@@ -2,10 +2,17 @@
 
 = Introduction =
 
-The `accept` method on the pPOD entities follows the pattern of the pPOD version number propogation.
+The `accept` method on the pPOD entities follows the pattern of the pPOD version number propogation, but travels in the opposite direction: it goes from `Study` downward.
 
 
-= Details =
+= pPOD Visitor =
+
+`Study`->`OTUSet`s `CharacterStateMatrix`s `TreeSet`s
+`OTUSet` -> `OTU`
+`CharacterStateMatrix` -> nowhere yet
+`TreeSet` -> nowhere yet
+
+
 
 Add your content here.  Format your content with:
   * Text in *bold* or _italic_
