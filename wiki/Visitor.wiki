@@ -1,4 +1,4 @@
-#summary how the visitor travels through the entity object network
+#summary How a visitor travels through the entity object network
 
 = Introduction =
 
