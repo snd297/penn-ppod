@@ -1,4 +1,4 @@
-#The Visitor Pattern
+#summary how the visitor travels through the entity object network
 
 = Introduction =
 
