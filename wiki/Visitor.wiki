@@ -7,7 +7,7 @@ The `accept` method on the pPOD entities follows the pattern of the pPOD version
 
 = pPOD Visitor =
 
-  *`Study`->`OTUSet`s `CharacterStateMatrix`s `TreeSet`s
-  *`OTUSet` -> `OTU`
-  *`CharacterStateMatrix` -> nowhere yet
-  *`TreeSet` -> nowhere yet
+  * `Study` ->`OTUSet`s `CharacterStateMatrix`s `TreeSet`s
+  * `OTUSet` -> `OTU`
+  * `CharacterStateMatrix` -> nowhere yet
+  * `TreeSet` -> nowhere yet
