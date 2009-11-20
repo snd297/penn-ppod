@@ -2,7 +2,7 @@
 
 = Introduction =
 
-The `accept` method on the pPOD entities follows the pattern of the pPOD version number propogation, but travels in the opposite direction: it goes from `Study` downward.
+
 
 = pPOD Version Number =
 
@@ -26,6 +26,8 @@ These were created to enable quick notification to a client of changes in a pPOD
  
 
 = pPOD Visitor =
+
+The `accept` method on the pPOD entities follows the pattern of the pPOD version number propogation, but travels in the opposite direction: it goes from `Study` downward.
 
   * `Study` ->`OTUSet`
   * `OTUSet` -> `OTU`, `CharacterStateMatrix`, `TreeSet`
