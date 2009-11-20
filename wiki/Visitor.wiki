@@ -4,6 +4,18 @@
 
 The `accept` method on the pPOD entities follows the pattern of the pPOD version number propogation, but travels in the opposite direction: it goes from `Study` downward.
 
+= pPOD Version Number =
+
+These were created to enable quick notification of changes in server-side data. 
+
+ * 'CharacterState' -> 'Character'
+ * 'Character' -> 'CharacterStateMatrix'
+ * 'CharacterStateMatrix' -> 'OTUSet'
+ * 'OTUSet' -> 'Study'
+ * 'Tree' -> 'TreeSet'
+ * 'TreeSet' -> 'Study'
+ 
+ 
 
 = pPOD Visitor =
 
