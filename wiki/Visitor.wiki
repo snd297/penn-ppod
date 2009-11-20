@@ -12,7 +12,7 @@ These were created to enable quick notification to a client of changes in a pPOD
  * `Character` -> `CharacterStateMatrix`
 
  * `CharacterStateCell` -> `CharacterStateRow`, `CharacterStateMatrix.getColumnPPodVersionInfos()`
- * `CharacterStateRow` -> `CharacterStateMatrix`
+ * `CharacterStateRow`, `CharacterStateMatrix.getColumnPPodVersionInfos()` -> `CharacterStateMatrix`
  * `CharacterStateMatrix` -> `OTUSet`
 
  * `OTU` -> `OTUSet`
