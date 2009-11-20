@@ -10,8 +10,14 @@ These were created to enable quick notification to a client of changes in a pPOD
 
  * `CharacterState` -> `Character`
  * `Character` -> `CharacterStateMatrix`
+
+ * `CharacterStateCell` -> `CharacterStateRow`
+ * `CharacterStateRow` -> `CharacterStateMatrix`
  * `CharacterStateMatrix` -> `OTUSet`
+
+ * `OTU` -> `OTUSet`
  * `OTUSet` -> `Study`
+
  * `Tree` -> `TreeSet`
  * `TreeSet` -> `Study`
  
