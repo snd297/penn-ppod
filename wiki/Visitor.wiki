@@ -6,12 +6,12 @@ The `accept` method on the pPOD entities follows the pattern of the pPOD version
 
 = pPOD Version Number =
 
-These were created to enable quick notification of changes in server-side data. 
+These were created to enable quick notification to a client of changes in a pPOD database. 
 
- * `CharacterState` -> 'Character'
+ * `CharacterState` -> 'Character`
  * `Character' -> `CharacterStateMatrix`
  * `CharacterStateMatrix` -> `OTUSet`
- * `OTUSet' -> `Study'
+ * `OTUSet' -> `Study`
  * `Tree' -> `TreeSet`
  * `TreeSet' -> `Study`
  
