@@ -8,7 +8,7 @@ The `accept` method on the pPOD entities follows the pattern of the pPOD version
 
 These were created to enable quick notification to a client of changes in a pPOD database. 
 
- * `CharacterState` -> 'Character`
+ * `CharacterState` -> `Character`
  * `Character' -> `CharacterStateMatrix`
  * `CharacterStateMatrix` -> `OTUSet`
  * `OTUSet' -> `Study`
