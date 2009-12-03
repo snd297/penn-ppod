@@ -23,20 +23,18 @@
 					<optimize>true</optimize>
 				</configuration>
 			</plugin>
-			<!--			<plugin>-->
-			<!--				<groupId>com.atlassian.maven.plugins</groupId>-->
-			<!--				<artifactId>maven-clover2-plugin</artifactId>-->
-			<!--				<version>2.6.1</version>-->
-			<!--				<configuration>-->
-			<!--
-				<license><![CDATA[nqQoMUdIasPdtAPcalrOIiJirPwonFmiQatPxQusNEgJvR
-			-->
-			<!--mi2KF0nV4K5tQtdHOns99mVG2KD7Eo8bqgAbzxQ4R<E5ir-->
-			<!--ppPpvUoOPqQpOrNMMmOVToOqrmQoRNmQOnwxVtVXxTTtWW-->
-			<!--oXWosTXUxxswuUWUwuRnmpmUUnorrossmmmmmmUUnorros-->
-			<!--smmmmmmUULkfsbopfqvWlcWGbkkpvisXkfXUUn]]></license>-->
-			<!--				</configuration>-->
-			<!--			</plugin>-->
+			<plugin>
+				<groupId>com.atlassian.maven.plugins</groupId>
+				<artifactId>maven-clover2-plugin</artifactId>
+				<version>2.6.1</version>
+				<configuration>
+					<license><![CDATA[PnRNPbEpjlddRqxGircSiMhQmQnPfxImtrESFjUoiDXdMpLs
+mk2L0MXA87a>FXAECw4jsbTZo2L0K8fsAyRBFaaevjItEVOw
+ORqOWVqmOQqMORqRoOnUsnqOqNnonopmMmtXVstUuVUvWvNs
+smSTwSvuuuXSwVSxrnmpmUUnorvtruummmmmUUnorvtruumm
+mmmUULkfsbopfqvWlcWGbkkpvisXkfXUUn]]></license>
+				</configuration>
+			</plugin>
 			<plugin>
 				<artifactId>maven-surefire-plugin</artifactId>
 				<configuration>
@@ -52,12 +50,6 @@
 		<module>ppod-services</module>
 	</modules>
 	<repositories>
-		<repository>
-			<id>dbappserv.cis.upenn.edu-releases</id>
-			<name>dbappserv.cis.upenn.edu-releases</name>
-			<url>http://dbappserv.cis.upenn.edu:8080/artifactory/ext-releases-local
-			</url>
-		</repository>
 		<repository>
 			<!--  For shiro. -->
 			<id>apache-snapshots</id>
