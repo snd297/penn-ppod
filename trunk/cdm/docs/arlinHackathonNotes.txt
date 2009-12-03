@@ -1,0 +1,47 @@
+Notes from taking with Arlin Stoltzfus at NESCent Database
+Interoperability Hackathon at NESCent Durham, NC on 3/13/2009
+
+DELETE FROM TABLE1
+ WHERE COLUMN1 = 'VALUE'
+org.eclipse.datatools.modelbase.sql.query.impl.PredicateBasicImpl@1c1ea29 (name: null) (description: null, label: null) (negatedCondition: false) (negatedPredicate: false, hasSelectivity: false, selectivityValue: null) (comparisonOperator: EQUAL)
+
+DELETE FROM SUPPLIERS
+ WHERE EXISTS (SELECT NAME
+                 FROM CUSTOMERS
+                 WHERE CUSTOMER_ID = SUPPLIERS.SUPPLIER_ID AND CUSTOMER_NAME = 'IBM')
+org.eclipse.datatools.modelbase.sql.query.impl.PredicateExistsImpl@134e4fb (name: null) (description: null, label: null) (negatedCondition: false) (negatedPredicate: false, hasSelectivity: false, selectivityValue: null)
+
+DELETE FROM SUPPLIERS
+ WHERE CUSTOMER_ID = 23 AND CUSTOMER_NAME = 'IBM'
+nnorg.eclipse.datatools.modelbase.sql.query.impl.SearchConditionCombinedImpl@1786e64 (name: null) (description: null, label: null) (negatedCondition: false) (combinedOperator: AND)
+
+DELETE FROM TABLE1
+ WHERE COLUMN1 = 'VALUE' AND COLUMN2 = 'VALUE2'
+org.eclipse.datatools.modelbase.sql.query.impl.SearchConditionCombinedImpl@1786e64 (name: null) (description: null, label: null) (negatedCondition: false) (combinedOperator: AND)
+
+5509 Balitmore VIX
+SQLDomainModel
+ExecuteViewer has a database call in it.
+ExecuteAction has super.run 
+
+/**
+ * This interface defines the set of properties which define a SQL
+ * statement in a string. The DialectInfo is
+ * optional within a SQLStatementInfo and should only be used if the dialect
+ * in which the statement was created is different from that of the current
+ * connection.
+ *
+ * @author Jeremy Lindop
+ */
+public interface ISQLStatementInfo  {
+
+DatabaseDefinition looks like where the dialect info is stored.
+StatementHelper
+1 is ValueExpressionSimpleImpl
+"xxxx" or whatever string is ValueExpressionColumnImpl
+
+insertStatement.sourceQuery.query.nestedQuery.selectClause.data[0].
+CAST(? AS INTEGER)
+cast(null as VARCHAR(255))
+cast(null as VARCHAR(100))
+cast(null as INT)
