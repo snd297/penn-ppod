@@ -1,5 +1,4 @@
 edu.upenn.cis.dbgroup.common.messages
-edu.upenn.cis.ppod
 edu.upenn.cis.ppod.dao
 edu.upenn.cis.ppod.dao.hibernate
 edu.upenn.cis.ppod.model
