@@ -281,7 +281,7 @@ public final class CharacterStateCell extends PPodEntity {
 			// Should be all clear, but let's check for programming errors
 			if (states != null && states.size() != 0) {
 				throw new AssertionError(
-						"programming error: firstate == null and states.size() != 0");
+						"programming error: firstate == null && states != null && states.size() != 0");
 			}
 		} else {
 			firstState = null;
