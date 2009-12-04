@@ -27,13 +27,6 @@
 				<groupId>com.atlassian.maven.plugins</groupId>
 				<artifactId>maven-clover2-plugin</artifactId>
 				<version>2.6.1</version>
-				<configuration>
-					<license><![CDATA[PnRNPbEpjlddRqxGircSiMhQmQnPfxImtrESFjUoiDXdMpLs
-mk2L0MXA87a>FXAECw4jsbTZo2L0K8fsAyRBFaaevjItEVOw
-ORqOWVqmOQqMORqRoOnUsnqOqNnonopmMmtXVstUuVUvWvNs
-smSTwSvuuuXSwVSxrnmpmUUnorvtruummmmmUUnorvtruumm
-mmmUULkfsbopfqvWlcWGbkkpvisXkfXUUn]]></license>
-				</configuration>
 			</plugin>
 			<plugin>
 				<artifactId>maven-surefire-plugin</artifactId>
