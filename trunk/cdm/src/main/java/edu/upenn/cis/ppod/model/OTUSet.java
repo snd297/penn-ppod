@@ -271,12 +271,7 @@ public final class OTUSet extends UUPPodEntityWXmlId {
 		if (null == id) {
 			return null;
 		}
-		for (final OTU otu : getOTUs()) {
-			if (id.equals(otu.getPPodId())) {
-				return otu;
-			}
-		}
-		return null;
+		return findIf(getOTUs(), compose(equalTo(id), IUUPPodEntity.getPPodId));
 	}
 
 	/**
