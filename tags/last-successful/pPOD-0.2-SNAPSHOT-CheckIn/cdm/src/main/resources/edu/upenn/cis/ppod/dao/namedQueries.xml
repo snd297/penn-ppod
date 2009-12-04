@@ -1,0 +1,124 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<entity-mappings xmlns="http://java.sun.com/xml/ns/persistence/orm"
+	xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+	xsi:schemaLocation="http://java.sun.com/xml/ns/persistence/orm http://java.sun.com/xml/ns/persistence/orm_1_0.xsd"
+	version="1.0">
+
+	<named-query name="PPodVersionInfo-getMaxPPoddVersion">
+		<query>select max(pvi.pPodVersion) from PPodVersionInfo pvi
+		</query>
+		<hint name="org.hibernate.comment" value="Get the maxiumum PPodVersionInfo.ppodVersion." />
+	</named-query>
+
+	<named-query name="Study-getByPPodId">
+		<query>select s from Study s where s.pPodId=:pPodId</query>
+		<hint name="org.hibernate.comment" value="Get a Study given its pPOD ID." />
+	</named-query>
+
+	<named-query name="Study-getPPodVersionByPPodId">
+		<query>select s.pPodVersionInfo.pPodVersion from Study s where s.pPodId=:pPodId</query>
+	</named-query>
+
+	<named-query name="Study-getOTUSetInfosByStudyPPodIdAndMinPPodVersion">
+		<query>select os.id, os.pPodId, os.pPodVersionInfo.pPodVersion 
+		       from Study s join s.otuSets os
+		       where s.pPodId=:studyPPodId and os.pPodVersionInfo.pPodVersion >= :minPPodVersion</query>
+	</named-query>
+
+	<named-query name="Study-getPPodIdLabelPairs">
+		<query>select s.pPodId, s.label from Study s</query>
+		<hint name="org.hibernate.comment" value="Get pPodId/label pairs for all persisted studies" />
+	</named-query>
+
+
+	<named-query name="OTUSet-getByPPodId">
+		<query>select os from OTUSet os where os.pPodId=:pPodId</query>
+		<hint name="org.hibernate.comment" value="Get an otu set given its pPodId." />
+	</named-query>
+
+	<named-query name="OTUSet-getOTUPPodIdsVersionsByOTUSetIdAndMinPPodVersion">
+		<query>select o.pPodId, o.pPodVersionInfo.pPodVersion 
+		       from OTUSet os join os.otus o
+		       where os.id=:otuId and o.pPodVersionInfo.pPodVersion >= :minPPodVersion</query>
+	</named-query>
+
+	<named-query name="OTUSet-getMatrixInfosByOTUSetPPodIdAndMinPPodVersion">
+		<query>select m.id, m.pPodId, m.pPodVersionInfo.pPodVersion 
+		       from OTUSet os join os.matrices m 
+		       where os.pPodId=:otuSetPPodId and m.pPodVersionInfo.pPodVersion >= :minPPodVersion</query>
+	</named-query>
+
+	<named-query name="CharacterStateMatrix-getByPPodId">
+		<query>select m from CharacterStateMatrix m where m.pPodId=:pPodId</query>
+		<hint name="org.hibernate.comment" value="Get a CharacterStateMatrix given its pPodId." />
+	</named-query>
+
+	<named-query name="CharacterStateMatrix-getPPodVersionById">
+		<query>select m.pPodVersionInfo.pPodVersion from CharacterStateMatrix m where m.id=:id</query>
+		<hint name="org.hibernate.comment" value="Get a matrix pPOD	version given its id" />
+	</named-query>
+
+	<named-query
+		name="CharacterStateMatrix-getCharacterInfosByMatrixIdAndMinPPodVersion">
+		<query>select pc.id, pc.pPodId, pc.pPodVersionInfo.pPodVersion 
+		       from CharacterStateMatrix m join m.characters pc 
+		       where m.id=:matrixId and pc.pPodVersionInfo.pPodVersion >= :minPPodVersion</query>
+	</named-query>
+
+	<named-query name="CharacterStateMatrix-getColumnPPodVersionsByMatrixId">
+		<query>select versionInfo.pPodVersion from CharacterStateMatrix m join m.columnPPodVersionInfos versionInfo where m.id=:matrixId order by PPOD_VERSION_INFO_POSITION</query>
+		<hint name="org.hibernate.comment"
+			value="Get a matrixs column headers pPOD versions given the matrix id" />
+	</named-query>
+
+	<named-query
+		name="CharacterStateMatrix-getRowIdxsIdsVersionsByMatrixIdAndMinPPodVersion">
+		<query>select index(r), r.id, r.pPodVersionInfo.pPodVersion 
+		       from CharacterStateMatrix m join m.rows r where 
+		       m.id=:matrixId and r.pPodVersionInfo.pPodVersion >= :minPPodVersion</query>
+	</named-query>
+
+	<named-query name="CharacterStateMatrix-getPPodIdLabelPairs">
+		<query>select m.pPodId, m.label from CharacterStateMatrix m</query>
+		<hint name="org.hibernate.comment" value="Get pPodId/label pairs for all persisted matrices" />
+	</named-query>
+
+	<named-query name="CharacterState-getCellIdxsVersionsByRowIdAndMinVersion">
+		<query>select index(c), c.pPodVersionInfo.pPodVersion from CharacterStateRow r join r.cells c where r.id=:rowId and c.pPodVersionInfo.pPodVersion >= :minVersion</query>
+	</named-query>
+
+	<named-query name="Character-getByPPodId">
+		<query>select c from Character c where c.pPodId=:pPodId
+		</query>
+		<hint name="org.hibernate.comment" value="Get a phylo char given its pPodId." />
+	</named-query>
+
+	<named-query name="OTU-getByPPodId">
+		<query>select o from OTU o where o.pPodId=:pPodId</query>
+		<hint name="org.hibernate.comment" value="Get an otu given its pPodId." />
+	</named-query>
+
+	<named-query name="TreeSet-getByPPodId">
+		<query>select ts from TreeSet ts where ts.pPodId=:pPodId</query>
+		<hint name="org.hibernate.comment" value="Get a tree set given its pPodId." />
+	</named-query>
+
+	<named-query name="Tree-getByPPodId">
+		<query>select t from Tree t where t.pPodId=:pPodId</query>
+		<hint name="org.hibernate.comment" value="Get a tree given its pPodId." />
+	</named-query>
+
+	<named-query name="AttachmentNamespace-getByNamespace">
+		<query>select n from AttachmentNamespace n where n.label=:namespace</query>
+	</named-query>
+
+	<named-query name="AttachmentType-getByNamespaceAndType">
+		<query>select at from AttachmentType at where at.namespace.label=:namespaceLabel and at.label=:typeLabel
+		</query>
+		<hint name="org.hibernate.comment"
+			value="Get an AttachmentType given its namespace label and type label." />
+	</named-query>
+
+
+
+</entity-mappings>
