@@ -16,7 +16,7 @@
 package edu.upenn.cis.ppod.dao.hibernate;
 
 import edu.upenn.cis.ppod.dao.IUserDAO;
-import edu.upenn.cis.ppod.model.security.User;
+import edu.upenn.cis.ppod.thirdparty.model.security.User;
 
 /**
  * A {@link User} Hibernate DAO.
