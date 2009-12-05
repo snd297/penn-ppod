@@ -36,8 +36,8 @@ import edu.upenn.cis.ppod.dao.IPPodRoleDAO;
 import edu.upenn.cis.ppod.dao.IUserDAO;
 import edu.upenn.cis.ppod.model.security.PPodGroup;
 import edu.upenn.cis.ppod.model.security.PPodPermission;
-import edu.upenn.cis.ppod.model.security.Role;
-import edu.upenn.cis.ppod.model.security.User;
+import edu.upenn.cis.ppod.thirdparty.model.security.Role;
+import edu.upenn.cis.ppod.thirdparty.model.security.User;
 
 /**
  * The Spring/Hibernate sample application's one and only configured Apache

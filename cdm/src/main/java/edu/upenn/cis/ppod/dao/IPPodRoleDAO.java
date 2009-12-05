@@ -15,7 +15,7 @@
  */
 package edu.upenn.cis.ppod.dao;
 
-import edu.upenn.cis.ppod.model.security.Role;
+import edu.upenn.cis.ppod.thirdparty.model.security.Role;
 
 /**
  * @author Sam Donnelly
