@@ -23,23 +23,23 @@ import edu.upenn.cis.ppod.model.Tree;
 import edu.upenn.cis.ppod.model.TreeSet;
 
 /**
- * Manufactures <code>IDAO</code>s.
+ * Manufactures {@link IDAO}s.
  * 
  * @author Sam Donnelly
  */
 public interface IDAOFactory {
 
 	/**
-	 * Get a {@Study DAO.}
+	 * Get an {@link Study} DAO.
 	 * 
-	 * @return a {@link Study DAO}.
+	 * @return an {@code Study}
 	 */
 	IStudyDAO getStudyDAO();
 
 	/**
 	 * Get a {@link CharacterStateMatrix} DAO.
 	 * 
-	 * @return a {@link CharacterStateMatrix} DAO
+	 * @return a {@code CharacterStateMatrix} DAO
 	 */
 	ICharacterStateMatrixDAO geCharStateMatrixDAO();
 
@@ -53,7 +53,7 @@ public interface IDAOFactory {
 	/**
 	 * Get a {@link IOTUSetDAO}.
 	 * 
-	 * @return a {@link IOTUSetDAO}
+	 * @return a {@code IOTUSetDAO}
 	 */
 	IOTUSetDAO getOTUSetDAO();
 
@@ -67,7 +67,7 @@ public interface IDAOFactory {
 	/**
 	 * Get an {@link ICharacterStateDAO}.
 	 * 
-	 * @return an {@link ICharacterStateDAO}
+	 * @return an {@code ICharacterStateDAO}
 	 */
 	ICharacterStateDAO getCharacterStateDAO();
 
@@ -81,35 +81,35 @@ public interface IDAOFactory {
 	/**
 	 * Get an {@link ICharacterStateRowDAO}.
 	 * 
-	 * @return an {@link ICharacterStateRowDAO}
+	 * @return an {@code ICharacterStateRowDAO}
 	 */
 	ICharacterStateRowDAO getCharacterStateRowDAO();
 
 	/**
 	 * Get a {@link Tree} DAO.
 	 * 
-	 * @return a {@link Tree} DAO
+	 * @return a {@code Tree} DAO
 	 */
 	ITreeDAO getTreeDAO();
 
 	/**
 	 * Get a {@link TreeSet} DAO.
 	 * 
-	 * @return a {@link TreeSet} DAO
+	 * @return a {@code TreeSet} DAO
 	 */
 	ITreeSetDAO getTreeSetDAO();
 
 	/**
 	 * Get a {@link AttachmentNamespace} DAO.
 	 * 
-	 * @return a {@link AttachmentNamespace} DAO
+	 * @return a {@code AttachmentNamespace} DAO
 	 */
 	IAttachmentNamespaceDAO getAttachmentNamespaceDAO();
 
 	/**
 	 * Get a {@link AttachmentType} DAO.
 	 * 
-	 * @return a {@link AttachmentType} DAO
+	 * @return a {@code AttachmentType} DAO
 	 */
 	IAttachmentTypeDAO getAttachmentTypeDAO();
 
