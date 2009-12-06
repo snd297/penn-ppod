@@ -18,6 +18,7 @@ package edu.upenn.cis.ppod.dao;
 import edu.upenn.cis.ppod.model.AttachmentNamespace;
 import edu.upenn.cis.ppod.model.AttachmentType;
 import edu.upenn.cis.ppod.model.CharacterStateMatrix;
+import edu.upenn.cis.ppod.model.OTU;
 import edu.upenn.cis.ppod.model.Study;
 import edu.upenn.cis.ppod.model.Tree;
 import edu.upenn.cis.ppod.model.TreeSet;
@@ -44,7 +45,7 @@ public interface IDAOFactory {
 	ICharacterStateMatrixDAO getCharacterStateMatrixDAO();
 
 	/**
-	 * Get an <code>OTU</code> DAO.
+	 * Get an {@link OTU} DAO.
 	 * 
 	 * @return an <code>OTU</code> DAO.
 	 */
