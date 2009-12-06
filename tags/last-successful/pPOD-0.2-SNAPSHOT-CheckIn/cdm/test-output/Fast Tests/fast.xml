@@ -1,0 +1,38 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<testsuite name="fast" failures="0" tests="34" time="2.625" errors="0">
+  <properties/>
+  <testcase name="succeed" time="0.0080" classname="edu.upenn.cis.ppod.FactorySetup"/>
+  <testcase name="setOTUsWSameOTUs" time="0.0030" classname="edu.upenn.cis.ppod.model.CharacterStateMatrixTest"/>
+  <testcase name="setTypeAndStatesUncertain" time="0.011" classname="edu.upenn.cis.ppod.model.CharacterStateCellTest"/>
+  <testcase name="setTypeAndStatesSingleTooFewStates" time="0.0020" classname="edu.upenn.cis.ppod.model.CharacterStateCellTest"/>
+  <testcase name="setWithSameRow" time="0.0010" classname="edu.upenn.cis.ppod.model.CharacterStateMatrixTest"/>
+  <testcase name="setTypeAndStatesInapplicableTooManyStates" time="0.0020" classname="edu.upenn.cis.ppod.model.CharacterStateCellTest"/>
+  <testcase name="moveRow" time="0.0070" classname="edu.upenn.cis.ppod.model.CharacterStateMatrixTest"/>
+  <testcase name="moveCharacter" time="0.0020" classname="edu.upenn.cis.ppod.model.CharacterStateMatrixTest"/>
+  <testcase name="setCharacterWithItself" time="0.0010" classname="edu.upenn.cis.ppod.model.CharacterStateMatrixTest"/>
+  <testcase name="setRowCreatesPadding" time="0.0010" classname="edu.upenn.cis.ppod.model.CharacterStateMatrixTest"/>
+  <testcase name="getStatesWXmlStatesNeedsToBePutIntoStatesTrueInapplicable" time="0.0020" classname="edu.upenn.cis.ppod.model.CharacterStateCellTest"/>
+  <testcase name="removeLastCharacter" time="0.0020" classname="edu.upenn.cis.ppod.model.CharacterStateMatrixTest"/>
+  <testcase name="setTypeAndStatesSingle" time="0.0020" classname="edu.upenn.cis.ppod.model.CharacterStateCellTest"/>
+  <testcase name="setTypeAndStatesInapplicable" time="0.0010" classname="edu.upenn.cis.ppod.model.CharacterStateCellTest"/>
+  <testcase name="setTypeAndStatesUnassignedTooManyStates" time="0.0020" classname="edu.upenn.cis.ppod.model.CharacterStateCellTest"/>
+  <testcase name="setTypeAndStatesPolymorphicTooFewStates" time="0.0020" classname="edu.upenn.cis.ppod.model.CharacterStateCellTest"/>
+  <testcase name="setTypeAndStatesUnassigned" time="0.0060" classname="edu.upenn.cis.ppod.model.CharacterStateCellTest"/>
+  <testcase name="setTypeAndStatesPolymorphic" time="0.0020" classname="edu.upenn.cis.ppod.model.CharacterStateCellTest"/>
+  <testcase name="replaceCharacter" time="0.051" classname="edu.upenn.cis.ppod.model.CharacterStateMatrixTest"/>
+  <testcase name="setWrongOTUs" time="0.0020" classname="edu.upenn.cis.ppod.model.CharacterStateMatrixTest"/>
+  <testcase name="setCharacter" time="0.0020" classname="edu.upenn.cis.ppod.model.CharacterStateMatrixTest"/>
+  <testcase name="setTypeAndStatesUncertainTooFewStates" time="0.0020" classname="edu.upenn.cis.ppod.model.CharacterStateCellTest"/>
+  <testcase name="setOTUsWReorderedOTUs" time="0.0010" classname="edu.upenn.cis.ppod.model.CharacterStateMatrixTest"/>
+  <testcase name="setOTUs" time="0.0010" classname="edu.upenn.cis.ppod.model.CharacterStateMatrixTest"/>
+  <testcase name="setTypeAndStatesFromPolymorhpicToInapplicable" time="0.0020" classname="edu.upenn.cis.ppod.model.CharacterStateCellTest"/>
+  <testcase name="setTypeAndStatesFromSingleToInapplicable" time="0.0030" classname="edu.upenn.cis.ppod.model.CharacterStateCellTest"/>
+  <testcase name="getStatesWhenCellHasOneState" time="0.0010" classname="edu.upenn.cis.ppod.model.CharacterStateCellTest"/>
+  <testcase name="replaceRow" time="0.0020" classname="edu.upenn.cis.ppod.model.CharacterStateMatrixTest"/>
+  <testcase name="setTypeAndStatesSingleTooManyStates" time="0.0020" classname="edu.upenn.cis.ppod.model.CharacterStateCellTest"/>
+  <testcase name="getStatesWhenCellHasMultipleStates" time="0.0010" classname="edu.upenn.cis.ppod.model.CharacterStateCellTest"/>
+  <testcase name="setOTUsWLessOTUs" time="0.0010" classname="edu.upenn.cis.ppod.model.CharacterStateMatrixTest"/>
+  <testcase name="setStatesForACellThatDoesNotBelongToARow" time="0.0030" classname="edu.upenn.cis.ppod.model.CharacterStateCellTest"/>
+  <testcase name="of" time="0.0010" classname="edu.upenn.cis.ppod.model.CharacterStateCellTypeTest"/>
+  <testcase name="save" time="1.172" classname="edu.upenn.cis.ppod.saveorupdate.SaveOrUpdateMatrixTest"/>
+</testsuite>
