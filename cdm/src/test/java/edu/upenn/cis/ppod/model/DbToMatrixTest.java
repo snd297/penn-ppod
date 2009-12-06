@@ -40,7 +40,7 @@ public class DbToMatrixTest extends DbTestBase {
 		final String M = "dbToMatrix()";
 		try {
 			final ICharacterStateMatrixDAO phyloCharMatrixDAO = daoFactory
-					.geCharStateMatrixDAO();
+					.getCharacterStateMatrixDAO();
 // ManagedSessionContextUtil.openAndBindSession();
 // HibernateUtil.beginTransactionInCurrentSession();
 

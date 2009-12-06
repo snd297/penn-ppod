@@ -151,7 +151,7 @@ public class MatrixToDbTest extends DbTestBase {
 			}
 
 			final ICharacterStateMatrixDAO phyloCharMatrixDAO = daoFactory
-					.geCharStateMatrixDAO();
+					.getCharacterStateMatrixDAO();
 
 			@SuppressWarnings("unchecked")
 			final List<Element> matrixElements = pPodData

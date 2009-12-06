@@ -227,7 +227,7 @@ public class HibernateDAOFactory implements IDAOFactory {
 
 	private final Provider<CharacterStateMatrixDAOHibernate> charStateMatrixProvider;
 
-	public ICharacterStateMatrixDAO geCharStateMatrixDAO() {
+	public ICharacterStateMatrixDAO getCharacterStateMatrixDAO() {
 		return (ICharacterStateMatrixDAO) charStateMatrixProvider.get()
 				.setSession(session);
 	}
