@@ -30,7 +30,7 @@ public class DAOFactoriesTest {
 		 * 
 		 * @see edu.upenn.cis.ppod.dao.IDAOFactory#getMatrixDAO()
 		 */
-		public ICharacterStateMatrixDAO geCharStateMatrixDAO() {
+		public ICharacterStateMatrixDAO getCharacterStateMatrixDAO() {
 			// TODO Auto-generated method stub
 			return null;
 		}
