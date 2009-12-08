@@ -38,7 +38,7 @@ import edu.upenn.cis.ppod.model.OTUSet;
 import edu.upenn.cis.ppod.model.Study;
 import edu.upenn.cis.ppod.model.TreeSet;
 import edu.upenn.cis.ppod.saveorupdate.IMergeCharacterStateMatrix;
-import edu.upenn.cis.ppod.saveorupdate.ISaveOrUpdateOTUSet;
+import edu.upenn.cis.ppod.saveorupdate.IMergeOTUSet;
 import edu.upenn.cis.ppod.saveorupdate.ISaveOrUpdateStudy;
 import edu.upenn.cis.ppod.saveorupdate.ISaveOrUpdateTreeSet;
 
@@ -54,7 +54,7 @@ public class SaveOrUpdateStudyHibernate implements ISaveOrUpdateStudy {
 	private final Provider<OTUSet> otuSetProvider;
 	private final Provider<CharacterStateMatrix> matrixProvider;
 	private final Provider<TreeSet> treeSetProvider;
-	private final ISaveOrUpdateOTUSet saveOrUpdateOTUSet;
+	private final IMergeOTUSet mergeOTUSet;
 	private final IMergeCharacterStateMatrix mergeCharacterStateMatrix;
 	private final ISaveOrUpdateTreeSet saveOrUpdateTreeSet;
 
@@ -77,7 +77,7 @@ public class SaveOrUpdateStudyHibernate implements ISaveOrUpdateStudy {
 		this.otuSetProvider = otuSetProvider;
 		this.matrixProvider = matrixProvider;
 		this.treeSetProvider = treeSetProvider;
-		this.saveOrUpdateOTUSet = saveOrUpdateOTUSetFactory.create(session);
+		this.mergeOTUSet = saveOrUpdateOTUSetFactory.create(session);
 		this.mergeCharacterStateMatrix = saveOrUpdateMatrixFactory
 				.create(saveOrUpdateAttachmentFactory.create(session));
 		this.saveOrUpdateTreeSet = saveOrUpdateTreeSetFactory.create(session);
@@ -110,8 +110,8 @@ public class SaveOrUpdateStudyHibernate implements ISaveOrUpdateStudy {
 				dbOTUSet = dbStudy.addOTUSet(otuSetProvider.get());
 				dbOTUSet.setPPodId();
 			}
-			final Map<OTU, OTU> dbOTUsByIncomingOTU = saveOrUpdateOTUSet
-					.saveOrUpdate(incomingOTUSet, dbOTUSet);
+			final Map<OTU, OTU> dbOTUsByIncomingOTU = mergeOTUSet
+					.saveOrUpdate(dbOTUSet, incomingOTUSet);
 			for (final CharacterStateMatrix incomingMatrix : incomingOTUSet
 					.getMatrices()) {
 				CharacterStateMatrix dbMatrix;

@@ -17,12 +17,12 @@ package edu.upenn.cis.ppod.saveorupdate.hibernate;
 
 import org.hibernate.Session;
 
-import edu.upenn.cis.ppod.saveorupdate.ISaveOrUpdateOTUSet;
+import edu.upenn.cis.ppod.saveorupdate.IMergeOTUSet;
 
 /**
  * @author Sam Donnelly
  * 
  */
 public interface ISaveOrUpdateOTUSetHibernateFactory {
-	ISaveOrUpdateOTUSet create(Session session);
+	IMergeOTUSet create(Session session);
 }
