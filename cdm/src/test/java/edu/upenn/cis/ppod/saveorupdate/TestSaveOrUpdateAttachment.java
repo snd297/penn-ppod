@@ -18,17 +18,17 @@ package edu.upenn.cis.ppod.saveorupdate;
 import edu.upenn.cis.ppod.model.Attachment;
 
 /**
- * Stub {@link ISaveOrUpdateAttachment}.
+ * Stub {@link IMergeAttachment}.
  * 
  * @author Sam Donnelly
  */
-public class TestSaveOrUpdateAttachment implements ISaveOrUpdateAttachment {
+public class TestSaveOrUpdateAttachment implements IMergeAttachment {
 
 	/**
 	 * Does nothing.
 	 */
-	public Attachment saveOrUpdate(final Attachment incomingAttachment,
-			final Attachment dbAttachment) {
-		return dbAttachment;
+	public Attachment saveOrUpdate(final Attachment targetAttachment,
+			final Attachment sourceAttachment) {
+		return targetAttachment;
 	}
 }

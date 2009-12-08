@@ -35,7 +35,7 @@ import edu.upenn.cis.ppod.model.PPodAssert;
 import edu.upenn.cis.ppod.util.MatrixProvider;
 
 /**
- * Tests of {@link ISaveOrUpdateMatrix}.
+ * Tests of {@link IMergeCharacterStateMatrix}.
  * 
  * @author Sam Donnelly
  */
@@ -43,7 +43,7 @@ import edu.upenn.cis.ppod.util.MatrixProvider;
 public class SaveOrUpdateMatrixTest {
 
 	@Inject
-	private ISaveOrUpdateMatrix.IFactory saveOrUpdateMatrixFactory;
+	private IMergeCharacterStateMatrix.IFactory saveOrUpdateMatrixFactory;
 
 	@Inject
 	private Provider<CharacterStateMatrix> matrixProvider;
@@ -58,17 +58,20 @@ public class SaveOrUpdateMatrixTest {
 	private TestSaveOrUpdateAttachment saveOrUpdateAttachment;
 
 	@Test(dataProvider = MatrixProvider.SMALL_SIMPLE_MATRIX_PROVIDER, dataProviderClass = MatrixProvider.class)
-	public void save(final CharacterStateMatrix incomingMatrix) {
-		final ISaveOrUpdateMatrix saveOrUpdateMatrix = saveOrUpdateMatrixFactory
+	public void save(final CharacterStateMatrix sourceMatrix) {
+		final IMergeCharacterStateMatrix mergeCharacterStateMatrix = saveOrUpdateMatrixFactory
 				.create(saveOrUpdateAttachment);
-		final OTUSet fakeDbOTUSet = incomingMatrix.getOTUSet();
+		final OTUSet fakeDbOTUSet = sourceMatrix.getOTUSet();
 		final Map<OTU, OTU> fakeOTUsByIncomingOTU = newHashMap();
-		for (final OTU incomingOTU : incomingMatrix.getOTUs()) {
-			fakeOTUsByIncomingOTU.put(incomingOTU, incomingOTU);
+		for (final OTU sourceOTU : sourceMatrix.getOTUs()) {
+			fakeOTUsByIncomingOTU.put(sourceOTU, sourceOTU);
 		}
-		final CharacterStateMatrix dbMatrix = saveOrUpdateMatrix.saveOrUpdate(
-				incomingMatrix, (CharacterStateMatrix) matrixProvider.get()
-						.setPPodId(), fakeDbOTUSet, fakeOTUsByIncomingOTU);
+
+		final CharacterStateMatrix targetMatrix = (CharacterStateMatrix) matrixProvider
+				.get().setPPodId();
+		fakeDbOTUSet.addMatrix(targetMatrix);
+		final CharacterStateMatrix dbMatrix = mergeCharacterStateMatrix.merge(
+				targetMatrix, sourceMatrix, fakeOTUsByIncomingOTU);
 		assertNotNull(dbMatrix.getPPodId());
 		// Check to make sure it's a UUID
 		try {
@@ -77,6 +80,6 @@ public class SaveOrUpdateMatrixTest {
 			assertFalse(true, "dbMatrix.getPPodId() is not a UUID: " + e);
 		}
 
-		PPodAssert.assertEqualsCharacterStateMatrices(dbMatrix, incomingMatrix);
+		PPodAssert.assertEqualsCharacterStateMatrices(dbMatrix, sourceMatrix);
 	}
 }

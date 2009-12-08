@@ -33,12 +33,12 @@ import edu.upenn.cis.ppod.dao.hibernate.AttachmentTypeDAOHibernate;
 import edu.upenn.cis.ppod.model.Attachment;
 import edu.upenn.cis.ppod.model.AttachmentNamespace;
 import edu.upenn.cis.ppod.model.AttachmentType;
-import edu.upenn.cis.ppod.saveorupdate.ISaveOrUpdateAttachment;
+import edu.upenn.cis.ppod.saveorupdate.IMergeAttachment;
 
 /**
  * @author Sam Donnelly
  */
-public class SaveOrUpdateAttachmentHibernate implements ISaveOrUpdateAttachment {
+public class MergeAttachmentHibernate implements IMergeAttachment {
 
 	private final IAttachmentNamespaceDAO attachmentNamespaceDAO;
 	private final IAttachmentTypeDAO attachmentTypeDAO;
@@ -53,7 +53,7 @@ public class SaveOrUpdateAttachmentHibernate implements ISaveOrUpdateAttachment 
 	private final Map<AttachmentNamespace, Map<String, AttachmentType>> typesByNamespaceAndLabel = newHashMap();
 
 	@Inject
-	SaveOrUpdateAttachmentHibernate(
+	MergeAttachmentHibernate(
 			final AttachmentNamespaceDAOHibernate attachmentNamespaceDAO,
 			final AttachmentTypeDAOHibernate attachmentTypeDAO,
 			final Provider<AttachmentNamespace> attachmentNamespaceProvider,
@@ -67,18 +67,18 @@ public class SaveOrUpdateAttachmentHibernate implements ISaveOrUpdateAttachment 
 		this.attachmentTypeProvider = attachmentTypeProvider;
 	}
 
-	public Attachment saveOrUpdate(final Attachment incomingAttachment,
-			final Attachment dbAttachment) {
+	public Attachment saveOrUpdate(final Attachment targetAttachment,
+			final Attachment sourceAttachment) {
 		AttachmentNamespace dbAttachmentNamespace = namespacesByLabel
-				.get(incomingAttachment.getType().getNamespace().getLabel());
+				.get(sourceAttachment.getType().getNamespace().getLabel());
 		if (null == dbAttachmentNamespace) {
 			dbAttachmentNamespace = attachmentNamespaceDAO
-					.getNamespaceByLabel(incomingAttachment.getType()
+					.getNamespaceByLabel(sourceAttachment.getType()
 							.getNamespace().getLabel());
 			if (null == dbAttachmentNamespace) {
 				dbAttachmentNamespace = attachmentNamespaceProvider.get()
 						.setLabel(
-								incomingAttachment.getType().getNamespace()
+								sourceAttachment.getType().getNamespace()
 										.getLabel());
 			}
 			namespacesByLabel.put(dbAttachmentNamespace.getLabel(),
@@ -89,25 +89,25 @@ public class SaveOrUpdateAttachmentHibernate implements ISaveOrUpdateAttachment 
 
 		AttachmentType dbAttachmentType = typesByNamespaceAndLabel.get(
 				dbAttachmentNamespace).get(
-				incomingAttachment.getType().getLabel());
+				sourceAttachment.getType().getLabel());
 		if (null == dbAttachmentType) {
 			dbAttachmentType = attachmentTypeDAO
 					.getAttachmentTypeByNamespaceAndType(dbAttachmentNamespace
-							.getLabel(), incomingAttachment.getType()
+							.getLabel(), sourceAttachment.getType()
 							.getLabel());
 			if (null == dbAttachmentType) {
 				dbAttachmentType = attachmentTypeProvider.get().setLabel(
-						incomingAttachment.getType().getLabel());
+						sourceAttachment.getType().getLabel());
 				dbAttachmentType.setNamespace(dbAttachmentNamespace);
 			}
 			typesByNamespaceAndLabel.get(dbAttachmentNamespace).put(
 					dbAttachmentType.getLabel(), dbAttachmentType);
 		}
 
-		dbAttachment.setLabel(incomingAttachment.getLabel());
-		dbAttachment.setStringValue(incomingAttachment.getStringValue());
-		dbAttachment.setType(dbAttachmentType);
+		targetAttachment.setLabel(sourceAttachment.getLabel());
+		targetAttachment.setStringValue(sourceAttachment.getStringValue());
+		targetAttachment.setType(dbAttachmentType);
 
-		return dbAttachment;
+		return targetAttachment;
 	}
 }
