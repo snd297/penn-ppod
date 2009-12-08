@@ -66,7 +66,7 @@ public class SaveOrUpdateStudyHibernate implements ISaveOrUpdateStudy {
 			final Provider<OTUSet> otuSetProvider,
 			final Provider<CharacterStateMatrix> matrixProvider,
 			final Provider<TreeSet> treeSetProvider,
-			final ISaveOrUpdateOTUSetHibernateFactory saveOrUpdateOTUSetFactory,
+			final IMergeOTUSetHibernateFactory saveOrUpdateOTUSetFactory,
 			final IMergeCharacterStateMatrix.IFactory saveOrUpdateMatrixFactory,
 			final ISaveOrUpdateTreeSetHibernateFactory saveOrUpdateTreeSetFactory,
 			final IMergeAttachmentHibernateFactory saveOrUpdateAttachmentFactory,
