@@ -21,13 +21,13 @@ import com.google.inject.assistedinject.FactoryProvider;
 import edu.upenn.cis.ppod.dao.hibernate.HibernateDAOFactory;
 import edu.upenn.cis.ppod.dao.hibernate.StudyDAOHibernate;
 import edu.upenn.cis.ppod.model.CharacterState;
-import edu.upenn.cis.ppod.saveorupdate.ISaveOrUpdateMatrix;
-import edu.upenn.cis.ppod.saveorupdate.SaveOrUpdateMatrix;
-import edu.upenn.cis.ppod.saveorupdate.hibernate.ISaveOrUpdateAttachmentHibernateFactory;
+import edu.upenn.cis.ppod.saveorupdate.IMergeCharacterStateMatrix;
+import edu.upenn.cis.ppod.saveorupdate.MergeCharacterStateMatrix;
+import edu.upenn.cis.ppod.saveorupdate.hibernate.IMergeAttachmentHibernateFactory;
 import edu.upenn.cis.ppod.saveorupdate.hibernate.ISaveOrUpdateOTUSetHibernateFactory;
 import edu.upenn.cis.ppod.saveorupdate.hibernate.ISaveOrUpdateStudyHibernateFactory;
 import edu.upenn.cis.ppod.saveorupdate.hibernate.ISaveOrUpdateTreeSetHibernateFactory;
-import edu.upenn.cis.ppod.saveorupdate.hibernate.SaveOrUpdateAttachmentHibernate;
+import edu.upenn.cis.ppod.saveorupdate.hibernate.MergeAttachmentHibernate;
 import edu.upenn.cis.ppod.saveorupdate.hibernate.SaveOrUpdateOTUSetHibernate;
 import edu.upenn.cis.ppod.saveorupdate.hibernate.SaveOrUpdateStudyHibernate;
 import edu.upenn.cis.ppod.saveorupdate.hibernate.SaveOrUpdateTreeSetHibernate;
@@ -55,18 +55,19 @@ public final class PPodCoreModule extends AbstractModule {
 				FactoryProvider.newFactory(
 						ISaveOrUpdateOTUSetHibernateFactory.class,
 						SaveOrUpdateOTUSetHibernate.class));
-		bind(ISaveOrUpdateMatrix.IFactory.class).toProvider(
-				FactoryProvider.newFactory(ISaveOrUpdateMatrix.IFactory.class,
-						SaveOrUpdateMatrix.class));
+		bind(IMergeCharacterStateMatrix.IFactory.class).toProvider(
+				FactoryProvider.newFactory(
+						IMergeCharacterStateMatrix.IFactory.class,
+						MergeCharacterStateMatrix.class));
 		bind(ISaveOrUpdateTreeSetHibernateFactory.class).toProvider(
 				FactoryProvider.newFactory(
 						ISaveOrUpdateTreeSetHibernateFactory.class,
 						SaveOrUpdateTreeSetHibernate.class));
 
-		bind(ISaveOrUpdateAttachmentHibernateFactory.class).toProvider(
+		bind(IMergeAttachmentHibernateFactory.class).toProvider(
 				FactoryProvider.newFactory(
-						ISaveOrUpdateAttachmentHibernateFactory.class,
-						SaveOrUpdateAttachmentHibernate.class));
+						IMergeAttachmentHibernateFactory.class,
+						MergeAttachmentHibernate.class));
 
 		bind(CharacterState.IFactory.class).toProvider(
 				FactoryProvider.newFactory(CharacterState.IFactory.class,

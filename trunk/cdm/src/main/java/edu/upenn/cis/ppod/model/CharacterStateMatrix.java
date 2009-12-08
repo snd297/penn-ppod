@@ -584,11 +584,18 @@ public final class CharacterStateMatrix extends UUPPodEntityWXmlId {
 	 * @throws IllegalArgumentException if the members of {@code otus} are not
 	 *             the same as those of this {@code CharacterStateMatrix}'s
 	 *             associated {@code OTUSet}
+	 * @throws IllegalStateException if the OTU set has not been set, ie if
+	 *             {@link #getOTUSet() == null}
 	 */
 	public CharacterStateMatrix setOTUs(final List<OTU> newOtus) {
 		if (newOtus.equals(otus)) {
 			// They're the same, nothing to do
 			return this;
+		}
+
+		if (otuSet == null) {
+			throw new IllegalStateException(
+					"otuSet needs to be set before setOTUs(...) is called");
 		}
 
 		if (newOtus.containsAll(otuSet.getOTUs())

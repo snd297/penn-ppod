@@ -37,7 +37,7 @@ import edu.upenn.cis.ppod.model.OTU;
 import edu.upenn.cis.ppod.model.OTUSet;
 import edu.upenn.cis.ppod.model.Study;
 import edu.upenn.cis.ppod.model.TreeSet;
-import edu.upenn.cis.ppod.saveorupdate.ISaveOrUpdateMatrix;
+import edu.upenn.cis.ppod.saveorupdate.IMergeCharacterStateMatrix;
 import edu.upenn.cis.ppod.saveorupdate.ISaveOrUpdateOTUSet;
 import edu.upenn.cis.ppod.saveorupdate.ISaveOrUpdateStudy;
 import edu.upenn.cis.ppod.saveorupdate.ISaveOrUpdateTreeSet;
@@ -55,7 +55,7 @@ public class SaveOrUpdateStudyHibernate implements ISaveOrUpdateStudy {
 	private final Provider<CharacterStateMatrix> matrixProvider;
 	private final Provider<TreeSet> treeSetProvider;
 	private final ISaveOrUpdateOTUSet saveOrUpdateOTUSet;
-	private final ISaveOrUpdateMatrix saveOrUpdateMatrix;
+	private final IMergeCharacterStateMatrix mergeCharacterStateMatrix;
 	private final ISaveOrUpdateTreeSet saveOrUpdateTreeSet;
 
 	@Inject
@@ -67,9 +67,9 @@ public class SaveOrUpdateStudyHibernate implements ISaveOrUpdateStudy {
 			final Provider<CharacterStateMatrix> matrixProvider,
 			final Provider<TreeSet> treeSetProvider,
 			final ISaveOrUpdateOTUSetHibernateFactory saveOrUpdateOTUSetFactory,
-			final ISaveOrUpdateMatrix.IFactory saveOrUpdateMatrixFactory,
+			final IMergeCharacterStateMatrix.IFactory saveOrUpdateMatrixFactory,
 			final ISaveOrUpdateTreeSetHibernateFactory saveOrUpdateTreeSetFactory,
-			final ISaveOrUpdateAttachmentHibernateFactory saveOrUpdateAttachmentFactory,
+			final IMergeAttachmentHibernateFactory saveOrUpdateAttachmentFactory,
 			@Assisted final Session session) {
 		this.studyDAO = (IStudyDAO) studyDAOHibernate.setSession(session);
 		this.otuSetDAO = (IOTUSetDAO) otuSetDAO.setSession(session);
@@ -78,7 +78,7 @@ public class SaveOrUpdateStudyHibernate implements ISaveOrUpdateStudy {
 		this.matrixProvider = matrixProvider;
 		this.treeSetProvider = treeSetProvider;
 		this.saveOrUpdateOTUSet = saveOrUpdateOTUSetFactory.create(session);
-		this.saveOrUpdateMatrix = saveOrUpdateMatrixFactory
+		this.mergeCharacterStateMatrix = saveOrUpdateMatrixFactory
 				.create(saveOrUpdateAttachmentFactory.create(session));
 		this.saveOrUpdateTreeSet = saveOrUpdateTreeSetFactory.create(session);
 	}
@@ -121,8 +121,9 @@ public class SaveOrUpdateStudyHibernate implements ISaveOrUpdateStudy {
 					dbMatrix = dbOTUSet.addMatrix(matrixProvider.get());
 					dbMatrix.setPPodId();
 				}
-				saveOrUpdateMatrix.saveOrUpdate(incomingMatrix, dbMatrix,
-						dbOTUSet, dbOTUsByIncomingOTU);
+				dbOTUSet.addMatrix(dbMatrix);
+				mergeCharacterStateMatrix.merge(dbMatrix, incomingMatrix,
+						dbOTUsByIncomingOTU);
 			}
 			for (final TreeSet incomingTreeSet : incomingOTUSet.getTreeSets()) {
 				TreeSet dbTreeSet;

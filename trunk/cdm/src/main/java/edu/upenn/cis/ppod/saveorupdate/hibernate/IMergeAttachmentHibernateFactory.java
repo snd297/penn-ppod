@@ -17,12 +17,12 @@ package edu.upenn.cis.ppod.saveorupdate.hibernate;
 
 import org.hibernate.Session;
 
-import edu.upenn.cis.ppod.saveorupdate.ISaveOrUpdateAttachment;
+import edu.upenn.cis.ppod.saveorupdate.IMergeAttachment;
 
 /**
  * @author Sam Donnelly
  * 
  */
-public interface ISaveOrUpdateAttachmentHibernateFactory {
-	ISaveOrUpdateAttachment create(Session session);
+public interface IMergeAttachmentHibernateFactory {
+	IMergeAttachment create(Session session);
 }

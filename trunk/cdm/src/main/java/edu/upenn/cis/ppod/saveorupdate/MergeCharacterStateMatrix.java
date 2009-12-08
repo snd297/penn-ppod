@@ -43,89 +43,90 @@ import edu.upenn.cis.ppod.model.CharacterStateRow;
 import edu.upenn.cis.ppod.model.IUUPPodEntity;
 import edu.upenn.cis.ppod.model.OTU;
 import edu.upenn.cis.ppod.model.OTUSet;
-import edu.upenn.cis.ppod.saveorupdate.hibernate.ISaveOrUpdateAttachmentHibernateFactory;
+import edu.upenn.cis.ppod.saveorupdate.hibernate.IMergeAttachmentHibernateFactory;
 
 /**
  * @author Sam Donnelly
  */
-public class SaveOrUpdateMatrix implements ISaveOrUpdateMatrix {
+public class MergeCharacterStateMatrix implements IMergeCharacterStateMatrix {
 
 	private final Provider<Character> characterProvider;
 	private final Provider<CharacterStateRow> rowProvider;
 	private final Provider<CharacterStateCell> cellProvider;
 	private final CharacterState.IFactory stateFactory;
 	private final Provider<Attachment> attachmentProvider;
-	private final ISaveOrUpdateAttachment saveOrUpdateAttachment;
+	private final IMergeAttachment mergeAttachment;
 
 	@Inject
-	SaveOrUpdateMatrix(
+	MergeCharacterStateMatrix(
 			final Provider<Character> characterProvider,
 			final Provider<CharacterStateRow> rowProvider,
 			final Provider<CharacterStateCell> cellProvider,
 			final CharacterState.IFactory stateFactory,
 			final Provider<Attachment> attachmentProvider,
-			final ISaveOrUpdateAttachmentHibernateFactory saveOrUpdateAttachmentFactory,
-			@Assisted final ISaveOrUpdateAttachment saveOrUpdateAttachment) {
+			final IMergeAttachmentHibernateFactory saveOrUpdateAttachmentFactory,
+			@Assisted final IMergeAttachment mergeAttachment) {
 		this.characterProvider = characterProvider;
 		this.rowProvider = rowProvider;
 		this.cellProvider = cellProvider;
 		this.stateFactory = stateFactory;
 		this.attachmentProvider = attachmentProvider;
-		this.saveOrUpdateAttachment = saveOrUpdateAttachment;
+		this.mergeAttachment = mergeAttachment;
 	}
 
-	public CharacterStateMatrix saveOrUpdate(
-			final CharacterStateMatrix incomingMatrix,
-			final CharacterStateMatrix dbMatrix, final OTUSet dbOTUSet,
-			final Map<OTU, OTU> dbOTUsByIncomingOTU) {
-		checkArgument(dbMatrix.getPPodId() != null,
-				"dbMatrix must have its pPOD ID set");
-		dbMatrix.setLabel(incomingMatrix.getLabel());
-		dbMatrix.setDescription(incomingMatrix.getDescription());
-		dbOTUSet.addMatrix(dbMatrix);
+	public CharacterStateMatrix merge(final CharacterStateMatrix targetMatrix,
+			final CharacterStateMatrix sourceMatrix,
+			final Map<OTU, OTU> mergedOTUsBySourceOTU) {
+		checkArgument(targetMatrix.getPPodId() != null,
+				"targetMatrix must have its pPOD ID set");
+		checkArgument(targetMatrix.getOTUSet() != null,
+				"targetMatrix must be attached to an OTU set");
+		targetMatrix.setLabel(sourceMatrix.getLabel());
+		targetMatrix.setDescription(sourceMatrix.getDescription());
 
 		// We need this for the response: it's less than ideal to do this here,
 		// but easy
-		dbMatrix.setDocId(incomingMatrix.getDocId());
+		targetMatrix.setDocId(sourceMatrix.getDocId());
 
 		final List<OTU> newDbOTUs = newArrayList();
-		for (final OTU incomingOTU : incomingMatrix.getOTUs()) {
-			final OTU newDbOTU = dbOTUsByIncomingOTU.get(incomingOTU);
+		for (final OTU incomingOTU : sourceMatrix.getOTUs()) {
+			final OTU newDbOTU = mergedOTUsBySourceOTU.get(incomingOTU);
 			if (newDbOTU == null) {
 				throw new AssertionError(
 						"couldn't find incomingOTU in persistentOTUsByIncomingOTU");
 			}
 			newDbOTUs.add(newDbOTU);
 		}
-		final List<OTU> previousDbOTUs = newArrayList(dbMatrix.getOTUs());
-		dbMatrix.setOTUs(newDbOTUs);
+		final List<OTU> previousDbOTUs = newArrayList(targetMatrix.getOTUs());
+		targetMatrix.setOTUs(newDbOTUs);
 
 		// Now realign rows to new OTU order
-		final List<CharacterStateRow> previousDbRows = newArrayList(dbMatrix
+		final List<CharacterStateRow> previousDbRows = newArrayList(targetMatrix
 				.getRows());
-		for (int i = 0; i < dbMatrix.getOTUs().size(); i++) {
+		for (int i = 0; i < targetMatrix.getOTUs().size(); i++) {
 			int previousDbOTUIdx = -1;
 
 			for (int j = 0; j < previousDbOTUs.size(); j++) {
-				if (previousDbOTUs.get(j).equals(dbMatrix.getOTUs().get(i))) {
+				if (previousDbOTUs.get(j).equals(targetMatrix.getOTUs().get(i))) {
 					previousDbOTUIdx = j;
 					break;
 				}
 			}
 			if (previousDbOTUIdx == -1) {
-				dbMatrix.setRow(i, rowProvider.get());
+				targetMatrix.setRow(i, rowProvider.get());
 			} else {
-				dbMatrix.setRow(i, previousDbRows.get(previousDbOTUIdx));
+				targetMatrix.setRow(i, previousDbRows.get(previousDbOTUIdx));
 
 			}
 		}
 
 		// Get rid of deleted rows
-		while (dbMatrix.getRows().size() > dbMatrix.getOTUs().size()) {
-			dbMatrix.removeLastRow();
+		while (targetMatrix.getRows().size() > targetMatrix.getOTUs().size()) {
+			targetMatrix.removeLastRow();
 		}
 
-		final List<Character> clearedDbCharacters = dbMatrix.clearCharacters();
+		final List<Character> clearedDbCharacters = targetMatrix
+				.clearCharacters();
 		final Map<Character, Integer> oldIdxsByChararacter = newHashMap();
 		for (final ListIterator<Character> idx = clearedDbCharacters
 				.listIterator(); idx.hasNext();) {
@@ -134,7 +135,7 @@ public class SaveOrUpdateMatrix implements ISaveOrUpdateMatrix {
 
 		// Move Characters around
 		final Map<Integer, Integer> oldCharIdxsByNewCharIdx = newHashMap();
-		for (final Character incomingCharacter : incomingMatrix.getCharacters()) {
+		for (final Character incomingCharacter : sourceMatrix.getCharacters()) {
 			Character newDbCharacter;
 			if (null == (newDbCharacter = findIf(clearedDbCharacters, compose(
 					equalTo(incomingCharacter.getPPodId()),
@@ -142,7 +143,7 @@ public class SaveOrUpdateMatrix implements ISaveOrUpdateMatrix {
 				newDbCharacter = characterProvider.get();
 				newDbCharacter.setPPodId();
 			}
-			dbMatrix.addCharacter(newDbCharacter);
+			targetMatrix.addCharacter(newDbCharacter);
 			newDbCharacter.setLabel(incomingCharacter.getLabel());
 
 			for (final CharacterState incomingState : incomingCharacter
@@ -157,7 +158,7 @@ public class SaveOrUpdateMatrix implements ISaveOrUpdateMatrix {
 				dbState.setLabel(incomingState.getLabel());
 			}
 
-			oldCharIdxsByNewCharIdx.put(dbMatrix
+			oldCharIdxsByNewCharIdx.put(targetMatrix
 					.getCharacterIdx(newDbCharacter), oldIdxsByChararacter
 					.get(newDbCharacter));
 
@@ -172,16 +173,15 @@ public class SaveOrUpdateMatrix implements ISaveOrUpdateMatrix {
 					dbAttachment.setPPodId();
 				}
 				newDbCharacter.addAttachment(dbAttachment);
-				saveOrUpdateAttachment.saveOrUpdate(incomingAttachment,
-						dbAttachment);
+				mergeAttachment.saveOrUpdate(dbAttachment, incomingAttachment);
 			}
 		}
 
 		// Now we get the columns to match the Character ordering
-		for (final CharacterStateRow dbRow : dbMatrix.getRows()) {
+		for (final CharacterStateRow dbRow : targetMatrix.getRows()) {
 			final List<CharacterStateCell> clearedDbCells = dbRow.clearCells();
 
-			for (int newCellIdx = 0; newCellIdx < dbMatrix.getCharacters()
+			for (int newCellIdx = 0; newCellIdx < targetMatrix.getCharacters()
 					.size(); newCellIdx++) {
 				if (null == oldCharIdxsByNewCharIdx.get(newCellIdx)) {
 					dbRow.addCell(cellProvider.get());
@@ -190,7 +190,8 @@ public class SaveOrUpdateMatrix implements ISaveOrUpdateMatrix {
 							.get(newCellIdx)));
 				}
 			}
-			while (dbRow.getCells().size() > dbMatrix.getCharacters().size()) {
+			while (dbRow.getCells().size() > targetMatrix.getCharacters()
+					.size()) {
 				dbRow.removeLastCell();
 			}
 		}
@@ -198,9 +199,9 @@ public class SaveOrUpdateMatrix implements ISaveOrUpdateMatrix {
 		// We should now have a matrix with the proper cell dimensions and all
 		// OTU's and characters done - now let's fill
 		// in the cells
-		for (final Iterator<CharacterStateRow> incomingRowItr = incomingMatrix
-				.getRows().iterator(), dbRowItr = dbMatrix.getRows().iterator(); incomingRowItr
-				.hasNext();) {
+		for (final Iterator<CharacterStateRow> incomingRowItr = sourceMatrix
+				.getRows().iterator(), dbRowItr = targetMatrix.getRows()
+				.iterator(); incomingRowItr.hasNext();) {
 			final CharacterStateRow incomingRow = incomingRowItr.next(), dbRow = dbRowItr
 					.next();
 			for (final ListIterator<CharacterStateCell> incomingCellItr = incomingRow
@@ -211,13 +212,13 @@ public class SaveOrUpdateMatrix implements ISaveOrUpdateMatrix {
 				final Set<CharacterState> newDbStates = newHashSet();
 				for (final CharacterState incomingState : incomingCell
 						.getStates()) {
-					newDbStates.add(dbMatrix.getCharacter(
+					newDbStates.add(targetMatrix.getCharacter(
 							dbCellItr.previousIndex()).getStates().get(
 							incomingState.getStateNumber()));
 				}
 				dbCell.setTypeAndStates(incomingCell.getType(), newDbStates);
 			}
 		}
-		return dbMatrix;
+		return targetMatrix;
 	}
 }

@@ -21,9 +21,9 @@ import edu.upenn.cis.ppod.model.Attachment;
  * @author Sam Donnelly
  * 
  */
-public interface ISaveOrUpdateAttachment {
+public interface IMergeAttachment {
 
-	Attachment saveOrUpdate(final Attachment incomingAttachment,
-			final Attachment dbAttachment);
+	Attachment saveOrUpdate(final Attachment targetAttachment,
+			final Attachment sourceAttachment);
 
 }
