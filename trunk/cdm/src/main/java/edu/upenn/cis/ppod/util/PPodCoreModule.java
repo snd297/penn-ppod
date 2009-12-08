@@ -28,7 +28,7 @@ import edu.upenn.cis.ppod.saveorupdate.hibernate.ISaveOrUpdateOTUSetHibernateFac
 import edu.upenn.cis.ppod.saveorupdate.hibernate.ISaveOrUpdateStudyHibernateFactory;
 import edu.upenn.cis.ppod.saveorupdate.hibernate.ISaveOrUpdateTreeSetHibernateFactory;
 import edu.upenn.cis.ppod.saveorupdate.hibernate.MergeAttachmentHibernate;
-import edu.upenn.cis.ppod.saveorupdate.hibernate.SaveOrUpdateOTUSetHibernate;
+import edu.upenn.cis.ppod.saveorupdate.hibernate.MergeOTUSetHibernate;
 import edu.upenn.cis.ppod.saveorupdate.hibernate.SaveOrUpdateStudyHibernate;
 import edu.upenn.cis.ppod.saveorupdate.hibernate.SaveOrUpdateTreeSetHibernate;
 import edu.upenn.cis.ppod.security.ISimpleAuthenticationInfoFactory;
@@ -54,7 +54,7 @@ public final class PPodCoreModule extends AbstractModule {
 		bind(ISaveOrUpdateOTUSetHibernateFactory.class).toProvider(
 				FactoryProvider.newFactory(
 						ISaveOrUpdateOTUSetHibernateFactory.class,
-						SaveOrUpdateOTUSetHibernate.class));
+						MergeOTUSetHibernate.class));
 		bind(IMergeCharacterStateMatrix.IFactory.class).toProvider(
 				FactoryProvider.newFactory(
 						IMergeCharacterStateMatrix.IFactory.class,
