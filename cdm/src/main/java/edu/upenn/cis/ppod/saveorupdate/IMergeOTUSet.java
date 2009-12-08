@@ -13,16 +13,21 @@
  * See the License for the specific language governing permissions and
  * limitations under the License.
  */
-package edu.upenn.cis.ppod.saveorupdate.hibernate;
+package edu.upenn.cis.ppod.saveorupdate;
 
-import org.hibernate.Session;
+import java.util.Map;
 
-import edu.upenn.cis.ppod.saveorupdate.IMergeOTUSet;
+import edu.upenn.cis.ppod.model.OTU;
+import edu.upenn.cis.ppod.model.OTUSet;
 
 /**
  * @author Sam Donnelly
- * 
  */
-public interface ISaveOrUpdateOTUSetHibernateFactory {
-	IMergeOTUSet create(Session session);
+public interface IMergeOTUSet {
+
+	/**
+	 * Return persistentOTUsByIncomingOTU.
+	 */
+	Map<OTU, OTU> saveOrUpdate(OTUSet targetOTUSet, OTUSet sourceOTUSet);
+
 }
