@@ -33,8 +33,9 @@ public interface ISaveOrUpdateStudy {
 	 * it.
 	 * 
 	 * @param study to be made persistent or updated
+	 * 
 	 * @return this
 	 */
-	Study saveOrUpdate(Study incomingStudy, Study persistentStudy);
+	Study saveOrUpdate(Study dbStudy, Study incomingStudy);
 
 }

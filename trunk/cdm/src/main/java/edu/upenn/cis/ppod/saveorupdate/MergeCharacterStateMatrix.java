@@ -42,8 +42,6 @@ import edu.upenn.cis.ppod.model.CharacterStateMatrix;
 import edu.upenn.cis.ppod.model.CharacterStateRow;
 import edu.upenn.cis.ppod.model.IUUPPodEntity;
 import edu.upenn.cis.ppod.model.OTU;
-import edu.upenn.cis.ppod.model.OTUSet;
-import edu.upenn.cis.ppod.saveorupdate.hibernate.IMergeAttachmentHibernateFactory;
 
 /**
  * @author Sam Donnelly
@@ -58,13 +56,11 @@ public class MergeCharacterStateMatrix implements IMergeCharacterStateMatrix {
 	private final IMergeAttachment mergeAttachment;
 
 	@Inject
-	MergeCharacterStateMatrix(
-			final Provider<Character> characterProvider,
+	MergeCharacterStateMatrix(final Provider<Character> characterProvider,
 			final Provider<CharacterStateRow> rowProvider,
 			final Provider<CharacterStateCell> cellProvider,
 			final CharacterState.IFactory stateFactory,
 			final Provider<Attachment> attachmentProvider,
-			final IMergeAttachmentHibernateFactory saveOrUpdateAttachmentFactory,
 			@Assisted final IMergeAttachment mergeAttachment) {
 		this.characterProvider = characterProvider;
 		this.rowProvider = rowProvider;
@@ -173,7 +169,7 @@ public class MergeCharacterStateMatrix implements IMergeCharacterStateMatrix {
 					dbAttachment.setPPodId();
 				}
 				newDbCharacter.addAttachment(dbAttachment);
-				mergeAttachment.saveOrUpdate(dbAttachment, incomingAttachment);
+				mergeAttachment.merge(dbAttachment, incomingAttachment);
 			}
 		}
 

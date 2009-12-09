@@ -20,16 +20,12 @@ import static com.google.common.collect.Maps.newHashMap;
 import java.util.HashMap;
 import java.util.Map;
 
-import org.hibernate.Session;
-
 import com.google.inject.Inject;
 import com.google.inject.Provider;
 import com.google.inject.assistedinject.Assisted;
 
 import edu.upenn.cis.ppod.dao.IAttachmentNamespaceDAO;
 import edu.upenn.cis.ppod.dao.IAttachmentTypeDAO;
-import edu.upenn.cis.ppod.dao.hibernate.AttachmentNamespaceDAOHibernate;
-import edu.upenn.cis.ppod.dao.hibernate.AttachmentTypeDAOHibernate;
 import edu.upenn.cis.ppod.model.Attachment;
 import edu.upenn.cis.ppod.model.AttachmentNamespace;
 import edu.upenn.cis.ppod.model.AttachmentType;
@@ -54,20 +50,18 @@ public class MergeAttachmentHibernate implements IMergeAttachment {
 
 	@Inject
 	MergeAttachmentHibernate(
-			final AttachmentNamespaceDAOHibernate attachmentNamespaceDAO,
-			final AttachmentTypeDAOHibernate attachmentTypeDAO,
 			final Provider<AttachmentNamespace> attachmentNamespaceProvider,
 			final Provider<AttachmentType> attachmentTypeProvider,
-			@Assisted final Session session) {
-		this.attachmentNamespaceDAO = (IAttachmentNamespaceDAO) attachmentNamespaceDAO
-				.setSession(session);
-		this.attachmentTypeDAO = (IAttachmentTypeDAO) attachmentTypeDAO
-				.setSession(session);
+			@Assisted final IAttachmentNamespaceDAO attachmentNamespaceDAO,
+			@Assisted final IAttachmentTypeDAO attachmentTypeDAO) {
+
+		this.attachmentNamespaceDAO = attachmentNamespaceDAO;
+		this.attachmentTypeDAO = attachmentTypeDAO;
 		this.attachmentNamespaceProvider = attachmentNamespaceProvider;
 		this.attachmentTypeProvider = attachmentTypeProvider;
 	}
 
-	public Attachment saveOrUpdate(final Attachment targetAttachment,
+	public Attachment merge(final Attachment targetAttachment,
 			final Attachment sourceAttachment) {
 		AttachmentNamespace dbAttachmentNamespace = namespacesByLabel
 				.get(sourceAttachment.getType().getNamespace().getLabel());
@@ -93,8 +87,7 @@ public class MergeAttachmentHibernate implements IMergeAttachment {
 		if (null == dbAttachmentType) {
 			dbAttachmentType = attachmentTypeDAO
 					.getAttachmentTypeByNamespaceAndType(dbAttachmentNamespace
-							.getLabel(), sourceAttachment.getType()
-							.getLabel());
+							.getLabel(), sourceAttachment.getType().getLabel());
 			if (null == dbAttachmentType) {
 				dbAttachmentType = attachmentTypeProvider.get().setLabel(
 						sourceAttachment.getType().getLabel());
