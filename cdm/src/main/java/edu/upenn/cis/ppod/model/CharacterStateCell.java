@@ -102,17 +102,13 @@ public final class CharacterStateCell extends PPodEntity {
 		public static Type of(final String s) {
 			if (Type.SINGLE.toString().equals(s)) {
 				return Type.SINGLE;
-			}
-			if (Type.UNASSIGNED.toString().equals(s)) {
+			} else if (Type.UNASSIGNED.toString().equals(s)) {
 				return Type.UNASSIGNED;
-			}
-			if (Type.INAPPLICABLE.toString().equals(s)) {
+			} else if (Type.INAPPLICABLE.toString().equals(s)) {
 				return Type.INAPPLICABLE;
-			}
-			if (Type.POLYMORPHIC.toString().equals(s)) {
+			} else if (Type.POLYMORPHIC.toString().equals(s)) {
 				return Type.POLYMORPHIC;
-			}
-			if (Type.UNCERTAIN.toString().equals(s)) {
+			} else if (Type.UNCERTAIN.toString().equals(s)) {
 				return Type.UNCERTAIN;
 			}
 			throw new IllegalArgumentException("Unknown s: [" + s + "]");

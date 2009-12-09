@@ -13,18 +13,27 @@
  * See the License for the specific language governing permissions and
  * limitations under the License.
  */
-package edu.upenn.cis.ppod.saveorupdate;
+package edu.upenn.cis.ppod.saveorupdate.hibernate;
 
-import java.util.Map;
+import org.hibernate.Session;
 
-import edu.upenn.cis.ppod.model.OTU;
-import edu.upenn.cis.ppod.model.OTUSet;
-import edu.upenn.cis.ppod.model.TreeSet;
+import edu.upenn.cis.ppod.saveorupdate.IMergeTreeSet;
 
 /**
+ * Create a {@link IMergeTreeSet} that depends on a {@link Session}.
+ * 
  * @author Sam Donnelly
  */
-public interface ISaveOrUpdateTreeSet {
-	TreeSet saveOrUpdate(TreeSet incomingTreeSet, TreeSet dbTreeSet,
-			OTUSet persistedOTUSet, Map<OTU, OTU> dbOTUsByIncomingOTU);
+public interface IMergeTreeSetHibernateFactory {
+
+	/**
+	 * Create an {@link IMergeTreeSet} that depends on a {@link Session}.
+	 * <p>
+	 * {@code session} must have an open transaction.
+	 * 
+	 * @param session a {@link Session} with an open transaction
+	 * 
+	 * @return a {@link IMergeTreeSet} that depends on a {@link Session}
+	 */
+	IMergeTreeSet create(Session session);
 }
