@@ -44,7 +44,7 @@ import edu.upenn.cis.ppod.saveorupdate.IMergeAttachment;
 import edu.upenn.cis.ppod.saveorupdate.IMergeCharacterStateMatrix;
 import edu.upenn.cis.ppod.saveorupdate.IMergeOTUSet;
 import edu.upenn.cis.ppod.saveorupdate.ISaveOrUpdateStudy;
-import edu.upenn.cis.ppod.saveorupdate.ISaveOrUpdateTreeSet;
+import edu.upenn.cis.ppod.saveorupdate.IMergeTreeSet;
 
 /**
  * @author Sam Donnelly
@@ -60,7 +60,7 @@ public class SaveOrUpdateStudyHibernate implements ISaveOrUpdateStudy {
 	private final Provider<TreeSet> treeSetProvider;
 	private final IMergeOTUSet mergeOTUSet;
 	private final IMergeCharacterStateMatrix mergeMatrix;
-	private final ISaveOrUpdateTreeSet saveOrUpdateTreeSet;
+	private final IMergeTreeSet mergeTreeSet;
 
 	@Inject
 	SaveOrUpdateStudyHibernate(
@@ -72,7 +72,7 @@ public class SaveOrUpdateStudyHibernate implements ISaveOrUpdateStudy {
 			final Provider<TreeSet> treeSetProvider,
 			final IMergeOTUSetHibernateFactory saveOrUpdateOTUSetFactory,
 			final IMergeCharacterStateMatrix.IFactory mergeMatrixFactory,
-			final ISaveOrUpdateTreeSetHibernateFactory saveOrUpdateTreeSetFactory,
+			final IMergeTreeSetHibernateFactory saveOrUpdateTreeSetFactory,
 			final IAttachmentNamespaceDAOHibernateFactory attachmentNamespaceDAOFactory,
 			final IAttachmentTypeDAOHibernateFactory attachmentTypeDAOFactory,
 			final IMergeAttachment.IFactory mergeAttachmentFactory,
@@ -87,7 +87,7 @@ public class SaveOrUpdateStudyHibernate implements ISaveOrUpdateStudy {
 		this.mergeMatrix = mergeMatrixFactory.create(mergeAttachmentFactory
 				.create(attachmentNamespaceDAOFactory.create(session),
 						attachmentTypeDAOFactory.create(session)));
-		this.saveOrUpdateTreeSet = saveOrUpdateTreeSetFactory.create(session);
+		this.mergeTreeSet = saveOrUpdateTreeSetFactory.create(session);
 	}
 
 	public Study save(final Study incomingStudy) {
@@ -140,8 +140,9 @@ public class SaveOrUpdateStudyHibernate implements ISaveOrUpdateStudy {
 					dbTreeSet = dbOTUSet.addTreeSet(treeSetProvider.get());
 					dbTreeSet.setPPodId();
 				}
-				saveOrUpdateTreeSet.saveOrUpdate(incomingTreeSet, dbTreeSet,
-						dbOTUSet, dbOTUsByIncomingOTU);
+				dbOTUSet.addTreeSet(dbTreeSet);
+				mergeTreeSet.merge(dbTreeSet, incomingTreeSet,
+						dbOTUsByIncomingOTU);
 			}
 		}
 

@@ -25,52 +25,49 @@ import com.google.inject.Inject;
 import com.google.inject.Provider;
 
 import edu.upenn.cis.ppod.model.OTU;
-import edu.upenn.cis.ppod.model.OTUSet;
 import edu.upenn.cis.ppod.model.Tree;
 import edu.upenn.cis.ppod.model.TreeSet;
-import edu.upenn.cis.ppod.saveorupdate.ISaveOrUpdateTreeSet;
+import edu.upenn.cis.ppod.saveorupdate.IMergeTreeSet;
 
 /**
  * @author Sam Donnelly
  */
-public class SaveOrUpdateTreeSetHibernate implements ISaveOrUpdateTreeSet {
+public class MergeTreeSetHibernate implements IMergeTreeSet {
 
 	private final Provider<Tree> treeProvider;
 
 	@Inject
-	SaveOrUpdateTreeSetHibernate(final Provider<Tree> treeProvider) {
+	MergeTreeSetHibernate(final Provider<Tree> treeProvider) {
 		this.treeProvider = treeProvider;
 	}
 
-	public TreeSet saveOrUpdate(final TreeSet incomingTreeSet,
-			final TreeSet dbTreeSet, final OTUSet dbOTUSet,
-			final Map<OTU, OTU> dbOTUsByIncomingOTU) {
+	public TreeSet merge(final TreeSet targetTreeSet,
+			final TreeSet sourceTreeSet, final Map<OTU, OTU> dbOTUsByIncomingOTU) {
 
 		// For the response to the client
-		dbTreeSet.setDocId(incomingTreeSet.getDocId());
+		targetTreeSet.setDocId(sourceTreeSet.getDocId());
 
-		dbTreeSet.setLabel(incomingTreeSet.getLabel());
-		dbOTUSet.addTreeSet(dbTreeSet);
+		targetTreeSet.setLabel(sourceTreeSet.getLabel());
 
 		final Set<Tree> dbTreesToBeRemoved = newHashSet();
 
 		// Get rid of deleted trees
-		for (final Tree dbTree : dbTreeSet.getTrees()) {
-			if (null == incomingTreeSet.getTreeByPPodId(dbTree.getPPodId())) {
+		for (final Tree dbTree : targetTreeSet.getTrees()) {
+			if (null == sourceTreeSet.getTreeByPPodId(dbTree.getPPodId())) {
 				dbTreesToBeRemoved.add(dbTree);
 			}
 		}
 
 		for (final Tree dbTreeToBeRemoved : dbTreesToBeRemoved) {
-			dbTreeSet.removeTree(dbTreeToBeRemoved);
+			targetTreeSet.removeTree(dbTreeToBeRemoved);
 		}
 
-		for (final Tree incomingTree : incomingTreeSet.getTrees()) {
+		for (final Tree incomingTree : sourceTreeSet.getTrees()) {
 			Tree dbTree;
-			if (null == (dbTree = dbTreeSet.getTreeByPPodId(incomingTree
+			if (null == (dbTree = targetTreeSet.getTreeByPPodId(incomingTree
 					.getPPodId()))) {
 				dbTree = treeProvider.get();
-				dbTreeSet.addTree(dbTree);
+				targetTreeSet.addTree(dbTree);
 				dbTree.setPPodId();
 			}
 			String dbNewick = incomingTree.getNewick();
@@ -83,6 +80,6 @@ public class SaveOrUpdateTreeSetHibernate implements ISaveOrUpdateTreeSet {
 			dbTree.setNewick(dbNewick);
 			dbTree.setLabel(incomingTree.getLabel());
 		}
-		return dbTreeSet;
+		return targetTreeSet;
 	}
 }
