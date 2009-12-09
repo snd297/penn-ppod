@@ -75,14 +75,14 @@ public final class CharacterStateCell extends PPodEntity {
 		SINGLE,
 
 		/**
-		 * The cell is a conjunctions of states: state1 and state2 and ... and
-		 * stateN.
+		 * The cell is a conjunctions of states: <em>state1</em> and
+		 * <em>state2</em> and ... and <em>stateN</em>.
 		 */
 		POLYMORPHIC,
 
 		/**
-		 * The cell is a disjunction of states: state1 or state2 or ... or
-		 * stateN.
+		 * The cell is a disjunction of states: <em>state1</em> or
+		 * <em>state2</em> or ... or <em>stateN</em>.
 		 */
 		UNCERTAIN,
 
@@ -102,13 +102,17 @@ public final class CharacterStateCell extends PPodEntity {
 		public static Type of(final String s) {
 			if (Type.SINGLE.toString().equals(s)) {
 				return Type.SINGLE;
-			} else if (Type.UNASSIGNED.toString().equals(s)) {
+			}
+			if (Type.UNASSIGNED.toString().equals(s)) {
 				return Type.UNASSIGNED;
-			} else if (Type.INAPPLICABLE.toString().equals(s)) {
+			}
+			if (Type.INAPPLICABLE.toString().equals(s)) {
 				return Type.INAPPLICABLE;
-			} else if (Type.POLYMORPHIC.toString().equals(s)) {
+			}
+			if (Type.POLYMORPHIC.toString().equals(s)) {
 				return Type.POLYMORPHIC;
-			} else if (Type.UNCERTAIN.toString().equals(s)) {
+			}
+			if (Type.UNCERTAIN.toString().equals(s)) {
 				return Type.UNCERTAIN;
 			}
 			throw new IllegalArgumentException("Unknown s: [" + s + "]");
