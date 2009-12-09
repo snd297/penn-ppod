@@ -38,3 +38,5 @@ The `accept` method on the pPOD entities follows the pattern of the pPOD version
   * `OTUSet` -> `OTU`, `CharacterStateMatrix`, `TreeSet`
   * `CharacterStateMatrix` -> nowhere yet
   * `TreeSet` -> nowhere yet
+
+[http://en.wikipedia.org/wiki/File:Professor_Challenger.jpg]
