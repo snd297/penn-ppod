@@ -21,10 +21,15 @@ import edu.upenn.cis.ppod.model.Attachment;
 
 /**
  * @author Sam Donnelly
- * 
  */
 public interface IMergeAttachment {
-
+	
+	/**
+	 * @throws IllegalArgumentException if {@code sourceAttachment.getType() ==
+	 *             null}
+	 * @throws IllegalArgumentException if {@code
+	 *             sourceAttachment.getType().getNamespace() == null}
+	 */
 	Attachment merge(final Attachment targetAttachment,
 			final Attachment sourceAttachment);
 

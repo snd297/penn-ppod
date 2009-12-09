@@ -13,8 +13,10 @@
  * See the License for the specific language governing permissions and
  * limitations under the License.
  */
-package edu.upenn.cis.ppod.saveorupdate.hibernate;
+package edu.upenn.cis.ppod.saveorupdate;
 
+import static com.google.common.base.Preconditions.checkArgument;
+import static com.google.common.base.Preconditions.checkNotNull;
 import static com.google.common.collect.Maps.newHashMap;
 
 import java.util.HashMap;
@@ -29,12 +31,11 @@ import edu.upenn.cis.ppod.dao.IAttachmentTypeDAO;
 import edu.upenn.cis.ppod.model.Attachment;
 import edu.upenn.cis.ppod.model.AttachmentNamespace;
 import edu.upenn.cis.ppod.model.AttachmentType;
-import edu.upenn.cis.ppod.saveorupdate.IMergeAttachment;
 
 /**
  * @author Sam Donnelly
  */
-public class MergeAttachmentHibernate implements IMergeAttachment {
+public class MergeAttachment implements IMergeAttachment {
 
 	private final IAttachmentNamespaceDAO attachmentNamespaceDAO;
 	private final IAttachmentTypeDAO attachmentTypeDAO;
@@ -49,7 +50,7 @@ public class MergeAttachmentHibernate implements IMergeAttachment {
 	private final Map<AttachmentNamespace, Map<String, AttachmentType>> typesByNamespaceAndLabel = newHashMap();
 
 	@Inject
-	MergeAttachmentHibernate(
+	MergeAttachment(
 			final Provider<AttachmentNamespace> attachmentNamespaceProvider,
 			final Provider<AttachmentType> attachmentTypeProvider,
 			@Assisted final IAttachmentNamespaceDAO attachmentNamespaceDAO,
@@ -63,6 +64,12 @@ public class MergeAttachmentHibernate implements IMergeAttachment {
 
 	public Attachment merge(final Attachment targetAttachment,
 			final Attachment sourceAttachment) {
+		checkNotNull(targetAttachment);
+		checkNotNull(sourceAttachment);
+		checkArgument(sourceAttachment.getType() != null,
+				"sourceAttachment.getType() == null");
+		checkArgument(sourceAttachment.getType().getNamespace() != null,
+				"sourceAttachment.getType().getNamespace() == null");
 		AttachmentNamespace dbAttachmentNamespace = namespacesByLabel
 				.get(sourceAttachment.getType().getNamespace().getLabel());
 		if (null == dbAttachmentNamespace) {
@@ -98,7 +105,9 @@ public class MergeAttachmentHibernate implements IMergeAttachment {
 		}
 
 		targetAttachment.setLabel(sourceAttachment.getLabel());
-		targetAttachment.setStringValue(sourceAttachment.getStringValue());
+		if (sourceAttachment.getStringValue() != null) {
+			targetAttachment.setStringValue(sourceAttachment.getStringValue());
+		}
 		targetAttachment.setType(dbAttachmentType);
 
 		return targetAttachment;

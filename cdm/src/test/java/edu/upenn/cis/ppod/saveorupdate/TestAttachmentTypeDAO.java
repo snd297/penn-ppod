@@ -1,7 +1,10 @@
 package edu.upenn.cis.ppod.saveorupdate;
 
+import static com.google.common.collect.Maps.newHashMap;
+
 import java.io.Serializable;
 import java.util.List;
+import java.util.Map;
 
 import edu.upenn.cis.ppod.dao.IAttachmentTypeDAO;
 import edu.upenn.cis.ppod.model.AttachmentType;
@@ -11,10 +14,16 @@ import edu.upenn.cis.ppod.model.AttachmentType;
  */
 public class TestAttachmentTypeDAO implements IAttachmentTypeDAO {
 
+	private final Map<String, Map<String, AttachmentType>> typesByNamespaceLabelAndTypeLabel = newHashMap();
+
 	public AttachmentType getAttachmentTypeByNamespaceAndType(
 			String namespaceLabel, String typeLabel) {
-		// TODO Auto-generated method stub
-		throw new UnsupportedOperationException();
+		final Map<String, AttachmentType> typesByLabel = typesByNamespaceLabelAndTypeLabel
+				.get(namespaceLabel);
+		if (typesByLabel != null) { 
+			return typesByLabel.get(typeLabel);
+		}
+		return null;
 	}
 
 	public AttachmentType delete(AttachmentType entity) {

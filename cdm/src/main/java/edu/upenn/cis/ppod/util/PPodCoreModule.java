@@ -27,11 +27,11 @@ import edu.upenn.cis.ppod.dao.hibernate.StudyDAOHibernate;
 import edu.upenn.cis.ppod.model.CharacterState;
 import edu.upenn.cis.ppod.saveorupdate.IMergeAttachment;
 import edu.upenn.cis.ppod.saveorupdate.IMergeCharacterStateMatrix;
+import edu.upenn.cis.ppod.saveorupdate.MergeAttachment;
 import edu.upenn.cis.ppod.saveorupdate.MergeCharacterStateMatrix;
 import edu.upenn.cis.ppod.saveorupdate.hibernate.IMergeOTUSetHibernateFactory;
 import edu.upenn.cis.ppod.saveorupdate.hibernate.ISaveOrUpdateStudyHibernateFactory;
 import edu.upenn.cis.ppod.saveorupdate.hibernate.IMergeTreeSetHibernateFactory;
-import edu.upenn.cis.ppod.saveorupdate.hibernate.MergeAttachmentHibernate;
 import edu.upenn.cis.ppod.saveorupdate.hibernate.MergeOTUSetHibernate;
 import edu.upenn.cis.ppod.saveorupdate.hibernate.SaveOrUpdateStudyHibernate;
 import edu.upenn.cis.ppod.saveorupdate.hibernate.MergeTreeSetHibernate;
@@ -77,7 +77,7 @@ public final class PPodCoreModule extends AbstractModule {
 
 		bind(IMergeAttachment.IFactory.class).toProvider(
 				FactoryProvider.newFactory(IMergeAttachment.IFactory.class,
-						MergeAttachmentHibernate.class));
+						MergeAttachment.class));
 
 		bind(CharacterState.IFactory.class).toProvider(
 				FactoryProvider.newFactory(CharacterState.IFactory.class,
