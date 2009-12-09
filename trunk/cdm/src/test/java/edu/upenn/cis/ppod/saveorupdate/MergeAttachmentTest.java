@@ -1,7 +1,7 @@
 package edu.upenn.cis.ppod.saveorupdate;
 
 import static com.google.common.collect.Maps.newHashMap;
-import static org.testng.Assert.assertTrue;
+import static org.testng.Assert.assertEquals;
 
 import java.util.Map;
 
@@ -66,6 +66,10 @@ public class MergeAttachmentTest {
 				attachmentNamespaceProvider.get().setLabel(
 						"SOURCE_ATTACHMENT_NAMESPACE"));
 		mergeAttachment.merge(targetAttachment, sourceAttachment);
-		assertTrue(true);
+		assertEquals(targetAttachment.getType().getNamespace().getLabel(),
+				sourceAttachment.getType().getNamespace().getLabel());
+		assertEquals(targetAttachment.getType().getLabel(), sourceAttachment
+				.getType().getLabel());
+		assertEquals(targetAttachment.getLabel(), sourceAttachment.getLabel());
 	}
 }
