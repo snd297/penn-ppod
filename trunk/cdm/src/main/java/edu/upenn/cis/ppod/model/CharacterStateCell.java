@@ -411,9 +411,11 @@ public final class CharacterStateCell extends PPodEntity {
 	}
 
 	/**
-	 * Add a {@code CharacterState} to this {@code CharacterStateCell}.
+	 * Add a set of {@code CharacterState}s to this {@code CharacterStateCell}.
 	 * <p>
 	 * Assumes that none of {@code states} is in a Hibernate-detached state.
+	 * <p>
+	 * This object makes its own copy of {@code states}.
 	 * 
 	 * @param state to be added. Must be in a persistent state.
 	 * 

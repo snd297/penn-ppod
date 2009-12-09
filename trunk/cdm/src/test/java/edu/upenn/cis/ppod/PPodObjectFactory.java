@@ -21,6 +21,7 @@ import com.google.inject.util.Modules;
 
 import edu.upenn.cis.ppod.saveorupdate.IMergeCharacterStateMatrix;
 import edu.upenn.cis.ppod.saveorupdate.MergeCharacterStateMatrix;
+import edu.upenn.cis.ppod.saveorupdate.TestAttachmentNamespaceDAO;
 import edu.upenn.cis.ppod.saveorupdate.TestMergeAttachment;
 import edu.upenn.cis.ppod.services.IPPodEntitiesResource;
 import edu.upenn.cis.ppod.services.hibernate.PPodEntitiesResourceHibernate;
@@ -47,6 +48,11 @@ public class PPodObjectFactory extends GuiceObjectFactory {
 
 		bind(IPPodEntitiesResource.class).to(
 				PPodEntitiesResourceHibernate.class);
+
+		bind(TestAttachmentNamespaceDAO.IFactory.class).toProvider(
+				FactoryProvider.newFactory(
+						TestAttachmentNamespaceDAO.IFactory.class,
+						TestAttachmentNamespaceDAO.class));
 // bind(IAttachmentNamespaceDAO.class)
 // .to(TestAttachmentNamespaceDAO.class);
 // bind(IAttachmentTypeDAO.class).to(TestAttachmentTypeDAO.class);
