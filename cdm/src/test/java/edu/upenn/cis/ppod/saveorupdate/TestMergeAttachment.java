@@ -22,12 +22,12 @@ import edu.upenn.cis.ppod.model.Attachment;
  * 
  * @author Sam Donnelly
  */
-public class TestSaveOrUpdateAttachment implements IMergeAttachment {
+public class TestMergeAttachment implements IMergeAttachment {
 
 	/**
-	 * Does nothing.
+	 * Does nothing but return {@code targetAttachment}.
 	 */
-	public Attachment saveOrUpdate(final Attachment targetAttachment,
+	public Attachment merge(final Attachment targetAttachment,
 			final Attachment sourceAttachment) {
 		return targetAttachment;
 	}

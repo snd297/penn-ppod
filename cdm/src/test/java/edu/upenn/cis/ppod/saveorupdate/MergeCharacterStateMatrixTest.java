@@ -40,10 +40,10 @@ import edu.upenn.cis.ppod.util.MatrixProvider;
  * @author Sam Donnelly
  */
 @Test(groups = { TestGroupDefs.FAST })
-public class MergeMatrixTest {
+public class MergeCharacterStateMatrixTest {
 
 	@Inject
-	private IMergeCharacterStateMatrix.IFactory saveOrUpdateMatrixFactory;
+	private IMergeCharacterStateMatrix.IFactory mergeMatrixFactory;
 
 	@Inject
 	private Provider<CharacterStateMatrix> matrixProvider;
@@ -55,12 +55,12 @@ public class MergeMatrixTest {
 	private Provider<OTU> otuProvider;
 
 	@Inject
-	private TestSaveOrUpdateAttachment saveOrUpdateAttachment;
+	private TestMergeAttachment mergeAttachment;
 
 	@Test(dataProvider = MatrixProvider.SMALL_SIMPLE_MATRIX_PROVIDER, dataProviderClass = MatrixProvider.class)
 	public void save(final CharacterStateMatrix sourceMatrix) {
-		final IMergeCharacterStateMatrix mergeCharacterStateMatrix = saveOrUpdateMatrixFactory
-				.create(saveOrUpdateAttachment);
+		final IMergeCharacterStateMatrix mergeCharacterStateMatrix = mergeMatrixFactory
+				.create(mergeAttachment);
 		final OTUSet fakeDbOTUSet = sourceMatrix.getOTUSet();
 		final Map<OTU, OTU> fakeOTUsByIncomingOTU = newHashMap();
 		for (final OTU sourceOTU : sourceMatrix.getOTUs()) {

@@ -4,7 +4,8 @@
 	<test name="one">
 		<classes>
 			<class name="edu.upenn.cis.ppod.FactorySetup" />
-			<class name="edu.upenn.cis.ppod.saveorupdate.SaveOrUpdateMatrixTest" />
+			<class
+				name="edu.upenn.cis.ppod.saveorupdate.MergeCharacterStateMatrixTest" />
 		</classes>
 	</test>
 </suite>

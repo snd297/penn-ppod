@@ -18,12 +18,16 @@ package edu.upenn.cis.ppod.util;
 import com.google.inject.AbstractModule;
 import com.google.inject.assistedinject.FactoryProvider;
 
+import edu.upenn.cis.ppod.dao.hibernate.AttachmentNamespaceDAOHibernate;
+import edu.upenn.cis.ppod.dao.hibernate.AttachmentTypeDAOHibernate;
 import edu.upenn.cis.ppod.dao.hibernate.HibernateDAOFactory;
+import edu.upenn.cis.ppod.dao.hibernate.IAttachmentNamespaceDAOHibernateFactory;
+import edu.upenn.cis.ppod.dao.hibernate.IAttachmentTypeDAOHibernateFactory;
 import edu.upenn.cis.ppod.dao.hibernate.StudyDAOHibernate;
 import edu.upenn.cis.ppod.model.CharacterState;
+import edu.upenn.cis.ppod.saveorupdate.IMergeAttachment;
 import edu.upenn.cis.ppod.saveorupdate.IMergeCharacterStateMatrix;
 import edu.upenn.cis.ppod.saveorupdate.MergeCharacterStateMatrix;
-import edu.upenn.cis.ppod.saveorupdate.hibernate.IMergeAttachmentHibernateFactory;
 import edu.upenn.cis.ppod.saveorupdate.hibernate.IMergeOTUSetHibernateFactory;
 import edu.upenn.cis.ppod.saveorupdate.hibernate.ISaveOrUpdateStudyHibernateFactory;
 import edu.upenn.cis.ppod.saveorupdate.hibernate.ISaveOrUpdateTreeSetHibernateFactory;
@@ -41,6 +45,14 @@ public final class PPodCoreModule extends AbstractModule {
 				FactoryProvider.newFactory(HibernateDAOFactory.IFactory.class,
 						HibernateDAOFactory.class));
 		bind(StudyDAOHibernate.class);
+		bind(IAttachmentNamespaceDAOHibernateFactory.class).toProvider(
+				FactoryProvider.newFactory(
+						IAttachmentNamespaceDAOHibernateFactory.class,
+						AttachmentNamespaceDAOHibernate.class));
+		bind(IAttachmentTypeDAOHibernateFactory.class).toProvider(
+				FactoryProvider.newFactory(
+						IAttachmentTypeDAOHibernateFactory.class,
+						AttachmentTypeDAOHibernate.class));
 
 		bind(IPair.IFactory.class).to(Pair.Factory.class);
 
@@ -52,8 +64,7 @@ public final class PPodCoreModule extends AbstractModule {
 						ISaveOrUpdateStudyHibernateFactory.class,
 						SaveOrUpdateStudyHibernate.class));
 		bind(IMergeOTUSetHibernateFactory.class).toProvider(
-				FactoryProvider.newFactory(
-						IMergeOTUSetHibernateFactory.class,
+				FactoryProvider.newFactory(IMergeOTUSetHibernateFactory.class,
 						MergeOTUSetHibernate.class));
 		bind(IMergeCharacterStateMatrix.IFactory.class).toProvider(
 				FactoryProvider.newFactory(
@@ -64,9 +75,8 @@ public final class PPodCoreModule extends AbstractModule {
 						ISaveOrUpdateTreeSetHibernateFactory.class,
 						SaveOrUpdateTreeSetHibernate.class));
 
-		bind(IMergeAttachmentHibernateFactory.class).toProvider(
-				FactoryProvider.newFactory(
-						IMergeAttachmentHibernateFactory.class,
+		bind(IMergeAttachment.IFactory.class).toProvider(
+				FactoryProvider.newFactory(IMergeAttachment.IFactory.class,
 						MergeAttachmentHibernate.class));
 
 		bind(CharacterState.IFactory.class).toProvider(

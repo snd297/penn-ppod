@@ -30,5 +30,4 @@ public class AttachmentNamespaceDAOHibernate extends
 				AttachmentNamespace.class.getSimpleName() + "-getByNamespace")
 				.setParameter("namespace", namespace).uniqueResult();
 	}
-
 }

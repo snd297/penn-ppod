@@ -15,6 +15,8 @@
  */
 package edu.upenn.cis.ppod.saveorupdate;
 
+import edu.upenn.cis.ppod.dao.IAttachmentNamespaceDAO;
+import edu.upenn.cis.ppod.dao.IAttachmentTypeDAO;
 import edu.upenn.cis.ppod.model.Attachment;
 
 /**
@@ -23,7 +25,11 @@ import edu.upenn.cis.ppod.model.Attachment;
  */
 public interface IMergeAttachment {
 
-	Attachment saveOrUpdate(final Attachment targetAttachment,
+	Attachment merge(final Attachment targetAttachment,
 			final Attachment sourceAttachment);
 
+	interface IFactory {
+		IMergeAttachment create(IAttachmentNamespaceDAO attachmentNamespaceDAO,
+				IAttachmentTypeDAO attachmentTypeDAO);
+	}
 }

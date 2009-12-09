@@ -27,8 +27,11 @@ import com.google.inject.Inject;
 import com.google.inject.Provider;
 import com.google.inject.assistedinject.Assisted;
 
+import edu.upenn.cis.ppod.dao.IAttachmentNamespaceDAO;
 import edu.upenn.cis.ppod.dao.IOTUSetDAO;
 import edu.upenn.cis.ppod.dao.IStudyDAO;
+import edu.upenn.cis.ppod.dao.hibernate.IAttachmentNamespaceDAOHibernateFactory;
+import edu.upenn.cis.ppod.dao.hibernate.IAttachmentTypeDAOHibernateFactory;
 import edu.upenn.cis.ppod.dao.hibernate.StudyDAOHibernate;
 import edu.upenn.cis.ppod.dao.hibernate.HibernateDAOFactory.OTUSetDAOHibernate;
 import edu.upenn.cis.ppod.model.CharacterStateMatrix;
@@ -37,6 +40,7 @@ import edu.upenn.cis.ppod.model.OTU;
 import edu.upenn.cis.ppod.model.OTUSet;
 import edu.upenn.cis.ppod.model.Study;
 import edu.upenn.cis.ppod.model.TreeSet;
+import edu.upenn.cis.ppod.saveorupdate.IMergeAttachment;
 import edu.upenn.cis.ppod.saveorupdate.IMergeCharacterStateMatrix;
 import edu.upenn.cis.ppod.saveorupdate.IMergeOTUSet;
 import edu.upenn.cis.ppod.saveorupdate.ISaveOrUpdateStudy;
@@ -55,7 +59,7 @@ public class SaveOrUpdateStudyHibernate implements ISaveOrUpdateStudy {
 	private final Provider<CharacterStateMatrix> matrixProvider;
 	private final Provider<TreeSet> treeSetProvider;
 	private final IMergeOTUSet mergeOTUSet;
-	private final IMergeCharacterStateMatrix mergeCharacterStateMatrix;
+	private final IMergeCharacterStateMatrix mergeMatrix;
 	private final ISaveOrUpdateTreeSet saveOrUpdateTreeSet;
 
 	@Inject
@@ -67,9 +71,11 @@ public class SaveOrUpdateStudyHibernate implements ISaveOrUpdateStudy {
 			final Provider<CharacterStateMatrix> matrixProvider,
 			final Provider<TreeSet> treeSetProvider,
 			final IMergeOTUSetHibernateFactory saveOrUpdateOTUSetFactory,
-			final IMergeCharacterStateMatrix.IFactory saveOrUpdateMatrixFactory,
+			final IMergeCharacterStateMatrix.IFactory mergeMatrixFactory,
 			final ISaveOrUpdateTreeSetHibernateFactory saveOrUpdateTreeSetFactory,
-			final IMergeAttachmentHibernateFactory saveOrUpdateAttachmentFactory,
+			final IAttachmentNamespaceDAOHibernateFactory attachmentNamespaceDAOFactory,
+			final IAttachmentTypeDAOHibernateFactory attachmentTypeDAOFactory,
+			final IMergeAttachment.IFactory mergeAttachmentFactory,
 			@Assisted final Session session) {
 		this.studyDAO = (IStudyDAO) studyDAOHibernate.setSession(session);
 		this.otuSetDAO = (IOTUSetDAO) otuSetDAO.setSession(session);
@@ -78,17 +84,18 @@ public class SaveOrUpdateStudyHibernate implements ISaveOrUpdateStudy {
 		this.matrixProvider = matrixProvider;
 		this.treeSetProvider = treeSetProvider;
 		this.mergeOTUSet = saveOrUpdateOTUSetFactory.create(session);
-		this.mergeCharacterStateMatrix = saveOrUpdateMatrixFactory
-				.create(saveOrUpdateAttachmentFactory.create(session));
+		this.mergeMatrix = mergeMatrixFactory.create(mergeAttachmentFactory
+				.create(attachmentNamespaceDAOFactory.create(session),
+						attachmentTypeDAOFactory.create(session)));
 		this.saveOrUpdateTreeSet = saveOrUpdateTreeSetFactory.create(session);
 	}
 
 	public Study save(final Study incomingStudy) {
-		return saveOrUpdate(incomingStudy, (Study) studyProvider.get()
-				.setPPodId());
+		return saveOrUpdate((Study) studyProvider.get().setPPodId(),
+				incomingStudy);
 	}
 
-	public Study saveOrUpdate(final Study incomingStudy, final Study dbStudy) {
+	public Study saveOrUpdate(final Study dbStudy, final Study incomingStudy) {
 
 		dbStudy.setLabel(incomingStudy.getLabel());
 
@@ -110,8 +117,8 @@ public class SaveOrUpdateStudyHibernate implements ISaveOrUpdateStudy {
 				dbOTUSet = dbStudy.addOTUSet(otuSetProvider.get());
 				dbOTUSet.setPPodId();
 			}
-			final Map<OTU, OTU> dbOTUsByIncomingOTU = mergeOTUSet
-					.saveOrUpdate(dbOTUSet, incomingOTUSet);
+			final Map<OTU, OTU> dbOTUsByIncomingOTU = mergeOTUSet.saveOrUpdate(
+					dbOTUSet, incomingOTUSet);
 			for (final CharacterStateMatrix incomingMatrix : incomingOTUSet
 					.getMatrices()) {
 				CharacterStateMatrix dbMatrix;
@@ -122,8 +129,8 @@ public class SaveOrUpdateStudyHibernate implements ISaveOrUpdateStudy {
 					dbMatrix.setPPodId();
 				}
 				dbOTUSet.addMatrix(dbMatrix);
-				mergeCharacterStateMatrix.merge(dbMatrix, incomingMatrix,
-						dbOTUsByIncomingOTU);
+				mergeMatrix
+						.merge(dbMatrix, incomingMatrix, dbOTUsByIncomingOTU);
 			}
 			for (final TreeSet incomingTreeSet : incomingOTUSet.getTreeSets()) {
 				TreeSet dbTreeSet;
@@ -150,6 +157,6 @@ public class SaveOrUpdateStudyHibernate implements ISaveOrUpdateStudy {
 					+ incomingStudy.getLabel() + " "
 					+ incomingStudy.getPPodId() + " is not persisted");
 		}
-		return saveOrUpdate(incomingStudy, persistentStudy);
+		return saveOrUpdate(persistentStudy, incomingStudy);
 	}
 }

@@ -19,14 +19,9 @@ import com.google.inject.Guice;
 import com.google.inject.assistedinject.FactoryProvider;
 import com.google.inject.util.Modules;
 
-import edu.upenn.cis.ppod.dao.IAttachmentNamespaceDAO;
-import edu.upenn.cis.ppod.dao.IAttachmentTypeDAO;
 import edu.upenn.cis.ppod.saveorupdate.IMergeCharacterStateMatrix;
 import edu.upenn.cis.ppod.saveorupdate.MergeCharacterStateMatrix;
-import edu.upenn.cis.ppod.saveorupdate.TestAttachmentNamespaceDAO;
-import edu.upenn.cis.ppod.saveorupdate.TestAttachmentTypeDAO;
-import edu.upenn.cis.ppod.saveorupdate.TestSaveOrUpdateAttachment;
-import edu.upenn.cis.ppod.saveorupdate.hibernate.IMergeAttachmentHibernateFactory;
+import edu.upenn.cis.ppod.saveorupdate.TestMergeAttachment;
 import edu.upenn.cis.ppod.services.IPPodEntitiesResource;
 import edu.upenn.cis.ppod.services.hibernate.PPodEntitiesResourceHibernate;
 import edu.upenn.cis.ppod.util.GuiceObjectFactory;
@@ -45,18 +40,16 @@ public class PPodObjectFactory extends GuiceObjectFactory {
 	@Override
 	protected void configure() {
 		bind(IMergeCharacterStateMatrix.IFactory.class).toProvider(
-				FactoryProvider.newFactory(IMergeCharacterStateMatrix.IFactory.class,
-						MergeCharacterStateMatrix.class));
-		bind(IMergeAttachmentHibernateFactory.class).toProvider(
 				FactoryProvider.newFactory(
-						IMergeAttachmentHibernateFactory.class,
-						TestSaveOrUpdateAttachment.class));
+						IMergeCharacterStateMatrix.IFactory.class,
+						MergeCharacterStateMatrix.class));
+		bind(TestMergeAttachment.class);
 
 		bind(IPPodEntitiesResource.class).to(
 				PPodEntitiesResourceHibernate.class);
+// bind(IAttachmentNamespaceDAO.class)
+// .to(TestAttachmentNamespaceDAO.class);
+// bind(IAttachmentTypeDAO.class).to(TestAttachmentTypeDAO.class);
 
-		bind(IAttachmentNamespaceDAO.class)
-				.to(TestAttachmentNamespaceDAO.class);
-		bind(IAttachmentTypeDAO.class).to(TestAttachmentTypeDAO.class);
 	}
 }
