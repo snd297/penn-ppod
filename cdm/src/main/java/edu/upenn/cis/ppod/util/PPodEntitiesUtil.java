@@ -90,16 +90,4 @@ public class PPodEntitiesUtil {
 
 		return pPodEntities;
 	}
-
-	public static IUUPPodEntity getUUPPodEntityByPPodId(
-			final Iterable<? extends IUUPPodEntity> uuPPodEntities,
-			final String pPodId) {
-		if (pPodId == null) {
-			return null;
-		} else {
-			return findIf(uuPPodEntities, compose(equalTo(pPodId),
-					IUUPPodEntity.getPPodId));
-		}
-	}
-
 }

@@ -26,7 +26,7 @@ import java.util.Map.Entry;
 /**
  * @author Sam Donnelly
  */
-public class PPodAssert {
+public class ModelAssert {
 
 	public static void assertEqualsOTUSet(final OTUSet actualOTUSet,
 			final OTUSet expectedOTUSet) {
@@ -100,10 +100,11 @@ public class PPodAssert {
 				.getCells().iterator(), expectedCellItr = expectedRow
 				.getCells().iterator(); actualCellItr.hasNext()
 				&& expectedCellItr.hasNext();) {
-			assertEqualsCharacterStateCells(actualCellItr.next(),
-					expectedCellItr.next());
+			final CharacterStateCell actualCell = actualCellItr.next(), expectedCell = expectedCellItr
+					.next();
+			assertTrue(actualCell.getRow() == actualRow);
+			assertEqualsCharacterStateCells(actualCell, expectedCell);
 		}
-
 	}
 
 	/**
@@ -122,6 +123,10 @@ public class PPodAssert {
 		assertEqualsOTUSet(actualMatrix.getOTUSet(), expectedMatrix.getOTUSet());
 		assertEquals(actualMatrix.getOTUs().size(), expectedMatrix.getOTUs()
 				.size());
+
+		// assertEqualsOTUSet verifies that both OTUSet's contain the same
+		// OTU's. Now we confirm
+		// that the matrix's OTU's are in the correct order
 		for (final Iterator<OTU> actualOTUItr = actualMatrix.getOTUs()
 				.iterator(), expectedOTUItr = expectedMatrix.getOTUs()
 				.iterator(); actualOTUItr.hasNext() && expectedOTUItr.hasNext();) {
@@ -172,31 +177,17 @@ public class PPodAssert {
 				.getRows().iterator(), expectedRowItr = expectedMatrix
 				.getRows().iterator(); actualRowItr.hasNext()
 				&& expectedRowItr.hasNext();) {
-			assertEqualsCharacterStateRows(actualRowItr.next(), expectedRowItr
-					.next());
+			final CharacterStateRow actualRow = actualRowItr.next(), expectedRow = expectedRowItr
+					.next();
+			assertTrue(actualRow.getMatrix() == actualMatrix);
+			assertEqualsCharacterStateRows(actualRow, expectedRow);
 		}
-
-// if (rows == null) {
-// if (expectedMatrix.rows != null) {
-// return false;
-// }
-// } else if (!rows.equals(expectedMatrix.rows)) {
-// return false;
-// }
-// if (study == null) {
-// if (expectedMatrix.study != null) {
-// return false;
-// }
-// } else if (!study.equals(expectedMatrix.study)) {
-// return false;
-// }
-//
 	}
 
 	/**
 	 * Prevent inheritance and instantiation.
 	 */
-	private PPodAssert() {
-		throw new AssertionError("can't instantiate a PPodAssert");
+	private ModelAssert() {
+		throw new AssertionError("can't instantiate a ModelAssert");
 	}
 }

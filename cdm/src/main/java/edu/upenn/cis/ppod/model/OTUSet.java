@@ -161,12 +161,12 @@ public final class OTUSet extends UUPPodEntityWXmlId {
 	 * 
 	 * @param otu see description
 	 * 
-	 * @return this OTU set
+	 * @return {@code otu}
 	 * 
 	 * @throws IllegalArgumentException if this OTU set already has an OTU with
 	 *             {@code otu}'s label
 	 */
-	public OTUSet addOTU(final OTU otu) {
+	public OTU addOTU(final OTU otu) {
 		checkNotNull(otu);
 		if (null != findIf(getOTUs(), compose(equalTo(otu.getLabel()),
 				OTU.getLabel))) {
@@ -177,7 +177,7 @@ public final class OTUSet extends UUPPodEntityWXmlId {
 			otu.addOTUSet(this);
 			resetPPodVersionInfo();
 		}
-		return this;
+		return otu;
 	}
 
 	/**
@@ -259,19 +259,16 @@ public final class OTUSet extends UUPPodEntityWXmlId {
 	}
 
 	/**
-	 * Return the {@code OTU}, if any, with id {@code id}, or <code>null</code>
-	 * if there is no such {@code OTU}, or <code>null</code> if
-	 * <code>null == id</code>.
+	 * Return the {@code OTU}, if any, with id {@code pPodId}, or
+	 * <code>null</code> if there is no such {@code OTU}, or <code>null</code>
+	 * if {@code pPodId == null}.
 	 * 
-	 * @param id the <code>getId()</code> of the <code>OTU</code> that we're
-	 *            looking for.
+	 * @param pPodId the pPOD id of the <code>OTU</code> that we're looking for
 	 * @return see description.
 	 */
-	public OTU getOTUByPPodId(final String id) {
-		if (null == id) {
-			return null;
-		}
-		return findIf(getOTUs(), compose(equalTo(id), IUUPPodEntity.getPPodId));
+	public OTU getOTUByPPodId(final String pPodId) {
+		return findIf(getOTUs(), compose(equalTo(pPodId),
+				IUUPPodEntity.getPPodId));
 	}
 
 	/**

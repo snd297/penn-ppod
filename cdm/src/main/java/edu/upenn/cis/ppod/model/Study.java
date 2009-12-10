@@ -16,7 +16,10 @@
 package edu.upenn.cis.ppod.model;
 
 import static com.google.common.base.Preconditions.checkNotNull;
+import static com.google.common.base.Predicates.compose;
+import static com.google.common.base.Predicates.equalTo;
 import static com.google.common.collect.Sets.newHashSet;
+import static edu.upenn.cis.ppod.util.PPodIterables.findIf;
 
 import java.util.Collections;
 import java.util.Set;
@@ -131,8 +134,8 @@ public final class Study extends UUPPodEntity implements IPPodEntities {
 	}
 
 	public OTUSet getOTUSetByPPodId(final String pPodId) {
-		return (OTUSet) PPodEntitiesUtil.getUUPPodEntityByPPodId(otuSets,
-				pPodId);
+		return findIf(getOTUSets(), compose(equalTo(pPodId),
+				IUUPPodEntity.getPPodId));
 	}
 
 	/**
