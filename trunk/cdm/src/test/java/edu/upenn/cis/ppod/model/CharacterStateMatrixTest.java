@@ -16,6 +16,7 @@
 package edu.upenn.cis.ppod.model;
 
 import static com.google.common.collect.Lists.newArrayList;
+import static edu.upenn.cis.ppod.util.CollectionsUtil.nullFillAndSet;
 import static org.testng.Assert.assertEquals;
 import static org.testng.Assert.assertNotNull;
 import static org.testng.Assert.assertNull;
@@ -266,4 +267,25 @@ public class CharacterStateMatrixTest {
 		assertNull(row1.getMatrix());
 	}
 
+	@Inject
+	private Provider<PPodVersionInfo> pPodVersionInfoProvider;
+
+	public void beforeMarshall() {
+		nullFillAndSet(matrix.getColumnPPodVersionInfosMutable(), 2,
+				pPodVersionInfoProvider.get().setPPodVersion(3L));
+		nullFillAndSet(matrix.getColumnPPodVersionInfosMutable(), 5,
+				pPodVersionInfoProvider.get().setPPodVersion(8L));
+
+		matrix.beforeMarshal(null);
+		assertEquals(matrix.getColumnPPodVersions().size(), matrix
+				.getColumnPPodVersionInfos().size());
+		for (int i = 0; i < matrix.getColumnPPodVersionInfos().size(); i++) {
+			if (matrix.getColumnPPodVersionInfos().get(i) == null) {
+				assertNull(matrix.getColumnPPodVersions().get(i));
+			} else {
+				assertEquals(matrix.getColumnPPodVersions().get(i), matrix
+						.getColumnPPodVersionInfos().get(i).getPPodVersion());
+			}
+		}
+	}
 }
