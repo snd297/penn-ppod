@@ -15,7 +15,10 @@
  */
 package edu.upenn.cis.ppod.services.ppodentity;
 
+import static com.google.common.base.Predicates.compose;
+import static com.google.common.base.Predicates.equalTo;
 import static com.google.common.collect.Sets.newHashSet;
+import static edu.upenn.cis.ppod.util.PPodIterables.findIf;
 
 import java.util.Collections;
 import java.util.Set;
@@ -29,6 +32,7 @@ import javax.xml.bind.annotation.XmlRootElement;
 import edu.upenn.cis.ppod.model.Attachment;
 import edu.upenn.cis.ppod.model.AttachmentNamespace;
 import edu.upenn.cis.ppod.model.AttachmentType;
+import edu.upenn.cis.ppod.model.IUUPPodEntity;
 import edu.upenn.cis.ppod.model.OTUSet;
 import edu.upenn.cis.ppod.util.PPodEntitiesUtil;
 
@@ -82,8 +86,8 @@ public class PPodEntities implements IPPodEntities {
 	}
 
 	public OTUSet getOTUSetByPPodId(final String pPodId) {
-		return (OTUSet) PPodEntitiesUtil.getUUPPodEntityByPPodId(otuSets,
-				pPodId);
+		return findIf(getOTUSets(), compose(equalTo(pPodId),
+				IUUPPodEntity.getPPodId));
 	}
 
 }

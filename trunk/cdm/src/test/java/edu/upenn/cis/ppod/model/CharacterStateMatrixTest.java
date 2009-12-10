@@ -74,7 +74,10 @@ public class CharacterStateMatrixTest {
 
 		otus012 = newArrayList(otu0, otu1, otu2);
 
-		otuSet012 = otuSetProvider.get().addOTU(otu0).addOTU(otu1).addOTU(otu2);
+		otuSet012 = otuSetProvider.get();
+		otuSet012.addOTU(otu0);
+		otuSet012.addOTU(otu1);
+		otuSet012.addOTU(otu2);
 	}
 
 	public void setOTUsWSameOTUs() {

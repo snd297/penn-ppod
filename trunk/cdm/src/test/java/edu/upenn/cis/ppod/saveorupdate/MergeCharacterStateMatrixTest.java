@@ -31,7 +31,7 @@ import edu.upenn.cis.ppod.TestGroupDefs;
 import edu.upenn.cis.ppod.model.CharacterStateMatrix;
 import edu.upenn.cis.ppod.model.OTU;
 import edu.upenn.cis.ppod.model.OTUSet;
-import edu.upenn.cis.ppod.model.PPodAssert;
+import edu.upenn.cis.ppod.model.ModelAssert;
 import edu.upenn.cis.ppod.util.MatrixProvider;
 
 /**
@@ -80,6 +80,6 @@ public class MergeCharacterStateMatrixTest {
 			assertFalse(true, "dbMatrix.getPPodId() is not a UUID: " + e);
 		}
 
-		PPodAssert.assertEqualsCharacterStateMatrices(dbMatrix, sourceMatrix);
+		ModelAssert.assertEqualsCharacterStateMatrices(dbMatrix, sourceMatrix);
 	}
 }
