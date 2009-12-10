@@ -16,9 +16,12 @@
 package edu.upenn.cis.ppod.model;
 
 import static com.google.common.base.Preconditions.checkNotNull;
+import static com.google.common.base.Predicates.compose;
+import static com.google.common.base.Predicates.equalTo;
 import static com.google.common.collect.Lists.newArrayList;
 import static com.google.common.collect.Lists.newArrayListWithCapacity;
 import static com.google.common.collect.Maps.newHashMap;
+import static edu.upenn.cis.ppod.util.PPodIterables.findIf;
 import static edu.upenn.cis.ppod.util.UPennCisPPodUtil.nullSafeEquals;
 
 import java.util.Collections;
@@ -263,18 +266,14 @@ public final class CharacterStateMatrix extends UUPPodEntityWXmlId {
 
 	/**
 	 * Given a pPOD id, retrieve a {@code Character}, or <code>null</code> if
-	 * there is no such {@code Character}.
+	 * there is no such {@code Character} or if {@code characterPPodId == null}.
 	 * 
-	 * @param characterPPodId the pPodid
+	 * @param characterPPodId the pPOD id
 	 * @return see description
 	 */
 	public Character getCharacterByPPodId(final String characterPPodId) {
-		for (final Character character : characters) {
-			if (character.getPPodId().equals(characterPPodId)) {
-				return character;
-			}
-		}
-		return null;
+		return findIf(getCharacters(), compose(equalTo(characterPPodId),
+				IUUPPodEntity.getPPodId));
 	}
 
 	/**
@@ -310,12 +309,28 @@ public final class CharacterStateMatrix extends UUPPodEntityWXmlId {
 	}
 
 	/**
-	 * Getter.
+	 * Get an unmodifiable view of the {@code PPodVersionInfo}s for each for the
+	 * columns of the matrix.
+	 * <p>
+	 * This value is {@code equals()} to the max pPOD version info in a column.
 	 * 
-	 * @return an unmodifiable view of <code>this.columnPPodVersions</code>.
+	 * @return an unmodifiable view of the columns' {@code PPodVersionInfo}s
 	 */
 	public List<PPodVersionInfo> getColumnPPodVersionInfos() {
 		return Collections.unmodifiableList(columnPPodVersionInfos);
+	}
+
+	/**
+	 * Get a mutable view of the {@code PPodVersionInfo}s for each for the
+	 * columns of the matrix.
+	 * <p>
+	 * Intentionally package-private and written to ease testing.
+	 * 
+	 * @return a mutable view of the {@code PPodVersionInfo}s for each for the
+	 *         columns of the matrix
+	 */
+	List<PPodVersionInfo> getColumnPPodVersionInfosMutable() {
+		return columnPPodVersionInfos;
 	}
 
 	/**
