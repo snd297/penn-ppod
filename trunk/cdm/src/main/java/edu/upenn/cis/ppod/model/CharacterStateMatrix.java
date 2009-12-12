@@ -631,7 +631,7 @@ public final class CharacterStateMatrix extends UUPPodEntityWXmlId {
 			final OTU newOtu = newOtus.get(newOtuIdx);
 
 			// oldIdx is where newOtu used to be
-			final Integer oldIdx = otuIdx.get(newOtu);
+			final Integer oldIdx = getOTUIdx().get(newOtu);
 			CharacterStateRow oldRow = null;
 			if (oldIdx == null) {
 				// It's a new row - it will be filled in later.
@@ -656,7 +656,7 @@ public final class CharacterStateMatrix extends UUPPodEntityWXmlId {
 
 		// Get rid of rows that no longer have OTU's
 		while (rows.size() > newRows.size()) {
-			rows.remove(rows.size() - 1);
+			removeLastRow();
 		}
 
 		resetPPodVersionInfo();

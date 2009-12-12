@@ -15,10 +15,13 @@
  */
 package edu.upenn.cis.ppod.saveorupdate;
 
+import static com.google.common.collect.Lists.newArrayList;
 import static com.google.common.collect.Maps.newHashMap;
 import static org.testng.Assert.assertFalse;
 import static org.testng.Assert.assertNotNull;
 
+import java.util.Collections;
+import java.util.List;
 import java.util.Map;
 import java.util.UUID;
 
@@ -29,9 +32,11 @@ import com.google.inject.Provider;
 
 import edu.upenn.cis.ppod.TestGroupDefs;
 import edu.upenn.cis.ppod.model.CharacterStateMatrix;
+import edu.upenn.cis.ppod.model.ModelAssert;
 import edu.upenn.cis.ppod.model.OTU;
 import edu.upenn.cis.ppod.model.OTUSet;
-import edu.upenn.cis.ppod.model.ModelAssert;
+import edu.upenn.cis.ppod.saveorupdate.IMergeCharacterStateMatrix;
+import edu.upenn.cis.ppod.saveorupdate.IMergeCharacterStateMatrix.IFactory;
 import edu.upenn.cis.ppod.util.MatrixProvider;
 
 /**
@@ -81,5 +86,31 @@ public class MergeCharacterStateMatrixTest {
 		}
 
 		ModelAssert.assertEqualsCharacterStateMatrices(dbMatrix, sourceMatrix);
+	}
+
+	@Test(dataProvider = MatrixProvider.SMALL_SIMPLE_MATRIX_PROVIDER, dataProviderClass = MatrixProvider.class)
+	public void moveRows(final CharacterStateMatrix sourceMatrix) {
+		final IMergeCharacterStateMatrix mergeCharacterStateMatrix = mergeMatrixFactory
+				.create(mergeAttachment);
+		final OTUSet fakeTargetOTUSet = sourceMatrix.getOTUSet();
+		final Map<OTU, OTU> fakeOTUsByIncomingOTU = newHashMap();
+		for (final OTU sourceOTU : sourceMatrix.getOTUs()) {
+			fakeOTUsByIncomingOTU.put(sourceOTU, sourceOTU);
+		}
+
+		final CharacterStateMatrix targetMatrix = (CharacterStateMatrix) matrixProvider
+				.get().setPPodId();
+		fakeTargetOTUSet.addMatrix(targetMatrix);
+		mergeCharacterStateMatrix.merge(targetMatrix, sourceMatrix,
+				fakeOTUsByIncomingOTU);
+		final List<OTU> shuffledSourceOTUs = newArrayList(sourceMatrix
+				.getOTUs());
+		Collections.shuffle(shuffledSourceOTUs);
+		sourceMatrix.setOTUs(shuffledSourceOTUs);
+
+		mergeCharacterStateMatrix.merge(targetMatrix, sourceMatrix,
+				fakeOTUsByIncomingOTU);
+		ModelAssert.assertEqualsCharacterStateMatrices(targetMatrix,
+				sourceMatrix);
 	}
 }

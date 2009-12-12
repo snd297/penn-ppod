@@ -229,8 +229,8 @@ public final class CharacterStateRow extends PPodEntity {
 
 		final StringBuilder retValue = new StringBuilder();
 
-		retValue.append("PhyloCharMatrixRow(").append("id=").append(TAB)
-				.append("cells=").append(this.cells).append(")\n");
+		retValue.append("CharacterStateRow(").append("id=").append(TAB).append(
+				"cells=").append(this.cells).append(")\n");
 
 		return retValue.toString();
 	}

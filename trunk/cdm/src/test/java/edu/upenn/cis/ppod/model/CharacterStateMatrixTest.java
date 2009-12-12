@@ -16,6 +16,7 @@
 package edu.upenn.cis.ppod.model;
 
 import static com.google.common.collect.Lists.newArrayList;
+import static com.google.common.collect.Sets.newHashSet;
 import static edu.upenn.cis.ppod.util.CollectionsUtil.nullFillAndSet;
 import static org.testng.Assert.assertEquals;
 import static org.testng.Assert.assertNotNull;
@@ -58,6 +59,12 @@ public class CharacterStateMatrixTest {
 	@Inject
 	private Provider<CharacterStateRow> rowProvider;
 
+	@Inject
+	private Provider<CharacterStateCell> cellProvider;
+
+	@Inject
+	private CharacterState.IFactory stateFactory;
+
 	private OTUSet otuSet012;
 	private OTU otu0;
 	private OTU otu1;
@@ -95,15 +102,48 @@ public class CharacterStateMatrixTest {
 	}
 
 	public void setOTUsWReorderedOTUs() {
+
+		final Character character = characterProvider.get().setLabel(
+				"testLabel");
+		matrix.setCharacter(0, character);
+
 		matrix.setOTUSet(otuSet012);
 
 		matrix.setOTUs(otus012);
+		matrix.setRow(0, rowProvider.get());
+		final CharacterStateCell cell00 = matrix.getRow(0).addCell(
+				cellProvider.get());
+		cell00.setTypeAndStates(CharacterStateCell.Type.SINGLE,
+				newHashSet(stateFactory.create(0).setCharacter(character)));
+
+		matrix.setRow(1, rowProvider.get());
+		final CharacterStateCell cell10 = matrix.getRow(1).addCell(
+				cellProvider.get());
+		cell10.setTypeAndStates(CharacterStateCell.Type.SINGLE,
+				newHashSet(stateFactory.create(1)));
+
+		matrix.setRow(2, rowProvider.get());
+		final CharacterStateCell cell20 = matrix.getRow(2).addCell(
+				cellProvider.get());
+		cell20.setTypeAndStates(CharacterStateCell.Type.SINGLE,
+				newHashSet(stateFactory.create(2)));
+
+		final List<CharacterStateRow> originalRows = newArrayList(matrix
+				.getRows());
 
 		final List<OTU> otus210 = newArrayList(otu2, otu1, otu0);
 
 		matrix.setOTUs(otus210);
 
 		assertEquals(matrix.getOTUs(), otus210);
+		assertEquals(matrix.getRows().size(), originalRows.size());
+		ModelAssert.assertEqualsCharacterStateRows(matrix.getRow(0),
+				originalRows.get(2));
+		ModelAssert.assertEqualsCharacterStateRows(matrix.getRow(1),
+				originalRows.get(1));
+		ModelAssert.assertEqualsCharacterStateRows(matrix.getRow(2),
+				originalRows.get(0));
+
 	}
 
 	public void setOTUsWLessOTUs() {
