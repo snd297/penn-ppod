@@ -82,7 +82,9 @@ public class MergeCharacterStateMatrix implements IMergeCharacterStateMatrix {
 
 		// We need this for the response: it's less than ideal to do this here,
 		// but easy
-		targetMatrix.setDocId(sourceMatrix.getDocId());
+		if (targetMatrix.getDocId() == null) {
+			targetMatrix.setDocId(sourceMatrix.getDocId());
+		}
 
 		final List<OTU> newDbOTUs = newArrayList();
 		for (final OTU incomingOTU : sourceMatrix.getOTUs()) {
@@ -195,24 +197,23 @@ public class MergeCharacterStateMatrix implements IMergeCharacterStateMatrix {
 		// We should now have a matrix with the proper cell dimensions and all
 		// OTU's and characters done - now let's fill
 		// in the cells
-		for (final Iterator<CharacterStateRow> incomingRowItr = sourceMatrix
-				.getRows().iterator(), dbRowItr = targetMatrix.getRows()
-				.iterator(); incomingRowItr.hasNext();) {
-			final CharacterStateRow incomingRow = incomingRowItr.next(), dbRow = dbRowItr
+		for (final Iterator<CharacterStateRow> sourceRowItr = sourceMatrix
+				.getRows().iterator(), targetRowItr = targetMatrix.getRows()
+				.iterator(); sourceRowItr.hasNext();) {
+			final CharacterStateRow sourceRow = sourceRowItr.next(), targetRow = targetRowItr
 					.next();
-			for (final ListIterator<CharacterStateCell> incomingCellItr = incomingRow
-					.getCells().listIterator(), dbCellItr = dbRow.getCells()
-					.listIterator(); incomingCellItr.hasNext();) {
-				final CharacterStateCell incomingCell = incomingCellItr.next(), dbCell = dbCellItr
+			for (final ListIterator<CharacterStateCell> sourceCellItr = sourceRow
+					.getCells().listIterator(), targetCellItr = targetRow
+					.getCells().listIterator(); sourceCellItr.hasNext();) {
+				final CharacterStateCell sourceCell = sourceCellItr.next(), targetCell = targetCellItr
 						.next();
-				final Set<CharacterState> newDbStates = newHashSet();
-				for (final CharacterState incomingState : incomingCell
-						.getStates()) {
-					newDbStates.add(targetMatrix.getCharacter(
-							dbCellItr.previousIndex()).getStates().get(
-							incomingState.getStateNumber()));
+				final Set<CharacterState> newTargetStates = newHashSet();
+				for (final CharacterState sourceState : sourceCell.getStates()) {
+					newTargetStates.add(targetMatrix.getCharacter(
+							targetCellItr.previousIndex()).getStates().get(
+							sourceState.getStateNumber()));
 				}
-				dbCell.setTypeAndStates(incomingCell.getType(), newDbStates);
+				targetCell.setTypeAndStates(sourceCell.getType(), newTargetStates);
 			}
 		}
 		return targetMatrix;

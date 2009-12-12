@@ -208,11 +208,10 @@ public final class CharacterStateCell extends PPodEntity {
 			throw new IllegalStateException(
 					"This cell has not been added to a row yet.");
 		}
-		if (state.getCharacter() == null) {
-			throw new IllegalArgumentException(
-					"for state + '"
-							+ state.getLabel()
-							+ "' getCharacter() == null but CharacterStateCell needs it to be associated with a character");
+		if (null == getRow().getMatrix().getCharacter(
+				getRow().getCellIdx().get(this))) {
+			throw new IllegalStateException(
+					"This cell's column hasn't been assigned a character");
 		}
 		if (!state.getCharacter().equals(
 				getRow().getMatrix().getCharacter(
@@ -320,7 +319,7 @@ public final class CharacterStateCell extends PPodEntity {
 	 * <p>
 	 * The returned set may or may not be a view of this cell's states.
 	 * 
-	 * @return an unmodifiable copy of this cell's states
+	 * @return an unmodifiable set which contains this cell's states
 	 */
 	public Set<CharacterState> getStates() {
 		if (xmlStatesNeedsToBePutIntoStates) {
@@ -433,6 +432,10 @@ public final class CharacterStateCell extends PPodEntity {
 		}
 
 		for (final CharacterState state : states) {
+			if (state.getCharacter() == null) {
+				state.setCharacter(getRow().getMatrix().getCharacter(
+						getRow().getCellIdx().get(this)));
+			}
 			checkIncomingState(state);
 		}
 
@@ -468,6 +471,9 @@ public final class CharacterStateCell extends PPodEntity {
 	 * <p>
 	 * {@code states} will be copied so subsequent actions on it will not affect
 	 * this cell.
+	 * <p>
+	 * If a state hasn't been assigned to a character, this method will assign
+	 * the state to the character that owns this cell's column
 	 * 
 	 * @param type the type
 	 * @param states the states
@@ -475,12 +481,12 @@ public final class CharacterStateCell extends PPodEntity {
 	 * @return this cell
 	 * 
 	 * @throws IllegalStateException if this cell is not a member of a row
-	 * @throws IllegalStateException if any member of {@code states} is such
-	 *             that {@code state.getCharacter() == null}, that is, if any of
-	 *             {@code states} isn't associated with a character
+	 * @throws IllegalStateException if this cell's column hasn't been assigned
+	 *             a character
 	 * @throws IllegalArgumentException if any of {@code states} is such that
-	 *             {@code state.getCharacter()} is not the character of this
-	 *             cell's column
+	 *             {@code state.getCharacter() != null} and {@code
+	 *             state.getCharacter()} is not the character of this cell's
+	 *             column
 	 * @throws IllegalArgumentException if {@code type} is {@code Type.SINGLE}
 	 *             and {@codes states.size() != 1}
 	 * @throws IllegalArgumentException if {@code type} is {@code
@@ -539,9 +545,9 @@ public final class CharacterStateCell extends PPodEntity {
 
 		final StringBuilder retValue = new StringBuilder();
 
-		retValue.append("PhyloCharMatrixCell(").append(super.toString())
-				.append(TAB).append("version=").append(TAB).append("states=")
-				.append(this.states).append(TAB).append(")");
+		retValue.append("CharacterStateCell(").append(super.toString()).append(
+				TAB).append("version=").append(TAB).append("states=").append(
+				this.states).append(TAB).append(")");
 
 		return retValue.toString();
 	}
