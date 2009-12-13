@@ -73,8 +73,6 @@ public class MergeCharacterStateMatrix implements IMergeCharacterStateMatrix {
 	public CharacterStateMatrix merge(final CharacterStateMatrix targetMatrix,
 			final CharacterStateMatrix sourceMatrix,
 			final Map<OTU, OTU> mergedOTUsBySourceOTU) {
-		checkArgument(targetMatrix.getPPodId() != null,
-				"targetMatrix must have its pPOD ID set");
 		checkArgument(targetMatrix.getOTUSet() != null,
 				"targetMatrix must be attached to an OTU set");
 		targetMatrix.setLabel(sourceMatrix.getLabel());
@@ -136,19 +134,19 @@ public class MergeCharacterStateMatrix implements IMergeCharacterStateMatrix {
 
 		// Move Characters around
 		final Map<Integer, Integer> oldCharIdxsByNewCharIdx = newHashMap();
-		for (final Character incomingCharacter : sourceMatrix.getCharacters()) {
+		for (final Character sourceCharacter : sourceMatrix.getCharacters()) {
 			Character newTargetCharacter;
 			if (null == (newTargetCharacter = findIf(clearedDbCharacters,
-					compose(equalTo(incomingCharacter.getPPodId()),
+					compose(equalTo(sourceCharacter.getPPodId()),
 							IUUPPodEntity.getPPodId)))) {
 				newTargetCharacter = characterProvider.get();
 				newTargetCharacter.setPPodId();
 			}
 			targetMatrix.addCharacter(newTargetCharacter);
-			newTargetCharacter.setLabel(incomingCharacter.getLabel());
+			newTargetCharacter.setLabel(sourceCharacter.getLabel());
 
-			for (final CharacterState sourceState : incomingCharacter
-					.getStates().values()) {
+			for (final CharacterState sourceState : sourceCharacter.getStates()
+					.values()) {
 				CharacterState targetState;
 				if (null == (targetState = newTargetCharacter.getStates().get(
 						sourceState.getStateNumber()))) {
@@ -163,7 +161,7 @@ public class MergeCharacterStateMatrix implements IMergeCharacterStateMatrix {
 					.getCharacterIdx(newTargetCharacter), oldIdxsByChararacter
 					.get(newTargetCharacter));
 
-			for (final Attachment sourceAttachment : incomingCharacter
+			for (final Attachment sourceAttachment : sourceCharacter
 					.getAttachments()) {
 				final Set<Attachment> targetAttachments = newTargetCharacter
 						.getAttachmentsByStringValue(sourceAttachment

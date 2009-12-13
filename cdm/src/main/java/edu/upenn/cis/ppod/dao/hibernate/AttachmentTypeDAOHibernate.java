@@ -15,6 +15,11 @@
  */
 package edu.upenn.cis.ppod.dao.hibernate;
 
+import org.hibernate.Session;
+
+import com.google.inject.Inject;
+import com.google.inject.assistedinject.Assisted;
+
 import edu.upenn.cis.ppod.dao.IAttachmentTypeDAO;
 import edu.upenn.cis.ppod.model.AttachmentType;
 
@@ -26,12 +31,19 @@ import edu.upenn.cis.ppod.model.AttachmentType;
 public final class AttachmentTypeDAOHibernate extends
 		GenericHibernateDAO<AttachmentType, Long> implements IAttachmentTypeDAO {
 
+	@Inject
+	AttachmentTypeDAOHibernate(@Assisted Session session) {
+		setSession(session);
+	}
+
 	public AttachmentType getAttachmentTypeByNamespaceAndType(
 			final String namespaceLabel, final String typeLabel) {
-		return (AttachmentType) getSession().getNamedQuery(
-				"AttachmentType-getByNamespaceAndType").setParameter(
-				"namespaceLabel", namespaceLabel).setParameter("typeLabel",
-				typeLabel).uniqueResult();
+		return (AttachmentType) getSession()
+				.getNamedQuery(
+						AttachmentType.class.getSimpleName()
+								+ "-getByNamespaceAndType").setParameter(
+						"namespaceLabel", namespaceLabel).setParameter(
+						"typeLabel", typeLabel).uniqueResult();
 	}
 
 }
