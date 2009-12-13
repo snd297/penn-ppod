@@ -86,34 +86,37 @@ public class MergeCharacterStateMatrix implements IMergeCharacterStateMatrix {
 			targetMatrix.setDocId(sourceMatrix.getDocId());
 		}
 
-		final List<OTU> newDbOTUs = newArrayList();
-		for (final OTU incomingOTU : sourceMatrix.getOTUs()) {
-			final OTU newDbOTU = mergedOTUsBySourceOTU.get(incomingOTU);
-			if (newDbOTU == null) {
+		final List<OTU> newTargetOTUs = newArrayList();
+		for (final OTU sourceOTU : sourceMatrix.getOTUs()) {
+			final OTU newTargetOTU = mergedOTUsBySourceOTU.get(sourceOTU);
+			if (newTargetOTU == null) {
 				throw new AssertionError(
 						"couldn't find incomingOTU in persistentOTUsByIncomingOTU");
 			}
-			newDbOTUs.add(newDbOTU);
+			newTargetOTUs.add(newTargetOTU);
 		}
-		final List<OTU> previousDbOTUs = newArrayList(targetMatrix.getOTUs());
-		targetMatrix.setOTUs(newDbOTUs);
+		final List<OTU> previousTargetOTUs = newArrayList(targetMatrix
+				.getOTUs());
+		targetMatrix.setOTUs(newTargetOTUs);
 
 		// Now realign rows to new OTU order
-		final List<CharacterStateRow> previousDbRows = newArrayList(targetMatrix
+		final List<CharacterStateRow> previousTargetRows = newArrayList(targetMatrix
 				.getRows());
 		for (int i = 0; i < targetMatrix.getOTUs().size(); i++) {
-			int previousDbOTUIdx = -1;
+			int previousTargetOTUIdx = -1;
 
-			for (int j = 0; j < previousDbOTUs.size(); j++) {
-				if (previousDbOTUs.get(j).equals(targetMatrix.getOTUs().get(i))) {
-					previousDbOTUIdx = j;
+			for (int j = 0; j < previousTargetOTUs.size(); j++) {
+				if (previousTargetOTUs.get(j).equals(
+						targetMatrix.getOTUs().get(i))) {
+					previousTargetOTUIdx = j;
 					break;
 				}
 			}
-			if (previousDbOTUIdx == -1) {
+			if (previousTargetOTUIdx == -1) {
 				targetMatrix.setRow(i, rowProvider.get());
 			} else {
-				targetMatrix.setRow(i, previousDbRows.get(previousDbOTUIdx));
+				targetMatrix.setRow(i, previousTargetRows
+						.get(previousTargetOTUIdx));
 
 			}
 		}
@@ -134,63 +137,65 @@ public class MergeCharacterStateMatrix implements IMergeCharacterStateMatrix {
 		// Move Characters around
 		final Map<Integer, Integer> oldCharIdxsByNewCharIdx = newHashMap();
 		for (final Character incomingCharacter : sourceMatrix.getCharacters()) {
-			Character newDbCharacter;
-			if (null == (newDbCharacter = findIf(clearedDbCharacters, compose(
-					equalTo(incomingCharacter.getPPodId()),
-					IUUPPodEntity.getPPodId)))) {
-				newDbCharacter = characterProvider.get();
-				newDbCharacter.setPPodId();
+			Character newTargetCharacter;
+			if (null == (newTargetCharacter = findIf(clearedDbCharacters,
+					compose(equalTo(incomingCharacter.getPPodId()),
+							IUUPPodEntity.getPPodId)))) {
+				newTargetCharacter = characterProvider.get();
+				newTargetCharacter.setPPodId();
 			}
-			targetMatrix.addCharacter(newDbCharacter);
-			newDbCharacter.setLabel(incomingCharacter.getLabel());
+			targetMatrix.addCharacter(newTargetCharacter);
+			newTargetCharacter.setLabel(incomingCharacter.getLabel());
 
-			for (final CharacterState incomingState : incomingCharacter
+			for (final CharacterState sourceState : incomingCharacter
 					.getStates().values()) {
-				CharacterState dbState;
-				if (null == (dbState = newDbCharacter.getStates().get(
-						incomingState.getStateNumber()))) {
-					dbState = newDbCharacter.addState(stateFactory
-							.create(incomingState.getStateNumber()));
+				CharacterState targetState;
+				if (null == (targetState = newTargetCharacter.getStates().get(
+						sourceState.getStateNumber()))) {
+					targetState = newTargetCharacter.addState(stateFactory
+							.create(sourceState.getStateNumber()));
 
 				}
-				dbState.setLabel(incomingState.getLabel());
+				targetState.setLabel(sourceState.getLabel());
 			}
 
 			oldCharIdxsByNewCharIdx.put(targetMatrix
-					.getCharacterIdx(newDbCharacter), oldIdxsByChararacter
-					.get(newDbCharacter));
+					.getCharacterIdx(newTargetCharacter), oldIdxsByChararacter
+					.get(newTargetCharacter));
 
-			for (final Attachment incomingAttachment : incomingCharacter
+			for (final Attachment sourceAttachment : incomingCharacter
 					.getAttachments()) {
-				final Set<Attachment> dbAttachments = newDbCharacter
-						.getAttachmentsByStringValue(incomingAttachment
+				final Set<Attachment> targetAttachments = newTargetCharacter
+						.getAttachmentsByStringValue(sourceAttachment
 								.getStringValue());
-				Attachment dbAttachment = getOnlyElement(dbAttachments, null);
-				if (dbAttachment == null) {
-					dbAttachment = attachmentProvider.get();
-					dbAttachment.setPPodId();
+				Attachment targetAttachment = getOnlyElement(targetAttachments,
+						null);
+				if (targetAttachment == null) {
+					targetAttachment = attachmentProvider.get();
+					targetAttachment.setPPodId();
 				}
-				newDbCharacter.addAttachment(dbAttachment);
-				mergeAttachment.merge(dbAttachment, incomingAttachment);
+				newTargetCharacter.addAttachment(targetAttachment);
+				mergeAttachment.merge(targetAttachment, sourceAttachment);
 			}
 		}
 
 		// Now we get the columns to match the Character ordering
-		for (final CharacterStateRow dbRow : targetMatrix.getRows()) {
-			final List<CharacterStateCell> clearedDbCells = dbRow.clearCells();
+		for (final CharacterStateRow targetRow : targetMatrix.getRows()) {
+			final List<CharacterStateCell> clearedDbCells = targetRow
+					.clearCells();
 
 			for (int newCellIdx = 0; newCellIdx < targetMatrix.getCharacters()
 					.size(); newCellIdx++) {
 				if (null == oldCharIdxsByNewCharIdx.get(newCellIdx)) {
-					dbRow.addCell(cellProvider.get());
+					targetRow.addCell(cellProvider.get());
 				} else {
-					dbRow.addCell(clearedDbCells.get(oldCharIdxsByNewCharIdx
-							.get(newCellIdx)));
+					targetRow.addCell(clearedDbCells
+							.get(oldCharIdxsByNewCharIdx.get(newCellIdx)));
 				}
 			}
-			while (dbRow.getCells().size() > targetMatrix.getCharacters()
+			while (targetRow.getCells().size() > targetMatrix.getCharacters()
 					.size()) {
-				dbRow.removeLastCell();
+				targetRow.removeLastCell();
 			}
 		}
 
@@ -213,7 +218,8 @@ public class MergeCharacterStateMatrix implements IMergeCharacterStateMatrix {
 							targetCellItr.previousIndex()).getStates().get(
 							sourceState.getStateNumber()));
 				}
-				targetCell.setTypeAndStates(sourceCell.getType(), newTargetStates);
+				targetCell.setTypeAndStates(sourceCell.getType(),
+						newTargetStates);
 			}
 		}
 		return targetMatrix;

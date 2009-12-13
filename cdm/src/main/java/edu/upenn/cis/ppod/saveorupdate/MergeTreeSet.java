@@ -31,12 +31,12 @@ import edu.upenn.cis.ppod.model.TreeSet;
 /**
  * @author Sam Donnelly
  */
-public class MergeTreeSetHibernate implements IMergeTreeSet {
+public class MergeTreeSet implements IMergeTreeSet {
 
 	private final Provider<Tree> treeProvider;
 
 	@Inject
-	MergeTreeSetHibernate(final Provider<Tree> treeProvider) {
+	MergeTreeSet(final Provider<Tree> treeProvider) {
 		this.treeProvider = treeProvider;
 	}
 
