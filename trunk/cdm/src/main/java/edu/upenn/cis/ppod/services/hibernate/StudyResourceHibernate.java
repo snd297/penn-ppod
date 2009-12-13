@@ -18,7 +18,6 @@ package edu.upenn.cis.ppod.services.hibernate;
 import static com.google.common.collect.Iterables.transform;
 import static com.google.common.collect.Sets.newHashSet;
 
-import java.util.Date;
 import java.util.Set;
 
 import com.google.inject.Inject;

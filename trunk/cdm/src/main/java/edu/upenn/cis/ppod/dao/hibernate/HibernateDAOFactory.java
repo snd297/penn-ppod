@@ -197,11 +197,6 @@ public class HibernateDAOFactory implements IDAOFactory {
 	public static class TreeDAOHibernate extends
 			GenericHibernateDAO<Tree, Long> implements ITreeDAO {
 
-		/*
-		 * (non-Javadoc)
-		 * 
-		 * @see edu.upenn.cis.ppod.dao.ITreeDAO#getByPPodId(java.lang.String)
-		 */
 		public Tree getByPPodId(String pPodId) {
 			return (Tree) getSession().getNamedQuery(
 					Tree.class.getSimpleName() + "-getByPPodId").setParameter(
@@ -268,13 +263,12 @@ public class HibernateDAOFactory implements IDAOFactory {
 	}
 
 	public IAttachmentTypeDAO getAttachmentTypeDAO() {
-		return (IAttachmentTypeDAO) new AttachmentTypeDAOHibernate()
-				.setSession(session);
+		return (IAttachmentTypeDAO) new AttachmentTypeDAOHibernate(session);
 	}
 
 	public IAttachmentNamespaceDAO getAttachmentNamespaceDAO() {
-		return (IAttachmentNamespaceDAO) new AttachmentNamespaceDAOHibernate()
-				.setSession(session);
+		return (IAttachmentNamespaceDAO) new AttachmentNamespaceDAOHibernate(
+				session);
 	}
 
 	public IUserDAO getPPodUserDAO() {

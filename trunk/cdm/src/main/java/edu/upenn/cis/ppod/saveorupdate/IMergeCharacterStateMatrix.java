@@ -28,15 +28,14 @@ import edu.upenn.cis.ppod.model.OTU;
 public interface IMergeCharacterStateMatrix {
 
 	/**
-	 * Merge {@code sourceMatrix} into {@code targetMatrix}.
+	 * Merge {@code sourceMatrix} onto {@code targetMatrix}.
 	 * <p>
-	 * If a new matrix is being newly saved, {@code targetMatrix} must have the
-	 * pPOD ID set by the client. *
+	 * This method doesn't do anything about connecting {@code targetMatrix} to
+	 * an {@code OTUSet} and this must have been done before this method is
+	 * called.
 	 * <p>
-	 * NOTE: this method doesn't do anything about connecting {@code
-	 * targetMatrix} to an {@code OTUSet} and this must have been done before
-	 * this method is called.
-	 * 
+	 * If {@code sourceMatrix.getDocId() != null} then this method will do call
+	 * {@code sourceMatrix.setDocId(sourceMatrix.getDocId())}.
 	 * 
 	 * @param targetMatrix merge into the target matrix
 	 * @param sourceMatrix source of the merge
@@ -47,7 +46,6 @@ public interface IMergeCharacterStateMatrix {
 	 * 
 	 * @return {@code targetMatrix}
 	 * 
-	 * @throws IllegalArgumentException if {@code dbOTUSet.getPPodId() == null}
 	 * @throws IllegalArgumentException if {@targetMatrix.getOTUSet() == null}
 	 */
 	CharacterStateMatrix merge(CharacterStateMatrix targetMatrix,
