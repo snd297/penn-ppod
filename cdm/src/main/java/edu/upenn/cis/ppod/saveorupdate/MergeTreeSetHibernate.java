@@ -13,7 +13,7 @@
  * See the License for the specific language governing permissions and
  * limitations under the License.
  */
-package edu.upenn.cis.ppod.saveorupdate.hibernate;
+package edu.upenn.cis.ppod.saveorupdate;
 
 import static com.google.common.collect.Sets.newHashSet;
 
@@ -27,7 +27,6 @@ import com.google.inject.Provider;
 import edu.upenn.cis.ppod.model.OTU;
 import edu.upenn.cis.ppod.model.Tree;
 import edu.upenn.cis.ppod.model.TreeSet;
-import edu.upenn.cis.ppod.saveorupdate.IMergeTreeSet;
 
 /**
  * @author Sam Donnelly
@@ -42,7 +41,8 @@ public class MergeTreeSetHibernate implements IMergeTreeSet {
 	}
 
 	public TreeSet merge(final TreeSet targetTreeSet,
-			final TreeSet sourceTreeSet, final Map<OTU, OTU> dbOTUsByIncomingOTU) {
+			final TreeSet sourceTreeSet,
+			final Map<OTU, OTU> mergedOTUsBySourceOTU) {
 
 		// For the response to the client
 		targetTreeSet.setDocId(sourceTreeSet.getDocId());
@@ -62,23 +62,24 @@ public class MergeTreeSetHibernate implements IMergeTreeSet {
 			targetTreeSet.removeTree(dbTreeToBeRemoved);
 		}
 
-		for (final Tree incomingTree : sourceTreeSet.getTrees()) {
-			Tree dbTree;
-			if (null == (dbTree = targetTreeSet.getTreeByPPodId(incomingTree
+		for (final Tree sourceTree : sourceTreeSet.getTrees()) {
+			Tree targetTree;
+			if (null == (targetTree = targetTreeSet.getTreeByPPodId(sourceTree
 					.getPPodId()))) {
-				dbTree = treeProvider.get();
-				targetTreeSet.addTree(dbTree);
-				dbTree.setPPodId();
+				targetTree = treeProvider.get();
+				targetTreeSet.addTree(targetTree);
+				targetTree.setPPodId();
 			}
-			String dbNewick = incomingTree.getNewick();
-			for (final Entry<OTU, OTU> dbOTUByIncomingOTU : dbOTUsByIncomingOTU
+			String targetNewick = sourceTree.getNewick();
+			for (final Entry<OTU, OTU> mergedOTUBySourceOTU : mergedOTUsBySourceOTU
 					.entrySet()) {
-				dbNewick = dbNewick.replace(dbOTUByIncomingOTU.getKey()
-						.getDocId(), dbOTUByIncomingOTU.getValue().getPPodId());
+				targetNewick = targetNewick.replace(mergedOTUBySourceOTU
+						.getKey().getDocId(), mergedOTUBySourceOTU.getValue()
+						.getPPodId());
 
 			}
-			dbTree.setNewick(dbNewick);
-			dbTree.setLabel(incomingTree.getLabel());
+			targetTree.setNewick(targetNewick);
+			targetTree.setLabel(sourceTree.getLabel());
 		}
 		return targetTreeSet;
 	}
