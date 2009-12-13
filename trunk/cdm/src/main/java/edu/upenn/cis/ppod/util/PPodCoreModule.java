@@ -29,12 +29,12 @@ import edu.upenn.cis.ppod.saveorupdate.IMergeAttachment;
 import edu.upenn.cis.ppod.saveorupdate.IMergeCharacterStateMatrix;
 import edu.upenn.cis.ppod.saveorupdate.MergeAttachment;
 import edu.upenn.cis.ppod.saveorupdate.MergeCharacterStateMatrix;
+import edu.upenn.cis.ppod.saveorupdate.MergeTreeSetHibernate;
 import edu.upenn.cis.ppod.saveorupdate.hibernate.IMergeOTUSetHibernateFactory;
 import edu.upenn.cis.ppod.saveorupdate.hibernate.ISaveOrUpdateStudyHibernateFactory;
 import edu.upenn.cis.ppod.saveorupdate.hibernate.IMergeTreeSetHibernateFactory;
 import edu.upenn.cis.ppod.saveorupdate.hibernate.MergeOTUSetHibernate;
 import edu.upenn.cis.ppod.saveorupdate.hibernate.SaveOrUpdateStudyHibernate;
-import edu.upenn.cis.ppod.saveorupdate.hibernate.MergeTreeSetHibernate;
 import edu.upenn.cis.ppod.security.ISimpleAuthenticationInfoFactory;
 import edu.upenn.cis.ppod.security.SimpleAuthenticationInfoFactory;
 
