@@ -98,8 +98,8 @@ public class DNAState extends CharacterState {
 	}
 
 	/**
-	 * This method is not supported for {@DNAState} since all
-	 * instance are immutable.
+	 * This method is not supported for {@code DNAState} since all instances are
+	 * immutable.
 	 * 
 	 * @param label ignored
 	 * 
