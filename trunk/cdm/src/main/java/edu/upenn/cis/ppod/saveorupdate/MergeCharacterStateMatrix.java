@@ -18,10 +18,12 @@ package edu.upenn.cis.ppod.saveorupdate;
 import static com.google.common.base.Preconditions.checkNotNull;
 import static com.google.common.base.Predicates.compose;
 import static com.google.common.base.Predicates.equalTo;
+import static com.google.common.collect.Iterables.filter;
 import static com.google.common.collect.Iterables.getOnlyElement;
 import static com.google.common.collect.Lists.newArrayList;
 import static com.google.common.collect.Maps.newHashMap;
 import static com.google.common.collect.Sets.newHashSet;
+import static edu.upenn.cis.ppod.util.PPodIterables.findEach;
 import static edu.upenn.cis.ppod.util.PPodIterables.findIf;
 
 import java.util.Iterator;
@@ -99,31 +101,7 @@ public class MergeCharacterStateMatrix implements IMergeCharacterStateMatrix {
 			}
 			newTargetOTUs.add(newTargetOTU);
 		}
-		final List<OTU> previousTargetOTUs = newArrayList(targetMatrix
-				.getOTUs());
 		targetMatrix.setOTUs(newTargetOTUs);
-
-		// Now realign rows to new OTU order
-		final List<CharacterStateRow> previousTargetRows = newArrayList(targetMatrix
-				.getRows());
-		for (int i = 0; i < targetMatrix.getOTUs().size(); i++) {
-			int previousTargetOTUIdx = -1;
-
-			for (int j = 0; j < previousTargetOTUs.size(); j++) {
-				if (previousTargetOTUs.get(j).equals(
-						targetMatrix.getOTUs().get(i))) {
-					previousTargetOTUIdx = j;
-					break;
-				}
-			}
-			if (previousTargetOTUIdx == -1) {
-				targetMatrix.setRow(i, rowProvider.get());
-			} else {
-				targetMatrix.setRow(i, previousTargetRows
-						.get(previousTargetOTUIdx));
-
-			}
-		}
 
 		// Move Characters around - start by removing all characters
 		final List<Character> clearedTargetCharacters = targetMatrix
@@ -158,15 +136,17 @@ public class MergeCharacterStateMatrix implements IMergeCharacterStateMatrix {
 				targetState.setLabel(sourceState.getLabel());
 			}
 
-			oldCharIdxsByNewCharIdx.put(targetMatrix
-					.getCharacterIdx(newTargetCharacter), oldIdxsByChararacter
+			oldCharIdxsByNewCharIdx.put(targetMatrix.getCharacterIdx().get(
+					newTargetCharacter), oldIdxsByChararacter
 					.get(newTargetCharacter));
 
 			for (final Attachment sourceAttachment : sourceCharacter
 					.getAttachments()) {
-				final Set<Attachment> targetAttachments = newTargetCharacter
-						.getAttachmentsByStringValue(sourceAttachment
-								.getStringValue());
+				final Set<Attachment> targetAttachments = findEach(
+						newTargetCharacter.getAttachments(), compose(
+								equalTo(sourceAttachment.getStringValue()),
+								Attachment.getStringValue));
+
 				Attachment targetAttachment = getOnlyElement(targetAttachments,
 						null);
 				if (targetAttachment == null) {
@@ -178,9 +158,13 @@ public class MergeCharacterStateMatrix implements IMergeCharacterStateMatrix {
 			}
 		}
 
-		// Now we get the columns to match the Character ordering
-		for (final CharacterStateRow targetRow : targetMatrix.getRows()) {
-			final List<CharacterStateCell> clearedDbCells = targetRow
+		for (final OTU targetOTU : targetMatrix.getOTUs()) {
+			CharacterStateRow targetRow = targetMatrix.getRow(targetOTU);
+			if (targetRow == null) {
+				targetRow = rowProvider.get();
+				targetMatrix.setRow(targetOTU, targetRow);
+			}
+			final List<CharacterStateCell> clearedTargetCells = targetRow
 					.clearCells();
 
 			for (int newCellIdx = 0; newCellIdx < targetMatrix.getCharacters()
@@ -188,7 +172,7 @@ public class MergeCharacterStateMatrix implements IMergeCharacterStateMatrix {
 				if (null == oldCharIdxsByNewCharIdx.get(newCellIdx)) {
 					targetRow.addCell(cellProvider.get());
 				} else {
-					targetRow.addCell(clearedDbCells
+					targetRow.addCell(clearedTargetCells
 							.get(oldCharIdxsByNewCharIdx.get(newCellIdx)));
 				}
 			}

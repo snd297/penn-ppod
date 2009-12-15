@@ -110,17 +110,6 @@ abstract class PPodEntity extends PersistentObject implements IAttachee,
 		return true;
 	}
 
-	public Attachment getAttachmentByPPodId(final String pPodId) {
-		if (pPodId == null) {
-			return null;
-		}
-		if (attachments == null) {
-			return null;
-		}
-		return findIf(attachments, compose(equalTo(pPodId),
-				IUUPPodEntity.getPPodId));
-	}
-
 	public Set<Attachment> getAttachments() {
 		if (attachments == null) {
 			return Collections.emptySet();
@@ -150,14 +139,6 @@ abstract class PPodEntity extends PersistentObject implements IAttachee,
 								&& input.getType().getLabel().equals(type);
 					}
 				}));
-	}
-
-	public Set<Attachment> getAttachmentsByStringValue(final String stringValue) {
-		if (attachments == null) {
-			return Collections.emptySet();
-		}
-		return newHashSet(filter(attachments, compose(equalTo(stringValue),
-				Attachment.getStringValue)));
 	}
 
 	public Long getPPodVersion() {

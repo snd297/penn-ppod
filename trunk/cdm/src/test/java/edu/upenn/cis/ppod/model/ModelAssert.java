@@ -184,6 +184,40 @@ public class ModelAssert {
 		}
 	}
 
+	public static void assertEqualsAttachmentNamespaces(
+			final AttachmentNamespace actualAttachmentNamespace,
+			final AttachmentNamespace expectedAttachmentNamespace) {
+		assertEquals(actualAttachmentNamespace.getLabel(),
+				expectedAttachmentNamespace.getLabel());
+	}
+
+	public static void assertEqualsAttachmentTypes(
+			final AttachmentType actualAttachmentType,
+			final AttachmentType expectedAttachmentType) {
+		assertEquals(actualAttachmentType.getLabel(), expectedAttachmentType
+				.getLabel());
+		assertEqualsAttachmentNamespaces(actualAttachmentType.getNamespace(),
+				expectedAttachmentType.getNamespace());
+	}
+
+	public static void assertEqualsAttachments(
+			final Attachment actualAttachment,
+			final Attachment expectedAttachment) {
+		assertEquals(actualAttachment.getLabel(), expectedAttachment.getLabel());
+		assertEquals(actualAttachment.getStringValue(), expectedAttachment
+				.getStringValue());
+		assertEquals(actualAttachment.getBytesValue(), expectedAttachment
+				.getBytesValue());
+		assertEqualsAttachmentTypes(actualAttachment.getType(),
+				expectedAttachment.getType());
+		assertEquals(actualAttachment.getAttachments().size(),
+				expectedAttachment.getAttachments().size());
+		for (final Attachment attachmentAttachment : expectedAttachment
+				.getAttachments()) {
+			// TODO
+		}
+	}
+
 	/**
 	 * Prevent inheritance and instantiation.
 	 */
