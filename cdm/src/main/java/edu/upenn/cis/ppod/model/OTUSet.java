@@ -136,9 +136,10 @@ public final class OTUSet extends UUPPodEntityWXmlId {
 	 * 
 	 * @return {@code matrix}
 	 */
-	CharacterStateMatrix addMatrix(final CharacterStateMatrix matrix) {
+	public CharacterStateMatrix addMatrix(final CharacterStateMatrix matrix) {
 		checkNotNull(matrix);
 		if (matrices.add(matrix)) {
+			matrix.setOTUSet(this);
 			resetPPodVersionInfo();
 		}
 		return matrix;
@@ -189,12 +190,10 @@ public final class OTUSet extends UUPPodEntityWXmlId {
 	 * 
 	 * @return {@code treeSet}
 	 */
-	TreeSet addTreeSet(final TreeSet treeSet) {
+	public TreeSet addTreeSet(final TreeSet treeSet) {
 		checkNotNull(treeSet);
 		if (treeSets.add(treeSet)) {
-
-		} else {
-			treeSets.add(treeSet);
+			treeSet.setOTUSet(this);
 			resetPPodVersionInfo();
 		}
 		return treeSet;
@@ -290,19 +289,18 @@ public final class OTUSet extends UUPPodEntityWXmlId {
 	}
 
 	/**
-	 * Remove {@code matrix} from this OTU set's matrices.
-	 * 
-	 * Intentionally package-private: this relationship his managed on the
-	 * {@code OTU} side.
+	 * Remove {@code matrix} from this OTU set's matrices. Also takes care of
+	 * the matrix side of the relationship.
 	 * 
 	 * @param matrix to be removed
 	 * 
 	 * @return {@code true} if {@code matrix} belonged to this OTU set and was
 	 *         removed
 	 */
-	boolean removeMatrix(final CharacterStateMatrix matrix) {
+	public boolean removeMatrix(final CharacterStateMatrix matrix) {
 		checkNotNull(matrix);
 		if (matrices.remove(matrix)) {
+			matrix.setOTUSet(null);
 			resetPPodVersionInfo();
 			return true;
 		}
@@ -310,38 +308,43 @@ public final class OTUSet extends UUPPodEntityWXmlId {
 	}
 
 	/**
-	 * Intentionally package-private: this relationship his managed on the
-	 * {@code OTU} side.
+	 * Scaffolding codes that does two things:
+	 * <ol>
+	 * <li>Removes <code>otu</code> from this <code>OTUSet</code>'s constituent
+	 * <code>OTU</code>s.</li>
+	 * <li>Removes this <code>OTUSet</code> from <code>
+     * otu</code>'s
+	 * <code>OTUSet</code>s.</li>
+	 * </ol>
+	 * So it takes care of both sides of the <code>OTUSet</code><->
+	 * <code>OTU</code> relationship.
 	 * 
 	 * @param otu see description
 	 * 
-	 * @return {@code true} if {@code otu} belonged to this OTU set and was
-	 *         removed
+	 * @return {@code otu}
 	 */
-	boolean removeOTU(final OTU otu) {
+	public OTU removeOTU(final OTU otu) {
 		checkNotNull(otu);
 		if (otus.remove(otu)) {
+			otu.removeOtuSet(this);
 			resetPPodVersionInfo();
-			return true;
 		}
-		return false;
+		return otu;
 	}
 
 	/**
 	 * Remove {@code matrix} from this OTU set's matrices. Also takes care of
 	 * the tree set side of the relationship.
-	 * <p>
-	 * Intentionally package-private. This relationship his managed on the
-	 * {@code TreeSet} side.
 	 * 
 	 * @param treeSet to be removed
 	 * 
 	 * @return {@code true} if {@code matrix} belonged to this OTU set and was
 	 *         removed
 	 */
-	boolean removeTreeSet(final TreeSet treeSet) {
+	public boolean removeTreeSet(final TreeSet treeSet) {
 		checkNotNull(treeSet);
 		if (treeSets.remove(treeSet)) {
+			treeSet.setOTUSet(null);
 			resetPPodVersionInfo();
 			return true;
 		}
