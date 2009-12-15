@@ -181,6 +181,10 @@ abstract class PPodEntity extends PersistentObject implements IAttachee,
 	@Transient
 	private boolean suppressResetPPodVersionInfo = false;
 
+	public boolean getSuppressResetPPodVersionInfo() {
+		return suppressResetPPodVersionInfo;
+	}
+
 	public PPodEntity suppressResetPPodVersionInfo(final boolean suppress) {
 		suppressResetPPodVersionInfo = suppress;
 		return this;

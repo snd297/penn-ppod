@@ -123,9 +123,9 @@ public class PPodEntitiesResourceHibernate implements IPPodEntitiesResource {
 					if (addedMatrices.contains(matrix)) {
 
 					} else {
-						otuSet.suppressResetPPodVersionInfo(true);
-						otuSet.removeMatrix(matrix);
-						otuSet.suppressResetPPodVersionInfo(false);
+						matrix.suppressResetPPodVersionInfo(true);
+						matrix.setOTUSet(null);
+						matrix.suppressResetPPodVersionInfo(false);
 					}
 				}
 
@@ -133,9 +133,9 @@ public class PPodEntitiesResourceHibernate implements IPPodEntitiesResource {
 					if (addedTreeSets.contains(treeSet)) {
 
 					} else {
-						otuSet.suppressResetPPodVersionInfo(true);
-						otuSet.removeTreeSet(treeSet);
-						otuSet.suppressResetPPodVersionInfo(false);
+						treeSet.suppressResetPPodVersionInfo(true);
+						treeSet.setOTUSet(null);
+						treeSet.suppressResetPPodVersionInfo(false);
 					}
 				}
 			}
