@@ -136,10 +136,9 @@ public final class OTUSet extends UUPPodEntityWXmlId {
 	 * 
 	 * @return {@code matrix}
 	 */
-	public CharacterStateMatrix addMatrix(final CharacterStateMatrix matrix) {
+	CharacterStateMatrix addMatrix(final CharacterStateMatrix matrix) {
 		checkNotNull(matrix);
 		if (matrices.add(matrix)) {
-			matrix.setOTUSet(this);
 			resetPPodVersionInfo();
 		}
 		return matrix;
@@ -190,13 +189,12 @@ public final class OTUSet extends UUPPodEntityWXmlId {
 	 * 
 	 * @return {@code treeSet}
 	 */
-	public TreeSet addTreeSet(final TreeSet treeSet) {
+	TreeSet addTreeSet(final TreeSet treeSet) {
 		checkNotNull(treeSet);
 		if (treeSets.add(treeSet)) {
 
 		} else {
 			treeSets.add(treeSet);
-			treeSet.setOTUSet(this);
 			resetPPodVersionInfo();
 		}
 		return treeSet;

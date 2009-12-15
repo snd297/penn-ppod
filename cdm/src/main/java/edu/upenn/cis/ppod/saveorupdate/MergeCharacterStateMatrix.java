@@ -15,7 +15,7 @@
  */
 package edu.upenn.cis.ppod.saveorupdate;
 
-import static com.google.common.base.Preconditions.checkArgument;
+import static com.google.common.base.Preconditions.checkNotNull;
 import static com.google.common.base.Predicates.compose;
 import static com.google.common.base.Predicates.equalTo;
 import static com.google.common.collect.Iterables.getOnlyElement;
@@ -42,6 +42,7 @@ import edu.upenn.cis.ppod.model.CharacterStateMatrix;
 import edu.upenn.cis.ppod.model.CharacterStateRow;
 import edu.upenn.cis.ppod.model.IUUPPodEntity;
 import edu.upenn.cis.ppod.model.OTU;
+import edu.upenn.cis.ppod.model.OTUSet;
 
 /**
  * @author Sam Donnelly
@@ -72,9 +73,14 @@ public class MergeCharacterStateMatrix implements IMergeCharacterStateMatrix {
 
 	public CharacterStateMatrix merge(final CharacterStateMatrix targetMatrix,
 			final CharacterStateMatrix sourceMatrix,
+			final OTUSet newTargetMatrixOTUSet,
 			final Map<OTU, OTU> mergedOTUsBySourceOTU) {
-		checkArgument(targetMatrix.getOTUSet() != null,
-				"targetMatrix must be attached to an OTU set");
+		checkNotNull(targetMatrix);
+		checkNotNull(sourceMatrix);
+		checkNotNull(newTargetMatrixOTUSet);
+
+		targetMatrix.setOTUSet(newTargetMatrixOTUSet);
+
 		targetMatrix.setLabel(sourceMatrix.getLabel());
 		targetMatrix.setDescription(sourceMatrix.getDescription());
 
@@ -119,24 +125,19 @@ public class MergeCharacterStateMatrix implements IMergeCharacterStateMatrix {
 			}
 		}
 
-		// Get rid of deleted rows
-		while (targetMatrix.getRows().size() > targetMatrix.getOTUs().size()) {
-			targetMatrix.removeLastRow();
-		}
-
-		final List<Character> clearedDbCharacters = targetMatrix
+		// Move Characters around - start by removing all characters
+		final List<Character> clearedTargetCharacters = targetMatrix
 				.clearCharacters();
 		final Map<Character, Integer> oldIdxsByChararacter = newHashMap();
-		for (final ListIterator<Character> idx = clearedDbCharacters
+		for (final ListIterator<Character> idx = clearedTargetCharacters
 				.listIterator(); idx.hasNext();) {
 			oldIdxsByChararacter.put(idx.next(), idx.previousIndex());
 		}
 
-		// Move Characters around
 		final Map<Integer, Integer> oldCharIdxsByNewCharIdx = newHashMap();
 		for (final Character sourceCharacter : sourceMatrix.getCharacters()) {
 			Character newTargetCharacter;
-			if (null == (newTargetCharacter = findIf(clearedDbCharacters,
+			if (null == (newTargetCharacter = findIf(clearedTargetCharacters,
 					compose(equalTo(sourceCharacter.getPPodId()),
 							IUUPPodEntity.getPPodId)))) {
 				newTargetCharacter = characterProvider.get();

@@ -15,6 +15,7 @@
  */
 package edu.upenn.cis.ppod.saveorupdate;
 
+import static com.google.common.collect.Iterables.get;
 import static com.google.common.collect.Lists.newArrayList;
 import static com.google.common.collect.Maps.newHashMap;
 import static org.testng.Assert.assertFalse;
@@ -35,8 +36,6 @@ import edu.upenn.cis.ppod.model.CharacterStateMatrix;
 import edu.upenn.cis.ppod.model.ModelAssert;
 import edu.upenn.cis.ppod.model.OTU;
 import edu.upenn.cis.ppod.model.OTUSet;
-import edu.upenn.cis.ppod.saveorupdate.IMergeCharacterStateMatrix;
-import edu.upenn.cis.ppod.saveorupdate.IMergeCharacterStateMatrix.IFactory;
 import edu.upenn.cis.ppod.util.MatrixProvider;
 
 /**
@@ -74,9 +73,9 @@ public class MergeCharacterStateMatrixTest {
 
 		final CharacterStateMatrix targetMatrix = (CharacterStateMatrix) matrixProvider
 				.get().setPPodId();
-		fakeDbOTUSet.addMatrix(targetMatrix);
-		final CharacterStateMatrix dbMatrix = mergeCharacterStateMatrix.merge(
-				targetMatrix, sourceMatrix, fakeOTUsByIncomingOTU);
+		final CharacterStateMatrix dbMatrix = mergeCharacterStateMatrix
+				.merge(targetMatrix, sourceMatrix, fakeDbOTUSet,
+						fakeOTUsByIncomingOTU);
 		assertNotNull(dbMatrix.getPPodId());
 		// Check to make sure it's a UUID
 		try {
@@ -100,17 +99,18 @@ public class MergeCharacterStateMatrixTest {
 
 		final CharacterStateMatrix targetMatrix = (CharacterStateMatrix) matrixProvider
 				.get().setPPodId();
-		fakeTargetOTUSet.addMatrix(targetMatrix);
+
 		mergeCharacterStateMatrix.merge(targetMatrix, sourceMatrix,
-				fakeOTUsByIncomingOTU);
+				fakeTargetOTUSet, fakeOTUsByIncomingOTU);
 		final List<OTU> shuffledSourceOTUs = newArrayList(sourceMatrix
 				.getOTUs());
 		Collections.shuffle(shuffledSourceOTUs);
 		sourceMatrix.setOTUs(shuffledSourceOTUs);
 
 		mergeCharacterStateMatrix.merge(targetMatrix, sourceMatrix,
-				fakeOTUsByIncomingOTU);
+				fakeTargetOTUSet, fakeOTUsByIncomingOTU);
 		ModelAssert.assertEqualsCharacterStateMatrices(targetMatrix,
 				sourceMatrix);
 	}
+
 }
