@@ -192,7 +192,7 @@ public final class TreeSet extends UUPPodEntityWXmlId {
 
 	@Override
 	protected TreeSet resetPPodVersionInfo() {
-		if (getPPodVersionInfo() == null) {
+		if (getPPodVersionInfo() == null || getSuppressResetPPodVersionInfo()) {
 
 		} else {
 			if (otuSet != null) {
@@ -231,8 +231,12 @@ public final class TreeSet extends UUPPodEntityWXmlId {
 		if (nullSafeEquals(this.otuSet, otuSet)) {
 
 		} else {
+			if (otuSet == null) {
+				this.otuSet.removeTreeSet(this);
+			} else {
+				otuSet.addTreeSet(this);
+			}
 			this.otuSet = otuSet;
-			this.otuSet.addTreeSet(this);
 			resetPPodVersionInfo();
 		}
 		return this;

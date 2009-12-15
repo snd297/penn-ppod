@@ -49,8 +49,6 @@ import javax.xml.bind.annotation.XmlIDREF;
 
 import org.hibernate.annotations.Cascade;
 
-import com.google.inject.Inject;
-
 import edu.upenn.cis.ppod.util.IVisitor;
 
 /**
@@ -188,13 +186,6 @@ public final class CharacterStateMatrix extends UUPPodEntityWXmlId {
 
 	/** No-arg constructor for (at least) Hibernate. */
 	CharacterStateMatrix() {}
-
-	private CharacterState.IFactory stateFactory;
-
-	@Inject
-	CharacterStateMatrix(final CharacterState.IFactory stateFactory) {
-		this.stateFactory = stateFactory;
-	}
 
 	@Override
 	public CharacterStateMatrix accept(final IVisitor visitor) {
@@ -472,7 +463,7 @@ public final class CharacterStateMatrix extends UUPPodEntityWXmlId {
 	 */
 	@Override
 	protected CharacterStateMatrix resetPPodVersionInfo() {
-		if (getPPodVersionInfo() == null) {
+		if (getPPodVersionInfo() == null || getSuppressResetPPodVersionInfo()) {
 			// nothing to do
 		} else {
 			if (otuSet != null) {
@@ -705,8 +696,13 @@ public final class CharacterStateMatrix extends UUPPodEntityWXmlId {
 	}
 
 	/**
-	 * Setter. Intentionally package-private and meant to be called from {@code
-	 * OTUSet}.
+	 * Setter.
+	 * <p>
+	 * Manages both sides of the {@code CharacterStateMatrix <-> OTUSet}
+	 * relationship.
+	 * <p>
+	 * If {@code otuSet == null} then this method removes the matrix from
+	 * {@code otuSet}.
 	 * 
 	 * @param otuSet new {@code OTUSet} for this matrix. nullable.
 	 * 
@@ -716,8 +712,12 @@ public final class CharacterStateMatrix extends UUPPodEntityWXmlId {
 		if (nullSafeEquals(this.otuSet, otuSet)) {
 			// still the same
 		} else {
+			if (otuSet == null) {
+				this.otuSet.removeMatrix(this);
+			} else {
+				otuSet.addMatrix(this);
+			}
 			this.otuSet = otuSet;
-			this.otuSet.addMatrix(this);
 			resetPPodVersionInfo();
 		}
 		return otuSet;

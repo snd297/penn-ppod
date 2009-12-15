@@ -125,7 +125,7 @@ public final class OTU extends UUPPodEntityWXmlId {
 	/**
 	 * Get an unmodifiable view of the <code>OTUSet</code>s of which this
 	 * <code>OTU</code> is a member. Use {@code addOTUSet(OTUSet)} and {@code
-	 * removeOtuSet(OTUSet)} for modifying.
+	 * removeOTUSet(OTUSet)} for modifying.
 	 * 
 	 * @return an unmodifiable view of the <code>OTUSet</code>s of which this
 	 *         <code>OTU</code> is a member
@@ -137,21 +137,25 @@ public final class OTU extends UUPPodEntityWXmlId {
 	/**
 	 * Remove <code>otuSet</code> form this <code>OTU</code>s associated
 	 * <code>OTUSet</code>s.
-	 * <p>
-	 * Intended to be package protected and used in conjunction with
-	 * {@link OTUSet#removeOTU(OTU)}.
 	 * 
-	 * @param otuSet the <code>OTUSet</code> that we're removing.
+	 * @param otuSet to be removed
+	 * @return {@code true} if {@code otuSet} belonged to this OTU set and was
+	 *         removed
 	 */
-	void removeOtuSet(final OTUSet otuSet) {
+	public boolean removeOtuSet(final OTUSet otuSet) {
 		checkNotNull(otuSet);
-		otuSets.remove(otuSet);
+		if (otuSets.remove(otuSet)) {
+			otuSet.removeOTU(this);
+			resetPPodVersionInfo();
+			return true;
+		}
+		return false;
 	}
 
 	/**
-	 * Reset this OTU's pPOD version info to {@code null}, and call {@link
-	 * OTUSet#resetPPodVersionInfo()} on all of the OTU sets that contain this
-	 * OTU.
+	 * Reset this OTU's pPOD version info to {@code null}, and call
+	 * {@link OTUSet#resetPPodVersionInfo()} on all of the OTU sets that contain
+	 * this OTU.
 	 * 
 	 * @return this {@code OTU}
 	 */
