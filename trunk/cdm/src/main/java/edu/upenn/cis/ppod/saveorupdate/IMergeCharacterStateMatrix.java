@@ -32,7 +32,9 @@ public interface IMergeCharacterStateMatrix {
 	 * Merge {@code sourceMatrix} onto {@code targetMatrix}.
 	 * <p>
 	 * If {@code sourceMatrix.getDocId() != null} then this method calls {@code
-	 * sourceMatrix.setDocId(sourceMatrix.getDocId())}.
+	 * sourceMatrix.setDocId(sourceMatrix.getDocId())}. In other words, if
+	 * {@code targetMatrix}'s doc id is not already set, this method copies it
+	 * from {@code sourceMatrix}.
 	 * 
 	 * @param targetMatrix merge into the target matrix
 	 * @param sourceMatrix source of the merge
