@@ -258,12 +258,12 @@ public class MatrixToDbTest extends DbTestBase {
 									METHOD,
 									sortedRowElement
 											.attributeValue(CharacterStateMatrix.ROW_INDEX_COLUMN));
-					final CharacterStateRow phyloCharMatrixRow = phyloCharMatrix
-							.setRow(
-									new Integer(
-											sortedRowElement
-													.attributeValue(CharacterStateMatrix.ROW_INDEX_COLUMN)),
-									new CharacterStateRow());
+					final CharacterStateRow phyloCharMatrixRow = null;// phyloCharMatrix
+					// .setRow(
+					// new Integer(
+					// sortedRowElement
+					// .attributeValue(CharacterStateMatrix.ROW_INDEX_COLUMN)),
+					// new CharacterStateRow());
 
 					@SuppressWarnings("unchecked")
 					List<Element> cellElements = pPodData
