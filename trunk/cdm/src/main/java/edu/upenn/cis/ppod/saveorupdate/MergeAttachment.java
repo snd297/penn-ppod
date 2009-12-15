@@ -88,27 +88,27 @@ public class MergeAttachment implements IMergeAttachment {
 					new HashMap<String, AttachmentType>());
 		}
 
-		AttachmentType dbAttachmentType = typesByNamespaceAndLabel.get(
+		AttachmentType targetAttachmentType = typesByNamespaceAndLabel.get(
 				dbAttachmentNamespace).get(
 				sourceAttachment.getType().getLabel());
-		if (null == dbAttachmentType) {
-			dbAttachmentType = attachmentTypeDAO
+		if (null == targetAttachmentType) {
+			targetAttachmentType = attachmentTypeDAO
 					.getAttachmentTypeByNamespaceAndType(dbAttachmentNamespace
 							.getLabel(), sourceAttachment.getType().getLabel());
-			if (null == dbAttachmentType) {
-				dbAttachmentType = attachmentTypeProvider.get().setLabel(
+			if (null == targetAttachmentType) {
+				targetAttachmentType = attachmentTypeProvider.get().setLabel(
 						sourceAttachment.getType().getLabel());
-				dbAttachmentType.setNamespace(dbAttachmentNamespace);
+				targetAttachmentType.setNamespace(dbAttachmentNamespace);
 			}
 			typesByNamespaceAndLabel.get(dbAttachmentNamespace).put(
-					dbAttachmentType.getLabel(), dbAttachmentType);
+					targetAttachmentType.getLabel(), targetAttachmentType);
 		}
 
 		targetAttachment.setLabel(sourceAttachment.getLabel());
-		if (sourceAttachment.getStringValue() != null) {
-			targetAttachment.setStringValue(sourceAttachment.getStringValue());
-		}
-		targetAttachment.setType(dbAttachmentType);
+		targetAttachment.setStringValue(sourceAttachment.getStringValue());
+
+		targetAttachment.setByteArrayValue(sourceAttachment.getBytesValue());
+		targetAttachment.setType(targetAttachmentType);
 
 		return targetAttachment;
 	}

@@ -214,7 +214,7 @@ public class ModelAssert {
 				expectedAttachment.getAttachments().size());
 		for (final Attachment attachmentAttachment : expectedAttachment
 				.getAttachments()) {
-			// TODO
+			throw new IllegalArgumentException("We don't support nested attchaments yet");
 		}
 	}
 

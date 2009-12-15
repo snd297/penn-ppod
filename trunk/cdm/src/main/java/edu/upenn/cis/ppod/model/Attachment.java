@@ -17,7 +17,9 @@ package edu.upenn.cis.ppod.model;
 
 import static com.google.common.base.Preconditions.checkNotNull;
 import static com.google.common.collect.Sets.newHashSet;
+import static edu.upenn.cis.ppod.util.UPennCisPPodUtil.nullSafeEquals;
 
+import java.util.Arrays;
 import java.util.Set;
 import java.util.UUID;
 
@@ -107,7 +109,7 @@ public final class Attachment extends UUPPodEntity {
 	private String label;
 
 	// TODO: this is set to unique only to allow lookups of Character's mesquite
-	// id's. See bug 128
+	// id's. See bug Bugzilla 128
 	@XmlAttribute
 	@Column(name = STRING_VALUE_COLUMN, nullable = true, unique = true)
 	private String stringValue;
@@ -196,13 +198,20 @@ public final class Attachment extends UUPPodEntity {
 	/**
 	 * Set the byteArrayValue.
 	 * 
-	 * @param byteArrayValue the byteArrayValue to set
+	 * @param bytesValue the byteArrayValue to set. Nullable.
 	 * 
 	 * @return this
 	 */
-	public Attachment setByteArrayValue(final byte[] byteArrayValue) {
-		checkNotNull(byteArrayValue);
-		this.bytesValue = byteArrayValue;
+	public Attachment setByteArrayValue(final byte[] bytesValue) {
+		if (Arrays.equals(bytesValue, this.bytesValue)) {
+			return this;
+		}
+		if (this.bytesValue == null
+				|| this.bytesValue.length != bytesValue.length) {
+			this.bytesValue = new byte[bytesValue.length];
+		}
+		System.arraycopy(this.bytesValue, 0, bytesValue, 0,
+				this.bytesValue.length);
 		resetPPodVersionInfo();
 		return this;
 	}
@@ -228,12 +237,11 @@ public final class Attachment extends UUPPodEntity {
 	/**
 	 * Set the value.
 	 * 
-	 * @param stringValue the value
+	 * @param stringValue the value. Nullable.
 	 * @return this {@code Attachment}
 	 */
 	public Attachment setStringValue(final String stringValue) {
-		checkNotNull(stringValue);
-		if (stringValue.equals(this.stringValue)) {
+		if (nullSafeEquals(stringValue, this.stringValue)) {
 
 		} else {
 			this.stringValue = stringValue;

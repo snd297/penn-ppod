@@ -554,37 +554,37 @@ public final class CharacterStateMatrix extends UUPPodEntityWXmlId {
 	 * This method is does not reorder the columns of the matrix, unlike
 	 * {@link #setOTUs(List)} which reorders rows.
 	 * 
-	 * @param newCharacterIdx index
-	 * @param newCharacter value
+	 * @param characterIdx index
+	 * @param character value
 	 * 
 	 * @return the {@code Character} previously at that position or {@code null}
 	 *         if there was no such {@code Character}
 	 */
-	public Character setCharacter(final int newCharacterIdx,
-			final Character newCharacter) {
-		checkNotNull(newCharacter);
-		if (characters.size() > newCharacterIdx
-				&& newCharacter.equals(characters.get(newCharacterIdx))) {
+	public Character setCharacter(final int characterIdx,
+			final Character character) {
+		checkNotNull(character);
+		if (characters.size() > characterIdx
+				&& character.equals(characters.get(characterIdx))) {
 			// Nothing to do
-			return newCharacter;
+			return character;
 		}
-		while (characters.size() <= newCharacterIdx) {
+		while (characters.size() <= characterIdx) {
 			characters.add(null);
 			columnPPodVersionInfos.add(null);
 		}
 		final Integer newCharacterOriginalIdx = this.characterIdx
-				.get(newCharacter);
+				.get(character);
 		if (newCharacterOriginalIdx != null) {
 			characters.set(newCharacterOriginalIdx, null);
 			resetColumnPPodVersion(newCharacterOriginalIdx);
 		}
-		final Character oldCharacter = characters.get(newCharacterIdx);
+		final Character oldCharacter = characters.get(characterIdx);
 		if (oldCharacter != null) {
 			this.characterIdx.remove(oldCharacter);
 		}
-		characters.set(newCharacterIdx, newCharacter);
-		this.characterIdx.put(newCharacter, newCharacterIdx);
-		newCharacter.addMatrix(this);
+		characters.set(characterIdx, character);
+		this.characterIdx.put(character, characterIdx);
+		character.addMatrix(this);
 
 		// the matrix has changed
 		resetPPodVersionInfo();
