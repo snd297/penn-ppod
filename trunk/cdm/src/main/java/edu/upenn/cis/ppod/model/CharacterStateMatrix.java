@@ -698,25 +698,17 @@ public final class CharacterStateMatrix extends UUPPodEntityWXmlId {
 	/**
 	 * Setter.
 	 * <p>
-	 * Manages both sides of the {@code CharacterStateMatrix <-> OTUSet}
-	 * relationship.
-	 * <p>
-	 * If {@code otuSet == null} then this method removes the matrix from
-	 * {@code otuSet}.
+	 * Intentionally package-private and meant to be called from {@code
+	 * CharacterStateMatrix}.
 	 * 
 	 * @param otuSet new {@code OTUSet} for this matrix. nullable.
 	 * 
 	 * @return {@code otuSet}
 	 */
-	public OTUSet setOTUSet(final OTUSet otuSet) {
+	OTUSet setOTUSet(final OTUSet otuSet) {
 		if (nullSafeEquals(this.otuSet, otuSet)) {
 			// still the same
 		} else {
-			if (otuSet == null) {
-				this.otuSet.removeMatrix(this);
-			} else {
-				otuSet.addMatrix(this);
-			}
 			this.otuSet = otuSet;
 			resetPPodVersionInfo();
 		}

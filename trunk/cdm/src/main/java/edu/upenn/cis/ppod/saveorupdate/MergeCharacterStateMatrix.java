@@ -18,7 +18,6 @@ package edu.upenn.cis.ppod.saveorupdate;
 import static com.google.common.base.Preconditions.checkNotNull;
 import static com.google.common.base.Predicates.compose;
 import static com.google.common.base.Predicates.equalTo;
-import static com.google.common.collect.Iterables.filter;
 import static com.google.common.collect.Iterables.getOnlyElement;
 import static com.google.common.collect.Lists.newArrayList;
 import static com.google.common.collect.Maps.newHashMap;
@@ -81,7 +80,7 @@ public class MergeCharacterStateMatrix implements IMergeCharacterStateMatrix {
 		checkNotNull(sourceMatrix);
 		checkNotNull(newTargetMatrixOTUSet);
 
-		targetMatrix.setOTUSet(newTargetMatrixOTUSet);
+		newTargetMatrixOTUSet.addMatrix(targetMatrix);
 
 		targetMatrix.setLabel(sourceMatrix.getLabel());
 		targetMatrix.setDescription(sourceMatrix.getDescription());

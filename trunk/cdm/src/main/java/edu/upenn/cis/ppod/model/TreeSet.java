@@ -222,20 +222,17 @@ public final class TreeSet extends UUPPodEntityWXmlId {
 
 	/**
 	 * Setter. Assumes that {@code otuSet} is not detached.
+	 * <p>
+	 * Intention package-private and meant to be called from {@code TreeSet}.
 	 * 
 	 * @param otuSet the {@code OTUSet}. nullable.
 	 * 
 	 * @return this {@code TreeSet}
 	 */
-	public TreeSet setOTUSet(final OTUSet otuSet) {
+	TreeSet setOTUSet(final OTUSet otuSet) {
 		if (nullSafeEquals(this.otuSet, otuSet)) {
 
 		} else {
-			if (otuSet == null) {
-				this.otuSet.removeTreeSet(this);
-			} else {
-				otuSet.addTreeSet(this);
-			}
 			this.otuSet = otuSet;
 			resetPPodVersionInfo();
 		}
