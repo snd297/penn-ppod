@@ -65,6 +65,7 @@ public class MergeAttachmentTest {
 		sourceAttachment.getType().setNamespace(
 				attachmentNamespaceProvider.get().setLabel(
 						"SOURCE_ATTACHMENT_NAMESPACE"));
+		sourceAttachment.setStringValue("STRING_VALUE");
 		mergeAttachment.merge(targetAttachment, sourceAttachment);
 		ModelAssert.assertEqualsAttachments(targetAttachment, sourceAttachment);
 	}
