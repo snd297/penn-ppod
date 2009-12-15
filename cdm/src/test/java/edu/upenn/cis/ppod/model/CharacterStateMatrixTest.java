@@ -86,12 +86,17 @@ public class CharacterStateMatrixTest {
 		otuSet012.addOTU(otu0);
 		otuSet012.addOTU(otu1);
 		otuSet012.addOTU(otu2);
-	}
 
-	public void setOTUsWSameOTUs() {
 		matrix.setOTUSet(otuSet012);
 
 		matrix.setOTUs(otus012);
+	}
+
+	/**
+	 * When we set with the same OTU's, the pPOD version number of the matrix
+	 * should not change.
+	 */
+	public void setOTUsWSameOTUs() {
 		matrix.setPPodVersionInfo(pPodVersionInfo);
 
 		matrix.setOTUs(otus012);
@@ -107,23 +112,20 @@ public class CharacterStateMatrixTest {
 				"testLabel");
 		matrix.setCharacter(0, character);
 
-		matrix.setOTUSet(otuSet012);
-
-		matrix.setOTUs(otus012);
-		matrix.setRow(0, rowProvider.get());
-		final CharacterStateCell cell00 = matrix.getRow(0).addCell(
+		matrix.setRow(otu0, rowProvider.get());
+		final CharacterStateCell cell00 = matrix.getRow(otu0).addCell(
 				cellProvider.get());
 		cell00.setTypeAndStates(CharacterStateCell.Type.SINGLE,
 				newHashSet(stateFactory.create(0).setCharacter(character)));
 
-		matrix.setRow(1, rowProvider.get());
-		final CharacterStateCell cell10 = matrix.getRow(1).addCell(
+		matrix.setRow(otu1, rowProvider.get());
+		final CharacterStateCell cell10 = matrix.getRow(otu1).addCell(
 				cellProvider.get());
 		cell10.setTypeAndStates(CharacterStateCell.Type.SINGLE,
 				newHashSet(stateFactory.create(1)));
 
-		matrix.setRow(2, rowProvider.get());
-		final CharacterStateCell cell20 = matrix.getRow(2).addCell(
+		matrix.setRow(otu2, rowProvider.get());
+		final CharacterStateCell cell20 = matrix.getRow(otu2).addCell(
 				cellProvider.get());
 		cell20.setTypeAndStates(CharacterStateCell.Type.SINGLE,
 				newHashSet(stateFactory.create(2)));
@@ -137,18 +139,16 @@ public class CharacterStateMatrixTest {
 
 		assertEquals(matrix.getOTUs(), otus210);
 		assertEquals(matrix.getRows().size(), originalRows.size());
-		ModelAssert.assertEqualsCharacterStateRows(matrix.getRow(0),
+		ModelAssert.assertEqualsCharacterStateRows(matrix.getRow(otu2),
 				originalRows.get(2));
-		ModelAssert.assertEqualsCharacterStateRows(matrix.getRow(1),
+		ModelAssert.assertEqualsCharacterStateRows(matrix.getRow(otu1),
 				originalRows.get(1));
-		ModelAssert.assertEqualsCharacterStateRows(matrix.getRow(2),
+		ModelAssert.assertEqualsCharacterStateRows(matrix.getRow(otu0),
 				originalRows.get(0));
 
 	}
 
 	public void setOTUsWLessOTUs() {
-		matrix.setOTUSet(otuSet012);
-		matrix.setOTUs(otus012);
 
 		otuSet012.removeOTU(otu0);
 
@@ -159,19 +159,15 @@ public class CharacterStateMatrixTest {
 	}
 
 	public void setOTUs() {
-
-		matrix.setOTUSet(otuSet012);
-
-		final List<OTU> otus = newArrayList(otu0, otu1, otu2);
-
-		matrix.setOTUs(otus);
-
 		Assert.assertEquals(matrix.getOTUs(), newArrayList(otu0, otu1, otu2));
+
+		for (final OTU otu : matrix.getOTUs()) {
+			assertNull(matrix.getRow(otu));
+		}
 	}
 
 	@Test(expectedExceptions = IllegalArgumentException.class)
 	public void setWrongOTUs() {
-		matrix.setOTUSet(otuSet012);
 		matrix.setOTUs(newArrayList(otu0, otu2));
 	}
 
@@ -187,7 +183,7 @@ public class CharacterStateMatrixTest {
 		final Character gotCharacter1 = matrix.getCharacter(1);
 		Assert.assertEquals(gotCharacter1, character);
 
-		final int characterIdx = matrix.getCharacterIdx(gotCharacter1);
+		final int characterIdx = matrix.getCharacterIdx().get(gotCharacter1);
 		Assert.assertEquals(characterIdx, 1);
 
 		matrix.setCharacter(15, new Character().setLabel("phyloChar3"));
@@ -226,7 +222,7 @@ public class CharacterStateMatrixTest {
 		final Character someCharacter = matrix.setCharacter(3, character2);
 		assertEquals(matrix.getCharacter(3), character2);
 		assertEquals(someCharacter, character1);
-		assertNull(matrix.getCharacterIdx(character1));
+		assertNull(matrix.getCharacterIdx().get(character1));
 	}
 
 	/**
@@ -242,39 +238,15 @@ public class CharacterStateMatrixTest {
 	}
 
 	/**
-	 * Straight {@link CharacterStateMatrix#removeLastCharacter()} test.
-	 */
-// public void removeLastCharacter() {
-// final Character character15 = characterProvider.get();
-// matrix.setCharacter(15, character15);
-// matrix.removeLastCharacter();
-//
-// Assert.assertEquals(matrix.getCharacters().size(), 15);
-// Assert.assertEquals(matrix.getColumnPPodVersionInfos().size(), 15);
-// }
-
-	/**
 	 * When we set a character that was already at some position, then the its
 	 * pPOD version should not be set to {@code null}.
 	 */
 	public void setWithSameRow() {
 		final CharacterStateRow row1 = rowProvider.get();
-		matrix.setRow(4, row1);
+		matrix.setRow(otu1, row1);
 		matrix.setPPodVersionInfo(pPodVersionInfo);
-		matrix.setRow(4, row1);
-		assertNotNull(matrix.getRow(4));
-	}
-
-	/**
-	 * Setting a row should pad with all lesser unassigned rows with {@code
-	 * null}.
-	 */
-	public void setRowCreatesPadding() {
-		final CharacterStateRow row1 = rowProvider.get();
-		matrix.setRow(18, row1);
-		for (int i = 0; i < 18; i++) {
-			assertNull(matrix.getRow(i));
-		}
+		matrix.setRow(otu1, row1);
+		assertNotNull(matrix.getRow(otu1));
 	}
 
 	/**
@@ -282,16 +254,16 @@ public class CharacterStateMatrixTest {
 	 */
 	public void moveRow() {
 		final CharacterStateRow row1 = rowProvider.get();
-		matrix.setRow(3, row1);
-		matrix.setRow(0, row1);
-		assertEquals(matrix.getRow(0), row1);
-		assertNull(matrix.getRow(3));
+		matrix.setRow(otu1, row1);
+		matrix.setRow(otu0, row1);
+		assertEquals(matrix.getRow(otu0), row1);
+		assertNull(matrix.getRow(otu1));
 	}
 
 	/**
 	 * Test replacing one row with another.
 	 * <ul>
-	 * <li>{@link CharacterStateMatrix#setRow(int, CharacterStateRow)} should
+	 * <li>{@link CharacterStateMatrix#setRow(OTU, CharacterStateRow)} should
 	 * return the row that had been there</li>
 	 * <li>the replaced row should have its matrix (accessed by
 	 * {@link CharacterStateRow#getMatrix()}) set to {@code null}</li>
@@ -299,11 +271,11 @@ public class CharacterStateMatrixTest {
 	 */
 	public void replaceRow() {
 		final CharacterStateRow row1 = rowProvider.get();
-		matrix.setRow(5, row1);
+		matrix.setRow(otu1, row1);
 		final CharacterStateRow row2 = rowProvider.get();
-		final CharacterStateRow someRow = matrix.setRow(5, row2);
+		final CharacterStateRow someRow = matrix.setRow(otu1, row2);
 		assertEquals(someRow, row1);
-		assertEquals(matrix.getRow(5), row2);
+		assertEquals(matrix.getRow(otu1), row2);
 		assertNull(row1.getMatrix());
 	}
 

@@ -1,7 +1,6 @@
 package edu.upenn.cis.ppod.saveorupdate;
 
 import static com.google.common.collect.Maps.newHashMap;
-import static org.testng.Assert.assertEquals;
 
 import java.util.Map;
 
@@ -16,6 +15,7 @@ import edu.upenn.cis.ppod.dao.IAttachmentNamespaceDAO;
 import edu.upenn.cis.ppod.model.Attachment;
 import edu.upenn.cis.ppod.model.AttachmentNamespace;
 import edu.upenn.cis.ppod.model.AttachmentType;
+import edu.upenn.cis.ppod.model.ModelAssert;
 
 /**
  * Tests {@link IMergeAttachment}s.
@@ -66,10 +66,6 @@ public class MergeAttachmentTest {
 				attachmentNamespaceProvider.get().setLabel(
 						"SOURCE_ATTACHMENT_NAMESPACE"));
 		mergeAttachment.merge(targetAttachment, sourceAttachment);
-		assertEquals(targetAttachment.getType().getNamespace().getLabel(),
-				sourceAttachment.getType().getNamespace().getLabel());
-		assertEquals(targetAttachment.getType().getLabel(), sourceAttachment
-				.getType().getLabel());
-		assertEquals(targetAttachment.getLabel(), sourceAttachment.getLabel());
+		ModelAssert.assertEqualsAttachments(targetAttachment, sourceAttachment);
 	}
 }

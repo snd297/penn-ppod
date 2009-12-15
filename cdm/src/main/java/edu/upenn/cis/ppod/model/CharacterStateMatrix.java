@@ -15,6 +15,7 @@
  */
 package edu.upenn.cis.ppod.model;
 
+import static com.google.common.base.Preconditions.checkArgument;
 import static com.google.common.base.Preconditions.checkNotNull;
 import static com.google.common.base.Predicates.compose;
 import static com.google.common.base.Predicates.equalTo;
@@ -47,6 +48,8 @@ import javax.xml.bind.annotation.XmlElement;
 import javax.xml.bind.annotation.XmlIDREF;
 
 import org.hibernate.annotations.Cascade;
+
+import com.google.inject.Inject;
 
 import edu.upenn.cis.ppod.util.IVisitor;
 
@@ -186,6 +189,13 @@ public final class CharacterStateMatrix extends UUPPodEntityWXmlId {
 	/** No-arg constructor for (at least) Hibernate. */
 	CharacterStateMatrix() {}
 
+	private CharacterState.IFactory stateFactory;
+
+	@Inject
+	CharacterStateMatrix(final CharacterState.IFactory stateFactory) {
+		this.stateFactory = stateFactory;
+	}
+
 	@Override
 	public CharacterStateMatrix accept(final IVisitor visitor) {
 		visitor.visit(this);
@@ -224,6 +234,33 @@ public final class CharacterStateMatrix extends UUPPodEntityWXmlId {
 			}
 		}
 	}
+
+//
+// /**
+// * Keep it private because it's a non-cheap operation to be used sparingly.
+// */
+// private List<CharacterStateCell> getColumn(final Character character) {
+// final int characterIdx = getCharacterIdx().get(character);
+// final List<CharacterStateCell> columnCells = newArrayList();
+// for (final CharacterStateRow row : getRows()) {
+// columnCells.add(row.getCells().get(characterIdx));
+// }
+// return columnCells;
+// }
+//
+// private List<CharacterStateCell> setColumn(final Character character,
+// final List<CharacterStateCell> column) {
+// checkArgument(column.size() == getRows().size(), "column has "
+// + column.size() + " entries, but matrix has "
+// + getRows().size() + " rows");
+// final int characterIdx = getCharacterIdx().get(character);
+// final List<CharacterStateCell> columnCells = newArrayList();
+// for (int i = 0; i < getRows().size(); i++) {
+// final List<CharacterStateCell> originalCells = getRows().get(i).s
+//			
+// }
+// return this;
+// }
 
 	@Override
 	public boolean beforeMarshal(final Marshaller marshaller) {
@@ -278,25 +315,11 @@ public final class CharacterStateMatrix extends UUPPodEntityWXmlId {
 
 	/**
 	 * Get an unmodifiable view of characterIdx.
-	 * <p>
-	 * Intentionally package-private for the time being - created for testing.
 	 * 
 	 * @return the characterIdx
 	 */
-	Map<Character, Integer> getCharacterIdx() {
+	public Map<Character, Integer> getCharacterIdx() {
 		return Collections.unmodifiableMap(characterIdx);
-	}
-
-	/**
-	 * Get the index of {@code character}, or <code>-1</code> if
-	 * <code>character</code> is not associated with this matrix.
-	 * 
-	 * @param character see description
-	 * @return see description
-	 */
-	public Integer getCharacterIdx(final Character character) {
-		final Integer characterIdx = this.characterIdx.get(character);
-		return characterIdx;
 	}
 
 	/**
@@ -399,17 +422,19 @@ public final class CharacterStateMatrix extends UUPPodEntityWXmlId {
 	}
 
 	/**
-	 * Get a row of this matrix given an index, or {@code null} if {@code idx}
-	 * is too big or negative.
+	 * Get a row of this matrix given the OTU of the row, or {@code null} if
+	 * {@code otu} does not belong to this matrix.
 	 * 
-	 * @param idx see description
+	 * 
+	 * @param otu see description
 	 * @return see description
 	 */
-	public CharacterStateRow getRow(final int idx) {
-		if ((idx < 0) || (idx + 1 > getRows().size())) {
+	public CharacterStateRow getRow(final OTU otu) {
+		final Integer otuIdx = getOTUIdx().get(otu);
+		if (otuIdx == null) {
 			return null;
 		}
-		return getRows().get(idx);
+		return getRows().get(otuIdx);
 	}
 
 	/**
@@ -419,19 +444,6 @@ public final class CharacterStateMatrix extends UUPPodEntityWXmlId {
 	 */
 	public List<CharacterStateRow> getRows() {
 		return Collections.unmodifiableList(rows);
-	}
-
-	/**
-	 * Remove the last row of the matrix.
-	 * 
-	 * @return the removed row, or {@code null} if no row was removed
-	 */
-	private CharacterStateRow removeLastRow() {
-		if (rows.get(rows.size() - 1) != null) {
-			rows.get(rows.size() - 1).setMatrix(null);
-			resetPPodVersionInfo();
-		}
-		return rows.remove(rows.size() - 1);
 	}
 
 	/**
@@ -471,6 +483,65 @@ public final class CharacterStateMatrix extends UUPPodEntityWXmlId {
 		return this;
 	}
 
+// public List<Character> setCharacters(final List<Character> newCharacters) {
+// checkNotNull(newCharacters);
+// if (newCharacters.equals(getCharacters())) {
+// // they're the same, nothing to do
+// return getCharacters();
+// }
+//
+// // Move Characters around - start by removing all characters
+// final List<Character> clearedTargetCharacters = clearCharacters();
+// final Map<Character, Integer> originalCharacterIndex =
+	// newHashMap(getCharacterIdx());
+//
+// final Map<Integer, Integer> oldCharIdxsByNewCharIdx = newHashMap();
+// for (final Character newCharacter : newCharacters) {
+// Character newTargetCharacter;
+// if (null == (newTargetCharacter = findIf(clearedTargetCharacters,
+// compose(equalTo(newCharacter.getPPodId()),
+// IUUPPodEntity.getPPodId)))) {
+// newTargetCharacter = newCharacter;
+// newTargetCharacter.setPPodId();
+// }
+// this.characters.add(newTargetCharacter);
+// newTargetCharacter.setLabel(newCharacter.getLabel());
+//
+// for (final CharacterState sourceState : newCharacter.getStates()
+// .values()) {
+// CharacterState targetState;
+// if (null == (targetState = newTargetCharacter.getStates().get(
+// sourceState.getStateNumber()))) {
+// targetState = newTargetCharacter.addState(stateFactory
+// .create(sourceState.getStateNumber()));
+//
+// }
+// targetState.setLabel(sourceState.getLabel());
+// }
+//
+// oldCharIdxsByNewCharIdx.put(targetMatrix.getCharacterIdx().get(
+// newTargetCharacter), oldIdxsByChararacter
+// .get(newTargetCharacter));
+//
+// for (final Attachment sourceAttachment : newCharacter
+// .getAttachments()) {
+// final Set<Attachment> targetAttachments = newTargetCharacter
+// .getAttachmentsByStringValue(sourceAttachment
+// .getStringValue());
+// Attachment targetAttachment = getOnlyElement(targetAttachments,
+// null);
+// if (targetAttachment == null) {
+// targetAttachment = attachmentProvider.get();
+// targetAttachment.setPPodId();
+// }
+// newTargetCharacter.addAttachment(targetAttachment);
+// mergeAttachment.merge(targetAttachment, sourceAttachment);
+// }
+// }
+//
+// return originalCharacters;
+// 
+
 	/**
 	 * Set the {@code Character} at {@code characterIdx}.
 	 * <p>
@@ -479,42 +550,46 @@ public final class CharacterStateMatrix extends UUPPodEntityWXmlId {
 	 * <p>
 	 * If {@code character} was already contained in this matrix, then its
 	 * former position is filled in with {@code null}.
+	 * <p>
+	 * This method is does not reorder the columns of the matrix, unlike
+	 * {@link #setOTUs(List)} which reorders rows.
 	 * 
-	 * @param characterIdx index
-	 * @param character value
+	 * @param newCharacterIdx index
+	 * @param newCharacter value
 	 * 
 	 * @return the {@code Character} previously at that position or {@code null}
 	 *         if there was no such {@code Character}
 	 */
-	public Character setCharacter(final int characterIdx,
-			final Character character) {
-		checkNotNull(character);
-		if (characters.size() > characterIdx
-				&& character.equals(characters.get(characterIdx))) {
+	public Character setCharacter(final int newCharacterIdx,
+			final Character newCharacter) {
+		checkNotNull(newCharacter);
+		if (characters.size() > newCharacterIdx
+				&& newCharacter.equals(characters.get(newCharacterIdx))) {
 			// Nothing to do
-			return character;
+			return newCharacter;
 		}
-		while (characters.size() <= characterIdx) {
+		while (characters.size() <= newCharacterIdx) {
 			characters.add(null);
 			columnPPodVersionInfos.add(null);
 		}
-		final Integer oldCharIdx = this.characterIdx.get(character);
-		if (oldCharIdx != null) {
-			characters.set(oldCharIdx, null);
-			resetColumnPPodVersion(oldCharIdx);
+		final Integer newCharacterOriginalIdx = this.characterIdx
+				.get(newCharacter);
+		if (newCharacterOriginalIdx != null) {
+			characters.set(newCharacterOriginalIdx, null);
+			resetColumnPPodVersion(newCharacterOriginalIdx);
 		}
-		final Character oldChar = characters.get(characterIdx);
-		if (oldChar != null) {
-			this.characterIdx.remove(oldChar);
+		final Character oldCharacter = characters.get(newCharacterIdx);
+		if (oldCharacter != null) {
+			this.characterIdx.remove(oldCharacter);
 		}
-		characters.set(characterIdx, character);
-		this.characterIdx.put(character, characterIdx);
-		character.addMatrix(this);
+		characters.set(newCharacterIdx, newCharacter);
+		this.characterIdx.put(newCharacter, newCharacterIdx);
+		newCharacter.addMatrix(this);
 
 		// the matrix has changed
 		resetPPodVersionInfo();
 
-		return oldChar;
+		return oldCharacter;
 	}
 
 	/**
@@ -557,8 +632,8 @@ public final class CharacterStateMatrix extends UUPPodEntityWXmlId {
 	 * the order of the rows in this {@code CharacterStateMatrix}.
 	 * <p>
 	 * This method operates on the rows and reorders them appropriately, filling
-	 * in {@code null} values for newly introduced {@code OTU}s. These {@code
-	 * null}'d {@code OTU}s must be filled in by the client.
+	 * in {@code null} values for newly introduced rows. These {@code null}'d
+	 * rows must be filled in by the client.
 	 * <p>
 	 * A copy of {@code newOtus} is made so subsequent modifications of {@code
 	 * newOTUs} will have no affect on this matrix.
@@ -606,31 +681,23 @@ public final class CharacterStateMatrix extends UUPPodEntityWXmlId {
 
 			// oldIdx is where newOtu used to be
 			final Integer oldIdx = getOTUIdx().get(newOtu);
-			CharacterStateRow oldRow = null;
+			CharacterStateRow originalRow = null;
 			if (oldIdx == null) {
 				// It's a new row - it will be filled in later.
 			} else {
-				oldRow = rows.get(oldIdx);
+				originalRow = rows.get(oldIdx);
 			}
-			newRows.add(oldRow);
+			newRows.add(originalRow); // could be adding null
 		}
 
 		otus.clear();
 		otuIdx.clear();
+		rows.clear();
 		for (int i = 0; i < newRows.size(); i++) {
 			final OTU newOtu = newOtus.get(i);
 			otus.add(newOtu);
 			otuIdx.put(newOtu, i);
-			if (i < rows.size()) {
-				rows.set(i, newRows.get(i));
-			} else {
-				rows.add(newRows.get(i));
-			}
-		}
-
-		// Get rid of rows that no longer have OTU's
-		while (rows.size() > newRows.size()) {
-			removeLastRow();
+			setRow(newOtu, newRows.get(i)); // could be setting it to null
 		}
 
 		resetPPodVersionInfo();
@@ -667,22 +734,24 @@ public final class CharacterStateMatrix extends UUPPodEntityWXmlId {
 	 * <p>
 	 * Assumes {@code row} is not detached.
 	 * 
-	 * @param index see description
+	 * @param otu index of the row we are adding
 	 * @param row see description
 	 * 
 	 * @return the {@code CharacterStateRow} that was previously there, or
 	 *         {@code null} if there was no {@code CharacterStateRow} previously
 	 *         there
 	 */
-	public CharacterStateRow setRow(final int index, final CharacterStateRow row) {
-		checkNotNull(row);
+	public CharacterStateRow setRow(final OTU otu, final CharacterStateRow row) {
+		checkArgument(getOTUIdx().get(otu) != null,
+				"otu does not belong to this matrix");
 
-		while (rows.size() <= index) {
+		final Integer otuIdx = getOTUIdx().get(otu);
+		while (rows.size() <= otuIdx) {
 			rows.add(null);
 			resetPPodVersionInfo();
 		}
-		final CharacterStateRow oldRow = rows.get(index);
-		if (row.equals(oldRow)) {
+		final CharacterStateRow oldRow = rows.get(otuIdx);
+		if (nullSafeEquals(row, oldRow)) {
 			// same, nothing to do
 		} else {
 
@@ -698,7 +767,7 @@ public final class CharacterStateMatrix extends UUPPodEntityWXmlId {
 			}
 
 			// Now set it to it's new position.
-			rows.set(index, row.setMatrix(this));
+			rows.set(otuIdx, row.setMatrix(this));
 			resetPPodVersionInfo();
 		}
 		return oldRow;

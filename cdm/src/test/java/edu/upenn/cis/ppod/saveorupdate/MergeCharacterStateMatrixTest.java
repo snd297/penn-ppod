@@ -17,15 +17,11 @@ package edu.upenn.cis.ppod.saveorupdate;
 
 import static com.google.common.collect.Lists.newArrayList;
 import static com.google.common.collect.Maps.newHashMap;
-import static org.testng.Assert.assertFalse;
-import static org.testng.Assert.assertNotNull;
 
 import java.util.Collections;
 import java.util.List;
 import java.util.Map;
-import java.util.UUID;
 
-import org.testng.annotations.BeforeClass;
 import org.testng.annotations.Test;
 
 import com.google.inject.Inject;
@@ -105,7 +101,7 @@ public class MergeCharacterStateMatrixTest {
 				sourceMatrix);
 	}
 
-	@Test(dataProvider = MatrixProvider.SMALL_SIMPLE_MATRIX_PROVIDER, dataProviderClass = MatrixProvider.class)
+	@Test(dataProvider = MatrixProvider.SMALL_SIMPLE_MATRIX_PROVIDER, dataProviderClass = MatrixProvider.class, groups = TestGroupDefs.IN_DEVELOPMENT)
 	public void moveCharacters(final CharacterStateMatrix sourceMatrix) {
 		final IMergeCharacterStateMatrix mergeCharacterStateMatrix = mergeMatrixFactory
 				.create(mergeAttachment);
@@ -120,6 +116,14 @@ public class MergeCharacterStateMatrixTest {
 
 		mergeCharacterStateMatrix.merge(targetMatrix, sourceMatrix,
 				fakeTargetOTUSet, fakeOTUsByIncomingOTU);
+
+		// Swap 2 and 0
+		sourceMatrix.setCharacter(0, sourceMatrix.setCharacter(2, sourceMatrix
+				.getCharacter(0)));
+
+		mergeCharacterStateMatrix.merge(targetMatrix, sourceMatrix,
+				fakeTargetOTUSet, fakeOTUsByIncomingOTU);
+
 		ModelAssert.assertEqualsCharacterStateMatrices(targetMatrix,
 				sourceMatrix);
 	}

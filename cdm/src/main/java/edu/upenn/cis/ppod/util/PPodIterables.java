@@ -15,8 +15,12 @@
  */
 package edu.upenn.cis.ppod.util;
 
+import static com.google.common.collect.Iterables.filter;
+import static com.google.common.collect.Sets.newHashSet;
+
 import java.util.Collection;
 import java.util.Iterator;
+import java.util.Set;
 
 import com.google.common.base.Predicate;
 
@@ -44,6 +48,11 @@ public class PPodIterables {
 			}
 		}
 		return null;
+	}
+
+	public static <T> Set<T> findEach(final Set<T> iterable,
+			final Predicate<? super T> predicate) {
+		return newHashSet(filter(iterable, predicate));
 	}
 
 	public static <T> boolean removeIf(final Collection<T> collection,
