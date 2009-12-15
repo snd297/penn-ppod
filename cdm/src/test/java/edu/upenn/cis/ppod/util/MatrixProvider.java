@@ -37,10 +37,12 @@ public class MatrixProvider {
 
 	@DataProvider(name = SMALL_SIMPLE_MATRIX_PROVIDER)
 	public static Object[][] createMatrix() throws Exception {
+
 		final JAXBContext ctx = JAXBContext.newInstance(Study.class);
 		final Study study = (Study) ctx.createUnmarshaller().unmarshal(
 				MatrixProvider.class.getResourceAsStream("/MX540.xml"));
-		return new Object[][] { new Object[] { getOnlyElement(getOnlyElement(
-				study.getOTUSets()).getMatrices()) } };
+		final CharacterStateMatrix smallSimpleMatrix = getOnlyElement(getOnlyElement(
+				study.getOTUSets()).getMatrices());
+		return new Object[][] { new Object[] { smallSimpleMatrix } };
 	}
 }
