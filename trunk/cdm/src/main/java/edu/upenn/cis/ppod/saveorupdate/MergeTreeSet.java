@@ -15,6 +15,7 @@
  */
 package edu.upenn.cis.ppod.saveorupdate;
 
+import static com.google.common.base.Preconditions.checkNotNull;
 import static com.google.common.collect.Sets.newHashSet;
 
 import java.util.Map;
@@ -25,6 +26,7 @@ import com.google.inject.Inject;
 import com.google.inject.Provider;
 
 import edu.upenn.cis.ppod.model.OTU;
+import edu.upenn.cis.ppod.model.OTUSet;
 import edu.upenn.cis.ppod.model.Tree;
 import edu.upenn.cis.ppod.model.TreeSet;
 
@@ -41,8 +43,11 @@ public class MergeTreeSet implements IMergeTreeSet {
 	}
 
 	public TreeSet merge(final TreeSet targetTreeSet,
-			final TreeSet sourceTreeSet,
+			final TreeSet sourceTreeSet, final OTUSet newTargetTreeSetOTUSet,
 			final Map<OTU, OTU> mergedOTUsBySourceOTU) {
+		checkNotNull(targetTreeSet);
+		checkNotNull(sourceTreeSet);
+		checkNotNull(newTargetTreeSetOTUSet);
 
 		// For the response to the client
 		targetTreeSet.setDocId(sourceTreeSet.getDocId());

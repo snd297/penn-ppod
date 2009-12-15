@@ -422,37 +422,11 @@ public final class CharacterStateMatrix extends UUPPodEntityWXmlId {
 	}
 
 	/**
-	 * Remove the last {@code Character}.
-	 * 
-	 * @return the removed {@code Character}, could be <code>null</code>.
-	 */
-	public Character removeLastCharacter() {
-		final int lastCharacterIdx = characters.size() - 1;
-		if (lastCharacterIdx == 0) {
-			// nothing to do
-			return null;
-		}
-		final Character oldCharacter = characters.remove(lastCharacterIdx);
-		characterIdx.remove(oldCharacter);
-
-		columnPPodVersionInfos.remove(lastCharacterIdx);
-
-		// Remember, we could have a null there: see the setCharacter
-		// method for
-		// how we end up with a null here.
-		if (oldCharacter != null) {
-			oldCharacter.removeMatrix(this);
-		}
-		resetPPodVersionInfo();
-		return oldCharacter;
-	}
-
-	/**
 	 * Remove the last row of the matrix.
 	 * 
 	 * @return the removed row, or {@code null} if no row was removed
 	 */
-	public CharacterStateRow removeLastRow() {
+	private CharacterStateRow removeLastRow() {
 		if (rows.get(rows.size() - 1) != null) {
 			rows.get(rows.size() - 1).setMatrix(null);
 			resetPPodVersionInfo();
@@ -671,11 +645,12 @@ public final class CharacterStateMatrix extends UUPPodEntityWXmlId {
 	 * 
 	 * @return {@code otuSet}
 	 */
-	OTUSet setOTUSet(final OTUSet otuSet) {
+	public OTUSet setOTUSet(final OTUSet otuSet) {
 		if (nullSafeEquals(this.otuSet, otuSet)) {
 			// still the same
 		} else {
 			this.otuSet = otuSet;
+			this.otuSet.addMatrix(this);
 			resetPPodVersionInfo();
 		}
 		return otuSet;

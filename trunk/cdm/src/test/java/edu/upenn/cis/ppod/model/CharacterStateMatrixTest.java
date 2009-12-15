@@ -244,14 +244,14 @@ public class CharacterStateMatrixTest {
 	/**
 	 * Straight {@link CharacterStateMatrix#removeLastCharacter()} test.
 	 */
-	public void removeLastCharacter() {
-		final Character character15 = characterProvider.get();
-		matrix.setCharacter(15, character15);
-		matrix.removeLastCharacter();
-
-		Assert.assertEquals(matrix.getCharacters().size(), 15);
-		Assert.assertEquals(matrix.getColumnPPodVersionInfos().size(), 15);
-	}
+// public void removeLastCharacter() {
+// final Character character15 = characterProvider.get();
+// matrix.setCharacter(15, character15);
+// matrix.removeLastCharacter();
+//
+// Assert.assertEquals(matrix.getCharacters().size(), 15);
+// Assert.assertEquals(matrix.getColumnPPodVersionInfos().size(), 15);
+// }
 
 	/**
 	 * When we set a character that was already at some position, then the its

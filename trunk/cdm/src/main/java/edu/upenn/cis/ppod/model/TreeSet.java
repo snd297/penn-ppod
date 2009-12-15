@@ -97,7 +97,8 @@ public final class TreeSet extends UUPPodEntityWXmlId {
 	 * So it takes care of both sides of the <code>TreeSet</code><->
 	 * <code>Tree</code> relationship.
 	 * <p>
-	 * This method assumes that {@code tree} is not in a Hibernate-detached state.
+	 * This method assumes that {@code tree} is not in a Hibernate-detached
+	 * state.
 	 * 
 	 * @param tree see description
 	 * @return {@code true} if this set did not already contain {@code tree}
@@ -221,18 +222,17 @@ public final class TreeSet extends UUPPodEntityWXmlId {
 
 	/**
 	 * Setter. Assumes that {@code otuSet} is not detached.
-	 * <p>
-	 * Intentionally package-private and meant to be called from {@code OTUSet}.
 	 * 
 	 * @param otuSet the {@code OTUSet}. nullable.
 	 * 
 	 * @return this {@code TreeSet}
 	 */
-	TreeSet setOTUSet(final OTUSet otuSet) {
+	public TreeSet setOTUSet(final OTUSet otuSet) {
 		if (nullSafeEquals(this.otuSet, otuSet)) {
 
 		} else {
 			this.otuSet = otuSet;
+			this.otuSet.addTreeSet(this);
 			resetPPodVersionInfo();
 		}
 		return this;

@@ -19,6 +19,7 @@ import java.util.Map;
 
 import edu.upenn.cis.ppod.model.CharacterStateMatrix;
 import edu.upenn.cis.ppod.model.OTU;
+import edu.upenn.cis.ppod.model.OTUSet;
 
 /**
  * Save or update a matrix in the pPOD db.
@@ -30,15 +31,13 @@ public interface IMergeCharacterStateMatrix {
 	/**
 	 * Merge {@code sourceMatrix} onto {@code targetMatrix}.
 	 * <p>
-	 * This method doesn't do anything about connecting {@code targetMatrix} to
-	 * an {@code OTUSet} and this must have been done before this method is
-	 * called.
-	 * <p>
-	 * If {@code sourceMatrix.getDocId() != null} then this method will do call
-	 * {@code sourceMatrix.setDocId(sourceMatrix.getDocId())}.
+	 * If {@code sourceMatrix.getDocId() != null} then this method calls {@code
+	 * sourceMatrix.setDocId(sourceMatrix.getDocId())}.
 	 * 
 	 * @param targetMatrix merge into the target matrix
 	 * @param sourceMatrix source of the merge
+	 * @param newTargetMatrixOTUSet this method will call {@code
+	 *            targetMatrix.setOTUSet(newTargetMatrixOTUSet)}
 	 * @param mergedOTUsBySourceOTU maps each merged OTU to its source OTU
 	 *            counterpart. This parameter is used to set the new OTU
 	 *            ordering in {@code targetMatrix} as dictated by {@code
@@ -49,7 +48,7 @@ public interface IMergeCharacterStateMatrix {
 	 * @throws IllegalArgumentException if {@targetMatrix.getOTUSet() == null}
 	 */
 	CharacterStateMatrix merge(CharacterStateMatrix targetMatrix,
-			CharacterStateMatrix sourceMatrix,
+			CharacterStateMatrix sourceMatrix, OTUSet newTargetMatrixOTUSet,
 			Map<OTU, OTU> mergedOTUsBySourceOTU);
 
 	/**

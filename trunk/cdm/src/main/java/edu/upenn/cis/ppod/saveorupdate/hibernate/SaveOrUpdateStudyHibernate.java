@@ -27,7 +27,6 @@ import com.google.inject.Inject;
 import com.google.inject.Provider;
 import com.google.inject.assistedinject.Assisted;
 
-import edu.upenn.cis.ppod.dao.IAttachmentNamespaceDAO;
 import edu.upenn.cis.ppod.dao.IOTUSetDAO;
 import edu.upenn.cis.ppod.dao.IStudyDAO;
 import edu.upenn.cis.ppod.dao.hibernate.IAttachmentNamespaceDAOHibernateFactory;
@@ -43,8 +42,8 @@ import edu.upenn.cis.ppod.model.TreeSet;
 import edu.upenn.cis.ppod.saveorupdate.IMergeAttachment;
 import edu.upenn.cis.ppod.saveorupdate.IMergeCharacterStateMatrix;
 import edu.upenn.cis.ppod.saveorupdate.IMergeOTUSet;
-import edu.upenn.cis.ppod.saveorupdate.ISaveOrUpdateStudy;
 import edu.upenn.cis.ppod.saveorupdate.IMergeTreeSet;
+import edu.upenn.cis.ppod.saveorupdate.ISaveOrUpdateStudy;
 import edu.upenn.cis.ppod.saveorupdate.MergeTreeSet;
 
 /**
@@ -125,23 +124,21 @@ public class SaveOrUpdateStudyHibernate implements ISaveOrUpdateStudy {
 				if (null == (dbMatrix = findIf(dbOTUSet.getMatrices(), compose(
 						equalTo(incomingMatrix.getPPodId()),
 						IUUPPodEntity.getPPodId)))) {
-					dbMatrix = dbOTUSet.addMatrix(matrixProvider.get());
+					dbMatrix = matrixProvider.get();
 					dbMatrix.setPPodId();
 				}
-				dbOTUSet.addMatrix(dbMatrix);
-				mergeMatrix
-						.merge(dbMatrix, incomingMatrix, dbOTUsByIncomingOTU);
+				mergeMatrix.merge(dbMatrix, incomingMatrix, dbOTUSet,
+						dbOTUsByIncomingOTU);
 			}
 			for (final TreeSet incomingTreeSet : incomingOTUSet.getTreeSets()) {
 				TreeSet dbTreeSet;
 				if (null == (dbTreeSet = findIf(dbOTUSet.getTreeSets(),
 						compose(equalTo(incomingTreeSet.getPPodId()),
 								IUUPPodEntity.getPPodId)))) {
-					dbTreeSet = dbOTUSet.addTreeSet(treeSetProvider.get());
+					dbTreeSet = treeSetProvider.get();
 					dbTreeSet.setPPodId();
 				}
-				dbOTUSet.addTreeSet(dbTreeSet);
-				mergeTreeSet.merge(dbTreeSet, incomingTreeSet,
+				mergeTreeSet.merge(dbTreeSet, incomingTreeSet, dbOTUSet,
 						dbOTUsByIncomingOTU);
 			}
 		}
