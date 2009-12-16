@@ -113,19 +113,19 @@ public class CharacterStateMatrixTest {
 		matrix.setCharacter(0, character);
 
 		matrix.setRow(otu0, rowProvider.get());
-		final CharacterStateCell cell00 = matrix.getRow(otu0).addCell(
+		final CharacterStateCell cell00 = matrix.getRows().get(0).addCell(
 				cellProvider.get());
 		cell00.setTypeAndStates(CharacterStateCell.Type.SINGLE,
 				newHashSet(stateFactory.create(0).setCharacter(character)));
 
 		matrix.setRow(otu1, rowProvider.get());
-		final CharacterStateCell cell10 = matrix.getRow(otu1).addCell(
+		final CharacterStateCell cell10 = matrix.getRows().get(1).addCell(
 				cellProvider.get());
 		cell10.setTypeAndStates(CharacterStateCell.Type.SINGLE,
 				newHashSet(stateFactory.create(1)));
 
 		matrix.setRow(otu2, rowProvider.get());
-		final CharacterStateCell cell20 = matrix.getRow(otu2).addCell(
+		final CharacterStateCell cell20 = matrix.getRows().get(2).addCell(
 				cellProvider.get());
 		cell20.setTypeAndStates(CharacterStateCell.Type.SINGLE,
 				newHashSet(stateFactory.create(2)));
@@ -139,12 +139,12 @@ public class CharacterStateMatrixTest {
 
 		assertEquals(matrix.getOTUs(), otus210);
 		assertEquals(matrix.getRows().size(), originalRows.size());
-		ModelAssert.assertEqualsCharacterStateRows(matrix.getRow(otu2),
-				originalRows.get(2));
-		ModelAssert.assertEqualsCharacterStateRows(matrix.getRow(otu1),
-				originalRows.get(1));
-		ModelAssert.assertEqualsCharacterStateRows(matrix.getRow(otu0),
-				originalRows.get(0));
+		ModelAssert.assertEqualsCharacterStateRows(matrix.getRows().get(
+				matrix.getOTUIdx().get(otu2)), originalRows.get(2));
+		ModelAssert.assertEqualsCharacterStateRows(matrix.getRows().get(
+				matrix.getOTUIdx().get(otu1)), originalRows.get(1));
+		ModelAssert.assertEqualsCharacterStateRows(matrix.getRows().get(
+				matrix.getOTUIdx().get(otu0)), originalRows.get(0));
 
 	}
 
@@ -161,8 +161,8 @@ public class CharacterStateMatrixTest {
 	public void setOTUs() {
 		Assert.assertEquals(matrix.getOTUs(), newArrayList(otu0, otu1, otu2));
 
-		for (final OTU otu : matrix.getOTUs()) {
-			assertNull(matrix.getRow(otu));
+		for (int i = 0; i < matrix.getRows().size(); i++) {
+			assertNull(matrix.getRows().get(i));
 		}
 	}
 
@@ -180,7 +180,7 @@ public class CharacterStateMatrixTest {
 		final Character character = characterProvider.get().setLabel(
 				"testLabel");
 		matrix.setCharacter(1, character);
-		final Character gotCharacter1 = matrix.getCharacter(1);
+		final Character gotCharacter1 = matrix.getCharacters().get(1);
 		Assert.assertEquals(gotCharacter1, character);
 
 		final int characterIdx = matrix.getCharacterIdx().get(gotCharacter1);
@@ -203,11 +203,11 @@ public class CharacterStateMatrixTest {
 		final Character character1 = characterProvider.get().setLabel(
 				"character1");
 		matrix.setCharacter(3, character1);
-		assertEquals(matrix.getCharacter(3), character1);
+		assertEquals(matrix.getCharacters().get(3), character1);
 
 		matrix.setCharacter(18, character1);
-		assertNull(matrix.getCharacter(3));
-		assertEquals(matrix.getCharacter(18), character1);
+		assertNull(matrix.getCharacters().get(3));
+		assertEquals(matrix.getCharacters().get(18), character1);
 	}
 
 	/**
@@ -220,7 +220,7 @@ public class CharacterStateMatrixTest {
 		final Character character2 = characterProvider.get().setLabel(
 				"character2");
 		final Character someCharacter = matrix.setCharacter(3, character2);
-		assertEquals(matrix.getCharacter(3), character2);
+		assertEquals(matrix.getCharacters().get(3), character2);
 		assertEquals(someCharacter, character1);
 		assertNull(matrix.getCharacterIdx().get(character1));
 	}
@@ -246,7 +246,7 @@ public class CharacterStateMatrixTest {
 		matrix.setRow(otu1, row1);
 		matrix.setPPodVersionInfo(pPodVersionInfo);
 		matrix.setRow(otu1, row1);
-		assertNotNull(matrix.getRow(otu1));
+		assertNotNull(matrix.getRows().get(matrix.getOTUIdx().get(otu1)));
 	}
 
 	/**
@@ -256,8 +256,8 @@ public class CharacterStateMatrixTest {
 		final CharacterStateRow row1 = rowProvider.get();
 		matrix.setRow(otu1, row1);
 		matrix.setRow(otu0, row1);
-		assertEquals(matrix.getRow(otu0), row1);
-		assertNull(matrix.getRow(otu1));
+		assertEquals(matrix.getRows().get(matrix.getOTUIdx().get(otu0)), row1);
+		assertNull(matrix.getRows().get(matrix.getOTUIdx().get(otu1)));
 	}
 
 	/**
@@ -275,7 +275,7 @@ public class CharacterStateMatrixTest {
 		final CharacterStateRow row2 = rowProvider.get();
 		final CharacterStateRow someRow = matrix.setRow(otu1, row2);
 		assertEquals(someRow, row1);
-		assertEquals(matrix.getRow(otu1), row2);
+		assertEquals(matrix.getRows().get(matrix.getOTUIdx().get(otu1)), row2);
 		assertNull(row1.getMatrix());
 	}
 

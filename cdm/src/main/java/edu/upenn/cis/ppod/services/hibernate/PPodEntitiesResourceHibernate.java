@@ -28,6 +28,7 @@ import com.google.inject.Inject;
 import com.google.inject.Provider;
 
 import edu.upenn.cis.ppod.model.CharacterStateMatrix;
+import edu.upenn.cis.ppod.model.OTU;
 import edu.upenn.cis.ppod.model.OTUSet;
 import edu.upenn.cis.ppod.model.TreeSet;
 import edu.upenn.cis.ppod.services.IPPodEntitiesResource;
@@ -67,7 +68,6 @@ public class PPodEntitiesResourceHibernate implements IPPodEntitiesResource {
 
 		final Set<CharacterStateMatrix> addedMatrices = newHashSet();
 		final Set<TreeSet> addedTreeSets = newHashSet();
-
 		final Session s = HibernateUtil.getCurrentSession();
 
 		for (final Object queryResult : queryResults) {
@@ -110,13 +110,17 @@ public class PPodEntitiesResourceHibernate implements IPPodEntitiesResource {
 				// Note that otu set may have already been added in any of the
 				// other if clauses: Hibernate identity takes care of us
 				pPodEntities.addOTUSet(treeSet.getOTUSet());
+			} else if (queryResult instanceof OTU) {
+				final OTU otu = (OTU) queryResult;
+				s.setReadOnly(otu, true);
+				pPodEntities.addOTU(otu);
 			} else {
 				throw new IllegalArgumentException("unsupported entity type "
 						+ queryResult.getClass() + ", result: " + queryResult);
 			}
 
 			// Now we clean up our response so we don't include any extra
-			// matrices or tree sets that were pulled over with the OTU sets
+			// matrices or tree sets that were pulled over with the OTUSet's
 			for (final OTUSet otuSet : pPodEntities.getOTUSets()) {
 
 				for (final CharacterStateMatrix matrix : otuSet.getMatrices()) {

@@ -15,10 +15,7 @@
  */
 package edu.upenn.cis.ppod.services.ppodentity;
 
-import static com.google.common.base.Predicates.compose;
-import static com.google.common.base.Predicates.equalTo;
 import static com.google.common.collect.Sets.newHashSet;
-import static edu.upenn.cis.ppod.util.PPodIterables.findIf;
 
 import java.util.Collections;
 import java.util.Set;
@@ -32,7 +29,7 @@ import javax.xml.bind.annotation.XmlRootElement;
 import edu.upenn.cis.ppod.model.Attachment;
 import edu.upenn.cis.ppod.model.AttachmentNamespace;
 import edu.upenn.cis.ppod.model.AttachmentType;
-import edu.upenn.cis.ppod.model.IUUPPodEntity;
+import edu.upenn.cis.ppod.model.OTU;
 import edu.upenn.cis.ppod.model.OTUSet;
 import edu.upenn.cis.ppod.util.PPodEntitiesUtil;
 
@@ -43,10 +40,13 @@ import edu.upenn.cis.ppod.util.PPodEntitiesUtil;
  */
 @XmlRootElement
 @XmlAccessorType(XmlAccessType.NONE)
-public class PPodEntities implements IPPodEntities {
+public class PPodEntities implements IOTUSets {
 
 	@XmlElement(name = "otuSet")
 	private final Set<OTUSet> otuSets = newHashSet();
+
+	@XmlElement(name = "otu")
+	private final Set<OTU> otus = newHashSet();
 
 	@XmlElement(name = "pPodEntitiesWideAttachmentNamespace")
 	private final Set<AttachmentNamespace> pPodEntitiesWideAttachmentNamespaces = newHashSet();
@@ -85,9 +85,12 @@ public class PPodEntities implements IPPodEntities {
 		return Collections.unmodifiableSet(otuSets);
 	}
 
-	public OTUSet getOTUSetByPPodId(final String pPodId) {
-		return findIf(getOTUSets(), compose(equalTo(pPodId),
-				IUUPPodEntity.getPPodId));
+	public Set<OTU> getOTUs() {
+		return Collections.unmodifiableSet(otus);
 	}
 
+	public OTU addOTU(final OTU otu) {
+		otus.add(otu);
+		return otu;
+	}
 }

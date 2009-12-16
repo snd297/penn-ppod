@@ -119,7 +119,7 @@ public class MergeCharacterStateMatrixTest {
 
 		// Swap 2 and 0
 		sourceMatrix.setCharacter(0, sourceMatrix.setCharacter(2, sourceMatrix
-				.getCharacter(0)));
+				.getCharacters().get(0)));
 
 		mergeCharacterStateMatrix.merge(targetMatrix, sourceMatrix,
 				fakeTargetOTUSet, fakeOTUsByIncomingOTU);

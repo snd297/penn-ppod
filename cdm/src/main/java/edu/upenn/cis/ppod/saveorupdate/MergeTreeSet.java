@@ -49,6 +49,8 @@ public class MergeTreeSet implements IMergeTreeSet {
 		checkNotNull(sourceTreeSet);
 		checkNotNull(newTargetTreeSetOTUSet);
 
+		newTargetTreeSetOTUSet.addTreeSet(targetTreeSet);
+
 		// For the response to the client
 		targetTreeSet.setDocId(sourceTreeSet.getDocId());
 

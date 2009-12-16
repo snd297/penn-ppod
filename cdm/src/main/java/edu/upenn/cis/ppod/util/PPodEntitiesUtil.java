@@ -30,7 +30,7 @@ import edu.upenn.cis.ppod.model.IAttachee;
 import edu.upenn.cis.ppod.model.IUUPPodEntity;
 import edu.upenn.cis.ppod.model.OTU;
 import edu.upenn.cis.ppod.model.OTUSet;
-import edu.upenn.cis.ppod.services.ppodentity.IPPodEntities;
+import edu.upenn.cis.ppod.services.ppodentity.IOTUSets;
 
 /**
  * @author Sam Donnelly
@@ -62,12 +62,12 @@ public class PPodEntitiesUtil {
 		return attachee;
 	}
 
-	public static IPPodEntities extractAttachmentInfoFromPPodEntities(
+	public static IOTUSets extractAttachmentInfoFromPPodEntities(
 			final Set<AttachmentNamespace> studyWideAttachmentNamespaces,
 			final Set<AttachmentType> studyWideAttachmentTypes,
 			final Set<Attachment> studyWideAttachments,
-			final IPPodEntities pPodEntities) {
-		for (final OTUSet otuSet : pPodEntities.getOTUSets()) {
+			final IOTUSets oTUSets) {
+		for (final OTUSet otuSet : oTUSets.getOTUSets()) {
 			extractAttachmentInfoFromAttachee(studyWideAttachmentNamespaces,
 					studyWideAttachmentTypes, studyWideAttachments, otuSet);
 			for (final OTU otu : otuSet.getOTUs()) {
@@ -88,6 +88,6 @@ public class PPodEntitiesUtil {
 			}
 		}
 
-		return pPodEntities;
+		return oTUSets;
 	}
 }

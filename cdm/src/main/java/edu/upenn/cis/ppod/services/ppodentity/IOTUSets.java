@@ -24,21 +24,10 @@ import edu.upenn.cis.ppod.model.OTUSet;
  * 
  * @author Sam Donnelly
  */
-public interface IPPodEntities {
+public interface IOTUSets {
 
 	/**
-	 * Get the OTU set with the given pPOD id, or {@code null} if there is no
-	 * such OTU set, or {@code null} if {@code pPodId} is {@code null}.
-	 * 
-	 * @param pPodId the pPOD id, or {@code null}
-	 * @return the OTU set with the given pPOD id, or {@code null} if there is
-	 *         no such OTU set, or {@code null} if {@code pPodId} is {@code
-	 *         null}
-	 */
-	OTUSet getOTUSetByPPodId(String pPodId);
-
-	/**
-	 * Add an OTU set to this {@link IPPodEntities}.
+	 * Add an OTU set to this {@link IOTUSets}.
 	 * 
 	 * @param otuSet to be added
 	 * @return {@code otuSet}

@@ -6,7 +6,7 @@ import org.testng.annotations.Test;
 import com.google.inject.Inject;
 
 import edu.upenn.cis.ppod.TestGroupDefs;
-import edu.upenn.cis.ppod.services.ppodentity.IPPodEntities;
+import edu.upenn.cis.ppod.services.ppodentity.IOTUSets;
 import edu.upenn.cis.ppod.thirdparty.HibernateUtil;
 
 /**
@@ -21,7 +21,7 @@ public class PPodEntitiesResourceTest {
 	public void getEntitiesByHqlQuery() {
 		ManagedSessionContext.bind(HibernateUtil.getSessionFactory()
 				.openSession());
-		final IPPodEntities entities = pPodEntitiesResource
+		final IOTUSets entities = pPodEntitiesResource
 				.getEntitiesByHqlQuery("from CharacterStateMatrix m join fetch m.otuSet os join fetch os.otus o where o.label='Sus'");
 		System.out.println(entities);
 		ManagedSessionContext.unbind(HibernateUtil.getSessionFactory());

@@ -208,17 +208,19 @@ public final class CharacterStateCell extends PPodEntity {
 			throw new IllegalStateException(
 					"This cell has not been added to a row yet.");
 		}
-		if (null == getRow().getMatrix().getCharacter(
-				getRow().getCellIdx().get(this))) {
+		if (getRow().getMatrix().getCharacters().size() < getRow().getCellIdx()
+				.get(this)
+				|| null == getRow().getMatrix().getCharacters().get(
+						getRow().getCellIdx().get(this))) {
 			throw new IllegalStateException(
 					"This cell's column hasn't been assigned a character");
 		}
 		if (!state.getCharacter().equals(
-				getRow().getMatrix().getCharacter(
+				getRow().getMatrix().getCharacters().get(
 						getRow().getCellIdx().get(this)))) {
 			throw new IllegalArgumentException(
 					"state is from the wrong Character. We want "
-							+ getRow().getMatrix().getCharacter(
+							+ getRow().getMatrix().getCharacters().get(
 									getRow().getCellIdx().get(this)).getLabel()
 							+ " but got " + state.getCharacter().getLabel());
 		}
@@ -433,7 +435,7 @@ public final class CharacterStateCell extends PPodEntity {
 
 		for (final CharacterState state : states) {
 			if (state.getCharacter() == null) {
-				state.setCharacter(getRow().getMatrix().getCharacter(
+				state.setCharacter(getRow().getMatrix().getCharacters().get(
 						getRow().getCellIdx().get(this)));
 			}
 			checkIncomingState(state);

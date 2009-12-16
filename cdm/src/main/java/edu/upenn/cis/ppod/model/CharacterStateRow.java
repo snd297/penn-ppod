@@ -117,7 +117,8 @@ public final class CharacterStateRow extends PPodEntity {
 			throw new IllegalStateException(
 					"This row hasn't been added to a matrix yet");
 		}
-		if (getMatrix().getCharacter(cells.size()) == null) {
+		if (getMatrix().getCharacters().size() < cells.size()
+				|| getMatrix().getCharacters().get(cells.size()) == null) {
 			throw new IllegalStateException(
 					"Character hasn't been set for column " + cells.size());
 		}

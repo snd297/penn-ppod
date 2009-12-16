@@ -158,7 +158,8 @@ public class MergeCharacterStateMatrix implements IMergeCharacterStateMatrix {
 		}
 
 		for (final OTU targetOTU : targetMatrix.getOTUs()) {
-			CharacterStateRow targetRow = targetMatrix.getRow(targetOTU);
+			CharacterStateRow targetRow = targetMatrix.getRows().get(
+					targetMatrix.getOTUIdx().get(targetOTU));
 			if (targetRow == null) {
 				targetRow = rowProvider.get();
 				targetMatrix.setRow(targetOTU, targetRow);
@@ -196,7 +197,7 @@ public class MergeCharacterStateMatrix implements IMergeCharacterStateMatrix {
 						.next();
 				final Set<CharacterState> newTargetStates = newHashSet();
 				for (final CharacterState sourceState : sourceCell.getStates()) {
-					newTargetStates.add(targetMatrix.getCharacter(
+					newTargetStates.add(targetMatrix.getCharacters().get(
 							targetCellItr.previousIndex()).getStates().get(
 							sourceState.getStateNumber()));
 				}
