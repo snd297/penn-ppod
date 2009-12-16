@@ -38,7 +38,7 @@ import javax.xml.bind.annotation.XmlRootElement;
 
 import org.hibernate.annotations.Cascade;
 
-import edu.upenn.cis.ppod.services.ppodentity.IOTUSets;
+import edu.upenn.cis.ppod.services.ppodentity.IOTUSetCentricEntities;
 import edu.upenn.cis.ppod.util.IVisitor;
 import edu.upenn.cis.ppod.util.PPodEntitiesUtil;
 
@@ -52,7 +52,7 @@ import edu.upenn.cis.ppod.util.PPodEntitiesUtil;
 @XmlAccessorType(XmlAccessType.NONE)
 @Entity
 @Table(name = Study.TABLE)
-public final class Study extends UUPPodEntity implements IOTUSets {
+public final class Study extends UUPPodEntity implements IOTUSetCentricEntities {
 
 	/** The table name for this entity. */
 	public static final String TABLE = "STUDY";

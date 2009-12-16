@@ -24,10 +24,10 @@ import edu.upenn.cis.ppod.model.OTUSet;
  * 
  * @author Sam Donnelly
  */
-public interface IOTUSets {
+public interface IOTUSetCentricEntities {
 
 	/**
-	 * Add an OTU set to this {@link IOTUSets}.
+	 * Add an OTU set to this {@link IOTUSetCentricEntities}.
 	 * 
 	 * @param otuSet to be added
 	 * @return {@code otuSet}
