@@ -55,7 +55,6 @@ public class MergeAttachmentTest {
 	}
 
 	public void mergeOnBlankTarget() {
-
 		IMergeAttachment mergeAttachment = mergeAttachmentFactory.create(
 				attachmentNamespaceDAO, attachmentTypeDAO);
 		final Attachment targetAttachment = attachmentProvider.get(), sourceAttachment = attachmentProvider
