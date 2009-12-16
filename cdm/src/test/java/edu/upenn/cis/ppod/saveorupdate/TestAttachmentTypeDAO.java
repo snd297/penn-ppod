@@ -14,7 +14,7 @@ import edu.upenn.cis.ppod.model.AttachmentType;
  */
 public class TestAttachmentTypeDAO implements IAttachmentTypeDAO {
 
-	private final Map<String, Map<String, AttachmentType>> typesByNamespaceLabelAndTypeLabel = newHashMap();
+	private Map<String, Map<String, AttachmentType>> typesByNamespaceLabelAndTypeLabel = newHashMap();
 
 	public AttachmentType delete(final AttachmentType entity) {
 		throw new UnsupportedOperationException();
@@ -50,6 +50,12 @@ public class TestAttachmentTypeDAO implements IAttachmentTypeDAO {
 
 	public AttachmentType saveOrUpdate(final AttachmentType entity) {
 		throw new UnsupportedOperationException();
+	}
+
+	public TestAttachmentTypeDAO setTypesByNamespaceLabelAndTypeLabel(
+			final Map<String, Map<String, AttachmentType>> typesByNamespaceLabelAndTypeLabel) {
+		this.typesByNamespaceLabelAndTypeLabel = typesByNamespaceLabelAndTypeLabel;
+		return this;
 	}
 
 }
