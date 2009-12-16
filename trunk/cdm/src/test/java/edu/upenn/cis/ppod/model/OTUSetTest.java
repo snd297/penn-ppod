@@ -1,5 +1,6 @@
 package edu.upenn.cis.ppod.model;
 
+import static com.google.common.collect.Iterables.getOnlyElement;
 import static com.google.common.collect.Lists.newArrayList;
 import static org.testng.Assert.assertEquals;
 import static org.testng.Assert.assertNull;
@@ -31,6 +32,12 @@ public class OTUSetTest {
 
 	private List<OTU> otus;
 
+	@Inject
+	private Provider<Study> studyProvider;
+
+	@Inject
+	private Provider<TreeSet> treeSetProvider;
+
 	@BeforeMethod
 	public void beforeMethod() {
 		otuSet = otuSetProvider.get();
@@ -50,5 +57,25 @@ public class OTUSetTest {
 
 	public void getOTUByNullPPodId() {
 		assertNull(otuSet.getOTUByPPodId(null));
+	}
+
+	@Test(expectedExceptions = IllegalArgumentException.class)
+	public void addOTUWDuplicateLabel() {
+		otuSet.addOTU(otuProvider.get().setLabel(otus.get(0).getLabel()));
+	}
+
+	public void addTreeSet() {
+		final TreeSet treeSet = treeSetProvider.get();
+		otuSet.addTreeSet(treeSet);
+		assertEquals(getOnlyElement(otuSet.getTreeSets()), treeSet);
+	}
+
+	public void resetPPodVersionInfoWNullVersion() {
+		final Study study = studyProvider.get();
+		study.addOTUSet(otuSet);
+		final PPodVersionInfo studyPPodVersionInfo = study.getPPodVersionInfo();
+		otuSet.resetPPodVersionInfo();
+		assertNull(otuSet.getPPodVersionInfo());
+		assertEquals(study.getPPodVersionInfo(), studyPPodVersionInfo);
 	}
 }
