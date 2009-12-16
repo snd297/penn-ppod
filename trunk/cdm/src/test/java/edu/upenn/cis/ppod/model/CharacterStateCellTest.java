@@ -118,7 +118,7 @@ public class CharacterStateCellTest {
 
 	public void getStatesWhenCellHasOneState() {
 		states.add(state00);
-		matrix.getRow(matrix.getOTUs().get(0)).addCell(cell);
+		matrix.getRows().get(0).addCell(cell);
 		cell.setTypeAndStates(CharacterStateCell.Type.SINGLE, states);
 		assertEquals(cell.getStates(), states);
 	}
@@ -126,7 +126,7 @@ public class CharacterStateCellTest {
 	public void getStatesWhenCellHasMultipleStates() {
 		states.add(state00);
 		states.add(state01);
-		matrix.getRow(matrix.getOTUs().get(0)).addCell(cell);
+		matrix.getRows().get(0).addCell(cell);
 
 		cell.setTypeAndStates(CharacterStateCell.Type.POLYMORPHIC, states);
 
@@ -139,7 +139,7 @@ public class CharacterStateCellTest {
 	}
 
 	public void setTypeAndStatesFromSingleToInapplicable() {
-		matrix.getRow(matrix.getOTUs().get(0)).addCell(cell);
+		matrix.getRows().get(0).addCell(cell);
 		states.add(state00);
 		cell.setTypeAndStates(CharacterStateCell.Type.SINGLE, states);
 		cell.getStates();// to initialize CharacterStateCell.firstStateSet
@@ -150,7 +150,7 @@ public class CharacterStateCellTest {
 	}
 
 	public void setTypeAndStatesFromPolymorhpicToInapplicable() {
-		matrix.getRow(matrix.getOTUs().get(0)).addCell(cell);
+		matrix.getRows().get(0).addCell(cell);
 		states.add(state00);
 		states.add(state01);
 		cell.setTypeAndStates(CharacterStateCell.Type.POLYMORPHIC, states);
@@ -161,7 +161,7 @@ public class CharacterStateCellTest {
 	}
 
 	public void setTypeAndStatesInapplicable() {
-		matrix.getRow(matrix.getOTUs().get(0)).addCell(cell);
+		matrix.getRows().get(0).addCell(cell);
 		cell.setTypeAndStates(CharacterStateCell.Type.INAPPLICABLE, states);
 		assertEquals(cell.getType(), CharacterStateCell.Type.INAPPLICABLE);
 		assertEquals(cell.getStates(), states);
@@ -169,13 +169,13 @@ public class CharacterStateCellTest {
 
 	@Test(expectedExceptions = IllegalArgumentException.class)
 	public void setTypeAndStatesInapplicableTooManyStates() {
-		matrix.getRow(matrix.getOTUs().get(0)).addCell(cell);
+		matrix.getRows().get(0).addCell(cell);
 		states.add(state00);
 		cell.setTypeAndStates(CharacterStateCell.Type.INAPPLICABLE, states);
 	}
 
 	public void setTypeAndStatesUnassigned() {
-		matrix.getRow(matrix.getOTUs().get(0)).addCell(cell);
+		matrix.getRows().get(0).addCell(cell);
 		cell.setTypeAndStates(CharacterStateCell.Type.UNASSIGNED, states);
 		assertEquals(cell.getType(), CharacterStateCell.Type.UNASSIGNED);
 		assertEquals(cell.getStates(), states);
@@ -183,13 +183,13 @@ public class CharacterStateCellTest {
 
 	@Test(expectedExceptions = IllegalArgumentException.class)
 	public void setTypeAndStatesUnassignedTooManyStates() {
-		matrix.getRow(matrix.getOTUs().get(0)).addCell(cell);
+		matrix.getRows().get(0).addCell(cell);
 		states.add(state00);
 		cell.setTypeAndStates(CharacterStateCell.Type.UNASSIGNED, states);
 	}
 
 	public void setTypeAndStatesSingle() {
-		matrix.getRow(matrix.getOTUs().get(0)).addCell(cell);
+		matrix.getRows().get(0).addCell(cell);
 		states.add(state00);
 		cell.setTypeAndStates(CharacterStateCell.Type.SINGLE, states);
 		assertEquals(cell.getType(), CharacterStateCell.Type.SINGLE);
@@ -198,12 +198,12 @@ public class CharacterStateCellTest {
 
 	@Test(expectedExceptions = IllegalArgumentException.class)
 	public void setTypeAndStatesSingleTooFewStates() {
-		matrix.getRow(matrix.getOTUs().get(0)).addCell(cell);
+		matrix.getRows().get(0).addCell(cell);
 		cell.setTypeAndStates(CharacterStateCell.Type.SINGLE, states);
 	}
 
 	public void setTypeAndStatesPolymorphic() {
-		matrix.getRow(matrix.getOTUs().get(0)).addCell(cell);
+		matrix.getRows().get(0).addCell(cell);
 		states.add(state00);
 		states.add(state01);
 		cell.setTypeAndStates(CharacterStateCell.Type.POLYMORPHIC, states);
@@ -213,20 +213,22 @@ public class CharacterStateCellTest {
 
 	@Test(expectedExceptions = IllegalArgumentException.class)
 	public void setTypeAndStatesPolymorphicTooFewStates() {
-		matrix.getRow(matrix.getOTUs().get(0)).addCell(cell);
+		matrix.getRows().get(0).addCell(cell);
+
 		cell.setTypeAndStates(CharacterStateCell.Type.POLYMORPHIC, states);
 	}
 
 	@Test(expectedExceptions = IllegalArgumentException.class)
 	public void setTypeAndStatesSingleTooManyStates() {
-		matrix.getRow(matrix.getOTUs().get(0)).addCell(cell);
+		matrix.getRows().get(0).addCell(cell);
+
 		states.add(state00);
 		states.add(state01);
 		cell.setTypeAndStates(CharacterStateCell.Type.SINGLE, states);
 	}
 
 	public void setTypeAndStatesUncertain() {
-		matrix.getRow(matrix.getOTUs().get(0)).addCell(cell);
+		matrix.getRows().get(0).addCell(cell);
 		states.add(state00);
 		states.add(state01);
 		cell.setTypeAndStates(CharacterStateCell.Type.UNCERTAIN, states);
@@ -236,7 +238,7 @@ public class CharacterStateCellTest {
 
 	@Test(expectedExceptions = IllegalArgumentException.class)
 	public void setTypeAndStatesUncertainTooFewStates() {
-		matrix.getRow(matrix.getOTUs().get(0)).addCell(cell);
+		matrix.getRows().get(0).addCell(cell);
 		states.add(state00);
 		cell.setTypeAndStates(CharacterStateCell.Type.UNCERTAIN, states);
 	}
@@ -244,7 +246,7 @@ public class CharacterStateCellTest {
 	@Test(groups = TestGroupDefs.IN_DEVELOPMENT)
 	public void getStatesWXmlStatesNeedsToBePutIntoStatesTrueSingle() {
 		cell.setXmlStatesNeedsToBePutIntoStates(true);
-		matrix.getRow(matrix.getOTUs().get(0)).addCell(cell);
+		matrix.getRows().get(0).addCell(cell);
 		states.add(state00);
 		cell.setTypeAndXmlStates(CharacterStateCell.Type.SINGLE, states);
 		assertEquals((Object) cell.getStates(), (Object) states);
@@ -254,7 +256,7 @@ public class CharacterStateCellTest {
 
 	public void getStatesWXmlStatesNeedsToBePutIntoStatesTrueInapplicable() {
 		cell.setXmlStatesNeedsToBePutIntoStates(true);
-		matrix.getRow(matrix.getOTUs().get(0)).addCell(cell);
+		matrix.getRows().get(0).addCell(cell);
 		cell.setTypeAndXmlStates(CharacterStateCell.Type.INAPPLICABLE, null);
 		assertEquals((Object) cell.getStates(), (Object) states);
 		assertFalse(cell.getXmlStatesNeedsToBePutIntoStates());

@@ -285,12 +285,12 @@ public final class CharacterStateMatrix extends UUPPodEntityWXmlId {
 	 * @param idx see description
 	 * @return see description
 	 */
-	public Character getCharacter(final int idx) {
-		if ((idx < 0) || (idx + 1 > getCharacters().size())) {
-			return null;
-		}
-		return getCharacters().get(idx);
-	}
+// public Character getCharacter(final int idx) {
+// if ((idx < 0) || (idx + 1 > getCharacters().size())) {
+// return null;
+// }
+// return getCharacters().get(idx);
+// }
 
 	/**
 	 * Given a pPOD id, retrieve a {@code Character}, or <code>null</code> if
@@ -410,22 +410,6 @@ public final class CharacterStateMatrix extends UUPPodEntityWXmlId {
 	 */
 	public OTUSet getOTUSet() {
 		return otuSet;
-	}
-
-	/**
-	 * Get a row of this matrix given the OTU of the row, or {@code null} if
-	 * {@code otu} does not belong to this matrix.
-	 * 
-	 * 
-	 * @param otu see description
-	 * @return see description
-	 */
-	public CharacterStateRow getRow(final OTU otu) {
-		final Integer otuIdx = getOTUIdx().get(otu);
-		if (otuIdx == null) {
-			return null;
-		}
-		return getRows().get(otuIdx);
 	}
 
 	/**
