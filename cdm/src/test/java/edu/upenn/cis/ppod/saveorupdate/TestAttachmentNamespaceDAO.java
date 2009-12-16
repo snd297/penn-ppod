@@ -17,21 +17,14 @@ import edu.upenn.cis.ppod.model.AttachmentNamespace;
  */
 public class TestAttachmentNamespaceDAO implements IAttachmentNamespaceDAO {
 
-	/**
-	 * Makes {@code TestAttachmentNamespaceDAO}s
-	 */
-	public interface IFactory {
-		TestAttachmentNamespaceDAO create(
-				Map<String, AttachmentNamespace> namespacesByLabel);
-	}
-
-	@Inject
-	TestAttachmentNamespaceDAO(
-			@Assisted Map<String, AttachmentNamespace> namespacesByLabel) {
-		this.namespacesByLabel.putAll(namespacesByLabel);
-	}
-
 	private final Map<String, AttachmentNamespace> namespacesByLabel = newHashMap();
+
+	public TestAttachmentNamespaceDAO setNamespacesByLabel(
+			final Map<String, AttachmentNamespace> namespacesByLabel) {
+		namespacesByLabel.clear();
+		this.namespacesByLabel.putAll(namespacesByLabel);
+		return this;
+	}
 
 	public AttachmentNamespace delete(final AttachmentNamespace entity) {
 		throw new UnsupportedOperationException();

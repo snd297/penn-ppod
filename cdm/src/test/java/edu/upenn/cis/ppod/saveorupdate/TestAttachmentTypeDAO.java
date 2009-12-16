@@ -16,44 +16,39 @@ public class TestAttachmentTypeDAO implements IAttachmentTypeDAO {
 
 	private final Map<String, Map<String, AttachmentType>> typesByNamespaceLabelAndTypeLabel = newHashMap();
 
-	public AttachmentType getAttachmentTypeByNamespaceAndType(
-			String namespaceLabel, String typeLabel) {
-		final Map<String, AttachmentType> typesByLabel = typesByNamespaceLabelAndTypeLabel
-				.get(namespaceLabel);
-		if (typesByLabel != null) { 
-			return typesByLabel.get(typeLabel);
-		}
-		return null;
-	}
-
-	public AttachmentType delete(AttachmentType entity) {
-		// TODO Auto-generated method stub
+	public AttachmentType delete(final AttachmentType entity) {
 		throw new UnsupportedOperationException();
 	}
 
 	public List<AttachmentType> findAll() {
-		// TODO Auto-generated method stub
 		throw new UnsupportedOperationException();
 	}
 
-	public List<AttachmentType> findByExample(AttachmentType exampleInstance,
-			String... excludeProperty) {
-		// TODO Auto-generated method stub
+	public List<AttachmentType> findByExample(
+			final AttachmentType exampleInstance,
+			final String... excludeProperty) {
 		throw new UnsupportedOperationException();
 	}
 
-	public AttachmentType get(Long id, boolean lock) {
-		// TODO Auto-generated method stub
+	public AttachmentType get(final Long id, final boolean lock) {
 		throw new UnsupportedOperationException();
 	}
 
-	public Serializable getIdentifier(Object o) {
-		// TODO Auto-generated method stub
+	public AttachmentType getAttachmentTypeByNamespaceAndType(
+			final String namespaceLabel, final String typeLabel) {
+		final Map<String, AttachmentType> typesByLabel = typesByNamespaceLabelAndTypeLabel
+				.get(namespaceLabel);
+		if (typesByLabel == null) {
+			return null;
+		}
+		return typesByLabel.get(typeLabel);
+	}
+
+	public Serializable getIdentifier(final Object o) {
 		throw new UnsupportedOperationException();
 	}
 
-	public AttachmentType saveOrUpdate(AttachmentType entity) {
-		// TODO Auto-generated method stub
+	public AttachmentType saveOrUpdate(final AttachmentType entity) {
 		throw new UnsupportedOperationException();
 	}
 

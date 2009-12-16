@@ -111,7 +111,7 @@ public class MergeCharacterStateMatrix implements IMergeCharacterStateMatrix {
 			oldIdxsByChararacter.put(idx.next(), idx.previousIndex());
 		}
 
-		final Map<Integer, Integer> oldCharIdxsByNewCharIdx = newHashMap();
+		final Map<Integer, Integer> originalCharIdxsByNewCharIdx = newHashMap();
 		for (final Character sourceCharacter : sourceMatrix.getCharacters()) {
 			Character newTargetCharacter;
 			if (null == (newTargetCharacter = findIf(clearedTargetCharacters,
@@ -135,8 +135,8 @@ public class MergeCharacterStateMatrix implements IMergeCharacterStateMatrix {
 				targetState.setLabel(sourceState.getLabel());
 			}
 
-			oldCharIdxsByNewCharIdx.put(targetMatrix.getCharacterIdx().get(
-					newTargetCharacter), oldIdxsByChararacter
+			originalCharIdxsByNewCharIdx.put(targetMatrix.getCharacterIdx()
+					.get(newTargetCharacter), oldIdxsByChararacter
 					.get(newTargetCharacter));
 
 			for (final Attachment sourceAttachment : sourceCharacter
@@ -157,9 +157,9 @@ public class MergeCharacterStateMatrix implements IMergeCharacterStateMatrix {
 			}
 		}
 
+		// Now we add (but don't fill in) and remove cells
 		for (final OTU targetOTU : targetMatrix.getOTUs()) {
-			CharacterStateRow targetRow = targetMatrix.getRows().get(
-					targetMatrix.getOTUIdx().get(targetOTU));
+			CharacterStateRow targetRow = targetMatrix.getRow(targetOTU);
 			if (targetRow == null) {
 				targetRow = rowProvider.get();
 				targetMatrix.setRow(targetOTU, targetRow);
@@ -169,11 +169,11 @@ public class MergeCharacterStateMatrix implements IMergeCharacterStateMatrix {
 
 			for (int newCellIdx = 0; newCellIdx < targetMatrix.getCharacters()
 					.size(); newCellIdx++) {
-				if (null == oldCharIdxsByNewCharIdx.get(newCellIdx)) {
+				if (null == originalCharIdxsByNewCharIdx.get(newCellIdx)) {
 					targetRow.addCell(cellProvider.get());
 				} else {
 					targetRow.addCell(clearedTargetCells
-							.get(oldCharIdxsByNewCharIdx.get(newCellIdx)));
+							.get(originalCharIdxsByNewCharIdx.get(newCellIdx)));
 				}
 			}
 			while (targetRow.getCells().size() > targetMatrix.getCharacters()
