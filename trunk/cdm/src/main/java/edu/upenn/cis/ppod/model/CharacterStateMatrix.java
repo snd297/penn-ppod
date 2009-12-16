@@ -393,6 +393,22 @@ public final class CharacterStateMatrix extends UUPPodEntityWXmlId {
 	}
 
 	/**
+	 * 
+	 * @param otu
+	 * @return
+	 * @throws IllegalArgumentException if {@code otu} does not belong to this
+	 *             matrix
+	 */
+	public CharacterStateRow getRow(final OTU otu) {
+		checkNotNull(otu);
+		if (getOTUIdx().get(otu) == null) {
+			throw new IllegalArgumentException(
+					"otu does not belong to this matrix");
+		}
+		return getRows().get(getOTUIdx().get(otu));
+	}
+
+	/**
 	 * Set the {@link PPodVersionInfo} at {@code idx} to {@code null}. Fills
 	 * with <code>null</code>s if necessary.
 	 * <p>

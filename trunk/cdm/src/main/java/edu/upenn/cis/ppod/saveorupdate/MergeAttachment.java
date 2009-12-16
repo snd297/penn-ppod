@@ -70,37 +70,38 @@ public class MergeAttachment implements IMergeAttachment {
 				"sourceAttachment.getType() == null");
 		checkArgument(sourceAttachment.getType().getNamespace() != null,
 				"sourceAttachment.getType().getNamespace() == null");
-		AttachmentNamespace dbAttachmentNamespace = namespacesByLabel
+		AttachmentNamespace targetAttachmentNamespace = namespacesByLabel
 				.get(sourceAttachment.getType().getNamespace().getLabel());
-		if (null == dbAttachmentNamespace) {
-			dbAttachmentNamespace = attachmentNamespaceDAO
+		if (null == targetAttachmentNamespace) {
+			targetAttachmentNamespace = attachmentNamespaceDAO
 					.getNamespaceByLabel(sourceAttachment.getType()
 							.getNamespace().getLabel());
-			if (null == dbAttachmentNamespace) {
-				dbAttachmentNamespace = attachmentNamespaceProvider.get()
+			if (null == targetAttachmentNamespace) {
+				targetAttachmentNamespace = attachmentNamespaceProvider.get()
 						.setLabel(
 								sourceAttachment.getType().getNamespace()
 										.getLabel());
 			}
-			namespacesByLabel.put(dbAttachmentNamespace.getLabel(),
-					dbAttachmentNamespace);
-			typesByNamespaceAndLabel.put(dbAttachmentNamespace,
+			namespacesByLabel.put(targetAttachmentNamespace.getLabel(),
+					targetAttachmentNamespace);
+			typesByNamespaceAndLabel.put(targetAttachmentNamespace,
 					new HashMap<String, AttachmentType>());
 		}
 
 		AttachmentType targetAttachmentType = typesByNamespaceAndLabel.get(
-				dbAttachmentNamespace).get(
+				targetAttachmentNamespace).get(
 				sourceAttachment.getType().getLabel());
 		if (null == targetAttachmentType) {
 			targetAttachmentType = attachmentTypeDAO
-					.getAttachmentTypeByNamespaceAndType(dbAttachmentNamespace
-							.getLabel(), sourceAttachment.getType().getLabel());
+					.getAttachmentTypeByNamespaceAndType(
+							targetAttachmentNamespace.getLabel(),
+							sourceAttachment.getType().getLabel());
 			if (null == targetAttachmentType) {
 				targetAttachmentType = attachmentTypeProvider.get().setLabel(
 						sourceAttachment.getType().getLabel());
-				targetAttachmentType.setNamespace(dbAttachmentNamespace);
+				targetAttachmentType.setNamespace(targetAttachmentNamespace);
 			}
-			typesByNamespaceAndLabel.get(dbAttachmentNamespace).put(
+			typesByNamespaceAndLabel.get(targetAttachmentNamespace).put(
 					targetAttachmentType.getLabel(), targetAttachmentType);
 		}
 

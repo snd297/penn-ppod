@@ -29,7 +29,7 @@ public class MergeAttachmentTest {
 	private IMergeAttachment.IFactory mergeAttachmentFactory;
 
 	@Inject
-	private TestAttachmentNamespaceDAO.IFactory attachmentNamespaceDAOFactory;
+	private Provider<TestAttachmentNamespaceDAO> attachmentNamespaceDAOProvider;
 
 	private IAttachmentNamespaceDAO attachmentNamespaceDAO;
 
@@ -50,11 +50,12 @@ public class MergeAttachmentTest {
 		final Map<String, AttachmentNamespace> namespacesByLabel = newHashMap();
 		namespacesByLabel.put("TEST_ATTACHMENT_NAMESPACE",
 				attachmentNamespaceProvider.get());
-		attachmentNamespaceDAO = attachmentNamespaceDAOFactory
-				.create(namespacesByLabel);
+		attachmentNamespaceDAO = attachmentNamespaceDAOProvider.get()
+				.setNamespacesByLabel(namespacesByLabel);
 	}
 
 	public void mergeOnBlankTarget() {
+
 		IMergeAttachment mergeAttachment = mergeAttachmentFactory.create(
 				attachmentNamespaceDAO, attachmentTypeDAO);
 		final Attachment targetAttachment = attachmentProvider.get(), sourceAttachment = attachmentProvider
@@ -66,6 +67,7 @@ public class MergeAttachmentTest {
 				attachmentNamespaceProvider.get().setLabel(
 						"SOURCE_ATTACHMENT_NAMESPACE"));
 		sourceAttachment.setStringValue("STRING_VALUE");
+		sourceAttachment.setByteArrayValue(new byte[] { 0, 1, 2 });
 		mergeAttachment.merge(targetAttachment, sourceAttachment);
 		ModelAssert.assertEqualsAttachments(targetAttachment, sourceAttachment);
 	}
