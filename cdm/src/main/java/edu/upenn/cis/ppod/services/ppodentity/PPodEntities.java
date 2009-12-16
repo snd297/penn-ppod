@@ -40,7 +40,7 @@ import edu.upenn.cis.ppod.util.PPodEntitiesUtil;
  */
 @XmlRootElement
 @XmlAccessorType(XmlAccessType.NONE)
-public class PPodEntities implements IOTUSets {
+public class PPodEntities implements IOTUSetCentricEntities {
 
 	@XmlElement(name = "otuSet")
 	private final Set<OTUSet> otuSets = newHashSet();

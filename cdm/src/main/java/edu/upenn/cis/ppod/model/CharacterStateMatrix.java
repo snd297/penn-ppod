@@ -17,12 +17,9 @@ package edu.upenn.cis.ppod.model;
 
 import static com.google.common.base.Preconditions.checkArgument;
 import static com.google.common.base.Preconditions.checkNotNull;
-import static com.google.common.base.Predicates.compose;
-import static com.google.common.base.Predicates.equalTo;
 import static com.google.common.collect.Lists.newArrayList;
 import static com.google.common.collect.Lists.newArrayListWithCapacity;
 import static com.google.common.collect.Maps.newHashMap;
-import static edu.upenn.cis.ppod.util.PPodIterables.findIf;
 import static edu.upenn.cis.ppod.util.UPennCisPPodUtil.nullSafeEquals;
 
 import java.util.Collections;
@@ -276,32 +273,6 @@ public final class CharacterStateMatrix extends UUPPodEntityWXmlId {
 		characters.clear();
 		characterIdx.clear();
 		return clearedCharacters;
-	}
-
-	/**
-	 * Get a <code>Character</code> given by an index, or <code>null</code> if
-	 * <code>idx</code> is too big or negative.
-	 * 
-	 * @param idx see description
-	 * @return see description
-	 */
-// public Character getCharacter(final int idx) {
-// if ((idx < 0) || (idx + 1 > getCharacters().size())) {
-// return null;
-// }
-// return getCharacters().get(idx);
-// }
-
-	/**
-	 * Given a pPOD id, retrieve a {@code Character}, or <code>null</code> if
-	 * there is no such {@code Character} or if {@code characterPPodId == null}.
-	 * 
-	 * @param characterPPodId the pPOD id
-	 * @return see description
-	 */
-	public Character getCharacterByPPodId(final String characterPPodId) {
-		return findIf(getCharacters(), compose(equalTo(characterPPodId),
-				IUUPPodEntity.getPPodId));
 	}
 
 	/**
