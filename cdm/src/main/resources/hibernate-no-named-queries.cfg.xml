@@ -34,8 +34,6 @@
 <!--		<mapping class="edu.upenn.cis.ppod.model.DNACharacter" />-->
 <!--		<mapping class="edu.upenn.cis.ppod.model.DNAState" />-->
 
-		<!--  metadata -->
-		<mapping resource="edu/upenn/cis/ppod/dao/namedQueries.xml" />
 
 	</session-factory>
 </hibernate-configuration>

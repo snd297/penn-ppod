@@ -118,7 +118,4 @@
 		<hint name="org.hibernate.comment"
 			value="Get an AttachmentType given its namespace label and type label." />
 	</named-query>
-
-
-
 </entity-mappings>

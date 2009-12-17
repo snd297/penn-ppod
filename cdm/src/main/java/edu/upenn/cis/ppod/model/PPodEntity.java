@@ -15,11 +15,7 @@
  */
 package edu.upenn.cis.ppod.model;
 
-import static com.google.common.base.Predicates.compose;
-import static com.google.common.base.Predicates.equalTo;
-import static com.google.common.collect.Iterables.filter;
 import static com.google.common.collect.Sets.newHashSet;
-import static edu.upenn.cis.ppod.util.PPodIterables.findIf;
 
 import java.util.Collections;
 import java.util.Set;
@@ -85,6 +81,9 @@ abstract class PPodEntity extends PersistentObject implements IAttachee,
 	@Transient
 	private Long pPodVersion;
 
+	@Transient
+	private boolean suppressResetPPodVersionInfo = false;
+
 	PPodEntity() {}
 
 	public PPodEntity addAttachment(final Attachment attachment) {
@@ -148,11 +147,15 @@ abstract class PPodEntity extends PersistentObject implements IAttachee,
 		if (pPodVersion != null) {
 			return pPodVersion;
 		}
-		throw new IllegalStateException("no version number available");
+		return null;
 	}
 
 	public PPodVersionInfo getPPodVersionInfo() {
 		return pPodVersionInfo;
+	}
+
+	public boolean getSuppressResetPPodVersionInfo() {
+		return suppressResetPPodVersionInfo;
 	}
 
 	public boolean removeAttachment(final Attachment attachment) {
@@ -178,20 +181,13 @@ abstract class PPodEntity extends PersistentObject implements IAttachee,
 		return this;
 	}
 
-	@Transient
-	private boolean suppressResetPPodVersionInfo = false;
-
-	public boolean getSuppressResetPPodVersionInfo() {
-		return suppressResetPPodVersionInfo;
+	PPodEntity setPPodVersionInfo(final PPodVersionInfo pPodVersionInfo) {
+		this.pPodVersionInfo = pPodVersionInfo;
+		return this;
 	}
 
 	public PPodEntity suppressResetPPodVersionInfo(final boolean suppress) {
 		suppressResetPPodVersionInfo = suppress;
-		return this;
-	}
-
-	PPodEntity setPPodVersionInfo(final PPodVersionInfo pPodVersionInfo) {
-		this.pPodVersionInfo = pPodVersionInfo;
 		return this;
 	}
 
