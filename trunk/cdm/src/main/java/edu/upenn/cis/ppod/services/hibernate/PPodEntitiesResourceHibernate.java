@@ -16,6 +16,7 @@
 package edu.upenn.cis.ppod.services.hibernate;
 
 import static com.google.common.base.Preconditions.checkNotNull;
+import static com.google.common.collect.Lists.newArrayList;
 import static com.google.common.collect.Sets.newHashSet;
 
 import java.util.List;
@@ -23,6 +24,7 @@ import java.util.Set;
 
 import org.hibernate.FlushMode;
 import org.hibernate.Session;
+import org.hibernate.engine.query.HQLQueryPlan;
 
 import com.google.inject.Inject;
 import com.google.inject.Provider;
@@ -70,6 +72,18 @@ public class PPodEntitiesResourceHibernate implements IPPodEntitiesResource {
 		final Set<TreeSet> addedTreeSets = newHashSet();
 		final Session s = HibernateUtil.getCurrentSession();
 
+// final List<Object> flattenedQueryResults = newArrayList();
+// for (final Object queryResult : queryResults) {
+// if (queryResult instanceof Object[]) {
+// final Object[] objects = (Object[]) queryResult;
+// for (final Object object : objects) {
+// flattenedQueryResults.add(object);
+// }
+// } else {
+// flattenedQueryResults.add(queryResult);
+// }
+// }
+
 		for (final Object queryResult : queryResults) {
 			if (queryResult instanceof OTUSet) {
 				final OTUSet otuSet = (OTUSet) queryResult;
@@ -77,7 +91,10 @@ public class PPodEntitiesResourceHibernate implements IPPodEntitiesResource {
 				// Extra insurance against accidental sync with database
 				s.setReadOnly(otuSet, true);
 
-				otuSet.accept(setDocIdVisitor);
+				if (otuSet.getDocId() == null) {
+					otuSet.accept(setDocIdVisitor);
+				}
+
 				// Note that otu set may have already been added in any of the
 				// other if clauses: Hibernate identity takes care of us
 				pPodEntities.addOTUSet(otuSet);
@@ -114,9 +131,14 @@ public class PPodEntitiesResourceHibernate implements IPPodEntitiesResource {
 				final OTU otu = (OTU) queryResult;
 				s.setReadOnly(otu, true);
 				pPodEntities.addOTU(otu);
+			} else if (queryResult instanceof Object[]) {
+				throw new IllegalArgumentException(
+						"nested query results not supported. query: [" + query
+								+ "]");
 			} else {
-				throw new IllegalArgumentException("unsupported entity type "
-						+ queryResult.getClass() + ", result: " + queryResult);
+				throw new IllegalArgumentException("unsupported entity type ["
+						+ queryResult.getClass() + "], result: ["
+						+ queryResult.toString() + "]");
 			}
 
 			// Now we clean up our response so we don't include any extra

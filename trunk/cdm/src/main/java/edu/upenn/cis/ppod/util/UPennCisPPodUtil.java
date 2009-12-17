@@ -15,6 +15,12 @@
  */
 package edu.upenn.cis.ppod.util;
 
+import static com.google.common.base.Predicates.compose;
+import static com.google.common.base.Predicates.equalTo;
+
+import com.google.common.base.Function;
+import com.google.common.base.Predicate;
+
 /**
  * Project wide utilities.
  * 
@@ -53,4 +59,8 @@ public class UPennCisPPodUtil {
 		return lhs.equals(rhs);
 	}
 
+	public static <F, T> Predicate<F> composeEqualTo(T equalToTarget,
+			Function<F, ? extends T> f) {
+		return compose(equalTo(equalToTarget), f);
+	}
 }
