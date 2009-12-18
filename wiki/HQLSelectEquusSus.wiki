@@ -1,0 +1,3 @@
+#Screenshots of "select m from CharacterStateMatrix m join m.otus otu1 join m.otus otu2 where otu1.label='equus' and otu2.label='sus'"
+
+[https://dbappserv.cis.upenn.edu/ppod/images/mesqSelectHQL1.tiff]
