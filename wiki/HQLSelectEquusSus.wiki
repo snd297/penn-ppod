@@ -1,3 +1,4 @@
 #Screenshots of "select m from CharacterStateMatrix m join m.otus otu1 join m.otus otu2 where otu1.label='equus' and otu2.label='sus'"
 
 [http://penn-ppod.googlecode.com/svn/wiki/pictures/mesqSelectHQL1.png]
+[http://penn-ppod.googlecode.com/svn/wiki/pictures/mesqHQLQueryWindow2.png]
