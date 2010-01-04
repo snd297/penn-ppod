@@ -119,7 +119,7 @@ public final class CharacterStateMatrix extends UUPPodEntityWXmlId {
 	static final String OTU_IDX_COLUMN = "OTU_IDX";
 
 	/**
-	 * The inverse of {@code otus}: it's an {@code OTU}->rowNumber lookup.
+	 * The inverse of {@code otus}: 	 an {@code OTU}->rowNumber lookup.
 	 */
 	@org.hibernate.annotations.CollectionOfElements
 	@JoinTable(name = TABLE + "_" + OTU_IDX_COLUMN, joinColumns = @JoinColumn(name = ID_COLUMN))

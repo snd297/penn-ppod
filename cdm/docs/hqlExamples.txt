@@ -112,4 +112,13 @@ select distinct
   and phyloChar.label like '%Nerve%'
   and otu.label like 'Mesonyx'
   and phyloCharState.label like '%absent%'
+  
+  select distinct c1.label, c2.label, m1.otuSet.study.label
+from Character c1, Character c2
+join c1.matrices m1
+join c2.matrices m2
+where m1=m2
+  and c1!=c2
+  and c1.label=c2.label
+  
 
