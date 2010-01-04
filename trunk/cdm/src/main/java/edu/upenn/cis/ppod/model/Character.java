@@ -213,17 +213,34 @@ public class Character extends UUPPodEntity {
 	 * 
 	 * @return a <code>String</code> representation of this object.
 	 */
-	@Override
 	public String toString() {
 		final String TAB = "";
 
 		final StringBuilder retValue = new StringBuilder();
 
-		retValue.append("Character(").append(super.toString()).append(TAB)
-				.append("states=").append(this.states).append(TAB).append(
-						"label=").append(this.label).append(TAB).append(")");
+		retValue.append("Character(").append("label=").append(this.label)
+				.append(TAB).append(")");
 
 		return retValue.toString();
 	}
+
+// /**
+// * Constructs a <code>String</code> with all attributes in name = value
+// * format.
+// *
+// * @return a <code>String</code> representation of this object.
+// */
+// @Override
+// public String toString() {
+// final String TAB = "";
+//
+// final StringBuilder retValue = new StringBuilder();
+//		
+// retValue.append("Character(").append(super.toString()).append(TAB)
+// .append("states=").append(this.states).append(TAB).append(
+// "label=").append(this.label).append(TAB).append(")");
+//
+// return retValue.toString();
+// }
 
 }
