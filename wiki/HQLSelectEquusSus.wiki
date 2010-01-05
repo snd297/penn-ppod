@@ -1,3 +1,5 @@
+#summary In Mesquite use HQL to select all matrices in the pPOD database which contain both 'Equus' and 'Sus'
+
 =Use HQL to select all matrices in the pPOD database which contain both 'Equus' and 'Sus'=
 
 ===In Mesquite, get started by choosing _HQL Query against pPOD database..._:===
