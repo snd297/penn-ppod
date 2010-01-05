@@ -1,6 +1,9 @@
 =Use HQL to select all matrices which contain both 'Equus' and 'Sus'=
 
+In Mesquite, get started by choosing _HQL Query against pPOD database..._:
 [http://penn-ppod.googlecode.com/svn/wiki/pictures/mesqSelectHQL1.png]
+
+Enter in our HQL query:
 [http://penn-ppod.googlecode.com/svn/wiki/pictures/mesqHQLQueryWindow2.png]
 [http://penn-ppod.googlecode.com/svn/wiki/pictures/mesqQueryResults3.png]
 [http://penn-ppod.googlecode.com/svn/wiki/pictures/mesqMatrix1Detail4.png]
@@ -8,6 +11,5 @@
 [http://penn-ppod.googlecode.com/svn/wiki/pictures/mesqCut6.png]
 [http://penn-ppod.googlecode.com/svn/wiki/pictures/1-7-mesqAfterCut7.png]
 
-
-*View the second matrix returned:*
+View the second matrix returned:
 [http://penn-ppod.googlecode.com/svn/wiki/pictures/1-8-mesqChoose2ndTaxa.png]
