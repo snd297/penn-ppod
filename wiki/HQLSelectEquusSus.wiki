@@ -5,10 +5,20 @@
 
 ===Enter in our HQL query:===
 [http://penn-ppod.googlecode.com/svn/wiki/pictures/mesqHQLQueryWindow2.png]
+
+===The results:===
 [http://penn-ppod.googlecode.com/svn/wiki/pictures/mesqQueryResults3.png]
+
+===Have a look at the first matrix:===
 [http://penn-ppod.googlecode.com/svn/wiki/pictures/mesqMatrix1Detail4.png]
+
+===Highlight all non-equus and non-sus taxa:===
 [http://penn-ppod.googlecode.com/svn/wiki/pictures/mesqEqSusDehighlighted5.png]
+
+===Get rid of all non-equus and non-sus taxa:===
 [http://penn-ppod.googlecode.com/svn/wiki/pictures/mesqCut6.png]
+
+===Only left with equus and sus:===
 [http://penn-ppod.googlecode.com/svn/wiki/pictures/1-7-mesqAfterCut7.png]
 
 ===View the second matrix returned:===
