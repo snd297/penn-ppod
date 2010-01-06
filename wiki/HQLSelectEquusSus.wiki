@@ -9,19 +9,19 @@
 [http://penn-ppod.googlecode.com/svn/wiki/Pictures/2-mesqHQLQueryWindow.png]
 
 ===The results:===
-[http://penn-ppod.googlecode.com/svn/wiki/pictures/SelectEquusAndSusMatrices/mesqQueryResults3.png]
+[http://penn-ppod.googlecode.com/svn/wiki/Pictures/SelectEquusAndSusMatrices/mesqQueryResults3.png]
 
 ===Have a look at the first matrix:===
-[http://penn-ppod.googlecode.com/svn/wiki/pictures/SelectEquusAndSusMatrices/mesqMatrix1Detail4.png]
+[http://penn-ppod.googlecode.com/svn/wiki/Pictures/SelectEquusAndSusMatrices/mesqMatrix1Detail4.png]
 
 ===Highlight all non-equus and non-sus taxa:===
-[http://penn-ppod.googlecode.com/svn/wiki/pictures/SelectEquusAndSusMatrices/mesqEqSusDehighlighted5.png]
+[http://penn-ppod.googlecode.com/svn/wiki/Pictures/SelectEquusAndSusMatrices/mesqEqSusDehighlighted5.png]
 
 ===Get rid of all non-equus and non-sus taxa:===
-[http://penn-ppod.googlecode.com/svn/wiki/pictures/SelectEquusAndSusMatrices/mesqCut6.png]
+[http://penn-ppod.googlecode.com/svn/wiki/Pictures/SelectEquusAndSusMatrices/mesqCut6.png]
 
 ===Only left with equus and sus:===
-[http://penn-ppod.googlecode.com/svn/wiki/pictures/SelectEquusAndSusMatrices/7-mesqAfterCut7.png]
+[http://penn-ppod.googlecode.com/svn/wiki/Pictures/SelectEquusAndSusMatrices/7-mesqAfterCut7.png]
 
 ===View the second matrix returned:===
-[http://penn-ppod.googlecode.com/svn/wiki/pictures/SelectEquusAndSusMatrices/8-mesqChoose2ndTaxa.png]
+[http://penn-ppod.googlecode.com/svn/wiki/Pictures/SelectEquusAndSusMatrices/8-mesqChoose2ndTaxa.png]
