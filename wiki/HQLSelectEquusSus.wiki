@@ -1,1 +1,33 @@
+#summary In Mesquite use HQL to select all matrices in the pPOD database which contain both 'Equus' and 'Sus'
+
+=Use HQL to select all matrices in the pPOD database which contain both 'Equus' and 'Sus'=
+
+===In Mesquite, get started by choosing _HQL Query against pPOD database..._:===
 [http://penn-ppod.googlecode.com/svn/wiki/Pictures/SelectEquusAndSusMatrices/1-mesqSelectHQL.png]
+
+===Enter in our HQL query:===
+[http://penn-ppod.googlecode.com/svn/wiki/Pictures/SelectEquusAndSusMatrices/2-mesqHQLQueryWindow.png]
+
+===The results:===
+[http://penn-ppod.googlecode.com/svn/wiki/Pictures/SelectEquusAndSusMatrices/3-mesqQueryResults.png]
+
+===Have a look at the first matrix:===
+[http://penn-ppod.googlecode.com/svn/wiki/Pictures/SelectEquusAndSusMatrices/4-mesqMatrix1Detail.png]
+
+===Highlight all non-Equus and non-Sus taxa:===
+[http://penn-ppod.googlecode.com/svn/wiki/Pictures/SelectEquusAndSusMatrices/5-mesqEqSusDehighlighted.png]
+
+===Get rid of all non-Equus and non-Sus taxa:===
+[http://penn-ppod.googlecode.com/svn/wiki/Pictures/SelectEquusAndSusMatrices/6-mesqCut.png]
+
+===Only left with Equus and Sus:===
+[http://penn-ppod.googlecode.com/svn/wiki/Pictures/SelectEquusAndSusMatrices/7-mesqAfterCut.png]
+
+===Rename them to Equus1 and Sus1 in anticipation of combining with other matrices:===
+[http://penn-ppod.googlecode.com/svn/wiki/Pictures/SelectEquusAndSusMatrices/7.1-rename1stMatrixTaxaToX1.png]
+
+===View the second matrix returned:===
+[http://penn-ppod.googlecode.com/svn/wiki/Pictures/SelectEquusAndSusMatrices/8-mesqChoose2ndTaxa.png]
+
+===Get rid of taxa we don't want and rename to Equus2 and Sus2:===
+[http://penn-ppod.googlecode.com/svn/wiki/Pictures/SelectEquusAndSusMatrices/9-rename2ndMatrixTaxaToX2.png]
