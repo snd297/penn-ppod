@@ -3,7 +3,7 @@
 =Use HQL to select all matrices in the pPOD database which contain both 'Equus' and 'Sus'=
 
 ===In Mesquite, get started by choosing _HQL Query against pPOD database..._:===
-[http://penn-ppod.googlecode.com/svn/wiki/pictures/mesqSelectHQL1.png]
+[http://penn-ppod.googlecode.com/svn/wiki/Pictures/SelectEquusAndSusMatrices/1-mesqSelectHQL.png]
 
 ===Enter in our HQL query:===
 [http://penn-ppod.googlecode.com/svn/wiki/pictures/mesqHQLQueryWindow2.png]
