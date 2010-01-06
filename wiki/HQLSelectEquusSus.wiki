@@ -25,3 +25,6 @@
 
 ===View the second matrix returned:===
 [http://penn-ppod.googlecode.com/svn/wiki/Pictures/SelectEquusAndSusMatrices/8-mesqChoose2ndTaxa.png]
+
+===Get rid of taxa we don't want and rename to Equus2 and Sus2===
+[http://penn-ppod.googlecode.com/svn/wiki/Pictures/SelectEquusAndSusMatrices/9-rename2ndMatrixTaxaToX2.png]
