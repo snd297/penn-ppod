@@ -23,7 +23,7 @@
 ===Only left with equus and sus:===
 [http://penn-ppod.googlecode.com/svn/wiki/Pictures/SelectEquusAndSusMatrices/7-mesqAfterCut.png]
 
-===Rename them to Equus and Sus in anticipation of combining with other matrices:===
+===Rename them to Equus1 and Sus1 in anticipation of combining with other matrices:===
 [http://penn-ppod.googlecode.com/svn/wiki/Pictures/SelectEquusAndSusMatrices/7.1-rename1stMatrixTaxaToX1.png]
 
 ===View the second matrix returned:===
