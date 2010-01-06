@@ -26,6 +26,9 @@
 ===Rename them to Equus1 and Sus1 in anticipation of combining with other matrices:===
 [http://penn-ppod.googlecode.com/svn/wiki/Pictures/SelectEquusAndSusMatrices/7.1-rename1stMatrixTaxaToX1.png]
 
+===Using a similiar technique as cutting out taxa, whittle down to the characters we want===
+[http://penn-ppod.googlecode.com/svn/wiki/Pictures/SelectEquusAndSusMatrices/7.2-cutUnwantedCharsFrom1stMatrix.png]
+
 ===View the second matrix returned:===
 [http://penn-ppod.googlecode.com/svn/wiki/Pictures/SelectEquusAndSusMatrices/8-mesqChoose2ndTaxa.png]
 
