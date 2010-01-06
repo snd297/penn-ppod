@@ -5,6 +5,8 @@
 ===In Mesquite, get started by choosing _HQL Query against pPOD database..._:===
 [http://penn-ppod.googlecode.com/svn/wiki/Pictures/SelectEquusAndSusMatrices/1-mesqSelectHQL.png]
 
+[http://penn-ppod.googlecode.com/svn/wiki/Pictures/SelectEquusAndSusMatrices/1-mesqSelectHQL.png]
+
 ===Enter in our HQL query:===
 [http://penn-ppod.googlecode.com/svn/wiki/Pictures/SelectEquusAndSusMatrices/2-mesqHQLQueryWindow.png]
 
