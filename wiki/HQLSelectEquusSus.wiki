@@ -14,10 +14,7 @@
 ===Have a look at the first matrix:===
 [http://penn-ppod.googlecode.com/svn/wiki/Pictures/SelectEquusAndSusMatrices/004-mesqMatrix1Detail.png]
 
-===Rename the taxa to Equus1 and Sus1 and d_Edit->Cut_ all rows and columns we're not interested in:===
-[http://penn-ppod.googlecode.com/svn/wiki/Pictures/SelectEquusAndSusMatrices/007.001-rename1stMatrixTaxaToX1.png]
-
-===Using a similiar technique as the one we used for cutting out taxa, whittle down to the characters we want: ===
+===Rename the taxa to Equus1 and Sus1 and _Edit->Cut_ all rows and columns we're not interested in:===
 [http://penn-ppod.googlecode.com/svn/wiki/Pictures/SelectEquusAndSusMatrices/007.002-cutUnwantedCharsFrom1stMatrix.png]
 
 ===View the second matrix returned:===
