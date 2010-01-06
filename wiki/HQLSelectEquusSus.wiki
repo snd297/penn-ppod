@@ -21,4 +21,4 @@
 [http://penn-ppod.googlecode.com/svn/wiki/Pictures/SelectEquusAndSusMatrices/008-mesqChoose2ndMatrix.png]
 
 ===Rename our taxa to Equus1 and Sus1 and _Edit->Cut_ all rows and columns we're not interested in:===
-[http://penn-ppod.googlecode.com/svn/wiki/Pictures/SelectEquusAndSusMatrices/010-removedCharsCharFromSecondMatrix.png]
+[http://penn-ppod.googlecode.com/svn/wiki/Pictures/SelectEquusAndSusMatrices/010-removedCharsFromSecondMatrix.png]
