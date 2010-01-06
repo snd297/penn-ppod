@@ -22,3 +22,7 @@
 
 ===Rename our taxa to "Equus2" and "Sus2" and _Edit->Cut_ all rows and columns we're not interested in:===
 [http://penn-ppod.googlecode.com/svn/wiki/Pictures/SelectEquusAndSusMatrices/010-removedCharsFromSecondMatrix.png]
+
+==For the third matrix, rename our taxa to "Equus3" and "Sus3" and _Edit->Cut_ all rows and columns we're not interested in:===
+[http://penn-ppod.googlecode.com/svn/wiki/Pictures/SelectEquusAndSusMatrices/011-3rdMatrixTaxaAndCharsTrimmedAndTaxaRenamed.png]
+
