@@ -1,6 +1,6 @@
 #summary In Mesquite use HQL to select all matrices in the pPOD database which contain both 'Equus' and 'Sus'
 
-=Use HQL to select all matrices in the pPOD database which contain both 'Equus' and 'Sus'=
+=Use HQL to select all matrices in the pPOD database which contain both 'Equus' and 'Sus', and then assemble them into a single matrix=
 
 ===In Mesquite, get started by choosing _HQL Query against pPOD database..._:===
 [http://penn-ppod.googlecode.com/svn/wiki/Pictures/SelectEquusAndSusMatrices/001-mesqSelectHQL.png]
@@ -28,5 +28,3 @@
 
 ===Finally we use Mesquite's _Matrix->Utilities->Concatenate Other Matrix_ to concatenate first the second then the third matrices to the first matrix:===
 [http://penn-ppod.googlecode.com/svn/wiki/Pictures/SelectEquusAndSusMatrices/012-2ndAnd3rdConcatedTo1st.png]
-
-
