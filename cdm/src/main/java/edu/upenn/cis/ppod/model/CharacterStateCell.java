@@ -418,7 +418,7 @@ public final class CharacterStateCell extends PPodEntity {
 	 * <p>
 	 * This object makes its own copy of {@code states}.
 	 * 
-	 * @param state to be added. Must be in a persistent state.
+	 * @param states to be added. Each must not be in a detached state.
 	 * 
 	 * @return {@code state}
 	 */
@@ -490,7 +490,7 @@ public final class CharacterStateCell extends PPodEntity {
 	 *             state.getCharacter()} is not the character of this cell's
 	 *             column
 	 * @throws IllegalArgumentException if {@code type} is {@code Type.SINGLE}
-	 *             and {@codes states.size() != 1}
+	 *             and {@code states.size() != 1}
 	 * @throws IllegalArgumentException if {@code type} is {@code
 	 *             Type.POLYMORPHIC} and {@code states.size() < 2}
 	 * @throws IllegalArgumentException if {@code type} is {@code

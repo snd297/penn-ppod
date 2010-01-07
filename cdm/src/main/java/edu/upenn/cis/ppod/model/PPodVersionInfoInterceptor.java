@@ -71,8 +71,9 @@ public class PPodVersionInfoInterceptor extends EmptyInterceptor {
 
 	/**
 	 * In a temporary session, grab the next available pPOD version number,
-	 * assign it to {@link PPodVersionInfoInterceptor#pPodVersionInfo},
-	 * increment it, and save (but not commit) it to the database.
+	 * increment it, assign it to a {@code sessionFactory.getCurrentSession()}
+	 * and {@code PPodVersionInfo} in {@link #pPodVersionInfosBySession}, and
+	 * save (but not commit) it to the database.
 	 */
 	private void initializePPodVersionInfo() {
 		if (pPodVersionInfosBySession.containsKey(sessionFactory

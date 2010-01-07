@@ -144,7 +144,7 @@ public final class OTU extends UUPPodEntityWXmlId {
 	 * @return {@code true} if {@code otuSet} belonged to this OTU set and was
 	 *         removed
 	 */
-	boolean removeOtuSet(final OTUSet otuSet) {
+	boolean removeOTUSet(final OTUSet otuSet) {
 		checkNotNull(otuSet);
 		if (otuSets.remove(otuSet)) {
 			resetPPodVersionInfo();

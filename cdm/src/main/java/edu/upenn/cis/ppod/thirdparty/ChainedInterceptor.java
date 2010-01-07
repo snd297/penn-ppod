@@ -51,11 +51,6 @@ public class ChainedInterceptor extends EmptyInterceptor {
 		this.interceptors = interceptors;
 	}
 
-	/**
-	 * @see net.sf.hibernate.Interceptor#findDirty(java.lang.Object,
-	 *      java.io.Serializable, java.lang.Object[], java.lang.Object[],
-	 *      java.lang.String[], net.sf.hibernate.type.Type[])
-	 */
 	@Override
 	public int[] findDirty(final Object entity, final Serializable id,
 			final Object[] currentState, final Object[] previousState,
@@ -85,10 +80,6 @@ public class ChainedInterceptor extends EmptyInterceptor {
 		return interceptors;
 	}
 
-	/**
-	 * @see net.sf.hibernate.Interceptor#instantiate(java.lang.Class,
-	 *      java.io.Serializable)
-	 */
 	@Override
 	public Object instantiate(final String entityName,
 			final EntityMode entityMode, final Serializable id)
@@ -107,9 +98,6 @@ public class ChainedInterceptor extends EmptyInterceptor {
 		return result;
 	}
 
-	/**
-	 * @see net.sf.hibernate.Interceptor#isUnsaved(java.lang.Object)
-	 */
 	@Override
 	public Boolean isTransient(final Object entity) {
 		Boolean result = null;
@@ -124,11 +112,6 @@ public class ChainedInterceptor extends EmptyInterceptor {
 		return result;
 	}
 
-	/**
-	 * @see net.sf.hibernate.Interceptor#onDelete(java.lang.Object,
-	 *      java.io.Serializable, java.lang.Object[], java.lang.String[],
-	 *      net.sf.hibernate.type.Type[])
-	 */
 	@Override
 	public void onDelete(final Object entity, final Serializable id,
 			final Object[] state, final String[] propertyNames,
@@ -138,11 +121,6 @@ public class ChainedInterceptor extends EmptyInterceptor {
 		}
 	}
 
-	/**
-	 * @see net.sf.hibernate.Interceptor#onFlushDirty(java.lang.Object,
-	 *      java.io.Serializable, java.lang.Object[], java.lang.Object[],
-	 *      java.lang.String[], net.sf.hibernate.type.Type[])
-	 */
 	@Override
 	public boolean onFlushDirty(final Object entity, final Serializable id,
 			final Object[] currentState, final Object[] previousState,
@@ -162,11 +140,6 @@ public class ChainedInterceptor extends EmptyInterceptor {
 		return result;
 	}
 
-	/**
-	 * @see net.sf.hibernate.Interceptor#onLoad(java.lang.Object,
-	 *      java.io.Serializable, java.lang.Object[], java.lang.String[],
-	 *      net.sf.hibernate.type.Type[])
-	 */
 	@Override
 	public boolean onLoad(final Object entity, final Serializable id,
 			final Object[] state, final String[] propertyNames,
@@ -184,11 +157,6 @@ public class ChainedInterceptor extends EmptyInterceptor {
 		return result;
 	}
 
-	/**
-	 * @see net.sf.hibernate.Interceptor#onSave(java.lang.Object,
-	 *      java.io.Serializable, java.lang.Object[], java.lang.String[],
-	 *      net.sf.hibernate.type.Type[])
-	 */
 	@Override
 	public boolean onSave(final Object entity, final Serializable id,
 			final Object[] state, final String[] propertyNames,
@@ -206,9 +174,6 @@ public class ChainedInterceptor extends EmptyInterceptor {
 		return result;
 	}
 
-	/**
-	 * @see Interceptor#postFlush(Iterator)
-	 */
 	@Override
 	public void postFlush(final Iterator entities) throws CallbackException {
 		final List entityList = newArrayList(entities);
@@ -217,9 +182,6 @@ public class ChainedInterceptor extends EmptyInterceptor {
 		}
 	}
 
-	/**
-	 * @see Interceptor#preFlush(Iterator)
-	 */
 	@Override
 	public void preFlush(final Iterator entities) throws CallbackException {
 		final List entityList = newArrayList(entities);

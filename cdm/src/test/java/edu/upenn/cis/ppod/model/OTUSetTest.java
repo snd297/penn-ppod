@@ -78,4 +78,14 @@ public class OTUSetTest {
 		assertNull(otuSet.getPPodVersionInfo());
 		assertEquals(study.getPPodVersionInfo(), studyPPodVersionInfo);
 	}
+
+	public void setDescriptionToNull() {
+		otuSet.setDescription(null);
+		assertNull(otuSet.getDescription());
+	}
+
+	public void setDescription() {
+		otuSet.setDescription("TEST DESCRIPTION");
+		assertEquals(otuSet.getDescription(), "TEST DESCRIPTION");
+	}
 }

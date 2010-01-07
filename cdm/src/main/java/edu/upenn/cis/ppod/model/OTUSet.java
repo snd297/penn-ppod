@@ -217,13 +217,17 @@ public final class OTUSet extends UUPPodEntityWXmlId {
 	}
 
 	/**
-	 * Clear this OTU set's OTUs.
+	 * Equivalent to calling {@link #removeOTU(OTU)} on each of this OTU set's
+	 * OTUs.
 	 * 
 	 * @return the OTUs that were removed
 	 */
 	public Set<OTU> clearOTUs() {
 		final Set<OTU> clearedOTUs = newHashSet(otus);
-		otus.clear();
+		for (final OTU otu : getOTUs()) {
+			clearedOTUs.add(otu);
+			removeOTU(otu);
+		}
 		return clearedOTUs;
 	}
 
@@ -321,15 +325,17 @@ public final class OTUSet extends UUPPodEntityWXmlId {
 	 * 
 	 * @param otu see description
 	 * 
-	 * @return {@code otu}
+	 * @return {@code true} if {@code otu} belonged to this OTU set and was
+	 *         removed
 	 */
-	public OTU removeOTU(final OTU otu) {
+	public boolean removeOTU(final OTU otu) {
 		checkNotNull(otu);
 		if (otus.remove(otu)) {
-			otu.removeOtuSet(this);
+			otu.removeOTUSet(this);
 			resetPPodVersionInfo();
+			return true;
 		}
-		return otu;
+		return false;
 	}
 
 	/**
