@@ -360,8 +360,13 @@ public final class OTUSet extends UUPPodEntityWXmlId {
 	/**
 	 * Point this {@code OTUSet} and all of its {@code PhyloCharMatrix}'s to a
 	 * new {@code pPodVersionInfo}. Only the first call has an effect.
+	 * <p>
+	 * If {@link #getDoNotPersist()} {@code == true} then calls
+	 * to this method does nothing and returns.
 	 * 
-	 * @return this <code>OTUSet</code>
+	 * @see #setDoNotPersist(boolean)
+	 * 
+	 * @return this {@code OTUSet}
 	 * 
 	 * @throws IllegalArgumentException if {@code
 	 *             pPodVersionInfo.getPPodVersion()} is greater than {@code
@@ -371,7 +376,7 @@ public final class OTUSet extends UUPPodEntityWXmlId {
 	protected OTUSet resetPPodVersionInfo() {
 		if (getPPodVersionInfo() == null) {
 
-		} else if (getSuppressResetPPodVersionInfo()) {
+		} else if (getDoNotPersist()) {
 
 		} else {
 			if (study != null) {

@@ -16,7 +16,6 @@
 package edu.upenn.cis.ppod.services.hibernate;
 
 import static com.google.common.base.Preconditions.checkNotNull;
-import static com.google.common.collect.Lists.newArrayList;
 import static com.google.common.collect.Sets.newHashSet;
 
 import java.util.List;
@@ -24,7 +23,6 @@ import java.util.Set;
 
 import org.hibernate.FlushMode;
 import org.hibernate.Session;
-import org.hibernate.engine.query.HQLQueryPlan;
 
 import com.google.inject.Inject;
 import com.google.inject.Provider;
@@ -87,6 +85,7 @@ public class PPodEntitiesResourceHibernate implements IPPodEntitiesResource {
 		for (final Object queryResult : queryResults) {
 			if (queryResult instanceof OTUSet) {
 				final OTUSet otuSet = (OTUSet) queryResult;
+				otuSet.setDoNotPersist();
 
 				// Extra insurance against accidental sync with database
 				s.setReadOnly(otuSet, true);
@@ -101,6 +100,7 @@ public class PPodEntitiesResourceHibernate implements IPPodEntitiesResource {
 			} else if (queryResult instanceof CharacterStateMatrix) {
 
 				final CharacterStateMatrix matrix = (CharacterStateMatrix) queryResult;
+				matrix.setDoNotPersist();
 
 				// Extra insurance against accidental sync with database
 				s.setReadOnly(matrix, true);
@@ -115,6 +115,7 @@ public class PPodEntitiesResourceHibernate implements IPPodEntitiesResource {
 				pPodEntities.addOTUSet(matrix.getOTUSet());
 			} else if (queryResult instanceof TreeSet) {
 				final TreeSet treeSet = (TreeSet) queryResult;
+				treeSet.setDoNotPersist();
 
 				// Extra insurance against accidental sync with database
 				s.setReadOnly(treeSet, true);
@@ -129,6 +130,7 @@ public class PPodEntitiesResourceHibernate implements IPPodEntitiesResource {
 				pPodEntities.addOTUSet(treeSet.getOTUSet());
 			} else if (queryResult instanceof OTU) {
 				final OTU otu = (OTU) queryResult;
+				otu.setDoNotPersist();
 				s.setReadOnly(otu, true);
 				pPodEntities.addOTU(otu);
 			} else if (queryResult instanceof Object[]) {
@@ -149,23 +151,13 @@ public class PPodEntitiesResourceHibernate implements IPPodEntitiesResource {
 					if (addedMatrices.contains(matrix)) {
 
 					} else {
-						otuSet.suppressResetPPodVersionInfo(true);
-						matrix.suppressResetPPodVersionInfo(true);
 						otuSet.removeMatrix(matrix);
-						otuSet.suppressResetPPodVersionInfo(false);
-						matrix.suppressResetPPodVersionInfo(false);
 					}
 				}
 
 				for (final TreeSet treeSet : otuSet.getTreeSets()) {
-					if (addedTreeSets.contains(treeSet)) {
-
-					} else {
-						otuSet.suppressResetPPodVersionInfo(true);
-						treeSet.suppressResetPPodVersionInfo(true);
+					if (addedTreeSets.contains(treeSet)) {} else {
 						otuSet.removeTreeSet(treeSet);
-						otuSet.suppressResetPPodVersionInfo(false);
-						treeSet.suppressResetPPodVersionInfo(false);
 					}
 				}
 			}

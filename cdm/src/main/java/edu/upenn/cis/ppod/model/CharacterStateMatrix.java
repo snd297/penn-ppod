@@ -435,7 +435,7 @@ public final class CharacterStateMatrix extends UUPPodEntityWXmlId {
 	 */
 	@Override
 	protected CharacterStateMatrix resetPPodVersionInfo() {
-		if (getPPodVersionInfo() == null || getSuppressResetPPodVersionInfo()) {
+		if (getPPodVersionInfo() == null || getDoNotPersist()) {
 			// nothing to do
 		} else {
 			if (otuSet != null) {
