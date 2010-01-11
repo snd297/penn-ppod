@@ -70,6 +70,12 @@ public class OTUSetTest {
 		assertEquals(getOnlyElement(otuSet.getTreeSets()), treeSet);
 	}
 
+	/**
+	 * Call {@code OTUSet.resetPPodVersionInfo()} when {@code
+	 * OTUSet.getPPodVersionInfo() == null} and make sure that
+	 * {@link OTUSet#getPPodVersionInfo()} stays {@code null} and that the OTU
+	 * sets's {@code Study}'s pPOD Version info is unaffected.
+	 */
 	public void resetPPodVersionInfoWNullVersion() {
 		final Study study = studyProvider.get();
 		study.addOTUSet(otuSet);
@@ -87,5 +93,9 @@ public class OTUSetTest {
 	public void setDescription() {
 		otuSet.setDescription("TEST DESCRIPTION");
 		assertEquals(otuSet.getDescription(), "TEST DESCRIPTION");
+	}
+
+	public void setDescriptionIfAlreadySetToNotNullValue() {
+		otuSet.setDescription("TEST DESCRIPTION");
 	}
 }

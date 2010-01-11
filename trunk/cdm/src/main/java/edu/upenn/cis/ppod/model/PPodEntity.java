@@ -43,6 +43,8 @@ import com.google.common.base.Predicate;
 import com.google.common.collect.Iterables;
 import com.google.common.collect.Sets;
 
+import edu.upenn.cis.ppod.services.hibernate.PPodEntitiesResourceHibernate;
+
 /**
  * A {@code PersistentObject} with pPOD version information and to which we can
  * add/remove attachments.
@@ -82,7 +84,7 @@ abstract class PPodEntity extends PersistentObject implements IAttachee,
 	private Long pPodVersion;
 
 	@Transient
-	private boolean suppressResetPPodVersionInfo = false;
+	private boolean doNotPersist = false;
 
 	PPodEntity() {}
 
@@ -154,8 +156,15 @@ abstract class PPodEntity extends PersistentObject implements IAttachee,
 		return pPodVersionInfo;
 	}
 
-	public boolean getSuppressResetPPodVersionInfo() {
-		return suppressResetPPodVersionInfo;
+	/**
+	 * If {@code true} then is pPOD entity should not be written to the
+	 * database. Also, calling {@code setPPodVersionInfo(PPodVersionInfo)} will
+	 * have no effect.
+	 * 
+	 * @return see description
+	 */
+	public boolean getDoNotPersist() {
+		return doNotPersist;
 	}
 
 	public boolean removeAttachment(final Attachment attachment) {
@@ -168,11 +177,14 @@ abstract class PPodEntity extends PersistentObject implements IAttachee,
 	 * <p>
 	 * Implementors should also, if desired, call {@code resetPPodVersionInfo()}
 	 * on any owning objects.
+	 * <p>
+	 * If {@code getDoNotPersist()} {@code == true} this method returns
+	 * without doing anything.
 	 * 
 	 * @return this {@code PPodEntity}
 	 */
 	protected PPodEntity resetPPodVersionInfo() {
-		if (suppressResetPPodVersionInfo) {
+		if (getDoNotPersist()) {
 
 		} else {
 			pPodVersionInfo = null;
@@ -186,8 +198,28 @@ abstract class PPodEntity extends PersistentObject implements IAttachee,
 		return this;
 	}
 
-	public PPodEntity suppressResetPPodVersionInfo(final boolean suppress) {
-		suppressResetPPodVersionInfo = suppress;
+	/**
+	 * Indicate that this object should not be persisted and changes to the pPOD
+	 * version numbers should not be propagated.
+	 * <p>
+	 * {@link PPodVersionInfoInterceptor} checks this flag before it does any
+	 * write operations. Beyond that, this flag should not be taken as a
+	 * guarantee that an object will not be written. Note that if {@code
+	 * PPodVersionInterceptor} is not configured in a session, it will,
+	 * obviously, not check this flag.
+	 * <p>
+	 * This flag was invented so that we can remove matrices and tree sets from
+	 * an {@link OTUSet} in
+	 * {@link PPodEntitiesResourceHibernate#getEntitiesByHqlQuery(String)}
+	 * before we return the data to the client. It is a less than ideal
+	 * solution.
+	 * 
+	 * @see PPodVersionInfoInterceptor
+	 * 
+	 * @return this {@code pPodEntity}
+	 */
+	public PPodEntity setDoNotPersist() {
+		this.doNotPersist = true;
 		return this;
 	}
 
