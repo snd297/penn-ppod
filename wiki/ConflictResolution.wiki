@@ -2,9 +2,9 @@
 #labels Phase-Requirements
 
 = Introduction =
-
-r1||1||1||
-r2||1||1||
+||m1 ||*c1*||*c2*||
+||*r1*||1||1||
+||*r2*||1||1||
 
 Add your content here.
 
