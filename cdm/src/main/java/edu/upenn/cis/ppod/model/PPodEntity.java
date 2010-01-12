@@ -160,6 +160,8 @@ abstract class PPodEntity extends PersistentObject implements IAttachee,
 	 * If {@code true} then is pPOD entity should not be written to the
 	 * database. Also, calling {@code setPPodVersionInfo(PPodVersionInfo)} will
 	 * have no effect.
+	 * <p>
+	 * See {@code setDoNotPersist()}
 	 * 
 	 * @return see description
 	 */
@@ -178,8 +180,8 @@ abstract class PPodEntity extends PersistentObject implements IAttachee,
 	 * Implementors should also, if desired, call {@code resetPPodVersionInfo()}
 	 * on any owning objects.
 	 * <p>
-	 * If {@code getDoNotPersist()} {@code == true} this method returns
-	 * without doing anything.
+	 * If {@code getDoNotPersist()} {@code == true} this method returns without
+	 * doing anything.
 	 * 
 	 * @return this {@code PPodEntity}
 	 */

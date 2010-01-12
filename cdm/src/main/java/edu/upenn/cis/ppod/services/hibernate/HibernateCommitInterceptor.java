@@ -28,7 +28,7 @@ import edu.upenn.cis.ppod.thirdparty.HibernateUtil;
 /**
  * Attempt to commit the current transaction <em>before</em> the servlet
  * response is committed. Because we want the client to be notified if the
- * commit fails. Which doesn't happen if we commit in 
+ * commit fails. Which doesn't happen if we commit in
  * {@link HibernateSessionPerRequestFilter}.
  * 
  * @author Sam Donnelly
@@ -38,7 +38,8 @@ import edu.upenn.cis.ppod.thirdparty.HibernateUtil;
 public class HibernateCommitInterceptor implements PostProcessInterceptor {
 
 	public void postProcess(final ServerResponse response) {
-		final Session currentSession = HibernateUtil.getCurrentSession();
+		final Session currentSession = HibernateUtil.getSessionFactory()
+				.getCurrentSession();
 
 		// The transaction may have been committed by the servlet!
 		if (currentSession.getTransaction().isActive()) {
