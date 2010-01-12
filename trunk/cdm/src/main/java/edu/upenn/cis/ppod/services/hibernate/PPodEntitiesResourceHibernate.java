@@ -59,16 +59,17 @@ public class PPodEntitiesResourceHibernate implements IPPodEntitiesResource {
 		// These queries are read only so set this for efficiency, security, and
 		// so we can modify the entities for the response
 		// without the modifications being committed to the database.
-		HibernateUtil.getCurrentSession().setFlushMode(FlushMode.MANUAL);
+		HibernateUtil.getSessionFactory().getCurrentSession().setFlushMode(
+				FlushMode.MANUAL);
 
 		@SuppressWarnings("unchecked")
-		final List<Object> queryResults = HibernateUtil.getCurrentSession()
-				.createQuery(query).list();
+		final List<Object> queryResults = HibernateUtil.getSessionFactory()
+				.getCurrentSession().createQuery(query).list();
 		final PPodEntities pPodEntities = pPodEntitiesProvider.get();
 
 		final Set<CharacterStateMatrix> addedMatrices = newHashSet();
 		final Set<TreeSet> addedTreeSets = newHashSet();
-		final Session s = HibernateUtil.getCurrentSession();
+		final Session s = HibernateUtil.getSessionFactory().getCurrentSession();
 
 // final List<Object> flattenedQueryResults = newArrayList();
 // for (final Object queryResult : queryResults) {

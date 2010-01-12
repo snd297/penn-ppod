@@ -34,10 +34,13 @@ import javax.naming.InitialContext;
 import javax.naming.NamingException;
 
 import org.hibernate.SessionFactory;
+import org.hibernate.Transaction;
 import org.hibernate.cfg.AnnotationConfiguration;
 import org.hibernate.cfg.Configuration;
 import org.hibernate.cfg.Environment;
+import org.hibernate.classic.Session;
 import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 
 import edu.upenn.cis.ppod.model.PPodVersionInfoInterceptor;
 import edu.upenn.cis.ppod.util.PPodCoreFactory;
@@ -69,120 +72,82 @@ import edu.upenn.cis.ppod.util.PPodCoreFactory;
  * 
  * @author Christian Bauer
  */
-public class HibernateUtil {
+public class CopyOfHibernateUtil {
 
-	private static Logger log = org.slf4j.LoggerFactory
-			.getLogger(HibernateUtil.class);
+	/**
+	 * Prevent inheritance and instantiation.
+	 * 
+	 * @throws UnsupportedOperationException always
+	 */
+	private CopyOfHibernateUtil() {
+		throw new AssertionError("Can't instantiate a HibernateUtil");
+	}
 
-	private static AnnotationConfiguration configuration;
+	private static Logger logger = LoggerFactory.getLogger(CopyOfHibernateUtil.class);
 
+	/**
+	 * Configuration used for building and rebuilding
+	 * <code>sessionFactory</code>.
+	 */
+	private static Configuration config;
+
+	/** The session factory that we're wrapping. */
 	private static SessionFactory sessionFactory;
+
 	static {
-		// Create the initial SessionFactory from the default configuration
-		// files
 		try {
-			log.debug("Initializing Hibernate");
-
-			// Read hibernate.properties, if present
-			configuration = new AnnotationConfiguration();
-			// Use annotations: configuration = new AnnotationConfiguration();
-
-			// Read hibernate.cfg.xml (has to be present)
-			configuration.configure();
-
-			configuration.setInterceptor(new PPodCoreFactory()
-					.create(PPodVersionInfoInterceptor.class));
-
+			// Reads hibernate.properties, if present and
 			// Build and store (either in JNDI or static variable)
-			rebuildSessionFactory(configuration);
-
-			log
-					.debug("Hibernate initialized, call HibernateUtil.getSessionFactory()");
-		} catch (final Throwable ex) {
+			rebuildSessionFactory(configure(new AnnotationConfiguration()));
+		} catch (Throwable ex) {
 			// We have to catch Throwable, otherwise we will miss
 			// NoClassDefFoundError and other subclasses of Error
-			log.error("Building SessionFactory failed.", ex);
+			logger.error("Couldn't load HibernateUtil.", ex); // We break the
+			// rule and log this here because we're
+			// losing the
+			// exception
+			// otherwise in the Mesquite module - but don't know why
 			throw new ExceptionInInitializerError(ex);
 		}
 	}
 
+	public static Configuration configure(AnnotationConfiguration config) {
+		// Create the initial SessionFactory from the default config
+		// files
+		logger.debug("(Re)Initializing Hibernate");
+
+		// Read hibernate.cfg.xml (has to be present)
+		config.configure().setInterceptor(
+				new PPodCoreFactory().create(PPodVersionInfoInterceptor.class));
+
+		logger
+				.debug("Hibernate initialized, call HibernateUtil.getSessionFactory()");
+		return config;
+	}
+
+	public static void addResource(String resource) {
+		rebuildSessionFactory(configure(new AnnotationConfiguration()
+				.addResource(resource)));
+	}
+
 	/**
-	 * Returns the Hibernate configuration that was used to build the
-	 * SessionFactory.
+	 * Equivalent to {@code getCurrentSession().beginTransaction()}.
 	 * 
-	 * @return Configuration
+	 * @return {@code getCurrentSession().beginTransaction()}
 	 */
-	public static Configuration getConfiguration() {
-		return configuration;
+	public static Transaction beginTransactionInCurrentSession() {
+		return getCurrentSession().beginTransaction();
 	}
 
 	/**
-	 * Returns the global SessionFactory either from a static variable or a JNDI
-	 * lookup.
-	 * 
-	 * @return SessionFactory
-	 */
-	public static SessionFactory getSessionFactory() {
-		final String sfName = configuration
-				.getProperty(Environment.SESSION_FACTORY_NAME);
-		if (sfName != null) {
-			log.debug("Looking up SessionFactory in JNDI");
-			try {
-				return (SessionFactory) new InitialContext().lookup(sfName);
-			} catch (final NamingException ex) {
-				throw new RuntimeException(ex);
-			}
-		} else if (sessionFactory == null) {
-			rebuildSessionFactory();
-		}
-		return sessionFactory;
-	}
-
-	/**
-	 * Rebuild the SessionFactory with the static Configuration.
-	 * <p>
-	 * Note that this method should only be used with static SessionFactory
-	 * management, not with JNDI or any other external registry. This method
-	 * also closes the old static variable SessionFactory before, if it is still
-	 * open.
-	 */
-	public static void rebuildSessionFactory() {
-		log.debug("Using current Configuration to rebuild SessionFactory");
-		rebuildSessionFactory(configuration);
-	}
-
-	/**
-	 * Rebuild the SessionFactory with the given Hibernate Configuration.
-	 * <p>
-	 * HibernateUtil does not configure() the given Configuration object, it
-	 * directly calls buildSessionFactory(). This method also closes the old
-	 * static variable SessionFactory before, if it is still open.
-	 * 
-	 * @param cfg
-	 */
-	public static void rebuildSessionFactory(final AnnotationConfiguration cfg) {
-		log.debug("Rebuilding the SessionFactory from given Configuration");
-		if (sessionFactory != null && !sessionFactory.isClosed()) {
-			sessionFactory.close();
-		}
-		if (cfg.getProperty(Environment.SESSION_FACTORY_NAME) != null) {
-			log.debug("Managing SessionFactory in JNDI");
-			cfg.buildSessionFactory();
-		} else {
-			log.debug("Holding SessionFactory in static variable");
-			sessionFactory = cfg.buildSessionFactory();
-		}
-		configuration = cfg;
-	}
-
-	/**
-	 * Closes the current SessionFactory and releases all resources.
+	 * Closes the current {@code SessionFactory} and releases all resources.
 	 * <p>
 	 * The only other method that can be called on HibernateUtil after this one
 	 * is rebuildSessionFactory(Configuration).
 	 */
-	public static void shutdown() {
-		log.debug("Shutting down Hibernate");
+	public static void closeSessionFactory() {
+		logger.debug("Shutting down Hibernate");
+
 		// Close caches and connection pools
 		getSessionFactory().close();
 
@@ -191,12 +156,94 @@ public class HibernateUtil {
 	}
 
 	/**
-	 * Prevent inheritance and instantiation.
-	 * 
-	 * @throws UnsupportedOperationException always
+	 * Equivalent to {@code getCurrentSession().getTransaction().commit()}.
 	 */
-	private HibernateUtil() {
-		throw new AssertionError("Can't instantiate a HibernateUtil");
+	public static void commitTransactionInCurrentSession() {
+		getCurrentSession().getTransaction().commit();
+	}
+
+	/**
+	 * Returns the Hibernate config that was used to build the SessionFactory.
+	 * 
+	 * @return Configuration
+	 */
+	public static Configuration getConfiguration() {
+		return config;
+	}
+
+	/**
+	 * Equivalent to {@code getSessionFactory().getCurrentSession()}.
+	 * 
+	 * @return {@code getSessionFactory().getCurrentSession()}
+	 */
+	public static Session getCurrentSession() {
+		return getSessionFactory().getCurrentSession();
+	}
+
+	/**
+	 * Returns the global {@code SessionFactory} either from a static variable
+	 * or a JNDI lookup.
+	 * 
+	 * @return the global {@code SessionFactory}
+	 * @throws IllegalStateException if a JNDI lookup is done and fails
+	 */
+	public static SessionFactory getSessionFactory() {
+		final String sfName = config
+				.getProperty(Environment.SESSION_FACTORY_NAME);
+		if (sfName != null) {
+			logger.debug("Looking up SessionFactory in JNDI");
+			try {
+				return (SessionFactory) new InitialContext().lookup(sfName);
+			} catch (final NamingException ex) {
+				throw new IllegalStateException(ex);
+			}
+		} else if (sessionFactory == null) {
+			rebuildSessionFactory();
+		}
+		return sessionFactory;
+	}
+
+	/**
+	 * Rebuild the SessionFactory with the static {@code Configuration}.
+	 * <p>
+	 * Note that this method should only be used with static SessionFactory
+	 * management, not with JNDI or any other external registry. This method
+	 * also closes the old static variable SessionFactory before, if it is still
+	 * open.
+	 */
+	public static void rebuildSessionFactory() {
+		logger.debug("Using current Configuration to rebuild SessionFactory");
+		rebuildSessionFactory(config);
+	}
+
+	/**
+	 * Rebuild the SessionFactory with the given Hibernate
+	 * {@link AnnotationConfiguration}.
+	 * <p>
+	 * {@code rebuildSessionFactory(...)} does not {@code configure()} the given
+	 * {@code config}, it directly calls {@code buildSessionFactory()}. This
+	 * method also closes the old static variable SessionFactory before, if it
+	 * is still open.
+	 * 
+	 * @param config the Hibernate {@link AnnotationConfiguration}.
+	 */
+	public static void rebuildSessionFactory(final Configuration config) {
+		logger.debug("Rebuilding the SessionFactory from given Configuration");
+		if ((sessionFactory != null) && !sessionFactory.isClosed()) {
+			sessionFactory.close();
+		}
+		if (config.getProperty(Environment.SESSION_FACTORY_NAME) != null) {
+			logger.debug("Managing SessionFactory in JNDI");
+			config.buildSessionFactory();
+		} else {
+			logger.debug("Holding SessionFactory in static variable");
+			sessionFactory = config.buildSessionFactory();
+		}
+		CopyOfHibernateUtil.config = config;
+		logger
+				.debug("url: {}", getConfiguration().getProperty(
+						Environment.URL));
+
 	}
 
 }

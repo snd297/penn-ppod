@@ -53,16 +53,17 @@ public final class StudyResourceHibernate implements IStudyResource {
 			final IStudy2StudyInfo study2StudyInfo,
 			final SetDocIdVisitor setDocIdVisitor) {
 		this.studyDAO = (IStudyDAO) studyDAO.setSession(HibernateUtil
-				.getCurrentSession());
+				.getSessionFactory().getCurrentSession());
 		this.saveOrUpdateStudy = saveOrUpdateStudyFactory.create(HibernateUtil
-				.getCurrentSession());
+				.getSessionFactory().getCurrentSession());
 		this.study2StudyInfo = study2StudyInfo;
 		this.setDocIdVisitor = setDocIdVisitor;
 	}
 
 	public StudyInfo create(final Study study) {
 		final Study dbStudy = saveOrUpdateStudy.save(study);
-		HibernateUtil.getCurrentSession().getTransaction().commit();
+		HibernateUtil.getSessionFactory().getCurrentSession().getTransaction()
+				.commit();
 		return study2StudyInfo.go(dbStudy);
 	}
 
@@ -79,7 +80,8 @@ public final class StudyResourceHibernate implements IStudyResource {
 
 	public StudyInfo update(final Study incomingStudy, final String pPodId) {
 		final Study dbStudy = saveOrUpdateStudy.update(incomingStudy);
-		HibernateUtil.getCurrentSession().getTransaction().commit();
+		HibernateUtil.getSessionFactory().getCurrentSession().getTransaction()
+				.commit();
 		return study2StudyInfo.go(dbStudy);
 	}
 }
