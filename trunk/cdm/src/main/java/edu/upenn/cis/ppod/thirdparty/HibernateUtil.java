@@ -74,9 +74,11 @@ public class HibernateUtil {
 	private static Logger log = org.slf4j.LoggerFactory
 			.getLogger(HibernateUtil.class);
 
-	private static AnnotationConfiguration configuration;
+	private static Configuration configuration;
 
 	private static SessionFactory sessionFactory;
+	
+
 	static {
 		// Create the initial SessionFactory from the default configuration
 		// files
@@ -160,7 +162,7 @@ public class HibernateUtil {
 	 * 
 	 * @param cfg
 	 */
-	public static void rebuildSessionFactory(final AnnotationConfiguration cfg) {
+	public static void rebuildSessionFactory(final Configuration cfg) {
 		log.debug("Rebuilding the SessionFactory from given Configuration");
 		if (sessionFactory != null && !sessionFactory.isClosed()) {
 			sessionFactory.close();
