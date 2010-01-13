@@ -31,7 +31,6 @@ import edu.upenn.cis.ppod.model.CharacterStateMatrix;
 import edu.upenn.cis.ppod.model.OTU;
 import edu.upenn.cis.ppod.model.OTUSet;
 import edu.upenn.cis.ppod.model.TreeSet;
-import edu.upenn.cis.ppod.services.IPPodEntitiesResource;
 import edu.upenn.cis.ppod.services.ppodentity.PPodEntities;
 import edu.upenn.cis.ppod.thirdparty.HibernateUtil;
 import edu.upenn.cis.ppod.util.IVisitor;
@@ -40,11 +39,14 @@ import edu.upenn.cis.ppod.util.SetDocIdVisitor;
 /**
  * @author Sam Donnelly
  */
-public class PPodEntitiesResourceHibernate implements IPPodEntitiesResource {
+public class PPodEntitiesResourceHibernate implements
+		IPPodEntitiesResourceHibernate {
 
 	private final Provider<PPodEntities> pPodEntitiesProvider;
 
 	private final IVisitor setDocIdVisitor;
+
+	private Session session;
 
 	@Inject
 	PPodEntitiesResourceHibernate(final Provider<PPodEntities> pPodEntities,
@@ -56,20 +58,21 @@ public class PPodEntitiesResourceHibernate implements IPPodEntitiesResource {
 	public PPodEntities getEntitiesByHqlQuery(final String query) {
 		checkNotNull(query);
 
+		if (session == null) {
+			session = HibernateUtil.getSessionFactory().getCurrentSession();
+		}
+
 		// These queries are read only so set this for efficiency, security, and
 		// so we can modify the entities for the response
 		// without the modifications being committed to the database.
-		HibernateUtil.getSessionFactory().getCurrentSession().setFlushMode(
-				FlushMode.MANUAL);
+		session.setFlushMode(FlushMode.MANUAL);
 
 		@SuppressWarnings("unchecked")
-		final List<Object> queryResults = HibernateUtil.getSessionFactory()
-				.getCurrentSession().createQuery(query).list();
+		final List<Object> queryResults = session.createQuery(query).list();
 		final PPodEntities pPodEntities = pPodEntitiesProvider.get();
 
 		final Set<CharacterStateMatrix> addedMatrices = newHashSet();
 		final Set<TreeSet> addedTreeSets = newHashSet();
-		final Session s = HibernateUtil.getSessionFactory().getCurrentSession();
 
 // final List<Object> flattenedQueryResults = newArrayList();
 // for (final Object queryResult : queryResults) {
@@ -89,7 +92,7 @@ public class PPodEntitiesResourceHibernate implements IPPodEntitiesResource {
 				otuSet.setDoNotPersist();
 
 				// Extra insurance against accidental sync with database
-				s.setReadOnly(otuSet, true);
+				session.setReadOnly(otuSet, true);
 
 				if (otuSet.getDocId() == null) {
 					otuSet.accept(setDocIdVisitor);
@@ -104,7 +107,7 @@ public class PPodEntitiesResourceHibernate implements IPPodEntitiesResource {
 				matrix.setDoNotPersist();
 
 				// Extra insurance against accidental sync with database
-				s.setReadOnly(matrix, true);
+				session.setReadOnly(matrix, true);
 
 				addedMatrices.add(matrix);
 				if (matrix.getOTUSet().getDocId() == null) {
@@ -119,7 +122,7 @@ public class PPodEntitiesResourceHibernate implements IPPodEntitiesResource {
 				treeSet.setDoNotPersist();
 
 				// Extra insurance against accidental sync with database
-				s.setReadOnly(treeSet, true);
+				session.setReadOnly(treeSet, true);
 
 				addedTreeSets.add(treeSet);
 				if (treeSet.getOTUSet().getDocId() == null) {
@@ -132,7 +135,7 @@ public class PPodEntitiesResourceHibernate implements IPPodEntitiesResource {
 			} else if (queryResult instanceof OTU) {
 				final OTU otu = (OTU) queryResult;
 				otu.setDoNotPersist();
-				s.setReadOnly(otu, true);
+				session.setReadOnly(otu, true);
 				pPodEntities.addOTU(otu);
 			} else if (queryResult instanceof Object[]) {
 				throw new IllegalArgumentException(
@@ -164,5 +167,10 @@ public class PPodEntitiesResourceHibernate implements IPPodEntitiesResource {
 			}
 		}
 		return pPodEntities;
+	}
+
+	public PPodEntitiesResourceHibernate setSession(final Session session) {
+		this.session = session;
+		return this;
 	}
 }
