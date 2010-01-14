@@ -23,7 +23,7 @@ import javax.ws.rs.Produces;
 
 import org.jboss.resteasy.annotations.GZIP;
 
-import edu.upenn.cis.ppod.thirdparty.Pretty;
+import edu.upenn.cis.ppod.thirdparty.util.Pretty;
 
 /**
  * @author Sam Donnelly

@@ -27,7 +27,7 @@ import com.google.inject.Provider;
 
 import edu.upenn.cis.ppod.model.Study;
 import edu.upenn.cis.ppod.model.security.PPodPermission;
-import edu.upenn.cis.ppod.thirdparty.ChainedInterceptor;
+import edu.upenn.cis.ppod.thirdparty.util.ChainedInterceptor;
 
 /**
  * Hibernate interceptor that implements CRUD access control via Apache Shiro.

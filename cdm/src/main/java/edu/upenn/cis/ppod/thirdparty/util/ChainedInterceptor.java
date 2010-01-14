@@ -1,7 +1,7 @@
 /*
  * From "https://www.hibernate.org/92.html" w/ modification suggested by the comments. 
  */
-package edu.upenn.cis.ppod.thirdparty;
+package edu.upenn.cis.ppod.thirdparty.util;
 
 import static com.google.common.collect.Lists.newArrayList;
 

@@ -29,7 +29,7 @@ import org.jboss.resteasy.annotations.GZIP;
 
 import edu.upenn.cis.ppod.model.Study;
 import edu.upenn.cis.ppod.services.ppodentity.StudyInfo;
-import edu.upenn.cis.ppod.thirdparty.Pretty;
+import edu.upenn.cis.ppod.thirdparty.util.Pretty;
 
 /**
  * @author Sam Donnelly
