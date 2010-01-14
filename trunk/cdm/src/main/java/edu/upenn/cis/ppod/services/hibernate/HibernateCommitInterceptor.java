@@ -22,8 +22,8 @@ import org.jboss.resteasy.annotations.interception.ServerInterceptor;
 import org.jboss.resteasy.core.ServerResponse;
 import org.jboss.resteasy.spi.interception.PostProcessInterceptor;
 
-import edu.upenn.cis.ppod.thirdparty.HibernateSessionPerRequestFilter;
-import edu.upenn.cis.ppod.thirdparty.HibernateUtil;
+import edu.upenn.cis.ppod.thirdparty.util.HibernateSessionPerRequestFilter;
+import edu.upenn.cis.ppod.thirdparty.util.HibernateUtil;
 
 /**
  * Attempt to commit the current transaction <em>before</em> the servlet

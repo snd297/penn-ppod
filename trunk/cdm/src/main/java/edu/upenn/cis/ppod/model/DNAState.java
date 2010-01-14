@@ -29,7 +29,7 @@ import javax.persistence.Table;
 public class DNAState extends CharacterState {
 	final static String TABLE = "DNA_STATE";
 
-	static final String ID_COLUMN = "DNA_STATE_ID";
+	// static final String ID_COLUMN = "DNA_STATE_ID";
 	static final String STATE_COLUMN = "STATE";
 
 	public static final DNAState A = new DNAState("A");
@@ -37,64 +37,62 @@ public class DNAState extends CharacterState {
 	public static final DNAState G = new DNAState("G");
 	public static final DNAState T = new DNAState("T");
 
-	@Column(name = "STATE", unique = true, nullable = false)
-	private Integer state;
-
-// @Id
-// @Column(name = "DNA_STATE_ID")
-// private final Long id;
+	// @Column(name = "STATE_NUMBER", unique = true, nullable = false)
+	// private Integer stateNumber;
 
 	@Column(name = "LABEL", unique = true, nullable = false)
 	private String label;
 
 	/**
-	 * Tells us what {@link Character} this is a state of.
+	 * Tells us what {@link Character} this is a stateNumber of.
 	 */
 	@ManyToOne(fetch = FetchType.LAZY)
 	@JoinColumn(name = Character.ID_COLUMN)
-	private Character phyloChar;
+	private DNACharacter character;
 
-	public DNAState() {}
+	DNAState() {}
 
 	private DNAState(final String label) {
 		checkNotNull(label);
 		this.label = label;
 		if ("A".equals(label)) {
 			// id = 0L;
-			state = 0;
+			// stateNumber = 0;
 		} else if ("C".equals(label)) {
 			// id = 0L;
-			state = 1;
+			// stateNumber = 1;
 		} else if ("G".equals(label)) {
 			// id = 0L;
-			state = 2;
+			// stateNumber = 2;
 		} else if ("T".equals(label)) {
 			// id = 0L;
-			state = 3;
+			// stateNumber = 3;
 		} else {
-			throw new IllegalArgumentException("bad label: [" + label + "]");
+			throw new IllegalArgumentException("undefined label: [" + label
+					+ "]");
 		}
 	}
 
 	@Override
-	public Character getCharacter() {
-		return null;
+	public DNACharacter getCharacter() {
+		return character;
 	}
 
 	@Override
 	public String getLabel() {
-		return this.label;
+		return label;
 	}
 
 	@Override
 	public Integer getStateNumber() {
-		return state;
+		throw new UnsupportedOperationException(
+				"DNAState's do not have numbers");
 	}
 
 	@Override
-	public DNAState setCharacter(final Character phyloChar) {
-		this.phyloChar = phyloChar;
-		return this;
+	public DNAState setCharacter(final Character character) {
+		throw new UnsupportedOperationException(
+				"DNAState character is fixed, setCharacter(...) is not supported");
 	}
 
 	/**
@@ -114,7 +112,7 @@ public class DNAState extends CharacterState {
 	 * This method is not supported for {@code DNAState} since all instance are
 	 * immutable.
 	 * 
-	 * @param state ignored
+	 * @param stateNumber ignored
 	 * 
 	 * @throws UnsupportedOperationException always
 	 */

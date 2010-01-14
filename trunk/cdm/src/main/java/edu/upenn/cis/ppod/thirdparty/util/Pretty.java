@@ -1,7 +1,7 @@
 /*
  * http://www.jboss.org/file-access/default/members/resteasy/freezone/docs/1.2
  */
-package edu.upenn.cis.ppod.thirdparty;
+package edu.upenn.cis.ppod.thirdparty.util;
 
 import java.lang.annotation.ElementType;
 import java.lang.annotation.Retention;

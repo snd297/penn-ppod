@@ -27,7 +27,7 @@ import javax.xml.bind.annotation.XmlAccessorType;
 import javax.xml.bind.annotation.XmlAttribute;
 import javax.xml.bind.annotation.XmlRootElement;
 
-import edu.upenn.cis.ppod.thirdparty.HibernateUtil;
+import edu.upenn.cis.ppod.thirdparty.util.HibernateUtil;
 
 /**
  * Stores data about a particular version of the whole pPOD instance - for

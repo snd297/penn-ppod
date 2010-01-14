@@ -31,7 +31,7 @@ import edu.upenn.cis.ppod.services.IStudyResource;
 import edu.upenn.cis.ppod.services.PairStringString;
 import edu.upenn.cis.ppod.services.ppodentity.IStudy2StudyInfo;
 import edu.upenn.cis.ppod.services.ppodentity.StudyInfo;
-import edu.upenn.cis.ppod.thirdparty.HibernateUtil;
+import edu.upenn.cis.ppod.thirdparty.util.HibernateUtil;
 import edu.upenn.cis.ppod.util.SetDocIdVisitor;
 
 /**

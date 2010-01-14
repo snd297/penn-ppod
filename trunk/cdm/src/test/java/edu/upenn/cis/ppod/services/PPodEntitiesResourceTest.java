@@ -7,7 +7,7 @@ import com.google.inject.Inject;
 
 import edu.upenn.cis.ppod.TestGroupDefs;
 import edu.upenn.cis.ppod.services.ppodentity.IOTUSetCentricEntities;
-import edu.upenn.cis.ppod.thirdparty.HibernateUtil;
+import edu.upenn.cis.ppod.thirdparty.util.HibernateUtil;
 
 /**
  * @author Sam Donnelly

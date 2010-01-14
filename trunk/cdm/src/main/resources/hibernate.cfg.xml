@@ -24,15 +24,17 @@
 		<mapping class="edu.upenn.cis.ppod.model.CharacterStateMatrix" />
 		<mapping class="edu.upenn.cis.ppod.model.CharacterStateRow" />
 		<mapping class="edu.upenn.cis.ppod.model.CharacterStateCell" />
+
 		<mapping class="edu.upenn.cis.ppod.model.Character" />
 		<mapping class="edu.upenn.cis.ppod.model.CharacterState" />
+
+		<mapping class="edu.upenn.cis.ppod.model.DNACharacter" />
+		<mapping class="edu.upenn.cis.ppod.model.DNAState" />
 
 		<mapping class="edu.upenn.cis.ppod.model.Attachment" />
 		<mapping class="edu.upenn.cis.ppod.model.AttachmentNamespace" />
 		<mapping class="edu.upenn.cis.ppod.model.AttachmentType" />
 
-<!--		<mapping class="edu.upenn.cis.ppod.model.DNACharacter" />-->
-<!--		<mapping class="edu.upenn.cis.ppod.model.DNAState" />-->
 
 		<!--  metadata -->
 		<mapping resource="edu/upenn/cis/ppod/dao/namedQueries.xml" />

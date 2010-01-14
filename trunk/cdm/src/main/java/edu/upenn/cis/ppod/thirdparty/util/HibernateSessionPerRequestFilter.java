@@ -28,7 +28,7 @@
  * ARISING IN ANY WAY OUT of THE USE of THIS SOFTWARE, EVEN IF ADVISED of
  * THE POSSIBILITY of SUCH DAMAGE.
  */
-package edu.upenn.cis.ppod.thirdparty;
+package edu.upenn.cis.ppod.thirdparty.util;
 
 import java.io.IOException;
 import java.util.Date;

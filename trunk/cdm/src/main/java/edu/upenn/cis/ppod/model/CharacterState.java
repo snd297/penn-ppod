@@ -112,7 +112,7 @@ public class CharacterState extends PPodEntityWXmlId {
 	 * The column where the stateNumber is stored. Intentionally
 	 * package-private.
 	 */
-	final static String STATE_COLUMN = "STATE";
+	final static String STATE_COLUMN = "STATE_NUMBER";
 
 	/**
 	 * The column where the label is stored. Intentionally package-private.
@@ -136,7 +136,7 @@ public class CharacterState extends PPodEntityWXmlId {
 	private String label;
 
 	/**
-	 * Tells us what {@code Character} this is a stateNumber of.
+	 * The {@code Character} of which this is a state.
 	 */
 	@ManyToOne(fetch = FetchType.LAZY)
 	@JoinColumn(name = Character.ID_COLUMN)

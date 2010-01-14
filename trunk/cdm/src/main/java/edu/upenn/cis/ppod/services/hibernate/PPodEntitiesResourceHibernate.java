@@ -32,7 +32,7 @@ import edu.upenn.cis.ppod.model.OTU;
 import edu.upenn.cis.ppod.model.OTUSet;
 import edu.upenn.cis.ppod.model.TreeSet;
 import edu.upenn.cis.ppod.services.ppodentity.PPodEntities;
-import edu.upenn.cis.ppod.thirdparty.HibernateUtil;
+import edu.upenn.cis.ppod.thirdparty.util.HibernateUtil;
 import edu.upenn.cis.ppod.util.IVisitor;
 import edu.upenn.cis.ppod.util.SetDocIdVisitor;
 
