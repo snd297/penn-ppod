@@ -102,7 +102,6 @@ public class HibernateUtil {
 		} catch (final Throwable ex) {
 			// We have to catch Throwable, otherwise we will miss
 			// NoClassDefFoundError and other subclasses of Error
-			DocumentException documentException = new DocumentException();
 
 			// Generally speaking, we only log exceptions at the point of
 			// handling, but
