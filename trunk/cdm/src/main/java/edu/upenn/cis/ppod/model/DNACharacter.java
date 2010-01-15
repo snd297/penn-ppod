@@ -15,14 +15,13 @@
  */
 package edu.upenn.cis.ppod.model;
 
-import static com.google.common.collect.Maps.newHashMap;
+import static com.google.common.collect.Sets.newHashSet;
 
-import java.util.Collections;
 import java.util.Map;
+import java.util.Set;
 
 import javax.persistence.Column;
 import javax.persistence.Entity;
-import javax.persistence.MapKey;
 import javax.persistence.OneToMany;
 import javax.persistence.Table;
 
@@ -43,21 +42,25 @@ public class DNACharacter extends Character {
 
 	public static final DNACharacter DNA_CHARACTER = new DNACharacter();
 
+	/**
+	 * Even though {@code DNACharacter} inherits a label from {@link Character}
+	 * we include this since the label must be unique here but not there. This
+	 * is a compromise.
+	 */
 	@Column(name = "LABEL", nullable = false, unique = true)
 	private String label;
 
 	@OneToMany(mappedBy = "character")
 	@Cascade( { org.hibernate.annotations.CascadeType.SAVE_UPDATE,
 			org.hibernate.annotations.CascadeType.DELETE_ORPHAN })
-	@MapKey(name = "stateNumber")
-	private final Map<Integer, DNAState> states = newHashMap();
+	private final Set<DNAState> states = newHashSet();
 
 	private DNACharacter() {
-		setLabel("DNA Character");
-		states.put(0, DNAState.A);
-		states.put(1, DNAState.C);
-		states.put(2, DNAState.G);
-		states.put(3, DNAState.T);
+		label = "DNA Character";
+		states.add(DNAState.A);
+		states.add(DNAState.C);
+		states.add(DNAState.G);
+		states.add(DNAState.T);
 	}
 
 	/**
@@ -75,23 +78,32 @@ public class DNACharacter extends Character {
 				"can't add a state to a DNACharacter");
 	}
 
+	/**
+	 * A DNA Character has no state numbers, so this method is unsupported.
+	 * 
+	 * @throws UnsupportedOperationException always
+	 */
 	@Override
 	public Map<Integer, CharacterState> getStates() {
-
+		throw new UnsupportedOperationException(
+				"DNA states have no state numbers so no values to return");
 		// We need to jump through these hoops because we
 		// can't just return a Map<Integer, DNAState> which is what
 		// this.states is.
-		final Map<Integer, CharacterState> states = newHashMap();
-		for (final Map.Entry<Integer, DNAState> dnaStateEntry : this.states
-				.entrySet()) {
-			states.put(dnaStateEntry.getKey(), dnaStateEntry.getValue());
-		}
-		// unmodifiable to be consistent with Character#getStates.
-		return Collections.unmodifiableMap(states);
+// final Map<Integer, CharacterState> states = newHashMap();
+// for (final Map.Entry<Integer, DNAState> dnaStateEntry : this.states
+// .entrySet()) {
+// states.put(dnaStateEntry.getKey(), dnaStateEntry.getValue());
+// }
+// // unmodifiable to be consistent with Character#getStates.
+// return Collections.unmodifiableMap(states);
 	}
 
 	@Override
 	public Character setLabel(final String label) {
+		if (this.label != null) {
+			throw new IllegalStateException("A DNA characecter label is WORM");
+		}
 		this.label = label;
 		return this;
 		// Can't do this:
@@ -99,5 +111,4 @@ public class DNACharacter extends Character {
 		// "can't change the label of a DNACharacter");
 		// because Hibernate calls this method
 	}
-
 }
