@@ -15,7 +15,8 @@
  */
 package edu.upenn.cis.ppod.util;
 
-import org.hibernate.Session;
+import org.hibernate.classic.Session;
+import org.hibernate.context.ManagedSessionContext;
 
 import edu.upenn.cis.ppod.model.DNACharacter;
 import edu.upenn.cis.ppod.thirdparty.util.HibernateUtil;
@@ -33,6 +34,7 @@ public class PopulateTables {
 		Session session = null;
 		try {
 			session = HibernateUtil.getSessionFactory().openSession();
+			ManagedSessionContext.bind(session);
 			session.beginTransaction();
 			session.save(DNACharacter.DNA_CHARACTER);
 			session.getTransaction().commit();
@@ -54,6 +56,7 @@ public class PopulateTables {
 				} catch (Throwable t) {
 					System.err.println("exception while closing session: " + t);
 				}
+				ManagedSessionContext.unbind(HibernateUtil.getSessionFactory());
 			}
 		}
 	}

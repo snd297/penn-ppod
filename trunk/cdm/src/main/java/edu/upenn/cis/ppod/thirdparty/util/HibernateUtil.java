@@ -33,7 +33,6 @@ package edu.upenn.cis.ppod.thirdparty.util;
 import javax.naming.InitialContext;
 import javax.naming.NamingException;
 
-import org.dom4j.DocumentException;
 import org.hibernate.SessionFactory;
 import org.hibernate.cfg.AnnotationConfiguration;
 import org.hibernate.cfg.Configuration;
@@ -102,7 +101,6 @@ public class HibernateUtil {
 		} catch (final Throwable ex) {
 			// We have to catch Throwable, otherwise we will miss
 			// NoClassDefFoundError and other subclasses of Error
-
 			// Generally speaking, we only log exceptions at the point of
 			// handling, but
 			// we sometimes lose this exception otherwise for unknown reasons
@@ -198,7 +196,8 @@ public class HibernateUtil {
 	/**
 	 * Prevent inheritance and instantiation.
 	 * 
-	 * @throws UnsupportedOperationException always
+	 * @throws UnsupportedOperationException
+	 *             always
 	 */
 	private HibernateUtil() {
 		throw new AssertionError("Can't instantiate a HibernateUtil");
