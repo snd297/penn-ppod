@@ -21,7 +21,7 @@
 		<filter-name>HibernateSessionPerRequestFilter</filter-name>
 		<display-name>HibernateSessionPerRequestFilter</display-name>
 		<description></description>
-		<filter-class>edu.upenn.cis.ppod.thirdparty.HibernateSessionPerRequestFilter</filter-class>
+		<filter-class>edu.upenn.cis.ppod.thirdparty.util.HibernateSessionPerRequestFilter</filter-class>
 	</filter>
 	<filter-mapping>
 		<filter-name>HibernateSessionPerRequestFilter</filter-name>

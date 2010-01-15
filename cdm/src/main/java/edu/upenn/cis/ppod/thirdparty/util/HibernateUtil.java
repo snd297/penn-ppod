@@ -33,6 +33,7 @@ package edu.upenn.cis.ppod.thirdparty.util;
 import javax.naming.InitialContext;
 import javax.naming.NamingException;
 
+import org.dom4j.DocumentException;
 import org.hibernate.SessionFactory;
 import org.hibernate.cfg.AnnotationConfiguration;
 import org.hibernate.cfg.Configuration;
@@ -71,23 +72,21 @@ import edu.upenn.cis.ppod.util.PPodCoreFactory;
  */
 public class HibernateUtil {
 
-	private static Logger log = org.slf4j.LoggerFactory
+	private static Logger logger = org.slf4j.LoggerFactory
 			.getLogger(HibernateUtil.class);
 
 	private static Configuration configuration;
 
 	private static SessionFactory sessionFactory;
-	
 
 	static {
 		// Create the initial SessionFactory from the default configuration
 		// files
 		try {
-			log.debug("Initializing Hibernate");
+			logger.debug("Initializing Hibernate");
 
-			// Read hibernate.properties, if present
+			// Reads hibernate.properties, if present
 			configuration = new AnnotationConfiguration();
-			// Use annotations: configuration = new AnnotationConfiguration();
 
 			// Read hibernate.cfg.xml (has to be present)
 			configuration.configure();
@@ -98,12 +97,17 @@ public class HibernateUtil {
 			// Build and store (either in JNDI or static variable)
 			rebuildSessionFactory(configuration);
 
-			log
+			logger
 					.debug("Hibernate initialized, call HibernateUtil.getSessionFactory()");
 		} catch (final Throwable ex) {
 			// We have to catch Throwable, otherwise we will miss
 			// NoClassDefFoundError and other subclasses of Error
-			log.error("Building SessionFactory failed.", ex);
+			DocumentException documentException = new DocumentException();
+
+			// Generally speaking, we only log exceptions at the point of
+			// handling, but
+			// we sometimes lose this exception otherwise for unknown reasons
+			logger.error("Building SessionFactory failed.", ex);
 			throw new ExceptionInInitializerError(ex);
 		}
 	}
@@ -128,7 +132,7 @@ public class HibernateUtil {
 		final String sfName = configuration
 				.getProperty(Environment.SESSION_FACTORY_NAME);
 		if (sfName != null) {
-			log.debug("Looking up SessionFactory in JNDI");
+			logger.debug("Looking up SessionFactory in JNDI");
 			try {
 				return (SessionFactory) new InitialContext().lookup(sfName);
 			} catch (final NamingException ex) {
@@ -149,7 +153,7 @@ public class HibernateUtil {
 	 * open.
 	 */
 	public static void rebuildSessionFactory() {
-		log.debug("Using current Configuration to rebuild SessionFactory");
+		logger.debug("Using current Configuration to rebuild SessionFactory");
 		rebuildSessionFactory(configuration);
 	}
 
@@ -163,15 +167,15 @@ public class HibernateUtil {
 	 * @param cfg
 	 */
 	public static void rebuildSessionFactory(final Configuration cfg) {
-		log.debug("Rebuilding the SessionFactory from given Configuration");
+		logger.debug("Rebuilding the SessionFactory from given Configuration");
 		if (sessionFactory != null && !sessionFactory.isClosed()) {
 			sessionFactory.close();
 		}
 		if (cfg.getProperty(Environment.SESSION_FACTORY_NAME) != null) {
-			log.debug("Managing SessionFactory in JNDI");
+			logger.debug("Managing SessionFactory in JNDI");
 			cfg.buildSessionFactory();
 		} else {
-			log.debug("Holding SessionFactory in static variable");
+			logger.debug("Holding SessionFactory in static variable");
 			sessionFactory = cfg.buildSessionFactory();
 		}
 		configuration = cfg;
@@ -184,7 +188,7 @@ public class HibernateUtil {
 	 * is rebuildSessionFactory(Configuration).
 	 */
 	public static void shutdown() {
-		log.debug("Shutting down Hibernate");
+		logger.debug("Shutting down Hibernate");
 		// Close caches and connection pools
 		getSessionFactory().close();
 
