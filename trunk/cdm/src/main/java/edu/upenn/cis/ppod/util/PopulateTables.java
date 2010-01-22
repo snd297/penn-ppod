@@ -18,7 +18,10 @@ package edu.upenn.cis.ppod.util;
 import org.hibernate.classic.Session;
 import org.hibernate.context.ManagedSessionContext;
 
+import edu.upenn.cis.ppod.model.Character;
+import edu.upenn.cis.ppod.model.CharacterState;
 import edu.upenn.cis.ppod.model.DNACharacter;
+import edu.upenn.cis.ppod.model.DNAState;
 import edu.upenn.cis.ppod.thirdparty.util.HibernateUtil;
 
 /**
@@ -26,6 +29,7 @@ import edu.upenn.cis.ppod.thirdparty.util.HibernateUtil;
  * 
  */
 public class PopulateTables {
+	private static PPodCoreFactory pPodCoreFactory = new PPodCoreFactory();
 
 	/**
 	 * @param args
@@ -33,10 +37,25 @@ public class PopulateTables {
 	public static void main(String[] args) throws Throwable {
 		Session session = null;
 		try {
+			System.out.println("equal?: "
+					+ (DNACharacter.DNA_CHARACTER == (DNACharacter) DNAState.A
+							.getCharacter()));
+			System.out.println(DNACharacter.DNA_CHARACTER + ", "
+					+ DNAState.A.getCharacter());
+			final DNACharacter dnaCharacter = pPodCoreFactory
+					.create(DNACharacter.class);
+			dnaCharacter.setLabel("DNA Character");
+			((Character) dnaCharacter).addState(pPodCoreFactory.create(
+					CharacterState.IFactory.class).create(0));
+
 			session = HibernateUtil.getSessionFactory().openSession();
 			ManagedSessionContext.bind(session);
 			session.beginTransaction();
 			session.save(DNACharacter.DNA_CHARACTER);
+			System.out
+					.println("equal?: "
+							+ (DNACharacter.DNA_CHARACTER == DNAState.A
+									.getCharacter()));
 			session.getTransaction().commit();
 		} catch (Throwable t) {
 			if (session != null) {

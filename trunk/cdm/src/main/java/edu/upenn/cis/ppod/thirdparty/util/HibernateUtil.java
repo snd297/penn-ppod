@@ -90,11 +90,15 @@ public class HibernateUtil {
 			// Read hibernate.cfg.xml (has to be present)
 			configuration.configure();
 
-			configuration.setInterceptor(new PPodCoreFactory()
-					.create(PPodVersionInfoInterceptor.class));
+			final PPodVersionInfoInterceptor pPodVersionInfoInterceptor = new PPodCoreFactory()
+					.create(PPodVersionInfoInterceptor.class);
+
+			configuration.setInterceptor(pPodVersionInfoInterceptor);
 
 			// Build and store (either in JNDI or static variable)
 			rebuildSessionFactory(configuration);
+			
+			pPodVersionInfoInterceptor.setSessionFactory(getSessionFactory());
 
 			logger
 					.debug("Hibernate initialized, call HibernateUtil.getSessionFactory()");
@@ -196,8 +200,7 @@ public class HibernateUtil {
 	/**
 	 * Prevent inheritance and instantiation.
 	 * 
-	 * @throws UnsupportedOperationException
-	 *             always
+	 * @throws UnsupportedOperationException always
 	 */
 	private HibernateUtil() {
 		throw new AssertionError("Can't instantiate a HibernateUtil");
