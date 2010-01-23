@@ -19,6 +19,7 @@ import static com.google.common.base.Predicates.compose;
 import static com.google.common.base.Predicates.equalTo;
 import static edu.upenn.cis.ppod.util.PPodIterables.findIf;
 
+import java.util.List;
 import java.util.Map;
 
 import org.hibernate.Session;
@@ -27,13 +28,16 @@ import com.google.inject.Inject;
 import com.google.inject.Provider;
 import com.google.inject.assistedinject.Assisted;
 
+import edu.upenn.cis.ppod.dao.IDNACharacterDAO;
 import edu.upenn.cis.ppod.dao.IOTUSetDAO;
 import edu.upenn.cis.ppod.dao.IStudyDAO;
+import edu.upenn.cis.ppod.dao.hibernate.DNACharacterDAOHibernate;
 import edu.upenn.cis.ppod.dao.hibernate.IAttachmentNamespaceDAOHibernateFactory;
 import edu.upenn.cis.ppod.dao.hibernate.IAttachmentTypeDAOHibernateFactory;
 import edu.upenn.cis.ppod.dao.hibernate.StudyDAOHibernate;
 import edu.upenn.cis.ppod.dao.hibernate.HibernateDAOFactory.OTUSetDAOHibernate;
 import edu.upenn.cis.ppod.model.CharacterStateMatrix;
+import edu.upenn.cis.ppod.model.DNACharacter;
 import edu.upenn.cis.ppod.model.IUUPPodEntity;
 import edu.upenn.cis.ppod.model.OTU;
 import edu.upenn.cis.ppod.model.OTUSet;
@@ -53,11 +57,13 @@ public class SaveOrUpdateStudyHibernate implements ISaveOrUpdateStudy {
 
 	private final IStudyDAO studyDAO;
 	private final IOTUSetDAO otuSetDAO;
+	private final IDNACharacterDAO dnaCharacterDAO;
 
 	private final Provider<Study> studyProvider;
 	private final Provider<OTUSet> otuSetProvider;
 	private final Provider<CharacterStateMatrix> matrixProvider;
 	private final Provider<TreeSet> treeSetProvider;
+	private final Provider<DNACharacter> dnaCharacterProvider;
 	private final IMergeOTUSet mergeOTUSet;
 	private final IMergeCharacterStateMatrix mergeMatrix;
 	private final IMergeTreeSet mergeTreeSet;
@@ -66,10 +72,12 @@ public class SaveOrUpdateStudyHibernate implements ISaveOrUpdateStudy {
 	SaveOrUpdateStudyHibernate(
 			final StudyDAOHibernate studyDAOHibernate,
 			final OTUSetDAOHibernate otuSetDAO,
+			final DNACharacterDAOHibernate dnaCharacterDAO,
 			final Provider<Study> studyProvider,
 			final Provider<OTUSet> otuSetProvider,
 			final Provider<CharacterStateMatrix> matrixProvider,
 			final Provider<TreeSet> treeSetProvider,
+			final Provider<DNACharacter> dnaCharacterProvider,
 			final IMergeOTUSetHibernateFactory saveOrUpdateOTUSetFactory,
 			final IMergeCharacterStateMatrix.IFactory mergeMatrixFactory,
 			final IAttachmentNamespaceDAOHibernateFactory attachmentNamespaceDAOFactory,
@@ -78,10 +86,13 @@ public class SaveOrUpdateStudyHibernate implements ISaveOrUpdateStudy {
 			final MergeTreeSet mergeTreeSet, @Assisted final Session session) {
 		this.studyDAO = (IStudyDAO) studyDAOHibernate.setSession(session);
 		this.otuSetDAO = (IOTUSetDAO) otuSetDAO.setSession(session);
+		this.dnaCharacterDAO = (IDNACharacterDAO) dnaCharacterDAO
+				.setSession(session);
 		this.studyProvider = studyProvider;
 		this.otuSetProvider = otuSetProvider;
 		this.matrixProvider = matrixProvider;
 		this.treeSetProvider = treeSetProvider;
+		this.dnaCharacterProvider = dnaCharacterProvider;
 		this.mergeOTUSet = saveOrUpdateOTUSetFactory.create(session);
 		this.mergeMatrix = mergeMatrixFactory.create(mergeAttachmentFactory
 				.create(attachmentNamespaceDAOFactory.create(session),
@@ -108,6 +119,13 @@ public class SaveOrUpdateStudyHibernate implements ISaveOrUpdateStudy {
 			}
 		}
 
+		final List<DNACharacter> dnaCharacters = dnaCharacterDAO.findAll();
+		if (dnaCharacters.size() != 0) {
+			throw new IllegalStateException(
+					"there is not DNACharacter in the database: has it been populated with start data?");
+		}
+		final DNACharacter dbDNACharacter = dnaCharacters.get(0);
+
 		// Save or update incoming otu sets
 		for (final OTUSet incomingOTUSet : incomingStudy.getOTUSets()) {
 			OTUSet dbOTUSet;
@@ -128,7 +146,7 @@ public class SaveOrUpdateStudyHibernate implements ISaveOrUpdateStudy {
 					dbMatrix.setPPodId();
 				}
 				mergeMatrix.merge(dbMatrix, incomingMatrix, dbOTUSet,
-						dbOTUsByIncomingOTU);
+						dbOTUsByIncomingOTU, dbDNACharacter);
 			}
 			for (final TreeSet incomingTreeSet : incomingOTUSet.getTreeSets()) {
 				TreeSet dbTreeSet;

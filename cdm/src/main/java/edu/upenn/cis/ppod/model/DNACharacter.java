@@ -15,20 +15,35 @@
  */
 package edu.upenn.cis.ppod.model;
 
+import javax.persistence.Column;
 import javax.persistence.Entity;
 import javax.persistence.Table;
+import javax.xml.bind.annotation.XmlAccessType;
+import javax.xml.bind.annotation.XmlAccessorType;
 
 /**
  * @author Sam Donnelly
  */
+@XmlAccessorType(XmlAccessType.NONE)
 @Entity
 @Table(name = DNACharacter.TABLE)
-public class DNACharacter extends Character {
+public final class DNACharacter extends Character {
 
 	public static final String TABLE = "DNA_CHARACTER";
 
+	/**
+	 * This column should be the same as {@link Character#getLabel()} and is
+	 * really only here to prevent duplicate {@code DNACharacter}s form being
+	 * added to the table.
+	 */
+	@Column(name = "LABEL", nullable = false, unique = true)
+	private final String label;
+
+	private final static String LABEL = "DNA Character";
+
 	DNACharacter() {
-		super.setLabel("DNA Character");
+		this.label = LABEL;
+		super.setLabel(LABEL);
 	}
 
 // @Override
