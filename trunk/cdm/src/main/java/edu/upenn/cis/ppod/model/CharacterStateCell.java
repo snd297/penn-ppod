@@ -156,13 +156,11 @@ public final class CharacterStateCell extends PPodEntity {
 	/**
 	 * Does this cell have a single state?, multiple states?, is it unassigned?,
 	 * or inapplicable?
-	 * 
-	 * @see Type
 	 */
 	@XmlAttribute
 	@Column(name = TYPE_COLUMN)
 	@Enumerated(EnumType.STRING)
-	private CharacterStateCell.Type type;
+	private Type type;
 
 	/**
 	 * The {@code CharacterStateRow} to which this {@code CharacterStateCell}

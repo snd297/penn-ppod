@@ -160,7 +160,7 @@ public class DbToMatrixTest extends DbTestBase {
 							final CharacterState phyloCharState = phyloCharMatrixCell
 									.getStateByNumber(new Integer(
 											phyloCharStateElement
-													.attributeValue(CharacterState.STATE_COLUMN)));
+													.attributeValue(CharacterState.STATE_NUMBER_COLUMN)));
 							logger
 									.debug(
 											"{}:new Long(\r\n"
@@ -179,13 +179,13 @@ public class DbToMatrixTest extends DbTestBase {
 											M,
 											new Integer(
 													phyloCharStateElement
-															.attributeValue(CharacterState.STATE_COLUMN)));
+															.attributeValue(CharacterState.STATE_NUMBER_COLUMN)));
 							Assert
 									.assertEquals(
 											phyloCharState.getStateNumber(),
 											new Integer(
 													phyloCharStateElement
-															.attributeValue(CharacterState.STATE_COLUMN)));
+															.attributeValue(CharacterState.STATE_NUMBER_COLUMN)));
 							Assert
 									.assertEquals(
 											phyloCharState.getLabel(),

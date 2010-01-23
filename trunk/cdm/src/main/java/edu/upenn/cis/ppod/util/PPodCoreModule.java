@@ -25,6 +25,7 @@ import edu.upenn.cis.ppod.dao.hibernate.IAttachmentNamespaceDAOHibernateFactory;
 import edu.upenn.cis.ppod.dao.hibernate.IAttachmentTypeDAOHibernateFactory;
 import edu.upenn.cis.ppod.dao.hibernate.StudyDAOHibernate;
 import edu.upenn.cis.ppod.model.CharacterState;
+import edu.upenn.cis.ppod.model.DNAState;
 import edu.upenn.cis.ppod.saveorupdate.IMergeAttachment;
 import edu.upenn.cis.ppod.saveorupdate.IMergeCharacterStateMatrix;
 import edu.upenn.cis.ppod.saveorupdate.IMergeTreeSet;
@@ -79,5 +80,9 @@ public final class PPodCoreModule extends AbstractModule {
 		bind(CharacterState.IFactory.class).toProvider(
 				FactoryProvider.newFactory(CharacterState.IFactory.class,
 						CharacterState.class));
+		bind(DNAState.IFactory.class).toProvider(
+				FactoryProvider.newFactory(DNAState.IFactory.class,
+						DNAState.class));
+
 	}
 }

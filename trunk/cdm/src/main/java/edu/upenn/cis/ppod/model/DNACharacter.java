@@ -27,23 +27,35 @@ public class DNACharacter extends Character {
 
 	public static final String TABLE = "DNA_CHARACTER";
 
-	public static final DNACharacter DNA_CHARACTER = new DNACharacter();
-
-	DNACharacter() {}
-
-	@Override
-	public DNACharacter setPPodId() {
-		throw new UnsupportedOperationException(
-				"Can't set a DNACharacter's pPOD ID");
+	DNACharacter() {
+		super.setLabel("DNA Character");
 	}
 
+// @Override
+// public DNACharacter setPPodId() {
+// throw new UnsupportedOperationException(
+// "Can't set a DNACharacter's pPOD ID");
+// }
+
 	@Override
-	public CharacterState addState(final CharacterState state) {
+	public DNACharacter setLabel(final String label) {
+		throw new UnsupportedOperationException(
+				"Can't set the label of a DNACharacter");
+	}
+
+	/**
+	 * @throws IllegalArgumentException if {@code state} is not a
+	 *             {@link DNAState}
+	 */
+	@Override
+	public DNAState addState(final CharacterState state) {
 		if (state instanceof DNAState) {
 			super.addState(state);
+			return (DNAState) state;
 		}
 		throw new IllegalArgumentException(
-				"can't add a non DNAState to a DNACharacter");
+				"can't only add a DNAState to a DNACharacter, you added a "
+						+ state.getClass());
 	}
 
 	/**

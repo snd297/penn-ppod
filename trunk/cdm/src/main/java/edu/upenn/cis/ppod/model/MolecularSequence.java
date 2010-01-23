@@ -31,16 +31,16 @@ abstract class MolecularSequence {
 
 	@Column(name = SEQUENCE_COLUMN)
 	private String sequence;
-	private final Map<Integer, CharacterStateCell> cellsByCharStateIndex = newHashMap();
+	private final Map<Integer, CharacterStateCell> cellsByStateIndex = newHashMap();
 
 	public String getSequence() {
 		return sequence;
 	}
 
-	public MolecularSequence putCellByCharStateIndex(final Integer idx,
+	public MolecularSequence putCellByStateIndex(final Integer idx,
 			final CharacterStateCell cell) {
 		checkNotNull(idx, cell);
-		cellsByCharStateIndex.put(idx, cell);
+		cellsByStateIndex.put(idx, cell);
 		return this;
 	}
 

@@ -21,8 +21,6 @@ import static com.google.common.base.Preconditions.checkNotNull;
 import javax.persistence.Column;
 import javax.persistence.Entity;
 import javax.persistence.FetchType;
-import javax.persistence.Inheritance;
-import javax.persistence.InheritanceType;
 import javax.persistence.JoinColumn;
 import javax.persistence.ManyToOne;
 import javax.persistence.Table;
@@ -46,7 +44,6 @@ import com.google.inject.assistedinject.Assisted;
 @XmlAccessorType(XmlAccessType.NONE)
 @Entity
 @Table(name = CharacterState.TABLE)
-@Inheritance(strategy = InheritanceType.JOINED)
 public class CharacterState extends PPodEntityWXmlId {
 
 	/**
@@ -112,7 +109,7 @@ public class CharacterState extends PPodEntityWXmlId {
 	 * The column where the stateNumber is stored. Intentionally
 	 * package-private.
 	 */
-	final static String STATE_COLUMN = "STATE_NUMBER";
+	final static String STATE_NUMBER_COLUMN = "STATE_NUMBER";
 
 	/**
 	 * The column where the label is stored. Intentionally package-private.
@@ -124,7 +121,7 @@ public class CharacterState extends PPodEntityWXmlId {
 	 * value of these objects.
 	 */
 	@XmlAttribute
-	@Column(name = STATE_COLUMN, nullable = false, updatable = false)
+	@Column(name = STATE_NUMBER_COLUMN, nullable = false, updatable = false)
 	private Integer stateNumber;
 
 	/**
@@ -189,6 +186,18 @@ public class CharacterState extends PPodEntityWXmlId {
 	 */
 	public Integer getStateNumber() {
 		return stateNumber;
+	}
+
+	/**
+	 * Set the integer value of this state.
+	 * 
+	 * @param stateNumber the integer value to use for this state
+	 * 
+	 * @return this
+	 */
+	protected CharacterState setStateNumber(final int stateNumber) {
+		this.stateNumber = stateNumber;
+		return this;
 	}
 
 	/**
