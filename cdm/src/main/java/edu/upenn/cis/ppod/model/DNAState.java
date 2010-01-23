@@ -15,84 +15,70 @@
  */
 package edu.upenn.cis.ppod.model;
 
-import static com.google.common.base.Preconditions.checkNotNull;
-
-import javax.persistence.Column;
 import javax.persistence.Entity;
-import javax.persistence.FetchType;
-import javax.persistence.JoinColumn;
-import javax.persistence.ManyToOne;
 import javax.persistence.Table;
+
+import com.google.inject.Inject;
+import com.google.inject.assistedinject.Assisted;
 
 @Entity
 @Table(name = DNAState.TABLE)
 public class DNAState extends CharacterState {
+
+	/**
+	 * For assisted injections.
+	 */
+	public static interface IFactory {
+
+		/**
+		 * Create a character state with the nucleotide
+		 * 
+		 * @param nucleotide the nucleotide
+		 * 
+		 * @return the new DNA state
+		 */
+		DNAState create(Nucleotide nucleotide);
+	}
+
 	final static String TABLE = "DNA_STATE";
 
 	static final String ID_COLUMN = "DNA_STATE_ID";
 	static final String STATE_COLUMN = "STATE";
 
-	public static final DNAState A = new DNAState("A");
-	public static final DNAState C = new DNAState("C");
-	public static final DNAState G = new DNAState("G");
-	public static final DNAState T = new DNAState("T");
+	public static enum Nucleotide {
+		A, C, G, T;
+	}
 
-	@Column(name = "STATE_NUMBER", unique = true, nullable = false)
-	private Integer stateNumber;
-
-	@Column(name = "LABEL", unique = true, nullable = false)
-	private String label;
-
-	/**
-	 * Tells us what {@link Character} this is a state of.
-	 */
-	@ManyToOne(fetch = FetchType.LAZY)
-	// @Cascade(org.hibernate.annotations.CascadeType.SAVE_UPDATE)
-	@JoinColumn(name = Character.ID_COLUMN)
-	private DNACharacter dnaCharacter = DNACharacter.DNA_CHARACTER;
-
-	private DNAState(final String label) {
-		checkNotNull(label);
-		this.dnaCharacter = DNACharacter.DNA_CHARACTER;
-		this.label = label;
-		if ("A".equals(label)) {
-			// id = 0L;
-			stateNumber = 0;
-		} else if ("C".equals(label)) {
-			// id = 0L;
-			stateNumber = 1;
-		} else if ("G".equals(label)) {
-			// id = 0L;
-			stateNumber = 2;
-		} else if ("T".equals(label)) {
-			// id = 0L;
-			stateNumber = 3;
-		} else {
-			throw new IllegalArgumentException("bad label: [" + label + "]");
+	@Inject
+	DNAState(@Assisted final Nucleotide nucleotide) {
+		super.setLabel(nucleotide.toString());
+		switch (nucleotide) {
+			case A:
+				setStateNumber(0);
+				break;
+			case C:
+				setStateNumber(1);
+				break;
+			case G:
+				setStateNumber(2);
+				break;
+			case T:
+				setStateNumber(3);
+				break;
+			default:
+				throw new AssertionError("unknown Nucleotide");
 		}
 	}
 
 	@Override
-	public Character getCharacter() {
-		return dnaCharacter;
-	}
-
-	@Override
-	public String getLabel() {
-		return this.label;
-	}
-
-	@Override
-	public Integer getStateNumber() {
-		return stateNumber;
-	}
-
-	@Override
 	DNAState setCharacter(final Character character) {
-		this.dnaCharacter = (DNACharacter) character;
+		if (character instanceof DNACharacter) {
+			super.setCharacter(character);
+		} else {
+			throw new IllegalArgumentException(
+					"a DNAState's character must be a DNACharacter");
+		}
 		return this;
-		// throw new UnsupportedOperationException(
-// "Can't set the dnaCharacter of a DNA state because it is fixed");
 	}
 
 	/**
@@ -105,19 +91,6 @@ public class DNAState extends CharacterState {
 	 */
 	@Override
 	public DNAState setLabel(final String label) {
-		throw new UnsupportedOperationException();
-	}
-
-	/**
-	 * This method is not supported for {@code DNAState} since all instance are
-	 * immutable.
-	 * 
-	 * @param state ignored
-	 * 
-	 * @throws UnsupportedOperationException always
-	 */
-
-	private DNAState setStateNumber(final Integer state) {
 		throw new UnsupportedOperationException();
 	}
 

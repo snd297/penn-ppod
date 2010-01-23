@@ -88,7 +88,7 @@ public class MatrixToDbTest extends DbTestBase {
 // .attributeValue(Character.ID_COLUMN)))
 // .put(new CharacterState());
 // phyloCharState.setState(new Integer(phyloCharStateElement
-// .attributeValue(CharacterState.STATE_COLUMN)));
+// .attributeValue(CharacterState.STATE_NUMBER_COLUMN)));
 // phyloCharState.setLabel(phyloCharStateElement
 // .attributeValue(CharacterState.LABEL_COLUMN));
 // initialDataSetIdToPhyloCharStateMap.put(new Long(
