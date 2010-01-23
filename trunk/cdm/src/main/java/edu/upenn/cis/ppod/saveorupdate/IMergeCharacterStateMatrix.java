@@ -18,11 +18,14 @@ package edu.upenn.cis.ppod.saveorupdate;
 import java.util.Map;
 
 import edu.upenn.cis.ppod.model.CharacterStateMatrix;
+import edu.upenn.cis.ppod.model.DNACharacter;
 import edu.upenn.cis.ppod.model.OTU;
 import edu.upenn.cis.ppod.model.OTUSet;
 
 /**
- * Save or update a matrix in the pPOD db.
+ * Merge two matrices.
+ * 
+ * @see #merge(CharacterStateMatrix, CharacterStateMatrix, OTUSet, Map, DNACharacter)
  * 
  * @author Sam Donnelly
  */
@@ -48,12 +51,10 @@ public interface IMergeCharacterStateMatrix {
 	 *            sourceMatrix}
 	 * 
 	 * @return {@code targetMatrix}
-	 * 
-	 * @throws IllegalArgumentException if {@targetMatrix.getOTUSet() == null}
 	 */
 	CharacterStateMatrix merge(CharacterStateMatrix targetMatrix,
 			CharacterStateMatrix sourceMatrix, OTUSet newTargetMatrixOTUSet,
-			Map<OTU, OTU> mergedOTUsBySourceOTU);
+			Map<OTU, OTU> mergedOTUsBySourceOTU, DNACharacter dnaCharacter);
 
 	/**
 	 * Makes {@link IMergeCharacterStateMatrix}s.

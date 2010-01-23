@@ -41,6 +41,8 @@ import edu.upenn.cis.ppod.model.CharacterState;
 import edu.upenn.cis.ppod.model.CharacterStateCell;
 import edu.upenn.cis.ppod.model.CharacterStateMatrix;
 import edu.upenn.cis.ppod.model.CharacterStateRow;
+import edu.upenn.cis.ppod.model.DNACharacter;
+import edu.upenn.cis.ppod.model.DNAState;
 import edu.upenn.cis.ppod.model.IUUPPodEntity;
 import edu.upenn.cis.ppod.model.OTU;
 import edu.upenn.cis.ppod.model.OTUSet;
@@ -75,7 +77,8 @@ public class MergeCharacterStateMatrix implements IMergeCharacterStateMatrix {
 	public CharacterStateMatrix merge(final CharacterStateMatrix targetMatrix,
 			final CharacterStateMatrix sourceMatrix,
 			final OTUSet newTargetMatrixOTUSet,
-			final Map<OTU, OTU> mergedOTUsBySourceOTU) {
+			final Map<OTU, OTU> mergedOTUsBySourceOTU,
+			final DNACharacter dnaCharacter) {
 		checkNotNull(targetMatrix);
 		checkNotNull(sourceMatrix);
 		checkNotNull(newTargetMatrixOTUSet);

@@ -13,23 +13,23 @@ import edu.upenn.cis.ppod.TestGroupDefs;
 public class CharacterStateCellTypeTest {
 	public void of() {
 		final CharacterStateCell.Type single = CharacterStateCell.Type
-				.of("SINGLE");
+				.valueOf("SINGLE");
 		assertEquals(single, CharacterStateCell.Type.SINGLE);
 
 		final CharacterStateCell.Type unassigned = CharacterStateCell.Type
-				.of("UNASSIGNED");
+				.valueOf("UNASSIGNED");
 		assertEquals(unassigned, CharacterStateCell.Type.UNASSIGNED);
 
 		final CharacterStateCell.Type inapplicable = CharacterStateCell.Type
-				.of("INAPPLICABLE");
+				.valueOf("INAPPLICABLE");
 		assertEquals(inapplicable, CharacterStateCell.Type.INAPPLICABLE);
 
 		final CharacterStateCell.Type uncertain = CharacterStateCell.Type
-				.of("UNCERTAIN");
+				.valueOf("UNCERTAIN");
 		assertEquals(uncertain, CharacterStateCell.Type.UNCERTAIN);
 
 		final CharacterStateCell.Type polymorphic = CharacterStateCell.Type
-				.of("POLYMORPHIC");
+				.valueOf("POLYMORPHIC");
 		assertEquals(polymorphic, CharacterStateCell.Type.POLYMORPHIC);
 
 	}

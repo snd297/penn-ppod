@@ -15,15 +15,19 @@
  */
 package edu.upenn.cis.ppod.model;
 
+import javax.persistence.Column;
 import javax.persistence.Entity;
 import javax.persistence.Table;
+import javax.xml.bind.annotation.XmlAccessType;
+import javax.xml.bind.annotation.XmlAccessorType;
 
 import com.google.inject.Inject;
 import com.google.inject.assistedinject.Assisted;
 
+@XmlAccessorType(XmlAccessType.NONE)
 @Entity
 @Table(name = DNAState.TABLE)
-public class DNAState extends CharacterState {
+public final class DNAState extends CharacterState {
 
 	/**
 	 * For assisted injections.
@@ -31,9 +35,9 @@ public class DNAState extends CharacterState {
 	public static interface IFactory {
 
 		/**
-		 * Create a character state with the nucleotide
+		 * Create a character state with the label
 		 * 
-		 * @param nucleotide the nucleotide
+		 * @param label the label
 		 * 
 		 * @return the new DNA state
 		 */
@@ -45,8 +49,35 @@ public class DNAState extends CharacterState {
 	static final String ID_COLUMN = "DNA_STATE_ID";
 	static final String STATE_COLUMN = "STATE";
 
+	/**
+	 * This column should be the same as {@link CharacterState#getLabel()} and
+	 * is really only here to prevent duplicate {@code DNAState}s form being
+	 * added to the table.
+	 */
+	@Column(name = "LABEL", nullable = false, unique = true)
+	private final String label;
+
 	public static enum Nucleotide {
+
 		A, C, G, T;
+
+		public static Nucleotide of(final int stateNumber) {
+			// Can't do a switch on Nucleotide.ordinal, so if statements it is
+			if (stateNumber == A.ordinal()) {
+				return A;
+			}
+			if (stateNumber == C.ordinal()) {
+				return C;
+			}
+			if (stateNumber == G.ordinal()) {
+				return G;
+			}
+			if (stateNumber == T.ordinal()) {
+				return T;
+			}
+			throw new IllegalArgumentException(
+					"stateNumber must be 0, 1, 2, or 3");
+		}
 	}
 
 	@Inject
@@ -54,20 +85,25 @@ public class DNAState extends CharacterState {
 		super.setLabel(nucleotide.toString());
 		switch (nucleotide) {
 			case A:
-				setStateNumber(0);
+				this.label = Nucleotide.A.toString();
+				setStateNumber(Nucleotide.A.ordinal());
 				break;
 			case C:
-				setStateNumber(1);
+				this.label = Nucleotide.C.toString();
+				setStateNumber(Nucleotide.C.ordinal());
 				break;
 			case G:
-				setStateNumber(2);
+				this.label = Nucleotide.G.toString();
+				setStateNumber(Nucleotide.G.ordinal());
 				break;
 			case T:
-				setStateNumber(3);
+				this.label = Nucleotide.T.toString();
+				setStateNumber(Nucleotide.T.ordinal());
 				break;
 			default:
 				throw new AssertionError("unknown Nucleotide");
 		}
+
 	}
 
 	@Override
@@ -93,5 +129,4 @@ public class DNAState extends CharacterState {
 	public DNAState setLabel(final String label) {
 		throw new UnsupportedOperationException();
 	}
-
 }

@@ -91,28 +91,6 @@ public final class CharacterStateCell extends PPodEntity {
 
 		/** Inapplicable, usually written as a {@code "-"} in Nexus files. */
 		INAPPLICABLE;
-
-		/**
-		 * From a string, return the {@code Type} that has {@code
-		 * toString().equals(s)}.
-		 * 
-		 * @param s see description
-		 * @return see description
-		 */
-		public static Type of(final String s) {
-			if (Type.SINGLE.toString().equals(s)) {
-				return Type.SINGLE;
-			} else if (Type.UNASSIGNED.toString().equals(s)) {
-				return Type.UNASSIGNED;
-			} else if (Type.INAPPLICABLE.toString().equals(s)) {
-				return Type.INAPPLICABLE;
-			} else if (Type.POLYMORPHIC.toString().equals(s)) {
-				return Type.POLYMORPHIC;
-			} else if (Type.UNCERTAIN.toString().equals(s)) {
-				return Type.UNCERTAIN;
-			}
-			throw new IllegalArgumentException("Unknown s: [" + s + "]");
-		}
 	}
 
 	static final String TABLE = "CHARACTER_STATE_CELL";

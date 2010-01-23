@@ -29,6 +29,7 @@ import com.google.inject.Provider;
 
 import edu.upenn.cis.ppod.TestGroupDefs;
 import edu.upenn.cis.ppod.model.CharacterStateMatrix;
+import edu.upenn.cis.ppod.model.DNACharacter;
 import edu.upenn.cis.ppod.model.ModelAssert;
 import edu.upenn.cis.ppod.model.OTU;
 import edu.upenn.cis.ppod.model.OTUSet;
@@ -55,6 +56,9 @@ public class MergeCharacterStateMatrixTest {
 	private Provider<OTU> otuProvider;
 
 	@Inject
+	private Provider<DNACharacter> dnaCharacterProvider;
+
+	@Inject
 	private TestMergeAttachment mergeAttachment;
 
 	@Test(dataProvider = MatrixProvider.SMALL_SIMPLE_MATRIX_PROVIDER, dataProviderClass = MatrixProvider.class)
@@ -69,9 +73,9 @@ public class MergeCharacterStateMatrixTest {
 
 		final CharacterStateMatrix targetMatrix = (CharacterStateMatrix) matrixProvider
 				.get();
-		final CharacterStateMatrix dbMatrix = mergeCharacterStateMatrix
-				.merge(targetMatrix, sourceMatrix, fakeDbOTUSet,
-						fakeOTUsByIncomingOTU);
+		final CharacterStateMatrix dbMatrix = mergeCharacterStateMatrix.merge(
+				targetMatrix, sourceMatrix, fakeDbOTUSet,
+				fakeOTUsByIncomingOTU, dnaCharacterProvider.get());
 		ModelAssert.assertEqualsCharacterStateMatrices(dbMatrix, sourceMatrix);
 	}
 
@@ -89,14 +93,16 @@ public class MergeCharacterStateMatrixTest {
 				.get();
 
 		mergeCharacterStateMatrix.merge(targetMatrix, sourceMatrix,
-				fakeTargetOTUSet, fakeOTUsByIncomingOTU);
+				fakeTargetOTUSet, fakeOTUsByIncomingOTU, dnaCharacterProvider
+						.get());
 		final List<OTU> shuffledSourceOTUs = newArrayList(sourceMatrix
 				.getOTUs());
 		Collections.shuffle(shuffledSourceOTUs);
 		sourceMatrix.setOTUs(shuffledSourceOTUs);
 
 		mergeCharacterStateMatrix.merge(targetMatrix, sourceMatrix,
-				fakeTargetOTUSet, fakeOTUsByIncomingOTU);
+				fakeTargetOTUSet, fakeOTUsByIncomingOTU, dnaCharacterProvider
+						.get());
 		ModelAssert.assertEqualsCharacterStateMatrices(targetMatrix,
 				sourceMatrix);
 	}
@@ -115,14 +121,16 @@ public class MergeCharacterStateMatrixTest {
 				.get();
 
 		mergeCharacterStateMatrix.merge(targetMatrix, sourceMatrix,
-				fakeTargetOTUSet, fakeOTUsByIncomingOTU);
+				fakeTargetOTUSet, fakeOTUsByIncomingOTU, dnaCharacterProvider
+						.get());
 
 		// Swap 2 and 0
 		sourceMatrix.setCharacter(0, sourceMatrix.setCharacter(2, sourceMatrix
 				.getCharacters().get(0)));
 
 		mergeCharacterStateMatrix.merge(targetMatrix, sourceMatrix,
-				fakeTargetOTUSet, fakeOTUsByIncomingOTU);
+				fakeTargetOTUSet, fakeOTUsByIncomingOTU, dnaCharacterProvider
+						.get());
 
 		ModelAssert.assertEqualsCharacterStateMatrices(targetMatrix,
 				sourceMatrix);
