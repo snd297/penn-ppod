@@ -42,7 +42,6 @@ import edu.upenn.cis.ppod.model.CharacterStateCell;
 import edu.upenn.cis.ppod.model.CharacterStateMatrix;
 import edu.upenn.cis.ppod.model.CharacterStateRow;
 import edu.upenn.cis.ppod.model.DNACharacter;
-import edu.upenn.cis.ppod.model.DNAState;
 import edu.upenn.cis.ppod.model.IUUPPodEntity;
 import edu.upenn.cis.ppod.model.OTU;
 import edu.upenn.cis.ppod.model.OTUSet;
@@ -117,9 +116,11 @@ public class MergeCharacterStateMatrix implements IMergeCharacterStateMatrix {
 		final Map<Integer, Integer> originalCharIdxsByNewCharIdx = newHashMap();
 		for (final Character sourceCharacter : sourceMatrix.getCharacters()) {
 			Character newTargetCharacter;
-			if (null == (newTargetCharacter = findIf(clearedTargetCharacters,
-					compose(equalTo(sourceCharacter.getPPodId()),
-							IUUPPodEntity.getPPodId)))) {
+			if (sourceCharacter instanceof DNACharacter) {
+				newTargetCharacter = dnaCharacter;
+			} else if (null == (newTargetCharacter = findIf(
+					clearedTargetCharacters, compose(equalTo(sourceCharacter
+							.getPPodId()), IUUPPodEntity.getPPodId)))) {
 				newTargetCharacter = characterProvider.get();
 				newTargetCharacter.setPPodId();
 			}

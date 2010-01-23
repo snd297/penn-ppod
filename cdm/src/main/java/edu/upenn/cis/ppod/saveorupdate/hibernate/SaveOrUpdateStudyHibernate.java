@@ -63,7 +63,7 @@ public class SaveOrUpdateStudyHibernate implements ISaveOrUpdateStudy {
 	private final Provider<OTUSet> otuSetProvider;
 	private final Provider<CharacterStateMatrix> matrixProvider;
 	private final Provider<TreeSet> treeSetProvider;
-	private final Provider<DNACharacter> dnaCharacterProvider;
+
 	private final IMergeOTUSet mergeOTUSet;
 	private final IMergeCharacterStateMatrix mergeMatrix;
 	private final IMergeTreeSet mergeTreeSet;
@@ -77,7 +77,6 @@ public class SaveOrUpdateStudyHibernate implements ISaveOrUpdateStudy {
 			final Provider<OTUSet> otuSetProvider,
 			final Provider<CharacterStateMatrix> matrixProvider,
 			final Provider<TreeSet> treeSetProvider,
-			final Provider<DNACharacter> dnaCharacterProvider,
 			final IMergeOTUSetHibernateFactory saveOrUpdateOTUSetFactory,
 			final IMergeCharacterStateMatrix.IFactory mergeMatrixFactory,
 			final IAttachmentNamespaceDAOHibernateFactory attachmentNamespaceDAOFactory,
@@ -92,7 +91,6 @@ public class SaveOrUpdateStudyHibernate implements ISaveOrUpdateStudy {
 		this.otuSetProvider = otuSetProvider;
 		this.matrixProvider = matrixProvider;
 		this.treeSetProvider = treeSetProvider;
-		this.dnaCharacterProvider = dnaCharacterProvider;
 		this.mergeOTUSet = saveOrUpdateOTUSetFactory.create(session);
 		this.mergeMatrix = mergeMatrixFactory.create(mergeAttachmentFactory
 				.create(attachmentNamespaceDAOFactory.create(session),
@@ -120,9 +118,14 @@ public class SaveOrUpdateStudyHibernate implements ISaveOrUpdateStudy {
 		}
 
 		final List<DNACharacter> dnaCharacters = dnaCharacterDAO.findAll();
-		if (dnaCharacters.size() != 0) {
+		if (dnaCharacters.size() == 0) {
 			throw new IllegalStateException(
-					"there is not DNACharacter in the database: has it been populated with start data?");
+					"there are no DNACharacter's in the database: has it been populated with a DNA character and DNA states?");
+		} else if (dnaCharacters.size() > 1) {
+			throw new AssertionError(
+					"there are "
+							+ dnaCharacters.size()
+							+ " DNACharacter's in the database, it should not be possible for there to be more than 1");
 		}
 		final DNACharacter dbDNACharacter = dnaCharacters.get(0);
 
@@ -145,6 +148,7 @@ public class SaveOrUpdateStudyHibernate implements ISaveOrUpdateStudy {
 					dbMatrix = matrixProvider.get();
 					dbMatrix.setPPodId();
 				}
+
 				mergeMatrix.merge(dbMatrix, incomingMatrix, dbOTUSet,
 						dbOTUsByIncomingOTU, dbDNACharacter);
 			}
