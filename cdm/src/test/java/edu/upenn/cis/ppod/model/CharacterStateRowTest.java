@@ -1,7 +1,6 @@
 package edu.upenn.cis.ppod.model;
 
 import static com.google.common.collect.Lists.newArrayList;
-import static org.testng.Assert.assertEquals;
 
 import java.util.List;
 
@@ -40,7 +39,7 @@ public class CharacterStateRowTest {
 	@Inject
 	private Provider<CharacterStateCell> cellProvider;
 
-	private final List<OTU> rowIdxs = newArrayList();
+	private List<OTU> rowIdxs;
 
 	private CharacterStateMatrix matrix;
 
@@ -48,18 +47,46 @@ public class CharacterStateRowTest {
 	public void beforeMethod() {
 		matrix = matrixProvider.get();
 		matrix.setOTUSet(otuSetProvider.get());
+		rowIdxs = newArrayList();
 		rowIdxs.add(otuProvider.get().setLabel("OTU-0"));
 		matrix.getOTUSet().addOTU(rowIdxs.get(0));
 		matrix.setOTUs(rowIdxs);
+		matrix.setRow(rowIdxs.get(0), rowProvider.get());
 		matrix.addCharacter(characterProvider.get().setLabel("CHARACTER-0"));
 	}
 
 	public void addCellToMatrixWOneCharacter() {
-		matrix.setRow(rowIdxs.get(0), rowProvider.get());
-		final CharacterStateCell cell = cellProvider.get();
-		cell.setUnassigned();
+		final CharacterStateCell cell = cellProvider.get().setUnassigned();
 		matrix.getRow(matrix.getOTUs().get(0)).addCell(cell);
 		ModelAssert.assertEqualsCharacterStateCells(cell, matrix.getRow(
 				rowIdxs.get(0)).getCells().get(0));
 	}
+
+	@Test(expectedExceptions = IllegalStateException.class)
+	public void addCellToRowThatsNotInAMatrix() {
+		// Just call setUnassigned so that the cell is in a legal state - it
+		// shouldn't really matterJust call setUnassigned so that the cell is in
+		// a legal state - it shouldn't really matter
+		rowProvider.get().addCell(cellProvider.get().setUnassigned());
+	}
+
+	@Test(expectedExceptions = IllegalStateException.class)
+	public void addCellToMatrixThatHasNoCharacters() {
+		matrix.clearCharacters();
+
+		// Just call setUnassigned so that the cell is in a legal state - it
+		// shouldn't really matterJust call setUnassigned so that the cell is in
+		// a legal state - it shouldn't really matter
+		matrix.getRow(matrix.getOTUs().get(0)).addCell(
+				cellProvider.get().setUnassigned());
+	}
+
+	@Test(expectedExceptions = IllegalStateException.class)
+	public void addCellToMatrixWTooFewCharacters() {
+		matrix.getRow(matrix.getOTUs().get(0)).addCell(
+				cellProvider.get().setUnassigned());
+		matrix.getRow(matrix.getOTUs().get(0)).addCell(
+				cellProvider.get().setUnassigned());
+	}
+
 }
