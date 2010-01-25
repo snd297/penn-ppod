@@ -28,7 +28,6 @@ import static edu.upenn.cis.ppod.util.UPennCisPPodUtil.nullSafeEquals;
 
 import java.util.Collections;
 import java.util.Comparator;
-import java.util.HashSet;
 import java.util.Set;
 import java.util.SortedSet;
 
@@ -174,9 +173,17 @@ public final class CharacterStateCell extends PPodEntity {
 		xmlStatesNeedsToBePutIntoStates = true;
 	}
 
+	/**
+	 * @throws IllegalStateException if the type has not been set
+	 */
 	@Override
 	public boolean beforeMarshal(final Marshaller marshaller) {
 		super.beforeMarshal(marshaller);
+		if (type == null) {
+			// Let's not marshal it if it's in a bad state
+			throw new IllegalStateException(
+					"can't marshal a cell without a type");
+		}
 		getXmlStates().addAll(getStates());
 		return true;
 	}
@@ -201,54 +208,6 @@ public final class CharacterStateCell extends PPodEntity {
 							+ getRow().getMatrix().getCharacters().get(
 									getRow().getCellIdx().get(this)).getLabel()
 							+ " but got " + state.getCharacter().getLabel());
-		}
-	}
-
-	/**
-	 * Do {@code checkNotNull(...)}s and make sure that {@code type} and {@code
-	 * states.size()} are compatible.
-	 * 
-	 * @param type the type
-	 * @param states the states
-	 */
-	private void checkTypeAndStates(final Type type,
-			final Set<CharacterState> states) {
-		checkNotNull(type);
-		checkNotNull(states);
-		switch (type) {
-
-			case INAPPLICABLE:
-				if (states.size() > 0) {
-					throw new IllegalStateException(
-							"type INAPPLICABLE needs empty states arg");
-				}
-				break;
-			case UNASSIGNED:
-				if (states.size() > 0) {
-					throw new IllegalStateException(
-							"type UNASSIGNED needs empty states arg");
-				}
-				break;
-			case SINGLE:
-				if (states.size() != 1) {
-					throw new IllegalStateException(
-							"type SINGLE needs == 1 states arg");
-				}
-				break;
-			case POLYMORPHIC:
-				if (states.size() < 2) {
-					throw new IllegalStateException(
-							"type POLYMORPHIC needs > 1 states arg");
-				}
-				break;
-			case UNCERTAIN:
-				if (states.size() < 2) {
-					throw new IllegalStateException(
-							"type UNCERTAIN needs > 1 states arg");
-				}
-				break;
-			default:
-				throw new AssertionError("Unknown CharacterState.Type: " + type);
 		}
 	}
 
@@ -308,7 +267,6 @@ public final class CharacterStateCell extends PPodEntity {
 		checkState(getType() != null,
 				"type has yet to be assigned for this cell");
 		if (xmlStatesNeedsToBePutIntoStates) {
-			checkTypeAndStates(this.type, getXmlStates());
 			setStates(getXmlStates());
 			xmlStates = null;
 			xmlStatesNeedsToBePutIntoStates = false;
@@ -377,6 +335,31 @@ public final class CharacterStateCell extends PPodEntity {
 		return this;
 	}
 
+	public CharacterStateCell setInapplicable() {
+		setType(Type.INAPPLICABLE);
+		setStates(Collections.EMPTY_SET);
+		return this;
+	}
+
+	/**
+	 * Set the type to polymorphic uncertain with the given states.
+	 * 
+	 * @param polymorphicStates the states
+	 * 
+	 * @return this
+	 * 
+	 * @throw IllegalArgumentException if {@code polymorphicStates.size() < 2}
+	 */
+	public CharacterStateCell setPolymorphicStates(
+			final Set<CharacterState> polymorphicStates) {
+		checkNotNull(polymorphicStates);
+		checkArgument(polymorphicStates.size() > 1,
+				"polymorphic states must be > 1");
+		setType(Type.POLYMORPHIC);
+		setStates(polymorphicStates);
+		return this;
+	}
+
 	/**
 	 * Setter. Intentionally package-private.
 	 * 
@@ -391,6 +374,13 @@ public final class CharacterStateCell extends PPodEntity {
 			this.row = row;
 			resetPPodVersionInfo();
 		}
+		return this;
+	}
+
+	public CharacterStateCell setSingleState(final CharacterState state) {
+		checkNotNull(state);
+		setType(Type.SINGLE);
+		setStates(newHashSet(state));
 		return this;
 	}
 
@@ -451,45 +441,6 @@ public final class CharacterStateCell extends PPodEntity {
 		return this;
 	}
 
-	public CharacterStateCell setSingleState(final CharacterState state) {
-		checkNotNull(state);
-		setType(Type.SINGLE);
-		setStates(newHashSet(state));
-		return this;
-	}
-
-	public CharacterStateCell setPolymorphicStates(
-			final Set<CharacterState> polymorphicStates) {
-		checkNotNull(polymorphicStates);
-		checkArgument(polymorphicStates.size() > 1,
-				"polymorphic states must be > 1");
-		setType(Type.POLYMORPHIC);
-		setStates(polymorphicStates);
-		return this;
-	}
-
-	public CharacterStateCell setUncertainStates(
-			final Set<CharacterState> uncertainStates) {
-		checkNotNull(uncertainStates);
-		checkArgument(uncertainStates.size() > 1,
-				"uncertain states must be > 1");
-		setType(Type.UNCERTAIN);
-		setStates(uncertainStates);
-		return this;
-	}
-
-	public CharacterStateCell setUnassigned() {
-		setType(Type.UNASSIGNED);
-		setStates(Collections.EMPTY_SET);
-		return this;
-	}
-
-	public CharacterStateCell setInapplicable() {
-		setType(Type.INAPPLICABLE);
-		setStates(Collections.EMPTY_SET);
-		return this;
-	}
-
 	/**
 	 * Created for testing purposes.
 	 * 
@@ -499,10 +450,35 @@ public final class CharacterStateCell extends PPodEntity {
 	CharacterStateCell setTypeAndXmlStates(final Type type,
 			final Set<CharacterState> xmlStates) {
 		checkNotNull(type);
-		checkTypeAndStates(type,
-				xmlStates == null ? new HashSet<CharacterState>() : xmlStates);
+// checkTypeAndStates(type,
+// xmlStates == null ? new HashSet<CharacterState>() : xmlStates);
 		setType(type);
 		this.xmlStates = xmlStates;
+		return this;
+	}
+
+	public CharacterStateCell setUnassigned() {
+		setType(Type.UNASSIGNED);
+		setStates(Collections.EMPTY_SET);
+		return this;
+	}
+
+	/**
+	 * Set the type to uncertain with the given states.
+	 * 
+	 * @param uncertainStates the states
+	 * 
+	 * @return this
+	 * 
+	 * @throw IllegalArgumentException if {@code uncertainStates.size() < 2}
+	 */
+	public CharacterStateCell setUncertainStates(
+			final Set<CharacterState> uncertainStates) {
+		checkNotNull(uncertainStates);
+		checkArgument(uncertainStates.size() > 1,
+				"uncertain states must be > 1");
+		setType(Type.UNCERTAIN);
+		setStates(uncertainStates);
 		return this;
 	}
 

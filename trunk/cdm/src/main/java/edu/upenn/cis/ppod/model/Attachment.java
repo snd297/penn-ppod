@@ -47,6 +47,9 @@ import edu.upenn.cis.ppod.util.IVisitor;
 
 /**
  * A flexible container for data that can be attached to other pPOD attachees.
+ * <p>
+ * This class has a non-accessible {@code @XmlId} (only used by the marshaller
+ * and unmarshaller) and so doesn't extend from {@code UUPPodEntityWXmlId}.
  * 
  * @author Sam Donnelly
  */

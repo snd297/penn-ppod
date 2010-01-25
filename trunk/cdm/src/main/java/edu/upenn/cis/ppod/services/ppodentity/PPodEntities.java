@@ -29,6 +29,8 @@ import javax.xml.bind.annotation.XmlRootElement;
 import edu.upenn.cis.ppod.model.Attachment;
 import edu.upenn.cis.ppod.model.AttachmentNamespace;
 import edu.upenn.cis.ppod.model.AttachmentType;
+import edu.upenn.cis.ppod.model.Character;
+import edu.upenn.cis.ppod.model.CharacterStateMatrix;
 import edu.upenn.cis.ppod.model.OTU;
 import edu.upenn.cis.ppod.model.OTUSet;
 import edu.upenn.cis.ppod.util.PPodEntitiesUtil;
@@ -57,6 +59,9 @@ public class PPodEntities implements IPPodEntities {
 	@XmlElement(name = "pPodEntitiesWideAttachment")
 	private final Set<Attachment> pPodEntitiesWideAttachment = newHashSet();
 
+	@XmlElement(name = "studyWideCharacters")
+	private final Set<Character> studyWideCharacters = newHashSet();
+
 	public OTUSet addOTUSet(final OTUSet otuSet) {
 		otuSets.add(otuSet);
 		return otuSet;
@@ -77,6 +82,11 @@ public class PPodEntities implements IPPodEntities {
 					pPodEntitiesWideAttachmentNamespaces,
 					pPodEntitiesWideAttachmentTypes,
 					pPodEntitiesWideAttachment, this);
+			for (final OTUSet otuSet : getOTUSets()) {
+				for (final CharacterStateMatrix matrix : otuSet.getMatrices()) {
+					studyWideCharacters.addAll(matrix.getCharacters());
+				}
+			}
 		}
 		return true;
 	}
