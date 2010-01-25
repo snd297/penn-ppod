@@ -1,5 +1,5 @@
 /*
- * Copyright (C) 2009 Trustees of the University of Pennsylvania
+ * Copyright (C) 2010 Trustees of the University of Pennsylvania
  *
  * Licensed under the Apache License, Version 2.0 (the "License");
  * you may not use this file except in compliance with the License.
@@ -23,27 +23,13 @@ import edu.upenn.cis.ppod.model.Study;
 import edu.upenn.cis.ppod.model.TreeSet;
 
 /**
- * @author Sam Donnelly
+ * An {@link IVisitor} that does nothing.
  * 
+ * @author Sam Donnelly
  */
-public class SetDocIdVisitor implements IVisitor {
-
-	public IVisitor visit(final Study study) {
-		return this;
-	}
+public abstract class AbstractVisitor implements IVisitor {
 
 	public IVisitor visit(final CharacterStateMatrix matrix) {
-		// matrix.setDocId();
-		return this;
-	}
-
-	public IVisitor visit(final OTUSet otuset) {
-		otuset.setDocId();
-		return this;
-	}
-
-	public IVisitor visit(final OTU otu) {
-		otu.setDocId();
 		return this;
 	}
 
@@ -51,9 +37,19 @@ public class SetDocIdVisitor implements IVisitor {
 		return this;
 	}
 
-	public IVisitor visit(final TreeSet treeSet) {
-		// treeSet.setDocId();
+	public IVisitor visit(final OTU otu) {
 		return this;
 	}
 
+	public IVisitor visit(final OTUSet otuset) {
+		return this;
+	}
+
+	public IVisitor visit(final Study study) {
+		return this;
+	}
+
+	public IVisitor visit(final TreeSet treeSet) {
+		return this;
+	}
 }

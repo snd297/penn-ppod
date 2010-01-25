@@ -22,6 +22,7 @@ import static com.google.common.collect.Sets.newHashSet;
 import java.util.Collections;
 import java.util.Map;
 import java.util.Set;
+import java.util.UUID;
 
 import javax.persistence.Column;
 import javax.persistence.Entity;
@@ -31,11 +32,13 @@ import javax.persistence.ManyToMany;
 import javax.persistence.MapKey;
 import javax.persistence.OneToMany;
 import javax.persistence.Table;
+import javax.persistence.Transient;
 import javax.xml.bind.Unmarshaller;
 import javax.xml.bind.annotation.XmlAccessType;
 import javax.xml.bind.annotation.XmlAccessorType;
 import javax.xml.bind.annotation.XmlAttribute;
 import javax.xml.bind.annotation.XmlElementWrapper;
+import javax.xml.bind.annotation.XmlID;
 
 import org.hibernate.annotations.Cascade;
 
@@ -43,6 +46,9 @@ import com.google.common.base.Preconditions;
 
 /**
  * A standard character. For example, "length_of_infraorb_canal".
+ * <p>
+ * This class has a non-accessible {@code @XmlId} (only used by the marshaller
+ * and unmarshaller) and so doesn't extend from {@code UUPPodEntityWXmlId}.
  * 
  * @author Sam Donnelly
  */
@@ -51,6 +57,12 @@ import com.google.common.base.Preconditions;
 @Table(name = Character.TABLE)
 @Inheritance(strategy = InheritanceType.JOINED)
 public class Character extends UUPPodEntity {
+
+	@XmlAttribute
+	@XmlID
+	@Transient
+	@SuppressWarnings("unused")
+	private final String docId = UUID.randomUUID().toString();
 
 	/**
 	 * We don't call the table {@code "CHARACTER"} because that causes problems
@@ -62,7 +74,6 @@ public class Character extends UUPPodEntity {
 	final static String ID_COLUMN = TABLE + "_ID";
 
 	final static String LABEL_COLUMN = "LABEL";
-
 	/**
 	 * The states that this character can have. For example, 0->"absent",
 	 * 1->"present", 2->"one", or 3->"two". NOTE: it is legal to have
@@ -79,15 +90,6 @@ public class Character extends UUPPodEntity {
 	/** The matrices that hold a reference to this {@code Character}. */
 	@ManyToMany(mappedBy = "characters")
 	private final Set<CharacterStateMatrix> matrices = newHashSet();
-
-	/**
-	 * Intentionally package-private and created for testing.
-	 * 
-	 * @return the matrices to which this character belongs
-	 */
-	Set<CharacterStateMatrix> getMatrices() {
-		return matrices;
-	}
 
 	/**
 	 * The non-unique label of this {@code Character}.
@@ -161,6 +163,15 @@ public class Character extends UUPPodEntity {
 	}
 
 	/**
+	 * Intentionally package-private and created for testing.
+	 * 
+	 * @return the matrices to which this character belongs
+	 */
+	Set<CharacterStateMatrix> getMatrices() {
+		return matrices;
+	}
+
+	/**
 	 * Return an unmodifiable view of this <code>Character</code>'s states.
 	 * 
 	 * @return an unmodifiable view of this {@code Character}'s states
@@ -216,6 +227,7 @@ public class Character extends UUPPodEntity {
 	 * 
 	 * @return a <code>String</code> representation of this object.
 	 */
+	@Override
 	public String toString() {
 		final String TAB = "";
 

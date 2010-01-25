@@ -21,6 +21,8 @@ import javax.persistence.Table;
 import javax.xml.bind.annotation.XmlAccessType;
 import javax.xml.bind.annotation.XmlAccessorType;
 
+import com.google.inject.Inject;
+
 /**
  * @author Sam Donnelly
  */
@@ -37,13 +39,21 @@ public final class DNACharacter extends Character {
 	 * added to the table.
 	 */
 	@Column(name = "LABEL", nullable = false, unique = true)
-	private final String label;
+	private String label;
 
 	private final static String LABEL = "DNA Character";
 
-	DNACharacter() {
+	/** For hibernate. */
+	DNACharacter() {}
+
+	@Inject
+	DNACharacter(final DNAState.IFactory dnaStateFactory) {
 		this.label = LABEL;
 		super.setLabel(LABEL);
+		addState(dnaStateFactory.create(DNAState.Nucleotide.A));
+		addState(dnaStateFactory.create(DNAState.Nucleotide.C));
+		addState(dnaStateFactory.create(DNAState.Nucleotide.G));
+		addState(dnaStateFactory.create(DNAState.Nucleotide.T));
 	}
 
 // @Override
@@ -51,12 +61,6 @@ public final class DNACharacter extends Character {
 // throw new UnsupportedOperationException(
 // "Can't set a DNACharacter's pPOD ID");
 // }
-
-	@Override
-	public DNACharacter setLabel(final String label) {
-		throw new UnsupportedOperationException(
-				"Can't set the label of a DNACharacter");
-	}
 
 	/**
 	 * @throws IllegalArgumentException if {@code state} is not a
@@ -69,8 +73,14 @@ public final class DNACharacter extends Character {
 			return (DNAState) state;
 		}
 		throw new IllegalArgumentException(
-				"can't only add a DNAState to a DNACharacter, you added a "
-						+ state.getClass());
+				"can only add a DNAState to a DNACharacter, not a "
+						+ state.getClass().getName());
+	}
+
+	@Override
+	public DNACharacter setLabel(final String label) {
+		throw new UnsupportedOperationException(
+				"Can't set the label of a DNACharacter");
 	}
 
 	/**
@@ -79,6 +89,7 @@ public final class DNACharacter extends Character {
 	 * 
 	 * @return a <code>String</code> representation of this object.
 	 */
+	@Override
 	public String toString() {
 		final String TAB = "";
 

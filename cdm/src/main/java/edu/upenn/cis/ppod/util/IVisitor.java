@@ -25,7 +25,8 @@ import edu.upenn.cis.ppod.model.TreeSet;
 /**
  * The visitor in the visitor pattern.
  * <p>
- * {@link http://en.wikipedia.org/wiki/Visitor_pattern}
+ * <a href="http://en.wikipedia.org/wiki/Visitor_pattern">wikipedia visitor
+ * entry</a>
  * 
  * @author Sam Donnelly
  */

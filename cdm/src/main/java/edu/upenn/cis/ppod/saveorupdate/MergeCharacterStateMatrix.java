@@ -198,8 +198,8 @@ public class MergeCharacterStateMatrix implements IMergeCharacterStateMatrix {
 			for (final ListIterator<CharacterStateCell> sourceCellItr = sourceRow
 					.getCells().listIterator(), targetCellItr = targetRow
 					.getCells().listIterator(); sourceCellItr.hasNext();) {
-				final CharacterStateCell sourceCell = sourceCellItr.next(), targetCell = targetCellItr
-						.next();
+				final CharacterStateCell sourceCell = sourceCellItr.next();
+				final CharacterStateCell targetCell = targetCellItr.next();
 				final Set<CharacterState> newTargetStates = newHashSet();
 				for (final CharacterState sourceState : sourceCell.getStates()) {
 					newTargetStates.add(targetMatrix.getCharacters().get(

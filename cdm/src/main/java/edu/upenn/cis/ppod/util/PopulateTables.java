@@ -40,14 +40,6 @@ public class PopulateTables {
 			final DNAState.IFactory dnaStateFactory = pPodCoreFactory
 					.create(DNAState.IFactory.class);
 			dnaCharacter.setPPodId();
-			dnaCharacter
-					.addState(dnaStateFactory.create(DNAState.Nucleotide.A));
-			dnaCharacter
-					.addState(dnaStateFactory.create(DNAState.Nucleotide.C));
-			dnaCharacter
-					.addState(dnaStateFactory.create(DNAState.Nucleotide.G));
-			dnaCharacter
-					.addState(dnaStateFactory.create(DNAState.Nucleotide.T));
 
 			session = HibernateUtil.getSessionFactory().openSession();
 			ManagedSessionContext.bind(session);

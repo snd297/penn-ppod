@@ -197,6 +197,7 @@ public final class CharacterStateMatrix extends UUPPodEntityWXmlId {
 	 * @return {@code character}
 	 */
 	public Character addCharacter(final Character character) {
+		checkNotNull(character);
 		setCharacter(getCharacters().size(), character);
 		return character;
 	}
@@ -535,17 +536,22 @@ public final class CharacterStateMatrix extends UUPPodEntityWXmlId {
 			characters.add(null);
 			columnPPodVersionInfos.add(null);
 		}
-		final Integer newCharacterOriginalIdx = this.characterIdx
-				.get(character);
-		if (newCharacterOriginalIdx != null) {
-			characters.set(newCharacterOriginalIdx, null);
-			resetColumnPPodVersion(newCharacterOriginalIdx);
+		Character oldCharacter = null;
+		if (character instanceof DNACharacter) {
+
+		} else {
+			final Integer newCharacterOriginalIdx = this.characterIdx
+					.get(character);
+			if (newCharacterOriginalIdx != null) {
+				characters.set(newCharacterOriginalIdx, null);
+				resetColumnPPodVersion(newCharacterOriginalIdx);
+			}
+			oldCharacter = characters.get(characterIdx);
+			if (oldCharacter != null) {
+				this.characterIdx.remove(oldCharacter);
+			}
 		}
-		final Character oldCharacter = characters.get(characterIdx);
-		if (oldCharacter != null) {
-			this.characterIdx.remove(oldCharacter);
-		}
-		characters.set(characterIdx, character);
+		this.characters.set(characterIdx, character);
 		this.characterIdx.put(character, characterIdx);
 		character.addMatrix(this);
 

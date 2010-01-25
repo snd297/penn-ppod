@@ -44,19 +44,6 @@ public final class DNAState extends CharacterState {
 		DNAState create(Nucleotide nucleotide);
 	}
 
-	final static String TABLE = "DNA_STATE";
-
-	static final String ID_COLUMN = "DNA_STATE_ID";
-	static final String STATE_COLUMN = "STATE";
-
-	/**
-	 * This column should be the same as {@link CharacterState#getLabel()} and
-	 * is really only here to prevent duplicate {@code DNAState}s form being
-	 * added to the table.
-	 */
-	@Column(name = "LABEL", nullable = false, unique = true)
-	private final String label;
-
 	public static enum Nucleotide {
 
 		A, C, G, T;
@@ -79,6 +66,22 @@ public final class DNAState extends CharacterState {
 					"stateNumber must be 0, 1, 2, or 3");
 		}
 	}
+
+	final static String TABLE = "DNA_STATE";
+	static final String ID_COLUMN = "DNA_STATE_ID";
+
+	static final String STATE_COLUMN = "STATE";
+
+	/**
+	 * This column should be the same as {@link CharacterState#getLabel()} and
+	 * is really only here to prevent duplicate {@code DNAState}s form being
+	 * added to the table.
+	 */
+	@Column(name = "LABEL", nullable = false, unique = true)
+	private String label;
+
+	/** For hibernate. */
+	DNAState() {}
 
 	@Inject
 	DNAState(@Assisted final Nucleotide nucleotide) {
@@ -127,6 +130,7 @@ public final class DNAState extends CharacterState {
 	 */
 	@Override
 	public DNAState setLabel(final String label) {
-		throw new UnsupportedOperationException();
+		throw new UnsupportedOperationException(
+				"the label of a dna state is fixed");
 	}
 }
