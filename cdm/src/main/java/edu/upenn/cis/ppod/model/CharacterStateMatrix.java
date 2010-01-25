@@ -675,16 +675,16 @@ public final class CharacterStateMatrix extends UUPPodEntityWXmlId {
 	 * 
 	 * @param otuSet new {@code OTUSet} for this matrix. nullable.
 	 * 
-	 * @return {@code otuSet}
+	 * @return this
 	 */
-	OTUSet setOTUSet(final OTUSet otuSet) {
+	CharacterStateMatrix setOTUSet(final OTUSet otuSet) {
 		if (nullSafeEquals(this.otuSet, otuSet)) {
 			// still the same
 		} else {
 			this.otuSet = otuSet;
 			resetPPodVersionInfo();
 		}
-		return otuSet;
+		return this;
 	}
 
 	/**
@@ -701,9 +701,8 @@ public final class CharacterStateMatrix extends UUPPodEntityWXmlId {
 	 * @param otu index of the row we are adding
 	 * @param row see description
 	 * 
-	 * @return the {@code CharacterStateRow} that was previously there, or
-	 *         {@code null} if there was no {@code CharacterStateRow} previously
-	 *         there
+	 * @return the row that was previously there, or {@code null} if there was
+	 *         no row previously there
 	 */
 	public CharacterStateRow setRow(final OTU otu, final CharacterStateRow row) {
 		checkArgument(getOTUIdx().get(otu) != null,

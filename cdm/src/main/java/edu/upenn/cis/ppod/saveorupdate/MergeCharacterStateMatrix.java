@@ -18,6 +18,7 @@ package edu.upenn.cis.ppod.saveorupdate;
 import static com.google.common.base.Preconditions.checkNotNull;
 import static com.google.common.base.Predicates.compose;
 import static com.google.common.base.Predicates.equalTo;
+import static com.google.common.collect.Iterables.get;
 import static com.google.common.collect.Iterables.getOnlyElement;
 import static com.google.common.collect.Lists.newArrayList;
 import static com.google.common.collect.Maps.newHashMap;
@@ -205,8 +206,25 @@ public class MergeCharacterStateMatrix implements IMergeCharacterStateMatrix {
 							targetCellItr.previousIndex()).getStates().get(
 							sourceState.getStateNumber()));
 				}
-				targetCell.setTypeAndStates(sourceCell.getType(),
-						newTargetStates);
+				switch (sourceCell.getType()) {
+					case INAPPLICABLE:
+						targetCell.setInapplicable();
+						break;
+					case POLYMORPHIC:
+						targetCell.setPolymorphicStates(newTargetStates);
+						break;
+					case SINGLE:
+						targetCell.setSingleState(get(newTargetStates, 0));
+						break;
+					case UNASSIGNED:
+						targetCell.setUnassigned();
+						break;
+					case UNCERTAIN:
+						targetCell.setUncertainStates(newTargetStates);
+						break;
+					default:
+						throw new AssertionError("unknown type");
+				}
 			}
 		}
 		return targetMatrix;

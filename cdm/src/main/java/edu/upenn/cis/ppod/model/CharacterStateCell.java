@@ -15,7 +15,9 @@
  */
 package edu.upenn.cis.ppod.model;
 
+import static com.google.common.base.Preconditions.checkArgument;
 import static com.google.common.base.Preconditions.checkNotNull;
+import static com.google.common.base.Preconditions.checkState;
 import static com.google.common.base.Predicates.compose;
 import static com.google.common.base.Predicates.equalTo;
 import static com.google.common.collect.Iterables.get;
@@ -217,31 +219,31 @@ public final class CharacterStateCell extends PPodEntity {
 
 			case INAPPLICABLE:
 				if (states.size() > 0) {
-					throw new IllegalArgumentException(
+					throw new IllegalStateException(
 							"type INAPPLICABLE needs empty states arg");
 				}
 				break;
 			case UNASSIGNED:
 				if (states.size() > 0) {
-					throw new IllegalArgumentException(
+					throw new IllegalStateException(
 							"type UNASSIGNED needs empty states arg");
 				}
 				break;
 			case SINGLE:
 				if (states.size() != 1) {
-					throw new IllegalArgumentException(
+					throw new IllegalStateException(
 							"type SINGLE needs == 1 states arg");
 				}
 				break;
 			case POLYMORPHIC:
 				if (states.size() < 2) {
-					throw new IllegalArgumentException(
+					throw new IllegalStateException(
 							"type POLYMORPHIC needs > 1 states arg");
 				}
 				break;
 			case UNCERTAIN:
 				if (states.size() < 2) {
-					throw new IllegalArgumentException(
+					throw new IllegalStateException(
 							"type UNCERTAIN needs > 1 states arg");
 				}
 				break;
@@ -298,8 +300,13 @@ public final class CharacterStateCell extends PPodEntity {
 	 * The returned set may or may not be a view of this cell's states.
 	 * 
 	 * @return an unmodifiable set which contains this cell's states
+	 * 
+	 * @throws IllegalStateException if the type of this cell has not been
+	 *             assigned
 	 */
 	public Set<CharacterState> getStates() {
+		checkState(getType() != null,
+				"type has yet to be assigned for this cell");
 		if (xmlStatesNeedsToBePutIntoStates) {
 			checkTypeAndStates(this.type, getXmlStates());
 			setStates(getXmlStates());
@@ -444,46 +451,42 @@ public final class CharacterStateCell extends PPodEntity {
 		return this;
 	}
 
-	/**
-	 * Set both the {@code Type} and states of this cell.
-	 * <p>
-	 * {@code states} will be copied so subsequent actions on it will not affect
-	 * this cell.
-	 * <p>
-	 * If a state hasn't been assigned to a character, this method will assign
-	 * the state to the character that owns this cell's column
-	 * 
-	 * @param type the type
-	 * @param states the states
-	 * 
-	 * @return this cell
-	 * 
-	 * @throws IllegalStateException if this cell is not a member of a row
-	 * @throws IllegalStateException if this cell's column hasn't been assigned
-	 *             a character
-	 * @throws IllegalArgumentException if any of {@code states} is such that
-	 *             {@code state.getCharacter() != null} and {@code
-	 *             state.getCharacter()} is not the character of this cell's
-	 *             column
-	 * @throws IllegalArgumentException if {@code type} is {@code Type.SINGLE}
-	 *             and {@code states.size() != 1}
-	 * @throws IllegalArgumentException if {@code type} is {@code
-	 *             Type.POLYMORPHIC} and {@code states.size() < 2}
-	 * @throws IllegalArgumentException if {@code type} is {@code
-	 *             Type.UNCERTAIN} and {@code states.size() < 2}
-	 * @throws IllegalArgumentException if {@code type} is {@code
-	 *             Type.INAPPLICABLE} and {@code states.size() > 0}
-	 * @throws IllegalArgumentException if {@code type} is {@code
-	 *             Type.UNASSIGNED} and {@code states.size() > 0}
-	 */
-	public CharacterStateCell setTypeAndStates(final Type type,
-			final Set<CharacterState> states) {
-		checkNotNull(type);
-		checkNotNull(states);
-		checkTypeAndStates(type, states);
+	public CharacterStateCell setSingleState(final CharacterState state) {
+		checkNotNull(state);
+		setType(Type.SINGLE);
+		setStates(newHashSet(state));
+		return this;
+	}
 
-		setType(type);
-		setStates(states);
+	public CharacterStateCell setPolymorphicStates(
+			final Set<CharacterState> polymorphicStates) {
+		checkNotNull(polymorphicStates);
+		checkArgument(polymorphicStates.size() > 1,
+				"polymorphic states must be > 1");
+		setType(Type.POLYMORPHIC);
+		setStates(polymorphicStates);
+		return this;
+	}
+
+	public CharacterStateCell setUncertainStates(
+			final Set<CharacterState> uncertainStates) {
+		checkNotNull(uncertainStates);
+		checkArgument(uncertainStates.size() > 1,
+				"uncertain states must be > 1");
+		setType(Type.UNCERTAIN);
+		setStates(uncertainStates);
+		return this;
+	}
+
+	public CharacterStateCell setUnassigned() {
+		setType(Type.UNASSIGNED);
+		setStates(Collections.EMPTY_SET);
+		return this;
+	}
+
+	public CharacterStateCell setInapplicable() {
+		setType(Type.INAPPLICABLE);
+		setStates(Collections.EMPTY_SET);
 		return this;
 	}
 

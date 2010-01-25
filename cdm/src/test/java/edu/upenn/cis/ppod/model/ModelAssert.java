@@ -24,6 +24,9 @@ import java.util.Iterator;
 import java.util.Map.Entry;
 
 /**
+ * For asserting that various {@code edu.upenn.cis.ppod.model} elements are the
+ * equal.
+ * 
  * @author Sam Donnelly
  */
 public class ModelAssert {
@@ -214,7 +217,8 @@ public class ModelAssert {
 				expectedAttachment.getAttachments().size());
 		for (final Attachment attachmentAttachment : expectedAttachment
 				.getAttachments()) {
-			throw new IllegalArgumentException("We don't support nested attchaments yet");
+			throw new IllegalArgumentException(
+					"We don't support nested attchaments yet");
 		}
 	}
 
