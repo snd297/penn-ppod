@@ -239,6 +239,27 @@ public class Character extends UUPPodEntity {
 		return retValue.toString();
 	}
 
+	@Transient
+	@XmlAttribute
+	private boolean dnaCharacter = false;
+
+	/**
+	 * So we know it's a DNA character after it's marshalled/unmarshalled. Since
+	 * JAXB doesn't seem to handle class hierarchies.
+	 * 
+	 * @return {@code true} if this is an instance of {@link DNACharacter},
+	 *         {@code false} otherwise
+	 * 
+	 */
+	public boolean isDNACharacter() {
+		return dnaCharacter;
+	}
+
+	public Character setDNACharacter() {
+		dnaCharacter = true;
+		return this;
+	}
+
 // /**
 // * Constructs a <code>String</code> with all attributes in name = value
 // * format.

@@ -166,7 +166,8 @@ public final class CharacterStateMatrix extends UUPPodEntityWXmlId {
 	 * its column number in each <code>row</cod>. So <code>characters</code> is
 	 * a columnNumber-> <code>Character</code> lookup.
 	 */
-	@XmlElement(name = "character")
+	@XmlElement(name = "characterDocId")
+	@XmlIDREF
 	@ManyToMany
 	@Cascade( { org.hibernate.annotations.CascadeType.SAVE_UPDATE })
 	@JoinTable(name = MATRIX_CHARACTER_JOIN_TABLE, joinColumns = { @JoinColumn(name = ID_COLUMN) }, inverseJoinColumns = { @JoinColumn(name = Character.ID_COLUMN) })
@@ -187,6 +188,9 @@ public final class CharacterStateMatrix extends UUPPodEntityWXmlId {
 	@Override
 	public CharacterStateMatrix accept(final IVisitor visitor) {
 		visitor.visit(this);
+		for (final CharacterStateRow row : getRows()) {
+			row.accept(visitor);
+		}
 		return this;
 	}
 
@@ -213,6 +217,9 @@ public final class CharacterStateMatrix extends UUPPodEntityWXmlId {
 			this.otuSet = (OTUSet) parent;
 		}
 
+	}
+
+	public void afterUnmarshal() {
 		if (characterIdx.size() == 0) {
 			int i = 0;
 			for (final Character character : characters) {
@@ -385,15 +392,6 @@ public final class CharacterStateMatrix extends UUPPodEntityWXmlId {
 	}
 
 	/**
-	 * Get an unmodifiable view of this matrix's rows.
-	 * 
-	 * @return an unmodifiable view of this matrix's rows
-	 */
-	public List<CharacterStateRow> getRows() {
-		return Collections.unmodifiableList(rows);
-	}
-
-	/**
 	 * Get the row indexed by an OTU.
 	 * 
 	 * @param otu the index
@@ -408,6 +406,15 @@ public final class CharacterStateMatrix extends UUPPodEntityWXmlId {
 					"otu does not belong to this matrix");
 		}
 		return getRows().get(getOTUIdx().get(otu));
+	}
+
+	/**
+	 * Get an unmodifiable view of this matrix's rows.
+	 * 
+	 * @return an unmodifiable view of this matrix's rows
+	 */
+	public List<CharacterStateRow> getRows() {
+		return Collections.unmodifiableList(rows);
 	}
 
 	/**

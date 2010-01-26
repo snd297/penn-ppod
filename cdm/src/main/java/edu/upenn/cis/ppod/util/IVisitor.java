@@ -15,7 +15,10 @@
  */
 package edu.upenn.cis.ppod.util;
 
+import edu.upenn.cis.ppod.model.Attachment;
+import edu.upenn.cis.ppod.model.CharacterStateCell;
 import edu.upenn.cis.ppod.model.CharacterStateMatrix;
+import edu.upenn.cis.ppod.model.CharacterStateRow;
 import edu.upenn.cis.ppod.model.IPersistentObject;
 import edu.upenn.cis.ppod.model.OTU;
 import edu.upenn.cis.ppod.model.OTUSet;
@@ -32,7 +35,9 @@ import edu.upenn.cis.ppod.model.TreeSet;
  */
 public interface IVisitor {
 
-	IVisitor visit(IPersistentObject persistentObject);
+	IVisitor visit(IPersistentObject perisistentObject);
+
+	IVisitor visit(Attachment attachment);
 
 	IVisitor visit(Study study);
 
@@ -41,6 +46,10 @@ public interface IVisitor {
 	IVisitor visit(OTU otu);
 
 	IVisitor visit(CharacterStateMatrix matrix);
+
+	IVisitor visit(CharacterStateRow row);
+
+	IVisitor visit(CharacterStateCell cell);
 
 	IVisitor visit(TreeSet treeSet);
 

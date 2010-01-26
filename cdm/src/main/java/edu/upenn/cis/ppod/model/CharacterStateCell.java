@@ -54,6 +54,8 @@ import org.hibernate.annotations.Cascade;
 import org.hibernate.annotations.Sort;
 import org.hibernate.annotations.SortType;
 
+import edu.upenn.cis.ppod.util.IVisitor;
+
 /**
  * A cell in a {@link CharacterStateMatrix}.
  * 
@@ -173,6 +175,14 @@ public final class CharacterStateCell extends PPodEntity {
 		xmlStatesNeedsToBePutIntoStates = true;
 	}
 
+	public void afterUnmarshal() {
+		if (xmlStatesNeedsToBePutIntoStates) {
+			setStates(getXmlStates());
+			xmlStates = null;
+			xmlStatesNeedsToBePutIntoStates = false;
+		}
+	}
+
 	/**
 	 * @throws IllegalStateException if the type has not been set
 	 */
@@ -200,9 +210,10 @@ public final class CharacterStateCell extends PPodEntity {
 			throw new IllegalStateException(
 					"This cell's column hasn't been assigned a character");
 		}
-		if (!state.getCharacter().equals(
-				getRow().getMatrix().getCharacters().get(
-						getRow().getCellIdx().get(this)))) {
+		final Character thisCellsCharacter = getRow().getMatrix()
+				.getCharacters().get(getRow().getCellIdx().get(this));
+
+		if (!state.getCharacter().equals(thisCellsCharacter)) {
 			throw new IllegalArgumentException(
 					"state is from the wrong Character. We want "
 							+ getRow().getMatrix().getCharacters().get(
@@ -266,11 +277,6 @@ public final class CharacterStateCell extends PPodEntity {
 	public Set<CharacterState> getStates() {
 		checkState(getType() != null,
 				"type has yet to be assigned for this cell");
-		if (xmlStatesNeedsToBePutIntoStates) {
-			setStates(getXmlStates());
-			xmlStates = null;
-			xmlStatesNeedsToBePutIntoStates = false;
-		}
 		switch (getType()) {
 			// Don't hit states unless we have too
 			case INAPPLICABLE:
@@ -507,5 +513,10 @@ public final class CharacterStateCell extends PPodEntity {
 				this.states).append(TAB).append(")");
 
 		return retValue.toString();
+	}
+
+	public CharacterStateCell accept(final IVisitor visitor) {
+		visitor.visit(this);
+		return this;
 	}
 }

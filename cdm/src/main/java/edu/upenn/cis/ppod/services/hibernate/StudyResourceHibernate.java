@@ -21,6 +21,7 @@ import static com.google.common.collect.Sets.newHashSet;
 import java.util.Set;
 
 import com.google.inject.Inject;
+import com.google.inject.Provider;
 
 import edu.upenn.cis.ppod.dao.IStudyDAO;
 import edu.upenn.cis.ppod.dao.hibernate.StudyDAOHibernate;
@@ -32,6 +33,7 @@ import edu.upenn.cis.ppod.services.PairStringString;
 import edu.upenn.cis.ppod.services.ppodentity.IStudy2StudyInfo;
 import edu.upenn.cis.ppod.services.ppodentity.StudyInfo;
 import edu.upenn.cis.ppod.thirdparty.util.HibernateUtil;
+import edu.upenn.cis.ppod.util.AfterUnmarshalVisitor;
 import edu.upenn.cis.ppod.util.OTUSetAndOTUSetDocIdVisitor;
 
 /**
@@ -47,21 +49,26 @@ public final class StudyResourceHibernate implements IStudyResource {
 
 	private final OTUSetAndOTUSetDocIdVisitor oTUSetAndOTUSetDocIdVisitor;
 
+	private final Provider<AfterUnmarshalVisitor> afterUnmarshalVisitorProvider;
+
 	@Inject
 	StudyResourceHibernate(final StudyDAOHibernate studyDAO,
 			final ISaveOrUpdateStudyHibernateFactory saveOrUpdateStudyFactory,
 			final IStudy2StudyInfo study2StudyInfo,
-			final OTUSetAndOTUSetDocIdVisitor oTUSetAndOTUSetDocIdVisitor) {
+			final OTUSetAndOTUSetDocIdVisitor oTUSetAndOTUSetDocIdVisitor,
+			final Provider<AfterUnmarshalVisitor> afterUnmarshalVisitorProvider) {
 		this.studyDAO = (IStudyDAO) studyDAO.setSession(HibernateUtil
 				.getSessionFactory().getCurrentSession());
 		this.saveOrUpdateStudy = saveOrUpdateStudyFactory.create(HibernateUtil
 				.getSessionFactory().getCurrentSession());
 		this.study2StudyInfo = study2StudyInfo;
 		this.oTUSetAndOTUSetDocIdVisitor = oTUSetAndOTUSetDocIdVisitor;
+		this.afterUnmarshalVisitorProvider = afterUnmarshalVisitorProvider;
 	}
 
-	public StudyInfo create(final Study study) {
-		final Study dbStudy = saveOrUpdateStudy.save(study);
+	public StudyInfo create(final Study incomingStudy) {
+		incomingStudy.accept(afterUnmarshalVisitorProvider.get());
+		final Study dbStudy = saveOrUpdateStudy.save(incomingStudy);
 		HibernateUtil.getSessionFactory().getCurrentSession().getTransaction()
 				.commit();
 		return study2StudyInfo.go(dbStudy);
@@ -79,6 +86,7 @@ public final class StudyResourceHibernate implements IStudyResource {
 	}
 
 	public StudyInfo update(final Study incomingStudy, final String pPodId) {
+		incomingStudy.accept(afterUnmarshalVisitorProvider.get());
 		final Study dbStudy = saveOrUpdateStudy.update(incomingStudy);
 		HibernateUtil.getSessionFactory().getCurrentSession().getTransaction()
 				.commit();

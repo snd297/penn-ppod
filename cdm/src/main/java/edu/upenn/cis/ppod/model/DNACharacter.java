@@ -20,28 +20,35 @@ import javax.persistence.Entity;
 import javax.persistence.Table;
 import javax.xml.bind.annotation.XmlAccessType;
 import javax.xml.bind.annotation.XmlAccessorType;
+import javax.xml.bind.annotation.XmlType;
 
 import com.google.inject.Inject;
 
 /**
  * @author Sam Donnelly
  */
+@XmlType(name = "DNACharacter")
 @XmlAccessorType(XmlAccessType.NONE)
 @Entity
 @Table(name = DNACharacter.TABLE)
 public final class DNACharacter extends Character {
 
+	/**
+	 * The name of the table.
+	 */
 	public static final String TABLE = "DNA_CHARACTER";
 
 	/**
 	 * This column should be the same as {@link Character#getLabel()} and is
-	 * really only here to prevent duplicate {@code DNACharacter}s form being
-	 * added to the table.
+	 * really only here to prevent duplicate {@code DNACharacter}s from being
+	 * added to the table. Duplicates are prevented by the {@code nullable =
+	 * false, unique = true} combination.
 	 */
 	@Column(name = "LABEL", nullable = false, unique = true)
+	@SuppressWarnings("unused")
 	private String label;
 
-	private final static String LABEL = "DNA Character";
+	public final static String LABEL = "DNA Character";
 
 	/** For hibernate. */
 	DNACharacter() {}
@@ -50,6 +57,7 @@ public final class DNACharacter extends Character {
 	DNACharacter(final DNAState.IFactory dnaStateFactory) {
 		this.label = LABEL;
 		super.setLabel(LABEL);
+		setDNACharacter();
 		addState(dnaStateFactory.create(DNAState.Nucleotide.A));
 		addState(dnaStateFactory.create(DNAState.Nucleotide.C));
 		addState(dnaStateFactory.create(DNAState.Nucleotide.G));

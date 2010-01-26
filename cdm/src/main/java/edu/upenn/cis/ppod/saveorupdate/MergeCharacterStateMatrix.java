@@ -23,6 +23,7 @@ import static com.google.common.collect.Iterables.getOnlyElement;
 import static com.google.common.collect.Lists.newArrayList;
 import static com.google.common.collect.Maps.newHashMap;
 import static com.google.common.collect.Sets.newHashSet;
+import static edu.upenn.cis.ppod.util.PPodIterables.equalTo;
 import static edu.upenn.cis.ppod.util.PPodIterables.findEach;
 import static edu.upenn.cis.ppod.util.PPodIterables.findIf;
 
@@ -43,6 +44,7 @@ import edu.upenn.cis.ppod.model.CharacterStateCell;
 import edu.upenn.cis.ppod.model.CharacterStateMatrix;
 import edu.upenn.cis.ppod.model.CharacterStateRow;
 import edu.upenn.cis.ppod.model.DNACharacter;
+import edu.upenn.cis.ppod.model.DNAState;
 import edu.upenn.cis.ppod.model.IUUPPodEntity;
 import edu.upenn.cis.ppod.model.OTU;
 import edu.upenn.cis.ppod.model.OTUSet;
@@ -117,16 +119,18 @@ public class MergeCharacterStateMatrix implements IMergeCharacterStateMatrix {
 		final Map<Integer, Integer> originalCharIdxsByNewCharIdx = newHashMap();
 		for (final Character sourceCharacter : sourceMatrix.getCharacters()) {
 			Character newTargetCharacter;
-			if (sourceCharacter instanceof DNACharacter) {
+			if (sourceCharacter.isDNACharacter()) {
 				newTargetCharacter = dnaCharacter;
 			} else if (null == (newTargetCharacter = findIf(
-					clearedTargetCharacters, compose(equalTo(sourceCharacter
-							.getPPodId()), IUUPPodEntity.getPPodId)))) {
+					clearedTargetCharacters, equalTo(sourceCharacter
+							.getPPodId(), IUUPPodEntity.getPPodId)))) {
 				newTargetCharacter = characterProvider.get();
 				newTargetCharacter.setPPodId();
 			}
 			targetMatrix.addCharacter(newTargetCharacter);
-			newTargetCharacter.setLabel(sourceCharacter.getLabel());
+			if (!(newTargetCharacter instanceof DNACharacter)) {
+				newTargetCharacter.setLabel(sourceCharacter.getLabel());
+			}
 
 			for (final CharacterState sourceState : sourceCharacter.getStates()
 					.values()) {
@@ -137,7 +141,9 @@ public class MergeCharacterStateMatrix implements IMergeCharacterStateMatrix {
 							.create(sourceState.getStateNumber()));
 
 				}
-				targetState.setLabel(sourceState.getLabel());
+				if (!(targetState instanceof DNAState)) {
+					targetState.setLabel(sourceState.getLabel());
+				}
 			}
 
 			originalCharIdxsByNewCharIdx.put(targetMatrix.getCharacterIdx()
