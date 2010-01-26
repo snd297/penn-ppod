@@ -46,6 +46,7 @@ import javax.xml.bind.annotation.XmlIDREF;
 
 import org.hibernate.annotations.Cascade;
 
+import edu.upenn.cis.ppod.model.DNAState.Nucleotide;
 import edu.upenn.cis.ppod.util.IVisitor;
 
 /**
@@ -56,7 +57,7 @@ import edu.upenn.cis.ppod.util.IVisitor;
 @XmlAccessorType(XmlAccessType.NONE)
 @Entity
 @Table(name = CharacterStateMatrix.TABLE)
-public final class CharacterStateMatrix extends UUPPodEntityWXmlId {
+public class CharacterStateMatrix extends UUPPodEntityWXmlId {
 
 	/** This entity's table name. Intentionally package-private. */
 	static final String TABLE = "CHARACTER_STATE_MATRIX";
@@ -292,6 +293,10 @@ public final class CharacterStateMatrix extends UUPPodEntityWXmlId {
 		return Collections.unmodifiableMap(characterIdx);
 	}
 
+	protected Map<Character, Integer> getCharacterIdxMutable() {
+		return characterIdx;
+	}
+
 	/**
 	 * Get an unmodifiable view of the <code>Character</code> ordering.
 	 * 
@@ -299,6 +304,15 @@ public final class CharacterStateMatrix extends UUPPodEntityWXmlId {
 	 */
 	public List<Character> getCharacters() {
 		return Collections.unmodifiableList(characters);
+	}
+
+	/**
+	 * Get a modifiable reference to the characters.
+	 * 
+	 * @return a modifiable reference to the characters
+	 */
+	protected List<Character> getCharactersMutable() {
+		return characters;
 	}
 
 	/**
@@ -334,6 +348,10 @@ public final class CharacterStateMatrix extends UUPPodEntityWXmlId {
 	 * @return the column pPOD versions
 	 */
 	public List<Long> getColumnPPodVersions() {
+		return Collections.unmodifiableList(columnPPodVersions);
+	}
+
+	protected List<Long> getColumnPPodVersionsMutable() {
 		return columnPPodVersions;
 	}
 
@@ -774,4 +792,15 @@ public final class CharacterStateMatrix extends UUPPodEntityWXmlId {
 		return retValue.toString();
 	}
 
+	public static enum Type {
+		DNA, RNA, CHARACTER_STATE;
+	}
+
+	@Transient
+	private Type type = Type.CHARACTER_STATE;
+
+	protected CharacterStateMatrix setType(Type type) {
+		this.type = type;
+		return this;
+	}
 }

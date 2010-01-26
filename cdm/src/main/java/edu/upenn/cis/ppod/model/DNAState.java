@@ -27,7 +27,7 @@ import com.google.inject.assistedinject.Assisted;
 @XmlAccessorType(XmlAccessType.NONE)
 @Entity
 @Table(name = DNAState.TABLE)
-public final class DNAState extends CharacterState {
+public final class DNAState extends MolecularState { 
 
 	/**
 	 * For assisted injections.
