@@ -31,7 +31,7 @@ import com.google.inject.Inject;
 @XmlAccessorType(XmlAccessType.NONE)
 @Entity
 @Table(name = DNACharacter.TABLE)
-public final class DNACharacter extends Character {
+public final class DNACharacter extends MolecularCharacter {
 
 	/**
 	 * The name of the table.
@@ -57,7 +57,7 @@ public final class DNACharacter extends Character {
 	DNACharacter(final DNAState.IFactory dnaStateFactory) {
 		this.label = LABEL;
 		super.setLabel(LABEL);
-		setDNACharacter();
+		setMolecularCharacter();
 		addState(dnaStateFactory.create(DNAState.Nucleotide.A));
 		addState(dnaStateFactory.create(DNAState.Nucleotide.C));
 		addState(dnaStateFactory.create(DNAState.Nucleotide.G));

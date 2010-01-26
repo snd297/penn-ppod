@@ -119,7 +119,7 @@ public class MergeCharacterStateMatrix implements IMergeCharacterStateMatrix {
 		final Map<Integer, Integer> originalCharIdxsByNewCharIdx = newHashMap();
 		for (final Character sourceCharacter : sourceMatrix.getCharacters()) {
 			Character newTargetCharacter;
-			if (sourceCharacter.isDNACharacter()) {
+			if (sourceCharacter.isMolecularCharacter()) {
 				newTargetCharacter = dnaCharacter;
 			} else if (null == (newTargetCharacter = findIf(
 					clearedTargetCharacters, equalTo(sourceCharacter
