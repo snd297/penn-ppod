@@ -1,5 +1,5 @@
 /*
- * Copyright (C) 2009 Trustees of the University of Pennsylvania
+ * Copyright (C) 2010 Trustees of the University of Pennsylvania
  *
  * Licensed under the Apache License, Version 2.0 (the "License");
  * you may not use this file except in compliance with the License.
@@ -13,41 +13,38 @@
  * See the License for the specific language governing permissions and
  * limitations under the License.
  */
+
 package edu.upenn.cis.ppod.util;
 
-import edu.upenn.cis.ppod.model.OTU;
-import edu.upenn.cis.ppod.model.OTUSet;
+import edu.upenn.cis.ppod.model.CharacterStateCell;
+import edu.upenn.cis.ppod.model.CharacterStateMatrix;
 
 /**
- * @author Sam Donnelly
+ * For straightening up or data structures after we're unmarshalled.
  * 
+ * @author Sam Donnelly
  */
-public class OTUSetAndOTUSetDocIdVisitor extends AbstractVisitor {
+public class AfterUnmarshalVisitor extends AbstractVisitor {
 
 	/**
-	 * Call {@code otuSet.setDocId()}.
+	 * Call {@code matrix.afterUnmarshal()}.
 	 * 
-	 * @param otuSet target
-	 * 
-	 * @return this
+	 * @param matrix target
 	 */
 	@Override
-	public IVisitor visit(final OTUSet otuSet) {
-		otuSet.setDocId();
+	public AfterUnmarshalVisitor visit(final CharacterStateMatrix matrix) {
+		matrix.afterUnmarshal();
 		return this;
 	}
 
 	/**
-	 * Call {@code otu.setDocId()}.
+	 * Call {@code cell.afterUnmarshal()}.
 	 * 
-	 * @param otu target
-	 * 
-	 * @return this
+	 * @param cell target
 	 */
 	@Override
-	public IVisitor visit(final OTU otu) {
-		otu.setDocId();
+	public AfterUnmarshalVisitor visit(final CharacterStateCell cell) {
+		cell.afterUnmarshal();
 		return this;
 	}
-
 }

@@ -35,6 +35,8 @@ import javax.xml.bind.annotation.XmlElement;
 
 import org.hibernate.annotations.Cascade;
 
+import edu.upenn.cis.ppod.util.IVisitor;
+
 /**
  * Rows of a {@link CharacterStateMatrix}.
  * <p>
@@ -242,4 +244,12 @@ public final class CharacterStateRow extends PPodEntity {
 		return retValue.toString();
 	}
 
+	@Override
+	public CharacterStateRow accept(final IVisitor visitor) {
+		visitor.visit(this);
+		for (final CharacterStateCell cell : getCells()) {
+			cell.accept(visitor);
+		}
+		return this;
+	}
 }

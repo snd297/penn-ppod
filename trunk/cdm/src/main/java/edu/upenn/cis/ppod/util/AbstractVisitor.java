@@ -15,7 +15,10 @@
  */
 package edu.upenn.cis.ppod.util;
 
+import edu.upenn.cis.ppod.model.Attachment;
+import edu.upenn.cis.ppod.model.CharacterStateCell;
 import edu.upenn.cis.ppod.model.CharacterStateMatrix;
+import edu.upenn.cis.ppod.model.CharacterStateRow;
 import edu.upenn.cis.ppod.model.IPersistentObject;
 import edu.upenn.cis.ppod.model.OTU;
 import edu.upenn.cis.ppod.model.OTUSet;
@@ -29,27 +32,102 @@ import edu.upenn.cis.ppod.model.TreeSet;
  */
 public abstract class AbstractVisitor implements IVisitor {
 
-	public IVisitor visit(final CharacterStateMatrix matrix) {
-		return this;
-	}
-
+	/**
+	 * Does nothing
+	 * 
+	 * @param persistentObject ignored
+	 * 
+	 * @return this
+	 */
 	public IVisitor visit(final IPersistentObject persistentObject) {
 		return this;
 	}
 
+	/**
+	 * Does nothing.
+	 * 
+	 * @param matrix ignored
+	 * 
+	 * @return this
+	 */
+	public IVisitor visit(final CharacterStateMatrix matrix) {
+		return this;
+	}
+
+	/**
+	 * Does nothing.
+	 * 
+	 * @param row ignored
+	 * 
+	 * @return this
+	 */
+	public IVisitor visit(final CharacterStateRow row) {
+		return this;
+	}
+
+	/**
+	 * Does nothing.
+	 * 
+	 * @param otu ignored
+	 * 
+	 * @return this
+	 */
 	public IVisitor visit(final OTU otu) {
 		return this;
 	}
 
-	public IVisitor visit(final OTUSet otuset) {
+	/**
+	 * Does nothing.
+	 * 
+	 * @param otuSet ignored
+	 * 
+	 * @return this
+	 */
+	public IVisitor visit(final OTUSet otuSet) {
 		return this;
 	}
 
+	/**
+	 * Does nothing.
+	 * 
+	 * @param study ignored
+	 * 
+	 * @return this
+	 */
 	public IVisitor visit(final Study study) {
 		return this;
 	}
 
+	/**
+	 * Does nothing.
+	 * 
+	 * @param treeSet ignored
+	 * 
+	 * @return this
+	 */
 	public IVisitor visit(final TreeSet treeSet) {
+		return this;
+	}
+
+	/**
+	 * Does nothing.
+	 * 
+	 * @param attachment ignored
+	 * 
+	 * @return this
+	 */
+	public IVisitor visit(final Attachment attachment) {
+		return this;
+	}
+
+	/**
+	 * Does nothing.
+	 * 
+	 * @param cell ignored
+	 * 
+	 * @return this
+	 */
+	public IVisitor visit(final CharacterStateCell cell) {
 		return this;
 	}
 }

@@ -48,7 +48,8 @@ public abstract class PersistentObject implements IPersistentObject {
 	protected PersistentObject() {}
 
 	public PersistentObject accept(final IVisitor visitor) {
-		throw new UnsupportedOperationException();
+		visitor.visit(this);
+		return this;
 	}
 
 	public Long getId() {
