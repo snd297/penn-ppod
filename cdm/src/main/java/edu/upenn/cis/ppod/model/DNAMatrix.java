@@ -15,6 +15,9 @@
  */
 package edu.upenn.cis.ppod.model;
 
+import static com.google.common.base.Preconditions.checkArgument;
+import static com.google.common.base.Preconditions.checkNotNull;
+
 /**
  * @author Sam Donnelly
  */
@@ -22,5 +25,13 @@ public final class DNAMatrix extends MolecularMatrix {
 
 	DNAMatrix() {
 		setType(Type.DNA);
+	}
+
+	public DNACharacter setCharacter(final int characterIdx,
+			final Character character) {
+		checkNotNull(character);
+		checkArgument(character instanceof DNACharacter,
+				"character must be a DNACharacer for a DNAMatrix");
+		return (DNACharacter) super.setCharacter(characterIdx, character);
 	}
 }

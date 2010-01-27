@@ -37,9 +37,10 @@ abstract class MolecularSequence {
 		return sequence;
 	}
 
-	public MolecularSequence putCellByStateIndex(final Integer idx,
+	public MolecularSequence putCell(final Integer idx,
 			final CharacterStateCell cell) {
-		checkNotNull(idx, cell);
+		checkNotNull(idx);
+		checkNotNull(cell);
 		cellsByStateIndex.put(idx, cell);
 		return this;
 	}

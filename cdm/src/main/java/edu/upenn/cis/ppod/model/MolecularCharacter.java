@@ -18,4 +18,4 @@ package edu.upenn.cis.ppod.model;
 /**
  * @author Sam Donnelly
  */
-public abstract class MolecularCharacter extends Character {}
+public class MolecularCharacter extends Character {}
