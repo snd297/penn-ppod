@@ -15,7 +15,11 @@
  */
 package edu.upenn.cis.ppod.model;
 
+import edu.upenn.cis.ppod.model.DNAState.Nucleotide;
+
 /**
  * @author Sam Donnelly
  */
-public class MolecularState extends CharacterState {}
+public abstract class MolecularState extends CharacterState {
+
+}

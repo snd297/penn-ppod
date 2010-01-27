@@ -239,10 +239,6 @@ public class Character extends UUPPodEntity {
 		return retValue.toString();
 	}
 
-	@Transient
-	@XmlAttribute
-	private boolean molecularCharacter = false;
-
 	/**
 	 * So we know it's a molecular character after it's marshalled/unmarshalled.
 	 * Since JAXB doesn't seem to handle class hierarchies.
@@ -251,12 +247,20 @@ public class Character extends UUPPodEntity {
 	 *         , {@code false} otherwise
 	 * 
 	 */
-	public boolean isMolecularCharacter() {
-		return molecularCharacter;
+	public CharacterType getType() {
+		return characterType;
 	}
 
-	public Character setMolecularCharacter() {
-		molecularCharacter = true;
+	public static enum CharacterType {
+		DNA, RNA, CHARACTER;
+	}
+
+	@XmlAttribute
+	@Transient
+	private CharacterType characterType = CharacterType.CHARACTER;
+
+	protected Character setType(final CharacterType characterType) {
+		this.characterType = characterType;
 		return this;
 	}
 }
