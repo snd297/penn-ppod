@@ -57,7 +57,7 @@ public final class DNACharacter extends MolecularCharacter {
 	DNACharacter(final DNAState.IFactory dnaStateFactory) {
 		this.label = LABEL;
 		super.setLabel(LABEL);
-		setMolecularCharacter();
+		setType(CharacterType.DNA);
 		addState(dnaStateFactory.create(DNAState.Nucleotide.A));
 		addState(dnaStateFactory.create(DNAState.Nucleotide.C));
 		addState(dnaStateFactory.create(DNAState.Nucleotide.G));

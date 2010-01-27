@@ -27,7 +27,7 @@ import com.google.inject.assistedinject.Assisted;
 @XmlAccessorType(XmlAccessType.NONE)
 @Entity
 @Table(name = DNAState.TABLE)
-public final class DNAState extends MolecularState { 
+public final class DNAState extends MolecularState {
 
 	/**
 	 * For assisted injections.
@@ -37,7 +37,7 @@ public final class DNAState extends MolecularState {
 		/**
 		 * Create a character state with the label
 		 * 
-		 * @param label the label
+		 * @param nucleotide the nucletide of the state we are creating
 		 * 
 		 * @return the new DNA state
 		 */

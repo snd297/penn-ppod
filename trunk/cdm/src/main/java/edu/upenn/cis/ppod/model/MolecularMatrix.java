@@ -24,7 +24,7 @@ import java.util.List;
  * @author Sam Donnelly
  * 
  */
-public class MolecularMatrix extends CharacterStateMatrix {
+public abstract class MolecularMatrix extends CharacterStateMatrix {
 
 	/**
 	 * Set the {@code Character} at {@code characterIdx}.
