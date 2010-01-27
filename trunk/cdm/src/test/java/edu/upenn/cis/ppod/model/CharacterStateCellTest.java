@@ -215,11 +215,13 @@ public class CharacterStateCellTest {
 
 	}
 
-	public void getStatesWXmlStatesNeedsToBePutIntoStatesTrueInapplicable() {
+
+	public void afterUnmarshal() {
 		cell.setXmlStatesNeedsToBePutIntoStates(true);
 		matrix.getRows().get(0).addCell(cell);
 		cell.setTypeAndXmlStates(CharacterStateCell.Type.INAPPLICABLE, null);
-		assertEquals((Object) cell.getStates(), (Object) states);
+		cell.afterUnmarshal();
+		//assertEquals((Object) cell.getStates(), (Object) states);
 		assertFalse(cell.getXmlStatesNeedsToBePutIntoStates());
 	}
 }

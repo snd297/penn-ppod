@@ -35,12 +35,15 @@ public class MatrixProvider {
 
 	public static final String SMALL_SIMPLE_MATRIX_PROVIDER = "MX54O";
 
+	private static AfterUnmarshalVisitor afterUnmarshalVisitor = new AfterUnmarshalVisitor();
+
 	@DataProvider(name = SMALL_SIMPLE_MATRIX_PROVIDER)
 	public static Object[][] createMatrix() throws Exception {
 
 		final JAXBContext ctx = JAXBContext.newInstance(Study.class);
 		final Study study = (Study) ctx.createUnmarshaller().unmarshal(
 				MatrixProvider.class.getResourceAsStream("/MX540.xml"));
+		study.accept(afterUnmarshalVisitor);
 		final CharacterStateMatrix smallSimpleMatrix = getOnlyElement(getOnlyElement(
 				study.getOTUSets()).getMatrices());
 		return new Object[][] { new Object[] { smallSimpleMatrix } };

@@ -46,7 +46,6 @@ import javax.xml.bind.annotation.XmlIDREF;
 
 import org.hibernate.annotations.Cascade;
 
-import edu.upenn.cis.ppod.model.DNAState.Nucleotide;
 import edu.upenn.cis.ppod.util.IVisitor;
 
 /**
@@ -228,6 +227,9 @@ public class CharacterStateMatrix extends UUPPodEntityWXmlId {
 
 				// Mark these as ready for new versions when persisted
 				columnPPodVersionInfos.add(null);
+			}
+			for (final Character character : getCharacters()) {
+				character.addMatrix(this);
 			}
 		}
 	}

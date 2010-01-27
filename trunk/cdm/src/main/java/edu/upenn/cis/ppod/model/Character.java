@@ -142,9 +142,11 @@ public class Character extends UUPPodEntity {
 	 * @param parent see {@code Unmarshaller}
 	 */
 	public void afterUnmarshal(final Unmarshaller u, final Object parent) {
-		if (parent instanceof CharacterStateMatrix) {
-			addMatrix((CharacterStateMatrix) parent);
-		}
+		// This is not longer possible since chars are stored as xmlid's in the
+		// matrix
+		// if (parent instanceof CharacterStateMatrix) {
+		// addMatrix((CharacterStateMatrix) parent);
+		// }
 		if (getStates().size() > 0
 				&& get(getStates().values(), 0).getCharacter() == null) {
 			for (final CharacterState state : getStates().values()) {

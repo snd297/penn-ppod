@@ -69,8 +69,20 @@ public final class CharacterStateCell extends PPodEntity {
 	/**
 	 * The different types of {@code CharacterStateCell}: single, polymorphic,
 	 * uncertain, unassigned, or inapplicable.
+	 * <p>
+	 * Because we're storing these in the db as oridnals they will be: 
+	 * <ul>
+	 * <li>{@code UNASSIGNED -> 0}</li>
+	 * <li>{@code SINGLE -> 1}</li>
+	 * <li>{@code POLYMORPHIC -> 2}</li>
+	 * <li>{@code UNCERTAIN -> 3}</li>
+	 * <li>{@code INAPPLICABLE -> 4}</li>
+	 * </ul>
 	 */
 	public static enum Type {
+
+		/** Unassigned, usually written as a {@code "?"} in Nexus files. */
+		UNASSIGNED,
 
 		/**
 		 * The cell has exactly one state.
@@ -88,9 +100,6 @@ public final class CharacterStateCell extends PPodEntity {
 		 * <em>state2</em> or ... or <em>stateN</em>.
 		 */
 		UNCERTAIN,
-
-		/** Unassigned, usually written as a {@code "?"} in Nexus files. */
-		UNASSIGNED,
 
 		/** Inapplicable, usually written as a {@code "-"} in Nexus files. */
 		INAPPLICABLE;
@@ -140,7 +149,7 @@ public final class CharacterStateCell extends PPodEntity {
 	 */
 	@XmlAttribute
 	@Column(name = TYPE_COLUMN)
-	@Enumerated(EnumType.STRING)
+	@Enumerated(EnumType.ORDINAL)
 	private Type type;
 
 	/**

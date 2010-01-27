@@ -22,7 +22,6 @@ import java.util.List;
 
 /**
  * @author Sam Donnelly
- * 
  */
 public abstract class MolecularMatrix extends CharacterStateMatrix {
 
@@ -30,7 +29,7 @@ public abstract class MolecularMatrix extends CharacterStateMatrix {
 	 * Set the {@code Character} at {@code characterIdx}.
 	 * <p>
 	 * If {@code getCharacters().size() <= characterIdx}, then this method pads
-	 * {@link #getCharacters()} with {@code null}s.
+	 * {@link #getCharacters()} with {@code character}.
 	 * <p>
 	 * If {@code character} was already contained in this matrix, then its
 	 * former position is filled in with {@code null}.
@@ -47,15 +46,15 @@ public abstract class MolecularMatrix extends CharacterStateMatrix {
 	public MolecularCharacter setCharacter(final int characterIdx,
 			final Character character) {
 		checkNotNull(character);
-		checkArgument(character instanceof DNACharacter,
-				"character must be a DNACharacer for a DNAMatrix");
+		checkArgument(character instanceof MolecularCharacter,
+				"characters of a MolecularMatrix must be MolecularCharacer, not a "
+						+ character.getClass().getName());
 		if (getCharacters().size() > 0) {
 			checkArgument(character.equals(getCharacters().get(0)),
 					"all characters must be .equals() in a molecular matrix");
 		}
 		final MolecularCharacter molecularCharacter = (MolecularCharacter) character;
-		if (getCharacters().size() > characterIdx
-				&& character.equals(getCharacters().get(characterIdx))) {
+		if (getCharacters().size() > characterIdx) {
 			// Nothing to do
 			return molecularCharacter;
 		}

@@ -33,6 +33,7 @@ import edu.upenn.cis.ppod.model.DNACharacter;
 import edu.upenn.cis.ppod.model.ModelAssert;
 import edu.upenn.cis.ppod.model.OTU;
 import edu.upenn.cis.ppod.model.OTUSet;
+import edu.upenn.cis.ppod.util.AfterUnmarshalVisitor;
 import edu.upenn.cis.ppod.util.MatrixProvider;
 
 /**
@@ -79,6 +80,7 @@ public class MergeCharacterStateMatrixTest {
 		ModelAssert.assertEqualsCharacterStateMatrices(dbMatrix, sourceMatrix);
 	}
 
+	
 	@Test(dataProvider = MatrixProvider.SMALL_SIMPLE_MATRIX_PROVIDER, dataProviderClass = MatrixProvider.class)
 	public void moveRows(final CharacterStateMatrix sourceMatrix) {
 		final IMergeCharacterStateMatrix mergeCharacterStateMatrix = mergeMatrixFactory
