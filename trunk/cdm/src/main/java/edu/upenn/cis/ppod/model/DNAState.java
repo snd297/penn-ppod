@@ -106,7 +106,9 @@ public final class DNAState extends MolecularState {
 			default:
 				throw new AssertionError("unknown Nucleotide");
 		}
-
+		// State numbers are unique for DNA, so let's use since it's smaller
+		// and there will be lots of them in the xml
+		setDocId(getStateNumber().toString());
 	}
 
 	@Override

@@ -564,20 +564,18 @@ public class CharacterStateMatrix extends UUPPodEntityWXmlId {
 			columnPPodVersionInfos.add(null);
 		}
 		Character oldCharacter = null;
-		if (character instanceof DNACharacter) {
 
-		} else {
-			final Integer newCharacterOriginalIdx = this.characterIdx
-					.get(character);
-			if (newCharacterOriginalIdx != null) {
-				characters.set(newCharacterOriginalIdx, null);
-				resetColumnPPodVersion(newCharacterOriginalIdx);
-			}
-			oldCharacter = characters.get(characterIdx);
-			if (oldCharacter != null) {
-				this.characterIdx.remove(oldCharacter);
-			}
+		final Integer newCharacterOriginalIdx = this.characterIdx
+				.get(character);
+		if (newCharacterOriginalIdx != null) {
+			characters.set(newCharacterOriginalIdx, null);
+			resetColumnPPodVersion(newCharacterOriginalIdx);
 		}
+		oldCharacter = characters.get(characterIdx);
+		if (oldCharacter != null) {
+			this.characterIdx.remove(oldCharacter);
+		}
+
 		this.characters.set(characterIdx, character);
 		this.characterIdx.put(character, characterIdx);
 		character.addMatrix(this);

@@ -37,5 +37,10 @@ abstract class PPodEntityWXmlId extends PPodEntity {
 	@XmlAttribute
 	@XmlID
 	@SuppressWarnings("unused")
-	private final String docId = UUID.randomUUID().toString();
+	private String docId = UUID.randomUUID().toString();
+
+	protected PPodEntityWXmlId setDocId(final String docId) {
+		this.docId = docId;
+		return this;
+	}
 }
