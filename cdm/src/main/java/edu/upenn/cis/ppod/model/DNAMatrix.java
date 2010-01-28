@@ -31,7 +31,8 @@ public final class DNAMatrix extends MolecularMatrix {
 			final Character character) {
 		checkNotNull(character);
 		checkArgument(character instanceof DNACharacter,
-				"character must be a DNACharacer for a DNAMatrix");
+				"character must be a DNACharacer for a DNAMatrix, not a "
+						+ character.getClass().getCanonicalName());
 		return (DNACharacter) super.setCharacter(characterIdx, character);
 	}
 }

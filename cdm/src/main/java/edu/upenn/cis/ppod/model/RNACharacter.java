@@ -15,25 +15,13 @@
  */
 package edu.upenn.cis.ppod.model;
 
-import javax.persistence.Column;
-import javax.persistence.MappedSuperclass;
-
 /**
  * @author Sam Donnelly
+ * 
  */
-@MappedSuperclass
-public abstract class MolecularState extends CharacterState {
+public class RNACharacter extends Character {
 
-	/**
-	 * This column should be the same as {@link CharacterState#getLabel()} and
-	 * is really only here to prevent duplicate {@code DNAState}s form being
-	 * added to the table.
-	 */
-	@Column(name = "LABEL", nullable = false, unique = true)
-	private String label;
-
-	protected MolecularState setMolecularStateLabel(final String label) {
-		this.label = label;
-		return this;
+	RNACharacter() {
+		setType(Type.RNA);
 	}
 }

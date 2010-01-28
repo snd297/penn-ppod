@@ -39,6 +39,7 @@ import javax.xml.bind.annotation.XmlAccessorType;
 import javax.xml.bind.annotation.XmlAttribute;
 import javax.xml.bind.annotation.XmlElementWrapper;
 import javax.xml.bind.annotation.XmlID;
+import javax.xml.bind.annotation.XmlType;
 
 import org.hibernate.annotations.Cascade;
 
@@ -58,6 +59,14 @@ import com.google.common.base.Preconditions;
 @Inheritance(strategy = InheritanceType.JOINED)
 public class Character extends UUPPodEntity {
 
+	/**
+	 * So we can identify what type of character we have after we unmarshal it.
+	 */
+	@XmlType(name = "characterType")
+	public static enum Type {
+		DNA, RNA, MORPHOLOGICAL;
+	}
+
 	@XmlAttribute
 	@XmlID
 	@Transient
@@ -72,8 +81,8 @@ public class Character extends UUPPodEntity {
 	final static String TABLE = "PHYLO_CHARACTER";
 
 	final static String ID_COLUMN = TABLE + "_ID";
-
 	final static String LABEL_COLUMN = "LABEL";
+
 	/**
 	 * The states that this character can have. For example, 0->"absent",
 	 * 1->"present", 2->"one", or 3->"two". NOTE: it is legal to have
@@ -97,6 +106,10 @@ public class Character extends UUPPodEntity {
 	@XmlAttribute
 	@Column(name = LABEL_COLUMN, nullable = false)
 	private String label;
+
+	@XmlAttribute
+	@Transient
+	private Type type = Type.MORPHOLOGICAL;
 
 	/**
 	 * Default constructor for (at least) Hibernate.
@@ -183,6 +196,18 @@ public class Character extends UUPPodEntity {
 	}
 
 	/**
+	 * So we know it's a molecular character after it's marshalled/unmarshalled.
+	 * Since JAXB doesn't seem to handle class hierarchies.
+	 * 
+	 * @return {@code true} if this is an instance of {@link MolecularCharacter}
+	 *         , {@code false} otherwise
+	 * 
+	 */
+	public Type getType() {
+		return type;
+	}
+
+	/**
 	 * Remove {@code matrix} from this {@code Character}'s matrices.
 	 * <p>
 	 * Intentionally package-protected.
@@ -224,6 +249,18 @@ public class Character extends UUPPodEntity {
 	}
 
 	/**
+	 * Set the type of this character
+	 * 
+	 * @param type the type
+	 * 
+	 * @return this
+	 */
+	protected Character setType(final Type type) {
+		this.type = type;
+		return this;
+	}
+
+	/**
 	 * Constructs a <code>String</code> with all attributes in name = value
 	 * format.
 	 * 
@@ -239,30 +276,5 @@ public class Character extends UUPPodEntity {
 				.append(TAB).append(")");
 
 		return retValue.toString();
-	}
-
-	/**
-	 * So we know it's a molecular character after it's marshalled/unmarshalled.
-	 * Since JAXB doesn't seem to handle class hierarchies.
-	 * 
-	 * @return {@code true} if this is an instance of {@link MolecularCharacter}
-	 *         , {@code false} otherwise
-	 * 
-	 */
-	public CharacterType getType() {
-		return characterType;
-	}
-
-	public static enum CharacterType {
-		DNA, RNA, CHARACTER;
-	}
-
-	@XmlAttribute
-	@Transient
-	private CharacterType characterType = CharacterType.CHARACTER;
-
-	protected Character setType(final CharacterType characterType) {
-		this.characterType = characterType;
-		return this;
 	}
 }
