@@ -15,7 +15,6 @@
  */
 package edu.upenn.cis.ppod.model;
 
-import javax.persistence.Column;
 import javax.persistence.Entity;
 import javax.persistence.Table;
 import javax.xml.bind.annotation.XmlAccessType;
@@ -37,7 +36,7 @@ public final class DNAState extends MolecularState {
 		/**
 		 * Create a character state with the label
 		 * 
-		 * @param nucleotide the nucletide of the state we are creating
+		 * @param nucleotide the nucleotide of the state we are creating
 		 * 
 		 * @return the new DNA state
 		 */
@@ -72,14 +71,6 @@ public final class DNAState extends MolecularState {
 
 	static final String STATE_COLUMN = "STATE";
 
-	/**
-	 * This column should be the same as {@link CharacterState#getLabel()} and
-	 * is really only here to prevent duplicate {@code DNAState}s form being
-	 * added to the table.
-	 */
-	@Column(name = "LABEL", nullable = false, unique = true)
-	private String label;
-
 	/** For hibernate. */
 	DNAState() {}
 
@@ -88,19 +79,19 @@ public final class DNAState extends MolecularState {
 		super.setLabel(nucleotide.toString());
 		switch (nucleotide) {
 			case A:
-				this.label = Nucleotide.A.toString();
+				setMolecularStateLabel(Nucleotide.A.toString());
 				setStateNumber(Nucleotide.A.ordinal());
 				break;
 			case C:
-				this.label = Nucleotide.C.toString();
+				setMolecularStateLabel(Nucleotide.C.toString());
 				setStateNumber(Nucleotide.C.ordinal());
 				break;
 			case G:
-				this.label = Nucleotide.G.toString();
+				setMolecularStateLabel(Nucleotide.G.toString());
 				setStateNumber(Nucleotide.G.ordinal());
 				break;
 			case T:
-				this.label = Nucleotide.T.toString();
+				setMolecularStateLabel(Nucleotide.T.toString());
 				setStateNumber(Nucleotide.T.ordinal());
 				break;
 			default:

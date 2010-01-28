@@ -70,7 +70,7 @@ public final class CharacterStateCell extends PPodEntity {
 	 * The different types of {@code CharacterStateCell}: single, polymorphic,
 	 * uncertain, unassigned, or inapplicable.
 	 * <p>
-	 * Because we're storing these in the db as oridnals they will be: 
+	 * Because we're storing these in the db as oridnals they will be:
 	 * <ul>
 	 * <li>{@code UNASSIGNED -> 0}</li>
 	 * <li>{@code SINGLE -> 1}</li>

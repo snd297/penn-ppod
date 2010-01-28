@@ -48,16 +48,18 @@ public final class DNACharacter extends MolecularCharacter {
 	@SuppressWarnings("unused")
 	private String label;
 
-	public final static String LABEL = "DNA Character";
+	private final static String LABEL = "DNA Character";
 
 	/** For hibernate. */
-	DNACharacter() {}
+	DNACharacter() {
+		setType(Type.DNA);
+	}
 
 	@Inject
 	DNACharacter(final DNAState.IFactory dnaStateFactory) {
+		this();
 		this.label = LABEL;
-		super.setLabel(LABEL);
-		setType(CharacterType.DNA);
+		setType(Type.DNA);
 		addState(dnaStateFactory.create(DNAState.Nucleotide.A));
 		addState(dnaStateFactory.create(DNAState.Nucleotide.C));
 		addState(dnaStateFactory.create(DNAState.Nucleotide.G));

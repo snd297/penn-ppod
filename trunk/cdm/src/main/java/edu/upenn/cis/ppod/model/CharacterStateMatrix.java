@@ -43,6 +43,7 @@ import javax.xml.bind.annotation.XmlAccessorType;
 import javax.xml.bind.annotation.XmlAttribute;
 import javax.xml.bind.annotation.XmlElement;
 import javax.xml.bind.annotation.XmlIDREF;
+import javax.xml.bind.annotation.XmlType;
 
 import org.hibernate.annotations.Cascade;
 
@@ -57,6 +58,11 @@ import edu.upenn.cis.ppod.util.IVisitor;
 @Entity
 @Table(name = CharacterStateMatrix.TABLE)
 public class CharacterStateMatrix extends UUPPodEntityWXmlId {
+
+	@XmlType(name = "CharacterStateMatrixType")
+	public static enum Type {
+		DNA, RNA, CHARACTER_STATE;
+	}
 
 	/** This entity's table name. Intentionally package-private. */
 	static final String TABLE = "CHARACTER_STATE_MATRIX";
@@ -182,6 +188,10 @@ public class CharacterStateMatrix extends UUPPodEntityWXmlId {
 			org.hibernate.annotations.CascadeType.DELETE_ORPHAN })
 	private final List<CharacterStateRow> rows = newArrayList();
 
+	@Transient
+	@XmlAttribute
+	private Type type = Type.CHARACTER_STATE;
+
 	/** No-arg constructor for (at least) Hibernate. */
 	CharacterStateMatrix() {}
 
@@ -204,34 +214,6 @@ public class CharacterStateMatrix extends UUPPodEntityWXmlId {
 		checkNotNull(character);
 		setCharacter(getCharacters().size(), character);
 		return character;
-	}
-
-	/**
-	 * {@link Unmarshaller} callback.
-	 * 
-	 * @param u see {@code Unmarshaller}
-	 * @param parent see {@code Unmarshaller}
-	 */
-	public void afterUnmarshal(final Unmarshaller u, final Object parent) {
-		if (parent instanceof OTUSet) {
-			this.otuSet = (OTUSet) parent;
-		}
-
-	}
-
-	public void afterUnmarshal() {
-		if (characterIdx.size() == 0) {
-			int i = 0;
-			for (final Character character : characters) {
-				characterIdx.put(character, i++);
-
-				// Mark these as ready for new versions when persisted
-				columnPPodVersionInfos.add(null);
-			}
-			for (final Character character : getCharacters()) {
-				character.addMatrix(this);
-			}
-		}
 	}
 
 //
@@ -260,6 +242,34 @@ public class CharacterStateMatrix extends UUPPodEntityWXmlId {
 // }
 // return this;
 // }
+
+	public void afterUnmarshal() {
+		if (characterIdx.size() == 0) {
+			int i = 0;
+			for (final Character character : characters) {
+				characterIdx.put(character, i++);
+
+				// Mark these as ready for new versions when persisted
+				columnPPodVersionInfos.add(null);
+			}
+			for (final Character character : getCharacters()) {
+				character.addMatrix(this);
+			}
+		}
+	}
+
+	/**
+	 * {@link Unmarshaller} callback.
+	 * 
+	 * @param u see {@code Unmarshaller}
+	 * @param parent see {@code Unmarshaller}
+	 */
+	public void afterUnmarshal(final Unmarshaller u, final Object parent) {
+		if (parent instanceof OTUSet) {
+			this.otuSet = (OTUSet) parent;
+		}
+
+	}
 
 	@Override
 	public boolean beforeMarshal(final Marshaller marshaller) {
@@ -437,43 +447,6 @@ public class CharacterStateMatrix extends UUPPodEntityWXmlId {
 		return Collections.unmodifiableList(rows);
 	}
 
-	/**
-	 * Set the {@link PPodVersionInfo} at {@code idx} to {@code null}. Fills
-	 * with <code>null</code>s if necessary.
-	 * <p>
-	 * Intentionally package-private.
-	 * 
-	 * @param idx see description
-	 * 
-	 * @return this {@code CharacterStateMatrix}
-	 */
-	CharacterStateMatrix resetColumnPPodVersion(final int idx) {
-		while (columnPPodVersionInfos.size() - 1 < idx) {
-			columnPPodVersionInfos.add(null);
-		}
-		columnPPodVersionInfos.set(idx, null);
-		return this;
-	}
-
-	/**
-	 * {@code null} out {@code pPodVersionInfo} and the {@link PPodVersionInfo}
-	 * of the owning study.
-	 * 
-	 * @return this {@code CharacterStateMatrix}
-	 */
-	@Override
-	protected CharacterStateMatrix resetPPodVersionInfo() {
-		if (getPPodVersionInfo() == null || getDoNotPersist()) {
-			// nothing to do
-		} else {
-			if (otuSet != null) {
-				otuSet.resetPPodVersionInfo();
-			}
-			super.resetPPodVersionInfo();
-		}
-		return this;
-	}
-
 // public List<Character> setCharacters(final List<Character> newCharacters) {
 // checkNotNull(newCharacters);
 // if (newCharacters.equals(getCharacters())) {
@@ -534,6 +507,43 @@ public class CharacterStateMatrix extends UUPPodEntityWXmlId {
 // 
 
 	/**
+	 * Set the {@link PPodVersionInfo} at {@code idx} to {@code null}. Fills
+	 * with <code>null</code>s if necessary.
+	 * <p>
+	 * Intentionally package-private.
+	 * 
+	 * @param idx see description
+	 * 
+	 * @return this {@code CharacterStateMatrix}
+	 */
+	CharacterStateMatrix resetColumnPPodVersion(final int idx) {
+		while (columnPPodVersionInfos.size() - 1 < idx) {
+			columnPPodVersionInfos.add(null);
+		}
+		columnPPodVersionInfos.set(idx, null);
+		return this;
+	}
+
+	/**
+	 * {@code null} out {@code pPodVersionInfo} and the {@link PPodVersionInfo}
+	 * of the owning study.
+	 * 
+	 * @return this {@code CharacterStateMatrix}
+	 */
+	@Override
+	protected CharacterStateMatrix resetPPodVersionInfo() {
+		if (getPPodVersionInfo() == null || getDoNotPersist()) {
+			// nothing to do
+		} else {
+			if (otuSet != null) {
+				otuSet.resetPPodVersionInfo();
+			}
+			super.resetPPodVersionInfo();
+		}
+		return this;
+	}
+
+	/**
 	 * Set the {@code Character} at {@code characterIdx}.
 	 * <p>
 	 * If {@code getCharacters().size() <= characterIdx}, then this method pads
@@ -554,6 +564,11 @@ public class CharacterStateMatrix extends UUPPodEntityWXmlId {
 	public Character setCharacter(final int characterIdx,
 			final Character character) {
 		checkNotNull(character);
+		if (character instanceof MolecularCharacter) {
+			throw new AssertionError(
+					"character should not be a MolecularCharacter");
+		}
+
 		if (characters.size() > characterIdx
 				&& character.equals(characters.get(characterIdx))) {
 			// Nothing to do
@@ -767,6 +782,15 @@ public class CharacterStateMatrix extends UUPPodEntityWXmlId {
 		return oldRow;
 	}
 
+	public Type getType() {
+		return type;
+	}
+
+	protected CharacterStateMatrix setType(final Type type) {
+		this.type = type;
+		return this;
+	}
+
 	/**
 	 * Constructs a <code>String</code> with attributes in name=value format.
 	 * 
@@ -790,17 +814,5 @@ public class CharacterStateMatrix extends UUPPodEntityWXmlId {
 				.append("characterIdx=").append(this.characterIdx).append(")");
 
 		return retValue.toString();
-	}
-
-	public static enum Type {
-		DNA, RNA, CHARACTER_STATE;
-	}
-
-	@Transient
-	private Type type = Type.CHARACTER_STATE;
-
-	protected CharacterStateMatrix setType(Type type) {
-		this.type = type;
-		return this;
 	}
 }
