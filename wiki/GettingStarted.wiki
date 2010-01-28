@@ -2,8 +2,8 @@
 
 = How to set up a development environment in Eclipse =
 
-  * Install Apache Tomcat http://tomcat.apache.org/
-  * Get the Eclipse IDE for Java EE developers from, for example, http://www.eclipse.org/downloads/
+  # Install Apache Tomcat http://tomcat.apache.org/
+  # Get the Eclipse IDE for Java EE developers from, for example, http://www.eclipse.org/downloads/
  # Install the [http://m2eclipse.sonatype.org/ M2Eclipse] Eclipse plugin. At a minimum you'll need the following items:
     * Maven Integration/Maven Embedder
     * Maven Integration/Maven Integration for Eclipse
