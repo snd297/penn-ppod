@@ -4,7 +4,7 @@
 
   # Install Apache Tomcat http://tomcat.apache.org/
   # Get the Eclipse IDE for Java EE developers from, for example, http://www.eclipse.org/downloads/
- # Install the [http://m2eclipse.sonatype.org/ M2Eclipse] Eclipse plugin. At a minimum you'll need the following items:
+  # Install the [http://m2eclipse.sonatype.org/ M2Eclipse] Eclipse plugin. At a minimum you'll need the following items:
     * Maven Integration/Maven Embedder
     * Maven Integration/Maven Integration for Eclipse
     * Maven Optional Components/Maven SCM Handler for Subclipse
@@ -14,8 +14,3 @@
     * Sublcipse/Subversion JavaHL Native Library Adapter
   # Install the [http://testng.org/doc/eclipse.html TestNG] Eclipse plugin
   
-
-Add your content here.  Format your content with:
-  * Text in *bold* or _italic_
-  * Headings, paragraphs, and lists
-  * Automatic links to other wiki pages
