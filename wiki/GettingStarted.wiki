@@ -3,7 +3,7 @@
 = How to set up a development environment in Eclipse =
 
   * Install Apache Tomcat http://tomcat.apache.org/
-  * http://www.eclipse.org/downloads/
+  * Get the Eclipse IDE for Java EE developers from, for example, http://www.eclipse.org/downloads/
 
 Add your content here.  Format your content with:
   * Text in *bold* or _italic_
