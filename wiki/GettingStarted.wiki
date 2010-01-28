@@ -1,6 +1,6 @@
 #getting started-a way to set up a development environment in Eclipse.
 
-= Introduction =
+= How to set up a development environment in Eclipse =
 
 Add your content here.
 
