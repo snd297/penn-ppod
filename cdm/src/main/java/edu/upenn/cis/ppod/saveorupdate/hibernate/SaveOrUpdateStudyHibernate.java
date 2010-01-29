@@ -70,6 +70,7 @@ public class SaveOrUpdateStudyHibernate implements ISaveOrUpdateStudy {
 	private final IMergeOTUSet mergeOTUSet;
 	private final IMergeCharacterStateMatrix mergeMatrix;
 	private final IMergeTreeSet mergeTreeSet;
+	private Session session;
 
 	@Inject
 	SaveOrUpdateStudyHibernate(
@@ -87,6 +88,7 @@ public class SaveOrUpdateStudyHibernate implements ISaveOrUpdateStudy {
 			final IAttachmentTypeDAOHibernateFactory attachmentTypeDAOFactory,
 			final IMergeAttachment.IFactory mergeAttachmentFactory,
 			final MergeTreeSet mergeTreeSet, @Assisted final Session session) {
+		this.session = session;
 		this.studyDAO = (IStudyDAO) studyDAOHibernate.setSession(session);
 		this.otuSetDAO = (IOTUSetDAO) otuSetDAO.setSession(session);
 		this.dnaCharacterDAO = (IDNACharacterDAO) dnaCharacterDAO
@@ -99,7 +101,7 @@ public class SaveOrUpdateStudyHibernate implements ISaveOrUpdateStudy {
 		this.mergeOTUSet = saveOrUpdateOTUSetFactory.create(session);
 		this.mergeMatrix = mergeMatrixFactory.create(mergeAttachmentFactory
 				.create(attachmentNamespaceDAOFactory.create(session),
-						attachmentTypeDAOFactory.create(session)));
+						attachmentTypeDAOFactory.create(session)), session);
 		this.mergeTreeSet = mergeTreeSet;
 	}
 

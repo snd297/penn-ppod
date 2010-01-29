@@ -50,7 +50,6 @@ import javax.xml.bind.annotation.XmlAttribute;
 import javax.xml.bind.annotation.XmlElement;
 import javax.xml.bind.annotation.XmlIDREF;
 
-import org.hibernate.annotations.Cascade;
 import org.hibernate.annotations.Sort;
 import org.hibernate.annotations.SortType;
 
@@ -123,7 +122,6 @@ public final class CharacterStateCell extends PPodEntity {
 	 * cache {@code states.get(0)}.
 	 */
 	@ManyToOne(fetch = FetchType.LAZY)
-	@Cascade(org.hibernate.annotations.CascadeType.SAVE_UPDATE)
 	@JoinColumn(name = "FIRST_" + CharacterState.ID_COLUMN)
 	private CharacterState firstState = null;
 
@@ -132,7 +130,6 @@ public final class CharacterStateCell extends PPodEntity {
 	 */
 	@ManyToMany
 	@Sort(type = SortType.COMPARATOR, comparator = CharacterState.CharacterStateComparator.class)
-	@Cascade(org.hibernate.annotations.CascadeType.SAVE_UPDATE)
 	@JoinTable(name = CELL_CHARACTER_STATE_JOIN_TABLE, joinColumns = @JoinColumn(name = ID_COLUMN), inverseJoinColumns = @JoinColumn(name = CharacterState.ID_COLUMN))
 	private SortedSet<CharacterState> states = null;
 
@@ -426,7 +423,7 @@ public final class CharacterStateCell extends PPodEntity {
 				state.setCharacter(getRow().getMatrix().getCharacters().get(
 						getRow().getCellIdx().get(this)));
 			}
-			checkIncomingState(state);
+			//checkIncomingState(state);
 		}
 
 		clearStates();

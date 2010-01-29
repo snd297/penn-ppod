@@ -47,20 +47,6 @@ import com.google.inject.assistedinject.Assisted;
 public class CharacterState extends PPodEntityWXmlId {
 
 	/**
-	 * For assisted injections.
-	 */
-	public static interface IFactory {
-
-		/**
-		 * Create a character state with the given state number.
-		 * 
-		 * @param stateNumber the state number for the new state
-		 * @return the new state
-		 */
-		CharacterState create(Integer stateNumber);
-	}
-
-	/**
 	 * Orders character states by the natural ordering of
 	 * {@link CharacterState#getStateNumber()}.
 	 * <p>
@@ -87,6 +73,20 @@ public class CharacterState extends PPodEntityWXmlId {
 
 			return o2.getStateNumber() - o1.getStateNumber();
 		}
+	}
+
+	/**
+	 * For assisted injections.
+	 */
+	public static interface IFactory {
+
+		/**
+		 * Create a character state with the given state number.
+		 * 
+		 * @param stateNumber the state number for the new state
+		 * @return the new state
+		 */
+		CharacterState create(Integer stateNumber);
 	}
 
 	/**
@@ -189,18 +189,6 @@ public class CharacterState extends PPodEntityWXmlId {
 	}
 
 	/**
-	 * Set the integer value of this state.
-	 * 
-	 * @param stateNumber the integer value to use for this state
-	 * 
-	 * @return this
-	 */
-	protected CharacterState setStateNumber(final int stateNumber) {
-		this.stateNumber = stateNumber;
-		return this;
-	}
-
-	/**
 	 * Mark this object as needed a new pPOD version.
 	 * 
 	 * @return this {@code CharacterState}
@@ -246,6 +234,18 @@ public class CharacterState extends PPodEntityWXmlId {
 			this.label = label;
 			resetPPodVersionInfo();
 		}
+		return this;
+	}
+
+	/**
+	 * Set the integer value of this state.
+	 * 
+	 * @param stateNumber the integer value to use for this state
+	 * 
+	 * @return this
+	 */
+	protected CharacterState setStateNumber(final int stateNumber) {
+		this.stateNumber = stateNumber;
 		return this;
 	}
 

@@ -96,7 +96,7 @@ public final class CharacterStateRow extends PPodEntity {
 	 * belongs.
 	 */
 	@ManyToOne
-	@JoinColumn(name = CharacterStateMatrix.ID_COLUMN, insertable = false, updatable = false, nullable = false)
+	@JoinColumn(name = CharacterStateMatrix.ID_COLUMN, insertable = false, updatable = false)//, nullable = false)
 	private CharacterStateMatrix matrix;
 
 	CharacterStateRow() {}
@@ -115,21 +115,21 @@ public final class CharacterStateRow extends PPodEntity {
 	 */
 	public CharacterStateCell addCell(final CharacterStateCell cell) {
 		checkNotNull(cell);
-		if (getMatrix() == null) {
-			throw new IllegalStateException(
-					"This row hasn't been added to a matrix yet");
-		}
-		if (getMatrix().getCharacters().size() < getCells().size() + 1) {
-			throw new IllegalStateException("the matrix has less characters "
-					+ getMatrix().getCharacterIdx().size()
-					+ " than the row is about to have "
-					+ (getCells().size() + 1));
-		}
-		if (getMatrix().getCharacters().size() > 0
-				&& getMatrix().getCharacters().get(getCells().size()) == null) {
-			throw new IllegalStateException("Character is null at column "
-					+ cells.size());
-		}
+//		if (getMatrix() == null) {
+//			throw new IllegalStateException(
+//					"This row hasn't been added to a matrix yet");
+//		}
+//		if (getMatrix().getCharacters().size() < getCells().size() + 1) {
+//			throw new IllegalStateException("the matrix has less characters "
+//					+ getMatrix().getCharacterIdx().size()
+//					+ " than the row is about to have "
+//					+ (getCells().size() + 1));
+//		}
+//		if (getMatrix().getCharacters().size() > 0
+//				&& getMatrix().getCharacters().get(getCells().size()) == null) {
+//			throw new IllegalStateException("Character is null at column "
+//					+ cells.size());
+//		}
 		cells.add(cell);
 		cellIdx.put(cell, cells.size() - 1);
 		cell.setRow(this);
@@ -222,7 +222,7 @@ public final class CharacterStateRow extends PPodEntity {
 	 * 
 	 * @return this {@code CharacterStateRow}
 	 */
-	CharacterStateRow setMatrix(final CharacterStateMatrix matrix) {
+	 CharacterStateRow setMatrix(final CharacterStateMatrix matrix) {
 		this.matrix = matrix;
 		return this;
 	}

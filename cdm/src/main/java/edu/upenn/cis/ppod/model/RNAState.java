@@ -30,7 +30,7 @@ public class RNAState extends MolecularState {
 		/**
 		 * Create a character state with the label
 		 * 
-		 * @param nucleotide the nucletide of the state we are creating
+		 * @param nucleotide the nucleoAtide of the state we are creating
 		 * 
 		 * @return the new DNA state
 		 */

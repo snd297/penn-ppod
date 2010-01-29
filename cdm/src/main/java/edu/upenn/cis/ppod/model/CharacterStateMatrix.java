@@ -143,7 +143,6 @@ public class CharacterStateMatrix extends UUPPodEntityWXmlId {
 	@XmlElement(name = "otuDocId")
 	@XmlIDREF
 	@ManyToMany
-	@Cascade(org.hibernate.annotations.CascadeType.SAVE_UPDATE)
 	@JoinTable(name = TABLE + "_" + OTU.TABLE, joinColumns = { @JoinColumn(name = ID_COLUMN) }, inverseJoinColumns = { @JoinColumn(name = OTU.ID_COLUMN) })
 	@org.hibernate.annotations.IndexColumn(name = OTU.TABLE + "_POSITION")
 	private final List<OTU> otus = newArrayList();
@@ -153,7 +152,7 @@ public class CharacterStateMatrix extends UUPPodEntityWXmlId {
 	 * CharacterStateMatrix}.
 	 */
 	@ManyToOne(fetch = FetchType.LAZY)
-	@Cascade(org.hibernate.annotations.CascadeType.SAVE_UPDATE)
+	// @Cascade(org.hibernate.annotations.CascadeType.SAVE_UPDATE)
 	@JoinColumn(name = OTUSet.ID_COLUMN, nullable = false)
 	private OTUSet otuSet;
 
@@ -175,7 +174,7 @@ public class CharacterStateMatrix extends UUPPodEntityWXmlId {
 	@XmlElement(name = "characterDocId")
 	@XmlIDREF
 	@ManyToMany
-	@Cascade( { org.hibernate.annotations.CascadeType.SAVE_UPDATE })
+	// @Cascade( { org.hibernate.annotations.CascadeType.SAVE_UPDATE })
 	@JoinTable(name = MATRIX_CHARACTER_JOIN_TABLE, joinColumns = { @JoinColumn(name = ID_COLUMN) }, inverseJoinColumns = { @JoinColumn(name = Character.ID_COLUMN) })
 	@org.hibernate.annotations.IndexColumn(name = CHARACTER_INDEX_COLUMN)
 	private final List<Character> characters = newArrayList();
@@ -183,7 +182,8 @@ public class CharacterStateMatrix extends UUPPodEntityWXmlId {
 	@XmlElement(name = "row")
 	@OneToMany
 	@org.hibernate.annotations.IndexColumn(name = ROW_INDEX_COLUMN)
-	@JoinColumn(name = ID_COLUMN, nullable = false)
+	@JoinColumn(name = ID_COLUMN)
+	// , nullable = false)
 	@Cascade( { org.hibernate.annotations.CascadeType.SAVE_UPDATE,
 			org.hibernate.annotations.CascadeType.DELETE_ORPHAN })
 	private final List<CharacterStateRow> rows = newArrayList();
