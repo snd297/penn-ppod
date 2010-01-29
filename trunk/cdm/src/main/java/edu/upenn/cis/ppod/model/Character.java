@@ -61,7 +61,7 @@ public class Character extends UUPPodEntity {
 	 */
 	@XmlType(name = "characterType")
 	public static enum Type {
-		DNA, RNA, MORPHOLOGICAL;
+		DNA, RNA, STANDARD;
 	}
 
 	@XmlAttribute
@@ -106,7 +106,7 @@ public class Character extends UUPPodEntity {
 
 	@XmlAttribute
 	@Transient
-	private Type type = Type.MORPHOLOGICAL;
+	private Type type = Type.STANDARD;
 
 	/**
 	 * Default constructor for (at least) Hibernate.
