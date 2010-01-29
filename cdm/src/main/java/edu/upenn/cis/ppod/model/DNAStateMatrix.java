@@ -25,13 +25,13 @@ import javax.persistence.Table;
  * @author Sam Donnelly
  */
 @Entity
-@Table(name = DNAMatrix.TABLE)
-public final class DNAMatrix extends MolecularMatrix {
+@Table(name = DNAStateMatrix.TABLE)
+public final class DNAStateMatrix extends MolecularStateMatrix {
 
 	/** Database table name. */
-	public static final String TABLE = "DNA_MATRIX";
+	public static final String TABLE = "DNA_STATE_MATRIX";
 
-	DNAMatrix() {
+	DNAStateMatrix() {
 		setType(Type.DNA);
 	}
 
@@ -39,7 +39,7 @@ public final class DNAMatrix extends MolecularMatrix {
 			final Character character) {
 		checkNotNull(character);
 		checkArgument(character instanceof DNACharacter,
-				"character must be a DNACharacer for a DNAMatrix, not a "
+				"character must be a DNACharacer for a DNAStateMatrix, not a "
 						+ character.getClass().getCanonicalName());
 		return (DNACharacter) super.setCharacter(characterIdx, character);
 	}

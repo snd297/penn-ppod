@@ -61,7 +61,7 @@ public class CharacterStateMatrix extends UUPPodEntityWXmlId {
 
 	@XmlType(name = "CharacterStateMatrixType")
 	public static enum Type {
-		DNA, RNA, CHARACTER_STATE;
+		DNA, RNA, STANDARD;
 	}
 
 	/** This entity's table name. Intentionally package-private. */
@@ -152,7 +152,6 @@ public class CharacterStateMatrix extends UUPPodEntityWXmlId {
 	 * CharacterStateMatrix}.
 	 */
 	@ManyToOne(fetch = FetchType.LAZY)
-	// @Cascade(org.hibernate.annotations.CascadeType.SAVE_UPDATE)
 	@JoinColumn(name = OTUSet.ID_COLUMN, nullable = false)
 	private OTUSet otuSet;
 
@@ -190,7 +189,7 @@ public class CharacterStateMatrix extends UUPPodEntityWXmlId {
 
 	@Transient
 	@XmlAttribute
-	private Type type = Type.CHARACTER_STATE;
+	private Type type = Type.STANDARD;
 
 	/** No-arg constructor for (at least) Hibernate. */
 	CharacterStateMatrix() {}
@@ -244,18 +243,18 @@ public class CharacterStateMatrix extends UUPPodEntityWXmlId {
 // }
 
 	public void afterUnmarshal() {
-		if (characterIdx.size() == 0) {
-			int i = 0;
-			for (final Character character : characters) {
-				characterIdx.put(character, i++);
-
-				// Mark these as ready for new versions when persisted
-				columnPPodVersionInfos.add(null);
-			}
-			for (final Character character : getCharacters()) {
-				character.addMatrix(this);
-			}
-		}
+// if (characterIdx.size() == 0) {
+// int i = 0;
+// for (final Character character : characters) {
+// characterIdx.put(character, i++);
+//
+// // Mark these as ready for new versions when persisted
+// columnPPodVersionInfos.add(null);
+// }
+// for (final Character character : getCharacters()) {
+// character.addMatrix(this);
+// }
+// }
 	}
 
 	/**

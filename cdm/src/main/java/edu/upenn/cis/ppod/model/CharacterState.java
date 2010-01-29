@@ -101,7 +101,7 @@ public class CharacterState extends PPodEntityWXmlId {
 	};
 
 	/** The name of this entity's table. Intentionally package-private. */
-	final static String TABLE = "CHARACTER_STATE";
+	final static String TABLE = "STANDARD";
 
 	final static String ID_COLUMN = TABLE + "_ID";
 
@@ -117,8 +117,8 @@ public class CharacterState extends PPodEntityWXmlId {
 	final static String LABEL_COLUMN = "LABEL";
 
 	/**
-	 * The stateNumber number of this {@code CharacterState}. This is the core
-	 * value of these objects.
+	 * The state number of this {@code CharacterState}. This is the core value
+	 * of these objects.
 	 */
 	@XmlAttribute
 	@Column(name = STATE_NUMBER_COLUMN, nullable = false, updatable = false)
@@ -157,7 +157,7 @@ public class CharacterState extends PPodEntityWXmlId {
 	 *            <em>Unmarshal Event Callbacks</em>
 	 */
 	public void afterUnmarshal(final Unmarshaller u, final Object parent) {
-	// We take of setting this.character in Character.afterUnmarshal(...)
+	// We take care of setting this.character in Character.afterUnmarshal(...)
 	}
 
 	/**

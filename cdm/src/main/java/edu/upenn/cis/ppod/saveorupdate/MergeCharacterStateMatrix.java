@@ -27,7 +27,6 @@ import static edu.upenn.cis.ppod.util.PPodIterables.equalTo;
 import static edu.upenn.cis.ppod.util.PPodIterables.findEach;
 import static edu.upenn.cis.ppod.util.PPodIterables.findIf;
 
-import java.util.Iterator;
 import java.util.List;
 import java.util.ListIterator;
 import java.util.Map;

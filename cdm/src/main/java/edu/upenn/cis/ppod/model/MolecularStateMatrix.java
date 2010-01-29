@@ -23,7 +23,7 @@ import java.util.List;
 /**
  * @author Sam Donnelly
  */
-public abstract class MolecularMatrix extends CharacterStateMatrix {
+public abstract class MolecularStateMatrix extends CharacterStateMatrix {
 
 	/**
 	 * Set the {@code Character} at {@code characterIdx}.
@@ -47,7 +47,7 @@ public abstract class MolecularMatrix extends CharacterStateMatrix {
 			final Character character) {
 		checkNotNull(character);
 		checkArgument(character instanceof MolecularCharacter,
-				"characters of a MolecularMatrix must be MolecularCharacer, not a "
+				"characters of a MolecularStateMatrix must be MolecularCharacer, not a "
 						+ character.getClass().getName());
 		if (getCharacters().size() > 0) {
 			checkArgument(character.equals(getCharacters().get(0)),

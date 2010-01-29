@@ -39,7 +39,7 @@ import edu.upenn.cis.ppod.dao.hibernate.StudyDAOHibernate;
 import edu.upenn.cis.ppod.dao.hibernate.HibernateDAOFactory.OTUSetDAOHibernate;
 import edu.upenn.cis.ppod.model.CharacterStateMatrix;
 import edu.upenn.cis.ppod.model.DNACharacter;
-import edu.upenn.cis.ppod.model.DNAMatrix;
+import edu.upenn.cis.ppod.model.DNAStateMatrix;
 import edu.upenn.cis.ppod.model.IUUPPodEntity;
 import edu.upenn.cis.ppod.model.OTU;
 import edu.upenn.cis.ppod.model.OTUSet;
@@ -64,7 +64,7 @@ public class SaveOrUpdateStudyHibernate implements ISaveOrUpdateStudy {
 	private final Provider<Study> studyProvider;
 	private final Provider<OTUSet> otuSetProvider;
 	private final Provider<CharacterStateMatrix> characterStateMatrixProvider;
-	private final Provider<DNAMatrix> dnaMatrixProvider;
+	private final Provider<DNAStateMatrix> dnaMatrixProvider;
 	private final Provider<TreeSet> treeSetProvider;
 
 	private final IMergeOTUSet mergeOTUSet;
@@ -80,7 +80,7 @@ public class SaveOrUpdateStudyHibernate implements ISaveOrUpdateStudy {
 			final Provider<Study> studyProvider,
 			final Provider<OTUSet> otuSetProvider,
 			final Provider<CharacterStateMatrix> characterStateMatrixProvider,
-			final Provider<DNAMatrix> dnaMatrixProvider,
+			final Provider<DNAStateMatrix> dnaMatrixProvider,
 			final Provider<TreeSet> treeSetProvider,
 			final IMergeOTUSetHibernateFactory saveOrUpdateOTUSetFactory,
 			final IMergeCharacterStateMatrix.IFactory mergeMatrixFactory,
@@ -152,7 +152,7 @@ public class SaveOrUpdateStudyHibernate implements ISaveOrUpdateStudy {
 				if (null == (dbMatrix = findIf(dbOTUSet.getMatrices(), equalTo(
 						incomingMatrix.getPPodId(), IUUPPodEntity.getPPodId)))) {
 					switch (incomingMatrix.getType()) {
-						case CHARACTER_STATE:
+						case STANDARD:
 							dbMatrix = characterStateMatrixProvider.get();
 							break;
 						case DNA:
