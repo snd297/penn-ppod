@@ -63,7 +63,6 @@ abstract class PPodEntity extends PersistentObject implements IAttachee,
 	@XmlElement(name = "attachmentDocId")
 	@XmlIDREF
 	@ManyToMany
-	@Cascade(org.hibernate.annotations.CascadeType.SAVE_UPDATE)
 	@JoinTable(name = TABLE + "_" + Attachment.TABLE, joinColumns = { @JoinColumn(name = ID_COLUMN) }, inverseJoinColumns = { @JoinColumn(name = Attachment.ID_COLUMN) })
 	private Set<Attachment> attachments;
 
@@ -75,7 +74,6 @@ abstract class PPodEntity extends PersistentObject implements IAttachee,
 	 * manipulated in there that we need to leave it eagerly fetched.
 	 */
 	@ManyToOne(fetch = FetchType.EAGER)
-	@Cascade(org.hibernate.annotations.CascadeType.SAVE_UPDATE)
 	@JoinColumn(name = PPodVersionInfo.ID_COLUMN, nullable = false)
 	private PPodVersionInfo pPodVersionInfo;
 

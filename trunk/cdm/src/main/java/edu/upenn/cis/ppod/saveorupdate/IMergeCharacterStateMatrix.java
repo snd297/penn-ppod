@@ -17,6 +17,8 @@ package edu.upenn.cis.ppod.saveorupdate;
 
 import java.util.Map;
 
+import org.hibernate.Session;
+
 import edu.upenn.cis.ppod.model.CharacterStateMatrix;
 import edu.upenn.cis.ppod.model.DNACharacter;
 import edu.upenn.cis.ppod.model.OTU;
@@ -25,7 +27,8 @@ import edu.upenn.cis.ppod.model.OTUSet;
 /**
  * Merge two matrices.
  * 
- * @see #merge(CharacterStateMatrix, CharacterStateMatrix, OTUSet, Map, DNACharacter)
+ * @see #merge(CharacterStateMatrix, CharacterStateMatrix, OTUSet, Map,
+ *      DNACharacter)
  * 
  * @author Sam Donnelly
  */
@@ -49,6 +52,7 @@ public interface IMergeCharacterStateMatrix {
 	 *            counterpart. This parameter is used to set the new OTU
 	 *            ordering in {@code targetMatrix} as dictated by {@code
 	 *            sourceMatrix}
+	 * @param session
 	 * 
 	 * @return {@code targetMatrix}
 	 */
@@ -60,6 +64,6 @@ public interface IMergeCharacterStateMatrix {
 	 * Makes {@link IMergeCharacterStateMatrix}s.
 	 */
 	static interface IFactory {
-		IMergeCharacterStateMatrix create(IMergeAttachment mergeAttachment);
+		IMergeCharacterStateMatrix create(IMergeAttachment mergeAttachment, Session session);
 	}
 }

@@ -33,6 +33,9 @@ import java.util.ListIterator;
 import java.util.Map;
 import java.util.Set;
 
+import org.hibernate.Session;
+import org.slf4j.Logger;
+
 import com.google.inject.Inject;
 import com.google.inject.Provider;
 import com.google.inject.assistedinject.Assisted;
@@ -48,6 +51,7 @@ import edu.upenn.cis.ppod.model.DNAState;
 import edu.upenn.cis.ppod.model.IUUPPodEntity;
 import edu.upenn.cis.ppod.model.OTU;
 import edu.upenn.cis.ppod.model.OTUSet;
+import edu.upenn.cis.ppod.thirdparty.injectslf4j.InjectLogger;
 
 /**
  * @author Sam Donnelly
@@ -60,6 +64,10 @@ public class MergeCharacterStateMatrix implements IMergeCharacterStateMatrix {
 	private final CharacterState.IFactory stateFactory;
 	private final Provider<Attachment> attachmentProvider;
 	private final IMergeAttachment mergeAttachment;
+	private final Session session;
+
+	@InjectLogger
+	private Logger logger;
 
 	@Inject
 	MergeCharacterStateMatrix(final Provider<Character> characterProvider,
@@ -67,13 +75,15 @@ public class MergeCharacterStateMatrix implements IMergeCharacterStateMatrix {
 			final Provider<CharacterStateCell> cellProvider,
 			final CharacterState.IFactory stateFactory,
 			final Provider<Attachment> attachmentProvider,
-			@Assisted final IMergeAttachment mergeAttachment) {
+			@Assisted final IMergeAttachment mergeAttachment,
+			@Assisted final Session session) {
 		this.characterProvider = characterProvider;
 		this.rowProvider = rowProvider;
 		this.cellProvider = cellProvider;
 		this.stateFactory = stateFactory;
 		this.attachmentProvider = attachmentProvider;
 		this.mergeAttachment = mergeAttachment;
+		this.session = session;
 	}
 
 	public CharacterStateMatrix merge(final CharacterStateMatrix targetMatrix,
@@ -81,6 +91,8 @@ public class MergeCharacterStateMatrix implements IMergeCharacterStateMatrix {
 			final OTUSet newTargetMatrixOTUSet,
 			final Map<OTU, OTU> mergedOTUsBySourceOTU,
 			final DNACharacter dnaCharacter) {
+		final String METHOD = "merge(...)";
+		logger.debug("{}: entering", METHOD);
 		checkNotNull(targetMatrix);
 		checkNotNull(sourceMatrix);
 		checkNotNull(newTargetMatrixOTUSet);
@@ -116,8 +128,17 @@ public class MergeCharacterStateMatrix implements IMergeCharacterStateMatrix {
 			oldIdxsByChararacter.put(idx.next(), idx.previousIndex());
 		}
 
+		// int characterCounter = -1;
 		final Map<Integer, Integer> originalCharIdxsByNewCharIdx = newHashMap();
 		for (final Character sourceCharacter : sourceMatrix.getCharacters()) {
+// characterCounter++;
+// if (characterCounter % 20 == 0 && characterCounter > 0) {
+// logger.debug("{}: flushing cells, characterCounter: {}",
+// METHOD, characterCounter);
+// session.flush();
+// session.clear();
+// }
+
 			Character newTargetCharacter;
 			if (sourceCharacter.getType() == Character.Type.DNA) {
 				newTargetCharacter = dnaCharacter;
@@ -144,6 +165,7 @@ public class MergeCharacterStateMatrix implements IMergeCharacterStateMatrix {
 				if (!(targetState instanceof DNAState)) {
 					targetState.setLabel(sourceState.getLabel());
 				}
+				// session.save(targetState);
 			}
 
 			originalCharIdxsByNewCharIdx.put(targetMatrix.getCharacterIdx()
@@ -165,15 +187,22 @@ public class MergeCharacterStateMatrix implements IMergeCharacterStateMatrix {
 				}
 				newTargetCharacter.addAttachment(targetAttachment);
 				mergeAttachment.merge(targetAttachment, sourceAttachment);
+				session.saveOrUpdate(newTargetCharacter);
+				session.saveOrUpdate(targetAttachment);
 			}
 		}
 
-		// Now we add (but don't fill in) and remove cells
+		// session.saveOrUpdate(newTargetMatrixOTUSet.getStudy());
+		// session.saveOrUpdate(newTargetMatrixOTUSet);
+
+		int sourceRowIdx = 0;
+		final List<CharacterStateRow> targetRows = newArrayList();
 		for (final OTU targetOTU : targetMatrix.getOTUs()) {
 			CharacterStateRow targetRow = targetMatrix.getRow(targetOTU);
 			if (targetRow == null) {
 				targetRow = rowProvider.get();
-				targetMatrix.setRow(targetOTU, targetRow);
+				targetRows.add(targetRow);
+				// targetMatrix.setRow(targetOTU, targetRow);
 			}
 			final List<CharacterStateCell> clearedTargetCells = targetRow
 					.clearCells();
@@ -191,16 +220,9 @@ public class MergeCharacterStateMatrix implements IMergeCharacterStateMatrix {
 					.size()) {
 				targetRow.removeLastCell();
 			}
-		}
 
-		// We should now have a matrix with the proper cell dimensions and all
-		// OTU's and characters done - now let's fill
-		// in the cells
-		for (final Iterator<CharacterStateRow> sourceRowItr = sourceMatrix
-				.getRows().iterator(), targetRowItr = targetMatrix.getRows()
-				.iterator(); sourceRowItr.hasNext();) {
-			final CharacterStateRow sourceRow = sourceRowItr.next(), targetRow = targetRowItr
-					.next();
+			final CharacterStateRow sourceRow = sourceMatrix
+					.getRow(sourceMatrix.getOTUs().get(sourceRowIdx++));
 			for (final ListIterator<CharacterStateCell> sourceCellItr = sourceRow
 					.getCells().listIterator(), targetCellItr = targetRow
 					.getCells().listIterator(); sourceCellItr.hasNext();) {
@@ -232,7 +254,28 @@ public class MergeCharacterStateMatrix implements IMergeCharacterStateMatrix {
 						throw new AssertionError("unknown type");
 				}
 			}
+			// session.saveOrUpdate(targetMatrix);
+			session.saveOrUpdate(targetRow);
+// if (sourceRowIdx % 20 == 0) {
+			logger.debug("{}: flushing rows, rowCounter: {}", METHOD,
+					sourceRowIdx);
+			session.flush();
+			session.clear();
+// }
 		}
+		for (int i = 0; i < targetRows.size(); i++) {
+			targetMatrix.setRow(targetMatrix.getOTUs().get(i), targetRows
+					.get(i));
+		}
+		// We should now have a matrix with the proper cell dimensions and all
+		// OTU's and characters done - now let's fill
+		// in the cells
+
+// for (final Iterator<CharacterStateRow> sourceRowItr = sourceMatrix
+// .getRows().iterator(), targetRowItr = targetMatrix.getRows()
+// .iterator(); sourceRowItr.hasNext();) {
+//
+// }
 		return targetMatrix;
 	}
 }

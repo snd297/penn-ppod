@@ -361,8 +361,8 @@ public final class OTUSet extends UUPPodEntityWXmlId {
 	 * Point this {@code OTUSet} and all of its {@code PhyloCharMatrix}'s to a
 	 * new {@code pPodVersionInfo}. Only the first call has an effect.
 	 * <p>
-	 * If {@link #getDoNotPersist()} {@code == true} then calls
-	 * to this method does nothing and returns.
+	 * If {@link #getDoNotPersist()} {@code == true} then calls to this method
+	 * does nothing and returns.
 	 * 
 	 * @see #setDoNotPersist(boolean)
 	 * 
@@ -450,5 +450,9 @@ public final class OTUSet extends UUPPodEntityWXmlId {
 				.append(this.otus).append(TAB).append(")");
 
 		return retValue.toString();
+	}
+
+	public Study getStudy() {
+		return study;
 	}
 }

@@ -18,10 +18,18 @@ package edu.upenn.cis.ppod.model;
 import static com.google.common.base.Preconditions.checkArgument;
 import static com.google.common.base.Preconditions.checkNotNull;
 
+import javax.persistence.Entity;
+import javax.persistence.Table;
+
 /**
  * @author Sam Donnelly
  */
+@Entity
+@Table(name = DNAMatrix.TABLE)
 public final class DNAMatrix extends MolecularMatrix {
+
+	/** Database table name. */
+	public static final String TABLE = "DNA_MATRIX";
 
 	DNAMatrix() {
 		setType(Type.DNA);

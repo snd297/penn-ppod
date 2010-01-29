@@ -66,8 +66,8 @@ public final class DNAState extends MolecularState {
 		}
 	}
 
-	final static String TABLE = "DNA_STATE";
-	static final String ID_COLUMN = "DNA_STATE_ID";
+	public static final String TABLE = "DNA_STATE";
+	public static final String ID_COLUMN = "DNA_STATE_ID";
 
 	static final String STATE_COLUMN = "STATE";
 
