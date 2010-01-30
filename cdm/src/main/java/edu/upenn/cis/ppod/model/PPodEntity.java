@@ -85,7 +85,6 @@ public abstract class PPodEntity extends PersistentObject implements IAttachee,
 	@JoinColumn(name = PPodVersionInfo.ID_COLUMN, nullable = false)
 	private PPodVersionInfo pPodVersionInfo;
 
-	@XmlAttribute
 	@Transient
 	private Long pPodVersion;
 
@@ -148,6 +147,19 @@ public abstract class PPodEntity extends PersistentObject implements IAttachee,
 				}));
 	}
 
+	/**
+	 * Created for JAXB.
+	 * 
+	 * @param pPodVersion the pPOD version number
+	 * 
+	 * @return this
+	 */
+	PPodEntity setPPodVersion(final Long pPodVersion) {
+		this.pPodVersion = pPodVersion;
+		return this;
+	}
+
+	@XmlAttribute
 	public Long getPPodVersion() {
 		if (pPodVersionInfo != null) {
 			return pPodVersionInfo.getPPodVersion();

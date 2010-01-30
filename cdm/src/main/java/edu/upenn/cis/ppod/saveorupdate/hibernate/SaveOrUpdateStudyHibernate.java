@@ -15,8 +15,6 @@
  */
 package edu.upenn.cis.ppod.saveorupdate.hibernate;
 
-import static com.google.common.base.Predicates.compose;
-import static com.google.common.base.Predicates.equalTo;
 import static edu.upenn.cis.ppod.util.PPodIterables.equalTo;
 import static edu.upenn.cis.ppod.util.PPodIterables.findIf;
 
@@ -70,7 +68,7 @@ public class SaveOrUpdateStudyHibernate implements ISaveOrUpdateStudy {
 	private final IMergeOTUSet mergeOTUSet;
 	private final IMergeCharacterStateMatrix mergeMatrix;
 	private final IMergeTreeSet mergeTreeSet;
-	private Session session;
+	private boolean save;
 
 	@Inject
 	SaveOrUpdateStudyHibernate(
@@ -88,7 +86,6 @@ public class SaveOrUpdateStudyHibernate implements ISaveOrUpdateStudy {
 			final IAttachmentTypeDAOHibernateFactory attachmentTypeDAOFactory,
 			final IMergeAttachment.IFactory mergeAttachmentFactory,
 			final MergeTreeSet mergeTreeSet, @Assisted final Session session) {
-		this.session = session;
 		this.studyDAO = (IStudyDAO) studyDAOHibernate.setSession(session);
 		this.otuSetDAO = (IOTUSetDAO) otuSetDAO.setSession(session);
 		this.dnaCharacterDAO = (IDNACharacterDAO) dnaCharacterDAO
@@ -106,6 +103,7 @@ public class SaveOrUpdateStudyHibernate implements ISaveOrUpdateStudy {
 	}
 
 	public Study save(final Study incomingStudy) {
+		this.save = true;
 		return saveOrUpdate((Study) studyProvider.get().setPPodId(),
 				incomingStudy);
 	}
@@ -167,12 +165,12 @@ public class SaveOrUpdateStudyHibernate implements ISaveOrUpdateStudy {
 				}
 
 				mergeMatrix.merge(dbMatrix, incomingMatrix, dbOTUSet,
-						dbOTUsByIncomingOTU, dbDNACharacter);
+						dbOTUsByIncomingOTU, dbDNACharacter, save);
 			}
 			for (final TreeSet incomingTreeSet : incomingOTUSet.getTreeSets()) {
 				TreeSet dbTreeSet;
 				if (null == (dbTreeSet = findIf(dbOTUSet.getTreeSets(),
-						compose(equalTo(incomingTreeSet.getPPodId()),
+						equalTo(incomingTreeSet.getPPodId(),
 								IUUPPodEntity.getPPodId)))) {
 					dbTreeSet = treeSetProvider.get();
 					dbTreeSet.setPPodId();

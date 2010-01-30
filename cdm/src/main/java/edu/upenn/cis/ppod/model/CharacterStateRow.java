@@ -158,7 +158,7 @@ public final class CharacterStateRow extends PPodEntity {
 	 * @return the cleared cells
 	 */
 	public List<CharacterStateCell> clearCells() {
-		final List<CharacterStateCell> clearedCells = newArrayList(getCells());
+		final List<CharacterStateCell> clearedCells = newArrayList(cells);
 		cells.clear();
 		return clearedCells;
 	}

@@ -89,7 +89,7 @@ public class MergeCharacterStateMatrix implements IMergeCharacterStateMatrix {
 			final CharacterStateMatrix sourceMatrix,
 			final OTUSet newTargetMatrixOTUSet,
 			final Map<OTU, OTU> mergedOTUsBySourceOTU,
-			final DNACharacter dnaCharacter) {
+			final DNACharacter dnaCharacter, boolean save) {
 		final String METHOD = "merge(...)";
 		logger.debug("{}: entering", METHOD);
 		checkNotNull(targetMatrix);
@@ -186,13 +186,12 @@ public class MergeCharacterStateMatrix implements IMergeCharacterStateMatrix {
 				}
 				newTargetCharacter.addAttachment(targetAttachment);
 				mergeAttachment.merge(targetAttachment, sourceAttachment);
-				session.saveOrUpdate(newTargetCharacter);
-				session.saveOrUpdate(targetAttachment);
+				if (save) {
+					session.saveOrUpdate(newTargetCharacter);
+					session.saveOrUpdate(targetAttachment);
+				}
 			}
 		}
-
-		// session.saveOrUpdate(newTargetMatrixOTUSet.getStudy());
-		// session.saveOrUpdate(newTargetMatrixOTUSet);
 
 		int sourceRowIdx = 0;
 		final List<CharacterStateRow> targetRows = newArrayList();
@@ -253,13 +252,15 @@ public class MergeCharacterStateMatrix implements IMergeCharacterStateMatrix {
 						throw new AssertionError("unknown type");
 				}
 			}
-			// session.saveOrUpdate(targetMatrix);
-			session.saveOrUpdate(targetRow);
+			if (save) {
+				// session.saveOrUpdate(targetMatrix);
+				session.saveOrUpdate(targetRow);
 // if (sourceRowIdx % 20 == 0) {
-			logger.debug("{}: flushing rows, rowCounter: {}", METHOD,
-					sourceRowIdx);
-			session.flush();
-			session.clear();
+				logger.debug("{}: flushing rows, rowCounter: {}", METHOD,
+						sourceRowIdx);
+				session.flush();
+				session.clear();
+			}
 // }
 		}
 		for (int i = 0; i < targetRows.size(); i++) {

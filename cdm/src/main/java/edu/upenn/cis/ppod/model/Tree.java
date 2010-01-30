@@ -44,11 +44,9 @@ public final class Tree extends UUPPodEntity {
 
 	static final String TABLE = "TREE";
 
-	@XmlAttribute
 	@Column(name = "LABEL", nullable = false)
 	private String label;
 
-	@XmlElement
 	@Lob
 	@Column(name = "NEWICK", nullable = false)
 	private String newick;
@@ -105,6 +103,7 @@ public final class Tree extends UUPPodEntity {
 	 * 
 	 * @return the label
 	 */
+	@XmlAttribute
 	public String getLabel() {
 		return label;
 	}
@@ -114,6 +113,7 @@ public final class Tree extends UUPPodEntity {
 	 * 
 	 * @return the newick string
 	 */
+	@XmlElement
 	public String getNewick() {
 		return newick;
 	}

@@ -36,11 +36,11 @@ abstract class UUPPodEntity extends PPodEntity implements IUUPPodEntity {
 	final static int PPOD_ID_COLUMN_LENGTH = 36;
 	final static String PPOD_ID_COLUMN_IDX = "IDX_PPOD_ID";
 
-	@XmlAttribute
 	@Column(name = PPOD_ID_COLUMN, unique = true, nullable = false, length = PPOD_ID_COLUMN_LENGTH)
 	@org.hibernate.annotations.Index(name = PPOD_ID_COLUMN_IDX)
 	private String pPodId;
 
+	@XmlAttribute
 	public String getPPodId() {
 		return pPodId;
 	}

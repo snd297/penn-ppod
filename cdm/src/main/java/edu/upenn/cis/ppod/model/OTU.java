@@ -69,7 +69,6 @@ public final class OTU extends UUPPodEntityWXmlId {
 	static final String LABEL_COLUMN = "LABEL";
 
 	/** Non-unique label. */
-	@XmlAttribute
 	@Column(name = "LABEL", nullable = false)
 	private String label;
 
@@ -118,6 +117,7 @@ public final class OTU extends UUPPodEntityWXmlId {
 	 * 
 	 * @return the label of this {@code OTU}
 	 */
+	@XmlAttribute
 	public String getLabel() {
 		return label;
 	}
