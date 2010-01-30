@@ -26,6 +26,7 @@ import javax.xml.bind.annotation.XmlID;
  * @author Sam Donnelly
  */
 abstract class PPodEntityWXmlId extends PPodEntity {
+
 	/**
 	 * Intended for referencing elements within a document - be it XML, JSON,
 	 * etc. This is distinct from the pPOD Id of {@link UUPPodEntity}.

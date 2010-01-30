@@ -17,13 +17,10 @@ package edu.upenn.cis.ppod.model;
 
 import javax.persistence.Entity;
 import javax.persistence.Table;
-import javax.xml.bind.annotation.XmlAccessType;
-import javax.xml.bind.annotation.XmlAccessorType;
 
 import com.google.inject.Inject;
 import com.google.inject.assistedinject.Assisted;
 
-@XmlAccessorType(XmlAccessType.NONE)
 @Entity
 @Table(name = DNAState.TABLE)
 public final class DNAState extends MolecularState {
