@@ -57,7 +57,6 @@ public final class TreeSet extends UUPPodEntityWXmlId {
 
 	static final String ID_COLUMN = TABLE + "_ID";
 
-	@XmlAttribute
 	@Column(name = "LABEL", nullable = false)
 	@org.hibernate.annotations.Index(name = "IDX_LABEL")
 	private String label;
@@ -130,6 +129,7 @@ public final class TreeSet extends UUPPodEntityWXmlId {
 	 * 
 	 * @return the label
 	 */
+	@XmlAttribute
 	public String getLabel() {
 		return label;
 	}

@@ -99,8 +99,6 @@ public final class Attachment extends UUPPodEntity {
 	}
 
 	/** Like a variable type. */
-	@XmlAttribute(name = "attachmentTypeDocId")
-	@XmlIDREF
 	@ManyToOne(fetch = FetchType.LAZY)
 	@JoinColumn(name = AttachmentType.ID_COLUMN, nullable = false)
 	@Cascade(org.hibernate.annotations.CascadeType.SAVE_UPDATE)
@@ -181,6 +179,8 @@ public final class Attachment extends UUPPodEntity {
 	 * 
 	 * @return the type of this attachment
 	 */
+	@XmlAttribute(name = "attachmentTypeDocId")
+	@XmlIDREF
 	public AttachmentType getType() {
 		return type;
 	}

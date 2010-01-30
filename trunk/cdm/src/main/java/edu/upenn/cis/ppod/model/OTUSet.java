@@ -79,7 +79,6 @@ public final class OTUSet extends UUPPodEntityWXmlId {
 	 * <p>
 	 * OTU set labels are unique within a particular <code>Study</code>.
 	 */
-	@XmlAttribute
 	@Column(name = "LABEL", nullable = false)
 	@org.hibernate.annotations.Index(name = "IDX_LABEL")
 	private String label;
@@ -104,7 +103,6 @@ public final class OTUSet extends UUPPodEntityWXmlId {
 	private final Set<TreeSet> treeSets = newHashSet();
 
 	/** Free-form description. */
-	@XmlAttribute
 	@Column(name = "DESCRIPTION")
 	private String description;
 
@@ -235,6 +233,7 @@ public final class OTUSet extends UUPPodEntityWXmlId {
 	 * 
 	 * @return the description
 	 */
+	@XmlAttribute
 	public String getDescription() {
 		return description;
 	}
@@ -244,6 +243,7 @@ public final class OTUSet extends UUPPodEntityWXmlId {
 	 * 
 	 * @return the label
 	 */
+	@XmlAttribute
 	public String getLabel() {
 		return label;
 	}

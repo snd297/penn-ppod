@@ -58,12 +58,14 @@ public interface IMergeCharacterStateMatrix {
 	 */
 	CharacterStateMatrix merge(CharacterStateMatrix targetMatrix,
 			CharacterStateMatrix sourceMatrix, OTUSet newTargetMatrixOTUSet,
-			Map<OTU, OTU> mergedOTUsBySourceOTU, DNACharacter dnaCharacter);
+			Map<OTU, OTU> mergedOTUsBySourceOTU, DNACharacter dnaCharacter,
+			boolean save);
 
 	/**
 	 * Makes {@link IMergeCharacterStateMatrix}s.
 	 */
 	static interface IFactory {
-		IMergeCharacterStateMatrix create(IMergeAttachment mergeAttachment, Session session);
+		IMergeCharacterStateMatrix create(IMergeAttachment mergeAttachment,
+				Session session);
 	}
 }

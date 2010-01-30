@@ -62,7 +62,6 @@ public final class Study extends UUPPodEntity implements IOTUSetCentricEntities 
 
 	static final String LABEL_COLUMN = "LABEL";
 
-	@XmlAttribute
 	@Column(name = LABEL_COLUMN, nullable = false)
 	private String label;
 
@@ -145,6 +144,7 @@ public final class Study extends UUPPodEntity implements IOTUSetCentricEntities 
 	 * 
 	 * @return the label
 	 */
+	@XmlAttribute
 	public String getLabel() {
 		return label;
 	}
