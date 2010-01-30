@@ -15,10 +15,6 @@
  */
 package edu.upenn.cis.ppod.util;
 
-import static com.google.common.base.Predicates.compose;
-import static com.google.common.base.Predicates.equalTo;
-import static edu.upenn.cis.ppod.util.PPodIterables.findIf;
-
 import java.util.Set;
 
 import edu.upenn.cis.ppod.model.Attachment;
@@ -27,7 +23,6 @@ import edu.upenn.cis.ppod.model.AttachmentType;
 import edu.upenn.cis.ppod.model.Character;
 import edu.upenn.cis.ppod.model.CharacterStateMatrix;
 import edu.upenn.cis.ppod.model.IAttachee;
-import edu.upenn.cis.ppod.model.IUUPPodEntity;
 import edu.upenn.cis.ppod.model.OTU;
 import edu.upenn.cis.ppod.model.OTUSet;
 import edu.upenn.cis.ppod.services.ppodentity.IOTUSetCentricEntities;

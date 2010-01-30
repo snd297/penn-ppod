@@ -26,6 +26,8 @@ import java.util.UUID;
 
 import javax.persistence.Column;
 import javax.persistence.Entity;
+import javax.persistence.Inheritance;
+import javax.persistence.InheritanceType;
 import javax.persistence.ManyToMany;
 import javax.persistence.MapKey;
 import javax.persistence.OneToMany;
@@ -37,7 +39,6 @@ import javax.xml.bind.annotation.XmlAccessorType;
 import javax.xml.bind.annotation.XmlAttribute;
 import javax.xml.bind.annotation.XmlElementWrapper;
 import javax.xml.bind.annotation.XmlID;
-import javax.xml.bind.annotation.XmlType;
 
 import org.hibernate.annotations.Cascade;
 
@@ -54,15 +55,8 @@ import com.google.common.base.Preconditions;
 @XmlAccessorType(XmlAccessType.NONE)
 @Entity
 @Table(name = Character.TABLE)
+@Inheritance(strategy = InheritanceType.JOINED)
 public class Character extends UUPPodEntity {
-
-	/**
-	 * So we can identify what type of character we have after we unmarshal it.
-	 */
-	@XmlType(name = "characterType")
-	public static enum Type {
-		DNA, RNA, STANDARD;
-	}
 
 	@XmlAttribute
 	@XmlID
@@ -100,13 +94,8 @@ public class Character extends UUPPodEntity {
 	/**
 	 * The non-unique label of this {@code Character}.
 	 */
-	@XmlAttribute
 	@Column(name = LABEL_COLUMN, nullable = false)
 	private String label;
-
-	@XmlAttribute
-	@Transient
-	private Type type = Type.STANDARD;
 
 	/**
 	 * Default constructor for (at least) Hibernate.
@@ -170,6 +159,7 @@ public class Character extends UUPPodEntity {
 	 * 
 	 * @return the label of this {@code Character}
 	 */
+	@XmlAttribute
 	public String getLabel() {
 		return label;
 	}
@@ -190,18 +180,6 @@ public class Character extends UUPPodEntity {
 	 */
 	public Map<Integer, CharacterState> getStates() {
 		return Collections.unmodifiableMap(states);
-	}
-
-	/**
-	 * So we know it's a molecular character after it's marshalled/unmarshalled.
-	 * Since JAXB doesn't seem to handle class hierarchies.
-	 * 
-	 * @return {@code true} if this is an instance of {@link MolecularCharacter}
-	 *         , {@code false} otherwise
-	 * 
-	 */
-	public Type getType() {
-		return type;
 	}
 
 	/**
@@ -242,18 +220,6 @@ public class Character extends UUPPodEntity {
 			this.label = label;
 			resetPPodVersionInfo();
 		}
-		return this;
-	}
-
-	/**
-	 * Set the type of this character
-	 * 
-	 * @param type the type
-	 * 
-	 * @return this
-	 */
-	protected Character setType(final Type type) {
-		this.type = type;
 		return this;
 	}
 

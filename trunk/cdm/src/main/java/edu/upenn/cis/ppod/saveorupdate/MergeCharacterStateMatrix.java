@@ -139,7 +139,7 @@ public class MergeCharacterStateMatrix implements IMergeCharacterStateMatrix {
 // }
 
 			Character newTargetCharacter;
-			if (sourceCharacter.getType() == Character.Type.DNA) {
+			if (sourceMatrix.getType() == CharacterStateMatrix.Type.DNA) {
 				newTargetCharacter = dnaCharacter;
 			} else if (null == (newTargetCharacter = findIf(
 					clearedTargetCharacters, equalTo(sourceCharacter

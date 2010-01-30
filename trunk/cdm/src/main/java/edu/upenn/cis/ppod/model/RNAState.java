@@ -15,13 +15,21 @@
  */
 package edu.upenn.cis.ppod.model;
 
+import javax.persistence.Entity;
+import javax.persistence.Table;
+
 import com.google.inject.Inject;
 import com.google.inject.assistedinject.Assisted;
 
 /**
  * @author Sam Donnelly
  */
+@Entity
+@Table(name = RNAState.TABLE)
 public class RNAState extends MolecularState {
+
+	public static final String TABLE = "RNA_STATE";
+
 	/**
 	 * For assisted injections.
 	 */

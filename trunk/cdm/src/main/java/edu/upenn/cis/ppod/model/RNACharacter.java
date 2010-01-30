@@ -15,13 +15,18 @@
  */
 package edu.upenn.cis.ppod.model;
 
+import javax.persistence.Entity;
+import javax.persistence.Table;
+
 /**
  * @author Sam Donnelly
  * 
  */
+@Entity
+@Table(name = RNACharacter.TABLE)
 public class RNACharacter extends Character {
 
-	RNACharacter() {
-		setType(Type.RNA);
-	}
+	public final static String TABLE = "RNA_CHARACTER";
+
+	RNACharacter() {}
 }

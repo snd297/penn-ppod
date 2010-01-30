@@ -21,10 +21,11 @@ import static com.google.common.base.Preconditions.checkNotNull;
 import javax.persistence.Column;
 import javax.persistence.Entity;
 import javax.persistence.FetchType;
+import javax.persistence.Inheritance;
+import javax.persistence.InheritanceType;
 import javax.persistence.JoinColumn;
 import javax.persistence.ManyToOne;
 import javax.persistence.Table;
-import javax.xml.bind.Unmarshaller;
 import javax.xml.bind.annotation.XmlAccessType;
 import javax.xml.bind.annotation.XmlAccessorType;
 import javax.xml.bind.annotation.XmlAttribute;
@@ -44,6 +45,7 @@ import com.google.inject.assistedinject.Assisted;
 @XmlAccessorType(XmlAccessType.NONE)
 @Entity
 @Table(name = CharacterState.TABLE)
+@Inheritance(strategy = InheritanceType.JOINED)
 public class CharacterState extends PPodEntityWXmlId {
 
 	/**
@@ -101,7 +103,7 @@ public class CharacterState extends PPodEntityWXmlId {
 	};
 
 	/** The name of this entity's table. Intentionally package-private. */
-	final static String TABLE = "STANDARD";
+	final static String TABLE = "CHARACTER_STATE";
 
 	final static String ID_COLUMN = TABLE + "_ID";
 
@@ -120,7 +122,6 @@ public class CharacterState extends PPodEntityWXmlId {
 	 * The state number of this {@code CharacterState}. This is the core value
 	 * of these objects.
 	 */
-	@XmlAttribute
 	@Column(name = STATE_NUMBER_COLUMN, nullable = false, updatable = false)
 	private Integer stateNumber;
 
@@ -128,7 +129,6 @@ public class CharacterState extends PPodEntityWXmlId {
 	 * Label for this stateNumber. Things like <code>"absent"</code>,
 	 * <code>"short"</code>, and <code>"long"</code>
 	 */
-	@XmlAttribute
 	@Column(name = LABEL_COLUMN, nullable = false)
 	private String label;
 
@@ -156,9 +156,10 @@ public class CharacterState extends PPodEntityWXmlId {
 	 * @param parent see {@code Unmarshaller} javadoc on
 	 *            <em>Unmarshal Event Callbacks</em>
 	 */
-	public void afterUnmarshal(final Unmarshaller u, final Object parent) {
+// public void afterUnmarshal(final Unmarshaller u, final Object parent) {
+	// super.af
 	// We take care of setting this.character in Character.afterUnmarshal(...)
-	}
+// }
 
 	/**
 	 * Get this character owning character.
@@ -174,6 +175,7 @@ public class CharacterState extends PPodEntityWXmlId {
 	 * 
 	 * @return this character stateNumber's label
 	 */
+	@XmlAttribute
 	public String getLabel() {
 		return label;
 	}
@@ -184,6 +186,7 @@ public class CharacterState extends PPodEntityWXmlId {
 	 * 
 	 * @return get the integer value of this character stateNumber
 	 */
+	@XmlAttribute
 	public Integer getStateNumber() {
 		return stateNumber;
 	}
@@ -239,12 +242,15 @@ public class CharacterState extends PPodEntityWXmlId {
 
 	/**
 	 * Set the integer value of this state.
+	 * <p>
+	 * {@code stateNumber} must be an {@code Integer} and not an {@code int} to
+	 * play nicely with JAXB.
 	 * 
 	 * @param stateNumber the integer value to use for this state
 	 * 
 	 * @return this
 	 */
-	protected CharacterState setStateNumber(final int stateNumber) {
+	protected CharacterState setStateNumber(final Integer stateNumber) {
 		this.stateNumber = stateNumber;
 		return this;
 	}

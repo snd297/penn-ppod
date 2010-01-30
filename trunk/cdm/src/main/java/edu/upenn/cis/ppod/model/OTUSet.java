@@ -223,12 +223,11 @@ public final class OTUSet extends UUPPodEntityWXmlId {
 	 * @return the OTUs that were removed
 	 */
 	public Set<OTU> clearOTUs() {
-		final Set<OTU> clearedOTUs = newHashSet(otus);
-		for (final OTU otu : getOTUs()) {
-			clearedOTUs.add(otu);
+		final Set<OTU> toBeClearedOTUs = newHashSet(otus);
+		for (final OTU otu : toBeClearedOTUs) {
 			removeOTU(otu);
 		}
-		return clearedOTUs;
+		return toBeClearedOTUs;
 	}
 
 	/**

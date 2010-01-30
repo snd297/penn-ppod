@@ -5,8 +5,6 @@
 <hibernate-configuration>
 	<session-factory>
 		<!-- List of annotated classes-->
-
-
 		<mapping class="edu.upenn.cis.ppod.thirdparty.model.security.Role" />
 		<mapping class="edu.upenn.cis.ppod.thirdparty.model.security.User" />
 		<mapping class="edu.upenn.cis.ppod.model.security.Party" />
@@ -30,9 +28,12 @@
 		<mapping class="edu.upenn.cis.ppod.model.Character" />
 		<mapping class="edu.upenn.cis.ppod.model.CharacterState" />
 
-		<mapping class="edu.upenn.cis.ppod.model.DNAMatrix" />
+		<mapping class="edu.upenn.cis.ppod.model.DNAStateMatrix" />
 		<mapping class="edu.upenn.cis.ppod.model.DNACharacter" />
 		<mapping class="edu.upenn.cis.ppod.model.DNAState" />
+
+		<mapping class="edu.upenn.cis.ppod.model.RNACharacter" />
+		<mapping class="edu.upenn.cis.ppod.model.RNAState" />
 
 		<mapping class="edu.upenn.cis.ppod.model.Attachment" />
 		<mapping class="edu.upenn.cis.ppod.model.AttachmentNamespace" />

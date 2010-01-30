@@ -15,7 +15,10 @@
  */
 package edu.upenn.cis.ppod.model;
 
+import javax.persistence.MappedSuperclass;
+
 /**
  * @author Sam Donnelly
  */
+@MappedSuperclass
 public class MolecularCharacter extends Character {}

@@ -113,12 +113,10 @@ public class CharacterStateMatrix extends UUPPodEntityWXmlId {
 	private final List<Long> columnPPodVersions = newArrayList();
 
 	/** Free-form description. */
-	@XmlAttribute
 	@Column(name = DESCRIPTION_COLUMN)
 	private String description;
 
 	/** The label for this {@code CharacterStateMatrix}. */
-	@XmlAttribute
 	@Column(name = LABEL_COLUMN, nullable = false)
 	private String label;
 
@@ -173,7 +171,6 @@ public class CharacterStateMatrix extends UUPPodEntityWXmlId {
 	@XmlElement(name = "characterDocId")
 	@XmlIDREF
 	@ManyToMany
-	// @Cascade( { org.hibernate.annotations.CascadeType.SAVE_UPDATE })
 	@JoinTable(name = MATRIX_CHARACTER_JOIN_TABLE, joinColumns = { @JoinColumn(name = ID_COLUMN) }, inverseJoinColumns = { @JoinColumn(name = Character.ID_COLUMN) })
 	@org.hibernate.annotations.IndexColumn(name = CHARACTER_INDEX_COLUMN)
 	private final List<Character> characters = newArrayList();
@@ -187,8 +184,8 @@ public class CharacterStateMatrix extends UUPPodEntityWXmlId {
 			org.hibernate.annotations.CascadeType.DELETE_ORPHAN })
 	private final List<CharacterStateRow> rows = newArrayList();
 
-	@Transient
 	@XmlAttribute
+	@Transient
 	private Type type = Type.STANDARD;
 
 	/** No-arg constructor for (at least) Hibernate. */
@@ -243,18 +240,18 @@ public class CharacterStateMatrix extends UUPPodEntityWXmlId {
 // }
 
 	public void afterUnmarshal() {
-// if (characterIdx.size() == 0) {
-// int i = 0;
-// for (final Character character : characters) {
-// characterIdx.put(character, i++);
-//
-// // Mark these as ready for new versions when persisted
-// columnPPodVersionInfos.add(null);
-// }
-// for (final Character character : getCharacters()) {
-// character.addMatrix(this);
-// }
-// }
+		if (characterIdx.size() == 0) {
+			int i = 0;
+			for (final Character character : characters) {
+				characterIdx.put(character, i++);
+
+				// Mark these as ready for new versions when persisted
+				columnPPodVersionInfos.add(null);
+			}
+			for (final Character character : getCharacters()) {
+				character.addMatrix(this);
+			}
+		}
 	}
 
 	/**
@@ -304,6 +301,11 @@ public class CharacterStateMatrix extends UUPPodEntityWXmlId {
 		return Collections.unmodifiableMap(characterIdx);
 	}
 
+	/**
+	 * Get a modifiable view of characterIdx
+	 * 
+	 * @return a modifiable view of characterIdx
+	 */
 	protected Map<Character, Integer> getCharacterIdxMutable() {
 		return characterIdx;
 	}
@@ -371,6 +373,7 @@ public class CharacterStateMatrix extends UUPPodEntityWXmlId {
 	 * 
 	 * @return the description
 	 */
+	@XmlAttribute
 	public String getDescription() {
 		return description;
 	}
@@ -380,6 +383,7 @@ public class CharacterStateMatrix extends UUPPodEntityWXmlId {
 	 * 
 	 * @return the label
 	 */
+	@XmlAttribute
 	public String getLabel() {
 		return label;
 	}

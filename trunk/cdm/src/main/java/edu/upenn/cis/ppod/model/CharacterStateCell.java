@@ -420,10 +420,11 @@ public final class CharacterStateCell extends PPodEntity {
 
 		for (final CharacterState state : states) {
 			if (state.getCharacter() == null) {
-				state.setCharacter(getRow().getMatrix().getCharacters().get(
-						getRow().getCellIdx().get(this)));
+				final Character thisCellsCharacter = getRow().getMatrix()
+						.getCharacters().get(getRow().getCellIdx().get(this));
+				state.setCharacter(thisCellsCharacter);
 			}
-			//checkIncomingState(state);
+			// checkIncomingState(state);
 		}
 
 		clearStates();

@@ -83,7 +83,7 @@ public final class Study extends UUPPodEntity implements IOTUSetCentricEntities 
 	@Transient
 	private final Set<AttachmentNamespace> studyWideAttachmentNamespaces = newHashSet();
 
-	@XmlElement(name = "studyWideCharacters")
+	@XmlElement(name = "studyWideCharacter")
 	@Transient
 	private final Set<Character> studyWideCharacters = newHashSet();
 
@@ -128,6 +128,13 @@ public final class Study extends UUPPodEntity implements IOTUSetCentricEntities 
 				for (final CharacterStateMatrix matrix : otuSet.getMatrices()) {
 					studyWideCharacters.addAll(matrix.getCharacters());
 				}
+//				for (final Character studyWideCharacter : studyWideCharacters) {
+//					for (final CharacterState state : studyWideCharacter
+//							.getStates().values()) {
+//						state.xmlStateNumber = state.getStateNumber();
+//						state.xmlLabel = state.getLabel();
+//					}
+//				}
 			}
 		}
 		return true;

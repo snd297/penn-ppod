@@ -46,6 +46,16 @@ import edu.upenn.cis.ppod.services.hibernate.PPodEntitiesResourceHibernate;
 /**
  * A {@code PersistentObject} with pPOD version information and to which we can
  * add/remove attachments.
+ * <p>
+ * Made public for Hibernate. Otherwise we get:
+ * 
+ * <pre>
+ * Caused by: java.lang.IllegalAccessException: Class org.hibernate.proxy.pojo.javassist.JavassistLazyInitializer can not access a member of class edu.upenn.cis.ppod.model.PPodEntity with modifiers "public"
+ *  	at sun.reflect.Reflection.ensureMemberAccess(Reflection.java:65)
+ *  	at java.lang.reflect.Method.invoke(Method.java:588)
+ *  	at org.hibernate.proxy.pojo.javassist.JavassistLazyInitializer.invoke(JavassistLazyInitializer.java:197)
+ *  	at edu.upenn.cis.ppod.model.CharacterState_$$_javassist_0.beforeMarshal(CharacterState_$$_javassist_0.java)
+ * </pre>
  * 
  * @author Sam Donnelly
  */
@@ -53,7 +63,7 @@ import edu.upenn.cis.ppod.services.hibernate.PPodEntitiesResourceHibernate;
 @Entity
 @Table(name = PPodEntity.TABLE)
 @Inheritance(strategy = InheritanceType.JOINED)
-abstract class PPodEntity extends PersistentObject implements IAttachee,
+public abstract class PPodEntity extends PersistentObject implements IAttachee,
 		IPPodVersioned {
 
 	static final String TABLE = "PPOD_ENTITY";
@@ -241,5 +251,4 @@ abstract class PPodEntity extends PersistentObject implements IAttachee,
 
 		return retValue.toString();
 	}
-
 }

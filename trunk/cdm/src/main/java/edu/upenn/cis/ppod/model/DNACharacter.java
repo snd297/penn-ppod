@@ -18,17 +18,12 @@ package edu.upenn.cis.ppod.model;
 import javax.persistence.Column;
 import javax.persistence.Entity;
 import javax.persistence.Table;
-import javax.xml.bind.annotation.XmlAccessType;
-import javax.xml.bind.annotation.XmlAccessorType;
-import javax.xml.bind.annotation.XmlType;
 
 import com.google.inject.Inject;
 
 /**
  * @author Sam Donnelly
  */
-@XmlType(name = "DNACharacter")
-@XmlAccessorType(XmlAccessType.NONE)
 @Entity
 @Table(name = DNACharacter.TABLE)
 public final class DNACharacter extends MolecularCharacter {
@@ -50,16 +45,12 @@ public final class DNACharacter extends MolecularCharacter {
 
 	private final static String LABEL = "DNA Character";
 
-	/** For hibernate. */
-	DNACharacter() {
-		setType(Type.DNA);
-	}
+	DNACharacter() {}
 
 	@Inject
 	DNACharacter(final DNAState.IFactory dnaStateFactory) {
 		this();
 		this.label = LABEL;
-		setType(Type.DNA);
 		addState(dnaStateFactory.create(DNAState.Nucleotide.A));
 		addState(dnaStateFactory.create(DNAState.Nucleotide.C));
 		addState(dnaStateFactory.create(DNAState.Nucleotide.G));
