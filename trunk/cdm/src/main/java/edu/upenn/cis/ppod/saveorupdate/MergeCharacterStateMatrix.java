@@ -130,13 +130,6 @@ public class MergeCharacterStateMatrix implements IMergeCharacterStateMatrix {
 		// int characterCounter = -1;
 		final Map<Integer, Integer> originalCharIdxsByNewCharIdx = newHashMap();
 		for (final Character sourceCharacter : sourceMatrix.getCharacters()) {
-// characterCounter++;
-// if (characterCounter % 20 == 0 && characterCounter > 0) {
-// logger.debug("{}: flushing cells, characterCounter: {}",
-// METHOD, characterCounter);
-// session.flush();
-// session.clear();
-// }
 
 			Character newTargetCharacter;
 			if (sourceMatrix.getType() == CharacterStateMatrix.Type.DNA) {
@@ -193,43 +186,40 @@ public class MergeCharacterStateMatrix implements IMergeCharacterStateMatrix {
 			}
 		}
 
-		int sourceRowIdx = 0;
-		final List<CharacterStateRow> targetRows = newArrayList();
+		int sourceRowIdx = -1;
+		int cellCounter = -1;
 		for (final OTU targetOTU : targetMatrix.getOTUs()) {
+			sourceRowIdx++;
 			CharacterStateRow targetRow = targetMatrix.getRow(targetOTU);
 			if (targetRow == null) {
 				targetRow = rowProvider.get();
-				targetRows.add(targetRow);
-				// targetMatrix.setRow(targetOTU, targetRow);
-			}
-			final List<CharacterStateCell> clearedTargetCells = targetRow
-					.clearCells();
-
-			for (int newCellIdx = 0; newCellIdx < targetMatrix.getCharacters()
-					.size(); newCellIdx++) {
-				if (null == originalCharIdxsByNewCharIdx.get(newCellIdx)) {
-					targetRow.addCell(cellProvider.get());
-				} else {
-					targetRow.addCell(clearedTargetCells
-							.get(originalCharIdxsByNewCharIdx.get(newCellIdx)));
-				}
+				targetMatrix.setRow(targetOTU, targetRow);
 			}
 			while (targetRow.getCells().size() > targetMatrix.getCharacters()
 					.size()) {
 				targetRow.removeLastCell();
 			}
 
-			final CharacterStateRow sourceRow = sourceMatrix
-					.getRow(sourceMatrix.getOTUs().get(sourceRowIdx++));
-			for (final ListIterator<CharacterStateCell> sourceCellItr = sourceRow
-					.getCells().listIterator(), targetCellItr = targetRow
-					.getCells().listIterator(); sourceCellItr.hasNext();) {
-				final CharacterStateCell sourceCell = sourceCellItr.next();
-				final CharacterStateCell targetCell = targetCellItr.next();
+			final List<CharacterStateCell> clearedTargetCells = targetRow
+					.clearCells();
+
+			for (int newCellIdx = 0; newCellIdx < targetMatrix.getCharacters()
+					.size(); newCellIdx++) {
+				CharacterStateCell targetCell;
+				if (null == originalCharIdxsByNewCharIdx.get(newCellIdx)) {
+					targetCell = targetRow.addCell(cellProvider.get());
+				} else {
+					targetCell = targetRow.addCell(clearedTargetCells
+							.get(originalCharIdxsByNewCharIdx.get(newCellIdx)));
+				}
+
+				final CharacterStateCell sourceCell = sourceMatrix.getRows()
+						.get(sourceRowIdx).getCells().get(newCellIdx);
+
 				final Set<CharacterState> newTargetStates = newHashSet();
 				for (final CharacterState sourceState : sourceCell.getStates()) {
 					newTargetStates.add(targetMatrix.getCharacters().get(
-							targetCellItr.previousIndex()).getStates().get(
+							newCellIdx).getStates().get(
 							sourceState.getStateNumber()));
 				}
 				switch (sourceCell.getType()) {
@@ -251,31 +241,21 @@ public class MergeCharacterStateMatrix implements IMergeCharacterStateMatrix {
 					default:
 						throw new AssertionError("unknown type");
 				}
+				session.saveOrUpdate(targetCell);
+				if (cellCounter++ % 20 == 0) {
+					logger.debug("{}: flushing cells, cellCounter: {}", METHOD,
+							cellCounter);
+					session.flush();
+					session.clear();
+				}
 			}
-			if (save) {
-				// session.saveOrUpdate(targetMatrix);
-				session.saveOrUpdate(targetRow);
-// if (sourceRowIdx % 20 == 0) {
-				logger.debug("{}: flushing rows, rowCounter: {}", METHOD,
-						sourceRowIdx);
-				session.flush();
-				session.clear();
-			}
-// }
+			session.saveOrUpdate(targetRow);
+			logger.debug("{}: flushing rows,  sourceRowIdx: {}", METHOD,
+					sourceRowIdx);
+			session.flush();
+			session.clear();
 		}
-		for (int i = 0; i < targetRows.size(); i++) {
-			targetMatrix.setRow(targetMatrix.getOTUs().get(i), targetRows
-					.get(i));
-		}
-		// We should now have a matrix with the proper cell dimensions and all
-		// OTU's and characters done - now let's fill
-		// in the cells
 
-// for (final Iterator<CharacterStateRow> sourceRowItr = sourceMatrix
-// .getRows().iterator(), targetRowItr = targetMatrix.getRows()
-// .iterator(); sourceRowItr.hasNext();) {
-//
-// }
 		return targetMatrix;
 	}
 }

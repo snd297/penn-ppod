@@ -46,6 +46,7 @@ import javax.xml.bind.annotation.XmlIDREF;
 import javax.xml.bind.annotation.XmlType;
 
 import org.hibernate.annotations.Cascade;
+import org.hibernate.annotations.IndexColumn;
 
 import edu.upenn.cis.ppod.util.IVisitor;
 
@@ -59,9 +60,20 @@ import edu.upenn.cis.ppod.util.IVisitor;
 @Table(name = CharacterStateMatrix.TABLE)
 public class CharacterStateMatrix extends UUPPodEntityWXmlId {
 
+	/**
+	 * We use these to figure out what kind of matrix we have after
+	 * unmarshalling.
+	 */
 	@XmlType(name = "CharacterStateMatrixType")
 	public static enum Type {
-		DNA, RNA, STANDARD;
+		/** A DNA matrix. */
+		DNA,
+
+		/** An RNA matrix. */
+		RNA,
+
+		/** A standard matrix. */
+		STANDARD;
 	}
 
 	/** This entity's table name. Intentionally package-private. */
@@ -75,27 +87,19 @@ public class CharacterStateMatrix extends UUPPodEntityWXmlId {
 	 */
 	static final String ID_COLUMN = TABLE + "_ID";
 
-	/** Label column. Intentionally package-private. */
 	static final String LABEL_COLUMN = "LABEL";
 
-	/**
-	 * {@code CharacterStateMatrix}-{@link Character} join table. Intentionally
-	 * package-private.
-	 */
-	static final String MATRIX_CHARACTER_JOIN_TABLE = TABLE + "_"
-			+ Character.TABLE;
-
-	static final String CHARACTER_IDX_COLUMN = "PHYLO_CHARACTER_IDX";
+	static final String CHARACTER_IDX_COLUMN = Character.TABLE + "_IDX";
 
 	/**
 	 * Column that orders the {@link Character}s. Intentionally package-private.
 	 */
-	static final String CHARACTER_INDEX_COLUMN = Character.TABLE + "_POSITION";
+	static final String CHARACTERS_INDEX_COLUMN = Character.TABLE + "_POSITION";
 
 	/**
 	 * Column that orders the rows. Intentionally package-private.
 	 */
-	static final String ROW_INDEX_COLUMN = CharacterStateRow.TABLE
+	static final String ROWS_INDEX_COLUMN = CharacterStateRow.TABLE
 			+ "_POSITION";
 
 	/** The pPod versions of the columns. */
@@ -103,7 +107,7 @@ public class CharacterStateMatrix extends UUPPodEntityWXmlId {
 	// EAGER so we can manipulate it in PPodVersionInfoInterceptor: see the
 	// javadoc for Interceptor: "a callback [may not] cause a collection or
 	// proxy to be lazily initialized)."
-	@JoinTable(name = TABLE + "_" + PPodVersionInfo.TABLE, joinColumns = { @JoinColumn(name = ID_COLUMN) }, inverseJoinColumns = { @JoinColumn(name = PPodVersionInfo.ID_COLUMN) })
+	@JoinTable(inverseJoinColumns = { @JoinColumn(name = PPodVersionInfo.ID_COLUMN) })
 	@org.hibernate.annotations.IndexColumn(name = PPodVersionInfo.TABLE
 			+ "_POSITION")
 	private final List<PPodVersionInfo> columnPPodVersionInfos = newArrayList();
@@ -135,13 +139,11 @@ public class CharacterStateMatrix extends UUPPodEntityWXmlId {
 	 * The position of an {@code OTU} in {@code otus} signifies its row number
 	 * in <code>row</code>. So <code>otus</code> is a rowNumber-> {@code OTU}
 	 * lookup.
-	 * <p>
-	 * Cascade-saved through {@code this.otuSet}.
 	 */
 	@XmlElement(name = "otuDocId")
 	@XmlIDREF
 	@ManyToMany
-	@JoinTable(name = TABLE + "_" + OTU.TABLE, joinColumns = { @JoinColumn(name = ID_COLUMN) }, inverseJoinColumns = { @JoinColumn(name = OTU.ID_COLUMN) })
+	@JoinTable(inverseJoinColumns = { @JoinColumn(name = OTU.ID_COLUMN) })
 	@org.hibernate.annotations.IndexColumn(name = OTU.TABLE + "_POSITION")
 	private final List<OTU> otus = newArrayList();
 
@@ -171,15 +173,20 @@ public class CharacterStateMatrix extends UUPPodEntityWXmlId {
 	@XmlElement(name = "characterDocId")
 	@XmlIDREF
 	@ManyToMany
-	@JoinTable(name = MATRIX_CHARACTER_JOIN_TABLE, joinColumns = { @JoinColumn(name = ID_COLUMN) }, inverseJoinColumns = { @JoinColumn(name = Character.ID_COLUMN) })
-	@org.hibernate.annotations.IndexColumn(name = CHARACTER_INDEX_COLUMN)
+	@JoinTable(inverseJoinColumns = { @JoinColumn(name = Character.ID_COLUMN) })
+	@org.hibernate.annotations.IndexColumn(name = CHARACTERS_INDEX_COLUMN)
 	private final List<Character> characters = newArrayList();
 
+// @XmlElement(name = "row")
+// @OneToMany
+// @org.hibernate.annotations.IndexColumn(name = ROWS_INDEX_COLUMN)
+// @JoinColumn(name = ID_COLUMN, nullable = false)
+// @Cascade( { org.hibernate.annotations.CascadeType.SAVE_UPDATE,
+// org.hibernate.annotations.CascadeType.DELETE_ORPHAN })
 	@XmlElement(name = "row")
 	@OneToMany
-	@org.hibernate.annotations.IndexColumn(name = ROW_INDEX_COLUMN)
-	@JoinColumn(name = ID_COLUMN)
-	// , nullable = false)
+	@JoinTable(inverseJoinColumns = { @JoinColumn(name = CharacterStateRow.ID_COLUMN) })
+	@IndexColumn(name = ROWS_INDEX_COLUMN)
 	@Cascade( { org.hibernate.annotations.CascadeType.SAVE_UPDATE,
 			org.hibernate.annotations.CascadeType.DELETE_ORPHAN })
 	private final List<CharacterStateRow> rows = newArrayList();
@@ -509,6 +516,10 @@ public class CharacterStateMatrix extends UUPPodEntityWXmlId {
 // return originalCharacters;
 // 
 
+	public Type getType() {
+		return type;
+	}
+
 	/**
 	 * Set the {@link PPodVersionInfo} at {@code idx} to {@code null}. Fills
 	 * with <code>null</code>s if necessary.
@@ -767,9 +778,9 @@ public class CharacterStateMatrix extends UUPPodEntityWXmlId {
 			// same, nothing to do
 		} else {
 
-			if (oldRow != null) {
-				oldRow.setMatrix(null);
-			}
+// if (oldRow != null) {
+// oldRow.setMatrix(null);
+// }
 
 			// Remove the row from its old position, if it's already in this
 			// matrix
@@ -779,16 +790,20 @@ public class CharacterStateMatrix extends UUPPodEntityWXmlId {
 			}
 
 			// Now set it to it's new position.
-			rows.set(otuIdx, row.setMatrix(this));
+			rows.set(otuIdx, row);// .setMatrix(this));
 			resetPPodVersionInfo();
 		}
 		return oldRow;
 	}
 
-	public Type getType() {
-		return type;
-	}
-
+	/**
+	 * Set the type of this matrix so that we know what kind it is after
+	 * marshalling.
+	 * 
+	 * @param type the type of this matrix
+	 * 
+	 * @return this
+	 */
 	protected CharacterStateMatrix setType(final Type type) {
 		this.type = type;
 		return this;

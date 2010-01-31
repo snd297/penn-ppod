@@ -21,8 +21,6 @@ import static com.google.common.base.Preconditions.checkNotNull;
 import javax.persistence.Column;
 import javax.persistence.Entity;
 import javax.persistence.FetchType;
-import javax.persistence.Inheritance;
-import javax.persistence.InheritanceType;
 import javax.persistence.JoinColumn;
 import javax.persistence.ManyToOne;
 import javax.persistence.Table;
@@ -45,7 +43,6 @@ import com.google.inject.assistedinject.Assisted;
 @XmlAccessorType(XmlAccessType.NONE)
 @Entity
 @Table(name = CharacterState.TABLE)
-@Inheritance(strategy = InheritanceType.JOINED)
 public class CharacterState extends PPodEntityWXmlId {
 
 	/**
@@ -233,7 +230,9 @@ public class CharacterState extends PPodEntityWXmlId {
 	 */
 	public CharacterState setLabel(final String label) {
 		checkNotNull(label);
-		if (label.equals(this.label)) {} else {
+		if (label.equals(this.label)) {
+
+		} else {
 			this.label = label;
 			resetPPodVersionInfo();
 		}

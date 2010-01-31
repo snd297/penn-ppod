@@ -26,8 +26,6 @@ import java.util.UUID;
 
 import javax.persistence.Column;
 import javax.persistence.Entity;
-import javax.persistence.Inheritance;
-import javax.persistence.InheritanceType;
 import javax.persistence.ManyToMany;
 import javax.persistence.MapKey;
 import javax.persistence.OneToMany;
@@ -55,7 +53,6 @@ import com.google.common.base.Preconditions;
 @XmlAccessorType(XmlAccessType.NONE)
 @Entity
 @Table(name = Character.TABLE)
-@Inheritance(strategy = InheritanceType.JOINED)
 public class Character extends UUPPodEntity {
 
 	@XmlAttribute
