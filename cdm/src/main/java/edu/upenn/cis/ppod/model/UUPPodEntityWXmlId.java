@@ -33,6 +33,8 @@ abstract class UUPPodEntityWXmlId extends UUPPodEntity {
 	 * <p>
 	 * Called "docId" and not "xmlId" so that it's format agnostic.
 	 */
+	@XmlAttribute
+	@XmlID
 	private String docId;
 
 	/**
@@ -40,8 +42,6 @@ abstract class UUPPodEntityWXmlId extends UUPPodEntity {
 	 * 
 	 * @return the {@code XmlID} attribute
 	 */
-	@XmlAttribute
-	@XmlID
 	public String getDocId() {
 		return docId;
 	}

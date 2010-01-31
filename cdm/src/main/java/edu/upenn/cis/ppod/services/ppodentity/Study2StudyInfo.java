@@ -114,10 +114,10 @@ public final class Study2StudyInfo implements IStudy2StudyInfo {
 				for (final CharacterStateRow row : matrix.getRows()) {
 					matrixInfo.getRowHeaderVersionsByIdx().put(rowIdx++,
 							row.getPPodVersionInfo().getPPodVersion());
+					int cellIdx = 0;
 					for (final CharacterStateCell cell : row.getCells()) {
-						matrixInfo.setCellPPodIdAndVersion(rowIdx, cell
-								.getRow().getCellIdx().get(cell), cell
-								.getPPodVersionInfo().getPPodVersion());
+						matrixInfo.setCellPPodIdAndVersion(rowIdx, cellIdx++,
+								cell.getPPodVersionInfo().getPPodVersion());
 					}
 				}
 			}

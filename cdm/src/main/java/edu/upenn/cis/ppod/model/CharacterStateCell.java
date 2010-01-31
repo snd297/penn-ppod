@@ -24,7 +24,6 @@ import static com.google.common.collect.Iterables.get;
 import static com.google.common.collect.Sets.newHashSet;
 import static com.google.common.collect.Sets.newTreeSet;
 import static edu.upenn.cis.ppod.util.PPodIterables.findIf;
-import static edu.upenn.cis.ppod.util.UPennCisPPodUtil.nullSafeEquals;
 
 import java.util.Collections;
 import java.util.Comparator;
@@ -69,7 +68,7 @@ public final class CharacterStateCell extends PPodEntity {
 	 * The different types of {@code CharacterStateCell}: single, polymorphic,
 	 * uncertain, unassigned, or inapplicable.
 	 * <p>
-	 * Because we're storing these in the db as oridnals they will be:
+	 * Because we're storing these in the db as ordinals they will be:
 	 * <ul>
 	 * <li>{@code UNASSIGNED -> 0}</li>
 	 * <li>{@code SINGLE -> 1}</li>
@@ -130,7 +129,7 @@ public final class CharacterStateCell extends PPodEntity {
 	 */
 	@ManyToMany
 	@Sort(type = SortType.COMPARATOR, comparator = CharacterState.CharacterStateComparator.class)
-	@JoinTable(name = CELL_CHARACTER_STATE_JOIN_TABLE, joinColumns = @JoinColumn(name = ID_COLUMN), inverseJoinColumns = @JoinColumn(name = CharacterState.ID_COLUMN))
+	@JoinTable(inverseJoinColumns = @JoinColumn(name = CharacterState.ID_COLUMN))
 	private SortedSet<CharacterState> states = null;
 
 	/**
@@ -144,7 +143,6 @@ public final class CharacterStateCell extends PPodEntity {
 	 * Does this cell have a single state?, multiple states?, is it unassigned?,
 	 * or inapplicable?
 	 */
-	@XmlAttribute
 	@Column(name = TYPE_COLUMN)
 	@Enumerated(EnumType.ORDINAL)
 	private Type type;
@@ -153,9 +151,10 @@ public final class CharacterStateCell extends PPodEntity {
 	 * The {@code CharacterStateRow} to which this {@code CharacterStateCell}
 	 * belongs.
 	 */
-	@ManyToOne(fetch = FetchType.LAZY)
-	@JoinColumn(name = CharacterStateRow.ID_COLUMN, insertable = false, updatable = false, nullable = false)
-	private CharacterStateRow row;
+	// @ManyToOne(fetch = FetchType.LAZY)
+	// /@JoinColumn(name = CharacterStateRow.ID_COLUMN, nullable = false)
+	// insertable = false, updatable = false, nullable = false)
+	// private CharacterStateRow row;
 
 	/**
 	 * Tells us that this {@code CharacterStateCell} has been unmarshalled and
@@ -176,7 +175,7 @@ public final class CharacterStateCell extends PPodEntity {
 	 * @param parent see {@code Unmarshaller}
 	 */
 	public void afterUnmarshal(final Unmarshaller u, final Object parent) {
-		row = (CharacterStateRow) parent; // don't call setRow because it'll
+// row = (CharacterStateRow) parent; // don't call setRow because it'll
 		// reset the ppod version info
 		xmlStatesNeedsToBePutIntoStates = true;
 	}
@@ -204,29 +203,29 @@ public final class CharacterStateCell extends PPodEntity {
 		return true;
 	}
 
-	private void checkIncomingState(final CharacterState state) {
-		if (row == null) {
-			throw new IllegalStateException(
-					"This cell has not been added to a row yet.");
-		}
-		if (getRow().getMatrix().getCharacters().size() < getRow().getCellIdx()
-				.get(this)
-				|| null == getRow().getMatrix().getCharacters().get(
-						getRow().getCellIdx().get(this))) {
-			throw new IllegalStateException(
-					"This cell's column hasn't been assigned a character");
-		}
-		final Character thisCellsCharacter = getRow().getMatrix()
-				.getCharacters().get(getRow().getCellIdx().get(this));
-
-		if (!state.getCharacter().equals(thisCellsCharacter)) {
-			throw new IllegalArgumentException(
-					"state is from the wrong Character. We want "
-							+ getRow().getMatrix().getCharacters().get(
-									getRow().getCellIdx().get(this)).getLabel()
-							+ " but got " + state.getCharacter().getLabel());
-		}
-	}
+// private void checkIncomingState(final CharacterState state) {
+// if (row == null) {
+// throw new IllegalStateException(
+// "This cell has not been added to a row yet.");
+// }
+// if (getRow().getMatrix().getCharacters().size() < getRow().getCellIdx()
+// .get(this)
+// || null == getRow().getMatrix().getCharacters().get(
+// getRow().getCellIdx().get(this))) {
+// throw new IllegalStateException(
+// "This cell's column hasn't been assigned a character");
+// }
+// final Character thisCellsCharacter = getRow().getMatrix()
+// .getCharacters().get(getRow().getCellIdx().get(this));
+//
+// if (!state.getCharacter().equals(thisCellsCharacter)) {
+// throw new IllegalArgumentException(
+// "state is from the wrong Character. We want "
+// + getRow().getMatrix().getCharacters().get(
+// getRow().getCellIdx().get(this)).getLabel()
+// + " but got " + state.getCharacter().getLabel());
+// }
+// }
 
 	/**
 	 * Clear all {@link CharacterState} info.
@@ -253,9 +252,9 @@ public final class CharacterStateCell extends PPodEntity {
 	 * @return the {@code CharacterStateRow} to which this {@code
 	 *         CharacterStateCell} belongs
 	 */
-	public CharacterStateRow getRow() {
-		return row;
-	}
+// public CharacterStateRow getRow() {
+// return row;
+// }
 
 	/**
 	 * Retrieve the {@code CharacterState} with the given state number, or
@@ -309,6 +308,7 @@ public final class CharacterStateCell extends PPodEntity {
 	 * 
 	 * @return the {@code CharacterStateCell.Type}
 	 */
+	@XmlAttribute
 	public CharacterStateCell.Type getType() {
 		return type;
 	}
@@ -337,11 +337,13 @@ public final class CharacterStateCell extends PPodEntity {
 	@Override
 	protected CharacterStateCell resetPPodVersionInfo() {
 		if (getPPodVersionInfo() == null) {} else {
-			if (row != null) {
-				row.resetPPodVersionInfo();
-				row.getMatrix().resetColumnPPodVersion(
-						row.getCellIdx().get(this));
-			}
+// if (row != null) {
+// row.resetPPodVersionInfo();
+// if (row.getMatrix() != null) {
+// row.getMatrix().resetColumnPPodVersion(
+// row.getCellIdx().get(this));
+// }
+// }
 			super.resetPPodVersionInfo();
 		}
 		return this;
@@ -379,15 +381,15 @@ public final class CharacterStateCell extends PPodEntity {
 	 * 
 	 * @return this {@code CharacterStateCell}
 	 */
-	CharacterStateCell setRow(final CharacterStateRow row) {
-		if (nullSafeEquals(this.row, row)) {
-
-		} else {
-			this.row = row;
-			resetPPodVersionInfo();
-		}
-		return this;
-	}
+// CharacterStateCell setRow(final CharacterStateRow row) {
+// if (nullSafeEquals(this.row, row)) {
+//
+// } else {
+// this.row = row;
+// resetPPodVersionInfo();
+// }
+// return this;
+// }
 
 	public CharacterStateCell setSingleState(final CharacterState state) {
 		checkNotNull(state);
@@ -418,14 +420,14 @@ public final class CharacterStateCell extends PPodEntity {
 			return this;
 		}
 
-		for (final CharacterState state : states) {
-			if (state.getCharacter() == null) {
-				final Character thisCellsCharacter = getRow().getMatrix()
-						.getCharacters().get(getRow().getCellIdx().get(this));
-				state.setCharacter(thisCellsCharacter);
-			}
-			// checkIncomingState(state);
-		}
+// for (final CharacterState state : states) {
+// if (state.getCharacter() == null) {
+// final Character thisCellsCharacter = getRow().getMatrix()
+// .getCharacters().get(getRow().getCellIdx().get(this));
+// state.setCharacter(thisCellsCharacter);
+// }
+// // checkIncomingState(state);
+// }
 
 		clearStates();
 
@@ -447,7 +449,9 @@ public final class CharacterStateCell extends PPodEntity {
 	 */
 	private CharacterStateCell setType(final CharacterStateCell.Type type) {
 		checkNotNull(type);
-		if (type.equals(this.type)) {} else {
+		if (type.equals(this.type)) {
+
+		} else {
 			this.type = type;
 			resetPPodVersionInfo();
 		}

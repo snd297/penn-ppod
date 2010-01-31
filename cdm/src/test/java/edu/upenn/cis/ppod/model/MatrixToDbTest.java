@@ -197,7 +197,7 @@ public class MatrixToDbTest extends DbTestBase {
 				@SuppressWarnings("unchecked")
 				final List<Element> matrixPhyloCharElements = pPodData
 						.selectNodes("/dataset/"
-								+ CharacterStateMatrix.MATRIX_CHARACTER_JOIN_TABLE
+								+ (CharacterStateMatrix.TABLE + Character.TABLE)
 										.toLowerCase()
 								+ "[@"
 								+ CharacterStateMatrix.ID_COLUMN
@@ -215,7 +215,7 @@ public class MatrixToDbTest extends DbTestBase {
 							.setCharacter(
 									new Integer(
 											matrixPhyloCharElement
-													.attributeValue(CharacterStateMatrix.CHARACTER_INDEX_COLUMN)),
+													.attributeValue(CharacterStateMatrix.CHARACTERS_INDEX_COLUMN)),
 									initialDataSetIdToPhyloCarMap
 											.get(new Long(
 													matrixPhyloCharElement
@@ -245,7 +245,7 @@ public class MatrixToDbTest extends DbTestBase {
 							.put(
 									new Integer(
 											rowElement
-													.attributeValue(CharacterStateMatrix.ROW_INDEX_COLUMN)),
+													.attributeValue(CharacterStateMatrix.ROWS_INDEX_COLUMN)),
 									rowElement);
 				}
 				rowElements = null; // free up the memory
@@ -257,12 +257,12 @@ public class MatrixToDbTest extends DbTestBase {
 									"{}:adding row {}",
 									METHOD,
 									sortedRowElement
-											.attributeValue(CharacterStateMatrix.ROW_INDEX_COLUMN));
+											.attributeValue(CharacterStateMatrix.ROWS_INDEX_COLUMN));
 					final CharacterStateRow phyloCharMatrixRow = null;// phyloCharMatrix
 					// .setRow(
 					// new Integer(
 					// sortedRowElement
-					// .attributeValue(CharacterStateMatrix.ROW_INDEX_COLUMN)),
+					// .attributeValue(CharacterStateMatrix.ROWS_INDEX_COLUMN)),
 					// new CharacterStateRow());
 
 					@SuppressWarnings("unchecked")
@@ -288,7 +288,7 @@ public class MatrixToDbTest extends DbTestBase {
 								.put(
 										new Integer(
 												cellElement
-														.attributeValue(CharacterStateRow.CELL_INDEX_COLUMN)),
+														.attributeValue(CharacterStateRow.CELLS_INDEX_COLUMN)),
 										cellElement);
 					}
 					cellElements = null; // free up the memory

@@ -28,6 +28,8 @@ import com.google.inject.assistedinject.Assisted;
 @Table(name = RNAState.TABLE)
 public class RNAState extends MolecularState {
 
+	RNAState() {}
+
 	public static final String TABLE = "RNA_STATE";
 
 	/**

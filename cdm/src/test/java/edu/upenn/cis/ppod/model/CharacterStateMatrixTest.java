@@ -273,7 +273,7 @@ public class CharacterStateMatrixTest {
 		final CharacterStateRow someRow = matrix.setRow(otu1, row2);
 		assertEquals(someRow, row1);
 		assertEquals(matrix.getRows().get(matrix.getOTUIdx().get(otu1)), row2);
-		assertNull(row1.getMatrix());
+		// assertNull(row1.getMatrix());
 	}
 
 	@Inject
