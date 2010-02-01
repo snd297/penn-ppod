@@ -75,11 +75,6 @@ public final class DNAState extends MolecularState {
 	DNAState(@Assisted final Nucleotide nucleotide) {
 		super.setMolecularStateLabel(nucleotide.toString());
 		super.setStateNumber(nucleotide.ordinal());
-
-		// State numbers are unique for DNA, so let's use them instead of UUID's
-		// since their smaller and there will be lots of them in the xml: up to
-		// hundreds of thousands.
-		super.setDocId(getStateNumber().toString());
 	}
 
 	@Override
@@ -92,4 +87,15 @@ public final class DNAState extends MolecularState {
 		}
 		return this;
 	}
+
+	@Override
+	protected String getDocId() {
+		// "D" + nucleotide are unique for DNA (as long as we keep them so),
+		// so let's use them instead of UUID's
+		// since their smaller and there will be lots of them in the xml: up to
+		// hundreds of thousands.
+
+		return "D" + getLabel();
+	}
+
 }

@@ -22,6 +22,7 @@ import java.util.Collections;
 import java.util.List;
 import java.util.Map;
 
+import org.hibernate.Session;
 import org.testng.annotations.Test;
 
 import com.google.inject.Inject;
@@ -40,7 +41,7 @@ import edu.upenn.cis.ppod.util.MatrixProvider;
  * 
  * @author Sam Donnelly
  */
-@Test(groups = { TestGroupDefs.FAST, TestGroupDefs.BROKEN })
+@Test(groups = { TestGroupDefs.FAST })
 public class MergeCharacterStateMatrixTest {
 
 	@Inject
@@ -59,12 +60,15 @@ public class MergeCharacterStateMatrixTest {
 	private Provider<DNACharacter> dnaCharacterProvider;
 
 	@Inject
+	private Session session;
+
+	@Inject
 	private TestMergeAttachment mergeAttachment;
 
 	@Test(dataProvider = MatrixProvider.SMALL_SIMPLE_MATRIX_PROVIDER, dataProviderClass = MatrixProvider.class)
 	public void save(final CharacterStateMatrix sourceMatrix) {
 		final IMergeCharacterStateMatrix mergeCharacterStateMatrix = mergeMatrixFactory
-				.create(mergeAttachment, null);
+				.create(mergeAttachment, session);
 		final OTUSet fakeDbOTUSet = sourceMatrix.getOTUSet();
 		final Map<OTU, OTU> fakeOTUsByIncomingOTU = newHashMap();
 		for (final OTU sourceOTU : sourceMatrix.getOTUs()) {
@@ -75,14 +79,14 @@ public class MergeCharacterStateMatrixTest {
 				.get();
 		final CharacterStateMatrix dbMatrix = mergeCharacterStateMatrix.merge(
 				targetMatrix, sourceMatrix, fakeDbOTUSet,
-				fakeOTUsByIncomingOTU, dnaCharacterProvider.get(), false);
+				fakeOTUsByIncomingOTU, dnaCharacterProvider.get());
 		ModelAssert.assertEqualsCharacterStateMatrices(dbMatrix, sourceMatrix);
 	}
 
 	@Test(dataProvider = MatrixProvider.SMALL_SIMPLE_MATRIX_PROVIDER, dataProviderClass = MatrixProvider.class)
 	public void moveRows(final CharacterStateMatrix sourceMatrix) {
 		final IMergeCharacterStateMatrix mergeCharacterStateMatrix = mergeMatrixFactory
-				.create(mergeAttachment, null);
+				.create(mergeAttachment, session);
 		final OTUSet fakeTargetOTUSet = sourceMatrix.getOTUSet();
 		final Map<OTU, OTU> fakeOTUsByIncomingOTU = newHashMap();
 		for (final OTU sourceOTU : sourceMatrix.getOTUs()) {
@@ -94,7 +98,7 @@ public class MergeCharacterStateMatrixTest {
 
 		mergeCharacterStateMatrix.merge(targetMatrix, sourceMatrix,
 				fakeTargetOTUSet, fakeOTUsByIncomingOTU, dnaCharacterProvider
-						.get(), false);
+						.get());
 		final List<OTU> shuffledSourceOTUs = newArrayList(sourceMatrix
 				.getOTUs());
 		Collections.shuffle(shuffledSourceOTUs);
@@ -102,7 +106,7 @@ public class MergeCharacterStateMatrixTest {
 
 		mergeCharacterStateMatrix.merge(targetMatrix, sourceMatrix,
 				fakeTargetOTUSet, fakeOTUsByIncomingOTU, dnaCharacterProvider
-						.get(), false);
+						.get());
 		ModelAssert.assertEqualsCharacterStateMatrices(targetMatrix,
 				sourceMatrix);
 	}
@@ -110,7 +114,7 @@ public class MergeCharacterStateMatrixTest {
 	@Test(dataProvider = MatrixProvider.SMALL_SIMPLE_MATRIX_PROVIDER, dataProviderClass = MatrixProvider.class, groups = TestGroupDefs.IN_DEVELOPMENT)
 	public void moveCharacters(final CharacterStateMatrix sourceMatrix) {
 		final IMergeCharacterStateMatrix mergeCharacterStateMatrix = mergeMatrixFactory
-				.create(mergeAttachment, null);
+				.create(mergeAttachment, session);
 		final OTUSet fakeTargetOTUSet = sourceMatrix.getOTUSet();
 		final Map<OTU, OTU> fakeOTUsByIncomingOTU = newHashMap();
 		for (final OTU sourceOTU : sourceMatrix.getOTUs()) {
@@ -122,7 +126,7 @@ public class MergeCharacterStateMatrixTest {
 
 		mergeCharacterStateMatrix.merge(targetMatrix, sourceMatrix,
 				fakeTargetOTUSet, fakeOTUsByIncomingOTU, dnaCharacterProvider
-						.get(), false);
+						.get());
 
 		// Swap 2 and 0
 		sourceMatrix.setCharacter(0, sourceMatrix.setCharacter(2, sourceMatrix
@@ -130,7 +134,7 @@ public class MergeCharacterStateMatrixTest {
 
 		mergeCharacterStateMatrix.merge(targetMatrix, sourceMatrix,
 				fakeTargetOTUSet, fakeOTUsByIncomingOTU, dnaCharacterProvider
-						.get(), false);
+						.get());
 
 		ModelAssert.assertEqualsCharacterStateMatrices(targetMatrix,
 				sourceMatrix);

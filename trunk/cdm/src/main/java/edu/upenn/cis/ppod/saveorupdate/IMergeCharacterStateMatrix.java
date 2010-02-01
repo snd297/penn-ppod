@@ -52,14 +52,14 @@ public interface IMergeCharacterStateMatrix {
 	 *            counterpart. This parameter is used to set the new OTU
 	 *            ordering in {@code targetMatrix} as dictated by {@code
 	 *            sourceMatrix}
-	 * @param session
+	 * @param dnaCharacter the {@code DNACharacter} in a persistent state that
+	 *            should be used in the target matrix
 	 * 
 	 * @return {@code targetMatrix}
 	 */
 	CharacterStateMatrix merge(CharacterStateMatrix targetMatrix,
 			CharacterStateMatrix sourceMatrix, OTUSet newTargetMatrixOTUSet,
-			Map<OTU, OTU> mergedOTUsBySourceOTU, DNACharacter dnaCharacter,
-			boolean save);
+			Map<OTU, OTU> mergedOTUsBySourceOTU, DNACharacter dnaCharacter);
 
 	/**
 	 * Makes {@link IMergeCharacterStateMatrix}s.

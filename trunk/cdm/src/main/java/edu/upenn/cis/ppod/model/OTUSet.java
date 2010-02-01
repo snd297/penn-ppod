@@ -374,7 +374,7 @@ public final class OTUSet extends UUPPodEntityWXmlId {
 	protected OTUSet resetPPodVersionInfo() {
 		if (getPPodVersionInfo() == null) {
 
-		} else if (getSuppressResetPPodVersion()) {
+		} else if (getDoNotPersist()) {
 
 		} else {
 			if (study != null) {

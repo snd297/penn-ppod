@@ -17,6 +17,7 @@ package edu.upenn.cis.ppod.util;
 
 import com.google.inject.AbstractModule;
 import com.google.inject.assistedinject.FactoryProvider;
+import com.google.inject.matcher.Matchers;
 
 import edu.upenn.cis.ppod.dao.hibernate.AttachmentNamespaceDAOHibernate;
 import edu.upenn.cis.ppod.dao.hibernate.AttachmentTypeDAOHibernate;
@@ -30,14 +31,15 @@ import edu.upenn.cis.ppod.saveorupdate.IMergeAttachment;
 import edu.upenn.cis.ppod.saveorupdate.IMergeCharacterStateMatrix;
 import edu.upenn.cis.ppod.saveorupdate.IMergeTreeSet;
 import edu.upenn.cis.ppod.saveorupdate.MergeAttachment;
-import edu.upenn.cis.ppod.saveorupdate.SaveOrUpdateCharacterStateMatrix;
 import edu.upenn.cis.ppod.saveorupdate.MergeTreeSet;
+import edu.upenn.cis.ppod.saveorupdate.SaveOrUpdateCharacterStateMatrix;
 import edu.upenn.cis.ppod.saveorupdate.hibernate.IMergeOTUSetHibernateFactory;
 import edu.upenn.cis.ppod.saveorupdate.hibernate.ISaveOrUpdateStudyHibernateFactory;
 import edu.upenn.cis.ppod.saveorupdate.hibernate.MergeOTUSetHibernate;
 import edu.upenn.cis.ppod.saveorupdate.hibernate.SaveOrUpdateStudyHibernate;
 import edu.upenn.cis.ppod.security.ISimpleAuthenticationInfoFactory;
 import edu.upenn.cis.ppod.security.SimpleAuthenticationInfoFactory;
+import edu.upenn.cis.ppod.thirdparty.injectslf4j.Slf4jTypeListener;
 
 public final class PPodCoreModule extends AbstractModule {
 	@Override
@@ -83,6 +85,5 @@ public final class PPodCoreModule extends AbstractModule {
 		bind(DNAState.IFactory.class).toProvider(
 				FactoryProvider.newFactory(DNAState.IFactory.class,
 						DNAState.class));
-
 	}
 }
