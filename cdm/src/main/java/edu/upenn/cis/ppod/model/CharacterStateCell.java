@@ -181,6 +181,11 @@ public final class CharacterStateCell extends PPodEntity {
 		xmlStatesNeedsToBePutIntoStates = true;
 	}
 
+	/**
+	 * Take actions after unmarshalling that need to occur after
+	 * {@link #afterUnmarshal(Unmarshaller, Object)} is called, specifically
+	 * after {@code @XmlIDRef} elements are resolved
+	 */
 	public void afterUnmarshal() {
 		if (xmlStatesNeedsToBePutIntoStates) {
 			setStates(getXmlStates());
@@ -343,9 +348,19 @@ public final class CharacterStateCell extends PPodEntity {
 		return xmlStatesNeedsToBePutIntoStates;
 	}
 
+	/**
+	 * Set this cell's type to {@link Type#INAPPLICABLE} to {@code
+	 * Collections.EMPTY_SET}.
+	 * 
+	 * @return this
+	 */
 	public CharacterStateCell setInapplicable() {
 		setType(Type.INAPPLICABLE);
-		setStates(Collections.EMPTY_SET);
+
+		@SuppressWarnings("unchecked")
+		final Set<CharacterState> emptyStates = (Set<CharacterState>) Collections.EMPTY_SET;
+		setStates(emptyStates);
+
 		return this;
 	}
 
@@ -538,6 +553,7 @@ public final class CharacterStateCell extends PPodEntity {
 		return retValue.toString();
 	}
 
+	@Override
 	public CharacterStateCell accept(final IVisitor visitor) {
 		visitor.visit(this);
 		return this;

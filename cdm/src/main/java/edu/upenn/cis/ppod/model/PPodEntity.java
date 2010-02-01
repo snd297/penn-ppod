@@ -62,7 +62,6 @@ import edu.upenn.cis.ppod.services.hibernate.PPodEntitiesResourceHibernate;
 @XmlAccessorType(XmlAccessType.NONE)
 @Entity
 @Table(name = PPodEntity.TABLE)
-@Inheritance(strategy = InheritanceType.JOINED)
 public abstract class PPodEntity extends PersistentObject implements IAttachee,
 		IPPodVersioned {
 

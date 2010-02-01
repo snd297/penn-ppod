@@ -198,6 +198,7 @@ public class CharacterStateMatrix extends UUPPodEntityWXmlId {
 	/** No-arg constructor for (at least) Hibernate. */
 	CharacterStateMatrix() {}
 
+	@Override
 	public CharacterStateMatrix accept(final IVisitor visitor) {
 		visitor.visit(this);
 		for (final CharacterStateRow row : getRows()) {
@@ -245,6 +246,11 @@ public class CharacterStateMatrix extends UUPPodEntityWXmlId {
 // return this;
 // }
 
+	/**
+	 * Take actions after unmarshalling that need to occur after
+	 * {@link #afterUnmarshal(Unmarshaller, Object)} is called, specifically
+	 * after {@code @XmlIDRef} elements are resolved
+	 */
 	public void afterUnmarshal() {
 		if (characterIdx.size() == 0) {
 			int i = 0;
@@ -360,7 +366,7 @@ public class CharacterStateMatrix extends UUPPodEntityWXmlId {
 	}
 
 	/**
-	 * Get the column pPOD versions.
+	 * Get an unmodifiable view of the column pPOD versions.
 	 * <p>
 	 * A column version is the max pPOD version of the cells in a column.
 	 * 
@@ -370,6 +376,13 @@ public class CharacterStateMatrix extends UUPPodEntityWXmlId {
 		return Collections.unmodifiableList(columnPPodVersions);
 	}
 
+	/**
+	 * Get the column pPOD versions. This is a modifiable list.
+	 * 
+	 * @see #getColumnPPodVersions()
+	 * 
+	 * @return the column pPOD versions
+	 */
 	protected List<Long> getColumnPPodVersionsMutable() {
 		return columnPPodVersions;
 	}
@@ -515,6 +528,12 @@ public class CharacterStateMatrix extends UUPPodEntityWXmlId {
 // return originalCharacters;
 // 
 
+	/**
+	 * Get the type of this matrix. Used to determine the type of matrix after
+	 * marhsalling->unmarshalling, which loses class info.
+	 * 
+	 * @return the type of this matrixn
+	 */
 	public Type getType() {
 		return type;
 	}

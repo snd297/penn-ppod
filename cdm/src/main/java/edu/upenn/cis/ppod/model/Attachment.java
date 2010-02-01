@@ -133,6 +133,7 @@ public final class Attachment extends UUPPodEntity {
 	/** Default constructor for (at least) Hibernate. */
 	Attachment() {}
 
+	@Override
 	public Attachment accept(final IVisitor visitor) {
 		visitor.visit(this);
 		for (final Attachment attachment : getAttachments()) {
