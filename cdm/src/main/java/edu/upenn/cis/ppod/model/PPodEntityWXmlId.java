@@ -31,17 +31,23 @@ abstract class PPodEntityWXmlId extends PPodEntity {
 	 * Intended for referencing elements within a document - be it XML, JSON,
 	 * etc. This is distinct from the pPOD Id of {@link UUPPodEntity}.
 	 * <p>
-	 * NOTE: we don't require an explicit setter to this because we don't need a
-	 * getter method. TODO: figure out why that is! It's something to do with
-	 * help avoiding bugs.
+	 * NOTE: we don't require an explicit public setter as with
+	 * {@link UUPPodEntityWXmlId} because we don't need a getter method. TODO:
+	 * figure out why that is! It's something to do with help avoiding bugs.
 	 */
-	@XmlAttribute
-	@XmlID
-	@SuppressWarnings("unused")
-	private String docId = UUID.randomUUID().toString();
+	private String docId;
 
 	protected PPodEntityWXmlId setDocId(final String docId) {
 		this.docId = docId;
 		return this;
+	}
+
+	@XmlAttribute
+	@XmlID
+	protected String getDocId() {
+		if (docId == null) {
+			docId = UUID.randomUUID().toString();
+		}
+		return docId;
 	}
 }

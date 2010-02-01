@@ -105,7 +105,7 @@ public class ModelAssert {
 				&& expectedCellItr.hasNext();) {
 			final CharacterStateCell actualCell = actualCellItr.next(), expectedCell = expectedCellItr
 					.next();
-			//assertTrue(actualCell.getRow() == actualRow);
+			assertTrue(actualCell.getRow() == actualRow);
 			assertEqualsCharacterStateCells(actualCell, expectedCell);
 		}
 	}
@@ -182,7 +182,7 @@ public class ModelAssert {
 				&& expectedRowItr.hasNext();) {
 			final CharacterStateRow actualRow = actualRowItr.next(), expectedRow = expectedRowItr
 					.next();
-			//assertTrue(actualRow.getMatrix() == actualMatrix);
+			assertTrue(actualRow.getMatrix() == actualMatrix);
 			assertEqualsCharacterStateRows(actualRow, expectedRow);
 		}
 	}

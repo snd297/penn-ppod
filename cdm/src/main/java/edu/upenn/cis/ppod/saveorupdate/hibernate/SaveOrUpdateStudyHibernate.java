@@ -165,7 +165,7 @@ public class SaveOrUpdateStudyHibernate implements ISaveOrUpdateStudy {
 				}
 
 				mergeMatrix.merge(dbMatrix, incomingMatrix, dbOTUSet,
-						dbOTUsByIncomingOTU, dbDNACharacter, save);
+						dbOTUsByIncomingOTU, dbDNACharacter);
 			}
 			for (final TreeSet incomingTreeSet : incomingOTUSet.getTreeSets()) {
 				TreeSet dbTreeSet;

@@ -15,6 +15,8 @@
  */
 package edu.upenn.cis.ppod;
 
+import org.hibernate.Session;
+
 import com.google.inject.Guice;
 import com.google.inject.assistedinject.FactoryProvider;
 import com.google.inject.util.Modules;
@@ -24,8 +26,10 @@ import edu.upenn.cis.ppod.saveorupdate.SaveOrUpdateCharacterStateMatrix;
 import edu.upenn.cis.ppod.saveorupdate.TestMergeAttachment;
 import edu.upenn.cis.ppod.services.IPPodEntitiesResource;
 import edu.upenn.cis.ppod.services.hibernate.PPodEntitiesResourceHibernate;
+import edu.upenn.cis.ppod.thirdparty.injectslf4j.InjectSlf4jModule;
 import edu.upenn.cis.ppod.util.GuiceObjectFactory;
 import edu.upenn.cis.ppod.util.PPodCoreModule;
+import edu.upenn.cis.ppod.util.StubSession;
 
 /**
  * @author Sam Donnelly
@@ -34,7 +38,7 @@ public class PPodObjectFactory extends GuiceObjectFactory {
 
 	PPodObjectFactory() {
 		setInjector(Guice.createInjector(Modules.override(new PPodCoreModule())
-				.with(this)));
+				.with(this), new InjectSlf4jModule()));
 	}
 
 	@Override
@@ -47,5 +51,7 @@ public class PPodObjectFactory extends GuiceObjectFactory {
 
 		bind(IPPodEntitiesResource.class).to(
 				PPodEntitiesResourceHibernate.class);
+
+		bind(Session.class).to(StubSession.class);
 	}
 }

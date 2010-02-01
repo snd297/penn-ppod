@@ -174,19 +174,6 @@ public abstract class PPodEntity extends PersistentObject implements IAttachee,
 		return pPodVersionInfo;
 	}
 
-	@Transient
-	private boolean suppressResetPPodVersion = false;
-
-	protected PPodEntity setSuppressResetPPodVersion(
-			final boolean suppresssResetPPodVersion) {
-		this.suppressResetPPodVersion = suppresssResetPPodVersion;
-		return this;
-	}
-
-	protected boolean getSuppressResetPPodVersion() {
-		return suppressResetPPodVersion;
-	}
-
 	/**
 	 * If {@code true} then is pPOD entity should not be written to the
 	 * database. Also, calling {@code resetPPodVersionInfo(PPodVersionInfo)}
@@ -217,7 +204,7 @@ public abstract class PPodEntity extends PersistentObject implements IAttachee,
 	 * @return this {@code PPodEntity}
 	 */
 	protected PPodEntity resetPPodVersionInfo() {
-		if (getSuppressResetPPodVersion()) {
+		if (getDoNotPersist()) {
 
 		} else {
 			pPodVersionInfo = null;
@@ -253,7 +240,6 @@ public abstract class PPodEntity extends PersistentObject implements IAttachee,
 	 */
 	public PPodEntity setDoNotPersist() {
 		this.doNotPersist = true;
-		setSuppressResetPPodVersion(true);
 		return this;
 	}
 

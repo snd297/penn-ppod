@@ -191,7 +191,7 @@ public final class TreeSet extends UUPPodEntityWXmlId {
 
 	@Override
 	protected TreeSet resetPPodVersionInfo() {
-		if (getPPodVersionInfo() == null || getSuppressResetPPodVersion()) {
+		if (getPPodVersionInfo() == null || getDoNotPersist()) {
 
 		} else {
 			if (otuSet != null) {

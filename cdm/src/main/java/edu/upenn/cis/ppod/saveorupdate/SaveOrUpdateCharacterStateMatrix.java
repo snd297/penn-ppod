@@ -89,7 +89,7 @@ public class SaveOrUpdateCharacterStateMatrix implements IMergeCharacterStateMat
 			final CharacterStateMatrix sourceMatrix,
 			final OTUSet newTargetMatrixOTUSet,
 			final Map<OTU, OTU> mergedOTUsBySourceOTU,
-			final DNACharacter dnaCharacter, boolean save) {
+			final DNACharacter dnaCharacter) { 
 		final String METHOD = "merge(...)";
 		logger.debug("{}: entering", METHOD);
 		checkNotNull(targetMatrix);
@@ -179,10 +179,8 @@ public class SaveOrUpdateCharacterStateMatrix implements IMergeCharacterStateMat
 				}
 				newTargetCharacter.addAttachment(targetAttachment);
 				mergeAttachment.merge(targetAttachment, sourceAttachment);
-				if (save) {
-					session.saveOrUpdate(newTargetCharacter);
-					session.saveOrUpdate(targetAttachment);
-				}
+				session.saveOrUpdate(newTargetCharacter);
+				session.saveOrUpdate(targetAttachment);
 			}
 		}
 
