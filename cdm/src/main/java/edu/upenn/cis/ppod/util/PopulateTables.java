@@ -37,8 +37,7 @@ public class PopulateTables {
 		try {
 			final DNACharacter dnaCharacter = pPodCoreFactory
 					.create(DNACharacter.class);
-			final DNAState.IFactory dnaStateFactory = pPodCoreFactory
-					.create(DNAState.IFactory.class);
+
 			dnaCharacter.setPPodId();
 
 			session = HibernateUtil.getSessionFactory().openSession();

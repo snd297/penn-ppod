@@ -16,6 +16,7 @@
 package edu.upenn.cis.ppod.model;
 
 import static com.google.common.base.Preconditions.checkNotNull;
+import static com.google.common.base.Preconditions.checkState;
 import static com.google.common.collect.Lists.newArrayList;
 import static com.google.common.collect.Maps.newHashMap;
 
@@ -29,6 +30,7 @@ import javax.persistence.JoinColumn;
 import javax.persistence.JoinTable;
 import javax.persistence.OneToMany;
 import javax.persistence.Table;
+import javax.persistence.Transient;
 import javax.xml.bind.Unmarshaller;
 import javax.xml.bind.annotation.XmlElement;
 
@@ -62,14 +64,18 @@ public final class CharacterStateRow extends PPodEntity {
 	 */
 	static final String ID_COLUMN = TABLE + "_ID";
 
-	/** The {@code CharacterStateCell}s that make up the row. */
-
+	/**
+	 * The {@code CharacterStateCell}s that make up the row.
+	 * <p>
+	 * We don't don't cascade SAVE_UPDATE since there are so many cells and it
+	 * slows things down quite a bit - at least for saves (haven't looked at
+	 * update yet).
+	 */
 	@XmlElement(name = "cell")
 	@OneToMany
-	@JoinTable(inverseJoinColumns = { @JoinColumn(name = CharacterStateCell.ID_COLUMN) })
+	@JoinTable(name = TABLE + "_" + CharacterStateCell.TABLE, joinColumns = { @JoinColumn(name = ID_COLUMN) }, inverseJoinColumns = { @JoinColumn(name = CharacterStateCell.ID_COLUMN) })
 	@IndexColumn(name = CELLS_INDEX_COLUMN)
-	@Cascade( { org.hibernate.annotations.CascadeType.SAVE_UPDATE,
-			org.hibernate.annotations.CascadeType.DELETE_ORPHAN })
+	@Cascade(org.hibernate.annotations.CascadeType.DELETE_ORPHAN)
 	private final List<CharacterStateCell> cells = newArrayList();
 
 	/** {@code CharacterStateCell}-><code>cells</code>Index lookup. */
@@ -92,10 +98,8 @@ public final class CharacterStateRow extends PPodEntity {
 	 * The {@code CharacterStateMatrix} to which this {@code CharacterStateRow}
 	 * belongs.
 	 */
-// @ManyToOne
-// @JoinColumn(name = CharacterStateMatrix.ID_COLUMN, insertable = false,
-	// updatable = false, nullable = false)
-// private CharacterStateMatrix matrix;
+	@Transient
+	private CharacterStateMatrix matrix;
 
 	CharacterStateRow() {}
 
@@ -113,24 +117,24 @@ public final class CharacterStateRow extends PPodEntity {
 	 */
 	public CharacterStateCell addCell(final CharacterStateCell cell) {
 		checkNotNull(cell);
-// if (getMatrix() == null) {
-// throw new IllegalStateException(
-// "This row hasn't been added to a matrix yet");
-// }
-// if (getMatrix().getCharacters().size() < getCells().size() + 1) {
-// throw new IllegalStateException("the matrix has less characters "
-// + getMatrix().getCharacterIdx().size()
-// + " than the row is about to have "
-// + (getCells().size() + 1));
-// }
-// if (getMatrix().getCharacters().size() > 0
-// && getMatrix().getCharacters().get(getCells().size()) == null) {
-// throw new IllegalStateException("Character is null at column "
-// + cells.size());
-// }
+		if (getMatrix() == null) {
+			throw new IllegalStateException(
+					"This row hasn't been added to a matrix yet");
+		}
+		if (getMatrix().getCharacters().size() < getCells().size() + 1) {
+			throw new IllegalStateException("the matrix has less characters "
+					+ getMatrix().getCharacterIdx().size()
+					+ " than the row is about to have "
+					+ (getCells().size() + 1));
+		}
+		if (getMatrix().getCharacters().size() > 0
+				&& getMatrix().getCharacters().get(getCells().size()) == null) {
+			throw new IllegalStateException("Character is null at column "
+					+ cells.size());
+		}
 		cells.add(cell);
 		cellIdx.put(cell, cells.size() - 1);
-		// cell.setRow(this);
+		cell.setRow(this);
 		resetPPodVersionInfo();
 		return cell;
 	}
@@ -142,7 +146,7 @@ public final class CharacterStateRow extends PPodEntity {
 	 * @param parent see {@code Unmarshaller}
 	 */
 	public void afterUnmarshal(final Unmarshaller u, final Object parent) {
-		// setMatrix((CharacterStateMatrix) parent);
+		setMatrix((CharacterStateMatrix) parent);
 		int i = 0;
 		for (final CharacterStateCell cell : getCells()) {
 			cellIdx.put(cell, i++);
@@ -175,9 +179,9 @@ public final class CharacterStateRow extends PPodEntity {
 	 * 
 	 * @return the {@code CharacterStateMatrix} of which this is a row
 	 */
-// public CharacterStateMatrix getMatrix() {
-// return matrix;
-// }
+	public CharacterStateMatrix getMatrix() {
+		return matrix;
+	}
 
 	/**
 	 * Remove the last cell in this row.
@@ -193,7 +197,7 @@ public final class CharacterStateRow extends PPodEntity {
 		final CharacterStateCell oldPhyloCharMatrixCell = cells.remove(cells
 				.size() - 1);
 		cellIdx.remove(oldPhyloCharMatrixCell);
-		// oldPhyloCharMatrixCell.setRow(null);
+		oldPhyloCharMatrixCell.setRow(null);
 		resetPPodVersionInfo();
 		return oldPhyloCharMatrixCell;
 	}
@@ -208,26 +212,25 @@ public final class CharacterStateRow extends PPodEntity {
 		if (getPPodVersionInfo() == null) {
 
 		} else {
-// if (matrix != null) {
-// matrix.resetPPodVersionInfo();
-// }
+			checkState(getMatrix() != null);
+			matrix.resetPPodVersionInfo();
 			super.resetPPodVersionInfo();
 		}
 		return this;
 	}
 
 	/**
-	 * Setter. Intentionally package-private.
+	 * Setter.
 	 * 
 	 * @param matrix the {@code CharacterStateMatrix} of which this is a row.
 	 *            This is nullable.
 	 * 
 	 * @return this {@code CharacterStateRow}
 	 */
-// CharacterStateRow setMatrix(final CharacterStateMatrix matrix) {
-// this.matrix = matrix;
-// return this;
-// }
+	public CharacterStateRow setMatrix(final CharacterStateMatrix matrix) {
+		this.matrix = matrix;
+		return this;
+	}
 
 	/**
 	 * Constructs a {@code String} with all attributes in name=value format.

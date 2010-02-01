@@ -127,13 +127,6 @@ public final class Study extends UUPPodEntity implements IOTUSetCentricEntities 
 				for (final CharacterStateMatrix matrix : otuSet.getMatrices()) {
 					studyWideCharacters.addAll(matrix.getCharacters());
 				}
-//				for (final Character studyWideCharacter : studyWideCharacters) {
-//					for (final CharacterState state : studyWideCharacter
-//							.getStates().values()) {
-//						state.xmlStateNumber = state.getStateNumber();
-//						state.xmlLabel = state.getLabel();
-//					}
-//				}
 			}
 		}
 		return true;

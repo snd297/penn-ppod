@@ -15,10 +15,35 @@
  */
 package edu.upenn.cis.ppod.model;
 
+import javax.persistence.Column;
 import javax.persistence.MappedSuperclass;
 
 /**
  * @author Sam Donnelly
  */
 @MappedSuperclass
-public class MolecularCharacter extends Character {}
+public class MolecularCharacter extends Character {
+
+	/**
+	 * This column should be the same as {@link Character#getLabel()} and is
+	 * only here to prevent duplicate {@code DNACharacter}s from being added to
+	 * the table. Duplicates are prevented by the {@code nullable = false,
+	 * unique = true} combination.
+	 * <p>
+	 * We were just calling this column {@code "LABEL"}, but that seemed to
+	 * break {@link Character#getLabel()} - it would return {@code null} after
+	 * db retrieval. Because {@code Character} has a column called {@code
+	 * "LABEL"}?
+	 */
+	@Column(name = "MOLECULAR_CHARACTER_LABEL", nullable = false, unique = true)
+	@SuppressWarnings("unused")
+	private String molecularCharacterLabel;
+
+	protected MolecularCharacter setMolecularCharacterLabel(
+			final String molecularCharacterLabel) {
+		super.setLabel(molecularCharacterLabel);
+		this.molecularCharacterLabel = molecularCharacterLabel;
+		return this;
+	}
+
+}

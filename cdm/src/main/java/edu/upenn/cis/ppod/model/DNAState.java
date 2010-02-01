@@ -73,30 +73,13 @@ public final class DNAState extends MolecularState {
 
 	@Inject
 	DNAState(@Assisted final Nucleotide nucleotide) {
-		super.setLabel(nucleotide.toString());
-		switch (nucleotide) {
-			case A:
-				setMolecularStateLabel(Nucleotide.A.toString());
-				setStateNumber(Nucleotide.A.ordinal());
-				break;
-			case C:
-				setMolecularStateLabel(Nucleotide.C.toString());
-				setStateNumber(Nucleotide.C.ordinal());
-				break;
-			case G:
-				setMolecularStateLabel(Nucleotide.G.toString());
-				setStateNumber(Nucleotide.G.ordinal());
-				break;
-			case T:
-				setMolecularStateLabel(Nucleotide.T.toString());
-				setStateNumber(Nucleotide.T.ordinal());
-				break;
-			default:
-				throw new AssertionError("unknown Nucleotide");
-		}
-		// State numbers are unique for DNA, so let's use since it's smaller
-		// and there will be lots of them in the xml
-		setDocId(getStateNumber().toString());
+		super.setMolecularStateLabel(nucleotide.toString());
+		super.setStateNumber(nucleotide.ordinal());
+
+		// State numbers are unique for DNA, so let's use them instead of UUID's
+		// since their smaller and there will be lots of them in the xml: up to
+		// hundreds of thousands.
+		super.setDocId(getStateNumber().toString());
 	}
 
 	@Override
@@ -108,19 +91,5 @@ public final class DNAState extends MolecularState {
 					"a DNAState's character must be a DNACharacter");
 		}
 		return this;
-	}
-
-	/**
-	 * This method is not supported for {@code DNAState} since all instances are
-	 * immutable.
-	 * 
-	 * @param label ignored
-	 * 
-	 * @throws UnsupportedOperationException always
-	 */
-	@Override
-	public DNAState setLabel(final String label) {
-		throw new UnsupportedOperationException(
-				"the label of a dna state is fixed");
 	}
 }

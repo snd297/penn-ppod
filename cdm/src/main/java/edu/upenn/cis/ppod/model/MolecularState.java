@@ -17,23 +17,60 @@ package edu.upenn.cis.ppod.model;
 
 import javax.persistence.Column;
 import javax.persistence.MappedSuperclass;
+import javax.xml.bind.annotation.XmlAccessType;
+import javax.xml.bind.annotation.XmlAccessorType;
 
 /**
+ * A state of a {@link MolecularCharacter}.
+ * 
  * @author Sam Donnelly
  */
+@XmlAccessorType(XmlAccessType.NONE)
 @MappedSuperclass
 public abstract class MolecularState extends CharacterState {
 
 	/**
 	 * This column should be the same as {@link CharacterState#getLabel()} and
-	 * is really only here to prevent duplicate {@code DNAState}s form being
-	 * added to the table.
+	 * is only here to prevent duplicate {@code DNAState}s form being added to
+	 * the table.
+	 * <p>
+	 * We were just calling this column {@code "LABEL"}, but that seemed to
+	 * break {@link Character#getLabel()} - it would return {@code null} after
+	 * db retrieval. Because {@code CharacterState} has a column called {@code
+	 * "LABEL"}?
 	 */
-	@Column(name = "LABEL", nullable = false, unique = true)
-	private String label;
+	@Column(name = "MOLECULAR_STATE_LABEL", nullable = false, unique = true)
+	@SuppressWarnings("unused")
+	private String molecularStateLabel;
 
-	protected MolecularState setMolecularStateLabel(final String label) {
-		this.label = label;
+	/**
+	 * Set the molecular state label and {@code CharacterState.getLabel()}. This
+	 * value is only used to prevent multiple rows of a particular molecular
+	 * state from being created. For example, we don't want more than one
+	 * {@code DNACharacter} in the database.
+	 * 
+	 * @param molecularStateLabel the label.
+	 * 
+	 * @return this
+	 */
+	protected MolecularState setMolecularStateLabel(
+			final String molecularStateLabel) {
+		super.setLabel(molecularStateLabel);
+		this.molecularStateLabel = molecularStateLabel;
 		return this;
+	}
+
+	/**
+	 * This method is not supported for {@code DNAState} since all instances are
+	 * immutable.
+	 * 
+	 * @param label ignored
+	 * 
+	 * @throws UnsupportedOperationException always
+	 */
+	@Override
+	public MolecularState setLabel(final String label) {
+		throw new UnsupportedOperationException(
+				"the label of a MolecularState is fixed");
 	}
 }

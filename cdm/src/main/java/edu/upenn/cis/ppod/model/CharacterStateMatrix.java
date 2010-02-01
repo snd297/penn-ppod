@@ -778,9 +778,9 @@ public class CharacterStateMatrix extends UUPPodEntityWXmlId {
 			// same, nothing to do
 		} else {
 
-// if (oldRow != null) {
-// oldRow.setMatrix(null);
-// }
+			if (oldRow != null) {
+				oldRow.setMatrix(null);
+			}
 
 			// Remove the row from its old position, if it's already in this
 			// matrix
@@ -790,7 +790,8 @@ public class CharacterStateMatrix extends UUPPodEntityWXmlId {
 			}
 
 			// Now set it to it's new position.
-			rows.set(otuIdx, row);// .setMatrix(this));
+			rows.set(otuIdx, row);
+			row.setMatrix(this);
 			resetPPodVersionInfo();
 		}
 		return oldRow;
