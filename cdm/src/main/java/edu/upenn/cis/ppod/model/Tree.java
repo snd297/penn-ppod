@@ -92,7 +92,9 @@ public final class Tree extends UUPPodEntity {
 	 * @param parent see see {@code Unmarshaller}
 	 * 
 	 */
+	@Override
 	public void afterUnmarshal(final Unmarshaller u, final Object parent) {
+		super.afterUnmarshal(u, parent);
 		if (parent instanceof TreeSet) {
 			addTreeSet((TreeSet) parent);
 		}

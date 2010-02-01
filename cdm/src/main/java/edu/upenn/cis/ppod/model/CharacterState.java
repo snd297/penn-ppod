@@ -154,8 +154,7 @@ public class CharacterState extends PPodEntityWXmlId {
 	 *            <em>Unmarshal Event Callbacks</em>
 	 */
 // public void afterUnmarshal(final Unmarshaller u, final Object parent) {
-	// super.af
-	// We take care of setting this.character in Character.afterUnmarshal(...)
+// We take care of setting this.character in Character.afterUnmarshal(...)
 // }
 
 	/**

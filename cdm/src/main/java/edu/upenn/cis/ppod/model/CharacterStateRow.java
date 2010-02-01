@@ -145,7 +145,9 @@ public final class CharacterStateRow extends PPodEntity {
 	 * @param u see {@code Unmarshaller}
 	 * @param parent see {@code Unmarshaller}
 	 */
+	@Override
 	public void afterUnmarshal(final Unmarshaller u, final Object parent) {
+		super.afterUnmarshal(u, parent);
 		setMatrix((CharacterStateMatrix) parent);
 		int i = 0;
 		for (final CharacterStateCell cell : getCells()) {
@@ -249,6 +251,7 @@ public final class CharacterStateRow extends PPodEntity {
 		return retValue.toString();
 	}
 
+	@Override
 	public CharacterStateRow accept(final IVisitor visitor) {
 		visitor.visit(this);
 		for (final CharacterStateCell cell : getCells()) {

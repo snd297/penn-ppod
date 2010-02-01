@@ -114,7 +114,7 @@ public class SaveCharacterStateMatrixHibernate {
 
 		for (final Character sourceCharacter : sourceMatrix.getCharacters()) {
 			Character newTargetCharacter;
-			if (sourceMatrix.getType() == CharacterStateMatrix.Type.DNA) {
+			if (sourceMatrix.getType() == CharacterStateMatrix.Type.DNA) { 
 				newTargetCharacter = dnaCharacter;
 			} else {
 				newTargetCharacter = characterProvider.get();

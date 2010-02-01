@@ -55,7 +55,8 @@ import edu.upenn.cis.ppod.thirdparty.injectslf4j.InjectLogger;
 /**
  * @author Sam Donnelly
  */
-public class SaveOrUpdateCharacterStateMatrix implements IMergeCharacterStateMatrix {
+public class SaveOrUpdateCharacterStateMatrix implements
+		IMergeCharacterStateMatrix {
 
 	private final Provider<Character> characterProvider;
 	private final Provider<CharacterStateRow> rowProvider;
@@ -69,7 +70,8 @@ public class SaveOrUpdateCharacterStateMatrix implements IMergeCharacterStateMat
 	private Logger logger;
 
 	@Inject
-	SaveOrUpdateCharacterStateMatrix(final Provider<Character> characterProvider,
+	SaveOrUpdateCharacterStateMatrix(
+			final Provider<Character> characterProvider,
 			final Provider<CharacterStateRow> rowProvider,
 			final Provider<CharacterStateCell> cellProvider,
 			final CharacterState.IFactory stateFactory,
@@ -89,7 +91,7 @@ public class SaveOrUpdateCharacterStateMatrix implements IMergeCharacterStateMat
 			final CharacterStateMatrix sourceMatrix,
 			final OTUSet newTargetMatrixOTUSet,
 			final Map<OTU, OTU> mergedOTUsBySourceOTU,
-			final DNACharacter dnaCharacter) { 
+			final DNACharacter dnaCharacter) {
 		final String METHOD = "merge(...)";
 		logger.debug("{}: entering", METHOD);
 		checkNotNull(targetMatrix);

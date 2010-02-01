@@ -89,7 +89,7 @@ public class PPodEntitiesResourceHibernate implements
 		for (final Object queryResult : queryResults) {
 			if (queryResult instanceof OTUSet) {
 				final OTUSet otuSet = (OTUSet) queryResult;
-				otuSet.setDoNotPersist();
+				otuSet.unsetAllowPersistAndResetPPodVersionInfo();
 
 				// Extra insurance against accidental sync with database
 				session.setReadOnly(otuSet, true);
@@ -104,7 +104,7 @@ public class PPodEntitiesResourceHibernate implements
 			} else if (queryResult instanceof CharacterStateMatrix) {
 
 				final CharacterStateMatrix matrix = (CharacterStateMatrix) queryResult;
-				matrix.setDoNotPersist();
+				matrix.unsetAllowPersistAndResetPPodVersionInfo();
 
 				// Extra insurance against accidental sync with database
 				session.setReadOnly(matrix, true);
@@ -119,7 +119,7 @@ public class PPodEntitiesResourceHibernate implements
 				pPodEntities.addOTUSet(matrix.getOTUSet());
 			} else if (queryResult instanceof TreeSet) {
 				final TreeSet treeSet = (TreeSet) queryResult;
-				treeSet.setDoNotPersist();
+				treeSet.unsetAllowPersistAndResetPPodVersionInfo();
 
 				// Extra insurance against accidental sync with database
 				session.setReadOnly(treeSet, true);
@@ -134,7 +134,7 @@ public class PPodEntitiesResourceHibernate implements
 				pPodEntities.addOTUSet(treeSet.getOTUSet());
 			} else if (queryResult instanceof OTU) {
 				final OTU otu = (OTU) queryResult;
-				otu.setDoNotPersist();
+				otu.unsetAllowPersistAndResetPPodVersionInfo();
 				session.setReadOnly(otu, true);
 				pPodEntities.addOTU(otu);
 			} else if (queryResult instanceof Object[]) {
