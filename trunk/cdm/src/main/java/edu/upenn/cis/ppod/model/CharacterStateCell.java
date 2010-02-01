@@ -150,11 +150,12 @@ public final class CharacterStateCell extends PPodEntity {
 	/**
 	 * The {@code CharacterStateRow} to which this {@code CharacterStateCell}
 	 * belongs.
+	 * <p>
+	 * Not persisted. It's up to the client to set after db retrieval this for
+	 * pPOD version propagation and state checking.
 	 */
-	// @ManyToOne(fetch = FetchType.LAZY)
-	// /@JoinColumn(name = CharacterStateRow.ID_COLUMN, nullable = false)
-	// insertable = false, updatable = false, nullable = false)
-	// private CharacterStateRow row;
+	@Transient
+	private CharacterStateRow row;
 
 	/**
 	 * Tells us that this {@code CharacterStateCell} has been unmarshalled and
@@ -175,7 +176,7 @@ public final class CharacterStateCell extends PPodEntity {
 	 * @param parent see {@code Unmarshaller}
 	 */
 	public void afterUnmarshal(final Unmarshaller u, final Object parent) {
-// row = (CharacterStateRow) parent; // don't call setRow because it'll
+		row = (CharacterStateRow) parent; // don't call because it'll
 		// reset the ppod version info
 		xmlStatesNeedsToBePutIntoStates = true;
 	}
@@ -203,29 +204,36 @@ public final class CharacterStateCell extends PPodEntity {
 		return true;
 	}
 
-// private void checkIncomingState(final CharacterState state) {
-// if (row == null) {
-// throw new IllegalStateException(
-// "This cell has not been added to a row yet.");
-// }
-// if (getRow().getMatrix().getCharacters().size() < getRow().getCellIdx()
-// .get(this)
-// || null == getRow().getMatrix().getCharacters().get(
-// getRow().getCellIdx().get(this))) {
-// throw new IllegalStateException(
-// "This cell's column hasn't been assigned a character");
-// }
-// final Character thisCellsCharacter = getRow().getMatrix()
-// .getCharacters().get(getRow().getCellIdx().get(this));
-//
-// if (!state.getCharacter().equals(thisCellsCharacter)) {
-// throw new IllegalArgumentException(
-// "state is from the wrong Character. We want "
-// + getRow().getMatrix().getCharacters().get(
-// getRow().getCellIdx().get(this)).getLabel()
-// + " but got " + state.getCharacter().getLabel());
-// }
-// }
+	private void checkIncomingState(final CharacterState state) {
+		if (getRow() == null) {
+			throw new IllegalStateException(
+					"this cell has not been assigned a row");
+		}
+
+		if (getRow().getMatrix() == null) {
+			throw new IllegalStateException(
+					"this cell's row has not had a matrix assigned");
+		}
+
+		if (getRow().getMatrix().getCharacters().size() < getRow().getCellIdx()
+				.get(this)
+				|| null == getRow().getMatrix().getCharacters().get(
+						getRow().getCellIdx().get(this))) {
+			throw new IllegalStateException(
+					"this cell's column hasn't been assigned a character");
+		}
+
+		final Character thisCellsCharacter = getRow().getMatrix()
+				.getCharacters().get(row.getCellIdx().get(this));
+
+		if (!state.getCharacter().equals(thisCellsCharacter)) {
+			throw new IllegalArgumentException(
+					"state is from the wrong Character. We want "
+							+ getRow().getMatrix().getCharacters().get(
+									getRow().getCellIdx().get(this)).getLabel()
+							+ " but got " + state.getCharacter().getLabel());
+		}
+	}
 
 	/**
 	 * Clear all {@link CharacterState} info.
@@ -252,9 +260,9 @@ public final class CharacterStateCell extends PPodEntity {
 	 * @return the {@code CharacterStateRow} to which this {@code
 	 *         CharacterStateCell} belongs
 	 */
-// public CharacterStateRow getRow() {
-// return row;
-// }
+	public CharacterStateRow getRow() {
+		return row;
+	}
 
 	/**
 	 * Retrieve the {@code CharacterState} with the given state number, or
@@ -329,26 +337,6 @@ public final class CharacterStateCell extends PPodEntity {
 		return xmlStatesNeedsToBePutIntoStates;
 	}
 
-	/**
-	 * {@code null} out {@code pPodVersionInfo}.
-	 * 
-	 * @return this {@code CharacterStateCell}
-	 */
-	@Override
-	protected CharacterStateCell resetPPodVersionInfo() {
-		if (getPPodVersionInfo() == null) {} else {
-// if (row != null) {
-// row.resetPPodVersionInfo();
-// if (row.getMatrix() != null) {
-// row.getMatrix().resetColumnPPodVersion(
-// row.getCellIdx().get(this));
-// }
-// }
-			super.resetPPodVersionInfo();
-		}
-		return this;
-	}
-
 	public CharacterStateCell setInapplicable() {
 		setType(Type.INAPPLICABLE);
 		setStates(Collections.EMPTY_SET);
@@ -375,22 +363,31 @@ public final class CharacterStateCell extends PPodEntity {
 	}
 
 	/**
-	 * Setter. Intentionally package-private.
+	 * Set the row to which this cell belongs.
+	 * <p>
+	 * This value not persisted because it's simple to be able to persist the
+	 * cells (and there are lots of them) before the row is persisted.
+	 * <p>
+	 * This value is used for error checking. For example, to make sure that the
+	 * states that are assigned to this cell belong to the correct character.
 	 * 
 	 * @param row value. nullable.
 	 * 
 	 * @return this {@code CharacterStateCell}
 	 */
-// CharacterStateCell setRow(final CharacterStateRow row) {
-// if (nullSafeEquals(this.row, row)) {
-//
-// } else {
-// this.row = row;
-// resetPPodVersionInfo();
-// }
-// return this;
-// }
+	public CharacterStateCell setRow(final CharacterStateRow row) {
+		this.row = row;
+		return this;
+	}
 
+	/**
+	 * Set the cell to have {@link Type#SINGLE} and {@link #getStates()} {@code
+	 * == state}.
+	 * 
+	 * @param state state to assign to this cell
+	 * 
+	 * @return this
+	 */
 	public CharacterStateCell setSingleState(final CharacterState state) {
 		checkNotNull(state);
 		setType(Type.SINGLE);
@@ -420,14 +417,14 @@ public final class CharacterStateCell extends PPodEntity {
 			return this;
 		}
 
-// for (final CharacterState state : states) {
-// if (state.getCharacter() == null) {
-// final Character thisCellsCharacter = getRow().getMatrix()
-// .getCharacters().get(getRow().getCellIdx().get(this));
-// state.setCharacter(thisCellsCharacter);
-// }
-// // checkIncomingState(state);
-// }
+		for (final CharacterState state : states) {
+			if (state.getCharacter() == null) {
+				final Character thisCellsCharacter = getRow().getMatrix()
+						.getCharacters().get(row.getCellIdx().get(this));
+				state.setCharacter(thisCellsCharacter);
+			}
+			checkIncomingState(state);
+		}
 
 		clearStates();
 
@@ -474,9 +471,18 @@ public final class CharacterStateCell extends PPodEntity {
 		return this;
 	}
 
+	/**
+	 * Set this cell's type to {@link Type#UNASSIGNED} to {@code
+	 * Collections.EMPTY_SET}.
+	 * 
+	 * @return this
+	 */
 	public CharacterStateCell setUnassigned() {
 		setType(Type.UNASSIGNED);
-		setStates(Collections.EMPTY_SET);
+
+		@SuppressWarnings("unchecked")
+		final Set<CharacterState> emptyStates = (Set<CharacterState>) Collections.EMPTY_SET;
+		setStates(emptyStates);
 		return this;
 	}
 

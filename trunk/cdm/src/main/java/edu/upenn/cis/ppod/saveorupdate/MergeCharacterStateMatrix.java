@@ -250,7 +250,7 @@ public class MergeCharacterStateMatrix implements IMergeCharacterStateMatrix {
 				}
 			}
 			session.saveOrUpdate(targetRow);
-			logger.debug("{}: flushing rows,  sourceRowIdx: {}", METHOD,
+			logger.debug("{}: flushing row,  sourceRowIdx: {}", METHOD,
 					sourceRowIdx);
 			session.flush();
 			session.clear();

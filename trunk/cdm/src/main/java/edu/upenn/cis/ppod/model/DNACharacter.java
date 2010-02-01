@@ -15,7 +15,6 @@
  */
 package edu.upenn.cis.ppod.model;
 
-import javax.persistence.Column;
 import javax.persistence.Entity;
 import javax.persistence.Table;
 
@@ -33,35 +32,18 @@ public final class DNACharacter extends MolecularCharacter {
 	 */
 	public static final String TABLE = "DNA_CHARACTER";
 
-	/**
-	 * This column should be the same as {@link Character#getLabel()} and is
-	 * really only here to prevent duplicate {@code DNACharacter}s from being
-	 * added to the table. Duplicates are prevented by the {@code nullable =
-	 * false, unique = true} combination.
-	 */
-	@Column(name = "LABEL", nullable = false, unique = true)
-	@SuppressWarnings("unused")
-	private String label;
-
 	private final static String LABEL = "DNA Character";
 
 	DNACharacter() {}
 
 	@Inject
 	DNACharacter(final DNAState.IFactory dnaStateFactory) {
-		this();
-		this.label = LABEL;
+		super.setMolecularCharacterLabel(LABEL);
 		addState(dnaStateFactory.create(DNAState.Nucleotide.A));
 		addState(dnaStateFactory.create(DNAState.Nucleotide.C));
 		addState(dnaStateFactory.create(DNAState.Nucleotide.G));
 		addState(dnaStateFactory.create(DNAState.Nucleotide.T));
 	}
-
-// @Override
-// public DNACharacter setPPodId() {
-// throw new UnsupportedOperationException(
-// "Can't set a DNACharacter's pPOD ID");
-// }
 
 	/**
 	 * @throws IllegalArgumentException if {@code state} is not a
