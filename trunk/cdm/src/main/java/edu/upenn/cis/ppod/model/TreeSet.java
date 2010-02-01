@@ -119,7 +119,9 @@ public final class TreeSet extends UUPPodEntityWXmlId {
 	 * @param u See {@code Unmarshaller}
 	 * @param parent {@code Unmarshaller}
 	 */
+	@Override
 	public void afterUnmarshal(final Unmarshaller u, final Object parent) {
+		super.afterUnmarshal(u, parent);
 		this.otuSet = (OTUSet) parent;
 	}
 
@@ -191,13 +193,15 @@ public final class TreeSet extends UUPPodEntityWXmlId {
 
 	@Override
 	protected TreeSet resetPPodVersionInfo() {
-		if (getPPodVersionInfo() == null || getDoNotPersist()) {
+		if (getAllowPersistAndResetPPodVersionInfo()) {
+			if (getPPodVersionInfo() == null) {
 
-		} else {
-			if (otuSet != null) {
-				otuSet.resetPPodVersionInfo();
+			} else {
+				if (otuSet != null) {
+					otuSet.resetPPodVersionInfo();
+				}
+				super.resetPPodVersionInfo();
 			}
-			super.resetPPodVersionInfo();
 		}
 		return this;
 	}

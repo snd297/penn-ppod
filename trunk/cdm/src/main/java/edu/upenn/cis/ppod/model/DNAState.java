@@ -90,7 +90,8 @@ public final class DNAState extends MolecularState {
 
 	@Override
 	protected String getDocId() {
-		// "D" + nucleotide are unique for DNA (as long as we keep them so),
+		// "D" + nucleotide are unique for DNA_STATE (as long as we keep them
+		// so),
 		// so let's use them instead of UUID's
 		// since their smaller and there will be lots of them in the xml: up to
 		// hundreds of thousands.

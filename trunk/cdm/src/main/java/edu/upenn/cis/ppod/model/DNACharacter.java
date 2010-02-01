@@ -21,6 +21,8 @@ import javax.persistence.Table;
 import com.google.inject.Inject;
 
 /**
+ * A {@link MolecularCharacter} that can only point to {@link DNAState}s.
+ * 
  * @author Sam Donnelly
  */
 @Entity
@@ -32,7 +34,7 @@ public final class DNACharacter extends MolecularCharacter {
 	 */
 	public static final String TABLE = "DNA_CHARACTER";
 
-	private final static String LABEL = "DNA Character";
+	private final static String LABEL = "DNA_STATE Character";
 
 	DNACharacter() {}
 

@@ -125,7 +125,7 @@ public class SaveOrUpdateStudyHibernate implements ISaveOrUpdateStudy {
 		final List<DNACharacter> dnaCharacters = dnaCharacterDAO.findAll();
 		if (dnaCharacters.size() == 0) {
 			throw new IllegalStateException(
-					"there are no DNACharacter's in the database: has it been populated with a DNA character and DNA states?");
+					"there are no DNACharacter's in the database: has it been populated with a DNA_STATE character and DNA_STATE states?");
 		} else if (dnaCharacters.size() > 1) {
 			throw new AssertionError(
 					"there are "

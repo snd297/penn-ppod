@@ -202,7 +202,9 @@ public final class OTUSet extends UUPPodEntityWXmlId {
 	 * @param u see {@code Unmarshaller}
 	 * @param parent see {@code Unmarshaller}
 	 */
+	@Override
 	public void afterUnmarshal(final Unmarshaller u, final Object parent) {
+		super.afterUnmarshal(u, parent);
 		if (parent instanceof Study) {
 			// We don't call setStudy(...) since that would reset the pPOD
 			// version info, which is not appropriate here. (Even though it
@@ -359,8 +361,8 @@ public final class OTUSet extends UUPPodEntityWXmlId {
 	 * Point this {@code OTUSet} and all of its {@code PhyloCharMatrix}'s to a
 	 * new {@code pPodVersionInfo}. Only the first call has an effect.
 	 * <p>
-	 * If {@link #getDoNotPersist()} {@code == true} then calls to this method
-	 * does nothing and returns.
+	 * If {@link #getAllowPersistAndResetPPodVersionInfo()} {@code == true} then
+	 * calls to this method does nothing and returns.
 	 * 
 	 * @see #setDoNotPersist(boolean)
 	 * 
@@ -372,15 +374,15 @@ public final class OTUSet extends UUPPodEntityWXmlId {
 	 */
 	@Override
 	protected OTUSet resetPPodVersionInfo() {
-		if (getPPodVersionInfo() == null) {
+		if (getAllowPersistAndResetPPodVersionInfo()) {
+			if (getPPodVersionInfo() == null) {
 
-		} else if (getDoNotPersist()) {
-
-		} else {
-			if (study != null) {
-				study.resetPPodVersionInfo();
+			} else {
+				if (study != null) {
+					study.resetPPodVersionInfo();
+				}
+				super.resetPPodVersionInfo();
 			}
-			super.resetPPodVersionInfo();
 		}
 		return this;
 	}

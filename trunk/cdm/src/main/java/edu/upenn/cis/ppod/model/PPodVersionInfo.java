@@ -22,10 +22,7 @@ import java.util.Date;
 import javax.persistence.Column;
 import javax.persistence.Entity;
 import javax.persistence.Table;
-import javax.xml.bind.annotation.XmlAccessType;
-import javax.xml.bind.annotation.XmlAccessorType;
 import javax.xml.bind.annotation.XmlAttribute;
-import javax.xml.bind.annotation.XmlRootElement;
 
 import edu.upenn.cis.ppod.thirdparty.util.HibernateUtil;
 
@@ -40,11 +37,9 @@ import edu.upenn.cis.ppod.thirdparty.util.HibernateUtil;
  * @see PPodVersionInfoInterceptor
  * @author Sam Donnelly
  */
-@XmlRootElement
-@XmlAccessorType(XmlAccessType.NONE)
 @Entity
 @Table(name = PPodVersionInfo.TABLE)
-public final class PPodVersionInfo extends PersistentObjectWXmlId {
+public final class PPodVersionInfo extends PersistentObject {
 
 	final static String TABLE = "PPOD_VERSION_INFO";
 

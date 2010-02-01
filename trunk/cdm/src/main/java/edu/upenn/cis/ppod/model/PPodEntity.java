@@ -31,6 +31,7 @@ import javax.persistence.ManyToOne;
 import javax.persistence.Table;
 import javax.persistence.Transient;
 import javax.xml.bind.Marshaller;
+import javax.xml.bind.Unmarshaller;
 import javax.xml.bind.annotation.XmlAccessType;
 import javax.xml.bind.annotation.XmlAccessorType;
 import javax.xml.bind.annotation.XmlAttribute;
@@ -87,9 +88,6 @@ public abstract class PPodEntity extends PersistentObject implements IAttachee,
 
 	@Transient
 	private Long pPodVersion;
-
-	@Transient
-	private boolean doNotPersist = false;
 
 	PPodEntity() {}
 
@@ -174,19 +172,6 @@ public abstract class PPodEntity extends PersistentObject implements IAttachee,
 		return pPodVersionInfo;
 	}
 
-	/**
-	 * If {@code true} then is pPOD entity should not be written to the
-	 * database. Also, calling {@code resetPPodVersionInfo(PPodVersionInfo)}
-	 * will have no effect.
-	 * <p>
-	 * See {@code setDoNotPersist()}
-	 * 
-	 * @return see description
-	 */
-	public boolean getDoNotPersist() {
-		return doNotPersist;
-	}
-
 	public boolean removeAttachment(final Attachment attachment) {
 		return attachments.remove(attachment);
 	}
@@ -204,9 +189,7 @@ public abstract class PPodEntity extends PersistentObject implements IAttachee,
 	 * @return this {@code PPodEntity}
 	 */
 	protected PPodEntity resetPPodVersionInfo() {
-		if (getDoNotPersist()) {
-
-		} else {
+		if (getAllowPersistAndResetPPodVersionInfo()) {
 			pPodVersionInfo = null;
 			pPodVersion = null;
 		}
@@ -215,31 +198,6 @@ public abstract class PPodEntity extends PersistentObject implements IAttachee,
 
 	PPodEntity setPPodVersionInfo(final PPodVersionInfo pPodVersionInfo) {
 		this.pPodVersionInfo = pPodVersionInfo;
-		return this;
-	}
-
-	/**
-	 * Indicate that this object should not be persisted and changes to the pPOD
-	 * version numbers should not be propagated.
-	 * <p>
-	 * {@link PPodVersionInfoInterceptor} checks this flag before it does any
-	 * write operations. Beyond that, this flag should not be taken as a
-	 * guarantee that an object will not be written. Note that if {@code
-	 * PPodVersionInterceptor} is not configured in a session, it will,
-	 * obviously, not check this flag.
-	 * <p>
-	 * This flag was invented so that we can remove matrices and tree sets from
-	 * an {@link OTUSet} in
-	 * {@link PPodEntitiesResourceHibernate#getEntitiesByHqlQuery(String)}
-	 * before we return the data to the client. It is a less than ideal
-	 * solution.
-	 * 
-	 * @see PPodVersionInfoInterceptor
-	 * 
-	 * @return this {@code pPodEntity}
-	 */
-	public PPodEntity setDoNotPersist() {
-		this.doNotPersist = true;
 		return this;
 	}
 
@@ -263,4 +221,56 @@ public abstract class PPodEntity extends PersistentObject implements IAttachee,
 
 		return retValue.toString();
 	}
+
+	@Transient
+	private boolean allowPersistAndResetPPodVersionInfo = true;
+
+	/**
+	 * If {@code true} then is pPOD entity should not be written to the
+	 * database. Also, calling {@code resetPPodVersionInfo(PPodVersionInfo)}
+	 * will have no effect.
+	 * <p>
+	 * See {@code setDoNotPersist()}
+	 * 
+	 * @return see description
+	 */
+	public boolean getAllowPersistAndResetPPodVersionInfo() {
+		return allowPersistAndResetPPodVersionInfo;
+	}
+
+	/**
+	 * Indicate that this object should not be persisted and changes to the pPOD
+	 * version numbers should not be propagated.
+	 * <p>
+	 * {@link PPodVersionInfoInterceptor} checks this flag before it does any
+	 * write operations. Beyond that, this flag should not be taken as a
+	 * guarantee that an object will not be written. Note that if {@code
+	 * PPodVersionInterceptor} is not configured in a session, it will,
+	 * obviously, not check this flag.
+	 * <p>
+	 * This flag was invented so that we can remove matrices and tree sets from
+	 * an {@link OTUSet} in
+	 * {@link PPodEntitiesResourceHibernate#getEntitiesByHqlQuery(String)}
+	 * before we return the data to the client. It is a less than ideal
+	 * solution.
+	 * 
+	 * @see PPodVersionInfoInterceptor
+	 * 
+	 * @return this {@code pPodEntity}
+	 */
+	public PersistentObject unsetAllowPersistAndResetPPodVersionInfo() {
+		this.allowPersistAndResetPPodVersionInfo = false;
+		return this;
+	}
+
+	/**
+	 * {@link Unmarshaller} callback.
+	 * 
+	 * @param u see {@code Unmarshaller}
+	 * @param parent see {@code Unmarshaller}
+	 */
+	public void afterUnmarshal(final Unmarshaller u, final Object parent) {
+		unsetAllowPersistAndResetPPodVersionInfo();
+	}
+
 }

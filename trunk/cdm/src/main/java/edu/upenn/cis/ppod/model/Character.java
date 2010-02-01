@@ -137,7 +137,9 @@ public class Character extends UUPPodEntity {
 	 * @param u see {@code Unmarshaller}
 	 * @param parent see {@code Unmarshaller}
 	 */
+	@Override
 	public void afterUnmarshal(final Unmarshaller u, final Object parent) {
+		super.afterUnmarshal(u, parent);
 		// This is not longer possible since chars are stored as xmlid's in the
 		// matrix
 		// if (parent instanceof CharacterStateMatrix) {

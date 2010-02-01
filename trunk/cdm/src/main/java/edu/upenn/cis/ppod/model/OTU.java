@@ -105,7 +105,9 @@ public final class OTU extends UUPPodEntityWXmlId {
 	 * @param u see {@code Unmarshaller}
 	 * @param parent see {@code Unmarshaller}
 	 */
+	@Override
 	public void afterUnmarshal(final Unmarshaller u, final Object parent) {
+		super.afterUnmarshal(u, parent);
 		if (parent instanceof OTUSet) {
 			addOTUSet((OTUSet) parent);
 		}

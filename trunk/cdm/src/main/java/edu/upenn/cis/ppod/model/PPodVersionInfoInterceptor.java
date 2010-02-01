@@ -147,7 +147,7 @@ public class PPodVersionInfoInterceptor extends EmptyInterceptor {
 			final String[] propertyNames, final Object[] currentState) {
 		boolean modified = false;
 		if (entity instanceof PPodEntity) {
-			if (((PPodEntity) entity).getDoNotPersist()) {
+			if (!((PPodEntity) entity).getAllowPersistAndResetPPodVersionInfo()) {
 				throw new IllegalArgumentException(
 						"entity is marked do not persist. Entity is "
 								+ entity.toString());

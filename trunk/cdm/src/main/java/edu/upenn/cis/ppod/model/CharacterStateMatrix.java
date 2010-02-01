@@ -66,13 +66,13 @@ public class CharacterStateMatrix extends UUPPodEntityWXmlId {
 	 */
 	@XmlType(name = "CharacterStateMatrixType")
 	public static enum Type {
-		/** A DNA matrix. */
+		/** A {@link DNAStateMatrix}. */
 		DNA,
 
-		/** An RNA matrix. */
+		/** An {@link RNAStateMatrix}. */
 		RNA,
 
-		/** A standard matrix. */
+		/** A standard {@link CharacterStateMatrix}. */
 		STANDARD;
 	}
 
@@ -272,7 +272,9 @@ public class CharacterStateMatrix extends UUPPodEntityWXmlId {
 	 * @param u see {@code Unmarshaller}
 	 * @param parent see {@code Unmarshaller}
 	 */
+	@Override
 	public void afterUnmarshal(final Unmarshaller u, final Object parent) {
+		super.afterUnmarshal(u, parent);
 		if (parent instanceof OTUSet) {
 			this.otuSet = (OTUSet) parent;
 		}
@@ -564,10 +566,10 @@ public class CharacterStateMatrix extends UUPPodEntityWXmlId {
 	 */
 	@Override
 	protected CharacterStateMatrix resetPPodVersionInfo() {
-		if (getPPodVersionInfo() == null || getDoNotPersist()) {
-			// nothing to do
-		} else {
-			if (otuSet != null) {
+		if (getAllowPersistAndResetPPodVersionInfo()) {
+			if (getPPodVersionInfo() == null) {
+				// nothing to do
+			} else if (otuSet != null) {
 				otuSet.resetPPodVersionInfo();
 			}
 			super.resetPPodVersionInfo();

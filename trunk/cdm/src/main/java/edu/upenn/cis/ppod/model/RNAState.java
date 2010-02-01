@@ -42,7 +42,7 @@ public class RNAState extends MolecularState {
 		 * 
 		 * @param nucleotide the nucleoAtide of the state we are creating
 		 * 
-		 * @return the new DNA state
+		 * @return the new DNA_STATE state
 		 */
 		RNAState create(Nucleotide nucleotide);
 	}
@@ -93,7 +93,7 @@ public class RNAState extends MolecularState {
 			default:
 				throw new AssertionError("unknown Nucleotide");
 		}
-		// State numbers are unique for DNA, so let's use since it's smaller
+		// State numbers are unique for DNA_STATE, so let's use since it's smaller
 		// and there will be lots of them in the xml
 		setDocId(getStateNumber().toString());
 	}
