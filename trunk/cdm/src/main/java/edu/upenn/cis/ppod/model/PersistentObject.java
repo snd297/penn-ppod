@@ -47,11 +47,6 @@ public abstract class PersistentObject implements IPersistentObject {
 	/** Default constructor. */
 	protected PersistentObject() {}
 
-	public PersistentObject accept(final IVisitor visitor) {
-		visitor.visit(this);
-		return this;
-	}
-
 	public Long getId() {
 		return id;
 	}

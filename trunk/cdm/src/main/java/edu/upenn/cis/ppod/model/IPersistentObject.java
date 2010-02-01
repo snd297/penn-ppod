@@ -25,14 +25,6 @@ import edu.upenn.cis.ppod.util.IVisitor;
 public interface IPersistentObject {
 
 	/**
-	 * Visitor pattern accept method.
-	 * 
-	 * @param visitor the visitor
-	 * @return this {@code IPersistentObject}
-	 */
-	IPersistentObject accept(IVisitor visitor);
-
-	/**
 	 * The surrogate key of the entity
 	 * 
 	 * @return the surrogate key of the entity

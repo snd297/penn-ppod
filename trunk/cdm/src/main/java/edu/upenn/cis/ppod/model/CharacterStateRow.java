@@ -249,7 +249,6 @@ public final class CharacterStateRow extends PPodEntity {
 		return retValue.toString();
 	}
 
-	@Override
 	public CharacterStateRow accept(final IVisitor visitor) {
 		visitor.visit(this);
 		for (final CharacterStateCell cell : getCells()) {

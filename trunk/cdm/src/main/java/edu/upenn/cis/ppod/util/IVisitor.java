@@ -35,8 +35,6 @@ import edu.upenn.cis.ppod.model.TreeSet;
  */
 public interface IVisitor {
 
-	IVisitor visit(IPersistentObject perisistentObject);
-
 	IVisitor visit(Attachment attachment);
 
 	IVisitor visit(Study study);

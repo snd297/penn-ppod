@@ -79,7 +79,6 @@ public final class TreeSet extends UUPPodEntityWXmlId {
 
 	TreeSet() {}
 
-	@Override
 	public TreeSet accept(final IVisitor visitor) {
 		visitor.visit(this);
 		return this;

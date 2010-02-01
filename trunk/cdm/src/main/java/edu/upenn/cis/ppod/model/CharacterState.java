@@ -24,7 +24,6 @@ import javax.persistence.FetchType;
 import javax.persistence.JoinColumn;
 import javax.persistence.ManyToOne;
 import javax.persistence.Table;
-import javax.persistence.Transient;
 import javax.xml.bind.annotation.XmlAccessType;
 import javax.xml.bind.annotation.XmlAccessorType;
 import javax.xml.bind.annotation.XmlAttribute;
@@ -232,8 +231,9 @@ public class CharacterState extends PPodEntityWXmlId {
 	public CharacterState setLabel(final String label) {
 		checkNotNull(label);
 		if (label.equals(getLabel())) {
-			this.label = label;
+
 		} else {
+			this.label = label;
 			resetPPodVersionInfo();
 		}
 		return this;
