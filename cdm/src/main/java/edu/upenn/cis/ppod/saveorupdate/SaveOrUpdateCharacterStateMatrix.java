@@ -55,7 +55,7 @@ import edu.upenn.cis.ppod.thirdparty.injectslf4j.InjectLogger;
 /**
  * @author Sam Donnelly
  */
-public class MergeCharacterStateMatrix implements IMergeCharacterStateMatrix {
+public class SaveOrUpdateCharacterStateMatrix implements IMergeCharacterStateMatrix {
 
 	private final Provider<Character> characterProvider;
 	private final Provider<CharacterStateRow> rowProvider;
@@ -69,7 +69,7 @@ public class MergeCharacterStateMatrix implements IMergeCharacterStateMatrix {
 	private Logger logger;
 
 	@Inject
-	MergeCharacterStateMatrix(final Provider<Character> characterProvider,
+	SaveOrUpdateCharacterStateMatrix(final Provider<Character> characterProvider,
 			final Provider<CharacterStateRow> rowProvider,
 			final Provider<CharacterStateCell> cellProvider,
 			final CharacterState.IFactory stateFactory,

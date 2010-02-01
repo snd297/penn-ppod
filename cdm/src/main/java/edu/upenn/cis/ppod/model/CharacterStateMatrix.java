@@ -198,7 +198,6 @@ public class CharacterStateMatrix extends UUPPodEntityWXmlId {
 	/** No-arg constructor for (at least) Hibernate. */
 	CharacterStateMatrix() {}
 
-	@Override
 	public CharacterStateMatrix accept(final IVisitor visitor) {
 		visitor.visit(this);
 		for (final CharacterStateRow row : getRows()) {

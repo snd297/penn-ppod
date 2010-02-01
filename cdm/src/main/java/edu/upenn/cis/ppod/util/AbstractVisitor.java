@@ -33,17 +33,6 @@ import edu.upenn.cis.ppod.model.TreeSet;
 public abstract class AbstractVisitor implements IVisitor {
 
 	/**
-	 * Does nothing
-	 * 
-	 * @param persistentObject ignored
-	 * 
-	 * @return this
-	 */
-	public IVisitor visit(final IPersistentObject persistentObject) {
-		return this;
-	}
-
-	/**
 	 * Does nothing.
 	 * 
 	 * @param matrix ignored

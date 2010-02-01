@@ -112,7 +112,6 @@ public final class OTUSet extends UUPPodEntityWXmlId {
 
 	OTUSet() {}
 
-	@Override
 	public OTUSet accept(final IVisitor visitor) {
 		visitor.visit(this);
 		for (final OTU otu : getOTUs()) {

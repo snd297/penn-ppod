@@ -80,7 +80,6 @@ public final class OTU extends UUPPodEntityWXmlId {
 
 	OTU() {}
 
-	@Override
 	public OTU accept(final IVisitor visitor) {
 		visitor.visit(this);
 		return this;

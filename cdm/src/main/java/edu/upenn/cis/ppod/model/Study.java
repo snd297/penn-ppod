@@ -88,7 +88,6 @@ public final class Study extends UUPPodEntity implements IOTUSetCentricEntities 
 
 	Study() {}
 
-	@Override
 	public Study accept(final IVisitor visitor) {
 		visitor.visit(this);
 		for (final OTUSet otuSet : getOTUSets()) {

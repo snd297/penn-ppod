@@ -290,6 +290,12 @@ public final class CharacterStateCell extends PPodEntity {
 	public Set<CharacterState> getStates() {
 		checkState(getType() != null,
 				"type has yet to be assigned for this cell");
+
+		// One may reasonably ask why we don't just do the visitor's work here.
+		// Answer: We don't want to encourage bad habits.
+		checkState(
+				!xmlStatesNeedsToBePutIntoStates,
+				"xmlStateNeedsToBePutIntoStates == true, has the afterUnmarshal visitor been dispatched?");
 		switch (getType()) {
 			// Don't hit states unless we have too
 			case INAPPLICABLE:
@@ -464,8 +470,8 @@ public final class CharacterStateCell extends PPodEntity {
 	CharacterStateCell setTypeAndXmlStates(final Type type,
 			final Set<CharacterState> xmlStates) {
 		checkNotNull(type);
-// checkTypeAndStates(type,
-// xmlStates == null ? new HashSet<CharacterState>() : xmlStates);
+		// checkTypeAndStates(type,
+		// xmlStates == null ? new HashSet<CharacterState>() : xmlStates);
 		setType(type);
 		this.xmlStates = xmlStates;
 		return this;
@@ -536,4 +542,5 @@ public final class CharacterStateCell extends PPodEntity {
 		visitor.visit(this);
 		return this;
 	}
+
 }

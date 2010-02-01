@@ -20,7 +20,7 @@ import com.google.inject.assistedinject.FactoryProvider;
 import com.google.inject.util.Modules;
 
 import edu.upenn.cis.ppod.saveorupdate.IMergeCharacterStateMatrix;
-import edu.upenn.cis.ppod.saveorupdate.MergeCharacterStateMatrix;
+import edu.upenn.cis.ppod.saveorupdate.SaveOrUpdateCharacterStateMatrix;
 import edu.upenn.cis.ppod.saveorupdate.TestMergeAttachment;
 import edu.upenn.cis.ppod.services.IPPodEntitiesResource;
 import edu.upenn.cis.ppod.services.hibernate.PPodEntitiesResourceHibernate;
@@ -42,7 +42,7 @@ public class PPodObjectFactory extends GuiceObjectFactory {
 		bind(IMergeCharacterStateMatrix.IFactory.class).toProvider(
 				FactoryProvider.newFactory(
 						IMergeCharacterStateMatrix.IFactory.class,
-						MergeCharacterStateMatrix.class));
+						SaveOrUpdateCharacterStateMatrix.class));
 		bind(TestMergeAttachment.class);
 
 		bind(IPPodEntitiesResource.class).to(
