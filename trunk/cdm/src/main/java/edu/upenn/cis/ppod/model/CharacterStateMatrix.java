@@ -437,7 +437,7 @@ public class CharacterStateMatrix extends UUPPodEntityWXmlId {
 	/**
 	 * Getter.
 	 * 
-	 * @return this maytrix's {@code OTUSet}
+	 * @return this matrix's {@code OTUSet}
 	 */
 	public OTUSet getOTUSet() {
 		return otuSet;
@@ -564,7 +564,7 @@ public class CharacterStateMatrix extends UUPPodEntityWXmlId {
 	 */
 	@Override
 	protected CharacterStateMatrix resetPPodVersionInfo() {
-		if (getPPodVersionInfo() == null || getDoNotPersist()) {
+		if (getPPodVersionInfo() == null || getSuppressResetPPodVersion()) {
 			// nothing to do
 		} else {
 			if (otuSet != null) {

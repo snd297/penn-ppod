@@ -62,6 +62,7 @@ import edu.upenn.cis.ppod.services.hibernate.PPodEntitiesResourceHibernate;
 @XmlAccessorType(XmlAccessType.NONE)
 @Entity
 @Table(name = PPodEntity.TABLE)
+@Inheritance(strategy = InheritanceType.JOINED)
 public abstract class PPodEntity extends PersistentObject implements IAttachee,
 		IPPodVersioned {
 
@@ -153,7 +154,7 @@ public abstract class PPodEntity extends PersistentObject implements IAttachee,
 	 * 
 	 * @return this
 	 */
-	PPodEntity setPPodVersion(final Long pPodVersion) {
+	private PPodEntity setPPodVersion(final Long pPodVersion) {
 		this.pPodVersion = pPodVersion;
 		return this;
 	}
@@ -173,10 +174,23 @@ public abstract class PPodEntity extends PersistentObject implements IAttachee,
 		return pPodVersionInfo;
 	}
 
+	@Transient
+	private boolean suppressResetPPodVersion = false;
+
+	protected PPodEntity setSuppressResetPPodVersion(
+			final boolean suppresssResetPPodVersion) {
+		this.suppressResetPPodVersion = suppresssResetPPodVersion;
+		return this;
+	}
+
+	protected boolean getSuppressResetPPodVersion() {
+		return suppressResetPPodVersion;
+	}
+
 	/**
 	 * If {@code true} then is pPOD entity should not be written to the
-	 * database. Also, calling {@code setPPodVersionInfo(PPodVersionInfo)} will
-	 * have no effect.
+	 * database. Also, calling {@code resetPPodVersionInfo(PPodVersionInfo)}
+	 * will have no effect.
 	 * <p>
 	 * See {@code setDoNotPersist()}
 	 * 
@@ -197,13 +211,13 @@ public abstract class PPodEntity extends PersistentObject implements IAttachee,
 	 * Implementors should also, if desired, call {@code resetPPodVersionInfo()}
 	 * on any owning objects.
 	 * <p>
-	 * If {@code getDoNotPersist()} {@code == true} this method returns without
-	 * doing anything.
+	 * If {@code setSuppressResetPPodVersion(true)} has been called, and not
+	 * undone, this method returns without doing anything.
 	 * 
 	 * @return this {@code PPodEntity}
 	 */
 	protected PPodEntity resetPPodVersionInfo() {
-		if (getDoNotPersist()) {
+		if (getSuppressResetPPodVersion()) {
 
 		} else {
 			pPodVersionInfo = null;
@@ -239,6 +253,7 @@ public abstract class PPodEntity extends PersistentObject implements IAttachee,
 	 */
 	public PPodEntity setDoNotPersist() {
 		this.doNotPersist = true;
+		setSuppressResetPPodVersion(true);
 		return this;
 	}
 
