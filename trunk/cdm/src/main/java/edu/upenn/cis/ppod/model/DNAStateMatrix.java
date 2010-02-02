@@ -38,6 +38,7 @@ public final class DNAStateMatrix extends MolecularStateMatrix {
 		setType(Type.DNA);
 	}
 
+	@Override
 	public DNACharacter setCharacter(final int characterIdx,
 			final Character character) {
 		checkNotNull(character);

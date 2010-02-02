@@ -86,15 +86,6 @@ public final class CharacterStateRow extends PPodEntity {
 	private final Map<CharacterStateCell, Integer> cellIdx = newHashMap();
 
 	/**
-	 * Get an unmodifiable view of the cell to row position lookup map.
-	 * 
-	 * @return get an unmodifiable view of the cell to row position lookup map
-	 */
-	public Map<CharacterStateCell, Integer> getCellIdx() {
-		return Collections.unmodifiableMap(cellIdx);
-	}
-
-	/**
 	 * The {@code CharacterStateMatrix} to which this {@code CharacterStateRow}
 	 * belongs.
 	 */
@@ -102,6 +93,15 @@ public final class CharacterStateRow extends PPodEntity {
 	private CharacterStateMatrix matrix;
 
 	CharacterStateRow() {}
+
+	@Override
+	public CharacterStateRow accept(final IVisitor visitor) {
+		visitor.visit(this);
+		for (final CharacterStateCell cell : getCells()) {
+			cell.accept(visitor);
+		}
+		return this;
+	}
 
 	/**
 	 * Add {@code cell} to the end of this row.
@@ -165,6 +165,15 @@ public final class CharacterStateRow extends PPodEntity {
 		final List<CharacterStateCell> clearedCells = newArrayList(cells);
 		cells.clear();
 		return clearedCells;
+	}
+
+	/**
+	 * Get an unmodifiable view of the cell to row position lookup map.
+	 * 
+	 * @return get an unmodifiable view of the cell to row position lookup map
+	 */
+	public Map<CharacterStateCell, Integer> getCellIdx() {
+		return Collections.unmodifiableMap(cellIdx);
 	}
 
 	/**
@@ -249,14 +258,5 @@ public final class CharacterStateRow extends PPodEntity {
 				"cells=").append(this.cells).append(")\n");
 
 		return retValue.toString();
-	}
-
-	@Override
-	public CharacterStateRow accept(final IVisitor visitor) {
-		visitor.visit(this);
-		for (final CharacterStateCell cell : getCells()) {
-			cell.accept(visitor);
-		}
-		return this;
 	}
 }

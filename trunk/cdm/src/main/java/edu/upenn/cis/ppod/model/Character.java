@@ -31,6 +31,7 @@ import javax.persistence.MapKey;
 import javax.persistence.OneToMany;
 import javax.persistence.Table;
 import javax.persistence.Transient;
+import javax.xml.bind.Marshaller;
 import javax.xml.bind.Unmarshaller;
 import javax.xml.bind.annotation.XmlAccessType;
 import javax.xml.bind.annotation.XmlAccessorType;
@@ -77,7 +78,6 @@ public class Character extends UUPPodEntity {
 	 * non-contiguous integers in the keys - so, for example, you might have 0,
 	 * 2, and 3.
 	 */
-	@XmlElementWrapper
 	@OneToMany(mappedBy = "character")
 	@Cascade( { org.hibernate.annotations.CascadeType.SAVE_UPDATE,
 			org.hibernate.annotations.CascadeType.DELETE_ORPHAN })
@@ -153,6 +153,13 @@ public class Character extends UUPPodEntity {
 		}
 	}
 
+	@Override
+	public boolean beforeMarshal(final Marshaller marshaller) {
+		super.beforeMarshal(marshaller);
+		System.out.println("getStatesForJaxb: " + getStatesForJaxb());
+		return true;
+	}
+
 	/**
 	 * Get the label of this {@code Character}.
 	 * 
@@ -179,6 +186,11 @@ public class Character extends UUPPodEntity {
 	 */
 	public Map<Integer, CharacterState> getStates() {
 		return Collections.unmodifiableMap(states);
+	}
+
+	@XmlElementWrapper(name = "states")
+	protected Map<Integer, CharacterState> getStatesForJaxb() {
+		return states;
 	}
 
 	/**

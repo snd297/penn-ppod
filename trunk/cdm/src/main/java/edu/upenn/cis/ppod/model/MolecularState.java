@@ -44,6 +44,20 @@ public abstract class MolecularState extends CharacterState {
 	private String molecularStateLabel;
 
 	/**
+	 * This method is not supported for {@code DNAState} since all instances are
+	 * immutable.
+	 * 
+	 * @param label ignored
+	 * 
+	 * @throws UnsupportedOperationException always
+	 */
+	@Override
+	public MolecularState setLabel(final String label) {
+		throw new UnsupportedOperationException(
+				"the label of a MolecularState is fixed");
+	}
+
+	/**
 	 * Set the molecular state label and {@code CharacterState.getLabel()}. This
 	 * value is only used to prevent multiple rows of a particular molecular
 	 * state from being created. For example, we don't want more than one
@@ -58,19 +72,5 @@ public abstract class MolecularState extends CharacterState {
 		super.setLabel(molecularStateLabel);
 		this.molecularStateLabel = molecularStateLabel;
 		return this;
-	}
-
-	/**
-	 * This method is not supported for {@code DNAState} since all instances are
-	 * immutable.
-	 * 
-	 * @param label ignored
-	 * 
-	 * @throws UnsupportedOperationException always
-	 */
-	@Override
-	public MolecularState setLabel(final String label) {
-		throw new UnsupportedOperationException(
-				"the label of a MolecularState is fixed");
 	}
 }

@@ -47,8 +47,6 @@ import edu.upenn.cis.ppod.services.hibernate.PPodEntitiesResourceHibernate;
 /**
  * A {@code PersistentObject} with pPOD version information and to which we can
  * add/remove attachments.
- * <p>
- * Made public for Hibernate. Otherwise we get:
  * 
  * <pre>
  * Caused by: java.lang.IllegalAccessException: Class org.hibernate.proxy.pojo.javassist.JavassistLazyInitializer can not access a member of class edu.upenn.cis.ppod.model.PPodEntity with modifiers "public"
@@ -69,10 +67,8 @@ public abstract class PPodEntity extends PersistentObject implements IAttachee,
 
 	static final String TABLE = "PPOD_ENTITY";
 
-	@XmlElement(name = "attachmentDocId")
-	@XmlIDREF
 	@ManyToMany
-	@JoinTable(name = TABLE + "_" + Attachment.TABLE, joinColumns = { @JoinColumn(name = ID_COLUMN) }, inverseJoinColumns = { @JoinColumn(name = Attachment.ID_COLUMN) })
+	@JoinTable(inverseJoinColumns = { @JoinColumn(name = Attachment.ID_COLUMN) })
 	private Set<Attachment> attachments;
 
 	/**
@@ -89,6 +85,9 @@ public abstract class PPodEntity extends PersistentObject implements IAttachee,
 	@Transient
 	private Long pPodVersion;
 
+	@Transient
+	private boolean allowPersistAndResetPPodVersionInfo = true;
+
 	PPodEntity() {}
 
 	public PPodEntity addAttachment(final Attachment attachment) {
@@ -98,6 +97,16 @@ public abstract class PPodEntity extends PersistentObject implements IAttachee,
 		attachments.add(attachment);
 		attachment.addAttachee(this);
 		return this;
+	}
+
+	/**
+	 * {@link Unmarshaller} callback.
+	 * 
+	 * @param u see {@code Unmarshaller}
+	 * @param parent see {@code Unmarshaller}
+	 */
+	public void afterUnmarshal(final Unmarshaller u, final Object parent) {
+		unsetAllowPersistAndResetPPodVersionInfo();
 	}
 
 	/**
@@ -112,6 +121,19 @@ public abstract class PPodEntity extends PersistentObject implements IAttachee,
 			pPodVersion = pPodVersionInfo.getPPodVersion();
 		}
 		return true;
+	}
+
+	/**
+	 * If {@code true} then is pPOD entity should not be written to the
+	 * database. Also, calling {@code resetPPodVersionInfo(PPodVersionInfo)}
+	 * will have no effect.
+	 * <p>
+	 * See {@code setDoNotPersist()}
+	 * 
+	 * @return see description
+	 */
+	public boolean getAllowPersistAndResetPPodVersionInfo() {
+		return allowPersistAndResetPPodVersionInfo;
 	}
 
 	public Set<Attachment> getAttachments() {
@@ -145,16 +167,13 @@ public abstract class PPodEntity extends PersistentObject implements IAttachee,
 				}));
 	}
 
-	/**
-	 * Created for JAXB.
-	 * 
-	 * @param pPodVersion the pPOD version number
-	 * 
-	 * @return this
-	 */
-	private PPodEntity setPPodVersion(final Long pPodVersion) {
-		this.pPodVersion = pPodVersion;
-		return this;
+	@XmlElement(name = "attachmentDocId")
+	@XmlIDREF
+	protected Set<Attachment> getAttachmentsForJaxb() {
+		if (attachments == null) {
+			attachments = newHashSet();
+		}
+		return attachments;
 	}
 
 	@XmlAttribute
@@ -196,6 +215,18 @@ public abstract class PPodEntity extends PersistentObject implements IAttachee,
 		return this;
 	}
 
+	/**
+	 * Created for JAXB.
+	 * 
+	 * @param pPodVersion the pPOD version number
+	 * 
+	 * @return this
+	 */
+	private PPodEntity setPPodVersion(final Long pPodVersion) {
+		this.pPodVersion = pPodVersion;
+		return this;
+	}
+
 	PPodEntity setPPodVersionInfo(final PPodVersionInfo pPodVersionInfo) {
 		this.pPodVersionInfo = pPodVersionInfo;
 		return this;
@@ -222,22 +253,6 @@ public abstract class PPodEntity extends PersistentObject implements IAttachee,
 		return retValue.toString();
 	}
 
-	@Transient
-	private boolean allowPersistAndResetPPodVersionInfo = true;
-
-	/**
-	 * If {@code true} then is pPOD entity should not be written to the
-	 * database. Also, calling {@code resetPPodVersionInfo(PPodVersionInfo)}
-	 * will have no effect.
-	 * <p>
-	 * See {@code setDoNotPersist()}
-	 * 
-	 * @return see description
-	 */
-	public boolean getAllowPersistAndResetPPodVersionInfo() {
-		return allowPersistAndResetPPodVersionInfo;
-	}
-
 	/**
 	 * Indicate that this object should not be persisted and changes to the pPOD
 	 * version numbers should not be propagated.
@@ -261,16 +276,6 @@ public abstract class PPodEntity extends PersistentObject implements IAttachee,
 	public PersistentObject unsetAllowPersistAndResetPPodVersionInfo() {
 		this.allowPersistAndResetPPodVersionInfo = false;
 		return this;
-	}
-
-	/**
-	 * {@link Unmarshaller} callback.
-	 * 
-	 * @param u see {@code Unmarshaller}
-	 * @param parent see {@code Unmarshaller}
-	 */
-	public void afterUnmarshal(final Unmarshaller u, final Object parent) {
-		unsetAllowPersistAndResetPPodVersionInfo();
 	}
 
 }

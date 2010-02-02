@@ -25,12 +25,22 @@ import javax.xml.bind.annotation.XmlAttribute;
 
 /**
  * A universally unique pPOD entity.
+ * <p>
+ * Made public for Hibernate. Otherwise we get:
+ * 
+ * <pre>
+ * Caused by: java.lang.IllegalAccessException: Class org.hibernate.proxy.pojo.javassist.JavassistLazyInitializer can not access a member of class edu.upenn.cis.ppod.model.PPodEntity with modifiers "public"
+ *  	at sun.reflect.Reflection.ensureMemberAccess(Reflection.java:65)
+ *  	at java.lang.reflect.Method.invoke(Method.java:588)
+ *  	at org.hibernate.proxy.pojo.javassist.JavassistLazyInitializer.invoke(JavassistLazyInitializer.java:197)
+ *  	at edu.upenn.cis.ppod.model.CharacterState_$$_javassist_0.beforeMarshal(CharacterState_$$_javassist_0.java)
+ * </pre>
  * 
  * @author Sam Donnelly
  */
 @XmlAccessorType(XmlAccessType.NONE)
 @MappedSuperclass
-abstract class UUPPodEntity extends PPodEntity implements IUUPPodEntity {
+public abstract class UUPPodEntity extends PPodEntity implements IUUPPodEntity {
 
 	final static String PPOD_ID_COLUMN = "PPOD_ID";
 	final static int PPOD_ID_COLUMN_LENGTH = 36;

@@ -28,10 +28,6 @@ import com.google.inject.assistedinject.Assisted;
 @Table(name = RNAState.TABLE)
 public class RNAState extends MolecularState {
 
-	RNAState() {}
-
-	public static final String TABLE = "RNA_STATE";
-
 	/**
 	 * For assisted injections.
 	 */
@@ -70,6 +66,10 @@ public class RNAState extends MolecularState {
 		}
 	}
 
+	public static final String TABLE = "RNA_STATE";
+
+	RNAState() {}
+
 	@Inject
 	RNAState(@Assisted final Nucleotide nucleotide) {
 		super.setLabel(nucleotide.toString());
@@ -93,7 +93,8 @@ public class RNAState extends MolecularState {
 			default:
 				throw new AssertionError("unknown Nucleotide");
 		}
-		// State numbers are unique for DNA_STATE, so let's use since it's smaller
+		// State numbers are unique for DNA_STATE, so let's use since it's
+		// smaller
 		// and there will be lots of them in the xml
 		setDocId(getStateNumber().toString());
 	}

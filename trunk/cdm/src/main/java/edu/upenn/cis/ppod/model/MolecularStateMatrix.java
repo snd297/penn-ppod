@@ -43,6 +43,7 @@ public abstract class MolecularStateMatrix extends CharacterStateMatrix {
 	 * @return the {@code Character} previously at that position or {@code null}
 	 *         if there was no such {@code Character}
 	 */
+	@Override
 	public MolecularCharacter setCharacter(final int characterIdx,
 			final Character character) {
 		checkNotNull(character);

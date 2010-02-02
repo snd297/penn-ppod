@@ -34,7 +34,7 @@ public final class DNACharacter extends MolecularCharacter {
 	 */
 	public static final String TABLE = "DNA_CHARACTER";
 
-	private final static String LABEL = "DNA_STATE Character";
+	private final static String LABEL = "DNA Character";
 
 	DNACharacter() {}
 
