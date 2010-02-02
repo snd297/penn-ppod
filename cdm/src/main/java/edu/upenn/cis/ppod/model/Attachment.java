@@ -105,17 +105,14 @@ public final class Attachment extends UUPPodEntity {
 	private AttachmentType type;
 
 	/** Like a variable name. */
-	@XmlAttribute
 	@Column(name = "LABEL", nullable = true)
 	private String label;
 
 	// TODO: this is set to unique only to allow lookups of Character's mesquite
 	// id's. See bug Bugzilla 128
-	@XmlAttribute
 	@Column(name = STRING_VALUE_COLUMN, nullable = true, unique = true)
 	private String stringValue;
 
-	@XmlElement
 	@Lob
 	@Column(name = BYTES_VALUE_COLUMN, nullable = true)
 	private byte[] bytesValue;
@@ -127,7 +124,6 @@ public final class Attachment extends UUPPodEntity {
 	@XmlAttribute
 	@XmlID
 	@Transient
-	@SuppressWarnings("unused")
 	private final String docId = UUID.randomUUID().toString();
 
 	/** Default constructor for (at least) Hibernate. */
@@ -152,6 +148,7 @@ public final class Attachment extends UUPPodEntity {
 	 * 
 	 * @return the byteArrayValue
 	 */
+	@XmlElement
 	public byte[] getBytesValue() {
 		return bytesValue;
 	}
@@ -161,6 +158,7 @@ public final class Attachment extends UUPPodEntity {
 	 * 
 	 * @return the label
 	 */
+	@XmlAttribute
 	public String getLabel() {
 		return label;
 	}
@@ -170,6 +168,7 @@ public final class Attachment extends UUPPodEntity {
 	 * 
 	 * @return the value.
 	 */
+	@XmlAttribute
 	public String getStringValue() {
 		return stringValue;
 	}
@@ -268,6 +267,28 @@ public final class Attachment extends UUPPodEntity {
 			resetPPodVersionInfo();
 		}
 		return this;
+	}
+
+	/**
+	 * Constructs a <code>String</code> with all attributes in name = value
+	 * format.
+	 * 
+	 * @return a <code>String</code> representation of this object.
+	 */
+	@Override
+	public String toString() {
+		final String TAB = "";
+
+		final StringBuilder retValue = new StringBuilder();
+
+		retValue.append("Attachment(").append(super.toString()).append(TAB)
+				.append("type=").append(this.type).append(TAB).append("label=")
+				.append(this.label).append(TAB).append("stringValue=").append(
+						this.stringValue).append(TAB).append("bytesValue=")
+				.append(this.bytesValue).append(TAB).append("docId=").append(
+						this.docId).append(TAB).append(")");
+
+		return retValue.toString();
 	}
 
 }

@@ -42,7 +42,6 @@ public final class AttachmentNamespace extends PersistentObjectWXmlId {
 
 	static final int LABEL_COLUMN_LENGTH = 64;
 
-	@XmlAttribute
 	@Column(name = LABEL_COLUMN, unique = true, nullable = false, length = LABEL_COLUMN_LENGTH)
 	private String label;
 
@@ -53,6 +52,7 @@ public final class AttachmentNamespace extends PersistentObjectWXmlId {
 	 * 
 	 * @return the label
 	 */
+	@XmlAttribute
 	public String getLabel() {
 		return label;
 	}

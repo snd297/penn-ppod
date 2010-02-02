@@ -159,7 +159,6 @@ public class SaveOrUpdateCharacterStateMatrix implements
 				if (!(targetState instanceof DNAState)) {
 					targetState.setLabel(sourceState.getLabel());
 				}
-				// session.save(targetState);
 			}
 
 			originalCharIdxsByNewCharIdx.put(targetMatrix.getCharacterIdx()
@@ -194,7 +193,11 @@ public class SaveOrUpdateCharacterStateMatrix implements
 			if (targetRow == null) {
 				targetRow = rowProvider.get();
 				targetMatrix.setRow(targetOTU, targetRow);
+			} else {
+				// Since we don't store the row->matrix reference
+				targetRow.setMatrix(targetMatrix);
 			}
+
 			while (targetRow.getCells().size() > targetMatrix.getCharacters()
 					.size()) {
 				targetRow.removeLastCell();
@@ -211,6 +214,8 @@ public class SaveOrUpdateCharacterStateMatrix implements
 				} else {
 					targetCell = targetRow.addCell(clearedTargetCells
 							.get(originalCharIdxsByNewCharIdx.get(newCellIdx)));
+					// Because we don't store the cell->row reference.
+					targetCell.setRow(targetRow);
 				}
 
 				final CharacterStateCell sourceCell = sourceMatrix.getRows()

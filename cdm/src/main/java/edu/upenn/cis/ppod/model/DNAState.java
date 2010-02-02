@@ -78,17 +78,6 @@ public final class DNAState extends MolecularState {
 	}
 
 	@Override
-	DNAState setCharacter(final Character character) {
-		if (character instanceof DNACharacter) {
-			super.setCharacter(character);
-		} else {
-			throw new IllegalArgumentException(
-					"a DNAState's character must be a DNACharacter");
-		}
-		return this;
-	}
-
-	@Override
 	protected String getDocId() {
 		// "D" + nucleotide are unique for DNA_STATE (as long as we keep them
 		// so),
@@ -97,6 +86,17 @@ public final class DNAState extends MolecularState {
 		// hundreds of thousands.
 
 		return "D" + getLabel();
+	}
+
+	@Override
+	DNAState setCharacter(final Character character) {
+		if (character instanceof DNACharacter) {
+			super.setCharacter(character);
+		} else {
+			throw new IllegalArgumentException(
+					"a DNAState's character must be a DNACharacter");
+		}
+		return this;
 	}
 
 }

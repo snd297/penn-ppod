@@ -120,14 +120,14 @@ public final class CharacterStateCell extends PPodEntity {
 	 * To handle the most-common case of a single {@code CharacterState}, we
 	 * cache {@code states.get(0)}.
 	 */
-	@ManyToOne(fetch = FetchType.LAZY)
+	@ManyToOne(fetch = FetchType.EAGER)
 	@JoinColumn(name = "FIRST_" + CharacterState.ID_COLUMN)
 	private CharacterState firstState = null;
 
 	/**
 	 * The heart of the cell: the states.
 	 */
-	@ManyToMany
+	@ManyToMany(fetch = FetchType.EAGER)
 	@Sort(type = SortType.COMPARATOR, comparator = CharacterState.CharacterStateComparator.class)
 	@JoinTable(inverseJoinColumns = @JoinColumn(name = CharacterState.ID_COLUMN))
 	private SortedSet<CharacterState> states = null;
@@ -169,18 +169,10 @@ public final class CharacterStateCell extends PPodEntity {
 	/** No-arg constructor for (at least) Hibernate. */
 	CharacterStateCell() {}
 
-	/**
-	 * {@link Unmarshaller} callback.
-	 * 
-	 * @param u see {@code Unmarshaller}
-	 * @param parent see {@code Unmarshaller}
-	 */
 	@Override
-	public void afterUnmarshal(final Unmarshaller u, final Object parent) {
-		super.afterUnmarshal(u, parent);
-		row = (CharacterStateRow) parent; // don't setRow call because it'll
-		// reset the ppod version info
-		xmlStatesNeedsToBePutIntoStates = true;
+	public CharacterStateCell accept(final IVisitor visitor) {
+		visitor.visit(this);
+		return this;
 	}
 
 	/**
@@ -190,10 +182,24 @@ public final class CharacterStateCell extends PPodEntity {
 	 */
 	public void afterUnmarshal() {
 		if (xmlStatesNeedsToBePutIntoStates) {
+			xmlStatesNeedsToBePutIntoStates = false;
 			setStates(getXmlStates());
 			xmlStates = null;
-			xmlStatesNeedsToBePutIntoStates = false;
 		}
+	}
+
+	/**
+	 * {@link Unmarshaller} callback.
+	 * 
+	 * @param u see {@code Unmarshaller}
+	 * @param parent see {@code Unmarshaller}
+	 */
+	@Override
+	public void afterUnmarshal(final Unmarshaller u, final Object parent) {
+		row = (CharacterStateRow) parent; // don't setRow call because it'll
+		// reset the ppod version info
+		xmlStatesNeedsToBePutIntoStates = true;
+		super.afterUnmarshal(u, parent);
 	}
 
 	/**
@@ -201,14 +207,15 @@ public final class CharacterStateCell extends PPodEntity {
 	 */
 	@Override
 	public boolean beforeMarshal(final Marshaller marshaller) {
-		super.beforeMarshal(marshaller);
+
 		if (type == null) {
 			// Let's not marshal it if it's in a bad state
 			throw new IllegalStateException(
 					"can't marshal a cell without a type");
 		}
 		getXmlStates().addAll(getStates());
-		return true;
+		return super.beforeMarshal(marshaller);
+
 	}
 
 	private void checkIncomingState(final CharacterState state) {
@@ -360,7 +367,7 @@ public final class CharacterStateCell extends PPodEntity {
 		setType(Type.INAPPLICABLE);
 
 		@SuppressWarnings("unchecked")
-		final Set<CharacterState> emptyStates = (Set<CharacterState>) Collections.EMPTY_SET;
+		final Set<CharacterState> emptyStates = Collections.EMPTY_SET;
 		setStates(emptyStates);
 
 		return this;
@@ -504,7 +511,7 @@ public final class CharacterStateCell extends PPodEntity {
 		setType(Type.UNASSIGNED);
 
 		@SuppressWarnings("unchecked")
-		final Set<CharacterState> emptyStates = (Set<CharacterState>) Collections.EMPTY_SET;
+		final Set<CharacterState> emptyStates = Collections.EMPTY_SET;
 		setStates(emptyStates);
 		return this;
 	}
@@ -553,12 +560,6 @@ public final class CharacterStateCell extends PPodEntity {
 				this.states).append(TAB).append(")");
 
 		return retValue.toString();
-	}
-
-	@Override
-	public CharacterStateCell accept(final IVisitor visitor) {
-		visitor.visit(this);
-		return this;
 	}
 
 }

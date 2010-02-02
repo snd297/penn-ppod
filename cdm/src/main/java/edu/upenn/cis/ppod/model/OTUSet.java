@@ -112,6 +112,7 @@ public final class OTUSet extends UUPPodEntityWXmlId {
 
 	OTUSet() {}
 
+	@Override
 	public OTUSet accept(final IVisitor visitor) {
 		visitor.visit(this);
 		for (final OTU otu : getOTUs()) {
@@ -283,6 +284,10 @@ public final class OTUSet extends UUPPodEntityWXmlId {
 		return Collections.unmodifiableSet(otus);
 	}
 
+	public Study getStudy() {
+		return study;
+	}
+
 	/**
 	 * Get the tree sets that are composed of this OTU set.
 	 * 
@@ -450,9 +455,5 @@ public final class OTUSet extends UUPPodEntityWXmlId {
 				.append(this.otus).append(TAB).append(")");
 
 		return retValue.toString();
-	}
-
-	public Study getStudy() {
-		return study;
 	}
 }

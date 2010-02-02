@@ -73,12 +73,13 @@ public final class TreeSet extends UUPPodEntityWXmlId {
 	@XmlElement(name = "tree")
 	@ManyToMany
 	@Cascade(org.hibernate.annotations.CascadeType.SAVE_UPDATE)
-	@JoinTable(name = TABLE + "_" + Tree.TABLE, joinColumns = { @JoinColumn(name = TreeSet.ID_COLUMN) }, inverseJoinColumns = { @JoinColumn(name = Tree.ID_COLUMN) })
+	@JoinTable(name = TABLE + "_" + Tree.TABLE, joinColumns = { @JoinColumn(name = TreeSet.ID_COLUMN) }, inverseJoinColumns = { @JoinColumn(name = PersistentObject.ID_COLUMN) })
 	@org.hibernate.annotations.IndexColumn(name = "TREE_POSITION")
 	private final List<Tree> trees = newArrayList();
 
 	TreeSet() {}
 
+	@Override
 	public TreeSet accept(final IVisitor visitor) {
 		visitor.visit(this);
 		return this;

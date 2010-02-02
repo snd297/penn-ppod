@@ -49,14 +49,11 @@ public final class AttachmentType extends PersistentObjectWXmlId {
 
 	static final int LABEL_COLUMN_LENGTH = 64;
 
-	@XmlAttribute(name = "attachmentNamespaceDocId")
-	@XmlIDREF
 	@ManyToOne(fetch = FetchType.LAZY)
 	@Cascade(org.hibernate.annotations.CascadeType.SAVE_UPDATE)
 	@JoinColumn(name = AttachmentNamespace.ID_COLUMN, nullable = false)
 	private AttachmentNamespace namespace;
 
-	@XmlAttribute
 	@Column(name = LABEL_COLUMN, unique = true, nullable = false, length = LABEL_COLUMN_LENGTH)
 	private String label;
 
@@ -67,6 +64,7 @@ public final class AttachmentType extends PersistentObjectWXmlId {
 	 * 
 	 * @return the label
 	 */
+	@XmlAttribute
 	public String getLabel() {
 		return label;
 	}
@@ -76,6 +74,8 @@ public final class AttachmentType extends PersistentObjectWXmlId {
 	 * 
 	 * @return the namespace
 	 */
+	@XmlAttribute(name = "attachmentNamespaceDocId")
+	@XmlIDREF
 	public AttachmentNamespace getNamespace() {
 		return namespace;
 	}

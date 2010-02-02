@@ -37,11 +37,6 @@ abstract class PPodEntityWXmlId extends PPodEntity {
 	 */
 	private String docId;
 
-	protected PPodEntityWXmlId setDocId(final String docId) {
-		this.docId = docId;
-		return this;
-	}
-
 	@XmlAttribute
 	@XmlID
 	protected String getDocId() {
@@ -49,5 +44,10 @@ abstract class PPodEntityWXmlId extends PPodEntity {
 			docId = UUID.randomUUID().toString();
 		}
 		return docId;
+	}
+
+	protected PPodEntityWXmlId setDocId(final String docId) {
+		this.docId = docId;
+		return this;
 	}
 }
