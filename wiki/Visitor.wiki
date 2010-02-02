@@ -4,11 +4,11 @@
 
 Some information is propagated through the pPOD object tree. The hierarchy is as follows:
 
-  *`Study` -> `OTUSet`
-  *`OTUSet`-> `OTU`,`CharacterStateMatrix`,`TreeSet`
-  *`CharacterStateMatrix`->`Character`,`CharacterStateRow`
-  *`CharacterStateRow`->`CharacterStateCell`
-  *`TreeSet`->`Tree`
+  * `Study` -> `OTUSet`
+  * `OTUSet`-> `OTU`, `CharacterStateMatrix`, `TreeSet`
+  * `CharacterStateMatrix`->`Character`, `CharacterStateRow`
+  * `CharacterStateRow`->`CharacterStateCell`
+  * `TreeSet`->`Tree`
 
 = pPOD Version Number =
 
