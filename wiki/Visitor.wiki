@@ -4,9 +4,9 @@
 
 Some information is propagated through the pPOD object tree. The hierarchy is as follows:
 
-`Study`
-`OTUSet`
-`CharacterStateMatrix`
+||`Study`
+||`OTUSet`
+||`OTU`||`CharacterStateMatrix`||`TreeSet`||
 
 
 = pPOD Version Number =
