@@ -75,7 +75,8 @@ public final class CharacterStateRow extends PPodEntity {
 	@OneToMany
 	@JoinTable(inverseJoinColumns = { @JoinColumn(name = CharacterStateCell.ID_COLUMN) })
 	@IndexColumn(name = CELLS_INDEX_COLUMN)
-	@Cascade(org.hibernate.annotations.CascadeType.DELETE_ORPHAN)
+	@Cascade( { org.hibernate.annotations.CascadeType.DELETE_ORPHAN,
+			org.hibernate.annotations.CascadeType.EVICT })
 	private final List<CharacterStateCell> cells = newArrayList();
 
 	/** {@code CharacterStateCell}-><code>cells</code>Index lookup. */

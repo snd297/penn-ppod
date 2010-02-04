@@ -66,9 +66,9 @@ public class SaveOrUpdateStudyHibernate implements ISaveOrUpdateStudy {
 	private final Provider<TreeSet> treeSetProvider;
 
 	private final IMergeOTUSet mergeOTUSet;
-	private final IMergeCharacterStateMatrix mergeMatrix;
+	private final IMergeCharacterStateMatrix saveOrUpdateMatrix;
 	private final IMergeTreeSet mergeTreeSet;
-	private boolean save;
+	private Session session;
 
 	@Inject
 	SaveOrUpdateStudyHibernate(
@@ -96,14 +96,15 @@ public class SaveOrUpdateStudyHibernate implements ISaveOrUpdateStudy {
 		this.dnaMatrixProvider = dnaMatrixProvider;
 		this.treeSetProvider = treeSetProvider;
 		this.mergeOTUSet = saveOrUpdateOTUSetFactory.create(session);
-		this.mergeMatrix = mergeMatrixFactory.create(mergeAttachmentFactory
-				.create(attachmentNamespaceDAOFactory.create(session),
-						attachmentTypeDAOFactory.create(session)), session);
+		this.saveOrUpdateMatrix = mergeMatrixFactory.create(
+				mergeAttachmentFactory.create(attachmentNamespaceDAOFactory
+						.create(session), attachmentTypeDAOFactory
+						.create(session)), session);
 		this.mergeTreeSet = mergeTreeSet;
+		this.session = session;
 	}
 
 	public Study save(final Study incomingStudy) {
-		this.save = true;
 		return saveOrUpdate((Study) studyProvider.get().setPPodId(),
 				incomingStudy);
 	}
@@ -164,8 +165,9 @@ public class SaveOrUpdateStudyHibernate implements ISaveOrUpdateStudy {
 					dbMatrix.setPPodId();
 				}
 
-				mergeMatrix.saveOrUpdate(dbMatrix, incomingMatrix, dbOTUSet,
-						dbOTUsByIncomingOTU, dbDNACharacter);
+				saveOrUpdateMatrix.saveOrUpdate(dbMatrix, incomingMatrix,
+						dbOTUSet, dbOTUsByIncomingOTU, dbDNACharacter);
+
 			}
 			for (final TreeSet incomingTreeSet : incomingOTUSet.getTreeSets()) {
 				TreeSet dbTreeSet;
@@ -179,9 +181,7 @@ public class SaveOrUpdateStudyHibernate implements ISaveOrUpdateStudy {
 						dbOTUsByIncomingOTU);
 			}
 		}
-
-		studyDAO.saveOrUpdate(dbStudy);
-		return dbStudy;
+		return studyDAO.saveOrUpdate(dbStudy);
 	}
 
 	public Study update(final Study incomingStudy) {
