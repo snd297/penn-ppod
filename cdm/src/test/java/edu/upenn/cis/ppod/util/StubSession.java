@@ -132,8 +132,7 @@ public class StubSession implements Session {
 	}
 
 	public void evict(Object object) throws HibernateException {
-		// TODO Auto-generated method stub
-		throw new UnsupportedOperationException();
+
 	}
 
 	public void flush() throws HibernateException {

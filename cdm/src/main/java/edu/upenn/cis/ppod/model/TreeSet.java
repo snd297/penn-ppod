@@ -65,7 +65,6 @@ public final class TreeSet extends UUPPodEntityWXmlId {
 	 * The {@link OTU}s that this {@code Tree} contains.
 	 */
 	@ManyToOne(fetch = FetchType.LAZY)
-	@Cascade(org.hibernate.annotations.CascadeType.SAVE_UPDATE)
 	@JoinColumn(name = OTUSet.ID_COLUMN, nullable = false)
 	private OTUSet otuSet;
 
