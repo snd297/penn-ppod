@@ -183,13 +183,17 @@ public class CharacterStateMatrix extends UUPPodEntityWXmlId {
 // @JoinColumn(name = ID_COLUMN, nullable = false)
 // @Cascade( { org.hibernate.annotations.CascadeType.SAVE_UPDATE,
 // org.hibernate.annotations.CascadeType.DELETE_ORPHAN })
-	@XmlElement(name = "row")
 	@OneToMany
 	@JoinTable(inverseJoinColumns = { @JoinColumn(name = CharacterStateRow.ID_COLUMN) })
 	@IndexColumn(name = ROWS_INDEX_COLUMN)
 	@Cascade( { org.hibernate.annotations.CascadeType.SAVE_UPDATE,
 			org.hibernate.annotations.CascadeType.DELETE_ORPHAN })
 	private final List<CharacterStateRow> rows = newArrayList();
+
+	@XmlElement(name = "row")
+	private List<CharacterStateRow> getRowsForJaxb() {
+		return rows;
+	}
 
 	@XmlAttribute
 	@Transient
@@ -831,27 +835,56 @@ public class CharacterStateMatrix extends UUPPodEntityWXmlId {
 	}
 
 	/**
+	 * Constructs a <code>String</code> with all attributes in name = value
+	 * format.
+	 * 
+	 * @return a <code>String</code> representation of this object.
+	 */
+// public String toString()
+// {
+// final String TAB = "";
+//	
+// final StringBuilder retValue = new StringBuilder();
+//	    
+// retValue.append("CharacterStateMatrix(")
+// .append(super.toString()).append(TAB)
+// .append("columnPPodVersions=").append(this.columnPPodVersions).append(TAB)
+// .append("description=").append(this.description).append(TAB)
+// .append("label=").append(this.label).append(TAB)
+// .append("otuIdx=").append(this.otuIdx).append(TAB)
+// .append("otus=").append(this.otus).append(TAB)
+// .append("otuSet=").append(this.otuSet).append(TAB)
+// .append("characterIdx=").append(this.characterIdx).append(TAB)
+// .append("characters=").append(this.characters).append(TAB)
+// .append("rows=").append(this.rows).append(TAB)
+// .append("type=").append(this.type).append(TAB)
+// .append(")");
+//	    
+// return retValue.toString();
+// }
+
+	/**
 	 * Constructs a <code>String</code> with attributes in name=value format.
 	 * 
 	 * @return a <code>String</code> representation of this object.
 	 */
-	@Override
-	public String toString() {
-		final String TAB = ",";
-
-		final StringBuilder retValue = new StringBuilder();
-
-		retValue.append(
-				"CharacterStateMatrix(" + otuSet.getOTUs().size() + ","
-						+ otus.size() + "," + otuIdx.size() + ",").append(TAB)
-				.append(TAB).append("label=").append(this.label).append(TAB)
-				.append("otuSet=").append(this.otuSet).append(TAB).append(
-						"otus=").append(this.otus).append(TAB)
-				.append("otuIdx=").append(this.otuIdx).append(TAB).append('\n')
-				.append("rows=").append(this.rows).append(TAB).append(
-						"characters=").append(this.characters).append(TAB)
-				.append("characterIdx=").append(this.characterIdx).append(")");
-
-		return retValue.toString();
-	}
+// @Override
+// public String toString() {
+// final String TAB = ",";
+//
+// final StringBuilder retValue = new StringBuilder();
+//
+// retValue.append(
+// "CharacterStateMatrix(" + otuSet.getOTUs().size() + ","
+// + otus.size() + "," + otuIdx.size() + ",").append(TAB)
+// .append(TAB).append("label=").append(this.label).append(TAB)
+// .append("otuSet=").append(this.otuSet).append(TAB).append(
+// "otus=").append(this.otus).append(TAB)
+// .append("otuIdx=").append(this.otuIdx).append(TAB).append('\n')
+// .append("rows=").append(this.rows).append(TAB).append(
+// "characters=").append(this.characters).append(TAB)
+// .append("characterIdx=").append(this.characterIdx).append(")");
+//
+// return retValue.toString();
+// }
 }

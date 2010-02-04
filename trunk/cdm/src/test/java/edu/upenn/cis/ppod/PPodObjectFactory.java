@@ -15,6 +15,7 @@
  */
 package edu.upenn.cis.ppod;
 
+import org.hibernate.Query;
 import org.hibernate.Session;
 
 import com.google.inject.Guice;
@@ -29,6 +30,7 @@ import edu.upenn.cis.ppod.services.hibernate.PPodEntitiesResourceHibernate;
 import edu.upenn.cis.ppod.thirdparty.injectslf4j.InjectSlf4jModule;
 import edu.upenn.cis.ppod.util.GuiceObjectFactory;
 import edu.upenn.cis.ppod.util.PPodCoreModule;
+import edu.upenn.cis.ppod.util.StubQuery;
 import edu.upenn.cis.ppod.util.StubSession;
 
 /**
@@ -53,5 +55,6 @@ public class PPodObjectFactory extends GuiceObjectFactory {
 				PPodEntitiesResourceHibernate.class);
 
 		bind(Session.class).to(StubSession.class);
+		bind(Query.class).to(StubQuery.class);
 	}
 }

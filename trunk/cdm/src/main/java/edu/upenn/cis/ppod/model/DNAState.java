@@ -89,7 +89,7 @@ public final class DNAState extends MolecularState {
 	}
 
 	@Override
-	DNAState setCharacter(final Character character) {
+	public DNAState setCharacter(final Character character) {
 		if (character instanceof DNACharacter) {
 			super.setCharacter(character);
 		} else {

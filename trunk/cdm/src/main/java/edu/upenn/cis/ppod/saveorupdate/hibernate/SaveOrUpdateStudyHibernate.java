@@ -164,7 +164,7 @@ public class SaveOrUpdateStudyHibernate implements ISaveOrUpdateStudy {
 					dbMatrix.setPPodId();
 				}
 
-				mergeMatrix.merge(dbMatrix, incomingMatrix, dbOTUSet,
+				mergeMatrix.saveOrUpdate(dbMatrix, incomingMatrix, dbOTUSet,
 						dbOTUsByIncomingOTU, dbDNACharacter);
 			}
 			for (final TreeSet incomingTreeSet : incomingOTUSet.getTreeSets()) {

@@ -17,7 +17,6 @@ package edu.upenn.cis.ppod.model;
 
 import static com.google.common.collect.Sets.newHashSet;
 
-import java.util.Collections;
 import java.util.Set;
 
 import javax.persistence.Entity;
@@ -69,7 +68,7 @@ public abstract class PPodEntity extends PersistentObject implements IAttachee,
 
 	@ManyToMany
 	@JoinTable(inverseJoinColumns = { @JoinColumn(name = Attachment.ID_COLUMN) })
-	private Set<Attachment> attachments;
+	private Set<Attachment> attachments = newHashSet();
 
 	/**
 	 * The pPod-version of this object. Similar in concept to Hibernate's
@@ -137,11 +136,12 @@ public abstract class PPodEntity extends PersistentObject implements IAttachee,
 	}
 
 	public Set<Attachment> getAttachments() {
-		if (attachments == null) {
-			return Collections.emptySet();
-		} else {
-			return Collections.unmodifiableSet(attachments);
-		}
+		return attachments;
+// if (attachments == null) {
+// return Collections.emptySet();
+// } else {
+// return Collections.unmodifiableSet(attachments);
+// }
 	}
 
 	public Set<Attachment> getAttachmentsByNamespace(final String namespace) {
