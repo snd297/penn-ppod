@@ -27,7 +27,7 @@ import edu.upenn.cis.ppod.model.OTUSet;
 /**
  * Merge two matrices.
  * 
- * @see #merge(CharacterStateMatrix, CharacterStateMatrix, OTUSet, Map,
+ * @see #saveOrUpdate(CharacterStateMatrix, CharacterStateMatrix, OTUSet, Map,
  *      DNACharacter)
  * 
  * @author Sam Donnelly
@@ -57,7 +57,7 @@ public interface IMergeCharacterStateMatrix {
 	 * 
 	 * @return {@code targetMatrix}
 	 */
-	CharacterStateMatrix merge(CharacterStateMatrix targetMatrix,
+	CharacterStateMatrix saveOrUpdate(CharacterStateMatrix targetMatrix,
 			CharacterStateMatrix sourceMatrix, OTUSet newTargetMatrixOTUSet,
 			Map<OTU, OTU> mergedOTUsBySourceOTU, DNACharacter dnaCharacter);
 

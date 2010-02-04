@@ -77,7 +77,7 @@ public class MergeCharacterStateMatrixTest {
 
 		final CharacterStateMatrix targetMatrix = (CharacterStateMatrix) matrixProvider
 				.get();
-		final CharacterStateMatrix dbMatrix = mergeCharacterStateMatrix.merge(
+		final CharacterStateMatrix dbMatrix = mergeCharacterStateMatrix.saveOrUpdate(
 				targetMatrix, sourceMatrix, fakeDbOTUSet,
 				fakeOTUsByIncomingOTU, dnaCharacterProvider.get());
 		ModelAssert.assertEqualsCharacterStateMatrices(dbMatrix, sourceMatrix);
@@ -96,7 +96,7 @@ public class MergeCharacterStateMatrixTest {
 		final CharacterStateMatrix targetMatrix = (CharacterStateMatrix) matrixProvider
 				.get();
 
-		mergeCharacterStateMatrix.merge(targetMatrix, sourceMatrix,
+		mergeCharacterStateMatrix.saveOrUpdate(targetMatrix, sourceMatrix,
 				fakeTargetOTUSet, fakeOTUsByIncomingOTU, dnaCharacterProvider
 						.get());
 		final List<OTU> shuffledSourceOTUs = newArrayList(sourceMatrix
@@ -104,7 +104,7 @@ public class MergeCharacterStateMatrixTest {
 		Collections.shuffle(shuffledSourceOTUs);
 		sourceMatrix.setOTUs(shuffledSourceOTUs);
 
-		mergeCharacterStateMatrix.merge(targetMatrix, sourceMatrix,
+		mergeCharacterStateMatrix.saveOrUpdate(targetMatrix, sourceMatrix,
 				fakeTargetOTUSet, fakeOTUsByIncomingOTU, dnaCharacterProvider
 						.get());
 		ModelAssert.assertEqualsCharacterStateMatrices(targetMatrix,
@@ -124,7 +124,7 @@ public class MergeCharacterStateMatrixTest {
 		final CharacterStateMatrix targetMatrix = (CharacterStateMatrix) matrixProvider
 				.get();
 
-		mergeCharacterStateMatrix.merge(targetMatrix, sourceMatrix,
+		mergeCharacterStateMatrix.saveOrUpdate(targetMatrix, sourceMatrix,
 				fakeTargetOTUSet, fakeOTUsByIncomingOTU, dnaCharacterProvider
 						.get());
 
@@ -132,7 +132,7 @@ public class MergeCharacterStateMatrixTest {
 		sourceMatrix.setCharacter(0, sourceMatrix.setCharacter(2, sourceMatrix
 				.getCharacters().get(0)));
 
-		mergeCharacterStateMatrix.merge(targetMatrix, sourceMatrix,
+		mergeCharacterStateMatrix.saveOrUpdate(targetMatrix, sourceMatrix,
 				fakeTargetOTUSet, fakeOTUsByIncomingOTU, dnaCharacterProvider
 						.get());
 

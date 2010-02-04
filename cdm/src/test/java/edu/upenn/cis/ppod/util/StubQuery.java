@@ -1,383 +1,414 @@
 package edu.upenn.cis.ppod.util;
 
 import java.io.Serializable;
-import java.sql.Connection;
+import java.math.BigDecimal;
+import java.math.BigInteger;
+import java.util.Calendar;
+import java.util.Collection;
+import java.util.Collections;
+import java.util.Date;
+import java.util.Iterator;
+import java.util.List;
+import java.util.Locale;
+import java.util.Map;
 
 import org.hibernate.CacheMode;
-import org.hibernate.Criteria;
-import org.hibernate.EntityMode;
-import org.hibernate.Filter;
 import org.hibernate.FlushMode;
 import org.hibernate.HibernateException;
 import org.hibernate.LockMode;
 import org.hibernate.Query;
-import org.hibernate.ReplicationMode;
-import org.hibernate.SQLQuery;
-import org.hibernate.Session;
-import org.hibernate.SessionFactory;
-import org.hibernate.Transaction;
-import org.hibernate.jdbc.Work;
-import org.hibernate.stat.SessionStatistics;
+import org.hibernate.ScrollMode;
+import org.hibernate.ScrollableResults;
+import org.hibernate.transform.ResultTransformer;
+import org.hibernate.type.Type;
 
-import com.google.inject.Inject;
-import com.google.inject.Provider;
+
 
 /**
  * @author samd
- * 
+ *
  */
-public class StubSession implements Session {
+public class StubQuery implements Query{
 
-	private Provider<Query> queryProvider;
-
-	@Inject
-	StubSession(final Provider<Query> queryProvider) {
-		this.queryProvider = queryProvider;
-	}
-
-	public Transaction beginTransaction() throws HibernateException {
+	public int executeUpdate() throws HibernateException {
 		// TODO Auto-generated method stub
 		throw new UnsupportedOperationException();
 	}
 
-	public void cancelQuery() throws HibernateException {
+	public String[] getNamedParameters() throws HibernateException {
 		// TODO Auto-generated method stub
 		throw new UnsupportedOperationException();
 	}
 
-	public void clear() {
-
-	}
-
-	public Connection close() throws HibernateException {
+	public String getQueryString() {
 		// TODO Auto-generated method stub
 		throw new UnsupportedOperationException();
 	}
 
-	public Connection connection() throws HibernateException {
+	public String[] getReturnAliases() throws HibernateException {
 		// TODO Auto-generated method stub
 		throw new UnsupportedOperationException();
 	}
 
-	public boolean contains(Object object) {
+	public Type[] getReturnTypes() throws HibernateException {
 		// TODO Auto-generated method stub
 		throw new UnsupportedOperationException();
 	}
 
-	public Criteria createCriteria(Class persistentClass) {
+	public Iterator iterate() throws HibernateException {
 		// TODO Auto-generated method stub
 		throw new UnsupportedOperationException();
 	}
 
-	public Criteria createCriteria(String entityName) {
+	public List list() throws HibernateException {
+		return Collections.EMPTY_LIST;
+	}
+
+	public ScrollableResults scroll() throws HibernateException {
 		// TODO Auto-generated method stub
 		throw new UnsupportedOperationException();
 	}
 
-	public Criteria createCriteria(Class persistentClass, String alias) {
-		// TODO Auto-generated method stub
-		throw new UnsupportedOperationException();
-	}
-
-	public Criteria createCriteria(String entityName, String alias) {
-		// TODO Auto-generated method stub
-		throw new UnsupportedOperationException();
-	}
-
-	public Query createFilter(Object collection, String queryString)
+	public ScrollableResults scroll(ScrollMode scrollMode)
 			throws HibernateException {
 		// TODO Auto-generated method stub
 		throw new UnsupportedOperationException();
 	}
 
-	public Query createQuery(String queryString) throws HibernateException {
-		return queryProvider.get();
+	public Query setBigDecimal(int position, BigDecimal number) {
+		// TODO Auto-generated method stub
+		throw new UnsupportedOperationException();
 	}
 
-	public SQLQuery createSQLQuery(String queryString)
+	public Query setBigDecimal(String name, BigDecimal number) {
+		// TODO Auto-generated method stub
+		throw new UnsupportedOperationException();
+	}
+
+	public Query setBigInteger(int position, BigInteger number) {
+		// TODO Auto-generated method stub
+		throw new UnsupportedOperationException();
+	}
+
+	public Query setBigInteger(String name, BigInteger number) {
+		// TODO Auto-generated method stub
+		throw new UnsupportedOperationException();
+	}
+
+	public Query setBinary(int position, byte[] val) {
+		// TODO Auto-generated method stub
+		throw new UnsupportedOperationException();
+	}
+
+	public Query setBinary(String name, byte[] val) {
+		// TODO Auto-generated method stub
+		throw new UnsupportedOperationException();
+	}
+
+	public Query setBoolean(int position, boolean val) {
+		// TODO Auto-generated method stub
+		throw new UnsupportedOperationException();
+	}
+
+	public Query setBoolean(String name, boolean val) {
+		// TODO Auto-generated method stub
+		throw new UnsupportedOperationException();
+	}
+
+	public Query setByte(int position, byte val) {
+		// TODO Auto-generated method stub
+		throw new UnsupportedOperationException();
+	}
+
+	public Query setByte(String name, byte val) {
+		// TODO Auto-generated method stub
+		throw new UnsupportedOperationException();
+	}
+
+	public Query setCacheMode(CacheMode cacheMode) {
+		// TODO Auto-generated method stub
+		throw new UnsupportedOperationException();
+	}
+
+	public Query setCacheRegion(String cacheRegion) {
+		// TODO Auto-generated method stub
+		throw new UnsupportedOperationException();
+	}
+
+	public Query setCacheable(boolean cacheable) {
+		// TODO Auto-generated method stub
+		throw new UnsupportedOperationException();
+	}
+
+	public Query setCalendar(int position, Calendar calendar) {
+		// TODO Auto-generated method stub
+		throw new UnsupportedOperationException();
+	}
+
+	public Query setCalendar(String name, Calendar calendar) {
+		// TODO Auto-generated method stub
+		throw new UnsupportedOperationException();
+	}
+
+	public Query setCalendarDate(int position, Calendar calendar) {
+		// TODO Auto-generated method stub
+		throw new UnsupportedOperationException();
+	}
+
+	public Query setCalendarDate(String name, Calendar calendar) {
+		// TODO Auto-generated method stub
+		throw new UnsupportedOperationException();
+	}
+
+	public Query setCharacter(int position, char val) {
+		// TODO Auto-generated method stub
+		throw new UnsupportedOperationException();
+	}
+
+	public Query setCharacter(String name, char val) {
+		// TODO Auto-generated method stub
+		throw new UnsupportedOperationException();
+	}
+
+	public Query setComment(String comment) {
+		// TODO Auto-generated method stub
+		throw new UnsupportedOperationException();
+	}
+
+	public Query setDate(int position, Date date) {
+		// TODO Auto-generated method stub
+		throw new UnsupportedOperationException();
+	}
+
+	public Query setDate(String name, Date date) {
+		// TODO Auto-generated method stub
+		throw new UnsupportedOperationException();
+	}
+
+	public Query setDouble(int position, double val) {
+		// TODO Auto-generated method stub
+		throw new UnsupportedOperationException();
+	}
+
+	public Query setDouble(String name, double val) {
+		// TODO Auto-generated method stub
+		throw new UnsupportedOperationException();
+	}
+
+	public Query setEntity(int position, Object val) {
+		// TODO Auto-generated method stub
+		throw new UnsupportedOperationException();
+	}
+
+	public Query setEntity(String name, Object val) {
+		// TODO Auto-generated method stub
+		throw new UnsupportedOperationException();
+	}
+
+	public Query setFetchSize(int fetchSize) {
+		// TODO Auto-generated method stub
+		throw new UnsupportedOperationException();
+	}
+
+	public Query setFirstResult(int firstResult) {
+		// TODO Auto-generated method stub
+		throw new UnsupportedOperationException();
+	}
+
+	public Query setFloat(int position, float val) {
+		// TODO Auto-generated method stub
+		throw new UnsupportedOperationException();
+	}
+
+	public Query setFloat(String name, float val) {
+		// TODO Auto-generated method stub
+		throw new UnsupportedOperationException();
+	}
+
+	public Query setFlushMode(FlushMode flushMode) {
+		// TODO Auto-generated method stub
+		throw new UnsupportedOperationException();
+	}
+
+	public Query setInteger(int position, int val) {
+		// TODO Auto-generated method stub
+		throw new UnsupportedOperationException();
+	}
+
+	public Query setInteger(String name, int val) {
+		// TODO Auto-generated method stub
+		throw new UnsupportedOperationException();
+	}
+
+	public Query setLocale(int position, Locale locale) {
+		// TODO Auto-generated method stub
+		throw new UnsupportedOperationException();
+	}
+
+	public Query setLocale(String name, Locale locale) {
+		// TODO Auto-generated method stub
+		throw new UnsupportedOperationException();
+	}
+
+	public Query setLockMode(String alias, LockMode lockMode) {
+		// TODO Auto-generated method stub
+		throw new UnsupportedOperationException();
+	}
+
+	public Query setLong(int position, long val) {
+		// TODO Auto-generated method stub
+		throw new UnsupportedOperationException();
+	}
+
+	public Query setLong(String name, long val) {
+		// TODO Auto-generated method stub
+		throw new UnsupportedOperationException();
+	}
+
+	public Query setMaxResults(int maxResults) {
+		// TODO Auto-generated method stub
+		throw new UnsupportedOperationException();
+	}
+
+	public Query setParameter(int position, Object val)
 			throws HibernateException {
 		// TODO Auto-generated method stub
 		throw new UnsupportedOperationException();
 	}
 
-	public void delete(Object object) throws HibernateException {
-		// TODO Auto-generated method stub
-		throw new UnsupportedOperationException();
-	}
-
-	public void delete(String entityName, Object object)
+	public Query setParameter(String name, Object val)
 			throws HibernateException {
 		// TODO Auto-generated method stub
 		throw new UnsupportedOperationException();
 	}
 
-	public void disableFilter(String filterName) {
+	public Query setParameter(int position, Object val, Type type) {
 		// TODO Auto-generated method stub
 		throw new UnsupportedOperationException();
 	}
 
-	public Connection disconnect() throws HibernateException {
+	public Query setParameter(String name, Object val, Type type) {
 		// TODO Auto-generated method stub
 		throw new UnsupportedOperationException();
 	}
 
-	public void doWork(Work work) throws HibernateException {
-		// TODO Auto-generated method stub
-		throw new UnsupportedOperationException();
-	}
-
-	public Filter enableFilter(String filterName) {
-		// TODO Auto-generated method stub
-		throw new UnsupportedOperationException();
-	}
-
-	public void evict(Object object) throws HibernateException {
-		// TODO Auto-generated method stub
-		throw new UnsupportedOperationException();
-	}
-
-	public void flush() throws HibernateException {
-
-	}
-
-	public Object get(Class clazz, Serializable id) throws HibernateException {
-		// TODO Auto-generated method stub
-		throw new UnsupportedOperationException();
-	}
-
-	public Object get(String entityName, Serializable id)
+	public Query setParameterList(String name, Collection vals)
 			throws HibernateException {
 		// TODO Auto-generated method stub
 		throw new UnsupportedOperationException();
 	}
 
-	public Object get(Class clazz, Serializable id, LockMode lockMode)
+	public Query setParameterList(String name, Object[] vals)
 			throws HibernateException {
 		// TODO Auto-generated method stub
 		throw new UnsupportedOperationException();
 	}
 
-	public Object get(String entityName, Serializable id, LockMode lockMode)
+	public Query setParameterList(String name, Collection vals, Type type)
 			throws HibernateException {
 		// TODO Auto-generated method stub
 		throw new UnsupportedOperationException();
 	}
 
-	public CacheMode getCacheMode() {
-		// TODO Auto-generated method stub
-		throw new UnsupportedOperationException();
-	}
-
-	public LockMode getCurrentLockMode(Object object) throws HibernateException {
-		// TODO Auto-generated method stub
-		throw new UnsupportedOperationException();
-	}
-
-	public Filter getEnabledFilter(String filterName) {
-		// TODO Auto-generated method stub
-		throw new UnsupportedOperationException();
-	}
-
-	public EntityMode getEntityMode() {
-		// TODO Auto-generated method stub
-		throw new UnsupportedOperationException();
-	}
-
-	public String getEntityName(Object object) throws HibernateException {
-		// TODO Auto-generated method stub
-		throw new UnsupportedOperationException();
-	}
-
-	public FlushMode getFlushMode() {
-		// TODO Auto-generated method stub
-		throw new UnsupportedOperationException();
-	}
-
-	public Serializable getIdentifier(Object object) throws HibernateException {
-		// TODO Auto-generated method stub
-		throw new UnsupportedOperationException();
-	}
-
-	public Query getNamedQuery(String queryName) throws HibernateException {
-		// TODO Auto-generated method stub
-		throw new UnsupportedOperationException();
-	}
-
-	public Session getSession(EntityMode entityMode) {
-		// TODO Auto-generated method stub
-		throw new UnsupportedOperationException();
-	}
-
-	public SessionFactory getSessionFactory() {
-		// TODO Auto-generated method stub
-		throw new UnsupportedOperationException();
-	}
-
-	public SessionStatistics getStatistics() {
-		// TODO Auto-generated method stub
-		throw new UnsupportedOperationException();
-	}
-
-	public Transaction getTransaction() {
-		// TODO Auto-generated method stub
-		throw new UnsupportedOperationException();
-	}
-
-	public boolean isConnected() {
-		// TODO Auto-generated method stub
-		throw new UnsupportedOperationException();
-	}
-
-	public boolean isDirty() throws HibernateException {
-		// TODO Auto-generated method stub
-		throw new UnsupportedOperationException();
-	}
-
-	public boolean isOpen() {
-		// TODO Auto-generated method stub
-		throw new UnsupportedOperationException();
-	}
-
-	public Object load(Class theClass, Serializable id)
+	public Query setParameterList(String name, Object[] vals, Type type)
 			throws HibernateException {
 		// TODO Auto-generated method stub
 		throw new UnsupportedOperationException();
 	}
 
-	public Object load(String entityName, Serializable id)
+	public Query setParameters(Object[] values, Type[] types)
 			throws HibernateException {
 		// TODO Auto-generated method stub
 		throw new UnsupportedOperationException();
 	}
 
-	public void load(Object object, Serializable id) throws HibernateException {
+	public Query setProperties(Object bean) throws HibernateException {
 		// TODO Auto-generated method stub
 		throw new UnsupportedOperationException();
 	}
 
-	public Object load(Class theClass, Serializable id, LockMode lockMode)
-			throws HibernateException {
+	public Query setProperties(Map bean) throws HibernateException {
 		// TODO Auto-generated method stub
 		throw new UnsupportedOperationException();
 	}
 
-	public Object load(String entityName, Serializable id, LockMode lockMode)
-			throws HibernateException {
+	public Query setReadOnly(boolean readOnly) {
 		// TODO Auto-generated method stub
 		throw new UnsupportedOperationException();
 	}
 
-	public void lock(Object object, LockMode lockMode)
-			throws HibernateException {
+	public Query setResultTransformer(ResultTransformer transformer) {
 		// TODO Auto-generated method stub
 		throw new UnsupportedOperationException();
 	}
 
-	public void lock(String entityName, Object object, LockMode lockMode)
-			throws HibernateException {
+	public Query setSerializable(int position, Serializable val) {
 		// TODO Auto-generated method stub
 		throw new UnsupportedOperationException();
 	}
 
-	public Object merge(Object object) throws HibernateException {
+	public Query setSerializable(String name, Serializable val) {
 		// TODO Auto-generated method stub
 		throw new UnsupportedOperationException();
 	}
 
-	public Object merge(String entityName, Object object)
-			throws HibernateException {
+	public Query setShort(int position, short val) {
 		// TODO Auto-generated method stub
 		throw new UnsupportedOperationException();
 	}
 
-	public void persist(Object object) throws HibernateException {
+	public Query setShort(String name, short val) {
 		// TODO Auto-generated method stub
 		throw new UnsupportedOperationException();
 	}
 
-	public void persist(String entityName, Object object)
-			throws HibernateException {
+	public Query setString(int position, String val) {
 		// TODO Auto-generated method stub
 		throw new UnsupportedOperationException();
 	}
 
-	public void reconnect() throws HibernateException {
+	public Query setString(String name, String val) {
 		// TODO Auto-generated method stub
 		throw new UnsupportedOperationException();
 	}
 
-	public void reconnect(Connection connection) throws HibernateException {
+	public Query setText(int position, String val) {
 		// TODO Auto-generated method stub
 		throw new UnsupportedOperationException();
 	}
 
-	public void refresh(Object object) throws HibernateException {
+	public Query setText(String name, String val) {
 		// TODO Auto-generated method stub
 		throw new UnsupportedOperationException();
 	}
 
-	public void refresh(Object object, LockMode lockMode)
-			throws HibernateException {
+	public Query setTime(int position, Date date) {
 		// TODO Auto-generated method stub
 		throw new UnsupportedOperationException();
 	}
 
-	public void replicate(Object object, ReplicationMode replicationMode)
-			throws HibernateException {
+	public Query setTime(String name, Date date) {
 		// TODO Auto-generated method stub
 		throw new UnsupportedOperationException();
 	}
 
-	public void replicate(String entityName, Object object,
-			ReplicationMode replicationMode) throws HibernateException {
+	public Query setTimeout(int timeout) {
 		// TODO Auto-generated method stub
 		throw new UnsupportedOperationException();
 	}
 
-	public Serializable save(Object object) throws HibernateException {
+	public Query setTimestamp(int position, Date date) {
 		// TODO Auto-generated method stub
 		throw new UnsupportedOperationException();
 	}
 
-	public Serializable save(String entityName, Object object)
-			throws HibernateException {
-		throw new UnsupportedOperationException();
-	}
-
-	public void saveOrUpdate(Object object) throws HibernateException {
-
-	}
-
-	public void saveOrUpdate(String entityName, Object object)
-			throws HibernateException {
+	public Query setTimestamp(String name, Date date) {
 		// TODO Auto-generated method stub
 		throw new UnsupportedOperationException();
 	}
 
-	public void setCacheMode(CacheMode cacheMode) {
-		// TODO Auto-generated method stub
-		throw new UnsupportedOperationException();
-	}
-
-	public void setFlushMode(FlushMode flushMode) {
-		// TODO Auto-generated method stub
-		throw new UnsupportedOperationException();
-	}
-
-	public void setReadOnly(Object entity, boolean readOnly) {
-		// TODO Auto-generated method stub
-		throw new UnsupportedOperationException();
-	}
-
-	public void update(Object object) throws HibernateException {
-		// TODO Auto-generated method stub
-		throw new UnsupportedOperationException();
-	}
-
-	public void update(String entityName, Object object)
-			throws HibernateException {
-		// TODO Auto-generated method stub
-		throw new UnsupportedOperationException();
+	public Object uniqueResult() throws HibernateException {
+		return null;
 	}
 
 }

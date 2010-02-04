@@ -16,8 +16,6 @@
 package edu.upenn.cis.ppod.saveorupdate.hibernate;
 
 import static com.google.common.base.Preconditions.checkNotNull;
-import static com.google.common.base.Predicates.compose;
-import static com.google.common.base.Predicates.equalTo;
 import static com.google.common.collect.Iterables.get;
 import static com.google.common.collect.Iterables.getOnlyElement;
 import static com.google.common.collect.Lists.newArrayList;
@@ -32,7 +30,10 @@ import java.util.ListIterator;
 import java.util.Map;
 import java.util.Set;
 
+import org.hibernate.Criteria;
+import org.hibernate.FetchMode;
 import org.hibernate.Session;
+import org.hibernate.criterion.Restrictions;
 import org.slf4j.Logger;
 
 import com.google.inject.Inject;
@@ -89,7 +90,8 @@ public class SaveOrUpdateCharacterStateMatrix implements
 		this.session = session;
 	}
 
-	public CharacterStateMatrix merge(final CharacterStateMatrix targetMatrix,
+	public CharacterStateMatrix saveOrUpdate(
+			final CharacterStateMatrix targetMatrix,
 			final CharacterStateMatrix sourceMatrix,
 			final OTUSet newTargetMatrixOTUSet,
 			final Map<OTU, OTU> mergedOTUsBySourceOTU,
@@ -156,7 +158,6 @@ public class SaveOrUpdateCharacterStateMatrix implements
 						sourceState.getStateNumber()))) {
 					targetState = newTargetCharacter.addState(stateFactory
 							.create(sourceState.getStateNumber()));
-
 				}
 				if (!(targetState instanceof DNAState)) {
 					targetState.setLabel(sourceState.getLabel());
@@ -170,8 +171,8 @@ public class SaveOrUpdateCharacterStateMatrix implements
 			for (final Attachment sourceAttachment : sourceCharacter
 					.getAttachments()) {
 				final Set<Attachment> targetAttachments = findEach(
-						newTargetCharacter.getAttachments(), compose(
-								equalTo(sourceAttachment.getStringValue()),
+						newTargetCharacter.getAttachments(), equalTo(
+								sourceAttachment.getStringValue(),
 								Attachment.getStringValue));
 
 				Attachment targetAttachment = getOnlyElement(targetAttachments,
@@ -182,16 +183,51 @@ public class SaveOrUpdateCharacterStateMatrix implements
 				}
 				newTargetCharacter.addAttachment(targetAttachment);
 				mergeAttachment.merge(targetAttachment, sourceAttachment);
-				session.saveOrUpdate(newTargetCharacter);
 				session.saveOrUpdate(targetAttachment);
 			}
+			session.saveOrUpdate(newTargetCharacter);
 		}
 
+		session.flush();
+		session.clear();
+
 		int sourceRowIdx = -1;
-		int cellCounter = -1;
+		int cellCounter = 0;
+		// Hibernate.initialize(targetMatrix.getRows());
 		for (final OTU targetOTU : targetMatrix.getOTUs()) {
 			sourceRowIdx++;
-			CharacterStateRow targetRow = targetMatrix.getRow(targetOTU);
+
+			CharacterStateRow targetRow = null;
+			List<Character> characters = targetMatrix.getCharacters();
+
+			if (targetMatrix.getId() != null) {
+				final String getRowQuery = "select r from CharacterStateRow r, CharacterStateMatrix m left join fetch r.cells where m.id = "
+						+ targetMatrix.getId()
+						+ " and m.rows["
+						+ sourceRowIdx
+						+ "] = r";
+				logger.debug("query: " + getRowQuery);
+
+				targetRow = (CharacterStateRow) session
+						.createQuery(getRowQuery).uniqueResult();
+
+				final String getMatrixQuery = "select m from CharacterStateMatrix m left join fetch m.characters c left join fetch c.states where m.id = "
+						+ targetMatrix.getId();
+
+				final Criteria getMatrixCriteria = session.createCriteria(
+						CharacterStateMatrix.class).add(
+						Restrictions.eq("id", targetMatrix.getId()))
+						.setFetchMode("characters", FetchMode.JOIN)
+						.createCriteria("characters").setFetchMode("states",
+								FetchMode.JOIN);
+				final CharacterStateMatrix m = (CharacterStateMatrix) getMatrixCriteria
+						.uniqueResult();
+
+// final CharacterStateMatrix m = (CharacterStateMatrix) session
+// .createQuery(getMatrixQuery).uniqueResult();
+				characters = m.getCharacters();
+			}
+
 			if (targetRow == null) {
 				targetRow = rowProvider.get();
 				targetMatrix.setRow(targetOTU, targetRow);
@@ -205,29 +241,26 @@ public class SaveOrUpdateCharacterStateMatrix implements
 				targetRow.removeLastCell();
 			}
 
-			final List<CharacterStateCell> clearedTargetCells = targetRow
-					.clearCells();
+			final List<CharacterStateCell> clearedTargetCells = newArrayList(targetRow
+					.getCells());
 
 			for (int newCellIdx = 0; newCellIdx < targetMatrix.getCharacters()
 					.size(); newCellIdx++) {
 				CharacterStateCell targetCell;
 				if (null == originalCharIdxsByNewCharIdx.get(newCellIdx)) {
-					targetCell = targetRow.addCell(cellProvider.get());
+					targetCell = cellProvider.get();
 				} else {
-					targetCell = targetRow.addCell(clearedTargetCells
-							.get(originalCharIdxsByNewCharIdx.get(newCellIdx)));
-					// Because we don't store the cell->row reference.
-					targetCell.setRow(targetRow);
+					targetCell = clearedTargetCells
+							.get(originalCharIdxsByNewCharIdx.get(newCellIdx));
 				}
-
+				targetRow.setCell(targetCell, newCellIdx);
 				final CharacterStateCell sourceCell = sourceMatrix.getRows()
 						.get(sourceRowIdx).getCells().get(newCellIdx);
 
 				final Set<CharacterState> newTargetStates = newHashSet();
 				for (final CharacterState sourceState : sourceCell.getStates()) {
-					newTargetStates.add(targetMatrix.getCharacters().get(
-							newCellIdx).getStates().get(
-							sourceState.getStateNumber()));
+					newTargetStates.add(characters.get(newCellIdx).getStates()
+							.get(sourceState.getStateNumber()));
 				}
 				switch (sourceCell.getType()) {
 					case INAPPLICABLE:
@@ -252,15 +285,15 @@ public class SaveOrUpdateCharacterStateMatrix implements
 				if (cellCounter++ % 20 == 0) {
 					logger.debug("{}: flushing cells, cellCounter: {}", METHOD,
 							cellCounter);
-					session.flush();
-					session.clear();
+// session.flush();
+// session.clear();
 				}
 			}
 			session.saveOrUpdate(targetRow);
 			logger.debug("{}: flushing row,  sourceRowIdx: {}", METHOD,
 					sourceRowIdx);
-			session.flush();
-			session.clear();
+// session.flush();
+// session.clear();
 		}
 
 		return targetMatrix;

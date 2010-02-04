@@ -214,7 +214,7 @@ public class CharacterState extends PPodEntityWXmlId {
 	 * 
 	 * @return this {@code CharacterState}
 	 */
-	CharacterState setCharacter(final Character character) {
+	public CharacterState setCharacter(final Character character) {
 		checkNotNull(character);
 		this.character = character;
 		return this;

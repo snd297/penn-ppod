@@ -156,7 +156,7 @@ public class Character extends UUPPodEntity {
 	@Override
 	public boolean beforeMarshal(final Marshaller marshaller) {
 		super.beforeMarshal(marshaller);
-		System.out.println("getStatesForJaxb: " + getStatesForJaxb());
+		//System.out.println("getStatesForJaxb: " + getStatesForJaxb());
 		return true;
 	}
 

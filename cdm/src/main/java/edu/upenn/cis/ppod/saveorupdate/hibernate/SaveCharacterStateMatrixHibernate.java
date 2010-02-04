@@ -114,7 +114,7 @@ public class SaveCharacterStateMatrixHibernate {
 
 		for (final Character sourceCharacter : sourceMatrix.getCharacters()) {
 			Character newTargetCharacter;
-			if (sourceMatrix.getType() == CharacterStateMatrix.Type.DNA) { 
+			if (sourceMatrix.getType() == CharacterStateMatrix.Type.DNA) {
 				newTargetCharacter = dnaCharacter;
 			} else {
 				newTargetCharacter = characterProvider.get();
@@ -171,7 +171,7 @@ public class SaveCharacterStateMatrixHibernate {
 
 			targetRow.addCell(cellProvider.get());
 
-			session.save(targetRow);
+			session.saveOrUpdate(targetRow);
 
 			final CharacterStateRow sourceRow = sourceMatrix
 					.getRow(sourceMatrix.getOTUs().get(sourceRowIdx++));
@@ -205,7 +205,7 @@ public class SaveCharacterStateMatrixHibernate {
 					default:
 						throw new AssertionError("unknown type");
 				}
-				session.save(targetCell);
+				session.saveOrUpdate(targetCell);
 				if (save && cellCounter++ % 20 == 0) {
 					logger.debug("{}: flushing rows, cellCounter: {}", METHOD,
 							cellCounter);

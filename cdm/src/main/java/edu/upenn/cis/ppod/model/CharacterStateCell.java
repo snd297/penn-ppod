@@ -119,6 +119,9 @@ public final class CharacterStateCell extends PPodEntity {
 	/**
 	 * To handle the most-common case of a single {@code CharacterState}, we
 	 * cache {@code states.get(0)}.
+	 * <p>
+	 * {@code Eager} because it seems whenever we grab a cell, we want to look
+	 * at its contents.
 	 */
 	@ManyToOne(fetch = FetchType.EAGER)
 	@JoinColumn(name = "FIRST_" + CharacterState.ID_COLUMN)
@@ -126,6 +129,9 @@ public final class CharacterStateCell extends PPodEntity {
 
 	/**
 	 * The heart of the cell: the states.
+	 * <p>
+	 * {@code Eager} because it seems whenever we grab a cell, we want to look
+	 * at its contents.
 	 */
 	@ManyToMany(fetch = FetchType.EAGER)
 	@Sort(type = SortType.COMPARATOR, comparator = CharacterState.CharacterStateComparator.class)

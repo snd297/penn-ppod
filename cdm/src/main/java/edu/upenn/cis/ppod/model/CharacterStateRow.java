@@ -19,6 +19,7 @@ import static com.google.common.base.Preconditions.checkNotNull;
 import static com.google.common.base.Preconditions.checkState;
 import static com.google.common.collect.Lists.newArrayList;
 import static com.google.common.collect.Maps.newHashMap;
+import static edu.upenn.cis.ppod.util.CollectionsUtil.nullFill;
 
 import java.util.Collections;
 import java.util.List;
@@ -71,9 +72,8 @@ public final class CharacterStateRow extends PPodEntity {
 	 * slows things down quite a bit - at least for saves (haven't looked at
 	 * update yet).
 	 */
-	@XmlElement(name = "cell")
 	@OneToMany
-	@JoinTable(name = TABLE + "_" + CharacterStateCell.TABLE, joinColumns = { @JoinColumn(name = ID_COLUMN) }, inverseJoinColumns = { @JoinColumn(name = CharacterStateCell.ID_COLUMN) })
+	@JoinTable(inverseJoinColumns = { @JoinColumn(name = CharacterStateCell.ID_COLUMN) })
 	@IndexColumn(name = CELLS_INDEX_COLUMN)
 	@Cascade(org.hibernate.annotations.CascadeType.DELETE_ORPHAN)
 	private final List<CharacterStateCell> cells = newArrayList();
@@ -139,6 +139,36 @@ public final class CharacterStateRow extends PPodEntity {
 		return cell;
 	}
 
+	public CharacterStateRow setCell(final CharacterStateCell cell,
+			final int cellIdx) {
+		checkNotNull(cell);
+		nullFill(cells, cellIdx + 1);
+		cell.setRow(this);
+		if (cell.equals(getCells().get(cellIdx))) {
+			return this;
+		}
+
+		if (getMatrix() == null) {
+			throw new IllegalStateException(
+					"This row hasn't been added to a matrix yet");
+		}
+		if (getMatrix().getCharacters().size() < cellIdx + 1) {
+			throw new IllegalStateException("the matrix has less characters "
+					+ getMatrix().getCharacterIdx().size()
+					+ " than the row is about to have "
+					+ (getCells().size() + 1));
+		}
+		if (getMatrix().getCharacters().size() > 0
+				&& getMatrix().getCharacters().get(cellIdx) == null) {
+			throw new IllegalStateException("Character is null at column "
+					+ cells.size());
+		}
+		cells.set(cellIdx, cell);
+		this.cellIdx.put(cell, cellIdx);
+		resetPPodVersionInfo();
+		return this;
+	}
+
 	/**
 	 * {@link Unmarshaller} callback.
 	 * 
@@ -183,6 +213,11 @@ public final class CharacterStateRow extends PPodEntity {
 	 */
 	public List<CharacterStateCell> getCells() {
 		return Collections.unmodifiableList(cells);
+	}
+
+	@XmlElement(name = "cell")
+	private List<CharacterStateCell> getCellsForJaxb() {
+		return cells;
 	}
 
 	/**

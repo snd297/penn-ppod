@@ -15,6 +15,8 @@
  */
 package edu.upenn.cis.ppod.util;
 
+import java.util.List;
+
 import org.hibernate.classic.Session;
 import org.hibernate.context.ManagedSessionContext;
 
@@ -44,6 +46,13 @@ public class PopulateTables {
 			ManagedSessionContext.bind(session);
 			session.beginTransaction();
 			session.save(dnaCharacter);
+			session.getTransaction().commit();
+			
+			session.beginTransaction();
+			final List<DNAState> dnaStates = (List<DNAState>)session.createQuery("from DNAState").list();
+			for (DNAState dnaState : dnaStates) { 
+				session.update(dnaState);
+			}
 			session.getTransaction().commit();
 		} catch (Throwable t) {
 			if (session != null) {
