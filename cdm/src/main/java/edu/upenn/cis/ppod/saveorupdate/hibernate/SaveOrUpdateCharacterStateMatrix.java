@@ -118,7 +118,7 @@ public class SaveOrUpdateCharacterStateMatrix implements
 			}
 			newTargetOTUs.add(newTargetOTU);
 		}
-		targetMatrix.setOTUs(newTargetOTUs);
+		//targetMatrix.setOTUs(newTargetOTUs);
 
 		// Move Characters around - start by removing all characters
 		final List<Character> clearedTargetCharacters = targetMatrix
@@ -185,6 +185,8 @@ public class SaveOrUpdateCharacterStateMatrix implements
 			session.saveOrUpdate(newTargetCharacter);
 		}
 
+		session.saveOrUpdate(targetMatrix);
+		
 		// session.flush();
 		// session.clear();
 
@@ -197,19 +199,6 @@ public class SaveOrUpdateCharacterStateMatrix implements
 
 			CharacterStateRow targetRow = null;
 			List<Character> characters = targetMatrix.getCharacters();
-
-// if (targetMatrix.getId() != null) {
-// final String getRowQuery =
-			// "select r from CharacterStateRow r, CharacterStateMatrix m left join fetch r.cells where m.id = "
-// + targetMatrix.getId()
-// + " and m.rows["
-// + sourceRowIdx
-// + "] = r";
-// logger.debug("query: " + getRowQuery);
-//
-// targetRow = (CharacterStateRow) session
-// .createQuery(getRowQuery).uniqueResult();
-// }
 
 			if (null == (targetRow = targetMatrix.getRow(targetOTU))) {
 				targetRow = rowProvider.get();
@@ -269,18 +258,18 @@ public class SaveOrUpdateCharacterStateMatrix implements
 				if (cellsToFlush.size() % 20 == 0) {
 					logger.debug("{}: flushing cells, cellCounter: {}", METHOD,
 							cellCounter);
-					session.flush();
-					for (final CharacterStateCell cellToFlush : cellsToFlush) {
-						session.evict(cellToFlush);
-					}
+//					session.flush();
+//					for (final CharacterStateCell cellToFlush : cellsToFlush) {
+//						session.evict(cellToFlush);
+//					}
 					cellsToFlush.clear();
 				}
 			}
 			session.saveOrUpdate(targetRow);
 			logger.debug("{}: flushing row,  sourceRowIdx: {}", METHOD,
 					sourceRowIdx);
-			session.flush();
-			session.evict(targetRow); // will flush the cells to via cascade
+//			session.flush();
+//			session.evict(targetRow); // will flush the cells to via cascade
 			cellsToFlush.clear();
 		}
 

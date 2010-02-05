@@ -284,6 +284,11 @@ public final class OTUSet extends UUPPodEntityWXmlId {
 		return Collections.unmodifiableSet(otus);
 	}
 
+	/**
+	 * Get the study to which this OTU set belongs.
+	 * 
+	 * @return the study to which this OTU set belongs
+	 */
 	public Study getStudy() {
 		return study;
 	}
@@ -369,7 +374,7 @@ public final class OTUSet extends UUPPodEntityWXmlId {
 	 * If {@link #getAllowPersistAndResetPPodVersionInfo()} {@code == true} then
 	 * calls to this method does nothing and returns.
 	 * 
-	 * @see #setDoNotPersist(boolean)
+	 * @see #unsetAllowPersistAndResetPPodVersionInfo()
 	 * 
 	 * @return this {@code OTUSet}
 	 * 

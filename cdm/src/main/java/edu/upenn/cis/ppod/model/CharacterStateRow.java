@@ -53,6 +53,10 @@ import edu.upenn.cis.ppod.util.IVisitor;
 @Table(name = CharacterStateRow.TABLE)
 public final class CharacterStateRow extends PPodEntity {
 
+	/** The position in the matrix. */
+// @Column(name = "CHARACTER_STATE_MATRIX_POSITION")
+// private int characterStateMatrixPosition = -1;
+
 	/** This entitiy's table. Intentionally package-private. */
 	static final String TABLE = "CHARACTER_STATE_ROW";
 
@@ -140,6 +144,16 @@ public final class CharacterStateRow extends PPodEntity {
 		return cell;
 	}
 
+	/**
+	 * Set the cell at {@code cellIdx}
+	 * <p>
+	 * If {@code getCells()} is too short, it is null padded.
+	 * 
+	 * @param cell value to put
+	 * @param cellIdx where to put it
+	 * 
+	 * @return this
+	 */
 	public CharacterStateRow setCell(final CharacterStateCell cell,
 			final int cellIdx) {
 		checkNotNull(cell);
@@ -217,7 +231,8 @@ public final class CharacterStateRow extends PPodEntity {
 	}
 
 	@XmlElement(name = "cell")
-	private List<CharacterStateCell> getCellsForJaxb() {
+	@SuppressWarnings("unused")
+	private List<CharacterStateCell> getCellsMutable() {
 		return cells;
 	}
 
@@ -295,4 +310,5 @@ public final class CharacterStateRow extends PPodEntity {
 
 		return retValue.toString();
 	}
+
 }

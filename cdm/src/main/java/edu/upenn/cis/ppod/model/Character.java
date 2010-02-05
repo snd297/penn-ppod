@@ -156,7 +156,7 @@ public class Character extends UUPPodEntity {
 	@Override
 	public boolean beforeMarshal(final Marshaller marshaller) {
 		super.beforeMarshal(marshaller);
-		//System.out.println("getStatesForJaxb: " + getStatesForJaxb());
+		// System.out.println("getStatesForJaxb: " + getStatesForJaxb());
 		return true;
 	}
 
@@ -188,8 +188,13 @@ public class Character extends UUPPodEntity {
 		return Collections.unmodifiableMap(states);
 	}
 
+	/**
+	 * Get a mutable reference to the states.
+	 * 
+	 * @return a mutable reference to the states
+	 */
 	@XmlElementWrapper(name = "states")
-	protected Map<Integer, CharacterState> getStatesForJaxb() {
+	protected Map<Integer, CharacterState> getStatesMutable() {
 		return states;
 	}
 
