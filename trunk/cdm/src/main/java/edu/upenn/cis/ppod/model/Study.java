@@ -16,9 +16,8 @@
 package edu.upenn.cis.ppod.model;
 
 import static com.google.common.base.Preconditions.checkNotNull;
-import static com.google.common.base.Predicates.compose;
-import static com.google.common.base.Predicates.equalTo;
 import static com.google.common.collect.Sets.newHashSet;
+import static edu.upenn.cis.ppod.util.PPodIterables.equalTo;
 import static edu.upenn.cis.ppod.util.PPodIterables.findIf;
 
 import java.util.Collections;
@@ -146,9 +145,17 @@ public final class Study extends UUPPodEntity implements IOTUSetCentricEntities 
 		return label;
 	}
 
+	/**
+	 * Get the OTU with the given pPOD ID. Returns {@code null} if there is not
+	 * such {@code OTUSet}.
+	 * 
+	 * @param pPodId the pPOD ID.
+	 * 
+	 * @return the OTU with the given pPOD ID. Returns {@code null} if there is
+	 *         not such {@code OTUSet}
+	 */
 	public OTUSet getOTUSetByPPodId(final String pPodId) {
-		return findIf(getOTUSets(), compose(equalTo(pPodId),
-				IUUPPodEntity.getPPodId));
+		return findIf(getOTUSets(), equalTo(pPodId, IUUPPodEntity.getPPodId));
 	}
 
 	/**

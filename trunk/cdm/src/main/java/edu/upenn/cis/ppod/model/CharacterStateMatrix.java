@@ -49,8 +49,6 @@ import javax.xml.bind.annotation.XmlType;
 import org.hibernate.annotations.Cascade;
 import org.hibernate.annotations.IndexColumn;
 
-import com.google.inject.internal.Nullable;
-
 import edu.upenn.cis.ppod.util.IVisitor;
 
 /**
@@ -143,8 +141,6 @@ public class CharacterStateMatrix extends UUPPodEntityWXmlId {
 	 * in <code>row</code>. So <code>otus</code> is a rowNumber-> {@code OTU}
 	 * lookup.
 	 */
-	@XmlElement(name = "otuDocId")
-	@XmlIDREF
 	@ManyToMany
 	@JoinTable(inverseJoinColumns = { @JoinColumn(name = OTU.ID_COLUMN) })
 	@org.hibernate.annotations.IndexColumn(name = OTU.TABLE + "_POSITION")
@@ -168,19 +164,25 @@ public class CharacterStateMatrix extends UUPPodEntityWXmlId {
 	@Column(name = CHARACTER_IDX_COLUMN)
 	private final Map<Character, Integer> characterIdx = newHashMap();
 
+// @org.hibernate.annotations.CollectionOfElements
+// @JoinTable(name = TABLE + "_" + OTU, joinColumns = @JoinColumn(name =
+	// ID_COLUMN))
+// @org.hibernate.annotations.MapKeyManyToMany(joinColumns = @JoinColumn(name =
+	// OTU.ID_COLUMN))
+// @Column(name = OTU.TABLE + "_IDX")
+// private final Map<OTU, CharacterStateRow> rowsByOTU = newHashMap();
+
 	/**
 	 * The position of a {@code Character} in <code>characters</code> signifies
 	 * its column number in each <code>row</cod>. So <code>characters</code> is
 	 * a columnNumber-> <code>Character</code> lookup.
 	 */
-	@XmlElement(name = "characterDocId")
-	@XmlIDREF
 	@ManyToMany
 	@JoinTable(inverseJoinColumns = { @JoinColumn(name = Character.ID_COLUMN) })
 	@org.hibernate.annotations.IndexColumn(name = CHARACTERS_INDEX_COLUMN)
 	private final List<Character> characters = newArrayList();
 
-// @XmlElement(name = "row")
+	// @XmlElement(name = "row")
 // @OneToMany
 // @org.hibernate.annotations.IndexColumn(name = ROWS_INDEX_COLUMN)
 // @JoinColumn(name = ID_COLUMN, nullable = false)
@@ -189,8 +191,7 @@ public class CharacterStateMatrix extends UUPPodEntityWXmlId {
 	@OneToMany
 	@JoinTable(inverseJoinColumns = { @JoinColumn(name = CharacterStateRow.ID_COLUMN) })
 	@IndexColumn(name = ROWS_INDEX_COLUMN)
-	@Cascade( { org.hibernate.annotations.CascadeType.SAVE_UPDATE,
-			org.hibernate.annotations.CascadeType.DELETE_ORPHAN })
+	@Cascade(org.hibernate.annotations.CascadeType.DELETE_ORPHAN)
 	private final List<CharacterStateRow> rows = newArrayList();
 
 	@XmlAttribute
@@ -236,33 +237,6 @@ public class CharacterStateMatrix extends UUPPodEntityWXmlId {
 			}
 		}
 	}
-
-//
-// /**
-// * Keep it private because it's a non-cheap operation to be used sparingly.
-// */
-// private List<CharacterStateCell> getColumn(final Character character) {
-// final int characterIdx = getCharacterIdx().get(character);
-// final List<CharacterStateCell> columnCells = newArrayList();
-// for (final CharacterStateRow row : getRows()) {
-// columnCells.add(row.getCells().get(characterIdx));
-// }
-// return columnCells;
-// }
-//
-// private List<CharacterStateCell> setColumn(final Character character,
-// final List<CharacterStateCell> column) {
-// checkArgument(column.size() == getRows().size(), "column has "
-// + column.size() + " entries, but matrix has "
-// + getRows().size() + " rows");
-// final int characterIdx = getCharacterIdx().get(character);
-// final List<CharacterStateCell> columnCells = newArrayList();
-// for (int i = 0; i < getRows().size(); i++) {
-// final List<CharacterStateCell> originalCells = getRows().get(i).s
-//			
-// }
-// return this;
-// }
 
 	/**
 	 * {@link Unmarshaller} callback.
@@ -337,6 +311,8 @@ public class CharacterStateMatrix extends UUPPodEntityWXmlId {
 	 * 
 	 * @return a modifiable reference to the characters
 	 */
+	@XmlElement(name = "characterDocId")
+	@XmlIDREF
 	protected List<Character> getCharactersMutable() {
 		return characters;
 	}
@@ -445,6 +421,13 @@ public class CharacterStateMatrix extends UUPPodEntityWXmlId {
 		return otuSet;
 	}
 
+	@XmlElement(name = "otuDocId")
+	@XmlIDREF
+	@SuppressWarnings("unused")
+	private List<OTU> getOTUsMutable() {
+		return otus;
+	}
+
 	/**
 	 * Get the row indexed by an OTU.
 	 * 
@@ -472,68 +455,10 @@ public class CharacterStateMatrix extends UUPPodEntityWXmlId {
 	}
 
 	@XmlElement(name = "row")
-	private List<CharacterStateRow> getRowsForJaxb() {
+	@SuppressWarnings("unused")
+	private List<CharacterStateRow> getRowMutable() {
 		return rows;
 	}
-
-// public List<Character> setCharacters(final List<Character> newCharacters) {
-// checkNotNull(newCharacters);
-// if (newCharacters.equals(getCharacters())) {
-// // they're the same, nothing to do
-// return getCharacters();
-// }
-//
-// // Move Characters around - start by removing all characters
-// final List<Character> clearedTargetCharacters = clearCharacters();
-// final Map<Character, Integer> originalCharacterIndex =
-	// newHashMap(getCharacterIdx());
-//
-// final Map<Integer, Integer> oldCharIdxsByNewCharIdx = newHashMap();
-// for (final Character newCharacter : newCharacters) {
-// Character newTargetCharacter;
-// if (null == (newTargetCharacter = findIf(clearedTargetCharacters,
-// compose(equalTo(newCharacter.getPPodId()),
-// IUUPPodEntity.getPPodId)))) {
-// newTargetCharacter = newCharacter;
-// newTargetCharacter.setPPodId();
-// }
-// this.characters.add(newTargetCharacter);
-// newTargetCharacter.setLabel(newCharacter.getLabel());
-//
-// for (final CharacterState sourceState : newCharacter.getStates()
-// .values()) {
-// CharacterState targetState;
-// if (null == (targetState = newTargetCharacter.getStates().get(
-// sourceState.getStateNumber()))) {
-// targetState = newTargetCharacter.addState(stateFactory
-// .create(sourceState.getStateNumber()));
-//
-// }
-// targetState.setLabel(sourceState.getLabel());
-// }
-//
-// oldCharIdxsByNewCharIdx.put(targetMatrix.getCharacterIdx().get(
-// newTargetCharacter), oldIdxsByChararacter
-// .get(newTargetCharacter));
-//
-// for (final Attachment sourceAttachment : newCharacter
-// .getAttachments()) {
-// final Set<Attachment> targetAttachments = newTargetCharacter
-// .getAttachmentsByStringValue(sourceAttachment
-// .getStringValue());
-// Attachment targetAttachment = getOnlyElement(targetAttachments,
-// null);
-// if (targetAttachment == null) {
-// targetAttachment = attachmentProvider.get();
-// targetAttachment.setPPodId();
-// }
-// newTargetCharacter.addAttachment(targetAttachment);
-// mergeAttachment.merge(targetAttachment, sourceAttachment);
-// }
-// }
-//
-// return originalCharacters;
-// 
 
 	/**
 	 * Get the type of this matrix. Used to determine the type of matrix after
@@ -796,7 +721,7 @@ public class CharacterStateMatrix extends UUPPodEntityWXmlId {
 			resetPPodVersionInfo();
 		}
 		final CharacterStateRow oldRow = rows.get(otuIdx);
-		if (row != null) { 
+		if (row != null) {
 			row.setMatrix(this);
 		}
 		if (nullSafeEquals(row, oldRow)) {

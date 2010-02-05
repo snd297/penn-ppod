@@ -21,6 +21,11 @@ import javax.persistence.Table;
 import com.google.inject.Inject;
 import com.google.inject.assistedinject.Assisted;
 
+/**
+ * Represents A, C, G, and T.
+ * 
+ * @author Sam Donnelly
+ */
 @Entity
 @Table(name = DNAState.TABLE)
 public final class DNAState extends MolecularState {

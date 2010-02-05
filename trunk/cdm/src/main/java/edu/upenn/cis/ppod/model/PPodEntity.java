@@ -167,9 +167,13 @@ public abstract class PPodEntity extends PersistentObject implements IAttachee,
 				}));
 	}
 
+	/**
+	 * Created for JAXB.
+	 */
 	@XmlElement(name = "attachmentDocId")
 	@XmlIDREF
-	protected Set<Attachment> getAttachmentsForJaxb() {
+	@SuppressWarnings("unused")
+	private Set<Attachment> getAttachmentsMutable() {
 		if (attachments == null) {
 			attachments = newHashSet();
 		}
@@ -222,6 +226,7 @@ public abstract class PPodEntity extends PersistentObject implements IAttachee,
 	 * 
 	 * @return this
 	 */
+	@SuppressWarnings("unused")
 	private PPodEntity setPPodVersion(final Long pPodVersion) {
 		this.pPodVersion = pPodVersion;
 		return this;
