@@ -65,25 +65,6 @@ public abstract class PPodEntity extends PersistentObject implements
 
 	static final String TABLE = "PPOD_ENTITY";
 
-	@Transient
-	private boolean receivedANewVersion = false;
-
-	/**
-	 * Set the receivedANewVersion.
-	 * 
-	 * @param receivedANewVersion the receivedANewVersion to set
-	 * 
-	 * @return this
-	 */
-	public IPPodEntity setReceivedANewVersion(final boolean receivedANewVersion) {
-		this.receivedANewVersion = receivedANewVersion;
-		return this;
-	}
-
-	public boolean getReceivedANewVersion() {
-		return receivedANewVersion;
-	}
-
 	@ManyToMany
 	@JoinTable(inverseJoinColumns = { @JoinColumn(name = Attachment.ID_COLUMN) })
 	private Set<Attachment> attachments = newHashSet();
@@ -103,7 +84,23 @@ public abstract class PPodEntity extends PersistentObject implements
 	private Long pPodVersion;
 
 	@Transient
-	boolean allowPersistAndResetPPodVersionInfo = true;
+	boolean allowPersist = true;
+
+	@Transient
+	boolean blockedAVersionReset = false;
+
+	@Transient
+	boolean allowResetPPodVersionInfo = true;
+
+	public PPodEntity setAllowResetPPodVersionInfo(
+			final boolean allowResetPPodVersionInfo) {
+		this.allowResetPPodVersionInfo = allowResetPPodVersionInfo;
+		return this;
+	}
+
+	public boolean getAllowResetPPodVersionInfo() {
+		return allowResetPPodVersionInfo;
+	}
 
 	PPodEntity() {}
 
@@ -140,8 +137,8 @@ public abstract class PPodEntity extends PersistentObject implements
 		return true;
 	}
 
-	public boolean getAllowPersistAndResetPPodVersionInfo() {
-		return allowPersistAndResetPPodVersionInfo;
+	public boolean getAllowPersist() {
+		return allowPersist;
 	}
 
 	public Set<Attachment> getAttachments() {
@@ -193,10 +190,7 @@ public abstract class PPodEntity extends PersistentObject implements
 		if (pPodVersionInfo != null) {
 			return pPodVersionInfo.getPPodVersion();
 		}
-		if (pPodVersion != null) {
-			return pPodVersion;
-		}
-		return null;
+		return pPodVersion;
 	}
 
 	public PPodVersionInfo getPPodVersionInfo() {
@@ -219,12 +213,35 @@ public abstract class PPodEntity extends PersistentObject implements
 	 * 
 	 * @return this {@code PPodEntity}
 	 */
-	protected PPodEntity resetPPodVersionInfo() {
-		if (getAllowPersistAndResetPPodVersionInfo()
-				&& !getReceivedANewVersion()) {
+	public PPodEntity resetPPodVersionInfo() {
+		if (getAllowResetPPodVersionInfo()) {
 			pPodVersionInfo = null;
 			pPodVersion = null;
+			setBlockedAVersionReset(false);
+		} else {
+			setBlockedAVersionReset(true);
 		}
+		return this;
+	}
+
+	/**
+	 * Get the blockedAVersionReset.
+	 * 
+	 * @return the blockedAVersionReset
+	 */
+	public boolean getBlockedAVersionReset() {
+		return blockedAVersionReset;
+	}
+
+	/**
+	 * Set the blockedAVersionReset.
+	 * 
+	 * @param blockedAVersionReset the blockedAVersionReset to set
+	 * 
+	 * @return this
+	 */
+	PPodEntity setBlockedAVersionReset(boolean blockedAVersionReset) {
+		this.blockedAVersionReset = blockedAVersionReset;
 		return this;
 	}
 
@@ -235,8 +252,7 @@ public abstract class PPodEntity extends PersistentObject implements
 	 * 
 	 * @return this
 	 */
-	@SuppressWarnings("unused")
-	private IPPodEntity setPPodVersion(final Long pPodVersion) {
+	public IPPodEntity setPPodVersion(final Long pPodVersion) {
 		this.pPodVersion = pPodVersion;
 		return this;
 	}
@@ -268,7 +284,8 @@ public abstract class PPodEntity extends PersistentObject implements
 	}
 
 	public PersistentObject unsetAllowPersistAndResetPPodVersionInfo() {
-		this.allowPersistAndResetPPodVersionInfo = false;
+		allowPersist = false;
+		allowResetPPodVersionInfo = false;
 		return this;
 	}
 

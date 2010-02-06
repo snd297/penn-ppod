@@ -493,8 +493,8 @@ public class CharacterStateMatrix extends UUPPodEntityWXmlId {
 	 * @return this {@code CharacterStateMatrix}
 	 */
 	@Override
-	protected CharacterStateMatrix resetPPodVersionInfo() {
-		if (getAllowPersistAndResetPPodVersionInfo()) {
+	public CharacterStateMatrix resetPPodVersionInfo() {
+		if (getAllowResetPPodVersionInfo()) {
 			if (getPPodVersionInfo() == null) {
 				// nothing to do
 			} else {

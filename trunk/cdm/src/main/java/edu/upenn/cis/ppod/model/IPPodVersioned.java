@@ -41,8 +41,7 @@ interface IPPodVersioned {
 	 */
 	PPodVersionInfo getPPodVersionInfo();
 
-	boolean getReceivedANewVersion();
-
-	IPPodVersioned setReceivedANewVersion(boolean receivedANewVersion);
+	IPPodVersioned setAllowResetPPodVersionInfo(
+			boolean allowResetPPodVersionInfo);
 
 }

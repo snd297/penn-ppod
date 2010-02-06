@@ -487,7 +487,7 @@ public final class CharacterStateCell extends PPodEntity {
 
 	@Override
 	public CharacterStateCell resetPPodVersionInfo() {
-		if (getAllowPersistAndResetPPodVersionInfo()) {
+		if (getAllowResetPPodVersionInfo()) {
 			if (getPPodVersionInfo() == null) {
 
 			} else {

@@ -398,8 +398,8 @@ public final class OTUSet extends UUPPodEntityWXmlId {
 	 *             this.getPPodVersion().getPPodVersion()}
 	 */
 	@Override
-	protected OTUSet resetPPodVersionInfo() {
-		if (getAllowPersistAndResetPPodVersionInfo()) {
+	public OTUSet resetPPodVersionInfo() {
+		if (getAllowResetPPodVersionInfo()) {
 			if (getPPodVersionInfo() == null) {
 
 			} else {

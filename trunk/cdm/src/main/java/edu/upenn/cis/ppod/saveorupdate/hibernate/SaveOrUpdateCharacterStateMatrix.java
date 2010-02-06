@@ -98,6 +98,11 @@ public class SaveOrUpdateCharacterStateMatrix implements
 		checkNotNull(sourceMatrix);
 		checkNotNull(newTargetMatrixOTUSet);
 
+		// We need to block version resets because they propagate upward and we
+		// don't want to modify OTUSet or Study before the flush's that we need
+		// to do. Because then we get StaleObjectException's.
+		targetMatrix.setAllowResetPPodVersionInfo(false);
+
 		newTargetMatrixOTUSet.addMatrix(targetMatrix);
 
 		targetMatrix.setLabel(sourceMatrix.getLabel());
@@ -208,15 +213,34 @@ public class SaveOrUpdateCharacterStateMatrix implements
 		for (final OTU targetOTU : targetMatrix.getOTUs()) {
 			sourceRowIdx++;
 
+			final CharacterStateRow sourceRow = sourceMatrix.getRows().get(
+					sourceRowIdx);
+
 			CharacterStateRow targetRow = null;
 			List<Character> characters = targetMatrix.getCharacters();
+
+			boolean newRow = false;
 
 			if (null == (targetRow = targetMatrix.getRow(targetOTU))) {
 				targetRow = rowProvider.get();
 				targetMatrix.setRow(targetOTU, targetRow);
+				newRow = true;
 			} else {
 				// Since we don't store the row->matrix reference
 				targetRow.setMatrix(targetMatrix);
+				newRow = false;
+			}
+
+			if (!newRow && targetRow.getPPodVersion() == null) {
+				throw new AssertionError(
+						"existing row has now pPOD version number");
+			}
+
+			if (newRow) {
+				// If it's new
+			} else if (targetRow.getPPodVersion() <= sourceRow.getPPodVersion()) {
+				// We already have the latest version
+				continue;
 			}
 
 			while (targetRow.getCells().size() > targetMatrix.getCharacters()
@@ -285,7 +309,10 @@ public class SaveOrUpdateCharacterStateMatrix implements
 			session.evict(targetRow); // will flush the cells to via cascade
 			cellsToFlush.clear();
 		}
-
+		targetMatrix.setAllowResetPPodVersionInfo(true);
+		if (targetMatrix.getBlockedAVersionReset()) {
+			targetMatrix.resetPPodVersionInfo();
+		}
 		return targetMatrix;
 	}
 }

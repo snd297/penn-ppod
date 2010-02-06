@@ -185,7 +185,7 @@ public final class Attachment extends UUPPodEntity {
 	}
 
 	@Override
-	protected Attachment resetPPodVersionInfo() {
+	public Attachment resetPPodVersionInfo() {
 		if (getPPodVersionInfo() == null) {
 			// Then it's already been reset
 		} else {
