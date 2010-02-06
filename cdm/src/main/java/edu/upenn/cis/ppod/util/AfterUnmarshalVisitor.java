@@ -24,7 +24,7 @@ import edu.upenn.cis.ppod.model.CharacterStateMatrix;
  * 
  * @author Sam Donnelly
  */
-public class AfterUnmarshalVisitor extends AbstractVisitor {
+public class AfterUnmarshalVisitor extends EmptyVisitor {
 
 	/**
 	 * Call {@code matrix.afterUnmarshal()}.

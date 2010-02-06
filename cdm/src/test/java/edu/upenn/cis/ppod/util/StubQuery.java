@@ -411,4 +411,9 @@ public class StubQuery implements Query{
 		return null;
 	}
 
+	public boolean isReadOnly() {
+		// TODO Auto-generated method stub
+		throw new UnsupportedOperationException();
+	}
+
 }

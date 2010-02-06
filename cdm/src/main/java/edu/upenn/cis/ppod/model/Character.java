@@ -213,12 +213,14 @@ public class Character extends UUPPodEntity {
 
 	@Override
 	protected Character resetPPodVersionInfo() {
-		if (getPPodVersionInfo() == null) {} else {
+		if (getPPodVersionInfo() == null) {
+			
+		} else {
 			for (final CharacterStateMatrix matrix : matrices) {
 				matrix.resetPPodVersionInfo();
 			}
+			super.resetPPodVersionInfo();
 		}
-		super.resetPPodVersionInfo();
 		return this;
 	}
 

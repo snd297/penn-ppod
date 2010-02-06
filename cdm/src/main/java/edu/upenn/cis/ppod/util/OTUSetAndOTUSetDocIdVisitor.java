@@ -22,7 +22,7 @@ import edu.upenn.cis.ppod.model.OTUSet;
  * @author Sam Donnelly
  * 
  */
-public class OTUSetAndOTUSetDocIdVisitor extends AbstractVisitor {
+public class OTUSetAndOTUSetDocIdVisitor extends EmptyVisitor {
 
 	/**
 	 * Call {@code otuSet.setDocId()}.

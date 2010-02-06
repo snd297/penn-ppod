@@ -84,20 +84,17 @@ public final class OTUSet extends UUPPodEntityWXmlId {
 	private String label;
 
 	/** The set of {@code OTU}s that this {@code OTUSet} contains. */
-	@XmlElement(name = "otu")
 	@ManyToMany
 	@Cascade(org.hibernate.annotations.CascadeType.SAVE_UPDATE)
 	@JoinTable(name = OTU_SET_OTU_JOIN_TABLE, joinColumns = { @JoinColumn(name = OTUSet.ID_COLUMN) }, inverseJoinColumns = { @JoinColumn(name = OTU.ID_COLUMN) })
 	private final Set<OTU> otus = newHashSet();
 
 	/** The matrices which reference this OTU set. */
-	@XmlElement(name = "matrix")
 	@OneToMany(mappedBy = "otuSet")
 	@Cascade(org.hibernate.annotations.CascadeType.SAVE_UPDATE)
 	private final Set<CharacterStateMatrix> matrices = newHashSet();
 
 	/** The tree sets that reference this OTU set. */
-	@XmlElement(name = "treeSet")
 	@OneToMany(mappedBy = "otuSet")
 	@Cascade(org.hibernate.annotations.CascadeType.SAVE_UPDATE)
 	private final Set<TreeSet> treeSets = newHashSet();
@@ -260,6 +257,12 @@ public final class OTUSet extends UUPPodEntityWXmlId {
 		return Collections.unmodifiableSet(matrices);
 	}
 
+	@XmlElement(name = "matrix")
+	@SuppressWarnings("unused")
+	private Set<CharacterStateMatrix> getMatricesMutable() {
+		return matrices;
+	}
+
 	/**
 	 * Return the {@code OTU}, if any, with id {@code pPodId}, or
 	 * <code>null</code> if there is no such {@code OTU}, or <code>null</code>
@@ -284,6 +287,12 @@ public final class OTUSet extends UUPPodEntityWXmlId {
 		return Collections.unmodifiableSet(otus);
 	}
 
+	@XmlElement(name = "otu")
+	@SuppressWarnings("unused")
+	private Set<OTU> getOTUSetsMutable() {
+		return otus;
+	}
+
 	/**
 	 * Get the study to which this OTU set belongs.
 	 * 
@@ -300,6 +309,12 @@ public final class OTUSet extends UUPPodEntityWXmlId {
 	 */
 	public Set<TreeSet> getTreeSets() {
 		return Collections.unmodifiableSet(treeSets);
+	}
+
+	@XmlElement(name = "treeSet")
+	@SuppressWarnings("unused")
+	private Set<TreeSet> getTreeSetsMutable() {
+		return treeSets;
 	}
 
 	/**
@@ -388,8 +403,8 @@ public final class OTUSet extends UUPPodEntityWXmlId {
 			if (getPPodVersionInfo() == null) {
 
 			} else {
-				if (study != null) {
-					study.resetPPodVersionInfo();
+				if (getStudy() != null) {
+					getStudy().resetPPodVersionInfo();
 				}
 				super.resetPPodVersionInfo();
 			}

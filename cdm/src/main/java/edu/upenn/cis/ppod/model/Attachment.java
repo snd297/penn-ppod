@@ -138,7 +138,7 @@ public final class Attachment extends UUPPodEntity {
 		return this;
 	}
 
-	PPodEntity addAttachee(final PPodEntity attachee) {
+	IPPodEntity addAttachee(final PPodEntity attachee) {
 		attachees.add(attachee);
 		return attachee;
 	}

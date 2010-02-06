@@ -77,9 +77,9 @@ public class MergeCharacterStateMatrixTest {
 
 		final CharacterStateMatrix targetMatrix = (CharacterStateMatrix) matrixProvider
 				.get();
-		final CharacterStateMatrix dbMatrix = mergeCharacterStateMatrix.saveOrUpdate(
-				targetMatrix, sourceMatrix, fakeDbOTUSet,
-				fakeOTUsByIncomingOTU, dnaCharacterProvider.get());
+		final CharacterStateMatrix dbMatrix = mergeCharacterStateMatrix
+				.saveOrUpdate(targetMatrix, sourceMatrix, fakeDbOTUSet,
+						fakeOTUsByIncomingOTU, dnaCharacterProvider.get());
 		ModelAssert.assertEqualsCharacterStateMatrices(dbMatrix, sourceMatrix);
 	}
 
@@ -102,6 +102,7 @@ public class MergeCharacterStateMatrixTest {
 		final List<OTU> shuffledSourceOTUs = newArrayList(sourceMatrix
 				.getOTUs());
 		Collections.shuffle(shuffledSourceOTUs);
+		sourceMatrix.clearOTUs();
 		sourceMatrix.setOTUs(shuffledSourceOTUs);
 
 		mergeCharacterStateMatrix.saveOrUpdate(targetMatrix, sourceMatrix,

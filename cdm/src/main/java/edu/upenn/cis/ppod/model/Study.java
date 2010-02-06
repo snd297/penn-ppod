@@ -64,7 +64,6 @@ public final class Study extends UUPPodEntity implements IOTUSetCentricEntities 
 	@Column(name = LABEL_COLUMN, nullable = false)
 	private String label;
 
-	@XmlElement(name = "otuSet")
 	@OneToMany(mappedBy = "study")
 	@Cascade(org.hibernate.annotations.CascadeType.SAVE_UPDATE)
 	private final Set<OTUSet> otuSets = newHashSet();
@@ -125,10 +124,6 @@ public final class Study extends UUPPodEntity implements IOTUSetCentricEntities 
 			for (final OTUSet otuSet : getOTUSets()) {
 				for (final CharacterStateMatrix matrix : otuSet.getMatrices()) {
 					studyWideCharacters.addAll(matrix.getCharacters());
-// for (final Character character : matrix.getCharacters()) {
-// System.out.println("character.getStates: "
-// + character.getStatesForJaxb());
-// }
 				}
 			}
 		}
@@ -159,12 +154,18 @@ public final class Study extends UUPPodEntity implements IOTUSetCentricEntities 
 	}
 
 	/**
-	 * Get the otuSets.
+	 * Get an unmodifiable view of the OTU sets.
 	 * 
 	 * @return the otuSets
 	 */
 	public Set<OTUSet> getOTUSets() {
 		return Collections.unmodifiableSet(otuSets);
+	}
+
+	@XmlElement(name = "otuSet")
+	@SuppressWarnings("unused")
+	private Set<OTUSet> getOTUSetsMutable() {
+		return otuSets;
 	}
 
 	/**

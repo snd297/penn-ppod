@@ -485,6 +485,19 @@ public final class CharacterStateCell extends PPodEntity {
 		return this;
 	}
 
+	@Override
+	public CharacterStateCell resetPPodVersionInfo() {
+		if (getAllowPersistAndResetPPodVersionInfo()) {
+			if (getPPodVersionInfo() == null) {
+
+			} else {
+				row.resetPPodVersionInfo();
+				super.resetPPodVersionInfo();
+			}
+		}
+		return this;
+	}
+
 	/**
 	 * Created for testing purposes.
 	 * 

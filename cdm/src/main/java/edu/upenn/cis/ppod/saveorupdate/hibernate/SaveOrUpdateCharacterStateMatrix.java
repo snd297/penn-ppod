@@ -118,11 +118,27 @@ public class SaveOrUpdateCharacterStateMatrix implements
 			}
 			newTargetOTUs.add(newTargetOTU);
 		}
-		//targetMatrix.setOTUs(newTargetOTUs);
+
+		targetMatrix.clearOTUs();
+
+		// Force the flushing
+		session.flush();
+
+		targetMatrix.setOTUs(newTargetOTUs);
 
 		// Move Characters around - start by removing all characters
 		final List<Character> clearedTargetCharacters = targetMatrix
 				.clearCharacters();
+		// Force the clearing of the characters
+		session.flush();
+
+		if (targetMatrix.getOTUSet().getId() != null) {
+			// session.refresh(targetMatrix.getOTUSet().getStudy());
+		}
+		if (targetMatrix.getOTUSet().getId() != null) {
+			// session.refresh(targetMatrix.getOTUSet());
+		}
+
 		final Map<Character, Integer> oldIdxsByChararacter = newHashMap();
 		for (final ListIterator<Character> idx = clearedTargetCharacters
 				.listIterator(); idx.hasNext();) {
@@ -185,11 +201,6 @@ public class SaveOrUpdateCharacterStateMatrix implements
 			session.saveOrUpdate(newTargetCharacter);
 		}
 
-		session.saveOrUpdate(targetMatrix);
-		
-		// session.flush();
-		// session.clear();
-
 		int sourceRowIdx = -1;
 		int cellCounter = 0;
 		final Set<CharacterStateCell> cellsToFlush = newHashSet();
@@ -214,7 +225,9 @@ public class SaveOrUpdateCharacterStateMatrix implements
 			}
 
 			final List<CharacterStateCell> originalTargetCells = newArrayList(targetRow
-					.getCells());
+					.clearCells());
+
+			session.flush();
 
 			for (int newCellIdx = 0; newCellIdx < targetMatrix.getCharacters()
 					.size(); newCellIdx++) {
@@ -258,18 +271,18 @@ public class SaveOrUpdateCharacterStateMatrix implements
 				if (cellsToFlush.size() % 20 == 0) {
 					logger.debug("{}: flushing cells, cellCounter: {}", METHOD,
 							cellCounter);
-//					session.flush();
-//					for (final CharacterStateCell cellToFlush : cellsToFlush) {
-//						session.evict(cellToFlush);
-//					}
+					session.flush();
+					for (final CharacterStateCell cellToFlush : cellsToFlush) {
+						session.evict(cellToFlush);
+					}
 					cellsToFlush.clear();
 				}
 			}
 			session.saveOrUpdate(targetRow);
 			logger.debug("{}: flushing row,  sourceRowIdx: {}", METHOD,
 					sourceRowIdx);
-//			session.flush();
-//			session.evict(targetRow); // will flush the cells to via cascade
+			session.flush();
+			session.evict(targetRow); // will flush the cells to via cascade
 			cellsToFlush.clear();
 		}
 
