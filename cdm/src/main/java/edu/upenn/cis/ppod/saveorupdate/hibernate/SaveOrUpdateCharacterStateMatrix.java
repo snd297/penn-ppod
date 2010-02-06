@@ -238,7 +238,7 @@ public class SaveOrUpdateCharacterStateMatrix implements
 
 			if (newRow) {
 				// If it's new
-			} else if (targetRow.getPPodVersion() <= sourceRow.getPPodVersion()) {
+			} else if (sourceRow.getPPodVersion() >= 0) {
 				// We already have the latest version
 				continue;
 			}

@@ -30,6 +30,7 @@ import com.google.inject.Provider;
 
 import edu.upenn.cis.ppod.TestGroupDefs;
 import edu.upenn.cis.ppod.model.CharacterStateMatrix;
+import edu.upenn.cis.ppod.model.CharacterStateRow;
 import edu.upenn.cis.ppod.model.DNACharacter;
 import edu.upenn.cis.ppod.model.ModelAssert;
 import edu.upenn.cis.ppod.model.OTU;
@@ -105,6 +106,12 @@ public class MergeCharacterStateMatrixTest {
 		sourceMatrix.clearOTUs();
 		sourceMatrix.setOTUs(shuffledSourceOTUs);
 
+		for (final CharacterStateRow targetRow : targetMatrix.getRows()) {
+			targetRow.setPPodVersion(1L);
+		}
+		for (final CharacterStateRow sourceRow : sourceMatrix.getRows()) {
+			sourceRow.setPPodVersion(1L);
+		}
 		mergeCharacterStateMatrix.saveOrUpdate(targetMatrix, sourceMatrix,
 				fakeTargetOTUSet, fakeOTUsByIncomingOTU, dnaCharacterProvider
 						.get());
