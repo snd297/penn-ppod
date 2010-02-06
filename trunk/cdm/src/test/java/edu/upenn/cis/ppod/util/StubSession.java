@@ -379,4 +379,19 @@ public class StubSession implements Session {
 		throw new UnsupportedOperationException();
 	}
 
+	public boolean isDefaultReadOnly() {
+		// TODO Auto-generated method stub
+		throw new UnsupportedOperationException();
+	}
+
+	public boolean isReadOnly(Object entityOrProxy) {
+		// TODO Auto-generated method stub
+		throw new UnsupportedOperationException();
+	}
+
+	public void setDefaultReadOnly(boolean readOnly) {
+		// TODO Auto-generated method stub
+		throw new UnsupportedOperationException();
+	}
+
 }

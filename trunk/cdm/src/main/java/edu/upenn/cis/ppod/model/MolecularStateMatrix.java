@@ -18,24 +18,22 @@ package edu.upenn.cis.ppod.model;
 import static com.google.common.base.Preconditions.checkArgument;
 import static com.google.common.base.Preconditions.checkNotNull;
 
-import java.util.List;
-
 /**
  * @author Sam Donnelly
  */
-public abstract class MolecularStateMatrix extends CharacterStateMatrix {
+abstract class MolecularStateMatrix extends CharacterStateMatrix {
 
 	/**
 	 * Set the {@code Character} at {@code characterIdx}.
 	 * <p>
 	 * If {@code getCharacters().size() <= characterIdx}, then this method pads
-	 * {@link #getCharacters()} with {@code character}.
+	 * {@code getCharacters()} with {@code character}.
 	 * <p>
 	 * If {@code character} was already contained in this matrix, then its
 	 * former position is filled in with {@code null}.
 	 * <p>
 	 * This method is does not reorder the columns of the matrix, unlike
-	 * {@link #setOTUs(List)} which reorders rows.
+	 * {@code setOTUs(List)} which reorders rows.
 	 * 
 	 * @param characterIdx index
 	 * @param character value

@@ -17,6 +17,7 @@ package edu.upenn.cis.ppod.model;
 
 import static com.google.common.base.Preconditions.checkArgument;
 import static com.google.common.base.Preconditions.checkNotNull;
+import static com.google.common.base.Preconditions.checkState;
 import static com.google.common.collect.Lists.newArrayList;
 import static com.google.common.collect.Lists.newArrayListWithCapacity;
 import static com.google.common.collect.Maps.newHashMap;
@@ -46,7 +47,6 @@ import javax.xml.bind.annotation.XmlElement;
 import javax.xml.bind.annotation.XmlIDREF;
 import javax.xml.bind.annotation.XmlType;
 
-import org.hibernate.annotations.Cascade;
 import org.hibernate.annotations.IndexColumn;
 
 import edu.upenn.cis.ppod.util.IVisitor;
@@ -142,7 +142,7 @@ public class CharacterStateMatrix extends UUPPodEntityWXmlId {
 	 * lookup.
 	 */
 	@ManyToMany
-	@JoinTable(inverseJoinColumns = { @JoinColumn(name = OTU.ID_COLUMN) })
+	@JoinTable(inverseJoinColumns = @JoinColumn(name = OTU.ID_COLUMN))
 	@org.hibernate.annotations.IndexColumn(name = OTU.TABLE + "_POSITION")
 	private final List<OTU> otus = newArrayList();
 
@@ -178,10 +178,11 @@ public class CharacterStateMatrix extends UUPPodEntityWXmlId {
 	 * a columnNumber-> <code>Character</code> lookup.
 	 */
 	@ManyToMany
-	@JoinTable(inverseJoinColumns = { @JoinColumn(name = Character.ID_COLUMN) })
-	@org.hibernate.annotations.IndexColumn(name = CHARACTERS_INDEX_COLUMN)
+	@JoinTable(inverseJoinColumns = @JoinColumn(name = Character.ID_COLUMN))
+	@IndexColumn(name = CHARACTERS_INDEX_COLUMN)
 	private final List<Character> characters = newArrayList();
 
+	/** No delete_orphan... TODO */
 	// @XmlElement(name = "row")
 // @OneToMany
 // @org.hibernate.annotations.IndexColumn(name = ROWS_INDEX_COLUMN)
@@ -189,9 +190,9 @@ public class CharacterStateMatrix extends UUPPodEntityWXmlId {
 // @Cascade( { org.hibernate.annotations.CascadeType.SAVE_UPDATE,
 // org.hibernate.annotations.CascadeType.DELETE_ORPHAN })
 	@OneToMany
-	@JoinTable(inverseJoinColumns = { @JoinColumn(name = CharacterStateRow.ID_COLUMN) })
+	@JoinTable(inverseJoinColumns = @JoinColumn(name = CharacterStateRow.ID_COLUMN))
 	@IndexColumn(name = ROWS_INDEX_COLUMN)
-	@Cascade(org.hibernate.annotations.CascadeType.DELETE_ORPHAN)
+// @Cascade(org.hibernate.annotations.CascadeType.DELETE_ORPHAN)
 	private final List<CharacterStateRow> rows = newArrayList();
 
 	@XmlAttribute
@@ -496,10 +497,12 @@ public class CharacterStateMatrix extends UUPPodEntityWXmlId {
 		if (getAllowPersistAndResetPPodVersionInfo()) {
 			if (getPPodVersionInfo() == null) {
 				// nothing to do
-			} else if (otuSet != null) {
-				otuSet.resetPPodVersionInfo();
+			} else {
+				if (otuSet != null) {
+					otuSet.resetPPodVersionInfo();
+				}
+				super.resetPPodVersionInfo();
 			}
-			super.resetPPodVersionInfo();
 		}
 		return this;
 	}
@@ -596,6 +599,22 @@ public class CharacterStateMatrix extends UUPPodEntityWXmlId {
 		return this;
 	}
 
+	@Transient
+	private List<OTU> clearedOTUs = newArrayList();
+
+	@Transient
+	private List<CharacterStateRow> clearedRows = newArrayList();
+
+	public CharacterStateMatrix clearOTUs() {
+		clearedOTUs.clear();
+		clearedRows.clear();
+		clearedOTUs.addAll(getOTUs());
+		clearedRows.addAll(getRows());
+		otus.clear();
+		rows.clear();
+		return this;
+	}
+
 	/**
 	 * Order the {@code OTU}s of {@code this.getOTUSet()}. In other words, set
 	 * the order of the rows in this {@code CharacterStateMatrix}.
@@ -609,7 +628,7 @@ public class CharacterStateMatrix extends UUPPodEntityWXmlId {
 	 * <p>
 	 * Assumes all members of {@code newOtus} are not Hibernate-detached.
 	 * 
-	 * @param newOtus order of the {@link OTUSet} associated with this {@code
+	 * @param newOTUs order of the {@link OTUSet} associated with this {@code
 	 *            CharacterStateMatrix}
 	 * 
 	 * @return this {@code CharacterStateMatrix}
@@ -620,8 +639,15 @@ public class CharacterStateMatrix extends UUPPodEntityWXmlId {
 	 * @throws IllegalStateException if the OTU set has not been set, ie if
 	 *             {@link #getOTUSet() == null}
 	 */
-	public CharacterStateMatrix setOTUs(final List<OTU> newOtus) {
-		if (newOtus.equals(otus)) {
+	public CharacterStateMatrix setOTUs(final List<OTU> newOTUs) {
+		checkNotNull(newOTUs);
+		checkState(getOTUs().size() == 0 && getRows().size() == 0,
+				"you must call clearOTUs before you call setOTUs if getOTUs is non-zero");
+		otus.addAll(clearedOTUs);
+		rows.addAll(clearedRows);
+		clearedOTUs.clear();
+		clearedRows.clear();
+		if (newOTUs.equals(getOTUs())) {
 			// They're the same, nothing to do
 			return this;
 		}
@@ -631,22 +657,22 @@ public class CharacterStateMatrix extends UUPPodEntityWXmlId {
 					"otuSet needs to be set before setOTUs(...) is called");
 		}
 
-		if (newOtus.containsAll(otuSet.getOTUs())
-				&& otuSet.getOTUs().containsAll(newOtus)) {
+		if (newOTUs.containsAll(otuSet.getOTUs())
+				&& otuSet.getOTUs().containsAll(newOTUs)) {
 			// They have the same elements, that's good.
 		} else {
 			throw new IllegalArgumentException(
 					"otus (size "
-							+ newOtus.size()
+							+ newOTUs.size()
 							+ ") does not contain the same OTU's as the matrix's OTUSet (size "
 							+ otuSet.getOTUs().size() + ").");
 		}
 
 		// We're now going to move around the rows to match the new ordering
-		final List<CharacterStateRow> newRows = newArrayListWithCapacity(newOtus
+		final List<CharacterStateRow> newRows = newArrayListWithCapacity(newOTUs
 				.size());
-		for (int newOtuIdx = 0; newOtuIdx < newOtus.size(); newOtuIdx++) {
-			final OTU newOtu = newOtus.get(newOtuIdx);
+		for (int newOtuIdx = 0; newOtuIdx < newOTUs.size(); newOtuIdx++) {
+			final OTU newOtu = newOTUs.get(newOtuIdx);
 
 			// oldIdx is where newOtu used to be
 			final Integer oldIdx = getOTUIdx().get(newOtu);
@@ -663,7 +689,7 @@ public class CharacterStateMatrix extends UUPPodEntityWXmlId {
 		otuIdx.clear();
 		rows.clear();
 		for (int i = 0; i < newRows.size(); i++) {
-			final OTU newOtu = newOtus.get(i);
+			final OTU newOtu = newOTUs.get(i);
 			otus.add(newOtu);
 			otuIdx.put(newOtu, i);
 			setRow(newOtu, newRows.get(i)); // could be setting it to null

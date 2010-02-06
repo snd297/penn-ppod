@@ -17,6 +17,7 @@ package edu.upenn.cis.ppod.model;
 
 import static com.google.common.collect.Sets.newHashSet;
 
+import java.util.Collections;
 import java.util.Set;
 
 import javax.persistence.Entity;
@@ -41,8 +42,6 @@ import com.google.common.base.Predicate;
 import com.google.common.collect.Iterables;
 import com.google.common.collect.Sets;
 
-import edu.upenn.cis.ppod.services.hibernate.PPodEntitiesResourceHibernate;
-
 /**
  * A {@code PersistentObject} with pPOD version information and to which we can
  * add/remove attachments.
@@ -61,10 +60,29 @@ import edu.upenn.cis.ppod.services.hibernate.PPodEntitiesResourceHibernate;
 @Entity
 @Table(name = PPodEntity.TABLE)
 @Inheritance(strategy = InheritanceType.JOINED)
-public abstract class PPodEntity extends PersistentObject implements IAttachee,
-		IPPodVersioned {
+public abstract class PPodEntity extends PersistentObject implements
+		IPPodEntity {
 
 	static final String TABLE = "PPOD_ENTITY";
+
+	@Transient
+	private boolean receivedANewVersion = false;
+
+	/**
+	 * Set the receivedANewVersion.
+	 * 
+	 * @param receivedANewVersion the receivedANewVersion to set
+	 * 
+	 * @return this
+	 */
+	public IPPodEntity setReceivedANewVersion(final boolean receivedANewVersion) {
+		this.receivedANewVersion = receivedANewVersion;
+		return this;
+	}
+
+	public boolean getReceivedANewVersion() {
+		return receivedANewVersion;
+	}
 
 	@ManyToMany
 	@JoinTable(inverseJoinColumns = { @JoinColumn(name = Attachment.ID_COLUMN) })
@@ -85,11 +103,11 @@ public abstract class PPodEntity extends PersistentObject implements IAttachee,
 	private Long pPodVersion;
 
 	@Transient
-	private boolean allowPersistAndResetPPodVersionInfo = true;
+	boolean allowPersistAndResetPPodVersionInfo = true;
 
 	PPodEntity() {}
 
-	public PPodEntity addAttachment(final Attachment attachment) {
+	public IPPodEntity addAttachment(final Attachment attachment) {
 		if (attachments == null) {
 			attachments = newHashSet();
 		}
@@ -122,26 +140,16 @@ public abstract class PPodEntity extends PersistentObject implements IAttachee,
 		return true;
 	}
 
-	/**
-	 * If {@code true} then is pPOD entity should not be written to the
-	 * database. Also, calling {@code resetPPodVersionInfo(PPodVersionInfo)}
-	 * will have no effect.
-	 * <p>
-	 * See {@code setDoNotPersist()}
-	 * 
-	 * @return see description
-	 */
 	public boolean getAllowPersistAndResetPPodVersionInfo() {
 		return allowPersistAndResetPPodVersionInfo;
 	}
 
 	public Set<Attachment> getAttachments() {
-		return attachments;
-// if (attachments == null) {
-// return Collections.emptySet();
-// } else {
-// return Collections.unmodifiableSet(attachments);
-// }
+		if (attachments == null) {
+			return Collections.emptySet();
+		} else {
+			return Collections.unmodifiableSet(attachments);
+		}
 	}
 
 	public Set<Attachment> getAttachmentsByNamespace(final String namespace) {
@@ -212,7 +220,8 @@ public abstract class PPodEntity extends PersistentObject implements IAttachee,
 	 * @return this {@code PPodEntity}
 	 */
 	protected PPodEntity resetPPodVersionInfo() {
-		if (getAllowPersistAndResetPPodVersionInfo()) {
+		if (getAllowPersistAndResetPPodVersionInfo()
+				&& !getReceivedANewVersion()) {
 			pPodVersionInfo = null;
 			pPodVersion = null;
 		}
@@ -227,12 +236,12 @@ public abstract class PPodEntity extends PersistentObject implements IAttachee,
 	 * @return this
 	 */
 	@SuppressWarnings("unused")
-	private PPodEntity setPPodVersion(final Long pPodVersion) {
+	private IPPodEntity setPPodVersion(final Long pPodVersion) {
 		this.pPodVersion = pPodVersion;
 		return this;
 	}
 
-	PPodEntity setPPodVersionInfo(final PPodVersionInfo pPodVersionInfo) {
+	IPPodEntity setPPodVersionInfo(final PPodVersionInfo pPodVersionInfo) {
 		this.pPodVersionInfo = pPodVersionInfo;
 		return this;
 	}
@@ -258,26 +267,6 @@ public abstract class PPodEntity extends PersistentObject implements IAttachee,
 		return retValue.toString();
 	}
 
-	/**
-	 * Indicate that this object should not be persisted and changes to the pPOD
-	 * version numbers should not be propagated.
-	 * <p>
-	 * {@link PPodVersionInfoInterceptor} checks this flag before it does any
-	 * write operations. Beyond that, this flag should not be taken as a
-	 * guarantee that an object will not be written. Note that if {@code
-	 * PPodVersionInterceptor} is not configured in a session, it will,
-	 * obviously, not check this flag.
-	 * <p>
-	 * This flag was invented so that we can remove matrices and tree sets from
-	 * an {@link OTUSet} in
-	 * {@link PPodEntitiesResourceHibernate#getEntitiesByHqlQuery(String)}
-	 * before we return the data to the client. It is a less than ideal
-	 * solution.
-	 * 
-	 * @see PPodVersionInfoInterceptor
-	 * 
-	 * @return this {@code pPodEntity}
-	 */
 	public PersistentObject unsetAllowPersistAndResetPPodVersionInfo() {
 		this.allowPersistAndResetPPodVersionInfo = false;
 		return this;

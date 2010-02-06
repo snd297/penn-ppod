@@ -75,19 +75,20 @@ public final class CharacterStateRow extends PPodEntity {
 	 * We don't don't cascade SAVE_UPDATE since there are so many cells and it
 	 * slows things down quite a bit - at least for saves (haven't looked at
 	 * update yet).
+	 * <p>
+	 * No delete orphan either...TODO
 	 */
 	@OneToMany
-	@JoinTable(inverseJoinColumns = { @JoinColumn(name = CharacterStateCell.ID_COLUMN) })
+	@JoinTable(inverseJoinColumns = @JoinColumn(name = CharacterStateCell.ID_COLUMN))
 	@IndexColumn(name = CELLS_INDEX_COLUMN)
-	@Cascade( { org.hibernate.annotations.CascadeType.DELETE_ORPHAN,
-			org.hibernate.annotations.CascadeType.EVICT })
+	@Cascade(org.hibernate.annotations.CascadeType.EVICT)
 	private final List<CharacterStateCell> cells = newArrayList();
 
 	/** {@code CharacterStateCell}-><code>cells</code>Index lookup. */
 	@org.hibernate.annotations.CollectionOfElements
-	@JoinTable(name = "ROW_CELL_IDX", joinColumns = @JoinColumn(name = ID_COLUMN))
+	@JoinTable(name = TABLE + "_" + CharacterStateCell.TABLE + "_IDX", joinColumns = @JoinColumn(name = ID_COLUMN))
 	@org.hibernate.annotations.MapKeyManyToMany(joinColumns = @JoinColumn(name = CharacterStateCell.ID_COLUMN))
-	@Column(name = "CELL_IDX")
+	@Column(name = CharacterStateCell.TABLE + "_IDX")
 	private final Map<CharacterStateCell, Integer> cellIdx = newHashMap();
 
 	/**
@@ -142,46 +143,6 @@ public final class CharacterStateRow extends PPodEntity {
 		cell.setRow(this);
 		resetPPodVersionInfo();
 		return cell;
-	}
-
-	/**
-	 * Set the cell at {@code cellIdx}
-	 * <p>
-	 * If {@code getCells()} is too short, it is null padded.
-	 * 
-	 * @param cell value to put
-	 * @param cellIdx where to put it
-	 * 
-	 * @return this
-	 */
-	public CharacterStateRow setCell(final CharacterStateCell cell,
-			final int cellIdx) {
-		checkNotNull(cell);
-		nullFill(cells, cellIdx + 1);
-		cell.setRow(this);
-		if (cell.equals(getCells().get(cellIdx))) {
-			return this;
-		}
-
-		if (getMatrix() == null) {
-			throw new IllegalStateException(
-					"This row hasn't been added to a matrix yet");
-		}
-		if (getMatrix().getCharacters().size() < cellIdx + 1) {
-			throw new IllegalStateException("the matrix has less characters "
-					+ getMatrix().getCharacterIdx().size()
-					+ " than the row is about to have "
-					+ (getCells().size() + 1));
-		}
-		if (getMatrix().getCharacters().size() > 0
-				&& getMatrix().getCharacters().get(cellIdx) == null) {
-			throw new IllegalStateException("Character is null at column "
-					+ cells.size());
-		}
-		cells.set(cellIdx, cell);
-		this.cellIdx.put(cell, cellIdx);
-		resetPPodVersionInfo();
-		return this;
 	}
 
 	/**
@@ -271,13 +232,55 @@ public final class CharacterStateRow extends PPodEntity {
 	 */
 	@Override
 	protected CharacterStateRow resetPPodVersionInfo() {
-		if (getPPodVersionInfo() == null) {
+		if (getAllowPersistAndResetPPodVersionInfo()) {
+			if (getPPodVersionInfo() == null) {
 
-		} else {
-			checkState(getMatrix() != null);
-			matrix.resetPPodVersionInfo();
-			super.resetPPodVersionInfo();
+			} else {
+				checkState(getMatrix() != null);
+				matrix.resetPPodVersionInfo();
+				super.resetPPodVersionInfo();
+			}
 		}
+		return this;
+	}
+
+	/**
+	 * Set the cell at {@code cellIdx}
+	 * <p>
+	 * If {@code getCells()} is too short, it is null padded.
+	 * 
+	 * @param cell value to put
+	 * @param cellIdx where to put it
+	 * 
+	 * @return this
+	 */
+	public CharacterStateRow setCell(final CharacterStateCell cell,
+			final int cellIdx) {
+		checkNotNull(cell);
+		nullFill(cells, cellIdx + 1);
+		cell.setRow(this);
+		if (cell.equals(getCells().get(cellIdx))) {
+			return this;
+		}
+
+		if (getMatrix() == null) {
+			throw new IllegalStateException(
+					"This row hasn't been added to a matrix yet");
+		}
+		if (getMatrix().getCharacters().size() < cellIdx + 1) {
+			throw new IllegalStateException("the matrix has less characters "
+					+ getMatrix().getCharacterIdx().size()
+					+ " than the row is about to have "
+					+ (getCells().size() + 1));
+		}
+		if (getMatrix().getCharacters().size() > 0
+				&& getMatrix().getCharacters().get(cellIdx) == null) {
+			throw new IllegalStateException("Character is null at column "
+					+ cells.size());
+		}
+		cells.set(cellIdx, cell);
+		this.cellIdx.put(cell, cellIdx);
+		resetPPodVersionInfo();
 		return this;
 	}
 

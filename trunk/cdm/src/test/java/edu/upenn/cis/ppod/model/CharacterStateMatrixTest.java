@@ -16,7 +16,6 @@
 package edu.upenn.cis.ppod.model;
 
 import static com.google.common.collect.Lists.newArrayList;
-import static com.google.common.collect.Sets.newHashSet;
 import static edu.upenn.cis.ppod.util.CollectionsUtil.nullFillAndSet;
 import static org.testng.Assert.assertEquals;
 import static org.testng.Assert.assertNotNull;
@@ -99,6 +98,7 @@ public class CharacterStateMatrixTest {
 	public void setOTUsWSameOTUs() {
 		matrix.setPPodVersionInfo(pPodVersionInfo);
 
+		matrix.clearOTUs();
 		matrix.setOTUs(otus012);
 
 		// Since they were the same, the version should not have been reset to
@@ -131,7 +131,7 @@ public class CharacterStateMatrixTest {
 				.getRows());
 
 		final List<OTU> otus210 = newArrayList(otu2, otu1, otu0);
-
+		matrix.clearOTUs();
 		matrix.setOTUs(otus210);
 
 		assertEquals(matrix.getOTUs(), otus210);
@@ -150,6 +150,7 @@ public class CharacterStateMatrixTest {
 		otuSet012.removeOTU(otu0);
 
 		final List<OTU> otus12 = newArrayList(otu1, otu2);
+		matrix.clearOTUs();
 		matrix.setOTUs(otus12);
 		assertEquals(matrix.getOTUs(), otus12);
 		assertEquals(matrix.getRows().size(), otus12.size());
@@ -165,6 +166,7 @@ public class CharacterStateMatrixTest {
 
 	@Test(expectedExceptions = IllegalArgumentException.class)
 	public void setWrongOTUs() {
+		matrix.clearOTUs();
 		matrix.setOTUs(newArrayList(otu0, otu2));
 	}
 

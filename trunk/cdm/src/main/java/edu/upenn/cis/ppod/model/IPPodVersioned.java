@@ -20,7 +20,7 @@ package edu.upenn.cis.ppod.model;
  * 
  * @author Sam Donnelly
  */
-public interface IPPodVersioned {
+interface IPPodVersioned {
 
 	/**
 	 * Used when we serialize so that we don't have to serialize the
@@ -40,5 +40,9 @@ public interface IPPodVersioned {
 	 * @return the version info of this {@code IPPodVersioned}
 	 */
 	PPodVersionInfo getPPodVersionInfo();
+
+	boolean getReceivedANewVersion();
+
+	IPPodVersioned setReceivedANewVersion(boolean receivedANewVersion);
 
 }

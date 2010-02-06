@@ -19,7 +19,6 @@ import edu.upenn.cis.ppod.model.Attachment;
 import edu.upenn.cis.ppod.model.CharacterStateCell;
 import edu.upenn.cis.ppod.model.CharacterStateMatrix;
 import edu.upenn.cis.ppod.model.CharacterStateRow;
-import edu.upenn.cis.ppod.model.IPersistentObject;
 import edu.upenn.cis.ppod.model.OTU;
 import edu.upenn.cis.ppod.model.OTUSet;
 import edu.upenn.cis.ppod.model.Study;
@@ -30,7 +29,7 @@ import edu.upenn.cis.ppod.model.TreeSet;
  * 
  * @author Sam Donnelly
  */
-public abstract class AbstractVisitor implements IVisitor {
+public abstract class EmptyVisitor implements IVisitor {
 
 	/**
 	 * Does nothing.
