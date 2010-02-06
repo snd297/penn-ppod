@@ -42,7 +42,7 @@ public interface IPPodEntity extends IAttachee, IPPodVersioned {
 	 * 
 	 * @return this {@code pPodEntity}
 	 */
-	public PersistentObject unsetAllowPersistAndResetPPodVersionInfo();
+	PersistentObject unsetAllowPersistAndResetPPodVersionInfo();
 
 	/**
 	 * If {@code true} then is pPOD entity should not be written to the
@@ -53,6 +53,8 @@ public interface IPPodEntity extends IAttachee, IPPodVersioned {
 	 * 
 	 * @return see description
 	 */
-	public boolean getAllowPersistAndResetPPodVersionInfo();
+	boolean getAllowPersist();
+
+	boolean getAllowResetPPodVersionInfo();
 
 }

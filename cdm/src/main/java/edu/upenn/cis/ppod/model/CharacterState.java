@@ -193,12 +193,14 @@ public class CharacterState extends PPodEntityWXmlId {
 	 * @return this {@code CharacterState}
 	 */
 	@Override
-	protected CharacterState resetPPodVersionInfo() {
-		if (getPPodVersionInfo() == null) {
+	public CharacterState resetPPodVersionInfo() {
+		if (getAllowResetPPodVersionInfo()) {
+			if (getPPodVersionInfo() == null) {
 
-		} else {
-			character.resetPPodVersionInfo();
-			super.resetPPodVersionInfo();
+			} else if (getAllowResetPPodVersionInfo()) {
+				character.resetPPodVersionInfo();
+				super.resetPPodVersionInfo();
+			}
 		}
 		return this;
 	}

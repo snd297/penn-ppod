@@ -231,8 +231,8 @@ public final class CharacterStateRow extends PPodEntity {
 	 * @return this {@code CharacterStateRow}
 	 */
 	@Override
-	protected CharacterStateRow resetPPodVersionInfo() {
-		if (getAllowPersistAndResetPPodVersionInfo()) {
+	public CharacterStateRow resetPPodVersionInfo() {
+		if (getAllowResetPPodVersionInfo()) {
 			if (getPPodVersionInfo() == null) {
 
 			} else {

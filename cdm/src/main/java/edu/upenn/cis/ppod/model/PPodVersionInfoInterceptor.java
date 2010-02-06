@@ -147,8 +147,7 @@ public class PPodVersionInfoInterceptor extends EmptyInterceptor {
 			final String[] propertyNames, final Object[] currentState) {
 		boolean modified = false;
 		if (entity instanceof IPPodVersioned) {
-			if (!((IPPodEntity) entity)
-					.getAllowPersistAndResetPPodVersionInfo()) {
+			if (!((IPPodEntity) entity).getAllowPersist()) {
 				throw new IllegalArgumentException(
 						"entity is marked do not persist. Entity is "
 								+ entity.toString());
@@ -163,7 +162,6 @@ public class PPodVersionInfoInterceptor extends EmptyInterceptor {
 						&& (currentState[i] == null)) {
 					currentState[i] = pPodVersionInfosBySession
 							.get(sessionFactory.getCurrentSession());
-					((IPPodVersioned) entity).setReceivedANewVersion(true);
 					modified = true;
 				}
 			}

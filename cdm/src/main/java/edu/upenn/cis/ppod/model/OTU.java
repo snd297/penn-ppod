@@ -163,12 +163,14 @@ public final class OTU extends UUPPodEntityWXmlId {
 	 * @return this {@code OTU}
 	 */
 	@Override
-	protected OTU resetPPodVersionInfo() {
-		if (getPPodVersionInfo() == null) {} else {
-			for (final OTUSet otuSet : otuSets) {
-				otuSet.resetPPodVersionInfo();
+	public OTU resetPPodVersionInfo() {
+		if (getAllowResetPPodVersionInfo()) {
+			if (getPPodVersionInfo() == null) {} else {
+				for (final OTUSet otuSet : otuSets) {
+					otuSet.resetPPodVersionInfo();
+				}
+				super.resetPPodVersionInfo();
 			}
-			super.resetPPodVersionInfo();
 		}
 		return this;
 	}
