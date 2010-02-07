@@ -36,6 +36,7 @@ import javax.persistence.JoinTable;
 import javax.persistence.ManyToMany;
 import javax.persistence.ManyToOne;
 import javax.persistence.OneToMany;
+import javax.persistence.OrderBy;
 import javax.persistence.Table;
 import javax.persistence.Transient;
 import javax.xml.bind.Marshaller;
@@ -56,7 +57,6 @@ import edu.upenn.cis.ppod.util.IVisitor;
  * 
  * @author Sam Donnelly
  */
-@XmlAccessorType(XmlAccessType.NONE)
 @Entity
 @Table(name = CharacterStateMatrix.TABLE)
 public class CharacterStateMatrix extends UUPPodEntityWXmlId {
@@ -183,16 +183,8 @@ public class CharacterStateMatrix extends UUPPodEntityWXmlId {
 	private final List<Character> characters = newArrayList();
 
 	/** No delete_orphan... TODO */
-	// @XmlElement(name = "row")
-// @OneToMany
-// @org.hibernate.annotations.IndexColumn(name = ROWS_INDEX_COLUMN)
-// @JoinColumn(name = ID_COLUMN, nullable = false)
-// @Cascade( { org.hibernate.annotations.CascadeType.SAVE_UPDATE,
-// org.hibernate.annotations.CascadeType.DELETE_ORPHAN })
 	@OneToMany
-	@JoinTable(inverseJoinColumns = @JoinColumn(name = CharacterStateRow.ID_COLUMN))
-	@IndexColumn(name = ROWS_INDEX_COLUMN)
-// @Cascade(org.hibernate.annotations.CascadeType.DELETE_ORPHAN)
+	@OrderBy("position")
 	private final List<CharacterStateRow> rows = newArrayList();
 
 	@XmlAttribute
@@ -599,22 +591,6 @@ public class CharacterStateMatrix extends UUPPodEntityWXmlId {
 		return this;
 	}
 
-	@Transient
-	private List<OTU> clearedOTUs = newArrayList();
-
-	@Transient
-	private List<CharacterStateRow> clearedRows = newArrayList();
-
-	public CharacterStateMatrix clearOTUs() {
-		clearedOTUs.clear();
-		clearedRows.clear();
-		clearedOTUs.addAll(getOTUs());
-		clearedRows.addAll(getRows());
-		otus.clear();
-		rows.clear();
-		return this;
-	}
-
 	/**
 	 * Order the {@code OTU}s of {@code this.getOTUSet()}. In other words, set
 	 * the order of the rows in this {@code CharacterStateMatrix}.
@@ -641,12 +617,12 @@ public class CharacterStateMatrix extends UUPPodEntityWXmlId {
 	 */
 	public CharacterStateMatrix setOTUs(final List<OTU> newOTUs) {
 		checkNotNull(newOTUs);
-		checkState(getOTUs().size() == 0 && getRows().size() == 0,
-				"you must call clearOTUs before you call setOTUs if getOTUs is non-zero");
-		otus.addAll(clearedOTUs);
-		rows.addAll(clearedRows);
-		clearedOTUs.clear();
-		clearedRows.clear();
+// checkState(getOTUs().size() == 0 && getRows().size() == 0,
+// "you must call clearOTUs before you call setOTUs if getOTUs is non-zero");
+// otus.addAll(clearedOTUs);
+// rows.addAll(clearedRows);
+// clearedOTUs.clear();
+// clearedRows.clear();
 		if (newOTUs.equals(getOTUs())) {
 			// They're the same, nothing to do
 			return this;
@@ -692,7 +668,11 @@ public class CharacterStateMatrix extends UUPPodEntityWXmlId {
 			final OTU newOtu = newOTUs.get(i);
 			otus.add(newOtu);
 			otuIdx.put(newOtu, i);
-			setRow(newOtu, newRows.get(i)); // could be setting it to null
+			setRow(newOtu, newRows.get(i)); // could be setting
+			// it to null
+			if (newRows.get(i) != null) {
+				newRows.get(i).setPosition(i);
+			}
 		}
 
 		resetPPodVersionInfo();
@@ -767,7 +747,9 @@ public class CharacterStateMatrix extends UUPPodEntityWXmlId {
 
 			// Now set it to it's new position.
 			rows.set(otuIdx, row);
-
+			if (row != null) {
+				row.setPosition(otuIdx);
+			}
 			resetPPodVersionInfo();
 		}
 		return oldRow;
