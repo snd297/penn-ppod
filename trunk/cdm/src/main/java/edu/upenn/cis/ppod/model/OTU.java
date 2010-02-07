@@ -26,8 +26,6 @@ import javax.persistence.Entity;
 import javax.persistence.ManyToMany;
 import javax.persistence.Table;
 import javax.xml.bind.Unmarshaller;
-import javax.xml.bind.annotation.XmlAccessType;
-import javax.xml.bind.annotation.XmlAccessorType;
 import javax.xml.bind.annotation.XmlAttribute;
 
 import com.google.common.base.Function;
@@ -40,7 +38,6 @@ import edu.upenn.cis.ppod.util.IVisitor;
  * @author Shirley Cohen
  * @author Sam Donnelly
  */
-@XmlAccessorType(XmlAccessType.NONE)
 @Entity
 @Table(name = OTU.TABLE)
 public final class OTU extends UUPPodEntityWXmlId {

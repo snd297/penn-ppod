@@ -20,6 +20,8 @@ import javax.persistence.GeneratedValue;
 import javax.persistence.Id;
 import javax.persistence.MappedSuperclass;
 import javax.persistence.Version;
+import javax.xml.bind.annotation.XmlAccessType;
+import javax.xml.bind.annotation.XmlAccessorType;
 import javax.xml.bind.annotation.XmlAttribute;
 
 import edu.upenn.cis.ppod.util.IVisitor;
@@ -29,6 +31,7 @@ import edu.upenn.cis.ppod.util.IVisitor;
  * 
  * @author Sam Donnelly
  */
+@XmlAccessorType(XmlAccessType.NONE)
 @MappedSuperclass
 public abstract class PersistentObject implements IPersistentObject {
 

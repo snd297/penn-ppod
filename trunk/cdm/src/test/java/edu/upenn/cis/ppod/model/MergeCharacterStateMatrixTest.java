@@ -111,7 +111,7 @@ public class MergeCharacterStateMatrixTest {
 		final List<OTU> shuffledSourceOTUs = newArrayList(sourceMatrix
 				.getOTUs());
 		Collections.shuffle(shuffledSourceOTUs);
-		sourceMatrix.clearOTUs();
+
 		sourceMatrix.setOTUs(shuffledSourceOTUs);
 
 		for (final CharacterStateRow targetRow : targetMatrix.getRows()) {

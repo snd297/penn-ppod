@@ -128,10 +128,8 @@ public class SaveOrUpdateCharacterStateMatrix implements
 			newTargetOTUs.add(newTargetOTU);
 		}
 
-		targetMatrix.clearOTUs();
-
 		// Force the flushing
-		dao.flush();
+		// dao.flush();
 
 		targetMatrix.setOTUs(newTargetOTUs);
 
@@ -140,13 +138,6 @@ public class SaveOrUpdateCharacterStateMatrix implements
 				.clearCharacters();
 		// Force the clearing of the characters
 		dao.flush();
-
-		if (targetMatrix.getOTUSet().getId() != null) {
-			// session.refresh(targetMatrix.getOTUSet().getStudy());
-		}
-		if (targetMatrix.getOTUSet().getId() != null) {
-			// session.refresh(targetMatrix.getOTUSet());
-		}
 
 		final Map<Character, Integer> oldIdxsByChararacter = newHashMap();
 		for (final ListIterator<Character> idx = clearedTargetCharacters
@@ -209,16 +200,14 @@ public class SaveOrUpdateCharacterStateMatrix implements
 			dao.saveOrUpdate(newTargetCharacter);
 		}
 
-		int sourceRowIdx = -1;
 		int cellCounter = 0;
 		final Set<CharacterStateCell> cellsToFlush = newHashSet();
-		// Hibernate.initialize(targetMatrix.getRows());
-		for (final OTU targetOTU : targetMatrix.getOTUs()) {
-			sourceRowIdx++;
 
-			final CharacterStateRow sourceRow = sourceMatrix.getRows().get(
-					sourceRowIdx);
+		for (final CharacterStateRow sourceRow : sourceMatrix.getRows()) {
 
+			final int sourceRowIdx = sourceRow.getPosition();
+
+			final OTU targetOTU = targetMatrix.getOTUs().get(sourceRowIdx);
 			CharacterStateRow targetRow = null;
 			List<Character> characters = targetMatrix.getCharacters();
 
@@ -239,12 +228,12 @@ public class SaveOrUpdateCharacterStateMatrix implements
 						"existing row has now pPOD version number");
 			}
 
-//			if (newRow) {
-//				// If it's new
-//			} else if (sourceRow.getPPodVersion() >= 0) {
-//				// We already have the latest version
-//				continue;
-//			}
+// if (newRow) {
+// // If it's new
+// } else if (sourceRow.getPPodVersion() >= 0) {
+// // We already have the latest version
+// continue;
+// }
 
 			while (targetRow.getCells().size() > targetMatrix.getCharacters()
 					.size()) {
@@ -266,8 +255,8 @@ public class SaveOrUpdateCharacterStateMatrix implements
 							.get(originalCharIdxsByNewCharIdx.get(newCellIdx));
 				}
 				targetRow.setCell(targetCell, newCellIdx);
-				final CharacterStateCell sourceCell = sourceMatrix.getRows()
-						.get(sourceRowIdx).getCells().get(newCellIdx);
+				final CharacterStateCell sourceCell = sourceRow.getCells().get(
+						newCellIdx);
 
 				final Set<CharacterState> newTargetStates = newHashSet();
 				for (final CharacterState sourceState : sourceCell.getStates()) {

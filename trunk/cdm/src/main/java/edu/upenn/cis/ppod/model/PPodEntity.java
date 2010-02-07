@@ -32,8 +32,6 @@ import javax.persistence.Table;
 import javax.persistence.Transient;
 import javax.xml.bind.Marshaller;
 import javax.xml.bind.Unmarshaller;
-import javax.xml.bind.annotation.XmlAccessType;
-import javax.xml.bind.annotation.XmlAccessorType;
 import javax.xml.bind.annotation.XmlAttribute;
 import javax.xml.bind.annotation.XmlElement;
 import javax.xml.bind.annotation.XmlIDREF;
@@ -56,7 +54,6 @@ import com.google.common.collect.Sets;
  * 
  * @author Sam Donnelly
  */
-@XmlAccessorType(XmlAccessType.NONE)
 @Entity
 @Table(name = PPodEntity.TABLE)
 @Inheritance(strategy = InheritanceType.JOINED)
@@ -85,9 +82,6 @@ public abstract class PPodEntity extends PersistentObject implements
 
 	@Transient
 	boolean allowPersist = true;
-
-	@Transient
-	boolean blockedAVersionReset = false;
 
 	@Transient
 	boolean allowResetPPodVersionInfo = true;
@@ -217,31 +211,7 @@ public abstract class PPodEntity extends PersistentObject implements
 		if (getAllowResetPPodVersionInfo()) {
 			pPodVersionInfo = null;
 			pPodVersion = null;
-			setBlockedAVersionReset(false);
-		} else {
-			setBlockedAVersionReset(true);
 		}
-		return this;
-	}
-
-	/**
-	 * Get the blockedAVersionReset.
-	 * 
-	 * @return the blockedAVersionReset
-	 */
-	public boolean getBlockedAVersionReset() {
-		return blockedAVersionReset;
-	}
-
-	/**
-	 * Set the blockedAVersionReset.
-	 * 
-	 * @param blockedAVersionReset the blockedAVersionReset to set
-	 * 
-	 * @return this
-	 */
-	PPodEntity setBlockedAVersionReset(boolean blockedAVersionReset) {
-		this.blockedAVersionReset = blockedAVersionReset;
 		return this;
 	}
 

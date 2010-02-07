@@ -33,6 +33,7 @@ import javax.persistence.OneToMany;
 import javax.persistence.Table;
 import javax.persistence.Transient;
 import javax.xml.bind.Unmarshaller;
+import javax.xml.bind.annotation.XmlAttribute;
 import javax.xml.bind.annotation.XmlElement;
 
 import org.hibernate.annotations.Cascade;
@@ -54,8 +55,30 @@ import edu.upenn.cis.ppod.util.IVisitor;
 public final class CharacterStateRow extends PPodEntity {
 
 	/** The position in the matrix. */
-// @Column(name = "CHARACTER_STATE_MATRIX_POSITION")
-// private int characterStateMatrixPosition = -1;
+	@Column(name = "POSITION", nullable = false)
+	private Integer position;
+
+	/**
+	 * Get the position.
+	 * 
+	 * @return the position
+	 */
+	@XmlAttribute
+	public Integer getPosition() {
+		return position;
+	}
+
+	/**
+	 * Set the position.
+	 * 
+	 * @param position the position to set
+	 * 
+	 * @return this
+	 */
+	public CharacterStateRow setPosition(final Integer position) {
+		this.position = position;
+		return this;
+	}
 
 	/** This entitiy's table. Intentionally package-private. */
 	static final String TABLE = "CHARACTER_STATE_ROW";
@@ -81,7 +104,6 @@ public final class CharacterStateRow extends PPodEntity {
 	@OneToMany
 	@JoinTable(inverseJoinColumns = @JoinColumn(name = CharacterStateCell.ID_COLUMN))
 	@IndexColumn(name = CELLS_INDEX_COLUMN)
-	@Cascade(org.hibernate.annotations.CascadeType.EVICT)
 	private final List<CharacterStateCell> cells = newArrayList();
 
 	/** {@code CharacterStateCell}-><code>cells</code>Index lookup. */
