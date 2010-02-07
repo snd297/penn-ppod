@@ -33,6 +33,7 @@ import edu.upenn.cis.ppod.dao.IStudyDAO;
 import edu.upenn.cis.ppod.dao.hibernate.DNACharacterDAOHibernate;
 import edu.upenn.cis.ppod.dao.hibernate.IAttachmentNamespaceDAOHibernateFactory;
 import edu.upenn.cis.ppod.dao.hibernate.IAttachmentTypeDAOHibernateFactory;
+import edu.upenn.cis.ppod.dao.hibernate.ObjectWLongIdDAOHibernate;
 import edu.upenn.cis.ppod.dao.hibernate.StudyDAOHibernate;
 import edu.upenn.cis.ppod.dao.hibernate.HibernateDAOFactory.OTUSetDAOHibernate;
 import edu.upenn.cis.ppod.model.CharacterStateMatrix;
@@ -68,13 +69,13 @@ public class SaveOrUpdateStudyHibernate implements ISaveOrUpdateStudy {
 	private final IMergeOTUSet mergeOTUSet;
 	private final IMergeCharacterStateMatrix saveOrUpdateMatrix;
 	private final IMergeTreeSet mergeTreeSet;
-	private Session session;
 
 	@Inject
 	SaveOrUpdateStudyHibernate(
-			final StudyDAOHibernate studyDAOHibernate,
+			final StudyDAOHibernate studyDAO,
 			final OTUSetDAOHibernate otuSetDAO,
 			final DNACharacterDAOHibernate dnaCharacterDAO,
+			final ObjectWLongIdDAOHibernate dao,
 			final Provider<Study> studyProvider,
 			final Provider<OTUSet> otuSetProvider,
 			final Provider<CharacterStateMatrix> characterStateMatrixProvider,
@@ -86,7 +87,7 @@ public class SaveOrUpdateStudyHibernate implements ISaveOrUpdateStudy {
 			final IAttachmentTypeDAOHibernateFactory attachmentTypeDAOFactory,
 			final IMergeAttachment.IFactory mergeAttachmentFactory,
 			final MergeTreeSet mergeTreeSet, @Assisted final Session session) {
-		this.studyDAO = (IStudyDAO) studyDAOHibernate.setSession(session);
+		this.studyDAO = (IStudyDAO) studyDAO.setSession(session);
 		this.otuSetDAO = (IOTUSetDAO) otuSetDAO.setSession(session);
 		this.dnaCharacterDAO = (IDNACharacterDAO) dnaCharacterDAO
 				.setSession(session);
@@ -99,9 +100,8 @@ public class SaveOrUpdateStudyHibernate implements ISaveOrUpdateStudy {
 		this.saveOrUpdateMatrix = mergeMatrixFactory.create(
 				mergeAttachmentFactory.create(attachmentNamespaceDAOFactory
 						.create(session), attachmentTypeDAOFactory
-						.create(session)), session);
+						.create(session)), dao.setSession(session));
 		this.mergeTreeSet = mergeTreeSet;
-		this.session = session;
 	}
 
 	public Study save(final Study incomingStudy) {

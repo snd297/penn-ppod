@@ -30,13 +30,13 @@ import java.util.ListIterator;
 import java.util.Map;
 import java.util.Set;
 
-import org.hibernate.Session;
 import org.slf4j.Logger;
 
 import com.google.inject.Inject;
 import com.google.inject.Provider;
 import com.google.inject.assistedinject.Assisted;
 
+import edu.upenn.cis.ppod.dao.IDAO;
 import edu.upenn.cis.ppod.model.Attachment;
 import edu.upenn.cis.ppod.model.Character;
 import edu.upenn.cis.ppod.model.CharacterState;
@@ -63,7 +63,7 @@ public class SaveOrUpdateCharacterStateMatrix implements
 	private final CharacterState.IFactory stateFactory;
 	private final Provider<Attachment> attachmentProvider;
 	private final IMergeAttachment mergeAttachment;
-	private final Session session;
+	private final IDAO<Object, Long> dao;
 
 	@InjectLogger
 	private Logger logger;
@@ -75,15 +75,16 @@ public class SaveOrUpdateCharacterStateMatrix implements
 			final Provider<CharacterStateCell> cellProvider,
 			final CharacterState.IFactory stateFactory,
 			final Provider<Attachment> attachmentProvider,
-			@Assisted final IMergeAttachment mergeAttachment,
-			@Assisted final Session session) {
+			@Assisted final IDAO<Object, Long> dao,
+			@Assisted final IMergeAttachment mergeAttachment) {
 		this.characterProvider = characterProvider;
 		this.rowProvider = rowProvider;
 		this.cellProvider = cellProvider;
 		this.stateFactory = stateFactory;
 		this.attachmentProvider = attachmentProvider;
+		this.dao = dao;
 		this.mergeAttachment = mergeAttachment;
-		this.session = session;
+
 	}
 
 	public CharacterStateMatrix saveOrUpdate(
@@ -92,7 +93,7 @@ public class SaveOrUpdateCharacterStateMatrix implements
 			final OTUSet newTargetMatrixOTUSet,
 			final Map<OTU, OTU> mergedOTUsBySourceOTU,
 			final DNACharacter dnaCharacter) {
-		final String METHOD = "merge(...)";
+		final String METHOD = "saveOrUpdate(...)";
 		logger.debug("{}: entering", METHOD);
 		checkNotNull(targetMatrix);
 		checkNotNull(sourceMatrix);
@@ -101,7 +102,10 @@ public class SaveOrUpdateCharacterStateMatrix implements
 		// We need to block version resets because they propagate upward and we
 		// don't want to modify OTUSet or Study before the flush's that we need
 		// to do. Because then we get StaleObjectException's.
-		targetMatrix.setAllowResetPPodVersionInfo(false);
+// targetMatrix.setAllowResetPPodVersionInfo(false);
+
+		dao.evict(newTargetMatrixOTUSet.getStudy());
+		dao.evict(newTargetMatrixOTUSet);
 
 		newTargetMatrixOTUSet.addMatrix(targetMatrix);
 
@@ -127,7 +131,7 @@ public class SaveOrUpdateCharacterStateMatrix implements
 		targetMatrix.clearOTUs();
 
 		// Force the flushing
-		session.flush();
+		dao.flush();
 
 		targetMatrix.setOTUs(newTargetOTUs);
 
@@ -135,7 +139,7 @@ public class SaveOrUpdateCharacterStateMatrix implements
 		final List<Character> clearedTargetCharacters = targetMatrix
 				.clearCharacters();
 		// Force the clearing of the characters
-		session.flush();
+		dao.flush();
 
 		if (targetMatrix.getOTUSet().getId() != null) {
 			// session.refresh(targetMatrix.getOTUSet().getStudy());
@@ -150,7 +154,6 @@ public class SaveOrUpdateCharacterStateMatrix implements
 			oldIdxsByChararacter.put(idx.next(), idx.previousIndex());
 		}
 
-		// int characterCounter = -1;
 		final Map<Integer, Integer> originalCharIdxsByNewCharIdx = newHashMap();
 		for (final Character sourceCharacter : sourceMatrix.getCharacters()) {
 
@@ -201,9 +204,9 @@ public class SaveOrUpdateCharacterStateMatrix implements
 				}
 				newTargetCharacter.addAttachment(targetAttachment);
 				mergeAttachment.merge(targetAttachment, sourceAttachment);
-				session.saveOrUpdate(targetAttachment);
+				dao.saveOrUpdate(targetAttachment);
 			}
-			session.saveOrUpdate(newTargetCharacter);
+			dao.saveOrUpdate(newTargetCharacter);
 		}
 
 		int sourceRowIdx = -1;
@@ -236,12 +239,12 @@ public class SaveOrUpdateCharacterStateMatrix implements
 						"existing row has now pPOD version number");
 			}
 
-			if (newRow) {
-				// If it's new
-			} else if (sourceRow.getPPodVersion() >= 0) {
-				// We already have the latest version
-				continue;
-			}
+//			if (newRow) {
+//				// If it's new
+//			} else if (sourceRow.getPPodVersion() >= 0) {
+//				// We already have the latest version
+//				continue;
+//			}
 
 			while (targetRow.getCells().size() > targetMatrix.getCharacters()
 					.size()) {
@@ -251,7 +254,7 @@ public class SaveOrUpdateCharacterStateMatrix implements
 			final List<CharacterStateCell> originalTargetCells = newArrayList(targetRow
 					.clearCells());
 
-			session.flush();
+			dao.flush();
 
 			for (int newCellIdx = 0; newCellIdx < targetMatrix.getCharacters()
 					.size(); newCellIdx++) {
@@ -290,29 +293,31 @@ public class SaveOrUpdateCharacterStateMatrix implements
 					default:
 						throw new AssertionError("unknown type");
 				}
-				session.saveOrUpdate(targetCell);
+				dao.saveOrUpdate(targetCell);
 				cellsToFlush.add(targetCell);
 				if (cellsToFlush.size() % 20 == 0) {
 					logger.debug("{}: flushing cells, cellCounter: {}", METHOD,
 							cellCounter);
-					session.flush();
+					dao.flush();
 					for (final CharacterStateCell cellToFlush : cellsToFlush) {
-						session.evict(cellToFlush);
+						dao.evict(cellToFlush);
 					}
 					cellsToFlush.clear();
 				}
 			}
-			session.saveOrUpdate(targetRow);
+			dao.saveOrUpdate(targetRow);
 			logger.debug("{}: flushing row,  sourceRowIdx: {}", METHOD,
 					sourceRowIdx);
-			session.flush();
-			session.evict(targetRow); // will flush the cells to via cascade
+			dao.flush();
+			dao.evict(targetRow); // will flush the cells to via cascade
 			cellsToFlush.clear();
 		}
-		targetMatrix.setAllowResetPPodVersionInfo(true);
-		if (targetMatrix.getBlockedAVersionReset()) {
-			targetMatrix.resetPPodVersionInfo();
-		}
+// targetMatrix.setAllowResetPPodVersionInfo(true);
+// if (targetMatrix.getBlockedAVersionReset()) {
+// targetMatrix.resetPPodVersionInfo();
+// }
+		dao.saveOrUpdate(newTargetMatrixOTUSet.getStudy());
+		dao.saveOrUpdate(newTargetMatrixOTUSet);
 		return targetMatrix;
 	}
 }

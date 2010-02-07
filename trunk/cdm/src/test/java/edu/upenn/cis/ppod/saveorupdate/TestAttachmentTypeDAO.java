@@ -58,4 +58,14 @@ public class TestAttachmentTypeDAO implements IAttachmentTypeDAO {
 		return this;
 	}
 
+	public AttachmentType evict(AttachmentType entity) {
+		// TODO Auto-generated method stub
+		throw new UnsupportedOperationException();
+	}
+
+	public void flush() {
+		// TODO Auto-generated method stub
+		throw new UnsupportedOperationException();
+	}
+
 }

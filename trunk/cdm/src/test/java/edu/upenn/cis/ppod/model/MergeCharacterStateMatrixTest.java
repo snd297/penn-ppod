@@ -13,7 +13,7 @@
  * See the License for the specific language governing permissions and
  * limitations under the License.
  */
-package edu.upenn.cis.ppod.saveorupdate;
+package edu.upenn.cis.ppod.model;
 
 import static com.google.common.collect.Lists.newArrayList;
 import static com.google.common.collect.Maps.newHashMap;
@@ -30,16 +30,17 @@ import com.google.inject.Provider;
 
 import edu.upenn.cis.ppod.TestGroupDefs;
 import edu.upenn.cis.ppod.dao.hibernate.ObjectWLongIdDAOHibernate;
-import edu.upenn.cis.ppod.model.CharacterStateMatrix;
-import edu.upenn.cis.ppod.model.CharacterStateRow;
-import edu.upenn.cis.ppod.model.DNACharacter;
-import edu.upenn.cis.ppod.model.ModelAssert;
-import edu.upenn.cis.ppod.model.OTU;
-import edu.upenn.cis.ppod.model.OTUSet;
+import edu.upenn.cis.ppod.saveorupdate.IMergeCharacterStateMatrix;
+import edu.upenn.cis.ppod.saveorupdate.TestMergeAttachment;
+import edu.upenn.cis.ppod.thirdparty.dao.hibernate.GenericHibernateDAO;
 import edu.upenn.cis.ppod.util.MatrixProvider;
 
 /**
  * Tests of {@link IMergeCharacterStateMatrix}.
+ * <p>
+ * We put it into this package, instead of {@code
+ * edu.upenn.cis.ppod.saveorupate} because we need access to at least one
+ * package-private methods.
  * 
  * @author Sam Donnelly
  */
@@ -62,13 +63,16 @@ public class MergeCharacterStateMatrixTest {
 	private Provider<DNACharacter> dnaCharacterProvider;
 
 	@Inject
-	private ObjectWLongIdDAOHibernate dao;
-
-	@Inject
 	private Session session;
 
 	@Inject
+	private ObjectWLongIdDAOHibernate dao;
+
+	@Inject
 	private TestMergeAttachment mergeAttachment;
+
+	@Inject
+	private Provider<PPodVersionInfo> pPodVersionInfoProvider;
 
 	@Test(dataProvider = MatrixProvider.SMALL_SIMPLE_MATRIX_PROVIDER, dataProviderClass = MatrixProvider.class)
 	public void save(final CharacterStateMatrix sourceMatrix) {

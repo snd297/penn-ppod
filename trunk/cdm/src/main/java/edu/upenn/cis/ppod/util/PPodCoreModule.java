@@ -16,15 +16,14 @@
 package edu.upenn.cis.ppod.util;
 
 import com.google.inject.AbstractModule;
+import com.google.inject.TypeLiteral;
 import com.google.inject.assistedinject.FactoryProvider;
-import com.google.inject.matcher.Matchers;
 
 import edu.upenn.cis.ppod.dao.hibernate.AttachmentNamespaceDAOHibernate;
 import edu.upenn.cis.ppod.dao.hibernate.AttachmentTypeDAOHibernate;
 import edu.upenn.cis.ppod.dao.hibernate.HibernateDAOFactory;
 import edu.upenn.cis.ppod.dao.hibernate.IAttachmentNamespaceDAOHibernateFactory;
 import edu.upenn.cis.ppod.dao.hibernate.IAttachmentTypeDAOHibernateFactory;
-import edu.upenn.cis.ppod.dao.hibernate.StudyDAOHibernate;
 import edu.upenn.cis.ppod.model.CharacterState;
 import edu.upenn.cis.ppod.model.DNAState;
 import edu.upenn.cis.ppod.saveorupdate.IMergeAttachment;
@@ -39,7 +38,7 @@ import edu.upenn.cis.ppod.saveorupdate.hibernate.SaveOrUpdateCharacterStateMatri
 import edu.upenn.cis.ppod.saveorupdate.hibernate.SaveOrUpdateStudyHibernate;
 import edu.upenn.cis.ppod.security.ISimpleAuthenticationInfoFactory;
 import edu.upenn.cis.ppod.security.SimpleAuthenticationInfoFactory;
-import edu.upenn.cis.ppod.thirdparty.injectslf4j.Slf4jTypeListener;
+import edu.upenn.cis.ppod.thirdparty.dao.hibernate.GenericHibernateDAO;
 
 public final class PPodCoreModule extends AbstractModule {
 	@Override
@@ -47,7 +46,7 @@ public final class PPodCoreModule extends AbstractModule {
 		bind(HibernateDAOFactory.IFactory.class).toProvider(
 				FactoryProvider.newFactory(HibernateDAOFactory.IFactory.class,
 						HibernateDAOFactory.class));
-		bind(StudyDAOHibernate.class);
+
 		bind(IAttachmentNamespaceDAOHibernateFactory.class).toProvider(
 				FactoryProvider.newFactory(
 						IAttachmentNamespaceDAOHibernateFactory.class,

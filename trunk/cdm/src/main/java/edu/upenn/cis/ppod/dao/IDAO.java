@@ -91,4 +91,8 @@ public interface IDAO<T, ID extends Serializable> {
 	 */
 	T saveOrUpdate(T entity);
 
+	T evict(final T entity);
+
+	public void flush();
+
 }

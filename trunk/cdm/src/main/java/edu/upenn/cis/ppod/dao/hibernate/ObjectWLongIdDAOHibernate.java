@@ -1,5 +1,5 @@
 /*
- * Copyright (C) 2009 Trustees of the University of Pennsylvania
+ * Copyright (C) 2010 Trustees of the University of Pennsylvania
  *
  * Licensed under the Apache License, Version 2.0 (the "License");
  * you may not use this file except in compliance with the License.
@@ -15,10 +15,12 @@
  */
 package edu.upenn.cis.ppod.dao.hibernate;
 
-import org.hibernate.Session;
+import edu.upenn.cis.ppod.thirdparty.dao.hibernate.GenericHibernateDAO;
 
-import edu.upenn.cis.ppod.dao.IAttachmentNamespaceDAO;
+/**
+ * @author Sam Donnelly
+ */
+public class ObjectWLongIdDAOHibernate extends
+		GenericHibernateDAO<Object, Long> {
 
-public interface IAttachmentNamespaceDAOHibernateFactory {
-	IAttachmentNamespaceDAO create(Session session);
 }
