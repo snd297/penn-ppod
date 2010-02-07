@@ -47,7 +47,7 @@ public final class StudyResourceHibernate implements IStudyResource {
 
 	private final IStudy2StudyInfo study2StudyInfo;
 
-	private final OTUSetAndOTUSetDocIdVisitor oTUSetAndOTUSetDocIdVisitor;
+	private final OTUSetAndOTUSetDocIdVisitor otuSetAndOTUSetDocIdVisitor;
 
 	private final Provider<AfterUnmarshalVisitor> afterUnmarshalVisitorProvider;
 
@@ -55,14 +55,14 @@ public final class StudyResourceHibernate implements IStudyResource {
 	StudyResourceHibernate(final StudyDAOHibernate studyDAO,
 			final ISaveOrUpdateStudyHibernateFactory saveOrUpdateStudyFactory,
 			final IStudy2StudyInfo study2StudyInfo,
-			final OTUSetAndOTUSetDocIdVisitor oTUSetAndOTUSetDocIdVisitor,
+			final OTUSetAndOTUSetDocIdVisitor otuSetAndOTUSetDocIdVisitor,
 			final Provider<AfterUnmarshalVisitor> afterUnmarshalVisitorProvider) {
 		this.studyDAO = (IStudyDAO) studyDAO.setSession(HibernateUtil
 				.getSessionFactory().getCurrentSession());
 		this.saveOrUpdateStudy = saveOrUpdateStudyFactory.create(HibernateUtil
 				.getSessionFactory().getCurrentSession());
 		this.study2StudyInfo = study2StudyInfo;
-		this.oTUSetAndOTUSetDocIdVisitor = oTUSetAndOTUSetDocIdVisitor;
+		this.otuSetAndOTUSetDocIdVisitor = otuSetAndOTUSetDocIdVisitor;
 		this.afterUnmarshalVisitorProvider = afterUnmarshalVisitorProvider;
 	}
 
@@ -76,7 +76,7 @@ public final class StudyResourceHibernate implements IStudyResource {
 
 	public Study getStudyByPPodId(final String pPodId) {
 		final Study study = studyDAO.getStudyByPPodId(pPodId);
-		study.accept(oTUSetAndOTUSetDocIdVisitor);
+		study.accept(otuSetAndOTUSetDocIdVisitor);
 		return study;
 	}
 

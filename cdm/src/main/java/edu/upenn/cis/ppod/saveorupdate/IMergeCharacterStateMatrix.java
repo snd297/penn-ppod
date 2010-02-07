@@ -17,8 +17,7 @@ package edu.upenn.cis.ppod.saveorupdate;
 
 import java.util.Map;
 
-import org.hibernate.Session;
-
+import edu.upenn.cis.ppod.dao.IDAO;
 import edu.upenn.cis.ppod.model.CharacterStateMatrix;
 import edu.upenn.cis.ppod.model.DNACharacter;
 import edu.upenn.cis.ppod.model.OTU;
@@ -66,6 +65,6 @@ public interface IMergeCharacterStateMatrix {
 	 */
 	static interface IFactory {
 		IMergeCharacterStateMatrix create(IMergeAttachment mergeAttachment,
-				Session session);
+				IDAO<Object, Long> dao);
 	}
 }

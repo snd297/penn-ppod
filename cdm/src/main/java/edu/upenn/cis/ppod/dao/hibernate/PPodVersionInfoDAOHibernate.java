@@ -17,6 +17,7 @@ package edu.upenn.cis.ppod.dao.hibernate;
 
 import edu.upenn.cis.ppod.dao.IPPodVersionInfoDAO;
 import edu.upenn.cis.ppod.model.PPodVersionInfo;
+import edu.upenn.cis.ppod.thirdparty.dao.hibernate.GenericHibernateDAO;
 
 /**
  * A Hibernate <code>IPPodVersionInfoDAO</code>.

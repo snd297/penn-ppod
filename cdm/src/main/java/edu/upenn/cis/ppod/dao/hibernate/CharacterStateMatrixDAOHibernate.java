@@ -25,6 +25,7 @@ import com.google.inject.Inject;
 
 import edu.upenn.cis.ppod.dao.ICharacterStateMatrixDAO;
 import edu.upenn.cis.ppod.model.CharacterStateMatrix;
+import edu.upenn.cis.ppod.thirdparty.dao.hibernate.GenericHibernateDAO;
 import edu.upenn.cis.ppod.util.IPair;
 
 /**
