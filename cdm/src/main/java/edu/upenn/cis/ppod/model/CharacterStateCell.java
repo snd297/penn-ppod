@@ -50,8 +50,6 @@ import javax.xml.bind.annotation.XmlIDREF;
 import org.hibernate.annotations.Sort;
 import org.hibernate.annotations.SortType;
 
-import com.google.common.base.Function;
-
 import edu.upenn.cis.ppod.util.IVisitor;
 
 /**
@@ -259,6 +257,11 @@ public final class CharacterStateCell extends PPodEntity {
 						getPosition())) {
 			throw new IllegalStateException(
 					"this cell's column hasn't been assigned a character");
+		}
+
+		if (getPosition() == null) {
+			throw new IllegalStateException(
+					"the position of this cell has net been set");
 		}
 
 		final Character thisCellsCharacter = getRow().getMatrix()
@@ -474,7 +477,7 @@ public final class CharacterStateCell extends PPodEntity {
 		for (final CharacterState state : states) {
 			if (state.getCharacter() == null) {
 				final Character thisCellsCharacter = getRow().getMatrix()
-						.getCharacters().get(row.getCellIdx().get(this));
+						.getCharacters().get(getPosition());
 				state.setCharacter(thisCellsCharacter);
 			}
 			checkIncomingState(state);

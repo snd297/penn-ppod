@@ -279,6 +279,9 @@ public final class CharacterStateRow extends PPodEntity {
 	public CharacterStateRow setCells(final List<CharacterStateCell> cells) {
 		checkNotNull(cells);
 
+		for (final CharacterStateCell cell : cells) {
+			cell.setRow(this);
+		}
 		if (cells.equals(getCells())) {
 			return this;
 		}
@@ -295,7 +298,6 @@ public final class CharacterStateRow extends PPodEntity {
 							+ " than cells " + cells.size());
 		}
 		for (int cellPos = 0; cellPos < cells.size(); cellPos++) {
-			cells.get(cellPos).setRow(this);
 			if (!cells.get(cellPos).getRow().equals(this)) {
 				throw new IllegalArgumentException("cells[" + cellPos
 						+ "] has not been set to this row");
@@ -307,9 +309,8 @@ public final class CharacterStateRow extends PPodEntity {
 			}
 		}
 		clearCells();
-		this.cells.addAll(cells);
-		for (int cellPos = 0; cellPos < getCells().size(); cellPos++) {
-			getCells().get(cellPos).setPosition(cellPos);
+		for (int cellPos = 0; cellPos < cells.size(); cellPos++) {
+			this.cells.add(cells.get(cellPos).setPosition(cellPos));
 			cellIdx.put(getCells().get(cellPos), cellPos);
 		}
 		resetPPodVersionInfo();

@@ -33,19 +33,29 @@ import edu.upenn.cis.ppod.model.Study;
  */
 public class MatrixProvider {
 
-	public static final String SMALL_SIMPLE_MATRIX_PROVIDER = "MX54O";
+	public static final String SMALL_MATRICES_PROVIDER = "SMALL_MATRICES_PROVIDER";
 
 	private static AfterUnmarshalVisitor afterUnmarshalVisitor = new AfterUnmarshalVisitor();
 
-	@DataProvider(name = SMALL_SIMPLE_MATRIX_PROVIDER)
+	@DataProvider(name = SMALL_MATRICES_PROVIDER)
 	public static Object[][] createMatrix() throws Exception {
 
 		final JAXBContext ctx = JAXBContext.newInstance(Study.class);
-		final Study study = (Study) ctx.createUnmarshaller().unmarshal(
+		final Study studyMX540 = (Study) ctx.createUnmarshaller().unmarshal(
 				MatrixProvider.class.getResourceAsStream("/MX540.xml"));
-		study.accept(afterUnmarshalVisitor);
+		studyMX540.accept(afterUnmarshalVisitor);
 		final CharacterStateMatrix smallSimpleMatrix = getOnlyElement(getOnlyElement(
-				study.getOTUSets()).getMatrices());
-		return new Object[][] { new Object[] { smallSimpleMatrix } };
+				studyMX540.getOTUSets()).getMatrices());
+
+		final Study studyM1808 = (Study) ctx.createUnmarshaller().unmarshal(
+				MatrixProvider.class.getResourceAsStream("/M1808.nex.xml"));
+
+		studyM1808.accept(afterUnmarshalVisitor);
+		final CharacterStateMatrix smallDNAMatrix = getOnlyElement(getOnlyElement(
+				studyM1808.getOTUSets()).getMatrices());
+
+		return new Object[][] { new Object[] { smallSimpleMatrix },
+				new Object[] { smallDNAMatrix } };
+
 	}
 }

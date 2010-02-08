@@ -45,7 +45,7 @@ import edu.upenn.cis.ppod.model.OTUSet;
 import edu.upenn.cis.ppod.model.Study;
 import edu.upenn.cis.ppod.model.TreeSet;
 import edu.upenn.cis.ppod.saveorupdate.IMergeAttachment;
-import edu.upenn.cis.ppod.saveorupdate.IMergeCharacterStateMatrix;
+import edu.upenn.cis.ppod.saveorupdate.ISaveOrUpdateCharacterStateMatrix;
 import edu.upenn.cis.ppod.saveorupdate.IMergeOTUSet;
 import edu.upenn.cis.ppod.saveorupdate.IMergeTreeSet;
 import edu.upenn.cis.ppod.saveorupdate.ISaveOrUpdateStudy;
@@ -67,7 +67,7 @@ public class SaveOrUpdateStudyHibernate implements ISaveOrUpdateStudy {
 	private final Provider<TreeSet> treeSetProvider;
 
 	private final IMergeOTUSet mergeOTUSet;
-	private final IMergeCharacterStateMatrix saveOrUpdateMatrix;
+	private final ISaveOrUpdateCharacterStateMatrix saveOrUpdateMatrix;
 	private final IMergeTreeSet mergeTreeSet;
 
 	@Inject
@@ -82,7 +82,7 @@ public class SaveOrUpdateStudyHibernate implements ISaveOrUpdateStudy {
 			final Provider<DNAStateMatrix> dnaMatrixProvider,
 			final Provider<TreeSet> treeSetProvider,
 			final IMergeOTUSetHibernateFactory saveOrUpdateOTUSetFactory,
-			final IMergeCharacterStateMatrix.IFactory mergeMatrixFactory,
+			final ISaveOrUpdateCharacterStateMatrix.IFactory mergeMatrixFactory,
 			final IAttachmentNamespaceDAOHibernateFactory attachmentNamespaceDAOFactory,
 			final IAttachmentTypeDAOHibernateFactory attachmentTypeDAOFactory,
 			final IMergeAttachment.IFactory mergeAttachmentFactory,

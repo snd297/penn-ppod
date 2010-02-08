@@ -49,14 +49,14 @@ import edu.upenn.cis.ppod.model.IUUPPodEntity;
 import edu.upenn.cis.ppod.model.OTU;
 import edu.upenn.cis.ppod.model.OTUSet;
 import edu.upenn.cis.ppod.saveorupdate.IMergeAttachment;
-import edu.upenn.cis.ppod.saveorupdate.IMergeCharacterStateMatrix;
+import edu.upenn.cis.ppod.saveorupdate.ISaveOrUpdateCharacterStateMatrix;
 import edu.upenn.cis.ppod.thirdparty.injectslf4j.InjectLogger;
 
 /**
  * @author Sam Donnelly
  */
 public class SaveOrUpdateCharacterStateMatrix implements
-		IMergeCharacterStateMatrix {
+		ISaveOrUpdateCharacterStateMatrix {
 
 	private final Provider<Character> characterProvider;
 	private final Provider<CharacterStateRow> rowProvider;
@@ -140,8 +140,9 @@ public class SaveOrUpdateCharacterStateMatrix implements
 		}
 
 		final Map<Integer, Integer> originalCharIdxsByNewCharIdx = newHashMap();
+		int sourceCharacterPosition = -1;
 		for (final Character sourceCharacter : sourceMatrix.getCharacters()) {
-
+			sourceCharacterPosition++;
 			Character newTargetCharacter;
 			if (sourceMatrix.getType() == CharacterStateMatrix.Type.DNA) {
 				newTargetCharacter = dnaCharacter;
@@ -170,10 +171,19 @@ public class SaveOrUpdateCharacterStateMatrix implements
 				}
 			}
 
-			originalCharIdxsByNewCharIdx.put(targetMatrix.getCharacterIdx()
-					.get(newTargetCharacter), oldIdxsByChararacter
-					.get(newTargetCharacter));
-
+			if (targetMatrix.getType() == CharacterStateMatrix.Type.STANDARD) {
+				originalCharIdxsByNewCharIdx.put(targetMatrix.getCharacterIdx()
+						.get(newTargetCharacter), oldIdxsByChararacter
+						.get(newTargetCharacter));
+			} else {
+				if (clearedTargetCharacters.size() <= sourceCharacterPosition) {
+					originalCharIdxsByNewCharIdx.put(sourceCharacterPosition,
+							null);
+				} else {
+					originalCharIdxsByNewCharIdx.put(sourceCharacterPosition,
+							sourceCharacterPosition);
+				}
+			}
 			for (final Attachment sourceAttachment : sourceCharacter
 					.getAttachments()) {
 				final Set<Attachment> targetAttachments = findEach(
@@ -234,20 +244,19 @@ public class SaveOrUpdateCharacterStateMatrix implements
 					targetCell = originalTargetCells
 							.get(originalCharIdxsByNewCharIdx.get(newCellIdx));
 				}
-
-				// CharacterStateCell requires setRow, setPosition for error
-				// checking
-				targetCell.setRow(targetRow);
-				targetCell.setPosition(newCellIdx);
-
 				newTargetCells.add(targetCell);
+			}
+			targetRow.setCells(newTargetCells);
+			for (final CharacterStateCell targetCell : targetRow.getCells()) {
+
 				final CharacterStateCell sourceCell = sourceRow.getCells().get(
-						newCellIdx);
+						targetCell.getPosition());
 
 				final Set<CharacterState> newTargetStates = newHashSet();
 				for (final CharacterState sourceState : sourceCell.getStates()) {
-					newTargetStates.add(characters.get(newCellIdx).getStates()
-							.get(sourceState.getStateNumber()));
+					newTargetStates.add(characters
+							.get(targetCell.getPosition()).getStates().get(
+									sourceState.getStateNumber()));
 				}
 				switch (sourceCell.getType()) {
 					case INAPPLICABLE:
@@ -269,11 +278,9 @@ public class SaveOrUpdateCharacterStateMatrix implements
 						throw new AssertionError("unknown type");
 				}
 				cellsToEvict.add(targetCell);
+				dao.saveOrUpdate(targetCell);
 			}
-			targetRow.setCells(newTargetCells);
-			for (final CharacterStateCell newTargetCell : newTargetCells) {
-				dao.saveOrUpdate(newTargetCell);
-			}
+
 			dao.saveOrUpdate(targetRow);
 			logger.debug("{}: flushing row,  sourceRowIdx: {}", METHOD,
 					sourceRowIdx);

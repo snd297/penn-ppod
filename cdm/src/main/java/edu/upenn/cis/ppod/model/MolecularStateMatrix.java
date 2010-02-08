@@ -18,6 +18,8 @@ package edu.upenn.cis.ppod.model;
 import static com.google.common.base.Preconditions.checkArgument;
 import static com.google.common.base.Preconditions.checkNotNull;
 
+import java.util.Map;
+
 /**
  * @author Sam Donnelly
  */
@@ -32,8 +34,8 @@ abstract class MolecularStateMatrix extends CharacterStateMatrix {
 	 * If {@code character} was already contained in this matrix, then its
 	 * former position is filled in with {@code null}.
 	 * <p>
-	 * This method is does not reorder the columns of the matrix, unlike
-	 * {@code setOTUs(List)} which reorders rows.
+	 * This method is does not reorder the columns of the matrix, unlike {@code
+	 * setOTUs(List)} which reorders rows.
 	 * 
 	 * @param characterIdx index
 	 * @param character value
@@ -73,5 +75,11 @@ abstract class MolecularStateMatrix extends CharacterStateMatrix {
 
 		// Try to stick with the contract even though it's a little funny
 		return addedNewCharacters ? null : molecularCharacter;
+	}
+
+	@Override
+	public Map<Character, Integer> getCharacterIdx() {
+		throw new UnsupportedOperationException(
+				"character index is not supported for a MolecularMatrix since all characters are the same instance.");
 	}
 }

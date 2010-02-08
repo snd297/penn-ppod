@@ -25,9 +25,11 @@ import edu.upenn.cis.ppod.dao.hibernate.HibernateDAOFactory;
 import edu.upenn.cis.ppod.dao.hibernate.IAttachmentNamespaceDAOHibernateFactory;
 import edu.upenn.cis.ppod.dao.hibernate.IAttachmentTypeDAOHibernateFactory;
 import edu.upenn.cis.ppod.model.CharacterState;
+import edu.upenn.cis.ppod.model.CharacterStateMatrixFactory;
 import edu.upenn.cis.ppod.model.DNAState;
+import edu.upenn.cis.ppod.model.ICharacterStateMatrixFactory;
 import edu.upenn.cis.ppod.saveorupdate.IMergeAttachment;
-import edu.upenn.cis.ppod.saveorupdate.IMergeCharacterStateMatrix;
+import edu.upenn.cis.ppod.saveorupdate.ISaveOrUpdateCharacterStateMatrix;
 import edu.upenn.cis.ppod.saveorupdate.IMergeTreeSet;
 import edu.upenn.cis.ppod.saveorupdate.MergeAttachment;
 import edu.upenn.cis.ppod.saveorupdate.MergeTreeSet;
@@ -68,9 +70,9 @@ public final class PPodCoreModule extends AbstractModule {
 		bind(IMergeOTUSetHibernateFactory.class).toProvider(
 				FactoryProvider.newFactory(IMergeOTUSetHibernateFactory.class,
 						MergeOTUSetHibernate.class));
-		bind(IMergeCharacterStateMatrix.IFactory.class).toProvider(
+		bind(ISaveOrUpdateCharacterStateMatrix.IFactory.class).toProvider(
 				FactoryProvider.newFactory(
-						IMergeCharacterStateMatrix.IFactory.class,
+						ISaveOrUpdateCharacterStateMatrix.IFactory.class,
 						SaveOrUpdateCharacterStateMatrix.class));
 		bind(IMergeTreeSet.class).to(MergeTreeSet.class);
 
@@ -84,5 +86,8 @@ public final class PPodCoreModule extends AbstractModule {
 		bind(DNAState.IFactory.class).toProvider(
 				FactoryProvider.newFactory(DNAState.IFactory.class,
 						DNAState.class));
+
+		bind(ICharacterStateMatrixFactory.class).to(
+				CharacterStateMatrixFactory.class);
 	}
 }
