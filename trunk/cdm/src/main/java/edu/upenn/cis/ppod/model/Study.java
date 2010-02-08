@@ -115,9 +115,9 @@ public final class Study extends UUPPodEntity implements IOTUSetCentricEntities 
 	public boolean beforeMarshal(final Marshaller m) {
 		super.beforeMarshal(m);
 		if (studyWideAttachmentNamespaces.size() == 0) {
-// PPodEntitiesUtil.extractAttachmentInfoFromAttachee(
-// studyWideAttachmentNamespaces, studyWideAttachmentTypes,
-// studyWideAttachments, this);
+			PPodEntitiesUtil.extractAttachmentInfoFromAttachee(
+					studyWideAttachmentNamespaces, studyWideAttachmentTypes,
+					studyWideAttachments, this);
 			PPodEntitiesUtil.extractAttachmentInfoFromPPodEntities(
 					studyWideAttachmentNamespaces, studyWideAttachmentTypes,
 					studyWideAttachments, this);

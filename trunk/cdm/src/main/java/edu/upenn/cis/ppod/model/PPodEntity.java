@@ -62,11 +62,10 @@ public abstract class PPodEntity extends PersistentObject implements
 
 	static final String TABLE = "PPOD_ENTITY";
 
-	// @Transient
-	// @ManyToMany
-	// @JoinTable(inverseJoinColumns = { @JoinColumn(name =
-	// Attachment.ID_COLUMN) })
-// private Set<Attachment> attachments = newHashSet();
+	@ManyToMany
+	@JoinTable(inverseJoinColumns = { @JoinColumn(name = Attachment.ID_COLUMN) })
+	private Set<Attachment> attachments;
+
 	/**
 	 * The pPod-version of this object. Similar in concept to Hibernate's
 	 * version, but tweaked for our purposes.
@@ -99,14 +98,14 @@ public abstract class PPodEntity extends PersistentObject implements
 
 	PPodEntity() {}
 
-// public IPPodEntity addAttachment(final Attachment attachment) {
-// if (attachments == null) {
-// attachments = newHashSet();
-// }
-// attachments.add(attachment);
-// attachment.addAttachee(this);
-// return this;
-// }
+	public IPPodEntity addAttachment(final Attachment attachment) {
+		if (attachments == null) {
+			attachments = newHashSet();
+		}
+		attachments.add(attachment);
+		attachment.addAttachee(this);
+		return this;
+	}
 
 	/**
 	 * {@link Unmarshaller} callback.
@@ -136,49 +135,49 @@ public abstract class PPodEntity extends PersistentObject implements
 		return allowPersist;
 	}
 
-// public Set<Attachment> getAttachments() {
-// if (attachments == null) {
-// return Collections.emptySet();
-// } else {
-// return Collections.unmodifiableSet(attachments);
-// }
-// }
+	public Set<Attachment> getAttachments() {
+		if (attachments == null) {
+			return Collections.emptySet();
+		} else {
+			return Collections.unmodifiableSet(attachments);
+		}
+	}
 
-// public Set<Attachment> getAttachmentsByNamespace(final String namespace) {
-// final Set<Attachment> attachmentsByNamespace = newHashSet();
-// for (final Attachment attachment : getAttachments()) {
-// if (namespace
-// .equals(attachment.getType().getNamespace().getLabel())) {
-// attachmentsByNamespace.add(attachment);
-// }
-// }
-// return attachmentsByNamespace;
-// }
-//
-// public Set<Attachment> getAttachmentsByNamespaceAndType(
-// final String namespace, final String type) {
-// return Sets.newHashSet(Iterables.filter(getAttachments(),
-// new Predicate<Attachment>() {
-// public boolean apply(final Attachment input) {
-// return input.getType().getNamespace().getLabel()
-// .equals(namespace)
-// && input.getType().getLabel().equals(type);
-// }
-// }));
-// }
+	public Set<Attachment> getAttachmentsByNamespace(final String namespace) {
+		final Set<Attachment> attachmentsByNamespace = newHashSet();
+		for (final Attachment attachment : getAttachments()) {
+			if (namespace
+					.equals(attachment.getType().getNamespace().getLabel())) {
+				attachmentsByNamespace.add(attachment);
+			}
+		}
+		return attachmentsByNamespace;
+	}
+
+	public Set<Attachment> getAttachmentsByNamespaceAndType(
+			final String namespace, final String type) {
+		return Sets.newHashSet(Iterables.filter(getAttachments(),
+				new Predicate<Attachment>() {
+					public boolean apply(final Attachment input) {
+						return input.getType().getNamespace().getLabel()
+								.equals(namespace)
+								&& input.getType().getLabel().equals(type);
+					}
+				}));
+	}
 
 	/**
 	 * Created for JAXB.
 	 */
-// @XmlElement(name = "attachmentDocId")
-// @XmlIDREF
-// @SuppressWarnings("unused")
-// private Set<Attachment> getAttachmentsMutable() {
-// if (attachments == null) {
-// attachments = newHashSet();
-// }
-// return attachments;
-// }
+	@XmlElement(name = "attachmentDocId")
+	@XmlIDREF
+	@SuppressWarnings("unused")
+	private Set<Attachment> getAttachmentsMutable() {
+		if (attachments == null) {
+			attachments = newHashSet();
+		}
+		return attachments;
+	}
 
 	@XmlAttribute
 	public Long getPPodVersion() {
@@ -192,9 +191,9 @@ public abstract class PPodEntity extends PersistentObject implements
 		return pPodVersionInfo;
 	}
 
-	// public boolean removeAttachment(final Attachment attachment) {
-	// return attachments.remove(attachment);
-	// }
+	public boolean removeAttachment(final Attachment attachment) {
+		return attachments.remove(attachment);
+	}
 
 	/**
 	 * Mark this object's {@link PPodVersionInfo} for update to the next version
@@ -246,6 +245,7 @@ public abstract class PPodEntity extends PersistentObject implements
 		final StringBuilder retValue = new StringBuilder();
 
 		retValue.append("PPodEntity(").append(super.toString()).append(TAB)
+				.append("attachments=").append(this.attachments).append(TAB)
 				.append("pPodVersionInfo=").append(this.pPodVersionInfo)
 				.append(TAB).append("pPodVersion=").append(this.pPodVersion)
 				.append(TAB).append(")");

@@ -31,7 +31,7 @@ import edu.upenn.cis.ppod.model.OTUSet;
  * 
  * @author Sam Donnelly
  */
-public interface IMergeCharacterStateMatrix {
+public interface ISaveOrUpdateCharacterStateMatrix {
 
 	/**
 	 * Merge {@code sourceMatrix} onto {@code targetMatrix}.
@@ -61,10 +61,10 @@ public interface IMergeCharacterStateMatrix {
 			Map<OTU, OTU> mergedOTUsBySourceOTU, DNACharacter dnaCharacter);
 
 	/**
-	 * Makes {@link IMergeCharacterStateMatrix}s.
+	 * Makes {@link ISaveOrUpdateCharacterStateMatrix}s.
 	 */
 	static interface IFactory {
-		IMergeCharacterStateMatrix create(IMergeAttachment mergeAttachment,
+		ISaveOrUpdateCharacterStateMatrix create(IMergeAttachment mergeAttachment,
 				IDAO<Object, Long> dao);
 	}
 }

@@ -164,13 +164,14 @@ public class ModelAssert {
 		// supposed to be.
 		// We use actualMatrix.getCharacters() to check as oppose to looking at
 		// expectedMatrix sine that seems to make the most sense
-		assertEquals(actualMatrix.getCharacterIdx().size(), actualMatrix
-				.getCharacters().size());
-
-		for (final Entry<Character, Integer> actualIdxByCharacter : actualMatrix
-				.getCharacterIdx().entrySet()) {
-			assertTrue(actualIdxByCharacter.getKey() == actualMatrix
-					.getCharacters().get(actualIdxByCharacter.getValue()));
+		if (actualMatrix.getType() == CharacterStateMatrix.Type.STANDARD) {
+			assertEquals(actualMatrix.getCharacterIdx().size(), actualMatrix
+					.getCharacters().size());
+			for (final Entry<Character, Integer> actualIdxByCharacter : actualMatrix
+					.getCharacterIdx().entrySet()) {
+				assertTrue(actualIdxByCharacter.getKey() == actualMatrix
+						.getCharacters().get(actualIdxByCharacter.getValue()));
+			}
 		}
 
 		assertEquals(actualMatrix.getRows().size(), expectedMatrix.getRows()
@@ -213,13 +214,13 @@ public class ModelAssert {
 				.getBytesValue());
 		assertEqualsAttachmentTypes(actualAttachment.getType(),
 				expectedAttachment.getType());
-//		assertEquals(actualAttachment.getAttachments().size(),
-//				expectedAttachment.getAttachments().size());
-//		for (final Attachment attachmentAttachment : expectedAttachment
-//				.getAttachments()) {
-//			throw new IllegalArgumentException(
-					//"We don't support nested attchaments yet");
-//		}
+// assertEquals(actualAttachment.getAttachments().size(),
+// expectedAttachment.getAttachments().size());
+// for (final Attachment attachmentAttachment : expectedAttachment
+// .getAttachments()) {
+// throw new IllegalArgumentException(
+		// "We don't support nested attchaments yet");
+// }
 	}
 
 	/**
