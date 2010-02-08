@@ -118,7 +118,8 @@ public final class Attachment extends UUPPodEntity {
 	private byte[] bytesValue;
 
 	/** Objects to which this {@code Attachment} is attached. */
-	@ManyToMany(mappedBy = "attachments")
+	@Transient
+	// @ManyToMany(mappedBy = "attachments")
 	private final Set<PPodEntity> attachees = newHashSet();
 
 	@XmlAttribute
@@ -132,9 +133,9 @@ public final class Attachment extends UUPPodEntity {
 	@Override
 	public Attachment accept(final IVisitor visitor) {
 		visitor.visit(this);
-		for (final Attachment attachment : getAttachments()) {
-			attachment.accept(visitor);
-		}
+// for (final Attachment attachment : getAttachments()) {
+// attachment.accept(visitor);
+// }
 		return this;
 	}
 

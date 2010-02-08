@@ -169,10 +169,6 @@ public class SaveCharacterStateMatrixHibernate {
 			final CharacterStateRow targetRow = rowProvider.get();
 			targetRows.add(targetRow);
 
-			targetRow.addCell(cellProvider.get());
-
-			session.saveOrUpdate(targetRow);
-
 			final CharacterStateRow sourceRow = sourceMatrix
 					.getRow(sourceMatrix.getOTUs().get(sourceRowIdx++));
 			for (final ListIterator<CharacterStateCell> sourceCellItr = sourceRow

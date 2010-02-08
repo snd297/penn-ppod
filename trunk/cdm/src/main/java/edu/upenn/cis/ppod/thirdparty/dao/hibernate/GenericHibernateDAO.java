@@ -32,6 +32,7 @@ package edu.upenn.cis.ppod.thirdparty.dao.hibernate;
 
 import java.io.Serializable;
 import java.lang.reflect.ParameterizedType;
+import java.util.Collection;
 import java.util.List;
 
 import org.hibernate.Criteria;
@@ -147,6 +148,13 @@ public class GenericHibernateDAO<T, ID extends Serializable> implements
 	public T evict(final T entity) {
 		getSession().evict(entity);
 		return entity;
+	}
+
+	public Collection<? extends T> evictEntities(final Collection<? extends T> entities) {
+		for (T entity : entities) {
+			evict(entity);
+		}
+		return entities;
 	}
 
 	public T delete(final T entity) {

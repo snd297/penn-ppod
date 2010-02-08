@@ -47,6 +47,7 @@ public interface IStudyDAO extends IDAO<Study, Long> {
 	 *         pPodId == null}
 	 */
 	Study getStudyByPPodId(String pPodId);
+	Study getStudyByPPodIdEager(String pPodId);
 
 	/**
 	 * Get the pPOD version of the study with the given pPOD id.

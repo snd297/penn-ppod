@@ -29,7 +29,6 @@ import javax.xml.bind.annotation.XmlAttribute;
  * 
  * @author Sam Donnelly
  */
-@XmlAccessorType(XmlAccessType.NONE)
 @Entity
 @Table(name = AttachmentNamespace.TABLE)
 public final class AttachmentNamespace extends PersistentObjectWXmlId {

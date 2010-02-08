@@ -112,19 +112,19 @@ public class CharacterStateMatrixTest {
 		matrix.setCharacter(0, character);
 
 		matrix.setRow(otu0, rowProvider.get());
-		final CharacterStateCell cell00 = matrix.getRows().get(0).addCell(
-				cellProvider.get());
+		final CharacterStateCell cell00 = cellProvider.get();
+		matrix.getRows().get(0).setCells(newArrayList(cell00));
 		cell00.setSingleState(stateFactory.create(0).setCharacter(character));
 
 		matrix.setRow(otu1, rowProvider.get());
-		final CharacterStateCell cell10 = matrix.getRows().get(1).addCell(
-				cellProvider.get());
+		final CharacterStateCell cell10 = cellProvider.get();
+		matrix.getRows().get(1).setCells(newArrayList(cell10));
 		cell10.setSingleState(stateFactory.create(1));
 
 		matrix.setRow(otu2, rowProvider.get());
-		final CharacterStateCell cell20 = matrix.getRows().get(2).addCell(
-				cellProvider.get());
-		cell20.setSingleState(stateFactory.create(2));
+		final CharacterStateCell cell20 = cellProvider.get();
+		matrix.getRows().get(1).setCells(newArrayList(cell20));
+		cell20.setSingleState(stateFactory.create(0));
 
 		final List<CharacterStateRow> originalRows = newArrayList(matrix
 				.getRows());

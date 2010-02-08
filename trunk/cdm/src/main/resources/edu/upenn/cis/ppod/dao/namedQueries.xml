@@ -15,6 +15,11 @@
 		<hint name="org.hibernate.comment" value="Get a Study given its pPOD ID." />
 	</named-query>
 
+	<named-query name="Study-getByPPodIdEager">
+		<query>select s from Study s left join fetch s.otuSets o left join fetch o.matrices m left join fetch m.rows where s.pPodId=:pPodId</query>
+		<hint name="org.hibernate.comment" value="Get a Study given its pPOD ID." />
+	</named-query>
+
 	<named-query name="Study-getPPodVersionByPPodId">
 		<query>select s.pPodVersionInfo.pPodVersion from Study s where s.pPodId=:pPodId</query>
 	</named-query>
@@ -69,25 +74,29 @@
 		<query>select versionInfo.pPodVersion from CharacterStateMatrix m join m.columnPPodVersionInfos versionInfo where m.id=:matrixId order by PPOD_VERSION_INFO_POSITION</query>
 		<hint name="org.hibernate.comment"
 			value="Get a matrixs column headers pPOD versions given the matrix id" />
-	</named-query><!--
-
-	<named-query
-		name="CharacterStateMatrix-getRowIdxsIdsVersionsByMatrixIdAndMinPPodVersion">
-		<query>select index(r), r.id, r.pPodVersionInfo.pPodVersion 
-		       from CharacterStateMatrix m join m.rows r where 
-		       m.id=:matrixId and r.pPodVersionInfo.pPodVersion >= :minPPodVersion</query>
 	</named-query>
+	<!--
 
-	--><named-query name="CharacterStateMatrix-getPPodIdLabelPairs">
+		<named-query
+		name="CharacterStateMatrix-getRowIdxsIdsVersionsByMatrixIdAndMinPPodVersion">
+		<query>select index(r), r.id, r.pPodVersionInfo.pPodVersion from
+		CharacterStateMatrix m join m.rows r where m.id=:matrixId and
+		r.pPodVersionInfo.pPodVersion >= :minPPodVersion</query>
+		</named-query>
+	-->
+	<named-query name="CharacterStateMatrix-getPPodIdLabelPairs">
 		<query>select m.pPodId, m.label from CharacterStateMatrix m</query>
 		<hint name="org.hibernate.comment" value="Get pPodId/label pairs for all persisted matrices" />
-	</named-query><!--
-
-	<named-query name="CharacterState-getCellIdxsVersionsByRowIdAndMinVersion">
-		<query>select index(c), c.pPodVersionInfo.pPodVersion from CharacterStateRow r join r.cells c where r.id=:rowId and c.pPodVersionInfo.pPodVersion >= :minVersion</query>
 	</named-query>
+	<!--
 
-	--><named-query name="Character-getByPPodId">
+		<named-query
+		name="CharacterState-getCellIdxsVersionsByRowIdAndMinVersion">
+		<query>select index(c), c.pPodVersionInfo.pPodVersion from
+		CharacterStateRow r join r.cells c where r.id=:rowId and
+		c.pPodVersionInfo.pPodVersion >= :minVersion</query> </named-query>
+	-->
+	<named-query name="Character-getByPPodId">
 		<query>select c from Character c where c.pPodId=:pPodId
 		</query>
 		<hint name="org.hibernate.comment" value="Get a phylo char given its pPodId." />

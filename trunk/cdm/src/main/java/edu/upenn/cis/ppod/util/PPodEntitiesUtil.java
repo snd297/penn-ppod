@@ -51,8 +51,8 @@ public class PPodEntitiesUtil {
 			attachmentNamespaces.add(attachment.getType().getNamespace());
 			attachmentTypes.add(attachment.getType());
 			attachments.add(attachment);
-			extractAttachmentInfoFromAttachee(attachmentNamespaces,
-					attachmentTypes, attachments, attachment);
+// extractAttachmentInfoFromAttachee(attachmentNamespaces,
+// attachmentTypes, attachments, attachment);
 		}
 		return attachee;
 	}
@@ -61,19 +61,19 @@ public class PPodEntitiesUtil {
 			final Set<AttachmentNamespace> studyWideAttachmentNamespaces,
 			final Set<AttachmentType> studyWideAttachmentTypes,
 			final Set<Attachment> studyWideAttachments,
-			final IOTUSetCentricEntities oTUSetCentricEntities) {
-		for (final OTUSet otuSet : oTUSetCentricEntities.getOTUSets()) {
-			extractAttachmentInfoFromAttachee(studyWideAttachmentNamespaces,
-					studyWideAttachmentTypes, studyWideAttachments, otuSet);
+			final IOTUSetCentricEntities otuSetCentricEntities) {
+		for (final OTUSet otuSet : otuSetCentricEntities.getOTUSets()) {
+// extractAttachmentInfoFromAttachee(studyWideAttachmentNamespaces,
+// studyWideAttachmentTypes, studyWideAttachments, otuSet);
 			for (final OTU otu : otuSet.getOTUs()) {
-				extractAttachmentInfoFromAttachee(
-						studyWideAttachmentNamespaces,
-						studyWideAttachmentTypes, studyWideAttachments, otu);
+// extractAttachmentInfoFromAttachee(
+// studyWideAttachmentNamespaces,
+// studyWideAttachmentTypes, studyWideAttachments, otu);
 			}
 			for (final CharacterStateMatrix matrix : otuSet.getMatrices()) {
-				extractAttachmentInfoFromAttachee(
-						studyWideAttachmentNamespaces,
-						studyWideAttachmentTypes, studyWideAttachments, matrix);
+// extractAttachmentInfoFromAttachee(
+// studyWideAttachmentNamespaces,
+// studyWideAttachmentTypes, studyWideAttachments, matrix);
 				for (final Character character : matrix.getCharacters()) {
 					extractAttachmentInfoFromAttachee(
 							studyWideAttachmentNamespaces,
@@ -83,6 +83,6 @@ public class PPodEntitiesUtil {
 			}
 		}
 
-		return oTUSetCentricEntities;
+		return otuSetCentricEntities;
 	}
 }

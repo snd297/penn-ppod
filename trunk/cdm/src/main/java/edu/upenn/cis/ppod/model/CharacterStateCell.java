@@ -43,14 +43,14 @@ import javax.persistence.Table;
 import javax.persistence.Transient;
 import javax.xml.bind.Marshaller;
 import javax.xml.bind.Unmarshaller;
-import javax.xml.bind.annotation.XmlAccessType;
-import javax.xml.bind.annotation.XmlAccessorType;
 import javax.xml.bind.annotation.XmlAttribute;
 import javax.xml.bind.annotation.XmlElement;
 import javax.xml.bind.annotation.XmlIDREF;
 
 import org.hibernate.annotations.Sort;
 import org.hibernate.annotations.SortType;
+
+import com.google.common.base.Function;
 
 import edu.upenn.cis.ppod.util.IVisitor;
 
@@ -59,10 +59,35 @@ import edu.upenn.cis.ppod.util.IVisitor;
  * 
  * @author Sam Donnelly
  */
-@XmlAccessorType(XmlAccessType.NONE)
 @Entity
 @Table(name = CharacterStateCell.TABLE)
 public final class CharacterStateCell extends PPodEntity {
+
+	/** Position in a {@link CharacterStateRow}. */
+	@XmlAttribute
+	@Column(name = "POSITION", nullable = false)
+	private Integer position;
+
+	/**
+	 * Get the position.
+	 * 
+	 * @return the position
+	 */
+	public Integer getPosition() {
+		return position;
+	}
+
+	/**
+	 * Set the position.
+	 * 
+	 * @param position the position to set
+	 * 
+	 * @return this
+	 */
+	public CharacterStateCell setPosition(final Integer position) {
+		this.position = position;
+		return this;
+	}
 
 	/**
 	 * The different types of {@code CharacterStateCell}: single, polymorphic,
@@ -218,7 +243,7 @@ public final class CharacterStateCell extends PPodEntity {
 
 	}
 
-	private void checkIncomingState(final CharacterState state) {
+	void checkIncomingState(final CharacterState state) {
 		if (getRow() == null) {
 			throw new IllegalStateException(
 					"this cell has not been assigned a row");
@@ -229,16 +254,15 @@ public final class CharacterStateCell extends PPodEntity {
 					"this cell's row has not had a matrix assigned");
 		}
 
-		if (getRow().getMatrix().getCharacters().size() < getRow().getCellIdx()
-				.get(this)
+		if (getRow().getMatrix().getCharacters().size() < getPosition()
 				|| null == getRow().getMatrix().getCharacters().get(
-						getRow().getCellIdx().get(this))) {
+						getPosition())) {
 			throw new IllegalStateException(
 					"this cell's column hasn't been assigned a character");
 		}
 
 		final Character thisCellsCharacter = getRow().getMatrix()
-				.getCharacters().get(row.getCellIdx().get(this));
+				.getCharacters().get(getPosition());
 
 		if (!state.getCharacter().equals(thisCellsCharacter)) {
 			throw new IllegalArgumentException(

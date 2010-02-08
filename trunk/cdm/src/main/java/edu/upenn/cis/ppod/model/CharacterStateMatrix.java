@@ -617,12 +617,6 @@ public class CharacterStateMatrix extends UUPPodEntityWXmlId {
 	 */
 	public CharacterStateMatrix setOTUs(final List<OTU> newOTUs) {
 		checkNotNull(newOTUs);
-// checkState(getOTUs().size() == 0 && getRows().size() == 0,
-// "you must call clearOTUs before you call setOTUs if getOTUs is non-zero");
-// otus.addAll(clearedOTUs);
-// rows.addAll(clearedRows);
-// clearedOTUs.clear();
-// clearedRows.clear();
 		if (newOTUs.equals(getOTUs())) {
 			// They're the same, nothing to do
 			return this;
