@@ -40,7 +40,6 @@ import com.google.inject.assistedinject.Assisted;
  * 
  * @author Sam Donnelly
  */
-@XmlAccessorType(XmlAccessType.NONE)
 @Entity
 @Table(name = CharacterState.TABLE)
 public class CharacterState extends PPodEntityWXmlId {

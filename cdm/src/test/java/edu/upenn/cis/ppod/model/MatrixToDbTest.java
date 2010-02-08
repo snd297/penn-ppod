@@ -295,11 +295,12 @@ public class MatrixToDbTest extends DbTestBase {
 
 					Assert.assertTrue(sortedCellElements.size() > 0);
 
+					final List<CharacterStateCell> cells = newArrayList();
 					for (final Element sortedCellElement : sortedCellElements
 							.values()) {
 						// logger.debug("cellElement: {}", sortedCellElement);
-						final CharacterStateCell phyloCharMatrixCell = phyloCharMatrixRow
-								.addCell(new CharacterStateCell());
+//						final CharacterStateCell phyloCharMatrixCell = phyloCharMatrixRow
+//								.addCell(new CharacterStateCell());
 
 // phyloCharMatrixCell
 // .setType(CharacterStateCell.Type

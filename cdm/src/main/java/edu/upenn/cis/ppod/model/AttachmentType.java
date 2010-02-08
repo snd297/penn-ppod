@@ -36,7 +36,6 @@ import org.hibernate.annotations.Cascade;
  * 
  * @author Sam Donnelly
  */
-@XmlAccessorType(XmlAccessType.NONE)
 @Entity
 @Table(name = AttachmentType.TABLE)
 public final class AttachmentType extends PersistentObjectWXmlId {

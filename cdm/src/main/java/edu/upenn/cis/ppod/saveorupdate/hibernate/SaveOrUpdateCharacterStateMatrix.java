@@ -19,6 +19,7 @@ import static com.google.common.base.Preconditions.checkNotNull;
 import static com.google.common.collect.Iterables.get;
 import static com.google.common.collect.Iterables.getOnlyElement;
 import static com.google.common.collect.Lists.newArrayList;
+import static com.google.common.collect.Lists.newArrayListWithCapacity;
 import static com.google.common.collect.Maps.newHashMap;
 import static com.google.common.collect.Sets.newHashSet;
 import static edu.upenn.cis.ppod.util.PPodIterables.equalTo;
@@ -99,13 +100,8 @@ public class SaveOrUpdateCharacterStateMatrix implements
 		checkNotNull(sourceMatrix);
 		checkNotNull(newTargetMatrixOTUSet);
 
-		// We need to block version resets because they propagate upward and we
-		// don't want to modify OTUSet or Study before the flush's that we need
-		// to do. Because then we get StaleObjectException's.
-// targetMatrix.setAllowResetPPodVersionInfo(false);
-
-		dao.evict(newTargetMatrixOTUSet.getStudy());
-		dao.evict(newTargetMatrixOTUSet);
+		// dao.evict(newTargetMatrixOTUSet.getStudy());
+		// dao.evict(newTargetMatrixOTUSet);
 
 		newTargetMatrixOTUSet.addMatrix(targetMatrix);
 
@@ -128,15 +124,13 @@ public class SaveOrUpdateCharacterStateMatrix implements
 			newTargetOTUs.add(newTargetOTU);
 		}
 
-		// Force the flushing
-		// dao.flush();
-
 		targetMatrix.setOTUs(newTargetOTUs);
 
 		// Move Characters around - start by removing all characters
 		final List<Character> clearedTargetCharacters = targetMatrix
 				.clearCharacters();
-		// Force the clearing of the characters
+		// Force the clearing of the characters otherwise reorderings will mess
+		// us up - it's a hibernate bug
 		dao.flush();
 
 		final Map<Character, Integer> oldIdxsByChararacter = newHashMap();
@@ -200,9 +194,7 @@ public class SaveOrUpdateCharacterStateMatrix implements
 			dao.saveOrUpdate(newTargetCharacter);
 		}
 
-		int cellCounter = 0;
-		final Set<CharacterStateCell> cellsToFlush = newHashSet();
-
+		final Set<CharacterStateCell> cellsToEvict = newHashSet();
 		for (final CharacterStateRow sourceRow : sourceMatrix.getRows()) {
 
 			final int sourceRowIdx = sourceRow.getPosition();
@@ -228,22 +220,10 @@ public class SaveOrUpdateCharacterStateMatrix implements
 						"existing row has now pPOD version number");
 			}
 
-// if (newRow) {
-// // If it's new
-// } else if (sourceRow.getPPodVersion() >= 0) {
-// // We already have the latest version
-// continue;
-// }
-
-			while (targetRow.getCells().size() > targetMatrix.getCharacters()
-					.size()) {
-				targetRow.removeLastCell();
-			}
-
-			final List<CharacterStateCell> originalTargetCells = newArrayList(targetRow
-					.clearCells());
-
-			dao.flush();
+			final List<CharacterStateCell> originalTargetCells = targetRow
+					.getCells();
+			final List<CharacterStateCell> newTargetCells = newArrayListWithCapacity(sourceRow
+					.getCells().size());
 
 			for (int newCellIdx = 0; newCellIdx < targetMatrix.getCharacters()
 					.size(); newCellIdx++) {
@@ -254,7 +234,13 @@ public class SaveOrUpdateCharacterStateMatrix implements
 					targetCell = originalTargetCells
 							.get(originalCharIdxsByNewCharIdx.get(newCellIdx));
 				}
-				targetRow.setCell(targetCell, newCellIdx);
+
+				// CharacterStateCell requires setRow, setPosition for error
+				// checking
+				targetCell.setRow(targetRow);
+				targetCell.setPosition(newCellIdx);
+
+				newTargetCells.add(targetCell);
 				final CharacterStateCell sourceCell = sourceRow.getCells().get(
 						newCellIdx);
 
@@ -282,31 +268,21 @@ public class SaveOrUpdateCharacterStateMatrix implements
 					default:
 						throw new AssertionError("unknown type");
 				}
-				dao.saveOrUpdate(targetCell);
-				cellsToFlush.add(targetCell);
-				if (cellsToFlush.size() % 20 == 0) {
-					logger.debug("{}: flushing cells, cellCounter: {}", METHOD,
-							cellCounter);
-					dao.flush();
-					for (final CharacterStateCell cellToFlush : cellsToFlush) {
-						dao.evict(cellToFlush);
-					}
-					cellsToFlush.clear();
-				}
+				cellsToEvict.add(targetCell);
+			}
+			targetRow.setCells(newTargetCells);
+			for (final CharacterStateCell newTargetCell : newTargetCells) {
+				dao.saveOrUpdate(newTargetCell);
 			}
 			dao.saveOrUpdate(targetRow);
 			logger.debug("{}: flushing row,  sourceRowIdx: {}", METHOD,
 					sourceRowIdx);
 			dao.flush();
-			dao.evict(targetRow); // will flush the cells to via cascade
-			cellsToFlush.clear();
+			dao.evictEntities(cellsToEvict).clear();
+			dao.evict(targetRow);
 		}
-// targetMatrix.setAllowResetPPodVersionInfo(true);
-// if (targetMatrix.getBlockedAVersionReset()) {
-// targetMatrix.resetPPodVersionInfo();
-// }
-		dao.saveOrUpdate(newTargetMatrixOTUSet.getStudy());
-		dao.saveOrUpdate(newTargetMatrixOTUSet);
+		// dao.saveOrUpdate(newTargetMatrixOTUSet.getStudy());
+		// dao.saveOrUpdate(newTargetMatrixOTUSet);
 		return targetMatrix;
 	}
 }

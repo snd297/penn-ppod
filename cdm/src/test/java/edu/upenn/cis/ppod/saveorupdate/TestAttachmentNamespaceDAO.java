@@ -3,6 +3,7 @@ package edu.upenn.cis.ppod.saveorupdate;
 import static com.google.common.collect.Maps.newHashMap;
 
 import java.io.Serializable;
+import java.util.Collection;
 import java.util.List;
 import java.util.Map;
 
@@ -62,6 +63,12 @@ public class TestAttachmentNamespaceDAO implements IAttachmentNamespaceDAO {
 	}
 
 	public void flush() {
+		// TODO Auto-generated method stub
+		throw new UnsupportedOperationException();
+	}
+
+	public Collection<? extends AttachmentNamespace> evictEntities(
+			Collection<? extends AttachmentNamespace> entities) {
 		// TODO Auto-generated method stub
 		throw new UnsupportedOperationException();
 	}

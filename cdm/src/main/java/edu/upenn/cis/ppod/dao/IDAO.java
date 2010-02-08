@@ -16,6 +16,7 @@
 package edu.upenn.cis.ppod.dao;
 
 import java.io.Serializable;
+import java.util.Collection;
 import java.util.List;
 
 /**
@@ -93,6 +94,8 @@ public interface IDAO<T, ID extends Serializable> {
 
 	T evict(final T entity);
 
-	public void flush();
+	Collection<? extends T> evictEntities(final Collection<? extends T> entities);
+
+	void flush();
 
 }

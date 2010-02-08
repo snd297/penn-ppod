@@ -21,9 +21,14 @@ import java.util.Iterator;
 import java.util.List;
 import java.util.Set;
 
+import org.hibernate.Criteria;
+import org.hibernate.FetchMode;
+import org.hibernate.criterion.Restrictions;
+
 import com.google.inject.Inject;
 
 import edu.upenn.cis.ppod.dao.IStudyDAO;
+import edu.upenn.cis.ppod.model.Character;
 import edu.upenn.cis.ppod.model.Study;
 import edu.upenn.cis.ppod.thirdparty.dao.hibernate.GenericHibernateDAO;
 import edu.upenn.cis.ppod.util.IPair;
@@ -55,8 +60,27 @@ public class StudyDAOHibernate extends GenericHibernateDAO<Study, Long>
 	}
 
 	public Study getStudyByPPodId(final String pPodId) {
-		return (Study) getSession().getNamedQuery("Study-getByPPodId")
+		return (Study) getSession().getNamedQuery(
+				Study.class.getSimpleName() + "-getByPPodId").setParameter(
+				"pPodId", pPodId).uniqueResult();
+	}
+
+	public Study getStudyByPPodIdEager(final String pPodId) {
+		//return getStudyByPPodId(pPodId);
+		return (Study) getSession().getNamedQuery(
+				Study.class.getSimpleName() + "-getByPPodIdEager")
 				.setParameter("pPodId", pPodId).uniqueResult();
+// return (Study) getSession().createCriteria(Study.class).add(
+// Restrictions.eq("pPodId", pPodId)).setFetchMode("otuSets",
+// FetchMode.JOIN).createCriteria("otuSets").setFetchMode("otus",
+// FetchMode.JOIN).setFetchMode("matrices", FetchMode.JOIN)
+// .setFetchMode("treeSets", FetchMode.JOIN).createCriteria(
+// "matrices").setFetchMode("characters", FetchMode.JOIN)
+// .setFetchMode("characterIdx", FetchMode.JOIN).setFetchMode(
+// "otus", FetchMode.JOIN).setFetchMode("otuIdx",
+// FetchMode.JOIN).setFetchMode("rows", FetchMode.JOIN)
+// .createCriteria("rows").setFetchMode("cells", FetchMode.JOIN)
+// .setFetchMode("cellIdx", FetchMode.JOIN).uniqueResult();
 	}
 
 	@SuppressWarnings("unchecked")

@@ -19,7 +19,6 @@ import static com.google.common.base.Preconditions.checkNotNull;
 import static com.google.common.base.Preconditions.checkState;
 import static com.google.common.collect.Lists.newArrayList;
 import static com.google.common.collect.Maps.newHashMap;
-import static edu.upenn.cis.ppod.util.CollectionsUtil.nullFill;
 
 import java.util.Collections;
 import java.util.List;
@@ -30,14 +29,12 @@ import javax.persistence.Entity;
 import javax.persistence.JoinColumn;
 import javax.persistence.JoinTable;
 import javax.persistence.OneToMany;
+import javax.persistence.OrderBy;
 import javax.persistence.Table;
 import javax.persistence.Transient;
 import javax.xml.bind.Unmarshaller;
 import javax.xml.bind.annotation.XmlAttribute;
 import javax.xml.bind.annotation.XmlElement;
-
-import org.hibernate.annotations.Cascade;
-import org.hibernate.annotations.IndexColumn;
 
 import edu.upenn.cis.ppod.util.IVisitor;
 
@@ -102,8 +99,10 @@ public final class CharacterStateRow extends PPodEntity {
 	 * No delete orphan either...TODO
 	 */
 	@OneToMany
-	@JoinTable(inverseJoinColumns = @JoinColumn(name = CharacterStateCell.ID_COLUMN))
-	@IndexColumn(name = CELLS_INDEX_COLUMN)
+	@OrderBy("position")
+// @JoinTable(inverseJoinColumns = @JoinColumn(name =
+	// CharacterStateCell.ID_COLUMN))
+// @IndexColumn(name = CELLS_INDEX_COLUMN)
 	private final List<CharacterStateCell> cells = newArrayList();
 
 	/** {@code CharacterStateCell}-><code>cells</code>Index lookup. */
@@ -143,29 +142,29 @@ public final class CharacterStateRow extends PPodEntity {
 	 * @throws IllegalStateException if a character has not been set for the
 	 *             column we're trying to add the cell to
 	 */
-	public CharacterStateCell addCell(final CharacterStateCell cell) {
-		checkNotNull(cell);
-		if (getMatrix() == null) {
-			throw new IllegalStateException(
-					"This row hasn't been added to a matrix yet");
-		}
-		if (getMatrix().getCharacters().size() < getCells().size() + 1) {
-			throw new IllegalStateException("the matrix has less characters "
-					+ getMatrix().getCharacterIdx().size()
-					+ " than the row is about to have "
-					+ (getCells().size() + 1));
-		}
-		if (getMatrix().getCharacters().size() > 0
-				&& getMatrix().getCharacters().get(getCells().size()) == null) {
-			throw new IllegalStateException("Character is null at column "
-					+ cells.size());
-		}
-		cells.add(cell);
-		cellIdx.put(cell, cells.size() - 1);
-		cell.setRow(this);
-		resetPPodVersionInfo();
-		return cell;
-	}
+// public CharacterStateCell addCell(final CharacterStateCell cell) {
+// checkNotNull(cell);
+// if (getMatrix() == null) {
+// throw new IllegalStateException(
+// "This row hasn't been added to a matrix yet");
+// }
+// if (getMatrix().getCharacters().size() < getCells().size() + 1) {
+// throw new IllegalStateException("the matrix has less characters "
+// + getMatrix().getCharacterIdx().size()
+// + " than the row is about to have "
+// + (getCells().size() + 1));
+// }
+// if (getMatrix().getCharacters().size() > 0
+// && getMatrix().getCharacters().get(getCells().size()) == null) {
+// throw new IllegalStateException("Character is null at column "
+// + cells.size());
+// }
+// cells.add(cell);
+// cellIdx.put(cell, cells.size() - 1);
+// cell.setRow(this);
+// resetPPodVersionInfo();
+// return cell;
+// }
 
 	/**
 	 * {@link Unmarshaller} callback.
@@ -189,9 +188,13 @@ public final class CharacterStateRow extends PPodEntity {
 	 * 
 	 * @return the cleared cells
 	 */
-	public List<CharacterStateCell> clearCells() {
+	private List<CharacterStateCell> clearCells() {
 		final List<CharacterStateCell> clearedCells = newArrayList(cells);
+		for (final CharacterStateCell clearedCell : clearedCells) {
+			clearedCell.setPosition(null);
+		}
 		cells.clear();
+		cellIdx.clear();
 		return clearedCells;
 	}
 
@@ -234,18 +237,18 @@ public final class CharacterStateRow extends PPodEntity {
 	 * @return the removed cell, or <code>null</code> if the row was empty
 	 * 
 	 */
-	public CharacterStateCell removeLastCell() {
-		if (cells.size() == 0) {
-			// nothing to do
-			return null;
-		}
-		final CharacterStateCell oldPhyloCharMatrixCell = cells.remove(cells
-				.size() - 1);
-		cellIdx.remove(oldPhyloCharMatrixCell);
-		oldPhyloCharMatrixCell.setRow(null);
-		resetPPodVersionInfo();
-		return oldPhyloCharMatrixCell;
-	}
+// public CharacterStateCell removeLastCell() {
+// if (cells.size() == 0) {
+// // nothing to do
+// return null;
+// }
+// final CharacterStateCell oldPhyloCharMatrixCell = cells.remove(cells
+// .size() - 1);
+// cellIdx.remove(oldPhyloCharMatrixCell);
+// oldPhyloCharMatrixCell.setRow(null);
+// resetPPodVersionInfo();
+// return oldPhyloCharMatrixCell;
+// }
 
 	/**
 	 * Reset the pPOD version info of this row and that of its matrix.
@@ -267,6 +270,53 @@ public final class CharacterStateRow extends PPodEntity {
 	}
 
 	/**
+	 * 
+	 * @param cells
+	 * @return
+	 * @throws IllegalArgumentException if any of cells are such that {@code
+	 *             cell.getRow() != this}
+	 */
+	public CharacterStateRow setCells(final List<CharacterStateCell> cells) {
+		checkNotNull(cells);
+
+		if (cells.equals(getCells())) {
+			return this;
+		}
+
+		if (getMatrix() == null) {
+			throw new IllegalStateException(
+					"This row hasn't been added to a matrix yet");
+		}
+
+		if (getMatrix().getCharacters().size() != cells.size()) {
+			throw new IllegalStateException(
+					"the matrix has different number of characters "
+							+ getMatrix().getCharacters().size()
+							+ " than cells " + cells.size());
+		}
+		for (int cellPos = 0; cellPos < cells.size(); cellPos++) {
+			cells.get(cellPos).setRow(this);
+			if (!cells.get(cellPos).getRow().equals(this)) {
+				throw new IllegalArgumentException("cells[" + cellPos
+						+ "] has not been set to this row");
+			}
+			if (getMatrix().getCharacters().size() > 0
+					&& getMatrix().getCharacters().get(cellPos) == null) {
+				throw new IllegalStateException("Character is null at column "
+						+ cells.size());
+			}
+		}
+		clearCells();
+		this.cells.addAll(cells);
+		for (int cellPos = 0; cellPos < getCells().size(); cellPos++) {
+			getCells().get(cellPos).setPosition(cellPos);
+			cellIdx.put(getCells().get(cellPos), cellPos);
+		}
+		resetPPodVersionInfo();
+		return this;
+	}
+
+	/**
 	 * Set the cell at {@code cellIdx}
 	 * <p>
 	 * If {@code getCells()} is too short, it is null padded.
@@ -276,35 +326,35 @@ public final class CharacterStateRow extends PPodEntity {
 	 * 
 	 * @return this
 	 */
-	public CharacterStateRow setCell(final CharacterStateCell cell,
-			final int cellIdx) {
-		checkNotNull(cell);
-		nullFill(cells, cellIdx + 1);
-		cell.setRow(this);
-		if (cell.equals(getCells().get(cellIdx))) {
-			return this;
-		}
-
-		if (getMatrix() == null) {
-			throw new IllegalStateException(
-					"This row hasn't been added to a matrix yet");
-		}
-		if (getMatrix().getCharacters().size() < cellIdx + 1) {
-			throw new IllegalStateException("the matrix has less characters "
-					+ getMatrix().getCharacterIdx().size()
-					+ " than the row is about to have "
-					+ (getCells().size() + 1));
-		}
-		if (getMatrix().getCharacters().size() > 0
-				&& getMatrix().getCharacters().get(cellIdx) == null) {
-			throw new IllegalStateException("Character is null at column "
-					+ cells.size());
-		}
-		cells.set(cellIdx, cell);
-		this.cellIdx.put(cell, cellIdx);
-		resetPPodVersionInfo();
-		return this;
-	}
+// public CharacterStateRow setCell(final CharacterStateCell cell,
+// final int cellIdx) {
+// checkNotNull(cell);
+// nullFill(cells, cellIdx + 1);
+// cell.setRow(this);
+// if (cell.equals(getCells().get(cellIdx))) {
+// return this;
+// }
+//
+// if (getMatrix() == null) {
+// throw new IllegalStateException(
+// "This row hasn't been added to a matrix yet");
+// }
+// if (getMatrix().getCharacters().size() < cellIdx + 1) {
+// throw new IllegalStateException("the matrix has less characters "
+// + getMatrix().getCharacterIdx().size()
+// + " than the row is about to have "
+// + (getCells().size() + 1));
+// }
+// if (getMatrix().getCharacters().size() > 0
+// && getMatrix().getCharacters().get(cellIdx) == null) {
+// throw new IllegalStateException("Character is null at column "
+// + cells.size());
+// }
+// cells.set(cellIdx, cell);
+// this.cellIdx.put(cell, cellIdx);
+// resetPPodVersionInfo();
+// return this;
+// }
 
 	/**
 	 * Setter.
