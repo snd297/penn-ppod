@@ -75,7 +75,7 @@ public final class StudyResourceHibernate implements IStudyResource {
 	}
 
 	public Study getStudyByPPodId(final String pPodId) {
-		final Study study = studyDAO.getStudyByPPodId(pPodId);
+		final Study study = studyDAO.getStudyByPPodIdEager(pPodId);
 		study.accept(otuSetAndOTUSetDocIdVisitor);
 		return study;
 	}
