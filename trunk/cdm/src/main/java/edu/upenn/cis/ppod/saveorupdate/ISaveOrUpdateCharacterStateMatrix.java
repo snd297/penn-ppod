@@ -53,10 +53,8 @@ public interface ISaveOrUpdateCharacterStateMatrix {
 	 *            sourceMatrix}
 	 * @param dnaCharacter the {@code DNACharacter} in a persistent state that
 	 *            should be used in the target matrix
-	 * 
-	 * @return {@code targetMatrix}
 	 */
-	CharacterStateMatrix saveOrUpdate(CharacterStateMatrix targetMatrix,
+	void saveOrUpdate(CharacterStateMatrix targetMatrix,
 			CharacterStateMatrix sourceMatrix, OTUSet newTargetMatrixOTUSet,
 			Map<OTU, OTU> mergedOTUsBySourceOTU, DNACharacter dnaCharacter);
 
@@ -64,7 +62,7 @@ public interface ISaveOrUpdateCharacterStateMatrix {
 	 * Makes {@link ISaveOrUpdateCharacterStateMatrix}s.
 	 */
 	static interface IFactory {
-		ISaveOrUpdateCharacterStateMatrix create(IMergeAttachment mergeAttachment,
-				IDAO<Object, Long> dao);
+		ISaveOrUpdateCharacterStateMatrix create(
+				IMergeAttachment mergeAttachment, IDAO<Object, Long> dao);
 	}
 }

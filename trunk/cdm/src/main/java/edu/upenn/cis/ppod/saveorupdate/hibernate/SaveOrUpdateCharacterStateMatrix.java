@@ -88,8 +88,7 @@ public class SaveOrUpdateCharacterStateMatrix implements
 
 	}
 
-	public CharacterStateMatrix saveOrUpdate(
-			final CharacterStateMatrix targetMatrix,
+	public void saveOrUpdate(final CharacterStateMatrix targetMatrix,
 			final CharacterStateMatrix sourceMatrix,
 			final OTUSet newTargetMatrixOTUSet,
 			final Map<OTU, OTU> mergedOTUsBySourceOTU,
@@ -298,6 +297,5 @@ public class SaveOrUpdateCharacterStateMatrix implements
 		dao.saveOrUpdate(newTargetMatrixOTUSet.getStudy());
 		dao.saveOrUpdate(newTargetMatrixOTUSet);
 		dao.saveOrUpdate(targetMatrix);
-		return targetMatrix;
 	}
 }

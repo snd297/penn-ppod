@@ -164,6 +164,9 @@ public abstract class PPodEntity extends PersistentObject implements
 		return this;
 	}
 
+	/**
+	 * Intentionally package private and created for testing.
+	 */
 	IPPodEntity setPPodVersionInfo(final PPodVersionInfo pPodVersionInfo) {
 		this.pPodVersionInfo = pPodVersionInfo;
 		return this;

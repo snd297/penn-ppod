@@ -168,7 +168,6 @@ public class Character extends UUPPodEntity implements IAttachee, IPPodEntity {
 	@Override
 	public boolean beforeMarshal(final Marshaller marshaller) {
 		super.beforeMarshal(marshaller);
-		// System.out.println("getStatesForJaxb: " + getStatesForJaxb());
 		return true;
 	}
 
