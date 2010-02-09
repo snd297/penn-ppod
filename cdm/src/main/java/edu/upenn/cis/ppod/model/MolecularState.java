@@ -39,7 +39,7 @@ public abstract class MolecularState extends CharacterState {
 	 * db retrieval. Because {@code CharacterState} has a column called {@code
 	 * "LABEL"}?
 	 */
-	@Column(name = "MOLECULAR_STATE_LABEL", nullable = false, unique = true)
+	@Column(name = "MOLECULAR_STATE_LABEL", unique = true)
 	@SuppressWarnings("unused")
 	private String molecularStateLabel;
 

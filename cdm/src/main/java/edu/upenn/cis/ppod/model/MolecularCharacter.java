@@ -35,7 +35,7 @@ public class MolecularCharacter extends Character {
 	 * db retrieval. Because {@code Character} has a column called {@code
 	 * "LABEL"}?
 	 */
-	@Column(name = "MOLECULAR_CHARACTER_LABEL", nullable = false, unique = true)
+	@Column(name = "MOLECULAR_CHARACTER_LABEL", unique = true)
 	@SuppressWarnings("unused")
 	private String molecularCharacterLabel;
 

@@ -15,8 +15,8 @@
  */
 package edu.upenn.cis.ppod.model;
 
+import javax.persistence.DiscriminatorValue;
 import javax.persistence.Entity;
-import javax.persistence.Table;
 
 import com.google.inject.Inject;
 
@@ -26,7 +26,7 @@ import com.google.inject.Inject;
  * @author Sam Donnelly
  */
 @Entity
-@Table(name = DNACharacter.TABLE)
+@DiscriminatorValue("DNA")
 public final class DNACharacter extends MolecularCharacter {
 
 	/**
