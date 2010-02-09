@@ -201,7 +201,7 @@ public abstract class PPodEntity extends PersistentObject implements
 		allowResetPPodVersionInfo = false;
 		return this;
 	}
-//
+
 // @ManyToMany
 // @JoinTable(inverseJoinColumns = { @JoinColumn(name = Attachment.TABLE
 // + "_FK") })

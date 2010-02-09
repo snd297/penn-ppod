@@ -19,6 +19,7 @@ import static com.google.common.base.Preconditions.checkNotNull;
 import static com.google.common.base.Predicates.compose;
 import static com.google.common.base.Predicates.equalTo;
 import static com.google.common.collect.Sets.newHashSet;
+import static edu.upenn.cis.ppod.util.PPodIterables.equalTo;
 import static edu.upenn.cis.ppod.util.PPodIterables.findIf;
 import static edu.upenn.cis.ppod.util.UPennCisPPodUtil.nullSafeEquals;
 
@@ -160,8 +161,11 @@ public final class OTUSet extends UUPPodEntityWXmlId {
 	 */
 	public OTU addOTU(final OTU otu) {
 		checkNotNull(otu);
-		if (null != findIf(getOTUs(), compose(equalTo(otu.getLabel()),
-				OTU.getLabel))) {
+		final OTU dupNameOTU = findIf(getOTUs(), equalTo(otu.getLabel(),
+				OTU.getLabel));
+		if (dupNameOTU == null || otu.equals(dupNameOTU)) {
+
+		} else {
 			throw new IllegalArgumentException("OTUSet labeled '" + getLabel()
 					+ "' already has an OTU labeled '" + otu.getLabel() + "'");
 		}
@@ -383,8 +387,8 @@ public final class OTUSet extends UUPPodEntityWXmlId {
 	 * Point this {@code OTUSet} and all of its {@code PhyloCharMatrix}'s to a
 	 * new {@code pPodVersionInfo}. Only the first call has an effect.
 	 * <p>
-	 * If {@link #getAllowPersistAndResetPPodVersionInfo()} {@code == true} then
-	 * calls to this method does nothing and returns.
+	 * If {@link #getAllowPersist()} {@code == true} then calls to this method
+	 * does nothing and returns.
 	 * 
 	 * @see #unsetAllowPersistAndResetPPodVersionInfo()
 	 * 
@@ -417,7 +421,9 @@ public final class OTUSet extends UUPPodEntityWXmlId {
 	 * @return this {@code OTUSet}
 	 */
 	public OTUSet setDescription(final String description) {
-		if (nullSafeEquals(getDescription(), description)) {} else {
+		if (nullSafeEquals(getDescription(), description)) {
+
+		} else {
 			this.description = description;
 			resetPPodVersionInfo();
 		}
