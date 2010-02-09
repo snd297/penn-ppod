@@ -253,9 +253,6 @@ public class CharacterStateMatrix extends UUPPodEntityWXmlId {
 				columnPPodVersions.add(columnVersionInfo.getPPodVersion());
 			}
 		}
-		for (final CharacterStateRow row : getRows()) { 
-			row.setMatrix(this);
-		}
 		return true;
 	}
 

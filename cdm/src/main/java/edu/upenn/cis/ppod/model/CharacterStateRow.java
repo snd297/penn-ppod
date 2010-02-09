@@ -388,12 +388,4 @@ public final class CharacterStateRow extends PPodEntity {
 		return retValue.toString();
 	}
 
-	@Override
-	public boolean beforeMarshal(final Marshaller marshaller) {
-		for (final CharacterStateCell cell : getCells()) {
-			cell.setRow(this);
-		}
-		return super.beforeMarshal(marshaller);
-	}
-
 }

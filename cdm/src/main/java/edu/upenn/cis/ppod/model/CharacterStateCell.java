@@ -34,9 +34,11 @@ import javax.persistence.Column;
 import javax.persistence.Entity;
 import javax.persistence.EnumType;
 import javax.persistence.Enumerated;
+import javax.persistence.FetchType;
 import javax.persistence.JoinColumn;
 import javax.persistence.JoinTable;
 import javax.persistence.ManyToMany;
+import javax.persistence.ManyToOne;
 import javax.persistence.Table;
 import javax.persistence.Transient;
 import javax.xml.bind.Marshaller;
@@ -141,11 +143,9 @@ public final class CharacterStateCell extends PPodEntity {
 	 * To handle the most-common case of a single {@code CharacterState}, we
 	 * cache {@code states.get(0)}.
 	 */
-	// @ManyToOne(fetch = FetchType.LAZY)
-	// @JoinColumn(name = "FIRST_" + CharacterState.ID_COLUMN)
-	// private CharacterState firstState = null;
-	@Column(name = "FIRST_STATE")
-	private Integer firstState = null;
+	@ManyToOne(fetch = FetchType.LAZY)
+	@JoinColumn(name = "FIRST_" + CharacterState.ID_COLUMN)
+	private CharacterState firstState = null;
 
 	/**
 	 * The heart of the cell: the states.
@@ -343,10 +343,7 @@ public final class CharacterStateCell extends PPodEntity {
 			case UNASSIGNED:
 				return Collections.emptySet();
 			case SINGLE:
-				// Collections.unmodifiableSet(newHashSet(firstState));
-				return Collections.unmodifiableSet(newHashSet(getRow()
-						.getMatrix().getCharacters().get(getPosition())
-						.getStates().get(firstState)));
+				return Collections.unmodifiableSet(newHashSet(firstState));
 			case POLYMORPHIC:
 			case UNCERTAIN:
 
@@ -469,7 +466,7 @@ public final class CharacterStateCell extends PPodEntity {
 	private CharacterStateCell setStates(final Set<CharacterState> states) {
 		checkNotNull(states);
 
-		if (this.states == null && states.size() > 1) {
+		if (this.states == null) {
 			this.states = newTreeSet(STATE_COMPARATOR);
 		}
 
@@ -487,15 +484,11 @@ public final class CharacterStateCell extends PPodEntity {
 		}
 
 		clearStates();
-		if (states.size() < 2) {
-			this.states = null;
-		} else {
-			this.states.addAll(states);
-		}
+
+		this.states.addAll(states);
 
 		if (states.size() > 0) {
-			firstState = get(states, 0).getStateNumber();
-			// firstState = get(this.states, 0);
+			firstState = get(this.states, 0);
 		}
 		resetPPodVersionInfo();
 		return this;
