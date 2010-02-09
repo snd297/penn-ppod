@@ -15,17 +15,27 @@
  */
 package edu.upenn.cis.ppod.model;
 
-import javax.persistence.Entity;
+import static com.google.common.collect.Sets.newHashSet;
+
+import java.util.Collections;
+import java.util.Set;
+
 import javax.persistence.FetchType;
-import javax.persistence.Inheritance;
-import javax.persistence.InheritanceType;
 import javax.persistence.JoinColumn;
+import javax.persistence.JoinTable;
+import javax.persistence.ManyToMany;
 import javax.persistence.ManyToOne;
-import javax.persistence.Table;
+import javax.persistence.MappedSuperclass;
 import javax.persistence.Transient;
 import javax.xml.bind.Marshaller;
 import javax.xml.bind.Unmarshaller;
 import javax.xml.bind.annotation.XmlAttribute;
+import javax.xml.bind.annotation.XmlElement;
+import javax.xml.bind.annotation.XmlIDREF;
+
+import com.google.common.base.Predicate;
+import com.google.common.collect.Iterables;
+import com.google.common.collect.Sets;
 
 /**
  * A {@code PersistentObject} with pPOD version information and to which we can
@@ -41,9 +51,10 @@ import javax.xml.bind.annotation.XmlAttribute;
  * 
  * @author Sam Donnelly
  */
-@Entity
-@Table(name = PPodEntity.TABLE)
-@Inheritance(strategy = InheritanceType.JOINED)
+@MappedSuperclass
+// @Entity
+// @Table(name = PPodEntity.TABLE)
+// @Inheritance(strategy = InheritanceType.JOINED)
 public abstract class PPodEntity extends PersistentObject implements
 		IPPodEntity {
 
@@ -190,9 +201,11 @@ public abstract class PPodEntity extends PersistentObject implements
 		allowResetPPodVersionInfo = false;
 		return this;
 	}
-
+//
 // @ManyToMany
-// @JoinTable(inverseJoinColumns = { @JoinColumn(name = Attachment.ID_COLUMN) })
+// @JoinTable(inverseJoinColumns = { @JoinColumn(name = Attachment.TABLE
+// + "_FK") })
+// // FK instead of ID to work with attachment_attachment table
 // private Set<Attachment> attachments;
 //
 // public IPPodEntity addAttachment(final Attachment attachment) {

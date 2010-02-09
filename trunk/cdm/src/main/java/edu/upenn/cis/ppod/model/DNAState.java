@@ -15,8 +15,8 @@
  */
 package edu.upenn.cis.ppod.model;
 
+import javax.persistence.DiscriminatorValue;
 import javax.persistence.Entity;
-import javax.persistence.Table;
 
 import com.google.inject.Inject;
 import com.google.inject.assistedinject.Assisted;
@@ -27,7 +27,7 @@ import com.google.inject.assistedinject.Assisted;
  * @author Sam Donnelly
  */
 @Entity
-@Table(name = DNAState.TABLE)
+@DiscriminatorValue("DNA")
 public final class DNAState extends MolecularState {
 
 	/**

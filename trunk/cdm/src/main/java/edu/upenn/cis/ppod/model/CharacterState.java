@@ -19,13 +19,16 @@ import static com.google.common.base.Preconditions.checkArgument;
 import static com.google.common.base.Preconditions.checkNotNull;
 
 import javax.persistence.Column;
+import javax.persistence.DiscriminatorColumn;
+import javax.persistence.DiscriminatorType;
+import javax.persistence.DiscriminatorValue;
 import javax.persistence.Entity;
 import javax.persistence.FetchType;
+import javax.persistence.Inheritance;
+import javax.persistence.InheritanceType;
 import javax.persistence.JoinColumn;
 import javax.persistence.ManyToOne;
 import javax.persistence.Table;
-import javax.xml.bind.annotation.XmlAccessType;
-import javax.xml.bind.annotation.XmlAccessorType;
 import javax.xml.bind.annotation.XmlAttribute;
 
 import com.google.common.base.Function;
@@ -42,6 +45,9 @@ import com.google.inject.assistedinject.Assisted;
  */
 @Entity
 @Table(name = CharacterState.TABLE)
+@Inheritance(strategy = InheritanceType.SINGLE_TABLE)
+@DiscriminatorColumn(name = "CHARACTER_STATE_TYPE", discriminatorType = DiscriminatorType.STRING)
+@DiscriminatorValue("STANDARD")
 public class CharacterState extends PPodEntityWXmlId {
 
 	/**

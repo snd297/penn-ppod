@@ -100,8 +100,11 @@ public class SaveOrUpdateCharacterStateMatrix implements
 		checkNotNull(sourceMatrix);
 		checkNotNull(newTargetMatrixOTUSet);
 
-		// dao.evict(newTargetMatrixOTUSet.getStudy());
-		// dao.evict(newTargetMatrixOTUSet);
+		// Let's not waste time flushing changes to the database for these
+		// objects: the versions will keep getting updated
+		// over and over again, let's just do it at the end of this method.
+		dao.evict(newTargetMatrixOTUSet.getStudy());
+		dao.evict(newTargetMatrixOTUSet);
 
 		newTargetMatrixOTUSet.addMatrix(targetMatrix);
 
@@ -225,6 +228,8 @@ public class SaveOrUpdateCharacterStateMatrix implements
 				newRow = false;
 			}
 
+			dao.evict(targetMatrix);
+
 			if (!newRow && targetRow.getPPodVersion() == null) {
 				throw new AssertionError(
 						"existing row has now pPOD version number");
@@ -288,8 +293,11 @@ public class SaveOrUpdateCharacterStateMatrix implements
 			dao.evictEntities(cellsToEvict).clear();
 			dao.evict(targetRow);
 		}
-		// dao.saveOrUpdate(newTargetMatrixOTUSet.getStudy());
-		// dao.saveOrUpdate(newTargetMatrixOTUSet);
+
+		// Let's reattach these
+		dao.saveOrUpdate(newTargetMatrixOTUSet.getStudy());
+		dao.saveOrUpdate(newTargetMatrixOTUSet);
+		dao.saveOrUpdate(targetMatrix);
 		return targetMatrix;
 	}
 }
