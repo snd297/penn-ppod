@@ -88,10 +88,10 @@ public class SaveOrUpdateCharacterStateMatrixTest {
 
 		final CharacterStateMatrix targetMatrix = characterStateMatrixFactory
 				.create(sourceMatrix.getType());
-		final CharacterStateMatrix dbMatrix = saveOrUpdateCharacterStateMatrix
-				.saveOrUpdate(targetMatrix, sourceMatrix, fakeDbOTUSet,
-						fakeOTUsByIncomingOTU, dnaCharacterProvider.get());
-		ModelAssert.assertEqualsCharacterStateMatrices(dbMatrix, sourceMatrix);
+		saveOrUpdateCharacterStateMatrix.saveOrUpdate(targetMatrix,
+				sourceMatrix, fakeDbOTUSet, fakeOTUsByIncomingOTU,
+				dnaCharacterProvider.get());
+		ModelAssert.assertEqualsCharacterStateMatrices(targetMatrix, sourceMatrix);
 	}
 
 	@Test(dataProvider = MatrixProvider.SMALL_MATRICES_PROVIDER, dataProviderClass = MatrixProvider.class)

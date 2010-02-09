@@ -4,13 +4,13 @@ import static com.google.common.collect.Iterables.getOnlyElement;
 import static com.google.common.collect.Lists.newArrayList;
 import static com.google.common.collect.Sets.newHashSet;
 import static org.testng.Assert.assertEquals;
-import static org.testng.Assert.assertEqualsNoOrder;
 import static org.testng.Assert.assertFalse;
 import static org.testng.Assert.assertNotNull;
 import static org.testng.Assert.assertNull;
 
-import java.util.Collections;
+import java.util.HashSet;
 import java.util.List;
+import java.util.Set;
 
 import org.testng.annotations.BeforeMethod;
 import org.testng.annotations.Test;
@@ -46,6 +46,11 @@ public class OTUSetTest {
 	@Inject
 	private Provider<PPodVersionInfo> pPodVersionInfoProvider;
 
+	@Inject
+	private Provider<CharacterStateMatrix> matrixProvider;
+
+	private Study study;
+
 	@BeforeMethod
 	public void beforeMethod() {
 		otuSet = otuSetProvider.get();
@@ -56,6 +61,10 @@ public class OTUSetTest {
 				.setPPodId()));
 		otus.add(otuSet.addOTU((OTU) otuProvider.get().setLabel("otu2")
 				.setPPodId()));
+
+		// Do this so we can check that version resets are being done.
+		study = studyProvider.get();
+		study.addOTUSet(otuSet);
 	}
 
 	public void getOTUByPPodId() {
@@ -85,9 +94,8 @@ public class OTUSetTest {
 	 * sets's {@code Study}'s pPOD Version info is unaffected.
 	 */
 	public void resetPPodVersionInfoWNullVersion() {
-		final Study study = studyProvider.get();
-		study.addOTUSet(otuSet);
 		final PPodVersionInfo studyPPodVersionInfo = study.getPPodVersionInfo();
+		otuSet.setPPodVersionInfo(null);
 		otuSet.resetPPodVersionInfo();
 		assertNull(otuSet.getPPodVersionInfo());
 		assertEquals(study.getPPodVersionInfo(), studyPPodVersionInfo);
@@ -146,9 +154,32 @@ public class OTUSetTest {
 			otuSet.addOTU(otu);
 		}
 		otuSet.setPPodVersionInfo(pPodVersionInfoProvider.get());
+		study.setPPodVersionInfo(pPodVersionInfoProvider.get());
 		otuSet.clearOTUs();
 		assertNull(otuSet.getPPodVersionInfo());
+		assertNull(study.getPPodVersionInfo());
 		assertEquals(otuSet.getOTUs().size(), 0);
 	}
 
+	public void removeMatrix() {
+		final CharacterStateMatrix matrix0 = matrixProvider.get();
+		final CharacterStateMatrix matrix1 = matrixProvider.get();
+		final CharacterStateMatrix matrix2 = matrixProvider.get();
+
+		final Set<CharacterStateMatrix> matrices = newHashSet(matrix0, matrix2);
+
+		otuSet.addMatrix(matrix0);
+		otuSet.addMatrix(matrix1);
+		otuSet.addMatrix(matrix2);
+		otuSet.setPPodVersionInfo(pPodVersionInfoProvider.get());
+
+		study.setPPodVersionInfo(pPodVersionInfoProvider.get());
+
+		otuSet.removeMatrix(matrix1);
+
+		assertNull(study.getPPodVersionInfo());
+		assertNull(otuSet.getPPodVersionInfo());
+		matrices.remove(matrix1);
+		assertEquals((Object) otuSet.getMatrices(), (Object) matrices);
+	}
 }
