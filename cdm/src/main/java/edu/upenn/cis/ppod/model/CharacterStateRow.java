@@ -32,6 +32,7 @@ import javax.persistence.OneToMany;
 import javax.persistence.OrderBy;
 import javax.persistence.Table;
 import javax.persistence.Transient;
+import javax.xml.bind.Marshaller;
 import javax.xml.bind.Unmarshaller;
 import javax.xml.bind.annotation.XmlAttribute;
 import javax.xml.bind.annotation.XmlElement;
@@ -385,6 +386,14 @@ public final class CharacterStateRow extends PPodEntity {
 				"cells=").append(this.cells).append(")\n");
 
 		return retValue.toString();
+	}
+
+	@Override
+	public boolean beforeMarshal(final Marshaller marshaller) {
+		for (final CharacterStateCell cell : getCells()) {
+			cell.setRow(this);
+		}
+		return super.beforeMarshal(marshaller);
 	}
 
 }

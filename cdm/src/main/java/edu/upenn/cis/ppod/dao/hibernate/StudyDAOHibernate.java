@@ -64,21 +64,21 @@ public class StudyDAOHibernate extends GenericHibernateDAO<Study, Long>
 	}
 
 	public Study getStudyByPPodIdEager(final String pPodId) {
-		// return getStudyByPPodId(pPodId);
-		// return (Study) getSession().getNamedQuery(
-		// Study.class.getSimpleName() + "-getByPPodIdEager")
-		// .setParameter("pPodId", pPodId).uniqueResult();
-		return (Study) getSession().createCriteria(Study.class).add(
-				Restrictions.eq("pPodId", pPodId)).setFetchMode("otuSets",
-				FetchMode.JOIN).createCriteria("otuSets").setFetchMode("otus",
-				FetchMode.JOIN).setFetchMode("matrices", FetchMode.JOIN)
-				.setFetchMode("treeSets", FetchMode.JOIN).createCriteria(
-						"matrices").setFetchMode("characters", FetchMode.JOIN)
-				.setFetchMode("characterIdx", FetchMode.JOIN).setFetchMode(
-						"otus", FetchMode.JOIN).setFetchMode("otuIdx",
-						FetchMode.JOIN).setFetchMode("rows", FetchMode.JOIN)
-				.createCriteria("rows").setFetchMode("cells", FetchMode.JOIN)
-				.setFetchMode("cellIdx", FetchMode.JOIN).uniqueResult();
+// return getStudyByPPodId(pPodId);
+		return (Study) getSession().getNamedQuery(
+				Study.class.getSimpleName() + "-getByPPodIdEager")
+				.setParameter("pPodId", pPodId).uniqueResult();
+// return (Study) getSession().createCriteria(Study.class).add(
+// Restrictions.eq("pPodId", pPodId)).setFetchMode("otuSets",
+// FetchMode.JOIN).createCriteria("otuSets").setFetchMode("otus",
+// FetchMode.JOIN).setFetchMode("matrices", FetchMode.JOIN)
+// .setFetchMode("treeSets", FetchMode.JOIN).createCriteria(
+// "matrices").setFetchMode("characters", FetchMode.JOIN)
+// .setFetchMode("characterIdx", FetchMode.JOIN).setFetchMode(
+// "otus", FetchMode.JOIN).setFetchMode("otuIdx",
+// FetchMode.JOIN).setFetchMode("rows", FetchMode.JOIN)
+// .createCriteria("rows").setFetchMode("cells", FetchMode.JOIN)
+// .setFetchMode("cellIdx", FetchMode.JOIN).uniqueResult();
 	}
 
 	@SuppressWarnings("unchecked")
