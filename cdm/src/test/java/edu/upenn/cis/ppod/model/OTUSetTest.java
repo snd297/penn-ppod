@@ -2,9 +2,14 @@ package edu.upenn.cis.ppod.model;
 
 import static com.google.common.collect.Iterables.getOnlyElement;
 import static com.google.common.collect.Lists.newArrayList;
+import static com.google.common.collect.Sets.newHashSet;
 import static org.testng.Assert.assertEquals;
+import static org.testng.Assert.assertEqualsNoOrder;
+import static org.testng.Assert.assertFalse;
+import static org.testng.Assert.assertNotNull;
 import static org.testng.Assert.assertNull;
 
+import java.util.Collections;
 import java.util.List;
 
 import org.testng.annotations.BeforeMethod;
@@ -37,6 +42,9 @@ public class OTUSetTest {
 
 	@Inject
 	private Provider<TreeSet> treeSetProvider;
+
+	@Inject
+	private Provider<PPodVersionInfo> pPodVersionInfoProvider;
 
 	@BeforeMethod
 	public void beforeMethod() {
@@ -83,6 +91,64 @@ public class OTUSetTest {
 		otuSet.resetPPodVersionInfo();
 		assertNull(otuSet.getPPodVersionInfo());
 		assertEquals(study.getPPodVersionInfo(), studyPPodVersionInfo);
+	}
+
+	/**
+	 * Add an otu that's already in an otu set into an otu set. The pPOD version
+	 * should not be reset when this happens.
+	 */
+	public void addOTUWAlreadyContainedOTU() {
+		final OTU otu = otuSet.addOTU(otuProvider.get().setLabel("OTU-1"));
+		assertNull(otuSet.getPPodVersionInfo());
+		otuSet.setPPodVersionInfo(pPodVersionInfoProvider.get());
+		assertNotNull(otuSet.getPPodVersionInfo());
+		otuSet.addOTU(otu);
+		assertNotNull(otuSet.getPPodVersionInfo());
+	}
+
+	/**
+	 * Remove an otu set and make sure it was removed and the pPOD version
+	 * reset.
+	 */
+	public void removeOTU() {
+		for (final OTU otu : otus) {
+			otuSet.addOTU(otu);
+		}
+		final PPodVersionInfo pPodVersionInfo = pPodVersionInfoProvider.get();
+		otuSet.setPPodVersionInfo(pPodVersionInfo);
+		otuSet.removeOTU(otus.get(1));
+		assertFalse(otuSet.getOTUs().contains(otus.get(1)));
+		assertNull(otuSet.getPPodVersionInfo());
+	}
+
+	/**
+	 * Remove an OTU that is not in an otuset. This should cause no change to
+	 * the pPOD version info.
+	 */
+	public void removeOTUThatIsNotThere() {
+		for (OTU otu : otus) {
+			otuSet.addOTU(otu);
+		}
+		final PPodVersionInfo pPodVersionInfo = pPodVersionInfoProvider.get();
+		otuSet.setPPodVersionInfo(pPodVersionInfo);
+		otuSet.removeOTU(otuProvider.get());
+
+		assertEquals((Object) otuSet.getOTUs(), (Object) newHashSet(otus));
+
+		assertEquals(otuSet.getPPodVersionInfo(), pPodVersionInfo);
+	}
+
+	/**
+	 * Straight test of clear.
+	 */
+	public void clearOTUs() {
+		for (final OTU otu : otus) {
+			otuSet.addOTU(otu);
+		}
+		otuSet.setPPodVersionInfo(pPodVersionInfoProvider.get());
+		otuSet.clearOTUs();
+		assertNull(otuSet.getPPodVersionInfo());
+		assertEquals(otuSet.getOTUs().size(), 0);
 	}
 
 }
