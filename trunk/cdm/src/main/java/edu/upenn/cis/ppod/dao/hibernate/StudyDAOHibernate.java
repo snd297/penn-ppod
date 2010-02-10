@@ -64,7 +64,7 @@ public class StudyDAOHibernate extends GenericHibernateDAO<Study, Long>
 	}
 
 	public Study getStudyByPPodIdEager(final String pPodId) {
-// return getStudyByPPodId(pPodId);
+		// return getStudyByPPodId(pPodId);
 // return (Study) getSession().getNamedQuery(
 // Study.class.getSimpleName() + "-getByPPodIdEager")
 // .setParameter("pPodId", pPodId).uniqueResult();

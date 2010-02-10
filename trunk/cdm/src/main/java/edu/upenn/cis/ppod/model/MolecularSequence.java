@@ -21,10 +21,12 @@ import static com.google.common.collect.Maps.newHashMap;
 import java.util.Map;
 
 import javax.persistence.Column;
+import javax.persistence.MappedSuperclass;
 
 /**
  * @author Sam Donnelly
  */
+@MappedSuperclass
 abstract class MolecularSequence {
 
 	final static String SEQUENCE_COLUMN = "SEQUENCE";

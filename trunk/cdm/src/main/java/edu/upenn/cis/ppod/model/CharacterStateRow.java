@@ -32,7 +32,6 @@ import javax.persistence.OneToMany;
 import javax.persistence.OrderBy;
 import javax.persistence.Table;
 import javax.persistence.Transient;
-import javax.xml.bind.Marshaller;
 import javax.xml.bind.Unmarshaller;
 import javax.xml.bind.annotation.XmlAttribute;
 import javax.xml.bind.annotation.XmlElement;
@@ -73,7 +72,7 @@ public final class CharacterStateRow extends PPodEntity {
 	 * 
 	 * @return this
 	 */
-	public CharacterStateRow setPosition(final Integer position) {
+	CharacterStateRow setPosition(final Integer position) {
 		this.position = position;
 		return this;
 	}
@@ -101,8 +100,7 @@ public final class CharacterStateRow extends PPodEntity {
 	 */
 	@OneToMany
 	@OrderBy("position")
-// @JoinTable(inverseJoinColumns = @JoinColumn(name =
-	// CharacterStateCell.ID_COLUMN))
+	@JoinTable(inverseJoinColumns = @JoinColumn(name = CharacterStateCell.ID_COLUMN))
 // @IndexColumn(name = CELLS_INDEX_COLUMN)
 	private final List<CharacterStateCell> cells = newArrayList();
 

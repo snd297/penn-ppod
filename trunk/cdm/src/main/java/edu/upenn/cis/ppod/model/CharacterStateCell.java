@@ -54,6 +54,12 @@ import edu.upenn.cis.ppod.util.IVisitor;
 
 /**
  * A cell in a {@link CharacterStateMatrix}.
+ * <p>
+ * The row must be set on a cell - by calling
+ * {@link CharacterStateRow #setCells(java.util.List)} - before any mutators can
+ * be called. This is for error checking, for example to make sure that any
+ * states that are added to the cell belong to the correct {@link Character} in
+ * the owning matrix.
  * 
  * @author Sam Donnelly
  */
@@ -82,7 +88,7 @@ public final class CharacterStateCell extends PPodEntity {
 	 * 
 	 * @return this
 	 */
-	public CharacterStateCell setPosition(final Integer position) {
+	CharacterStateCell setPosition(final Integer position) {
 		this.position = position;
 		return this;
 	}
@@ -203,12 +209,14 @@ public final class CharacterStateCell extends PPodEntity {
 	 * {@link #afterUnmarshal(Unmarshaller, Object)} is called, specifically
 	 * after {@code @XmlIDRef} elements are resolved
 	 */
+	@Override
 	public void afterUnmarshal() {
 		if (xmlStatesNeedsToBePutIntoStates) {
 			xmlStatesNeedsToBePutIntoStates = false;
 			setStates(getXmlStates());
 			xmlStates = null;
 		}
+		super.afterUnmarshal();
 	}
 
 	/**
@@ -432,7 +440,7 @@ public final class CharacterStateCell extends PPodEntity {
 	 * 
 	 * @return this {@code CharacterStateCell}
 	 */
-	public CharacterStateCell setRow(final CharacterStateRow row) {
+	CharacterStateCell setRow(final CharacterStateRow row) {
 		this.row = row;
 		return this;
 	}

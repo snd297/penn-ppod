@@ -28,6 +28,7 @@ import javax.persistence.Entity;
 import javax.persistence.FetchType;
 import javax.persistence.JoinColumn;
 import javax.persistence.Lob;
+import javax.persistence.ManyToMany;
 import javax.persistence.ManyToOne;
 import javax.persistence.Table;
 import javax.persistence.Transient;
@@ -117,8 +118,7 @@ public final class Attachment extends UUPPodEntity {
 	private byte[] bytesValue;
 
 	/** Objects to which this {@code Attachment} is attached. */
-	@Transient
-	// @ManyToMany(mappedBy = "attachments")
+	@ManyToMany(mappedBy = "attachments")
 	private final Set<PPodEntity> attachees = newHashSet();
 
 	@XmlAttribute
@@ -132,9 +132,7 @@ public final class Attachment extends UUPPodEntity {
 	@Override
 	public Attachment accept(final IVisitor visitor) {
 		visitor.visit(this);
-//		for (final Attachment attachment : getAttachments()) {
-//			attachment.accept(visitor);
-//		}
+		super.accept(visitor);
 		return this;
 	}
 

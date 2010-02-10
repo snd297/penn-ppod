@@ -16,6 +16,7 @@
 
 package edu.upenn.cis.ppod.util;
 
+import edu.upenn.cis.ppod.model.Character;
 import edu.upenn.cis.ppod.model.CharacterStateCell;
 import edu.upenn.cis.ppod.model.CharacterStateMatrix;
 
@@ -47,4 +48,11 @@ public class AfterUnmarshalVisitor extends EmptyVisitor {
 		cell.afterUnmarshal();
 		return this;
 	}
+
+	@Override
+	public AfterUnmarshalVisitor visit(final Character character) {
+		character.afterUnmarshal();
+		return this;
+	}
+
 }

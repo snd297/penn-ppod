@@ -25,14 +25,7 @@ import java.util.Set;
 import java.util.UUID;
 
 import javax.persistence.Column;
-import javax.persistence.DiscriminatorColumn;
-import javax.persistence.DiscriminatorType;
-import javax.persistence.DiscriminatorValue;
 import javax.persistence.Entity;
-import javax.persistence.Inheritance;
-import javax.persistence.InheritanceType;
-import javax.persistence.JoinColumn;
-import javax.persistence.JoinTable;
 import javax.persistence.ManyToMany;
 import javax.persistence.MapKey;
 import javax.persistence.OneToMany;
@@ -41,17 +34,14 @@ import javax.persistence.Transient;
 import javax.xml.bind.Marshaller;
 import javax.xml.bind.Unmarshaller;
 import javax.xml.bind.annotation.XmlAttribute;
-import javax.xml.bind.annotation.XmlElement;
 import javax.xml.bind.annotation.XmlElementWrapper;
 import javax.xml.bind.annotation.XmlID;
-import javax.xml.bind.annotation.XmlIDREF;
 
 import org.hibernate.annotations.Cascade;
 
 import com.google.common.base.Preconditions;
-import com.google.common.base.Predicate;
-import com.google.common.collect.Iterables;
-import com.google.common.collect.Sets;
+
+import edu.upenn.cis.ppod.util.IVisitor;
 
 /**
  * A standard character. For example, "length_of_infraorb_canal".
@@ -63,9 +53,6 @@ import com.google.common.collect.Sets;
  */
 @Entity
 @Table(name = Character.TABLE)
-@Inheritance(strategy = InheritanceType.SINGLE_TABLE)
-@DiscriminatorColumn(name = "CHARACTER_TYPE", discriminatorType = DiscriminatorType.STRING)
-@DiscriminatorValue("STANDARD")
 public class Character extends UUPPodEntity implements IAttachee, IPPodEntity {
 
 	@XmlAttribute
@@ -83,6 +70,13 @@ public class Character extends UUPPodEntity implements IAttachee, IPPodEntity {
 
 	final static String ID_COLUMN = TABLE + "_ID";
 	final static String LABEL_COLUMN = "LABEL";
+
+	@Override
+	public Character accept(final IVisitor visitor) {
+		super.accept(visitor);
+		visitor.visit(this);
+		return this;
+	}
 
 	/**
 	 * The states that this character can have. For example, 0->"absent",
@@ -270,64 +264,64 @@ public class Character extends UUPPodEntity implements IAttachee, IPPodEntity {
 		return retValue.toString();
 	}
 
-	@ManyToMany
-	@JoinTable(inverseJoinColumns = { @JoinColumn(name = Attachment.ID_COLUMN) })
-	private Set<Attachment> attachments;
-
-	public Character addAttachment(final Attachment attachment) {
-		if (attachments == null) {
-			attachments = newHashSet();
-		}
-		attachments.add(attachment);
-		attachment.addAttachee(this);
-		return this;
-	}
-
-	/**
-	 * Created for JAXB.
-	 */
-	@XmlElement(name = "attachmentDocId")
-	@XmlIDREF
-	@SuppressWarnings("unused")
-	private Set<Attachment> getAttachmentsMutable() {
-		if (attachments == null) {
-			attachments = newHashSet();
-		}
-		return attachments;
-	}
-
-	public boolean removeAttachment(final Attachment attachment) {
-		return attachments.remove(attachment);
-	}
-
-	public Set<Attachment> getAttachments() {
-		if (attachments == null) {
-			return Collections.emptySet();
-		} else {
-			return Collections.unmodifiableSet(attachments);
-		}
-	}
-
-	public Set<Attachment> getAttachmentsByNamespace(final String namespace) {
-		final Set<Attachment> attachmentsByNamespace = newHashSet();
-		for (final Attachment attachment : getAttachments()) {
-			if (namespace
-					.equals(attachment.getType().getNamespace().getLabel())) {
-				attachmentsByNamespace.add(attachment);
-			}
-		}
-		return attachmentsByNamespace;
-	}
-
-	public Set<Attachment> getAttachmentsByNamespaceAndType(
-			final String namespace, final String type) {
-		return Sets.newHashSet(Iterables.filter(getAttachments(),
-				new Predicate<Attachment>() {
-					public boolean apply(final Attachment input) {
-						return input.getType().getNamespace().getLabel()
-								.equals(namespace)
-								&& input.getType().getLabel().equals(type);
-					}
-				}));
-	}
+// @ManyToMany
+// @JoinTable(inverseJoinColumns = { @JoinColumn(name = Attachment.ID_COLUMN) })
+// private Set<Attachment> attachments;
+//
+// public Character addAttachment(final Attachment attachment) {
+// if (attachments == null) {
+// attachments = newHashSet();
+// }
+// attachments.add(attachment);
+// attachment.addAttachee(this);
+// return this;
+// }
+//
+// /**
+// * Created for JAXB.
+// */
+// @XmlElement(name = "attachmentDocId")
+// @XmlIDREF
+// @SuppressWarnings("unused")
+// private Set<Attachment> getAttachmentsMutable() {
+// if (attachments == null) {
+// attachments = newHashSet();
+// }
+// return attachments;
+// }
+//
+// public boolean removeAttachment(final Attachment attachment) {
+// return attachments.remove(attachment);
+// }
+//
+// public Set<Attachment> getAttachments() {
+// if (attachments == null) {
+// return Collections.emptySet();
+// } else {
+// return Collections.unmodifiableSet(attachments);
+// }
+// }
+//
+// public Set<Attachment> getAttachmentsByNamespace(final String namespace) {
+// final Set<Attachment> attachmentsByNamespace = newHashSet();
+// for (final Attachment attachment : getAttachments()) {
+// if (namespace
+// .equals(attachment.getType().getNamespace().getLabel())) {
+// attachmentsByNamespace.add(attachment);
+// }
+// }
+// return attachmentsByNamespace;
+// }
+//
+// public Set<Attachment> getAttachmentsByNamespaceAndType(
+// final String namespace, final String type) {
+// return Sets.newHashSet(Iterables.filter(getAttachments(),
+// new Predicate<Attachment>() {
+// public boolean apply(final Attachment input) {
+// return input.getType().getNamespace().getLabel()
+// .equals(namespace)
+// && input.getType().getLabel().equals(type);
+// }
+// }));
+// }
 }

@@ -20,7 +20,7 @@ import edu.upenn.cis.ppod.services.hibernate.PPodEntitiesResourceHibernate;
 /**
  * @author Sam Donnelly
  */
-public interface IPPodEntity extends IPersistentObject, /* IAttachee, */
+public interface IPPodEntity extends IPersistentObject, IAttachee, 
 IPPodVersioned {
 
 	/**

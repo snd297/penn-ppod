@@ -16,10 +16,10 @@
 package edu.upenn.cis.ppod.util;
 
 import edu.upenn.cis.ppod.model.Attachment;
+import edu.upenn.cis.ppod.model.Character;
 import edu.upenn.cis.ppod.model.CharacterStateCell;
 import edu.upenn.cis.ppod.model.CharacterStateMatrix;
 import edu.upenn.cis.ppod.model.CharacterStateRow;
-import edu.upenn.cis.ppod.model.IPersistentObject;
 import edu.upenn.cis.ppod.model.OTU;
 import edu.upenn.cis.ppod.model.OTUSet;
 import edu.upenn.cis.ppod.model.Study;
@@ -42,6 +42,8 @@ public interface IVisitor {
 	IVisitor visit(OTUSet otuset);
 
 	IVisitor visit(OTU otu);
+
+	IVisitor visit(Character character);
 
 	IVisitor visit(CharacterStateMatrix matrix);
 
