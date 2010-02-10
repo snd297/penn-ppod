@@ -9,6 +9,7 @@ Some information is propagated through the pPOD object tree. The hierarchy is as
   * `CharacterStateMatrix`->`Character`, `CharacterStateRow`
   * `CharacterStateRow`->`CharacterStateCell`
   * `TreeSet`->`Tree`
+  * An `Attachment` can be attached to any `PPodEntity`
 
 = pPOD Version Number =
 
