@@ -20,12 +20,16 @@ import static com.google.common.collect.Sets.newHashSet;
 import java.util.Collections;
 import java.util.Set;
 
+import javax.persistence.Column;
+import javax.persistence.Entity;
 import javax.persistence.FetchType;
+import javax.persistence.Inheritance;
+import javax.persistence.InheritanceType;
 import javax.persistence.JoinColumn;
 import javax.persistence.JoinTable;
 import javax.persistence.ManyToMany;
 import javax.persistence.ManyToOne;
-import javax.persistence.MappedSuperclass;
+import javax.persistence.Table;
 import javax.persistence.Transient;
 import javax.xml.bind.Marshaller;
 import javax.xml.bind.Unmarshaller;
@@ -36,6 +40,8 @@ import javax.xml.bind.annotation.XmlIDREF;
 import com.google.common.base.Predicate;
 import com.google.common.collect.Iterables;
 import com.google.common.collect.Sets;
+
+import edu.upenn.cis.ppod.util.IVisitor;
 
 /**
  * A {@code PersistentObject} with pPOD version information and to which we can
@@ -51,10 +57,9 @@ import com.google.common.collect.Sets;
  * 
  * @author Sam Donnelly
  */
-@MappedSuperclass
-// @Entity
-// @Table(name = PPodEntity.TABLE)
-// @Inheritance(strategy = InheritanceType.JOINED)
+@Entity
+@Table(name = PPodEntity.TABLE)
+@Inheritance(strategy = InheritanceType.JOINED)
 public abstract class PPodEntity extends PersistentObject implements
 		IPPodEntity {
 
@@ -80,17 +85,44 @@ public abstract class PPodEntity extends PersistentObject implements
 	@Transient
 	boolean allowResetPPodVersionInfo = true;
 
-	public PPodEntity setAllowResetPPodVersionInfo(
-			final boolean allowResetPPodVersionInfo) {
-		this.allowResetPPodVersionInfo = allowResetPPodVersionInfo;
+	@ManyToMany
+	@JoinTable(inverseJoinColumns = { @JoinColumn(name = Attachment.ID_COLUMN) })
+	private Set<Attachment> attachments;
+
+	@Column(name = "HAS_ATTACHMENTS")
+	private boolean hasAttachments = false;
+
+	@Transient
+	private Set<Attachment> attachmentsXml;
+
+	PPodEntity() {}
+
+	@Override
+	public PPodEntity accept(final IVisitor visitor) {
+		for (final Attachment attachment : getAttachments()) {
+			attachment.accept(visitor);
+		}
 		return this;
 	}
 
-	public boolean getAllowResetPPodVersionInfo() {
-		return allowResetPPodVersionInfo;
+	public IPPodEntity addAttachment(final Attachment attachment) {
+		if (attachments == null) {
+			attachments = newHashSet();
+		}
+		attachments.add(attachment);
+		hasAttachments = true;
+		attachment.addAttachee(this);
+		return this;
 	}
 
-	PPodEntity() {}
+	public void afterUnmarshal() {
+		if (attachmentsXml != null) {
+			for (final Attachment attachment : getAttachmentsXml()) {
+				addAttachment(attachment);
+			}
+			attachmentsXml = null;
+		}
+	}
 
 	/**
 	 * {@link Unmarshaller} callback.
@@ -113,11 +145,55 @@ public abstract class PPodEntity extends PersistentObject implements
 		if (pPodVersionInfo != null) {
 			pPodVersion = pPodVersionInfo.getPPodVersion();
 		}
+		getAttachmentsXml().addAll(getAttachments());
 		return true;
 	}
 
 	public boolean getAllowPersist() {
 		return allowPersist;
+	}
+
+	public boolean getAllowResetPPodVersionInfo() {
+		return allowResetPPodVersionInfo;
+	}
+
+	public Set<Attachment> getAttachments() {
+		if (hasAttachments) {
+			return Collections.unmodifiableSet(attachments);
+		}
+		return Collections.emptySet();
+	}
+
+	public Set<Attachment> getAttachmentsByNamespace(final String namespace) {
+		final Set<Attachment> attachmentsByNamespace = newHashSet();
+		for (final Attachment attachment : getAttachments()) {
+			if (namespace
+					.equals(attachment.getType().getNamespace().getLabel())) {
+				attachmentsByNamespace.add(attachment);
+			}
+		}
+		return attachmentsByNamespace;
+	}
+
+	public Set<Attachment> getAttachmentsByNamespaceAndType(
+			final String namespace, final String type) {
+		return Sets.newHashSet(Iterables.filter(getAttachments(),
+				new Predicate<Attachment>() {
+					public boolean apply(final Attachment input) {
+						return input.getType().getNamespace().getLabel()
+								.equals(namespace)
+								&& input.getType().getLabel().equals(type);
+					}
+				}));
+	}
+
+	@XmlElement(name = "attachmentDocId")
+	@XmlIDREF
+	private Set<Attachment> getAttachmentsXml() {
+		if (attachmentsXml == null) {
+			attachmentsXml = newHashSet();
+		}
+		return attachmentsXml;
 	}
 
 	@XmlAttribute
@@ -130,6 +206,14 @@ public abstract class PPodEntity extends PersistentObject implements
 
 	public PPodVersionInfo getPPodVersionInfo() {
 		return pPodVersionInfo;
+	}
+
+	public boolean removeAttachment(final Attachment attachment) {
+		final boolean attachmentRemoved = attachments.remove(attachment);
+		if (attachments.size() == 0) {
+			hasAttachments = false;
+		}
+		return attachmentRemoved;
 	}
 
 	/**
@@ -152,6 +236,12 @@ public abstract class PPodEntity extends PersistentObject implements
 		return this;
 	}
 
+	public PPodEntity setAllowResetPPodVersionInfo(
+			final boolean allowResetPPodVersionInfo) {
+		this.allowResetPPodVersionInfo = allowResetPPodVersionInfo;
+		return this;
+	}
+
 	/**
 	 * Created for JAXB.
 	 * 
@@ -164,9 +254,6 @@ public abstract class PPodEntity extends PersistentObject implements
 		return this;
 	}
 
-	/**
-	 * Intentionally package private and created for testing.
-	 */
 	IPPodEntity setPPodVersionInfo(final PPodVersionInfo pPodVersionInfo) {
 		this.pPodVersionInfo = pPodVersionInfo;
 		return this;
@@ -204,68 +291,4 @@ public abstract class PPodEntity extends PersistentObject implements
 		allowResetPPodVersionInfo = false;
 		return this;
 	}
-
-// @ManyToMany
-// @JoinTable(inverseJoinColumns = { @JoinColumn(name = Attachment.TABLE
-// + "_FK") })
-// // FK instead of ID to work with attachment_attachment table
-// private Set<Attachment> attachments;
-//
-// public IPPodEntity addAttachment(final Attachment attachment) {
-// if (attachments == null) {
-// attachments = newHashSet();
-// }
-// attachments.add(attachment);
-// attachment.addAttachee(this);
-// return this;
-// }
-//
-// /**
-// * Created for JAXB.
-// */
-// @XmlElement(name = "attachmentDocId")
-// @XmlIDREF
-// @SuppressWarnings("unused")
-// private Set<Attachment> getAttachmentsMutable() {
-// if (attachments == null) {
-// attachments = newHashSet();
-// }
-// return attachments;
-// }
-//
-// public boolean removeAttachment(final Attachment attachment) {
-// return attachments.remove(attachment);
-// }
-//
-// public Set<Attachment> getAttachments() {
-// if (attachments == null) {
-// return Collections.emptySet();
-// } else {
-// return Collections.unmodifiableSet(attachments);
-// }
-// }
-//
-// public Set<Attachment> getAttachmentsByNamespace(final String namespace) {
-// final Set<Attachment> attachmentsByNamespace = newHashSet();
-// for (final Attachment attachment : getAttachments()) {
-// if (namespace
-// .equals(attachment.getType().getNamespace().getLabel())) {
-// attachmentsByNamespace.add(attachment);
-// }
-// }
-// return attachmentsByNamespace;
-// }
-//
-// public Set<Attachment> getAttachmentsByNamespaceAndType(
-// final String namespace, final String type) {
-// return Sets.newHashSet(Iterables.filter(getAttachments(),
-// new Predicate<Attachment>() {
-// public boolean apply(final Attachment input) {
-// return input.getType().getNamespace().getLabel()
-// .equals(namespace)
-// && input.getType().getLabel().equals(type);
-// }
-// }));
-// }
-
 }

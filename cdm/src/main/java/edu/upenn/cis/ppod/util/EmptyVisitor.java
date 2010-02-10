@@ -16,6 +16,7 @@
 package edu.upenn.cis.ppod.util;
 
 import edu.upenn.cis.ppod.model.Attachment;
+import edu.upenn.cis.ppod.model.Character;
 import edu.upenn.cis.ppod.model.CharacterStateCell;
 import edu.upenn.cis.ppod.model.CharacterStateMatrix;
 import edu.upenn.cis.ppod.model.CharacterStateRow;
@@ -30,6 +31,17 @@ import edu.upenn.cis.ppod.model.TreeSet;
  * @author Sam Donnelly
  */
 public abstract class EmptyVisitor implements IVisitor {
+
+	/**
+	 * Does nothing.
+	 * 
+	 * @param character ignored
+	 * 
+	 * @return this
+	 */
+	public IVisitor visit(final Character character) {
+		return this;
+	}
 
 	/**
 	 * Does nothing.

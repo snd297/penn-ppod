@@ -218,7 +218,7 @@ public class CharacterStateCellTest {
 	public void afterUnmarshal() {
 		cell.setXmlStatesNeedsToBePutIntoStates(true);
 		matrix.getRows().get(0).setCells(newArrayList(cell));
-		cell.setTypeAndXmlStates(CharacterStateCell.Type.INAPPLICABLE, null);
+		cell.setTypeAndXmlStates(CharacterStateCell.Type.UNCERTAIN, states);
 		cell.afterUnmarshal();
 		// assertEquals((Object) cell.getStates(), (Object) states);
 		assertFalse(cell.getXmlStatesNeedsToBePutIntoStates());

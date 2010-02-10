@@ -45,9 +45,6 @@ import com.google.inject.assistedinject.Assisted;
  */
 @Entity
 @Table(name = CharacterState.TABLE)
-@Inheritance(strategy = InheritanceType.SINGLE_TABLE)
-@DiscriminatorColumn(name = "CHARACTER_STATE_TYPE", discriminatorType = DiscriminatorType.STRING)
-@DiscriminatorValue("STANDARD")
 public class CharacterState extends PPodEntityWXmlId {
 
 	/**
