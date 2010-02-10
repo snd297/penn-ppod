@@ -13,7 +13,8 @@ Some information is propagated through the pPOD object tree. The hierarchy is as
 = pPOD Version Number =
 
 These were created to enable quick notification to a client of changes in a pPOD database. 
-
+ 
+  * `Attachment`-> `whatever they're attached to`
   * `CharacterState` -> `Character`
   * `Character` -> `CharacterStateMatrix`
 
