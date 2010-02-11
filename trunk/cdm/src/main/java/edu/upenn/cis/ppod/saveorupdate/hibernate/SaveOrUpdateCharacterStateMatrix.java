@@ -227,8 +227,6 @@ public class SaveOrUpdateCharacterStateMatrix implements
 				newRow = false;
 			}
 
-			dao.evict(targetMatrix);
-
 			if (!newRow && targetRow.getPPodVersion() == null) {
 				throw new AssertionError(
 						"existing row has now pPOD version number");
@@ -296,6 +294,5 @@ public class SaveOrUpdateCharacterStateMatrix implements
 		// Let's reattach these
 		dao.saveOrUpdate(newTargetMatrixOTUSet.getStudy());
 		dao.saveOrUpdate(newTargetMatrixOTUSet);
-		dao.saveOrUpdate(targetMatrix);
 	}
 }

@@ -3,10 +3,11 @@ package edu.upenn.cis.ppod.model;
 import javax.xml.bind.annotation.XmlID;
 
 /**
- * One may ask, why require that the client explicitly set the doc id - why not
- * just have it assigned automatically at construction. The reason is that it
- * has been useful to notice when a doc id has accidentally not been set,
- * indicating that something is wrong.
+ * One may ask, why require that the client explicitly set the doc id? And why
+ * only allow it to be sent once? Why not just have it assigned automatically at
+ * construction and have it freely reset if required. The reason is that it has
+ * been useful to notice when a doc id has accidentally not been set, or when we
+ * try to set it twice. These things have meant that something is wrong.
  * 
  * @author Sam Donnelly
  */
