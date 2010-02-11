@@ -26,6 +26,7 @@ import static edu.upenn.cis.ppod.util.UPennCisPPodUtil.nullSafeEquals;
 import java.util.Collections;
 import java.util.Set;
 
+import javax.annotation.Nullable;
 import javax.persistence.Column;
 import javax.persistence.Entity;
 import javax.persistence.FetchType;
@@ -235,6 +236,7 @@ public class OTUSet extends UUPPodEntityWXmlId {
 	 * @return the description
 	 */
 	@XmlAttribute
+	@Nullable
 	public String getDescription() {
 		return description;
 	}
@@ -245,6 +247,7 @@ public class OTUSet extends UUPPodEntityWXmlId {
 	 * @return the label
 	 */
 	@XmlAttribute
+	@Nullable
 	public String getLabel() {
 		return label;
 	}
@@ -300,6 +303,7 @@ public class OTUSet extends UUPPodEntityWXmlId {
 	 * 
 	 * @return the study to which this OTU set belongs
 	 */
+	@Nullable
 	public Study getStudy() {
 		return study;
 	}
@@ -417,11 +421,11 @@ public class OTUSet extends UUPPodEntityWXmlId {
 	/**
 	 * Setter.
 	 * 
-	 * @param description the description. {@code null} is legal.
+	 * @param description the description
 	 * 
 	 * @return this {@code OTUSet}
 	 */
-	public OTUSet setDescription(final String description) {
+	public OTUSet setDescription(@Nullable final String description) {
 		if (nullSafeEquals(getDescription(), description)) {
 
 		} else {

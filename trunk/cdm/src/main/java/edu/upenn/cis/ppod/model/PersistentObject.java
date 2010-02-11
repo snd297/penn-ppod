@@ -15,6 +15,7 @@
  */
 package edu.upenn.cis.ppod.model;
 
+import javax.annotation.Nullable;
 import javax.persistence.Column;
 import javax.persistence.GeneratedValue;
 import javax.persistence.Id;
@@ -54,6 +55,7 @@ public abstract class PersistentObject implements IPersistentObject {
 	}
 
 	@XmlAttribute
+	@Nullable
 	public Long getId() {
 		return id;
 	}

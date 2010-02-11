@@ -374,6 +374,7 @@ public class CharacterStateMatrix extends UUPPodEntityWXmlId {
 	 * @return the description
 	 */
 	@XmlAttribute
+	@Nullable
 	public String getDescription() {
 		return description;
 	}
@@ -571,11 +572,12 @@ public class CharacterStateMatrix extends UUPPodEntityWXmlId {
 	/**
 	 * Setter.
 	 * 
-	 * @param description the description value. {@code null} is legal.
+	 * @param description the description value
 	 * 
 	 * @return this matrix
 	 */
-	public CharacterStateMatrix setDescription(final String description) {
+	public CharacterStateMatrix setDescription(
+			@Nullable final String description) {
 		if (nullSafeEquals(getDescription(), description)) {
 			// nothing to do
 		} else {

@@ -22,6 +22,7 @@ import static edu.upenn.cis.ppod.util.UPennCisPPodUtil.nullSafeEquals;
 import java.util.Arrays;
 import java.util.Set;
 
+import javax.annotation.Nullable;
 import javax.persistence.Column;
 import javax.persistence.Entity;
 import javax.persistence.FetchType;
@@ -127,6 +128,7 @@ public class Attachment extends UUPPodEntityWXmlId {
 	}
 
 	IPPodEntity addAttachee(final PPodEntity attachee) {
+		checkNotNull(attachee);
 		attachees.add(attachee);
 		return attachee;
 	}
@@ -137,6 +139,7 @@ public class Attachment extends UUPPodEntityWXmlId {
 	 * @return the byteArrayValue
 	 */
 	@XmlElement
+	@Nullable
 	public byte[] getBytesValue() {
 		return bytesValue;
 	}
@@ -147,6 +150,7 @@ public class Attachment extends UUPPodEntityWXmlId {
 	 * @return the label
 	 */
 	@XmlAttribute
+	@Nullable
 	public String getLabel() {
 		return label;
 	}
@@ -157,6 +161,7 @@ public class Attachment extends UUPPodEntityWXmlId {
 	 * @return the value.
 	 */
 	@XmlAttribute
+	@Nullable
 	public String getStringValue() {
 		return stringValue;
 	}
@@ -188,11 +193,11 @@ public class Attachment extends UUPPodEntityWXmlId {
 	/**
 	 * Set the byteArrayValue.
 	 * 
-	 * @param bytesValue the byteArrayValue to set. Nullable.
+	 * @param bytesValue the byteArrayValue to set
 	 * 
 	 * @return this
 	 */
-	public Attachment setByteArrayValue(final byte[] bytesValue) {
+	public Attachment setByteArrayValue(@Nullable final byte[] bytesValue) {
 		if (Arrays.equals(bytesValue, this.bytesValue)) {
 			return this;
 		}
@@ -213,7 +218,7 @@ public class Attachment extends UUPPodEntityWXmlId {
 	 * 
 	 * @return this
 	 */
-	public Attachment setLabel(final String label) {
+	public Attachment setLabel(@Nullable final String label) {
 		checkNotNull(label);
 		if (label.equals(this.label)) {
 
@@ -227,11 +232,12 @@ public class Attachment extends UUPPodEntityWXmlId {
 	/**
 	 * Set the value.
 	 * 
-	 * @param stringValue the value. Nullable.
+	 * @param stringValue the value
+	 * 
 	 * @return this {@code Attachment}
 	 */
-	public Attachment setStringValue(final String stringValue) {
-		if (nullSafeEquals(stringValue, this.stringValue)) {
+	public Attachment setStringValue(@Nullable final String stringValue) {
+		if (nullSafeEquals(stringValue, getStringValue())) {
 
 		} else {
 			this.stringValue = stringValue;
