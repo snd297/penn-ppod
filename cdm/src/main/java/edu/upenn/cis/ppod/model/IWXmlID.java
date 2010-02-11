@@ -1,5 +1,6 @@
 package edu.upenn.cis.ppod.model;
 
+import javax.annotation.Nullable;
 import javax.xml.bind.annotation.XmlID;
 
 /**
@@ -20,6 +21,7 @@ public interface IWXmlID {
 	 * 
 	 * @return the {@code XmlID} attribute
 	 */
+	@Nullable
 	String getDocId();
 
 	/**

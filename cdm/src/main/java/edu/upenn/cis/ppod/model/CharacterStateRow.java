@@ -24,6 +24,7 @@ import java.util.Collections;
 import java.util.List;
 import java.util.Map;
 
+import javax.annotation.Nullable;
 import javax.persistence.Column;
 import javax.persistence.Entity;
 import javax.persistence.JoinColumn;
@@ -270,12 +271,12 @@ public class CharacterStateRow extends PPodEntity {
 	/**
 	 * Setter.
 	 * 
-	 * @param matrix the {@code CharacterStateMatrix} of which this is a row.
-	 *            This is nullable.
+	 * @param matrix the {@code CharacterStateMatrix} of which this is a row
 	 * 
 	 * @return this {@code CharacterStateRow}
 	 */
-	public CharacterStateRow setMatrix(final CharacterStateMatrix matrix) {
+	public CharacterStateRow setMatrix(
+			@Nullable final CharacterStateMatrix matrix) {
 		this.matrix = matrix;
 		return this;
 	}

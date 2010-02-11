@@ -25,6 +25,7 @@ import static edu.upenn.cis.ppod.util.UPennCisPPodUtil.nullSafeEquals;
 import java.util.Collections;
 import java.util.List;
 
+import javax.annotation.Nullable;
 import javax.persistence.Column;
 import javax.persistence.Entity;
 import javax.persistence.FetchType;
@@ -214,7 +215,8 @@ public class TreeSet extends UUPPodEntityWXmlId {
 	 * @return this {@code TreeSet}
 	 */
 	public TreeSet setLabel(final String label) {
-		if (nullSafeEquals(this.label, label)) {
+		checkNotNull(label);
+		if (label.equals(getLabel())) {
 
 		} else {
 			this.label = label;
@@ -228,11 +230,11 @@ public class TreeSet extends UUPPodEntityWXmlId {
 	 * <p>
 	 * Intention package-private and meant to be called from {@code TreeSet}.
 	 * 
-	 * @param otuSet the {@code OTUSet}. nullable.
+	 * @param otuSet the {@code OTUSet}
 	 * 
 	 * @return this {@code TreeSet}
 	 */
-	TreeSet setOTUSet(final OTUSet otuSet) {
+	TreeSet setOTUSet(@Nullable final OTUSet otuSet) {
 		if (nullSafeEquals(this.otuSet, otuSet)) {
 
 		} else {
