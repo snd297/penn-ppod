@@ -156,7 +156,7 @@ public class SaveOrUpdateCharacterStateMatrix implements
 			}
 			targetMatrix.addCharacter(newTargetCharacter);
 
-			if (targetMatrix.getType() == CharacterStateMatrix.Type.STANDARD) {
+			if (sourceMatrix.getType() == CharacterStateMatrix.Type.STANDARD) {
 				newTargetCharacter.setLabel(sourceCharacter.getLabel());
 			}
 
@@ -168,12 +168,12 @@ public class SaveOrUpdateCharacterStateMatrix implements
 					targetState = newTargetCharacter.addState(stateFactory
 							.create(sourceState.getStateNumber()));
 				}
-				if (targetMatrix.getType() == CharacterStateMatrix.Type.STANDARD) {
+				if (sourceMatrix.getType() == CharacterStateMatrix.Type.STANDARD) {
 					targetState.setLabel(sourceState.getLabel());
 				}
 			}
 
-			if (targetMatrix.getType() == CharacterStateMatrix.Type.STANDARD) {
+			if (sourceMatrix.getType() == CharacterStateMatrix.Type.STANDARD) {
 				originalCharIdxsByNewCharIdx.put(targetMatrix.getCharacterIdx()
 						.get(newTargetCharacter), oldIdxsByChararacter
 						.get(newTargetCharacter));

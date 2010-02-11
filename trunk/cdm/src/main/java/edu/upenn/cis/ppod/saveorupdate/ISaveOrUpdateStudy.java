@@ -32,10 +32,8 @@ public interface ISaveOrUpdateStudy {
 	 * If study is new, make it persistent. If it was already persisted, update
 	 * it.
 	 * 
-	 * @param study to be made persistent or updated
-	 * 
-	 * @return this
+	 * @param incomingStudy to be made persistent or updated
 	 */
-	Study saveOrUpdate(Study dbStudy, Study incomingStudy);
+	void saveOrUpdate(Study dbStudy, Study incomingStudy);
 
 }

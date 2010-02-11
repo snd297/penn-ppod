@@ -25,29 +25,30 @@ import javax.xml.bind.annotation.XmlID;
  * 
  * @author Sam Donnelly
  */
-abstract class PPodEntityWXmlId extends PPodEntity {
+abstract class PPodEntityWXmlId extends PPodEntity implements IWXmlID {
 
 	/**
 	 * Intended for referencing elements within a document - be it XML, JSON,
 	 * etc. This is distinct from the pPOD Id of {@link UUPPodEntity}.
-	 * <p>
-	 * NOTE: we don't require an explicit public setter as with
-	 * {@link UUPPodEntityWXmlId} because we don't need a getter method. TODO:
-	 * figure out why that is! It's something to do with help avoiding bugs.
 	 */
-	private String docId;
-
 	@XmlAttribute
 	@XmlID
-	protected String getDocId() {
-		if (docId == null) {
-			docId = UUID.randomUUID().toString();
-		}
+	private String docId;
+
+	public String getDocId() {
 		return docId;
 	}
 
-	protected PPodEntityWXmlId setDocId(final String docId) {
+	public IWXmlID setDocId() {
+		return setDocId(UUID.randomUUID().toString());
+	}
+
+	public IWXmlID setDocId(final String docId) {
+		if (this.docId != null) {
+			throw new IllegalStateException("docId was already set");
+		}
 		this.docId = docId;
 		return this;
 	}
+
 }

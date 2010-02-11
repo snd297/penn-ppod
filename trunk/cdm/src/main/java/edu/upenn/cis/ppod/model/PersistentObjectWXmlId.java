@@ -26,18 +26,29 @@ import javax.xml.bind.annotation.XmlID;
  * 
  * @author Sam Donnelly
  */
-abstract class PersistentObjectWXmlId extends PersistentObject {
+abstract class PersistentObjectWXmlId extends PersistentObject implements
+		IWXmlID {
 	/**
 	 * Intended for referencing elements within a document - be it XML, JSON,
 	 * etc. This is distinct from the pPOD Id of {@link UUPPodEntity}.
-	 * <p>
-	 * NOTE: we don't require an explicit setter to this because we don't need a
-	 * getter method. TODO: figure out why that is! It's something to do with
-	 * help avoiding bugs.
 	 */
 	@XmlAttribute
 	@XmlID
-	@SuppressWarnings("unused")
-	private final String docId = UUID.randomUUID().toString();
+	private String docId;
 
+	public String getDocId() {
+		return docId;
+	}
+
+	public IWXmlID setDocId() {
+		return setDocId(UUID.randomUUID().toString());
+	}
+
+	public IWXmlID setDocId(final String docId) {
+		if (this.docId != null) {
+			throw new IllegalStateException("docId was already set");
+		}
+		this.docId = docId;
+		return this;
+	}
 }

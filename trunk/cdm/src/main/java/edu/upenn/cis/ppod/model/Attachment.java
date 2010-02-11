@@ -21,7 +21,6 @@ import static edu.upenn.cis.ppod.util.UPennCisPPodUtil.nullSafeEquals;
 
 import java.util.Arrays;
 import java.util.Set;
-import java.util.UUID;
 
 import javax.persistence.Column;
 import javax.persistence.Entity;
@@ -31,12 +30,10 @@ import javax.persistence.Lob;
 import javax.persistence.ManyToMany;
 import javax.persistence.ManyToOne;
 import javax.persistence.Table;
-import javax.persistence.Transient;
 import javax.xml.bind.annotation.XmlAccessType;
 import javax.xml.bind.annotation.XmlAccessorType;
 import javax.xml.bind.annotation.XmlAttribute;
 import javax.xml.bind.annotation.XmlElement;
-import javax.xml.bind.annotation.XmlID;
 import javax.xml.bind.annotation.XmlIDREF;
 
 import org.hibernate.annotations.Cascade;
@@ -47,16 +44,13 @@ import edu.upenn.cis.ppod.util.IVisitor;
 
 /**
  * A flexible container for data that can be attached to other pPOD attachees.
- * <p>
- * This class has a non-accessible {@code @XmlId} (only used by the marshaller
- * and unmarshaller) and so doesn't extend from {@code UUPPodEntityWXmlId}.
  * 
  * @author Sam Donnelly
  */
 @XmlAccessorType(XmlAccessType.NONE)
 @Entity
 @Table(name = Attachment.TABLE)
-public final class Attachment extends UUPPodEntity {
+public final class Attachment extends UUPPodEntityWXmlId {
 
 	static final String TABLE = "ATTACHMENT";
 
@@ -121,17 +115,13 @@ public final class Attachment extends UUPPodEntity {
 	@ManyToMany(mappedBy = "attachments")
 	private final Set<PPodEntity> attachees = newHashSet();
 
-	@XmlAttribute
-	@XmlID
-	@Transient
-	private final String docId = UUID.randomUUID().toString();
-
 	/** Default constructor for (at least) Hibernate. */
 	Attachment() {}
 
 	@Override
 	public Attachment accept(final IVisitor visitor) {
 		visitor.visit(this);
+		getType().accept(visitor);
 		super.accept(visitor);
 		return this;
 	}
@@ -283,8 +273,7 @@ public final class Attachment extends UUPPodEntity {
 				.append("type=").append(this.type).append(TAB).append("label=")
 				.append(this.label).append(TAB).append("stringValue=").append(
 						this.stringValue).append(TAB).append("bytesValue=")
-				.append(this.bytesValue).append(TAB).append("docId=").append(
-						this.docId).append(TAB).append(")");
+				.append(this.bytesValue).append(TAB).append(")");
 
 		return retValue.toString();
 	}

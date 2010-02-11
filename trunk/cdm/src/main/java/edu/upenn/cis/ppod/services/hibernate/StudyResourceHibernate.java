@@ -34,7 +34,7 @@ import edu.upenn.cis.ppod.services.ppodentity.IStudy2StudyInfo;
 import edu.upenn.cis.ppod.services.ppodentity.StudyInfo;
 import edu.upenn.cis.ppod.thirdparty.util.HibernateUtil;
 import edu.upenn.cis.ppod.util.AfterUnmarshalVisitor;
-import edu.upenn.cis.ppod.util.OTUSetAndOTUSetDocIdVisitor;
+import edu.upenn.cis.ppod.util.SetDocIdVisitor;
 
 /**
  * @author Sam Donnelly
@@ -47,7 +47,7 @@ public final class StudyResourceHibernate implements IStudyResource {
 
 	private final IStudy2StudyInfo study2StudyInfo;
 
-	private final OTUSetAndOTUSetDocIdVisitor otuSetAndOTUSetDocIdVisitor;
+	private final SetDocIdVisitor otuSetAndOTUSetDocIdVisitor;
 
 	private final Provider<AfterUnmarshalVisitor> afterUnmarshalVisitorProvider;
 
@@ -55,7 +55,7 @@ public final class StudyResourceHibernate implements IStudyResource {
 	StudyResourceHibernate(final StudyDAOHibernate studyDAO,
 			final ISaveOrUpdateStudyHibernateFactory saveOrUpdateStudyFactory,
 			final IStudy2StudyInfo study2StudyInfo,
-			final OTUSetAndOTUSetDocIdVisitor otuSetAndOTUSetDocIdVisitor,
+			final SetDocIdVisitor otuSetAndOTUSetDocIdVisitor,
 			final Provider<AfterUnmarshalVisitor> afterUnmarshalVisitorProvider) {
 		this.studyDAO = (IStudyDAO) studyDAO.setSession(HibernateUtil
 				.getSessionFactory().getCurrentSession());

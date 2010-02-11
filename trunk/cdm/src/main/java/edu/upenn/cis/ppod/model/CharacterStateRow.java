@@ -101,7 +101,6 @@ public final class CharacterStateRow extends PPodEntity {
 	@OneToMany
 	@OrderBy("position")
 	@JoinTable(inverseJoinColumns = @JoinColumn(name = CharacterStateCell.ID_COLUMN))
-// @IndexColumn(name = CELLS_INDEX_COLUMN)
 	private final List<CharacterStateCell> cells = newArrayList();
 
 	/** {@code CharacterStateCell}-><code>cells</code>Index lookup. */
@@ -126,44 +125,9 @@ public final class CharacterStateRow extends PPodEntity {
 		for (final CharacterStateCell cell : getCells()) {
 			cell.accept(visitor);
 		}
+		super.accept(visitor);
 		return this;
 	}
-
-	/**
-	 * Add {@code cell} to the end of this row.
-	 * 
-	 * @param cell to be added
-	 * 
-	 * @return {@code cell}
-	 * 
-	 * @throws IllegalStateException if this row hasn't been added to a matrix
-	 *             yet
-	 * @throws IllegalStateException if a character has not been set for the
-	 *             column we're trying to add the cell to
-	 */
-// public CharacterStateCell addCell(final CharacterStateCell cell) {
-// checkNotNull(cell);
-// if (getMatrix() == null) {
-// throw new IllegalStateException(
-// "This row hasn't been added to a matrix yet");
-// }
-// if (getMatrix().getCharacters().size() < getCells().size() + 1) {
-// throw new IllegalStateException("the matrix has less characters "
-// + getMatrix().getCharacterIdx().size()
-// + " than the row is about to have "
-// + (getCells().size() + 1));
-// }
-// if (getMatrix().getCharacters().size() > 0
-// && getMatrix().getCharacters().get(getCells().size()) == null) {
-// throw new IllegalStateException("Character is null at column "
-// + cells.size());
-// }
-// cells.add(cell);
-// cellIdx.put(cell, cells.size() - 1);
-// cell.setRow(this);
-// resetPPodVersionInfo();
-// return cell;
-// }
 
 	/**
 	 * {@link Unmarshaller} callback.
@@ -229,25 +193,6 @@ public final class CharacterStateRow extends PPodEntity {
 	public CharacterStateMatrix getMatrix() {
 		return matrix;
 	}
-
-	/**
-	 * Remove the last cell in this row.
-	 * 
-	 * @return the removed cell, or <code>null</code> if the row was empty
-	 * 
-	 */
-// public CharacterStateCell removeLastCell() {
-// if (cells.size() == 0) {
-// // nothing to do
-// return null;
-// }
-// final CharacterStateCell oldPhyloCharMatrixCell = cells.remove(cells
-// .size() - 1);
-// cellIdx.remove(oldPhyloCharMatrixCell);
-// oldPhyloCharMatrixCell.setRow(null);
-// resetPPodVersionInfo();
-// return oldPhyloCharMatrixCell;
-// }
 
 	/**
 	 * Reset the pPOD version info of this row and that of its matrix.
