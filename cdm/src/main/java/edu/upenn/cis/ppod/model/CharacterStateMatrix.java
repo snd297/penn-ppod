@@ -161,14 +161,6 @@ public class CharacterStateMatrix extends UUPPodEntityWXmlId {
 	@Column(name = CHARACTER_IDX_COLUMN)
 	private final Map<Character, Integer> characterIdx = newHashMap();
 
-// @org.hibernate.annotations.CollectionOfElements
-// @JoinTable(name = TABLE + "_" + OTU, joinColumns = @JoinColumn(name =
-	// ID_COLUMN))
-// @org.hibernate.annotations.MapKeyManyToMany(joinColumns = @JoinColumn(name =
-	// OTU.ID_COLUMN))
-// @Column(name = OTU.TABLE + "_IDX")
-// private final Map<OTU, CharacterStateRow> rowsByOTU = newHashMap();
-
 	/**
 	 * The position of a {@code Character} in <code>characters</code> signifies
 	 * its column number in each <code>row</cod>. So <code>characters</code> is
@@ -194,12 +186,13 @@ public class CharacterStateMatrix extends UUPPodEntityWXmlId {
 	@Override
 	public CharacterStateMatrix accept(final IVisitor visitor) {
 		visitor.visit(this);
-		for (final Character character : getCharacters()) { 
+		for (final Character character : getCharacters()) {
 			character.accept(visitor);
 		}
 		for (final CharacterStateRow row : getRows()) {
 			row.accept(visitor);
 		}
+		super.accept(visitor);
 		return this;
 	}
 
@@ -218,9 +211,16 @@ public class CharacterStateMatrix extends UUPPodEntityWXmlId {
 	/**
 	 * Take actions after unmarshalling that need to occur after
 	 * {@link #afterUnmarshal(Unmarshaller, Object)} is called, specifically
-	 * after {@code @XmlIDRef} elements are resolved
+	 * after {@code @XmlIDRef} elements are resolved.
 	 */
+	@Override
 	public void afterUnmarshal() {
+		if (otuIdx.size() == 0) {
+			int i = 0;
+			for (final OTU otu : otus) {
+				otuIdx.put(otu, i++);
+			}
+		}
 		if (characterIdx.size() == 0) {
 			int i = 0;
 			for (final Character character : getCharacters()) {
@@ -229,6 +229,13 @@ public class CharacterStateMatrix extends UUPPodEntityWXmlId {
 				character.addMatrix(this);
 			}
 		}
+		if (otuIdx.size() == 0) {
+			int i = 0;
+			for (final OTU otu : otus) {
+				otuIdx.put(otu, i++);
+			}
+		}
+		super.afterUnmarshal();
 	}
 
 	/**
@@ -386,12 +393,6 @@ public class CharacterStateMatrix extends UUPPodEntityWXmlId {
 	public Map<OTU, Integer> getOTUIdx() {
 		// Now we build up {@code this.otuIdx} and {@code this.characterIdx}
 		// since they are not sent over the wire.
-		if (otuIdx.size() == 0) {
-			int i = 0;
-			for (final OTU otu : otus) {
-				otuIdx.put(otu, i++);
-			}
-		}
 		return Collections.unmodifiableMap(otuIdx);
 	}
 

@@ -33,9 +33,8 @@ public class AfterUnmarshalVisitor extends EmptyVisitor {
 	 * @param matrix target
 	 */
 	@Override
-	public AfterUnmarshalVisitor visit(final CharacterStateMatrix matrix) {
+	public void visit(final CharacterStateMatrix matrix) {
 		matrix.afterUnmarshal();
-		return this;
 	}
 
 	/**
@@ -44,15 +43,12 @@ public class AfterUnmarshalVisitor extends EmptyVisitor {
 	 * @param cell target
 	 */
 	@Override
-	public AfterUnmarshalVisitor visit(final CharacterStateCell cell) {
+	public void visit(final CharacterStateCell cell) {
 		cell.afterUnmarshal();
-		return this;
 	}
 
 	@Override
-	public AfterUnmarshalVisitor visit(final Character character) {
+	public void visit(final Character character) {
 		character.afterUnmarshal();
-		return this;
 	}
-
 }

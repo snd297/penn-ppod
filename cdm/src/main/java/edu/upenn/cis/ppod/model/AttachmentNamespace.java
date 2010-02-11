@@ -20,9 +20,9 @@ import static com.google.common.base.Preconditions.checkNotNull;
 import javax.persistence.Column;
 import javax.persistence.Entity;
 import javax.persistence.Table;
-import javax.xml.bind.annotation.XmlAccessType;
-import javax.xml.bind.annotation.XmlAccessorType;
 import javax.xml.bind.annotation.XmlAttribute;
+
+import edu.upenn.cis.ppod.util.IVisitor;
 
 /**
  * To prevent name clashes among {@link AttachmentType}s.
@@ -65,6 +65,12 @@ public final class AttachmentNamespace extends PersistentObjectWXmlId {
 	public AttachmentNamespace setLabel(final String label) {
 		checkNotNull(label);
 		this.label = label;
+		return this;
+	}
+
+	@Override
+	public AttachmentNamespace accept(final IVisitor visitor) {
+		visitor.visit(this);
 		return this;
 	}
 }

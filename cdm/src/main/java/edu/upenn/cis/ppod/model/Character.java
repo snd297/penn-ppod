@@ -22,7 +22,6 @@ import static com.google.common.collect.Sets.newHashSet;
 import java.util.Collections;
 import java.util.Map;
 import java.util.Set;
-import java.util.UUID;
 
 import javax.persistence.Column;
 import javax.persistence.Entity;
@@ -30,12 +29,10 @@ import javax.persistence.ManyToMany;
 import javax.persistence.MapKey;
 import javax.persistence.OneToMany;
 import javax.persistence.Table;
-import javax.persistence.Transient;
 import javax.xml.bind.Marshaller;
 import javax.xml.bind.Unmarshaller;
 import javax.xml.bind.annotation.XmlAttribute;
 import javax.xml.bind.annotation.XmlElementWrapper;
-import javax.xml.bind.annotation.XmlID;
 
 import org.hibernate.annotations.Cascade;
 
@@ -53,13 +50,7 @@ import edu.upenn.cis.ppod.util.IVisitor;
  */
 @Entity
 @Table(name = Character.TABLE)
-public class Character extends UUPPodEntity implements IAttachee, IPPodEntity {
-
-	@XmlAttribute
-	@XmlID
-	@Transient
-	@SuppressWarnings("unused")
-	private final String docId = UUID.randomUUID().toString();
+public class Character extends UUPPodEntityWXmlId {
 
 	/**
 	 * We don't call the table {@code "CHARACTER"} because that causes problems
@@ -73,8 +64,11 @@ public class Character extends UUPPodEntity implements IAttachee, IPPodEntity {
 
 	@Override
 	public Character accept(final IVisitor visitor) {
-		super.accept(visitor);
 		visitor.visit(this);
+		for (final CharacterState state : getStates().values()) {
+			state.accept(visitor);
+		}
+		super.accept(visitor);
 		return this;
 	}
 

@@ -82,7 +82,7 @@ public final class DNAState extends MolecularState {
 	}
 
 	@Override
-	protected String getDocId() {
+	public String getDocId() {
 		// "D" + nucleotide are unique for DNA_STATE (as long as we keep them
 		// so),
 		// so let's use them instead of UUID's

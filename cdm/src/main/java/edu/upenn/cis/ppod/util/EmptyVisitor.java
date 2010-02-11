@@ -16,7 +16,10 @@
 package edu.upenn.cis.ppod.util;
 
 import edu.upenn.cis.ppod.model.Attachment;
+import edu.upenn.cis.ppod.model.AttachmentNamespace;
+import edu.upenn.cis.ppod.model.AttachmentType;
 import edu.upenn.cis.ppod.model.Character;
+import edu.upenn.cis.ppod.model.CharacterState;
 import edu.upenn.cis.ppod.model.CharacterStateCell;
 import edu.upenn.cis.ppod.model.CharacterStateMatrix;
 import edu.upenn.cis.ppod.model.CharacterStateRow;
@@ -35,99 +38,108 @@ public abstract class EmptyVisitor implements IVisitor {
 	/**
 	 * Does nothing.
 	 * 
-	 * @param character ignored
-	 * 
-	 * @return this
-	 */
-	public IVisitor visit(final Character character) {
-		return this;
-	}
-
-	/**
-	 * Does nothing.
-	 * 
-	 * @param matrix ignored
-	 * 
-	 * @return this
-	 */
-	public IVisitor visit(final CharacterStateMatrix matrix) {
-		return this;
-	}
-
-	/**
-	 * Does nothing.
-	 * 
-	 * @param row ignored
-	 * 
-	 * @return this
-	 */
-	public IVisitor visit(final CharacterStateRow row) {
-		return this;
-	}
-
-	/**
-	 * Does nothing.
-	 * 
-	 * @param otu ignored
-	 * 
-	 * @return this
-	 */
-	public IVisitor visit(final OTU otu) {
-		return this;
-	}
-
-	/**
-	 * Does nothing.
-	 * 
-	 * @param otuSet ignored
-	 * 
-	 * @return this
-	 */
-	public IVisitor visit(final OTUSet otuSet) {
-		return this;
-	}
-
-	/**
-	 * Does nothing.
-	 * 
-	 * @param study ignored
-	 * 
-	 * @return this
-	 */
-	public IVisitor visit(final Study study) {
-		return this;
-	}
-
-	/**
-	 * Does nothing.
-	 * 
-	 * @param treeSet ignored
-	 * 
-	 * @return this
-	 */
-	public IVisitor visit(final TreeSet treeSet) {
-		return this;
-	}
-
-	/**
-	 * Does nothing.
-	 * 
 	 * @param attachment ignored
-	 * 
-	 * @return this
 	 */
-	public IVisitor visit(final Attachment attachment) {
-		return this;
+	public void visit(final Attachment attachment) {
+
+	}
+
+	/**
+	 * Does nothing.
+	 * 
+	 * @param attachmentNamespace ignored
+	 */
+	public void visit(final AttachmentNamespace attachmentNamespace) {
+
+	}
+
+	/**
+	 * Does nothing.
+	 * 
+	 * @param attachmentType ignored
+	 */
+	public void visit(final AttachmentType attachmentType) {
+
+	}
+
+	/**
+	 * Does nothing.
+	 * 
+	 * @param character ignored
+	 */
+	public void visit(final Character character) {
+
+	}
+
+	/**
+	 * Does nothing.
+	 * 
+	 * @param characterState ignored
+	 */
+	public void visit(final CharacterState characterState) {
+
 	}
 
 	/**
 	 * Does nothing.
 	 * 
 	 * @param cell ignored
-	 * 
-	 * @return this
 	 */
-	public IVisitor visit(final CharacterStateCell cell) {
-		return this;
+	public void visit(final CharacterStateCell cell) {
+
+	}
+
+	/**
+	 * Does nothing.
+	 * 
+	 * @param matrix ignored
+	 */
+	public void visit(final CharacterStateMatrix matrix) {
+
+	}
+
+	/**
+	 * Does nothing.
+	 * 
+	 * @param row ignored
+	 */
+	public void visit(final CharacterStateRow row) {
+
+	}
+
+	/**
+	 * Does nothing.
+	 * 
+	 * @param otu ignored
+	 */
+	public void visit(final OTU otu) {
+
+	}
+
+	/**
+	 * Does nothing.
+	 * 
+	 * @param otuSet ignored
+	 */
+	public void visit(final OTUSet otuSet) {
+
+	}
+
+	/**
+	 * Does nothing.
+	 * 
+	 * @param study ignored
+	 */
+	public void visit(final Study study) {
+
+	}
+
+	/**
+	 * Does nothing.
+	 * 
+	 * @param treeSet ignored
+	 */
+	public void visit(final TreeSet treeSet) {
+
 	}
 }

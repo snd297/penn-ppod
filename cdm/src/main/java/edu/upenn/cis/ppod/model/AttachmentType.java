@@ -23,12 +23,12 @@ import javax.persistence.FetchType;
 import javax.persistence.JoinColumn;
 import javax.persistence.ManyToOne;
 import javax.persistence.Table;
-import javax.xml.bind.annotation.XmlAccessType;
-import javax.xml.bind.annotation.XmlAccessorType;
 import javax.xml.bind.annotation.XmlAttribute;
 import javax.xml.bind.annotation.XmlIDREF;
 
 import org.hibernate.annotations.Cascade;
+
+import edu.upenn.cis.ppod.util.IVisitor;
 
 /**
  * Says what kind of attachment we have. for example, you might have an author
@@ -100,6 +100,13 @@ public final class AttachmentType extends PersistentObjectWXmlId {
 	 */
 	public AttachmentType setNamespace(final AttachmentNamespace namespace) {
 		this.namespace = namespace;
+		return this;
+	}
+
+	@Override
+	public AttachmentType accept(IVisitor visitor) {
+		visitor.visit(this);
+		getNamespace().accept(visitor);
 		return this;
 	}
 }

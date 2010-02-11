@@ -16,7 +16,10 @@
 package edu.upenn.cis.ppod.util;
 
 import edu.upenn.cis.ppod.model.Attachment;
+import edu.upenn.cis.ppod.model.AttachmentNamespace;
+import edu.upenn.cis.ppod.model.AttachmentType;
 import edu.upenn.cis.ppod.model.Character;
+import edu.upenn.cis.ppod.model.CharacterState;
 import edu.upenn.cis.ppod.model.CharacterStateCell;
 import edu.upenn.cis.ppod.model.CharacterStateMatrix;
 import edu.upenn.cis.ppod.model.CharacterStateRow;
@@ -35,22 +38,28 @@ import edu.upenn.cis.ppod.model.TreeSet;
  */
 public interface IVisitor {
 
-	IVisitor visit(Attachment attachment);
+	void visit(Attachment attachment);
 
-	IVisitor visit(Study study);
+	void visit(AttachmentNamespace attachemntNamespace);
 
-	IVisitor visit(OTUSet otuset);
+	void visit(AttachmentType attachmentType);
 
-	IVisitor visit(OTU otu);
+	void visit(Character character);
 
-	IVisitor visit(Character character);
+	void visit(CharacterState characterState);
 
-	IVisitor visit(CharacterStateMatrix matrix);
+	void visit(CharacterStateCell cell);
 
-	IVisitor visit(CharacterStateRow row);
+	void visit(CharacterStateMatrix matrix);
 
-	IVisitor visit(CharacterStateCell cell);
+	void visit(CharacterStateRow row);
 
-	IVisitor visit(TreeSet treeSet);
+	void visit(OTU otu);
+
+	void visit(OTUSet otuset);
+
+	void visit(Study study);
+
+	void visit(TreeSet treeSet);
 
 }

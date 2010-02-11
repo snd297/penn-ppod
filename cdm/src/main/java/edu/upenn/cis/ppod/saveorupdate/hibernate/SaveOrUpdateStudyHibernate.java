@@ -45,9 +45,9 @@ import edu.upenn.cis.ppod.model.OTUSet;
 import edu.upenn.cis.ppod.model.Study;
 import edu.upenn.cis.ppod.model.TreeSet;
 import edu.upenn.cis.ppod.saveorupdate.IMergeAttachment;
-import edu.upenn.cis.ppod.saveorupdate.ISaveOrUpdateCharacterStateMatrix;
 import edu.upenn.cis.ppod.saveorupdate.IMergeOTUSet;
 import edu.upenn.cis.ppod.saveorupdate.IMergeTreeSet;
+import edu.upenn.cis.ppod.saveorupdate.ISaveOrUpdateCharacterStateMatrix;
 import edu.upenn.cis.ppod.saveorupdate.ISaveOrUpdateStudy;
 import edu.upenn.cis.ppod.saveorupdate.MergeTreeSet;
 
@@ -105,11 +105,12 @@ public class SaveOrUpdateStudyHibernate implements ISaveOrUpdateStudy {
 	}
 
 	public Study save(final Study incomingStudy) {
-		return saveOrUpdate((Study) studyProvider.get().setPPodId(),
-				incomingStudy);
+		final Study dbStudy = (Study) studyProvider.get().setPPodId();
+		saveOrUpdate(dbStudy, incomingStudy);
+		return dbStudy;
 	}
 
-	public Study saveOrUpdate(final Study dbStudy, final Study incomingStudy) {
+	public void saveOrUpdate(final Study dbStudy, final Study incomingStudy) {
 
 		dbStudy.setLabel(incomingStudy.getLabel());
 
@@ -181,7 +182,6 @@ public class SaveOrUpdateStudyHibernate implements ISaveOrUpdateStudy {
 						dbOTUsByIncomingOTU);
 			}
 		}
-		return studyDAO.saveOrUpdate(dbStudy);
 	}
 
 	public Study update(final Study incomingStudy) {
@@ -192,6 +192,7 @@ public class SaveOrUpdateStudyHibernate implements ISaveOrUpdateStudy {
 					+ incomingStudy.getLabel() + " "
 					+ incomingStudy.getPPodId() + " is not persisted");
 		}
-		return saveOrUpdate(persistentStudy, incomingStudy);
+		saveOrUpdate(persistentStudy, incomingStudy);
+		return persistentStudy;
 	}
 }

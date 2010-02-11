@@ -19,13 +19,8 @@ import static com.google.common.base.Preconditions.checkArgument;
 import static com.google.common.base.Preconditions.checkNotNull;
 
 import javax.persistence.Column;
-import javax.persistence.DiscriminatorColumn;
-import javax.persistence.DiscriminatorType;
-import javax.persistence.DiscriminatorValue;
 import javax.persistence.Entity;
 import javax.persistence.FetchType;
-import javax.persistence.Inheritance;
-import javax.persistence.InheritanceType;
 import javax.persistence.JoinColumn;
 import javax.persistence.ManyToOne;
 import javax.persistence.Table;
@@ -35,11 +30,16 @@ import com.google.common.base.Function;
 import com.google.inject.Inject;
 import com.google.inject.assistedinject.Assisted;
 
+import edu.upenn.cis.ppod.util.IVisitor;
+
 /**
  * A stateNumber of a {@link Character}. Represents things like "absent",
  * "short", and "long" for some character, say "proboscis".
  * <p>
  * A {@code CharacterState} can belong to exactly one {@code Character}.
+ * <p>
+ * This is <em>not</em> a {@link UUPPodEntity} because its uniqueness is a
+ * function of its {@link Character} + {@link #getStateNumber()}
  * 
  * @author Sam Donnelly
  */
@@ -276,4 +276,10 @@ public class CharacterState extends PPodEntityWXmlId {
 		return retValue.toString();
 	}
 
+	@Override
+	public CharacterState accept(final IVisitor visitor) {
+		visitor.visit(this);
+		super.accept(visitor);
+		return this;
+	}
 }
