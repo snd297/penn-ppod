@@ -52,7 +52,7 @@ import edu.upenn.cis.ppod.util.IVisitor;
  */
 @Entity
 @Table(name = OTUSet.TABLE)
-public final class OTUSet extends UUPPodEntityWXmlId {
+public class OTUSet extends UUPPodEntityWXmlId {
 
 	/** The table for this entity. Intentionally package-private. */
 	static final String TABLE = "OTU_SET";
@@ -119,6 +119,7 @@ public final class OTUSet extends UUPPodEntityWXmlId {
 		for (final TreeSet treeSet : getTreeSets()) {
 			treeSet.accept(visitor);
 		}
+		super.accept(visitor);
 		return this;
 	}
 

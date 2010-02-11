@@ -28,7 +28,7 @@ import com.google.inject.assistedinject.Assisted;
  */
 @Entity
 @Table(name = DNAState.TABLE)
-public final class DNAState extends MolecularState {
+public class DNAState extends MolecularState {
 
 	/**
 	 * For assisted injections.

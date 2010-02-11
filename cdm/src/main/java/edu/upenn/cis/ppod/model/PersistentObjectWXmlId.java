@@ -26,16 +26,16 @@ import javax.xml.bind.annotation.XmlID;
  * 
  * @author Sam Donnelly
  */
-abstract class PersistentObjectWXmlId extends PersistentObject implements
+public abstract class PersistentObjectWXmlId extends PersistentObject implements
 		IWXmlID {
 	/**
 	 * Intended for referencing elements within a document - be it XML, JSON,
 	 * etc. This is distinct from the pPOD Id of {@link UUPPodEntity}.
 	 */
-	@XmlAttribute
-	@XmlID
 	private String docId;
 
+	@XmlAttribute
+	@XmlID
 	public String getDocId() {
 		return docId;
 	}
@@ -45,7 +45,7 @@ abstract class PersistentObjectWXmlId extends PersistentObject implements
 	}
 
 	public IWXmlID setDocId(final String docId) {
-		if (this.docId != null) {
+		if (getDocId() != null) {
 			throw new IllegalStateException("docId was already set");
 		}
 		this.docId = docId;

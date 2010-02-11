@@ -39,7 +39,7 @@ import edu.upenn.cis.ppod.thirdparty.util.HibernateUtil;
  */
 @Entity
 @Table(name = PPodVersionInfo.TABLE)
-public final class PPodVersionInfo extends PersistentObject {
+public class PPodVersionInfo extends PersistentObject {
 
 	final static String TABLE = "PPOD_VERSION_INFO";
 

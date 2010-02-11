@@ -29,7 +29,7 @@ import javax.xml.bind.annotation.XmlAccessorType;
 @XmlAccessorType(XmlAccessType.NONE)
 @Entity
 @Table(name = DNAStateMatrix.TABLE)
-public final class DNAStateMatrix extends MolecularStateMatrix {
+public class DNAStateMatrix extends MolecularStateMatrix {
 
 	/** Database table name. */
 	public static final String TABLE = "DNA_STATE_MATRIX";

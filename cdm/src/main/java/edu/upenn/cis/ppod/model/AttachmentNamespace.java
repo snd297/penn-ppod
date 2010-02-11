@@ -31,7 +31,7 @@ import edu.upenn.cis.ppod.util.IVisitor;
  */
 @Entity
 @Table(name = AttachmentNamespace.TABLE)
-public final class AttachmentNamespace extends PersistentObjectWXmlId {
+public class AttachmentNamespace extends PersistentObjectWXmlId {
 
 	static final String TABLE = "ATTACHMENT_NAMESPACE";
 

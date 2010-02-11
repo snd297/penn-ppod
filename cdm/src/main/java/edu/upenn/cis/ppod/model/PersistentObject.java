@@ -37,7 +37,6 @@ public abstract class PersistentObject implements IPersistentObject {
 
 	static final String ID_COLUMN = "ID";
 
-	@XmlAttribute
 	@Id
 	@GeneratedValue
 	@Column(name = ID_COLUMN)
@@ -54,8 +53,16 @@ public abstract class PersistentObject implements IPersistentObject {
 		throw new UnsupportedOperationException();
 	}
 
+	@XmlAttribute
 	public Long getId() {
 		return id;
+	}
+
+	/** Created for Jaxb. */
+	@SuppressWarnings("unused")
+	private PersistentObject setId(final Long id) {
+		this.id = id;
+		return this;
 	}
 
 	/**

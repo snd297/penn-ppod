@@ -79,6 +79,7 @@ public class StudyDAOHibernate extends GenericHibernateDAO<Study, Long>
 						FetchMode.JOIN).setFetchMode("rows", FetchMode.JOIN)
 				.createCriteria("rows").setFetchMode("cells", FetchMode.JOIN)
 				.setFetchMode("cellIdx", FetchMode.JOIN).uniqueResult();
+		//Extending to cells.firstState causes us to run out of memory
 	}
 
 	@SuppressWarnings("unchecked")

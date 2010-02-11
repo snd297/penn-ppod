@@ -36,7 +36,9 @@ public class SetDocIdVisitor extends EmptyVisitor {
 	 */
 	@Override
 	public void visit(final OTUSet otuSet) {
-		otuSet.setDocId();
+		if (otuSet.getDocId() == null) {
+			otuSet.setDocId();
+		}
 	}
 
 	/**
@@ -46,7 +48,9 @@ public class SetDocIdVisitor extends EmptyVisitor {
 	 */
 	@Override
 	public void visit(final OTU otu) {
-		otu.setDocId();
+		if (otu.getDocId() == null) { 
+			otu.setDocId();
+		}
 	}
 
 	/**
@@ -56,7 +60,9 @@ public class SetDocIdVisitor extends EmptyVisitor {
 	 */
 	@Override
 	public void visit(final Character character) {
-		character.setDocId();
+		if (character.getDocId() == null) {
+			character.setDocId();
+		}
 	}
 
 	/**
@@ -66,7 +72,9 @@ public class SetDocIdVisitor extends EmptyVisitor {
 	 */
 	@Override
 	public void visit(final CharacterState characterState) {
-		characterState.setDocId();
+		if (characterState.getDocId() == null) {
+			characterState.setDocId();
+		}
 	}
 
 	/**

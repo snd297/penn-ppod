@@ -51,7 +51,7 @@ import edu.upenn.cis.ppod.util.IVisitor;
 @XmlAccessorType(XmlAccessType.NONE)
 @Entity
 @Table(name = TreeSet.TABLE)
-public final class TreeSet extends UUPPodEntityWXmlId {
+public class TreeSet extends UUPPodEntityWXmlId {
 
 	static final String TABLE = "TREE_SET";
 

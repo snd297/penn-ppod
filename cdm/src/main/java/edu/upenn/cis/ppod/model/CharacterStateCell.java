@@ -65,10 +65,9 @@ import edu.upenn.cis.ppod.util.IVisitor;
  */
 @Entity
 @Table(name = CharacterStateCell.TABLE)
-public final class CharacterStateCell extends PPodEntity {
+public class CharacterStateCell extends PPodEntity {
 
 	/** Position in a {@link CharacterStateRow}. */
-	@XmlAttribute
 	@Column(name = "POSITION", nullable = false)
 	private Integer position;
 
@@ -77,6 +76,7 @@ public final class CharacterStateCell extends PPodEntity {
 	 * 
 	 * @return the position
 	 */
+	@XmlAttribute
 	public Integer getPosition() {
 		return position;
 	}
@@ -478,7 +478,7 @@ public final class CharacterStateCell extends PPodEntity {
 			this.states = newTreeSet(STATE_COMPARATOR);
 		}
 
-		if (states.equals(this.states)) {
+		if (getStates().equals(states)) {
 			return this;
 		}
 

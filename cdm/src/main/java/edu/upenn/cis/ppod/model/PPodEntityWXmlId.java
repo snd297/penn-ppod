@@ -25,16 +25,16 @@ import javax.xml.bind.annotation.XmlID;
  * 
  * @author Sam Donnelly
  */
-abstract class PPodEntityWXmlId extends PPodEntity implements IWXmlID {
+public abstract class PPodEntityWXmlId extends PPodEntity implements IWXmlID {
 
 	/**
 	 * Intended for referencing elements within a document - be it XML, JSON,
 	 * etc. This is distinct from the pPOD Id of {@link UUPPodEntity}.
 	 */
-	@XmlAttribute
-	@XmlID
 	private String docId;
 
+	@XmlAttribute
+	@XmlID
 	public String getDocId() {
 		return docId;
 	}
