@@ -5,9 +5,11 @@ import javax.xml.bind.annotation.XmlID;
 /**
  * One may ask, why require that the client explicitly set the doc id? And why
  * only allow it to be sent once? Why not just have it assigned automatically at
- * construction and have it freely reset if required. The reason is that it has
- * been useful to notice when a doc id has accidentally not been set, or when we
- * try to set it twice. These things have meant that something is wrong.
+ * construction and have it freely reset if required. The reason is that
+ * sometimes a client needs to set it to a certain value using
+ * {@link #setDocId(String)} and since the {@link #getDocId()} is an identifier,
+ * it seems dangerous to allow it to be reset since as soon as it's assigned,
+ * something may be depending on that value.
  * 
  * @author Sam Donnelly
  */

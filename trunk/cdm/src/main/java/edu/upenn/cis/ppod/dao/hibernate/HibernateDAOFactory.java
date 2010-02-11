@@ -17,12 +17,13 @@ package edu.upenn.cis.ppod.dao.hibernate;
 
 import java.util.List;
 
+import javax.annotation.Nullable;
+
 import org.hibernate.Session;
 
 import com.google.inject.Inject;
 import com.google.inject.Provider;
 import com.google.inject.assistedinject.Assisted;
-import com.google.inject.internal.Nullable;
 
 import edu.upenn.cis.ppod.dao.IAttachmentNamespaceDAO;
 import edu.upenn.cis.ppod.dao.IAttachmentTypeDAO;

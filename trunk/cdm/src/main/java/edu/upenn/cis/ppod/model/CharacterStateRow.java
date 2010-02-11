@@ -148,16 +148,22 @@ public class CharacterStateRow extends PPodEntity {
 	/**
 	 * Empty out and return this row's cells. After calling this,
 	 * {@link #getCells()}{@code .size()} will be {@code 0}.
+	 * <p>
 	 * 
-	 * @return the cleared cells
+	 * @return the cleared cells - an empty list if {@link #getCells() == 0}
+	 *         when this method is called
 	 */
 	private List<CharacterStateCell> clearCells() {
-		final List<CharacterStateCell> clearedCells = newArrayList(cells);
+		final List<CharacterStateCell> clearedCells = newArrayList(getCells());
+		if (getCells().size() == 0) {
+			return clearedCells;
+		}
 		for (final CharacterStateCell clearedCell : clearedCells) {
 			clearedCell.setPosition(null);
 		}
 		cells.clear();
 		cellIdx.clear();
+		resetPPodVersionInfo();
 		return clearedCells;
 	}
 
@@ -260,46 +266,6 @@ public class CharacterStateRow extends PPodEntity {
 		resetPPodVersionInfo();
 		return this;
 	}
-
-	/**
-	 * Set the cell at {@code cellIdx}
-	 * <p>
-	 * If {@code getCells()} is too short, it is null padded.
-	 * 
-	 * @param cell value to put
-	 * @param cellIdx where to put it
-	 * 
-	 * @return this
-	 */
-// public CharacterStateRow setCell(final CharacterStateCell cell,
-// final int cellIdx) {
-// checkNotNull(cell);
-// nullFill(cells, cellIdx + 1);
-// cell.setRow(this);
-// if (cell.equals(getCells().get(cellIdx))) {
-// return this;
-// }
-//
-// if (getMatrix() == null) {
-// throw new IllegalStateException(
-// "This row hasn't been added to a matrix yet");
-// }
-// if (getMatrix().getCharacters().size() < cellIdx + 1) {
-// throw new IllegalStateException("the matrix has less characters "
-// + getMatrix().getCharacterIdx().size()
-// + " than the row is about to have "
-// + (getCells().size() + 1));
-// }
-// if (getMatrix().getCharacters().size() > 0
-// && getMatrix().getCharacters().get(cellIdx) == null) {
-// throw new IllegalStateException("Character is null at column "
-// + cells.size());
-// }
-// cells.set(cellIdx, cell);
-// this.cellIdx.put(cell, cellIdx);
-// resetPPodVersionInfo();
-// return this;
-// }
 
 	/**
 	 * Setter.
