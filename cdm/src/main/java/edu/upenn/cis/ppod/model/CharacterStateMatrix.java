@@ -173,6 +173,7 @@ public class CharacterStateMatrix extends UUPPodEntityWXmlId {
 
 	/** No delete_orphan... TODO */
 	@OneToMany
+	@JoinTable(inverseJoinColumns = @JoinColumn(name = CharacterStateRow.TABLE))
 	@OrderBy("position")
 	private final List<CharacterStateRow> rows = newArrayList();
 
@@ -246,11 +247,8 @@ public class CharacterStateMatrix extends UUPPodEntityWXmlId {
 	 */
 	@Override
 	public void afterUnmarshal(final Unmarshaller u, final Object parent) {
+		this.otuSet = (OTUSet) parent;
 		super.afterUnmarshal(u, parent);
-		if (parent instanceof OTUSet) {
-			this.otuSet = (OTUSet) parent;
-		}
-
 	}
 
 	@Override
@@ -510,7 +508,9 @@ public class CharacterStateMatrix extends UUPPodEntityWXmlId {
 	 * former position is filled in with {@code null}.
 	 * <p>
 	 * This method is does not reorder the columns of the matrix, unlike
-	 * {@link #setOTUs(List)} which reorders rows.
+	 * {@link #setOTUs(List)} which reorders rows. Reordering definitely does
+	 * not makes sense in a {@link MolecularStateMatrix} since all of the
+	 * characters will be the same instance.
 	 * 
 	 * @param characterIdx index
 	 * @param character value
@@ -521,6 +521,11 @@ public class CharacterStateMatrix extends UUPPodEntityWXmlId {
 	public Character setCharacter(final int characterIdx,
 			final Character character) {
 		checkNotNull(character);
+
+		// We leave this instanceof here since it is at worst ineffectual w/
+		// proxies, but
+		// it should still help us on the client side where hibernate is not a
+		// factor.
 		if (character instanceof MolecularCharacter) {
 			throw new AssertionError(
 					"character should not be a MolecularCharacter");

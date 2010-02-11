@@ -69,7 +69,7 @@ public class TestAttachmentTypeDAO implements IAttachmentTypeDAO {
 		throw new UnsupportedOperationException();
 	}
 
-	public Collection<? extends AttachmentType> evictEntities(
+	public void evictEntities(
 			Collection<? extends AttachmentType> entities) {
 		// TODO Auto-generated method stub
 		throw new UnsupportedOperationException();

@@ -15,9 +15,6 @@
  */
 package edu.upenn.cis.ppod.model;
 
-import static com.google.common.base.Preconditions.checkArgument;
-import static com.google.common.base.Preconditions.checkNotNull;
-
 import javax.persistence.Entity;
 import javax.persistence.Table;
 import javax.xml.bind.annotation.XmlAccessType;
@@ -38,13 +35,13 @@ public class DNAStateMatrix extends MolecularStateMatrix {
 		setType(Type.DNA);
 	}
 
-	@Override
-	public DNACharacter setCharacter(final int characterIdx,
-			final Character character) {
-		checkNotNull(character);
-		checkArgument(character instanceof DNACharacter,
-				"character must be a DNACharacer for a DNAStateMatrix, not a "
-						+ character.getClass().getCanonicalName());
-		return (DNACharacter) super.setCharacter(characterIdx, character);
-	}
+//	@Override
+//	public DNACharacter setCharacter(final int characterIdx,
+//			final Character character) {
+//		checkNotNull(character);
+//		checkArgument(character instanceof DNACharacter,
+//				"character must be a DNACharacer for a DNAStateMatrix, not a "
+//						+ character.getClass().getCanonicalName());
+//		return (DNACharacter) super.setCharacter(characterIdx, character);
+//	}
 }

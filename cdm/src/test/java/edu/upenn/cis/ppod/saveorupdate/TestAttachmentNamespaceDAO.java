@@ -67,8 +67,7 @@ public class TestAttachmentNamespaceDAO implements IAttachmentNamespaceDAO {
 		throw new UnsupportedOperationException();
 	}
 
-	public Collection<? extends AttachmentNamespace> evictEntities(
-			Collection<? extends AttachmentNamespace> entities) {
+	public void evictEntities(Collection<? extends AttachmentNamespace> entities) {
 		// TODO Auto-generated method stub
 		throw new UnsupportedOperationException();
 	}

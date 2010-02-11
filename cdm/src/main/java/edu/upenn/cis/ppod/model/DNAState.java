@@ -92,15 +92,15 @@ public class DNAState extends MolecularState {
 		return "D" + getLabel();
 	}
 
-	@Override
-	public DNAState setCharacter(final Character character) {
-		if (character instanceof DNACharacter) {
-			super.setCharacter(character);
-		} else {
-			throw new IllegalArgumentException(
-					"a DNAState's character must be a DNACharacter");
-		}
-		return this;
-	}
+//	@Override
+//	public DNAState setCharacter(final Character character) {
+//		if (character instanceof DNACharacter) {
+//			super.setCharacter(character);
+//		} else {
+//			throw new IllegalArgumentException(
+//					"a DNAState's character must be a DNACharacter");
+//		}
+//		return this;
+//	}
 
 }

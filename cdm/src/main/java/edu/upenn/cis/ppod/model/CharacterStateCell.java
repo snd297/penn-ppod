@@ -340,8 +340,9 @@ public class CharacterStateCell extends PPodEntity {
 		checkState(getType() != null,
 				"type has yet to be assigned for this cell");
 
-		// One may reasonably ask why we don't just do the visitor's work here.
-		// Answer: We don't want to encourage bad habits.
+		// One may reasonably ask why we don't just do the
+		// AfterUnmarshalVisitor's work here. Answer: We don't want to encourage
+		// bad habits.
 		checkState(
 				!xmlStatesNeedsToBePutIntoStates,
 				"xmlStateNeedsToBePutIntoStates == true, has the afterUnmarshal visitor been dispatched?");

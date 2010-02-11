@@ -138,7 +138,6 @@ public class CharacterState extends PPodEntityWXmlId {
 	@JoinColumn(name = Character.ID_COLUMN)
 	private Character character;
 
-	/** No-arg constructor. */
 	CharacterState() {}
 
 	@Inject
@@ -158,6 +157,13 @@ public class CharacterState extends PPodEntityWXmlId {
 // public void afterUnmarshal(final Unmarshaller u, final Object parent) {
 // We take care of setting this.character in Character.afterUnmarshal(...)
 // }
+
+	@Override
+	public CharacterState accept(final IVisitor visitor) {
+		visitor.visit(this);
+		super.accept(visitor);
+		return this;
+	}
 
 	/**
 	 * Get this character owning character.
@@ -274,12 +280,5 @@ public class CharacterState extends PPodEntityWXmlId {
 				this.label).append(TAB).append(")");
 
 		return retValue.toString();
-	}
-
-	@Override
-	public CharacterState accept(final IVisitor visitor) {
-		visitor.visit(this);
-		super.accept(visitor);
-		return this;
 	}
 }

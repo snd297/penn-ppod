@@ -94,7 +94,7 @@ public interface IDAO<T, ID extends Serializable> {
 
 	T evict(final T entity);
 
-	Collection<? extends T> evictEntities(final Collection<? extends T> entities);
+	void evictEntities(final Collection<? extends T> entities);
 
 	void flush();
 

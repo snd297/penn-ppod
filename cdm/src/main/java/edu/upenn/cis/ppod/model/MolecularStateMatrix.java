@@ -23,16 +23,14 @@ import java.util.Map;
 /**
  * @author Sam Donnelly
  */
-abstract class MolecularStateMatrix extends CharacterStateMatrix {
+public abstract class MolecularStateMatrix extends CharacterStateMatrix {
 
 	/**
 	 * Set the {@code Character} at {@code characterIdx}.
 	 * <p>
 	 * If {@code getCharacters().size() <= characterIdx}, then this method pads
-	 * {@code getCharacters()} with {@code character}.
-	 * <p>
-	 * If {@code character} was already contained in this matrix, then its
-	 * former position is filled in with {@code null}.
+	 * {@code getCharacters()} with {@code character}. NOTE: this is because in
+	 * a {@code MolecularStateMatrix} all characters are the same instance.
 	 * <p>
 	 * This method is does not reorder the columns of the matrix, unlike {@code
 	 * setOTUs(List)} which reorders rows.
@@ -44,25 +42,24 @@ abstract class MolecularStateMatrix extends CharacterStateMatrix {
 	 *         if there was no such {@code Character}
 	 */
 	@Override
-	public MolecularCharacter setCharacter(final int characterIdx,
+	public Character setCharacter(final int characterIdx,
 			final Character character) {
 		checkNotNull(character);
-		checkArgument(character instanceof MolecularCharacter,
-				"characters of a MolecularStateMatrix must be MolecularCharacer, not a "
-						+ character.getClass().getName());
+// checkArgument(character instanceof MolecularCharacter,
+// "characters of a MolecularStateMatrix must be MolecularCharacer, not a "
+// + character.getClass().getName());
 		if (getCharacters().size() > 0) {
 			checkArgument(character.equals(getCharacters().get(0)),
 					"all characters must be .equals() in a molecular matrix");
 		}
-		final MolecularCharacter molecularCharacter = (MolecularCharacter) character;
 		if (getCharacters().size() > characterIdx) {
 			// Nothing to do
-			return molecularCharacter;
+			return character;
 		}
 
 		boolean addedNewCharacters = false;
 		while (getCharacters().size() <= characterIdx) {
-			getCharactersMutable().add(molecularCharacter);
+			getCharactersMutable().add(character);
 			getColumnPPodVersionInfosMutable().add(null);
 			addedNewCharacters = true;
 		}
@@ -74,7 +71,7 @@ abstract class MolecularStateMatrix extends CharacterStateMatrix {
 		resetPPodVersionInfo();
 
 		// Try to stick with the contract even though it's a little funny
-		return addedNewCharacters ? null : molecularCharacter;
+		return addedNewCharacters ? null : character;
 	}
 
 	@Override
