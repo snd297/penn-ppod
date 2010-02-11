@@ -36,11 +36,7 @@ public class SetDocIdVisitor extends EmptyVisitor {
 	 */
 	@Override
 	public void visit(final OTUSet otuSet) {
-		// We'd rather not do this but it is required by
-		// the Mesquite modules
-		if (otuSet.getDocId() == null) {
-			otuSet.setDocId();
-		}
+		otuSet.setDocId();
 	}
 
 	/**
@@ -50,11 +46,7 @@ public class SetDocIdVisitor extends EmptyVisitor {
 	 */
 	@Override
 	public void visit(final OTU otu) {
-		// We'd rather not do this but it is required by
-		// the Mesquite modules
-		if (otu.getDocId() == null) {
-			otu.setDocId();
-		}
+		otu.setDocId();
 	}
 
 	/**
