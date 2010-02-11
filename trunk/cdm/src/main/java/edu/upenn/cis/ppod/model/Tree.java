@@ -40,7 +40,7 @@ import javax.xml.bind.annotation.XmlElement;
 @XmlAccessorType(XmlAccessType.NONE)
 @Entity
 @Table(name = "TREE")
-public final class Tree extends UUPPodEntity {
+public class Tree extends UUPPodEntity {
 
 	static final String TABLE = "TREE";
 

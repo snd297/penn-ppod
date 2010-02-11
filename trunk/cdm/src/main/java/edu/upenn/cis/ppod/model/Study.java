@@ -51,7 +51,7 @@ import edu.upenn.cis.ppod.util.PPodEntitiesUtil;
 @XmlAccessorType(XmlAccessType.NONE)
 @Entity
 @Table(name = Study.TABLE)
-public final class Study extends UUPPodEntity implements IOTUSetCentricEntities {
+public class Study extends UUPPodEntity implements IOTUSetCentricEntities {
 
 	/** The table name for this entity. */
 	public static final String TABLE = "STUDY";

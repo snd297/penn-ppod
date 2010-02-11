@@ -49,7 +49,7 @@ import edu.upenn.cis.ppod.util.IVisitor;
  */
 @Entity
 @Table(name = CharacterStateRow.TABLE)
-public final class CharacterStateRow extends PPodEntity {
+public class CharacterStateRow extends PPodEntity {
 
 	/** The position in the matrix. */
 	@Column(name = "POSITION", nullable = false)

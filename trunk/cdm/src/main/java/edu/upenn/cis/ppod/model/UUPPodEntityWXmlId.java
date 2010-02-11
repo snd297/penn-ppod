@@ -25,7 +25,7 @@ import javax.xml.bind.annotation.XmlID;
  * 
  * @author Sam Donnelly
  */
-abstract class UUPPodEntityWXmlId extends UUPPodEntity implements IWXmlID {
+public abstract class UUPPodEntityWXmlId extends UUPPodEntity implements IWXmlID {
 
 	/**
 	 * Intended for referencing elements within a document - be it XML, JSON,
@@ -33,8 +33,6 @@ abstract class UUPPodEntityWXmlId extends UUPPodEntity implements IWXmlID {
 	 * <p>
 	 * Called "docId" and not "xmlId" so that it's format agnostic.
 	 */
-	@XmlAttribute
-	@XmlID
 	private String docId;
 
 	/**
@@ -42,6 +40,8 @@ abstract class UUPPodEntityWXmlId extends UUPPodEntity implements IWXmlID {
 	 * 
 	 * @return the {@code XmlID} attribute
 	 */
+	@XmlAttribute
+	@XmlID
 	public String getDocId() {
 		return docId;
 	}
