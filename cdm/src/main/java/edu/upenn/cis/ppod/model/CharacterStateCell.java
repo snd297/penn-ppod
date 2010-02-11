@@ -67,32 +67,6 @@ import edu.upenn.cis.ppod.util.IVisitor;
 @Table(name = CharacterStateCell.TABLE)
 public class CharacterStateCell extends PPodEntity {
 
-	/** Position in a {@link CharacterStateRow}. */
-	@Column(name = "POSITION", nullable = false)
-	private Integer position;
-
-	/**
-	 * Get the position.
-	 * 
-	 * @return the position
-	 */
-	@XmlAttribute
-	public Integer getPosition() {
-		return position;
-	}
-
-	/**
-	 * Set the position.
-	 * 
-	 * @param position the position to set
-	 * 
-	 * @return this
-	 */
-	CharacterStateCell setPosition(final Integer position) {
-		this.position = position;
-		return this;
-	}
-
 	/**
 	 * The different types of {@code CharacterStateCell}: single, polymorphic,
 	 * uncertain, unassigned, or inapplicable.
@@ -131,6 +105,10 @@ public class CharacterStateCell extends PPodEntity {
 		/** Inapplicable, usually written as a {@code "-"} in Nexus files. */
 		INAPPLICABLE;
 	}
+
+	/** Position in a {@link CharacterStateRow}. */
+	@Column(name = "POSITION", nullable = false)
+	private Integer position;
 
 	static final String TABLE = "CHARACTER_STATE_CELL";
 
@@ -304,6 +282,16 @@ public class CharacterStateCell extends PPodEntity {
 	}
 
 	/**
+	 * Get the position.
+	 * 
+	 * @return the position
+	 */
+	@XmlAttribute
+	public Integer getPosition() {
+		return position;
+	}
+
+	/**
 	 * Getter.
 	 * 
 	 * @return the {@code CharacterStateRow} to which this {@code
@@ -393,6 +381,19 @@ public class CharacterStateCell extends PPodEntity {
 		return xmlStatesNeedsToBePutIntoStates;
 	}
 
+	@Override
+	public CharacterStateCell resetPPodVersionInfo() {
+		if (getAllowResetPPodVersionInfo()) {
+			if (getPPodVersionInfo() == null) {
+
+			} else {
+				row.resetPPodVersionInfo();
+				super.resetPPodVersionInfo();
+			}
+		}
+		return this;
+	}
+
 	/**
 	 * Set this cell's type to {@link Type#INAPPLICABLE} to {@code
 	 * Collections.EMPTY_SET}.
@@ -425,6 +426,18 @@ public class CharacterStateCell extends PPodEntity {
 				"polymorphic states must be > 1");
 		setType(Type.POLYMORPHIC);
 		setStates(polymorphicStates);
+		return this;
+	}
+
+	/**
+	 * Set the position.
+	 * 
+	 * @param position the position to set
+	 * 
+	 * @return this
+	 */
+	CharacterStateCell setPosition(final Integer position) {
+		this.position = position;
 		return this;
 	}
 
@@ -517,19 +530,6 @@ public class CharacterStateCell extends PPodEntity {
 		} else {
 			this.type = type;
 			resetPPodVersionInfo();
-		}
-		return this;
-	}
-
-	@Override
-	public CharacterStateCell resetPPodVersionInfo() {
-		if (getAllowResetPPodVersionInfo()) {
-			if (getPPodVersionInfo() == null) {
-
-			} else {
-				row.resetPPodVersionInfo();
-				super.resetPPodVersionInfo();
-			}
 		}
 		return this;
 	}

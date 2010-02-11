@@ -27,6 +27,7 @@ import java.util.Collections;
 import java.util.List;
 import java.util.Map;
 
+import javax.annotation.Nullable;
 import javax.persistence.Column;
 import javax.persistence.Entity;
 import javax.persistence.FetchType;
@@ -271,9 +272,13 @@ public class CharacterStateMatrix extends UUPPodEntityWXmlId {
 	 */
 	public List<Character> clearCharacters() {
 		final List<Character> clearedCharacters = newArrayList(characters);
+		if (characters.size() == 0) {
+			return clearedCharacters;
+		}
 		characters.clear();
 		characterIdx.clear();
 		columnPPodVersionInfos.clear();
+		resetPPodVersionInfo();
 		return clearedCharacters;
 	}
 
@@ -456,7 +461,7 @@ public class CharacterStateMatrix extends UUPPodEntityWXmlId {
 	 * Get the type of this matrix. Used to determine the type of matrix after
 	 * marhsalling->unmarshalling, which loses class info.
 	 * 
-	 * @return the type of this matrixn
+	 * @return the type of this matrix
 	 */
 	public Type getType() {
 		return type;
@@ -518,6 +523,7 @@ public class CharacterStateMatrix extends UUPPodEntityWXmlId {
 	 * @return the {@code Character} previously at that position or {@code null}
 	 *         if there was no such {@code Character}
 	 */
+	@Nullable
 	public Character setCharacter(final int characterIdx,
 			final Character character) {
 		checkNotNull(character);
@@ -685,11 +691,11 @@ public class CharacterStateMatrix extends UUPPodEntityWXmlId {
 	 * Intentionally package-private and meant to be called from {@code
 	 * CharacterStateMatrix}.
 	 * 
-	 * @param otuSet new {@code OTUSet} for this matrix. nullable.
+	 * @param otuSet new {@code OTUSet} for this matrix
 	 * 
 	 * @return this
 	 */
-	CharacterStateMatrix setOTUSet(final OTUSet otuSet) {
+	CharacterStateMatrix setOTUSet(@Nullable final OTUSet otuSet) {
 		if (nullSafeEquals(this.otuSet, otuSet)) {
 			// still the same
 		} else {
@@ -711,12 +717,14 @@ public class CharacterStateMatrix extends UUPPodEntityWXmlId {
 	 * Assumes {@code row} is not detached.
 	 * 
 	 * @param otu index of the row we are adding
-	 * @param row see description nullable
+	 * @param row see description
 	 * 
 	 * @return the row that was previously there, or {@code null} if there was
 	 *         no row previously there
 	 */
-	public CharacterStateRow setRow(final OTU otu, final CharacterStateRow row) {
+	@Nullable
+	public CharacterStateRow setRow(final OTU otu,
+			@Nullable final CharacterStateRow row) {
 
 		checkArgument(getOTUIdx().get(otu) != null,
 				"otu does not belong to this matrix");
