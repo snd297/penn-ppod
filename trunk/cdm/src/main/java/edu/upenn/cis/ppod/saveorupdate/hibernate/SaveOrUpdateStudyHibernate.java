@@ -182,6 +182,7 @@ public class SaveOrUpdateStudyHibernate implements ISaveOrUpdateStudy {
 						dbOTUsByIncomingOTU);
 			}
 		}
+		studyDAO.saveOrUpdate(dbStudy);
 	}
 
 	public Study update(final Study incomingStudy) {

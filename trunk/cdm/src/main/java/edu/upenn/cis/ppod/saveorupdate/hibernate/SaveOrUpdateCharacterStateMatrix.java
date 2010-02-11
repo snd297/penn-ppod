@@ -284,12 +284,25 @@ public class SaveOrUpdateCharacterStateMatrix implements
 			}
 
 			dao.saveOrUpdate(targetRow);
+
+			if (targetMatrix.getPPodVersionInfo() == null) {
+
+				// If it's already been reset, let's not keep resending this
+				// change to the database.
+				targetMatrix.setAllowResetPPodVersionInfo(false);
+			}
 			logger.debug("{}: flushing row,  sourceRowIdx: {}", METHOD,
 					sourceRowIdx);
 			dao.flush();
-			dao.evictEntities(cellsToEvict).clear();
+			dao.evictEntities(cellsToEvict);
+			cellsToEvict.clear();
 			dao.evict(targetRow);
 		}
+
+		targetMatrix.setAllowResetPPodVersionInfo(true);
+
+		// newTargetMatrixOTUSet.removeMatrix(targetMatrix);
+		// newTargetMatrixOTUSet.addMatrix(targetMatrix);
 
 		// Let's reattach these
 		dao.saveOrUpdate(newTargetMatrixOTUSet.getStudy());

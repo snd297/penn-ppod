@@ -109,12 +109,18 @@ public abstract class PPodEntity extends PersistentObject implements
 		if (attachments == null) {
 			attachments = newHashSet();
 		}
-		attachments.add(attachment);
+		if (attachments.add(attachment)) {
+			resetPPodVersionInfo();
+		}
 		hasAttachments = true;
 		attachment.addAttachee(this);
 		return this;
 	}
 
+	/**
+	 * Take care of any after-unmarshal work that needs to be done after
+	 * xmlidref's are resolved.
+	 */
 	public void afterUnmarshal() {
 		if (attachmentsXml != null) {
 			for (final Attachment attachment : getAttachmentsXml()) {
@@ -210,6 +216,9 @@ public abstract class PPodEntity extends PersistentObject implements
 
 	public boolean removeAttachment(final Attachment attachment) {
 		final boolean attachmentRemoved = attachments.remove(attachment);
+		if (attachmentRemoved) {
+			resetPPodVersionInfo();
+		}
 		if (attachments.size() == 0) {
 			hasAttachments = false;
 		}
@@ -243,7 +252,7 @@ public abstract class PPodEntity extends PersistentObject implements
 	}
 
 	/**
-	 * Created for JAXB.
+	 * Set the pPOD version number.
 	 * 
 	 * @param pPodVersion the pPOD version number
 	 * 

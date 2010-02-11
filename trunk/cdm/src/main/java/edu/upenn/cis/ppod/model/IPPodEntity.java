@@ -20,8 +20,8 @@ import edu.upenn.cis.ppod.services.hibernate.PPodEntitiesResourceHibernate;
 /**
  * @author Sam Donnelly
  */
-public interface IPPodEntity extends IPersistentObject, IAttachee, 
-IPPodVersioned {
+public interface IPPodEntity extends IPersistentObject, IAttachee,
+		IPPodVersioned {
 
 	/**
 	 * Indicate that this object should not be persisted and changes to the pPOD
@@ -57,5 +57,7 @@ IPPodVersioned {
 	boolean getAllowPersist();
 
 	boolean getAllowResetPPodVersionInfo();
+
+    IPPodEntity setAllowResetPPodVersionInfo(boolean allowResetPPodVersionInfo);
 
 }

@@ -150,11 +150,10 @@ public class GenericHibernateDAO<T, ID extends Serializable> implements
 		return entity;
 	}
 
-	public Collection<? extends T> evictEntities(final Collection<? extends T> entities) {
+	public void evictEntities(final Collection<? extends T> entities) {
 		for (T entity : entities) {
 			evict(entity);
 		}
-		return entities;
 	}
 
 	public T delete(final T entity) {
