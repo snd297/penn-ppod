@@ -50,10 +50,9 @@ public class UPennCisPPodUtil {
 	 * @return see description
 	 */
 	public static boolean nullSafeEquals(final Object lhs, final Object rhs) {
-		if ((lhs == null) && (rhs == null)) {
+		if (lhs == null && rhs == null) {
 			return true;
-		}
-		if (lhs == null) {
+		} else if (lhs == null) {
 			return false;
 		}
 		return lhs.equals(rhs);

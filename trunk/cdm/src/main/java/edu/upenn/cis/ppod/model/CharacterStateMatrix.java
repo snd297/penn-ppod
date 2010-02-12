@@ -17,6 +17,7 @@ package edu.upenn.cis.ppod.model;
 
 import static com.google.common.base.Preconditions.checkArgument;
 import static com.google.common.base.Preconditions.checkNotNull;
+import static com.google.common.base.Preconditions.checkState;
 import static com.google.common.collect.Lists.newArrayList;
 import static com.google.common.collect.Lists.newArrayListWithCapacity;
 import static com.google.common.collect.Maps.newHashMap;
@@ -635,21 +636,17 @@ public class CharacterStateMatrix extends UUPPodEntityWXmlId {
 			return this;
 		}
 
-		if (otuSet == null) {
-			throw new IllegalStateException(
-					"otuSet needs to be set before setOTUs(...) is called");
-		}
+		checkState(otuSet != null,
+				"otuSet needs to be set before setOTUs(...) is called");
 
-		if (newOTUs.containsAll(otuSet.getOTUs())
-				&& otuSet.getOTUs().containsAll(newOTUs)) {
-			// They have the same elements, that's good.
-		} else {
-			throw new IllegalArgumentException(
-					"otus (size "
-							+ newOTUs.size()
-							+ ") does not contain the same OTU's as the matrix's OTUSet (size "
-							+ otuSet.getOTUs().size() + ").");
-		}
+		// We want both newOTUs and this.otuSet to have the same elements
+		checkArgument(
+				newOTUs.containsAll(otuSet.getOTUs())
+						&& otuSet.getOTUs().containsAll(newOTUs),
+				"otus (size "
+						+ newOTUs.size()
+						+ ") does not contain the same OTU's as the matrix's OTUSet (size "
+						+ otuSet.getOTUs().size() + ").");
 
 		// We're now going to move around the rows to match the new ordering
 		final List<CharacterStateRow> newRows = newArrayListWithCapacity(newOTUs

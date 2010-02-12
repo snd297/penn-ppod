@@ -16,8 +16,6 @@
 package edu.upenn.cis.ppod.model;
 
 import static com.google.common.base.Preconditions.checkNotNull;
-import static com.google.common.base.Predicates.compose;
-import static com.google.common.base.Predicates.equalTo;
 import static com.google.common.collect.Sets.newHashSet;
 import static edu.upenn.cis.ppod.util.PPodIterables.equalTo;
 import static edu.upenn.cis.ppod.util.PPodIterables.findIf;
@@ -276,8 +274,7 @@ public class OTUSet extends UUPPodEntityWXmlId {
 	 * @return see description.
 	 */
 	public OTU getOTUByPPodId(final String pPodId) {
-		return findIf(getOTUs(), compose(equalTo(pPodId),
-				IUUPPodEntity.getPPodId));
+		return findIf(getOTUs(), equalTo(pPodId, IUUPPodEntity.getPPodId));
 	}
 
 	/**
