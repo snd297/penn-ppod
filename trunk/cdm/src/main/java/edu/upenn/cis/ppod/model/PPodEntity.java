@@ -89,8 +89,15 @@ public abstract class PPodEntity extends PersistentObject implements
 	@JoinTable(inverseJoinColumns = { @JoinColumn(name = Attachment.ID_COLUMN) })
 	private Set<Attachment> attachments;
 
-	@Column(name = "HAS_ATTACHMENTS")
-	private boolean hasAttachments = false;
+	@Column(name = "HAS_ATTACHMENTS", nullable = false)
+	private Boolean hasAttachments = false;
+
+	/**
+	 * Created for testing.
+	 */
+	Boolean getHasAttachments() {
+		return hasAttachments;
+	}
 
 	@Transient
 	private Set<Attachment> attachmentsXml;
