@@ -21,6 +21,7 @@ import static com.google.common.collect.Lists.newArrayList;
 import static com.google.common.collect.Lists.newArrayListWithCapacity;
 import static com.google.common.collect.Maps.newHashMap;
 import static edu.upenn.cis.ppod.util.CollectionsUtil.nullFill;
+import static edu.upenn.cis.ppod.util.CollectionsUtil.nullFillAndSet;
 import static edu.upenn.cis.ppod.util.UPennCisPPodUtil.nullSafeEquals;
 
 import java.util.Collections;
@@ -102,13 +103,15 @@ public class CharacterStateMatrix extends UUPPodEntityWXmlId {
 			+ "_POSITION";
 
 	/** The pPod versions of the columns. */
-	@ManyToMany(fetch = FetchType.EAGER)
+	@Transient
+// @ManyToMany(fetch = FetchType.EAGER)
 	// EAGER so we can manipulate it in PPodVersionInfoInterceptor: see the
 	// javadoc for Interceptor: "a callback [may not] cause a collection or
 	// proxy to be lazily initialized)."
-	@JoinTable(inverseJoinColumns = { @JoinColumn(name = PPodVersionInfo.ID_COLUMN) })
-	@org.hibernate.annotations.IndexColumn(name = PPodVersionInfo.TABLE
-			+ "_POSITION")
+// @JoinTable(inverseJoinColumns = { @JoinColumn(name =
+	// PPodVersionInfo.ID_COLUMN) })
+// @org.hibernate.annotations.IndexColumn(name = PPodVersionInfo.TABLE
+// + "_POSITION")
 	private final List<PPodVersionInfo> columnPPodVersionInfos = newArrayList();
 
 	@XmlElement(name = "columnPPodVersion")
@@ -168,13 +171,14 @@ public class CharacterStateMatrix extends UUPPodEntityWXmlId {
 	 * a columnNumber-> <code>Character</code> lookup.
 	 */
 	@ManyToMany
-	@JoinTable(inverseJoinColumns = @JoinColumn(name = Character.ID_COLUMN))
+	@JoinTable(joinColumns = { @JoinColumn(name = ID_COLUMN) }, inverseJoinColumns = { @JoinColumn(name = Character.ID_COLUMN) })
 	@IndexColumn(name = CHARACTERS_INDEX_COLUMN)
 	private final List<Character> characters = newArrayList();
 
 	/** No delete_orphan... TODO */
-	@OneToMany
-	@JoinTable(inverseJoinColumns = @JoinColumn(name = CharacterStateRow.TABLE))
+	@OneToMany(mappedBy = "matrix")
+	// @JoinTable(inverseJoinColumns = @JoinColumn(name =
+	// CharacterStateRow.TABLE))
 	@OrderBy("position")
 	private final List<CharacterStateRow> rows = newArrayList();
 
@@ -217,24 +221,18 @@ public class CharacterStateMatrix extends UUPPodEntityWXmlId {
 	 */
 	@Override
 	public void afterUnmarshal() {
-		if (otuIdx.size() == 0) {
+		if (getOTUIdx().size() == 0) {
 			int i = 0;
 			for (final OTU otu : otus) {
 				otuIdx.put(otu, i++);
 			}
 		}
-		if (characterIdx.size() == 0) {
+		if (getCharacterIdx().size() == 0) {
 			int i = 0;
 			for (final Character character : getCharacters()) {
 				characterIdx.put(character, i++);
 				columnPPodVersionInfos.add(null);
 				character.addMatrix(this);
-			}
-		}
-		if (otuIdx.size() == 0) {
-			int i = 0;
-			for (final OTU otu : otus) {
-				otuIdx.put(otu, i++);
 			}
 		}
 		super.afterUnmarshal();
@@ -385,6 +383,7 @@ public class CharacterStateMatrix extends UUPPodEntityWXmlId {
 	 * @return the label
 	 */
 	@XmlAttribute
+	@Nullable
 	public String getLabel() {
 		return label;
 	}
@@ -479,7 +478,7 @@ public class CharacterStateMatrix extends UUPPodEntityWXmlId {
 	 * @return this {@code CharacterStateMatrix}
 	 */
 	CharacterStateMatrix resetColumnPPodVersion(final int idx) {
-		nullFill(columnPPodVersionInfos, idx + 1);
+		nullFillAndSet(columnPPodVersionInfos, idx, null);
 		return this;
 	}
 

@@ -30,12 +30,15 @@
  */
 package edu.upenn.cis.ppod.thirdparty.dao.hibernate;
 
+import static com.google.common.base.Preconditions.checkNotNull;
+
 import java.io.Serializable;
 import java.lang.reflect.ParameterizedType;
 import java.util.Collection;
 import java.util.List;
 
 import org.hibernate.Criteria;
+import org.hibernate.Hibernate;
 import org.hibernate.LockMode;
 import org.hibernate.Session;
 import org.hibernate.criterion.Criterion;
@@ -212,4 +215,8 @@ public class GenericHibernateDAO<T, ID extends Serializable> implements
 		return session;
 	}
 
+	public void initialize(final T entity) {
+		checkNotNull(entity);
+		Hibernate.initialize(entity);
+	}
 }

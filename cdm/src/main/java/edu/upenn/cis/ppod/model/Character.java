@@ -23,6 +23,7 @@ import java.util.Collections;
 import java.util.Map;
 import java.util.Set;
 
+import javax.annotation.Nullable;
 import javax.persistence.Column;
 import javax.persistence.Entity;
 import javax.persistence.ManyToMany;
@@ -165,6 +166,7 @@ public class Character extends UUPPodEntityWXmlId {
 	 * @return the label of this {@code Character}
 	 */
 	@XmlAttribute
+	@Nullable
 	public String getLabel() {
 		return label;
 	}

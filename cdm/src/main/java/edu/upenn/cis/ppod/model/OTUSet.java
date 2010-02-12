@@ -84,8 +84,7 @@ public class OTUSet extends UUPPodEntityWXmlId {
 
 	/** The set of {@code OTU}s that this {@code OTUSet} contains. */
 	@ManyToMany
-	@Cascade(org.hibernate.annotations.CascadeType.SAVE_UPDATE)
-	@JoinTable(name = OTU_SET_OTU_JOIN_TABLE, joinColumns = { @JoinColumn(name = OTUSet.ID_COLUMN) }, inverseJoinColumns = { @JoinColumn(name = OTU.ID_COLUMN) })
+	@JoinTable(joinColumns = { @JoinColumn(name = ID_COLUMN) }, inverseJoinColumns = { @JoinColumn(name = OTU.ID_COLUMN) })
 	private final Set<OTU> otus = newHashSet();
 
 	/** The matrices which reference this OTU set. */

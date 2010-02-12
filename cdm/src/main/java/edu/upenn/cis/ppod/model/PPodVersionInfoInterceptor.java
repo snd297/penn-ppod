@@ -19,7 +19,6 @@ import static edu.upenn.cis.ppod.util.CollectionsUtil.newConcurrentHashMap;
 
 import java.io.Serializable;
 import java.util.Date;
-import java.util.List;
 import java.util.concurrent.ConcurrentMap;
 
 import org.hibernate.EmptyInterceptor;
@@ -159,31 +158,31 @@ public class PPodVersionInfoInterceptor extends EmptyInterceptor {
 						// Only set it if it's been modified in a way pPOD cares
 						// about,
 						// which is what pPodVersionInfo being null indicates
-						&& (currentState[i] == null)) {
+						&& currentState[i] == null) {
 					currentState[i] = pPodVersionInfosBySession
 							.get(sessionFactory.getCurrentSession());
 					modified = true;
 				}
 			}
 		}
-		if (entity instanceof CharacterStateMatrix) {
-			for (int i = 0; i < propertyNames.length; i++) {
-				if ("columnPPodVersionInfos".equals(propertyNames[i])) {
-					@SuppressWarnings("unchecked")
-					final List<PPodVersionInfo> columnPPodVersionInfos = (List<PPodVersionInfo>) currentState[i];
-					for (int j = 0; j < columnPPodVersionInfos.size(); j++) {
-						if (columnPPodVersionInfos.get(j) == null) {
-							columnPPodVersionInfos.set(j,
-									pPodVersionInfosBySession
-											.get(sessionFactory
-													.getCurrentSession()));
-							modified = true;
-						}
-					}
-					currentState[i] = columnPPodVersionInfos;
-				}
-			}
-		}
+//		if (entity instanceof CharacterStateMatrix) {
+//			for (int i = 0; i < propertyNames.length; i++) {
+//				if ("columnPPodVersionInfos".equals(propertyNames[i])) {
+//					@SuppressWarnings("unchecked")
+//					final List<PPodVersionInfo> columnPPodVersionInfos = (List<PPodVersionInfo>) currentState[i];
+//					for (int j = 0; j < columnPPodVersionInfos.size(); j++) {
+//						if (columnPPodVersionInfos.get(j) == null) {
+//							columnPPodVersionInfos.set(j,
+//									pPodVersionInfosBySession
+//											.get(sessionFactory
+//													.getCurrentSession()));
+//							modified = true;
+//						}
+//					}
+//					currentState[i] = columnPPodVersionInfos;
+//				}
+//			}
+//		}
 		return modified;
 	}
 
