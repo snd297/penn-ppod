@@ -28,6 +28,7 @@ import com.google.inject.Provider;
 import com.google.inject.assistedinject.Assisted;
 
 import edu.upenn.cis.ppod.dao.IDNACharacterDAO;
+import edu.upenn.cis.ppod.dao.IOTUDAO;
 import edu.upenn.cis.ppod.dao.IOTUSetDAO;
 import edu.upenn.cis.ppod.dao.IStudyDAO;
 import edu.upenn.cis.ppod.dao.hibernate.DNACharacterDAOHibernate;
@@ -35,6 +36,7 @@ import edu.upenn.cis.ppod.dao.hibernate.IAttachmentNamespaceDAOHibernateFactory;
 import edu.upenn.cis.ppod.dao.hibernate.IAttachmentTypeDAOHibernateFactory;
 import edu.upenn.cis.ppod.dao.hibernate.ObjectWLongIdDAOHibernate;
 import edu.upenn.cis.ppod.dao.hibernate.StudyDAOHibernate;
+import edu.upenn.cis.ppod.dao.hibernate.HibernateDAOFactory.OTUDAOHibernate;
 import edu.upenn.cis.ppod.dao.hibernate.HibernateDAOFactory.OTUSetDAOHibernate;
 import edu.upenn.cis.ppod.model.CharacterStateMatrix;
 import edu.upenn.cis.ppod.model.DNACharacter;
@@ -58,6 +60,7 @@ public class SaveOrUpdateStudyHibernate implements ISaveOrUpdateStudy {
 
 	private final IStudyDAO studyDAO;
 	private final IOTUSetDAO otuSetDAO;
+	private final IOTUDAO otuDAO;
 	private final IDNACharacterDAO dnaCharacterDAO;
 
 	private final Provider<Study> studyProvider;
@@ -74,6 +77,7 @@ public class SaveOrUpdateStudyHibernate implements ISaveOrUpdateStudy {
 	SaveOrUpdateStudyHibernate(
 			final StudyDAOHibernate studyDAO,
 			final OTUSetDAOHibernate otuSetDAO,
+			final OTUDAOHibernate otuDAO,
 			final DNACharacterDAOHibernate dnaCharacterDAO,
 			final ObjectWLongIdDAOHibernate dao,
 			final Provider<Study> studyProvider,
@@ -89,6 +93,7 @@ public class SaveOrUpdateStudyHibernate implements ISaveOrUpdateStudy {
 			final MergeTreeSet mergeTreeSet, @Assisted final Session session) {
 		this.studyDAO = (IStudyDAO) studyDAO.setSession(session);
 		this.otuSetDAO = (IOTUSetDAO) otuSetDAO.setSession(session);
+		this.otuDAO = (IOTUDAO) otuDAO.setSession(session);
 		this.dnaCharacterDAO = (IDNACharacterDAO) dnaCharacterDAO
 				.setSession(session);
 		this.studyProvider = studyProvider;
@@ -166,6 +171,12 @@ public class SaveOrUpdateStudyHibernate implements ISaveOrUpdateStudy {
 					dbMatrix.setPPodId();
 				}
 
+				// saveOrUpdateMatrix needs for dbOTUSet to have an id so that
+				// we can give it to the matrix
+				otuSetDAO.saveOrUpdate(dbOTUSet);
+				for (final OTU dbOTU : dbOTUSet.getOTUs()) {
+					otuDAO.saveOrUpdate(dbOTU);
+				}
 				saveOrUpdateMatrix.saveOrUpdate(dbMatrix, incomingMatrix,
 						dbOTUSet, dbOTUsByIncomingOTU, dbDNACharacter);
 

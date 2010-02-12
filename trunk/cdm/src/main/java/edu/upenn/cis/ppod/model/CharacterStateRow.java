@@ -29,6 +29,7 @@ import javax.persistence.Column;
 import javax.persistence.Entity;
 import javax.persistence.JoinColumn;
 import javax.persistence.JoinTable;
+import javax.persistence.ManyToOne;
 import javax.persistence.OneToMany;
 import javax.persistence.OrderBy;
 import javax.persistence.Table;
@@ -99,9 +100,10 @@ public class CharacterStateRow extends PPodEntity {
 	 * <p>
 	 * No delete orphan either...TODO
 	 */
-	@OneToMany
+	@OneToMany(mappedBy = "row")
 	@OrderBy("position")
-	@JoinTable(inverseJoinColumns = @JoinColumn(name = CharacterStateCell.ID_COLUMN))
+	// @JoinTable(inverseJoinColumns = @JoinColumn(name =
+	// CharacterStateCell.ID_COLUMN))
 	private final List<CharacterStateCell> cells = newArrayList();
 
 	/** {@code CharacterStateCell}-><code>cells</code>Index lookup. */
@@ -115,7 +117,8 @@ public class CharacterStateRow extends PPodEntity {
 	 * The {@code CharacterStateMatrix} to which this {@code CharacterStateRow}
 	 * belongs.
 	 */
-	@Transient
+	@ManyToOne
+	@JoinColumn(name = CharacterStateMatrix.ID_COLUMN)
 	private CharacterStateMatrix matrix;
 
 	CharacterStateRow() {}
@@ -275,8 +278,7 @@ public class CharacterStateRow extends PPodEntity {
 	 * 
 	 * @return this {@code CharacterStateRow}
 	 */
-	public CharacterStateRow setMatrix(
-			@Nullable final CharacterStateMatrix matrix) {
+	CharacterStateRow setMatrix(@Nullable final CharacterStateMatrix matrix) {
 		this.matrix = matrix;
 		return this;
 	}

@@ -88,7 +88,7 @@ public class SaveOrUpdateCharacterStateMatrix implements
 
 	}
 
-	public void saveOrUpdate(final CharacterStateMatrix targetMatrix,
+	public void saveOrUpdate(CharacterStateMatrix targetMatrix,
 			final CharacterStateMatrix sourceMatrix,
 			final OTUSet newTargetMatrixOTUSet,
 			final Map<OTU, OTU> mergedOTUsBySourceOTU,
@@ -131,8 +131,9 @@ public class SaveOrUpdateCharacterStateMatrix implements
 		// Move Characters around - start by removing all characters
 		final List<Character> clearedTargetCharacters = targetMatrix
 				.clearCharacters();
+
 		// Force the clearing of the characters otherwise reorderings will mess
-		// us up - it's a hibernate bug
+		// us up - it's a hibernate bug.
 		dao.flush();
 
 		final Map<Character, Integer> oldIdxsByChararacter = newHashMap();
@@ -206,6 +207,9 @@ public class SaveOrUpdateCharacterStateMatrix implements
 			dao.saveOrUpdate(newTargetCharacter);
 		}
 
+		// The rows need for this to have an id
+		dao.saveOrUpdate(targetMatrix);
+
 		final Set<CharacterStateCell> cellsToEvict = newHashSet();
 		for (final CharacterStateRow sourceRow : sourceMatrix.getRows()) {
 
@@ -220,10 +224,9 @@ public class SaveOrUpdateCharacterStateMatrix implements
 			if (null == (targetRow = targetMatrix.getRow(targetOTU))) {
 				targetRow = rowProvider.get();
 				targetMatrix.setRow(targetOTU, targetRow);
+				dao.saveOrUpdate(targetRow);
 				newRow = true;
 			} else {
-				// Since we don't store the row->matrix reference
-				targetRow.setMatrix(targetMatrix);
 				newRow = false;
 			}
 
@@ -237,10 +240,12 @@ public class SaveOrUpdateCharacterStateMatrix implements
 			final List<CharacterStateCell> newTargetCells = newArrayListWithCapacity(sourceRow
 					.getCells().size());
 
+			// First we fill with empty cells
 			for (int newCellIdx = 0; newCellIdx < targetMatrix.getCharacters()
 					.size(); newCellIdx++) {
 				CharacterStateCell targetCell;
-				if (null == originalCharIdxsByNewCharIdx.get(newCellIdx)) {
+				if (newRow
+						|| null == originalCharIdxsByNewCharIdx.get(newCellIdx)) {
 					targetCell = cellProvider.get();
 				} else {
 					targetCell = originalTargetCells
@@ -248,7 +253,9 @@ public class SaveOrUpdateCharacterStateMatrix implements
 				}
 				newTargetCells.add(targetCell);
 			}
+
 			targetRow.setCells(newTargetCells);
+
 			for (final CharacterStateCell targetCell : targetRow.getCells()) {
 
 				final CharacterStateCell sourceCell = sourceRow.getCells().get(
@@ -279,33 +286,23 @@ public class SaveOrUpdateCharacterStateMatrix implements
 					default:
 						throw new AssertionError("unknown type");
 				}
-				cellsToEvict.add(targetCell);
 				dao.saveOrUpdate(targetCell);
+				cellsToEvict.add(targetCell);
 			}
 
-			dao.saveOrUpdate(targetRow);
-
-			if (targetMatrix.getPPodVersionInfo() == null) {
-
-				// If it's already been reset, let's not keep resending this
-				// change to the database.
-				targetMatrix.setAllowResetPPodVersionInfo(false);
-			}
 			logger.debug("{}: flushing row,  sourceRowIdx: {}", METHOD,
 					sourceRowIdx);
 			dao.flush();
+
 			dao.evictEntities(cellsToEvict);
 			cellsToEvict.clear();
 			dao.evict(targetRow);
 		}
 
-		targetMatrix.setAllowResetPPodVersionInfo(true);
-
-		// newTargetMatrixOTUSet.removeMatrix(targetMatrix);
-		// newTargetMatrixOTUSet.addMatrix(targetMatrix);
-
 		// Let's reattach these
 		dao.saveOrUpdate(newTargetMatrixOTUSet.getStudy());
 		dao.saveOrUpdate(newTargetMatrixOTUSet);
+		//dao.saveOrUpdate(targetMatrix);
+
 	}
 }

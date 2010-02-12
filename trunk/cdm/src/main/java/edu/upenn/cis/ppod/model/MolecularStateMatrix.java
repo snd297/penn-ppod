@@ -64,7 +64,6 @@ public abstract class MolecularStateMatrix extends CharacterStateMatrix {
 			addedNewCharacters = true;
 		}
 
-		getCharacterIdxMutable().put(character, characterIdx);
 		character.addMatrix(this);
 
 		// the matrix has changed

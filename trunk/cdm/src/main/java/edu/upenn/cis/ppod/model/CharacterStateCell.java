@@ -161,7 +161,8 @@ public class CharacterStateCell extends PPodEntity {
 	 * Not persisted. It's up to the client to set after db retrieval this for
 	 * pPOD version propagation and state checking.
 	 */
-	@Transient
+	@ManyToOne
+	@JoinColumn(name = CharacterStateRow.ID_COLUMN)
 	private CharacterStateRow row;
 
 	/**
