@@ -54,12 +54,6 @@ import edu.upenn.cis.ppod.util.IVisitor;
 
 /**
  * A cell in a {@link CharacterStateMatrix}.
- * <p>
- * The row must be set on a cell - by calling
- * {@link CharacterStateRow #setCells(java.util.List)} - before any mutators can
- * be called. This is for error checking, for example to make sure that any
- * states that are added to the cell belong to the correct {@link Character} in
- * the owning matrix.
  * 
  * @author Sam Donnelly
  */
@@ -81,27 +75,27 @@ public class CharacterStateCell extends PPodEntity {
 	 * </ul>
 	 */
 	public static enum Type {
-
+	
 		/** Unassigned, usually written as a {@code "?"} in Nexus files. */
 		UNASSIGNED,
-
+	
 		/**
 		 * The cell has exactly one state.
 		 */
 		SINGLE,
-
+	
 		/**
 		 * The cell is a conjunctions of states: <em>state1</em> and
 		 * <em>state2</em> and ... and <em>stateN</em>.
 		 */
 		POLYMORPHIC,
-
+	
 		/**
 		 * The cell is a disjunction of states: <em>state1</em> or
 		 * <em>state2</em> or ... or <em>stateN</em>.
 		 */
 		UNCERTAIN,
-
+	
 		/** Inapplicable, usually written as a {@code "-"} in Nexus files. */
 		INAPPLICABLE;
 	}
@@ -152,7 +146,7 @@ public class CharacterStateCell extends PPodEntity {
 	 */
 	@Column(name = TYPE_COLUMN)
 	@Enumerated(EnumType.ORDINAL)
-	private Type type;
+	private CharacterStateCell.Type type;
 
 	/**
 	 * The {@code CharacterStateRow} to which this {@code CharacterStateCell}
@@ -402,7 +396,7 @@ public class CharacterStateCell extends PPodEntity {
 	 * @return this
 	 */
 	public CharacterStateCell setInapplicable() {
-		setType(Type.INAPPLICABLE);
+		setType(CharacterStateCell.Type.INAPPLICABLE);
 
 		@SuppressWarnings("unchecked")
 		final Set<CharacterState> emptyStates = Collections.EMPTY_SET;
@@ -425,7 +419,7 @@ public class CharacterStateCell extends PPodEntity {
 		checkNotNull(polymorphicStates);
 		checkArgument(polymorphicStates.size() > 1,
 				"polymorphic states must be > 1");
-		setType(Type.POLYMORPHIC);
+		setType(CharacterStateCell.Type.POLYMORPHIC);
 		setStates(polymorphicStates);
 		return this;
 	}
@@ -470,7 +464,7 @@ public class CharacterStateCell extends PPodEntity {
 	 */
 	public CharacterStateCell setSingleState(final CharacterState state) {
 		checkNotNull(state);
-		setType(Type.SINGLE);
+		setType(CharacterStateCell.Type.SINGLE);
 		setStates(newHashSet(state));
 		return this;
 	}
@@ -541,7 +535,7 @@ public class CharacterStateCell extends PPodEntity {
 	 * @param xmlStates should be {@code null} if type is inapplicable or
 	 *            unassigned to emulate what happens when a cell is unmarhsalled
 	 */
-	CharacterStateCell setTypeAndXmlStates(final Type type,
+	CharacterStateCell setTypeAndXmlStates(final CharacterStateCell.Type type,
 			final Set<CharacterState> xmlStates) {
 		checkNotNull(type);
 		// checkTypeAndStates(type,
@@ -558,7 +552,7 @@ public class CharacterStateCell extends PPodEntity {
 	 * @return this
 	 */
 	public CharacterStateCell setUnassigned() {
-		setType(Type.UNASSIGNED);
+		setType(CharacterStateCell.Type.UNASSIGNED);
 
 		@SuppressWarnings("unchecked")
 		final Set<CharacterState> emptyStates = Collections.EMPTY_SET;
@@ -580,7 +574,7 @@ public class CharacterStateCell extends PPodEntity {
 		checkNotNull(uncertainStates);
 		checkArgument(uncertainStates.size() > 1,
 				"uncertain states must be > 1");
-		setType(Type.UNCERTAIN);
+		setType(CharacterStateCell.Type.UNCERTAIN);
 		setStates(uncertainStates);
 		return this;
 	}
