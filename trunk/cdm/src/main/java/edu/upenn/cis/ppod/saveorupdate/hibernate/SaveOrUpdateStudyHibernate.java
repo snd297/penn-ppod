@@ -41,6 +41,7 @@ import edu.upenn.cis.ppod.dao.hibernate.HibernateDAOFactory.OTUSetDAOHibernate;
 import edu.upenn.cis.ppod.model.CharacterStateMatrix;
 import edu.upenn.cis.ppod.model.DNACharacter;
 import edu.upenn.cis.ppod.model.DNAStateMatrix;
+import edu.upenn.cis.ppod.model.ICharacterStateMatrixFactory;
 import edu.upenn.cis.ppod.model.IUUPPodEntity;
 import edu.upenn.cis.ppod.model.OTU;
 import edu.upenn.cis.ppod.model.OTUSet;
@@ -65,9 +66,9 @@ public class SaveOrUpdateStudyHibernate implements ISaveOrUpdateStudy {
 
 	private final Provider<Study> studyProvider;
 	private final Provider<OTUSet> otuSetProvider;
-	private final Provider<CharacterStateMatrix> characterStateMatrixProvider;
-	private final Provider<DNAStateMatrix> dnaMatrixProvider;
 	private final Provider<TreeSet> treeSetProvider;
+
+	private final ICharacterStateMatrixFactory matrixFactory;
 
 	private final IMergeOTUSet mergeOTUSet;
 	private final ISaveOrUpdateCharacterStateMatrix saveOrUpdateMatrix;
@@ -82,8 +83,7 @@ public class SaveOrUpdateStudyHibernate implements ISaveOrUpdateStudy {
 			final ObjectWLongIdDAOHibernate dao,
 			final Provider<Study> studyProvider,
 			final Provider<OTUSet> otuSetProvider,
-			final Provider<CharacterStateMatrix> characterStateMatrixProvider,
-			final Provider<DNAStateMatrix> dnaMatrixProvider,
+			final ICharacterStateMatrixFactory matrixFactory,
 			final Provider<TreeSet> treeSetProvider,
 			final IMergeOTUSetHibernateFactory saveOrUpdateOTUSetFactory,
 			final ISaveOrUpdateCharacterStateMatrix.IFactory mergeMatrixFactory,
@@ -98,8 +98,7 @@ public class SaveOrUpdateStudyHibernate implements ISaveOrUpdateStudy {
 				.setSession(session);
 		this.studyProvider = studyProvider;
 		this.otuSetProvider = otuSetProvider;
-		this.characterStateMatrixProvider = characterStateMatrixProvider;
-		this.dnaMatrixProvider = dnaMatrixProvider;
+		this.matrixFactory = matrixFactory;
 		this.treeSetProvider = treeSetProvider;
 		this.mergeOTUSet = saveOrUpdateOTUSetFactory.create(session);
 		this.saveOrUpdateMatrix = mergeMatrixFactory.create(
@@ -156,18 +155,7 @@ public class SaveOrUpdateStudyHibernate implements ISaveOrUpdateStudy {
 				CharacterStateMatrix dbMatrix;
 				if (null == (dbMatrix = findIf(dbOTUSet.getMatrices(), equalTo(
 						incomingMatrix.getPPodId(), IUUPPodEntity.getPPodId)))) {
-					switch (incomingMatrix.getType()) {
-						case STANDARD:
-							dbMatrix = characterStateMatrixProvider.get();
-							break;
-						case DNA:
-							dbMatrix = dnaMatrixProvider.get();
-							break;
-						default:
-							throw new IllegalArgumentException(
-									"unsupported matrix type: "
-											+ incomingMatrix.getType());
-					}
+					dbMatrix = matrixFactory.create(incomingMatrix.getType());
 					dbMatrix.setPPodId();
 				}
 
