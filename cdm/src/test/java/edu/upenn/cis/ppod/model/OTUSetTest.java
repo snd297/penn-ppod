@@ -7,7 +7,9 @@ import static org.testng.Assert.assertEquals;
 import static org.testng.Assert.assertFalse;
 import static org.testng.Assert.assertNotNull;
 import static org.testng.Assert.assertNull;
+import static org.testng.Assert.assertTrue;
 
+import java.util.Collections;
 import java.util.HashSet;
 import java.util.List;
 import java.util.Set;
@@ -181,5 +183,32 @@ public class OTUSetTest {
 		assertNull(otuSet.getPPodVersionInfo());
 		matrices.remove(matrix1);
 		assertEquals((Object) otuSet.getMatrices(), (Object) matrices);
+	}
+
+	public void removeTreeSet() {
+		final TreeSet treeSet0 = treeSetProvider.get();
+		final TreeSet treeSet1 = treeSetProvider.get();
+		final TreeSet treeSet2 = treeSetProvider.get();
+
+		otuSet.addTreeSet(treeSet0);
+		otuSet.addTreeSet(treeSet1);
+		otuSet.addTreeSet(treeSet2);
+
+		otuSet.setPPodVersionInfo(pPodVersionInfoProvider.get());
+
+		final boolean removeTreeSetReturnValue = otuSet.removeTreeSet(treeSet1);
+
+		assertTrue(removeTreeSetReturnValue);
+
+		assertNull(otuSet.getPPodVersionInfo());
+
+		assertEquals(otuSet.getTreeSets(), newHashSet(treeSet0, treeSet2));
+
+		otuSet.removeTreeSet(treeSet0);
+		boolean removeTreeSet2ReturnValue = otuSet.removeTreeSet(treeSet2);
+
+		assertFalse(removeTreeSet2ReturnValue);
+
+		assertEquals(otuSet.getTreeSets(), Collections.emptySet());
 	}
 }
