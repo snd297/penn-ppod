@@ -15,8 +15,10 @@
  */
 package edu.upenn.cis.ppod.model;
 
+import javax.annotation.Nullable;
+
 /**
- * An object w/ a {@link PPodVersionInfo}.
+ * An object with a {@link PPodVersionInfo}.
  * 
  * @author Sam Donnelly
  */
@@ -32,6 +34,7 @@ interface IPPodVersioned {
 	 * @throws IllegalStateException if there is no pPOD version number
 	 *             available
 	 */
+	@Nullable
 	Long getPPodVersion();
 
 	/**
@@ -39,6 +42,7 @@ interface IPPodVersioned {
 	 * 
 	 * @return the version info of this {@code IPPodVersioned}
 	 */
+	@Nullable
 	PPodVersionInfo getPPodVersionInfo();
 
 	IPPodVersioned setAllowResetPPodVersionInfo(

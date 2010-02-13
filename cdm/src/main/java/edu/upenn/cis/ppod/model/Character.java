@@ -141,11 +141,6 @@ public class Character extends UUPPodEntityWXmlId {
 	@Override
 	public void afterUnmarshal(final Unmarshaller u, final Object parent) {
 		super.afterUnmarshal(u, parent);
-		// This is not longer possible since chars are stored as xmlid's in the
-		// matrix
-		// if (parent instanceof CharacterStateMatrix) {
-		// addMatrix((CharacterStateMatrix) parent);
-		// }
 		if (getStates().size() > 0
 				&& get(getStates().values(), 0).getCharacter() == null) {
 			for (final CharacterState state : getStates().values()) {

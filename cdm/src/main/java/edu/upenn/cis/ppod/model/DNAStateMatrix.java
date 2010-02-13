@@ -34,14 +34,4 @@ public class DNAStateMatrix extends MolecularStateMatrix {
 	DNAStateMatrix() {
 		setType(Type.DNA);
 	}
-
-//	@Override
-//	public DNACharacter setCharacter(final int characterIdx,
-//			final Character character) {
-//		checkNotNull(character);
-//		checkArgument(character instanceof DNACharacter,
-//				"character must be a DNACharacer for a DNAStateMatrix, not a "
-//						+ character.getClass().getCanonicalName());
-//		return (DNACharacter) super.setCharacter(characterIdx, character);
-//	}
 }
