@@ -75,27 +75,27 @@ public class CharacterStateCell extends PPodEntity {
 	 * </ul>
 	 */
 	public static enum Type {
-	
+
 		/** Unassigned, usually written as a {@code "?"} in Nexus files. */
 		UNASSIGNED,
-	
+
 		/**
 		 * The cell has exactly one state.
 		 */
 		SINGLE,
-	
+
 		/**
 		 * The cell is a conjunctions of states: <em>state1</em> and
 		 * <em>state2</em> and ... and <em>stateN</em>.
 		 */
 		POLYMORPHIC,
-	
+
 		/**
 		 * The cell is a disjunction of states: <em>state1</em> or
 		 * <em>state2</em> or ... or <em>stateN</em>.
 		 */
 		UNCERTAIN,
-	
+
 		/** Inapplicable, usually written as a {@code "-"} in Nexus files. */
 		INAPPLICABLE;
 	}
@@ -222,7 +222,7 @@ public class CharacterStateCell extends PPodEntity {
 
 	}
 
-	void checkIncomingState(final CharacterState state) {
+	private void checkIncomingState(final CharacterState state) {
 		if (getRow() == null) {
 			throw new IllegalStateException(
 					"this cell has not been assigned a row");

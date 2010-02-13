@@ -27,23 +27,30 @@ import javax.persistence.MappedSuperclass;
  * @author Sam Donnelly
  */
 @MappedSuperclass
-abstract class MolecularSequence {
+public class MolecularSequence {
+
+	MolecularSequence() {}
 
 	final static String SEQUENCE_COLUMN = "SEQUENCE";
 
 	@Column(name = SEQUENCE_COLUMN)
 	private String sequence;
-	private final Map<Integer, CharacterStateCell> cellsByStateIndex = newHashMap();
+
+	private final Map<Integer, CharacterStates> statesByPosition = newHashMap();
+
+	protected Map<Integer, CharacterStates> getStatesByPosition() {
+		return statesByPosition;
+	}
 
 	public String getSequence() {
 		return sequence;
 	}
 
-	public MolecularSequence putCell(final Integer idx,
-			final CharacterStateCell cell) {
+	public MolecularSequence putStates(final Integer idx,
+			final CharacterStates states) {
 		checkNotNull(idx);
-		checkNotNull(cell);
-		cellsByStateIndex.put(idx, cell);
+		checkNotNull(states);
+		statesByPosition.put(idx, states);
 		return this;
 	}
 
@@ -52,19 +59,4 @@ abstract class MolecularSequence {
 		return this;
 	}
 
-// public static MolecularSequence of(final List<CharacterStateCell> cells)
-	// {
-// checkNotNull(cells);
-// final MolecularSequence sequence = new MolecularSequence();
-// for (final CharacterStateCell cell : cells) {
-// if (cell.getStates().size() == 1) {
-// sequence.addState(cell.getStates().iterator().next());
-// } else {
-// sequence.addState(null);
-// sequence.putCellByCharStateIndex(sequence.getCharStates()
-// .size() - 1, cell);
-// }
-// }
-// return sequence;
-// }
 }

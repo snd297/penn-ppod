@@ -15,13 +15,10 @@
  */
 package edu.upenn.cis.ppod.util;
 
-import java.util.List;
-
 import org.hibernate.classic.Session;
 import org.hibernate.context.ManagedSessionContext;
 
 import edu.upenn.cis.ppod.model.DNACharacter;
-import edu.upenn.cis.ppod.model.DNAState;
 import edu.upenn.cis.ppod.thirdparty.util.HibernateUtil;
 
 /**
@@ -47,13 +44,7 @@ public class PopulateTables {
 			session.beginTransaction();
 			session.save(dnaCharacter);
 			session.getTransaction().commit();
-			
-			session.beginTransaction();
-			final List<DNAState> dnaStates = (List<DNAState>)session.createQuery("from DNAState").list();
-			for (DNAState dnaState : dnaStates) { 
-				session.update(dnaState);
-			}
-			session.getTransaction().commit();
+
 		} catch (Throwable t) {
 			if (session != null) {
 				if (session.getTransaction().isActive()) {

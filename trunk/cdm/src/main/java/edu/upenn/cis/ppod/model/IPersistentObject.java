@@ -15,6 +15,8 @@
  */
 package edu.upenn.cis.ppod.model;
 
+import javax.annotation.Nullable;
+
 import edu.upenn.cis.ppod.util.IVisitor;
 
 /**
@@ -37,5 +39,6 @@ public interface IPersistentObject {
 	 * 
 	 * @return the surrogate key of the entity
 	 */
+	@Nullable
 	Long getId();
 }

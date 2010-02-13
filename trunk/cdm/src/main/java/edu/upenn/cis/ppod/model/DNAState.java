@@ -15,6 +15,8 @@
  */
 package edu.upenn.cis.ppod.model;
 
+import static com.google.common.base.Preconditions.checkNotNull;
+
 import javax.persistence.Entity;
 import javax.persistence.Table;
 
@@ -45,12 +47,34 @@ public class DNAState extends MolecularState {
 		DNAState create(Nucleotide nucleotide);
 	}
 
+	/**
+	 * The four state that a {@code DNAState} can have.
+	 */
 	public static enum Nucleotide {
+		/** Adenine. */
+		A,
 
-		A, C, G, T;
+		/** Cytosine. */
+		C,
 
+		/** Guanine. */
+		G,
+
+		/** Thymine. */
+		T;
+
+		/**
+		 * Get the {@code Nucleotide} with {@code Nucleotide.getOrdinal() ==
+		 * stateNumber}.
+		 * 
+		 * @param stateNumber the state number of the {@code Nucleotide} we want
+		 * 
+		 * @return the {@code Nucleotide} with {@code Nucleotide.getOrdinal() ==
+		 *         stateNumber}
+		 */
 		public static Nucleotide of(final int stateNumber) {
-			// Can't do a switch on Nucleotide.ordinal, so if statements it is
+			// Can't do a switch on Nucleotide.ordinal, so if
+			// statements it is
 			if (stateNumber == A.ordinal()) {
 				return A;
 			}
@@ -65,6 +89,23 @@ public class DNAState extends MolecularState {
 			}
 			throw new IllegalArgumentException(
 					"stateNumber must be 0, 1, 2, or 3");
+		}
+
+		public static boolean hasOneWithAValueOf(final String s) {
+			checkNotNull(s);
+			if (s.equals(A.toString()) || s.equals(C.toString())
+					|| s.equals(G.toString()) || s.equals(T.toString())) {
+				return true;
+			}
+			return false;
+		}
+
+		public static boolean hasOneWithAValueOf(final int i) {
+			if (A.ordinal() == i || C.ordinal() == i || G.ordinal() == i
+					|| T.ordinal() == i) {
+				return true;
+			}
+			return false;
 		}
 	}
 
@@ -91,16 +132,4 @@ public class DNAState extends MolecularState {
 
 		return "D" + getLabel();
 	}
-
-//	@Override
-//	public DNAState setCharacter(final Character character) {
-//		if (character instanceof DNACharacter) {
-//			super.setCharacter(character);
-//		} else {
-//			throw new IllegalArgumentException(
-//					"a DNAState's character must be a DNACharacter");
-//		}
-//		return this;
-//	}
-
 }

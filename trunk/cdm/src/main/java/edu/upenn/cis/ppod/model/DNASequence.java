@@ -15,9 +15,39 @@
  */
 package edu.upenn.cis.ppod.model;
 
+import static com.google.common.base.Preconditions.checkNotNull;
+import static com.google.common.base.Preconditions.checkState;
+import static com.google.common.collect.Iterables.getOnlyElement;
+
+import java.util.List;
+
 /**
  * @author Sam Donnelly
  */
 public class DNASequence extends MolecularSequence {
-	
+	public DNASequence of(final List<? extends CharacterStateCell> cells) {
+		checkNotNull(cells);
+		final StringBuilder sequenceStringBuilder = new StringBuilder();
+		for (int cellIdx = 0; cellIdx < cells.size(); cellIdx++) {
+			if (cells.get(cellIdx).getStates().size() == 1) {
+				final String stateLabel = getOnlyElement(
+						cells.get(cellIdx).getStates()).getLabel();
+				final Integer stateNumber = getOnlyElement(
+						cells.get(cellIdx).getStates()).getStateNumber();
+				checkState(DNAState.Nucleotide.hasOneWithAValueOf(stateLabel),
+						"cell " + cellIdx + " has a state label [" + stateLabel
+								+ "] which is not that of a DNAState");
+				checkState(DNAState.Nucleotide.hasOneWithAValueOf(stateNumber),
+						"cell " + cellIdx + " has a state number of"
+								+ stateNumber
+								+ " which is not that of a DNAState");
+				sequenceStringBuilder.append(stateLabel);
+
+			} else {
+				sequenceStringBuilder.append("N");
+				putStates(cellIdx, null);
+			}
+		}
+		return this;
+	}
 }
