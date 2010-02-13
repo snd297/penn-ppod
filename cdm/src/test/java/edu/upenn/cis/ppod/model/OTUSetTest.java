@@ -205,9 +205,10 @@ public class OTUSetTest {
 		assertEquals(otuSet.getTreeSets(), newHashSet(treeSet0, treeSet2));
 
 		otuSet.removeTreeSet(treeSet0);
-		boolean removeTreeSet2ReturnValue = otuSet.removeTreeSet(treeSet2);
+		otuSet.removeTreeSet(treeSet2);
+		boolean removeTreeSetValueShouldBeFalse = otuSet.removeTreeSet(treeSet2);
 
-		assertFalse(removeTreeSet2ReturnValue);
+		assertFalse(removeTreeSetValueShouldBeFalse);
 
 		assertEquals(otuSet.getTreeSets(), Collections.emptySet());
 	}
