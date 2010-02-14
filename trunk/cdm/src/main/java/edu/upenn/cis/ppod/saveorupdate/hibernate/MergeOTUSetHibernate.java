@@ -15,9 +15,9 @@
  */
 package edu.upenn.cis.ppod.saveorupdate.hibernate;
 
-import static com.google.common.base.Predicates.compose;
-import static com.google.common.base.Predicates.equalTo;
 import static com.google.common.collect.Maps.newHashMap;
+import static com.google.common.collect.Sets.newHashSet;
+import static edu.upenn.cis.ppod.util.PPodIterables.equalTo;
 import static edu.upenn.cis.ppod.util.PPodIterables.findIf;
 
 import java.util.Map;
@@ -61,25 +61,29 @@ public class MergeOTUSetHibernate implements IMergeOTUSet {
 
 		// This is for a response to the service client.
 		targetOTUSet.setDocId(sourceOTUSet.getDocId());
-		final Set<OTU> clearedOTUs = targetOTUSet.clearOTUs();
+		// final Set<OTU> clearedOTUs = targetOTUSet.clearOTUs();
+		final Set<OTU> newOTUs = newHashSet();
 		final Map<OTU, OTU> persistentOTUsByIncomingOTU = newHashMap();
 		for (final OTU incomingOTU : sourceOTUSet.getOTUs()) {
 			OTU persistedOTU;
-			if (null == (persistedOTU = findIf(clearedOTUs, compose(
-					equalTo(incomingOTU.getPPodId()), IUUPPodEntity.getPPodId)))) {
+			if (null == (persistedOTU = findIf(targetOTUSet.getOTUs(), equalTo(
+					incomingOTU.getPPodId(), IUUPPodEntity.getPPodId)))) {
+
+				// See if it's hooked up to another OTUSet
 				if (null == (persistedOTU = otuDAO.getOTUByPPodId(incomingOTU
 						.getPPodId()))) {
 					persistedOTU = otuProvider.get();
 					persistedOTU.setPPodId();
 				}
 			}
-			targetOTUSet.addOTU(persistedOTU);
+			newOTUs.add(persistedOTU);
 			persistedOTU.setLabel(incomingOTU.getLabel());
 			persistentOTUsByIncomingOTU.put(incomingOTU, persistedOTU);
 
 			// This is for a response to the service client.
 			persistedOTU.setDocId(incomingOTU.getDocId());
 		}
+		targetOTUSet.setOTUs(newOTUs);
 		return persistentOTUsByIncomingOTU;
 	}
 }

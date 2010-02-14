@@ -159,7 +159,10 @@ public class SaveOrUpdateStudyHibernate implements ISaveOrUpdateStudy {
 				}
 
 				// saveOrUpdateMatrix needs for dbOTUSet to have an id so that
-				// we can give it to the matrix
+				// we can give it to the matrix. dbOTUSet needs for dbStudy to
+				// have an id. Note that cascade from the matrix takes care of
+				// the study too.
+				studyDAO.saveOrUpdate(dbStudy);
 				otuSetDAO.saveOrUpdate(dbOTUSet);
 				for (final OTU dbOTU : dbOTUSet.getOTUs()) {
 					otuDAO.saveOrUpdate(dbOTU);

@@ -18,6 +18,7 @@ package edu.upenn.cis.ppod.model;
 import static com.google.common.base.Preconditions.checkArgument;
 import static com.google.common.base.Preconditions.checkNotNull;
 
+import java.util.List;
 import java.util.Map;
 
 /**
@@ -42,35 +43,30 @@ public abstract class MolecularStateMatrix extends CharacterStateMatrix {
 	 *         if there was no such {@code Character}
 	 */
 	@Override
-	public Character setCharacter(final int characterIdx,
-			final Character character) {
-		checkNotNull(character);
-// checkArgument(character instanceof MolecularCharacter,
-// "characters of a MolecularStateMatrix must be MolecularCharacer, not a "
-// + character.getClass().getName());
+	public MolecularStateMatrix setCharacters(
+			final List<Character> dnaCharacters) {
+
+		checkNotNull(dnaCharacters);
+
 		if (getCharacters().size() > 0) {
-			checkArgument(character.equals(getCharacters().get(0)),
-					"all characters must be .equals() in a molecular matrix");
-		}
-		if (getCharacters().size() > characterIdx) {
-			// Nothing to do
-			return character;
+			for (final Character dnaCharacter : dnaCharacters) {
+				checkArgument(dnaCharacter.equals(dnaCharacters.get(0)),
+						"all characters must be .equals() in a molecular matrix");
+			}
 		}
 
-		boolean addedNewCharacters = false;
-		while (getCharacters().size() <= characterIdx) {
-			getCharactersMutable().add(character);
+		while (getCharacters().size() < dnaCharacters.size()) {
+			getCharactersMutable().add(dnaCharacters.get(0));
 			getColumnPPodVersionInfosMutable().add(null);
-			addedNewCharacters = true;
 		}
 
-		character.addMatrix(this);
+		dnaCharacters.get(0).addMatrix(this);
 
 		// the matrix has changed
 		resetPPodVersionInfo();
 
 		// Try to stick with the contract even though it's a little funny
-		return addedNewCharacters ? null : character;
+		return this;
 	}
 
 	@Override

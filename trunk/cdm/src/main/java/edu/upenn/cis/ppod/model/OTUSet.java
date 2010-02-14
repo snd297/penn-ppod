@@ -159,7 +159,7 @@ public class OTUSet extends UUPPodEntityWXmlId {
 	 * @throws IllegalArgumentException if this OTU set already has an OTU with
 	 *             {@code otu}'s label
 	 */
-	public OTU addOTU(final OTU otu) {
+	private OTU addOTU(final OTU otu) {
 		checkNotNull(otu);
 		final OTU dupNameOTU = findIf(getOTUs(), equalTo(otu.getLabel(),
 				OTU.getLabel));
@@ -201,9 +201,7 @@ public class OTUSet extends UUPPodEntityWXmlId {
 	 * @param u see {@code Unmarshaller}
 	 * @param parent see {@code Unmarshaller}
 	 */
-	@Override
 	public void afterUnmarshal(final Unmarshaller u, final Object parent) {
-		super.afterUnmarshal(u, parent);
 		if (parent instanceof Study) {
 			// We don't call setStudy(...) since that would reset the pPOD
 			// version info, which is not appropriate here. (Even though it
@@ -217,16 +215,18 @@ public class OTUSet extends UUPPodEntityWXmlId {
 	/**
 	 * Equivalent to calling {@link #removeOTU(OTU)} on each of this OTU set's
 	 * OTUs.
+	 * <p>
+	 * Note, this will reset the pPOD version if the OTU set is non-empty.
 	 * 
 	 * @return the OTUs that were removed
 	 */
-	public Set<OTU> clearOTUs() {
-		final Set<OTU> toBeClearedOTUs = newHashSet(otus);
-		for (final OTU otu : toBeClearedOTUs) {
-			removeOTU(otu);
-		}
-		return toBeClearedOTUs;
-	}
+// public Set<OTU> clearOTUs() {
+// final Set<OTU> toBeClearedOTUs = newHashSet(otus);
+// for (final OTU otu : toBeClearedOTUs) {
+// removeOTU(otu);
+// }
+// return toBeClearedOTUs;
+// }
 
 	/**
 	 * Getter.
@@ -291,7 +291,7 @@ public class OTUSet extends UUPPodEntityWXmlId {
 
 	@XmlElement(name = "otu")
 	@SuppressWarnings("unused")
-	private Set<OTU> getOTUSetsMutable() {
+	private Set<OTU> getOTUsMutable() {
 		return otus;
 	}
 
@@ -356,14 +356,27 @@ public class OTUSet extends UUPPodEntityWXmlId {
 	 * @return {@code true} if {@code otu} belonged to this OTU set and was
 	 *         removed
 	 */
-	public boolean removeOTU(final OTU otu) {
-		checkNotNull(otu);
-		if (otus.remove(otu)) {
-			otu.removeOTUSet(this);
-			resetPPodVersionInfo();
-			return true;
+// public boolean removeOTU(final OTU otu) {
+// checkNotNull(otu);
+// if (otus.remove(otu)) {
+// otu.removeOTUSet(this);
+// resetPPodVersionInfo();
+// return true;
+// }
+// return false;
+// }
+
+	public OTUSet setOTUs(final Set<OTU> otus) {
+		checkNotNull(otus);
+		if (otus.equals(this.otus)) {
+			return this;
 		}
-		return false;
+		getOTUsMutable().clear();
+		for (final OTU otu : otus) {
+			addOTU(otu);
+		}
+		resetPPodVersionInfo();
+		return this;
 	}
 
 	/**
@@ -403,7 +416,7 @@ public class OTUSet extends UUPPodEntityWXmlId {
 	@Override
 	public OTUSet resetPPodVersionInfo() {
 		if (getAllowResetPPodVersionInfo()) {
-			if (getPPodVersionInfo() == null) {
+			if (isInNeedOfNewPPodVersionInfo()) {
 
 			} else {
 				if (getStudy() != null) {

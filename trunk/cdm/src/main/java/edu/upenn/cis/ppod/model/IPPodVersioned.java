@@ -22,11 +22,12 @@ import javax.annotation.Nullable;
  * 
  * @author Sam Donnelly
  */
-interface IPPodVersioned {
+interface IPPodVersioned extends IPersistentObject {
 
 	/**
 	 * Used when we serialize so that we don't have to serialize the
-	 * {@link PPodVersionInfo} too.
+	 * {@link PPodVersionInfo} too. Will be {@code null} when the object is
+	 * first constructed.
 	 * 
 	 * @return {@code getPPodVersionInfo().getPPodVersion()} if available,
 	 *         otherwise use the value that was serialized
@@ -39,13 +40,20 @@ interface IPPodVersioned {
 
 	/**
 	 * Get the version info of this {@code IPPodVersioned}.
+	 * <p>
+	 * NOTE: the weird name is on purpose so that Hibernate can identity it as
+	 * the getter.
 	 * 
 	 * @return the version info of this {@code IPPodVersioned}
 	 */
 	@Nullable
-	PPodVersionInfo getPPodVersionInfo();
+	PPodVersionInfo getpPodVersionInfo();
 
 	IPPodVersioned setAllowResetPPodVersionInfo(
 			boolean allowResetPPodVersionInfo);
+
+	IPPodVersioned unsetInNeedOfNewPPodVersionInfo();
+
+	boolean isInNeedOfNewPPodVersionInfo();
 
 }

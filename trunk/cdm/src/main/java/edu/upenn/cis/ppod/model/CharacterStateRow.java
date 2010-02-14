@@ -37,6 +37,8 @@ import javax.xml.bind.Unmarshaller;
 import javax.xml.bind.annotation.XmlAttribute;
 import javax.xml.bind.annotation.XmlElement;
 
+import org.hibernate.annotations.Cascade;
+
 import edu.upenn.cis.ppod.util.IVisitor;
 
 /**
@@ -101,8 +103,7 @@ public class CharacterStateRow extends PPodEntity {
 	 */
 	@OneToMany(mappedBy = "row")
 	@OrderBy("position")
-	// @JoinTable(inverseJoinColumns = @JoinColumn(name =
-	// CharacterStateCell.ID_COLUMN))
+	@Cascade(org.hibernate.annotations.CascadeType.DELETE_ORPHAN)
 	private final List<CharacterStateCell> cells = newArrayList();
 
 	/** {@code CharacterStateCell}-><code>cells</code>Index lookup. */
@@ -139,14 +140,12 @@ public class CharacterStateRow extends PPodEntity {
 	 * @param u see {@code Unmarshaller}
 	 * @param parent see {@code Unmarshaller}
 	 */
-	@Override
 	public void afterUnmarshal(final Unmarshaller u, final Object parent) {
 		setMatrix((CharacterStateMatrix) parent);
 		int i = 0;
 		for (final CharacterStateCell cell : getCells()) {
 			cellIdx.put(cell, i++);
 		}
-		super.afterUnmarshal(u, parent);
 	}
 
 	/**
@@ -212,7 +211,7 @@ public class CharacterStateRow extends PPodEntity {
 	@Override
 	public CharacterStateRow resetPPodVersionInfo() {
 		if (getAllowResetPPodVersionInfo()) {
-			if (getPPodVersionInfo() == null) {
+			if (getpPodVersionInfo() == null) {
 
 			} else {
 				checkState(getMatrix() != null);
@@ -237,9 +236,6 @@ public class CharacterStateRow extends PPodEntity {
 	public CharacterStateRow setCells(final List<CharacterStateCell> cells) {
 		checkNotNull(cells);
 
-		for (final CharacterStateCell cell : cells) {
-			cell.setRow(this);
-		}
 		if (cells.equals(getCells())) {
 			return this;
 		}
@@ -256,10 +252,7 @@ public class CharacterStateRow extends PPodEntity {
 							+ " than cells " + cells.size());
 		}
 		for (int cellPos = 0; cellPos < cells.size(); cellPos++) {
-			if (!cells.get(cellPos).getRow().equals(this)) {
-				throw new IllegalArgumentException("cells[" + cellPos
-						+ "] has not been set to this row");
-			}
+			cells.get(cellPos).setRow(this);
 			if (getMatrix().getCharacters().size() > 0
 					&& getMatrix().getCharacters().get(cellPos) == null) {
 				throw new IllegalStateException("Character is null at column "

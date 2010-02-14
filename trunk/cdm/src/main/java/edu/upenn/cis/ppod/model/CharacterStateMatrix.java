@@ -47,8 +47,8 @@ import javax.xml.bind.Unmarshaller;
 import javax.xml.bind.annotation.XmlAttribute;
 import javax.xml.bind.annotation.XmlElement;
 import javax.xml.bind.annotation.XmlIDREF;
-import javax.xml.bind.annotation.XmlType;
 
+import org.hibernate.annotations.Cascade;
 import org.hibernate.annotations.IndexColumn;
 
 import edu.upenn.cis.ppod.util.IVisitor;
@@ -60,23 +60,8 @@ import edu.upenn.cis.ppod.util.IVisitor;
  */
 @Entity
 @Table(name = CharacterStateMatrix.TABLE)
-public class CharacterStateMatrix extends UUPPodEntityWXmlId {
-
-	/**
-	 * We use these to figure out what kind of matrix we have after
-	 * unmarshalling.
-	 */
-	@XmlType(name = "CharacterStateMatrixType")
-	public static enum Type {
-		/** A {@link DNAStateMatrix}. */
-		DNA,
-
-		/** An {@link RNAStateMatrix}. */
-		RNA,
-
-		/** A standard {@link CharacterStateMatrix}. */
-		STANDARD;
-	}
+public class CharacterStateMatrix extends UUPPodEntityWXmlId implements
+		ICharacterStateMatrix {
 
 	/** This entity's table name. Intentionally package-private. */
 	static final String TABLE = "CHARACTER_STATE_MATRIX";
@@ -105,16 +90,19 @@ public class CharacterStateMatrix extends UUPPodEntityWXmlId {
 			+ "_POSITION";
 
 	/** The pPod versions of the columns. */
-	@Transient
-// @ManyToMany(fetch = FetchType.EAGER)
+	// @Transient
+	@ManyToMany(fetch = FetchType.EAGER)
+	// @AccessType("property")
 	// EAGER so we can manipulate it in PPodVersionInfoInterceptor: see the
 	// javadoc for Interceptor: "a callback [may not] cause a collection or
 	// proxy to be lazily initialized)."
-// @JoinTable(inverseJoinColumns = { @JoinColumn(name =
-	// PPodVersionInfo.ID_COLUMN) })
-// @org.hibernate.annotations.IndexColumn(name = PPodVersionInfo.TABLE
-// + "_POSITION")
+	@JoinTable(inverseJoinColumns = { @JoinColumn(name = PPodVersionInfo.ID_COLUMN) })
+	@org.hibernate.annotations.IndexColumn(name = PPodVersionInfo.TABLE
+			+ "_POSITION")
 	private final List<PPodVersionInfo> columnPPodVersionInfos = newArrayList();
+
+	@Transient
+	private final List<Boolean> isInNeedOfColumnPPodVersionInfo = newArrayList();
 
 	@XmlElement(name = "columnPPodVersion")
 	@Transient
@@ -180,9 +168,8 @@ public class CharacterStateMatrix extends UUPPodEntityWXmlId {
 
 	/** No delete_orphan... TODO */
 	@OneToMany(mappedBy = "matrix")
-	// @JoinTable(inverseJoinColumns = @JoinColumn(name =
-	// CharacterStateRow.TABLE))
 	@OrderBy("position")
+	@Cascade(org.hibernate.annotations.CascadeType.DELETE_ORPHAN)
 	private final List<CharacterStateRow> rows = newArrayList();
 
 	@XmlAttribute
@@ -206,15 +193,28 @@ public class CharacterStateMatrix extends UUPPodEntityWXmlId {
 	}
 
 	/**
-	 * Add a character to the end of this matrix's characters.
+	 * Add a character to the end.
 	 * 
-	 * @param character the character to be added
+	 * @param character to be added
+	 * 
 	 * @return {@code character}
 	 */
 	public Character addCharacter(final Character character) {
-		checkNotNull(character);
 		setCharacter(getCharacters().size(), character);
 		return character;
+	}
+
+	public CharacterStateMatrix setCharacters(final List<Character> characters) {
+		checkNotNull(characters);
+		if (characters.equals(this.characters)) {
+			return this;
+		}
+		clearCharacters();
+		for (int i = 0; i < characters.size(); i++) {
+			setCharacter(i, characters.get(i));
+		}
+		resetPPodVersionInfo();
+		return this;
 	}
 
 	/**
@@ -233,7 +233,11 @@ public class CharacterStateMatrix extends UUPPodEntityWXmlId {
 		if (getCharacterIdx().size() == 0) {
 			int i = 0;
 			for (final Character character : getCharacters()) {
-				characterIdx.put(character, i++);
+				if (getType() != Type.DNA || getType() != Type.RNA) {
+					// characterIdx is meaningless for MolecularMatrix's since
+					// all of their Characters are the same
+					characterIdx.put(character, i++);
+				}
 				columnPPodVersionInfos.add(null);
 				character.addMatrix(this);
 			}
@@ -247,10 +251,8 @@ public class CharacterStateMatrix extends UUPPodEntityWXmlId {
 	 * @param u see {@code Unmarshaller}
 	 * @param parent see {@code Unmarshaller}
 	 */
-	@Override
 	public void afterUnmarshal(final Unmarshaller u, final Object parent) {
 		this.otuSet = (OTUSet) parent;
-		super.afterUnmarshal(u, parent);
 	}
 
 	@Override
@@ -271,14 +273,14 @@ public class CharacterStateMatrix extends UUPPodEntityWXmlId {
 	 * 
 	 * @return the removed characters
 	 */
-	public List<Character> clearCharacters() {
+	private List<Character> clearCharacters() {
 		final List<Character> clearedCharacters = newArrayList(characters);
-		if (characters.size() == 0) {
+		if (getCharacters().size() == 0) {
 			return clearedCharacters;
 		}
-		characters.clear();
+		getCharactersMutable().clear();
 		characterIdx.clear();
-		columnPPodVersionInfos.clear();
+		// columnPPodVersionInfos.clear();
 		resetPPodVersionInfo();
 		return clearedCharacters;
 	}
@@ -321,6 +323,15 @@ public class CharacterStateMatrix extends UUPPodEntityWXmlId {
 		return characters;
 	}
 
+	public Character removeCharacter(final int characterPosition) {
+		if (characterPosition < getCharacters().size()) {
+			getCharacterIdxMutable().remove(
+					getCharacters().get(characterPosition));
+			return getCharactersMutable().remove(characterPosition);
+		}
+		return null;
+	}
+
 	/**
 	 * Get an unmodifiable view of the {@code PPodVersionInfo}s for each for the
 	 * columns of the matrix.
@@ -337,7 +348,7 @@ public class CharacterStateMatrix extends UUPPodEntityWXmlId {
 	 * Get a mutable view of the {@code PPodVersionInfo}s for each for the
 	 * columns of the matrix.
 	 * <p>
-	 * Intentionally package-private and written to ease testing.
+	 * Intentionally package-private.
 	 * 
 	 * @return a mutable view of the {@code PPodVersionInfo}s for each for the
 	 *         columns of the matrix
@@ -397,9 +408,8 @@ public class CharacterStateMatrix extends UUPPodEntityWXmlId {
 	 * @return an unmodifiable view of the {@code OTU->row number} map
 	 */
 	public Map<OTU, Integer> getOTUIdx() {
-		// Now we build up {@code this.otuIdx} and {@code this.characterIdx}
-		// since they are not sent over the wire.
-		return Collections.unmodifiableMap(otuIdx);
+		return otuIdx;
+		// return Collections.unmodifiableMap(otuIdx);
 	}
 
 	/**
@@ -485,8 +495,8 @@ public class CharacterStateMatrix extends UUPPodEntityWXmlId {
 	 * 
 	 * @return this {@code CharacterStateMatrix}
 	 */
-	CharacterStateMatrix resetColumnPPodVersion(final int idx) {
-		nullFillAndSet(columnPPodVersionInfos, idx, null);
+	ICharacterStateMatrix resetColumnPPodVersion(final int idx) {
+		nullFillAndSet(getColumnPPodVersionInfosMutable(), idx, null);
 		return this;
 	}
 
@@ -499,7 +509,7 @@ public class CharacterStateMatrix extends UUPPodEntityWXmlId {
 	@Override
 	public CharacterStateMatrix resetPPodVersionInfo() {
 		if (getAllowResetPPodVersionInfo()) {
-			if (getPPodVersionInfo() == null) {
+			if (getpPodVersionInfo() == null) {
 				// nothing to do
 			} else {
 				if (otuSet != null) {
@@ -532,7 +542,7 @@ public class CharacterStateMatrix extends UUPPodEntityWXmlId {
 	 *         if there was no such {@code Character}
 	 */
 	@Nullable
-	public Character setCharacter(final int characterIdx,
+	private Character setCharacter(final int characterIdx,
 			final Character character) {
 		checkNotNull(character);
 
@@ -545,28 +555,30 @@ public class CharacterStateMatrix extends UUPPodEntityWXmlId {
 					"character should not be a MolecularCharacter");
 		}
 
-		if (characters.size() > characterIdx
-				&& character.equals(characters.get(characterIdx))) {
+		if (getCharacters().size() > characterIdx
+				&& character.equals(getCharacters().get(characterIdx))) {
 			// Nothing to do
 			return character;
 		}
-		nullFill(characters, characterIdx + 1);
+		nullFill(getCharactersMutable(), characterIdx + 1);
 		nullFill(columnPPodVersionInfos, characterIdx + 1);
+		nullFill(isInNeedOfColumnPPodVersionInfo, characterIdx + 1);
+		Collections.fill(isInNeedOfColumnPPodVersionInfo, Boolean.FALSE);
 
 		Character oldCharacter = null;
 
 		final Integer newCharacterOriginalIdx = this.characterIdx
 				.get(character);
 		if (newCharacterOriginalIdx != null) {
-			characters.set(newCharacterOriginalIdx, null);
-			resetColumnPPodVersion(newCharacterOriginalIdx);
+			getCharactersMutable().set(newCharacterOriginalIdx, null);
+			// resetColumnPPodVersion(newCharacterOriginalIdx);
 		}
-		oldCharacter = characters.get(characterIdx);
+		oldCharacter = getCharacters().get(characterIdx);
 		if (oldCharacter != null) {
 			this.characterIdx.remove(oldCharacter);
 		}
 
-		this.characters.set(characterIdx, character);
+		getCharactersMutable().set(characterIdx, character);
 		this.characterIdx.put(character, characterIdx);
 		character.addMatrix(this);
 
@@ -583,7 +595,7 @@ public class CharacterStateMatrix extends UUPPodEntityWXmlId {
 	 * 
 	 * @return this matrix
 	 */
-	public CharacterStateMatrix setDescription(
+	public ICharacterStateMatrix setDescription(
 			@Nullable final String description) {
 		if (nullSafeEquals(getDescription(), description)) {
 			// nothing to do
@@ -601,7 +613,7 @@ public class CharacterStateMatrix extends UUPPodEntityWXmlId {
 	 * 
 	 * @return this matrix
 	 */
-	public CharacterStateMatrix setLabel(final String label) {
+	public ICharacterStateMatrix setLabel(final String label) {
 		checkNotNull(label);
 		if (label.equals(getLabel())) {
 			// they're the same, nothing to do
@@ -636,7 +648,7 @@ public class CharacterStateMatrix extends UUPPodEntityWXmlId {
 	 * @throws IllegalStateException if the OTU set has not been set, ie if
 	 *             {@link #getOTUSet() == null}
 	 */
-	public CharacterStateMatrix setOTUs(final List<OTU> newOTUs) {
+	public ICharacterStateMatrix setOTUs(final List<OTU> newOTUs) {
 		checkNotNull(newOTUs);
 		if (newOTUs.equals(getOTUs())) {
 			// They're the same, nothing to do
@@ -700,7 +712,7 @@ public class CharacterStateMatrix extends UUPPodEntityWXmlId {
 	 * 
 	 * @return this
 	 */
-	CharacterStateMatrix setOTUSet(@Nullable final OTUSet otuSet) {
+	ICharacterStateMatrix setOTUSet(@Nullable final OTUSet otuSet) {
 		if (nullSafeEquals(this.otuSet, otuSet)) {
 			// still the same
 		} else {
@@ -776,7 +788,7 @@ public class CharacterStateMatrix extends UUPPodEntityWXmlId {
 	 * 
 	 * @return this
 	 */
-	protected CharacterStateMatrix setType(final Type type) {
+	protected ICharacterStateMatrix setType(final Type type) {
 		this.type = type;
 		return this;
 	}

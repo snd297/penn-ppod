@@ -16,6 +16,7 @@
 package edu.upenn.cis.ppod.model;
 
 import static com.google.common.collect.Lists.newArrayList;
+import static com.google.common.collect.Sets.newHashSet;
 import static edu.upenn.cis.ppod.util.CollectionsUtil.nullFillAndSet;
 import static org.testng.Assert.assertEquals;
 import static org.testng.Assert.assertNotNull;
@@ -82,9 +83,7 @@ public class CharacterStateMatrixTest {
 		otus012 = newArrayList(otu0, otu1, otu2);
 
 		otuSet012 = otuSetProvider.get();
-		otuSet012.addOTU(otu0);
-		otuSet012.addOTU(otu1);
-		otuSet012.addOTU(otu2);
+		otuSet012.setOTUs(newHashSet(otu0, otu1, otu2));
 
 		matrix.setOTUSet(otuSet012);
 
@@ -96,20 +95,20 @@ public class CharacterStateMatrixTest {
 	 * should not change.
 	 */
 	public void setOTUsWSameOTUs() {
-		matrix.setPPodVersionInfo(pPodVersionInfo);
+		matrix.setpPodVersionInfo(pPodVersionInfo);
 
 		matrix.setOTUs(otus012);
 
 		// Since they were the same, the version should not have been reset to
 		// null
-		assertNotNull(matrix.getPPodVersionInfo());
+		assertNotNull(matrix.getpPodVersionInfo());
 	}
 
 	public void setOTUsWReorderedOTUs() {
 
 		final Character character = characterProvider.get().setLabel(
 				"testLabel");
-		matrix.setCharacter(0, character);
+		matrix.setCharacters(newArrayList(character));
 
 		matrix.setRow(otu0, rowProvider.get());
 		final CharacterStateCell cell00 = cellProvider.get();
@@ -146,7 +145,7 @@ public class CharacterStateMatrixTest {
 
 	public void setOTUsWLessOTUs() {
 
-		otuSet012.removeOTU(otu0);
+		otuSet012.setOTUs(newHashSet(otu1, otu2));
 
 		final List<OTU> otus12 = newArrayList(otu1, otu2);
 		matrix.setOTUs(otus12);
@@ -172,66 +171,66 @@ public class CharacterStateMatrixTest {
 	 * <p>
 	 * Make sure it pads with nulls.
 	 */
-	public void setCharacter() {
-		final Character character = characterProvider.get().setLabel(
-				"testLabel");
-		matrix.setCharacter(1, character);
-		final Character gotCharacter1 = matrix.getCharacters().get(1);
-		Assert.assertEquals(gotCharacter1, character);
-
-		final int characterIdx = matrix.getCharacterIdx().get(gotCharacter1);
-		Assert.assertEquals(characterIdx, 1);
-
-		matrix.setCharacter(15, new Character().setLabel("phyloChar3"));
-
-		for (final Character thisPhyloChar : matrix.getCharacters().subList(2,
-				15)) {
-			assertNull(thisPhyloChar);
-		}
-
-	}
+// public void setCharacter() {
+// final Character character = characterProvider.get().setLabel(
+// "testLabel");
+// matrix.setCharacter(1, character);
+// final Character gotCharacter1 = matrix.getCharacters().get(1);
+// Assert.assertEquals(gotCharacter1, character);
+//
+// final int characterIdx = matrix.getCharacterIdx().get(gotCharacter1);
+// Assert.assertEquals(characterIdx, 1);
+//
+// matrix.setCharacter(15, new Character().setLabel("phyloChar3"));
+//
+// for (final Character thisPhyloChar : matrix.getCharacters().subList(2,
+// 15)) {
+// assertNull(thisPhyloChar);
+// }
+//
+// }
 
 	/**
 	 * Make sure when we move a character it gets moved and its old position is
 	 * null'd.
 	 */
-	public void moveCharacter() {
-		final Character character1 = characterProvider.get().setLabel(
-				"character1");
-		matrix.setCharacter(3, character1);
-		assertEquals(matrix.getCharacters().get(3), character1);
-
-		matrix.setCharacter(18, character1);
-		assertNull(matrix.getCharacters().get(3));
-		assertEquals(matrix.getCharacters().get(18), character1);
-	}
+// public void moveCharacter() {
+// final Character character1 = characterProvider.get().setLabel(
+// "character1");
+// matrix.setCharacter(3, character1);
+// assertEquals(matrix.getCharacters().get(3), character1);
+//
+// matrix.setCharacter(18, character1);
+// assertNull(matrix.getCharacters().get(3));
+// assertEquals(matrix.getCharacters().get(18), character1);
+// }
 
 	/**
 	 * Test replacing a character.
 	 */
-	public void replaceCharacter() {
-		final Character character1 = characterProvider.get().setLabel(
-				"character1");
-		matrix.setCharacter(3, character1);
-		final Character character2 = characterProvider.get().setLabel(
-				"character2");
-		final Character someCharacter = matrix.setCharacter(3, character2);
-		assertEquals(matrix.getCharacters().get(3), character2);
-		assertEquals(someCharacter, character1);
-		assertNull(matrix.getCharacterIdx().get(character1));
-	}
+// public void replaceCharacter() {
+// final Character character1 = characterProvider.get().setLabel(
+// "character1");
+// matrix.setCharacter(3, character1);
+// final Character character2 = characterProvider.get().setLabel(
+// "character2");
+// final Character someCharacter = matrix.setCharacter(3, character2);
+// assertEquals(matrix.getCharacters().get(3), character2);
+// assertEquals(someCharacter, character1);
+// assertNull(matrix.getCharacterIdx().get(character1));
+// }
 
 	/**
 	 * When we set a character that was already at a position, then the its pPOD
 	 * version should not be set to {@code null}.
 	 */
-	public void setCharacterWithItself() {
-		final Character character1 = characterProvider.get();
-		matrix.setCharacter(3, character1);
-		matrix.setPPodVersionInfo(pPodVersionInfo);
-		matrix.setCharacter(3, character1);
-		assertNotNull(matrix.getPPodVersionInfo());
-	}
+// public void setCharacterWithItself() {
+// final Character character1 = characterProvider.get();
+// matrix.setCharacter(3, character1);
+// matrix.setpPodVersionInfo(pPodVersionInfo);
+// matrix.setCharacter(3, character1);
+// assertNotNull(matrix.getpPodVersionInfo());
+// }
 
 	/**
 	 * When we set a character that was already at some position, then the its
@@ -240,7 +239,7 @@ public class CharacterStateMatrixTest {
 	public void setWithSameRow() {
 		final CharacterStateRow row1 = rowProvider.get();
 		matrix.setRow(otu1, row1);
-		matrix.setPPodVersionInfo(pPodVersionInfo);
+		matrix.setpPodVersionInfo(pPodVersionInfo);
 		matrix.setRow(otu1, row1);
 		assertNotNull(matrix.getRows().get(matrix.getOTUIdx().get(otu1)));
 	}

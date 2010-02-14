@@ -30,6 +30,7 @@ import com.google.inject.Provider;
 
 import edu.upenn.cis.ppod.TestGroupDefs;
 import edu.upenn.cis.ppod.dao.hibernate.ObjectWLongIdDAOHibernate;
+import edu.upenn.cis.ppod.model.Character;
 import edu.upenn.cis.ppod.model.CharacterStateMatrix;
 import edu.upenn.cis.ppod.model.CharacterStateRow;
 import edu.upenn.cis.ppod.model.DNACharacter;
@@ -61,9 +62,6 @@ public class SaveOrUpdateCharacterStateMatrixTest {
 	private Provider<OTU> otuProvider;
 
 	@Inject
-	private Provider<DNACharacter> dnaCharacterProvider;
-
-	@Inject
 	private Session session;
 
 	@Inject
@@ -74,6 +72,9 @@ public class SaveOrUpdateCharacterStateMatrixTest {
 
 	@Inject
 	private Provider<PPodVersionInfo> pPodVersionInfoProvider;
+
+	@Inject
+	private DNACharacter dnaCharacter;
 
 	@Test(dataProvider = MatrixProvider.SMALL_MATRICES_PROVIDER, dataProviderClass = MatrixProvider.class)
 	public void save(final CharacterStateMatrix sourceMatrix) {
@@ -88,10 +89,11 @@ public class SaveOrUpdateCharacterStateMatrixTest {
 
 		final CharacterStateMatrix targetMatrix = characterStateMatrixFactory
 				.create(sourceMatrix.getType());
-		saveOrUpdateCharacterStateMatrix.saveOrUpdate(targetMatrix,
-				sourceMatrix, fakeDbOTUSet, fakeOTUsByIncomingOTU,
-				dnaCharacterProvider.get());
-		ModelAssert.assertEqualsCharacterStateMatrices(targetMatrix, sourceMatrix);
+		saveOrUpdateCharacterStateMatrix
+				.saveOrUpdate(targetMatrix, sourceMatrix, fakeDbOTUSet,
+						fakeOTUsByIncomingOTU, dnaCharacter);
+		ModelAssert.assertEqualsCharacterStateMatrices(targetMatrix,
+				sourceMatrix);
 	}
 
 	@Test(dataProvider = MatrixProvider.SMALL_MATRICES_PROVIDER, dataProviderClass = MatrixProvider.class)
@@ -109,7 +111,7 @@ public class SaveOrUpdateCharacterStateMatrixTest {
 
 		saveOrUpdateCharacterStateMatrix.saveOrUpdate(targetMatrix,
 				sourceMatrix, fakeTargetOTUSet, fakeOTUsByIncomingOTU,
-				dnaCharacterProvider.get());
+				dnaCharacter);
 		final List<OTU> shuffledSourceOTUs = newArrayList(sourceMatrix
 				.getOTUs());
 		Collections.shuffle(shuffledSourceOTUs);
@@ -124,7 +126,7 @@ public class SaveOrUpdateCharacterStateMatrixTest {
 		}
 		saveOrUpdateCharacterStateMatrix.saveOrUpdate(targetMatrix,
 				sourceMatrix, fakeTargetOTUSet, fakeOTUsByIncomingOTU,
-				dnaCharacterProvider.get());
+				dnaCharacter);
 		ModelAssert.assertEqualsCharacterStateMatrices(targetMatrix,
 				sourceMatrix);
 	}
@@ -144,15 +146,18 @@ public class SaveOrUpdateCharacterStateMatrixTest {
 
 		saveOrUpdateCharacterStateMatrix.saveOrUpdate(targetMatrix,
 				sourceMatrix, fakeTargetOTUSet, fakeOTUsByIncomingOTU,
-				dnaCharacterProvider.get());
+				dnaCharacter);
 
 		// Swap 2 and 0
-		sourceMatrix.setCharacter(0, sourceMatrix.setCharacter(2, sourceMatrix
-				.getCharacters().get(0)));
+		final List<Character> newSourceMatrixCharacters = newArrayList(sourceMatrix
+				.getCharacters());
+
+		newSourceMatrixCharacters.set(0, sourceMatrix.getCharacters().get(2));
+		newSourceMatrixCharacters.set(2, sourceMatrix.getCharacters().get(0));
 
 		saveOrUpdateCharacterStateMatrix.saveOrUpdate(targetMatrix,
 				sourceMatrix, fakeTargetOTUSet, fakeOTUsByIncomingOTU,
-				dnaCharacterProvider.get());
+				dnaCharacter);
 
 		ModelAssert.assertEqualsCharacterStateMatrices(targetMatrix,
 				sourceMatrix);

@@ -21,6 +21,7 @@ import static com.google.common.collect.Sets.newHashSet;
 import java.util.Collections;
 import java.util.Set;
 
+import javax.annotation.Nullable;
 import javax.persistence.Column;
 import javax.persistence.Entity;
 import javax.persistence.Lob;
@@ -45,10 +46,12 @@ public class Tree extends UUPPodEntity {
 	static final String TABLE = "TREE";
 
 	@Column(name = "LABEL", nullable = false)
+	@Nullable
 	private String label;
 
 	@Lob
 	@Column(name = "NEWICK", nullable = false)
+	@Nullable
 	private String newick;
 
 	@ManyToMany(mappedBy = "trees")
@@ -92,30 +95,30 @@ public class Tree extends UUPPodEntity {
 	 * @param parent see see {@code Unmarshaller}
 	 * 
 	 */
-	@Override
 	public void afterUnmarshal(final Unmarshaller u, final Object parent) {
-		super.afterUnmarshal(u, parent);
 		if (parent instanceof TreeSet) {
 			addTreeSet((TreeSet) parent);
 		}
 	}
 
 	/**
-	 * Return the label.
+	 * Return the label. {@code null} when the tree is constructed.
 	 * 
 	 * @return the label
 	 */
 	@XmlAttribute
+	@Nullable
 	public String getLabel() {
 		return label;
 	}
 
 	/**
-	 * Get the newick string.
+	 * Get the newick string. {@code null} when the tree is constructed.
 	 * 
 	 * @return the newick string
 	 */
 	@XmlElement
+	@Nullable
 	public String getNewick() {
 		return newick;
 	}
@@ -147,7 +150,7 @@ public class Tree extends UUPPodEntity {
 	@Override
 	public Tree resetPPodVersionInfo() {
 		if (getAllowResetPPodVersionInfo()) {
-			if (getPPodVersionInfo() == null) {
+			if (getpPodVersionInfo() == null) {
 				// nothing to do
 			} else {
 				for (final TreeSet treeSet : getTreeSets()) {

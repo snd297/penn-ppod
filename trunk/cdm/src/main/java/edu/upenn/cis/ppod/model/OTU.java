@@ -104,9 +104,7 @@ public class OTU extends UUPPodEntityWXmlId {
 	 * @param u see {@code Unmarshaller}
 	 * @param parent see {@code Unmarshaller}
 	 */
-	@Override
 	public void afterUnmarshal(final Unmarshaller u, final Object parent) {
-		super.afterUnmarshal(u, parent);
 		if (parent instanceof OTUSet) {
 			addOTUSet((OTUSet) parent);
 		}
@@ -164,7 +162,7 @@ public class OTU extends UUPPodEntityWXmlId {
 	@Override
 	public OTU resetPPodVersionInfo() {
 		if (getAllowResetPPodVersionInfo()) {
-			if (getPPodVersionInfo() == null) {} else {
+			if (getpPodVersionInfo() == null) {} else {
 				for (final OTUSet otuSet : otuSets) {
 					otuSet.resetPPodVersionInfo();
 				}
