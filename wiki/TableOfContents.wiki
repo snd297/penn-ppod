@@ -1,0 +1,3 @@
+#summary documentation outline
+  * [GettingStarted Getting Started]
+  * [Glossary Glossary]
