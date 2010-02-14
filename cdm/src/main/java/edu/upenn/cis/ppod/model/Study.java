@@ -23,6 +23,7 @@ import static edu.upenn.cis.ppod.util.PPodIterables.findIf;
 import java.util.Collections;
 import java.util.Set;
 
+import javax.annotation.Nullable;
 import javax.persistence.Column;
 import javax.persistence.Entity;
 import javax.persistence.OneToMany;
@@ -149,6 +150,7 @@ public class Study extends UUPPodEntity implements IOTUSetCentricEntities {
 	 * @return the OTU with the given pPOD ID. Returns {@code null} if there is
 	 *         not such {@code OTUSet}
 	 */
+	@Nullable
 	public OTUSet getOTUSetByPPodId(final String pPodId) {
 		return findIf(getOTUSets(), equalTo(pPodId, IUUPPodEntity.getPPodId));
 	}

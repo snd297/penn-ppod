@@ -17,6 +17,7 @@ package edu.upenn.cis.ppod.model;
 
 import java.util.UUID;
 
+import javax.annotation.Nullable;
 import javax.xml.bind.annotation.XmlAttribute;
 import javax.xml.bind.annotation.XmlID;
 
@@ -25,7 +26,8 @@ import javax.xml.bind.annotation.XmlID;
  * 
  * @author Sam Donnelly
  */
-public abstract class UUPPodEntityWXmlId extends UUPPodEntity implements IWXmlID {
+public abstract class UUPPodEntityWXmlId extends UUPPodEntity implements
+		IWXmlID {
 
 	/**
 	 * Intended for referencing elements within a document - be it XML, JSON,
@@ -33,15 +35,20 @@ public abstract class UUPPodEntityWXmlId extends UUPPodEntity implements IWXmlID
 	 * <p>
 	 * Called "docId" and not "xmlId" so that it's format agnostic.
 	 */
+	@Nullable
 	private String docId;
 
 	/**
 	 * Get the {@link XmlID} attribute.
+	 * <p>
+	 * Will be {@code null} until one of the {@code setDocId(...)} are called by
+	 * the client.
 	 * 
 	 * @return the {@code XmlID} attribute
 	 */
 	@XmlAttribute
 	@XmlID
+	@Nullable
 	public String getDocId() {
 		return docId;
 	}
@@ -69,7 +76,7 @@ public abstract class UUPPodEntityWXmlId extends UUPPodEntity implements IWXmlID
 	 *             method is called
 	 */
 	public UUPPodEntityWXmlId setDocId(final String docId) {
-		if (this.docId != null) {
+		if (getDocId() != null) {
 			throw new IllegalStateException("docId was already set");
 		}
 		this.docId = docId;

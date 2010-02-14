@@ -118,6 +118,7 @@ public class CharacterStateRow extends PPodEntity {
 	 */
 	@ManyToOne
 	@JoinColumn(name = CharacterStateMatrix.ID_COLUMN)
+	@Nullable
 	private CharacterStateMatrix matrix;
 
 	CharacterStateRow() {}
@@ -166,7 +167,6 @@ public class CharacterStateRow extends PPodEntity {
 		}
 		cells.clear();
 		cellIdx.clear();
-		resetPPodVersionInfo();
 		return clearedCells;
 	}
 
@@ -195,10 +195,11 @@ public class CharacterStateRow extends PPodEntity {
 	}
 
 	/**
-	 * Getter.
+	 * Getter. {@code null} at object creation.
 	 * 
 	 * @return the {@code CharacterStateMatrix} of which this is a row
 	 */
+	@Nullable
 	public CharacterStateMatrix getMatrix() {
 		return matrix;
 	}
@@ -223,11 +224,15 @@ public class CharacterStateRow extends PPodEntity {
 	}
 
 	/**
+	 * Set the cells of this row.
 	 * 
-	 * @param cells
-	 * @return
+	 * @param cells the cells.
+	 * 
+	 * @return this
+	 * 
 	 * @throws IllegalArgumentException if any of cells are such that {@code
 	 *             cell.getRow() != this}
+	 * @throws IllegalStateException if {@code this.getMatrix() == null}
 	 */
 	public CharacterStateRow setCells(final List<CharacterStateCell> cells) {
 		checkNotNull(cells);

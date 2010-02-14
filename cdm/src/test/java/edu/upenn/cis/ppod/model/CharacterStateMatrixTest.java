@@ -278,7 +278,7 @@ public class CharacterStateMatrixTest {
 	@Inject
 	private Provider<PPodVersionInfo> pPodVersionInfoProvider;
 
-	public void beforeMarshall() {
+	public void beforeMarshal() {
 		nullFillAndSet(matrix.getColumnPPodVersionInfosMutable(), 2,
 				pPodVersionInfoProvider.get().setPPodVersion(3L));
 		nullFillAndSet(matrix.getColumnPPodVersionInfosMutable(), 5,

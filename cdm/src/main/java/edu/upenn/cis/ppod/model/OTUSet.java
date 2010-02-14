@@ -24,6 +24,7 @@ import static edu.upenn.cis.ppod.util.UPennCisPPodUtil.nullSafeEquals;
 import java.util.Collections;
 import java.util.Set;
 
+import javax.annotation.CheckForNull;
 import javax.annotation.Nullable;
 import javax.persistence.Column;
 import javax.persistence.Entity;
@@ -233,13 +234,13 @@ public class OTUSet extends UUPPodEntityWXmlId {
 	 * @return the description
 	 */
 	@XmlAttribute
-	@Nullable
+	@CheckForNull
 	public String getDescription() {
 		return description;
 	}
 
 	/**
-	 * Getter
+	 * Getter. {@code null} when the object is created.
 	 * 
 	 * @return the label
 	 */

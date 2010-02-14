@@ -17,6 +17,7 @@ package edu.upenn.cis.ppod.model;
 
 import java.util.UUID;
 
+import javax.annotation.Nullable;
 import javax.persistence.Column;
 import javax.persistence.MappedSuperclass;
 import javax.xml.bind.annotation.XmlAccessType;
@@ -48,9 +49,11 @@ public abstract class UUPPodEntity extends PPodEntity implements IUUPPodEntity {
 
 	@Column(name = PPOD_ID_COLUMN, unique = true, nullable = false, length = PPOD_ID_COLUMN_LENGTH)
 	@org.hibernate.annotations.Index(name = PPOD_ID_COLUMN_IDX)
+	@Nullable
 	private String pPodId;
 
 	@XmlAttribute
+	@Nullable
 	public String getPPodId() {
 		return pPodId;
 	}
@@ -60,7 +63,7 @@ public abstract class UUPPodEntity extends PPodEntity implements IUUPPodEntity {
 	}
 
 	public UUPPodEntity setPPodId(final String pPodId) {
-		if (this.pPodId != null) {
+		if (getPPodId() != null) {
 			throw new IllegalStateException("pPodId already set");
 		}
 		this.pPodId = pPodId;
