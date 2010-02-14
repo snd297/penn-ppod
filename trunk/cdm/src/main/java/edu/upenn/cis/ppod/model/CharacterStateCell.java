@@ -30,6 +30,7 @@ import java.util.Comparator;
 import java.util.Set;
 import java.util.SortedSet;
 
+import javax.annotation.Nullable;
 import javax.persistence.Column;
 import javax.persistence.Entity;
 import javax.persistence.EnumType;
@@ -102,6 +103,7 @@ public class CharacterStateCell extends PPodEntity {
 
 	/** Position in a {@link CharacterStateRow}. */
 	@Column(name = "POSITION", nullable = false)
+	@Nullable
 	private Integer position;
 
 	static final String TABLE = "CHARACTER_STATE_CELL";
@@ -123,6 +125,7 @@ public class CharacterStateCell extends PPodEntity {
 	 */
 	@ManyToOne(fetch = FetchType.LAZY)
 	@JoinColumn(name = "FIRST_" + CharacterState.ID_COLUMN)
+	@Nullable
 	private CharacterState firstState = null;
 
 	/**
@@ -131,6 +134,7 @@ public class CharacterStateCell extends PPodEntity {
 	@ManyToMany
 	@Sort(type = SortType.COMPARATOR, comparator = CharacterState.CharacterStateComparator.class)
 	@JoinTable(inverseJoinColumns = @JoinColumn(name = CharacterState.ID_COLUMN))
+	@Nullable
 	private SortedSet<CharacterState> states = null;
 
 	/**
@@ -138,6 +142,7 @@ public class CharacterStateCell extends PPodEntity {
 	 * and thereby cause unwanted database hits.
 	 */
 	@Transient
+	@Nullable
 	private Set<CharacterState> xmlStates = null;
 
 	/**
@@ -146,6 +151,7 @@ public class CharacterStateCell extends PPodEntity {
 	 */
 	@Column(name = TYPE_COLUMN)
 	@Enumerated(EnumType.ORDINAL)
+	@Nullable
 	private CharacterStateCell.Type type;
 
 	/**
@@ -277,11 +283,12 @@ public class CharacterStateCell extends PPodEntity {
 	}
 
 	/**
-	 * Get the position.
+	 * Get the position. {@code null} for newly created objects.
 	 * 
 	 * @return the position
 	 */
 	@XmlAttribute
+	@Nullable
 	public Integer getPosition() {
 		return position;
 	}
@@ -351,11 +358,12 @@ public class CharacterStateCell extends PPodEntity {
 	}
 
 	/**
-	 * Get the type of this cell.
+	 * Get the type of this cell. {@code null} when this object is constructed.
 	 * 
 	 * @return the {@code CharacterStateCell.Type}
 	 */
 	@XmlAttribute
+	@Nullable
 	public CharacterStateCell.Type getType() {
 		return type;
 	}
@@ -427,11 +435,12 @@ public class CharacterStateCell extends PPodEntity {
 	/**
 	 * Set the position.
 	 * 
-	 * @param position the position to set
+	 * @param position the position to set, pass in {@code null} if the cell is
+	 *            no longer part of a row
 	 * 
 	 * @return this
 	 */
-	CharacterStateCell setPosition(final Integer position) {
+	CharacterStateCell setPosition(@Nullable final Integer position) {
 		this.position = position;
 		return this;
 	}

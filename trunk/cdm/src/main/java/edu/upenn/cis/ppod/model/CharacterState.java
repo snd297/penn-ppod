@@ -18,6 +18,7 @@ package edu.upenn.cis.ppod.model;
 import static com.google.common.base.Preconditions.checkArgument;
 import static com.google.common.base.Preconditions.checkNotNull;
 
+import javax.annotation.Nullable;
 import javax.persistence.Column;
 import javax.persistence.Entity;
 import javax.persistence.FetchType;
@@ -123,6 +124,7 @@ public class CharacterState extends PPodEntityWXmlId {
 	 * of these objects.
 	 */
 	@Column(name = STATE_NUMBER_COLUMN, nullable = false, updatable = false)
+	@Nullable
 	private Integer stateNumber;
 
 	/**
@@ -137,6 +139,7 @@ public class CharacterState extends PPodEntityWXmlId {
 	 */
 	@ManyToOne(fetch = FetchType.LAZY)
 	@JoinColumn(name = Character.ID_COLUMN)
+	@Nullable
 	private Character character;
 
 	CharacterState() {}
@@ -174,10 +177,12 @@ public class CharacterState extends PPodEntityWXmlId {
 	}
 
 	/**
-	 * Get this character owning character.
+	 * Get this character owning character. Will be {@code null} when newly
+	 * constructed.
 	 * 
 	 * @return this character stateNumber's owning character
 	 */
+	@Nullable
 	public Character getCharacter() {
 		return character;
 	}
@@ -188,6 +193,7 @@ public class CharacterState extends PPodEntityWXmlId {
 	 * @return this character stateNumber's label
 	 */
 	@XmlAttribute(required = true)
+	@Nullable
 	public String getLabel() {
 		return label;
 	}
@@ -195,10 +201,13 @@ public class CharacterState extends PPodEntityWXmlId {
 	/**
 	 * Get the integer value of this character stateNumber. The integer value is
 	 * the heart of the class.
+	 * <p>
+	 * {@code null} when the object is created.
 	 * 
 	 * @return get the integer value of this character stateNumber
 	 */
 	@XmlAttribute
+	@Nullable
 	public Integer getStateNumber() {
 		return stateNumber;
 	}

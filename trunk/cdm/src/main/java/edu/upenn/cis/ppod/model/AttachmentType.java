@@ -17,6 +17,7 @@ package edu.upenn.cis.ppod.model;
 
 import static com.google.common.base.Preconditions.checkNotNull;
 
+import javax.annotation.Nullable;
 import javax.persistence.Column;
 import javax.persistence.Entity;
 import javax.persistence.FetchType;
@@ -51,6 +52,7 @@ public class AttachmentType extends PersistentObjectWXmlId {
 	@ManyToOne(fetch = FetchType.LAZY)
 	@Cascade(org.hibernate.annotations.CascadeType.SAVE_UPDATE)
 	@JoinColumn(name = AttachmentNamespace.ID_COLUMN, nullable = false)
+	@Nullable
 	private AttachmentNamespace namespace;
 
 	@Column(name = LABEL_COLUMN, unique = true, nullable = false, length = LABEL_COLUMN_LENGTH)
@@ -69,12 +71,13 @@ public class AttachmentType extends PersistentObjectWXmlId {
 	}
 
 	/**
-	 * Get the namespace.
+	 * Get the namespace. Will be {@code null} for newly constructed objects.
 	 * 
 	 * @return the namespace
 	 */
 	@XmlAttribute(name = "attachmentNamespaceDocId")
 	@XmlIDREF
+	@Nullable
 	public AttachmentNamespace getNamespace() {
 		return namespace;
 	}

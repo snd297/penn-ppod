@@ -40,6 +40,7 @@ import javax.xml.bind.annotation.XmlIDREF;
 import org.hibernate.annotations.Cascade;
 
 import com.google.common.base.Function;
+import com.google.common.base.Predicate;
 
 import edu.upenn.cis.ppod.util.IVisitor;
 
@@ -97,6 +98,7 @@ public class Attachment extends UUPPodEntityWXmlId {
 	@ManyToOne(fetch = FetchType.LAZY)
 	@JoinColumn(name = AttachmentType.ID_COLUMN, nullable = false)
 	@Cascade(org.hibernate.annotations.CascadeType.SAVE_UPDATE)
+	@Nullable
 	private AttachmentType type;
 
 	/** Like a variable name. */
@@ -173,6 +175,7 @@ public class Attachment extends UUPPodEntityWXmlId {
 	 */
 	@XmlAttribute(name = "attachmentTypeDocId")
 	@XmlIDREF
+	@Nullable
 	public AttachmentType getType() {
 		return type;
 	}
@@ -219,8 +222,7 @@ public class Attachment extends UUPPodEntityWXmlId {
 	 * @return this
 	 */
 	public Attachment setLabel(@Nullable final String label) {
-		checkNotNull(label);
-		if (label.equals(this.label)) {
+		if (nullSafeEquals(label, getLabel())) {
 
 		} else {
 			this.label = label;
@@ -282,6 +284,29 @@ public class Attachment extends UUPPodEntityWXmlId {
 				.append(this.bytesValue).append(TAB).append(")");
 
 		return retValue.toString();
+	}
+
+	public final static class IsOfNamespaceAndType implements
+			Predicate<Attachment> {
+
+		private final String type;
+
+		private final String namespace;
+
+		/**
+		 * @param type
+		 * @param namespace
+		 */
+		public IsOfNamespaceAndType(final String type, final String namespace) {
+			this.type = type;
+			this.namespace = namespace;
+		}
+
+		public boolean apply(final Attachment input) {
+			return input.getType().getNamespace().getLabel().equals(namespace)
+					&& input.getType().getLabel().equals(type);
+		}
+
 	}
 
 }

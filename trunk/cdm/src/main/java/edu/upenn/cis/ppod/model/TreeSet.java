@@ -132,6 +132,7 @@ public class TreeSet extends UUPPodEntityWXmlId {
 	 * @return the label
 	 */
 	@XmlAttribute
+	@Nullable
 	public String getLabel() {
 		return label;
 	}
@@ -141,17 +142,21 @@ public class TreeSet extends UUPPodEntityWXmlId {
 	 * 
 	 * @return the value
 	 */
+	@Nullable
 	public OTUSet getOTUSet() {
 		return otuSet;
 	}
 
 	/**
-	 * Get the tree with the given pPOD id.
+	 * Get the tree with the given pPOD id or {@code null} if {@code pPodId ==
+	 * null}.
 	 * 
 	 * @param pPodId the pPOD id
-	 * @return the tree with the given pPOD id
+	 * @return the tree with the given pPOD id or {@code null} if {@code pPodId
+	 *         == null}
 	 */
-	public Tree getTreeByPPodId(final String pPodId) {
+	@Nullable
+	public Tree getTreeByPPodId(@Nullable final String pPodId) {
 		if (pPodId == null) {
 			return null;
 		}

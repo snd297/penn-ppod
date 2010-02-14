@@ -17,6 +17,7 @@ package edu.upenn.cis.ppod.model;
 
 import java.util.UUID;
 
+import javax.annotation.Nullable;
 import javax.xml.bind.annotation.XmlAttribute;
 import javax.xml.bind.annotation.XmlID;
 
@@ -32,10 +33,12 @@ public abstract class PersistentObjectWXmlId extends PersistentObject implements
 	 * Intended for referencing elements within a document - be it XML, JSON,
 	 * etc. This is distinct from the pPOD Id of {@link UUPPodEntity}.
 	 */
+	@Nullable
 	private String docId;
 
 	@XmlAttribute
 	@XmlID
+	@Nullable
 	public String getDocId() {
 		return docId;
 	}

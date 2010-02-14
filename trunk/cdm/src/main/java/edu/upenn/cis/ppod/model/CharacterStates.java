@@ -91,6 +91,7 @@ public class CharacterStates {
 	 */
 	@ManyToOne(fetch = FetchType.LAZY)
 	@JoinColumn(name = "FIRST_" + CharacterState.ID_COLUMN)
+	@Nullable
 	private CharacterState firstState = null;
 
 	/**
@@ -99,10 +100,12 @@ public class CharacterStates {
 	@ManyToMany
 	@Sort(type = SortType.COMPARATOR, comparator = CharacterState.CharacterStateComparator.class)
 	@JoinTable(inverseJoinColumns = @JoinColumn(name = CharacterState.ID_COLUMN))
+	@Nullable
 	private SortedSet<CharacterState> states = null;
 
 	private boolean xmlStatesNeedsToBePutIntoStates;
 
+	@Nullable
 	private Type type;
 
 	/**

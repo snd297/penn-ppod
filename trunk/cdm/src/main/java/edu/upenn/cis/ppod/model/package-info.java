@@ -13,26 +13,13 @@
  * See the License for the specific language governing permissions and
  * limitations under the License.
  */
-package edu.upenn.cis.ppod.model;
-
-import edu.upenn.cis.ppod.model.CharacterStateMatrix.Type;
 
 /**
- * @author Sam Donnelly
+ * This is the heart of the project: the CDM classes.
  */
-public class CharacterStateMatrixFactory implements
-		ICharacterStateMatrixFactory {
+@DefaultAnnotation(NonNull.class)
+package edu.upenn.cis.ppod.model;
 
-	public CharacterStateMatrix create(final Type type) {
-		switch (type) {
-			case STANDARD:
-				return new CharacterStateMatrix();
-			case DNA:
-				return new DNAStateMatrix();
-			case RNA:
-				return new RNAStateMatrix();
-			default:
-				throw new AssertionError("unknown type " + type);
-		}
-	}
-}
+import edu.umd.cs.findbugs.annotations.DefaultAnnotation;
+import edu.umd.cs.findbugs.annotations.NonNull;
+

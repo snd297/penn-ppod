@@ -35,8 +35,8 @@ import edu.upenn.cis.ppod.thirdparty.util.ChainedInterceptor;
  * N.B., This is not a typical Interceptor implementation, don't use this as a
  * model.
  */
-public final class AccessInterceptor extends ChainedInterceptor implements
-		Interceptor {
+public final class AccessInterceptor extends ChainedInterceptor {
+		
 
 	private final Provider<PPodPermission> permissionFactory;
 

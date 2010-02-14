@@ -29,6 +29,7 @@ import java.util.Collections;
 import java.util.List;
 import java.util.Map;
 
+import javax.annotation.CheckForNull;
 import javax.annotation.Nullable;
 import javax.persistence.Column;
 import javax.persistence.Entity;
@@ -154,6 +155,7 @@ public class CharacterStateMatrix extends UUPPodEntityWXmlId {
 	 */
 	@ManyToOne(fetch = FetchType.LAZY)
 	@JoinColumn(name = OTUSet.ID_COLUMN, nullable = false)
+	@Nullable
 	private OTUSet otuSet;
 
 	/**
@@ -373,13 +375,13 @@ public class CharacterStateMatrix extends UUPPodEntityWXmlId {
 	 * @return the description
 	 */
 	@XmlAttribute
-	@Nullable
+	@CheckForNull
 	public String getDescription() {
 		return description;
 	}
 
 	/**
-	 * Getter.
+	 * Getter. {@code null} when the object is constructed.
 	 * 
 	 * @return the label
 	 */
@@ -411,10 +413,11 @@ public class CharacterStateMatrix extends UUPPodEntityWXmlId {
 	}
 
 	/**
-	 * Getter.
+	 * Getter. Will be {@code null} when object is first created.
 	 * 
 	 * @return this matrix's {@code OTUSet}
 	 */
+	@Nullable
 	public OTUSet getOTUSet() {
 		return otuSet;
 	}
@@ -428,12 +431,16 @@ public class CharacterStateMatrix extends UUPPodEntityWXmlId {
 
 	/**
 	 * Get the row indexed by an OTU.
+	 * <p>
+	 * Will return {@code null} for rows that have had an OTU assigned - through
+	 * {@link #setOTUs(List)} - but have yet to have a row set.
 	 * 
 	 * @param otu the index
 	 * @return the row
 	 * @throws IllegalArgumentException if {@code otu} does not belong to this
 	 *             matrix
 	 */
+	@Nullable
 	public CharacterStateRow getRow(final OTU otu) {
 		checkNotNull(otu);
 		if (getOTUIdx().get(otu) == null) {
@@ -572,7 +579,7 @@ public class CharacterStateMatrix extends UUPPodEntityWXmlId {
 	/**
 	 * Setter.
 	 * 
-	 * @param description the description value
+	 * @param description the description value, {@code null} is allowed
 	 * 
 	 * @return this matrix
 	 */
@@ -636,7 +643,7 @@ public class CharacterStateMatrix extends UUPPodEntityWXmlId {
 			return this;
 		}
 
-		checkState(otuSet != null,
+		checkState(getOTUSet() != null,
 				"otuSet needs to be set before setOTUs(...) is called");
 
 		// We want both newOTUs and this.otuSet to have the same elements

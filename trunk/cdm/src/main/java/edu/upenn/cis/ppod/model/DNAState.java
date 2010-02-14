@@ -91,6 +91,16 @@ public class DNAState extends MolecularState {
 					"stateNumber must be 0, 1, 2, or 3");
 		}
 
+		/**
+		 * Return {@code true} if {@code s} is the string value of {@link #A},
+		 * {@link #C}, {@link #G}, or {@link #T}, {@code false} otherwise.
+		 * 
+		 * @param s see description
+		 * 
+		 * @return Return {@code true} if {@code s} is the string value of
+		 *         {@link #A}, {@link #C}, {@link #G}, or {@link #T}, {@code
+		 *         false} otherwise.
+		 */
 		public static boolean hasOneWithAValueOf(final String s) {
 			checkNotNull(s);
 			if (s.equals(A.toString()) || s.equals(C.toString())
@@ -100,6 +110,16 @@ public class DNAState extends MolecularState {
 			return false;
 		}
 
+		/**
+		 * Return {@code true} if {@code i} is the ordinal value of {@link #A},
+		 * {@link #C}, {@link #G}, or {@link #T}, {@code false} otherwise.
+		 * 
+		 * @param i see description
+		 * 
+		 * @return {@code true} if {@code i} is the ordinal value of {@link #A},
+		 *         {@link #C}, {@link #G}, or {@link #T}, {@code false}
+		 *         otherwise
+		 */
 		public static boolean hasOneWithAValueOf(final int i) {
 			if (A.ordinal() == i || C.ordinal() == i || G.ordinal() == i
 					|| T.ordinal() == i) {

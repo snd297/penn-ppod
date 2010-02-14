@@ -20,6 +20,8 @@ import static com.google.common.collect.Sets.newHashSet;
 import java.util.Collections;
 import java.util.Set;
 
+import javax.annotation.Nullable;
+import javax.annotation.OverridingMethodsMustInvokeSuper;
 import javax.persistence.Column;
 import javax.persistence.Entity;
 import javax.persistence.FetchType;
@@ -37,10 +39,10 @@ import javax.xml.bind.annotation.XmlAttribute;
 import javax.xml.bind.annotation.XmlElement;
 import javax.xml.bind.annotation.XmlIDREF;
 
-import com.google.common.base.Predicate;
 import com.google.common.collect.Iterables;
 import com.google.common.collect.Sets;
 
+import edu.umd.cs.findbugs.annotations.OverrideMustInvoke;
 import edu.upenn.cis.ppod.util.IVisitor;
 
 /**
@@ -69,14 +71,22 @@ public abstract class PPodEntity extends PersistentObject implements
 	 * The pPod-version of this object. Similar in concept to Hibernate's
 	 * version, but tweaked for our purposes.
 	 * <p>
+	 * For better and worse, a {@code null} value is used to indicate that this
+	 * {@code PPodEntity} needs to be assigned a new pPOD version.
+	 * <p>
 	 * Will be saved in {@link PPodVersionInfoInterceptor} and it's because its
 	 * manipulated in there that we need to leave it eagerly fetched.
+	 * 
+	 * @see PPodVersionInfo
+	 * @see PPodVersionInfoInterceptor
 	 */
 	@ManyToOne(fetch = FetchType.EAGER)
 	@JoinColumn(name = PPodVersionInfo.ID_COLUMN, nullable = false)
+	@Nullable
 	private PPodVersionInfo pPodVersionInfo;
 
 	@Transient
+	@Nullable
 	private Long pPodVersion;
 
 	@Transient
@@ -87,6 +97,7 @@ public abstract class PPodEntity extends PersistentObject implements
 
 	@ManyToMany
 	@JoinTable(inverseJoinColumns = { @JoinColumn(name = Attachment.ID_COLUMN) })
+	@Nullable
 	private Set<Attachment> attachments;
 
 	@Column(name = "HAS_ATTACHMENTS", nullable = false)
@@ -100,6 +111,7 @@ public abstract class PPodEntity extends PersistentObject implements
 	}
 
 	@Transient
+	@Nullable
 	private Set<Attachment> attachmentsXml;
 
 	PPodEntity() {}
@@ -128,6 +140,7 @@ public abstract class PPodEntity extends PersistentObject implements
 	 * Take care of any after-unmarshal work that needs to be done after
 	 * xmlidref's are resolved.
 	 */
+	@OverridingMethodsMustInvokeSuper
 	public void afterUnmarshal() {
 		if (attachmentsXml != null) {
 			for (final Attachment attachment : getAttachmentsXml()) {
@@ -143,6 +156,7 @@ public abstract class PPodEntity extends PersistentObject implements
 	 * @param u see {@code Unmarshaller}
 	 * @param parent see {@code Unmarshaller}
 	 */
+	@OverridingMethodsMustInvokeSuper
 	public void afterUnmarshal(final Unmarshaller u, final Object parent) {
 		unsetAllowPersistAndResetPPodVersionInfo();
 	}
@@ -153,6 +167,7 @@ public abstract class PPodEntity extends PersistentObject implements
 	 * @param marshaler see {@code Marshaller}
 	 * @return see {@code Marshaller}
 	 */
+	@OverridingMethodsMustInvokeSuper
 	public boolean beforeMarshal(final Marshaller marshaler) {
 		// Write out the version number for the client of the xml
 		if (pPodVersionInfo != null) {
@@ -191,13 +206,7 @@ public abstract class PPodEntity extends PersistentObject implements
 	public Set<Attachment> getAttachmentsByNamespaceAndType(
 			final String namespace, final String type) {
 		return Sets.newHashSet(Iterables.filter(getAttachments(),
-				new Predicate<Attachment>() {
-					public boolean apply(final Attachment input) {
-						return input.getType().getNamespace().getLabel()
-								.equals(namespace)
-								&& input.getType().getLabel().equals(type);
-					}
-				}));
+				new Attachment.IsOfNamespaceAndType(type, namespace)));
 	}
 
 	@XmlElement(name = "attachmentDocId")
@@ -270,7 +279,15 @@ public abstract class PPodEntity extends PersistentObject implements
 		return this;
 	}
 
-	IPPodEntity setPPodVersionInfo(final PPodVersionInfo pPodVersionInfo) {
+	/**
+	 * Created for testing.
+	 * 
+	 * @param pPodVersionInfo new pPOD version
+	 * 
+	 * @return this
+	 */
+	IPPodEntity setPPodVersionInfo(
+			@Nullable final PPodVersionInfo pPodVersionInfo) {
 		this.pPodVersionInfo = pPodVersionInfo;
 		return this;
 	}
