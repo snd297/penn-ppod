@@ -16,10 +16,7 @@
 package edu.upenn.cis.ppod.model;
 
 import static com.google.common.base.Preconditions.checkNotNull;
-import static com.google.common.base.Predicates.compose;
-import static com.google.common.base.Predicates.equalTo;
 import static com.google.common.collect.Lists.newArrayList;
-import static edu.upenn.cis.ppod.util.PPodIterables.findIf;
 import static edu.upenn.cis.ppod.util.UPennCisPPodUtil.nullSafeEquals;
 
 import java.util.Collections;
@@ -102,16 +99,27 @@ public class TreeSet extends UUPPodEntityWXmlId {
 	 * @param tree see description
 	 * @return {@code true} if this set did not already contain {@code tree}
 	 */
-	public boolean addTree(final Tree tree) {
-		checkNotNull(tree);
-		if (trees.contains(tree)) {
-			return false;
-		}
+// public boolean addTree(final Tree tree) {
+// checkNotNull(tree);
+// if (trees.contains(tree)) {
+// return false;
+// }
+//
+// trees.add(tree);
+// tree.addTreeSet(this);
+// resetPPodVersionInfo();
+// return true;
+// }
 
-		trees.add(tree);
-		tree.addTreeSet(this);
+	public TreeSet setTrees(final List<Tree> trees) {
+		checkNotNull(trees);
+		if (trees.equals(getTrees())) {
+			return this;
+		}
+		trees.clear();
+		trees.addAll(trees);
 		resetPPodVersionInfo();
-		return true;
+		return this;
 	}
 
 	/**
@@ -120,9 +128,7 @@ public class TreeSet extends UUPPodEntityWXmlId {
 	 * @param u See {@code Unmarshaller}
 	 * @param parent {@code Unmarshaller}
 	 */
-	@Override
 	public void afterUnmarshal(final Unmarshaller u, final Object parent) {
-		super.afterUnmarshal(u, parent);
 		this.otuSet = (OTUSet) parent;
 	}
 
@@ -145,23 +151,6 @@ public class TreeSet extends UUPPodEntityWXmlId {
 	@Nullable
 	public OTUSet getOTUSet() {
 		return otuSet;
-	}
-
-	/**
-	 * Get the tree with the given pPOD id or {@code null} if {@code pPodId ==
-	 * null}.
-	 * 
-	 * @param pPodId the pPOD id
-	 * @return the tree with the given pPOD id or {@code null} if {@code pPodId
-	 *         == null}
-	 */
-	@Nullable
-	public Tree getTreeByPPodId(@Nullable final String pPodId) {
-		if (pPodId == null) {
-			return null;
-		}
-		return findIf(getTrees(), compose(equalTo(pPodId),
-				IUUPPodEntity.getPPodId));
 	}
 
 	/**
@@ -189,18 +178,18 @@ public class TreeSet extends UUPPodEntityWXmlId {
 	 * 
 	 * @param tree see description.
 	 */
-	public void removeTree(final Tree tree) {
-		final boolean treeWasRemoved = trees.remove(tree);
-		tree.removeTreeSet(this);
-		if (treeWasRemoved) {
-			resetPPodVersionInfo();
-		}
-	}
+// public void removeTree(final Tree tree) {
+// final boolean treeWasRemoved = trees.remove(tree);
+// tree.removeTreeSet(this);
+// if (treeWasRemoved) {
+// resetPPodVersionInfo();
+// }
+// }
 
 	@Override
 	public TreeSet resetPPodVersionInfo() {
 		if (getAllowResetPPodVersionInfo()) {
-			if (getPPodVersionInfo() == null) {
+			if (getpPodVersionInfo() == null) {
 
 			} else {
 				if (otuSet != null) {

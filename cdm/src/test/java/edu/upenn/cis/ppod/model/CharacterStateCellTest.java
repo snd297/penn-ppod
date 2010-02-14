@@ -80,7 +80,7 @@ public class CharacterStateCellTest {
 		final OTUSet otuSet = otuSetProvider.get();
 
 		final OTU otu0 = otuProvider.get().setLabel("otu0");
-		otuSet.addOTU(otu0);
+		otuSet.setOTUs(newHashSet(otu0));
 		matrix.setOTUSet(otuSet);
 		matrix.setOTUs(newArrayList(otu0));
 

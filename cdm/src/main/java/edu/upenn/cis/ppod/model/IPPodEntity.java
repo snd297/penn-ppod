@@ -45,16 +45,7 @@ public interface IPPodEntity extends IPersistentObject, IAttachee,
 	 */
 	PersistentObject unsetAllowPersistAndResetPPodVersionInfo();
 
-	/**
-	 * If {@code true} then is pPOD entity should not be written to the
-	 * database. Also, calling {@code resetPPodVersionInfo(PPodVersionInfo)}
-	 * will have no effect.
-	 * <p>
-	 * See {@code setDoNotPersist()}
-	 * 
-	 * @return see description
-	 */
-	boolean getAllowPersist();
+
 
 	boolean getAllowResetPPodVersionInfo();
 

@@ -158,7 +158,6 @@ public class CharacterState extends PPodEntityWXmlId {
 	 * @param parent see {@code Unmarshaller} javadoc on
 	 *            <em>Unmarshal Event Callbacks</em>
 	 */
-	@Override
 	public void afterUnmarshal(final Unmarshaller u, final Object parent) {
 	// We do this in Character - why? Does it have to do with the fact that
 	// CharacterState's are stored in Character in a Map?
@@ -220,7 +219,7 @@ public class CharacterState extends PPodEntityWXmlId {
 	@Override
 	public CharacterState resetPPodVersionInfo() {
 		if (getAllowResetPPodVersionInfo()) {
-			if (getPPodVersionInfo() == null) {
+			if (getpPodVersionInfo() == null) {
 
 			} else if (getAllowResetPPodVersionInfo()) {
 				character.resetPPodVersionInfo();

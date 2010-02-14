@@ -1,7 +1,9 @@
 package edu.upenn.cis.ppod.model;
 
 import static com.google.common.collect.Lists.newArrayList;
+import static com.google.common.collect.Sets.newHashSet;
 
+import java.util.Collections;
 import java.util.List;
 
 import org.testng.annotations.BeforeMethod;
@@ -9,6 +11,7 @@ import org.testng.annotations.Test;
 
 import com.google.inject.Inject;
 import com.google.inject.Provider;
+import com.sun.xml.bind.v2.runtime.reflect.Lister.CollectionLister;
 
 import edu.upenn.cis.ppod.TestGroupDefs;
 
@@ -49,7 +52,7 @@ public class CharacterStateRowTest {
 		matrix.setOTUSet(otuSetProvider.get());
 		rowIdxs = newArrayList();
 		rowIdxs.add(otuProvider.get().setLabel("OTU-0"));
-		matrix.getOTUSet().addOTU(rowIdxs.get(0));
+		matrix.getOTUSet().setOTUs(newHashSet(rowIdxs.get(0)));
 		matrix.setOTUs(rowIdxs);
 		matrix.setRow(rowIdxs.get(0), rowProvider.get());
 		matrix.addCharacter(characterProvider.get().setLabel("CHARACTER-0"));
@@ -73,7 +76,7 @@ public class CharacterStateRowTest {
 
 	@Test(expectedExceptions = IllegalStateException.class)
 	public void addCellToMatrixThatHasNoCharacters() {
-		matrix.clearCharacters();
+		matrix.setCharacters((List<Character>) Collections.EMPTY_LIST);
 
 		// Just call setUnassigned so that the cell is in a legal state - it
 		// shouldn't really matterJust call setUnassigned so that the cell is in

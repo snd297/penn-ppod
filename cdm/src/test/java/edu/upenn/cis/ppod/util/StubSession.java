@@ -101,8 +101,7 @@ public class StubSession implements Session {
 	}
 
 	public void delete(Object object) throws HibernateException {
-		// TODO Auto-generated method stub
-		throw new UnsupportedOperationException();
+		return;
 	}
 
 	public void delete(String entityName, Object object)

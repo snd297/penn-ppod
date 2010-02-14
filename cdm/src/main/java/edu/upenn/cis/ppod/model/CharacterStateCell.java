@@ -204,12 +204,10 @@ public class CharacterStateCell extends PPodEntity {
 	 * @param u see {@code Unmarshaller}
 	 * @param parent see {@code Unmarshaller}
 	 */
-	@Override
 	public void afterUnmarshal(final Unmarshaller u, final Object parent) {
 		row = (CharacterStateRow) parent; // don't setRow call because it'll
 		// reset the ppod version info
 		xmlStatesNeedsToBePutIntoStates = true;
-		super.afterUnmarshal(u, parent);
 	}
 
 	/**
@@ -387,7 +385,7 @@ public class CharacterStateCell extends PPodEntity {
 	@Override
 	public CharacterStateCell resetPPodVersionInfo() {
 		if (getAllowResetPPodVersionInfo()) {
-			if (getPPodVersionInfo() == null) {
+			if (getpPodVersionInfo() == null) {
 
 			} else {
 				row.resetPPodVersionInfo();

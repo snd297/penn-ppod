@@ -16,15 +16,18 @@
 package edu.upenn.cis.ppod.saveorupdate;
 
 import static com.google.common.base.Preconditions.checkNotNull;
-import static com.google.common.collect.Sets.newHashSet;
+import static com.google.common.collect.Lists.newArrayList;
+import static edu.upenn.cis.ppod.util.PPodIterables.equalTo;
+import static edu.upenn.cis.ppod.util.PPodIterables.findIf;
 
+import java.util.List;
 import java.util.Map;
-import java.util.Set;
 import java.util.Map.Entry;
 
 import com.google.inject.Inject;
 import com.google.inject.Provider;
 
+import edu.upenn.cis.ppod.model.IUUPPodEntity;
 import edu.upenn.cis.ppod.model.OTU;
 import edu.upenn.cis.ppod.model.OTUSet;
 import edu.upenn.cis.ppod.model.Tree;
@@ -56,25 +59,14 @@ public class MergeTreeSet implements IMergeTreeSet {
 
 		targetTreeSet.setLabel(sourceTreeSet.getLabel());
 
-		final Set<Tree> dbTreesToBeRemoved = newHashSet();
-
-		// Get rid of deleted trees
-		for (final Tree dbTree : targetTreeSet.getTrees()) {
-			if (null == sourceTreeSet.getTreeByPPodId(dbTree.getPPodId())) {
-				dbTreesToBeRemoved.add(dbTree);
-			}
-		}
-
-		for (final Tree dbTreeToBeRemoved : dbTreesToBeRemoved) {
-			targetTreeSet.removeTree(dbTreeToBeRemoved);
-		}
+		final List<Tree> newTargetTrees = newArrayList();
 
 		for (final Tree sourceTree : sourceTreeSet.getTrees()) {
 			Tree targetTree;
-			if (null == (targetTree = targetTreeSet.getTreeByPPodId(sourceTree
-					.getPPodId()))) {
+			if (null == (targetTree = findIf(targetTreeSet.getTrees(), equalTo(
+					sourceTree.getPPodId(), IUUPPodEntity.getPPodId)))) {
 				targetTree = treeProvider.get();
-				targetTreeSet.addTree(targetTree);
+				newTargetTrees.add(targetTree);
 				targetTree.setPPodId();
 			}
 			String targetNewick = sourceTree.getNewick();
@@ -88,6 +80,7 @@ public class MergeTreeSet implements IMergeTreeSet {
 			targetTree.setNewick(targetNewick);
 			targetTree.setLabel(sourceTree.getLabel());
 		}
+		targetTreeSet.setTrees(newTargetTrees);
 		return targetTreeSet;
 	}
 }

@@ -97,7 +97,7 @@ public class HibernateUtil {
 
 			// Build and store (either in JNDI or static variable)
 			rebuildSessionFactory(configuration);
-			
+
 			pPodVersionInfoInterceptor.setSessionFactory(getSessionFactory());
 
 			logger

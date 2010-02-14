@@ -138,9 +138,7 @@ public class Character extends UUPPodEntityWXmlId {
 	 * @param u see {@code Unmarshaller}
 	 * @param parent see {@code Unmarshaller}
 	 */
-	@Override
 	public void afterUnmarshal(final Unmarshaller u, final Object parent) {
-		super.afterUnmarshal(u, parent);
 		if (getStates().size() > 0
 				&& get(getStates().values(), 0).getCharacter() == null) {
 			for (final CharacterState state : getStates().values()) {
@@ -209,7 +207,7 @@ public class Character extends UUPPodEntityWXmlId {
 
 	@Override
 	public Character resetPPodVersionInfo() {
-		if (getPPodVersionInfo() == null) {
+		if (getpPodVersionInfo() == null) {
 
 		} else if (getAllowResetPPodVersionInfo()) {
 			for (final CharacterStateMatrix matrix : matrices) {

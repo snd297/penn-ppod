@@ -15,7 +15,7 @@
  */
 package edu.upenn.cis.ppod.model;
 
-import edu.upenn.cis.ppod.model.CharacterStateMatrix.Type;
+import edu.upenn.cis.ppod.model.ICharacterStateMatrix.Type;
 
 /**
  * @author Sam Donnelly

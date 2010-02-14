@@ -24,7 +24,6 @@ import javax.annotation.Nullable;
 import javax.annotation.OverridingMethodsMustInvokeSuper;
 import javax.persistence.Column;
 import javax.persistence.Entity;
-import javax.persistence.FetchType;
 import javax.persistence.Inheritance;
 import javax.persistence.InheritanceType;
 import javax.persistence.JoinColumn;
@@ -39,10 +38,11 @@ import javax.xml.bind.annotation.XmlAttribute;
 import javax.xml.bind.annotation.XmlElement;
 import javax.xml.bind.annotation.XmlIDREF;
 
+import org.hibernate.annotations.AccessType;
+
 import com.google.common.collect.Iterables;
 import com.google.common.collect.Sets;
 
-import edu.umd.cs.findbugs.annotations.OverrideMustInvoke;
 import edu.upenn.cis.ppod.util.IVisitor;
 
 /**
@@ -70,27 +70,23 @@ public abstract class PPodEntity extends PersistentObject implements
 	/**
 	 * The pPod-version of this object. Similar in concept to Hibernate's
 	 * version, but tweaked for our purposes.
-	 * <p>
-	 * For better and worse, a {@code null} value is used to indicate that this
-	 * {@code PPodEntity} needs to be assigned a new pPOD version.
-	 * <p>
-	 * Will be saved in {@link PPodVersionInfoInterceptor} and it's because its
-	 * manipulated in there that we need to leave it eagerly fetched.
 	 * 
 	 * @see PPodVersionInfo
 	 * @see PPodVersionInfoInterceptor
 	 */
-	@ManyToOne(fetch = FetchType.EAGER)
+	@AccessType("property")
+	@ManyToOne
 	@JoinColumn(name = PPodVersionInfo.ID_COLUMN, nullable = false)
 	@Nullable
 	private PPodVersionInfo pPodVersionInfo;
 
+	/** Does this object need to be assigned a new pPOD version? */
+	@Transient
+	private boolean inNeedOfNewPPodVersionInfo = true;
+
 	@Transient
 	@Nullable
 	private Long pPodVersion;
-
-	@Transient
-	boolean allowPersist = true;
 
 	@Transient
 	boolean allowResetPPodVersionInfo = true;
@@ -157,7 +153,7 @@ public abstract class PPodEntity extends PersistentObject implements
 	 * @param parent see {@code Unmarshaller}
 	 */
 	@OverridingMethodsMustInvokeSuper
-	public void afterUnmarshal(final Unmarshaller u, final Object parent) {
+	public void beforeUnmarshal(final Unmarshaller u, final Object parent) {
 		unsetAllowPersistAndResetPPodVersionInfo();
 	}
 
@@ -175,10 +171,6 @@ public abstract class PPodEntity extends PersistentObject implements
 		}
 		getAttachmentsXml().addAll(getAttachments());
 		return true;
-	}
-
-	public boolean getAllowPersist() {
-		return allowPersist;
 	}
 
 	public boolean getAllowResetPPodVersionInfo() {
@@ -226,7 +218,7 @@ public abstract class PPodEntity extends PersistentObject implements
 		return pPodVersion;
 	}
 
-	public PPodVersionInfo getPPodVersionInfo() {
+	public PPodVersionInfo getpPodVersionInfo() {
 		return pPodVersionInfo;
 	}
 
@@ -255,8 +247,7 @@ public abstract class PPodEntity extends PersistentObject implements
 	 */
 	public PPodEntity resetPPodVersionInfo() {
 		if (getAllowResetPPodVersionInfo()) {
-			pPodVersionInfo = null;
-			pPodVersion = null;
+			inNeedOfNewPPodVersionInfo = true;
 		}
 		return this;
 	}
@@ -280,16 +271,28 @@ public abstract class PPodEntity extends PersistentObject implements
 	}
 
 	/**
-	 * Created for testing.
+	 * Created for testing an Hibernate because this has access type "property".
+	 * <p>
+	 * NOTE: the weird name is on purpose so that Hibernate can identity it as
+	 * the setter.
 	 * 
 	 * @param pPodVersionInfo new pPOD version
 	 * 
 	 * @return this
 	 */
-	IPPodEntity setPPodVersionInfo(
-			@Nullable final PPodVersionInfo pPodVersionInfo) {
+	PersistentObject setpPodVersionInfo(final PPodVersionInfo pPodVersionInfo) {
 		this.pPodVersionInfo = pPodVersionInfo;
+		unsetInNeedOfNewPPodVersionInfo();
 		return this;
+	}
+
+	public PPodEntity unsetInNeedOfNewPPodVersionInfo() {
+		inNeedOfNewPPodVersionInfo = false;
+		return this;
+	}
+
+	public boolean isInNeedOfNewPPodVersionInfo() {
+		return inNeedOfNewPPodVersionInfo;
 	}
 
 	/**

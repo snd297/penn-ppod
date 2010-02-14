@@ -118,4 +118,14 @@ public final class PPodPermission extends DomainPermission implements
 	public PPodPermission accept(IVisitor visitor) {
 		throw new UnsupportedOperationException();
 	}
+
+	public boolean getAllowPersist() {
+		// TODO Auto-generated method stub
+		throw new UnsupportedOperationException();
+	}
+
+
+	public PPodPermission setAllowPersist(final Boolean allowPersist) {
+		throw new UnsupportedOperationException();
+	}
 }

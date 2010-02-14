@@ -144,8 +144,8 @@ public class MatrixToDbTest extends DbTestBase {
 								+ "']");
 
 				for (final Element otuSetOTUElement : otuSetOTUElements) {
-					otuSet.addOTU(initialDataSetToOTUMap.get(new Long(
-							otuSetOTUElement.attributeValue(OTU.ID_COLUMN))));
+					// otuSet.addOTU(initialDataSetToOTUMap.get(new Long(
+					// otuSetOTUElement.attributeValue(OTU.ID_COLUMN))));
 				}
 				otuSetDAO.saveOrUpdate(otuSet); // this'll save the OTU's too
 			}
@@ -211,15 +211,15 @@ public class MatrixToDbTest extends DbTestBase {
 					// METHOD, new Integer(matrixPhyloCharElement
 					// .attributeValue(Character.TABLE
 					// + "_POSITION")));
-					phyloCharMatrix
-							.setCharacter(
-									new Integer(
-											matrixPhyloCharElement
-													.attributeValue(CharacterStateMatrix.CHARACTERS_INDEX_COLUMN)),
-									initialDataSetIdToPhyloCarMap
-											.get(new Long(
-													matrixPhyloCharElement
-															.attributeValue(Character.ID_COLUMN))));
+// phyloCharMatrix
+// .setCharacter(
+// new Integer(
+// matrixPhyloCharElement
+// .attributeValue(CharacterStateMatrix.CHARACTERS_INDEX_COLUMN)),
+// initialDataSetIdToPhyloCarMap
+// .get(new Long(
+// matrixPhyloCharElement
+// .attributeValue(Character.ID_COLUMN))));
 				}
 
 				@SuppressWarnings("unchecked")
@@ -299,8 +299,8 @@ public class MatrixToDbTest extends DbTestBase {
 					for (final Element sortedCellElement : sortedCellElements
 							.values()) {
 						// logger.debug("cellElement: {}", sortedCellElement);
-//						final CharacterStateCell phyloCharMatrixCell = phyloCharMatrixRow
-//								.addCell(new CharacterStateCell());
+// final CharacterStateCell phyloCharMatrixCell = phyloCharMatrixRow
+// .addCell(new CharacterStateCell());
 
 // phyloCharMatrixCell
 // .setType(CharacterStateCell.Type

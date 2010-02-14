@@ -20,6 +20,7 @@ import javax.persistence.Column;
 import javax.persistence.GeneratedValue;
 import javax.persistence.Id;
 import javax.persistence.MappedSuperclass;
+import javax.persistence.Transient;
 import javax.persistence.Version;
 import javax.xml.bind.annotation.XmlAccessType;
 import javax.xml.bind.annotation.XmlAccessorType;
@@ -46,6 +47,9 @@ public abstract class PersistentObject implements IPersistentObject {
 	@Version
 	@Column(name = "OBJ_VERSION")
 	private Integer version;
+
+	@Transient
+	protected boolean allowPersist = true;
 
 	/** Default constructor. */
 	protected PersistentObject() {}
@@ -84,5 +88,9 @@ public abstract class PersistentObject implements IPersistentObject {
 				"version=").append(this.version).append(TAB).append(")");
 
 		return retValue.toString();
+	}
+
+	public boolean getAllowPersist() {
+		return allowPersist;
 	}
 }
