@@ -86,6 +86,22 @@ public class TreeSet extends UUPPodEntityWXmlId {
 		return this;
 	}
 
+	/**
+	 * Scaffolding codes that does two things:
+	 * <ol>
+	 * <li>Removes <code>tree</code> from this <code>TreeSet</code>'s
+	 * constituent <code>Tree</code>s.</li>
+	 * <li>Removes this <code>TreeSet
+	 * </code> from <code> tree</code>'s <code>TreeSet</code>s.
+	 * </li>
+	 * </ol>
+	 * So it takes care of both sides of the <code>TreeSet</code><->
+	 * <code>Tree</code> relationship.
+	 * 
+	 * @param newTrees the new trees to be set
+	 * 
+	 * @return this
+	 */
 	public TreeSet setTrees(final List<Tree> newTrees) {
 		checkNotNull(newTrees);
 		if (newTrees.equals(getTrees())) {
@@ -116,7 +132,7 @@ public class TreeSet extends UUPPodEntityWXmlId {
 	}
 
 	/**
-	 * Get the label.
+	 * Get the label. Will be {@code null} when the object is first contructed.
 	 * 
 	 * @return the label
 	 */
@@ -147,44 +163,13 @@ public class TreeSet extends UUPPodEntityWXmlId {
 		return Collections.unmodifiableList(trees);
 	}
 
-	/**
-	 * Scaffolding codes that does two things:
-	 * <ol>
-	 * <li>Removes <code>tree</code> from this <code>TreeSet</code>'s
-	 * constituent <code>Tree</code>s.</li>
-	 * <li>Removes this <code>TreeSet
-	 * </code> from <code> tree</code>'s <code>TreeSet</code>s.
-	 * </li>
-	 * </ol>
-	 * So it takes care of both sides of the <code>TreeSet</code><->
-	 * <code>Tree</code> relationship.
-	 * 
-	 * @param tree see description.
-	 * 
-	 * @return {@code true} if the tree was removed, {@code false} if it wasn't
-	 *         present to begin with
-	 */
-// public boolean removeTree(final Tree tree) {
-// final boolean treeWasRemoved = trees.remove(tree);
-// if (treeWasRemoved) {
-// tree.removeTreeSet(this);
-// resetPPodVersionInfo();
-// }
-// return treeWasRemoved;
-// }
-
 	@Override
 	public TreeSet resetPPodVersionInfo() {
-		if (getAllowResetPPodVersionInfo()) {
-			if (isInNeedOfNewPPodVersionInfo()) {
-
-			} else {
-				if (otuSet != null) {
-					otuSet.resetPPodVersionInfo();
-				}
-				super.resetPPodVersionInfo();
-			}
+		if (getOTUSet() != null) {
+			getOTUSet().resetPPodVersionInfo();
 		}
+		super.resetPPodVersionInfo();
+
 		return this;
 	}
 

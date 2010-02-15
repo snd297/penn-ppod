@@ -22,6 +22,7 @@ import static edu.upenn.cis.ppod.util.UPennCisPPodUtil.nullSafeEquals;
 import java.util.Arrays;
 import java.util.Set;
 
+import javax.annotation.CheckForNull;
 import javax.annotation.Nullable;
 import javax.persistence.Column;
 import javax.persistence.Entity;
@@ -103,15 +104,18 @@ public class Attachment extends UUPPodEntityWXmlId {
 
 	/** Like a variable name. */
 	@Column(name = "LABEL", nullable = true)
+	@CheckForNull
 	private String label;
 
 	// TODO: this is set to unique only to allow lookups of Character's mesquite
 	// id's. See bug Bugzilla 128
 	@Column(name = STRING_VALUE_COLUMN, nullable = true, unique = true)
+	@CheckForNull
 	private String stringValue;
 
 	@Lob
 	@Column(name = BYTES_VALUE_COLUMN, nullable = true)
+	@CheckForNull
 	private byte[] bytesValue;
 
 	/** Objects to which this {@code Attachment} is attached. */
@@ -141,7 +145,7 @@ public class Attachment extends UUPPodEntityWXmlId {
 	 * @return the byteArrayValue
 	 */
 	@XmlElement
-	@Nullable
+	@CheckForNull
 	public byte[] getBytesValue() {
 		return bytesValue;
 	}
@@ -152,7 +156,7 @@ public class Attachment extends UUPPodEntityWXmlId {
 	 * @return the label
 	 */
 	@XmlAttribute
-	@Nullable
+	@CheckForNull
 	public String getLabel() {
 		return label;
 	}
@@ -163,7 +167,7 @@ public class Attachment extends UUPPodEntityWXmlId {
 	 * @return the value.
 	 */
 	@XmlAttribute
-	@Nullable
+	@CheckForNull
 	public String getStringValue() {
 		return stringValue;
 	}

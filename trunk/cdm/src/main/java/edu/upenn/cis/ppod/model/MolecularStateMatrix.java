@@ -27,22 +27,27 @@ import java.util.Map;
 public abstract class MolecularStateMatrix extends CharacterStateMatrix {
 
 	/**
-	 * Set all of the characters of the molecular matrix. All of the characters
-	 * must be {@code .equals} to each other and must be
-	 * {@link MolecularCharacter}s.
+	 * Set all of the characters of the molecular matrix.
 	 * <p>
-	 * Because they could be proxies, this method does not verify that all
-	 * members of {@code newMolecularCharacters} are of the correct type.
+	 * All of the characters must be {@code .equals} to each other. This
+	 * condition does not hold for
+	 * {@link CharacterStateMatrix#setCharacters(List)}.
+	 * <p>
+	 * All of the characters must be {@link IMolecularCharacter}s. This
+	 * condition does not hold for
+	 * {@link CharacterStateMatrix#setCharacters(List)}.
 	 * <p>
 	 * Assumes that none of {@code newMolecularCharacters} are detached.
 	 * 
 	 * @param newMolecularCharacters the new {@code MolecularCharacter}s to be
-	 *            added.
+	 *            added
 	 * 
 	 * @return this
 	 * 
-	 * @throws IllegalArgumentException if all of {@code dnaCharacters} are not
-	 *             {@code .equal} to each other
+	 * @throws IllegalArgumentException if all of {@code newMolecularCharacters}
+	 *             are not {@code .equals} to each other
+	 * @throws IllegalArgumentException if any of {@code newMolecularCharacter}
+	 *             are not {@code IMolecularCharacter}s
 	 */
 	@Override
 	public MolecularStateMatrix setCharacters(
@@ -50,14 +55,36 @@ public abstract class MolecularStateMatrix extends CharacterStateMatrix {
 
 		checkNotNull(newMolecularCharacters);
 
-		for (final Character dnaCharacter : newMolecularCharacters) {
-			checkArgument(dnaCharacter.equals(newMolecularCharacters.get(0)),
+		for (final Character newMolecularCharacter : newMolecularCharacters) {
+			checkArgument(newMolecularCharacter.equals(newMolecularCharacters
+					.get(0)),
 					"all characters must be .equals() in a molecular matrix");
+			checkArgument(newMolecularCharacter instanceof IMolecularCharacter,
+					"all newMolecularCharacters must be IMolecularCharacter's, found a "
+							+ newMolecularCharacter.getClass()
+									.getCanonicalName());
+		}
+
+		if (getCharacters().size() == newMolecularCharacters.size()) {
+			// They are the same, nothing to do
+			return this;
+		}
+
+		if (getCharacters().size() != getColumnPPodVersionInfos().size()) {
+			throw new AssertionError(
+					"programming error: getCharacters() and getColumnPPodVersionInfos() should always be the same size");
 		}
 
 		while (getCharacters().size() < newMolecularCharacters.size()) {
 			getCharactersMutable().add(newMolecularCharacters.get(0));
 			getColumnPPodVersionInfosMutable().add(null);
+		}
+
+		while (getCharacters().size() > newMolecularCharacters.size()) {
+			getCharactersMutable().remove(getCharacters().size() - 1);
+			getColumnPPodVersionInfosMutable().remove(
+					getColumnPPodVersionInfos().size() - 1);
+
 		}
 
 		newMolecularCharacters.get(0).addMatrix(this);

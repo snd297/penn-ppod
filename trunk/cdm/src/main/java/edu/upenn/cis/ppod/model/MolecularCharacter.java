@@ -27,7 +27,8 @@ import javax.persistence.MappedSuperclass;
  * @author Sam Donnelly
  */
 @MappedSuperclass
-public class MolecularCharacter extends Character {
+public class MolecularCharacter extends Character implements
+		IMolecularCharacter {
 
 	/**
 	 * This column should be the same as {@link Character#getLabel()} and is

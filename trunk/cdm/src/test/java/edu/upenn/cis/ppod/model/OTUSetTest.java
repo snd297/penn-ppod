@@ -68,15 +68,6 @@ public class OTUSetTest {
 		study.addOTUSet(otuSet);
 	}
 
-	public void getOTUByPPodId() {
-		assertEquals(otuSet.getOTUByPPodId(otus.get(1).getPPodId()), otus
-				.get(1));
-	}
-
-	public void getOTUByNullPPodId() {
-		assertNull(otuSet.getOTUByPPodId(null));
-	}
-
 	@Test(expectedExceptions = IllegalArgumentException.class)
 	public void addOTUWDuplicateLabel() {
 		otus.add(otuProvider.get().setLabel(otus.get(0).getLabel()));

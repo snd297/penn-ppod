@@ -15,6 +15,7 @@
  */
 package edu.upenn.cis.ppod.model;
 
+import static com.google.common.base.Preconditions.checkArgument;
 import static com.google.common.base.Preconditions.checkNotNull;
 import static com.google.common.collect.Sets.newHashSet;
 import static edu.upenn.cis.ppod.util.PPodIterables.equalTo;
@@ -97,11 +98,13 @@ public class OTUSet extends UUPPodEntityWXmlId {
 	private final Set<TreeSet> treeSets = newHashSet();
 
 	/** Free-form description. */
-	@Column(name = "DESCRIPTION")
+	@Column(name = "DESCRIPTION", nullable = true)
+	@CheckForNull
 	private String description;
 
 	@ManyToOne(fetch = FetchType.LAZY)
 	@JoinColumn(name = Study.ID_COLUMN)
+	@CheckForNull
 	private Study study;
 
 	OTUSet() {}
@@ -166,7 +169,7 @@ public class OTUSet extends UUPPodEntityWXmlId {
 		if (dupNameOTU == null || otu.equals(dupNameOTU)) {
 
 		} else {
-			throw new IllegalArgumentException("OTUSet labeled '" + getLabel()
+			checkArgument(false, "OTUSet labeled '" + getLabel()
 					+ "' already has an OTU labeled '" + otu.getLabel() + "'");
 		}
 		if (otus.add(otu)) {
@@ -213,22 +216,6 @@ public class OTUSet extends UUPPodEntityWXmlId {
 	}
 
 	/**
-	 * Equivalent to calling {@link #removeOTU(OTU)} on each of this OTU set's
-	 * OTUs.
-	 * <p>
-	 * Note, this will reset the pPOD version if the OTU set is non-empty.
-	 * 
-	 * @return the OTUs that were removed
-	 */
-// public Set<OTU> clearOTUs() {
-// final Set<OTU> toBeClearedOTUs = newHashSet(otus);
-// for (final OTU otu : toBeClearedOTUs) {
-// removeOTU(otu);
-// }
-// return toBeClearedOTUs;
-// }
-
-	/**
 	 * Getter.
 	 * 
 	 * @return the description
@@ -251,10 +238,9 @@ public class OTUSet extends UUPPodEntityWXmlId {
 	}
 
 	/**
-	 * Get an unmodifiable view of the matrices to which refer to this OTU set.
+	 * Get an unmodifiable view of the matrices which refer to this OTU set.
 	 * 
-	 * @return an unmodifiable view of the matrices to which refer to this OTU
-	 *         set
+	 * @return an unmodifiable view of the matrices which refer to this OTU set
 	 */
 	public Set<CharacterStateMatrix> getMatrices() {
 		return Collections.unmodifiableSet(matrices);
@@ -264,18 +250,6 @@ public class OTUSet extends UUPPodEntityWXmlId {
 	@SuppressWarnings("unused")
 	private Set<CharacterStateMatrix> getMatricesMutable() {
 		return matrices;
-	}
-
-	/**
-	 * Return the {@code OTU}, if any, with id {@code pPodId}, or
-	 * <code>null</code> if there is no such {@code OTU}, or <code>null</code>
-	 * if {@code pPodId == null}.
-	 * 
-	 * @param pPodId the pPOD id of the <code>OTU</code> that we're looking for
-	 * @return see description.
-	 */
-	public OTU getOTUByPPodId(final String pPodId) {
-		return findIf(getOTUs(), equalTo(pPodId, IUUPPodEntity.getPPodId));
 	}
 
 	/**
@@ -290,17 +264,17 @@ public class OTUSet extends UUPPodEntityWXmlId {
 	}
 
 	@XmlElement(name = "otu")
-	@SuppressWarnings("unused")
 	private Set<OTU> getOTUsMutable() {
 		return otus;
 	}
 
 	/**
-	 * Get the study to which this OTU set belongs.
+	 * Get the study to which this OTU set belongs. Will be {@code null} until
+	 * this is added to a {@code Study}.
 	 * 
 	 * @return the study to which this OTU set belongs
 	 */
-	@Nullable
+	@CheckForNull
 	public Study getStudy() {
 		return study;
 	}
@@ -339,6 +313,16 @@ public class OTUSet extends UUPPodEntityWXmlId {
 		return false;
 	}
 
+	/**
+	 * If any of {@link #getOTUs()} are not in {@code newOTUs} then this {@code
+	 * OTUSet} is removed from those {@code getOTUs()}. That is, if this method
+	 * is effectively <em>removing</em> any of this sets's original OTUs, then
+	 * the {@code OTU->OTUSet} relationship is severed.
+	 * 
+	 * @param newOTUs
+	 * 
+	 * @return this
+	 */
 	public OTUSet setOTUs(final Set<OTU> newOTUs) {
 		checkNotNull(newOTUs);
 		if (newOTUs.equals(this.otus)) {
@@ -393,16 +377,10 @@ public class OTUSet extends UUPPodEntityWXmlId {
 	 */
 	@Override
 	public OTUSet resetPPodVersionInfo() {
-		if (getAllowResetPPodVersionInfo()) {
-			if (isInNeedOfNewPPodVersionInfo()) {
-
-			} else {
-				if (getStudy() != null) {
-					getStudy().resetPPodVersionInfo();
-				}
-				super.resetPPodVersionInfo();
-			}
+		if (getStudy() != null) {
+			getStudy().resetPPodVersionInfo();
 		}
+		super.resetPPodVersionInfo();
 		return this;
 	}
 
@@ -448,7 +426,6 @@ public class OTUSet extends UUPPodEntityWXmlId {
 		} else {
 			this.study = study;
 			resetPPodVersionInfo();
-
 		}
 		return this;
 	}
