@@ -48,13 +48,11 @@ public class PPodVersionInfo extends PersistentObject {
 	final static String PPOD_VERSION_INFO_FIELD = "pPodVersionInfo";
 
 	/** Global pPOD version. */
-	@XmlAttribute
 	@Column(name = "PPOD_VERSION", unique = true, nullable = false)
 	@org.hibernate.annotations.Index(name = "IDX_PPOD_VERSION")
 	private Long pPodVersion;
 
 	/** Record the creation time of this record. */
-	@XmlAttribute
 	@Column(name = "CREATED", nullable = false)
 	private Date created;
 
@@ -68,6 +66,7 @@ public class PPodVersionInfo extends PersistentObject {
 	 * 
 	 * @return a copy of the creation date
 	 */
+	@XmlAttribute
 	public Date getCreated() {
 		return (Date) created.clone();
 	}
@@ -77,6 +76,7 @@ public class PPodVersionInfo extends PersistentObject {
 	 * 
 	 * @return the pPOD version number
 	 */
+	@XmlAttribute
 	public Long getPPodVersion() {
 		return pPodVersion;
 	}
@@ -99,7 +99,7 @@ public class PPodVersionInfo extends PersistentObject {
 	 * <p>
 	 * Intentionally package-private: we don't want for these to be manipulated
 	 * outside of the package: use {@link HibernateUtil#openSession()} to start
-	 * session that will create these.
+	 * a session that will create these.
 	 * 
 	 * @param pPodVersion the pPOD version number
 	 * 
