@@ -28,8 +28,6 @@ import javax.persistence.Lob;
 import javax.persistence.ManyToMany;
 import javax.persistence.Table;
 import javax.xml.bind.Unmarshaller;
-import javax.xml.bind.annotation.XmlAccessType;
-import javax.xml.bind.annotation.XmlAccessorType;
 import javax.xml.bind.annotation.XmlAttribute;
 import javax.xml.bind.annotation.XmlElement;
 
@@ -38,7 +36,6 @@ import javax.xml.bind.annotation.XmlElement;
  * 
  * @author Sam Donnelly
  */
-@XmlAccessorType(XmlAccessType.NONE)
 @Entity
 @Table(name = "TREE")
 public class Tree extends UUPPodEntity {
@@ -150,7 +147,7 @@ public class Tree extends UUPPodEntity {
 	@Override
 	public Tree resetPPodVersionInfo() {
 		if (getAllowResetPPodVersionInfo()) {
-			if (getpPodVersionInfo() == null) {
+			if (isInNeedOfNewPPodVersionInfo()) { 
 				// nothing to do
 			} else {
 				for (final TreeSet treeSet : getTreeSets()) {
