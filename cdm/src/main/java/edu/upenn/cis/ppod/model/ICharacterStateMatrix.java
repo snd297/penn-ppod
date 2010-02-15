@@ -1,13 +1,12 @@
 package edu.upenn.cis.ppod.model;
 
-import java.util.Collections;
 import java.util.List;
 
 import javax.xml.bind.annotation.XmlType;
 
 /**
  * @author Sam Donnelly
- *
+ * 
  */
 public interface ICharacterStateMatrix {
 
@@ -19,10 +18,10 @@ public interface ICharacterStateMatrix {
 	public static enum Type {
 		/** A {@link DNAStateMatrix}. */
 		DNA,
-	
+
 		/** An {@link RNAStateMatrix}. */
 		RNA,
-	
+
 		/** A standard {@link CharacterStateMatrix}. */
 		STANDARD;
 	}
@@ -36,5 +35,8 @@ public interface ICharacterStateMatrix {
 	 * @return an unmodifiable view of the columns' {@code PPodVersionInfo}s
 	 */
 	public List<PPodVersionInfo> getColumnPPodVersionInfos();
+
+	public ICharacterStateMatrix setColumnPPodVersionInfo(int pos,
+			PPodVersionInfo pPodVersionInfo);
 
 }
