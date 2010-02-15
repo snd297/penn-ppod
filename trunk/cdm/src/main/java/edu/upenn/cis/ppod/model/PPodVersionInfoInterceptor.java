@@ -114,10 +114,12 @@ public class PPodVersionInfoInterceptor extends EmptyInterceptor {
 							.getColumnPPodVersionInfos();
 					for (int j = 0; j < columnPPodVersionInfos.size(); j++) {
 						if (columnPPodVersionInfos.get(j) == null) {
-							columnPPodVersionInfos.set(j,
-									pPodVersionInfosBySession
-											.get(sessionFactory
-													.getCurrentSession()));
+							((ICharacterStateMatrix) entity)
+									.setColumnPPodVersionInfo(
+											j,
+											pPodVersionInfosBySession
+													.get(sessionFactory
+															.getCurrentSession()));
 						}
 					}
 				}

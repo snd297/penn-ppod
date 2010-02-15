@@ -102,7 +102,7 @@ public class CharacterStateMatrix extends UUPPodEntityWXmlId implements
 	final List<PPodVersionInfo> columnPPodVersionInfos = newArrayList();
 
 	@Transient
-	private final List<Boolean> isInNeedOfColumnPPodVersionInfo = newArrayList();
+	private final List<Boolean> isInNeedOfColumnPPodVersionInfos = newArrayList();
 
 	@XmlElement(name = "columnPPodVersion")
 	@Transient
@@ -192,19 +192,6 @@ public class CharacterStateMatrix extends UUPPodEntityWXmlId implements
 		return this;
 	}
 
-	public ICharacterStateMatrix setCharacters(final List<Character> characters) {
-		checkNotNull(characters);
-		if (characters.equals(this.characters)) {
-			return this;
-		}
-		clearCharacters();
-		for (int i = 0; i < characters.size(); i++) {
-			setCharacter(i, characters.get(i));
-		}
-		resetPPodVersionInfo();
-		return this;
-	}
-
 	/**
 	 * Take actions after unmarshalling that need to occur after
 	 * {@link #afterUnmarshal(Unmarshaller, Object)} is called, specifically
@@ -254,24 +241,6 @@ public class CharacterStateMatrix extends UUPPodEntityWXmlId implements
 			}
 		}
 		return true;
-	}
-
-	/**
-	 * Remove this matrix's characters and return them.
-	 * 
-	 * @return the removed characters
-	 */
-	private List<Character> clearCharacters() {
-		final List<Character> clearedCharacters = newArrayList(characters);
-		if (getCharacters().size() == 0) {
-			return clearedCharacters;
-		}
-		getCharactersMutable().clear();
-		getCharacterIdxMutable().clear();
-
-		// columnPPodVersionInfos.clear();
-		resetPPodVersionInfo();
-		return clearedCharacters;
 	}
 
 	/**
@@ -330,7 +299,7 @@ public class CharacterStateMatrix extends UUPPodEntityWXmlId implements
 	 * @return an unmodifiable view of the columns' {@code PPodVersionInfo}s
 	 */
 	public List<PPodVersionInfo> getColumnPPodVersionInfos() {
-		return columnPPodVersionInfos;
+		return Collections.unmodifiableList(columnPPodVersionInfos);
 	}
 
 	/**
@@ -530,51 +499,44 @@ public class CharacterStateMatrix extends UUPPodEntityWXmlId implements
 	 * @return the {@code Character} previously at that position or {@code null}
 	 *         if there was no such {@code Character}
 	 */
-	@Nullable
-	private Character setCharacter(final int characterIdx,
-			final Character character) {
-		checkNotNull(character);
+	public CharacterStateMatrix setCharacters(final List<Character> characters) {
+		checkNotNull(characters);
 
 		// We leave this instanceof here since it is at worst ineffectual w/
 		// proxies, but
 		// it should still help us on the client side where hibernate is not a
 		// factor.
-		if (character instanceof MolecularCharacter) {
-			throw new AssertionError(
-					"character should not be a MolecularCharacter");
+		for (final Character character : characters) {
+			if (character instanceof MolecularCharacter) {
+				throw new AssertionError(
+						"character should not be a MolecularCharacter");
+			}
 		}
 
-		if (getCharacters().size() > characterIdx
-				&& character.equals(getCharacters().get(characterIdx))) {
-			// Nothing to do
-			return character;
-		}
-		nullFill(getCharactersMutable(), characterIdx + 1);
-		nullFill(columnPPodVersionInfos, characterIdx + 1);
-		nullFill(isInNeedOfColumnPPodVersionInfo, characterIdx + 1);
-		Collections.fill(isInNeedOfColumnPPodVersionInfo, Boolean.FALSE);
-
-		Character oldCharacter = null;
-
-		final Integer newCharacterOriginalIdx = this.characterIdx
-				.get(character);
-		if (newCharacterOriginalIdx != null) {
-			getCharactersMutable().set(newCharacterOriginalIdx, null);
-			// resetColumnPPodVersion(newCharacterOriginalIdx);
-		}
-		oldCharacter = getCharacters().get(characterIdx);
-		if (oldCharacter != null) {
-			this.characterIdx.remove(oldCharacter);
+		if (characters.equals(getCharacters())) {
+			return this;
 		}
 
-		getCharactersMutable().set(characterIdx, character);
-		this.characterIdx.put(character, characterIdx);
-		character.addMatrix(this);
+		getCharactersMutable().clear();
+		getCharacterIdxMutable().clear();
+
+		nullFill(columnPPodVersionInfos, characters.size());
+
+		while (isInNeedOfColumnPPodVersionInfos.size() < getCharacters().size()) {
+			isInNeedOfColumnPPodVersionInfos.add(Boolean.TRUE);
+		}
+
+		getCharactersMutable().addAll(characters);
+
+		int characterPosition = 0;
+		for (final Character character : getCharacters()) {
+			getCharacterIdxMutable().put(character, characterPosition++);
+			character.addMatrix(this);
+		}
 
 		// the matrix has changed
 		resetPPodVersionInfo();
-
-		return oldCharacter;
+		return this;
 	}
 
 	/**
@@ -779,6 +741,12 @@ public class CharacterStateMatrix extends UUPPodEntityWXmlId implements
 	 */
 	protected ICharacterStateMatrix setType(final Type type) {
 		this.type = type;
+		return this;
+	}
+
+	public ICharacterStateMatrix setColumnPPodVersionInfo(int pos,
+			PPodVersionInfo pPodVersionInfo) {
+		getColumnPPodVersionInfosMutable().set(pos, pPodVersionInfo);
 		return this;
 	}
 }
