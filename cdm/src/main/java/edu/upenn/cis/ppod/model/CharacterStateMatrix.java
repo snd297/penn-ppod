@@ -237,7 +237,7 @@ public class CharacterStateMatrix extends UUPPodEntityWXmlId implements
 	}
 
 	@Override
-	public boolean beforeMarshal(final Marshaller marshaller) {
+	public boolean beforeMarshal(@Nullable final Marshaller marshaller) {
 		super.beforeMarshal(marshaller);
 		for (final PPodVersionInfo columnVersionInfo : getColumnPPodVersionInfos()) {
 			if (columnVersionInfo == null) {

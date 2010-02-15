@@ -126,11 +126,13 @@ public class CharacterStateCell extends PPodEntity {
 	 */
 	@ManyToOne(fetch = FetchType.LAZY)
 	@JoinColumn(name = "FIRST_" + CharacterState.ID_COLUMN)
-	@Nullable
+	@CheckForNull
 	private CharacterState firstState = null;
 
 	/**
 	 * The heart of the cell: the states.
+	 * <p>
+	 * Will be {@code null} when first created, but is generally not-null.
 	 */
 	@ManyToMany
 	@Sort(type = SortType.COMPARATOR, comparator = CharacterState.CharacterStateComparator.class)
@@ -143,14 +145,14 @@ public class CharacterStateCell extends PPodEntity {
 	 * and thereby cause unwanted database hits.
 	 */
 	@Transient
-	@Nullable
+	@CheckForNull
 	private Set<CharacterState> xmlStates = null;
 
 	/**
 	 * Does this cell have a single state?, multiple states?, is it unassigned?,
 	 * or inapplicable?
 	 */
-	@Column(name = TYPE_COLUMN)
+	@Column(name = TYPE_COLUMN, nullable = false)
 	@Enumerated(EnumType.ORDINAL)
 	@Nullable
 	private CharacterStateCell.Type type;
@@ -377,7 +379,9 @@ public class CharacterStateCell extends PPodEntity {
 		if (getRow() != null) {
 			getRow().resetPPodVersionInfo();
 			if (getPosition() != null) {
-				getRow().getMatrix().resetColumnPPodVersion(getPosition());
+				if (getRow().getMatrix() != null) {
+					getRow().getMatrix().resetColumnPPodVersion(getPosition());
+				}
 			}
 		}
 		super.resetPPodVersionInfo();

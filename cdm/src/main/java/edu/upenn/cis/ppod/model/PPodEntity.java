@@ -68,6 +68,8 @@ public abstract class PPodEntity extends PersistentObject implements
 
 	static final String TABLE = "PPOD_ENTITY";
 
+	static final String ID_COLUMN = TABLE + "_ID";
+
 	/**
 	 * The pPod-version of this object. Similar in concept to Hibernate's
 	 * version, but tweaked for our purposes.
@@ -95,7 +97,7 @@ public abstract class PPodEntity extends PersistentObject implements
 	boolean allowResetPPodVersionInfo = true;
 
 	@ManyToMany
-	@JoinTable(inverseJoinColumns = { @JoinColumn(name = Attachment.ID_COLUMN) })
+	@JoinTable(joinColumns = @JoinColumn(name = ID_COLUMN), inverseJoinColumns = @JoinColumn(name = Attachment.ID_COLUMN))
 	@Nullable
 	private Set<Attachment> attachments;
 
@@ -167,7 +169,7 @@ public abstract class PPodEntity extends PersistentObject implements
 	 * @return see {@code Marshaller}
 	 */
 	@OverridingMethodsMustInvokeSuper
-	public boolean beforeMarshal(final Marshaller marshaler) {
+	public boolean beforeMarshal(@Nullable final Marshaller marshaler) {
 		// Write out the version number for the client of the xml
 		if (pPodVersionInfo != null) {
 			pPodVersion = pPodVersionInfo.getPPodVersion();
@@ -226,12 +228,17 @@ public abstract class PPodEntity extends PersistentObject implements
 	}
 
 	public boolean removeAttachment(final Attachment attachment) {
-		final boolean attachmentRemoved = attachments.remove(attachment);
-		if (attachmentRemoved) {
-			resetPPodVersionInfo();
-		}
-		if (attachments.size() == 0) {
-			hasAttachments = false;
+		Boolean attachmentRemoved;
+		if (!hasAttachments) {
+			attachmentRemoved = false;
+		} else {
+			attachmentRemoved = attachments.remove(attachment);
+			if (attachmentRemoved) {
+				resetPPodVersionInfo();
+			}
+			if (attachments.size() == 0) {
+				hasAttachments = false;
+			}
 		}
 		return attachmentRemoved;
 	}
