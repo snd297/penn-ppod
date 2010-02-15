@@ -4,8 +4,11 @@
 	<test name="one">
 		<classes>
 			<class name="edu.upenn.cis.ppod.FactorySetup" />
-			<class
-				name="edu.upenn.cis.ppod.saveorupdate.MergeCharacterStateMatrixTest" />
+			<class name="edu.upenn.cis.ppod.model.CharacterStateRowTest">
+				<methods>
+					<include name="addCellToMatrixThatHasNoCharacters" />
+				</methods>
+			</class>
 		</classes>
 	</test>
 </suite>

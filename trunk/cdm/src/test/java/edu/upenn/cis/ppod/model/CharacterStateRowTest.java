@@ -11,7 +11,6 @@ import org.testng.annotations.Test;
 
 import com.google.inject.Inject;
 import com.google.inject.Provider;
-import com.sun.xml.bind.v2.runtime.reflect.Lister.CollectionLister;
 
 import edu.upenn.cis.ppod.TestGroupDefs;
 

@@ -18,6 +18,7 @@ package edu.upenn.cis.ppod.model;
 import static com.google.common.base.Preconditions.checkArgument;
 import static com.google.common.base.Preconditions.checkNotNull;
 
+import javax.annotation.CheckForNull;
 import javax.annotation.Nullable;
 import javax.persistence.Column;
 import javax.persistence.Entity;
@@ -139,7 +140,7 @@ public class CharacterState extends PPodEntityWXmlId {
 	 */
 	@ManyToOne(fetch = FetchType.LAZY)
 	@JoinColumn(name = Character.ID_COLUMN)
-	@Nullable
+	@CheckForNull
 	private Character character;
 
 	CharacterState() {}
@@ -218,14 +219,10 @@ public class CharacterState extends PPodEntityWXmlId {
 	 */
 	@Override
 	public CharacterState resetPPodVersionInfo() {
-		if (getAllowResetPPodVersionInfo()) {
-			if (getpPodVersionInfo() == null) {
-
-			} else if (getAllowResetPPodVersionInfo()) {
-				character.resetPPodVersionInfo();
-				super.resetPPodVersionInfo();
-			}
+		if (character != null) {
+			character.resetPPodVersionInfo();
 		}
+		super.resetPPodVersionInfo();
 		return this;
 	}
 

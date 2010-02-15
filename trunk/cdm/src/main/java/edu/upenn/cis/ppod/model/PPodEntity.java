@@ -248,6 +248,7 @@ public abstract class PPodEntity extends PersistentObject implements
 	 * 
 	 * @return this {@code PPodEntity}
 	 */
+	@OverridingMethodsMustInvokeSuper
 	public PPodEntity resetPPodVersionInfo() {
 		if (getAllowResetPPodVersionInfo()) {
 			inNeedOfNewPPodVersionInfo = true;

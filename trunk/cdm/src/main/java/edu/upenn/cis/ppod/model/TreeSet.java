@@ -39,6 +39,8 @@ import javax.xml.bind.annotation.XmlElement;
 
 import org.hibernate.annotations.Cascade;
 
+import com.sun.source.util.Trees;
+
 import edu.upenn.cis.ppod.util.IVisitor;
 
 /**
@@ -67,12 +69,16 @@ public class TreeSet extends UUPPodEntityWXmlId {
 	private OTUSet otuSet;
 
 	/** The set of {@code Tree}s this {@code TreeSet} contains. */
-	@XmlElement(name = "tree")
 	@ManyToMany
 	@Cascade(org.hibernate.annotations.CascadeType.SAVE_UPDATE)
 	@JoinTable(name = TABLE + "_" + Tree.TABLE, joinColumns = { @JoinColumn(name = TreeSet.ID_COLUMN) }, inverseJoinColumns = { @JoinColumn(name = PersistentObject.ID_COLUMN) })
 	@org.hibernate.annotations.IndexColumn(name = "TREE_POSITION")
 	private final List<Tree> trees = newArrayList();
+
+	@XmlElement(name = "tree")
+	private List<Tree> getTreesMutable() {
+		return trees;
+	}
 
 	TreeSet() {}
 
@@ -82,42 +88,21 @@ public class TreeSet extends UUPPodEntityWXmlId {
 		return this;
 	}
 
-	/**
-	 * Scaffolding code that does two things:
-	 * <ol>
-	 * <li>Adds <code>tree</code> to this <code>TreeSet</code>'s constituent
-	 * <code>Tree</code>s.</li>
-	 * <li>Adds this <code>TreeSet</code> to <code>tree
-	 * </code>'s <code>TreeSet</code>s.</li>
-	 * </ol>
-	 * So it takes care of both sides of the <code>TreeSet</code><->
-	 * <code>Tree</code> relationship.
-	 * <p>
-	 * This method assumes that {@code tree} is not in a Hibernate-detached
-	 * state.
-	 * 
-	 * @param tree see description
-	 * @return {@code true} if this set did not already contain {@code tree}
-	 */
-// public boolean addTree(final Tree tree) {
-// checkNotNull(tree);
-// if (trees.contains(tree)) {
-// return false;
-// }
-//
-// trees.add(tree);
-// tree.addTreeSet(this);
-// resetPPodVersionInfo();
-// return true;
-// }
-
-	public TreeSet setTrees(final List<Tree> trees) {
-		checkNotNull(trees);
-		if (trees.equals(getTrees())) {
+	public TreeSet setTrees(final List<Tree> newTrees) {
+		checkNotNull(newTrees);
+		if (newTrees.equals(getTrees())) {
 			return this;
 		}
-		this.trees.clear();
-		this.trees.addAll(trees);
+		for (final Tree tree : getTrees()) {
+			if (!newTrees.contains(tree)) {
+				tree.removeTreeSet(this);
+			}
+		}
+		getTreesMutable().clear();
+		getTreesMutable().addAll(newTrees);
+		for (final Tree tree : getTrees()) {
+			tree.addTreeSet(this);
+		}
 		resetPPodVersionInfo();
 		return this;
 	}
@@ -177,19 +162,23 @@ public class TreeSet extends UUPPodEntityWXmlId {
 	 * <code>Tree</code> relationship.
 	 * 
 	 * @param tree see description.
+	 * 
+	 * @return {@code true} if the tree was removed, {@code false} if it wasn't
+	 *         present to begin with
 	 */
-// public void removeTree(final Tree tree) {
+// public boolean removeTree(final Tree tree) {
 // final boolean treeWasRemoved = trees.remove(tree);
-// tree.removeTreeSet(this);
 // if (treeWasRemoved) {
+// tree.removeTreeSet(this);
 // resetPPodVersionInfo();
 // }
+// return treeWasRemoved;
 // }
 
 	@Override
 	public TreeSet resetPPodVersionInfo() {
 		if (getAllowResetPPodVersionInfo()) {
-			if (isInNeedOfNewPPodVersionInfo()) { 
+			if (isInNeedOfNewPPodVersionInfo()) {
 
 			} else {
 				if (otuSet != null) {
