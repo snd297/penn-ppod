@@ -66,9 +66,9 @@ public class MergeTreeSet implements IMergeTreeSet {
 			if (null == (targetTree = findIf(targetTreeSet.getTrees(), equalTo(
 					sourceTree.getPPodId(), IUUPPodEntity.getPPodId)))) {
 				targetTree = treeProvider.get();
-				newTargetTrees.add(targetTree);
 				targetTree.setPPodId();
 			}
+			newTargetTrees.add(targetTree);
 			String targetNewick = sourceTree.getNewick();
 			for (final Entry<OTU, OTU> mergedOTUBySourceOTU : mergedOTUsBySourceOTU
 					.entrySet()) {

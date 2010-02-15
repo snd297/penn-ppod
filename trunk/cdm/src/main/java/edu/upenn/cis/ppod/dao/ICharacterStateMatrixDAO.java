@@ -19,6 +19,7 @@ import java.util.List;
 import java.util.Set;
 
 import edu.upenn.cis.ppod.model.CharacterStateMatrix;
+import edu.upenn.cis.ppod.model.ICharacterStateMatrix;
 import edu.upenn.cis.ppod.model.Study;
 import edu.upenn.cis.ppod.util.IPair;
 
@@ -45,7 +46,7 @@ public interface ICharacterStateMatrixDAO extends
 	 * @return a matrix given its pPOD id, or {@code null} if there is no such
 	 *         matrix
 	 */
-	CharacterStateMatrix getByPPodId(String pPodId);
+	ICharacterStateMatrix getByPPodId(String pPodId);
 
 	/**
 	 * Get a (pPOD ID, Study label) pair for every {@link CharacterStateMatrix}

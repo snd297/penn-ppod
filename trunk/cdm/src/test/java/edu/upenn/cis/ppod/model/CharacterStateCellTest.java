@@ -84,8 +84,9 @@ public class CharacterStateCellTest {
 		matrix.setOTUSet(otuSet);
 		matrix.setOTUs(newArrayList(otu0));
 
-		final Character character0 = matrix.addCharacter(characterProvider
-				.get().setLabel("character0"));
+		final Character character0 = characterProvider.get().setLabel(
+				"character0");
+		matrix.setCharacters(newArrayList(character0));
 		final CharacterStateRow row0 = rowProvider.get();
 		matrix.setRow(matrix.getOTUs().get(0), row0);
 

@@ -55,7 +55,8 @@ public class CharacterStateRowTest {
 		matrix.getOTUSet().setOTUs(newHashSet(rowIdxs.get(0)));
 		matrix.setOTUs(rowIdxs);
 		matrix.setRow(rowIdxs.get(0), rowProvider.get());
-		matrix.addCharacter(characterProvider.get().setLabel("CHARACTER-0"));
+		matrix.setCharacters(newArrayList(characterProvider.get().setLabel(
+				"CHARACTER-0")));
 	}
 
 	public void addCellToMatrixWOneCharacter() {

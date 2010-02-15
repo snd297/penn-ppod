@@ -385,7 +385,7 @@ public class CharacterStateCell extends PPodEntity {
 	@Override
 	public CharacterStateCell resetPPodVersionInfo() {
 		if (getAllowResetPPodVersionInfo()) {
-			if (getpPodVersionInfo() == null) {
+			if (isInNeedOfNewPPodVersionInfo()) {
 
 			} else {
 				row.resetPPodVersionInfo();

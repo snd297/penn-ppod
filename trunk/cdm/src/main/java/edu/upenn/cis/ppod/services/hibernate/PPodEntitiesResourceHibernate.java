@@ -28,6 +28,7 @@ import com.google.inject.Inject;
 import com.google.inject.Provider;
 
 import edu.upenn.cis.ppod.model.CharacterStateMatrix;
+import edu.upenn.cis.ppod.model.ICharacterStateMatrix;
 import edu.upenn.cis.ppod.model.OTU;
 import edu.upenn.cis.ppod.model.OTUSet;
 import edu.upenn.cis.ppod.model.TreeSet;
@@ -101,7 +102,7 @@ public class PPodEntitiesResourceHibernate implements
 				// Note that otu set may have already been added in any of the
 				// other if clauses: Hibernate identity takes care of us
 				pPodEntities.addOTUSet(otuSet);
-			} else if (queryResult instanceof CharacterStateMatrix) {
+			} else if (queryResult instanceof ICharacterStateMatrix) {
 
 				final CharacterStateMatrix matrix = (CharacterStateMatrix) queryResult;
 				matrix.unsetAllowPersistAndResetPPodVersionInfo();
