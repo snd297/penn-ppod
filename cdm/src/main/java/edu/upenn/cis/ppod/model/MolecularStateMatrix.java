@@ -27,45 +27,44 @@ import java.util.Map;
 public abstract class MolecularStateMatrix extends CharacterStateMatrix {
 
 	/**
-	 * Set the {@code Character} at {@code characterIdx}.
+	 * Set all of the characters of the molecular matrix. All of the characters
+	 * must be {@code .equals} to each other and must be
+	 * {@link MolecularCharacter}s.
 	 * <p>
-	 * If {@code getCharacters().size() <= characterIdx}, then this method pads
-	 * {@code getCharacters()} with {@code character}. NOTE: this is because in
-	 * a {@code MolecularStateMatrix} all characters are the same instance.
+	 * Because they could be proxies, this method does not verify that all
+	 * members of {@code newMolecularCharacters} are of the correct type.
 	 * <p>
-	 * This method is does not reorder the columns of the matrix, unlike {@code
-	 * setOTUs(List)} which reorders rows.
+	 * Assumes that none of {@code newMolecularCharacters} are detached.
 	 * 
-	 * @param characterIdx index
-	 * @param character value
+	 * @param newMolecularCharacters the new {@code MolecularCharacter}s to be
+	 *            added.
 	 * 
-	 * @return the {@code Character} previously at that position or {@code null}
-	 *         if there was no such {@code Character}
+	 * @return this
+	 * 
+	 * @throws IllegalArgumentException if all of {@code dnaCharacters} are not
+	 *             {@code .equal} to each other
 	 */
 	@Override
 	public MolecularStateMatrix setCharacters(
-			final List<Character> dnaCharacters) {
+			final List<? extends Character> newMolecularCharacters) {
 
-		checkNotNull(dnaCharacters);
+		checkNotNull(newMolecularCharacters);
 
-		if (getCharacters().size() > 0) {
-			for (final Character dnaCharacter : dnaCharacters) {
-				checkArgument(dnaCharacter.equals(dnaCharacters.get(0)),
-						"all characters must be .equals() in a molecular matrix");
-			}
+		for (final Character dnaCharacter : newMolecularCharacters) {
+			checkArgument(dnaCharacter.equals(newMolecularCharacters.get(0)),
+					"all characters must be .equals() in a molecular matrix");
 		}
 
-		while (getCharacters().size() < dnaCharacters.size()) {
-			getCharactersMutable().add(dnaCharacters.get(0));
+		while (getCharacters().size() < newMolecularCharacters.size()) {
+			getCharactersMutable().add(newMolecularCharacters.get(0));
 			getColumnPPodVersionInfosMutable().add(null);
 		}
 
-		dnaCharacters.get(0).addMatrix(this);
+		newMolecularCharacters.get(0).addMatrix(this);
 
 		// the matrix has changed
 		resetPPodVersionInfo();
 
-		// Try to stick with the contract even though it's a little funny
 		return this;
 	}
 

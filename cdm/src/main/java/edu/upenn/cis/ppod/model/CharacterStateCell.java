@@ -30,6 +30,7 @@ import java.util.Comparator;
 import java.util.Set;
 import java.util.SortedSet;
 
+import javax.annotation.CheckForNull;
 import javax.annotation.Nullable;
 import javax.persistence.Column;
 import javax.persistence.Entity;
@@ -157,12 +158,10 @@ public class CharacterStateCell extends PPodEntity {
 	/**
 	 * The {@code CharacterStateRow} to which this {@code CharacterStateCell}
 	 * belongs.
-	 * <p>
-	 * Not persisted. It's up to the client to set after db retrieval this for
-	 * pPOD version propagation and state checking.
 	 */
 	@ManyToOne
 	@JoinColumn(name = CharacterStateRow.ID_COLUMN)
+	@CheckForNull
 	private CharacterStateRow row;
 
 	/**
@@ -216,49 +215,39 @@ public class CharacterStateCell extends PPodEntity {
 	@Override
 	public boolean beforeMarshal(final Marshaller marshaller) {
 
-		if (type == null) {
-			// Let's not marshal it if it's in a bad state
-			throw new IllegalStateException(
-					"can't marshal a cell without a type");
-		}
+		// Let's not marshal it if it's in a bad state
+		checkState(type != null, "can't marshal a cell without a type");
+
 		getXmlStates().addAll(getStates());
 		return super.beforeMarshal(marshaller);
 
 	}
 
 	private void checkIncomingState(final CharacterState state) {
-		if (getRow() == null) {
-			throw new IllegalStateException(
-					"this cell has not been assigned a row");
-		}
+		checkState(getRow() != null, "this cell has not been assigned a row");
+		checkState(getRow().getMatrix() != null,
+				"this cell's row has not had a matrix assigned");
 
-		if (getRow().getMatrix() == null) {
-			throw new IllegalStateException(
-					"this cell's row has not had a matrix assigned");
-		}
+		checkState(
+				getRow().getMatrix().getCharacters().size() >= getPosition(),
+				"this cell's column hasn't been assigned a character");
 
-		if (getRow().getMatrix().getCharacters().size() < getPosition()
-				|| null == getRow().getMatrix().getCharacters().get(
-						getPosition())) {
-			throw new IllegalStateException(
-					"this cell's column hasn't been assigned a character");
-		}
+		checkState(null != getRow().getMatrix().getCharacters().get(
+				getPosition()),
+				"this cell's column hasn't been assigned a character");
 
-		if (getPosition() == null) {
-			throw new IllegalStateException(
-					"the position of this cell has net been set");
-		}
+		checkState(getPosition() != null,
+				"the position of this cell has net been set");
 
 		final Character thisCellsCharacter = getRow().getMatrix()
 				.getCharacters().get(getPosition());
 
-		if (!state.getCharacter().equals(thisCellsCharacter)) {
-			throw new IllegalArgumentException(
-					"state is from the wrong Character. We want "
-							+ getRow().getMatrix().getCharacters().get(
-									getRow().getCellIdx().get(this)).getLabel()
-							+ " but got " + state.getCharacter().getLabel());
-		}
+		checkArgument(state.getCharacter().equals(thisCellsCharacter),
+				"state is from the wrong Character. We want "
+						+ getRow().getMatrix().getCharacters().get(
+								getRow().getCellIdx().get(this)).getLabel()
+						+ " but got " + state.getCharacter().getLabel());
+
 	}
 
 	/**
@@ -292,11 +281,12 @@ public class CharacterStateCell extends PPodEntity {
 	}
 
 	/**
-	 * Getter.
+	 * Getter. This will return {@code null} until the cell is added to a row.
 	 * 
 	 * @return the {@code CharacterStateRow} to which this {@code
 	 *         CharacterStateCell} belongs
 	 */
+	@CheckForNull
 	public CharacterStateRow getRow() {
 		return row;
 	}
@@ -384,14 +374,13 @@ public class CharacterStateCell extends PPodEntity {
 
 	@Override
 	public CharacterStateCell resetPPodVersionInfo() {
-		if (getAllowResetPPodVersionInfo()) {
-			if (isInNeedOfNewPPodVersionInfo()) {
-
-			} else {
-				row.resetPPodVersionInfo();
-				super.resetPPodVersionInfo();
+		if (getRow() != null) {
+			getRow().resetPPodVersionInfo();
+			if (getPosition() != null) {
+				getRow().getMatrix().resetColumnPPodVersion(getPosition());
 			}
 		}
+		super.resetPPodVersionInfo();
 		return this;
 	}
 

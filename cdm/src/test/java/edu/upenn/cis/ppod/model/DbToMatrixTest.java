@@ -98,7 +98,7 @@ public class DbToMatrixTest extends DbTestBase {
 									+ "']");
 					Assert.assertTrue(cellElements.size() > 0);
 					for (final Element cellElement : cellElements) {
-						final CharacterStateCell phyloCharMatrixCell = null; // phyloCharMatrixRow
+						final CharacterStateCell cell = null; // phyloCharMatrixRow
 						// .getCells()
 // .get(
 						// Integer
@@ -106,7 +106,7 @@ public class DbToMatrixTest extends DbTestBase {
 						// .attributeValue(CharacterStateRow.CELL_INDEX_COLUMN)));
 						Assert
 								.assertEquals(
-										phyloCharMatrixCell.getType()
+										cell.getType()
 												.toString(),
 										cellElement
 												.attributeValue(CharacterStateCell.TYPE_COLUMN));
@@ -157,7 +157,7 @@ public class DbToMatrixTest extends DbTestBase {
 						}
 
 						for (final Element phyloCharStateElement : phyloCharStateElements) {
-							final CharacterState phyloCharState = phyloCharMatrixCell
+							final CharacterState phyloCharState = cell
 									.getStateByNumber(new Integer(
 											phyloCharStateElement
 													.attributeValue(CharacterState.STATE_NUMBER_COLUMN)));

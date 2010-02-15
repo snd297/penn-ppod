@@ -339,40 +339,18 @@ public class OTUSet extends UUPPodEntityWXmlId {
 		return false;
 	}
 
-	/**
-	 * Scaffolding codes that does two things:
-	 * <ol>
-	 * <li>Removes <code>otu</code> from this <code>OTUSet</code>'s constituent
-	 * <code>OTU</code>s.</li>
-	 * <li>Removes this <code>OTUSet</code> from <code>
-     * otu</code>'s
-	 * <code>OTUSet</code>s.</li>
-	 * </ol>
-	 * So it takes care of both sides of the <code>OTUSet</code><->
-	 * <code>OTU</code> relationship.
-	 * 
-	 * @param otu see description
-	 * 
-	 * @return {@code true} if {@code otu} belonged to this OTU set and was
-	 *         removed
-	 */
-// public boolean removeOTU(final OTU otu) {
-// checkNotNull(otu);
-// if (otus.remove(otu)) {
-// otu.removeOTUSet(this);
-// resetPPodVersionInfo();
-// return true;
-// }
-// return false;
-// }
-
-	public OTUSet setOTUs(final Set<OTU> otus) {
-		checkNotNull(otus);
-		if (otus.equals(this.otus)) {
+	public OTUSet setOTUs(final Set<OTU> newOTUs) {
+		checkNotNull(newOTUs);
+		if (newOTUs.equals(this.otus)) {
 			return this;
 		}
+		for (final OTU otu : getOTUs()) {
+			if (!newOTUs.contains(otu)) {
+				otu.removeOTUSet(this);
+			}
+		}
 		getOTUsMutable().clear();
-		for (final OTU otu : otus) {
+		for (final OTU otu : newOTUs) {
 			addOTU(otu);
 		}
 		resetPPodVersionInfo();

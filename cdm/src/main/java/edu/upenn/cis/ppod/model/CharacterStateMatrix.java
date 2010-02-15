@@ -21,13 +21,14 @@ import static com.google.common.base.Preconditions.checkState;
 import static com.google.common.collect.Lists.newArrayList;
 import static com.google.common.collect.Lists.newArrayListWithCapacity;
 import static com.google.common.collect.Maps.newHashMap;
-import static edu.upenn.cis.ppod.util.CollectionsUtil.nullFill;
 import static edu.upenn.cis.ppod.util.CollectionsUtil.nullFillAndSet;
 import static edu.upenn.cis.ppod.util.UPennCisPPodUtil.nullSafeEquals;
 
 import java.util.Collections;
+import java.util.Iterator;
 import java.util.List;
 import java.util.Map;
+import java.util.Map.Entry;
 
 import javax.annotation.CheckForNull;
 import javax.annotation.Nullable;
@@ -48,8 +49,10 @@ import javax.xml.bind.annotation.XmlAttribute;
 import javax.xml.bind.annotation.XmlElement;
 import javax.xml.bind.annotation.XmlIDREF;
 
-import org.hibernate.annotations.Cascade;
 import org.hibernate.annotations.IndexColumn;
+
+import com.google.common.collect.BiMap;
+import com.google.common.collect.HashBiMap;
 
 import edu.upenn.cis.ppod.util.IVisitor;
 
@@ -166,10 +169,13 @@ public class CharacterStateMatrix extends UUPPodEntityWXmlId implements
 	@IndexColumn(name = CHARACTERS_INDEX_COLUMN)
 	private final List<Character> characters = newArrayList();
 
-	/** No delete_orphan... TODO */
+	/**
+	 * The rows of the matrix. We don't do save_update cascades since we want to
+	 * control when rows are added to the persistence context. We don't want the
+	 * rows added or reattached only if the matrix is.
+	 */
 	@OneToMany(mappedBy = "matrix")
 	@OrderBy("position")
-	@Cascade(org.hibernate.annotations.CascadeType.DELETE_ORPHAN)
 	private final List<CharacterStateRow> rows = newArrayList();
 
 	@XmlAttribute
@@ -280,15 +286,6 @@ public class CharacterStateMatrix extends UUPPodEntityWXmlId implements
 	protected List<Character> getCharactersMutable() {
 		return characters;
 	}
-
-// public Character removeCharacter(final int characterPosition) {
-// if (characterPosition < getCharacters().size()) {
-// getCharacterIdxMutable().remove(
-// getCharacters().get(characterPosition));
-// return getCharactersMutable().remove(characterPosition);
-// }
-// return null;
-// }
 
 	/**
 	 * Get an unmodifiable view of the {@code PPodVersionInfo}s for each for the
@@ -466,67 +463,71 @@ public class CharacterStateMatrix extends UUPPodEntityWXmlId implements
 	 */
 	@Override
 	public CharacterStateMatrix resetPPodVersionInfo() {
-		if (getAllowResetPPodVersionInfo()) {
-			if (isInNeedOfNewPPodVersionInfo()) {
-				// nothing to do
-			} else {
-				if (otuSet != null) {
-					otuSet.resetPPodVersionInfo();
-				}
-				super.resetPPodVersionInfo();
-			}
+		if (otuSet != null) {
+			otuSet.resetPPodVersionInfo();
 		}
+		super.resetPPodVersionInfo();
 		return this;
 	}
 
 	/**
-	 * Set the {@code Character} at {@code characterIdx}.
-	 * <p>
-	 * If {@code getCharacters().size() <= characterIdx}, then this method pads
-	 * {@link #getCharacters()} with {@code null}s.
-	 * <p>
-	 * If {@code character} was already contained in this matrix, then its
-	 * former position is filled in with {@code null}.
+	 * Set the characters.
 	 * <p>
 	 * This method is does not reorder the columns of the matrix, unlike
 	 * {@link #setOTUs(List)} which reorders rows. Reordering definitely does
 	 * not makes sense in a {@link MolecularStateMatrix} since all of the
 	 * characters will be the same instance.
+	 * <p>
+	 * This method does reorder {@link #getColumnPPodVersionInfos()}.
+	 * <p>
+	 * It is legal for two characters to have the same label, but to to be
+	 * {@code .equals} to each other.
 	 * 
-	 * @param characterIdx index
-	 * @param character value
+	 * @param newCharacters the new characters
 	 * 
 	 * @return the {@code Character} previously at that position or {@code null}
 	 *         if there was no such {@code Character}
+	 * @throws IllegalArgumentException if any of {@code characters} are {@code
+	 *             .equals} to each other. NOTE: this constraint does not hold
+	 *             in a {@code MolecularStateMatrix}
 	 */
-	public CharacterStateMatrix setCharacters(final List<Character> characters) {
-		checkNotNull(characters);
+	public CharacterStateMatrix setCharacters(
+			final List<? extends Character> newCharacters) {
+		checkNotNull(newCharacters);
 
 		// We leave this instanceof here since it is at worst ineffectual w/
 		// proxies, but
 		// it should still help us on the client side where hibernate is not a
 		// factor.
-		for (final Character character : characters) {
+		for (final Character character : newCharacters) {
 			if (character instanceof MolecularCharacter) {
 				throw new AssertionError(
 						"character should not be a MolecularCharacter");
 			}
+			for (final Iterator<? extends Character> itr = newCharacters
+					.listIterator(newCharacters.indexOf(character) + 1); itr
+					.hasNext();) {
+				final Character character2 = itr.next();
+				checkArgument(!character.equals(character2),
+						"two characters are the same " + character.getLabel()
+								+ " at positions "
+								+ newCharacters.indexOf(character) + " and "
+								+ newCharacters.indexOf(character2));
+			}
 		}
 
-		if (characters.equals(getCharacters())) {
+		if (newCharacters.equals(getCharacters())) {
 			return this;
 		}
+
+		columnPPodVersionInfos.clear();
+		columnPPodVersionInfos.addAll(reorderColumnHeaderPPodVersionInfos(
+				getCharacters(), newCharacters));
 
 		getCharactersMutable().clear();
 		getCharacterIdxMutable().clear();
 
-		nullFill(columnPPodVersionInfos, characters.size());
-
-		while (isInNeedOfColumnPPodVersionInfos.size() < getCharacters().size()) {
-			isInNeedOfColumnPPodVersionInfos.add(Boolean.TRUE);
-		}
-
-		getCharactersMutable().addAll(characters);
+		getCharactersMutable().addAll(newCharacters);
 
 		int characterPosition = 0;
 		for (final Character character : getCharacters()) {
@@ -537,6 +538,58 @@ public class CharacterStateMatrix extends UUPPodEntityWXmlId implements
 		// the matrix has changed
 		resetPPodVersionInfo();
 		return this;
+	}
+
+	/**
+	 * Made package-private (instead of private) for unit testing.
+	 * 
+	 * @param originalCharacters
+	 * @param newCharacters
+	 * @return
+	 */
+	List<PPodVersionInfo> reorderColumnHeaderPPodVersionInfos(
+			final List<? extends Character> originalCharacters,
+			final List<? extends Character> newCharacters) {
+		final BiMap<Integer, Integer> originalPositionsToNewPositions = HashBiMap
+				.create(originalCharacters.size());
+		for (final Character originalCharacter : originalCharacters) {
+			final Integer originalPosition = originalCharacters
+					.indexOf(originalCharacter);
+			final Integer newPosition = newCharacters
+					.indexOf(originalCharacter);
+			// Use unique negative values to indicate not present. Unique since
+			// this is a BiMap
+			originalPositionsToNewPositions.put(originalPosition,
+					newPosition == -1 ? -(originalPosition + 1) : newPosition);
+		}
+		final List<PPodVersionInfo> newColumnHeaderPPodVersionInfos = newArrayListWithCapacity(newCharacters
+				.size());
+		for (final Entry<Integer, Integer> originalPositionToNewPosition : originalPositionsToNewPositions
+				.entrySet()) {
+			final Integer originalPosition = originalPositionToNewPosition
+					.getKey();
+			final Integer newPosition = originalPositionToNewPosition
+					.getValue();
+			if (newPosition < 0) {
+				// The character has been removed, nothing to do
+			} else {
+				nullFillAndSet(newColumnHeaderPPodVersionInfos, newPosition,
+						getColumnPPodVersionInfos().get(originalPosition));
+			}
+		}
+
+		final Map<Integer, Integer> newPositionsByOriginalPositions = originalPositionsToNewPositions
+				.inverse();
+		// Now we add in null values for newly added characters
+		for (int newCharacterPosition = 0; newCharacterPosition < newCharacters
+				.size(); newCharacterPosition++) {
+			if (null == newPositionsByOriginalPositions
+					.get(newCharacterPosition)) {
+				nullFillAndSet(newColumnHeaderPPodVersionInfos,
+						newCharacterPosition, null);
+			}
+		}
+		return newColumnHeaderPPodVersionInfos;
 	}
 
 	/**
@@ -596,7 +649,7 @@ public class CharacterStateMatrix extends UUPPodEntityWXmlId implements
 	 * @throws IllegalArgumentException if the members of {@code otus} are not
 	 *             the same as those of this {@code CharacterStateMatrix}'s
 	 *             associated {@code OTUSet}
-	 * @throws IllegalStateException if the OTU set has not been set, ie if
+	 * @throws IllegalStateException if the OTU set has not been set, i.e. if
 	 *             {@link #getOTUSet() == null}
 	 */
 	public ICharacterStateMatrix setOTUs(final List<OTU> newOTUs) {

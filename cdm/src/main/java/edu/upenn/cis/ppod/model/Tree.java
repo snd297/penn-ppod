@@ -146,16 +146,10 @@ public class Tree extends UUPPodEntity {
 
 	@Override
 	public Tree resetPPodVersionInfo() {
-		if (getAllowResetPPodVersionInfo()) {
-			if (isInNeedOfNewPPodVersionInfo()) { 
-				// nothing to do
-			} else {
-				for (final TreeSet treeSet : getTreeSets()) {
-					treeSet.resetPPodVersionInfo();
-				}
-				super.resetPPodVersionInfo();
-			}
+		for (final TreeSet treeSet : getTreeSets()) {
+			treeSet.resetPPodVersionInfo();
 		}
+		super.resetPPodVersionInfo();
 		return this;
 	}
 

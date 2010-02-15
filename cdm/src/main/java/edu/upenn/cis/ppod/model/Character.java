@@ -103,14 +103,14 @@ public class Character extends UUPPodEntityWXmlId {
 	/**
 	 * Add {@code matrix} to this {@code Character}'s matrices.
 	 * <p>
-	 * Intentionally package-protected and meant to be used for clients who
-	 * create the {@code Character}<->{@code CharacterStateMatrix} relationship.
+	 * Not public because it's meant to be called from classes who create the
+	 * {@code Character}<-> {@code CharacterStateMatrix} relationship.
 	 * 
 	 * @param matrix to be added.
 	 * @return <code>true</code> if <code>matrix</code> was not there before,
 	 *         <code>false</code> otherwise
 	 */
-	boolean addMatrix(final CharacterStateMatrix matrix) {
+	protected boolean addMatrix(final CharacterStateMatrix matrix) {
 		Preconditions.checkNotNull(matrix);
 		return matrices.add(matrix);
 	}
@@ -195,26 +195,23 @@ public class Character extends UUPPodEntityWXmlId {
 	/**
 	 * Remove {@code matrix} from this {@code Character}'s matrices.
 	 * <p>
-	 * Intentionally package-protected.
+	 * Not public because it's meant to be called from classes who create the
+	 * {@code Character}<-> {@code CharacterStateMatrix} relationship.
 	 * 
 	 * @param matrix to be removed.
 	 * @return <code>true</code> if <code>matrix</code> was there to be removed,
 	 *         <code>false</code> otherwise
 	 */
-	boolean removeMatrix(final ICharacterStateMatrix matrix) {
+	protected boolean removeMatrix(final ICharacterStateMatrix matrix) {
 		return matrices.remove(matrix);
 	}
 
 	@Override
 	public Character resetPPodVersionInfo() {
-		if (getpPodVersionInfo() == null) {
-
-		} else if (getAllowResetPPodVersionInfo()) {
-			for (final CharacterStateMatrix matrix : matrices) {
-				matrix.resetPPodVersionInfo();
-			}
-			super.resetPPodVersionInfo();
+		for (final CharacterStateMatrix matrix : matrices) {
+			matrix.resetPPodVersionInfo();
 		}
+		super.resetPPodVersionInfo();
 		return this;
 	}
 
