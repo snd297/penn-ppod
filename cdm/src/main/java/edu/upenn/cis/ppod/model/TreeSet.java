@@ -39,8 +39,6 @@ import javax.xml.bind.annotation.XmlElement;
 
 import org.hibernate.annotations.Cascade;
 
-import com.sun.source.util.Trees;
-
 import edu.upenn.cis.ppod.util.IVisitor;
 
 /**

@@ -19,6 +19,11 @@ import javax.persistence.Column;
 import javax.persistence.MappedSuperclass;
 
 /**
+ * A molecular character is different from a {@code Character} in that there
+ * should exist exactly one of each type in a pPOD database. For example, there
+ * should be exactly one {@link DNACharacter} and exactly one
+ * {@link RNACharacter} in the database.
+ * 
  * @author Sam Donnelly
  */
 @MappedSuperclass
@@ -35,7 +40,7 @@ public class MolecularCharacter extends Character {
 	 * db retrieval. Because {@code Character} has a column called {@code
 	 * "LABEL"}?
 	 */
-	@Column(name = "MOLECULAR_CHARACTER_LABEL", unique = true)
+	@Column(name = "MOLECULAR_CHARACTER_LABEL", unique = true, nullable = false)
 	@SuppressWarnings("unused")
 	private String molecularCharacterLabel;
 
