@@ -39,7 +39,6 @@ import javax.xml.bind.annotation.XmlAttribute;
  * 
  * @author Sam Donnelly
  */
-@XmlAccessorType(XmlAccessType.NONE)
 @MappedSuperclass
 public abstract class UUPPodEntity extends PPodEntity implements IUUPPodEntity {
 
