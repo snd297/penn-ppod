@@ -164,7 +164,7 @@ public class ModelAssert {
 		// supposed to be.
 		// We use actualMatrix.getCharacters() to check as oppose to looking at
 		// expectedMatrix sine that seems to make the most sense
-		if (actualMatrix.getType() == CharacterStateMatrix.Type.STANDARD) {
+		if (actualMatrix.getType() == ICharacterStateMatrix.Type.STANDARD) {
 			assertEquals(actualMatrix.getCharacterIdx().size(), actualMatrix
 					.getCharacters().size());
 			for (final Entry<Character, Integer> actualIdxByCharacter : actualMatrix

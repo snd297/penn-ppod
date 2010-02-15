@@ -99,7 +99,7 @@ public class CharacterStateMatrix extends UUPPodEntityWXmlId implements
 	@JoinTable(inverseJoinColumns = { @JoinColumn(name = PPodVersionInfo.ID_COLUMN) })
 	@org.hibernate.annotations.IndexColumn(name = PPodVersionInfo.TABLE
 			+ "_POSITION")
-	private final List<PPodVersionInfo> columnPPodVersionInfos = newArrayList();
+	final List<PPodVersionInfo> columnPPodVersionInfos = newArrayList();
 
 	@Transient
 	private final List<Boolean> isInNeedOfColumnPPodVersionInfo = newArrayList();
@@ -192,19 +192,7 @@ public class CharacterStateMatrix extends UUPPodEntityWXmlId implements
 		return this;
 	}
 
-	/**
-	 * Add a character to the end.
-	 * 
-	 * @param character to be added
-	 * 
-	 * @return {@code character}
-	 */
-	public Character addCharacter(final Character character) {
-		setCharacter(getCharacters().size(), character);
-		return character;
-	}
-
-	public CharacterStateMatrix setCharacters(final List<Character> characters) {
+	public ICharacterStateMatrix setCharacters(final List<Character> characters) {
 		checkNotNull(characters);
 		if (characters.equals(this.characters)) {
 			return this;
@@ -279,7 +267,8 @@ public class CharacterStateMatrix extends UUPPodEntityWXmlId implements
 			return clearedCharacters;
 		}
 		getCharactersMutable().clear();
-		characterIdx.clear();
+		getCharacterIdxMutable().clear();
+
 		// columnPPodVersionInfos.clear();
 		resetPPodVersionInfo();
 		return clearedCharacters;
@@ -323,14 +312,14 @@ public class CharacterStateMatrix extends UUPPodEntityWXmlId implements
 		return characters;
 	}
 
-	public Character removeCharacter(final int characterPosition) {
-		if (characterPosition < getCharacters().size()) {
-			getCharacterIdxMutable().remove(
-					getCharacters().get(characterPosition));
-			return getCharactersMutable().remove(characterPosition);
-		}
-		return null;
-	}
+// public Character removeCharacter(final int characterPosition) {
+// if (characterPosition < getCharacters().size()) {
+// getCharacterIdxMutable().remove(
+// getCharacters().get(characterPosition));
+// return getCharactersMutable().remove(characterPosition);
+// }
+// return null;
+// }
 
 	/**
 	 * Get an unmodifiable view of the {@code PPodVersionInfo}s for each for the
@@ -341,7 +330,7 @@ public class CharacterStateMatrix extends UUPPodEntityWXmlId implements
 	 * @return an unmodifiable view of the columns' {@code PPodVersionInfo}s
 	 */
 	public List<PPodVersionInfo> getColumnPPodVersionInfos() {
-		return Collections.unmodifiableList(columnPPodVersionInfos);
+		return columnPPodVersionInfos;
 	}
 
 	/**
@@ -509,7 +498,7 @@ public class CharacterStateMatrix extends UUPPodEntityWXmlId implements
 	@Override
 	public CharacterStateMatrix resetPPodVersionInfo() {
 		if (getAllowResetPPodVersionInfo()) {
-			if (getpPodVersionInfo() == null) {
+			if (isInNeedOfNewPPodVersionInfo()) {
 				// nothing to do
 			} else {
 				if (otuSet != null) {

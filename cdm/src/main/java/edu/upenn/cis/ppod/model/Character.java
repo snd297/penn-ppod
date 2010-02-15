@@ -201,7 +201,7 @@ public class Character extends UUPPodEntityWXmlId {
 	 * @return <code>true</code> if <code>matrix</code> was there to be removed,
 	 *         <code>false</code> otherwise
 	 */
-	boolean removeMatrix(final CharacterStateMatrix matrix) {
+	boolean removeMatrix(final ICharacterStateMatrix matrix) {
 		return matrices.remove(matrix);
 	}
 

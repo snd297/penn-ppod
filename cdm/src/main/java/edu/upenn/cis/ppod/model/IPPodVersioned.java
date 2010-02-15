@@ -49,6 +49,8 @@ interface IPPodVersioned extends IPersistentObject {
 	@Nullable
 	PPodVersionInfo getpPodVersionInfo();
 
+	IPPodVersioned setpPodVersionInfo(final PPodVersionInfo pPodVersionInfo);
+
 	IPPodVersioned setAllowResetPPodVersionInfo(
 			boolean allowResetPPodVersionInfo);
 

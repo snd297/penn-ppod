@@ -129,7 +129,7 @@ public class OTUSet extends UUPPodEntityWXmlId {
 	 * 
 	 * @return {@code matrix}
 	 */
-	public CharacterStateMatrix addMatrix(final CharacterStateMatrix matrix) {
+	public ICharacterStateMatrix addMatrix(final CharacterStateMatrix matrix) {
 		checkNotNull(matrix);
 		if (matrices.add(matrix)) {
 			matrix.setOTUSet(this);

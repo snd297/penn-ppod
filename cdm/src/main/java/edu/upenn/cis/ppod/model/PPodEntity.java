@@ -24,6 +24,7 @@ import javax.annotation.Nullable;
 import javax.annotation.OverridingMethodsMustInvokeSuper;
 import javax.persistence.Column;
 import javax.persistence.Entity;
+import javax.persistence.FetchType;
 import javax.persistence.Inheritance;
 import javax.persistence.InheritanceType;
 import javax.persistence.JoinColumn;
@@ -70,12 +71,14 @@ public abstract class PPodEntity extends PersistentObject implements
 	/**
 	 * The pPod-version of this object. Similar in concept to Hibernate's
 	 * version, but tweaked for our purposes.
+	 * <p>
+	 * We leave it EAGER because we manipulate it in PPodVersionInfoInterceptor.
 	 * 
 	 * @see PPodVersionInfo
 	 * @see PPodVersionInfoInterceptor
 	 */
 	@AccessType("property")
-	@ManyToOne
+	@ManyToOne(fetch = FetchType.EAGER)
 	@JoinColumn(name = PPodVersionInfo.ID_COLUMN, nullable = false)
 	@Nullable
 	private PPodVersionInfo pPodVersionInfo;
@@ -280,7 +283,7 @@ public abstract class PPodEntity extends PersistentObject implements
 	 * 
 	 * @return this
 	 */
-	PersistentObject setpPodVersionInfo(final PPodVersionInfo pPodVersionInfo) {
+	public PPodEntity setpPodVersionInfo(final PPodVersionInfo pPodVersionInfo) {
 		this.pPodVersionInfo = pPodVersionInfo;
 		unsetInNeedOfNewPPodVersionInfo();
 		return this;

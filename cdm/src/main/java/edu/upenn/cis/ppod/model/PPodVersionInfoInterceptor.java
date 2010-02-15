@@ -19,6 +19,7 @@ import static edu.upenn.cis.ppod.util.CollectionsUtil.newConcurrentHashMap;
 
 import java.io.Serializable;
 import java.util.Date;
+import java.util.Iterator;
 import java.util.List;
 import java.util.concurrent.ConcurrentMap;
 
@@ -97,16 +98,31 @@ public class PPodVersionInfoInterceptor extends EmptyInterceptor {
 		tempSession.flush();
 	}
 
-	/**
-	 * Equivalent to {@code setPPodVersionInfoIfAppropriate(entity,
-	 * propertyNames, currentState)}.
-	 */
 	@Override
-	public boolean onFlushDirty(final Object entity, final Serializable id,
-			final Object[] currentState, final Object[] previousState,
-			final String[] propertyNames, final Type[] types) {
-		return setPPodVersionInfoIfAppropriate(entity, propertyNames,
-				currentState);
+	public void preFlush(Iterator entities) {
+		while (entities.hasNext()) {
+			final Object entity = entities.next();
+			if (entity instanceof IPPodVersioned) {
+				if (((IPPodVersioned) entity).isInNeedOfNewPPodVersionInfo()) {
+					initializePPodVersionInfo();
+					((IPPodVersioned) entity)
+							.setpPodVersionInfo(pPodVersionInfosBySession
+									.get(sessionFactory.getCurrentSession()));
+				}
+				if (entity instanceof ICharacterStateMatrix) {
+					final List<PPodVersionInfo> columnPPodVersionInfos = ((ICharacterStateMatrix) entity)
+							.getColumnPPodVersionInfos();
+					for (int j = 0; j < columnPPodVersionInfos.size(); j++) {
+						if (columnPPodVersionInfos.get(j) == null) {
+							columnPPodVersionInfos.set(j,
+									pPodVersionInfosBySession
+											.get(sessionFactory
+													.getCurrentSession()));
+						}
+					}
+				}
+			}
+		}
 	}
 
 	/**
@@ -153,12 +169,15 @@ public class PPodVersionInfoInterceptor extends EmptyInterceptor {
 								+ entity.toString());
 			}
 			initializePPodVersionInfo();
-			for (int i = 0; i < propertyNames.length; i++) {
-				if (((IPPodVersioned) entity).isInNeedOfNewPPodVersionInfo()) {
+			if (((IPPodVersioned) entity).isInNeedOfNewPPodVersionInfo()) {
+				for (int i = 0; i < propertyNames.length; i++) {
 					if (PPodVersionInfo.PPOD_VERSION_INFO_FIELD
 							.equals(propertyNames[i])) {
 						currentState[i] = pPodVersionInfosBySession
 								.get(sessionFactory.getCurrentSession());
+						((IPPodVersioned) entity)
+								.setpPodVersionInfo(pPodVersionInfosBySession
+										.get(sessionFactory.getCurrentSession()));
 						((IPPodVersioned) entity)
 								.unsetInNeedOfNewPPodVersionInfo();
 						modified = true;

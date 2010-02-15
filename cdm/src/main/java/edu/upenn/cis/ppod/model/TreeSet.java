@@ -116,8 +116,8 @@ public class TreeSet extends UUPPodEntityWXmlId {
 		if (trees.equals(getTrees())) {
 			return this;
 		}
-		trees.clear();
-		trees.addAll(trees);
+		this.trees.clear();
+		this.trees.addAll(trees);
 		resetPPodVersionInfo();
 		return this;
 	}
