@@ -24,4 +24,4 @@ public class Child {
 }
 }}}
 
-but it was too slow on at least saves. This was because it performed many extra updates for unknown reasons./
+but it was too slow on at least saves. This was because it performed many extra updates for unknown reasons - maybe because it needs to manage the ordering of the list? Instead of relying on an attribute set by the client.
