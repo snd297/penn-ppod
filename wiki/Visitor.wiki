@@ -19,8 +19,8 @@ These were created to enable quick notification to a client of changes in a pPOD
   * `CharacterState` -> `Character`
   * `Character` -> `CharacterStateMatrix`
 
-  * `CharacterStateCell` -> `CharacterStateRow`, `CharacterStateMatrix.getColumnPPodVersionInfos()`
-  * `CharacterStateRow`, `CharacterStateMatrix.getColumnPPodVersionInfos()` -> `CharacterStateMatrix`
+  * `CharacterStateCell  -> CharacterStateRow`, `CharacterStateMatrix.getColumnPPodVersionInfos()`
+  * `CharacterStateRow -> CharacterStateMatrix`
 
   * `CharacterStateMatrix` -> `OTUSet`
 
@@ -45,5 +45,7 @@ The `accept` method on the pPOD entities follows the pattern of the pPOD version
   * `CharacterStateRow` -> `CharacterStateCell`
 
   * `TreeSet` -> nowhere yet
+
+  * `PPodEntity -> Attachment`
 
 [http://upload.wikimedia.org/wikipedia/en/4/4a/Professor_Challenger.jpg]
