@@ -215,10 +215,10 @@ public class SaveOrUpdateCharacterStateMatrix implements
 				newRow = false;
 			}
 
-			if (!newRow && targetRow.getPPodVersion() == null) {
-				throw new AssertionError(
-						"existing row has now pPOD version number");
-			}
+//			if (!newRow && targetRow.getPPodVersion() == null) {
+//				throw new AssertionError(
+//						"existing row has no pPOD version number");
+//			}
 
 			final List<CharacterStateCell> originalTargetCells = newArrayList(targetRow
 					.getCells());

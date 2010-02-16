@@ -294,7 +294,7 @@ public abstract class PPodEntity extends PersistentObject implements
 	}
 
 	/**
-	 * Created for testing an Hibernate because this has access type "property".
+	 * Created for testing and Hibernate because this has access type "property".
 	 * <p>
 	 * NOTE: the weird name is on purpose so that Hibernate can identity it as
 	 * the setter.
