@@ -23,8 +23,6 @@ import java.util.Iterator;
 import java.util.List;
 import java.util.concurrent.ConcurrentMap;
 
-import javax.persistence.Transient;
-
 import org.hibernate.EmptyInterceptor;
 import org.hibernate.SessionFactory;
 import org.hibernate.Transaction;
@@ -101,7 +99,8 @@ public class PPodVersionInfoInterceptor extends EmptyInterceptor {
 	}
 
 	@Override
-	public void preFlush(Iterator entities) {
+	@SuppressWarnings("unchecked")
+	public void preFlush(final Iterator entities) {
 		while (entities.hasNext()) {
 			final Object entity = entities.next();
 			if (entity instanceof IPPodVersioned) {

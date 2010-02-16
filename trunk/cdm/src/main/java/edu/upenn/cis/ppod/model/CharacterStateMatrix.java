@@ -263,7 +263,7 @@ public class CharacterStateMatrix extends UUPPodEntityWXmlId implements
 	 * 
 	 * @return a modifiable view of characterIdx
 	 */
-	protected Map<Character, Integer> getCharacterIdxMutable() {
+	protected Map<Character, Integer> getCharacterIdxModifiable() {
 		return characterIdx;
 	}
 
@@ -283,7 +283,7 @@ public class CharacterStateMatrix extends UUPPodEntityWXmlId implements
 	 */
 	@XmlElement(name = "characterDocId")
 	@XmlIDREF
-	protected List<Character> getCharactersMutable() {
+	protected List<Character> getCharactersModifiable() {
 		return characters;
 	}
 
@@ -308,7 +308,7 @@ public class CharacterStateMatrix extends UUPPodEntityWXmlId implements
 	 * @return a mutable view of the {@code PPodVersionInfo}s for each for the
 	 *         columns of the matrix
 	 */
-	List<PPodVersionInfo> getColumnPPodVersionInfosMutable() {
+	List<PPodVersionInfo> getColumnPPodVersionInfosModifiable() {
 		return columnPPodVersionInfos;
 	}
 
@@ -331,7 +331,7 @@ public class CharacterStateMatrix extends UUPPodEntityWXmlId implements
 	 * @return the column pPOD versions
 	 */
 	@XmlElement(name = "columnPPodVersion")
-	protected List<Long> getColumnPPodVersionsMutable() {
+	protected List<Long> getColumnPPodVersionsModifiable() {
 		return columnPPodVersions;
 	}
 
@@ -390,7 +390,7 @@ public class CharacterStateMatrix extends UUPPodEntityWXmlId implements
 	@XmlElement(name = "otuDocId")
 	@XmlIDREF
 	@SuppressWarnings("unused")
-	private List<OTU> getOTUsMutable() {
+	private List<OTU> getOTUsModifiable() {
 		return otus;
 	}
 
@@ -451,7 +451,7 @@ public class CharacterStateMatrix extends UUPPodEntityWXmlId implements
 	 * @return this {@code CharacterStateMatrix}
 	 */
 	ICharacterStateMatrix resetColumnPPodVersion(final int idx) {
-		nullFillAndSet(getColumnPPodVersionInfosMutable(), idx, null);
+		nullFillAndSet(getColumnPPodVersionInfosModifiable(), idx, null);
 		return this;
 	}
 
@@ -521,17 +521,17 @@ public class CharacterStateMatrix extends UUPPodEntityWXmlId implements
 		}
 
 		final List<PPodVersionInfo> newColumnPPodVersionInfos = determineNewColumnHeaderPPodVersionInfos(newCharacters);
-		getColumnPPodVersionInfosMutable().clear();
-		getColumnPPodVersionInfosMutable().addAll(newColumnPPodVersionInfos);
+		getColumnPPodVersionInfosModifiable().clear();
+		getColumnPPodVersionInfosModifiable().addAll(newColumnPPodVersionInfos);
 
-		getCharactersMutable().clear();
-		getCharacterIdxMutable().clear();
+		getCharactersModifiable().clear();
+		getCharacterIdxModifiable().clear();
 
-		getCharactersMutable().addAll(newCharacters);
+		getCharactersModifiable().addAll(newCharacters);
 
 		int characterPosition = 0;
 		for (final Character character : getCharacters()) {
-			getCharacterIdxMutable().put(character, characterPosition++);
+			getCharacterIdxModifiable().put(character, characterPosition++);
 			character.addMatrix(this);
 		}
 
@@ -800,7 +800,7 @@ public class CharacterStateMatrix extends UUPPodEntityWXmlId implements
 
 	public ICharacterStateMatrix setColumnPPodVersionInfo(int pos,
 			PPodVersionInfo pPodVersionInfo) {
-		getColumnPPodVersionInfosMutable().set(pos, pPodVersionInfo);
+		getColumnPPodVersionInfosModifiable().set(pos, pPodVersionInfo);
 		return this;
 	}
 }

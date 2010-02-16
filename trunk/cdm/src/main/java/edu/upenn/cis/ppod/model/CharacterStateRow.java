@@ -37,8 +37,6 @@ import javax.xml.bind.Unmarshaller;
 import javax.xml.bind.annotation.XmlAttribute;
 import javax.xml.bind.annotation.XmlElement;
 
-import org.hibernate.annotations.Cascade;
-
 import edu.upenn.cis.ppod.util.IVisitor;
 
 /**
@@ -189,8 +187,7 @@ public class CharacterStateRow extends PPodEntity {
 	}
 
 	@XmlElement(name = "cell")
-	@SuppressWarnings("unused")
-	private List<CharacterStateCell> getCellsMutable() {
+	private List<CharacterStateCell> getCellsModifiable() {
 		return cells;
 	}
 
@@ -266,7 +263,7 @@ public class CharacterStateRow extends PPodEntity {
 
 		clearCells();
 		for (int cellPos = 0; cellPos < newCells.size(); cellPos++) {
-			getCellsMutable().add(newCells.get(cellPos));
+			getCellsModifiable().add(newCells.get(cellPos));
 			newCells.get(cellPos).setRow(this);
 			newCells.get(cellPos).setPosition(cellPos);
 			cellIdx.put(getCells().get(cellPos), cellPos);

@@ -19,8 +19,11 @@ import static com.google.common.collect.Lists.newArrayList;
 import static com.google.common.collect.Sets.newHashSet;
 import static edu.upenn.cis.ppod.util.CollectionsUtil.nullFillAndSet;
 import static org.testng.Assert.assertEquals;
+import static org.testng.Assert.assertFalse;
 import static org.testng.Assert.assertNotNull;
+import static org.testng.Assert.assertNotSame;
 import static org.testng.Assert.assertNull;
+import static org.testng.Assert.assertTrue;
 
 import java.util.List;
 
@@ -28,6 +31,7 @@ import org.testng.Assert;
 import org.testng.annotations.BeforeMethod;
 import org.testng.annotations.Test;
 
+import com.google.common.collect.ImmutableList;
 import com.google.inject.Inject;
 import com.google.inject.Provider;
 
@@ -167,70 +171,128 @@ public class CharacterStateMatrixTest {
 	}
 
 	/**
-	 * Straight {@link CharacterStateMatrix#setCharacter(int, Character)} tests.
-	 * <p>
-	 * Make sure it pads with nulls.
+	 * Straight {@link CharacterStateMatrix#setCharacters(List)} test.
 	 */
-// public void setCharacter() {
-// final Character character = characterProvider.get().setLabel(
-// "testLabel");
-// matrix.setCharacter(1, character);
-// final Character gotCharacter1 = matrix.getCharacters().get(1);
-// Assert.assertEquals(gotCharacter1, character);
-//
-// final int characterIdx = matrix.getCharacterIdx().get(gotCharacter1);
-// Assert.assertEquals(characterIdx, 1);
-//
-// matrix.setCharacter(15, new Character().setLabel("phyloChar3"));
-//
-// for (final Character thisPhyloChar : matrix.getCharacters().subList(2,
-// 15)) {
-// assertNull(thisPhyloChar);
-// }
-//
-// }
+	public void setCharacters() {
+
+		final ImmutableList<Character> characters = ImmutableList.of(
+				characterProvider.get().setLabel("character0"),
+				characterProvider.get().setLabel("character1"),
+				characterProvider.get().setLabel("character2"));
+
+		matrix.setCharacters(characters);
+
+		assertNotSame(matrix.getCharacters(), characters);
+		Assert.assertEquals(matrix.getCharacters(), characters);
+
+		Assert.assertEquals(matrix.getCharacterIdx().get(characters.get(0)),
+				new Integer(0));
+		Assert.assertEquals(matrix.getCharacterIdx().get(characters.get(1)),
+				new Integer(1));
+		Assert.assertEquals(matrix.getCharacterIdx().get(characters.get(2)),
+				new Integer(2));
+	}
 
 	/**
-	 * Make sure when we move a character it gets moved and its old position is
-	 * null'd.
+	 * Make sure when we move a character it gets moved and its column version
+	 * comes with it
 	 */
-// public void moveCharacter() {
-// final Character character1 = characterProvider.get().setLabel(
-// "character1");
-// matrix.setCharacter(3, character1);
-// assertEquals(matrix.getCharacters().get(3), character1);
-//
-// matrix.setCharacter(18, character1);
-// assertNull(matrix.getCharacters().get(3));
-// assertEquals(matrix.getCharacters().get(18), character1);
-// }
+	public void moveCharacter() {
+
+		final ImmutableList<Character> characters = ImmutableList.of(
+				characterProvider.get().setLabel("character0"),
+				characterProvider.get().setLabel("character1"),
+				characterProvider.get().setLabel("character2"));
+
+		final PPodVersionInfo pPodVersionInfo0 = pPodVersionInfoProvider.get();
+		final PPodVersionInfo pPodVersionInfo1 = pPodVersionInfoProvider.get();
+		final PPodVersionInfo pPodVersionInfo2 = pPodVersionInfoProvider.get();
+
+		matrix.setCharacters(characters);
+
+		matrix.getColumnPPodVersionInfosModifiable().set(0, pPodVersionInfo0);
+		matrix.getColumnPPodVersionInfosModifiable().set(1, pPodVersionInfo1);
+		matrix.getColumnPPodVersionInfosModifiable().set(2, pPodVersionInfo2);
+
+		final ImmutableList<Character> shuffledCharacters = ImmutableList.of(
+				characters.get(1), characters.get(2), characters.get(0));
+
+		matrix.setCharacters(shuffledCharacters);
+
+		assertNotSame(matrix.getCharacters(), shuffledCharacters);
+		assertEquals(matrix.getCharacters(), shuffledCharacters);
+
+		Assert.assertEquals(matrix.getCharacterIdx().get(
+				shuffledCharacters.get(0)), new Integer(0));
+		Assert.assertEquals(matrix.getCharacterIdx().get(
+				shuffledCharacters.get(1)), new Integer(1));
+		Assert.assertEquals(matrix.getCharacterIdx().get(
+				shuffledCharacters.get(2)), new Integer(2));
+
+		assertEquals(matrix.getColumnPPodVersionInfos().get(0),
+				pPodVersionInfo1);
+		assertEquals(matrix.getColumnPPodVersionInfos().get(1),
+				pPodVersionInfo2);
+		assertEquals(matrix.getColumnPPodVersionInfos().get(2),
+				pPodVersionInfo0);
+
+	}
 
 	/**
-	 * Test replacing a character.
+	 * Test replacing all of the characters.
 	 */
-// public void replaceCharacter() {
-// final Character character1 = characterProvider.get().setLabel(
-// "character1");
-// matrix.setCharacter(3, character1);
-// final Character character2 = characterProvider.get().setLabel(
-// "character2");
-// final Character someCharacter = matrix.setCharacter(3, character2);
-// assertEquals(matrix.getCharacters().get(3), character2);
-// assertEquals(someCharacter, character1);
-// assertNull(matrix.getCharacterIdx().get(character1));
-// }
+	public void replaceCharacters() {
+		final ImmutableList<Character> characters = ImmutableList.of(
+				characterProvider.get().setLabel("character0"),
+				characterProvider.get().setLabel("character1"),
+				characterProvider.get().setLabel("character2"));
+
+		final PPodVersionInfo pPodVersionInfo0 = pPodVersionInfoProvider.get();
+		final PPodVersionInfo pPodVersionInfo1 = pPodVersionInfoProvider.get();
+		final PPodVersionInfo pPodVersionInfo2 = pPodVersionInfoProvider.get();
+
+		matrix.setCharacters(characters);
+
+		matrix.getColumnPPodVersionInfosModifiable().set(0, pPodVersionInfo0);
+		matrix.getColumnPPodVersionInfosModifiable().set(1, pPodVersionInfo1);
+		matrix.getColumnPPodVersionInfosModifiable().set(2, pPodVersionInfo2);
+
+		final ImmutableList<Character> characters2 = ImmutableList.of(
+				characterProvider.get().setLabel("character2-0"),
+				characterProvider.get().setLabel("character2-1"),
+				characterProvider.get().setLabel("character2-2"));
+
+		matrix.unsetInNeedOfNewPPodVersionInfo();
+
+		matrix.setCharacters(characters2);
+		assertTrue(matrix.isInNeedOfNewPPodVersionInfo());
+
+		for (final PPodVersionInfo columnPPodVersionInfo : matrix
+				.getColumnPPodVersionInfos()) {
+			assertNull(columnPPodVersionInfo);
+		}
+
+	}
 
 	/**
-	 * When we set a character that was already at a position, then the its pPOD
-	 * version should not be set to {@code null}.
+	 * When we set characters to the same characters, the matrix should not be
+	 * marked in need of a new version number.
 	 */
-// public void setCharacterWithItself() {
-// final Character character1 = characterProvider.get();
-// matrix.setCharacter(3, character1);
-// matrix.setpPodVersionInfo(pPodVersionInfo);
-// matrix.setCharacter(3, character1);
-// assertNotNull(matrix.getpPodVersionInfo());
-// }
+	public void setCharactersWithEqualsCharacters() {
+		final ImmutableList<Character> characters = ImmutableList.of(
+				characterProvider.get().setLabel("character0"),
+				characterProvider.get().setLabel("character1"),
+				characterProvider.get().setLabel("character2"));
+
+		matrix.setCharacters(characters);
+
+		matrix.unsetInNeedOfNewPPodVersionInfo();
+
+		matrix.setCharacters(characters);
+
+		assertFalse(matrix.isInNeedOfNewPPodVersionInfo());
+
+	}
 
 	/**
 	 * When we set a character that was already at some position, then the its
@@ -278,9 +340,9 @@ public class CharacterStateMatrixTest {
 	private Provider<PPodVersionInfo> pPodVersionInfoProvider;
 
 	public void beforeMarshal() {
-		nullFillAndSet(matrix.getColumnPPodVersionInfosMutable(), 2,
+		nullFillAndSet(matrix.getColumnPPodVersionInfosModifiable(), 2,
 				pPodVersionInfoProvider.get().setPPodVersion(3L));
-		nullFillAndSet(matrix.getColumnPPodVersionInfosMutable(), 5,
+		nullFillAndSet(matrix.getColumnPPodVersionInfosModifiable(), 5,
 				pPodVersionInfoProvider.get().setPPodVersion(8L));
 
 		matrix.beforeMarshal(null);
@@ -294,5 +356,17 @@ public class CharacterStateMatrixTest {
 						.getColumnPPodVersionInfos().get(i).getPPodVersion());
 			}
 		}
+	}
+
+	@Test(expectedExceptions = IllegalArgumentException.class)
+	public void setCharactersW2EqualsCharacters() {
+		final Character character0 = characterProvider.get().setLabel(
+				"character0");
+		final Character character1 = characterProvider.get().setLabel(
+				"character1");
+
+		final ImmutableList<Character> characters = ImmutableList.of(
+				character0, character1, character0);
+		matrix.setCharacters(characters);
 	}
 }

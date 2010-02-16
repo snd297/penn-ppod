@@ -23,12 +23,12 @@ import edu.upenn.cis.ppod.model.AttachmentType;
 import edu.upenn.cis.ppod.model.Character;
 import edu.upenn.cis.ppod.model.CharacterStateMatrix;
 import edu.upenn.cis.ppod.model.IAttachee;
+import edu.upenn.cis.ppod.model.OTU;
 import edu.upenn.cis.ppod.model.OTUSet;
 import edu.upenn.cis.ppod.services.ppodentity.IOTUSetCentricEntities;
 
 /**
  * @author Sam Donnelly
- * 
  */
 public class PPodEntitiesUtil {
 	/**
@@ -50,8 +50,8 @@ public class PPodEntitiesUtil {
 			attachmentNamespaces.add(attachment.getType().getNamespace());
 			attachmentTypes.add(attachment.getType());
 			attachments.add(attachment);
-// extractAttachmentInfoFromAttachee(attachmentNamespaces,
-// attachmentTypes, attachments, attachment);
+			extractAttachmentInfoFromAttachee(attachmentNamespaces,
+					attachmentTypes, attachments, attachment);
 		}
 		return attachee;
 	}
@@ -62,17 +62,17 @@ public class PPodEntitiesUtil {
 			final Set<Attachment> studyWideAttachments,
 			final IOTUSetCentricEntities otuSetCentricEntities) {
 		for (final OTUSet otuSet : otuSetCentricEntities.getOTUSets()) {
-// extractAttachmentInfoFromAttachee(studyWideAttachmentNamespaces,
-// studyWideAttachmentTypes, studyWideAttachments, otuSet);
-// for (final OTU otu : otuSet.getOTUs()) {
-// extractAttachmentInfoFromAttachee(
-// studyWideAttachmentNamespaces,
-// studyWideAttachmentTypes, studyWideAttachments, otu);
-// }
+			extractAttachmentInfoFromAttachee(studyWideAttachmentNamespaces,
+					studyWideAttachmentTypes, studyWideAttachments, otuSet);
+			for (final OTU otu : otuSet.getOTUs()) {
+				extractAttachmentInfoFromAttachee(
+						studyWideAttachmentNamespaces,
+						studyWideAttachmentTypes, studyWideAttachments, otu);
+			}
 			for (final CharacterStateMatrix matrix : otuSet.getMatrices()) {
-// extractAttachmentInfoFromAttachee(
-// studyWideAttachmentNamespaces,
-// studyWideAttachmentTypes, studyWideAttachments, matrix);
+				extractAttachmentInfoFromAttachee(
+						studyWideAttachmentNamespaces,
+						studyWideAttachmentTypes, studyWideAttachments, matrix);
 				for (final Character character : matrix.getCharacters()) {
 					extractAttachmentInfoFromAttachee(
 							studyWideAttachmentNamespaces,
