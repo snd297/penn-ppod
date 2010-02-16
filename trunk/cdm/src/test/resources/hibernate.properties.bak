@@ -2,13 +2,11 @@ hibernate.connection.driver_class=org.h2.Driver
 #hibernate.connection.driver_class=com.mysql.jdbc.Driver
 
 #hibernate.connection.url=jdbc:mysql://localhost/PPOD
-#hibernate.connection.url=jdbc:mysql://dbserv.dbgroup.cis.upenn.edu/PPOD
 hibernate.connection.url=jdbc:h2:pPodDb/PPOD
 
 #hibernate.connection.username=root
 #hibernate.connection.password=
-#hibernate.connection.username=ppod
-#hibernate.connection.password=Asits9.
+
 
 hibernate.connection.pool_size=10
 
