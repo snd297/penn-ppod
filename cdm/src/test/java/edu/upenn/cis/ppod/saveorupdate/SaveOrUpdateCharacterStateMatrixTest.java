@@ -23,6 +23,8 @@ import java.util.List;
 import java.util.Map;
 
 import org.hibernate.Session;
+import org.hibernate.context.ManagedSessionContext;
+import org.testng.annotations.BeforeMethod;
 import org.testng.annotations.Test;
 
 import com.google.inject.Inject;
@@ -39,6 +41,7 @@ import edu.upenn.cis.ppod.model.ModelAssert;
 import edu.upenn.cis.ppod.model.OTU;
 import edu.upenn.cis.ppod.model.OTUSet;
 import edu.upenn.cis.ppod.model.PPodVersionInfo;
+import edu.upenn.cis.ppod.thirdparty.util.HibernateUtil;
 import edu.upenn.cis.ppod.util.MatrixProvider;
 
 /**
@@ -75,6 +78,13 @@ public class SaveOrUpdateCharacterStateMatrixTest {
 
 	@Inject
 	private DNACharacter dnaCharacter;
+
+	@BeforeMethod
+	public void beforeMethod() {
+		final org.hibernate.classic.Session session = HibernateUtil
+				.getSessionFactory().openSession();
+		ManagedSessionContext.bind(session);
+	}
 
 	@Test(dataProvider = MatrixProvider.SMALL_MATRICES_PROVIDER, dataProviderClass = MatrixProvider.class)
 	public void save(final CharacterStateMatrix sourceMatrix) {
