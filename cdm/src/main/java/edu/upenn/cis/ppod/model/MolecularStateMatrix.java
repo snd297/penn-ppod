@@ -33,7 +33,7 @@ public abstract class MolecularStateMatrix extends CharacterStateMatrix {
 	 * condition does not hold for
 	 * {@link CharacterStateMatrix#setCharacters(List)}.
 	 * <p>
-	 * All of the characters must be {@link IMolecularCharacter}s. This
+	 * All of the characters must be {@link IDNACharacter}s. This
 	 * condition does not hold for
 	 * {@link CharacterStateMatrix#setCharacters(List)}.
 	 * <p>
@@ -47,7 +47,7 @@ public abstract class MolecularStateMatrix extends CharacterStateMatrix {
 	 * @throws IllegalArgumentException if all of {@code newMolecularCharacters}
 	 *             are not {@code .equals} to each other
 	 * @throws IllegalArgumentException if any of {@code newMolecularCharacter}
-	 *             are not {@code IMolecularCharacter}s
+	 *             are not {@code IDNACharacter}s
 	 */
 	@Override
 	public MolecularStateMatrix setCharacters(
@@ -59,10 +59,10 @@ public abstract class MolecularStateMatrix extends CharacterStateMatrix {
 			checkArgument(newMolecularCharacter.equals(newMolecularCharacters
 					.get(0)),
 					"all characters must be .equals() in a molecular matrix");
-			checkArgument(newMolecularCharacter instanceof IMolecularCharacter,
-					"all newMolecularCharacters must be IMolecularCharacter's, found a "
+			checkArgument(newMolecularCharacter instanceof IDNACharacter,
+					"all newMolecularCharacters must be IDNACharacter's, found a "
 							+ newMolecularCharacter.getClass()
-									.getCanonicalName());
+									.getName());
 		}
 
 		if (getCharacters().size() == newMolecularCharacters.size()) {

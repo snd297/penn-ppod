@@ -64,6 +64,7 @@ public class DbUnitUtil {
 	 * 
 	 * @return see description
 	 */
+	@edu.umd.cs.findbugs.annotations.SuppressWarnings
 	public static IDatabaseConnection getConnection(
 			final IDataTypeFactory dataTypeFactory) {
 		final Properties hibernateProperties = null;// HibernateUtil.getConfiguration()
@@ -101,18 +102,18 @@ public class DbUnitUtil {
 
 	public static IDatabaseTester getDatabaseTester() {
 		return null;
-//		final Properties hibernateProperties = HibernateUtil.getConfiguration()
-//				.getProperties();
+// final Properties hibernateProperties = HibernateUtil.getConfiguration()
+// .getProperties();
 //
-//		try {
-//			return new JdbcDatabaseTester(hibernateProperties
-//					.getProperty(Environment.DRIVER), hibernateProperties
-//					.getProperty(Environment.URL), hibernateProperties
-//					.getProperty(Environment.USER), hibernateProperties
-//					.getProperty(Environment.PASS));
-//		} catch (final ClassNotFoundException e) {
-//			throw new IllegalStateException(e);
-//		}
+// try {
+// return new JdbcDatabaseTester(hibernateProperties
+// .getProperty(Environment.DRIVER), hibernateProperties
+// .getProperty(Environment.URL), hibernateProperties
+// .getProperty(Environment.USER), hibernateProperties
+// .getProperty(Environment.PASS));
+// } catch (final ClassNotFoundException e) {
+// throw new IllegalStateException(e);
+// }
 	}
 
 	/**

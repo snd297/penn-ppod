@@ -146,7 +146,7 @@ public class CharacterStateMatrix extends UUPPodEntityWXmlId implements
 	 */
 	@ManyToOne(fetch = FetchType.LAZY)
 	@JoinColumn(name = OTUSet.ID_COLUMN, nullable = false)
-	@Nullable
+	@CheckForNull
 	private OTUSet otuSet;
 
 	/**
@@ -665,12 +665,12 @@ public class CharacterStateMatrix extends UUPPodEntityWXmlId implements
 
 		// We want both newOTUs and this.otuSet to have the same elements
 		checkArgument(
-				newOTUs.containsAll(otuSet.getOTUs())
-						&& otuSet.getOTUs().containsAll(newOTUs),
+				newOTUs.containsAll(getOTUSet().getOTUs())
+						&& getOTUSet().getOTUs().containsAll(newOTUs),
 				"otus (size "
 						+ newOTUs.size()
 						+ ") does not contain the same OTU's as the matrix's OTUSet (size "
-						+ otuSet.getOTUs().size() + ").");
+						+ getOTUSet().getOTUs().size() + ").");
 
 		// We're now going to move around the rows to match the new ordering
 		final List<CharacterStateRow> newRows = newArrayListWithCapacity(newOTUs

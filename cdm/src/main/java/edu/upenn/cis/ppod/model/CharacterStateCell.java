@@ -227,27 +227,31 @@ public class CharacterStateCell extends PPodEntity {
 	}
 
 	private void checkIncomingState(final CharacterState state) {
-		checkState(getRow() != null, "this cell has not been assigned a row");
-		checkState(getRow().getMatrix() != null,
+
+		final CharacterStateRow row = getRow();
+
+		checkState(row != null, "this cell has not been assigned a row");
+
+		final CharacterStateMatrix matrix = row.getMatrix();
+
+		checkState(matrix != null,
 				"this cell's row has not had a matrix assigned");
 
-		int thisCellsPosition = getRow().getCellIdx().get(this);
+		int thisCellsPosition = row.getCellIdx().get(this);
 
-		checkState(
-				getRow().getMatrix().getCharacters().size() >= thisCellsPosition,
+		checkState(matrix.getCharacters().size() >= thisCellsPosition,
 				"this cell's column hasn't been assigned a character");
 
-		checkState(null != getRow().getMatrix().getCharacters().get(
-				thisCellsPosition),
+		checkState(null != matrix.getCharacters().get(thisCellsPosition),
 				"this cell's column hasn't been assigned a character");
 
-		final Character thisCellsCharacter = getRow().getMatrix()
-				.getCharacters().get(thisCellsPosition);
+		final Character thisCellsCharacter = matrix.getCharacters().get(
+				thisCellsPosition);
 
 		checkArgument(state.getCharacter().equals(thisCellsCharacter),
 				"state is from the wrong Character. We want "
-						+ getRow().getMatrix().getCharacters().get(
-								thisCellsPosition).getLabel() + " but got "
+						+ matrix.getCharacters().get(thisCellsPosition)
+								.getLabel() + " but got "
 						+ state.getCharacter().getLabel());
 
 	}
@@ -270,17 +274,6 @@ public class CharacterStateCell extends PPodEntity {
 			resetPPodVersionInfo();
 		}
 	}
-
-	/**
-	 * Get the position. {@code null} for newly created objects.
-	 * 
-	 * @return the position
-	 */
-// @XmlAttribute
-// @Nullable
-// public Integer getPosition() {
-// return position;
-// }
 
 	/**
 	 * Getter. This will return {@code null} until the cell is added to a row.
@@ -376,11 +369,12 @@ public class CharacterStateCell extends PPodEntity {
 
 	@Override
 	public CharacterStateCell resetPPodVersionInfo() {
-		if (getRow() != null) {
-			getRow().resetPPodVersionInfo();
-			if (getRow().getMatrix() != null) {
-				getRow().getMatrix().resetColumnPPodVersion(
-						getRow().getCellIdx().get(this));
+		final CharacterStateRow row = getRow();
+		if (row != null) {
+			row.resetPPodVersionInfo();
+			final CharacterStateMatrix matrix = row.getMatrix();
+			if (matrix != null) {
+				matrix.resetColumnPPodVersion(row.getCellIdx().get(this));
 			}
 		}
 		super.resetPPodVersionInfo();
@@ -436,7 +430,7 @@ public class CharacterStateCell extends PPodEntity {
 	}
 
 	/**
-	 * Set the row to which this cell belongs.
+	 * Set or unset the row to which this cell belongs.
 	 * <p>
 	 * This value not persisted because it's simple to be able to persist the
 	 * cells (and there are lots of them) before the row is persisted.
@@ -444,11 +438,12 @@ public class CharacterStateCell extends PPodEntity {
 	 * This value is used for error checking. For example, to make sure that the
 	 * states that are assigned to this cell belong to the correct character.
 	 * 
-	 * @param row value. nullable.
+	 * @param row value, {@code null} to indicate that the cell is removed from
+	 *            the row
 	 * 
 	 * @return this {@code CharacterStateCell}
 	 */
-	CharacterStateCell setRow(final CharacterStateRow row) {
+	CharacterStateCell setRow(@Nullable final CharacterStateRow row) {
 		this.row = row;
 		return this;
 	}

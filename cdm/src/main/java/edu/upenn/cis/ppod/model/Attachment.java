@@ -276,6 +276,7 @@ public class Attachment extends UUPPodEntityWXmlId {
 	 * @return a <code>String</code> representation of this object.
 	 */
 	@Override
+	@edu.umd.cs.findbugs.annotations.SuppressWarnings
 	public String toString() {
 		final String TAB = "";
 

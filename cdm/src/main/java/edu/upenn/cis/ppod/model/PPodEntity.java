@@ -89,6 +89,18 @@ public abstract class PPodEntity extends PersistentObject implements
 	@Transient
 	private boolean inNeedOfNewPPodVersionInfo = true;
 
+	/**
+	 * Set the inNeedOfNewPPodVersionInfo. Intentionally package-private.
+	 * 
+	 * @param inNeedOfNewPPodVersionInfo the inNeedOfNewPPodVersionInfo to set
+	 * 
+	 * @return this
+	 */
+	PPodEntity setInNeedOfNewPPodVersionInfo() { 
+		this.inNeedOfNewPPodVersionInfo = true;
+		return this;
+	}
+
 	@Transient
 	@Nullable
 	private Long pPodVersion;

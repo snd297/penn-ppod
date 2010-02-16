@@ -57,7 +57,7 @@ public final class HibernateSessionPerRequestFilter implements Filter {
 	private final PPodCoreFactory pPodCoreFactory = new PPodCoreFactory();
 	private final Provider<PPodVersionInfoInterceptor> versionInfoInterceptorProvider = pPodCoreFactory
 			.getProvider(PPodVersionInfoInterceptor.class);
-	private static SessionFactory sf;
+	private SessionFactory sf;
 
 	public void destroy() {}
 

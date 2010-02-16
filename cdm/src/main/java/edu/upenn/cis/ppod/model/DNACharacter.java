@@ -27,7 +27,7 @@ import com.google.inject.Inject;
  */
 @Entity
 @Table(name = DNACharacter.TABLE)
-public class DNACharacter extends MolecularCharacter {
+public class DNACharacter extends MolecularCharacter implements IDNACharacter {
 
 	/**
 	 * The name of the table.
