@@ -76,13 +76,13 @@ public abstract class MolecularStateMatrix extends CharacterStateMatrix {
 		}
 
 		while (getCharacters().size() < newMolecularCharacters.size()) {
-			getCharactersMutable().add(newMolecularCharacters.get(0));
-			getColumnPPodVersionInfosMutable().add(null);
+			getCharactersModifiable().add(newMolecularCharacters.get(0));
+			getColumnPPodVersionInfosModifiable().add(null);
 		}
 
 		while (getCharacters().size() > newMolecularCharacters.size()) {
-			getCharactersMutable().remove(getCharacters().size() - 1);
-			getColumnPPodVersionInfosMutable().remove(
+			getCharactersModifiable().remove(getCharacters().size() - 1);
+			getColumnPPodVersionInfosModifiable().remove(
 					getColumnPPodVersionInfos().size() - 1);
 
 		}
