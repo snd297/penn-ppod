@@ -1,0 +1,25 @@
+#summary Explanations of non-obvious stuff.
+
+===1) Why did you map cells and rows the way you did?===
+
+We were originally doing it like this (from http://docs.jboss.org/hibernate/stable/annotations/reference/en/html/entity.html#entity-hibspec-collection-enhance):
+
+{{{
+@Entity
+public class Parent {
+    @OneToMany
+    @org.hibernate.annotations.IndexColumn(name="order")
+    @JoinColumn(name="parent_id", nullable=false)
+    private List<Child> children;
+    ...
+}
+
+@Entity
+public class Child {
+    ...
+    @ManyToOne
+    @JoinColumn(name="parent_id", insertable=false, updatable=false, nullable=false)
+    private Parent parent;
+    ...
+}
+}}}
