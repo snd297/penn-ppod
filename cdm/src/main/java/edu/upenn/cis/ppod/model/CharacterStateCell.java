@@ -105,6 +105,7 @@ public class CharacterStateCell extends PPodEntity {
 	/** Position in a {@link CharacterStateRow}. */
 	@Column(name = "POSITION", nullable = false)
 	@Nullable
+	@SuppressWarnings("unused")
 	private Integer position;
 
 	static final String TABLE = "CHARACTER_STATE_CELL";
@@ -230,25 +231,24 @@ public class CharacterStateCell extends PPodEntity {
 		checkState(getRow().getMatrix() != null,
 				"this cell's row has not had a matrix assigned");
 
+		int thisCellsPosition = getRow().getCellIdx().get(this);
+
 		checkState(
-				getRow().getMatrix().getCharacters().size() >= getPosition(),
+				getRow().getMatrix().getCharacters().size() >= thisCellsPosition,
 				"this cell's column hasn't been assigned a character");
 
 		checkState(null != getRow().getMatrix().getCharacters().get(
-				getPosition()),
+				thisCellsPosition),
 				"this cell's column hasn't been assigned a character");
 
-		checkState(getPosition() != null,
-				"the position of this cell has net been set");
-
 		final Character thisCellsCharacter = getRow().getMatrix()
-				.getCharacters().get(getPosition());
+				.getCharacters().get(thisCellsPosition);
 
 		checkArgument(state.getCharacter().equals(thisCellsCharacter),
 				"state is from the wrong Character. We want "
 						+ getRow().getMatrix().getCharacters().get(
-								getRow().getCellIdx().get(this)).getLabel()
-						+ " but got " + state.getCharacter().getLabel());
+								thisCellsPosition).getLabel() + " but got "
+						+ state.getCharacter().getLabel());
 
 	}
 
@@ -276,11 +276,11 @@ public class CharacterStateCell extends PPodEntity {
 	 * 
 	 * @return the position
 	 */
-	@XmlAttribute
-	@Nullable
-	public Integer getPosition() {
-		return position;
-	}
+// @XmlAttribute
+// @Nullable
+// public Integer getPosition() {
+// return position;
+// }
 
 	/**
 	 * Getter. This will return {@code null} until the cell is added to a row.
@@ -378,10 +378,9 @@ public class CharacterStateCell extends PPodEntity {
 	public CharacterStateCell resetPPodVersionInfo() {
 		if (getRow() != null) {
 			getRow().resetPPodVersionInfo();
-			if (getPosition() != null) {
-				if (getRow().getMatrix() != null) {
-					getRow().getMatrix().resetColumnPPodVersion(getPosition());
-				}
+			if (getRow().getMatrix() != null) {
+				getRow().getMatrix().resetColumnPPodVersion(
+						getRow().getCellIdx().get(this));
 			}
 		}
 		super.resetPPodVersionInfo();
@@ -493,8 +492,9 @@ public class CharacterStateCell extends PPodEntity {
 
 		for (final CharacterState state : states) {
 			if (state.getCharacter() == null) {
+
 				final Character thisCellsCharacter = getRow().getMatrix()
-						.getCharacters().get(getPosition());
+						.getCharacters().get(getRow().getCellIdx().get(this));
 				state.setCharacter(thisCellsCharacter);
 			}
 			checkIncomingState(state);

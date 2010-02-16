@@ -95,15 +95,16 @@ public class CharacterStateRow extends PPodEntity {
 	/**
 	 * The {@code CharacterStateCell}s that make up the row.
 	 * <p>
-	 * We don't don't cascade SAVE_UPDATE since there are so many cells and it
-	 * slows things down quite a bit - at least for saves (haven't looked at
-	 * update yet).
+	 * We don't don't cascade {@code SAVE_UPDATE} since there are so many cells
+	 * and it slows things down quite a bit - at least for saves (haven't looked
+	 * at update yet).
 	 * <p>
-	 * No delete orphan either...TODO
+	 * We're not including any cascades here because there are so many cells and
+	 * we are concerned about performance, though the only evidence so far seen
+	 * is with {@code Cascade.SAVE_UPDATE}
 	 */
 	@OneToMany(mappedBy = "row")
 	@OrderBy("position")
-	@Cascade(org.hibernate.annotations.CascadeType.DELETE_ORPHAN)
 	private final List<CharacterStateCell> cells = newArrayList();
 
 	/** {@code CharacterStateCell}-><code>cells</code>Index lookup. */
@@ -162,7 +163,7 @@ public class CharacterStateRow extends PPodEntity {
 			return clearedCells;
 		}
 		for (final CharacterStateCell clearedCell : clearedCells) {
-			clearedCell.setPosition(null);
+			clearedCell.setRow(null);
 		}
 		cells.clear();
 		cellIdx.clear();
@@ -211,7 +212,7 @@ public class CharacterStateRow extends PPodEntity {
 	@Override
 	public CharacterStateRow resetPPodVersionInfo() {
 		if (getAllowResetPPodVersionInfo()) {
-			if (isInNeedOfNewPPodVersionInfo()) { 
+			if (isInNeedOfNewPPodVersionInfo()) {
 
 			} else {
 				checkState(getMatrix() != null);
@@ -225,19 +226,20 @@ public class CharacterStateRow extends PPodEntity {
 	/**
 	 * Set the cells of this row.
 	 * 
-	 * @param cells the cells.
+	 * @param newCells the cells.
 	 * 
-	 * @return this
+	 * @return any cells which were removed as a result of this operation
 	 * 
 	 * @throws IllegalArgumentException if any of cells are such that {@code
 	 *             cell.getRow() != this}
 	 * @throws IllegalStateException if {@code this.getMatrix() == null}
 	 */
-	public CharacterStateRow setCells(final List<CharacterStateCell> cells) {
-		checkNotNull(cells);
+	public List<CharacterStateCell> setCells(
+			final List<CharacterStateCell> newCells) {
+		checkNotNull(newCells);
 
-		if (cells.equals(getCells())) {
-			return this;
+		if (newCells.equals(getCells())) {
+			return Collections.emptyList();
 		}
 
 		if (getMatrix() == null) {
@@ -245,27 +247,32 @@ public class CharacterStateRow extends PPodEntity {
 					"This row hasn't been added to a matrix yet");
 		}
 
-		if (getMatrix().getCharacters().size() != cells.size()) {
+		if (getMatrix().getCharacters().size() != newCells.size()) {
 			throw new IllegalStateException(
 					"the matrix has different number of characters "
 							+ getMatrix().getCharacters().size()
-							+ " than cells " + cells.size());
+							+ " than cells " + newCells.size());
 		}
-		for (int cellPos = 0; cellPos < cells.size(); cellPos++) {
-			cells.get(cellPos).setRow(this);
-			if (getMatrix().getCharacters().size() > 0
-					&& getMatrix().getCharacters().get(cellPos) == null) {
+		for (int newCellPos = 0; newCellPos < newCells.size(); newCellPos++) {
+			if (getMatrix().getCharacters().size() > newCellPos
+					&& getMatrix().getCharacters().get(newCellPos) == null) {
 				throw new IllegalStateException("Character is null at column "
-						+ cells.size());
+						+ newCells.size());
 			}
 		}
+
+		final List<CharacterStateCell> clearedCells = newArrayList(getCells());
+		clearedCells.removeAll(newCells);
+
 		clearCells();
-		for (int cellPos = 0; cellPos < cells.size(); cellPos++) {
-			this.cells.add(cells.get(cellPos).setPosition(cellPos));
+		for (int cellPos = 0; cellPos < newCells.size(); cellPos++) {
+			getCellsMutable().add(newCells.get(cellPos));
+			newCells.get(cellPos).setRow(this);
+			newCells.get(cellPos).setPosition(cellPos);
 			cellIdx.put(getCells().get(cellPos), cellPos);
 		}
 		resetPPodVersionInfo();
-		return this;
+		return clearedCells;
 	}
 
 	/**

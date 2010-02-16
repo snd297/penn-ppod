@@ -520,9 +520,9 @@ public class CharacterStateMatrix extends UUPPodEntityWXmlId implements
 			return this;
 		}
 
-		columnPPodVersionInfos.clear();
-		columnPPodVersionInfos.addAll(reorderColumnHeaderPPodVersionInfos(
-				getCharacters(), newCharacters));
+		final List<PPodVersionInfo> newColumnPPodVersionInfos = determineNewColumnHeaderPPodVersionInfos(newCharacters);
+		getColumnPPodVersionInfosMutable().clear();
+		getColumnPPodVersionInfosMutable().addAll(newColumnPPodVersionInfos);
 
 		getCharactersMutable().clear();
 		getCharacterIdxMutable().clear();
@@ -547,14 +547,15 @@ public class CharacterStateMatrix extends UUPPodEntityWXmlId implements
 	 * @param newCharacters
 	 * @return
 	 */
-	List<PPodVersionInfo> reorderColumnHeaderPPodVersionInfos(
-			final List<? extends Character> originalCharacters,
+	private List<PPodVersionInfo> determineNewColumnHeaderPPodVersionInfos(
 			final List<? extends Character> newCharacters) {
+
 		final BiMap<Integer, Integer> originalPositionsToNewPositions = HashBiMap
-				.create(originalCharacters.size());
-		for (final Character originalCharacter : originalCharacters) {
-			final Integer originalPosition = originalCharacters
-					.indexOf(originalCharacter);
+				.create(getCharacters().size());
+		for (int originalPosition = 0; originalPosition < getCharacters()
+				.size(); originalPosition++) {
+			final Character originalCharacter = getCharacters().get(
+					originalPosition);
 			final Integer newPosition = newCharacters
 					.indexOf(originalCharacter);
 			// Use unique negative values to indicate not present. Unique since

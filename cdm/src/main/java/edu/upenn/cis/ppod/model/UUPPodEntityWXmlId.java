@@ -41,7 +41,7 @@ public abstract class UUPPodEntityWXmlId extends UUPPodEntity implements
 	/**
 	 * Get the {@link XmlID} attribute.
 	 * <p>
-	 * Will be {@code null} until one of the {@code setDocId(...)} are called by
+	 * Will be {@code null} until one of the {@code setDocId(...)}s are called by
 	 * the client.
 	 * 
 	 * @return the {@code XmlID} attribute
