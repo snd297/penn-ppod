@@ -1,4 +1,4 @@
 #summary documentation outline
   * [GettingStarted Getting Started]
   * [HQLSelectEquusSus Example HQL Query Against pPOD Db]
-  * [Visitor How Information Travels Through the CDM Hierarchy]
+  * [InfoPropagation How Information Travels Through the CDM Hierarchy]
