@@ -321,24 +321,28 @@ public class OTUSet extends UUPPodEntityWXmlId {
 	 * 
 	 * @param newOTUs
 	 * 
-	 * @return this
+	 * @return any {@code OTU}s that were removed as a result of this operation
 	 */
-	public OTUSet setOTUs(final Set<OTU> newOTUs) {
+	public Set<OTU> setOTUs(final Set<OTU> newOTUs) {
 		checkNotNull(newOTUs);
 		if (newOTUs.equals(this.otus)) {
-			return this;
+			return Collections.emptySet();
 		}
-		for (final OTU otu : getOTUs()) {
-			if (!newOTUs.contains(otu)) {
-				otu.removeOTUSet(this);
-			}
-		}
+
+		final Set<OTU> removedOTUs = newHashSet(getOTUs());
+		removedOTUs.removeAll(newOTUs);
+
 		getOTUsMutable().clear();
 		for (final OTU otu : newOTUs) {
 			addOTU(otu);
 		}
+
+		for (final OTU removedOTU : removedOTUs) {
+			removedOTU.removeOTUSet(this);
+		}
+
 		resetPPodVersionInfo();
-		return this;
+		return removedOTUs;
 	}
 
 	/**
