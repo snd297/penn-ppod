@@ -36,6 +36,7 @@ public class DbTestBase {
 	protected IDatabaseTester dbTester = DbUnitUtil.getDatabaseTester();;
 	protected IDataSet initialDataSet = DbUnitUtil.getDataSet(PPOD_DATA_XML);;
 
+	@edu.umd.cs.findbugs.annotations.SuppressWarnings
 	protected IDAOFactory daoFactory = null; // new PPodFactory();
 // .create(IDAOFactory.class);
 

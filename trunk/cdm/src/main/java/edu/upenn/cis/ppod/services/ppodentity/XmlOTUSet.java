@@ -37,6 +37,7 @@ import edu.upenn.cis.ppod.model.TreeSet;
  * @author Sam Donnelly
  * 
  */
+@edu.umd.cs.findbugs.annotations.SuppressWarnings
 public class XmlOTUSet {
 	/**
 	 * Globally non-unique label.

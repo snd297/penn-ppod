@@ -23,6 +23,8 @@ import java.util.Iterator;
 import java.util.List;
 import java.util.concurrent.ConcurrentMap;
 
+import javax.persistence.Transient;
+
 import org.hibernate.EmptyInterceptor;
 import org.hibernate.SessionFactory;
 import org.hibernate.Transaction;
@@ -51,9 +53,9 @@ public class PPodVersionInfoInterceptor extends EmptyInterceptor {
 
 	private SessionFactory sessionFactory;
 
-	private final HibernateDAOFactory.IFactory hibernateDAOFactoryFactory;
+	private final transient HibernateDAOFactory.IFactory hibernateDAOFactoryFactory;
 
-	private final Provider<PPodVersionInfo> pPodVersionInfoProvider;
+	private final transient Provider<PPodVersionInfo> pPodVersionInfoProvider;
 
 	private final ConcurrentMap<Session, PPodVersionInfo> pPodVersionInfosBySession = newConcurrentHashMap();
 

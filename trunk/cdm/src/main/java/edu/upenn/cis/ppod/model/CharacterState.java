@@ -18,6 +18,8 @@ package edu.upenn.cis.ppod.model;
 import static com.google.common.base.Preconditions.checkArgument;
 import static com.google.common.base.Preconditions.checkNotNull;
 
+import java.io.Serializable;
+
 import javax.annotation.CheckForNull;
 import javax.annotation.Nullable;
 import javax.persistence.Column;
@@ -64,7 +66,9 @@ public class CharacterState extends PPodEntityWXmlId {
 	 * this comparator should be safe to use in a {@code SortedSet}.
 	 */
 	public static class CharacterStateComparator implements
-			java.util.Comparator<CharacterState> {
+			java.util.Comparator<CharacterState>, Serializable {
+
+		private static final long serialVersionUID = 1L;
 
 		public int compare(final CharacterState o1, final CharacterState o2) {
 			checkNotNull(o1);
@@ -133,6 +137,7 @@ public class CharacterState extends PPodEntityWXmlId {
 	 * <code>"short"</code>, and <code>"long"</code>
 	 */
 	@Column(name = LABEL_COLUMN, nullable = false)
+	@Nullable
 	private String label;
 
 	/**
@@ -237,7 +242,7 @@ public class CharacterState extends PPodEntityWXmlId {
 	 * 
 	 * @return this {@code CharacterState}
 	 */
-	public CharacterState setCharacter(final Character character) {
+	CharacterState setCharacter(final Character character) {
 		checkNotNull(character);
 		this.character = character;
 		return this;

@@ -25,6 +25,8 @@ import java.util.List;
  * @author Sam Donnelly
  */
 public class DNASequence extends MolecularSequence {
+
+	@edu.umd.cs.findbugs.annotations.SuppressWarnings
 	public DNASequence of(final List<? extends CharacterStateCell> cells) {
 		checkNotNull(cells);
 		final StringBuilder sequenceStringBuilder = new StringBuilder();

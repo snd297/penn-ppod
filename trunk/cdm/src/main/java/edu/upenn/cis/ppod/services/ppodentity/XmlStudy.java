@@ -33,6 +33,7 @@ import edu.upenn.cis.ppod.model.OTUSet;
  * @author Sam Donnelly
  * 
  */
+@edu.umd.cs.findbugs.annotations.SuppressWarnings
 public class XmlStudy {
 	@XmlAttribute
 	private String label;

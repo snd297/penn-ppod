@@ -15,6 +15,10 @@
  */
 package edu.upenn.cis.ppod.model;
 
+import static com.google.common.base.Preconditions.checkArgument;
+
+import java.util.List;
+
 import javax.persistence.Entity;
 import javax.persistence.Table;
 import javax.xml.bind.annotation.XmlAccessType;
@@ -33,5 +37,24 @@ public class DNAStateMatrix extends MolecularStateMatrix {
 
 	DNAStateMatrix() {
 		setType(Type.DNA);
+	}
+
+	/**
+	 * 
+	 * @param newDNACharacters
+	 * @return
+	 * 
+	 * @throws IlegalArgumentException if any of {@code newDNACharacters} are
+	 *             not {@link IDNACharacter}
+	 */
+	@Override
+	public DNAStateMatrix setCharacters(
+			final List<? extends Character> newDNACharacters) {
+		for (final Character newDNACharacter : newDNACharacters) {
+			checkArgument(newDNACharacter instanceof IDNACharacter,
+					"all characters must be instanceof IDNACharacter, found a "
+							+ newDNACharacter.getClass().getName());
+		}
+		return (DNAStateMatrix) super.setCharacters(newDNACharacters);
 	}
 }

@@ -34,6 +34,7 @@ import edu.upenn.cis.ppod.dao.ICharacterStateMatrixDAO;
 import edu.upenn.cis.ppod.util.DbUnitUtil;
 
 @Test(groups = { TestGroupDefs.SLOW, TestGroupDefs.BROKEN })
+@edu.umd.cs.findbugs.annotations.SuppressWarnings
 public class DbToMatrixTest extends DbTestBase {
 
 	public void dbToMatrix() throws Throwable {

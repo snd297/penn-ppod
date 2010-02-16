@@ -86,11 +86,11 @@ public class OTUSetTest {
 	 * {@link OTUSet#getpPodVersionInfo()} stays {@code null} and that the OTU
 	 * sets's {@code Study}'s pPOD Version info is unaffected.
 	 */
-	public void resetPPodVersionInfoWNullVersion() {
+	public void resetWhenNotInNeedOfNewPPodVersionInfo() {
 		final PPodVersionInfo studyPPodVersionInfo = study.getpPodVersionInfo();
-		otuSet.setpPodVersionInfo(null);
+		otuSet.unsetInNeedOfNewPPodVersionInfo();
 		otuSet.resetPPodVersionInfo();
-		assertNull(otuSet.getpPodVersionInfo());
+		assertTrue(otuSet.isInNeedOfNewPPodVersionInfo());
 		assertEquals(study.getpPodVersionInfo(), studyPPodVersionInfo);
 	}
 

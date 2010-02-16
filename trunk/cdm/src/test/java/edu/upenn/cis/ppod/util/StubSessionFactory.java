@@ -13,8 +13,8 @@ public class StubSessionFactory implements ISessionFactory {
 
 	private Provider<Query> stubQueryProvider;
 
-	StubSessionFactory(final Provider<Query> stubyQueryProvider) {
-		this.stubQueryProvider = stubQueryProvider;
+	StubSessionFactory(final Provider<Query> stubQueryProvider) {
+	//	this.stubQueryProvider = stubQueryProvider
 	}
 
 	public Session create() {
