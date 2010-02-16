@@ -27,7 +27,6 @@ import static edu.upenn.cis.ppod.util.PPodIterables.findEach;
 import static edu.upenn.cis.ppod.util.PPodIterables.findIf;
 
 import java.util.List;
-import java.util.ListIterator;
 import java.util.Map;
 import java.util.Set;
 
@@ -99,12 +98,6 @@ public class SaveOrUpdateCharacterStateMatrix implements
 		checkNotNull(targetMatrix);
 		checkNotNull(sourceMatrix);
 		checkNotNull(newTargetMatrixOTUSet);
-
-		// Let's not waste time flushing changes to the database for these
-		// objects: the versions will keep getting updated
-		// over and over again, let's just do it at the end of this method.
-		// dao.evict(newTargetMatrixOTUSet.getStudy());
-		// dao.evict(newTargetMatrixOTUSet);
 
 		newTargetMatrixOTUSet.addMatrix(targetMatrix);
 
@@ -215,10 +208,10 @@ public class SaveOrUpdateCharacterStateMatrix implements
 				newRow = false;
 			}
 
-//			if (!newRow && targetRow.getPPodVersion() == null) {
-//				throw new AssertionError(
-//						"existing row has no pPOD version number");
-//			}
+// if (!newRow && targetRow.getPPodVersion() == null) {
+// throw new AssertionError(
+// "existing row has no pPOD version number");
+// }
 
 			final List<CharacterStateCell> originalTargetCells = newArrayList(targetRow
 					.getCells());
@@ -290,11 +283,5 @@ public class SaveOrUpdateCharacterStateMatrix implements
 			cellsToEvict.clear();
 			dao.evict(targetRow);
 		}
-
-		// Let's reattach these
-		// dao.saveOrUpdate(newTargetMatrixOTUSet.getStudy());
-		// dao.saveOrUpdate(newTargetMatrixOTUSet);
-		// dao.saveOrUpdate(targetMatrix);
-
 	}
 }
