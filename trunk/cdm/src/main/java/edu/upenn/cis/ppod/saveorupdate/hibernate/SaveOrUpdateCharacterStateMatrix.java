@@ -239,24 +239,25 @@ public class SaveOrUpdateCharacterStateMatrix implements
 				newTargetCells.add(targetCell);
 			}
 
-			targetRow.setCells(newTargetCells);
+			final List<CharacterStateCell> clearedCells = targetRow
+					.setCells(newTargetCells);
 
-			for (final CharacterStateCell originalTargetCell : originalTargetCells) {
-				if (!targetRow.getCells().contains(originalTargetCell)) {
-					dao.delete(originalTargetCell);
-				}
+			for (final CharacterStateCell clearedCell : clearedCells) {
+				dao.delete(clearedCell);
 			}
 
 			for (final CharacterStateCell targetCell : targetRow.getCells()) {
 
+				final Integer targetCellPosition = targetRow.getCellIdx().get(
+						targetCell);
+
 				final CharacterStateCell sourceCell = sourceRow.getCells().get(
-						targetCell.getPosition());
+						targetCellPosition);
 
 				final Set<CharacterState> newTargetStates = newHashSet();
 				for (final CharacterState sourceState : sourceCell.getStates()) {
-					newTargetStates.add(characters
-							.get(targetCell.getPosition()).getStates().get(
-									sourceState.getStateNumber()));
+					newTargetStates.add(characters.get(targetCellPosition)
+							.getStates().get(sourceState.getStateNumber()));
 				}
 				switch (sourceCell.getType()) {
 					case INAPPLICABLE:

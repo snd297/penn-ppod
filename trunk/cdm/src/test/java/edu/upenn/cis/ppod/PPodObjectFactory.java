@@ -53,7 +53,11 @@ public class PPodObjectFactory extends GuiceObjectFactory {
 
 		bind(IPPodEntitiesResource.class).to(
 				PPodEntitiesResourceHibernate.class);
-
+// final org.hibernate.classic.Session session =
+		// HibernateUtil.getSessionFactory().openSession();
+		// ManagedSessionContext.bind(session);
+		// bind(Session.class).toInstance(
+		// HibernateUtil.getSessionFactory().getCurrentSession());
 		bind(Session.class).to(StubSession.class);
 		bind(Query.class).to(StubQuery.class);
 	}
