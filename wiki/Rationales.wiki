@@ -1,0 +1,21 @@
+#summary Explanations of non-obvious stuff.
+
+{{{
+@Entity
+public class Parent {
+    @OneToMany
+    @org.hibernate.annotations.IndexColumn(name="order")
+    @JoinColumn(name="parent_id", nullable=false)
+    private List<Child> children;
+    ...
+}
+
+@Entity
+public class Child {
+    ...
+    @ManyToOne
+    @JoinColumn(name="parent_id", insertable=false, updatable=false, nullable=false)
+    private Parent parent;
+    ...
+}
+}}}
