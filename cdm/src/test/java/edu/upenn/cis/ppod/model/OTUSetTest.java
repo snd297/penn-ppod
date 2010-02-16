@@ -134,7 +134,7 @@ public class OTUSetTest {
 		study.setpPodVersionInfo(pPodVersionInfoProvider.get());
 		final Set<OTU> removedOTUs = otuSet.setOTUs(new HashSet<OTU>());
 
-		assertEquals(removedOTUs, otus);
+		assertEquals(removedOTUs, newHashSet(otus));
 		assertTrue(otuSet.isInNeedOfNewPPodVersionInfo());
 		// assertNull(otuSet.getPPodVersionInfo());
 		assertTrue(study.isInNeedOfNewPPodVersionInfo());
