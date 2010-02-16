@@ -131,7 +131,7 @@ public class SaveOrUpdateCharacterStateMatrixTest {
 				sourceMatrix);
 	}
 
-	@Test(dataProvider = MatrixProvider.SMALL_MATRICES_PROVIDER, dataProviderClass = MatrixProvider.class, groups = TestGroupDefs.IN_DEVELOPMENT)
+	@Test(dataProvider = MatrixProvider.SMALL_MATRICES_PROVIDER, dataProviderClass = MatrixProvider.class)
 	public void moveCharacters(final CharacterStateMatrix sourceMatrix) {
 		final ISaveOrUpdateCharacterStateMatrix saveOrUpdateCharacterStateMatrix = mergeMatrixFactory
 				.create(mergeAttachment, dao.setSession(session));
