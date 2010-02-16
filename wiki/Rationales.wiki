@@ -1,5 +1,9 @@
 #summary Explanations of non-obvious stuff.
 
+1) Why did you map cells and rows the way you did? 
+
+We tried (from http://docs.jboss.org/hibernate/stable/annotations/reference/en/html/entity.html#entity-hibspec-collection-enhance):
+
 {{{
 @Entity
 public class Parent {
