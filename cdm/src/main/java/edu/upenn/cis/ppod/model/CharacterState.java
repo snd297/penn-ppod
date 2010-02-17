@@ -145,7 +145,7 @@ public class CharacterState extends PPodEntityWXmlId {
 	 */
 	@ManyToOne(fetch = FetchType.LAZY)
 	@JoinColumn(name = Character.ID_COLUMN)
-	@CheckForNull
+	@Nullable
 	private Character character;
 
 	CharacterState() {}

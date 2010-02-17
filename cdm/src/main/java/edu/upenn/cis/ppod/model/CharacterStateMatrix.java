@@ -363,8 +363,7 @@ public class CharacterStateMatrix extends UUPPodEntityWXmlId implements
 	 * @return an unmodifiable view of the {@code OTU->row number} map
 	 */
 	public Map<OTU, Integer> getOTUIdx() {
-		return otuIdx;
-		// return Collections.unmodifiableMap(otuIdx);
+		return Collections.unmodifiableMap(otuIdx);
 	}
 
 	/**
@@ -451,7 +450,9 @@ public class CharacterStateMatrix extends UUPPodEntityWXmlId implements
 	 * @return this {@code CharacterStateMatrix}
 	 */
 	ICharacterStateMatrix resetColumnPPodVersion(final int idx) {
-		nullFillAndSet(getColumnPPodVersionInfosModifiable(), idx, null);
+		if (getAllowResetPPodVersionInfo()) {
+			nullFillAndSet(getColumnPPodVersionInfosModifiable(), idx, null);
+		}
 		return this;
 	}
 
@@ -713,7 +714,8 @@ public class CharacterStateMatrix extends UUPPodEntityWXmlId implements
 	 * Intentionally package-private and meant to be called from {@code
 	 * CharacterStateMatrix}.
 	 * 
-	 * @param otuSet new {@code OTUSet} for this matrix
+	 * @param otuSet new {@code OTUSet} for this matrix, or {@code null} if
+	 *            we're destroying the association
 	 * 
 	 * @return this
 	 */

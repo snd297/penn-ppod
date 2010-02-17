@@ -248,6 +248,9 @@ public class CharacterStateCell extends PPodEntity {
 		final Character thisCellsCharacter = matrix.getCharacters().get(
 				thisCellsPosition);
 
+		checkArgument(state.getCharacter() != null, "state " + state.getLabel()
+				+ " hasn't been assigned to a Character");
+
 		checkArgument(state.getCharacter().equals(thisCellsCharacter),
 				"state is from the wrong Character. We want "
 						+ matrix.getCharacters().get(thisCellsPosition)
@@ -486,12 +489,6 @@ public class CharacterStateCell extends PPodEntity {
 		}
 
 		for (final CharacterState state : states) {
-			if (state.getCharacter() == null) {
-
-				final Character thisCellsCharacter = getRow().getMatrix()
-						.getCharacters().get(getRow().getCellIdx().get(this));
-				state.setCharacter(thisCellsCharacter);
-			}
 			checkIncomingState(state);
 		}
 
