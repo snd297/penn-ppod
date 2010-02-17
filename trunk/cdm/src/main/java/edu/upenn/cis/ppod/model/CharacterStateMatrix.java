@@ -805,4 +805,13 @@ public class CharacterStateMatrix extends UUPPodEntityWXmlId implements
 		getColumnPPodVersionInfosModifiable().set(pos, pPodVersionInfo);
 		return this;
 	}
+
+	public ICharacterStateMatrix setColumnPPodVersionInfos(
+			final PPodVersionInfo pPodVersionInfo) {
+		for (int pos = 0; pos < getColumnPPodVersionInfos().size(); pos++) {
+			setColumnPPodVersionInfo(pos, pPodVersionInfo);
+		}
+		return this;
+	}
+
 }

@@ -47,14 +47,14 @@ public class DNAStateMatrix extends MolecularStateMatrix {
 	 * @throws IlegalArgumentException if any of {@code newDNACharacters} are
 	 *             not {@link IDNACharacter}
 	 */
-	@Override
-	public DNAStateMatrix setCharacters(
-			final List<? extends Character> newDNACharacters) {
-		for (final Character newDNACharacter : newDNACharacters) {
-			checkArgument(newDNACharacter instanceof IDNACharacter,
-					"all characters must be instanceof IDNACharacter, found a "
-							+ newDNACharacter.getClass().getName());
-		}
-		return (DNAStateMatrix) super.setCharacters(newDNACharacters);
-	}
+//	@Override
+//	public DNAStateMatrix setCharacters(
+//			final List<? extends Character> newDNACharacters) {
+//		for (final Character newDNACharacter : newDNACharacters) {
+//			checkArgument(newDNACharacter instanceof IDNACharacter,
+//					"all characters must be instanceof IDNACharacter, found a "
+//							+ newDNACharacter.getClass().getName());
+//		}
+//		return (DNAStateMatrix) super.setCharacters(newDNACharacters);
+//	}
 }

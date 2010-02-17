@@ -1,14 +1,8 @@
 package edu.upenn.cis.ppod.model;
 
-import java.util.Date;
-
-import org.hibernate.Session;
-
 import com.google.inject.Inject;
 import com.google.inject.assistedinject.Assisted;
 
-import edu.upenn.cis.ppod.dao.IPPodVersionInfoDAO;
-import edu.upenn.cis.ppod.dao.hibernate.PPodVersionInfoDAOHibernate;
 import edu.upenn.cis.ppod.util.EmptyVisitor;
 
 /**
@@ -19,52 +13,25 @@ import edu.upenn.cis.ppod.util.EmptyVisitor;
 public class SetPPodVersionInfoVisitor extends EmptyVisitor {
 
 	public static interface IFactory {
-		SetPPodVersionInfoVisitor create(Session s);
+		SetPPodVersionInfoVisitor create(LazyPPodVersionInfo lazyPPodVersionInfo);
 	}
 
-	private final PPodVersionInfo newPPodVersionInfo;
-	private final IPPodVersionInfoDAO pPodVersionInfoDAO;
-
-	static int counter = 0;
+	private final LazyPPodVersionInfo lazyPPodVersionInfo;
 
 	@Inject
 	SetPPodVersionInfoVisitor(
-			final PPodVersionInfoDAOHibernate pPodVersionInfoDAO,
-			final PPodVersionInfo newPPodVersionInfo,
-			@Assisted final Session session) {
-		this.newPPodVersionInfo = newPPodVersionInfo;
-		this.pPodVersionInfoDAO = (IPPodVersionInfoDAO) pPodVersionInfoDAO
-				.setSession(session);
-		counter++;
-	}
-
-	private boolean pPodVersionInfoInitialized = false;
-
-	private void initializePPodVersionInfo() {
-		if (pPodVersionInfoInitialized) {
-
-		} else {
-			final Long newPPodVersion = pPodVersionInfoDAO.getMaxPPodVersion() + 1;
-			newPPodVersionInfo.setPPodVersion(newPPodVersion);
-			newPPodVersionInfo.setCreated(new Date());
-			pPodVersionInfoDAO.saveOrUpdate(newPPodVersionInfo);
-			pPodVersionInfoInitialized = true;
-		}
+			@Assisted final LazyPPodVersionInfo lazyPPodVersionInfo) {
+		this.lazyPPodVersionInfo = lazyPPodVersionInfo;
 	}
 
 	private void setNewPPodVersionIfNeeded(final IPPodVersioned pPodVersioned) {
 		if (pPodVersioned.isInNeedOfNewPPodVersionInfo()) {
-			initializePPodVersionInfo();
-			pPodVersioned.setpPodVersionInfo(newPPodVersionInfo);
+			pPodVersioned.setpPodVersionInfo(lazyPPodVersionInfo
+					.getNewPPodVersionInfo());
 			pPodVersioned.unsetInNeedOfNewPPodVersionInfo();
 		}
 	}
 
-	/**
-	 * Does nothing.
-	 * 
-	 * @param attachment ignored
-	 */
 	@Override
 	public void visit(final Attachment attachment) {
 		setNewPPodVersionIfNeeded(attachment);
@@ -108,6 +75,12 @@ public class SetPPodVersionInfoVisitor extends EmptyVisitor {
 	@Override
 	public void visit(final CharacterStateMatrix matrix) {
 		setNewPPodVersionIfNeeded(matrix);
+		for (int pos = 0; pos < matrix.getColumnPPodVersionInfos().size(); pos++) {
+			if (matrix.getColumnPPodVersionInfos().get(pos) == null) {
+				matrix.setColumnPPodVersionInfo(pos, lazyPPodVersionInfo
+						.getNewPPodVersionInfo());
+			}
+		}
 	}
 
 	/**

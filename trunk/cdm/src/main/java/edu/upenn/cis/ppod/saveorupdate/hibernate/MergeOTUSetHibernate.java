@@ -32,6 +32,7 @@ import edu.upenn.cis.ppod.dao.IOTUDAO;
 import edu.upenn.cis.ppod.dao.hibernate.HibernateDAOFactory.OTUDAOHibernate;
 import edu.upenn.cis.ppod.dao.hibernate.HibernateDAOFactory.OTUSetDAOHibernate;
 import edu.upenn.cis.ppod.model.IUUPPodEntity;
+import edu.upenn.cis.ppod.model.LazyPPodVersionInfo;
 import edu.upenn.cis.ppod.model.OTU;
 import edu.upenn.cis.ppod.model.OTUSet;
 import edu.upenn.cis.ppod.saveorupdate.IMergeOTUSet;
@@ -55,7 +56,8 @@ public class MergeOTUSetHibernate implements IMergeOTUSet {
 	}
 
 	public Map<OTU, OTU> saveOrUpdate(final OTUSet targetOTUSet,
-			final OTUSet sourceOTUSet) {
+			final OTUSet sourceOTUSet,
+			final LazyPPodVersionInfo lazyPPodVersionInfo) {
 		targetOTUSet.setLabel(sourceOTUSet.getLabel());
 		targetOTUSet.setDescription(sourceOTUSet.getDescription());
 
@@ -65,24 +67,25 @@ public class MergeOTUSetHibernate implements IMergeOTUSet {
 		final Set<OTU> newOTUs = newHashSet();
 		final Map<OTU, OTU> persistentOTUsByIncomingOTU = newHashMap();
 		for (final OTU incomingOTU : sourceOTUSet.getOTUs()) {
-			OTU persistedOTU;
-			if (null == (persistedOTU = findIf(targetOTUSet.getOTUs(),
-					PPodPredicates.equalTo(incomingOTU.getPPodId(),
-							IUUPPodEntity.getPPodId)))) {
+			OTU dbOTU;
+			if (null == (dbOTU = findIf(targetOTUSet.getOTUs(), PPodPredicates
+					.equalTo(incomingOTU.getPPodId(), IUUPPodEntity.getPPodId)))) {
 
 				// See if it's hooked up to another OTUSet
-				if (null == (persistedOTU = otuDAO.getOTUByPPodId(incomingOTU
+				if (null == (dbOTU = otuDAO.getOTUByPPodId(incomingOTU
 						.getPPodId()))) {
-					persistedOTU = otuProvider.get();
-					persistedOTU.setPPodId();
+					dbOTU = otuProvider.get();
+					dbOTU.setpPodVersionInfo(lazyPPodVersionInfo
+							.getNewPPodVersionInfo());
+					dbOTU.setPPodId();
 				}
 			}
-			newOTUs.add(persistedOTU);
-			persistedOTU.setLabel(incomingOTU.getLabel());
-			persistentOTUsByIncomingOTU.put(incomingOTU, persistedOTU);
+			newOTUs.add(dbOTU);
+			dbOTU.setLabel(incomingOTU.getLabel());
+			persistentOTUsByIncomingOTU.put(incomingOTU, dbOTU);
 
 			// This is for a response to the service client.
-			persistedOTU.setDocId(incomingOTU.getDocId());
+			dbOTU.setDocId(incomingOTU.getDocId());
 		}
 		targetOTUSet.setOTUs(newOTUs);
 		return persistentOTUsByIncomingOTU;

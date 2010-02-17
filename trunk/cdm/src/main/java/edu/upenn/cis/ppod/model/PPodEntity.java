@@ -15,6 +15,7 @@
  */
 package edu.upenn.cis.ppod.model;
 
+import static com.google.common.base.Preconditions.checkNotNull;
 import static com.google.common.collect.Sets.newHashSet;
 
 import java.util.Collections;
@@ -71,25 +72,15 @@ public abstract class PPodEntity extends PersistentObject implements
 
 	static final String ID_COLUMN = TABLE + "_ID";
 
-	@Inject
-	PPodEntity(final PPodVersionInfo pPodVersionInfo) {
-		// This will have a version of negative one and should block saves since
-		// it is not saved.
-		// It MUST be replaced for this object to be saved.
-		setPPodVersion(pPodVersion);
-	}
-
 	/**
 	 * The pPod-version of this object. Similar in concept to Hibernate's
 	 * version, but tweaked for our purposes.
-	 * <p>
-	 * We leave it EAGER because we manipulate it in PPodVersionInfoInterceptor.
 	 * 
 	 * @see PPodVersionInfo
 	 * @see PPodVersionInfoInterceptor
 	 */
-	@AccessType("property")
-	@ManyToOne(fetch = FetchType.EAGER)
+	// @AccessType("property")
+	@ManyToOne(fetch = FetchType.LAZY)
 	@JoinColumn(name = PPodVersionInfo.ID_COLUMN, nullable = false)
 	@Nullable
 	private PPodVersionInfo pPodVersionInfo;
@@ -97,18 +88,6 @@ public abstract class PPodEntity extends PersistentObject implements
 	/** Does this object need to be assigned a new pPOD version? */
 	@Transient
 	private boolean inNeedOfNewPPodVersionInfo = false;
-
-	/**
-	 * Set the inNeedOfNewPPodVersionInfo. Intentionally package-private.
-	 * 
-	 * @param inNeedOfNewPPodVersionInfo the inNeedOfNewPPodVersionInfo to set
-	 * 
-	 * @return this
-	 */
-	PPodEntity setInNeedOfNewPPodVersionInfo() {
-		this.inNeedOfNewPPodVersionInfo = true;
-		return this;
-	}
 
 	@Transient
 	@Nullable
@@ -125,18 +104,19 @@ public abstract class PPodEntity extends PersistentObject implements
 	@Column(name = "HAS_ATTACHMENTS", nullable = false)
 	private Boolean hasAttachments = false;
 
-	/**
-	 * Created for testing.
-	 */
-	Boolean getHasAttachments() {
-		return hasAttachments;
-	}
-
 	@Transient
 	@Nullable
 	private Set<Attachment> attachmentsXml;
 
 	PPodEntity() {}
+
+	@Inject
+	PPodEntity(final PPodVersionInfo pPodVersionInfo) {
+		// This will have a version of negative one and should block saves since
+		// it is not saved.
+		// It MUST be replaced for this object to be saved.
+		setPPodVersion(pPodVersion);
+	}
 
 	@Override
 	@OverridingMethodsMustInvokeSuper
@@ -174,17 +154,6 @@ public abstract class PPodEntity extends PersistentObject implements
 	}
 
 	/**
-	 * {@link Unmarshaller} callback.
-	 * 
-	 * @param u see {@code Unmarshaller}
-	 * @param parent see {@code Unmarshaller}
-	 */
-	@OverridingMethodsMustInvokeSuper
-	public void beforeUnmarshal(final Unmarshaller u, final Object parent) {
-		unsetAllowPersistAndResetPPodVersionInfo();
-	}
-
-	/**
 	 * See {@link Marshaller}.
 	 * 
 	 * @param marshaler see {@code Marshaller}
@@ -198,6 +167,17 @@ public abstract class PPodEntity extends PersistentObject implements
 		}
 		getAttachmentsXml().addAll(getAttachments());
 		return true;
+	}
+
+	/**
+	 * {@link Unmarshaller} callback.
+	 * 
+	 * @param u see {@code Unmarshaller}
+	 * @param parent see {@code Unmarshaller}
+	 */
+	@OverridingMethodsMustInvokeSuper
+	public void beforeUnmarshal(final Unmarshaller u, final Object parent) {
+		unsetAllowPersistAndResetPPodVersionInfo();
 	}
 
 	public boolean getAllowResetPPodVersionInfo() {
@@ -237,6 +217,13 @@ public abstract class PPodEntity extends PersistentObject implements
 		return attachmentsXml;
 	}
 
+	/**
+	 * Created for testing.
+	 */
+	Boolean getHasAttachments() {
+		return hasAttachments;
+	}
+
 	@XmlAttribute
 	public Long getPPodVersion() {
 		if (pPodVersionInfo != null) {
@@ -247,6 +234,10 @@ public abstract class PPodEntity extends PersistentObject implements
 
 	public PPodVersionInfo getpPodVersionInfo() {
 		return pPodVersionInfo;
+	}
+
+	public boolean isInNeedOfNewPPodVersionInfo() {
+		return inNeedOfNewPPodVersionInfo;
 	}
 
 	public boolean removeAttachment(final Attachment attachment) {
@@ -292,6 +283,18 @@ public abstract class PPodEntity extends PersistentObject implements
 	}
 
 	/**
+	 * Set the inNeedOfNewPPodVersionInfo. Intentionally package-private.
+	 * 
+	 * @param inNeedOfNewPPodVersionInfo the inNeedOfNewPPodVersionInfo to set
+	 * 
+	 * @return this
+	 */
+	PPodEntity setInNeedOfNewPPodVersionInfo() {
+		this.inNeedOfNewPPodVersionInfo = true;
+		return this;
+	}
+
+	/**
 	 * Set the pPOD version number.
 	 * 
 	 * @param pPodVersion the pPOD version number
@@ -315,17 +318,10 @@ public abstract class PPodEntity extends PersistentObject implements
 	 * @return this
 	 */
 	public PPodEntity setpPodVersionInfo(final PPodVersionInfo pPodVersionInfo) {
+		// checkNotNull(pPodVersionInfo);
+		// unsetInNeedOfNewPPodVersionInfo();
 		this.pPodVersionInfo = pPodVersionInfo;
 		return this;
-	}
-
-	public PPodEntity unsetInNeedOfNewPPodVersionInfo() {
-		inNeedOfNewPPodVersionInfo = false;
-		return this;
-	}
-
-	public boolean isInNeedOfNewPPodVersionInfo() {
-		return inNeedOfNewPPodVersionInfo;
 	}
 
 	/**
@@ -360,4 +356,10 @@ public abstract class PPodEntity extends PersistentObject implements
 		allowResetPPodVersionInfo = false;
 		return this;
 	}
+
+	public PPodEntity unsetInNeedOfNewPPodVersionInfo() {
+		inNeedOfNewPPodVersionInfo = false;
+		return this;
+	}
+
 }

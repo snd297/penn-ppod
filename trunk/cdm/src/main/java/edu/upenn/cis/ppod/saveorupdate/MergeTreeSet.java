@@ -27,6 +27,7 @@ import com.google.inject.Inject;
 import com.google.inject.Provider;
 
 import edu.upenn.cis.ppod.model.IUUPPodEntity;
+import edu.upenn.cis.ppod.model.LazyPPodVersionInfo;
 import edu.upenn.cis.ppod.model.OTU;
 import edu.upenn.cis.ppod.model.OTUSet;
 import edu.upenn.cis.ppod.model.Tree;
@@ -42,12 +43,14 @@ public class MergeTreeSet implements IMergeTreeSet {
 
 	@Inject
 	MergeTreeSet(final Provider<Tree> treeProvider) {
+
 		this.treeProvider = treeProvider;
 	}
 
 	public TreeSet merge(final TreeSet targetTreeSet,
 			final TreeSet sourceTreeSet, final OTUSet newTargetTreeSetOTUSet,
-			final Map<OTU, OTU> mergedOTUsBySourceOTU) {
+			final Map<OTU, OTU> mergedOTUsBySourceOTU,
+			final LazyPPodVersionInfo lazyPPodVersionInfo) {
 		checkNotNull(targetTreeSet);
 		checkNotNull(sourceTreeSet);
 		checkNotNull(newTargetTreeSetOTUSet);
@@ -63,9 +66,12 @@ public class MergeTreeSet implements IMergeTreeSet {
 
 		for (final Tree sourceTree : sourceTreeSet.getTrees()) {
 			Tree targetTree;
-			if (null == (targetTree = findIf(targetTreeSet.getTrees(), PPodPredicates.equalTo(
-					sourceTree.getPPodId(), IUUPPodEntity.getPPodId)))) {
+			if (null == (targetTree = findIf(targetTreeSet.getTrees(),
+					PPodPredicates.equalTo(sourceTree.getPPodId(),
+							IUUPPodEntity.getPPodId)))) {
 				targetTree = treeProvider.get();
+				targetTree.setpPodVersionInfo(lazyPPodVersionInfo
+						.getNewPPodVersionInfo());
 				targetTree.setPPodId();
 			}
 			newTargetTrees.add(targetTree);

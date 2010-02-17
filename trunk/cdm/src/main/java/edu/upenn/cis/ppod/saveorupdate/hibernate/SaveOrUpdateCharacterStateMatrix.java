@@ -45,9 +45,9 @@ import edu.upenn.cis.ppod.model.CharacterStateRow;
 import edu.upenn.cis.ppod.model.DNACharacter;
 import edu.upenn.cis.ppod.model.ICharacterStateMatrix;
 import edu.upenn.cis.ppod.model.IUUPPodEntity;
+import edu.upenn.cis.ppod.model.LazyPPodVersionInfo;
 import edu.upenn.cis.ppod.model.OTU;
 import edu.upenn.cis.ppod.model.OTUSet;
-import edu.upenn.cis.ppod.model.SetPPodVersionInfoVisitor;
 import edu.upenn.cis.ppod.saveorupdate.IMergeAttachment;
 import edu.upenn.cis.ppod.saveorupdate.ISaveOrUpdateCharacterStateMatrix;
 import edu.upenn.cis.ppod.thirdparty.injectslf4j.InjectLogger;
@@ -69,7 +69,8 @@ public class SaveOrUpdateCharacterStateMatrix implements
 
 	@InjectLogger
 	private Logger logger;
-	final private SetPPodVersionInfoVisitor setPPodVersionInfoVisitor;
+
+	private final LazyPPodVersionInfo lazyPPodVersionInfo;
 
 	@Inject
 	SaveOrUpdateCharacterStateMatrix(
@@ -78,9 +79,10 @@ public class SaveOrUpdateCharacterStateMatrix implements
 			final Provider<CharacterStateCell> cellProvider,
 			final CharacterState.IFactory stateFactory,
 			final Provider<Attachment> attachmentProvider,
+			@Assisted final LazyPPodVersionInfo lazyPPodVersionInfo,
 			@Assisted final IDAO<Object, Long> dao,
-			@Assisted final IMergeAttachment mergeAttachment,
-			@Assisted final SetPPodVersionInfoVisitor setPPodVersionInfoVisitor) {
+			@Assisted final IMergeAttachment mergeAttachment) {
+
 		this.characterProvider = characterProvider;
 		this.rowProvider = rowProvider;
 		this.cellProvider = cellProvider;
@@ -88,7 +90,7 @@ public class SaveOrUpdateCharacterStateMatrix implements
 		this.attachmentProvider = attachmentProvider;
 		this.dao = dao;
 		this.mergeAttachment = mergeAttachment;
-		this.setPPodVersionInfoVisitor = setPPodVersionInfoVisitor;
+		this.lazyPPodVersionInfo = lazyPPodVersionInfo;
 	}
 
 	public void saveOrUpdate(CharacterStateMatrix targetMatrix,
@@ -137,8 +139,11 @@ public class SaveOrUpdateCharacterStateMatrix implements
 					.getCharacters(), PPodPredicates.equalTo(sourceCharacter
 					.getPPodId(), IUUPPodEntity.getPPodId)))) {
 				newTargetCharacter = characterProvider.get();
+				newTargetCharacter.setpPodVersionInfo(lazyPPodVersionInfo
+						.getNewPPodVersionInfo());
 				newTargetCharacter.setPPodId();
 			}
+
 			newTargetMatrixCharacters.add(newTargetCharacter);
 
 			if (sourceMatrix.getType() == ICharacterStateMatrix.Type.STANDARD) {
@@ -152,7 +157,10 @@ public class SaveOrUpdateCharacterStateMatrix implements
 						sourceState.getStateNumber()))) {
 					targetState = newTargetCharacter.addState(stateFactory
 							.create(sourceState.getStateNumber()));
+					targetState.setpPodVersionInfo(lazyPPodVersionInfo
+							.getNewPPodVersionInfo());
 				}
+
 				if (sourceMatrix.getType() == ICharacterStateMatrix.Type.STANDARD) {
 					targetState.setLabel(sourceState.getLabel());
 				}
@@ -181,6 +189,8 @@ public class SaveOrUpdateCharacterStateMatrix implements
 						null);
 				if (targetAttachment == null) {
 					targetAttachment = attachmentProvider.get();
+					targetAttachment.setpPodVersionInfo(lazyPPodVersionInfo
+							.getNewPPodVersionInfo());
 					targetAttachment.setPPodId();
 				}
 				newTargetCharacter.addAttachment(targetAttachment);
@@ -204,6 +214,8 @@ public class SaveOrUpdateCharacterStateMatrix implements
 
 			if (null == (targetRow = targetMatrix.getRow(targetOTU))) {
 				targetRow = rowProvider.get();
+				targetRow.setpPodVersionInfo(lazyPPodVersionInfo
+						.getNewPPodVersionInfo());
 				targetMatrix.setRow(targetOTU, targetRow);
 				dao.saveOrUpdate(targetRow);
 				newRow = true;
@@ -228,6 +240,8 @@ public class SaveOrUpdateCharacterStateMatrix implements
 				if (newRow
 						|| null == originalCharIdxsByNewCharIdx.get(newCellIdx)) {
 					targetCell = cellProvider.get();
+					targetCell.setpPodVersionInfo(lazyPPodVersionInfo
+							.getNewPPodVersionInfo());
 				} else {
 					targetCell = originalTargetCells
 							.get(originalCharIdxsByNewCharIdx.get(newCellIdx));
@@ -280,7 +294,7 @@ public class SaveOrUpdateCharacterStateMatrix implements
 
 			logger.debug("{}: flushing row,  sourceRowIdx: {}", METHOD,
 					sourceRowIdx);
-			targetRow.accept(setPPodVersionInfoVisitor);
+
 			dao.flush();
 
 			dao.evictEntities(cellsToEvict);

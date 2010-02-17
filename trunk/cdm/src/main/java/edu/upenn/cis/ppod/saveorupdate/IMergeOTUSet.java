@@ -17,6 +17,7 @@ package edu.upenn.cis.ppod.saveorupdate;
 
 import java.util.Map;
 
+import edu.upenn.cis.ppod.model.LazyPPodVersionInfo;
 import edu.upenn.cis.ppod.model.OTU;
 import edu.upenn.cis.ppod.model.OTUSet;
 
@@ -28,6 +29,7 @@ public interface IMergeOTUSet {
 	/**
 	 * Return persistentOTUsByIncomingOTU.
 	 */
-	Map<OTU, OTU> saveOrUpdate(OTUSet targetOTUSet, OTUSet sourceOTUSet);
+	Map<OTU, OTU> saveOrUpdate(OTUSet targetOTUSet, OTUSet sourceOTUSet,
+			LazyPPodVersionInfo lazyPPodVersionInfo);
 
 }
