@@ -2,8 +2,6 @@ package edu.upenn.cis.ppod.model;
 
 import java.util.Date;
 
-import org.hibernate.Session;
-
 import com.google.inject.Inject;
 
 import edu.upenn.cis.ppod.dao.hibernate.PPodVersionInfoDAOHibernate;
@@ -11,19 +9,14 @@ import edu.upenn.cis.ppod.thirdparty.util.HibernateUtil;
 
 /**
  * @author Sam Donnelly
- * 
  */
-public class LazyPPodVersionInfo {
-
-	public static interface IFactory {
-		LazyPPodVersionInfo create(Session s);
-	}
+public class NewPPodVersionInfo implements INewPPodVersionInfo {
 
 	private final PPodVersionInfo newPPodVersionInfo;
 	private final PPodVersionInfoDAOHibernate pPodVersionInfoDAO;
 
 	@Inject
-	LazyPPodVersionInfo(final PPodVersionInfoDAOHibernate pPodVersionInfoDAO,
+	NewPPodVersionInfo(final PPodVersionInfoDAOHibernate pPodVersionInfoDAO,
 			final PPodVersionInfo newPPodVersionInfo) {
 		this.newPPodVersionInfo = newPPodVersionInfo;
 		this.pPodVersionInfoDAO = pPodVersionInfoDAO;

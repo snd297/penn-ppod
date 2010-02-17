@@ -44,8 +44,8 @@ import edu.upenn.cis.ppod.model.CharacterStateMatrix;
 import edu.upenn.cis.ppod.model.CharacterStateRow;
 import edu.upenn.cis.ppod.model.DNACharacter;
 import edu.upenn.cis.ppod.model.ICharacterStateMatrix;
+import edu.upenn.cis.ppod.model.INewPPodVersionInfo;
 import edu.upenn.cis.ppod.model.IUUPPodEntity;
-import edu.upenn.cis.ppod.model.LazyPPodVersionInfo;
 import edu.upenn.cis.ppod.model.OTU;
 import edu.upenn.cis.ppod.model.OTUSet;
 import edu.upenn.cis.ppod.saveorupdate.IMergeAttachment;
@@ -70,7 +70,7 @@ public class SaveOrUpdateCharacterStateMatrix implements
 	@InjectLogger
 	private Logger logger;
 
-	private final LazyPPodVersionInfo lazyPPodVersionInfo;
+	private final INewPPodVersionInfo newPPodVersionInfo;
 
 	@Inject
 	SaveOrUpdateCharacterStateMatrix(
@@ -79,7 +79,7 @@ public class SaveOrUpdateCharacterStateMatrix implements
 			final Provider<CharacterStateCell> cellProvider,
 			final CharacterState.IFactory stateFactory,
 			final Provider<Attachment> attachmentProvider,
-			@Assisted final LazyPPodVersionInfo lazyPPodVersionInfo,
+			@Assisted final INewPPodVersionInfo newPPodVersionInfo,
 			@Assisted final IDAO<Object, Long> dao,
 			@Assisted final IMergeAttachment mergeAttachment) {
 
@@ -90,7 +90,7 @@ public class SaveOrUpdateCharacterStateMatrix implements
 		this.attachmentProvider = attachmentProvider;
 		this.dao = dao;
 		this.mergeAttachment = mergeAttachment;
-		this.lazyPPodVersionInfo = lazyPPodVersionInfo;
+		this.newPPodVersionInfo = newPPodVersionInfo;
 	}
 
 	public void saveOrUpdate(CharacterStateMatrix targetMatrix,
@@ -139,7 +139,7 @@ public class SaveOrUpdateCharacterStateMatrix implements
 					.getCharacters(), PPodPredicates.equalTo(sourceCharacter
 					.getPPodId(), IUUPPodEntity.getPPodId)))) {
 				newTargetCharacter = characterProvider.get();
-				newTargetCharacter.setpPodVersionInfo(lazyPPodVersionInfo
+				newTargetCharacter.setpPodVersionInfo(newPPodVersionInfo
 						.getNewPPodVersionInfo());
 				newTargetCharacter.setPPodId();
 			}
@@ -157,7 +157,7 @@ public class SaveOrUpdateCharacterStateMatrix implements
 						sourceState.getStateNumber()))) {
 					targetState = newTargetCharacter.addState(stateFactory
 							.create(sourceState.getStateNumber()));
-					targetState.setpPodVersionInfo(lazyPPodVersionInfo
+					targetState.setpPodVersionInfo(newPPodVersionInfo
 							.getNewPPodVersionInfo());
 				}
 
@@ -189,7 +189,7 @@ public class SaveOrUpdateCharacterStateMatrix implements
 						null);
 				if (targetAttachment == null) {
 					targetAttachment = attachmentProvider.get();
-					targetAttachment.setpPodVersionInfo(lazyPPodVersionInfo
+					targetAttachment.setpPodVersionInfo(newPPodVersionInfo
 							.getNewPPodVersionInfo());
 					targetAttachment.setPPodId();
 				}
@@ -214,7 +214,7 @@ public class SaveOrUpdateCharacterStateMatrix implements
 
 			if (null == (targetRow = targetMatrix.getRow(targetOTU))) {
 				targetRow = rowProvider.get();
-				targetRow.setpPodVersionInfo(lazyPPodVersionInfo
+				targetRow.setpPodVersionInfo(newPPodVersionInfo
 						.getNewPPodVersionInfo());
 				targetMatrix.setRow(targetOTU, targetRow);
 				dao.saveOrUpdate(targetRow);
@@ -240,7 +240,7 @@ public class SaveOrUpdateCharacterStateMatrix implements
 				if (newRow
 						|| null == originalCharIdxsByNewCharIdx.get(newCellIdx)) {
 					targetCell = cellProvider.get();
-					targetCell.setpPodVersionInfo(lazyPPodVersionInfo
+					targetCell.setpPodVersionInfo(newPPodVersionInfo
 							.getNewPPodVersionInfo());
 				} else {
 					targetCell = originalTargetCells

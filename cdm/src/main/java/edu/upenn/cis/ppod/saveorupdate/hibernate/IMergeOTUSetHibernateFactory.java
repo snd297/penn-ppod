@@ -17,6 +17,7 @@ package edu.upenn.cis.ppod.saveorupdate.hibernate;
 
 import org.hibernate.Session;
 
+import edu.upenn.cis.ppod.model.INewPPodVersionInfo;
 import edu.upenn.cis.ppod.saveorupdate.IMergeOTUSet;
 
 /**
@@ -24,5 +25,5 @@ import edu.upenn.cis.ppod.saveorupdate.IMergeOTUSet;
  * 
  */
 public interface IMergeOTUSetHibernateFactory {
-	IMergeOTUSet create(Session session);
+	IMergeOTUSet create(Session session, INewPPodVersionInfo newPPodVersionInfo);
 }

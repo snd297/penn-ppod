@@ -25,7 +25,7 @@ import com.google.inject.Provider;
 
 import edu.upenn.cis.ppod.dao.IStudyDAO;
 import edu.upenn.cis.ppod.dao.hibernate.StudyDAOHibernate;
-import edu.upenn.cis.ppod.model.LazyPPodVersionInfo;
+import edu.upenn.cis.ppod.model.INewPPodVersionInfo;
 import edu.upenn.cis.ppod.model.SetPPodVersionInfoVisitor;
 import edu.upenn.cis.ppod.model.Study;
 import edu.upenn.cis.ppod.saveorupdate.ISaveOrUpdateStudy;
@@ -62,14 +62,14 @@ public final class StudyResourceHibernate implements IStudyResource {
 			final IStudy2StudyInfo study2StudyInfo,
 			final SetDocIdVisitor otuSetAndOTUSetDocIdVisitor,
 			final Provider<AfterUnmarshalVisitor> afterUnmarshalVisitorProvider,
-			final LazyPPodVersionInfo lazyPPodVersionInfo,
+			final INewPPodVersionInfo newPPodVersionInfo,
 			final SetPPodVersionInfoVisitor.IFactory setPPodVersionInfoVisitorFactory) {
 		this.studyDAO = (IStudyDAO) studyDAO.setSession(HibernateUtil
 				.getSessionFactory().getCurrentSession());
 		this.setPPodVersionInfoVisitor = setPPodVersionInfoVisitorFactory
-				.create(lazyPPodVersionInfo);
+				.create(newPPodVersionInfo);
 		this.saveOrUpdateStudy = saveOrUpdateStudyFactory.create(HibernateUtil
-				.getSessionFactory().getCurrentSession(), lazyPPodVersionInfo);
+				.getSessionFactory().getCurrentSession(), newPPodVersionInfo);
 		this.study2StudyInfo = study2StudyInfo;
 		this.otuSetAndOTUSetDocIdVisitor = otuSetAndOTUSetDocIdVisitor;
 		this.afterUnmarshalVisitorProvider = afterUnmarshalVisitorProvider;

@@ -27,9 +27,11 @@ import edu.upenn.cis.ppod.model.CharacterState;
 import edu.upenn.cis.ppod.model.CharacterStateMatrixFactory;
 import edu.upenn.cis.ppod.model.DNAState;
 import edu.upenn.cis.ppod.model.ICharacterStateMatrixFactory;
+import edu.upenn.cis.ppod.model.INewPPodVersionInfo;
+import edu.upenn.cis.ppod.model.NewPPodVersionInfo;
 import edu.upenn.cis.ppod.model.SetPPodVersionInfoVisitor;
 import edu.upenn.cis.ppod.saveorupdate.IMergeAttachment;
-import edu.upenn.cis.ppod.saveorupdate.IMergeTreeSet;
+import edu.upenn.cis.ppod.saveorupdate.IMergeTreeSetFactory;
 import edu.upenn.cis.ppod.saveorupdate.ISaveOrUpdateCharacterStateMatrix;
 import edu.upenn.cis.ppod.saveorupdate.MergeAttachment;
 import edu.upenn.cis.ppod.saveorupdate.MergeTreeSet;
@@ -69,11 +71,13 @@ public final class PPodCoreModule extends AbstractModule {
 		bind(IMergeOTUSetHibernateFactory.class).toProvider(
 				FactoryProvider.newFactory(IMergeOTUSetHibernateFactory.class,
 						MergeOTUSetHibernate.class));
+		bind(IMergeTreeSetFactory.class).toProvider(
+				FactoryProvider.newFactory(IMergeTreeSetFactory.class,
+						MergeTreeSet.class));
 		bind(ISaveOrUpdateCharacterStateMatrix.IFactory.class).toProvider(
 				FactoryProvider.newFactory(
 						ISaveOrUpdateCharacterStateMatrix.IFactory.class,
 						SaveOrUpdateCharacterStateMatrix.class));
-		bind(IMergeTreeSet.class).to(MergeTreeSet.class);
 
 		bind(IMergeAttachment.IFactory.class).toProvider(
 				FactoryProvider.newFactory(IMergeAttachment.IFactory.class,
@@ -93,5 +97,8 @@ public final class PPodCoreModule extends AbstractModule {
 				FactoryProvider.newFactory(
 						SetPPodVersionInfoVisitor.IFactory.class,
 						SetPPodVersionInfoVisitor.class));
+
+		bind(INewPPodVersionInfo.class).to(NewPPodVersionInfo.class);
 	}
+
 }
