@@ -41,9 +41,9 @@ import edu.upenn.cis.ppod.model.CharacterStateMatrix;
 import edu.upenn.cis.ppod.model.DNACharacter;
 import edu.upenn.cis.ppod.model.ICharacterStateMatrixFactory;
 import edu.upenn.cis.ppod.model.IUUPPodEntity;
+import edu.upenn.cis.ppod.model.LazyPPodVersionInfo;
 import edu.upenn.cis.ppod.model.OTU;
 import edu.upenn.cis.ppod.model.OTUSet;
-import edu.upenn.cis.ppod.model.SetPPodVersionInfoVisitor;
 import edu.upenn.cis.ppod.model.Study;
 import edu.upenn.cis.ppod.model.TreeSet;
 import edu.upenn.cis.ppod.saveorupdate.IMergeAttachment;
@@ -73,6 +73,7 @@ public class SaveOrUpdateStudyHibernate implements ISaveOrUpdateStudy {
 	private final IMergeOTUSet mergeOTUSet;
 	private final ISaveOrUpdateCharacterStateMatrix saveOrUpdateMatrix;
 	private final IMergeTreeSet mergeTreeSet;
+	private final LazyPPodVersionInfo lazyPPodVersionInfo;
 
 	@Inject
 	SaveOrUpdateStudyHibernate(
@@ -91,7 +92,8 @@ public class SaveOrUpdateStudyHibernate implements ISaveOrUpdateStudy {
 			final IAttachmentTypeDAOHibernateFactory attachmentTypeDAOFactory,
 			final IMergeAttachment.IFactory mergeAttachmentFactory,
 			final MergeTreeSet mergeTreeSet, @Assisted final Session session,
-			@Assisted final SetPPodVersionInfoVisitor setPPodVersionInfoVisitor) {
+			@Assisted LazyPPodVersionInfo lazyPPodVersionInfo) {
+
 		this.studyDAO = (IStudyDAO) studyDAO.setSession(session);
 		this.otuSetDAO = (IOTUSetDAO) otuSetDAO.setSession(session);
 		this.otuDAO = (IOTUDAO) otuDAO.setSession(session);
@@ -102,16 +104,18 @@ public class SaveOrUpdateStudyHibernate implements ISaveOrUpdateStudy {
 		this.matrixFactory = matrixFactory;
 		this.treeSetProvider = treeSetProvider;
 		this.mergeOTUSet = saveOrUpdateOTUSetFactory.create(session);
+		this.lazyPPodVersionInfo = lazyPPodVersionInfo;
 		this.saveOrUpdateMatrix = mergeMatrixFactory.create(
-				mergeAttachmentFactory.create(attachmentNamespaceDAOFactory
-						.create(session), attachmentTypeDAOFactory
-						.create(session)), dao.setSession(session),
-				setPPodVersionInfoVisitor);
+				lazyPPodVersionInfo, mergeAttachmentFactory.create(
+						attachmentNamespaceDAOFactory.create(session),
+						attachmentTypeDAOFactory.create(session)), dao
+						.setSession(session));
 		this.mergeTreeSet = mergeTreeSet;
 	}
 
 	public Study save(final Study incomingStudy) {
 		final Study dbStudy = (Study) studyProvider.get().setPPodId();
+		dbStudy.setpPodVersionInfo(lazyPPodVersionInfo.getNewPPodVersionInfo());
 		saveOrUpdate(dbStudy, incomingStudy);
 		return dbStudy;
 	}
@@ -148,10 +152,13 @@ public class SaveOrUpdateStudyHibernate implements ISaveOrUpdateStudy {
 			if (null == (dbOTUSet = dbStudy.getOTUSetByPPodId(incomingOTUSet
 					.getPPodId()))) {
 				dbOTUSet = dbStudy.addOTUSet(otuSetProvider.get());
+				dbOTUSet.setpPodVersionInfo(lazyPPodVersionInfo
+						.getNewPPodVersionInfo());
 				dbOTUSet.setPPodId();
 			}
+
 			final Map<OTU, OTU> dbOTUsByIncomingOTU = mergeOTUSet.saveOrUpdate(
-					dbOTUSet, incomingOTUSet);
+					dbOTUSet, incomingOTUSet, lazyPPodVersionInfo);
 			for (final CharacterStateMatrix incomingMatrix : incomingOTUSet
 					.getMatrices()) {
 				CharacterStateMatrix dbMatrix;
@@ -159,6 +166,10 @@ public class SaveOrUpdateStudyHibernate implements ISaveOrUpdateStudy {
 						PPodPredicates.equalTo(incomingMatrix.getPPodId(),
 								IUUPPodEntity.getPPodId)))) {
 					dbMatrix = matrixFactory.create(incomingMatrix.getType());
+					dbMatrix.setpPodVersionInfo(lazyPPodVersionInfo
+							.getNewPPodVersionInfo());
+					dbMatrix.setColumnPPodVersionInfos(lazyPPodVersionInfo
+							.getNewPPodVersionInfo());
 					dbMatrix.setPPodId();
 				}
 
@@ -181,10 +192,13 @@ public class SaveOrUpdateStudyHibernate implements ISaveOrUpdateStudy {
 						PPodPredicates.equalTo(incomingTreeSet.getPPodId(),
 								IUUPPodEntity.getPPodId)))) {
 					dbTreeSet = treeSetProvider.get();
+					dbTreeSet.setpPodVersionInfo(lazyPPodVersionInfo
+							.getNewPPodVersionInfo());
 					dbTreeSet.setPPodId();
 				}
+
 				mergeTreeSet.merge(dbTreeSet, incomingTreeSet, dbOTUSet,
-						dbOTUsByIncomingOTU);
+						dbOTUsByIncomingOTU, lazyPPodVersionInfo);
 			}
 		}
 		studyDAO.saveOrUpdate(dbStudy);

@@ -18,8 +18,9 @@ package edu.upenn.cis.ppod.util;
 import org.hibernate.classic.Session;
 import org.hibernate.context.ManagedSessionContext;
 
+import edu.upenn.cis.ppod.model.CharacterState;
 import edu.upenn.cis.ppod.model.DNACharacter;
-import edu.upenn.cis.ppod.model.SetPPodVersionInfoVisitor;
+import edu.upenn.cis.ppod.model.LazyPPodVersionInfo;
 import edu.upenn.cis.ppod.thirdparty.util.HibernateUtil;
 
 /**
@@ -44,10 +45,13 @@ public class PopulateTables {
 			ManagedSessionContext.bind(session);
 			session.beginTransaction();
 
-			final SetPPodVersionInfoVisitor setPPodVersionInfoVisitor = pPodCoreFactory
-					.create(SetPPodVersionInfoVisitor.IFactory.class).create(
-							session);
-			dnaCharacter.accept(setPPodVersionInfoVisitor);
+			final LazyPPodVersionInfo lazyPPodVersionInfo = pPodCoreFactory
+					.create(LazyPPodVersionInfo.class);
+			dnaCharacter.setpPodVersionInfo(lazyPPodVersionInfo.getNewPPodVersionInfo());
+
+			for (final CharacterState state : dnaCharacter.getStates().values()) {
+				state.setpPodVersionInfo(lazyPPodVersionInfo.getNewPPodVersionInfo());
+			}
 
 			session.save(dnaCharacter);
 
