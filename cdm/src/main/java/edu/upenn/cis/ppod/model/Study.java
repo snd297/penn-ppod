@@ -17,7 +17,6 @@ package edu.upenn.cis.ppod.model;
 
 import static com.google.common.base.Preconditions.checkNotNull;
 import static com.google.common.collect.Sets.newHashSet;
-import static edu.upenn.cis.ppod.util.PPodIterables.equalTo;
 import static edu.upenn.cis.ppod.util.PPodIterables.findIf;
 
 import java.util.Collections;
@@ -41,6 +40,7 @@ import org.hibernate.annotations.Cascade;
 import edu.upenn.cis.ppod.services.ppodentity.IOTUSetCentricEntities;
 import edu.upenn.cis.ppod.util.IVisitor;
 import edu.upenn.cis.ppod.util.PPodEntitiesUtil;
+import edu.upenn.cis.ppod.util.PPodPredicates;
 
 /**
  * A collection of work - inspired by a Mesquite project - sets of OTU sets and,
@@ -152,7 +152,7 @@ public class Study extends UUPPodEntity implements IOTUSetCentricEntities {
 	 */
 	@Nullable
 	public OTUSet getOTUSetByPPodId(final String pPodId) {
-		return findIf(getOTUSets(), equalTo(pPodId, IUUPPodEntity.getPPodId));
+		return findIf(getOTUSets(), PPodPredicates.equalTo(pPodId, IUUPPodEntity.getPPodId));
 	}
 
 	/**

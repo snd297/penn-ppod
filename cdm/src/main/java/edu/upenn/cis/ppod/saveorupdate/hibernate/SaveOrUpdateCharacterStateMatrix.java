@@ -22,7 +22,6 @@ import static com.google.common.collect.Lists.newArrayList;
 import static com.google.common.collect.Lists.newArrayListWithCapacity;
 import static com.google.common.collect.Maps.newHashMap;
 import static com.google.common.collect.Sets.newHashSet;
-import static edu.upenn.cis.ppod.util.PPodIterables.equalTo;
 import static edu.upenn.cis.ppod.util.PPodIterables.findEach;
 import static edu.upenn.cis.ppod.util.PPodIterables.findIf;
 
@@ -48,9 +47,11 @@ import edu.upenn.cis.ppod.model.ICharacterStateMatrix;
 import edu.upenn.cis.ppod.model.IUUPPodEntity;
 import edu.upenn.cis.ppod.model.OTU;
 import edu.upenn.cis.ppod.model.OTUSet;
+import edu.upenn.cis.ppod.model.SetPPodVersionInfoVisitor;
 import edu.upenn.cis.ppod.saveorupdate.IMergeAttachment;
 import edu.upenn.cis.ppod.saveorupdate.ISaveOrUpdateCharacterStateMatrix;
 import edu.upenn.cis.ppod.thirdparty.injectslf4j.InjectLogger;
+import edu.upenn.cis.ppod.util.PPodPredicates;
 
 /**
  * @author Sam Donnelly
@@ -68,6 +69,7 @@ public class SaveOrUpdateCharacterStateMatrix implements
 
 	@InjectLogger
 	private Logger logger;
+	final private SetPPodVersionInfoVisitor setPPodVersionInfoVisitor;
 
 	@Inject
 	SaveOrUpdateCharacterStateMatrix(
@@ -77,7 +79,8 @@ public class SaveOrUpdateCharacterStateMatrix implements
 			final CharacterState.IFactory stateFactory,
 			final Provider<Attachment> attachmentProvider,
 			@Assisted final IDAO<Object, Long> dao,
-			@Assisted final IMergeAttachment mergeAttachment) {
+			@Assisted final IMergeAttachment mergeAttachment,
+			@Assisted final SetPPodVersionInfoVisitor setPPodVersionInfoVisitor) {
 		this.characterProvider = characterProvider;
 		this.rowProvider = rowProvider;
 		this.cellProvider = cellProvider;
@@ -85,7 +88,7 @@ public class SaveOrUpdateCharacterStateMatrix implements
 		this.attachmentProvider = attachmentProvider;
 		this.dao = dao;
 		this.mergeAttachment = mergeAttachment;
-
+		this.setPPodVersionInfoVisitor = setPPodVersionInfoVisitor;
 	}
 
 	public void saveOrUpdate(CharacterStateMatrix targetMatrix,
@@ -131,8 +134,8 @@ public class SaveOrUpdateCharacterStateMatrix implements
 			if (sourceMatrix.getType() == ICharacterStateMatrix.Type.DNA) {
 				newTargetCharacter = dnaCharacter;
 			} else if (null == (newTargetCharacter = findIf(targetMatrix
-					.getCharacters(), equalTo(sourceCharacter.getPPodId(),
-					IUUPPodEntity.getPPodId)))) {
+					.getCharacters(), PPodPredicates.equalTo(sourceCharacter
+					.getPPodId(), IUUPPodEntity.getPPodId)))) {
 				newTargetCharacter = characterProvider.get();
 				newTargetCharacter.setPPodId();
 			}
@@ -170,9 +173,9 @@ public class SaveOrUpdateCharacterStateMatrix implements
 			for (final Attachment sourceAttachment : sourceCharacter
 					.getAttachments()) {
 				final Set<Attachment> targetAttachments = findEach(
-						newTargetCharacter.getAttachments(), equalTo(
-								sourceAttachment.getStringValue(),
-								Attachment.getStringValue));
+						newTargetCharacter.getAttachments(), PPodPredicates
+								.equalTo(sourceAttachment.getStringValue(),
+										Attachment.getStringValue));
 
 				Attachment targetAttachment = getOnlyElement(targetAttachments,
 						null);
@@ -277,6 +280,7 @@ public class SaveOrUpdateCharacterStateMatrix implements
 
 			logger.debug("{}: flushing row,  sourceRowIdx: {}", METHOD,
 					sourceRowIdx);
+			targetRow.accept(setPPodVersionInfoVisitor);
 			dao.flush();
 
 			dao.evictEntities(cellsToEvict);

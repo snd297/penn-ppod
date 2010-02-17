@@ -50,7 +50,7 @@ public class PPodVersionInfo extends PersistentObject {
 	/** Global pPOD version. */
 	@Column(name = "PPOD_VERSION", unique = true, nullable = false)
 	@org.hibernate.annotations.Index(name = "IDX_PPOD_VERSION")
-	private Long pPodVersion;
+	private Long pPodVersion = -1L;
 
 	/** Record the creation time of this record. */
 	@Column(name = "CREATED", nullable = false)

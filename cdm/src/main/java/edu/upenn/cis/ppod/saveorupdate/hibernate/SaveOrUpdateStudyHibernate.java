@@ -15,7 +15,6 @@
  */
 package edu.upenn.cis.ppod.saveorupdate.hibernate;
 
-import static edu.upenn.cis.ppod.util.PPodIterables.equalTo;
 import static edu.upenn.cis.ppod.util.PPodIterables.findIf;
 
 import java.util.List;
@@ -44,6 +43,7 @@ import edu.upenn.cis.ppod.model.ICharacterStateMatrixFactory;
 import edu.upenn.cis.ppod.model.IUUPPodEntity;
 import edu.upenn.cis.ppod.model.OTU;
 import edu.upenn.cis.ppod.model.OTUSet;
+import edu.upenn.cis.ppod.model.SetPPodVersionInfoVisitor;
 import edu.upenn.cis.ppod.model.Study;
 import edu.upenn.cis.ppod.model.TreeSet;
 import edu.upenn.cis.ppod.saveorupdate.IMergeAttachment;
@@ -52,6 +52,7 @@ import edu.upenn.cis.ppod.saveorupdate.IMergeTreeSet;
 import edu.upenn.cis.ppod.saveorupdate.ISaveOrUpdateCharacterStateMatrix;
 import edu.upenn.cis.ppod.saveorupdate.ISaveOrUpdateStudy;
 import edu.upenn.cis.ppod.saveorupdate.MergeTreeSet;
+import edu.upenn.cis.ppod.util.PPodPredicates;
 
 /**
  * @author Sam Donnelly
@@ -89,7 +90,8 @@ public class SaveOrUpdateStudyHibernate implements ISaveOrUpdateStudy {
 			final IAttachmentNamespaceDAOHibernateFactory attachmentNamespaceDAOFactory,
 			final IAttachmentTypeDAOHibernateFactory attachmentTypeDAOFactory,
 			final IMergeAttachment.IFactory mergeAttachmentFactory,
-			final MergeTreeSet mergeTreeSet, @Assisted final Session session) {
+			final MergeTreeSet mergeTreeSet, @Assisted final Session session,
+			@Assisted final SetPPodVersionInfoVisitor setPPodVersionInfoVisitor) {
 		this.studyDAO = (IStudyDAO) studyDAO.setSession(session);
 		this.otuSetDAO = (IOTUSetDAO) otuSetDAO.setSession(session);
 		this.otuDAO = (IOTUDAO) otuDAO.setSession(session);
@@ -103,7 +105,8 @@ public class SaveOrUpdateStudyHibernate implements ISaveOrUpdateStudy {
 		this.saveOrUpdateMatrix = mergeMatrixFactory.create(
 				mergeAttachmentFactory.create(attachmentNamespaceDAOFactory
 						.create(session), attachmentTypeDAOFactory
-						.create(session)), dao.setSession(session));
+						.create(session)), dao.setSession(session),
+				setPPodVersionInfoVisitor);
 		this.mergeTreeSet = mergeTreeSet;
 	}
 
@@ -152,8 +155,9 @@ public class SaveOrUpdateStudyHibernate implements ISaveOrUpdateStudy {
 			for (final CharacterStateMatrix incomingMatrix : incomingOTUSet
 					.getMatrices()) {
 				CharacterStateMatrix dbMatrix;
-				if (null == (dbMatrix = findIf(dbOTUSet.getMatrices(), equalTo(
-						incomingMatrix.getPPodId(), IUUPPodEntity.getPPodId)))) {
+				if (null == (dbMatrix = findIf(dbOTUSet.getMatrices(),
+						PPodPredicates.equalTo(incomingMatrix.getPPodId(),
+								IUUPPodEntity.getPPodId)))) {
 					dbMatrix = matrixFactory.create(incomingMatrix.getType());
 					dbMatrix.setPPodId();
 				}
@@ -174,7 +178,7 @@ public class SaveOrUpdateStudyHibernate implements ISaveOrUpdateStudy {
 			for (final TreeSet incomingTreeSet : incomingOTUSet.getTreeSets()) {
 				TreeSet dbTreeSet;
 				if (null == (dbTreeSet = findIf(dbOTUSet.getTreeSets(),
-						equalTo(incomingTreeSet.getPPodId(),
+						PPodPredicates.equalTo(incomingTreeSet.getPPodId(),
 								IUUPPodEntity.getPPodId)))) {
 					dbTreeSet = treeSetProvider.get();
 					dbTreeSet.setPPodId();

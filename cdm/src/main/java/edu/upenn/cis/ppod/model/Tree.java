@@ -31,6 +31,8 @@ import javax.xml.bind.Unmarshaller;
 import javax.xml.bind.annotation.XmlAttribute;
 import javax.xml.bind.annotation.XmlElement;
 
+import edu.upenn.cis.ppod.util.IVisitor;
+
 /**
  * A phylogenetic tree.
  * 
@@ -55,6 +57,13 @@ public class Tree extends UUPPodEntity {
 	private final Set<TreeSet> treeSets = newHashSet();
 
 	Tree() {}
+
+	@Override
+	public Tree accept(final IVisitor visitor) {
+		visitor.visit(this);
+		super.accept(visitor);
+		return this;
+	}
 
 	/**
 	 * Add <code>treeSet</code> to this <code>Tree</code>'s associated {@code

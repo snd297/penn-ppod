@@ -43,6 +43,7 @@ import org.hibernate.annotations.AccessType;
 
 import com.google.common.collect.Iterables;
 import com.google.common.collect.Sets;
+import com.google.inject.Inject;
 
 import edu.upenn.cis.ppod.util.IVisitor;
 
@@ -70,6 +71,14 @@ public abstract class PPodEntity extends PersistentObject implements
 
 	static final String ID_COLUMN = TABLE + "_ID";
 
+	@Inject
+	PPodEntity(final PPodVersionInfo pPodVersionInfo) {
+		// This will have a version of negative one and should block saves since
+		// it is not saved.
+		// It MUST be replaced for this object to be saved.
+		setPPodVersion(pPodVersion);
+	}
+
 	/**
 	 * The pPod-version of this object. Similar in concept to Hibernate's
 	 * version, but tweaked for our purposes.
@@ -87,7 +96,7 @@ public abstract class PPodEntity extends PersistentObject implements
 
 	/** Does this object need to be assigned a new pPOD version? */
 	@Transient
-	private boolean inNeedOfNewPPodVersionInfo = true;
+	private boolean inNeedOfNewPPodVersionInfo = false;
 
 	/**
 	 * Set the inNeedOfNewPPodVersionInfo. Intentionally package-private.
@@ -96,7 +105,7 @@ public abstract class PPodEntity extends PersistentObject implements
 	 * 
 	 * @return this
 	 */
-	PPodEntity setInNeedOfNewPPodVersionInfo() { 
+	PPodEntity setInNeedOfNewPPodVersionInfo() {
 		this.inNeedOfNewPPodVersionInfo = true;
 		return this;
 	}
@@ -130,6 +139,7 @@ public abstract class PPodEntity extends PersistentObject implements
 	PPodEntity() {}
 
 	@Override
+	@OverridingMethodsMustInvokeSuper
 	public PPodEntity accept(final IVisitor visitor) {
 		for (final Attachment attachment : getAttachments()) {
 			attachment.accept(visitor);
@@ -294,7 +304,8 @@ public abstract class PPodEntity extends PersistentObject implements
 	}
 
 	/**
-	 * Created for testing and Hibernate because this has access type "property".
+	 * Created for testing and Hibernate because this has access type
+	 * "property".
 	 * <p>
 	 * NOTE: the weird name is on purpose so that Hibernate can identity it as
 	 * the setter.
@@ -305,7 +316,6 @@ public abstract class PPodEntity extends PersistentObject implements
 	 */
 	public PPodEntity setpPodVersionInfo(final PPodVersionInfo pPodVersionInfo) {
 		this.pPodVersionInfo = pPodVersionInfo;
-		unsetInNeedOfNewPPodVersionInfo();
 		return this;
 	}
 
@@ -346,7 +356,7 @@ public abstract class PPodEntity extends PersistentObject implements
 	}
 
 	public PersistentObject unsetAllowPersistAndResetPPodVersionInfo() {
-		allowPersist = false;
+		unsetAllowPersist();
 		allowResetPPodVersionInfo = false;
 		return this;
 	}

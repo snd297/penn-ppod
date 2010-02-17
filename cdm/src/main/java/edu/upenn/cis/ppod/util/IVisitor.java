@@ -26,6 +26,7 @@ import edu.upenn.cis.ppod.model.CharacterStateRow;
 import edu.upenn.cis.ppod.model.OTU;
 import edu.upenn.cis.ppod.model.OTUSet;
 import edu.upenn.cis.ppod.model.Study;
+import edu.upenn.cis.ppod.model.Tree;
 import edu.upenn.cis.ppod.model.TreeSet;
 
 /**
@@ -61,5 +62,7 @@ public interface IVisitor {
 	void visit(Study study);
 
 	void visit(TreeSet treeSet);
+
+	void visit(Tree tree);
 
 }

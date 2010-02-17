@@ -16,7 +16,6 @@
 package edu.upenn.cis.ppod.util;
 
 import com.google.inject.AbstractModule;
-import com.google.inject.TypeLiteral;
 import com.google.inject.assistedinject.FactoryProvider;
 
 import edu.upenn.cis.ppod.dao.hibernate.AttachmentNamespaceDAOHibernate;
@@ -28,9 +27,10 @@ import edu.upenn.cis.ppod.model.CharacterState;
 import edu.upenn.cis.ppod.model.CharacterStateMatrixFactory;
 import edu.upenn.cis.ppod.model.DNAState;
 import edu.upenn.cis.ppod.model.ICharacterStateMatrixFactory;
+import edu.upenn.cis.ppod.model.SetPPodVersionInfoVisitor;
 import edu.upenn.cis.ppod.saveorupdate.IMergeAttachment;
-import edu.upenn.cis.ppod.saveorupdate.ISaveOrUpdateCharacterStateMatrix;
 import edu.upenn.cis.ppod.saveorupdate.IMergeTreeSet;
+import edu.upenn.cis.ppod.saveorupdate.ISaveOrUpdateCharacterStateMatrix;
 import edu.upenn.cis.ppod.saveorupdate.MergeAttachment;
 import edu.upenn.cis.ppod.saveorupdate.MergeTreeSet;
 import edu.upenn.cis.ppod.saveorupdate.hibernate.IMergeOTUSetHibernateFactory;
@@ -40,7 +40,6 @@ import edu.upenn.cis.ppod.saveorupdate.hibernate.SaveOrUpdateCharacterStateMatri
 import edu.upenn.cis.ppod.saveorupdate.hibernate.SaveOrUpdateStudyHibernate;
 import edu.upenn.cis.ppod.security.ISimpleAuthenticationInfoFactory;
 import edu.upenn.cis.ppod.security.SimpleAuthenticationInfoFactory;
-import edu.upenn.cis.ppod.thirdparty.dao.hibernate.GenericHibernateDAO;
 
 public final class PPodCoreModule extends AbstractModule {
 	@Override
@@ -89,5 +88,10 @@ public final class PPodCoreModule extends AbstractModule {
 
 		bind(ICharacterStateMatrixFactory.class).to(
 				CharacterStateMatrixFactory.class);
+
+		bind(SetPPodVersionInfoVisitor.IFactory.class).toProvider(
+				FactoryProvider.newFactory(
+						SetPPodVersionInfoVisitor.IFactory.class,
+						SetPPodVersionInfoVisitor.class));
 	}
 }

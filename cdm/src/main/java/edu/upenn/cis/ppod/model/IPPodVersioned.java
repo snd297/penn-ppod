@@ -22,7 +22,7 @@ import javax.annotation.Nullable;
  * 
  * @author Sam Donnelly
  */
-interface IPPodVersioned extends IPersistentObject {
+public interface IPPodVersioned extends IPersistentObject {
 
 	/**
 	 * Used when we serialize so that we don't have to serialize the

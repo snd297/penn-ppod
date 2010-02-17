@@ -83,6 +83,10 @@ public class TreeSet extends UUPPodEntityWXmlId {
 	@Override
 	public TreeSet accept(final IVisitor visitor) {
 		visitor.visit(this);
+		for (final Tree tree : getTrees()) {
+			tree.accept(visitor);
+		}
+		super.accept(visitor);
 		return this;
 	}
 

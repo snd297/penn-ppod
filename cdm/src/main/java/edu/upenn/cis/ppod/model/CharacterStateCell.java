@@ -124,6 +124,9 @@ public class CharacterStateCell extends PPodEntity {
 	/**
 	 * To handle the most-common case of a single {@code CharacterState}, we
 	 * cache {@code states.get(0)}.
+	 * <p>
+	 * Will be {@code null} if this is a {@link Type.INAPPLICABLE} or
+	 * {@link Type.UNASSIGNED}.
 	 */
 	@ManyToOne(fetch = FetchType.LAZY)
 	@JoinColumn(name = "FIRST_" + CharacterState.ID_COLUMN)
@@ -284,7 +287,7 @@ public class CharacterStateCell extends PPodEntity {
 	 * @return the {@code CharacterStateRow} to which this {@code
 	 *         CharacterStateCell} belongs
 	 */
-	@CheckForNull
+	@Nullable
 	public CharacterStateRow getRow() {
 		return row;
 	}

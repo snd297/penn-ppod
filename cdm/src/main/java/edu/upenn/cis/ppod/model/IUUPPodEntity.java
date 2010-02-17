@@ -15,8 +15,6 @@
  */
 package edu.upenn.cis.ppod.model;
 
-import javax.annotation.Nullable;
-
 import com.google.common.base.Function;
 
 /**
