@@ -21,6 +21,8 @@ import org.hibernate.Session;
 
 import com.google.inject.Provider;
 
+import edu.umd.cs.findbugs.annotations.SuppressWarnings;
+
 /**
  * @author Sam Donnelly
  */
@@ -31,7 +33,7 @@ public class StubSessionFactory implements ISessionFactory {
 	StubSessionFactory(final Provider<Query> stubQueryProvider) {
 	//	this.stubQueryProvider = stubQueryProvider
 	}
-
+    @SuppressWarnings
 	public Session create() {
 		return new StubSession(stubQueryProvider);
 	}

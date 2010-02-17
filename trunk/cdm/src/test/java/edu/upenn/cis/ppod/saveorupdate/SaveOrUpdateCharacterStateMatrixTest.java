@@ -79,12 +79,12 @@ public class SaveOrUpdateCharacterStateMatrixTest {
 	@Inject
 	private DNACharacter dnaCharacter;
 
-	@BeforeMethod
-	public void beforeMethod() {
-		final org.hibernate.classic.Session session = HibernateUtil
-				.getSessionFactory().openSession();
-		ManagedSessionContext.bind(session);
-	}
+//	@BeforeMethod
+//	public void beforeMethod() {
+//		final org.hibernate.classic.Session session = HibernateUtil
+//				.getSessionFactory().openSession();
+//		ManagedSessionContext.bind(session);
+//	}
 
 	@Test(dataProvider = MatrixProvider.SMALL_MATRICES_PROVIDER, dataProviderClass = MatrixProvider.class)
 	public void save(final CharacterStateMatrix sourceMatrix) {

@@ -122,12 +122,18 @@ public class CharacterStateMatrixTest {
 		matrix.setRow(otu1, rowProvider.get());
 		final CharacterStateCell cell10 = cellProvider.get();
 		matrix.getRows().get(1).setCells(newArrayList(cell10));
-		cell10.setSingleState(stateFactory.create(1));
+
+		final CharacterState state1 = stateFactory.create(1);
+		character.addState(state1);
+		cell10.setSingleState(state1);
 
 		matrix.setRow(otu2, rowProvider.get());
 		final CharacterStateCell cell20 = cellProvider.get();
 		matrix.getRows().get(1).setCells(newArrayList(cell20));
-		cell20.setSingleState(stateFactory.create(0));
+
+		final CharacterState state0 = stateFactory.create(0);
+		character.addState(state0);
+		cell20.setSingleState(state0);
 
 		final List<CharacterStateRow> originalRows = newArrayList(matrix
 				.getRows());
@@ -186,11 +192,11 @@ public class CharacterStateMatrixTest {
 		Assert.assertEquals(matrix.getCharacters(), characters);
 
 		Assert.assertEquals(matrix.getCharacterIdx().get(characters.get(0)),
-				new Integer(0));
+				Integer.valueOf(0));
 		Assert.assertEquals(matrix.getCharacterIdx().get(characters.get(1)),
-				new Integer(1));
+				Integer.valueOf(1));
 		Assert.assertEquals(matrix.getCharacterIdx().get(characters.get(2)),
-				new Integer(2));
+				Integer.valueOf(2));
 	}
 
 	/**
@@ -223,11 +229,11 @@ public class CharacterStateMatrixTest {
 		assertEquals(matrix.getCharacters(), shuffledCharacters);
 
 		Assert.assertEquals(matrix.getCharacterIdx().get(
-				shuffledCharacters.get(0)), new Integer(0));
+				shuffledCharacters.get(0)), Integer.valueOf(0));
 		Assert.assertEquals(matrix.getCharacterIdx().get(
-				shuffledCharacters.get(1)), new Integer(1));
+				shuffledCharacters.get(1)), Integer.valueOf(1));
 		Assert.assertEquals(matrix.getCharacterIdx().get(
-				shuffledCharacters.get(2)), new Integer(2));
+				shuffledCharacters.get(2)), Integer.valueOf(2));
 
 		assertEquals(matrix.getColumnPPodVersionInfos().get(0),
 				pPodVersionInfo1);
