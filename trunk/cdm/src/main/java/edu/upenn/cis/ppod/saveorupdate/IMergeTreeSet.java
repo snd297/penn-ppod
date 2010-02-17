@@ -17,7 +17,6 @@ package edu.upenn.cis.ppod.saveorupdate;
 
 import java.util.Map;
 
-import edu.upenn.cis.ppod.model.LazyPPodVersionInfo;
 import edu.upenn.cis.ppod.model.OTU;
 import edu.upenn.cis.ppod.model.OTUSet;
 import edu.upenn.cis.ppod.model.TreeSet;
@@ -27,6 +26,6 @@ import edu.upenn.cis.ppod.model.TreeSet;
  */
 public interface IMergeTreeSet {
 	TreeSet merge(TreeSet targetTreeSet, TreeSet sourceTreeSet,
-			OTUSet newTargetTreeSetOTUSet, Map<OTU, OTU> mergedOTUsBySourceOTU,
-			LazyPPodVersionInfo lazyPodVersionInfo);
+			OTUSet newTargetTreeSetOTUSet, Map<OTU, OTU> mergedOTUsBySourceOTU);
+
 }

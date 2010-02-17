@@ -31,8 +31,8 @@ import com.google.inject.assistedinject.Assisted;
 import edu.upenn.cis.ppod.dao.IOTUDAO;
 import edu.upenn.cis.ppod.dao.hibernate.HibernateDAOFactory.OTUDAOHibernate;
 import edu.upenn.cis.ppod.dao.hibernate.HibernateDAOFactory.OTUSetDAOHibernate;
+import edu.upenn.cis.ppod.model.INewPPodVersionInfo;
 import edu.upenn.cis.ppod.model.IUUPPodEntity;
-import edu.upenn.cis.ppod.model.LazyPPodVersionInfo;
 import edu.upenn.cis.ppod.model.OTU;
 import edu.upenn.cis.ppod.model.OTUSet;
 import edu.upenn.cis.ppod.saveorupdate.IMergeOTUSet;
@@ -45,19 +45,21 @@ public class MergeOTUSetHibernate implements IMergeOTUSet {
 
 	private final IOTUDAO otuDAO;
 	private final Provider<OTU> otuProvider;
+	private INewPPodVersionInfo newPPodVersionInfo;
 
 	@Inject
 	MergeOTUSetHibernate(final OTUSetDAOHibernate otuSetDAO,
 			final OTUDAOHibernate otuDAO,
 			final Provider<OTUSet> otuSetProvider,
-			final Provider<OTU> otuProvider, @Assisted Session s) {
+			final Provider<OTU> otuProvider, @Assisted Session s,
+			@Assisted INewPPodVersionInfo newPPodVersionInfo) {
 		this.otuDAO = (IOTUDAO) otuDAO.setSession(s);
 		this.otuProvider = otuProvider;
+		this.newPPodVersionInfo = newPPodVersionInfo;
 	}
 
 	public Map<OTU, OTU> saveOrUpdate(final OTUSet targetOTUSet,
-			final OTUSet sourceOTUSet,
-			final LazyPPodVersionInfo lazyPPodVersionInfo) {
+			final OTUSet sourceOTUSet) {
 		targetOTUSet.setLabel(sourceOTUSet.getLabel());
 		targetOTUSet.setDescription(sourceOTUSet.getDescription());
 
@@ -75,7 +77,7 @@ public class MergeOTUSetHibernate implements IMergeOTUSet {
 				if (null == (dbOTU = otuDAO.getOTUByPPodId(incomingOTU
 						.getPPodId()))) {
 					dbOTU = otuProvider.get();
-					dbOTU.setpPodVersionInfo(lazyPPodVersionInfo
+					dbOTU.setpPodVersionInfo(newPPodVersionInfo
 							.getNewPPodVersionInfo());
 					dbOTU.setPPodId();
 				}

@@ -13,20 +13,20 @@ import edu.upenn.cis.ppod.util.EmptyVisitor;
 public class SetPPodVersionInfoVisitor extends EmptyVisitor {
 
 	public static interface IFactory {
-		SetPPodVersionInfoVisitor create(LazyPPodVersionInfo lazyPPodVersionInfo);
+		SetPPodVersionInfoVisitor create(INewPPodVersionInfo newPPodVersionInfo);
 	}
 
-	private final LazyPPodVersionInfo lazyPPodVersionInfo;
+	private final INewPPodVersionInfo newPPodVersionInfo;
 
 	@Inject
 	SetPPodVersionInfoVisitor(
-			@Assisted final LazyPPodVersionInfo lazyPPodVersionInfo) {
-		this.lazyPPodVersionInfo = lazyPPodVersionInfo;
+			@Assisted final INewPPodVersionInfo newPPodVersionInfo) {
+		this.newPPodVersionInfo = newPPodVersionInfo;
 	}
 
 	private void setNewPPodVersionIfNeeded(final IPPodVersioned pPodVersioned) {
 		if (pPodVersioned.isInNeedOfNewPPodVersionInfo()) {
-			pPodVersioned.setpPodVersionInfo(lazyPPodVersionInfo
+			pPodVersioned.setpPodVersionInfo(newPPodVersionInfo
 					.getNewPPodVersionInfo());
 			pPodVersioned.unsetInNeedOfNewPPodVersionInfo();
 		}
@@ -77,7 +77,7 @@ public class SetPPodVersionInfoVisitor extends EmptyVisitor {
 		setNewPPodVersionIfNeeded(matrix);
 		for (int pos = 0; pos < matrix.getColumnPPodVersionInfos().size(); pos++) {
 			if (matrix.getColumnPPodVersionInfos().get(pos) == null) {
-				matrix.setColumnPPodVersionInfo(pos, lazyPPodVersionInfo
+				matrix.setColumnPPodVersionInfo(pos, newPPodVersionInfo
 						.getNewPPodVersionInfo());
 			}
 		}

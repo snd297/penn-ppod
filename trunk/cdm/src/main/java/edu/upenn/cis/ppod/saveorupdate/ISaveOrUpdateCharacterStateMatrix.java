@@ -20,7 +20,7 @@ import java.util.Map;
 import edu.upenn.cis.ppod.dao.IDAO;
 import edu.upenn.cis.ppod.model.CharacterStateMatrix;
 import edu.upenn.cis.ppod.model.DNACharacter;
-import edu.upenn.cis.ppod.model.LazyPPodVersionInfo;
+import edu.upenn.cis.ppod.model.INewPPodVersionInfo;
 import edu.upenn.cis.ppod.model.OTU;
 import edu.upenn.cis.ppod.model.OTUSet;
 import edu.upenn.cis.ppod.model.SetPPodVersionInfoVisitor;
@@ -65,7 +65,7 @@ public interface ISaveOrUpdateCharacterStateMatrix {
 	 */
 	static interface IFactory {
 		ISaveOrUpdateCharacterStateMatrix create(
-				LazyPPodVersionInfo lazyPPodVersionInfo,
-				IMergeAttachment mergeAttachment, IDAO<Object, Long> dao);
+				IMergeAttachment mergeAttachment,
+				IDAO<Object, Long> dao, INewPPodVersionInfo newPPodVersionInfo);
 	}
 }

@@ -40,8 +40,8 @@ import edu.upenn.cis.ppod.dao.hibernate.HibernateDAOFactory.OTUSetDAOHibernate;
 import edu.upenn.cis.ppod.model.CharacterStateMatrix;
 import edu.upenn.cis.ppod.model.DNACharacter;
 import edu.upenn.cis.ppod.model.ICharacterStateMatrixFactory;
+import edu.upenn.cis.ppod.model.INewPPodVersionInfo;
 import edu.upenn.cis.ppod.model.IUUPPodEntity;
-import edu.upenn.cis.ppod.model.LazyPPodVersionInfo;
 import edu.upenn.cis.ppod.model.OTU;
 import edu.upenn.cis.ppod.model.OTUSet;
 import edu.upenn.cis.ppod.model.Study;
@@ -49,9 +49,9 @@ import edu.upenn.cis.ppod.model.TreeSet;
 import edu.upenn.cis.ppod.saveorupdate.IMergeAttachment;
 import edu.upenn.cis.ppod.saveorupdate.IMergeOTUSet;
 import edu.upenn.cis.ppod.saveorupdate.IMergeTreeSet;
+import edu.upenn.cis.ppod.saveorupdate.IMergeTreeSetFactory;
 import edu.upenn.cis.ppod.saveorupdate.ISaveOrUpdateCharacterStateMatrix;
 import edu.upenn.cis.ppod.saveorupdate.ISaveOrUpdateStudy;
-import edu.upenn.cis.ppod.saveorupdate.MergeTreeSet;
 import edu.upenn.cis.ppod.util.PPodPredicates;
 
 /**
@@ -73,7 +73,7 @@ public class SaveOrUpdateStudyHibernate implements ISaveOrUpdateStudy {
 	private final IMergeOTUSet mergeOTUSet;
 	private final ISaveOrUpdateCharacterStateMatrix saveOrUpdateMatrix;
 	private final IMergeTreeSet mergeTreeSet;
-	private final LazyPPodVersionInfo lazyPPodVersionInfo;
+	private final INewPPodVersionInfo newPPodVersionInfo;
 
 	@Inject
 	SaveOrUpdateStudyHibernate(
@@ -84,15 +84,16 @@ public class SaveOrUpdateStudyHibernate implements ISaveOrUpdateStudy {
 			final ObjectWLongIdDAOHibernate dao,
 			final Provider<Study> studyProvider,
 			final Provider<OTUSet> otuSetProvider,
-			final ICharacterStateMatrixFactory matrixFactory,
 			final Provider<TreeSet> treeSetProvider,
+			final ICharacterStateMatrixFactory matrixFactory,
 			final IMergeOTUSetHibernateFactory saveOrUpdateOTUSetFactory,
+			final IMergeTreeSetFactory mergeTreeSetFactory,
 			final ISaveOrUpdateCharacterStateMatrix.IFactory mergeMatrixFactory,
 			final IAttachmentNamespaceDAOHibernateFactory attachmentNamespaceDAOFactory,
 			final IAttachmentTypeDAOHibernateFactory attachmentTypeDAOFactory,
 			final IMergeAttachment.IFactory mergeAttachmentFactory,
-			final MergeTreeSet mergeTreeSet, @Assisted final Session session,
-			@Assisted LazyPPodVersionInfo lazyPPodVersionInfo) {
+			@Assisted final Session session,
+			@Assisted INewPPodVersionInfo newPPodVersionInfo) {
 
 		this.studyDAO = (IStudyDAO) studyDAO.setSession(session);
 		this.otuSetDAO = (IOTUSetDAO) otuSetDAO.setSession(session);
@@ -103,19 +104,20 @@ public class SaveOrUpdateStudyHibernate implements ISaveOrUpdateStudy {
 		this.otuSetProvider = otuSetProvider;
 		this.matrixFactory = matrixFactory;
 		this.treeSetProvider = treeSetProvider;
-		this.mergeOTUSet = saveOrUpdateOTUSetFactory.create(session);
-		this.lazyPPodVersionInfo = lazyPPodVersionInfo;
+		this.newPPodVersionInfo = newPPodVersionInfo;
+		this.mergeOTUSet = saveOrUpdateOTUSetFactory.create(session,
+				newPPodVersionInfo);
 		this.saveOrUpdateMatrix = mergeMatrixFactory.create(
-				lazyPPodVersionInfo, mergeAttachmentFactory.create(
+				mergeAttachmentFactory.create(
 						attachmentNamespaceDAOFactory.create(session),
 						attachmentTypeDAOFactory.create(session)), dao
-						.setSession(session));
-		this.mergeTreeSet = mergeTreeSet;
+				.setSession(session), newPPodVersionInfo);
+		this.mergeTreeSet = mergeTreeSetFactory.create(newPPodVersionInfo);
 	}
 
 	public Study save(final Study incomingStudy) {
 		final Study dbStudy = (Study) studyProvider.get().setPPodId();
-		dbStudy.setpPodVersionInfo(lazyPPodVersionInfo.getNewPPodVersionInfo());
+		dbStudy.setpPodVersionInfo(newPPodVersionInfo.getNewPPodVersionInfo());
 		saveOrUpdate(dbStudy, incomingStudy);
 		return dbStudy;
 	}
@@ -152,13 +154,13 @@ public class SaveOrUpdateStudyHibernate implements ISaveOrUpdateStudy {
 			if (null == (dbOTUSet = dbStudy.getOTUSetByPPodId(incomingOTUSet
 					.getPPodId()))) {
 				dbOTUSet = dbStudy.addOTUSet(otuSetProvider.get());
-				dbOTUSet.setpPodVersionInfo(lazyPPodVersionInfo
+				dbOTUSet.setpPodVersionInfo(newPPodVersionInfo
 						.getNewPPodVersionInfo());
 				dbOTUSet.setPPodId();
 			}
 
 			final Map<OTU, OTU> dbOTUsByIncomingOTU = mergeOTUSet.saveOrUpdate(
-					dbOTUSet, incomingOTUSet, lazyPPodVersionInfo);
+					dbOTUSet, incomingOTUSet);
 			for (final CharacterStateMatrix incomingMatrix : incomingOTUSet
 					.getMatrices()) {
 				CharacterStateMatrix dbMatrix;
@@ -166,9 +168,9 @@ public class SaveOrUpdateStudyHibernate implements ISaveOrUpdateStudy {
 						PPodPredicates.equalTo(incomingMatrix.getPPodId(),
 								IUUPPodEntity.getPPodId)))) {
 					dbMatrix = matrixFactory.create(incomingMatrix.getType());
-					dbMatrix.setpPodVersionInfo(lazyPPodVersionInfo
+					dbMatrix.setpPodVersionInfo(newPPodVersionInfo
 							.getNewPPodVersionInfo());
-					dbMatrix.setColumnPPodVersionInfos(lazyPPodVersionInfo
+					dbMatrix.setColumnPPodVersionInfos(newPPodVersionInfo
 							.getNewPPodVersionInfo());
 					dbMatrix.setPPodId();
 				}
@@ -192,13 +194,13 @@ public class SaveOrUpdateStudyHibernate implements ISaveOrUpdateStudy {
 						PPodPredicates.equalTo(incomingTreeSet.getPPodId(),
 								IUUPPodEntity.getPPodId)))) {
 					dbTreeSet = treeSetProvider.get();
-					dbTreeSet.setpPodVersionInfo(lazyPPodVersionInfo
+					dbTreeSet.setpPodVersionInfo(newPPodVersionInfo
 							.getNewPPodVersionInfo());
 					dbTreeSet.setPPodId();
 				}
 
 				mergeTreeSet.merge(dbTreeSet, incomingTreeSet, dbOTUSet,
-						dbOTUsByIncomingOTU, lazyPPodVersionInfo);
+						dbOTUsByIncomingOTU);
 			}
 		}
 		studyDAO.saveOrUpdate(dbStudy);

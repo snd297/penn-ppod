@@ -87,7 +87,7 @@ public class SaveOrUpdateCharacterStateMatrixTest {
 	public void save(final CharacterStateMatrix sourceMatrix) {
 
 		final ISaveOrUpdateCharacterStateMatrix saveOrUpdateCharacterStateMatrix = mergeMatrixFactory
-				.create(null, mergeAttachment, dao.setSession(session));
+				.create(mergeAttachment, dao.setSession(session), null);
 		final OTUSet fakeDbOTUSet = sourceMatrix.getOTUSet();
 		final Map<OTU, OTU> fakeOTUsByIncomingOTU = newHashMap();
 		for (final OTU sourceOTU : sourceMatrix.getOTUs()) {
@@ -106,7 +106,7 @@ public class SaveOrUpdateCharacterStateMatrixTest {
 	@Test(dataProvider = MatrixProvider.SMALL_MATRICES_PROVIDER, dataProviderClass = MatrixProvider.class)
 	public void moveRows(final CharacterStateMatrix sourceMatrix) {
 		final ISaveOrUpdateCharacterStateMatrix saveOrUpdateCharacterStateMatrix = mergeMatrixFactory
-				.create(null, mergeAttachment, dao.setSession(session));
+				.create(mergeAttachment, dao.setSession(session), null);
 		final OTUSet fakeTargetOTUSet = sourceMatrix.getOTUSet();
 		final Map<OTU, OTU> fakeOTUsByIncomingOTU = newHashMap();
 		for (final OTU sourceOTU : sourceMatrix.getOTUs()) {
@@ -141,7 +141,7 @@ public class SaveOrUpdateCharacterStateMatrixTest {
 	@Test(dataProvider = MatrixProvider.SMALL_MATRICES_PROVIDER, dataProviderClass = MatrixProvider.class)
 	public void moveCharacters(final CharacterStateMatrix sourceMatrix) {
 		final ISaveOrUpdateCharacterStateMatrix saveOrUpdateCharacterStateMatrix = mergeMatrixFactory
-				.create(null, mergeAttachment, dao.setSession(session));
+				.create(mergeAttachment, dao.setSession(session), null);
 		final OTUSet fakeTargetOTUSet = sourceMatrix.getOTUSet();
 		final Map<OTU, OTU> fakeOTUsByIncomingOTU = newHashMap();
 		for (final OTU sourceOTU : sourceMatrix.getOTUs()) {
