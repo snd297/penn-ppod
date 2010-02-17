@@ -26,6 +26,7 @@ import edu.upenn.cis.ppod.model.CharacterStateRow;
 import edu.upenn.cis.ppod.model.OTU;
 import edu.upenn.cis.ppod.model.OTUSet;
 import edu.upenn.cis.ppod.model.Study;
+import edu.upenn.cis.ppod.model.Tree;
 import edu.upenn.cis.ppod.model.TreeSet;
 
 /**
@@ -140,6 +141,15 @@ public abstract class EmptyVisitor implements IVisitor {
 	 * @param treeSet ignored
 	 */
 	public void visit(final TreeSet treeSet) {
+
+	}
+
+	/**
+	 * Does nothing.
+	 * 
+	 * @param tree ignored
+	 */
+	public void visit(final Tree tree) {
 
 	}
 }

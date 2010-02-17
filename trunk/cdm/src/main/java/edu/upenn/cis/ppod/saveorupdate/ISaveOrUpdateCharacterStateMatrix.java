@@ -22,6 +22,7 @@ import edu.upenn.cis.ppod.model.CharacterStateMatrix;
 import edu.upenn.cis.ppod.model.DNACharacter;
 import edu.upenn.cis.ppod.model.OTU;
 import edu.upenn.cis.ppod.model.OTUSet;
+import edu.upenn.cis.ppod.model.SetPPodVersionInfoVisitor;
 
 /**
  * Merge two matrices.
@@ -63,6 +64,7 @@ public interface ISaveOrUpdateCharacterStateMatrix {
 	 */
 	static interface IFactory {
 		ISaveOrUpdateCharacterStateMatrix create(
-				IMergeAttachment mergeAttachment, IDAO<Object, Long> dao);
+				IMergeAttachment mergeAttachment, IDAO<Object, Long> dao,
+				SetPPodVersionInfoVisitor setPPodVersionInfoVisitor);
 	}
 }

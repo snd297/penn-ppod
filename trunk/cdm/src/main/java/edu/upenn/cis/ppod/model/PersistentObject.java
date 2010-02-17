@@ -26,6 +26,8 @@ import javax.xml.bind.annotation.XmlAccessType;
 import javax.xml.bind.annotation.XmlAccessorType;
 import javax.xml.bind.annotation.XmlAttribute;
 
+import org.hibernate.annotations.AccessType;
+
 import edu.upenn.cis.ppod.util.IVisitor;
 
 /**
@@ -39,6 +41,7 @@ public abstract class PersistentObject implements IPersistentObject {
 
 	static final String ID_COLUMN = "ID";
 
+	@AccessType("property")
 	@Id
 	@GeneratedValue
 	@Column(name = ID_COLUMN)
@@ -49,7 +52,12 @@ public abstract class PersistentObject implements IPersistentObject {
 	private Integer version;
 
 	@Transient
-	protected boolean allowPersist = true;
+	private boolean allowPersist = true;
+
+	protected PersistentObject unsetAllowPersist() {
+		allowPersist = false;
+		return this;
+	}
 
 	/** Default constructor. */
 	protected PersistentObject() {}

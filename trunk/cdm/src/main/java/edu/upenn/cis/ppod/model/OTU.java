@@ -177,7 +177,7 @@ public class OTU extends UUPPodEntityWXmlId {
 	 */
 	public OTU setLabel(final String label) {
 		checkNotNull(label);
-		if (label.equals(this.label)) {
+		if (label.equals(getLabel())) {
 
 		} else {
 			this.label = label;

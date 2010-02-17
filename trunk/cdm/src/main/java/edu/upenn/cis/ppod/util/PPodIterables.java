@@ -15,7 +15,6 @@
  */
 package edu.upenn.cis.ppod.util;
 
-import static com.google.common.base.Predicates.compose;
 import static com.google.common.collect.Iterables.filter;
 import static com.google.common.collect.Sets.newHashSet;
 
@@ -23,9 +22,7 @@ import java.util.Collection;
 import java.util.Iterator;
 import java.util.Set;
 
-import com.google.common.base.Function;
 import com.google.common.base.Predicate;
-import com.google.common.base.Predicates;
 
 /**
  * @author Sam Donnelly
@@ -54,11 +51,6 @@ public class PPodIterables {
 			}
 		}
 		return null;
-	}
-
-	public static <A, B> Predicate<A> equalTo(final B target,
-			final Function<A, ? extends B> func) {
-		return compose(Predicates.equalTo(target), func);
 	}
 
 	public static <T> Set<T> findEach(final Set<T> iterable,

@@ -18,7 +18,6 @@ package edu.upenn.cis.ppod.model;
 import static com.google.common.base.Preconditions.checkArgument;
 import static com.google.common.base.Preconditions.checkNotNull;
 import static com.google.common.collect.Sets.newHashSet;
-import static edu.upenn.cis.ppod.util.PPodIterables.equalTo;
 import static edu.upenn.cis.ppod.util.PPodIterables.findIf;
 import static edu.upenn.cis.ppod.util.UPennCisPPodUtil.nullSafeEquals;
 
@@ -43,6 +42,7 @@ import javax.xml.bind.annotation.XmlElement;
 import org.hibernate.annotations.Cascade;
 
 import edu.upenn.cis.ppod.util.IVisitor;
+import edu.upenn.cis.ppod.util.PPodPredicates;
 
 /**
  * A set of {@link OTU}s. The relationship between {@code OTU} and {@code
@@ -164,7 +164,7 @@ public class OTUSet extends UUPPodEntityWXmlId {
 	 */
 	private OTU addOTU(final OTU otu) {
 		checkNotNull(otu);
-		final OTU dupNameOTU = findIf(getOTUs(), equalTo(otu.getLabel(),
+		final OTU dupNameOTU = findIf(getOTUs(), PPodPredicates.equalTo(otu.getLabel(),
 				OTU.getLabel));
 		if (dupNameOTU == null || otu.equals(dupNameOTU)) {
 

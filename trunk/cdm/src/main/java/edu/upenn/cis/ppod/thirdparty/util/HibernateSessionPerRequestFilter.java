@@ -45,9 +45,6 @@ import org.hibernate.context.ManagedSessionContext;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
-import com.google.inject.Provider;
-
-import edu.upenn.cis.ppod.model.PPodVersionInfoInterceptor;
 import edu.upenn.cis.ppod.util.PPodCoreFactory;
 
 public final class HibernateSessionPerRequestFilter implements Filter {
@@ -55,8 +52,9 @@ public final class HibernateSessionPerRequestFilter implements Filter {
 			.getLogger(HibernateSessionPerRequestFilter.class);
 
 	private final PPodCoreFactory pPodCoreFactory = new PPodCoreFactory();
-	private final Provider<PPodVersionInfoInterceptor> versionInfoInterceptorProvider = pPodCoreFactory
-			.getProvider(PPodVersionInfoInterceptor.class);
+// private final Provider<PPodVersionInfoInterceptor>
+	// versionInfoInterceptorProvider = pPodCoreFactory
+	// .getProvider(PPodVersionInfoInterceptor.class);
 	private SessionFactory sf;
 
 	public void destroy() {}
@@ -70,8 +68,7 @@ public final class HibernateSessionPerRequestFilter implements Filter {
 		try {
 
 			logger.debug("Opening Session");
-			currentSession = sf.openSession(versionInfoInterceptorProvider
-					.get().setSessionFactory(sf));
+			currentSession = sf.openSession();
 
 			logger.debug("Binding the current Session");
 			ManagedSessionContext.bind(currentSession);

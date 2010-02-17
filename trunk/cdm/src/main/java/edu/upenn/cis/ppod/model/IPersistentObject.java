@@ -24,7 +24,7 @@ import edu.upenn.cis.ppod.util.IVisitor;
  * 
  * @author Sam Donnelly
  */
-public interface IPersistentObject {
+interface IPersistentObject {
 
 	/**
 	 * Visitor pattern accept method.

@@ -23,8 +23,6 @@ import java.util.List;
 import java.util.Map;
 
 import org.hibernate.Session;
-import org.hibernate.context.ManagedSessionContext;
-import org.testng.annotations.BeforeMethod;
 import org.testng.annotations.Test;
 
 import com.google.inject.Inject;
@@ -41,7 +39,6 @@ import edu.upenn.cis.ppod.model.ModelAssert;
 import edu.upenn.cis.ppod.model.OTU;
 import edu.upenn.cis.ppod.model.OTUSet;
 import edu.upenn.cis.ppod.model.PPodVersionInfo;
-import edu.upenn.cis.ppod.thirdparty.util.HibernateUtil;
 import edu.upenn.cis.ppod.util.MatrixProvider;
 
 /**
@@ -79,18 +76,18 @@ public class SaveOrUpdateCharacterStateMatrixTest {
 	@Inject
 	private DNACharacter dnaCharacter;
 
-//	@BeforeMethod
-//	public void beforeMethod() {
-//		final org.hibernate.classic.Session session = HibernateUtil
-//				.getSessionFactory().openSession();
-//		ManagedSessionContext.bind(session);
-//	}
+// @BeforeMethod
+// public void beforeMethod() {
+// final org.hibernate.classic.Session session = HibernateUtil
+// .getSessionFactory().openSession();
+// ManagedSessionContext.bind(session);
+// }
 
 	@Test(dataProvider = MatrixProvider.SMALL_MATRICES_PROVIDER, dataProviderClass = MatrixProvider.class)
 	public void save(final CharacterStateMatrix sourceMatrix) {
 
 		final ISaveOrUpdateCharacterStateMatrix saveOrUpdateCharacterStateMatrix = mergeMatrixFactory
-				.create(mergeAttachment, dao.setSession(session));
+				.create(mergeAttachment, dao.setSession(session), null);
 		final OTUSet fakeDbOTUSet = sourceMatrix.getOTUSet();
 		final Map<OTU, OTU> fakeOTUsByIncomingOTU = newHashMap();
 		for (final OTU sourceOTU : sourceMatrix.getOTUs()) {
@@ -109,7 +106,7 @@ public class SaveOrUpdateCharacterStateMatrixTest {
 	@Test(dataProvider = MatrixProvider.SMALL_MATRICES_PROVIDER, dataProviderClass = MatrixProvider.class)
 	public void moveRows(final CharacterStateMatrix sourceMatrix) {
 		final ISaveOrUpdateCharacterStateMatrix saveOrUpdateCharacterStateMatrix = mergeMatrixFactory
-				.create(mergeAttachment, dao.setSession(session));
+				.create(mergeAttachment, dao.setSession(session), null);
 		final OTUSet fakeTargetOTUSet = sourceMatrix.getOTUSet();
 		final Map<OTU, OTU> fakeOTUsByIncomingOTU = newHashMap();
 		for (final OTU sourceOTU : sourceMatrix.getOTUs()) {
@@ -144,7 +141,7 @@ public class SaveOrUpdateCharacterStateMatrixTest {
 	@Test(dataProvider = MatrixProvider.SMALL_MATRICES_PROVIDER, dataProviderClass = MatrixProvider.class)
 	public void moveCharacters(final CharacterStateMatrix sourceMatrix) {
 		final ISaveOrUpdateCharacterStateMatrix saveOrUpdateCharacterStateMatrix = mergeMatrixFactory
-				.create(mergeAttachment, dao.setSession(session));
+				.create(mergeAttachment, dao.setSession(session), null);
 		final OTUSet fakeTargetOTUSet = sourceMatrix.getOTUSet();
 		final Map<OTU, OTU> fakeOTUsByIncomingOTU = newHashMap();
 		for (final OTU sourceOTU : sourceMatrix.getOTUs()) {

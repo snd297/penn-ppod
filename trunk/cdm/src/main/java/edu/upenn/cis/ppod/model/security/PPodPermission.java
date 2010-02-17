@@ -24,7 +24,6 @@ import javax.persistence.Version;
 
 import org.apache.shiro.authz.permission.DomainPermission;
 
-import edu.upenn.cis.ppod.model.IPersistentObject;
 import edu.upenn.cis.ppod.util.IVisitor;
 
 /**
@@ -35,8 +34,8 @@ import edu.upenn.cis.ppod.util.IVisitor;
 @Entity
 @Table(name = PPodPermission.TABLE)
 @edu.umd.cs.findbugs.annotations.SuppressWarnings
-public final class PPodPermission extends DomainPermission implements
-		IPersistentObject {
+public final class PPodPermission extends DomainPermission {
+		
 
 	static final String TABLE = "PPOD_PERMISSION";
 
