@@ -22,9 +22,9 @@ import edu.upenn.cis.ppod.model.AttachmentNamespace;
 import edu.upenn.cis.ppod.model.AttachmentType;
 import edu.upenn.cis.ppod.model.Character;
 import edu.upenn.cis.ppod.model.CharacterStateMatrix;
-import edu.upenn.cis.ppod.model.IAttachee;
 import edu.upenn.cis.ppod.model.OTU;
 import edu.upenn.cis.ppod.model.OTUSet;
+import edu.upenn.cis.ppod.modelinterfaces.IAttachee;
 import edu.upenn.cis.ppod.services.ppodentity.IOTUSetCentricEntities;
 
 /**

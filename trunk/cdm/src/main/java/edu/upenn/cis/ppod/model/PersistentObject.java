@@ -28,6 +28,7 @@ import javax.xml.bind.annotation.XmlAttribute;
 
 import org.hibernate.annotations.AccessType;
 
+import edu.upenn.cis.ppod.modelinterfaces.IPersistentObject;
 import edu.upenn.cis.ppod.util.IVisitor;
 
 /**

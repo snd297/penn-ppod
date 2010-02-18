@@ -43,6 +43,7 @@ import org.hibernate.annotations.Cascade;
 import com.google.common.base.Function;
 import com.google.common.base.Predicate;
 
+import edu.upenn.cis.ppod.modelinterfaces.IPPodEntity;
 import edu.upenn.cis.ppod.util.IVisitor;
 
 /**

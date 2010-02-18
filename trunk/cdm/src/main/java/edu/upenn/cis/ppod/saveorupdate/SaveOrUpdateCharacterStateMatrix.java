@@ -43,11 +43,10 @@ import edu.upenn.cis.ppod.model.CharacterStateCell;
 import edu.upenn.cis.ppod.model.CharacterStateMatrix;
 import edu.upenn.cis.ppod.model.CharacterStateRow;
 import edu.upenn.cis.ppod.model.DNACharacter;
-import edu.upenn.cis.ppod.model.ICharacterStateMatrix;
-import edu.upenn.cis.ppod.model.INewPPodVersionInfo;
-import edu.upenn.cis.ppod.model.IUUPPodEntity;
 import edu.upenn.cis.ppod.model.OTU;
 import edu.upenn.cis.ppod.model.OTUSet;
+import edu.upenn.cis.ppod.modelinterfaces.INewPPodVersionInfo;
+import edu.upenn.cis.ppod.modelinterfaces.IUUPPodEntity;
 import edu.upenn.cis.ppod.thirdparty.injectslf4j.InjectLogger;
 import edu.upenn.cis.ppod.util.PPodPredicates;
 
@@ -131,7 +130,7 @@ public class SaveOrUpdateCharacterStateMatrix implements
 		for (final Character sourceCharacter : sourceMatrix.getCharacters()) {
 			sourceCharacterPosition++;
 			Character newTargetCharacter;
-			if (sourceMatrix.getType() == ICharacterStateMatrix.Type.DNA) {
+			if (sourceMatrix.getType() == CharacterStateMatrix.Type.DNA) {
 				newTargetCharacter = dnaCharacter;
 			} else if (null == (newTargetCharacter = findIf(targetMatrix
 					.getCharacters(), PPodPredicates.equalTo(sourceCharacter
@@ -144,7 +143,7 @@ public class SaveOrUpdateCharacterStateMatrix implements
 
 			newTargetMatrixCharacters.add(newTargetCharacter);
 
-			if (sourceMatrix.getType() == ICharacterStateMatrix.Type.STANDARD) {
+			if (sourceMatrix.getType() == CharacterStateMatrix.Type.STANDARD) {
 				newTargetCharacter.setLabel(sourceCharacter.getLabel());
 			}
 
@@ -159,12 +158,12 @@ public class SaveOrUpdateCharacterStateMatrix implements
 							.getNewPPodVersionInfo());
 				}
 
-				if (sourceMatrix.getType() == ICharacterStateMatrix.Type.STANDARD) {
+				if (sourceMatrix.getType() == CharacterStateMatrix.Type.STANDARD) {
 					targetState.setLabel(sourceState.getLabel());
 				}
 			}
 
-			if (sourceMatrix.getType() == ICharacterStateMatrix.Type.STANDARD) {
+			if (sourceMatrix.getType() == CharacterStateMatrix.Type.STANDARD) {
 				originalCharIdxsByNewCharIdx.put(sourceCharacterPosition,
 						targetMatrix.getCharacterIdx().get(newTargetCharacter));
 			} else {

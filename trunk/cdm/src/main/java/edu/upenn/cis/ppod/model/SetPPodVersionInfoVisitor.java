@@ -3,6 +3,8 @@ package edu.upenn.cis.ppod.model;
 import com.google.inject.Inject;
 import com.google.inject.assistedinject.Assisted;
 
+import edu.upenn.cis.ppod.modelinterfaces.INewPPodVersionInfo;
+import edu.upenn.cis.ppod.modelinterfaces.IPPodVersioned;
 import edu.upenn.cis.ppod.util.EmptyVisitor;
 
 /**

@@ -1,6 +1,6 @@
 package edu.upenn.cis.ppod.saveorupdate;
 
-import edu.upenn.cis.ppod.model.INewPPodVersionInfo;
+import edu.upenn.cis.ppod.modelinterfaces.INewPPodVersionInfo;
 
 /**
  * @author Sam Donnelly

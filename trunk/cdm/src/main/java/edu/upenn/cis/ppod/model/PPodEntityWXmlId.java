@@ -21,6 +21,8 @@ import javax.annotation.Nullable;
 import javax.xml.bind.annotation.XmlAttribute;
 import javax.xml.bind.annotation.XmlID;
 
+import edu.upenn.cis.ppod.modelinterfaces.IWXmlID;
+
 /**
  * A {@code PPodEntity} w/ an {@link XmlID} attribute called {@code "docId"}.
  * 

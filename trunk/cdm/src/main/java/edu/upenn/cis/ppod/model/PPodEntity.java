@@ -46,6 +46,7 @@ import com.google.common.collect.Iterables;
 import com.google.common.collect.Sets;
 import com.google.inject.Inject;
 
+import edu.upenn.cis.ppod.modelinterfaces.IPPodEntity;
 import edu.upenn.cis.ppod.util.IVisitor;
 
 /**

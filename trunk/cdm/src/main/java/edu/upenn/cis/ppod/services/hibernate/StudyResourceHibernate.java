@@ -25,9 +25,9 @@ import com.google.inject.Provider;
 
 import edu.upenn.cis.ppod.dao.IStudyDAO;
 import edu.upenn.cis.ppod.dao.hibernate.StudyDAOHibernate;
-import edu.upenn.cis.ppod.model.INewPPodVersionInfo;
 import edu.upenn.cis.ppod.model.SetPPodVersionInfoVisitor;
 import edu.upenn.cis.ppod.model.Study;
+import edu.upenn.cis.ppod.modelinterfaces.INewPPodVersionInfo;
 import edu.upenn.cis.ppod.saveorupdate.ISaveOrUpdateStudy;
 import edu.upenn.cis.ppod.saveorupdate.hibernate.ISaveOrUpdateStudyHibernateFactory;
 import edu.upenn.cis.ppod.services.IStudyResource;

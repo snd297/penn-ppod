@@ -17,8 +17,8 @@ package edu.upenn.cis.ppod.saveorupdate.hibernate;
 
 import org.hibernate.Session;
 
-import edu.upenn.cis.ppod.model.INewPPodVersionInfo;
 import edu.upenn.cis.ppod.model.Study;
+import edu.upenn.cis.ppod.modelinterfaces.INewPPodVersionInfo;
 import edu.upenn.cis.ppod.saveorupdate.ISaveOrUpdateStudy;
 
 /**
