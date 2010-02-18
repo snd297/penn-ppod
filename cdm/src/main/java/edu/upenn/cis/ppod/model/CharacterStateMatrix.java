@@ -486,13 +486,13 @@ public class CharacterStateMatrix extends UUPPodEntityWXmlId implements
 	 * 
 	 * @param newCharacters the new characters
 	 * 
-	 * @return the {@code Character} previously at that position or {@code null}
-	 *         if there was no such {@code Character}
+	 * @return the characters removed as a result of this operation
+	 * 
 	 * @throws IllegalArgumentException if any of {@code characters} are {@code
 	 *             .equals} to each other. NOTE: this constraint does not hold
 	 *             in a {@code MolecularStateMatrix}
 	 */
-	public CharacterStateMatrix setCharacters(
+	public List<Character> setCharacters(
 			final List<? extends Character> newCharacters) {
 		checkNotNull(newCharacters);
 
@@ -518,12 +518,16 @@ public class CharacterStateMatrix extends UUPPodEntityWXmlId implements
 		}
 
 		if (newCharacters.equals(getCharacters())) {
-			return this;
+			return Collections.emptyList();
 		}
 
 		final List<PPodVersionInfo> newColumnPPodVersionInfos = determineNewColumnHeaderPPodVersionInfos(newCharacters);
 		getColumnPPodVersionInfosModifiable().clear();
 		getColumnPPodVersionInfosModifiable().addAll(newColumnPPodVersionInfos);
+
+		final List<Character> removedCharacters = newArrayList(getCharacters());
+
+		removedCharacters.removeAll(newCharacters);
 
 		getCharactersModifiable().clear();
 		getCharacterIdxModifiable().clear();
@@ -538,7 +542,7 @@ public class CharacterStateMatrix extends UUPPodEntityWXmlId implements
 
 		// the matrix has changed
 		resetPPodVersionInfo();
-		return this;
+		return removedCharacters;
 	}
 
 	/**

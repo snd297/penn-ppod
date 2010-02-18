@@ -26,7 +26,7 @@ public class SetPPodVersionInfoVisitor extends EmptyVisitor {
 
 	private void setNewPPodVersionIfNeeded(final IPPodVersioned pPodVersioned) {
 		if (pPodVersioned.isInNeedOfNewPPodVersionInfo()) {
-			pPodVersioned.setpPodVersionInfo(newPPodVersionInfo
+			pPodVersioned.setPPodVersionInfo(newPPodVersionInfo
 					.getNewPPodVersionInfo());
 			pPodVersioned.unsetInNeedOfNewPPodVersionInfo();
 		}

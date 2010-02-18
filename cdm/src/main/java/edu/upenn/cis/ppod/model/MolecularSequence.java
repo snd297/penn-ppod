@@ -58,5 +58,24 @@ public class MolecularSequence {
 		this.sequence = sequence;
 		return this;
 	}
+	
+	private String locus;// when read back into matrix it gets put taxon 
+	private String wholeUnparseHeader;
+	/*
+	 * Have an operation upload to server as sequences.
+	 * 
+	 * Should be able to tell from the name label that it's a sequence.
+	 * 
+	 * Figure out alignment.
+	 * 
+	 * Extract OTU from the locus part.
+	 * 
+	 * Store whole header as an annotation on the row
+	 * 
+	 * Have a locus field
+	 * Whole unparsed header field
+	 * 
+	 * Look around sequence header cleaners
+	 */
 
 }

@@ -31,14 +31,14 @@ import edu.upenn.cis.ppod.model.INewPPodVersionInfo;
 import edu.upenn.cis.ppod.model.NewPPodVersionInfo;
 import edu.upenn.cis.ppod.model.SetPPodVersionInfoVisitor;
 import edu.upenn.cis.ppod.saveorupdate.IMergeAttachment;
+import edu.upenn.cis.ppod.saveorupdate.IMergeOTUSetFactory;
 import edu.upenn.cis.ppod.saveorupdate.IMergeTreeSetFactory;
-import edu.upenn.cis.ppod.saveorupdate.ISaveOrUpdateCharacterStateMatrix;
+import edu.upenn.cis.ppod.saveorupdate.ISaveOrUpdateMatrixFactory;
 import edu.upenn.cis.ppod.saveorupdate.MergeAttachment;
+import edu.upenn.cis.ppod.saveorupdate.MergeOTUSet;
 import edu.upenn.cis.ppod.saveorupdate.MergeTreeSet;
-import edu.upenn.cis.ppod.saveorupdate.hibernate.IMergeOTUSetHibernateFactory;
+import edu.upenn.cis.ppod.saveorupdate.SaveOrUpdateCharacterStateMatrix;
 import edu.upenn.cis.ppod.saveorupdate.hibernate.ISaveOrUpdateStudyHibernateFactory;
-import edu.upenn.cis.ppod.saveorupdate.hibernate.MergeOTUSetHibernate;
-import edu.upenn.cis.ppod.saveorupdate.hibernate.SaveOrUpdateCharacterStateMatrix;
 import edu.upenn.cis.ppod.saveorupdate.hibernate.SaveOrUpdateStudyHibernate;
 import edu.upenn.cis.ppod.security.ISimpleAuthenticationInfoFactory;
 import edu.upenn.cis.ppod.security.SimpleAuthenticationInfoFactory;
@@ -68,15 +68,15 @@ public final class PPodCoreModule extends AbstractModule {
 				FactoryProvider.newFactory(
 						ISaveOrUpdateStudyHibernateFactory.class,
 						SaveOrUpdateStudyHibernate.class));
-		bind(IMergeOTUSetHibernateFactory.class).toProvider(
-				FactoryProvider.newFactory(IMergeOTUSetHibernateFactory.class,
-						MergeOTUSetHibernate.class));
+		bind(IMergeOTUSetFactory.class).toProvider(
+				FactoryProvider.newFactory(IMergeOTUSetFactory.class,
+						MergeOTUSet.class));
 		bind(IMergeTreeSetFactory.class).toProvider(
 				FactoryProvider.newFactory(IMergeTreeSetFactory.class,
 						MergeTreeSet.class));
-		bind(ISaveOrUpdateCharacterStateMatrix.IFactory.class).toProvider(
+		bind(ISaveOrUpdateMatrixFactory.class).toProvider(
 				FactoryProvider.newFactory(
-						ISaveOrUpdateCharacterStateMatrix.IFactory.class,
+						ISaveOrUpdateMatrixFactory.class,
 						SaveOrUpdateCharacterStateMatrix.class));
 
 		bind(IMergeAttachment.IFactory.class).toProvider(

@@ -24,8 +24,9 @@ import java.util.Set;
 import javax.annotation.Nullable;
 import javax.persistence.Column;
 import javax.persistence.Entity;
+import javax.persistence.JoinColumn;
 import javax.persistence.Lob;
-import javax.persistence.ManyToMany;
+import javax.persistence.ManyToOne;
 import javax.persistence.Table;
 import javax.xml.bind.Unmarshaller;
 import javax.xml.bind.annotation.XmlAttribute;
@@ -53,8 +54,9 @@ public class Tree extends UUPPodEntity {
 	@Nullable
 	private String newick;
 
-	@ManyToMany(mappedBy = "trees")
-	private final Set<TreeSet> treeSets = newHashSet();
+	@ManyToOne
+	@JoinColumn(name = TreeSet.ID_COLUMN, insertable = false, updatable = false, nullable = false)
+	private TreeSet treeSet;
 
 	Tree() {}
 
@@ -78,21 +80,21 @@ public class Tree extends UUPPodEntity {
 	 *             equal to (@code
 	 *             this.getTreeSets().iterator().next().getOTUSet()}
 	 */
-	void addTreeSet(final TreeSet treeSet) {
-		checkNotNull(treeSet);
-		if ((getTreeSets().size() == 0)
-				|| getTreeSets().iterator().next().getOTUSet().equals(
-						treeSet.getOTUSet())) {
-			if (treeSets.add(treeSet)) {
-				resetPPodVersionInfo();
-			}
-		} else {
-			throw new IllegalArgumentException(
-					"treeSet doesn't point to this tree's OTUSet: "
-							+ getTreeSets().iterator().next().getOTUSet()
-									.getLabel());
-		}
-	}
+// void addTreeSet(final TreeSet treeSet) {
+// checkNotNull(treeSet);
+// if ((getTreeSets().size() == 0)
+// || getTreeSets().iterator().next().getOTUSet().equals(
+// treeSet.getOTUSet())) {
+// if (treeSets.add(treeSet)) {
+// resetPPodVersionInfo();
+// }
+// } else {
+// throw new IllegalArgumentException(
+// "treeSet doesn't point to this tree's OTUSet: "
+// + getTreeSets().iterator().next().getOTUSet()
+// .getLabel());
+// }
+// }
 
 	/**
 	 * See {@link Unmarshaller}.
@@ -103,7 +105,7 @@ public class Tree extends UUPPodEntity {
 	 */
 	public void afterUnmarshal(final Unmarshaller u, final Object parent) {
 		if (parent instanceof TreeSet) {
-			addTreeSet((TreeSet) parent);
+			setTreeSet(treeSet);
 		}
 	}
 
@@ -130,15 +132,6 @@ public class Tree extends UUPPodEntity {
 	}
 
 	/**
-	 * Get all of the tree sets to which this tree belongs.
-	 * 
-	 * @return all of the tree sets to which this tree belongs
-	 */
-	public Set<TreeSet> getTreeSets() {
-		return Collections.unmodifiableSet(treeSets);
-	}
-
-	/**
 	 * Remove {@code treeSet} form this {@code Tree}s associated {@code TreeSet}
 	 * s.
 	 * <p>
@@ -146,16 +139,17 @@ public class Tree extends UUPPodEntity {
 	 * {@link TreeSet#removeTree(Tree)}.
 	 * 
 	 * @param treeSet the {@code TreeSet} that we're removing
+	 * 
+	 * @return this
 	 */
-	void removeTreeSet(final TreeSet treeSet) {
-		if (treeSets.remove(treeSet)) {
-			resetPPodVersionInfo();
-		}
+	Tree setTreeSet(@Nullable final TreeSet treeSet) {
+		this.treeSet = treeSet;
+		return this;
 	}
 
 	@Override
 	public Tree resetPPodVersionInfo() {
-		for (final TreeSet treeSet : getTreeSets()) {
+		if (treeSet != null) {
 			treeSet.resetPPodVersionInfo();
 		}
 		super.resetPPodVersionInfo();

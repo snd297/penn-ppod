@@ -42,7 +42,7 @@ import edu.upenn.cis.ppod.model.PPodVersionInfo;
 import edu.upenn.cis.ppod.util.MatrixProvider;
 
 /**
- * Tests of {@link ISaveOrUpdateCharacterStateMatrix}.
+ * Tests of {@link ISaveOrUpdateMatrix}.
  * 
  * @author Sam Donnelly
  */
@@ -50,7 +50,7 @@ import edu.upenn.cis.ppod.util.MatrixProvider;
 public class SaveOrUpdateCharacterStateMatrixTest {
 
 	@Inject
-	private ISaveOrUpdateCharacterStateMatrix.IFactory mergeMatrixFactory;
+	private ISaveOrUpdateMatrixFactory mergeMatrixFactory;
 
 	@Inject
 	private ICharacterStateMatrixFactory characterStateMatrixFactory;
@@ -86,7 +86,7 @@ public class SaveOrUpdateCharacterStateMatrixTest {
 	@Test(dataProvider = MatrixProvider.SMALL_MATRICES_PROVIDER, dataProviderClass = MatrixProvider.class)
 	public void save(final CharacterStateMatrix sourceMatrix) {
 
-		final ISaveOrUpdateCharacterStateMatrix saveOrUpdateCharacterStateMatrix = mergeMatrixFactory
+		final ISaveOrUpdateMatrix saveOrUpdateMatrix = mergeMatrixFactory
 				.create(mergeAttachment, dao.setSession(session), null);
 		final OTUSet fakeDbOTUSet = sourceMatrix.getOTUSet();
 		final Map<OTU, OTU> fakeOTUsByIncomingOTU = newHashMap();
@@ -96,7 +96,7 @@ public class SaveOrUpdateCharacterStateMatrixTest {
 
 		final CharacterStateMatrix targetMatrix = characterStateMatrixFactory
 				.create(sourceMatrix.getType());
-		saveOrUpdateCharacterStateMatrix
+		saveOrUpdateMatrix
 				.saveOrUpdate(targetMatrix, sourceMatrix, fakeDbOTUSet,
 						fakeOTUsByIncomingOTU, dnaCharacter);
 		ModelAssert.assertEqualsCharacterStateMatrices(targetMatrix,
@@ -105,7 +105,7 @@ public class SaveOrUpdateCharacterStateMatrixTest {
 
 	@Test(dataProvider = MatrixProvider.SMALL_MATRICES_PROVIDER, dataProviderClass = MatrixProvider.class)
 	public void moveRows(final CharacterStateMatrix sourceMatrix) {
-		final ISaveOrUpdateCharacterStateMatrix saveOrUpdateCharacterStateMatrix = mergeMatrixFactory
+		final ISaveOrUpdateMatrix saveOrUpdateMatrix = mergeMatrixFactory
 				.create(mergeAttachment, dao.setSession(session), null);
 		final OTUSet fakeTargetOTUSet = sourceMatrix.getOTUSet();
 		final Map<OTU, OTU> fakeOTUsByIncomingOTU = newHashMap();
@@ -116,7 +116,7 @@ public class SaveOrUpdateCharacterStateMatrixTest {
 		final CharacterStateMatrix targetMatrix = characterStateMatrixFactory
 				.create(sourceMatrix.getType());
 
-		saveOrUpdateCharacterStateMatrix.saveOrUpdate(targetMatrix,
+		saveOrUpdateMatrix.saveOrUpdate(targetMatrix,
 				sourceMatrix, fakeTargetOTUSet, fakeOTUsByIncomingOTU,
 				dnaCharacter);
 		final List<OTU> shuffledSourceOTUs = newArrayList(sourceMatrix
@@ -131,7 +131,7 @@ public class SaveOrUpdateCharacterStateMatrixTest {
 		for (final CharacterStateRow sourceRow : sourceMatrix.getRows()) {
 			sourceRow.setPPodVersion(1L);
 		}
-		saveOrUpdateCharacterStateMatrix.saveOrUpdate(targetMatrix,
+		saveOrUpdateMatrix.saveOrUpdate(targetMatrix,
 				sourceMatrix, fakeTargetOTUSet, fakeOTUsByIncomingOTU,
 				dnaCharacter);
 		ModelAssert.assertEqualsCharacterStateMatrices(targetMatrix,
@@ -140,7 +140,7 @@ public class SaveOrUpdateCharacterStateMatrixTest {
 
 	@Test(dataProvider = MatrixProvider.SMALL_MATRICES_PROVIDER, dataProviderClass = MatrixProvider.class)
 	public void moveCharacters(final CharacterStateMatrix sourceMatrix) {
-		final ISaveOrUpdateCharacterStateMatrix saveOrUpdateCharacterStateMatrix = mergeMatrixFactory
+		final ISaveOrUpdateMatrix saveOrUpdateMatrix = mergeMatrixFactory
 				.create(mergeAttachment, dao.setSession(session), null);
 		final OTUSet fakeTargetOTUSet = sourceMatrix.getOTUSet();
 		final Map<OTU, OTU> fakeOTUsByIncomingOTU = newHashMap();
@@ -151,7 +151,7 @@ public class SaveOrUpdateCharacterStateMatrixTest {
 		final CharacterStateMatrix targetMatrix = characterStateMatrixFactory
 				.create(sourceMatrix.getType());
 
-		saveOrUpdateCharacterStateMatrix.saveOrUpdate(targetMatrix,
+		saveOrUpdateMatrix.saveOrUpdate(targetMatrix,
 				sourceMatrix, fakeTargetOTUSet, fakeOTUsByIncomingOTU,
 				dnaCharacter);
 
@@ -162,7 +162,7 @@ public class SaveOrUpdateCharacterStateMatrixTest {
 		newSourceMatrixCharacters.set(0, sourceMatrix.getCharacters().get(2));
 		newSourceMatrixCharacters.set(2, sourceMatrix.getCharacters().get(0));
 
-		saveOrUpdateCharacterStateMatrix.saveOrUpdate(targetMatrix,
+		saveOrUpdateMatrix.saveOrUpdate(targetMatrix,
 				sourceMatrix, fakeTargetOTUSet, fakeOTUsByIncomingOTU,
 				dnaCharacter);
 

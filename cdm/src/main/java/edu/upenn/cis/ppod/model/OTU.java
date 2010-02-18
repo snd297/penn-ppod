@@ -16,15 +16,12 @@
 package edu.upenn.cis.ppod.model;
 
 import static com.google.common.base.Preconditions.checkNotNull;
-import static com.google.common.collect.Sets.newHashSet;
-
-import java.util.Collections;
-import java.util.Set;
 
 import javax.annotation.Nullable;
 import javax.persistence.Column;
 import javax.persistence.Entity;
-import javax.persistence.ManyToMany;
+import javax.persistence.JoinColumn;
+import javax.persistence.ManyToOne;
 import javax.persistence.Table;
 import javax.xml.bind.Unmarshaller;
 import javax.xml.bind.annotation.XmlAttribute;
@@ -68,13 +65,16 @@ public class OTU extends UUPPodEntityWXmlId {
 
 	/** Non-unique label. */
 	@Column(name = "LABEL", nullable = false)
+	@Nullable
 	private String label;
 
 	/**
 	 * These are the {@code OTUSet}s that this {@code OTU} belongs to.
 	 */
-	@ManyToMany(mappedBy = "otus")
-	private final Set<OTUSet> otuSets = newHashSet();
+	@ManyToOne
+	@JoinColumn(name = OTUSet.ID_COLUMN)
+	@Nullable
+	private OTUSet otuSet;
 
 	OTU() {}
 
@@ -93,9 +93,9 @@ public class OTU extends UUPPodEntityWXmlId {
 	 * 
 	 * @param otuSet to be added to this <code>OTU</code>.
 	 */
-	void addOTUSet(final OTUSet otuSet) {
-		checkNotNull(otuSet);
-		otuSets.add(otuSet);
+	OTU setOTUSet(@Nullable final OTUSet otuSet) {
+		this.otuSet = otuSet;
+		return this;
 	}
 
 	/**
@@ -106,7 +106,7 @@ public class OTU extends UUPPodEntityWXmlId {
 	 */
 	public void afterUnmarshal(final Unmarshaller u, final Object parent) {
 		if (parent instanceof OTUSet) {
-			addOTUSet((OTUSet) parent);
+			this.otuSet = (OTUSet) parent;
 		}
 	}
 
@@ -129,27 +129,9 @@ public class OTU extends UUPPodEntityWXmlId {
 	 * @return an unmodifiable view of the <code>OTUSet</code>s of which this
 	 *         <code>OTU</code> is a member
 	 */
-	public Set<OTUSet> getOTUSets() {
-		return Collections.unmodifiableSet(otuSets);
-	}
-
-	/**
-	 * Remove <code>otuSet</code> form this <code>OTU</code>s associated
-	 * <code>OTUSet</code>s.
-	 * <p>
-	 * Intentionally package-private and meant to be called from {@code OTUSet}.
-	 * 
-	 * @param otuSet to be removed
-	 * @return {@code true} if {@code otuSet} belonged to this OTU set and was
-	 *         removed
-	 */
-	boolean removeOTUSet(final OTUSet otuSet) {
-		checkNotNull(otuSet);
-		if (otuSets.remove(otuSet)) {
-			resetPPodVersionInfo();
-			return true;
-		}
-		return false;
+	@Nullable
+	public OTUSet getOTUSet() {
+		return otuSet;
 	}
 
 	/**
@@ -161,8 +143,8 @@ public class OTU extends UUPPodEntityWXmlId {
 	 */
 	@Override
 	public OTU resetPPodVersionInfo() {
-		for (final OTUSet otuSet : otuSets) {
-			otuSet.resetPPodVersionInfo();
+		if (getOTUSet() != null) {
+			getOTUSet().resetPPodVersionInfo();
 		}
 		super.resetPPodVersionInfo();
 		return this;

@@ -27,9 +27,8 @@ import javax.persistence.Column;
 import javax.persistence.Entity;
 import javax.persistence.FetchType;
 import javax.persistence.JoinColumn;
-import javax.persistence.JoinTable;
-import javax.persistence.ManyToMany;
 import javax.persistence.ManyToOne;
+import javax.persistence.OneToMany;
 import javax.persistence.Table;
 import javax.xml.bind.Unmarshaller;
 import javax.xml.bind.annotation.XmlAccessType;
@@ -42,7 +41,7 @@ import org.hibernate.annotations.Cascade;
 import edu.upenn.cis.ppod.util.IVisitor;
 
 /**
- * A tree set.
+ * An ordered collection of {@link Tree}s.
  * 
  * @author Sam Donnelly
  */
@@ -67,16 +66,12 @@ public class TreeSet extends UUPPodEntityWXmlId {
 	private OTUSet otuSet;
 
 	/** The set of {@code Tree}s this {@code TreeSet} contains. */
-	@ManyToMany
-	@Cascade(org.hibernate.annotations.CascadeType.SAVE_UPDATE)
-	@JoinTable(name = TABLE + "_" + Tree.TABLE, joinColumns = { @JoinColumn(name = TreeSet.ID_COLUMN) }, inverseJoinColumns = { @JoinColumn(name = PersistentObject.ID_COLUMN) })
-	@org.hibernate.annotations.IndexColumn(name = "TREE_POSITION")
+	@OneToMany
+	@org.hibernate.annotations.IndexColumn(name = "POSITION")
+	@JoinColumn(name = ID_COLUMN, nullable = false)
+	@Cascade( { org.hibernate.annotations.CascadeType.SAVE_UPDATE,
+			org.hibernate.annotations.CascadeType.DELETE_ORPHAN })
 	private final List<Tree> trees = newArrayList();
-
-	@XmlElement(name = "tree")
-	private List<Tree> getTreesMutable() {
-		return trees;
-	}
 
 	TreeSet() {}
 
@@ -87,41 +82,6 @@ public class TreeSet extends UUPPodEntityWXmlId {
 			tree.accept(visitor);
 		}
 		super.accept(visitor);
-		return this;
-	}
-
-	/**
-	 * Scaffolding codes that does two things:
-	 * <ol>
-	 * <li>Removes <code>tree</code> from this <code>TreeSet</code>'s
-	 * constituent <code>Tree</code>s.</li>
-	 * <li>Removes this <code>TreeSet
-	 * </code> from <code> tree</code>'s <code>TreeSet</code>s.
-	 * </li>
-	 * </ol>
-	 * So it takes care of both sides of the <code>TreeSet</code><->
-	 * <code>Tree</code> relationship.
-	 * 
-	 * @param newTrees the new trees to be set
-	 * 
-	 * @return this
-	 */
-	public TreeSet setTrees(final List<Tree> newTrees) {
-		checkNotNull(newTrees);
-		if (newTrees.equals(getTrees())) {
-			return this;
-		}
-		for (final Tree tree : getTrees()) {
-			if (!newTrees.contains(tree)) {
-				tree.removeTreeSet(this);
-			}
-		}
-		getTreesMutable().clear();
-		getTreesMutable().addAll(newTrees);
-		for (final Tree tree : getTrees()) {
-			tree.addTreeSet(this);
-		}
-		resetPPodVersionInfo();
 		return this;
 	}
 
@@ -167,6 +127,11 @@ public class TreeSet extends UUPPodEntityWXmlId {
 		return Collections.unmodifiableList(trees);
 	}
 
+	@XmlElement(name = "tree")
+	private List<Tree> getTreesMutable() {
+		return trees;
+	}
+
 	@Override
 	public TreeSet resetPPodVersionInfo() {
 		if (getOTUSet() != null) {
@@ -196,9 +161,9 @@ public class TreeSet extends UUPPodEntityWXmlId {
 	}
 
 	/**
-	 * Setter. Assumes that {@code otuSet} is not detached.
+	 * Setter.
 	 * <p>
-	 * Intention package-private and meant to be called from {@code TreeSet}.
+	 * Intentionally package-private and meant to be called from {@code TreeSet}.
 	 * 
 	 * @param otuSet the {@code OTUSet}
 	 * 
@@ -212,6 +177,43 @@ public class TreeSet extends UUPPodEntityWXmlId {
 			resetPPodVersionInfo();
 		}
 		return this;
+	}
+
+	/**
+	 * Scaffolding codes that does two things:
+	 * <ol>
+	 * <li>Removes <code>tree</code> from this <code>TreeSet</code>'s
+	 * constituent <code>Tree</code>s.</li>
+	 * <li>Removes this <code>TreeSet
+	 * </code> from <code> tree</code>'s <code>TreeSet</code>s.
+	 * </li>
+	 * </ol>
+	 * So it takes care of both sides of the <code>TreeSet</code><->
+	 * <code>Tree</code> relationship.
+	 * 
+	 * @param newTrees the new trees to be set
+	 * 
+	 * @return the trees that were removed as a result of this operation
+	 */
+	public List<Tree> setTrees(final List<Tree> newTrees) {
+		checkNotNull(newTrees);
+		if (newTrees.equals(getTrees())) {
+			return Collections.emptyList();
+		}
+		for (final Tree tree : getTrees()) {
+			if (!newTrees.contains(tree)) {
+				tree.setTreeSet(null);
+			}
+		}
+		final List<Tree> removedTrees = newArrayList(getTrees());
+		removedTrees.removeAll(newTrees);
+		getTreesMutable().clear();
+		getTreesMutable().addAll(newTrees);
+		for (final Tree tree : getTrees()) {
+			tree.setTreeSet(this);
+		}
+		resetPPodVersionInfo();
+		return removedTrees;
 	}
 
 	/**

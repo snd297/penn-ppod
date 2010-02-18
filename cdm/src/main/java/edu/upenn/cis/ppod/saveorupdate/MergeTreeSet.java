@@ -73,7 +73,7 @@ public class MergeTreeSet implements IMergeTreeSet {
 					PPodPredicates.equalTo(sourceTree.getPPodId(),
 							IUUPPodEntity.getPPodId)))) {
 				targetTree = treeProvider.get();
-				targetTree.setpPodVersionInfo(newPPodVersionInfo
+				targetTree.setPPodVersionInfo(newPPodVersionInfo
 						.getNewPPodVersionInfo());
 				targetTree.setPPodId();
 			}

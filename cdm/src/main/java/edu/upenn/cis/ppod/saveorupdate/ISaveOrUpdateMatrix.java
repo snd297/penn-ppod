@@ -17,13 +17,10 @@ package edu.upenn.cis.ppod.saveorupdate;
 
 import java.util.Map;
 
-import edu.upenn.cis.ppod.dao.IDAO;
 import edu.upenn.cis.ppod.model.CharacterStateMatrix;
 import edu.upenn.cis.ppod.model.DNACharacter;
-import edu.upenn.cis.ppod.model.INewPPodVersionInfo;
 import edu.upenn.cis.ppod.model.OTU;
 import edu.upenn.cis.ppod.model.OTUSet;
-import edu.upenn.cis.ppod.model.SetPPodVersionInfoVisitor;
 
 /**
  * Merge two matrices.
@@ -33,7 +30,7 @@ import edu.upenn.cis.ppod.model.SetPPodVersionInfoVisitor;
  * 
  * @author Sam Donnelly
  */
-public interface ISaveOrUpdateCharacterStateMatrix {
+public interface ISaveOrUpdateMatrix {
 
 	/**
 	 * Merge {@code sourceMatrix} onto {@code targetMatrix}.
@@ -59,13 +56,4 @@ public interface ISaveOrUpdateCharacterStateMatrix {
 	void saveOrUpdate(CharacterStateMatrix targetMatrix,
 			CharacterStateMatrix sourceMatrix, OTUSet newTargetMatrixOTUSet,
 			Map<OTU, OTU> mergedOTUsBySourceOTU, DNACharacter dnaCharacter);
-
-	/**
-	 * Makes {@link ISaveOrUpdateCharacterStateMatrix}s.
-	 */
-	static interface IFactory {
-		ISaveOrUpdateCharacterStateMatrix create(
-				IMergeAttachment mergeAttachment,
-				IDAO<Object, Long> dao, INewPPodVersionInfo newPPodVersionInfo);
-	}
 }

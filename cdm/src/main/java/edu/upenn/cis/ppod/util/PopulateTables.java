@@ -48,10 +48,10 @@ public class PopulateTables {
 
 			final INewPPodVersionInfo newPPodVersionInfo = pPodCoreFactory
 					.create(NewPPodVersionInfo.class);
-			dnaCharacter.setpPodVersionInfo(newPPodVersionInfo.getNewPPodVersionInfo());
+			dnaCharacter.setPPodVersionInfo(newPPodVersionInfo.getNewPPodVersionInfo());
 
 			for (final CharacterState state : dnaCharacter.getStates().values()) {
-				state.setpPodVersionInfo(newPPodVersionInfo.getNewPPodVersionInfo());
+				state.setPPodVersionInfo(newPPodVersionInfo.getNewPPodVersionInfo());
 			}
 
 			session.save(dnaCharacter);
