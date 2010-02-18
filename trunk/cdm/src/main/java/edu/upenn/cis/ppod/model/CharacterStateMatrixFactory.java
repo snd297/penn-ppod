@@ -15,14 +15,12 @@
  */
 package edu.upenn.cis.ppod.model;
 
-import edu.upenn.cis.ppod.model.CharacterStateMatrix.Type;
-import edu.upenn.cis.ppod.modelinterfaces.ICharacterStateMatrixFactory;
 
 /**
  * @author Sam Donnelly
  */
 public class CharacterStateMatrixFactory implements
-		ICharacterStateMatrixFactory {
+		CharacterStateMatrix.IFactory {
 
 	public CharacterStateMatrix create(final CharacterStateMatrix.Type type) {
 		switch (type) {

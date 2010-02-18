@@ -65,6 +65,23 @@ import edu.upenn.cis.ppod.util.IVisitor;
 @Entity
 @Table(name = CharacterStateMatrix.TABLE)
 public class CharacterStateMatrix extends UUPPodEntityWXmlId {
+	/**
+	 * Produces {@link CharacterStateMatrix}s of a given
+	 * {@link CharacterStateMatrix.Type}. For Guice.
+	 * 
+	 * @author Sam Donnelly
+	 */
+	public static interface IFactory {
+
+		/**
+		 * Make a {@code CharacterStateMatrix} of the give type.
+		 * 
+		 * @param type the type of matrix we want
+		 * 
+		 * @return the new matrix
+		 */
+		CharacterStateMatrix create(final CharacterStateMatrix.Type type);
+	}
 
 	/**
 	 * We use these to figure out what kind of matrix we have after
@@ -267,6 +284,59 @@ public class CharacterStateMatrix extends UUPPodEntityWXmlId {
 	}
 
 	/**
+	 * Made package-private (instead of private) for unit testing.
+	 * 
+	 * @param originalCharacters
+	 * @param newCharacters
+	 * @return
+	 */
+	private List<PPodVersionInfo> determineNewColumnHeaderPPodVersionInfos(
+			final List<? extends Character> newCharacters) {
+
+		final BiMap<Integer, Integer> originalPositionsToNewPositions = HashBiMap
+				.create(getCharacters().size());
+		for (int originalPosition = 0; originalPosition < getCharacters()
+				.size(); originalPosition++) {
+			final Character originalCharacter = getCharacters().get(
+					originalPosition);
+			final Integer newPosition = newCharacters
+					.indexOf(originalCharacter);
+			// Use unique negative values to indicate not present. Unique since
+			// this is a BiMap
+			originalPositionsToNewPositions.put(originalPosition,
+					newPosition == -1 ? -(originalPosition + 1) : newPosition);
+		}
+		final List<PPodVersionInfo> newColumnHeaderPPodVersionInfos = newArrayListWithCapacity(newCharacters
+				.size());
+		for (final Entry<Integer, Integer> originalPositionToNewPosition : originalPositionsToNewPositions
+				.entrySet()) {
+			final Integer originalPosition = originalPositionToNewPosition
+					.getKey();
+			final Integer newPosition = originalPositionToNewPosition
+					.getValue();
+			if (newPosition < 0) {
+				// The character has been removed, nothing to do
+			} else {
+				nullFillAndSet(newColumnHeaderPPodVersionInfos, newPosition,
+						getColumnPPodVersionInfos().get(originalPosition));
+			}
+		}
+
+		final Map<Integer, Integer> newPositionsByOriginalPositions = originalPositionsToNewPositions
+				.inverse();
+		// Now we add in null values for newly added characters
+		for (int newCharacterPosition = 0; newCharacterPosition < newCharacters
+				.size(); newCharacterPosition++) {
+			if (null == newPositionsByOriginalPositions
+					.get(newCharacterPosition)) {
+				nullFillAndSet(newColumnHeaderPPodVersionInfos,
+						newCharacterPosition, null);
+			}
+		}
+		return newColumnHeaderPPodVersionInfos;
+	}
+
+	/**
 	 * Get an unmodifiable view of characterIdx.
 	 * 
 	 * @return the characterIdx
@@ -431,6 +501,12 @@ public class CharacterStateMatrix extends UUPPodEntityWXmlId {
 		return getRows().get(getOTUIdx().get(otu));
 	}
 
+	@XmlElement(name = "row")
+	@SuppressWarnings("unused")
+	private List<CharacterStateRow> getRowMutable() {
+		return rows;
+	}
+
 	/**
 	 * Get an unmodifiable view of this matrix's rows.
 	 * 
@@ -438,12 +514,6 @@ public class CharacterStateMatrix extends UUPPodEntityWXmlId {
 	 */
 	public List<CharacterStateRow> getRows() {
 		return Collections.unmodifiableList(rows);
-	}
-
-	@XmlElement(name = "row")
-	@SuppressWarnings("unused")
-	private List<CharacterStateRow> getRowMutable() {
-		return rows;
 	}
 
 	/**
@@ -562,57 +632,18 @@ public class CharacterStateMatrix extends UUPPodEntityWXmlId {
 		return removedCharacters;
 	}
 
-	/**
-	 * Made package-private (instead of private) for unit testing.
-	 * 
-	 * @param originalCharacters
-	 * @param newCharacters
-	 * @return
-	 */
-	private List<PPodVersionInfo> determineNewColumnHeaderPPodVersionInfos(
-			final List<? extends Character> newCharacters) {
+	public CharacterStateMatrix setColumnPPodVersionInfo(final int pos,
+			final PPodVersionInfo pPodVersionInfo) {
+		getColumnPPodVersionInfosModifiable().set(pos, pPodVersionInfo);
+		return this;
+	}
 
-		final BiMap<Integer, Integer> originalPositionsToNewPositions = HashBiMap
-				.create(getCharacters().size());
-		for (int originalPosition = 0; originalPosition < getCharacters()
-				.size(); originalPosition++) {
-			final Character originalCharacter = getCharacters().get(
-					originalPosition);
-			final Integer newPosition = newCharacters
-					.indexOf(originalCharacter);
-			// Use unique negative values to indicate not present. Unique since
-			// this is a BiMap
-			originalPositionsToNewPositions.put(originalPosition,
-					newPosition == -1 ? -(originalPosition + 1) : newPosition);
+	public CharacterStateMatrix setColumnPPodVersionInfos(
+			final PPodVersionInfo pPodVersionInfo) {
+		for (int pos = 0; pos < getColumnPPodVersionInfos().size(); pos++) {
+			setColumnPPodVersionInfo(pos, pPodVersionInfo);
 		}
-		final List<PPodVersionInfo> newColumnHeaderPPodVersionInfos = newArrayListWithCapacity(newCharacters
-				.size());
-		for (final Entry<Integer, Integer> originalPositionToNewPosition : originalPositionsToNewPositions
-				.entrySet()) {
-			final Integer originalPosition = originalPositionToNewPosition
-					.getKey();
-			final Integer newPosition = originalPositionToNewPosition
-					.getValue();
-			if (newPosition < 0) {
-				// The character has been removed, nothing to do
-			} else {
-				nullFillAndSet(newColumnHeaderPPodVersionInfos, newPosition,
-						getColumnPPodVersionInfos().get(originalPosition));
-			}
-		}
-
-		final Map<Integer, Integer> newPositionsByOriginalPositions = originalPositionsToNewPositions
-				.inverse();
-		// Now we add in null values for newly added characters
-		for (int newCharacterPosition = 0; newCharacterPosition < newCharacters
-				.size(); newCharacterPosition++) {
-			if (null == newPositionsByOriginalPositions
-					.get(newCharacterPosition)) {
-				nullFillAndSet(newColumnHeaderPPodVersionInfos,
-						newCharacterPosition, null);
-			}
-		}
-		return newColumnHeaderPPodVersionInfos;
+		return this;
 	}
 
 	/**
@@ -818,20 +849,6 @@ public class CharacterStateMatrix extends UUPPodEntityWXmlId {
 	 */
 	protected CharacterStateMatrix setType(final CharacterStateMatrix.Type type) {
 		this.type = type;
-		return this;
-	}
-
-	public CharacterStateMatrix setColumnPPodVersionInfo(int pos,
-			PPodVersionInfo pPodVersionInfo) {
-		getColumnPPodVersionInfosModifiable().set(pos, pPodVersionInfo);
-		return this;
-	}
-
-	public CharacterStateMatrix setColumnPPodVersionInfos(
-			final PPodVersionInfo pPodVersionInfo) {
-		for (int pos = 0; pos < getColumnPPodVersionInfos().size(); pos++) {
-			setColumnPPodVersionInfo(pos, pPodVersionInfo);
-		}
 		return this;
 	}
 
