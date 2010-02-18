@@ -15,10 +15,11 @@
  */
 package edu.upenn.cis.ppod.saveorupdate;
 
+import static com.google.common.base.Predicates.compose;
+import static com.google.common.base.Predicates.equalTo;
 import static com.google.common.collect.Maps.newHashMap;
 import static com.google.common.collect.Sets.newHashSet;
 import static edu.upenn.cis.ppod.util.PPodIterables.findIf;
-import static edu.upenn.cis.ppod.util.PPodPredicates.equalTo;
 
 import java.util.Map;
 import java.util.Set;
@@ -61,8 +62,8 @@ public class MergeOTUSet implements IMergeOTUSet {
 		final Map<OTU, OTU> source2TargetOTUs = newHashMap();
 		for (final OTU sourceOTU : sourceOTUSet.getOTUs()) {
 			OTU targetOTU;
-			if (null == (targetOTU = findIf(targetOTUSet.getOTUs(), equalTo(
-					sourceOTU.getPPodId(), IUUPPodEntity.getPPodId)))) {
+			if (null == (targetOTU = findIf(targetOTUSet.getOTUs(), compose(
+					equalTo(sourceOTU.getPPodId()), IUUPPodEntity.getPPodId)))) {
 				targetOTU = otuProvider.get();
 				targetOTU.setPPodVersionInfo(newPPodVersionInfo
 						.getNewPPodVersionInfo());

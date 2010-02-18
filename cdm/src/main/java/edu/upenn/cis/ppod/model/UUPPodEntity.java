@@ -20,8 +20,6 @@ import java.util.UUID;
 import javax.annotation.Nullable;
 import javax.persistence.Column;
 import javax.persistence.MappedSuperclass;
-import javax.xml.bind.annotation.XmlAccessType;
-import javax.xml.bind.annotation.XmlAccessorType;
 import javax.xml.bind.annotation.XmlAttribute;
 
 import edu.upenn.cis.ppod.modelinterfaces.IUUPPodEntity;

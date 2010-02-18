@@ -16,6 +16,8 @@
 package edu.upenn.cis.ppod.saveorupdate;
 
 import static com.google.common.base.Preconditions.checkNotNull;
+import static com.google.common.base.Predicates.compose;
+import static com.google.common.base.Predicates.equalTo;
 import static com.google.common.collect.Lists.newArrayList;
 import static edu.upenn.cis.ppod.util.PPodIterables.findIf;
 
@@ -33,7 +35,6 @@ import edu.upenn.cis.ppod.model.Tree;
 import edu.upenn.cis.ppod.model.TreeSet;
 import edu.upenn.cis.ppod.modelinterfaces.INewPPodVersionInfo;
 import edu.upenn.cis.ppod.modelinterfaces.IUUPPodEntity;
-import edu.upenn.cis.ppod.util.PPodPredicates;
 
 /**
  * @author Sam Donnelly
@@ -69,9 +70,8 @@ public class MergeTreeSet implements IMergeTreeSet {
 
 		for (final Tree sourceTree : sourceTreeSet.getTrees()) {
 			Tree targetTree;
-			if (null == (targetTree = findIf(targetTreeSet.getTrees(),
-					PPodPredicates.equalTo(sourceTree.getPPodId(),
-							IUUPPodEntity.getPPodId)))) {
+			if (null == (targetTree = findIf(targetTreeSet.getTrees(), compose(
+					equalTo(sourceTree.getPPodId()), IUUPPodEntity.getPPodId)))) {
 				targetTree = treeProvider.get();
 				targetTree.setPPodVersionInfo(newPPodVersionInfo
 						.getNewPPodVersionInfo());

@@ -17,12 +17,10 @@ package edu.upenn.cis.ppod.model;
 
 import static com.google.common.base.Preconditions.checkNotNull;
 import static com.google.common.collect.Sets.newHashSet;
-import static edu.upenn.cis.ppod.util.PPodIterables.findIf;
 
 import java.util.Collections;
 import java.util.Set;
 
-import javax.annotation.Nullable;
 import javax.persistence.Column;
 import javax.persistence.Entity;
 import javax.persistence.OneToMany;
@@ -37,11 +35,9 @@ import javax.xml.bind.annotation.XmlRootElement;
 
 import org.hibernate.annotations.Cascade;
 
-import edu.upenn.cis.ppod.modelinterfaces.IUUPPodEntity;
 import edu.upenn.cis.ppod.services.ppodentity.IOTUSetCentricEntities;
 import edu.upenn.cis.ppod.util.IVisitor;
 import edu.upenn.cis.ppod.util.PPodEntitiesUtil;
-import edu.upenn.cis.ppod.util.PPodPredicates;
 
 /**
  * A collection of work - inspired by a Mesquite project - sets of OTU sets and,
@@ -140,20 +136,6 @@ public class Study extends UUPPodEntity implements IOTUSetCentricEntities {
 	@XmlAttribute
 	public String getLabel() {
 		return label;
-	}
-
-	/**
-	 * Get the OTU with the given pPOD ID. Returns {@code null} if there is not
-	 * such {@code OTUSet}.
-	 * 
-	 * @param pPodId the pPOD ID.
-	 * 
-	 * @return the OTU with the given pPOD ID. Returns {@code null} if there is
-	 *         not such {@code OTUSet}
-	 */
-	@Nullable
-	public OTUSet getOTUSetByPPodId(final String pPodId) {
-		return findIf(getOTUSets(), PPodPredicates.equalTo(pPodId, IUUPPodEntity.getPPodId));
 	}
 
 	/**

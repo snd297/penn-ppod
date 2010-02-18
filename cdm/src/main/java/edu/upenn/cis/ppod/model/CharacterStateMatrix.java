@@ -132,9 +132,6 @@ public class CharacterStateMatrix extends UUPPodEntityWXmlId {
 			+ "_POSITION")
 	final List<PPodVersionInfo> columnPPodVersionInfos = newArrayList();
 
-	@Transient
-	private final List<Boolean> isInNeedOfColumnPPodVersionInfos = newArrayList();
-
 	@XmlElement(name = "columnPPodVersion")
 	@Transient
 	private final List<Long> columnPPodVersions = newArrayList();
@@ -627,12 +624,27 @@ public class CharacterStateMatrix extends UUPPodEntityWXmlId {
 		return removedCharacters;
 	}
 
+	/**
+	 * Set a particular column to a version
+	 * 
+	 * @param pos position of the column
+	 * @param pPodVersionInfo the version
+	 * 
+	 * @return this
+	 */
 	public CharacterStateMatrix setColumnPPodVersionInfo(final int pos,
 			final PPodVersionInfo pPodVersionInfo) {
 		getColumnPPodVersionInfosModifiable().set(pos, pPodVersionInfo);
 		return this;
 	}
 
+	/**
+	 * Set all of the columns' pPOD version infos.
+	 * 
+	 * @param pPodVersionInfo version
+	 * 
+	 * @return this
+	 */
 	public CharacterStateMatrix setColumnPPodVersionInfos(
 			final PPodVersionInfo pPodVersionInfo) {
 		for (int pos = 0; pos < getColumnPPodVersionInfos().size(); pos++) {
