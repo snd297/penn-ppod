@@ -16,10 +16,6 @@
 package edu.upenn.cis.ppod.model;
 
 import static com.google.common.base.Preconditions.checkNotNull;
-import static com.google.common.collect.Sets.newHashSet;
-
-import java.util.Collections;
-import java.util.Set;
 
 import javax.annotation.Nullable;
 import javax.persistence.Column;

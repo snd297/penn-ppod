@@ -15,6 +15,8 @@
  */
 package edu.upenn.cis.ppod.saveorupdate.hibernate;
 
+import static com.google.common.base.Predicates.compose;
+import static com.google.common.base.Predicates.equalTo;
 import static edu.upenn.cis.ppod.util.PPodIterables.findIf;
 
 import java.util.List;
@@ -27,7 +29,6 @@ import com.google.inject.Provider;
 import com.google.inject.assistedinject.Assisted;
 
 import edu.upenn.cis.ppod.dao.IDNACharacterDAO;
-import edu.upenn.cis.ppod.dao.IOTUDAO;
 import edu.upenn.cis.ppod.dao.IOTUSetDAO;
 import edu.upenn.cis.ppod.dao.IStudyDAO;
 import edu.upenn.cis.ppod.dao.hibernate.DNACharacterDAOHibernate;
@@ -35,7 +36,6 @@ import edu.upenn.cis.ppod.dao.hibernate.IAttachmentNamespaceDAOHibernateFactory;
 import edu.upenn.cis.ppod.dao.hibernate.IAttachmentTypeDAOHibernateFactory;
 import edu.upenn.cis.ppod.dao.hibernate.ObjectWLongIdDAOHibernate;
 import edu.upenn.cis.ppod.dao.hibernate.StudyDAOHibernate;
-import edu.upenn.cis.ppod.dao.hibernate.HibernateDAOFactory.OTUDAOHibernate;
 import edu.upenn.cis.ppod.dao.hibernate.HibernateDAOFactory.OTUSetDAOHibernate;
 import edu.upenn.cis.ppod.model.CharacterStateMatrix;
 import edu.upenn.cis.ppod.model.DNACharacter;
@@ -54,16 +54,16 @@ import edu.upenn.cis.ppod.saveorupdate.IMergeTreeSetFactory;
 import edu.upenn.cis.ppod.saveorupdate.ISaveOrUpdateMatrix;
 import edu.upenn.cis.ppod.saveorupdate.ISaveOrUpdateMatrixFactory;
 import edu.upenn.cis.ppod.saveorupdate.ISaveOrUpdateStudy;
-import edu.upenn.cis.ppod.util.PPodPredicates;
 
 /**
+ * Save a new study or update an existing one.
+ * 
  * @author Sam Donnelly
  */
 public class SaveOrUpdateStudyHibernate implements ISaveOrUpdateStudy {
 
 	private final IStudyDAO studyDAO;
 	private final IOTUSetDAO otuSetDAO;
-	private final IOTUDAO otuDAO;
 	private final IDNACharacterDAO dnaCharacterDAO;
 
 	private final Provider<Study> studyProvider;
@@ -81,7 +81,6 @@ public class SaveOrUpdateStudyHibernate implements ISaveOrUpdateStudy {
 	SaveOrUpdateStudyHibernate(
 			final StudyDAOHibernate studyDAO,
 			final OTUSetDAOHibernate otuSetDAO,
-			final OTUDAOHibernate otuDAO,
 			final DNACharacterDAOHibernate dnaCharacterDAO,
 			final ObjectWLongIdDAOHibernate dao,
 			final Provider<Study> studyProvider,
@@ -99,7 +98,6 @@ public class SaveOrUpdateStudyHibernate implements ISaveOrUpdateStudy {
 
 		this.studyDAO = (IStudyDAO) studyDAO.setSession(session);
 		this.otuSetDAO = (IOTUSetDAO) otuSetDAO.setSession(session);
-		this.otuDAO = (IOTUDAO) otuDAO.setSession(session);
 		this.dnaCharacterDAO = (IDNACharacterDAO) dnaCharacterDAO
 				.setSession(session);
 		this.studyProvider = studyProvider;
@@ -129,11 +127,11 @@ public class SaveOrUpdateStudyHibernate implements ISaveOrUpdateStudy {
 
 		// Delete otu sets in persisted study that are not in the incoming
 		// study.
-		for (final OTUSet persistedOTUSet : dbStudy.getOTUSets()) {
-			if (null == incomingStudy.getOTUSetByPPodId(persistedOTUSet
-					.getPPodId())) {
-				dbStudy.removeOTUSet(persistedOTUSet);
-				otuSetDAO.delete(persistedOTUSet);
+		for (final OTUSet dbOTUSet : dbStudy.getOTUSets()) {
+			if (null == findIf(incomingStudy.getOTUSets(), compose(
+					equalTo(dbOTUSet.getPPodId()), IUUPPodEntity.getPPodId))) {
+				dbStudy.removeOTUSet(dbOTUSet);
+				otuSetDAO.delete(dbOTUSet);
 			}
 		}
 
@@ -152,8 +150,9 @@ public class SaveOrUpdateStudyHibernate implements ISaveOrUpdateStudy {
 		// Save or update incoming otu sets
 		for (final OTUSet incomingOTUSet : incomingStudy.getOTUSets()) {
 			OTUSet dbOTUSet;
-			if (null == (dbOTUSet = dbStudy.getOTUSetByPPodId(incomingOTUSet
-					.getPPodId()))) {
+			if (null == (dbOTUSet = findIf(dbStudy.getOTUSets(), compose(
+					equalTo(incomingOTUSet.getPPodId()),
+					IUUPPodEntity.getPPodId)))) {
 				dbOTUSet = dbStudy.addOTUSet(otuSetProvider.get());
 				dbOTUSet.setPPodVersionInfo(newPPodVersionInfo
 						.getNewPPodVersionInfo());
@@ -165,9 +164,9 @@ public class SaveOrUpdateStudyHibernate implements ISaveOrUpdateStudy {
 			for (final CharacterStateMatrix incomingMatrix : incomingOTUSet
 					.getMatrices()) {
 				CharacterStateMatrix dbMatrix;
-				if (null == (dbMatrix = findIf(dbOTUSet.getMatrices(),
-						PPodPredicates.equalTo(incomingMatrix.getPPodId(),
-								IUUPPodEntity.getPPodId)))) {
+				if (null == (dbMatrix = findIf(dbOTUSet.getMatrices(), compose(
+						equalTo(incomingMatrix.getPPodId()),
+						IUUPPodEntity.getPPodId)))) {
 					dbMatrix = matrixFactory.create(incomingMatrix.getType());
 					dbMatrix.setPPodVersionInfo(newPPodVersionInfo
 							.getNewPPodVersionInfo());
@@ -178,13 +177,9 @@ public class SaveOrUpdateStudyHibernate implements ISaveOrUpdateStudy {
 
 				// saveOrUpdateMatrix needs for dbOTUSet to have an id so that
 				// we can give it to the matrix. dbOTUSet needs for dbStudy to
-				// have an id. Note that cascade from the matrix takes care of
-				// the study too.
+				// have an id. Note that cascade from the study takes care of
+				// the OTUSet and Matrix too
 				studyDAO.saveOrUpdate(dbStudy);
-				otuSetDAO.saveOrUpdate(dbOTUSet);
-				for (final OTU dbOTU : dbOTUSet.getOTUs()) {
-					otuDAO.saveOrUpdate(dbOTU);
-				}
 				saveOrUpdateMatrix.saveOrUpdate(dbMatrix, incomingMatrix,
 						dbOTUSet, dbOTUsByIncomingOTU, dbDNACharacter);
 
@@ -192,14 +187,13 @@ public class SaveOrUpdateStudyHibernate implements ISaveOrUpdateStudy {
 			for (final TreeSet incomingTreeSet : incomingOTUSet.getTreeSets()) {
 				TreeSet dbTreeSet;
 				if (null == (dbTreeSet = findIf(dbOTUSet.getTreeSets(),
-						PPodPredicates.equalTo(incomingTreeSet.getPPodId(),
+						compose(equalTo(incomingTreeSet.getPPodId()),
 								IUUPPodEntity.getPPodId)))) {
 					dbTreeSet = treeSetProvider.get();
 					dbTreeSet.setPPodVersionInfo(newPPodVersionInfo
 							.getNewPPodVersionInfo());
 					dbTreeSet.setPPodId();
 				}
-
 				mergeTreeSet.merge(dbTreeSet, incomingTreeSet, dbOTUSet,
 						dbOTUsByIncomingOTU);
 			}

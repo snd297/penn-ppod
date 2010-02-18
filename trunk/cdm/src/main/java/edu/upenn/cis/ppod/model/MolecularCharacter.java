@@ -15,6 +15,7 @@
  */
 package edu.upenn.cis.ppod.model;
 
+import javax.annotation.Nullable;
 import javax.persistence.Column;
 import javax.persistence.MappedSuperclass;
 
@@ -42,6 +43,7 @@ public class MolecularCharacter extends Character {
 	 */
 	@Column(name = "MOLECULAR_CHARACTER_LABEL", unique = true, nullable = false)
 	@SuppressWarnings("unused")
+	@Nullable
 	private String molecularCharacterLabel;
 
 	protected MolecularCharacter setMolecularCharacterLabel(

@@ -100,35 +100,6 @@ public class PPodVersionInfoInterceptor extends EmptyInterceptor {
 		tempSession.flush();
 	}
 
-	@Override
-	@SuppressWarnings("unchecked")
-	public void preFlush(final Iterator entities) {
-		while (entities.hasNext()) {
-			final Object entity = entities.next();
-			if (entity instanceof IPPodVersioned) {
-				if (((IPPodVersioned) entity).isInNeedOfNewPPodVersionInfo()) {
-					initializePPodVersionInfo();
-					((IPPodVersioned) entity)
-							.setPPodVersionInfo(pPodVersionInfosBySession
-									.get(sessionFactory.getCurrentSession()));
-				}
-				if (entity instanceof CharacterStateMatrix) {
-					final List<PPodVersionInfo> columnPPodVersionInfos = ((CharacterStateMatrix) entity)
-							.getColumnPPodVersionInfos();
-					for (int j = 0; j < columnPPodVersionInfos.size(); j++) {
-						if (columnPPodVersionInfos.get(j) == null) {
-							((CharacterStateMatrix) entity)
-									.setColumnPPodVersionInfo(
-											j,
-											pPodVersionInfosBySession
-													.get(sessionFactory
-															.getCurrentSession()));
-						}
-					}
-				}
-			}
-		}
-	}
 
 	/**
 	 * Equivalent to {@code setPPodVersionInfoIfAppropriate(entity,

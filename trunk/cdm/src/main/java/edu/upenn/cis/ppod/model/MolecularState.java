@@ -15,6 +15,9 @@
  */
 package edu.upenn.cis.ppod.model;
 
+import static com.google.common.base.Preconditions.checkNotNull;
+
+import javax.annotation.Nullable;
 import javax.persistence.Column;
 import javax.persistence.MappedSuperclass;
 import javax.xml.bind.annotation.XmlAccessType;
@@ -41,6 +44,7 @@ public abstract class MolecularState extends CharacterState {
 	 */
 	@Column(name = "MOLECULAR_STATE_LABEL", unique = true)
 	@SuppressWarnings("unused")
+	@Nullable
 	private String molecularStateLabel;
 
 	/**
@@ -69,6 +73,7 @@ public abstract class MolecularState extends CharacterState {
 	 */
 	protected MolecularState setMolecularStateLabel(
 			final String molecularStateLabel) {
+		checkNotNull(molecularStateLabel);
 		super.setLabel(molecularStateLabel);
 		this.molecularStateLabel = molecularStateLabel;
 		return this;

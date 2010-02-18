@@ -16,6 +16,8 @@
 package edu.upenn.cis.ppod.saveorupdate;
 
 import static com.google.common.base.Preconditions.checkNotNull;
+import static com.google.common.base.Predicates.compose;
+import static com.google.common.base.Predicates.equalTo;
 import static com.google.common.collect.Iterables.get;
 import static com.google.common.collect.Iterables.getOnlyElement;
 import static com.google.common.collect.Lists.newArrayList;
@@ -53,8 +55,7 @@ import edu.upenn.cis.ppod.util.PPodPredicates;
 /**
  * @author Sam Donnelly
  */
-public class SaveOrUpdateCharacterStateMatrix implements
-		ISaveOrUpdateMatrix {
+public class SaveOrUpdateCharacterStateMatrix implements ISaveOrUpdateMatrix {
 
 	private final Provider<Character> characterProvider;
 	private final Provider<CharacterStateRow> rowProvider;
@@ -133,8 +134,8 @@ public class SaveOrUpdateCharacterStateMatrix implements
 			if (sourceMatrix.getType() == CharacterStateMatrix.Type.DNA) {
 				newTargetCharacter = dnaCharacter;
 			} else if (null == (newTargetCharacter = findIf(targetMatrix
-					.getCharacters(), PPodPredicates.equalTo(sourceCharacter
-					.getPPodId(), IUUPPodEntity.getPPodId)))) {
+					.getCharacters(), compose(equalTo(sourceCharacter
+					.getPPodId()), IUUPPodEntity.getPPodId)))) {
 				newTargetCharacter = characterProvider.get();
 				newTargetCharacter.setPPodVersionInfo(newPPodVersionInfo
 						.getNewPPodVersionInfo());
@@ -178,9 +179,9 @@ public class SaveOrUpdateCharacterStateMatrix implements
 			for (final Attachment sourceAttachment : sourceCharacter
 					.getAttachments()) {
 				final Set<Attachment> targetAttachments = findEach(
-						newTargetCharacter.getAttachments(), PPodPredicates
-								.equalTo(sourceAttachment.getStringValue(),
-										Attachment.getStringValue));
+						newTargetCharacter.getAttachments(), compose(
+								equalTo(sourceAttachment.getStringValue()),
+								Attachment.getStringValue));
 
 				Attachment targetAttachment = getOnlyElement(targetAttachments,
 						null);
