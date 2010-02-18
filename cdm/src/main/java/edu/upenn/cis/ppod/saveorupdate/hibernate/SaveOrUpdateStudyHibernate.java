@@ -43,7 +43,7 @@ import edu.upenn.cis.ppod.model.OTU;
 import edu.upenn.cis.ppod.model.OTUSet;
 import edu.upenn.cis.ppod.model.Study;
 import edu.upenn.cis.ppod.model.TreeSet;
-import edu.upenn.cis.ppod.modelinterfaces.ICharacterStateMatrixFactory;
+import edu.upenn.cis.ppod.model.CharacterStateMatrix.IFactory;
 import edu.upenn.cis.ppod.modelinterfaces.INewPPodVersionInfo;
 import edu.upenn.cis.ppod.modelinterfaces.IUUPPodEntity;
 import edu.upenn.cis.ppod.saveorupdate.IMergeAttachment;
@@ -70,7 +70,7 @@ public class SaveOrUpdateStudyHibernate implements ISaveOrUpdateStudy {
 	private final Provider<OTUSet> otuSetProvider;
 	private final Provider<TreeSet> treeSetProvider;
 
-	private final ICharacterStateMatrixFactory matrixFactory;
+	private final CharacterStateMatrix.IFactory matrixFactory;
 
 	private final IMergeOTUSet mergeOTUSet;
 	private final ISaveOrUpdateMatrix saveOrUpdateMatrix;
@@ -87,7 +87,7 @@ public class SaveOrUpdateStudyHibernate implements ISaveOrUpdateStudy {
 			final Provider<Study> studyProvider,
 			final Provider<OTUSet> otuSetProvider,
 			final Provider<TreeSet> treeSetProvider,
-			final ICharacterStateMatrixFactory matrixFactory,
+			final IFactory matrixFactory,
 			final IMergeOTUSetFactory saveOrUpdateOTUSetFactory,
 			final IMergeTreeSetFactory mergeTreeSetFactory,
 			final ISaveOrUpdateMatrixFactory mergeMatrixFactory,

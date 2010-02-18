@@ -38,7 +38,6 @@ import edu.upenn.cis.ppod.model.ModelAssert;
 import edu.upenn.cis.ppod.model.OTU;
 import edu.upenn.cis.ppod.model.OTUSet;
 import edu.upenn.cis.ppod.model.PPodVersionInfo;
-import edu.upenn.cis.ppod.modelinterfaces.ICharacterStateMatrixFactory;
 import edu.upenn.cis.ppod.modelinterfaces.INewPPodVersionInfo;
 import edu.upenn.cis.ppod.util.MatrixProvider;
 
@@ -54,7 +53,7 @@ public class SaveOrUpdateCharacterStateMatrixTest {
 	private ISaveOrUpdateMatrixFactory mergeMatrixFactory;
 
 	@Inject
-	private ICharacterStateMatrixFactory characterStateMatrixFactory;
+	private CharacterStateMatrix.IFactory factory;
 
 	@Inject
 	private Provider<OTUSet> otuSetProvider;
@@ -99,7 +98,7 @@ public class SaveOrUpdateCharacterStateMatrixTest {
 			fakeOTUsByIncomingOTU.put(sourceOTU, sourceOTU);
 		}
 
-		final CharacterStateMatrix targetMatrix = characterStateMatrixFactory
+		final CharacterStateMatrix targetMatrix = factory
 				.create(sourceMatrix.getType());
 		saveOrUpdateMatrix.saveOrUpdate(targetMatrix, sourceMatrix,
 				fakeDbOTUSet, fakeOTUsByIncomingOTU, dnaCharacter);
@@ -118,7 +117,7 @@ public class SaveOrUpdateCharacterStateMatrixTest {
 			fakeOTUsByIncomingOTU.put(sourceOTU, sourceOTU);
 		}
 
-		final CharacterStateMatrix targetMatrix = characterStateMatrixFactory
+		final CharacterStateMatrix targetMatrix = factory
 				.create(sourceMatrix.getType());
 
 		saveOrUpdateMatrix.saveOrUpdate(targetMatrix, sourceMatrix,
@@ -152,7 +151,7 @@ public class SaveOrUpdateCharacterStateMatrixTest {
 			fakeOTUsByIncomingOTU.put(sourceOTU, sourceOTU);
 		}
 
-		final CharacterStateMatrix targetMatrix = characterStateMatrixFactory
+		final CharacterStateMatrix targetMatrix = factory
 				.create(sourceMatrix.getType());
 
 		saveOrUpdateMatrix.saveOrUpdate(targetMatrix, sourceMatrix,
