@@ -126,12 +126,7 @@ public class CharacterStateMatrix extends UUPPodEntityWXmlId {
 			+ "_POSITION";
 
 	/** The pPod versions of the columns. */
-	// @Transient
-	@ManyToMany(fetch = FetchType.EAGER)
-	// @AccessType("property")
-	// EAGER so we can manipulate it in PPodVersionInfoInterceptor: see the
-	// javadoc for Interceptor: "a callback [may not] cause a collection or
-	// proxy to be lazily initialized)."
+	@ManyToMany
 	@JoinTable(inverseJoinColumns = { @JoinColumn(name = PPodVersionInfo.ID_COLUMN) })
 	@org.hibernate.annotations.IndexColumn(name = PPodVersionInfo.TABLE
 			+ "_POSITION")
