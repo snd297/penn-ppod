@@ -51,7 +51,6 @@ public class PPodObjectFactory extends GuiceObjectFactory {
 				FactoryProvider.newFactory(ISaveOrUpdateMatrixFactory.class,
 						SaveOrUpdateCharacterStateMatrix.class));
 		bind(TestMergeAttachment.class);
-
 		bind(IPPodEntitiesResource.class).to(
 				PPodEntitiesResourceHibernate.class);
 // final org.hibernate.classic.Session session = HibernateUtil

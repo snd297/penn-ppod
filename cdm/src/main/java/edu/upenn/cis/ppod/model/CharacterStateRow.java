@@ -100,7 +100,7 @@ public class CharacterStateRow extends PPodEntity {
 	 * We're not including any other cascades here - {@code DELETE_ORPHAN} is
 	 * tempting - because there are so many cells and we are concerned about
 	 * performance, though the only evidence so far seen, or looked for, is for
-	 * {@code Cascade.SAVE_UPDATE}
+	 * {@code Cascade.SAVE_UPDATE}.
 	 */
 	@OneToMany(mappedBy = "row")
 	@OrderBy("position")
