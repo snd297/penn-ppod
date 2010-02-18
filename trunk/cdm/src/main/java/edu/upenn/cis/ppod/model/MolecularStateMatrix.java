@@ -17,7 +17,9 @@ package edu.upenn.cis.ppod.model;
 
 import static com.google.common.base.Preconditions.checkArgument;
 import static com.google.common.base.Preconditions.checkNotNull;
+import static com.google.common.collect.Lists.newArrayList;
 
+import java.util.Collections;
 import java.util.List;
 import java.util.Map;
 
@@ -33,16 +35,19 @@ public abstract class MolecularStateMatrix extends CharacterStateMatrix {
 	 * condition does not hold for
 	 * {@link CharacterStateMatrix#setCharacters(List)}.
 	 * <p>
-	 * All of the characters must be {@link IDNACharacter}s. This
-	 * condition does not hold for
-	 * {@link CharacterStateMatrix#setCharacters(List)}.
+	 * All of the characters must be {@link IDNACharacter}s. This condition does
+	 * not hold for {@link CharacterStateMatrix#setCharacters(List)}.
 	 * <p>
 	 * Assumes that none of {@code newMolecularCharacters} are detached.
+	 * <p>
+	 * The return value will is only included for consistency with the
+	 * overridden method.
 	 * 
 	 * @param newMolecularCharacters the new {@code MolecularCharacter}s to be
 	 *            added
 	 * 
-	 * @return this
+	 * @return characters that were removed as a result of this operation -
+	 *         these will all point to the same {@code MolecuarCharacter}
 	 * 
 	 * @throws IllegalArgumentException if all of {@code newMolecularCharacters}
 	 *             are not {@code .equals} to each other
@@ -50,7 +55,7 @@ public abstract class MolecularStateMatrix extends CharacterStateMatrix {
 	 *             are not {@code IDNACharacter}s
 	 */
 	@Override
-	public MolecularStateMatrix setCharacters(
+	public List<Character> setCharacters(
 			final List<? extends Character> newMolecularCharacters) {
 
 		checkNotNull(newMolecularCharacters);
@@ -61,18 +66,24 @@ public abstract class MolecularStateMatrix extends CharacterStateMatrix {
 					"all characters must be .equals() in a molecular matrix");
 			checkArgument(newMolecularCharacter instanceof IDNACharacter,
 					"all newMolecularCharacters must be IDNACharacter's, found a "
-							+ newMolecularCharacter.getClass()
-									.getName());
+							+ newMolecularCharacter.getClass().getName());
 		}
 
 		if (getCharacters().size() == newMolecularCharacters.size()) {
 			// They are the same, nothing to do
-			return this;
+			return Collections.emptyList();
 		}
 
 		if (getCharacters().size() != getColumnPPodVersionInfos().size()) {
 			throw new AssertionError(
 					"programming error: getCharacters() and getColumnPPodVersionInfos() should always be the same size");
+		}
+
+		final List<Character> removedCharacters = newArrayList();
+
+		for (int i = 0; i < getCharacters().size()
+				- newMolecularCharacters.size(); i++) {
+			removedCharacters.add(getCharacters().get(0));
 		}
 
 		while (getCharacters().size() < newMolecularCharacters.size()) {
@@ -92,7 +103,7 @@ public abstract class MolecularStateMatrix extends CharacterStateMatrix {
 		// the matrix has changed
 		resetPPodVersionInfo();
 
-		return this;
+		return removedCharacters;
 	}
 
 	@Override

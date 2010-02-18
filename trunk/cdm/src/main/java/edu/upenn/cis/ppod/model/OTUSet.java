@@ -30,8 +30,6 @@ import javax.persistence.Column;
 import javax.persistence.Entity;
 import javax.persistence.FetchType;
 import javax.persistence.JoinColumn;
-import javax.persistence.JoinTable;
-import javax.persistence.ManyToMany;
 import javax.persistence.ManyToOne;
 import javax.persistence.OneToMany;
 import javax.persistence.Table;
@@ -45,8 +43,9 @@ import edu.upenn.cis.ppod.util.IVisitor;
 import edu.upenn.cis.ppod.util.PPodPredicates;
 
 /**
- * A set of {@link OTU}s. The relationship between {@code OTU} and {@code
- * OTUSet} is many-to-many.
+ * A set of {@link OTU}s.
+ *<p>
+ * The relationship between {@code OTU} and {@code OTUSet} is one-to-many.
  * 
  * @author Shirley Cohen
  * @author Sam Donnelly
@@ -83,18 +82,21 @@ public class OTUSet extends UUPPodEntityWXmlId {
 	private String label;
 
 	/** The set of {@code OTU}s that this {@code OTUSet} contains. */
-	@ManyToMany
-	@JoinTable(joinColumns = { @JoinColumn(name = ID_COLUMN) }, inverseJoinColumns = { @JoinColumn(name = OTU.ID_COLUMN) })
+	@OneToMany(mappedBy = "otuSet")
+	@Cascade( { org.hibernate.annotations.CascadeType.SAVE_UPDATE,
+			org.hibernate.annotations.CascadeType.DELETE_ORPHAN })
 	private final Set<OTU> otus = newHashSet();
 
 	/** The matrices which reference this OTU set. */
 	@OneToMany(mappedBy = "otuSet")
-	@Cascade(org.hibernate.annotations.CascadeType.SAVE_UPDATE)
+	@Cascade( { org.hibernate.annotations.CascadeType.SAVE_UPDATE,
+			org.hibernate.annotations.CascadeType.DELETE_ORPHAN })
 	private final Set<CharacterStateMatrix> matrices = newHashSet();
 
 	/** The tree sets that reference this OTU set. */
 	@OneToMany(mappedBy = "otuSet")
-	@Cascade(org.hibernate.annotations.CascadeType.SAVE_UPDATE)
+	@Cascade( { org.hibernate.annotations.CascadeType.SAVE_UPDATE,
+			org.hibernate.annotations.CascadeType.DELETE_ORPHAN })
 	private final Set<TreeSet> treeSets = newHashSet();
 
 	/** Free-form description. */
@@ -164,8 +166,8 @@ public class OTUSet extends UUPPodEntityWXmlId {
 	 */
 	private OTU addOTU(final OTU otu) {
 		checkNotNull(otu);
-		final OTU dupNameOTU = findIf(getOTUs(), PPodPredicates.equalTo(otu.getLabel(),
-				OTU.getLabel));
+		final OTU dupNameOTU = findIf(getOTUs(), PPodPredicates.equalTo(otu
+				.getLabel(), OTU.getLabel));
 		if (dupNameOTU == null || otu.equals(dupNameOTU)) {
 
 		} else {
@@ -173,7 +175,7 @@ public class OTUSet extends UUPPodEntityWXmlId {
 					+ "' already has an OTU labeled '" + otu.getLabel() + "'");
 		}
 		if (otus.add(otu)) {
-			otu.addOTUSet(this);
+			otu.setOTUSet(this);
 			resetPPodVersionInfo();
 		}
 		return otu;
@@ -314,12 +316,14 @@ public class OTUSet extends UUPPodEntityWXmlId {
 	}
 
 	/**
+	 * Set this {@code OTUSet}'s {@code OTU}s.
+	 * <p>
 	 * If any of {@link #getOTUs()} are not in {@code newOTUs} then this {@code
 	 * OTUSet} is removed from those {@code getOTUs()}. That is, if this method
 	 * is effectively <em>removing</em> any of this sets's original OTUs, then
 	 * the {@code OTU->OTUSet} relationship is severed.
 	 * 
-	 * @param newOTUs
+	 * @param newOTUs the otus to assign to this OTU set
 	 * 
 	 * @return any {@code OTU}s that were removed as a result of this operation
 	 */
@@ -338,7 +342,7 @@ public class OTUSet extends UUPPodEntityWXmlId {
 		}
 
 		for (final OTU removedOTU : removedOTUs) {
-			removedOTU.removeOTUSet(this);
+			removedOTU.setOTUSet(null);
 		}
 
 		resetPPodVersionInfo();

@@ -317,7 +317,7 @@ public abstract class PPodEntity extends PersistentObject implements
 	 * 
 	 * @return this
 	 */
-	public PPodEntity setpPodVersionInfo(final PPodVersionInfo pPodVersionInfo) {
+	public PPodEntity setPPodVersionInfo(final PPodVersionInfo pPodVersionInfo) {
 		// checkNotNull(pPodVersionInfo);
 		// unsetInNeedOfNewPPodVersionInfo();
 		this.pPodVersionInfo = pPodVersionInfo;

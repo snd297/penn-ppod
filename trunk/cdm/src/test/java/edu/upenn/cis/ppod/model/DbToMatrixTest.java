@@ -16,7 +16,6 @@
 package edu.upenn.cis.ppod.model;
 
 import static com.google.common.collect.Lists.newArrayList;
-import static org.testng.Assert.assertEquals;
 
 import java.util.List;
 
@@ -235,16 +234,16 @@ public class DbToMatrixTest extends DbTestBase {
 			Assert.assertEquals(otu.getLabel(), otuElement
 					.attributeValue(OTU.LABEL_COLUMN));
 
-			for (final OTUSet otuSet : otu.getOTUSets()) {
-				final Element otuSetElement = (Element) pPodDocument
-						.selectSingleNode("/dataset/"
-								+ OTUSet.TABLE.toLowerCase() + "[@"
-								+ OTUSet.ID_COLUMN + "='" + otuSet.getId()
-								+ "']");
-				assertEquals(otuSet.getLabel(), otuSetElement
-						.attributeValue(OTUSet.LABEL_COLUMN));
-				assertEquals(m.getOTUSet(), otuSet);
-			}
+//			for (final OTUSet otuSet : otu.getOTUSets()) {
+//				final Element otuSetElement = (Element) pPodDocument
+//						.selectSingleNode("/dataset/"
+//								+ OTUSet.TABLE.toLowerCase() + "[@"
+//								+ OTUSet.ID_COLUMN + "='" + otuSet.getId()
+//								+ "']");
+//				assertEquals(otuSet.getLabel(), otuSetElement
+//						.attributeValue(OTUSet.LABEL_COLUMN));
+//				assertEquals(m.getOTUSet(), otuSet);
+//			}
 		}
 	}
 }

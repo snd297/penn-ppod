@@ -99,7 +99,7 @@ public class CharacterStateMatrixTest {
 	 * should not change.
 	 */
 	public void setOTUsWSameOTUs() {
-		matrix.setpPodVersionInfo(pPodVersionInfo);
+		matrix.setPPodVersionInfo(pPodVersionInfo);
 
 		matrix.setOTUs(otus012);
 
@@ -307,7 +307,7 @@ public class CharacterStateMatrixTest {
 	public void setWithSameRow() {
 		final CharacterStateRow row1 = rowProvider.get();
 		matrix.setRow(otu1, row1);
-		matrix.setpPodVersionInfo(pPodVersionInfo);
+		matrix.setPPodVersionInfo(pPodVersionInfo);
 		matrix.setRow(otu1, row1);
 		assertNotNull(matrix.getRows().get(matrix.getOTUIdx().get(otu1)));
 	}

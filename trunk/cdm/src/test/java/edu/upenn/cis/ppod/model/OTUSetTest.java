@@ -145,8 +145,8 @@ public class OTUSetTest {
 	public void clearOTUs() {
 		otuSet.setOTUs(newHashSet(otus));
 
-		otuSet.setpPodVersionInfo(pPodVersionInfoProvider.get());
-		study.setpPodVersionInfo(pPodVersionInfoProvider.get());
+		otuSet.setPPodVersionInfo(pPodVersionInfoProvider.get());
+		study.setPPodVersionInfo(pPodVersionInfoProvider.get());
 		final Set<OTU> removedOTUs = otuSet.setOTUs(new HashSet<OTU>());
 
 		assertEquals(removedOTUs, newHashSet(otus));
@@ -167,9 +167,9 @@ public class OTUSetTest {
 		otuSet.addMatrix(matrix0);
 		otuSet.addMatrix(matrix1);
 		otuSet.addMatrix(matrix2);
-		otuSet.setpPodVersionInfo(pPodVersionInfoProvider.get());
+		otuSet.setPPodVersionInfo(pPodVersionInfoProvider.get());
 
-		study.setpPodVersionInfo(pPodVersionInfoProvider.get());
+		study.setPPodVersionInfo(pPodVersionInfoProvider.get());
 
 		otuSet.removeMatrix(matrix1);
 
@@ -191,7 +191,7 @@ public class OTUSetTest {
 		otuSet.addTreeSet(treeSet1);
 		otuSet.addTreeSet(treeSet2);
 
-		otuSet.setpPodVersionInfo(pPodVersionInfoProvider.get());
+		otuSet.setPPodVersionInfo(pPodVersionInfoProvider.get());
 
 		final boolean removeTreeSetReturnValue = otuSet.removeTreeSet(treeSet1);
 

@@ -48,9 +48,11 @@ import edu.upenn.cis.ppod.model.Study;
 import edu.upenn.cis.ppod.model.TreeSet;
 import edu.upenn.cis.ppod.saveorupdate.IMergeAttachment;
 import edu.upenn.cis.ppod.saveorupdate.IMergeOTUSet;
+import edu.upenn.cis.ppod.saveorupdate.IMergeOTUSetFactory;
 import edu.upenn.cis.ppod.saveorupdate.IMergeTreeSet;
 import edu.upenn.cis.ppod.saveorupdate.IMergeTreeSetFactory;
-import edu.upenn.cis.ppod.saveorupdate.ISaveOrUpdateCharacterStateMatrix;
+import edu.upenn.cis.ppod.saveorupdate.ISaveOrUpdateMatrix;
+import edu.upenn.cis.ppod.saveorupdate.ISaveOrUpdateMatrixFactory;
 import edu.upenn.cis.ppod.saveorupdate.ISaveOrUpdateStudy;
 import edu.upenn.cis.ppod.util.PPodPredicates;
 
@@ -71,7 +73,7 @@ public class SaveOrUpdateStudyHibernate implements ISaveOrUpdateStudy {
 	private final ICharacterStateMatrixFactory matrixFactory;
 
 	private final IMergeOTUSet mergeOTUSet;
-	private final ISaveOrUpdateCharacterStateMatrix saveOrUpdateMatrix;
+	private final ISaveOrUpdateMatrix saveOrUpdateMatrix;
 	private final IMergeTreeSet mergeTreeSet;
 	private final INewPPodVersionInfo newPPodVersionInfo;
 
@@ -86,9 +88,9 @@ public class SaveOrUpdateStudyHibernate implements ISaveOrUpdateStudy {
 			final Provider<OTUSet> otuSetProvider,
 			final Provider<TreeSet> treeSetProvider,
 			final ICharacterStateMatrixFactory matrixFactory,
-			final IMergeOTUSetHibernateFactory saveOrUpdateOTUSetFactory,
+			final IMergeOTUSetFactory saveOrUpdateOTUSetFactory,
 			final IMergeTreeSetFactory mergeTreeSetFactory,
-			final ISaveOrUpdateCharacterStateMatrix.IFactory mergeMatrixFactory,
+			final ISaveOrUpdateMatrixFactory mergeMatrixFactory,
 			final IAttachmentNamespaceDAOHibernateFactory attachmentNamespaceDAOFactory,
 			final IAttachmentTypeDAOHibernateFactory attachmentTypeDAOFactory,
 			final IMergeAttachment.IFactory mergeAttachmentFactory,
@@ -105,19 +107,18 @@ public class SaveOrUpdateStudyHibernate implements ISaveOrUpdateStudy {
 		this.matrixFactory = matrixFactory;
 		this.treeSetProvider = treeSetProvider;
 		this.newPPodVersionInfo = newPPodVersionInfo;
-		this.mergeOTUSet = saveOrUpdateOTUSetFactory.create(session,
-				newPPodVersionInfo);
+		this.mergeOTUSet = saveOrUpdateOTUSetFactory.create(newPPodVersionInfo);
 		this.saveOrUpdateMatrix = mergeMatrixFactory.create(
-				mergeAttachmentFactory.create(
-						attachmentNamespaceDAOFactory.create(session),
-						attachmentTypeDAOFactory.create(session)), dao
-				.setSession(session), newPPodVersionInfo);
+				mergeAttachmentFactory.create(attachmentNamespaceDAOFactory
+						.create(session), attachmentTypeDAOFactory
+						.create(session)), dao.setSession(session),
+				newPPodVersionInfo);
 		this.mergeTreeSet = mergeTreeSetFactory.create(newPPodVersionInfo);
 	}
 
 	public Study save(final Study incomingStudy) {
 		final Study dbStudy = (Study) studyProvider.get().setPPodId();
-		dbStudy.setpPodVersionInfo(newPPodVersionInfo.getNewPPodVersionInfo());
+		dbStudy.setPPodVersionInfo(newPPodVersionInfo.getNewPPodVersionInfo());
 		saveOrUpdate(dbStudy, incomingStudy);
 		return dbStudy;
 	}
@@ -154,7 +155,7 @@ public class SaveOrUpdateStudyHibernate implements ISaveOrUpdateStudy {
 			if (null == (dbOTUSet = dbStudy.getOTUSetByPPodId(incomingOTUSet
 					.getPPodId()))) {
 				dbOTUSet = dbStudy.addOTUSet(otuSetProvider.get());
-				dbOTUSet.setpPodVersionInfo(newPPodVersionInfo
+				dbOTUSet.setPPodVersionInfo(newPPodVersionInfo
 						.getNewPPodVersionInfo());
 				dbOTUSet.setPPodId();
 			}
@@ -168,7 +169,7 @@ public class SaveOrUpdateStudyHibernate implements ISaveOrUpdateStudy {
 						PPodPredicates.equalTo(incomingMatrix.getPPodId(),
 								IUUPPodEntity.getPPodId)))) {
 					dbMatrix = matrixFactory.create(incomingMatrix.getType());
-					dbMatrix.setpPodVersionInfo(newPPodVersionInfo
+					dbMatrix.setPPodVersionInfo(newPPodVersionInfo
 							.getNewPPodVersionInfo());
 					dbMatrix.setColumnPPodVersionInfos(newPPodVersionInfo
 							.getNewPPodVersionInfo());
@@ -194,7 +195,7 @@ public class SaveOrUpdateStudyHibernate implements ISaveOrUpdateStudy {
 						PPodPredicates.equalTo(incomingTreeSet.getPPodId(),
 								IUUPPodEntity.getPPodId)))) {
 					dbTreeSet = treeSetProvider.get();
-					dbTreeSet.setpPodVersionInfo(newPPodVersionInfo
+					dbTreeSet.setPPodVersionInfo(newPPodVersionInfo
 							.getNewPPodVersionInfo());
 					dbTreeSet.setPPodId();
 				}

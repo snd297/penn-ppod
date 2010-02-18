@@ -13,7 +13,7 @@
  * See the License for the specific language governing permissions and
  * limitations under the License.
  */
-package edu.upenn.cis.ppod.saveorupdate.hibernate;
+package edu.upenn.cis.ppod.saveorupdate;
 
 import static com.google.common.base.Preconditions.checkNotNull;
 import static com.google.common.collect.Iterables.get;
@@ -48,8 +48,6 @@ import edu.upenn.cis.ppod.model.INewPPodVersionInfo;
 import edu.upenn.cis.ppod.model.IUUPPodEntity;
 import edu.upenn.cis.ppod.model.OTU;
 import edu.upenn.cis.ppod.model.OTUSet;
-import edu.upenn.cis.ppod.saveorupdate.IMergeAttachment;
-import edu.upenn.cis.ppod.saveorupdate.ISaveOrUpdateCharacterStateMatrix;
 import edu.upenn.cis.ppod.thirdparty.injectslf4j.InjectLogger;
 import edu.upenn.cis.ppod.util.PPodPredicates;
 
@@ -57,7 +55,7 @@ import edu.upenn.cis.ppod.util.PPodPredicates;
  * @author Sam Donnelly
  */
 public class SaveOrUpdateCharacterStateMatrix implements
-		ISaveOrUpdateCharacterStateMatrix {
+		ISaveOrUpdateMatrix {
 
 	private final Provider<Character> characterProvider;
 	private final Provider<CharacterStateRow> rowProvider;
@@ -139,7 +137,7 @@ public class SaveOrUpdateCharacterStateMatrix implements
 					.getCharacters(), PPodPredicates.equalTo(sourceCharacter
 					.getPPodId(), IUUPPodEntity.getPPodId)))) {
 				newTargetCharacter = characterProvider.get();
-				newTargetCharacter.setpPodVersionInfo(newPPodVersionInfo
+				newTargetCharacter.setPPodVersionInfo(newPPodVersionInfo
 						.getNewPPodVersionInfo());
 				newTargetCharacter.setPPodId();
 			}
@@ -157,7 +155,7 @@ public class SaveOrUpdateCharacterStateMatrix implements
 						sourceState.getStateNumber()))) {
 					targetState = newTargetCharacter.addState(stateFactory
 							.create(sourceState.getStateNumber()));
-					targetState.setpPodVersionInfo(newPPodVersionInfo
+					targetState.setPPodVersionInfo(newPPodVersionInfo
 							.getNewPPodVersionInfo());
 				}
 
@@ -189,7 +187,7 @@ public class SaveOrUpdateCharacterStateMatrix implements
 						null);
 				if (targetAttachment == null) {
 					targetAttachment = attachmentProvider.get();
-					targetAttachment.setpPodVersionInfo(newPPodVersionInfo
+					targetAttachment.setPPodVersionInfo(newPPodVersionInfo
 							.getNewPPodVersionInfo());
 					targetAttachment.setPPodId();
 				}
@@ -214,7 +212,7 @@ public class SaveOrUpdateCharacterStateMatrix implements
 
 			if (null == (targetRow = targetMatrix.getRow(targetOTU))) {
 				targetRow = rowProvider.get();
-				targetRow.setpPodVersionInfo(newPPodVersionInfo
+				targetRow.setPPodVersionInfo(newPPodVersionInfo
 						.getNewPPodVersionInfo());
 				targetMatrix.setRow(targetOTU, targetRow);
 				dao.saveOrUpdate(targetRow);
@@ -240,7 +238,7 @@ public class SaveOrUpdateCharacterStateMatrix implements
 				if (newRow
 						|| null == originalCharIdxsByNewCharIdx.get(newCellIdx)) {
 					targetCell = cellProvider.get();
-					targetCell.setpPodVersionInfo(newPPodVersionInfo
+					targetCell.setPPodVersionInfo(newPPodVersionInfo
 							.getNewPPodVersionInfo());
 				} else {
 					targetCell = originalTargetCells

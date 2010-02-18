@@ -13,17 +13,14 @@
  * See the License for the specific language governing permissions and
  * limitations under the License.
  */
-package edu.upenn.cis.ppod.saveorupdate.hibernate;
-
-import org.hibernate.Session;
+package edu.upenn.cis.ppod.saveorupdate;
 
 import edu.upenn.cis.ppod.model.INewPPodVersionInfo;
-import edu.upenn.cis.ppod.saveorupdate.IMergeOTUSet;
 
 /**
  * @author Sam Donnelly
  * 
  */
-public interface IMergeOTUSetHibernateFactory {
-	IMergeOTUSet create(Session session, INewPPodVersionInfo newPPodVersionInfo);
+public interface IMergeOTUSetFactory {
+	IMergeOTUSet create(INewPPodVersionInfo newPPodVersionInfo);
 }

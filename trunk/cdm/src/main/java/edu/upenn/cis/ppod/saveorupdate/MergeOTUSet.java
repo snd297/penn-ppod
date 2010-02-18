@@ -13,47 +13,38 @@
  * See the License for the specific language governing permissions and
  * limitations under the License.
  */
-package edu.upenn.cis.ppod.saveorupdate.hibernate;
+package edu.upenn.cis.ppod.saveorupdate;
 
 import static com.google.common.collect.Maps.newHashMap;
 import static com.google.common.collect.Sets.newHashSet;
 import static edu.upenn.cis.ppod.util.PPodIterables.findIf;
+import static edu.upenn.cis.ppod.util.PPodPredicates.equalTo;
 
 import java.util.Map;
 import java.util.Set;
-
-import org.hibernate.Session;
 
 import com.google.inject.Inject;
 import com.google.inject.Provider;
 import com.google.inject.assistedinject.Assisted;
 
-import edu.upenn.cis.ppod.dao.IOTUDAO;
-import edu.upenn.cis.ppod.dao.hibernate.HibernateDAOFactory.OTUDAOHibernate;
-import edu.upenn.cis.ppod.dao.hibernate.HibernateDAOFactory.OTUSetDAOHibernate;
 import edu.upenn.cis.ppod.model.INewPPodVersionInfo;
 import edu.upenn.cis.ppod.model.IUUPPodEntity;
 import edu.upenn.cis.ppod.model.OTU;
 import edu.upenn.cis.ppod.model.OTUSet;
-import edu.upenn.cis.ppod.saveorupdate.IMergeOTUSet;
-import edu.upenn.cis.ppod.util.PPodPredicates;
 
 /**
+ * Merge form {@code sourceOTUSet} onto {@code targetOTUSet}.
+ * 
  * @author Sam Donnelly
  */
-public class MergeOTUSetHibernate implements IMergeOTUSet {
+public class MergeOTUSet implements IMergeOTUSet {
 
-	private final IOTUDAO otuDAO;
 	private final Provider<OTU> otuProvider;
-	private INewPPodVersionInfo newPPodVersionInfo;
+	private final INewPPodVersionInfo newPPodVersionInfo;
 
 	@Inject
-	MergeOTUSetHibernate(final OTUSetDAOHibernate otuSetDAO,
-			final OTUDAOHibernate otuDAO,
-			final Provider<OTUSet> otuSetProvider,
-			final Provider<OTU> otuProvider, @Assisted Session s,
+	MergeOTUSet(final Provider<OTU> otuProvider,
 			@Assisted INewPPodVersionInfo newPPodVersionInfo) {
-		this.otuDAO = (IOTUDAO) otuDAO.setSession(s);
 		this.otuProvider = otuProvider;
 		this.newPPodVersionInfo = newPPodVersionInfo;
 	}
@@ -67,29 +58,24 @@ public class MergeOTUSetHibernate implements IMergeOTUSet {
 		targetOTUSet.setDocId(sourceOTUSet.getDocId());
 		// final Set<OTU> clearedOTUs = targetOTUSet.clearOTUs();
 		final Set<OTU> newOTUs = newHashSet();
-		final Map<OTU, OTU> persistentOTUsByIncomingOTU = newHashMap();
-		for (final OTU incomingOTU : sourceOTUSet.getOTUs()) {
-			OTU dbOTU;
-			if (null == (dbOTU = findIf(targetOTUSet.getOTUs(), PPodPredicates
-					.equalTo(incomingOTU.getPPodId(), IUUPPodEntity.getPPodId)))) {
-
-				// See if it's hooked up to another OTUSet
-				if (null == (dbOTU = otuDAO.getOTUByPPodId(incomingOTU
-						.getPPodId()))) {
-					dbOTU = otuProvider.get();
-					dbOTU.setpPodVersionInfo(newPPodVersionInfo
-							.getNewPPodVersionInfo());
-					dbOTU.setPPodId();
-				}
+		final Map<OTU, OTU> source2TargetOTUs = newHashMap();
+		for (final OTU sourceOTU : sourceOTUSet.getOTUs()) {
+			OTU targetOTU;
+			if (null == (targetOTU = findIf(targetOTUSet.getOTUs(), equalTo(
+					sourceOTU.getPPodId(), IUUPPodEntity.getPPodId)))) {
+				targetOTU = otuProvider.get();
+				targetOTU.setPPodVersionInfo(newPPodVersionInfo
+						.getNewPPodVersionInfo());
+				targetOTU.setPPodId();
 			}
-			newOTUs.add(dbOTU);
-			dbOTU.setLabel(incomingOTU.getLabel());
-			persistentOTUsByIncomingOTU.put(incomingOTU, dbOTU);
+			newOTUs.add(targetOTU);
+			targetOTU.setLabel(sourceOTU.getLabel());
+			source2TargetOTUs.put(sourceOTU, targetOTU);
 
 			// This is for a response to the service client.
-			dbOTU.setDocId(incomingOTU.getDocId());
+			targetOTU.setDocId(sourceOTU.getDocId());
 		}
 		targetOTUSet.setOTUs(newOTUs);
-		return persistentOTUsByIncomingOTU;
+		return source2TargetOTUs;
 	}
 }
