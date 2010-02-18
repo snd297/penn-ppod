@@ -23,6 +23,9 @@ import java.util.List;
 import java.util.Map;
 
 import org.hibernate.Session;
+import org.hibernate.context.ManagedSessionContext;
+import org.testng.annotations.AfterMethod;
+import org.testng.annotations.BeforeMethod;
 import org.testng.annotations.Test;
 
 import com.google.inject.Inject;
@@ -39,6 +42,7 @@ import edu.upenn.cis.ppod.model.OTU;
 import edu.upenn.cis.ppod.model.OTUSet;
 import edu.upenn.cis.ppod.model.PPodVersionInfo;
 import edu.upenn.cis.ppod.modelinterfaces.INewPPodVersionInfo;
+import edu.upenn.cis.ppod.thirdparty.util.HibernateUtil;
 import edu.upenn.cis.ppod.util.MatrixProvider;
 
 /**
@@ -79,12 +83,20 @@ public class SaveOrUpdateCharacterStateMatrixTest {
 	@Inject
 	private INewPPodVersionInfo newPPodVersionInfo;
 
-// @BeforeMethod
-// public void beforeMethod() {
-// final org.hibernate.classic.Session session = HibernateUtil
-// .getSessionFactory().openSession();
-// ManagedSessionContext.bind(session);
-// }
+	@BeforeMethod
+	public void beforeMethod() {
+		final org.hibernate.classic.Session session = HibernateUtil
+				.getSessionFactory().openSession();
+		ManagedSessionContext.bind(session);
+		this.session = session;
+	}
+
+	@AfterMethod
+	public void afterMethod() {
+		Session s = ManagedSessionContext.unbind(HibernateUtil
+				.getSessionFactory());
+		s.close();
+	}
 
 	@Test(dataProvider = MatrixProvider.SMALL_MATRICES_PROVIDER, dataProviderClass = MatrixProvider.class)
 	public void save(final CharacterStateMatrix sourceMatrix) {
@@ -98,8 +110,8 @@ public class SaveOrUpdateCharacterStateMatrixTest {
 			fakeOTUsByIncomingOTU.put(sourceOTU, sourceOTU);
 		}
 
-		final CharacterStateMatrix targetMatrix = factory
-				.create(sourceMatrix.getType());
+		final CharacterStateMatrix targetMatrix = factory.create(sourceMatrix
+				.getType());
 		saveOrUpdateMatrix.saveOrUpdate(targetMatrix, sourceMatrix,
 				fakeDbOTUSet, fakeOTUsByIncomingOTU, dnaCharacter);
 		ModelAssert.assertEqualsCharacterStateMatrices(targetMatrix,
@@ -117,8 +129,8 @@ public class SaveOrUpdateCharacterStateMatrixTest {
 			fakeOTUsByIncomingOTU.put(sourceOTU, sourceOTU);
 		}
 
-		final CharacterStateMatrix targetMatrix = factory
-				.create(sourceMatrix.getType());
+		final CharacterStateMatrix targetMatrix = factory.create(sourceMatrix
+				.getType());
 
 		saveOrUpdateMatrix.saveOrUpdate(targetMatrix, sourceMatrix,
 				fakeTargetOTUSet, fakeOTUsByIncomingOTU, dnaCharacter);
@@ -151,8 +163,8 @@ public class SaveOrUpdateCharacterStateMatrixTest {
 			fakeOTUsByIncomingOTU.put(sourceOTU, sourceOTU);
 		}
 
-		final CharacterStateMatrix targetMatrix = factory
-				.create(sourceMatrix.getType());
+		final CharacterStateMatrix targetMatrix = factory.create(sourceMatrix
+				.getType());
 
 		saveOrUpdateMatrix.saveOrUpdate(targetMatrix, sourceMatrix,
 				fakeTargetOTUSet, fakeOTUsByIncomingOTU, dnaCharacter);
