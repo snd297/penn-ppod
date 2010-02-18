@@ -14,7 +14,21 @@ import edu.upenn.cis.ppod.util.EmptyVisitor;
  */
 public class SetPPodVersionInfoVisitor extends EmptyVisitor {
 
+	/**
+	 * Create a {@code SetPPodVersionInfoVisitor} with the given {@code
+	 * INewPPodVersionInfo}.
+	 */
 	public static interface IFactory {
+
+		/**
+		 * Create a {@code SetPPodVersionInfoVisitor} with the given {@code
+		 * INewPPodVersionInfo}.
+		 * 
+		 * @param newPPodVersionInfo to be assigned to objects that are
+		 *            {@link PPodEntity#isInNeedOfNewPPodVersionInfo()}
+		 * 
+		 * @return the new {@code SetPPodVersionInfoVisitor}
+		 */
 		SetPPodVersionInfoVisitor create(INewPPodVersionInfo newPPodVersionInfo);
 	}
 

@@ -292,6 +292,10 @@ public class Attachment extends UUPPodEntityWXmlId {
 		return retValue.toString();
 	}
 
+	/**
+	 * Is an attachment of a particular {@link AttachmentNamespace} and
+	 * {@link AttachmentType}?
+	 */
 	public final static class IsOfNamespaceAndType implements
 			Predicate<Attachment> {
 
@@ -300,8 +304,8 @@ public class Attachment extends UUPPodEntityWXmlId {
 		private final String namespace;
 
 		/**
-		 * @param type
-		 * @param namespace
+		 * @param type is the attachment of this type?
+		 * @param namespace is the type of this namespace?
 		 */
 		public IsOfNamespaceAndType(final String type, final String namespace) {
 			this.type = type;
