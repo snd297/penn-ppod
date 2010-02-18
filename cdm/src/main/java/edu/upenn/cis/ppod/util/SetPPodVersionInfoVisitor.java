@@ -1,11 +1,22 @@
-package edu.upenn.cis.ppod.model;
+package edu.upenn.cis.ppod.util;
 
 import com.google.inject.Inject;
 import com.google.inject.assistedinject.Assisted;
 
+import edu.upenn.cis.ppod.model.Attachment;
+import edu.upenn.cis.ppod.model.Character;
+import edu.upenn.cis.ppod.model.CharacterState;
+import edu.upenn.cis.ppod.model.CharacterStateCell;
+import edu.upenn.cis.ppod.model.CharacterStateMatrix;
+import edu.upenn.cis.ppod.model.CharacterStateRow;
+import edu.upenn.cis.ppod.model.OTU;
+import edu.upenn.cis.ppod.model.OTUSet;
+import edu.upenn.cis.ppod.model.PPodEntity;
+import edu.upenn.cis.ppod.model.Study;
+import edu.upenn.cis.ppod.model.Tree;
+import edu.upenn.cis.ppod.model.TreeSet;
 import edu.upenn.cis.ppod.modelinterfaces.INewPPodVersionInfo;
 import edu.upenn.cis.ppod.modelinterfaces.IPPodVersioned;
-import edu.upenn.cis.ppod.util.EmptyVisitor;
 
 /**
  * Stuff that should be done at the very end of a pPOD session.

@@ -15,6 +15,7 @@
  */
 package edu.upenn.cis.ppod.model;
 
+import static com.google.common.base.Preconditions.checkNotNull;
 import static com.google.common.collect.Sets.newHashSet;
 
 import java.util.Collections;
@@ -77,13 +78,27 @@ public abstract class PPodEntity extends PersistentObject implements
 	 * @see PPodVersionInfo
 	 * @see PPodVersionInfoInterceptor
 	 */
-	// @AccessType("property")
 	@ManyToOne(fetch = FetchType.LAZY)
 	@JoinColumn(name = PPodVersionInfo.ID_COLUMN, nullable = false)
 	@Nullable
 	private PPodVersionInfo pPodVersionInfo;
 
-	/** Does this object need to be assigned a new pPOD version? */
+	/**
+	 * Does this object need to be assigned a new pPOD version at next save or
+	 * update? This flag is really only needed for entities that were obtained
+	 * from the database and not for transient objects - read on for the why.
+	 * <p>
+	 * We start with {@code false} because
+	 * <ul>
+	 * <li>that's appropriate for Db entities: when an object is modified, this
+	 * value will be set to {@code true} and it will be set to the newest
+	 * version number by whatever mechanism is in place</li>
+	 * <li>for transient entities this flag is functionally irrelevant: the pPOD
+	 * version info needs to set at time of creation, so this value is will be
+	 * unset anyway in {@link #setPPodVersion(Long)} . Subsequent calls to the
+	 * setters will then turn it to {@code true} needlessly.
+	 * </ul>
+	 */
 	@Transient
 	private boolean inNeedOfNewPPodVersionInfo = false;
 
@@ -316,8 +331,8 @@ public abstract class PPodEntity extends PersistentObject implements
 	 * @return this
 	 */
 	public PPodEntity setPPodVersionInfo(final PPodVersionInfo pPodVersionInfo) {
-		// checkNotNull(pPodVersionInfo);
-		// unsetInNeedOfNewPPodVersionInfo();
+		checkNotNull(pPodVersionInfo);
+		unsetInNeedOfNewPPodVersionInfo();
 		this.pPodVersionInfo = pPodVersionInfo;
 		return this;
 	}

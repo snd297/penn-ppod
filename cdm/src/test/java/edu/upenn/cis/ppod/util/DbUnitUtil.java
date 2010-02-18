@@ -125,14 +125,14 @@ public class DbUnitUtil {
 	 */
 	public static IDataSet getDataSet(final String xmlDataset) {
 		IDataSet loadedDataSet;
-		try {
-			loadedDataSet = new FlatXmlDataSet(DbUnitUtil.class
-					.getResourceAsStream(xmlDataset));
-		} catch (final DataSetException e) {
-			throw new IllegalStateException(e);
-		} catch (final IOException e) {
-			throw new IllegalStateException(e);
-		}
+	//	try {
+			loadedDataSet = null;// new FlatXmlDataSet(DbUnitUtil.class
+// .getResourceAsStream(xmlDataset));
+//		} catch (final DataSetException e) {
+//			throw new IllegalStateException(e);
+//		} catch (final IOException e) {
+//			throw new IllegalStateException(e);
+//		}
 		return loadedDataSet;
 	}
 

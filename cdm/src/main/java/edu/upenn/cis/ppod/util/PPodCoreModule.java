@@ -27,7 +27,6 @@ import edu.upenn.cis.ppod.model.CharacterState;
 import edu.upenn.cis.ppod.model.CharacterStateMatrixFactory;
 import edu.upenn.cis.ppod.model.DNAState;
 import edu.upenn.cis.ppod.model.NewPPodVersionInfo;
-import edu.upenn.cis.ppod.model.SetPPodVersionInfoVisitor;
 import edu.upenn.cis.ppod.modelinterfaces.ICharacterStateMatrixFactory;
 import edu.upenn.cis.ppod.modelinterfaces.INewPPodVersionInfo;
 import edu.upenn.cis.ppod.saveorupdate.IMergeAttachment;
