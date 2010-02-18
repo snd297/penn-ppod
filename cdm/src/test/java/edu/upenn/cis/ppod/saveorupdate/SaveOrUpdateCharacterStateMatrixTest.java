@@ -34,11 +34,11 @@ import edu.upenn.cis.ppod.model.Character;
 import edu.upenn.cis.ppod.model.CharacterStateMatrix;
 import edu.upenn.cis.ppod.model.CharacterStateRow;
 import edu.upenn.cis.ppod.model.DNACharacter;
-import edu.upenn.cis.ppod.model.ICharacterStateMatrixFactory;
 import edu.upenn.cis.ppod.model.ModelAssert;
 import edu.upenn.cis.ppod.model.OTU;
 import edu.upenn.cis.ppod.model.OTUSet;
 import edu.upenn.cis.ppod.model.PPodVersionInfo;
+import edu.upenn.cis.ppod.modelinterfaces.ICharacterStateMatrixFactory;
 import edu.upenn.cis.ppod.util.MatrixProvider;
 
 /**

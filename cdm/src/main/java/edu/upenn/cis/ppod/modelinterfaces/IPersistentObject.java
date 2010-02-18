@@ -13,7 +13,7 @@
  * See the License for the specific language governing permissions and
  * limitations under the License.
  */
-package edu.upenn.cis.ppod.model;
+package edu.upenn.cis.ppod.modelinterfaces;
 
 import javax.annotation.Nullable;
 
@@ -24,7 +24,7 @@ import edu.upenn.cis.ppod.util.IVisitor;
  * 
  * @author Sam Donnelly
  */
-interface IPersistentObject {
+public interface IPersistentObject {
 
 	/**
 	 * Visitor pattern accept method.

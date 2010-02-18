@@ -5,6 +5,7 @@ import java.util.Date;
 import com.google.inject.Inject;
 
 import edu.upenn.cis.ppod.dao.hibernate.PPodVersionInfoDAOHibernate;
+import edu.upenn.cis.ppod.modelinterfaces.INewPPodVersionInfo;
 import edu.upenn.cis.ppod.thirdparty.util.HibernateUtil;
 
 /**

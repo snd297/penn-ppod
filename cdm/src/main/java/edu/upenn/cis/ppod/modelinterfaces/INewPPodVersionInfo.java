@@ -1,4 +1,6 @@
-package edu.upenn.cis.ppod.model;
+package edu.upenn.cis.ppod.modelinterfaces;
+
+import edu.upenn.cis.ppod.model.PPodVersionInfo;
 
 /**
  * @author Sam Donnelly

@@ -37,6 +37,7 @@ import javax.xml.bind.annotation.XmlRootElement;
 
 import org.hibernate.annotations.Cascade;
 
+import edu.upenn.cis.ppod.modelinterfaces.IUUPPodEntity;
 import edu.upenn.cis.ppod.services.ppodentity.IOTUSetCentricEntities;
 import edu.upenn.cis.ppod.util.IVisitor;
 import edu.upenn.cis.ppod.util.PPodEntitiesUtil;

@@ -32,7 +32,7 @@ public class DNAStateMatrix extends MolecularStateMatrix {
 	public static final String TABLE = "DNA_STATE_MATRIX";
 
 	DNAStateMatrix() {
-		setType(Type.DNA);
+		setType(CharacterStateMatrix.Type.DNA);
 	}
 
 	/**

@@ -13,8 +13,10 @@
  * See the License for the specific language governing permissions and
  * limitations under the License.
  */
-package edu.upenn.cis.ppod.model;
+package edu.upenn.cis.ppod.modelinterfaces;
 
+import edu.upenn.cis.ppod.model.OTUSet;
+import edu.upenn.cis.ppod.model.PersistentObject;
 import edu.upenn.cis.ppod.services.hibernate.PPodEntitiesResourceHibernate;
 
 /**

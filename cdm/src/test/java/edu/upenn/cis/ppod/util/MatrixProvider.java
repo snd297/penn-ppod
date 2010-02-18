@@ -22,7 +22,6 @@ import javax.xml.bind.JAXBContext;
 import org.testng.annotations.DataProvider;
 
 import edu.upenn.cis.ppod.model.CharacterStateMatrix;
-import edu.upenn.cis.ppod.model.ICharacterStateMatrix;
 import edu.upenn.cis.ppod.model.Study;
 
 /**
@@ -45,14 +44,14 @@ public class MatrixProvider {
 		final Study studyMX540 = (Study) ctx.createUnmarshaller().unmarshal(
 				MatrixProvider.class.getResourceAsStream("/MX540.xml"));
 		studyMX540.accept(afterUnmarshalVisitor);
-		final ICharacterStateMatrix smallSimpleMatrix = getOnlyElement(getOnlyElement(
+		final CharacterStateMatrix smallSimpleMatrix = getOnlyElement(getOnlyElement(
 				studyMX540.getOTUSets()).getMatrices());
 
 		final Study studyM1808 = (Study) ctx.createUnmarshaller().unmarshal(
 				MatrixProvider.class.getResourceAsStream("/M1808.nex.xml"));
 
 		studyM1808.accept(afterUnmarshalVisitor);
-		final ICharacterStateMatrix smallDNAMatrix = getOnlyElement(getOnlyElement(
+		final CharacterStateMatrix smallDNAMatrix = getOnlyElement(getOnlyElement(
 				studyM1808.getOTUSets()).getMatrices());
 
 		return new Object[][] { new Object[] { smallSimpleMatrix },

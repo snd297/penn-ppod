@@ -48,6 +48,7 @@ import javax.xml.bind.Unmarshaller;
 import javax.xml.bind.annotation.XmlAttribute;
 import javax.xml.bind.annotation.XmlElement;
 import javax.xml.bind.annotation.XmlIDREF;
+import javax.xml.bind.annotation.XmlType;
 
 import org.hibernate.annotations.IndexColumn;
 
@@ -63,8 +64,23 @@ import edu.upenn.cis.ppod.util.IVisitor;
  */
 @Entity
 @Table(name = CharacterStateMatrix.TABLE)
-public class CharacterStateMatrix extends UUPPodEntityWXmlId implements
-		ICharacterStateMatrix {
+public class CharacterStateMatrix extends UUPPodEntityWXmlId {
+
+	/**
+	 * We use these to figure out what kind of matrix we have after
+	 * unmarshalling.
+	 */
+	@XmlType(name = "CharacterStateMatrixType")
+	public static enum Type {
+		/** A {@link DNAStateMatrix}. */
+		DNA,
+
+		/** An {@link RNAStateMatrix}. */
+		RNA,
+
+		/** A standard {@link CharacterStateMatrix}. */
+		STANDARD;
+	}
 
 	/** This entity's table name. Intentionally package-private. */
 	static final String TABLE = "CHARACTER_STATE_MATRIX";
@@ -180,7 +196,7 @@ public class CharacterStateMatrix extends UUPPodEntityWXmlId implements
 
 	@XmlAttribute
 	@Transient
-	private Type type = Type.STANDARD;
+	private CharacterStateMatrix.Type type = CharacterStateMatrix.Type.STANDARD;
 
 	/** No-arg constructor for (at least) Hibernate. */
 	CharacterStateMatrix() {}
@@ -214,7 +230,8 @@ public class CharacterStateMatrix extends UUPPodEntityWXmlId implements
 		if (getCharacterIdx().size() == 0) {
 			int i = 0;
 			for (final Character character : getCharacters()) {
-				if (getType() != Type.DNA || getType() != Type.RNA) {
+				if (getType() != CharacterStateMatrix.Type.DNA
+						|| getType() != CharacterStateMatrix.Type.RNA) {
 					// characterIdx is meaningless for MolecularMatrix's since
 					// all of their Characters are the same
 					characterIdx.put(character, i++);
@@ -435,7 +452,7 @@ public class CharacterStateMatrix extends UUPPodEntityWXmlId implements
 	 * 
 	 * @return the type of this matrix
 	 */
-	public Type getType() {
+	public CharacterStateMatrix.Type getType() {
 		return type;
 	}
 
@@ -449,7 +466,7 @@ public class CharacterStateMatrix extends UUPPodEntityWXmlId implements
 	 * 
 	 * @return this {@code CharacterStateMatrix}
 	 */
-	ICharacterStateMatrix resetColumnPPodVersion(final int idx) {
+	CharacterStateMatrix resetColumnPPodVersion(final int idx) {
 		if (getAllowResetPPodVersionInfo()) {
 			nullFillAndSet(getColumnPPodVersionInfosModifiable(), idx, null);
 		}
@@ -605,7 +622,7 @@ public class CharacterStateMatrix extends UUPPodEntityWXmlId implements
 	 * 
 	 * @return this matrix
 	 */
-	public ICharacterStateMatrix setDescription(
+	public CharacterStateMatrix setDescription(
 			@Nullable final String description) {
 		if (nullSafeEquals(getDescription(), description)) {
 			// nothing to do
@@ -623,7 +640,7 @@ public class CharacterStateMatrix extends UUPPodEntityWXmlId implements
 	 * 
 	 * @return this matrix
 	 */
-	public ICharacterStateMatrix setLabel(final String label) {
+	public CharacterStateMatrix setLabel(final String label) {
 		checkNotNull(label);
 		if (label.equals(getLabel())) {
 			// they're the same, nothing to do
@@ -658,7 +675,7 @@ public class CharacterStateMatrix extends UUPPodEntityWXmlId implements
 	 * @throws IllegalStateException if the OTU set has not been set, i.e. if
 	 *             {@link #getOTUSet() == null}
 	 */
-	public ICharacterStateMatrix setOTUs(final List<OTU> newOTUs) {
+	public CharacterStateMatrix setOTUs(final List<OTU> newOTUs) {
 		checkNotNull(newOTUs);
 		if (newOTUs.equals(getOTUs())) {
 			// They're the same, nothing to do
@@ -723,7 +740,7 @@ public class CharacterStateMatrix extends UUPPodEntityWXmlId implements
 	 * 
 	 * @return this
 	 */
-	ICharacterStateMatrix setOTUSet(@Nullable final OTUSet otuSet) {
+	CharacterStateMatrix setOTUSet(@Nullable final OTUSet otuSet) {
 		if (nullSafeEquals(this.otuSet, otuSet)) {
 			// still the same
 		} else {
@@ -799,18 +816,18 @@ public class CharacterStateMatrix extends UUPPodEntityWXmlId implements
 	 * 
 	 * @return this
 	 */
-	protected ICharacterStateMatrix setType(final Type type) {
+	protected CharacterStateMatrix setType(final CharacterStateMatrix.Type type) {
 		this.type = type;
 		return this;
 	}
 
-	public ICharacterStateMatrix setColumnPPodVersionInfo(int pos,
+	public CharacterStateMatrix setColumnPPodVersionInfo(int pos,
 			PPodVersionInfo pPodVersionInfo) {
 		getColumnPPodVersionInfosModifiable().set(pos, pPodVersionInfo);
 		return this;
 	}
 
-	public ICharacterStateMatrix setColumnPPodVersionInfos(
+	public CharacterStateMatrix setColumnPPodVersionInfos(
 			final PPodVersionInfo pPodVersionInfo) {
 		for (int pos = 0; pos < getColumnPPodVersionInfos().size(); pos++) {
 			setColumnPPodVersionInfo(pos, pPodVersionInfo);

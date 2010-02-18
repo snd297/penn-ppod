@@ -25,7 +25,6 @@ import com.google.inject.Inject;
 
 import edu.upenn.cis.ppod.dao.ICharacterStateMatrixDAO;
 import edu.upenn.cis.ppod.model.CharacterStateMatrix;
-import edu.upenn.cis.ppod.model.ICharacterStateMatrix;
 import edu.upenn.cis.ppod.thirdparty.dao.hibernate.GenericHibernateDAO;
 import edu.upenn.cis.ppod.util.IPair;
 
@@ -52,8 +51,8 @@ public class CharacterStateMatrixDAOHibernate extends
 				.setParameter("label", label).list();
 	}
 
-	public ICharacterStateMatrix getByPPodId(final String pPodId) {
-		return (ICharacterStateMatrix) getSession().getNamedQuery(
+	public CharacterStateMatrix getByPPodId(final String pPodId) {
+		return (CharacterStateMatrix) getSession().getNamedQuery(
 				CharacterStateMatrix.class.getSimpleName() + "-getByPPodId")
 				.setParameter("pPodId", pPodId).uniqueResult();
 	}
