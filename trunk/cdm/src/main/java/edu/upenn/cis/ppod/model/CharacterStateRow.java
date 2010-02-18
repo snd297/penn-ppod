@@ -93,13 +93,14 @@ public class CharacterStateRow extends PPodEntity {
 	/**
 	 * The {@code CharacterStateCell}s that make up the row.
 	 * <p>
-	 * We don't don't cascade {@code SAVE_UPDATE} since there are so many cells
-	 * and it slows things down quite a bit - at least for saves (haven't looked
-	 * at update yet).
+	 * We don't cascade {@code SAVE_UPDATE} since there are so many cells and it
+	 * slows things down quite a bit - at least for saves (haven't looked at
+	 * update yet).
 	 * <p>
-	 * We're not including any cascades here because there are so many cells and
-	 * we are concerned about performance, though the only evidence so far seen
-	 * is with {@code Cascade.SAVE_UPDATE}
+	 * We're not including any other cascades here - {@code DELETE_ORPHAN} is
+	 * tempting - because there are so many cells and we are concerned about
+	 * performance, though the only evidence so far seen, or looked for, is for
+	 * {@code Cascade.SAVE_UPDATE}
 	 */
 	@OneToMany(mappedBy = "row")
 	@OrderBy("position")

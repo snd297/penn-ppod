@@ -34,6 +34,8 @@ import com.google.inject.Provider;
 
 import edu.upenn.cis.ppod.dao.IPPodVersionInfoDAO;
 import edu.upenn.cis.ppod.dao.hibernate.HibernateDAOFactory;
+import edu.upenn.cis.ppod.modelinterfaces.IPPodEntity;
+import edu.upenn.cis.ppod.modelinterfaces.IPPodVersioned;
 
 /**
  * Assign a new {@link PPodVersionInfo} to any {@code PPodEntity}s that are
@@ -107,15 +109,15 @@ public class PPodVersionInfoInterceptor extends EmptyInterceptor {
 				if (((IPPodVersioned) entity).isInNeedOfNewPPodVersionInfo()) {
 					initializePPodVersionInfo();
 					((IPPodVersioned) entity)
-							.setpPodVersionInfo(pPodVersionInfosBySession
+							.setPPodVersionInfo(pPodVersionInfosBySession
 									.get(sessionFactory.getCurrentSession()));
 				}
-				if (entity instanceof ICharacterStateMatrix) {
-					final List<PPodVersionInfo> columnPPodVersionInfos = ((ICharacterStateMatrix) entity)
+				if (entity instanceof CharacterStateMatrix) {
+					final List<PPodVersionInfo> columnPPodVersionInfos = ((CharacterStateMatrix) entity)
 							.getColumnPPodVersionInfos();
 					for (int j = 0; j < columnPPodVersionInfos.size(); j++) {
 						if (columnPPodVersionInfos.get(j) == null) {
-							((ICharacterStateMatrix) entity)
+							((CharacterStateMatrix) entity)
 									.setColumnPPodVersionInfo(
 											j,
 											pPodVersionInfosBySession
@@ -179,7 +181,7 @@ public class PPodVersionInfoInterceptor extends EmptyInterceptor {
 						currentState[i] = pPodVersionInfosBySession
 								.get(sessionFactory.getCurrentSession());
 						((IPPodVersioned) entity)
-								.setpPodVersionInfo(pPodVersionInfosBySession
+								.setPPodVersionInfo(pPodVersionInfosBySession
 										.get(sessionFactory.getCurrentSession()));
 						((IPPodVersioned) entity)
 								.unsetInNeedOfNewPPodVersionInfo();
@@ -188,7 +190,7 @@ public class PPodVersionInfoInterceptor extends EmptyInterceptor {
 				}
 			}
 		}
-		if (entity instanceof ICharacterStateMatrix) {
+		if (entity instanceof CharacterStateMatrix) {
 			for (int i = 0; i < propertyNames.length; i++) {
 				if ("columnPPodVersionInfos".equals(propertyNames[i])) {
 					@SuppressWarnings("unchecked")

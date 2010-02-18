@@ -25,7 +25,6 @@ import com.google.inject.Provider;
 
 import edu.upenn.cis.ppod.dao.IStudyDAO;
 import edu.upenn.cis.ppod.dao.hibernate.StudyDAOHibernate;
-import edu.upenn.cis.ppod.model.SetPPodVersionInfoVisitor;
 import edu.upenn.cis.ppod.model.Study;
 import edu.upenn.cis.ppod.modelinterfaces.INewPPodVersionInfo;
 import edu.upenn.cis.ppod.saveorupdate.ISaveOrUpdateStudy;
@@ -37,6 +36,7 @@ import edu.upenn.cis.ppod.services.ppodentity.StudyInfo;
 import edu.upenn.cis.ppod.thirdparty.util.HibernateUtil;
 import edu.upenn.cis.ppod.util.AfterUnmarshalVisitor;
 import edu.upenn.cis.ppod.util.SetDocIdVisitor;
+import edu.upenn.cis.ppod.util.SetPPodVersionInfoVisitor;
 
 /**
  * @author Sam Donnelly
