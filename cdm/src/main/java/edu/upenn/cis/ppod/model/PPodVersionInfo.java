@@ -34,7 +34,6 @@ import edu.upenn.cis.ppod.thirdparty.util.HibernateUtil;
  * because we don't want for these to be manipulated outside of this package due
  * to their trickiness.
  * 
- * @see PPodVersionInfoInterceptor
  * @author Sam Donnelly
  */
 @Entity

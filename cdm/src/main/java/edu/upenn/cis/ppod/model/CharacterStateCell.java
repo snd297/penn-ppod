@@ -52,7 +52,6 @@ import javax.xml.bind.annotation.XmlIDREF;
 import org.hibernate.annotations.Sort;
 import org.hibernate.annotations.SortType;
 
-import edu.upenn.cis.ppod.model.CharacterStateMatrix.Type;
 import edu.upenn.cis.ppod.util.IVisitor;
 
 /**
