@@ -607,6 +607,9 @@ public class CharacterStateMatrix extends UUPPodEntityWXmlId {
 		final List<Character> removedCharacters = newArrayList(getCharacters());
 
 		removedCharacters.removeAll(newCharacters);
+		for (final Character removedCharacter : removedCharacters) {
+			removedCharacter.removeMatrix(this);
+		}
 
 		getCharactersModifiable().clear();
 		getCharacterIdxModifiable().clear();

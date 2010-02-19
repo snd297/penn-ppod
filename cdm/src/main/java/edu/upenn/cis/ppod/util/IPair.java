@@ -15,11 +15,12 @@
  */
 package edu.upenn.cis.ppod.util;
 
-
 /**
  * An ordered pair.
  * 
  * @author Sam Donnelly
+ * @param <T> type of the first
+ * @param <U> type of the second
  */
 public interface IPair<T, U> {
 
@@ -37,6 +38,9 @@ public interface IPair<T, U> {
 	 */
 	U getSecond();
 
+	/**
+	 * Create an ordered pair.
+	 */
 	static interface IFactory {
 		<T, U> IPair<T, U> create(T t, U u);
 	}

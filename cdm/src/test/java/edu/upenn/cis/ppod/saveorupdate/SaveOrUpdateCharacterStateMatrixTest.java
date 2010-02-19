@@ -83,20 +83,20 @@ public class SaveOrUpdateCharacterStateMatrixTest {
 	@Inject
 	private INewPPodVersionInfo newPPodVersionInfo;
 
-	@BeforeMethod
-	public void beforeMethod() {
-		final org.hibernate.classic.Session session = HibernateUtil
-				.getSessionFactory().openSession();
-		ManagedSessionContext.bind(session);
-		this.session = session;
-	}
-
-	@AfterMethod
-	public void afterMethod() {
-		Session s = ManagedSessionContext.unbind(HibernateUtil
-				.getSessionFactory());
-		s.close();
-	}
+//	@BeforeMethod
+//	public void beforeMethod() {
+//		final org.hibernate.classic.Session session = HibernateUtil
+//				.getSessionFactory().openSession();
+//		ManagedSessionContext.bind(session);
+//		this.session = session;
+//	}
+//
+//	@AfterMethod
+//	public void afterMethod() {
+//		Session s = ManagedSessionContext.unbind(HibernateUtil
+//				.getSessionFactory());
+//		s.close();
+//	}
 
 	@Test(dataProvider = MatrixProvider.SMALL_MATRICES_PROVIDER, dataProviderClass = MatrixProvider.class)
 	public void save(final CharacterStateMatrix sourceMatrix) {
