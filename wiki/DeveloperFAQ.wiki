@@ -11,7 +11,7 @@ public class CharacterStateRow {
     @OneToMany
     @org.hibernate.annotations.IndexColumn(name="position")
     @JoinColumn(name="CHARACTER_STATE_ROW_ID", nullable=false)
-    private List<Child> children;
+    private List<CharacterStateRow> rows;
     ...
 }
 
