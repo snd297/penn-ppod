@@ -30,6 +30,7 @@ import javax.persistence.ManyToMany;
 import javax.persistence.MapKey;
 import javax.persistence.OneToMany;
 import javax.persistence.Table;
+import javax.persistence.Transient;
 import javax.xml.bind.Marshaller;
 import javax.xml.bind.Unmarshaller;
 import javax.xml.bind.annotation.XmlAttribute;
@@ -165,11 +166,11 @@ public class Character extends UUPPodEntityWXmlId {
 	}
 
 	/**
-	 * Intentionally package-private and created for testing.
+	 * Get the matrices in which this character is used.
 	 * 
 	 * @return the matrices to which this character belongs
 	 */
-	Set<CharacterStateMatrix> getMatrices() {
+	public Set<CharacterStateMatrix> getMatrices() {
 		return matrices;
 	}
 

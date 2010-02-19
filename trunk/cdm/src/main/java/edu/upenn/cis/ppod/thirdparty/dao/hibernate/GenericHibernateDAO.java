@@ -219,4 +219,8 @@ public class GenericHibernateDAO<T, ID extends Serializable> implements
 		checkNotNull(entity);
 		Hibernate.initialize(entity);
 	}
+
+	public String getEntityName(T entity) {
+		return getSession().getEntityName(entity);
+	}
 }

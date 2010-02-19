@@ -125,6 +125,7 @@ public class OTUSet extends UUPPodEntityWXmlId {
 			treeSet.accept(visitor);
 		}
 		super.accept(visitor);
+
 		return this;
 	}
 

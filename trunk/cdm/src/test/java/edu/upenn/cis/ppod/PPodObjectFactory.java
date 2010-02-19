@@ -19,13 +19,9 @@ import org.hibernate.Query;
 import org.hibernate.Session;
 
 import com.google.inject.Guice;
-import com.google.inject.assistedinject.FactoryProvider;
 import com.google.inject.util.Modules;
 
 import edu.upenn.cis.ppod.modelinterfaces.INewPPodVersionInfo;
-import edu.upenn.cis.ppod.saveorupdate.ISaveOrUpdateMatrixFactory;
-import edu.upenn.cis.ppod.saveorupdate.SaveOrUpdateCharacterStateMatrix;
-import edu.upenn.cis.ppod.saveorupdate.TestMergeAttachment;
 import edu.upenn.cis.ppod.services.IPPodEntitiesResource;
 import edu.upenn.cis.ppod.services.hibernate.PPodEntitiesResourceHibernate;
 import edu.upenn.cis.ppod.thirdparty.injectslf4j.InjectSlf4jModule;
@@ -47,10 +43,6 @@ public class PPodObjectFactory extends GuiceObjectFactory {
 
 	@Override
 	protected void configure() {
-		bind(ISaveOrUpdateMatrixFactory.class).toProvider(
-				FactoryProvider.newFactory(ISaveOrUpdateMatrixFactory.class,
-						SaveOrUpdateCharacterStateMatrix.class));
-		bind(TestMergeAttachment.class);
 		bind(IPPodEntitiesResource.class).to(
 				PPodEntitiesResourceHibernate.class);
 // final org.hibernate.classic.Session session = HibernateUtil

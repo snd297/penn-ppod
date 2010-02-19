@@ -197,8 +197,7 @@ public class StubSession implements Session {
 	}
 
 	public String getEntityName(Object object) throws HibernateException {
-		// TODO Auto-generated method stub
-		throw new UnsupportedOperationException();
+		return object.getClass().getName();
 	}
 
 	public FlushMode getFlushMode() {

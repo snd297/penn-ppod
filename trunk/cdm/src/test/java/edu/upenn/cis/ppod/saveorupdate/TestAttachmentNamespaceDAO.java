@@ -89,4 +89,9 @@ public class TestAttachmentNamespaceDAO implements IAttachmentNamespaceDAO {
 		throw new UnsupportedOperationException();
 	}
 
+	public String getEntityName(AttachmentNamespace entity) {
+		// TODO Auto-generated method stub
+		throw new UnsupportedOperationException();
+	}
+
 }

@@ -15,10 +15,9 @@
  */
 package edu.upenn.cis.ppod.services;
 
-import javax.ws.rs.Consumes;
-import javax.ws.rs.GET;
+import javax.ws.rs.FormParam;
+import javax.ws.rs.POST;
 import javax.ws.rs.Path;
-import javax.ws.rs.PathParam;
 import javax.ws.rs.Produces;
 
 import org.jboss.resteasy.annotations.GZIP;
@@ -33,12 +32,11 @@ import edu.upenn.cis.ppod.thirdparty.util.Pretty;
 @Path("/entities")
 public interface IPPodEntitiesResource {
 
-	@GET
+	@POST
 	@Pretty
 	@GZIP
-	@Path("/{query}")
-	@Consumes("text/plain")
+	@Path("/query")
 	@Produces("application/xml")
-	PPodEntities getEntitiesByHqlQuery(@PathParam("query") String query);
+	PPodEntities getEntitiesByHqlQuery(@FormParam("query") String query);
 
 }

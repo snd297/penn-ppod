@@ -99,4 +99,6 @@ public interface IDAO<T, ID extends Serializable> {
 	void flush();
 
 	void initialize(T entity);
+
+	String getEntityName(T entity);
 }

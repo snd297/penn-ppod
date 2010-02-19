@@ -39,8 +39,18 @@ import edu.upenn.cis.ppod.model.TreeSet;
  */
 public interface IVisitor {
 
+	/**
+	 * Visit an attachment
+	 * 
+	 * @param attachment visitee
+	 */
 	void visit(Attachment attachment);
 
+	/**
+	 * Visit an attachment namespace.
+	 * 
+	 * @param attachmentNamespace visitee
+	 */
 	void visit(AttachmentNamespace attachemntNamespace);
 
 	void visit(AttachmentType attachmentType);

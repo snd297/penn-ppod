@@ -50,7 +50,6 @@ import edu.upenn.cis.ppod.model.OTUSet;
 import edu.upenn.cis.ppod.modelinterfaces.INewPPodVersionInfo;
 import edu.upenn.cis.ppod.modelinterfaces.IUUPPodEntity;
 import edu.upenn.cis.ppod.thirdparty.injectslf4j.InjectLogger;
-import edu.upenn.cis.ppod.util.PPodPredicates;
 
 /**
  * @author Sam Donnelly
@@ -196,8 +195,12 @@ public class SaveOrUpdateCharacterStateMatrix implements ISaveOrUpdateMatrix {
 				dao.saveOrUpdate(targetAttachment);
 			}
 			dao.saveOrUpdate(newTargetCharacter);
+			logger.debug("entity name: "
+					+ dao.getEntityName(newTargetCharacter));
+
 		}
-		targetMatrix.setCharacters(newTargetMatrixCharacters);
+		final List<Character> removedCharacters = targetMatrix
+				.setCharacters(newTargetMatrixCharacters);
 
 		final Set<CharacterStateCell> cellsToEvict = newHashSet();
 		for (final CharacterStateRow sourceRow : sourceMatrix.getRows()) {
@@ -298,6 +301,24 @@ public class SaveOrUpdateCharacterStateMatrix implements ISaveOrUpdateMatrix {
 			dao.evictEntities(cellsToEvict);
 			cellsToEvict.clear();
 			dao.evict(targetRow);
+		}
+
+		// Do this down here because it's after any cells that reference the
+		// characers are deleted and they must be deleted first.
+		for (final Character character : removedCharacters) {
+			// We only want to delete STANDARD characters because other kinds
+			// are
+			// shared by matrices
+			if (dao.getEntityName(character).equals(Character.class.getName())) {
+				if (character.getMatrices().size() != 0) {
+					logger.warn("character " + character.toString()
+							+ " belonged to multiple matrices: "
+							+ character.getMatrices());
+				} else {
+					logger.debug("deleting character: " + character.getLabel());
+					dao.delete(character);
+				}
+			}
 		}
 	}
 }
