@@ -1,4 +1,4 @@
-#summary Explanations of non-obvious stuff.
+#summary Explanations of non-obvious stuff so that we remember it.
 
 ===1) Why did you map cells and rows the way you did? If you don't mind using non-JPA Hibernate annotations, then why didn't you use `@IndexColumn`?===
 
