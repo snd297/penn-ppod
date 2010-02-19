@@ -37,14 +37,14 @@ These were created to enable quick notification to a client of changes in a pPOD
 
 The `accept` method on the pPOD entities follows the pattern of the pPOD version number propogation, but travels in the opposite direction: it goes from `Study` downward.
 
-  * `Study` ->`OTUSet`
+  * `Study->OTUSet`
 
-  * `OTUSet` -> `OTU`, `CharacterStateMatrix`, `TreeSet`
+  * `OTUSet->OTU`, `CharacterStateMatrix`, `TreeSet`
 
-  * `CharacterStateMatrix` -> `CharacterStateRow`
-  * `CharacterStateRow` -> `CharacterStateCell`
+  * `CharacterStateMatrix->CharacterStateRow`
+  * `CharacterStateRow->CharacterStateCell`
 
-  * `TreeSet` -> nowhere yet
+  * `TreeSet->Tree`
 
   * `PPodEntity -> Attachment`
 
