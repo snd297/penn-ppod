@@ -29,3 +29,7 @@ but it was too slow on at least saves. This was because it performed many extra 
 ===2) If what you say in rationale 1 is true, why did you proceed to do it with `CharacterStateMatrix->Character`?===
 
 Because that is a many-to-many relationship and we didn't know how to do it otherwise. Plus, there're aren't as many `Character`s as there are cells and so performance problems - if any - wouldn't be as amplified.
+
+===3) But then why is `TreeSet->Tree` done with an `@IndexColumn` and join table?===
+
+Because it used to be many-to-many and since there're are so few trees in tree sets it didn't seem worth it to change.
