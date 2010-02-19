@@ -97,10 +97,8 @@ public class CharacterStateRow extends PPodEntity {
 	 * slows things down quite a bit - at least for saves (haven't looked at
 	 * update yet).
 	 * <p>
-	 * We're not including any other cascades here - {@code DELETE_ORPHAN} is
-	 * tempting - because there are so many cells and we are concerned about
-	 * performance, though the only evidence so far seen, or looked for, is for
-	 * {@code Cascade.SAVE_UPDATE}.
+	 * There is evidence that {@code DELETE_ORPHAN} slows things down so we're
+	 * not including that either.
 	 */
 	@OneToMany(mappedBy = "row")
 	@OrderBy("position")
