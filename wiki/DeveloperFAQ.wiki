@@ -1,25 +1,25 @@
 #summary Explanations of non-obvious stuff.
 
-===1) Why did you map cells and rows the way you did?===
+===1) Why did you map cells and rows the way you did? If you don't mind using non-JPA Hibernate annotations, then why didn't you use `@IndexColumn`?===
 
-We were originally doing it like this (from http://docs.jboss.org/hibernate/stable/annotations/reference/en/html/entity.html#entity-hibspec-collection-enhance):
+We were originally doing it like this:
 
 {{{
 @Entity
-public class Parent {
+public class CharacterStateRow {
     @OneToMany
-    @org.hibernate.annotations.IndexColumn(name="order")
-    @JoinColumn(name="parent_id", nullable=false)
+    @org.hibernate.annotations.IndexColumn(name="position")
+    @JoinColumn(name="CHARACTER_STATE_ROW_ID", nullable=false)
     private List<Child> children;
     ...
 }
 
 @Entity
-public class Child {
+public class CharacterStateCell {
     ...
     @ManyToOne
-    @JoinColumn(name="parent_id", insertable=false, updatable=false, nullable=false)
-    private Parent parent;
+    @JoinColumn(name="CHARACTER_STATE_ROW_ID", insertable=false, updatable=false, nullable=false)
+    private CharacterStateRow row;
     ...
 }
 }}}
