@@ -14,12 +14,12 @@ public class JettyService implements IService {
 
 	public void start() throws Exception {
 		server = new Server();
-		Connector connector = new SelectChannelConnector();
+		final Connector connector = new SelectChannelConnector();
 		connector.setPort(8080);
 		connector.setHost("127.0.0.1");
 		server.addConnector(connector);
 
-		WebAppContext wac = new WebAppContext();
+		final WebAppContext wac = new WebAppContext();
 		wac.setContextPath("/");
 		wac.setWar("./web"); // this is path to .war OR TO expanded, existing
 		// webapp; WILL FIND web.xml and parse it

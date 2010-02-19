@@ -50,6 +50,7 @@ import javax.xml.bind.annotation.XmlElement;
 import javax.xml.bind.annotation.XmlIDREF;
 import javax.xml.bind.annotation.XmlType;
 
+import org.hibernate.annotations.Cascade;
 import org.hibernate.annotations.IndexColumn;
 
 import com.google.common.collect.BiMap;
@@ -196,11 +197,12 @@ public class CharacterStateMatrix extends UUPPodEntityWXmlId {
 
 	/**
 	 * The rows of the matrix. We don't do save_update cascades since we want to
-	 * control when rows are added to the persistence context. We don't want the
-	 * rows added or reattached only if the matrix is.
+	 * control when rows are added to the persistence context. We sometimes
+	 * don't want the rows saved or reattached when the the matrix is.
 	 */
 	@OneToMany(mappedBy = "matrix")
 	@OrderBy("position")
+	@Cascade(org.hibernate.annotations.CascadeType.DELETE_ORPHAN)
 	private final List<CharacterStateRow> rows = newArrayList();
 
 	@XmlAttribute
