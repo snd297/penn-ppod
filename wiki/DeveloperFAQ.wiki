@@ -24,8 +24,8 @@ public class Child {
 }
 }}}
 
-but it was too slow on at least saves. This was because it performed many extra updates for unknown reasons .- maybe because it needs to manage the ordering of the list? Instead of relying on an attribute set by the client.
+but it was too slow on at least saves. This was because it performed many extra updates for unknown reasons .- maybe because it needs to manage the ordering of the list? Instead of relying on an attribute set by the client. `CharacterStateMatrix->CharacterStateRow` was done the same way for consistency. 
 
 ===2) If what you say in rationale 1 is true, why did you proceed to do it with `CharacterStateMatrix->Character`?===
 
-Because that is a many-to-many relationship and we didn't know how to do it otherwise. Plus, there're aren't as many `Character`s as there are cells and so performance problems weren't as amplified.
+Because that is a many-to-many relationship and we didn't know how to do it otherwise. Plus, there're aren't as many `Character`s as there are cells and so performance problems - if any - wouldn't be as amplified.
