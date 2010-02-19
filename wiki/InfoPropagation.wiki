@@ -15,29 +15,29 @@ Some information is propagated through the pPOD object tree. The hierarchy is as
 
 These were created to enable quick notification to a client of changes in a pPOD database. 
  
-  * `Attachment`-> `whatever they're attached to`
-  * `CharacterState` -> `Character`
-  * `Character` -> `CharacterStateMatrix`
+  * `Attachment -> whatever they're attached to`
+  * `CharacterState -> Character`
+  * `Character -> CharacterStateMatrix`
 
   * `CharacterStateCell -> CharacterStateRow, CharacterStateMatrix.getColumnPPodVersionInfos()`
   * `CharacterStateRow -> CharacterStateMatrix`
 
   * `CharacterStateMatrix` -> `OTUSet`
 
-  * `OTU` -> `OTUSet`
+  * `OTU -> OTUSet`
  
-  * `Tree` -> `TreeSet`
-  * `TreeSet` -> `OTUSet`
+  * `Tree -> TreeSet`
+  * `TreeSet -> OTUSet`
 
-  * `OTUSet` -> `Study`
+  * `OTUSet -> Study`
  
  
 
 = pPOD Visitor =
 
-The `accept` method on the pPOD entities follows the pattern of the pPOD version number propogation, but travels in the opposite direction: it goes from `Study` downward.
+The `accept` method on the pPOD entities follows the pattern of the pPOD version number propagation, but travels in the opposite direction: it goes from `Study` downward.
 
-  * `Study->OTUSet`
+  * `Study -> OTUSet`
 
   * `OTUSet -> OTU, CharacterStateMatrix, TreeSet`
 
