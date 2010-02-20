@@ -41,10 +41,10 @@ public class DNACharacter extends MolecularCharacter {
 	@Inject
 	DNACharacter(final DNAState.IFactory dnaStateFactory) {
 		super.setMolecularCharacterLabel(LABEL);
-		addState(dnaStateFactory.create(DNAState.Nucleotide.A));
-		addState(dnaStateFactory.create(DNAState.Nucleotide.C));
-		addState(dnaStateFactory.create(DNAState.Nucleotide.G));
-		addState(dnaStateFactory.create(DNAState.Nucleotide.T));
+		addState(dnaStateFactory.create(DNAState.NucleotideStateNumber.A));
+		addState(dnaStateFactory.create(DNAState.NucleotideStateNumber.C));
+		addState(dnaStateFactory.create(DNAState.NucleotideStateNumber.G));
+		addState(dnaStateFactory.create(DNAState.NucleotideStateNumber.T));
 	}
 
 	/**
@@ -53,6 +53,9 @@ public class DNACharacter extends MolecularCharacter {
 	 */
 	@Override
 	public DNAState addState(final CharacterState state) {
+		// This instanceof should be safe since it only makes
+		// sense to call this method on a transient DNACharacter
+		// w/ transient CharacterState's.
 		if (state instanceof DNAState) {
 			super.addState(state);
 			return (DNAState) state;

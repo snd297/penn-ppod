@@ -533,6 +533,7 @@ public class CharacterStateCell extends PPodEntity {
 	CharacterStateCell setTypeAndXmlStates(final CharacterStateCell.Type type,
 			final Set<CharacterState> xmlStates) {
 		checkNotNull(type);
+		checkNotNull(xmlStates);
 		// checkTypeAndStates(type,
 		// xmlStates == null ? new HashSet<CharacterState>() : xmlStates);
 		setType(type);

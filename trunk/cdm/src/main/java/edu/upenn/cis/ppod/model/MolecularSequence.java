@@ -15,52 +15,46 @@
  */
 package edu.upenn.cis.ppod.model;
 
-import static com.google.common.base.Preconditions.checkNotNull;
-import static com.google.common.collect.Maps.newHashMap;
-
-import java.util.Map;
-
+import javax.annotation.Nullable;
+import javax.annotation.OverridingMethodsMustInvokeSuper;
 import javax.persistence.Column;
+import javax.persistence.Lob;
+import javax.persistence.ManyToOne;
 import javax.persistence.MappedSuperclass;
+import javax.xml.bind.annotation.XmlAttribute;
+import javax.xml.bind.annotation.XmlElement;
 
 /**
  * @author Sam Donnelly
  */
 @MappedSuperclass
-public class MolecularSequence {
-
-	MolecularSequence() {}
+public class MolecularSequence extends UUPPodEntity {
 
 	final static String SEQUENCE_COLUMN = "SEQUENCE";
 
-	@Column(name = SEQUENCE_COLUMN)
+	@Lob
+	@Column(name = SEQUENCE_COLUMN, nullable = false)
+	@Nullable
 	private String sequence;
 
-	private final Map<Integer, CharacterStates> statesByPosition = newHashMap();
+	@Column(name = "LOCUS")
+	private String locus;// when read back into matrix it gets put taxon
 
-	protected Map<Integer, CharacterStates> getStatesByPosition() {
-		return statesByPosition;
-	}
+// private final Map<Integer, CharacterStates> statesByPosition = newHashMap();
 
-	public String getSequence() {
-		return sequence;
-	}
+// protected Map<Integer, CharacterStates> getStatesByPosition() {
+// return statesByPosition;
+// }
 
-	public MolecularSequence putStates(final Integer idx,
-			final CharacterStates states) {
-		checkNotNull(idx);
-		checkNotNull(states);
-		statesByPosition.put(idx, states);
-		return this;
-	}
+	@Column(name = "DEFLINE")
+	@Nullable
+	private String defline;
 
-	public MolecularSequence setSequence(final String sequence) {
-		this.sequence = sequence;
-		return this;
-	}
-	
-	private String locus;// when read back into matrix it gets put taxon 
-	private String wholeUnparseHeader;
+	private String accessionNumber;
+
+	@ManyToOne
+	private MolecularSequenceSet sequenceSet;
+
 	/*
 	 * Have an operation upload to server as sequences.
 	 * 
@@ -72,10 +66,55 @@ public class MolecularSequence {
 	 * 
 	 * Store whole header as an annotation on the row
 	 * 
-	 * Have a locus field
-	 * Whole unparsed header field
+	 * Have a locus field Whole unparsed header field
 	 * 
 	 * Look around sequence header cleaners
+	 * 
+	 * A separte header object w/ subclasses for for example GenBank
 	 */
+
+// public MolecularSequence putStates(final Integer idx,
+// final CharacterStates states) {
+	// checkNotNull(idx);
+// checkNotNull(states);
+// statesByPosition.put(idx, states);
+// return this;
+// }
+
+	/**
+	 * Get the defline.
+	 * 
+	 * @return the defline
+	 */
+	@XmlAttribute
+	@Nullable
+	private String getDefline() {
+		return defline;
+	}
+
+	/**
+	 * Set the defline.
+	 * 
+	 * @param defline the defline to set
+	 * 
+	 * @return this
+	 */
+	private MolecularSequence setDefline(final String defline) {
+		this.defline = defline;
+		return this;
+	}
+
+	MolecularSequence() {}
+
+	@XmlElement
+	public String getSequence() {
+		return sequence.toString();
+	}
+
+	@OverridingMethodsMustInvokeSuper
+	public MolecularSequence setSequence(final String sequence) {
+		this.sequence = sequence;
+		return this;
+	}
 
 }

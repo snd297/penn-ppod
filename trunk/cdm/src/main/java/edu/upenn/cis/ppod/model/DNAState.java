@@ -40,17 +40,17 @@ public class DNAState extends MolecularState {
 		/**
 		 * Create a character state with the label
 		 * 
-		 * @param nucleotide the nucleotide of the state we are creating
+		 * @param nucleotideStateNumber the nucleotide of the state we are creating
 		 * 
 		 * @return the new DNA state
 		 */
-		DNAState create(Nucleotide nucleotide);
+		DNAState create(NucleotideStateNumber nucleotideStateNumber);
 	}
 
 	/**
-	 * The four state that a {@code DNAState} can have.
+	 * The four states that a {@code DNAState} can have.
 	 */
-	public static enum Nucleotide {
+	public static enum NucleotideStateNumber {
 		/** Adenine. */
 		A,
 
@@ -64,16 +64,16 @@ public class DNAState extends MolecularState {
 		T;
 
 		/**
-		 * Get the {@code Nucleotide} with {@code Nucleotide.getOrdinal() ==
+		 * Get the {@code NucleotideStateNumber} with {@code NucleotideStateNumber.getOrdinal() ==
 		 * stateNumber}.
 		 * 
-		 * @param stateNumber the state number of the {@code Nucleotide} we want
+		 * @param stateNumber the state number of the {@code NucleotideStateNumber} we want
 		 * 
-		 * @return the {@code Nucleotide} with {@code Nucleotide.getOrdinal() ==
+		 * @return the {@code NucleotideStateNumber} with {@code NucleotideStateNumber.getOrdinal() ==
 		 *         stateNumber}
 		 */
-		public static Nucleotide of(final int stateNumber) {
-			// Can't do a switch on Nucleotide.ordinal, so if
+		public static NucleotideStateNumber of(final int stateNumber) {
+			// Can't do a switch on NucleotideStateNumber.ordinal, so if
 			// statements it is
 			if (stateNumber == A.ordinal()) {
 				return A;
@@ -137,9 +137,9 @@ public class DNAState extends MolecularState {
 	DNAState() {}
 
 	@Inject
-	DNAState(@Assisted final Nucleotide nucleotide) {
-		super.setMolecularStateLabel(nucleotide.toString());
-		super.setStateNumber(nucleotide.ordinal());
+	DNAState(@Assisted final NucleotideStateNumber nucleotideStateNumber) {
+		super.setMolecularStateLabel(nucleotideStateNumber.toString());
+		super.setStateNumber(nucleotideStateNumber.ordinal());
 	}
 
 	@Override

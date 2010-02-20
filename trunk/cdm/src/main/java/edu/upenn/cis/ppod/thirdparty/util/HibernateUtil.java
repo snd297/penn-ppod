@@ -86,6 +86,7 @@ public class HibernateUtil {
 
 			// Read hibernate.cfg.xml (has to be present)
 			configuration.configure();
+			
 
 // final PPodVersionInfoInterceptor pPodVersionInfoInterceptor = new
 			// PPodCoreFactory()
