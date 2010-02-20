@@ -136,13 +136,31 @@ public class OTUSet extends UUPPodEntityWXmlId {
 	 * 
 	 * @return {@code matrix}
 	 */
-	public CharacterStateMatrix addMatrix(final CharacterStateMatrix matrix) {
-		checkNotNull(matrix);
-		if (matrices.add(matrix)) {
-			matrix.setOTUSet(this);
-			resetPPodVersionInfo();
+// public CharacterStateMatrix addMatrix(final CharacterStateMatrix matrix) {
+// checkNotNull(matrix);
+// if (matrices.add(matrix)) {
+// matrix.setOTUSet(this);
+// resetPPodVersionInfo();
+// }
+// return matrix;
+// }
+
+	public Set<CharacterStateMatrix> setMatrices(
+			final Set<CharacterStateMatrix> newMatrices) {
+		checkNotNull(matrices);
+		final Set<CharacterStateMatrix> removedMatrices = newHashSet(getMatrices());
+		removedMatrices.removeAll(newMatrices);
+
+		for (final CharacterStateMatrix removedMatrix : removedMatrices) {
+			removedMatrix.setOTUSet(null);
 		}
-		return matrix;
+
+		getMatricesMutable().clear();
+		getMatricesMutable().addAll(newMatrices);
+		for (final CharacterStateMatrix matrix : getMatrices()) {
+			matrix.setOTUSet(this);
+		}
+		return removedMatrices;
 	}
 
 	/**

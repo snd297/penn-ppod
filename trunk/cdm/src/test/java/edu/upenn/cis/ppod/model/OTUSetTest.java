@@ -164,9 +164,11 @@ public class OTUSetTest {
 
 		final Set<CharacterStateMatrix> matrices = newHashSet(matrix0, matrix2);
 
-		otuSet.addMatrix(matrix0);
-		otuSet.addMatrix(matrix1);
-		otuSet.addMatrix(matrix2);
+		Set<CharacterStateMatrix> otuSetMatrices = newHashSet();
+		otuSetMatrices.add(matrix0);
+		otuSetMatrices.add(matrix1);
+		otuSetMatrices.add(matrix2);
+		otuSet.setMatrices(otuSetMatrices);
 		otuSet.setPPodVersionInfo(pPodVersionInfoProvider.get());
 
 		study.setPPodVersionInfo(pPodVersionInfoProvider.get());

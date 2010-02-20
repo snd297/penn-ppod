@@ -17,10 +17,12 @@ package edu.upenn.cis.ppod.saveorupdate.hibernate;
 
 import static com.google.common.base.Predicates.compose;
 import static com.google.common.base.Predicates.equalTo;
+import static com.google.common.collect.Sets.newHashSet;
 import static edu.upenn.cis.ppod.util.PPodIterables.findIf;
 
 import java.util.List;
 import java.util.Map;
+import java.util.Set;
 
 import org.hibernate.Session;
 
@@ -161,6 +163,7 @@ public class SaveOrUpdateStudyHibernate implements ISaveOrUpdateStudy {
 
 			final Map<OTU, OTU> dbOTUsByIncomingOTU = mergeOTUSet.saveOrUpdate(
 					dbOTUSet, incomingOTUSet);
+			final Set<CharacterStateMatrix> newDbMatrices = newHashSet();
 			for (final CharacterStateMatrix incomingMatrix : incomingOTUSet
 					.getMatrices()) {
 				CharacterStateMatrix dbMatrix;
@@ -174,16 +177,20 @@ public class SaveOrUpdateStudyHibernate implements ISaveOrUpdateStudy {
 							.getNewPPodVersionInfo());
 					dbMatrix.setPPodId();
 				}
+				newDbMatrices.add(dbMatrix);
+				dbOTUSet.setMatrices(newDbMatrices);
 
 				// saveOrUpdateMatrix needs for dbOTUSet to have an id so that
 				// we can give it to the matrix. dbOTUSet needs for dbStudy to
 				// have an id. Note that cascade from the study takes care of
 				// the OTUSet and Matrix too
 				studyDAO.saveOrUpdate(dbStudy);
+
 				saveOrUpdateMatrix.saveOrUpdate(dbMatrix, incomingMatrix,
-						dbOTUSet, dbOTUsByIncomingOTU, dbDNACharacter);
+						dbOTUsByIncomingOTU, dbDNACharacter);
 
 			}
+
 			for (final TreeSet incomingTreeSet : incomingOTUSet.getTreeSets()) {
 				TreeSet dbTreeSet;
 				if (null == (dbTreeSet = findIf(dbOTUSet.getTreeSets(),

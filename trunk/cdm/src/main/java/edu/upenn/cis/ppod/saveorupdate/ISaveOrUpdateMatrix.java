@@ -44,8 +44,6 @@ public interface ISaveOrUpdateMatrix {
 	 * 
 	 * @param targetMatrix merge into the target matrix
 	 * @param sourceMatrix source of the merge
-	 * @param newTargetMatrixOTUSet this method will call {@code
-	 *            targetMatrix.setOTUSet(newTargetMatrixOTUSet)}
 	 * @param mergedOTUsBySourceOTU maps each merged OTU to its source OTU
 	 *            counterpart. This parameter is used to set the new OTU
 	 *            ordering in {@code targetMatrix} as dictated by {@code
@@ -54,6 +52,6 @@ public interface ISaveOrUpdateMatrix {
 	 *            should be used in the target matrix
 	 */
 	void saveOrUpdate(CharacterStateMatrix targetMatrix,
-			CharacterStateMatrix sourceMatrix, OTUSet newTargetMatrixOTUSet,
+			CharacterStateMatrix sourceMatrix, 
 			Map<OTU, OTU> mergedOTUsBySourceOTU, DNACharacter dnaCharacter);
 }

@@ -31,7 +31,6 @@ import java.util.List;
 import java.util.Map;
 import java.util.Set;
 
-import org.hibernate.Hibernate;
 import org.slf4j.Logger;
 
 import com.google.inject.Inject;
@@ -47,7 +46,6 @@ import edu.upenn.cis.ppod.model.CharacterStateMatrix;
 import edu.upenn.cis.ppod.model.CharacterStateRow;
 import edu.upenn.cis.ppod.model.DNACharacter;
 import edu.upenn.cis.ppod.model.OTU;
-import edu.upenn.cis.ppod.model.OTUSet;
 import edu.upenn.cis.ppod.modelinterfaces.INewPPodVersionInfo;
 import edu.upenn.cis.ppod.modelinterfaces.IUUPPodEntity;
 import edu.upenn.cis.ppod.thirdparty.injectslf4j.InjectLogger;
@@ -92,16 +90,12 @@ public class SaveOrUpdateCharacterStateMatrix implements ISaveOrUpdateMatrix {
 
 	public void saveOrUpdate(CharacterStateMatrix targetMatrix,
 			final CharacterStateMatrix sourceMatrix,
-			final OTUSet newTargetMatrixOTUSet,
 			final Map<OTU, OTU> mergedOTUsBySourceOTU,
 			final DNACharacter dnaCharacter) {
 		final String METHOD = "saveOrUpdate(...)";
 		logger.debug("{}: entering", METHOD);
 		checkNotNull(targetMatrix);
 		checkNotNull(sourceMatrix);
-		checkNotNull(newTargetMatrixOTUSet);
-
-		newTargetMatrixOTUSet.addMatrix(targetMatrix);
 
 		targetMatrix.setLabel(sourceMatrix.getLabel());
 		targetMatrix.setDescription(sourceMatrix.getDescription());

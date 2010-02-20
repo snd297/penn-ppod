@@ -263,7 +263,7 @@ public class CharacterStateMatrix extends UUPPodEntityWXmlId {
 	 * @param parent see {@code Unmarshaller}
 	 */
 	public void afterUnmarshal(final Unmarshaller u, final Object parent) {
-		this.otuSet = (OTUSet) parent;
+		setOTUSet((OTUSet) parent);
 	}
 
 	@Override
