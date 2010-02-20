@@ -5,12 +5,13 @@
 <hibernate-configuration>
 	<session-factory>
 		<!-- List of annotated classes-->
-		<mapping class="edu.upenn.cis.ppod.thirdparty.model.security.Role" />
-		<mapping class="edu.upenn.cis.ppod.thirdparty.model.security.User" />
-		<mapping class="edu.upenn.cis.ppod.model.security.Party" />
-		<mapping class="edu.upenn.cis.ppod.model.security.PPodGroup" />
-		<mapping class="edu.upenn.cis.ppod.model.security.PPodPermission" />
-
+		<!--
+			<mapping class="edu.upenn.cis.ppod.thirdparty.model.security.Role" />
+			<mapping class="edu.upenn.cis.ppod.thirdparty.model.security.User" />
+			<mapping class="edu.upenn.cis.ppod.model.security.Party" /> <mapping
+			class="edu.upenn.cis.ppod.model.security.PPodGroup" /> <mapping
+			class="edu.upenn.cis.ppod.model.security.PPodPermission" />
+		-->
 		<mapping class="edu.upenn.cis.ppod.model.PPodVersionInfo" />
 
 		<mapping class="edu.upenn.cis.ppod.model.Study" />
@@ -37,10 +38,12 @@
 
 		<mapping class="edu.upenn.cis.ppod.model.Attachment" />
 		<mapping class="edu.upenn.cis.ppod.model.AttachmentNamespace" />
-		<mapping class="edu.upenn.cis.ppod.model.AttachmentType" />
+		<mapping class="edu.upenn.cis.ppod.model.AttachmentType" /><!--
 
+		<mapping class="edu.upenn.cis.ppod.model.MolecularSequence" />
+		<mapping class="edu.upenn.cis.ppod.model.DNASequence" />
 
-		<!--  metadata -->
+		--><!--  metadata -->
 		<mapping resource="edu/upenn/cis/ppod/dao/namedQueries.xml" />
 
 	</session-factory>

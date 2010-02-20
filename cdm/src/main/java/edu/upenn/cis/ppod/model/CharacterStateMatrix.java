@@ -207,10 +207,12 @@ public class CharacterStateMatrix extends UUPPodEntityWXmlId {
 
 	@XmlAttribute
 	@Transient
-	private CharacterStateMatrix.Type type = CharacterStateMatrix.Type.STANDARD;
+	private CharacterStateMatrix.Type type;
 
 	/** No-arg constructor for (at least) Hibernate. */
-	CharacterStateMatrix() {}
+	CharacterStateMatrix() {
+		setType(Type.STANDARD);
+	}
 
 	@Override
 	public CharacterStateMatrix accept(final IVisitor visitor) {

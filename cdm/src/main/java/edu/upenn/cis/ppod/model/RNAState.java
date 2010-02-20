@@ -48,7 +48,7 @@ public class RNAState extends MolecularState {
 		A, C, G, U;
 
 		public static Nucleotide of(final int stateNumber) {
-			// Can't do a case on Nucleotide.ordinal(), so if statements it is
+			// Can't do a case on NucleotideStateNumber.ordinal(), so if statements it is
 			if (stateNumber == A.ordinal()) {
 				return A;
 			}
@@ -91,7 +91,7 @@ public class RNAState extends MolecularState {
 				setStateNumber(Nucleotide.U.ordinal());
 				break;
 			default:
-				throw new AssertionError("unknown Nucleotide");
+				throw new AssertionError("unknown NucleotideStateNumber");
 		}
 		// State numbers are unique for DNA_STATE, so let's use since it's
 		// smaller

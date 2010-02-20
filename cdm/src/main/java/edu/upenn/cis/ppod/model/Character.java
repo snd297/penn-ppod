@@ -30,7 +30,6 @@ import javax.persistence.ManyToMany;
 import javax.persistence.MapKey;
 import javax.persistence.OneToMany;
 import javax.persistence.Table;
-import javax.persistence.Transient;
 import javax.xml.bind.Marshaller;
 import javax.xml.bind.Unmarshaller;
 import javax.xml.bind.annotation.XmlAttribute;
@@ -86,7 +85,11 @@ public class Character extends UUPPodEntityWXmlId {
 	@MapKey(name = "stateNumber")
 	private final Map<Integer, CharacterState> states = newHashMap();
 
-	/** The matrices that hold a reference to this {@code Character}. */
+	/**
+	 * The matrices that hold a reference to this {@code Character}. This is
+	 * really only a many-to-many for Molecular matrices. For standard matrices,
+	 * it is many-to-one.
+	 */
 	@ManyToMany(mappedBy = "characters")
 	private final Set<CharacterStateMatrix> matrices = newHashSet();
 

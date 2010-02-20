@@ -31,6 +31,7 @@ import java.util.List;
 import java.util.Map;
 import java.util.Set;
 
+import org.hibernate.Hibernate;
 import org.slf4j.Logger;
 
 import com.google.inject.Inject;
@@ -79,7 +80,6 @@ public class SaveOrUpdateCharacterStateMatrix implements ISaveOrUpdateMatrix {
 			@Assisted final INewPPodVersionInfo newPPodVersionInfo,
 			@Assisted final IDAO<Object, Long> dao,
 			@Assisted final IMergeAttachment mergeAttachment) {
-
 		this.characterProvider = characterProvider;
 		this.rowProvider = rowProvider;
 		this.cellProvider = cellProvider;
@@ -195,8 +195,6 @@ public class SaveOrUpdateCharacterStateMatrix implements ISaveOrUpdateMatrix {
 				dao.saveOrUpdate(targetAttachment);
 			}
 			dao.saveOrUpdate(newTargetCharacter);
-			logger.debug("entity name: "
-					+ dao.getEntityName(newTargetCharacter));
 
 		}
 		final List<Character> removedCharacters = targetMatrix
@@ -304,14 +302,14 @@ public class SaveOrUpdateCharacterStateMatrix implements ISaveOrUpdateMatrix {
 		}
 
 		// Do this down here because it's after any cells that reference the
-		// characers are deleted and they must be deleted first.
+		// characters are deleted.
 		for (final Character character : removedCharacters) {
 			// We only want to delete STANDARD characters because other kinds
-			// are
-			// shared by matrices
-			if (dao.getEntityName(character).equals(Character.class.getName())) {
+			// are shared by matrices. This is less than ideal.
+			if (dao.getEntityName(character).equals(
+					dao.getEntityName(Character.class))) {
 				if (character.getMatrices().size() != 0) {
-					logger.warn("character " + character.toString()
+					logger.warn("standard character " + character.toString()
 							+ " belonged to multiple matrices: "
 							+ character.getMatrices());
 				} else {

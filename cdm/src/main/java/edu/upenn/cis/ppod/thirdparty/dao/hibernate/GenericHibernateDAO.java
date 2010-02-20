@@ -45,6 +45,7 @@ import org.hibernate.criterion.Criterion;
 import org.hibernate.criterion.Example;
 
 import edu.upenn.cis.ppod.dao.IDAO;
+import edu.upenn.cis.ppod.thirdparty.util.HibernateUtil;
 
 /**
  * From http://www.hibernate.org/328.html.
@@ -222,5 +223,9 @@ public class GenericHibernateDAO<T, ID extends Serializable> implements
 
 	public String getEntityName(T entity) {
 		return getSession().getEntityName(entity);
+	}
+
+	public String getEntityName(Class<? extends T> entityClass) {
+		return Hibernate.entity(entityClass).getName();
 	}
 }

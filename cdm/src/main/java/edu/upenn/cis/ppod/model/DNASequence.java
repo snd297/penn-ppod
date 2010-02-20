@@ -21,10 +21,33 @@ import static com.google.common.collect.Iterables.getOnlyElement;
 
 import java.util.List;
 
+import javax.persistence.Entity;
+import javax.persistence.Table;
+
 /**
  * @author Sam Donnelly
  */
+@Entity
+@Table(name = DNASequence.TABLE)
 public class DNASequence extends MolecularSequence {
+
+	public static final String TABLE = "DNA_SEQUENCE";
+
+	@Override
+	public DNASequence setSequence(final String newSequence) {
+		for (int i = 0; i < newSequence.length(); i++) {
+			if (DNAState.NucleotideStateNumber.hasOneWithAValueOf(newSequence
+					.charAt(i))) {
+
+			} else {
+				throw new IllegalArgumentException("Position " + i + " is ["
+						+ newSequence.charAt(i)
+						+ "] which is not a DNA state");
+			}
+		}
+		super.setSequence(newSequence);
+		return this;
+	}
 
 	@edu.umd.cs.findbugs.annotations.SuppressWarnings
 	public DNASequence of(final List<? extends CharacterStateCell> cells) {
@@ -36,18 +59,19 @@ public class DNASequence extends MolecularSequence {
 						cells.get(cellIdx).getStates()).getLabel();
 				final Integer stateNumber = getOnlyElement(
 						cells.get(cellIdx).getStates()).getStateNumber();
-				checkState(DNAState.Nucleotide.hasOneWithAValueOf(stateLabel),
-						"cell " + cellIdx + " has a state label [" + stateLabel
-								+ "] which is not that of a DNAState");
-				checkState(DNAState.Nucleotide.hasOneWithAValueOf(stateNumber),
-						"cell " + cellIdx + " has a state number of"
-								+ stateNumber
-								+ " which is not that of a DNAState");
+				checkState(DNAState.NucleotideStateNumber
+						.hasOneWithAValueOf(stateLabel), "cell " + cellIdx
+						+ " has a state label [" + stateLabel
+						+ "] which is not that of a DNAState");
+				checkState(DNAState.NucleotideStateNumber
+						.hasOneWithAValueOf(stateNumber), "cell " + cellIdx
+						+ " has a state number of" + stateNumber
+						+ " which is not that of a DNAState");
 				sequenceStringBuilder.append(stateLabel);
 
 			} else {
 				sequenceStringBuilder.append("N");
-				putStates(cellIdx, null);
+				// putStates(cellIdx, null);
 			}
 		}
 		return this;

@@ -101,4 +101,6 @@ public interface IDAO<T, ID extends Serializable> {
 	void initialize(T entity);
 
 	String getEntityName(T entity);
+	
+	String getEntityName(Class<? extends T> entityClass);
 }
