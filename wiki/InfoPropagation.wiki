@@ -15,7 +15,7 @@ For `MolecularStateMatrix`s, this is a little awkward since `MolecularCharacter`
 
 = pPOD Version Number =
 
-These were created to enable quick notification to a client of changes in a pPOD database. 
+These were created to enable quick notification to a client of changes in a pPOD database and to record when changes occur. The idea is that if you update an object, a new version number will get assigned up the chain of ownership. So, for example, modifying a cell in a matrix will cause the matrix, OTUSet, and Study all to get a new version number.  
  
   * `Attachment -> whatever they're attached to`
   * `CharacterState -> Character`
