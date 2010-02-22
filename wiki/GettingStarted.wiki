@@ -1,4 +1,4 @@
-#summary getting A way to set up a development environment in Eclipse.
+#summary A way to set up a development environment in Eclipse.
 
 = How to set up a development environment in Eclipse =
 
