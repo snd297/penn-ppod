@@ -13,4 +13,5 @@
     * Subclipse/Subversion Client Adapter
     * Sublcipse/Subversion JavaHL Native Library Adapter
   # Install the [http://testng.org/doc/eclipse.html TestNG] Eclipse plugin
-  
+ 
+You should then be able to run the test suite in `ppod-cdm/src/test/resources/testng-fast.xml` by right-clicking on it and choosing `Run As...TestNG Suite`.
