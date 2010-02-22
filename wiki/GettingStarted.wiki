@@ -14,8 +14,8 @@
     * Sublcipse/Subversion JavaHL Native Library Adapter
   # Install the [http://testng.org/doc/eclipse.html TestNG] Eclipse plugin
   # Install the [http://testng.org/doc/eclipse.html TestNG] Eclipse plugin
-  # Fire up Eclipse and switch over to the `SVN Repository Exploring` perspective and create a repository at [http://penn-orchestra.googlecode.com/svn/] if you're not a commiter or [https://penn-orchestra.googlecode.com/svn/] if you're a committer
-  # Navigate to http(s)://penn-orchestra.googlecode.com/branches and right-click (ctrl-click on Macs) on orchestra-0.1.x and choose _Check out as Maven Project_
+  # Fire up Eclipse and switch over to the `SVN Repository Exploring` perspective and create a repository at [http://penn-ppod.googlecode.com/svn/trunk/] if you're not a commiter or [https://penn-ppod.googlecode.com/svn/trunk/] if you're a committer
+  # Navigate to `http(s)://penn-ppod.googlecode.com/svn/trunk/` and right-click (ctrl-click on Macs) on orchestra-0.1.x and choose _Check out as Maven Project_
     * Some of us like to choose the Name Template `[`artifactId`]`-`[`version`]` under _Advanced_ to give a quick indicator of which branch we're working on but that doesn't seem to work on OS X
     * Hit _Finish_
   # Switch over to the Java perspective
