@@ -20,4 +20,4 @@
  
 You should then be able to use the TestNG plugin to run the test suite in `ppod-cdm/src/test/resources/testng-fast.xml` by right-clicking on it and choosing `Run As...TestNG Suite`.
 
-To run the RESTFul services, right-click on _ppod-services_ and choose _Run As...Run on Server_ and follow the instructions for running on a Tomcat server.
+To run the RESTFul services, right-click on _ppod-services_ and choose _Run As...Run on Server_ and follow the instructions for running on a Tomcat server. 
