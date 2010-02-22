@@ -11,7 +11,7 @@
   # Install the [http://subclipse.tigris.org/ Subclipse] Eclipse plugin. At a minimum you'll need the required items: 
     * Subclipse/Subclipse
     * Subclipse/Subversion Client Adapter
-    * Sublcipse/Subversion JavaHL Native Library Adapter
+    * Subclipse/Subversion JavaHL Native Library Adapter
   # Install the [http://testng.org/doc/eclipse.html TestNG] Eclipse plugin
   # Install the [http://testng.org/doc/eclipse.html TestNG] Eclipse plugin
   # Fire up Eclipse and switch over to the _SVN Repository Exploring_ perspective and create a repository at [http://penn-ppod.googlecode.com/svn/trunk/] if you're not a commiter or [https://penn-ppod.googlecode.com/svn/trunk/] if you're a committer
