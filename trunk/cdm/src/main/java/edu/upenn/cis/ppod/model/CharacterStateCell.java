@@ -52,6 +52,7 @@ import javax.xml.bind.annotation.XmlIDREF;
 import org.hibernate.annotations.Sort;
 import org.hibernate.annotations.SortType;
 
+import edu.upenn.cis.ppod.model.CharacterStateMatrix.Type;
 import edu.upenn.cis.ppod.util.IVisitor;
 
 /**
@@ -550,8 +551,7 @@ public class CharacterStateCell extends PPodEntity {
 	public CharacterStateCell setUnassigned() {
 		setType(CharacterStateCell.Type.UNASSIGNED);
 
-		@SuppressWarnings("unchecked")
-		final Set<CharacterState> emptyStates = Collections.EMPTY_SET;
+		final Set<CharacterState> emptyStates = Collections.emptySet();
 		setStates(emptyStates);
 		return this;
 	}

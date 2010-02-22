@@ -15,14 +15,14 @@
  */
 package edu.upenn.cis.ppod.services;
 
-import org.hibernate.context.ManagedSessionContext;
+import org.jboss.resteasy.plugins.guice.GuiceResteasyBootstrapServletContextListener;
+import org.mortbay.jetty.testing.ServletTester;
+import org.testng.annotations.BeforeSuite;
 import org.testng.annotations.Test;
 
 import com.google.inject.Inject;
 
 import edu.upenn.cis.ppod.TestGroupDefs;
-import edu.upenn.cis.ppod.services.ppodentity.IOTUSetCentricEntities;
-import edu.upenn.cis.ppod.thirdparty.util.HibernateUtil;
 
 /**
  * @author Sam Donnelly
@@ -30,15 +30,47 @@ import edu.upenn.cis.ppod.thirdparty.util.HibernateUtil;
 @Test(groups = { TestGroupDefs.FAST, TestGroupDefs.IN_DEVELOPMENT }, dependsOnGroups = TestGroupDefs.INIT)
 public class PPodEntitiesResourceTest {
 
+	private ServletTester tester;
+
 	@Inject
 	private IPPodEntitiesResource pPodEntitiesResource;
 
-	public void getEntitiesByHqlQuery() {
-		ManagedSessionContext.bind(HibernateUtil.getSessionFactory()
-				.openSession());
-		final IOTUSetCentricEntities entities = pPodEntitiesResource
-				.getEntitiesByHqlQuery("from CharacterStateMatrix m join fetch m.otuSet os join fetch os.otus o where o.label='Sus'");
-		System.out.println(entities);
-		ManagedSessionContext.unbind(HibernateUtil.getSessionFactory());
+	@BeforeSuite
+	public void beforeSuite() {
+		tester = new ServletTester();
+		tester.setContextPath("");
+		tester
+				.addServlet(
+						org.jboss.resteasy.plugins.server.servlet.HttpServletDispatcher.class,
+						"/ppod-services");
+		tester
+				.setAttribute(
+						"resteasy.guice.modules",
+						"edu.upenn.cis.ppod.services.PPodServicesModule, "
+								+ "edu.upenn.cis.ppod.util.PPodCoreModule, "
+								+ "edu.upenn.cis.ppod.thirdparty.injectslf4j.InjectSlf4jModule");
+		tester
+				.setAttribute("resteasy.providers",
+						"edu.upenn.cis.ppod.services.hibernate.HibernateCommitInterceptor");
+		tester
+				.addFilter(
+						edu.upenn.cis.ppod.thirdparty.util.HibernateSessionPerRequestFilter.class,
+						"/*", 0);
+		tester
+				.addEventListener(new GuiceResteasyBootstrapServletContextListener());
+
 	}
+
+	public void uploadProject() throws Exception {
+		final String response = tester.getResponses("GET");
+	}
+
+// public void getEntitiesByHqlQuery() {
+// ManagedSessionContext.bind(HibernateUtil.getSessionFactory()
+// .openSession());
+// final IOTUSetCentricEntities entities = pPodEntitiesResource
+// .getEntitiesByHqlQuery("from CharacterStateMatrix m join fetch m.otuSet os join fetch os.otus o where o.label='Sus'");
+// System.out.println(entities);
+// ManagedSessionContext.unbind(HibernateUtil.getSessionFactory());
+// }
 }
