@@ -17,6 +17,6 @@
   # Expand _http(s)://penn-ppod.googlecode.com/svn/_ and right-click (ctrl-click on Macs) on _trunk_ and choose _Check out as Maven Project_
     * Some of us like to choose the Name Template `[`artifactId`]`-`[`version`]` under _Advanced_ to give a quick indicator of which branch we're working on but that doesn't seem to work on OS X
     * Hit _Finish_
-  # Switch over to the Java perspective
+  # Switch over to the _Java EE_ perspective
  
 You should then be able to use the TestNG plugin to run the test suite in `ppod-cdm/src/test/resources/testng-fast.xml` by right-clicking on it and choosing `Run As...TestNG Suite`.
