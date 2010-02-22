@@ -11,7 +11,7 @@ Some information is propagated through the pPOD object tree. The hierarchy is as
   * `TreeSet -> Tree`
   * An `Attachment` can be attached to any `PPodEntity`
 
-For `MolecularStateMatrix`s, this is a little awkward since their characters are shared between matrices. If necessary, checks must be put in place in new `IVisitor`s to avoid processing `MolecularCharacter`s multiple times.
+For `MolecularStateMatrix`s, this is a little awkward since `MolecularCharacter`s are shared between matrices. If necessary, checks must be put in place in new `IVisitor`s to avoid processing `MolecularCharacter`s multiple times.
 
 = pPOD Version Number =
 
