@@ -1,7 +1,10 @@
 #summary A way to set up a development environment in Eclipse.
 
 = How we set up our development environment in Eclipse =
-  # Install Apache Tomcat http://tomcat.apache.org/
+
+_Be aware that the pPOD Mesquite Modules which use this have not been released yet! So if you really want to use the services you'll have to write your own RESTEasy client._
+
+  # Install Apache Tomcat http://tomcat.apache.org/ 
   # Install [http://www.mysql.com/downloads/mysql/ MySQL]
   # Get the Eclipse IDE for Java EE developers from, for example, http://www.eclipse.org/downloads/
   # Install the [http://m2eclipse.sonatype.org/ M2Eclipse] Eclipse plugin. At a minimum you'll need the following items:
