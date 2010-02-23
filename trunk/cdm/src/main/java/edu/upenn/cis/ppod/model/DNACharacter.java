@@ -41,10 +41,10 @@ public class DNACharacter extends MolecularCharacter {
 	@Inject
 	DNACharacter(final DNAState.IFactory dnaStateFactory) {
 		super.setMolecularCharacterLabel(LABEL);
-		addState(dnaStateFactory.create(DNAState.NucleotideStateNumber.A));
-		addState(dnaStateFactory.create(DNAState.NucleotideStateNumber.C));
-		addState(dnaStateFactory.create(DNAState.NucleotideStateNumber.G));
-		addState(dnaStateFactory.create(DNAState.NucleotideStateNumber.T));
+		addState(dnaStateFactory.create(DNAState.Nucleotide.A));
+		addState(dnaStateFactory.create(DNAState.Nucleotide.C));
+		addState(dnaStateFactory.create(DNAState.Nucleotide.G));
+		addState(dnaStateFactory.create(DNAState.Nucleotide.T));
 	}
 
 	/**

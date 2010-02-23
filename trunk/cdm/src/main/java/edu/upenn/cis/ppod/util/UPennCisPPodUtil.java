@@ -38,26 +38,6 @@ public class UPennCisPPodUtil {
 				"Can't instantiate a UPennCisPPodUtil");
 	}
 
-	/**
-	 * Equivalent to:<br>
-	 * If {@code lhs == rhs == null}, return {@code true}.<br>
-	 * Else if {@code lhs == null}, return {@code false}. <br>
-	 * Else return {@code lhs.equals(rhs)}.
-	 * 
-	 * @param lhs left-hand side
-	 * @param rhs right-hand side
-	 * 
-	 * @return see description
-	 */
-	public static boolean nullSafeEquals(final Object lhs, final Object rhs) {
-		if (lhs == null && rhs == null) {
-			return true;
-		} else if (lhs == null) {
-			return false;
-		}
-		return lhs.equals(rhs);
-	}
-
 	public static <F, T> Predicate<F> composeEqualTo(T equalToTarget,
 			Function<F, ? extends T> f) {
 		return compose(equalTo(equalToTarget), f);

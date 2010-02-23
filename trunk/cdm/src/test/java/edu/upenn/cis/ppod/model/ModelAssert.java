@@ -15,7 +15,7 @@
  */
 package edu.upenn.cis.ppod.model;
 
-import static edu.upenn.cis.ppod.util.UPennCisPPodUtil.nullSafeEquals;
+import static com.google.common.base.Objects.equal;
 import static org.testng.Assert.assertEquals;
 import static org.testng.Assert.assertNotNull;
 import static org.testng.Assert.assertTrue;
@@ -40,7 +40,7 @@ public class ModelAssert {
 		for (final OTU expectedOTU : expectedOTUSet.getOTUs()) {
 			boolean foundIt = false;
 			for (final OTU actualOTU : actualOTUSet.getOTUs()) {
-				if (nullSafeEquals(actualOTU.getLabel(), expectedOTU.getLabel())) {
+				if (equal(actualOTU.getLabel(), expectedOTU.getLabel())) {
 					foundIt = true;
 					break;
 				}

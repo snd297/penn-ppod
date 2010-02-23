@@ -40,17 +40,17 @@ public class DNAState extends MolecularState {
 		/**
 		 * Create a character state with the label
 		 * 
-		 * @param nucleotideStateNumber the nucleotide of the state we are creating
+		 * @param nucleotide the nucleotide of the state we are creating
 		 * 
 		 * @return the new DNA state
 		 */
-		DNAState create(NucleotideStateNumber nucleotideStateNumber);
+		DNAState create(Nucleotide nucleotide);
 	}
 
 	/**
 	 * The four states that a {@code DNAState} can have.
 	 */
-	public static enum NucleotideStateNumber {
+	public static enum Nucleotide {
 		/** Adenine. */
 		A,
 
@@ -64,16 +64,16 @@ public class DNAState extends MolecularState {
 		T;
 
 		/**
-		 * Get the {@code NucleotideStateNumber} with {@code NucleotideStateNumber.getOrdinal() ==
+		 * Get the {@code Nucleotide} with {@code Nucleotide.getOrdinal() ==
 		 * stateNumber}.
 		 * 
-		 * @param stateNumber the state number of the {@code NucleotideStateNumber} we want
+		 * @param stateNumber the state number of the {@code Nucleotide} we want
 		 * 
-		 * @return the {@code NucleotideStateNumber} with {@code NucleotideStateNumber.getOrdinal() ==
+		 * @return the {@code Nucleotide} with {@code Nucleotide.getOrdinal() ==
 		 *         stateNumber}
 		 */
-		public static NucleotideStateNumber of(final int stateNumber) {
-			// Can't do a switch on NucleotideStateNumber.ordinal, so if
+		public static Nucleotide of(final int stateNumber) {
+			// Can't do a switch on Nucleotide.ordinal, so if
 			// statements it is
 			if (stateNumber == A.ordinal()) {
 				return A;
@@ -137,9 +137,9 @@ public class DNAState extends MolecularState {
 	DNAState() {}
 
 	@Inject
-	DNAState(@Assisted final NucleotideStateNumber nucleotideStateNumber) {
-		super.setMolecularStateLabel(nucleotideStateNumber.toString());
-		super.setStateNumber(nucleotideStateNumber.ordinal());
+	DNAState(@Assisted final Nucleotide nucleotide) {
+		super.setMolecularStateLabel(nucleotide.toString());
+		super.setStateNumber(nucleotide.ordinal());
 	}
 
 	@Override

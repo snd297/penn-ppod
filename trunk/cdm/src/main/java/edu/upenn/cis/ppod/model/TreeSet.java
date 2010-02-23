@@ -15,9 +15,9 @@
  */
 package edu.upenn.cis.ppod.model;
 
+import static com.google.common.base.Objects.equal;
 import static com.google.common.base.Preconditions.checkNotNull;
 import static com.google.common.collect.Lists.newArrayList;
-import static edu.upenn.cis.ppod.util.UPennCisPPodUtil.nullSafeEquals;
 
 import java.util.Collections;
 import java.util.List;
@@ -170,7 +170,7 @@ public class TreeSet extends UUPPodEntityWXmlId {
 	 * @return this {@code TreeSet}
 	 */
 	TreeSet setOTUSet(@Nullable final OTUSet otuSet) {
-		if (nullSafeEquals(this.otuSet, otuSet)) {
+		if (equal(this.otuSet, otuSet)) {
 
 		} else {
 			this.otuSet = otuSet;

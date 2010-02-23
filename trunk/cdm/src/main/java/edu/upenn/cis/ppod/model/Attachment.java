@@ -15,9 +15,9 @@
  */
 package edu.upenn.cis.ppod.model;
 
+import static com.google.common.base.Objects.equal;
 import static com.google.common.base.Preconditions.checkNotNull;
 import static com.google.common.collect.Sets.newHashSet;
-import static edu.upenn.cis.ppod.util.UPennCisPPodUtil.nullSafeEquals;
 
 import java.util.Arrays;
 import java.util.Set;
@@ -227,7 +227,7 @@ public class Attachment extends UUPPodEntityWXmlId {
 	 * @return this
 	 */
 	public Attachment setLabel(@Nullable final String label) {
-		if (nullSafeEquals(label, getLabel())) {
+		if (equal(label, getLabel())) {
 
 		} else {
 			this.label = label;
@@ -244,7 +244,7 @@ public class Attachment extends UUPPodEntityWXmlId {
 	 * @return this {@code Attachment}
 	 */
 	public Attachment setStringValue(@Nullable final String stringValue) {
-		if (nullSafeEquals(stringValue, getStringValue())) {
+		if (equal(stringValue, getStringValue())) {
 
 		} else {
 			this.stringValue = stringValue;
