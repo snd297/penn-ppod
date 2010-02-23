@@ -32,9 +32,9 @@ public class DNAStateTest {
 	 * correct nucleotides.
 	 */
 	public void of() {
-		assertEquals(DNAState.NucleotideStateNumber.of(0), DNAState.NucleotideStateNumber.A);
-		assertEquals(DNAState.NucleotideStateNumber.of(1), DNAState.NucleotideStateNumber.C);
-		assertEquals(DNAState.NucleotideStateNumber.of(2), DNAState.NucleotideStateNumber.G);
-		assertEquals(DNAState.NucleotideStateNumber.of(3), DNAState.NucleotideStateNumber.T);
+		assertEquals(DNAState.Nucleotide.of(0), DNAState.Nucleotide.A);
+		assertEquals(DNAState.Nucleotide.of(1), DNAState.Nucleotide.C);
+		assertEquals(DNAState.Nucleotide.of(2), DNAState.Nucleotide.G);
+		assertEquals(DNAState.Nucleotide.of(3), DNAState.Nucleotide.T);
 	}
 }

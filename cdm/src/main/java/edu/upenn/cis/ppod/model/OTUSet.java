@@ -15,13 +15,13 @@
  */
 package edu.upenn.cis.ppod.model;
 
+import static com.google.common.base.Objects.equal;
 import static com.google.common.base.Preconditions.checkArgument;
 import static com.google.common.base.Preconditions.checkNotNull;
 import static com.google.common.base.Predicates.compose;
 import static com.google.common.base.Predicates.equalTo;
 import static com.google.common.collect.Sets.newHashSet;
 import static edu.upenn.cis.ppod.util.PPodIterables.findIf;
-import static edu.upenn.cis.ppod.util.UPennCisPPodUtil.nullSafeEquals;
 
 import java.util.Collections;
 import java.util.Set;
@@ -94,6 +94,11 @@ public class OTUSet extends UUPPodEntityWXmlId {
 			org.hibernate.annotations.CascadeType.DELETE_ORPHAN })
 	private final Set<CharacterStateMatrix> matrices = newHashSet();
 
+	@OneToMany(mappedBy = "otuSet")
+	@Cascade( { org.hibernate.annotations.CascadeType.SAVE_UPDATE,
+			org.hibernate.annotations.CascadeType.DELETE_ORPHAN })
+	private final Set<MolecularSequenceSet> sequenceSets = newHashSet();
+
 	/** The tree sets that reference this OTU set. */
 	@OneToMany(mappedBy = "otuSet")
 	@Cascade( { org.hibernate.annotations.CascadeType.SAVE_UPDATE,
@@ -127,40 +132,6 @@ public class OTUSet extends UUPPodEntityWXmlId {
 		super.accept(visitor);
 
 		return this;
-	}
-
-	/**
-	 * Add <code>matrix</code> to this <code>OTUSet</code>'s matrices.
-	 * 
-	 * @param matrix to be added
-	 * 
-	 * @return {@code matrix}
-	 */
-// public CharacterStateMatrix addMatrix(final CharacterStateMatrix matrix) {
-// checkNotNull(matrix);
-// if (matrices.add(matrix)) {
-// matrix.setOTUSet(this);
-// resetPPodVersionInfo();
-// }
-// return matrix;
-// }
-
-	public Set<CharacterStateMatrix> setMatrices(
-			final Set<CharacterStateMatrix> newMatrices) {
-		checkNotNull(matrices);
-		final Set<CharacterStateMatrix> removedMatrices = newHashSet(getMatrices());
-		removedMatrices.removeAll(newMatrices);
-
-		for (final CharacterStateMatrix removedMatrix : removedMatrices) {
-			removedMatrix.setOTUSet(null);
-		}
-
-		getMatricesMutable().clear();
-		getMatricesMutable().addAll(newMatrices);
-		for (final CharacterStateMatrix matrix : getMatrices()) {
-			matrix.setOTUSet(this);
-		}
-		return removedMatrices;
 	}
 
 	/**
@@ -290,6 +261,14 @@ public class OTUSet extends UUPPodEntityWXmlId {
 		return otus;
 	}
 
+	public Set<MolecularSequenceSet> getSequenceSets() {
+		return Collections.unmodifiableSet(getSequenceSetsModifiable());
+	}
+
+	private Set<MolecularSequenceSet> getSequenceSetsModifiable() {
+		return sequenceSets;
+	}
+
 	/**
 	 * Get the study to which this OTU set belongs. Will be {@code null} until
 	 * this is added to a {@code Study}.
@@ -333,40 +312,6 @@ public class OTUSet extends UUPPodEntityWXmlId {
 			return true;
 		}
 		return false;
-	}
-
-	/**
-	 * Set this {@code OTUSet}'s {@code OTU}s.
-	 * <p>
-	 * If any of {@link #getOTUs()} are not in {@code newOTUs} then this {@code
-	 * OTUSet} is removed from those {@code getOTUs()}. That is, if this method
-	 * is effectively <em>removing</em> any of this sets's original OTUs, then
-	 * the {@code OTU->OTUSet} relationship is severed.
-	 * 
-	 * @param newOTUs the otus to assign to this OTU set
-	 * 
-	 * @return any {@code OTU}s that were removed as a result of this operation
-	 */
-	public Set<OTU> setOTUs(final Set<OTU> newOTUs) {
-		checkNotNull(newOTUs);
-		if (newOTUs.equals(this.otus)) {
-			return Collections.emptySet();
-		}
-
-		final Set<OTU> removedOTUs = newHashSet(getOTUs());
-		removedOTUs.removeAll(newOTUs);
-
-		getOTUsMutable().clear();
-		for (final OTU otu : newOTUs) {
-			addOTU(otu);
-		}
-
-		for (final OTU removedOTU : removedOTUs) {
-			removedOTU.setOTUSet(null);
-		}
-
-		resetPPodVersionInfo();
-		return removedOTUs;
 	}
 
 	/**
@@ -421,7 +366,7 @@ public class OTUSet extends UUPPodEntityWXmlId {
 	 * @return this {@code OTUSet}
 	 */
 	public OTUSet setDescription(@Nullable final String description) {
-		if (nullSafeEquals(getDescription(), description)) {
+		if (equal(getDescription(), description)) {
 
 		} else {
 			this.description = description;
@@ -446,6 +391,83 @@ public class OTUSet extends UUPPodEntityWXmlId {
 			resetPPodVersionInfo();
 		}
 		return this;
+	}
+
+	/**
+	 * Add <code>matrix</code> to this <code>OTUSet</code>'s matrices.
+	 * 
+	 * @param matrix to be added
+	 * 
+	 * @return {@code matrix}
+	 */
+	public Set<CharacterStateMatrix> setMatrices(
+			final Set<? extends CharacterStateMatrix> newMatrices) {
+		checkNotNull(matrices);
+		final Set<CharacterStateMatrix> removedMatrices = newHashSet(getMatrices());
+		removedMatrices.removeAll(newMatrices);
+
+		for (final CharacterStateMatrix removedMatrix : removedMatrices) {
+			removedMatrix.setOTUSet(null);
+		}
+
+		getMatricesMutable().clear();
+		getMatricesMutable().addAll(newMatrices);
+		for (final CharacterStateMatrix matrix : getMatrices()) {
+			matrix.setOTUSet(this);
+		}
+		return removedMatrices;
+	}
+
+	/**
+	 * Set this {@code OTUSet}'s {@code OTU}s.
+	 * <p>
+	 * If this method is effectively removing any of this sets's original OTUs,
+	 * then the {@code OTU->OTUSet} relationship is severed.
+	 * 
+	 * @param newOTUs the otus to assign to this OTU set
+	 * 
+	 * @return any {@code OTU}s that were removed as a result of this operation
+	 */
+	public Set<OTU> setOTUs(final Set<? extends OTU> newOTUs) {
+		checkNotNull(newOTUs);
+		if (newOTUs.equals(this.otus)) {
+			return Collections.emptySet();
+		}
+
+		final Set<OTU> removedOTUs = newHashSet(getOTUs());
+		removedOTUs.removeAll(newOTUs);
+
+		getOTUsMutable().clear();
+		for (final OTU otu : newOTUs) {
+			addOTU(otu);
+		}
+
+		for (final OTU removedOTU : removedOTUs) {
+			removedOTU.setOTUSet(null);
+		}
+
+		resetPPodVersionInfo();
+		return removedOTUs;
+	}
+
+	public Set<MolecularSequenceSet> setSequenceSets(
+			final Set<? extends MolecularSequenceSet> newSequenceSets) {
+		checkNotNull(newSequenceSets);
+
+		final Set<MolecularSequenceSet> removedSequenceSets = getSequenceSets();
+		removedSequenceSets.removeAll(newSequenceSets);
+
+		for (final MolecularSequenceSet removedSequenceSet : removedSequenceSets) {
+			removedSequenceSet.setOTUSet(null);
+		}
+
+		getSequenceSetsModifiable().clear();
+		getSequenceSetsModifiable().addAll(newSequenceSets);
+
+		for (final MolecularSequenceSet newSequenceSet : newSequenceSets) {
+			newSequenceSet.setOTUSet(this);
+		}
+		return removedSequenceSets;
 	}
 
 	OTUSet setStudy(final Study study) {

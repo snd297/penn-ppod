@@ -38,12 +38,14 @@
 
 		<mapping class="edu.upenn.cis.ppod.model.Attachment" />
 		<mapping class="edu.upenn.cis.ppod.model.AttachmentNamespace" />
-		<mapping class="edu.upenn.cis.ppod.model.AttachmentType" /><!--
+		<mapping class="edu.upenn.cis.ppod.model.AttachmentType" />
 
-		<mapping class="edu.upenn.cis.ppod.model.MolecularSequence" />
+		<mapping class="edu.upenn.cis.ppod.model.MolecularSequenceSet" />
+
+		<mapping class="edu.upenn.cis.ppod.model.DNASequenceSet" />
 		<mapping class="edu.upenn.cis.ppod.model.DNASequence" />
 
-		--><!--  metadata -->
+		<!--  metadata -->
 		<mapping resource="edu/upenn/cis/ppod/dao/namedQueries.xml" />
 
 	</session-factory>

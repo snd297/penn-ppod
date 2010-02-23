@@ -15,6 +15,7 @@
  */
 package edu.upenn.cis.ppod.model;
 
+import static com.google.common.base.Objects.equal;
 import static com.google.common.base.Preconditions.checkArgument;
 import static com.google.common.base.Preconditions.checkNotNull;
 import static com.google.common.base.Preconditions.checkState;
@@ -22,7 +23,6 @@ import static com.google.common.collect.Lists.newArrayList;
 import static com.google.common.collect.Lists.newArrayListWithCapacity;
 import static com.google.common.collect.Maps.newHashMap;
 import static edu.upenn.cis.ppod.util.CollectionsUtil.nullFillAndSet;
-import static edu.upenn.cis.ppod.util.UPennCisPPodUtil.nullSafeEquals;
 
 import java.util.Collections;
 import java.util.Iterator;
@@ -172,7 +172,7 @@ public class CharacterStateMatrix extends UUPPodEntityWXmlId {
 	 */
 	@ManyToOne(fetch = FetchType.LAZY)
 	@JoinColumn(name = OTUSet.ID_COLUMN, nullable = false)
-	@CheckForNull
+	@Nullable
 	private OTUSet otuSet;
 
 	/**
@@ -669,7 +669,7 @@ public class CharacterStateMatrix extends UUPPodEntityWXmlId {
 	 */
 	public CharacterStateMatrix setDescription(
 			@Nullable final String description) {
-		if (nullSafeEquals(getDescription(), description)) {
+		if (equal(getDescription(), description)) {
 			// nothing to do
 		} else {
 			this.description = description;
@@ -786,7 +786,7 @@ public class CharacterStateMatrix extends UUPPodEntityWXmlId {
 	 * @return this
 	 */
 	CharacterStateMatrix setOTUSet(@Nullable final OTUSet otuSet) {
-		if (nullSafeEquals(this.otuSet, otuSet)) {
+		if (equal(this.otuSet, otuSet)) {
 			// still the same
 		} else {
 			this.otuSet = otuSet;
@@ -828,7 +828,7 @@ public class CharacterStateMatrix extends UUPPodEntityWXmlId {
 		if (row != null) {
 			row.setMatrix(this);
 		}
-		if (nullSafeEquals(row, oldRow)) {
+		if (equal(row, oldRow)) {
 			// same, nothing to do
 		} else {
 

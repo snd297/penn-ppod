@@ -21,7 +21,10 @@ import static com.google.common.collect.Iterables.getOnlyElement;
 
 import java.util.List;
 
+import javax.annotation.Nullable;
 import javax.persistence.Entity;
+import javax.persistence.JoinColumn;
+import javax.persistence.ManyToOne;
 import javax.persistence.Table;
 
 /**
@@ -31,18 +34,23 @@ import javax.persistence.Table;
 @Table(name = DNASequence.TABLE)
 public class DNASequence extends MolecularSequence {
 
-	public static final String TABLE = "DNA_SEQUENCE";
+	@ManyToOne
+	@JoinColumn(name = DNASequenceSet.ID_COLUMN)
+	private DNASequenceSet sequenceSet;
+
+	/**
+	 * The name of the {@code DNASequence} table.
+	 */
+	static final String TABLE = "DNA_SEQUENCE";
 
 	@Override
-	public DNASequence setSequence(final String newSequence) {
+	public DNASequence setSequence(final StringBuilder newSequence) {
 		for (int i = 0; i < newSequence.length(); i++) {
-			if (DNAState.NucleotideStateNumber.hasOneWithAValueOf(newSequence
-					.charAt(i))) {
+			if (DNAState.Nucleotide.hasOneWithAValueOf(newSequence.charAt(i))) {
 
 			} else {
 				throw new IllegalArgumentException("Position " + i + " is ["
-						+ newSequence.charAt(i)
-						+ "] which is not a DNA state");
+						+ newSequence.charAt(i) + "] which is not a DNA state");
 			}
 		}
 		super.setSequence(newSequence);
@@ -59,14 +67,13 @@ public class DNASequence extends MolecularSequence {
 						cells.get(cellIdx).getStates()).getLabel();
 				final Integer stateNumber = getOnlyElement(
 						cells.get(cellIdx).getStates()).getStateNumber();
-				checkState(DNAState.NucleotideStateNumber
-						.hasOneWithAValueOf(stateLabel), "cell " + cellIdx
-						+ " has a state label [" + stateLabel
-						+ "] which is not that of a DNAState");
-				checkState(DNAState.NucleotideStateNumber
-						.hasOneWithAValueOf(stateNumber), "cell " + cellIdx
-						+ " has a state number of" + stateNumber
-						+ " which is not that of a DNAState");
+				checkState(DNAState.Nucleotide.hasOneWithAValueOf(stateLabel),
+						"cell " + cellIdx + " has a state label [" + stateLabel
+								+ "] which is not that of a DNAState");
+				checkState(DNAState.Nucleotide.hasOneWithAValueOf(stateNumber),
+						"cell " + cellIdx + " has a state number of"
+								+ stateNumber
+								+ " which is not that of a DNAState");
 				sequenceStringBuilder.append(stateLabel);
 
 			} else {
@@ -74,6 +81,16 @@ public class DNASequence extends MolecularSequence {
 				// putStates(cellIdx, null);
 			}
 		}
+		return this;
+	}
+
+	@Override
+	public MolecularSequenceSet getSequenceSet() {
+		return sequenceSet;
+	}
+
+	DNASequence setSequenceSet(@Nullable final DNASequenceSet newSequenceSet) {
+		sequenceSet = newSequenceSet;
 		return this;
 	}
 }

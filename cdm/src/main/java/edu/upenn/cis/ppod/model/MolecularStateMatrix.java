@@ -41,7 +41,7 @@ public abstract class MolecularStateMatrix extends CharacterStateMatrix {
 	 * <p>
 	 * Assumes that none of {@code newMolecularCharacters} are detached.
 	 * <p>
-	 * The return value will is only included for consistency with the
+	 * The return value is only included for consistency with the
 	 * overridden method.
 	 * 
 	 * @param newMolecularCharacters the new {@code MolecularCharacter}s to be

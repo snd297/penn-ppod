@@ -15,11 +15,12 @@
  */
 package edu.upenn.cis.ppod.model;
 
+import static com.google.common.base.Preconditions.checkNotNull;
+
 import javax.annotation.Nullable;
 import javax.annotation.OverridingMethodsMustInvokeSuper;
 import javax.persistence.Column;
 import javax.persistence.Lob;
-import javax.persistence.ManyToOne;
 import javax.persistence.MappedSuperclass;
 import javax.xml.bind.annotation.XmlAttribute;
 import javax.xml.bind.annotation.XmlElement;
@@ -28,14 +29,16 @@ import javax.xml.bind.annotation.XmlElement;
  * @author Sam Donnelly
  */
 @MappedSuperclass
-public class MolecularSequence extends UUPPodEntity {
+public abstract class MolecularSequence extends UUPPodEntity {
 
 	final static String SEQUENCE_COLUMN = "SEQUENCE";
 
 	@Lob
 	@Column(name = SEQUENCE_COLUMN, nullable = false)
 	@Nullable
-	private String sequence;
+	private StringBuilder sequence;
+
+	public abstract MolecularSequenceSet getSequenceSet();
 
 	@Column(name = "LOCUS")
 	private String locus;// when read back into matrix it gets put taxon
@@ -51,9 +54,6 @@ public class MolecularSequence extends UUPPodEntity {
 	private String defline;
 
 	private String accessionNumber;
-
-	@ManyToOne
-	private MolecularSequenceSet sequenceSet;
 
 	/*
 	 * Have an operation upload to server as sequences.
@@ -81,6 +81,8 @@ public class MolecularSequence extends UUPPodEntity {
 // return this;
 // }
 
+	MolecularSequence() {}
+
 	/**
 	 * Get the defline.
 	 * 
@@ -90,6 +92,11 @@ public class MolecularSequence extends UUPPodEntity {
 	@Nullable
 	private String getDefline() {
 		return defline;
+	}
+
+	@XmlElement
+	public String getSequence() {
+		return sequence.toString();
 	}
 
 	/**
@@ -104,16 +111,22 @@ public class MolecularSequence extends UUPPodEntity {
 		return this;
 	}
 
-	MolecularSequence() {}
-
-	@XmlElement
-	public String getSequence() {
-		return sequence.toString();
+	@OverridingMethodsMustInvokeSuper
+	public MolecularSequence setSequence(final StringBuilder newSequence) {
+		checkNotNull(newSequence);
+		if (newSequence.equals(newSequence)) {
+			return this;
+		}
+		sequence.setLength(0);
+		sequence.append(newSequence);
+		resetPPodVersionInfo();
+		return this;
 	}
 
-	@OverridingMethodsMustInvokeSuper
-	public MolecularSequence setSequence(final String sequence) {
-		this.sequence = sequence;
+	@Override
+	public MolecularSequence resetPPodVersionInfo() {
+		getSequenceSet().resetPPodVersionInfo();
+		super.resetPPodVersionInfo();
 		return this;
 	}
 
