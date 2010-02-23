@@ -21,4 +21,4 @@
  
 You should then be able to use the TestNG plugin to run the test suite in `ppod-cdm/src/test/resources/testng-fast.xml` by right-clicking on it and choosing `Run As...TestNG Suite`.
 
-To run the RESTful services, right-click on _ppod-services_ and choose _Run As...Run on Server_ and follow the instructions for running on a Tomcat server. Note: The pPOD Mesquite Modules which use this have not been released yet! So if you really want to use the services you'll have to write your own [http://www.jboss.org/resteasy/ RESTEasy] client.
+To run the RESTful services into MySQL, right-click on _ppod-services_ and choose _Run As...Run on Server_ and follow the instructions for running on a Tomcat server. You'll nee d to season hibernate.properties to taste. Note: The pPOD Mesquite Modules which use this have not been released yet! So if you really want to use the services you'll have to write your own [http://www.jboss.org/resteasy/ RESTEasy] client.
