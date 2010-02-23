@@ -2,7 +2,7 @@
 
 = How we set up our development environment in Eclipse =
 
-_Be aware that the pPOD Mesquite Modules which use this have not been released yet! So if you really want to use this stuff, you'll have to write your own client._
+_Be aware that the pPOD Mesquite Modules which use pPOD have not been released yet! So if you really want to use this stuff, you'll have to write your own client._
 
   # Install Apache Tomcat http://tomcat.apache.org/ 
   # Install [http://www.mysql.com/downloads/mysql/ MySQL]
