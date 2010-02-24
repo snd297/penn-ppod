@@ -17,6 +17,7 @@ package edu.upenn.cis.ppod.model;
 
 import static com.google.common.base.Preconditions.checkNotNull;
 
+import javax.annotation.CheckForNull;
 import javax.annotation.Nullable;
 import javax.annotation.OverridingMethodsMustInvokeSuper;
 import javax.persistence.Column;
@@ -35,22 +36,71 @@ public abstract class MolecularSequence extends UUPPodEntity {
 
 	@Lob
 	@Column(name = SEQUENCE_COLUMN, nullable = false)
-	private StringBuilder sequence = new StringBuilder();
+	private final StringBuilder sequence = new StringBuilder();
 
-	@Nullable
-	public abstract MolecularSequenceSet getSequenceSet();
+	@Column(name = "ACCESSION", nullable = true)
+	@CheckForNull
+	private String accession;
 
-	@Column(name = "LOCUS")
-	@Nullable
-	private String locus;// when read back into matrix it gets put taxon
+	@Column(name = "DESCRIPTION", nullable = true)
+	@CheckForNull
+	private String description;
 
-	@Column(name = "DEFLINE")
-	@Nullable
-	private String defline;
+	@Column(name = "NAME", nullable = true)
+	@CheckForNull
+	private String name;
 
-	@Column(name = "ACCESSION_NUMBER")
+	MolecularSequence() {}
+
+	/**
+	 * Get the accession.
+	 * 
+	 * @return the accession
+	 */
+	@XmlAttribute
+	@CheckForNull
+	public String getAccession() {
+		return accession;
+	}
+
+	/**
+	 * Get the defline.
+	 * 
+	 * @return the defline
+	 */
+	@XmlAttribute
+	@CheckForNull
+	private String getDescription() {
+		return description;
+	}
+
+	/**
+	 * Get the name.
+	 * 
+	 * @return the name
+	 */
+	@XmlAttribute
+	public String getName() {
+		return name;
+	}
+
+	@XmlElement
 	@Nullable
-	private String accessionNumber;
+	public String getSequence() {
+		return sequence.toString();
+	}
+
+// @Column(name = "LOCUS")
+// @Nullable
+// private String locus;// when read back into matrix it gets put taxon
+//
+// @Column(name = "DEFLINE")
+// @Nullable
+// private String defline;
+//
+// @Column(name = "ACCESSION_NUMBER")
+// @Nullable
+// private String accessionNumber;
 
 	/*
 	 * Have an operation upload to server as sequences.
@@ -78,33 +128,51 @@ public abstract class MolecularSequence extends UUPPodEntity {
 // return this;
 // }
 
-	MolecularSequence() {}
-
-	/**
-	 * Get the defline.
-	 * 
-	 * @return the defline
-	 */
-	@XmlAttribute
 	@Nullable
-	private String getDefline() {
-		return defline;
-	}
+	public abstract MolecularSequenceSet getSequenceSet();
 
-	@XmlElement
-	public String getSequence() {
-		return sequence.toString();
+	@Override
+	public MolecularSequence resetPPodVersionInfo() {
+		if (getSequenceSet() != null) {
+			getSequenceSet().resetPPodVersionInfo();
+		}
+		super.resetPPodVersionInfo();
+		return this;
 	}
 
 	/**
-	 * Set the defline.
+	 * Set the accession.
 	 * 
-	 * @param defline the defline to set
+	 * @param accession the accession to set
 	 * 
 	 * @return this
 	 */
-	private MolecularSequence setDefline(final String defline) {
-		this.defline = defline;
+	public MolecularSequence setAccession(final String accession) {
+		this.accession = accession;
+		return this;
+	}
+
+	/**
+	 * Set the description
+	 * 
+	 * @param newDescription the new description
+	 * 
+	 * @return this
+	 */
+	public MolecularSequence setDescription(final String newDescription) {
+		description = newDescription;
+		return this;
+	}
+
+	/**
+	 * Set the name.
+	 * 
+	 * @param name the name to set
+	 * 
+	 * @return this
+	 */
+	public MolecularSequence setName(final String name) {
+		this.name = name;
 		return this;
 	}
 
@@ -117,15 +185,6 @@ public abstract class MolecularSequence extends UUPPodEntity {
 		sequence.setLength(0);
 		sequence.append(newSequence);
 		resetPPodVersionInfo();
-		return this;
-	}
-
-	@Override
-	public MolecularSequence resetPPodVersionInfo() {
-		if (getSequenceSet() != null) {
-			getSequenceSet().resetPPodVersionInfo();
-		}
-		super.resetPPodVersionInfo();
 		return this;
 	}
 
