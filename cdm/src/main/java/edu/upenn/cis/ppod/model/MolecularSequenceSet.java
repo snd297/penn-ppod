@@ -18,9 +18,7 @@ package edu.upenn.cis.ppod.model;
 import java.util.Set;
 
 import javax.annotation.Nullable;
-import javax.persistence.FetchType;
 import javax.persistence.JoinColumn;
-import javax.persistence.ManyToOne;
 import javax.persistence.MappedSuperclass;
 
 /**
@@ -31,20 +29,22 @@ public abstract class MolecularSequenceSet extends UUPPodEntity {
 
 	static final String TABLE = "MOLECULAR_SEQUENCE_SET";
 
-	@ManyToOne(fetch = FetchType.LAZY)
-	@JoinColumn(name = OTUSet.ID_COLUMN, nullable = false)
+	@JoinColumn(name = Study.ID_COLUMN, nullable = false)
 	@Nullable
-	private OTUSet otuSet;
+	private Study study;
 
 	/**
-	 * Intentionally package-private and meant to be called in {@link OTUSet}.
+	 * Intentionally package-private and meant to be called in {@link Study}.
+	 * <p>
+	 * A {@code null} value for {@code newStudy} indicates we're severing the
+	 * relationship.
 	 * 
 	 * @param newOTUSet the OTU set that will own this sequence set
 	 * 
 	 * @return this sequence set
 	 */
-	MolecularSequenceSet setOTUSet(@Nullable OTUSet newOTUSet) {
-		this.otuSet = newOTUSet;
+	MolecularSequenceSet setStudy(@Nullable Study newStudy) {
+		study = newStudy;
 		return this;
 	}
 
@@ -53,8 +53,8 @@ public abstract class MolecularSequenceSet extends UUPPodEntity {
 	 * 
 	 * @return this sequence set's owning OTU set
 	 */
-	public OTUSet getOTUSet() {
-		return otuSet;
+	public Study getStudy() {
+		return study;
 	}
 
 	/**
@@ -68,7 +68,7 @@ public abstract class MolecularSequenceSet extends UUPPodEntity {
 
 	@Override
 	public MolecularSequenceSet resetPPodVersionInfo() {
-		getOTUSet().resetPPodVersionInfo();
+		getStudy().resetPPodVersionInfo();
 		super.resetPPodVersionInfo();
 		return this;
 	}

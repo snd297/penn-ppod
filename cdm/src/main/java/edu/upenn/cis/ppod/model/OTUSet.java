@@ -94,11 +94,6 @@ public class OTUSet extends UUPPodEntityWXmlId {
 			org.hibernate.annotations.CascadeType.DELETE_ORPHAN })
 	private final Set<CharacterStateMatrix> matrices = newHashSet();
 
-	@OneToMany(mappedBy = "otuSet")
-	@Cascade( { org.hibernate.annotations.CascadeType.SAVE_UPDATE,
-			org.hibernate.annotations.CascadeType.DELETE_ORPHAN })
-	private final Set<DNASequenceSet> dnaSequenceSets = newHashSet();
-
 	/** The tree sets that reference this OTU set. */
 	@OneToMany(mappedBy = "otuSet")
 	@Cascade( { org.hibernate.annotations.CascadeType.SAVE_UPDATE,
@@ -271,14 +266,7 @@ public class OTUSet extends UUPPodEntityWXmlId {
 		return otus;
 	}
 
-	public Set<DNASequenceSet> getDNASequenceSets() {
-		return Collections.unmodifiableSet(getDNASequenceSetsModifiable());
-	}
 
-	@XmlElement(name = "dnaSequenceSet")
-	private Set<DNASequenceSet> getDNASequenceSetsModifiable() {
-		return dnaSequenceSets;
-	}
 
 	/**
 	 * Get the study to which this OTU set belongs. Will be {@code null} until
@@ -424,25 +412,6 @@ public class OTUSet extends UUPPodEntityWXmlId {
 		return removedOTUs;
 	}
 
-	public Set<DNASequenceSet> setDNASequenceSets(
-			final Set<? extends DNASequenceSet> newSequenceSets) {
-		checkNotNull(newSequenceSets);
-
-		final Set<DNASequenceSet> removedSequenceSets = getDNASequenceSets();
-		removedSequenceSets.removeAll(newSequenceSets);
-
-		for (final MolecularSequenceSet removedSequenceSet : removedSequenceSets) {
-			removedSequenceSet.setOTUSet(null);
-		}
-
-		getDNASequenceSetsModifiable().clear();
-		getDNASequenceSetsModifiable().addAll(newSequenceSets);
-
-		for (final MolecularSequenceSet newSequenceSet : newSequenceSets) {
-			newSequenceSet.setOTUSet(this);
-		}
-		return removedSequenceSets;
-	}
 
 	OTUSet setStudy(final Study study) {
 		checkNotNull(study);
