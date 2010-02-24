@@ -144,12 +144,12 @@ public class Study extends UUPPodEntity implements IOTUSetCentricEntities {
 	 * @return the otuSets
 	 */
 	public Set<OTUSet> getOTUSets() {
-		return Collections.unmodifiableSet(otuSets);
+		return Collections.unmodifiableSet(getOTUSetsModifiable());
 	}
 
 	@XmlElement(name = "otuSet")
 	@SuppressWarnings("unused")
-	private Set<OTUSet> getOTUSetsMutable() {
+	private Set<OTUSet> getOTUSetsModifiable() {
 		return otuSets;
 	}
 

@@ -15,7 +15,7 @@
  */
 package edu.upenn.cis.ppod.services;
 
-import org.jboss.resteasy.plugins.guice.GuiceResteasyBootstrapServletContextListener;
+import org.jboss.resteasy.plugins.server.tjws.TJWSEmbeddedJaxrsServer;
 import org.mortbay.jetty.testing.ServletTester;
 import org.testng.annotations.BeforeSuite;
 import org.testng.annotations.Test;
@@ -37,28 +37,32 @@ public class PPodEntitiesResourceTest {
 
 	@BeforeSuite
 	public void beforeSuite() {
-		tester = new ServletTester();
-		tester.setContextPath("");
-		tester
-				.addServlet(
-						org.jboss.resteasy.plugins.server.servlet.HttpServletDispatcher.class,
-						"/ppod-services");
-		tester
-				.setAttribute(
-						"resteasy.guice.modules",
-						"edu.upenn.cis.ppod.services.PPodServicesModule, "
-								+ "edu.upenn.cis.ppod.util.PPodCoreModule, "
-								+ "edu.upenn.cis.ppod.thirdparty.injectslf4j.InjectSlf4jModule");
-		tester
-				.setAttribute("resteasy.providers",
-						"edu.upenn.cis.ppod.services.hibernate.HibernateCommitInterceptor");
-		tester
-				.addFilter(
-						edu.upenn.cis.ppod.thirdparty.util.HibernateSessionPerRequestFilter.class,
-						"/*", 0);
-		tester
-				.addEventListener(new GuiceResteasyBootstrapServletContextListener());
+// tester = new ServletTester();
+// tester.setContextPath("");
+// tester
+// .addServlet(
+// org.jboss.resteasy.plugins.server.servlet.HttpServletDispatcher.class,
+// "/ppod-services");
+// tester
+// .setAttribute(
+// "resteasy.guice.modules",
+// "edu.upenn.cis.ppod.services.PPodServicesModule, "
+// + "edu.upenn.cis.ppod.util.PPodCoreModule, "
+// + "edu.upenn.cis.ppod.thirdparty.injectslf4j.InjectSlf4jModule");
+// tester
+// .setAttribute("resteasy.providers",
+// "edu.upenn.cis.ppod.services.hibernate.HibernateCommitInterceptor");
+// tester
+// .addFilter(
+// edu.upenn.cis.ppod.thirdparty.util.HibernateSessionPerRequestFilter.class,
+// "/*", 0);
+// tester
+// .addEventListener(new GuiceResteasyBootstrapServletContextListener());
 
+//		TJWSEmbeddedJaxrsServer tjws = new TJWSEmbeddedJaxrsServer();
+//		tjws.setPort(8081);
+//		tjws.getDeployment().getActualResourceClasses().add(PP
+//		tjws.start();
 	}
 
 	public void uploadProject() throws Exception {

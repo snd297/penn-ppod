@@ -190,7 +190,7 @@ public class SaveOrUpdateStudyHibernate implements ISaveOrUpdateStudy {
 						dbOTUsByIncomingOTU, dbDNACharacter);
 
 			}
-
+			final Set<TreeSet> newDbTreeSets = newHashSet();
 			for (final TreeSet incomingTreeSet : incomingOTUSet.getTreeSets()) {
 				TreeSet dbTreeSet;
 				if (null == (dbTreeSet = findIf(dbOTUSet.getTreeSets(),
@@ -201,7 +201,9 @@ public class SaveOrUpdateStudyHibernate implements ISaveOrUpdateStudy {
 							.getNewPPodVersionInfo());
 					dbTreeSet.setPPodId();
 				}
-				mergeTreeSet.merge(dbTreeSet, incomingTreeSet, dbOTUSet,
+				newDbTreeSets.add(dbTreeSet);
+				dbOTUSet.setTreeSets(newDbTreeSets);
+				mergeTreeSet.merge(dbTreeSet, incomingTreeSet,
 						dbOTUsByIncomingOTU);
 			}
 		}

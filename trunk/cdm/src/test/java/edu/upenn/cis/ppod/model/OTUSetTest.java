@@ -20,7 +20,6 @@ import static com.google.common.collect.Lists.newArrayList;
 import static com.google.common.collect.Sets.newHashSet;
 import static org.testng.Assert.assertEquals;
 import static org.testng.Assert.assertFalse;
-import static org.testng.Assert.assertNull;
 import static org.testng.Assert.assertTrue;
 
 import java.util.Collections;
@@ -39,7 +38,6 @@ import edu.upenn.cis.ppod.TestGroupDefs;
 
 /**
  * @author Sam Donnelly
- * 
  */
 @Test(groups = TestGroupDefs.INIT)
 public class OTUSetTest {
@@ -91,7 +89,7 @@ public class OTUSetTest {
 
 	public void addTreeSet() {
 		final TreeSet treeSet = treeSetProvider.get();
-		otuSet.addTreeSet(treeSet);
+		otuSet.setTreeSets(newHashSet(treeSet));
 		assertEquals(getOnlyElement(otuSet.getTreeSets()), treeSet);
 	}
 
@@ -173,7 +171,9 @@ public class OTUSetTest {
 
 		study.setPPodVersionInfo(pPodVersionInfoProvider.get());
 
-		otuSet.removeMatrix(matrix1);
+		final ImmutableSet<CharacterStateMatrix> matricesMinusMatrix1 = ImmutableSet
+				.of(matrix0, matrix2);
+		otuSet.setMatrices(matricesMinusMatrix1);
 
 		assertTrue(study.isInNeedOfNewPPodVersionInfo());
 		assertTrue(otuSet.isInNeedOfNewPPodVersionInfo());
@@ -188,28 +188,29 @@ public class OTUSetTest {
 		final TreeSet treeSet0 = treeSetProvider.get();
 		final TreeSet treeSet1 = treeSetProvider.get();
 		final TreeSet treeSet2 = treeSetProvider.get();
+		final ImmutableSet<TreeSet> treeSets = ImmutableSet.of(treeSet0,
+				treeSet1, treeSet2);
 
-		otuSet.addTreeSet(treeSet0);
-		otuSet.addTreeSet(treeSet1);
-		otuSet.addTreeSet(treeSet2);
+		otuSet.setTreeSets(treeSets);
 
 		otuSet.setPPodVersionInfo(pPodVersionInfoProvider.get());
 
-		final boolean removeTreeSetReturnValue = otuSet.removeTreeSet(treeSet1);
+		final ImmutableSet<TreeSet> treeSetsMinusTreeSet1 = ImmutableSet.of(
+				treeSet0, treeSet2);
 
-		assertTrue(removeTreeSetReturnValue);
+		final Set<TreeSet> removedTreeSets = otuSet
+				.setTreeSets(treeSetsMinusTreeSet1);
+
+		assertEquals(removedTreeSets, newHashSet(treeSet1));
 
 		assertTrue(otuSet.isInNeedOfNewPPodVersionInfo());
-		// assertNull(otuSet.getPPodVersionInfo());
 
 		assertEquals(otuSet.getTreeSets(), newHashSet(treeSet0, treeSet2));
 
-		otuSet.removeTreeSet(treeSet0);
-		otuSet.removeTreeSet(treeSet2);
-		boolean removeTreeSetValueShouldBeFalse = otuSet
-				.removeTreeSet(treeSet2);
+		final ImmutableSet<TreeSet> removedTreeSets2 = ImmutableSet
+				.copyOf(otuSet.setTreeSets(Collections.EMPTY_SET));
 
-		assertFalse(removeTreeSetValueShouldBeFalse);
+		assertEquals((Object) removedTreeSets2, (Object) treeSetsMinusTreeSet1);
 
 		assertEquals(otuSet.getTreeSets(), Collections.emptySet());
 	}

@@ -110,6 +110,22 @@ public class DNAState extends MolecularState {
 			return false;
 		}
 
+		public static boolean hasOneWithAValueOf(final char c) {
+			if (c == A.toString().charAt(0)) {
+				return true;
+			}
+			if (c == C.toString().charAt(0)) {
+				return true;
+			}
+			if (c == G.toString().charAt(0)) {
+				return true;
+			}
+			if (c == T.toString().charAt(0)) {
+				return true;
+			}
+			return false;
+		}
+
 		/**
 		 * Return {@code true} if {@code i} is the ordinal value of {@link #A},
 		 * {@link #C}, {@link #G}, or {@link #T}, {@code false} otherwise.

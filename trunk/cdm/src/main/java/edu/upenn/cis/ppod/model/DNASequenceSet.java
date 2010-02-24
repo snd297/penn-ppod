@@ -24,11 +24,10 @@ import java.util.Set;
 import javax.persistence.Entity;
 import javax.persistence.OneToMany;
 import javax.persistence.Table;
-import javax.xml.bind.annotation.XmlAttribute;
+import javax.xml.bind.annotation.XmlElement;
 
 /**
  * @author Sam Donnelly
- * 
  */
 @Entity
 @Table(name = DNASequenceSet.TABLE)
@@ -36,12 +35,12 @@ public class DNASequenceSet extends MolecularSequenceSet {
 
 	public final static String TABLE = "DNA_SEQUENCE_SET";
 
-	public final static String ID_COLUMN = "DNA_ " + PersistentObject.ID_COLUMN;
+	public final static String ID_COLUMN = "DNA_" + PersistentObject.ID_COLUMN;
 
 	@OneToMany(mappedBy = "sequenceSet")
 	private Set<DNASequence> sequences = newHashSet();
 
-	@XmlAttribute(name = "sequence")
+	@XmlElement(name = "sequence")
 	private Set<DNASequence> getSequencesModifiable() {
 		return sequences;
 	}
