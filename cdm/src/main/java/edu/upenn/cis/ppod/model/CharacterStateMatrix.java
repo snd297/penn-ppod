@@ -638,9 +638,14 @@ public class CharacterStateMatrix extends UUPPodEntityWXmlId {
 	 * @param pPodVersionInfo the version
 	 * 
 	 * @return this
+	 * 
+	 * @throw IllegalArgumentException if {@code pos >=
+	 *        getColumnPPodVersionInfos().size()}
 	 */
 	public CharacterStateMatrix setColumnPPodVersionInfo(final int pos,
 			final PPodVersionInfo pPodVersionInfo) {
+		checkArgument(pos < getColumnPPodVersionInfos().size(),
+				"pos is bigger than getColumnPPodVersionInfos().size()");
 		getColumnPPodVersionInfosModifiable().set(pos, pPodVersionInfo);
 		return this;
 	}

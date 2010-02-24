@@ -35,24 +35,21 @@ public abstract class MolecularSequence extends UUPPodEntity {
 
 	@Lob
 	@Column(name = SEQUENCE_COLUMN, nullable = false)
-	@Nullable
-	private StringBuilder sequence;
+	private StringBuilder sequence = new StringBuilder();
 
+	@Nullable
 	public abstract MolecularSequenceSet getSequenceSet();
 
 	@Column(name = "LOCUS")
+	@Nullable
 	private String locus;// when read back into matrix it gets put taxon
-
-// private final Map<Integer, CharacterStates> statesByPosition = newHashMap();
-
-// protected Map<Integer, CharacterStates> getStatesByPosition() {
-// return statesByPosition;
-// }
 
 	@Column(name = "DEFLINE")
 	@Nullable
 	private String defline;
 
+	@Column(name = "ACCESSION_NUMBER")
+	@Nullable
 	private String accessionNumber;
 
 	/*
@@ -112,9 +109,9 @@ public abstract class MolecularSequence extends UUPPodEntity {
 	}
 
 	@OverridingMethodsMustInvokeSuper
-	public MolecularSequence setSequence(final StringBuilder newSequence) {
+	public MolecularSequence setSequence(final CharSequence newSequence) {
 		checkNotNull(newSequence);
-		if (newSequence.equals(newSequence)) {
+		if (newSequence.equals(getSequence())) {
 			return this;
 		}
 		sequence.setLength(0);
@@ -125,9 +122,18 @@ public abstract class MolecularSequence extends UUPPodEntity {
 
 	@Override
 	public MolecularSequence resetPPodVersionInfo() {
-		getSequenceSet().resetPPodVersionInfo();
+		if (getSequenceSet() != null) {
+			getSequenceSet().resetPPodVersionInfo();
+		}
 		super.resetPPodVersionInfo();
 		return this;
 	}
+
+	// private final Map<Integer, CharacterStates> statesByPosition =
+	// newHashMap();
+
+	// protected Map<Integer, CharacterStates> getStatesByPosition() {
+	// return statesByPosition;
+	// }
 
 }

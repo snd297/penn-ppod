@@ -21,6 +21,7 @@ import static com.google.common.collect.Iterables.getOnlyElement;
 
 import java.util.List;
 
+import javax.annotation.CheckForNull;
 import javax.annotation.Nullable;
 import javax.persistence.Entity;
 import javax.persistence.JoinColumn;
@@ -34,8 +35,59 @@ import javax.persistence.Table;
 @Table(name = DNASequence.TABLE)
 public class DNASequence extends MolecularSequence {
 
+	private static boolean isLegal(final char c) {
+		final char upcasedC = java.lang.Character.toUpperCase(c);
+		if (upcasedC == 'A') {
+			return true;
+		}
+		if (upcasedC == 'C') {
+			return true;
+		}
+		if (upcasedC == 'G') {
+			return true;
+		}
+		if (upcasedC == 'T') {
+			return true;
+		}
+		if (upcasedC == 'R') {
+			return true;
+		}
+		if (upcasedC == 'Y') {
+			return true;
+		}
+		if (upcasedC == 'K') {
+			return true;
+		}
+		if (upcasedC == 'M') {
+			return true;
+		}
+		if (upcasedC == 'S') {
+			return true;
+		}
+		if (upcasedC == 'W') {
+			return true;
+		}
+		if (upcasedC == 'B') {
+			return true;
+		}
+		if (upcasedC == 'D') {
+			return true;
+		}
+		if (upcasedC == 'H') {
+			return true;
+		}
+		if (upcasedC == 'V') {
+			return true;
+		}
+		if (upcasedC == 'N') {
+			return true;
+		}
+		return false;
+	}
+
 	@ManyToOne
-	@JoinColumn(name = DNASequenceSet.ID_COLUMN)
+	@JoinColumn(name = DNASequenceSet.ID_COLUMN, nullable = false)
+	@CheckForNull
 	private DNASequenceSet sequenceSet;
 
 	/**
@@ -44,17 +96,8 @@ public class DNASequence extends MolecularSequence {
 	static final String TABLE = "DNA_SEQUENCE";
 
 	@Override
-	public DNASequence setSequence(final StringBuilder newSequence) {
-		for (int i = 0; i < newSequence.length(); i++) {
-			if (DNAState.Nucleotide.hasOneWithAValueOf(newSequence.charAt(i))) {
-
-			} else {
-				throw new IllegalArgumentException("Position " + i + " is ["
-						+ newSequence.charAt(i) + "] which is not a DNA state");
-			}
-		}
-		super.setSequence(newSequence);
-		return this;
+	public MolecularSequenceSet getSequenceSet() {
+		return sequenceSet;
 	}
 
 	@edu.umd.cs.findbugs.annotations.SuppressWarnings
@@ -85,8 +128,17 @@ public class DNASequence extends MolecularSequence {
 	}
 
 	@Override
-	public MolecularSequenceSet getSequenceSet() {
-		return sequenceSet;
+	public DNASequence setSequence(final CharSequence newSequence) {
+		for (int i = 0; i < newSequence.length(); i++) {
+			if (isLegal(newSequence.charAt(i))) {
+
+			} else {
+				throw new IllegalArgumentException("Position " + i + " is ["
+						+ newSequence.charAt(i) + "] which is not a DNA state");
+			}
+		}
+		super.setSequence(newSequence);
+		return this;
 	}
 
 	DNASequence setSequenceSet(@Nullable final DNASequenceSet newSequenceSet) {

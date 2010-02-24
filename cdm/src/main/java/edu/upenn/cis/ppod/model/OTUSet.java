@@ -97,7 +97,7 @@ public class OTUSet extends UUPPodEntityWXmlId {
 	@OneToMany(mappedBy = "otuSet")
 	@Cascade( { org.hibernate.annotations.CascadeType.SAVE_UPDATE,
 			org.hibernate.annotations.CascadeType.DELETE_ORPHAN })
-	private final Set<MolecularSequenceSet> sequenceSets = newHashSet();
+	private final Set<DNASequenceSet> dnaSequenceSets = newHashSet();
 
 	/** The tree sets that reference this OTU set. */
 	@OneToMany(mappedBy = "otuSet")
@@ -182,13 +182,23 @@ public class OTUSet extends UUPPodEntityWXmlId {
 	 * 
 	 * @return {@code treeSet}
 	 */
-	public TreeSet addTreeSet(final TreeSet treeSet) {
-		checkNotNull(treeSet);
-		if (treeSets.add(treeSet)) {
-			treeSet.setOTUSet(this);
-			resetPPodVersionInfo();
+	public Set<TreeSet> setTreeSets(final Set<TreeSet> newTreeSets) {
+		checkNotNull(newTreeSets);
+		if (newTreeSets.equals(getTreeSets())) {
+			return Collections.emptySet();
 		}
-		return treeSet;
+		final Set<TreeSet> removedTreeSets = newHashSet(getTreeSets());
+		removedTreeSets.removeAll(newTreeSets);
+		for (final TreeSet removedTreeSet : removedTreeSets) {
+			removedTreeSet.setOTUSet(null);
+		}
+		getTreeSetsModifiable().clear();
+		getTreeSetsModifiable().addAll(newTreeSets);
+		for (final TreeSet treeSet : getTreeSets()) {
+			treeSet.setOTUSet(this);
+		}
+		resetPPodVersionInfo();
+		return removedTreeSets;
 	}
 
 	/**
@@ -261,12 +271,13 @@ public class OTUSet extends UUPPodEntityWXmlId {
 		return otus;
 	}
 
-	public Set<MolecularSequenceSet> getSequenceSets() {
-		return Collections.unmodifiableSet(getSequenceSetsModifiable());
+	public Set<DNASequenceSet> getDNASequenceSets() {
+		return Collections.unmodifiableSet(getDNASequenceSetsModifiable());
 	}
 
-	private Set<MolecularSequenceSet> getSequenceSetsModifiable() {
-		return sequenceSets;
+	@XmlElement(name = "dnaSequenceSet")
+	private Set<DNASequenceSet> getDNASequenceSetsModifiable() {
+		return dnaSequenceSets;
 	}
 
 	/**
@@ -291,46 +302,8 @@ public class OTUSet extends UUPPodEntityWXmlId {
 
 	@XmlElement(name = "treeSet")
 	@SuppressWarnings("unused")
-	private Set<TreeSet> getTreeSetsMutable() {
+	private Set<TreeSet> getTreeSetsModifiable() {
 		return treeSets;
-	}
-
-	/**
-	 * Remove {@code matrix} from this OTU set's matrices. Also takes care of
-	 * the matrix side of the relationship.
-	 * 
-	 * @param matrix to be removed
-	 * 
-	 * @return {@code true} if {@code matrix} belonged to this OTU set and was
-	 *         removed
-	 */
-	public boolean removeMatrix(final CharacterStateMatrix matrix) {
-		checkNotNull(matrix);
-		if (matrices.remove(matrix)) {
-			matrix.setOTUSet(null);
-			resetPPodVersionInfo();
-			return true;
-		}
-		return false;
-	}
-
-	/**
-	 * Remove {@code matrix} from this OTU set's matrices. Also takes care of
-	 * the tree set side of the relationship.
-	 * 
-	 * @param treeSet to be removed
-	 * 
-	 * @return {@code true} if {@code matrix} belonged to this OTU set and was
-	 *         removed
-	 */
-	public boolean removeTreeSet(final TreeSet treeSet) {
-		checkNotNull(treeSet);
-		if (treeSets.remove(treeSet)) {
-			treeSet.setOTUSet(null);
-			resetPPodVersionInfo();
-			return true;
-		}
-		return false;
 	}
 
 	/**
@@ -415,6 +388,7 @@ public class OTUSet extends UUPPodEntityWXmlId {
 		for (final CharacterStateMatrix matrix : getMatrices()) {
 			matrix.setOTUSet(this);
 		}
+		resetPPodVersionInfo();
 		return removedMatrices;
 	}
 
@@ -450,19 +424,19 @@ public class OTUSet extends UUPPodEntityWXmlId {
 		return removedOTUs;
 	}
 
-	public Set<MolecularSequenceSet> setSequenceSets(
-			final Set<? extends MolecularSequenceSet> newSequenceSets) {
+	public Set<DNASequenceSet> setDNASequenceSets(
+			final Set<? extends DNASequenceSet> newSequenceSets) {
 		checkNotNull(newSequenceSets);
 
-		final Set<MolecularSequenceSet> removedSequenceSets = getSequenceSets();
+		final Set<DNASequenceSet> removedSequenceSets = getDNASequenceSets();
 		removedSequenceSets.removeAll(newSequenceSets);
 
 		for (final MolecularSequenceSet removedSequenceSet : removedSequenceSets) {
 			removedSequenceSet.setOTUSet(null);
 		}
 
-		getSequenceSetsModifiable().clear();
-		getSequenceSetsModifiable().addAll(newSequenceSets);
+		getDNASequenceSetsModifiable().clear();
+		getDNASequenceSetsModifiable().addAll(newSequenceSets);
 
 		for (final MolecularSequenceSet newSequenceSet : newSequenceSets) {
 			newSequenceSet.setOTUSet(this);

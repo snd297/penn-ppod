@@ -151,19 +151,22 @@ public class PPodEntitiesResourceHibernate implements
 			// matrices or tree sets that were pulled over with the OTUSet's
 			for (final OTUSet otuSet : pPodEntities.getOTUSets()) {
 
+				final Set<CharacterStateMatrix> matricesToReturn = newHashSet();
+
 				for (final CharacterStateMatrix matrix : otuSet.getMatrices()) {
 					if (addedMatrices.contains(matrix)) {
-
-					} else {
-						otuSet.removeMatrix(matrix);
+						matricesToReturn.add(matrix);
 					}
 				}
+				otuSet.setMatrices(matricesToReturn);
 
+				final Set<TreeSet> treeSetsToReturn = newHashSet();
 				for (final TreeSet treeSet : otuSet.getTreeSets()) {
-					if (addedTreeSets.contains(treeSet)) {} else {
-						otuSet.removeTreeSet(treeSet);
+					if (addedTreeSets.contains(treeSet)) {
+						treeSetsToReturn.add(treeSet);
 					}
 				}
+				otuSet.setTreeSets(treeSetsToReturn);
 			}
 		}
 		return pPodEntities;

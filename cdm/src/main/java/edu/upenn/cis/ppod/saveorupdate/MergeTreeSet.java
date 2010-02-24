@@ -53,13 +53,10 @@ public class MergeTreeSet implements IMergeTreeSet {
 	}
 
 	public TreeSet merge(final TreeSet targetTreeSet,
-			final TreeSet sourceTreeSet, final OTUSet newTargetTreeSetOTUSet,
+			final TreeSet sourceTreeSet, 
 			final Map<OTU, OTU> mergedOTUsBySourceOTU) {
 		checkNotNull(targetTreeSet);
 		checkNotNull(sourceTreeSet);
-		checkNotNull(newTargetTreeSetOTUSet);
-
-		newTargetTreeSetOTUSet.addTreeSet(targetTreeSet);
 
 		// For the response to the client
 		targetTreeSet.setDocId(sourceTreeSet.getDocId());
