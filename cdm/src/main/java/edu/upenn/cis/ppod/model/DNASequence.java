@@ -36,7 +36,7 @@ import javax.xml.bind.Unmarshaller;
 @Table(name = DNASequence.TABLE)
 public class DNASequence extends MolecularSequence<DNASequenceSet> {
 
-	private static boolean isLegal(final char c) {
+	public boolean isLegal(final char c) {
 		if (c == 'A') {
 			return true;
 		}
@@ -125,20 +125,6 @@ public class DNASequence extends MolecularSequence<DNASequenceSet> {
 				// putStates(cellIdx, null);
 			}
 		}
-		return this;
-	}
-
-	@Override
-	public DNASequence setSequence(final CharSequence newSequence) {
-		for (int i = 0; i < newSequence.length(); i++) {
-			if (isLegal(newSequence.charAt(i))) {
-
-			} else {
-				throw new IllegalArgumentException("Position " + i + " is ["
-						+ newSequence.charAt(i) + "] which is not a DNA state");
-			}
-		}
-		super.setSequence(newSequence);
 		return this;
 	}
 

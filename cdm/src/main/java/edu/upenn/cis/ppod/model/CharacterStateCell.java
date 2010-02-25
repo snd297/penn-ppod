@@ -141,7 +141,7 @@ public class CharacterStateCell extends PPodEntity {
 	@ManyToMany
 	@Sort(type = SortType.COMPARATOR, comparator = CharacterState.CharacterStateComparator.class)
 	@JoinTable(inverseJoinColumns = @JoinColumn(name = CharacterState.ID_COLUMN))
-	@Nullable
+	@CheckForNull
 	private SortedSet<CharacterState> states = null;
 
 	/**
@@ -158,7 +158,7 @@ public class CharacterStateCell extends PPodEntity {
 	 */
 	@Column(name = TYPE_COLUMN, nullable = false)
 	@Enumerated(EnumType.ORDINAL)
-	@Nullable
+	@CheckForNull
 	private CharacterStateCell.Type type;
 
 	/**
@@ -480,12 +480,16 @@ public class CharacterStateCell extends PPodEntity {
 	 * 
 	 * @return {@code state}
 	 */
-	private CharacterStateCell setStates(final Set<CharacterState> states) {
+	private CharacterStateCell setStates(
+			final Set<? extends CharacterState> states) {
 		checkNotNull(states);
 
 		if (this.states == null) {
 			this.states = newTreeSet(STATE_COMPARATOR);
 		}
+
+		// So FindBugs knows that we got it when it wasn't null
+		final Set<CharacterState> thisStates = this.states;
 
 		if (getStates().equals(states)) {
 			return this;
@@ -497,10 +501,10 @@ public class CharacterStateCell extends PPodEntity {
 
 		clearStates();
 
-		this.states.addAll(states);
+		thisStates.addAll(states);
 
 		if (states.size() > 0) {
-			firstState = get(this.states, 0);
+			firstState = get(thisStates, 0);
 		}
 		resetPPodVersionInfo();
 		return this;
