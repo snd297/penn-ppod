@@ -24,7 +24,6 @@ import javax.xml.bind.annotation.XmlAttribute;
 
 import edu.upenn.cis.ppod.modelinterfaces.IUUPPodEntity;
 
-
 /**
  * A universally unique pPOD entity.
  * <p>

@@ -23,6 +23,7 @@ import org.testng.annotations.Test;
 import com.google.inject.Inject;
 
 import edu.upenn.cis.ppod.TestGroupDefs;
+import edu.upenn.cis.ppod.services.hibernate.PPodEntitiesResourceHibernate;
 
 /**
  * @author Sam Donnelly
@@ -59,10 +60,12 @@ public class PPodEntitiesResourceTest {
 // tester
 // .addEventListener(new GuiceResteasyBootstrapServletContextListener());
 
-//		TJWSEmbeddedJaxrsServer tjws = new TJWSEmbeddedJaxrsServer();
-//		tjws.setPort(8081);
-//		tjws.getDeployment().getActualResourceClasses().add(PP
-//		tjws.start();
+		final TJWSEmbeddedJaxrsServer tjws = new TJWSEmbeddedJaxrsServer();
+		tjws.setPort(8081);
+		tjws.getDeployment().getActualResourceClasses().add(
+				PPodEntitiesResourceHibernate.class);
+		System.out.println("started the server......................");
+		tjws.start();
 	}
 
 	public void uploadProject() throws Exception {

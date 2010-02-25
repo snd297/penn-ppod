@@ -22,8 +22,7 @@ import com.google.inject.Guice;
 import com.google.inject.util.Modules;
 
 import edu.upenn.cis.ppod.modelinterfaces.INewPPodVersionInfo;
-import edu.upenn.cis.ppod.services.IPPodEntitiesResource;
-import edu.upenn.cis.ppod.services.hibernate.PPodEntitiesResourceHibernate;
+import edu.upenn.cis.ppod.services.PPodServicesModule;
 import edu.upenn.cis.ppod.thirdparty.injectslf4j.InjectSlf4jModule;
 import edu.upenn.cis.ppod.util.GuiceObjectFactory;
 import edu.upenn.cis.ppod.util.PPodCoreModule;
@@ -37,19 +36,12 @@ import edu.upenn.cis.ppod.util.StubSession;
 public class PPodObjectFactory extends GuiceObjectFactory {
 
 	PPodObjectFactory() {
-		setInjector(Guice.createInjector(Modules.override(new PPodCoreModule())
-				.with(this), new InjectSlf4jModule()));
+		setInjector(Guice.createInjector(Modules.override(new PPodCoreModule(),
+				new PPodServicesModule()).with(this), new InjectSlf4jModule()));
 	}
 
 	@Override
 	protected void configure() {
-		bind(IPPodEntitiesResource.class).to(
-				PPodEntitiesResourceHibernate.class);
-// final org.hibernate.classic.Session session = HibernateUtil
-// .getSessionFactory().openSession();
-// ManagedSessionContext.bind(session);
-// bind(Session.class).toInstance(
-// HibernateUtil.getSessionFactory().getCurrentSession());
 		bind(Session.class).to(StubSession.class);
 		bind(Query.class).to(StubQuery.class);
 		bind(INewPPodVersionInfo.class).to(StubNewVersionInfo.class);
