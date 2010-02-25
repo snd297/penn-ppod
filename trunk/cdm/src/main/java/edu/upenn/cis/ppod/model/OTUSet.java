@@ -80,6 +80,7 @@ public class OTUSet extends UUPPodEntityWXmlId {
 	 */
 	@Column(name = "LABEL", nullable = false)
 	@org.hibernate.annotations.Index(name = "IDX_LABEL")
+	@CheckForNull
 	private String label;
 
 	/** The set of {@code OTU}s that this {@code OTUSet} contains. */

@@ -145,6 +145,8 @@ public abstract class MolecularSequence<SS extends MolecularSequenceSet<?>>
 // return this;
 // }
 
+	public abstract boolean isLegal(char c);
+
 	@Override
 	public MolecularSequence resetPPodVersionInfo() {
 		if (getSequenceSet() != null) {
@@ -196,6 +198,15 @@ public abstract class MolecularSequence<SS extends MolecularSequenceSet<?>>
 		if (newSequence.equals(getSequence())) {
 			return this;
 		}
+		for (int i = 0; i < newSequence.length(); i++) {
+			if (isLegal(newSequence.charAt(i))) {
+
+			} else {
+				throw new IllegalArgumentException("Position " + i + " is ["
+						+ newSequence.charAt(i) + "] which is not a DNA state");
+			}
+		}
+
 		sequence.setLength(0);
 		sequence.append(newSequence);
 		resetPPodVersionInfo();

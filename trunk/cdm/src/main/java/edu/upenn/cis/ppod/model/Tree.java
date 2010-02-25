@@ -17,6 +17,7 @@ package edu.upenn.cis.ppod.model;
 
 import static com.google.common.base.Preconditions.checkNotNull;
 
+import javax.annotation.CheckForNull;
 import javax.annotation.Nullable;
 import javax.persistence.Column;
 import javax.persistence.Entity;
@@ -42,16 +43,17 @@ public class Tree extends UUPPodEntity {
 	static final String TABLE = "TREE";
 
 	@Column(name = "LABEL", nullable = false)
-	@Nullable
+	@CheckForNull
 	private String label;
 
 	@Lob
 	@Column(name = "NEWICK", nullable = false)
-	@Nullable
+	@CheckForNull
 	private String newick;
 
 	@ManyToOne
 	@JoinColumn(name = TreeSet.ID_COLUMN, insertable = false, updatable = false, nullable = false)
+	@CheckForNull
 	private TreeSet treeSet;
 
 	Tree() {}
@@ -133,6 +135,8 @@ public class Tree extends UUPPodEntity {
 	 * <p>
 	 * Intended to be package-private and used in conjunction with
 	 * {@link TreeSet#removeTree(Tree)}.
+	 * <p>
+	 * Use {@code null} for {@code treeSet} to sever the relationship.
 	 * 
 	 * @param treeSet the {@code TreeSet} that we're removing
 	 * 

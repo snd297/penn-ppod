@@ -49,7 +49,6 @@ import javax.xml.bind.annotation.XmlAttribute;
 import javax.xml.bind.annotation.XmlElement;
 import javax.xml.bind.annotation.XmlIDREF;
 import javax.xml.bind.annotation.XmlSeeAlso;
-import javax.xml.bind.annotation.XmlType;
 
 import org.hibernate.annotations.Cascade;
 import org.hibernate.annotations.IndexColumn;
@@ -108,10 +107,12 @@ public class CharacterStateMatrix extends UUPPodEntityWXmlId {
 
 	/** Free-form description. */
 	@Column(name = DESCRIPTION_COLUMN)
+	@CheckForNull
 	private String description;
 
 	/** The label for this {@code CharacterStateMatrix}. */
 	@Column(name = LABEL_COLUMN, nullable = false)
+	@CheckForNull
 	private String label;
 
 	static final String OTU_IDX_COLUMN = "OTU_IDX";
@@ -141,7 +142,7 @@ public class CharacterStateMatrix extends UUPPodEntityWXmlId {
 	 */
 	@ManyToOne(fetch = FetchType.LAZY)
 	@JoinColumn(name = OTUSet.ID_COLUMN, nullable = false)
-	@Nullable
+	@CheckForNull
 	private OTUSet otuSet;
 
 	/**
@@ -384,6 +385,8 @@ public class CharacterStateMatrix extends UUPPodEntityWXmlId {
 
 	/**
 	 * Getter.
+	 * <p>
+	 * {@code null} is a legal value.
 	 * 
 	 * @return the description
 	 */
