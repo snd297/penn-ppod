@@ -24,8 +24,6 @@ import edu.upenn.cis.ppod.dao.hibernate.HibernateDAOFactory;
 import edu.upenn.cis.ppod.dao.hibernate.IAttachmentNamespaceDAOHibernateFactory;
 import edu.upenn.cis.ppod.dao.hibernate.IAttachmentTypeDAOHibernateFactory;
 import edu.upenn.cis.ppod.model.CharacterState;
-import edu.upenn.cis.ppod.model.CharacterStateMatrix;
-import edu.upenn.cis.ppod.model.CharacterStateMatrixFactory;
 import edu.upenn.cis.ppod.model.DNAState;
 import edu.upenn.cis.ppod.model.NewPPodVersionInfo;
 import edu.upenn.cis.ppod.modelinterfaces.INewPPodVersionInfo;
@@ -87,9 +85,6 @@ public final class PPodCoreModule extends AbstractModule {
 		bind(DNAState.IFactory.class).toProvider(
 				FactoryProvider.newFactory(DNAState.IFactory.class,
 						DNAState.class));
-
-		bind(CharacterStateMatrix.IFactory.class).to(
-				CharacterStateMatrixFactory.class);
 
 		bind(SetPPodVersionInfoVisitor.IFactory.class).toProvider(
 				FactoryProvider.newFactory(

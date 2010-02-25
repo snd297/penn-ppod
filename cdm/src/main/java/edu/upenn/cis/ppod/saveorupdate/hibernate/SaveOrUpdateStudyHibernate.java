@@ -41,11 +41,11 @@ import edu.upenn.cis.ppod.dao.hibernate.StudyDAOHibernate;
 import edu.upenn.cis.ppod.dao.hibernate.HibernateDAOFactory.OTUSetDAOHibernate;
 import edu.upenn.cis.ppod.model.CharacterStateMatrix;
 import edu.upenn.cis.ppod.model.DNACharacter;
+import edu.upenn.cis.ppod.model.DNAStateMatrix;
 import edu.upenn.cis.ppod.model.OTU;
 import edu.upenn.cis.ppod.model.OTUSet;
 import edu.upenn.cis.ppod.model.Study;
 import edu.upenn.cis.ppod.model.TreeSet;
-import edu.upenn.cis.ppod.model.CharacterStateMatrix.IFactory;
 import edu.upenn.cis.ppod.modelinterfaces.INewPPodVersionInfo;
 import edu.upenn.cis.ppod.modelinterfaces.IUUPPodEntity;
 import edu.upenn.cis.ppod.saveorupdate.IMergeAttachment;
@@ -72,12 +72,12 @@ public class SaveOrUpdateStudyHibernate implements ISaveOrUpdateStudy {
 	private final Provider<OTUSet> otuSetProvider;
 	private final Provider<TreeSet> treeSetProvider;
 
-	private final CharacterStateMatrix.IFactory matrixFactory;
-
 	private final IMergeOTUSet mergeOTUSet;
 	private final ISaveOrUpdateMatrix saveOrUpdateMatrix;
 	private final IMergeTreeSet mergeTreeSet;
 	private final INewPPodVersionInfo newPPodVersionInfo;
+	private final Provider<CharacterStateMatrix> standardMatrixProvider;
+	private final Provider<DNAStateMatrix> dnaMatrixProvider;
 
 	@Inject
 	SaveOrUpdateStudyHibernate(
@@ -87,8 +87,9 @@ public class SaveOrUpdateStudyHibernate implements ISaveOrUpdateStudy {
 			final ObjectWLongIdDAOHibernate dao,
 			final Provider<Study> studyProvider,
 			final Provider<OTUSet> otuSetProvider,
+			final Provider<CharacterStateMatrix> standardMatrixProvider,
+			final Provider<DNAStateMatrix> dnaMatrixProvider,
 			final Provider<TreeSet> treeSetProvider,
-			final IFactory matrixFactory,
 			final IMergeOTUSetFactory saveOrUpdateOTUSetFactory,
 			final IMergeTreeSetFactory mergeTreeSetFactory,
 			final ISaveOrUpdateMatrixFactory mergeMatrixFactory,
@@ -96,7 +97,7 @@ public class SaveOrUpdateStudyHibernate implements ISaveOrUpdateStudy {
 			final IAttachmentTypeDAOHibernateFactory attachmentTypeDAOFactory,
 			final IMergeAttachment.IFactory mergeAttachmentFactory,
 			@Assisted final Session session,
-			@Assisted INewPPodVersionInfo newPPodVersionInfo) {
+			@Assisted final INewPPodVersionInfo newPPodVersionInfo) {
 
 		this.studyDAO = (IStudyDAO) studyDAO.setSession(session);
 		this.otuSetDAO = (IOTUSetDAO) otuSetDAO.setSession(session);
@@ -104,7 +105,8 @@ public class SaveOrUpdateStudyHibernate implements ISaveOrUpdateStudy {
 				.setSession(session);
 		this.studyProvider = studyProvider;
 		this.otuSetProvider = otuSetProvider;
-		this.matrixFactory = matrixFactory;
+		this.standardMatrixProvider = standardMatrixProvider;
+		this.dnaMatrixProvider = dnaMatrixProvider;
 		this.treeSetProvider = treeSetProvider;
 		this.newPPodVersionInfo = newPPodVersionInfo;
 		this.mergeOTUSet = saveOrUpdateOTUSetFactory.create(newPPodVersionInfo);
@@ -163,6 +165,13 @@ public class SaveOrUpdateStudyHibernate implements ISaveOrUpdateStudy {
 
 			final Map<OTU, OTU> dbOTUsByIncomingOTU = mergeOTUSet.saveOrUpdate(
 					dbOTUSet, incomingOTUSet);
+
+			// saveOrUpdateMatrix needs for dbOTUSet to have an id so that
+			// we can give it to the matrix. dbOTUSet needs for dbStudy to
+			// have an id. Note that cascade from the study takes care of
+			// the OTUSet and Matrix too
+			studyDAO.saveOrUpdate(dbStudy);
+
 			final Set<CharacterStateMatrix> newDbMatrices = newHashSet();
 			for (final CharacterStateMatrix incomingMatrix : incomingOTUSet
 					.getMatrices()) {
@@ -170,7 +179,17 @@ public class SaveOrUpdateStudyHibernate implements ISaveOrUpdateStudy {
 				if (null == (dbMatrix = findIf(dbOTUSet.getMatrices(), compose(
 						equalTo(incomingMatrix.getPPodId()),
 						IUUPPodEntity.getPPodId)))) {
-					dbMatrix = matrixFactory.create(incomingMatrix.getType());
+					if (incomingMatrix.getClass().equals(
+							CharacterStateMatrix.class)) {
+						dbMatrix = standardMatrixProvider.get();
+					} else if (incomingMatrix.getClass().equals(
+							DNAStateMatrix.class)) {
+						dbMatrix = dnaMatrixProvider.get();
+					} else {
+						throw new IllegalArgumentException(incomingMatrix
+								.getClass()
+								+ " matrices not supported");
+					}
 					dbMatrix.setPPodVersionInfo(newPPodVersionInfo
 							.getNewPPodVersionInfo());
 					dbMatrix.setColumnPPodVersionInfos(newPPodVersionInfo
@@ -179,12 +198,6 @@ public class SaveOrUpdateStudyHibernate implements ISaveOrUpdateStudy {
 				}
 				newDbMatrices.add(dbMatrix);
 				dbOTUSet.setMatrices(newDbMatrices);
-
-				// saveOrUpdateMatrix needs for dbOTUSet to have an id so that
-				// we can give it to the matrix. dbOTUSet needs for dbStudy to
-				// have an id. Note that cascade from the study takes care of
-				// the OTUSet and Matrix too
-				studyDAO.saveOrUpdate(dbStudy);
 
 				saveOrUpdateMatrix.saveOrUpdate(dbMatrix, incomingMatrix,
 						dbOTUsByIncomingOTU, dbDNACharacter);

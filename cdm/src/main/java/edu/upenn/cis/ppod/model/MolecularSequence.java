@@ -25,10 +25,14 @@ import javax.persistence.Lob;
 import javax.persistence.MappedSuperclass;
 import javax.xml.bind.annotation.XmlAttribute;
 import javax.xml.bind.annotation.XmlElement;
+import javax.xml.bind.annotation.XmlSeeAlso;
 
 /**
+ * This class would be abstract, but JAXB didn't like that.
+ * 
  * @author Sam Donnelly
  */
+@XmlSeeAlso( { DNASequence.class })
 @MappedSuperclass
 public abstract class MolecularSequence<SS extends MolecularSequenceSet<?>>
 		extends UUPPodEntity {

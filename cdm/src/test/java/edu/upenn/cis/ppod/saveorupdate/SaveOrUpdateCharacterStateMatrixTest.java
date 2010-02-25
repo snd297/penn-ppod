@@ -56,9 +56,6 @@ public class SaveOrUpdateCharacterStateMatrixTest {
 	private ISaveOrUpdateMatrixFactory mergeMatrixFactory;
 
 	@Inject
-	private CharacterStateMatrix.IFactory factory;
-
-	@Inject
 	private Provider<OTUSet> otuSetProvider;
 
 	@Inject
@@ -109,8 +106,8 @@ public class SaveOrUpdateCharacterStateMatrixTest {
 			fakeOTUsByIncomingOTU.put(sourceOTU, sourceOTU);
 		}
 
-		final CharacterStateMatrix targetMatrix = factory.create(sourceMatrix
-				.getType());
+		final CharacterStateMatrix targetMatrix = null; // characterStateMatrixFactory.create(sourceMatrix
+		// .getType());
 		final Set<CharacterStateMatrix> sourceAndTargetMatrices = newHashSet(sourceMatrix);
 		sourceAndTargetMatrices.add(targetMatrix);
 
@@ -132,8 +129,8 @@ public class SaveOrUpdateCharacterStateMatrixTest {
 			fakeOTUsByIncomingOTU.put(sourceOTU, sourceOTU);
 		}
 
-		final CharacterStateMatrix targetMatrix = factory.create(sourceMatrix
-				.getType());
+		final CharacterStateMatrix targetMatrix = null; // characterStateMatrixFactory.create(sourceMatrix;
+		// .getType());
 
 		final Set<CharacterStateMatrix> sourceAndTargetMatrices = newHashSet(sourceMatrix);
 		sourceAndTargetMatrices.add(targetMatrix);
@@ -162,7 +159,7 @@ public class SaveOrUpdateCharacterStateMatrixTest {
 	@Test(dataProvider = MatrixProvider.SMALL_MATRICES_PROVIDER, dataProviderClass = MatrixProvider.class)
 	public void moveCharacters(final CharacterStateMatrix sourceMatrix) {
 		// It only makes sense to move characters in a standard matrix
-		if (sourceMatrix.getType() == CharacterStateMatrix.Type.STANDARD) {
+		if (sourceMatrix.getClass().equals(CharacterStateMatrix.class)) {
 			final ISaveOrUpdateMatrix saveOrUpdateMatrix = mergeMatrixFactory
 					.create(mergeAttachment, dao.setSession(session),
 							newPPodVersionInfo);
@@ -172,8 +169,8 @@ public class SaveOrUpdateCharacterStateMatrixTest {
 				fakeOTUsByIncomingOTU.put(sourceOTU, sourceOTU);
 			}
 
-			final CharacterStateMatrix targetMatrix = factory
-					.create(sourceMatrix.getType());
+			final CharacterStateMatrix targetMatrix = null; // characterStateMatrixFactory;
+			// .create(sourceMatrix.getType());
 			final Set<CharacterStateMatrix> sourceAndTargetMatrices = newHashSet(sourceMatrix);
 			sourceAndTargetMatrices.add(targetMatrix);
 

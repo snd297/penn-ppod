@@ -45,6 +45,7 @@ import edu.upenn.cis.ppod.model.CharacterStateCell;
 import edu.upenn.cis.ppod.model.CharacterStateMatrix;
 import edu.upenn.cis.ppod.model.CharacterStateRow;
 import edu.upenn.cis.ppod.model.DNACharacter;
+import edu.upenn.cis.ppod.model.DNAStateMatrix;
 import edu.upenn.cis.ppod.model.OTU;
 import edu.upenn.cis.ppod.modelinterfaces.INewPPodVersionInfo;
 import edu.upenn.cis.ppod.modelinterfaces.IUUPPodEntity;
@@ -124,7 +125,7 @@ public class SaveOrUpdateCharacterStateMatrix implements ISaveOrUpdateMatrix {
 		for (final Character sourceCharacter : sourceMatrix.getCharacters()) {
 			sourceCharacterPosition++;
 			Character newTargetCharacter;
-			if (sourceMatrix.getType() == CharacterStateMatrix.Type.DNA) {
+			if (sourceMatrix instanceof DNAStateMatrix) {
 				newTargetCharacter = dnaCharacter;
 			} else if (null == (newTargetCharacter = findIf(targetMatrix
 					.getCharacters(), compose(equalTo(sourceCharacter
@@ -137,7 +138,7 @@ public class SaveOrUpdateCharacterStateMatrix implements ISaveOrUpdateMatrix {
 
 			newTargetMatrixCharacters.add(newTargetCharacter);
 
-			if (sourceMatrix.getType() == CharacterStateMatrix.Type.STANDARD) {
+			if (!(sourceMatrix instanceof DNAStateMatrix)) {
 				newTargetCharacter.setLabel(sourceCharacter.getLabel());
 			}
 
@@ -152,12 +153,12 @@ public class SaveOrUpdateCharacterStateMatrix implements ISaveOrUpdateMatrix {
 							.getNewPPodVersionInfo());
 				}
 
-				if (sourceMatrix.getType() == CharacterStateMatrix.Type.STANDARD) {
+				if (!(sourceMatrix instanceof DNAStateMatrix)) {
 					targetState.setLabel(sourceState.getLabel());
 				}
 			}
 
-			if (sourceMatrix.getType() == CharacterStateMatrix.Type.STANDARD) {
+			if (!(sourceMatrix instanceof DNAStateMatrix)) {
 				originalCharIdxsByNewCharIdx.put(sourceCharacterPosition,
 						targetMatrix.getCharacterIdx().get(newTargetCharacter));
 			} else {

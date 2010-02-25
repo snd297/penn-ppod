@@ -48,6 +48,7 @@ import javax.xml.bind.Unmarshaller;
 import javax.xml.bind.annotation.XmlAttribute;
 import javax.xml.bind.annotation.XmlElement;
 import javax.xml.bind.annotation.XmlIDREF;
+import javax.xml.bind.annotation.XmlSeeAlso;
 import javax.xml.bind.annotation.XmlType;
 
 import org.hibernate.annotations.Cascade;
@@ -63,42 +64,10 @@ import edu.upenn.cis.ppod.util.IVisitor;
  * 
  * @author Sam Donnelly
  */
+@XmlSeeAlso( { DNAStateMatrix.class, RNAStateMatrix.class })
 @Entity
 @Table(name = CharacterStateMatrix.TABLE)
 public class CharacterStateMatrix extends UUPPodEntityWXmlId {
-	/**
-	 * Produces {@link CharacterStateMatrix}s of a given
-	 * {@link CharacterStateMatrix.Type}. For Guice.
-	 * 
-	 * @author Sam Donnelly
-	 */
-	public static interface IFactory {
-
-		/**
-		 * Make a {@code CharacterStateMatrix} of the give type.
-		 * 
-		 * @param type the type of matrix we want
-		 * 
-		 * @return the new matrix
-		 */
-		CharacterStateMatrix create(final CharacterStateMatrix.Type type);
-	}
-
-	/**
-	 * We use these to figure out what kind of matrix we have after
-	 * unmarshalling.
-	 */
-	@XmlType(name = "CharacterStateMatrixType")
-	public static enum Type {
-		/** A {@link DNAStateMatrix}. */
-		DNA,
-
-		/** An {@link RNAStateMatrix}. */
-		RNA,
-
-		/** A standard {@link CharacterStateMatrix}. */
-		STANDARD;
-	}
 
 	/** This entity's table name. Intentionally package-private. */
 	static final String TABLE = "CHARACTER_STATE_MATRIX";
@@ -205,13 +174,9 @@ public class CharacterStateMatrix extends UUPPodEntityWXmlId {
 	@Cascade(org.hibernate.annotations.CascadeType.DELETE_ORPHAN)
 	private final List<CharacterStateRow> rows = newArrayList();
 
-	@XmlAttribute
-	@Transient
-	private CharacterStateMatrix.Type type;
-
 	/** No-arg constructor for (at least) Hibernate. */
 	CharacterStateMatrix() {
-		setType(Type.STANDARD);
+
 	}
 
 	@Override
@@ -240,18 +205,17 @@ public class CharacterStateMatrix extends UUPPodEntityWXmlId {
 				otuIdx.put(otu, i++);
 			}
 		}
-		if (getCharacterIdx().size() == 0) {
-			int i = 0;
-			for (final Character character : getCharacters()) {
-				if (getType() != CharacterStateMatrix.Type.DNA
-						|| getType() != CharacterStateMatrix.Type.RNA) {
-					// characterIdx is meaningless for MolecularMatrix's since
-					// all of their Characters are the same
-					characterIdx.put(character, i++);
-				}
-				columnPPodVersionInfos.add(null);
-				character.addMatrix(this);
+		int i = 0;
+		for (final Character character : getCharacters()) {
+			if (this instanceof DNAStateMatrix
+					|| this instanceof RNAStateMatrix) {
+				// characterIdx is meaningless for MolecularMatrix's since
+				// all of their Characters are the same
+			} else {
+				characterIdx.put(character, i++);
 			}
+			columnPPodVersionInfos.add(null);
+			character.addMatrix(this);
 		}
 		super.afterUnmarshal();
 	}
@@ -510,16 +474,6 @@ public class CharacterStateMatrix extends UUPPodEntityWXmlId {
 	 */
 	public List<CharacterStateRow> getRows() {
 		return Collections.unmodifiableList(rows);
-	}
-
-	/**
-	 * Get the type of this matrix. Used to determine the type of matrix after
-	 * marhsalling->unmarshalling, which loses class info.
-	 * 
-	 * @return the type of this matrix
-	 */
-	public CharacterStateMatrix.Type getType() {
-		return type;
 	}
 
 	/**
@@ -856,19 +810,6 @@ public class CharacterStateMatrix extends UUPPodEntityWXmlId {
 			resetPPodVersionInfo();
 		}
 		return oldRow;
-	}
-
-	/**
-	 * Set the type of this matrix so that we know what kind it is after
-	 * marshalling.
-	 * 
-	 * @param type the type of this matrix
-	 * 
-	 * @return this
-	 */
-	protected CharacterStateMatrix setType(final CharacterStateMatrix.Type type) {
-		this.type = type;
-		return this;
 	}
 
 }
