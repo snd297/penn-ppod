@@ -94,6 +94,11 @@ public class OTUSet extends UUPPodEntityWXmlId {
 			org.hibernate.annotations.CascadeType.DELETE_ORPHAN })
 	private final Set<CharacterStateMatrix> matrices = newHashSet();
 
+	@OneToMany(mappedBy = "otuSet")
+	@Cascade( { org.hibernate.annotations.CascadeType.SAVE_UPDATE,
+			org.hibernate.annotations.CascadeType.DELETE_ORPHAN })
+	private final Set<DNASequenceSet> dnaSequenceSets = newHashSet();
+
 	/** The tree sets that reference this OTU set. */
 	@OneToMany(mappedBy = "otuSet")
 	@Cascade( { org.hibernate.annotations.CascadeType.SAVE_UPDATE,
@@ -168,35 +173,6 @@ public class OTUSet extends UUPPodEntityWXmlId {
 	}
 
 	/**
-	 * Add {@code treeSet} to this {@code OTUSet}'s tree sets and add this OTU
-	 * set to {@code treeSet}.
-	 * <p>
-	 * {@code treeSet} must not be in a detached state.
-	 * 
-	 * @param treeSet to be added
-	 * 
-	 * @return {@code treeSet}
-	 */
-	public Set<TreeSet> setTreeSets(final Set<TreeSet> newTreeSets) {
-		checkNotNull(newTreeSets);
-		if (newTreeSets.equals(getTreeSets())) {
-			return Collections.emptySet();
-		}
-		final Set<TreeSet> removedTreeSets = newHashSet(getTreeSets());
-		removedTreeSets.removeAll(newTreeSets);
-		for (final TreeSet removedTreeSet : removedTreeSets) {
-			removedTreeSet.setOTUSet(null);
-		}
-		getTreeSetsModifiable().clear();
-		getTreeSetsModifiable().addAll(newTreeSets);
-		for (final TreeSet treeSet : getTreeSets()) {
-			treeSet.setOTUSet(this);
-		}
-		resetPPodVersionInfo();
-		return removedTreeSets;
-	}
-
-	/**
 	 * See {@link Unmarshaller}.
 	 * 
 	 * @param u see {@code Unmarshaller}
@@ -225,6 +201,20 @@ public class OTUSet extends UUPPodEntityWXmlId {
 	}
 
 	/**
+	 * Get the {@link DNASequenceSet}s that belong to this study.
+	 * 
+	 * @return the {@link DNASequenceSet}s that belong to this study
+	 */
+	public Set<DNASequenceSet> getDNASequenceSets() {
+		return Collections.unmodifiableSet(getDNASequenceSetsModifiable());
+	}
+
+	@XmlElement(name = "dnaSequenceSet")
+	private Set<DNASequenceSet> getDNASequenceSetsModifiable() {
+		return dnaSequenceSets;
+	}
+
+	/**
 	 * Getter. {@code null} when the object is created.
 	 * 
 	 * @return the label
@@ -245,7 +235,6 @@ public class OTUSet extends UUPPodEntityWXmlId {
 	}
 
 	@XmlElement(name = "matrix")
-	@SuppressWarnings("unused")
 	private Set<CharacterStateMatrix> getMatricesMutable() {
 		return matrices;
 	}
@@ -265,8 +254,6 @@ public class OTUSet extends UUPPodEntityWXmlId {
 	private Set<OTU> getOTUsMutable() {
 		return otus;
 	}
-
-
 
 	/**
 	 * Get the study to which this OTU set belongs. Will be {@code null} until
@@ -289,7 +276,6 @@ public class OTUSet extends UUPPodEntityWXmlId {
 	}
 
 	@XmlElement(name = "treeSet")
-	@SuppressWarnings("unused")
 	private Set<TreeSet> getTreeSetsModifiable() {
 		return treeSets;
 	}
@@ -336,6 +322,23 @@ public class OTUSet extends UUPPodEntityWXmlId {
 		return this;
 	}
 
+	public Set<DNASequenceSet> setDNASequenceSets(
+			final Set<? extends DNASequenceSet> newSequenceSets) {
+		checkNotNull(newSequenceSets);
+
+		final Set<DNASequenceSet> removedSequenceSets = newHashSet(getDNASequenceSets());
+		removedSequenceSets.removeAll(newSequenceSets);
+
+		for (final MolecularSequenceSet removedSequenceSet : removedSequenceSets) {
+			removedSequenceSet.setOTUSet(null);
+		}
+
+		getDNASequenceSetsModifiable().clear();
+		getDNASequenceSetsModifiable().addAll(newSequenceSets);
+
+		return removedSequenceSets;
+	}
+
 	/**
 	 * Set the label of this <code>OTUSet</code>.
 	 * 
@@ -355,9 +358,9 @@ public class OTUSet extends UUPPodEntityWXmlId {
 	}
 
 	/**
-	 * Add <code>matrix</code> to this <code>OTUSet</code>'s matrices.
+	 * Set <code>newMatrices</code> to this <code>OTUSet</code>'s matrices.
 	 * 
-	 * @param matrix to be added
+	 * @param newMatrices new matrices
 	 * 
 	 * @return {@code matrix}
 	 */
@@ -412,7 +415,6 @@ public class OTUSet extends UUPPodEntityWXmlId {
 		return removedOTUs;
 	}
 
-
 	OTUSet setStudy(final Study study) {
 		checkNotNull(study);
 		if (study.equals(this.study)) {
@@ -422,6 +424,38 @@ public class OTUSet extends UUPPodEntityWXmlId {
 			resetPPodVersionInfo();
 		}
 		return this;
+	}
+
+	/**
+	 * Add {@code treeSet} to this {@code OTUSet}'s tree sets and add this OTU
+	 * set to {@code treeSet}.
+	 * <p>
+	 * All of {@code newTreeSets} must not be in a detached state.
+	 * <p>
+	 * The {@code TreeSet->OTUSet} relationship will be taken care of, including
+	 * severing removed tree sets.
+	 * 
+	 * @param newTreeSets new tree sets
+	 * 
+	 * @return any tree sets which were removed as a result of this operation
+	 */
+	public Set<TreeSet> setTreeSets(final Set<TreeSet> newTreeSets) {
+		checkNotNull(newTreeSets);
+		if (newTreeSets.equals(getTreeSets())) {
+			return Collections.emptySet();
+		}
+		final Set<TreeSet> removedTreeSets = newHashSet(getTreeSets());
+		removedTreeSets.removeAll(newTreeSets);
+		for (final TreeSet removedTreeSet : removedTreeSets) {
+			removedTreeSet.setOTUSet(null);
+		}
+		getTreeSetsModifiable().clear();
+		getTreeSetsModifiable().addAll(newTreeSets);
+		for (final TreeSet treeSet : getTreeSets()) {
+			treeSet.setOTUSet(this);
+		}
+		resetPPodVersionInfo();
+		return removedTreeSets;
 	}
 
 	/**
@@ -443,4 +477,5 @@ public class OTUSet extends UUPPodEntityWXmlId {
 
 		return retValue.toString();
 	}
+
 }

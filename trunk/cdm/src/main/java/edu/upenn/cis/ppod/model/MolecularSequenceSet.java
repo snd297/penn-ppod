@@ -15,23 +15,82 @@
  */
 package edu.upenn.cis.ppod.model;
 
+import static com.google.common.base.Preconditions.checkNotNull;
+import static com.google.common.collect.Sets.newHashSet;
+
+import java.util.Collections;
 import java.util.Set;
 
+import javax.annotation.CheckForNull;
 import javax.annotation.Nullable;
 import javax.persistence.JoinColumn;
+import javax.persistence.ManyToOne;
 import javax.persistence.MappedSuperclass;
+import javax.xml.bind.annotation.XmlElement;
 
 /**
  * @author Sam Donnelly
  */
 @MappedSuperclass
-public abstract class MolecularSequenceSet extends UUPPodEntity {
+public abstract class MolecularSequenceSet<S extends MolecularSequence> extends
+		UUPPodEntity {
 
 	static final String TABLE = "MOLECULAR_SEQUENCE_SET";
 
-	@JoinColumn(name = Study.ID_COLUMN, nullable = false)
+	@ManyToOne
+	@JoinColumn(name = OTUSet.ID_COLUMN, nullable = false)
+	@CheckForNull
+	private OTUSet otuSet;
+
+	/**
+	 * Get the constituent sequences.
+	 * 
+	 * @return the constituent sequences
+	 */
+	public Set<S> getSequences() {
+		return Collections.unmodifiableSet(getSequencesModifiable());
+	}
+
+	@XmlElement(name = "sequence")
+	protected abstract Set<S> getSequencesModifiable();
+
+	/**
+	 * Get this sequence set's owning OTU set.
+	 * 
+	 * @return this sequence set's owning OTU set
+	 */
 	@Nullable
-	private Study study;
+	public OTUSet getOTUSet() {
+		return otuSet;
+	}
+
+	@Override
+	public MolecularSequenceSet resetPPodVersionInfo() {
+		getOTUSet().resetPPodVersionInfo();
+		super.resetPPodVersionInfo();
+		return this;
+	}
+
+	public Set<S> setSequences(final Set<S> newSequences) {
+		checkNotNull(newSequences);
+
+		if (newSequences.equals(getSequences())) {
+			return Collections.emptySet();
+		}
+
+		final Set<S> removedSequences = newHashSet(getSequencesModifiable());
+		removedSequences.removeAll(newSequences);
+		for (final S removedSequence : removedSequences) {
+			removedSequence.setSequenceSet(null);
+		}
+
+		getSequencesModifiable().clear();
+		getSequencesModifiable().addAll(newSequences);
+		for (final S sequence : getSequencesModifiable()) {
+			sequence.setSequenceSet(this);
+		}
+		return removedSequences;
+	}
 
 	/**
 	 * Intentionally package-private and meant to be called in {@link Study}.
@@ -43,33 +102,8 @@ public abstract class MolecularSequenceSet extends UUPPodEntity {
 	 * 
 	 * @return this sequence set
 	 */
-	MolecularSequenceSet setStudy(@Nullable Study newStudy) {
-		study = newStudy;
-		return this;
-	}
-
-	/**
-	 * Get this sequence set's owning OTU set.
-	 * 
-	 * @return this sequence set's owning OTU set
-	 */
-	public Study getStudy() {
-		return study;
-	}
-
-	/**
-	 * Get a copy of the set constituent sequences.
-	 * <p>
-	 * The sequences themselves will not be copies.
-	 * 
-	 * @return a copy of the set constituent sequences
-	 */
-	public abstract Set<MolecularSequence> getSequences();
-
-	@Override
-	public MolecularSequenceSet resetPPodVersionInfo() {
-		getStudy().resetPPodVersionInfo();
-		super.resetPPodVersionInfo();
+	MolecularSequenceSet setOTUSet(@Nullable final OTUSet newOTUSet) {
+		otuSet = newOTUSet;
 		return this;
 	}
 

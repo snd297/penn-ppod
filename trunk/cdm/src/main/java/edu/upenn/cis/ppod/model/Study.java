@@ -66,11 +66,6 @@ public class Study extends UUPPodEntity implements IOTUSetCentricEntities {
 	@Cascade(org.hibernate.annotations.CascadeType.SAVE_UPDATE)
 	private final Set<OTUSet> otuSets = newHashSet();
 
-	@OneToMany(mappedBy = "otuSet")
-	@Cascade( { org.hibernate.annotations.CascadeType.SAVE_UPDATE,
-			org.hibernate.annotations.CascadeType.DELETE_ORPHAN })
-	private final Set<DNASequenceSet> dnaSequenceSets = newHashSet();
-
 	@XmlElement(name = "studyWideAttachment")
 	@Transient
 	private final Set<Attachment> studyWideAttachments = newHashSet();
@@ -133,15 +128,6 @@ public class Study extends UUPPodEntity implements IOTUSetCentricEntities {
 		return true;
 	}
 
-	public Set<DNASequenceSet> getDNASequenceSets() {
-		return Collections.unmodifiableSet(getDNASequenceSetsModifiable());
-	}
-
-	@XmlElement(name = "dnaSequenceSet")
-	private Set<DNASequenceSet> getDNASequenceSetsModifiable() {
-		return dnaSequenceSets;
-	}
-
 	/**
 	 * Get the label.
 	 * 
@@ -162,7 +148,6 @@ public class Study extends UUPPodEntity implements IOTUSetCentricEntities {
 	}
 
 	@XmlElement(name = "otuSet")
-	@SuppressWarnings("unused")
 	private Set<OTUSet> getOTUSetsModifiable() {
 		return otuSets;
 	}
@@ -176,23 +161,6 @@ public class Study extends UUPPodEntity implements IOTUSetCentricEntities {
 	 */
 	public boolean removeOTUSet(final OTUSet otuSet) {
 		return otuSets.remove(otuSet);
-	}
-
-	public Set<DNASequenceSet> setDNASequenceSets(
-			final Set<? extends DNASequenceSet> newSequenceSets) {
-		checkNotNull(newSequenceSets);
-
-		final Set<DNASequenceSet> removedSequenceSets = getDNASequenceSets();
-		removedSequenceSets.removeAll(newSequenceSets);
-
-		for (final MolecularSequenceSet removedSequenceSet : removedSequenceSets) {
-			removedSequenceSet.setStudy(null);
-		}
-
-		getDNASequenceSetsModifiable().clear();
-		getDNASequenceSetsModifiable().addAll(newSequenceSets);
-
-		return removedSequenceSets;
 	}
 
 	/**

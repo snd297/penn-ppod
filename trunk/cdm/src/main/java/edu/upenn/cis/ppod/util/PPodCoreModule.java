@@ -97,6 +97,7 @@ public final class PPodCoreModule extends AbstractModule {
 						SetPPodVersionInfoVisitor.class));
 
 		bind(INewPPodVersionInfo.class).to(NewPPodVersionInfo.class);
+
 	}
 
 }
