@@ -20,7 +20,7 @@ import javax.xml.bind.annotation.XmlID;
 
 /**
  * An object that holds a write-once-read-many {@link XmlID}.
- * 
+ * <p>
  * One may ask, why require that the client explicitly set the doc id? And why
  * only allow it to be sent once? Why not just have it assigned automatically at
  * construction and have it freely reset if required. The reason is that

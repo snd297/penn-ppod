@@ -24,8 +24,11 @@ import edu.upenn.cis.ppod.model.OTU;
 import edu.upenn.cis.ppod.model.OTUSet;
 
 /**
- * @author Sam Donnelly
+ * Set the doc id on {@code OTUSet}s, {@code OTU}s, {@code Character}s, {@code
+ * CharacterState}s, {@code Attachment}s, {@code AttachmentType}s, and {@code
+ * AttachmentNamespace}s.
  * 
+ * @author Sam Donnelly
  */
 public class SetDocIdVisitor extends EmptyVisitor {
 
@@ -48,7 +51,7 @@ public class SetDocIdVisitor extends EmptyVisitor {
 	 */
 	@Override
 	public void visit(final OTU otu) {
-		if (otu.getDocId() == null) { 
+		if (otu.getDocId() == null) {
 			otu.setDocId();
 		}
 	}

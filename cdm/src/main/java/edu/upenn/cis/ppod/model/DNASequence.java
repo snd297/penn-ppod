@@ -27,59 +27,59 @@ import javax.persistence.Entity;
 import javax.persistence.JoinColumn;
 import javax.persistence.ManyToOne;
 import javax.persistence.Table;
+import javax.xml.bind.Unmarshaller;
 
 /**
  * @author Sam Donnelly
  */
 @Entity
 @Table(name = DNASequence.TABLE)
-public class DNASequence extends MolecularSequence {
+public class DNASequence extends MolecularSequence<DNASequenceSet> {
 
 	private static boolean isLegal(final char c) {
-		final char upcasedC = java.lang.Character.toUpperCase(c);
-		if (upcasedC == 'A') {
+		if (c == 'A') {
 			return true;
 		}
-		if (upcasedC == 'C') {
+		if (c == 'C') {
 			return true;
 		}
-		if (upcasedC == 'G') {
+		if (c == 'G') {
 			return true;
 		}
-		if (upcasedC == 'T') {
+		if (c == 'T') {
 			return true;
 		}
-		if (upcasedC == 'R') {
+		if (c == 'R') {
 			return true;
 		}
-		if (upcasedC == 'Y') {
+		if (c == 'Y') {
 			return true;
 		}
-		if (upcasedC == 'K') {
+		if (c == 'K') {
 			return true;
 		}
-		if (upcasedC == 'M') {
+		if (c == 'M') {
 			return true;
 		}
-		if (upcasedC == 'S') {
+		if (c == 'S') {
 			return true;
 		}
-		if (upcasedC == 'W') {
+		if (c == 'W') {
 			return true;
 		}
-		if (upcasedC == 'B') {
+		if (c == 'B') {
 			return true;
 		}
-		if (upcasedC == 'D') {
+		if (c == 'D') {
 			return true;
 		}
-		if (upcasedC == 'H') {
+		if (c == 'H') {
 			return true;
 		}
-		if (upcasedC == 'V') {
+		if (c == 'V') {
 			return true;
 		}
-		if (upcasedC == 'N') {
+		if (c == 'N') {
 			return true;
 		}
 		return false;
@@ -93,10 +93,11 @@ public class DNASequence extends MolecularSequence {
 	/**
 	 * The name of the {@code DNASequence} table.
 	 */
+
 	static final String TABLE = "DNA_SEQUENCE";
 
 	@Override
-	public MolecularSequenceSet getSequenceSet() {
+	public MolecularSequenceSet<DNASequence> getSequenceSet() {
 		return sequenceSet;
 	}
 
@@ -141,8 +142,21 @@ public class DNASequence extends MolecularSequence {
 		return this;
 	}
 
-	DNASequence setSequenceSet(@Nullable final DNASequenceSet newSequenceSet) {
+	@Override
+	protected DNASequence setSequenceSet(
+			@Nullable final DNASequenceSet newSequenceSet) {
 		sequenceSet = newSequenceSet;
 		return this;
 	}
+
+	/**
+	 * See {@link Unmarshaller}.
+	 * 
+	 * @param u see {@code Unmarshaller}
+	 * @param parent see {@code Unmarshaller}
+	 */
+	public void afterUnmarshal(final Unmarshaller u, final Object parent) {
+		setSequenceSet((DNASequenceSet) sequenceSet);
+	}
+
 }

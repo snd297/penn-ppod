@@ -30,7 +30,8 @@ import javax.xml.bind.annotation.XmlElement;
  * @author Sam Donnelly
  */
 @MappedSuperclass
-public abstract class MolecularSequence extends UUPPodEntity {
+public abstract class MolecularSequence<SS extends MolecularSequenceSet<?>>
+		extends UUPPodEntity {
 
 	final static String SEQUENCE_COLUMN = "SEQUENCE";
 
@@ -80,6 +81,7 @@ public abstract class MolecularSequence extends UUPPodEntity {
 	 * @return the name
 	 */
 	@XmlAttribute
+	@Nullable
 	public String getName() {
 		return name;
 	}
@@ -89,6 +91,9 @@ public abstract class MolecularSequence extends UUPPodEntity {
 	public String getSequence() {
 		return sequence.toString();
 	}
+
+	@Nullable
+	public abstract MolecularSequenceSet getSequenceSet();
 
 // @Column(name = "LOCUS")
 // @Nullable
@@ -127,9 +132,6 @@ public abstract class MolecularSequence extends UUPPodEntity {
 // statesByPosition.put(idx, states);
 // return this;
 // }
-
-	@Nullable
-	public abstract MolecularSequenceSet getSequenceSet();
 
 	@Override
 	public MolecularSequence resetPPodVersionInfo() {
@@ -186,6 +188,40 @@ public abstract class MolecularSequence extends UUPPodEntity {
 		sequence.append(newSequence);
 		resetPPodVersionInfo();
 		return this;
+	}
+
+	/**
+	 * Set the sequence set that contains this sequence.
+	 * <p>
+	 * A {@code null} value for {@code sequenceSet} indicates that the
+	 * relationship is being severed.
+	 * 
+	 * @param sequenceSet the sequence set that contains this sequence.
+	 * 
+	 * @return this
+	 */
+	protected abstract MolecularSequence<SS> setSequenceSet(
+			@Nullable final SS sequenceSet);
+
+	/**
+	 * Constructs a <code>String</code> with all attributes in name = value
+	 * format.
+	 * 
+	 * @return a <code>String</code> representation of this object.
+	 */
+	@Override
+	public String toString() {
+		final String TAB = "";
+
+		final StringBuilder retValue = new StringBuilder();
+
+		retValue.append("MolecularSequence(").append("sequence=").append(
+				this.sequence).append(TAB).append("accession=").append(
+				this.accession).append(TAB).append("description=").append(
+				this.description).append(TAB).append("name=").append(this.name)
+				.append(TAB).append(")");
+
+		return retValue.toString();
 	}
 
 	// private final Map<Integer, CharacterStates> statesByPosition =
