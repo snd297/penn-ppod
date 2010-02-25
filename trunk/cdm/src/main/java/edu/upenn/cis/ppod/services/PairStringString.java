@@ -43,16 +43,16 @@ public final class PairStringString implements IPair<String, String> {
 		this.second = second;
 	}
 
-	public String getFirst() {
+	public String get1st() {
 		return first;
 	}
 
-	public String getSecond() {
+	public String get2nd() {
 		return second;
 	}
 
 	public static PairStringString of(IPair<String, String> pair) {
-		return new PairStringString(pair.getFirst(), pair.getSecond());
+		return new PairStringString(pair.get1st(), pair.get2nd());
 	}
 
 	public static final Function<PairStringString, IPair<String, String>> castToIPair = new Function<PairStringString, IPair<String, String>>() {
