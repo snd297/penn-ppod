@@ -28,9 +28,12 @@ import javax.xml.bind.annotation.XmlElement;
 import javax.xml.bind.annotation.XmlSeeAlso;
 
 /**
- * This class would be abstract, but JAXB didn't like that.
+ * A molecular sequence - DNA, RNA, protein - that is represented by a {@code
+ * CharSequence}.
  * 
  * @author Sam Donnelly
+ * @param <SS> the type of {@link MolecularSequenceSet} that contains this
+ *            {@code MolecularSequence}
  */
 @XmlSeeAlso( { DNASequence.class })
 @MappedSuperclass
@@ -96,8 +99,13 @@ public abstract class MolecularSequence<SS extends MolecularSequenceSet<?>>
 		return sequence.toString();
 	}
 
+	/**
+	 * Get the {@code MolecularSequenceSet} that owns this sequence.
+	 * 
+	 * @return the {@code MolecularSequenceSet} that owns this sequence
+	 */
 	@Nullable
-	public abstract MolecularSequenceSet getSequenceSet();
+	public abstract MolecularSequenceSet<?> getSequenceSet();
 
 // @Column(name = "LOCUS")
 // @Nullable

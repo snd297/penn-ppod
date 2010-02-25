@@ -29,14 +29,14 @@ public interface IPair<T, U> {
 	 * 
 	 * @return the first entry
 	 */
-	T getFirst();
+	T get1st();
 
 	/**
 	 * Get the second entry.
 	 * 
 	 * @return the second entry
 	 */
-	U getSecond();
+	U get2nd();
 
 	/**
 	 * Create an ordered pair.

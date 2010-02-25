@@ -1,6 +1,8 @@
-package edu.upenn.cis.ppod.model;
+package edu.upenn.cis.ppod.util;
 
 import com.google.inject.ImplementedBy;
+
+import edu.upenn.cis.ppod.model.CharacterStateMatrix;
 
 /**
  * Produces {@link CharacterStateMatrix}s of the given argument.

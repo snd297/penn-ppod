@@ -13,10 +13,14 @@
  * See the License for the specific language governing permissions and
  * limitations under the License.
  */
-package edu.upenn.cis.ppod.model;
+package edu.upenn.cis.ppod.util;
 
 import com.google.inject.Inject;
 import com.google.inject.Provider;
+
+import edu.upenn.cis.ppod.model.CharacterStateMatrix;
+import edu.upenn.cis.ppod.model.DNAStateMatrix;
+import edu.upenn.cis.ppod.model.RNAStateMatrix;
 
 /**
  * @author Sam Donnelly

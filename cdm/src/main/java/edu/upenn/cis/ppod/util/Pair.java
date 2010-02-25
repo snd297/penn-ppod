@@ -46,12 +46,12 @@ public class Pair<T, U> implements IPair<T, U> {
 		this._2nd = second;
 	}
 
-	public T getFirst() {
+	public T get1st() {
 		return _1st;
 	}
 
 	@XmlElement
-	public U getSecond() {
+	public U get2nd() {
 		return _2nd;
 	}
 
@@ -73,7 +73,7 @@ public class Pair<T, U> implements IPair<T, U> {
 	}
 
 	public static <T, U> Pair<T, U> of(final IPair<T, U> orderedPair) {
-		return new Pair<T, U>(orderedPair.getFirst(), orderedPair.getSecond());
+		return new Pair<T, U>(orderedPair.get1st(), orderedPair.get2nd());
 	}
 
 	/**
