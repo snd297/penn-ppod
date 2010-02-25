@@ -41,7 +41,7 @@ import edu.upenn.cis.ppod.dao.hibernate.StudyDAOHibernate;
 import edu.upenn.cis.ppod.dao.hibernate.HibernateDAOFactory.OTUSetDAOHibernate;
 import edu.upenn.cis.ppod.model.CharacterStateMatrix;
 import edu.upenn.cis.ppod.model.DNACharacter;
-import edu.upenn.cis.ppod.model.DNAStateMatrix;
+import edu.upenn.cis.ppod.model.ICharacterStateMatrixFactory;
 import edu.upenn.cis.ppod.model.OTU;
 import edu.upenn.cis.ppod.model.OTUSet;
 import edu.upenn.cis.ppod.model.Study;
@@ -70,14 +70,13 @@ public class SaveOrUpdateStudyHibernate implements ISaveOrUpdateStudy {
 
 	private final Provider<Study> studyProvider;
 	private final Provider<OTUSet> otuSetProvider;
+	private final ICharacterStateMatrixFactory matrixFactory;
 	private final Provider<TreeSet> treeSetProvider;
 
 	private final IMergeOTUSet mergeOTUSet;
 	private final ISaveOrUpdateMatrix saveOrUpdateMatrix;
 	private final IMergeTreeSet mergeTreeSet;
 	private final INewPPodVersionInfo newPPodVersionInfo;
-	private final Provider<CharacterStateMatrix> standardMatrixProvider;
-	private final Provider<DNAStateMatrix> dnaMatrixProvider;
 
 	@Inject
 	SaveOrUpdateStudyHibernate(
@@ -87,8 +86,7 @@ public class SaveOrUpdateStudyHibernate implements ISaveOrUpdateStudy {
 			final ObjectWLongIdDAOHibernate dao,
 			final Provider<Study> studyProvider,
 			final Provider<OTUSet> otuSetProvider,
-			final Provider<CharacterStateMatrix> standardMatrixProvider,
-			final Provider<DNAStateMatrix> dnaMatrixProvider,
+			final ICharacterStateMatrixFactory matrixFactory,
 			final Provider<TreeSet> treeSetProvider,
 			final IMergeOTUSetFactory saveOrUpdateOTUSetFactory,
 			final IMergeTreeSetFactory mergeTreeSetFactory,
@@ -105,8 +103,7 @@ public class SaveOrUpdateStudyHibernate implements ISaveOrUpdateStudy {
 				.setSession(session);
 		this.studyProvider = studyProvider;
 		this.otuSetProvider = otuSetProvider;
-		this.standardMatrixProvider = standardMatrixProvider;
-		this.dnaMatrixProvider = dnaMatrixProvider;
+		this.matrixFactory = matrixFactory;
 		this.treeSetProvider = treeSetProvider;
 		this.newPPodVersionInfo = newPPodVersionInfo;
 		this.mergeOTUSet = saveOrUpdateOTUSetFactory.create(newPPodVersionInfo);
@@ -179,17 +176,7 @@ public class SaveOrUpdateStudyHibernate implements ISaveOrUpdateStudy {
 				if (null == (dbMatrix = findIf(dbOTUSet.getMatrices(), compose(
 						equalTo(incomingMatrix.getPPodId()),
 						IUUPPodEntity.getPPodId)))) {
-					if (incomingMatrix.getClass().equals(
-							CharacterStateMatrix.class)) {
-						dbMatrix = standardMatrixProvider.get();
-					} else if (incomingMatrix.getClass().equals(
-							DNAStateMatrix.class)) {
-						dbMatrix = dnaMatrixProvider.get();
-					} else {
-						throw new IllegalArgumentException(incomingMatrix
-								.getClass()
-								+ " matrices not supported");
-					}
+					dbMatrix = matrixFactory.create(incomingMatrix);
 					dbMatrix.setPPodVersionInfo(newPPodVersionInfo
 							.getNewPPodVersionInfo());
 					dbMatrix.setColumnPPodVersionInfos(newPPodVersionInfo

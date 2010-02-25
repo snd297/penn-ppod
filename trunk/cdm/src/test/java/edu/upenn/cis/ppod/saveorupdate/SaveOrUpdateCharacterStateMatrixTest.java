@@ -37,6 +37,7 @@ import edu.upenn.cis.ppod.model.CharacterStateCell;
 import edu.upenn.cis.ppod.model.CharacterStateMatrix;
 import edu.upenn.cis.ppod.model.CharacterStateRow;
 import edu.upenn.cis.ppod.model.DNACharacter;
+import edu.upenn.cis.ppod.model.ICharacterStateMatrixFactory;
 import edu.upenn.cis.ppod.model.ModelAssert;
 import edu.upenn.cis.ppod.model.OTU;
 import edu.upenn.cis.ppod.model.OTUSet;
@@ -60,6 +61,9 @@ public class SaveOrUpdateCharacterStateMatrixTest {
 
 	@Inject
 	private Provider<OTU> otuProvider;
+
+	@Inject
+	private ICharacterStateMatrixFactory matrixFactory;
 
 	@Inject
 	private Session session;
@@ -106,8 +110,9 @@ public class SaveOrUpdateCharacterStateMatrixTest {
 			fakeOTUsByIncomingOTU.put(sourceOTU, sourceOTU);
 		}
 
-		final CharacterStateMatrix targetMatrix = null; // characterStateMatrixFactory.create(sourceMatrix
-		// .getType());
+		final CharacterStateMatrix targetMatrix = matrixFactory
+				.create(sourceMatrix);
+
 		final Set<CharacterStateMatrix> sourceAndTargetMatrices = newHashSet(sourceMatrix);
 		sourceAndTargetMatrices.add(targetMatrix);
 
@@ -129,8 +134,8 @@ public class SaveOrUpdateCharacterStateMatrixTest {
 			fakeOTUsByIncomingOTU.put(sourceOTU, sourceOTU);
 		}
 
-		final CharacterStateMatrix targetMatrix = null; // characterStateMatrixFactory.create(sourceMatrix;
-		// .getType());
+		final CharacterStateMatrix targetMatrix = matrixFactory
+				.create(sourceMatrix);
 
 		final Set<CharacterStateMatrix> sourceAndTargetMatrices = newHashSet(sourceMatrix);
 		sourceAndTargetMatrices.add(targetMatrix);
@@ -138,6 +143,14 @@ public class SaveOrUpdateCharacterStateMatrixTest {
 		fakeTargetOTUSet.setMatrices(sourceAndTargetMatrices);
 		saveOrUpdateMatrix.saveOrUpdate(targetMatrix, sourceMatrix,
 				fakeOTUsByIncomingOTU, dnaCharacter);
+
+		// Simulate passing back in the persisted characters: so we need to
+		// assign the proper pPOD ID's.
+		for (int i = 0; i < sourceMatrix.getCharacters().size(); i++) {
+			sourceMatrix.getCharacters().get(i).setPPodId(
+					targetMatrix.getCharacters().get(i).getPPodId());
+		}
+
 		final List<OTU> shuffledSourceOTUs = newArrayList(sourceMatrix
 				.getOTUs());
 		Collections.shuffle(shuffledSourceOTUs);
@@ -169,14 +182,21 @@ public class SaveOrUpdateCharacterStateMatrixTest {
 				fakeOTUsByIncomingOTU.put(sourceOTU, sourceOTU);
 			}
 
-			final CharacterStateMatrix targetMatrix = null; // characterStateMatrixFactory;
-			// .create(sourceMatrix.getType());
+			final CharacterStateMatrix targetMatrix = matrixFactory
+					.create(sourceMatrix);
 			final Set<CharacterStateMatrix> sourceAndTargetMatrices = newHashSet(sourceMatrix);
 			sourceAndTargetMatrices.add(targetMatrix);
 
 			fakeTargetOTUSet.setMatrices(sourceAndTargetMatrices);
 			saveOrUpdateMatrix.saveOrUpdate(targetMatrix, sourceMatrix,
 					fakeOTUsByIncomingOTU, dnaCharacter);
+
+			// Simulate passing back in the persisted characters: so we need to
+			// assign the proper pPOD ID's.
+			for (int i = 0; i < sourceMatrix.getCharacters().size(); i++) {
+				sourceMatrix.getCharacters().get(i).setPPodId(
+						targetMatrix.getCharacters().get(i).getPPodId());
+			}
 
 			// Swap 2 and 0
 			final List<Character> newSourceMatrixCharacters = newArrayList(sourceMatrix
