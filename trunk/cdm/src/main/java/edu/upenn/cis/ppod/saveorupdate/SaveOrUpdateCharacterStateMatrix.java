@@ -195,6 +195,9 @@ public class SaveOrUpdateCharacterStateMatrix implements ISaveOrUpdateMatrix {
 		final List<Character> removedCharacters = targetMatrix
 				.setCharacters(newTargetMatrixCharacters);
 
+		// So the rows have a targetMatrix id
+		dao.saveOrUpdate(targetMatrix);
+
 		final Set<CharacterStateCell> cellsToEvict = newHashSet();
 		for (final CharacterStateRow sourceRow : sourceMatrix.getRows()) {
 

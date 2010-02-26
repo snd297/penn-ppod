@@ -31,6 +31,8 @@ public class NewPPodVersionInfo implements INewPPodVersionInfo {
 	private final PPodVersionInfo newPPodVersionInfo;
 	private final PPodVersionInfoDAOHibernate pPodVersionInfoDAO;
 
+	private boolean pPodVersionInfoInitialized = false;
+
 	@Inject
 	NewPPodVersionInfo(final PPodVersionInfoDAOHibernate pPodVersionInfoDAO,
 			final PPodVersionInfo newPPodVersionInfo) {
@@ -38,7 +40,10 @@ public class NewPPodVersionInfo implements INewPPodVersionInfo {
 		this.pPodVersionInfoDAO = pPodVersionInfoDAO;
 	}
 
-	private boolean pPodVersionInfoInitialized = false;
+	public PPodVersionInfo getNewPPodVersionInfo() {
+		initializePPodVersionInfo();
+		return newPPodVersionInfo;
+	}
 
 	private void initializePPodVersionInfo() {
 		if (pPodVersionInfoInitialized) {
@@ -52,10 +57,5 @@ public class NewPPodVersionInfo implements INewPPodVersionInfo {
 			pPodVersionInfoDAO.saveOrUpdate(newPPodVersionInfo);
 			pPodVersionInfoInitialized = true;
 		}
-	}
-
-	public PPodVersionInfo getNewPPodVersionInfo() {
-		initializePPodVersionInfo();
-		return newPPodVersionInfo;
 	}
 }

@@ -93,9 +93,9 @@ public abstract class MolecularSequenceSet<S extends MolecularSequence> extends
 	}
 
 	/**
-	 * Intentionally package-private and meant to be called in {@link Study}.
+	 * Intentionally package-private and meant to be called in {@link OTUSet}.
 	 * <p>
-	 * A {@code null} value for {@code newStudy} indicates we're severing the
+	 * A {@code null} value for {@code newOTUSet} indicates we're severing the
 	 * relationship.
 	 * 
 	 * @param newOTUSet the OTU set that will own this sequence set

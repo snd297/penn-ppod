@@ -116,7 +116,7 @@ public class CharacterStateRow extends PPodEntity {
 	 * belongs.
 	 */
 	@ManyToOne
-	@JoinColumn(name = CharacterStateMatrix.ID_COLUMN)
+	@JoinColumn(name = CharacterStateMatrix.ID_COLUMN, nullable = false)
 	@Nullable
 	private CharacterStateMatrix matrix;
 

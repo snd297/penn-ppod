@@ -163,7 +163,7 @@ public abstract class MolecularSequence<SS extends MolecularSequenceSet<?>>
 	 * 
 	 * @return this
 	 */
-	public MolecularSequence setAccession(final String accession) {
+	public MolecularSequence setAccession(@Nullable final String accession) {
 		this.accession = accession;
 		return this;
 	}
@@ -175,7 +175,8 @@ public abstract class MolecularSequence<SS extends MolecularSequenceSet<?>>
 	 * 
 	 * @return this
 	 */
-	public MolecularSequence setDescription(final String newDescription) {
+	public MolecularSequence setDescription(
+			@Nullable final String newDescription) {
 		description = newDescription;
 		return this;
 	}
@@ -187,7 +188,7 @@ public abstract class MolecularSequence<SS extends MolecularSequenceSet<?>>
 	 * 
 	 * @return this
 	 */
-	public MolecularSequence setName(final String name) {
+	public MolecularSequence setName(@Nullable final String name) {
 		this.name = name;
 		return this;
 	}
@@ -223,7 +224,7 @@ public abstract class MolecularSequence<SS extends MolecularSequenceSet<?>>
 	 * 
 	 * @return this
 	 */
-	protected abstract MolecularSequence<SS> setSequenceSet(
+	public abstract MolecularSequence<SS> setSequenceSet(
 			@Nullable final SS sequenceSet);
 
 	/**

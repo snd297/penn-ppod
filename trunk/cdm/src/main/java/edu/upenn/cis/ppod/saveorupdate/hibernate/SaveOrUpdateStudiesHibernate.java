@@ -41,6 +41,8 @@ import edu.upenn.cis.ppod.dao.hibernate.StudyDAOHibernate;
 import edu.upenn.cis.ppod.dao.hibernate.HibernateDAOFactory.OTUSetDAOHibernate;
 import edu.upenn.cis.ppod.model.CharacterStateMatrix;
 import edu.upenn.cis.ppod.model.DNACharacter;
+import edu.upenn.cis.ppod.model.DNASequence;
+import edu.upenn.cis.ppod.model.DNASequenceSet;
 import edu.upenn.cis.ppod.model.OTU;
 import edu.upenn.cis.ppod.model.OTUSet;
 import edu.upenn.cis.ppod.model.Study;
@@ -48,13 +50,14 @@ import edu.upenn.cis.ppod.model.TreeSet;
 import edu.upenn.cis.ppod.modelinterfaces.INewPPodVersionInfo;
 import edu.upenn.cis.ppod.modelinterfaces.IUUPPodEntity;
 import edu.upenn.cis.ppod.saveorupdate.IMergeAttachments;
+import edu.upenn.cis.ppod.saveorupdate.IMergeMolecularSequenceSets;
 import edu.upenn.cis.ppod.saveorupdate.IMergeOTUSetFactory;
 import edu.upenn.cis.ppod.saveorupdate.IMergeOTUSets;
+import edu.upenn.cis.ppod.saveorupdate.ISaveOrUpdateStudies;
 import edu.upenn.cis.ppod.saveorupdate.IMergeTreeSets;
 import edu.upenn.cis.ppod.saveorupdate.IMergeTreeSetsFactory;
 import edu.upenn.cis.ppod.saveorupdate.ISaveOrUpdateMatrix;
 import edu.upenn.cis.ppod.saveorupdate.ISaveOrUpdateMatrixFactory;
-import edu.upenn.cis.ppod.saveorupdate.ISaveOrUpdateStudy;
 import edu.upenn.cis.ppod.util.ICharacterStateMatrixFactory;
 
 /**
@@ -62,7 +65,7 @@ import edu.upenn.cis.ppod.util.ICharacterStateMatrixFactory;
  * 
  * @author Sam Donnelly
  */
-public class SaveOrUpdateStudyHibernate implements ISaveOrUpdateStudy {
+public class SaveOrUpdateStudiesHibernate implements ISaveOrUpdateStudies {
 
 	private final IStudyDAO studyDAO;
 	private final IOTUSetDAO otuSetDAO;
@@ -71,15 +74,17 @@ public class SaveOrUpdateStudyHibernate implements ISaveOrUpdateStudy {
 	private final Provider<Study> studyProvider;
 	private final Provider<OTUSet> otuSetProvider;
 	private final ICharacterStateMatrixFactory matrixFactory;
+	private final Provider<DNASequenceSet> dnaSequenceSetProvider;
 	private final Provider<TreeSet> treeSetProvider;
 
 	private final IMergeOTUSets mergeOTUSets;
-	private final ISaveOrUpdateMatrix saveOrUpdateMatrix;
+	private final ISaveOrUpdateMatrix mergeMatrices;
 	private final IMergeTreeSets mergeTreeSets;
 	private final INewPPodVersionInfo newPPodVersionInfo;
+	private final IMergeMolecularSequenceSets<DNASequenceSet, DNASequence> mergeDNASequenceSets;
 
 	@Inject
-	SaveOrUpdateStudyHibernate(
+	SaveOrUpdateStudiesHibernate(
 			final StudyDAOHibernate studyDAO,
 			final OTUSetDAOHibernate otuSetDAO,
 			final DNACharacterDAOHibernate dnaCharacterDAO,
@@ -87,10 +92,12 @@ public class SaveOrUpdateStudyHibernate implements ISaveOrUpdateStudy {
 			final Provider<Study> studyProvider,
 			final Provider<OTUSet> otuSetProvider,
 			final ICharacterStateMatrixFactory matrixFactory,
+			final Provider<DNASequenceSet> dnaSequenceSetProvider,
 			final Provider<TreeSet> treeSetProvider,
 			final IMergeOTUSetFactory saveOrUpdateOTUSetFactory,
 			final IMergeTreeSetsFactory mergeTreeSetsFactory,
 			final ISaveOrUpdateMatrixFactory mergeMatrixFactory,
+			final IMergeMolecularSequenceSets.IFactory<DNASequenceSet, DNASequence> mergeDNASequenceSetsFactory,
 			final IAttachmentNamespaceDAOHibernateFactory attachmentNamespaceDAOFactory,
 			final IAttachmentTypeDAOHibernateFactory attachmentTypeDAOFactory,
 			final IMergeAttachments.IFactory mergeAttachmentFactory,
@@ -104,13 +111,16 @@ public class SaveOrUpdateStudyHibernate implements ISaveOrUpdateStudy {
 		this.studyProvider = studyProvider;
 		this.otuSetProvider = otuSetProvider;
 		this.matrixFactory = matrixFactory;
+		this.dnaSequenceSetProvider = dnaSequenceSetProvider;
 		this.treeSetProvider = treeSetProvider;
 		this.newPPodVersionInfo = newPPodVersionInfo;
-		this.mergeOTUSets = saveOrUpdateOTUSetFactory.create(newPPodVersionInfo);
-		this.saveOrUpdateMatrix = mergeMatrixFactory.create(
-				mergeAttachmentFactory.create(attachmentNamespaceDAOFactory
-						.create(session), attachmentTypeDAOFactory
-						.create(session)), dao.setSession(session),
+		this.mergeOTUSets = saveOrUpdateOTUSetFactory
+				.create(newPPodVersionInfo);
+		this.mergeMatrices = mergeMatrixFactory.create(mergeAttachmentFactory
+				.create(attachmentNamespaceDAOFactory.create(session),
+						attachmentTypeDAOFactory.create(session)), dao
+				.setSession(session), newPPodVersionInfo);
+		this.mergeDNASequenceSets = mergeDNASequenceSetsFactory.create(dao,
 				newPPodVersionInfo);
 		this.mergeTreeSets = mergeTreeSetsFactory.create(newPPodVersionInfo);
 	}
@@ -163,7 +173,7 @@ public class SaveOrUpdateStudyHibernate implements ISaveOrUpdateStudy {
 			final Map<OTU, OTU> dbOTUsByIncomingOTU = mergeOTUSets.merge(
 					dbOTUSet, incomingOTUSet);
 
-			// saveOrUpdateMatrix needs for dbOTUSet to have an id so that
+			// mergeMatrices needs for dbOTUSet to have an id so that
 			// we can give it to the matrix. dbOTUSet needs for dbStudy to
 			// have an id. Note that cascade from the study takes care of
 			// the OTUSet.
@@ -185,10 +195,27 @@ public class SaveOrUpdateStudyHibernate implements ISaveOrUpdateStudy {
 				}
 				newDbMatrices.add(dbMatrix);
 				dbOTUSet.setMatrices(newDbMatrices);
-
-				saveOrUpdateMatrix.saveOrUpdate(dbMatrix, incomingMatrix,
+				mergeMatrices.saveOrUpdate(dbMatrix, incomingMatrix,
 						dbOTUsByIncomingOTU, dbDNACharacter);
+			}
 
+			final Set<DNASequenceSet> newDbDNASequenceSets = newHashSet();
+			for (final DNASequenceSet incomingDNASequenceSet : incomingOTUSet
+					.getDNASequenceSets()) {
+				DNASequenceSet dbDNASequenceSet;
+				if (null == (dbDNASequenceSet = findIf(dbOTUSet
+						.getDNASequenceSets(), compose(
+						equalTo(incomingDNASequenceSet.getPPodId()),
+						IUUPPodEntity.getPPodId)))) {
+					dbDNASequenceSet = dnaSequenceSetProvider.get();
+					dbDNASequenceSet.setPPodId();
+					dbDNASequenceSet.setPPodVersionInfo(newPPodVersionInfo
+							.getNewPPodVersionInfo());
+				}
+				newDbDNASequenceSets.add(dbDNASequenceSet);
+				dbOTUSet.setDNASequenceSets(newDbDNASequenceSets);
+				mergeDNASequenceSets.merge(dbDNASequenceSet,
+						incomingDNASequenceSet);
 			}
 			final Set<TreeSet> newDbTreeSets = newHashSet();
 			for (final TreeSet incomingTreeSet : incomingOTUSet.getTreeSets()) {

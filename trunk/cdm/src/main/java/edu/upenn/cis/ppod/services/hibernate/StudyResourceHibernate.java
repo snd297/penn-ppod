@@ -27,7 +27,7 @@ import edu.upenn.cis.ppod.dao.IStudyDAO;
 import edu.upenn.cis.ppod.dao.hibernate.StudyDAOHibernate;
 import edu.upenn.cis.ppod.model.Study;
 import edu.upenn.cis.ppod.modelinterfaces.INewPPodVersionInfo;
-import edu.upenn.cis.ppod.saveorupdate.ISaveOrUpdateStudy;
+import edu.upenn.cis.ppod.saveorupdate.ISaveOrUpdateStudies;
 import edu.upenn.cis.ppod.saveorupdate.hibernate.ISaveOrUpdateStudyHibernateFactory;
 import edu.upenn.cis.ppod.services.IStudyResource;
 import edu.upenn.cis.ppod.services.PairStringString;
@@ -45,7 +45,7 @@ public final class StudyResourceHibernate implements IStudyResource {
 
 	private final IStudyDAO studyDAO;
 
-	private final ISaveOrUpdateStudy saveOrUpdateStudy;
+	private final ISaveOrUpdateStudies saveOrUpdateStudies;
 
 	private final IStudy2StudyInfo study2StudyInfo;
 
@@ -68,7 +68,7 @@ public final class StudyResourceHibernate implements IStudyResource {
 				.getSessionFactory().getCurrentSession());
 		this.setPPodVersionInfoVisitor = setPPodVersionInfoVisitorFactory
 				.create(newPPodVersionInfo);
-		this.saveOrUpdateStudy = saveOrUpdateStudyFactory.create(HibernateUtil
+		this.saveOrUpdateStudies = saveOrUpdateStudyFactory.create(HibernateUtil
 				.getSessionFactory().getCurrentSession(), newPPodVersionInfo);
 		this.study2StudyInfo = study2StudyInfo;
 		this.otuSetAndOTUSetDocIdVisitor = otuSetAndOTUSetDocIdVisitor;
@@ -78,7 +78,7 @@ public final class StudyResourceHibernate implements IStudyResource {
 
 	public StudyInfo create(final Study incomingStudy) {
 		incomingStudy.accept(afterUnmarshalVisitorProvider.get());
-		final Study dbStudy = saveOrUpdateStudy.save(incomingStudy);
+		final Study dbStudy = saveOrUpdateStudies.save(incomingStudy);
 		dbStudy.accept(setPPodVersionInfoVisitor);
 		return study2StudyInfo.go(dbStudy);
 	}
@@ -96,7 +96,7 @@ public final class StudyResourceHibernate implements IStudyResource {
 
 	public StudyInfo update(final Study incomingStudy, final String pPodId) {
 		incomingStudy.accept(afterUnmarshalVisitorProvider.get());
-		final Study dbStudy = saveOrUpdateStudy.update(incomingStudy);
+		final Study dbStudy = saveOrUpdateStudies.update(incomingStudy);
 		dbStudy.accept(setPPodVersionInfoVisitor);
 		return study2StudyInfo.go(dbStudy);
 	}
