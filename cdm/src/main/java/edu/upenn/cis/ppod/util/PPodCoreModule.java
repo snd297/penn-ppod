@@ -27,13 +27,13 @@ import edu.upenn.cis.ppod.model.CharacterState;
 import edu.upenn.cis.ppod.model.DNAState;
 import edu.upenn.cis.ppod.model.NewPPodVersionInfo;
 import edu.upenn.cis.ppod.modelinterfaces.INewPPodVersionInfo;
-import edu.upenn.cis.ppod.saveorupdate.IMergeAttachment;
+import edu.upenn.cis.ppod.saveorupdate.IMergeAttachments;
 import edu.upenn.cis.ppod.saveorupdate.IMergeOTUSetFactory;
-import edu.upenn.cis.ppod.saveorupdate.IMergeTreeSetFactory;
+import edu.upenn.cis.ppod.saveorupdate.IMergeTreeSetsFactory;
 import edu.upenn.cis.ppod.saveorupdate.ISaveOrUpdateMatrixFactory;
-import edu.upenn.cis.ppod.saveorupdate.MergeAttachment;
-import edu.upenn.cis.ppod.saveorupdate.MergeOTUSet;
-import edu.upenn.cis.ppod.saveorupdate.MergeTreeSet;
+import edu.upenn.cis.ppod.saveorupdate.MergeAttachments;
+import edu.upenn.cis.ppod.saveorupdate.MergeOTUSets;
+import edu.upenn.cis.ppod.saveorupdate.MergeTreeSets;
 import edu.upenn.cis.ppod.saveorupdate.SaveOrUpdateCharacterStateMatrix;
 import edu.upenn.cis.ppod.saveorupdate.hibernate.ISaveOrUpdateStudyHibernateFactory;
 import edu.upenn.cis.ppod.saveorupdate.hibernate.SaveOrUpdateStudyHibernate;
@@ -67,17 +67,17 @@ public final class PPodCoreModule extends AbstractModule {
 						SaveOrUpdateStudyHibernate.class));
 		bind(IMergeOTUSetFactory.class).toProvider(
 				FactoryProvider.newFactory(IMergeOTUSetFactory.class,
-						MergeOTUSet.class));
-		bind(IMergeTreeSetFactory.class).toProvider(
-				FactoryProvider.newFactory(IMergeTreeSetFactory.class,
-						MergeTreeSet.class));
+						MergeOTUSets.class));
+		bind(IMergeTreeSetsFactory.class).toProvider(
+				FactoryProvider.newFactory(IMergeTreeSetsFactory.class,
+						MergeTreeSets.class));
 		bind(ISaveOrUpdateMatrixFactory.class).toProvider(
 				FactoryProvider.newFactory(ISaveOrUpdateMatrixFactory.class,
 						SaveOrUpdateCharacterStateMatrix.class));
 
-		bind(IMergeAttachment.IFactory.class).toProvider(
-				FactoryProvider.newFactory(IMergeAttachment.IFactory.class,
-						MergeAttachment.class));
+		bind(IMergeAttachments.IFactory.class).toProvider(
+				FactoryProvider.newFactory(IMergeAttachments.IFactory.class,
+						MergeAttachments.class));
 
 		bind(CharacterState.IFactory.class).toProvider(
 				FactoryProvider.newFactory(CharacterState.IFactory.class,

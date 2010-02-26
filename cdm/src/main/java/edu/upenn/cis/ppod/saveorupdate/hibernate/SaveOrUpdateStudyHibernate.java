@@ -47,11 +47,11 @@ import edu.upenn.cis.ppod.model.Study;
 import edu.upenn.cis.ppod.model.TreeSet;
 import edu.upenn.cis.ppod.modelinterfaces.INewPPodVersionInfo;
 import edu.upenn.cis.ppod.modelinterfaces.IUUPPodEntity;
-import edu.upenn.cis.ppod.saveorupdate.IMergeAttachment;
-import edu.upenn.cis.ppod.saveorupdate.IMergeOTUSet;
+import edu.upenn.cis.ppod.saveorupdate.IMergeAttachments;
 import edu.upenn.cis.ppod.saveorupdate.IMergeOTUSetFactory;
-import edu.upenn.cis.ppod.saveorupdate.IMergeTreeSet;
-import edu.upenn.cis.ppod.saveorupdate.IMergeTreeSetFactory;
+import edu.upenn.cis.ppod.saveorupdate.IMergeOTUSets;
+import edu.upenn.cis.ppod.saveorupdate.IMergeTreeSets;
+import edu.upenn.cis.ppod.saveorupdate.IMergeTreeSetsFactory;
 import edu.upenn.cis.ppod.saveorupdate.ISaveOrUpdateMatrix;
 import edu.upenn.cis.ppod.saveorupdate.ISaveOrUpdateMatrixFactory;
 import edu.upenn.cis.ppod.saveorupdate.ISaveOrUpdateStudy;
@@ -73,9 +73,9 @@ public class SaveOrUpdateStudyHibernate implements ISaveOrUpdateStudy {
 	private final ICharacterStateMatrixFactory matrixFactory;
 	private final Provider<TreeSet> treeSetProvider;
 
-	private final IMergeOTUSet mergeOTUSet;
+	private final IMergeOTUSets mergeOTUSets;
 	private final ISaveOrUpdateMatrix saveOrUpdateMatrix;
-	private final IMergeTreeSet mergeTreeSet;
+	private final IMergeTreeSets mergeTreeSets;
 	private final INewPPodVersionInfo newPPodVersionInfo;
 
 	@Inject
@@ -89,11 +89,11 @@ public class SaveOrUpdateStudyHibernate implements ISaveOrUpdateStudy {
 			final ICharacterStateMatrixFactory matrixFactory,
 			final Provider<TreeSet> treeSetProvider,
 			final IMergeOTUSetFactory saveOrUpdateOTUSetFactory,
-			final IMergeTreeSetFactory mergeTreeSetFactory,
+			final IMergeTreeSetsFactory mergeTreeSetsFactory,
 			final ISaveOrUpdateMatrixFactory mergeMatrixFactory,
 			final IAttachmentNamespaceDAOHibernateFactory attachmentNamespaceDAOFactory,
 			final IAttachmentTypeDAOHibernateFactory attachmentTypeDAOFactory,
-			final IMergeAttachment.IFactory mergeAttachmentFactory,
+			final IMergeAttachments.IFactory mergeAttachmentFactory,
 			@Assisted final Session session,
 			@Assisted final INewPPodVersionInfo newPPodVersionInfo) {
 
@@ -106,13 +106,13 @@ public class SaveOrUpdateStudyHibernate implements ISaveOrUpdateStudy {
 		this.matrixFactory = matrixFactory;
 		this.treeSetProvider = treeSetProvider;
 		this.newPPodVersionInfo = newPPodVersionInfo;
-		this.mergeOTUSet = saveOrUpdateOTUSetFactory.create(newPPodVersionInfo);
+		this.mergeOTUSets = saveOrUpdateOTUSetFactory.create(newPPodVersionInfo);
 		this.saveOrUpdateMatrix = mergeMatrixFactory.create(
 				mergeAttachmentFactory.create(attachmentNamespaceDAOFactory
 						.create(session), attachmentTypeDAOFactory
 						.create(session)), dao.setSession(session),
 				newPPodVersionInfo);
-		this.mergeTreeSet = mergeTreeSetFactory.create(newPPodVersionInfo);
+		this.mergeTreeSets = mergeTreeSetsFactory.create(newPPodVersionInfo);
 	}
 
 	public Study save(final Study incomingStudy) {
@@ -160,13 +160,13 @@ public class SaveOrUpdateStudyHibernate implements ISaveOrUpdateStudy {
 				dbOTUSet.setPPodId();
 			}
 
-			final Map<OTU, OTU> dbOTUsByIncomingOTU = mergeOTUSet.saveOrUpdate(
+			final Map<OTU, OTU> dbOTUsByIncomingOTU = mergeOTUSets.merge(
 					dbOTUSet, incomingOTUSet);
 
 			// saveOrUpdateMatrix needs for dbOTUSet to have an id so that
 			// we can give it to the matrix. dbOTUSet needs for dbStudy to
 			// have an id. Note that cascade from the study takes care of
-			// the OTUSet and Matrix too
+			// the OTUSet.
 			studyDAO.saveOrUpdate(dbStudy);
 
 			final Set<CharacterStateMatrix> newDbMatrices = newHashSet();
@@ -203,7 +203,7 @@ public class SaveOrUpdateStudyHibernate implements ISaveOrUpdateStudy {
 				}
 				newDbTreeSets.add(dbTreeSet);
 				dbOTUSet.setTreeSets(newDbTreeSets);
-				mergeTreeSet.merge(dbTreeSet, incomingTreeSet,
+				mergeTreeSets.merge(dbTreeSet, incomingTreeSet,
 						dbOTUsByIncomingOTU);
 			}
 		}

@@ -30,7 +30,6 @@ import com.google.inject.Provider;
 import com.google.inject.assistedinject.Assisted;
 
 import edu.upenn.cis.ppod.model.OTU;
-import edu.upenn.cis.ppod.model.OTUSet;
 import edu.upenn.cis.ppod.model.Tree;
 import edu.upenn.cis.ppod.model.TreeSet;
 import edu.upenn.cis.ppod.modelinterfaces.INewPPodVersionInfo;
@@ -39,13 +38,13 @@ import edu.upenn.cis.ppod.modelinterfaces.IUUPPodEntity;
 /**
  * @author Sam Donnelly
  */
-public class MergeTreeSet implements IMergeTreeSet {
+public class MergeTreeSets implements IMergeTreeSets {
 
 	private final Provider<Tree> treeProvider;
 	private final INewPPodVersionInfo newPPodVersionInfo;
 
 	@Inject
-	MergeTreeSet(final Provider<Tree> treeProvider,
+	MergeTreeSets(final Provider<Tree> treeProvider,
 			@Assisted final INewPPodVersionInfo newPPodVersionInfo) {
 
 		this.treeProvider = treeProvider;

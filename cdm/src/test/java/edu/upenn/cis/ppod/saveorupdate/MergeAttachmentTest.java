@@ -33,7 +33,7 @@ import edu.upenn.cis.ppod.model.AttachmentType;
 import edu.upenn.cis.ppod.model.ModelAssert;
 
 /**
- * Tests {@link IMergeAttachment}s.
+ * Tests {@link IMergeAttachments}s.
  * 
  * @author Sam Donnelly
  */
@@ -41,7 +41,7 @@ import edu.upenn.cis.ppod.model.ModelAssert;
 public class MergeAttachmentTest {
 
 	@Inject
-	private IMergeAttachment.IFactory mergeAttachmentFactory;
+	private IMergeAttachments.IFactory mergeAttachmentFactory;
 
 	@Inject
 	private Provider<TestAttachmentNamespaceDAO> attachmentNamespaceDAOProvider;
@@ -71,7 +71,7 @@ public class MergeAttachmentTest {
 
 	public void mergeOnBlankTarget() {
 		System.out.println("entering...mergeOnBlankTarget");
-		IMergeAttachment mergeAttachment = mergeAttachmentFactory.create(
+		IMergeAttachments mergeAttachments = mergeAttachmentFactory.create(
 				attachmentNamespaceDAO, attachmentTypeDAO);
 		final Attachment targetAttachment = attachmentProvider.get(), sourceAttachment = attachmentProvider
 				.get();
@@ -83,7 +83,7 @@ public class MergeAttachmentTest {
 						"SOURCE_ATTACHMENT_NAMESPACE"));
 		sourceAttachment.setStringValue("STRING_VALUE");
 		sourceAttachment.setByteArrayValue(new byte[] { 0, 1, 2 });
-		mergeAttachment.merge(targetAttachment, sourceAttachment);
+		mergeAttachments.merge(targetAttachment, sourceAttachment);
 		ModelAssert.assertEqualsAttachments(targetAttachment, sourceAttachment);
 	}
 }

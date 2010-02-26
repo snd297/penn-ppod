@@ -35,7 +35,7 @@ import edu.upenn.cis.ppod.model.AttachmentType;
 /**
  * @author Sam Donnelly
  */
-public class MergeAttachment implements IMergeAttachment {
+public class MergeAttachments implements IMergeAttachments {
 
 	private final IAttachmentNamespaceDAO attachmentNamespaceDAO;
 	private final IAttachmentTypeDAO attachmentTypeDAO;
@@ -50,7 +50,7 @@ public class MergeAttachment implements IMergeAttachment {
 	private final Map<AttachmentNamespace, Map<String, AttachmentType>> typesByNamespaceAndLabel = newHashMap();
 
 	@Inject
-	MergeAttachment(
+	MergeAttachments(
 			final Provider<AttachmentNamespace> attachmentNamespaceProvider,
 			final Provider<AttachmentType> attachmentTypeProvider,
 			@Assisted final IAttachmentNamespaceDAO attachmentNamespaceDAO,

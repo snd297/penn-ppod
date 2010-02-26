@@ -15,26 +15,19 @@
  */
 package edu.upenn.cis.ppod.saveorupdate;
 
-import edu.upenn.cis.ppod.dao.IAttachmentNamespaceDAO;
-import edu.upenn.cis.ppod.dao.IAttachmentTypeDAO;
-import edu.upenn.cis.ppod.model.Attachment;
+import java.util.Map;
+
+import edu.upenn.cis.ppod.model.OTU;
+import edu.upenn.cis.ppod.model.OTUSet;
 
 /**
  * @author Sam Donnelly
  */
-public interface IMergeAttachment {
-	
-	/**
-	 * @throws IllegalArgumentException if {@code sourceAttachment.getType() ==
-	 *             null}
-	 * @throws IllegalArgumentException if {@code
-	 *             sourceAttachment.getType().getNamespace() == null}
-	 */
-	Attachment merge(final Attachment targetAttachment,
-			final Attachment sourceAttachment);
+public interface IMergeOTUSets {
 
-	interface IFactory {
-		IMergeAttachment create(IAttachmentNamespaceDAO attachmentNamespaceDAO,
-				IAttachmentTypeDAO attachmentTypeDAO);
-	}
+	/**
+	 * Return persistentOTUsByIncomingOTU.
+	 */
+	Map<OTU, OTU> merge(OTUSet targetOTUSet, OTUSet sourceOTUSet);
+
 }

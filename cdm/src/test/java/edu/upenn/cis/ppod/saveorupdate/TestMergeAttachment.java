@@ -18,11 +18,11 @@ package edu.upenn.cis.ppod.saveorupdate;
 import edu.upenn.cis.ppod.model.Attachment;
 
 /**
- * Stub {@link IMergeAttachment}.
+ * Stub {@link IMergeAttachments}.
  * 
  * @author Sam Donnelly
  */
-public class TestMergeAttachment implements IMergeAttachment {
+public class TestMergeAttachment implements IMergeAttachments {
 
 	/**
 	 * Does nothing but return {@code targetAttachment}.

@@ -72,13 +72,13 @@ public abstract class MolecularSequence<SS extends MolecularSequenceSet<?>>
 	}
 
 	/**
-	 * Get the defline.
+	 * Get the description.
 	 * 
-	 * @return the defline
+	 * @return the description
 	 */
 	@XmlAttribute
 	@CheckForNull
-	private String getDescription() {
+	public String getDescription() {
 		return description;
 	}
 

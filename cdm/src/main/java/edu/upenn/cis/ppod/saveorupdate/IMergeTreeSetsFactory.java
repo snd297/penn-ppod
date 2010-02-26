@@ -6,6 +6,6 @@ import edu.upenn.cis.ppod.modelinterfaces.INewPPodVersionInfo;
  * @author Sam Donnelly
  * 
  */
-public interface IMergeTreeSetFactory {
-	IMergeTreeSet create(INewPPodVersionInfo newPPodVersionInfo);
+public interface IMergeTreeSetsFactory {
+	IMergeTreeSets create(INewPPodVersionInfo newPPodVersionInfo);
 }
