@@ -37,4 +37,6 @@ Because it used to be many-to-many and since there're are so few trees in tree s
 
 ===4) Why field access and not property access? ===
 
-Because our setter's are used to figure out when we need a new pPOD version number, and we didn't want that flag set when loading entities from the database.
+Because our setter's are used to figure out when we need a new pPOD version number, and we didn't want that flag set when loading entities from the database. 
+
+For better and for worse, we take the view that the accessors are for Java client's and the fields are for the database.
