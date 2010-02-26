@@ -61,7 +61,7 @@ public class SaveOrUpdateCharacterStateMatrix implements ISaveOrUpdateMatrix {
 	private final Provider<CharacterStateCell> cellProvider;
 	private final CharacterState.IFactory stateFactory;
 	private final Provider<Attachment> attachmentProvider;
-	private final IMergeAttachment mergeAttachment;
+	private final IMergeAttachments mergeAttachments;
 	private final IDAO<Object, Long> dao;
 
 	@InjectLogger
@@ -78,14 +78,14 @@ public class SaveOrUpdateCharacterStateMatrix implements ISaveOrUpdateMatrix {
 			final Provider<Attachment> attachmentProvider,
 			@Assisted final INewPPodVersionInfo newPPodVersionInfo,
 			@Assisted final IDAO<Object, Long> dao,
-			@Assisted final IMergeAttachment mergeAttachment) {
+			@Assisted final IMergeAttachments mergeAttachments) {
 		this.characterProvider = characterProvider;
 		this.rowProvider = rowProvider;
 		this.cellProvider = cellProvider;
 		this.stateFactory = stateFactory;
 		this.attachmentProvider = attachmentProvider;
 		this.dao = dao;
-		this.mergeAttachment = mergeAttachment;
+		this.mergeAttachments = mergeAttachments;
 		this.newPPodVersionInfo = newPPodVersionInfo;
 	}
 
@@ -186,7 +186,7 @@ public class SaveOrUpdateCharacterStateMatrix implements ISaveOrUpdateMatrix {
 					targetAttachment.setPPodId();
 				}
 				newTargetCharacter.addAttachment(targetAttachment);
-				mergeAttachment.merge(targetAttachment, sourceAttachment);
+				mergeAttachments.merge(targetAttachment, sourceAttachment);
 				dao.saveOrUpdate(targetAttachment);
 			}
 			dao.saveOrUpdate(newTargetCharacter);

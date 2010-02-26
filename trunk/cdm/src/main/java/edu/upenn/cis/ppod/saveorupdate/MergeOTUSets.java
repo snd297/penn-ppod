@@ -34,23 +34,23 @@ import edu.upenn.cis.ppod.modelinterfaces.INewPPodVersionInfo;
 import edu.upenn.cis.ppod.modelinterfaces.IUUPPodEntity;
 
 /**
- * Merge form {@code sourceOTUSet} onto {@code targetOTUSet}.
+ * Merge {@code sourceOTUSet} onto {@code targetOTUSet}.
  * 
  * @author Sam Donnelly
  */
-public class MergeOTUSet implements IMergeOTUSet {
+public class MergeOTUSets implements IMergeOTUSets {
 
 	private final Provider<OTU> otuProvider;
 	private final INewPPodVersionInfo newPPodVersionInfo;
 
 	@Inject
-	MergeOTUSet(final Provider<OTU> otuProvider,
+	MergeOTUSets(final Provider<OTU> otuProvider,
 			@Assisted INewPPodVersionInfo newPPodVersionInfo) {
 		this.otuProvider = otuProvider;
 		this.newPPodVersionInfo = newPPodVersionInfo;
 	}
 
-	public Map<OTU, OTU> saveOrUpdate(final OTUSet targetOTUSet,
+	public Map<OTU, OTU> merge(final OTUSet targetOTUSet,
 			final OTUSet sourceOTUSet) {
 		targetOTUSet.setLabel(sourceOTUSet.getLabel());
 		targetOTUSet.setDescription(sourceOTUSet.getDescription());

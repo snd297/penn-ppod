@@ -106,8 +106,7 @@ public class DbToMatrixTest extends DbTestBase {
 						// .attributeValue(CharacterStateRow.CELL_INDEX_COLUMN)));
 						Assert
 								.assertEquals(
-										cell.getType()
-												.toString(),
+										cell.getType().toString(),
 										cellElement
 												.attributeValue(CharacterStateCell.TYPE_COLUMN));
 
@@ -157,10 +156,10 @@ public class DbToMatrixTest extends DbTestBase {
 						}
 
 						for (final Element phyloCharStateElement : phyloCharStateElements) {
-							final CharacterState phyloCharState = cell
-									.getStateByNumber(new Integer(
-											phyloCharStateElement
-													.attributeValue(CharacterState.STATE_NUMBER_COLUMN)));
+							final CharacterState phyloCharState = null; // cell
+							// n.getStateByNumber(new Integer(
+							// phyloCharStateElement
+							// .attributeValue(CharacterState.STATE_NUMBER_COLUMN)));
 							logger
 									.debug(
 											"{}:new Long(\r\n"
@@ -234,16 +233,16 @@ public class DbToMatrixTest extends DbTestBase {
 			Assert.assertEquals(otu.getLabel(), otuElement
 					.attributeValue(OTU.LABEL_COLUMN));
 
-//			for (final OTUSet otuSet : otu.getOTUSets()) {
-//				final Element otuSetElement = (Element) pPodDocument
-//						.selectSingleNode("/dataset/"
-//								+ OTUSet.TABLE.toLowerCase() + "[@"
-//								+ OTUSet.ID_COLUMN + "='" + otuSet.getId()
-//								+ "']");
-//				assertEquals(otuSet.getLabel(), otuSetElement
-//						.attributeValue(OTUSet.LABEL_COLUMN));
-//				assertEquals(m.getOTUSet(), otuSet);
-//			}
+// for (final OTUSet otuSet : otu.getOTUSets()) {
+// final Element otuSetElement = (Element) pPodDocument
+// .selectSingleNode("/dataset/"
+// + OTUSet.TABLE.toLowerCase() + "[@"
+// + OTUSet.ID_COLUMN + "='" + otuSet.getId()
+// + "']");
+// assertEquals(otuSet.getLabel(), otuSetElement
+// .attributeValue(OTUSet.LABEL_COLUMN));
+// assertEquals(m.getOTUSet(), otuSet);
+// }
 		}
 	}
 }

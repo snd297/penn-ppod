@@ -82,6 +82,9 @@ public class DNASequence extends MolecularSequence<DNASequenceSet> {
 		if (c == 'N') {
 			return true;
 		}
+		if (c == '-') {
+			return true;
+		}
 		return false;
 	}
 

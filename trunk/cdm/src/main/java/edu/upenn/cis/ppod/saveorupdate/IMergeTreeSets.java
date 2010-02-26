@@ -23,7 +23,7 @@ import edu.upenn.cis.ppod.model.TreeSet;
 /**
  * @author Sam Donnelly
  */
-public interface IMergeTreeSet {
+public interface IMergeTreeSets {
 	TreeSet merge(TreeSet targetTreeSet, TreeSet sourceTreeSet,
 			Map<OTU, OTU> mergedOTUsBySourceOTU);
 }

@@ -18,12 +18,9 @@ package edu.upenn.cis.ppod.model;
 import static com.google.common.base.Preconditions.checkArgument;
 import static com.google.common.base.Preconditions.checkNotNull;
 import static com.google.common.base.Preconditions.checkState;
-import static com.google.common.base.Predicates.compose;
-import static com.google.common.base.Predicates.equalTo;
 import static com.google.common.collect.Iterables.get;
 import static com.google.common.collect.Sets.newHashSet;
 import static com.google.common.collect.Sets.newTreeSet;
-import static edu.upenn.cis.ppod.util.PPodIterables.findIf;
 
 import java.util.Collections;
 import java.util.Comparator;
@@ -125,8 +122,8 @@ public class CharacterStateCell extends PPodEntity {
 	 * To handle the most-common case of a single {@code CharacterState}, we
 	 * cache {@code states.get(0)}.
 	 * <p>
-	 * Will be {@code null} if this is a {@link Type.INAPPLICABLE} or
-	 * {@link Type.UNASSIGNED}.
+	 * Will be {@code null} if this is a {@link Type#INAPPLICABLE} or
+	 * {@link Type#UNASSIGNED}.
 	 */
 	@ManyToOne(fetch = FetchType.LAZY)
 	@JoinColumn(name = "FIRST_" + CharacterState.ID_COLUMN)
@@ -290,19 +287,6 @@ public class CharacterStateCell extends PPodEntity {
 	@Nullable
 	public CharacterStateRow getRow() {
 		return row;
-	}
-
-	/**
-	 * Retrieve the {@code CharacterState} with the given state number, or
-	 * {@code null} if there is no such {@code CharacterState}
-	 * 
-	 * @param stateNumber the state value
-	 * @return Retrieve the {@code CharacterState} with the given state number,
-	 *         or {@code null} if there is no such {@code CharacterState}
-	 */
-	public CharacterState getStateByNumber(final Integer stateNumber) {
-		return findIf(getStates(), compose(equalTo(stateNumber),
-				CharacterState.getStateNumber));
 	}
 
 	/**

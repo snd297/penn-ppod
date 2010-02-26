@@ -22,5 +22,5 @@ import edu.upenn.cis.ppod.modelinterfaces.INewPPodVersionInfo;
  * 
  */
 public interface IMergeOTUSetFactory {
-	IMergeOTUSet create(INewPPodVersionInfo newPPodVersionInfo);
+	IMergeOTUSets create(INewPPodVersionInfo newPPodVersionInfo);
 }
