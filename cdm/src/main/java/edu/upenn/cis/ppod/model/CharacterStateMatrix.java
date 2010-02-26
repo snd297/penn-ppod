@@ -451,16 +451,15 @@ public class CharacterStateMatrix extends UUPPodEntityWXmlId {
 	 * 
 	 * @param otu the index
 	 * @return the row
+	 * 
 	 * @throws IllegalArgumentException if {@code otu} does not belong to this
 	 *             matrix
 	 */
 	@Nullable
 	public CharacterStateRow getRow(final OTU otu) {
 		checkNotNull(otu);
-		if (getOTUIdx().get(otu) == null) {
-			throw new IllegalArgumentException(
-					"otu does not belong to this matrix");
-		}
+		checkArgument(getOTUIdx().get(otu) != null,
+				"otu does not belong to this matrix");
 		return getRows().get(getOTUIdx().get(otu));
 	}
 
@@ -773,12 +772,15 @@ public class CharacterStateMatrix extends UUPPodEntityWXmlId {
 	 * 
 	 * @return the row that was previously there, or {@code null} if there was
 	 *         no row previously there
+	 * 
+	 * @throw IllegalArgumentException if {@code otu} does not belong to this
+	 *        matrix's {@code OTUSet}
 	 */
 	@Nullable
 	public CharacterStateRow setRow(final OTU otu,
 			@Nullable final CharacterStateRow row) {
 
-		checkArgument(getOTUIdx().get(otu) != null,
+		checkArgument(getOTUSet().getOTUs().contains(otu),
 				"otu does not belong to this matrix");
 
 		final Integer otuIdx = getOTUIdx().get(otu);

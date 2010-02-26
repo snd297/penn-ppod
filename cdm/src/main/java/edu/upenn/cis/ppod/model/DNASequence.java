@@ -36,6 +36,42 @@ import javax.xml.bind.Unmarshaller;
 @Table(name = DNASequence.TABLE)
 public class DNASequence extends MolecularSequence<DNASequenceSet> {
 
+	@ManyToOne
+	@JoinColumn(name = DNASequenceSet.ID_COLUMN, nullable = false)
+	@CheckForNull
+	private DNASequenceSet sequenceSet;
+
+	/**
+	 * The name of the {@code DNASequence} table.
+	 */
+	static final String TABLE = "DNA_SEQUENCE";
+
+	/**
+	 * See {@link Unmarshaller}.
+	 * 
+	 * @param u see {@code Unmarshaller}
+	 * @param parent see {@code Unmarshaller}
+	 */
+	public void afterUnmarshal(final Unmarshaller u, final Object parent) {
+		setSequenceSet(sequenceSet);
+	}
+
+	@Override
+	public MolecularSequenceSet<DNASequence> getSequenceSet() {
+		return sequenceSet;
+	}
+
+	/**
+	 * Is it a legal DNA Sequence character? As defined by <a
+	 * href=http://www.ncbi.nlm.nih.gov/blast/fasta.shtml>Fasta format
+	 * description</a>.
+	 * 
+	 * @param c candidate
+	 * 
+	 * @return {@code true} if the character is Fasta DNA legal, {@code false}
+	 *         otherwise
+	 */
+	@Override
 	public boolean isLegal(final char c) {
 		if (c == 'A') {
 			return true;
@@ -88,22 +124,6 @@ public class DNASequence extends MolecularSequence<DNASequenceSet> {
 		return false;
 	}
 
-	@ManyToOne
-	@JoinColumn(name = DNASequenceSet.ID_COLUMN, nullable = false)
-	@CheckForNull
-	private DNASequenceSet sequenceSet;
-
-	/**
-	 * The name of the {@code DNASequence} table.
-	 */
-
-	static final String TABLE = "DNA_SEQUENCE";
-
-	@Override
-	public MolecularSequenceSet<DNASequence> getSequenceSet() {
-		return sequenceSet;
-	}
-
 	@edu.umd.cs.findbugs.annotations.SuppressWarnings
 	public DNASequence of(final List<? extends CharacterStateCell> cells) {
 		checkNotNull(cells);
@@ -132,20 +152,10 @@ public class DNASequence extends MolecularSequence<DNASequenceSet> {
 	}
 
 	@Override
-	protected DNASequence setSequenceSet(
+	public DNASequence setSequenceSet(
 			@Nullable final DNASequenceSet newSequenceSet) {
 		sequenceSet = newSequenceSet;
 		return this;
-	}
-
-	/**
-	 * See {@link Unmarshaller}.
-	 * 
-	 * @param u see {@code Unmarshaller}
-	 * @param parent see {@code Unmarshaller}
-	 */
-	public void afterUnmarshal(final Unmarshaller u, final Object parent) {
-		setSequenceSet((DNASequenceSet) sequenceSet);
 	}
 
 }

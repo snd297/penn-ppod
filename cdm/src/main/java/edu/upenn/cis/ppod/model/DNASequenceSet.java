@@ -22,7 +22,6 @@ import java.util.Set;
 import javax.persistence.Entity;
 import javax.persistence.OneToMany;
 import javax.persistence.Table;
-import javax.xml.bind.annotation.XmlElement;
 
 /**
  * @author Sam Donnelly
