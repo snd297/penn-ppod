@@ -34,3 +34,7 @@ Because that is a many-to-many relationship and we didn't know how to do it othe
 ===3) But then why is `TreeSet->Tree` done with an `@IndexColumn` and join table?===
 
 Because it used to be many-to-many and since there're are so few trees in tree sets it didn't seem worth it to change.
+
+===4) Why field access and not property access? ===
+
+Because our setter's are used to figure out when we need a new pPOD version number, and we didn't want that flag set when loading entities from the database.
