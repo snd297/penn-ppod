@@ -32,10 +32,11 @@ public class DNASequenceSet extends MolecularSequenceSet<DNASequence> {
 
 	public final static String TABLE = "DNA_SEQUENCE_SET";
 
-	public final static String ID_COLUMN = "DNA_" + PersistentObject.ID_COLUMN;
+	public final static String ID_COLUMN = TABLE + "_"
+			+ PersistentObject.ID_COLUMN;
 
 	@OneToMany(mappedBy = "sequenceSet")
-	private Set<DNASequence> sequences = newHashSet();
+	private final Set<DNASequence> sequences = newHashSet();
 
 	@Override
 	protected Set<DNASequence> getSequencesModifiable() {

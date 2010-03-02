@@ -13,20 +13,25 @@ public class JettyService implements IService {
 	private Server server;
 
 	public void start() throws Exception {
+		String jetty_home = System.getProperty("jetty.home", "..");
+		System.out.println("jetty_home: " + jetty_home);
+		System.out.println("properties: " + System.getProperties());
 		server = new Server();
-		final Connector connector = new SelectChannelConnector();
+		Connector connector = new SelectChannelConnector();
 		connector.setPort(8080);
 		connector.setHost("127.0.0.1");
 		server.addConnector(connector);
 
 		final WebAppContext wac = new WebAppContext();
-		wac.setContextPath("/");
-		wac.setWar("./web"); // this is path to .war OR TO expanded, existing
-		// webapp; WILL FIND web.xml and parse it
+		wac.setContextPath("/ppod-services");
+		wac.setWar("../services/src/main/webapp"); // this is path to .war OR TO
+		// expanded,
+		// existing webapp; WILL FIND web.xml and
+		// parse it
 		server.setHandler(wac);
 		server.setStopAtShutdown(true);
-
 		server.start();
+
 	}
 
 	public void stop() throws Exception {

@@ -331,14 +331,14 @@ public class OTUSet extends UUPPodEntityWXmlId {
 		removedSequenceSets.removeAll(newSequenceSets);
 
 		for (final DNASequenceSet removedSequenceSet : removedSequenceSets) {
-			removedSequenceSet.setOTUSet(null);
+			removedSequenceSet.setOtuSet(null);
 		}
 
 		getDNASequenceSetsModifiable().clear();
 		getDNASequenceSetsModifiable().addAll(newSequenceSets);
 
 		for (final DNASequenceSet dnaSequenceSet : getDNASequenceSets()) {
-			dnaSequenceSet.setOTUSet(this);
+			dnaSequenceSet.setOtuSet(this);
 		}
 
 		return removedSequenceSets;

@@ -22,12 +22,10 @@ import static com.google.common.collect.Iterables.getOnlyElement;
 import java.util.List;
 
 import javax.annotation.CheckForNull;
-import javax.annotation.Nullable;
 import javax.persistence.Entity;
 import javax.persistence.JoinColumn;
 import javax.persistence.ManyToOne;
 import javax.persistence.Table;
-import javax.xml.bind.Unmarshaller;
 
 /**
  * @author Sam Donnelly
@@ -36,28 +34,19 @@ import javax.xml.bind.Unmarshaller;
 @Table(name = DNASequence.TABLE)
 public class DNASequence extends MolecularSequence<DNASequenceSet> {
 
-	@ManyToOne
-	@JoinColumn(name = DNASequenceSet.ID_COLUMN, nullable = false)
-	@CheckForNull
-	private DNASequenceSet sequenceSet;
-
 	/**
 	 * The name of the {@code DNASequence} table.
 	 */
 	static final String TABLE = "DNA_SEQUENCE";
 
-	/**
-	 * See {@link Unmarshaller}.
-	 * 
-	 * @param u see {@code Unmarshaller}
-	 * @param parent see {@code Unmarshaller}
-	 */
-	public void afterUnmarshal(final Unmarshaller u, final Object parent) {
-		setSequenceSet(sequenceSet);
-	}
+	@ManyToOne
+	@JoinColumn(name = DNASequenceSet.ID_COLUMN, nullable = false)
+	@CheckForNull
+	private DNASequenceSet sequenceSet;
+
 
 	@Override
-	public MolecularSequenceSet<DNASequence> getSequenceSet() {
+	public DNASequenceSet getSequenceSet() {
 		return sequenceSet;
 	}
 
@@ -152,10 +141,16 @@ public class DNASequence extends MolecularSequence<DNASequenceSet> {
 	}
 
 	@Override
-	public DNASequence setSequenceSet(
-			@Nullable final DNASequenceSet newSequenceSet) {
-		sequenceSet = newSequenceSet;
+	public DNASequence setSequenceSet(final DNASequenceSet sequenceSet) {
+		this.sequenceSet = sequenceSet;
 		return this;
 	}
+
+// @Override
+// public DNASequence setSequenceSet(
+// @Nullable final DNASequenceSet newSequenceSet) {
+// sequenceSet = newSequenceSet;
+// return this;
+// }
 
 }
