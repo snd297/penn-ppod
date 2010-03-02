@@ -28,9 +28,6 @@ import javax.persistence.ManyToOne;
 import javax.persistence.MappedSuperclass;
 import javax.xml.bind.annotation.XmlElement;
 
-/**
- * @author Sam Donnelly
- */
 @MappedSuperclass
 public abstract class MolecularSequenceSet<S extends MolecularSequence> extends
 		UUPPodEntity {
@@ -43,6 +40,16 @@ public abstract class MolecularSequenceSet<S extends MolecularSequence> extends
 	private OTUSet otuSet;
 
 	/**
+	 * Get this sequence set's owning OTU set.
+	 * 
+	 * @return this sequence set's owning OTU set
+	 */
+	@Nullable
+	public OTUSet getOtuSet() {
+		return otuSet;
+	}
+
+	/**
 	 * Get the constituent sequences.
 	 * 
 	 * @return the constituent sequences
@@ -51,45 +58,21 @@ public abstract class MolecularSequenceSet<S extends MolecularSequence> extends
 		return Collections.unmodifiableSet(getSequencesModifiable());
 	}
 
+	/**
+	 * Created for JAXB.
+	 * 
+	 * @return a modifiable reference to this set's sequences
+	 */
 	@XmlElement(name = "sequence")
 	protected abstract Set<S> getSequencesModifiable();
 
-	/**
-	 * Get this sequence set's owning OTU set.
-	 * 
-	 * @return this sequence set's owning OTU set
-	 */
-	@Nullable
-	public OTUSet getOTUSet() {
-		return otuSet;
-	}
-
 	@Override
 	public MolecularSequenceSet resetPPodVersionInfo() {
-		getOTUSet().resetPPodVersionInfo();
+		if (getOtuSet() != null) {
+			getOtuSet().resetPPodVersionInfo();
+		}
 		super.resetPPodVersionInfo();
 		return this;
-	}
-
-	public Set<S> setSequences(final Set<S> newSequences) {
-		checkNotNull(newSequences);
-
-		if (newSequences.equals(getSequences())) {
-			return Collections.emptySet();
-		}
-
-		final Set<S> removedSequences = newHashSet(getSequencesModifiable());
-		removedSequences.removeAll(newSequences);
-		for (final S removedSequence : removedSequences) {
-			removedSequence.setSequenceSet(null);
-		}
-
-		getSequencesModifiable().clear();
-		getSequencesModifiable().addAll(newSequences);
-		for (final S sequence : getSequencesModifiable()) {
-			sequence.setSequenceSet(this);
-		}
-		return removedSequences;
 	}
 
 	/**
@@ -102,9 +85,31 @@ public abstract class MolecularSequenceSet<S extends MolecularSequence> extends
 	 * 
 	 * @return this sequence set
 	 */
-	MolecularSequenceSet setOTUSet(@Nullable final OTUSet newOTUSet) {
+	protected MolecularSequenceSet setOtuSet(@Nullable final OTUSet newOTUSet) {
 		otuSet = newOTUSet;
 		return this;
+	}
+
+	public Set<S> setSequences(final Set<S> newSequences) {
+		checkNotNull(newSequences);
+
+		if (newSequences.equals(getSequences())) {
+			return Collections.emptySet();
+		}
+
+		final Set<S> removedSequences = newHashSet(getSequences());
+		removedSequences.removeAll(newSequences);
+		for (final S removedSequence : removedSequences) {
+			removedSequence.setSequenceSet(null);
+		}
+
+		getSequencesModifiable().clear();
+		getSequencesModifiable().addAll(newSequences);
+		for (final S sequence : getSequences()) {
+			sequence.setSequenceSet(this);
+		}
+		resetPPodVersionInfo();
+		return removedSequences;
 	}
 
 }

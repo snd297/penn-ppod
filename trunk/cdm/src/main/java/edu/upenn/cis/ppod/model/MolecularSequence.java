@@ -15,14 +15,15 @@
  */
 package edu.upenn.cis.ppod.model;
 
+import static com.google.common.base.Objects.equal;
 import static com.google.common.base.Preconditions.checkNotNull;
 
 import javax.annotation.CheckForNull;
 import javax.annotation.Nullable;
-import javax.annotation.OverridingMethodsMustInvokeSuper;
 import javax.persistence.Column;
 import javax.persistence.Lob;
 import javax.persistence.MappedSuperclass;
+import javax.xml.bind.Unmarshaller;
 import javax.xml.bind.annotation.XmlAttribute;
 import javax.xml.bind.annotation.XmlElement;
 import javax.xml.bind.annotation.XmlSeeAlso;
@@ -44,7 +45,8 @@ public abstract class MolecularSequence<SS extends MolecularSequenceSet<?>>
 
 	@Lob
 	@Column(name = SEQUENCE_COLUMN, nullable = false)
-	private final StringBuilder sequence = new StringBuilder();
+	@CheckForNull
+	private String sequence;
 
 	@Column(name = "ACCESSION", nullable = true)
 	@CheckForNull
@@ -54,11 +56,21 @@ public abstract class MolecularSequence<SS extends MolecularSequenceSet<?>>
 	@CheckForNull
 	private String description;
 
-	@Column(name = "NAME", nullable = true)
+	@Column(name = "NAME")
 	@CheckForNull
 	private String name;
 
 	MolecularSequence() {}
+
+	/**
+	 * See {@link Unmarshaller}.
+	 * 
+	 * @param u see {@code Unmarshaller}
+	 * @param parent see {@code Unmarshaller}
+	 */
+	public void afterUnmarshal(final Unmarshaller u, final Object parent) {
+		setSequenceSet((SS) parent);
+	}
 
 	/**
 	 * Get the accession.
@@ -96,7 +108,7 @@ public abstract class MolecularSequence<SS extends MolecularSequenceSet<?>>
 	@XmlElement
 	@Nullable
 	public String getSequence() {
-		return sequence.toString();
+		return sequence;
 	}
 
 	/**
@@ -105,7 +117,7 @@ public abstract class MolecularSequence<SS extends MolecularSequenceSet<?>>
 	 * @return the {@code MolecularSequenceSet} that owns this sequence
 	 */
 	@Nullable
-	public abstract MolecularSequenceSet<?> getSequenceSet();
+	public abstract SS getSequenceSet();
 
 // @Column(name = "LOCUS")
 // @Nullable
@@ -164,7 +176,11 @@ public abstract class MolecularSequence<SS extends MolecularSequenceSet<?>>
 	 * @return this
 	 */
 	public MolecularSequence setAccession(@Nullable final String accession) {
+		if (equal(accession, getAccession())) {
+			return this;
+		}
 		this.accession = accession;
+		resetPPodVersionInfo();
 		return this;
 	}
 
@@ -177,7 +193,11 @@ public abstract class MolecularSequence<SS extends MolecularSequenceSet<?>>
 	 */
 	public MolecularSequence setDescription(
 			@Nullable final String newDescription) {
+		if (equal(newDescription, getDescription())) {
+			return this;
+		}
 		description = newDescription;
+		resetPPodVersionInfo();
 		return this;
 	}
 
@@ -188,13 +208,17 @@ public abstract class MolecularSequence<SS extends MolecularSequenceSet<?>>
 	 * 
 	 * @return this
 	 */
-	public MolecularSequence setName(@Nullable final String name) {
+	public MolecularSequence setName(final String name) {
+		checkNotNull(name);
+		if (name.equals(getName())) {
+			return this;
+		}
 		this.name = name;
+		resetPPodVersionInfo();
 		return this;
 	}
 
-	@OverridingMethodsMustInvokeSuper
-	public MolecularSequence setSequence(final CharSequence newSequence) {
+	public MolecularSequence setSequence(final String newSequence) {
 		checkNotNull(newSequence);
 		if (newSequence.equals(getSequence())) {
 			return this;
@@ -208,8 +232,7 @@ public abstract class MolecularSequence<SS extends MolecularSequenceSet<?>>
 			}
 		}
 
-		sequence.setLength(0);
-		sequence.append(newSequence);
+		sequence = newSequence;
 		resetPPodVersionInfo();
 		return this;
 	}

@@ -15,15 +15,14 @@
  */
 package edu.upenn.cis.ppod.services;
 
-import org.jboss.resteasy.plugins.server.tjws.TJWSEmbeddedJaxrsServer;
-import org.mortbay.jetty.testing.ServletTester;
+import org.mortbay.jetty.Connector;
+import org.mortbay.jetty.Server;
+import org.mortbay.jetty.nio.SelectChannelConnector;
+import org.mortbay.jetty.webapp.WebAppContext;
 import org.testng.annotations.BeforeSuite;
 import org.testng.annotations.Test;
 
-import com.google.inject.Inject;
-
 import edu.upenn.cis.ppod.TestGroupDefs;
-import edu.upenn.cis.ppod.services.hibernate.PPodEntitiesResourceHibernate;
 
 /**
  * @author Sam Donnelly
@@ -31,15 +30,39 @@ import edu.upenn.cis.ppod.services.hibernate.PPodEntitiesResourceHibernate;
 @Test(groups = { TestGroupDefs.FAST, TestGroupDefs.IN_DEVELOPMENT }, dependsOnGroups = TestGroupDefs.INIT)
 public class PPodEntitiesResourceTest {
 
-	private ServletTester tester;
+	// private ServletTester tester;
+	private Server server;
 
-	@Inject
-	private IPPodEntitiesResource pPodEntitiesResource;
+// @Inject
+// private IPPodEntitiesResource pPodEntitiesResource;
 
 	@BeforeSuite
-	public void beforeSuite() {
-// tester = new ServletTester();
-// tester.setContextPath("");
+	public void beforeSuite() throws Exception {
+		String jetty_home = System.getProperty("jetty.home", "..");
+		System.out.println("jetty_home: " + jetty_home);
+		System.out.println("properties: " + System.getProperties());
+		server = new Server();
+		Connector connector = new SelectChannelConnector();
+		connector.setPort(8080);
+		connector.setHost("127.0.0.1");
+		server.addConnector(connector);
+
+		final WebAppContext wac = new WebAppContext();
+		wac.setContextPath("/ppod-services");
+		wac.setWar("../services/src/main/webapp"); // this is path to .war OR TO
+		// expanded,
+		// existing webapp; WILL FIND web.xml and
+		// parse it
+		server.setHandler(wac);
+		server.setStopAtShutdown(true);
+
+		server.start();
+
+		while (true) {
+			Thread.sleep(1000);
+		}
+// server = new Server(8080);
+// server.setContextPath("");
 // tester
 // .addServlet(
 // org.jboss.resteasy.plugins.server.servlet.HttpServletDispatcher.class,
@@ -60,16 +83,18 @@ public class PPodEntitiesResourceTest {
 // tester
 // .addEventListener(new GuiceResteasyBootstrapServletContextListener());
 
-		final TJWSEmbeddedJaxrsServer tjws = new TJWSEmbeddedJaxrsServer();
-		tjws.setPort(8081);
-		tjws.getDeployment().getActualResourceClasses().add(
-				PPodEntitiesResourceHibernate.class);
-		System.out.println("started the server......................");
-		tjws.start();
+// final TJWSEmbeddedJaxrsServer tjws = new TJWSEmbeddedJaxrsServer();
+// tjws.setPort(8081);
+//
+// tjws.getDeployment().getActualResourceClasses().add(
+// IPPodEntitiesResource.class);
+// System.out.println("started the server......................");
+// tjws.start();
 	}
 
 	public void uploadProject() throws Exception {
-		final String response = tester.getResponses("GET");
+
+	// final String response = tester.getResponses("GET");
 	}
 
 // public void getEntitiesByHqlQuery() {

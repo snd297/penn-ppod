@@ -4,7 +4,6 @@ import static com.google.common.base.Preconditions.checkNotNull;
 import static com.google.common.base.Predicates.compose;
 import static com.google.common.base.Predicates.equalTo;
 import static com.google.common.collect.Sets.newHashSet;
-import static com.google.common.collect.Sets.newHashSetWithExpectedSize;
 import static edu.upenn.cis.ppod.util.PPodIterables.findIf;
 
 import java.util.Set;
@@ -57,6 +56,7 @@ public class MergeMolecularSequenceSets<SS extends MolecularSequenceSet<S>, S ex
 			}
 			newTargetSequences.add(targetSequence);
 
+			targetSequence.setSequence(sourceSequence.getSequence());
 			targetSequence.setName(sourceSequence.getName());
 			targetSequence.setDescription(sourceSequence.getDescription());
 			targetSequence.setAccession(sourceSequence.getAccession());

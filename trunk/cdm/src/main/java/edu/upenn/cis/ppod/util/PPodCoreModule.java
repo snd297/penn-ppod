@@ -36,7 +36,6 @@ import edu.upenn.cis.ppod.saveorupdate.IMergeOTUSetFactory;
 import edu.upenn.cis.ppod.saveorupdate.IMergeTreeSetsFactory;
 import edu.upenn.cis.ppod.saveorupdate.ISaveOrUpdateMatrixFactory;
 import edu.upenn.cis.ppod.saveorupdate.MergeAttachments;
-import edu.upenn.cis.ppod.saveorupdate.MergeDNASequenceSetsFactory;
 import edu.upenn.cis.ppod.saveorupdate.MergeMolecularSequenceSets;
 import edu.upenn.cis.ppod.saveorupdate.MergeOTUSets;
 import edu.upenn.cis.ppod.saveorupdate.MergeTreeSets;
@@ -83,23 +82,13 @@ public final class PPodCoreModule extends AbstractModule {
 
 		final TypeLiteral<IMergeMolecularSequenceSets.IFactory<DNASequenceSet, DNASequence>> mergeDNASequencesFactoryTypeLiteral = new TypeLiteral<IMergeMolecularSequenceSets.IFactory<DNASequenceSet, DNASequence>>() {
 		};
-		bind(mergeDNASequencesFactoryTypeLiteral)
-				.toInstance(
-						new MergeDNASequenceSetsFactory(
-								getProvider(DNASequence.class)));
 
-// final TypeLiteral<MergeMolecularSequenceSets<DNASequenceSet, DNASequence>>
-		// mergeDNASequenceSetTypeLiteral = new
-		// TypeLiteral<MergeMolecularSequenceSets<DNASequenceSet,
-		// DNASequence>>() {
-// };
-// // bind(mergeDNASequenceSetTypeLiteral).toInstance(
-// // new MergeMolecularSequenceSets<DNASequenceSet, DNASequence>(
-// // null, null, null));
-//
-// bind(mergeDNASequencesFactoryTypeLiteral).toProvider(
-// FactoryProvider.newFactory(mergeDNASequencesFactoryTypeLiteral,
-// mergeDNASequenceSetTypeLiteral));
+		final TypeLiteral<MergeMolecularSequenceSets<DNASequenceSet, DNASequence>> mergeDNASequenceSetTypeLiteral = new TypeLiteral<MergeMolecularSequenceSets<DNASequenceSet, DNASequence>>() {
+		};
+
+		bind(mergeDNASequencesFactoryTypeLiteral).toProvider(
+				FactoryProvider.newFactory(mergeDNASequencesFactoryTypeLiteral,
+						mergeDNASequenceSetTypeLiteral));
 
 		bind(IMergeAttachments.IFactory.class).toProvider(
 				FactoryProvider.newFactory(IMergeAttachments.IFactory.class,
