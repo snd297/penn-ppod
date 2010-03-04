@@ -15,20 +15,13 @@
  */
 package edu.upenn.cis.ppod;
 
-import org.hibernate.Query;
-import org.hibernate.Session;
-
 import com.google.inject.Guice;
 import com.google.inject.util.Modules;
 
-import edu.upenn.cis.ppod.modelinterfaces.INewPPodVersionInfo;
 import edu.upenn.cis.ppod.services.PPodServicesModule;
 import edu.upenn.cis.ppod.thirdparty.injectslf4j.InjectSlf4jModule;
 import edu.upenn.cis.ppod.util.GuiceObjectFactory;
 import edu.upenn.cis.ppod.util.PPodCoreModule;
-import edu.upenn.cis.ppod.util.StubNewVersionInfo;
-import edu.upenn.cis.ppod.util.StubQuery;
-import edu.upenn.cis.ppod.util.StubSession;
 
 /**
  * @author Sam Donnelly
@@ -37,13 +30,9 @@ public class PPodObjectFactory extends GuiceObjectFactory {
 
 	PPodObjectFactory() {
 		setInjector(Guice.createInjector(Modules.override(new PPodCoreModule(),
-				new PPodServicesModule()).with(this), new InjectSlf4jModule()));
+				new PPodServicesModule()).with(new TestModule()),
+				new InjectSlf4jModule()));
 	}
 
-	@Override
-	protected void configure() {
-		bind(Session.class).to(StubSession.class);
-		bind(Query.class).to(StubQuery.class);
-		bind(INewPPodVersionInfo.class).to(StubNewVersionInfo.class);
-	}
+	protected void configure() {}
 }

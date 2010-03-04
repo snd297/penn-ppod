@@ -36,7 +36,7 @@ public class PPodEntitiesResourceTest {
 // @Inject
 // private IPPodEntitiesResource pPodEntitiesResource;
 
-	@BeforeSuite
+	//@BeforeSuite
 	public void beforeSuite() throws Exception {
 		String jetty_home = System.getProperty("jetty.home", "..");
 		System.out.println("jetty_home: " + jetty_home);
