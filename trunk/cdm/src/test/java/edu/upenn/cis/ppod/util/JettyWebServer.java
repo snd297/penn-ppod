@@ -20,18 +20,16 @@ import org.mortbay.jetty.Server;
 import org.mortbay.jetty.nio.SelectChannelConnector;
 import org.mortbay.jetty.webapp.WebAppContext;
 import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 
 import com.google.inject.Inject;
-
-import edu.upenn.cis.ppod.thirdparty.injectslf4j.InjectLogger;
 
 /**
  * @author Sam Donnelly
  */
 public class JettyWebServer implements IService {
 
-	@InjectLogger
-	private Logger logger;
+	private Logger logger = LoggerFactory.getLogger(getClass());
 
 	private final Server server;
 
