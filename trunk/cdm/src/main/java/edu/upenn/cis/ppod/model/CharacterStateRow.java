@@ -117,7 +117,6 @@ public class CharacterStateRow extends PPodEntity {
 	 * @param parent see {@code Unmarshaller}
 	 */
 	public void afterUnmarshal(final Unmarshaller u, final Object parent) {
-		setMatrix((CharacterStateMatrix) parent);
 		int i = 0;
 		for (final CharacterStateCell cell : getCells()) {
 			cellIdx.put(cell, i++);

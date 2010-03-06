@@ -35,12 +35,16 @@ import javax.persistence.JoinTable;
 import javax.persistence.ManyToMany;
 import javax.persistence.ManyToOne;
 import javax.persistence.MappedSuperclass;
+import javax.xml.bind.annotation.XmlAccessType;
+import javax.xml.bind.annotation.XmlAccessorType;
 import javax.xml.bind.annotation.XmlElement;
+import javax.xml.bind.annotation.XmlElementWrapper;
 import javax.xml.bind.annotation.XmlIDREF;
 
 /**
  * @author Sam Donnelly
  */
+@XmlAccessorType(XmlAccessType.NONE)
 @MappedSuperclass
 abstract class OTUKeyedMap<T, P extends PPodEntity> {
 
@@ -63,7 +67,10 @@ abstract class OTUKeyedMap<T, P extends PPodEntity> {
 	public List<T> getItemsInOTUOrder() {
 		final List<T> itemsInOTUOrder = newArrayList();
 		for (final OTU otu : getOTUOrdering()) {
-			itemsInOTUOrder.add(getItems().get(otu));
+			final T t = getItems().get(otu);
+			if (t != null) {
+				itemsInOTUOrder.add(t);
+			}
 		}
 		return itemsInOTUOrder;
 	}
@@ -79,6 +86,7 @@ abstract class OTUKeyedMap<T, P extends PPodEntity> {
 		return Collections.unmodifiableList(getOTUOrderingModifiable());
 	}
 
+	@XmlElementWrapper(name = "otuOrdering")
 	@XmlElement(name = "otuDocId")
 	@XmlIDREF
 	protected List<OTU> getOTUOrderingModifiable() {

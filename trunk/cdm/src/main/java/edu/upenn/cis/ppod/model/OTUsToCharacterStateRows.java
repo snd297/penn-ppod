@@ -23,6 +23,8 @@ import javax.persistence.Embeddable;
 import javax.persistence.FetchType;
 import javax.persistence.JoinColumn;
 import javax.persistence.OneToOne;
+import javax.xml.bind.Unmarshaller;
+import javax.xml.bind.annotation.XmlElementWrapper;
 
 /**
  * @author Sam Donnelly
@@ -30,14 +32,24 @@ import javax.persistence.OneToOne;
 @Embeddable
 public class OTUsToCharacterStateRows extends
 		OTUKeyedMap<CharacterStateRow, CharacterStateMatrix> {
-
+	/**
+	 * The rows of the matrix. We don't do save_update cascades since we want to
+	 * control when otusToRows are added to the persistence context. We
+	 * sometimes don't want the otusToRows saved or reattached when the the
+	 * matrix is.
+	 */
 	@org.hibernate.annotations.CollectionOfElements
 	@org.hibernate.annotations.MapKeyManyToMany(joinColumns = @JoinColumn(name = OTU.ID_COLUMN))
+	@org.hibernate.annotations.Cascade(value = org.hibernate.annotations.CascadeType.DELETE_ORPHAN)
 	private final Map<OTU, CharacterStateRow> rows = newHashMap();
 
 	@OneToOne(fetch = FetchType.LAZY)
+	@JoinColumn(name = CharacterStateMatrix.ID_COLUMN)
 	private CharacterStateMatrix matrix;
 
+	OTUsToCharacterStateRows() {}
+
+	@XmlElementWrapper(name = "rows")
 	@Override
 	protected Map<OTU, CharacterStateRow> getItemsModifiable() {
 		return rows;
@@ -53,10 +65,14 @@ public class OTUsToCharacterStateRows extends
 		return matrix;
 	}
 
+	public void afterUnmarshal(final Unmarshaller u, final Object parent) {
+		setParent((CharacterStateMatrix) parent);
+	}
+
 	@Override
 	protected OTUKeyedMap<CharacterStateRow, CharacterStateMatrix> setParent(
-			final CharacterStateMatrix owner) {
-		this.matrix = owner;
+			final CharacterStateMatrix parent) {
+		this.matrix = parent;
 		return this;
 	}
 }
