@@ -185,13 +185,6 @@ public class CharacterStateMatrixTest {
 
 		assertNotSame(matrix.getCharacters(), characters);
 		Assert.assertEquals(matrix.getCharacters(), characters);
-
-		Assert.assertEquals(matrix.getCharacterIdx().get(characters.get(0)),
-				Integer.valueOf(0));
-		Assert.assertEquals(matrix.getCharacterIdx().get(characters.get(1)),
-				Integer.valueOf(1));
-		Assert.assertEquals(matrix.getCharacterIdx().get(characters.get(2)),
-				Integer.valueOf(2));
 	}
 
 	/**
@@ -223,12 +216,6 @@ public class CharacterStateMatrixTest {
 		assertNotSame(matrix.getCharacters(), shuffledCharacters);
 		assertEquals(matrix.getCharacters(), shuffledCharacters);
 
-		Assert.assertEquals(matrix.getCharacterIdx().get(
-				shuffledCharacters.get(0)), Integer.valueOf(0));
-		Assert.assertEquals(matrix.getCharacterIdx().get(
-				shuffledCharacters.get(1)), Integer.valueOf(1));
-		Assert.assertEquals(matrix.getCharacterIdx().get(
-				shuffledCharacters.get(2)), Integer.valueOf(2));
 
 		assertEquals(matrix.getColumnPPodVersionInfos().get(0),
 				pPodVersionInfo1);

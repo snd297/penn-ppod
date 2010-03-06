@@ -116,16 +116,6 @@ public class CharacterStateMatrix extends UUPPodEntityWXmlId {
 	private String label;
 
 	/**
-	 * The inverse of {@link #characters}. So it's a {@code Character}
-	 * ->columnNumber lookup.
-	 */
-	@org.hibernate.annotations.CollectionOfElements
-	@JoinTable(name = TABLE + "_" + CHARACTER_IDX_COLUMN, joinColumns = @JoinColumn(name = ID_COLUMN))
-	@org.hibernate.annotations.MapKeyManyToMany(joinColumns = @JoinColumn(name = Character.ID_COLUMN))
-	@Column(name = CHARACTER_IDX_COLUMN)
-	private final Map<Character, Integer> characterIdx = newHashMap();
-
-	/**
 	 * The position of a {@code Character} in <code>characters</code> signifies
 	 * its column number in each <code>row</cod>. So <code>characters</code> is
 	 * a columnNumber-> <code>Character</code> lookup.
@@ -136,13 +126,35 @@ public class CharacterStateMatrix extends UUPPodEntityWXmlId {
 	private final List<Character> characters = newArrayList();
 
 	/**
-	 * The otusToRows of the matrix. We don't do save_update cascades since we
-	 * want to control when otusToRows are added to the persistence context. We
-	 * sometimes don't want the otusToRows saved or reattached when the the
-	 * matrix is.
+	 * Should only be {@code null} during unmarshalling.
 	 */
 	@Embedded
+	@Nullable
 	private OTUsToCharacterStateRows otusToRows;
+
+	/**
+	 * Get the otusToRows.
+	 * 
+	 * @return the otusToRows
+	 */
+	@XmlElement(name = "otusToRows")
+	private OTUsToCharacterStateRows getOTUsToRows() {
+		return otusToRows;
+	}
+
+	/**
+	 * Set the otusToRows.
+	 * 
+	 * @param otusToRows the otusToRows to set
+	 * 
+	 * @return this
+	 */
+	@SuppressWarnings("unused")
+	private CharacterStateMatrix setOTUsToRows(
+			OTUsToCharacterStateRows otusToRows) {
+		this.otusToRows = otusToRows;
+		return this;
+	}
 
 	CharacterStateMatrix() {}
 
@@ -174,13 +186,6 @@ public class CharacterStateMatrix extends UUPPodEntityWXmlId {
 	public void afterUnmarshal() {
 		int i = 0;
 		for (final Character character : getCharacters()) {
-			if (this instanceof DNAStateMatrix
-					|| this instanceof RNAStateMatrix) {
-				// characterIdx is meaningless for MolecularMatrix's since
-				// all of their Characters are the same
-			} else {
-				characterIdx.put(character, i++);
-			}
 			columnPPodVersionInfos.add(null);
 			character.addMatrix(this);
 		}
@@ -261,24 +266,6 @@ public class CharacterStateMatrix extends UUPPodEntityWXmlId {
 			}
 		}
 		return newColumnHeaderPPodVersionInfos;
-	}
-
-	/**
-	 * Get an unmodifiable view of characterIdx.
-	 * 
-	 * @return the characterIdx
-	 */
-	public Map<Character, Integer> getCharacterIdx() {
-		return Collections.unmodifiableMap(characterIdx);
-	}
-
-	/**
-	 * Get a modifiable view of characterIdx
-	 * 
-	 * @return a modifiable view of characterIdx
-	 */
-	protected Map<Character, Integer> getCharacterIdxModifiable() {
-		return characterIdx;
 	}
 
 	/**
@@ -408,9 +395,12 @@ public class CharacterStateMatrix extends UUPPodEntityWXmlId {
 
 	/**
 	 * Get the otusToRows.
+	 * <p>
+	 * Should only be {@code null} during unmarshalling.
 	 * 
 	 * @return the otusToRows
 	 */
+	@Nullable
 	protected OTUsToCharacterStateRows getRowsByOTU() {
 		return otusToRows;
 	}
@@ -450,8 +440,10 @@ public class CharacterStateMatrix extends UUPPodEntityWXmlId {
 	 */
 	@Override
 	public CharacterStateMatrix resetPPodVersionInfo() {
-		if (getRowsByOTU().getOTUSet() != null) {
-			getRowsByOTU().getOTUSet().resetPPodVersionInfo();
+		if (getRowsByOTU() != null) {
+			if (getRowsByOTU().getOTUSet() != null) {
+				getRowsByOTU().getOTUSet().resetPPodVersionInfo();
+			}
 		}
 		super.resetPPodVersionInfo();
 		return this;
@@ -519,13 +511,10 @@ public class CharacterStateMatrix extends UUPPodEntityWXmlId {
 		}
 
 		getCharactersModifiable().clear();
-		getCharacterIdxModifiable().clear();
 
 		getCharactersModifiable().addAll(newCharacters);
 
-		int characterPosition = 0;
 		for (final Character character : getCharacters()) {
-			getCharacterIdxModifiable().put(character, characterPosition++);
 			character.addMatrix(this);
 		}
 

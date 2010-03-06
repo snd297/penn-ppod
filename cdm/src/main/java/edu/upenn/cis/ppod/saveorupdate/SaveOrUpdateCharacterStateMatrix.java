@@ -119,7 +119,7 @@ public class SaveOrUpdateCharacterStateMatrix implements ISaveOrUpdateMatrix {
 
 		targetMatrix.setOTUOrdering(newTargetOTUs);
 
-		final Map<Integer, Integer> originalCharIdxsByNewCharIdx = newHashMap();
+		final Map<Integer, Integer> newCharPositionsToOriginalCharPositions = newHashMap();
 		final List<Character> newTargetMatrixCharacters = newArrayList();
 		int sourceCharacterPosition = -1;
 		for (final Character sourceCharacter : sourceMatrix.getCharacters()) {
@@ -159,15 +159,16 @@ public class SaveOrUpdateCharacterStateMatrix implements ISaveOrUpdateMatrix {
 			}
 
 			if (!(sourceMatrix instanceof DNAStateMatrix)) {
-				originalCharIdxsByNewCharIdx.put(sourceCharacterPosition,
-						targetMatrix.getCharacterIdx().get(newTargetCharacter));
+				newCharPositionsToOriginalCharPositions.put(
+						sourceCharacterPosition, targetMatrix.getCharacters()
+								.indexOf(newTargetCharacter));
 			} else {
 				if (targetMatrix.getCharacters().size() <= sourceCharacterPosition) {
-					originalCharIdxsByNewCharIdx.put(sourceCharacterPosition,
-							null);
+					newCharPositionsToOriginalCharPositions.put(
+							sourceCharacterPosition, null);
 				} else {
-					originalCharIdxsByNewCharIdx.put(sourceCharacterPosition,
-							sourceCharacterPosition);
+					newCharPositionsToOriginalCharPositions.put(
+							sourceCharacterPosition, sourceCharacterPosition);
 				}
 			}
 			for (final Attachment sourceAttachment : sourceCharacter
@@ -203,7 +204,8 @@ public class SaveOrUpdateCharacterStateMatrix implements ISaveOrUpdateMatrix {
 
 			final int sourceRowIdx = sourceRow.getPosition();
 
-			final OTU targetOTU = targetMatrix.getOTUOrdering().get(sourceRowIdx);
+			final OTU targetOTU = targetMatrix.getOTUOrdering().get(
+					sourceRowIdx);
 			CharacterStateRow targetRow = null;
 			List<Character> characters = targetMatrix.getCharacters();
 
@@ -235,13 +237,15 @@ public class SaveOrUpdateCharacterStateMatrix implements ISaveOrUpdateMatrix {
 					.size(); newCellIdx++) {
 				CharacterStateCell targetCell;
 				if (newRow
-						|| null == originalCharIdxsByNewCharIdx.get(newCellIdx)) {
+						|| null == newCharPositionsToOriginalCharPositions
+								.get(newCellIdx)) {
 					targetCell = cellProvider.get();
 					targetCell.setPPodVersionInfo(newPPodVersionInfo
 							.getNewPPodVersionInfo());
 				} else {
 					targetCell = originalTargetCells
-							.get(originalCharIdxsByNewCharIdx.get(newCellIdx));
+							.get(newCharPositionsToOriginalCharPositions
+									.get(newCellIdx));
 				}
 				newTargetCells.add(targetCell);
 			}

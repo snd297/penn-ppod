@@ -149,20 +149,6 @@ public class ModelAssert {
 			assertEqualsCharacters(actualCharacter, expectedCharacter);
 		}
 
-		// Let's make sure that actualMatrix.getCharacterIdx() is what it's
-		// supposed to be.
-		// We use actualMatrix.getCharacters() to check as oppose to looking at
-		// expectedMatrix sine that seems to make the most sense
-		if (actualMatrix.getClass().equals(CharacterStateMatrix.class)) {
-			assertEquals(actualMatrix.getCharacterIdx().size(), actualMatrix
-					.getCharacters().size());
-			for (final Entry<Character, Integer> actualIdxByCharacter : actualMatrix
-					.getCharacterIdx().entrySet()) {
-				assertTrue(actualIdxByCharacter.getKey() == actualMatrix
-						.getCharacters().get(actualIdxByCharacter.getValue()));
-			}
-		}
-
 		assertEquals(actualMatrix.getRows().size(), expectedMatrix.getRows()
 				.size());
 

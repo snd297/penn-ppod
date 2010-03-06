@@ -28,12 +28,6 @@ import java.util.Map;
  */
 public abstract class MolecularStateMatrix extends CharacterStateMatrix {
 
-	@Override
-	public Map<Character, Integer> getCharacterIdx() {
-		throw new UnsupportedOperationException(
-				"character index is not supported for a MolecularMatrix since all characters are the same instance.");
-	}
-
 	/**
 	 * Set all of the characters of the molecular matrix.
 	 * <p>
