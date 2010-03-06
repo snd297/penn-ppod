@@ -47,6 +47,18 @@ public interface IStudyDAO extends IDAO<Study, Long> {
 	 *         pPodId == null}
 	 */
 	Study getStudyByPPodId(String pPodId);
+
+	/**
+	 * Retrieve a {@link Study} given its pPOD id. Returns {@code null} if
+	 * {@code pPodId == null}.
+	 * <p>
+	 * This method will eagerly get everything it can out of the database.
+	 * 
+	 * @param pPodId the pPOD id of the {@link Study} we want - {@code null} is
+	 *            legal
+	 * @return a {@link Study} given its pPOD id or {@code null} if {@code
+	 *         pPodId == null}
+	 */
 	Study getStudyByPPodIdEager(String pPodId);
 
 	/**
@@ -56,7 +68,6 @@ public interface IStudyDAO extends IDAO<Study, Long> {
 	 * @return the pPOD version of the study with the given pPOD id
 	 */
 	Long getPPodVersionByPPodId(String pPodId);
-
 
 	List<Object[]> getOTUInfosByStudyPPodIdAndMinPPodVersion(String pPodId,
 			Long pPodVersion);

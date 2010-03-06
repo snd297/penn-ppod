@@ -14,11 +14,9 @@ import edu.upenn.cis.ppod.modelinterfaces.INewPPodVersionInfo;
  */
 public interface IMergeMolecularSequenceSets<SS extends MolecularSequenceSet<S>, S extends MolecularSequence<SS>> {
 
-	
 	public void merge(final SS targetSequenceSet, final SS sourceSequenceSet);
 
 	static interface IFactory<SS extends MolecularSequenceSet<S>, S extends MolecularSequence<SS>> {
-
 
 		IMergeMolecularSequenceSets<SS, S> create(IDAO<Object, Long> dao,
 				INewPPodVersionInfo newPPodVersionInfo);

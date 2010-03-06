@@ -192,7 +192,7 @@ public class MatrixToDbTest extends DbTestBase {
 											.attributeValue(OTU.ID_COLUMN))));
 				}
 				matrixOTUElements = null; // free up the memory
-				phyloCharMatrix.setOTUs(newArrayList(sortedOTUs.values()));
+				phyloCharMatrix.setOTUOrdering(newArrayList(sortedOTUs.values()));
 
 				@SuppressWarnings("unchecked")
 				final List<Element> matrixPhyloCharElements = pPodData

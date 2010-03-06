@@ -124,29 +124,18 @@ public class ModelAssert {
 				.getDescription());
 
 		assertEqualsOTUSet(actualMatrix.getOTUSet(), expectedMatrix.getOTUSet());
-		assertEquals(actualMatrix.getOTUs().size(), expectedMatrix.getOTUs()
-				.size());
+		assertEquals(actualMatrix.getOTUOrdering().size(), expectedMatrix
+				.getOTUOrdering().size());
 
 		// assertEqualsOTUSet verifies that both OTUSet's contain the same
 		// OTU's. Now we confirm
 		// that the matrix's OTU's are in the correct order
-		for (final Iterator<OTU> actualOTUItr = actualMatrix.getOTUs()
-				.iterator(), expectedOTUItr = expectedMatrix.getOTUs()
+		for (final Iterator<OTU> actualOTUItr = actualMatrix.getOTUOrdering()
+				.iterator(), expectedOTUItr = expectedMatrix.getOTUOrdering()
 				.iterator(); actualOTUItr.hasNext() && expectedOTUItr.hasNext();) {
 			assertEqualsOTUs(actualOTUItr.next(), expectedOTUItr.next());
 		}
 
-		// Let's make sure that actualMatrix.getOTUIdx() is what it's
-		// supposed to be.
-		// We use actualMatrix.getOTUs() to check as opposed to looking at
-		// expectedMatrix sine that seems to make the most sense
-		assertEquals(actualMatrix.getOTUIdx().size(), actualMatrix.getOTUs()
-				.size());
-		for (final Entry<OTU, Integer> actualIdxByOTU : actualMatrix
-				.getOTUIdx().entrySet()) {
-			assertTrue(actualIdxByOTU.getKey() == actualMatrix.getOTUs().get(
-					actualIdxByOTU.getValue()));
-		}
 		assertEquals(actualMatrix.getCharacters().size(), actualMatrix
 				.getCharacters().size());
 		for (final Iterator<Character> actualCharacterItr = actualMatrix

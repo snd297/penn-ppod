@@ -49,7 +49,7 @@ public final class StudyResourceHibernate implements IStudyResource {
 
 	private final IStudy2StudyInfo study2StudyInfo;
 
-	private final SetDocIdVisitor otuSetAndOTUSetDocIdVisitor;
+	private final SetDocIdVisitor setDocIdVisitor;
 
 	private final Provider<AfterUnmarshalVisitor> afterUnmarshalVisitorProvider;
 
@@ -71,7 +71,7 @@ public final class StudyResourceHibernate implements IStudyResource {
 		this.saveOrUpdateStudies = saveOrUpdateStudyFactory.create(HibernateUtil
 				.getSessionFactory().getCurrentSession(), newPPodVersionInfo);
 		this.study2StudyInfo = study2StudyInfo;
-		this.otuSetAndOTUSetDocIdVisitor = otuSetAndOTUSetDocIdVisitor;
+		this.setDocIdVisitor = otuSetAndOTUSetDocIdVisitor;
 		this.afterUnmarshalVisitorProvider = afterUnmarshalVisitorProvider;
 
 	}
@@ -85,7 +85,7 @@ public final class StudyResourceHibernate implements IStudyResource {
 
 	public Study getStudyByPPodId(final String pPodId) {
 		final Study study = studyDAO.getStudyByPPodIdEager(pPodId);
-		study.accept(otuSetAndOTUSetDocIdVisitor);
+		study.accept(setDocIdVisitor);
 		return study;
 	}
 

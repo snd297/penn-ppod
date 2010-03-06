@@ -108,7 +108,7 @@ public class SaveOrUpdateCharacterStateMatrix implements ISaveOrUpdateMatrix {
 		}
 
 		final List<OTU> newTargetOTUs = newArrayList();
-		for (final OTU sourceOTU : sourceMatrix.getOTUs()) {
+		for (final OTU sourceOTU : sourceMatrix.getOTUOrdering()) {
 			final OTU newTargetOTU = mergedOTUsBySourceOTU.get(sourceOTU);
 			if (newTargetOTU == null) {
 				throw new AssertionError(
@@ -117,7 +117,7 @@ public class SaveOrUpdateCharacterStateMatrix implements ISaveOrUpdateMatrix {
 			newTargetOTUs.add(newTargetOTU);
 		}
 
-		targetMatrix.setOTUs(newTargetOTUs);
+		targetMatrix.setOTUOrdering(newTargetOTUs);
 
 		final Map<Integer, Integer> originalCharIdxsByNewCharIdx = newHashMap();
 		final List<Character> newTargetMatrixCharacters = newArrayList();
@@ -203,7 +203,7 @@ public class SaveOrUpdateCharacterStateMatrix implements ISaveOrUpdateMatrix {
 
 			final int sourceRowIdx = sourceRow.getPosition();
 
-			final OTU targetOTU = targetMatrix.getOTUs().get(sourceRowIdx);
+			final OTU targetOTU = targetMatrix.getOTUOrdering().get(sourceRowIdx);
 			CharacterStateRow targetRow = null;
 			List<Character> characters = targetMatrix.getCharacters();
 
@@ -213,7 +213,7 @@ public class SaveOrUpdateCharacterStateMatrix implements ISaveOrUpdateMatrix {
 				targetRow = rowProvider.get();
 				targetRow.setPPodVersionInfo(newPPodVersionInfo
 						.getNewPPodVersionInfo());
-				targetMatrix.setRow(targetOTU, targetRow);
+				targetMatrix.putRow(targetOTU, targetRow);
 				dao.saveOrUpdate(targetRow);
 				newRow = true;
 			} else {
