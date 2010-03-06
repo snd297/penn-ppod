@@ -73,7 +73,7 @@ public class HibernateUtil {
 
 	private static Configuration configuration;
 
-	private static volatile SessionFactory sessionFactory;
+	private static SessionFactory sessionFactory;
 
 	static {
 		// Create the initial SessionFactory from the default configuration

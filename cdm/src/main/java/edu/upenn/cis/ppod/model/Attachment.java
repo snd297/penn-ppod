@@ -56,33 +56,6 @@ import edu.upenn.cis.ppod.util.IVisitor;
 @Table(name = Attachment.TABLE)
 public class Attachment extends UUPPodEntityWXmlId {
 
-	/**
-	 * Is an attachment of a particular {@link AttachmentNamespace} and
-	 * {@link AttachmentType}?
-	 */
-	public final static class IsOfNamespaceAndType implements
-			Predicate<Attachment> {
-
-		private final String type;
-
-		private final String namespace;
-
-		/**
-		 * @param type is the attachment of this type?
-		 * @param namespace is the type of this namespace?
-		 */
-		public IsOfNamespaceAndType(final String type, final String namespace) {
-			this.type = type;
-			this.namespace = namespace;
-		}
-
-		public boolean apply(final Attachment input) {
-			return input.getType().getNamespace().getLabel().equals(namespace)
-					&& input.getType().getLabel().equals(type);
-		}
-
-	}
-
 	static final String TABLE = "ATTACHMENT";
 
 	static final String ID_COLUMN = TABLE + "_ID";
@@ -317,6 +290,33 @@ public class Attachment extends UUPPodEntityWXmlId {
 				.append(this.bytesValue).append(TAB).append(")");
 
 		return retValue.toString();
+	}
+
+	/**
+	 * Is an attachment of a particular {@link AttachmentNamespace} and
+	 * {@link AttachmentType}?
+	 */
+	public final static class IsOfNamespaceAndType implements
+			Predicate<Attachment> {
+
+		private final String type;
+
+		private final String namespace;
+
+		/**
+		 * @param type is the attachment of this type?
+		 * @param namespace is the type of this namespace?
+		 */
+		public IsOfNamespaceAndType(final String type, final String namespace) {
+			this.type = type;
+			this.namespace = namespace;
+		}
+
+		public boolean apply(final Attachment input) {
+			return input.getType().getNamespace().getLabel().equals(namespace)
+					&& input.getType().getLabel().equals(type);
+		}
+
 	}
 
 }

@@ -30,7 +30,7 @@ import javax.xml.bind.annotation.XmlSeeAlso;
 
 /**
  * A molecular sequence - DNA, RNA, protein - that is represented by a {@code
- * String}.
+ * CharSequence}.
  * 
  * @author Sam Donnelly
  * @param <SS> the type of {@link MolecularSequenceSet} that contains this
@@ -68,7 +68,6 @@ public abstract class MolecularSequence<SS extends MolecularSequenceSet<?>>
 	 * @param u see {@code Unmarshaller}
 	 * @param parent see {@code Unmarshaller}
 	 */
-	@SuppressWarnings("unchecked")
 	public void afterUnmarshal(final Unmarshaller u, final Object parent) {
 		setSequenceSet((SS) parent);
 	}
@@ -120,18 +119,48 @@ public abstract class MolecularSequence<SS extends MolecularSequenceSet<?>>
 	@Nullable
 	public abstract SS getSequenceSet();
 
-	/**
-	 * Is {@code c} a legal code for this kind of sequence?
+// @Column(name = "LOCUS")
+// @Nullable
+// private String locus;// when read back into matrix it gets put taxon
+//
+// @Column(name = "DEFLINE")
+// @Nullable
+// private String defline;
+//
+// @Column(name = "ACCESSION_NUMBER")
+// @Nullable
+// private String accessionNumber;
+
+	/*
+	 * Have an operation upload to server as sequences.
 	 * 
-	 * @param c is this a legal code?
+	 * Should be able to tell from the name label that it's a sequence.
 	 * 
-	 * @return {@code true} if {@code c} is a legal character, {@code false}
-	 *         otherwise
+	 * Figure out alignment.
+	 * 
+	 * Extract OTU from the locus part.
+	 * 
+	 * Store whole header as an annotation on the row
+	 * 
+	 * Have a locus field Whole unparsed header field
+	 * 
+	 * Look around sequence header cleaners
+	 * 
+	 * A separte header object w/ subclasses for for example GenBank
 	 */
+
+// public MolecularSequence putStates(final Integer idx,
+// final CharacterStates states) {
+	// checkNotNull(idx);
+// checkNotNull(states);
+// statesByPosition.put(idx, states);
+// return this;
+// }
+
 	public abstract boolean isLegal(char c);
 
 	@Override
-	public MolecularSequence<SS> resetPPodVersionInfo() {
+	public MolecularSequence resetPPodVersionInfo() {
 		if (getSequenceSet() != null) {
 			getSequenceSet().resetPPodVersionInfo();
 		}
@@ -146,7 +175,7 @@ public abstract class MolecularSequence<SS extends MolecularSequenceSet<?>>
 	 * 
 	 * @return this
 	 */
-	public MolecularSequence<SS> setAccession(@Nullable final String accession) {
+	public MolecularSequence setAccession(@Nullable final String accession) {
 		if (equal(accession, getAccession())) {
 			return this;
 		}
@@ -162,7 +191,7 @@ public abstract class MolecularSequence<SS extends MolecularSequenceSet<?>>
 	 * 
 	 * @return this
 	 */
-	public MolecularSequence<SS> setDescription(
+	public MolecularSequence setDescription(
 			@Nullable final String newDescription) {
 		if (equal(newDescription, getDescription())) {
 			return this;
@@ -179,7 +208,7 @@ public abstract class MolecularSequence<SS extends MolecularSequenceSet<?>>
 	 * 
 	 * @return this
 	 */
-	public MolecularSequence<SS> setName(final String name) {
+	public MolecularSequence setName(final String name) {
 		checkNotNull(name);
 		if (name.equals(getName())) {
 			return this;
@@ -189,7 +218,7 @@ public abstract class MolecularSequence<SS extends MolecularSequenceSet<?>>
 		return this;
 	}
 
-	public MolecularSequence<SS> setSequence(final String newSequence) {
+	public MolecularSequence setSequence(final String newSequence) {
 		checkNotNull(newSequence);
 		if (newSequence.equals(getSequence())) {
 			return this;
@@ -209,13 +238,10 @@ public abstract class MolecularSequence<SS extends MolecularSequenceSet<?>>
 	}
 
 	/**
-	 * Set the {@code MolecularSequenceSet} that contains this sequence.
+	 * Set the sequence set that contains this sequence.
 	 * <p>
 	 * A {@code null} value for {@code sequenceSet} indicates that the
 	 * relationship is being severed.
-	 * <p>
-	 * Made public so that we could save sequences without saving {@code
-	 * MolecularSequenceSet}s.
 	 * 
 	 * @param sequenceSet the sequence set that contains this sequence.
 	 * 
@@ -244,6 +270,7 @@ public abstract class MolecularSequence<SS extends MolecularSequenceSet<?>>
 
 		return retValue.toString();
 	}
+
 	// private final Map<Integer, CharacterStates> statesByPosition =
 	// newHashMap();
 
@@ -252,41 +279,3 @@ public abstract class MolecularSequence<SS extends MolecularSequenceSet<?>>
 	// }
 
 }
-
-// @Column(name = "LOCUS")
-// @Nullable
-// private String locus;// when read back into matrix it gets put taxon
-//
-// @Column(name = "DEFLINE")
-// @Nullable
-// private String defline;
-//
-// @Column(name = "ACCESSION_NUMBER")
-// @Nullable
-// private String accessionNumber;
-
-/*
- * Have an operation upload to server as sequences.
- * 
- * Should be able to tell from the name label that it's a sequence.
- * 
- * Figure out alignment.
- * 
- * Extract OTU from the locus part.
- * 
- * Store whole header as an annotation on the row
- * 
- * Have a locus field Whole unparsed header field
- * 
- * Look around sequence header cleaners
- * 
- * A separte header object w/ subclasses for for example GenBank
- */
-
-// public MolecularSequence putStates(final Integer idx,
-// final CharacterStates states) {
-// checkNotNull(idx);
-// checkNotNull(states);
-// statesByPosition.put(idx, states);
-// return this;
-// }

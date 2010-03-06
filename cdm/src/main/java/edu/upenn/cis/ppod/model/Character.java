@@ -63,6 +63,16 @@ public class Character extends UUPPodEntityWXmlId {
 	final static String ID_COLUMN = TABLE + "_ID";
 	final static String LABEL_COLUMN = "LABEL";
 
+	@Override
+	public Character accept(final IVisitor visitor) {
+		visitor.visit(this);
+		for (final CharacterState state : getStates().values()) {
+			state.accept(visitor);
+		}
+		super.accept(visitor);
+		return this;
+	}
+
 	/**
 	 * The states that this character can have. For example, 0->"absent",
 	 * 1->"present", 2->"one", or 3->"two". NOTE: it is legal to have
@@ -93,16 +103,6 @@ public class Character extends UUPPodEntityWXmlId {
 	 * Default constructor for (at least) Hibernate.
 	 */
 	Character() {}
-
-	@Override
-	public Character accept(final IVisitor visitor) {
-		visitor.visit(this);
-		for (final CharacterState state : getStates().values()) {
-			state.accept(visitor);
-		}
-		super.accept(visitor);
-		return this;
-	}
 
 	/**
 	 * Add {@code matrix} to this {@code Character}'s matrices.
@@ -212,7 +212,7 @@ public class Character extends UUPPodEntityWXmlId {
 
 	@Override
 	public Character resetPPodVersionInfo() {
-		for (final CharacterStateMatrix matrix : getMatrices()) {
+		for (final CharacterStateMatrix matrix : matrices) {
 			matrix.resetPPodVersionInfo();
 		}
 		super.resetPPodVersionInfo();

@@ -55,15 +55,21 @@ public abstract class PersistentObject implements IPersistentObject {
 	@Transient
 	private boolean allowPersist = true;
 
+	/**
+	 * Can be used to block persisting an object, for example an in interceptor.
+	 * 
+	 * @return this
+	 */
+	protected PersistentObject unsetAllowPersist() {
+		allowPersist = false;
+		return this;
+	}
+
 	/** Default constructor. */
 	protected PersistentObject() {}
 
 	public PersistentObject accept(final IVisitor visitor) {
 		throw new UnsupportedOperationException();
-	}
-
-	public boolean getAllowPersist() {
-		return allowPersist;
 	}
 
 	@XmlAttribute
@@ -98,13 +104,7 @@ public abstract class PersistentObject implements IPersistentObject {
 		return retValue.toString();
 	}
 
-	/**
-	 * Can be used to block persisting an object, for example an in interceptor.
-	 * 
-	 * @return this
-	 */
-	protected PersistentObject unsetAllowPersist() {
-		allowPersist = false;
-		return this;
+	public boolean getAllowPersist() {
+		return allowPersist;
 	}
 }

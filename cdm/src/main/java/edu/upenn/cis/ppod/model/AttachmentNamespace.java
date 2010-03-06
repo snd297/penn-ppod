@@ -46,12 +46,6 @@ public class AttachmentNamespace extends PersistentObjectWXmlId {
 
 	AttachmentNamespace() {}
 
-	@Override
-	public AttachmentNamespace accept(final IVisitor visitor) {
-		visitor.visit(this);
-		return this;
-	}
-
 	/**
 	 * Get the label.
 	 * 
@@ -71,6 +65,12 @@ public class AttachmentNamespace extends PersistentObjectWXmlId {
 	public AttachmentNamespace setLabel(final String label) {
 		checkNotNull(label);
 		this.label = label;
+		return this;
+	}
+
+	@Override
+	public AttachmentNamespace accept(final IVisitor visitor) {
+		visitor.visit(this);
 		return this;
 	}
 }

@@ -119,7 +119,7 @@ public class SaveOrUpdateCharacterStateMatrix implements ISaveOrUpdateMatrix {
 
 		targetMatrix.setOTUOrdering(newTargetOTUs);
 
-		final Map<Integer, Integer> newCharPositionsToOriginalCharPositions = newHashMap();
+		final Map<Integer, Integer> originalCharIdxsByNewCharIdx = newHashMap();
 		final List<Character> newTargetMatrixCharacters = newArrayList();
 		int sourceCharacterPosition = -1;
 		for (final Character sourceCharacter : sourceMatrix.getCharacters()) {
@@ -159,16 +159,15 @@ public class SaveOrUpdateCharacterStateMatrix implements ISaveOrUpdateMatrix {
 			}
 
 			if (!(sourceMatrix instanceof DNAStateMatrix)) {
-				newCharPositionsToOriginalCharPositions.put(
-						sourceCharacterPosition, targetMatrix.getCharacters()
-								.indexOf(newTargetCharacter));
+				originalCharIdxsByNewCharIdx.put(sourceCharacterPosition,
+						targetMatrix.getCharacterIdx().get(newTargetCharacter));
 			} else {
 				if (targetMatrix.getCharacters().size() <= sourceCharacterPosition) {
-					newCharPositionsToOriginalCharPositions.put(
-							sourceCharacterPosition, null);
+					originalCharIdxsByNewCharIdx.put(sourceCharacterPosition,
+							null);
 				} else {
-					newCharPositionsToOriginalCharPositions.put(
-							sourceCharacterPosition, sourceCharacterPosition);
+					originalCharIdxsByNewCharIdx.put(sourceCharacterPosition,
+							sourceCharacterPosition);
 				}
 			}
 			for (final Attachment sourceAttachment : sourceCharacter
@@ -237,15 +236,13 @@ public class SaveOrUpdateCharacterStateMatrix implements ISaveOrUpdateMatrix {
 					.size(); newCellIdx++) {
 				CharacterStateCell targetCell;
 				if (newRow
-						|| null == newCharPositionsToOriginalCharPositions
-								.get(newCellIdx)) {
+						|| null == originalCharIdxsByNewCharIdx.get(newCellIdx)) {
 					targetCell = cellProvider.get();
 					targetCell.setPPodVersionInfo(newPPodVersionInfo
 							.getNewPPodVersionInfo());
 				} else {
 					targetCell = originalTargetCells
-							.get(newCharPositionsToOriginalCharPositions
-									.get(newCellIdx));
+							.get(originalCharIdxsByNewCharIdx.get(newCellIdx));
 				}
 				newTargetCells.add(targetCell);
 			}

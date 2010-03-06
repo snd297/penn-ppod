@@ -41,8 +41,8 @@ public abstract class MolecularStateMatrix extends CharacterStateMatrix {
 	 * <p>
 	 * Assumes that none of {@code newMolecularCharacters} are detached.
 	 * <p>
-	 * The return value is only included for consistency with the overridden
-	 * method.
+	 * The return value is only included for consistency with the
+	 * overridden method.
 	 * 
 	 * @param newMolecularCharacters the new {@code MolecularCharacter}s to be
 	 *            added
@@ -100,5 +100,11 @@ public abstract class MolecularStateMatrix extends CharacterStateMatrix {
 		resetPPodVersionInfo();
 
 		return removedCharacters;
+	}
+
+	@Override
+	public Map<Character, Integer> getCharacterIdx() {
+		throw new UnsupportedOperationException(
+				"character index is not supported for a MolecularMatrix since all characters are the same instance.");
 	}
 }

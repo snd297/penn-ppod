@@ -29,8 +29,10 @@ import javax.persistence.MappedSuperclass;
 import javax.xml.bind.annotation.XmlElement;
 
 @MappedSuperclass
-public abstract class MolecularSequenceSet<S extends MolecularSequence<?>>
-		extends UUPPodEntity {
+public abstract class MolecularSequenceSet<S extends MolecularSequence> extends
+		UUPPodEntity {
+
+	static final String TABLE = "MOLECULAR_SEQUENCE_SET";
 
 	@ManyToOne
 	@JoinColumn(name = OTUSet.ID_COLUMN, nullable = false)
@@ -38,12 +40,12 @@ public abstract class MolecularSequenceSet<S extends MolecularSequence<?>>
 	private OTUSet otuSet;
 
 	/**
-	 * Getter. Will be {@code null} when object is first created.
+	 * Get this sequence set's owning OTU set.
 	 * 
-	 * @return this matrix's {@code OTUSet}
+	 * @return this sequence set's owning OTU set
 	 */
 	@Nullable
-	public OTUSet getOTUSet() {
+	public OTUSet getOtuSet() {
 		return otuSet;
 	}
 
@@ -65,9 +67,9 @@ public abstract class MolecularSequenceSet<S extends MolecularSequence<?>>
 	protected abstract Set<S> getSequencesModifiable();
 
 	@Override
-	public MolecularSequenceSet<S> resetPPodVersionInfo() {
-		if (getOTUSet() != null) {
-			getOTUSet().resetPPodVersionInfo();
+	public MolecularSequenceSet resetPPodVersionInfo() {
+		if (getOtuSet() != null) {
+			getOtuSet().resetPPodVersionInfo();
 		}
 		super.resetPPodVersionInfo();
 		return this;
@@ -83,14 +85,12 @@ public abstract class MolecularSequenceSet<S extends MolecularSequence<?>>
 	 * 
 	 * @return this sequence set
 	 */
-	protected MolecularSequenceSet<S> setOtuSet(@Nullable final OTUSet newOTUSet) {
+	protected MolecularSequenceSet setOtuSet(@Nullable final OTUSet newOTUSet) {
 		otuSet = newOTUSet;
 		return this;
 	}
 
-	public abstract Set<S> setSequences(final Set<? extends S> newSequences);
-
-	protected Set<S> setSequencesHelper(final Set<? extends S> newSequences) {
+	public Set<S> setSequences(final Set<S> newSequences) {
 		checkNotNull(newSequences);
 
 		if (newSequences.equals(getSequences())) {
@@ -105,7 +105,11 @@ public abstract class MolecularSequenceSet<S extends MolecularSequence<?>>
 
 		getSequencesModifiable().clear();
 		getSequencesModifiable().addAll(newSequences);
+		for (final S sequence : getSequences()) {
+			sequence.setSequenceSet(this);
+		}
 		resetPPodVersionInfo();
 		return removedSequences;
 	}
+
 }

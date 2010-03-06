@@ -15,7 +15,6 @@
  */
 package edu.upenn.cis.ppod.model;
 
-import static com.google.common.base.Preconditions.checkNotNull;
 import static com.google.common.collect.Sets.newHashSet;
 
 import java.util.Set;
@@ -44,14 +43,4 @@ public class DNASequenceSet extends MolecularSequenceSet<DNASequence> {
 		return sequences;
 	}
 
-	public Set<DNASequence> setSequences(
-			final Set<? extends DNASequence> newSequences) {
-		checkNotNull(newSequences);
-		final Set<DNASequence> removedSequences = super
-				.setSequencesHelper(newSequences);
-		for (final DNASequence dnaSequence : getSequences()) {
-			dnaSequence.setSequenceSet(this);
-		}
-		return removedSequences;
-	}
 }
