@@ -63,53 +63,6 @@ public class DNAState extends MolecularState {
 		/** Thymine. */
 		T;
 
-		/**
-		 * Get the {@code Nucleotide} with {@code Nucleotide.getOrdinal() ==
-		 * stateNumber}.
-		 * 
-		 * @param stateNumber the state number of the {@code Nucleotide} we want
-		 * 
-		 * @return the {@code Nucleotide} with {@code Nucleotide.getOrdinal() ==
-		 *         stateNumber}
-		 */
-		public static Nucleotide of(final int stateNumber) {
-			// Can't do a switch on Nucleotide.ordinal, so if
-			// statements it is
-			if (stateNumber == A.ordinal()) {
-				return A;
-			}
-			if (stateNumber == C.ordinal()) {
-				return C;
-			}
-			if (stateNumber == G.ordinal()) {
-				return G;
-			}
-			if (stateNumber == T.ordinal()) {
-				return T;
-			}
-			throw new IllegalArgumentException(
-					"stateNumber must be 0, 1, 2, or 3");
-		}
-
-		/**
-		 * Return {@code true} if {@code s} is the string value of {@link #A},
-		 * {@link #C}, {@link #G}, or {@link #T}, {@code false} otherwise.
-		 * 
-		 * @param s see description
-		 * 
-		 * @return Return {@code true} if {@code s} is the string value of
-		 *         {@link #A}, {@link #C}, {@link #G}, or {@link #T}, {@code
-		 *         false} otherwise.
-		 */
-		public static boolean hasOneWithAValueOf(final String s) {
-			checkNotNull(s);
-			if (s.equals(A.toString()) || s.equals(C.toString())
-					|| s.equals(G.toString()) || s.equals(T.toString())) {
-				return true;
-			}
-			return false;
-		}
-
 		public static boolean hasOneWithAValueOf(final char c) {
 			if (c == A.toString().charAt(0)) {
 				return true;
@@ -142,6 +95,53 @@ public class DNAState extends MolecularState {
 				return true;
 			}
 			return false;
+		}
+
+		/**
+		 * Return {@code true} if {@code s} is the string value of {@link #A},
+		 * {@link #C}, {@link #G}, or {@link #T}, {@code false} otherwise.
+		 * 
+		 * @param s see description
+		 * 
+		 * @return Return {@code true} if {@code s} is the string value of
+		 *         {@link #A}, {@link #C}, {@link #G}, or {@link #T}, {@code
+		 *         false} otherwise.
+		 */
+		public static boolean hasOneWithAValueOf(final String s) {
+			checkNotNull(s);
+			if (s.equals(A.toString()) || s.equals(C.toString())
+					|| s.equals(G.toString()) || s.equals(T.toString())) {
+				return true;
+			}
+			return false;
+		}
+
+		/**
+		 * Get the {@code Nucleotide} with {@code Nucleotide.getOrdinal() ==
+		 * stateNumber}.
+		 * 
+		 * @param stateNumber the state number of the {@code Nucleotide} we want
+		 * 
+		 * @return the {@code Nucleotide} with {@code Nucleotide.getOrdinal() ==
+		 *         stateNumber}
+		 */
+		public static Nucleotide of(final int stateNumber) {
+			// Can't do a switch on Nucleotide.ordinal, so if
+			// statements it is
+			if (stateNumber == A.ordinal()) {
+				return A;
+			}
+			if (stateNumber == C.ordinal()) {
+				return C;
+			}
+			if (stateNumber == G.ordinal()) {
+				return G;
+			}
+			if (stateNumber == T.ordinal()) {
+				return T;
+			}
+			throw new IllegalArgumentException(
+					"stateNumber must be 0, 1, 2, or 3");
 		}
 	}
 

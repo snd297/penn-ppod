@@ -44,7 +44,6 @@ public class DNASequence extends MolecularSequence<DNASequenceSet> {
 	@CheckForNull
 	private DNASequenceSet sequenceSet;
 
-
 	@Override
 	public DNASequenceSet getSequenceSet() {
 		return sequenceSet;
@@ -145,12 +144,5 @@ public class DNASequence extends MolecularSequence<DNASequenceSet> {
 		this.sequenceSet = sequenceSet;
 		return this;
 	}
-
-// @Override
-// public DNASequence setSequenceSet(
-// @Nullable final DNASequenceSet newSequenceSet) {
-// sequenceSet = newSequenceSet;
-// return this;
-// }
 
 }

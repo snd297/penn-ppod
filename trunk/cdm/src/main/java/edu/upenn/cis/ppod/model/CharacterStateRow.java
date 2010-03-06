@@ -56,28 +56,6 @@ public class CharacterStateRow extends PPodEntity {
 	@Column(name = "POSITION", nullable = false)
 	private Integer position;
 
-	/**
-	 * Get the position.
-	 * 
-	 * @return the position
-	 */
-	@XmlAttribute
-	public Integer getPosition() {
-		return position;
-	}
-
-	/**
-	 * Set the position.
-	 * 
-	 * @param position the position to set
-	 * 
-	 * @return this
-	 */
-	CharacterStateRow setPosition(final Integer position) {
-		this.position = position;
-		return this;
-	}
-
 	/** This entitiy's table. Intentionally package-private. */
 	static final String TABLE = "CHARACTER_STATE_ROW";
 
@@ -201,6 +179,16 @@ public class CharacterStateRow extends PPodEntity {
 	}
 
 	/**
+	 * Get the position.
+	 * 
+	 * @return the position
+	 */
+	@XmlAttribute
+	public Integer getPosition() {
+		return position;
+	}
+
+	/**
 	 * Reset the pPOD version info of this row and that of its matrix.
 	 * 
 	 * @return this {@code CharacterStateRow}
@@ -280,6 +268,18 @@ public class CharacterStateRow extends PPodEntity {
 	 */
 	CharacterStateRow setMatrix(@Nullable final CharacterStateMatrix matrix) {
 		this.matrix = matrix;
+		return this;
+	}
+
+	/**
+	 * Set the position.
+	 * 
+	 * @param position the position to set
+	 * 
+	 * @return this
+	 */
+	CharacterStateRow setPosition(final Integer position) {
+		this.position = position;
 		return this;
 	}
 

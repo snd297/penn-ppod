@@ -90,7 +90,7 @@ public class OTUSet extends UUPPodEntityWXmlId {
 	private final Set<OTU> otus = newHashSet();
 
 	/** The matrices which reference this OTU set. */
-	@OneToMany(mappedBy = "otuSet")
+	@OneToMany(mappedBy = "otusToRows.otuSet")
 	@Cascade( { org.hibernate.annotations.CascadeType.SAVE_UPDATE,
 			org.hibernate.annotations.CascadeType.DELETE_ORPHAN })
 	private final Set<CharacterStateMatrix> matrices = newHashSet();

@@ -18,7 +18,6 @@ package edu.upenn.cis.ppod.model;
 import static com.google.common.base.Objects.equal;
 import static com.google.common.base.Preconditions.checkArgument;
 import static com.google.common.base.Preconditions.checkNotNull;
-import static com.google.common.base.Preconditions.checkState;
 import static com.google.common.collect.Lists.newArrayList;
 import static com.google.common.collect.Lists.newArrayListWithCapacity;
 import static com.google.common.collect.Maps.newHashMap;
@@ -33,14 +32,11 @@ import java.util.Map.Entry;
 import javax.annotation.CheckForNull;
 import javax.annotation.Nullable;
 import javax.persistence.Column;
+import javax.persistence.Embedded;
 import javax.persistence.Entity;
-import javax.persistence.FetchType;
 import javax.persistence.JoinColumn;
 import javax.persistence.JoinTable;
 import javax.persistence.ManyToMany;
-import javax.persistence.ManyToOne;
-import javax.persistence.OneToMany;
-import javax.persistence.OrderBy;
 import javax.persistence.Table;
 import javax.persistence.Transient;
 import javax.xml.bind.Marshaller;
@@ -50,11 +46,11 @@ import javax.xml.bind.annotation.XmlElement;
 import javax.xml.bind.annotation.XmlIDREF;
 import javax.xml.bind.annotation.XmlSeeAlso;
 
-import org.hibernate.annotations.Cascade;
 import org.hibernate.annotations.IndexColumn;
 
 import com.google.common.collect.BiMap;
 import com.google.common.collect.HashBiMap;
+import com.google.inject.Inject;
 
 import edu.upenn.cis.ppod.util.IVisitor;
 
@@ -89,7 +85,7 @@ public class CharacterStateMatrix extends UUPPodEntityWXmlId {
 	static final String CHARACTERS_INDEX_COLUMN = Character.TABLE + "_POSITION";
 
 	/**
-	 * Column that orders the rows. Intentionally package-private.
+	 * Column that orders the otusToRows. Intentionally package-private.
 	 */
 	static final String ROWS_INDEX_COLUMN = CharacterStateRow.TABLE
 			+ "_POSITION";
@@ -101,6 +97,10 @@ public class CharacterStateMatrix extends UUPPodEntityWXmlId {
 			+ "_POSITION")
 	final List<PPodVersionInfo> columnPPodVersionInfos = newArrayList();
 
+	/**
+	 * So we can just send the version numbers over the wire, and not all of the
+	 * {@code PPodVersionInfo}s.
+	 */
 	@XmlElement(name = "columnPPodVersion")
 	@Transient
 	private final List<Long> columnPPodVersions = newArrayList();
@@ -114,36 +114,6 @@ public class CharacterStateMatrix extends UUPPodEntityWXmlId {
 	@Column(name = LABEL_COLUMN, nullable = false)
 	@CheckForNull
 	private String label;
-
-	static final String OTU_IDX_COLUMN = "OTU_IDX";
-
-	/**
-	 * The inverse of {@code otus}: an {@code OTU}->rowNumber lookup.
-	 */
-	@org.hibernate.annotations.CollectionOfElements
-	@JoinTable(name = TABLE + "_" + OTU_IDX_COLUMN, joinColumns = @JoinColumn(name = ID_COLUMN))
-	@org.hibernate.annotations.MapKeyManyToMany(joinColumns = @JoinColumn(name = OTU.ID_COLUMN))
-	@Column(name = OTU_IDX_COLUMN)
-	private final Map<OTU, Integer> otuIdx = newHashMap();
-
-	/**
-	 * The position of an {@code OTU} in {@code otus} signifies its row number
-	 * in <code>row</code>. So <code>otus</code> is a rowNumber-> {@code OTU}
-	 * lookup.
-	 */
-	@ManyToMany
-	@JoinTable(inverseJoinColumns = @JoinColumn(name = OTU.ID_COLUMN))
-	@org.hibernate.annotations.IndexColumn(name = OTU.TABLE + "_POSITION")
-	private final List<OTU> otus = newArrayList();
-
-	/**
-	 * These are the <code>OTU</code>s whose data comprises this {@code
-	 * CharacterStateMatrix}.
-	 */
-	@ManyToOne(fetch = FetchType.LAZY)
-	@JoinColumn(name = OTUSet.ID_COLUMN, nullable = false)
-	@CheckForNull
-	private OTUSet otuSet;
 
 	/**
 	 * The inverse of {@link #characters}. So it's a {@code Character}
@@ -166,18 +136,20 @@ public class CharacterStateMatrix extends UUPPodEntityWXmlId {
 	private final List<Character> characters = newArrayList();
 
 	/**
-	 * The rows of the matrix. We don't do save_update cascades since we want to
-	 * control when rows are added to the persistence context. We sometimes
-	 * don't want the rows saved or reattached when the the matrix is.
+	 * The otusToRows of the matrix. We don't do save_update cascades since we
+	 * want to control when otusToRows are added to the persistence context. We
+	 * sometimes don't want the otusToRows saved or reattached when the the
+	 * matrix is.
 	 */
-	@OneToMany(mappedBy = "matrix")
-	@OrderBy("position")
-	@Cascade(org.hibernate.annotations.CascadeType.DELETE_ORPHAN)
-	private final List<CharacterStateRow> rows = newArrayList();
+	@Embedded
+	private OTUsToCharacterStateRows otusToRows;
 
-	/** No-arg constructor for (at least) Hibernate. */
-	CharacterStateMatrix() {
+	CharacterStateMatrix() {}
 
+	@Inject
+	CharacterStateMatrix(final OTUsToCharacterStateRows otusToRows) {
+		this.otusToRows = otusToRows;
+		otusToRows.setParent(this);
 	}
 
 	@Override
@@ -200,12 +172,6 @@ public class CharacterStateMatrix extends UUPPodEntityWXmlId {
 	 */
 	@Override
 	public void afterUnmarshal() {
-		if (getOTUIdx().size() == 0) {
-			int i = 0;
-			for (final OTU otu : otus) {
-				otuIdx.put(otu, i++);
-			}
-		}
 		int i = 0;
 		for (final Character character : getCharacters()) {
 			if (this instanceof DNAStateMatrix
@@ -228,7 +194,7 @@ public class CharacterStateMatrix extends UUPPodEntityWXmlId {
 	 * @param parent see {@code Unmarshaller}
 	 */
 	public void afterUnmarshal(final Unmarshaller u, final Object parent) {
-		setOTUSet((OTUSet) parent);
+		otusToRows.setOTUSet((OTUSet) parent);
 	}
 
 	@Override
@@ -407,47 +373,17 @@ public class CharacterStateMatrix extends UUPPodEntityWXmlId {
 		return label;
 	}
 
-	/**
-	 * Get an unmodifiable view of the {@code OTU->row number} map.
-	 * 
-	 * @return an unmodifiable view of the {@code OTU->row number} map
-	 */
-	public Map<OTU, Integer> getOTUIdx() {
-		return Collections.unmodifiableMap(otuIdx);
+	public List<OTU> getOTUOrdering() {
+		return getRowsByOTU().getOTUOrdering();
 	}
 
-	/**
-	 * Return an unmodifiable view of this matrix's <code>OTUSet</code>
-	 * ordering.
-	 * 
-	 * @return see description
-	 */
-	public List<OTU> getOTUs() {
-		return Collections.unmodifiableList(otus);
-	}
-
-	/**
-	 * Getter. Will be {@code null} when object is first created.
-	 * 
-	 * @return this matrix's {@code OTUSet}
-	 */
-	@Nullable
 	public OTUSet getOTUSet() {
-		return otuSet;
-	}
-
-	@XmlElement(name = "otuDocId")
-	@XmlIDREF
-	@SuppressWarnings("unused")
-	private List<OTU> getOTUsModifiable() {
-		return otus;
+		return getRowsByOTU().getOTUSet();
 	}
 
 	/**
-	 * Get the row indexed by an OTU.
-	 * <p>
-	 * Will return {@code null} for rows that have had an OTU assigned - through
-	 * {@link #setOTUs(List)} - but have yet to have a row set.
+	 * Get the row indexed by an OTU, or {@code null} if there is no such
+	 * element.
 	 * 
 	 * @param otu the index
 	 * @return the row
@@ -455,27 +391,38 @@ public class CharacterStateMatrix extends UUPPodEntityWXmlId {
 	 * @throws IllegalArgumentException if {@code otu} does not belong to this
 	 *             matrix
 	 */
-	@Nullable
+	@CheckForNull
 	public CharacterStateRow getRow(final OTU otu) {
 		checkNotNull(otu);
-		checkArgument(getOTUIdx().get(otu) != null,
-				"otu does not belong to this matrix");
-		return getRows().get(getOTUIdx().get(otu));
-	}
-
-	@XmlElement(name = "row")
-	@SuppressWarnings("unused")
-	private List<CharacterStateRow> getRowMutable() {
-		return rows;
+		return getRowsByOTU().getItems().get(otu);
 	}
 
 	/**
-	 * Get an unmodifiable view of this matrix's rows.
+	 * Get a possibly unmodifiable view of this matrix's otusToRows.
 	 * 
-	 * @return an unmodifiable view of this matrix's rows
+	 * @return a possible unmodifiable view of this matrix's otusToRows
 	 */
 	public List<CharacterStateRow> getRows() {
-		return Collections.unmodifiableList(rows);
+		return otusToRows.getItemsInOTUOrder();
+	}
+
+	/**
+	 * Get the otusToRows.
+	 * 
+	 * @return the otusToRows
+	 */
+	protected OTUsToCharacterStateRows getRowsByOTU() {
+		return otusToRows;
+	}
+
+	public CharacterStateRow putRow(final OTU otu,
+			final CharacterStateRow newRow) {
+		final CharacterStateRow originalRow = getRowsByOTU().put(otu, newRow);
+		newRow.setMatrix(this);
+		if (originalRow != null) {
+			originalRow.setMatrix(null);
+		}
+		return originalRow;
 	}
 
 	/**
@@ -503,8 +450,8 @@ public class CharacterStateMatrix extends UUPPodEntityWXmlId {
 	 */
 	@Override
 	public CharacterStateMatrix resetPPodVersionInfo() {
-		if (otuSet != null) {
-			otuSet.resetPPodVersionInfo();
+		if (getRowsByOTU().getOTUSet() != null) {
+			getRowsByOTU().getOTUSet().resetPPodVersionInfo();
 		}
 		super.resetPPodVersionInfo();
 		return this;
@@ -514,8 +461,8 @@ public class CharacterStateMatrix extends UUPPodEntityWXmlId {
 	 * Set the characters.
 	 * <p>
 	 * This method is does not reorder the columns of the matrix, unlike
-	 * {@link #setOTUs(List)} which reorders rows. Reordering definitely does
-	 * not makes sense in a {@link MolecularStateMatrix} since all of the
+	 * {@link #setOTUs(List)} which reorders otusToRows. Reordering definitely
+	 * does not makes sense in a {@link MolecularStateMatrix} since all of the
 	 * characters will be the same instance.
 	 * <p>
 	 * This method does reorder {@link #getColumnPPodVersionInfos()}.
@@ -607,9 +554,9 @@ public class CharacterStateMatrix extends UUPPodEntityWXmlId {
 	}
 
 	/**
-	 * Set all of the columns' pPOD version infos.
+	 * Set all of the columns' {@code PPodVersionInfo}s to a given value
 	 * 
-	 * @param pPodVersionInfo version
+	 * @param pPodVersionInfo the given value
 	 * 
 	 * @return this
 	 */
@@ -657,164 +604,14 @@ public class CharacterStateMatrix extends UUPPodEntityWXmlId {
 		return this;
 	}
 
-	/**
-	 * Order the {@code OTU}s of {@code this.getOTUSet()}. In other words, set
-	 * the order of the rows in this {@code CharacterStateMatrix}.
-	 * <p>
-	 * This method operates on the rows and reorders them appropriately, filling
-	 * in {@code null} values for newly introduced rows. These {@code null}'d
-	 * rows must be filled in by the client.
-	 * <p>
-	 * A copy of {@code newOtus} is made so subsequent modifications of {@code
-	 * newOTUs} will have no affect on this matrix.
-	 * <p>
-	 * Assumes all members of {@code newOtus} are not Hibernate-detached.
-	 * 
-	 * @param newOTUs order of the {@link OTUSet} associated with this {@code
-	 *            CharacterStateMatrix}
-	 * 
-	 * @return this {@code CharacterStateMatrix}
-	 * 
-	 * @throws IllegalArgumentException if the members of {@code otus} are not
-	 *             the same as those of this {@code CharacterStateMatrix}'s
-	 *             associated {@code OTUSet}
-	 * @throws IllegalStateException if the OTU set has not been set, i.e. if
-	 *             {@link #getOTUSet() == null}
-	 */
-	public CharacterStateMatrix setOTUs(final List<OTU> newOTUs) {
-		checkNotNull(newOTUs);
-		if (newOTUs.equals(getOTUs())) {
-			// They're the same, nothing to do
-			return this;
-		}
-
-		checkState(getOTUSet() != null,
-				"otuSet needs to be set before setOTUs(...) is called");
-
-		// We want both newOTUs and this.otuSet to have the same elements
-		checkArgument(
-				newOTUs.containsAll(getOTUSet().getOTUs())
-						&& getOTUSet().getOTUs().containsAll(newOTUs),
-				"otus (size "
-						+ newOTUs.size()
-						+ ") does not contain the same OTU's as the matrix's OTUSet (size "
-						+ getOTUSet().getOTUs().size() + ").");
-
-		// We're now going to move around the rows to match the new ordering
-		final List<CharacterStateRow> newRows = newArrayListWithCapacity(newOTUs
-				.size());
-		for (int newOtuIdx = 0; newOtuIdx < newOTUs.size(); newOtuIdx++) {
-			final OTU newOtu = newOTUs.get(newOtuIdx);
-
-			// oldIdx is where newOtu used to be
-			final Integer oldIdx = getOTUIdx().get(newOtu);
-			CharacterStateRow originalRow = null;
-			if (oldIdx == null) {
-				// It's a new row - it will be filled in later.
-			} else {
-				originalRow = rows.get(oldIdx);
-			}
-			newRows.add(originalRow); // could be adding null
-		}
-
-		otus.clear();
-		otuIdx.clear();
-		rows.clear();
-		for (int i = 0; i < newRows.size(); i++) {
-			final OTU newOtu = newOTUs.get(i);
-			otus.add(newOtu);
-			otuIdx.put(newOtu, i);
-			setRow(newOtu, newRows.get(i)); // could be setting
-			// it to null
-			if (newRows.get(i) != null) {
-				newRows.get(i).setPosition(i);
-			}
-		}
-
-		resetPPodVersionInfo();
+	public CharacterStateMatrix setOTUOrdering(final List<OTU> newOTUOrdering) {
+		getRowsByOTU().setOTUOrdering(newOTUOrdering);
 		return this;
 	}
 
-	/**
-	 * Setter.
-	 * <p>
-	 * Intentionally package-private and meant to be called from {@code
-	 * CharacterStateMatrix}.
-	 * 
-	 * @param otuSet new {@code OTUSet} for this matrix, or {@code null} if
-	 *            we're destroying the association
-	 * 
-	 * @return this
-	 */
-	CharacterStateMatrix setOTUSet(@Nullable final OTUSet otuSet) {
-		if (equal(this.otuSet, otuSet)) {
-			// still the same
-		} else {
-			this.otuSet = otuSet;
-			resetPPodVersionInfo();
-		}
+	protected CharacterStateMatrix setOTUSet(@Nullable final OTUSet newOTUSet) {
+		getRowsByOTU().setOTUSet(newOTUSet);
 		return this;
-	}
-
-	/**
-	 * Set row at <code>index</code> to <code>row</code>. Fills with
-	 * <code>null</code>s if <code>index</code> is too big.
-	 * <p>
-	 * If {@code row} is already in this matrix, this method sets that position
-	 * to {@code null}.
-	 * <p>
-	 * Assumes row does not belong to another matrix.
-	 * <p>
-	 * Assumes {@code row} is not detached.
-	 * 
-	 * @param otu index of the row we are adding
-	 * @param row see description
-	 * 
-	 * @return the row that was previously there, or {@code null} if there was
-	 *         no row previously there
-	 * 
-	 * @throw IllegalArgumentException if {@code otu} does not belong to this
-	 *        matrix's {@code OTUSet}
-	 */
-	@Nullable
-	public CharacterStateRow setRow(final OTU otu,
-			@Nullable final CharacterStateRow row) {
-
-		checkArgument(getOTUSet().getOTUs().contains(otu),
-				"otu does not belong to this matrix");
-
-		final Integer otuIdx = getOTUIdx().get(otu);
-		while (rows.size() <= otuIdx) {
-			rows.add(null);
-			resetPPodVersionInfo();
-		}
-		final CharacterStateRow oldRow = rows.get(otuIdx);
-		if (row != null) {
-			row.setMatrix(this);
-		}
-		if (equal(row, oldRow)) {
-			// same, nothing to do
-		} else {
-
-			if (oldRow != null) {
-				oldRow.setMatrix(null);
-			}
-
-			// Remove the row from its old position, if it's already in this
-			// matrix
-			final int rowOldIdx = rows.indexOf(row);
-			if (rowOldIdx != -1) {
-				rows.set(rowOldIdx, null);
-			}
-
-			// Now set it to it's new position.
-			rows.set(otuIdx, row);
-			if (row != null) {
-				row.setPosition(otuIdx);
-			}
-			resetPPodVersionInfo();
-		}
-		return oldRow;
 	}
 
 }

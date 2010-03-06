@@ -129,24 +129,6 @@ public class Tree extends UUPPodEntity {
 		return newick;
 	}
 
-	/**
-	 * Remove {@code treeSet} form this {@code Tree}s associated {@code TreeSet}
-	 * s.
-	 * <p>
-	 * Intended to be package-private and used in conjunction with
-	 * {@link TreeSet#removeTree(Tree)}.
-	 * <p>
-	 * Use {@code null} for {@code treeSet} to sever the relationship.
-	 * 
-	 * @param treeSet the {@code TreeSet} that we're removing
-	 * 
-	 * @return this
-	 */
-	Tree setTreeSet(@Nullable final TreeSet treeSet) {
-		this.treeSet = treeSet;
-		return this;
-	}
-
 	@Override
 	public Tree resetPPodVersionInfo() {
 		if (treeSet != null) {
@@ -189,6 +171,24 @@ public class Tree extends UUPPodEntity {
 			this.newick = newick;
 			resetPPodVersionInfo();
 		}
+		return this;
+	}
+
+	/**
+	 * Remove {@code treeSet} form this {@code Tree}s associated {@code TreeSet}
+	 * s.
+	 * <p>
+	 * Intended to be package-private and used in conjunction with
+	 * {@link TreeSet#removeTree(Tree)}.
+	 * <p>
+	 * Use {@code null} for {@code treeSet} to sever the relationship.
+	 * 
+	 * @param treeSet the {@code TreeSet} that we're removing
+	 * 
+	 * @return this
+	 */
+	Tree setTreeSet(@Nullable final TreeSet treeSet) {
+		this.treeSet = treeSet;
 		return this;
 	}
 }

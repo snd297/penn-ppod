@@ -29,10 +29,8 @@ import javax.persistence.MappedSuperclass;
 import javax.xml.bind.annotation.XmlElement;
 
 @MappedSuperclass
-public abstract class MolecularSequenceSet<S extends MolecularSequence> extends
-		UUPPodEntity {
-
-	static final String TABLE = "MOLECULAR_SEQUENCE_SET";
+public abstract class MolecularSequenceSet<S extends MolecularSequence<?>>
+		extends UUPPodEntity {
 
 	@ManyToOne
 	@JoinColumn(name = OTUSet.ID_COLUMN, nullable = false)
@@ -40,12 +38,12 @@ public abstract class MolecularSequenceSet<S extends MolecularSequence> extends
 	private OTUSet otuSet;
 
 	/**
-	 * Get this sequence set's owning OTU set.
+	 * Getter. Will be {@code null} when object is first created.
 	 * 
-	 * @return this sequence set's owning OTU set
+	 * @return this matrix's {@code OTUSet}
 	 */
 	@Nullable
-	public OTUSet getOtuSet() {
+	public OTUSet getOTUSet() {
 		return otuSet;
 	}
 
@@ -67,9 +65,9 @@ public abstract class MolecularSequenceSet<S extends MolecularSequence> extends
 	protected abstract Set<S> getSequencesModifiable();
 
 	@Override
-	public MolecularSequenceSet resetPPodVersionInfo() {
-		if (getOtuSet() != null) {
-			getOtuSet().resetPPodVersionInfo();
+	public MolecularSequenceSet<S> resetPPodVersionInfo() {
+		if (getOTUSet() != null) {
+			getOTUSet().resetPPodVersionInfo();
 		}
 		super.resetPPodVersionInfo();
 		return this;
@@ -85,12 +83,14 @@ public abstract class MolecularSequenceSet<S extends MolecularSequence> extends
 	 * 
 	 * @return this sequence set
 	 */
-	protected MolecularSequenceSet setOtuSet(@Nullable final OTUSet newOTUSet) {
+	protected MolecularSequenceSet<S> setOtuSet(@Nullable final OTUSet newOTUSet) {
 		otuSet = newOTUSet;
 		return this;
 	}
 
-	public Set<S> setSequences(final Set<S> newSequences) {
+	public abstract Set<S> setSequences(final Set<? extends S> newSequences);
+
+	protected Set<S> setSequencesHelper(final Set<? extends S> newSequences) {
 		checkNotNull(newSequences);
 
 		if (newSequences.equals(getSequences())) {
@@ -105,11 +105,7 @@ public abstract class MolecularSequenceSet<S extends MolecularSequence> extends
 
 		getSequencesModifiable().clear();
 		getSequencesModifiable().addAll(newSequences);
-		for (final S sequence : getSequences()) {
-			sequence.setSequenceSet(this);
-		}
 		resetPPodVersionInfo();
 		return removedSequences;
 	}
-
 }

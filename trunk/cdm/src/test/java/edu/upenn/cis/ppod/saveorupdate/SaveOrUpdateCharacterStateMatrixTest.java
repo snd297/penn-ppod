@@ -106,7 +106,7 @@ public class SaveOrUpdateCharacterStateMatrixTest {
 						newPPodVersionInfo);
 		final OTUSet fakeDbOTUSet = sourceMatrix.getOTUSet();
 		final Map<OTU, OTU> fakeOTUsByIncomingOTU = newHashMap();
-		for (final OTU sourceOTU : sourceMatrix.getOTUs()) {
+		for (final OTU sourceOTU : sourceMatrix.getOTUOrdering()) {
 			fakeOTUsByIncomingOTU.put(sourceOTU, sourceOTU);
 		}
 
@@ -130,7 +130,7 @@ public class SaveOrUpdateCharacterStateMatrixTest {
 						newPPodVersionInfo);
 		final OTUSet fakeTargetOTUSet = sourceMatrix.getOTUSet();
 		final Map<OTU, OTU> fakeOTUsByIncomingOTU = newHashMap();
-		for (final OTU sourceOTU : sourceMatrix.getOTUs()) {
+		for (final OTU sourceOTU : sourceMatrix.getOTUOrdering()) {
 			fakeOTUsByIncomingOTU.put(sourceOTU, sourceOTU);
 		}
 
@@ -152,10 +152,10 @@ public class SaveOrUpdateCharacterStateMatrixTest {
 		}
 
 		final List<OTU> shuffledSourceOTUs = newArrayList(sourceMatrix
-				.getOTUs());
+				.getOTUOrdering());
 		Collections.shuffle(shuffledSourceOTUs);
 
-		sourceMatrix.setOTUs(shuffledSourceOTUs);
+		sourceMatrix.setOTUOrdering(shuffledSourceOTUs);
 
 		for (final CharacterStateRow targetRow : targetMatrix.getRows()) {
 			targetRow.setPPodVersion(1L);
@@ -178,7 +178,7 @@ public class SaveOrUpdateCharacterStateMatrixTest {
 							newPPodVersionInfo);
 			final OTUSet fakeTargetOTUSet = sourceMatrix.getOTUSet();
 			final Map<OTU, OTU> fakeOTUsByIncomingOTU = newHashMap();
-			for (final OTU sourceOTU : sourceMatrix.getOTUs()) {
+			for (final OTU sourceOTU : sourceMatrix.getOTUOrdering()) {
 				fakeOTUsByIncomingOTU.put(sourceOTU, sourceOTU);
 			}
 
