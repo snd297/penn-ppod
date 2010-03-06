@@ -24,6 +24,8 @@ import javax.persistence.Entity;
 import javax.persistence.Table;
 import javax.xml.bind.annotation.XmlAttribute;
 
+import edu.upenn.cis.ppod.thirdparty.util.HibernateUtil;
+
 /**
  * Stores data about a particular version of the whole pPOD instance - for
  * example the pPOD version number.

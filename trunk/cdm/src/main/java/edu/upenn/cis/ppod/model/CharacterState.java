@@ -155,13 +155,6 @@ public class CharacterState extends PPodEntityWXmlId {
 		this.stateNumber = stateNumber;
 	}
 
-	@Override
-	public CharacterState accept(final IVisitor visitor) {
-		visitor.visit(this);
-		super.accept(visitor);
-		return this;
-	}
-
 	/**
 	 * See {@link Unmarshaller} javadoc on <em>Unmarshal Event Callbacks</em>.
 	 * 
@@ -178,6 +171,13 @@ public class CharacterState extends PPodEntityWXmlId {
 	// setCharacter((Character) parent);
 	// }
 	// super.afterUnmarshal(u, parent);
+	}
+
+	@Override
+	public CharacterState accept(final IVisitor visitor) {
+		visitor.visit(this);
+		super.accept(visitor);
+		return this;
 	}
 
 	/**

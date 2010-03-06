@@ -75,8 +75,7 @@ public class CharacterStateRowTest {
 
 	public void addCellToMatrixWOneCharacter() {
 		final CharacterStateCell cell = cellProvider.get().setUnassigned();
-		matrix.getRow(matrix.getOTUOrdering().get(0)).setCells(
-				newArrayList(cell));
+		matrix.getRow(matrix.getOTUOrdering().get(0)).setCells(newArrayList(cell));
 		ModelAssert.assertEqualsCharacterStateCells(cell, matrix.getRow(
 				rowIdxs.get(0)).getCells().get(0));
 	}

@@ -87,7 +87,7 @@ public final class HibernateSessionPerRequestFilter implements Filter {
 				logger
 						.warn("The transaction has not already been committed as we expect it to be - is the HibernateCommitInterceptor configured? Committing the transaction now...");
 				currentSession.getTransaction().commit();
-				logger.warn("...transaction committed");
+				logger.warn("transaction committed");
 			}
 
 		} catch (final Throwable ex) {

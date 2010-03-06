@@ -136,6 +136,17 @@ public class ModelAssert {
 			assertEqualsOTUs(actualOTUItr.next(), expectedOTUItr.next());
 		}
 
+		// Let's make sure that actualMatrix.getOTUIdx() is what it's
+		// supposed to be.
+		// We use actualMatrix.getOTUs() to check as opposed to looking at
+		// expectedMatrix sine that seems to make the most sense
+		assertEquals(actualMatrix.getOTUIdx().size(), actualMatrix
+				.getOTUOrdering().size());
+		for (final Entry<OTU, Integer> actualIdxByOTU : actualMatrix
+				.getOTUIdx().entrySet()) {
+			assertTrue(actualIdxByOTU.getKey() == actualMatrix.getOTUOrdering().get(
+					actualIdxByOTU.getValue()));
+		}
 		assertEquals(actualMatrix.getCharacters().size(), actualMatrix
 				.getCharacters().size());
 		for (final Iterator<Character> actualCharacterItr = actualMatrix
@@ -147,6 +158,20 @@ public class ModelAssert {
 			assertTrue(actualCharacter.getMatrices().contains(actualMatrix));
 			assertTrue(expectedCharacter.getMatrices().contains(expectedMatrix));
 			assertEqualsCharacters(actualCharacter, expectedCharacter);
+		}
+
+		// Let's make sure that actualMatrix.getCharacterIdx() is what it's
+		// supposed to be.
+		// We use actualMatrix.getCharacters() to check as oppose to looking at
+		// expectedMatrix sine that seems to make the most sense
+		if (actualMatrix.getClass().equals(CharacterStateMatrix.class)) {
+			assertEquals(actualMatrix.getCharacterIdx().size(), actualMatrix
+					.getCharacters().size());
+			for (final Entry<Character, Integer> actualIdxByCharacter : actualMatrix
+					.getCharacterIdx().entrySet()) {
+				assertTrue(actualIdxByCharacter.getKey() == actualMatrix
+						.getCharacters().get(actualIdxByCharacter.getValue()));
+			}
 		}
 
 		assertEquals(actualMatrix.getRows().size(), expectedMatrix.getRows()

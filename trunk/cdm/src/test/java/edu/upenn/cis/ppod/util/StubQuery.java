@@ -37,11 +37,13 @@ import org.hibernate.ScrollableResults;
 import org.hibernate.transform.ResultTransformer;
 import org.hibernate.type.Type;
 
+
+
 /**
  * @author samd
- * 
+ *
  */
-public class StubQuery implements Query {
+public class StubQuery implements Query{
 
 	public int executeUpdate() throws HibernateException {
 		// TODO Auto-generated method stub

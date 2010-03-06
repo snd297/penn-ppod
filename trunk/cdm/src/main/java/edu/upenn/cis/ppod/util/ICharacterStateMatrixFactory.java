@@ -13,8 +13,8 @@ import edu.upenn.cis.ppod.model.CharacterStateMatrix;
 public interface ICharacterStateMatrixFactory {
 
 	/**
-	 * Make a new {@code CharacterStateMatrix} with the same {@code getClass()}
-	 * as {@code matrix}.
+	 * Make a new {@code CharacterStateMatrix} with the same class as {@code
+	 * matrix}.
 	 * 
 	 * @param type the type of matrix we want
 	 * 
