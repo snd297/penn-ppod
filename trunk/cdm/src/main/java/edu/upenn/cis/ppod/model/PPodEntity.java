@@ -154,8 +154,9 @@ public abstract class PPodEntity extends PersistentObject implements
 	}
 
 	/**
-	 * Take care of any after-unmarshal work that needs to be done after
-	 * xmlidref's are resolved.
+	 * Take actions after unmarshalling that need to occur after
+	 * {@link #afterUnmarshal(Unmarshaller, Object)} is called, specifically
+	 * after {@code @XmlIDRef} elements are resolved.
 	 */
 	@OverridingMethodsMustInvokeSuper
 	public void afterUnmarshal() {

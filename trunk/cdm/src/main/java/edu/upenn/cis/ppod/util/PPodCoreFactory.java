@@ -22,7 +22,7 @@ import com.google.inject.Provider;
 import edu.upenn.cis.ppod.thirdparty.injectslf4j.InjectSlf4jModule;
 
 /**
- * Makes objects for the pPODMesquiteModules project.
+ * Makes objects for the ppod-cdm project.
  * 
  * @author Sam Donnelly
  */

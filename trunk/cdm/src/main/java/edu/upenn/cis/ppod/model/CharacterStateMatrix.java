@@ -56,6 +56,7 @@ import org.hibernate.annotations.IndexColumn;
 
 import com.google.common.collect.BiMap;
 import com.google.common.collect.HashBiMap;
+import com.google.common.collect.ImmutableSet;
 
 import edu.upenn.cis.ppod.util.IVisitor;
 
@@ -101,7 +102,7 @@ public class CharacterStateMatrix extends UUPPodEntityWXmlId implements
 	@JoinTable(inverseJoinColumns = { @JoinColumn(name = PPodVersionInfo.ID_COLUMN) })
 	@org.hibernate.annotations.IndexColumn(name = PPodVersionInfo.TABLE
 			+ "_POSITION")
-	final List<PPodVersionInfo> columnPPodVersionInfos = newArrayList();
+	private final List<PPodVersionInfo> columnPPodVersionInfos = newArrayList();
 
 	@XmlElement(name = "columnPPodVersion")
 	@Transient
@@ -169,6 +170,10 @@ public class CharacterStateMatrix extends UUPPodEntityWXmlId implements
 	@IndexColumn(name = CHARACTERS_INDEX_COLUMN)
 	private final List<Character> characters = newArrayList();
 
+	/**
+	 * For marshalling {@code otusToRows}. Since a {@code Map}'s key couldn't be
+	 * an {@code XmlIDREF} in JAXB - at least not easily.
+	 */
 	@Transient
 	private final Set<OTUCharacterStateRowPair> otuRowPairs = newHashSet();
 
@@ -188,11 +193,6 @@ public class CharacterStateMatrix extends UUPPodEntityWXmlId implements
 		return this;
 	}
 
-	/**
-	 * Take actions after unmarshalling that need to occur after
-	 * {@link #afterUnmarshal(Unmarshaller, Object)} is called, specifically
-	 * after {@code @XmlIDRef} elements are resolved.
-	 */
 	@Override
 	public void afterUnmarshal() {
 		for (final OTUCharacterStateRowPair otuRowPair : getOTURowPairsModifiable()) {
@@ -200,7 +200,10 @@ public class CharacterStateMatrix extends UUPPodEntityWXmlId implements
 					otuRowPair.getSecond());
 			otuRowPair.getSecond().setMatrix(this);
 		}
+
+		// We're done with this - clear it out
 		getOTURowPairsModifiable().clear();
+
 		int i = 0;
 		for (final Character character : getCharacters()) {
 			if (this instanceof DNAStateMatrix
@@ -319,7 +322,7 @@ public class CharacterStateMatrix extends UUPPodEntityWXmlId implements
 	/**
 	 * Get an unmodifiable view of the <code>Character</code> ordering.
 	 * 
-	 * @return an unmodifiable view of the <code>Character</code> ordering.
+	 * @return an unmodifiable view of the <code>Character</code> ordering
 	 */
 	public List<Character> getCharacters() {
 		return Collections.unmodifiableList(characters);
@@ -413,9 +416,6 @@ public class CharacterStateMatrix extends UUPPodEntityWXmlId implements
 	 * ordering.
 	 * 
 	 * @return see description
-	 * 
-	 * @throws IllegalStateException if {@link #getOTUOrdering()} {@code ==
-	 *             null}
 	 */
 	public List<OTU> getOTUOrdering() {
 		return Collections.unmodifiableList(getOTUOrderingModifiable());
@@ -476,7 +476,8 @@ public class CharacterStateMatrix extends UUPPodEntityWXmlId implements
 	 *             the same elements as {@code getOTUSet()}
 	 */
 	public List<CharacterStateRow> getRows() {
-		final Set<OTU> otuOrderingAsSet = newHashSet(getOTUOrdering());
+		final ImmutableSet<OTU> otuOrderingAsSet = ImmutableSet
+				.copyOf(getOTUOrdering());
 		checkState(otuOrderingAsSet.equals(getOTUSet().getOTUs()),
 				"otu ordering is not in sync with this matrix's OTUSet");
 

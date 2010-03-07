@@ -16,28 +16,77 @@
 package edu.upenn.cis.ppod.model;
 
 import static com.google.common.base.Preconditions.checkNotNull;
+import static com.google.common.collect.Lists.newArrayList;
 import static com.google.common.collect.Sets.newHashSet;
 
 import java.util.Collections;
+import java.util.List;
+import java.util.Map;
 import java.util.Set;
 
 import javax.annotation.CheckForNull;
 import javax.annotation.Nullable;
 import javax.persistence.JoinColumn;
+import javax.persistence.JoinTable;
+import javax.persistence.ManyToMany;
 import javax.persistence.ManyToOne;
 import javax.persistence.MappedSuperclass;
 import javax.xml.bind.annotation.XmlElement;
+import javax.xml.bind.annotation.XmlElementWrapper;
+import javax.xml.bind.annotation.XmlIDREF;
+
+import edu.upenn.cis.ppod.util.IPair;
 
 @MappedSuperclass
-public abstract class MolecularSequenceSet<S extends MolecularSequence> extends
-		UUPPodEntity {
+public abstract class MolecularSequenceSet<S extends MolecularSequence<?>>
+		extends UUPPodEntity {
 
 	static final String TABLE = "MOLECULAR_SEQUENCE_SET";
+
+	/**
+	 * The position of an {@code OTU} in {@code otuOrdering} signifies its row
+	 * number in <code>row</code>. So <code>otuOrdering</code> is a rowNumber->
+	 * {@code OTU} lookup.
+	 */
+	@ManyToMany
+	@JoinTable(inverseJoinColumns = @JoinColumn(name = OTU.ID_COLUMN))
+	@org.hibernate.annotations.IndexColumn(name = OTU.TABLE + "_POSITION")
+	private final List<OTU> otuOrdering = newArrayList();
 
 	@ManyToOne
 	@JoinColumn(name = OTUSet.ID_COLUMN, nullable = false)
 	@CheckForNull
 	private OTUSet otuSet;
+
+	@Override
+	public void afterUnmarshal() {
+		for (final IPair<OTU, S> otuSequencePair : getOTUSequencePairsModifiable()) {
+			getOTUsToSeqeuencesModifiable().put(otuSequencePair.getFirst(),
+					otuSequencePair.getSecond());
+		}
+
+		// We're done with this - clear it out
+		getOTUSequencePairsModifiable().clear();
+	}
+
+	/**
+	 * Return an unmodifiable view of this matrix's <code>OTUSet</code>
+	 * ordering.
+	 * 
+	 * @return see description
+	 */
+	public List<OTU> getOTUOrdering() {
+		return Collections.unmodifiableList(getOTUOrderingModifiable());
+	}
+
+	@XmlElementWrapper(name = "otuOrdering")
+	@XmlElement(name = "otuDocId")
+	@XmlIDREF
+	private List<OTU> getOTUOrderingModifiable() {
+		return otuOrdering;
+	}
+
+	protected abstract Set<IPair<OTU, S>> getOTUSequencePairsModifiable();
 
 	/**
 	 * Get this sequence set's owning OTU set.
@@ -48,6 +97,8 @@ public abstract class MolecularSequenceSet<S extends MolecularSequence> extends
 	public OTUSet getOtuSet() {
 		return otuSet;
 	}
+
+	protected abstract Map<OTU, S> getOTUsToSeqeuencesModifiable();
 
 	/**
 	 * Get the constituent sequences.
@@ -67,7 +118,7 @@ public abstract class MolecularSequenceSet<S extends MolecularSequence> extends
 	protected abstract Set<S> getSequencesModifiable();
 
 	@Override
-	public MolecularSequenceSet resetPPodVersionInfo() {
+	public MolecularSequenceSet<S> resetPPodVersionInfo() {
 		if (getOtuSet() != null) {
 			getOtuSet().resetPPodVersionInfo();
 		}
@@ -85,12 +136,14 @@ public abstract class MolecularSequenceSet<S extends MolecularSequence> extends
 	 * 
 	 * @return this sequence set
 	 */
-	protected MolecularSequenceSet setOtuSet(@Nullable final OTUSet newOTUSet) {
+	protected MolecularSequenceSet<S> setOtuSet(@Nullable final OTUSet newOTUSet) {
 		otuSet = newOTUSet;
 		return this;
 	}
 
-	public Set<S> setSequences(final Set<S> newSequences) {
+	public abstract Set<S> setSequences(final Set<S> newSequences);
+
+	protected Set<S> setSequencesHelper(final Set<S> newSequences) {
 		checkNotNull(newSequences);
 
 		if (newSequences.equals(getSequences())) {
@@ -105,9 +158,7 @@ public abstract class MolecularSequenceSet<S extends MolecularSequence> extends
 
 		getSequencesModifiable().clear();
 		getSequencesModifiable().addAll(newSequences);
-		for (final S sequence : getSequences()) {
-			sequence.setSequenceSet(this);
-		}
+
 		resetPPodVersionInfo();
 		return removedSequences;
 	}
