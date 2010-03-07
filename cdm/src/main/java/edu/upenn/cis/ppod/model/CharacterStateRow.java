@@ -34,7 +34,6 @@ import javax.persistence.OneToMany;
 import javax.persistence.OrderBy;
 import javax.persistence.Table;
 import javax.xml.bind.Unmarshaller;
-import javax.xml.bind.annotation.XmlAttribute;
 import javax.xml.bind.annotation.XmlElement;
 
 import edu.upenn.cis.ppod.util.IVisitor;
@@ -52,31 +51,31 @@ import edu.upenn.cis.ppod.util.IVisitor;
 @Table(name = CharacterStateRow.TABLE)
 public class CharacterStateRow extends PPodEntity {
 
-	/** The position in the matrix. */
-	@Column(name = "POSITION", nullable = false)
-	private Integer position;
+// /** The position in the matrix. */
+// @Column(name = "POSITION", nullable = false)
+// private Integer position;
+//
+// /**
+// * Get the position.
+// *
+// * @return the position
+// */
+// @XmlAttribute
+// public Integer getPosition() {
+// return position;
+// }
 
-	/**
-	 * Get the position.
-	 * 
-	 * @return the position
-	 */
-	@XmlAttribute
-	public Integer getPosition() {
-		return position;
-	}
-
-	/**
-	 * Set the position.
-	 * 
-	 * @param position the position to set
-	 * 
-	 * @return this
-	 */
-	CharacterStateRow setPosition(final Integer position) {
-		this.position = position;
-		return this;
-	}
+// /**
+// * Set the position.
+// *
+// * @param position the position to set
+// *
+// * @return this
+// */
+// CharacterStateRow setPosition(final Integer position) {
+// this.position = position;
+// return this;
+// }
 
 	/** This entitiy's table. Intentionally package-private. */
 	static final String TABLE = "CHARACTER_STATE_ROW";
@@ -139,7 +138,6 @@ public class CharacterStateRow extends PPodEntity {
 	 * @param parent see {@code Unmarshaller}
 	 */
 	public void afterUnmarshal(final Unmarshaller u, final Object parent) {
-		setMatrix((CharacterStateMatrix) parent);
 		int i = 0;
 		for (final CharacterStateCell cell : getCells()) {
 			cellIdx.put(cell, i++);

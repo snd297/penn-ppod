@@ -113,7 +113,8 @@ public class SaveOrUpdateCharacterStateMatrixTest {
 		final CharacterStateMatrix targetMatrix = matrixFactory
 				.create(sourceMatrix);
 
-		final Set<CharacterStateMatrix> sourceAndTargetMatrices = newHashSet(sourceMatrix);
+		final Set<CharacterStateMatrix> sourceAndTargetMatrices = newHashSet();
+		sourceAndTargetMatrices.add(sourceMatrix);
 		sourceAndTargetMatrices.add(targetMatrix);
 
 		fakeDbOTUSet.setMatrices(sourceAndTargetMatrices);
@@ -137,7 +138,8 @@ public class SaveOrUpdateCharacterStateMatrixTest {
 		final CharacterStateMatrix targetMatrix = matrixFactory
 				.create(sourceMatrix);
 
-		final Set<CharacterStateMatrix> sourceAndTargetMatrices = newHashSet(sourceMatrix);
+		final Set<CharacterStateMatrix> sourceAndTargetMatrices = newHashSet();
+		sourceAndTargetMatrices.add(sourceMatrix);
 		sourceAndTargetMatrices.add(targetMatrix);
 
 		fakeTargetOTUSet.setMatrices(sourceAndTargetMatrices);
@@ -184,7 +186,8 @@ public class SaveOrUpdateCharacterStateMatrixTest {
 
 			final CharacterStateMatrix targetMatrix = matrixFactory
 					.create(sourceMatrix);
-			final Set<CharacterStateMatrix> sourceAndTargetMatrices = newHashSet(sourceMatrix);
+			final Set<CharacterStateMatrix> sourceAndTargetMatrices = newHashSet();
+			sourceAndTargetMatrices.add(sourceMatrix);
 			sourceAndTargetMatrices.add(targetMatrix);
 
 			fakeTargetOTUSet.setMatrices(sourceAndTargetMatrices);
