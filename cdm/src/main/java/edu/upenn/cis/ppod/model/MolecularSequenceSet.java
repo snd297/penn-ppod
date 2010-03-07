@@ -61,13 +61,13 @@ public abstract class MolecularSequenceSet<S extends MolecularSequence<?>>
 
 	@Override
 	public void afterUnmarshal() {
-		for (final IPair<OTU, S> otuSequencePair : getOTUSequencePairsModifiable()) {
+		for (final IPair<OTU, S> otuSequencePair : getOTUSequencePairs()) {
 			getOTUsToSeqeuencesModifiable().put(otuSequencePair.getFirst(),
 					otuSequencePair.getSecond());
 		}
 
 		// We're done with this - clear it out
-		getOTUSequencePairsModifiable().clear();
+		getOTUSequencePairs().clear();
 	}
 
 	/**
@@ -87,7 +87,7 @@ public abstract class MolecularSequenceSet<S extends MolecularSequence<?>>
 		return otuOrdering;
 	}
 
-	protected abstract Set<IPair<OTU, S>> getOTUSequencePairsModifiable();
+	protected abstract Set<IPair<OTU, S>> getOTUSequencePairs();
 
 	/**
 	 * Get this sequence set's owning OTU set.

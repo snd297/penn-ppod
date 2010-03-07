@@ -27,10 +27,12 @@ import javax.persistence.JoinColumn;
 import javax.persistence.JoinTable;
 import javax.persistence.OneToMany;
 import javax.persistence.Table;
+import javax.persistence.Transient;
 
 import org.hibernate.annotations.Cascade;
 
 import edu.upenn.cis.ppod.util.IPair;
+import edu.upenn.cis.ppod.util.OTUDNASequencePair;
 
 /**
  * @author Sam Donnelly
@@ -53,10 +55,37 @@ public class DNASequenceSet extends MolecularSequenceSet<DNASequence> {
 	@JoinTable(name = OTU.TABLE + "_" + CharacterStateRow.TABLE, joinColumns = @JoinColumn(name = ID_COLUMN), inverseJoinColumns = @JoinColumn(name = CharacterStateRow.ID_COLUMN))
 	@org.hibernate.annotations.MapKeyManyToMany(joinColumns = @JoinColumn(name = OTU.ID_COLUMN))
 	@Cascade(org.hibernate.annotations.CascadeType.DELETE_ORPHAN)
-	private final Map<OTU, DNASequence> otusToRows = newHashMap();
+	private final Map<OTU, DNASequence> otusToSequences = newHashMap();
+
+	/** For marshalling. */
+	@Transient
+	private final Set<OTUDNASequencePair> otuSequencePairs = newHashSet();
+
+	/**
+	 * Get the otuSequencePairs.
+	 * 
+	 * @return the otuSequencePairs
+	 */
+	private Set<OTUDNASequencePair> getOTUSequencePairsModifiable() {
+		return otuSequencePairs;
+	}
 
 	@OneToMany(mappedBy = "sequenceSet")
 	private final Set<DNASequence> sequences = newHashSet();
+
+	@Override
+	protected Set<IPair<OTU, DNASequence>> getOTUSequencePairs() {
+		final Set<IPair<OTU, DNASequence>> otuSequenceIPairs = newHashSet();
+		for (final OTUDNASequencePair otuDNASequencePair : getOTUSequencePairsModifiable()) {
+			otuSequenceIPairs.add(otuDNASequencePair);
+		}
+		return otuSequenceIPairs;
+	}
+
+	@Override
+	protected Map<OTU, DNASequence> getOTUsToSeqeuencesModifiable() {
+		return otusToSequences;
+	}
 
 	@Override
 	protected Set<DNASequence> getSequencesModifiable() {
@@ -64,28 +93,17 @@ public class DNASequenceSet extends MolecularSequenceSet<DNASequence> {
 	}
 
 	@Override
-	protected Set<IPair<OTU, DNASequence>> getOTUSequencePairsModifiable() {
-		// TODO Auto-generated method stub
-		throw new UnsupportedOperationException();
+	public DNASequence putRow(final OTU otu, final DNASequence newSequence) {
+		newSequence.setSequenceSet(this);
+		return super.putRowHelper(otu, newSequence);
 	}
 
 	@Override
-	protected Map<OTU, DNASequence> getOTUsToSeqeuencesModifiable() {
-		// TODO Auto-generated method stub
-		throw new UnsupportedOperationException();
-	}
-
 	public Set<DNASequence> setSequences(final Set<DNASequence> dnaSequences) {
 		checkNotNull(dnaSequences);
 		for (final DNASequence dnaSequence : getSequences()) {
 			dnaSequence.setSequenceSet(this);
 		}
 		return super.setSequencesHelper(dnaSequences);
-	}
-
-	@Override
-	public DNASequence putRow(OTU otu, DNASequence newSequence) {
-		newSequence.setSequenceSet(this);
-		return super.putRowHelper(otu, newSequence);
 	}
 }
