@@ -107,17 +107,17 @@ public class SaveOrUpdateCharacterStateMatrix implements ISaveOrUpdateMatrix {
 			targetMatrix.setDocId(sourceMatrix.getDocId());
 		}
 
-		final List<OTU> newTargetOTUs = newArrayList();
+		final List<OTU> newTargetOTUOrdering = newArrayList();
 		for (final OTU sourceOTU : sourceMatrix.getOTUOrdering()) {
 			final OTU newTargetOTU = mergedOTUsBySourceOTU.get(sourceOTU);
 			if (newTargetOTU == null) {
 				throw new AssertionError(
 						"couldn't find incomingOTU in persistentOTUsByIncomingOTU");
 			}
-			newTargetOTUs.add(newTargetOTU);
+			newTargetOTUOrdering.add(newTargetOTU);
 		}
 
-		targetMatrix.setOTUOrdering(newTargetOTUs);
+		targetMatrix.setOTUOrdering(newTargetOTUOrdering);
 
 		final Map<Integer, Integer> originalCharIdxsByNewCharIdx = newHashMap();
 		final List<Character> newTargetMatrixCharacters = newArrayList();
@@ -199,12 +199,11 @@ public class SaveOrUpdateCharacterStateMatrix implements ISaveOrUpdateMatrix {
 		dao.saveOrUpdate(targetMatrix);
 
 		final Set<CharacterStateCell> cellsToEvict = newHashSet();
-		for (final CharacterStateRow sourceRow : sourceMatrix.getRows()) {
-
-			final int sourceRowIdx = sourceRow.getPosition();
-
+		int sourceRowNumber = -1;
+		for (final CharacterStateRow sourceRow : sourceMatrix) {
+			sourceRowNumber++;
 			final OTU targetOTU = targetMatrix.getOTUOrdering().get(
-					sourceRowIdx);
+					sourceRowNumber);
 			CharacterStateRow targetRow = null;
 			List<Character> characters = targetMatrix.getCharacters();
 
@@ -291,7 +290,7 @@ public class SaveOrUpdateCharacterStateMatrix implements ISaveOrUpdateMatrix {
 			}
 
 			logger.debug("{}: flushing row,  sourceRowIdx: {}", METHOD,
-					sourceRowIdx);
+					sourceRowNumber);
 
 			dao.flush();
 

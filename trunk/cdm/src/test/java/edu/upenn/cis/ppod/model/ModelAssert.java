@@ -136,17 +136,6 @@ public class ModelAssert {
 			assertEqualsOTUs(actualOTUItr.next(), expectedOTUItr.next());
 		}
 
-		// Let's make sure that actualMatrix.getOTUIdx() is what it's
-		// supposed to be.
-		// We use actualMatrix.getOTUs() to check as opposed to looking at
-		// expectedMatrix sine that seems to make the most sense
-		assertEquals(actualMatrix.getOTUIdx().size(), actualMatrix
-				.getOTUOrdering().size());
-		for (final Entry<OTU, Integer> actualIdxByOTU : actualMatrix
-				.getOTUIdx().entrySet()) {
-			assertTrue(actualIdxByOTU.getKey() == actualMatrix.getOTUOrdering().get(
-					actualIdxByOTU.getValue()));
-		}
 		assertEquals(actualMatrix.getCharacters().size(), actualMatrix
 				.getCharacters().size());
 		for (final Iterator<Character> actualCharacterItr = actualMatrix

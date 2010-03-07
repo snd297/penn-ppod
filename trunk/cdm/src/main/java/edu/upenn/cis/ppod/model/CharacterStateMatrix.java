@@ -22,12 +22,14 @@ import static com.google.common.base.Preconditions.checkState;
 import static com.google.common.collect.Lists.newArrayList;
 import static com.google.common.collect.Lists.newArrayListWithCapacity;
 import static com.google.common.collect.Maps.newHashMap;
+import static com.google.common.collect.Sets.newHashSet;
 import static edu.upenn.cis.ppod.util.CollectionsUtil.nullFillAndSet;
 
 import java.util.Collections;
 import java.util.Iterator;
 import java.util.List;
 import java.util.Map;
+import java.util.Set;
 import java.util.Map.Entry;
 
 import javax.annotation.CheckForNull;
@@ -39,14 +41,13 @@ import javax.persistence.JoinColumn;
 import javax.persistence.JoinTable;
 import javax.persistence.ManyToMany;
 import javax.persistence.ManyToOne;
-import javax.persistence.OneToMany;
-import javax.persistence.OrderBy;
 import javax.persistence.Table;
 import javax.persistence.Transient;
 import javax.xml.bind.Marshaller;
 import javax.xml.bind.Unmarshaller;
 import javax.xml.bind.annotation.XmlAttribute;
 import javax.xml.bind.annotation.XmlElement;
+import javax.xml.bind.annotation.XmlElementWrapper;
 import javax.xml.bind.annotation.XmlIDREF;
 import javax.xml.bind.annotation.XmlSeeAlso;
 
@@ -66,7 +67,8 @@ import edu.upenn.cis.ppod.util.IVisitor;
 @XmlSeeAlso( { DNAStateMatrix.class, RNAStateMatrix.class })
 @Entity
 @Table(name = CharacterStateMatrix.TABLE)
-public class CharacterStateMatrix extends UUPPodEntityWXmlId {
+public class CharacterStateMatrix extends UUPPodEntityWXmlId implements
+		Iterable<CharacterStateRow> {
 
 	/** This entity's table name. Intentionally package-private. */
 	static final String TABLE = "CHARACTER_STATE_MATRIX";
@@ -118,13 +120,15 @@ public class CharacterStateMatrix extends UUPPodEntityWXmlId {
 	static final String OTU_IDX_COLUMN = "OTU_IDX";
 
 	/**
-	 * The inverse of {@code otuOrdering}: an {@code OTU}->rowNumber lookup.
+	 * The rows of the matrix. We don't do save_update cascades since we want to
+	 * control when rows are added to the persistence context. We sometimes
+	 * don't want the rows saved or reattached when the the matrix is.
 	 */
 	@org.hibernate.annotations.CollectionOfElements
-	@JoinTable(name = TABLE + "_" + OTU_IDX_COLUMN, joinColumns = @JoinColumn(name = ID_COLUMN))
+	@JoinTable(name = OTU.TABLE + "_" + CharacterStateRow.TABLE, joinColumns = @JoinColumn(name = ID_COLUMN), inverseJoinColumns = @JoinColumn(name = CharacterStateRow.ID_COLUMN))
 	@org.hibernate.annotations.MapKeyManyToMany(joinColumns = @JoinColumn(name = OTU.ID_COLUMN))
-	@Column(name = OTU_IDX_COLUMN)
-	private final Map<OTU, Integer> otuIdx = newHashMap();
+	@Cascade(org.hibernate.annotations.CascadeType.DELETE_ORPHAN)
+	private final Map<OTU, CharacterStateRow> otusToRows = newHashMap();
 
 	/**
 	 * The position of an {@code OTU} in {@code otuOrdering} signifies its row
@@ -165,20 +169,11 @@ public class CharacterStateMatrix extends UUPPodEntityWXmlId {
 	@IndexColumn(name = CHARACTERS_INDEX_COLUMN)
 	private final List<Character> characters = newArrayList();
 
-	/**
-	 * The rows of the matrix. We don't do save_update cascades since we want to
-	 * control when rows are added to the persistence context. We sometimes
-	 * don't want the rows saved or reattached when the the matrix is.
-	 */
-	@OneToMany(mappedBy = "matrix")
-	@OrderBy("position")
-	@Cascade(org.hibernate.annotations.CascadeType.DELETE_ORPHAN)
-	private final List<CharacterStateRow> rows = newArrayList();
+	@Transient
+	private final Set<OTUCharacterStateRowPair> otuRowPairs = newHashSet();
 
 	/** No-arg constructor for (at least) Hibernate. */
-	CharacterStateMatrix() {
-
-	}
+	CharacterStateMatrix() {}
 
 	@Override
 	public CharacterStateMatrix accept(final IVisitor visitor) {
@@ -186,7 +181,7 @@ public class CharacterStateMatrix extends UUPPodEntityWXmlId {
 		for (final Character character : getCharacters()) {
 			character.accept(visitor);
 		}
-		for (final CharacterStateRow row : getRows()) {
+		for (final CharacterStateRow row : getOTUsToRowsModifiable().values()) {
 			row.accept(visitor);
 		}
 		super.accept(visitor);
@@ -200,12 +195,12 @@ public class CharacterStateMatrix extends UUPPodEntityWXmlId {
 	 */
 	@Override
 	public void afterUnmarshal() {
-		if (getOTUIdx().size() == 0) {
-			int i = 0;
-			for (final OTU otu : otuOrdering) {
-				otuIdx.put(otu, i++);
-			}
+		for (final OTUCharacterStateRowPair otuRowPair : getOTURowPairsModifiable()) {
+			getOTUsToRowsModifiable().put(otuRowPair.getFirst(),
+					otuRowPair.getSecond());
+			otuRowPair.getSecond().setMatrix(this);
 		}
+		getOTURowPairsModifiable().clear();
 		int i = 0;
 		for (final Character character : getCharacters()) {
 			if (this instanceof DNAStateMatrix
@@ -234,6 +229,12 @@ public class CharacterStateMatrix extends UUPPodEntityWXmlId {
 	@Override
 	public boolean beforeMarshal(@Nullable final Marshaller marshaller) {
 		super.beforeMarshal(marshaller);
+		for (final Map.Entry<OTU, CharacterStateRow> otuToRow : getOTUsToRowsModifiable()
+				.entrySet()) {
+			getOTURowPairsModifiable().add(
+					OTUCharacterStateRowPair.of(otuToRow.getKey(), otuToRow
+							.getValue()));
+		}
 		for (final PPodVersionInfo columnVersionInfo : getColumnPPodVersionInfos()) {
 			if (columnVersionInfo == null) {
 				columnPPodVersions.add(null);
@@ -408,22 +409,28 @@ public class CharacterStateMatrix extends UUPPodEntityWXmlId {
 	}
 
 	/**
-	 * Get an unmodifiable view of the {@code OTU->row number} map.
-	 * 
-	 * @return an unmodifiable view of the {@code OTU->row number} map
-	 */
-	public Map<OTU, Integer> getOTUIdx() {
-		return Collections.unmodifiableMap(otuIdx);
-	}
-
-	/**
 	 * Return an unmodifiable view of this matrix's <code>OTUSet</code>
 	 * ordering.
 	 * 
 	 * @return see description
+	 * 
+	 * @throws IllegalStateException if {@link #getOTUOrdering()} {@code ==
+	 *             null}
 	 */
 	public List<OTU> getOTUOrdering() {
-		return Collections.unmodifiableList(otuOrdering);
+		return Collections.unmodifiableList(getOTUOrderingModifiable());
+	}
+
+	@XmlElementWrapper(name = "otuOrdering")
+	@XmlElement(name = "otuDocId")
+	@XmlIDREF
+	private List<OTU> getOTUOrderingModifiable() {
+		return otuOrdering;
+	}
+
+	@XmlElement(name = "otuRowPair")
+	private Set<OTUCharacterStateRowPair> getOTURowPairsModifiable() {
+		return otuRowPairs;
 	}
 
 	/**
@@ -436,46 +443,90 @@ public class CharacterStateMatrix extends UUPPodEntityWXmlId {
 		return otuSet;
 	}
 
-	@XmlElement(name = "otuDocId")
-	@XmlIDREF
-	@SuppressWarnings("unused")
-	private List<OTU> getOTUOrderingModifiable() {
-		return otuOrdering;
+	/**
+	 * Get the otusToRows.
+	 * 
+	 * @return the otusToRows
+	 */
+	private Map<OTU, CharacterStateRow> getOTUsToRowsModifiable() {
+		return otusToRows;
 	}
 
 	/**
-	 * Get the row indexed by an OTU.
-	 * <p>
-	 * Will return {@code null} for rows that have had an OTU assigned - through
-	 * {@link #setOTUs(List)} - but have yet to have a row set.
+	 * Get the row indexed by an OTU or {@code null} if there is no such row.
 	 * 
 	 * @param otu the index
-	 * @return the row
 	 * 
-	 * @throws IllegalArgumentException if {@code otu} does not belong to this
-	 *             matrix
+	 * @return the row
 	 */
 	@Nullable
 	public CharacterStateRow getRow(final OTU otu) {
 		checkNotNull(otu);
-		checkArgument(getOTUIdx().get(otu) != null,
-				"otu does not belong to this matrix");
-		return getRows().get(getOTUIdx().get(otu));
-	}
-
-	@XmlElement(name = "row")
-	@SuppressWarnings("unused")
-	private List<CharacterStateRow> getRowMutable() {
-		return rows;
+		return getOTUsToRowsModifiable().get(otu);
 	}
 
 	/**
-	 * Get an unmodifiable view of this matrix's rows.
+	 * Get a possibly unmodifiable view of this matrix's rows in
+	 * {@link #getOTUOrdering()} order.
 	 * 
-	 * @return an unmodifiable view of this matrix's rows
+	 * @return a possibly unmodifiable view of this matrix's rows in {@code
+	 *         getOTUOrdering()} order
+	 * 
+	 * @throws IllegalStateException if this matrix's OTU ordering does not have
+	 *             the same elements as {@code getOTUSet()}
 	 */
 	public List<CharacterStateRow> getRows() {
+		final Set<OTU> otuOrderingAsSet = newHashSet(getOTUOrdering());
+		checkState(otuOrderingAsSet.equals(getOTUSet().getOTUs()),
+				"otu ordering is not in sync with this matrix's OTUSet");
+
+		final List<CharacterStateRow> rows = newArrayList();
+		for (final OTU otu : getOTUOrdering()) {
+			rows.add(getOTUsToRowsModifiable().get(otu));
+		}
 		return Collections.unmodifiableList(rows);
+	}
+
+	public Iterator<CharacterStateRow> iterator() {
+		return getRows().iterator();
+	}
+
+	/**
+	 * Set row at <code>otu</code> to <code>row</code>.
+	 * <p>
+	 * Assumes {@code newRow} does not belong to another matrix.
+	 * <p>
+	 * Assumes {@code newRow} is not detached.
+	 * 
+	 * @param otu index of the row we are adding
+	 * @param newRow the row we're adding
+	 * 
+	 * @return the row that was previously there, or {@code null} if there was
+	 *         no row previously there
+	 * 
+	 * @throw IllegalArgumentException if {@code otu} does not belong to this
+	 *        matrix's {@code OTUSet}
+	 */
+	@Nullable
+	public CharacterStateRow putRow(final OTU otu,
+			final CharacterStateRow newRow) {
+		checkNotNull(otu);
+		checkNotNull(newRow);
+		checkArgument(getOTUSet().getOTUs().contains(otu),
+				"otu does not belong to this matrix");
+
+		final CharacterStateRow originalRow = getOTUsToRowsModifiable().put(
+				otu, newRow);
+		if (newRow.equals(originalRow)) {
+
+		} else {
+			if (originalRow != null) {
+				originalRow.setMatrix(null);
+			}
+			newRow.setMatrix(this);
+			resetPPodVersionInfo();
+		}
+		return originalRow;
 	}
 
 	/**
@@ -681,56 +732,28 @@ public class CharacterStateMatrix extends UUPPodEntityWXmlId {
 	 * @throws IllegalStateException if the OTU set has not been set, i.e. if
 	 *             {@link #getOTUSet() == null}
 	 */
-	public CharacterStateMatrix setOTUOrdering(final List<OTU> newOTUs) {
-		checkNotNull(newOTUs);
-		if (newOTUs.equals(getOTUOrdering())) {
+	public CharacterStateMatrix setOTUOrdering(final List<OTU> newOTUOrdering) {
+		checkNotNull(newOTUOrdering);
+
+		checkState(getOTUSet() != null,
+				"otuSet needs to be set before setOTUOrdering(...) is called");
+
+		// We want both newOTUs and this.otuSet to have the same elements
+		checkArgument(
+				newOTUOrdering.containsAll(getOTUSet().getOTUs())
+						&& getOTUSet().getOTUs().containsAll(newOTUOrdering),
+				"otuOrdering (size "
+						+ newOTUOrdering.size()
+						+ ") does not contain the same OTU's as the matrix's OTUSet (size "
+						+ getOTUSet().getOTUs().size() + ").");
+
+		if (newOTUOrdering.equals(getOTUOrdering())) {
 			// They're the same, nothing to do
 			return this;
 		}
 
-		checkState(getOTUSet() != null,
-				"otuSet needs to be set before setOTUs(...) is called");
-
-		// We want both newOTUs and this.otuSet to have the same elements
-		checkArgument(
-				newOTUs.containsAll(getOTUSet().getOTUs())
-						&& getOTUSet().getOTUs().containsAll(newOTUs),
-				"otuOrdering (size "
-						+ newOTUs.size()
-						+ ") does not contain the same OTU's as the matrix's OTUSet (size "
-						+ getOTUSet().getOTUs().size() + ").");
-
-		// We're now going to move around the rows to match the new ordering
-		final List<CharacterStateRow> newRows = newArrayListWithCapacity(newOTUs
-				.size());
-		for (int newOtuIdx = 0; newOtuIdx < newOTUs.size(); newOtuIdx++) {
-			final OTU newOtu = newOTUs.get(newOtuIdx);
-
-			// oldIdx is where newOtu used to be
-			final Integer oldIdx = getOTUIdx().get(newOtu);
-			CharacterStateRow originalRow = null;
-			if (oldIdx == null) {
-				// It's a new row - it will be filled in later.
-			} else {
-				originalRow = rows.get(oldIdx);
-			}
-			newRows.add(originalRow); // could be adding null
-		}
-
-		otuOrdering.clear();
-		otuIdx.clear();
-		rows.clear();
-		for (int i = 0; i < newRows.size(); i++) {
-			final OTU newOtu = newOTUs.get(i);
-			otuOrdering.add(newOtu);
-			otuIdx.put(newOtu, i);
-			putRow(newOtu, newRows.get(i)); // could be setting
-			// it to null
-			if (newRows.get(i) != null) {
-				newRows.get(i).setPosition(i);
-			}
-		}
-
+		getOTUOrderingModifiable().clear();
+		getOTUOrderingModifiable().addAll(newOTUOrdering);
 		resetPPodVersionInfo();
 		return this;
 	}
@@ -754,67 +777,6 @@ public class CharacterStateMatrix extends UUPPodEntityWXmlId {
 			resetPPodVersionInfo();
 		}
 		return this;
-	}
-
-	/**
-	 * Set row at <code>index</code> to <code>row</code>. Fills with
-	 * <code>null</code>s if <code>index</code> is too big.
-	 * <p>
-	 * If {@code row} is already in this matrix, this method sets that position
-	 * to {@code null}.
-	 * <p>
-	 * Assumes row does not belong to another matrix.
-	 * <p>
-	 * Assumes {@code row} is not detached.
-	 * 
-	 * @param otu index of the row we are adding
-	 * @param row see description
-	 * 
-	 * @return the row that was previously there, or {@code null} if there was
-	 *         no row previously there
-	 * 
-	 * @throw IllegalArgumentException if {@code otu} does not belong to this
-	 *        matrix's {@code OTUSet}
-	 */
-	@Nullable
-	public CharacterStateRow putRow(final OTU otu,
-			@Nullable final CharacterStateRow row) {
-
-		checkArgument(getOTUSet().getOTUs().contains(otu),
-				"otu does not belong to this matrix");
-
-		final Integer otuIdx = getOTUIdx().get(otu);
-		while (rows.size() <= otuIdx) {
-			rows.add(null);
-			resetPPodVersionInfo();
-		}
-		final CharacterStateRow oldRow = rows.get(otuIdx);
-		if (row != null) {
-			row.setMatrix(this);
-		}
-		if (equal(row, oldRow)) {
-			// same, nothing to do
-		} else {
-
-			if (oldRow != null) {
-				oldRow.setMatrix(null);
-			}
-
-			// Remove the row from its old position, if it's already in this
-			// matrix
-			final int rowOldIdx = rows.indexOf(row);
-			if (rowOldIdx != -1) {
-				rows.set(rowOldIdx, null);
-			}
-
-			// Now set it to it's new position.
-			rows.set(otuIdx, row);
-			if (row != null) {
-				row.setPosition(otuIdx);
-			}
-			resetPPodVersionInfo();
-		}
-		return oldRow;
 	}
 
 }

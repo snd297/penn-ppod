@@ -36,6 +36,9 @@ public final class PairStringString implements IPair<String, String> {
 	private String first;
 	private String second;
 
+	/**
+	 * Created for JAXB.
+	 */
 	private PairStringString() {}
 
 	public PairStringString(final String first, final String second) {
@@ -43,16 +46,16 @@ public final class PairStringString implements IPair<String, String> {
 		this.second = second;
 	}
 
-	public String get1st() {
+	public String getFirst() {
 		return first;
 	}
 
-	public String get2nd() {
+	public String getSecond() {
 		return second;
 	}
 
 	public static PairStringString of(IPair<String, String> pair) {
-		return new PairStringString(pair.get1st(), pair.get2nd());
+		return new PairStringString(pair.getFirst(), pair.getSecond());
 	}
 
 	public static final Function<PairStringString, IPair<String, String>> castToIPair = new Function<PairStringString, IPair<String, String>>() {

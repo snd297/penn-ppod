@@ -144,12 +144,6 @@ public class CharacterStateMatrixTest {
 
 		assertEquals(matrix.getOTUOrdering(), otus210);
 		assertEquals(matrix.getRows().size(), originalRows.size());
-		ModelAssert.assertEqualsCharacterStateRows(matrix.getRows().get(
-				matrix.getOTUIdx().get(otu2)), originalRows.get(2));
-		ModelAssert.assertEqualsCharacterStateRows(matrix.getRows().get(
-				matrix.getOTUIdx().get(otu1)), originalRows.get(1));
-		ModelAssert.assertEqualsCharacterStateRows(matrix.getRows().get(
-				matrix.getOTUIdx().get(otu0)), originalRows.get(0));
 
 	}
 
@@ -164,7 +158,8 @@ public class CharacterStateMatrixTest {
 	}
 
 	public void setOTUs() {
-		Assert.assertEquals(matrix.getOTUOrdering(), newArrayList(otu0, otu1, otu2));
+		Assert.assertEquals(matrix.getOTUOrdering(), newArrayList(otu0, otu1,
+				otu2));
 
 		for (int i = 0; i < matrix.getRows().size(); i++) {
 			assertNull(matrix.getRows().get(i));
@@ -301,27 +296,27 @@ public class CharacterStateMatrixTest {
 	}
 
 	/**
-	 * When we set a character that was already at some position, then the its
-	 * pPOD version should not be set to {@code null}.
+	 * When we set a character that was already at some position, then it should
+	 * not be marked as in need of a new pPOD version info.
 	 */
 	public void setWithSameRow() {
 		final CharacterStateRow row1 = rowProvider.get();
 		matrix.putRow(otu1, row1);
 		matrix.setPPodVersionInfo(pPodVersionInfo);
 		matrix.putRow(otu1, row1);
-		assertNotNull(matrix.getRows().get(matrix.getOTUIdx().get(otu1)));
+		assertFalse(matrix.isInNeedOfNewPPodVersionInfo());
 	}
 
-	/**
-	 * When we move a row, its previous position should be automatically null'd.
-	 */
-	public void moveRow() {
-		final CharacterStateRow row1 = rowProvider.get();
-		matrix.putRow(otu1, row1);
-		matrix.putRow(otu0, row1);
-		assertEquals(matrix.getRows().get(matrix.getOTUIdx().get(otu0)), row1);
-		assertNull(matrix.getRows().get(matrix.getOTUIdx().get(otu1)));
-	}
+// /**
+// * When we move a row, its previous position should be automatically null'd.
+// */
+// public void moveRow() {
+// final CharacterStateRow row1 = rowProvider.get();
+// matrix.putRow(otu1, row1);
+// matrix.putRow(otu0, row1);
+// assertEquals(matrix.getRows().get(matrix.getOTUIdx().get(otu0)), row1);
+// assertNull(matrix.getRows().get(matrix.getOTUIdx().get(otu1)));
+// }
 
 	/**
 	 * Test replacing one row with another.
@@ -338,8 +333,7 @@ public class CharacterStateMatrixTest {
 		final CharacterStateRow row2 = rowProvider.get();
 		final CharacterStateRow someRow = matrix.putRow(otu1, row2);
 		assertEquals(someRow, row1);
-		assertEquals(matrix.getRows().get(matrix.getOTUIdx().get(otu1)), row2);
-		// assertNull(row1.getMatrix());
+		assertNull(row1.getMatrix());
 	}
 
 	@Inject
