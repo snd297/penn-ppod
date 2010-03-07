@@ -15,6 +15,7 @@
  */
 package edu.upenn.cis.ppod.util;
 
+import javax.annotation.Nullable;
 import javax.xml.bind.annotation.XmlAccessType;
 import javax.xml.bind.annotation.XmlAccessorType;
 
@@ -48,10 +49,12 @@ public class Pair<T, U> implements IPair<T, U> {
 		this.second = second;
 	}
 
+	@Nullable
 	public T getFirst() {
 		return first;
 	}
 
+	@Nullable
 	public U getSecond() {
 		return second;
 	}

@@ -15,9 +15,7 @@ public class OTUCharacterStateRowPair extends Pair<OTU, CharacterStateRow> {
 	/**
 	 * For JAXB.
 	 */
-	private OTUCharacterStateRowPair() {
-
-	}
+	private OTUCharacterStateRowPair() {}
 
 	@XmlElement
 	@XmlIDREF
@@ -32,16 +30,20 @@ public class OTUCharacterStateRowPair extends Pair<OTU, CharacterStateRow> {
 		return super.getSecond();
 	}
 
+	/**
+	 * This seemingly redundant setter method added for the sake of JAXB.
+	 */
 	@Override
 	public OTUCharacterStateRowPair setFirst(final OTU otu) {
-		super.setFirst(otu);
-		return this;
+		return (OTUCharacterStateRowPair) super.setFirst(otu);
 	}
 
+	/**
+	 * This seemingly redundant setter method added for the sake of JAXB.
+	 */
 	@Override
 	public OTUCharacterStateRowPair setSecond(final CharacterStateRow row) {
-		super.setSecond(row);
-		return this;
+		return (OTUCharacterStateRowPair) super.setSecond(row);
 	}
 
 	public static OTUCharacterStateRowPair of(final OTU first,
