@@ -59,6 +59,8 @@ import com.google.common.collect.HashBiMap;
 import com.google.common.collect.ImmutableSet;
 
 import edu.upenn.cis.ppod.util.IVisitor;
+import edu.upenn.cis.ppod.util.OTUCharacterStateRowPair;
+import edu.upenn.cis.ppod.util.OTUSomethingPair;
 
 /**
  * A standard matrix - aka a character matrix.
@@ -195,7 +197,7 @@ public class CharacterStateMatrix extends UUPPodEntityWXmlId implements
 
 	@Override
 	public void afterUnmarshal() {
-		for (final OTUCharacterStateRowPair otuRowPair : getOTURowPairsModifiable()) {
+		for (final OTUSomethingPair<CharacterStateRow> otuRowPair : getOTURowPairsModifiable()) {
 			getOTUsToRowsModifiable().put(otuRowPair.getFirst(),
 					otuRowPair.getSecond());
 			otuRowPair.getSecond().setMatrix(this);
@@ -508,7 +510,7 @@ public class CharacterStateMatrix extends UUPPodEntityWXmlId implements
 	 * @throw IllegalArgumentException if {@code otu} does not belong to this
 	 *        matrix's {@code OTUSet}
 	 */
-	@Nullable
+	@CheckForNull
 	public CharacterStateRow putRow(final OTU otu,
 			final CharacterStateRow newRow) {
 		checkNotNull(otu);
@@ -572,7 +574,7 @@ public class CharacterStateMatrix extends UUPPodEntityWXmlId implements
 	 * <p>
 	 * This method does reorder {@link #getColumnPPodVersionInfos()}.
 	 * <p>
-	 * It is legal for two characters to have the same label, but to to be
+	 * It is legal for two characters to have the same label, but not to be
 	 * {@code .equals} to each other.
 	 * 
 	 * @param newCharacters the new characters
@@ -581,11 +583,15 @@ public class CharacterStateMatrix extends UUPPodEntityWXmlId implements
 	 * 
 	 * @throws IllegalArgumentException if any of {@code characters} are {@code
 	 *             .equals} to each other. NOTE: this constraint does not hold
-	 *             in a {@code MolecularStateMatrix}
+	 *             in a {@link MolecularStateMatrix}
 	 */
 	public List<Character> setCharacters(
 			final List<? extends Character> newCharacters) {
 		checkNotNull(newCharacters);
+
+		if (newCharacters.equals(getCharacters())) {
+			return Collections.emptyList();
+		}
 
 		// We leave this instanceof here since it is at worst ineffectual w/
 		// proxies, but
@@ -606,10 +612,6 @@ public class CharacterStateMatrix extends UUPPodEntityWXmlId implements
 								+ newCharacters.indexOf(character) + " and "
 								+ newCharacters.indexOf(character2));
 			}
-		}
-
-		if (newCharacters.equals(getCharacters())) {
-			return Collections.emptyList();
 		}
 
 		final List<PPodVersionInfo> newColumnPPodVersionInfos = determineNewColumnHeaderPPodVersionInfos(newCharacters);

@@ -19,7 +19,6 @@ import static com.google.common.base.Preconditions.checkNotNull;
 import static com.google.common.collect.Maps.newHashMap;
 import static com.google.common.collect.Sets.newHashSet;
 
-import java.util.Collections;
 import java.util.Map;
 import java.util.Set;
 
@@ -78,11 +77,15 @@ public class DNASequenceSet extends MolecularSequenceSet<DNASequence> {
 
 	public Set<DNASequence> setSequences(final Set<DNASequence> dnaSequences) {
 		checkNotNull(dnaSequences);
-		final Set<DNASequence> removedSequences = super
-				.setSequencesHelper(dnaSequences);
 		for (final DNASequence dnaSequence : getSequences()) {
 			dnaSequence.setSequenceSet(this);
 		}
-		return removedSequences;
+		return super.setSequencesHelper(dnaSequences);
+	}
+
+	@Override
+	public DNASequence putRow(OTU otu, DNASequence newSequence) {
+		newSequence.setSequenceSet(this);
+		return super.putRowHelper(otu, newSequence);
 	}
 }

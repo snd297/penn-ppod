@@ -15,6 +15,7 @@
  */
 package edu.upenn.cis.ppod.model;
 
+import static com.google.common.base.Preconditions.checkArgument;
 import static com.google.common.base.Preconditions.checkNotNull;
 import static com.google.common.collect.Lists.newArrayList;
 import static com.google.common.collect.Sets.newHashSet;
@@ -98,6 +99,16 @@ public abstract class MolecularSequenceSet<S extends MolecularSequence<?>>
 		return otuSet;
 	}
 
+	/**
+	 * Getter. Will be {@code null} when object is first created.
+	 * 
+	 * @return this matrix's {@code OTUSet}
+	 */
+	@Nullable
+	public OTUSet getOTUSet() {
+		return otuSet;
+	}
+
 	protected abstract Map<OTU, S> getOTUsToSeqeuencesModifiable();
 
 	/**
@@ -116,6 +127,46 @@ public abstract class MolecularSequenceSet<S extends MolecularSequence<?>>
 	 */
 	@XmlElement(name = "sequence")
 	protected abstract Set<S> getSequencesModifiable();
+
+	@CheckForNull
+	public abstract S putRow(final OTU otu, final S newSequence);
+
+	/**
+	 * Set row at <code>otu</code> to <code>row</code>.
+	 * <p>
+	 * Assumes {@code newSequence} does not belong to another matrix.
+	 * <p>
+	 * Assumes {@code newSequence} is not detached.
+	 * 
+	 * @param otu index of the row we are adding
+	 * @param newSequence the row we're adding
+	 * 
+	 * @return the row that was previously there, or {@code null} if there was
+	 *         no row previously there
+	 * 
+	 * @throw IllegalArgumentException if {@code otu} does not belong to this
+	 *        matrix's {@code OTUSet}
+	 */
+	@CheckForNull
+	protected S putRowHelper(final OTU otu, final S newSequence) {
+		checkNotNull(otu);
+		checkNotNull(newSequence);
+		checkArgument(getOTUSet().getOTUs().contains(otu),
+				"otu does not belong to this sequence set");
+
+		final S originalSequence = getOTUsToSeqeuencesModifiable().put(otu,
+				newSequence);
+		if (newSequence.equals(originalSequence)) {
+
+		} else {
+			if (originalSequence != null) {
+				originalSequence.setSequenceSet(null);
+			}
+
+			resetPPodVersionInfo();
+		}
+		return originalSequence;
+	}
 
 	@Override
 	public MolecularSequenceSet<S> resetPPodVersionInfo() {
