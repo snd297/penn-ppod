@@ -87,11 +87,10 @@ public class CharacterStateMatrixTest {
 		otus012 = newArrayList(otu0, otu1, otu2);
 
 		otuSet012 = otuSetProvider.get();
-		otuSet012.setOTUs(newHashSet(otu0, otu1, otu2));
+		otuSet012.setOTUs(newArrayList(otu0, otu1, otu2));
 
 		matrix.setOTUSet(otuSet012);
 
-		matrix.setOTUOrdering(otus012);
 	}
 
 	/**
@@ -100,8 +99,6 @@ public class CharacterStateMatrixTest {
 	 */
 	public void setOTUsWSameOTUs() {
 		matrix.setPPodVersionInfo(pPodVersionInfo);
-
-		matrix.setOTUOrdering(otus012);
 
 		// Since they were the same, the version should not have been reset to
 		// null
@@ -138,37 +135,21 @@ public class CharacterStateMatrixTest {
 		final List<CharacterStateRow> originalRows = newArrayList(matrix
 				.getRows());
 
-		final List<OTU> otus210 = newArrayList(otu2, otu1, otu0);
+		final ImmutableList<OTU> otus210 = ImmutableList.of(otu2, otu1, otu0);
+		matrix.getOTUSet().setOTUs(otus210);
 
-		matrix.setOTUOrdering(otus210);
-
-		assertEquals(matrix.getOTUOrdering(), otus210);
+		assertEquals(matrix.getOTUSet().getOTUs(), otus210);
 		assertEquals(matrix.getRows().size(), originalRows.size());
 
 	}
 
 	public void setOTUsWLessOTUs() {
 
-		otuSet012.setOTUs(newHashSet(otu1, otu2));
+		otuSet012.setOTUs(newArrayList(otu1, otu2));
 
 		final List<OTU> otus12 = newArrayList(otu1, otu2);
-		matrix.setOTUOrdering(otus12);
-		assertEquals(matrix.getOTUOrdering(), otus12);
+		assertEquals(matrix.getOTUSet().getOTUs(), otus12);
 		assertEquals(matrix.getRows().size(), otus12.size());
-	}
-
-	public void setOTUs() {
-		Assert.assertEquals(matrix.getOTUOrdering(), newArrayList(otu0, otu1,
-				otu2));
-
-		for (int i = 0; i < matrix.getRows().size(); i++) {
-			assertNull(matrix.getRows().get(i));
-		}
-	}
-
-	@Test(expectedExceptions = IllegalArgumentException.class)
-	public void setWrongOTUs() {
-		matrix.setOTUOrdering(newArrayList(otu0, otu2));
 	}
 
 	/**

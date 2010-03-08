@@ -226,7 +226,7 @@ public class DbToMatrixTest extends DbTestBase {
 
 	void checkOTUs(final Document pPodDocument, final CharacterStateMatrix m) {
 
-		for (final OTU otu : m.getOTUOrdering()) {
+		for (final OTU otu : m.getOTUSet().getOTUs()) {
 			final Element otuElement = (Element) pPodDocument
 					.selectSingleNode("/dataset/" + OTU.TABLE.toLowerCase()
 							+ "[@" + OTU.ID_COLUMN + "='" + otu.getId() + "']");

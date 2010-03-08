@@ -27,10 +27,9 @@ import javax.persistence.OneToMany;
 import javax.persistence.Table;
 import javax.persistence.Transient;
 import javax.xml.bind.Marshaller;
-import javax.xml.bind.annotation.XmlAccessType;
-import javax.xml.bind.annotation.XmlAccessorType;
 import javax.xml.bind.annotation.XmlAttribute;
 import javax.xml.bind.annotation.XmlElement;
+import javax.xml.bind.annotation.XmlElementWrapper;
 import javax.xml.bind.annotation.XmlRootElement;
 
 import org.hibernate.annotations.Cascade;
@@ -46,7 +45,6 @@ import edu.upenn.cis.ppod.util.PPodEntitiesUtil;
  * @author Sam Donnelly
  */
 @XmlRootElement
-@XmlAccessorType(XmlAccessType.NONE)
 @Entity
 @Table(name = Study.TABLE)
 public class Study extends UUPPodEntity implements IOTUSetCentricEntities {
@@ -66,18 +64,22 @@ public class Study extends UUPPodEntity implements IOTUSetCentricEntities {
 	@Cascade(org.hibernate.annotations.CascadeType.SAVE_UPDATE)
 	private final Set<OTUSet> otuSets = newHashSet();
 
+	@XmlElementWrapper(name = "studyWideAttachments")
 	@XmlElement(name = "studyWideAttachment")
 	@Transient
 	private final Set<Attachment> studyWideAttachments = newHashSet();
 
+	@XmlElementWrapper(name = "studyWideAttachmentTypes")
 	@XmlElement(name = "studyWideAttachmentType")
 	@Transient
 	private final Set<AttachmentType> studyWideAttachmentTypes = newHashSet();
 
+	@XmlElementWrapper(name = "studyWideAttachmentNamespaces")
 	@XmlElement(name = "studyWideAttachmentNamespace")
 	@Transient
 	private final Set<AttachmentNamespace> studyWideAttachmentNamespaces = newHashSet();
 
+	@XmlElementWrapper(name = "studyWideCharacters")
 	@XmlElement(name = "studyWideCharacter")
 	@Transient
 	private final Set<Character> studyWideCharacters = newHashSet();

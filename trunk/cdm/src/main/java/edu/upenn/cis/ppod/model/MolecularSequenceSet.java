@@ -62,11 +62,6 @@ public abstract class MolecularSequenceSet<S extends MolecularSequence<?>>
 	@CheckForNull
 	private OTUSet otuSet;
 
-	public S getSequence(final OTU otu) {
-		checkNotNull(otu);
-		return getOTUsToSeqeuencesModifiable().get(otu);
-	}
-
 	@Override
 	public void afterUnmarshal() {
 		for (final IPair<OTU, S> otuSequencePair : getOTUSequencePairs()) {
@@ -108,6 +103,11 @@ public abstract class MolecularSequenceSet<S extends MolecularSequence<?>>
 	}
 
 	protected abstract Map<OTU, S> getOTUsToSeqeuencesModifiable();
+
+	public S getSequence(final OTU otu) {
+		checkNotNull(otu);
+		return getOTUsToSeqeuencesModifiable().get(otu);
+	}
 
 	/**
 	 * Get a possibly unmodifiable view of the constituent sequences in {@code

@@ -19,6 +19,7 @@ package edu.upenn.cis.ppod.util;
 import edu.upenn.cis.ppod.model.Character;
 import edu.upenn.cis.ppod.model.CharacterStateCell;
 import edu.upenn.cis.ppod.model.CharacterStateMatrix;
+import edu.upenn.cis.ppod.model.OTUKeyedMap;
 
 /**
  * For straightening up or data structures after we're unmarshalled.
@@ -50,5 +51,10 @@ public class AfterUnmarshalVisitor extends EmptyVisitor {
 	@Override
 	public void visit(final Character character) {
 		character.afterUnmarshal();
+	}
+
+	@Override
+	public void visit(final OTUKeyedMap<?, ?> otuKeyedMap) {
+		otuKeyedMap.afterUnmarshal();
 	}
 }

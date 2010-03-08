@@ -357,20 +357,6 @@ public class CharacterStateCell extends PPodEntity {
 		return xmlStatesNeedsToBePutIntoStates;
 	}
 
-	@Override
-	public CharacterStateCell setInNeedOfNewPPodVersionInfo() {
-		final CharacterStateRow row = getRow();
-		if (row != null) {
-			row.setInNeedOfNewPPodVersionInfo();
-			final CharacterStateMatrix matrix = row.getMatrix();
-			if (matrix != null) {
-				matrix.resetColumnPPodVersion(row.getCellIdx().get(this));
-			}
-		}
-		super.setInNeedOfNewPPodVersionInfo();
-		return this;
-	}
-
 	/**
 	 * Set this cell's type to {@link Type#INAPPLICABLE} to {@code
 	 * Collections.EMPTY_SET}.
@@ -384,6 +370,20 @@ public class CharacterStateCell extends PPodEntity {
 		final Set<CharacterState> emptyStates = Collections.EMPTY_SET;
 		setStates(emptyStates);
 
+		return this;
+	}
+
+	@Override
+	public CharacterStateCell setInNeedOfNewPPodVersionInfo() {
+		final CharacterStateRow row = getRow();
+		if (row != null) {
+			row.setInNeedOfNewPPodVersionInfo();
+			final CharacterStateMatrix matrix = row.getMatrix();
+			if (matrix != null) {
+				matrix.resetColumnPPodVersion(row.getCellIdx().get(this));
+			}
+		}
+		super.setInNeedOfNewPPodVersionInfo();
 		return this;
 	}
 

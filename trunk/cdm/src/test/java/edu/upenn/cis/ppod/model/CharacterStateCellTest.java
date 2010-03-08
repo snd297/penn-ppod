@@ -80,15 +80,14 @@ public class CharacterStateCellTest {
 		final OTUSet otuSet = otuSetProvider.get();
 
 		final OTU otu0 = otuProvider.get().setLabel("otu0");
-		otuSet.setOTUs(newHashSet(otu0));
+		otuSet.setOTUs(newArrayList(otu0));
 		matrix.setOTUSet(otuSet);
-		matrix.setOTUOrdering(newArrayList(otu0));
 
 		final Character character0 = characterProvider.get().setLabel(
 				"character0");
 		matrix.setCharacters(newArrayList(character0));
 		final CharacterStateRow row0 = rowProvider.get();
-		matrix.putRow(matrix.getOTUOrdering().get(0), row0);
+		matrix.putRow(matrix.getOTUSet().getOTUs().get(0), row0);
 
 		states = newHashSet();
 

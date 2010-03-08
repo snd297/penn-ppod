@@ -217,20 +217,6 @@ public class CharacterState extends PPodEntityWXmlId {
 	}
 
 	/**
-	 * Mark this object as needed a new pPOD version.
-	 * 
-	 * @return this {@code CharacterState}
-	 */
-	@Override
-	public CharacterState setInNeedOfNewPPodVersionInfo() {
-		if (character != null) {
-			character.setInNeedOfNewPPodVersionInfo();
-		}
-		super.setInNeedOfNewPPodVersionInfo();
-		return this;
-	}
-
-	/**
 	 * Set the <code>character</code> property of this {@code CharacterState} to
 	 * <code>character</code>.
 	 * <p>
@@ -244,6 +230,20 @@ public class CharacterState extends PPodEntityWXmlId {
 	CharacterState setCharacter(final Character character) {
 		checkNotNull(character);
 		this.character = character;
+		return this;
+	}
+
+	/**
+	 * Mark this object as needed a new pPOD version.
+	 * 
+	 * @return this {@code CharacterState}
+	 */
+	@Override
+	public CharacterState setInNeedOfNewPPodVersionInfo() {
+		if (character != null) {
+			character.setInNeedOfNewPPodVersionInfo();
+		}
+		super.setInNeedOfNewPPodVersionInfo();
 		return this;
 	}
 

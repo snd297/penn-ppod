@@ -17,6 +17,7 @@ package edu.upenn.cis.ppod.model;
 
 import static com.google.common.base.Preconditions.checkNotNull;
 
+import javax.annotation.CheckForNull;
 import javax.annotation.Nullable;
 import javax.persistence.Column;
 import javax.persistence.Entity;
@@ -64,16 +65,16 @@ public class OTU extends UUPPodEntityWXmlId {
 	static final String LABEL_COLUMN = "LABEL";
 
 	/** Non-unique label. */
-	@Column(name = "LABEL", nullable = false)
-	@Nullable
+	@Column(name = LABEL_COLUMN, nullable = false)
+	@CheckForNull
 	private String label;
 
 	/**
 	 * These are the {@code OTUSet}s that this {@code OTU} belongs to.
 	 */
 	@ManyToOne
-	@JoinColumn(name = OTUSet.ID_COLUMN)
-	@Nullable
+	@JoinColumn(name = OTUSet.ID_COLUMN, insertable = false, updatable = false, nullable = false)
+	@CheckForNull
 	private OTUSet otuSet;
 
 	OTU() {}
@@ -108,12 +109,9 @@ public class OTU extends UUPPodEntityWXmlId {
 	}
 
 	/**
-	 * Get an unmodifiable view of the <code>OTUSet</code>s of which this
-	 * <code>OTU</code> is a member. Use {@code addOTUSet(OTUSet)} and {@code
-	 * removeOTUSet(OTUSet)} for modifying.
+	 * Get the owning {@code OTUSet}.
 	 * 
-	 * @return an unmodifiable view of the <code>OTUSet</code>s of which this
-	 *         <code>OTU</code> is a member
+	 * @return the {@code OTUSet} that owns this {@code OTU}
 	 */
 	@Nullable
 	public OTUSet getOTUSet() {
