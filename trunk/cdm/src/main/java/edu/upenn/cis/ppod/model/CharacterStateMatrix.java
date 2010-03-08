@@ -104,7 +104,6 @@ public class CharacterStateMatrix extends UUPPodEntityWXmlId implements
 			+ "_POSITION")
 	private final List<PPodVersionInfo> columnPPodVersionInfos = newArrayList();
 
-	@XmlElementWrapper(name = "columnPPodVersions")
 	@XmlElement(name = "columnPPodVersion")
 	@Transient
 	private final List<Long> columnPPodVersions = newArrayList();
@@ -157,7 +156,7 @@ public class CharacterStateMatrix extends UUPPodEntityWXmlId implements
 	CharacterStateMatrix() {}
 
 	@Inject
-	CharacterStateMatrix(final OTUsToCharacterStateRows rows) {
+	protected CharacterStateMatrix(final OTUsToCharacterStateRows rows) {
 		this.otusToRows = rows;
 	}
 
@@ -302,7 +301,6 @@ public class CharacterStateMatrix extends UUPPodEntityWXmlId implements
 	 * 
 	 * @return a modifiable reference to the characters
 	 */
-	@XmlElementWrapper(name = "characterDocIds")
 	@XmlElement(name = "characterDocId")
 	@XmlIDREF
 	protected List<Character> getCharactersModifiable() {
@@ -352,7 +350,6 @@ public class CharacterStateMatrix extends UUPPodEntityWXmlId implements
 	 * 
 	 * @return the column pPOD versions
 	 */
-	@XmlElementWrapper(name = "columnPPodVersions")
 	@XmlElement(name = "columnPPodVersion")
 	protected List<Long> getColumnPPodVersionsModifiable() {
 		return columnPPodVersions;

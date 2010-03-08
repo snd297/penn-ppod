@@ -71,7 +71,6 @@ public class OTUsToCharacterStateRows extends
 		return true;
 	}
 
-	@XmlElementWrapper(name = "otuRowPairs")
 	@XmlElement(name = "otuRowPair")
 	private Set<OTUCharacterStateRowPair> getOTURowPairsModifiable() {
 		return otuRowPairs;

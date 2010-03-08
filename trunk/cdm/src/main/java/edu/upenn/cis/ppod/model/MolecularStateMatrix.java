@@ -28,6 +28,15 @@ import java.util.Map;
  */
 public abstract class MolecularStateMatrix extends CharacterStateMatrix {
 
+	protected MolecularStateMatrix() {}
+
+	/**
+	 * @param otusToRows
+	 */
+	protected MolecularStateMatrix(OTUsToCharacterStateRows otusToRows) {
+		super(otusToRows);
+	}
+
 	@Override
 	public Map<Character, Integer> getCharacterIdx() {
 		throw new UnsupportedOperationException(
