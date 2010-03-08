@@ -60,7 +60,7 @@ abstract class OTUKeyedMap<T extends PersistentObject, P extends IWithOTUSet>
 
 	@Override
 	public OTUKeyedMap<T, P> accept(final IVisitor visitor) {
-		for (final T t : getOTUsToValues().values()) {
+		for (final T t : getOTUsToValuesModifiable().values()) {
 			t.accept(visitor);
 		}
 		return this;
@@ -86,10 +86,6 @@ abstract class OTUKeyedMap<T extends PersistentObject, P extends IWithOTUSet>
 		return otuOrdering;
 	}
 
-	public Map<OTU, T> getOTUsToValues() {
-		return Collections.unmodifiableMap(getOTUsToValuesModifiable());
-	}
-
 	/**
 	 * Get the {@code OTU}-keyed items.
 	 * 
@@ -100,7 +96,7 @@ abstract class OTUKeyedMap<T extends PersistentObject, P extends IWithOTUSet>
 	public List<T> getValuesInOTUOrder() {
 		final List<T> valuesInOTUOrder = newArrayList();
 		for (final OTU otu : getOTUOrdering()) {
-			valuesInOTUOrder.add(getOTUsToValues().get(otu));
+			valuesInOTUOrder.add(getOTUsToValuesModifiable().get(otu));
 		}
 		return valuesInOTUOrder;
 	}
