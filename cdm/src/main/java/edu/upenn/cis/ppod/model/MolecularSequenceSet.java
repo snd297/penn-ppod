@@ -73,23 +73,6 @@ public abstract class MolecularSequenceSet<S extends MolecularSequence<?>>
 		getOTUSequencePairs().clear();
 	}
 
-	/**
-	 * Return an unmodifiable view of this matrix's <code>OTUSet</code>
-	 * ordering.
-	 * 
-	 * @return see description
-	 */
-	public List<OTU> getOTUOrdering() {
-		return Collections.unmodifiableList(getOTUOrderingModifiable());
-	}
-
-	@XmlElementWrapper(name = "otuOrdering")
-	@XmlElement(name = "otuDocId")
-	@XmlIDREF
-	private List<OTU> getOTUOrderingModifiable() {
-		return otuOrdering;
-	}
-
 	protected abstract Set<IPair<OTU, S>> getOTUSequencePairs();
 
 	/**
@@ -116,16 +99,16 @@ public abstract class MolecularSequenceSet<S extends MolecularSequence<?>>
 	 * @return the constituent sequences
 	 */
 	public List<S> getSequences() {
-		final ImmutableSet<OTU> otuOrderingAsSet = ImmutableSet
-				.copyOf(getOTUOrdering());
-		checkState(otuOrderingAsSet.equals(getOTUSet().getOTUs()),
-				"otu ordering is not in sync with this sequence's OTUSet");
 
-		final List<S> rows = newArrayList();
-		for (final OTU otu : getOTUOrdering()) {
-			rows.add(getOTUsToSeqeuencesModifiable().get(otu));
-		}
-		return Collections.unmodifiableList(rows);
+// checkState(otuOrderingAsSet.equals(getOTUSet().getOTUs()),
+// "otu ordering is not in sync with this sequence's OTUSet");
+//
+// final List<S> rows = newArrayList();
+// for (final OTU otu : getOTUOrdering()) {
+// rows.add(getOTUsToSeqeuencesModifiable().get(otu));
+// }
+		return null;
+		// return Collections.unmodifiableList(rows);
 	}
 
 	/**

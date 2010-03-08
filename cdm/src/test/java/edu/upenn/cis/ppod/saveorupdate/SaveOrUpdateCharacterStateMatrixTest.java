@@ -50,7 +50,7 @@ import edu.upenn.cis.ppod.util.MatrixProvider;
  * 
  * @author Sam Donnelly
  */
-@Test(groups = { TestGroupDefs.FAST, TestGroupDefs.BROKEN })
+@Test(groups = { TestGroupDefs.FAST })
 public class SaveOrUpdateCharacterStateMatrixTest {
 
 	@Inject

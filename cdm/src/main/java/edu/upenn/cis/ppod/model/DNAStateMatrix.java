@@ -18,6 +18,8 @@ package edu.upenn.cis.ppod.model;
 import javax.persistence.Entity;
 import javax.persistence.Table;
 
+import com.google.inject.Inject;
+
 /**
  * @author Sam Donnelly
  */
@@ -28,7 +30,10 @@ public class DNAStateMatrix extends MolecularStateMatrix {
 	/** Database table name. */
 	public static final String TABLE = "DNA_STATE_MATRIX";
 
-	DNAStateMatrix() {
-	// setType(CharacterStateMatrix.Type.DNA);
+	DNAStateMatrix() {}
+
+	@Inject
+	DNAStateMatrix(final OTUsToCharacterStateRows otusToRows) {
+		super(otusToRows);
 	}
 }

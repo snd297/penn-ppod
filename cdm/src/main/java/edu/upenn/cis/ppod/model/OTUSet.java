@@ -215,7 +215,6 @@ public class OTUSet extends UUPPodEntityWXmlId {
 		return Collections.unmodifiableSet(getDNASequenceSetsModifiable());
 	}
 
-	@XmlElementWrapper(name = "dnaSequenceSets")
 	@XmlElement(name = "dnaSequenceSet")
 	private Set<DNASequenceSet> getDNASequenceSetsModifiable() {
 		return dnaSequenceSets;
@@ -241,7 +240,6 @@ public class OTUSet extends UUPPodEntityWXmlId {
 		return Collections.unmodifiableSet(matrices);
 	}
 
-	@XmlElementWrapper(name = "matrices")
 	@XmlElement(name = "matrix")
 	private Set<CharacterStateMatrix> getMatricesMutable() {
 		return matrices;
@@ -258,7 +256,6 @@ public class OTUSet extends UUPPodEntityWXmlId {
 		return Collections.unmodifiableList(getOTUsModifiable());
 	}
 
-	@XmlElementWrapper(name = "otus")
 	@XmlElement(name = "otu")
 	private List<OTU> getOTUsModifiable() {
 		return otus;
@@ -284,7 +281,6 @@ public class OTUSet extends UUPPodEntityWXmlId {
 		return Collections.unmodifiableSet(treeSets);
 	}
 
-	@XmlElementWrapper(name = "treeSets")
 	@XmlElement(name = "treeSet")
 	private Set<TreeSet> getTreeSetsModifiable() {
 		return treeSets;

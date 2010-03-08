@@ -64,22 +64,18 @@ public class Study extends UUPPodEntity implements IOTUSetCentricEntities {
 	@Cascade(org.hibernate.annotations.CascadeType.SAVE_UPDATE)
 	private final Set<OTUSet> otuSets = newHashSet();
 
-	@XmlElementWrapper(name = "studyWideAttachments")
 	@XmlElement(name = "studyWideAttachment")
 	@Transient
 	private final Set<Attachment> studyWideAttachments = newHashSet();
 
-	@XmlElementWrapper(name = "studyWideAttachmentTypes")
 	@XmlElement(name = "studyWideAttachmentType")
 	@Transient
 	private final Set<AttachmentType> studyWideAttachmentTypes = newHashSet();
 
-	@XmlElementWrapper(name = "studyWideAttachmentNamespaces")
 	@XmlElement(name = "studyWideAttachmentNamespace")
 	@Transient
 	private final Set<AttachmentNamespace> studyWideAttachmentNamespaces = newHashSet();
 
-	@XmlElementWrapper(name = "studyWideCharacters")
 	@XmlElement(name = "studyWideCharacter")
 	@Transient
 	private final Set<Character> studyWideCharacters = newHashSet();
