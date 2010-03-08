@@ -270,6 +270,12 @@ public abstract class PPodEntity extends PersistentObject implements
 		return attachmentRemoved;
 	}
 
+	public PPodEntity setAllowResetPPodVersionInfo(
+			final boolean allowResetPPodVersionInfo) {
+		this.allowResetPPodVersionInfo = allowResetPPodVersionInfo;
+		return this;
+	}
+
 	/**
 	 * Mark this object's {@link PPodVersionInfo} for update to the next version
 	 * number on save or update. This is done by setting it to {@code null}.
@@ -287,12 +293,6 @@ public abstract class PPodEntity extends PersistentObject implements
 		if (getAllowResetPPodVersionInfo()) {
 			inNeedOfNewPPodVersionInfo = true;
 		}
-		return this;
-	}
-
-	public PPodEntity setAllowResetPPodVersionInfo(
-			final boolean allowResetPPodVersionInfo) {
-		this.allowResetPPodVersionInfo = allowResetPPodVersionInfo;
 		return this;
 	}
 

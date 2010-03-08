@@ -22,14 +22,15 @@ import static org.testng.Assert.assertEquals;
 import static org.testng.Assert.assertFalse;
 import static org.testng.Assert.assertTrue;
 
+import java.util.ArrayList;
 import java.util.Collections;
-import java.util.HashSet;
 import java.util.List;
 import java.util.Set;
 
 import org.testng.annotations.BeforeMethod;
 import org.testng.annotations.Test;
 
+import com.google.common.collect.ImmutableList;
 import com.google.common.collect.ImmutableSet;
 import com.google.inject.Inject;
 import com.google.inject.Provider;
@@ -66,25 +67,22 @@ public class OTUSetTest {
 
 	private Study study;
 
-	@BeforeMethod
-	public void beforeMethod() {
-		otuSet = otuSetProvider.get();
-		otus = newArrayList();
-		otus.add((OTU) otuProvider.get().setLabel("otu0").setPPodId());
-		otus.add((OTU) otuProvider.get().setLabel("otu1").setPPodId());
-		otus.add((OTU) otuProvider.get().setLabel("otu2").setPPodId());
+	/**
+	 * Add an otu that's already in an otu set into an otu set. The pPOD version
+	 * should not be reset when this happens.
+	 */
+	public void addOTUWAlreadyContainedOTU() {
+		otuSet.setOTUs(ImmutableList.of(otuProvider.get().setLabel("OTU-0")));
+		otuSet.unsetInNeedOfNewPPodVersionInfo();
 
-		otuSet.setOTUs(newHashSet(otus));
-
-		// Do this so we can check that version resets are being done.
-		study = studyProvider.get();
-		study.addOTUSet(otuSet);
+		otuSet.setOTUs(otuSet.getOTUs());
+		assertFalse(otuSet.isInNeedOfNewPPodVersionInfo());
 	}
 
 	@Test(expectedExceptions = IllegalArgumentException.class)
 	public void addOTUWDuplicateLabel() {
 		otus.add(otuProvider.get().setLabel(otus.get(0).getLabel()));
-		otuSet.setOTUs(newHashSet(otus));
+		otuSet.setOTUs(newArrayList(otus));
 	}
 
 	public void addTreeSet() {
@@ -93,61 +91,32 @@ public class OTUSetTest {
 		assertEquals(getOnlyElement(otuSet.getTreeSets()), treeSet);
 	}
 
-	/**
-	 * Call {@code OTUSet.resetPPodVersionInfo()} when {@code
-	 * OTUSet.getPPodVersionInfo() == null} and make sure that
-	 * {@link OTUSet#getpPodVersionInfo()} stays {@code null} and that the OTU
-	 * sets's {@code Study}'s pPOD Version info is unaffected.
-	 */
-	public void resetWhenNotInNeedOfNewPPodVersionInfo() {
-		final PPodVersionInfo studyPPodVersionInfo = study.getpPodVersionInfo();
-		otuSet.unsetInNeedOfNewPPodVersionInfo();
-		otuSet.setInNeedOfNewPPodVersionInfo();
-		assertTrue(otuSet.isInNeedOfNewPPodVersionInfo());
-		assertEquals(study.getpPodVersionInfo(), studyPPodVersionInfo);
-	}
+	@BeforeMethod
+	public void beforeMethod() {
+		otuSet = otuSetProvider.get();
+		otus = newArrayList();
+		otus.add((OTU) otuProvider.get().setLabel("otu0").setPPodId());
+		otus.add((OTU) otuProvider.get().setLabel("otu1").setPPodId());
+		otus.add((OTU) otuProvider.get().setLabel("otu2").setPPodId());
 
-	/**
-	 * Add an otu that's already in an otu set into an otu set. The pPOD version
-	 * should not be reset when this happens.
-	 */
-	public void addOTUWAlreadyContainedOTU() {
-		otuSet.setOTUs(ImmutableSet.of(otuProvider.get().setLabel("OTU-0")));
-		otuSet.unsetInNeedOfNewPPodVersionInfo();
+		otuSet.setOTUs(newArrayList(otus));
 
-		otuSet.setOTUs(otuSet.getOTUs());
-		assertFalse(otuSet.isInNeedOfNewPPodVersionInfo());
-	}
-
-	/**
-	 * Remove an otu set and make sure it was removed, otuSet is marked for a
-	 * new pPOD version, and the return value of removeOTUs contains the removed
-	 * OTU.
-	 */
-	public void removeOTU() {
-		otuSet.unsetInNeedOfNewPPodVersionInfo();
-
-		final ImmutableSet<OTU> otus2 = ImmutableSet.of(otus.get(0), otus
-				.get(2));
-
-		final Set<OTU> removedOTUs = otuSet.setOTUs(otus2);
-
-		assertFalse(otuSet.getOTUs().contains(otus.get(1)));
-		assertTrue(otuSet.isInNeedOfNewPPodVersionInfo());
-		assertEquals(removedOTUs, newHashSet(otus.get(1)));
+		// Do this so we can check that version resets are being done.
+		study = studyProvider.get();
+		study.addOTUSet(otuSet);
 	}
 
 	/**
 	 * Remove all OTUs
 	 */
 	public void clearOTUs() {
-		otuSet.setOTUs(newHashSet(otus));
+		otuSet.setOTUs(newArrayList(otus));
 
 		otuSet.setPPodVersionInfo(pPodVersionInfoProvider.get());
 		study.setPPodVersionInfo(pPodVersionInfoProvider.get());
-		final Set<OTU> removedOTUs = otuSet.setOTUs(new HashSet<OTU>());
+		final List<OTU> removedOTUs = otuSet.setOTUs(new ArrayList<OTU>());
 
-		assertEquals(removedOTUs, newHashSet(otus));
+		assertEquals(removedOTUs, otus);
 		assertTrue(otuSet.isInNeedOfNewPPodVersionInfo());
 		// assertNull(otuSet.getPPodVersionInfo());
 		assertTrue(study.isInNeedOfNewPPodVersionInfo());
@@ -162,7 +131,7 @@ public class OTUSetTest {
 
 		final Set<CharacterStateMatrix> matrices = newHashSet(matrix0, matrix2);
 
-		Set<CharacterStateMatrix> otuSetMatrices = newHashSet();
+		final Set<CharacterStateMatrix> otuSetMatrices = newHashSet();
 		otuSetMatrices.add(matrix0);
 		otuSetMatrices.add(matrix1);
 		otuSetMatrices.add(matrix2);
@@ -182,6 +151,25 @@ public class OTUSetTest {
 		// assertNull(otuSet.getPPodVersionInfo());
 		matrices.remove(matrix1);
 		assertEquals((Object) otuSet.getMatrices(), (Object) matrices);
+	}
+
+	/**
+	 * Remove an otu set and make sure it was removed, otuSet is marked for a
+	 * new pPOD version, and the return value of removeOTUs contains the removed
+	 * OTU.
+	 */
+	public void removeOTU() {
+		otuSet.unsetInNeedOfNewPPodVersionInfo();
+
+		final ImmutableList<OTU> otus2 = ImmutableList.of(otus.get(0), otus
+				.get(2));
+
+		final ImmutableList<OTU> removedOTUs = ImmutableList.copyOf(otuSet
+				.setOTUs(otus2));
+
+		assertFalse(otuSet.getOTUs().contains(otus.get(1)));
+		assertTrue(otuSet.isInNeedOfNewPPodVersionInfo());
+		assertEquals(removedOTUs, newHashSet(otus.get(1)));
 	}
 
 	public void removeTreeSet() {
@@ -213,5 +201,19 @@ public class OTUSetTest {
 		assertEquals((Object) removedTreeSets2, (Object) treeSetsMinusTreeSet1);
 
 		assertEquals(otuSet.getTreeSets(), Collections.emptySet());
+	}
+
+	/**
+	 * Call {@code OTUSet.resetPPodVersionInfo()} when {@code
+	 * OTUSet.getPPodVersionInfo() == null} and make sure that
+	 * {@link OTUSet#getpPodVersionInfo()} stays {@code null} and that the OTU
+	 * sets's {@code Study}'s pPOD Version info is unaffected.
+	 */
+	public void resetWhenNotInNeedOfNewPPodVersionInfo() {
+		final PPodVersionInfo studyPPodVersionInfo = study.getpPodVersionInfo();
+		otuSet.unsetInNeedOfNewPPodVersionInfo();
+		otuSet.setInNeedOfNewPPodVersionInfo();
+		assertTrue(otuSet.isInNeedOfNewPPodVersionInfo());
+		assertEquals(study.getpPodVersionInfo(), studyPPodVersionInfo);
 	}
 }

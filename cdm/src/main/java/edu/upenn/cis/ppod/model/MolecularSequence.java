@@ -124,15 +124,6 @@ public abstract class MolecularSequence<SS extends MolecularSequenceSet<?>>
 
 	public abstract boolean isLegal(char c);
 
-	@Override
-	public MolecularSequence<SS> setInNeedOfNewPPodVersionInfo() {
-		if (getSequenceSet() != null) {
-			getSequenceSet().setInNeedOfNewPPodVersionInfo();
-		}
-		super.setInNeedOfNewPPodVersionInfo();
-		return this;
-	}
-
 	/**
 	 * Set the accession.
 	 * 
@@ -163,6 +154,15 @@ public abstract class MolecularSequence<SS extends MolecularSequenceSet<?>>
 		}
 		description = newDescription;
 		setInNeedOfNewPPodVersionInfo();
+		return this;
+	}
+
+	@Override
+	public MolecularSequence<SS> setInNeedOfNewPPodVersionInfo() {
+		if (getSequenceSet() != null) {
+			getSequenceSet().setInNeedOfNewPPodVersionInfo();
+		}
+		super.setInNeedOfNewPPodVersionInfo();
 		return this;
 	}
 

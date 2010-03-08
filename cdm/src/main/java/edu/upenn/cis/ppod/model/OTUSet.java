@@ -20,10 +20,12 @@ import static com.google.common.base.Preconditions.checkArgument;
 import static com.google.common.base.Preconditions.checkNotNull;
 import static com.google.common.base.Predicates.compose;
 import static com.google.common.base.Predicates.equalTo;
+import static com.google.common.collect.Lists.newArrayList;
 import static com.google.common.collect.Sets.newHashSet;
 import static edu.upenn.cis.ppod.util.PPodIterables.findIf;
 
 import java.util.Collections;
+import java.util.List;
 import java.util.Set;
 
 import javax.annotation.CheckForNull;
@@ -38,6 +40,7 @@ import javax.persistence.Table;
 import javax.xml.bind.Unmarshaller;
 import javax.xml.bind.annotation.XmlAttribute;
 import javax.xml.bind.annotation.XmlElement;
+import javax.xml.bind.annotation.XmlElementWrapper;
 
 import org.hibernate.annotations.Cascade;
 
@@ -84,10 +87,12 @@ public class OTUSet extends UUPPodEntityWXmlId {
 	private String label;
 
 	/** The set of {@code OTU}s that this {@code OTUSet} contains. */
-	@OneToMany(mappedBy = "otuSet")
+	@OneToMany
+	@org.hibernate.annotations.IndexColumn(name = "POSITION")
+	@JoinColumn(name = ID_COLUMN, nullable = false)
 	@Cascade( { org.hibernate.annotations.CascadeType.SAVE_UPDATE,
 			org.hibernate.annotations.CascadeType.DELETE_ORPHAN })
-	private final Set<OTU> otus = newHashSet();
+	private final List<OTU> otus = newArrayList();
 
 	/** The matrices which reference this OTU set. */
 	@OneToMany(mappedBy = "otuSet")
@@ -107,7 +112,7 @@ public class OTUSet extends UUPPodEntityWXmlId {
 	private final Set<TreeSet> treeSets = newHashSet();
 
 	/** Free-form description. */
-	@Column(name = "DESCRIPTION", nullable = true)
+	@Column(name = DESCRIPTION_COLUMN, nullable = true)
 	@CheckForNull
 	private String description;
 
@@ -210,6 +215,7 @@ public class OTUSet extends UUPPodEntityWXmlId {
 		return Collections.unmodifiableSet(getDNASequenceSetsModifiable());
 	}
 
+	@XmlElementWrapper(name = "dnaSequenceSets")
 	@XmlElement(name = "dnaSequenceSet")
 	private Set<DNASequenceSet> getDNASequenceSetsModifiable() {
 		return dnaSequenceSets;
@@ -235,6 +241,7 @@ public class OTUSet extends UUPPodEntityWXmlId {
 		return Collections.unmodifiableSet(matrices);
 	}
 
+	@XmlElementWrapper(name = "matrices")
 	@XmlElement(name = "matrix")
 	private Set<CharacterStateMatrix> getMatricesMutable() {
 		return matrices;
@@ -247,12 +254,13 @@ public class OTUSet extends UUPPodEntityWXmlId {
 	 * @return an unmodifiable view of the <code>OTU</code>s that comprise this
 	 *         <code>OTUSet</code>.
 	 */
-	public Set<OTU> getOTUs() {
-		return Collections.unmodifiableSet(otus);
+	public List<OTU> getOTUs() {
+		return Collections.unmodifiableList(getOTUsModifiable());
 	}
 
+	@XmlElementWrapper(name = "otus")
 	@XmlElement(name = "otu")
-	private Set<OTU> getOTUsMutable() {
+	private List<OTU> getOTUsModifiable() {
 		return otus;
 	}
 
@@ -262,7 +270,7 @@ public class OTUSet extends UUPPodEntityWXmlId {
 	 * 
 	 * @return the study to which this OTU set belongs
 	 */
-	@CheckForNull
+	@Nullable
 	public Study getStudy() {
 		return study;
 	}
@@ -276,34 +284,10 @@ public class OTUSet extends UUPPodEntityWXmlId {
 		return Collections.unmodifiableSet(treeSets);
 	}
 
+	@XmlElementWrapper(name = "treeSets")
 	@XmlElement(name = "treeSet")
 	private Set<TreeSet> getTreeSetsModifiable() {
 		return treeSets;
-	}
-
-	/**
-	 * Point this {@code OTUSet} and all of its {@code PhyloCharMatrix}'s to a
-	 * new {@code pPodVersionInfo}. Only the first call has an effect.
-	 * <p>
-	 * If {@link #getAllowPersist()} {@code == true} then calls to this method
-	 * does nothing and returns.
-	 * 
-	 * @see #unsetAllowPersistAndResetPPodVersionInfo()
-	 * 
-	 * @return this {@code OTUSet}
-	 * 
-	 * @throws IllegalArgumentException if {@code
-	 *             pPodVersionInfo.getPPodVersion()} is greater than {@code
-	 *             this.getPPodVersion().getPPodVersion()}
-	 */
-	@Override
-	public OTUSet setInNeedOfNewPPodVersionInfo() {
-		final Study study = getStudy();
-		if (study != null) {
-			study.setInNeedOfNewPPodVersionInfo();
-		}
-		super.setInNeedOfNewPPodVersionInfo();
-		return this;
 	}
 
 	/**
@@ -342,6 +326,31 @@ public class OTUSet extends UUPPodEntityWXmlId {
 		}
 
 		return removedSequenceSets;
+	}
+
+	/**
+	 * Point this {@code OTUSet} and all of its {@code PhyloCharMatrix}'s to a
+	 * new {@code pPodVersionInfo}. Only the first call has an effect.
+	 * <p>
+	 * If {@link #getAllowPersist()} {@code == true} then calls to this method
+	 * does nothing and returns.
+	 * 
+	 * @see #unsetAllowPersistAndResetPPodVersionInfo()
+	 * 
+	 * @return this {@code OTUSet}
+	 * 
+	 * @throws IllegalArgumentException if {@code
+	 *             pPodVersionInfo.getPPodVersion()} is greater than {@code
+	 *             this.getPPodVersion().getPPodVersion()}
+	 */
+	@Override
+	public OTUSet setInNeedOfNewPPodVersionInfo() {
+		final Study study = getStudy();
+		if (study != null) {
+			study.setInNeedOfNewPPodVersionInfo();
+		}
+		super.setInNeedOfNewPPodVersionInfo();
+		return this;
 	}
 
 	/**
@@ -396,18 +405,19 @@ public class OTUSet extends UUPPodEntityWXmlId {
 	 * 
 	 * @param newOTUs the otus to assign to this OTU set
 	 * 
-	 * @return any {@code OTU}s that were removed as a result of this operation
+	 * @return any {@code OTU}s that were removed as a result of this operation,
+	 *         in their original order
 	 */
-	public Set<OTU> setOTUs(final Set<? extends OTU> newOTUs) {
+	public List<OTU> setOTUs(final List<? extends OTU> newOTUs) {
 		checkNotNull(newOTUs);
 		if (newOTUs.equals(this.otus)) {
-			return Collections.emptySet();
+			return Collections.emptyList();
 		}
 
-		final Set<OTU> removedOTUs = newHashSet(getOTUs());
+		final List<OTU> removedOTUs = newArrayList(getOTUs());
 		removedOTUs.removeAll(newOTUs);
 
-		getOTUsMutable().clear();
+		getOTUsModifiable().clear();
 		for (final OTU otu : newOTUs) {
 			addOTU(otu);
 		}
@@ -417,10 +427,15 @@ public class OTUSet extends UUPPodEntityWXmlId {
 		}
 
 		setInNeedOfNewPPodVersionInfo();
+
+		// Now let's let everyone know about the new OTUs
+		for (final CharacterStateMatrix matrix : getMatrices()) {
+			matrix.setOTUSet(this);
+		}
 		return removedOTUs;
 	}
 
-	OTUSet setStudy(final Study study) {
+	protected OTUSet setStudy(final Study study) {
 		checkNotNull(study);
 		if (study.equals(this.study)) {
 

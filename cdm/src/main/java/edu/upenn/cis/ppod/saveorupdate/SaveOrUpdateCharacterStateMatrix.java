@@ -107,18 +107,6 @@ public class SaveOrUpdateCharacterStateMatrix implements ISaveOrUpdateMatrix {
 			targetMatrix.setDocId(sourceMatrix.getDocId());
 		}
 
-		final List<OTU> newTargetOTUOrdering = newArrayList();
-		for (final OTU sourceOTU : sourceMatrix.getOTUOrdering()) {
-			final OTU newTargetOTU = mergedOTUsBySourceOTU.get(sourceOTU);
-			if (newTargetOTU == null) {
-				throw new AssertionError(
-						"couldn't find incomingOTU in persistentOTUsByIncomingOTU");
-			}
-			newTargetOTUOrdering.add(newTargetOTU);
-		}
-
-		targetMatrix.setOTUOrdering(newTargetOTUOrdering);
-
 		final Map<Integer, Integer> newCharIdxsToOriginalCharIdxs = newHashMap();
 		final List<Character> newTargetMatrixCharacters = newArrayList();
 		int sourceCharacterPosition = -1;
@@ -202,7 +190,7 @@ public class SaveOrUpdateCharacterStateMatrix implements ISaveOrUpdateMatrix {
 		int sourceRowNumber = -1;
 		for (final CharacterStateRow sourceRow : sourceMatrix.getRows()) {
 			sourceRowNumber++;
-			final OTU targetOTU = targetMatrix.getOTUOrdering().get(
+			final OTU targetOTU = targetMatrix.getOTUSet().getOTUs().get(
 					sourceRowNumber);
 			CharacterStateRow targetRow = null;
 			List<Character> characters = targetMatrix.getCharacters();

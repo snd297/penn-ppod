@@ -28,6 +28,7 @@ import javax.persistence.Table;
 import javax.persistence.Transient;
 import javax.xml.bind.Marshaller;
 import javax.xml.bind.annotation.XmlElement;
+import javax.xml.bind.annotation.XmlElementWrapper;
 
 import edu.upenn.cis.ppod.util.OTUCharacterStateRowPair;
 import edu.upenn.cis.ppod.util.OTUSomethingPair;
@@ -50,9 +51,17 @@ public class OTUsToCharacterStateRows extends
 	@org.hibernate.annotations.Cascade(value = org.hibernate.annotations.CascadeType.DELETE_ORPHAN)
 	private final Map<OTU, CharacterStateRow> otusToRows = newHashMap();
 
+	/**
+	 * For marshalling {@code otusToRows}. Since a {@code Map}'s key couldn't be
+	 * an {@code XmlIDREF} in JAXB - at least not easily.
+	 */
+	@Transient
+	private final Set<OTUCharacterStateRowPair> otuRowPairs = newHashSet();
+
 	OTUsToCharacterStateRows() {}
 
 	public boolean beforeMarshal(@Nullable final Marshaller marshaller) {
+		getOTURowPairsModifiable().clear();
 		for (final Map.Entry<OTU, CharacterStateRow> otuToRow : getOTUsToValuesModifiable()
 				.entrySet()) {
 			getOTURowPairsModifiable().add(
@@ -62,22 +71,25 @@ public class OTUsToCharacterStateRows extends
 		return true;
 	}
 
-	@Override
-	protected Map<OTU, CharacterStateRow> getOTUsToValuesModifiable() {
-		return otusToRows;
-	}
-
+	@XmlElementWrapper(name = "otuRowPairs")
 	@XmlElement(name = "otuRowPair")
 	private Set<OTUCharacterStateRowPair> getOTURowPairsModifiable() {
 		return otuRowPairs;
 	}
 
-	/**
-	 * For marshalling {@code otusToRows}. Since a {@code Map}'s key couldn't be
-	 * an {@code XmlIDREF} in JAXB - at least not easily.
-	 */
-	@Transient
-	private final Set<OTUCharacterStateRowPair> otuRowPairs = newHashSet();
+	@Override
+	protected Map<OTU, CharacterStateRow> getOTUsToValuesModifiable() {
+		return otusToRows;
+	}
+
+	@Override
+	protected Set<OTUSomethingPair<CharacterStateRow>> getOTUValuePairs() {
+		final Set<OTUSomethingPair<CharacterStateRow>> otuValuePairs = newHashSet();
+		for (final OTUCharacterStateRowPair otuRowPair : otuRowPairs) {
+			otuValuePairs.add(otuRowPair);
+		}
+		return otuValuePairs;
+	}
 
 	@Override
 	public CharacterStateRow put(final OTU otu, final CharacterStateRow newRow,
@@ -89,15 +101,6 @@ public class OTUsToCharacterStateRows extends
 			originalRow.setMatrix(null);
 		}
 		return originalRow;
-	}
-
-	@Override
-	protected Set<OTUSomethingPair<CharacterStateRow>> getOTUValuePairsModifiable() {
-		final Set<OTUSomethingPair<CharacterStateRow>> otuValuePairs = newHashSet();
-		for (final OTUCharacterStateRowPair otuRowPair : otuRowPairs) {
-			otuValuePairs.add(otuRowPair);
-		}
-		return otuValuePairs;
 	}
 
 }

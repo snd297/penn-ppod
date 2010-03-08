@@ -24,6 +24,7 @@ import edu.upenn.cis.ppod.model.CharacterStateCell;
 import edu.upenn.cis.ppod.model.CharacterStateMatrix;
 import edu.upenn.cis.ppod.model.CharacterStateRow;
 import edu.upenn.cis.ppod.model.OTU;
+import edu.upenn.cis.ppod.model.OTUKeyedMap;
 import edu.upenn.cis.ppod.model.OTUSet;
 import edu.upenn.cis.ppod.model.Study;
 import edu.upenn.cis.ppod.model.Tree;
@@ -150,6 +151,15 @@ public abstract class EmptyVisitor implements IVisitor {
 	 * @param tree ignored
 	 */
 	public void visit(final Tree tree) {
+
+	}
+
+	/**
+	 * Does nothing.
+	 * 
+	 * @param otuKeyedMap ignored
+	 */
+	public void visit(final OTUKeyedMap<?, ?> otuKeyedMap) {
 
 	}
 }

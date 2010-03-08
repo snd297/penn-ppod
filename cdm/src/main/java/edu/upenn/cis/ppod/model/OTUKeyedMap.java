@@ -17,27 +17,17 @@ package edu.upenn.cis.ppod.model;
 
 import static com.google.common.base.Preconditions.checkArgument;
 import static com.google.common.base.Preconditions.checkNotNull;
-import static com.google.common.base.Preconditions.checkState;
 import static com.google.common.collect.Lists.newArrayList;
+import static com.google.common.collect.Sets.newHashSet;
 
-import java.util.Collections;
 import java.util.List;
 import java.util.Map;
 import java.util.Set;
 
 import javax.annotation.Nullable;
-import javax.persistence.JoinColumn;
-import javax.persistence.JoinTable;
-import javax.persistence.ManyToMany;
 import javax.persistence.MappedSuperclass;
-import javax.xml.bind.Unmarshaller;
 import javax.xml.bind.annotation.XmlAccessType;
 import javax.xml.bind.annotation.XmlAccessorType;
-import javax.xml.bind.annotation.XmlElement;
-import javax.xml.bind.annotation.XmlElementWrapper;
-import javax.xml.bind.annotation.XmlIDREF;
-
-import com.google.common.collect.ImmutableSet;
 
 import edu.upenn.cis.ppod.modelinterfaces.IWithOTUSet;
 import edu.upenn.cis.ppod.util.IVisitor;
@@ -48,42 +38,25 @@ import edu.upenn.cis.ppod.util.OTUSomethingPair;
  */
 @XmlAccessorType(XmlAccessType.NONE)
 @MappedSuperclass
-abstract class OTUKeyedMap<T extends PersistentObject, P extends IWithOTUSet>
+public abstract class OTUKeyedMap<T extends PersistentObject, P extends IWithOTUSet>
 		extends PersistentObject {
 
 	static final String OTU_IDX_COLUMN = "OTU_IDX";
 
-	@ManyToMany
-	@JoinTable(inverseJoinColumns = @JoinColumn(name = OTU.ID_COLUMN))
-	@org.hibernate.annotations.IndexColumn(name = OTU.TABLE + "_POSITION")
-	private final List<OTU> otuOrdering = newArrayList();
-
 	@Override
 	public OTUKeyedMap<T, P> accept(final IVisitor visitor) {
+		visitor.visit(this);
 		for (final T t : getOTUsToValuesModifiable().values()) {
 			t.accept(visitor);
 		}
 		return this;
 	}
 
-	protected abstract Set<OTUSomethingPair<T>> getOTUValuePairsModifiable();
-
-	public void afterUnmarshal(final Unmarshaller u, final Object parent) {
-		for (final OTUSomethingPair<T> otuValuePair : getOTUValuePairsModifiable()) {
+	public void afterUnmarshal() {
+		for (final OTUSomethingPair<T> otuValuePair : getOTUValuePairs()) {
 			getOTUsToValuesModifiable().put(otuValuePair.getFirst(),
 					otuValuePair.getSecond());
 		}
-	}
-
-	public List<OTU> getOTUOrdering() {
-		return Collections.unmodifiableList(getOTUOrderingModifiable());
-	}
-
-	@XmlElementWrapper(name = "otuOrdering")
-	@XmlElement(name = "otuDocId")
-	@XmlIDREF
-	protected List<OTU> getOTUOrderingModifiable() {
-		return otuOrdering;
 	}
 
 	/**
@@ -93,9 +66,11 @@ abstract class OTUKeyedMap<T extends PersistentObject, P extends IWithOTUSet>
 	 */
 	protected abstract Map<OTU, T> getOTUsToValuesModifiable();
 
-	public List<T> getValuesInOTUOrder() {
+	protected abstract Set<OTUSomethingPair<T>> getOTUValuePairs();
+
+	public List<T> getValuesInOTUOrder(final OTUSet otuSet) {
 		final List<T> valuesInOTUOrder = newArrayList();
-		for (final OTU otu : getOTUOrdering()) {
+		for (final OTU otu : otuSet.getOTUs()) {
 			valuesInOTUOrder.add(getOTUsToValuesModifiable().get(otu));
 		}
 		return valuesInOTUOrder;
@@ -117,32 +92,33 @@ abstract class OTUKeyedMap<T extends PersistentObject, P extends IWithOTUSet>
 		return previousT;
 	}
 
-	public OTUKeyedMap<T, P> setOTUOrdering(final List<OTU> newOTUs,
+	protected OTUKeyedMap<T, P> setOTUs(@Nullable final OTUSet otuSet,
 			final P parent) {
-		checkNotNull(newOTUs);
-		final ImmutableSet<OTU> newOTUsSet = ImmutableSet.copyOf(newOTUs);
-		checkState(parent.getOTUSet() != null, "no OTUSet has been set");
-		checkArgument(newOTUsSet.equals(parent.getOTUSet().getOTUs()),
-				"argument newOTUs does not have same OTU's as the assigned OTUSet");
-		if (newOTUs.equals(getOTUOrdering())) {
-			// They're the same, nothing to do
-		} else {
-			getOTUOrderingModifiable().clear();
-			getOTUOrderingModifiable().addAll(newOTUs);
-			parent.setInNeedOfNewPPodVersionInfo();
-		}
-		return this;
-	}
-
-	protected OTUKeyedMap<T, P> setOTUSet(@Nullable final OTUSet otuSet,
-			P parent) {
+		checkArgument(otuSet == parent.getOTUSet(),
+				"otuSet does not belong to parent");
+		final Set<OTU> otusToBeRemoved = newHashSet();
 		for (final OTU otu : getOTUsToValuesModifiable().keySet()) {
-			if (!parent.getOTUSet().getOTUs().contains(otu)) {
-				getOTUsToValuesModifiable().remove(otu);
+			if (parent.getOTUSet() != null
+					&& parent.getOTUSet().getOTUs().contains(otu)) {
+				// it stays
+			} else {
+				otusToBeRemoved.add(otu);
+				parent.isInNeedOfNewPPodVersionInfo();
+			}
+		}
+
+		getOTUsToValuesModifiable().keySet().removeAll(otusToBeRemoved);
+
+		if (otuSet != null) {
+			for (final OTU otu : parent.getOTUSet().getOTUs()) {
+				if (getOTUsToValuesModifiable().containsKey(otu)) {
+
+				} else {
+					getOTUsToValuesModifiable().put(otu, null);
+				}
 			}
 		}
 		parent.setInNeedOfNewPPodVersionInfo();
 		return this;
 	}
-
 }

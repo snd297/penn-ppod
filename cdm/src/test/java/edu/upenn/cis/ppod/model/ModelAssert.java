@@ -124,17 +124,6 @@ public class ModelAssert {
 				.getDescription());
 
 		assertEqualsOTUSet(actualMatrix.getOTUSet(), expectedMatrix.getOTUSet());
-		assertEquals(actualMatrix.getOTUOrdering().size(), expectedMatrix
-				.getOTUOrdering().size());
-
-		// assertEqualsOTUSet verifies that both OTUSet's contain the same
-		// OTU's. Now we confirm
-		// that the matrix's OTU's are in the correct order
-		for (final Iterator<OTU> actualOTUItr = actualMatrix.getOTUOrdering()
-				.iterator(), expectedOTUItr = expectedMatrix.getOTUOrdering()
-				.iterator(); actualOTUItr.hasNext() && expectedOTUItr.hasNext();) {
-			assertEqualsOTUs(actualOTUItr.next(), expectedOTUItr.next());
-		}
 
 		assertEquals(actualMatrix.getCharacters().size(), actualMatrix
 				.getCharacters().size());

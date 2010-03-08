@@ -212,19 +212,6 @@ public class Attachment extends UUPPodEntityWXmlId {
 		return type;
 	}
 
-	@Override
-	public Attachment setInNeedOfNewPPodVersionInfo() {
-		if (getpPodVersionInfo() == null) {
-			// Then it's already been reset
-		} else {
-			for (final PPodEntity attachee : attachees) {
-				attachee.setInNeedOfNewPPodVersionInfo();
-			}
-			super.setInNeedOfNewPPodVersionInfo();
-		}
-		return this;
-	}
-
 	/**
 	 * Set the byteArrayValue.
 	 * 
@@ -243,6 +230,19 @@ public class Attachment extends UUPPodEntityWXmlId {
 		System.arraycopy(this.bytesValue, 0, bytesValue, 0,
 				this.bytesValue.length);
 		setInNeedOfNewPPodVersionInfo();
+		return this;
+	}
+
+	@Override
+	public Attachment setInNeedOfNewPPodVersionInfo() {
+		if (getpPodVersionInfo() == null) {
+			// Then it's already been reset
+		} else {
+			for (final PPodEntity attachee : attachees) {
+				attachee.setInNeedOfNewPPodVersionInfo();
+			}
+			super.setInNeedOfNewPPodVersionInfo();
+		}
 		return this;
 	}
 

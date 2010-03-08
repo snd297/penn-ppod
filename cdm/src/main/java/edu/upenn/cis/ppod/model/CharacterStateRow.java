@@ -51,32 +51,6 @@ import edu.upenn.cis.ppod.util.IVisitor;
 @Table(name = CharacterStateRow.TABLE)
 public class CharacterStateRow extends PPodEntity {
 
-// /** The position in the matrix. */
-// @Column(name = "POSITION", nullable = false)
-// private Integer position;
-//
-// /**
-// * Get the position.
-// *
-// * @return the position
-// */
-// @XmlAttribute
-// public Integer getPosition() {
-// return position;
-// }
-
-// /**
-// * Set the position.
-// *
-// * @param position the position to set
-// *
-// * @return this
-// */
-// CharacterStateRow setPosition(final Integer position) {
-// this.position = position;
-// return this;
-// }
-
 	/** This entitiy's table. Intentionally package-private. */
 	static final String TABLE = "CHARACTER_STATE_ROW";
 
@@ -199,25 +173,6 @@ public class CharacterStateRow extends PPodEntity {
 	}
 
 	/**
-	 * Reset the pPOD version info of this row and that of its matrix.
-	 * 
-	 * @return this {@code CharacterStateRow}
-	 */
-	@Override
-	public CharacterStateRow setInNeedOfNewPPodVersionInfo() {
-		if (getAllowResetPPodVersionInfo()) {
-			if (isInNeedOfNewPPodVersionInfo()) {
-
-			} else {
-				checkState(getMatrix() != null);
-				matrix.setInNeedOfNewPPodVersionInfo();
-				super.setInNeedOfNewPPodVersionInfo();
-			}
-		}
-		return this;
-	}
-
-	/**
 	 * Set the cells of this row.
 	 * 
 	 * @param newCells the cells.
@@ -267,6 +222,25 @@ public class CharacterStateRow extends PPodEntity {
 		}
 		setInNeedOfNewPPodVersionInfo();
 		return clearedCells;
+	}
+
+	/**
+	 * Reset the pPOD version info of this row and that of its matrix.
+	 * 
+	 * @return this {@code CharacterStateRow}
+	 */
+	@Override
+	public CharacterStateRow setInNeedOfNewPPodVersionInfo() {
+		if (getAllowResetPPodVersionInfo()) {
+			if (isInNeedOfNewPPodVersionInfo()) {
+
+			} else {
+				checkState(getMatrix() != null);
+				matrix.setInNeedOfNewPPodVersionInfo();
+				super.setInNeedOfNewPPodVersionInfo();
+			}
+		}
+		return this;
 	}
 
 	/**

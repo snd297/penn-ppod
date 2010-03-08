@@ -24,6 +24,7 @@ import edu.upenn.cis.ppod.model.CharacterStateCell;
 import edu.upenn.cis.ppod.model.CharacterStateMatrix;
 import edu.upenn.cis.ppod.model.CharacterStateRow;
 import edu.upenn.cis.ppod.model.OTU;
+import edu.upenn.cis.ppod.model.OTUKeyedMap;
 import edu.upenn.cis.ppod.model.OTUSet;
 import edu.upenn.cis.ppod.model.Study;
 import edu.upenn.cis.ppod.model.Tree;
@@ -83,6 +84,8 @@ public interface IVisitor {
 	void visit(OTU otu);
 
 	void visit(OTUSet otuset);
+
+	void visit(OTUKeyedMap<?, ?> otuKeyedMap);
 
 	void visit(Study study);
 
