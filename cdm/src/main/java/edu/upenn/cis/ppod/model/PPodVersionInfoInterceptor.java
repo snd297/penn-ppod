@@ -151,8 +151,8 @@ public class PPodVersionInfoInterceptor extends EmptyInterceptor {
 						((IPPodVersioned) entity)
 								.setPPodVersionInfo(pPodVersionInfosBySession
 										.get(sessionFactory.getCurrentSession()));
-						((IPPodVersioned) entity)
-								.unsetInNeedOfNewPPodVersionInfo();
+//						((IPPodVersioned) entity)
+//								.unsetInNeedOfNewPPodVersionInfo();
 						modified = true;
 					}
 				}

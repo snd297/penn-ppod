@@ -133,11 +133,11 @@ public class TreeSet extends UUPPodEntityWXmlId {
 	}
 
 	@Override
-	public TreeSet resetPPodVersionInfo() {
+	public TreeSet setInNeedOfNewPPodVersionInfo() {
 		if (getOTUSet() != null) {
-			getOTUSet().resetPPodVersionInfo();
+			getOTUSet().setInNeedOfNewPPodVersionInfo();
 		}
-		super.resetPPodVersionInfo();
+		super.setInNeedOfNewPPodVersionInfo();
 
 		return this;
 	}
@@ -155,7 +155,7 @@ public class TreeSet extends UUPPodEntityWXmlId {
 
 		} else {
 			this.label = label;
-			resetPPodVersionInfo();
+			setInNeedOfNewPPodVersionInfo();
 		}
 		return this;
 	}
@@ -174,7 +174,7 @@ public class TreeSet extends UUPPodEntityWXmlId {
 
 		} else {
 			this.otuSet = otuSet;
-			resetPPodVersionInfo();
+			setInNeedOfNewPPodVersionInfo();
 		}
 		return this;
 	}
@@ -212,7 +212,7 @@ public class TreeSet extends UUPPodEntityWXmlId {
 		for (final Tree tree : getTrees()) {
 			tree.setTreeSet(this);
 		}
-		resetPPodVersionInfo();
+		setInNeedOfNewPPodVersionInfo();
 		return removedTrees;
 	}
 

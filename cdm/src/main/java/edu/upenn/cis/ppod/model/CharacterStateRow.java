@@ -204,14 +204,14 @@ public class CharacterStateRow extends PPodEntity {
 	 * @return this {@code CharacterStateRow}
 	 */
 	@Override
-	public CharacterStateRow resetPPodVersionInfo() {
+	public CharacterStateRow setInNeedOfNewPPodVersionInfo() {
 		if (getAllowResetPPodVersionInfo()) {
 			if (isInNeedOfNewPPodVersionInfo()) {
 
 			} else {
 				checkState(getMatrix() != null);
-				matrix.resetPPodVersionInfo();
-				super.resetPPodVersionInfo();
+				matrix.setInNeedOfNewPPodVersionInfo();
+				super.setInNeedOfNewPPodVersionInfo();
 			}
 		}
 		return this;
@@ -265,7 +265,7 @@ public class CharacterStateRow extends PPodEntity {
 			newCells.get(cellPos).setPosition(cellPos);
 			cellIdx.put(getCells().get(cellPos), cellPos);
 		}
-		resetPPodVersionInfo();
+		setInNeedOfNewPPodVersionInfo();
 		return clearedCells;
 	}
 

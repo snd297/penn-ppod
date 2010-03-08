@@ -17,6 +17,7 @@ package edu.upenn.cis.ppod.model;
 
 import static com.google.common.base.Preconditions.checkArgument;
 import static com.google.common.base.Preconditions.checkNotNull;
+import static com.google.common.base.Preconditions.checkState;
 import static com.google.common.collect.Lists.newArrayList;
 import static com.google.common.collect.Sets.newHashSet;
 
@@ -35,6 +36,8 @@ import javax.persistence.MappedSuperclass;
 import javax.xml.bind.annotation.XmlElement;
 import javax.xml.bind.annotation.XmlElementWrapper;
 import javax.xml.bind.annotation.XmlIDREF;
+
+import com.google.common.collect.ImmutableSet;
 
 import edu.upenn.cis.ppod.util.IPair;
 
@@ -58,6 +61,11 @@ public abstract class MolecularSequenceSet<S extends MolecularSequence<?>>
 	@JoinColumn(name = OTUSet.ID_COLUMN, nullable = false)
 	@CheckForNull
 	private OTUSet otuSet;
+
+	public S getSequence(final OTU otu) {
+		checkNotNull(otu);
+		return getOTUsToSeqeuencesModifiable().get(otu);
+	}
 
 	@Override
 	public void afterUnmarshal() {
@@ -102,12 +110,22 @@ public abstract class MolecularSequenceSet<S extends MolecularSequence<?>>
 	protected abstract Map<OTU, S> getOTUsToSeqeuencesModifiable();
 
 	/**
-	 * Get the constituent sequences.
+	 * Get a possibly unmodifiable view of the constituent sequences in {@code
+	 * getOTUOrdering()} order.
 	 * 
 	 * @return the constituent sequences
 	 */
-	public Set<S> getSequences() {
-		return Collections.unmodifiableSet(getSequencesModifiable());
+	public List<S> getSequences() {
+		final ImmutableSet<OTU> otuOrderingAsSet = ImmutableSet
+				.copyOf(getOTUOrdering());
+		checkState(otuOrderingAsSet.equals(getOTUSet().getOTUs()),
+				"otu ordering is not in sync with this sequence's OTUSet");
+
+		final List<S> rows = newArrayList();
+		for (final OTU otu : getOTUOrdering()) {
+			rows.add(getOTUsToSeqeuencesModifiable().get(otu));
+		}
+		return Collections.unmodifiableList(rows);
 	}
 
 	/**
@@ -153,17 +171,17 @@ public abstract class MolecularSequenceSet<S extends MolecularSequence<?>>
 				originalSequence.setSequenceSet(null);
 			}
 
-			resetPPodVersionInfo();
+			setInNeedOfNewPPodVersionInfo();
 		}
 		return originalSequence;
 	}
 
 	@Override
-	public MolecularSequenceSet<S> resetPPodVersionInfo() {
+	public MolecularSequenceSet<S> setInNeedOfNewPPodVersionInfo() {
 		if (getOTUSet() != null) {
-			getOTUSet().resetPPodVersionInfo();
+			getOTUSet().setInNeedOfNewPPodVersionInfo();
 		}
-		super.resetPPodVersionInfo();
+		super.setInNeedOfNewPPodVersionInfo();
 		return this;
 	}
 
@@ -200,7 +218,7 @@ public abstract class MolecularSequenceSet<S extends MolecularSequence<?>>
 		getSequencesModifiable().clear();
 		getSequencesModifiable().addAll(newSequences);
 
-		resetPPodVersionInfo();
+		setInNeedOfNewPPodVersionInfo();
 		return removedSequences;
 	}
 

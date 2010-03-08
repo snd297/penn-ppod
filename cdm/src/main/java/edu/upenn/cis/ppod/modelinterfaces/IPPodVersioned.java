@@ -62,6 +62,8 @@ public interface IPPodVersioned extends IPersistentObject {
 
 	IPPodVersioned unsetInNeedOfNewPPodVersionInfo();
 
+	IPPodVersioned setInNeedOfNewPPodVersionInfo();
+
 	boolean isInNeedOfNewPPodVersionInfo();
 
 }

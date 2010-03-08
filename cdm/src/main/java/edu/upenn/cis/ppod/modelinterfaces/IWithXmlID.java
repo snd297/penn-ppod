@@ -31,7 +31,7 @@ import javax.xml.bind.annotation.XmlID;
  * 
  * @author Sam Donnelly
  */
-public interface IWXmlID {
+public interface IWithXmlID {
 
 	/**
 	 * Get the {@link XmlID} attribute.
@@ -49,7 +49,7 @@ public interface IWXmlID {
 	 * @throws IllegalStateException if {@code getDocId() != null} when this
 	 *             method is called
 	 */
-	IWXmlID setDocId();
+	IWithXmlID setDocId();
 
 	/**
 	 * Set this {@code UUPPodEntityWXmlId}'s doc id.
@@ -61,6 +61,6 @@ public interface IWXmlID {
 	 * @throws IllegalStateException if {@code getDocId() != null} when this
 	 *             method is called
 	 */
-	IWXmlID setDocId(final String docId);
+	IWithXmlID setDocId(final String docId);
 
 }

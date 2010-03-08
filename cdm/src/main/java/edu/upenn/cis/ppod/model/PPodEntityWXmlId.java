@@ -21,14 +21,14 @@ import javax.annotation.Nullable;
 import javax.xml.bind.annotation.XmlAttribute;
 import javax.xml.bind.annotation.XmlID;
 
-import edu.upenn.cis.ppod.modelinterfaces.IWXmlID;
+import edu.upenn.cis.ppod.modelinterfaces.IWithXmlID;
 
 /**
  * A {@code PPodEntity} w/ an {@link XmlID} attribute called {@code "docId"}.
  * 
  * @author Sam Donnelly
  */
-public abstract class PPodEntityWXmlId extends PPodEntity implements IWXmlID {
+public abstract class PPodEntityWXmlId extends PPodEntity implements IWithXmlID {
 
 	/**
 	 * Intended for referencing elements within a document - be it XML, JSON,
@@ -44,11 +44,11 @@ public abstract class PPodEntityWXmlId extends PPodEntity implements IWXmlID {
 		return docId;
 	}
 
-	public IWXmlID setDocId() {
+	public IWithXmlID setDocId() {
 		return setDocId(UUID.randomUUID().toString());
 	}
 
-	public IWXmlID setDocId(final String docId) {
+	public IWithXmlID setDocId(final String docId) {
 		if (getDocId() != null) {
 			throw new IllegalStateException("docId was already set");
 		}

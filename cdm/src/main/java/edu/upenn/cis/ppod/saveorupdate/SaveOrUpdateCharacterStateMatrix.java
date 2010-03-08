@@ -119,7 +119,7 @@ public class SaveOrUpdateCharacterStateMatrix implements ISaveOrUpdateMatrix {
 
 		targetMatrix.setOTUOrdering(newTargetOTUOrdering);
 
-		final Map<Integer, Integer> originalCharIdxsByNewCharIdx = newHashMap();
+		final Map<Integer, Integer> newCharIdxsToOriginalCharIdxs = newHashMap();
 		final List<Character> newTargetMatrixCharacters = newArrayList();
 		int sourceCharacterPosition = -1;
 		for (final Character sourceCharacter : sourceMatrix.getCharacters()) {
@@ -159,14 +159,14 @@ public class SaveOrUpdateCharacterStateMatrix implements ISaveOrUpdateMatrix {
 			}
 
 			if (!(sourceMatrix instanceof DNAStateMatrix)) {
-				originalCharIdxsByNewCharIdx.put(sourceCharacterPosition,
+				newCharIdxsToOriginalCharIdxs.put(sourceCharacterPosition,
 						targetMatrix.getCharacterIdx().get(newTargetCharacter));
 			} else {
 				if (targetMatrix.getCharacters().size() <= sourceCharacterPosition) {
-					originalCharIdxsByNewCharIdx.put(sourceCharacterPosition,
+					newCharIdxsToOriginalCharIdxs.put(sourceCharacterPosition,
 							null);
 				} else {
-					originalCharIdxsByNewCharIdx.put(sourceCharacterPosition,
+					newCharIdxsToOriginalCharIdxs.put(sourceCharacterPosition,
 							sourceCharacterPosition);
 				}
 			}
@@ -200,7 +200,7 @@ public class SaveOrUpdateCharacterStateMatrix implements ISaveOrUpdateMatrix {
 
 		final Set<CharacterStateCell> cellsToEvict = newHashSet();
 		int sourceRowNumber = -1;
-		for (final CharacterStateRow sourceRow : sourceMatrix) {
+		for (final CharacterStateRow sourceRow : sourceMatrix.getRows()) {
 			sourceRowNumber++;
 			final OTU targetOTU = targetMatrix.getOTUOrdering().get(
 					sourceRowNumber);
@@ -235,13 +235,14 @@ public class SaveOrUpdateCharacterStateMatrix implements ISaveOrUpdateMatrix {
 					.size(); newCellIdx++) {
 				CharacterStateCell targetCell;
 				if (newRow
-						|| null == originalCharIdxsByNewCharIdx.get(newCellIdx)) {
+						|| null == newCharIdxsToOriginalCharIdxs
+								.get(newCellIdx)) {
 					targetCell = cellProvider.get();
 					targetCell.setPPodVersionInfo(newPPodVersionInfo
 							.getNewPPodVersionInfo());
 				} else {
 					targetCell = originalTargetCells
-							.get(originalCharIdxsByNewCharIdx.get(newCellIdx));
+							.get(newCharIdxsToOriginalCharIdxs.get(newCellIdx));
 				}
 				newTargetCells.add(targetCell);
 			}
