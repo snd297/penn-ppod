@@ -21,7 +21,7 @@ import javax.annotation.Nullable;
 import javax.xml.bind.annotation.XmlAttribute;
 import javax.xml.bind.annotation.XmlID;
 
-import edu.upenn.cis.ppod.modelinterfaces.IWXmlID;
+import edu.upenn.cis.ppod.modelinterfaces.IWithXmlID;
 
 /**
  * A {@code UUPPodEntity} w/ an {@link XmlID} attribute called {@code "docId"}.
@@ -29,7 +29,7 @@ import edu.upenn.cis.ppod.modelinterfaces.IWXmlID;
  * @author Sam Donnelly
  */
 public abstract class UUPPodEntityWXmlId extends UUPPodEntity implements
-		IWXmlID {
+		IWithXmlID {
 
 	/**
 	 * Intended for referencing elements within a document - be it XML, JSON,

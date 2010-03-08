@@ -130,11 +130,11 @@ public class Tree extends UUPPodEntity {
 	}
 
 	@Override
-	public Tree resetPPodVersionInfo() {
+	public Tree setInNeedOfNewPPodVersionInfo() {
 		if (treeSet != null) {
-			treeSet.resetPPodVersionInfo();
+			treeSet.setInNeedOfNewPPodVersionInfo();
 		}
-		super.resetPPodVersionInfo();
+		super.setInNeedOfNewPPodVersionInfo();
 		return this;
 	}
 
@@ -151,7 +151,7 @@ public class Tree extends UUPPodEntity {
 			// nothing to do
 		} else {
 			this.label = label;
-			resetPPodVersionInfo();
+			setInNeedOfNewPPodVersionInfo();
 		}
 		return this;
 	}
@@ -169,7 +169,7 @@ public class Tree extends UUPPodEntity {
 
 		} else {
 			this.newick = newick;
-			resetPPodVersionInfo();
+			setInNeedOfNewPPodVersionInfo();
 		}
 		return this;
 	}

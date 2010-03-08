@@ -274,7 +274,7 @@ public class CharacterStateCell extends PPodEntity {
 			if (states != null) {
 				states.clear();
 			}
-			resetPPodVersionInfo();
+			setInNeedOfNewPPodVersionInfo();
 		}
 	}
 
@@ -358,16 +358,16 @@ public class CharacterStateCell extends PPodEntity {
 	}
 
 	@Override
-	public CharacterStateCell resetPPodVersionInfo() {
+	public CharacterStateCell setInNeedOfNewPPodVersionInfo() {
 		final CharacterStateRow row = getRow();
 		if (row != null) {
-			row.resetPPodVersionInfo();
+			row.setInNeedOfNewPPodVersionInfo();
 			final CharacterStateMatrix matrix = row.getMatrix();
 			if (matrix != null) {
 				matrix.resetColumnPPodVersion(row.getCellIdx().get(this));
 			}
 		}
-		super.resetPPodVersionInfo();
+		super.setInNeedOfNewPPodVersionInfo();
 		return this;
 	}
 
@@ -490,7 +490,7 @@ public class CharacterStateCell extends PPodEntity {
 		if (states.size() > 0) {
 			firstState = get(thisStates, 0);
 		}
-		resetPPodVersionInfo();
+		setInNeedOfNewPPodVersionInfo();
 		return this;
 	}
 
@@ -507,7 +507,7 @@ public class CharacterStateCell extends PPodEntity {
 
 		} else {
 			this.type = type;
-			resetPPodVersionInfo();
+			setInNeedOfNewPPodVersionInfo();
 		}
 		return this;
 	}

@@ -49,14 +49,29 @@ public interface IVisitor {
 	/**
 	 * Visit an attachment namespace.
 	 * 
-	 * @param attachmentNamespace visitee
+	 * @param the attachmentNamespace visitee
 	 */
 	void visit(AttachmentNamespace attachemntNamespace);
 
+	/**
+	 * Visit an attachment type.
+	 * 
+	 * @param the attachment type visitee
+	 */
 	void visit(AttachmentType attachmentType);
 
+	/**
+	 * Visit a character
+	 * 
+	 * @param the character visitee
+	 */
 	void visit(Character character);
 
+	/**
+	 * Visit the character state.
+	 * 
+	 * @param characterState the character state visitee
+	 */
 	void visit(CharacterState characterState);
 
 	void visit(CharacterStateCell cell);

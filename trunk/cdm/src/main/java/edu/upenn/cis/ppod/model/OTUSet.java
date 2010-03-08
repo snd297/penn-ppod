@@ -168,7 +168,7 @@ public class OTUSet extends UUPPodEntityWXmlId {
 		}
 		if (otus.add(otu)) {
 			otu.setOTUSet(this);
-			resetPPodVersionInfo();
+			setInNeedOfNewPPodVersionInfo();
 		}
 		return otu;
 	}
@@ -297,12 +297,12 @@ public class OTUSet extends UUPPodEntityWXmlId {
 	 *             this.getPPodVersion().getPPodVersion()}
 	 */
 	@Override
-	public OTUSet resetPPodVersionInfo() {
+	public OTUSet setInNeedOfNewPPodVersionInfo() {
 		final Study study = getStudy();
 		if (study != null) {
-			study.resetPPodVersionInfo();
+			study.setInNeedOfNewPPodVersionInfo();
 		}
-		super.resetPPodVersionInfo();
+		super.setInNeedOfNewPPodVersionInfo();
 		return this;
 	}
 
@@ -318,7 +318,7 @@ public class OTUSet extends UUPPodEntityWXmlId {
 
 		} else {
 			this.description = description;
-			resetPPodVersionInfo();
+			setInNeedOfNewPPodVersionInfo();
 		}
 		return this;
 	}
@@ -357,7 +357,7 @@ public class OTUSet extends UUPPodEntityWXmlId {
 
 		} else {
 			this.label = label;
-			resetPPodVersionInfo();
+			setInNeedOfNewPPodVersionInfo();
 		}
 		return this;
 	}
@@ -384,7 +384,7 @@ public class OTUSet extends UUPPodEntityWXmlId {
 		for (final CharacterStateMatrix matrix : getMatrices()) {
 			matrix.setOTUSet(this);
 		}
-		resetPPodVersionInfo();
+		setInNeedOfNewPPodVersionInfo();
 		return removedMatrices;
 	}
 
@@ -416,7 +416,7 @@ public class OTUSet extends UUPPodEntityWXmlId {
 			removedOTU.setOTUSet(null);
 		}
 
-		resetPPodVersionInfo();
+		setInNeedOfNewPPodVersionInfo();
 		return removedOTUs;
 	}
 
@@ -426,7 +426,7 @@ public class OTUSet extends UUPPodEntityWXmlId {
 
 		} else {
 			this.study = study;
-			resetPPodVersionInfo();
+			setInNeedOfNewPPodVersionInfo();
 		}
 		return this;
 	}
@@ -459,7 +459,7 @@ public class OTUSet extends UUPPodEntityWXmlId {
 		for (final TreeSet treeSet : getTreeSets()) {
 			treeSet.setOTUSet(this);
 		}
-		resetPPodVersionInfo();
+		setInNeedOfNewPPodVersionInfo();
 		return removedTreeSets;
 	}
 

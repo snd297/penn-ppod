@@ -145,7 +145,7 @@ public abstract class PPodEntity extends PersistentObject implements
 			attachments = newHashSet();
 		}
 		if (attachments.add(attachment)) {
-			resetPPodVersionInfo();
+			setInNeedOfNewPPodVersionInfo();
 		}
 		hasAttachments = true;
 		attachment.addAttachee(this);
@@ -261,7 +261,7 @@ public abstract class PPodEntity extends PersistentObject implements
 		} else {
 			attachmentRemoved = attachments.remove(attachment);
 			if (attachmentRemoved) {
-				resetPPodVersionInfo();
+				setInNeedOfNewPPodVersionInfo();
 			}
 			if (attachments.size() == 0) {
 				hasAttachments = false;
@@ -283,7 +283,7 @@ public abstract class PPodEntity extends PersistentObject implements
 	 * @return this {@code PPodEntity}
 	 */
 	@OverridingMethodsMustInvokeSuper
-	public PPodEntity resetPPodVersionInfo() {
+	public PPodEntity setInNeedOfNewPPodVersionInfo() {
 		if (getAllowResetPPodVersionInfo()) {
 			inNeedOfNewPPodVersionInfo = true;
 		}
@@ -293,18 +293,6 @@ public abstract class PPodEntity extends PersistentObject implements
 	public PPodEntity setAllowResetPPodVersionInfo(
 			final boolean allowResetPPodVersionInfo) {
 		this.allowResetPPodVersionInfo = allowResetPPodVersionInfo;
-		return this;
-	}
-
-	/**
-	 * Set the inNeedOfNewPPodVersionInfo. Intentionally package-private.
-	 * 
-	 * @param inNeedOfNewPPodVersionInfo the inNeedOfNewPPodVersionInfo to set
-	 * 
-	 * @return this
-	 */
-	PPodEntity setInNeedOfNewPPodVersionInfo() {
-		this.inNeedOfNewPPodVersionInfo = true;
 		return this;
 	}
 

@@ -103,7 +103,7 @@ public abstract class MolecularStateMatrix extends CharacterStateMatrix {
 		newMolecularCharacters.get(0).addMatrix(this);
 
 		// the matrix has changed
-		resetPPodVersionInfo();
+		setInNeedOfNewPPodVersionInfo();
 
 		return removedCharacters;
 	}

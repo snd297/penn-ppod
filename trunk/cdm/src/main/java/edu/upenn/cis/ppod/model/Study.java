@@ -176,7 +176,7 @@ public class Study extends UUPPodEntity implements IOTUSetCentricEntities {
 
 		} else {
 			this.label = label;
-			resetPPodVersionInfo();
+			setInNeedOfNewPPodVersionInfo();
 		}
 		return this;
 	}

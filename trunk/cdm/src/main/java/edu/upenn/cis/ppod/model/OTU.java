@@ -128,11 +128,11 @@ public class OTU extends UUPPodEntityWXmlId {
 	 * @return this {@code OTU}
 	 */
 	@Override
-	public OTU resetPPodVersionInfo() {
+	public OTU setInNeedOfNewPPodVersionInfo() {
 		if (getOTUSet() != null) {
-			getOTUSet().resetPPodVersionInfo();
+			getOTUSet().setInNeedOfNewPPodVersionInfo();
 		}
-		super.resetPPodVersionInfo();
+		super.setInNeedOfNewPPodVersionInfo();
 		return this;
 	}
 
@@ -149,7 +149,7 @@ public class OTU extends UUPPodEntityWXmlId {
 
 		} else {
 			this.label = label;
-			resetPPodVersionInfo();
+			setInNeedOfNewPPodVersionInfo();
 		}
 		return this;
 	}

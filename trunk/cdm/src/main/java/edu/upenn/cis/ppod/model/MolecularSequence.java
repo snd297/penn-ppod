@@ -68,8 +68,11 @@ public abstract class MolecularSequence<SS extends MolecularSequenceSet<?>>
 	 * @param u see {@code Unmarshaller}
 	 * @param parent see {@code Unmarshaller}
 	 */
+
 	public void afterUnmarshal(final Unmarshaller u, final Object parent) {
-		setSequenceSet((SS) parent);
+		@SuppressWarnings("unchecked")
+		final SS parentAsSS = (SS) parent;
+		setSequenceSet(parentAsSS);
 	}
 
 	/**
@@ -119,52 +122,14 @@ public abstract class MolecularSequence<SS extends MolecularSequenceSet<?>>
 	@Nullable
 	public abstract SS getSequenceSet();
 
-// @Column(name = "LOCUS")
-// @Nullable
-// private String locus;// when read back into matrix it gets put taxon
-//
-// @Column(name = "DEFLINE")
-// @Nullable
-// private String defline;
-//
-// @Column(name = "ACCESSION_NUMBER")
-// @Nullable
-// private String accessionNumber;
-
-	/*
-	 * Have an operation upload to server as sequences.
-	 * 
-	 * Should be able to tell from the name label that it's a sequence.
-	 * 
-	 * Figure out alignment.
-	 * 
-	 * Extract OTU from the locus part.
-	 * 
-	 * Store whole header as an annotation on the row
-	 * 
-	 * Have a locus field Whole unparsed header field
-	 * 
-	 * Look around sequence header cleaners
-	 * 
-	 * A separte header object w/ subclasses for for example GenBank
-	 */
-
-// public MolecularSequence putStates(final Integer idx,
-// final CharacterStates states) {
-	// checkNotNull(idx);
-// checkNotNull(states);
-// statesByPosition.put(idx, states);
-// return this;
-// }
-
 	public abstract boolean isLegal(char c);
 
 	@Override
-	public MolecularSequence resetPPodVersionInfo() {
+	public MolecularSequence<SS> setInNeedOfNewPPodVersionInfo() {
 		if (getSequenceSet() != null) {
-			getSequenceSet().resetPPodVersionInfo();
+			getSequenceSet().setInNeedOfNewPPodVersionInfo();
 		}
-		super.resetPPodVersionInfo();
+		super.setInNeedOfNewPPodVersionInfo();
 		return this;
 	}
 
@@ -175,12 +140,12 @@ public abstract class MolecularSequence<SS extends MolecularSequenceSet<?>>
 	 * 
 	 * @return this
 	 */
-	public MolecularSequence setAccession(@Nullable final String accession) {
+	public MolecularSequence<SS> setAccession(@Nullable final String accession) {
 		if (equal(accession, getAccession())) {
 			return this;
 		}
 		this.accession = accession;
-		resetPPodVersionInfo();
+		setInNeedOfNewPPodVersionInfo();
 		return this;
 	}
 
@@ -191,13 +156,13 @@ public abstract class MolecularSequence<SS extends MolecularSequenceSet<?>>
 	 * 
 	 * @return this
 	 */
-	public MolecularSequence setDescription(
+	public MolecularSequence<SS> setDescription(
 			@Nullable final String newDescription) {
 		if (equal(newDescription, getDescription())) {
 			return this;
 		}
 		description = newDescription;
-		resetPPodVersionInfo();
+		setInNeedOfNewPPodVersionInfo();
 		return this;
 	}
 
@@ -208,17 +173,17 @@ public abstract class MolecularSequence<SS extends MolecularSequenceSet<?>>
 	 * 
 	 * @return this
 	 */
-	public MolecularSequence setName(final String name) {
+	public MolecularSequence<SS> setName(final String name) {
 		checkNotNull(name);
 		if (name.equals(getName())) {
 			return this;
 		}
 		this.name = name;
-		resetPPodVersionInfo();
+		setInNeedOfNewPPodVersionInfo();
 		return this;
 	}
 
-	public MolecularSequence setSequence(final String newSequence) {
+	public MolecularSequence<SS> setSequence(final String newSequence) {
 		checkNotNull(newSequence);
 		if (newSequence.equals(getSequence())) {
 			return this;
@@ -233,7 +198,7 @@ public abstract class MolecularSequence<SS extends MolecularSequenceSet<?>>
 		}
 
 		sequence = newSequence;
-		resetPPodVersionInfo();
+		setInNeedOfNewPPodVersionInfo();
 		return this;
 	}
 
@@ -279,3 +244,41 @@ public abstract class MolecularSequence<SS extends MolecularSequenceSet<?>>
 	// }
 
 }
+
+// @Column(name = "LOCUS")
+// @Nullable
+// private String locus;// when read back into matrix it gets put taxon
+//
+// @Column(name = "DEFLINE")
+// @Nullable
+// private String defline;
+//
+// @Column(name = "ACCESSION_NUMBER")
+// @Nullable
+// private String accessionNumber;
+
+/*
+ * Have an operation upload to server as sequences.
+ * 
+ * Should be able to tell from the name label that it's a sequence.
+ * 
+ * Figure out alignment.
+ * 
+ * Extract OTU from the locus part.
+ * 
+ * Store whole header as an annotation on the row
+ * 
+ * Have a locus field Whole unparsed header field
+ * 
+ * Look around sequence header cleaners
+ * 
+ * A separte header object w/ subclasses for for example GenBank
+ */
+
+// public MolecularSequence putStates(final Integer idx,
+// final CharacterStates states) {
+// checkNotNull(idx);
+// checkNotNull(states);
+// statesByPosition.put(idx, states);
+// return this;
+// }

@@ -102,7 +102,7 @@ public class OTUSetTest {
 	public void resetWhenNotInNeedOfNewPPodVersionInfo() {
 		final PPodVersionInfo studyPPodVersionInfo = study.getpPodVersionInfo();
 		otuSet.unsetInNeedOfNewPPodVersionInfo();
-		otuSet.resetPPodVersionInfo();
+		otuSet.setInNeedOfNewPPodVersionInfo();
 		assertTrue(otuSet.isInNeedOfNewPPodVersionInfo());
 		assertEquals(study.getpPodVersionInfo(), studyPPodVersionInfo);
 	}
