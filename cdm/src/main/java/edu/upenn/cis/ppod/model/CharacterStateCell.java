@@ -237,7 +237,7 @@ public class CharacterStateCell extends PPodEntity {
 		checkState(matrix != null,
 				"this cell's row has not had a matrix assigned");
 
-		int thisCellsPosition = row.getCellIdx().get(this);
+		final int thisCellsPosition = row.getCellIdx().get(this);
 
 		checkState(matrix.getCharacters().size() >= thisCellsPosition,
 				"this cell's column hasn't been assigned a character");

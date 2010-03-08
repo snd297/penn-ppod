@@ -60,6 +60,13 @@ public class AttachmentType extends PersistentObjectWXmlId {
 
 	AttachmentType() {}
 
+	@Override
+	public AttachmentType accept(final IVisitor visitor) {
+		visitor.visit(this);
+		getNamespace().accept(visitor);
+		return this;
+	}
+
 	/**
 	 * Get the label.
 	 * 
@@ -103,13 +110,6 @@ public class AttachmentType extends PersistentObjectWXmlId {
 	 */
 	public AttachmentType setNamespace(final AttachmentNamespace namespace) {
 		this.namespace = namespace;
-		return this;
-	}
-
-	@Override
-	public AttachmentType accept(IVisitor visitor) {
-		visitor.visit(this);
-		getNamespace().accept(visitor);
 		return this;
 	}
 }

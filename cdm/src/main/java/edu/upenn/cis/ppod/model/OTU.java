@@ -85,20 +85,6 @@ public class OTU extends UUPPodEntityWXmlId {
 	}
 
 	/**
-	 * Add <code>otuSet</code> to this <code>OTU</code>'s associated
-	 * <code>OTUSet</code>s.
-	 * <p>
-	 * Intended to be package protected and used in conjunction with
-	 * {@link OTUSet#addOTU(OTU)}.
-	 * 
-	 * @param otuSet to be added to this <code>OTU</code>.
-	 */
-	OTU setOTUSet(@Nullable final OTUSet otuSet) {
-		this.otuSet = otuSet;
-		return this;
-	}
-
-	/**
 	 * See {@link Unmarshaller}.
 	 * 
 	 * @param u see {@code Unmarshaller}
@@ -165,6 +151,20 @@ public class OTU extends UUPPodEntityWXmlId {
 			this.label = label;
 			resetPPodVersionInfo();
 		}
+		return this;
+	}
+
+	/**
+	 * Add <code>otuSet</code> to this <code>OTU</code>'s associated
+	 * <code>OTUSet</code>s.
+	 * <p>
+	 * Intended to be package protected and used in conjunction with
+	 * {@link OTUSet#addOTU(OTU)}.
+	 * 
+	 * @param otuSet to be added to this <code>OTU</code>.
+	 */
+	OTU setOTUSet(@Nullable final OTUSet otuSet) {
+		this.otuSet = otuSet;
 		return this;
 	}
 

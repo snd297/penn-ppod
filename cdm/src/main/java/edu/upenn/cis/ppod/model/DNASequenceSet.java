@@ -61,15 +61,6 @@ public class DNASequenceSet extends MolecularSequenceSet<DNASequence> {
 	@Transient
 	private final Set<OTUDNASequencePair> otuSequencePairs = newHashSet();
 
-	/**
-	 * Get the otuSequencePairs.
-	 * 
-	 * @return the otuSequencePairs
-	 */
-	private Set<OTUDNASequencePair> getOTUSequencePairsModifiable() {
-		return otuSequencePairs;
-	}
-
 	@OneToMany(mappedBy = "sequenceSet")
 	private final Set<DNASequence> sequences = newHashSet();
 
@@ -80,6 +71,15 @@ public class DNASequenceSet extends MolecularSequenceSet<DNASequence> {
 			otuSequenceIPairs.add(otuDNASequencePair);
 		}
 		return otuSequenceIPairs;
+	}
+
+	/**
+	 * Get the otuSequencePairs.
+	 * 
+	 * @return the otuSequencePairs
+	 */
+	private Set<OTUDNASequencePair> getOTUSequencePairsModifiable() {
+		return otuSequencePairs;
 	}
 
 	@Override
@@ -94,6 +94,7 @@ public class DNASequenceSet extends MolecularSequenceSet<DNASequence> {
 
 	@Override
 	public DNASequence putRow(final OTU otu, final DNASequence newSequence) {
+		checkNotNull(newSequence);
 		newSequence.setSequenceSet(this);
 		return super.putRowHelper(otu, newSequence);
 	}
