@@ -90,16 +90,6 @@ public abstract class MolecularSequenceSet<S extends MolecularSequence<?>>
 	protected abstract Set<IPair<OTU, S>> getOTUSequencePairs();
 
 	/**
-	 * Get this sequence set's owning OTU set.
-	 * 
-	 * @return this sequence set's owning OTU set
-	 */
-	@Nullable
-	public OTUSet getOtuSet() {
-		return otuSet;
-	}
-
-	/**
 	 * Getter. Will be {@code null} when object is first created.
 	 * 
 	 * @return this matrix's {@code OTUSet}
@@ -170,8 +160,8 @@ public abstract class MolecularSequenceSet<S extends MolecularSequence<?>>
 
 	@Override
 	public MolecularSequenceSet<S> resetPPodVersionInfo() {
-		if (getOtuSet() != null) {
-			getOtuSet().resetPPodVersionInfo();
+		if (getOTUSet() != null) {
+			getOTUSet().resetPPodVersionInfo();
 		}
 		super.resetPPodVersionInfo();
 		return this;

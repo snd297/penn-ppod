@@ -19,7 +19,6 @@ import static edu.upenn.cis.ppod.util.CollectionsUtil.newConcurrentHashMap;
 
 import java.io.Serializable;
 import java.util.Date;
-import java.util.Iterator;
 import java.util.List;
 import java.util.concurrent.ConcurrentMap;
 
@@ -34,7 +33,6 @@ import com.google.inject.Provider;
 
 import edu.upenn.cis.ppod.dao.IPPodVersionInfoDAO;
 import edu.upenn.cis.ppod.dao.hibernate.HibernateDAOFactory;
-import edu.upenn.cis.ppod.modelinterfaces.IPPodEntity;
 import edu.upenn.cis.ppod.modelinterfaces.IPPodVersioned;
 
 /**
@@ -99,7 +97,6 @@ public class PPodVersionInfoInterceptor extends EmptyInterceptor {
 				.getCurrentSession()));
 		tempSession.flush();
 	}
-
 
 	/**
 	 * Equivalent to {@code setPPodVersionInfoIfAppropriate(entity,
