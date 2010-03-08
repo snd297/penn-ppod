@@ -25,7 +25,7 @@ public class CharacterStateCell {
 }
 }}}
 
-but it was too slow on at least saves. This was because it performed many extra updates for unknown reasons - maybe because it needs to manage the ordering of the list and can only update the position column when the row is flushed, that is, after all the members have been set?  `CharacterStateMatrix->CharacterStateRow` was done the same way because it was developed at the same time. It also seems nice for consistency's sake. 
+but it was too slow on at least saves. This was because it performed many extra updates for unknown reasons - maybe because it needs to manage the ordering of the list and can only update the position column when the `CharacterStateRow`is flushed, that is, after all the members have been set?  `CharacterStateMatrix->CharacterStateRow` was done the same way because it was developed at the same time. It also seems nice for consistency's sake. 
 
 ===2) If what you say in rationale 1 is true, why did you proceed to do it with `CharacterStateMatrix->Character`?===
 
