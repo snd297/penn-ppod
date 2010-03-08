@@ -56,7 +56,6 @@ import com.google.inject.Inject;
 
 import edu.upenn.cis.ppod.modelinterfaces.IWithOTUSet;
 import edu.upenn.cis.ppod.util.IVisitor;
-import edu.upenn.cis.ppod.util.OTUSomethingPair;
 
 /**
  * A standard matrix - aka a character matrix.
@@ -195,13 +194,14 @@ public class CharacterStateMatrix extends UUPPodEntityWXmlId implements
 	 */
 	public void afterUnmarshal(final Unmarshaller u, final Object parent) {
 		setOTUSet((OTUSet) parent);
-		for (final CharacterStateRow row : otusToRows.getOTUsToValues().values()) { 
+		for (final CharacterStateRow row : otusToRows
+				.getOTUsToValuesModifiable().values()) {
 			row.setMatrix(this);
 		}
-//		for (final OTUSomethingPair<CharacterStateRow> otuRowPair : otusToRows
-//				.getOTUValuePairsModifiable()) {
-//			otuRowPair.getSecond().setMatrix(this);
-//		}
+// for (final OTUSomethingPair<CharacterStateRow> otuRowPair : otusToRows
+// .getOTUValuePairsModifiable()) {
+// otuRowPair.getSecond().setMatrix(this);
+// }
 	}
 
 	@Override
@@ -411,7 +411,7 @@ public class CharacterStateMatrix extends UUPPodEntityWXmlId implements
 	@Nullable
 	public CharacterStateRow getRow(final OTU otu) {
 		checkNotNull(otu);
-		return otusToRows.getOTUsToValues().get(otu);
+		return otusToRows.getOTUsToValuesModifiable().get(otu);
 	}
 
 	/**

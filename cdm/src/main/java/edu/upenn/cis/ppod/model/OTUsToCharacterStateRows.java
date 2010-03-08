@@ -28,7 +28,6 @@ import javax.persistence.Table;
 import javax.persistence.Transient;
 import javax.xml.bind.Marshaller;
 import javax.xml.bind.annotation.XmlElement;
-import javax.xml.bind.annotation.XmlElementWrapper;
 
 import edu.upenn.cis.ppod.util.OTUCharacterStateRowPair;
 import edu.upenn.cis.ppod.util.OTUSomethingPair;
@@ -54,7 +53,7 @@ public class OTUsToCharacterStateRows extends
 	OTUsToCharacterStateRows() {}
 
 	public boolean beforeMarshal(@Nullable final Marshaller marshaller) {
-		for (final Map.Entry<OTU, CharacterStateRow> otuToRow : getOTUsToValues()
+		for (final Map.Entry<OTU, CharacterStateRow> otuToRow : getOTUsToValuesModifiable()
 				.entrySet()) {
 			getOTURowPairsModifiable().add(
 					OTUCharacterStateRowPair.of(otuToRow.getKey(), otuToRow
@@ -63,7 +62,6 @@ public class OTUsToCharacterStateRows extends
 		return true;
 	}
 
-	@XmlElementWrapper(name = "otusToRows")
 	@Override
 	protected Map<OTU, CharacterStateRow> getOTUsToValuesModifiable() {
 		return otusToRows;
