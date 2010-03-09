@@ -46,7 +46,6 @@ import javax.xml.bind.Marshaller;
 import javax.xml.bind.Unmarshaller;
 import javax.xml.bind.annotation.XmlAttribute;
 import javax.xml.bind.annotation.XmlElement;
-import javax.xml.bind.annotation.XmlElementWrapper;
 import javax.xml.bind.annotation.XmlIDREF;
 import javax.xml.bind.annotation.XmlSeeAlso;
 
@@ -411,7 +410,7 @@ public class CharacterStateMatrix extends UUPPodEntityWXmlId implements
 	 * @throws IllegalArgumentException if {@code otu} does not belong to this
 	 *             matrix's {@code OTUSet}
 	 */
-	@CheckForNull
+	@Nullable
 	public CharacterStateRow getRow(final OTU otu) {
 		checkNotNull(otu);
 		checkArgument(getOTUSet().getOTUs().contains(otu),
