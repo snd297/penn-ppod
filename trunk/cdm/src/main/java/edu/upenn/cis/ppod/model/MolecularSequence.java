@@ -39,7 +39,7 @@ import javax.xml.bind.annotation.XmlSeeAlso;
 @XmlSeeAlso( { DNASequence.class })
 @MappedSuperclass
 public abstract class MolecularSequence<SS extends MolecularSequenceSet<?>>
-		extends UUPPodEntity {
+		extends PPodEntity {
 
 	final static String SEQUENCE_COLUMN = "SEQUENCE";
 
@@ -212,7 +212,7 @@ public abstract class MolecularSequence<SS extends MolecularSequenceSet<?>>
 	 * 
 	 * @return this
 	 */
-	public abstract MolecularSequence<SS> setSequenceSet(
+	protected abstract MolecularSequence<SS> setSequenceSet(
 			@Nullable final SS sequenceSet);
 
 	/**

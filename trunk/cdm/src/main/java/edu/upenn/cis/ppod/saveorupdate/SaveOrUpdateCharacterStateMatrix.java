@@ -33,6 +33,7 @@ import java.util.Set;
 
 import org.slf4j.Logger;
 
+import com.google.common.collect.ImmutableList;
 import com.google.inject.Inject;
 import com.google.inject.Provider;
 import com.google.inject.assistedinject.Assisted;
@@ -187,11 +188,14 @@ public class SaveOrUpdateCharacterStateMatrix implements ISaveOrUpdateMatrix {
 		dao.saveOrUpdate(targetMatrix);
 
 		final Set<CharacterStateCell> cellsToEvict = newHashSet();
-		int sourceRowNumber = -1;
-		for (final CharacterStateRow sourceRow : sourceMatrix.getRows()) {
-			sourceRowNumber++;
+		for (final OTU sourceOTU : sourceMatrix.getOTUSet().getOTUs()) {
+			final CharacterStateRow sourceRow = sourceMatrix.getRow(sourceOTU);
+
+			final int sourceOTUPosition = sourceMatrix.getOTUSet().getOTUs()
+					.indexOf(sourceOTU);
+
 			final OTU targetOTU = targetMatrix.getOTUSet().getOTUs().get(
-					sourceRowNumber);
+					sourceOTUPosition);
 			CharacterStateRow targetRow = null;
 			List<Character> characters = targetMatrix.getCharacters();
 
@@ -213,8 +217,8 @@ public class SaveOrUpdateCharacterStateMatrix implements ISaveOrUpdateMatrix {
 // "existing row has no pPOD version number");
 // }
 
-			final List<CharacterStateCell> originalTargetCells = newArrayList(targetRow
-					.getCells());
+			final ImmutableList<CharacterStateCell> originalTargetCells = ImmutableList
+					.copyOf(targetRow.getCells());
 			final List<CharacterStateCell> newTargetCells = newArrayListWithCapacity(sourceRow
 					.getCells().size());
 
@@ -278,8 +282,8 @@ public class SaveOrUpdateCharacterStateMatrix implements ISaveOrUpdateMatrix {
 				cellsToEvict.add(targetCell);
 			}
 
-			logger.debug("{}: flushing row,  sourceRowIdx: {}", METHOD,
-					sourceRowNumber);
+			logger.debug("{}: flushing row number {}", METHOD,
+					sourceOTUPosition);
 
 			dao.flush();
 
