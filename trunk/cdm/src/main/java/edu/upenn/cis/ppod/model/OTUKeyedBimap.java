@@ -38,13 +38,13 @@ import edu.upenn.cis.ppod.util.OTUSomethingPair;
  */
 @XmlAccessorType(XmlAccessType.NONE)
 @MappedSuperclass
-public abstract class OTUKeyedMap<T extends PersistentObject, P extends IWithOTUSet>
+public abstract class OTUKeyedBimap<T extends PersistentObject, P extends IWithOTUSet>
 		extends PersistentObject {
 
 	static final String OTU_IDX_COLUMN = "OTU_IDX";
 
 	@Override
-	public OTUKeyedMap<T, P> accept(final IVisitor visitor) {
+	public OTUKeyedBimap<T, P> accept(final IVisitor visitor) {
 		visitor.visit(this);
 		for (final T t : getOTUsToValuesModifiable().values()) {
 			t.accept(visitor);
@@ -57,6 +57,12 @@ public abstract class OTUKeyedMap<T extends PersistentObject, P extends IWithOTU
 			getOTUsToValuesModifiable().put(otuValuePair.getFirst(),
 					otuValuePair.getSecond());
 		}
+	}
+
+	public T get(final OTU otu, final P parent) {
+		checkArgument(parent.getOTUSet().getOTUs().contains(otu),
+				"otu does not belong to parent's OTUSet");
+		return getOTUsToValuesModifiable().get(otu);
 	}
 
 	/**
@@ -82,17 +88,36 @@ public abstract class OTUKeyedMap<T extends PersistentObject, P extends IWithOTU
 		checkNotNull(otu);
 		checkNotNull(newT);
 		checkArgument(parent.getOTUSet().getOTUs().contains(otu),
-				"otu does not belong to this matrix");
-		final T previousT = getOTUsToValuesModifiable().put(otu, newT);
-		if (newT.equals(previousT)) {
+				"otu does not belong to the parent's OTUSet");
 
-		} else {
-			parent.setInNeedOfNewPPodVersionInfo();
+		if (null != getOTUsToValuesModifiable().get(otu)
+				&& getOTUsToValuesModifiable().get(otu).equals(newT)) {
+			return getOTUsToValuesModifiable().get(otu);
 		}
-		return previousT;
+		checkArgument(!getOTUsToValuesModifiable().containsValue(newT),
+				"already has a value .equals() to newT: " + newT);
+
+		parent.setInNeedOfNewPPodVersionInfo();
+		return getOTUsToValuesModifiable().put(otu, newT);
 	}
 
-	protected OTUKeyedMap<T, P> setOTUs(@Nullable final OTUSet otuSet,
+	/**
+	 * Set the keys of this {@code OTUKeyedBimap}.
+	 * <p>
+	 * Any new keys will be given {@code null} values.
+	 * <p>
+	 * Any existing keys will be removed if they are not present in {@code
+	 * otuSet.getOTUs()}.
+	 * 
+	 * @param otuSet must be {@code ==} to {@code parent.getOTUSet()} - only
+	 *            included to emphasize that {@code null} is allowed
+	 * @param parent owner of this bimap
+	 * 
+	 * @return this
+	 * 
+	 * @throw IllegalArgumentException if {@code otuSet != parent.getOTUSet()}
+	 */
+	protected OTUKeyedBimap<T, P> setOTUs(@Nullable final OTUSet otuSet,
 			final P parent) {
 		checkArgument(otuSet == parent.getOTUSet(),
 				"otuSet does not belong to parent");

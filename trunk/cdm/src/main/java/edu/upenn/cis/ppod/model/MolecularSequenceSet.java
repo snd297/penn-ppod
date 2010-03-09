@@ -15,60 +15,26 @@
  */
 package edu.upenn.cis.ppod.model;
 
-import static com.google.common.base.Preconditions.checkArgument;
-import static com.google.common.base.Preconditions.checkNotNull;
-import static com.google.common.collect.Lists.newArrayList;
-import static com.google.common.collect.Sets.newHashSet;
-
-import java.util.Collections;
 import java.util.List;
-import java.util.Map;
-import java.util.Set;
 
 import javax.annotation.CheckForNull;
 import javax.annotation.Nullable;
 import javax.persistence.JoinColumn;
-import javax.persistence.JoinTable;
-import javax.persistence.ManyToMany;
 import javax.persistence.ManyToOne;
 import javax.persistence.MappedSuperclass;
-import javax.xml.bind.annotation.XmlElement;
 
-import edu.upenn.cis.ppod.util.IPair;
+import edu.upenn.cis.ppod.modelinterfaces.IWithOTUSet;
 
 @MappedSuperclass
 public abstract class MolecularSequenceSet<S extends MolecularSequence<?>>
-		extends UUPPodEntity {
+		extends UUPPodEntity implements IWithOTUSet {
 
 	static final String TABLE = "MOLECULAR_SEQUENCE_SET";
-
-	/**
-	 * The position of an {@code OTU} in {@code otuOrdering} signifies its row
-	 * number in <code>row</code>. So <code>otuOrdering</code> is a rowNumber->
-	 * {@code OTU} lookup.
-	 */
-	@ManyToMany
-	@JoinTable(inverseJoinColumns = @JoinColumn(name = OTU.ID_COLUMN))
-	@org.hibernate.annotations.IndexColumn(name = OTU.TABLE + "_POSITION")
-	private final List<OTU> otuOrdering = newArrayList();
 
 	@ManyToOne
 	@JoinColumn(name = OTUSet.ID_COLUMN, nullable = false)
 	@CheckForNull
 	private OTUSet otuSet;
-
-	@Override
-	public void afterUnmarshal() {
-		for (final IPair<OTU, S> otuSequencePair : getOTUSequencePairs()) {
-			getOTUsToSeqeuencesModifiable().put(otuSequencePair.getFirst(),
-					otuSequencePair.getSecond());
-		}
-
-		// We're done with this - clear it out
-		getOTUSequencePairs().clear();
-	}
-
-	protected abstract Set<IPair<OTU, S>> getOTUSequencePairs();
 
 	/**
 	 * Getter. Will be {@code null} when object is first created.
@@ -80,79 +46,26 @@ public abstract class MolecularSequenceSet<S extends MolecularSequence<?>>
 		return otuSet;
 	}
 
-	protected abstract Map<OTU, S> getOTUsToSeqeuencesModifiable();
-
-	public S getSequence(final OTU otu) {
-		checkNotNull(otu);
-		return getOTUsToSeqeuencesModifiable().get(otu);
-	}
+	/**
+	 * 
+	 * @param otu
+	 * @return
+	 * 
+	 * @throws IllegalArgument Exception if {@code otu} does not belong to this
+	 *             sequence's {@code OTUSet}
+	 */
+	public abstract S getSequence(final OTU otu);
 
 	/**
-	 * Get a possibly unmodifiable view of the constituent sequences in {@code
-	 * getOTUOrdering()} order.
+	 * Get a copy of the constituent sequences in {@code getOTUOrdering()}
+	 * order.
 	 * 
 	 * @return the constituent sequences
 	 */
-	public List<S> getSequences() {
+	public abstract List<S> getSequences();
 
-// checkState(otuOrderingAsSet.equals(getOTUSet().getOTUs()),
-// "otu ordering is not in sync with this sequence's OTUSet");
-//
-// final List<S> rows = newArrayList();
-// for (final OTU otu : getOTUOrdering()) {
-// rows.add(getOTUsToSeqeuencesModifiable().get(otu));
-// }
-		return null;
-		// return Collections.unmodifiableList(rows);
-	}
-
-	/**
-	 * Created for JAXB.
-	 * 
-	 * @return a modifiable reference to this set's sequences
-	 */
-	@XmlElement(name = "sequence")
-	protected abstract Set<S> getSequencesModifiable();
-
-	@CheckForNull
-	public abstract S putRow(final OTU otu, final S newSequence);
-
-	/**
-	 * Set row at <code>otu</code> to <code>row</code>.
-	 * <p>
-	 * Assumes {@code newSequence} does not belong to another matrix.
-	 * <p>
-	 * Assumes {@code newSequence} is not detached.
-	 * 
-	 * @param otu index of the row we are adding
-	 * @param newSequence the row we're adding
-	 * 
-	 * @return the row that was previously there, or {@code null} if there was
-	 *         no row previously there
-	 * 
-	 * @throw IllegalArgumentException if {@code otu} does not belong to this
-	 *        matrix's {@code OTUSet}
-	 */
-	@CheckForNull
-	protected S putRowHelper(final OTU otu, final S newSequence) {
-		checkNotNull(otu);
-		checkNotNull(newSequence);
-		checkArgument(getOTUSet().getOTUs().contains(otu),
-				"otu does not belong to this sequence set");
-
-		final S originalSequence = getOTUsToSeqeuencesModifiable().put(otu,
-				newSequence);
-		if (newSequence.equals(originalSequence)) {
-
-		} else {
-			if (originalSequence != null) {
-				originalSequence.setSequenceSet(null);
-			}
-
-			setInNeedOfNewPPodVersionInfo();
-		}
-		return originalSequence;
-	}
+	@Nullable
+	public abstract S putSequence(final OTU otu, final S newSequence);
 
 	@Override
 	public MolecularSequenceSet<S> setInNeedOfNewPPodVersionInfo() {
@@ -173,31 +86,9 @@ public abstract class MolecularSequenceSet<S extends MolecularSequence<?>>
 	 * 
 	 * @return this sequence set
 	 */
-	protected MolecularSequenceSet<S> setOtuSet(@Nullable final OTUSet newOTUSet) {
+	protected MolecularSequenceSet<S> setOTUSet(@Nullable final OTUSet newOTUSet) {
 		otuSet = newOTUSet;
 		return this;
-	}
-
-	public abstract Set<S> setSequences(final Set<S> newSequences);
-
-	protected Set<S> setSequencesHelper(final Set<S> newSequences) {
-		checkNotNull(newSequences);
-
-		if (newSequences.equals(getSequences())) {
-			return Collections.emptySet();
-		}
-
-		final Set<S> removedSequences = newHashSet(getSequences());
-		removedSequences.removeAll(newSequences);
-		for (final S removedSequence : removedSequences) {
-			removedSequence.setSequenceSet(null);
-		}
-
-		getSequencesModifiable().clear();
-		getSequencesModifiable().addAll(newSequences);
-
-		setInNeedOfNewPPodVersionInfo();
-		return removedSequences;
 	}
 
 }

@@ -67,10 +67,10 @@ public class MergeMolecularSequenceSets<SS extends MolecularSequenceSet<S>, S ex
 		}
 
 		// Now let's remove what's wasn't in sourceSequenceSet
-		final Set<S> removedTargetSequences = targetSequenceSet
-				.setSequences(newTargetSequences);
-		for (final S removedSequence : removedTargetSequences) {
-			dao.delete(removedSequence);
-		}
+// final Set<S> removedTargetSequences = targetSequenceSet
+		// .setSequences(newTargetSequences);
+// for (final S removedSequence : removedTargetSequences) {
+// dao.delete(removedSequence);
+		// }
 	}
 }

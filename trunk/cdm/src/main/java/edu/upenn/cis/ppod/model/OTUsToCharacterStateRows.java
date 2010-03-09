@@ -38,7 +38,7 @@ import edu.upenn.cis.ppod.util.OTUSomethingPair;
 @Entity
 @Table(name = "OTUS_TO_CHARACTER_STATE_ROWS")
 public class OTUsToCharacterStateRows extends
-		OTUKeyedMap<CharacterStateRow, CharacterStateMatrix> {
+		OTUKeyedBimap<CharacterStateRow, CharacterStateMatrix> {
 	/**
 	 * The otusToRows of the matrix. We don't do save_update cascades since we
 	 * want to control when otusToRows are added to the persistence context. We
