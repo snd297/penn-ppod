@@ -22,6 +22,8 @@ import java.util.Collection;
 import java.util.Iterator;
 import java.util.Set;
 
+import javax.annotation.CheckForNull;
+
 import com.google.common.base.Predicate;
 
 /**
@@ -38,6 +40,7 @@ public class PPodIterables {
 	 * @param predicate
 	 * @return
 	 */
+	@CheckForNull
 	public static <T> T findIf(final Iterable<T> iterable,
 			final Predicate<? super T> predicate) {
 

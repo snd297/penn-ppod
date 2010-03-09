@@ -71,8 +71,6 @@ public class DNASequenceSet extends MolecularSequenceSet<DNASequence> {
 
 	@Override
 	public DNASequence putSequence(final OTU otu, final DNASequence newSequence) {
-		// TODO Auto-generated method stub
-		throw new UnsupportedOperationException();
+		return getOTUsToSequences().put(otu, newSequence, this);
 	}
-
 }
