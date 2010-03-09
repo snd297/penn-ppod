@@ -16,23 +16,17 @@
 package edu.upenn.cis.ppod.model;
 
 import static com.google.common.base.Preconditions.checkNotNull;
-import static com.google.common.collect.Maps.newHashMap;
-import static com.google.common.collect.Sets.newHashSet;
 
-import java.util.Map;
-import java.util.Set;
+import java.util.List;
 
+import javax.persistence.CascadeType;
 import javax.persistence.Entity;
-import javax.persistence.JoinColumn;
-import javax.persistence.JoinTable;
-import javax.persistence.OneToMany;
+import javax.persistence.FetchType;
+import javax.persistence.OneToOne;
 import javax.persistence.Table;
-import javax.persistence.Transient;
+import javax.xml.bind.annotation.XmlElement;
 
-import org.hibernate.annotations.Cascade;
-
-import edu.upenn.cis.ppod.util.IPair;
-import edu.upenn.cis.ppod.util.OTUDNASequencePair;
+import com.google.inject.Inject;
 
 /**
  * @author Sam Donnelly
@@ -47,64 +41,38 @@ public class DNASequenceSet extends MolecularSequenceSet<DNASequence> {
 			+ PersistentObject.ID_COLUMN;
 
 	/**
-	 * The rows of the matrix. We don't do save_update cascades since we want to
-	 * control when rows are added to the persistence context. We sometimes
-	 * don't want the rows saved or reattached when the the matrix is.
+	 * The sequences.
 	 */
-	@org.hibernate.annotations.CollectionOfElements
-	@JoinTable(name = OTU.TABLE + "_" + CharacterStateRow.TABLE, joinColumns = @JoinColumn(name = ID_COLUMN), inverseJoinColumns = @JoinColumn(name = CharacterStateRow.ID_COLUMN))
-	@org.hibernate.annotations.MapKeyManyToMany(joinColumns = @JoinColumn(name = OTU.ID_COLUMN))
-	@Cascade(org.hibernate.annotations.CascadeType.DELETE_ORPHAN)
-	private final Map<OTU, DNASequence> otusToSequences = newHashMap();
+	@OneToOne(fetch = FetchType.LAZY, optional = false, cascade = CascadeType.ALL)
+	private OTUsToDNASequences otusToSequences;
 
-	/** For marshalling. */
-	@Transient
-	private final Set<OTUDNASequencePair> otuSequencePairs = newHashSet();
+	DNASequenceSet() {}
 
-	@OneToMany(mappedBy = "sequenceSet")
-	private final Set<DNASequence> sequences = newHashSet();
-
-	@Override
-	protected Set<IPair<OTU, DNASequence>> getOTUSequencePairs() {
-		final Set<IPair<OTU, DNASequence>> otuSequenceIPairs = newHashSet();
-		for (final OTUDNASequencePair otuDNASequencePair : getOTUSequencePairsModifiable()) {
-			otuSequenceIPairs.add(otuDNASequencePair);
-		}
-		return otuSequenceIPairs;
+	@Inject
+	DNASequenceSet(final OTUsToDNASequences otusToDNASequences) {
+		this.otusToSequences = otusToDNASequences;
 	}
 
-	/**
-	 * Get the otuSequencePairs.
-	 * 
-	 * @return the otuSequencePairs
-	 */
-	private Set<OTUDNASequencePair> getOTUSequencePairsModifiable() {
-		return otuSequencePairs;
-	}
-
-	@Override
-	protected Map<OTU, DNASequence> getOTUsToSeqeuencesModifiable() {
+	@XmlElement(name = "otusToSequences")
+	private OTUsToDNASequences getOTUsToSequences() {
 		return otusToSequences;
 	}
 
 	@Override
-	protected Set<DNASequence> getSequencesModifiable() {
-		return sequences;
+	public DNASequence getSequence(final OTU otu) {
+		checkNotNull(otu);
+		return getOTUsToSequences().get(otu, this);
 	}
 
 	@Override
-	public DNASequence putRow(final OTU otu, final DNASequence newSequence) {
-		checkNotNull(newSequence);
-		newSequence.setSequenceSet(this);
-		return super.putRowHelper(otu, newSequence);
+	public List<DNASequence> getSequences() {
+		return getOTUsToSequences().getValuesInOTUOrder(getOTUSet());
 	}
 
 	@Override
-	public Set<DNASequence> setSequences(final Set<DNASequence> dnaSequences) {
-		checkNotNull(dnaSequences);
-		for (final DNASequence dnaSequence : getSequences()) {
-			dnaSequence.setSequenceSet(this);
-		}
-		return super.setSequencesHelper(dnaSequences);
+	public DNASequence putSequence(final OTU otu, final DNASequence newSequence) {
+		// TODO Auto-generated method stub
+		throw new UnsupportedOperationException();
 	}
+
 }

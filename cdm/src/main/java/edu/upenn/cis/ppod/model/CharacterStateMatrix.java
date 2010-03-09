@@ -413,9 +413,7 @@ public class CharacterStateMatrix extends UUPPodEntityWXmlId implements
 	@Nullable
 	public CharacterStateRow getRow(final OTU otu) {
 		checkNotNull(otu);
-		checkArgument(getOTUSet().getOTUs().contains(otu),
-				"otu does not belong to this matrix's OTUSet");
-		return getOTUsToRows().getOTUsToValuesModifiable().get(otu);
+		return getOTUsToRows().get(otu, this);
 	}
 
 	/**
