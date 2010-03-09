@@ -74,14 +74,15 @@ public class Pair<T, U> implements IPair<T, U> {
 	 * 
 	 * @return a <code>String</code> representation of this object.
 	 */
+	@Override
 	public String toString() {
 		final String TAB = " ";
 
 		StringBuilder retValue = new StringBuilder();
 
-		retValue.append("OrderedPair(").append(super.toString()).append(TAB)
-				.append("first=").append(this.first).append(TAB).append(
-						"second=").append(this.second).append(TAB).append(")");
+		retValue.append("Pair(").append(super.toString()).append(TAB).append(
+				"first=").append(this.first).append(TAB).append("second=")
+				.append(this.second).append(TAB).append(")");
 
 		return retValue.toString();
 	}

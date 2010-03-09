@@ -33,7 +33,7 @@ public abstract class MolecularStateMatrix extends CharacterStateMatrix {
 	/**
 	 * @param otusToRows
 	 */
-	protected MolecularStateMatrix(OTUsToCharacterStateRows otusToRows) {
+	protected MolecularStateMatrix(final OTUsToCharacterStateRows otusToRows) {
 		super(otusToRows);
 	}
 

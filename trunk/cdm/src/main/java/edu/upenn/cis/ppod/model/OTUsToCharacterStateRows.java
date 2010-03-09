@@ -28,7 +28,6 @@ import javax.persistence.Table;
 import javax.persistence.Transient;
 import javax.xml.bind.Marshaller;
 import javax.xml.bind.annotation.XmlElement;
-import javax.xml.bind.annotation.XmlElementWrapper;
 
 import edu.upenn.cis.ppod.util.OTUCharacterStateRowPair;
 import edu.upenn.cis.ppod.util.OTUSomethingPair;
