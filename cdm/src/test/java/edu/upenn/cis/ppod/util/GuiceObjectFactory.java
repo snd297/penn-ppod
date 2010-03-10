@@ -28,11 +28,12 @@ import com.google.inject.Injector;
  */
 public abstract class GuiceObjectFactory extends AbstractModule implements
 		IObjectFactory {
+
+	private static final long serialVersionUID = 1L;
 	private Injector injector;
 	private final ObjectFactoryImpl creator = new ObjectFactoryImpl();
-	
 
-	protected GuiceObjectFactory setInjector(final Injector injector) { 
+	protected GuiceObjectFactory setInjector(final Injector injector) {
 		this.injector = injector;
 		return this;
 	}
@@ -41,6 +42,9 @@ public abstract class GuiceObjectFactory extends AbstractModule implements
 
 	}
 
+	@SuppressWarnings("unchecked")
+	// We're implementing a method from TestNG library - no choice but to
+	// suppress
 	public Object newInstance(final Constructor constructor,
 			final Object... objects) {
 		final Object o = creator.newInstance(constructor, objects);

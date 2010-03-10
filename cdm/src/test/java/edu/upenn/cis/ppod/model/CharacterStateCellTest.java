@@ -24,6 +24,8 @@ import static org.testng.Assert.assertTrue;
 import java.util.HashSet;
 import java.util.Set;
 
+import javax.annotation.Nullable;
+
 import org.testng.annotations.BeforeMethod;
 import org.testng.annotations.Test;
 
@@ -61,14 +63,19 @@ public class CharacterStateCellTest {
 	@Inject
 	private Provider<OTU> otuProvider;
 
+	@Nullable
 	private Set<CharacterState> states;
 
+	@Nullable
 	private CharacterStateCell cell;
 
+	@Nullable
 	private CharacterStateMatrix matrix;
 
+	@Nullable
 	private CharacterState state00;
 
+	@Nullable
 	private CharacterState state01;
 
 	@BeforeMethod

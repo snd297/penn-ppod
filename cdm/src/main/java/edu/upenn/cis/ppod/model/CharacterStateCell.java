@@ -101,7 +101,7 @@ public class CharacterStateCell extends PPodEntity {
 
 	/** Position in a {@link CharacterStateRow}. */
 	@Column(name = "POSITION", nullable = false)
-	@Nullable
+	@CheckForNull
 	private Integer position;
 
 	static final String TABLE = "CHARACTER_STATE_CELL";
@@ -229,17 +229,18 @@ public class CharacterStateCell extends PPodEntity {
 
 		final CharacterStateRow row = getRow();
 
-		checkState(row != null, "this cell has not been assigned a row");
+		checkState(row != null && getPosition() != null,
+				"this cell has not been assigned a row");
 
 		final CharacterStateMatrix matrix = row.getMatrix();
 
 		checkState(matrix != null,
 				"this cell's row has not had a matrix assigned");
 
-		checkState(matrix.getCharacters().size() >= position,
+		checkState(matrix.getCharacters().size() >= getPosition(),
 				"this cell's column hasn't been assigned a character");
 
-		checkState(null != matrix.getCharacters().get(position),
+		checkState(null != matrix.getCharacters().get(getPosition()),
 				"this cell's column hasn't been assigned a character");
 
 		final Character thisCellsCharacter = matrix.getCharacters().get(
@@ -250,7 +251,7 @@ public class CharacterStateCell extends PPodEntity {
 
 		checkArgument(state.getCharacter().equals(thisCellsCharacter),
 				"state is from the wrong Character. We want "
-						+ matrix.getCharacters().get(position)
+						+ matrix.getCharacters().get(getPosition())
 								.getLabel() + " but got "
 						+ state.getCharacter().getLabel());
 
@@ -276,6 +277,8 @@ public class CharacterStateCell extends PPodEntity {
 	}
 
 	@XmlAttribute
+	@SuppressWarnings("unused")
+	@CheckForNull
 	private Integer getPosition() {
 		return position;
 	}
@@ -382,7 +385,7 @@ public class CharacterStateCell extends PPodEntity {
 			row.setInNeedOfNewPPodVersionInfo();
 			final CharacterStateMatrix matrix = row.getMatrix();
 			if (matrix != null) {
-				matrix.resetColumnPPodVersion(position);
+				matrix.resetColumnPPodVersion(getPosition());
 			}
 		}
 		super.setInNeedOfNewPPodVersionInfo();

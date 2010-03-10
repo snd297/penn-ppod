@@ -10,6 +10,8 @@ import com.google.inject.Provider;
 import com.google.inject.assistedinject.Assisted;
 
 import edu.upenn.cis.ppod.dao.IDAO;
+import edu.upenn.cis.ppod.model.DNASequence;
+import edu.upenn.cis.ppod.model.DNASequenceSet;
 import edu.upenn.cis.ppod.model.MolecularSequence;
 import edu.upenn.cis.ppod.model.MolecularSequenceSet;
 import edu.upenn.cis.ppod.model.OTU;
@@ -68,4 +70,6 @@ public class MergeMolecularSequenceSets<SS extends MolecularSequenceSet<S>, S ex
 			dao.evict(targetSequence);
 		}
 	}
+
+
 }

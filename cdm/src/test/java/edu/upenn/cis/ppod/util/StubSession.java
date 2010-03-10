@@ -43,6 +43,8 @@ import com.google.inject.Provider;
  */
 public class StubSession implements Session {
 
+	private static final long serialVersionUID = 1L;
+
 	private Provider<Query> queryProvider;
 
 	@Inject

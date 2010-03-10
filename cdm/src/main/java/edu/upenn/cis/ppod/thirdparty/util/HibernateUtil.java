@@ -73,7 +73,7 @@ public class HibernateUtil {
 
 	private static Configuration configuration;
 
-	private static SessionFactory sessionFactory;
+	private static volatile SessionFactory sessionFactory;
 
 	static {
 		// Create the initial SessionFactory from the default configuration
@@ -86,7 +86,6 @@ public class HibernateUtil {
 
 			// Read hibernate.cfg.xml (has to be present)
 			configuration.configure();
-			
 
 // final PPodVersionInfoInterceptor pPodVersionInfoInterceptor = new
 			// PPodCoreFactory()
