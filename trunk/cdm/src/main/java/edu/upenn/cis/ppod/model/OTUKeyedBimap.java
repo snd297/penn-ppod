@@ -17,13 +17,14 @@ package edu.upenn.cis.ppod.model;
 
 import static com.google.common.base.Preconditions.checkArgument;
 import static com.google.common.base.Preconditions.checkNotNull;
-import static com.google.common.collect.Lists.newArrayList;
+import static com.google.common.collect.Lists.newArrayListWithCapacity;
 import static com.google.common.collect.Sets.newHashSet;
 
 import java.util.List;
 import java.util.Map;
 import java.util.Set;
 
+import javax.annotation.CheckForNull;
 import javax.annotation.Nullable;
 import javax.persistence.MappedSuperclass;
 import javax.xml.bind.annotation.XmlAccessType;
@@ -75,30 +76,76 @@ public abstract class OTUKeyedBimap<T extends PersistentObject, P extends IWithO
 	protected abstract Set<OTUSomethingPair<T>> getOTUValuePairs();
 
 	public List<T> getValuesInOTUOrder(final OTUSet otuSet) {
-		final List<T> valuesInOTUOrder = newArrayList();
+		final List<T> valuesInOTUOrder = newArrayListWithCapacity(otuSet
+				.getOTUs().size());
 		for (final OTU otu : otuSet.getOTUs()) {
 			valuesInOTUOrder.add(getOTUsToValuesModifiable().get(otu));
 		}
 		return valuesInOTUOrder;
 	}
 
-	public abstract T put(OTU otu, T newT, P parent);
+	/**
+	 * Associates {@code value} with {@code key} in this map. If the map
+	 * previously contained a mapping for {@code key}, the original value is
+	 * replaced by the specified value.
+	 * <p>
+	 * This method calls {@code arent.setInNeedOfNewPPodVersionInfo()} if this
+	 * method changes anything
+	 * 
+	 * @param key key
+	 * @param newValue new value for {@code key}
+	 * @param parent the owning object
+	 * 
+	 * @return the previous value associated with <tt>otu</tt>, or <tt>null</tt>
+	 *         if there was no mapping for <tt>otu</tt>. (A <tt>null</tt> return
+	 *         can also indicate that the map previously associated
+	 *         <tt>null</tt> with <tt>key</tt>.)
+	 * 
+	 * @throws IllegalArgumentException if {@code otu} does not belong to
+	 *             {@code parent.getOTUSet()}
+	 * @throws IllegalArgumentException if there's already a value {@code
+	 *             .equals} to {@code newT}
+	 */
+	public abstract T put(OTU key, T value, P parent);
 
-	protected T putHelper(final OTU otu, final T newT, final P parent) {
-		checkNotNull(otu);
-		checkNotNull(newT);
-		checkArgument(parent.getOTUSet().getOTUs().contains(otu),
+	/**
+	 * Associates {@code value} with {@code key} in this map. If the map
+	 * previously contained a mapping for {@code key}, the old value is replaced
+	 * by the specified value.
+	 * <p>
+	 * This method calls {@code parent.setInNeedOfNewPPodVersionInfo()} if it
+	 * changes this {@code OTUKeyedBimap}'s state.
+	 * 
+	 * @param otu key
+	 * @param value value
+	 * @param parent the owning object
+	 * 
+	 * @return the previous value associated with <tt>otu</tt>, or <tt>null</tt>
+	 *         if there was no mapping for <tt>otu</tt>. (A <tt>null</tt> return
+	 *         can also indicate that the map previously associated
+	 *         <tt>null</tt> with <tt>key</tt>.)
+	 * 
+	 * @throws IllegalArgumentException if {@code otu} does not belong to
+	 *             {@code parent.getOTUSet()}
+	 * @throws IllegalArgumentException if there's already a value {@code
+	 *             .equals} to {@code newT}
+	 */
+	@CheckForNull
+	protected T putHelper(final OTU key, final T value, final P parent) {
+		checkNotNull(key);
+		checkNotNull(value);
+		checkArgument(parent.getOTUSet().getOTUs().contains(key),
 				"otu does not belong to the parent's OTUSet");
 
-		if (null != getOTUsToValuesModifiable().get(otu)
-				&& getOTUsToValuesModifiable().get(otu).equals(newT)) {
-			return getOTUsToValuesModifiable().get(otu);
+		if (null != getOTUsToValuesModifiable().get(key)
+				&& getOTUsToValuesModifiable().get(key).equals(value)) {
+			return getOTUsToValuesModifiable().get(key);
 		}
-		checkArgument(!getOTUsToValuesModifiable().containsValue(newT),
-				"already has a value .equals() to newT: " + newT);
+		checkArgument(!getOTUsToValuesModifiable().containsValue(value),
+				"already has a value .equals() to newT: " + value);
 
 		parent.setInNeedOfNewPPodVersionInfo();
-		return getOTUsToValuesModifiable().put(otu, newT);
+		return getOTUsToValuesModifiable().put(key, value);
 	}
 
 	/**

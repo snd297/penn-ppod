@@ -42,7 +42,7 @@ public class JettyWebServer implements IService {
 		String jetty_home = System.getProperty("jetty.home", "..");
 
 		final Connector connector = new SelectChannelConnector();
-		connector.setPort(8080);
+		connector.setPort(8082);
 		connector.setHost("127.0.0.1");
 		server.addConnector(connector);
 
@@ -61,8 +61,8 @@ public class JettyWebServer implements IService {
 	}
 
 	public void stop() throws Exception {
-		logger.info("stopping jetty...");
-		server.stop();
-		logger.info("...stopped");
+		// Nothing to do here: stopping will happen because of server.setStopAtShutdown(true)
 	}
+
+
 }

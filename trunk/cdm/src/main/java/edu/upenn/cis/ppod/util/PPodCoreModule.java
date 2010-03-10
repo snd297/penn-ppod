@@ -46,6 +46,15 @@ import edu.upenn.cis.ppod.security.ISimpleAuthenticationInfoFactory;
 import edu.upenn.cis.ppod.security.SimpleAuthenticationInfoFactory;
 
 public final class PPodCoreModule extends AbstractModule {
+
+	private final static class MergeMolecularSequenceSetsTypeLiteral
+			extends
+			TypeLiteral<MergeMolecularSequenceSets<DNASequenceSet, DNASequence>> {}
+
+	private final static class IMergeMolecularSequenceSetsIFactoryTypeLiteral
+			extends
+			TypeLiteral<IMergeMolecularSequenceSets.IFactory<DNASequenceSet, DNASequence>> {}
+
 	@Override
 	protected void configure() {
 		bind(HibernateDAOFactory.IFactory.class).toProvider(
@@ -80,11 +89,9 @@ public final class PPodCoreModule extends AbstractModule {
 				FactoryProvider.newFactory(ISaveOrUpdateMatrixFactory.class,
 						SaveOrUpdateCharacterStateMatrix.class));
 
-		final TypeLiteral<IMergeMolecularSequenceSets.IFactory<DNASequenceSet, DNASequence>> mergeDNASequencesFactoryTypeLiteral = new TypeLiteral<IMergeMolecularSequenceSets.IFactory<DNASequenceSet, DNASequence>>() {
-		};
+		final TypeLiteral<IMergeMolecularSequenceSets.IFactory<DNASequenceSet, DNASequence>> mergeDNASequencesFactoryTypeLiteral = new IMergeMolecularSequenceSetsIFactoryTypeLiteral();
 
-		final TypeLiteral<MergeMolecularSequenceSets<DNASequenceSet, DNASequence>> mergeDNASequenceSetTypeLiteral = new TypeLiteral<MergeMolecularSequenceSets<DNASequenceSet, DNASequence>>() {
-		};
+		final TypeLiteral<MergeMolecularSequenceSets<DNASequenceSet, DNASequence>> mergeDNASequenceSetTypeLiteral = new MergeMolecularSequenceSetsTypeLiteral();
 
 		bind(mergeDNASequencesFactoryTypeLiteral).toProvider(
 				FactoryProvider.newFactory(mergeDNASequencesFactoryTypeLiteral,

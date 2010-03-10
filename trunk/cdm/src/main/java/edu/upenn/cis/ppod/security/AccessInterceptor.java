@@ -19,7 +19,6 @@ import java.io.Serializable;
 
 import org.apache.shiro.SecurityUtils;
 import org.hibernate.CallbackException;
-import org.hibernate.Interceptor;
 import org.hibernate.type.Type;
 
 import com.google.inject.Inject;
