@@ -1,22 +1,16 @@
 package edu.upenn.cis.ppod.saveorupdate;
 
 import static com.google.common.base.Preconditions.checkNotNull;
-import static com.google.common.base.Predicates.compose;
-import static com.google.common.base.Predicates.equalTo;
-import static edu.upenn.cis.ppod.util.PPodIterables.findIf;
 
 import com.google.inject.Inject;
 import com.google.inject.Provider;
 import com.google.inject.assistedinject.Assisted;
 
 import edu.upenn.cis.ppod.dao.IDAO;
-import edu.upenn.cis.ppod.model.DNASequence;
-import edu.upenn.cis.ppod.model.DNASequenceSet;
 import edu.upenn.cis.ppod.model.MolecularSequence;
 import edu.upenn.cis.ppod.model.MolecularSequenceSet;
 import edu.upenn.cis.ppod.model.OTU;
 import edu.upenn.cis.ppod.modelinterfaces.INewPPodVersionInfo;
-import edu.upenn.cis.ppod.modelinterfaces.IUUPPodEntity;
 
 /**
  * @author Sam Donnelly
@@ -42,15 +36,15 @@ public class MergeMolecularSequenceSets<SS extends MolecularSequenceSet<S>, S ex
 		checkNotNull(sourceSequenceSet);
 		dao.saveOrUpdate(targetSequenceSet);
 
-		for (final OTU sourceOTU : sourceSequenceSet.getOTUSet().getOTUs()) {
+		for (int i = 0; i < sourceSequenceSet.getOTUSet().getOTUs()
+				.size(); i++) {
+			final OTU sourceOTU = sourceSequenceSet.getOTUSet().getOTUs()
+					.get(i);
+
 			final S sourceSequence = sourceSequenceSet.getSequence(sourceOTU);
-			final OTU targetOTU = findIf(targetSequenceSet.getOTUSet()
-					.getOTUs(), compose(equalTo(sourceOTU.getPPodId()),
-					IUUPPodEntity.getPPodId));
-			if (null == targetOTU) {
-				throw new AssertionError("missing an OTU with pPODID: ["
-						+ sourceOTU.getPPodId() + "]");
-			}
+			final OTU targetOTU = targetSequenceSet.getOTUSet().getOTUs().get(
+					i);
+
 			S targetSequence;
 
 			if (null == (targetSequence = targetSequenceSet
@@ -70,6 +64,5 @@ public class MergeMolecularSequenceSets<SS extends MolecularSequenceSet<S>, S ex
 			dao.evict(targetSequence);
 		}
 	}
-
 
 }

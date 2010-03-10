@@ -23,6 +23,8 @@ import edu.upenn.cis.ppod.model.CharacterState;
 import edu.upenn.cis.ppod.model.CharacterStateCell;
 import edu.upenn.cis.ppod.model.CharacterStateMatrix;
 import edu.upenn.cis.ppod.model.CharacterStateRow;
+import edu.upenn.cis.ppod.model.DNASequence;
+import edu.upenn.cis.ppod.model.DNASequenceSet;
 import edu.upenn.cis.ppod.model.OTU;
 import edu.upenn.cis.ppod.model.OTUKeyedBimap;
 import edu.upenn.cis.ppod.model.OTUSet;
@@ -161,5 +163,13 @@ public abstract class EmptyVisitor implements IVisitor {
 	 */
 	public void visit(final OTUKeyedBimap<?, ?> otuKeyedMap) {
 
+	}
+	
+	public void visit(final DNASequenceSet dnaSequenceSet) { 
+		
+	}
+	
+	public void visit(final DNASequence dnaSequence) {
+	
 	}
 }

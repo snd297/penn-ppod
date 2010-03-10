@@ -27,6 +27,8 @@ import javax.persistence.JoinColumn;
 import javax.persistence.ManyToOne;
 import javax.persistence.Table;
 
+import edu.upenn.cis.ppod.util.IVisitor;
+
 /**
  * @author Sam Donnelly
  */
@@ -47,6 +49,12 @@ public class DNASequence extends MolecularSequence<DNASequenceSet> {
 	@Override
 	public DNASequenceSet getSequenceSet() {
 		return sequenceSet;
+	}
+
+	@Override
+	public DNASequence accept(final IVisitor visitor) {
+		visitor.visit(this);
+		return this;
 	}
 
 	/**

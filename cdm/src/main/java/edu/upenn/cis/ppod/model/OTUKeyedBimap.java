@@ -106,6 +106,7 @@ public abstract class OTUKeyedBimap<T extends PersistentObject, P extends IWithO
 	 * @throws IllegalArgumentException if there's already a value {@code
 	 *             .equals} to {@code newT}
 	 */
+	@CheckForNull
 	public abstract T put(OTU key, T value, P parent);
 
 	/**
@@ -164,6 +165,7 @@ public abstract class OTUKeyedBimap<T extends PersistentObject, P extends IWithO
 	 * 
 	 * @throw IllegalArgumentException if {@code otuSet != parent.getOTUSet()}
 	 */
+	@CheckForNull
 	protected OTUKeyedBimap<T, P> setOTUs(@Nullable final OTUSet otuSet,
 			final P parent) {
 		checkArgument(otuSet == parent.getOTUSet(),

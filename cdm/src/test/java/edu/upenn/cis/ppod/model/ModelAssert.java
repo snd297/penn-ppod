@@ -74,9 +74,10 @@ public class ModelAssert {
 					.getValue();
 			final CharacterState expectedState = expectedCharacter.getStates()
 					.get(actualStateNumberToState.getKey());
+
 			assertNotNull(expectedState);
 			assertTrue(expectedState.getCharacter() == expectedCharacter);
-			assertEqualsCharacterStates(actualStateNumberToState.getValue(),
+			assertEqualsCharacterStates(actualState,
 					expectedState);
 		}
 	}

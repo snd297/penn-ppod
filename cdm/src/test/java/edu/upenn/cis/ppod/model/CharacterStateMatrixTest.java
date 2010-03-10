@@ -73,18 +73,16 @@ public class CharacterStateMatrixTest {
 	private OTU otu0;
 	private OTU otu1;
 	private OTU otu2;
-	private List<OTU> otus012 = newArrayList();
+
 	private CharacterStateMatrix matrix;
 
 	@BeforeMethod
-	private void beforeMethod() {
+	public void beforeMethod() {
 		matrix = matrixProvider.get();
 
 		otu0 = otuProvider.get().setLabel("otu0");
 		otu1 = otuProvider.get().setLabel("otu1");
 		otu2 = otuProvider.get().setLabel("otu2");
-
-		otus012 = newArrayList(otu0, otu1, otu2);
 
 		otuSet012 = otuSetProvider.get();
 		otuSet012.setOTUs(newArrayList(otu0, otu1, otu2));

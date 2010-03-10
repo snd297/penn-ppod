@@ -23,6 +23,8 @@ import edu.upenn.cis.ppod.model.CharacterState;
 import edu.upenn.cis.ppod.model.CharacterStateCell;
 import edu.upenn.cis.ppod.model.CharacterStateMatrix;
 import edu.upenn.cis.ppod.model.CharacterStateRow;
+import edu.upenn.cis.ppod.model.DNASequence;
+import edu.upenn.cis.ppod.model.DNASequenceSet;
 import edu.upenn.cis.ppod.model.OTU;
 import edu.upenn.cis.ppod.model.OTUKeyedBimap;
 import edu.upenn.cis.ppod.model.OTUSet;
@@ -92,5 +94,9 @@ public interface IVisitor {
 	void visit(TreeSet treeSet);
 
 	void visit(Tree tree);
+
+	void visit(DNASequenceSet dnaSequenceSet);
+
+	void visit(DNASequence dnaSequence);
 
 }

@@ -186,7 +186,7 @@ public class CharacterStateCell extends PPodEntity {
 
 	/**
 	 * Take actions after unmarshalling that need to occur after
-	 * {@link #afterUnmarshal(Unmarshaller, Object)} is called, specifically
+	 * {@link #afterUnmarshal(Unmarshaller, Object)} is called - specifically,
 	 * after {@code @XmlIDRef} elements are resolved
 	 */
 	@Override
@@ -232,15 +232,17 @@ public class CharacterStateCell extends PPodEntity {
 		checkState(row != null && getPosition() != null,
 				"this cell has not been assigned a row");
 
+		final Integer position = getPosition();
+
 		final CharacterStateMatrix matrix = row.getMatrix();
 
 		checkState(matrix != null,
 				"this cell's row has not had a matrix assigned");
 
-		checkState(matrix.getCharacters().size() >= getPosition(),
+		checkState(matrix.getCharacters().size() >= position,
 				"this cell's column hasn't been assigned a character");
 
-		checkState(null != matrix.getCharacters().get(getPosition()),
+		checkState(null != matrix.getCharacters().get(position),
 				"this cell's column hasn't been assigned a character");
 
 		final Character thisCellsCharacter = matrix.getCharacters().get(
@@ -251,7 +253,7 @@ public class CharacterStateCell extends PPodEntity {
 
 		checkArgument(state.getCharacter().equals(thisCellsCharacter),
 				"state is from the wrong Character. We want "
-						+ matrix.getCharacters().get(getPosition())
+						+ matrix.getCharacters().get(position)
 								.getLabel() + " but got "
 						+ state.getCharacter().getLabel());
 
@@ -276,8 +278,6 @@ public class CharacterStateCell extends PPodEntity {
 		}
 	}
 
-	@XmlAttribute
-	@SuppressWarnings("unused")
 	@CheckForNull
 	private Integer getPosition() {
 		return position;
@@ -419,7 +419,7 @@ public class CharacterStateCell extends PPodEntity {
 	 * 
 	 * @return this
 	 */
-	CharacterStateCell setPosition(@Nullable final Integer position) {
+	protected CharacterStateCell setPosition(@Nullable final Integer position) {
 		this.position = position;
 		return this;
 	}

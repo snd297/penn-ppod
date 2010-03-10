@@ -62,18 +62,6 @@ public abstract class MolecularSequence<SS extends MolecularSequenceSet<?>>
 
 	MolecularSequence() {}
 
-	/**
-	 * See {@link Unmarshaller}.
-	 * 
-	 * @param u see {@code Unmarshaller}
-	 * @param parent see {@code Unmarshaller}
-	 */
-
-	public void afterUnmarshal(final Unmarshaller u, final Object parent) {
-		@SuppressWarnings("unchecked")
-		final SS parentAsSS = (SS) parent;
-		setSequenceSet(parentAsSS);
-	}
 
 	/**
 	 * Get the accession.
