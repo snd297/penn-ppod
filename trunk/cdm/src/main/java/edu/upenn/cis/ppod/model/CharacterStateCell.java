@@ -102,7 +102,6 @@ public class CharacterStateCell extends PPodEntity {
 	/** Position in a {@link CharacterStateRow}. */
 	@Column(name = "POSITION", nullable = false)
 	@Nullable
-	@SuppressWarnings("unused")
 	private Integer position;
 
 	static final String TABLE = "CHARACTER_STATE_CELL";
@@ -237,23 +236,21 @@ public class CharacterStateCell extends PPodEntity {
 		checkState(matrix != null,
 				"this cell's row has not had a matrix assigned");
 
-		final int thisCellsPosition = row.getCellIdx().get(this);
-
-		checkState(matrix.getCharacters().size() >= thisCellsPosition,
+		checkState(matrix.getCharacters().size() >= position,
 				"this cell's column hasn't been assigned a character");
 
-		checkState(null != matrix.getCharacters().get(thisCellsPosition),
+		checkState(null != matrix.getCharacters().get(position),
 				"this cell's column hasn't been assigned a character");
 
 		final Character thisCellsCharacter = matrix.getCharacters().get(
-				thisCellsPosition);
+				position);
 
 		checkArgument(state.getCharacter() != null, "state " + state.getLabel()
 				+ " hasn't been assigned to a Character");
 
 		checkArgument(state.getCharacter().equals(thisCellsCharacter),
 				"state is from the wrong Character. We want "
-						+ matrix.getCharacters().get(thisCellsPosition)
+						+ matrix.getCharacters().get(position)
 								.getLabel() + " but got "
 						+ state.getCharacter().getLabel());
 
@@ -276,6 +273,11 @@ public class CharacterStateCell extends PPodEntity {
 			}
 			setInNeedOfNewPPodVersionInfo();
 		}
+	}
+
+	@XmlAttribute
+	private Integer getPosition() {
+		return position;
 	}
 
 	/**
@@ -380,7 +382,7 @@ public class CharacterStateCell extends PPodEntity {
 			row.setInNeedOfNewPPodVersionInfo();
 			final CharacterStateMatrix matrix = row.getMatrix();
 			if (matrix != null) {
-				matrix.resetColumnPPodVersion(row.getCellIdx().get(this));
+				matrix.resetColumnPPodVersion(position);
 			}
 		}
 		super.setInNeedOfNewPPodVersionInfo();

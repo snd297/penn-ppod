@@ -246,10 +246,10 @@ public class SaveOrUpdateCharacterStateMatrix implements ISaveOrUpdateMatrix {
 				dao.delete(clearedCell);
 			}
 
-			for (final CharacterStateCell targetCell : targetRow.getCells()) {
+			int targetCellPosition = -1;
 
-				final Integer targetCellPosition = targetRow.getCellIdx().get(
-						targetCell);
+			for (final CharacterStateCell targetCell : targetRow.getCells()) {
+				targetCellPosition++;
 
 				final CharacterStateCell sourceCell = sourceRow.getCells().get(
 						targetCellPosition);

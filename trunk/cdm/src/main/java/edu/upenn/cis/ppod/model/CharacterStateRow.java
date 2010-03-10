@@ -18,22 +18,17 @@ package edu.upenn.cis.ppod.model;
 import static com.google.common.base.Preconditions.checkNotNull;
 import static com.google.common.base.Preconditions.checkState;
 import static com.google.common.collect.Lists.newArrayList;
-import static com.google.common.collect.Maps.newHashMap;
 
 import java.util.Collections;
 import java.util.List;
-import java.util.Map;
 
 import javax.annotation.Nullable;
-import javax.persistence.Column;
 import javax.persistence.Entity;
 import javax.persistence.JoinColumn;
-import javax.persistence.JoinTable;
 import javax.persistence.ManyToOne;
 import javax.persistence.OneToMany;
 import javax.persistence.OrderBy;
 import javax.persistence.Table;
-import javax.xml.bind.Unmarshaller;
 import javax.xml.bind.annotation.XmlElement;
 
 import edu.upenn.cis.ppod.util.IVisitor;
@@ -77,13 +72,6 @@ public class CharacterStateRow extends PPodEntity {
 	@OrderBy("position")
 	private final List<CharacterStateCell> cells = newArrayList();
 
-	/** {@code CharacterStateCell}-><code>cells</code>Index lookup. */
-	@org.hibernate.annotations.CollectionOfElements
-	@JoinTable(name = TABLE + "_" + CharacterStateCell.TABLE + "_IDX", joinColumns = @JoinColumn(name = ID_COLUMN))
-	@org.hibernate.annotations.MapKeyManyToMany(joinColumns = @JoinColumn(name = CharacterStateCell.ID_COLUMN))
-	@Column(name = CharacterStateCell.TABLE + "_IDX")
-	private final Map<CharacterStateCell, Integer> cellIdx = newHashMap();
-
 	/**
 	 * The {@code CharacterStateMatrix} to which this {@code CharacterStateRow}
 	 * belongs.
@@ -106,19 +94,6 @@ public class CharacterStateRow extends PPodEntity {
 	}
 
 	/**
-	 * {@link Unmarshaller} callback.
-	 * 
-	 * @param u see {@code Unmarshaller}
-	 * @param parent see {@code Unmarshaller}
-	 */
-	public void afterUnmarshal(final Unmarshaller u, final Object parent) {
-		int i = 0;
-		for (final CharacterStateCell cell : getCells()) {
-			cellIdx.put(cell, i++);
-		}
-	}
-
-	/**
 	 * Empty out and return this row's cells. After calling this,
 	 * {@link #getCells()}{@code .size()} will be {@code 0}.
 	 * <p>
@@ -135,17 +110,7 @@ public class CharacterStateRow extends PPodEntity {
 			clearedCell.setRow(null);
 		}
 		cells.clear();
-		cellIdx.clear();
 		return clearedCells;
-	}
-
-	/**
-	 * Get an unmodifiable view of the cell to row position lookup map.
-	 * 
-	 * @return get an unmodifiable view of the cell to row position lookup map
-	 */
-	public Map<CharacterStateCell, Integer> getCellIdx() {
-		return Collections.unmodifiableMap(cellIdx);
 	}
 
 	/**
@@ -218,7 +183,7 @@ public class CharacterStateRow extends PPodEntity {
 			getCellsModifiable().add(newCells.get(cellPos));
 			newCells.get(cellPos).setRow(this);
 			newCells.get(cellPos).setPosition(cellPos);
-			cellIdx.put(getCells().get(cellPos), cellPos);
+			// cellIdx.put(getCells().get(cellPos), cellPos);
 		}
 		setInNeedOfNewPPodVersionInfo();
 		return clearedCells;
