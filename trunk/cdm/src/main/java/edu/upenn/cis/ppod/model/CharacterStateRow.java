@@ -29,6 +29,7 @@ import javax.persistence.ManyToOne;
 import javax.persistence.OneToMany;
 import javax.persistence.OrderBy;
 import javax.persistence.Table;
+import javax.xml.bind.Unmarshaller;
 import javax.xml.bind.annotation.XmlElement;
 
 import edu.upenn.cis.ppod.util.IVisitor;
@@ -91,6 +92,19 @@ public class CharacterStateRow extends PPodEntity {
 		}
 		super.accept(visitor);
 		return this;
+	}
+
+	/**
+	 * {@link Unmarshaller} callback.
+	 * 
+	 * @param u see {@code Unmarshaller}
+	 * @param parent see {@code Unmarshaller}
+	 */
+	public void afterUnmarshal(final Unmarshaller u, final Object parent) {
+		int cellPosition = -1;
+		for (final CharacterStateCell cell : getCells()) {
+			cell.setPosition(++cellPosition);
+		}
 	}
 
 	/**

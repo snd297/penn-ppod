@@ -19,6 +19,7 @@ package edu.upenn.cis.ppod.util;
 import edu.upenn.cis.ppod.model.Character;
 import edu.upenn.cis.ppod.model.CharacterStateCell;
 import edu.upenn.cis.ppod.model.CharacterStateMatrix;
+import edu.upenn.cis.ppod.model.DNASequenceSet;
 import edu.upenn.cis.ppod.model.OTUKeyedBimap;
 
 /**
@@ -56,5 +57,10 @@ public class AfterUnmarshalVisitor extends EmptyVisitor {
 	@Override
 	public void visit(final OTUKeyedBimap<?, ?> otuKeyedMap) {
 		otuKeyedMap.afterUnmarshal();
+	}
+
+	@Override
+	public void visit(DNASequenceSet dnaSequenceSet) {
+		dnaSequenceSet.afterUnmarshal();
 	}
 }

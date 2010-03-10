@@ -19,11 +19,14 @@ import java.util.List;
 
 import javax.annotation.CheckForNull;
 import javax.annotation.Nullable;
+import javax.annotation.OverridingMethodsMustInvokeSuper;
 import javax.persistence.JoinColumn;
 import javax.persistence.ManyToOne;
 import javax.persistence.MappedSuperclass;
+import javax.xml.bind.Unmarshaller;
 
 import edu.upenn.cis.ppod.modelinterfaces.IWithOTUSet;
+import edu.upenn.cis.ppod.util.IVisitor;
 
 @MappedSuperclass
 public abstract class MolecularSequenceSet<S extends MolecularSequence<?>>
@@ -35,6 +38,29 @@ public abstract class MolecularSequenceSet<S extends MolecularSequence<?>>
 	@JoinColumn(name = OTUSet.ID_COLUMN, nullable = false)
 	@CheckForNull
 	private OTUSet otuSet;
+
+	@Override
+	public MolecularSequenceSet<S> accept(final IVisitor visitor) {
+		for (final S sequence : getOTUsToSequences()
+				.getOTUsToValuesModifiable().values()) {
+			sequence.accept(visitor);
+		}
+		super.accept(visitor);
+		return this;
+	}
+
+	protected abstract OTUKeyedBimap<S, ?> getOTUsToSequences();
+
+	/**
+	 * See {@link Unmarshaller}.
+	 * 
+	 * @param u see {@code Unmarshaller}
+	 * @param parent see {@code Unmarshaller}
+	 */
+	@OverridingMethodsMustInvokeSuper
+	public void afterUnmarshal(final Unmarshaller u, final Object parent) {
+		setOTUSet((OTUSet) parent);
+	}
 
 	/**
 	 * Getter. Will be {@code null} when object is first created.
@@ -54,6 +80,7 @@ public abstract class MolecularSequenceSet<S extends MolecularSequence<?>>
 	 * @throws IllegalArgument Exception if {@code otu} does not belong to this
 	 *             sequence's {@code OTUSet}
 	 */
+	@Nullable
 	public abstract S getSequence(final OTU otu);
 
 	/**

@@ -28,6 +28,8 @@ import javax.xml.bind.annotation.XmlElement;
 
 import com.google.inject.Inject;
 
+import edu.upenn.cis.ppod.util.IVisitor;
+
 /**
  * @author Sam Donnelly
  */
@@ -39,6 +41,13 @@ public class DNASequenceSet extends MolecularSequenceSet<DNASequence> {
 
 	public final static String ID_COLUMN = TABLE + "_"
 			+ PersistentObject.ID_COLUMN;
+
+	@Override
+	public DNASequenceSet accept(final IVisitor visitor) {
+		visitor.visit(this);
+		super.accept(visitor);
+		return this;
+	}
 
 	/**
 	 * The sequences.
@@ -53,9 +62,25 @@ public class DNASequenceSet extends MolecularSequenceSet<DNASequence> {
 		this.otusToSequences = otusToDNASequences;
 	}
 
+	@Override
+	public void afterUnmarshal() {
+		super.afterUnmarshal();
+		for (final DNASequence dnaSequence : getSequences()) {
+			dnaSequence.setSequenceSet(this);
+		}
+	}
+
 	@XmlElement(name = "otusToSequences")
-	private OTUsToDNASequences getOTUsToSequences() {
+	@Override
+	protected OTUsToDNASequences getOTUsToSequences() {
 		return otusToSequences;
+	}
+
+	@SuppressWarnings("unused")
+	private DNASequenceSet setOTUsToSequences(
+			final OTUsToDNASequences otusToSequences) {
+		this.otusToSequences = otusToSequences;
+		return this;
 	}
 
 	@Override
@@ -73,4 +98,5 @@ public class DNASequenceSet extends MolecularSequenceSet<DNASequence> {
 	public DNASequence putSequence(final OTU otu, final DNASequence newSequence) {
 		return getOTUsToSequences().put(otu, newSequence, this);
 	}
+
 }
