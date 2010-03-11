@@ -95,13 +95,12 @@ public class Character extends UUPPodEntityWXmlId {
 	Character() {}
 
 	@Override
-	public Character accept(final IVisitor visitor) {
-		visitor.visit(this);
+	public void accept(final IVisitor visitor) {
 		for (final CharacterState state : getStates().values()) {
 			state.accept(visitor);
 		}
 		super.accept(visitor);
-		return this;
+		visitor.visit(this);
 	}
 
 	/**

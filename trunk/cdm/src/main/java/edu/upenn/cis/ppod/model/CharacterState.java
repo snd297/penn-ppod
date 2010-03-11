@@ -156,10 +156,9 @@ public class CharacterState extends PPodEntityWXmlId {
 	}
 
 	@Override
-	public CharacterState accept(final IVisitor visitor) {
-		visitor.visit(this);
+	public void accept(final IVisitor visitor) {
 		super.accept(visitor);
-		return this;
+		visitor.visit(this);
 	}
 
 	/**

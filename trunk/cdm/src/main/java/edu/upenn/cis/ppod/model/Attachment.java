@@ -154,11 +154,10 @@ public class Attachment extends UUPPodEntityWXmlId {
 	Attachment() {}
 
 	@Override
-	public Attachment accept(final IVisitor visitor) {
+	public void accept(final IVisitor visitor) {
 		visitor.visit(this);
 		getType().accept(visitor);
 		super.accept(visitor);
-		return this;
 	}
 
 	IPPodEntity addAttachee(final PPodEntity attachee) {

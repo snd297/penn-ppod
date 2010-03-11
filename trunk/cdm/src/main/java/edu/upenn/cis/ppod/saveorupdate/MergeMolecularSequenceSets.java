@@ -50,9 +50,9 @@ public class MergeMolecularSequenceSets<SS extends MolecularSequenceSet<S>, S ex
 			if (null == (targetSequence = targetSequenceSet
 					.getSequence(targetOTU))) {
 				targetSequence = sequenceProvider.get();
+				targetSequenceSet.putSequence(targetOTU, targetSequence);
 				targetSequence.setPPodVersionInfo(newPPodVersionInfo
 						.getNewPPodVersionInfo());
-				targetSequenceSet.putSequence(targetOTU, targetSequence);
 			}
 			targetSequence.setSequence(sourceSequence.getSequence());
 			targetSequence.setName(sourceSequence.getName());

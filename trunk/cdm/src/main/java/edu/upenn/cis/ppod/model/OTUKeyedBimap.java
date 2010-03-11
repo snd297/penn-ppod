@@ -45,12 +45,11 @@ public abstract class OTUKeyedBimap<T extends PersistentObject, P extends IWithO
 	static final String OTU_IDX_COLUMN = "OTU_IDX";
 
 	@Override
-	public OTUKeyedBimap<T, P> accept(final IVisitor visitor) {
-		visitor.visit(this);
+	public void accept(final IVisitor visitor) {
 		for (final T t : getOTUsToValuesModifiable().values()) {
 			t.accept(visitor);
 		}
-		return this;
+		visitor.visit(this);
 	}
 
 	public void afterUnmarshal() {
@@ -144,7 +143,6 @@ public abstract class OTUKeyedBimap<T extends PersistentObject, P extends IWithO
 		}
 		checkArgument(!getOTUsToValuesModifiable().containsValue(value),
 				"already has a value .equals() to newT: " + value);
-
 		parent.setInNeedOfNewPPodVersionInfo();
 		return getOTUsToValuesModifiable().put(key, value);
 	}

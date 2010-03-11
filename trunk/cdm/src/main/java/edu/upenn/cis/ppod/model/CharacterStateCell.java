@@ -179,9 +179,8 @@ public class CharacterStateCell extends PPodEntity {
 	CharacterStateCell() {}
 
 	@Override
-	public CharacterStateCell accept(final IVisitor visitor) {
+	public void accept(final IVisitor visitor) {
 		visitor.visit(this);
-		return this;
 	}
 
 	/**

@@ -30,9 +30,8 @@ public interface IPersistentObject {
 	 * Visitor pattern accept method.
 	 * 
 	 * @param visitor the visitor
-	 * @return this {@code IPersistentObject}
 	 */
-	IPersistentObject accept(IVisitor visitor);
+	void accept(IVisitor visitor);
 
 	/**
 	 * The surrogate key of the entity

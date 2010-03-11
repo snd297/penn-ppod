@@ -23,7 +23,6 @@ import javax.annotation.Nullable;
 import javax.persistence.Column;
 import javax.persistence.Lob;
 import javax.persistence.MappedSuperclass;
-import javax.xml.bind.Unmarshaller;
 import javax.xml.bind.annotation.XmlAttribute;
 import javax.xml.bind.annotation.XmlElement;
 import javax.xml.bind.annotation.XmlSeeAlso;
@@ -91,7 +90,7 @@ public abstract class MolecularSequence<SS extends MolecularSequenceSet<?>>
 	 * @return the name
 	 */
 	@XmlAttribute
-	@Nullable
+	@CheckForNull
 	public String getName() {
 		return name;
 	}

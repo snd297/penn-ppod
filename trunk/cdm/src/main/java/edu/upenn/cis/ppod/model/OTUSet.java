@@ -123,8 +123,7 @@ public class OTUSet extends UUPPodEntityWXmlId {
 	OTUSet() {}
 
 	@Override
-	public OTUSet accept(final IVisitor visitor) {
-		visitor.visit(this);
+	public void accept(final IVisitor visitor) {
 		for (final OTU otu : getOTUs()) {
 			otu.accept(visitor);
 		}
@@ -134,9 +133,11 @@ public class OTUSet extends UUPPodEntityWXmlId {
 		for (final TreeSet treeSet : getTreeSets()) {
 			treeSet.accept(visitor);
 		}
+		for (final DNASequenceSet dnaSequenceSet : getDNASequenceSets()) {
+			dnaSequenceSet.accept(visitor);
+		}
 		super.accept(visitor);
-
-		return this;
+		visitor.visit(this);
 	}
 
 	/**

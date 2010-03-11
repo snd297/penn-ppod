@@ -133,11 +133,10 @@ public abstract class PPodEntity extends PersistentObject implements
 
 	@Override
 	@OverridingMethodsMustInvokeSuper
-	public PPodEntity accept(final IVisitor visitor) {
+	public void accept(final IVisitor visitor) {
 		for (final Attachment attachment : getAttachments()) {
 			attachment.accept(visitor);
 		}
-		return this;
 	}
 
 	public IPPodEntity addAttachment(final Attachment attachment) {

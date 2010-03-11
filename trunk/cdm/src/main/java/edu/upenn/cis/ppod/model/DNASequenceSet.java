@@ -43,10 +43,9 @@ public class DNASequenceSet extends MolecularSequenceSet<DNASequence> {
 			+ PersistentObject.ID_COLUMN;
 
 	@Override
-	public DNASequenceSet accept(final IVisitor visitor) {
-		visitor.visit(this);
+	public void accept(final IVisitor visitor) {
 		super.accept(visitor);
-		return this;
+		visitor.visit(this);
 	}
 
 	/**
@@ -96,6 +95,7 @@ public class DNASequenceSet extends MolecularSequenceSet<DNASequence> {
 
 	@Override
 	public DNASequence putSequence(final OTU otu, final DNASequence newSequence) {
+		
 		return getOTUsToSequences().put(otu, newSequence, this);
 	}
 
