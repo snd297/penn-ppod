@@ -52,9 +52,8 @@ public class DNASequence extends MolecularSequence<DNASequenceSet> {
 	}
 
 	@Override
-	public DNASequence accept(final IVisitor visitor) {
+	public void accept(final IVisitor visitor) {
 		visitor.visit(this);
-		return this;
 	}
 
 	/**

@@ -58,7 +58,7 @@ public abstract class PersistentObject implements IPersistentObject {
 	/** Default constructor. */
 	protected PersistentObject() {}
 
-	public PersistentObject accept(final IVisitor visitor) {
+	public void accept(final IVisitor visitor) {
 		throw new UnsupportedOperationException();
 	}
 

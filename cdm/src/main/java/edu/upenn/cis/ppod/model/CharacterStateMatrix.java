@@ -160,14 +160,13 @@ public class CharacterStateMatrix extends UUPPodEntityWXmlId implements
 	}
 
 	@Override
-	public CharacterStateMatrix accept(final IVisitor visitor) {
-		visitor.visit(this);
+	public void accept(final IVisitor visitor) {
 		for (final Character character : getCharacters()) {
 			character.accept(visitor);
 		}
 		getOTUsToRows().accept(visitor);
 		super.accept(visitor);
-		return this;
+		visitor.visit(this);
 	}
 
 	@Override

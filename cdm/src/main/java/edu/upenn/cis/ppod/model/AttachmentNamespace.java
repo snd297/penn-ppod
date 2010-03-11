@@ -47,9 +47,8 @@ public class AttachmentNamespace extends PersistentObjectWithXmlId {
 	AttachmentNamespace() {}
 
 	@Override
-	public AttachmentNamespace accept(final IVisitor visitor) {
+	public void accept(final IVisitor visitor) {
 		visitor.visit(this);
-		return this;
 	}
 
 	/**

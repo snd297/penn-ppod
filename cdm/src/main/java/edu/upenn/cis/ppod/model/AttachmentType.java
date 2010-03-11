@@ -61,10 +61,9 @@ public class AttachmentType extends PersistentObjectWithXmlId {
 	AttachmentType() {}
 
 	@Override
-	public AttachmentType accept(final IVisitor visitor) {
+	public void accept(final IVisitor visitor) {
 		visitor.visit(this);
 		getNamespace().accept(visitor);
-		return this;
 	}
 
 	/**

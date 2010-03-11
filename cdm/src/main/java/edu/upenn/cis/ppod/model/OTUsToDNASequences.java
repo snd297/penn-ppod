@@ -23,7 +23,7 @@ import edu.upenn.cis.ppod.util.OTUSomethingPair;
 @Entity
 @Table(name = "OTUS_TO_DNA_SEQUENCES")
 public class OTUsToDNASequences extends
-		OTUKeyedBimap<DNASequence, DNASequenceSet> {
+		OTUsToMolecularSequences<DNASequence, DNASequenceSet> {
 
 	/**
 	 * The sequences. We don't do save_update cascades since we want to control
@@ -78,9 +78,7 @@ public class OTUsToDNASequences extends
 			final DNASequenceSet parent) {
 		final DNASequence originalSequence = super.putHelper(otu, newSequence,
 				parent);
-		if (originalSequence != null && originalSequence != newSequence) {
-			originalSequence.setSequenceSet(parent);
-		}
+		newSequence.setSequenceSet(parent);
 		return originalSequence;
 	}
 }

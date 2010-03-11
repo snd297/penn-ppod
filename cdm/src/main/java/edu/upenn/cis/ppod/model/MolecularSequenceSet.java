@@ -40,16 +40,10 @@ public abstract class MolecularSequenceSet<S extends MolecularSequence<?>>
 	private OTUSet otuSet;
 
 	@Override
-	public MolecularSequenceSet<S> accept(final IVisitor visitor) {
-		for (final S sequence : getOTUsToSequences()
-				.getOTUsToValuesModifiable().values()) {
-			sequence.accept(visitor);
-		}
+	public void accept(final IVisitor visitor) {
+		getOTUsToSequences().accept(visitor);
 		super.accept(visitor);
-		return this;
 	}
-
-	protected abstract OTUKeyedBimap<S, ?> getOTUsToSequences();
 
 	/**
 	 * See {@link Unmarshaller}.
@@ -71,6 +65,8 @@ public abstract class MolecularSequenceSet<S extends MolecularSequence<?>>
 	public OTUSet getOTUSet() {
 		return otuSet;
 	}
+
+	protected abstract OTUKeyedBimap<S, ?> getOTUsToSequences();
 
 	/**
 	 * 
