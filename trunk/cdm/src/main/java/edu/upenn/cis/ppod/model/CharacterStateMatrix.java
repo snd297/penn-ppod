@@ -53,8 +53,6 @@ import org.hibernate.annotations.IndexColumn;
 
 import com.google.common.collect.BiMap;
 import com.google.common.collect.HashBiMap;
-import com.google.common.collect.ImmutableList;
-import com.google.common.collect.ImmutableMap;
 import com.google.inject.Inject;
 
 import edu.upenn.cis.ppod.modelinterfaces.IWithOTUSet;
@@ -70,7 +68,7 @@ import edu.upenn.cis.ppod.util.OTUSomethingPair;
 @Entity
 @Table(name = CharacterStateMatrix.TABLE)
 public class CharacterStateMatrix extends UUPPodEntityWXmlId implements
-		IWithOTUSet {
+		IWithOTUSet, Iterable<CharacterStateRow> {
 
 	/** This entity's table name. Intentionally package-private. */
 	static final String TABLE = "CHARACTER_STATE_MATRIX";
@@ -157,13 +155,13 @@ public class CharacterStateMatrix extends UUPPodEntityWXmlId implements
 	CharacterStateMatrix() {}
 
 	@Inject
-	protected CharacterStateMatrix(final OTUsToCharacterStateRows rows) {
-		this.otusToRows = rows;
+	protected CharacterStateMatrix(final OTUsToCharacterStateRows otusToRows) {
+		this.otusToRows = otusToRows;
 	}
 
 	@Override
 	public void accept(final IVisitor visitor) {
-		for (final Character character : getCharacters()) {
+		for (final Character character : getCharactersReference()) {
 			character.accept(visitor);
 		}
 		getOTUsToRows().accept(visitor);
@@ -181,7 +179,7 @@ public class CharacterStateMatrix extends UUPPodEntityWXmlId implements
 	public void afterUnmarshal() {
 		super.afterUnmarshal();
 		int i = 0;
-		for (final Character character : getCharacters()) {
+		for (final Character character : getCharactersReference()) {
 			if (this instanceof DNAStateMatrix
 					|| this instanceof RNAStateMatrix) {
 				// characterIdx is meaningless for MolecularMatrix's since
@@ -276,21 +274,21 @@ public class CharacterStateMatrix extends UUPPodEntityWXmlId implements
 	}
 
 	/**
-	 * Get a copy of the characterIdx.
+	 * Get an unmodifialbe view of the characterIdx.
 	 * 
 	 * @return a copy of the characterIdx
 	 */
-	public ImmutableMap<Character, Integer> getCharacterIdx() {
-		return ImmutableMap.copyOf(newHashMap(characterIdx));
+	public Map<Character, Integer> getCharacterIdx() {
+		return Collections.unmodifiableMap(characterIdx);
 	}
 
 	/**
-	 * Get a copy of the <code>Character</code>s.
+	 * Get an unmodifiable view of this matrix's <code>Character</code>s.
 	 * 
 	 * @return a copy of the <code>Character</code> ordering
 	 */
-	public ImmutableList<Character> getCharacters() {
-		return ImmutableList.copyOf(getCharactersReference());
+	public List<Character> getCharacters() {
+		return Collections.unmodifiableList(getCharactersReference());
 	}
 
 	/**
@@ -390,6 +388,8 @@ public class CharacterStateMatrix extends UUPPodEntityWXmlId implements
 
 	/**
 	 * Get the otusToRows.
+	 * <p>
+	 * Not {@code final} for JAXB
 	 * 
 	 * @return the otusToRows
 	 */
@@ -414,15 +414,6 @@ public class CharacterStateMatrix extends UUPPodEntityWXmlId implements
 	public CharacterStateRow getRow(final OTU otu) {
 		checkNotNull(otu);
 		return getOTUsToRows().get(otu, this);
-	}
-
-	/**
-	 * Get a copy of the matrix's rows in {@link #getOTUOrdering()} order.
-	 * 
-	 * @return a copy of this matrix's rows in {@code getOTUOrdering()} order
-	 */
-	public List<CharacterStateRow> getRows() {
-		return getOTUsToRows().getValuesInOTUOrder(getOTUSet());
 	}
 
 	/**
@@ -629,7 +620,7 @@ public class CharacterStateMatrix extends UUPPodEntityWXmlId implements
 	/**
 	 * Setter.
 	 * <p>
-	 * Meant to be called only from objects responsible for managin the {@code
+	 * Meant to be called only from objects responsible for managing the {@code
 	 * OTUSET<->CharacterStateMatrix} relationship.
 	 * <p>
 	 * This method will remove otusToRows from this matrix as necessary.
@@ -643,7 +634,7 @@ public class CharacterStateMatrix extends UUPPodEntityWXmlId implements
 	 * 
 	 * @return this
 	 */
-	protected CharacterStateMatrix setOTUSet(@Nullable final OTUSet newOTUSet) {
+	CharacterStateMatrix setOTUSet(@Nullable final OTUSet newOTUSet) {
 		otuSet = newOTUSet;
 		getOTUsToRows().setOTUs(getOTUSet(), this);
 		return this;
@@ -662,4 +653,33 @@ public class CharacterStateMatrix extends UUPPodEntityWXmlId implements
 		otusToRows = newOTUsToRows;
 		return this;
 	}
+
+	/**
+	 * Get the number of characters this matirx has.
+	 * 
+	 * @return the number of characters this matrix has
+	 */
+	public int getCharactersSize() {
+		return getCharactersReference().size();
+	}
+
+	/**
+	 * Get an iterator over this matrix's rows. The iterator will traverse the
+	 * rows in {@code getOTUSet().getOTUs()} order.
+	 * 
+	 * return an iterator over this matrix's rows
+	 */
+	public Iterator<CharacterStateRow> iterator() {
+		return getOTUsToRows().getValuesInOTUOrder(getOTUSet()).iterator();
+	}
+
+	/**
+	 * Get the number of rows in this matrix.
+	 * 
+	 * @return the number of rows in this matrix
+	 */
+	public int getRowsSize() {
+		return getOTUsToRows().getOTUsToValuesReference().size();
+	}
+
 }

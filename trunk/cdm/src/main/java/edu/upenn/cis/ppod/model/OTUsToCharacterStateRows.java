@@ -40,10 +40,9 @@ import edu.upenn.cis.ppod.util.OTUSomethingPair;
 public class OTUsToCharacterStateRows extends
 		OTUKeyedBimap<CharacterStateRow, CharacterStateMatrix> {
 	/**
-	 * The rows of the matrix. We don't do save_update cascades since we
-	 * want to control when rows are added to the persistence context. We
-	 * sometimes don't want the rows saved or reattached when the the
-	 * matrix is.
+	 * The rows of the matrix. We don't do save_update cascades since we want to
+	 * control when rows are added to the persistence context. We sometimes
+	 * don't want the rows saved or reattached when the the matrix is.
 	 */
 	@org.hibernate.annotations.CollectionOfElements
 	@org.hibernate.annotations.MapKeyManyToMany(joinColumns = @JoinColumn(name = OTU.ID_COLUMN))
@@ -51,8 +50,8 @@ public class OTUsToCharacterStateRows extends
 	private final Map<OTU, CharacterStateRow> rows = newHashMap();
 
 	/**
-	 * For marshalling {@code rows}. Since a {@code Map}'s key couldn't be
-	 * an {@code XmlIDREF} in JAXB - at least not easily.
+	 * For marshalling {@code rows}. Since a {@code Map}'s key couldn't be an
+	 * {@code XmlIDREF} in JAXB - at least not easily.
 	 */
 	@Transient
 	private final Set<OTUCharacterStateRowPair> otuRowPairs = newHashSet();
@@ -60,10 +59,10 @@ public class OTUsToCharacterStateRows extends
 	OTUsToCharacterStateRows() {}
 
 	public boolean beforeMarshal(@Nullable final Marshaller marshaller) {
-		getOTURowPairsModifiable().clear();
+		getOTURowPairsReference().clear();
 		for (final Map.Entry<OTU, CharacterStateRow> otuToRow : getOTUsToValuesReference()
 				.entrySet()) {
-			getOTURowPairsModifiable().add(
+			getOTURowPairsReference().add(
 					OTUCharacterStateRowPair.of(otuToRow.getKey(), otuToRow
 							.getValue()));
 		}
@@ -71,17 +70,17 @@ public class OTUsToCharacterStateRows extends
 	}
 
 	@XmlElement(name = "otuRowPair")
-	private Set<OTUCharacterStateRowPair> getOTURowPairsModifiable() {
+	protected Set<OTUCharacterStateRowPair> getOTURowPairsReference() {
 		return otuRowPairs;
 	}
 
 	@Override
-	protected Map<OTU, CharacterStateRow> getOTUsToValuesReference() {
+	protected final Map<OTU, CharacterStateRow> getOTUsToValuesReference() {
 		return rows;
 	}
 
 	@Override
-	protected Set<OTUSomethingPair<CharacterStateRow>> getOTUValuePairs() {
+	protected final Set<OTUSomethingPair<CharacterStateRow>> getOTUValuePairs() {
 		final Set<OTUSomethingPair<CharacterStateRow>> otuValuePairs = newHashSet();
 		for (final OTUCharacterStateRowPair otuRowPair : otuRowPairs) {
 			otuValuePairs.add(otuRowPair);

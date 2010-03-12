@@ -76,7 +76,7 @@ public abstract class MolecularSequenceSet<S extends MolecularSequence<?>>
 	}
 
 	@XmlAttribute(name = "label")
-	public final String getLabel() {
+	public String getLabel() {
 		return label;
 	}
 
@@ -86,7 +86,7 @@ public abstract class MolecularSequenceSet<S extends MolecularSequence<?>>
 	 * @return this matrix's {@code OTUSet}
 	 */
 	@Nullable
-	public final OTUSet getOTUSet() {
+	public OTUSet getOTUSet() {
 		return otuSet;
 	}
 
@@ -109,7 +109,7 @@ public abstract class MolecularSequenceSet<S extends MolecularSequence<?>>
 	 * 
 	 * @return the constituent sequences
 	 */
-	public final List<S> getSequences() {
+	public List<S> getSequences() {
 		return getOTUsToSequences().getValuesInOTUOrder(getOTUSet());
 	}
 
@@ -123,7 +123,7 @@ public abstract class MolecularSequenceSet<S extends MolecularSequence<?>>
 	 *             the same length as those sequences
 	 */
 	@CheckForNull
-	public final S putSequence(final OTU otu, final S sequence) {
+	public S putSequence(final OTU otu, final S sequence) {
 		checkNotNull(otu);
 		checkNotNull(sequence);
 		checkArgument(sequence.getSequence() != null,
@@ -151,7 +151,7 @@ public abstract class MolecularSequenceSet<S extends MolecularSequence<?>>
 		return this;
 	}
 
-	public final MolecularSequenceSet<S> setLabel(final String label) {
+	public MolecularSequenceSet<S> setLabel(final String label) {
 		checkNotNull(label);
 		if (label.equals(getLabel())) {
 

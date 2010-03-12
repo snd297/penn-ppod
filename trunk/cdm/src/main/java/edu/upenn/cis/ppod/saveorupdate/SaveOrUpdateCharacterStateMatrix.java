@@ -218,9 +218,9 @@ public class SaveOrUpdateCharacterStateMatrix implements ISaveOrUpdateMatrix {
 // }
 
 			final ImmutableList<CharacterStateCell> originalTargetCells = ImmutableList
-					.copyOf(targetRow.getCells());
+					.copyOf(targetRow.iterator());
 			final List<CharacterStateCell> newTargetCells = newArrayListWithCapacity(sourceRow
-					.getCells().size());
+					.getCellsSize());
 
 			// First we fill with empty cells
 			for (int newCellIdx = 0; newCellIdx < targetMatrix.getCharacters()
@@ -247,15 +247,14 @@ public class SaveOrUpdateCharacterStateMatrix implements ISaveOrUpdateMatrix {
 			}
 
 			int targetCellPosition = -1;
-
-			for (final CharacterStateCell targetCell : targetRow.getCells()) {
+			for (final CharacterStateCell targetCell : targetRow) {
 				targetCellPosition++;
 
-				final CharacterStateCell sourceCell = sourceRow.getCells().get(
+				final CharacterStateCell sourceCell = sourceRow.getCell(
 						targetCellPosition);
 
 				final Set<CharacterState> newTargetStates = newHashSet();
-				for (final CharacterState sourceState : sourceCell.getStates()) {
+				for (final CharacterState sourceState : sourceCell) {
 					newTargetStates.add(characters.get(targetCellPosition)
 							.getStates().get(sourceState.getStateNumber()));
 				}

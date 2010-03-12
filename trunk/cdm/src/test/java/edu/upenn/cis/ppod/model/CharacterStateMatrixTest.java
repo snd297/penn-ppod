@@ -16,7 +16,6 @@
 package edu.upenn.cis.ppod.model;
 
 import static com.google.common.collect.Lists.newArrayList;
-import static com.google.common.collect.Sets.newHashSet;
 import static edu.upenn.cis.ppod.util.CollectionsUtil.nullFillAndSet;
 import static org.testng.Assert.assertEquals;
 import static org.testng.Assert.assertFalse;
@@ -25,6 +24,7 @@ import static org.testng.Assert.assertNotSame;
 import static org.testng.Assert.assertNull;
 import static org.testng.Assert.assertTrue;
 
+import java.util.Arrays;
 import java.util.List;
 
 import org.testng.Assert;
@@ -32,6 +32,7 @@ import org.testng.annotations.BeforeMethod;
 import org.testng.annotations.Test;
 
 import com.google.common.collect.ImmutableList;
+import com.google.common.collect.ImmutableSet;
 import com.google.inject.Inject;
 import com.google.inject.Provider;
 
@@ -87,7 +88,10 @@ public class CharacterStateMatrixTest {
 		otuSet012 = otuSetProvider.get();
 		otuSet012.setOTUs(newArrayList(otu0, otu1, otu2));
 
-		matrix.setOTUSet(otuSet012);
+		final ImmutableSet<CharacterStateMatrix> matrices = ImmutableSet
+				.of(matrix);
+
+		otuSet012.setMatrices(matrices);
 
 	}
 
@@ -111,12 +115,14 @@ public class CharacterStateMatrixTest {
 
 		matrix.putRow(otu0, rowProvider.get());
 		final CharacterStateCell cell00 = cellProvider.get();
-		matrix.getRows().get(0).setCells(newArrayList(cell00));
+		matrix.getRow(otu0).setCells(
+				Arrays.asList(new CharacterStateCell[] { cell00 }));
 		cell00.setSingleState(stateFactory.create(0).setCharacter(character));
 
 		matrix.putRow(otu1, rowProvider.get());
 		final CharacterStateCell cell10 = cellProvider.get();
-		matrix.getRows().get(1).setCells(newArrayList(cell10));
+		matrix.getRow(otu1).setCells(
+				Arrays.asList(new CharacterStateCell[] { cell10 }));
 
 		final CharacterState state1 = stateFactory.create(1);
 		character.addState(state1);
@@ -124,30 +130,31 @@ public class CharacterStateMatrixTest {
 
 		matrix.putRow(otu2, rowProvider.get());
 		final CharacterStateCell cell20 = cellProvider.get();
-		matrix.getRows().get(1).setCells(newArrayList(cell20));
+		matrix.getRow(otu2).setCells(
+				Arrays.asList(new CharacterStateCell[] { cell20 }));
 
 		final CharacterState state0 = stateFactory.create(0);
 		character.addState(state0);
 		cell20.setSingleState(state0);
 
-		final List<CharacterStateRow> originalRows = newArrayList(matrix
-				.getRows());
+		final List<CharacterStateRow> originalRows = newArrayList(matrix);
 
 		final ImmutableList<OTU> otus210 = ImmutableList.of(otu2, otu1, otu0);
 		matrix.getOTUSet().setOTUs(otus210);
 
 		assertEquals(matrix.getOTUSet().getOTUs(), otus210);
-		assertEquals(matrix.getRows().size(), originalRows.size());
+		assertEquals(matrix.getRowsSize(), originalRows.size());
 
 	}
 
-	public void setOTUsWLessOTUs() {
+	public void setOTUsWithLessOTUs() {
 
 		otuSet012.setOTUs(newArrayList(otu1, otu2));
 
-		final List<OTU> otus12 = newArrayList(otu1, otu2);
+		final ImmutableList<OTU> otus12 = ImmutableList.of(otu1, otu2);
+
 		assertEquals(matrix.getOTUSet().getOTUs(), otus12);
-		assertEquals(matrix.getRows().size(), otus12.size());
+		assertEquals(matrix.getRowsSize(), otus12.size());
 	}
 
 	/**

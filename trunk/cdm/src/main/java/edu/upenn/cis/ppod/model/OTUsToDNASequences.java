@@ -69,17 +69,17 @@ public class OTUsToDNASequences extends
 	}
 
 	@XmlElement(name = "otuSequencePair")
-	private Set<OTUDNASequencePair> getOTUSequencePairsReference() {
+	protected Set<OTUDNASequencePair> getOTUSequencePairsReference() {
 		return otuSequencePairs;
 	}
 
 	@Override
-	protected Map<OTU, DNASequence> getOTUsToValuesReference() {
+	protected final Map<OTU, DNASequence> getOTUsToValuesReference() {
 		return sequences;
 	}
 
 	@Override
-	protected Set<OTUSomethingPair<DNASequence>> getOTUValuePairs() {
+	protected final Set<OTUSomethingPair<DNASequence>> getOTUValuePairs() {
 		final Set<OTUSomethingPair<DNASequence>> otuSomethingPairs = newHashSet();
 		for (final OTUDNASequencePair otuDNASequencePair : getOTUSequencePairsReference()) {
 			otuSomethingPairs.add(otuDNASequencePair);

@@ -85,11 +85,10 @@ public class ModelAssert {
 	public static void assertEqualsCharacterStateCells(
 			final CharacterStateCell actualCell,
 			final CharacterStateCell expectedCell) {
-		assertEquals(actualCell.getStates().size(), expectedCell.getStates()
-				.size());
+		assertEquals(actualCell.getStatesSize(), expectedCell.getStatesSize());
 		for (final Iterator<CharacterState> actualStateItr = actualCell
-				.getStates().iterator(), expectedStateItr = expectedCell
-				.getStates().iterator(); actualStateItr.hasNext()
+				.iterator(), expectedStateItr = expectedCell
+				.iterator(); actualStateItr.hasNext()
 				&& expectedStateItr.hasNext();) {
 			assertEqualsCharacterStates(actualStateItr.next(), expectedStateItr
 					.next());
@@ -99,10 +98,10 @@ public class ModelAssert {
 	public static void assertEqualsCharacterStateRows(
 			final CharacterStateRow actualRow,
 			final CharacterStateRow expectedRow) {
-		assertEquals(actualRow.getCells().size(), expectedRow.getCells().size());
+		assertEquals(actualRow.getCellsSize(), expectedRow.getCellsSize());
 		for (final Iterator<CharacterStateCell> actualCellItr = actualRow
-				.getCells().iterator(), expectedCellItr = expectedRow
-				.getCells().iterator(); actualCellItr.hasNext()
+				.iterator(), expectedCellItr = expectedRow.iterator(); actualCellItr
+				.hasNext()
 				&& expectedCellItr.hasNext();) {
 			final CharacterStateCell actualCell = actualCellItr.next(), expectedCell = expectedCellItr
 					.next();
@@ -153,12 +152,11 @@ public class ModelAssert {
 			}
 		}
 
-		assertEquals(actualMatrix.getRows().size(), expectedMatrix.getRows()
-				.size());
+		assertEquals(actualMatrix.getRowsSize(), expectedMatrix.getRowsSize());
 
 		for (final Iterator<CharacterStateRow> actualRowItr = actualMatrix
-				.getRows().iterator(), expectedRowItr = expectedMatrix
-				.getRows().iterator(); actualRowItr.hasNext()
+				.iterator(), expectedRowItr = expectedMatrix
+				.iterator(); actualRowItr.hasNext()
 				&& expectedRowItr.hasNext();) {
 			final CharacterStateRow actualRow = actualRowItr.next(), expectedRow = expectedRowItr
 					.next();

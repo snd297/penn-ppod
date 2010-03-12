@@ -21,6 +21,7 @@ import static org.testng.Assert.assertEquals;
 import static org.testng.Assert.assertFalse;
 import static org.testng.Assert.assertTrue;
 
+import java.util.Arrays;
 import java.util.HashSet;
 import java.util.Set;
 
@@ -29,7 +30,6 @@ import javax.annotation.Nullable;
 import org.testng.annotations.BeforeMethod;
 import org.testng.annotations.Test;
 
-import com.google.common.collect.ImmutableSet;
 import com.google.inject.Inject;
 import com.google.inject.Provider;
 
@@ -120,94 +120,105 @@ public class CharacterStateCellTest {
 
 	public void getStatesWhenCellHasOneState() {
 		states.add(state00);
-		matrix.getRows().get(0).setCells(newArrayList(cell));
+		matrix.getRow(matrix.getOTUSet().getOTUs().get(0)).setCells(
+				Arrays.asList(cell));
+
 		cell.setSingleState(state00);
-		assertEquals(cell.getStates(), states);
+		assertEquals(newHashSet(cell), states);
 	}
 
 	public void getStatesWhenCellHasMultipleStates() {
 		states.add(state00);
 		states.add(state01);
-		matrix.getRows().get(0).setCells(newArrayList(cell));
+		matrix.getRow(matrix.getOTUSet().getOTUs().get(0)).setCells(
+				Arrays.asList(cell));
 
 		cell.setPolymorphicStates(states);
 
 		// First of all, let's verify that we're testing what we want: a cell w/
 		// multiple states.
-		final int cellStatesSize = cell.getStates().size();
+		final int cellStatesSize = cell.getStatesSize();
 		assertTrue(cellStatesSize > 1, "found " + cellStatesSize + " states");
 
-		assertEquals((Object) cell.getStates(), (Object) states);
+		assertEquals((Object) newHashSet(cell), (Object) states);
 	}
 
 	public void setTypeAndStatesFromSingleToInapplicable() {
-		matrix.getRows().get(0).setCells(newArrayList(cell));
+		matrix.getRow(matrix.getOTUSet().getOTUs().get(0)).setCells(
+				Arrays.asList(cell));
 		cell.setSingleState(state00);
-		cell.getStates();// to initialize CharacterStateCell.firstStateSet
 		cell.setInapplicable();
 		assertEquals(cell.getType(), CharacterStateCell.Type.INAPPLICABLE);
-		assertEquals(cell.getStates(), new HashSet<CharacterState>());
+		assertEquals(newHashSet(cell), new HashSet<CharacterState>());
 	}
 
 	public void setTypeAndStatesFromPolymorhpicToInapplicable() {
-		matrix.getRows().get(0).setCells(newArrayList(cell));
+		matrix.getRow(matrix.getOTUSet().getOTUs().get(0)).setCells(
+				Arrays.asList(cell));
 		states.add(state00);
 		states.add(state01);
 		cell.setPolymorphicStates(states);
 		cell.setInapplicable();
 		assertEquals(cell.getType(), CharacterStateCell.Type.INAPPLICABLE);
-		assertEquals(cell.getStates(), new HashSet<CharacterState>());
+		assertEquals(newHashSet(cell), new HashSet<CharacterState>());
 	}
 
 	public void setTypeAndStatesInapplicable() {
-		matrix.getRows().get(0).setCells(newArrayList(cell));
+		matrix.getRow(matrix.getOTUSet().getOTUs().get(0)).setCells(
+				Arrays.asList(cell));
 		cell.setInapplicable();
 		assertEquals(cell.getType(), CharacterStateCell.Type.INAPPLICABLE);
-		assertEquals(cell.getStates(), states);
+		assertEquals(newHashSet(cell), states);
 	}
 
 	public void setTypeAndStatesUnassigned() {
-		matrix.getRows().get(0).setCells(newArrayList(cell));
+		matrix.getRow(matrix.getOTUSet().getOTUs().get(0)).setCells(
+				Arrays.asList(cell));
 		cell.setUnassigned();
 		assertEquals(cell.getType(), CharacterStateCell.Type.UNASSIGNED);
-		assertEquals(cell.getStates(), states);
+		assertEquals(newHashSet(cell), states);
 	}
 
 	public void setTypeAndStatesSingle() {
-		matrix.getRows().get(0).setCells(newArrayList(cell));
+		matrix.getRow(matrix.getOTUSet().getOTUs().get(0)).setCells(
+				Arrays.asList(cell));
 		states.add(state00);
 		cell.setSingleState(state00);
 		assertEquals(cell.getType(), CharacterStateCell.Type.SINGLE);
-		assertEquals(cell.getStates(), states);
+		assertEquals(newHashSet(cell), states);
 	}
 
 	public void setTypeAndStatesPolymorphic() {
-		matrix.getRows().get(0).setCells(newArrayList(cell));
+		matrix.getRow(matrix.getOTUSet().getOTUs().get(0)).setCells(
+				Arrays.asList(cell));
 		states.add(state00);
 		states.add(state01);
 		cell.setPolymorphicStates(states);
 		assertEquals(cell.getType(), CharacterStateCell.Type.POLYMORPHIC);
-		assertEquals((Object) cell.getStates(), (Object) states);
+		assertEquals(newHashSet(cell), states);
 	}
 
 	@Test(expectedExceptions = IllegalArgumentException.class)
 	public void setTypeAndStatesPolymorphicTooFewStates() {
-		matrix.getRows().get(0).setCells(newArrayList(cell));
+		matrix.getRow(matrix.getOTUSet().getOTUs().get(0)).setCells(
+				Arrays.asList(cell));
 		cell.setPolymorphicStates(states);
 	}
 
 	public void setUncertainStates() {
-		matrix.getRows().get(0).setCells(newArrayList(cell));
+		matrix.getRow(matrix.getOTUSet().getOTUs().get(0)).setCells(
+				Arrays.asList(cell));
 		states.add(state00);
 		states.add(state01);
 		cell.setUncertainStates(states);
 		assertEquals(cell.getType(), CharacterStateCell.Type.UNCERTAIN);
-		assertEquals(newHashSet(cell.getStates()), newHashSet(states));
+		assertEquals(newHashSet(cell), newHashSet(states));
 	}
 
 	@Test(expectedExceptions = IllegalArgumentException.class)
 	public void setTypeAndStatesUncertainTooFewStates() {
-		matrix.getRows().get(0).setCells(newArrayList(cell));
+		matrix.getRow(matrix.getOTUSet().getOTUs().get(0)).setCells(
+				Arrays.asList(cell));
 		states.add(state00);
 		cell.setUncertainStates(states);
 	}
@@ -215,17 +226,19 @@ public class CharacterStateCellTest {
 	@Test(groups = TestGroupDefs.IN_DEVELOPMENT)
 	public void getStatesWXmlStatesNeedsToBePutIntoStatesTrueSingle() {
 		cell.setXmlStatesNeedsToBePutIntoStates(true);
-		matrix.getRows().get(0).setCells(newArrayList(cell));
+		matrix.getRow(matrix.getOTUSet().getOTUs().get(0)).setCells(
+				Arrays.asList(cell));
 		states.add(state00);
 		cell.setTypeAndXmlStates(CharacterStateCell.Type.SINGLE, states);
-		assertEquals((Object) cell.getStates(), (Object) states);
+		assertEquals((Object) newHashSet(cell), (Object) states);
 		assertFalse(cell.getXmlStatesNeedsToBePutIntoStates());
 
 	}
 
 	public void afterUnmarshal() {
 		cell.setXmlStatesNeedsToBePutIntoStates(true);
-		matrix.getRows().get(0).setCells(newArrayList(cell));
+		matrix.getRow(matrix.getOTUSet().getOTUs().get(0)).setCells(
+				Arrays.asList(cell));
 		cell.setTypeAndXmlStates(CharacterStateCell.Type.UNCERTAIN, states);
 		cell.afterUnmarshal();
 		// assertEquals((Object) cell.getStates(), (Object) states);

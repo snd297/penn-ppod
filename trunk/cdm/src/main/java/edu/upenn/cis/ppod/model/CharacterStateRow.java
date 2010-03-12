@@ -20,6 +20,7 @@ import static com.google.common.base.Preconditions.checkState;
 import static com.google.common.collect.Lists.newArrayList;
 
 import java.util.Collections;
+import java.util.Iterator;
 import java.util.List;
 
 import javax.annotation.Nullable;
@@ -31,8 +32,6 @@ import javax.persistence.OrderBy;
 import javax.persistence.Table;
 import javax.xml.bind.Unmarshaller;
 import javax.xml.bind.annotation.XmlElement;
-
-import com.google.common.collect.ImmutableList;
 
 import edu.upenn.cis.ppod.util.IVisitor;
 
@@ -47,7 +46,8 @@ import edu.upenn.cis.ppod.util.IVisitor;
  */
 @Entity
 @Table(name = CharacterStateRow.TABLE)
-public class CharacterStateRow extends PPodEntity {
+public class CharacterStateRow extends PPodEntity implements
+		Iterable<CharacterStateCell> {
 
 	/** This entitiy's table. Intentionally package-private. */
 	static final String TABLE = "CHARACTER_STATE_ROW";
@@ -129,17 +129,30 @@ public class CharacterStateRow extends PPodEntity {
 	}
 
 	/**
-	 * Get a copy of the cells.
+	 * Get the cell at position {@code pPodCellPosition}.
 	 * 
-	 * @return an unmodifiable view of the row
+	 * @param pPodCellPosition the position of the cell we're interested in
+	 * @return the cell at position {@code pPodCellPosition}
+	 * 
+	 * @throws IndexOutOfBoundsException if {@code pPodCellPosition} is out of
+	 *             bounds for this row
 	 */
-	public ImmutableList<CharacterStateCell> getCells() {
-		return ImmutableList.copyOf(cells);
+	public CharacterStateCell getCell(final int pPodCellPosition) {
+		return getCellsReference().get(pPodCellPosition);
 	}
 
 	@XmlElement(name = "cell")
 	private List<CharacterStateCell> getCellsReference() {
 		return cells;
+	}
+
+	/**
+	 * Get the number of cells this row has.
+	 * 
+	 * @return the number of cells this row has
+	 */
+	public int getCellsSize() {
+		return getCellsReference().size();
 	}
 
 	/**
@@ -150,6 +163,15 @@ public class CharacterStateRow extends PPodEntity {
 	@Nullable
 	public CharacterStateMatrix getMatrix() {
 		return matrix;
+	}
+
+	/**
+	 * Get an iterator over this row's cells.
+	 * 
+	 * @return an iterator over this row's cells
+	 */
+	public Iterator<CharacterStateCell> iterator() {
+		return getCellsReference().iterator();
 	}
 
 	/**
@@ -176,15 +198,15 @@ public class CharacterStateRow extends PPodEntity {
 					"This row hasn't been added to a matrix yet");
 		}
 
-		if (getMatrix().getCharacters().size() != newCells.size()) {
+		if (getMatrix().getCharactersReference().size() != newCells.size()) {
 			throw new IllegalStateException(
 					"the matrix has different number of characters "
-							+ getMatrix().getCharacters().size()
+							+ getMatrix().getCharactersReference().size()
 							+ " than cells " + newCells.size());
 		}
 		for (int newCellPos = 0; newCellPos < newCells.size(); newCellPos++) {
-			if (getMatrix().getCharacters().size() > newCellPos
-					&& getMatrix().getCharacters().get(newCellPos) == null) {
+			if (getMatrix().getCharactersReference().size() > newCellPos
+					&& getMatrix().getCharactersReference().get(newCellPos) == null) {
 				throw new IllegalStateException("Character is null at column "
 						+ newCells.size());
 			}

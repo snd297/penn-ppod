@@ -159,10 +159,10 @@ public class SaveOrUpdateCharacterStateMatrixTest {
 
 		sourceMatrix.getOTUSet().setOTUs(shuffledSourceOTUs);
 
-		for (final CharacterStateRow targetRow : targetMatrix.getRows()) {
+		for (final CharacterStateRow targetRow : targetMatrix) {
 			targetRow.setPPodVersion(1L);
 		}
-		for (final CharacterStateRow sourceRow : sourceMatrix.getRows()) {
+		for (final CharacterStateRow sourceRow : sourceMatrix) {
 			sourceRow.setPPodVersion(1L);
 		}
 		saveOrUpdateMatrix.saveOrUpdate(targetMatrix, sourceMatrix,
@@ -211,11 +211,11 @@ public class SaveOrUpdateCharacterStateMatrixTest {
 					.get(0));
 			sourceMatrix.setCharacters(newSourceMatrixCharacters);
 
-			for (final CharacterStateRow sourceRow : sourceMatrix.getRows()) {
-				final List<CharacterStateCell> newSourceCells = newArrayList(sourceRow
-						.getCells());
-				newSourceCells.set(0, sourceRow.getCells().get(2));
-				newSourceCells.set(2, sourceRow.getCells().get(0));
+			for (final CharacterStateRow sourceRow : sourceMatrix) {
+				final List<CharacterStateCell> newSourceCells = newArrayList(sourceRow);
+
+				newSourceCells.set(0, sourceRow.getCell(2));
+				newSourceCells.set(2, sourceRow.getCell(0));
 				sourceRow.setCells(newSourceCells);
 			}
 			saveOrUpdateMatrix.saveOrUpdate(targetMatrix, sourceMatrix,

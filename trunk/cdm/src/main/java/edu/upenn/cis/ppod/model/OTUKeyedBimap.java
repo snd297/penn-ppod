@@ -26,8 +26,6 @@ import java.util.Set;
 
 import javax.annotation.CheckForNull;
 import javax.annotation.Nullable;
-import javax.xml.bind.annotation.XmlAccessType;
-import javax.xml.bind.annotation.XmlAccessorType;
 
 import edu.upenn.cis.ppod.modelinterfaces.IWithOTUSet;
 import edu.upenn.cis.ppod.util.IVisitor;
@@ -36,7 +34,6 @@ import edu.upenn.cis.ppod.util.OTUSomethingPair;
 /**
  * @author Sam Donnelly
  */
-@XmlAccessorType(XmlAccessType.NONE)
 public abstract class OTUKeyedBimap<T extends PersistentObject, P extends IWithOTUSet>
 		extends PersistentObject {
 
@@ -54,7 +51,7 @@ public abstract class OTUKeyedBimap<T extends PersistentObject, P extends IWithO
 		}
 	}
 
-	public final T get(final OTU otu, final P parent) {
+	public T get(final OTU otu, final P parent) {
 		checkArgument(parent.getOTUSet().getOTUs().contains(otu),
 				"otu does not belong to parent's OTUSet");
 		return getOTUsToValuesReference().get(otu);
@@ -69,7 +66,7 @@ public abstract class OTUKeyedBimap<T extends PersistentObject, P extends IWithO
 
 	protected abstract Set<OTUSomethingPair<T>> getOTUValuePairs();
 
-	public final List<T> getValuesInOTUOrder(final OTUSet otuSet) {
+	public List<T> getValuesInOTUOrder(final OTUSet otuSet) {
 		final List<T> valuesInOTUOrder = newArrayListWithCapacity(getOTUsToValuesReference()
 				.values().size());
 		for (final OTU otu : otuSet.getOTUs()) {
@@ -161,7 +158,7 @@ public abstract class OTUKeyedBimap<T extends PersistentObject, P extends IWithO
 	 * @throw IllegalArgumentException if {@code otuSet != parent.getOTUSet()}
 	 */
 	@CheckForNull
-	protected OTUKeyedBimap<T, P> setOTUs(@Nullable final OTUSet otuSet,
+	protected final OTUKeyedBimap<T, P> setOTUs(@Nullable final OTUSet otuSet,
 			final P parent) {
 		checkArgument(otuSet == parent.getOTUSet(),
 				"otuSet does not belong to parent");

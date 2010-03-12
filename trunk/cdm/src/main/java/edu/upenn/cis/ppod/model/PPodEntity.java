@@ -139,7 +139,7 @@ public abstract class PPodEntity extends PersistentObject implements
 		}
 	}
 
-	public final IPPodEntity addAttachment(final Attachment attachment) {
+	public IPPodEntity addAttachment(final Attachment attachment) {
 		if (attachments == null) {
 			attachments = newHashSet();
 		}
@@ -194,18 +194,18 @@ public abstract class PPodEntity extends PersistentObject implements
 		unsetAllowPersistAndResetPPodVersionInfo();
 	}
 
-	public final boolean getAllowResetPPodVersionInfo() {
+	public boolean getAllowResetPPodVersionInfo() {
 		return allowResetPPodVersionInfo;
 	}
 
-	public final Set<Attachment> getAttachments() {
+	public Set<Attachment> getAttachments() {
 		if (hasAttachments) {
 			return Collections.unmodifiableSet(attachments);
 		}
 		return Collections.emptySet();
 	}
 
-	public final Set<Attachment> getAttachmentsByNamespace(
+	public Set<Attachment> getAttachmentsByNamespace(
 			final String namespace) {
 		final Set<Attachment> attachmentsByNamespace = newHashSet();
 		for (final Attachment attachment : getAttachments()) {
@@ -217,7 +217,7 @@ public abstract class PPodEntity extends PersistentObject implements
 		return attachmentsByNamespace;
 	}
 
-	public final Set<Attachment> getAttachmentsByNamespaceAndType(
+	public Set<Attachment> getAttachmentsByNamespaceAndType(
 			final String namespace, final String type) {
 		return Sets.newHashSet(Iterables.filter(getAttachments(),
 				new Attachment.IsOfNamespaceAndType(type, namespace)));
@@ -240,14 +240,14 @@ public abstract class PPodEntity extends PersistentObject implements
 	}
 
 	@XmlAttribute
-	public final Long getPPodVersion() {
+	public Long getPPodVersion() {
 		if (pPodVersionInfo != null) {
 			return pPodVersionInfo.getPPodVersion();
 		}
 		return pPodVersion;
 	}
 
-	public final PPodVersionInfo getPPodVersionInfo() {
+	public PPodVersionInfo getPPodVersionInfo() {
 		if (getMarshalled()) {
 			throw new IllegalStateException(
 					"can't access a PPodVersionInfo through a marshalled PPodEntity");
@@ -255,11 +255,11 @@ public abstract class PPodEntity extends PersistentObject implements
 		return pPodVersionInfo;
 	}
 
-	public final boolean isInNeedOfNewPPodVersionInfo() {
+	public boolean isInNeedOfNewPPodVersionInfo() {
 		return inNeedOfNewPPodVersionInfo;
 	}
 
-	public final boolean removeAttachment(final Attachment attachment) {
+	public boolean removeAttachment(final Attachment attachment) {
 		Boolean attachmentRemoved;
 		if (!hasAttachments) {
 			attachmentRemoved = false;
@@ -275,7 +275,7 @@ public abstract class PPodEntity extends PersistentObject implements
 		return attachmentRemoved;
 	}
 
-	public final PPodEntity setAllowResetPPodVersionInfo(
+	public PPodEntity setAllowResetPPodVersionInfo(
 			final boolean allowResetPPodVersionInfo) {
 		this.allowResetPPodVersionInfo = allowResetPPodVersionInfo;
 		return this;
@@ -308,7 +308,7 @@ public abstract class PPodEntity extends PersistentObject implements
 	 * 
 	 * @return this
 	 */
-	public final IPPodEntity setPPodVersion(final Long pPodVersion) {
+	public IPPodEntity setPPodVersion(final Long pPodVersion) {
 		this.pPodVersion = pPodVersion;
 		return this;
 	}
@@ -320,7 +320,7 @@ public abstract class PPodEntity extends PersistentObject implements
 	 * 
 	 * @return this
 	 */
-	public final PPodEntity setPPodVersionInfo(
+	public PPodEntity setPPodVersionInfo(
 			final PPodVersionInfo pPodVersionInfo) {
 		checkNotNull(pPodVersionInfo);
 		unsetInNeedOfNewPPodVersionInfo();
@@ -355,13 +355,13 @@ public abstract class PPodEntity extends PersistentObject implements
 		return retValue.toString();
 	}
 
-	public final PersistentObject unsetAllowPersistAndResetPPodVersionInfo() {
+	public PersistentObject unsetAllowPersistAndResetPPodVersionInfo() {
 		unsetAllowPersist();
 		allowResetPPodVersionInfo = false;
 		return this;
 	}
 
-	public final PPodEntity unsetInNeedOfNewPPodVersionInfo() {
+	public PPodEntity unsetInNeedOfNewPPodVersionInfo() {
 		inNeedOfNewPPodVersionInfo = false;
 		return this;
 	}

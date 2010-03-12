@@ -24,6 +24,7 @@ import static com.google.common.collect.Sets.newTreeSet;
 
 import java.util.Collections;
 import java.util.Comparator;
+import java.util.Iterator;
 import java.util.Set;
 import java.util.SortedSet;
 
@@ -49,8 +50,6 @@ import javax.xml.bind.annotation.XmlIDREF;
 import org.hibernate.annotations.Sort;
 import org.hibernate.annotations.SortType;
 
-import com.google.common.collect.ImmutableSet;
-
 import edu.upenn.cis.ppod.util.IVisitor;
 
 /**
@@ -60,7 +59,8 @@ import edu.upenn.cis.ppod.util.IVisitor;
  */
 @Entity
 @Table(name = CharacterStateCell.TABLE)
-public class CharacterStateCell extends PPodEntity {
+public class CharacterStateCell extends PPodEntity implements
+		Iterable<CharacterState> {
 
 	/**
 	 * The different types of {@code CharacterStateCell}: single, polymorphic,
@@ -298,7 +298,7 @@ public class CharacterStateCell extends PPodEntity {
 		return row;
 	}
 
-	protected ImmutableSet<CharacterState> getStatesNoStateChecks() {
+	protected Set<CharacterState> getStatesNoStateChecks() {
 		Type type = getType();
 		if (type == null) {
 			type = Type.UNASSIGNED;
@@ -307,9 +307,9 @@ public class CharacterStateCell extends PPodEntity {
 			// Don't hit states unless we have too
 			case INAPPLICABLE:
 			case UNASSIGNED:
-				return ImmutableSet.of();
+				return Collections.emptySet();
 			case SINGLE:
-				return ImmutableSet.of(firstState);
+				return Collections.unmodifiableSet(newHashSet(firstState));
 			case POLYMORPHIC:
 			case UNCERTAIN:
 
@@ -317,7 +317,7 @@ public class CharacterStateCell extends PPodEntity {
 				// possible since it will trigger a database hit, which in the
 				// aggregate
 				// is expensive since there're are so many cells.
-				return ImmutableSet.copyOf(states);
+				return Collections.unmodifiableSet(states);
 			default:
 				throw new AssertionError("Unknown CharacterState.Type: " + type);
 		}
@@ -333,7 +333,7 @@ public class CharacterStateCell extends PPodEntity {
 	 * @throws IllegalStateException if the type of this cell has not been
 	 *             assigned
 	 */
-	public ImmutableSet<CharacterState> getStates() {
+	private Set<CharacterState> getStates() {
 		checkState(getType() != null,
 				"type has yet to be assigned for this cell");
 
@@ -603,4 +603,28 @@ public class CharacterStateCell extends PPodEntity {
 		return retValue.toString();
 	}
 
+	public Iterator<CharacterState> iterator() {
+		return getStates().iterator();
+	}
+
+	/**
+	 * Get the number of states that this cell contains.
+	 * 
+	 * @return the number of states that this cell contains
+	 */
+	public int getStatesSize() {
+		switch (type) {
+			// Don't hit states unless we have too
+			case INAPPLICABLE:
+			case UNASSIGNED:
+				return 0;
+			case SINGLE:
+				return 1;
+			case POLYMORPHIC:
+			case UNCERTAIN:
+				return getStates().size();
+			default:
+				throw new AssertionError("Unknown CharacterState.Type: " + type);
+		}
+	}
 }

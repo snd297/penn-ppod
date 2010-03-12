@@ -43,9 +43,6 @@ import javax.xml.bind.annotation.XmlElement;
 
 import org.hibernate.annotations.Cascade;
 
-import com.google.common.collect.ImmutableList;
-import com.google.common.collect.ImmutableSet;
-
 import edu.upenn.cis.ppod.util.IVisitor;
 
 /**
@@ -210,12 +207,13 @@ public class OTUSet extends UUPPodEntityWXmlId {
 	}
 
 	/**
-	 * Get the {@link DNASequenceSet}s that belong to this study.
+	 * Get an unmodifiable view of the {@link DNASequenceSet}s that belong to
+	 * this study.
 	 * 
 	 * @return the {@link DNASequenceSet}s that belong to this study
 	 */
-	public ImmutableSet<DNASequenceSet> getDNASequenceSets() {
-		return ImmutableSet.copyOf(getDNASequenceSetsReference());
+	public Set<DNASequenceSet> getDNASequenceSets() {
+		return Collections.unmodifiableSet(getDNASequenceSetsReference());
 	}
 
 	@XmlElement(name = "dnaSequenceSet")
@@ -235,12 +233,12 @@ public class OTUSet extends UUPPodEntityWXmlId {
 	}
 
 	/**
-	 * Get an unmodifiable copy of the matrices which refer to this OTU set.
+	 * Get an unmodifiable view of the matrices which refer to this OTU set.
 	 * 
 	 * @return a copy of the matrices which refer to this OTU set
 	 */
-	public ImmutableSet<CharacterStateMatrix> getMatrices() {
-		return ImmutableSet.copyOf(getMatricesReference());
+	public Set<CharacterStateMatrix> getMatrices() {
+		return Collections.unmodifiableSet(getMatricesReference());
 	}
 
 	@XmlElement(name = "matrix")
@@ -255,8 +253,8 @@ public class OTUSet extends UUPPodEntityWXmlId {
 	 * @return an unmodifiable view of the <code>OTU</code>s that comprise this
 	 *         <code>OTUSet</code>.
 	 */
-	public ImmutableList<OTU> getOTUs() {
-		return ImmutableList.copyOf(getOTUsReference());
+	public List<OTU> getOTUs() {
+		return Collections.unmodifiableList(getOTUsReference());
 	}
 
 	@XmlElement(name = "otu")
@@ -280,8 +278,8 @@ public class OTUSet extends UUPPodEntityWXmlId {
 	 * 
 	 * @return the tree sets that are composed of this OTU set
 	 */
-	public ImmutableSet<TreeSet> getTreeSets() {
-		return ImmutableSet.copyOf(getTreeSetsReference());
+	public Set<TreeSet> getTreeSets() {
+		return Collections.unmodifiableSet(getTreeSetsReference());
 	}
 
 	@XmlElement(name = "treeSet")
@@ -428,8 +426,12 @@ public class OTUSet extends UUPPodEntityWXmlId {
 		setInNeedOfNewPPodVersionInfo();
 
 		// Now let's let everyone know about the new OTUs
-		for (final CharacterStateMatrix matrix : getMatrices()) {
+		for (final CharacterStateMatrix matrix : getMatricesReference()) {
 			matrix.setOTUSet(this);
+		}
+		
+		for (final DNASequenceSet dnaSequenceSet : getDNASequenceSetsReference()) { 
+			dnaSequenceSet.setOTUSet(this);
 		}
 		return removedOTUs;
 	}
