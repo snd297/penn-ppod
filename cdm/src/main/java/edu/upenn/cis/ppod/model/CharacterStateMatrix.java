@@ -53,6 +53,8 @@ import org.hibernate.annotations.IndexColumn;
 
 import com.google.common.collect.BiMap;
 import com.google.common.collect.HashBiMap;
+import com.google.common.collect.ImmutableList;
+import com.google.common.collect.ImmutableMap;
 import com.google.inject.Inject;
 
 import edu.upenn.cis.ppod.modelinterfaces.IWithOTUSet;
@@ -165,6 +167,12 @@ public class CharacterStateMatrix extends UUPPodEntityWXmlId implements
 			character.accept(visitor);
 		}
 		getOTUsToRows().accept(visitor);
+
+		for (final CharacterStateRow row : getOTUsToRows()
+				.getOTUsToValuesReference().values()) {
+			row.accept(visitor);
+		}
+
 		super.accept(visitor);
 		visitor.visit(this);
 	}
@@ -268,30 +276,21 @@ public class CharacterStateMatrix extends UUPPodEntityWXmlId implements
 	}
 
 	/**
-	 * Get a possibly unmodifiable view of characterIdx.
+	 * Get a copy of the characterIdx.
 	 * 
-	 * @return the characterIdx
+	 * @return a copy of the characterIdx
 	 */
-	public Map<Character, Integer> getCharacterIdx() {
-		return Collections.unmodifiableMap(characterIdx);
+	public ImmutableMap<Character, Integer> getCharacterIdx() {
+		return ImmutableMap.copyOf(newHashMap(characterIdx));
 	}
 
 	/**
-	 * Get a modifiable view of characterIdx
+	 * Get a copy of the <code>Character</code>s.
 	 * 
-	 * @return a modifiable view of characterIdx
+	 * @return a copy of the <code>Character</code> ordering
 	 */
-	protected Map<Character, Integer> getCharacterIdxModifiable() {
-		return characterIdx;
-	}
-
-	/**
-	 * Get a possibly unmodifiable view of the <code>Character</code> ordering.
-	 * 
-	 * @return an unmodifiable view of the <code>Character</code> ordering
-	 */
-	public List<Character> getCharacters() {
-		return Collections.unmodifiableList(characters);
+	public ImmutableList<Character> getCharacters() {
+		return ImmutableList.copyOf(getCharactersReference());
 	}
 
 	/**
@@ -301,44 +300,46 @@ public class CharacterStateMatrix extends UUPPodEntityWXmlId implements
 	 */
 	@XmlElement(name = "characterDocId")
 	@XmlIDREF
-	protected List<Character> getCharactersModifiable() {
+	protected List<Character> getCharactersReference() {
 		return characters;
 	}
 
 	/**
-	 * Get an unmodifiable view of the {@code PPodVersionInfo}s for each for the
-	 * columns of the matrix.
-	 * <p>
-	 * This value is {@code equals()} to the max pPOD version info in a column.
-	 * 
-	 * @return an unmodifiable view of the columns' {@code PPodVersionInfo}s
-	 */
-	public List<PPodVersionInfo> getColumnPPodVersionInfos() {
-		return Collections.unmodifiableList(columnPPodVersionInfos);
-	}
-
-	/**
-	 * Get a mutable view of the {@code PPodVersionInfo}s for each for the
-	 * columns of the matrix.
+	 * Get a reference of the {@code PPodVersionInfo}s for each for the columns
+	 * of the matrix.
 	 * <p>
 	 * Intentionally package-private.
 	 * 
 	 * @return a mutable view of the {@code PPodVersionInfo}s for each for the
 	 *         columns of the matrix
 	 */
-	List<PPodVersionInfo> getColumnPPodVersionInfosModifiable() {
+	List<PPodVersionInfo> getColumnPPodVersionInfoReference() {
 		return columnPPodVersionInfos;
 	}
 
 	/**
-	 * Get a possibly unmodifiable view of the column pPOD versions.
+	 * Get an unmodifiable copy of the {@code PPodVersionInfo}s for each for the
+	 * columns of the matrix.
+	 * <p>
+	 * This value is {@code equals()} to the max pPOD version info in a column.
+	 * 
+	 * @return a copy of the columns' {@code PPodVersionInfo}s
+	 */
+	public List<PPodVersionInfo> getColumnPPodVersionInfos() {
+		return Collections
+				.unmodifiableList(newArrayList(columnPPodVersionInfos));
+	}
+
+	/**
+	 * Get an unmodifiable copy of the column pPOD versions.
 	 * <p>
 	 * A column version is the max pPOD version of the cells in a column.
 	 * 
-	 * @return the column pPOD versions
+	 * @return an unmodifiable copy of the column pPOD versions
 	 */
 	public List<Long> getColumnPPodVersions() {
-		return Collections.unmodifiableList(columnPPodVersions);
+		return Collections
+				.unmodifiableList(newArrayList(getColumnPPodVersionsReference()));
 	}
 
 	/**
@@ -349,7 +350,7 @@ public class CharacterStateMatrix extends UUPPodEntityWXmlId implements
 	 * @return the column pPOD versions
 	 */
 	@XmlElement(name = "columnPPodVersion")
-	protected List<Long> getColumnPPodVersionsModifiable() {
+	protected List<Long> getColumnPPodVersionsReference() {
 		return columnPPodVersions;
 	}
 
@@ -458,7 +459,7 @@ public class CharacterStateMatrix extends UUPPodEntityWXmlId implements
 	 */
 	CharacterStateMatrix resetColumnPPodVersion(final int idx) {
 		if (getAllowResetPPodVersionInfo()) {
-			nullFillAndSet(getColumnPPodVersionInfosModifiable(), idx, null);
+			nullFillAndSet(getColumnPPodVersionInfoReference(), idx, null);
 		}
 		return this;
 	}
@@ -514,8 +515,8 @@ public class CharacterStateMatrix extends UUPPodEntityWXmlId implements
 		}
 
 		final List<PPodVersionInfo> newColumnPPodVersionInfos = determineNewColumnHeaderPPodVersionInfos(newCharacters);
-		getColumnPPodVersionInfosModifiable().clear();
-		getColumnPPodVersionInfosModifiable().addAll(newColumnPPodVersionInfos);
+		getColumnPPodVersionInfoReference().clear();
+		getColumnPPodVersionInfoReference().addAll(newColumnPPodVersionInfos);
 
 		final List<Character> removedCharacters = newArrayList(getCharacters());
 
@@ -524,14 +525,14 @@ public class CharacterStateMatrix extends UUPPodEntityWXmlId implements
 			removedCharacter.removeMatrix(this);
 		}
 
-		getCharactersModifiable().clear();
-		getCharacterIdxModifiable().clear();
+		getCharactersReference().clear();
+		characterIdx.clear();
 
-		getCharactersModifiable().addAll(newCharacters);
+		getCharactersReference().addAll(newCharacters);
 
 		int characterPosition = 0;
 		for (final Character character : getCharacters()) {
-			getCharacterIdxModifiable().put(character, characterPosition++);
+			characterIdx.put(character, characterPosition++);
 			character.addMatrix(this);
 		}
 
@@ -555,7 +556,7 @@ public class CharacterStateMatrix extends UUPPodEntityWXmlId implements
 			final PPodVersionInfo pPodVersionInfo) {
 		checkArgument(pos < getColumnPPodVersionInfos().size(),
 				"pos is bigger than getColumnPPodVersionInfos().size()");
-		getColumnPPodVersionInfosModifiable().set(pos, pPodVersionInfo);
+		getColumnPPodVersionInfoReference().set(pos, pPodVersionInfo);
 		return this;
 	}
 

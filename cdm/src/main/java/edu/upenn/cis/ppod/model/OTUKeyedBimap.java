@@ -26,7 +26,6 @@ import java.util.Set;
 
 import javax.annotation.CheckForNull;
 import javax.annotation.Nullable;
-import javax.persistence.MappedSuperclass;
 import javax.xml.bind.annotation.XmlAccessType;
 import javax.xml.bind.annotation.XmlAccessorType;
 
@@ -38,7 +37,6 @@ import edu.upenn.cis.ppod.util.OTUSomethingPair;
  * @author Sam Donnelly
  */
 @XmlAccessorType(XmlAccessType.NONE)
-@MappedSuperclass
 public abstract class OTUKeyedBimap<T extends PersistentObject, P extends IWithOTUSet>
 		extends PersistentObject {
 
@@ -46,23 +44,20 @@ public abstract class OTUKeyedBimap<T extends PersistentObject, P extends IWithO
 
 	@Override
 	public void accept(final IVisitor visitor) {
-		for (final T t : getOTUsToValuesModifiable().values()) {
-			t.accept(visitor);
-		}
 		visitor.visit(this);
 	}
 
 	public void afterUnmarshal() {
 		for (final OTUSomethingPair<T> otuValuePair : getOTUValuePairs()) {
-			getOTUsToValuesModifiable().put(otuValuePair.getFirst(),
+			getOTUsToValuesReference().put(otuValuePair.getFirst(),
 					otuValuePair.getSecond());
 		}
 	}
 
-	public T get(final OTU otu, final P parent) {
+	public final T get(final OTU otu, final P parent) {
 		checkArgument(parent.getOTUSet().getOTUs().contains(otu),
 				"otu does not belong to parent's OTUSet");
-		return getOTUsToValuesModifiable().get(otu);
+		return getOTUsToValuesReference().get(otu);
 	}
 
 	/**
@@ -70,15 +65,17 @@ public abstract class OTUKeyedBimap<T extends PersistentObject, P extends IWithO
 	 * 
 	 * @return the {@code OTU}-keyed items
 	 */
-	protected abstract Map<OTU, T> getOTUsToValuesModifiable();
+	protected abstract Map<OTU, T> getOTUsToValuesReference();
 
 	protected abstract Set<OTUSomethingPair<T>> getOTUValuePairs();
 
-	public List<T> getValuesInOTUOrder(final OTUSet otuSet) {
-		final List<T> valuesInOTUOrder = newArrayListWithCapacity(otuSet
-				.getOTUs().size());
+	public final List<T> getValuesInOTUOrder(final OTUSet otuSet) {
+		final List<T> valuesInOTUOrder = newArrayListWithCapacity(getOTUsToValuesReference()
+				.values().size());
 		for (final OTU otu : otuSet.getOTUs()) {
-			valuesInOTUOrder.add(getOTUsToValuesModifiable().get(otu));
+			if (getOTUsToValuesReference().containsKey(otu)) {
+				valuesInOTUOrder.add(getOTUsToValuesReference().get(otu));
+			}
 		}
 		return valuesInOTUOrder;
 	}
@@ -137,14 +134,14 @@ public abstract class OTUKeyedBimap<T extends PersistentObject, P extends IWithO
 		checkArgument(parent.getOTUSet().getOTUs().contains(key),
 				"otu does not belong to the parent's OTUSet");
 
-		if (null != getOTUsToValuesModifiable().get(key)
-				&& getOTUsToValuesModifiable().get(key).equals(value)) {
-			return getOTUsToValuesModifiable().get(key);
+		if (null != getOTUsToValuesReference().get(key)
+				&& getOTUsToValuesReference().get(key).equals(value)) {
+			return getOTUsToValuesReference().get(key);
 		}
-		checkArgument(!getOTUsToValuesModifiable().containsValue(value),
+		checkArgument(!getOTUsToValuesReference().containsValue(value),
 				"already has a value .equals() to newT: " + value);
 		parent.setInNeedOfNewPPodVersionInfo();
-		return getOTUsToValuesModifiable().put(key, value);
+		return getOTUsToValuesReference().put(key, value);
 	}
 
 	/**
@@ -169,7 +166,7 @@ public abstract class OTUKeyedBimap<T extends PersistentObject, P extends IWithO
 		checkArgument(otuSet == parent.getOTUSet(),
 				"otuSet does not belong to parent");
 		final Set<OTU> otusToBeRemoved = newHashSet();
-		for (final OTU otu : getOTUsToValuesModifiable().keySet()) {
+		for (final OTU otu : getOTUsToValuesReference().keySet()) {
 			if (parent.getOTUSet() != null
 					&& parent.getOTUSet().getOTUs().contains(otu)) {
 				// it stays
@@ -179,14 +176,14 @@ public abstract class OTUKeyedBimap<T extends PersistentObject, P extends IWithO
 			}
 		}
 
-		getOTUsToValuesModifiable().keySet().removeAll(otusToBeRemoved);
+		getOTUsToValuesReference().keySet().removeAll(otusToBeRemoved);
 
 		if (otuSet != null) {
 			for (final OTU otu : parent.getOTUSet().getOTUs()) {
-				if (getOTUsToValuesModifiable().containsKey(otu)) {
+				if (getOTUsToValuesReference().containsKey(otu)) {
 
 				} else {
-					getOTUsToValuesModifiable().put(otu, null);
+					getOTUsToValuesReference().put(otu, null);
 				}
 			}
 		}

@@ -63,13 +63,13 @@ public final class Study2StudyInfo implements IStudy2StudyInfo {
 		final StudyInfo studyInfo = studyInfoProvider.get();
 		studyInfo.setEntityId(study.getId());
 		studyInfo.setPPodId(study.getPPodId());
-		studyInfo.setPPodVersion(study.getpPodVersionInfo().getPPodVersion());
+		studyInfo.setPPodVersion(study.getPPodVersionInfo().getPPodVersion());
 		for (final OTUSet otuSet : study.getOTUSets()) {
 			final OTUSetInfo otuSetInfo = otuSetInfoProvider.get();
 			studyInfo.getOTUSetInfos().add(otuSetInfo);
 			otuSetInfo.setEntityId(otuSet.getId());
 			otuSetInfo.setPPodId(otuSet.getPPodId());
-			otuSetInfo.setPPodVersion(otuSet.getpPodVersionInfo()
+			otuSetInfo.setPPodVersion(otuSet.getPPodVersionInfo()
 					.getPPodVersion());
 			otuSetInfo.setDocId(otuSet.getDocId());
 			for (final OTU otu : otuSet.getOTUs()) {
@@ -78,7 +78,7 @@ public final class Study2StudyInfo implements IStudy2StudyInfo {
 				otuSetInfo.getOTUInfos().add(otuInfo);
 				otuInfo.setEntityId(otu.getId());
 				otuInfo.setPPodId(otu.getPPodId());
-				otuInfo.setPPodVersion(otu.getpPodVersionInfo()
+				otuInfo.setPPodVersion(otu.getPPodVersionInfo()
 						.getPPodVersion());
 				otuInfo.setDocId(otu.getDocId());
 			}
@@ -89,7 +89,7 @@ public final class Study2StudyInfo implements IStudy2StudyInfo {
 				otuSetInfo.getMatrixInfos().add(matrixInfo);
 				matrixInfo.setEntityId(matrix.getId());
 				matrixInfo.setPPodId(matrix.getPPodId());
-				matrixInfo.setPPodVersion(matrix.getpPodVersionInfo()
+				matrixInfo.setPPodVersion(matrix.getPPodVersionInfo()
 						.getPPodVersion());
 				matrixInfo.setDocId(matrix.getDocId());
 
@@ -108,18 +108,18 @@ public final class Study2StudyInfo implements IStudy2StudyInfo {
 						.getColumnPPodVersionInfos()) {
 					matrixInfo.getColumnHeaderVersionsByIdx().put(columnIdx++,
 					// TODO: what are we going to do about column header version
-							matrix.getpPodVersionInfo().getPPodVersion());
+							matrix.getPPodVersionInfo().getPPodVersion());
 					// columnPPodVersionInfo.getPPodVersion());
 				}
 
 				int rowIdx = 0;
 				for (final CharacterStateRow row : matrix.getRows()) {
 					matrixInfo.getRowHeaderVersionsByIdx().put(rowIdx++,
-							row.getpPodVersionInfo().getPPodVersion());
+							row.getPPodVersionInfo().getPPodVersion());
 					int cellIdx = 0;
 					for (final CharacterStateCell cell : row.getCells()) {
 						matrixInfo.setCellPPodIdAndVersion(rowIdx, cellIdx++,
-								cell.getpPodVersionInfo().getPPodVersion());
+								cell.getPPodVersionInfo().getPPodVersion());
 					}
 				}
 			}
@@ -129,7 +129,7 @@ public final class Study2StudyInfo implements IStudy2StudyInfo {
 				otuSetInfo.getTreeSetInfos().add(treeSetInfo);
 				treeSetInfo.setEntityId(treeSet.getId());
 				treeSetInfo.setPPodId(treeSet.getPPodId());
-				treeSetInfo.setPPodVersion(treeSet.getpPodVersionInfo()
+				treeSetInfo.setPPodVersion(treeSet.getPPodVersionInfo()
 						.getPPodVersion());
 				treeSetInfo.setDocId(treeSet.getDocId());
 

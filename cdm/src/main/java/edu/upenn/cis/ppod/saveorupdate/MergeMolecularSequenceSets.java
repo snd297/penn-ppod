@@ -34,6 +34,7 @@ public class MergeMolecularSequenceSets<SS extends MolecularSequenceSet<S>, S ex
 	public void merge(final SS targetSequenceSet, final SS sourceSequenceSet) {
 		checkNotNull(targetSequenceSet);
 		checkNotNull(sourceSequenceSet);
+		targetSequenceSet.setLabel(sourceSequenceSet.getLabel());
 		dao.saveOrUpdate(targetSequenceSet);
 
 		for (int i = 0; i < sourceSequenceSet.getOTUSet().getOTUs()
@@ -50,11 +51,11 @@ public class MergeMolecularSequenceSets<SS extends MolecularSequenceSet<S>, S ex
 			if (null == (targetSequence = targetSequenceSet
 					.getSequence(targetOTU))) {
 				targetSequence = sequenceProvider.get();
-				targetSequenceSet.putSequence(targetOTU, targetSequence);
 				targetSequence.setPPodVersionInfo(newPPodVersionInfo
 						.getNewPPodVersionInfo());
 			}
 			targetSequence.setSequence(sourceSequence.getSequence());
+			targetSequenceSet.putSequence(targetOTU, targetSequence);
 			targetSequence.setName(sourceSequence.getName());
 			targetSequence.setDescription(sourceSequence.getDescription());
 			targetSequence.setAccession(sourceSequence.getAccession());

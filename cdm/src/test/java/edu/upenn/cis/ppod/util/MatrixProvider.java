@@ -44,6 +44,7 @@ public class MatrixProvider {
 		final Study studyMX540 = (Study) ctx.createUnmarshaller().unmarshal(
 				MatrixProvider.class.getResourceAsStream("/MX540.xml"));
 		studyMX540.accept(afterUnmarshalVisitor);
+	
 		final CharacterStateMatrix smallSimpleMatrix = getOnlyElement(getOnlyElement(
 				studyMX540.getOTUSets()).getMatrices());
 

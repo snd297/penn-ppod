@@ -234,7 +234,7 @@ public class Attachment extends UUPPodEntityWXmlId {
 
 	@Override
 	public Attachment setInNeedOfNewPPodVersionInfo() {
-		if (getpPodVersionInfo() == null) {
+		if (getPPodVersionInfo() == null) {
 			// Then it's already been reset
 		} else {
 			for (final PPodEntity attachee : attachees) {

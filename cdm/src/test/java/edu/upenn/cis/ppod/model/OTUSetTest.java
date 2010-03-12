@@ -210,10 +210,10 @@ public class OTUSetTest {
 	 * sets's {@code Study}'s pPOD Version info is unaffected.
 	 */
 	public void resetWhenNotInNeedOfNewPPodVersionInfo() {
-		final PPodVersionInfo studyPPodVersionInfo = study.getpPodVersionInfo();
+		final PPodVersionInfo studyPPodVersionInfo = study.getPPodVersionInfo();
 		otuSet.unsetInNeedOfNewPPodVersionInfo();
 		otuSet.setInNeedOfNewPPodVersionInfo();
 		assertTrue(otuSet.isInNeedOfNewPPodVersionInfo());
-		assertEquals(study.getpPodVersionInfo(), studyPPodVersionInfo);
+		assertEquals(study.getPPodVersionInfo(), studyPPodVersionInfo);
 	}
 }

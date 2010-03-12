@@ -100,7 +100,7 @@ public class CharacterStateMatrixTest {
 
 		// Since they were the same, the version should not have been reset to
 		// null
-		assertNotNull(matrix.getpPodVersionInfo());
+		assertNotNull(matrix.getPPodVersionInfo());
 	}
 
 	public void setOTUsWReorderedOTUs() {
@@ -190,9 +190,9 @@ public class CharacterStateMatrixTest {
 
 		matrix.setCharacters(characters);
 
-		matrix.getColumnPPodVersionInfosModifiable().set(0, pPodVersionInfo0);
-		matrix.getColumnPPodVersionInfosModifiable().set(1, pPodVersionInfo1);
-		matrix.getColumnPPodVersionInfosModifiable().set(2, pPodVersionInfo2);
+		matrix.getColumnPPodVersionInfoReference().set(0, pPodVersionInfo0);
+		matrix.getColumnPPodVersionInfoReference().set(1, pPodVersionInfo1);
+		matrix.getColumnPPodVersionInfoReference().set(2, pPodVersionInfo2);
 
 		final ImmutableList<Character> shuffledCharacters = ImmutableList.of(
 				characters.get(1), characters.get(2), characters.get(0));
@@ -233,9 +233,9 @@ public class CharacterStateMatrixTest {
 
 		matrix.setCharacters(characters);
 
-		matrix.getColumnPPodVersionInfosModifiable().set(0, pPodVersionInfo0);
-		matrix.getColumnPPodVersionInfosModifiable().set(1, pPodVersionInfo1);
-		matrix.getColumnPPodVersionInfosModifiable().set(2, pPodVersionInfo2);
+		matrix.getColumnPPodVersionInfoReference().set(0, pPodVersionInfo0);
+		matrix.getColumnPPodVersionInfoReference().set(1, pPodVersionInfo1);
+		matrix.getColumnPPodVersionInfoReference().set(2, pPodVersionInfo2);
 
 		final ImmutableList<Character> characters2 = ImmutableList.of(
 				characterProvider.get().setLabel("character2-0"),
@@ -319,9 +319,9 @@ public class CharacterStateMatrixTest {
 	private Provider<PPodVersionInfo> pPodVersionInfoProvider;
 
 	public void beforeMarshal() {
-		nullFillAndSet(matrix.getColumnPPodVersionInfosModifiable(), 2,
+		nullFillAndSet(matrix.getColumnPPodVersionInfoReference(), 2,
 				pPodVersionInfoProvider.get().setPPodVersion(3L));
-		nullFillAndSet(matrix.getColumnPPodVersionInfosModifiable(), 5,
+		nullFillAndSet(matrix.getColumnPPodVersionInfoReference(), 5,
 				pPodVersionInfoProvider.get().setPPodVersion(8L));
 
 		matrix.beforeMarshal(null);

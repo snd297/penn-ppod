@@ -49,6 +49,8 @@ import javax.xml.bind.annotation.XmlIDREF;
 import org.hibernate.annotations.Sort;
 import org.hibernate.annotations.SortType;
 
+import com.google.common.collect.ImmutableSet;
+
 import edu.upenn.cis.ppod.util.IVisitor;
 
 /**
@@ -190,12 +192,15 @@ public class CharacterStateCell extends PPodEntity {
 	 */
 	@Override
 	public void afterUnmarshal() {
-		if (xmlStatesNeedsToBePutIntoStates) {
-			xmlStatesNeedsToBePutIntoStates = false;
-			setStates(getXmlStates());
-			xmlStates = null;
-		}
 		super.afterUnmarshal();
+		if (xmlStatesNeedsToBePutIntoStates) {
+			Type originalType = getType();
+			type = null;// setStates wants this to be null for fresh assignments
+			setStates(getXmlStates());
+			setType(originalType);
+			xmlStates = null;
+			xmlStatesNeedsToBePutIntoStates = false;
+		}
 	}
 
 	/**
@@ -293,6 +298,31 @@ public class CharacterStateCell extends PPodEntity {
 		return row;
 	}
 
+	protected ImmutableSet<CharacterState> getStatesNoStateChecks() {
+		Type type = getType();
+		if (type == null) {
+			type = Type.UNASSIGNED;
+		}
+		switch (type) {
+			// Don't hit states unless we have too
+			case INAPPLICABLE:
+			case UNASSIGNED:
+				return ImmutableSet.of();
+			case SINGLE:
+				return ImmutableSet.of(firstState);
+			case POLYMORPHIC:
+			case UNCERTAIN:
+
+				// We have to hit states, which we want to avoid as much as
+				// possible since it will trigger a database hit, which in the
+				// aggregate
+				// is expensive since there're are so many cells.
+				return ImmutableSet.copyOf(states);
+			default:
+				throw new AssertionError("Unknown CharacterState.Type: " + type);
+		}
+	}
+
 	/**
 	 * Return an unmodifiable set which contains this cell's states.
 	 * <p>
@@ -303,7 +333,7 @@ public class CharacterStateCell extends PPodEntity {
 	 * @throws IllegalStateException if the type of this cell has not been
 	 *             assigned
 	 */
-	public Set<CharacterState> getStates() {
+	public ImmutableSet<CharacterState> getStates() {
 		checkState(getType() != null,
 				"type has yet to be assigned for this cell");
 
@@ -313,25 +343,7 @@ public class CharacterStateCell extends PPodEntity {
 		checkState(
 				!xmlStatesNeedsToBePutIntoStates,
 				"xmlStateNeedsToBePutIntoStates == true, has the afterUnmarshal visitor been dispatched?");
-		switch (getType()) {
-			// Don't hit states unless we have too
-			case INAPPLICABLE:
-			case UNASSIGNED:
-				return Collections.emptySet();
-			case SINGLE:
-				return Collections.unmodifiableSet(newHashSet(firstState));
-			case POLYMORPHIC:
-			case UNCERTAIN:
-
-				// We have to hit states, which we want to avoid as much as
-				// possible since it will trigger a database hit, which in the
-				// aggregate
-				// is expensive since there're are so many cells.
-				return Collections.unmodifiableSet(states);
-			default:
-				throw new AssertionError("Unknown CharacterState.Type: " + type);
-		}
-
+		return getStatesNoStateChecks();
 	}
 
 	/**
@@ -373,7 +385,6 @@ public class CharacterStateCell extends PPodEntity {
 		@SuppressWarnings("unchecked")
 		final Set<CharacterState> emptyStates = Collections.EMPTY_SET;
 		setStates(emptyStates);
-
 		return this;
 	}
 
@@ -405,8 +416,8 @@ public class CharacterStateCell extends PPodEntity {
 		checkNotNull(polymorphicStates);
 		checkArgument(polymorphicStates.size() > 1,
 				"polymorphic states must be > 1");
-		setType(CharacterStateCell.Type.POLYMORPHIC);
 		setStates(polymorphicStates);
+		setType(CharacterStateCell.Type.POLYMORPHIC);
 		return this;
 	}
 
@@ -452,8 +463,8 @@ public class CharacterStateCell extends PPodEntity {
 	 */
 	public CharacterStateCell setSingleState(final CharacterState state) {
 		checkNotNull(state);
-		setType(CharacterStateCell.Type.SINGLE);
 		setStates(newHashSet(state));
+		setType(CharacterStateCell.Type.SINGLE);
 		return this;
 	}
 
@@ -479,7 +490,7 @@ public class CharacterStateCell extends PPodEntity {
 		// So FindBugs knows that we got it when it wasn't null
 		final Set<CharacterState> thisStates = this.states;
 
-		if (getStates().equals(states)) {
+		if (getStatesNoStateChecks().equals(states)) {
 			return this;
 		}
 
@@ -540,10 +551,9 @@ public class CharacterStateCell extends PPodEntity {
 	 * @return this
 	 */
 	public CharacterStateCell setUnassigned() {
-		setType(CharacterStateCell.Type.UNASSIGNED);
-
 		final Set<CharacterState> emptyStates = Collections.emptySet();
 		setStates(emptyStates);
+		setType(CharacterStateCell.Type.UNASSIGNED);
 		return this;
 	}
 
