@@ -71,7 +71,7 @@ public abstract class PersistentObject implements IPersistentObject {
 
 	@XmlAttribute
 	@Nullable
-	public final Long getId() {
+	public Long getId() {
 		return id;
 	}
 

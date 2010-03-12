@@ -124,11 +124,11 @@ public class DNASequence extends MolecularSequence<DNASequenceSet> {
 		checkNotNull(cells);
 		final StringBuilder sequenceStringBuilder = new StringBuilder();
 		for (int cellIdx = 0; cellIdx < cells.size(); cellIdx++) {
-			if (cells.get(cellIdx).getStates().size() == 1) {
+			if (cells.get(cellIdx).getStatesSize() == 1) {
 				final String stateLabel = getOnlyElement(
-						cells.get(cellIdx).getStates()).getLabel();
+						cells.get(cellIdx)).getLabel();
 				final Integer stateNumber = getOnlyElement(
-						cells.get(cellIdx).getStates()).getStateNumber();
+						cells.get(cellIdx)).getStateNumber();
 				checkState(DNAState.Nucleotide.hasOneWithAValueOf(stateLabel),
 						"cell " + cellIdx + " has a state label [" + stateLabel
 								+ "] which is not that of a DNAState");

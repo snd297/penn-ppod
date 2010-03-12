@@ -53,15 +53,15 @@ public abstract class UUPPodEntity extends PPodEntity implements IUUPPodEntity {
 
 	@XmlAttribute
 	@Nullable
-	public final String getPPodId() {
+	public String getPPodId() {
 		return pPodId;
 	}
 
-	public final UUPPodEntity setPPodId() {
+	public UUPPodEntity setPPodId() {
 		return setPPodId(UUID.randomUUID().toString());
 	}
 
-	public final UUPPodEntity setPPodId(final String pPodId) {
+	public UUPPodEntity setPPodId(final String pPodId) {
 		if (getPPodId() != null) {
 			throw new IllegalStateException("pPodId already set");
 		}

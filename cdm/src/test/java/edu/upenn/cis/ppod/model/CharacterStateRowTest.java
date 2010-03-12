@@ -16,8 +16,8 @@
 package edu.upenn.cis.ppod.model;
 
 import static com.google.common.collect.Lists.newArrayList;
-import static com.google.common.collect.Sets.newHashSet;
 
+import java.util.Arrays;
 import java.util.Collections;
 import java.util.List;
 
@@ -75,9 +75,10 @@ public class CharacterStateRowTest {
 	public void addCellToMatrixWOneCharacter() {
 		final CharacterStateCell cell = cellProvider.get().setUnassigned();
 		matrix.getRow(matrix.getOTUSet().getOTUs().get(0)).setCells(
-				newArrayList(cell));
+				Arrays.asList(cell));
+
 		ModelAssert.assertEqualsCharacterStateCells(cell, matrix.getRow(
-				rowIdxs.get(0)).getCells().get(0));
+				rowIdxs.get(0)).getCell(0));
 	}
 
 	@Test(expectedExceptions = IllegalStateException.class)
@@ -86,7 +87,8 @@ public class CharacterStateRowTest {
 		// shouldn't really matterJust call setUnassigned so that the cell is in
 		// a legal state - it shouldn't really matter
 		rowProvider.get().setCells(
-				newArrayList(cellProvider.get().setUnassigned()));
+				Arrays.asList(cellProvider.get()
+						.setUnassigned()));
 	}
 
 	@Test(expectedExceptions = IllegalStateException.class)
@@ -97,7 +99,8 @@ public class CharacterStateRowTest {
 		// shouldn't really matterJust call setUnassigned so that the cell is in
 		// a legal state - it shouldn't really matter
 		matrix.getRow(matrix.getOTUSet().getOTUs().get(0)).setCells(
-				newArrayList(cellProvider.get().setUnassigned()));
+				Arrays.asList(cellProvider.get()
+						.setUnassigned()));
 	}
 
 	@Test(expectedExceptions = IllegalStateException.class)

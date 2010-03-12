@@ -107,17 +107,15 @@ public final class Study2StudyInfo implements IStudy2StudyInfo {
 				for (final PPodVersionInfo columnPPodVersionInfo : matrix
 						.getColumnPPodVersionInfos()) {
 					matrixInfo.getColumnHeaderVersionsByIdx().put(columnIdx++,
-					// TODO: what are we going to do about column header version
-							matrix.getPPodVersionInfo().getPPodVersion());
-					// columnPPodVersionInfo.getPPodVersion());
+							columnPPodVersionInfo.getPPodVersion());
 				}
 
 				int rowIdx = 0;
-				for (final CharacterStateRow row : matrix.getRows()) {
+				for (final CharacterStateRow row : matrix) {
 					matrixInfo.getRowHeaderVersionsByIdx().put(rowIdx++,
 							row.getPPodVersionInfo().getPPodVersion());
 					int cellIdx = 0;
-					for (final CharacterStateCell cell : row.getCells()) {
+					for (final CharacterStateCell cell : row) {
 						matrixInfo.setCellPPodIdAndVersion(rowIdx, cellIdx++,
 								cell.getPPodVersionInfo().getPPodVersion());
 					}
