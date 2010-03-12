@@ -40,18 +40,18 @@ import edu.upenn.cis.ppod.util.OTUSomethingPair;
 public class OTUsToCharacterStateRows extends
 		OTUKeyedBimap<CharacterStateRow, CharacterStateMatrix> {
 	/**
-	 * The otusToRows of the matrix. We don't do save_update cascades since we
-	 * want to control when otusToRows are added to the persistence context. We
-	 * sometimes don't want the otusToRows saved or reattached when the the
+	 * The rows of the matrix. We don't do save_update cascades since we
+	 * want to control when rows are added to the persistence context. We
+	 * sometimes don't want the rows saved or reattached when the the
 	 * matrix is.
 	 */
 	@org.hibernate.annotations.CollectionOfElements
 	@org.hibernate.annotations.MapKeyManyToMany(joinColumns = @JoinColumn(name = OTU.ID_COLUMN))
 	@org.hibernate.annotations.Cascade(value = org.hibernate.annotations.CascadeType.DELETE_ORPHAN)
-	private final Map<OTU, CharacterStateRow> otusToRows = newHashMap();
+	private final Map<OTU, CharacterStateRow> rows = newHashMap();
 
 	/**
-	 * For marshalling {@code otusToRows}. Since a {@code Map}'s key couldn't be
+	 * For marshalling {@code rows}. Since a {@code Map}'s key couldn't be
 	 * an {@code XmlIDREF} in JAXB - at least not easily.
 	 */
 	@Transient
@@ -61,7 +61,7 @@ public class OTUsToCharacterStateRows extends
 
 	public boolean beforeMarshal(@Nullable final Marshaller marshaller) {
 		getOTURowPairsModifiable().clear();
-		for (final Map.Entry<OTU, CharacterStateRow> otuToRow : getOTUsToValuesModifiable()
+		for (final Map.Entry<OTU, CharacterStateRow> otuToRow : getOTUsToValuesReference()
 				.entrySet()) {
 			getOTURowPairsModifiable().add(
 					OTUCharacterStateRowPair.of(otuToRow.getKey(), otuToRow
@@ -76,8 +76,8 @@ public class OTUsToCharacterStateRows extends
 	}
 
 	@Override
-	protected Map<OTU, CharacterStateRow> getOTUsToValuesModifiable() {
-		return otusToRows;
+	protected Map<OTU, CharacterStateRow> getOTUsToValuesReference() {
+		return rows;
 	}
 
 	@Override

@@ -32,6 +32,8 @@ import javax.persistence.Table;
 import javax.xml.bind.Unmarshaller;
 import javax.xml.bind.annotation.XmlElement;
 
+import com.google.common.collect.ImmutableList;
+
 import edu.upenn.cis.ppod.util.IVisitor;
 
 /**
@@ -86,7 +88,7 @@ public class CharacterStateRow extends PPodEntity {
 
 	@Override
 	public void accept(final IVisitor visitor) {
-		for (final CharacterStateCell cell : getCells()) {
+		for (final CharacterStateCell cell : getCellsReference()) {
 			cell.accept(visitor);
 		}
 		super.accept(visitor);
@@ -101,7 +103,7 @@ public class CharacterStateRow extends PPodEntity {
 	 */
 	public void afterUnmarshal(final Unmarshaller u, final Object parent) {
 		int cellPosition = -1;
-		for (final CharacterStateCell cell : getCells()) {
+		for (final CharacterStateCell cell : getCellsReference()) {
 			cell.setPosition(++cellPosition);
 		}
 	}
@@ -115,8 +117,8 @@ public class CharacterStateRow extends PPodEntity {
 	 *         when this method is called
 	 */
 	private List<CharacterStateCell> clearCells() {
-		final List<CharacterStateCell> clearedCells = newArrayList(getCells());
-		if (getCells().size() == 0) {
+		final List<CharacterStateCell> clearedCells = newArrayList(getCellsReference());
+		if (getCellsReference().size() == 0) {
 			return clearedCells;
 		}
 		for (final CharacterStateCell clearedCell : clearedCells) {
@@ -127,16 +129,16 @@ public class CharacterStateRow extends PPodEntity {
 	}
 
 	/**
-	 * Get an unmodifiable view of the row.
+	 * Get a copy of the cells.
 	 * 
 	 * @return an unmodifiable view of the row
 	 */
-	public List<CharacterStateCell> getCells() {
-		return Collections.unmodifiableList(cells);
+	public ImmutableList<CharacterStateCell> getCells() {
+		return ImmutableList.copyOf(cells);
 	}
 
 	@XmlElement(name = "cell")
-	private List<CharacterStateCell> getCellsModifiable() {
+	private List<CharacterStateCell> getCellsReference() {
 		return cells;
 	}
 
@@ -165,7 +167,7 @@ public class CharacterStateRow extends PPodEntity {
 			final List<CharacterStateCell> newCells) {
 		checkNotNull(newCells);
 
-		if (newCells.equals(getCells())) {
+		if (newCells.equals(getCellsReference())) {
 			return Collections.emptyList();
 		}
 
@@ -188,15 +190,14 @@ public class CharacterStateRow extends PPodEntity {
 			}
 		}
 
-		final List<CharacterStateCell> clearedCells = newArrayList(getCells());
+		final List<CharacterStateCell> clearedCells = newArrayList(getCellsReference());
 		clearedCells.removeAll(newCells);
 
 		clearCells();
 		for (int cellPos = 0; cellPos < newCells.size(); cellPos++) {
-			getCellsModifiable().add(newCells.get(cellPos));
+			getCellsReference().add(newCells.get(cellPos));
 			newCells.get(cellPos).setRow(this);
 			newCells.get(cellPos).setPosition(cellPos);
-			// cellIdx.put(getCells().get(cellPos), cellPos);
 		}
 		setInNeedOfNewPPodVersionInfo();
 		return clearedCells;

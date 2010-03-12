@@ -49,12 +49,8 @@ public interface IPPodVersioned extends IPersistentObject {
 	 * @return the version info of this {@code IPPodVersioned}
 	 */
 	@Nullable
-	PPodVersionInfo getpPodVersionInfo();
+	PPodVersionInfo getPPodVersionInfo();
 
-	/**
-	 * NOTE: the weird name is on purpose so that Hibernate can identity it as
-	 * the getter.
-	 */
 	IPPodVersioned setPPodVersionInfo(final PPodVersionInfo pPodVersionInfo);
 
 	IPPodVersioned setAllowResetPPodVersionInfo(

@@ -68,8 +68,10 @@ public final class StudyResourceHibernate implements IStudyResource {
 				.getSessionFactory().getCurrentSession());
 		this.setPPodVersionInfoVisitor = setPPodVersionInfoVisitorFactory
 				.create(newPPodVersionInfo);
-		this.saveOrUpdateStudies = saveOrUpdateStudyFactory.create(HibernateUtil
-				.getSessionFactory().getCurrentSession(), newPPodVersionInfo);
+		this.saveOrUpdateStudies = saveOrUpdateStudyFactory.create(
+				HibernateUtil
+						.getSessionFactory().getCurrentSession(),
+				newPPodVersionInfo);
 		this.study2StudyInfo = study2StudyInfo;
 		this.otuSetAndOTUSetDocIdVisitor = otuSetAndOTUSetDocIdVisitor;
 		this.afterUnmarshalVisitorProvider = afterUnmarshalVisitorProvider;
@@ -84,7 +86,7 @@ public final class StudyResourceHibernate implements IStudyResource {
 	}
 
 	public Study getStudyByPPodId(final String pPodId) {
-		final Study study = studyDAO.getStudyByPPodIdEager(pPodId);
+		final Study study = studyDAO.getStudyByPPodId(pPodId);
 		study.accept(otuSetAndOTUSetDocIdVisitor);
 		return study;
 	}

@@ -21,7 +21,8 @@ import static com.google.common.collect.Lists.newArrayList;
 
 import java.util.Collections;
 import java.util.List;
-import java.util.Map;
+
+import com.google.common.collect.ImmutableMap;
 
 /**
  * @author Sam Donnelly
@@ -38,7 +39,7 @@ public abstract class MolecularStateMatrix extends CharacterStateMatrix {
 	}
 
 	@Override
-	public Map<Character, Integer> getCharacterIdx() {
+	public ImmutableMap<Character, Integer> getCharacterIdx() {
 		throw new UnsupportedOperationException(
 				"character index is not supported for a MolecularMatrix since all characters are the same instance.");
 	}
@@ -98,13 +99,13 @@ public abstract class MolecularStateMatrix extends CharacterStateMatrix {
 		}
 
 		while (getCharacters().size() < newMolecularCharacters.size()) {
-			getCharactersModifiable().add(newMolecularCharacters.get(0));
-			getColumnPPodVersionInfosModifiable().add(null);
+			getCharactersReference().add(newMolecularCharacters.get(0));
+			getColumnPPodVersionInfoReference().add(null);
 		}
 
 		while (getCharacters().size() > newMolecularCharacters.size()) {
-			getCharactersModifiable().remove(getCharacters().size() - 1);
-			getColumnPPodVersionInfosModifiable().remove(
+			getCharactersReference().remove(getCharacters().size() - 1);
+			getColumnPPodVersionInfoReference().remove(
 					getColumnPPodVersionInfos().size() - 1);
 
 		}

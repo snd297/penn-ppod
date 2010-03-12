@@ -55,6 +55,9 @@ public abstract class PersistentObject implements IPersistentObject {
 	@Transient
 	private boolean allowPersist = true;
 
+	@Transient
+	protected boolean marshalled = false;
+
 	/** Default constructor. */
 	protected PersistentObject() {}
 
@@ -68,13 +71,13 @@ public abstract class PersistentObject implements IPersistentObject {
 
 	@XmlAttribute
 	@Nullable
-	public Long getId() {
+	public final Long getId() {
 		return id;
 	}
 
 	/** Created for Jaxb. */
 	@SuppressWarnings("unused")
-	private PersistentObject setId(final Long id) {
+	private final PersistentObject setId(final Long id) {
 		this.id = id;
 		return this;
 	}
@@ -106,5 +109,9 @@ public abstract class PersistentObject implements IPersistentObject {
 	protected PersistentObject unsetAllowPersist() {
 		allowPersist = false;
 		return this;
+	}
+
+	protected boolean getMarshalled() {
+		return marshalled;
 	}
 }

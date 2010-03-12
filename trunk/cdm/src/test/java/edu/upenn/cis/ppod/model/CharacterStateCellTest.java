@@ -29,6 +29,7 @@ import javax.annotation.Nullable;
 import org.testng.annotations.BeforeMethod;
 import org.testng.annotations.Test;
 
+import com.google.common.collect.ImmutableSet;
 import com.google.inject.Inject;
 import com.google.inject.Provider;
 
@@ -195,13 +196,13 @@ public class CharacterStateCellTest {
 		cell.setPolymorphicStates(states);
 	}
 
-	public void setTypeAndStatesUncertain() {
+	public void setUncertainStates() {
 		matrix.getRows().get(0).setCells(newArrayList(cell));
 		states.add(state00);
 		states.add(state01);
 		cell.setUncertainStates(states);
 		assertEquals(cell.getType(), CharacterStateCell.Type.UNCERTAIN);
-		assertEquals((Object) cell.getStates(), (Object) states);
+		assertEquals(newHashSet(cell.getStates()), newHashSet(states));
 	}
 
 	@Test(expectedExceptions = IllegalArgumentException.class)

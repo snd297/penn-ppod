@@ -67,9 +67,9 @@ public class MergeOTUSets implements IMergeOTUSets {
 			if (null == (targetOTU = findIf(targetOTUSet.getOTUs(), compose(
 					equalTo(sourceOTU.getPPodId()), IUUPPodEntity.getPPodId)))) {
 				targetOTU = otuProvider.get();
+				targetOTU.setPPodId();
 				targetOTU.setPPodVersionInfo(newPPodVersionInfo
 						.getNewPPodVersionInfo());
-				targetOTU.setPPodId();
 			}
 			newTargetOTUs.add(targetOTU);
 			targetOTU.setLabel(sourceOTU.getLabel());

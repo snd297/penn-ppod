@@ -17,8 +17,6 @@ package edu.upenn.cis.ppod.model;
 
 import static com.google.common.base.Preconditions.checkNotNull;
 
-import java.util.List;
-
 import javax.persistence.CascadeType;
 import javax.persistence.Entity;
 import javax.persistence.FetchType;
@@ -31,6 +29,8 @@ import com.google.inject.Inject;
 import edu.upenn.cis.ppod.util.IVisitor;
 
 /**
+ * A set of {@link DNASequence}s.
+ * 
  * @author Sam Donnelly
  */
 @Entity
@@ -41,12 +41,6 @@ public class DNASequenceSet extends MolecularSequenceSet<DNASequence> {
 
 	public final static String ID_COLUMN = TABLE + "_"
 			+ PersistentObject.ID_COLUMN;
-
-	@Override
-	public void accept(final IVisitor visitor) {
-		super.accept(visitor);
-		visitor.visit(this);
-	}
 
 	/**
 	 * The sequences.
@@ -59,6 +53,12 @@ public class DNASequenceSet extends MolecularSequenceSet<DNASequence> {
 	@Inject
 	DNASequenceSet(final OTUsToDNASequences otusToDNASequences) {
 		this.otusToSequences = otusToDNASequences;
+	}
+
+	@Override
+	public void accept(final IVisitor visitor) {
+		super.accept(visitor);
+		visitor.visit(this);
 	}
 
 	@Override
@@ -75,13 +75,6 @@ public class DNASequenceSet extends MolecularSequenceSet<DNASequence> {
 		return otusToSequences;
 	}
 
-	@SuppressWarnings("unused")
-	private DNASequenceSet setOTUsToSequences(
-			final OTUsToDNASequences otusToSequences) {
-		this.otusToSequences = otusToSequences;
-		return this;
-	}
-
 	@Override
 	public DNASequence getSequence(final OTU otu) {
 		checkNotNull(otu);
@@ -89,14 +82,15 @@ public class DNASequenceSet extends MolecularSequenceSet<DNASequence> {
 	}
 
 	@Override
-	public List<DNASequence> getSequences() {
-		return getOTUsToSequences().getValuesInOTUOrder(getOTUSet());
-	}
-
-	@Override
-	public DNASequence putSequence(final OTU otu, final DNASequence newSequence) {
-		
+	protected DNASequence putSequenceHelper(final OTU otu,
+			final DNASequence newSequence) {
 		return getOTUsToSequences().put(otu, newSequence, this);
 	}
 
+	@SuppressWarnings("unused")
+	private DNASequenceSet setOTUsToSequences(
+			final OTUsToDNASequences otusToSequences) {
+		this.otusToSequences = otusToSequences;
+		return this;
+	}
 }

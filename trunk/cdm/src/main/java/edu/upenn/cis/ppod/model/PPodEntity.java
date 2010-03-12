@@ -94,8 +94,8 @@ public abstract class PPodEntity extends PersistentObject implements
 	 * value will be set to {@code true} and it will be set to the newest
 	 * version number by whatever mechanism is in place</li>
 	 * <li>for transient entities this flag is functionally irrelevant: the pPOD
-	 * version info needs to set at time of creation, so this value is will be
-	 * unset anyway in {@link #setPPodVersion(Long)} . Subsequent calls to the
+	 * version info needs to be set at time of creation, so this value is will
+	 * be unset anyway in {@link #setPPodVersionInfo} . Subsequent calls to the
 	 * setters will then turn it to {@code true} needlessly.
 	 * </ul>
 	 */
@@ -139,7 +139,7 @@ public abstract class PPodEntity extends PersistentObject implements
 		}
 	}
 
-	public IPPodEntity addAttachment(final Attachment attachment) {
+	public final IPPodEntity addAttachment(final Attachment attachment) {
 		if (attachments == null) {
 			attachments = newHashSet();
 		}
@@ -164,6 +164,7 @@ public abstract class PPodEntity extends PersistentObject implements
 			}
 			attachmentsXml = null;
 		}
+		marshalled = true;
 	}
 
 	/**
@@ -193,18 +194,19 @@ public abstract class PPodEntity extends PersistentObject implements
 		unsetAllowPersistAndResetPPodVersionInfo();
 	}
 
-	public boolean getAllowResetPPodVersionInfo() {
+	public final boolean getAllowResetPPodVersionInfo() {
 		return allowResetPPodVersionInfo;
 	}
 
-	public Set<Attachment> getAttachments() {
+	public final Set<Attachment> getAttachments() {
 		if (hasAttachments) {
 			return Collections.unmodifiableSet(attachments);
 		}
 		return Collections.emptySet();
 	}
 
-	public Set<Attachment> getAttachmentsByNamespace(final String namespace) {
+	public final Set<Attachment> getAttachmentsByNamespace(
+			final String namespace) {
 		final Set<Attachment> attachmentsByNamespace = newHashSet();
 		for (final Attachment attachment : getAttachments()) {
 			if (namespace
@@ -215,7 +217,7 @@ public abstract class PPodEntity extends PersistentObject implements
 		return attachmentsByNamespace;
 	}
 
-	public Set<Attachment> getAttachmentsByNamespaceAndType(
+	public final Set<Attachment> getAttachmentsByNamespaceAndType(
 			final String namespace, final String type) {
 		return Sets.newHashSet(Iterables.filter(getAttachments(),
 				new Attachment.IsOfNamespaceAndType(type, namespace)));
@@ -233,27 +235,31 @@ public abstract class PPodEntity extends PersistentObject implements
 	/**
 	 * Created for testing.
 	 */
-	Boolean getHasAttachments() {
+	final Boolean getHasAttachments() {
 		return hasAttachments;
 	}
 
 	@XmlAttribute
-	public Long getPPodVersion() {
+	public final Long getPPodVersion() {
 		if (pPodVersionInfo != null) {
 			return pPodVersionInfo.getPPodVersion();
 		}
 		return pPodVersion;
 	}
 
-	public PPodVersionInfo getpPodVersionInfo() {
+	public final PPodVersionInfo getPPodVersionInfo() {
+		if (getMarshalled()) {
+			throw new IllegalStateException(
+					"can't access a PPodVersionInfo through a marshalled PPodEntity");
+		}
 		return pPodVersionInfo;
 	}
 
-	public boolean isInNeedOfNewPPodVersionInfo() {
+	public final boolean isInNeedOfNewPPodVersionInfo() {
 		return inNeedOfNewPPodVersionInfo;
 	}
 
-	public boolean removeAttachment(final Attachment attachment) {
+	public final boolean removeAttachment(final Attachment attachment) {
 		Boolean attachmentRemoved;
 		if (!hasAttachments) {
 			attachmentRemoved = false;
@@ -269,7 +275,7 @@ public abstract class PPodEntity extends PersistentObject implements
 		return attachmentRemoved;
 	}
 
-	public PPodEntity setAllowResetPPodVersionInfo(
+	public final PPodEntity setAllowResetPPodVersionInfo(
 			final boolean allowResetPPodVersionInfo) {
 		this.allowResetPPodVersionInfo = allowResetPPodVersionInfo;
 		return this;
@@ -302,23 +308,20 @@ public abstract class PPodEntity extends PersistentObject implements
 	 * 
 	 * @return this
 	 */
-	public IPPodEntity setPPodVersion(final Long pPodVersion) {
+	public final IPPodEntity setPPodVersion(final Long pPodVersion) {
 		this.pPodVersion = pPodVersion;
 		return this;
 	}
 
 	/**
-	 * Created for testing and Hibernate because this has access type
-	 * "property".
-	 * <p>
-	 * NOTE: the weird name is on purpose so that Hibernate can identity it as
-	 * the setter.
+	 * Set the pPod version info.
 	 * 
 	 * @param pPodVersionInfo new pPOD version
 	 * 
 	 * @return this
 	 */
-	public PPodEntity setPPodVersionInfo(final PPodVersionInfo pPodVersionInfo) {
+	public final PPodEntity setPPodVersionInfo(
+			final PPodVersionInfo pPodVersionInfo) {
 		checkNotNull(pPodVersionInfo);
 		unsetInNeedOfNewPPodVersionInfo();
 		this.pPodVersionInfo = pPodVersionInfo;
@@ -352,13 +355,13 @@ public abstract class PPodEntity extends PersistentObject implements
 		return retValue.toString();
 	}
 
-	public PersistentObject unsetAllowPersistAndResetPPodVersionInfo() {
+	public final PersistentObject unsetAllowPersistAndResetPPodVersionInfo() {
 		unsetAllowPersist();
 		allowResetPPodVersionInfo = false;
 		return this;
 	}
 
-	public PPodEntity unsetInNeedOfNewPPodVersionInfo() {
+	public final PPodEntity unsetInNeedOfNewPPodVersionInfo() {
 		inNeedOfNewPPodVersionInfo = false;
 		return this;
 	}
