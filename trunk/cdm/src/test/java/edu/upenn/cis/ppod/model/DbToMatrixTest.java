@@ -146,10 +146,12 @@ public class DbToMatrixTest extends DbTestBase {
 							final List<Element> phyloCharStateObjectsTemp = pPodDataSmall
 									.selectNodes(phyloCharStateXPath);
 
-							Assert.assertTrue(
-									phyloCharStateObjectsTemp.size() > 0,
-									"phyloCharStateObjects.size() should have been > 0, but was "
-											+ phyloCharStateElements.size());
+							Assert
+									.assertTrue(
+											phyloCharStateObjectsTemp.size() > 0,
+											"phyloCharStateObjects.size() should have been > 0, but was "
+													+ phyloCharStateElements
+															.size());
 
 							phyloCharStateElements
 									.addAll(phyloCharStateObjectsTemp);
@@ -226,7 +228,7 @@ public class DbToMatrixTest extends DbTestBase {
 
 	void checkOTUs(final Document pPodDocument, final CharacterStateMatrix m) {
 
-		for (final OTU otu : m.getOTUSet().getOTUs()) {
+		for (final OTU otu : m.getOTUSet()) {
 			final Element otuElement = (Element) pPodDocument
 					.selectSingleNode("/dataset/" + OTU.TABLE.toLowerCase()
 							+ "[@" + OTU.ID_COLUMN + "='" + otu.getId() + "']");

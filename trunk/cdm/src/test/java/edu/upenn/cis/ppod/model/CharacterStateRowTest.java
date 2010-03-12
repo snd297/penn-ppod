@@ -74,7 +74,7 @@ public class CharacterStateRowTest {
 
 	public void addCellToMatrixWOneCharacter() {
 		final CharacterStateCell cell = cellProvider.get().setUnassigned();
-		matrix.getRow(matrix.getOTUSet().getOTUs().get(0)).setCells(
+		matrix.getRow(matrix.getOTUSet().getOTU(0)).setCells(
 				Arrays.asList(cell));
 
 		ModelAssert.assertEqualsCharacterStateCells(cell, matrix.getRow(
@@ -98,7 +98,7 @@ public class CharacterStateRowTest {
 		// Just call setUnassigned so that the cell is in a legal state - it
 		// shouldn't really matterJust call setUnassigned so that the cell is in
 		// a legal state - it shouldn't really matter
-		matrix.getRow(matrix.getOTUSet().getOTUs().get(0)).setCells(
+		matrix.getRow(matrix.getOTUSet().getOTU(0)).setCells(
 				Arrays.asList(cellProvider.get()
 						.setUnassigned()));
 	}
@@ -107,6 +107,6 @@ public class CharacterStateRowTest {
 	public void addCellToMatrixWTooFewCharacters() {
 		final List<CharacterStateCell> cells = newArrayList(cellProvider.get()
 				.setUnassigned(), cellProvider.get().setUnassigned());
-		matrix.getRow(matrix.getOTUSet().getOTUs().get(0)).setCells(cells);
+		matrix.getRow(matrix.getOTUSet().getOTU(0)).setCells(cells);
 	}
 }

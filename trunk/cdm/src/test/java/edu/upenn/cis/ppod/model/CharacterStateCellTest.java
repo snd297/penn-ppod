@@ -95,7 +95,7 @@ public class CharacterStateCellTest {
 				"character0");
 		matrix.setCharacters(newArrayList(character0));
 		final CharacterStateRow row0 = rowProvider.get();
-		matrix.putRow(matrix.getOTUSet().getOTUs().get(0), row0);
+		matrix.putRow(matrix.getOTUSet().getOTU(0), row0);
 
 		states = newHashSet();
 
@@ -120,7 +120,7 @@ public class CharacterStateCellTest {
 
 	public void getStatesWhenCellHasOneState() {
 		states.add(state00);
-		matrix.getRow(matrix.getOTUSet().getOTUs().get(0)).setCells(
+		matrix.getRow(matrix.getOTUSet().getOTU(0)).setCells(
 				Arrays.asList(cell));
 
 		cell.setSingleState(state00);
@@ -130,7 +130,7 @@ public class CharacterStateCellTest {
 	public void getStatesWhenCellHasMultipleStates() {
 		states.add(state00);
 		states.add(state01);
-		matrix.getRow(matrix.getOTUSet().getOTUs().get(0)).setCells(
+		matrix.getRow(matrix.getOTUSet().getOTU(0)).setCells(
 				Arrays.asList(cell));
 
 		cell.setPolymorphicStates(states);
@@ -144,7 +144,7 @@ public class CharacterStateCellTest {
 	}
 
 	public void setTypeAndStatesFromSingleToInapplicable() {
-		matrix.getRow(matrix.getOTUSet().getOTUs().get(0)).setCells(
+		matrix.getRow(matrix.getOTUSet().getOTU(0)).setCells(
 				Arrays.asList(cell));
 		cell.setSingleState(state00);
 		cell.setInapplicable();
@@ -153,7 +153,7 @@ public class CharacterStateCellTest {
 	}
 
 	public void setTypeAndStatesFromPolymorhpicToInapplicable() {
-		matrix.getRow(matrix.getOTUSet().getOTUs().get(0)).setCells(
+		matrix.getRow(matrix.getOTUSet().getOTU(0)).setCells(
 				Arrays.asList(cell));
 		states.add(state00);
 		states.add(state01);
@@ -164,7 +164,7 @@ public class CharacterStateCellTest {
 	}
 
 	public void setTypeAndStatesInapplicable() {
-		matrix.getRow(matrix.getOTUSet().getOTUs().get(0)).setCells(
+		matrix.getRow(matrix.getOTUSet().getOTU(0)).setCells(
 				Arrays.asList(cell));
 		cell.setInapplicable();
 		assertEquals(cell.getType(), CharacterStateCell.Type.INAPPLICABLE);
@@ -172,7 +172,7 @@ public class CharacterStateCellTest {
 	}
 
 	public void setTypeAndStatesUnassigned() {
-		matrix.getRow(matrix.getOTUSet().getOTUs().get(0)).setCells(
+		matrix.getRow(matrix.getOTUSet().getOTU(0)).setCells(
 				Arrays.asList(cell));
 		cell.setUnassigned();
 		assertEquals(cell.getType(), CharacterStateCell.Type.UNASSIGNED);
@@ -180,7 +180,7 @@ public class CharacterStateCellTest {
 	}
 
 	public void setTypeAndStatesSingle() {
-		matrix.getRow(matrix.getOTUSet().getOTUs().get(0)).setCells(
+		matrix.getRow(matrix.getOTUSet().getOTU(0)).setCells(
 				Arrays.asList(cell));
 		states.add(state00);
 		cell.setSingleState(state00);
@@ -189,7 +189,7 @@ public class CharacterStateCellTest {
 	}
 
 	public void setTypeAndStatesPolymorphic() {
-		matrix.getRow(matrix.getOTUSet().getOTUs().get(0)).setCells(
+		matrix.getRow(matrix.getOTUSet().getOTU(0)).setCells(
 				Arrays.asList(cell));
 		states.add(state00);
 		states.add(state01);
@@ -200,13 +200,13 @@ public class CharacterStateCellTest {
 
 	@Test(expectedExceptions = IllegalArgumentException.class)
 	public void setTypeAndStatesPolymorphicTooFewStates() {
-		matrix.getRow(matrix.getOTUSet().getOTUs().get(0)).setCells(
+		matrix.getRow(matrix.getOTUSet().getOTU(0)).setCells(
 				Arrays.asList(cell));
 		cell.setPolymorphicStates(states);
 	}
 
 	public void setUncertainStates() {
-		matrix.getRow(matrix.getOTUSet().getOTUs().get(0)).setCells(
+		matrix.getRow(matrix.getOTUSet().getOTU(0)).setCells(
 				Arrays.asList(cell));
 		states.add(state00);
 		states.add(state01);
@@ -217,7 +217,7 @@ public class CharacterStateCellTest {
 
 	@Test(expectedExceptions = IllegalArgumentException.class)
 	public void setTypeAndStatesUncertainTooFewStates() {
-		matrix.getRow(matrix.getOTUSet().getOTUs().get(0)).setCells(
+		matrix.getRow(matrix.getOTUSet().getOTU(0)).setCells(
 				Arrays.asList(cell));
 		states.add(state00);
 		cell.setUncertainStates(states);
@@ -226,7 +226,7 @@ public class CharacterStateCellTest {
 	@Test(groups = TestGroupDefs.IN_DEVELOPMENT)
 	public void getStatesWXmlStatesNeedsToBePutIntoStatesTrueSingle() {
 		cell.setXmlStatesNeedsToBePutIntoStates(true);
-		matrix.getRow(matrix.getOTUSet().getOTUs().get(0)).setCells(
+		matrix.getRow(matrix.getOTUSet().getOTU(0)).setCells(
 				Arrays.asList(cell));
 		states.add(state00);
 		cell.setTypeAndXmlStates(CharacterStateCell.Type.SINGLE, states);
@@ -237,7 +237,7 @@ public class CharacterStateCellTest {
 
 	public void afterUnmarshal() {
 		cell.setXmlStatesNeedsToBePutIntoStates(true);
-		matrix.getRow(matrix.getOTUSet().getOTUs().get(0)).setCells(
+		matrix.getRow(matrix.getOTUSet().getOTU(0)).setCells(
 				Arrays.asList(cell));
 		cell.setTypeAndXmlStates(CharacterStateCell.Type.UNCERTAIN, states);
 		cell.afterUnmarshal();

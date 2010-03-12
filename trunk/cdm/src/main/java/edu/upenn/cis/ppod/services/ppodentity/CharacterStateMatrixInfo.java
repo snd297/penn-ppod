@@ -20,7 +20,6 @@ import static com.google.common.collect.Maps.newTreeMap;
 
 import java.util.Map;
 import java.util.SortedMap;
-import java.util.TreeMap;
 
 import javax.xml.bind.annotation.XmlAccessType;
 import javax.xml.bind.annotation.XmlAccessorType;

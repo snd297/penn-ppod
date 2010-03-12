@@ -88,7 +88,7 @@ public class CharacterStateRow extends PPodEntity implements
 
 	@Override
 	public void accept(final IVisitor visitor) {
-		for (final CharacterStateCell cell : getCellsReference()) {
+		for (final CharacterStateCell cell : getCells()) {
 			cell.accept(visitor);
 		}
 		super.accept(visitor);
@@ -103,7 +103,7 @@ public class CharacterStateRow extends PPodEntity implements
 	 */
 	public void afterUnmarshal(final Unmarshaller u, final Object parent) {
 		int cellPosition = -1;
-		for (final CharacterStateCell cell : getCellsReference()) {
+		for (final CharacterStateCell cell : getCells()) {
 			cell.setPosition(++cellPosition);
 		}
 	}
@@ -117,8 +117,8 @@ public class CharacterStateRow extends PPodEntity implements
 	 *         when this method is called
 	 */
 	private List<CharacterStateCell> clearCells() {
-		final List<CharacterStateCell> clearedCells = newArrayList(getCellsReference());
-		if (getCellsReference().size() == 0) {
+		final List<CharacterStateCell> clearedCells = newArrayList(getCells());
+		if (getCells().size() == 0) {
 			return clearedCells;
 		}
 		for (final CharacterStateCell clearedCell : clearedCells) {
@@ -138,11 +138,11 @@ public class CharacterStateRow extends PPodEntity implements
 	 *             bounds for this row
 	 */
 	public CharacterStateCell getCell(final int pPodCellPosition) {
-		return getCellsReference().get(pPodCellPosition);
+		return getCells().get(pPodCellPosition);
 	}
 
 	@XmlElement(name = "cell")
-	private List<CharacterStateCell> getCellsReference() {
+	private List<CharacterStateCell> getCells() {
 		return cells;
 	}
 
@@ -152,7 +152,7 @@ public class CharacterStateRow extends PPodEntity implements
 	 * @return the number of cells this row has
 	 */
 	public int getCellsSize() {
-		return getCellsReference().size();
+		return getCells().size();
 	}
 
 	/**
@@ -171,7 +171,7 @@ public class CharacterStateRow extends PPodEntity implements
 	 * @return an iterator over this row's cells
 	 */
 	public Iterator<CharacterStateCell> iterator() {
-		return getCellsReference().iterator();
+		return getCells().iterator();
 	}
 
 	/**
@@ -189,7 +189,7 @@ public class CharacterStateRow extends PPodEntity implements
 			final List<CharacterStateCell> newCells) {
 		checkNotNull(newCells);
 
-		if (newCells.equals(getCellsReference())) {
+		if (newCells.equals(getCells())) {
 			return Collections.emptyList();
 		}
 
@@ -212,12 +212,12 @@ public class CharacterStateRow extends PPodEntity implements
 			}
 		}
 
-		final List<CharacterStateCell> clearedCells = newArrayList(getCellsReference());
+		final List<CharacterStateCell> clearedCells = newArrayList(getCells());
 		clearedCells.removeAll(newCells);
 
 		clearCells();
 		for (int cellPos = 0; cellPos < newCells.size(); cellPos++) {
-			getCellsReference().add(newCells.get(cellPos));
+			getCells().add(newCells.get(cellPos));
 			newCells.get(cellPos).setRow(this);
 			newCells.get(cellPos).setPosition(cellPos);
 		}
