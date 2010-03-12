@@ -59,12 +59,12 @@ public class MergeOTUSets implements IMergeOTUSets {
 		targetOTUSet.setDocId(sourceOTUSet.getDocId());
 
 		final List<OTU> newTargetOTUs = newArrayListWithCapacity(sourceOTUSet
-				.getOTUs().size());
+				.getOTUsSize());
 
 		final Map<OTU, OTU> source2TargetOTUs = newHashMap();
-		for (final OTU sourceOTU : sourceOTUSet.getOTUs()) {
+		for (final OTU sourceOTU : sourceOTUSet) {
 			OTU targetOTU;
-			if (null == (targetOTU = findIf(targetOTUSet.getOTUs(), compose(
+			if (null == (targetOTU = findIf(targetOTUSet, compose(
 					equalTo(sourceOTU.getPPodId()), IUUPPodEntity.getPPodId)))) {
 				targetOTU = otuProvider.get();
 				targetOTU.setPPodId();

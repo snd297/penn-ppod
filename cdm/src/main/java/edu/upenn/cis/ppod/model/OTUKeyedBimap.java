@@ -17,6 +17,7 @@ package edu.upenn.cis.ppod.model;
 
 import static com.google.common.base.Preconditions.checkArgument;
 import static com.google.common.base.Preconditions.checkNotNull;
+import static com.google.common.collect.Iterables.contains;
 import static com.google.common.collect.Lists.newArrayListWithCapacity;
 import static com.google.common.collect.Sets.newHashSet;
 
@@ -52,7 +53,7 @@ public abstract class OTUKeyedBimap<T extends PersistentObject, P extends IWithO
 	}
 
 	public T get(final OTU otu, final P parent) {
-		checkArgument(parent.getOTUSet().getOTUs().contains(otu),
+		checkArgument(contains(parent.getOTUSet(), otu),
 				"otu does not belong to parent's OTUSet");
 		return getOTUsToValuesReference().get(otu);
 	}
@@ -69,7 +70,7 @@ public abstract class OTUKeyedBimap<T extends PersistentObject, P extends IWithO
 	public List<T> getValuesInOTUOrder(final OTUSet otuSet) {
 		final List<T> valuesInOTUOrder = newArrayListWithCapacity(getOTUsToValuesReference()
 				.values().size());
-		for (final OTU otu : otuSet.getOTUs()) {
+		for (final OTU otu : otuSet) {
 			if (getOTUsToValuesReference().containsKey(otu)) {
 				valuesInOTUOrder.add(getOTUsToValuesReference().get(otu));
 			}
@@ -128,7 +129,7 @@ public abstract class OTUKeyedBimap<T extends PersistentObject, P extends IWithO
 	protected T putHelper(final OTU key, final T value, final P parent) {
 		checkNotNull(key);
 		checkNotNull(value);
-		checkArgument(parent.getOTUSet().getOTUs().contains(key),
+		checkArgument(contains(parent.getOTUSet(), key),
 				"otu does not belong to the parent's OTUSet");
 
 		if (null != getOTUsToValuesReference().get(key)
@@ -165,7 +166,7 @@ public abstract class OTUKeyedBimap<T extends PersistentObject, P extends IWithO
 		final Set<OTU> otusToBeRemoved = newHashSet();
 		for (final OTU otu : getOTUsToValuesReference().keySet()) {
 			if (parent.getOTUSet() != null
-					&& parent.getOTUSet().getOTUs().contains(otu)) {
+					&& contains(parent.getOTUSet(), otu)) {
 				// it stays
 			} else {
 				otusToBeRemoved.add(otu);
@@ -176,7 +177,7 @@ public abstract class OTUKeyedBimap<T extends PersistentObject, P extends IWithO
 		getOTUsToValuesReference().keySet().removeAll(otusToBeRemoved);
 
 		if (otuSet != null) {
-			for (final OTU otu : parent.getOTUSet().getOTUs()) {
+			for (final OTU otu : parent.getOTUSet()) {
 				if (getOTUsToValuesReference().containsKey(otu)) {
 
 				} else {

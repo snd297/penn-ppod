@@ -35,11 +35,10 @@ public class ModelAssert {
 			final OTUSet expectedOTUSet) {
 		assertEquals(actualOTUSet.getLabel(), expectedOTUSet.getLabel());
 
-		assertEquals(actualOTUSet.getOTUs().size(), expectedOTUSet.getOTUs()
-				.size());
-		for (final OTU expectedOTU : expectedOTUSet.getOTUs()) {
+		assertEquals(actualOTUSet.getOTUsSize(), expectedOTUSet.getOTUsSize());
+		for (final OTU expectedOTU : expectedOTUSet) {
 			boolean foundIt = false;
-			for (final OTU actualOTU : actualOTUSet.getOTUs()) {
+			for (final OTU actualOTU : actualOTUSet) {
 				if (equal(actualOTU.getLabel(), expectedOTU.getLabel())) {
 					foundIt = true;
 					break;
@@ -47,7 +46,7 @@ public class ModelAssert {
 			}
 			assertTrue(foundIt, "couldn't find an expected OTU ["
 					+ expectedOTU.getLabel() + "] in the actual OTU's: "
-					+ actualOTUSet.getOTUs());
+					+ actualOTUSet);
 		}
 	}
 

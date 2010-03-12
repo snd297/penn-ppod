@@ -37,14 +37,11 @@ public class MergeMolecularSequenceSets<SS extends MolecularSequenceSet<S>, S ex
 		targetSequenceSet.setLabel(sourceSequenceSet.getLabel());
 		dao.saveOrUpdate(targetSequenceSet);
 
-		for (int i = 0; i < sourceSequenceSet.getOTUSet().getOTUs()
-				.size(); i++) {
-			final OTU sourceOTU = sourceSequenceSet.getOTUSet().getOTUs()
-					.get(i);
+		for (int i = 0; i < sourceSequenceSet.getOTUSet().getOTUsSize(); i++) {
+			final OTU sourceOTU = sourceSequenceSet.getOTUSet().getOTU(i);
 
 			final S sourceSequence = sourceSequenceSet.getSequence(sourceOTU);
-			final OTU targetOTU = targetSequenceSet.getOTUSet().getOTUs().get(
-					i);
+			final OTU targetOTU = targetSequenceSet.getOTUSet().getOTU(i);
 
 			S targetSequence;
 

@@ -15,9 +15,9 @@
  */
 package edu.upenn.cis.ppod.services.ppodentity;
 
-import static com.google.common.collect.Lists.newArrayList;
+import static com.google.common.collect.Sets.newHashSet;
 
-import java.util.List;
+import java.util.Set;
 
 import javax.xml.bind.annotation.XmlAccessType;
 import javax.xml.bind.annotation.XmlAccessorType;
@@ -31,45 +31,48 @@ import javax.xml.bind.annotation.XmlRootElement;
 @XmlAccessorType(XmlAccessType.NONE)
 public final class OTUSetInfo extends PPodEntityInfoWDocId {
 
-	private List<PPodEntityInfoWDocId> otuInfos = newArrayList();
+	private Set<PPodEntityInfoWDocId> otuInfos = newHashSet();
+
 	/**
 	 * The pPOD version of char matrix {@code data} is {@code
 	 * matrixInfosByDocId.get(PPodUtil.getPPodId(data))}.
 	 */
-	private List<CharacterStateMatrixInfo> matrixInfos = newArrayList();
+	private Set<CharacterStateMatrixInfo> matrixInfos = newHashSet();
 
-	private List<TreeSetInfo> treeSetInfos = newArrayList();
+	private Set<MolecularSequenceSetInfo> sequenceSets = newHashSet();
+
+	private Set<TreeSetInfo> treeSetInfos = newHashSet();
 
 	OTUSetInfo() {}
 
 	@XmlElement(name = "matrixInfo")
-	public List<CharacterStateMatrixInfo> getMatrixInfos() {
+	public Set<CharacterStateMatrixInfo> getMatrixInfos() {
 		return matrixInfos;
 	}
 
 	@XmlElement(name = "treeSetInfo")
-	public List<TreeSetInfo> getTreeSetInfos() {
+	public Set<TreeSetInfo> getTreeSetInfos() {
 		return treeSetInfos;
 	}
 
 	public OTUSetInfo setMatrixInfos(
-			final List<CharacterStateMatrixInfo> matrixInfos) {
+			final Set<CharacterStateMatrixInfo> matrixInfos) {
 		this.matrixInfos = matrixInfos;
 		return this;
 	}
 
-	public OTUSetInfo setTreeSetInfos(final List<TreeSetInfo> treeSetInfos) {
+	public OTUSetInfo setTreeSetInfos(final Set<TreeSetInfo> treeSetInfos) {
 		this.treeSetInfos = treeSetInfos;
 		return this;
 	}
 
 	@XmlElement(name = "otuInfo")
-	public List<PPodEntityInfoWDocId> getOTUInfos() {
+	public Set<PPodEntityInfoWDocId> getOTUInfos() {
 		return otuInfos;
 	}
 
 	public OTUSetInfo setOTUInfosByDocId(
-			final List<PPodEntityInfoWDocId> otuInfos) {
+			final Set<PPodEntityInfoWDocId> otuInfos) {
 		this.otuInfos = otuInfos;
 		return this;
 	}

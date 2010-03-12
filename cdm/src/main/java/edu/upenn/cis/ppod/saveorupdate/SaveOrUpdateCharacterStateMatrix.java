@@ -188,13 +188,12 @@ public class SaveOrUpdateCharacterStateMatrix implements ISaveOrUpdateMatrix {
 		dao.saveOrUpdate(targetMatrix);
 
 		final Set<CharacterStateCell> cellsToEvict = newHashSet();
-		for (final OTU sourceOTU : sourceMatrix.getOTUSet().getOTUs()) {
+		int sourceOTUPosition = -1;
+		for (final OTU sourceOTU : sourceMatrix.getOTUSet()) {
+			sourceOTUPosition++;
 			final CharacterStateRow sourceRow = sourceMatrix.getRow(sourceOTU);
 
-			final int sourceOTUPosition = sourceMatrix.getOTUSet().getOTUs()
-					.indexOf(sourceOTU);
-
-			final OTU targetOTU = targetMatrix.getOTUSet().getOTUs().get(
+			final OTU targetOTU = targetMatrix.getOTUSet().getOTU(
 					sourceOTUPosition);
 			CharacterStateRow targetRow = null;
 			List<Character> characters = targetMatrix.getCharacters();

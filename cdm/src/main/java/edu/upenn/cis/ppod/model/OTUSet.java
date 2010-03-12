@@ -25,6 +25,7 @@ import static com.google.common.collect.Sets.newHashSet;
 import static edu.upenn.cis.ppod.util.PPodIterables.findIf;
 
 import java.util.Collections;
+import java.util.Iterator;
 import java.util.List;
 import java.util.Set;
 
@@ -55,7 +56,7 @@ import edu.upenn.cis.ppod.util.IVisitor;
  */
 @Entity
 @Table(name = OTUSet.TABLE)
-public class OTUSet extends UUPPodEntityWXmlId {
+public class OTUSet extends UUPPodEntityWXmlId implements Iterable<OTU> {
 
 	/** The table for this entity. Intentionally package-private. */
 	static final String TABLE = "OTU_SET";
@@ -246,19 +247,8 @@ public class OTUSet extends UUPPodEntityWXmlId {
 		return matrices;
 	}
 
-	/**
-	 * Get an unmodifiable view of the <code>OTU</code>s that comprise this
-	 * <code>OTUSet</code>.
-	 * 
-	 * @return an unmodifiable view of the <code>OTU</code>s that comprise this
-	 *         <code>OTUSet</code>.
-	 */
-	public List<OTU> getOTUs() {
-		return Collections.unmodifiableList(getOTUsReference());
-	}
-
 	@XmlElement(name = "otu")
-	private List<OTU> getOTUsReference() {
+	private List<OTU> getOTUs() {
 		return otus;
 	}
 
@@ -414,7 +404,7 @@ public class OTUSet extends UUPPodEntityWXmlId {
 		final List<OTU> removedOTUs = newArrayList(getOTUs());
 		removedOTUs.removeAll(newOTUs);
 
-		getOTUsReference().clear();
+		getOTUs().clear();
 		for (final OTU otu : newOTUs) {
 			addOTU(otu);
 		}
@@ -429,8 +419,8 @@ public class OTUSet extends UUPPodEntityWXmlId {
 		for (final CharacterStateMatrix matrix : getMatricesReference()) {
 			matrix.setOTUSet(this);
 		}
-		
-		for (final DNASequenceSet dnaSequenceSet : getDNASequenceSetsReference()) { 
+
+		for (final DNASequenceSet dnaSequenceSet : getDNASequenceSetsReference()) {
 			dnaSequenceSet.setOTUSet(this);
 		}
 		return removedOTUs;
@@ -497,6 +487,32 @@ public class OTUSet extends UUPPodEntityWXmlId {
 				.append(this.otus).append(TAB).append(")");
 
 		return retValue.toString();
+	}
+
+	public Iterator<OTU> iterator() {
+		return getOTUs().iterator();
+	}
+
+	/**
+	 * Get the number of OTU's in this {@code OTUSet}.
+	 * 
+	 * @return the number of OTU's in this {@code OTUSet}
+	 */
+	public int getOTUsSize() {
+		return getOTUs().size();
+	}
+
+	/**
+	 * Get the OTU at position {@code otuPosition}.
+	 * 
+	 * @param otuPosition the position we want
+	 * 
+	 * @return the OTU at position {@code otuPosition}
+	 * 
+	 * @throws IndexOutOfBoundsException if {@code otuPosition} is out of bounds
+	 */
+	public OTU getOTU(final int otuPosition) {
+		return getOTUs().get(otuPosition);
 	}
 
 }

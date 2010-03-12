@@ -15,6 +15,7 @@
  */
 package edu.upenn.cis.ppod.model;
 
+import static com.google.common.collect.Iterables.contains;
 import static com.google.common.collect.Iterables.getOnlyElement;
 import static com.google.common.collect.Lists.newArrayList;
 import static com.google.common.collect.Sets.newHashSet;
@@ -75,7 +76,7 @@ public class OTUSetTest {
 		otuSet.setOTUs(ImmutableList.of(otuProvider.get().setLabel("OTU-0")));
 		otuSet.unsetInNeedOfNewPPodVersionInfo();
 
-		otuSet.setOTUs(otuSet.getOTUs());
+		otuSet.setOTUs(newArrayList(otuSet));
 		assertFalse(otuSet.isInNeedOfNewPPodVersionInfo());
 	}
 
@@ -121,7 +122,7 @@ public class OTUSetTest {
 		// assertNull(otuSet.getPPodVersionInfo());
 		assertTrue(study.isInNeedOfNewPPodVersionInfo());
 		// assertNull(study.getPPodVersionInfo());
-		assertEquals(otuSet.getOTUs().size(), 0);
+		assertEquals(otuSet.getOTUsSize(), 0);
 	}
 
 	public void removeMatrix() {
@@ -167,7 +168,7 @@ public class OTUSetTest {
 		final ImmutableList<OTU> removedOTUs = ImmutableList.copyOf(otuSet
 				.setOTUs(otus2));
 
-		assertFalse(otuSet.getOTUs().contains(otus.get(1)));
+		assertFalse(contains(otuSet, otus.get(1)));
 		assertTrue(otuSet.isInNeedOfNewPPodVersionInfo());
 		assertEquals(removedOTUs, newHashSet(otus.get(1)));
 	}

@@ -142,7 +142,7 @@ public class CharacterStateMatrixTest {
 		final ImmutableList<OTU> otus210 = ImmutableList.of(otu2, otu1, otu0);
 		matrix.getOTUSet().setOTUs(otus210);
 
-		assertEquals(matrix.getOTUSet().getOTUs(), otus210);
+		assertEquals(newArrayList(matrix.getOTUSet()), otus210);
 		assertEquals(matrix.getRowsSize(), originalRows.size());
 
 	}
@@ -153,7 +153,7 @@ public class CharacterStateMatrixTest {
 
 		final ImmutableList<OTU> otus12 = ImmutableList.of(otu1, otu2);
 
-		assertEquals(matrix.getOTUSet().getOTUs(), otus12);
+		assertEquals(newArrayList(matrix.getOTUSet()), otus12);
 		assertEquals(matrix.getRowsSize(), otus12.size());
 	}
 
