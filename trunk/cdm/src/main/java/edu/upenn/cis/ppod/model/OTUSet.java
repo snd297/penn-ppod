@@ -128,17 +128,37 @@ public class OTUSet extends UUPPodEntityWXmlId implements Iterable<OTU> {
 		for (final OTU otu : getOTUs()) {
 			otu.accept(visitor);
 		}
-		for (final CharacterStateMatrix matrix : getMatricesReference()) {
+		for (final CharacterStateMatrix matrix : getMatrices()) {
 			matrix.accept(visitor);
 		}
-		for (final TreeSet treeSet : getTreeSetsReference()) {
+		for (final TreeSet treeSet : getTreeSets()) {
 			treeSet.accept(visitor);
 		}
-		for (final DNASequenceSet dnaSequenceSet : getDNASequenceSetsReference()) {
+		for (final DNASequenceSet dnaSequenceSet : getDNASequenceSets()) {
 			dnaSequenceSet.accept(visitor);
 		}
 		super.accept(visitor);
 		visitor.visit(this);
+	}
+
+	/**
+	 * Add a {@code DNASequenceSet}.
+	 * 
+	 * @param pPodDNASequenceSet the new {@code DNASequenceSet}
+	 * 
+	 * @return this
+	 */
+	public DNASequenceSet addDNASequenceSet(
+			final DNASequenceSet pPodDNASequenceSet) {
+		getDNASequenceSets().add(pPodDNASequenceSet);
+		pPodDNASequenceSet.setOTUSet(this);
+		return pPodDNASequenceSet;
+	}
+
+	public CharacterStateMatrix addMatrix(final CharacterStateMatrix matrix) {
+		getMatrices().add(matrix);
+		matrix.setOTUSet(this);
+		return matrix;
 	}
 
 	/**
@@ -207,19 +227,13 @@ public class OTUSet extends UUPPodEntityWXmlId implements Iterable<OTU> {
 		return description;
 	}
 
-	/**
-	 * Get an unmodifiable view of the {@link DNASequenceSet}s that belong to
-	 * this study.
-	 * 
-	 * @return the {@link DNASequenceSet}s that belong to this study
-	 */
-	public Set<DNASequenceSet> getDNASequenceSets() {
-		return Collections.unmodifiableSet(getDNASequenceSetsReference());
+	@XmlElement(name = "dnaSequenceSet")
+	private Set<DNASequenceSet> getDNASequenceSets() {
+		return dnaSequenceSets;
 	}
 
-	@XmlElement(name = "dnaSequenceSet")
-	private Set<DNASequenceSet> getDNASequenceSetsReference() {
-		return dnaSequenceSets;
+	public Iterator<DNASequenceSet> getDNASequenceSetsIterator() {
+		return getDNASequenceSets().iterator();
 	}
 
 	/**
@@ -233,23 +247,40 @@ public class OTUSet extends UUPPodEntityWXmlId implements Iterable<OTU> {
 		return label;
 	}
 
-	/**
-	 * Get an unmodifiable view of the matrices which refer to this OTU set.
-	 * 
-	 * @return a copy of the matrices which refer to this OTU set
-	 */
-	public Set<CharacterStateMatrix> getMatrices() {
-		return Collections.unmodifiableSet(getMatricesReference());
+	@XmlElement(name = "matrix")
+	private Set<CharacterStateMatrix> getMatrices() {
+		return matrices;
 	}
 
-	@XmlElement(name = "matrix")
-	private Set<CharacterStateMatrix> getMatricesReference() {
-		return matrices;
+	public Iterator<CharacterStateMatrix> getMatricesIterator() {
+		return getMatrices().iterator();
+	}
+
+	/**
+	 * Get the OTU at position {@code otuPosition}.
+	 * 
+	 * @param otuPosition the position we want
+	 * 
+	 * @return the OTU at position {@code otuPosition}
+	 * 
+	 * @throws IndexOutOfBoundsException if {@code otuPosition} is out of bounds
+	 */
+	public OTU getOTU(final int otuPosition) {
+		return getOTUs().get(otuPosition);
 	}
 
 	@XmlElement(name = "otu")
 	private List<OTU> getOTUs() {
 		return otus;
+	}
+
+	/**
+	 * Get the number of OTU's in this {@code OTUSet}.
+	 * 
+	 * @return the number of OTU's in this {@code OTUSet}
+	 */
+	public int getOTUsSize() {
+		return getOTUs().size();
 	}
 
 	/**
@@ -263,18 +294,17 @@ public class OTUSet extends UUPPodEntityWXmlId implements Iterable<OTU> {
 		return study;
 	}
 
-	/**
-	 * Get the tree sets that are composed of this OTU set.
-	 * 
-	 * @return the tree sets that are composed of this OTU set
-	 */
-	public Set<TreeSet> getTreeSets() {
-		return Collections.unmodifiableSet(getTreeSetsReference());
+	@XmlElement(name = "treeSet")
+	private Set<TreeSet> getTreeSets() {
+		return treeSets;
 	}
 
-	@XmlElement(name = "treeSet")
-	private Set<TreeSet> getTreeSetsReference() {
-		return treeSets;
+	public Iterator<TreeSet> getTreeSetsIterator() {
+		return getTreeSets().iterator();
+	}
+
+	public Iterator<OTU> iterator() {
+		return getOTUs().iterator();
 	}
 
 	/**
@@ -305,11 +335,10 @@ public class OTUSet extends UUPPodEntityWXmlId implements Iterable<OTU> {
 			removedSequenceSet.setOTUSet(null);
 		}
 
-		getDNASequenceSetsReference().clear();
-		getDNASequenceSetsReference().addAll(newSequenceSets);
+		getDNASequenceSets().clear();
 
-		for (final DNASequenceSet dnaSequenceSet : getDNASequenceSets()) {
-			dnaSequenceSet.setOTUSet(this);
+		for (final DNASequenceSet newSequenceSet : newSequenceSets) {
+			addDNASequenceSet(newSequenceSet);
 		}
 
 		return removedSequenceSets;
@@ -375,8 +404,8 @@ public class OTUSet extends UUPPodEntityWXmlId implements Iterable<OTU> {
 			removedMatrix.setOTUSet(null);
 		}
 
-		getMatricesReference().clear();
-		getMatricesReference().addAll(newMatrices);
+		getMatrices().clear();
+		getMatrices().addAll(newMatrices);
 		for (final CharacterStateMatrix matrix : getMatrices()) {
 			matrix.setOTUSet(this);
 		}
@@ -386,6 +415,8 @@ public class OTUSet extends UUPPodEntityWXmlId implements Iterable<OTU> {
 
 	/**
 	 * Set this {@code OTUSet}'s {@code OTU}s.
+	 * <p>
+	 * This {@code OTUSet} makes a copy of {@code newOTUs}.
 	 * <p>
 	 * If this method is effectively removing any of this sets's original OTUs,
 	 * then the {@code OTU->OTUSet} relationship is severed.
@@ -416,11 +447,11 @@ public class OTUSet extends UUPPodEntityWXmlId implements Iterable<OTU> {
 		setInNeedOfNewPPodVersionInfo();
 
 		// Now let's let everyone know about the new OTUs
-		for (final CharacterStateMatrix matrix : getMatricesReference()) {
+		for (final CharacterStateMatrix matrix : getMatrices()) {
 			matrix.setOTUSet(this);
 		}
 
-		for (final DNASequenceSet dnaSequenceSet : getDNASequenceSetsReference()) {
+		for (final DNASequenceSet dnaSequenceSet : getDNASequenceSets()) {
 			dnaSequenceSet.setOTUSet(this);
 		}
 		return removedOTUs;
@@ -460,8 +491,8 @@ public class OTUSet extends UUPPodEntityWXmlId implements Iterable<OTU> {
 		for (final TreeSet removedTreeSet : removedTreeSets) {
 			removedTreeSet.setOTUSet(null);
 		}
-		getTreeSetsReference().clear();
-		getTreeSetsReference().addAll(newTreeSets);
+		getTreeSets().clear();
+		getTreeSets().addAll(newTreeSets);
 		for (final TreeSet treeSet : getTreeSets()) {
 			treeSet.setOTUSet(this);
 		}
@@ -487,32 +518,6 @@ public class OTUSet extends UUPPodEntityWXmlId implements Iterable<OTU> {
 				.append(this.otus).append(TAB).append(")");
 
 		return retValue.toString();
-	}
-
-	public Iterator<OTU> iterator() {
-		return getOTUs().iterator();
-	}
-
-	/**
-	 * Get the number of OTU's in this {@code OTUSet}.
-	 * 
-	 * @return the number of OTU's in this {@code OTUSet}
-	 */
-	public int getOTUsSize() {
-		return getOTUs().size();
-	}
-
-	/**
-	 * Get the OTU at position {@code otuPosition}.
-	 * 
-	 * @param otuPosition the position we want
-	 * 
-	 * @return the OTU at position {@code otuPosition}
-	 * 
-	 * @throws IndexOutOfBoundsException if {@code otuPosition} is out of bounds
-	 */
-	public OTU getOTU(final int otuPosition) {
-		return getOTUs().get(otuPosition);
 	}
 
 }

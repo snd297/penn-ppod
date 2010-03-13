@@ -61,7 +61,6 @@ public abstract class MolecularSequence<SS extends MolecularSequenceSet<?>>
 
 	MolecularSequence() {}
 
-
 	/**
 	 * Get the accession.
 	 * 

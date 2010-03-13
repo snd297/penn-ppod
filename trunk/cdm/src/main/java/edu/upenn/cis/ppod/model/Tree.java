@@ -65,35 +65,6 @@ public class Tree extends UUPPodEntity {
 	}
 
 	/**
-	 * Add <code>treeSet</code> to this <code>Tree</code>'s associated {@code
-	 * TreeSet}s.
-	 * <p>
-	 * Intended to be package-private and used in conjunction with
-	 * {@link TreeSet#addTree(Tree)}.
-	 * 
-	 * @param treeSet to be added to this {@code Tree}
-	 * 
-	 * @throws IllegalArgumentException if {@code treeSet.getOTUSet()} is not
-	 *             equal to (@code
-	 *             this.getTreeSets().iterator().next().getOTUSet()}
-	 */
-// void addTreeSet(final TreeSet treeSet) {
-// checkNotNull(treeSet);
-// if ((getTreeSets().size() == 0)
-// || getTreeSets().iterator().next().getOTUSet().equals(
-// treeSet.getOTUSet())) {
-// if (treeSets.add(treeSet)) {
-// resetPPodVersionInfo();
-// }
-// } else {
-// throw new IllegalArgumentException(
-// "treeSet doesn't point to this tree's OTUSet: "
-// + getTreeSets().iterator().next().getOTUSet()
-// .getLabel());
-// }
-// }
-
-	/**
 	 * See {@link Unmarshaller}.
 	 * 
 	 * @param u see {@code Unmarshaller}

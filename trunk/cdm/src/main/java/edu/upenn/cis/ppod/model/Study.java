@@ -19,6 +19,7 @@ import static com.google.common.base.Preconditions.checkNotNull;
 import static com.google.common.collect.Sets.newHashSet;
 
 import java.util.Collections;
+import java.util.Iterator;
 import java.util.Set;
 
 import javax.persistence.Column;
@@ -116,8 +117,10 @@ public class Study extends UUPPodEntity implements IOTUSetCentricEntities {
 					studyWideAttachmentNamespaces, studyWideAttachmentTypes,
 					studyWideAttachments, this);
 			for (final OTUSet otuSet : getOTUSets()) {
-				for (final CharacterStateMatrix matrix : otuSet.getMatrices()) {
-					studyWideCharacters.addAll(matrix.getCharacters());
+				for (final Iterator<CharacterStateMatrix> matrixItr = otuSet
+						.getMatricesIterator(); matrixItr.hasNext();) {
+					studyWideCharacters
+							.addAll(matrixItr.next().getCharacters());
 				}
 			}
 		}

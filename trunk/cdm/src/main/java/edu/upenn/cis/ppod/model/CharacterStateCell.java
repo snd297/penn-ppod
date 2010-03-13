@@ -603,6 +603,12 @@ public class CharacterStateCell extends PPodEntity implements
 		return retValue.toString();
 	}
 
+	/**
+	 * Returns an iterator over this cell's states. Guaranteed to iterator in
+	 * {@link CharacterState#getStateNumber()} order.
+	 * 
+	 * @return an iterator over this cell's states
+	 */
 	public Iterator<CharacterState> iterator() {
 		return getStates().iterator();
 	}
@@ -614,7 +620,6 @@ public class CharacterStateCell extends PPodEntity implements
 	 */
 	public int getStatesSize() {
 		switch (type) {
-			// Don't hit states unless we have too
 			case INAPPLICABLE:
 			case UNASSIGNED:
 				return 0;

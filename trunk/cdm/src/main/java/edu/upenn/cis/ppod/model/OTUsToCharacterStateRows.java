@@ -59,10 +59,10 @@ public class OTUsToCharacterStateRows extends
 	OTUsToCharacterStateRows() {}
 
 	public boolean beforeMarshal(@Nullable final Marshaller marshaller) {
-		getOTURowPairsReference().clear();
-		for (final Map.Entry<OTU, CharacterStateRow> otuToRow : getOTUsToValuesReference()
+		getOTURowPairs().clear();
+		for (final Map.Entry<OTU, CharacterStateRow> otuToRow : getOTUsToValues()
 				.entrySet()) {
-			getOTURowPairsReference().add(
+			getOTURowPairs().add(
 					OTUCharacterStateRowPair.of(otuToRow.getKey(), otuToRow
 							.getValue()));
 		}
@@ -70,12 +70,12 @@ public class OTUsToCharacterStateRows extends
 	}
 
 	@XmlElement(name = "otuRowPair")
-	protected Set<OTUCharacterStateRowPair> getOTURowPairsReference() {
+	protected Set<OTUCharacterStateRowPair> getOTURowPairs() {
 		return otuRowPairs;
 	}
 
 	@Override
-	protected final Map<OTU, CharacterStateRow> getOTUsToValuesReference() {
+	protected final Map<OTU, CharacterStateRow> getOTUsToValues() {
 		return rows;
 	}
 

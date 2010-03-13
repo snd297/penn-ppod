@@ -43,11 +43,16 @@ public class PPodIterables {
 	@CheckForNull
 	public static <T> T findIf(final Iterable<T> iterable,
 			final Predicate<? super T> predicate) {
+		return findIf(iterable.iterator(), predicate);
+	}
+
+	@CheckForNull
+	public static <T> T findIf(final Iterator<T> iterator,
+			final Predicate<? super T> predicate) {
 
 		// NOTE: we had this implemented in terms of filter(...), but the
 		// javadoc for that doesn't guarantee order preserving.
-		for (final Iterator<T> iterator = iterable.iterator(); iterator
-				.hasNext();) {
+		while (iterator.hasNext()) {
 			final T thisItem = iterator.next();
 			if (predicate.apply(thisItem)) {
 				return thisItem;

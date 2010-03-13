@@ -17,6 +17,8 @@ package edu.upenn.cis.ppod.services.ppodentity;
 
 import static com.google.common.base.Preconditions.checkNotNull;
 
+import java.util.Iterator;
+
 import com.google.inject.Inject;
 import com.google.inject.Provider;
 
@@ -24,6 +26,8 @@ import edu.upenn.cis.ppod.model.Character;
 import edu.upenn.cis.ppod.model.CharacterStateCell;
 import edu.upenn.cis.ppod.model.CharacterStateMatrix;
 import edu.upenn.cis.ppod.model.CharacterStateRow;
+import edu.upenn.cis.ppod.model.DNASequence;
+import edu.upenn.cis.ppod.model.DNASequenceSet;
 import edu.upenn.cis.ppod.model.OTU;
 import edu.upenn.cis.ppod.model.OTUSet;
 import edu.upenn.cis.ppod.model.PPodVersionInfo;
@@ -38,6 +42,7 @@ public final class Study2StudyInfo implements IStudy2StudyInfo {
 	private final Provider<StudyInfo> studyInfoProvider;
 	private final Provider<OTUSetInfo> otuSetInfoProvider;
 	private final Provider<CharacterStateMatrixInfo> matrixInfoProvider;
+	private final Provider<MolecularSequenceSetInfo> molecularSequenceSetInfoProvider;
 	private final Provider<TreeSetInfo> treeSetInfoProvider;
 	private final Provider<PPodEntityInfo> pPodEntityInfoProvider;
 	private final Provider<PPodEntityInfoWDocId> pPodEntityInfoWDocIdProvider;
@@ -47,18 +52,20 @@ public final class Study2StudyInfo implements IStudy2StudyInfo {
 			final Provider<StudyInfo> studyPPodIdAndVersionProvider,
 			final Provider<OTUSetInfo> otuSetPPodIdAndVersionProvider,
 			final Provider<CharacterStateMatrixInfo> matrixPPodIdAndVersionProvider,
+			final Provider<MolecularSequenceSetInfo> molecularSequenceSetInfoProvider,
 			final Provider<TreeSetInfo> treeSetInfoProvider,
 			final Provider<PPodEntityInfo> pPodEntityInfoProvider,
 			final Provider<PPodEntityInfoWDocId> pPodEntityInfoWDocIdProvider) {
 		this.studyInfoProvider = studyPPodIdAndVersionProvider;
 		this.otuSetInfoProvider = otuSetPPodIdAndVersionProvider;
 		this.matrixInfoProvider = matrixPPodIdAndVersionProvider;
+		this.molecularSequenceSetInfoProvider = molecularSequenceSetInfoProvider;
 		this.treeSetInfoProvider = treeSetInfoProvider;
 		this.pPodEntityInfoProvider = pPodEntityInfoProvider;
 		this.pPodEntityInfoWDocIdProvider = pPodEntityInfoWDocIdProvider;
 	}
 
-	public StudyInfo go(final Study study) {
+	public StudyInfo toStudyInfo(final Study study) {
 		checkNotNull(study);
 		final StudyInfo studyInfo = studyInfoProvider.get();
 		studyInfo.setEntityId(study.getId());
@@ -83,7 +90,9 @@ public final class Study2StudyInfo implements IStudy2StudyInfo {
 				otuInfo.setDocId(otu.getDocId());
 			}
 
-			for (final CharacterStateMatrix matrix : otuSet.getMatrices()) {
+			for (final Iterator<CharacterStateMatrix> matrixItr = otuSet
+					.getMatricesIterator(); matrixItr.hasNext();) {
+				final CharacterStateMatrix matrix = matrixItr.next();
 				final CharacterStateMatrixInfo matrixInfo = matrixInfoProvider
 						.get();
 				otuSetInfo.getMatrixInfos().add(matrixInfo);
@@ -121,8 +130,30 @@ public final class Study2StudyInfo implements IStudy2StudyInfo {
 					}
 				}
 			}
+			// TODO: this should be genericized when we support other kinds of
+			// MolecularSequenceSets
+			for (final Iterator<DNASequenceSet> dnaSequenceSetItr = otuSet
+					.getDNASequenceSetsIterator(); dnaSequenceSetItr.hasNext();) {
+				final DNASequenceSet dnaSequenceSet = dnaSequenceSetItr.next();
+				final MolecularSequenceSetInfo sequenceSetInfo = molecularSequenceSetInfoProvider
+						.get();
+				otuSetInfo.getSequenceSetInfos().add(sequenceSetInfo);
+				sequenceSetInfo.setPPodId(dnaSequenceSet.getPPodId());
+				sequenceSetInfo.setPPodVersion(dnaSequenceSet
+						.getPPodVersionInfo().getPPodVersion());
+				sequenceSetInfo.setEntityId(dnaSequenceSet.getId());
+				for (final OTU otu : otuSet) {
+					final DNASequence dnaSequence = dnaSequenceSet
+							.getSequence(otu);
+					sequenceSetInfo.getSequenceVersionsByOTUDocId().put(
+							otu.getDocId(),
+							dnaSequence.getPPodVersionInfo().getPPodVersion());
+				}
+			}
 
-			for (final TreeSet treeSet : otuSet.getTreeSets()) {
+			for (final Iterator<TreeSet> treeSetItr = otuSet
+					.getTreeSetsIterator(); treeSetItr.hasNext();) {
+				final TreeSet treeSet = treeSetItr.next();
 				final TreeSetInfo treeSetInfo = treeSetInfoProvider.get();
 				otuSetInfo.getTreeSetInfos().add(treeSetInfo);
 				treeSetInfo.setEntityId(treeSet.getId());
@@ -131,7 +162,7 @@ public final class Study2StudyInfo implements IStudy2StudyInfo {
 						.getPPodVersion());
 				treeSetInfo.setDocId(treeSet.getDocId());
 
-				for (final Tree tree : treeSet.getTrees()) {
+				for (final Tree tree : treeSet) {
 					final PPodEntityInfo treeInfo = pPodEntityInfoProvider
 							.get();
 					treeSetInfo.getTreeInfos().add(treeInfo);

@@ -28,14 +28,14 @@ import java.util.Set;
 import javax.annotation.CheckForNull;
 import javax.annotation.Nullable;
 
-import edu.upenn.cis.ppod.modelinterfaces.IWithOTUSet;
+import edu.upenn.cis.ppod.modelinterfaces.IPPodVersionedWithOTUSet;
 import edu.upenn.cis.ppod.util.IVisitor;
 import edu.upenn.cis.ppod.util.OTUSomethingPair;
 
 /**
  * @author Sam Donnelly
  */
-public abstract class OTUKeyedBimap<T extends PersistentObject, P extends IWithOTUSet>
+public abstract class OTUKeyedBimap<T extends PersistentObject, P extends IPPodVersionedWithOTUSet>
 		extends PersistentObject {
 
 	static final String OTU_IDX_COLUMN = "OTU_IDX";
@@ -47,7 +47,7 @@ public abstract class OTUKeyedBimap<T extends PersistentObject, P extends IWithO
 
 	public void afterUnmarshal() {
 		for (final OTUSomethingPair<T> otuValuePair : getOTUValuePairs()) {
-			getOTUsToValuesReference().put(otuValuePair.getFirst(),
+			getOTUsToValues().put(otuValuePair.getFirst(),
 					otuValuePair.getSecond());
 		}
 	}
@@ -55,7 +55,7 @@ public abstract class OTUKeyedBimap<T extends PersistentObject, P extends IWithO
 	public T get(final OTU otu, final P parent) {
 		checkArgument(contains(parent.getOTUSet(), otu),
 				"otu does not belong to parent's OTUSet");
-		return getOTUsToValuesReference().get(otu);
+		return getOTUsToValues().get(otu);
 	}
 
 	/**
@@ -63,16 +63,16 @@ public abstract class OTUKeyedBimap<T extends PersistentObject, P extends IWithO
 	 * 
 	 * @return the {@code OTU}-keyed items
 	 */
-	protected abstract Map<OTU, T> getOTUsToValuesReference();
+	protected abstract Map<OTU, T> getOTUsToValues();
 
 	protected abstract Set<OTUSomethingPair<T>> getOTUValuePairs();
 
 	public List<T> getValuesInOTUOrder(final OTUSet otuSet) {
-		final List<T> valuesInOTUOrder = newArrayListWithCapacity(getOTUsToValuesReference()
+		final List<T> valuesInOTUOrder = newArrayListWithCapacity(getOTUsToValues()
 				.values().size());
 		for (final OTU otu : otuSet) {
-			if (getOTUsToValuesReference().containsKey(otu)) {
-				valuesInOTUOrder.add(getOTUsToValuesReference().get(otu));
+			if (getOTUsToValues().containsKey(otu)) {
+				valuesInOTUOrder.add(getOTUsToValues().get(otu));
 			}
 		}
 		return valuesInOTUOrder;
@@ -132,14 +132,14 @@ public abstract class OTUKeyedBimap<T extends PersistentObject, P extends IWithO
 		checkArgument(contains(parent.getOTUSet(), key),
 				"otu does not belong to the parent's OTUSet");
 
-		if (null != getOTUsToValuesReference().get(key)
-				&& getOTUsToValuesReference().get(key).equals(value)) {
-			return getOTUsToValuesReference().get(key);
+		if (null != getOTUsToValues().get(key)
+				&& getOTUsToValues().get(key).equals(value)) {
+			return getOTUsToValues().get(key);
 		}
-		checkArgument(!getOTUsToValuesReference().containsValue(value),
+		checkArgument(!getOTUsToValues().containsValue(value),
 				"already has a value .equals() to newT: " + value);
 		parent.setInNeedOfNewPPodVersionInfo();
-		return getOTUsToValuesReference().put(key, value);
+		return getOTUsToValues().put(key, value);
 	}
 
 	/**
@@ -164,7 +164,7 @@ public abstract class OTUKeyedBimap<T extends PersistentObject, P extends IWithO
 		checkArgument(otuSet == parent.getOTUSet(),
 				"otuSet does not belong to parent");
 		final Set<OTU> otusToBeRemoved = newHashSet();
-		for (final OTU otu : getOTUsToValuesReference().keySet()) {
+		for (final OTU otu : getOTUsToValues().keySet()) {
 			if (parent.getOTUSet() != null
 					&& contains(parent.getOTUSet(), otu)) {
 				// it stays
@@ -174,14 +174,14 @@ public abstract class OTUKeyedBimap<T extends PersistentObject, P extends IWithO
 			}
 		}
 
-		getOTUsToValuesReference().keySet().removeAll(otusToBeRemoved);
+		getOTUsToValues().keySet().removeAll(otusToBeRemoved);
 
 		if (otuSet != null) {
 			for (final OTU otu : parent.getOTUSet()) {
-				if (getOTUsToValuesReference().containsKey(otu)) {
+				if (getOTUsToValues().containsKey(otu)) {
 
 				} else {
-					getOTUsToValuesReference().put(otu, null);
+					getOTUsToValues().put(otu, null);
 				}
 			}
 		}

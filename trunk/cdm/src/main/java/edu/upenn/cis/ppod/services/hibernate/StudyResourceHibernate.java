@@ -82,7 +82,7 @@ public final class StudyResourceHibernate implements IStudyResource {
 		incomingStudy.accept(afterUnmarshalVisitorProvider.get());
 		final Study dbStudy = saveOrUpdateStudies.save(incomingStudy);
 		dbStudy.accept(setPPodVersionInfoVisitor);
-		return study2StudyInfo.go(dbStudy);
+		return study2StudyInfo.toStudyInfo(dbStudy);
 	}
 
 	public Study getStudyByPPodId(final String pPodId) {
@@ -100,6 +100,6 @@ public final class StudyResourceHibernate implements IStudyResource {
 		incomingStudy.accept(afterUnmarshalVisitorProvider.get());
 		final Study dbStudy = saveOrUpdateStudies.update(incomingStudy);
 		dbStudy.accept(setPPodVersionInfoVisitor);
-		return study2StudyInfo.go(dbStudy);
+		return study2StudyInfo.toStudyInfo(dbStudy);
 	}
 }

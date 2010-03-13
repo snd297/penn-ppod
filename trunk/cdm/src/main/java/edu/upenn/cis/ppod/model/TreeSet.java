@@ -20,6 +20,7 @@ import static com.google.common.base.Preconditions.checkNotNull;
 import static com.google.common.collect.Lists.newArrayList;
 
 import java.util.Collections;
+import java.util.Iterator;
 import java.util.List;
 
 import javax.annotation.Nullable;
@@ -48,7 +49,7 @@ import edu.upenn.cis.ppod.util.IVisitor;
 @XmlAccessorType(XmlAccessType.NONE)
 @Entity
 @Table(name = TreeSet.TABLE)
-public class TreeSet extends UUPPodEntityWXmlId {
+public class TreeSet extends UUPPodEntityWXmlId implements Iterable<Tree> {
 
 	static final String TABLE = "TREE_SET";
 
@@ -115,19 +116,8 @@ public class TreeSet extends UUPPodEntityWXmlId {
 		return otuSet;
 	}
 
-	/**
-	 * Get an unmodifiable view of the <code>Tree</code>s that comprise this
-	 * <code>TreeSet</code>.
-	 * 
-	 * @return an unmodifiable view of the <code>Tree</code>s that comprise this
-	 *         <code>TreeSet</code>
-	 */
-	public List<Tree> getTrees() {
-		return Collections.unmodifiableList(trees);
-	}
-
 	@XmlElement(name = "tree")
-	private List<Tree> getTreesMutable() {
+	private List<Tree> getTrees() {
 		return trees;
 	}
 
@@ -206,8 +196,8 @@ public class TreeSet extends UUPPodEntityWXmlId {
 		}
 		final List<Tree> removedTrees = newArrayList(getTrees());
 		removedTrees.removeAll(newTrees);
-		getTreesMutable().clear();
-		getTreesMutable().addAll(newTrees);
+		getTrees().clear();
+		getTrees().addAll(newTrees);
 		for (final Tree tree : getTrees()) {
 			tree.setTreeSet(this);
 		}
@@ -226,12 +216,15 @@ public class TreeSet extends UUPPodEntityWXmlId {
 
 		final StringBuilder retValue = new StringBuilder();
 
-		retValue.append("TreeSet(").append(super.toString()).append(TAB)
-				.append("id=").append(TAB).append(TAB).append("label=").append(
+		retValue.append("TreeSet(").append("label=").append(
 						this.label).append(TAB).append("trees=").append(
 						this.trees).append(TAB).append(")");
 
 		return retValue.toString();
+	}
+
+	public Iterator<Tree> iterator() {
+		return getTrees().iterator();
 	}
 
 }
