@@ -55,7 +55,7 @@ import com.google.common.collect.BiMap;
 import com.google.common.collect.HashBiMap;
 import com.google.inject.Inject;
 
-import edu.upenn.cis.ppod.modelinterfaces.IWithOTUSet;
+import edu.upenn.cis.ppod.modelinterfaces.IPPodVersionedWithOTUSet;
 import edu.upenn.cis.ppod.util.IVisitor;
 import edu.upenn.cis.ppod.util.OTUSomethingPair;
 
@@ -68,7 +68,7 @@ import edu.upenn.cis.ppod.util.OTUSomethingPair;
 @Entity
 @Table(name = CharacterStateMatrix.TABLE)
 public class CharacterStateMatrix extends UUPPodEntityWXmlId implements
-		IWithOTUSet, Iterable<CharacterStateRow> {
+		IPPodVersionedWithOTUSet, Iterable<CharacterStateRow> {
 
 	/** This entity's table name. Intentionally package-private. */
 	static final String TABLE = "CHARACTER_STATE_MATRIX";
@@ -167,7 +167,7 @@ public class CharacterStateMatrix extends UUPPodEntityWXmlId implements
 		getOTUsToRows().accept(visitor);
 
 		for (final CharacterStateRow row : getOTUsToRows()
-				.getOTUsToValuesReference().values()) {
+				.getOTUsToValues().values()) {
 			row.accept(visitor);
 		}
 
@@ -679,7 +679,7 @@ public class CharacterStateMatrix extends UUPPodEntityWXmlId implements
 	 * @return the number of rows in this matrix
 	 */
 	public int getRowsSize() {
-		return getOTUsToRows().getOTUsToValuesReference().size();
+		return getOTUsToRows().getOTUsToValues().size();
 	}
 
 }

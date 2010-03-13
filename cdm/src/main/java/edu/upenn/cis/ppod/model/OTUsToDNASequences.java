@@ -58,10 +58,10 @@ public class OTUsToDNASequences extends
 	private final Set<OTUDNASequencePair> otuSequencePairs = newHashSet();
 
 	public boolean beforeMarshal(@Nullable final Marshaller marshaller) {
-		getOTUSequencePairsReference().clear();
-		for (final Map.Entry<OTU, DNASequence> otuToRow : getOTUsToValuesReference()
+		getOTUSequencePairs().clear();
+		for (final Map.Entry<OTU, DNASequence> otuToRow : getOTUsToValues()
 				.entrySet()) {
-			getOTUSequencePairsReference().add(
+			getOTUSequencePairs().add(
 					OTUDNASequencePair.of(otuToRow.getKey(), otuToRow
 							.getValue()));
 		}
@@ -69,19 +69,19 @@ public class OTUsToDNASequences extends
 	}
 
 	@XmlElement(name = "otuSequencePair")
-	protected Set<OTUDNASequencePair> getOTUSequencePairsReference() {
+	protected Set<OTUDNASequencePair> getOTUSequencePairs() {
 		return otuSequencePairs;
 	}
 
 	@Override
-	protected final Map<OTU, DNASequence> getOTUsToValuesReference() {
+	protected final Map<OTU, DNASequence> getOTUsToValues() {
 		return sequences;
 	}
 
 	@Override
 	protected final Set<OTUSomethingPair<DNASequence>> getOTUValuePairs() {
 		final Set<OTUSomethingPair<DNASequence>> otuSomethingPairs = newHashSet();
-		for (final OTUDNASequencePair otuDNASequencePair : getOTUSequencePairsReference()) {
+		for (final OTUDNASequencePair otuDNASequencePair : getOTUSequencePairs()) {
 			otuSomethingPairs.add(otuDNASequencePair);
 		}
 		return otuSomethingPairs;

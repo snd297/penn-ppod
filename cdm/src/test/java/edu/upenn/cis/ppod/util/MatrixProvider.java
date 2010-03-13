@@ -15,11 +15,12 @@
  */
 package edu.upenn.cis.ppod.util;
 
-import static com.google.common.collect.Iterables.getOnlyElement;
-
 import javax.xml.bind.JAXBContext;
 
 import org.testng.annotations.DataProvider;
+
+import com.google.common.collect.Iterables;
+import com.google.common.collect.Iterators;
 
 import edu.upenn.cis.ppod.model.CharacterStateMatrix;
 import edu.upenn.cis.ppod.model.Study;
@@ -44,16 +45,18 @@ public class MatrixProvider {
 		final Study studyMX540 = (Study) ctx.createUnmarshaller().unmarshal(
 				MatrixProvider.class.getResourceAsStream("/MX540.xml"));
 		studyMX540.accept(afterUnmarshalVisitor);
-	
-		final CharacterStateMatrix smallSimpleMatrix = getOnlyElement(getOnlyElement(
-				studyMX540.getOTUSets()).getMatrices());
+
+		final CharacterStateMatrix smallSimpleMatrix = Iterators
+				.getOnlyElement(Iterables.getOnlyElement(
+						studyMX540.getOTUSets()).getMatricesIterator());
 
 		final Study studyM1808 = (Study) ctx.createUnmarshaller().unmarshal(
 				MatrixProvider.class.getResourceAsStream("/M1808.nex.xml"));
 
 		studyM1808.accept(afterUnmarshalVisitor);
-		final CharacterStateMatrix smallDNAMatrix = getOnlyElement(getOnlyElement(
-				studyM1808.getOTUSets()).getMatrices());
+		final CharacterStateMatrix smallDNAMatrix = Iterators
+				.getOnlyElement(Iterables.getOnlyElement(
+						studyM1808.getOTUSets()).getMatricesIterator());
 
 		return new Object[][] { new Object[] { smallSimpleMatrix },
 				new Object[] { smallDNAMatrix } };

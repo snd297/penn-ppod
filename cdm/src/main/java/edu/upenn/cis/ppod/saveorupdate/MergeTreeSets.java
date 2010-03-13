@@ -52,7 +52,7 @@ public class MergeTreeSets implements IMergeTreeSets {
 	}
 
 	public TreeSet merge(final TreeSet targetTreeSet,
-			final TreeSet sourceTreeSet, 
+			final TreeSet sourceTreeSet,
 			final Map<OTU, OTU> mergedOTUsBySourceOTU) {
 		checkNotNull(targetTreeSet);
 		checkNotNull(sourceTreeSet);
@@ -64,9 +64,9 @@ public class MergeTreeSets implements IMergeTreeSets {
 
 		final List<Tree> newTargetTrees = newArrayList();
 
-		for (final Tree sourceTree : sourceTreeSet.getTrees()) {
+		for (final Tree sourceTree : sourceTreeSet) {
 			Tree targetTree;
-			if (null == (targetTree = findIf(targetTreeSet.getTrees(), compose(
+			if (null == (targetTree = findIf(targetTreeSet, compose(
 					equalTo(sourceTree.getPPodId()), IUUPPodEntity.getPPodId)))) {
 				targetTree = treeProvider.get();
 				targetTree.setPPodVersionInfo(newPPodVersionInfo

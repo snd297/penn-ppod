@@ -15,6 +15,7 @@
  */
 package edu.upenn.cis.ppod.util;
 
+import java.util.Iterator;
 import java.util.Set;
 
 import edu.upenn.cis.ppod.model.Attachment;
@@ -69,7 +70,9 @@ public class PPodEntitiesUtil {
 						studyWideAttachmentNamespaces,
 						studyWideAttachmentTypes, studyWideAttachments, otu);
 			}
-			for (final CharacterStateMatrix matrix : otuSet.getMatrices()) {
+			for (final Iterator<CharacterStateMatrix> matrixItr = otuSet
+					.getMatricesIterator(); matrixItr.hasNext();) {
+				final CharacterStateMatrix matrix = matrixItr.next();
 				extractAttachmentInfoFromAttachee(
 						studyWideAttachmentNamespaces,
 						studyWideAttachmentTypes, studyWideAttachments, matrix);

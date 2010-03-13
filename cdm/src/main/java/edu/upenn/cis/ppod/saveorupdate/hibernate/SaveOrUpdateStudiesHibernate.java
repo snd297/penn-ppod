@@ -20,6 +20,7 @@ import static com.google.common.base.Predicates.equalTo;
 import static com.google.common.collect.Sets.newHashSet;
 import static edu.upenn.cis.ppod.util.PPodIterables.findIf;
 
+import java.util.Iterator;
 import java.util.List;
 import java.util.Map;
 import java.util.Set;
@@ -53,11 +54,11 @@ import edu.upenn.cis.ppod.saveorupdate.IMergeAttachments;
 import edu.upenn.cis.ppod.saveorupdate.IMergeMolecularSequenceSets;
 import edu.upenn.cis.ppod.saveorupdate.IMergeOTUSetFactory;
 import edu.upenn.cis.ppod.saveorupdate.IMergeOTUSets;
-import edu.upenn.cis.ppod.saveorupdate.ISaveOrUpdateStudies;
 import edu.upenn.cis.ppod.saveorupdate.IMergeTreeSets;
 import edu.upenn.cis.ppod.saveorupdate.IMergeTreeSetsFactory;
 import edu.upenn.cis.ppod.saveorupdate.ISaveOrUpdateMatrix;
 import edu.upenn.cis.ppod.saveorupdate.ISaveOrUpdateMatrixFactory;
+import edu.upenn.cis.ppod.saveorupdate.ISaveOrUpdateStudies;
 import edu.upenn.cis.ppod.util.ICharacterStateMatrixFactory;
 
 /**
@@ -180,12 +181,15 @@ public class SaveOrUpdateStudiesHibernate implements ISaveOrUpdateStudies {
 			studyDAO.saveOrUpdate(dbStudy);
 
 			final Set<CharacterStateMatrix> newDbMatrices = newHashSet();
-			for (final CharacterStateMatrix incomingMatrix : incomingOTUSet
-					.getMatrices()) {
+			for (final Iterator<CharacterStateMatrix> incomingMatrixItr = incomingOTUSet
+					.getMatricesIterator(); incomingMatrixItr.hasNext();) {
+				final CharacterStateMatrix incomingMatrix = incomingMatrixItr
+						.next();
 				CharacterStateMatrix dbMatrix;
-				if (null == (dbMatrix = findIf(dbOTUSet.getMatrices(), compose(
-						equalTo(incomingMatrix.getPPodId()),
-						IUUPPodEntity.getPPodId)))) {
+				if (null == (dbMatrix = findIf(dbOTUSet.getMatricesIterator(),
+						compose(
+								equalTo(incomingMatrix.getPPodId()),
+								IUUPPodEntity.getPPodId)))) {
 					dbMatrix = matrixFactory.create(incomingMatrix);
 					dbMatrix.setPPodVersionInfo(newPPodVersionInfo
 							.getNewPPodVersionInfo());
@@ -200,11 +204,14 @@ public class SaveOrUpdateStudiesHibernate implements ISaveOrUpdateStudies {
 			}
 
 			final Set<DNASequenceSet> newDbDNASequenceSets = newHashSet();
-			for (final DNASequenceSet incomingDNASequenceSet : incomingOTUSet
-					.getDNASequenceSets()) {
+			for (final Iterator<DNASequenceSet> incomingDNASequenceSetItr = incomingOTUSet
+					.getDNASequenceSetsIterator(); incomingDNASequenceSetItr
+					.hasNext();) {
+				final DNASequenceSet incomingDNASequenceSet = incomingDNASequenceSetItr
+						.next();
 				DNASequenceSet dbDNASequenceSet;
 				if (null == (dbDNASequenceSet = findIf(dbOTUSet
-						.getDNASequenceSets(), compose(
+						.getDNASequenceSetsIterator(), compose(
 						equalTo(incomingDNASequenceSet.getPPodId()),
 						IUUPPodEntity.getPPodId)))) {
 					dbDNASequenceSet = dnaSequenceSetProvider.get();
@@ -218,9 +225,11 @@ public class SaveOrUpdateStudiesHibernate implements ISaveOrUpdateStudies {
 						incomingDNASequenceSet);
 			}
 			final Set<TreeSet> newDbTreeSets = newHashSet();
-			for (final TreeSet incomingTreeSet : incomingOTUSet.getTreeSets()) {
+			for (final Iterator<TreeSet> incomingTreeSetItr = incomingOTUSet
+					.getTreeSetsIterator(); incomingTreeSetItr.hasNext();) {
+				final TreeSet incomingTreeSet = incomingTreeSetItr.next();
 				TreeSet dbTreeSet;
-				if (null == (dbTreeSet = findIf(dbOTUSet.getTreeSets(),
+				if (null == (dbTreeSet = findIf(dbOTUSet.getTreeSetsIterator(),
 						compose(equalTo(incomingTreeSet.getPPodId()),
 								IUUPPodEntity.getPPodId)))) {
 					dbTreeSet = treeSetProvider.get();

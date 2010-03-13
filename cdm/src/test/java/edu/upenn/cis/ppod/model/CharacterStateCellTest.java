@@ -140,7 +140,7 @@ public class CharacterStateCellTest {
 		final int cellStatesSize = cell.getStatesSize();
 		assertTrue(cellStatesSize > 1, "found " + cellStatesSize + " states");
 
-		assertEquals((Object) newHashSet(cell), (Object) states);
+		assertEquals(newHashSet(cell), states);
 	}
 
 	public void setTypeAndStatesFromSingleToInapplicable() {
@@ -230,7 +230,7 @@ public class CharacterStateCellTest {
 				Arrays.asList(cell));
 		states.add(state00);
 		cell.setTypeAndXmlStates(CharacterStateCell.Type.SINGLE, states);
-		assertEquals((Object) newHashSet(cell), (Object) states);
+		assertEquals(newHashSet(cell), states);
 		assertFalse(cell.getXmlStatesNeedsToBePutIntoStates());
 
 	}

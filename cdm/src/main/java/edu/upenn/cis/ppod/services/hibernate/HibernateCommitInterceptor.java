@@ -22,7 +22,6 @@ import org.jboss.resteasy.annotations.interception.ServerInterceptor;
 import org.jboss.resteasy.core.ServerResponse;
 import org.jboss.resteasy.spi.interception.PostProcessInterceptor;
 
-import edu.upenn.cis.ppod.thirdparty.util.HibernateSessionPerRequestFilter;
 import edu.upenn.cis.ppod.thirdparty.util.HibernateUtil;
 
 /**

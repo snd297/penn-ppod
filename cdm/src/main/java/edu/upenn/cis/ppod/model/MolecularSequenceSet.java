@@ -30,11 +30,11 @@ import javax.persistence.MappedSuperclass;
 import javax.xml.bind.Unmarshaller;
 import javax.xml.bind.annotation.XmlAttribute;
 
-import edu.upenn.cis.ppod.modelinterfaces.IWithOTUSet;
+import edu.upenn.cis.ppod.modelinterfaces.IPPodVersionedWithOTUSet;
 import edu.upenn.cis.ppod.util.IVisitor;
 
 /**
- * A set of {@link MolecularSequence}s, all of which are the same length.
+ * A set of {@link MolecularSequence}s.
  * 
  * @author Sam Donnelly
  * 
@@ -42,7 +42,7 @@ import edu.upenn.cis.ppod.util.IVisitor;
  */
 @MappedSuperclass
 public abstract class MolecularSequenceSet<S extends MolecularSequence<?>>
-		extends UUPPodEntity implements IWithOTUSet {
+		extends UUPPodEntityWXmlId implements IPPodVersionedWithOTUSet {
 
 	static final String TABLE = "MOLECULAR_SEQUENCE_SET";
 
@@ -57,7 +57,7 @@ public abstract class MolecularSequenceSet<S extends MolecularSequence<?>>
 	@Override
 	public void accept(final IVisitor visitor) {
 		getOTUsToSequences().accept(visitor);
-		for (final S sequence : getOTUsToSequences().getOTUsToValuesReference()
+		for (final S sequence : getOTUsToSequences().getOTUsToValues()
 				.values()) {
 			sequence.accept(visitor);
 		}
@@ -90,7 +90,7 @@ public abstract class MolecularSequenceSet<S extends MolecularSequence<?>>
 		return otuSet;
 	}
 
-	protected abstract OTUKeyedBimap<S, ?> getOTUsToSequences();
+	protected abstract OTUKeyedBimap<S, ? extends MolecularSequenceSet<?>> getOTUsToSequences();
 
 	/**
 	 * 
@@ -117,26 +117,11 @@ public abstract class MolecularSequenceSet<S extends MolecularSequence<?>>
 	 * @param otu
 	 * @param newSequence
 	 * @return
-	 * 
-	 * @throws IllegalArgumentException if this sequence set already contains
-	 *             sequences and {@code newSequence.getSequence()} does not have
-	 *             the same length as those sequences
 	 */
 	@CheckForNull
 	public S putSequence(final OTU otu, final S sequence) {
 		checkNotNull(otu);
 		checkNotNull(sequence);
-		checkArgument(sequence.getSequence() != null,
-				"non-nullable value sequence.getSequence() is null");
-		if (getSequences().size() > 0) {
-			checkArgument(
-					getSequences().get(0).getSequence().length() == sequence
-							.getSequence().length(),
-					"newSequence has incorrect length. It needs to be " +
-							getSequences().get(0).getSequence().length()
-							+ ", but it is "
-							+ sequence.getSequence().length());
-		}
 		return putSequenceHelper(otu, sequence);
 	}
 
@@ -162,6 +147,9 @@ public abstract class MolecularSequenceSet<S extends MolecularSequence<?>>
 		return this;
 	}
 
+	protected abstract MolecularSequenceSet<S> setOTUsInOTUsToSequences(
+			final OTUSet otuSet);
+
 	/**
 	 * Intentionally package-private and meant to be called in {@link OTUSet}.
 	 * <p>
@@ -172,9 +160,10 @@ public abstract class MolecularSequenceSet<S extends MolecularSequence<?>>
 	 * 
 	 * @return this sequence set
 	 */
-	protected final MolecularSequenceSet<S> setOTUSet(
+	MolecularSequenceSet<S> setOTUSet(
 			@Nullable final OTUSet newOTUSet) {
-		otuSet = newOTUSet;
+		this.otuSet = newOTUSet;
+		setOTUsInOTUsToSequences(newOTUSet);
 		return this;
 	}
 

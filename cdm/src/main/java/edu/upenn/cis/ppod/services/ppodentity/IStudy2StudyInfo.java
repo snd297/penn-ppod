@@ -30,6 +30,6 @@ public interface IStudy2StudyInfo {
 	 * @param study input
 	 * @return output
 	 */
-	StudyInfo go(final Study study);
+	StudyInfo toStudyInfo(final Study study);
 
 }

@@ -57,6 +57,11 @@ public class DNASequenceSet extends MolecularSequenceSet<DNASequence> {
 
 	@Override
 	public void accept(final IVisitor visitor) {
+		otusToSequences.accept(visitor);
+		for (final DNASequence sequence : getOTUsToSequences()
+				.getValuesInOTUOrder(getOTUSet())) {
+			sequence.accept(visitor);
+		}
 		super.accept(visitor);
 		visitor.visit(this);
 	}
@@ -93,4 +98,13 @@ public class DNASequenceSet extends MolecularSequenceSet<DNASequence> {
 		this.otusToSequences = otusToSequences;
 		return this;
 	}
+
+	@Override
+	protected MolecularSequenceSet<DNASequence> setOTUsInOTUsToSequences(
+			final OTUSet otuSet) {
+		checkNotNull(otuSet);
+		getOTUsToSequences().setOTUs(otuSet, this);
+		return this;
+	}
+
 }
