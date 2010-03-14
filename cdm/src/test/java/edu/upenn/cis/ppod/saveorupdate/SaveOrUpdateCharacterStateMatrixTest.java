@@ -148,9 +148,9 @@ public class SaveOrUpdateCharacterStateMatrixTest {
 
 		// Simulate passing back in the persisted characters: so we need to
 		// assign the proper pPOD ID's.
-		for (int i = 0; i < sourceMatrix.getCharacters().size(); i++) {
-			sourceMatrix.getCharacters().get(i).setPPodId(
-					targetMatrix.getCharacters().get(i).getPPodId());
+		for (int i = 0; i < sourceMatrix.getCharactersSize(); i++) {
+			sourceMatrix.getCharacter(i).setPPodId(
+					targetMatrix.getCharacter(i).getPPodId());
 		}
 
 		final List<OTU> shuffledSourceOTUs = newArrayList(sourceMatrix
@@ -196,19 +196,17 @@ public class SaveOrUpdateCharacterStateMatrixTest {
 
 			// Simulate passing back in the persisted characters: so we need to
 			// assign the proper pPOD ID's.
-			for (int i = 0; i < sourceMatrix.getCharacters().size(); i++) {
-				sourceMatrix.getCharacters().get(i).setPPodId(
-						targetMatrix.getCharacters().get(i).getPPodId());
+			for (int i = 0; i < sourceMatrix.getCharactersSize(); i++) {
+				sourceMatrix.getCharacter(i).setPPodId(
+						targetMatrix.getCharacter(i).getPPodId());
 			}
 
 			// Swap 2 and 0
 			final List<Character> newSourceMatrixCharacters = newArrayList(sourceMatrix
-					.getCharacters());
+					.getCharactersIterator());
 
-			newSourceMatrixCharacters.set(0, sourceMatrix.getCharacters()
-					.get(2));
-			newSourceMatrixCharacters.set(2, sourceMatrix.getCharacters()
-					.get(0));
+			newSourceMatrixCharacters.set(0, sourceMatrix.getCharacter(2));
+			newSourceMatrixCharacters.set(2, sourceMatrix.getCharacter(0));
 			sourceMatrix.setCharacters(newSourceMatrixCharacters);
 
 			for (final CharacterStateRow sourceRow : sourceMatrix) {

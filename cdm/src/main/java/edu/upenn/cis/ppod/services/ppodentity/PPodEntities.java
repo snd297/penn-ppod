@@ -15,6 +15,7 @@
  */
 package edu.upenn.cis.ppod.services.ppodentity;
 
+import static com.google.common.collect.Lists.newArrayList;
 import static com.google.common.collect.Sets.newHashSet;
 
 import java.util.Collections;
@@ -87,7 +88,8 @@ public class PPodEntities implements IPPodEntities {
 				for (final Iterator<CharacterStateMatrix> matrixItr = otuSet
 						.getMatricesIterator(); matrixItr.hasNext();) {
 					studyWideCharacters
-							.addAll(matrixItr.next().getCharacters());
+							.addAll(newArrayList(matrixItr.next()
+									.getCharactersIterator()));
 				}
 			}
 		}

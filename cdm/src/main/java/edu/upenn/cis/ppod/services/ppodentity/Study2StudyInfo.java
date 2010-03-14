@@ -103,7 +103,9 @@ public final class Study2StudyInfo implements IStudy2StudyInfo {
 				matrixInfo.setDocId(matrix.getDocId());
 
 				int characterIdx = 0;
-				for (final Character character : matrix.getCharacters()) {
+				for (final Iterator<Character> charactersItr = matrix
+						.getCharactersIterator(); charactersItr.hasNext();) {
+					final Character character = charactersItr.next();
 					PPodEntityInfo characterInfo = pPodEntityInfoProvider.get();
 					characterInfo.setPPodId(character.getPPodId());
 					characterInfo.setEntityId(character.getId());
@@ -113,8 +115,11 @@ public final class Study2StudyInfo implements IStudy2StudyInfo {
 				}
 
 				int columnIdx = 0;
-				for (final PPodVersionInfo columnPPodVersionInfo : matrix
-						.getColumnPPodVersionInfos()) {
+				for (final Iterator<PPodVersionInfo> columnPPodVersionInfosItr = matrix
+						.getColumnPPodVersionInfosIterator(); columnPPodVersionInfosItr
+						.hasNext();) {
+					final PPodVersionInfo columnPPodVersionInfo = columnPPodVersionInfosItr
+							.next();
 					matrixInfo.getColumnHeaderVersionsByIdx().put(columnIdx++,
 							columnPPodVersionInfo.getPPodVersion());
 				}

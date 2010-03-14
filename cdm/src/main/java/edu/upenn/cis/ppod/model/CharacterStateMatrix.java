@@ -53,6 +53,7 @@ import org.hibernate.annotations.IndexColumn;
 
 import com.google.common.collect.BiMap;
 import com.google.common.collect.HashBiMap;
+import com.google.common.collect.ImmutableMap;
 import com.google.inject.Inject;
 
 import edu.upenn.cis.ppod.modelinterfaces.IPPodVersionedWithOTUSet;
@@ -139,7 +140,7 @@ public class CharacterStateMatrix extends UUPPodEntityWXmlId implements
 	@JoinTable(name = TABLE + "_" + CHARACTER_IDX_COLUMN, joinColumns = @JoinColumn(name = ID_COLUMN))
 	@org.hibernate.annotations.MapKeyManyToMany(joinColumns = @JoinColumn(name = Character.ID_COLUMN))
 	@Column(name = CHARACTER_IDX_COLUMN)
-	private final Map<Character, Integer> characterIdx = newHashMap();
+	private final Map<Character, Integer> charactersToPositions = newHashMap();
 
 	/**
 	 * The position of a {@code Character} in <code>characters</code> signifies
@@ -161,7 +162,7 @@ public class CharacterStateMatrix extends UUPPodEntityWXmlId implements
 
 	@Override
 	public void accept(final IVisitor visitor) {
-		for (final Character character : getCharactersReference()) {
+		for (final Character character : getCharacters()) {
 			character.accept(visitor);
 		}
 		getOTUsToRows().accept(visitor);
@@ -179,13 +180,14 @@ public class CharacterStateMatrix extends UUPPodEntityWXmlId implements
 	public void afterUnmarshal() {
 		super.afterUnmarshal();
 		int i = 0;
-		for (final Character character : getCharactersReference()) {
+		for (final Character character : getCharacters()) {
 			if (this instanceof DNAStateMatrix
 					|| this instanceof RNAStateMatrix) {
-				// characterIdx is meaningless for MolecularMatrix's since
+				// charactersToPositions is meaningless for MolecularMatrix's
+				// since
 				// all of their Characters are the same
 			} else {
-				characterIdx.put(character, i++);
+				charactersToPositions.put(character, i++);
 			}
 			columnPPodVersionInfos.add(null);
 			character.addMatrix(this);
@@ -220,18 +222,11 @@ public class CharacterStateMatrix extends UUPPodEntityWXmlId implements
 		return true;
 	}
 
-	/**
-	 * Made package-private (instead of private) for unit testing.
-	 * 
-	 * @param originalCharacters
-	 * @param newCharacters
-	 * @return
-	 */
 	private List<PPodVersionInfo> determineNewColumnHeaderPPodVersionInfos(
 			final List<? extends Character> newCharacters) {
 
 		final BiMap<Integer, Integer> originalPositionsToNewPositions = HashBiMap
-				.create(getCharacters().size());
+				.create(getCharactersSize());
 		for (int originalPosition = 0; originalPosition < getCharacters()
 				.size(); originalPosition++) {
 			final Character originalCharacter = getCharacters().get(
@@ -274,32 +269,65 @@ public class CharacterStateMatrix extends UUPPodEntityWXmlId implements
 	}
 
 	/**
-	 * Get an unmodifialbe view of the characterIdx.
-	 * 
-	 * @return a copy of the characterIdx
+	 * @param pPodCharacterIdx
+	 * @return
 	 */
-	public Map<Character, Integer> getCharacterIdx() {
-		return Collections.unmodifiableMap(characterIdx);
+	public Character getCharacter(final int characterPosition) {
+		return getCharacters().get(characterPosition);
 	}
 
 	/**
-	 * Get an unmodifiable view of this matrix's <code>Character</code>s.
-	 * 
-	 * @return a copy of the <code>Character</code> ordering
+	 * Created for testing.
 	 */
-	public List<Character> getCharacters() {
-		return Collections.unmodifiableList(getCharactersReference());
+	ImmutableMap<Character, Integer> getCharacterPosition() {
+		return ImmutableMap.copyOf(charactersToPositions);
 	}
 
 	/**
-	 * Get a modifiable reference to the characters.
+	 * Get the position of a character in this matrix, or {@code null} if the
+	 * character is not in this matrix.
+	 * 
+	 * @param character the character who's position we want
+	 * 
+	 * @return the position of a character in this matrix, or {@code null} if
+	 *         the character is not in this matrix
+	 */
+	public Integer getCharacterPosition(final Character character) {
+		return charactersToPositions.get(character);
+	}
+
+	/**
+	 * Get the characters.
 	 * 
 	 * @return a modifiable reference to the characters
 	 */
 	@XmlElement(name = "characterDocId")
 	@XmlIDREF
-	protected List<Character> getCharactersReference() {
+	protected List<Character> getCharacters() {
 		return characters;
+	}
+
+	public Iterator<Character> getCharactersIterator() {
+		return getCharacters().iterator();
+	}
+
+	/**
+	 * Get the number of characters this matrix has.
+	 * 
+	 * @return the number of characters this matrix has
+	 */
+	public int getCharactersSize() {
+		return getCharacters().size();
+	}
+
+	public Long getColumnPPodVersion(final int columnPPodVersionPosition) {
+		return getColumnPPodVersions().get(columnPPodVersionPosition);
+	}
+
+	@CheckForNull
+	public PPodVersionInfo getColumnPPodVersionInfo(
+			final int columnPPodVersionInfoPosition) {
+		return getColumnPPodVersionInfos().get(columnPPodVersionInfoPosition);
 	}
 
 	/**
@@ -311,44 +339,21 @@ public class CharacterStateMatrix extends UUPPodEntityWXmlId implements
 	 * @return a mutable view of the {@code PPodVersionInfo}s for each for the
 	 *         columns of the matrix
 	 */
-	List<PPodVersionInfo> getColumnPPodVersionInfoReference() {
+	protected List<PPodVersionInfo> getColumnPPodVersionInfos() {
 		return columnPPodVersionInfos;
 	}
 
-	/**
-	 * Get an unmodifiable copy of the {@code PPodVersionInfo}s for each for the
-	 * columns of the matrix.
-	 * <p>
-	 * This value is {@code equals()} to the max pPOD version info in a column.
-	 * 
-	 * @return a copy of the columns' {@code PPodVersionInfo}s
-	 */
-	public List<PPodVersionInfo> getColumnPPodVersionInfos() {
-		return Collections
-				.unmodifiableList(newArrayList(columnPPodVersionInfos));
-	}
-
-	/**
-	 * Get an unmodifiable copy of the column pPOD versions.
-	 * <p>
-	 * A column version is the max pPOD version of the cells in a column.
-	 * 
-	 * @return an unmodifiable copy of the column pPOD versions
-	 */
-	public List<Long> getColumnPPodVersions() {
-		return Collections
-				.unmodifiableList(newArrayList(getColumnPPodVersionsReference()));
+	public Iterator<PPodVersionInfo> getColumnPPodVersionInfosIterator() {
+		return getColumnPPodVersionInfos().iterator();
 	}
 
 	/**
 	 * Get the column pPOD versions. This is a modifiable list.
 	 * 
-	 * @see #getColumnPPodVersions()
-	 * 
 	 * @return the column pPOD versions
 	 */
 	@XmlElement(name = "columnPPodVersion")
-	protected List<Long> getColumnPPodVersionsReference() {
+	protected List<Long> getColumnPPodVersions() {
 		return columnPPodVersions;
 	}
 
@@ -394,7 +399,7 @@ public class CharacterStateMatrix extends UUPPodEntityWXmlId implements
 	 * @return the otusToRows
 	 */
 	@XmlElement(name = "otusToRows")
-	private OTUsToCharacterStateRows getOTUsToRows() {
+	protected OTUsToCharacterStateRows getOTUsToRows() {
 		return otusToRows;
 	}
 
@@ -414,6 +419,25 @@ public class CharacterStateMatrix extends UUPPodEntityWXmlId implements
 	public CharacterStateRow getRow(final OTU otu) {
 		checkNotNull(otu);
 		return getOTUsToRows().get(otu, this);
+	}
+
+	/**
+	 * Get the number of rows in this matrix.
+	 * 
+	 * @return the number of rows in this matrix
+	 */
+	public int getRowsSize() {
+		return getOTUsToRows().getOTUsToValues().size();
+	}
+
+	/**
+	 * Get an iterator over this matrix's rows. The iterator will traverse the
+	 * rows in {@code getOTUSet().getOTUs()} order.
+	 * 
+	 * return an iterator over this matrix's rows
+	 */
+	public Iterator<CharacterStateRow> iterator() {
+		return getOTUsToRows().getValuesInOTUOrder(getOTUSet()).iterator();
 	}
 
 	/**
@@ -450,7 +474,7 @@ public class CharacterStateMatrix extends UUPPodEntityWXmlId implements
 	 */
 	CharacterStateMatrix resetColumnPPodVersion(final int idx) {
 		if (getAllowResetPPodVersionInfo()) {
-			nullFillAndSet(getColumnPPodVersionInfoReference(), idx, null);
+			nullFillAndSet(getColumnPPodVersionInfos(), idx, null);
 		}
 		return this;
 	}
@@ -506,8 +530,8 @@ public class CharacterStateMatrix extends UUPPodEntityWXmlId implements
 		}
 
 		final List<PPodVersionInfo> newColumnPPodVersionInfos = determineNewColumnHeaderPPodVersionInfos(newCharacters);
-		getColumnPPodVersionInfoReference().clear();
-		getColumnPPodVersionInfoReference().addAll(newColumnPPodVersionInfos);
+		getColumnPPodVersionInfos().clear();
+		getColumnPPodVersionInfos().addAll(newColumnPPodVersionInfos);
 
 		final List<Character> removedCharacters = newArrayList(getCharacters());
 
@@ -516,14 +540,14 @@ public class CharacterStateMatrix extends UUPPodEntityWXmlId implements
 			removedCharacter.removeMatrix(this);
 		}
 
-		getCharactersReference().clear();
-		characterIdx.clear();
+		getCharacters().clear();
+		charactersToPositions.clear();
 
-		getCharactersReference().addAll(newCharacters);
+		getCharacters().addAll(newCharacters);
 
 		int characterPosition = 0;
 		for (final Character character : getCharacters()) {
-			characterIdx.put(character, characterPosition++);
+			charactersToPositions.put(character, characterPosition++);
 			character.addMatrix(this);
 		}
 
@@ -547,7 +571,7 @@ public class CharacterStateMatrix extends UUPPodEntityWXmlId implements
 			final PPodVersionInfo pPodVersionInfo) {
 		checkArgument(pos < getColumnPPodVersionInfos().size(),
 				"pos is bigger than getColumnPPodVersionInfos().size()");
-		getColumnPPodVersionInfoReference().set(pos, pPodVersionInfo);
+		getColumnPPodVersionInfos().set(pos, pPodVersionInfo);
 		return this;
 	}
 
@@ -634,7 +658,7 @@ public class CharacterStateMatrix extends UUPPodEntityWXmlId implements
 	 * 
 	 * @return this
 	 */
-	CharacterStateMatrix setOTUSet(@Nullable final OTUSet newOTUSet) {
+	protected CharacterStateMatrix setOTUSet(@Nullable final OTUSet newOTUSet) {
 		otuSet = newOTUSet;
 		getOTUsToRows().setOTUs(getOTUSet(), this);
 		return this;
@@ -652,34 +676,6 @@ public class CharacterStateMatrix extends UUPPodEntityWXmlId implements
 			final OTUsToCharacterStateRows newOTUsToRows) {
 		otusToRows = newOTUsToRows;
 		return this;
-	}
-
-	/**
-	 * Get the number of characters this matirx has.
-	 * 
-	 * @return the number of characters this matrix has
-	 */
-	public int getCharactersSize() {
-		return getCharactersReference().size();
-	}
-
-	/**
-	 * Get an iterator over this matrix's rows. The iterator will traverse the
-	 * rows in {@code getOTUSet().getOTUs()} order.
-	 * 
-	 * return an iterator over this matrix's rows
-	 */
-	public Iterator<CharacterStateRow> iterator() {
-		return getOTUsToRows().getValuesInOTUOrder(getOTUSet()).iterator();
-	}
-
-	/**
-	 * Get the number of rows in this matrix.
-	 * 
-	 * @return the number of rows in this matrix
-	 */
-	public int getRowsSize() {
-		return getOTUsToRows().getOTUsToValues().size();
 	}
 
 }

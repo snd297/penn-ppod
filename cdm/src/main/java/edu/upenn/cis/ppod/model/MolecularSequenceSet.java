@@ -15,10 +15,9 @@
  */
 package edu.upenn.cis.ppod.model;
 
-import static com.google.common.base.Preconditions.checkArgument;
 import static com.google.common.base.Preconditions.checkNotNull;
 
-import java.util.List;
+import java.util.Iterator;
 
 import javax.annotation.CheckForNull;
 import javax.annotation.Nullable;
@@ -42,7 +41,8 @@ import edu.upenn.cis.ppod.util.IVisitor;
  */
 @MappedSuperclass
 public abstract class MolecularSequenceSet<S extends MolecularSequence<?>>
-		extends UUPPodEntityWXmlId implements IPPodVersionedWithOTUSet {
+		extends UUPPodEntityWXmlId implements IPPodVersionedWithOTUSet,
+		Iterable<S> {
 
 	static final String TABLE = "MOLECULAR_SEQUENCE_SET";
 
@@ -93,9 +93,11 @@ public abstract class MolecularSequenceSet<S extends MolecularSequence<?>>
 	protected abstract OTUKeyedBimap<S, ? extends MolecularSequenceSet<?>> getOTUsToSequences();
 
 	/**
+	 * Get the sequence indexed by {@code otu}.
 	 * 
-	 * @param otu
-	 * @return
+	 * @param otu index
+	 * 
+	 * @return the sequence at {@code otu}
 	 * 
 	 * @throws IllegalArgument Exception if {@code otu} does not belong to this
 	 *             sequence's {@code OTUSet}
@@ -104,13 +106,16 @@ public abstract class MolecularSequenceSet<S extends MolecularSequence<?>>
 	public abstract S getSequence(final OTU otu);
 
 	/**
-	 * Get a copy of the constituent sequences in {@code getOTUOrdering()}
-	 * order.
+	 * Get the number of sequences in this set.
 	 * 
-	 * @return the constituent sequences
+	 * @return the number of sequences in this set.
 	 */
-	public List<S> getSequences() {
-		return getOTUsToSequences().getValuesInOTUOrder(getOTUSet());
+	public int getSequencesSize() {
+		return getOTUsToSequences().getOTUsToValues().size();
+	}
+
+	public Iterator<S> iterator() {
+		return getOTUsToSequences().getValuesInOTUOrder(getOTUSet()).iterator();
 	}
 
 	/**
@@ -147,9 +152,6 @@ public abstract class MolecularSequenceSet<S extends MolecularSequence<?>>
 		return this;
 	}
 
-	protected abstract MolecularSequenceSet<S> setOTUsInOTUsToSequences(
-			final OTUSet otuSet);
-
 	/**
 	 * Intentionally package-private and meant to be called in {@link OTUSet}.
 	 * <p>
@@ -166,5 +168,8 @@ public abstract class MolecularSequenceSet<S extends MolecularSequence<?>>
 		setOTUsInOTUsToSequences(newOTUSet);
 		return this;
 	}
+
+	protected abstract MolecularSequenceSet<S> setOTUsInOTUsToSequences(
+			final OTUSet otuSet);
 
 }

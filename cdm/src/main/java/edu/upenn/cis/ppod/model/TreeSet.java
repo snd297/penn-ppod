@@ -121,6 +121,10 @@ public class TreeSet extends UUPPodEntityWXmlId implements Iterable<Tree> {
 		return trees;
 	}
 
+	public Iterator<Tree> iterator() {
+		return getTrees().iterator();
+	}
+
 	@Override
 	public TreeSet setInNeedOfNewPPodVersionInfo() {
 		if (getOTUSet() != null) {
@@ -221,10 +225,6 @@ public class TreeSet extends UUPPodEntityWXmlId implements Iterable<Tree> {
 						this.trees).append(TAB).append(")");
 
 		return retValue.toString();
-	}
-
-	public Iterator<Tree> iterator() {
-		return getTrees().iterator();
 	}
 
 }

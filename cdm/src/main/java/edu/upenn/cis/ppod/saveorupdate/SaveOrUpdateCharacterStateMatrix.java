@@ -27,6 +27,7 @@ import static com.google.common.collect.Sets.newHashSet;
 import static edu.upenn.cis.ppod.util.PPodIterables.findEach;
 import static edu.upenn.cis.ppod.util.PPodIterables.findIf;
 
+import java.util.Iterator;
 import java.util.List;
 import java.util.Map;
 import java.util.Set;
@@ -111,13 +112,15 @@ public class SaveOrUpdateCharacterStateMatrix implements ISaveOrUpdateMatrix {
 		final Map<Integer, Integer> newCharIdxsToOriginalCharIdxs = newHashMap();
 		final List<Character> newTargetMatrixCharacters = newArrayList();
 		int sourceCharacterPosition = -1;
-		for (final Character sourceCharacter : sourceMatrix.getCharacters()) {
+		for (final Iterator<Character> sourceCharactersItr = sourceMatrix
+				.getCharactersIterator(); sourceCharactersItr.hasNext();) {
+			final Character sourceCharacter = sourceCharactersItr.next();
 			sourceCharacterPosition++;
 			Character newTargetCharacter;
 			if (sourceMatrix instanceof DNAStateMatrix) {
 				newTargetCharacter = dnaCharacter;
 			} else if (null == (newTargetCharacter = findIf(targetMatrix
-					.getCharacters(), compose(equalTo(sourceCharacter
+					.getCharactersIterator(), compose(equalTo(sourceCharacter
 					.getPPodId()), IUUPPodEntity.getPPodId)))) {
 				newTargetCharacter = characterProvider.get();
 				newTargetCharacter.setPPodVersionInfo(newPPodVersionInfo
@@ -149,9 +152,9 @@ public class SaveOrUpdateCharacterStateMatrix implements ISaveOrUpdateMatrix {
 
 			if (!(sourceMatrix instanceof DNAStateMatrix)) {
 				newCharIdxsToOriginalCharIdxs.put(sourceCharacterPosition,
-						targetMatrix.getCharacterIdx().get(newTargetCharacter));
+						targetMatrix.getCharacterPosition(newTargetCharacter));
 			} else {
-				if (targetMatrix.getCharacters().size() <= sourceCharacterPosition) {
+				if (targetMatrix.getCharactersSize() <= sourceCharacterPosition) {
 					newCharIdxsToOriginalCharIdxs.put(sourceCharacterPosition,
 							null);
 				} else {
@@ -196,7 +199,8 @@ public class SaveOrUpdateCharacterStateMatrix implements ISaveOrUpdateMatrix {
 			final OTU targetOTU = targetMatrix.getOTUSet().getOTU(
 					sourceOTUPosition);
 			CharacterStateRow targetRow = null;
-			List<Character> characters = targetMatrix.getCharacters();
+			final List<Character> characters = newArrayList(targetMatrix
+					.getCharactersIterator());
 
 			boolean newRow = false;
 
@@ -222,8 +226,8 @@ public class SaveOrUpdateCharacterStateMatrix implements ISaveOrUpdateMatrix {
 					.getCellsSize());
 
 			// First we fill with empty cells
-			for (int newCellIdx = 0; newCellIdx < targetMatrix.getCharacters()
-					.size(); newCellIdx++) {
+			for (int newCellIdx = 0; newCellIdx < targetMatrix
+					.getCharactersSize(); newCellIdx++) {
 				CharacterStateCell targetCell;
 				if (newRow
 						|| null == newCharIdxsToOriginalCharIdxs
