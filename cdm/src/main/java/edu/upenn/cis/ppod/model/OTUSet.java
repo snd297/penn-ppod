@@ -168,6 +168,7 @@ public class OTUSet extends UUPPodEntityWXmlId implements Iterable<OTU> {
 	 * @return {@code matrix}
 	 */
 	public CharacterStateMatrix addMatrix(final CharacterStateMatrix matrix) {
+		checkNotNull(matrix);
 		getMatrices().add(matrix);
 		matrix.setOTUSet(this);
 		return matrix;
@@ -375,6 +376,10 @@ public class OTUSet extends UUPPodEntityWXmlId implements Iterable<OTU> {
 			final Set<? extends DNASequenceSet> newSequenceSets) {
 		checkNotNull(newSequenceSets);
 
+		if (newSequenceSets.equals(getDNASequenceSets())) {
+			return Collections.emptySet();
+		}
+
 		final Set<DNASequenceSet> removedSequenceSets = newHashSet(getDNASequenceSets());
 		removedSequenceSets.removeAll(newSequenceSets);
 
@@ -425,7 +430,7 @@ public class OTUSet extends UUPPodEntityWXmlId implements Iterable<OTU> {
 	 */
 	public OTUSet setLabel(final String label) {
 		checkNotNull(label);
-		if (label.equals(this.label)) {
+		if (label.equals(getLabel())) {
 
 		} else {
 			this.label = label;
@@ -443,7 +448,12 @@ public class OTUSet extends UUPPodEntityWXmlId implements Iterable<OTU> {
 	 */
 	public Set<CharacterStateMatrix> setMatrices(
 			final Set<? extends CharacterStateMatrix> newMatrices) {
-		checkNotNull(matrices);
+		checkNotNull(newMatrices);
+
+		if (newMatrices.equals(getMatrices())) {
+			return Collections.emptySet();
+		}
+
 		final Set<CharacterStateMatrix> removedMatrices = newHashSet(getMatrices());
 		removedMatrices.removeAll(newMatrices);
 

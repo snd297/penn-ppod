@@ -159,10 +159,11 @@ public abstract class OTUKeyedBimap<T extends PersistentObject, P extends IPPodV
 	 * @throw IllegalArgumentException if {@code otuSet != parent.getOTUSet()}
 	 */
 	@CheckForNull
-	protected final OTUKeyedBimap<T, P> setOTUs(@Nullable final OTUSet otuSet,
+	protected OTUKeyedBimap<T, P> setOTUs(@Nullable final OTUSet otuSet,
 			final P parent) {
 		checkArgument(otuSet == parent.getOTUSet(),
 				"otuSet does not belong to parent");
+
 		final Set<OTU> otusToBeRemoved = newHashSet();
 		for (final OTU otu : getOTUsToValues().keySet()) {
 			if (parent.getOTUSet() != null
@@ -182,10 +183,10 @@ public abstract class OTUKeyedBimap<T extends PersistentObject, P extends IPPodV
 
 				} else {
 					getOTUsToValues().put(otu, null);
+					parent.setInNeedOfNewPPodVersionInfo();
 				}
 			}
 		}
-		parent.setInNeedOfNewPPodVersionInfo();
 		return this;
 	}
 }

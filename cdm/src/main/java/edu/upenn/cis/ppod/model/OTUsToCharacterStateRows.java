@@ -75,12 +75,12 @@ public class OTUsToCharacterStateRows extends
 	}
 
 	@Override
-	protected final Map<OTU, CharacterStateRow> getOTUsToValues() {
+	protected Map<OTU, CharacterStateRow> getOTUsToValues() {
 		return rows;
 	}
 
 	@Override
-	protected final Set<OTUSomethingPair<CharacterStateRow>> getOTUValuePairs() {
+	protected Set<OTUSomethingPair<CharacterStateRow>> getOTUValuePairs() {
 		final Set<OTUSomethingPair<CharacterStateRow>> otuValuePairs = newHashSet();
 		for (final OTUCharacterStateRowPair otuRowPair : otuRowPairs) {
 			otuValuePairs.add(otuRowPair);

@@ -74,12 +74,12 @@ public class OTUsToDNASequences extends
 	}
 
 	@Override
-	protected final Map<OTU, DNASequence> getOTUsToValues() {
+	protected Map<OTU, DNASequence> getOTUsToValues() {
 		return sequences;
 	}
 
 	@Override
-	protected final Set<OTUSomethingPair<DNASequence>> getOTUValuePairs() {
+	protected Set<OTUSomethingPair<DNASequence>> getOTUValuePairs() {
 		final Set<OTUSomethingPair<DNASequence>> otuSomethingPairs = newHashSet();
 		for (final OTUDNASequencePair otuDNASequencePair : getOTUSequencePairs()) {
 			otuSomethingPairs.add(otuDNASequencePair);
