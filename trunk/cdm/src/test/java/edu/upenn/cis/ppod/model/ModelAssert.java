@@ -23,6 +23,8 @@ import static org.testng.Assert.assertTrue;
 import java.util.Iterator;
 import java.util.Map.Entry;
 
+import com.google.common.collect.ImmutableMap;
+
 /**
  * For asserting that various {@code edu.upenn.cis.ppod.model} elements are the
  * equal.
@@ -34,7 +36,9 @@ public class ModelAssert {
 	public static void assertEqualsOTUSet(final OTUSet actualOTUSet,
 			final OTUSet expectedOTUSet) {
 		assertEquals(actualOTUSet.getLabel(), expectedOTUSet.getLabel());
-
+		if (expectedOTUSet.getPPodId() != null) {
+			assertEquals(actualOTUSet.getPPodId(), expectedOTUSet.getPPodId());
+		}
 		assertEquals(actualOTUSet.getOTUsSize(), expectedOTUSet.getOTUsSize());
 		for (final OTU expectedOTU : expectedOTUSet) {
 			boolean foundIt = false;
@@ -142,10 +146,12 @@ public class ModelAssert {
 		// We use actualMatrix.getCharacters() to check as oppose to looking at
 		// expectedMatrix sine that seems to make the most sense
 		if (actualMatrix.getClass().equals(CharacterStateMatrix.class)) {
-			assertEquals(actualMatrix.getCharacterIdx().size(), actualMatrix
-					.getCharacters().size());
-			for (final Entry<Character, Integer> actualIdxByCharacter : actualMatrix
-					.getCharacterIdx().entrySet()) {
+			final ImmutableMap<Character, Integer> actualMatrixCharacterIdx = actualMatrix
+					.getCharacterPosition();
+			assertEquals(actualMatrixCharacterIdx.size(), actualMatrix
+					.getCharactersSize());
+			for (final Entry<Character, Integer> actualIdxByCharacter : actualMatrixCharacterIdx
+					.entrySet()) {
 				assertTrue(actualIdxByCharacter.getKey() == actualMatrix
 						.getCharacters().get(actualIdxByCharacter.getValue()));
 			}

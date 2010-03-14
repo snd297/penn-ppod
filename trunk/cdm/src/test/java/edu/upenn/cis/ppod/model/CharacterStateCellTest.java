@@ -140,7 +140,7 @@ public class CharacterStateCellTest {
 		final int cellStatesSize = cell.getStatesSize();
 		assertTrue(cellStatesSize > 1, "found " + cellStatesSize + " states");
 
-		assertEquals(newHashSet(cell), states);
+		assertEquals((Object) newHashSet(cell), (Object) states);
 	}
 
 	public void setTypeAndStatesFromSingleToInapplicable() {
@@ -195,7 +195,7 @@ public class CharacterStateCellTest {
 		states.add(state01);
 		cell.setPolymorphicStates(states);
 		assertEquals(cell.getType(), CharacterStateCell.Type.POLYMORPHIC);
-		assertEquals(newHashSet(cell), states);
+		assertEquals((Object) newHashSet(cell), (Object) states);
 	}
 
 	@Test(expectedExceptions = IllegalArgumentException.class)

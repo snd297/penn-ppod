@@ -172,11 +172,11 @@ public class CharacterStateMatrixTest {
 		assertNotSame(matrix.getCharacters(), characters);
 		Assert.assertEquals(matrix.getCharacters(), characters);
 
-		Assert.assertEquals(matrix.getCharacterIdx().get(characters.get(0)),
+		Assert.assertEquals(matrix.getCharacterPosition().get(characters.get(0)),
 				Integer.valueOf(0));
-		Assert.assertEquals(matrix.getCharacterIdx().get(characters.get(1)),
+		Assert.assertEquals(matrix.getCharacterPosition().get(characters.get(1)),
 				Integer.valueOf(1));
-		Assert.assertEquals(matrix.getCharacterIdx().get(characters.get(2)),
+		Assert.assertEquals(matrix.getCharacterPosition().get(characters.get(2)),
 				Integer.valueOf(2));
 	}
 
@@ -197,9 +197,9 @@ public class CharacterStateMatrixTest {
 
 		matrix.setCharacters(characters);
 
-		matrix.getColumnPPodVersionInfoReference().set(0, pPodVersionInfo0);
-		matrix.getColumnPPodVersionInfoReference().set(1, pPodVersionInfo1);
-		matrix.getColumnPPodVersionInfoReference().set(2, pPodVersionInfo2);
+		matrix.getColumnPPodVersionInfos().set(0, pPodVersionInfo0);
+		matrix.getColumnPPodVersionInfos().set(1, pPodVersionInfo1);
+		matrix.getColumnPPodVersionInfos().set(2, pPodVersionInfo2);
 
 		final ImmutableList<Character> shuffledCharacters = ImmutableList.of(
 				characters.get(1), characters.get(2), characters.get(0));
@@ -209,11 +209,11 @@ public class CharacterStateMatrixTest {
 		assertNotSame(matrix.getCharacters(), shuffledCharacters);
 		assertEquals(matrix.getCharacters(), shuffledCharacters);
 
-		Assert.assertEquals(matrix.getCharacterIdx().get(
+		Assert.assertEquals(matrix.getCharacterPosition().get(
 				shuffledCharacters.get(0)), Integer.valueOf(0));
-		Assert.assertEquals(matrix.getCharacterIdx().get(
+		Assert.assertEquals(matrix.getCharacterPosition().get(
 				shuffledCharacters.get(1)), Integer.valueOf(1));
-		Assert.assertEquals(matrix.getCharacterIdx().get(
+		Assert.assertEquals(matrix.getCharacterPosition().get(
 				shuffledCharacters.get(2)), Integer.valueOf(2));
 
 		assertEquals(matrix.getColumnPPodVersionInfos().get(0),
@@ -240,9 +240,9 @@ public class CharacterStateMatrixTest {
 
 		matrix.setCharacters(characters);
 
-		matrix.getColumnPPodVersionInfoReference().set(0, pPodVersionInfo0);
-		matrix.getColumnPPodVersionInfoReference().set(1, pPodVersionInfo1);
-		matrix.getColumnPPodVersionInfoReference().set(2, pPodVersionInfo2);
+		matrix.getColumnPPodVersionInfos().set(0, pPodVersionInfo0);
+		matrix.getColumnPPodVersionInfos().set(1, pPodVersionInfo1);
+		matrix.getColumnPPodVersionInfos().set(2, pPodVersionInfo2);
 
 		final ImmutableList<Character> characters2 = ImmutableList.of(
 				characterProvider.get().setLabel("character2-0"),
@@ -326,9 +326,9 @@ public class CharacterStateMatrixTest {
 	private Provider<PPodVersionInfo> pPodVersionInfoProvider;
 
 	public void beforeMarshal() {
-		nullFillAndSet(matrix.getColumnPPodVersionInfoReference(), 2,
+		nullFillAndSet(matrix.getColumnPPodVersionInfos(), 2,
 				pPodVersionInfoProvider.get().setPPodVersion(3L));
-		nullFillAndSet(matrix.getColumnPPodVersionInfoReference(), 5,
+		nullFillAndSet(matrix.getColumnPPodVersionInfos(), 5,
 				pPodVersionInfoProvider.get().setPPodVersion(8L));
 
 		matrix.beforeMarshal(null);

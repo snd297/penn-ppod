@@ -198,15 +198,15 @@ public class CharacterStateRow extends PPodEntity implements
 					"This row hasn't been added to a matrix yet");
 		}
 
-		if (getMatrix().getCharactersReference().size() != newCells.size()) {
+		if (getMatrix().getCharacters().size() != newCells.size()) {
 			throw new IllegalStateException(
 					"the matrix has different number of characters "
-							+ getMatrix().getCharactersReference().size()
+							+ getMatrix().getCharacters().size()
 							+ " than cells " + newCells.size());
 		}
 		for (int newCellPos = 0; newCellPos < newCells.size(); newCellPos++) {
-			if (getMatrix().getCharactersReference().size() > newCellPos
-					&& getMatrix().getCharactersReference().get(newCellPos) == null) {
+			if (getMatrix().getCharacters().size() > newCellPos
+					&& getMatrix().getCharacters().get(newCellPos) == null) {
 				throw new IllegalStateException("Character is null at column "
 						+ newCells.size());
 			}
@@ -251,7 +251,8 @@ public class CharacterStateRow extends PPodEntity implements
 	 * 
 	 * @return this {@code CharacterStateRow}
 	 */
-	CharacterStateRow setMatrix(@Nullable final CharacterStateMatrix matrix) {
+	protected CharacterStateRow setMatrix(
+			@Nullable final CharacterStateMatrix matrix) {
 		this.matrix = matrix;
 		return this;
 	}

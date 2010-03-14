@@ -151,8 +151,8 @@ public class OTUSetTest {
 
 		// assertNull(study.getPPodVersionInfo());
 		// assertNull(otuSet.getPPodVersionInfo());
-		assertEquals(newHashSet(otuSet.getMatricesIterator()),
-					newHashSet(matricesMinusMatrix1));
+		assertEquals((Object) newHashSet(otuSet.getMatricesIterator()),
+					(Object) newHashSet(matricesMinusMatrix1));
 	}
 
 	/**
@@ -204,8 +204,8 @@ public class OTUSetTest {
 		final Set<TreeSet> removedTreeSets2 = otuSet
 				.setTreeSets(Collections.EMPTY_SET);
 
-		assertEquals((Set<TreeSet>) removedTreeSets2,
-				(Set<TreeSet>) treeSetsMinusTreeSet1);
+		assertEquals((Object) removedTreeSets2,
+				(Object) treeSetsMinusTreeSet1);
 
 		assertEquals(newHashSet(otuSet.getTreeSetsIterator()), Collections
 				.emptySet());

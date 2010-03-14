@@ -21,7 +21,6 @@ import static com.google.common.collect.Lists.newArrayList;
 
 import java.util.Collections;
 import java.util.List;
-import java.util.Map;
 
 /**
  * @author Sam Donnelly
@@ -38,9 +37,10 @@ public abstract class MolecularStateMatrix extends CharacterStateMatrix {
 	}
 
 	@Override
-	public Map<Character, Integer> getCharacterIdx() {
+	public Integer getCharacterPosition(
+			final Character character) {
 		throw new UnsupportedOperationException(
-				"character index is not supported for a MolecularMatrix since all characters are the same instance.");
+				"getCharacterPosition(...) is not supported for a MolecularMatrix since all characters are the same instance.");
 	}
 
 	/**
@@ -98,13 +98,13 @@ public abstract class MolecularStateMatrix extends CharacterStateMatrix {
 		}
 
 		while (getCharacters().size() < newMolecularCharacters.size()) {
-			getCharactersReference().add(newMolecularCharacters.get(0));
-			getColumnPPodVersionInfoReference().add(null);
+			getCharacters().add(newMolecularCharacters.get(0));
+			getColumnPPodVersionInfos().add(null);
 		}
 
 		while (getCharacters().size() > newMolecularCharacters.size()) {
-			getCharactersReference().remove(getCharacters().size() - 1);
-			getColumnPPodVersionInfoReference().remove(
+			getCharacters().remove(getCharacters().size() - 1);
+			getColumnPPodVersionInfos().remove(
 					getColumnPPodVersionInfos().size() - 1);
 
 		}

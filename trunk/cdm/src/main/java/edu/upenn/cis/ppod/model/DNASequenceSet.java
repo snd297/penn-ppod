@@ -68,10 +68,10 @@ public class DNASequenceSet extends MolecularSequenceSet<DNASequence> {
 
 	@Override
 	public void afterUnmarshal() {
-		super.afterUnmarshal();
-		for (final DNASequence dnaSequence : getSequences()) {
+		for (final DNASequence dnaSequence : this) {
 			dnaSequence.setSequenceSet(this);
 		}
+		super.afterUnmarshal();
 	}
 
 	@XmlElement(name = "otusToSequences")
