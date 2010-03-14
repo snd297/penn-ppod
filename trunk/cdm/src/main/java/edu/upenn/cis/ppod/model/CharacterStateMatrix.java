@@ -169,7 +169,9 @@ public class CharacterStateMatrix extends UUPPodEntityWXmlId implements
 
 		for (final CharacterStateRow row : getOTUsToRows()
 				.getOTUsToValues().values()) {
-			row.accept(visitor);
+			if (row != null) {
+				row.accept(visitor);
+			}
 		}
 
 		super.accept(visitor);
@@ -348,12 +350,11 @@ public class CharacterStateMatrix extends UUPPodEntityWXmlId implements
 	}
 
 	/**
-	 * Get the column pPOD versions. This is a modifiable list.
+	 * Created for testing.
 	 * 
-	 * @return the column pPOD versions
+	 * @return
 	 */
-	@XmlElement(name = "columnPPodVersion")
-	protected List<Long> getColumnPPodVersions() {
+	List<Long> getColumnPPodVersions() {
 		return columnPPodVersions;
 	}
 
