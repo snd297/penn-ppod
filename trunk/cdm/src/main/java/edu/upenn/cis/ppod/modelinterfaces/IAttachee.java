@@ -15,10 +15,10 @@
  */
 package edu.upenn.cis.ppod.modelinterfaces;
 
+import java.util.Iterator;
 import java.util.Set;
 
 import edu.upenn.cis.ppod.model.Attachment;
-
 
 /**
  * An object to which we can add and remove attachments.
@@ -36,11 +36,12 @@ public interface IAttachee {
 	IAttachee addAttachment(Attachment attachment);
 
 	/**
-	 * Get the attachments of this {@code IAttachee}.
+	 * Get the attachments of this {@code IAttachee}. There will be no
+	 * duplicates.
 	 * 
 	 * @return the attachments of this {@code IAttachee}
 	 */
-	Set<Attachment> getAttachments();
+	Iterator<Attachment> getAttachmentsIterator();
 
 	/**
 	 * Get all attachments within the given namespace.

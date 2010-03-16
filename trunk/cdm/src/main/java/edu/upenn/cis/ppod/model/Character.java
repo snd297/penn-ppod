@@ -15,14 +15,22 @@
  */
 package edu.upenn.cis.ppod.model;
 
+import static com.google.common.base.Preconditions.checkState;
 import static com.google.common.collect.Iterables.get;
+import static com.google.common.collect.Iterables.getOnlyElement;
+import static com.google.common.collect.Lists.newArrayList;
 import static com.google.common.collect.Maps.newHashMap;
 import static com.google.common.collect.Sets.newHashSet;
+import static com.google.common.collect.Sets.newTreeSet;
 
 import java.util.Collections;
+import java.util.Iterator;
+import java.util.List;
 import java.util.Map;
 import java.util.Set;
+import java.util.SortedSet;
 
+import javax.annotation.CheckForNull;
 import javax.annotation.Nullable;
 import javax.persistence.Column;
 import javax.persistence.Entity;
@@ -108,13 +116,23 @@ public class Character extends UUPPodEntityWXmlId {
 	 * <p>
 	 * Not public because it's meant to be called from classes who create the
 	 * {@code Character}<-> {@code CharacterStateMatrix} relationship.
+	 * <p>
+	 * Unlike {@code MolecularCharacter}s, standard characters can belong to
+	 * exactly one matrix.
 	 * 
 	 * @param matrix to be added.
 	 * @return <code>true</code> if <code>matrix</code> was not there before,
 	 *         <code>false</code> otherwise
+	 * 
+	 * @throw IllegalStateException if this character already belongs to a
+	 *        different matrix - it's fine to keep calling this method with the
+	 *        same matrix
 	 */
 	protected boolean addMatrix(final CharacterStateMatrix matrix) {
 		Preconditions.checkNotNull(matrix);
+		checkState(getMatrices().size() == 0
+				|| getOnlyElement(getMatrices()).equals(matrix),
+				"standard characters can belong to only one matrix");
 		return matrices.add(matrix);
 	}
 
@@ -177,12 +195,17 @@ public class Character extends UUPPodEntityWXmlId {
 	}
 
 	/**
-	 * Return an unmodifiable view of this <code>Character</code>'s states.
+	 * Get the state with the given state number, or {@code null} if there is no
+	 * such state.
 	 * 
-	 * @return an unmodifiable view of this {@code Character}'s states
+	 * @param stateNumber the state number of the state we want to retrieve
+	 * 
+	 * @return the state with the given state number, or {@code null} if there
+	 *         is no such state.
 	 */
-	public Map<Integer, CharacterState> getStates() {
-		return Collections.unmodifiableMap(states);
+	@CheckForNull
+	public CharacterState getState(final int stateNumber) {
+		return getStates().get(stateNumber);
 	}
 
 	/**
@@ -191,8 +214,30 @@ public class Character extends UUPPodEntityWXmlId {
 	 * @return a mutable reference to the states
 	 */
 	@XmlElementWrapper(name = "states")
-	protected Map<Integer, CharacterState> getStatesMutable() {
+	protected Map<Integer, CharacterState> getStates() {
 		return states;
+	}
+
+	/**
+	 * Get an unmodifiable iterator over this {@code Character}'s states in no
+	 * definite order.
+	 * 
+	 * @return an iterator over this {@code Character}'s states
+	 */
+	public Iterator<CharacterState> getStatesIterator() {
+		return Collections.unmodifiableCollection(getStates().values())
+				.iterator();
+	}
+
+	/**
+	 * Get the number of {@code CharacterState}s associated with this {@code
+	 * Character}.
+	 * 
+	 * @return the number of {@code CharacterState}s associated with this
+	 *         {@code Character}
+	 */
+	public int getStatesSize() {
+		return getStates().size();
 	}
 
 	/**

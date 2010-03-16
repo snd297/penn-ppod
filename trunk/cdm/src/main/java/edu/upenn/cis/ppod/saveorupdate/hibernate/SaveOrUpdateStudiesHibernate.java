@@ -139,8 +139,10 @@ public class SaveOrUpdateStudiesHibernate implements ISaveOrUpdateStudies {
 
 		// Delete otu sets in persisted study that are not in the incoming
 		// study.
-		for (final OTUSet dbOTUSet : dbStudy.getOTUSets()) {
-			if (null == findIf(incomingStudy.getOTUSets(), compose(
+		for (final Iterator<OTUSet> dbOTUSetsItr = dbStudy.getOTUSetsIterator(); dbOTUSetsItr
+				.hasNext();) {
+			final OTUSet dbOTUSet = dbOTUSetsItr.next();
+			if (null == findIf(incomingStudy.getOTUSetsIterator(), compose(
 					equalTo(dbOTUSet.getPPodId()), IUUPPodEntity.getPPodId))) {
 				dbStudy.removeOTUSet(dbOTUSet);
 				otuSetDAO.delete(dbOTUSet);
@@ -160,11 +162,14 @@ public class SaveOrUpdateStudiesHibernate implements ISaveOrUpdateStudies {
 		final DNACharacter dbDNACharacter = dnaCharacters.get(0);
 
 		// Save or update incoming otu sets
-		for (final OTUSet incomingOTUSet : incomingStudy.getOTUSets()) {
+		for (final Iterator<OTUSet> incomingOTUSetsItr = incomingStudy
+				.getOTUSetsIterator(); incomingOTUSetsItr.hasNext();) {
+			final OTUSet incomingOTUSet = incomingOTUSetsItr.next();
 			OTUSet dbOTUSet;
-			if (null == (dbOTUSet = findIf(dbStudy.getOTUSets(), compose(
-					equalTo(incomingOTUSet.getPPodId()),
-					IUUPPodEntity.getPPodId)))) {
+			if (null == (dbOTUSet = findIf(dbStudy.getOTUSetsIterator(),
+					compose(
+							equalTo(incomingOTUSet.getPPodId()),
+							IUUPPodEntity.getPPodId)))) {
 				dbOTUSet = dbStudy.addOTUSet(otuSetProvider.get());
 				dbOTUSet.setPPodVersionInfo(newPPodVersionInfo
 						.getNewPPodVersionInfo());

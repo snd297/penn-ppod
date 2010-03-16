@@ -19,6 +19,7 @@ import static com.google.common.base.Preconditions.checkNotNull;
 import static com.google.common.collect.Sets.newHashSet;
 
 import java.util.Collections;
+import java.util.Iterator;
 import java.util.Set;
 
 import javax.annotation.Nullable;
@@ -191,18 +192,31 @@ public abstract class PPodEntity extends PersistentObject implements
 	 */
 	@OverridingMethodsMustInvokeSuper
 	public void beforeUnmarshal(final Unmarshaller u, final Object parent) {
-		unsetAllowPersistAndResetPPodVersionInfo();
+		unsetAllowPersist();
 	}
 
 	public boolean getAllowResetPPodVersionInfo() {
 		return allowResetPPodVersionInfo;
 	}
 
-	public Set<Attachment> getAttachments() {
+	private Set<Attachment> getAttachments() {
 		if (hasAttachments) {
-			return Collections.unmodifiableSet(attachments);
+			return attachments;
 		}
 		return Collections.emptySet();
+	}
+
+	/**
+	 * Unmodifiable iterator over the attachments. There will be no duplicates.
+	 * 
+	 * @return an iterator over the attachments
+	 */
+	public Iterator<Attachment> getAttachmentsIterator() {
+		return Collections.unmodifiableSet(getAttachments()).iterator();
+	}
+
+	public int getAttachmentsSize() {
+		return getAttachments().size();
 	}
 
 	public Set<Attachment> getAttachmentsByNamespace(
@@ -353,12 +367,6 @@ public abstract class PPodEntity extends PersistentObject implements
 				.append(TAB).append(")");
 
 		return retValue.toString();
-	}
-
-	public PersistentObject unsetAllowPersistAndResetPPodVersionInfo() {
-		unsetAllowPersist();
-		allowResetPPodVersionInfo = false;
-		return this;
 	}
 
 	public PPodEntity unsetInNeedOfNewPPodVersionInfo() {

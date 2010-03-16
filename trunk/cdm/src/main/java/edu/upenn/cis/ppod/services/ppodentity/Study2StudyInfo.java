@@ -71,7 +71,9 @@ public final class Study2StudyInfo implements IStudy2StudyInfo {
 		studyInfo.setEntityId(study.getId());
 		studyInfo.setPPodId(study.getPPodId());
 		studyInfo.setPPodVersion(study.getPPodVersionInfo().getPPodVersion());
-		for (final OTUSet otuSet : study.getOTUSets()) {
+		for (final Iterator<OTUSet> otuSetsItr = study.getOTUSetsIterator(); otuSetsItr
+				.hasNext();) {
+			final OTUSet otuSet = otuSetsItr.next();
 			final OTUSetInfo otuSetInfo = otuSetInfoProvider.get();
 			studyInfo.getOTUSetInfos().add(otuSetInfo);
 			otuSetInfo.setEntityId(otuSet.getId());

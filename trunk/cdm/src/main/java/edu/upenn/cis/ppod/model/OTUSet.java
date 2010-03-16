@@ -125,6 +125,7 @@ public class OTUSet extends UUPPodEntityWXmlId implements Iterable<OTU> {
 
 	@Override
 	public void accept(final IVisitor visitor) {
+		checkNotNull(visitor);
 		for (final OTU otu : getOTUs()) {
 			otu.accept(visitor);
 		}
@@ -253,7 +254,7 @@ public class OTUSet extends UUPPodEntityWXmlId implements Iterable<OTU> {
 	}
 
 	public Iterator<DNASequenceSet> getDNASequenceSetsIterator() {
-		return getDNASequenceSets().iterator();
+		return Collections.unmodifiableSet(getDNASequenceSets()).iterator();
 	}
 
 	/**
@@ -282,7 +283,7 @@ public class OTUSet extends UUPPodEntityWXmlId implements Iterable<OTU> {
 	}
 
 	public Iterator<CharacterStateMatrix> getMatricesIterator() {
-		return getMatrices().iterator();
+		return Collections.unmodifiableSet(getMatrices()).iterator();
 	}
 
 	/**
@@ -339,7 +340,7 @@ public class OTUSet extends UUPPodEntityWXmlId implements Iterable<OTU> {
 	}
 
 	public Iterator<TreeSet> getTreeSetsIterator() {
-		return getTreeSets().iterator();
+		return Collections.unmodifiableSet(getTreeSets()).iterator();
 	}
 
 	/**
@@ -555,12 +556,19 @@ public class OTUSet extends UUPPodEntityWXmlId implements Iterable<OTU> {
 			removedTreeSet.setOTUSet(null);
 		}
 		getTreeSets().clear();
-		getTreeSets().addAll(newTreeSets);
-		for (final TreeSet treeSet : getTreeSets()) {
-			treeSet.setOTUSet(this);
+		for (final TreeSet treeSet : newTreeSets) {
+			addTreeSet(treeSet);
 		}
 		setInNeedOfNewPPodVersionInfo();
 		return removedTreeSets;
+	}
+
+	public OTUSet addTreeSet(final TreeSet newTreeSet) {
+		checkNotNull(newTreeSet);
+		getTreeSets().add(newTreeSet);
+		newTreeSet.setOTUSet(this);
+		setInNeedOfNewPPodVersionInfo();
+		return this;
 	}
 
 	/**

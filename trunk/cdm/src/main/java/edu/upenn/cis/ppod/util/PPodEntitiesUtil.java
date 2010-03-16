@@ -47,7 +47,9 @@ public class PPodEntitiesUtil {
 			final Set<AttachmentNamespace> attachmentNamespaces,
 			final Set<AttachmentType> attachmentTypes,
 			final Set<Attachment> attachments, final IAttachee attachee) {
-		for (final Attachment attachment : attachee.getAttachments()) {
+		for (final Iterator<Attachment> attachmentsItr = attachee
+				.getAttachmentsIterator(); attachmentsItr.hasNext();) {
+			final Attachment attachment = attachmentsItr.next();
 			attachmentNamespaces.add(attachment.getType().getNamespace());
 			attachmentTypes.add(attachment.getType());
 			attachments.add(attachment);
@@ -62,7 +64,9 @@ public class PPodEntitiesUtil {
 			final Set<AttachmentType> studyWideAttachmentTypes,
 			final Set<Attachment> studyWideAttachments,
 			final IOTUSetCentricEntities otuSetCentricEntities) {
-		for (final OTUSet otuSet : otuSetCentricEntities.getOTUSets()) {
+		for (final Iterator<OTUSet> otuSetsItr = otuSetCentricEntities
+				.getOTUSetsIterator(); otuSetsItr.hasNext();) {
+			final OTUSet otuSet = otuSetsItr.next();
 			extractAttachmentInfoFromAttachee(studyWideAttachmentNamespaces,
 					studyWideAttachmentTypes, studyWideAttachments, otuSet);
 			for (final OTU otu : otuSet) {

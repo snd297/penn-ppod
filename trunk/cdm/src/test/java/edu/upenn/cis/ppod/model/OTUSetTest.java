@@ -88,8 +88,7 @@ public class OTUSetTest {
 
 	public void setTreeSets() {
 		final TreeSet treeSet = treeSetProvider.get();
-		final Set<TreeSet> treeSets = newHashSet();
-		treeSets.add(treeSet);
+		final ImmutableSet<TreeSet> treeSets = ImmutableSet.of(treeSet);
 		otuSet.setTreeSets(treeSets);
 		assertEquals(Iterators.getOnlyElement(otuSet.getTreeSetsIterator()),
 				treeSet);

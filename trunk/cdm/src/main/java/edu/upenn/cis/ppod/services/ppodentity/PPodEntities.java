@@ -84,7 +84,9 @@ public class PPodEntities implements IPPodEntities {
 					pPodEntitiesWideAttachmentNamespaces,
 					pPodEntitiesWideAttachmentTypes,
 					pPodEntitiesWideAttachment, this);
-			for (final OTUSet otuSet : getOTUSets()) {
+			for (final Iterator<OTUSet> otuSetsItr = getOTUSetsIterator(); otuSetsItr
+					.hasNext();) {
+				final OTUSet otuSet = otuSetsItr.next();
 				for (final Iterator<CharacterStateMatrix> matrixItr = otuSet
 						.getMatricesIterator(); matrixItr.hasNext();) {
 					studyWideCharacters
@@ -96,10 +98,6 @@ public class PPodEntities implements IPPodEntities {
 		return true;
 	}
 
-	public Set<OTUSet> getOTUSets() {
-		return Collections.unmodifiableSet(otuSets);
-	}
-
 	public Set<OTU> getOTUs() {
 		return Collections.unmodifiableSet(otus);
 	}
@@ -108,4 +106,9 @@ public class PPodEntities implements IPPodEntities {
 		otus.add(otu);
 		return otu;
 	}
+
+	public Iterator<OTUSet> getOTUSetsIterator() {
+		return otuSets.iterator();
+	}
+
 }

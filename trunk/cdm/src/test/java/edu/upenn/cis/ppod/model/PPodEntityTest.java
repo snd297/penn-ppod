@@ -15,7 +15,6 @@
  */
 package edu.upenn.cis.ppod.model;
 
-import static com.google.common.collect.Iterables.getOnlyElement;
 import static com.google.common.collect.Sets.newHashSet;
 import static org.testng.Assert.assertEquals;
 import static org.testng.Assert.assertFalse;
@@ -25,6 +24,7 @@ import java.util.Collections;
 
 import org.testng.annotations.Test;
 
+import com.google.common.collect.Iterators;
 import com.google.inject.Inject;
 import com.google.inject.Provider;
 
@@ -47,7 +47,8 @@ public class PPodEntityTest {
 		final Attachment attachment = attachmentProvider.get();
 		assertFalse(otuSet.getHasAttachments());
 		otuSet.addAttachment(attachment);
-		assertEquals(getOnlyElement(otuSet.getAttachments()), attachment);
+		assertEquals(Iterators.getOnlyElement(otuSet.getAttachmentsIterator()),
+				attachment);
 		assertTrue(otuSet.getHasAttachments());
 	}
 
@@ -59,16 +60,19 @@ public class PPodEntityTest {
 		otuSet.addAttachment(attachment1);
 		otuSet.addAttachment(attachment2);
 		otuSet.addAttachment(attachment3);
-		assertEquals(otuSet.getAttachments(), newHashSet(attachment1,
+		assertEquals(newHashSet(otuSet.getAttachmentsIterator()), newHashSet(
+				attachment1,
 				attachment2, attachment3));
 		otuSet.removeAttachment(attachment2);
-		assertEquals(otuSet.getAttachments(), newHashSet(attachment1,
+		assertEquals(newHashSet(otuSet.getAttachmentsIterator()), newHashSet(
+				attachment1,
 				attachment3));
 		assertTrue(otuSet.getHasAttachments());
 
 		otuSet.removeAttachment(attachment1);
 		otuSet.removeAttachment(attachment3);
-		assertEquals(otuSet.getAttachments(), Collections.emptySet());
+		assertEquals(newHashSet(otuSet.getAttachmentsIterator()), Collections
+				.emptySet());
 		assertFalse(otuSet.getHasAttachments());
 	}
 }

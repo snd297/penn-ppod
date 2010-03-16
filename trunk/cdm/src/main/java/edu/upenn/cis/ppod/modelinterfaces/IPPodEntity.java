@@ -15,40 +15,10 @@
  */
 package edu.upenn.cis.ppod.modelinterfaces;
 
-import edu.upenn.cis.ppod.model.PersistentObject;
-
 /**
  * @author Sam Donnelly
  */
 public interface IPPodEntity extends IPersistentObject, IAttachee,
 		IPPodVersioned {
-
-	/**
-	 * Indicate that this object should not be persisted and changes to the pPOD
-	 * version numbers should not be propagated.
-	 * <p>
-	 * {@link PPodVersionInfoInterceptor} checks this flag before it does any
-	 * write operations. Beyond that, this flag should not be taken as a
-	 * guarantee that an object will not be written. Note that if {@code
-	 * PPodVersionInterceptor} is not configured in a session, it will,
-	 * obviously, not check this flag.
-	 * <p>
-	 * This flag was invented so that we can remove matrices and tree sets from
-	 * an {@link OTUSet} in
-	 * {@link PPodEntitiesResourceHibernate#getEntitiesByHqlQuery(String)}
-	 * before we return the data to the client. It is a less than ideal
-	 * solution.
-	 * 
-	 * @see PPodVersionInfoInterceptor
-	 * 
-	 * @return this {@code pPodEntity}
-	 */
-	PersistentObject unsetAllowPersistAndResetPPodVersionInfo();
-
-
-
-	boolean getAllowResetPPodVersionInfo();
-
-    IPPodEntity setAllowResetPPodVersionInfo(boolean allowResetPPodVersionInfo);
 
 }

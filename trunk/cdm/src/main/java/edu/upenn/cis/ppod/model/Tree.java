@@ -135,7 +135,7 @@ public class Tree extends UUPPodEntity {
 	 */
 	public Tree setNewick(final String newick) {
 		checkNotNull(newick);
-		if (newick.equals(this.newick)) {
+		if (newick.equals(getNewick())){ 
 
 		} else {
 			this.newick = newick;

@@ -61,7 +61,7 @@ public abstract class UUPPodEntity extends PPodEntity implements IUUPPodEntity {
 		return setPPodId(UUID.randomUUID().toString());
 	}
 
-	public UUPPodEntity setPPodId(final String pPodId) {
+	public UUPPodEntity setPPodId(@Nullable final String pPodId) {
 		if (getPPodId() != null) {
 			throw new IllegalStateException("pPodId already set");
 		}

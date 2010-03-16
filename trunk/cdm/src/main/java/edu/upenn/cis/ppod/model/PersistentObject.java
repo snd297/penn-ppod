@@ -77,7 +77,7 @@ public abstract class PersistentObject implements IPersistentObject {
 
 	/** Created for Jaxb. */
 	@SuppressWarnings("unused")
-	private final PersistentObject setId(final Long id) {
+	private PersistentObject setId(final Long id) {
 		this.id = id;
 		return this;
 	}
@@ -102,7 +102,7 @@ public abstract class PersistentObject implements IPersistentObject {
 	}
 
 	/**
-	 * Can be used to block persisting an object, for example an in interceptor.
+	 * Can be used to block persisting an object, for example in an interceptor.
 	 * 
 	 * @return this
 	 */

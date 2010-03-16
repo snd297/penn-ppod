@@ -166,12 +166,12 @@ public class CharacterStateRow extends PPodEntity implements
 	}
 
 	/**
-	 * Get an iterator over this row's cells.
+	 * Get a no-remove iterator over this row's cells.
 	 * 
 	 * @return an iterator over this row's cells
 	 */
 	public Iterator<CharacterStateCell> iterator() {
-		return getCells().iterator();
+		return Collections.unmodifiableList(getCells()).iterator();
 	}
 
 	/**
@@ -181,9 +181,9 @@ public class CharacterStateRow extends PPodEntity implements
 	 * 
 	 * @return any cells which were removed as a result of this operation
 	 * 
-	 * @throws IllegalArgumentException if any of cells are such that {@code
-	 *             cell.getRow() != this}
 	 * @throws IllegalStateException if {@code this.getMatrix() == null}
+	 * @throws IllegalStateException if the owning matrix does not have the same
+	 *             number of characters as {@code newCells.size()}
 	 */
 	public List<CharacterStateCell> setCells(
 			final List<CharacterStateCell> newCells) {
@@ -193,24 +193,14 @@ public class CharacterStateRow extends PPodEntity implements
 			return Collections.emptyList();
 		}
 
-		if (getMatrix() == null) {
-			throw new IllegalStateException(
-					"This row hasn't been added to a matrix yet");
-		}
+		checkState(getMatrix() != null,
+								"This row hasn't been added to a matrix yet");
 
-		if (getMatrix().getCharacters().size() != newCells.size()) {
-			throw new IllegalStateException(
-					"the matrix has different number of characters "
-							+ getMatrix().getCharacters().size()
-							+ " than cells " + newCells.size());
-		}
-		for (int newCellPos = 0; newCellPos < newCells.size(); newCellPos++) {
-			if (getMatrix().getCharacters().size() > newCellPos
-					&& getMatrix().getCharacters().get(newCellPos) == null) {
-				throw new IllegalStateException("Character is null at column "
-						+ newCells.size());
-			}
-		}
+		checkState(
+				getMatrix().getCharacters().size() == newCells.size(),
+								"the matrix has different number of characters "
+										+ getMatrix().getCharacters().size()
+										+ " than cells " + newCells.size());
 
 		final List<CharacterStateCell> clearedCells = newArrayList(getCells());
 		clearedCells.removeAll(newCells);

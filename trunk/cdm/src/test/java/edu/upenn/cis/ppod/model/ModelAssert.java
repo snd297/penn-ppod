@@ -196,9 +196,9 @@ public class ModelAssert {
 				.getBytesValue());
 		assertEqualsAttachmentTypes(actualAttachment.getType(),
 				expectedAttachment.getType());
-		assertEquals(actualAttachment.getAttachments().size(),
-				expectedAttachment.getAttachments().size());
-		if (expectedAttachment.getAttachments().size() > 0) {
+		assertEquals(actualAttachment.getAttachmentsSize(),
+				expectedAttachment.getAttachmentsSize());
+		if (expectedAttachment.getAttachmentsSize() > 0) {
 			throw new IllegalArgumentException(
 					"We don't support nested attchaments yet");
 		}
