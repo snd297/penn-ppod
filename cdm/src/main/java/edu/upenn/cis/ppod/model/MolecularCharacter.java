@@ -15,6 +15,8 @@
  */
 package edu.upenn.cis.ppod.model;
 
+import static com.google.common.base.Preconditions.checkNotNull;
+
 import javax.annotation.Nullable;
 import javax.persistence.Column;
 import javax.persistence.MappedSuperclass;
@@ -51,6 +53,16 @@ public abstract class MolecularCharacter extends Character {
 		super.setLabel(molecularCharacterLabel);
 		this.molecularCharacterLabel = molecularCharacterLabel;
 		return this;
+	}
+
+	/**
+	 * Unlike {@link Character#addMatrix(CharacterStateMatrix)}, this allows for
+	 * a {@code MolecularCharacter} to be added to more than one matrix.
+	 */
+	@Override
+	protected boolean addMatrix(final CharacterStateMatrix matrix) {
+		checkNotNull(matrix);
+		return getMatrices().add(matrix);
 	}
 
 }

@@ -15,6 +15,8 @@
  */
 package edu.upenn.cis.ppod.util;
 
+import java.util.Iterator;
+
 import org.hibernate.classic.Session;
 import org.hibernate.context.ManagedSessionContext;
 
@@ -48,10 +50,14 @@ public class PopulateTables {
 
 			final INewPPodVersionInfo newPPodVersionInfo = pPodCoreFactory
 					.create(NewPPodVersionInfo.class);
-			dnaCharacter.setPPodVersionInfo(newPPodVersionInfo.getNewPPodVersionInfo());
+			dnaCharacter.setPPodVersionInfo(newPPodVersionInfo
+					.getNewPPodVersionInfo());
 
-			for (final CharacterState state : dnaCharacter.getStates().values()) {
-				state.setPPodVersionInfo(newPPodVersionInfo.getNewPPodVersionInfo());
+			for (final Iterator<CharacterState> statesItr = dnaCharacter
+					.getStatesIterator(); statesItr.hasNext();) {
+				final CharacterState state = statesItr.next();
+				state.setPPodVersionInfo(newPPodVersionInfo
+						.getNewPPodVersionInfo());
 			}
 
 			session.save(dnaCharacter);

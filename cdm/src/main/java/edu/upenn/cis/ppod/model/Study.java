@@ -137,17 +137,8 @@ public class Study extends UUPPodEntity implements IOTUSetCentricEntities {
 		return label;
 	}
 
-	/**
-	 * Get an unmodifiable view of the OTU sets.
-	 * 
-	 * @return the otuSets
-	 */
-	public Set<OTUSet> getOTUSets() {
-		return Collections.unmodifiableSet(getOTUSetsModifiable());
-	}
-
 	@XmlElement(name = "otuSet")
-	private Set<OTUSet> getOTUSetsModifiable() {
+	private Set<OTUSet> getOTUSets() {
 		return otuSets;
 	}
 
@@ -204,6 +195,10 @@ public class Study extends UUPPodEntity implements IOTUSetCentricEntities {
 						")");
 
 		return retValue.toString();
+	}
+
+	public Iterator<OTUSet> getOTUSetsIterator() {
+		return Collections.unmodifiableSet(getOTUSets()).iterator();
 	}
 
 }

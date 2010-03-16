@@ -15,6 +15,8 @@
  */
 package edu.upenn.cis.ppod.modelinterfaces;
 
+import javax.annotation.Nullable;
+
 import com.google.common.base.Function;
 
 /**
@@ -40,6 +42,7 @@ public interface IUUPPodEntity {
 	 * 
 	 * @return the pPOD id of this {@link IUUPPodEntity}
 	 */
+	@Nullable
 	String getPPodId();
 
 	/**
@@ -55,6 +58,8 @@ public interface IUUPPodEntity {
 
 	/**
 	 * Set the pPOD id.
+	 * <p>
+	 * It is legal to call this with a {@code null} {@code pPodId}.
 	 * 
 	 * @param pPodId
 	 * 
@@ -64,6 +69,6 @@ public interface IUUPPodEntity {
 	 *             this method is called. That is, it throws an exception if the
 	 *             pPOD id has already been set.
 	 */
-	IUUPPodEntity setPPodId(String pPodId);
+	IUUPPodEntity setPPodId(@Nullable String pPodId);
 
 }

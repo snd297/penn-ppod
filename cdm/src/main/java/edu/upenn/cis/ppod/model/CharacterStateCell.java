@@ -393,7 +393,7 @@ public class CharacterStateCell extends PPodEntity implements
 	 * @return an iterator over this cell's states
 	 */
 	public Iterator<CharacterState> iterator() {
-		return getStates().iterator();
+		return Collections.unmodifiableSet(getStates()).iterator();
 	}
 
 	/**

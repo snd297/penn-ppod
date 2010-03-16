@@ -23,8 +23,8 @@ import static com.google.common.collect.Iterables.getOnlyElement;
 import static com.google.common.collect.Lists.newArrayList;
 import static com.google.common.collect.Lists.newArrayListWithCapacity;
 import static com.google.common.collect.Maps.newHashMap;
+import static com.google.common.collect.Sets.filter;
 import static com.google.common.collect.Sets.newHashSet;
-import static edu.upenn.cis.ppod.util.PPodIterables.findEach;
 import static edu.upenn.cis.ppod.util.PPodIterables.findIf;
 
 import java.util.Iterator;
@@ -35,6 +35,7 @@ import java.util.Set;
 import org.slf4j.Logger;
 
 import com.google.common.collect.ImmutableList;
+import com.google.common.collect.ImmutableSet;
 import com.google.inject.Inject;
 import com.google.inject.Provider;
 import com.google.inject.assistedinject.Assisted;
@@ -134,10 +135,11 @@ public class SaveOrUpdateCharacterStateMatrix implements ISaveOrUpdateMatrix {
 				newTargetCharacter.setLabel(sourceCharacter.getLabel());
 			}
 
-			for (final CharacterState sourceState : sourceCharacter.getStates()
-					.values()) {
+			for (final Iterator<CharacterState> sourceStatesItr = sourceCharacter
+					.getStatesIterator(); sourceStatesItr.hasNext();) {
+				final CharacterState sourceState = sourceStatesItr.next();
 				CharacterState targetState;
-				if (null == (targetState = newTargetCharacter.getStates().get(
+				if (null == (targetState = newTargetCharacter.getState(
 						sourceState.getStateNumber()))) {
 					targetState = newTargetCharacter.addState(stateFactory
 							.create(sourceState.getStateNumber()));
@@ -162,10 +164,13 @@ public class SaveOrUpdateCharacterStateMatrix implements ISaveOrUpdateMatrix {
 							sourceCharacterPosition);
 				}
 			}
-			for (final Attachment sourceAttachment : sourceCharacter
-					.getAttachments()) {
-				final Set<Attachment> targetAttachments = findEach(
-						newTargetCharacter.getAttachments(), compose(
+			for (final Iterator<Attachment> sourceAttachmentsItr = sourceCharacter
+					.getAttachmentsIterator(); sourceAttachmentsItr.hasNext();) {
+				final Attachment sourceAttachment = sourceAttachmentsItr.next();
+				final ImmutableSet<Attachment> newTargetCharacterAttachments = ImmutableSet
+						.copyOf(newTargetCharacter.getAttachmentsIterator());
+				final Set<Attachment> targetAttachments = filter(
+						newTargetCharacterAttachments, compose(
 								equalTo(sourceAttachment.getStringValue()),
 								Attachment.getStringValue));
 
@@ -259,7 +264,7 @@ public class SaveOrUpdateCharacterStateMatrix implements ISaveOrUpdateMatrix {
 				final Set<CharacterState> newTargetStates = newHashSet();
 				for (final CharacterState sourceState : sourceCell) {
 					newTargetStates.add(characters.get(targetCellPosition)
-							.getStates().get(sourceState.getStateNumber()));
+							.getState(sourceState.getStateNumber()));
 				}
 				switch (sourceCell.getType()) {
 					case INAPPLICABLE:

@@ -16,7 +16,6 @@
 package edu.upenn.cis.ppod.modelinterfaces;
 
 import javax.annotation.Nullable;
-import javax.xml.bind.annotation.XmlID;
 
 /**
  * An object that holds a write-once-read-many {@link XmlID}.

@@ -122,7 +122,7 @@ public class TreeSet extends UUPPodEntityWXmlId implements Iterable<Tree> {
 	}
 
 	public Iterator<Tree> iterator() {
-		return getTrees().iterator();
+		return Collections.unmodifiableList(getTrees()).iterator();
 	}
 
 	@Override
@@ -162,7 +162,7 @@ public class TreeSet extends UUPPodEntityWXmlId implements Iterable<Tree> {
 	 * 
 	 * @return this {@code TreeSet}
 	 */
-	TreeSet setOTUSet(@Nullable final OTUSet otuSet) {
+	protected TreeSet setOTUSet(@Nullable final OTUSet otuSet) {
 		if (equal(this.otuSet, otuSet)) {
 
 		} else {
@@ -200,13 +200,24 @@ public class TreeSet extends UUPPodEntityWXmlId implements Iterable<Tree> {
 		}
 		final List<Tree> removedTrees = newArrayList(getTrees());
 		removedTrees.removeAll(newTrees);
+
 		getTrees().clear();
-		getTrees().addAll(newTrees);
-		for (final Tree tree : getTrees()) {
-			tree.setTreeSet(this);
+		for (final Tree newTree : newTrees) {
+			addTree(newTree);
 		}
 		setInNeedOfNewPPodVersionInfo();
 		return removedTrees;
+	}
+
+	public TreeSet addTree(final Tree newTree) {
+		checkNotNull(newTree);
+		getTrees().add(newTree);
+		setInNeedOfNewPPodVersionInfo();
+		return this;
+	}
+
+	public int getTreesSize() {
+		return getTrees().size();
 	}
 
 	/**

@@ -90,7 +90,6 @@ public class PPodEntitiesResourceHibernate implements
 		for (final Object queryResult : queryResults) {
 			if (queryResult instanceof OTUSet) {
 				final OTUSet otuSet = (OTUSet) queryResult;
-				otuSet.unsetAllowPersistAndResetPPodVersionInfo();
 
 				// Extra insurance against accidental sync with database
 				session.setReadOnly(otuSet, true);
@@ -105,7 +104,6 @@ public class PPodEntitiesResourceHibernate implements
 			} else if (queryResult instanceof CharacterStateMatrix) {
 
 				final CharacterStateMatrix matrix = (CharacterStateMatrix) queryResult;
-				matrix.unsetAllowPersistAndResetPPodVersionInfo();
 
 				// Extra insurance against accidental sync with database
 				session.setReadOnly(matrix, true);
@@ -120,7 +118,6 @@ public class PPodEntitiesResourceHibernate implements
 				pPodEntities.addOTUSet(matrix.getOTUSet());
 			} else if (queryResult instanceof TreeSet) {
 				final TreeSet treeSet = (TreeSet) queryResult;
-				treeSet.unsetAllowPersistAndResetPPodVersionInfo();
 
 				// Extra insurance against accidental sync with database
 				session.setReadOnly(treeSet, true);
@@ -135,7 +132,6 @@ public class PPodEntitiesResourceHibernate implements
 				pPodEntities.addOTUSet(treeSet.getOTUSet());
 			} else if (queryResult instanceof OTU) {
 				final OTU otu = (OTU) queryResult;
-				otu.unsetAllowPersistAndResetPPodVersionInfo();
 				session.setReadOnly(otu, true);
 				pPodEntities.addOTU(otu);
 			} else if (queryResult instanceof Object[]) {
@@ -150,7 +146,10 @@ public class PPodEntitiesResourceHibernate implements
 
 			// Now we clean up our response so we don't include any extra
 			// matrices or tree sets that were pulled over with the OTUSet's
-			for (final OTUSet otuSet : pPodEntities.getOTUSets()) {
+			for (final Iterator<OTUSet> otuSetsItr = pPodEntities
+					.getOTUSetsIterator(); otuSetsItr.hasNext();) {
+
+				final OTUSet otuSet = otuSetsItr.next();
 
 				final Set<CharacterStateMatrix> matricesToReturn = newHashSet();
 

@@ -271,7 +271,7 @@ public class CharacterStateMatrix extends UUPPodEntityWXmlId implements
 	}
 
 	/**
-	 * @param pPodCharacterIdx
+	 * @param pPodCharacterPosition the position of the character we want
 	 * @return
 	 */
 	public Character getCharacter(final int characterPosition) {
@@ -310,7 +310,7 @@ public class CharacterStateMatrix extends UUPPodEntityWXmlId implements
 	}
 
 	public Iterator<Character> getCharactersIterator() {
-		return getCharacters().iterator();
+		return Collections.unmodifiableList(getCharacters()).iterator();
 	}
 
 	/**
@@ -346,7 +346,8 @@ public class CharacterStateMatrix extends UUPPodEntityWXmlId implements
 	}
 
 	public Iterator<PPodVersionInfo> getColumnPPodVersionInfosIterator() {
-		return getColumnPPodVersionInfos().iterator();
+		return Collections.unmodifiableList(getColumnPPodVersionInfos())
+				.iterator();
 	}
 
 	/**
@@ -497,9 +498,11 @@ public class CharacterStateMatrix extends UUPPodEntityWXmlId implements
 	 * 
 	 * @return the characters removed as a result of this operation
 	 * 
-	 * @throws IllegalArgumentException if any of {@code characters} are {@code
-	 *             .equals} to each other. NOTE: this constraint does not hold
-	 *             in a {@link MolecularStateMatrix}
+	 * @throws IlelgalArgumentException if any of {code newCharacters} is
+	 *             {@code null}
+	 * @throws IllegalArgumentException if any of {@code newCharacters} are
+	 *             {@code .equals} to each other. NOTE: this constraint does not
+	 *             hold in a {@link MolecularStateMatrix}
 	 */
 	public List<Character> setCharacters(
 			final List<? extends Character> newCharacters) {
@@ -513,19 +516,25 @@ public class CharacterStateMatrix extends UUPPodEntityWXmlId implements
 		// proxies, but
 		// it should still help us on the client side where hibernate is not a
 		// factor.
-		for (final Character character : newCharacters) {
-			if (character instanceof MolecularCharacter) {
+		int newCharacterPos = -1;
+		for (final Character newCharacter : newCharacters) {
+			newCharacterPos++;
+			checkArgument(newCharacter != null, "newCharacters["
+					+ newCharacterPos
+					+ "] is null");
+			if (newCharacter instanceof MolecularCharacter) {
 				throw new AssertionError(
 						"character should not be a MolecularCharacter");
 			}
 			for (final Iterator<? extends Character> itr = newCharacters
-					.listIterator(newCharacters.indexOf(character) + 1); itr
+					.listIterator(newCharacterPos + 1); itr
 					.hasNext();) {
 				final Character character2 = itr.next();
-				checkArgument(!character.equals(character2),
-						"two characters are the same " + character.getLabel()
+				checkArgument(!newCharacter.equals(character2),
+						"two characters are the same "
+								+ newCharacter.getLabel()
 								+ " at positions "
-								+ newCharacters.indexOf(character) + " and "
+								+ newCharacters.indexOf(newCharacter) + " and "
 								+ newCharacters.indexOf(character2));
 			}
 		}

@@ -61,11 +61,6 @@ public class PPodIterables {
 		return null;
 	}
 
-	public static <T> Set<T> findEach(final Set<T> iterable,
-			final Predicate<? super T> predicate) {
-		return newHashSet(filter(iterable, predicate));
-	}
-
 	public static <T> boolean removeIf(final Collection<T> collection,
 			final Predicate<? super T> predicate) {
 		final int preSize = collection.size();
