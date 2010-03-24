@@ -183,8 +183,7 @@ public class CharacterStateMatrix extends UUPPodEntityWXmlId implements
 		super.afterUnmarshal();
 		int i = 0;
 		for (final Character character : getCharacters()) {
-			if (this instanceof DNAStateMatrix
-					|| this instanceof RNAStateMatrix) {
+			if (this instanceof MolecularStateMatrix) {
 				// charactersToPositions is meaningless for MolecularMatrix's
 				// since
 				// all of their Characters are the same
@@ -202,7 +201,9 @@ public class CharacterStateMatrix extends UUPPodEntityWXmlId implements
 	 * @param u see {@code Unmarshaller}
 	 * @param parent see {@code Unmarshaller}
 	 */
+	@Override
 	public void afterUnmarshal(final Unmarshaller u, final Object parent) {
+		super.afterUnmarshal(u, parent);
 		setOTUSet((OTUSet) parent);
 		for (final OTUSomethingPair<CharacterStateRow> otuRowPair : otusToRows
 				.getOTUValuePairs()) {

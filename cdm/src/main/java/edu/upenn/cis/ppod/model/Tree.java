@@ -71,7 +71,9 @@ public class Tree extends UUPPodEntity {
 	 * @param parent see see {@code Unmarshaller}
 	 * 
 	 */
+	@Override
 	public void afterUnmarshal(final Unmarshaller u, final Object parent) {
+		super.afterUnmarshal(u, parent);
 		if (parent instanceof TreeSet) {
 			setTreeSet(treeSet);
 		}
@@ -135,7 +137,7 @@ public class Tree extends UUPPodEntity {
 	 */
 	public Tree setNewick(final String newick) {
 		checkNotNull(newick);
-		if (newick.equals(getNewick())){ 
+		if (newick.equals(getNewick())) {
 
 		} else {
 			this.newick = newick;

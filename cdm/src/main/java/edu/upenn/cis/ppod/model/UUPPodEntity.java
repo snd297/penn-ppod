@@ -22,6 +22,8 @@ import javax.persistence.Column;
 import javax.persistence.MappedSuperclass;
 import javax.xml.bind.annotation.XmlAttribute;
 
+import org.hibernate.annotations.Index;
+
 import edu.upenn.cis.ppod.modelinterfaces.IUUPPodEntity;
 
 /**

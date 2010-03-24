@@ -39,6 +39,7 @@ public final class PairStringString implements IPair<String, String> {
 	/**
 	 * Created for JAXB.
 	 */
+	@SuppressWarnings("unused")
 	private PairStringString() {}
 
 	public PairStringString(final String first, final String second) {

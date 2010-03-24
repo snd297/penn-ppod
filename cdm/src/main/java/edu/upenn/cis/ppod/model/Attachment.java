@@ -43,7 +43,6 @@ import org.hibernate.annotations.Cascade;
 import com.google.common.base.Function;
 import com.google.common.base.Predicate;
 
-import edu.upenn.cis.ppod.modelinterfaces.IPPodEntity;
 import edu.upenn.cis.ppod.util.IVisitor;
 
 /**
@@ -160,7 +159,14 @@ public class Attachment extends UUPPodEntityWXmlId {
 		super.accept(visitor);
 	}
 
-	IPPodEntity addAttachee(final PPodEntity attachee) {
+	/**
+	 * Add an item to which this is attached.
+	 * 
+	 * @param attachee to which this is attached
+	 * 
+	 * @return {@code attachee}
+	 */
+	protected PPodEntity addAttachee(final PPodEntity attachee) {
 		checkNotNull(attachee);
 		attachees.add(attachee);
 		return attachee;
@@ -234,14 +240,11 @@ public class Attachment extends UUPPodEntityWXmlId {
 
 	@Override
 	public Attachment setInNeedOfNewPPodVersionInfo() {
-		if (getPPodVersionInfo() == null) {
-			// Then it's already been reset
-		} else {
-			for (final PPodEntity attachee : attachees) {
-				attachee.setInNeedOfNewPPodVersionInfo();
-			}
-			super.setInNeedOfNewPPodVersionInfo();
+		for (final PPodEntity attachee : attachees) {
+			attachee.setInNeedOfNewPPodVersionInfo();
 		}
+		super.setInNeedOfNewPPodVersionInfo();
+
 		return this;
 	}
 
