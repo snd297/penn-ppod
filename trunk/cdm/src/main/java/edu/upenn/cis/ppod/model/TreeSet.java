@@ -56,7 +56,6 @@ public class TreeSet extends UUPPodEntityWXmlId implements Iterable<Tree> {
 	static final String ID_COLUMN = TABLE + "_ID";
 
 	@Column(name = "LABEL", nullable = false)
-	@org.hibernate.annotations.Index(name = "IDX_LABEL")
 	private String label;
 
 	/**
@@ -91,7 +90,9 @@ public class TreeSet extends UUPPodEntityWXmlId implements Iterable<Tree> {
 	 * @param u See {@code Unmarshaller}
 	 * @param parent {@code Unmarshaller}
 	 */
+	@Override
 	public void afterUnmarshal(final Unmarshaller u, final Object parent) {
+		super.afterUnmarshal(u, parent);
 		this.otuSet = (OTUSet) parent;
 	}
 
@@ -163,7 +164,7 @@ public class TreeSet extends UUPPodEntityWXmlId implements Iterable<Tree> {
 	 * @return this {@code TreeSet}
 	 */
 	protected TreeSet setOTUSet(@Nullable final OTUSet otuSet) {
-		if (equal(this.otuSet, otuSet)) {
+		if (equal(otuSet, getOTUSet())) {
 
 		} else {
 			this.otuSet = otuSet;

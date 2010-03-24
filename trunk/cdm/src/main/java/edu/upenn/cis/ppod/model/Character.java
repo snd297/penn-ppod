@@ -18,17 +18,13 @@ package edu.upenn.cis.ppod.model;
 import static com.google.common.base.Preconditions.checkState;
 import static com.google.common.collect.Iterables.get;
 import static com.google.common.collect.Iterables.getOnlyElement;
-import static com.google.common.collect.Lists.newArrayList;
 import static com.google.common.collect.Maps.newHashMap;
 import static com.google.common.collect.Sets.newHashSet;
-import static com.google.common.collect.Sets.newTreeSet;
 
 import java.util.Collections;
 import java.util.Iterator;
-import java.util.List;
 import java.util.Map;
 import java.util.Set;
-import java.util.SortedSet;
 
 import javax.annotation.CheckForNull;
 import javax.annotation.Nullable;
@@ -159,7 +155,9 @@ public class Character extends UUPPodEntityWXmlId {
 	 * @param u see {@code Unmarshaller}
 	 * @param parent see {@code Unmarshaller}
 	 */
+	@Override
 	public void afterUnmarshal(final Unmarshaller u, final Object parent) {
+		super.afterUnmarshal(u, parent);
 		if (getStates().size() > 0
 				&& get(getStates().values(), 0).getCharacter() == null) {
 			for (final CharacterState state : getStates().values()) {
@@ -220,7 +218,7 @@ public class Character extends UUPPodEntityWXmlId {
 
 	/**
 	 * Get an unmodifiable iterator over this {@code Character}'s states in no
-	 * definite order.
+	 * particular order.
 	 * 
 	 * @return an iterator over this {@code Character}'s states
 	 */

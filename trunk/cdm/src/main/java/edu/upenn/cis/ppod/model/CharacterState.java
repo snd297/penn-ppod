@@ -27,7 +27,6 @@ import javax.persistence.FetchType;
 import javax.persistence.JoinColumn;
 import javax.persistence.ManyToOne;
 import javax.persistence.Table;
-import javax.xml.bind.Unmarshaller;
 import javax.xml.bind.annotation.XmlAttribute;
 
 import com.google.common.base.Function;
@@ -169,7 +168,7 @@ public class CharacterState extends PPodEntityWXmlId {
 	 * @param parent see {@code Unmarshaller} javadoc on
 	 *            <em>Unmarshal Event Callbacks</em>
 	 */
-	public void afterUnmarshal(final Unmarshaller u, final Object parent) {
+	// public void afterUnmarshal(final Unmarshaller u, final Object parent) {
 	// We do this in Character - why? Does it have to do with the fact that
 	// CharacterState's are stored in Character in a Map?
 	//
@@ -177,7 +176,7 @@ public class CharacterState extends PPodEntityWXmlId {
 	// setCharacter((Character) parent);
 	// }
 	// super.afterUnmarshal(u, parent);
-	}
+	// }
 
 	/**
 	 * Get this character owning character. Will be {@code null} when newly

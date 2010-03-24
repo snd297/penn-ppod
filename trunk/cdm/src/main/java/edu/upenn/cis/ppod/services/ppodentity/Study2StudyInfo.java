@@ -104,35 +104,39 @@ public final class Study2StudyInfo implements IStudy2StudyInfo {
 						.getPPodVersion());
 				matrixInfo.setDocId(matrix.getDocId());
 
-				int characterIdx = 0;
+				int characterIdx = -1;
 				for (final Iterator<Character> charactersItr = matrix
 						.getCharactersIterator(); charactersItr.hasNext();) {
+					characterIdx++;
 					final Character character = charactersItr.next();
 					PPodEntityInfo characterInfo = pPodEntityInfoProvider.get();
 					characterInfo.setPPodId(character.getPPodId());
 					characterInfo.setEntityId(character.getId());
 					characterInfo.setPPodVersion(character.getPPodVersion());
-					matrixInfo.getCharacterInfosByIdx().put(characterIdx++,
+					matrixInfo.getCharacterInfosByIdx().put(characterIdx,
 							characterInfo);
 				}
 
-				int columnIdx = 0;
+				int columnIdx = -1;
 				for (final Iterator<PPodVersionInfo> columnPPodVersionInfosItr = matrix
 						.getColumnPPodVersionInfosIterator(); columnPPodVersionInfosItr
 						.hasNext();) {
+					columnIdx++;
 					final PPodVersionInfo columnPPodVersionInfo = columnPPodVersionInfosItr
 							.next();
-					matrixInfo.getColumnHeaderVersionsByIdx().put(columnIdx++,
+					matrixInfo.getColumnHeaderVersionsByIdx().put(columnIdx,
 							columnPPodVersionInfo.getPPodVersion());
 				}
 
-				int rowIdx = 0;
+				int rowIdx = -1;
 				for (final CharacterStateRow row : matrix) {
-					matrixInfo.getRowHeaderVersionsByIdx().put(rowIdx++,
+					rowIdx++;
+					matrixInfo.getRowHeaderVersionsByIdx().put(rowIdx,
 							row.getPPodVersionInfo().getPPodVersion());
-					int cellIdx = 0;
+					int cellIdx = -1;
 					for (final CharacterStateCell cell : row) {
-						matrixInfo.setCellPPodIdAndVersion(rowIdx, cellIdx++,
+						cellIdx++;
+						matrixInfo.setCellPPodIdAndVersion(rowIdx, cellIdx,
 								cell.getPPodVersionInfo().getPPodVersion());
 					}
 				}

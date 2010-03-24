@@ -101,7 +101,9 @@ public class CharacterStateRow extends PPodEntity implements
 	 * @param u see {@code Unmarshaller}
 	 * @param parent see {@code Unmarshaller}
 	 */
+	@Override
 	public void afterUnmarshal(final Unmarshaller u, final Object parent) {
+		super.afterUnmarshal();
 		int cellPosition = -1;
 		for (final CharacterStateCell cell : getCells()) {
 			cell.setPosition(++cellPosition);

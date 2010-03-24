@@ -60,18 +60,18 @@ public class PPodEntityTest {
 		otuSet.addAttachment(attachment1);
 		otuSet.addAttachment(attachment2);
 		otuSet.addAttachment(attachment3);
-		assertEquals(newHashSet(otuSet.getAttachmentsIterator()), newHashSet(
+		assertEquals((Object)newHashSet(otuSet.getAttachmentsIterator()), (Object)newHashSet(
 				attachment1,
 				attachment2, attachment3));
 		otuSet.removeAttachment(attachment2);
-		assertEquals(newHashSet(otuSet.getAttachmentsIterator()), newHashSet(
+		assertEquals((Object)newHashSet(otuSet.getAttachmentsIterator()), (Object)newHashSet(
 				attachment1,
 				attachment3));
 		assertTrue(otuSet.getHasAttachments());
 
 		otuSet.removeAttachment(attachment1);
 		otuSet.removeAttachment(attachment3);
-		assertEquals(newHashSet(otuSet.getAttachmentsIterator()), Collections
+		assertEquals((Object)newHashSet(otuSet.getAttachmentsIterator()), (Object)Collections
 				.emptySet());
 		assertFalse(otuSet.getHasAttachments());
 	}

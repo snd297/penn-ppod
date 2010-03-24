@@ -71,7 +71,9 @@ public abstract class MolecularSequenceSet<S extends MolecularSequence<?>>
 	 * @param parent see {@code Unmarshaller}
 	 */
 	@OverridingMethodsMustInvokeSuper
+	@Override
 	public void afterUnmarshal(final Unmarshaller u, final Object parent) {
+		super.afterUnmarshal(u, parent);
 		setOTUSet((OTUSet) parent);
 	}
 

@@ -33,6 +33,8 @@ import edu.upenn.cis.ppod.util.OTUCharacterStateRowPair;
 import edu.upenn.cis.ppod.util.OTUSomethingPair;
 
 /**
+ * Maps {@code OTU}s to {@code CharacterStateRow}s.
+ * 
  * @author Sam Donnelly
  */
 @Entity

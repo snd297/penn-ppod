@@ -20,6 +20,8 @@ import static com.google.common.collect.Sets.newHashSet;
 
 import java.util.Set;
 
+import javax.annotation.security.PermitAll;
+
 import com.google.inject.Inject;
 import com.google.inject.Provider;
 

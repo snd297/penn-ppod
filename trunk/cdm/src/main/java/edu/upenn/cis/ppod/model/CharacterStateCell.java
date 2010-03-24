@@ -210,7 +210,9 @@ public class CharacterStateCell extends PPodEntity implements
 	 * @param u see {@code Unmarshaller}
 	 * @param parent see {@code Unmarshaller}
 	 */
+	@Override
 	public void afterUnmarshal(final Unmarshaller u, final Object parent) {
+		super.afterUnmarshal(u, parent);
 		row = (CharacterStateRow) parent; // don't setRow call because it'll
 		// reset the ppod version info
 		xmlStatesNeedsToBePutIntoStates = true;

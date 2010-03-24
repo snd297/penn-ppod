@@ -226,7 +226,9 @@ public class OTUSet extends UUPPodEntityWXmlId implements Iterable<OTU> {
 	 * @param u see {@code Unmarshaller}
 	 * @param parent see {@code Unmarshaller}
 	 */
+	@Override
 	public void afterUnmarshal(final Unmarshaller u, final Object parent) {
+		super.afterUnmarshal(u, parent);
 		if (parent instanceof Study) {
 			// We don't call setStudy(...) since that would reset the pPOD
 			// version info, which is not appropriate here. (Even though it
@@ -253,6 +255,9 @@ public class OTUSet extends UUPPodEntityWXmlId implements Iterable<OTU> {
 		return dnaSequenceSets;
 	}
 
+	/**
+	 * Get an iterator over this {@code OTUSet}'s {@code DNASequenceSets}s.
+	 */
 	public Iterator<DNASequenceSet> getDNASequenceSetsIterator() {
 		return Collections.unmodifiableSet(getDNASequenceSets()).iterator();
 	}
@@ -353,7 +358,7 @@ public class OTUSet extends UUPPodEntityWXmlId implements Iterable<OTU> {
 	}
 
 	public Iterator<OTU> iterator() {
-		return getOTUs().iterator();
+		return Collections.unmodifiableList(getOTUs()).iterator();
 	}
 
 	/**
@@ -373,6 +378,19 @@ public class OTUSet extends UUPPodEntityWXmlId implements Iterable<OTU> {
 		return this;
 	}
 
+	/**
+	 * Set the {@code DNASequenceSet}s. Any sequence sets which are removed as a
+	 * result of this operation are returned.
+	 * <p>
+	 * This method handles both sides of the {@code OTUSet<->DNASequenceSet}
+	 * relationship: if a sequence set is added, then this {@code OTUSet}
+	 * is set as its {@code OTUSet}, and if a set is deleted, the relationship is severed.
+	 * 
+	 * @param newSequenceSets the new sequence sets
+	 * 
+	 * @return any sequence sets which are removed as a result of this operation
+	 *         are returned
+	 */
 	public Set<DNASequenceSet> setDNASequenceSets(
 			final Set<? extends DNASequenceSet> newSequenceSets) {
 		checkNotNull(newSequenceSets);

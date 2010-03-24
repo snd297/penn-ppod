@@ -16,12 +16,14 @@
 package edu.upenn.cis.ppod.model;
 
 import javax.annotation.Nullable;
+import javax.annotation.OverridingMethodsMustInvokeSuper;
 import javax.persistence.Column;
 import javax.persistence.GeneratedValue;
 import javax.persistence.Id;
 import javax.persistence.MappedSuperclass;
 import javax.persistence.Transient;
 import javax.persistence.Version;
+import javax.xml.bind.Unmarshaller;
 import javax.xml.bind.annotation.XmlAccessType;
 import javax.xml.bind.annotation.XmlAccessorType;
 import javax.xml.bind.annotation.XmlAttribute;
@@ -56,13 +58,24 @@ public abstract class PersistentObject implements IPersistentObject {
 	private boolean allowPersist = true;
 
 	@Transient
-	protected boolean marshalled = false;
+	private boolean marshalled = false;
 
 	/** Default constructor. */
 	protected PersistentObject() {}
 
 	public void accept(final IVisitor visitor) {
 		throw new UnsupportedOperationException();
+	}
+
+	/**
+	 * {@link Unmarshaller} callback.
+	 * 
+	 * @param u see {@code Unmarshaller}
+	 * @param parent see {@code Unmarshaller}
+	 */
+	@OverridingMethodsMustInvokeSuper
+	public void afterUnmarshal(final Unmarshaller u, final Object parent) {
+		marshalled = true;
 	}
 
 	public boolean getAllowPersist() {
@@ -73,6 +86,10 @@ public abstract class PersistentObject implements IPersistentObject {
 	@Nullable
 	public Long getId() {
 		return id;
+	}
+
+	protected boolean getMarshalled() {
+		return marshalled;
 	}
 
 	/** Created for Jaxb. */
@@ -109,9 +126,5 @@ public abstract class PersistentObject implements IPersistentObject {
 	protected PersistentObject unsetAllowPersist() {
 		allowPersist = false;
 		return this;
-	}
-
-	protected boolean getMarshalled() {
-		return marshalled;
 	}
 }

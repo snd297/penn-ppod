@@ -45,7 +45,9 @@ import com.google.common.collect.Iterables;
 import com.google.common.collect.Sets;
 import com.google.inject.Inject;
 
-import edu.upenn.cis.ppod.modelinterfaces.IPPodEntity;
+import edu.upenn.cis.ppod.modelinterfaces.IAttachee;
+import edu.upenn.cis.ppod.modelinterfaces.IPPodVersioned;
+import edu.upenn.cis.ppod.modelinterfaces.IPersistentObject;
 import edu.upenn.cis.ppod.util.IVisitor;
 
 /**
@@ -65,8 +67,8 @@ import edu.upenn.cis.ppod.util.IVisitor;
 @Entity
 @Table(name = PPodEntity.TABLE)
 @Inheritance(strategy = InheritanceType.JOINED)
-public abstract class PPodEntity extends PersistentObject implements
-		IPPodEntity {
+public abstract class PPodEntity extends PersistentObject implements IAttachee,
+		IPersistentObject, IPPodVersioned {
 
 	static final String TABLE = "PPOD_ENTITY";
 
@@ -140,7 +142,7 @@ public abstract class PPodEntity extends PersistentObject implements
 		}
 	}
 
-	public IPPodEntity addAttachment(final Attachment attachment) {
+	public PPodEntity addAttachment(final Attachment attachment) {
 		if (attachments == null) {
 			attachments = newHashSet();
 		}
@@ -165,7 +167,6 @@ public abstract class PPodEntity extends PersistentObject implements
 			}
 			attachmentsXml = null;
 		}
-		marshalled = true;
 	}
 
 	/**
@@ -206,19 +207,6 @@ public abstract class PPodEntity extends PersistentObject implements
 		return Collections.emptySet();
 	}
 
-	/**
-	 * Unmodifiable iterator over the attachments. There will be no duplicates.
-	 * 
-	 * @return an iterator over the attachments
-	 */
-	public Iterator<Attachment> getAttachmentsIterator() {
-		return Collections.unmodifiableSet(getAttachments()).iterator();
-	}
-
-	public int getAttachmentsSize() {
-		return getAttachments().size();
-	}
-
 	public Set<Attachment> getAttachmentsByNamespace(
 			final String namespace) {
 		final Set<Attachment> attachmentsByNamespace = newHashSet();
@@ -235,6 +223,19 @@ public abstract class PPodEntity extends PersistentObject implements
 			final String namespace, final String type) {
 		return Sets.newHashSet(Iterables.filter(getAttachments(),
 				new Attachment.IsOfNamespaceAndType(type, namespace)));
+	}
+
+	/**
+	 * Unmodifiable iterator over the attachments. There will be no duplicates.
+	 * 
+	 * @return an iterator over the attachments
+	 */
+	public Iterator<Attachment> getAttachmentsIterator() {
+		return Collections.unmodifiableSet(getAttachments()).iterator();
+	}
+
+	public int getAttachmentsSize() {
+		return getAttachments().size();
 	}
 
 	@XmlElement(name = "attachmentDocId")
@@ -254,6 +255,7 @@ public abstract class PPodEntity extends PersistentObject implements
 	}
 
 	@XmlAttribute
+	@Nullable
 	public Long getPPodVersion() {
 		if (pPodVersionInfo != null) {
 			return pPodVersionInfo.getPPodVersion();
@@ -322,7 +324,7 @@ public abstract class PPodEntity extends PersistentObject implements
 	 * 
 	 * @return this
 	 */
-	public IPPodEntity setPPodVersion(final Long pPodVersion) {
+	public PPodEntity setPPodVersion(final Long pPodVersion) {
 		this.pPodVersion = pPodVersion;
 		return this;
 	}

@@ -10,4 +10,16 @@
 	<modelVersion>4.0.0</modelVersion>
 	<groupId>edu.upenn.cis.ppod</groupId>
 	<artifactId>ppod-cdm</artifactId>
+	<build>
+		<plugins>
+			<plugin>
+				<artifactId>maven-surefire-plugin</artifactId>
+				<configuration>
+					<suiteXmlFiles>
+						<suiteXmlFile>src/test/resources/testng-fast.xml</suiteXmlFile>
+					</suiteXmlFiles>
+				</configuration>
+			</plugin>
+		</plugins>
+	</build>
 </project>
