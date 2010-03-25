@@ -20,7 +20,7 @@ import static com.google.common.collect.Sets.newHashSet;
 
 import java.util.Set;
 
-import javax.annotation.security.PermitAll;
+import org.hibernate.Session;
 
 import com.google.inject.Inject;
 import com.google.inject.Provider;
@@ -64,15 +64,18 @@ public final class StudyResourceHibernate implements IStudyResource {
 			final IStudy2StudyInfo study2StudyInfo,
 			final SetDocIdVisitor otuSetAndOTUSetDocIdVisitor,
 			final Provider<AfterUnmarshalVisitor> afterUnmarshalVisitorProvider,
-			final INewPPodVersionInfo newPPodVersionInfo,
+			final INewPPodVersionInfo.IFactory newPPodVersionInfoFactory,
 			final SetPPodVersionInfoVisitor.IFactory setPPodVersionInfoVisitorFactory) {
 		this.studyDAO = (IStudyDAO) studyDAO.setSession(HibernateUtil
 				.getSessionFactory().getCurrentSession());
+		final Session currentSession = HibernateUtil
+				.getSessionFactory().getCurrentSession();
+		final INewPPodVersionInfo newPPodVersionInfo = newPPodVersionInfoFactory
+				.create(currentSession);
 		this.setPPodVersionInfoVisitor = setPPodVersionInfoVisitorFactory
 				.create(newPPodVersionInfo);
 		this.saveOrUpdateStudies = saveOrUpdateStudyFactory.create(
-				HibernateUtil
-						.getSessionFactory().getCurrentSession(),
+				currentSession,
 				newPPodVersionInfo);
 		this.study2StudyInfo = study2StudyInfo;
 		this.otuSetAndOTUSetDocIdVisitor = otuSetAndOTUSetDocIdVisitor;

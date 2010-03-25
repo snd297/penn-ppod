@@ -17,11 +17,13 @@ package edu.upenn.cis.ppod.model;
 
 import java.util.Date;
 
+import org.hibernate.Session;
+
 import com.google.inject.Inject;
+import com.google.inject.assistedinject.Assisted;
 
 import edu.upenn.cis.ppod.dao.hibernate.PPodVersionInfoDAOHibernate;
 import edu.upenn.cis.ppod.modelinterfaces.INewPPodVersionInfo;
-import edu.upenn.cis.ppod.thirdparty.util.HibernateUtil;
 
 /**
  * @author Sam Donnelly
@@ -35,9 +37,11 @@ public class NewPPodVersionInfo implements INewPPodVersionInfo {
 
 	@Inject
 	NewPPodVersionInfo(final PPodVersionInfoDAOHibernate pPodVersionInfoDAO,
-			final PPodVersionInfo newPPodVersionInfo) {
+			final PPodVersionInfo newPPodVersionInfo,
+			@Assisted final Session session) {
 		this.newPPodVersionInfo = newPPodVersionInfo;
 		this.pPodVersionInfoDAO = pPodVersionInfoDAO;
+		this.pPodVersionInfoDAO.setSession(session);
 	}
 
 	public PPodVersionInfo getNewPPodVersionInfo() {
@@ -49,8 +53,6 @@ public class NewPPodVersionInfo implements INewPPodVersionInfo {
 		if (pPodVersionInfoInitialized) {
 
 		} else {
-			pPodVersionInfoDAO.setSession(HibernateUtil.getSessionFactory()
-					.getCurrentSession());
 			final Long newPPodVersion = pPodVersionInfoDAO.getMaxPPodVersion() + 1;
 			newPPodVersionInfo.setPPodVersion(newPPodVersion);
 			newPPodVersionInfo.setCreated(new Date());

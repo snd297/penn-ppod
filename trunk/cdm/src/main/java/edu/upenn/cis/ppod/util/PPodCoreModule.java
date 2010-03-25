@@ -113,7 +113,9 @@ public final class PPodCoreModule extends AbstractModule {
 						SetPPodVersionInfoVisitor.IFactory.class,
 						SetPPodVersionInfoVisitor.class));
 
-		bind(INewPPodVersionInfo.class).to(NewPPodVersionInfo.class);
+		bind(INewPPodVersionInfo.IFactory.class).toProvider(
+				FactoryProvider.newFactory(INewPPodVersionInfo.IFactory.class,
+						NewPPodVersionInfo.class));
 
 	}
 }

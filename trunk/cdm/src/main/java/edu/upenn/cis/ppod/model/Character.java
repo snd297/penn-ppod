@@ -139,14 +139,23 @@ public class Character extends UUPPodEntityWXmlId {
 	 * <code>CharacterState</code>s. relationship.
 	 * 
 	 * @param state what we're adding
-	 * @return <code>state</code>
+	 * @return the state that was associated with {@code state.getStateNumber()}
+	 *         or {@code null} if there was no such state.
 	 */
-	public CharacterState addState(final CharacterState state) {
+	public CharacterState putState(final CharacterState state) {
 		Preconditions.checkNotNull(state);
-		states.put(state.getStateNumber(), state);
+		final CharacterState originalState = states.put(state.getStateNumber(),
+				state);
+		if (state == originalState) {
+			return originalState;
+		}
+
+		if (originalState != null) {
+			originalState.setCharacter(null);
+		}
 		state.setCharacter(this);
 		setInNeedOfNewPPodVersionInfo();
-		return state;
+		return originalState;
 	}
 
 	/**
@@ -218,7 +227,7 @@ public class Character extends UUPPodEntityWXmlId {
 
 	/**
 	 * Get an unmodifiable iterator over this {@code Character}'s states in no
-	 * particular order.
+	 * specified order.
 	 * 
 	 * @return an iterator over this {@code Character}'s states
 	 */

@@ -23,31 +23,56 @@ import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
 import com.google.inject.Inject;
+import com.google.inject.assistedinject.Assisted;
 
 /**
  * @author Sam Donnelly
  */
 public class JettyWebServer implements IService {
 
-	private Logger logger = LoggerFactory.getLogger(getClass());
+	private final Logger logger = LoggerFactory.getLogger(getClass());
 
 	private final Server server;
 
+	private final String host;
+
+	private final int port;
+
+	private final String contextPath;
+
+	private final String war;
+
+	public static interface IFactory {
+		JettyWebServer create(@Assisted("host") String host, int port,
+				@Assisted("contextPath") String contextPath,
+				@Assisted("war") String war);
+	}
+
 	@Inject
-	JettyWebServer(final Server server) {
+	JettyWebServer(final Server server,
+			@Assisted("host") final String host,
+			@Assisted final int port,
+			@Assisted("contextPath") final String contextPath,
+			@Assisted("war") final String war) {
 		this.server = server;
+		this.host = host;
+		this.port = port;
+		this.contextPath = contextPath;
+		this.war = war;
 	}
 
 	public void start() throws Exception {
 
 		final Connector connector = new SelectChannelConnector();
-		connector.setPort(8082);
-		connector.setHost("127.0.0.1");
+		connector.setPort(port);
+		connector.setHost(host);
 		server.addConnector(connector);
 
 		final WebAppContext wac = new WebAppContext();
-		wac.setContextPath("/ppod-services");
-		wac.setWar("../ppod/services/src/main/webapp"); // this is path to .war
+		wac.setContextPath(contextPath);
+		wac.setWar(war);
+		// wac.setWar("../ppod/services/src/main/webapp"); // this is path to
+		// .war
 		// OR TO
 		// expanded,
 		// existing webapp; WILL FIND web.xml and
