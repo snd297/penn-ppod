@@ -25,6 +25,7 @@ import java.util.Map;
 import java.util.Set;
 
 import org.hibernate.Session;
+import org.testng.annotations.BeforeMethod;
 import org.testng.annotations.Test;
 
 import com.google.inject.Inject;
@@ -81,6 +82,8 @@ public class SaveOrUpdateCharacterStateMatrixTest {
 	private DNACharacter dnaCharacter;
 
 	@Inject
+	private INewPPodVersionInfo.IFactory newPPodVersionInfoFactory;
+
 	private INewPPodVersionInfo newPPodVersionInfo;
 
 // @BeforeMethod
@@ -97,6 +100,11 @@ public class SaveOrUpdateCharacterStateMatrixTest {
 // .getSessionFactory());
 // s.close();
 // }
+
+	@BeforeMethod
+	public void beforeMethod() {
+		newPPodVersionInfo = newPPodVersionInfoFactory.create(null);
+	}
 
 	@Test(dataProvider = MatrixProvider.SMALL_MATRICES_PROVIDER, dataProviderClass = MatrixProvider.class)
 	public void save(final CharacterStateMatrix sourceMatrix) {

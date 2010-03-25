@@ -141,8 +141,9 @@ public class SaveOrUpdateCharacterStateMatrix implements ISaveOrUpdateMatrix {
 				CharacterState targetState;
 				if (null == (targetState = newTargetCharacter.getState(
 						sourceState.getStateNumber()))) {
-					targetState = newTargetCharacter.addState(stateFactory
-							.create(sourceState.getStateNumber()));
+					targetState = stateFactory
+							.create(sourceState.getStateNumber());
+					newTargetCharacter.putState(targetState);
 					targetState.setPPodVersionInfo(newPPodVersionInfo
 							.getNewPPodVersionInfo());
 				}

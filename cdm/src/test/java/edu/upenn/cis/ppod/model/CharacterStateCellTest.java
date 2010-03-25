@@ -102,11 +102,11 @@ public class CharacterStateCellTest {
 		// State 0 of character 0
 		state00 = stateFactory.create(0);
 
-		character0.addState(state00);
+		character0.putState(state00);
 
 		// State 0 of character 1
 		state01 = stateFactory.create(1);
-		character0.addState(state01);
+		character0.putState(state01);
 
 	}
 
