@@ -5,6 +5,13 @@
 <hibernate-configuration>
 	<session-factory>
 		<!-- List of annotated classes-->
+		<!--
+			<mapping class="edu.upenn.cis.ppod.thirdparty.model.security.Role" />
+			<mapping class="edu.upenn.cis.ppod.thirdparty.model.security.User" />
+			<mapping class="edu.upenn.cis.ppod.model.security.Party" /> <mapping
+			class="edu.upenn.cis.ppod.model.security.PPodGroup" /> <mapping
+			class="edu.upenn.cis.ppod.model.security.PPodPermission" />
+		-->
 		<mapping class="edu.upenn.cis.ppod.model.PPodVersionInfo" />
 
 		<mapping class="edu.upenn.cis.ppod.model.Study" />
@@ -16,6 +23,7 @@
 		<mapping class="edu.upenn.cis.ppod.model.TreeSet" />
 
 		<mapping class="edu.upenn.cis.ppod.model.CharacterStateMatrix" />
+		<mapping class="edu.upenn.cis.ppod.model.OTUsToCharacterStateRows" />
 		<mapping class="edu.upenn.cis.ppod.model.CharacterStateRow" />
 		<mapping class="edu.upenn.cis.ppod.model.CharacterStateCell" />
 
@@ -32,6 +40,12 @@
 		<mapping class="edu.upenn.cis.ppod.model.Attachment" />
 		<mapping class="edu.upenn.cis.ppod.model.AttachmentNamespace" />
 		<mapping class="edu.upenn.cis.ppod.model.AttachmentType" />
+
+		<mapping class="edu.upenn.cis.ppod.model.MolecularSequenceSet" />
+
+		<mapping class="edu.upenn.cis.ppod.model.DNASequenceSet" />
+		<mapping class="edu.upenn.cis.ppod.model.OTUsToDNASequences" />
+		<mapping class="edu.upenn.cis.ppod.model.DNASequence" />
 
 	</session-factory>
 </hibernate-configuration>

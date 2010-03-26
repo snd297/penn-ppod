@@ -25,11 +25,9 @@ import java.util.Map;
 import java.util.Set;
 
 import org.hibernate.Session;
-import org.testng.annotations.BeforeMethod;
 import org.testng.annotations.Test;
 
 import com.google.inject.Inject;
-import com.google.inject.Provider;
 
 import edu.upenn.cis.ppod.TestGroupDefs;
 import edu.upenn.cis.ppod.dao.hibernate.ObjectWLongIdDAOHibernate;
@@ -41,7 +39,6 @@ import edu.upenn.cis.ppod.model.DNACharacter;
 import edu.upenn.cis.ppod.model.ModelAssert;
 import edu.upenn.cis.ppod.model.OTU;
 import edu.upenn.cis.ppod.model.OTUSet;
-import edu.upenn.cis.ppod.model.PPodVersionInfo;
 import edu.upenn.cis.ppod.modelinterfaces.INewPPodVersionInfo;
 import edu.upenn.cis.ppod.util.ICharacterStateMatrixFactory;
 import edu.upenn.cis.ppod.util.MatrixProvider;
@@ -58,12 +55,6 @@ public class SaveOrUpdateCharacterStateMatrixTest {
 	private ISaveOrUpdateMatrixFactory mergeMatrixFactory;
 
 	@Inject
-	private Provider<OTUSet> otuSetProvider;
-
-	@Inject
-	private Provider<OTU> otuProvider;
-
-	@Inject
 	private ICharacterStateMatrixFactory matrixFactory;
 
 	@Inject
@@ -76,14 +67,9 @@ public class SaveOrUpdateCharacterStateMatrixTest {
 	private TestMergeAttachment mergeAttachment;
 
 	@Inject
-	private Provider<PPodVersionInfo> pPodVersionInfoProvider;
-
-	@Inject
 	private DNACharacter dnaCharacter;
 
 	@Inject
-	private INewPPodVersionInfo.IFactory newPPodVersionInfoFactory;
-
 	private INewPPodVersionInfo newPPodVersionInfo;
 
 // @BeforeMethod
@@ -100,11 +86,6 @@ public class SaveOrUpdateCharacterStateMatrixTest {
 // .getSessionFactory());
 // s.close();
 // }
-
-	@BeforeMethod
-	public void beforeMethod() {
-		newPPodVersionInfo = newPPodVersionInfoFactory.create(null);
-	}
 
 	@Test(dataProvider = MatrixProvider.SMALL_MATRICES_PROVIDER, dataProviderClass = MatrixProvider.class)
 	public void save(final CharacterStateMatrix sourceMatrix) {

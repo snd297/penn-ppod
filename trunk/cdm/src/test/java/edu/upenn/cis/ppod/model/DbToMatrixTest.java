@@ -82,7 +82,7 @@ public class DbToMatrixTest extends DbTestBase {
 					final CharacterStateRow phyloCharMatrixRow; // = m
 					// .getRow(Integer
 					// .parseInt(rowElement
-					// .attributeValue(CharacterStateMatrix.ROWS_INDEX_COLUMN)));
+					// .attributeValue(CharacterStateMatrix.ROWS_POSITION_COLUMN)));
 					// Assert.assertEquals(row.getId(), new Long(rowElement
 					// .attributeValue(PhyloCharMatrixRow.ID_COLUMN)));
 

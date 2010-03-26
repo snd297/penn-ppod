@@ -28,8 +28,8 @@ import edu.upenn.cis.ppod.model.CharacterState;
 import edu.upenn.cis.ppod.model.DNASequence;
 import edu.upenn.cis.ppod.model.DNASequenceSet;
 import edu.upenn.cis.ppod.model.DNAState;
-import edu.upenn.cis.ppod.model.NewPPodVersionInfo;
-import edu.upenn.cis.ppod.modelinterfaces.INewPPodVersionInfo;
+import edu.upenn.cis.ppod.model.NewPPodVersionInfoHibernate;
+import edu.upenn.cis.ppod.modelinterfaces.INewPPodVersionInfoHibernate;
 import edu.upenn.cis.ppod.saveorupdate.IMergeAttachments;
 import edu.upenn.cis.ppod.saveorupdate.IMergeMolecularSequenceSets;
 import edu.upenn.cis.ppod.saveorupdate.IMergeOTUSetFactory;
@@ -113,9 +113,10 @@ public final class PPodCoreModule extends AbstractModule {
 						SetPPodVersionInfoVisitor.IFactory.class,
 						SetPPodVersionInfoVisitor.class));
 
-		bind(INewPPodVersionInfo.IFactory.class).toProvider(
-				FactoryProvider.newFactory(INewPPodVersionInfo.IFactory.class,
-						NewPPodVersionInfo.class));
+		bind(INewPPodVersionInfoHibernate.IFactory.class).toProvider(
+				FactoryProvider.newFactory(
+						INewPPodVersionInfoHibernate.IFactory.class,
+						NewPPodVersionInfoHibernate.class));
 
 	}
 }

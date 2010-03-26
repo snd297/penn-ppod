@@ -1,9 +1,5 @@
 package edu.upenn.cis.ppod.modelinterfaces;
 
-import javax.annotation.Nullable;
-
-import org.hibernate.Session;
-
 import edu.upenn.cis.ppod.model.PPodVersionInfo;
 
 /**
@@ -23,8 +19,5 @@ public interface INewPPodVersionInfo {
 	 */
 	PPodVersionInfo getNewPPodVersionInfo();
 
-	static interface IFactory {
-		INewPPodVersionInfo create(@Nullable Session session);
-	}
 
 }

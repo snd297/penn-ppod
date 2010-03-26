@@ -15,14 +15,14 @@
  */
 package edu.upenn.cis.ppod.model;
 
+import static com.google.common.base.Preconditions.checkState;
+
 import java.util.UUID;
 
 import javax.annotation.Nullable;
 import javax.persistence.Column;
 import javax.persistence.MappedSuperclass;
 import javax.xml.bind.annotation.XmlAttribute;
-
-import org.hibernate.annotations.Index;
 
 import edu.upenn.cis.ppod.modelinterfaces.IUUPPodEntity;
 
@@ -64,9 +64,8 @@ public abstract class UUPPodEntity extends PPodEntity implements IUUPPodEntity {
 	}
 
 	public UUPPodEntity setPPodId(@Nullable final String pPodId) {
-		if (getPPodId() != null) {
-			throw new IllegalStateException("pPodId already set");
-		}
+		checkState(getPPodId() == null, "pPodId already set");
+
 		this.pPodId = pPodId;
 		return this;
 	}

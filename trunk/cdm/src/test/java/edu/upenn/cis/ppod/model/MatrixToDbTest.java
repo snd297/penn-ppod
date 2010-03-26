@@ -214,7 +214,7 @@ public class MatrixToDbTest extends DbTestBase {
 // .setCharacter(
 // new Integer(
 // matrixPhyloCharElement
-// .attributeValue(CharacterStateMatrix.CHARACTERS_INDEX_COLUMN)),
+// .attributeValue(CharacterStateMatrix.CHARACTERS_POSITION_COLUMN)),
 // initialDataSetIdToPhyloCarMap
 // .get(new Long(
 // matrixPhyloCharElement
@@ -239,29 +239,17 @@ public class MatrixToDbTest extends DbTestBase {
 				// numerically
 				// on
 				// position
-				for (final Element rowElement : rowElements) {
-					sortedRowElements
-							.put(
-									new Integer(
-											rowElement
-													.attributeValue(CharacterStateMatrix.ROWS_INDEX_COLUMN)),
-									rowElement);
-				}
+				for (final Element rowElement : rowElements) {}
 				rowElements = null; // free up the memory
 
 				for (final Element sortedRowElement : sortedRowElements
 						.values()) {
-					logger
-							.debug(
-									"{}:adding row {}",
-									METHOD,
-									sortedRowElement
-											.attributeValue(CharacterStateMatrix.ROWS_INDEX_COLUMN));
+
 					final CharacterStateRow phyloCharMatrixRow = null;// phyloCharMatrix
 					// .setRow(
 					// new Integer(
 					// sortedRowElement
-					// .attributeValue(CharacterStateMatrix.ROWS_INDEX_COLUMN)),
+					// .attributeValue(CharacterStateMatrix.ROWS_POSITION_COLUMN)),
 					// new CharacterStateRow());
 
 					@SuppressWarnings("unchecked")
