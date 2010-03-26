@@ -29,6 +29,7 @@ import edu.upenn.cis.ppod.dao.IStudyDAO;
 import edu.upenn.cis.ppod.dao.hibernate.StudyDAOHibernate;
 import edu.upenn.cis.ppod.model.Study;
 import edu.upenn.cis.ppod.modelinterfaces.INewPPodVersionInfo;
+import edu.upenn.cis.ppod.modelinterfaces.INewPPodVersionInfoHibernate;
 import edu.upenn.cis.ppod.saveorupdate.ISaveOrUpdateStudies;
 import edu.upenn.cis.ppod.saveorupdate.hibernate.ISaveOrUpdateStudyHibernateFactory;
 import edu.upenn.cis.ppod.services.IStudyResource;
@@ -64,7 +65,7 @@ public final class StudyResourceHibernate implements IStudyResource {
 			final IStudy2StudyInfo study2StudyInfo,
 			final SetDocIdVisitor otuSetAndOTUSetDocIdVisitor,
 			final Provider<AfterUnmarshalVisitor> afterUnmarshalVisitorProvider,
-			final INewPPodVersionInfo.IFactory newPPodVersionInfoFactory,
+			final INewPPodVersionInfoHibernate.IFactory newPPodVersionInfoFactory,
 			final SetPPodVersionInfoVisitor.IFactory setPPodVersionInfoVisitorFactory) {
 		this.studyDAO = (IStudyDAO) studyDAO.setSession(HibernateUtil
 				.getSessionFactory().getCurrentSession());

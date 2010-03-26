@@ -37,7 +37,5 @@ public class PPodObjectFactory extends GuiceObjectFactory {
 	}
 
 	@Override
-	protected void configure() {
-
-	}
+	protected void configure() {}
 }

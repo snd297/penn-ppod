@@ -89,13 +89,7 @@ public class CharacterStateMatrix extends UUPPodEntityWXmlId implements
 	/**
 	 * Column that orders the {@link Character}s. Intentionally package-private.
 	 */
-	static final String CHARACTERS_INDEX_COLUMN = Character.TABLE + "_POSITION";
-
-	/**
-	 * Column that orders the otusToRows. Intentionally package-private.
-	 */
-	static final String ROWS_INDEX_COLUMN = CharacterStateRow.TABLE
-			+ "_POSITION";
+	static final String CHARACTERS_POSITION_COLUMN = Character.TABLE + "_POSITION";
 
 	/** The pPod versions of the columns. */
 	@ManyToMany
@@ -149,7 +143,7 @@ public class CharacterStateMatrix extends UUPPodEntityWXmlId implements
 	 */
 	@ManyToMany
 	@JoinTable(joinColumns = { @JoinColumn(name = ID_COLUMN) }, inverseJoinColumns = { @JoinColumn(name = Character.ID_COLUMN) })
-	@IndexColumn(name = CHARACTERS_INDEX_COLUMN)
+	@IndexColumn(name = CHARACTERS_POSITION_COLUMN)
 	private final List<Character> characters = newArrayList();
 
 	/** No-arg constructor for (at least) Hibernate. */

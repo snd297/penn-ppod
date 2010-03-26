@@ -23,12 +23,13 @@ import com.google.inject.Inject;
 import com.google.inject.assistedinject.Assisted;
 
 import edu.upenn.cis.ppod.dao.hibernate.PPodVersionInfoDAOHibernate;
-import edu.upenn.cis.ppod.modelinterfaces.INewPPodVersionInfo;
+import edu.upenn.cis.ppod.modelinterfaces.INewPPodVersionInfoHibernate;
 
 /**
  * @author Sam Donnelly
  */
-public class NewPPodVersionInfo implements INewPPodVersionInfo {
+public class NewPPodVersionInfoHibernate implements
+		INewPPodVersionInfoHibernate {
 
 	private final PPodVersionInfo newPPodVersionInfo;
 	private final PPodVersionInfoDAOHibernate pPodVersionInfoDAO;
@@ -36,7 +37,8 @@ public class NewPPodVersionInfo implements INewPPodVersionInfo {
 	private boolean pPodVersionInfoInitialized = false;
 
 	@Inject
-	NewPPodVersionInfo(final PPodVersionInfoDAOHibernate pPodVersionInfoDAO,
+	NewPPodVersionInfoHibernate(
+			final PPodVersionInfoDAOHibernate pPodVersionInfoDAO,
 			final PPodVersionInfo newPPodVersionInfo,
 			@Assisted final Session session) {
 		this.newPPodVersionInfo = newPPodVersionInfo;

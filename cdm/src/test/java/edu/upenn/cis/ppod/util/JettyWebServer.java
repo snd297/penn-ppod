@@ -28,7 +28,7 @@ import com.google.inject.assistedinject.Assisted;
 /**
  * @author Sam Donnelly
  */
-public class JettyWebServer implements IService {
+public class JettyWebServer implements IServletContainer {
 
 	private final Logger logger = LoggerFactory.getLogger(getClass());
 
@@ -41,12 +41,6 @@ public class JettyWebServer implements IService {
 	private final String contextPath;
 
 	private final String war;
-
-	public static interface IFactory {
-		JettyWebServer create(@Assisted("host") String host, int port,
-				@Assisted("contextPath") String contextPath,
-				@Assisted("war") String war);
-	}
 
 	@Inject
 	JettyWebServer(final Server server,

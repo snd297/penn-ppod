@@ -22,7 +22,7 @@ import org.hibernate.context.ManagedSessionContext;
 
 import edu.upenn.cis.ppod.model.CharacterState;
 import edu.upenn.cis.ppod.model.DNACharacter;
-import edu.upenn.cis.ppod.model.NewPPodVersionInfo;
+import edu.upenn.cis.ppod.model.NewPPodVersionInfoHibernate;
 import edu.upenn.cis.ppod.modelinterfaces.INewPPodVersionInfo;
 import edu.upenn.cis.ppod.thirdparty.util.HibernateUtil;
 
@@ -49,7 +49,7 @@ public class PopulateTables {
 			session.beginTransaction();
 
 			final INewPPodVersionInfo newPPodVersionInfo = pPodCoreFactory
-					.create(NewPPodVersionInfo.class);
+					.create(NewPPodVersionInfoHibernate.class);
 			dnaCharacter.setPPodVersionInfo(newPPodVersionInfo
 					.getNewPPodVersionInfo());
 
