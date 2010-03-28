@@ -28,7 +28,7 @@ import edu.upenn.cis.ppod.modelinterfaces.INewPPodVersionInfoHibernate;
 /**
  * @author Sam Donnelly
  */
-public class NewPPodVersionInfoHibernate implements
+class NewPPodVersionInfoHibernate implements
 		INewPPodVersionInfoHibernate {
 
 	private final PPodVersionInfo newPPodVersionInfo;

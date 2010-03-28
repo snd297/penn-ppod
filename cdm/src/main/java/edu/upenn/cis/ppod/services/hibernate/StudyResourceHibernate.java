@@ -31,7 +31,7 @@ import edu.upenn.cis.ppod.dao.hibernate.StudyDAOHibernate;
 import edu.upenn.cis.ppod.model.Study;
 import edu.upenn.cis.ppod.modelinterfaces.INewPPodVersionInfo;
 import edu.upenn.cis.ppod.modelinterfaces.INewPPodVersionInfoHibernate;
-import edu.upenn.cis.ppod.saveorupdate.ISaveOrUpdateStudies;
+import edu.upenn.cis.ppod.saveorupdate.ISaveOrUpdateStudy;
 import edu.upenn.cis.ppod.saveorupdate.hibernate.ISaveOrUpdateStudyHibernateFactory;
 import edu.upenn.cis.ppod.services.IStudyResource;
 import edu.upenn.cis.ppod.services.StringPair;
@@ -40,17 +40,17 @@ import edu.upenn.cis.ppod.services.ppodentity.StudyInfo;
 import edu.upenn.cis.ppod.thirdparty.util.HibernateUtil;
 import edu.upenn.cis.ppod.util.AfterUnmarshalVisitor;
 import edu.upenn.cis.ppod.util.IPair;
+import edu.upenn.cis.ppod.util.ISetPPodVersionInfoVisitor;
 import edu.upenn.cis.ppod.util.SetDocIdVisitor;
-import edu.upenn.cis.ppod.util.SetPPodVersionInfoVisitor;
 
 /**
  * @author Sam Donnelly
  */
-public final class StudyResourceHibernate implements IStudyResource {
+final class StudyResourceHibernate implements IStudyResource {
 
 	private final IStudyDAO studyDAO;
 
-	private final ISaveOrUpdateStudies saveOrUpdateStudies;
+	private final ISaveOrUpdateStudy saveOrUpdateStudy;
 
 	private final IStudy2StudyInfo study2StudyInfo;
 
@@ -58,7 +58,7 @@ public final class StudyResourceHibernate implements IStudyResource {
 
 	private final Provider<AfterUnmarshalVisitor> afterUnmarshalVisitorProvider;
 
-	private final SetPPodVersionInfoVisitor setPPodVersionInfoVisitor;
+	private final ISetPPodVersionInfoVisitor setPPodVersionInfoVisitor;
 
 	private final StringPair.IFactory stringPairFactory;
 
@@ -70,7 +70,7 @@ public final class StudyResourceHibernate implements IStudyResource {
 			final SetDocIdVisitor otuSetAndOTUSetDocIdVisitor,
 			final Provider<AfterUnmarshalVisitor> afterUnmarshalVisitorProvider,
 			final INewPPodVersionInfoHibernate.IFactory newPPodVersionInfoFactory,
-			final SetPPodVersionInfoVisitor.IFactory setPPodVersionInfoVisitorFactory,
+			final ISetPPodVersionInfoVisitor.IFactory setPPodVersionInfoVisitorFactory,
 			final StringPair.IFactory stringPairFactory) {
 		this.studyDAO = (IStudyDAO) studyDAO.setSession(HibernateUtil
 				.getSessionFactory().getCurrentSession());
@@ -80,7 +80,7 @@ public final class StudyResourceHibernate implements IStudyResource {
 				.create(currentSession);
 		this.setPPodVersionInfoVisitor = setPPodVersionInfoVisitorFactory
 				.create(newPPodVersionInfo);
-		this.saveOrUpdateStudies = saveOrUpdateStudyFactory.create(
+		this.saveOrUpdateStudy = saveOrUpdateStudyFactory.create(
 				currentSession,
 				newPPodVersionInfo);
 		this.study2StudyInfo = study2StudyInfo;
@@ -91,7 +91,7 @@ public final class StudyResourceHibernate implements IStudyResource {
 
 	public StudyInfo create(final Study incomingStudy) {
 		incomingStudy.accept(afterUnmarshalVisitorProvider.get());
-		final Study dbStudy = saveOrUpdateStudies.save(incomingStudy);
+		final Study dbStudy = saveOrUpdateStudy.save(incomingStudy);
 		dbStudy.accept(setPPodVersionInfoVisitor);
 		return study2StudyInfo.toStudyInfo(dbStudy);
 	}
@@ -114,7 +114,7 @@ public final class StudyResourceHibernate implements IStudyResource {
 
 	public StudyInfo update(final Study incomingStudy, final String pPodId) {
 		incomingStudy.accept(afterUnmarshalVisitorProvider.get());
-		final Study dbStudy = saveOrUpdateStudies.update(incomingStudy);
+		final Study dbStudy = saveOrUpdateStudy.update(incomingStudy);
 		dbStudy.accept(setPPodVersionInfoVisitor);
 		return study2StudyInfo.toStudyInfo(dbStudy);
 	}

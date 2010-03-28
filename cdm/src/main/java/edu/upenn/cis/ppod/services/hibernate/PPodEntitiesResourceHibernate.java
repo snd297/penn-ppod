@@ -40,7 +40,7 @@ import edu.upenn.cis.ppod.util.SetDocIdVisitor;
 /**
  * @author Sam Donnelly
  */
-public class PPodEntitiesResourceHibernate implements
+class PPodEntitiesResourceHibernate implements
 		IPPodEntitiesResourceHibernate {
 
 	private final Provider<PPodEntities> pPodEntitiesProvider;

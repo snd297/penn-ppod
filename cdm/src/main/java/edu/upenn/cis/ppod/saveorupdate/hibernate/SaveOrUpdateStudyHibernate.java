@@ -58,7 +58,7 @@ import edu.upenn.cis.ppod.saveorupdate.IMergeTreeSets;
 import edu.upenn.cis.ppod.saveorupdate.IMergeTreeSetsFactory;
 import edu.upenn.cis.ppod.saveorupdate.ISaveOrUpdateMatrix;
 import edu.upenn.cis.ppod.saveorupdate.ISaveOrUpdateMatrixFactory;
-import edu.upenn.cis.ppod.saveorupdate.ISaveOrUpdateStudies;
+import edu.upenn.cis.ppod.saveorupdate.ISaveOrUpdateStudy;
 import edu.upenn.cis.ppod.util.ICharacterStateMatrixFactory;
 
 /**
@@ -66,7 +66,7 @@ import edu.upenn.cis.ppod.util.ICharacterStateMatrixFactory;
  * 
  * @author Sam Donnelly
  */
-public class SaveOrUpdateStudiesHibernate implements ISaveOrUpdateStudies {
+class SaveOrUpdateStudyHibernate implements ISaveOrUpdateStudy {
 
 	private final IStudyDAO studyDAO;
 	private final IOTUSetDAO otuSetDAO;
@@ -85,7 +85,7 @@ public class SaveOrUpdateStudiesHibernate implements ISaveOrUpdateStudies {
 	private final IMergeMolecularSequenceSets<DNASequenceSet, DNASequence> mergeDNASequenceSets;
 
 	@Inject
-	SaveOrUpdateStudiesHibernate(
+	SaveOrUpdateStudyHibernate(
 			final StudyDAOHibernate studyDAO,
 			final OTUSetDAOHibernate otuSetDAO,
 			final DNACharacterDAOHibernate dnaCharacterDAO,

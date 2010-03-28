@@ -28,8 +28,7 @@ import edu.upenn.cis.ppod.model.CharacterState;
 import edu.upenn.cis.ppod.model.DNASequence;
 import edu.upenn.cis.ppod.model.DNASequenceSet;
 import edu.upenn.cis.ppod.model.DNAState;
-import edu.upenn.cis.ppod.model.NewPPodVersionInfoHibernate;
-import edu.upenn.cis.ppod.modelinterfaces.INewPPodVersionInfoHibernate;
+import edu.upenn.cis.ppod.model.ModelModule;
 import edu.upenn.cis.ppod.saveorupdate.IMergeAttachments;
 import edu.upenn.cis.ppod.saveorupdate.IMergeMolecularSequenceSets;
 import edu.upenn.cis.ppod.saveorupdate.IMergeOTUSetFactory;
@@ -40,8 +39,7 @@ import edu.upenn.cis.ppod.saveorupdate.MergeMolecularSequenceSets;
 import edu.upenn.cis.ppod.saveorupdate.MergeOTUSets;
 import edu.upenn.cis.ppod.saveorupdate.MergeTreeSets;
 import edu.upenn.cis.ppod.saveorupdate.SaveOrUpdateCharacterStateMatrix;
-import edu.upenn.cis.ppod.saveorupdate.hibernate.ISaveOrUpdateStudyHibernateFactory;
-import edu.upenn.cis.ppod.saveorupdate.hibernate.SaveOrUpdateStudiesHibernate;
+import edu.upenn.cis.ppod.saveorupdate.hibernate.SaveOrUpdateHibernateModule;
 import edu.upenn.cis.ppod.security.ISimpleAuthenticationInfoFactory;
 import edu.upenn.cis.ppod.security.SimpleAuthenticationInfoFactory;
 import edu.upenn.cis.ppod.services.StringPair;
@@ -76,10 +74,6 @@ public final class PPodCoreModule extends AbstractModule {
 		bind(ISimpleAuthenticationInfoFactory.class).to(
 				SimpleAuthenticationInfoFactory.class);
 
-		bind(ISaveOrUpdateStudyHibernateFactory.class).toProvider(
-				FactoryProvider.newFactory(
-						ISaveOrUpdateStudyHibernateFactory.class,
-						SaveOrUpdateStudiesHibernate.class));
 		bind(IMergeOTUSetFactory.class).toProvider(
 				FactoryProvider.newFactory(IMergeOTUSetFactory.class,
 						MergeOTUSets.class));
@@ -111,20 +105,13 @@ public final class PPodCoreModule extends AbstractModule {
 				FactoryProvider.newFactory(DNAState.IFactory.class,
 						DNAState.class));
 
-		bind(SetPPodVersionInfoVisitor.IFactory.class).toProvider(
-				FactoryProvider.newFactory(
-						SetPPodVersionInfoVisitor.IFactory.class,
-						SetPPodVersionInfoVisitor.class));
-
-		bind(INewPPodVersionInfoHibernate.IFactory.class).toProvider(
-				FactoryProvider.newFactory(
-						INewPPodVersionInfoHibernate.IFactory.class,
-						NewPPodVersionInfoHibernate.class));
-
 		bind(StringPair.IFactory.class).toProvider(
 				FactoryProvider.newFactory(
 						StringPair.IFactory.class,
 						StringPair.class));
+
+		install(new ModelModule());
+		install(new SaveOrUpdateHibernateModule());
 
 	}
 }

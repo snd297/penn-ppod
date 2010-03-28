@@ -25,7 +25,7 @@ import edu.upenn.cis.ppod.model.RNAStateMatrix;
 /**
  * @author Sam Donnelly
  */
-public class CharacterStateMatrixFactory implements
+class CharacterStateMatrixFactory implements
 		ICharacterStateMatrixFactory {
 	private final Provider<CharacterStateMatrix> standardMatrixProvider;
 	private final Provider<DNAStateMatrix> dnaMatrixProvider;

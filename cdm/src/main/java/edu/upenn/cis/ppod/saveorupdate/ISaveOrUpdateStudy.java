@@ -22,7 +22,7 @@ import edu.upenn.cis.ppod.model.Study;
  * 
  * @author Sam Donnelly
  */
-public interface ISaveOrUpdateStudies {
+public interface ISaveOrUpdateStudy {
 
 	Study save(Study study);
 
