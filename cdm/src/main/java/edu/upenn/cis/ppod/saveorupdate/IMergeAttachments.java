@@ -15,6 +15,8 @@
  */
 package edu.upenn.cis.ppod.saveorupdate;
 
+import com.google.inject.ImplementedBy;
+
 import edu.upenn.cis.ppod.dao.IAttachmentNamespaceDAO;
 import edu.upenn.cis.ppod.dao.IAttachmentTypeDAO;
 import edu.upenn.cis.ppod.model.Attachment;
@@ -22,8 +24,9 @@ import edu.upenn.cis.ppod.model.Attachment;
 /**
  * @author Sam Donnelly
  */
+@ImplementedBy(MergeAttachments.class)
 public interface IMergeAttachments {
-	
+
 	/**
 	 * @throws IllegalArgumentException if {@code sourceAttachment.getType() ==
 	 *             null}
@@ -34,7 +37,8 @@ public interface IMergeAttachments {
 			final Attachment sourceAttachment);
 
 	interface IFactory {
-		IMergeAttachments create(IAttachmentNamespaceDAO attachmentNamespaceDAO,
+		IMergeAttachments create(
+				IAttachmentNamespaceDAO attachmentNamespaceDAO,
 				IAttachmentTypeDAO attachmentTypeDAO);
 	}
 }

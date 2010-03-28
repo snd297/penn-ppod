@@ -17,12 +17,15 @@ package edu.upenn.cis.ppod.saveorupdate;
 
 import java.util.Map;
 
+import com.google.inject.ImplementedBy;
+
 import edu.upenn.cis.ppod.model.OTU;
 import edu.upenn.cis.ppod.model.OTUSet;
 
 /**
  * @author Sam Donnelly
  */
+@ImplementedBy(MergeOTUSets.class)
 public interface IMergeOTUSets {
 
 	/**

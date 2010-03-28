@@ -57,7 +57,7 @@ import edu.upenn.cis.ppod.thirdparty.injectslf4j.InjectLogger;
 /**
  * @author Sam Donnelly
  */
-public class SaveOrUpdateCharacterStateMatrix implements ISaveOrUpdateMatrix {
+class SaveOrUpdateCharacterStateMatrix implements ISaveOrUpdateMatrix {
 
 	private final Provider<Character> characterProvider;
 	private final Provider<CharacterStateRow> rowProvider;

@@ -20,9 +20,12 @@ import javax.ws.rs.Path;
 import javax.ws.rs.Produces;
 import javax.ws.rs.core.Response;
 
+import com.google.inject.ImplementedBy;
+
 /**
  * @author Sam Donnelly
  */
+@ImplementedBy(PPodGreetingService.class)
 @Path("/")
 public interface IPPodGreetingResource {
 

@@ -131,10 +131,4 @@ class SetPPodVersionInfoVisitor extends EmptyVisitor implements
 		setNewPPodVersionIfNeeded(tree);
 	}
 
-	static class Factory implements IFactory {
-		public SetPPodVersionInfoVisitor create(
-				final INewPPodVersionInfo newPPodVersionInfo) {
-			return new SetPPodVersionInfoVisitor(newPPodVersionInfo);
-		}
-	}
 }
