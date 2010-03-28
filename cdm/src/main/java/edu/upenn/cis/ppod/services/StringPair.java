@@ -20,6 +20,8 @@ import javax.xml.bind.annotation.XmlAccessorType;
 import javax.xml.bind.annotation.XmlRootElement;
 
 import com.google.common.base.Function;
+import com.google.inject.Inject;
+import com.google.inject.assistedinject.Assisted;
 
 import edu.upenn.cis.ppod.util.IPair;
 
@@ -31,7 +33,7 @@ import edu.upenn.cis.ppod.util.IPair;
  */
 @XmlRootElement
 @XmlAccessorType(XmlAccessType.FIELD)
-public final class PairStringString implements IPair<String, String> {
+public final class StringPair implements IPair<String, String> {
 
 	private String first;
 	private String second;
@@ -40,9 +42,11 @@ public final class PairStringString implements IPair<String, String> {
 	 * Created for JAXB.
 	 */
 	@SuppressWarnings("unused")
-	private PairStringString() {}
+	private StringPair() {}
 
-	PairStringString(final String first, final String second) {
+	@Inject
+	StringPair(@Assisted("first") final String first,
+			@Assisted("second") final String second) {
 		this.first = first;
 		this.second = second;
 	}
@@ -55,24 +59,16 @@ public final class PairStringString implements IPair<String, String> {
 		return second;
 	}
 
-	public static PairStringString of(IPair<String, String> pair) {
-		return new PairStringString(pair.getFirst(), pair.getSecond());
-	}
+	public static final Function<StringPair, IPair<String, String>> castToIPair = new Function<StringPair, IPair<String, String>>() {
 
-	public static final Function<PairStringString, IPair<String, String>> castToIPair = new Function<PairStringString, IPair<String, String>>() {
-
-		public IPair<String, String> apply(final PairStringString from) {
+		public IPair<String, String> apply(final StringPair from) {
 			return (IPair<String, String>) from;
 		}
 
 	};
 
-	public static final Function<IPair<String, String>, PairStringString> of = new Function<IPair<String, String>, PairStringString>() {
-
-		public PairStringString apply(final IPair<String, String> from) {
-			return of(from);
-		}
-
-	};
-
+	public static interface IFactory {
+		StringPair create(@Assisted("first") String first,
+				@Assisted("second") String second);
+	}
 }

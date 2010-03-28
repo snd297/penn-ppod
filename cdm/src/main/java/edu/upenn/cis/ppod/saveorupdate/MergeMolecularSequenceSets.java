@@ -58,6 +58,12 @@ public class MergeMolecularSequenceSets<SS extends MolecularSequenceSet<S>, S ex
 			targetSequence.setAccession(sourceSequence.getAccession());
 
 			dao.saveOrUpdate(targetSequence);
+
+			if (targetSequence.isInNeedOfNewPPodVersionInfo()) {
+				targetSequence.setPPodVersionInfo(newPPodVersionInfo
+						.getNewPPodVersionInfo());
+			}
+
 			dao.flush();
 			dao.evict(targetSequence);
 		}

@@ -22,6 +22,7 @@ import java.util.Set;
 
 import org.hibernate.Session;
 
+import com.google.common.base.Function;
 import com.google.inject.Inject;
 import com.google.inject.Provider;
 
@@ -33,11 +34,12 @@ import edu.upenn.cis.ppod.modelinterfaces.INewPPodVersionInfoHibernate;
 import edu.upenn.cis.ppod.saveorupdate.ISaveOrUpdateStudies;
 import edu.upenn.cis.ppod.saveorupdate.hibernate.ISaveOrUpdateStudyHibernateFactory;
 import edu.upenn.cis.ppod.services.IStudyResource;
-import edu.upenn.cis.ppod.services.PairStringString;
+import edu.upenn.cis.ppod.services.StringPair;
 import edu.upenn.cis.ppod.services.ppodentity.IStudy2StudyInfo;
 import edu.upenn.cis.ppod.services.ppodentity.StudyInfo;
 import edu.upenn.cis.ppod.thirdparty.util.HibernateUtil;
 import edu.upenn.cis.ppod.util.AfterUnmarshalVisitor;
+import edu.upenn.cis.ppod.util.IPair;
 import edu.upenn.cis.ppod.util.SetDocIdVisitor;
 import edu.upenn.cis.ppod.util.SetPPodVersionInfoVisitor;
 
@@ -58,6 +60,8 @@ public final class StudyResourceHibernate implements IStudyResource {
 
 	private final SetPPodVersionInfoVisitor setPPodVersionInfoVisitor;
 
+	private final StringPair.IFactory stringPairFactory;
+
 	@Inject
 	StudyResourceHibernate(
 			final StudyDAOHibernate studyDAO,
@@ -66,7 +70,8 @@ public final class StudyResourceHibernate implements IStudyResource {
 			final SetDocIdVisitor otuSetAndOTUSetDocIdVisitor,
 			final Provider<AfterUnmarshalVisitor> afterUnmarshalVisitorProvider,
 			final INewPPodVersionInfoHibernate.IFactory newPPodVersionInfoFactory,
-			final SetPPodVersionInfoVisitor.IFactory setPPodVersionInfoVisitorFactory) {
+			final SetPPodVersionInfoVisitor.IFactory setPPodVersionInfoVisitorFactory,
+			final StringPair.IFactory stringPairFactory) {
 		this.studyDAO = (IStudyDAO) studyDAO.setSession(HibernateUtil
 				.getSessionFactory().getCurrentSession());
 		final Session currentSession = HibernateUtil
@@ -81,7 +86,7 @@ public final class StudyResourceHibernate implements IStudyResource {
 		this.study2StudyInfo = study2StudyInfo;
 		this.setDocIdVisitor = otuSetAndOTUSetDocIdVisitor;
 		this.afterUnmarshalVisitorProvider = afterUnmarshalVisitorProvider;
-
+		this.stringPairFactory = stringPairFactory;
 	}
 
 	public StudyInfo create(final Study incomingStudy) {
@@ -97,9 +102,14 @@ public final class StudyResourceHibernate implements IStudyResource {
 		return study;
 	}
 
-	public Set<PairStringString> getStudyPPodIdLabelPairs() {
+	public Set<StringPair> getStudyPPodIdLabelPairs() {
 		return newHashSet(transform(studyDAO.getPPodIdLabelPairs(),
-				PairStringString.of));
+				new Function<IPair<String, String>, StringPair>() {
+					public StringPair apply(IPair<String, String> from) {
+						return stringPairFactory.create(from.getFirst(), from
+								.getSecond());
+					}
+				}));
 	}
 
 	public StudyInfo update(final Study incomingStudy, final String pPodId) {
