@@ -32,13 +32,11 @@ import edu.upenn.cis.ppod.model.ModelModule;
 import edu.upenn.cis.ppod.saveorupdate.IMergeAttachments;
 import edu.upenn.cis.ppod.saveorupdate.IMergeMolecularSequenceSets;
 import edu.upenn.cis.ppod.saveorupdate.IMergeOTUSetFactory;
-import edu.upenn.cis.ppod.saveorupdate.IMergeTreeSetsFactory;
+import edu.upenn.cis.ppod.saveorupdate.IMergeOTUSets;
+import edu.upenn.cis.ppod.saveorupdate.IMergeTreeSets;
+import edu.upenn.cis.ppod.saveorupdate.ISaveOrUpdateMatrix;
 import edu.upenn.cis.ppod.saveorupdate.ISaveOrUpdateMatrixFactory;
-import edu.upenn.cis.ppod.saveorupdate.MergeAttachments;
 import edu.upenn.cis.ppod.saveorupdate.MergeMolecularSequenceSets;
-import edu.upenn.cis.ppod.saveorupdate.MergeOTUSets;
-import edu.upenn.cis.ppod.saveorupdate.MergeTreeSets;
-import edu.upenn.cis.ppod.saveorupdate.SaveOrUpdateCharacterStateMatrix;
 import edu.upenn.cis.ppod.saveorupdate.hibernate.SaveOrUpdateHibernateModule;
 import edu.upenn.cis.ppod.security.ISimpleAuthenticationInfoFactory;
 import edu.upenn.cis.ppod.security.SimpleAuthenticationInfoFactory;
@@ -76,13 +74,16 @@ public final class PPodCoreModule extends AbstractModule {
 
 		bind(IMergeOTUSetFactory.class).toProvider(
 				FactoryProvider.newFactory(IMergeOTUSetFactory.class,
-						MergeOTUSets.class));
-		bind(IMergeTreeSetsFactory.class).toProvider(
-				FactoryProvider.newFactory(IMergeTreeSetsFactory.class,
-						MergeTreeSets.class));
+						IMergeOTUSets.class));
+		bind(IMergeTreeSets.IFactory.class).toProvider(
+				FactoryProvider.newFactory(IMergeTreeSets.IFactory.class,
+						IMergeTreeSets.class));
 		bind(ISaveOrUpdateMatrixFactory.class).toProvider(
 				FactoryProvider.newFactory(ISaveOrUpdateMatrixFactory.class,
-						SaveOrUpdateCharacterStateMatrix.class));
+						ISaveOrUpdateMatrix.class));
+		bind(IMergeAttachments.IFactory.class).toProvider(
+				FactoryProvider.newFactory(IMergeAttachments.IFactory.class,
+						IMergeAttachments.class));
 
 		final TypeLiteral<IMergeMolecularSequenceSets.IFactory<DNASequenceSet, DNASequence>> mergeDNASequencesFactoryTypeLiteral =
 				new IMergeMolecularSequenceSetsIFactoryTypeLiteral();
@@ -93,10 +94,6 @@ public final class PPodCoreModule extends AbstractModule {
 		bind(mergeDNASequencesFactoryTypeLiteral).toProvider(
 				FactoryProvider.newFactory(mergeDNASequencesFactoryTypeLiteral,
 						mergeDNASequenceSetTypeLiteral));
-
-		bind(IMergeAttachments.IFactory.class).toProvider(
-				FactoryProvider.newFactory(IMergeAttachments.IFactory.class,
-						MergeAttachments.class));
 
 		bind(CharacterState.IFactory.class).toProvider(
 				FactoryProvider.newFactory(CharacterState.IFactory.class,
@@ -109,6 +106,11 @@ public final class PPodCoreModule extends AbstractModule {
 				FactoryProvider.newFactory(
 						StringPair.IFactory.class,
 						StringPair.class));
+
+		bind(ISetPPodVersionInfoVisitor.IFactory.class).toProvider(
+				FactoryProvider.newFactory(
+						ISetPPodVersionInfoVisitor.IFactory.class,
+						ISetPPodVersionInfoVisitor.class));
 
 		install(new ModelModule());
 		install(new SaveOrUpdateHibernateModule());

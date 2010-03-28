@@ -55,7 +55,6 @@ import edu.upenn.cis.ppod.saveorupdate.IMergeMolecularSequenceSets;
 import edu.upenn.cis.ppod.saveorupdate.IMergeOTUSetFactory;
 import edu.upenn.cis.ppod.saveorupdate.IMergeOTUSets;
 import edu.upenn.cis.ppod.saveorupdate.IMergeTreeSets;
-import edu.upenn.cis.ppod.saveorupdate.IMergeTreeSetsFactory;
 import edu.upenn.cis.ppod.saveorupdate.ISaveOrUpdateMatrix;
 import edu.upenn.cis.ppod.saveorupdate.ISaveOrUpdateMatrixFactory;
 import edu.upenn.cis.ppod.saveorupdate.ISaveOrUpdateStudy;
@@ -96,7 +95,7 @@ class SaveOrUpdateStudyHibernate implements ISaveOrUpdateStudy {
 			final Provider<DNASequenceSet> dnaSequenceSetProvider,
 			final Provider<TreeSet> treeSetProvider,
 			final IMergeOTUSetFactory saveOrUpdateOTUSetFactory,
-			final IMergeTreeSetsFactory mergeTreeSetsFactory,
+			final IMergeTreeSets.IFactory mergeTreeSetsFactory,
 			final ISaveOrUpdateMatrixFactory mergeMatrixFactory,
 			final IMergeMolecularSequenceSets.IFactory<DNASequenceSet, DNASequence> mergeDNASequenceSetsFactory,
 			final IAttachmentNamespaceDAOHibernateFactory attachmentNamespaceDAOFactory,

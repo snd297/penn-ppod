@@ -18,6 +18,7 @@ import edu.upenn.cis.ppod.modelinterfaces.INewPPodVersionInfo;
 /**
  * @author Sam Donnelly
  */
+@ImplementedBy(SetPPodVersionInfoVisitor.class)
 public interface ISetPPodVersionInfoVisitor extends IVisitor {
 
 	void visit(final Attachment attachment);
@@ -46,7 +47,6 @@ public interface ISetPPodVersionInfoVisitor extends IVisitor {
 	 * Create a {@code SetPPodVersionInfoVisitor} with the given {@code
 	 * INewPPodVersionInfo}.
 	 */
-	@ImplementedBy(SetPPodVersionInfoVisitor.Factory.class)
 	static interface IFactory {
 
 		/**

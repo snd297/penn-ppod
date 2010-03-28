@@ -17,13 +17,21 @@ package edu.upenn.cis.ppod.saveorupdate;
 
 import java.util.Map;
 
+import com.google.inject.ImplementedBy;
+
 import edu.upenn.cis.ppod.model.OTU;
 import edu.upenn.cis.ppod.model.TreeSet;
+import edu.upenn.cis.ppod.modelinterfaces.INewPPodVersionInfo;
 
 /**
  * @author Sam Donnelly
  */
+@ImplementedBy(MergeTreeSets.class)
 public interface IMergeTreeSets {
 	TreeSet merge(TreeSet targetTreeSet, TreeSet sourceTreeSet,
 			Map<OTU, OTU> mergedOTUsBySourceOTU);
+
+	static interface IFactory {
+		IMergeTreeSets create(INewPPodVersionInfo newPPodVersionInfo);
+	}
 }

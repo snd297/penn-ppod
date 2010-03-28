@@ -17,10 +17,11 @@ package edu.upenn.cis.ppod.saveorupdate;
 
 import java.util.Map;
 
+import com.google.inject.ImplementedBy;
+
 import edu.upenn.cis.ppod.model.CharacterStateMatrix;
 import edu.upenn.cis.ppod.model.DNACharacter;
 import edu.upenn.cis.ppod.model.OTU;
-import edu.upenn.cis.ppod.model.OTUSet;
 
 /**
  * Merge two matrices.
@@ -30,6 +31,7 @@ import edu.upenn.cis.ppod.model.OTUSet;
  * 
  * @author Sam Donnelly
  */
+@ImplementedBy(SaveOrUpdateCharacterStateMatrix.class)
 public interface ISaveOrUpdateMatrix {
 
 	/**
@@ -52,6 +54,6 @@ public interface ISaveOrUpdateMatrix {
 	 *            should be used in the target matrix
 	 */
 	void saveOrUpdate(CharacterStateMatrix targetMatrix,
-			CharacterStateMatrix sourceMatrix, 
+			CharacterStateMatrix sourceMatrix,
 			Map<OTU, OTU> mergedOTUsBySourceOTU, DNACharacter dnaCharacter);
 }

@@ -38,7 +38,7 @@ import edu.upenn.cis.ppod.modelinterfaces.IUUPPodEntity;
  * 
  * @author Sam Donnelly
  */
-public class MergeOTUSets implements IMergeOTUSets {
+class MergeOTUSets implements IMergeOTUSets {
 
 	private final Provider<OTU> otuProvider;
 	private final INewPPodVersionInfo newPPodVersionInfo;

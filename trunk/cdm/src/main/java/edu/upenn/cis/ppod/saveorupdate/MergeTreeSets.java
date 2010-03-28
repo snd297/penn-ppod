@@ -38,7 +38,7 @@ import edu.upenn.cis.ppod.modelinterfaces.IUUPPodEntity;
 /**
  * @author Sam Donnelly
  */
-public class MergeTreeSets implements IMergeTreeSets {
+class MergeTreeSets implements IMergeTreeSets {
 
 	private final Provider<Tree> treeProvider;
 	private final INewPPodVersionInfo newPPodVersionInfo;

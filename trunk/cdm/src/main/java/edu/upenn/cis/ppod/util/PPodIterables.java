@@ -15,12 +15,8 @@
  */
 package edu.upenn.cis.ppod.util;
 
-import static com.google.common.collect.Iterables.filter;
-import static com.google.common.collect.Sets.newHashSet;
-
 import java.util.Collection;
 import java.util.Iterator;
-import java.util.Set;
 
 import javax.annotation.CheckForNull;
 
