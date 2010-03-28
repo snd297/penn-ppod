@@ -24,7 +24,7 @@ import edu.upenn.cis.ppod.thirdparty.model.security.User;
  * 
  * @author Sam Donnelly
  */
-public class UserDAOHibernate extends GenericHibernateDAO<User, Long> implements
+class UserDAOHibernate extends GenericHibernateDAO<User, Long> implements
 		IUserDAO {
 
 	public User getUserByName(final String userName) {

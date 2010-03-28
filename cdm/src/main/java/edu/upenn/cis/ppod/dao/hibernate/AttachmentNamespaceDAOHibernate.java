@@ -27,7 +27,7 @@ import edu.upenn.cis.ppod.thirdparty.dao.hibernate.GenericHibernateDAO;
 /**
  * @author Sam Donnelly
  */
-public class AttachmentNamespaceDAOHibernate extends
+class AttachmentNamespaceDAOHibernate extends
 		GenericHibernateDAO<AttachmentNamespace, Long> implements
 		IAttachmentNamespaceDAO {
 

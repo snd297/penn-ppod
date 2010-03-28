@@ -33,7 +33,7 @@ import edu.upenn.cis.ppod.util.IPair;
  * 
  * @author Sam Donnelly
  */
-public class CharacterStateMatrixDAOHibernate extends
+class CharacterStateMatrixDAOHibernate extends
 		GenericHibernateDAO<CharacterStateMatrix, Long> implements
 		ICharacterStateMatrixDAO {
 
