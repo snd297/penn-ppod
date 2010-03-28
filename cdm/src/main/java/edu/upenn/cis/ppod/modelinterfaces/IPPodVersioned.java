@@ -53,9 +53,6 @@ public interface IPPodVersioned extends IPersistentObject {
 
 	IPPodVersioned setPPodVersionInfo(final PPodVersionInfo pPodVersionInfo);
 
-	IPPodVersioned setAllowResetPPodVersionInfo(
-			boolean allowResetPPodVersionInfo);
-
 	IPPodVersioned unsetInNeedOfNewPPodVersionInfo();
 
 	IPPodVersioned setInNeedOfNewPPodVersionInfo();

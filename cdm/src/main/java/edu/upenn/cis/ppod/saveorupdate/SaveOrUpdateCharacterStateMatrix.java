@@ -110,7 +110,7 @@ public class SaveOrUpdateCharacterStateMatrix implements ISaveOrUpdateMatrix {
 			targetMatrix.setDocId(sourceMatrix.getDocId());
 		}
 
-		final Map<Integer, Integer> newCharIdxsToOriginalCharIdxs = newHashMap();
+		final Map<Integer, Integer> newCharPositionsToOriginalCharPositions = newHashMap();
 		final List<Character> newTargetMatrixCharacters = newArrayList();
 		int sourceCharacterPosition = -1;
 		for (final Iterator<Character> sourceCharactersItr = sourceMatrix
@@ -154,14 +154,17 @@ public class SaveOrUpdateCharacterStateMatrix implements ISaveOrUpdateMatrix {
 			}
 
 			if (!(sourceMatrix instanceof DNAStateMatrix)) {
-				newCharIdxsToOriginalCharIdxs.put(sourceCharacterPosition,
+				newCharPositionsToOriginalCharPositions.put(
+						sourceCharacterPosition,
 						targetMatrix.getCharacterPosition(newTargetCharacter));
 			} else {
 				if (targetMatrix.getCharactersSize() <= sourceCharacterPosition) {
-					newCharIdxsToOriginalCharIdxs.put(sourceCharacterPosition,
+					newCharPositionsToOriginalCharPositions.put(
+							sourceCharacterPosition,
 							null);
 				} else {
-					newCharIdxsToOriginalCharIdxs.put(sourceCharacterPosition,
+					newCharPositionsToOriginalCharPositions.put(
+							sourceCharacterPosition,
 							sourceCharacterPosition);
 				}
 			}
@@ -232,18 +235,19 @@ public class SaveOrUpdateCharacterStateMatrix implements ISaveOrUpdateMatrix {
 					.getCellsSize());
 
 			// First we fill with empty cells
-			for (int newCellIdx = 0; newCellIdx < targetMatrix
-					.getCharactersSize(); newCellIdx++) {
+			for (int newCellPosition = 0; newCellPosition < targetMatrix
+					.getCharactersSize(); newCellPosition++) {
 				CharacterStateCell targetCell;
 				if (newRow
-						|| null == newCharIdxsToOriginalCharIdxs
-								.get(newCellIdx)) {
+						|| null == newCharPositionsToOriginalCharPositions
+								.get(newCellPosition)) {
 					targetCell = cellProvider.get();
 					targetCell.setPPodVersionInfo(newPPodVersionInfo
 							.getNewPPodVersionInfo());
 				} else {
 					targetCell = originalTargetCells
-							.get(newCharIdxsToOriginalCharIdxs.get(newCellIdx));
+							.get(newCharPositionsToOriginalCharPositions
+									.get(newCellPosition));
 				}
 				newTargetCells.add(targetCell);
 			}
@@ -287,7 +291,22 @@ public class SaveOrUpdateCharacterStateMatrix implements ISaveOrUpdateMatrix {
 						throw new AssertionError("unknown type");
 				}
 				dao.saveOrUpdate(targetCell);
+
+				// We need to do this here since we're removing the cell from
+				// the persistence context (with evict).
+				if (targetCell.isInNeedOfNewPPodVersionInfo()) {
+					targetCell.setPPodVersionInfo(newPPodVersionInfo
+							.getNewPPodVersionInfo());
+				}
+
 				cellsToEvict.add(targetCell);
+			}
+
+			// We need to do this here since we're removing the cell from
+			// the persistence context (with evict)
+			if (targetRow.isInNeedOfNewPPodVersionInfo()) {
+				targetRow.setPPodVersionInfo(newPPodVersionInfo
+						.getNewPPodVersionInfo());
 			}
 
 			logger.debug("{}: flushing row number {}", METHOD,
@@ -297,6 +316,7 @@ public class SaveOrUpdateCharacterStateMatrix implements ISaveOrUpdateMatrix {
 
 			dao.evictEntities(cellsToEvict);
 			cellsToEvict.clear();
+
 			dao.evict(targetRow);
 		}
 

@@ -89,7 +89,8 @@ public class CharacterStateMatrix extends UUPPodEntityWXmlId implements
 	/**
 	 * Column that orders the {@link Character}s. Intentionally package-private.
 	 */
-	static final String CHARACTERS_POSITION_COLUMN = Character.TABLE + "_POSITION";
+	static final String CHARACTERS_POSITION_COLUMN = Character.TABLE
+			+ "_POSITION";
 
 	/** The pPod versions of the columns. */
 	@ManyToMany
@@ -175,14 +176,15 @@ public class CharacterStateMatrix extends UUPPodEntityWXmlId implements
 	@Override
 	public void afterUnmarshal() {
 		super.afterUnmarshal();
-		int i = 0;
+		int i = -1;
 		for (final Character character : getCharacters()) {
+			i++;
 			if (this instanceof MolecularStateMatrix) {
 				// charactersToPositions is meaningless for MolecularMatrix's
 				// since
 				// all of their Characters are the same
 			} else {
-				charactersToPositions.put(character, i++);
+				charactersToPositions.put(character, i);
 			}
 			columnPPodVersionInfos.add(null);
 			character.addMatrix(this);
@@ -469,10 +471,9 @@ public class CharacterStateMatrix extends UUPPodEntityWXmlId implements
 	 * 
 	 * @return this {@code CharacterStateMatrix}
 	 */
-	CharacterStateMatrix resetColumnPPodVersion(final int idx) {
-		if (getAllowResetPPodVersionInfo()) {
-			nullFillAndSet(getColumnPPodVersionInfos(), idx, null);
-		}
+	CharacterStateMatrix resetColumnPPodVersion(final int position) {
+		checkArgument(position >= 0, "position must be non-negative");
+		nullFillAndSet(getColumnPPodVersionInfos(), position, null);
 		return this;
 	}
 
@@ -574,6 +575,7 @@ public class CharacterStateMatrix extends UUPPodEntityWXmlId implements
 	 */
 	public CharacterStateMatrix setColumnPPodVersionInfo(final int pos,
 			final PPodVersionInfo pPodVersionInfo) {
+		checkNotNull(pPodVersionInfo);
 		checkArgument(pos < getColumnPPodVersionInfos().size(),
 				"pos is bigger than getColumnPPodVersionInfos().size()");
 		getColumnPPodVersionInfos().set(pos, pPodVersionInfo);
@@ -621,8 +623,8 @@ public class CharacterStateMatrix extends UUPPodEntityWXmlId implements
 	 */
 	@Override
 	public CharacterStateMatrix setInNeedOfNewPPodVersionInfo() {
-		if (otuSet != null) {
-			otuSet.setInNeedOfNewPPodVersionInfo();
+		if (getOTUSet() != null) {
+			getOTUSet().setInNeedOfNewPPodVersionInfo();
 		}
 		super.setInNeedOfNewPPodVersionInfo();
 		return this;

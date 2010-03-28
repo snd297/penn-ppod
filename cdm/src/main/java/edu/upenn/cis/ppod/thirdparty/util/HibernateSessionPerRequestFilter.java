@@ -45,16 +45,14 @@ import org.hibernate.context.ManagedSessionContext;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
-import edu.upenn.cis.ppod.util.PPodCoreFactory;
-
 public final class HibernateSessionPerRequestFilter implements Filter {
 	private static Logger logger = LoggerFactory
 			.getLogger(HibernateSessionPerRequestFilter.class);
 
-	private final PPodCoreFactory pPodCoreFactory = new PPodCoreFactory();
-// private final Provider<PPodVersionInfoInterceptor>
+	// private final Provider<PPodVersionInfoInterceptor>
 	// versionInfoInterceptorProvider = pPodCoreFactory
 	// .getProvider(PPodVersionInfoInterceptor.class);
+
 	private SessionFactory sf;
 
 	public void destroy() {}

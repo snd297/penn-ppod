@@ -15,10 +15,15 @@
  */
 package edu.upenn.cis.ppod.util;
 
+import static com.google.common.base.Preconditions.checkArgument;
+import static com.google.common.base.Preconditions.checkNotNull;
+
 import java.util.Collection;
 import java.util.List;
 import java.util.Vector;
 import java.util.concurrent.ConcurrentHashMap;
+
+import javax.annotation.Nullable;
 
 /**
  * For easing work with collections.
@@ -59,7 +64,10 @@ public class CollectionsUtil {
 		return new Vector<T>();
 	}
 
-	public static <T> List<T> nullFillAndSet(List<T> coll, int i, T t) {
+	public static <T> List<T> nullFillAndSet(final List<T> coll, final int i,
+			@Nullable final T t) {
+		checkNotNull(coll);
+		checkArgument(i >= 0, "i must be non-negative");
 		while (coll.size() < i + 1) {
 			coll.add(null);
 		}
@@ -67,7 +75,10 @@ public class CollectionsUtil {
 		return coll;
 	}
 
-	public static <T> Collection<T> nullFill(Collection<T> coll, int size) {
+	public static <T> Collection<T> nullFill(final Collection<T> coll,
+			final int size) {
+		checkNotNull(coll);
+		checkArgument(size >= 0, "size must be non-negative");
 		while (coll.size() < size) {
 			coll.add(null);
 		}

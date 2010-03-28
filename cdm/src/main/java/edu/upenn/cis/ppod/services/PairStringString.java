@@ -42,7 +42,7 @@ public final class PairStringString implements IPair<String, String> {
 	@SuppressWarnings("unused")
 	private PairStringString() {}
 
-	public PairStringString(final String first, final String second) {
+	PairStringString(final String first, final String second) {
 		this.first = first;
 		this.second = second;
 	}

@@ -112,7 +112,8 @@ public final class Study2StudyInfo implements IStudy2StudyInfo {
 					PPodEntityInfo characterInfo = pPodEntityInfoProvider.get();
 					characterInfo.setPPodId(character.getPPodId());
 					characterInfo.setEntityId(character.getId());
-					characterInfo.setPPodVersion(character.getPPodVersion());
+					characterInfo.setPPodVersion(character.getPPodVersionInfo()
+							.getPPodVersion());
 					matrixInfo.getCharacterInfosByIdx().put(characterIdx,
 							characterInfo);
 				}
@@ -179,7 +180,8 @@ public final class Study2StudyInfo implements IStudy2StudyInfo {
 					treeSetInfo.getTreeInfos().add(treeInfo);
 					treeInfo.setEntityId(tree.getId());
 					treeInfo.setPPodId(tree.getPPodId());
-					treeInfo.setPPodVersion(tree.getPPodVersion());
+					treeInfo.setPPodVersion(tree.getPPodVersionInfo()
+							.getPPodVersion());
 				}
 			}
 		}
