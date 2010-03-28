@@ -41,5 +41,5 @@ public interface IMatricesResource {
 	@GZIP
 	@Path("ppodidlabelpairs")
 	@Produces("application/xml")
-	Set<PairStringString> getMatrixPPodIdLabelPairs();
+	Set<StringPair> getMatrixPPodIdLabelPairs();
 }

@@ -77,7 +77,7 @@ public interface IStudyResource {
 	@GZIP
 	@Path("ppodidlabelpairs")
 	@Produces("application/xml")
-	Set<PairStringString> getStudyPPodIdLabelPairs();
+	Set<StringPair> getStudyPPodIdLabelPairs();
 
 	@PUT
 	@Pretty

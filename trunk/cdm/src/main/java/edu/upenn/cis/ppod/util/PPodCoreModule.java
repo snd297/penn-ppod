@@ -44,6 +44,7 @@ import edu.upenn.cis.ppod.saveorupdate.hibernate.ISaveOrUpdateStudyHibernateFact
 import edu.upenn.cis.ppod.saveorupdate.hibernate.SaveOrUpdateStudiesHibernate;
 import edu.upenn.cis.ppod.security.ISimpleAuthenticationInfoFactory;
 import edu.upenn.cis.ppod.security.SimpleAuthenticationInfoFactory;
+import edu.upenn.cis.ppod.services.StringPair;
 
 public final class PPodCoreModule extends AbstractModule {
 
@@ -89,9 +90,11 @@ public final class PPodCoreModule extends AbstractModule {
 				FactoryProvider.newFactory(ISaveOrUpdateMatrixFactory.class,
 						SaveOrUpdateCharacterStateMatrix.class));
 
-		final TypeLiteral<IMergeMolecularSequenceSets.IFactory<DNASequenceSet, DNASequence>> mergeDNASequencesFactoryTypeLiteral = new IMergeMolecularSequenceSetsIFactoryTypeLiteral();
+		final TypeLiteral<IMergeMolecularSequenceSets.IFactory<DNASequenceSet, DNASequence>> mergeDNASequencesFactoryTypeLiteral =
+				new IMergeMolecularSequenceSetsIFactoryTypeLiteral();
 
-		final TypeLiteral<MergeMolecularSequenceSets<DNASequenceSet, DNASequence>> mergeDNASequenceSetTypeLiteral = new MergeMolecularSequenceSetsTypeLiteral();
+		final TypeLiteral<MergeMolecularSequenceSets<DNASequenceSet, DNASequence>> mergeDNASequenceSetTypeLiteral =
+				new MergeMolecularSequenceSetsTypeLiteral();
 
 		bind(mergeDNASequencesFactoryTypeLiteral).toProvider(
 				FactoryProvider.newFactory(mergeDNASequencesFactoryTypeLiteral,
@@ -117,6 +120,11 @@ public final class PPodCoreModule extends AbstractModule {
 				FactoryProvider.newFactory(
 						INewPPodVersionInfoHibernate.IFactory.class,
 						NewPPodVersionInfoHibernate.class));
+
+		bind(StringPair.IFactory.class).toProvider(
+				FactoryProvider.newFactory(
+						StringPair.IFactory.class,
+						StringPair.class));
 
 	}
 }

@@ -52,7 +52,7 @@ import edu.upenn.cis.ppod.util.MatrixProvider;
 public class SaveOrUpdateCharacterStateMatrixTest {
 
 	@Inject
-	private ISaveOrUpdateMatrixFactory mergeMatrixFactory;
+	private ISaveOrUpdateMatrixFactory saveOrUpdateMatrixFactory;
 
 	@Inject
 	private ICharacterStateMatrixFactory matrixFactory;
@@ -90,7 +90,7 @@ public class SaveOrUpdateCharacterStateMatrixTest {
 	@Test(dataProvider = MatrixProvider.SMALL_MATRICES_PROVIDER, dataProviderClass = MatrixProvider.class)
 	public void save(final CharacterStateMatrix sourceMatrix) {
 
-		final ISaveOrUpdateMatrix saveOrUpdateMatrix = mergeMatrixFactory
+		final ISaveOrUpdateMatrix saveOrUpdateMatrix = saveOrUpdateMatrixFactory
 				.create(mergeAttachment, dao.setSession(session),
 						newPPodVersionInfo);
 		final OTUSet fakeDbOTUSet = sourceMatrix.getOTUSet();
@@ -115,7 +115,7 @@ public class SaveOrUpdateCharacterStateMatrixTest {
 
 	@Test(dataProvider = MatrixProvider.SMALL_MATRICES_PROVIDER, dataProviderClass = MatrixProvider.class)
 	public void moveRows(final CharacterStateMatrix sourceMatrix) {
-		final ISaveOrUpdateMatrix saveOrUpdateMatrix = mergeMatrixFactory
+		final ISaveOrUpdateMatrix saveOrUpdateMatrix = saveOrUpdateMatrixFactory
 				.create(mergeAttachment, dao.setSession(session),
 						newPPodVersionInfo);
 		final OTUSet fakeTargetOTUSet = sourceMatrix.getOTUSet();
@@ -164,7 +164,7 @@ public class SaveOrUpdateCharacterStateMatrixTest {
 	public void moveCharacters(final CharacterStateMatrix sourceMatrix) {
 		// It only makes sense to move characters in a standard matrix
 		if (sourceMatrix.getClass().equals(CharacterStateMatrix.class)) {
-			final ISaveOrUpdateMatrix saveOrUpdateMatrix = mergeMatrixFactory
+			final ISaveOrUpdateMatrix saveOrUpdateMatrix = saveOrUpdateMatrixFactory
 					.create(mergeAttachment, dao.setSession(session),
 							newPPodVersionInfo);
 			final OTUSet fakeTargetOTUSet = sourceMatrix.getOTUSet();
