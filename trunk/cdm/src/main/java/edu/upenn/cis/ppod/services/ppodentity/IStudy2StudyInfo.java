@@ -15,6 +15,8 @@
  */
 package edu.upenn.cis.ppod.services.ppodentity;
 
+import com.google.inject.ImplementedBy;
+
 import edu.upenn.cis.ppod.model.Study;
 
 /**
@@ -22,6 +24,7 @@ import edu.upenn.cis.ppod.model.Study;
  * 
  * @author Sam Donnelly
  */
+@ImplementedBy(Study2StudyInfo.class)
 public interface IStudy2StudyInfo {
 
 	/**

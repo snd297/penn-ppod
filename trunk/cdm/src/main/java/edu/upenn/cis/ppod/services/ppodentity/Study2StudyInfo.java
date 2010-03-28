@@ -38,7 +38,7 @@ import edu.upenn.cis.ppod.model.TreeSet;
 /**
  * @author Sam Donnelly
  */
-public final class Study2StudyInfo implements IStudy2StudyInfo {
+final class Study2StudyInfo implements IStudy2StudyInfo {
 	private final Provider<StudyInfo> studyInfoProvider;
 	private final Provider<OTUSetInfo> otuSetInfoProvider;
 	private final Provider<CharacterStateMatrixInfo> matrixInfoProvider;

@@ -42,7 +42,7 @@ public class PopulateTables {
 		Session session = null;
 		try {
 			final Injector injector = Guice
-			.createInjector(new PPodCoreModule());
+					.createInjector(new PPodCoreModule());
 			final DNACharacter dnaCharacter = injector
 					.getInstance(DNACharacter.class);
 

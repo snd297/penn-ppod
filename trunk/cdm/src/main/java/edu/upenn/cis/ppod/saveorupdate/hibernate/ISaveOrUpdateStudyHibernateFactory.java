@@ -18,7 +18,7 @@ package edu.upenn.cis.ppod.saveorupdate.hibernate;
 import org.hibernate.Session;
 
 import edu.upenn.cis.ppod.modelinterfaces.INewPPodVersionInfo;
-import edu.upenn.cis.ppod.saveorupdate.ISaveOrUpdateStudies;
+import edu.upenn.cis.ppod.saveorupdate.ISaveOrUpdateStudy;
 
 /**
  * Create {@link Study}s that depend on a {@link Session}.
@@ -28,12 +28,13 @@ import edu.upenn.cis.ppod.saveorupdate.ISaveOrUpdateStudies;
 public interface ISaveOrUpdateStudyHibernateFactory {
 
 	/**
-	 * Create {@link Study}s that depend on a {@link Session}.
+	 * Create {@link ISaveOrUpdateStudy}s that depend on a {@link Session}.
 	 * 
 	 * @param session dependency
 	 * @param newPPodVersionInfo
-	 * @return a new {@link Study}
+	 * 
+	 * @return a new {@link ISaveOrUpdateStudy}
 	 */
-	ISaveOrUpdateStudies create(Session session,
+	ISaveOrUpdateStudy create(Session session,
 				INewPPodVersionInfo newPPodVersionInfo);
 }

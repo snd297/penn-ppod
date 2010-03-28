@@ -17,6 +17,8 @@ package edu.upenn.cis.ppod.services.hibernate;
 
 import org.hibernate.Session;
 
+import com.google.inject.ImplementedBy;
+
 import edu.upenn.cis.ppod.services.IPPodEntitiesResource;
 
 /**
@@ -25,6 +27,7 @@ import edu.upenn.cis.ppod.services.IPPodEntitiesResource;
  * 
  * @author Sam Donnelly
  */
+@ImplementedBy(PPodEntitiesResourceHibernate.class)
 public interface IPPodEntitiesResourceHibernate extends IPPodEntitiesResource {
 	IPPodEntitiesResourceHibernate setSession(Session session);
 }

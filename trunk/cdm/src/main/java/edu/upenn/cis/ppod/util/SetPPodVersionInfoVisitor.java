@@ -37,25 +37,8 @@ import edu.upenn.cis.ppod.modelinterfaces.IPPodVersioned;
  * 
  * @author Sam Donnelly
  */
-public class SetPPodVersionInfoVisitor extends EmptyVisitor {
-
-	/**
-	 * Create a {@code SetPPodVersionInfoVisitor} with the given {@code
-	 * INewPPodVersionInfo}.
-	 */
-	public static interface IFactory {
-
-		/**
-		 * Create a {@code SetPPodVersionInfoVisitor} with the given {@code
-		 * INewPPodVersionInfo}.
-		 * 
-		 * @param newPPodVersionInfo to be assigned to objects that are
-		 *            {@link PPodEntity#isInNeedOfNewPPodVersionInfo()}
-		 * 
-		 * @return the new {@code SetPPodVersionInfoVisitor}
-		 */
-		SetPPodVersionInfoVisitor create(INewPPodVersionInfo newPPodVersionInfo);
-	}
+class SetPPodVersionInfoVisitor extends EmptyVisitor implements
+		ISetPPodVersionInfoVisitor {
 
 	private final INewPPodVersionInfo newPPodVersionInfo;
 
@@ -77,41 +60,21 @@ public class SetPPodVersionInfoVisitor extends EmptyVisitor {
 		setNewPPodVersionIfNeeded(attachment);
 	}
 
-	/**
-	 * Does nothing.
-	 * 
-	 * @param character ignored
-	 */
 	@Override
 	public void visit(final Character character) {
 		setNewPPodVersionIfNeeded(character);
 	}
 
-	/**
-	 * Does nothing.
-	 * 
-	 * @param characterState ignored
-	 */
 	@Override
 	public void visit(final CharacterState characterState) {
 		setNewPPodVersionIfNeeded(characterState);
 	}
 
-	/**
-	 * Does nothing.
-	 * 
-	 * @param cell ignored
-	 */
 	@Override
 	public void visit(final CharacterStateCell cell) {
 		setNewPPodVersionIfNeeded(cell);
 	}
 
-	/**
-	 * Does nothing.
-	 * 
-	 * @param matrix ignored
-	 */
 	@Override
 	public void visit(final CharacterStateMatrix matrix) {
 		setNewPPodVersionIfNeeded(matrix);
@@ -153,21 +116,11 @@ public class SetPPodVersionInfoVisitor extends EmptyVisitor {
 		setNewPPodVersionIfNeeded(otuSet);
 	}
 
-	/**
-	 * Does nothing.
-	 * 
-	 * @param study ignored
-	 */
 	@Override
 	public void visit(final Study study) {
 		setNewPPodVersionIfNeeded(study);
 	}
 
-	/**
-	 * Does nothing.
-	 * 
-	 * @param treeSet ignored
-	 */
 	@Override
 	public void visit(final TreeSet treeSet) {
 		setNewPPodVersionIfNeeded(treeSet);
@@ -176,5 +129,12 @@ public class SetPPodVersionInfoVisitor extends EmptyVisitor {
 	@Override
 	public void visit(final Tree tree) {
 		setNewPPodVersionIfNeeded(tree);
+	}
+
+	static class Factory implements IFactory {
+		public SetPPodVersionInfoVisitor create(
+				final INewPPodVersionInfo newPPodVersionInfo) {
+			return new SetPPodVersionInfoVisitor(newPPodVersionInfo);
+		}
 	}
 }
