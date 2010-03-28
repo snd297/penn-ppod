@@ -19,11 +19,8 @@ import com.google.inject.AbstractModule;
 import com.google.inject.TypeLiteral;
 import com.google.inject.assistedinject.FactoryProvider;
 
-import edu.upenn.cis.ppod.dao.hibernate.AttachmentNamespaceDAOHibernate;
-import edu.upenn.cis.ppod.dao.hibernate.AttachmentTypeDAOHibernate;
+import edu.upenn.cis.ppod.dao.hibernate.DAOHibernateModule;
 import edu.upenn.cis.ppod.dao.hibernate.HibernateDAOFactory;
-import edu.upenn.cis.ppod.dao.hibernate.IAttachmentNamespaceDAOHibernateFactory;
-import edu.upenn.cis.ppod.dao.hibernate.IAttachmentTypeDAOHibernateFactory;
 import edu.upenn.cis.ppod.model.CharacterState;
 import edu.upenn.cis.ppod.model.DNASequence;
 import edu.upenn.cis.ppod.model.DNASequenceSet;
@@ -54,18 +51,10 @@ public final class PPodCoreModule extends AbstractModule {
 
 	@Override
 	protected void configure() {
+
 		bind(HibernateDAOFactory.IFactory.class).toProvider(
 				FactoryProvider.newFactory(HibernateDAOFactory.IFactory.class,
 						HibernateDAOFactory.class));
-
-		bind(IAttachmentNamespaceDAOHibernateFactory.class).toProvider(
-				FactoryProvider.newFactory(
-						IAttachmentNamespaceDAOHibernateFactory.class,
-						AttachmentNamespaceDAOHibernate.class));
-		bind(IAttachmentTypeDAOHibernateFactory.class).toProvider(
-				FactoryProvider.newFactory(
-						IAttachmentTypeDAOHibernateFactory.class,
-						AttachmentTypeDAOHibernate.class));
 
 		bind(IPair.IFactory.class).to(Pair.Factory.class);
 
@@ -111,9 +100,10 @@ public final class PPodCoreModule extends AbstractModule {
 				FactoryProvider.newFactory(
 						ISetPPodVersionInfoVisitor.IFactory.class,
 						ISetPPodVersionInfoVisitor.class));
-
+		
 		install(new ModelModule());
 		install(new SaveOrUpdateHibernateModule());
+		install(new DAOHibernateModule());
 
 	}
 }

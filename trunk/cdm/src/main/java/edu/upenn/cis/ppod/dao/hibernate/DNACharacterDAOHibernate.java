@@ -22,7 +22,8 @@ import edu.upenn.cis.ppod.thirdparty.dao.hibernate.GenericHibernateDAO;
 /**
  * @author Sam Donnelly
  */
-public class DNACharacterDAOHibernate extends GenericHibernateDAO<DNACharacter, Long>
+public class DNACharacterDAOHibernate extends
+		GenericHibernateDAO<DNACharacter, Long>
 		implements IDNACharacterDAO {
 
 }
