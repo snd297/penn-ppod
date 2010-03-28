@@ -155,6 +155,7 @@ public class OTUSet extends UUPPodEntityWXmlId implements Iterable<OTU> {
 			final DNASequenceSet dnaSequenceSet) {
 		getDNASequenceSets().add(dnaSequenceSet);
 		dnaSequenceSet.setOTUSet(this);
+		setInNeedOfNewPPodVersionInfo();
 		return dnaSequenceSet;
 	}
 
@@ -172,6 +173,7 @@ public class OTUSet extends UUPPodEntityWXmlId implements Iterable<OTU> {
 		checkNotNull(matrix);
 		getMatrices().add(matrix);
 		matrix.setOTUSet(this);
+		setInNeedOfNewPPodVersionInfo();
 		return matrix;
 	}
 
@@ -199,7 +201,7 @@ public class OTUSet extends UUPPodEntityWXmlId implements Iterable<OTU> {
 	public OTU addOTU(final OTU otu) {
 		checkNotNull(otu);
 		addOTUWithoutSetOTUsOnChildren(otu);
-		setOTUsOnChildren();
+		setOTUSetOnChildren();
 		return otu;
 	}
 
@@ -344,6 +346,11 @@ public class OTUSet extends UUPPodEntityWXmlId implements Iterable<OTU> {
 		return treeSets;
 	}
 
+	/**
+	 * Get an iterator over this {@code OTUSet}'s {@code TreeSet}s.
+	 * 
+	 * @return an iterator over this {@code OTUSet}'s {@code TreeSet}s
+	 */
 	public Iterator<TreeSet> getTreeSetsIterator() {
 		return Collections.unmodifiableSet(getTreeSets()).iterator();
 	}
@@ -368,11 +375,11 @@ public class OTUSet extends UUPPodEntityWXmlId implements Iterable<OTU> {
 	 * 
 	 * @return this {@code OTUSet}
 	 */
-	public OTUSet setDescription(@Nullable final String description) {
-		if (equal(getDescription(), description)) {
+	public OTUSet setDescription(@Nullable final String newDescription) {
+		if (equal(getDescription(), newDescription)) {
 
 		} else {
-			this.description = description;
+			this.description = newDescription;
 			setInNeedOfNewPPodVersionInfo();
 		}
 		return this;
@@ -383,8 +390,9 @@ public class OTUSet extends UUPPodEntityWXmlId implements Iterable<OTU> {
 	 * result of this operation are returned.
 	 * <p>
 	 * This method handles both sides of the {@code OTUSet<->DNASequenceSet}
-	 * relationship: if a sequence set is added, then this {@code OTUSet}
-	 * is set as its {@code OTUSet}, and if a set is deleted, the relationship is severed.
+	 * relationship: if a sequence set is added, then this {@code OTUSet} is set
+	 * as its {@code OTUSet}, and if a set is deleted, the relationship is
+	 * severed.
 	 * 
 	 * @param newSequenceSets the new sequence sets
 	 * 
@@ -412,23 +420,17 @@ public class OTUSet extends UUPPodEntityWXmlId implements Iterable<OTU> {
 			addDNASequenceSet(newSequenceSet);
 		}
 
+		setInNeedOfNewPPodVersionInfo();
 		return removedSequenceSets;
 	}
 
 	/**
-	 * Point this {@code OTUSet} and all of its {@code PhyloCharMatrix}'s to a
-	 * new {@code pPodVersionInfo}. Only the first call has an effect.
-	 * <p>
-	 * If {@link #getAllowPersist()} {@code == true} then calls to this method
-	 * does nothing and returns.
+	 * Point this {@code OTUSet} and all of its children to a new {@code
+	 * pPodVersionInfo}. Only the first call has an effect.
 	 * 
 	 * @see #unsetAllowPersistAndResetPPodVersionInfo()
 	 * 
 	 * @return this {@code OTUSet}
-	 * 
-	 * @throws IllegalArgumentException if {@code
-	 *             pPodVersionInfo.getPPodVersion()} is greater than {@code
-	 *             this.getPPodVersion().getPPodVersion()}
 	 */
 	@Override
 	public OTUSet setInNeedOfNewPPodVersionInfo() {
@@ -447,12 +449,12 @@ public class OTUSet extends UUPPodEntityWXmlId implements Iterable<OTU> {
 	 * 
 	 * @return this <code>OTUSet</code>
 	 */
-	public OTUSet setLabel(final String label) {
-		checkNotNull(label);
-		if (label.equals(getLabel())) {
+	public OTUSet setLabel(final String newLabel) {
+		checkNotNull(newLabel);
+		if (newLabel.equals(getLabel())) {
 
 		} else {
-			this.label = label;
+			this.label = newLabel;
 			setInNeedOfNewPPodVersionInfo();
 		}
 		return this;
@@ -520,14 +522,14 @@ public class OTUSet extends UUPPodEntityWXmlId implements Iterable<OTU> {
 			removedOTU.setOTUSet(null);
 		}
 
-		setOTUsOnChildren();
+		setOTUSetOnChildren();
 
 		setInNeedOfNewPPodVersionInfo();
 
 		return removedOTUs;
 	}
 
-	private void setOTUsOnChildren() {
+	private void setOTUSetOnChildren() {
 		// Now let's let everyone know about the new OTUs
 		for (final CharacterStateMatrix matrix : getMatrices()) {
 			matrix.setOTUSet(this);

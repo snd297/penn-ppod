@@ -224,15 +224,9 @@ public class CharacterStateRow extends PPodEntity implements
 	 */
 	@Override
 	public CharacterStateRow setInNeedOfNewPPodVersionInfo() {
-		if (getAllowResetPPodVersionInfo()) {
-			if (isInNeedOfNewPPodVersionInfo()) {
-
-			} else {
-				checkState(getMatrix() != null);
-				matrix.setInNeedOfNewPPodVersionInfo();
-				super.setInNeedOfNewPPodVersionInfo();
-			}
-		}
+		checkState(getMatrix() != null);
+		matrix.setInNeedOfNewPPodVersionInfo();
+		super.setInNeedOfNewPPodVersionInfo();
 		return this;
 	}
 

@@ -69,7 +69,6 @@ public class SetPPodVersionInfoVisitor extends EmptyVisitor {
 		if (pPodVersioned.isInNeedOfNewPPodVersionInfo()) {
 			pPodVersioned.setPPodVersionInfo(newPPodVersionInfo
 					.getNewPPodVersionInfo());
-			pPodVersioned.unsetInNeedOfNewPPodVersionInfo();
 		}
 	}
 

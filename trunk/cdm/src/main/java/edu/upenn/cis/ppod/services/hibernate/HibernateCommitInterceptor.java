@@ -21,6 +21,8 @@ import org.hibernate.Session;
 import org.jboss.resteasy.annotations.interception.ServerInterceptor;
 import org.jboss.resteasy.core.ServerResponse;
 import org.jboss.resteasy.spi.interception.PostProcessInterceptor;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 
 import edu.upenn.cis.ppod.thirdparty.util.HibernateUtil;
 
@@ -36,14 +38,17 @@ import edu.upenn.cis.ppod.thirdparty.util.HibernateUtil;
 @ServerInterceptor
 public class HibernateCommitInterceptor implements PostProcessInterceptor {
 
+	private static Logger logger = LoggerFactory
+			.getLogger(HibernateCommitInterceptor.class);
+
 	public void postProcess(final ServerResponse response) {
 		final Session currentSession = HibernateUtil.getSessionFactory()
 				.getCurrentSession();
 
-		// The transaction may have been committed by the servlet!
-		if (currentSession.getTransaction().isActive()) {
-			currentSession.getTransaction().commit();
-		}
+		logger.info("committing transaction...");
+		currentSession.getTransaction().commit();
+		logger.info("committed");
+
 		return;
 	}
 }

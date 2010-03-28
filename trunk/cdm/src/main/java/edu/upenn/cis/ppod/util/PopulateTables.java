@@ -20,10 +20,13 @@ import java.util.Iterator;
 import org.hibernate.classic.Session;
 import org.hibernate.context.ManagedSessionContext;
 
+import com.google.inject.Guice;
+import com.google.inject.Injector;
+
 import edu.upenn.cis.ppod.model.CharacterState;
 import edu.upenn.cis.ppod.model.DNACharacter;
-import edu.upenn.cis.ppod.model.NewPPodVersionInfoHibernate;
 import edu.upenn.cis.ppod.modelinterfaces.INewPPodVersionInfo;
+import edu.upenn.cis.ppod.modelinterfaces.INewPPodVersionInfoHibernate;
 import edu.upenn.cis.ppod.thirdparty.util.HibernateUtil;
 
 /**
@@ -31,7 +34,6 @@ import edu.upenn.cis.ppod.thirdparty.util.HibernateUtil;
  * 
  */
 public class PopulateTables {
-	private static PPodCoreFactory pPodCoreFactory = new PPodCoreFactory();
 
 	/**
 	 * @param args
@@ -39,8 +41,10 @@ public class PopulateTables {
 	public static void main(String[] args) throws Throwable {
 		Session session = null;
 		try {
-			final DNACharacter dnaCharacter = pPodCoreFactory
-					.create(DNACharacter.class);
+			final Injector injector = Guice
+			.createInjector(new PPodCoreModule());
+			final DNACharacter dnaCharacter = injector
+					.getInstance(DNACharacter.class);
 
 			dnaCharacter.setPPodId();
 
@@ -48,8 +52,9 @@ public class PopulateTables {
 			ManagedSessionContext.bind(session);
 			session.beginTransaction();
 
-			final INewPPodVersionInfo newPPodVersionInfo = pPodCoreFactory
-					.create(NewPPodVersionInfoHibernate.class);
+			final INewPPodVersionInfo newPPodVersionInfo = injector
+					.getInstance(INewPPodVersionInfoHibernate.IFactory.class)
+					.create(session);
 			dnaCharacter.setPPodVersionInfo(newPPodVersionInfo
 					.getNewPPodVersionInfo());
 

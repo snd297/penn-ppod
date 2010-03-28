@@ -46,10 +46,8 @@ public abstract class UUPPodEntity extends PPodEntity implements IUUPPodEntity {
 
 	final static String PPOD_ID_COLUMN = "PPOD_ID";
 	final static int PPOD_ID_COLUMN_LENGTH = 36;
-	final static String PPOD_ID_COLUMN_IDX = "IDX_PPOD_ID";
 
 	@Column(name = PPOD_ID_COLUMN, unique = true, nullable = false, length = PPOD_ID_COLUMN_LENGTH)
-	@org.hibernate.annotations.Index(name = PPOD_ID_COLUMN_IDX)
 	@Nullable
 	private String pPodId;
 

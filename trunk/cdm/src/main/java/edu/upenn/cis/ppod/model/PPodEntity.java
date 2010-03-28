@@ -109,9 +109,6 @@ public abstract class PPodEntity extends PersistentObject implements IAttachee,
 	@Nullable
 	private Long pPodVersion;
 
-	@Transient
-	boolean allowResetPPodVersionInfo = true;
-
 	@ManyToMany
 	@JoinTable(joinColumns = @JoinColumn(name = ID_COLUMN), inverseJoinColumns = @JoinColumn(name = Attachment.ID_COLUMN))
 	@Nullable
@@ -194,10 +191,6 @@ public abstract class PPodEntity extends PersistentObject implements IAttachee,
 	@OverridingMethodsMustInvokeSuper
 	public void beforeUnmarshal(final Unmarshaller u, final Object parent) {
 		unsetAllowPersist();
-	}
-
-	public boolean getAllowResetPPodVersionInfo() {
-		return allowResetPPodVersionInfo;
 	}
 
 	private Set<Attachment> getAttachments() {
@@ -291,12 +284,6 @@ public abstract class PPodEntity extends PersistentObject implements IAttachee,
 		return attachmentRemoved;
 	}
 
-	public PPodEntity setAllowResetPPodVersionInfo(
-			final boolean allowResetPPodVersionInfo) {
-		this.allowResetPPodVersionInfo = allowResetPPodVersionInfo;
-		return this;
-	}
-
 	/**
 	 * Mark this object's {@link PPodVersionInfo} for update to the next version
 	 * number on save or update. This is done by setting it to {@code null}.
@@ -311,9 +298,7 @@ public abstract class PPodEntity extends PersistentObject implements IAttachee,
 	 */
 	@OverridingMethodsMustInvokeSuper
 	public PPodEntity setInNeedOfNewPPodVersionInfo() {
-		if (getAllowResetPPodVersionInfo()) {
-			inNeedOfNewPPodVersionInfo = true;
-		}
+		inNeedOfNewPPodVersionInfo = true;
 		return this;
 	}
 
