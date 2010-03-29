@@ -30,9 +30,9 @@ import com.google.inject.assistedinject.Assisted;
 
 import edu.upenn.cis.ppod.dao.IAttachmentNamespaceDAO;
 import edu.upenn.cis.ppod.dao.IAttachmentTypeDAO;
+import edu.upenn.cis.ppod.dao.IDAO;
 import edu.upenn.cis.ppod.dao.IDNACharacterDAO;
 import edu.upenn.cis.ppod.dao.IOTUSetDAO;
-import edu.upenn.cis.ppod.dao.IObjectWithLongIdDAO;
 import edu.upenn.cis.ppod.dao.IStudyDAO;
 import edu.upenn.cis.ppod.model.CharacterStateMatrix;
 import edu.upenn.cis.ppod.model.DNACharacter;
@@ -85,7 +85,7 @@ final class SaveOrUpdateStudy implements ISaveOrUpdateStudy {
 			@Assisted final IDNACharacterDAO dnaCharacterDAO,
 			@Assisted final IAttachmentNamespaceDAO attachmentNamespaceDAO,
 			@Assisted final IAttachmentTypeDAO attachmentTypeDAO,
-			@Assisted final IObjectWithLongIdDAO dao,
+			@Assisted final IDAO<Object, Long> dao,
 			@Assisted final INewPPodVersionInfo newPPodVersionInfo) {
 
 		this.studyDAO = studyDAO;
