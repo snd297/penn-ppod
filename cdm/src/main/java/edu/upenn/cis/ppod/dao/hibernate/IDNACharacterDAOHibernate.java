@@ -1,5 +1,5 @@
 /*
- * Copyright (C) 2009 Trustees of the University of Pennsylvania
+ * Copyright (C) 2010 Trustees of the University of Pennsylvania
  *
  * Licensed under the Apache License, Version 2.0 (the "License");
  * you may not use this file except in compliance with the License.
@@ -9,16 +9,24 @@
  *
  * Unless required by applicable law or agreed to in writing, software
  * distributed under the License is distributed on an "AS IS" BASIS,
- * WITHOUT WARRANTIES OR CONDITIONS of ANY KIND, either express or implied.
+ * WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
  * See the License for the specific language governing permissions and
  * limitations under the License.
  */
 package edu.upenn.cis.ppod.dao.hibernate;
 
-import org.hibernate.Session;
+import com.google.inject.ImplementedBy;
 
-import edu.upenn.cis.ppod.dao.IAttachmentNamespaceDAO;
+import edu.upenn.cis.ppod.dao.IDNACharacterDAO;
+import edu.upenn.cis.ppod.model.DNACharacter;
 
-public interface IAttachmentNamespaceDAOHibernateFactory {
-	IAttachmentNamespaceDAO create(Session session);
+/**
+ * The Interface IDNACharacterDAOHibernate.
+ * 
+ * @author Sam Donnelly
+ */
+@ImplementedBy(DNACharacterDAOHibernate.class)
+public interface IDNACharacterDAOHibernate extends IDNACharacterDAO,
+		IDAOHibernate<DNACharacter, Long> {
+
 }

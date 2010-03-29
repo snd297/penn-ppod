@@ -25,8 +25,6 @@ import com.google.inject.Inject;
 import com.google.inject.Provider;
 import com.google.inject.assistedinject.Assisted;
 
-import edu.upenn.cis.ppod.dao.IAttachmentNamespaceDAO;
-import edu.upenn.cis.ppod.dao.IAttachmentTypeDAO;
 import edu.upenn.cis.ppod.dao.ICharacterDAO;
 import edu.upenn.cis.ppod.dao.ICharacterStateDAO;
 import edu.upenn.cis.ppod.dao.ICharacterStateMatrixDAO;
@@ -51,6 +49,7 @@ import edu.upenn.cis.ppod.model.security.PPodGroup;
 import edu.upenn.cis.ppod.thirdparty.dao.hibernate.GenericHibernateDAO;
 import edu.upenn.cis.ppod.thirdparty.model.security.Role;
 
+// TODO: Auto-generated Javadoc
 /**
  * Manufactures DAO's for talking to the database with straight Hibernate (as
  * opposed to using EJB's).
@@ -79,8 +78,16 @@ public class HibernateDAOFactory implements IDAOFactory {
 		HibernateDAOFactory create(Session session);
 	}
 
+	/** The session. */
 	private final Session session;
 
+	/**
+	 * Instantiates a new hibernate dao factory.
+	 * 
+	 * @param studyDAOProvider the study dao provider
+	 * @param charStateMatrixDAOProvider the char state matrix dao provider
+	 * @param session the session
+	 */
 	@Inject
 	public HibernateDAOFactory(
 			final Provider<StudyDAOHibernate> studyDAOProvider,
@@ -97,6 +104,12 @@ public class HibernateDAOFactory implements IDAOFactory {
 	public static class OTUDAOHibernate extends GenericHibernateDAO<OTU, Long>
 			implements IOTUDAO {
 
+		/**
+		 * Gets the oTU by p pod id.
+		 * 
+		 * @param pPodId the pod id
+		 * @return the oTU by p pod id
+		 */
 		public OTU getOTUByPPodId(String pPodId) {
 			return (OTU) getSession().getNamedQuery(
 					OTU.class.getSimpleName() + "-getByPPodId").setParameter(
@@ -110,12 +123,25 @@ public class HibernateDAOFactory implements IDAOFactory {
 	public static class OTUSetDAOHibernate extends
 			GenericHibernateDAO<OTUSet, Long> implements IOTUSetDAO {
 
+		/**
+		 * Gets the oTU set by p pod id.
+		 * 
+		 * @param pPodId the pod id
+		 * @return the oTU set by p pod id
+		 */
 		public OTUSet getOTUSetByPPodId(final String pPodId) {
 			return (OTUSet) getSession().getNamedQuery(
 					OTUSet.class.getSimpleName() + "-getByPPodId")
 					.setParameter("pPodId", pPodId).uniqueResult();
 		}
 
+		/**
+		 * Gets the oTU ids versions by otu set id and min p pod version.
+		 * 
+		 * @param otuId the otu id
+		 * @param minPPodVersion the min p pod version
+		 * @return the oTU ids versions by otu set id and min p pod version
+		 */
 		@SuppressWarnings("unchecked")
 		public List<Object[]> getOTUIdsVersionsByOTUSetIdAndMinPPodVersion(
 				final Long otuId, final Long minPPodVersion) {
@@ -127,6 +153,13 @@ public class HibernateDAOFactory implements IDAOFactory {
 							"minPPodVersion", minPPodVersion).list();
 		}
 
+		/**
+		 * Gets the matrix infos by otu set p pod id and min p pod version.
+		 * 
+		 * @param otuSetPPodId the otu set p pod id
+		 * @param minPPodVersion the min p pod version
+		 * @return the matrix infos by otu set p pod id and min p pod version
+		 */
 		@SuppressWarnings("unchecked")
 		public List<Object[]> getMatrixInfosByOTUSetPPodIdAndMinPPodVersion(
 				final String otuSetPPodId, final Long minPPodVersion) {
@@ -145,6 +178,12 @@ public class HibernateDAOFactory implements IDAOFactory {
 	public static class CharacterDAOHibernate extends
 			GenericHibernateDAO<Character, Long> implements ICharacterDAO {
 
+		/**
+		 * Gets the character by p pod id.
+		 * 
+		 * @param pPodId the pod id
+		 * @return the character by p pod id
+		 */
 		public Character getCharacterByPPodId(String pPodId) {
 			if (pPodId == null) {
 				return null;
@@ -169,6 +208,13 @@ public class HibernateDAOFactory implements IDAOFactory {
 			GenericHibernateDAO<CharacterStateRow, Long> implements
 			ICharacterStateRowDAO {
 
+		/**
+		 * Gets the cell idxs versions by row id and min version.
+		 * 
+		 * @param rowId the row id
+		 * @param minVersion the min version
+		 * @return the cell idxs versions by row id and min version
+		 */
 		@SuppressWarnings("unchecked")
 		public List<Object[]> getCellIdxsVersionsByRowIdAndMinVersion(
 				Long rowId, Long minVersion) {
@@ -181,11 +227,24 @@ public class HibernateDAOFactory implements IDAOFactory {
 
 	}
 
+	/**
+	 * The Class PPodGroupDAOHibernate.
+	 */
 	public static class PPodGroupDAOHibernate extends
 			GenericHibernateDAO<PPodGroup, Long> implements IPPodGroupDAO {}
 
+	/**
+	 * The Class PPodRoleDAOHibernate.
+	 */
 	public static class PPodRoleDAOHibernate extends
 			GenericHibernateDAO<Role, Long> implements IPPodRoleDAO {
+
+		/**
+		 * Gets the by name.
+		 * 
+		 * @param name the name
+		 * @return the by name
+		 */
 		public Role getByName(String name) {
 			return (Role) getSession().createQuery(
 					"select role from Role role where role.name=:name")
@@ -199,6 +258,12 @@ public class HibernateDAOFactory implements IDAOFactory {
 	public static class TreeDAOHibernate extends
 			GenericHibernateDAO<Tree, Long> implements ITreeDAO {
 
+		/**
+		 * Gets the by p pod id.
+		 * 
+		 * @param pPodId the pod id
+		 * @return the by p pod id
+		 */
 		public Tree getByPPodId(String pPodId) {
 			return (Tree) getSession().getNamedQuery(
 					Tree.class.getSimpleName() + "-getByPPodId").setParameter(
@@ -209,6 +274,13 @@ public class HibernateDAOFactory implements IDAOFactory {
 	/** A default {@code TreeSet} Hibernate DAO. */
 	public static class TreeSetDAOHibernate extends
 			GenericHibernateDAO<TreeSet, Long> implements ITreeSetDAO {
+
+		/**
+		 * Gets the by p pod id.
+		 * 
+		 * @param pPodId the pod id
+		 * @return the by p pod id
+		 */
 		public TreeSet getByPPodId(final String pPodId) {
 			return (TreeSet) getSession().getNamedQuery(
 					TreeSet.class.getSimpleName() + "-getByPPodId")
@@ -216,71 +288,129 @@ public class HibernateDAOFactory implements IDAOFactory {
 		}
 	}
 
+	/** The study dao provider. */
 	private final Provider<StudyDAOHibernate> studyDAOProvider;
 
-	public StudyDAOHibernate getStudyDAO() {
+	/**
+	 * Gets the study dao.
+	 * 
+	 * @return the study dao
+	 */
+	public IStudyDAOHibernate getStudyDAO() {
 		return (StudyDAOHibernate) studyDAOProvider.get().setSession(session);
 	}
 
+	/** The char state matrix provider. */
 	private final Provider<CharacterStateMatrixDAOHibernate> charStateMatrixProvider;
 
+	/**
+	 * Gets the character state matrix dao.
+	 * 
+	 * @return the character state matrix dao
+	 */
 	public ICharacterStateMatrixDAO getCharacterStateMatrixDAO() {
 		return (ICharacterStateMatrixDAO) charStateMatrixProvider.get()
 				.setSession(session);
 	}
 
+	/**
+	 * Gets the oTUDAO.
+	 * 
+	 * @return the oTUDAO
+	 */
 	public IOTUDAO getOTUDAO() {
 		return (IOTUDAO) new OTUDAOHibernate().setSession(session);
 	}
 
+	/**
+	 * Gets the oTU set dao.
+	 * 
+	 * @return the oTU set dao
+	 */
 	public IOTUSetDAO getOTUSetDAO() {
 		return (IOTUSetDAO) new OTUSetDAOHibernate().setSession(session);
 	}
 
+	/**
+	 * Gets the character dao.
+	 * 
+	 * @return the character dao
+	 */
 	public ICharacterDAO getCharacterDAO() {
 		return (ICharacterDAO) new CharacterDAOHibernate().setSession(session);
 	}
 
+	/**
+	 * Gets the character state dao.
+	 * 
+	 * @return the character state dao
+	 */
 	public ICharacterStateDAO getCharacterStateDAO() {
 		return (ICharacterStateDAO) new CharacterStateDAOHibernate()
 				.setSession(session);
 	}
 
+	/**
+	 * Gets the p pod version info dao.
+	 * 
+	 * @return the p pod version info dao
+	 */
 	public IPPodVersionInfoDAO getPPodVersionInfoDAO() {
 		return (IPPodVersionInfoDAO) new PPodVersionInfoDAOHibernate()
 				.setSession(session);
 	}
 
+	/**
+	 * Gets the character state row dao.
+	 * 
+	 * @return the character state row dao
+	 */
 	public ICharacterStateRowDAO getCharacterStateRowDAO() {
 		return (ICharacterStateRowDAO) new CharacterStateRowDAOHibernate()
 				.setSession(session);
 	}
 
+	/**
+	 * Gets the tree dao.
+	 * 
+	 * @return the tree dao
+	 */
 	public ITreeDAO getTreeDAO() {
 		return (ITreeDAO) new TreeDAOHibernate().setSession(session);
 	}
 
+	/**
+	 * Gets the tree set dao.
+	 * 
+	 * @return the tree set dao
+	 */
 	public ITreeSetDAO getTreeSetDAO() {
 		return (ITreeSetDAO) new TreeSetDAOHibernate().setSession(session);
 	}
 
-	public IAttachmentTypeDAO getAttachmentTypeDAO() {
-		return (IAttachmentTypeDAO) new AttachmentTypeDAOHibernate(session);
-	}
-
-	public IAttachmentNamespaceDAO getAttachmentNamespaceDAO() {
-		return (IAttachmentNamespaceDAO) new AttachmentNamespaceDAOHibernate(
-				session);
-	}
-
+	/**
+	 * Gets the p pod user dao.
+	 * 
+	 * @return the p pod user dao
+	 */
 	public IUserDAO getPPodUserDAO() {
 		return (IUserDAO) new UserDAOHibernate().setSession(session);
 	}
 
+	/**
+	 * Gets the p pod group dao.
+	 * 
+	 * @return the p pod group dao
+	 */
 	public IPPodGroupDAO getPPodGroupDAO() {
 		return (IPPodGroupDAO) new PPodGroupDAOHibernate().setSession(session);
 	}
 
+	/**
+	 * Gets the p pod role dao.
+	 * 
+	 * @return the p pod role dao
+	 */
 	public IPPodRoleDAO getPPodRoleDAO() {
 		return (IPPodRoleDAO) new PPodRoleDAOHibernate().setSession(session);
 	}

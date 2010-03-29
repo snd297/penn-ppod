@@ -20,8 +20,9 @@ import edu.upenn.cis.ppod.model.Attachment;
 import edu.upenn.cis.ppod.thirdparty.dao.hibernate.GenericHibernateDAO;
 
 /**
- * @author Sam Donnelly
+ * The Class AttachmentDAOHibernate.
  * 
+ * @author Sam Donnelly
  */
-class AttachmentDAOHibernate extends
+final class AttachmentDAOHibernate extends
 		GenericHibernateDAO<Attachment, Long> implements IAttachmentDAO {}

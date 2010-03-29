@@ -18,6 +18,8 @@ package edu.upenn.cis.ppod.dao.hibernate;
 import edu.upenn.cis.ppod.thirdparty.dao.hibernate.GenericHibernateDAO;
 
 /**
+ * The Class ObjectWLongIdDAOHibernate.
+ * 
  * @author Sam Donnelly
  */
 public class ObjectWLongIdDAOHibernate extends
