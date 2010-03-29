@@ -21,21 +21,10 @@ import org.hibernate.Session;
 
 import edu.upenn.cis.ppod.dao.IDAO;
 
-// TODO: Auto-generated Javadoc
 /**
- * The Interface IDAOHibernate.
- * 
- * @param <T> the < t>
- * @param <ID> the < i d>
  * @author Sam Donnelly
  */
 public interface IDAOHibernate<T, ID extends Serializable> extends IDAO<T, ID> {
-	
-	/**
-	 * Sets the session.
-	 * 
-	 * @param s the s
-	 * @return the iDAO hibernate
-	 */
+
 	IDAOHibernate<T, ID> setSession(Session s);
 }
