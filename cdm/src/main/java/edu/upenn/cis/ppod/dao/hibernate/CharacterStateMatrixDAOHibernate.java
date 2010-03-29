@@ -28,7 +28,6 @@ import edu.upenn.cis.ppod.model.CharacterStateMatrix;
 import edu.upenn.cis.ppod.thirdparty.dao.hibernate.GenericHibernateDAO;
 import edu.upenn.cis.ppod.util.IPair;
 
-// TODO: Auto-generated Javadoc
 /**
  * A default {@link CharacterStateMatrix} Hibernate DAO.
  * 
@@ -38,25 +37,13 @@ final class CharacterStateMatrixDAOHibernate extends
 		GenericHibernateDAO<CharacterStateMatrix, Long> implements
 		ICharacterStateMatrixDAO {
 
-	/** The pair factory. */
 	private final IPair.IFactory pairFactory;
 
-	/**
-	 * Instantiates a new character state matrix dao hibernate.
-	 * 
-	 * @param orderedPairFactory the ordered pair factory
-	 */
 	@Inject
 	CharacterStateMatrixDAOHibernate(final IPair.IFactory orderedPairFactory) {
 		this.pairFactory = orderedPairFactory;
 	}
 
-	/**
-	 * Gets the by label.
-	 * 
-	 * @param label the label
-	 * @return the by label
-	 */
 	@SuppressWarnings("unchecked")
 	public List<CharacterStateMatrix> getByLabel(final String label) {
 		return getSession().getNamedQuery(
@@ -64,25 +51,12 @@ final class CharacterStateMatrixDAOHibernate extends
 				.setParameter("label", label).list();
 	}
 
-	/**
-	 * Gets the by p pod id.
-	 * 
-	 * @param pPodId the pod id
-	 * @return the by p pod id
-	 */
 	public CharacterStateMatrix getByPPodId(final String pPodId) {
 		return (CharacterStateMatrix) getSession().getNamedQuery(
 				CharacterStateMatrix.class.getSimpleName() + "-getByPPodId")
 				.setParameter("pPodId", pPodId).uniqueResult();
 	}
 
-	/**
-	 * Gets the character infos by matrix id and min p pod version.
-	 * 
-	 * @param matrixId the matrix id
-	 * @param minPPodVersion the min p pod version
-	 * @return the character infos by matrix id and min p pod version
-	 */
 	@SuppressWarnings("unchecked")
 	public List<Object[]> getCharacterInfosByMatrixIdAndMinPPodVersion(
 			final Long matrixId, final Long minPPodVersion) {
@@ -93,12 +67,6 @@ final class CharacterStateMatrixDAOHibernate extends
 						"minPPodVersion", minPPodVersion).list();
 	}
 
-	/**
-	 * Gets the column p pod versions by matrix id.
-	 * 
-	 * @param matrixId the matrix id
-	 * @return the column p pod versions by matrix id
-	 */
 	@SuppressWarnings("unchecked")
 	public List<Long> getColumnPPodVersionsByMatrixId(final Long matrixId) {
 		return getSession().getNamedQuery(
@@ -107,11 +75,6 @@ final class CharacterStateMatrixDAOHibernate extends
 				"matrixId", matrixId).list();
 	}
 
-	/**
-	 * Gets the p pod id label pairs.
-	 * 
-	 * @return the p pod id label pairs
-	 */
 	public Set<IPair<String, String>> getPPodIdLabelPairs() {
 		final Set<IPair<String, String>> results = newHashSet();
 		for (final Iterator<?> itr = getSession().getNamedQuery(
@@ -124,12 +87,6 @@ final class CharacterStateMatrixDAOHibernate extends
 		return results;
 	}
 
-	/**
-	 * Gets the p pod version by id.
-	 * 
-	 * @param id the id
-	 * @return the p pod version by id
-	 */
 	public Long getPPodVersionById(final Long id) {
 		return (Long) getSession().getNamedQuery(
 				CharacterStateMatrix.class.getSimpleName()
@@ -137,13 +94,6 @@ final class CharacterStateMatrixDAOHibernate extends
 				.uniqueResult();
 	}
 
-	/**
-	 * Gets the row idxs ids versions by matrix id and min p pod version.
-	 * 
-	 * @param matrixId the matrix id
-	 * @param minPPodVersion the min p pod version
-	 * @return the row idxs ids versions by matrix id and min p pod version
-	 */
 	@SuppressWarnings("unchecked")
 	public List<Object[]> getRowIdxsIdsVersionsByMatrixIdAndMinPPodVersion(
 			final Long matrixId, final Long minPPodVersion) {

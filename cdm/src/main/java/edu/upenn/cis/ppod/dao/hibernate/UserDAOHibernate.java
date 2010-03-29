@@ -19,7 +19,6 @@ import edu.upenn.cis.ppod.dao.IUserDAO;
 import edu.upenn.cis.ppod.thirdparty.dao.hibernate.GenericHibernateDAO;
 import edu.upenn.cis.ppod.thirdparty.model.security.User;
 
-// TODO: Auto-generated Javadoc
 /**
  * A {@link User} Hibernate DAO.
  * 
@@ -28,12 +27,6 @@ import edu.upenn.cis.ppod.thirdparty.model.security.User;
 class UserDAOHibernate extends GenericHibernateDAO<User, Long> implements
 		IUserDAO {
 
-	/**
-	 * Gets the user by name.
-	 * 
-	 * @param userName the user name
-	 * @return the user by name
-	 */
 	public User getUserByName(final String userName) {
 		final String query = "from User u where u.name = :userName";
 		return (User) getSession().createQuery(query).setString("userName",

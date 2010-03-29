@@ -18,7 +18,6 @@ package edu.upenn.cis.ppod.dao.hibernate;
 import edu.upenn.cis.ppod.model.AttachmentType;
 import edu.upenn.cis.ppod.thirdparty.dao.hibernate.GenericHibernateDAO;
 
-// TODO: Auto-generated Javadoc
 /**
  * A Hibernate {@link AttachmentType} DAO.
  * 
@@ -28,13 +27,6 @@ final class AttachmentTypeDAOHibernate extends
 		GenericHibernateDAO<AttachmentType, Long> implements
 		IAttachmentTypeDAOHibernate {
 
-	/**
-	 * Gets the attachment type by namespace and type.
-	 * 
-	 * @param namespaceLabel the namespace label
-	 * @param typeLabel the type label
-	 * @return the attachment type by namespace and type
-	 */
 	public AttachmentType getAttachmentTypeByNamespaceAndType(
 			final String namespaceLabel, final String typeLabel) {
 		return (AttachmentType) getSession()

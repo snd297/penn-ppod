@@ -20,7 +20,6 @@ import com.google.inject.AbstractModule;
 import edu.upenn.cis.ppod.dao.IAttachmentNamespaceDAO;
 import edu.upenn.cis.ppod.dao.IAttachmentTypeDAO;
 
-// TODO: Auto-generated Javadoc
 /**
  * The Class DAOHibernateModule.
  * 
@@ -28,9 +27,6 @@ import edu.upenn.cis.ppod.dao.IAttachmentTypeDAO;
  */
 public class DAOHibernateModule extends AbstractModule {
 
-	/**
-	 * Configure.
-	 */
 	@Override
 	protected void configure() {
 
