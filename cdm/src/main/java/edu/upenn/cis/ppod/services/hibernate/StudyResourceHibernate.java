@@ -29,16 +29,19 @@ import com.google.inject.Provider;
 import edu.upenn.cis.ppod.dao.IAttachmentNamespaceDAO;
 import edu.upenn.cis.ppod.dao.IAttachmentTypeDAO;
 import edu.upenn.cis.ppod.dao.IDNACharacterDAO;
+import edu.upenn.cis.ppod.dao.IOTUSetDAO;
+import edu.upenn.cis.ppod.dao.IObjectWithLongIdDAO;
 import edu.upenn.cis.ppod.dao.IStudyDAO;
 import edu.upenn.cis.ppod.dao.hibernate.IAttachmentNamespaceDAOHibernate;
 import edu.upenn.cis.ppod.dao.hibernate.IAttachmentTypeDAOHibernate;
 import edu.upenn.cis.ppod.dao.hibernate.IDNACharacterDAOHibernate;
+import edu.upenn.cis.ppod.dao.hibernate.IOTUSetDAOHibernate;
+import edu.upenn.cis.ppod.dao.hibernate.IObjectWithLongIdDAOHibernate;
 import edu.upenn.cis.ppod.dao.hibernate.IStudyDAOHibernate;
 import edu.upenn.cis.ppod.model.Study;
 import edu.upenn.cis.ppod.modelinterfaces.INewPPodVersionInfo;
 import edu.upenn.cis.ppod.modelinterfaces.INewPPodVersionInfoHibernate;
 import edu.upenn.cis.ppod.saveorupdate.ISaveOrUpdateStudy;
-import edu.upenn.cis.ppod.saveorupdate.hibernate.ISaveOrUpdateStudyHibernate;
 import edu.upenn.cis.ppod.services.IStudyResource;
 import edu.upenn.cis.ppod.services.StringPair;
 import edu.upenn.cis.ppod.services.ppodentity.IStudy2StudyInfo;
@@ -71,16 +74,18 @@ final class StudyResourceHibernate implements IStudyResource {
 	@Inject
 	StudyResourceHibernate(
 			final IStudyDAOHibernate studyDAO,
-			final ISaveOrUpdateStudyHibernate.IFactory saveOrUpdateStudyFactory,
+			final IOTUSetDAOHibernate otuSetDAO,
+			final ISaveOrUpdateStudy.IFactory saveOrUpdateStudyFactory,
 			final IStudy2StudyInfo study2StudyInfo,
-			final SetDocIdVisitor otuSetAndOTUSetDocIdVisitor,
+			final SetDocIdVisitor setDocIdVisitor,
 			final Provider<AfterUnmarshalVisitor> afterUnmarshalVisitorProvider,
 			final INewPPodVersionInfoHibernate.IFactory newPPodVersionInfoFactory,
 			final ISetPPodVersionInfoVisitor.IFactory setPPodVersionInfoVisitorFactory,
 			final StringPair.IFactory stringPairFactory,
 			final IDNACharacterDAOHibernate dnaCharacterDAO,
 			final IAttachmentNamespaceDAOHibernate attachmentNamespaceDAO,
-			final IAttachmentTypeDAOHibernate attachmentTypeDAO) {
+			final IAttachmentTypeDAOHibernate attachmentTypeDAO,
+			final IObjectWithLongIdDAOHibernate dao) {
 		this.studyDAO = (IStudyDAO) studyDAO.setSession(HibernateUtil
 				.getSessionFactory().getCurrentSession());
 		final Session currentSession = HibernateUtil
@@ -93,14 +98,16 @@ final class StudyResourceHibernate implements IStudyResource {
 		this.saveOrUpdateStudy = saveOrUpdateStudyFactory.create(
 				currentSession,
 				(IStudyDAO) studyDAO.setSession(currentSession),
+				(IOTUSetDAO) otuSetDAO.setSession(currentSession),
 				(IDNACharacterDAO) dnaCharacterDAO.setSession(currentSession),
 				(IAttachmentNamespaceDAO) attachmentNamespaceDAO
 						.setSession(currentSession),
 				(IAttachmentTypeDAO) attachmentTypeDAO
 						.setSession(currentSession),
+				(IObjectWithLongIdDAO) dao.setSession(currentSession),
 				newPPodVersionInfo);
 		this.study2StudyInfo = study2StudyInfo;
-		this.setDocIdVisitor = otuSetAndOTUSetDocIdVisitor;
+		this.setDocIdVisitor = setDocIdVisitor;
 		this.afterUnmarshalVisitorProvider = afterUnmarshalVisitorProvider;
 		this.stringPairFactory = stringPairFactory;
 	}

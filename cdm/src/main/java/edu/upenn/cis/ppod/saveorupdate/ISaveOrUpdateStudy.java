@@ -15,13 +15,25 @@
  */
 package edu.upenn.cis.ppod.saveorupdate;
 
+import org.hibernate.Session;
+
+import com.google.inject.ImplementedBy;
+
+import edu.upenn.cis.ppod.dao.IAttachmentNamespaceDAO;
+import edu.upenn.cis.ppod.dao.IAttachmentTypeDAO;
+import edu.upenn.cis.ppod.dao.IDNACharacterDAO;
+import edu.upenn.cis.ppod.dao.IOTUSetDAO;
+import edu.upenn.cis.ppod.dao.IObjectWithLongIdDAO;
+import edu.upenn.cis.ppod.dao.IStudyDAO;
 import edu.upenn.cis.ppod.model.Study;
+import edu.upenn.cis.ppod.modelinterfaces.INewPPodVersionInfo;
 
 /**
  * If study is new, make it persistent. If it was already persisted, update it.
  * 
  * @author Sam Donnelly
  */
+@ImplementedBy(SaveOrUpdateStudy.class)
 public interface ISaveOrUpdateStudy {
 
 	Study save(Study study);
@@ -36,4 +48,24 @@ public interface ISaveOrUpdateStudy {
 	 */
 	void saveOrUpdate(Study dbStudy, Study incomingStudy);
 
+	static interface IFactory {
+
+		/**
+		 * Create {@link ISaveOrUpdateStudy}s that depend on a {@link Session}.
+		 * 
+		 * @param session dependency
+		 * @param newPPodVersionInfo
+		 * 
+		 * @return a new {@link ISaveOrUpdateStudy}
+		 */
+		ISaveOrUpdateStudy create(Session session,
+				IStudyDAO studyDAO,
+				IOTUSetDAO otuSetDAO,
+				IDNACharacterDAO dnaCharacterDAO,
+				IAttachmentNamespaceDAO attachmentNamespaceDAO,
+				IAttachmentTypeDAO attachmentTypeDAO,
+				IObjectWithLongIdDAO objectWithLongIdDAO,
+				INewPPodVersionInfo newPPodVersionInfo);
+
+	}
 }

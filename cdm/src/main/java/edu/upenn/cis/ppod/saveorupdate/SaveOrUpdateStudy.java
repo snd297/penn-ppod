@@ -13,7 +13,7 @@
  * See the License for the specific language governing permissions and
  * limitations under the License.
  */
-package edu.upenn.cis.ppod.saveorupdate.hibernate;
+package edu.upenn.cis.ppod.saveorupdate;
 
 import static com.google.common.base.Predicates.compose;
 import static com.google.common.base.Predicates.equalTo;
@@ -24,8 +24,6 @@ import java.util.Iterator;
 import java.util.List;
 import java.util.Set;
 
-import org.hibernate.Session;
-
 import com.google.inject.Inject;
 import com.google.inject.Provider;
 import com.google.inject.assistedinject.Assisted;
@@ -34,9 +32,8 @@ import edu.upenn.cis.ppod.dao.IAttachmentNamespaceDAO;
 import edu.upenn.cis.ppod.dao.IAttachmentTypeDAO;
 import edu.upenn.cis.ppod.dao.IDNACharacterDAO;
 import edu.upenn.cis.ppod.dao.IOTUSetDAO;
+import edu.upenn.cis.ppod.dao.IObjectWithLongIdDAO;
 import edu.upenn.cis.ppod.dao.IStudyDAO;
-import edu.upenn.cis.ppod.dao.hibernate.ObjectWLongIdDAOHibernate;
-import edu.upenn.cis.ppod.dao.hibernate.HibernateDAOFactory.OTUSetDAOHibernate;
 import edu.upenn.cis.ppod.model.CharacterStateMatrix;
 import edu.upenn.cis.ppod.model.DNACharacter;
 import edu.upenn.cis.ppod.model.DNASequence;
@@ -46,12 +43,6 @@ import edu.upenn.cis.ppod.model.Study;
 import edu.upenn.cis.ppod.model.TreeSet;
 import edu.upenn.cis.ppod.modelinterfaces.INewPPodVersionInfo;
 import edu.upenn.cis.ppod.modelinterfaces.IUUPPodEntity;
-import edu.upenn.cis.ppod.saveorupdate.IMergeAttachments;
-import edu.upenn.cis.ppod.saveorupdate.IMergeMolecularSequenceSets;
-import edu.upenn.cis.ppod.saveorupdate.IMergeOTUSets;
-import edu.upenn.cis.ppod.saveorupdate.IMergeTreeSets;
-import edu.upenn.cis.ppod.saveorupdate.ISaveOrUpdateMatrix;
-import edu.upenn.cis.ppod.saveorupdate.ISaveOrUpdateMatrixFactory;
 import edu.upenn.cis.ppod.util.ICharacterStateMatrixFactory;
 
 /**
@@ -59,7 +50,7 @@ import edu.upenn.cis.ppod.util.ICharacterStateMatrixFactory;
  * 
  * @author Sam Donnelly
  */
-final class SaveOrUpdateStudyHibernate implements ISaveOrUpdateStudyHibernate {
+final class SaveOrUpdateStudy implements ISaveOrUpdateStudy {
 
 	private final IStudyDAO studyDAO;
 	private final IOTUSetDAO otuSetDAO;
@@ -78,9 +69,7 @@ final class SaveOrUpdateStudyHibernate implements ISaveOrUpdateStudyHibernate {
 	private final IMergeMolecularSequenceSets<DNASequenceSet, DNASequence> mergeDNASequenceSets;
 
 	@Inject
-	SaveOrUpdateStudyHibernate(
-			final OTUSetDAOHibernate otuSetDAO,
-			final ObjectWLongIdDAOHibernate dao,
+	SaveOrUpdateStudy(
 			final Provider<Study> studyProvider,
 			final Provider<OTUSet> otuSetProvider,
 			final ICharacterStateMatrixFactory matrixFactory,
@@ -88,18 +77,19 @@ final class SaveOrUpdateStudyHibernate implements ISaveOrUpdateStudyHibernate {
 			final Provider<TreeSet> treeSetProvider,
 			final IMergeOTUSets.IFactory saveOrUpdateOTUSetFactory,
 			final IMergeTreeSets.IFactory mergeTreeSetsFactory,
-			final ISaveOrUpdateMatrixFactory mergeMatrixFactory,
+			final ISaveOrUpdateMatrix.IFactory saveOrUpdateMatrixFactory,
 			final IMergeMolecularSequenceSets.IFactory<DNASequenceSet, DNASequence> mergeDNASequenceSetsFactory,
 			final IMergeAttachments.IFactory mergeAttachmentFactory,
-			@Assisted final Session session,
 			@Assisted final IStudyDAO studyDAO,
+			@Assisted final IOTUSetDAO otuSetDAO,
 			@Assisted final IDNACharacterDAO dnaCharacterDAO,
 			@Assisted final IAttachmentNamespaceDAO attachmentNamespaceDAO,
 			@Assisted final IAttachmentTypeDAO attachmentTypeDAO,
+			@Assisted final IObjectWithLongIdDAO dao,
 			@Assisted final INewPPodVersionInfo newPPodVersionInfo) {
 
 		this.studyDAO = studyDAO;
-		this.otuSetDAO = (IOTUSetDAO) otuSetDAO.setSession(session);
+		this.otuSetDAO = otuSetDAO;
 		this.dnaCharacterDAO = dnaCharacterDAO;
 		this.studyProvider = studyProvider;
 		this.otuSetProvider = otuSetProvider;
@@ -109,11 +99,13 @@ final class SaveOrUpdateStudyHibernate implements ISaveOrUpdateStudyHibernate {
 		this.newPPodVersionInfo = newPPodVersionInfo;
 		this.mergeOTUSets = saveOrUpdateOTUSetFactory
 				.create(newPPodVersionInfo);
-		this.mergeMatrices = mergeMatrixFactory.create(mergeAttachmentFactory
-				.create(attachmentNamespaceDAO,
-						attachmentTypeDAO), dao
-								.setSession(session), newPPodVersionInfo);
-		this.mergeDNASequenceSets = mergeDNASequenceSetsFactory.create(dao,
+		this.mergeMatrices = saveOrUpdateMatrixFactory.create(
+				mergeAttachmentFactory
+						.create(attachmentNamespaceDAO,
+								attachmentTypeDAO), dao,
+				newPPodVersionInfo);
+		this.mergeDNASequenceSets = mergeDNASequenceSetsFactory.create(
+				dao,
 				newPPodVersionInfo);
 		this.mergeTreeSets = mergeTreeSetsFactory.create(newPPodVersionInfo);
 	}

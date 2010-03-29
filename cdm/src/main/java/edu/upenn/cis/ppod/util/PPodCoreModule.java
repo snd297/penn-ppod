@@ -27,9 +27,8 @@ import edu.upenn.cis.ppod.saveorupdate.IMergeAttachments;
 import edu.upenn.cis.ppod.saveorupdate.IMergeOTUSets;
 import edu.upenn.cis.ppod.saveorupdate.IMergeTreeSets;
 import edu.upenn.cis.ppod.saveorupdate.ISaveOrUpdateMatrix;
-import edu.upenn.cis.ppod.saveorupdate.ISaveOrUpdateMatrixFactory;
+import edu.upenn.cis.ppod.saveorupdate.ISaveOrUpdateStudy;
 import edu.upenn.cis.ppod.saveorupdate.SaveOrUpdateModule;
-import edu.upenn.cis.ppod.saveorupdate.hibernate.ISaveOrUpdateStudyHibernate;
 import edu.upenn.cis.ppod.security.ISimpleAuthenticationInfoFactory;
 import edu.upenn.cis.ppod.security.SimpleAuthenticationInfoFactory;
 import edu.upenn.cis.ppod.services.StringPair;
@@ -54,8 +53,8 @@ public final class PPodCoreModule extends AbstractModule {
 		bind(IMergeTreeSets.IFactory.class).toProvider(
 				FactoryProvider.newFactory(IMergeTreeSets.IFactory.class,
 						IMergeTreeSets.class));
-		bind(ISaveOrUpdateMatrixFactory.class).toProvider(
-				FactoryProvider.newFactory(ISaveOrUpdateMatrixFactory.class,
+		bind(ISaveOrUpdateMatrix.IFactory.class).toProvider(
+				FactoryProvider.newFactory(ISaveOrUpdateMatrix.IFactory.class,
 						ISaveOrUpdateMatrix.class));
 		bind(IMergeAttachments.IFactory.class).toProvider(
 				FactoryProvider.newFactory(IMergeAttachments.IFactory.class,
@@ -78,10 +77,10 @@ public final class PPodCoreModule extends AbstractModule {
 						ISetPPodVersionInfoVisitor.IFactory.class,
 						ISetPPodVersionInfoVisitor.class));
 
-		bind(ISaveOrUpdateStudyHibernate.IFactory.class).toProvider(
+		bind(ISaveOrUpdateStudy.IFactory.class).toProvider(
 				FactoryProvider.newFactory(
-						ISaveOrUpdateStudyHibernate.IFactory.class,
-						ISaveOrUpdateStudyHibernate.class));
+						ISaveOrUpdateStudy.IFactory.class,
+						ISaveOrUpdateStudy.class));
 
 		install(new ModelModule());
 		install(new DAOHibernateModule());
