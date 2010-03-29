@@ -38,7 +38,7 @@ import edu.upenn.cis.ppod.model.Study;
 import edu.upenn.cis.ppod.modelinterfaces.INewPPodVersionInfo;
 import edu.upenn.cis.ppod.modelinterfaces.INewPPodVersionInfoHibernate;
 import edu.upenn.cis.ppod.saveorupdate.ISaveOrUpdateStudy;
-import edu.upenn.cis.ppod.saveorupdate.hibernate.ISaveOrUpdateStudyHibernateFactory;
+import edu.upenn.cis.ppod.saveorupdate.hibernate.ISaveOrUpdateStudyHibernate;
 import edu.upenn.cis.ppod.services.IStudyResource;
 import edu.upenn.cis.ppod.services.StringPair;
 import edu.upenn.cis.ppod.services.ppodentity.IStudy2StudyInfo;
@@ -71,7 +71,7 @@ final class StudyResourceHibernate implements IStudyResource {
 	@Inject
 	StudyResourceHibernate(
 			final IStudyDAOHibernate studyDAO,
-			final ISaveOrUpdateStudyHibernateFactory saveOrUpdateStudyFactory,
+			final ISaveOrUpdateStudyHibernate.IFactory saveOrUpdateStudyFactory,
 			final IStudy2StudyInfo study2StudyInfo,
 			final SetDocIdVisitor otuSetAndOTUSetDocIdVisitor,
 			final Provider<AfterUnmarshalVisitor> afterUnmarshalVisitorProvider,

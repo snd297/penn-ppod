@@ -94,7 +94,6 @@ class SaveOrUpdateCharacterStateMatrix implements ISaveOrUpdateMatrix {
 
 	public void saveOrUpdate(CharacterStateMatrix targetMatrix,
 			final CharacterStateMatrix sourceMatrix,
-			final Map<OTU, OTU> mergedOTUsBySourceOTU,
 			final DNACharacter dnaCharacter) {
 		final String METHOD = "saveOrUpdate(...)";
 		logger.debug("{}: entering", METHOD);

@@ -15,11 +15,8 @@
  */
 package edu.upenn.cis.ppod.saveorupdate;
 
-import java.util.Map;
-
 import com.google.inject.ImplementedBy;
 
-import edu.upenn.cis.ppod.model.OTU;
 import edu.upenn.cis.ppod.model.TreeSet;
 import edu.upenn.cis.ppod.modelinterfaces.INewPPodVersionInfo;
 
@@ -28,8 +25,7 @@ import edu.upenn.cis.ppod.modelinterfaces.INewPPodVersionInfo;
  */
 @ImplementedBy(MergeTreeSets.class)
 public interface IMergeTreeSets {
-	TreeSet merge(TreeSet targetTreeSet, TreeSet sourceTreeSet,
-			Map<OTU, OTU> mergedOTUsBySourceOTU);
+	void merge(TreeSet targetTreeSet, TreeSet sourceTreeSet);
 
 	static interface IFactory {
 		IMergeTreeSets create(INewPPodVersionInfo newPPodVersionInfo);

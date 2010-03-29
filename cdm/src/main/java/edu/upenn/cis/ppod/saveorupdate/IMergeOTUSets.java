@@ -15,12 +15,10 @@
  */
 package edu.upenn.cis.ppod.saveorupdate;
 
-import java.util.Map;
-
 import com.google.inject.ImplementedBy;
 
-import edu.upenn.cis.ppod.model.OTU;
 import edu.upenn.cis.ppod.model.OTUSet;
+import edu.upenn.cis.ppod.modelinterfaces.INewPPodVersionInfo;
 
 /**
  * @author Sam Donnelly
@@ -28,9 +26,11 @@ import edu.upenn.cis.ppod.model.OTUSet;
 @ImplementedBy(MergeOTUSets.class)
 public interface IMergeOTUSets {
 
-	/**
-	 * Return persistentOTUsByIncomingOTU.
-	 */
-	Map<OTU, OTU> merge(OTUSet targetOTUSet, OTUSet sourceOTUSet);
+	
+	void merge(OTUSet targetOTUSet, OTUSet sourceOTUSet);
+
+	static interface IFactory {
+		IMergeOTUSets create(INewPPodVersionInfo newPPodVersionInfo);
+	}
 
 }

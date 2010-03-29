@@ -17,6 +17,8 @@ package edu.upenn.cis.ppod.saveorupdate.hibernate;
 
 import org.hibernate.Session;
 
+import com.google.inject.ImplementedBy;
+
 import edu.upenn.cis.ppod.dao.IAttachmentNamespaceDAO;
 import edu.upenn.cis.ppod.dao.IAttachmentTypeDAO;
 import edu.upenn.cis.ppod.dao.IDNACharacterDAO;
@@ -25,24 +27,27 @@ import edu.upenn.cis.ppod.modelinterfaces.INewPPodVersionInfo;
 import edu.upenn.cis.ppod.saveorupdate.ISaveOrUpdateStudy;
 
 /**
- * Create {@link Study}s that depend on a {@link Session}.
+ * {@link ISaveOrUpdateStudy}s that depend on a {@link Session}.
  * 
  * @author Sam Donnelly
  */
-public interface ISaveOrUpdateStudyHibernateFactory {
+@ImplementedBy(SaveOrUpdateStudyHibernate.class)
+public interface ISaveOrUpdateStudyHibernate extends ISaveOrUpdateStudy {
+	static interface IFactory {
 
-	/**
-	 * Create {@link ISaveOrUpdateStudy}s that depend on a {@link Session}.
-	 * 
-	 * @param session dependency
-	 * @param newPPodVersionInfo
-	 * 
-	 * @return a new {@link ISaveOrUpdateStudy}
-	 */
-	ISaveOrUpdateStudy create(Session session,
-			IStudyDAO studyDAO,
-			IDNACharacterDAO dnaCharacterDAO,
-			IAttachmentNamespaceDAO attachmentNamespaceDAO,
-			IAttachmentTypeDAO attachmentTypeDAO,
-			INewPPodVersionInfo newPPodVersionInfo);
+		/**
+		 * Create {@link ISaveOrUpdateStudy}s that depend on a {@link Session}.
+		 * 
+		 * @param session dependency
+		 * @param newPPodVersionInfo
+		 * 
+		 * @return a new {@link ISaveOrUpdateStudy}
+		 */
+		ISaveOrUpdateStudyHibernate create(Session session,
+				IStudyDAO studyDAO,
+				IDNACharacterDAO dnaCharacterDAO,
+				IAttachmentNamespaceDAO attachmentNamespaceDAO,
+				IAttachmentTypeDAO attachmentTypeDAO,
+				INewPPodVersionInfo newPPodVersionInfo);
+	}
 }

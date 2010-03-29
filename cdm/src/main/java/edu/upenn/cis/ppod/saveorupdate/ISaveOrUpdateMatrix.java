@@ -15,13 +15,10 @@
  */
 package edu.upenn.cis.ppod.saveorupdate;
 
-import java.util.Map;
-
 import com.google.inject.ImplementedBy;
 
 import edu.upenn.cis.ppod.model.CharacterStateMatrix;
 import edu.upenn.cis.ppod.model.DNACharacter;
-import edu.upenn.cis.ppod.model.OTU;
 
 /**
  * Merge two matrices.
@@ -55,5 +52,5 @@ public interface ISaveOrUpdateMatrix {
 	 */
 	void saveOrUpdate(CharacterStateMatrix targetMatrix,
 			CharacterStateMatrix sourceMatrix,
-			Map<OTU, OTU> mergedOTUsBySourceOTU, DNACharacter dnaCharacter);
+			DNACharacter dnaCharacter);
 }
