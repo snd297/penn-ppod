@@ -21,9 +21,9 @@ import com.google.inject.ImplementedBy;
 
 import edu.upenn.cis.ppod.dao.IAttachmentNamespaceDAO;
 import edu.upenn.cis.ppod.dao.IAttachmentTypeDAO;
+import edu.upenn.cis.ppod.dao.IDAO;
 import edu.upenn.cis.ppod.dao.IDNACharacterDAO;
 import edu.upenn.cis.ppod.dao.IOTUSetDAO;
-import edu.upenn.cis.ppod.dao.IObjectWithLongIdDAO;
 import edu.upenn.cis.ppod.dao.IStudyDAO;
 import edu.upenn.cis.ppod.model.Study;
 import edu.upenn.cis.ppod.modelinterfaces.INewPPodVersionInfo;
@@ -64,7 +64,7 @@ public interface ISaveOrUpdateStudy {
 				IDNACharacterDAO dnaCharacterDAO,
 				IAttachmentNamespaceDAO attachmentNamespaceDAO,
 				IAttachmentTypeDAO attachmentTypeDAO,
-				IObjectWithLongIdDAO objectWithLongIdDAO,
+				IDAO<Object, Long> dao,
 				INewPPodVersionInfo newPPodVersionInfo);
 
 	}
