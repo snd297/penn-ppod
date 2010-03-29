@@ -22,7 +22,6 @@ import static edu.upenn.cis.ppod.util.PPodIterables.findIf;
 
 import java.util.Iterator;
 import java.util.List;
-import java.util.Map;
 import java.util.Set;
 
 import org.hibernate.Session;
@@ -42,7 +41,6 @@ import edu.upenn.cis.ppod.model.CharacterStateMatrix;
 import edu.upenn.cis.ppod.model.DNACharacter;
 import edu.upenn.cis.ppod.model.DNASequence;
 import edu.upenn.cis.ppod.model.DNASequenceSet;
-import edu.upenn.cis.ppod.model.OTU;
 import edu.upenn.cis.ppod.model.OTUSet;
 import edu.upenn.cis.ppod.model.Study;
 import edu.upenn.cis.ppod.model.TreeSet;
@@ -50,12 +48,10 @@ import edu.upenn.cis.ppod.modelinterfaces.INewPPodVersionInfo;
 import edu.upenn.cis.ppod.modelinterfaces.IUUPPodEntity;
 import edu.upenn.cis.ppod.saveorupdate.IMergeAttachments;
 import edu.upenn.cis.ppod.saveorupdate.IMergeMolecularSequenceSets;
-import edu.upenn.cis.ppod.saveorupdate.IMergeOTUSetFactory;
 import edu.upenn.cis.ppod.saveorupdate.IMergeOTUSets;
 import edu.upenn.cis.ppod.saveorupdate.IMergeTreeSets;
 import edu.upenn.cis.ppod.saveorupdate.ISaveOrUpdateMatrix;
 import edu.upenn.cis.ppod.saveorupdate.ISaveOrUpdateMatrixFactory;
-import edu.upenn.cis.ppod.saveorupdate.ISaveOrUpdateStudy;
 import edu.upenn.cis.ppod.util.ICharacterStateMatrixFactory;
 
 /**
@@ -63,7 +59,7 @@ import edu.upenn.cis.ppod.util.ICharacterStateMatrixFactory;
  * 
  * @author Sam Donnelly
  */
-class SaveOrUpdateStudyHibernate implements ISaveOrUpdateStudy {
+final class SaveOrUpdateStudyHibernate implements ISaveOrUpdateStudyHibernate {
 
 	private final IStudyDAO studyDAO;
 	private final IOTUSetDAO otuSetDAO;
@@ -90,7 +86,7 @@ class SaveOrUpdateStudyHibernate implements ISaveOrUpdateStudy {
 			final ICharacterStateMatrixFactory matrixFactory,
 			final Provider<DNASequenceSet> dnaSequenceSetProvider,
 			final Provider<TreeSet> treeSetProvider,
-			final IMergeOTUSetFactory saveOrUpdateOTUSetFactory,
+			final IMergeOTUSets.IFactory saveOrUpdateOTUSetFactory,
 			final IMergeTreeSets.IFactory mergeTreeSetsFactory,
 			final ISaveOrUpdateMatrixFactory mergeMatrixFactory,
 			final IMergeMolecularSequenceSets.IFactory<DNASequenceSet, DNASequence> mergeDNASequenceSetsFactory,
@@ -172,8 +168,7 @@ class SaveOrUpdateStudyHibernate implements ISaveOrUpdateStudy {
 				dbOTUSet.setPPodId();
 			}
 
-			final Map<OTU, OTU> dbOTUsByIncomingOTU = mergeOTUSets.merge(
-					dbOTUSet, incomingOTUSet);
+			mergeOTUSets.merge(dbOTUSet, incomingOTUSet);
 
 			// mergeMatrices needs for dbOTUSet to have an id so that
 			// we can give it to the matrix. dbOTUSet needs for dbStudy to
@@ -201,7 +196,8 @@ class SaveOrUpdateStudyHibernate implements ISaveOrUpdateStudy {
 				newDbMatrices.add(dbMatrix);
 				dbOTUSet.setMatrices(newDbMatrices);
 				mergeMatrices.saveOrUpdate(dbMatrix, incomingMatrix,
-						dbOTUsByIncomingOTU, dbDNACharacter);
+						dbDNACharacter);
+
 			}
 
 			final Set<DNASequenceSet> newDbDNASequenceSets = newHashSet();
@@ -240,8 +236,8 @@ class SaveOrUpdateStudyHibernate implements ISaveOrUpdateStudy {
 				}
 				newDbTreeSets.add(dbTreeSet);
 				dbOTUSet.setTreeSets(newDbTreeSets);
-				mergeTreeSets.merge(dbTreeSet, incomingTreeSet,
-						dbOTUsByIncomingOTU);
+				mergeTreeSets.merge(dbTreeSet, incomingTreeSet);
+
 			}
 		}
 		studyDAO.saveOrUpdate(dbStudy);

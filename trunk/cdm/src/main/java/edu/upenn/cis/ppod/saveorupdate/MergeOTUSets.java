@@ -18,11 +18,9 @@ package edu.upenn.cis.ppod.saveorupdate;
 import static com.google.common.base.Predicates.compose;
 import static com.google.common.base.Predicates.equalTo;
 import static com.google.common.collect.Lists.newArrayListWithCapacity;
-import static com.google.common.collect.Maps.newHashMap;
 import static edu.upenn.cis.ppod.util.PPodIterables.findIf;
 
 import java.util.List;
-import java.util.Map;
 
 import com.google.inject.Inject;
 import com.google.inject.Provider;
@@ -38,7 +36,7 @@ import edu.upenn.cis.ppod.modelinterfaces.IUUPPodEntity;
  * 
  * @author Sam Donnelly
  */
-class MergeOTUSets implements IMergeOTUSets {
+final class MergeOTUSets implements IMergeOTUSets {
 
 	private final Provider<OTU> otuProvider;
 	private final INewPPodVersionInfo newPPodVersionInfo;
@@ -50,7 +48,7 @@ class MergeOTUSets implements IMergeOTUSets {
 		this.newPPodVersionInfo = newPPodVersionInfo;
 	}
 
-	public Map<OTU, OTU> merge(final OTUSet targetOTUSet,
+	public void merge(final OTUSet targetOTUSet,
 			final OTUSet sourceOTUSet) {
 		targetOTUSet.setLabel(sourceOTUSet.getLabel());
 		targetOTUSet.setDescription(sourceOTUSet.getDescription());
@@ -61,7 +59,6 @@ class MergeOTUSets implements IMergeOTUSets {
 		final List<OTU> newTargetOTUs = newArrayListWithCapacity(sourceOTUSet
 				.getOTUsSize());
 
-		final Map<OTU, OTU> source2TargetOTUs = newHashMap();
 		for (final OTU sourceOTU : sourceOTUSet) {
 			OTU targetOTU;
 			if (null == (targetOTU = findIf(targetOTUSet, compose(
@@ -73,12 +70,10 @@ class MergeOTUSets implements IMergeOTUSets {
 			}
 			newTargetOTUs.add(targetOTU);
 			targetOTU.setLabel(sourceOTU.getLabel());
-			source2TargetOTUs.put(sourceOTU, targetOTU);
 
 			// This is for a response to the service client.
 			targetOTU.setDocId(sourceOTU.getDocId());
 		}
 		targetOTUSet.setOTUs(newTargetOTUs);
-		return source2TargetOTUs;
 	}
 }

@@ -21,9 +21,8 @@ import static com.google.common.base.Predicates.equalTo;
 import static com.google.common.collect.Lists.newArrayList;
 import static edu.upenn.cis.ppod.util.PPodIterables.findIf;
 
+import java.util.Iterator;
 import java.util.List;
-import java.util.Map;
-import java.util.Map.Entry;
 
 import com.google.inject.Inject;
 import com.google.inject.Provider;
@@ -38,7 +37,7 @@ import edu.upenn.cis.ppod.modelinterfaces.IUUPPodEntity;
 /**
  * @author Sam Donnelly
  */
-class MergeTreeSets implements IMergeTreeSets {
+final class MergeTreeSets implements IMergeTreeSets {
 
 	private final Provider<Tree> treeProvider;
 	private final INewPPodVersionInfo newPPodVersionInfo;
@@ -51,9 +50,8 @@ class MergeTreeSets implements IMergeTreeSets {
 		this.newPPodVersionInfo = newPPodVersionInfo;
 	}
 
-	public TreeSet merge(final TreeSet targetTreeSet,
-			final TreeSet sourceTreeSet,
-			final Map<OTU, OTU> mergedOTUsBySourceOTU) {
+	public void merge(final TreeSet targetTreeSet,
+			final TreeSet sourceTreeSet) {
 		checkNotNull(targetTreeSet);
 		checkNotNull(sourceTreeSet);
 
@@ -74,18 +72,26 @@ class MergeTreeSets implements IMergeTreeSets {
 				targetTree.setPPodId();
 			}
 			newTargetTrees.add(targetTree);
-			String targetNewick = sourceTree.getNewick();
-			for (final Entry<OTU, OTU> mergedOTUBySourceOTU : mergedOTUsBySourceOTU
-					.entrySet()) {
-				targetNewick = targetNewick.replace(mergedOTUBySourceOTU
-						.getKey().getDocId(), mergedOTUBySourceOTU.getValue()
-						.getPPodId());
 
+			String targetNewick = sourceTree.getNewick();
+
+			if (sourceTreeSet.getOTUSet().getOTUsSize() != targetTreeSet
+					.getOTUSet().getOTUsSize()) {
+				throw new AssertionError(
+						"sourceTreeSet.getOTUSet().getOTUsSize() should be the same as targetTreeSet.getOTUSet().getOTUsSize()");
+			}
+			for (final Iterator<OTU> sourceOTUItr = sourceTreeSet.getOTUSet()
+					.iterator(), targetOTUItr = targetTreeSet.getOTUSet()
+					.iterator(); sourceOTUItr.hasNext();) {
+				final OTU sourceOTU = sourceOTUItr.next();
+				final OTU targetOTU = targetOTUItr.next();
+				targetNewick = targetNewick.replace(
+						sourceOTU.getDocId(),
+						targetOTU.getPPodId());
 			}
 			targetTree.setNewick(targetNewick);
 			targetTree.setLabel(sourceTree.getLabel());
 		}
 		targetTreeSet.setTrees(newTargetTrees);
-		return targetTreeSet;
 	}
 }

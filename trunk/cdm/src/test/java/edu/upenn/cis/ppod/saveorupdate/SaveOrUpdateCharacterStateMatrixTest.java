@@ -16,12 +16,10 @@
 package edu.upenn.cis.ppod.saveorupdate;
 
 import static com.google.common.collect.Lists.newArrayList;
-import static com.google.common.collect.Maps.newHashMap;
 import static com.google.common.collect.Sets.newHashSet;
 
 import java.util.Collections;
 import java.util.List;
-import java.util.Map;
 import java.util.Set;
 
 import org.hibernate.Session;
@@ -94,10 +92,6 @@ public class SaveOrUpdateCharacterStateMatrixTest {
 				.create(mergeAttachment, dao.setSession(session),
 						newPPodVersionInfo);
 		final OTUSet fakeDbOTUSet = sourceMatrix.getOTUSet();
-		final Map<OTU, OTU> fakeOTUsByIncomingOTU = newHashMap();
-		for (final OTU sourceOTU : sourceMatrix.getOTUSet()) {
-			fakeOTUsByIncomingOTU.put(sourceOTU, sourceOTU);
-		}
 
 		final CharacterStateMatrix targetMatrix = matrixFactory
 				.create(sourceMatrix);
@@ -108,7 +102,7 @@ public class SaveOrUpdateCharacterStateMatrixTest {
 
 		fakeDbOTUSet.setMatrices(sourceAndTargetMatrices);
 		saveOrUpdateMatrix.saveOrUpdate(targetMatrix, sourceMatrix,
-				fakeOTUsByIncomingOTU, dnaCharacter);
+				dnaCharacter);
 		ModelAssert.assertEqualsCharacterStateMatrices(targetMatrix,
 				sourceMatrix);
 	}
@@ -119,10 +113,6 @@ public class SaveOrUpdateCharacterStateMatrixTest {
 				.create(mergeAttachment, dao.setSession(session),
 						newPPodVersionInfo);
 		final OTUSet fakeTargetOTUSet = sourceMatrix.getOTUSet();
-		final Map<OTU, OTU> fakeOTUsByIncomingOTU = newHashMap();
-		for (final OTU sourceOTU : sourceMatrix.getOTUSet()) {
-			fakeOTUsByIncomingOTU.put(sourceOTU, sourceOTU);
-		}
 
 		final CharacterStateMatrix targetMatrix = matrixFactory
 				.create(sourceMatrix);
@@ -133,7 +123,7 @@ public class SaveOrUpdateCharacterStateMatrixTest {
 
 		fakeTargetOTUSet.setMatrices(sourceAndTargetMatrices);
 		saveOrUpdateMatrix.saveOrUpdate(targetMatrix, sourceMatrix,
-				fakeOTUsByIncomingOTU, dnaCharacter);
+				dnaCharacter);
 
 		// Simulate passing back in the persisted characters: so we need to
 		// assign the proper pPOD ID's.
@@ -155,7 +145,7 @@ public class SaveOrUpdateCharacterStateMatrixTest {
 			sourceRow.setPPodVersion(1L);
 		}
 		saveOrUpdateMatrix.saveOrUpdate(targetMatrix, sourceMatrix,
-				fakeOTUsByIncomingOTU, dnaCharacter);
+				dnaCharacter);
 		ModelAssert.assertEqualsCharacterStateMatrices(targetMatrix,
 				sourceMatrix);
 	}
@@ -168,10 +158,6 @@ public class SaveOrUpdateCharacterStateMatrixTest {
 					.create(mergeAttachment, dao.setSession(session),
 							newPPodVersionInfo);
 			final OTUSet fakeTargetOTUSet = sourceMatrix.getOTUSet();
-			final Map<OTU, OTU> fakeOTUsByIncomingOTU = newHashMap();
-			for (final OTU sourceOTU : sourceMatrix.getOTUSet()) {
-				fakeOTUsByIncomingOTU.put(sourceOTU, sourceOTU);
-			}
 
 			final CharacterStateMatrix targetMatrix = matrixFactory
 					.create(sourceMatrix);
@@ -181,7 +167,7 @@ public class SaveOrUpdateCharacterStateMatrixTest {
 
 			fakeTargetOTUSet.setMatrices(sourceAndTargetMatrices);
 			saveOrUpdateMatrix.saveOrUpdate(targetMatrix, sourceMatrix,
-					fakeOTUsByIncomingOTU, dnaCharacter);
+					dnaCharacter);
 
 			// Simulate passing back in the persisted characters: so we need to
 			// assign the proper pPOD ID's.
@@ -206,7 +192,7 @@ public class SaveOrUpdateCharacterStateMatrixTest {
 				sourceRow.setCells(newSourceCells);
 			}
 			saveOrUpdateMatrix.saveOrUpdate(targetMatrix, sourceMatrix,
-					fakeOTUsByIncomingOTU, dnaCharacter);
+					dnaCharacter);
 
 			ModelAssert.assertEqualsCharacterStateMatrices(targetMatrix,
 					sourceMatrix);
