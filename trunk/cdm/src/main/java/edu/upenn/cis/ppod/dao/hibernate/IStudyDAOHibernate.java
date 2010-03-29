@@ -15,16 +15,19 @@
  */
 package edu.upenn.cis.ppod.dao.hibernate;
 
-import edu.upenn.cis.ppod.model.DNACharacter;
-import edu.upenn.cis.ppod.thirdparty.dao.hibernate.GenericHibernateDAO;
+import com.google.inject.ImplementedBy;
+
+import edu.upenn.cis.ppod.dao.IStudyDAO;
+import edu.upenn.cis.ppod.model.Study;
 
 /**
- * The Class DNACharacterDAOHibernate.
+ * The Interface IStudyDAOHibernate.
  * 
  * @author Sam Donnelly
  */
-final class DNACharacterDAOHibernate extends
-		GenericHibernateDAO<DNACharacter, Long>
-		implements IDNACharacterDAOHibernate {
+@ImplementedBy(StudyDAOHibernate.class)
+public interface IStudyDAOHibernate extends
+		IStudyDAO,
+		IDAOHibernate<Study, Long> {
 
 }

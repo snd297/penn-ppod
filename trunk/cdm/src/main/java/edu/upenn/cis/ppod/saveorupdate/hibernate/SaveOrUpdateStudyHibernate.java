@@ -31,14 +31,12 @@ import com.google.inject.Inject;
 import com.google.inject.Provider;
 import com.google.inject.assistedinject.Assisted;
 
+import edu.upenn.cis.ppod.dao.IAttachmentNamespaceDAO;
+import edu.upenn.cis.ppod.dao.IAttachmentTypeDAO;
 import edu.upenn.cis.ppod.dao.IDNACharacterDAO;
 import edu.upenn.cis.ppod.dao.IOTUSetDAO;
 import edu.upenn.cis.ppod.dao.IStudyDAO;
-import edu.upenn.cis.ppod.dao.hibernate.DNACharacterDAOHibernate;
-import edu.upenn.cis.ppod.dao.hibernate.IAttachmentNamespaceDAOHibernateFactory;
-import edu.upenn.cis.ppod.dao.hibernate.IAttachmentTypeDAOHibernateFactory;
 import edu.upenn.cis.ppod.dao.hibernate.ObjectWLongIdDAOHibernate;
-import edu.upenn.cis.ppod.dao.hibernate.StudyDAOHibernate;
 import edu.upenn.cis.ppod.dao.hibernate.HibernateDAOFactory.OTUSetDAOHibernate;
 import edu.upenn.cis.ppod.model.CharacterStateMatrix;
 import edu.upenn.cis.ppod.model.DNACharacter;
@@ -85,9 +83,7 @@ class SaveOrUpdateStudyHibernate implements ISaveOrUpdateStudy {
 
 	@Inject
 	SaveOrUpdateStudyHibernate(
-			final StudyDAOHibernate studyDAO,
 			final OTUSetDAOHibernate otuSetDAO,
-			final DNACharacterDAOHibernate dnaCharacterDAO,
 			final ObjectWLongIdDAOHibernate dao,
 			final Provider<Study> studyProvider,
 			final Provider<OTUSet> otuSetProvider,
@@ -98,16 +94,17 @@ class SaveOrUpdateStudyHibernate implements ISaveOrUpdateStudy {
 			final IMergeTreeSets.IFactory mergeTreeSetsFactory,
 			final ISaveOrUpdateMatrixFactory mergeMatrixFactory,
 			final IMergeMolecularSequenceSets.IFactory<DNASequenceSet, DNASequence> mergeDNASequenceSetsFactory,
-			final IAttachmentNamespaceDAOHibernateFactory attachmentNamespaceDAOFactory,
-			final IAttachmentTypeDAOHibernateFactory attachmentTypeDAOFactory,
 			final IMergeAttachments.IFactory mergeAttachmentFactory,
 			@Assisted final Session session,
+			@Assisted final IStudyDAO studyDAO,
+			@Assisted final IDNACharacterDAO dnaCharacterDAO,
+			@Assisted final IAttachmentNamespaceDAO attachmentNamespaceDAO,
+			@Assisted final IAttachmentTypeDAO attachmentTypeDAO,
 			@Assisted final INewPPodVersionInfo newPPodVersionInfo) {
 
-		this.studyDAO = (IStudyDAO) studyDAO.setSession(session);
+		this.studyDAO = studyDAO;
 		this.otuSetDAO = (IOTUSetDAO) otuSetDAO.setSession(session);
-		this.dnaCharacterDAO = (IDNACharacterDAO) dnaCharacterDAO
-				.setSession(session);
+		this.dnaCharacterDAO = dnaCharacterDAO;
 		this.studyProvider = studyProvider;
 		this.otuSetProvider = otuSetProvider;
 		this.matrixFactory = matrixFactory;
@@ -117,9 +114,9 @@ class SaveOrUpdateStudyHibernate implements ISaveOrUpdateStudy {
 		this.mergeOTUSets = saveOrUpdateOTUSetFactory
 				.create(newPPodVersionInfo);
 		this.mergeMatrices = mergeMatrixFactory.create(mergeAttachmentFactory
-				.create(attachmentNamespaceDAOFactory.create(session),
-						attachmentTypeDAOFactory.create(session)), dao
-				.setSession(session), newPPodVersionInfo);
+				.create(attachmentNamespaceDAO,
+						attachmentTypeDAO), dao
+								.setSession(session), newPPodVersionInfo);
 		this.mergeDNASequenceSets = mergeDNASequenceSetsFactory.create(dao,
 				newPPodVersionInfo);
 		this.mergeTreeSets = mergeTreeSetsFactory.create(newPPodVersionInfo);

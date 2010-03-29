@@ -17,6 +17,10 @@ package edu.upenn.cis.ppod.saveorupdate.hibernate;
 
 import org.hibernate.Session;
 
+import edu.upenn.cis.ppod.dao.IAttachmentNamespaceDAO;
+import edu.upenn.cis.ppod.dao.IAttachmentTypeDAO;
+import edu.upenn.cis.ppod.dao.IDNACharacterDAO;
+import edu.upenn.cis.ppod.dao.IStudyDAO;
 import edu.upenn.cis.ppod.modelinterfaces.INewPPodVersionInfo;
 import edu.upenn.cis.ppod.saveorupdate.ISaveOrUpdateStudy;
 
@@ -36,5 +40,9 @@ public interface ISaveOrUpdateStudyHibernateFactory {
 	 * @return a new {@link ISaveOrUpdateStudy}
 	 */
 	ISaveOrUpdateStudy create(Session session,
-				INewPPodVersionInfo newPPodVersionInfo);
+			IStudyDAO studyDAO,
+			IDNACharacterDAO dnaCharacterDAO,
+			IAttachmentNamespaceDAO attachmentNamespaceDAO,
+			IAttachmentTypeDAO attachmentTypeDAO,
+			INewPPodVersionInfo newPPodVersionInfo);
 }

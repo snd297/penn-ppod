@@ -19,6 +19,7 @@ import edu.upenn.cis.ppod.dao.IPPodVersionInfoDAO;
 import edu.upenn.cis.ppod.model.PPodVersionInfo;
 import edu.upenn.cis.ppod.thirdparty.dao.hibernate.GenericHibernateDAO;
 
+// TODO: Auto-generated Javadoc
 /**
  * A Hibernate <code>IPPodVersionInfoDAO</code>.
  * 
@@ -28,6 +29,11 @@ public final class PPodVersionInfoDAOHibernate extends
 		GenericHibernateDAO<PPodVersionInfo, Long> implements
 		IPPodVersionInfoDAO {
 
+	/**
+	 * Gets the max p pod version.
+	 * 
+	 * @return the max p pod version
+	 */
 	public long getMaxPPodVersion() {
 		final Long maxPPodVersion = (Long) getSession().getNamedQuery(
 				"PPodVersionInfo-getMaxPPoddVersion").uniqueResult();

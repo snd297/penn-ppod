@@ -15,27 +15,25 @@
  */
 package edu.upenn.cis.ppod.dao.hibernate;
 
-import org.hibernate.Session;
-
-import com.google.inject.Inject;
-import com.google.inject.assistedinject.Assisted;
-
-import edu.upenn.cis.ppod.dao.IAttachmentNamespaceDAO;
 import edu.upenn.cis.ppod.model.AttachmentNamespace;
 import edu.upenn.cis.ppod.thirdparty.dao.hibernate.GenericHibernateDAO;
 
+// TODO: Auto-generated Javadoc
 /**
+ * The Class AttachmentNamespaceDAOHibernate.
+ * 
  * @author Sam Donnelly
  */
-class AttachmentNamespaceDAOHibernate extends
+final class AttachmentNamespaceDAOHibernate extends
 		GenericHibernateDAO<AttachmentNamespace, Long> implements
-		IAttachmentNamespaceDAO {
+		IAttachmentNamespaceDAOHibernate {
 
-	@Inject
-	AttachmentNamespaceDAOHibernate(@Assisted Session session) {
-		setSession(session);
-	}
-
+	/**
+	 * Gets the namespace by label.
+	 * 
+	 * @param namespace the namespace
+	 * @return the namespace by label
+	 */
 	public AttachmentNamespace getNamespaceByLabel(final String namespace) {
 		return (AttachmentNamespace) getSession().getNamedQuery(
 				AttachmentNamespace.class.getSimpleName() + "-getByNamespace")

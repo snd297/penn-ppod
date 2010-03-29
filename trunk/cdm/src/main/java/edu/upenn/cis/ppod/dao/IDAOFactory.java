@@ -15,13 +15,6 @@
  */
 package edu.upenn.cis.ppod.dao;
 
-import edu.upenn.cis.ppod.model.AttachmentNamespace;
-import edu.upenn.cis.ppod.model.AttachmentType;
-import edu.upenn.cis.ppod.model.CharacterStateMatrix;
-import edu.upenn.cis.ppod.model.OTU;
-import edu.upenn.cis.ppod.model.Study;
-import edu.upenn.cis.ppod.model.Tree;
-import edu.upenn.cis.ppod.model.TreeSet;
 
 /**
  * Manufactures {@link IDAO}s.
@@ -99,20 +92,6 @@ public interface IDAOFactory {
 	 * @return a {@code TreeSet} DAO
 	 */
 	ITreeSetDAO getTreeSetDAO();
-
-	/**
-	 * Get a {@link AttachmentNamespace} DAO.
-	 * 
-	 * @return a {@code AttachmentNamespace} DAO
-	 */
-	IAttachmentNamespaceDAO getAttachmentNamespaceDAO();
-
-	/**
-	 * Get a {@link AttachmentType} DAO.
-	 * 
-	 * @return a {@code AttachmentType} DAO
-	 */
-	IAttachmentTypeDAO getAttachmentTypeDAO();
 
 	IUserDAO getPPodUserDAO();
 

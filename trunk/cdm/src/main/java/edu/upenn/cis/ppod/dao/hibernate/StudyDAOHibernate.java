@@ -26,26 +26,37 @@ import org.hibernate.criterion.Restrictions;
 
 import com.google.inject.Inject;
 
-import edu.upenn.cis.ppod.dao.IStudyDAO;
 import edu.upenn.cis.ppod.model.Study;
 import edu.upenn.cis.ppod.thirdparty.dao.hibernate.GenericHibernateDAO;
 import edu.upenn.cis.ppod.util.IPair;
 
+// TODO: Auto-generated Javadoc
 /**
  * An {@link IStudyDAO} Hibernate DAO.
  * 
  * @author Sam Donnelly
  */
-public class StudyDAOHibernate extends GenericHibernateDAO<Study, Long>
-		implements IStudyDAO {
+final class StudyDAOHibernate extends GenericHibernateDAO<Study, Long>
+		implements IStudyDAOHibernate {
 
+	/** The pair factory. */
 	private final IPair.IFactory pairFactory;
 
+	/**
+	 * Instantiates a new study dao hibernate.
+	 * 
+	 * @param pairFactory the pair factory
+	 */
 	@Inject
 	StudyDAOHibernate(final IPair.IFactory pairFactory) {
 		this.pairFactory = pairFactory;
 	}
 
+	/**
+	 * Gets the p pod id label pairs.
+	 * 
+	 * @return the p pod id label pairs
+	 */
 	public Set<IPair<String, String>> getPPodIdLabelPairs() {
 		final Set<IPair<String, String>> results = newHashSet();
 		for (final Iterator<?> itr = getSession().getNamedQuery(
@@ -57,12 +68,24 @@ public class StudyDAOHibernate extends GenericHibernateDAO<Study, Long>
 		return results;
 	}
 
+	/**
+	 * Gets the study by p pod id.
+	 * 
+	 * @param pPodId the pod id
+	 * @return the study by p pod id
+	 */
 	public Study getStudyByPPodId(final String pPodId) {
 		return (Study) getSession().getNamedQuery(
 				Study.class.getSimpleName() + "-getByPPodId").setParameter(
 				"pPodId", pPodId).uniqueResult();
 	}
 
+	/**
+	 * Gets the study by p pod id eager.
+	 * 
+	 * @param pPodId the pod id
+	 * @return the study by p pod id eager
+	 */
 	public Study getStudyByPPodIdEager(final String pPodId) {
 		return (Study) getSession().createCriteria(Study.class).add(
 				Restrictions.eq("pPodId", pPodId)).setFetchMode("otuSets",
@@ -80,6 +103,13 @@ public class StudyDAOHibernate extends GenericHibernateDAO<Study, Long>
 		// Extending to cells.firstState causes us to run out of memory
 	}
 
+	/**
+	 * Gets the oTU infos by study p pod id and min p pod version.
+	 * 
+	 * @param studyPPodId the study p pod id
+	 * @param minPPodVersion the min p pod version
+	 * @return the oTU infos by study p pod id and min p pod version
+	 */
 	@SuppressWarnings("unchecked")
 	public List<Object[]> getOTUInfosByStudyPPodIdAndMinPPodVersion(
 			String studyPPodId, Long minPPodVersion) {
@@ -89,6 +119,12 @@ public class StudyDAOHibernate extends GenericHibernateDAO<Study, Long>
 						"minPPodVersion", minPPodVersion).list();
 	}
 
+	/**
+	 * Gets the p pod version by p pod id.
+	 * 
+	 * @param pPodId the pod id
+	 * @return the p pod version by p pod id
+	 */
 	public Long getPPodVersionByPPodId(String pPodId) {
 		return (Long) getSession()
 				.getNamedQuery("Study-getPPodVersionByPPodId").setParameter(

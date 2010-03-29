@@ -26,8 +26,14 @@ import com.google.common.base.Function;
 import com.google.inject.Inject;
 import com.google.inject.Provider;
 
+import edu.upenn.cis.ppod.dao.IAttachmentNamespaceDAO;
+import edu.upenn.cis.ppod.dao.IAttachmentTypeDAO;
+import edu.upenn.cis.ppod.dao.IDNACharacterDAO;
 import edu.upenn.cis.ppod.dao.IStudyDAO;
-import edu.upenn.cis.ppod.dao.hibernate.StudyDAOHibernate;
+import edu.upenn.cis.ppod.dao.hibernate.IAttachmentNamespaceDAOHibernate;
+import edu.upenn.cis.ppod.dao.hibernate.IAttachmentTypeDAOHibernate;
+import edu.upenn.cis.ppod.dao.hibernate.IDNACharacterDAOHibernate;
+import edu.upenn.cis.ppod.dao.hibernate.IStudyDAOHibernate;
 import edu.upenn.cis.ppod.model.Study;
 import edu.upenn.cis.ppod.modelinterfaces.INewPPodVersionInfo;
 import edu.upenn.cis.ppod.modelinterfaces.INewPPodVersionInfoHibernate;
@@ -64,24 +70,34 @@ final class StudyResourceHibernate implements IStudyResource {
 
 	@Inject
 	StudyResourceHibernate(
-			final StudyDAOHibernate studyDAO,
+			final IStudyDAOHibernate studyDAO,
 			final ISaveOrUpdateStudyHibernateFactory saveOrUpdateStudyFactory,
 			final IStudy2StudyInfo study2StudyInfo,
 			final SetDocIdVisitor otuSetAndOTUSetDocIdVisitor,
 			final Provider<AfterUnmarshalVisitor> afterUnmarshalVisitorProvider,
 			final INewPPodVersionInfoHibernate.IFactory newPPodVersionInfoFactory,
 			final ISetPPodVersionInfoVisitor.IFactory setPPodVersionInfoVisitorFactory,
-			final StringPair.IFactory stringPairFactory) {
+			final StringPair.IFactory stringPairFactory,
+			final IDNACharacterDAOHibernate dnaCharacterDAO,
+			final IAttachmentNamespaceDAOHibernate attachmentNamespaceDAO,
+			final IAttachmentTypeDAOHibernate attachmentTypeDAO) {
 		this.studyDAO = (IStudyDAO) studyDAO.setSession(HibernateUtil
 				.getSessionFactory().getCurrentSession());
 		final Session currentSession = HibernateUtil
 				.getSessionFactory().getCurrentSession();
+
 		final INewPPodVersionInfo newPPodVersionInfo = newPPodVersionInfoFactory
 				.create(currentSession);
 		this.setPPodVersionInfoVisitor = setPPodVersionInfoVisitorFactory
 				.create(newPPodVersionInfo);
 		this.saveOrUpdateStudy = saveOrUpdateStudyFactory.create(
 				currentSession,
+				(IStudyDAO) studyDAO.setSession(currentSession),
+				(IDNACharacterDAO) dnaCharacterDAO.setSession(currentSession),
+				(IAttachmentNamespaceDAO) attachmentNamespaceDAO
+						.setSession(currentSession),
+				(IAttachmentTypeDAO) attachmentTypeDAO
+						.setSession(currentSession),
 				newPPodVersionInfo);
 		this.study2StudyInfo = study2StudyInfo;
 		this.setDocIdVisitor = otuSetAndOTUSetDocIdVisitor;

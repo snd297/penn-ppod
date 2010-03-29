@@ -15,28 +15,26 @@
  */
 package edu.upenn.cis.ppod.dao.hibernate;
 
-import org.hibernate.Session;
-
-import com.google.inject.Inject;
-import com.google.inject.assistedinject.Assisted;
-
-import edu.upenn.cis.ppod.dao.IAttachmentTypeDAO;
 import edu.upenn.cis.ppod.model.AttachmentType;
 import edu.upenn.cis.ppod.thirdparty.dao.hibernate.GenericHibernateDAO;
 
+// TODO: Auto-generated Javadoc
 /**
  * A Hibernate {@link AttachmentType} DAO.
  * 
  * @author Sam Donnelly
  */
 final class AttachmentTypeDAOHibernate extends
-		GenericHibernateDAO<AttachmentType, Long> implements IAttachmentTypeDAO {
+		GenericHibernateDAO<AttachmentType, Long> implements
+		IAttachmentTypeDAOHibernate {
 
-	@Inject
-	AttachmentTypeDAOHibernate(@Assisted Session session) {
-		setSession(session);
-	}
-
+	/**
+	 * Gets the attachment type by namespace and type.
+	 * 
+	 * @param namespaceLabel the namespace label
+	 * @param typeLabel the type label
+	 * @return the attachment type by namespace and type
+	 */
 	public AttachmentType getAttachmentTypeByNamespaceAndType(
 			final String namespaceLabel, final String typeLabel) {
 		return (AttachmentType) getSession()
