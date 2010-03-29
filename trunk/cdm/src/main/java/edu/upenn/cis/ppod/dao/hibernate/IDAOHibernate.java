@@ -22,9 +22,18 @@ import org.hibernate.Session;
 import edu.upenn.cis.ppod.dao.IDAO;
 
 /**
+ * An {@link IDAO} that needs to have a {@link Session} set to function.
+ * 
  * @author Sam Donnelly
  */
 public interface IDAOHibernate<T, ID extends Serializable> extends IDAO<T, ID> {
 
+	/**
+	 * Set the {@code session}.
+	 * 
+	 * @param s the session
+	 * 
+	 * @return this
+	 */
 	IDAOHibernate<T, ID> setSession(Session s);
 }

@@ -9,19 +9,21 @@
  *
  * Unless required by applicable law or agreed to in writing, software
  * distributed under the License is distributed on an "AS IS" BASIS,
- * WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
+ * WITHOUT WARRANTIES OR CONDITIONS of ANY KIND, either express or implied.
  * See the License for the specific language governing permissions and
  * limitations under the License.
  */
-package edu.upenn.cis.ppod.saveorupdate;
+package edu.upenn.cis.ppod.dao.hibernate;
 
-import edu.upenn.cis.ppod.dao.IDAO;
-import edu.upenn.cis.ppod.modelinterfaces.INewPPodVersionInfo;
+import edu.upenn.cis.ppod.thirdparty.dao.hibernate.GenericHibernateDAO;
 
 /**
- * Makes {@link ISaveOrUpdateMatrix}s.
+ * A pretty generic DAO for when we just need the basic operations.
+ * 
+ * @author Sam Donnelly
  */
-public interface ISaveOrUpdateMatrixFactory {
-	ISaveOrUpdateMatrix create(IMergeAttachments mergeAttachments,
-			IDAO<Object, Long> dao, INewPPodVersionInfo newPPodVersionInfo);
+final class ObjectWithLongIdDAOHibernate extends
+		GenericHibernateDAO<Object, Long> implements
+		IObjectWithLongIdDAOHibernate {
+
 }

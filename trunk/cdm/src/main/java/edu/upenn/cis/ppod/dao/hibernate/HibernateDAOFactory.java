@@ -107,7 +107,7 @@ public class HibernateDAOFactory implements IDAOFactory {
 	 * An {@link OTUSet} Hibernate DAO.
 	 */
 	public static class OTUSetDAOHibernate extends
-			GenericHibernateDAO<OTUSet, Long> implements IOTUSetDAO {
+			GenericHibernateDAO<OTUSet, Long> implements IOTUSetDAOHibernate {
 
 		public OTUSet getOTUSetByPPodId(final String pPodId) {
 			return (OTUSet) getSession().getNamedQuery(

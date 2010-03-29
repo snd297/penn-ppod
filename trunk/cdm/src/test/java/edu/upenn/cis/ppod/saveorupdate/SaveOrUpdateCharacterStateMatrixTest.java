@@ -28,7 +28,7 @@ import org.testng.annotations.Test;
 import com.google.inject.Inject;
 
 import edu.upenn.cis.ppod.TestGroupDefs;
-import edu.upenn.cis.ppod.dao.hibernate.ObjectWLongIdDAOHibernate;
+import edu.upenn.cis.ppod.dao.hibernate.IObjectWithLongIdDAOHibernate;
 import edu.upenn.cis.ppod.model.Character;
 import edu.upenn.cis.ppod.model.CharacterStateCell;
 import edu.upenn.cis.ppod.model.CharacterStateMatrix;
@@ -50,7 +50,7 @@ import edu.upenn.cis.ppod.util.MatrixProvider;
 public class SaveOrUpdateCharacterStateMatrixTest {
 
 	@Inject
-	private ISaveOrUpdateMatrixFactory saveOrUpdateMatrixFactory;
+	private ISaveOrUpdateMatrix.IFactory saveOrUpdateMatrixFactory;
 
 	@Inject
 	private ICharacterStateMatrixFactory matrixFactory;
@@ -59,7 +59,7 @@ public class SaveOrUpdateCharacterStateMatrixTest {
 	private Session session;
 
 	@Inject
-	private ObjectWLongIdDAOHibernate dao;
+	private IObjectWithLongIdDAOHibernate dao;
 
 	@Inject
 	private TestMergeAttachment mergeAttachment;

@@ -17,8 +17,10 @@ package edu.upenn.cis.ppod.saveorupdate;
 
 import com.google.inject.ImplementedBy;
 
+import edu.upenn.cis.ppod.dao.IDAO;
 import edu.upenn.cis.ppod.model.CharacterStateMatrix;
 import edu.upenn.cis.ppod.model.DNACharacter;
+import edu.upenn.cis.ppod.modelinterfaces.INewPPodVersionInfo;
 
 /**
  * Merge two matrices.
@@ -53,4 +55,10 @@ public interface ISaveOrUpdateMatrix {
 	void saveOrUpdate(CharacterStateMatrix targetMatrix,
 			CharacterStateMatrix sourceMatrix,
 			DNACharacter dnaCharacter);
+
+	static interface IFactory {
+		ISaveOrUpdateMatrix create(IMergeAttachments mergeAttachments,
+				IDAO<Object, Long> dao, INewPPodVersionInfo newPPodVersionInfo);
+	}
+
 }

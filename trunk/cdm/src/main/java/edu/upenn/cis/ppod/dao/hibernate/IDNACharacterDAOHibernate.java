@@ -21,12 +21,12 @@ import edu.upenn.cis.ppod.dao.IDNACharacterDAO;
 import edu.upenn.cis.ppod.model.DNACharacter;
 
 /**
- * The Interface IDNACharacterDAOHibernate.
+ * An {@link IDNACharacterDAO} that is a {@link IDAOHibernate}.
  * 
  * @author Sam Donnelly
  */
 @ImplementedBy(DNACharacterDAOHibernate.class)
 public interface IDNACharacterDAOHibernate extends IDNACharacterDAO,
-		IDAOHibernate<DNACharacter, Long> {
+IDAOHibernate<DNACharacter, Long> {
 
 }

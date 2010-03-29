@@ -19,7 +19,7 @@ import edu.upenn.cis.ppod.model.DNACharacter;
 import edu.upenn.cis.ppod.thirdparty.dao.hibernate.GenericHibernateDAO;
 
 /**
- * The Class DNACharacterDAOHibernate.
+ * An {@link IDNACharacterDAOHibernate}.
  * 
  * @author Sam Donnelly
  */
