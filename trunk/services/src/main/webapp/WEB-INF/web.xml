@@ -10,7 +10,7 @@
 	<context-param>
 		<param-name>resteasy.guice.modules</param-name>
 		<param-value>edu.upenn.cis.ppod.services.hibernate.PPodServicesHibernateModule,
-			edu.upenn.cis.ppod.util.PPodCoreModule,
+			edu.upenn.cis.ppod.PPodModule,
 			edu.upenn.cis.ppod.thirdparty.injectslf4j.InjectSlf4jModule</param-value>
 	</context-param>
 	<context-param>

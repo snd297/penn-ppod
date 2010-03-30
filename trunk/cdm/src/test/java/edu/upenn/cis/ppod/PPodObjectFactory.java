@@ -21,7 +21,6 @@ import com.google.inject.util.Modules;
 import edu.upenn.cis.ppod.services.hibernate.PPodServicesHibernateModule;
 import edu.upenn.cis.ppod.thirdparty.injectslf4j.InjectSlf4jModule;
 import edu.upenn.cis.ppod.util.GuiceObjectFactory;
-import edu.upenn.cis.ppod.util.PPodCoreModule;
 
 /**
  * @author Sam Donnelly
@@ -31,7 +30,7 @@ public class PPodObjectFactory extends GuiceObjectFactory {
 	private static final long serialVersionUID = 1L;
 
 	PPodObjectFactory() {
-		setInjector(Guice.createInjector(Modules.override(new PPodCoreModule(),
+		setInjector(Guice.createInjector(Modules.override(new PPodModule(),
 				new PPodServicesHibernateModule()).with(new TestModule()),
 				new InjectSlf4jModule()));
 	}
