@@ -30,7 +30,7 @@ import edu.upenn.cis.ppod.modelinterfaces.INewPPodVersionInfo;
 /**
  * @author Sam Donnelly
  */
-class MergeMolecularSequenceSets<SS extends MolecularSequenceSet<S>, S extends MolecularSequence<SS>>
+final class MergeMolecularSequenceSets<SS extends MolecularSequenceSet<S>, S extends MolecularSequence<SS>>
 		implements IMergeMolecularSequenceSets<SS, S> {
 
 	final IDAO<Object, Long> dao;

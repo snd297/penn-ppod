@@ -23,6 +23,7 @@ import org.hibernate.context.ManagedSessionContext;
 import com.google.inject.Guice;
 import com.google.inject.Injector;
 
+import edu.upenn.cis.ppod.PPodModule;
 import edu.upenn.cis.ppod.model.CharacterState;
 import edu.upenn.cis.ppod.model.DNACharacter;
 import edu.upenn.cis.ppod.modelinterfaces.INewPPodVersionInfo;
@@ -42,7 +43,7 @@ public class PopulateTables {
 		Session session = null;
 		try {
 			final Injector injector = Guice
-					.createInjector(new PPodCoreModule());
+					.createInjector(new PPodModule());
 			final DNACharacter dnaCharacter = injector
 					.getInstance(DNACharacter.class);
 

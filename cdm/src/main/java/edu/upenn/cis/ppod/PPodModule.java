@@ -13,7 +13,7 @@
  * See the License for the specific language governing permissions and
  * limitations under the License.
  */
-package edu.upenn.cis.ppod.util;
+package edu.upenn.cis.ppod;
 
 import com.google.inject.AbstractModule;
 import com.google.inject.assistedinject.FactoryProvider;
@@ -32,8 +32,13 @@ import edu.upenn.cis.ppod.saveorupdate.SaveOrUpdateModule;
 import edu.upenn.cis.ppod.security.ISimpleAuthenticationInfoFactory;
 import edu.upenn.cis.ppod.security.SimpleAuthenticationInfoFactory;
 import edu.upenn.cis.ppod.services.StringPair;
+import edu.upenn.cis.ppod.util.IPair;
+import edu.upenn.cis.ppod.util.ISetPPodVersionInfoVisitor;
+import edu.upenn.cis.ppod.util.Pair;
+import edu.upenn.cis.ppod.util.ISetPPodVersionInfoVisitor.IFactory;
+import edu.upenn.cis.ppod.util.Pair.Factory;
 
-public final class PPodCoreModule extends AbstractModule {
+public final class PPodModule extends AbstractModule {
 
 	@Override
 	protected void configure() {
