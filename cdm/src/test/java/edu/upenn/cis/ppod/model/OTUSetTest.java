@@ -16,11 +16,11 @@
 package edu.upenn.cis.ppod.model;
 
 import static com.google.common.collect.Iterables.contains;
-import static com.google.common.collect.Iterables.getOnlyElement;
 import static com.google.common.collect.Lists.newArrayList;
 import static com.google.common.collect.Sets.newHashSet;
 import static org.testng.Assert.assertEquals;
 import static org.testng.Assert.assertFalse;
+import static org.testng.Assert.assertNull;
 import static org.testng.Assert.assertSame;
 import static org.testng.Assert.assertTrue;
 
@@ -267,5 +267,27 @@ public class OTUSetTest {
 		final OTU shouldBeOTU0 = otuSet.addOTU(otu0);
 		assertSame(shouldBeOTU0, otu0);
 		assertTrue(contains(otuSet, otu0));
+	}
+
+	public void setDescription() {
+		otuSet.unsetInNeedOfNewPPodVersionInfo();
+		final String description = "DESCRIPTION";
+		otuSet.setDescription(description);
+		assertEquals(otuSet.getDescription(), description);
+		assertTrue(otuSet.isInNeedOfNewPPodVersionInfo());
+
+		otuSet.unsetInNeedOfNewPPodVersionInfo();
+		otuSet.setDescription(description);
+		assertFalse(otuSet.isInNeedOfNewPPodVersionInfo());
+
+		otuSet.unsetInNeedOfNewPPodVersionInfo();
+		otuSet.setDescription(null);
+		assertNull(otuSet.getDescription());
+		assertTrue(otuSet.isInNeedOfNewPPodVersionInfo());
+
+		otuSet.unsetInNeedOfNewPPodVersionInfo();
+		otuSet.setDescription(null);
+		assertNull(otuSet.getDescription());
+		assertFalse(otuSet.isInNeedOfNewPPodVersionInfo());
 	}
 }
