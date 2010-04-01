@@ -66,6 +66,9 @@ public class OTUSetTest {
 	@Inject
 	private Provider<CharacterStateMatrix> matrixProvider;
 
+	@Inject
+	private Provider<DNASequenceSet> dnaSequenceSetProvider;
+
 	private Study study;
 
 	/**
@@ -200,6 +203,7 @@ public class OTUSetTest {
 				treeSet0,
 				treeSet2));
 
+		@SuppressWarnings("unchecked")
 		final Set<TreeSet> removedTreeSets2 = otuSet
 				.setTreeSets(Collections.EMPTY_SET);
 
@@ -222,5 +226,37 @@ public class OTUSetTest {
 		otuSet.setInNeedOfNewPPodVersionInfo();
 		assertTrue(otuSet.isInNeedOfNewPPodVersionInfo());
 		assertEquals(study.getPPodVersionInfo(), studyPPodVersionInfo);
+	}
+
+	public void setDNASequenceSets() {
+		final DNASequenceSet dnaSequenceSet0 = dnaSequenceSetProvider.get();
+		final DNASequenceSet dnaSequenceSet1 = dnaSequenceSetProvider.get();
+		final DNASequenceSet dnaSequenceSet2 = dnaSequenceSetProvider.get();
+		final ImmutableSet<DNASequenceSet> dnaSequenceSets = ImmutableSet.of(
+				dnaSequenceSet0, dnaSequenceSet1, dnaSequenceSet2);
+		otuSet.setDNASequenceSets(dnaSequenceSets);
+
+		assertEquals(otuSet.getDNASequenceSetsSize(), dnaSequenceSets.size());
+
+		assertEquals((Object) newHashSet(otuSet.getDNASequenceSetsIterator()),
+				(Object) dnaSequenceSets);
+
+		otuSet.unsetInNeedOfNewPPodVersionInfo();
+
+		final Set<DNASequenceSet> shouldBeEmpty = otuSet
+				.setDNASequenceSets(dnaSequenceSets);
+
+		assertEquals(shouldBeEmpty.size(), 0);
+
+		assertFalse(otuSet.isInNeedOfNewPPodVersionInfo());
+
+		final ImmutableSet<DNASequenceSet> dnaSequenceSets02 = ImmutableSet.of(
+				dnaSequenceSet0, dnaSequenceSet2);
+
+		final Set<DNASequenceSet> removedDNASequenceSets = otuSet
+				.setDNASequenceSets(dnaSequenceSets02);
+
+		assertEquals(removedDNASequenceSets, ImmutableSet.of(dnaSequenceSet1));
+
 	}
 }
