@@ -17,6 +17,7 @@ package edu.upenn.cis.ppod.model;
 
 import static com.google.common.base.Preconditions.checkNotNull;
 
+import javax.annotation.Nullable;
 import javax.persistence.CascadeType;
 import javax.persistence.Entity;
 import javax.persistence.FetchType;
@@ -101,8 +102,7 @@ public class DNASequenceSet extends MolecularSequenceSet<DNASequence> {
 
 	@Override
 	protected MolecularSequenceSet<DNASequence> setOTUsInOTUsToSequences(
-			final OTUSet otuSet) {
-		checkNotNull(otuSet);
+			@Nullable final OTUSet otuSet) {
 		getOTUsToSequences().setOTUs(otuSet, this);
 		return this;
 	}
