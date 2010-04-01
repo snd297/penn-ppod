@@ -70,11 +70,13 @@ public class CharacterStateMatrixTest {
 	@Inject
 	private CharacterState.IFactory stateFactory;
 
+	@edu.umd.cs.findbugs.annotations.SuppressWarnings
 	private OTUSet otuSet012;
 	private OTU otu0;
 	private OTU otu1;
 	private OTU otu2;
 
+	@edu.umd.cs.findbugs.annotations.SuppressWarnings
 	private CharacterStateMatrix matrix;
 
 	@BeforeMethod
@@ -172,11 +174,14 @@ public class CharacterStateMatrixTest {
 		assertNotSame(matrix.getCharacters(), characters);
 		Assert.assertEquals(matrix.getCharacters(), characters);
 
-		Assert.assertEquals(matrix.getCharacterPosition().get(characters.get(0)),
+		Assert.assertEquals(matrix.getCharacterPosition()
+				.get(characters.get(0)),
 				Integer.valueOf(0));
-		Assert.assertEquals(matrix.getCharacterPosition().get(characters.get(1)),
+		Assert.assertEquals(matrix.getCharacterPosition()
+				.get(characters.get(1)),
 				Integer.valueOf(1));
-		Assert.assertEquals(matrix.getCharacterPosition().get(characters.get(2)),
+		Assert.assertEquals(matrix.getCharacterPosition()
+				.get(characters.get(2)),
 				Integer.valueOf(2));
 	}
 

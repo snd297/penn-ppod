@@ -35,9 +35,13 @@ import edu.upenn.cis.ppod.thirdparty.util.ChainedInterceptor;
  * model.
  */
 public final class AccessInterceptor extends ChainedInterceptor {
-		
 
-	private final Provider<PPodPermission> permissionFactory;
+	/**
+	 * Serial Version uid 1.
+	 */
+	private static final long serialVersionUID = 1L;
+
+	private transient final Provider<PPodPermission> permissionFactory;
 
 	@Inject
 	AccessInterceptor(final Provider<PPodPermission> permissionFactory) {

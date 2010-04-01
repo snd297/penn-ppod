@@ -15,20 +15,19 @@
  */
 package edu.upenn.cis.ppod.util;
 
-import java.io.IOException;
 import java.sql.Connection;
 import java.sql.DriverManager;
 import java.sql.SQLException;
 import java.util.Properties;
 
+import javax.annotation.Nullable;
+
 import org.dbunit.DatabaseUnitException;
 import org.dbunit.IDatabaseTester;
 import org.dbunit.database.DatabaseConnection;
 import org.dbunit.database.IDatabaseConnection;
-import org.dbunit.dataset.DataSetException;
 import org.dbunit.dataset.IDataSet;
 import org.dbunit.dataset.datatype.IDataTypeFactory;
-import org.dbunit.dataset.xml.FlatXmlDataSet;
 import org.hibernate.cfg.Environment;
 
 /**
@@ -49,6 +48,7 @@ public class DbUnitUtil {
 	 * 
 	 * @return see description
 	 */
+	@edu.umd.cs.findbugs.annotations.SuppressWarnings 
 	public static IDatabaseConnection getConnection() {
 		return getConnection(null);
 	}
@@ -100,6 +100,7 @@ public class DbUnitUtil {
 		}
 	}
 
+	@Nullable
 	public static IDatabaseTester getDatabaseTester() {
 		return null;
 // final Properties hibernateProperties = HibernateUtil.getConfiguration()
@@ -123,19 +124,21 @@ public class DbUnitUtil {
 	 * @param xmlDataset resource name
 	 * @return the {@code IDataSet}
 	 */
+	@Nullable
 	public static IDataSet getDataSet(final String xmlDataset) {
 		IDataSet loadedDataSet;
-	//	try {
-			loadedDataSet = null;// new FlatXmlDataSet(DbUnitUtil.class
+		// try {
+		loadedDataSet = null;// new FlatXmlDataSet(DbUnitUtil.class
 // .getResourceAsStream(xmlDataset));
-//		} catch (final DataSetException e) {
-//			throw new IllegalStateException(e);
-//		} catch (final IOException e) {
-//			throw new IllegalStateException(e);
-//		}
+// } catch (final DataSetException e) {
+// throw new IllegalStateException(e);
+// } catch (final IOException e) {
+// throw new IllegalStateException(e);
+// }
 		return loadedDataSet;
 	}
 
+	@Nullable
 	public static String getDialect() {
 		return null;// HibernateUtil.getConfiguration().getProperties().getProperty(
 		// Environment.DIALECT);

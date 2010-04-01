@@ -39,6 +39,7 @@ import edu.upenn.cis.ppod.dao.IOTUDAO;
 import edu.upenn.cis.ppod.dao.IOTUSetDAO;
 
 @Test(groups = { TestGroupDefs.SLOW, TestGroupDefs.BROKEN })
+@edu.umd.cs.findbugs.annotations.SuppressWarnings
 public class MatrixToDbTest extends DbTestBase {
 
 	@Test

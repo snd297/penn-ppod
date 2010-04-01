@@ -87,12 +87,15 @@ public class DNASequenceSet extends MolecularSequenceSet<DNASequence> {
 		return getOTUsToSequences().get(otu, this);
 	}
 
+	@Nullable
 	@Override
 	protected DNASequence putSequenceHelper(final OTU otu,
 			final DNASequence newSequence) {
 		return getOTUsToSequences().put(otu, newSequence, this);
 	}
 
+	/** For JAXB. */
+	@edu.umd.cs.findbugs.annotations.SuppressWarnings
 	@SuppressWarnings("unused")
 	private DNASequenceSet setOTUsToSequences(
 			final OTUsToDNASequences otusToSequences) {

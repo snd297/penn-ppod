@@ -171,6 +171,8 @@ public class CharacterStates {
 	 * 
 	 * @return {@code state}
 	 */
+	@edu.umd.cs.findbugs.annotations.SuppressWarnings
+	@SuppressWarnings("unused")
 	private CharacterStates setStates(final Set<CharacterState> states) {
 		checkNotNull(states);
 

@@ -132,6 +132,7 @@ public abstract class MolecularSequenceSet<S extends MolecularSequence<?>>
 		return putSequenceHelper(otu, sequence);
 	}
 
+	@Nullable
 	protected abstract S putSequenceHelper(final OTU otu, final S newSequence);
 
 	@Override
@@ -172,6 +173,6 @@ public abstract class MolecularSequenceSet<S extends MolecularSequence<?>>
 	}
 
 	protected abstract MolecularSequenceSet<S> setOTUsInOTUsToSequences(
-			final OTUSet otuSet);
+			@Nullable final OTUSet otuSet);
 
 }
