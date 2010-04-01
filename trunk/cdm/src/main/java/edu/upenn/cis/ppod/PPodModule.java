@@ -35,8 +35,6 @@ import edu.upenn.cis.ppod.services.StringPair;
 import edu.upenn.cis.ppod.util.IPair;
 import edu.upenn.cis.ppod.util.ISetPPodVersionInfoVisitor;
 import edu.upenn.cis.ppod.util.Pair;
-import edu.upenn.cis.ppod.util.ISetPPodVersionInfoVisitor.IFactory;
-import edu.upenn.cis.ppod.util.Pair.Factory;
 
 public final class PPodModule extends AbstractModule {
 
