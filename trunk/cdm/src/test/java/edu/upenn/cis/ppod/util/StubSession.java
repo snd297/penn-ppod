@@ -45,7 +45,7 @@ public class StubSession implements Session {
 
 	private static final long serialVersionUID = 1L;
 
-	private Provider<Query> queryProvider;
+	private transient Provider<Query> queryProvider;
 
 	@Inject
 	StubSession(final Provider<Query> queryProvider) {

@@ -508,16 +508,17 @@ public class CharacterStateMatrix extends UUPPodEntityWXmlId implements
 			return Collections.emptyList();
 		}
 
-		// We leave this instanceof here since it is at worst ineffectual w/
-		// proxies, but
-		// it should still help us on the client side where hibernate is not a
-		// factor.
 		int newCharacterPos = -1;
 		for (final Character newCharacter : newCharacters) {
 			newCharacterPos++;
 			checkArgument(newCharacter != null, "newCharacters["
 					+ newCharacterPos
 					+ "] is null");
+
+			// We leave this instanceof here since it is at worst ineffectual w/
+			// proxies, but
+			// it should still help us on the webapp client side (eg Mesquite)
+			// where hibernate is not a factor.
 			if (newCharacter instanceof MolecularCharacter) {
 				throw new AssertionError(
 						"character should not be a MolecularCharacter");
@@ -678,6 +679,7 @@ public class CharacterStateMatrix extends UUPPodEntityWXmlId implements
 	 * 
 	 * @return this
 	 */
+	@edu.umd.cs.findbugs.annotations.SuppressWarnings
 	@SuppressWarnings("unused")
 	private CharacterStateMatrix setOTUsToRows(
 			final OTUsToCharacterStateRows newOTUsToRows) {

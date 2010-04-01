@@ -142,6 +142,7 @@ public class Character extends UUPPodEntityWXmlId {
 	 * @return the state that was associated with {@code state.getStateNumber()}
 	 *         or {@code null} if there was no such state.
 	 */
+	@CheckForNull
 	public CharacterState putState(final CharacterState state) {
 		Preconditions.checkNotNull(state);
 		final CharacterState originalState = states.put(state.getStateNumber(),

@@ -335,7 +335,11 @@ public class CharacterStateCell extends PPodEntity implements
 				// possible since it will trigger a database hit, which in the
 				// aggregate
 				// is expensive since there're are so many cells.
+				if (states == null) {
+					return Collections.emptySet();
+				}
 				return states;
+
 			default:
 				throw new AssertionError("Unknown CharacterState.Type: " + type);
 		}
@@ -347,7 +351,9 @@ public class CharacterStateCell extends PPodEntity implements
 	 * @return the number of states that this cell contains
 	 */
 	public int getStatesSize() {
-		switch (type) {
+		checkState(getType() != null,
+				"type has yet to be assigned for this cell");
+		switch (getType()) {
 			case INAPPLICABLE:
 			case UNASSIGNED:
 				return 0;
@@ -419,7 +425,12 @@ public class CharacterStateCell extends PPodEntity implements
 			row.setInNeedOfNewPPodVersionInfo();
 			final CharacterStateMatrix matrix = row.getMatrix();
 			if (matrix != null) {
-				matrix.resetColumnPPodVersion(getPosition());
+
+				// so FindBugs knows that it's okay
+				final Integer position = getPosition();
+				checkState(position != null,
+						"cell has no position, but is a part of a matrix");
+				matrix.resetColumnPPodVersion(position);
 			}
 		}
 		super.setInNeedOfNewPPodVersionInfo();

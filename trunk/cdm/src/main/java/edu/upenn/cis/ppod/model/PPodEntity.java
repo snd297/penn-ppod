@@ -68,7 +68,7 @@ import edu.upenn.cis.ppod.util.IVisitor;
 @Table(name = PPodEntity.TABLE)
 @Inheritance(strategy = InheritanceType.JOINED)
 public abstract class PPodEntity extends PersistentObject implements IAttachee,
-		IPersistentObject, IPPodVersioned {
+			IPPodVersioned {
 
 	static final String TABLE = "PPOD_ENTITY";
 

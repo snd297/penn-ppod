@@ -55,7 +55,7 @@ public abstract class MolecularSequence<SS extends MolecularSequenceSet<?>>
 	@CheckForNull
 	private String description;
 
-	@Column(name = "NAME")
+	@Column(name = "NAME", nullable = true)
 	@CheckForNull
 	private String name;
 
@@ -159,9 +159,8 @@ public abstract class MolecularSequence<SS extends MolecularSequenceSet<?>>
 	 * 
 	 * @return this
 	 */
-	public MolecularSequence<SS> setName(final String name) {
-		checkNotNull(name);
-		if (name.equals(getName())) {
+	public MolecularSequence<SS> setName(@Nullable final String name) {
+		if (equal(name, getName())) {
 			return this;
 		}
 		this.name = name;

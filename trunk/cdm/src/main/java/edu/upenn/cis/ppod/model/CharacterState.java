@@ -220,13 +220,15 @@ public class CharacterState extends PPodEntityWXmlId {
 	 * <p>
 	 * This is intended to be package-private and called from
 	 * {@link Character#addState(CharacterState)}.
+	 * <p>
+	 * {@code character} being {@code null} signifies that the relationship, if
+	 * it exists, is being severed.
 	 * 
 	 * @param character see description.
 	 * 
 	 * @return this {@code CharacterState}
 	 */
-	CharacterState setCharacter(final Character character) {
-		checkNotNull(character);
+	CharacterState setCharacter(@Nullable final Character character) {
 		this.character = character;
 		return this;
 	}
