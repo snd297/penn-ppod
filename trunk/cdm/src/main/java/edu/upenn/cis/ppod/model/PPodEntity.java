@@ -47,7 +47,6 @@ import com.google.inject.Inject;
 
 import edu.upenn.cis.ppod.modelinterfaces.IAttachee;
 import edu.upenn.cis.ppod.modelinterfaces.IPPodVersioned;
-import edu.upenn.cis.ppod.modelinterfaces.IPersistentObject;
 import edu.upenn.cis.ppod.util.IVisitor;
 
 /**
