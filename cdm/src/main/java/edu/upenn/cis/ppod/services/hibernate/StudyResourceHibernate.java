@@ -47,7 +47,7 @@ import edu.upenn.cis.ppod.services.StringPair;
 import edu.upenn.cis.ppod.services.ppodentity.IStudy2StudyInfo;
 import edu.upenn.cis.ppod.services.ppodentity.StudyInfo;
 import edu.upenn.cis.ppod.thirdparty.util.HibernateUtil;
-import edu.upenn.cis.ppod.util.AfterUnmarshalVisitor;
+import edu.upenn.cis.ppod.util.IAfterUnmarshalVisitor;
 import edu.upenn.cis.ppod.util.IPair;
 import edu.upenn.cis.ppod.util.ISetPPodVersionInfoVisitor;
 import edu.upenn.cis.ppod.util.SetDocIdVisitor;
@@ -65,7 +65,7 @@ final class StudyResourceHibernate implements IStudyResource {
 
 	private final SetDocIdVisitor setDocIdVisitor;
 
-	private final Provider<AfterUnmarshalVisitor> afterUnmarshalVisitorProvider;
+	private final Provider<IAfterUnmarshalVisitor> afterUnmarshalVisitorProvider;
 
 	private final ISetPPodVersionInfoVisitor setPPodVersionInfoVisitor;
 
@@ -78,7 +78,7 @@ final class StudyResourceHibernate implements IStudyResource {
 			final ISaveOrUpdateStudy.IFactory saveOrUpdateStudyFactory,
 			final IStudy2StudyInfo study2StudyInfo,
 			final SetDocIdVisitor setDocIdVisitor,
-			final Provider<AfterUnmarshalVisitor> afterUnmarshalVisitorProvider,
+			final Provider<IAfterUnmarshalVisitor> afterUnmarshalVisitorProvider,
 			final INewPPodVersionInfoHibernate.IFactory newPPodVersionInfoFactory,
 			final ISetPPodVersionInfoVisitor.IFactory setPPodVersionInfoVisitorFactory,
 			final StringPair.IFactory stringPairFactory,

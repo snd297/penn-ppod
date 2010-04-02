@@ -23,11 +23,12 @@ import edu.upenn.cis.ppod.model.DNASequenceSet;
 import edu.upenn.cis.ppod.model.OTUKeyedBimap;
 
 /**
- * For straightening up or data structures after we're unmarshalled.
+ * For straightening up or filling data structures after we've unmarshalled.
  * 
  * @author Sam Donnelly
  */
-public class AfterUnmarshalVisitor extends EmptyVisitor {
+class AfterUnmarshalVisitor extends EmptyVisitor implements
+		IAfterUnmarshalVisitor {
 
 	/**
 	 * Call {@code matrix.afterUnmarshal()}.
