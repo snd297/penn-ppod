@@ -37,7 +37,7 @@ import edu.upenn.cis.ppod.modelinterfaces.IPPodVersioned;
  * 
  * @author Sam Donnelly
  */
-class SetPPodVersionInfoVisitor extends EmptyVisitor implements
+final class SetPPodVersionInfoVisitor extends EmptyVisitor implements
 		ISetPPodVersionInfoVisitor {
 
 	private final INewPPodVersionInfo newPPodVersionInfo;
