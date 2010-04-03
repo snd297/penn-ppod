@@ -34,8 +34,8 @@ import edu.upenn.cis.ppod.model.OTUSet;
 import edu.upenn.cis.ppod.model.TreeSet;
 import edu.upenn.cis.ppod.services.ppodentity.PPodEntities;
 import edu.upenn.cis.ppod.thirdparty.util.HibernateUtil;
+import edu.upenn.cis.ppod.util.ISetDocIdVisitor;
 import edu.upenn.cis.ppod.util.IVisitor;
-import edu.upenn.cis.ppod.util.SetDocIdVisitor;
 
 /**
  * @author Sam Donnelly
@@ -51,7 +51,7 @@ class PPodEntitiesResourceHibernate implements
 
 	@Inject
 	PPodEntitiesResourceHibernate(final Provider<PPodEntities> pPodEntities,
-			final SetDocIdVisitor setDocIdVisitor) {
+			final ISetDocIdVisitor setDocIdVisitor) {
 		this.pPodEntitiesProvider = pPodEntities;
 		this.setDocIdVisitor = setDocIdVisitor;
 	}

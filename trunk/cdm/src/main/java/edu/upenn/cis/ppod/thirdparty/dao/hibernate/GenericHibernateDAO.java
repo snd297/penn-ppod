@@ -53,8 +53,8 @@ import edu.upenn.cis.ppod.dao.hibernate.IDAOHibernate;
  * @param <ID> the type of the Hibernate PHYLO_CHAR_ID_COLUMN - usually
  *            {@link Long}
  */
-public class GenericHibernateDAO<T, ID extends Serializable> implements
-		IDAOHibernate<T, ID> {
+public abstract class GenericHibernateDAO<T, ID extends Serializable>
+		implements IDAOHibernate<T, ID> {
 
 	/** No arg constructor. */
 	public GenericHibernateDAO() {
