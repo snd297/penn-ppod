@@ -24,13 +24,13 @@ import edu.upenn.cis.ppod.model.OTU;
 import edu.upenn.cis.ppod.model.OTUSet;
 
 /**
- * Set the doc id on {@code OTUSet}s, {@code OTU}s, {@code Character}s, {@code
- * CharacterState}s, {@code Attachment}s, {@code AttachmentType}s, and {@code
- * AttachmentNamespace}s.
+ * Set the doc id on {@code Attachment}s, {@code AttachmentNamespace}s, {@code
+ * AttachmentType}s, {@code Character}s, {@code CharacterState}s, {@code OTU}s,
+ * {@code OTUSet}s.
  * 
  * @author Sam Donnelly
  */
-public class SetDocIdVisitor extends EmptyVisitor {
+final class SetDocIdVisitor extends EmptyVisitor implements ISetDocIdVisitor {
 
 	/**
 	 * Call {@code otuSet.setDocId()}.

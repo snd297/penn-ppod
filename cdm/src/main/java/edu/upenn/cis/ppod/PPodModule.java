@@ -19,7 +19,6 @@ import com.google.inject.AbstractModule;
 import com.google.inject.assistedinject.FactoryProvider;
 
 import edu.upenn.cis.ppod.dao.hibernate.DAOHibernateModule;
-import edu.upenn.cis.ppod.dao.hibernate.HibernateDAOFactory;
 import edu.upenn.cis.ppod.model.CharacterState;
 import edu.upenn.cis.ppod.model.DNAState;
 import edu.upenn.cis.ppod.model.ModelModule;
@@ -40,10 +39,6 @@ public final class PPodModule extends AbstractModule {
 
 	@Override
 	protected void configure() {
-
-		bind(HibernateDAOFactory.IFactory.class).toProvider(
-				FactoryProvider.newFactory(HibernateDAOFactory.IFactory.class,
-						HibernateDAOFactory.class));
 
 		bind(IPair.IFactory.class).to(Pair.Factory.class);
 

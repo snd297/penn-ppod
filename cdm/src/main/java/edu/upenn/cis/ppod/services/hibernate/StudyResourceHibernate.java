@@ -49,8 +49,8 @@ import edu.upenn.cis.ppod.services.ppodentity.StudyInfo;
 import edu.upenn.cis.ppod.thirdparty.util.HibernateUtil;
 import edu.upenn.cis.ppod.util.IAfterUnmarshalVisitor;
 import edu.upenn.cis.ppod.util.IPair;
+import edu.upenn.cis.ppod.util.ISetDocIdVisitor;
 import edu.upenn.cis.ppod.util.ISetPPodVersionInfoVisitor;
-import edu.upenn.cis.ppod.util.SetDocIdVisitor;
 
 /**
  * @author Sam Donnelly
@@ -63,7 +63,7 @@ final class StudyResourceHibernate implements IStudyResource {
 
 	private final IStudy2StudyInfo study2StudyInfo;
 
-	private final SetDocIdVisitor setDocIdVisitor;
+	private final ISetDocIdVisitor setDocIdVisitor;
 
 	private final Provider<IAfterUnmarshalVisitor> afterUnmarshalVisitorProvider;
 
@@ -77,7 +77,7 @@ final class StudyResourceHibernate implements IStudyResource {
 			final IOTUSetDAOHibernate otuSetDAO,
 			final ISaveOrUpdateStudy.IFactory saveOrUpdateStudyFactory,
 			final IStudy2StudyInfo study2StudyInfo,
-			final SetDocIdVisitor setDocIdVisitor,
+			final ISetDocIdVisitor setDocIdVisitor,
 			final Provider<IAfterUnmarshalVisitor> afterUnmarshalVisitorProvider,
 			final INewPPodVersionInfoHibernate.IFactory newPPodVersionInfoFactory,
 			final ISetPPodVersionInfoVisitor.IFactory setPPodVersionInfoVisitorFactory,
