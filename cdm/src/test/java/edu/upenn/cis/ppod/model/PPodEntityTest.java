@@ -52,6 +52,10 @@ public class PPodEntityTest {
 		assertTrue(otuSet.getHasAttachments());
 	}
 
+	/**
+	 * This is a pretty thorough test of {@code
+	 * PPodEntity.removeAttachment(...)}. A refactoring wouldn't hurt.
+	 */
 	public void removeAttachment() {
 		final OTUSet otuSet = otuSetProvider.get();
 		final Attachment attachment1 = attachmentProvider.get();
@@ -60,19 +64,27 @@ public class PPodEntityTest {
 		otuSet.addAttachment(attachment1);
 		otuSet.addAttachment(attachment2);
 		otuSet.addAttachment(attachment3);
-		assertEquals((Object)newHashSet(otuSet.getAttachmentsIterator()), (Object)newHashSet(
-				attachment1,
-				attachment2, attachment3));
-		otuSet.removeAttachment(attachment2);
-		assertEquals((Object)newHashSet(otuSet.getAttachmentsIterator()), (Object)newHashSet(
-				attachment1,
-				attachment3));
+		assertEquals((Object) newHashSet(otuSet.getAttachmentsIterator()),
+				(Object) newHashSet(
+						attachment1,
+						attachment2, attachment3));
+		final boolean returnBoolean = otuSet.removeAttachment(attachment2);
+		assertTrue(returnBoolean);
+		assertEquals((Object) newHashSet(otuSet.getAttachmentsIterator()),
+				(Object) newHashSet(
+						attachment1,
+						attachment3));
 		assertTrue(otuSet.getHasAttachments());
 
 		otuSet.removeAttachment(attachment1);
 		otuSet.removeAttachment(attachment3);
-		assertEquals((Object)newHashSet(otuSet.getAttachmentsIterator()), (Object)Collections
-				.emptySet());
+		assertEquals((Object) newHashSet(otuSet.getAttachmentsIterator()),
+				(Object) Collections
+						.emptySet());
 		assertFalse(otuSet.getHasAttachments());
+
+		final boolean returnBoolean2 = otuSet.removeAttachment(attachment3);
+		assertFalse(returnBoolean2);
 	}
+
 }

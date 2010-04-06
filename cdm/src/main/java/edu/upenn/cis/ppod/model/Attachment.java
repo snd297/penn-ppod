@@ -82,6 +82,27 @@ public class Attachment extends UUPPodEntityWXmlId {
 
 	}
 
+	/**
+	 * Is an attachment of a particular {@link AttachmentNamespace}.
+	 */
+	public final static class IsOfNamespace implements
+			Predicate<Attachment> {
+
+		private final String namespace;
+
+		/**
+		 * @param namespace is the type of this namespace?
+		 */
+		public IsOfNamespace(final String namespace) {
+			this.namespace = namespace;
+		}
+
+		public boolean apply(final Attachment input) {
+			return input.getType().getNamespace().getLabel().equals(namespace);
+		}
+
+	}
+
 	static final String TABLE = "ATTACHMENT";
 
 	static final String ID_COLUMN = TABLE + "_ID";
