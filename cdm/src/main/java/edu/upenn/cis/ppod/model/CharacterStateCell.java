@@ -222,7 +222,7 @@ public class CharacterStateCell extends PPodEntity implements
 	 * @throws IllegalStateException if the type has not been set
 	 */
 	@Override
-	public boolean beforeMarshal(final Marshaller marshaller) {
+	public boolean beforeMarshal(@Nullable final Marshaller marshaller) {
 
 		// Let's not marshal it if it's in a bad state
 		checkState(type != null, "can't marshal a cell without a type");
@@ -378,9 +378,14 @@ public class CharacterStateCell extends PPodEntity implements
 		return type;
 	}
 
+	/**
+	 * Set package-private for testing.
+	 * 
+	 * @return the states for marhsalling
+	 */
 	@XmlElement(name = "stateDocId")
 	@XmlIDREF
-	private Set<CharacterState> getXmlStates() {
+	Set<CharacterState> getXmlStates() {
 		if (xmlStates == null) {
 			xmlStates = newHashSet();
 		}

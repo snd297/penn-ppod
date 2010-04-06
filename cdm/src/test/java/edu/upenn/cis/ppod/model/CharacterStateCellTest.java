@@ -15,6 +15,9 @@
  */
 package edu.upenn.cis.ppod.model;
 
+import static com.google.common.base.Predicates.compose;
+import static com.google.common.base.Predicates.equalTo;
+import static com.google.common.collect.Iterables.find;
 import static com.google.common.collect.Lists.newArrayList;
 import static com.google.common.collect.Sets.newHashSet;
 import static org.testng.Assert.assertEquals;
@@ -232,7 +235,38 @@ public class CharacterStateCellTest {
 		cell.setTypeAndXmlStates(CharacterStateCell.Type.SINGLE, states);
 		assertEquals(newHashSet(cell), states);
 		assertFalse(cell.getXmlStatesNeedsToBePutIntoStates());
+	}
 
+	/**
+	 * {@code beforeMarshal(...)} should throw an exception if the type has not
+	 * bee set yet.
+	 */
+	@Test(expectedExceptions = IllegalStateException.class)
+	public void beforeMarshalBeforeTypeHasBeenSet() {
+		cell.beforeMarshal(null);
+	}
+
+	/**
+	 * Straight {@code beforeMarshal(...) test.
+	 */
+	public void beforeMarshal() {
+		matrix.getRow(matrix.getOTUSet().getOTU(0)).setCells(
+				Arrays.asList(cell));
+		states.add(state00);
+		states.add(state01);
+		cell.setPolymorphicStates(states);
+		cell.beforeMarshal(null);
+		final Set<CharacterState> xmlStates = cell.getXmlStates();
+		assertEquals(xmlStates.size(), states.size());
+		for (final CharacterState expectedState : states) {
+
+			// find(...) will throw an exception if what we're looking for is
+			// not there
+			final CharacterState xmlState = find(xmlStates,
+						compose(equalTo(expectedState.getStateNumber()),
+								CharacterState.getStateNumber));
+			assertEquals(xmlState.getLabel(), expectedState.getLabel());
+		}
 	}
 
 	public void afterUnmarshal() {
