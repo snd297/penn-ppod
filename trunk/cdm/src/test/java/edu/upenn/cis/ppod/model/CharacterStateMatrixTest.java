@@ -22,6 +22,7 @@ import static org.testng.Assert.assertFalse;
 import static org.testng.Assert.assertNotNull;
 import static org.testng.Assert.assertNotSame;
 import static org.testng.Assert.assertNull;
+import static org.testng.Assert.assertSame;
 import static org.testng.Assert.assertTrue;
 
 import java.util.Arrays;
@@ -359,5 +360,39 @@ public class CharacterStateMatrixTest {
 		final ImmutableList<Character> characters = ImmutableList.of(
 				character0, character1, character0);
 		matrix.setCharacters(characters);
+	}
+
+	public void setColumnPPodVersionInfos() {
+		final PPodVersionInfo pPodVersionInfo = pPodVersionInfoProvider.get();
+		final CharacterStateMatrix returnedMatrix = matrix
+				.setColumnPPodVersionInfos(pPodVersionInfo);
+		assertSame(returnedMatrix, matrix);
+
+		for (final PPodVersionInfo columnPPodVersionInfo : matrix
+				.getColumnPPodVersionInfos()) {
+			assertSame(columnPPodVersionInfo, pPodVersionInfo);
+		}
+	}
+
+	public void setDescription() {
+		matrix.unsetInNeedOfNewPPodVersionInfo();
+		final String description = "DESCRIPTION";
+		matrix.setDescription(description);
+		assertEquals(matrix.getDescription(), description);
+		assertTrue(matrix.isInNeedOfNewPPodVersionInfo());
+
+		matrix.unsetInNeedOfNewPPodVersionInfo();
+		matrix.setDescription(description);
+		assertFalse(matrix.isInNeedOfNewPPodVersionInfo());
+
+		matrix.unsetInNeedOfNewPPodVersionInfo();
+		matrix.setDescription(null);
+		assertNull(matrix.getDescription());
+		assertTrue(matrix.isInNeedOfNewPPodVersionInfo());
+
+		matrix.unsetInNeedOfNewPPodVersionInfo();
+		matrix.setDescription(null);
+		assertNull(matrix.getDescription());
+		assertFalse(matrix.isInNeedOfNewPPodVersionInfo());
 	}
 }
