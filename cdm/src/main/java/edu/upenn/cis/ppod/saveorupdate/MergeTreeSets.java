@@ -35,6 +35,8 @@ import edu.upenn.cis.ppod.modelinterfaces.INewPPodVersionInfo;
 import edu.upenn.cis.ppod.modelinterfaces.IUUPPodEntity;
 
 /**
+ * An {@code IMergeTreeSetes} with no explicit outside dependencies.
+ * 
  * @author Sam Donnelly
  */
 final class MergeTreeSets implements IMergeTreeSets {
