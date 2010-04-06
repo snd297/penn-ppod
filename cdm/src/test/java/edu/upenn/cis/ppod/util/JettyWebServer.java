@@ -28,7 +28,7 @@ import com.google.inject.assistedinject.Assisted;
 /**
  * @author Sam Donnelly
  */
-public class JettyWebServer implements IServletContainer {
+final class JettyWebServer implements IServletContainer {
 
 	private final Logger logger = LoggerFactory.getLogger(getClass());
 
