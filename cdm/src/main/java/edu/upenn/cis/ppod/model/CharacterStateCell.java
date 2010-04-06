@@ -157,7 +157,7 @@ public class CharacterStateCell extends PPodEntity implements
 	@Column(name = TYPE_COLUMN, nullable = false)
 	@Enumerated(EnumType.ORDINAL)
 	@CheckForNull
-	private CharacterStateCell.Type type;
+	private Type type;
 
 	/**
 	 * The {@code CharacterStateRow} to which this {@code CharacterStateCell}
@@ -370,11 +370,11 @@ public class CharacterStateCell extends PPodEntity implements
 	/**
 	 * Get the type of this cell. {@code null} when this object is constructed.
 	 * 
-	 * @return the {@code CharacterStateCell.Type}
+	 * @return the {@code Type}
 	 */
 	@XmlAttribute
 	@Nullable
-	public CharacterStateCell.Type getType() {
+	public Type getType() {
 		return type;
 	}
 
@@ -414,7 +414,7 @@ public class CharacterStateCell extends PPodEntity implements
 
 		@SuppressWarnings("unchecked")
 		final Set<CharacterState> emptyStates = Collections.EMPTY_SET;
-		setTypeAndStates(CharacterStateCell.Type.INAPPLICABLE, emptyStates);
+		setTypeAndStates(Type.INAPPLICABLE, emptyStates);
 		return this;
 	}
 
@@ -438,7 +438,7 @@ public class CharacterStateCell extends PPodEntity implements
 	}
 
 	/**
-	 * Set the type to polymorphic uncertain with the given states.
+	 * Set the type to polymorphic with the given states.
 	 * 
 	 * @param polymorphicStates the states
 	 * 
@@ -451,7 +451,7 @@ public class CharacterStateCell extends PPodEntity implements
 		checkNotNull(polymorphicStates);
 		checkArgument(polymorphicStates.size() > 1,
 				"polymorphic states must be > 1");
-		setTypeAndStates(CharacterStateCell.Type.POLYMORPHIC, polymorphicStates);
+		setTypeAndStates(Type.POLYMORPHIC, polymorphicStates);
 		return this;
 	}
 
@@ -497,7 +497,7 @@ public class CharacterStateCell extends PPodEntity implements
 	 */
 	public CharacterStateCell setSingleState(final CharacterState state) {
 		checkNotNull(state);
-		setTypeAndStates(CharacterStateCell.Type.SINGLE, newHashSet(state));
+		setTypeAndStates(Type.SINGLE, newHashSet(state));
 		return this;
 	}
 

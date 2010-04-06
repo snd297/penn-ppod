@@ -116,6 +116,9 @@ public abstract class MolecularSequenceSet<S extends MolecularSequence<?>>
 		return getOTUsToSequences().getOTUsToValues().size();
 	}
 
+	/**
+	 * Iterates over the sequences in {@code getOTUSet().getOTUs()} order.
+	 */
 	public Iterator<S> iterator() {
 		return getOTUsToSequences().getValuesInOTUOrder(getOTUSet()).iterator();
 	}
