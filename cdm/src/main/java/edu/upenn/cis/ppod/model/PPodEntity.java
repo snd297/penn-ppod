@@ -204,7 +204,7 @@ public abstract class PPodEntity extends PersistentObject implements IAttachee,
 	}
 
 	/**
-	 * Unmodifiable iterator over the attachments. There will be no duplicates.
+	 * Get an iterator over the attachments. There will be no duplicates.
 	 * 
 	 * @return an iterator over the attachments
 	 */
