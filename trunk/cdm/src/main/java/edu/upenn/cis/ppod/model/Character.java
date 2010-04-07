@@ -73,9 +73,8 @@ public class Character extends UUPPodEntityWXmlId {
 	 * non-contiguous integers in the keys - so, for example, you might have 0,
 	 * 2, and 3.
 	 */
-	@OneToMany(mappedBy = "character")
-	@Cascade( { org.hibernate.annotations.CascadeType.SAVE_UPDATE,
-			org.hibernate.annotations.CascadeType.DELETE_ORPHAN })
+	@OneToMany(mappedBy = "character", orphanRemoval = true)
+	@Cascade(org.hibernate.annotations.CascadeType.SAVE_UPDATE)
 	@MapKey(name = "stateNumber")
 	private final Map<Integer, CharacterState> states = newHashMap();
 
