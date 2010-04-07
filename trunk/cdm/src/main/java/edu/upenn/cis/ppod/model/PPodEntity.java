@@ -16,6 +16,7 @@
 package edu.upenn.cis.ppod.model;
 
 import static com.google.common.base.Preconditions.checkNotNull;
+import static com.google.common.base.Preconditions.checkState;
 import static com.google.common.collect.Sets.newHashSet;
 
 import java.util.Collections;
@@ -246,10 +247,9 @@ public abstract class PPodEntity extends PersistentObject implements IAttachee,
 	}
 
 	public PPodVersionInfo getPPodVersionInfo() {
-		if (getMarshalled()) {
-			throw new IllegalStateException(
-					"can't access a PPodVersionInfo through a marshalled PPodEntity");
-		}
+		checkState(
+				!getMarshalled(),
+						"can't access a PPodVersionInfo through a marshalled PPodEntity");
 		return pPodVersionInfo;
 	}
 

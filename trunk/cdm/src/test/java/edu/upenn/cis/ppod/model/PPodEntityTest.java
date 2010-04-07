@@ -87,4 +87,14 @@ public class PPodEntityTest {
 		assertFalse(returnBoolean2);
 	}
 
+	/**
+	 * Make sure {@code PPodEntity.getPPodVersionInfo()} throws an exception for
+	 * marshalled objects.
+	 */
+	@Test(expectedExceptions = IllegalStateException.class)
+	public void getMarshalled() {
+		final OTUSet otuSet = otuSetProvider.get();
+		((PersistentObject) otuSet).setMarshalled(true);
+		otuSet.getPPodVersionInfo();
+	}
 }
