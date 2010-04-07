@@ -201,9 +201,10 @@ public class OTUSetTest {
 
 		assertTrue(otuSet.isInNeedOfNewPPodVersionInfo());
 
-		assertEquals(newHashSet(otuSet.getTreeSetsIterator()), newHashSet(
-				treeSet0,
-				treeSet2));
+		assertEquals((Object) newHashSet(otuSet.getTreeSetsIterator()),
+				(Object) newHashSet(
+						treeSet0,
+						treeSet2));
 
 		@SuppressWarnings("unchecked")
 		final Set<TreeSet> removedTreeSets2 = otuSet

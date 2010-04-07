@@ -39,7 +39,7 @@ public class PopulateTables {
 	/**
 	 * @param args
 	 */
-	public static void main(String[] args) throws Throwable {
+	public static void main(final String[] args) throws Throwable {
 		Session session = null;
 		try {
 			final Injector injector = Guice
@@ -70,7 +70,7 @@ public class PopulateTables {
 
 			session.getTransaction().commit();
 
-		} catch (Throwable t) {
+		} catch (final Throwable t) {
 			if (session != null) {
 				if (session.getTransaction().isActive()) {
 					try {
