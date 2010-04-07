@@ -25,12 +25,14 @@ import org.hibernate.Filter;
 import org.hibernate.FlushMode;
 import org.hibernate.HibernateException;
 import org.hibernate.LockMode;
+import org.hibernate.LockOptions;
 import org.hibernate.Query;
 import org.hibernate.ReplicationMode;
 import org.hibernate.SQLQuery;
 import org.hibernate.Session;
 import org.hibernate.SessionFactory;
 import org.hibernate.Transaction;
+import org.hibernate.UnknownProfileException;
 import org.hibernate.jdbc.Work;
 import org.hibernate.stat.SessionStatistics;
 
@@ -405,6 +407,57 @@ public class StubSession implements Session {
 	}
 
 	public void setDefaultReadOnly(boolean readOnly) {
+		// TODO Auto-generated method stub
+		throw new UnsupportedOperationException();
+	}
+
+	public LockRequest buildLockRequest(LockOptions arg0) {
+		// TODO Auto-generated method stub
+		throw new UnsupportedOperationException();
+	}
+
+	public void disableFetchProfile(String arg0) throws UnknownProfileException {
+		// TODO Auto-generated method stub
+		throw new UnsupportedOperationException();
+	}
+
+	public void enableFetchProfile(String arg0) throws UnknownProfileException {
+		// TODO Auto-generated method stub
+		throw new UnsupportedOperationException();
+	}
+
+	public Object get(Class arg0, Serializable arg1, LockOptions arg2)
+			throws HibernateException {
+		// TODO Auto-generated method stub
+		throw new UnsupportedOperationException();
+	}
+
+	public Object get(String arg0, Serializable arg1, LockOptions arg2)
+			throws HibernateException {
+		// TODO Auto-generated method stub
+		throw new UnsupportedOperationException();
+	}
+
+	public boolean isFetchProfileEnabled(String arg0)
+			throws UnknownProfileException {
+		// TODO Auto-generated method stub
+		throw new UnsupportedOperationException();
+	}
+
+	public Object load(Class arg0, Serializable arg1, LockOptions arg2)
+			throws HibernateException {
+		// TODO Auto-generated method stub
+		throw new UnsupportedOperationException();
+	}
+
+	public Object load(String arg0, Serializable arg1, LockOptions arg2)
+			throws HibernateException {
+		// TODO Auto-generated method stub
+		throw new UnsupportedOperationException();
+	}
+
+	public void refresh(Object arg0, LockOptions arg1)
+			throws HibernateException {
 		// TODO Auto-generated method stub
 		throw new UnsupportedOperationException();
 	}

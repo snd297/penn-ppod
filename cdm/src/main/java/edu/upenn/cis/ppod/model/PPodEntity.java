@@ -43,7 +43,6 @@ import javax.xml.bind.annotation.XmlIDREF;
 
 import com.google.common.collect.Iterables;
 import com.google.common.collect.Sets;
-import com.google.inject.Inject;
 
 import edu.upenn.cis.ppod.modelinterfaces.IAttachee;
 import edu.upenn.cis.ppod.modelinterfaces.IPPodVersioned;
@@ -121,14 +120,6 @@ public abstract class PPodEntity extends PersistentObject implements IAttachee,
 	private Set<Attachment> attachmentsXml;
 
 	PPodEntity() {}
-
-	@Inject
-	PPodEntity(final PPodVersionInfo pPodVersionInfo) {
-		// This will have a version of negative one and should block saves since
-		// it is not saved.
-		// It MUST be replaced for this object to be saved.
-		setPPodVersion(pPodVersion);
-	}
 
 	@Override
 	@OverridingMethodsMustInvokeSuper
@@ -220,6 +211,11 @@ public abstract class PPodEntity extends PersistentObject implements IAttachee,
 		return Collections.unmodifiableSet(getAttachments()).iterator();
 	}
 
+	/**
+	 * Get the number of attachments that this {@code PPodEntity} has.
+	 * 
+	 * @return the number of attachments that this {@code PPodEntity} has
+	 */
 	public int getAttachmentsSize() {
 		return getAttachments().size();
 	}
