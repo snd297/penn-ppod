@@ -33,12 +33,13 @@ public interface IMergeAttachments {
 	 * @throws IllegalArgumentException if {@code
 	 *             sourceAttachment.getType().getNamespace() == null}
 	 */
-	Attachment merge(final Attachment targetAttachment,
+	void merge(final Attachment targetAttachment,
 			final Attachment sourceAttachment);
 
-	interface IFactory {
+	static interface IFactory {
 		IMergeAttachments create(
 				IAttachmentNamespaceDAO attachmentNamespaceDAO,
 				IAttachmentTypeDAO attachmentTypeDAO);
 	}
+	
 }

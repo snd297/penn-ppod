@@ -45,7 +45,7 @@ class MergeAttachments implements IMergeAttachments {
 
 	// Temporary measure: both the the type and namespace should be passed in
 	// from caller (is that really true?)
-	private final Map<String, AttachmentNamespace> namespacesByLabel = newHashMap();
+	private final Map<String, AttachmentNamespace> labelsToNamespaces = newHashMap();
 
 	private final Map<AttachmentNamespace, Map<String, AttachmentType>> typesByNamespaceAndLabel = newHashMap();
 
@@ -62,15 +62,21 @@ class MergeAttachments implements IMergeAttachments {
 		this.attachmentTypeProvider = attachmentTypeProvider;
 	}
 
-	public Attachment merge(final Attachment targetAttachment,
+	public void merge(final Attachment targetAttachment,
 			final Attachment sourceAttachment) {
 		checkNotNull(targetAttachment);
 		checkNotNull(sourceAttachment);
 		checkArgument(sourceAttachment.getType() != null,
 				"sourceAttachment.getType() == null");
+		checkArgument(sourceAttachment.getType().getLabel() != null,
+				"sourceAttachment.getType().getLabel() == null");
 		checkArgument(sourceAttachment.getType().getNamespace() != null,
 				"sourceAttachment.getType().getNamespace() == null");
-		AttachmentNamespace targetAttachmentNamespace = namespacesByLabel
+		checkArgument(
+				sourceAttachment.getType().getNamespace().getLabel() != null,
+				"sourceAttachment.getType().getNamespace().getLabel() == null");
+
+		AttachmentNamespace targetAttachmentNamespace = labelsToNamespaces
 				.get(sourceAttachment.getType().getNamespace().getLabel());
 		if (null == targetAttachmentNamespace) {
 			targetAttachmentNamespace = attachmentNamespaceDAO
@@ -82,7 +88,7 @@ class MergeAttachments implements IMergeAttachments {
 								sourceAttachment.getType().getNamespace()
 										.getLabel());
 			}
-			namespacesByLabel.put(targetAttachmentNamespace.getLabel(),
+			labelsToNamespaces.put(targetAttachmentNamespace.getLabel(),
 					targetAttachmentNamespace);
 			typesByNamespaceAndLabel.put(targetAttachmentNamespace,
 					new HashMap<String, AttachmentType>());
@@ -110,7 +116,5 @@ class MergeAttachments implements IMergeAttachments {
 
 		targetAttachment.setByteArrayValue(sourceAttachment.getBytesValue());
 		targetAttachment.setType(targetAttachmentType);
-
-		return targetAttachment;
 	}
 }
