@@ -31,6 +31,7 @@ import org.hibernate.CacheMode;
 import org.hibernate.FlushMode;
 import org.hibernate.HibernateException;
 import org.hibernate.LockMode;
+import org.hibernate.LockOptions;
 import org.hibernate.Query;
 import org.hibernate.ScrollMode;
 import org.hibernate.ScrollableResults;
@@ -427,6 +428,11 @@ public class StubQuery implements Query{
 	}
 
 	public boolean isReadOnly() {
+		// TODO Auto-generated method stub
+		throw new UnsupportedOperationException();
+	}
+
+	public Query setLockOptions(LockOptions arg0) {
 		// TODO Auto-generated method stub
 		throw new UnsupportedOperationException();
 	}

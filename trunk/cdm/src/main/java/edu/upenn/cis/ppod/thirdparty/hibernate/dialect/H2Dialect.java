@@ -28,6 +28,8 @@ import org.hibernate.exception.TemplatedViolatedConstraintNameExtracter;
 import org.hibernate.exception.ViolatedConstraintNameExtracter;
 import org.hibernate.util.ReflectHelper;
 
+
+
 /**
  * A dialect compatible with the H2 database.
  * 

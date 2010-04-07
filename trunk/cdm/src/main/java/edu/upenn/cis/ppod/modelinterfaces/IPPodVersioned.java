@@ -53,10 +53,14 @@ public interface IPPodVersioned extends IPersistentObject {
 
 	IPPodVersioned setPPodVersionInfo(final PPodVersionInfo pPodVersionInfo);
 
-	IPPodVersioned unsetInNeedOfNewPPodVersionInfo();
-
 	IPPodVersioned setInNeedOfNewPPodVersionInfo();
 
+	/**
+	 * Does this object need a new pPOD version before it is saved?
+	 * 
+	 * @return {@code true} of this object needs a new pPOD version before it is
+	 *         saved, {@code false} otherwise
+	 */
 	boolean isInNeedOfNewPPodVersionInfo();
 
 }
