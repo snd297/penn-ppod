@@ -42,6 +42,9 @@ public class PPodEntityTest {
 	@Inject
 	private Provider<Attachment> attachmentProvider;
 
+	@Inject
+	private Provider<PPodVersionInfo> pPodVersionInfoProvider;
+
 	public void addAttachment() {
 		final OTUSet otuSet = otuSetProvider.get();
 		final Attachment attachment = attachmentProvider.get();
@@ -96,5 +99,13 @@ public class PPodEntityTest {
 		final OTUSet otuSet = otuSetProvider.get();
 		((PersistentObject) otuSet).setMarshalled(true);
 		otuSet.getPPodVersionInfo();
+	}
+
+	public void beforeMarahal() {
+		final OTUSet otuSet = otuSetProvider.get();
+		final PPodVersionInfo pPodVersionInfo = pPodVersionInfoProvider.get();
+		otuSet.setPPodVersionInfo(pPodVersionInfoProvider.get());
+		otuSet.beforeMarshal(null);
+		assertEquals(otuSet.getPPodVersion(), pPodVersionInfo.getPPodVersion());
 	}
 }

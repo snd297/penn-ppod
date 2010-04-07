@@ -70,7 +70,7 @@ public class Attachment extends UUPPodEntityWXmlId {
 		 * @param type is the attachment of this type?
 		 * @param namespace is the type of this namespace?
 		 */
-		public IsOfNamespaceAndType(final String type, final String namespace) {
+		IsOfNamespaceAndType(final String type, final String namespace) {
 			this.type = type;
 			this.namespace = namespace;
 		}
@@ -93,7 +93,7 @@ public class Attachment extends UUPPodEntityWXmlId {
 		/**
 		 * @param namespace is the type of this namespace?
 		 */
-		public IsOfNamespace(final String namespace) {
+		IsOfNamespace(final String namespace) {
 			this.namespace = namespace;
 		}
 
