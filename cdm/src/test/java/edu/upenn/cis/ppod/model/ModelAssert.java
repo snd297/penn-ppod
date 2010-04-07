@@ -16,14 +16,19 @@
 package edu.upenn.cis.ppod.model;
 
 import static com.google.common.base.Objects.equal;
+import static com.google.common.collect.Iterables.filter;
+import static com.google.common.collect.Iterables.getOnlyElement;
+import static com.google.common.collect.Sets.newHashSet;
 import static org.testng.Assert.assertEquals;
 import static org.testng.Assert.assertNotNull;
 import static org.testng.Assert.assertTrue;
 
 import java.util.Iterator;
+import java.util.Set;
 import java.util.Map.Entry;
 
 import com.google.common.collect.ImmutableMap;
+import com.google.common.collect.Iterables;
 
 /**
  * For asserting that various {@code edu.upenn.cis.ppod.model} elements are the
@@ -68,6 +73,7 @@ public class ModelAssert {
 
 	public static void assertEqualsCharacters(final Character actualCharacter,
 			final Character expectedCharacter) {
+		assertEqualsPPodEntities(actualCharacter, expectedCharacter);
 		assertEquals(actualCharacter.getLabel(), expectedCharacter.getLabel());
 		assertEquals(actualCharacter.getStates().size(), expectedCharacter
 				.getStates().size());
@@ -83,6 +89,7 @@ public class ModelAssert {
 			assertEqualsCharacterStates(actualState,
 					expectedState);
 		}
+
 	}
 
 	public static void assertEqualsCharacterStateCells(
@@ -184,6 +191,33 @@ public class ModelAssert {
 				.getLabel());
 		assertEqualsAttachmentNamespaces(actualAttachmentType.getNamespace(),
 				expectedAttachmentType.getNamespace());
+	}
+
+	public static void assertEqualsPPodEntities(
+			final PPodEntity actualPPodEntity,
+			final PPodEntity expectedPPodEntity) {
+		assertEqualsAttachmentSets(newHashSet(actualPPodEntity
+				.getAttachmentsIterator()),
+				newHashSet(expectedPPodEntity.getAttachmentsIterator()));
+	}
+
+	public static void assertEqualsAttachmentSets(
+			final Set<Attachment> actualAttachments,
+			final Set<Attachment> expectedAttachments) {
+		assertEquals(actualAttachments.size(), expectedAttachments.size());
+		final Set<Attachment> expectedAttachmentsCopy = newHashSet(expectedAttachments);
+		for (final Attachment actualAttachment : actualAttachments) {
+			final Attachment expectedAttachment = getOnlyElement(filter(
+							expectedAttachmentsCopy,
+							new Attachment.IsOfNamespaceTypeLabelAndStringValue(
+									actualAttachment.getType().getNamespace()
+											.getLabel(),
+									actualAttachment.getType().getLabel(),
+									actualAttachment.getLabel(),
+									actualAttachment.getStringValue())));
+			expectedAttachmentsCopy.remove(expectedAttachment);
+			assertEqualsAttachments(actualAttachment, expectedAttachment);
+		}
 	}
 
 	public static void assertEqualsAttachments(
