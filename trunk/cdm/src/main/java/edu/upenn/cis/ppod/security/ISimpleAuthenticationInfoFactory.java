@@ -17,10 +17,13 @@ package edu.upenn.cis.ppod.security;
 
 import org.apache.shiro.authc.SimpleAuthenticationInfo;
 
+import com.google.inject.ImplementedBy;
+
 /**
  * @author Sam Donnelly
  * 
  */
+@ImplementedBy(SimpleAuthenticationInfoFactory.class)
 public interface ISimpleAuthenticationInfoFactory {
 	SimpleAuthenticationInfo create(Object principal, Object credentials,
 			String realmName);

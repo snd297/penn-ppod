@@ -21,7 +21,7 @@ import org.apache.shiro.authc.SimpleAuthenticationInfo;
  * @author Sam Donnelly
  * 
  */
-public class SimpleAuthenticationInfoFactory implements
+class SimpleAuthenticationInfoFactory implements
 		ISimpleAuthenticationInfoFactory {
 
 	public SimpleAuthenticationInfo create(final Object principal,
