@@ -28,8 +28,6 @@ import edu.upenn.cis.ppod.saveorupdate.IMergeTreeSets;
 import edu.upenn.cis.ppod.saveorupdate.ISaveOrUpdateMatrix;
 import edu.upenn.cis.ppod.saveorupdate.ISaveOrUpdateStudy;
 import edu.upenn.cis.ppod.saveorupdate.SaveOrUpdateModule;
-import edu.upenn.cis.ppod.security.ISimpleAuthenticationInfoFactory;
-import edu.upenn.cis.ppod.security.SimpleAuthenticationInfoFactory;
 import edu.upenn.cis.ppod.services.StringPair;
 import edu.upenn.cis.ppod.util.IPair;
 import edu.upenn.cis.ppod.util.ISetPPodVersionInfoVisitor;
@@ -41,9 +39,6 @@ public final class PPodModule extends AbstractModule {
 	protected void configure() {
 
 		bind(IPair.IFactory.class).to(Pair.Factory.class);
-
-		bind(ISimpleAuthenticationInfoFactory.class).to(
-				SimpleAuthenticationInfoFactory.class);
 
 		bind(IMergeOTUSets.IFactory.class).toProvider(
 				FactoryProvider.newFactory(IMergeOTUSets.IFactory.class,
