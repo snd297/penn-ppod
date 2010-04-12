@@ -18,6 +18,7 @@ package edu.upenn.cis.ppod.model;
 import static com.google.common.base.Predicates.compose;
 import static com.google.common.base.Predicates.equalTo;
 import static com.google.common.collect.Iterables.find;
+import static com.google.common.collect.Iterables.isEmpty;
 import static com.google.common.collect.Lists.newArrayList;
 import static com.google.common.collect.Sets.newHashSet;
 import static org.testng.Assert.assertEquals;
@@ -25,7 +26,6 @@ import static org.testng.Assert.assertFalse;
 import static org.testng.Assert.assertTrue;
 
 import java.util.Arrays;
-import java.util.HashSet;
 import java.util.Set;
 
 import javax.annotation.Nullable;
@@ -127,7 +127,7 @@ public class CharacterStateCellTest {
 				Arrays.asList(cell));
 
 		cell.setSingleState(state00);
-		assertEquals(newHashSet(cell), states);
+		assertEquals((Object) newHashSet(cell), (Object) states);
 	}
 
 	public void getStatesWhenCellHasMultipleStates() {
@@ -152,7 +152,9 @@ public class CharacterStateCellTest {
 		cell.setSingleState(state00);
 		cell.setInapplicable();
 		assertEquals(cell.getType(), CharacterStateCell.Type.INAPPLICABLE);
-		assertEquals(newHashSet(cell), new HashSet<CharacterState>());
+
+		// Make sure it's empty
+		assertFalse(cell.iterator().hasNext());
 	}
 
 	public void setTypeAndStatesFromPolymorhpicToInapplicable() {
@@ -163,7 +165,7 @@ public class CharacterStateCellTest {
 		cell.setPolymorphicStates(states);
 		cell.setInapplicable();
 		assertEquals(cell.getType(), CharacterStateCell.Type.INAPPLICABLE);
-		assertEquals(newHashSet(cell), new HashSet<CharacterState>());
+		assertTrue(isEmpty(newHashSet(cell)));
 	}
 
 	public void setTypeAndStatesInapplicable() {
@@ -171,7 +173,7 @@ public class CharacterStateCellTest {
 				Arrays.asList(cell));
 		cell.setInapplicable();
 		assertEquals(cell.getType(), CharacterStateCell.Type.INAPPLICABLE);
-		assertEquals(newHashSet(cell), states);
+		assertEquals((Object) newHashSet(cell), (Object) states);
 	}
 
 	public void setTypeAndStatesUnassigned() {
@@ -179,7 +181,7 @@ public class CharacterStateCellTest {
 				Arrays.asList(cell));
 		cell.setUnassigned();
 		assertEquals(cell.getType(), CharacterStateCell.Type.UNASSIGNED);
-		assertEquals(newHashSet(cell), states);
+		assertEquals((Object) newHashSet(cell), (Object) states);
 	}
 
 	public void setTypeAndStatesSingle() {
@@ -188,7 +190,7 @@ public class CharacterStateCellTest {
 		states.add(state00);
 		cell.setSingleState(state00);
 		assertEquals(cell.getType(), CharacterStateCell.Type.SINGLE);
-		assertEquals(newHashSet(cell), states);
+		assertEquals((Object) newHashSet(cell), (Object) states);
 	}
 
 	public void setTypeAndStatesPolymorphic() {
@@ -215,7 +217,7 @@ public class CharacterStateCellTest {
 		states.add(state01);
 		cell.setUncertainStates(states);
 		assertEquals(cell.getType(), CharacterStateCell.Type.UNCERTAIN);
-		assertEquals(newHashSet(cell), newHashSet(states));
+		assertEquals((Object) newHashSet(cell), (Object) newHashSet(states));
 	}
 
 	@Test(expectedExceptions = IllegalArgumentException.class)

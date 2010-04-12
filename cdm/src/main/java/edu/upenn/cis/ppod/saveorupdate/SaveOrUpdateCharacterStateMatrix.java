@@ -119,9 +119,11 @@ final class SaveOrUpdateCharacterStateMatrix implements ISaveOrUpdateMatrix {
 			Character newTargetCharacter;
 			if (sourceMatrix instanceof DNAStateMatrix) {
 				newTargetCharacter = dnaCharacter;
-			} else if (null == (newTargetCharacter = findIf(targetMatrix
-					.getCharactersIterator(), compose(equalTo(sourceCharacter
-					.getPPodId()), IUUPPodEntity.getPPodId)))) {
+			} else if (null == (newTargetCharacter =
+					findIf(targetMatrix
+							.getCharactersIterator(),
+							compose(equalTo(sourceCharacter
+									.getPPodId()), IUUPPodEntity.getPPodId)))) {
 				newTargetCharacter = characterProvider.get();
 				newTargetCharacter.setPPodVersionInfo(newPPodVersionInfo
 						.getNewPPodVersionInfo());
@@ -328,8 +330,8 @@ final class SaveOrUpdateCharacterStateMatrix implements ISaveOrUpdateMatrix {
 					dao.getEntityName(Character.class))) {
 				if (character.getMatrices().size() != 0) {
 					logger.warn("standard character " + character.toString()
-							+ " belonged to multiple matrices: "
-							+ character.getMatrices());
+								+ " belonged to multiple matrices: "
+								+ character.getMatrices());
 				} else {
 					logger.debug("deleting character: " + character.getLabel());
 					dao.delete(character);

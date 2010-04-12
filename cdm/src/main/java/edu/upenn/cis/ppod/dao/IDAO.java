@@ -79,10 +79,8 @@ public interface IDAO<T, ID extends Serializable> {
 	 * Make the given entity transient. That is, delete <code>entity</code>.
 	 * 
 	 * @param entity to be made transient
-	 * 
-	 * @return {@code entity}
 	 */
-	T delete(T entity);
+	void delete(T entity);
 
 	/**
 	 * Save or update <code>entity</code>.
@@ -90,9 +88,9 @@ public interface IDAO<T, ID extends Serializable> {
 	 * @param entity entity object
 	 * @return <code>entity</code>
 	 */
-	T saveOrUpdate(T entity);
+	void saveOrUpdate(T entity);
 
-	T evict(final T entity);
+	void evict(final T entity);
 
 	void evictEntities(final Collection<? extends T> entities);
 
@@ -101,6 +99,6 @@ public interface IDAO<T, ID extends Serializable> {
 	void initialize(T entity);
 
 	String getEntityName(T entity);
-	
+
 	String getEntityName(Class<? extends T> entityClass);
 }
