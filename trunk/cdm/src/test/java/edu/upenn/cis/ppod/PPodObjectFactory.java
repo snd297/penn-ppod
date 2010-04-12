@@ -31,7 +31,7 @@ public class PPodObjectFactory extends GuiceObjectFactory {
 
 	PPodObjectFactory() {
 		setInjector(Guice.createInjector(Modules.override(new PPodModule(),
-				new PPodServicesHibernateModule()).with(new TestModule()),
+				new PPodServicesHibernateModule()).with(new TestPPodModule()),
 				new InjectSlf4jModule()));
 	}
 

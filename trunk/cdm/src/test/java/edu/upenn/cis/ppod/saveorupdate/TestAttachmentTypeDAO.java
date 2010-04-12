@@ -32,7 +32,7 @@ public class TestAttachmentTypeDAO implements IAttachmentTypeDAO {
 
 	private Map<String, Map<String, AttachmentType>> typesByNamespaceLabelAndTypeLabel = newHashMap();
 
-	public AttachmentType delete(final AttachmentType entity) {
+	public void delete(final AttachmentType entity) {
 		throw new UnsupportedOperationException();
 	}
 
@@ -64,7 +64,7 @@ public class TestAttachmentTypeDAO implements IAttachmentTypeDAO {
 		throw new UnsupportedOperationException();
 	}
 
-	public AttachmentType saveOrUpdate(final AttachmentType entity) {
+	public void saveOrUpdate(final AttachmentType entity) {
 		throw new UnsupportedOperationException();
 	}
 
@@ -74,7 +74,7 @@ public class TestAttachmentTypeDAO implements IAttachmentTypeDAO {
 		return this;
 	}
 
-	public AttachmentType evict(AttachmentType entity) {
+	public void evict(AttachmentType entity) {
 		// TODO Auto-generated method stub
 		throw new UnsupportedOperationException();
 	}

@@ -16,19 +16,16 @@
 package edu.upenn.cis.ppod.saveorupdate;
 
 import static com.google.common.collect.Lists.newArrayList;
-import static com.google.common.collect.Sets.newHashSet;
 
 import java.util.Collections;
 import java.util.List;
-import java.util.Set;
 
-import org.hibernate.Session;
 import org.testng.annotations.Test;
 
 import com.google.inject.Inject;
 
 import edu.upenn.cis.ppod.TestGroupDefs;
-import edu.upenn.cis.ppod.dao.hibernate.IObjectWithLongIdDAOHibernate;
+import edu.upenn.cis.ppod.dao.TestObjectWithLongIdDAO;
 import edu.upenn.cis.ppod.model.Character;
 import edu.upenn.cis.ppod.model.CharacterStateCell;
 import edu.upenn.cis.ppod.model.CharacterStateMatrix;
@@ -56,10 +53,7 @@ public class SaveOrUpdateCharacterStateMatrixTest {
 	private ICharacterStateMatrixFactory matrixFactory;
 
 	@Inject
-	private Session session;
-
-	@Inject
-	private IObjectWithLongIdDAOHibernate dao;
+	private TestObjectWithLongIdDAO dao;
 
 	@Inject
 	private TestMergeAttachment mergeAttachment;
@@ -89,18 +83,13 @@ public class SaveOrUpdateCharacterStateMatrixTest {
 	public void save(final CharacterStateMatrix sourceMatrix) {
 
 		final ISaveOrUpdateMatrix saveOrUpdateMatrix = saveOrUpdateMatrixFactory
-				.create(mergeAttachment, dao.setSession(session),
-						newPPodVersionInfo);
+				.create(mergeAttachment, dao, newPPodVersionInfo);
 		final OTUSet fakeDbOTUSet = sourceMatrix.getOTUSet();
 
 		final CharacterStateMatrix targetMatrix = matrixFactory
 				.create(sourceMatrix);
 
-		final Set<CharacterStateMatrix> sourceAndTargetMatrices = newHashSet();
-		sourceAndTargetMatrices.add(sourceMatrix);
-		sourceAndTargetMatrices.add(targetMatrix);
-
-		fakeDbOTUSet.setMatrices(sourceAndTargetMatrices);
+		fakeDbOTUSet.addMatrix(targetMatrix);
 		saveOrUpdateMatrix.saveOrUpdate(targetMatrix, sourceMatrix,
 				dnaCharacter);
 		ModelAssert.assertEqualsCharacterStateMatrices(targetMatrix,
@@ -110,18 +99,14 @@ public class SaveOrUpdateCharacterStateMatrixTest {
 	@Test(dataProvider = MatrixProvider.SMALL_MATRICES_PROVIDER, dataProviderClass = MatrixProvider.class)
 	public void moveRows(final CharacterStateMatrix sourceMatrix) {
 		final ISaveOrUpdateMatrix saveOrUpdateMatrix = saveOrUpdateMatrixFactory
-				.create(mergeAttachment, dao.setSession(session),
+				.create(mergeAttachment, dao,
 						newPPodVersionInfo);
-		final OTUSet fakeTargetOTUSet = sourceMatrix.getOTUSet();
+		final OTUSet fakeDbOTUSet = sourceMatrix.getOTUSet();
 
 		final CharacterStateMatrix targetMatrix = matrixFactory
 				.create(sourceMatrix);
 
-		final Set<CharacterStateMatrix> sourceAndTargetMatrices = newHashSet();
-		sourceAndTargetMatrices.add(sourceMatrix);
-		sourceAndTargetMatrices.add(targetMatrix);
-
-		fakeTargetOTUSet.setMatrices(sourceAndTargetMatrices);
+		fakeDbOTUSet.addMatrix(targetMatrix);
 		saveOrUpdateMatrix.saveOrUpdate(targetMatrix, sourceMatrix,
 				dnaCharacter);
 
@@ -155,17 +140,13 @@ public class SaveOrUpdateCharacterStateMatrixTest {
 		// It only makes sense to move characters in a standard matrix
 		if (sourceMatrix.getClass().equals(CharacterStateMatrix.class)) {
 			final ISaveOrUpdateMatrix saveOrUpdateMatrix = saveOrUpdateMatrixFactory
-					.create(mergeAttachment, dao.setSession(session),
-							newPPodVersionInfo);
-			final OTUSet fakeTargetOTUSet = sourceMatrix.getOTUSet();
+					.create(mergeAttachment, dao, newPPodVersionInfo);
+			final OTUSet fakeDbOTUSet = sourceMatrix.getOTUSet();
 
 			final CharacterStateMatrix targetMatrix = matrixFactory
 					.create(sourceMatrix);
-			final Set<CharacterStateMatrix> sourceAndTargetMatrices = newHashSet();
-			sourceAndTargetMatrices.add(sourceMatrix);
-			sourceAndTargetMatrices.add(targetMatrix);
 
-			fakeTargetOTUSet.setMatrices(sourceAndTargetMatrices);
+			fakeDbOTUSet.addMatrix(targetMatrix);
 			saveOrUpdateMatrix.saveOrUpdate(targetMatrix, sourceMatrix,
 					dnaCharacter);
 
@@ -196,6 +177,33 @@ public class SaveOrUpdateCharacterStateMatrixTest {
 
 			ModelAssert.assertEqualsCharacterStateMatrices(targetMatrix,
 					sourceMatrix);
+		}
+	}
+
+	/**
+	 * Test removing a character from a matrix.
+	 */
+	@Test(dataProvider = MatrixProvider.SMALL_MATRICES_PROVIDER, dataProviderClass = MatrixProvider.class)
+	public void deleteCharacter(final CharacterStateMatrix sourceMatrix) {
+		// It only makes sense to remove characters from a standard matrix
+		if (sourceMatrix.getClass().equals(CharacterStateMatrix.class)) {
+			final ISaveOrUpdateMatrix saveOrUpdateMatrix = saveOrUpdateMatrixFactory
+					.create(mergeAttachment, dao, newPPodVersionInfo);
+			final OTUSet fakeDbOTUSet = sourceMatrix.getOTUSet();
+
+			final CharacterStateMatrix targetMatrix = matrixFactory
+					.create(sourceMatrix);
+
+			fakeDbOTUSet.addMatrix(targetMatrix);
+			saveOrUpdateMatrix.saveOrUpdate(targetMatrix, sourceMatrix,
+					dnaCharacter);
+
+			// Simulate passing back in the persisted characters: so we need to
+			// assign the proper pPOD ID's.
+			for (int i = 0; i < sourceMatrix.getCharactersSize(); i++) {
+				sourceMatrix.getCharacter(i).setPPodId(
+						targetMatrix.getCharacter(i).getPPodId());
+			}
 		}
 	}
 }

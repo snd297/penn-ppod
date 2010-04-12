@@ -197,7 +197,7 @@ public class OTUSetTest {
 
 		final ImmutableSet<TreeSet> treeSet1Set = ImmutableSet.of(treeSet1);
 
-		assertEquals(removedTreeSets, treeSet1Set);
+		assertEquals((Object) removedTreeSets, (Object) treeSet1Set);
 
 		assertTrue(otuSet.isInNeedOfNewPPodVersionInfo());
 
@@ -213,8 +213,7 @@ public class OTUSetTest {
 		assertEquals((Object) removedTreeSets2,
 				(Object) treeSetsMinusTreeSet1);
 
-		assertEquals(newHashSet(otuSet.getTreeSetsIterator()), Collections
-				.emptySet());
+		assertFalse(otuSet.getTreeSetsIterator().hasNext());
 	}
 
 	/**
@@ -259,7 +258,8 @@ public class OTUSetTest {
 		final Set<DNASequenceSet> removedDNASequenceSets = otuSet
 				.setDNASequenceSets(dnaSequenceSets02);
 
-		assertEquals(removedDNASequenceSets, ImmutableSet.of(dnaSequenceSet1));
+		assertEquals((Object) removedDNASequenceSets, (Object) ImmutableSet
+				.of(dnaSequenceSet1));
 
 	}
 

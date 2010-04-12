@@ -124,7 +124,7 @@ public abstract class GenericHibernateDAO<T, ID extends Serializable>
 		if (lock) {
 			@SuppressWarnings("unchecked")
 			final T suppressUncheckedWarningEntity = (T) getSession().get(
-					getPersistentClass(), id, LockMode.UPGRADE);
+					getPersistentClass(), id, LockMode.PESSIMISTIC_WRITE);
 			entity = suppressUncheckedWarningEntity;
 		} else {
 			@SuppressWarnings("unchecked")
@@ -148,9 +148,8 @@ public abstract class GenericHibernateDAO<T, ID extends Serializable>
 		return persistentClass;
 	}
 
-	public T evict(final T entity) {
+	public void evict(final T entity) {
 		getSession().evict(entity);
-		return entity;
 	}
 
 	public void evictEntities(final Collection<? extends T> entities) {
@@ -159,14 +158,12 @@ public abstract class GenericHibernateDAO<T, ID extends Serializable>
 		}
 	}
 
-	public T delete(final T entity) {
+	public void delete(final T entity) {
 		getSession().delete(entity);
-		return entity;
 	}
 
-	public T saveOrUpdate(final T entity) {
+	public void saveOrUpdate(final T entity) {
 		getSession().saveOrUpdate(entity);
-		return entity;
 	}
 
 	/**

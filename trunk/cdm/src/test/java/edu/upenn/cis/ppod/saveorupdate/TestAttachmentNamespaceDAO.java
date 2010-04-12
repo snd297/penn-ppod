@@ -39,7 +39,7 @@ public class TestAttachmentNamespaceDAO implements IAttachmentNamespaceDAO {
 		return this;
 	}
 
-	public AttachmentNamespace delete(final AttachmentNamespace entity) {
+	public void delete(final AttachmentNamespace entity) {
 		throw new UnsupportedOperationException();
 	}
 
@@ -65,11 +65,11 @@ public class TestAttachmentNamespaceDAO implements IAttachmentNamespaceDAO {
 		return namespacesByLabel.get(label);
 	}
 
-	public AttachmentNamespace saveOrUpdate(final AttachmentNamespace entity) {
+	public void saveOrUpdate(final AttachmentNamespace entity) {
 		throw new UnsupportedOperationException();
 	}
 
-	public AttachmentNamespace evict(AttachmentNamespace entity) {
+	public void evict(AttachmentNamespace entity) {
 		// TODO Auto-generated method stub
 		throw new UnsupportedOperationException();
 	}
