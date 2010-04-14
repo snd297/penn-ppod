@@ -43,7 +43,6 @@ import javax.xml.bind.annotation.XmlElement;
 import javax.xml.bind.annotation.XmlIDREF;
 
 import com.google.common.collect.Iterables;
-import com.google.common.collect.Sets;
 
 import edu.upenn.cis.ppod.modelinterfaces.IAttachee;
 import edu.upenn.cis.ppod.modelinterfaces.IPPodVersioned;
@@ -137,8 +136,9 @@ public abstract class PPodEntity extends PersistentObject implements IAttachee,
 		if (attachments.add(attachment)) {
 			setInNeedOfNewPPodVersionInfo();
 		}
-		hasAttachments = true;
 		attachment.addAttachee(this);
+		hasAttachments = true;
+
 		return this;
 	}
 

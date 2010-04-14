@@ -291,14 +291,15 @@ final class SaveOrUpdateCharacterStateMatrix implements ISaveOrUpdateMatrix {
 					default:
 						throw new AssertionError("unknown type");
 				}
-				dao.saveOrUpdate(targetCell);
 
 				// We need to do this here since we're removing the cell from
-				// the persistence context (with evict).
+				// the persistence context (with evict). So it won't get handled
+				// higher up in the application when it does for most entities.
 				if (targetCell.isInNeedOfNewPPodVersionInfo()) {
 					targetCell.setPPodVersionInfo(newPPodVersionInfo
 							.getNewPPodVersionInfo());
 				}
+				dao.saveOrUpdate(targetCell);
 
 				cellsToEvict.add(targetCell);
 			}

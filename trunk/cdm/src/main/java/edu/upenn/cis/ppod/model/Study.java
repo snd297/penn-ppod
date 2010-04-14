@@ -22,6 +22,7 @@ import java.util.Collections;
 import java.util.Iterator;
 import java.util.Set;
 
+import javax.persistence.CascadeType;
 import javax.persistence.Column;
 import javax.persistence.Entity;
 import javax.persistence.OneToMany;
@@ -60,7 +61,7 @@ public class Study extends UUPPodEntity implements IOTUSetCentricEntities {
 	@Column(name = LABEL_COLUMN, nullable = false)
 	private String label;
 
-	@OneToMany(mappedBy = "study")
+	@OneToMany(mappedBy = "study", cascade = CascadeType.ALL)
 	@Cascade(org.hibernate.annotations.CascadeType.SAVE_UPDATE)
 	private final Set<OTUSet> otuSets = newHashSet();
 

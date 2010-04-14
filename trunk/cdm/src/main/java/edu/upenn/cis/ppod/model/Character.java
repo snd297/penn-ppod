@@ -28,6 +28,7 @@ import java.util.Set;
 
 import javax.annotation.CheckForNull;
 import javax.annotation.Nullable;
+import javax.persistence.CascadeType;
 import javax.persistence.Column;
 import javax.persistence.Entity;
 import javax.persistence.ManyToMany;
@@ -38,8 +39,6 @@ import javax.xml.bind.Marshaller;
 import javax.xml.bind.Unmarshaller;
 import javax.xml.bind.annotation.XmlAttribute;
 import javax.xml.bind.annotation.XmlElementWrapper;
-
-import org.hibernate.annotations.Cascade;
 
 import com.google.common.base.Preconditions;
 
@@ -73,8 +72,7 @@ public class Character extends UUPPodEntityWXmlId {
 	 * non-contiguous integers in the keys - so, for example, you might have 0,
 	 * 2, and 3.
 	 */
-	@OneToMany(mappedBy = "character", orphanRemoval = true)
-	@Cascade(org.hibernate.annotations.CascadeType.SAVE_UPDATE)
+	@OneToMany(mappedBy = "character", cascade = CascadeType.ALL, orphanRemoval = true)
 	@MapKey(name = "stateNumber")
 	private final Map<Integer, CharacterState> states = newHashMap();
 
@@ -126,7 +124,7 @@ public class Character extends UUPPodEntityWXmlId {
 	protected boolean addMatrix(final CharacterStateMatrix matrix) {
 		Preconditions.checkNotNull(matrix);
 		checkState(getMatrices().size() == 0
-				|| getOnlyElement(getMatrices()).equals(matrix),
+					|| getOnlyElement(getMatrices()).equals(matrix),
 				"standard characters can belong to only one matrix");
 		return matrices.add(matrix);
 	}
@@ -211,7 +209,7 @@ public class Character extends UUPPodEntityWXmlId {
 	 *         is no such state.
 	 */
 	@CheckForNull
-	public CharacterState getState(final int stateNumber) {
+	public CharacterState getState(final Integer stateNumber) {
 		return getStates().get(stateNumber);
 	}
 

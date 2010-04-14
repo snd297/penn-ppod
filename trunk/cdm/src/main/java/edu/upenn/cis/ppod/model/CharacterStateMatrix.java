@@ -33,12 +33,14 @@ import javax.annotation.CheckForNull;
 import javax.annotation.Nullable;
 import javax.persistence.CascadeType;
 import javax.persistence.Column;
+import javax.persistence.ElementCollection;
 import javax.persistence.Entity;
 import javax.persistence.FetchType;
 import javax.persistence.JoinColumn;
 import javax.persistence.JoinTable;
 import javax.persistence.ManyToMany;
 import javax.persistence.ManyToOne;
+import javax.persistence.MapKeyJoinColumn;
 import javax.persistence.OneToOne;
 import javax.persistence.Table;
 import javax.persistence.Transient;
@@ -65,7 +67,7 @@ import edu.upenn.cis.ppod.util.OTUSomethingPair;
  * 
  * @author Sam Donnelly
  */
-@XmlSeeAlso( { DNAStateMatrix.class, RNAStateMatrix.class })
+@XmlSeeAlso( { DNAStateMatrix.class })
 @Entity
 @Table(name = CharacterStateMatrix.TABLE)
 public class CharacterStateMatrix extends UUPPodEntityWXmlId implements
@@ -90,13 +92,13 @@ public class CharacterStateMatrix extends UUPPodEntityWXmlId implements
 	 * Column that orders the {@link Character}s. Intentionally package-private.
 	 */
 	static final String CHARACTERS_POSITION_COLUMN = Character.TABLE
-			+ "_POSITION";
+														+ "_POSITION";
 
 	/** The pPod versions of the columns. */
 	@ManyToMany
 	@JoinTable(inverseJoinColumns = { @JoinColumn(name = PPodVersionInfo.ID_COLUMN) })
 	@org.hibernate.annotations.IndexColumn(name = PPodVersionInfo.TABLE
-			+ "_POSITION")
+													+ "_POSITION")
 	private final List<PPodVersionInfo> columnPPodVersionInfos = newArrayList();
 
 	@XmlElement(name = "columnPPodVersion")
@@ -115,7 +117,7 @@ public class CharacterStateMatrix extends UUPPodEntityWXmlId implements
 
 	static final String OTU_IDX_COLUMN = "OTU_IDX";
 
-	@OneToOne(fetch = FetchType.LAZY, optional = false, cascade = CascadeType.ALL)
+	@OneToOne(fetch = FetchType.LAZY, optional = false, cascade = CascadeType.ALL, orphanRemoval = true)
 	private OTUsToCharacterStateRows otusToRows;
 
 	/**
@@ -131,9 +133,9 @@ public class CharacterStateMatrix extends UUPPodEntityWXmlId implements
 	 * The inverse of {@link #characters}. So it's a {@code Character}
 	 * ->columnNumber lookup.
 	 */
-	@org.hibernate.annotations.CollectionOfElements
+	@ElementCollection
 	@JoinTable(name = TABLE + "_" + CHARACTER_IDX_COLUMN, joinColumns = @JoinColumn(name = ID_COLUMN))
-	@org.hibernate.annotations.MapKeyManyToMany(joinColumns = @JoinColumn(name = Character.ID_COLUMN))
+	@MapKeyJoinColumn(name = Character.ID_COLUMN)
 	@Column(name = CHARACTER_IDX_COLUMN)
 	private final Map<Character, Integer> charactersToPositions = newHashMap();
 
@@ -512,8 +514,8 @@ public class CharacterStateMatrix extends UUPPodEntityWXmlId implements
 		for (final Character newCharacter : newCharacters) {
 			newCharacterPos++;
 			checkArgument(newCharacter != null, "newCharacters["
-					+ newCharacterPos
-					+ "] is null");
+												+ newCharacterPos
+												+ "] is null");
 
 			// We leave this instanceof here since it is at worst ineffectual w/
 			// proxies, but

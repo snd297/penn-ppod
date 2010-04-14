@@ -24,6 +24,7 @@ import java.util.Iterator;
 import java.util.List;
 
 import javax.annotation.Nullable;
+import javax.persistence.CascadeType;
 import javax.persistence.Entity;
 import javax.persistence.JoinColumn;
 import javax.persistence.ManyToOne;
@@ -53,7 +54,7 @@ public class CharacterStateRow extends PPodEntity implements
 	static final String TABLE = "CHARACTER_STATE_ROW";
 
 	static final String CELLS_INDEX_COLUMN = CharacterStateCell.TABLE
-			+ "_POSITION";
+												+ "_POSITION";
 
 	/**
 	 * The column where a {@code CharacterStateRow}'s
@@ -71,7 +72,7 @@ public class CharacterStateRow extends PPodEntity implements
 	 * There is evidence that {@code DELETE_ORPHAN} slows things down so we're
 	 * not including that either.
 	 */
-	@OneToMany(mappedBy = "row")
+	@OneToMany(mappedBy = "row", cascade = CascadeType.REMOVE)
 	@OrderBy("position")
 	private final List<CharacterStateCell> cells = newArrayList();
 
