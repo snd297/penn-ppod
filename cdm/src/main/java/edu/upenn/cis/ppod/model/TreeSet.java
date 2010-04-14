@@ -66,11 +66,10 @@ public class TreeSet extends UUPPodEntityWXmlId implements Iterable<Tree> {
 	private OTUSet otuSet;
 
 	/** The set of {@code Tree}s this {@code TreeSet} contains. */
-	@OneToMany
+	@OneToMany(orphanRemoval = true)
 	@org.hibernate.annotations.IndexColumn(name = "POSITION")
 	@JoinColumn(name = ID_COLUMN, nullable = false)
-	@Cascade( { org.hibernate.annotations.CascadeType.SAVE_UPDATE,
-			org.hibernate.annotations.CascadeType.DELETE_ORPHAN })
+	@Cascade(org.hibernate.annotations.CascadeType.SAVE_UPDATE)
 	private final List<Tree> trees = newArrayList();
 
 	TreeSet() {}

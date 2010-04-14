@@ -82,33 +82,28 @@ public class OTUSet extends UUPPodEntityWXmlId implements Iterable<OTU> {
 	 * OTU set labels are unique within a particular <code>Study</code>.
 	 */
 	@Column(name = "LABEL", nullable = false)
-	@org.hibernate.annotations.Index(name = "IDX_LABEL")
 	@CheckForNull
 	private String label;
 
 	/** The set of {@code OTU}s that this {@code OTUSet} contains. */
-	@OneToMany
+	@OneToMany(orphanRemoval = true)
 	@org.hibernate.annotations.IndexColumn(name = "POSITION")
 	@JoinColumn(name = ID_COLUMN, nullable = false)
-	@Cascade( { org.hibernate.annotations.CascadeType.SAVE_UPDATE,
-			org.hibernate.annotations.CascadeType.DELETE_ORPHAN })
+	@Cascade( { org.hibernate.annotations.CascadeType.SAVE_UPDATE })
 	private final List<OTU> otus = newArrayList();
 
 	/** The matrices which reference this OTU set. */
-	@OneToMany(mappedBy = "otuSet")
-	@Cascade( { org.hibernate.annotations.CascadeType.SAVE_UPDATE,
-			org.hibernate.annotations.CascadeType.DELETE_ORPHAN })
+	@OneToMany(mappedBy = "otuSet", orphanRemoval = true)
+	@Cascade( { org.hibernate.annotations.CascadeType.SAVE_UPDATE })
 	private final Set<CharacterStateMatrix> matrices = newHashSet();
 
-	@OneToMany(mappedBy = "otuSet")
-	@Cascade( { org.hibernate.annotations.CascadeType.SAVE_UPDATE,
-			org.hibernate.annotations.CascadeType.DELETE_ORPHAN })
+	@OneToMany(mappedBy = "otuSet", orphanRemoval = true)
+	@Cascade( { org.hibernate.annotations.CascadeType.SAVE_UPDATE })
 	private final Set<DNASequenceSet> dnaSequenceSets = newHashSet();
 
 	/** The tree sets that reference this OTU set. */
-	@OneToMany(mappedBy = "otuSet")
-	@Cascade( { org.hibernate.annotations.CascadeType.SAVE_UPDATE,
-			org.hibernate.annotations.CascadeType.DELETE_ORPHAN })
+	@OneToMany(mappedBy = "otuSet", orphanRemoval = true)
+	@Cascade( { org.hibernate.annotations.CascadeType.SAVE_UPDATE })
 	private final Set<TreeSet> treeSets = newHashSet();
 
 	/** Free-form description. */
@@ -213,7 +208,8 @@ public class OTUSet extends UUPPodEntityWXmlId implements Iterable<OTU> {
 
 		} else {
 			checkArgument(false, "OTUSet labeled '" + getLabel()
-					+ "' already has an OTU labeled '" + otu.getLabel() + "'");
+									+ "' already has an OTU labeled '"
+									+ otu.getLabel() + "'");
 		}
 		if (getOTUs().add(otu)) {
 			otu.setOTUSet(this);
@@ -465,7 +461,7 @@ public class OTUSet extends UUPPodEntityWXmlId implements Iterable<OTU> {
 	 * 
 	 * @param newMatrices new matrices
 	 * 
-	 * @return {@code matrix}
+	 * @return any matrices that were removed as a result of this operation
 	 */
 	public Set<CharacterStateMatrix> setMatrices(
 			final Set<? extends CharacterStateMatrix> newMatrices) {

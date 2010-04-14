@@ -33,6 +33,7 @@ import com.google.common.base.Function;
 import com.google.inject.Inject;
 import com.google.inject.assistedinject.Assisted;
 
+import edu.umd.cs.findbugs.annotations.CheckForNull;
 import edu.upenn.cis.ppod.util.IVisitor;
 
 /**
@@ -127,7 +128,7 @@ public class CharacterState extends PPodEntityWXmlId {
 	 * of these objects.
 	 */
 	@Column(name = STATE_NUMBER_COLUMN, nullable = false, updatable = false)
-	@Nullable
+	@CheckForNull
 	private Integer stateNumber;
 
 	/**
@@ -135,7 +136,7 @@ public class CharacterState extends PPodEntityWXmlId {
 	 * <code>"short"</code>, and <code>"long"</code>
 	 */
 	@Column(name = LABEL_COLUMN, nullable = false)
-	@Nullable
+	@CheckForNull
 	private String label;
 
 	/**
@@ -143,7 +144,7 @@ public class CharacterState extends PPodEntityWXmlId {
 	 */
 	@ManyToOne(fetch = FetchType.LAZY)
 	@JoinColumn(name = Character.ID_COLUMN)
-	@Nullable
+	@CheckForNull
 	private Character character;
 
 	CharacterState() {}

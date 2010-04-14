@@ -20,7 +20,6 @@ import com.google.inject.Provider;
 
 import edu.upenn.cis.ppod.model.CharacterStateMatrix;
 import edu.upenn.cis.ppod.model.DNAStateMatrix;
-import edu.upenn.cis.ppod.model.RNAStateMatrix;
 
 /**
  * @author Sam Donnelly
@@ -29,16 +28,17 @@ class CharacterStateMatrixFactory implements
 		ICharacterStateMatrixFactory {
 	private final Provider<CharacterStateMatrix> standardMatrixProvider;
 	private final Provider<DNAStateMatrix> dnaMatrixProvider;
-	private final Provider<RNAStateMatrix> rnaMatrixProvider;
+
+// private final Provider<RNAStateMatrix> rnaMatrixProvider;
 
 	@Inject
 	CharacterStateMatrixFactory(
 			final Provider<CharacterStateMatrix> standardMatrixProvider,
-			final Provider<DNAStateMatrix> dnaMatrixProvider,
-			final Provider<RNAStateMatrix> rnaMatrixProvider) {
+			final Provider<DNAStateMatrix> dnaMatrixProvider) {
+		// final Provider<RNAStateMatrix> rnaMatrixProvider) {
 		this.standardMatrixProvider = standardMatrixProvider;
 		this.dnaMatrixProvider = dnaMatrixProvider;
-		this.rnaMatrixProvider = rnaMatrixProvider;
+		// this.rnaMatrixProvider = rnaMatrixProvider;
 	}
 
 	public CharacterStateMatrix create(final CharacterStateMatrix matrix) {
@@ -47,11 +47,11 @@ class CharacterStateMatrixFactory implements
 			newMatrix = standardMatrixProvider.get();
 		} else if (matrix.getClass().equals(DNAStateMatrix.class)) {
 			newMatrix = dnaMatrixProvider.get();
-		} else if (matrix.getClass().equals(RNAStateMatrix.class)) {
-			newMatrix = rnaMatrixProvider.get();
+			// } else if (matrix.getClass().equals(RNAStateMatrix.class)) {
+			// newMatrix = rnaMatrixProvider.get();
 		} else {
 			throw new IllegalArgumentException("unsupported matrix type: "
-					+ matrix.getClass());
+												+ matrix.getClass());
 		}
 		return newMatrix;
 	}

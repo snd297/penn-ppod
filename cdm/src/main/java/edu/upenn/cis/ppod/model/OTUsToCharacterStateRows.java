@@ -22,8 +22,10 @@ import java.util.Map;
 import java.util.Set;
 
 import javax.annotation.Nullable;
+import javax.persistence.CascadeType;
 import javax.persistence.Entity;
-import javax.persistence.JoinColumn;
+import javax.persistence.MapKeyJoinColumn;
+import javax.persistence.OneToMany;
 import javax.persistence.Table;
 import javax.persistence.Transient;
 import javax.xml.bind.Marshaller;
@@ -42,13 +44,10 @@ import edu.upenn.cis.ppod.util.OTUSomethingPair;
 public class OTUsToCharacterStateRows extends
 		OTUKeyedBimap<CharacterStateRow, CharacterStateMatrix> {
 	/**
-	 * The rows of the matrix. We don't do save_update cascades since we want to
-	 * control when rows are added to the persistence context. We sometimes
-	 * don't want the rows saved or reattached when the the matrix is.
+	 * The rows of the matrix.
 	 */
-	@org.hibernate.annotations.CollectionOfElements
-	@org.hibernate.annotations.MapKeyManyToMany(joinColumns = @JoinColumn(name = OTU.ID_COLUMN))
-	@org.hibernate.annotations.Cascade(value = org.hibernate.annotations.CascadeType.DELETE_ORPHAN)
+	@OneToMany(cascade = CascadeType.ALL, orphanRemoval = true)
+	@MapKeyJoinColumn(name = OTU.ID_COLUMN)
 	private final Map<OTU, CharacterStateRow> rows = newHashMap();
 
 	/**
