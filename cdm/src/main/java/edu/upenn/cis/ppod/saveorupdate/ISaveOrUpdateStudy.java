@@ -15,8 +15,6 @@
  */
 package edu.upenn.cis.ppod.saveorupdate;
 
-import org.hibernate.Session;
-
 import com.google.inject.ImplementedBy;
 
 import edu.upenn.cis.ppod.dao.IAttachmentNamespaceDAO;
@@ -27,6 +25,7 @@ import edu.upenn.cis.ppod.dao.IOTUSetDAO;
 import edu.upenn.cis.ppod.dao.IStudyDAO;
 import edu.upenn.cis.ppod.model.Study;
 import edu.upenn.cis.ppod.modelinterfaces.INewPPodVersionInfo;
+import edu.upenn.cis.ppod.services.ppodentity.StudyInfo;
 
 /**
  * If study is new, make it persistent. If it was already persisted, update it.
@@ -36,17 +35,29 @@ import edu.upenn.cis.ppod.modelinterfaces.INewPPodVersionInfo;
 @ImplementedBy(SaveOrUpdateStudy.class)
 public interface ISaveOrUpdateStudy {
 
-	Study save(Study study);
-
-	Study update(Study study);
-
 	/**
 	 * If study is new, make it persistent. If it was already persisted, update
 	 * it.
 	 * 
 	 * @param incomingStudy to be made persistent or updated
 	 */
-	void saveOrUpdate(Study dbStudy, Study incomingStudy);
+	void saveOrUpdate();
+
+	/**
+	 * Get all of the {@code StudyInfo} data that is a result of the operation
+	 * called.
+	 * 
+	 * @return the {@code StudyInfo} data that is a result of the operation
+	 *         called
+	 */
+	StudyInfo getStudyInfo();
+
+	/**
+	 * Return the {@code Study} in a persistent state.
+	 * 
+	 * @return the {@code Study} in a persistent state.
+	 */
+	Study getDbStudy();
 
 	static interface IFactory {
 
@@ -58,7 +69,7 @@ public interface ISaveOrUpdateStudy {
 		 * 
 		 * @return a new {@link ISaveOrUpdateStudy}
 		 */
-		ISaveOrUpdateStudy create(Session session,
+		ISaveOrUpdateStudy create(Study incomingStudy,
 				IStudyDAO studyDAO,
 				IOTUSetDAO otuSetDAO,
 				IDNACharacterDAO dnaCharacterDAO,

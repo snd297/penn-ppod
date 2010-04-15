@@ -42,6 +42,7 @@ import javax.persistence.ManyToMany;
 import javax.persistence.ManyToOne;
 import javax.persistence.MapKeyJoinColumn;
 import javax.persistence.OneToOne;
+import javax.persistence.OrderColumn;
 import javax.persistence.Table;
 import javax.persistence.Transient;
 import javax.xml.bind.Marshaller;
@@ -55,7 +56,6 @@ import org.hibernate.annotations.IndexColumn;
 
 import com.google.common.collect.BiMap;
 import com.google.common.collect.HashBiMap;
-import com.google.common.collect.ImmutableMap;
 import com.google.inject.Inject;
 
 import edu.upenn.cis.ppod.modelinterfaces.IPPodVersionedWithOTUSet;
@@ -97,8 +97,7 @@ public class CharacterStateMatrix extends UUPPodEntityWXmlId implements
 	/** The pPod versions of the columns. */
 	@ManyToMany
 	@JoinTable(inverseJoinColumns = { @JoinColumn(name = PPodVersionInfo.ID_COLUMN) })
-	@org.hibernate.annotations.IndexColumn(name = PPodVersionInfo.TABLE
-													+ "_POSITION")
+	@OrderColumn(name = PPodVersionInfo.TABLE + "_POSITION")
 	private final List<PPodVersionInfo> columnPPodVersionInfos = newArrayList();
 
 	@XmlElement(name = "columnPPodVersion")
@@ -143,6 +142,10 @@ public class CharacterStateMatrix extends UUPPodEntityWXmlId implements
 	 * The position of a {@code Character} in <code>characters</code> signifies
 	 * its column number in each <code>row</cod>. So <code>characters</code> is
 	 * a columnNumber-> <code>Character</code> lookup.
+	 * <p>
+	 * This relationship is really only many-to-many for {@code
+	 * MolecularStateMatrix}s, for character matrices it is one-to-many and a
+	 * refactoring should be considered.
 	 */
 	@ManyToMany
 	@JoinTable(joinColumns = { @JoinColumn(name = ID_COLUMN) }, inverseJoinColumns = { @JoinColumn(name = Character.ID_COLUMN) })
@@ -280,8 +283,8 @@ public class CharacterStateMatrix extends UUPPodEntityWXmlId implements
 	/**
 	 * Created for testing.
 	 */
-	ImmutableMap<Character, Integer> getCharacterPosition() {
-		return ImmutableMap.copyOf(charactersToPositions);
+	Map<Character, Integer> getCharacterPosition() {
+		return charactersToPositions;
 	}
 
 	/**

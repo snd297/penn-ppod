@@ -33,6 +33,7 @@ import javax.xml.bind.annotation.XmlRootElement;
 @XmlAccessorType(XmlAccessType.NONE)
 public final class OTUSetInfo extends PPodEntityInfoWDocId {
 
+
 	/** Order matters for these. */
 	private final List<PPodEntityInfoWDocId> otuInfos = newArrayList();
 
@@ -93,7 +94,7 @@ public final class OTUSetInfo extends PPodEntityInfoWDocId {
 		String retValue = "";
 
 		retValue = "OTUSetInfo ( " + super.toString() + TAB
-				+ "otuInfosByDocId = " + this.otuInfos + TAB + " )";
+					+ "otuInfosByDocId = " + this.otuInfos + TAB + " )";
 
 		return retValue;
 	}

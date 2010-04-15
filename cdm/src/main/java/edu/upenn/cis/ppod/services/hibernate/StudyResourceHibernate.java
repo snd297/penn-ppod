@@ -59,22 +59,35 @@ final class StudyResourceHibernate implements IStudyResource {
 
 	private final IStudyDAO studyDAO;
 
-	private final ISaveOrUpdateStudy saveOrUpdateStudy;
+	private final IOTUSetDAO otuSetDAO;
+
+	private final IDNACharacterDAO dnaCharacterDAO;
+
+	private final IAttachmentNamespaceDAO attachmentNamespaceDAO;
+
+	private final IAttachmentTypeDAO attachmentTypeDAO;
+
+	private final ISaveOrUpdateStudy.IFactory saveOrUpdateStudyFactory;
+
+	private final IObjectWithLongIdDAO objectWithLongIdDAO;
 
 	private final IStudy2StudyInfo study2StudyInfo;
 
 	private final ISetDocIdVisitor setDocIdVisitor;
 
+	private final INewPPodVersionInfo newPPodVersionInfo;
+
 	private final Provider<IAfterUnmarshalVisitor> afterUnmarshalVisitorProvider;
 
-	private final ISetPPodVersionInfoVisitor setPPodVersionInfoVisitor;
-
 	private final StringPair.IFactory stringPairFactory;
+
+	private final ISetPPodVersionInfoVisitor.IFactory setPPodVersionInfoVisitorFactory;
 
 	@Inject
 	StudyResourceHibernate(
 			final IStudyDAOHibernate studyDAO,
 			final IOTUSetDAOHibernate otuSetDAO,
+			final IDNACharacterDAOHibernate dnaCharacterDAO,
 			final ISaveOrUpdateStudy.IFactory saveOrUpdateStudyFactory,
 			final IStudy2StudyInfo study2StudyInfo,
 			final ISetDocIdVisitor setDocIdVisitor,
@@ -82,41 +95,43 @@ final class StudyResourceHibernate implements IStudyResource {
 			final INewPPodVersionInfoHibernate.IFactory newPPodVersionInfoFactory,
 			final ISetPPodVersionInfoVisitor.IFactory setPPodVersionInfoVisitorFactory,
 			final StringPair.IFactory stringPairFactory,
-			final IDNACharacterDAOHibernate dnaCharacterDAO,
 			final IAttachmentNamespaceDAOHibernate attachmentNamespaceDAO,
 			final IAttachmentTypeDAOHibernate attachmentTypeDAO,
 			final IObjectWithLongIdDAOHibernate dao) {
-		this.studyDAO = (IStudyDAO) studyDAO.setSession(HibernateUtil
-				.getSessionFactory().getCurrentSession());
 		final Session currentSession = HibernateUtil
 				.getSessionFactory().getCurrentSession();
+		this.studyDAO = (IStudyDAO) studyDAO.setSession(HibernateUtil
+				.getSessionFactory().getCurrentSession());
 
-		final INewPPodVersionInfo newPPodVersionInfo = newPPodVersionInfoFactory
-				.create(currentSession);
-		this.setPPodVersionInfoVisitor = setPPodVersionInfoVisitorFactory
-				.create(newPPodVersionInfo);
-		this.saveOrUpdateStudy = saveOrUpdateStudyFactory.create(
-				currentSession,
-				(IStudyDAO) studyDAO.setSession(currentSession),
-				(IOTUSetDAO) otuSetDAO.setSession(currentSession),
-				(IDNACharacterDAO) dnaCharacterDAO.setSession(currentSession),
-				(IAttachmentNamespaceDAO) attachmentNamespaceDAO
-						.setSession(currentSession),
-				(IAttachmentTypeDAO) attachmentTypeDAO
-						.setSession(currentSession),
-				(IObjectWithLongIdDAO) dao.setSession(currentSession),
-				newPPodVersionInfo);
+		this.otuSetDAO = (IOTUSetDAO) otuSetDAO.setSession(currentSession);
+
+		this.dnaCharacterDAO = (IDNACharacterDAO) dnaCharacterDAO
+				.setSession(currentSession);
+
+		this.attachmentNamespaceDAO = (IAttachmentNamespaceDAO) attachmentNamespaceDAO
+				.setSession(currentSession);
+
+		this.attachmentTypeDAO = (IAttachmentTypeDAO) attachmentTypeDAO
+				.setSession(currentSession);
+
+		this.objectWithLongIdDAO = (IObjectWithLongIdDAO) dao
+				.setSession(currentSession);
+
+		this.saveOrUpdateStudyFactory = saveOrUpdateStudyFactory;
+
 		this.study2StudyInfo = study2StudyInfo;
 		this.setDocIdVisitor = setDocIdVisitor;
 		this.afterUnmarshalVisitorProvider = afterUnmarshalVisitorProvider;
 		this.stringPairFactory = stringPairFactory;
+
+		newPPodVersionInfo = newPPodVersionInfoFactory
+				.create(currentSession);
+
+		this.setPPodVersionInfoVisitorFactory = setPPodVersionInfoVisitorFactory;
 	}
 
 	public StudyInfo create(final Study incomingStudy) {
-		incomingStudy.accept(afterUnmarshalVisitorProvider.get());
-		final Study dbStudy = saveOrUpdateStudy.save(incomingStudy);
-		dbStudy.accept(setPPodVersionInfoVisitor);
-		return study2StudyInfo.toStudyInfo(dbStudy);
+		return saveOrUpdate(incomingStudy);
 	}
 
 	public Study getStudyByPPodId(final String pPodId) {
@@ -128,17 +143,36 @@ final class StudyResourceHibernate implements IStudyResource {
 	public Set<StringPair> getStudyPPodIdLabelPairs() {
 		return newHashSet(transform(studyDAO.getPPodIdLabelPairs(),
 				new Function<IPair<String, String>, StringPair>() {
-					public StringPair apply(IPair<String, String> from) {
+					public StringPair apply(final IPair<String, String> from) {
 						return stringPairFactory.create(from.getFirst(), from
 								.getSecond());
 					}
 				}));
 	}
 
-	public StudyInfo update(final Study incomingStudy, final String pPodId) {
+	private StudyInfo saveOrUpdate(final Study incomingStudy) {
 		incomingStudy.accept(afterUnmarshalVisitorProvider.get());
-		final Study dbStudy = saveOrUpdateStudy.update(incomingStudy);
+
+		final ISaveOrUpdateStudy saveOrUpdateStudy =
+				saveOrUpdateStudyFactory.create(incomingStudy,
+						studyDAO,
+						otuSetDAO,
+						dnaCharacterDAO,
+						attachmentNamespaceDAO,
+						attachmentTypeDAO,
+						objectWithLongIdDAO,
+						newPPodVersionInfo);
+		saveOrUpdateStudy.saveOrUpdate();
+		final Study dbStudy = saveOrUpdateStudy.getDbStudy();
+		final ISetPPodVersionInfoVisitor setPPodVersionInfoVisitor = setPPodVersionInfoVisitorFactory
+				.create(newPPodVersionInfo);
 		dbStudy.accept(setPPodVersionInfoVisitor);
-		return study2StudyInfo.toStudyInfo(dbStudy);
+
+		final StudyInfo dbStudyInfo = saveOrUpdateStudy.getStudyInfo();
+		return study2StudyInfo.toStudyInfo(dbStudy, dbStudyInfo);
+	}
+
+	public StudyInfo update(final Study incomingStudy, final String pPodId) {
+		return saveOrUpdate(incomingStudy);
 	}
 }

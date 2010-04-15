@@ -24,37 +24,37 @@ import com.google.common.base.Function;
  * 
  * @author Sam Donnelly
  */
-public interface IUUPPodEntity {
+public interface IWithPPodId {
 
 	/**
 	 * {@link Function} wrapper of {@link #getPPodId()}.
 	 */
-	public static Function<IUUPPodEntity, String> getPPodId = new Function<IUUPPodEntity, String>() {
+	public static Function<IWithPPodId, String> getPPodId = new Function<IWithPPodId, String>() {
 
-		public String apply(final IUUPPodEntity from) {
+		public String apply(final IWithPPodId from) {
 			return from.getPPodId();
 		}
 
 	};
 
 	/**
-	 * Get the pPOD id of this {@link IUUPPodEntity}.
+	 * Get the pPOD id of this {@link IWithPPodId}.
 	 * 
-	 * @return the pPOD id of this {@link IUUPPodEntity}
+	 * @return the pPOD id of this {@link IWithPPodId}
 	 */
 	@Nullable
 	String getPPodId();
 
 	/**
-	 * Create the pPOD ID for this {@link IUUPPodEntity}.
+	 * Create the pPOD ID for this {@link IWithPPodId}.
 	 * 
-	 * @return this {@link IUUPPodEntity}
+	 * @return this {@link IWithPPodId}
 	 * 
 	 * @throws IllegalStateException if {@link #getPPodId()}{@code != null} when
 	 *             this method is called. That is, it throws an exception if the
 	 *             pPOD id has already been set.
 	 */
-	IUUPPodEntity setPPodId();
+	IWithPPodId setPPodId();
 
 	/**
 	 * Set the pPOD id.
@@ -63,12 +63,12 @@ public interface IUUPPodEntity {
 	 * 
 	 * @param pPodId
 	 * 
-	 * @return this {@link IUUPPodEntity}
+	 * @return this {@link IWithPPodId}
 	 * 
 	 * @throws IllegalStateException if {@link #getPPodId()}{@code != null} when
 	 *             this method is called. That is, it throws an exception if the
 	 *             pPOD id has already been set.
 	 */
-	IUUPPodEntity setPPodId(@Nullable String pPodId);
+	IWithPPodId setPPodId(@Nullable String pPodId);
 
 }

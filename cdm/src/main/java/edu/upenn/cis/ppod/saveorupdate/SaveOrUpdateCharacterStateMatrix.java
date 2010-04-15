@@ -18,7 +18,6 @@ package edu.upenn.cis.ppod.saveorupdate;
 import static com.google.common.base.Preconditions.checkNotNull;
 import static com.google.common.base.Predicates.compose;
 import static com.google.common.base.Predicates.equalTo;
-import static com.google.common.collect.Iterables.get;
 import static com.google.common.collect.Iterables.getOnlyElement;
 import static com.google.common.collect.Lists.newArrayList;
 import static com.google.common.collect.Lists.newArrayListWithCapacity;
@@ -51,7 +50,9 @@ import edu.upenn.cis.ppod.model.DNACharacter;
 import edu.upenn.cis.ppod.model.DNAStateMatrix;
 import edu.upenn.cis.ppod.model.OTU;
 import edu.upenn.cis.ppod.modelinterfaces.INewPPodVersionInfo;
-import edu.upenn.cis.ppod.modelinterfaces.IUUPPodEntity;
+import edu.upenn.cis.ppod.modelinterfaces.IWithPPodId;
+import edu.upenn.cis.ppod.services.ppodentity.CharacterStateMatrixInfo;
+import edu.upenn.cis.ppod.services.ppodentity.PPodEntityInfo;
 import edu.upenn.cis.ppod.thirdparty.injectslf4j.InjectLogger;
 
 /**
@@ -62,6 +63,8 @@ final class SaveOrUpdateCharacterStateMatrix implements ISaveOrUpdateMatrix {
 	private final Provider<Character> characterProvider;
 	private final Provider<CharacterStateRow> rowProvider;
 	private final Provider<CharacterStateCell> cellProvider;
+	private final Provider<CharacterStateMatrixInfo> matrixInfoProvider;
+	// private final Provider<PPodEntityInfo> pPodEntityInfoProvider;
 	private final CharacterState.IFactory stateFactory;
 	private final Provider<Attachment> attachmentProvider;
 	private final IMergeAttachments mergeAttachments;
@@ -79,6 +82,8 @@ final class SaveOrUpdateCharacterStateMatrix implements ISaveOrUpdateMatrix {
 			final Provider<CharacterStateCell> cellProvider,
 			final CharacterState.IFactory stateFactory,
 			final Provider<Attachment> attachmentProvider,
+			final Provider<CharacterStateMatrixInfo> matrixInfoProvider,
+			final Provider<PPodEntityInfo> pPodEntityInfoProvider,
 			@Assisted final INewPPodVersionInfo newPPodVersionInfo,
 			@Assisted final IDAO<Object, Long> dao,
 			@Assisted final IMergeAttachments mergeAttachments) {
@@ -87,79 +92,84 @@ final class SaveOrUpdateCharacterStateMatrix implements ISaveOrUpdateMatrix {
 		this.cellProvider = cellProvider;
 		this.stateFactory = stateFactory;
 		this.attachmentProvider = attachmentProvider;
+		this.matrixInfoProvider = matrixInfoProvider;
+		// this.pPodEntityInfoProvider = pPodEntityInfoProvider;
 		this.dao = dao;
 		this.mergeAttachments = mergeAttachments;
 		this.newPPodVersionInfo = newPPodVersionInfo;
 	}
 
-	public void saveOrUpdate(CharacterStateMatrix targetMatrix,
+	public CharacterStateMatrixInfo saveOrUpdate(
+			CharacterStateMatrix dbMatrix,
 			final CharacterStateMatrix sourceMatrix,
 			final DNACharacter dnaCharacter) {
 		final String METHOD = "saveOrUpdate(...)";
 		logger.debug("{}: entering", METHOD);
-		checkNotNull(targetMatrix);
+		checkNotNull(dbMatrix);
 		checkNotNull(sourceMatrix);
 
-		targetMatrix.setLabel(sourceMatrix.getLabel());
-		targetMatrix.setDescription(sourceMatrix.getDescription());
+		final CharacterStateMatrixInfo matrixInfo = matrixInfoProvider.get();
+
+		dbMatrix.setLabel(sourceMatrix.getLabel());
+		dbMatrix.setDescription(sourceMatrix.getDescription());
 
 		// We need this for the response: it's less than ideal to do this here,
 		// but easy
-		if (targetMatrix.getDocId() == null) {
-			targetMatrix.setDocId(sourceMatrix.getDocId());
+		if (dbMatrix.getDocId() == null) {
+			dbMatrix.setDocId(sourceMatrix.getDocId());
 		}
 
 		final Map<Integer, Integer> newCharPositionsToOriginalCharPositions = newHashMap();
-		final List<Character> newTargetMatrixCharacters = newArrayList();
+		final List<Character> newDbMatrixCharacters = newArrayList();
 		int sourceCharacterPosition = -1;
 		for (final Iterator<Character> sourceCharactersItr = sourceMatrix
 				.getCharactersIterator(); sourceCharactersItr.hasNext();) {
 			final Character sourceCharacter = sourceCharactersItr.next();
 			sourceCharacterPosition++;
-			Character newTargetCharacter;
+			Character newDbCharacter;
 			if (sourceMatrix instanceof DNAStateMatrix) {
-				newTargetCharacter = dnaCharacter;
-			} else if (null == (newTargetCharacter =
-					findIf(targetMatrix
+				newDbCharacter = dnaCharacter;
+			} else if (null == (newDbCharacter =
+					findIf(dbMatrix
 							.getCharactersIterator(),
 							compose(equalTo(sourceCharacter
-									.getPPodId()), IUUPPodEntity.getPPodId)))) {
-				newTargetCharacter = characterProvider.get();
-				newTargetCharacter.setPPodVersionInfo(newPPodVersionInfo
+									.getPPodId()), IWithPPodId.getPPodId)))) {
+				newDbCharacter = characterProvider.get();
+				newDbCharacter.setPPodVersionInfo(newPPodVersionInfo
 						.getNewPPodVersionInfo());
-				newTargetCharacter.setPPodId();
+				newDbCharacter.setPPodId();
 			}
 
-			newTargetMatrixCharacters.add(newTargetCharacter);
+			newDbMatrixCharacters.add(newDbCharacter);
 
 			if (!(sourceMatrix instanceof DNAStateMatrix)) {
-				newTargetCharacter.setLabel(sourceCharacter.getLabel());
+				newDbCharacter.setLabel(sourceCharacter.getLabel());
 			}
 
 			for (final Iterator<CharacterState> sourceStatesItr = sourceCharacter
 					.getStatesIterator(); sourceStatesItr.hasNext();) {
 				final CharacterState sourceState = sourceStatesItr.next();
-				CharacterState targetState;
-				if (null == (targetState = newTargetCharacter.getState(
+				CharacterState dbState;
+				if (null == (dbState = newDbCharacter.getState(
 						sourceState.getStateNumber()))) {
-					targetState = stateFactory
+					dbState = stateFactory
 							.create(sourceState.getStateNumber());
-					newTargetCharacter.putState(targetState);
-					targetState.setPPodVersionInfo(newPPodVersionInfo
+					newDbCharacter.putState(dbState);
+					dbState.setPPodVersionInfo(newPPodVersionInfo
 							.getNewPPodVersionInfo());
 				}
 
 				if (!(sourceMatrix instanceof DNAStateMatrix)) {
-					targetState.setLabel(sourceState.getLabel());
+					dbState.setLabel(sourceState.getLabel());
 				}
 			}
 
 			if (!(sourceMatrix instanceof DNAStateMatrix)) {
 				newCharPositionsToOriginalCharPositions.put(
 						sourceCharacterPosition,
-						targetMatrix.getCharacterPosition(newTargetCharacter));
+						dbMatrix.getCharacterPosition(newDbCharacter));
 			} else {
-				if (targetMatrix.getCharactersSize() <= sourceCharacterPosition) {
+				if (dbMatrix.getCharactersSize() <= sourceCharacterPosition) {
 					newCharPositionsToOriginalCharPositions.put(
 							sourceCharacterPosition,
 							null);
@@ -172,54 +182,55 @@ final class SaveOrUpdateCharacterStateMatrix implements ISaveOrUpdateMatrix {
 			for (final Iterator<Attachment> sourceAttachmentsItr = sourceCharacter
 					.getAttachmentsIterator(); sourceAttachmentsItr.hasNext();) {
 				final Attachment sourceAttachment = sourceAttachmentsItr.next();
-				final ImmutableSet<Attachment> newTargetCharacterAttachments = ImmutableSet
-						.copyOf(newTargetCharacter.getAttachmentsIterator());
+				final ImmutableSet<Attachment> newDbCharacterAttachments = ImmutableSet
+						.copyOf(newDbCharacter.getAttachmentsIterator());
 				final Set<Attachment> targetAttachments = filter(
-						newTargetCharacterAttachments, compose(
+						newDbCharacterAttachments, compose(
 								equalTo(sourceAttachment.getStringValue()),
 								Attachment.getStringValue));
 
-				Attachment targetAttachment = getOnlyElement(targetAttachments,
+				Attachment dbAttachment = getOnlyElement(targetAttachments,
 						null);
-				if (targetAttachment == null) {
-					targetAttachment = attachmentProvider.get();
-					targetAttachment.setPPodVersionInfo(newPPodVersionInfo
+				if (dbAttachment == null) {
+					dbAttachment = attachmentProvider.get();
+					dbAttachment.setPPodVersionInfo(newPPodVersionInfo
 							.getNewPPodVersionInfo());
-					targetAttachment.setPPodId();
+					dbAttachment.setPPodId();
 				}
-				newTargetCharacter.addAttachment(targetAttachment);
-				mergeAttachments.merge(targetAttachment, sourceAttachment);
-				dao.saveOrUpdate(targetAttachment);
+				newDbCharacter.addAttachment(dbAttachment);
+				mergeAttachments.merge(dbAttachment, sourceAttachment);
+				dao.saveOrUpdate(dbAttachment);
 			}
-			dao.saveOrUpdate(newTargetCharacter);
+			dao.saveOrUpdate(newDbCharacter);
 
 		}
-		final List<Character> removedCharacters = targetMatrix
-				.setCharacters(newTargetMatrixCharacters);
+		final List<Character> removedCharacters = dbMatrix
+				.setCharacters(newDbMatrixCharacters);
 
-		// So the rows have a targetMatrix id
-		dao.saveOrUpdate(targetMatrix);
+		// So the rows have a dbMatrix id
+		dao.saveOrUpdate(dbMatrix);
 
 		final Set<CharacterStateCell> cellsToEvict = newHashSet();
 		int sourceOTUPosition = -1;
+
 		for (final OTU sourceOTU : sourceMatrix.getOTUSet()) {
 			sourceOTUPosition++;
 			final CharacterStateRow sourceRow = sourceMatrix.getRow(sourceOTU);
 
-			final OTU targetOTU = targetMatrix.getOTUSet().getOTU(
+			final OTU dbOTU = dbMatrix.getOTUSet().getOTU(
 					sourceOTUPosition);
-			CharacterStateRow targetRow = null;
-			final List<Character> characters = newArrayList(targetMatrix
+			CharacterStateRow dbRow = null;
+			final List<Character> characters = newArrayList(dbMatrix
 					.getCharactersIterator());
 
 			boolean newRow = false;
 
-			if (null == (targetRow = targetMatrix.getRow(targetOTU))) {
-				targetRow = rowProvider.get();
-				targetRow.setPPodVersionInfo(newPPodVersionInfo
+			if (null == (dbRow = dbMatrix.getRow(dbOTU))) {
+				dbRow = rowProvider.get();
+				dbRow.setPPodVersionInfo(newPPodVersionInfo
 						.getNewPPodVersionInfo());
-				targetMatrix.putRow(targetOTU, targetRow);
-				dao.saveOrUpdate(targetRow);
+				dbMatrix.putRow(dbOTU, dbRow);
+				dao.saveOrUpdate(dbRow);
 				newRow = true;
 			} else {
 				newRow = false;
@@ -230,38 +241,38 @@ final class SaveOrUpdateCharacterStateMatrix implements ISaveOrUpdateMatrix {
 // "existing row has no pPOD version number");
 // }
 
-			final ImmutableList<CharacterStateCell> originalTargetCells = ImmutableList
-					.copyOf(targetRow.iterator());
-			final List<CharacterStateCell> newTargetCells = newArrayListWithCapacity(sourceRow
+			final ImmutableList<CharacterStateCell> originalDbCells = ImmutableList
+					.copyOf(dbRow.iterator());
+			final List<CharacterStateCell> newDbCells = newArrayListWithCapacity(sourceRow
 					.getCellsSize());
 
 			// First we fill with empty cells
-			for (int newCellPosition = 0; newCellPosition < targetMatrix
+			for (int newCellPosition = 0; newCellPosition < dbMatrix
 					.getCharactersSize(); newCellPosition++) {
-				CharacterStateCell targetCell;
+				CharacterStateCell dbCell;
 				if (newRow
 						|| null == newCharPositionsToOriginalCharPositions
 								.get(newCellPosition)) {
-					targetCell = cellProvider.get();
-					targetCell.setPPodVersionInfo(newPPodVersionInfo
+					dbCell = cellProvider.get();
+					dbCell.setPPodVersionInfo(newPPodVersionInfo
 							.getNewPPodVersionInfo());
 				} else {
-					targetCell = originalTargetCells
+					dbCell = originalDbCells
 							.get(newCharPositionsToOriginalCharPositions
 									.get(newCellPosition));
 				}
-				newTargetCells.add(targetCell);
+				newDbCells.add(dbCell);
 			}
 
-			final List<CharacterStateCell> clearedCells = targetRow
-					.setCells(newTargetCells);
+			final List<CharacterStateCell> clearedCells = dbRow
+					.setCells(newDbCells);
 
 			for (final CharacterStateCell clearedCell : clearedCells) {
 				dao.delete(clearedCell);
 			}
 
 			int targetCellPosition = -1;
-			for (final CharacterStateCell targetCell : targetRow) {
+			for (final CharacterStateCell dbCell : dbRow) {
 				targetCellPosition++;
 
 				final CharacterStateCell sourceCell = sourceRow.getCell(
@@ -274,19 +285,20 @@ final class SaveOrUpdateCharacterStateMatrix implements ISaveOrUpdateMatrix {
 				}
 				switch (sourceCell.getType()) {
 					case INAPPLICABLE:
-						targetCell.setInapplicable();
+						dbCell.setInapplicable();
 						break;
 					case POLYMORPHIC:
-						targetCell.setPolymorphicStates(newTargetStates);
+						dbCell.setPolymorphicStates(newTargetStates);
 						break;
 					case SINGLE:
-						targetCell.setSingleState(get(newTargetStates, 0));
+						dbCell
+								.setSingleState(getOnlyElement(newTargetStates));
 						break;
 					case UNASSIGNED:
-						targetCell.setUnassigned();
+						dbCell.setUnassigned();
 						break;
 					case UNCERTAIN:
-						targetCell.setUncertainStates(newTargetStates);
+						dbCell.setUncertainStates(newTargetStates);
 						break;
 					default:
 						throw new AssertionError("unknown type");
@@ -295,19 +307,19 @@ final class SaveOrUpdateCharacterStateMatrix implements ISaveOrUpdateMatrix {
 				// We need to do this here since we're removing the cell from
 				// the persistence context (with evict). So it won't get handled
 				// higher up in the application when it does for most entities.
-				if (targetCell.isInNeedOfNewPPodVersionInfo()) {
-					targetCell.setPPodVersionInfo(newPPodVersionInfo
+				if (dbCell.isInNeedOfNewPPodVersionInfo()) {
+					dbCell.setPPodVersionInfo(newPPodVersionInfo
 							.getNewPPodVersionInfo());
 				}
-				dao.saveOrUpdate(targetCell);
+				dao.saveOrUpdate(dbCell);
 
-				cellsToEvict.add(targetCell);
+				cellsToEvict.add(dbCell);
 			}
 
 			// We need to do this here since we're removing the cell from
 			// the persistence context (with evict)
-			if (targetRow.isInNeedOfNewPPodVersionInfo()) {
-				targetRow.setPPodVersionInfo(newPPodVersionInfo
+			if (dbRow.isInNeedOfNewPPodVersionInfo()) {
+				dbRow.setPPodVersionInfo(newPPodVersionInfo
 						.getNewPPodVersionInfo());
 			}
 
@@ -319,7 +331,13 @@ final class SaveOrUpdateCharacterStateMatrix implements ISaveOrUpdateMatrix {
 			dao.evictEntities(cellsToEvict);
 			cellsToEvict.clear();
 
-			dao.evict(targetRow);
+			dao.evict(dbRow);
+
+			fillInCellInfo(matrixInfo, dbRow, sourceOTUPosition);
+
+			// This is to free up the cells for garbage collection - but depends
+			// on dao.evict(targetRow) to be safe!!!!!
+			dbRow.clearCells();
 		}
 
 		// Do this down here because it's after any cells that reference the
@@ -339,5 +357,61 @@ final class SaveOrUpdateCharacterStateMatrix implements ISaveOrUpdateMatrix {
 				}
 			}
 		}
+
+		matrixInfo.setPPodId(dbMatrix.getPPodId());
+		return matrixInfo;
 	}
+
+	private void fillInCellInfo(final CharacterStateMatrixInfo matrixInfo,
+			final CharacterStateRow row, final int rowPosition) {
+		int cellPosition = -1;
+		for (final CharacterStateCell cell : row) {
+			cellPosition++;
+			matrixInfo.setCellPPodIdAndVersion(rowPosition,
+					cellPosition,
+					cell.getPPodVersionInfo().getPPodVersion());
+		}
+	}
+
+// private void fillInMatrixInfo(
+// final CharacterStateMatrixInfo matrixInfo,
+// final CharacterStateMatrix matrix) {
+// matrixInfo.setEntityId(matrix.getId());
+// matrixInfo.setPPodId(matrix.getPPodId());
+// matrixInfo.setPPodVersion(matrix.getPPodVersionInfo()
+// .getPPodVersion());
+// matrixInfo.setDocId(matrix.getDocId());
+//
+// int characterIdx = -1;
+// for (final Iterator<Character> charactersItr = matrix
+// .getCharactersIterator(); charactersItr.hasNext();) {
+// characterIdx++;
+// final Character character = charactersItr.next();
+// PPodEntityInfo characterInfo = pPodEntityInfoProvider.get();
+// characterInfo.setPPodId(character.getPPodId());
+// characterInfo.setEntityId(character.getId());
+// characterInfo.setPPodVersion(character.getPPodVersionInfo()
+// .getPPodVersion());
+// matrixInfo.getCharacterInfosByIdx().put(characterIdx,
+// characterInfo);
+// }
+//
+// int columnIdx = -1;
+// for (final Iterator<PPodVersionInfo> columnPPodVersionInfosItr = matrix
+// .getColumnPPodVersionInfosIterator(); columnPPodVersionInfosItr
+// .hasNext();) {
+// columnIdx++;
+// final PPodVersionInfo columnPPodVersionInfo = columnPPodVersionInfosItr
+// .next();
+// matrixInfo.getColumnHeaderVersionsByIdx().put(columnIdx,
+// columnPPodVersionInfo.getPPodVersion());
+// }
+//
+// int rowIdx = -1;
+// for (final CharacterStateRow row : matrix) {
+// rowIdx++;
+// matrixInfo.getRowHeaderVersionsByIdx().put(rowIdx,
+// row.getPPodVersionInfo().getPPodVersion());
+// }
+// }
 }
