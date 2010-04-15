@@ -48,6 +48,7 @@ import edu.upenn.cis.ppod.model.CharacterStateMatrix;
 import edu.upenn.cis.ppod.model.CharacterStateRow;
 import edu.upenn.cis.ppod.model.DNACharacter;
 import edu.upenn.cis.ppod.model.DNAStateMatrix;
+import edu.upenn.cis.ppod.model.MolecularStateMatrix;
 import edu.upenn.cis.ppod.model.OTU;
 import edu.upenn.cis.ppod.modelinterfaces.INewPPodVersionInfo;
 import edu.upenn.cis.ppod.modelinterfaces.IWithPPodId;
@@ -100,7 +101,7 @@ final class SaveOrUpdateCharacterStateMatrix implements ISaveOrUpdateMatrix {
 	}
 
 	public CharacterStateMatrixInfo saveOrUpdate(
-			CharacterStateMatrix dbMatrix,
+			final CharacterStateMatrix dbMatrix,
 			final CharacterStateMatrix sourceMatrix,
 			final DNACharacter dnaCharacter) {
 		final String METHOD = "saveOrUpdate(...)";
@@ -133,7 +134,8 @@ final class SaveOrUpdateCharacterStateMatrix implements ISaveOrUpdateMatrix {
 					findIf(dbMatrix
 							.getCharactersIterator(),
 							compose(equalTo(sourceCharacter
-									.getPPodId()), IWithPPodId.getPPodId)))) {
+									.getPPodId()),
+									IWithPPodId.getPPodId)))) {
 				newDbCharacter = characterProvider.get();
 				newDbCharacter.setPPodVersionInfo(newPPodVersionInfo
 						.getNewPPodVersionInfo());
@@ -164,7 +166,7 @@ final class SaveOrUpdateCharacterStateMatrix implements ISaveOrUpdateMatrix {
 				}
 			}
 
-			if (!(sourceMatrix instanceof DNAStateMatrix)) {
+			if (!(sourceMatrix instanceof MolecularStateMatrix)) {
 				newCharPositionsToOriginalCharPositions.put(
 						sourceCharacterPosition,
 						dbMatrix.getCharacterPosition(newDbCharacter));
@@ -338,6 +340,9 @@ final class SaveOrUpdateCharacterStateMatrix implements ISaveOrUpdateMatrix {
 			// This is to free up the cells for garbage collection - but depends
 			// on dao.evict(targetRow) to be safe!!!!!
 			dbRow.clearCells();
+
+			// Again to free up cells for garbage collection
+			sourceRow.clearCells();
 		}
 
 		// Do this down here because it's after any cells that reference the

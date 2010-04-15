@@ -153,7 +153,7 @@ public abstract class GenericHibernateDAO<T, ID extends Serializable>
 	}
 
 	public void evictEntities(final Collection<? extends T> entities) {
-		for (T entity : entities) {
+		for (final T entity : entities) {
 			evict(entity);
 		}
 	}
