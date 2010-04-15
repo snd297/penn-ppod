@@ -31,6 +31,7 @@ import java.util.Set;
 
 import javax.annotation.CheckForNull;
 import javax.annotation.Nullable;
+import javax.persistence.CascadeType;
 import javax.persistence.Column;
 import javax.persistence.Entity;
 import javax.persistence.FetchType;
@@ -93,17 +94,14 @@ public class OTUSet extends UUPPodEntityWXmlId implements Iterable<OTU> {
 	private final List<OTU> otus = newArrayList();
 
 	/** The matrices which reference this OTU set. */
-	@OneToMany(mappedBy = "otuSet", orphanRemoval = true)
-	@Cascade( { org.hibernate.annotations.CascadeType.SAVE_UPDATE })
+	@OneToMany(mappedBy = "otuSet", cascade = CascadeType.ALL, orphanRemoval = true)
 	private final Set<CharacterStateMatrix> matrices = newHashSet();
 
-	@OneToMany(mappedBy = "otuSet", orphanRemoval = true)
-	@Cascade( { org.hibernate.annotations.CascadeType.SAVE_UPDATE })
+	@OneToMany(mappedBy = "otuSet", cascade = CascadeType.ALL, orphanRemoval = true)
 	private final Set<DNASequenceSet> dnaSequenceSets = newHashSet();
 
 	/** The tree sets that reference this OTU set. */
-	@OneToMany(mappedBy = "otuSet", orphanRemoval = true)
-	@Cascade( { org.hibernate.annotations.CascadeType.SAVE_UPDATE })
+	@OneToMany(mappedBy = "otuSet", cascade = CascadeType.ALL, orphanRemoval = true)
 	private final Set<TreeSet> treeSets = newHashSet();
 
 	/** Free-form description. */

@@ -55,7 +55,8 @@ final class NewPPodVersionInfoHibernate implements
 		if (pPodVersionInfoInitialized) {
 
 		} else {
-			final Long newPPodVersion = pPodVersionInfoDAO.getMaxPPodVersion() + 1;
+			final Long newPPodVersion = Long.valueOf(pPodVersionInfoDAO
+					.getMaxPPodVersion() + 1);
 			newPPodVersionInfo.setPPodVersion(newPPodVersion);
 			newPPodVersionInfo.setCreated(new Date());
 			pPodVersionInfoDAO.saveOrUpdate(newPPodVersionInfo);

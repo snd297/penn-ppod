@@ -32,7 +32,6 @@ import edu.upenn.cis.ppod.dao.IAttachmentNamespaceDAO;
 import edu.upenn.cis.ppod.dao.IAttachmentTypeDAO;
 import edu.upenn.cis.ppod.dao.IDAO;
 import edu.upenn.cis.ppod.dao.IDNACharacterDAO;
-import edu.upenn.cis.ppod.dao.IOTUSetDAO;
 import edu.upenn.cis.ppod.dao.IStudyDAO;
 import edu.upenn.cis.ppod.model.CharacterStateMatrix;
 import edu.upenn.cis.ppod.model.DNACharacter;
@@ -42,7 +41,10 @@ import edu.upenn.cis.ppod.model.OTUSet;
 import edu.upenn.cis.ppod.model.Study;
 import edu.upenn.cis.ppod.model.TreeSet;
 import edu.upenn.cis.ppod.modelinterfaces.INewPPodVersionInfo;
-import edu.upenn.cis.ppod.modelinterfaces.IUUPPodEntity;
+import edu.upenn.cis.ppod.modelinterfaces.IWithPPodId;
+import edu.upenn.cis.ppod.services.ppodentity.CharacterStateMatrixInfo;
+import edu.upenn.cis.ppod.services.ppodentity.OTUSetInfo;
+import edu.upenn.cis.ppod.services.ppodentity.StudyInfo;
 import edu.upenn.cis.ppod.util.ICharacterStateMatrixFactory;
 
 /**
@@ -53,7 +55,7 @@ import edu.upenn.cis.ppod.util.ICharacterStateMatrixFactory;
 final class SaveOrUpdateStudy implements ISaveOrUpdateStudy {
 
 	private final IStudyDAO studyDAO;
-	private final IOTUSetDAO otuSetDAO;
+
 	private final IDNACharacterDAO dnaCharacterDAO;
 
 	private final Provider<Study> studyProvider;
@@ -67,6 +69,10 @@ final class SaveOrUpdateStudy implements ISaveOrUpdateStudy {
 	private final IMergeTreeSets mergeTreeSets;
 	private final INewPPodVersionInfo newPPodVersionInfo;
 	private final IMergeMolecularSequenceSets<DNASequenceSet, DNASequence> mergeDNASequenceSets;
+	private final Study incomingStudy;
+	private Study dbStudy;
+	private final StudyInfo dbStudyInfo;
+	private final Provider<OTUSetInfo> otuSetInfoProvider;
 
 	@Inject
 	SaveOrUpdateStudy(
@@ -80,16 +86,17 @@ final class SaveOrUpdateStudy implements ISaveOrUpdateStudy {
 			final ISaveOrUpdateMatrix.IFactory saveOrUpdateMatrixFactory,
 			final IMergeMolecularSequenceSets.IFactory<DNASequenceSet, DNASequence> mergeDNASequenceSetsFactory,
 			final IMergeAttachments.IFactory mergeAttachmentFactory,
+			final Provider<OTUSetInfo> otuSetInfoProvider,
+			final StudyInfo studyInfo,
+			@Assisted final Study incomingStudy,
 			@Assisted final IStudyDAO studyDAO,
-			@Assisted final IOTUSetDAO otuSetDAO,
 			@Assisted final IDNACharacterDAO dnaCharacterDAO,
 			@Assisted final IAttachmentNamespaceDAO attachmentNamespaceDAO,
 			@Assisted final IAttachmentTypeDAO attachmentTypeDAO,
 			@Assisted final IDAO<Object, Long> dao,
 			@Assisted final INewPPodVersionInfo newPPodVersionInfo) {
-
+		this.incomingStudy = incomingStudy;
 		this.studyDAO = studyDAO;
-		this.otuSetDAO = otuSetDAO;
 		this.dnaCharacterDAO = dnaCharacterDAO;
 		this.studyProvider = studyProvider;
 		this.otuSetProvider = otuSetProvider;
@@ -104,20 +111,25 @@ final class SaveOrUpdateStudy implements ISaveOrUpdateStudy {
 						.create(attachmentNamespaceDAO,
 								attachmentTypeDAO), dao,
 				newPPodVersionInfo);
+		this.otuSetInfoProvider = otuSetInfoProvider;
 		this.mergeDNASequenceSets = mergeDNASequenceSetsFactory.create(
 				dao,
 				newPPodVersionInfo);
 		this.mergeTreeSets = mergeTreeSetsFactory.create(newPPodVersionInfo);
+		this.dbStudyInfo = studyInfo;
 	}
 
-	public Study save(final Study incomingStudy) {
-		final Study dbStudy = (Study) studyProvider.get().setPPodId();
+	public void saveOrUpdate() {
+		dbStudy = (Study) studyProvider.get().setPPodId();
 		dbStudy.setPPodVersionInfo(newPPodVersionInfo.getNewPPodVersionInfo());
-		saveOrUpdate(dbStudy, incomingStudy);
-		return dbStudy;
-	}
 
-	public void saveOrUpdate(final Study dbStudy, final Study incomingStudy) {
+		if (null == (dbStudy = studyDAO.getStudyByPPodId(incomingStudy
+				.getPPodId()))) {
+			dbStudy = studyProvider.get();
+			dbStudy.setPPodVersionInfo(newPPodVersionInfo
+					.getNewPPodVersionInfo());
+			dbStudy.setPPodId();
+		}
 
 		dbStudy.setLabel(incomingStudy.getLabel());
 
@@ -127,9 +139,8 @@ final class SaveOrUpdateStudy implements ISaveOrUpdateStudy {
 				.hasNext();) {
 			final OTUSet dbOTUSet = dbOTUSetsItr.next();
 			if (null == findIf(incomingStudy.getOTUSetsIterator(), compose(
-					equalTo(dbOTUSet.getPPodId()), IUUPPodEntity.getPPodId))) {
+					equalTo(dbOTUSet.getPPodId()), IWithPPodId.getPPodId))) {
 				dbStudy.removeOTUSet(dbOTUSet);
-				otuSetDAO.delete(dbOTUSet);
 			}
 		}
 
@@ -153,7 +164,7 @@ final class SaveOrUpdateStudy implements ISaveOrUpdateStudy {
 			if (null == (dbOTUSet = findIf(dbStudy.getOTUSetsIterator(),
 					compose(
 							equalTo(incomingOTUSet.getPPodId()),
-							IUUPPodEntity.getPPodId)))) {
+							IWithPPodId.getPPodId)))) {
 				dbOTUSet = dbStudy.addOTUSet(otuSetProvider.get());
 				dbOTUSet.setPPodVersionInfo(newPPodVersionInfo
 						.getNewPPodVersionInfo());
@@ -168,6 +179,11 @@ final class SaveOrUpdateStudy implements ISaveOrUpdateStudy {
 			// the OTUSet.
 			studyDAO.saveOrUpdate(dbStudy);
 
+			final OTUSetInfo otuSetInfo = otuSetInfoProvider.get();
+			dbStudyInfo.getOTUSetInfos().add(otuSetInfo);
+
+			otuSetInfo.setPPodId(dbOTUSet.getPPodId());
+
 			final Set<CharacterStateMatrix> newDbMatrices = newHashSet();
 			for (final Iterator<CharacterStateMatrix> incomingMatrixItr = incomingOTUSet
 					.getMatricesIterator(); incomingMatrixItr.hasNext();) {
@@ -177,7 +193,7 @@ final class SaveOrUpdateStudy implements ISaveOrUpdateStudy {
 				if (null == (dbMatrix = findIf(dbOTUSet.getMatricesIterator(),
 						compose(
 								equalTo(incomingMatrix.getPPodId()),
-								IUUPPodEntity.getPPodId)))) {
+								IWithPPodId.getPPodId)))) {
 					dbMatrix = matrixFactory.create(incomingMatrix);
 					dbMatrix.setPPodVersionInfo(newPPodVersionInfo
 							.getNewPPodVersionInfo());
@@ -187,9 +203,10 @@ final class SaveOrUpdateStudy implements ISaveOrUpdateStudy {
 				}
 				newDbMatrices.add(dbMatrix);
 				dbOTUSet.setMatrices(newDbMatrices);
-				mergeMatrices.saveOrUpdate(dbMatrix, incomingMatrix,
-						dbDNACharacter);
-
+				final CharacterStateMatrixInfo dbMatrixInfo = mergeMatrices
+						.saveOrUpdate(dbMatrix,
+								incomingMatrix, dbDNACharacter);
+				otuSetInfo.getMatrixInfos().add(dbMatrixInfo);
 			}
 
 			final Set<DNASequenceSet> newDbDNASequenceSets = newHashSet();
@@ -202,7 +219,7 @@ final class SaveOrUpdateStudy implements ISaveOrUpdateStudy {
 				if (null == (dbDNASequenceSet = findIf(dbOTUSet
 						.getDNASequenceSetsIterator(), compose(
 						equalTo(incomingDNASequenceSet.getPPodId()),
-						IUUPPodEntity.getPPodId)))) {
+						IWithPPodId.getPPodId)))) {
 					dbDNASequenceSet = dnaSequenceSetProvider.get();
 					dbDNASequenceSet.setPPodId();
 					dbDNASequenceSet.setPPodVersionInfo(newPPodVersionInfo
@@ -220,7 +237,7 @@ final class SaveOrUpdateStudy implements ISaveOrUpdateStudy {
 				TreeSet dbTreeSet;
 				if (null == (dbTreeSet = findIf(dbOTUSet.getTreeSetsIterator(),
 						compose(equalTo(incomingTreeSet.getPPodId()),
-								IUUPPodEntity.getPPodId)))) {
+								IWithPPodId.getPPodId)))) {
 					dbTreeSet = treeSetProvider.get();
 					dbTreeSet.setPPodVersionInfo(newPPodVersionInfo
 							.getNewPPodVersionInfo());
@@ -235,15 +252,12 @@ final class SaveOrUpdateStudy implements ISaveOrUpdateStudy {
 		studyDAO.saveOrUpdate(dbStudy);
 	}
 
-	public Study update(final Study incomingStudy) {
-		Study persistentStudy;
-		if (null == (persistentStudy = studyDAO.getStudyByPPodId(incomingStudy
-				.getPPodId()))) {
-			throw new IllegalArgumentException("study "
-					+ incomingStudy.getLabel() + " "
-					+ incomingStudy.getPPodId() + " is not persisted");
-		}
-		saveOrUpdate(persistentStudy, incomingStudy);
-		return persistentStudy;
+	public StudyInfo getStudyInfo() {
+		return dbStudyInfo;
 	}
+
+	public Study getDbStudy() {
+		return dbStudy;
+	}
+
 }

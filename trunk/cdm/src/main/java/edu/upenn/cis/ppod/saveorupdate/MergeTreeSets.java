@@ -32,7 +32,7 @@ import edu.upenn.cis.ppod.model.OTU;
 import edu.upenn.cis.ppod.model.Tree;
 import edu.upenn.cis.ppod.model.TreeSet;
 import edu.upenn.cis.ppod.modelinterfaces.INewPPodVersionInfo;
-import edu.upenn.cis.ppod.modelinterfaces.IUUPPodEntity;
+import edu.upenn.cis.ppod.modelinterfaces.IWithPPodId;
 
 /**
  * An {@code IMergeTreeSetes} with no explicit outside dependencies.
@@ -67,7 +67,7 @@ final class MergeTreeSets implements IMergeTreeSets {
 		for (final Tree sourceTree : sourceTreeSet) {
 			Tree targetTree;
 			if (null == (targetTree = findIf(targetTreeSet, compose(
-					equalTo(sourceTree.getPPodId()), IUUPPodEntity.getPPodId)))) {
+					equalTo(sourceTree.getPPodId()), IWithPPodId.getPPodId)))) {
 				targetTree = treeProvider.get();
 				targetTree.setPPodVersionInfo(newPPodVersionInfo
 						.getNewPPodVersionInfo());

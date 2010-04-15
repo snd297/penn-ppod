@@ -20,6 +20,8 @@ import javax.xml.bind.annotation.XmlAccessorType;
 import javax.xml.bind.annotation.XmlAttribute;
 import javax.xml.bind.annotation.XmlRootElement;
 
+import edu.upenn.cis.ppod.modelinterfaces.IWithPPodId;
+
 /**
  * For communicating back to a client certain information about a pPOD entity
  * without having to send the entire entity: the pPOD ID, pPOD Version, database
@@ -29,7 +31,7 @@ import javax.xml.bind.annotation.XmlRootElement;
  */
 @XmlRootElement
 @XmlAccessorType(XmlAccessType.NONE)
-public class PPodEntityInfo {
+public class PPodEntityInfo implements IWithPPodId {
 
 	private String pPodId;
 
@@ -101,5 +103,12 @@ public class PPodEntityInfo {
 	public PPodEntityInfo setPPodVersion(final Long pPodVersion) {
 		this.pPodVersion = pPodVersion;
 		return this;
+	}
+
+	/**
+	 * This method is not supported.
+	 */
+	public PPodEntityInfo setPPodId() {
+		throw new UnsupportedOperationException();
 	}
 }

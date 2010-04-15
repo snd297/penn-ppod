@@ -71,6 +71,8 @@ public class CharacterStateRow extends PPodEntity implements
 	 * <p>
 	 * There is evidence that {@code DELETE_ORPHAN} slows things down so we're
 	 * not including that either.
+	 * <p>
+	 * Remove is here so that the cells are deleted when owning row is.
 	 */
 	@OneToMany(mappedBy = "row", cascade = CascadeType.REMOVE)
 	@OrderBy("position")
@@ -115,11 +117,13 @@ public class CharacterStateRow extends PPodEntity implements
 	 * Empty out and return this row's cells. After calling this,
 	 * {@link #getCells()}{@code .size()} will be {@code 0}.
 	 * <p>
+	 * This method will not mark this object or parents as in need of a new pPOD
+	 * version.
 	 * 
 	 * @return the cleared cells - an empty list if {@link #getCells() == 0}
 	 *         when this method is called
 	 */
-	private List<CharacterStateCell> clearCells() {
+	public List<CharacterStateCell> clearCells() {
 		final List<CharacterStateCell> clearedCells = newArrayList(getCells());
 		if (getCells().size() == 0) {
 			return clearedCells;
@@ -200,10 +204,13 @@ public class CharacterStateRow extends PPodEntity implements
 								"This row hasn't been added to a matrix yet");
 
 		checkState(
-				getMatrix().getCharacters().size() == newCells.size(),
+				getMatrix().getCharacters().size() == newCells.size() ||
+						newCells.size() == 0,
 								"the matrix has different number of characters "
 										+ getMatrix().getCharacters().size()
-										+ " than cells " + newCells.size());
+										+ " than cells "
+										+ newCells.size()
+										+ " and cells > 0 (newCells.size() == 0 is allowed)");
 
 		final List<CharacterStateCell> clearedCells = newArrayList(getCells());
 		clearedCells.removeAll(newCells);

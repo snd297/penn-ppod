@@ -29,7 +29,7 @@ import com.google.inject.assistedinject.Assisted;
 import edu.upenn.cis.ppod.model.OTU;
 import edu.upenn.cis.ppod.model.OTUSet;
 import edu.upenn.cis.ppod.modelinterfaces.INewPPodVersionInfo;
-import edu.upenn.cis.ppod.modelinterfaces.IUUPPodEntity;
+import edu.upenn.cis.ppod.modelinterfaces.IWithPPodId;
 
 /**
  * Merge {@code sourceOTUSet} onto {@code targetOTUSet}.
@@ -62,7 +62,7 @@ final class MergeOTUSets implements IMergeOTUSets {
 		for (final OTU sourceOTU : sourceOTUSet) {
 			OTU targetOTU;
 			if (null == (targetOTU = findIf(targetOTUSet, compose(
-					equalTo(sourceOTU.getPPodId()), IUUPPodEntity.getPPodId)))) {
+					equalTo(sourceOTU.getPPodId()), IWithPPodId.getPPodId)))) {
 				targetOTU = otuProvider.get();
 				targetOTU.setPPodId();
 				targetOTU.setPPodVersionInfo(newPPodVersionInfo

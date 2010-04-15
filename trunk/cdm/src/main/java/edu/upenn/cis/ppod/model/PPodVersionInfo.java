@@ -45,7 +45,7 @@ public class PPodVersionInfo extends PersistentObject {
 	final static String PPOD_VERSION_INFO_FIELD = "pPodVersionInfo";
 
 	/** Global pPOD version. */
-	@Column(name = "PPOD_VERSION", unique = true, nullable = false)
+	@Column(name = "PPOD_VERSION", unique = true, nullable = false, updatable = false)
 	private Long pPodVersion = -1L;
 
 	/** Record the creation time of this record. */

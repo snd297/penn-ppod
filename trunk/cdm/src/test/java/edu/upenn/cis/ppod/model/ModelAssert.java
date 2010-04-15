@@ -24,11 +24,9 @@ import static org.testng.Assert.assertNotNull;
 import static org.testng.Assert.assertTrue;
 
 import java.util.Iterator;
+import java.util.Map;
 import java.util.Set;
 import java.util.Map.Entry;
-
-import com.google.common.collect.ImmutableMap;
-import com.google.common.collect.Iterables;
 
 /**
  * For asserting that various {@code edu.upenn.cis.ppod.model} elements are the
@@ -54,8 +52,9 @@ public class ModelAssert {
 				}
 			}
 			assertTrue(foundIt, "couldn't find an expected OTU ["
-					+ expectedOTU.getLabel() + "] in the actual OTU's: "
-					+ actualOTUSet);
+								+ expectedOTU.getLabel()
+								+ "] in the actual OTU's: "
+								+ actualOTUSet);
 		}
 	}
 
@@ -99,7 +98,7 @@ public class ModelAssert {
 		for (final Iterator<CharacterState> actualStateItr = actualCell
 				.iterator(), expectedStateItr = expectedCell
 				.iterator(); actualStateItr.hasNext()
-				&& expectedStateItr.hasNext();) {
+								&& expectedStateItr.hasNext();) {
 			assertEqualsCharacterStates(actualStateItr.next(), expectedStateItr
 					.next());
 		}
@@ -112,7 +111,8 @@ public class ModelAssert {
 		for (final Iterator<CharacterStateCell> actualCellItr = actualRow
 				.iterator(), expectedCellItr = expectedRow.iterator(); actualCellItr
 				.hasNext()
-				&& expectedCellItr.hasNext();) {
+																		&& expectedCellItr
+																				.hasNext();) {
 			final CharacterStateCell actualCell = actualCellItr.next(), expectedCell = expectedCellItr
 					.next();
 			assertTrue(actualCell.getRow() == actualRow);
@@ -140,7 +140,8 @@ public class ModelAssert {
 		for (final Iterator<Character> actualCharacterItr = actualMatrix
 				.getCharacters().iterator(), expectedCharacterItr = expectedMatrix
 				.getCharacters().iterator(); actualCharacterItr.hasNext()
-				&& expectedCharacterItr.hasNext();) {
+												&& expectedCharacterItr
+														.hasNext();) {
 			final Character actualCharacter = actualCharacterItr.next();
 			final Character expectedCharacter = expectedCharacterItr.next();
 			assertTrue(actualCharacter.getMatrices().contains(actualMatrix));
@@ -153,7 +154,7 @@ public class ModelAssert {
 		// We use actualMatrix.getCharacters() to check as oppose to looking at
 		// expectedMatrix sine that seems to make the most sense
 		if (actualMatrix.getClass().equals(CharacterStateMatrix.class)) {
-			final ImmutableMap<Character, Integer> actualMatrixCharacterIdx = actualMatrix
+			final Map<Character, Integer> actualMatrixCharacterIdx = actualMatrix
 					.getCharacterPosition();
 			assertEquals(actualMatrixCharacterIdx.size(), actualMatrix
 					.getCharactersSize());
@@ -169,7 +170,7 @@ public class ModelAssert {
 		for (final Iterator<CharacterStateRow> actualRowItr = actualMatrix
 				.iterator(), expectedRowItr = expectedMatrix
 				.iterator(); actualRowItr.hasNext()
-				&& expectedRowItr.hasNext();) {
+								&& expectedRowItr.hasNext();) {
 			final CharacterStateRow actualRow = actualRowItr.next(), expectedRow = expectedRowItr
 					.next();
 			assertTrue(actualRow.getMatrix() == actualMatrix);
