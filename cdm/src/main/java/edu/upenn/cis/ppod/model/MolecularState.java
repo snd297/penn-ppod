@@ -17,6 +17,8 @@ package edu.upenn.cis.ppod.model;
 
 import static com.google.common.base.Preconditions.checkNotNull;
 
+import javax.annotation.CheckForNull;
+import javax.persistence.Column;
 import javax.persistence.MappedSuperclass;
 
 /**
@@ -26,6 +28,21 @@ import javax.persistence.MappedSuperclass;
  */
 @MappedSuperclass
 public abstract class MolecularState extends CharacterState {
+
+	/**
+	 * This column should be the same as {@link CharacterState#getLabel()} and
+	 * is only here to prevent duplicate {@code DNAState}s form being added to
+	 * the table.
+	 * <p>
+	 * We were just calling this column {@code "LABEL"}, but that seemed to
+	 * break {@link Character#getLabel()} - it would return {@code null} after
+	 * db retrieval. Because {@code CharacterState} has a column called {@code
+	 * "LABEL"}?
+	 */
+	@Column(name = "MOLECULAR_STATE_LABEL", unique = true)
+	@SuppressWarnings("unused")
+	@CheckForNull
+	private String molecularStateLabel;
 
 	MolecularState() {}
 
@@ -57,7 +74,7 @@ public abstract class MolecularState extends CharacterState {
 			final String molecularStateLabel) {
 		checkNotNull(molecularStateLabel);
 		super.setLabel(molecularStateLabel);
-		// this.molecularStateLabel = molecularStateLabel;
+		this.molecularStateLabel = molecularStateLabel;
 		return this;
 	}
 }

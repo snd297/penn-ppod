@@ -15,8 +15,6 @@
  */
 package edu.upenn.cis.ppod.model;
 
-import javax.annotation.Nullable;
-import javax.persistence.Column;
 import javax.persistence.Entity;
 import javax.persistence.Table;
 
@@ -32,22 +30,6 @@ import com.google.inject.Inject;
 public class DNACharacter extends MolecularCharacter {
 
 	/**
-	 * This column should be the same as {@link Character#getLabel()} and is
-	 * only here to prevent duplicate {@code DNACharacter}s from being added to
-	 * the table. Duplicates are prevented by the {@code nullable = false,
-	 * unique = true} combination.
-	 * <p>
-	 * We were just calling this column {@code "LABEL"}, but that seemed to
-	 * break {@link Character#getLabel()} - it would return {@code null} after
-	 * db retrieval. Because {@code Character} has a column called {@code
-	 * "LABEL"}?
-	 */
-	@Column(name = "MOLECULAR_CHARACTER_LABEL", unique = true, nullable = false)
-	@SuppressWarnings("unused")
-	@Nullable
-	private String molecularCharacterLabel;
-
-	/**
 	 * The name of the table.
 	 */
 	public static final String TABLE = "DNA_CHARACTER";
@@ -59,7 +41,6 @@ public class DNACharacter extends MolecularCharacter {
 	@Inject
 	DNACharacter(final DNAState.IFactory dnaStateFactory) {
 		super.setMolecularCharacterLabel(LABEL);
-		molecularCharacterLabel = LABEL;
 		putState(dnaStateFactory.create(DNAState.Nucleotide.A));
 		putState(dnaStateFactory.create(DNAState.Nucleotide.C));
 		putState(dnaStateFactory.create(DNAState.Nucleotide.G));

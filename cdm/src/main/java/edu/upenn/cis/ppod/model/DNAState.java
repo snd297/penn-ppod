@@ -17,8 +17,6 @@ package edu.upenn.cis.ppod.model;
 
 import static com.google.common.base.Preconditions.checkNotNull;
 
-import javax.annotation.CheckForNull;
-import javax.persistence.Column;
 import javax.persistence.Entity;
 import javax.persistence.Table;
 
@@ -33,27 +31,6 @@ import com.google.inject.assistedinject.Assisted;
 @Entity
 @Table(name = DNAState.TABLE)
 public class DNAState extends MolecularState {
-
-	/**
-	 * This column should be the same as {@link CharacterState#getLabel()} and
-	 * is only here to prevent duplicate {@code DNAState}s form being added to
-	 * the table.
-	 * <p>
-	 * We were just calling this column {@code "LABEL"}, but that seemed to
-	 * break {@link Character#getLabel()} - it would return {@code null} after
-	 * db retrieval. Because {@code CharacterState} has a column called {@code
-	 * "LABEL"}?
-	 * <p>
-	 * This should really be in {@code MolecularState} but a bug in Hiberante <a
-	 * href
-	 * ="http://opensource.atlassian.com/projects/hibernate/browse/HHH-5060">
-	 * HHH=5060</a> prevents that.
-	 * 
-	 */
-	@Column(name = "MOLECULAR_STATE_LABEL", unique = true)
-	@SuppressWarnings("unused")
-	@CheckForNull
-	private String molecularStateLabel;
 
 	/**
 	 * For assisted injections.
