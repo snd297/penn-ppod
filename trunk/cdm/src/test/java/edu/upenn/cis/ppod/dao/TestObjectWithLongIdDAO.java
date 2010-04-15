@@ -75,13 +75,11 @@ public class TestObjectWithLongIdDAO implements IObjectWithLongIdDAOHibernate {
 	}
 
 	public String getEntityName(final Class<? extends Object> entityClass) {
-		// TODO Auto-generated method stub
-		throw new UnsupportedOperationException();
+		return entityClass.getName();
 	}
 
 	public String getEntityName(final Object entity) {
-		// TODO Auto-generated method stub
-		throw new UnsupportedOperationException();
+		return entity.getClass().getName();
 	}
 
 	public Serializable getIdentifier(final Object o) {

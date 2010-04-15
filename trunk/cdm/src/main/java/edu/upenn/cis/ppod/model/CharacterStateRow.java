@@ -118,10 +118,14 @@ public class CharacterStateRow extends PPodEntity implements
 	 * {@link #getCells()}{@code .size()} will be {@code 0}.
 	 * <p>
 	 * This method will not mark this object or parents as in need of a new pPOD
-	 * version.
+	 * version. Which can be useful to free up the cells for garbage collection
+	 * after the row and cells are evicted but the matrix is still in the
+	 * persistence context.
+	 * <p>
+	 * This method {@code null}s out the cell->row relationship.
 	 * 
-	 * @return the cleared cells - an empty list if {@link #getCells() == 0}
-	 *         when this method is called
+	 * @return the cleared cells - an empty list if {@code getCells() == 0} when
+	 *         this method is called
 	 */
 	public List<CharacterStateCell> clearCells() {
 		final List<CharacterStateCell> clearedCells = newArrayList(getCells());
@@ -204,16 +208,15 @@ public class CharacterStateRow extends PPodEntity implements
 								"This row hasn't been added to a matrix yet");
 
 		checkState(
-				getMatrix().getCharacters().size() == newCells.size() ||
-						newCells.size() == 0,
+				getMatrix().getCharacters().size() == newCells.size(),
 								"the matrix has different number of characters "
 										+ getMatrix().getCharacters().size()
 										+ " than cells "
 										+ newCells.size()
-										+ " and cells > 0 (newCells.size() == 0 is allowed)");
+										+ " and cells > 0");
 
-		final List<CharacterStateCell> clearedCells = newArrayList(getCells());
-		clearedCells.removeAll(newCells);
+		final List<CharacterStateCell> removedCells = newArrayList(getCells());
+		removedCells.removeAll(newCells);
 
 		clearCells();
 		for (int cellPos = 0; cellPos < newCells.size(); cellPos++) {
@@ -222,7 +225,7 @@ public class CharacterStateRow extends PPodEntity implements
 			newCells.get(cellPos).setPosition(cellPos);
 		}
 		setInNeedOfNewPPodVersionInfo();
-		return clearedCells;
+		return removedCells;
 	}
 
 	/**
