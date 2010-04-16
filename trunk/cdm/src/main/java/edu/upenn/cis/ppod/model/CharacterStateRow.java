@@ -129,9 +129,6 @@ public class CharacterStateRow extends PPodEntity implements
 	 */
 	public List<CharacterStateCell> clearCells() {
 		final List<CharacterStateCell> clearedCells = newArrayList(getCells());
-		if (getCells().size() == 0) {
-			return clearedCells;
-		}
 		for (final CharacterStateCell clearedCell : clearedCells) {
 			clearedCell.setRow(null);
 		}

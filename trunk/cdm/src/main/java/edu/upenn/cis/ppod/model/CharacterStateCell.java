@@ -476,9 +476,6 @@ public class CharacterStateCell extends PPodEntity implements
 	/**
 	 * Set or unset the row to which this cell belongs.
 	 * <p>
-	 * This value not persisted because it's simple to be able to persist the
-	 * cells (and there are lots of them) before the row is persisted.
-	 * <p>
 	 * This value is used for error checking. For example, to make sure that the
 	 * states that are assigned to this cell belong to the correct character.
 	 * 
