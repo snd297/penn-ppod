@@ -42,7 +42,12 @@ public interface ISaveOrUpdateMatrix {
 	 * {@code targetMatrix}'s doc id is not already set, this method copies it
 	 * from {@code sourceMatrix}.
 	 * <p>
-	 * All rows in {@code sourceMatrix} must be non-null.
+	 * All rows in {@code sourceMatrix} must be non-null. *
+	 * <p>
+	 * Implementors are free to call {@code CharacterStateRow.clearCells()} on
+	 * both modify the past in matrices in order to free up objects for garbage
+	 * collection. So generally it is not safe to reattach {@code dbMatrix}.
+	 * 
 	 * 
 	 * @param targetMatrix merge into the target matrix
 	 * @param sourceMatrix source of the merge
@@ -53,7 +58,7 @@ public interface ISaveOrUpdateMatrix {
 	 * @param dnaCharacter the {@code DNACharacter} in a persistent state that
 	 *            should be used in the target matrix
 	 */
-	CharacterStateMatrixInfo saveOrUpdate(CharacterStateMatrix targetMatrix,
+	CharacterStateMatrixInfo saveOrUpdate(CharacterStateMatrix dbMatrix,
 			CharacterStateMatrix sourceMatrix,
 			DNACharacter dnaCharacter);
 

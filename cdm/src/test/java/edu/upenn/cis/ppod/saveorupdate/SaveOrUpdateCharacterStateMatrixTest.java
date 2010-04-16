@@ -96,6 +96,17 @@ public class SaveOrUpdateCharacterStateMatrixTest {
 				sourceMatrix);
 	}
 
+	private List<List<CharacterStateCell>> extractCells(
+			final Iterable<CharacterStateRow> rowsIterable) {
+		final List<List<CharacterStateCell>> cellsList = newArrayList();
+
+		for (final CharacterStateRow row : rowsIterable) {
+			cellsList.add(newArrayList(row));
+		}
+
+		return cellsList;
+	}
+
 	@Test(dataProvider = MatrixProvider.SMALL_MATRICES_PROVIDER, dataProviderClass = MatrixProvider.class)
 	public void moveRows(final CharacterStateMatrix sourceMatrix) {
 		final ISaveOrUpdateMatrix saveOrUpdateMatrix = saveOrUpdateMatrixFactory
@@ -107,6 +118,10 @@ public class SaveOrUpdateCharacterStateMatrixTest {
 				.create(sourceMatrix);
 
 		fakeDbOTUSet.addMatrix(targetMatrix);
+
+		final List<List<CharacterStateCell>> savedTargetCells = extractCells(targetMatrix);
+		final List<List<CharacterStateCell>> savedSourceCells = extractCells(sourceMatrix);
+
 		saveOrUpdateMatrix.saveOrUpdate(targetMatrix, sourceMatrix,
 				dnaCharacter);
 

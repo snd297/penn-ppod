@@ -67,7 +67,7 @@ import edu.upenn.cis.ppod.util.OTUSomethingPair;
  * 
  * @author Sam Donnelly
  */
-@XmlSeeAlso( { DNAStateMatrix.class })
+@XmlSeeAlso( { DNAMatrix.class })
 @Entity
 @Table(name = CharacterStateMatrix.TABLE)
 public class CharacterStateMatrix extends UUPPodEntityWXmlId implements

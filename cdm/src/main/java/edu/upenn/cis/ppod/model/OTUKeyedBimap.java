@@ -35,7 +35,7 @@ import edu.upenn.cis.ppod.util.OTUSomethingPair;
 /**
  * @author Sam Donnelly
  */
-public abstract class OTUKeyedBimap<T extends PersistentObject, P extends IPPodVersionedWithOTUSet>
+public abstract class OTUKeyedBimap<V extends PersistentObject, P extends IPPodVersionedWithOTUSet>
 		extends PersistentObject {
 
 	static final String OTU_IDX_COLUMN = "OTU_IDX";
@@ -46,13 +46,13 @@ public abstract class OTUKeyedBimap<T extends PersistentObject, P extends IPPodV
 	}
 
 	public void afterUnmarshal() {
-		for (final OTUSomethingPair<T> otuValuePair : getOTUValuePairs()) {
+		for (final OTUSomethingPair<V> otuValuePair : getOTUValuePairs()) {
 			getOTUsToValues().put(otuValuePair.getFirst(),
 					otuValuePair.getSecond());
 		}
 	}
 
-	public T get(final OTU otu, final P parent) {
+	public V get(final OTU otu, final P parent) {
 		checkArgument(contains(parent.getOTUSet(), otu),
 				"otu does not belong to parent's OTUSet");
 		return getOTUsToValues().get(otu);
@@ -63,12 +63,12 @@ public abstract class OTUKeyedBimap<T extends PersistentObject, P extends IPPodV
 	 * 
 	 * @return the {@code OTU}-keyed items
 	 */
-	protected abstract Map<OTU, T> getOTUsToValues();
+	protected abstract Map<OTU, V> getOTUsToValues();
 
-	protected abstract Set<OTUSomethingPair<T>> getOTUValuePairs();
+	protected abstract Set<OTUSomethingPair<V>> getOTUValuePairs();
 
-	public List<T> getValuesInOTUOrder(final OTUSet otuSet) {
-		final List<T> valuesInOTUOrder = newArrayListWithCapacity(getOTUsToValues()
+	public List<V> getValuesInOTUOrder(final OTUSet otuSet) {
+		final List<V> valuesInOTUOrder = newArrayListWithCapacity(getOTUsToValues()
 				.values().size());
 		for (final OTU otu : otuSet) {
 			if (getOTUsToValues().containsKey(otu)) {
@@ -101,7 +101,7 @@ public abstract class OTUKeyedBimap<T extends PersistentObject, P extends IPPodV
 	 *             .equals} to {@code newT}
 	 */
 	@CheckForNull
-	public abstract T put(OTU key, T value, P parent);
+	public abstract V put(OTU key, V value, P parent);
 
 	/**
 	 * Associates {@code value} with {@code key} in this map. If the map
@@ -126,7 +126,7 @@ public abstract class OTUKeyedBimap<T extends PersistentObject, P extends IPPodV
 	 *             .equals} to {@code newT}
 	 */
 	@CheckForNull
-	protected T putHelper(final OTU key, final T value, final P parent) {
+	protected V putHelper(final OTU key, final V value, final P parent) {
 		checkNotNull(key);
 		checkNotNull(value);
 		checkArgument(contains(parent.getOTUSet(), key),
@@ -159,7 +159,7 @@ public abstract class OTUKeyedBimap<T extends PersistentObject, P extends IPPodV
 	 * @throw IllegalArgumentException if {@code otuSet != parent.getOTUSet()}
 	 */
 	@CheckForNull
-	protected OTUKeyedBimap<T, P> setOTUs(@Nullable final OTUSet otuSet,
+	protected OTUKeyedBimap<V, P> setOTUs(@Nullable final OTUSet otuSet,
 			final P parent) {
 		checkArgument(otuSet == parent.getOTUSet(),
 				"otuSet does not belong to parent");

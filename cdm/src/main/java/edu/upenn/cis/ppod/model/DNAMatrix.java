@@ -24,16 +24,16 @@ import com.google.inject.Inject;
  * @author Sam Donnelly
  */
 @Entity
-@Table(name = DNAStateMatrix.TABLE)
-public class DNAStateMatrix extends MolecularStateMatrix {
+@Table(name = DNAMatrix.TABLE)
+public class DNAMatrix extends MolecularStateMatrix {
 
 	/** Database table name. */
 	public static final String TABLE = "DNA_STATE_MATRIX";
 
-	DNAStateMatrix() {}
+	DNAMatrix() {}
 
 	@Inject
-	DNAStateMatrix(final OTUsToCharacterStateRows otusToRows) {
+	DNAMatrix(final OTUsToCharacterStateRows otusToRows) {
 		super(otusToRows);
 	}
 }
