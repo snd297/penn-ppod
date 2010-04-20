@@ -51,6 +51,13 @@ public class TestGroupDefs {
 	public static final String IN_DEVELOPMENT = "in-development";
 
 	/**
+	 * A group that by convention only has a single member and can be used to
+	 * call just that member from a test suite. See,
+	 * <em>Next Generation Java Testing</em> first edition p. 460.
+	 */
+	public static final String SINGLE = "single";
+
+	/**
 	 * Prevent inheritance and instantiation.
 	 * 
 	 * @throws UnsupportedOperationException always

@@ -1,14 +1,20 @@
 package edu.upenn.cis.ppod.dao;
 
 import static com.google.common.collect.Lists.newArrayList;
+import static com.google.common.collect.Maps.newHashMap;
+import static edu.upenn.cis.ppod.util.CollectionsUtil.nullFillAndSet;
 
 import java.io.Serializable;
+import java.util.ArrayList;
 import java.util.Collection;
 import java.util.List;
+import java.util.Map;
 
 import org.hibernate.Session;
 
 import edu.upenn.cis.ppod.dao.hibernate.IObjectWithLongIdDAOHibernate;
+import edu.upenn.cis.ppod.model.CharacterStateCell;
+import edu.upenn.cis.ppod.model.CharacterStateRow;
 
 /**
  * A {@code IObjectWithLongIdDAO} that stores the entities that operations were
@@ -92,12 +98,30 @@ public class TestObjectWithLongIdDAO implements IObjectWithLongIdDAOHibernate {
 		throw new UnsupportedOperationException();
 	}
 
+	private Map<CharacterStateRow, List<CharacterStateCell>> rowsToCells = newHashMap();
+
 	/**
 	 * Does nothing.
 	 * 
 	 * @entity ignored
 	 */
-	public void saveOrUpdate(final Object entity) {}
+	public void saveOrUpdate(final Object entity) {
+		if (entity instanceof CharacterStateCell) {
+			final CharacterStateCell cell = (CharacterStateCell) entity;
+			final CharacterStateRow row = cell.getRow();
+			if (rowsToCells.containsKey(cell.getRow())) {
+
+			} else {
+				rowsToCells.put(row, new ArrayList<CharacterStateCell>());
+			}
+			nullFillAndSet(rowsToCells.get(row), row.getCellPosition(cell),
+						cell);
+		}
+	}
+
+	public Map<CharacterStateRow, List<CharacterStateCell>> getRowsToCells() {
+		return rowsToCells;
+	}
 
 	/**
 	 * Does nothing and returns.

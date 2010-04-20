@@ -116,8 +116,9 @@ public class CharacterStateCell extends PPodEntity implements
 	 * {@code CharacterStateCell}-{@link CharacterState} join table.
 	 * Intentionally package-private.
 	 */
-	static final String CELL_CHARACTER_STATE_JOIN_TABLE = TABLE + "_"
-			+ CharacterState.TABLE;
+	static final String CELL_CHARACTER_STATE_JOIN_TABLE = TABLE
+															+ "_"
+															+ CharacterState.TABLE;
 
 	/**
 	 * To handle the most-common case of a single {@code CharacterState}, we
@@ -255,8 +256,9 @@ public class CharacterStateCell extends PPodEntity implements
 		final Character thisCellsCharacter = matrix.getCharacters().get(
 				position);
 
-		checkArgument(state.getCharacter() != null, "state " + state.getLabel()
-				+ " hasn't been assigned to a Character");
+		checkArgument(state.getCharacter() != null,
+				"state " + state.getLabel()
+						+ " hasn't been assigned to a Character");
 
 		checkArgument(state.getCharacter().equals(thisCellsCharacter),
 				"state is from the wrong Character. We want "
@@ -285,8 +287,14 @@ public class CharacterStateCell extends PPodEntity implements
 		}
 	}
 
+	/**
+	 * Generally, the position of a cell should be obtained through
+	 * {@link CharacterStateRow#getCellPosition(CharacterStateCell)}.
+	 * 
+	 * @return
+	 */
 	@CheckForNull
-	private Integer getPosition() {
+	protected Integer getPosition() {
 		return position;
 	}
 
