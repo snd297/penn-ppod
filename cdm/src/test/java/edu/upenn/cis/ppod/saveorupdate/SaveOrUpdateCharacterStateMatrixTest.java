@@ -18,6 +18,7 @@ package edu.upenn.cis.ppod.saveorupdate;
 import static com.google.common.collect.Lists.newArrayList;
 import static com.google.common.collect.Maps.newHashMap;
 import static org.testng.Assert.assertEquals;
+import static org.testng.Assert.assertTrue;
 
 import java.util.Collections;
 import java.util.List;
@@ -246,8 +247,12 @@ public class SaveOrUpdateCharacterStateMatrixTest {
 					.create(sourceMatrix);
 
 			fakeDbOTUSet.addMatrix(targetMatrix);
+
+			final Map<CharacterStateRow, List<CharacterStateCell>> sourceRowsToCells2 = stashCells(sourceMatrix);
 			saveOrUpdateMatrix.saveOrUpdate(targetMatrix, sourceMatrix,
 					dnaCharacter);
+			putBackCells(targetMatrix, dao.getRowsToCells());
+			putBackCells(sourceMatrix, sourceRowsToCells2);
 
 			// Simulate passing back in the persisted characters: so we need to
 			// assign the proper pPOD ID's.
@@ -255,6 +260,29 @@ public class SaveOrUpdateCharacterStateMatrixTest {
 				sourceMatrix.getCharacter(i).setPPodId(
 						targetMatrix.getCharacter(i).getPPodId());
 			}
+
+			// Remove character 2
+			final Character shouldBemovedTargetCharacter = targetMatrix
+					.getCharacter(2);
+
+			final List<Character> newSourceMatrixCharacters = newArrayList(sourceMatrix
+					.getCharactersIterator());
+
+			newSourceMatrixCharacters.remove(2);
+
+			sourceMatrix.setCharacters(newSourceMatrixCharacters);
+
+			for (final CharacterStateRow sourceRow : sourceMatrix) {
+				final List<CharacterStateCell> newSourceCells = newArrayList(sourceRow);
+				newSourceCells.remove(2);
+				sourceRow.setCells(newSourceCells);
+			}
+
+			saveOrUpdateMatrix.saveOrUpdate(targetMatrix, sourceMatrix,
+					dnaCharacter);
+
+			assertTrue(dao.getDeletedEntities()
+					.contains(shouldBemovedTargetCharacter));
 		}
 	}
 }
