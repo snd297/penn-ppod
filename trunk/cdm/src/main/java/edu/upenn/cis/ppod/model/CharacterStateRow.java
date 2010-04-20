@@ -50,6 +50,10 @@ import edu.upenn.cis.ppod.util.IVisitor;
 public class CharacterStateRow extends PPodEntity implements
 		Iterable<CharacterStateCell> {
 
+	public int getCellPosition(final CharacterStateCell cell) {
+		return cell.getPosition();
+	}
+
 	/** This entitiy's table. Intentionally package-private. */
 	static final String TABLE = "CHARACTER_STATE_ROW";
 

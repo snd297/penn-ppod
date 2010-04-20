@@ -16,10 +16,14 @@
 package edu.upenn.cis.ppod.saveorupdate;
 
 import static com.google.common.collect.Lists.newArrayList;
+import static com.google.common.collect.Maps.newHashMap;
+import static org.testng.Assert.assertEquals;
 
 import java.util.Collections;
 import java.util.List;
+import java.util.Map;
 
+import org.testng.annotations.BeforeMethod;
 import org.testng.annotations.Test;
 
 import com.google.inject.Inject;
@@ -43,7 +47,7 @@ import edu.upenn.cis.ppod.util.MatrixProvider;
  * 
  * @author Sam Donnelly
  */
-@Test(groups = { TestGroupDefs.FAST, TestGroupDefs.BROKEN })
+@Test(groups = { TestGroupDefs.FAST }, sequential = true)
 public class SaveOrUpdateCharacterStateMatrixTest {
 
 	@Inject
@@ -51,9 +55,6 @@ public class SaveOrUpdateCharacterStateMatrixTest {
 
 	@Inject
 	private ICharacterStateMatrixFactory matrixFactory;
-
-	@Inject
-	private TestObjectWithLongIdDAO dao;
 
 	@Inject
 	private TestMergeAttachment mergeAttachment;
@@ -64,13 +65,14 @@ public class SaveOrUpdateCharacterStateMatrixTest {
 	@Inject
 	private INewPPodVersionInfo newPPodVersionInfo;
 
-// @BeforeMethod
-// public void beforeMethod() {
-// final org.hibernate.classic.Session session = HibernateUtil
-// .getSessionFactory().openSession();
-// ManagedSessionContext.bind(session);
-// this.session = session;
-// }
+	@Inject
+	private TestObjectWithLongIdDAO dao;
+
+	@BeforeMethod
+	public void beforeMethod() {
+		dao = new TestObjectWithLongIdDAO();
+	}
+
 //
 // @AfterMethod
 // public void afterMethod() {
@@ -78,6 +80,24 @@ public class SaveOrUpdateCharacterStateMatrixTest {
 // .getSessionFactory());
 // s.close();
 // }
+
+	private static Map<CharacterStateRow, List<CharacterStateCell>> stashCells(
+			final CharacterStateMatrix matrix) {
+		final Map<CharacterStateRow, List<CharacterStateCell>> rowsToCells = newHashMap();
+		for (final CharacterStateRow row : matrix) {
+			rowsToCells.put(row, newArrayList(row));
+		}
+		return rowsToCells;
+	}
+
+	private static void putBackCells(final CharacterStateMatrix matrix,
+			final Map<CharacterStateRow, List<CharacterStateCell>> rowsToCells) {
+		assertEquals(matrix.getRowsSize(), rowsToCells.size());
+		for (final CharacterStateRow row : matrix) {
+			row.setCells(rowsToCells.get(row));
+		}
+		rowsToCells.clear();
+	}
 
 	@Test(dataProvider = MatrixProvider.SMALL_MATRICES_PROVIDER, dataProviderClass = MatrixProvider.class)
 	public void save(final CharacterStateMatrix sourceMatrix) {
@@ -90,21 +110,17 @@ public class SaveOrUpdateCharacterStateMatrixTest {
 				.create(sourceMatrix);
 
 		fakeDbOTUSet.addMatrix(targetMatrix);
+
+		final Map<CharacterStateRow, List<CharacterStateCell>> sourceRowsToCells = stashCells(sourceMatrix);
+
 		saveOrUpdateMatrix.saveOrUpdate(targetMatrix, sourceMatrix,
 				dnaCharacter);
+
+		putBackCells(targetMatrix, dao.getRowsToCells());
+		putBackCells(sourceMatrix, sourceRowsToCells);
+
 		ModelAssert.assertEqualsCharacterStateMatrices(targetMatrix,
 				sourceMatrix);
-	}
-
-	private List<List<CharacterStateCell>> extractCells(
-			final Iterable<CharacterStateRow> rowsIterable) {
-		final List<List<CharacterStateCell>> cellsList = newArrayList();
-
-		for (final CharacterStateRow row : rowsIterable) {
-			cellsList.add(newArrayList(row));
-		}
-
-		return cellsList;
 	}
 
 	@Test(dataProvider = MatrixProvider.SMALL_MATRICES_PROVIDER, dataProviderClass = MatrixProvider.class)
@@ -119,11 +135,14 @@ public class SaveOrUpdateCharacterStateMatrixTest {
 
 		fakeDbOTUSet.addMatrix(targetMatrix);
 
-		final List<List<CharacterStateCell>> savedTargetCells = extractCells(targetMatrix);
-		final List<List<CharacterStateCell>> savedSourceCells = extractCells(sourceMatrix);
+		final Map<CharacterStateRow, List<CharacterStateCell>> sourceRowsToCells =
+				stashCells(sourceMatrix);
 
 		saveOrUpdateMatrix.saveOrUpdate(targetMatrix, sourceMatrix,
 				dnaCharacter);
+
+		putBackCells(targetMatrix, dao.getRowsToCells());
+		putBackCells(sourceMatrix, sourceRowsToCells);
 
 		// Simulate passing back in the persisted characters: so we need to
 		// assign the proper pPOD ID's.
@@ -144,8 +163,16 @@ public class SaveOrUpdateCharacterStateMatrixTest {
 		for (final CharacterStateRow sourceRow : sourceMatrix) {
 			sourceRow.setPPodVersion(1L);
 		}
+
+		final Map<CharacterStateRow, List<CharacterStateCell>> sourceRowsToCells2 =
+				stashCells(sourceMatrix);
+
 		saveOrUpdateMatrix.saveOrUpdate(targetMatrix, sourceMatrix,
 				dnaCharacter);
+
+		putBackCells(targetMatrix, dao.getRowsToCells());
+		putBackCells(sourceMatrix, sourceRowsToCells2);
+
 		ModelAssert.assertEqualsCharacterStateMatrices(targetMatrix,
 				sourceMatrix);
 	}
@@ -162,8 +189,13 @@ public class SaveOrUpdateCharacterStateMatrixTest {
 					.create(sourceMatrix);
 
 			fakeDbOTUSet.addMatrix(targetMatrix);
+
+			final Map<CharacterStateRow, List<CharacterStateCell>> sourceRowsToCells = stashCells(sourceMatrix);
 			saveOrUpdateMatrix.saveOrUpdate(targetMatrix, sourceMatrix,
 					dnaCharacter);
+
+			putBackCells(targetMatrix, dao.getRowsToCells());
+			putBackCells(sourceMatrix, sourceRowsToCells);
 
 			// Simulate passing back in the persisted characters: so we need to
 			// assign the proper pPOD ID's.
@@ -187,8 +219,12 @@ public class SaveOrUpdateCharacterStateMatrixTest {
 				newSourceCells.set(2, sourceRow.getCell(0));
 				sourceRow.setCells(newSourceCells);
 			}
+
+			final Map<CharacterStateRow, List<CharacterStateCell>> sourceRowsToCells2 = stashCells(sourceMatrix);
 			saveOrUpdateMatrix.saveOrUpdate(targetMatrix, sourceMatrix,
 					dnaCharacter);
+			putBackCells(targetMatrix, dao.getRowsToCells());
+			putBackCells(sourceMatrix, sourceRowsToCells2);
 
 			ModelAssert.assertEqualsCharacterStateMatrices(targetMatrix,
 					sourceMatrix);

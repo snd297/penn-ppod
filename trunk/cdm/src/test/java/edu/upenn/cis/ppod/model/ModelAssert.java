@@ -108,18 +108,17 @@ public class ModelAssert {
 			final CharacterStateRow actualRow,
 			final CharacterStateRow expectedRow) {
 		assertEquals(actualRow.getCellsSize(), expectedRow.getCellsSize());
-		//TODO: what are we going to to about this bit? It's no longer valid since we're freeing up the cells for garbage
-		// collection in SaveOrUpdateCharacterStateMatrix
-//		for (final Iterator<CharacterStateCell> actualCellItr = actualRow
-//				.iterator(), expectedCellItr = expectedRow.iterator(); actualCellItr
-//				.hasNext()
-//																		&& expectedCellItr
-//																				.hasNext();) {
-//			final CharacterStateCell actualCell = actualCellItr.next(), expectedCell = expectedCellItr
-//					.next();
-//			assertTrue(actualCell.getRow() == actualRow);
-//			assertEqualsCharacterStateCells(actualCell, expectedCell);
-//		}
+
+		for (final Iterator<CharacterStateCell> actualCellItr = actualRow
+				.iterator(), expectedCellItr = expectedRow.iterator(); actualCellItr
+				.hasNext()
+																		&& expectedCellItr
+																				.hasNext();) {
+			final CharacterStateCell actualCell = actualCellItr.next(), expectedCell = expectedCellItr
+					.next();
+			assertTrue(actualCell.getRow() == actualRow);
+			assertEqualsCharacterStateCells(actualCell, expectedCell);
+		}
 	}
 
 	/**
