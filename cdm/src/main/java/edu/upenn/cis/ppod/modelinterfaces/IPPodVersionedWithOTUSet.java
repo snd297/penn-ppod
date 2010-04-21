@@ -20,7 +20,7 @@ import edu.upenn.cis.ppod.model.OTUSet;
 /**
  * {@code IPPodVersioned}s that contain an {@code OTUSet}.
  * <p>
- * This is an artificial interface cooked up for {@link OTUKeyedBimap}.
+ * This interface was cooked up for {@link OTUKeyedBimap}.
  * 
  * @author Sam Donnelly
  */

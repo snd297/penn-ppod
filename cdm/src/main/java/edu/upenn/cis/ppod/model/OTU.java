@@ -27,8 +27,7 @@ import javax.persistence.Table;
 import javax.xml.bind.Unmarshaller;
 import javax.xml.bind.annotation.XmlAttribute;
 
-import com.google.common.base.Function;
-
+import edu.upenn.cis.ppod.modelinterfaces.ILabeled;
 import edu.upenn.cis.ppod.util.IVisitor;
 
 /**
@@ -39,16 +38,7 @@ import edu.upenn.cis.ppod.util.IVisitor;
  */
 @Entity
 @Table(name = OTU.TABLE)
-public class OTU extends UUPPodEntityWXmlId {
-
-	/**
-	 * {@link Function} wrapper of {@link #getLabel()}.
-	 */
-	public static final Function<OTU, String> getLabel = new Function<OTU, String>() {
-		public String apply(final OTU arg0) {
-			return arg0.getLabel();
-		}
-	};
+public class OTU extends UUPPodEntityWXmlId implements ILabeled {
 
 	/** The table for this entity. Intentionally package-private. */
 	static final String TABLE = "OTU";

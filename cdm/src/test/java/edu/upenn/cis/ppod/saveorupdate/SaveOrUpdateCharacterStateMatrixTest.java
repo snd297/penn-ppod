@@ -248,11 +248,11 @@ public class SaveOrUpdateCharacterStateMatrixTest {
 
 			fakeDbOTUSet.addMatrix(targetMatrix);
 
-			final Map<CharacterStateRow, List<CharacterStateCell>> sourceRowsToCells2 = stashCells(sourceMatrix);
+			final Map<CharacterStateRow, List<CharacterStateCell>> sourceRowsToCells = stashCells(sourceMatrix);
 			saveOrUpdateMatrix.saveOrUpdate(targetMatrix, sourceMatrix,
 					dnaCharacter);
 			putBackCells(targetMatrix, dao.getRowsToCells());
-			putBackCells(sourceMatrix, sourceRowsToCells2);
+			putBackCells(sourceMatrix, sourceRowsToCells);
 
 			// Simulate passing back in the persisted characters: so we need to
 			// assign the proper pPOD ID's.
@@ -278,11 +278,19 @@ public class SaveOrUpdateCharacterStateMatrixTest {
 				sourceRow.setCells(newSourceCells);
 			}
 
+			final Map<CharacterStateRow, List<CharacterStateCell>> sourceRowsToCells2 = stashCells(sourceMatrix);
 			saveOrUpdateMatrix.saveOrUpdate(targetMatrix, sourceMatrix,
 					dnaCharacter);
 
 			assertTrue(dao.getDeletedEntities()
 					.contains(shouldBemovedTargetCharacter));
+			
+			putBackCells(targetMatrix, dao.getRowsToCells());
+			putBackCells(sourceMatrix, sourceRowsToCells2);
+
+			ModelAssert.assertEqualsCharacterStateMatrices(targetMatrix,
+					sourceMatrix);
+
 		}
 	}
 }
