@@ -37,4 +37,9 @@ public class DNAStateTest {
 		assertEquals(DNAState.Nucleotide.of(2), DNAState.Nucleotide.G);
 		assertEquals(DNAState.Nucleotide.of(3), DNAState.Nucleotide.T);
 	}
+
+	@Test(expectedExceptions = IllegalArgumentException.class)
+	public void ofIllegalArg() {
+		assertEquals(DNAState.Nucleotide.of(4), DNAState.Nucleotide.A);
+	}
 }

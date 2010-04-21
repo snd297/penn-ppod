@@ -15,12 +15,6 @@
  */
 package edu.upenn.cis.ppod.model;
 
-import static com.google.common.base.Preconditions.checkNotNull;
-import static com.google.common.base.Preconditions.checkState;
-import static com.google.common.collect.Iterables.getOnlyElement;
-
-import java.util.List;
-
 import javax.annotation.CheckForNull;
 import javax.persistence.Entity;
 import javax.persistence.JoinColumn;
@@ -56,16 +50,6 @@ public class DNASequence extends MolecularSequence<DNASequenceSet> {
 		visitor.visit(this);
 	}
 
-	/**
-	 * Is it a legal DNA Sequence character? As defined by <a
-	 * href=http://www.ncbi.nlm.nih.gov/blast/fasta.shtml>Fasta format
-	 * description</a>.
-	 * 
-	 * @param c candidate
-	 * 
-	 * @return {@code true} if the character is Fasta DNA legal, {@code false}
-	 *         otherwise
-	 */
 	@Override
 	public boolean isLegal(final char c) {
 		if (c == 'A') {
@@ -117,33 +101,6 @@ public class DNASequence extends MolecularSequence<DNASequenceSet> {
 			return true;
 		}
 		return false;
-	}
-
-	@edu.umd.cs.findbugs.annotations.SuppressWarnings
-	public DNASequence of(final List<? extends CharacterStateCell> cells) {
-		checkNotNull(cells);
-		final StringBuilder sequenceStringBuilder = new StringBuilder();
-		for (int cellIdx = 0; cellIdx < cells.size(); cellIdx++) {
-			if (cells.get(cellIdx).getStatesSize() == 1) {
-				final String stateLabel = getOnlyElement(
-						cells.get(cellIdx)).getLabel();
-				final Integer stateNumber = getOnlyElement(
-						cells.get(cellIdx)).getStateNumber();
-				checkState(DNAState.Nucleotide.hasOneWithAValueOf(stateLabel),
-						"cell " + cellIdx + " has a state label [" + stateLabel
-								+ "] which is not that of a DNAState");
-				checkState(DNAState.Nucleotide.hasOneWithAValueOf(stateNumber),
-						"cell " + cellIdx + " has a state number of"
-								+ stateNumber
-								+ " which is not that of a DNAState");
-				sequenceStringBuilder.append(stateLabel);
-
-			} else {
-				sequenceStringBuilder.append("N");
-				// putStates(cellIdx, null);
-			}
-		}
-		return this;
 	}
 
 	@Override

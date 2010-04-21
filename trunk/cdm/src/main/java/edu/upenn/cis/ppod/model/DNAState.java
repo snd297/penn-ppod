@@ -15,8 +15,6 @@
  */
 package edu.upenn.cis.ppod.model;
 
-import static com.google.common.base.Preconditions.checkNotNull;
-
 import javax.persistence.Entity;
 import javax.persistence.Table;
 
@@ -62,67 +60,6 @@ public class DNAState extends MolecularState {
 
 		/** Thymine. */
 		T;
-
-		public static boolean hasOneWithAValueOf(final char c) {
-			if (c == A.toString().charAt(0)) {
-				return true;
-			}
-			if (c == C.toString().charAt(0)) {
-				return true;
-			}
-			if (c == G.toString().charAt(0)) {
-				return true;
-			}
-			if (c == T.toString().charAt(0)) {
-				return true;
-			}
-			return false;
-		}
-
-		/**
-		 * Return {@code true} if {@code i} is the ordinal value of {@link #A},
-		 * {@link #C}, {@link #G}, or {@link #T}, {@code false} otherwise.
-		 * 
-		 * @param i see description
-		 * 
-		 * @return {@code true} if {@code i} is the ordinal value of {@link #A},
-		 *         {@link #C}, {@link #G}, or {@link #T}, {@code false}
-		 *         otherwise
-		 */
-		public static boolean hasOneWithAValueOf(final int i) {
-			if (A.ordinal() == i) {
-				return true;
-			}
-			if (C.ordinal() == i) {
-				return true;
-			}
-			if (G.ordinal() == i) {
-				return true;
-			}
-			if (T.ordinal() == i) {
-				return true;
-			}
-			return false;
-		}
-
-		/**
-		 * Return {@code true} if {@code s} is the string value of {@link #A},
-		 * {@link #C}, {@link #G}, or {@link #T}, {@code false} otherwise.
-		 * 
-		 * @param s see description
-		 * 
-		 * @return Return {@code true} if {@code s} is the string value of
-		 *         {@link #A}, {@link #C}, {@link #G}, or {@link #T}, {@code
-		 *         false} otherwise.
-		 */
-		public static boolean hasOneWithAValueOf(final String s) {
-			checkNotNull(s);
-			if (s.equals(A.toString()) || s.equals(C.toString())
-					|| s.equals(G.toString()) || s.equals(T.toString())) {
-				return true;
-			}
-			return false;
-		}
 
 		/**
 		 * Get the {@code Nucleotide} with {@code Nucleotide.getOrdinal() ==
