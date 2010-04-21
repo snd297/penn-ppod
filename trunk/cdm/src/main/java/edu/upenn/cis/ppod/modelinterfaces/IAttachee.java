@@ -36,14 +36,6 @@ public interface IAttachee {
 	IAttachee addAttachment(Attachment attachment);
 
 	/**
-	 * Get the attachments of this {@code IAttachee}. There will be no
-	 * duplicates.
-	 * 
-	 * @return the attachments of this {@code IAttachee}
-	 */
-	Iterator<Attachment> getAttachmentsIterator();
-
-	/**
 	 * Get all attachments within the given namespace.
 	 * 
 	 * @param namespace the namespace
@@ -62,11 +54,25 @@ public interface IAttachee {
 			String type);
 
 	/**
+	 * Get the attachments of this {@code IAttachee}. There will be no
+	 * duplicates.
+	 * 
+	 * @return the attachments of this {@code IAttachee}
+	 */
+	Iterator<Attachment> getAttachmentsIterator();
+
+	/**
+	 * Get the number of attachments attached to this {@code IAttachee}.
+	 * 
+	 * @return the number of attachments attached to this {@code IAttachee}
+	 */
+	int getAttachmentsSize();
+
+	/**
 	 * Remove {@code attachment} from this {@code IAttachee}'s attachments.
 	 * 
 	 * @param attachment to be removed
 	 * @return {@code true} if the set contained the specified element
 	 */
 	boolean removeAttachment(Attachment attachment);
-
 }

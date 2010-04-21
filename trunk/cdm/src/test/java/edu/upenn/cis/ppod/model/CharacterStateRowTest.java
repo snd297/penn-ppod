@@ -60,6 +60,11 @@ public class CharacterStateRowTest {
 
 	private CharacterStateMatrix matrix;
 
+	@Inject
+	private Provider<ModelAssert> modelAssertProvider;
+
+	private ModelAssert modelAssert;
+
 	@BeforeMethod
 	public void beforeMethod() {
 		matrix = matrixProvider.get();
@@ -70,6 +75,7 @@ public class CharacterStateRowTest {
 		matrix.putRow(rowIdxs.get(0), rowProvider.get());
 		matrix.setCharacters(newArrayList(characterProvider.get().setLabel(
 				"CHARACTER-0")));
+		modelAssert = modelAssertProvider.get();
 	}
 
 	public void addCellToMatrixWOneCharacter() {
@@ -77,7 +83,7 @@ public class CharacterStateRowTest {
 		matrix.getRow(matrix.getOTUSet().getOTU(0)).setCells(
 				Arrays.asList(cell));
 
-		ModelAssert.assertEqualsCharacterStateCells(cell, matrix.getRow(
+		modelAssert.assertEqualsCharacterStateCells(cell, matrix.getRow(
 				rowIdxs.get(0)).getCell(0));
 	}
 

@@ -2,12 +2,11 @@ package edu.upenn.cis.ppod.modelinterfaces;
 
 import javax.annotation.Nullable;
 
-
 /**
  * @author Sam Donnelly
  * 
  */
-public interface IUUPPodEntityWithXmlID extends IWithXmlID {
+public interface IUUPPodEntityWithXmlID extends IAttachee, IWithXmlID {
 
 	/**
 	 * Get the {@link XmlID} attribute.

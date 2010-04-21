@@ -19,18 +19,18 @@ import javax.annotation.CheckForNull;
 import javax.persistence.Column;
 import javax.persistence.Entity;
 import javax.persistence.FetchType;
+import javax.persistence.Lob;
 import javax.persistence.OneToOne;
 import javax.persistence.Table;
-
-import edu.upenn.cis.ppod.modelinterfaces.IChromatogram;
 
 /**
  * @author Sam Donnelly
  */
 @Entity
 @Table(name = "CHROMATOGRAM")
-public class Chromatogram extends UUPPodEntity implements IChromatogram {
+public class Chromatogram extends UUPPodEntity {
 
+	@Lob
 	@Column(name = "CHROMATOGRAM", nullable = false)
 	@CheckForNull
 	private byte[] chromatogram;
@@ -43,7 +43,7 @@ public class Chromatogram extends UUPPodEntity implements IChromatogram {
 		return chromatogram;
 	}
 
-	public IChromatogram setChromatogram(final byte[] chromatogram) {
+	public Chromatogram setChromatogram(final byte[] chromatogram) {
 		this.chromatogram = chromatogram;
 		return this;
 	}
@@ -52,7 +52,7 @@ public class Chromatogram extends UUPPodEntity implements IChromatogram {
 		return sequence;
 	}
 
-	public IChromatogram setSequence(DNASequence sequence) {
+	public Chromatogram setSequence(DNASequence sequence) {
 		this.sequence = sequence;
 		return this;
 	}
