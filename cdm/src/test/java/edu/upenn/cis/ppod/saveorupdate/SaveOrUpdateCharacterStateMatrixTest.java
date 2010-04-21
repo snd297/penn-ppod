@@ -28,6 +28,7 @@ import org.testng.annotations.BeforeMethod;
 import org.testng.annotations.Test;
 
 import com.google.inject.Inject;
+import com.google.inject.Provider;
 
 import edu.upenn.cis.ppod.TestGroupDefs;
 import edu.upenn.cis.ppod.dao.TestObjectWithLongIdDAO;
@@ -67,11 +68,13 @@ public class SaveOrUpdateCharacterStateMatrixTest {
 	private INewPPodVersionInfo newPPodVersionInfo;
 
 	@Inject
+	private Provider<TestObjectWithLongIdDAO> daoFactory;
+
 	private TestObjectWithLongIdDAO dao;
 
 	@BeforeMethod
 	public void beforeMethod() {
-		dao = new TestObjectWithLongIdDAO();
+		dao = daoFactory.get();
 	}
 
 //
@@ -284,7 +287,7 @@ public class SaveOrUpdateCharacterStateMatrixTest {
 
 			assertTrue(dao.getDeletedEntities()
 					.contains(shouldBemovedTargetCharacter));
-			
+
 			putBackCells(targetMatrix, dao.getRowsToCells());
 			putBackCells(sourceMatrix, sourceRowsToCells2);
 

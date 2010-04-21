@@ -116,6 +116,8 @@ public class TestObjectWithLongIdDAO implements IObjectWithLongIdDAOHibernate {
 			}
 			nullFillAndSet(rowsToCells.get(row), row.getCellPosition(cell),
 						cell);
+		} else { 
+			
 		}
 	}
 

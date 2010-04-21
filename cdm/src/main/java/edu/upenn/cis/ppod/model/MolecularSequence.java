@@ -108,6 +108,19 @@ public abstract class MolecularSequence<SS extends MolecularSequenceSet<?>>
 	@Nullable
 	public abstract SS getSequenceSet();
 
+	/**
+	 * Is it a legal DNA Sequence character? As defined by <a
+	 * href=http://www.ncbi.nlm.nih.gov/blast/fasta.shtml>Fasta format
+	 * description</a>.
+	 * <p>
+	 * Note: this method is case sensitive and only upper-case characters are
+	 * legal.
+	 * 
+	 * @param c candidate
+	 * 
+	 * @return {@code true} if the character is Fasta DNA legal, {@code false}
+	 *         otherwise
+	 */
 	public abstract boolean isLegal(char c);
 
 	/**
@@ -168,6 +181,16 @@ public abstract class MolecularSequence<SS extends MolecularSequenceSet<?>>
 		return this;
 	}
 
+	/**
+	 * Set the sequence.
+	 * 
+	 * @param newSequence
+	 * 
+	 * @return this
+	 * 
+	 * @throws IllegalArgumentException if any characters in newSequence are
+	 *             such that {@link #isLegal(char)} is false.
+	 */
 	public MolecularSequence<SS> setSequence(final String newSequence) {
 		checkNotNull(newSequence);
 		if (newSequence.equals(getSequence())) {
@@ -177,8 +200,10 @@ public abstract class MolecularSequence<SS extends MolecularSequenceSet<?>>
 			if (isLegal(newSequence.charAt(i))) {
 
 			} else {
-				throw new IllegalArgumentException("Position " + i + " is ["
-						+ newSequence.charAt(i) + "] which is not a DNA state");
+				throw new IllegalArgumentException(
+						"Position " + i + " is ["
+								+ newSequence.charAt(i)
+								+ "] which is not a DNA state");
 			}
 		}
 
