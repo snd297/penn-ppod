@@ -72,15 +72,9 @@ public class SaveOrUpdateCharacterStateMatrixTest {
 
 	private TestObjectWithLongIdDAO dao;
 
-	@Inject
-	private Provider<ModelAssert> modelAssertProvider;
-
-	private ModelAssert modelAssert;
-
 	@BeforeMethod
 	public void beforeMethod() {
 		dao = daoFactory.get();
-		modelAssert = modelAssertProvider.get();
 	}
 
 //
@@ -129,7 +123,7 @@ public class SaveOrUpdateCharacterStateMatrixTest {
 		putBackCells(targetMatrix, dao.getRowsToCells());
 		putBackCells(sourceMatrix, sourceRowsToCells);
 
-		modelAssert.assertEqualsCharacterStateMatrices(targetMatrix,
+		ModelAssert.assertEqualsCharacterStateMatrices(targetMatrix,
 				sourceMatrix);
 	}
 
@@ -183,7 +177,7 @@ public class SaveOrUpdateCharacterStateMatrixTest {
 		putBackCells(targetMatrix, dao.getRowsToCells());
 		putBackCells(sourceMatrix, sourceRowsToCells2);
 
-		modelAssert.assertEqualsCharacterStateMatrices(targetMatrix,
+		ModelAssert.assertEqualsCharacterStateMatrices(targetMatrix,
 				sourceMatrix);
 	}
 
@@ -236,7 +230,7 @@ public class SaveOrUpdateCharacterStateMatrixTest {
 			putBackCells(targetMatrix, dao.getRowsToCells());
 			putBackCells(sourceMatrix, sourceRowsToCells2);
 
-			modelAssert.assertEqualsCharacterStateMatrices(targetMatrix,
+			ModelAssert.assertEqualsCharacterStateMatrices(targetMatrix,
 					sourceMatrix);
 		}
 	}
@@ -297,7 +291,7 @@ public class SaveOrUpdateCharacterStateMatrixTest {
 			putBackCells(targetMatrix, dao.getRowsToCells());
 			putBackCells(sourceMatrix, sourceRowsToCells2);
 
-			modelAssert.assertEqualsCharacterStateMatrices(targetMatrix,
+			ModelAssert.assertEqualsCharacterStateMatrices(targetMatrix,
 					sourceMatrix);
 
 		}

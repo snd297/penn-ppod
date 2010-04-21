@@ -16,6 +16,8 @@
 package edu.upenn.cis.ppod.model;
 
 import static com.google.common.base.Objects.equal;
+import static com.google.common.collect.Iterables.filter;
+import static com.google.common.collect.Iterables.getOnlyElement;
 import static com.google.common.collect.Sets.newHashSet;
 import static org.testng.Assert.assertEquals;
 import static org.testng.Assert.assertNotNull;
@@ -26,8 +28,6 @@ import java.util.Map;
 import java.util.Set;
 import java.util.Map.Entry;
 
-import edu.upenn.cis.ppod.modelinterfaces.IAttachment;
-
 /**
  * For asserting that various {@code edu.upenn.cis.ppod.model} elements are the
  * equal.
@@ -36,7 +36,7 @@ import edu.upenn.cis.ppod.modelinterfaces.IAttachment;
  */
 public class ModelAssert {
 
-	public void assertEqualsOTUSet(final OTUSet actualOTUSet,
+	public static void assertEqualsOTUSet(final OTUSet actualOTUSet,
 			final OTUSet expectedOTUSet) {
 		assertEquals(actualOTUSet.getLabel(), expectedOTUSet.getLabel());
 		if (expectedOTUSet.getPPodId() != null) {
@@ -58,19 +58,19 @@ public class ModelAssert {
 		}
 	}
 
-	public void assertEqualsOTUs(final OTU actualOTU,
+	public static void assertEqualsOTUs(final OTU actualOTU,
 			final OTU expectedOTU) {
 		assertEquals(actualOTU.getLabel(), expectedOTU.getLabel());
 	}
 
-	public void assertEqualsCharacterStates(
+	public static void assertEqualsCharacterStates(
 			final CharacterState actualState, final CharacterState expectedState) {
 		assertEquals(actualState.getLabel(), expectedState.getLabel());
 		assertEquals(actualState.getStateNumber(), expectedState
 				.getStateNumber());
 	}
 
-	public void assertEqualsCharacters(final Character actualCharacter,
+	public static void assertEqualsCharacters(final Character actualCharacter,
 			final Character expectedCharacter) {
 		assertEqualsPPodEntities(actualCharacter, expectedCharacter);
 		assertEquals(actualCharacter.getLabel(), expectedCharacter.getLabel());
@@ -91,7 +91,7 @@ public class ModelAssert {
 
 	}
 
-	public void assertEqualsCharacterStateCells(
+	public static void assertEqualsCharacterStateCells(
 			final CharacterStateCell actualCell,
 			final CharacterStateCell expectedCell) {
 		assertEquals(actualCell.getStatesSize(), expectedCell.getStatesSize());
@@ -104,7 +104,7 @@ public class ModelAssert {
 		}
 	}
 
-	public void assertEqualsCharacterStateRows(
+	public static void assertEqualsCharacterStateRows(
 			final CharacterStateRow actualRow,
 			final CharacterStateRow expectedRow) {
 		assertEquals(actualRow.getCellsSize(), expectedRow.getCellsSize());
@@ -127,7 +127,7 @@ public class ModelAssert {
 	 * @param actualMatrix
 	 * @param expectedMatrix
 	 */
-	public void assertEqualsCharacterStateMatrices(
+	public static void assertEqualsCharacterStateMatrices(
 			final CharacterStateMatrix actualMatrix,
 			final CharacterStateMatrix expectedMatrix) {
 		assertEquals(actualMatrix.getLabel(), expectedMatrix.getLabel());
@@ -179,14 +179,14 @@ public class ModelAssert {
 		}
 	}
 
-	public void assertEqualsAttachmentNamespaces(
+	public static void assertEqualsAttachmentNamespaces(
 			final AttachmentNamespace actualAttachmentNamespace,
 			final AttachmentNamespace expectedAttachmentNamespace) {
 		assertEquals(actualAttachmentNamespace.getLabel(),
 				expectedAttachmentNamespace.getLabel());
 	}
 
-	public void assertEqualsAttachmentTypes(
+	public static void assertEqualsAttachmentTypes(
 			final AttachmentType actualAttachmentType,
 			final AttachmentType expectedAttachmentType) {
 		assertEquals(actualAttachmentType.getLabel(), expectedAttachmentType
@@ -195,7 +195,7 @@ public class ModelAssert {
 				expectedAttachmentType.getNamespace());
 	}
 
-	public void assertEqualsPPodEntities(
+	public static void assertEqualsPPodEntities(
 			final PPodEntity actualPPodEntity,
 			final PPodEntity expectedPPodEntity) {
 		assertEqualsAttachmentSets(newHashSet(actualPPodEntity
@@ -203,39 +203,28 @@ public class ModelAssert {
 				newHashSet(expectedPPodEntity.getAttachmentsIterator()));
 	}
 
-	public void assertEqualsAttachmentSets(
-			final Set<? extends IAttachment> actualAttachments,
-			final Set<? extends IAttachment> expectedAttachments) {
+	public static void assertEqualsAttachmentSets(
+			final Set<Attachment> actualAttachments,
+			final Set<Attachment> expectedAttachments) {
 		assertEquals(actualAttachments.size(), expectedAttachments.size());
-		final Set<IAttachment> expectedAttachmentsCopy = newHashSet(expectedAttachments);
-		for (final IAttachment actualAttachment : actualAttachments) {
-
-			IAttachment expectedAttachment = null;
-
-			for (IAttachment possibleExpectedAttachment : expectedAttachmentsCopy) {
-				if (possibleExpectedAttachment.getType().getNamespace()
-						.getLabel().equals(
-								actualAttachment.getType().getNamespace()
-										.getLabel())
-					&& possibleExpectedAttachment.getType().getLabel().equals(
-							actualAttachment.getType().getLabel())
-					&& possibleExpectedAttachment.getLabel().equals(
-							actualAttachment.getLabel())
-					&& possibleExpectedAttachment.getStringValue().equals(
-							actualAttachment.getStringValue())) {
-					expectedAttachment = possibleExpectedAttachment;
-				}
-
-			}
-
+		final Set<Attachment> expectedAttachmentsCopy = newHashSet(expectedAttachments);
+		for (final Attachment actualAttachment : actualAttachments) {
+			final Attachment expectedAttachment = getOnlyElement(filter(
+							expectedAttachmentsCopy,
+							new Attachment.IsOfNamespaceTypeLabelAndStringValue(
+									actualAttachment.getType().getNamespace()
+											.getLabel(),
+									actualAttachment.getType().getLabel(),
+									actualAttachment.getLabel(),
+									actualAttachment.getStringValue())));
 			expectedAttachmentsCopy.remove(expectedAttachment);
 			assertEqualsAttachments(actualAttachment, expectedAttachment);
 		}
 	}
 
-	public void assertEqualsAttachments(
-			final IAttachment actualAttachment,
-			final IAttachment expectedAttachment) {
+	public static void assertEqualsAttachments(
+			final Attachment actualAttachment,
+			final Attachment expectedAttachment) {
 		assertEquals(actualAttachment.getLabel(), expectedAttachment.getLabel());
 		assertEquals(actualAttachment.getStringValue(), expectedAttachment
 				.getStringValue());
@@ -251,4 +240,10 @@ public class ModelAssert {
 		}
 	}
 
+	/**
+	 * Prevent inheritance and instantiation.
+	 */
+	private ModelAssert() {
+		throw new AssertionError("can't instantiate a ModelAssert");
+	}
 }

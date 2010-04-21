@@ -42,7 +42,7 @@ public interface ISaveOrUpdateMatrix {
 	 * {@code targetMatrix}'s doc id is not already set, this method copies it
 	 * from {@code sourceMatrix}.
 	 * <p>
-	 * All rows in {@code sourceMatrix} must be non-null. *
+	 * All rows in {@code sourceMatrix} must be non-null. 
 	 * <p>
 	 * Implementors are free to call {@code CharacterStateRow.clearCells()} on
 	 * both modify the past in matrices in order to free up objects for garbage
