@@ -18,21 +18,26 @@ package edu.upenn.cis.ppod.model;
 import static org.testng.Assert.assertFalse;
 import static org.testng.Assert.assertTrue;
 
+import org.testng.annotations.Test;
+
 import com.google.common.collect.ImmutableList;
 
-import java.lang.Character;
+import edu.upenn.cis.ppod.TestGroupDefs;
 
 /**
  * @author Sam Donnelly
  * 
  */
+@Test(groups = TestGroupDefs.FAST)
 public class DNASequenceTest {
 
-	private final ImmutableList<Character> alpabet = ImmutableList.of('A', 'B',
-			'C', 'D', 'E', 'F', 'G', 'H', 'I', 'J', 'K', 'L', 'M', 'N', 'O',
-			'P', 'Q', 'R', 'S', 'T', 'U', 'V', 'W', 'X', 'Y', 'Z');
+	private final ImmutableList<java.lang.Character> alpabet = ImmutableList
+			.of('A', 'B',
+					'C', 'D', 'E', 'F', 'G', 'H', 'I', 'J', 'K', 'L', 'M', 'N',
+					'O',
+					'P', 'Q', 'R', 'S', 'T', 'U', 'V', 'W', 'X', 'Y', 'Z');
 
-	private final ImmutableList<Character> legalDNACharacters = ImmutableList
+	private final ImmutableList<java.lang.Character> legalDNACharacters = ImmutableList
 			.of('A',
 					'C',
 					'G',
@@ -53,7 +58,7 @@ public class DNASequenceTest {
 	public void testIsLegal() {
 		final MolecularSequence<?> sequence = new DNASequence();
 
-		for (final Character character : legalDNACharacters) {
+		for (final java.lang.Character character : legalDNACharacters) {
 			assertTrue(sequence.isLegal(character));
 		}
 	}
@@ -61,13 +66,13 @@ public class DNASequenceTest {
 	public void testIsLegalShouldReturnFalse() {
 		final MolecularSequence<?> sequence = new DNASequence();
 
-		for (final Character illegalCharacter : alpabet) {
+		for (final java.lang.Character illegalCharacter : alpabet) {
 			if (legalDNACharacters.contains(illegalCharacter)) {
 				// it's legal don't see if it's false
 			} else {
 				assertFalse(sequence.isLegal(illegalCharacter));
 			}
-			final Character lowerCaseIllegalCharacter = Character
+			final java.lang.Character lowerCaseIllegalCharacter = java.lang.Character
 					.toLowerCase(illegalCharacter);
 			assertFalse(sequence.isLegal(lowerCaseIllegalCharacter));
 		}
