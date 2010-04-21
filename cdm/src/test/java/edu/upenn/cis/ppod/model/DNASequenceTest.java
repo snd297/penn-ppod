@@ -25,8 +25,9 @@ import com.google.common.collect.ImmutableList;
 import edu.upenn.cis.ppod.TestGroupDefs;
 
 /**
- * @author Sam Donnelly
+ * {@code DNASequenceSet} tests.
  * 
+ * @author Sam Donnelly
  */
 @Test(groups = TestGroupDefs.FAST)
 public class DNASequenceTest {
@@ -55,6 +56,9 @@ public class DNASequenceTest {
 					'N',
 					'-');
 
+	/**
+	 * Make sure that all legal character return true for {@code isLegal(...)}.
+	 */
 	public void testIsLegal() {
 		final MolecularSequence<?> sequence = new DNASequence();
 
@@ -63,6 +67,10 @@ public class DNASequenceTest {
 		}
 	}
 
+	/**
+	 * Make sure that all illegal character return false for {@code
+	 * isLegal(...)}.
+	 */
 	public void testIsLegalShouldReturnFalse() {
 		final MolecularSequence<?> sequence = new DNASequence();
 

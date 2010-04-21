@@ -45,6 +45,7 @@ import javax.xml.bind.annotation.XmlIDREF;
 import com.google.common.collect.Iterables;
 
 import edu.upenn.cis.ppod.modelinterfaces.IAttachee;
+import edu.upenn.cis.ppod.modelinterfaces.IAttachment;
 import edu.upenn.cis.ppod.modelinterfaces.IPPodVersioned;
 import edu.upenn.cis.ppod.util.IVisitor;
 
@@ -194,13 +195,13 @@ public abstract class PPodEntity extends PersistentObject implements IAttachee,
 	public Set<Attachment> getAttachmentsByNamespace(
 			final String namespace) {
 		return newHashSet(Iterables.filter(getAttachments(),
-				new Attachment.IsOfNamespace(namespace)));
+				new IAttachment.IsOfNamespace(namespace)));
 	}
 
 	public Set<Attachment> getAttachmentsByNamespaceAndType(
 			final String namespace, final String type) {
 		return newHashSet(Iterables.filter(getAttachments(),
-				new Attachment.IsOfNamespaceAndType(namespace, type)));
+				new IAttachment.IsOfNamespaceAndType(namespace, type)));
 	}
 
 	/**

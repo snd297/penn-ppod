@@ -60,13 +60,19 @@ public class MergeAttachmentTest {
 	@Inject
 	private Provider<AttachmentType> attachmentTypeProvider;
 
+	@Inject
+	private Provider<ModelAssert> modelAssertProvider;
+
+	private ModelAssert modelAssert;
+
 	@BeforeMethod
-	void beforeMethod() {
+	public void beforeMethod() {
 		final Map<String, AttachmentNamespace> namespacesByLabel = newHashMap();
 		namespacesByLabel.put("TEST_ATTACHMENT_NAMESPACE",
 				attachmentNamespaceProvider.get());
 		attachmentNamespaceDAO = attachmentNamespaceDAOProvider.get()
 				.setNamespacesByLabel(namespacesByLabel);
+		modelAssert = modelAssertProvider.get();
 	}
 
 	public void mergeOnBlankTarget() {
@@ -84,6 +90,6 @@ public class MergeAttachmentTest {
 		sourceAttachment.setStringValue("STRING_VALUE");
 		sourceAttachment.setByteArrayValue(new byte[] { 0, 1, 2 });
 		mergeAttachments.merge(targetAttachment, sourceAttachment);
-		ModelAssert.assertEqualsAttachments(targetAttachment, sourceAttachment);
+		modelAssert.assertEqualsAttachments(targetAttachment, sourceAttachment);
 	}
 }

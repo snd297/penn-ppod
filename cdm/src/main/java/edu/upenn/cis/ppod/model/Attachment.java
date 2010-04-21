@@ -40,9 +40,7 @@ import javax.xml.bind.annotation.XmlIDREF;
 
 import org.hibernate.annotations.Cascade;
 
-import com.google.common.base.Function;
-import com.google.common.base.Predicate;
-
+import edu.upenn.cis.ppod.modelinterfaces.IAttachment;
 import edu.upenn.cis.ppod.util.IVisitor;
 
 /**
@@ -53,79 +51,8 @@ import edu.upenn.cis.ppod.util.IVisitor;
 @XmlAccessorType(XmlAccessType.NONE)
 @Entity
 @Table(name = Attachment.TABLE)
-public class Attachment extends UUPPodEntityWXmlId {
+public class Attachment extends UUPPodEntityWXmlId implements IAttachment {
 
-	/**
-	 * Is an attachment of a particular {@link AttachmentNamespace}.
-	 */
-	public final static class IsOfNamespace implements
-			Predicate<Attachment> {
-
-		private final String namespace;
-
-		/**
-		 * @param namespace is the type of this namespace?
-		 */
-		IsOfNamespace(final String namespace) {
-			this.namespace = namespace;
-		}
-
-		public boolean apply(final Attachment input) {
-			return input.getType().getNamespace().getLabel().equals(namespace);
-		}
-
-	}
-
-	/**
-	 * Is an attachment of a particular {@link AttachmentNamespace} and
-	 * {@link AttachmentType}?
-	 */
-	public final static class IsOfNamespaceAndType implements
-			Predicate<Attachment> {
-
-		private final String namespace;
-
-		private final String type;
-
-		/**
-		 * @param type is the attachment of this type?
-		 * @param namespace is the type of this namespace?
-		 */
-		IsOfNamespaceAndType(final String namespace, final String type) {
-			this.type = type;
-			this.namespace = namespace;
-		}
-
-		public boolean apply(final Attachment input) {
-			return input.getType().getNamespace().getLabel().equals(namespace)
-					&& input.getType().getLabel().equals(type);
-		}
-
-	}
-
-	public final static class IsOfNamespaceTypeLabelAndStringValue implements
-			Predicate<Attachment> {
-		private final String namespace;
-		private final String type;
-		private final String label;
-		private final String stringValue;
-
-		IsOfNamespaceTypeLabelAndStringValue(final String namespace,
-				final String type,
-				final String label, final String stringValue) {
-			this.namespace = namespace;
-			this.type = type;
-			this.label = label;
-			this.stringValue = stringValue;
-		}
-
-		public boolean apply(final Attachment input) {
-			return input.getType().getNamespace().getLabel().equals(namespace)
-					&& input.getType().getLabel().equals(type)
-					&& input.getLabel().equals(label)
-					&& input.getStringValue().equals(stringValue);
-		}
-	}
 
 	static final String TABLE = "ATTACHMENT";
 
@@ -136,16 +63,6 @@ public class Attachment extends UUPPodEntityWXmlId {
 	static final String STRING_VALUE_COLUMN = "STRING_VALUE";
 
 	static final String BYTES_VALUE_COLUMN = "BYTES_VALUE";
-
-	/**
-	 * {@link Function} wrapper of {@link #getStringValue()}.
-	 */
-	public static final Function<Attachment, String> getStringValue = new Function<Attachment, String>() {
-
-		public String apply(final Attachment from) {
-			return from.getStringValue();
-		}
-	};
 
 	/**
 	 * Return the attachments in this attachment set that are of type {@code

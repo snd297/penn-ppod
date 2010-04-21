@@ -28,9 +28,9 @@ import com.google.inject.assistedinject.Assisted;
 
 import edu.upenn.cis.ppod.dao.IAttachmentNamespaceDAO;
 import edu.upenn.cis.ppod.dao.IAttachmentTypeDAO;
-import edu.upenn.cis.ppod.model.Attachment;
 import edu.upenn.cis.ppod.model.AttachmentNamespace;
 import edu.upenn.cis.ppod.model.AttachmentType;
+import edu.upenn.cis.ppod.modelinterfaces.IAttachment;
 
 /**
  * @author Sam Donnelly
@@ -62,8 +62,8 @@ class MergeAttachments implements IMergeAttachments {
 		this.attachmentTypeProvider = attachmentTypeProvider;
 	}
 
-	public void merge(final Attachment targetAttachment,
-			final Attachment sourceAttachment) {
+	public void merge(final IAttachment targetAttachment,
+			final IAttachment sourceAttachment) {
 		checkNotNull(targetAttachment);
 		checkNotNull(sourceAttachment);
 		checkArgument(sourceAttachment.getType() != null,

@@ -19,7 +19,7 @@ import com.google.inject.ImplementedBy;
 
 import edu.upenn.cis.ppod.dao.IAttachmentNamespaceDAO;
 import edu.upenn.cis.ppod.dao.IAttachmentTypeDAO;
-import edu.upenn.cis.ppod.model.Attachment;
+import edu.upenn.cis.ppod.modelinterfaces.IAttachment;
 
 /**
  * @author Sam Donnelly
@@ -33,13 +33,13 @@ public interface IMergeAttachments {
 	 * @throws IllegalArgumentException if {@code
 	 *             sourceAttachment.getType().getNamespace() == null}
 	 */
-	void merge(final Attachment targetAttachment,
-			final Attachment sourceAttachment);
+	void merge(final IAttachment targetAttachment,
+			final IAttachment sourceAttachment);
 
 	static interface IFactory {
 		IMergeAttachments create(
 				IAttachmentNamespaceDAO attachmentNamespaceDAO,
 				IAttachmentTypeDAO attachmentTypeDAO);
 	}
-	
+
 }

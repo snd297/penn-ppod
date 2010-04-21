@@ -10,7 +10,7 @@ import edu.upenn.cis.ppod.modelinterfaces.INewPPodVersionInfo;
  * 
  * @author Sam Donnelly
  */
-public class StubNewVersionInfo implements INewPPodVersionInfo {
+class StubNewVersionInfo implements INewPPodVersionInfo {
 
 	private final PPodVersionInfo newPPodVersionInfo;
 
