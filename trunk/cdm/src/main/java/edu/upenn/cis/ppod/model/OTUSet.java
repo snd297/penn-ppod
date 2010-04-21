@@ -45,6 +45,7 @@ import javax.xml.bind.annotation.XmlElement;
 
 import org.hibernate.annotations.Cascade;
 
+import edu.upenn.cis.ppod.modelinterfaces.ILabeled;
 import edu.upenn.cis.ppod.util.IVisitor;
 
 /**
@@ -201,7 +202,7 @@ public class OTUSet extends UUPPodEntityWXmlId implements Iterable<OTU> {
 	private OTU addOTUWithoutSetOTUsOnChildren(final OTU otu) {
 		checkNotNull(otu);
 		final OTU dupNameOTU = findIf(getOTUs(), compose(
-				equalTo(otu.getLabel()), OTU.getLabel));
+				equalTo(otu.getLabel()), ILabeled.getLabel));
 		if (dupNameOTU == null || otu.equals(dupNameOTU)) {
 
 		} else {

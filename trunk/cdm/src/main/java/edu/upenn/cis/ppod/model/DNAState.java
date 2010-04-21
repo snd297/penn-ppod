@@ -90,8 +90,16 @@ public class DNAState extends MolecularState {
 		 *         otherwise
 		 */
 		public static boolean hasOneWithAValueOf(final int i) {
-			if (A.ordinal() == i || C.ordinal() == i || G.ordinal() == i
-					|| T.ordinal() == i) {
+			if (A.ordinal() == i) {
+				return true;
+			}
+			if (C.ordinal() == i) {
+				return true;
+			}
+			if (G.ordinal() == i) {
+				return true;
+			}
+			if (T.ordinal() == i) {
 				return true;
 			}
 			return false;

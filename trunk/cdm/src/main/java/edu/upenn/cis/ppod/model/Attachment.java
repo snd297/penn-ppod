@@ -55,27 +55,25 @@ import edu.upenn.cis.ppod.util.IVisitor;
 @Table(name = Attachment.TABLE)
 public class Attachment extends UUPPodEntityWXmlId {
 
-	public final static class IsOfNamespaceTypeLabelAndStringValue implements
+	/**
+	 * Is an attachment of a particular {@link AttachmentNamespace}.
+	 */
+	public final static class IsOfNamespace implements
 			Predicate<Attachment> {
-		private final String namespace;
-		private final String type;
-		private final String label;
-		private final String stringValue;
 
-		IsOfNamespaceTypeLabelAndStringValue(final String namespace, final String type,
-				final String label, final String stringValue) {
+		private final String namespace;
+
+		/**
+		 * @param namespace is the type of this namespace?
+		 */
+		IsOfNamespace(final String namespace) {
 			this.namespace = namespace;
-			this.type = type;
-			this.label = label;
-			this.stringValue = stringValue;
 		}
 
 		public boolean apply(final Attachment input) {
-			return input.getType().getNamespace().getLabel().equals(namespace)
-					&& input.getType().getLabel().equals(type)
-					&& input.getLabel().equals(label)
-					&& input.getStringValue().equals(stringValue);
+			return input.getType().getNamespace().getLabel().equals(namespace);
 		}
+
 	}
 
 	/**
@@ -105,25 +103,28 @@ public class Attachment extends UUPPodEntityWXmlId {
 
 	}
 
-	/**
-	 * Is an attachment of a particular {@link AttachmentNamespace}.
-	 */
-	public final static class IsOfNamespace implements
+	public final static class IsOfNamespaceTypeLabelAndStringValue implements
 			Predicate<Attachment> {
-
 		private final String namespace;
+		private final String type;
+		private final String label;
+		private final String stringValue;
 
-		/**
-		 * @param namespace is the type of this namespace?
-		 */
-		IsOfNamespace(final String namespace) {
+		IsOfNamespaceTypeLabelAndStringValue(final String namespace,
+				final String type,
+				final String label, final String stringValue) {
 			this.namespace = namespace;
+			this.type = type;
+			this.label = label;
+			this.stringValue = stringValue;
 		}
 
 		public boolean apply(final Attachment input) {
-			return input.getType().getNamespace().getLabel().equals(namespace);
+			return input.getType().getNamespace().getLabel().equals(namespace)
+					&& input.getType().getLabel().equals(type)
+					&& input.getLabel().equals(label)
+					&& input.getStringValue().equals(stringValue);
 		}
-
 	}
 
 	static final String TABLE = "ATTACHMENT";
