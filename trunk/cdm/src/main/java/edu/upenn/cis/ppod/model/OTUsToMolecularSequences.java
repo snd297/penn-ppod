@@ -18,8 +18,9 @@ package edu.upenn.cis.ppod.model;
 import static com.google.common.base.Preconditions.checkNotNull;
 
 /**
- * @author Sam Donnelly
+ * An {@code OTUKeyedBiMap} which maps to {@code MolecularSequence}s.
  * 
+ * @author Sam Donnelly
  */
 public abstract class OTUsToMolecularSequences<T extends MolecularSequence<?>, P extends MolecularSequenceSet<?>>
 		extends OTUKeyedBimap<T, P> {

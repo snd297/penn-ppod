@@ -123,12 +123,15 @@ public abstract class OTUKeyedBimap<V extends PersistentObject, P extends IPPodV
 	 * @throws IllegalArgumentException if {@code otu} does not belong to
 	 *             {@code parent.getOTUSet()}
 	 * @throws IllegalArgumentException if there's already a value {@code
-	 *             .equals} to {@code newT}
+	 *             .equals} to {@code newT}, so that we maintain our {@code
+	 *             Bimap}ness.
+	 * @throws IllegalArgumentException if {@code parent.getOTUSet() == null}
 	 */
 	@CheckForNull
 	protected V putHelper(final OTU key, final V value, final P parent) {
 		checkNotNull(key);
 		checkNotNull(value);
+		checkArgument(parent.getOTUSet() != null, "parent.getOTUSet() == null");
 		checkArgument(contains(parent.getOTUSet(), key),
 				"otu does not belong to the parent's OTUSet");
 

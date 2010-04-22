@@ -16,7 +16,9 @@
 package edu.upenn.cis.ppod.model;
 
 import static com.google.common.base.Preconditions.checkNotNull;
+import static com.google.common.base.Preconditions.checkState;
 
+import javax.annotation.CheckForNull;
 import javax.annotation.Nullable;
 import javax.persistence.CascadeType;
 import javax.persistence.Entity;
@@ -41,12 +43,13 @@ public class DNASequenceSet extends MolecularSequenceSet<DNASequence> {
 	public final static String TABLE = "DNA_SEQUENCE_SET";
 
 	public final static String ID_COLUMN = TABLE + "_"
-			+ PersistentObject.ID_COLUMN;
+											+ PersistentObject.ID_COLUMN;
 
 	/**
 	 * The sequences.
 	 */
 	@OneToOne(fetch = FetchType.LAZY, optional = false, cascade = CascadeType.ALL)
+	@CheckForNull
 	private OTUsToDNASequences otusToSequences;
 
 	DNASequenceSet() {}
@@ -58,7 +61,7 @@ public class DNASequenceSet extends MolecularSequenceSet<DNASequence> {
 
 	@Override
 	public void accept(final IVisitor visitor) {
-		otusToSequences.accept(visitor);
+		getOTUsToSequences().accept(visitor);
 		for (final DNASequence sequence : getOTUsToSequences()
 				.getValuesInOTUOrder(getOTUSet())) {
 			sequence.accept(visitor);
@@ -77,6 +80,7 @@ public class DNASequenceSet extends MolecularSequenceSet<DNASequence> {
 
 	@XmlElement(name = "otusToSequences")
 	@Override
+	@Nullable
 	protected OTUsToDNASequences getOTUsToSequences() {
 		return otusToSequences;
 	}
@@ -103,9 +107,15 @@ public class DNASequenceSet extends MolecularSequenceSet<DNASequence> {
 		return this;
 	}
 
+	/**
+	 * @throws IllegalStateException if {@link getOTUsToSequnces() == null}
+	 */
 	@Override
 	protected MolecularSequenceSet<DNASequence> setOTUsInOTUsToSequences(
 			@Nullable final OTUSet otuSet) {
+		checkState(
+				getOTUsToSequences() != null,
+				"getOTUsToSequences() == null, so there is no otusToSequences to operate on");
 		getOTUsToSequences().setOTUs(otuSet, this);
 		return this;
 	}

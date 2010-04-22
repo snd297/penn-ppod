@@ -212,11 +212,7 @@ public class ModelAssert {
 			final Attachment expectedAttachment = getOnlyElement(filter(
 							expectedAttachmentsCopy,
 							new Attachment.IsOfNamespaceTypeLabelAndStringValue(
-									actualAttachment.getType().getNamespace()
-											.getLabel(),
-									actualAttachment.getType().getLabel(),
-									actualAttachment.getLabel(),
-									actualAttachment.getStringValue())));
+									actualAttachment)));
 			expectedAttachmentsCopy.remove(expectedAttachment);
 			assertEqualsAttachments(actualAttachment, expectedAttachment);
 		}

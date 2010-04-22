@@ -32,6 +32,11 @@ public class ModelModule extends AbstractModule {
 				FactoryProvider.newFactory(
 						INewPPodVersionInfoHibernate.IFactory.class,
 						NewPPodVersionInfoHibernate.class));
+		bind(Attachment.IIsOfNamespace.IFactory.class)
+				.toProvider(
+						FactoryProvider.newFactory(
+								Attachment.IIsOfNamespace.IFactory.class,
+								Attachment.IIsOfNamespace.class));
 
 	}
 

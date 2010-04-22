@@ -15,6 +15,7 @@
  */
 package edu.upenn.cis.ppod.model;
 
+import static com.google.common.base.Preconditions.checkArgument;
 import static com.google.common.base.Preconditions.checkNotNull;
 import static com.google.common.base.Preconditions.checkState;
 import static com.google.common.collect.Lists.newArrayList;
@@ -51,7 +52,15 @@ public class CharacterStateRow extends PPodEntity implements
 		Iterable<CharacterStateCell> {
 
 	public int getCellPosition(final CharacterStateCell cell) {
-		return cell.getPosition();
+		checkNotNull(cell);
+		checkArgument(this.equals(cell.getRow()),
+				"cell does not belong to this row");
+		final Integer cellPosition = cell.getPosition();
+		if (cellPosition == null) {
+			throw new AssertionError(
+					"cell has been assigned to a row but has now position set");
+		}
+		return cellPosition;
 	}
 
 	/** This entitiy's table. Intentionally package-private. */
