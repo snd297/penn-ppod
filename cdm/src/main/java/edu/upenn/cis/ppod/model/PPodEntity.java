@@ -193,14 +193,16 @@ public abstract class PPodEntity extends PersistentObject implements IAttachee,
 
 	public Set<Attachment> getAttachmentsByNamespace(
 			final String namespace) {
-		return newHashSet(Iterables.filter(getAttachments(),
-				new Attachment.IsOfNamespace(namespace)));
+		return newHashSet(Iterables
+				.filter(getAttachments(),
+						new Attachment.IsOfNamespace(namespace)));
 	}
 
 	public Set<Attachment> getAttachmentsByNamespaceAndType(
 			final String namespace, final String type) {
-		return newHashSet(Iterables.filter(getAttachments(),
-				new Attachment.IsOfNamespaceAndType(namespace, type)));
+		return newHashSet(Iterables
+				.filter(getAttachments(),
+						new Attachment.IsOfNamespaceAndType(namespace, type)));
 	}
 
 	/**

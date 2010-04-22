@@ -93,7 +93,11 @@ public class CharacterStateRowTest {
 
 	@Test(expectedExceptions = IllegalStateException.class)
 	public void addCellToMatrixThatHasNoCharacters() {
-		matrix.setCharacters((List<Character>) Collections.EMPTY_LIST);
+
+		@SuppressWarnings("unchecked")
+		final List<Character> emptyList = (List<Character>) Collections.EMPTY_LIST;
+
+		matrix.setCharacters(emptyList);
 
 		// Just call setUnassigned so that the cell is in a legal state - it
 		// shouldn't really matterJust call setUnassigned so that the cell is in

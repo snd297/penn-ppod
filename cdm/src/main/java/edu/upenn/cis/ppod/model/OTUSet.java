@@ -147,6 +147,7 @@ public class OTUSet extends UUPPodEntityWXmlId implements Iterable<OTU> {
 	 */
 	public DNASequenceSet addDNASequenceSet(
 			final DNASequenceSet dnaSequenceSet) {
+		checkNotNull(dnaSequenceSet);
 		getDNASequenceSets().add(dnaSequenceSet);
 		dnaSequenceSet.setOTUSet(this);
 		setInNeedOfNewPPodVersionInfo();

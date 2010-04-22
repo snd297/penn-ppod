@@ -16,6 +16,7 @@
 package edu.upenn.cis.ppod.model;
 
 import javax.annotation.CheckForNull;
+import javax.annotation.Nullable;
 import javax.persistence.Column;
 import javax.persistence.Entity;
 import javax.persistence.FetchType;
@@ -32,8 +33,7 @@ public class Chromatogram extends UUPPodEntity {
 
 	@Lob
 	@Column(name = "CHROMATOGRAM", nullable = false)
-	@CheckForNull
-	private byte[] chromatogram;
+	private byte[] chromatogram = new byte[0];
 
 	@OneToOne(fetch = FetchType.LAZY)
 	@CheckForNull
@@ -48,6 +48,14 @@ public class Chromatogram extends UUPPodEntity {
 		return this;
 	}
 
+	/**
+	 * For newly constructed objects, this will return {@code null} until
+	 * {@code setSequence(...)} is called. For persisted {@code Chromatagram}s
+	 * this should never return {@code null}.
+	 * 
+	 * @return the {@code DNASequence} that this points to
+	 */
+	@Nullable
 	public DNASequence getSequence() {
 		return sequence;
 	}

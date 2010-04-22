@@ -16,6 +16,7 @@
 package edu.upenn.cis.ppod.model;
 
 import static com.google.common.base.Objects.equal;
+import static com.google.common.base.Preconditions.checkArgument;
 import static com.google.common.base.Preconditions.checkNotNull;
 import static com.google.common.collect.Sets.newHashSet;
 
@@ -42,6 +43,9 @@ import org.hibernate.annotations.Cascade;
 
 import com.google.common.base.Function;
 import com.google.common.base.Predicate;
+import com.google.inject.ImplementedBy;
+import com.google.inject.Inject;
+import com.google.inject.assistedinject.Assisted;
 
 import edu.upenn.cis.ppod.util.IVisitor;
 
@@ -56,17 +60,24 @@ import edu.upenn.cis.ppod.util.IVisitor;
 public class Attachment extends UUPPodEntityWXmlId {
 
 	/**
-	 * Is an attachment of a particular {@link AttachmentNamespace}.
+	 * Is an attachment of a particular {@link AttachmentNamespace}?
 	 */
-	public final static class IsOfNamespace implements
-			Predicate<Attachment> {
+	@ImplementedBy(IsOfNamespace.class)
+	public static interface IIsOfNamespace extends Predicate<Attachment> {
+		static interface IFactory {
+			IIsOfNamespace create(String namespace);
+		}
+	}
+
+	final static class IsOfNamespace implements IIsOfNamespace {
 
 		private final String namespace;
 
 		/**
 		 * @param namespace is the type of this namespace?
 		 */
-		IsOfNamespace(final String namespace) {
+		@Inject
+		IsOfNamespace(@Assisted final String namespace) {
 			this.namespace = namespace;
 		}
 
@@ -110,20 +121,35 @@ public class Attachment extends UUPPodEntityWXmlId {
 		private final String label;
 		private final String stringValue;
 
-		IsOfNamespaceTypeLabelAndStringValue(final String namespace,
-				final String type,
-				final String label, final String stringValue) {
-			this.namespace = namespace;
-			this.type = type;
-			this.label = label;
-			this.stringValue = stringValue;
+		IsOfNamespaceTypeLabelAndStringValue(final Attachment attachment) {
+			checkNotNull(attachment);
+			checkArgument(
+					attachment.getType().getNamespace().getLabel() != null,
+					"attachment's type's namespace has null label");
+
+			checkArgument(attachment.getType().getLabel() != null,
+					"attachment's type has null label");
+
+			final String attachmentLabel = attachment.getLabel();
+			checkArgument(attachmentLabel != null,
+					"attachment.getLabel() == null");
+
+			final String attachmentStringValue = attachment.getStringValue();
+
+			checkArgument(attachmentStringValue != null,
+					"attachment.getStringValue() == null");
+
+			this.namespace = attachment.getType().getNamespace().getLabel();
+			this.type = attachment.getType().getLabel();
+			this.label = attachmentLabel;
+			this.stringValue = attachmentStringValue;
 		}
 
 		public boolean apply(final Attachment input) {
-			return input.getType().getNamespace().getLabel().equals(namespace)
-					&& input.getType().getLabel().equals(type)
-					&& input.getLabel().equals(label)
-					&& input.getStringValue().equals(stringValue);
+			return namespace.equals(input.getType().getNamespace().getLabel())
+					&& type.equals(input.getType().getLabel())
+					&& label.equals(input.getLabel())
+					&& stringValue.equals(input.getStringValue());
 		}
 	}
 
