@@ -1,0 +1,79 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<project xmlns="http://maven.apache.org/POM/4.0.0" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+	xsi:schemaLocation="http://maven.apache.org/POM/4.0.0 http://maven.apache.org/xsd/maven-4.0.0.xsd">
+
+	<modelVersion>4.0.0</modelVersion>
+
+	<parent>
+		<groupId>org.hibernate</groupId>
+		<artifactId>hibernate-parent</artifactId>
+		<version>3.6.0-SNAPSHOT</version>
+		<relativePath>../parent/pom.xml</relativePath>
+	</parent>
+
+	<groupId>edu.upenn.cis.ppod</groupId>
+	<artifactId>ppod-distribution</artifactId>
+	<packaging>pom</packaging>
+
+	<name>pPOD Distribution</name>
+	<description>Builds the complete pPOD distribution bundles
+	</description>
+	<build>
+		<plugins>
+			<plugin>
+				<groupId>org.apache.maven.plugins</groupId>
+				<artifactId>maven-assembly-plugin</artifactId>
+				<executions>
+					<execution>
+						<phase>deploy</phase>
+						<goals>
+							<goal>single</goal>
+						</goals>
+					</execution>
+				</executions>
+			</plugin>
+		</plugins>
+		<pluginManagement>
+			<plugins>
+				<plugin>
+					<groupId>org.apache.maven.plugins</groupId>
+					<artifactId>maven-assembly-plugin</artifactId>
+					<version>2.2-beta-5</version>
+					<configuration>
+						<descriptors>
+							<descriptor>src/assembly/assembly.xml</descriptor>
+						</descriptors>
+						<archive>
+							<manifest>
+								<addDefaultSpecificationEntries>true
+								</addDefaultSpecificationEntries>
+								<addDefaultImplementationEntries>true
+								</addDefaultImplementationEntries>
+							</manifest>
+							<manifestEntries>
+								<Implementation-URL>http://hibernate.org</Implementation-URL>
+							</manifestEntries>
+						</archive>
+					</configuration>
+				</plugin>
+			</plugins>
+		</pluginManagement>
+	</build>
+	<!--
+		The assemblies work off of dependency sets since the stuff to be
+		aggregated is no longer sub-modules after moving assembly itself into
+		this 'distribution' module.
+	-->
+	<dependencies>
+		<dependency>
+			<groupId>${project.groupId}</groupId>
+			<artifactId>ppod-cdm</artifactId>
+			<version>${project.version}</version>
+		</dependency>
+		<dependency>
+			<groupId>${project.groupId}</groupId>
+			<artifactId>ppod-services</artifactId>
+			<version>${project.version}</version>
+		</dependency>
+	</dependencies>
+</project>

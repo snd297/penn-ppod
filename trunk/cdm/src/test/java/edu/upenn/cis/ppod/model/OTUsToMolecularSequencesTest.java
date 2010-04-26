@@ -1,6 +1,5 @@
 package edu.upenn.cis.ppod.model;
 
-import static org.testng.Assert.assertEquals;
 import static org.testng.Assert.assertSame;
 
 import org.testng.annotations.Test;
