@@ -32,6 +32,9 @@ public abstract class OTUsToMolecularSequences<T extends MolecularSequence<?>, P
 		checkNotNull(value);
 		final T originalSequence = super.putHelper(key, value,
 				parent);
+
+		// If we are replacing an OTU's sequence, we need to sever the previous
+		// sequence's sequence->sequenceSet pointer.
 		if (originalSequence != null && !originalSequence.equals(value)) {
 			originalSequence.setSequenceSet(null);
 		}
