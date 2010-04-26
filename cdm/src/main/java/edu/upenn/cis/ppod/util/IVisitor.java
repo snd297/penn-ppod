@@ -26,7 +26,7 @@ import edu.upenn.cis.ppod.model.CharacterStateRow;
 import edu.upenn.cis.ppod.model.DNASequence;
 import edu.upenn.cis.ppod.model.DNASequenceSet;
 import edu.upenn.cis.ppod.model.OTU;
-import edu.upenn.cis.ppod.model.OTUKeyedBimap;
+import edu.upenn.cis.ppod.model.OTUKeyedMap;
 import edu.upenn.cis.ppod.model.OTUSet;
 import edu.upenn.cis.ppod.model.Study;
 import edu.upenn.cis.ppod.model.Tree;
@@ -87,7 +87,7 @@ public interface IVisitor {
 
 	void visit(OTUSet otuset);
 
-	void visit(OTUKeyedBimap<?, ?> otuKeyedBimap);
+	void visit(OTUKeyedMap<?, ?> otuKeyedBimap);
 
 	void visit(Study study);
 

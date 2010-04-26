@@ -94,6 +94,16 @@ public abstract class MolecularSequence<SS extends MolecularSequenceSet<?>>
 		return name;
 	}
 
+	/**
+	 * Get the sequence string.
+	 * <p>
+	 * This will only be {@code null} for newly created objects until
+	 * {@link #setSequence(String)} is called.
+	 * <p>
+	 * This will never be {@code null} for objects in a persistent state.
+	 * 
+	 * @return
+	 */
 	@XmlElement
 	@Nullable
 	public String getSequence() {

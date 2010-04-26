@@ -33,9 +33,16 @@ import edu.upenn.cis.ppod.util.IVisitor;
 import edu.upenn.cis.ppod.util.OTUSomethingPair;
 
 /**
+ * An {@code OTU -> PersistentObject} map with {@code equals}-unique values.
+ * <p>
+ * Even though this object is guaranteed to have unique values, we don't call it
+ * a bidirectional map because it doesn't support an inverse view. It will
+ * always be safe however to, for example, call {@link HashBiMap#create(Map)} on
+ * {@link #getOTUsToValues()}.
+ * 
  * @author Sam Donnelly
  */
-public abstract class OTUKeyedBimap<V extends PersistentObject, P extends IPPodVersionedWithOTUSet>
+public abstract class OTUKeyedMap<V extends PersistentObject, P extends IPPodVersionedWithOTUSet>
 		extends PersistentObject {
 
 	static final String OTU_IDX_COLUMN = "OTU_IDX";
@@ -109,7 +116,7 @@ public abstract class OTUKeyedBimap<V extends PersistentObject, P extends IPPodV
 	 * by the specified value.
 	 * <p>
 	 * This method calls {@code parent.setInNeedOfNewPPodVersionInfo()} if it
-	 * changes this {@code OTUKeyedBimap}'s state.
+	 * changes this {@code OTUKeyedMap}'s state.
 	 * 
 	 * @param otu key
 	 * @param value value
@@ -123,8 +130,7 @@ public abstract class OTUKeyedBimap<V extends PersistentObject, P extends IPPodV
 	 * @throws IllegalArgumentException if {@code otu} does not belong to
 	 *             {@code parent.getOTUSet()}
 	 * @throws IllegalArgumentException if there's already a value {@code
-	 *             .equals} to {@code newT}, so that we maintain our {@code
-	 *             Bimap}ness.
+	 *             .equals} to {@code newT}
 	 * @throws IllegalArgumentException if {@code parent.getOTUSet() == null}
 	 */
 	@CheckForNull
@@ -147,9 +153,9 @@ public abstract class OTUKeyedBimap<V extends PersistentObject, P extends IPPodV
 	}
 
 	/**
-	 * Set the keys of this {@code OTUKeyedBimap}.
+	 * Set the keys of this {@code OTUKeyedMap}.
 	 * <p>
-	 * Any new keys will be given {@code null} values.
+	 * Any newly introduced keys will map to {@code null} values.
 	 * <p>
 	 * Any existing keys will be removed if they are not present in {@code
 	 * otuSet.getOTUs()}.
@@ -163,7 +169,7 @@ public abstract class OTUKeyedBimap<V extends PersistentObject, P extends IPPodV
 	 * @throw IllegalArgumentException if {@code otuSet != parent.getOTUSet()}
 	 */
 	@CheckForNull
-	protected OTUKeyedBimap<V, P> setOTUs(@Nullable final OTUSet otuSet,
+	protected OTUKeyedMap<V, P> setOTUs(@Nullable final OTUSet otuSet,
 			final P parent) {
 		checkArgument(otuSet == parent.getOTUSet(),
 				"otuSet does not belong to parent");

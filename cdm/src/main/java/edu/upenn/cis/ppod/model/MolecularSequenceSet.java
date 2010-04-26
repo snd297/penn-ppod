@@ -92,7 +92,7 @@ public abstract class MolecularSequenceSet<S extends MolecularSequence<?>>
 		return otuSet;
 	}
 
-	protected abstract OTUKeyedBimap<S, ? extends MolecularSequenceSet<?>> getOTUsToSequences();
+	protected abstract OTUKeyedMap<S, ? extends MolecularSequenceSet<?>> getOTUsToSequences();
 
 	/**
 	 * Get the sequence indexed by {@code otu}.

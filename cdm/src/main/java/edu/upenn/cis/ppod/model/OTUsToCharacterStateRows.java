@@ -42,7 +42,7 @@ import edu.upenn.cis.ppod.util.OTUSomethingPair;
 @Entity
 @Table(name = "OTUS_TO_CHARACTER_STATE_ROWS")
 public class OTUsToCharacterStateRows extends
-		OTUKeyedBimap<CharacterStateRow, CharacterStateMatrix> {
+		OTUKeyedMap<CharacterStateRow, CharacterStateMatrix> {
 	/**
 	 * The rows of the matrix.
 	 */

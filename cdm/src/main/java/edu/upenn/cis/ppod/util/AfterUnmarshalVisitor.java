@@ -20,7 +20,7 @@ import edu.upenn.cis.ppod.model.Character;
 import edu.upenn.cis.ppod.model.CharacterStateCell;
 import edu.upenn.cis.ppod.model.CharacterStateMatrix;
 import edu.upenn.cis.ppod.model.DNASequenceSet;
-import edu.upenn.cis.ppod.model.OTUKeyedBimap;
+import edu.upenn.cis.ppod.model.OTUKeyedMap;
 
 /**
  * For straightening up or filling data structures after we've unmarshalled.
@@ -56,7 +56,7 @@ class AfterUnmarshalVisitor extends EmptyVisitor implements
 	}
 
 	@Override
-	public void visit(final OTUKeyedBimap<?, ?> otuKeyedMap) {
+	public void visit(final OTUKeyedMap<?, ?> otuKeyedMap) {
 		otuKeyedMap.afterUnmarshal();
 	}
 
