@@ -23,7 +23,7 @@ import static com.google.common.base.Preconditions.checkNotNull;
  * @author Sam Donnelly
  */
 public abstract class OTUsToMolecularSequences<T extends MolecularSequence<?>, P extends MolecularSequenceSet<?>>
-		extends OTUKeyedBimap<T, P> {
+		extends OTUKeyedMap<T, P> {
 
 	@Override
 	protected T putHelper(final OTU key,
