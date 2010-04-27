@@ -20,6 +20,15 @@ public class MolecularSequenceTest {
 	@Inject
 	private Provider<DNASequence> dnaSequenceProvider;
 
+	@Inject
+	private Provider<DNASequenceSet> dnaSequenceSetProvider;
+
+	@Inject
+	private Provider<OTUSet> otuSetProvider;
+
+	@Inject
+	private Provider<OTU> otuProvider;
+
 	/**
 	 * Tests the following:
 	 * <ol>
@@ -58,5 +67,43 @@ public class MolecularSequenceTest {
 				.get();
 		final String sequenceString = "ACGTlC-T-A";
 		sequence.setSequence(sequenceString);
+	}
+
+	/**
+	 * Make sure that {@link MolecularSequence#setInNeedOfNewPPodVersionInfo()}
+	 * works on both the sequence and parent sequence set.
+	 * <p>
+	 * Also make sure that it works if no parent has been set.
+	 */
+	public void setInNeedOfNewPPodVersion() {
+		final DNASequence sequence = dnaSequenceProvider
+				.get();
+		final OTUSet otuSet = otuSetProvider.get();
+		final OTU otu0 = otuSet.addOTU(otuProvider.get());
+
+		final MolecularSequenceSet<DNASequence> sequenceSet = dnaSequenceSetProvider
+				.get();
+
+		sequenceSet.setOTUSet(otuSet);
+
+		sequenceSet.putSequence(otu0, sequence);
+
+		sequence.unsetInNeedOfNewPPodVersionInfo();
+		sequenceSet.unsetInNeedOfNewPPodVersionInfo();
+
+		sequence.setInNeedOfNewPPodVersionInfo();
+
+		assertTrue(sequence.isInNeedOfNewPPodVersionInfo());
+
+		assertTrue(sequenceSet.isInNeedOfNewPPodVersionInfo());
+
+		// Let's make sure it works if no parent has been set.
+		sequence.setSequenceSet(null);
+		sequence.unsetInNeedOfNewPPodVersionInfo();
+
+		sequence.setInNeedOfNewPPodVersionInfo();
+
+		assertTrue(sequence.isInNeedOfNewPPodVersionInfo());
+
 	}
 }

@@ -14,36 +14,34 @@
 	<description>Builds the complete pPOD distribution bundles
 	</description>
 	<build>
-		<pluginManagement>
-			<plugins>
-				<plugin>
-					<groupId>org.apache.maven.plugins</groupId>
-					<artifactId>maven-assembly-plugin</artifactId>
-					<version>2.2-beta-5</version>
-					<executions>
-						<execution>
-							<id>assemble</id>
-							<phase>install</phase>
-							<goals>
-								<goal>attached</goal>
-							</goals>
-							<configuration>
-								<descriptors>
-									<descriptor>src/assembly/dist.xml</descriptor>
-								</descriptors>
-							</configuration>
-						</execution>
-					</executions>
-				</plugin>
-				<plugin>
-					<groupId>org.apache.maven.plugins</groupId>
-					<artifactId>maven-install-plugin</artifactId>
-					<configuration>
-						<createChecksum>true</createChecksum>
-					</configuration>
-				</plugin>
-			</plugins>
-		</pluginManagement>
+		<plugins>
+			<plugin>
+				<groupId>org.apache.maven.plugins</groupId>
+				<artifactId>maven-assembly-plugin</artifactId>
+				<version>2.2-beta-5</version>
+				<executions>
+					<execution>
+						<id>assemble</id>
+						<phase>install</phase>
+						<goals>
+							<goal>attached</goal>
+						</goals>
+						<configuration>
+							<descriptors>
+								<descriptor>src/assembly/dist.xml</descriptor>
+							</descriptors>
+						</configuration>
+					</execution>
+				</executions>
+			</plugin>
+			<plugin>
+				<groupId>org.apache.maven.plugins</groupId>
+				<artifactId>maven-install-plugin</artifactId>
+				<configuration>
+					<createChecksum>true</createChecksum>
+				</configuration>
+			</plugin>
+		</plugins>
 	</build>
 	<dependencies>
 		<dependency>
