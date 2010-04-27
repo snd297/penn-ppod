@@ -2,6 +2,7 @@ package edu.upenn.cis.ppod.model;
 
 import static org.testng.Assert.assertEquals;
 import static org.testng.Assert.assertFalse;
+import static org.testng.Assert.assertNull;
 import static org.testng.Assert.assertTrue;
 
 import org.testng.annotations.Test;
@@ -104,6 +105,42 @@ public class MolecularSequenceTest {
 		sequence.setInNeedOfNewPPodVersionInfo();
 
 		assertTrue(sequence.isInNeedOfNewPPodVersionInfo());
+
+	}
+
+	/**
+	 * Run setName through its paces:
+	 * <ol>
+	 * <li>straight set and verify in need of new pPOD version</li>
+	 * <li>set w/ already-value and make sure its not in need of a new pPOD
+	 * version</li>
+	 * <li>set w/ a null value</li>
+	 * </ol>
+	 */
+	public void setName() {
+		final MolecularSequence<?> sequence = dnaSequenceProvider.get();
+
+		assertNull(sequence.getName());
+
+		final String sequenceName = "SEQ0";
+		sequence.setName(sequenceName);
+
+		assertEquals(sequence.getName(), sequenceName);
+
+		assertTrue(sequence.isInNeedOfNewPPodVersionInfo());
+
+		sequence.unsetInNeedOfNewPPodVersionInfo();
+
+		sequence.setName(sequenceName);
+
+		assertFalse(sequence.isInNeedOfNewPPodVersionInfo());
+
+		sequence.unsetInNeedOfNewPPodVersionInfo();
+
+		sequence.setName(null);
+
+		assertNull(sequence.getName());
+
 
 	}
 }
