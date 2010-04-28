@@ -141,6 +141,75 @@ public class MolecularSequenceTest {
 
 		assertNull(sequence.getName());
 
+	}
+
+	/**
+	 * Run setAccesion through its paces:
+	 * <ol>
+	 * <li>straight set and verify in need of new pPOD version</li>
+	 * <li>set w/ already-value and make sure its not in need of a new pPOD
+	 * version</li>
+	 * <li>set w/ a null value</li>
+	 * </ol>
+	 */
+	public void setAccession() {
+		final MolecularSequence<?> sequence = dnaSequenceProvider.get();
+
+		assertNull(sequence.getAccession());
+
+		final String accession = "ACC0";
+		sequence.setAccession(accession);
+
+		assertEquals(sequence.getAccession(), accession);
+
+		assertTrue(sequence.isInNeedOfNewPPodVersionInfo());
+
+		sequence.unsetInNeedOfNewPPodVersionInfo();
+
+		sequence.setAccession(accession);
+
+		assertFalse(sequence.isInNeedOfNewPPodVersionInfo());
+
+		sequence.unsetInNeedOfNewPPodVersionInfo();
+
+		sequence.setAccession(null);
+
+		assertNull(sequence.getAccession());
+
+	}
+
+	/**
+	 * Run setDescription through its paces:
+	 * <ol>
+	 * <li>straight set and verify in need of new pPOD version</li>
+	 * <li>set w/ already-value and make sure its not in need of a new pPOD
+	 * version</li>
+	 * <li>set w/ a null value</li>
+	 * </ol>
+	 */
+	public void setDescription() {
+		final MolecularSequence<?> sequence = dnaSequenceProvider.get();
+
+		assertNull(sequence.getDescription());
+
+		final String description = "DESC0";
+		sequence.setDescription(description);
+
+		assertEquals(sequence.getDescription(), description);
+
+		assertTrue(sequence.isInNeedOfNewPPodVersionInfo());
+
+		sequence.unsetInNeedOfNewPPodVersionInfo();
+
+		sequence.setDescription(description);
+
+		assertFalse(sequence.isInNeedOfNewPPodVersionInfo());
+
+		sequence.unsetInNeedOfNewPPodVersionInfo();
+
+		sequence.setDescription(null);
+
+		assertNull(sequence.getDescription());
 
 	}
 }

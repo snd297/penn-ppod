@@ -21,14 +21,14 @@
 				<version>2.2-beta-5</version>
 				<executions>
 					<execution>
-						<id>assemble</id>
+						<id>dist</id>
 						<phase>package</phase>
 						<goals>
 							<goal>single</goal>
 						</goals>
 						<configuration>
 							<descriptors>
-								<descriptor>assembly.xml</descriptor>
+								<descriptor>dist.xml</descriptor>
 							</descriptors>
 						</configuration>
 					</execution>
@@ -44,11 +44,6 @@
 		</plugins>
 	</build>
 	<dependencies>
-		<dependency>
-			<groupId>${project.groupId}</groupId>
-			<artifactId>ppod-cdm</artifactId>
-			<version>${project.version}</version>
-		</dependency>
 		<dependency>
 			<groupId>${project.groupId}</groupId>
 			<artifactId>ppod-services</artifactId>
