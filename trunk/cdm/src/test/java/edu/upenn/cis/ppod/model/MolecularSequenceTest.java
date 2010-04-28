@@ -13,9 +13,11 @@ import com.google.inject.Provider;
 import edu.upenn.cis.ppod.TestGroupDefs;
 
 /**
+ * Tests for {@link MolecularSequence}.
+ * 
  * @author Sam Donnelly
  */
-@Test(groups = { TestGroupDefs.INIT, TestGroupDefs.FAST, TestGroupDefs.SINGLE })
+@Test(groups = { TestGroupDefs.INIT, TestGroupDefs.FAST })
 public class MolecularSequenceTest {
 
 	@Inject
