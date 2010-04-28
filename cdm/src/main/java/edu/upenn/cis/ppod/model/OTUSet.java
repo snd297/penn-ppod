@@ -371,7 +371,7 @@ public class OTUSet extends UUPPodEntityWXmlId implements Iterable<OTU> {
 	 * 
 	 * @return this {@code OTUSet}
 	 */
-	public OTUSet setDescription(@Nullable final String newDescription) {
+	public OTUSet setDescription(@CheckForNull final String newDescription) {
 		if (equal(getDescription(), newDescription)) {
 
 		} else {

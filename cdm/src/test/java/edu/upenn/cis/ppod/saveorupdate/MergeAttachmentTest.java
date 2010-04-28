@@ -82,7 +82,7 @@ public class MergeAttachmentTest {
 				attachmentNamespaceProvider.get().setLabel(
 						"SOURCE_ATTACHMENT_NAMESPACE"));
 		sourceAttachment.setStringValue("STRING_VALUE");
-		sourceAttachment.setByteArrayValue(new byte[] { 0, 1, 2 });
+		sourceAttachment.setBytesValue(new byte[] { 0, 1, 2 });
 		mergeAttachments.merge(targetAttachment, sourceAttachment);
 		ModelAssert.assertEqualsAttachments(targetAttachment, sourceAttachment);
 	}

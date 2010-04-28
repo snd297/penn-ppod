@@ -99,7 +99,7 @@ public class CharacterState extends PPodEntityWXmlId {
 	/**
 	 * {@link Function} wrapper of {@link #getStateNumber()}.
 	 */
-	public static Function<CharacterState, Integer> getStateNumber = new Function<CharacterState, Integer>() {
+	public static final Function<CharacterState, Integer> getStateNumber = new Function<CharacterState, Integer>() {
 
 		public Integer apply(final CharacterState from) {
 			return from.getStateNumber();

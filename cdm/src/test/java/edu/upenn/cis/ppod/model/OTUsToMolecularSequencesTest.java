@@ -15,7 +15,7 @@ import edu.upenn.cis.ppod.TestGroupDefs;
  * 
  * @author Sam Donnelly
  */
-@Test(groups = { TestGroupDefs.INIT, TestGroupDefs.FAST, TestGroupDefs.SINGLE })
+@Test(groups = { TestGroupDefs.INIT, TestGroupDefs.FAST})
 public class OTUsToMolecularSequencesTest {
 
 	@Inject

@@ -15,6 +15,10 @@
  */
 package edu.upenn.cis.ppod.model;
 
+import static com.google.common.base.Preconditions.checkNotNull;
+
+import java.util.Arrays;
+
 import javax.annotation.CheckForNull;
 import javax.annotation.Nullable;
 import javax.persistence.Column;
@@ -33,18 +37,37 @@ public class Chromatogram extends UUPPodEntity {
 
 	@Lob
 	@Column(name = "CHROMATOGRAM", nullable = false)
+	@CheckForNull
 	private byte[] chromatogram = new byte[0];
 
 	@OneToOne(fetch = FetchType.LAZY)
 	@CheckForNull
 	private DNASequence sequence;
 
+	@Nullable
 	public byte[] getChromatogram() {
-		return chromatogram;
+		if (chromatogram == null) {
+			return null;
+		}
+		final byte[] chromatogramCopy = new byte[chromatogram.length];
+		System.arraycopy(chromatogram, 0, chromatogramCopy, 0,
+				chromatogram.length);
+		return chromatogramCopy;
 	}
 
 	public Chromatogram setChromatogram(final byte[] chromatogram) {
-		this.chromatogram = chromatogram;
+		checkNotNull(chromatogram);
+		if (Arrays.equals(chromatogram, this.chromatogram)) {
+			return this;
+		}
+
+		if (this.chromatogram == null
+					|| this.chromatogram.length != chromatogram.length) {
+			this.chromatogram = new byte[chromatogram.length];
+		}
+		System.arraycopy(this.chromatogram, 0, chromatogram, 0,
+					chromatogram.length);
+		setInNeedOfNewPPodVersionInfo();
 		return this;
 	}
 

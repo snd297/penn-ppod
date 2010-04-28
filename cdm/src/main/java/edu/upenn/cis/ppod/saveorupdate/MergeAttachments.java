@@ -114,7 +114,7 @@ class MergeAttachments implements IMergeAttachments {
 		targetAttachment.setLabel(sourceAttachment.getLabel());
 		targetAttachment.setStringValue(sourceAttachment.getStringValue());
 
-		targetAttachment.setByteArrayValue(sourceAttachment.getBytesValue());
+		targetAttachment.setBytesValue(sourceAttachment.getBytesValue());
 		targetAttachment.setType(targetAttachmentType);
 	}
 }

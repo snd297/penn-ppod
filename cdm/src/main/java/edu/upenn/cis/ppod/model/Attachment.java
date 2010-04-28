@@ -251,7 +251,12 @@ public class Attachment extends UUPPodEntityWXmlId {
 	@XmlElement
 	@CheckForNull
 	public byte[] getBytesValue() {
-		return bytesValue;
+		if (bytesValue == null) {
+			return null;
+		}
+		final byte[] bytesValueCopy = new byte[bytesValue.length];
+		System.arraycopy(bytesValue, 0, bytesValueCopy, 0, bytesValue.length);
+		return bytesValueCopy;
 	}
 
 	/**
@@ -289,22 +294,27 @@ public class Attachment extends UUPPodEntityWXmlId {
 	}
 
 	/**
-	 * Set the byteArrayValue.
+	 * Set the byteValue.
 	 * 
-	 * @param bytesValue the byteArrayValue to set
+	 * @param bytesValue the byteValue to set
 	 * 
 	 * @return this
 	 */
-	public Attachment setByteArrayValue(@Nullable final byte[] bytesValue) {
+	public Attachment setBytesValue(@Nullable final byte[] bytesValue) {
 		if (Arrays.equals(bytesValue, this.bytesValue)) {
 			return this;
 		}
-		if (this.bytesValue == null
-				|| this.bytesValue.length != bytesValue.length) {
-			this.bytesValue = new byte[bytesValue.length];
+
+		if (bytesValue == null) {
+			this.bytesValue = null;
+		} else {
+			if (this.bytesValue == null
+					|| this.bytesValue.length != bytesValue.length) {
+				this.bytesValue = new byte[bytesValue.length];
+			}
+			System.arraycopy(this.bytesValue, 0, bytesValue, 0,
+					this.bytesValue.length);
 		}
-		System.arraycopy(this.bytesValue, 0, bytesValue, 0,
-				this.bytesValue.length);
 		setInNeedOfNewPPodVersionInfo();
 		return this;
 	}
