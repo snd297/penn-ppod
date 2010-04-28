@@ -44,6 +44,7 @@
 	<modules>
 		<module>cdm</module>
 		<module>services</module>
+		<module>distribution</module>
 	</modules>
 	<repositories>
 		<repository>
