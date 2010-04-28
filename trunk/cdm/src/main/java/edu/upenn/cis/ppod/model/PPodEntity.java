@@ -37,7 +37,6 @@ import javax.persistence.ManyToOne;
 import javax.persistence.Table;
 import javax.persistence.Transient;
 import javax.xml.bind.Marshaller;
-import javax.xml.bind.Unmarshaller;
 import javax.xml.bind.annotation.XmlAttribute;
 import javax.xml.bind.annotation.XmlElement;
 import javax.xml.bind.annotation.XmlIDREF;
@@ -171,17 +170,6 @@ public abstract class PPodEntity extends PersistentObject implements IAttachee,
 		}
 		getAttachmentsXml().addAll(getAttachments());
 		return true;
-	}
-
-	/**
-	 * {@link Unmarshaller} callback.
-	 * 
-	 * @param u see {@code Unmarshaller}
-	 * @param parent see {@code Unmarshaller}
-	 */
-	@OverridingMethodsMustInvokeSuper
-	public void beforeUnmarshal(final Unmarshaller u, final Object parent) {
-		unsetAllowPersist();
 	}
 
 	private Set<Attachment> getAttachments() {
@@ -347,7 +335,7 @@ public abstract class PPodEntity extends PersistentObject implements IAttachee,
 		return retValue.toString();
 	}
 
-	public PPodEntity unsetInNeedOfNewPPodVersionInfo() {
+	PPodEntity unsetInNeedOfNewPPodVersionInfo() {
 		inNeedOfNewPPodVersionInfo = false;
 		return this;
 	}

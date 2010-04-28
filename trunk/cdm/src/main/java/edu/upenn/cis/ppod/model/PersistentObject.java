@@ -55,9 +55,6 @@ public abstract class PersistentObject implements IPersistentObject {
 	private Integer version;
 
 	@Transient
-	private boolean allowPersist = true;
-
-	@Transient
 	private boolean marshalled = false;
 
 	/** Default constructor. */
@@ -76,10 +73,6 @@ public abstract class PersistentObject implements IPersistentObject {
 	@OverridingMethodsMustInvokeSuper
 	public void afterUnmarshal(final Unmarshaller u, final Object parent) {
 		marshalled = true;
-	}
-
-	public boolean getAllowPersist() {
-		return allowPersist;
 	}
 
 	@XmlAttribute
@@ -126,13 +119,4 @@ public abstract class PersistentObject implements IPersistentObject {
 		return retValue.toString();
 	}
 
-	/**
-	 * Can be used to block persisting an object, for example in an interceptor.
-	 * 
-	 * @return this
-	 */
-	protected PersistentObject unsetAllowPersist() {
-		allowPersist = false;
-		return this;
-	}
 }
