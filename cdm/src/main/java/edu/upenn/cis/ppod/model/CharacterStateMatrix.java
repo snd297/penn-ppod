@@ -30,6 +30,7 @@ import java.util.Map;
 import java.util.Map.Entry;
 
 import javax.annotation.CheckForNull;
+import javax.annotation.Nonnegative;
 import javax.annotation.Nullable;
 import javax.persistence.CascadeType;
 import javax.persistence.Column;
@@ -478,7 +479,7 @@ public class CharacterStateMatrix extends UUPPodEntityWXmlId implements
 	 * 
 	 * @return this {@code CharacterStateMatrix}
 	 */
-	CharacterStateMatrix resetColumnPPodVersion(final int position) {
+	CharacterStateMatrix resetColumnPPodVersion(@Nonnegative final int position) {
 		checkArgument(position >= 0, "position is negative");
 		nullFillAndSet(getColumnPPodVersionInfos(), position, null);
 		return this;

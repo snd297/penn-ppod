@@ -24,6 +24,7 @@ import java.util.Vector;
 import java.util.concurrent.ConcurrentHashMap;
 
 import javax.annotation.CheckForNull;
+import javax.annotation.Nonnegative;
 
 /**
  * For easing work with collections.
@@ -64,7 +65,8 @@ public class CollectionsUtil {
 		return new Vector<T>();
 	}
 
-	public static <T> void nullFillAndSet(final List<T> coll, final int i,
+	public static <T> void nullFillAndSet(final List<T> coll,
+			@Nonnegative final int i,
 			@CheckForNull final T t) {
 		checkNotNull(coll);
 		checkArgument(i >= 0, "i is negative");
@@ -75,7 +77,7 @@ public class CollectionsUtil {
 	}
 
 	public static <T> void nullFill(final Collection<T> coll,
-			final int size) {
+			@Nonnegative final int size) {
 		checkNotNull(coll);
 		checkArgument(size >= 0, "size is negative");
 		while (coll.size() < size) {

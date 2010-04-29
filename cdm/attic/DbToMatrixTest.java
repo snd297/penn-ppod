@@ -110,15 +110,15 @@ public class DbToMatrixTest extends DbTestBase {
 										cellElement
 												.attributeValue(CharacterStateCell.TYPE_COLUMN));
 
-						final String cellPhyloCharStateXPath = "/dataset/"
-								+ CharacterStateCell.CELL_CHARACTER_STATE_JOIN_TABLE
-										.toLowerCase()
-								+ "[@"
-								+ CharacterStateCell.ID_COLUMN
-								+ "='"
-								+ cellElement
-										.attributeValue(CharacterStateCell.ID_COLUMN)
-								+ "']";
+//						final String cellPhyloCharStateXPath = null; "/dataset/"
+//								+ CharacterStateCell.CELL_CHARACTER_STATE_JOIN_TABLE
+//										.toLowerCase()
+//								+ "[@"
+//								+ CharacterStateCell.ID_COLUMN
+//								+ "='"
+//								+ cellElement
+//										.attributeValue(CharacterStateCell.ID_COLUMN)
+//								+ "']";
 						logger.debug("{}:Looking for nodes with {}", M,
 								cellPhyloCharStateXPath);
 

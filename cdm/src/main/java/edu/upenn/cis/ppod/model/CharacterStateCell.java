@@ -113,14 +113,6 @@ public class CharacterStateCell extends PPodEntity implements
 	static final String TYPE_COLUMN = "TYPE";
 
 	/**
-	 * {@code CharacterStateCell}-{@link CharacterState} join table.
-	 * Intentionally package-private.
-	 */
-	static final String CELL_CHARACTER_STATE_JOIN_TABLE = TABLE
-															+ "_"
-															+ CharacterState.TABLE;
-
-	/**
 	 * To handle the most-common case of a single {@code CharacterState}, we
 	 * cache {@code states.get(0)}.
 	 * <p>

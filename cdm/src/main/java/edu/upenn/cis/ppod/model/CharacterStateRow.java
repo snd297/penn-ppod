@@ -25,6 +25,7 @@ import java.util.Iterator;
 import java.util.List;
 
 import javax.annotation.CheckForNull;
+import javax.annotation.Nonnegative;
 import javax.annotation.Nullable;
 import javax.persistence.CascadeType;
 import javax.persistence.Entity;
@@ -159,7 +160,7 @@ public class CharacterStateRow extends PPodEntity implements
 	 * @throws IndexOutOfBoundsException if {@code pPodCellPosition} is out of
 	 *             bounds for this row
 	 */
-	public CharacterStateCell getCell(final int pPodCellPosition) {
+	public CharacterStateCell getCell(@Nonnegative final int pPodCellPosition) {
 		return getCells().get(pPodCellPosition);
 	}
 
