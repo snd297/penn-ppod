@@ -24,6 +24,7 @@ import java.util.Collections;
 import java.util.Iterator;
 import java.util.List;
 
+import javax.annotation.CheckForNull;
 import javax.annotation.Nullable;
 import javax.persistence.CascadeType;
 import javax.persistence.Entity;
@@ -97,7 +98,7 @@ public class CharacterStateRow extends PPodEntity implements
 	 */
 	@ManyToOne
 	@JoinColumn(name = CharacterStateMatrix.ID_COLUMN, nullable = false)
-	@Nullable
+	@CheckForNull
 	private CharacterStateMatrix matrix;
 
 	CharacterStateRow() {}
@@ -177,7 +178,10 @@ public class CharacterStateRow extends PPodEntity implements
 	}
 
 	/**
-	 * Getter. {@code null} at object creation.
+	 * Getter.
+	 * <p>
+	 * Will be {@code null} if and only if this row is not part of a matrix.
+	 * Will never be {@code null} for persistent objects.
 	 * 
 	 * @return the {@code CharacterStateMatrix} of which this is a row
 	 */
@@ -214,13 +218,14 @@ public class CharacterStateRow extends PPodEntity implements
 			return Collections.emptyList();
 		}
 
-		checkState(getMatrix() != null,
-								"This row hasn't been added to a matrix yet");
+		final CharacterStateMatrix matrix = getMatrix();
+
+		checkState(matrix != null, "This row hasn't been added to a matrix yet");
 
 		checkState(
-				getMatrix().getCharacters().size() == newCells.size(),
+				matrix.getCharacters().size() == newCells.size(),
 								"the matrix has different number of characters "
-										+ getMatrix().getCharacters().size()
+										+ matrix.getCharacters().size()
 										+ " than cells "
 										+ newCells.size()
 										+ " and cells > 0");
@@ -245,8 +250,10 @@ public class CharacterStateRow extends PPodEntity implements
 	 */
 	@Override
 	public CharacterStateRow setInNeedOfNewPPodVersionInfo() {
-		checkState(getMatrix() != null);
-		matrix.setInNeedOfNewPPodVersionInfo();
+		final CharacterStateMatrix matrix = getMatrix();
+		if (matrix != null) {
+			matrix.setInNeedOfNewPPodVersionInfo();
+		}
 		super.setInNeedOfNewPPodVersionInfo();
 		return this;
 	}
@@ -259,7 +266,7 @@ public class CharacterStateRow extends PPodEntity implements
 	 * @return this {@code CharacterStateRow}
 	 */
 	protected CharacterStateRow setMatrix(
-			@Nullable final CharacterStateMatrix matrix) {
+			@CheckForNull final CharacterStateMatrix matrix) {
 		this.matrix = matrix;
 		return this;
 	}

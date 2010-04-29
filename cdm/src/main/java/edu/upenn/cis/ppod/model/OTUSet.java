@@ -218,6 +218,14 @@ public class OTUSet extends UUPPodEntityWXmlId implements Iterable<OTU> {
 		return otu;
 	}
 
+	public OTUSet addTreeSet(final TreeSet newTreeSet) {
+		checkNotNull(newTreeSet);
+		getTreeSets().add(newTreeSet);
+		newTreeSet.setOTUSet(this);
+		setInNeedOfNewPPodVersionInfo();
+		return this;
+	}
+
 	/**
 	 * See {@link Unmarshaller}.
 	 * 
@@ -577,14 +585,6 @@ public class OTUSet extends UUPPodEntityWXmlId implements Iterable<OTU> {
 		}
 		setInNeedOfNewPPodVersionInfo();
 		return removedTreeSets;
-	}
-
-	public OTUSet addTreeSet(final TreeSet newTreeSet) {
-		checkNotNull(newTreeSet);
-		getTreeSets().add(newTreeSet);
-		newTreeSet.setOTUSet(this);
-		setInNeedOfNewPPodVersionInfo();
-		return this;
 	}
 
 	/**

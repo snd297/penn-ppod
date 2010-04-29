@@ -17,6 +17,7 @@ package edu.upenn.cis.ppod.model;
 
 import static com.google.common.base.Preconditions.checkNotNull;
 
+import javax.annotation.Nullable;
 import javax.persistence.Column;
 import javax.persistence.Entity;
 import javax.persistence.Table;
@@ -52,11 +53,14 @@ public class AttachmentNamespace extends PersistentObjectWithXmlId {
 	}
 
 	/**
-	 * Get the label.
+	 * Get the label. Will be {@code null} for newly created objects until
+	 * {@link #setLabel(String)} is called. For persistent objects, this value
+	 * will never be {@code null}.
 	 * 
 	 * @return the label
 	 */
 	@XmlAttribute
+	@Nullable
 	public String getLabel() {
 		return label;
 	}

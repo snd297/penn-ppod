@@ -17,6 +17,7 @@ package edu.upenn.cis.ppod.model;
 
 import static com.google.common.base.Preconditions.checkNotNull;
 
+import javax.annotation.CheckForNull;
 import javax.annotation.Nullable;
 import javax.persistence.Column;
 import javax.persistence.Entity;
@@ -52,10 +53,11 @@ public class AttachmentType extends PersistentObjectWithXmlId {
 	@ManyToOne(fetch = FetchType.LAZY)
 	@Cascade(org.hibernate.annotations.CascadeType.SAVE_UPDATE)
 	@JoinColumn(name = AttachmentNamespace.ID_COLUMN, nullable = false)
-	@Nullable
+	@CheckForNull
 	private AttachmentNamespace namespace;
 
 	@Column(name = LABEL_COLUMN, unique = true, nullable = false, length = LABEL_COLUMN_LENGTH)
+	@CheckForNull
 	private String label;
 
 	AttachmentType() {}
@@ -67,11 +69,14 @@ public class AttachmentType extends PersistentObjectWithXmlId {
 	}
 
 	/**
-	 * Get the label.
+	 * Get the label. Will be {@code null} for newly created objects until
+	 * {@link #setLabel(String)} is called. Will never be {@code null} for
+	 * persistent objects.
 	 * 
 	 * @return the label
 	 */
 	@XmlAttribute
+	@Nullable
 	public String getLabel() {
 		return label;
 	}

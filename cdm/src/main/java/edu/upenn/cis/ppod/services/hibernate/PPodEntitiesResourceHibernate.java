@@ -22,6 +22,8 @@ import java.util.Iterator;
 import java.util.List;
 import java.util.Set;
 
+import javax.annotation.CheckForNull;
+
 import org.hibernate.FlushMode;
 import org.hibernate.Session;
 
@@ -47,6 +49,7 @@ class PPodEntitiesResourceHibernate implements
 
 	private final IVisitor setDocIdVisitor;
 
+	@CheckForNull
 	private Session session;
 
 	@Inject
@@ -140,8 +143,10 @@ class PPodEntitiesResourceHibernate implements
 								+ "]");
 			} else {
 				throw new IllegalArgumentException("unsupported entity type ["
-						+ queryResult.getClass() + "], result: ["
-						+ queryResult.toString() + "]");
+													+ queryResult.getClass()
+													+ "], result: ["
+													+ queryResult.toString()
+													+ "]");
 			}
 
 			// Now we clean up our response so we don't include any extra

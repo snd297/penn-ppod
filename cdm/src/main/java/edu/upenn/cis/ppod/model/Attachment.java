@@ -71,18 +71,21 @@ public class Attachment extends UUPPodEntityWXmlId {
 
 	final static class IsOfNamespace implements IIsOfNamespace {
 
-		private final String namespace;
+		private final String namespaceLabel;
 
 		/**
-		 * @param namespace is the type of this namespace?
+		 * @param namespaceLabel is the typeLabel of this namespaceLabel?
 		 */
 		@Inject
-		IsOfNamespace(@Assisted final String namespace) {
-			this.namespace = namespace;
+		IsOfNamespace(@Assisted final String namespaceLabel) {
+			checkNotNull(namespaceLabel);
+			this.namespaceLabel = namespaceLabel;
 		}
 
 		public boolean apply(final Attachment input) {
-			return input.getType().getNamespace().getLabel().equals(namespace);
+			checkNotNull(input);
+			return namespaceLabel.equals(input.getType().getNamespace()
+					.getLabel());
 		}
 
 	}
@@ -94,28 +97,38 @@ public class Attachment extends UUPPodEntityWXmlId {
 	public final static class IsOfNamespaceAndType implements
 			Predicate<Attachment> {
 
-		private final String namespace;
+		private final String namespaceLabel;
 
-		private final String type;
+		private final String typeLabel;
 
 		/**
-		 * @param type is the attachment of this type?
-		 * @param namespace is the type of this namespace?
+		 * @param typeLabel is the attachment of this typeLabel?
+		 * @param namespaceLabel is the typeLabel of this namespaceLabel?
 		 */
-		IsOfNamespaceAndType(final String namespace, final String type) {
-			this.type = type;
-			this.namespace = namespace;
+		IsOfNamespaceAndType(final String namespaceLabel, final String typeLabel) {
+			checkNotNull(namespaceLabel);
+			checkNotNull(typeLabel);
+			this.typeLabel = typeLabel;
+			this.namespaceLabel = namespaceLabel;
 		}
 
 		public boolean apply(final Attachment input) {
-			return input.getType().getNamespace().getLabel().equals(namespace)
-					&& input.getType().getLabel().equals(type);
+			checkNotNull(input);
+			return namespaceLabel.equals(input.getType().getNamespace()
+					.getLabel())
+					&& typeLabel.equals(input.getType().getLabel());
 		}
 
 	}
 
-	public final static class IsOfNamespaceTypeLabelAndStringValue implements
+	public static interface IIsOfNamepspaceTypeLabelAndStringValue extends
 			Predicate<Attachment> {
+
+	}
+
+	public final static class IsOfNamespaceTypeLabelAndStringValue implements
+			IIsOfNamepspaceTypeLabelAndStringValue {
+
 		private final String namespace;
 		private final String type;
 		private final String label;
@@ -123,12 +136,19 @@ public class Attachment extends UUPPodEntityWXmlId {
 
 		IsOfNamespaceTypeLabelAndStringValue(final Attachment attachment) {
 			checkNotNull(attachment);
+
+			checkArgument(attachment.getType() != null,
+					"attachment.getType() == null");
+
+			checkArgument(attachment.getType().getNamespace() != null,
+					"attachment.getType().getNamespace() == null");
+
 			checkArgument(
 					attachment.getType().getNamespace().getLabel() != null,
-					"attachment's type's namespace has null label");
+					"attachment's typeLabel's namespaceLabel has null label");
 
 			checkArgument(attachment.getType().getLabel() != null,
-					"attachment's type has null label");
+					"attachment's typeLabel has null label");
 
 			final String attachmentLabel = attachment.getLabel();
 			checkArgument(attachmentLabel != null,
@@ -173,31 +193,11 @@ public class Attachment extends UUPPodEntityWXmlId {
 		}
 	};
 
-	/**
-	 * Return the attachments in this attachment set that are of type {@code
-	 * type}.
-	 * 
-	 * @param attachments in which to look for the attachments
-	 * @param type the type of attachment we want
-	 * @return the attachments in this attachment set that are of type {@code
-	 *         type}
-	 */
-	public static Set<Attachment> getAttachmentsByType(
-			final Set<Attachment> attachments, final String type) {
-		final Set<Attachment> returnAttachments = newHashSet();
-		for (final Attachment attachment : attachments) {
-			if (type.equals(attachment.getType().getLabel())) {
-				returnAttachments.add(attachment);
-			}
-		}
-		return returnAttachments;
-	}
-
-	/** Like a variable type. */
+	/** Like a variable typeLabel. */
 	@ManyToOne(fetch = FetchType.LAZY)
 	@JoinColumn(name = AttachmentType.ID_COLUMN, nullable = false)
 	@Cascade(org.hibernate.annotations.CascadeType.SAVE_UPDATE)
-	@Nullable
+	@CheckForNull
 	private AttachmentType type;
 
 	/** Like a variable name. */
@@ -244,9 +244,9 @@ public class Attachment extends UUPPodEntityWXmlId {
 	}
 
 	/**
-	 * Get the byteArrayValue.
+	 * Get a copy of the byteArrayValue.
 	 * 
-	 * @return the byteArrayValue
+	 * @return a copy of the byteArrayValue
 	 */
 	@XmlElement
 	@CheckForNull
@@ -282,9 +282,9 @@ public class Attachment extends UUPPodEntityWXmlId {
 	}
 
 	/**
-	 * Get the type of this attachment.
+	 * Get the typeLabel of this attachment.
 	 * 
-	 * @return the type of this attachment
+	 * @return the typeLabel of this attachment
 	 */
 	@XmlAttribute(name = "attachmentTypeDocId")
 	@XmlIDREF
@@ -300,7 +300,7 @@ public class Attachment extends UUPPodEntityWXmlId {
 	 * 
 	 * @return this
 	 */
-	public Attachment setBytesValue(@Nullable final byte[] bytesValue) {
+	public Attachment setBytesValue(@CheckForNull final byte[] bytesValue) {
 		if (Arrays.equals(bytesValue, this.bytesValue)) {
 			return this;
 		}
@@ -336,7 +336,7 @@ public class Attachment extends UUPPodEntityWXmlId {
 	 * 
 	 * @return this
 	 */
-	public Attachment setLabel(@Nullable final String label) {
+	public Attachment setLabel(@CheckForNull final String label) {
 		if (equal(label, getLabel())) {
 
 		} else {
@@ -353,7 +353,7 @@ public class Attachment extends UUPPodEntityWXmlId {
 	 * 
 	 * @return this {@code Attachment}
 	 */
-	public Attachment setStringValue(@Nullable final String stringValue) {
+	public Attachment setStringValue(@CheckForNull final String stringValue) {
 		if (equal(stringValue, getStringValue())) {
 
 		} else {
@@ -364,9 +364,9 @@ public class Attachment extends UUPPodEntityWXmlId {
 	}
 
 	/**
-	 * Set the type of this attachment.
+	 * Set the typeLabel of this attachment.
 	 * 
-	 * @param type the type
+	 * @param typeLabel the typeLabel
 	 * @return this attachment
 	 */
 	public Attachment setType(final AttachmentType type) {
@@ -394,7 +394,8 @@ public class Attachment extends UUPPodEntityWXmlId {
 		final StringBuilder retValue = new StringBuilder();
 
 		retValue.append("Attachment(").append(super.toString()).append(TAB)
-				.append("type=").append(this.type).append(TAB).append("label=")
+				.append("typeLabel=").append(this.type).append(TAB).append(
+						"label=")
 				.append(this.label).append(TAB).append("stringValue=").append(
 						this.stringValue).append(TAB).append("bytesValue=")
 				.append(this.bytesValue).append(TAB).append(")");

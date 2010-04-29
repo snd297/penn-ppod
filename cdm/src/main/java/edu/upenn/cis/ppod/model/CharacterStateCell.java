@@ -223,7 +223,7 @@ public class CharacterStateCell extends PPodEntity implements
 	 * @throws IllegalStateException if the type has not been set
 	 */
 	@Override
-	public boolean beforeMarshal(@Nullable final Marshaller marshaller) {
+	public boolean beforeMarshal(@CheckForNull final Marshaller marshaller) {
 
 		// Let's not marshal it if it's in a bad state
 		checkState(type != null, "can't marshal a cell without a type");
@@ -476,7 +476,8 @@ public class CharacterStateCell extends PPodEntity implements
 	 * 
 	 * @return this
 	 */
-	protected CharacterStateCell setPosition(@Nullable final Integer position) {
+	protected CharacterStateCell setPosition(
+			@CheckForNull final Integer position) {
 		this.position = position;
 		return this;
 	}
@@ -492,7 +493,8 @@ public class CharacterStateCell extends PPodEntity implements
 	 * 
 	 * @return this {@code CharacterStateCell}
 	 */
-	protected CharacterStateCell setRow(@Nullable final CharacterStateRow row) {
+	protected CharacterStateCell setRow(
+			@CheckForNull final CharacterStateRow row) {
 		this.row = row;
 		return this;
 	}

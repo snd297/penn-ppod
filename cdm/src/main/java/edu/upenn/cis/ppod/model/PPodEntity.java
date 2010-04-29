@@ -23,6 +23,7 @@ import java.util.Collections;
 import java.util.Iterator;
 import java.util.Set;
 
+import javax.annotation.CheckForNull;
 import javax.annotation.Nullable;
 import javax.annotation.OverridingMethodsMustInvokeSuper;
 import javax.persistence.Column;
@@ -80,7 +81,7 @@ public abstract class PPodEntity extends PersistentObject implements IAttachee,
 	 */
 	@ManyToOne(fetch = FetchType.LAZY)
 	@JoinColumn(name = PPodVersionInfo.ID_COLUMN, nullable = false)
-	@Nullable
+	@CheckForNull
 	private PPodVersionInfo pPodVersionInfo;
 
 	/**
@@ -103,19 +104,19 @@ public abstract class PPodEntity extends PersistentObject implements IAttachee,
 	private boolean inNeedOfNewPPodVersionInfo = false;
 
 	@Transient
-	@Nullable
+	@CheckForNull
 	private Long pPodVersion;
 
 	@ManyToMany
 	@JoinTable(joinColumns = @JoinColumn(name = ID_COLUMN), inverseJoinColumns = @JoinColumn(name = Attachment.ID_COLUMN))
-	@Nullable
+	@CheckForNull
 	private Set<Attachment> attachments;
 
 	@Column(name = "HAS_ATTACHMENTS", nullable = false)
 	private Boolean hasAttachments = false;
 
 	@Transient
-	@Nullable
+	@CheckForNull
 	private Set<Attachment> attachmentsXml;
 
 	PPodEntity() {}
@@ -163,7 +164,7 @@ public abstract class PPodEntity extends PersistentObject implements IAttachee,
 	 * @return see {@code Marshaller}
 	 */
 	@OverridingMethodsMustInvokeSuper
-	public boolean beforeMarshal(@Nullable final Marshaller marshaler) {
+	public boolean beforeMarshal(@CheckForNull final Marshaller marshaler) {
 		// Write out the version number for the client of the xml
 		if (pPodVersionInfo != null) {
 			pPodVersion = pPodVersionInfo.getPPodVersion();
@@ -174,6 +175,10 @@ public abstract class PPodEntity extends PersistentObject implements IAttachee,
 
 	private Set<Attachment> getAttachments() {
 		if (hasAttachments) {
+			if (attachments == null) {
+				throw new AssertionError(
+						"programming errors: attachments == null and hasAttachments == true");
+			}
 			return attachments;
 		}
 		return Collections.emptySet();
@@ -252,11 +257,11 @@ public abstract class PPodEntity extends PersistentObject implements IAttachee,
 		if (!hasAttachments) {
 			attachmentRemoved = false;
 		} else {
-			attachmentRemoved = attachments.remove(attachment);
+			attachmentRemoved = getAttachments().remove(attachment);
 			if (attachmentRemoved) {
 				setInNeedOfNewPPodVersionInfo();
 			}
-			if (attachments.size() == 0) {
+			if (getAttachments().size() == 0) {
 				hasAttachments = false;
 			}
 		}

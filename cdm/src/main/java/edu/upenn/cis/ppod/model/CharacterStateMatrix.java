@@ -213,7 +213,7 @@ public class CharacterStateMatrix extends UUPPodEntityWXmlId implements
 	}
 
 	@Override
-	public boolean beforeMarshal(@Nullable final Marshaller marshaller) {
+	public boolean beforeMarshal(@CheckForNull final Marshaller marshaller) {
 		super.beforeMarshal(marshaller);
 
 		for (final PPodVersionInfo columnVersionInfo : getColumnPPodVersionInfos()) {
@@ -375,7 +375,8 @@ public class CharacterStateMatrix extends UUPPodEntityWXmlId implements
 	}
 
 	/**
-	 * Getter. {@code null} when the object is constructed.
+	 * Getter. {@code null} when the object is constructed, but never {@code
+	 * null} for persistent objects.
 	 * 
 	 * @return the label
 	 */
@@ -386,7 +387,8 @@ public class CharacterStateMatrix extends UUPPodEntityWXmlId implements
 	}
 
 	/**
-	 * Getter. Will be {@code null} when object is first created.
+	 * Getter. Will be {@code null} when object is first created, but never
+	 * {@code null} for persistent objects.
 	 * 
 	 * @return this matrix's {@code OTUSet}
 	 */
@@ -611,7 +613,7 @@ public class CharacterStateMatrix extends UUPPodEntityWXmlId implements
 	 * @return this matrix
 	 */
 	public CharacterStateMatrix setDescription(
-			@Nullable final String description) {
+			@CheckForNull final String description) {
 		if (equal(getDescription(), description)) {
 			// nothing to do
 		} else {
@@ -671,7 +673,8 @@ public class CharacterStateMatrix extends UUPPodEntityWXmlId implements
 	 * 
 	 * @return this
 	 */
-	protected CharacterStateMatrix setOTUSet(@Nullable final OTUSet newOTUSet) {
+	protected CharacterStateMatrix setOTUSet(
+			@CheckForNull final OTUSet newOTUSet) {
 		otuSet = newOTUSet;
 		getOTUsToRows().setOTUs(getOTUSet(), this);
 		return this;
