@@ -95,12 +95,6 @@
 			<scope>runtime</scope>
 		</dependency>
 		<dependency>
-			<groupId>com.h2database</groupId>
-			<artifactId>h2</artifactId>
-			<version>1.2.132</version>
-			<scope>test</scope>
-		</dependency>
-		<dependency>
 			<groupId>org.apache.shiro</groupId>
 			<artifactId>shiro-core</artifactId>
 			<version>1.0-incubating-SNAPSHOT</version>
@@ -181,8 +175,7 @@
 		<dependency>
 			<groupId>org.testng</groupId>
 			<artifactId>testng</artifactId>
-			<version>5.11</version>
-			<classifier>jdk15</classifier>
+			<version>5.12.1</version>
 			<!--
 				Eclipse was giving an error when this was uncommented out.
 				<scope>test</scope>
