@@ -38,7 +38,7 @@ public class Chromatogram extends UUPPodEntity {
 	@Lob
 	@Column(name = "CHROMATOGRAM", nullable = false)
 	@CheckForNull
-	private byte[] chromatogram = new byte[0];
+	private byte[] chromatogram;
 
 	@OneToOne(fetch = FetchType.LAZY)
 	@CheckForNull
