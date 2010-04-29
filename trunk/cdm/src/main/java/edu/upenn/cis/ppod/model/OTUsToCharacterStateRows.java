@@ -21,7 +21,7 @@ import static com.google.common.collect.Sets.newHashSet;
 import java.util.Map;
 import java.util.Set;
 
-import javax.annotation.Nullable;
+import javax.annotation.CheckForNull;
 import javax.persistence.CascadeType;
 import javax.persistence.Entity;
 import javax.persistence.MapKeyJoinColumn;
@@ -59,7 +59,7 @@ public class OTUsToCharacterStateRows extends
 
 	OTUsToCharacterStateRows() {}
 
-	public boolean beforeMarshal(@Nullable final Marshaller marshaller) {
+	public boolean beforeMarshal(@CheckForNull final Marshaller marshaller) {
 		getOTURowPairs().clear();
 		for (final Map.Entry<OTU, CharacterStateRow> otuToRow : getOTUsToValues()
 				.entrySet()) {

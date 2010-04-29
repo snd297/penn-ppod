@@ -29,7 +29,9 @@ public abstract class OTUsToMolecularSequences<T extends MolecularSequence<?>, P
 	protected T putHelper(final OTU key,
 			final T value,
 			final P parent) {
+		checkNotNull(key);
 		checkNotNull(value);
+		checkNotNull(parent);
 		final T originalSequence = super.putHelper(key, value,
 				parent);
 
