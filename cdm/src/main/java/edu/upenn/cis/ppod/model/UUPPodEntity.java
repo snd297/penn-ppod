@@ -19,6 +19,7 @@ import static com.google.common.base.Preconditions.checkState;
 
 import java.util.UUID;
 
+import javax.annotation.CheckForNull;
 import javax.annotation.Nullable;
 import javax.persistence.Column;
 import javax.persistence.MappedSuperclass;
@@ -48,7 +49,7 @@ public abstract class UUPPodEntity extends PPodEntity implements IWithPPodId {
 	final static int PPOD_ID_COLUMN_LENGTH = 36;
 
 	@Column(name = PPOD_ID_COLUMN, unique = true, nullable = false, length = PPOD_ID_COLUMN_LENGTH)
-	@Nullable
+	@CheckForNull
 	private String pPodId;
 
 	@XmlAttribute
@@ -61,7 +62,7 @@ public abstract class UUPPodEntity extends PPodEntity implements IWithPPodId {
 		return setPPodId(UUID.randomUUID().toString());
 	}
 
-	public UUPPodEntity setPPodId(@Nullable final String pPodId) {
+	public UUPPodEntity setPPodId(@CheckForNull final String pPodId) {
 		checkState(getPPodId() == null, "pPodId already set");
 
 		this.pPodId = pPodId;

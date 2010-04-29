@@ -19,6 +19,8 @@ import static com.google.common.base.Preconditions.checkNotNull;
 
 import java.util.Date;
 
+import javax.annotation.CheckForNull;
+import javax.annotation.Nullable;
 import javax.persistence.Column;
 import javax.persistence.Entity;
 import javax.persistence.Table;
@@ -50,6 +52,7 @@ public class PPodVersionInfo extends PersistentObject {
 
 	/** Record the creation time of this record. */
 	@Column(name = "CREATED", nullable = false)
+	@CheckForNull
 	private Date created;
 
 	/**
@@ -63,7 +66,11 @@ public class PPodVersionInfo extends PersistentObject {
 	 * @return a copy of the creation date
 	 */
 	@XmlAttribute
+	@Nullable
 	public Date getCreated() {
+		if (created == null) { 
+			return null;
+		}
 		return (Date) created.clone();
 	}
 

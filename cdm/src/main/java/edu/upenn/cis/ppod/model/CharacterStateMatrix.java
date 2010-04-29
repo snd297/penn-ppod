@@ -479,7 +479,7 @@ public class CharacterStateMatrix extends UUPPodEntityWXmlId implements
 	 * @return this {@code CharacterStateMatrix}
 	 */
 	CharacterStateMatrix resetColumnPPodVersion(final int position) {
-		checkArgument(position >= 0, "position must be non-negative");
+		checkArgument(position >= 0, "position is negative");
 		nullFillAndSet(getColumnPPodVersionInfos(), position, null);
 		return this;
 	}

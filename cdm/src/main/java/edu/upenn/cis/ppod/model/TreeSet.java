@@ -23,6 +23,7 @@ import java.util.Collections;
 import java.util.Iterator;
 import java.util.List;
 
+import javax.annotation.CheckForNull;
 import javax.annotation.Nullable;
 import javax.persistence.Column;
 import javax.persistence.Entity;
@@ -58,14 +59,10 @@ public class TreeSet extends UUPPodEntityWXmlId implements Iterable<Tree> {
 	@Column(name = "LABEL", nullable = false)
 	private String label;
 
-	/**
-	 * The {@link OTU}s that this {@code Tree} contains.
-	 */
 	@ManyToOne(fetch = FetchType.LAZY)
 	@JoinColumn(name = OTUSet.ID_COLUMN, nullable = false)
 	private OTUSet otuSet;
 
-	/** The set of {@code Tree}s this {@code TreeSet} contains. */
 	@OneToMany(orphanRemoval = true)
 	@org.hibernate.annotations.IndexColumn(name = "POSITION")
 	@JoinColumn(name = ID_COLUMN, nullable = false)
@@ -162,7 +159,7 @@ public class TreeSet extends UUPPodEntityWXmlId implements Iterable<Tree> {
 	 * 
 	 * @return this {@code TreeSet}
 	 */
-	protected TreeSet setOTUSet(@Nullable final OTUSet otuSet) {
+	protected TreeSet setOTUSet(@CheckForNull final OTUSet otuSet) {
 		if (equal(otuSet, getOTUSet())) {
 
 		} else {
@@ -216,6 +213,11 @@ public class TreeSet extends UUPPodEntityWXmlId implements Iterable<Tree> {
 		return this;
 	}
 
+	/**
+	 * Returns the number of trees in this tree set.
+	 * 
+	 * @return the number of trees in this tree set
+	 */
 	public int getTreesSize() {
 		return getTrees().size();
 	}

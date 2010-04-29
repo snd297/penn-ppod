@@ -23,7 +23,7 @@ import java.util.List;
 import java.util.Vector;
 import java.util.concurrent.ConcurrentHashMap;
 
-import javax.annotation.Nullable;
+import javax.annotation.CheckForNull;
 
 /**
  * For easing work with collections.
@@ -64,24 +64,22 @@ public class CollectionsUtil {
 		return new Vector<T>();
 	}
 
-	public static <T> List<T> nullFillAndSet(final List<T> coll, final int i,
-			@Nullable final T t) {
+	public static <T> void nullFillAndSet(final List<T> coll, final int i,
+			@CheckForNull final T t) {
 		checkNotNull(coll);
-		checkArgument(i >= 0, "i must be non-negative");
+		checkArgument(i >= 0, "i is negative");
 		while (coll.size() < i + 1) {
 			coll.add(null);
 		}
 		coll.set(i, t);
-		return coll;
 	}
 
-	public static <T> Collection<T> nullFill(final Collection<T> coll,
+	public static <T> void nullFill(final Collection<T> coll,
 			final int size) {
 		checkNotNull(coll);
-		checkArgument(size >= 0, "size must be non-negative");
+		checkArgument(size >= 0, "size is negative");
 		while (coll.size() < size) {
 			coll.add(null);
 		}
-		return coll;
 	}
 }

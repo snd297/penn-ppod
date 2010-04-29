@@ -83,7 +83,7 @@ public class Chromatogram extends UUPPodEntity {
 		return sequence;
 	}
 
-	public Chromatogram setSequence(DNASequence sequence) {
+	public Chromatogram setSequence(@CheckForNull final DNASequence sequence) {
 		this.sequence = sequence;
 		return this;
 	}

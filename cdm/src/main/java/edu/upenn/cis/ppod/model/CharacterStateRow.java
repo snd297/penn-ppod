@@ -211,7 +211,7 @@ public class CharacterStateRow extends PPodEntity implements
 	 *             number of characters as {@code newCells.size()}
 	 */
 	public List<CharacterStateCell> setCells(
-			final List<CharacterStateCell> newCells) {
+			final List<? extends CharacterStateCell> newCells) {
 		checkNotNull(newCells);
 
 		if (newCells.equals(getCells())) {

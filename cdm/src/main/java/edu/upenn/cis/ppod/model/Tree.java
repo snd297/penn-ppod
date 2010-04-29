@@ -159,7 +159,7 @@ public class Tree extends UUPPodEntity {
 	 * 
 	 * @return this
 	 */
-	Tree setTreeSet(@Nullable final TreeSet treeSet) {
+	protected Tree setTreeSet(@CheckForNull final TreeSet treeSet) {
 		this.treeSet = treeSet;
 		return this;
 	}
