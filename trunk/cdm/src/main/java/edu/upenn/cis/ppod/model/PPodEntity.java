@@ -253,6 +253,7 @@ public abstract class PPodEntity extends PersistentObject implements IAttachee,
 	}
 
 	public boolean removeAttachment(final Attachment attachment) {
+		checkNotNull(attachment);
 		Boolean attachmentRemoved;
 		if (!hasAttachments) {
 			attachmentRemoved = false;
@@ -294,6 +295,7 @@ public abstract class PPodEntity extends PersistentObject implements IAttachee,
 	 * @return this
 	 */
 	public PPodEntity setPPodVersion(final Long pPodVersion) {
+		checkNotNull(pPodVersion);
 		this.pPodVersion = pPodVersion;
 		return this;
 	}

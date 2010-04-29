@@ -235,6 +235,8 @@ public class CharacterStateCell extends PPodEntity implements
 
 	private void checkIncomingState(final CharacterState state) {
 
+		checkNotNull(state);
+
 		final CharacterStateRow row = getRow();
 
 		checkState(row != null && getPosition() != null,
@@ -460,7 +462,7 @@ public class CharacterStateCell extends PPodEntity implements
 	 * @throw IllegalArgumentException if {@code polymorphicStates.size() < 2}
 	 */
 	public CharacterStateCell setPolymorphicStates(
-			final Set<CharacterState> polymorphicStates) {
+			final Set<? extends CharacterState> polymorphicStates) {
 		checkNotNull(polymorphicStates);
 		checkArgument(polymorphicStates.size() > 1,
 				"polymorphic states must be > 1");
@@ -566,16 +568,13 @@ public class CharacterStateCell extends PPodEntity implements
 
 	/**
 	 * Created for testing purposes.
-	 * 
-	 * @param xmlStates should be {@code null} if type is inapplicable or
-	 *            unassigned to emulate what happens when a cell is unmarhsalled
 	 */
 	CharacterStateCell setTypeAndXmlStates(final CharacterStateCell.Type type,
-			final Set<CharacterState> xmlStates) {
+			final Set<? extends CharacterState> xmlStates) {
 		checkNotNull(type);
 		checkNotNull(xmlStates);
 		setType(type);
-		this.xmlStates = xmlStates;
+		this.xmlStates = newHashSet(xmlStates);
 		return this;
 	}
 
@@ -601,7 +600,7 @@ public class CharacterStateCell extends PPodEntity implements
 	 * @throw IllegalArgumentException if {@code uncertainStates.size() < 2}
 	 */
 	public CharacterStateCell setUncertainStates(
-			final Set<CharacterState> uncertainStates) {
+			final Set<? extends CharacterState> uncertainStates) {
 		checkNotNull(uncertainStates);
 		checkArgument(uncertainStates.size() > 1,
 				"uncertain states must be > 1");

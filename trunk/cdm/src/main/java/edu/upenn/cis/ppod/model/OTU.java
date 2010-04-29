@@ -152,7 +152,7 @@ public class OTU extends UUPPodEntityWXmlId implements ILabeled {
 	 * 
 	 * @param otuSet to be added to this <code>OTU</code>.
 	 */
-	OTU setOTUSet(@Nullable final OTUSet otuSet) {
+	OTU setOTUSet(@CheckForNull final OTUSet otuSet) {
 		this.otuSet = otuSet;
 		return this;
 	}
