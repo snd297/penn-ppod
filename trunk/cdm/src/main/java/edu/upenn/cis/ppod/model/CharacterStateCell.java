@@ -282,10 +282,12 @@ public class CharacterStateCell extends PPodEntity implements
 	}
 
 	/**
+	 * Get this cell's position value.
+	 * <p>
 	 * Generally, the position of a cell should be obtained through
 	 * {@link CharacterStateRow#getCellPosition(CharacterStateCell)}.
 	 * 
-	 * @return
+	 * @return this cell's position value
 	 */
 	@CheckForNull
 	protected Integer getPosition() {
@@ -494,8 +496,7 @@ public class CharacterStateCell extends PPodEntity implements
 	}
 
 	/**
-	 * Set the cell to have {@link Type#SINGLE} and {@link #getStates()} {@code
-	 * == state}.
+	 * Set the cell to have type {@link Type#SINGLE} and the given states.
 	 * 
 	 * @param state state to assign to this cell
 	 * 

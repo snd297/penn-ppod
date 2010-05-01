@@ -27,10 +27,16 @@ import java.util.List;
  */
 public abstract class MolecularStateMatrix extends CharacterStateMatrix {
 
+	/**
+	 * Default constructor.
+	 */
 	protected MolecularStateMatrix() {}
 
 	/**
-	 * @param otusToRows
+	 * This constructor was created to allow for injected {@code
+	 * OTUsToCharacterStateRows} to be passed up the inheritance hierarchy.
+	 * 
+	 * @param otusToRows the {@code OTUsToCharacterStateRows} for this matrix.
 	 */
 	protected MolecularStateMatrix(final OTUsToCharacterStateRows otusToRows) {
 		super(otusToRows);
@@ -93,7 +99,7 @@ public abstract class MolecularStateMatrix extends CharacterStateMatrix {
 		final List<Character> removedCharacters = newArrayList();
 
 		for (int i = 0; i < getCharacters().size()
-				- newMolecularCharacters.size(); i++) {
+							- newMolecularCharacters.size(); i++) {
 			removedCharacters.add(getCharacters().get(0));
 		}
 

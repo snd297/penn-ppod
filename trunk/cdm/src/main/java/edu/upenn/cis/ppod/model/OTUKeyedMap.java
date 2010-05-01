@@ -28,6 +28,8 @@ import java.util.Set;
 import javax.annotation.CheckForNull;
 import javax.annotation.Nullable;
 
+import com.google.common.collect.HashBiMap;
+
 import edu.upenn.cis.ppod.modelinterfaces.IPPodVersionedWithOTUSet;
 import edu.upenn.cis.ppod.util.IVisitor;
 import edu.upenn.cis.ppod.util.OTUSomethingPair;
@@ -71,6 +73,15 @@ public abstract class OTUKeyedMap<V extends PersistentObject, P extends IPPodVer
 	 * @return the {@code OTU}-keyed items
 	 */
 	protected abstract Map<OTU, V> getOTUsToValues();
+
+	public OTUKeyedMap<V, P> clear(final P parent) {
+		if (getOTUsToValues().size() == 0) {
+			return this;
+		}
+		getOTUsToValues().clear();
+		parent.setInNeedOfNewPPodVersionInfo();
+		return this;
+	}
 
 	protected abstract Set<OTUSomethingPair<V>> getOTUValuePairs();
 

@@ -28,7 +28,7 @@ import edu.upenn.cis.ppod.util.IVisitor;
  */
 @Entity
 @Table(name = DNASequence.TABLE)
-public class DNASequence extends MolecularSequence<DNASequenceSet> {
+public class DNASequence extends Sequence<DNASequenceSet> {
 
 	/**
 	 * The name of the {@code DNASequence} table.

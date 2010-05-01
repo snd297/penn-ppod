@@ -13,7 +13,7 @@ import com.google.inject.Provider;
 import edu.upenn.cis.ppod.TestGroupDefs;
 
 /**
- * Tests for {@link MolecularSequence}.
+ * Tests for {@link Sequence}.
  * 
  * @author Sam Donnelly
  */
@@ -41,7 +41,7 @@ public class MolecularSequenceTest {
 	 * </ol>
 	 */
 	public void setSequence() {
-		final MolecularSequence<DNASequenceSet> sequence = dnaSequenceProvider
+		final Sequence<DNASequenceSet> sequence = dnaSequenceProvider
 				.get();
 		final String sequenceString = "ACGTAC-T-A";
 		sequence.setSequence(sequenceString);
@@ -66,14 +66,14 @@ public class MolecularSequenceTest {
 	 */
 	@Test(expectedExceptions = IllegalArgumentException.class)
 	public void setSequenceWithAnIllegalCharacter() {
-		final MolecularSequence<DNASequenceSet> sequence = dnaSequenceProvider
+		final Sequence<DNASequenceSet> sequence = dnaSequenceProvider
 				.get();
 		final String sequenceString = "ACGTlC-T-A";
 		sequence.setSequence(sequenceString);
 	}
 
 	/**
-	 * Make sure that {@link MolecularSequence#setInNeedOfNewPPodVersionInfo()}
+	 * Make sure that {@link Sequence#setInNeedOfNewPPodVersionInfo()}
 	 * works on both the sequence and parent sequence set.
 	 * <p>
 	 * Also make sure that it works if no parent has been set.
@@ -84,7 +84,7 @@ public class MolecularSequenceTest {
 		final OTUSet otuSet = otuSetProvider.get();
 		final OTU otu0 = otuSet.addOTU(otuProvider.get());
 
-		final MolecularSequenceSet<DNASequence> sequenceSet = dnaSequenceSetProvider
+		final SequenceSet<DNASequence> sequenceSet = dnaSequenceSetProvider
 				.get();
 
 		sequenceSet.setOTUSet(otuSet);
@@ -120,7 +120,7 @@ public class MolecularSequenceTest {
 	 * </ol>
 	 */
 	public void setName() {
-		final MolecularSequence<?> sequence = dnaSequenceProvider.get();
+		final Sequence<?> sequence = dnaSequenceProvider.get();
 
 		assertNull(sequence.getName());
 
@@ -155,7 +155,7 @@ public class MolecularSequenceTest {
 	 * </ol>
 	 */
 	public void setAccession() {
-		final MolecularSequence<?> sequence = dnaSequenceProvider.get();
+		final Sequence<?> sequence = dnaSequenceProvider.get();
 
 		assertNull(sequence.getAccession());
 
@@ -190,7 +190,7 @@ public class MolecularSequenceTest {
 	 * </ol>
 	 */
 	public void setDescription() {
-		final MolecularSequence<?> sequence = dnaSequenceProvider.get();
+		final Sequence<?> sequence = dnaSequenceProvider.get();
 
 		assertNull(sequence.getDescription());
 

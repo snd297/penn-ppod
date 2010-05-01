@@ -38,11 +38,11 @@ import edu.upenn.cis.ppod.util.IVisitor;
  */
 @Entity
 @Table(name = DNASequenceSet.TABLE)
-public class DNASequenceSet extends MolecularSequenceSet<DNASequence> {
+public class DNASequenceSet extends SequenceSet<DNASequence> {
 
-	public final static String TABLE = "DNA_SEQUENCE_SET";
+	final static String TABLE = "DNA_SEQUENCE_SET";
 
-	public final static String ID_COLUMN = TABLE + "_"
+	final static String ID_COLUMN = TABLE + "_"
 											+ PersistentObject.ID_COLUMN;
 
 	/**
@@ -108,15 +108,22 @@ public class DNASequenceSet extends MolecularSequenceSet<DNASequence> {
 	}
 
 	/**
-	 * @throws IllegalStateException if {@link getOTUsToSequnces() == null}
+	 * @throws IllegalStateException if {@link #getOTUsToSequences()} {@code ==
+	 *             null}.
 	 */
 	@Override
-	protected MolecularSequenceSet<DNASequence> setOTUsInOTUsToSequences(
+	protected SequenceSet<DNASequence> setOTUsInOTUsToSequences(
 			@Nullable final OTUSet otuSet) {
 		checkState(
 				getOTUsToSequences() != null,
 				"getOTUsToSequences() == null, so there is no otusToSequences to operate on");
 		getOTUsToSequences().setOTUs(otuSet, this);
+		return this;
+	}
+
+	@Override
+	public DNASequenceSet clear() {
+		getOTUsToSequences().clear(this);
 		return this;
 	}
 

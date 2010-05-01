@@ -18,12 +18,21 @@ package edu.upenn.cis.ppod.model;
 import static com.google.common.base.Preconditions.checkNotNull;
 
 /**
- * An {@code OTUKeyedBiMap} which maps to {@code MolecularSequence}s.
+ * An {@code OTUKeyedBiMap} which maps to {@code Sequence}s.
  * 
  * @author Sam Donnelly
  */
-public abstract class OTUsToMolecularSequences<T extends MolecularSequence<?>, P extends MolecularSequenceSet<?>>
+public abstract class OTUsToSequences<T extends Sequence<?>, P extends SequenceSet<?>>
 		extends OTUKeyedMap<T, P> {
+
+	@Override
+	public OTUsToSequences<T, P> clear(final P seqSet) {
+		for (final Sequence<?> seq : getOTUsToValues().values()) {
+			seq.setSequenceSet(null);
+		}
+		super.clear(seqSet);
+		return this;
+	}
 
 	@Override
 	protected T putHelper(final OTU key,

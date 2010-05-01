@@ -33,11 +33,11 @@ import javax.xml.bind.annotation.XmlSeeAlso;
  * 
  * @author Sam Donnelly
  * @param <SS> the type of {@link MolecularSequenceSet} that contains this
- *            {@code MolecularSequence}
+ *            {@code Sequence}
  */
 @XmlSeeAlso( { DNASequence.class })
 @MappedSuperclass
-public abstract class MolecularSequence<SS extends MolecularSequenceSet<?>>
+public abstract class Sequence<SS extends SequenceSet<?>>
 		extends PPodEntity {
 
 	final static String SEQUENCE_COLUMN = "SEQUENCE";
@@ -59,7 +59,7 @@ public abstract class MolecularSequence<SS extends MolecularSequenceSet<?>>
 	@CheckForNull
 	private String name;
 
-	MolecularSequence() {}
+	Sequence() {}
 
 	/**
 	 * Get the accession.
@@ -102,7 +102,7 @@ public abstract class MolecularSequence<SS extends MolecularSequenceSet<?>>
 	 * <p>
 	 * This will never be {@code null} for objects in a persistent state.
 	 * 
-	 * @return
+	 * @return the sequence string
 	 */
 	@XmlElement
 	@Nullable
@@ -140,7 +140,8 @@ public abstract class MolecularSequence<SS extends MolecularSequenceSet<?>>
 	 * 
 	 * @return this
 	 */
-	public MolecularSequence<SS> setAccession(@Nullable final String accession) {
+	public Sequence<SS> setAccession(
+				@CheckForNull final String accession) {
 		if (equal(accession, getAccession())) {
 			return this;
 		}
@@ -156,7 +157,7 @@ public abstract class MolecularSequence<SS extends MolecularSequenceSet<?>>
 	 * 
 	 * @return this
 	 */
-	public MolecularSequence<SS> setDescription(
+	public Sequence<SS> setDescription(
 			@Nullable final String newDescription) {
 		if (equal(newDescription, getDescription())) {
 			return this;
@@ -167,7 +168,7 @@ public abstract class MolecularSequence<SS extends MolecularSequenceSet<?>>
 	}
 
 	@Override
-	public MolecularSequence<SS> setInNeedOfNewPPodVersionInfo() {
+	public Sequence<SS> setInNeedOfNewPPodVersionInfo() {
 		if (getSequenceSet() != null) {
 			getSequenceSet().setInNeedOfNewPPodVersionInfo();
 		}
@@ -182,7 +183,7 @@ public abstract class MolecularSequence<SS extends MolecularSequenceSet<?>>
 	 * 
 	 * @return this
 	 */
-	public MolecularSequence<SS> setName(@Nullable final String name) {
+	public Sequence<SS> setName(@Nullable final String name) {
 		if (equal(name, getName())) {
 			return this;
 		}
@@ -192,32 +193,32 @@ public abstract class MolecularSequence<SS extends MolecularSequenceSet<?>>
 	}
 
 	/**
-	 * Set the sequence.
+	 * Set the sequence. 
 	 * 
-	 * @param newSequence
+	 * @param sequence the sequence
 	 * 
 	 * @return this
 	 * 
 	 * @throws IllegalArgumentException if any characters in newSequence are
 	 *             such that {@link #isLegal(char)} is false.
 	 */
-	public MolecularSequence<SS> setSequence(final String newSequence) {
-		checkNotNull(newSequence);
-		if (newSequence.equals(getSequence())) {
+	public Sequence<SS> setSequence(final String sequence) {
+		checkNotNull(sequence);
+		if (sequence.equals(getSequence())) {
 			return this;
 		}
-		for (int i = 0; i < newSequence.length(); i++) {
-			if (isLegal(newSequence.charAt(i))) {
+		for (int i = 0; i < sequence.length(); i++) {
+			if (isLegal(sequence.charAt(i))) {
 
 			} else {
 				throw new IllegalArgumentException(
 						"Position " + i + " is ["
-								+ newSequence.charAt(i)
+								+ sequence.charAt(i)
 								+ "] which is not a DNA state");
 			}
 		}
 
-		sequence = newSequence;
+		this.sequence = sequence;
 		setInNeedOfNewPPodVersionInfo();
 		return this;
 	}
@@ -232,7 +233,7 @@ public abstract class MolecularSequence<SS extends MolecularSequenceSet<?>>
 	 * 
 	 * @return this
 	 */
-	protected abstract MolecularSequence<SS> setSequenceSet(
+	protected abstract Sequence<SS> setSequenceSet(
 			@Nullable final SS sequenceSet);
 
 	/**
@@ -247,7 +248,7 @@ public abstract class MolecularSequence<SS extends MolecularSequenceSet<?>>
 
 		final StringBuilder retValue = new StringBuilder();
 
-		retValue.append("MolecularSequence(").append("sequence=").append(
+		retValue.append("Sequence(").append("sequence=").append(
 				this.sequence).append(TAB).append("accession=").append(
 				this.accession).append(TAB).append("description=").append(
 				this.description).append(TAB).append("name=").append(this.name)
@@ -295,7 +296,7 @@ public abstract class MolecularSequence<SS extends MolecularSequenceSet<?>>
  * A separte header object w/ subclasses for for example GenBank
  */
 
-// public MolecularSequence putStates(final Integer idx,
+// public Sequence putStates(final Integer idx,
 // final CharacterStates states) {
 // checkNotNull(idx);
 // checkNotNull(states);

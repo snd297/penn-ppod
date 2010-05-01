@@ -129,9 +129,8 @@ public class CharacterStateRow extends PPodEntity implements
 	}
 
 	/**
-	 * Empty out and return this row's cells. After calling this,
-	 * {@link #getCells()}{@code .size()} will be {@code 0}.
-	 * <p>
+	 * Empty out and return this row's cells.
+	 *<p>
 	 * This method will not mark this object or parents as in need of a new pPOD
 	 * version. Which can be useful to free up the cells for garbage collection
 	 * after the row and cells are evicted but the matrix is still in the

@@ -209,6 +209,18 @@ final class SaveOrUpdateStudy implements ISaveOrUpdateStudy {
 				otuSetInfo.getMatrixInfos().add(dbMatrixInfo);
 			}
 
+			// Let's delete sequences missing from the incoming otu set
+			for (final Iterator<DNASequenceSet> dbDNASeqSetItr = dbOTUSet
+					.getDNASequenceSetsIterator(); dbDNASeqSetItr.hasNext();) {
+				final DNASequenceSet dbDNASequenceSet = dbDNASeqSetItr.next();
+				if (null == findIf(incomingOTUSet.getDNASequenceSetsIterator(),
+						compose(equalTo(dbDNASequenceSet.getPPodId()),
+								IWithPPodId.getPPodId))) {
+					dbDNASequenceSet.clear();
+					dbOTUSet.removeDNASequenceSet(dbDNASequenceSet);
+				}
+			}
+
 			final Set<DNASequenceSet> newDbDNASequenceSets = newHashSet();
 			for (final Iterator<DNASequenceSet> incomingDNASequenceSetItr = incomingOTUSet
 					.getDNASequenceSetsIterator(); incomingDNASequenceSetItr
@@ -216,10 +228,11 @@ final class SaveOrUpdateStudy implements ISaveOrUpdateStudy {
 				final DNASequenceSet incomingDNASequenceSet = incomingDNASequenceSetItr
 						.next();
 				DNASequenceSet dbDNASequenceSet;
-				if (null == (dbDNASequenceSet = findIf(dbOTUSet
-						.getDNASequenceSetsIterator(), compose(
-						equalTo(incomingDNASequenceSet.getPPodId()),
-						IWithPPodId.getPPodId)))) {
+				if (null == (dbDNASequenceSet =
+						findIf(dbOTUSet.getDNASequenceSetsIterator(),
+								compose(equalTo(incomingDNASequenceSet
+										.getPPodId()),
+										IWithPPodId.getPPodId)))) {
 					dbDNASequenceSet = dnaSequenceSetProvider.get();
 					dbDNASequenceSet.setPPodId();
 					dbDNASequenceSet.setPPodVersionInfo(newPPodVersionInfo

@@ -17,6 +17,7 @@ package edu.upenn.cis.ppod.model;
 
 import static com.google.common.base.Preconditions.checkNotNull;
 
+import javax.annotation.CheckForNull;
 import javax.annotation.Nullable;
 import javax.persistence.Column;
 import javax.persistence.Entity;
@@ -43,6 +44,7 @@ public class AttachmentNamespace extends PersistentObjectWithXmlId {
 	static final int LABEL_COLUMN_LENGTH = 64;
 
 	@Column(name = LABEL_COLUMN, unique = true, nullable = false, length = LABEL_COLUMN_LENGTH)
+	@CheckForNull
 	private String label;
 
 	AttachmentNamespace() {}

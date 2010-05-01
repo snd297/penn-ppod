@@ -11,7 +11,7 @@ import com.google.inject.Provider;
 import edu.upenn.cis.ppod.TestGroupDefs;
 
 /**
- * Test methods specific to the abstract class {@link OTUsToMolecularSequences}.
+ * Test methods specific to the abstract class {@link OTUsToSequences}.
  * 
  * @author Sam Donnelly
  */
@@ -35,18 +35,18 @@ public class OTUsToMolecularSequencesTest {
 
 	/**
 	 * Do a straight put with
-	 * {@link OTUsToMolecularSequences#putHelper(OTU, MolecularSequence, MolecularSequenceSet)}
+	 * {@link OTUsToSequences#putHelper(OTU, Sequence, SequenceSet)}
 	 * .
 	 */
 	public void putHelperTest() {
-		final OTUsToMolecularSequences<DNASequence, DNASequenceSet> otusToSequences =
+		final OTUsToSequences<DNASequence, DNASequenceSet> otusToSequences =
 				otusToDNASequencesProvider.get();
 		final OTUSet otuSet = new OTUSet();
 		final OTU otu = otuSet.addOTU(new OTU());
 		final DNASequence sequence = new DNASequence();
 		final DNASequenceSet sequenceSet = dnaSequenceSetProvider.get();
 		otuSet.addDNASequenceSet(sequenceSet);
-		((OTUsToMolecularSequences<DNASequence, DNASequenceSet>) otusToSequences)
+		((OTUsToSequences<DNASequence, DNASequenceSet>) otusToSequences)
 				.putHelper(otu,
 						sequence, sequenceSet);
 		assertSame(otusToSequences.getOTUsToValues().get(otu), sequence);
@@ -57,20 +57,20 @@ public class OTUsToMolecularSequencesTest {
 	 * sequence's sequence->sequenceSet relationship is severed.
 	 */
 	public void putHelperTestReplaceASequence() {
-		final OTUsToMolecularSequences<DNASequence, DNASequenceSet> otusToSequences =
+		final OTUsToSequences<DNASequence, DNASequenceSet> otusToSequences =
 				otusToDNASequencesProvider.get();
 		final OTUSet otuSet = otuSetProvider.get();
 		final OTU otu = otuSet.addOTU(otuProvider.get());
 		final DNASequence sequence = dnaSequenceProvider.get();
 		final DNASequenceSet sequenceSet = dnaSequenceSetProvider.get();
 		otuSet.addDNASequenceSet(sequenceSet);
-		((OTUsToMolecularSequences<DNASequence, DNASequenceSet>) otusToSequences)
+		((OTUsToSequences<DNASequence, DNASequenceSet>) otusToSequences)
 				.putHelper(otu,
 						sequence, sequenceSet);
 
 		final DNASequence sequence2 = dnaSequenceProvider.get();
 
-		((OTUsToMolecularSequences<DNASequence, DNASequenceSet>) otusToSequences)
+		((OTUsToSequences<DNASequence, DNASequenceSet>) otusToSequences)
 				.putHelper(otu,
 						sequence2, sequenceSet);
 

@@ -32,8 +32,15 @@ public class DNAMatrix extends MolecularStateMatrix {
 
 	DNAMatrix() {}
 
+	/**
+	 * This constructor is {@code protected} to allow for injected {@code
+	 * OTUsToCharacterStateRows} in subclasses to be passed up the inheritance
+	 * hierarchy.
+	 * 
+	 * @param otusToRows the {@code OTUsToCharacterStateRows} for this matrix.
+	 */
 	@Inject
-	DNAMatrix(final OTUsToCharacterStateRows otusToRows) {
+	protected DNAMatrix(final OTUsToCharacterStateRows otusToRows) {
 		super(otusToRows);
 	}
 }

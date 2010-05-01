@@ -141,7 +141,7 @@ public class OTUSet extends UUPPodEntityWXmlId implements Iterable<OTU> {
 	 * <p>
 	 * Also handles the {@code DNASequenceSet->OTUSet} side of the relationship.
 	 * 
-	 * @param pPodDNASequenceSet the new {@code DNASequenceSet}
+	 * @param dnaSequenceSet the new {@code DNASequenceSet}
 	 * 
 	 * @return {@code dnaSequenceSet}
 	 */
@@ -152,6 +152,17 @@ public class OTUSet extends UUPPodEntityWXmlId implements Iterable<OTU> {
 		dnaSequenceSet.setOTUSet(this);
 		setInNeedOfNewPPodVersionInfo();
 		return dnaSequenceSet;
+	}
+
+	public boolean removeDNASequenceSet(
+			final DNASequenceSet dnaSequenceSet) {
+		checkNotNull(dnaSequenceSet);
+		if (getDNASequenceSets().remove(dnaSequenceSet)) {
+			dnaSequenceSet.setOTUSet(null);
+			setInNeedOfNewPPodVersionInfo();
+			return true;
+		}
+		return false;
 	}
 
 	/**
