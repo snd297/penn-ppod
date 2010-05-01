@@ -33,6 +33,7 @@ import edu.upenn.cis.ppod.dao.IAttachmentTypeDAO;
 import edu.upenn.cis.ppod.dao.IDAO;
 import edu.upenn.cis.ppod.dao.IDNACharacterDAO;
 import edu.upenn.cis.ppod.dao.IStudyDAO;
+import edu.upenn.cis.ppod.dao.hibernate.DAOHibernateModule;
 import edu.upenn.cis.ppod.model.CharacterStateMatrix;
 import edu.upenn.cis.ppod.model.DNACharacter;
 import edu.upenn.cis.ppod.model.DNASequence;
@@ -210,9 +211,11 @@ final class SaveOrUpdateStudy implements ISaveOrUpdateStudy {
 			}
 
 			// Let's delete sequences missing from the incoming otu set
-			for (final Iterator<DNASequenceSet> dbDNASeqSetItr = dbOTUSet
-					.getDNASequenceSetsIterator(); dbDNASeqSetItr.hasNext();) {
-				final DNASequenceSet dbDNASequenceSet = dbDNASeqSetItr.next();
+			for (final Iterator<DNASequenceSet> dbDNASequenceSetItr = dbOTUSet
+					.getDNASequenceSetsIterator(); dbDNASequenceSetItr
+					.hasNext();) {
+				final DNASequenceSet dbDNASequenceSet = dbDNASequenceSetItr
+						.next();
 				if (null == findIf(incomingOTUSet.getDNASequenceSetsIterator(),
 						compose(equalTo(dbDNASequenceSet.getPPodId()),
 								IWithPPodId.getPPodId))) {

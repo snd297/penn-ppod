@@ -60,7 +60,7 @@ public class DNASequenceTest {
 	 * Make sure that all legal character return true for {@code isLegal(...)}.
 	 */
 	public void testIsLegal() {
-		final Sequence<?> sequence = new DNASequence();
+		final Sequence sequence = new DNASequence();
 
 		for (final java.lang.Character character : legalDNACharacters) {
 			assertTrue(sequence.isLegal(character));
@@ -72,7 +72,7 @@ public class DNASequenceTest {
 	 * isLegal(...)}.
 	 */
 	public void testIsLegalShouldReturnFalse() {
-		final Sequence<?> sequence = new DNASequence();
+		final Sequence sequence = new DNASequence();
 
 		for (final java.lang.Character illegalCharacter : alpabet) {
 			if (legalDNACharacters.contains(illegalCharacter)) {

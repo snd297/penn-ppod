@@ -37,8 +37,7 @@ import javax.xml.bind.annotation.XmlSeeAlso;
  */
 @XmlSeeAlso( { DNASequence.class })
 @MappedSuperclass
-public abstract class Sequence<SS extends SequenceSet<?>>
-		extends PPodEntity {
+public abstract class Sequence extends PPodEntity {
 
 	final static String SEQUENCE_COLUMN = "SEQUENCE";
 
@@ -115,8 +114,8 @@ public abstract class Sequence<SS extends SequenceSet<?>>
 	 * 
 	 * @return the {@code MolecularSequenceSet} that owns this sequence
 	 */
-	@Nullable
-	public abstract SS getSequenceSet();
+	// @Nullable
+	// public abstract SequenceSet<Sequence> getSequenceSet();
 
 	/**
 	 * Is it a legal DNA Sequence character? As defined by <a
@@ -140,7 +139,7 @@ public abstract class Sequence<SS extends SequenceSet<?>>
 	 * 
 	 * @return this
 	 */
-	public Sequence<SS> setAccession(
+	public Sequence setAccession(
 				@CheckForNull final String accession) {
 		if (equal(accession, getAccession())) {
 			return this;
@@ -157,22 +156,13 @@ public abstract class Sequence<SS extends SequenceSet<?>>
 	 * 
 	 * @return this
 	 */
-	public Sequence<SS> setDescription(
-			@Nullable final String newDescription) {
+	public Sequence setDescription(
+			@CheckForNull final String newDescription) {
 		if (equal(newDescription, getDescription())) {
 			return this;
 		}
 		description = newDescription;
 		setInNeedOfNewPPodVersionInfo();
-		return this;
-	}
-
-	@Override
-	public Sequence<SS> setInNeedOfNewPPodVersionInfo() {
-		if (getSequenceSet() != null) {
-			getSequenceSet().setInNeedOfNewPPodVersionInfo();
-		}
-		super.setInNeedOfNewPPodVersionInfo();
 		return this;
 	}
 
@@ -183,7 +173,7 @@ public abstract class Sequence<SS extends SequenceSet<?>>
 	 * 
 	 * @return this
 	 */
-	public Sequence<SS> setName(@Nullable final String name) {
+	public Sequence setName(@CheckForNull final String name) {
 		if (equal(name, getName())) {
 			return this;
 		}
@@ -193,7 +183,7 @@ public abstract class Sequence<SS extends SequenceSet<?>>
 	}
 
 	/**
-	 * Set the sequence. 
+	 * Set the sequence.
 	 * 
 	 * @param sequence the sequence
 	 * 
@@ -202,7 +192,7 @@ public abstract class Sequence<SS extends SequenceSet<?>>
 	 * @throws IllegalArgumentException if any characters in newSequence are
 	 *             such that {@link #isLegal(char)} is false.
 	 */
-	public Sequence<SS> setSequence(final String sequence) {
+	public Sequence setSequence(final String sequence) {
 		checkNotNull(sequence);
 		if (sequence.equals(getSequence())) {
 			return this;
@@ -233,8 +223,10 @@ public abstract class Sequence<SS extends SequenceSet<?>>
 	 * 
 	 * @return this
 	 */
-	protected abstract Sequence<SS> setSequenceSet(
-			@Nullable final SS sequenceSet);
+// protected abstract Sequence setSequenceSet(
+// @Nullable final Object sequenceSet);
+
+	protected abstract Sequence unsetSequenceSet();
 
 	/**
 	 * Constructs a <code>String</code> with all attributes in name = value

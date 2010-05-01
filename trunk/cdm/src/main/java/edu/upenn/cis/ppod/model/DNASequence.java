@@ -15,11 +15,15 @@
  */
 package edu.upenn.cis.ppod.model;
 
+import java.util.Set;
+
 import javax.annotation.CheckForNull;
 import javax.persistence.Entity;
 import javax.persistence.JoinColumn;
 import javax.persistence.ManyToOne;
 import javax.persistence.Table;
+
+import com.google.common.collect.ImmutableSet;
 
 import edu.upenn.cis.ppod.util.IVisitor;
 
@@ -28,7 +32,7 @@ import edu.upenn.cis.ppod.util.IVisitor;
  */
 @Entity
 @Table(name = DNASequence.TABLE)
-public class DNASequence extends Sequence<DNASequenceSet> {
+public class DNASequence extends Sequence {
 
 	/**
 	 * The name of the {@code DNASequence} table.
@@ -41,72 +45,41 @@ public class DNASequence extends Sequence<DNASequenceSet> {
 	private DNASequenceSet sequenceSet;
 
 	@Override
-	public DNASequenceSet getSequenceSet() {
-		return sequenceSet;
-	}
-
-	@Override
 	public void accept(final IVisitor visitor) {
 		visitor.visit(this);
 	}
 
+	public DNASequenceSet getSequenceSet() {
+		return sequenceSet;
+	}
+
+	private final static Set<java.lang.Character> LEGAL_CHARS = ImmutableSet
+			.of('A', 'C', 'G', 'T', 'R', 'Y', 'K', 'M', 'S', 'W', 'B', 'D',
+					'H', 'V', 'N', '-');
+
 	@Override
 	public boolean isLegal(final char c) {
-		if (c == 'A') {
-			return true;
-		}
-		if (c == 'C') {
-			return true;
-		}
-		if (c == 'G') {
-			return true;
-		}
-		if (c == 'T') {
-			return true;
-		}
-		if (c == 'R') {
-			return true;
-		}
-		if (c == 'Y') {
-			return true;
-		}
-		if (c == 'K') {
-			return true;
-		}
-		if (c == 'M') {
-			return true;
-		}
-		if (c == 'S') {
-			return true;
-		}
-		if (c == 'W') {
-			return true;
-		}
-		if (c == 'B') {
-			return true;
-		}
-		if (c == 'D') {
-			return true;
-		}
-		if (c == 'H') {
-			return true;
-		}
-		if (c == 'V') {
-			return true;
-		}
-		if (c == 'N') {
-			return true;
-		}
-		if (c == '-') {
-			return true;
-		}
-		return false;
+		return LEGAL_CHARS.contains(c);
 	}
 
 	@Override
-	public DNASequence setSequenceSet(final DNASequenceSet sequenceSet) {
+	public DNASequence setInNeedOfNewPPodVersionInfo() {
+		if (getSequenceSet() != null) {
+			getSequenceSet().setInNeedOfNewPPodVersionInfo();
+		}
+		super.setInNeedOfNewPPodVersionInfo();
+		return this;
+	}
+
+	public DNASequence setSequenceSet(
+			@CheckForNull final DNASequenceSet sequenceSet) {
 		this.sequenceSet = sequenceSet;
 		return this;
 	}
 
+	@Override
+	protected DNASequence unsetSequenceSet() {
+		setSequenceSet(null);
+		return this;
+	}
 }
