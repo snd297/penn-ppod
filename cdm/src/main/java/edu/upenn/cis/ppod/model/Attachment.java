@@ -60,12 +60,53 @@ import edu.upenn.cis.ppod.util.IVisitor;
 public class Attachment extends UUPPodEntityWXmlId {
 
 	/**
+	 * Is an attachment of a the given's attachments namespace and type? And
+	 * does it have the given attachment's label and string value?
+	 */
+	public static interface IIsOfNamepspaceTypeLabelAndStringValue extends
+			Predicate<Attachment> {
+
+		/**
+		 * Creates {@code IIsOfNamepspaceTypeLabelAndStringValue}s. For Guice.
+		 */
+		public static interface IFactory {
+
+			/**
+			 * Create an {@code IIsOfNamepspaceTypeLabelAndStringValue} that
+			 * compares to the given attachment's label, string value, type
+			 * label, and namespace label.
+			 * 
+			 * @param attachment the attachment to match against
+			 * 
+			 * @return a new {@code IIsOfNamepspaceTypeLabelAndStringValue}
+			 */
+			IIsOfNamepspaceTypeLabelAndStringValue create(
+					@Assisted Attachment attachment);
+		}
+	}
+
+	/**
 	 * Is an attachment of a particular {@link AttachmentNamespace}?
 	 */
 	@ImplementedBy(IsOfNamespace.class)
 	public static interface IIsOfNamespace extends Predicate<Attachment> {
-		static interface IFactory {
-			IIsOfNamespace create(String namespace);
+
+		/**
+		 * Makes {@code IIsOfNamespace}s.
+		 */
+		public static interface IFactory {
+
+			/**
+			 * Create a {@code IIsOfNamespace} that will return {@code true} if
+			 * and only if the attachment's namespaceLabel has the given
+			 * attachmentLabel.
+			 * 
+			 * @param namespaceLabel the attachmentLabel of the namespaceLabel
+			 *            we're interested in
+			 * 
+			 * @return a new {@code IIsOfNamespace}
+			 */
+			IIsOfNamespace create(String namespaceLabel);
 		}
 	}
 
@@ -121,18 +162,13 @@ public class Attachment extends UUPPodEntityWXmlId {
 
 	}
 
-	public static interface IIsOfNamepspaceTypeLabelAndStringValue extends
-			Predicate<Attachment> {
-
-	}
-
-	public final static class IsOfNamespaceTypeLabelAndStringValue implements
+	final static class IsOfNamespaceTypeLabelAndStringValue implements
 			IIsOfNamepspaceTypeLabelAndStringValue {
 
-		private final String namespace;
-		private final String type;
-		private final String label;
-		private final String stringValue;
+		private final String namespaceLabel;
+		private final String typeLabel;
+		private final String attachmentLabel;
+		private final String attachmentStringValue;
 
 		IsOfNamespaceTypeLabelAndStringValue(final Attachment attachment) {
 			checkNotNull(attachment);
@@ -145,10 +181,10 @@ public class Attachment extends UUPPodEntityWXmlId {
 
 			checkArgument(
 					attachment.getType().getNamespace().getLabel() != null,
-					"attachment's typeLabel's namespaceLabel has null label");
+					"attachment's typeLabel's namespaceLabel has null attachmentLabel");
 
 			checkArgument(attachment.getType().getLabel() != null,
-					"attachment's typeLabel has null label");
+					"attachment's typeLabel has null attachmentLabel");
 
 			final String attachmentLabel = attachment.getLabel();
 			checkArgument(attachmentLabel != null,
@@ -159,17 +195,19 @@ public class Attachment extends UUPPodEntityWXmlId {
 			checkArgument(attachmentStringValue != null,
 					"attachment.getStringValue() == null");
 
-			this.namespace = attachment.getType().getNamespace().getLabel();
-			this.type = attachment.getType().getLabel();
-			this.label = attachmentLabel;
-			this.stringValue = attachmentStringValue;
+			this.namespaceLabel = attachment.getType().getNamespace()
+					.getLabel();
+			this.typeLabel = attachment.getType().getLabel();
+			this.attachmentLabel = attachmentLabel;
+			this.attachmentStringValue = attachmentStringValue;
 		}
 
 		public boolean apply(final Attachment input) {
-			return namespace.equals(input.getType().getNamespace().getLabel())
-					&& type.equals(input.getType().getLabel())
-					&& label.equals(input.getLabel())
-					&& stringValue.equals(input.getStringValue());
+			return namespaceLabel.equals(input.getType().getNamespace()
+					.getLabel())
+					&& typeLabel.equals(input.getType().getLabel())
+					&& attachmentLabel.equals(input.getLabel())
+					&& attachmentStringValue.equals(input.getStringValue());
 		}
 	}
 
@@ -260,9 +298,9 @@ public class Attachment extends UUPPodEntityWXmlId {
 	}
 
 	/**
-	 * Get the label.
+	 * Get the attachmentLabel.
 	 * 
-	 * @return the label
+	 * @return the attachmentLabel
 	 */
 	@XmlAttribute
 	@CheckForNull
@@ -332,7 +370,7 @@ public class Attachment extends UUPPodEntityWXmlId {
 	/**
 	 * Set the label.
 	 * 
-	 * @param label the label to set
+	 * @param label the label
 	 * 
 	 * @return this
 	 */
@@ -347,11 +385,12 @@ public class Attachment extends UUPPodEntityWXmlId {
 	}
 
 	/**
-	 * Set the value.
+	 * Set the string value. Use {@code null} to indicate there is no string
+	 * value.
 	 * 
-	 * @param stringValue the value
+	 * @param stringValue the string value
 	 * 
-	 * @return this {@code Attachment}
+	 * @return this
 	 */
 	public Attachment setStringValue(@CheckForNull final String stringValue) {
 		if (equal(stringValue, getStringValue())) {
@@ -364,10 +403,11 @@ public class Attachment extends UUPPodEntityWXmlId {
 	}
 
 	/**
-	 * Set the typeLabel of this attachment.
+	 * Set the type of this attachment.
 	 * 
-	 * @param typeLabel the typeLabel
-	 * @return this attachment
+	 * @param type the type
+	 * 
+	 * @return this
 	 */
 	public Attachment setType(final AttachmentType type) {
 		checkNotNull(type);
@@ -395,8 +435,9 @@ public class Attachment extends UUPPodEntityWXmlId {
 
 		retValue.append("Attachment(").append(super.toString()).append(TAB)
 				.append("typeLabel=").append(this.type).append(TAB).append(
-						"label=")
-				.append(this.label).append(TAB).append("stringValue=").append(
+						"attachmentLabel=")
+				.append(this.label).append(TAB)
+				.append("attachmentStringValue=").append(
 						this.stringValue).append(TAB).append("bytesValue=")
 				.append(this.bytesValue).append(TAB).append(")");
 

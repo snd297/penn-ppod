@@ -45,8 +45,6 @@
 		<mapping class="edu.upenn.cis.ppod.model.AttachmentNamespace" />
 		<mapping class="edu.upenn.cis.ppod.model.AttachmentType" />
 
-		<mapping class="edu.upenn.cis.ppod.model.MolecularSequenceSet" />
-
 		<mapping class="edu.upenn.cis.ppod.model.DNASequenceSet" />
 		<mapping class="edu.upenn.cis.ppod.model.OTUsToDNASequences" />
 		<mapping class="edu.upenn.cis.ppod.model.DNASequence" />

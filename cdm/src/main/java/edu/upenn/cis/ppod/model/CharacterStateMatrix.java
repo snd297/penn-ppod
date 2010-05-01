@@ -156,6 +156,13 @@ public class CharacterStateMatrix extends UUPPodEntityWXmlId implements
 	/** No-arg constructor for (at least) Hibernate. */
 	CharacterStateMatrix() {}
 
+	/**
+	 * This constructor is {@code protected} to allow for injected {@code
+	 * OTUsToCharacterStateRows} in subclasses to be passed up the inheritance
+	 * hierarchy.
+	 * 
+	 * @param otusToRows the {@code OTUsToCharacterStateRows} for this matrix.
+	 */
 	@Inject
 	protected CharacterStateMatrix(final OTUsToCharacterStateRows otusToRows) {
 		this.otusToRows = otusToRows;
@@ -274,10 +281,16 @@ public class CharacterStateMatrix extends UUPPodEntityWXmlId implements
 	}
 
 	/**
-	 * @param pPodCharacterPosition the position of the character we want
-	 * @return
+	 * Get the character at the given position.
+	 * 
+	 * @param characterPosition the character's position
+	 * 
+	 * @return the character at the given position\
+	 * 
+	 * @throws IndexOutOfBoundsException if {@code characterPosition} is out of
+	 *             bounds
 	 */
-	public Character getCharacter(final int characterPosition) {
+	public Character getCharacter(@Nonnegative final int characterPosition) {
 		return getCharacters().get(characterPosition);
 	}
 
@@ -312,6 +325,12 @@ public class CharacterStateMatrix extends UUPPodEntityWXmlId implements
 		return characters;
 	}
 
+	/**
+	 * Iterates over this matix's characters in column order.
+	 * 
+	 * @return an iterator that iterates over this matix's characters in column
+	 *         order
+	 */
 	public Iterator<Character> getCharactersIterator() {
 		return Collections.unmodifiableList(getCharacters()).iterator();
 	}
@@ -441,7 +460,7 @@ public class CharacterStateMatrix extends UUPPodEntityWXmlId implements
 	 * Get an iterator over this matrix's rows. The iterator will traverse the
 	 * rows in {@code getOTUSet().getOTUs()} order.
 	 * 
-	 * return an iterator over this matrix's rows
+	 * @return an iterator over this matrix's rows
 	 */
 	public Iterator<CharacterStateRow> iterator() {
 		return getOTUsToRows().getValuesInOTUOrder(getOTUSet()).iterator();
@@ -489,7 +508,7 @@ public class CharacterStateMatrix extends UUPPodEntityWXmlId implements
 	 * Set the characters.
 	 * <p>
 	 * This method is does not reorder the columns of the matrix, unlike
-	 * {@link #setOTUs(List)} which reorders otusToRows. Reordering definitely
+	 * {@link #setOTUSet(OTUSet)} which reorders the rows. Reordering definitely
 	 * does not makes sense in a {@link MolecularStateMatrix} since all of the
 	 * characters will be the same instance.
 	 * <p>
@@ -502,7 +521,7 @@ public class CharacterStateMatrix extends UUPPodEntityWXmlId implements
 	 * 
 	 * @return the characters removed as a result of this operation
 	 * 
-	 * @throws IlelgalArgumentException if any of {code newCharacters} is
+	 * @throws IllegalArgumentException if any of {code newCharacters} is
 	 *             {@code null}
 	 * @throws IllegalArgumentException if any of {@code newCharacters} are
 	 *             {@code .equals} to each other. NOTE: this constraint does not

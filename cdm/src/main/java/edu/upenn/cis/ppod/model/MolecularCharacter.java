@@ -17,7 +17,7 @@ package edu.upenn.cis.ppod.model;
 
 import static com.google.common.base.Preconditions.checkNotNull;
 
-import javax.annotation.Nullable;
+import javax.annotation.CheckForNull;
 import javax.persistence.Column;
 import javax.persistence.MappedSuperclass;
 
@@ -41,10 +41,15 @@ public abstract class MolecularCharacter extends Character {
 	 * break {@link Character#getLabel()} - it would return {@code null} after
 	 * db retrieval. Because {@code Character} has a column called {@code
 	 * "LABEL"}?
+	 * <p>
+	 * We were just calling this field "label" but that (or a change to {@code
+	 * MolecularState.label}) broke {@code
+	 * mesquite.pPod.lib.DNAMatrixTest.uploadMatrix}. That's probably because
+	 * the super class has a field called {@code label}.
 	 */
 	@Column(name = "MOLECULAR_CHARACTER_LABEL", unique = true, nullable = false)
 	@SuppressWarnings("unused")
-	@Nullable
+	@CheckForNull
 	private String molecularCharacterLabel;
 
 	MolecularCharacter() {}
@@ -61,6 +66,7 @@ public abstract class MolecularCharacter extends Character {
 
 	protected MolecularCharacter setMolecularCharacterLabel(
 			final String molecularCharacterLabel) {
+		checkNotNull(molecularCharacterLabel);
 		super.setLabel(molecularCharacterLabel);
 		this.molecularCharacterLabel = molecularCharacterLabel;
 		return this;

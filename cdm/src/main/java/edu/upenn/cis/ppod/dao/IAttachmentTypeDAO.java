@@ -25,11 +25,11 @@ import edu.upenn.cis.ppod.model.AttachmentType;
 public interface IAttachmentTypeDAO extends IDAO<AttachmentType, Long> {
 
 	/**
-	 * Get the {@link AttachmentType} of type {@code type} and in the given
-	 * namespace.
+	 * Get the {@link AttachmentType} with label {@code typeLabel} and in the
+	 * given namespace.
 	 * 
-	 * @param attachmentNamespace the namespace
-	 * @param type the type we're interested in
+	 * @param namespaceLabel the label of namespace
+	 * @param typeLabel the label of the type we're interested in
 	 * @return the {@link AttachmentType} of type {@code type} and in the given
 	 *         namespace
 	 */

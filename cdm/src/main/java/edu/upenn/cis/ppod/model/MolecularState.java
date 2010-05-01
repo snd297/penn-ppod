@@ -38,6 +38,11 @@ public abstract class MolecularState extends CharacterState {
 	 * break {@link Character#getLabel()} - it would return {@code null} after
 	 * db retrieval. Because {@code CharacterState} has a column called {@code
 	 * "LABEL"}?
+	 * <p>
+	 * We were just calling this field "label" but that (or a change to {@code
+	 * MolecularCharacter.label}) broke {@code
+	 * mesquite.pPod.lib.DNAMatrixTest.uploadMatrix}. That's probably because
+	 * the super class has a field called {@code label}.
 	 */
 	@Column(name = "MOLECULAR_STATE_LABEL", unique = true)
 	@SuppressWarnings("unused")
@@ -50,23 +55,23 @@ public abstract class MolecularState extends CharacterState {
 	 * This method is not supported for {@code DNAState} since all instances are
 	 * immutable.
 	 * 
-	 * @param label ignored
+	 * @param molecularStateLabel ignored
 	 * 
 	 * @throws UnsupportedOperationException always
 	 */
 	@Override
 	public MolecularState setLabel(final String label) {
 		throw new UnsupportedOperationException(
-				"the label of a MolecularState is fixed");
+				"the molecularStateLabel of a MolecularState is fixed");
 	}
 
 	/**
-	 * Set the molecular state label and {@code CharacterState.getLabel()}. This
-	 * value is only used to prevent multiple rows of a particular molecular
-	 * state from being created. For example, we don't want more than one
-	 * {@code DNACharacter} in the database.
+	 * Set the molecular state molecularStateLabel and {@code
+	 * CharacterState.getLabel()}. This value is only used to prevent multiple
+	 * rows of a particular molecular state from being created. For example, we
+	 * don't want more than one {@code DNACharacter} in the database.
 	 * 
-	 * @param molecularStateLabel the label.
+	 * @param molecularStateLabel the molecularStateLabel.
 	 * 
 	 * @return this
 	 */

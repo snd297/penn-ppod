@@ -33,14 +33,14 @@ import edu.upenn.cis.ppod.modelinterfaces.IPPodVersionedWithOTUSet;
 import edu.upenn.cis.ppod.util.IVisitor;
 
 /**
- * A set of {@link MolecularSequence}s.
+ * A set of {@link Sequence}s.
  * 
  * @author Sam Donnelly
  * 
- * @param <S> the type of {@code MolecularSequence} this set contains
+ * @param <S> the type of {@code Sequence} this set contains
  */
 @MappedSuperclass
-public abstract class MolecularSequenceSet<S extends MolecularSequence<?>>
+public abstract class SequenceSet<S extends Sequence<?>>
 		extends UUPPodEntityWXmlId implements IPPodVersionedWithOTUSet,
 		Iterable<S> {
 
@@ -53,6 +53,8 @@ public abstract class MolecularSequenceSet<S extends MolecularSequence<?>>
 	@JoinColumn(name = OTUSet.ID_COLUMN, nullable = false)
 	@CheckForNull
 	private OTUSet otuSet;
+
+	public abstract SequenceSet<S> clear();
 
 	@Override
 	public void accept(final IVisitor visitor) {
@@ -92,7 +94,7 @@ public abstract class MolecularSequenceSet<S extends MolecularSequence<?>>
 		return otuSet;
 	}
 
-	protected abstract OTUKeyedMap<S, ? extends MolecularSequenceSet<?>> getOTUsToSequences();
+	protected abstract OTUKeyedMap<S, ? extends SequenceSet<?>> getOTUsToSequences();
 
 	/**
 	 * Get the sequence indexed by {@code otu}.
@@ -139,7 +141,7 @@ public abstract class MolecularSequenceSet<S extends MolecularSequence<?>>
 	protected abstract S putSequenceHelper(final OTU otu, final S newSequence);
 
 	@Override
-	public MolecularSequenceSet<S> setInNeedOfNewPPodVersionInfo() {
+	public SequenceSet<S> setInNeedOfNewPPodVersionInfo() {
 		if (getOTUSet() != null) {
 			getOTUSet().setInNeedOfNewPPodVersionInfo();
 		}
@@ -147,7 +149,7 @@ public abstract class MolecularSequenceSet<S extends MolecularSequence<?>>
 		return this;
 	}
 
-	public MolecularSequenceSet<S> setLabel(final String label) {
+	public SequenceSet<S> setLabel(final String label) {
 		checkNotNull(label);
 		if (label.equals(getLabel())) {
 
@@ -168,14 +170,14 @@ public abstract class MolecularSequenceSet<S extends MolecularSequence<?>>
 	 * 
 	 * @return this sequence set
 	 */
-	MolecularSequenceSet<S> setOTUSet(
-			@Nullable final OTUSet newOTUSet) {
+	SequenceSet<S> setOTUSet(
+			@CheckForNull final OTUSet newOTUSet) {
 		this.otuSet = newOTUSet;
 		setOTUsInOTUsToSequences(newOTUSet);
 		return this;
 	}
 
-	protected abstract MolecularSequenceSet<S> setOTUsInOTUsToSequences(
+	protected abstract SequenceSet<S> setOTUsInOTUsToSequences(
 			@Nullable final OTUSet otuSet);
 
 }

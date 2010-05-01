@@ -33,6 +33,11 @@ import edu.upenn.cis.ppod.util.IPair;
 import edu.upenn.cis.ppod.util.ISetPPodVersionInfoVisitor;
 import edu.upenn.cis.ppod.util.Pair;
 
+/**
+ * pPOD CDM guice configuration.
+ * 
+ * @author Sam Donnelly
+ */
 public final class PPodModule extends AbstractModule {
 
 	@Override
