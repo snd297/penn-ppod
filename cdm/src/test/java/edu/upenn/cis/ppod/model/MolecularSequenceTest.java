@@ -101,7 +101,7 @@ public class MolecularSequenceTest {
 		assertTrue(sequenceSet.isInNeedOfNewPPodVersionInfo());
 
 		// Let's make sure it works if no parent has been set.
-		sequence.setSequenceSet(null);
+		sequence.setOTUsToSequences(null);
 		sequence.unsetInNeedOfNewPPodVersionInfo();
 
 		sequence.setInNeedOfNewPPodVersionInfo();

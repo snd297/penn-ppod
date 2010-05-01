@@ -17,6 +17,7 @@ package edu.upenn.cis.ppod.model;
 
 import static com.google.common.base.Preconditions.checkArgument;
 import static com.google.common.base.Preconditions.checkNotNull;
+import static com.google.common.base.Preconditions.checkState;
 import static com.google.common.collect.Iterables.contains;
 import static com.google.common.collect.Lists.newArrayListWithCapacity;
 import static com.google.common.collect.Sets.newHashSet;
@@ -42,7 +43,7 @@ import edu.upenn.cis.ppod.util.OTUSomethingPair;
  * 
  * @author Sam Donnelly
  */
-public abstract class OTUKeyedMap<V extends PersistentObject, P extends IPPodVersionedWithOTUSet>
+public abstract class OTUKeyedMap<V extends PersistentObject>
 		extends PersistentObject {
 
 	static final String OTU_IDX_COLUMN = "OTU_IDX";
@@ -59,8 +60,17 @@ public abstract class OTUKeyedMap<V extends PersistentObject, P extends IPPodVer
 		}
 	}
 
-	public V get(final OTU otu, final P parent) {
-		checkArgument(contains(parent.getOTUSet(), otu),
+	public OTUKeyedMap<V> clear() {
+		if (getOTUsToValues().size() == 0) {
+			return this;
+		}
+		getOTUsToValues().clear();
+		setInNeedOfNewPPodVersionInfo();
+		return this;
+	}
+
+	public V get(final OTU otu) {
+		checkArgument(contains(getParent().getOTUSet(), otu),
 				"otu does not belong to parent's OTUSet");
 		return getOTUsToValues().get(otu);
 	}
@@ -72,16 +82,9 @@ public abstract class OTUKeyedMap<V extends PersistentObject, P extends IPPodVer
 	 */
 	protected abstract Map<OTU, V> getOTUsToValues();
 
-	public OTUKeyedMap<V, P> clear(final P parent) {
-		if (getOTUsToValues().size() == 0) {
-			return this;
-		}
-		getOTUsToValues().clear();
-		parent.setInNeedOfNewPPodVersionInfo();
-		return this;
-	}
-
 	protected abstract Set<OTUSomethingPair<V>> getOTUValuePairs();
+
+	protected abstract IPPodVersionedWithOTUSet getParent();
 
 	public List<V> getValuesInOTUOrder(final OTUSet otuSet) {
 		final List<V> valuesInOTUOrder = newArrayListWithCapacity(getOTUsToValues()
@@ -99,8 +102,8 @@ public abstract class OTUKeyedMap<V extends PersistentObject, P extends IPPodVer
 	 * previously contained a mapping for {@code key}, the original value is
 	 * replaced by the specified value.
 	 * <p>
-	 * This method calls {@code arent.setInNeedOfNewPPodVersionInfo()} if this
-	 * method changes anything
+	 * This method calls {@code getParent().setInNeedOfNewPPodVersionInfo()} if
+	 * this method changes anything
 	 * 
 	 * @param key key
 	 * @param newValue new value for {@code key}
@@ -117,14 +120,14 @@ public abstract class OTUKeyedMap<V extends PersistentObject, P extends IPPodVer
 	 *             .equals} to {@code newT}
 	 */
 	@CheckForNull
-	public abstract V put(OTU key, V value, P parent);
+	public abstract V put(OTU key, V value);
 
 	/**
 	 * Associates {@code value} with {@code key} in this map. If the map
 	 * previously contained a mapping for {@code key}, the old value is replaced
 	 * by the specified value.
 	 * <p>
-	 * This method calls {@code parent.setInNeedOfNewPPodVersionInfo()} if it
+	 * This method calls {@code getParent.setInNeedOfNewPPodVersionInfo()} if it
 	 * changes this {@code OTUKeyedMap}'s state.
 	 * 
 	 * @param otu key
@@ -143,12 +146,13 @@ public abstract class OTUKeyedMap<V extends PersistentObject, P extends IPPodVer
 	 * @throws IllegalArgumentException if {@code parent.getOTUSet() == null}
 	 */
 	@CheckForNull
-	protected V putHelper(final OTU key, final V value, final P parent) {
+	protected V putHelper(final OTU key, final V value) {
 		checkNotNull(key);
 		checkNotNull(value);
-		checkNotNull(parent);
-		checkArgument(parent.getOTUSet() != null, "parent.getOTUSet() == null");
-		checkArgument(contains(parent.getOTUSet(), key),
+		checkState(getParent() != null, "no parent has been assigned");
+		checkState(getParent().getOTUSet() != null,
+				"parent.getOTUSet() == null");
+		checkArgument(contains(getParent().getOTUSet(), key),
 				"otu does not belong to the parent's OTUSet");
 
 		if (null != getOTUsToValues().get(key)
@@ -157,9 +161,11 @@ public abstract class OTUKeyedMap<V extends PersistentObject, P extends IPPodVer
 		}
 		checkArgument(!getOTUsToValues().containsValue(value),
 				"already has a value .equals() to newT: " + value);
-		parent.setInNeedOfNewPPodVersionInfo();
+		getParent().setInNeedOfNewPPodVersionInfo();
 		return getOTUsToValues().put(key, value);
 	}
+
+	protected abstract OTUKeyedMap<V> setInNeedOfNewPPodVersionInfo();
 
 	/**
 	 * Set the keys of this {@code OTUKeyedMap}.
@@ -178,8 +184,9 @@ public abstract class OTUKeyedMap<V extends PersistentObject, P extends IPPodVer
 	 * @throw IllegalArgumentException if {@code otuSet != parent.getOTUSet()}
 	 */
 	@CheckForNull
-	protected OTUKeyedMap<V, P> setOTUs(@Nullable final OTUSet otuSet,
-			final P parent) {
+	protected OTUKeyedMap<V> setOTUs(@Nullable final OTUSet otuSet) {
+		final IPPodVersionedWithOTUSet parent = getParent();
+
 		checkArgument(otuSet == parent.getOTUSet(),
 				"otuSet does not belong to parent");
 

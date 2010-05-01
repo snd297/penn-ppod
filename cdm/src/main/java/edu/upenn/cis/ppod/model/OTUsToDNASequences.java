@@ -15,6 +15,7 @@
  */
 package edu.upenn.cis.ppod.model;
 
+import static com.google.common.base.Preconditions.checkNotNull;
 import static com.google.common.collect.Maps.newHashMap;
 import static com.google.common.collect.Sets.newHashSet;
 
@@ -24,11 +25,14 @@ import java.util.Set;
 import javax.annotation.CheckForNull;
 import javax.persistence.CascadeType;
 import javax.persistence.Entity;
+import javax.persistence.FetchType;
 import javax.persistence.MapKeyJoinColumn;
 import javax.persistence.OneToMany;
+import javax.persistence.OneToOne;
 import javax.persistence.Table;
 import javax.persistence.Transient;
 import javax.xml.bind.Marshaller;
+import javax.xml.bind.Unmarshaller;
 import javax.xml.bind.annotation.XmlElement;
 
 import edu.upenn.cis.ppod.util.OTUDNASequencePair;
@@ -38,18 +42,19 @@ import edu.upenn.cis.ppod.util.OTUSomethingPair;
  * @author Sam Donnelly
  */
 @Entity
-@Table(name = "OTUS_TO_DNA_SEQUENCES")
+@Table(name = OTUsToDNASequences.TABLE)
 public class OTUsToDNASequences extends
-		OTUsToSequences<DNASequence, DNASequenceSet> {
-	
-	
-	
+		OTUsToSequences<DNASequence> {
 
-	/**
-	 * The sequences. We don't do save_update cascades since we want to control
-	 * when sequences are added to the persistence context. We sometimes don't
-	 * want the sequences saved or reattached when the the matrix is.
-	 */
+	final static String TABLE = "OTUS_TO_DNA_SEQUENCES";
+
+	final static String ID_COLUMN = TABLE + "_"
+											+ PersistentObject.ID_COLUMN;
+
+	@OneToOne(fetch = FetchType.LAZY, mappedBy = "otusToSequences")
+	@CheckForNull
+	private DNASequenceSet sequenceSet;
+
 	@OneToMany(cascade = CascadeType.ALL, orphanRemoval = true)
 	@MapKeyJoinColumn(name = OTU.ID_COLUMN)
 	private final Map<OTU, DNASequence> sequences = newHashMap();
@@ -60,6 +65,21 @@ public class OTUsToDNASequences extends
 	 */
 	@Transient
 	private final Set<OTUDNASequencePair> otuSequencePairs = newHashSet();
+
+	/**
+	 * {@link Unmarshaller} callback.
+	 * 
+	 * @param u see {@code Unmarshaller}
+	 * @param parent see {@code Unmarshaller}
+	 */
+	@Override
+	public void afterUnmarshal(final Unmarshaller u, final Object parent) {
+		super.afterUnmarshal(u, parent);
+		setSequenceSet((DNASequenceSet) parent);
+		for (final OTUSomethingPair<DNASequence> otuSequencePair : getOTUValuePairs()) {
+			otuSequencePair.getSecond().setOTUsToSequences(this);
+		}
+	}
 
 	public boolean beforeMarshal(@CheckForNull final Marshaller marshaller) {
 		getOTUSequencePairs().clear();
@@ -92,12 +112,36 @@ public class OTUsToDNASequences extends
 	}
 
 	@Override
-	public DNASequence put(final OTU otu, final DNASequence newSequence,
-			final DNASequenceSet parent) {
-		final DNASequence originalSequence = super.putHelper(otu, newSequence,
-				parent);
-		newSequence.setSequenceSet(parent);
+	protected DNASequenceSet getParent() {
+		return sequenceSet;
+	}
+
+	@Override
+	public DNASequence put(final OTU otu, final DNASequence sequence) {
+		checkNotNull(otu);
+		checkNotNull(sequence);
+		final DNASequence originalSequence = super.putHelper(otu, sequence);
+
+		sequence.setOTUsToSequences(this);
 		return originalSequence;
+	}
+
+	protected void setInNeedOfNewPPodVersion() {
+		sequenceSet.setInNeedOfNewPPodVersionInfo();
+	}
+
+	@Override
+	protected OTUsToDNASequences setInNeedOfNewPPodVersionInfo() {
+		if (sequenceSet != null) {
+			sequenceSet.setInNeedOfNewPPodVersionInfo();
+		}
+		return this;
+	}
+
+	protected OTUsToDNASequences setSequenceSet(final DNASequenceSet sequenceSet) {
+		checkNotNull(sequenceSet);
+		this.sequenceSet = sequenceSet;
+		return this;
 	}
 
 }

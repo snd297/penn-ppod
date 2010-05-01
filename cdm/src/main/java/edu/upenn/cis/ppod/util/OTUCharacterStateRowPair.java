@@ -43,7 +43,8 @@ public class OTUCharacterStateRowPair extends
 	 * This seemingly redundant setter method added for the sake of JAXB.
 	 */
 	@Override
-	public OTUSomethingPair<CharacterStateRow> setSecond(final CharacterStateRow row) {
+	public OTUSomethingPair<CharacterStateRow> setSecond(
+			final CharacterStateRow row) {
 		return (OTUSomethingPair<CharacterStateRow>) super.setSecond(row);
 	}
 
@@ -54,4 +55,5 @@ public class OTUCharacterStateRowPair extends
 		otuRowPair.setSecond(second);
 		return otuRowPair;
 	}
+
 }

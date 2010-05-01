@@ -87,7 +87,7 @@ public interface IVisitor {
 
 	void visit(OTUSet otuset);
 
-	void visit(OTUKeyedMap<?, ?> otuKeyedBimap);
+	void visit(OTUKeyedMap<?> otuKeyedBimap);
 
 	void visit(Study study);
 

@@ -15,6 +15,7 @@
  */
 package edu.upenn.cis.ppod.model;
 
+import static com.google.common.base.Preconditions.checkNotNull;
 import static com.google.common.collect.Maps.newHashMap;
 import static com.google.common.collect.Sets.newHashSet;
 
@@ -24,13 +25,17 @@ import java.util.Set;
 import javax.annotation.CheckForNull;
 import javax.persistence.CascadeType;
 import javax.persistence.Entity;
+import javax.persistence.FetchType;
 import javax.persistence.MapKeyJoinColumn;
 import javax.persistence.OneToMany;
+import javax.persistence.OneToOne;
 import javax.persistence.Table;
 import javax.persistence.Transient;
 import javax.xml.bind.Marshaller;
+import javax.xml.bind.Unmarshaller;
 import javax.xml.bind.annotation.XmlElement;
 
+import edu.upenn.cis.ppod.modelinterfaces.IPPodVersionedWithOTUSet;
 import edu.upenn.cis.ppod.util.OTUCharacterStateRowPair;
 import edu.upenn.cis.ppod.util.OTUSomethingPair;
 
@@ -42,10 +47,8 @@ import edu.upenn.cis.ppod.util.OTUSomethingPair;
 @Entity
 @Table(name = "OTUS_TO_CHARACTER_STATE_ROWS")
 public class OTUsToCharacterStateRows extends
-		OTUKeyedMap<CharacterStateRow, CharacterStateMatrix> {
-	/**
-	 * The rows of the matrix.
-	 */
+		OTUKeyedMap<CharacterStateRow> {
+
 	@OneToMany(cascade = CascadeType.ALL, orphanRemoval = true)
 	@MapKeyJoinColumn(name = OTU.ID_COLUMN)
 	private final Map<OTU, CharacterStateRow> rows = newHashMap();
@@ -57,7 +60,26 @@ public class OTUsToCharacterStateRows extends
 	@Transient
 	private final Set<OTUCharacterStateRowPair> otuRowPairs = newHashSet();
 
+	@OneToOne(fetch = FetchType.LAZY, mappedBy = "otusToRows")
+	@CheckForNull
+	private CharacterStateMatrix matrix;
+
 	OTUsToCharacterStateRows() {}
+
+	/**
+	 * {@link Unmarshaller} callback.
+	 * 
+	 * @param u see {@code Unmarshaller}
+	 * @param parent see {@code Unmarshaller}
+	 */
+	@Override
+	public void afterUnmarshal(final Unmarshaller u, final Object parent) {
+		super.afterUnmarshal(u, parent);
+		setMatrix((CharacterStateMatrix) parent);
+		for (final OTUSomethingPair<CharacterStateRow> otuRowPair : otuRowPairs) {
+			otuRowPair.getSecond().setOTUsToRows(this);
+		}
+	}
 
 	public boolean beforeMarshal(@CheckForNull final Marshaller marshaller) {
 		getOTURowPairs().clear();
@@ -68,6 +90,10 @@ public class OTUsToCharacterStateRows extends
 							.getValue()));
 		}
 		return true;
+	}
+
+	protected CharacterStateMatrix getMatrix() {
+		return matrix;
 	}
 
 	@XmlElement(name = "otuRowPair")
@@ -90,15 +116,34 @@ public class OTUsToCharacterStateRows extends
 	}
 
 	@Override
-	public CharacterStateRow put(final OTU otu, final CharacterStateRow newRow,
-			final CharacterStateMatrix matrix) {
-		newRow.setMatrix(matrix);
-		final CharacterStateRow originalRow = super.putHelper(otu, newRow,
-				matrix);
-		if (originalRow != null && originalRow != newRow) {
-			originalRow.setMatrix(null);
+	protected IPPodVersionedWithOTUSet getParent() {
+		return matrix;
+	}
+
+	@Override
+	public CharacterStateRow put(final OTU otu, final CharacterStateRow row) {
+		checkNotNull(otu);
+		checkNotNull(row);
+		row.setOTUsToRows(this);
+		final CharacterStateRow originalRow = super.putHelper(otu, row);
+		if (originalRow != null && originalRow != row) {
+			originalRow.setOTUsToRows(null);
 		}
 		return originalRow;
 	}
 
+	@Override
+	protected OTUsToCharacterStateRows setInNeedOfNewPPodVersionInfo() {
+		if (matrix != null) {
+			matrix.setInNeedOfNewPPodVersionInfo();
+		}
+		return this;
+	}
+
+	protected OTUsToCharacterStateRows setMatrix(
+			final CharacterStateMatrix matrix) {
+		checkNotNull(matrix);
+		this.matrix = matrix;
+		return this;
+	}
 }

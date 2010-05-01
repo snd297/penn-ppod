@@ -43,12 +43,12 @@ public class DNASequenceSet extends SequenceSet<DNASequence> {
 	final static String TABLE = "DNA_SEQUENCE_SET";
 
 	final static String ID_COLUMN = TABLE + "_"
-											+ PersistentObject.ID_COLUMN;
+									+ PersistentObject.ID_COLUMN;
 
 	/**
 	 * The sequences.
 	 */
-	@OneToOne(fetch = FetchType.LAZY, optional = false, cascade = CascadeType.ALL)
+	@OneToOne(fetch = FetchType.LAZY, optional = false, cascade = CascadeType.ALL, orphanRemoval = true)
 	@CheckForNull
 	private OTUsToDNASequences otusToSequences;
 
@@ -57,6 +57,7 @@ public class DNASequenceSet extends SequenceSet<DNASequence> {
 	@Inject
 	DNASequenceSet(final OTUsToDNASequences otusToDNASequences) {
 		this.otusToSequences = otusToDNASequences;
+		this.otusToSequences.setSequenceSet(this);
 	}
 
 	@Override
@@ -71,11 +72,9 @@ public class DNASequenceSet extends SequenceSet<DNASequence> {
 	}
 
 	@Override
-	public void afterUnmarshal() {
-		for (final DNASequence dnaSequence : this) {
-			dnaSequence.setSequenceSet(this);
-		}
-		super.afterUnmarshal();
+	public DNASequenceSet clear() {
+		getOTUsToSequences().clear();
+		return this;
 	}
 
 	@XmlElement(name = "otusToSequences")
@@ -88,23 +87,14 @@ public class DNASequenceSet extends SequenceSet<DNASequence> {
 	@Override
 	public DNASequence getSequence(final OTU otu) {
 		checkNotNull(otu);
-		return getOTUsToSequences().get(otu, this);
+		return getOTUsToSequences().get(otu);
 	}
 
 	@Nullable
 	@Override
 	protected DNASequence putSequenceHelper(final OTU otu,
 			final DNASequence newSequence) {
-		return getOTUsToSequences().put(otu, newSequence, this);
-	}
-
-	/** For JAXB. */
-	@edu.umd.cs.findbugs.annotations.SuppressWarnings
-	@SuppressWarnings("unused")
-	private DNASequenceSet setOTUsToSequences(
-			final OTUsToDNASequences otusToSequences) {
-		this.otusToSequences = otusToSequences;
-		return this;
+		return getOTUsToSequences().put(otu, newSequence);
 	}
 
 	/**
@@ -117,13 +107,17 @@ public class DNASequenceSet extends SequenceSet<DNASequence> {
 		checkState(
 				getOTUsToSequences() != null,
 				"getOTUsToSequences() == null, so there is no otusToSequences to operate on");
-		getOTUsToSequences().setOTUs(otuSet, this);
+		getOTUsToSequences().setOTUs(otuSet);
 		return this;
 	}
 
-	@Override
-	public DNASequenceSet clear() {
-		getOTUsToSequences().clear(this);
+	/** For JAXB. */
+	@edu.umd.cs.findbugs.annotations.SuppressWarnings
+	@SuppressWarnings("unused")
+	private DNASequenceSet setOTUsToSequences(
+			final OTUsToDNASequences otusToSequences) {
+		checkNotNull(otusToSequences);
+		this.otusToSequences = otusToSequences;
 		return this;
 	}
 

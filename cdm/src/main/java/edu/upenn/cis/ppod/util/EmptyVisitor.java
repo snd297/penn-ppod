@@ -161,15 +161,15 @@ public abstract class EmptyVisitor implements IVisitor {
 	 * 
 	 * @param otuKeyedMap ignored
 	 */
-	public void visit(final OTUKeyedMap<?, ?> otuKeyedMap) {
+	public void visit(final OTUKeyedMap<?> otuKeyedMap) {
 
 	}
-	
-	public void visit(final DNASequenceSet dnaSequenceSet) { 
-		
+
+	public void visit(final DNASequenceSet dnaSequenceSet) {
+
 	}
-	
+
 	public void visit(final DNASequence dnaSequence) {
-	
+
 	}
 }

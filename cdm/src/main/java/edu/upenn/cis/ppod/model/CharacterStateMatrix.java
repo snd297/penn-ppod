@@ -61,7 +61,6 @@ import com.google.inject.Inject;
 
 import edu.upenn.cis.ppod.modelinterfaces.IPPodVersionedWithOTUSet;
 import edu.upenn.cis.ppod.util.IVisitor;
-import edu.upenn.cis.ppod.util.OTUSomethingPair;
 
 /**
  * A standard matrix - aka a character matrix.
@@ -166,6 +165,7 @@ public class CharacterStateMatrix extends UUPPodEntityWXmlId implements
 	@Inject
 	protected CharacterStateMatrix(final OTUsToCharacterStateRows otusToRows) {
 		this.otusToRows = otusToRows;
+		this.otusToRows.setMatrix(this);
 	}
 
 	@Override
@@ -214,10 +214,6 @@ public class CharacterStateMatrix extends UUPPodEntityWXmlId implements
 	public void afterUnmarshal(final Unmarshaller u, final Object parent) {
 		super.afterUnmarshal(u, parent);
 		setOTUSet((OTUSet) parent);
-		for (final OTUSomethingPair<CharacterStateRow> otuRowPair : otusToRows
-				.getOTUValuePairs()) {
-			otuRowPair.getSecond().setMatrix(this);
-		}
 	}
 
 	@Override
@@ -444,7 +440,7 @@ public class CharacterStateMatrix extends UUPPodEntityWXmlId implements
 	@Nullable
 	public CharacterStateRow getRow(final OTU otu) {
 		checkNotNull(otu);
-		return getOTUsToRows().get(otu, this);
+		return getOTUsToRows().get(otu);
 	}
 
 	/**
@@ -469,9 +465,9 @@ public class CharacterStateMatrix extends UUPPodEntityWXmlId implements
 	/**
 	 * Set row at <code>otu</code> to <code>row</code>.
 	 * <p>
-	 * Assumes {@code newRow} does not belong to another matrix.
+	 * Assumes {@code row} does not belong to another matrix.
 	 * <p>
-	 * Assumes {@code newRow} is not detached.
+	 * Assumes {@code row} is not detached.
 	 * 
 	 * @param otu index of the row we are adding
 	 * @param newRow the row we're adding
@@ -484,8 +480,10 @@ public class CharacterStateMatrix extends UUPPodEntityWXmlId implements
 	 */
 	@CheckForNull
 	public CharacterStateRow putRow(final OTU otu,
-			final CharacterStateRow newRow) {
-		return getOTUsToRows().put(otu, newRow, this);
+			final CharacterStateRow row) {
+		checkNotNull(otu);
+		checkNotNull(row);
+		return getOTUsToRows().put(otu, row);
 	}
 
 	/**
@@ -696,12 +694,14 @@ public class CharacterStateMatrix extends UUPPodEntityWXmlId implements
 	protected CharacterStateMatrix setOTUSet(
 			@CheckForNull final OTUSet newOTUSet) {
 		otuSet = newOTUSet;
-		getOTUsToRows().setOTUs(getOTUSet(), this);
+		getOTUsToRows().setOTUs(getOTUSet());
 		return this;
 	}
 
 	/**
 	 * Set the otusToRows.
+	 * <p>
+	 * Created for JAXB.
 	 * 
 	 * @param otusToRows the otusToRows to set
 	 * 
@@ -710,8 +710,9 @@ public class CharacterStateMatrix extends UUPPodEntityWXmlId implements
 	@edu.umd.cs.findbugs.annotations.SuppressWarnings
 	@SuppressWarnings("unused")
 	private CharacterStateMatrix setOTUsToRows(
-			final OTUsToCharacterStateRows newOTUsToRows) {
-		otusToRows = newOTUsToRows;
+			final OTUsToCharacterStateRows otusToRows) {
+		checkNotNull(otusToRows);
+		this.otusToRows = otusToRows;
 		return this;
 	}
 

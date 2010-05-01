@@ -44,8 +44,6 @@ public abstract class SequenceSet<S extends Sequence>
 		extends UUPPodEntityWXmlId implements IPPodVersionedWithOTUSet,
 		Iterable<S> {
 
-	static final String TABLE = "MOLECULAR_SEQUENCE_SET";
-
 	@Column(name = "LABEL", nullable = false)
 	private String label;
 
@@ -100,7 +98,7 @@ public abstract class SequenceSet<S extends Sequence>
 		return otuSet;
 	}
 
-	protected abstract OTUKeyedMap<S, ? extends SequenceSet<?>> getOTUsToSequences();
+	protected abstract OTUKeyedMap<S> getOTUsToSequences();
 
 	/**
 	 * Get the sequence indexed by {@code otu}.
