@@ -29,7 +29,7 @@ import javax.annotation.Nonnegative;
 import javax.annotation.Nullable;
 import javax.persistence.CascadeType;
 import javax.persistence.Entity;
-import javax.persistence.JoinColumn;
+import javax.persistence.FetchType;
 import javax.persistence.ManyToOne;
 import javax.persistence.OneToMany;
 import javax.persistence.OrderBy;
@@ -52,18 +52,6 @@ import edu.upenn.cis.ppod.util.IVisitor;
 @Table(name = CharacterStateRow.TABLE)
 public class CharacterStateRow extends PPodEntity implements
 		Iterable<CharacterStateCell> {
-
-	public int getCellPosition(final CharacterStateCell cell) {
-		checkNotNull(cell);
-		checkArgument(this.equals(cell.getRow()),
-				"cell does not belong to this row");
-		final Integer cellPosition = cell.getPosition();
-		if (cellPosition == null) {
-			throw new AssertionError(
-					"cell has been assigned to a row but has now position set");
-		}
-		return cellPosition;
-	}
 
 	/** This entitiy's table. Intentionally package-private. */
 	static final String TABLE = "CHARACTER_STATE_ROW";
@@ -93,14 +81,9 @@ public class CharacterStateRow extends PPodEntity implements
 	@OrderBy("position")
 	private final List<CharacterStateCell> cells = newArrayList();
 
-	/**
-	 * The {@code CharacterStateMatrix} to which this {@code CharacterStateRow}
-	 * belongs.
-	 */
-	@ManyToOne
-	@JoinColumn(name = CharacterStateMatrix.ID_COLUMN, nullable = false)
+	@ManyToOne(fetch = FetchType.LAZY)
 	@CheckForNull
-	private CharacterStateMatrix matrix;
+	private OTUsToCharacterStateRows otusToRows;
 
 	CharacterStateRow() {}
 
@@ -163,6 +146,18 @@ public class CharacterStateRow extends PPodEntity implements
 		return getCells().get(pPodCellPosition);
 	}
 
+	public int getCellPosition(final CharacterStateCell cell) {
+		checkNotNull(cell);
+		checkArgument(this.equals(cell.getRow()),
+				"cell does not belong to this row");
+		final Integer cellPosition = cell.getPosition();
+		if (cellPosition == null) {
+			throw new AssertionError(
+					"cell has been assigned to a row but has now position set");
+		}
+		return cellPosition;
+	}
+
 	@XmlElement(name = "cell")
 	private List<CharacterStateCell> getCells() {
 		return cells;
@@ -187,7 +182,10 @@ public class CharacterStateRow extends PPodEntity implements
 	 */
 	@Nullable
 	public CharacterStateMatrix getMatrix() {
-		return matrix;
+		if (otusToRows == null) {
+			return null;
+		}
+		return otusToRows.getMatrix();
 	}
 
 	/**
@@ -261,13 +259,13 @@ public class CharacterStateRow extends PPodEntity implements
 	/**
 	 * Setter.
 	 * 
-	 * @param matrix the {@code CharacterStateMatrix} of which this is a row
+	 * @param otusToRows the {@code CharacterStateMatrix} of which this is a row
 	 * 
 	 * @return this {@code CharacterStateRow}
 	 */
-	protected CharacterStateRow setMatrix(
-			@CheckForNull final CharacterStateMatrix matrix) {
-		this.matrix = matrix;
+	protected CharacterStateRow setOTUsToRows(
+			@CheckForNull final OTUsToCharacterStateRows otusToRows) {
+		this.otusToRows = otusToRows;
 		return this;
 	}
 

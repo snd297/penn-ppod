@@ -19,7 +19,7 @@ import java.util.Set;
 
 import javax.annotation.CheckForNull;
 import javax.persistence.Entity;
-import javax.persistence.JoinColumn;
+import javax.persistence.FetchType;
 import javax.persistence.ManyToOne;
 import javax.persistence.Table;
 
@@ -34,28 +34,30 @@ import edu.upenn.cis.ppod.util.IVisitor;
 @Table(name = DNASequence.TABLE)
 public class DNASequence extends Sequence {
 
+	@ManyToOne(fetch = FetchType.LAZY)
+	@CheckForNull
+	private OTUsToDNASequences otusToSequences;
+
 	/**
 	 * The name of the {@code DNASequence} table.
 	 */
 	static final String TABLE = "DNA_SEQUENCE";
 
-	@ManyToOne
-	@JoinColumn(name = DNASequenceSet.ID_COLUMN, nullable = false)
-	@CheckForNull
-	private DNASequenceSet sequenceSet;
+	private final static Set<java.lang.Character> LEGAL_CHARS = ImmutableSet
+			.of('A', 'C', 'G', 'T', 'R', 'Y', 'K', 'M', 'S', 'W', 'B', 'D',
+					'H', 'V', 'N', '-');
 
 	@Override
 	public void accept(final IVisitor visitor) {
 		visitor.visit(this);
 	}
 
-	public DNASequenceSet getSequenceSet() {
-		return sequenceSet;
+	/**
+	 * Created for testing.
+	 */
+	OTUsToDNASequences getOTUsToSequences() {
+		return otusToSequences;
 	}
-
-	private final static Set<java.lang.Character> LEGAL_CHARS = ImmutableSet
-			.of('A', 'C', 'G', 'T', 'R', 'Y', 'K', 'M', 'S', 'W', 'B', 'D',
-					'H', 'V', 'N', '-');
 
 	@Override
 	public boolean isLegal(final char c) {
@@ -64,22 +66,23 @@ public class DNASequence extends Sequence {
 
 	@Override
 	public DNASequence setInNeedOfNewPPodVersionInfo() {
-		if (getSequenceSet() != null) {
-			getSequenceSet().setInNeedOfNewPPodVersionInfo();
+		if (otusToSequences != null) {
+			this.otusToSequences.setInNeedOfNewPPodVersion();
 		}
 		super.setInNeedOfNewPPodVersionInfo();
 		return this;
 	}
 
-	public DNASequence setSequenceSet(
-			@CheckForNull final DNASequenceSet sequenceSet) {
-		this.sequenceSet = sequenceSet;
+	public DNASequence setOTUsToSequences(
+			@CheckForNull final OTUsToDNASequences otusToSequences) {
+		this.otusToSequences = otusToSequences;
 		return this;
 	}
 
 	@Override
-	protected DNASequence unsetSequenceSet() {
-		setSequenceSet(null);
+	protected Sequence unsetOTUsToSequences() {
+		this.otusToSequences = null;
 		return this;
 	}
+
 }

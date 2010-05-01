@@ -156,7 +156,7 @@ public class CharacterStateCell extends PPodEntity implements
 	 * The {@code CharacterStateRow} to which this {@code CharacterStateCell}
 	 * belongs.
 	 */
-	@ManyToOne
+	@ManyToOne(fetch = FetchType.LAZY)
 	@JoinColumn(name = CharacterStateRow.ID_COLUMN)
 	@CheckForNull
 	private CharacterStateRow row;

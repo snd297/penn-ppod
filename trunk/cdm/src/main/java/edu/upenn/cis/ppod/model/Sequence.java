@@ -110,14 +110,6 @@ public abstract class Sequence extends PPodEntity {
 	}
 
 	/**
-	 * Get the {@code MolecularSequenceSet} that owns this sequence.
-	 * 
-	 * @return the {@code MolecularSequenceSet} that owns this sequence
-	 */
-	// @Nullable
-	// public abstract SequenceSet<Sequence> getSequenceSet();
-
-	/**
 	 * Is it a legal DNA Sequence character? As defined by <a
 	 * href=http://www.ncbi.nlm.nih.gov/blast/fasta.shtml>Fasta format
 	 * description</a>.
@@ -198,13 +190,11 @@ public abstract class Sequence extends PPodEntity {
 			return this;
 		}
 		for (int i = 0; i < sequence.length(); i++) {
-			if (isLegal(sequence.charAt(i))) {
-
-			} else {
+			if (!isLegal(sequence.charAt(i))) {
 				throw new IllegalArgumentException(
 						"Position " + i + " is ["
 								+ sequence.charAt(i)
-								+ "] which is not a DNA state");
+								+ "] which is not a legal DNA char");
 			}
 		}
 
@@ -212,21 +202,6 @@ public abstract class Sequence extends PPodEntity {
 		setInNeedOfNewPPodVersionInfo();
 		return this;
 	}
-
-	/**
-	 * Set the sequence set that contains this sequence.
-	 * <p>
-	 * A {@code null} value for {@code sequenceSet} indicates that the
-	 * relationship is being severed.
-	 * 
-	 * @param sequenceSet the sequence set that contains this sequence.
-	 * 
-	 * @return this
-	 */
-// protected abstract Sequence setSequenceSet(
-// @Nullable final Object sequenceSet);
-
-	protected abstract Sequence unsetSequenceSet();
 
 	/**
 	 * Constructs a <code>String</code> with all attributes in name = value
@@ -255,6 +230,22 @@ public abstract class Sequence extends PPodEntity {
 	// protected Map<Integer, CharacterStates> getStatesByPosition() {
 	// return statesByPosition;
 	// }
+
+	/**
+	 * Set the sequence set that contains this sequence.
+	 * <p>
+	 * A {@code null} value for {@code sequenceSet} indicates that the
+	 * relationship is being severed.
+	 * 
+	 * @param sequenceSet the sequence set that contains this sequence.
+	 * 
+	 * @return this
+	 */
+// protected abstract Sequence setSequenceSet(
+// @Nullable final Object sequenceSet);
+
+	// protected abstract Sequence unsetSequenceSet();
+	protected abstract Sequence unsetOTUsToSequences();
 
 }
 
