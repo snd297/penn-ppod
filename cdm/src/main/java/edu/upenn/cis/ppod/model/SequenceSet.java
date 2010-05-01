@@ -40,7 +40,7 @@ import edu.upenn.cis.ppod.util.IVisitor;
  * @param <S> the type of {@code Sequence} this set contains
  */
 @MappedSuperclass
-public abstract class SequenceSet<S extends Sequence<?>>
+public abstract class SequenceSet<S extends Sequence>
 		extends UUPPodEntityWXmlId implements IPPodVersionedWithOTUSet,
 		Iterable<S> {
 
@@ -53,8 +53,6 @@ public abstract class SequenceSet<S extends Sequence<?>>
 	@JoinColumn(name = OTUSet.ID_COLUMN, nullable = false)
 	@CheckForNull
 	private OTUSet otuSet;
-
-	public abstract SequenceSet<S> clear();
 
 	@Override
 	public void accept(final IVisitor visitor) {
@@ -78,6 +76,14 @@ public abstract class SequenceSet<S extends Sequence<?>>
 		super.afterUnmarshal(u, parent);
 		setOTUSet((OTUSet) parent);
 	}
+
+	/**
+	 * Remove all sequences from this set. Null's out the {@code
+	 * Sequence->SequenceSet} relationship.
+	 * 
+	 * @return this
+	 */
+	public abstract SequenceSet<S> clear();
 
 	@XmlAttribute(name = "label")
 	public String getLabel() {

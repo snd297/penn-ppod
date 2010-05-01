@@ -24,16 +24,13 @@ import edu.upenn.cis.ppod.modelinterfaces.INewPPodVersionInfo;
  * @author Sam Donnelly
  * 
  * @param <SS> the kind of {@link SequenceSet} we're operating on
- * @param <S> the kind of {@link Sequence} that belongs in the sequence
- *            set
+ * @param <S> the kind of {@link Sequence} that belongs in the sequence set
  */
-public interface IMergeMolecularSequenceSets<SS extends SequenceSet<S>, S extends Sequence<SS>> {
+public interface IMergeMolecularSequenceSets<SS extends SequenceSet<S>, S extends Sequence> {
 
-	
 	public void merge(final SS targetSequenceSet, final SS sourceSequenceSet);
 
-	static interface IFactory<SS extends SequenceSet<S>, S extends Sequence<SS>> {
-
+	static interface IFactory<SS extends SequenceSet<S>, S extends Sequence> {
 
 		IMergeMolecularSequenceSets<SS, S> create(IDAO<Object, Long> dao,
 				INewPPodVersionInfo newPPodVersionInfo);

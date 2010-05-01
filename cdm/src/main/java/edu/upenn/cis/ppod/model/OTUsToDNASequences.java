@@ -41,6 +41,9 @@ import edu.upenn.cis.ppod.util.OTUSomethingPair;
 @Table(name = "OTUS_TO_DNA_SEQUENCES")
 public class OTUsToDNASequences extends
 		OTUsToSequences<DNASequence, DNASequenceSet> {
+	
+	
+	
 
 	/**
 	 * The sequences. We don't do save_update cascades since we want to control

@@ -41,7 +41,7 @@ public class MolecularSequenceTest {
 	 * </ol>
 	 */
 	public void setSequence() {
-		final Sequence<DNASequenceSet> sequence = dnaSequenceProvider
+		final Sequence sequence = dnaSequenceProvider
 				.get();
 		final String sequenceString = "ACGTAC-T-A";
 		sequence.setSequence(sequenceString);
@@ -66,15 +66,15 @@ public class MolecularSequenceTest {
 	 */
 	@Test(expectedExceptions = IllegalArgumentException.class)
 	public void setSequenceWithAnIllegalCharacter() {
-		final Sequence<DNASequenceSet> sequence = dnaSequenceProvider
+		final Sequence sequence = dnaSequenceProvider
 				.get();
 		final String sequenceString = "ACGTlC-T-A";
 		sequence.setSequence(sequenceString);
 	}
 
 	/**
-	 * Make sure that {@link Sequence#setInNeedOfNewPPodVersionInfo()}
-	 * works on both the sequence and parent sequence set.
+	 * Make sure that {@link Sequence#setInNeedOfNewPPodVersionInfo()} works on
+	 * both the sequence and parent sequence set.
 	 * <p>
 	 * Also make sure that it works if no parent has been set.
 	 */
@@ -120,7 +120,7 @@ public class MolecularSequenceTest {
 	 * </ol>
 	 */
 	public void setName() {
-		final Sequence<?> sequence = dnaSequenceProvider.get();
+		final Sequence sequence = dnaSequenceProvider.get();
 
 		assertNull(sequence.getName());
 
@@ -155,7 +155,7 @@ public class MolecularSequenceTest {
 	 * </ol>
 	 */
 	public void setAccession() {
-		final Sequence<?> sequence = dnaSequenceProvider.get();
+		final Sequence sequence = dnaSequenceProvider.get();
 
 		assertNull(sequence.getAccession());
 
@@ -190,7 +190,7 @@ public class MolecularSequenceTest {
 	 * </ol>
 	 */
 	public void setDescription() {
-		final Sequence<?> sequence = dnaSequenceProvider.get();
+		final Sequence sequence = dnaSequenceProvider.get();
 
 		assertNull(sequence.getDescription());
 

@@ -22,15 +22,15 @@ import static com.google.common.base.Preconditions.checkNotNull;
  * 
  * @author Sam Donnelly
  */
-public abstract class OTUsToSequences<T extends Sequence<?>, P extends SequenceSet<?>>
+public abstract class OTUsToSequences<T extends Sequence, P extends SequenceSet<?>>
 		extends OTUKeyedMap<T, P> {
 
 	@Override
-	public OTUsToSequences<T, P> clear(final P seqSet) {
-		for (final Sequence<?> seq : getOTUsToValues().values()) {
-			seq.setSequenceSet(null);
+	public OTUsToSequences<T, P> clear(final P sequenceSet) {
+		for (final Sequence sequence : getOTUsToValues().values()) {
+			sequence.unsetSequenceSet();
 		}
-		super.clear(seqSet);
+		super.clear(sequenceSet);
 		return this;
 	}
 
@@ -47,7 +47,7 @@ public abstract class OTUsToSequences<T extends Sequence<?>, P extends SequenceS
 		// If we are replacing an OTU's sequence, we need to sever the previous
 		// sequence's sequence->sequenceSet pointer.
 		if (originalSequence != null && !originalSequence.equals(value)) {
-			originalSequence.setSequenceSet(null);
+			originalSequence.unsetSequenceSet();
 		}
 		return originalSequence;
 	}

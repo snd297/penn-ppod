@@ -22,15 +22,15 @@ import com.google.inject.Provider;
 import com.google.inject.assistedinject.Assisted;
 
 import edu.upenn.cis.ppod.dao.IDAO;
+import edu.upenn.cis.ppod.model.OTU;
 import edu.upenn.cis.ppod.model.Sequence;
 import edu.upenn.cis.ppod.model.SequenceSet;
-import edu.upenn.cis.ppod.model.OTU;
 import edu.upenn.cis.ppod.modelinterfaces.INewPPodVersionInfo;
 
 /**
  * @author Sam Donnelly
  */
-final class MergeMolecularSequenceSets<SS extends SequenceSet<S>, S extends Sequence<SS>>
+final class MergeMolecularSequenceSets<SS extends SequenceSet<S>, S extends Sequence>
 		implements IMergeMolecularSequenceSets<SS, S> {
 
 	final IDAO<Object, Long> dao;
