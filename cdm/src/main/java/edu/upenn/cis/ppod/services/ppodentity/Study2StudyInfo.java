@@ -25,9 +25,9 @@ import java.util.Iterator;
 import com.google.inject.Inject;
 import com.google.inject.Provider;
 
-import edu.upenn.cis.ppod.model.Character;
-import edu.upenn.cis.ppod.model.CharacterStateMatrix;
-import edu.upenn.cis.ppod.model.CharacterStateRow;
+import edu.upenn.cis.ppod.model.AbstractCharacter;
+import edu.upenn.cis.ppod.model.Matrix;
+import edu.upenn.cis.ppod.model.CategoricalRow;
 import edu.upenn.cis.ppod.model.DNASequence;
 import edu.upenn.cis.ppod.model.DNASequenceSet;
 import edu.upenn.cis.ppod.model.OTU;
@@ -92,9 +92,9 @@ final class Study2StudyInfo implements IStudy2StudyInfo {
 				otuInfo.setDocId(otu.getDocId());
 			}
 
-			for (final Iterator<CharacterStateMatrix> matrixItr = otuSet
-					.getMatricesIterator(); matrixItr.hasNext();) {
-				final CharacterStateMatrix matrix = matrixItr.next();
+			for (final Iterator<Matrix> matrixItr = otuSet
+					.categoricalMatricesIterator(); matrixItr.hasNext();) {
+				final Matrix matrix = matrixItr.next();
 				final CharacterStateMatrixInfo matrixInfo =
 						find(otuSetInfo.getMatrixInfos(),
 								compose(equalTo(matrix.getPPodId()),
@@ -105,14 +105,14 @@ final class Study2StudyInfo implements IStudy2StudyInfo {
 				matrixInfo.setDocId(matrix.getDocId());
 
 				int characterIdx = -1;
-				for (final Iterator<Character> charactersItr = matrix
+				for (final Iterator<AbstractCharacter> charactersItr = matrix
 						.getCharactersIterator(); charactersItr.hasNext();) {
 					characterIdx++;
-					final Character character = charactersItr.next();
+					final AbstractCharacter abstractCharacter = charactersItr.next();
 					PPodEntityInfo characterInfo = pPodEntityInfoProvider.get();
-					characterInfo.setPPodId(character.getPPodId());
-					characterInfo.setEntityId(character.getId());
-					characterInfo.setPPodVersion(character.getPPodVersionInfo()
+					characterInfo.setPPodId(abstractCharacter.getPPodId());
+					characterInfo.setEntityId(abstractCharacter.getId());
+					characterInfo.setPPodVersion(abstractCharacter.getPPodVersionInfo()
 							.getPPodVersion());
 					matrixInfo.getCharacterInfosByIdx().put(characterIdx,
 							characterInfo);
@@ -130,7 +130,7 @@ final class Study2StudyInfo implements IStudy2StudyInfo {
 				}
 
 				int rowIdx = -1;
-				for (final CharacterStateRow row : matrix) {
+				for (final CategoricalRow row : matrix) {
 					rowIdx++;
 					final Long rowPPodVersion = row.getPPodVersionInfo()
 							.getPPodVersion();
@@ -138,10 +138,10 @@ final class Study2StudyInfo implements IStudy2StudyInfo {
 							rowPPodVersion);
 
 					// This bit is not handled in
-					// SaveOrUpdateCharacterStateMatrix
+					// SaveOrUpdateCategoricalMatrix
 
 					// int cellIdx = -1;
-					// for (final CharacterStateCell cell : row) {
+					// for (final CategoricalCell cell : row) {
 					// cellIdx++;
 					// matrixInfo.setCellPPodIdAndVersion(rowIdx, cellIdx,
 					// cell.getPPodVersionInfo().getPPodVersion());
@@ -151,7 +151,7 @@ final class Study2StudyInfo implements IStudy2StudyInfo {
 			// TODO: this should be genericized when we support other kinds of
 			// MolecularSequenceSets
 			for (final Iterator<DNASequenceSet> dnaSequenceSetItr = otuSet
-					.getDNASequenceSetsIterator(); dnaSequenceSetItr.hasNext();) {
+					.dnaSequenceSetsIterator(); dnaSequenceSetItr.hasNext();) {
 				final DNASequenceSet dnaSequenceSet = dnaSequenceSetItr.next();
 				final MolecularSequenceSetInfo sequenceSetInfo = molecularSequenceSetInfoProvider
 						.get();

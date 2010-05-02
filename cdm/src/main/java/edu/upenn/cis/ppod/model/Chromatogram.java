@@ -55,6 +55,18 @@ public class Chromatogram extends UUPPodEntity {
 		return chromatogramCopy;
 	}
 
+	/**
+	 * For newly constructed objects, this will return {@code null} until
+	 * {@code setSequence(...)} is called. For persisted {@code Chromatagram}s
+	 * this should never return {@code null}.
+	 * 
+	 * @return the {@code DNASequence} that this points to
+	 */
+	@Nullable
+	public DNASequence getSequence() {
+		return sequence;
+	}
+
 	public Chromatogram setChromatogram(final byte[] chromatogram) {
 		checkNotNull(chromatogram);
 		if (Arrays.equals(chromatogram, this.chromatogram)) {
@@ -69,18 +81,6 @@ public class Chromatogram extends UUPPodEntity {
 					chromatogram.length);
 		setInNeedOfNewPPodVersionInfo();
 		return this;
-	}
-
-	/**
-	 * For newly constructed objects, this will return {@code null} until
-	 * {@code setSequence(...)} is called. For persisted {@code Chromatagram}s
-	 * this should never return {@code null}.
-	 * 
-	 * @return the {@code DNASequence} that this points to
-	 */
-	@Nullable
-	public DNASequence getSequence() {
-		return sequence;
 	}
 
 	public Chromatogram setSequence(@CheckForNull final DNASequence sequence) {

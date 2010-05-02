@@ -15,7 +15,9 @@
  */
 package edu.upenn.cis.ppod.util;
 
-import java.util.Iterator;
+import static com.google.common.collect.Sets.newHashSet;
+
+import java.util.Set;
 
 import org.hibernate.classic.Session;
 import org.hibernate.context.ManagedSessionContext;
@@ -24,8 +26,7 @@ import com.google.inject.Guice;
 import com.google.inject.Injector;
 
 import edu.upenn.cis.ppod.PPodModule;
-import edu.upenn.cis.ppod.model.CharacterState;
-import edu.upenn.cis.ppod.model.DNACharacter;
+import edu.upenn.cis.ppod.model.DNAState;
 import edu.upenn.cis.ppod.modelinterfaces.INewPPodVersionInfo;
 import edu.upenn.cis.ppod.modelinterfaces.INewPPodVersionInfoHibernate;
 import edu.upenn.cis.ppod.thirdparty.util.HibernateUtil;
@@ -44,29 +45,29 @@ public class PopulateTables {
 		try {
 			final Injector injector = Guice
 					.createInjector(new PPodModule());
-			final DNACharacter dnaCharacter = injector
-					.getInstance(DNACharacter.class);
-
-			dnaCharacter.setPPodId();
 
 			session = HibernateUtil.getSessionFactory().openSession();
 			ManagedSessionContext.bind(session);
 			session.beginTransaction();
 
+			final DNAState.IFactory dnaStateFactory = injector
+					.getInstance(DNAState.IFactory.class);
+
+			final Set<DNAState> states = newHashSet();
+			states.add(dnaStateFactory.create(DNAState.Nucleotide.A));
+			states.add(dnaStateFactory.create(DNAState.Nucleotide.C));
+			states.add(dnaStateFactory.create(DNAState.Nucleotide.T));
+			states.add(dnaStateFactory.create(DNAState.Nucleotide.G));
+
 			final INewPPodVersionInfo newPPodVersionInfo = injector
 					.getInstance(INewPPodVersionInfoHibernate.IFactory.class)
 					.create(session);
-			dnaCharacter.setPPodVersionInfo(newPPodVersionInfo
-					.getNewPPodVersionInfo());
 
-			for (final Iterator<CharacterState> statesItr = dnaCharacter
-					.getStatesIterator(); statesItr.hasNext();) {
-				final CharacterState state = statesItr.next();
+			for (final DNAState state : states) {
 				state.setPPodVersionInfo(newPPodVersionInfo
 						.getNewPPodVersionInfo());
+				session.save(state);
 			}
-
-			session.save(dnaCharacter);
 
 			session.getTransaction().commit();
 

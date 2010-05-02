@@ -1,0 +1,21 @@
+<!DOCTYPE suite SYSTEM "http://testng.org/testng-1.0.dtd">
+<suite thread-count="5" skipfailedinvocationCounts="false" verbose="1" name="Failed suite [Failed suite [PPod Integration Tests]]" junit="false" parallel="false" annotations="JDK">
+  <test name="fast(failed)(failed)" junit="false" parallel="false" annotations="JDK">
+    <groups>
+      <run>
+        <include name="init"/>
+        <include name="fast"/>
+        <exclude name="broken"/>
+        <exclude name="in-development"/>
+      </run>
+    </groups>
+    <classes>
+      <class name="edu.upenn.cis.ppod.saveorupdate.SaveOrUpdateCharacterStateMatrixTest">
+        <methods>
+          <include name="deleteCharacter"/>
+          <include name="beforeMethod"/>
+        </methods>
+      </class>
+    </classes>
+  </test>
+</suite>

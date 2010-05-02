@@ -80,6 +80,13 @@ public class TreeSet extends UUPPodEntityWXmlId implements Iterable<Tree> {
 		visitor.visit(this);
 	}
 
+	public TreeSet addTree(final Tree newTree) {
+		checkNotNull(newTree);
+		getTrees().add(newTree);
+		setInNeedOfNewPPodVersionInfo();
+		return this;
+	}
+
 	/**
 	 * {@link Unmarshaller} callback.
 	 * 
@@ -116,6 +123,15 @@ public class TreeSet extends UUPPodEntityWXmlId implements Iterable<Tree> {
 	@XmlElement(name = "tree")
 	private List<Tree> getTrees() {
 		return trees;
+	}
+
+	/**
+	 * Returns the number of trees in this tree set.
+	 * 
+	 * @return the number of trees in this tree set
+	 */
+	public int getTreesSize() {
+		return getTrees().size();
 	}
 
 	public Iterator<Tree> iterator() {
@@ -204,22 +220,6 @@ public class TreeSet extends UUPPodEntityWXmlId implements Iterable<Tree> {
 		}
 		setInNeedOfNewPPodVersionInfo();
 		return removedTrees;
-	}
-
-	public TreeSet addTree(final Tree newTree) {
-		checkNotNull(newTree);
-		getTrees().add(newTree);
-		setInNeedOfNewPPodVersionInfo();
-		return this;
-	}
-
-	/**
-	 * Returns the number of trees in this tree set.
-	 * 
-	 * @return the number of trees in this tree set
-	 */
-	public int getTreesSize() {
-		return getTrees().size();
 	}
 
 	/**

@@ -64,23 +64,23 @@ public class ModelAssert {
 	}
 
 	public static void assertEqualsCharacterStates(
-			final CharacterState actualState, final CharacterState expectedState) {
+			final CategoricalState actualState, final CategoricalState expectedState) {
 		assertEquals(actualState.getLabel(), expectedState.getLabel());
 		assertEquals(actualState.getStateNumber(), expectedState
 				.getStateNumber());
 	}
 
-	public static void assertEqualsCharacters(final Character actualCharacter,
-			final Character expectedCharacter) {
+	public static void assertEqualsCharacters(final AbstractCharacter actualCharacter,
+			final AbstractCharacter expectedCharacter) {
 		assertEqualsPPodEntities(actualCharacter, expectedCharacter);
 		assertEquals(actualCharacter.getLabel(), expectedCharacter.getLabel());
 		assertEquals(actualCharacter.getStates().size(), expectedCharacter
 				.getStates().size());
-		for (final Entry<Integer, CharacterState> actualStateNumberToState : actualCharacter
+		for (final Entry<Integer, CategoricalState> actualStateNumberToState : actualCharacter
 				.getStates().entrySet()) {
-			final CharacterState actualState = actualStateNumberToState
+			final CategoricalState actualState = actualStateNumberToState
 					.getValue();
-			final CharacterState expectedState = expectedCharacter.getStates()
+			final CategoricalState expectedState = expectedCharacter.getStates()
 					.get(actualStateNumberToState.getKey());
 
 			assertNotNull(expectedState);
@@ -92,10 +92,10 @@ public class ModelAssert {
 	}
 
 	public static void assertEqualsCharacterStateCells(
-			final CharacterStateCell actualCell,
-			final CharacterStateCell expectedCell) {
+			final CategoricalCell actualCell,
+			final CategoricalCell expectedCell) {
 		assertEquals(actualCell.getStatesSize(), expectedCell.getStatesSize());
-		for (final Iterator<CharacterState> actualStateItr = actualCell
+		for (final Iterator<CategoricalState> actualStateItr = actualCell
 				.iterator(), expectedStateItr = expectedCell
 				.iterator(); actualStateItr.hasNext()
 								&& expectedStateItr.hasNext();) {
@@ -105,16 +105,16 @@ public class ModelAssert {
 	}
 
 	public static void assertEqualsCharacterStateRows(
-			final CharacterStateRow actualRow,
-			final CharacterStateRow expectedRow) {
+			final CategoricalRow actualRow,
+			final CategoricalRow expectedRow) {
 		assertEquals(actualRow.getCellsSize(), expectedRow.getCellsSize());
 
-		for (final Iterator<CharacterStateCell> actualCellItr = actualRow
+		for (final Iterator<CategoricalCell> actualCellItr = actualRow
 				.iterator(), expectedCellItr = expectedRow.iterator(); actualCellItr
 				.hasNext()
 																		&& expectedCellItr
 																				.hasNext();) {
-			final CharacterStateCell actualCell = actualCellItr.next(), expectedCell = expectedCellItr
+			final CategoricalCell actualCell = actualCellItr.next(), expectedCell = expectedCellItr
 					.next();
 			assertTrue(actualCell.getRow() == actualRow);
 			assertEqualsCharacterStateCells(actualCell, expectedCell);
@@ -128,8 +128,8 @@ public class ModelAssert {
 	 * @param expectedMatrix
 	 */
 	public static void assertEqualsCharacterStateMatrices(
-			final CharacterStateMatrix actualMatrix,
-			final CharacterStateMatrix expectedMatrix) {
+			final Matrix actualMatrix,
+			final Matrix expectedMatrix) {
 		assertEquals(actualMatrix.getLabel(), expectedMatrix.getLabel());
 		assertEquals(actualMatrix.getDescription(), expectedMatrix
 				.getDescription());
@@ -138,13 +138,13 @@ public class ModelAssert {
 
 		assertEquals(actualMatrix.getCharacters().size(), actualMatrix
 				.getCharacters().size());
-		for (final Iterator<Character> actualCharacterItr = actualMatrix
+		for (final Iterator<AbstractCharacter> actualCharacterItr = actualMatrix
 				.getCharacters().iterator(), expectedCharacterItr = expectedMatrix
 				.getCharacters().iterator(); actualCharacterItr.hasNext()
 												&& expectedCharacterItr
 														.hasNext();) {
-			final Character actualCharacter = actualCharacterItr.next();
-			final Character expectedCharacter = expectedCharacterItr.next();
+			final AbstractCharacter actualCharacter = actualCharacterItr.next();
+			final AbstractCharacter expectedCharacter = expectedCharacterItr.next();
 			assertTrue(actualCharacter.getMatrices().contains(actualMatrix));
 			assertTrue(expectedCharacter.getMatrices().contains(expectedMatrix));
 			assertEqualsCharacters(actualCharacter, expectedCharacter);
@@ -154,12 +154,12 @@ public class ModelAssert {
 		// supposed to be.
 		// We use actualMatrix.getCharacters() to check as oppose to looking at
 		// expectedMatrix sine that seems to make the most sense
-		if (actualMatrix.getClass().equals(CharacterStateMatrix.class)) {
-			final Map<Character, Integer> actualMatrixCharacterIdx = actualMatrix
+		if (actualMatrix.getClass().equals(Matrix.class)) {
+			final Map<AbstractCharacter, Integer> actualMatrixCharacterIdx = actualMatrix
 					.getCharacterPosition();
 			assertEquals(actualMatrixCharacterIdx.size(), actualMatrix
 					.getCharactersSize());
-			for (final Entry<Character, Integer> actualIdxByCharacter : actualMatrixCharacterIdx
+			for (final Entry<AbstractCharacter, Integer> actualIdxByCharacter : actualMatrixCharacterIdx
 					.entrySet()) {
 				assertTrue(actualIdxByCharacter.getKey() == actualMatrix
 						.getCharacters().get(actualIdxByCharacter.getValue()));
@@ -168,11 +168,11 @@ public class ModelAssert {
 
 		assertEquals(actualMatrix.getRowsSize(), expectedMatrix.getRowsSize());
 
-		for (final Iterator<CharacterStateRow> actualRowItr = actualMatrix
+		for (final Iterator<CategoricalRow> actualRowItr = actualMatrix
 				.iterator(), expectedRowItr = expectedMatrix
 				.iterator(); actualRowItr.hasNext()
 								&& expectedRowItr.hasNext();) {
-			final CharacterStateRow actualRow = actualRowItr.next(), expectedRow = expectedRowItr
+			final CategoricalRow actualRow = actualRowItr.next(), expectedRow = expectedRowItr
 					.next();
 			assertTrue(actualRow.getMatrix() == actualMatrix);
 			assertEqualsCharacterStateRows(actualRow, expectedRow);

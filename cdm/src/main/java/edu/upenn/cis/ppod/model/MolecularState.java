@@ -29,57 +29,30 @@ import javax.persistence.MappedSuperclass;
 @MappedSuperclass
 public abstract class MolecularState extends CharacterState {
 
-	/**
-	 * This column should be the same as {@link CharacterState#getLabel()} and
-	 * is only here to prevent duplicate {@code DNAState}s form being added to
-	 * the table.
-	 * <p>
-	 * We were just calling this column {@code "LABEL"}, but that seemed to
-	 * break {@link Character#getLabel()} - it would return {@code null} after
-	 * db retrieval. Because {@code CharacterState} has a column called {@code
-	 * "LABEL"}?
-	 * <p>
-	 * We were just calling this field "label" but that (or a change to {@code
-	 * MolecularCharacter.label}) broke {@code
-	 * mesquite.pPod.lib.DNAMatrixTest.uploadMatrix}. That's probably because
-	 * the super class has a field called {@code label}.
-	 */
-	@Column(name = "MOLECULAR_STATE_LABEL", unique = true)
-	@SuppressWarnings("unused")
+	@Column(name = LABEL_COLUMN, unique = true, nullable = false)
 	@CheckForNull
-	private String molecularStateLabel;
+	private String label;
 
 	MolecularState() {}
 
-	/**
-	 * This method is not supported for {@code DNAState} since all instances are
-	 * immutable.
-	 * 
-	 * @param molecularStateLabel ignored
-	 * 
-	 * @throws UnsupportedOperationException always
-	 */
 	@Override
-	public MolecularState setLabel(final String label) {
-		throw new UnsupportedOperationException(
-				"the molecularStateLabel of a MolecularState is fixed");
+	public String getLabel() {
+		return label;
 	}
 
 	/**
-	 * Set the molecular state molecularStateLabel and {@code
-	 * CharacterState.getLabel()}. This value is only used to prevent multiple
-	 * rows of a particular molecular state from being created. For example, we
-	 * don't want more than one {@code DNACharacter} in the database.
+	 * Set the molecular state label and {@code CharacterState.getLabel()}. This
+	 * value is only used to prevent multiple rows of a particular molecular
+	 * state from being created. For example, we don't want more than one
+	 * {@code DNACharacter} in the database.
 	 * 
-	 * @param molecularStateLabel the molecularStateLabel.
+	 * @param label the label.
 	 * 
 	 * @return this
 	 */
-	protected MolecularState setMolecularStateLabel(
-			final String molecularStateLabel) {
-		checkNotNull(molecularStateLabel);
-		super.setLabel(molecularStateLabel);
-		this.molecularStateLabel = molecularStateLabel;
+	protected MolecularState setLabel(final String label) {
+		checkNotNull(label);
+		this.label = label;
 		return this;
 	}
 }

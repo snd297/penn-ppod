@@ -15,6 +15,8 @@
  */
 package edu.upenn.cis.ppod.util;
 
+import javax.xml.bind.annotation.XmlAccessType;
+import javax.xml.bind.annotation.XmlAccessorType;
 import javax.xml.bind.annotation.XmlElement;
 import javax.xml.bind.annotation.XmlIDREF;
 
@@ -24,6 +26,7 @@ import edu.upenn.cis.ppod.model.OTU;
  * @author Sam Donnelly
  * 
  */
+@XmlAccessorType(XmlAccessType.NONE)
 public class OTUSomethingPair<U> extends Pair<OTU, U> {
 
 	@XmlElement

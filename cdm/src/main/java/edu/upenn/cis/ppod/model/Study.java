@@ -74,10 +74,6 @@ public class Study extends UUPPodEntity implements IOTUSetCentricEntities {
 	@Transient
 	private final Set<AttachmentNamespace> studyWideAttachmentNamespaces = newHashSet();
 
-	@XmlElement(name = "studyWideCharacter")
-	@Transient
-	private final Set<Character> studyWideCharacters = newHashSet();
-
 	Study() {}
 
 	@Override
@@ -114,13 +110,6 @@ public class Study extends UUPPodEntity implements IOTUSetCentricEntities {
 			PPodEntitiesUtil.extractAttachmentInfoFromPPodEntities(
 					studyWideAttachmentNamespaces, studyWideAttachmentTypes,
 					studyWideAttachments, this);
-			for (final OTUSet otuSet : getOTUSets()) {
-				for (final Iterator<CharacterStateMatrix> matrixItr = otuSet
-						.getMatricesIterator(); matrixItr.hasNext();) {
-					studyWideCharacters
-							.addAll(matrixItr.next().getCharacters());
-				}
-			}
 		}
 		return true;
 	}
@@ -138,6 +127,10 @@ public class Study extends UUPPodEntity implements IOTUSetCentricEntities {
 	@XmlElement(name = "otuSet")
 	private Set<OTUSet> getOTUSets() {
 		return otuSets;
+	}
+
+	public Iterator<OTUSet> getOTUSetsIterator() {
+		return Collections.unmodifiableSet(getOTUSets()).iterator();
 	}
 
 	/**
@@ -193,10 +186,6 @@ public class Study extends UUPPodEntity implements IOTUSetCentricEntities {
 						")");
 
 		return retValue.toString();
-	}
-
-	public Iterator<OTUSet> getOTUSetsIterator() {
-		return Collections.unmodifiableSet(getOTUSets()).iterator();
 	}
 
 }

@@ -49,6 +49,7 @@ public class DNASequence extends Sequence {
 
 	@Override
 	public void accept(final IVisitor visitor) {
+		super.accept(visitor);
 		visitor.visit(this);
 	}
 

@@ -39,7 +39,7 @@ import edu.upenn.cis.ppod.TestGroupDefs;
 public class CharacterStateRowTest {
 
 	@Inject
-	private Provider<CharacterStateMatrix> matrixProvider;
+	private Provider<Matrix> matrixProvider;
 
 	@Inject
 	private Provider<OTUSet> otuSetProvider;
@@ -48,17 +48,17 @@ public class CharacterStateRowTest {
 	private Provider<OTU> otuProvider;
 
 	@Inject
-	private Provider<Character> characterProvider;
+	private Provider<AbstractCharacter> characterProvider;
 
 	@Inject
-	private Provider<CharacterStateRow> rowProvider;
+	private Provider<CategoricalRow> rowProvider;
 
 	@Inject
-	private Provider<CharacterStateCell> cellProvider;
+	private Provider<CategoricalCell> cellProvider;
 
 	private List<OTU> rowIdxs;
 
-	private CharacterStateMatrix matrix;
+	private Matrix matrix;
 
 	@BeforeMethod
 	public void beforeMethod() {
@@ -73,7 +73,7 @@ public class CharacterStateRowTest {
 	}
 
 	public void addCellToMatrixWOneCharacter() {
-		final CharacterStateCell cell = cellProvider.get().setUnassigned();
+		final CategoricalCell cell = cellProvider.get().setUnassigned();
 		matrix.getRow(matrix.getOTUSet().getOTU(0)).setCells(
 				Arrays.asList(cell));
 
@@ -95,7 +95,7 @@ public class CharacterStateRowTest {
 	public void addCellToMatrixThatHasNoCharacters() {
 
 		@SuppressWarnings("unchecked")
-		final List<Character> emptyList = (List<Character>) Collections.EMPTY_LIST;
+		final List<AbstractCharacter> emptyList = (List<AbstractCharacter>) Collections.EMPTY_LIST;
 
 		matrix.setCharacters(emptyList);
 
@@ -109,7 +109,7 @@ public class CharacterStateRowTest {
 
 	@Test(expectedExceptions = IllegalStateException.class)
 	public void addCellToMatrixWTooFewCharacters() {
-		final List<CharacterStateCell> cells = newArrayList(cellProvider.get()
+		final List<CategoricalCell> cells = newArrayList(cellProvider.get()
 				.setUnassigned(), cellProvider.get().setUnassigned());
 		matrix.getRow(matrix.getOTUSet().getOTU(0)).setCells(cells);
 	}

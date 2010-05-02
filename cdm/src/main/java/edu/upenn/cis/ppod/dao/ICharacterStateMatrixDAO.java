@@ -18,7 +18,7 @@ package edu.upenn.cis.ppod.dao;
 import java.util.List;
 import java.util.Set;
 
-import edu.upenn.cis.ppod.model.CharacterStateMatrix;
+import edu.upenn.cis.ppod.model.Matrix;
 import edu.upenn.cis.ppod.util.IPair;
 
 /**
@@ -27,7 +27,7 @@ import edu.upenn.cis.ppod.util.IPair;
  * @author Sam Donnelly
  */
 public interface ICharacterStateMatrixDAO extends
-		IDAO<CharacterStateMatrix, Long> {
+		IDAO<Matrix, Long> {
 
 	/**
 	 * Get all matrices with that have the given label.
@@ -35,7 +35,7 @@ public interface ICharacterStateMatrixDAO extends
 	 * @param label the label
 	 * @return all matrices with that have the given label.
 	 */
-	List<CharacterStateMatrix> getByLabel(String label);
+	List<Matrix> getByLabel(String label);
 
 	/**
 	 * Get a matrix given its pPOD id.
@@ -44,7 +44,7 @@ public interface ICharacterStateMatrixDAO extends
 	 * @return a matrix given its pPOD id, or {@code null} if there is no such
 	 *         matrix
 	 */
-	CharacterStateMatrix getByPPodId(String pPodId);
+	Matrix getByPPodId(String pPodId);
 
 	/**
 	 * Get a (pPOD ID, Study label) pair for every {@link CharacterStateMatrix}

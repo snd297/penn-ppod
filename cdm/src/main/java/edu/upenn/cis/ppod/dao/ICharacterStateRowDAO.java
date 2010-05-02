@@ -17,14 +17,14 @@ package edu.upenn.cis.ppod.dao;
 
 import java.util.List;
 
-import edu.upenn.cis.ppod.model.CharacterStateRow;
+import edu.upenn.cis.ppod.model.CategoricalRow;
 
 /**
  * {@link CharacterStateRow} DAO.
  * 
  * @author Sam Donnelly
  */
-public interface ICharacterStateRowDAO extends IDAO<CharacterStateRow, Long> {
+public interface ICharacterStateRowDAO extends IDAO<CategoricalRow, Long> {
 
 	List<Object[]> getCellIdxsVersionsByRowIdAndMinVersion(Long rowId,
 			Long minPPodVersion);

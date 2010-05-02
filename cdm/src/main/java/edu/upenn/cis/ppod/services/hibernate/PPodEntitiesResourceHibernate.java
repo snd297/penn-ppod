@@ -30,7 +30,7 @@ import org.hibernate.Session;
 import com.google.inject.Inject;
 import com.google.inject.Provider;
 
-import edu.upenn.cis.ppod.model.CharacterStateMatrix;
+import edu.upenn.cis.ppod.model.Matrix;
 import edu.upenn.cis.ppod.model.OTU;
 import edu.upenn.cis.ppod.model.OTUSet;
 import edu.upenn.cis.ppod.model.TreeSet;
@@ -75,7 +75,7 @@ class PPodEntitiesResourceHibernate implements
 		final List<Object> queryResults = session.createQuery(query).list();
 		final PPodEntities pPodEntities = pPodEntitiesProvider.get();
 
-		final Set<CharacterStateMatrix> addedMatrices = newHashSet();
+		final Set<Matrix> addedMatrices = newHashSet();
 		final Set<TreeSet> addedTreeSets = newHashSet();
 
 // final List<Object> flattenedQueryResults = newArrayList();
@@ -104,9 +104,9 @@ class PPodEntitiesResourceHibernate implements
 				// Note that otu set may have already been added in any of the
 				// other if clauses: Hibernate identity takes care of us
 				pPodEntities.addOTUSet(otuSet);
-			} else if (queryResult instanceof CharacterStateMatrix) {
+			} else if (queryResult instanceof Matrix) {
 
-				final CharacterStateMatrix matrix = (CharacterStateMatrix) queryResult;
+				final Matrix matrix = (Matrix) queryResult;
 
 				// Extra insurance against accidental sync with database
 				session.setReadOnly(matrix, true);
@@ -156,16 +156,16 @@ class PPodEntitiesResourceHibernate implements
 
 				final OTUSet otuSet = otuSetsItr.next();
 
-				final Set<CharacterStateMatrix> matricesToReturn = newHashSet();
+				final Set<Matrix> matricesToReturn = newHashSet();
 
-				for (final Iterator<CharacterStateMatrix> matrixItr = otuSet
-						.getMatricesIterator(); matrixItr.hasNext();) {
-					final CharacterStateMatrix matrix = matrixItr.next();
+				for (final Iterator<Matrix> matrixItr = otuSet
+						.categoricalMatricesIterator(); matrixItr.hasNext();) {
+					final Matrix matrix = matrixItr.next();
 					if (addedMatrices.contains(matrix)) {
 						matricesToReturn.add(matrix);
 					}
 				}
-				otuSet.setMatrices(matricesToReturn);
+				otuSet.setCategoricalMatrices(matricesToReturn);
 
 				final Set<TreeSet> treeSetsToReturn = newHashSet();
 				for (final Iterator<TreeSet> treeSetItr = otuSet

@@ -16,8 +16,6 @@
 package edu.upenn.cis.ppod.util;
 
 import javax.annotation.Nullable;
-import javax.xml.bind.annotation.XmlAccessType;
-import javax.xml.bind.annotation.XmlAccessorType;
 
 import com.google.common.base.Function;
 import com.google.inject.Inject;
@@ -28,7 +26,6 @@ import com.google.inject.assistedinject.Assisted;
  * 
  * @author Sam Donnelly
  */
-@XmlAccessorType(XmlAccessType.NONE)
 public class Pair<T, U> implements IPair<T, U> {
 
 	public static class Factory implements IFactory {

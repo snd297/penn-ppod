@@ -1,0 +1,937 @@
+<html>
+<head>
+<title>TestNG:  fast</title>
+<link href="../testng.css" rel="stylesheet" type="text/css" />
+<link href="../my-testng.css" rel="stylesheet" type="text/css" />
+
+<style type="text/css">
+.log { display: none;} 
+.stack-trace { display: none;} 
+</style>
+<script type="text/javascript">
+<!--
+function flip(e) {
+  current = e.style.display;
+  if (current == 'block') {
+    e.style.display = 'none';
+    return 0;
+  }
+  else {
+    e.style.display = 'block';
+    return 1;
+  }
+}
+
+function toggleBox(szDivId, elem, msg1, msg2)
+{
+  var res = -1;  if (document.getElementById) {
+    res = flip(document.getElementById(szDivId));
+  }
+  else if (document.all) {
+    // this is the way old msie versions work
+    res = flip(document.all[szDivId]);
+  }
+  if(elem) {
+    if(res == 0) elem.innerHTML = msg1; else elem.innerHTML = msg2;
+  }
+
+}
+
+function toggleAllBoxes() {
+  if (document.getElementsByTagName) {
+    d = document.getElementsByTagName('div');
+    for (i = 0; i < d.length; i++) {
+      if (d[i].className == 'log') {
+        flip(d[i]);
+      }
+    }
+  }
+}
+
+// -->
+</script>
+
+</head>
+<body>
+<h2 align='center'>fast</h2><table border='1' align="center">
+<tr>
+<td>Tests passed/Failed/Skipped:</td><td>68/0/0</td>
+</tr><tr>
+<td>Started on:</td><td>Wed Apr 28 13:09:56 EDT 2010</td>
+</tr>
+<tr><td>Total time:</td><td>9 seconds (9918 ms)</td>
+</tr><tr>
+<td>Included groups:</td><td>init fast </td>
+</tr><tr>
+<td>Excluded groups:</td><td>broken in-development </td>
+</tr>
+</table><p/>
+<small><i>(Hover the method name to see the test class name)</i></small><p/>
+<table width='100%' border='1' class='invocation-passed'>
+<tr><td colspan='4' align='center'><b>PASSED TESTS</b></td></tr>
+<tr><td><b>Test method</b></td>
+<td><b>Instance</b></td>
+<td width="10%"><b>Time (seconds)</b></td>
+<td width="30%"><b>Exception</b></td>
+</tr>
+<tr>
+<td title='edu.upenn.cis.ppod.model.PPodEntityTest.addAttachment()'><b>addAttachment</b><br>Test class:fast</td>
+<td>edu.upenn.cis.ppod.model.PPodEntityTest@71b493c6</td><td>0</td>
+<td></td>
+</tr>
+<tr>
+<td title='edu.upenn.cis.ppod.model.CharacterStateRowTest.addCellToMatrixThatHasNoCharacters()'><b>addCellToMatrixThatHasNoCharacters</b><br>Test class:fast</td>
+<td>edu.upenn.cis.ppod.model.CharacterStateRowTest@31a734ff</td><td>0</td>
+<td><div><pre>java.lang.IllegalStateException: the matrix has different number of characters 0 than cells 1 and cells &gt; 0
+	at com.google.common.base.Preconditions.checkState(Preconditions.java:139)
+	at edu.upenn.cis.ppod.model.CategoricalRow.setCells(CharacterStateRow.java:220)
+	at edu.upenn.cis.ppod.model.CharacterStateRowTest.addCellToMatrixThatHasNoCharacters(CharacterStateRowTest.java:105)
+	at org.apache.maven.surefire.testng.TestNGExecutor.run(TestNGExecutor.java:74)
+	at org.apache.maven.surefire.testng.TestNGXmlTestSuite.execute(TestNGXmlTestSuite.java:92)
+	at org.apache.maven.surefire.Surefire.run(Surefire.java:177)
+	at org.apache.maven.surefire.booter.SurefireBooter.runSuitesInProcess(SurefireBooter.java:345)
+	at org.apache.maven.surefire.booter.SurefireBooter.main(SurefireBooter.java:1009)
+... Removed 24 stack frames</pre></div><a href='#' onClick='toggleBox("stack-trace957239255", this, "Click to show all stack frames", "Click to hide stack frames")'>Click to show all stack frames</a>
+<div class='stack-trace' id='stack-trace957239255'><pre>java.lang.IllegalStateException: the matrix has different number of characters 0 than cells 1 and cells &gt; 0
+	at com.google.common.base.Preconditions.checkState(Preconditions.java:139)
+	at edu.upenn.cis.ppod.model.CategoricalRow.setCells(CharacterStateRow.java:220)
+	at edu.upenn.cis.ppod.model.CharacterStateRowTest.addCellToMatrixThatHasNoCharacters(CharacterStateRowTest.java:105)
+	at sun.reflect.NativeMethodAccessorImpl.invoke0(Native Method)
+	at sun.reflect.NativeMethodAccessorImpl.invoke(NativeMethodAccessorImpl.java:39)
+	at sun.reflect.DelegatingMethodAccessorImpl.invoke(DelegatingMethodAccessorImpl.java:25)
+	at java.lang.reflect.Method.invoke(Method.java:597)
+	at org.testng.internal.MethodHelper.invokeMethod(MethodHelper.java:644)
+	at org.testng.internal.Invoker.invokeMethod(Invoker.java:546)
+	at org.testng.internal.Invoker.invokeTestMethod(Invoker.java:700)
+	at org.testng.internal.Invoker.invokeTestMethods(Invoker.java:1002)
+	at org.testng.internal.TestMethodWorker.invokeTestMethods(TestMethodWorker.java:137)
+	at org.testng.internal.TestMethodWorker.run(TestMethodWorker.java:121)
+	at org.testng.TestRunner.runWorkers(TestRunner.java:909)
+	at org.testng.TestRunner.privateRun(TestRunner.java:618)
+	at org.testng.TestRunner.run(TestRunner.java:499)
+	at org.testng.SuiteRunner.runTest(SuiteRunner.java:332)
+	at org.testng.SuiteRunner.runSequentially(SuiteRunner.java:327)
+	at org.testng.SuiteRunner.privateRun(SuiteRunner.java:299)
+	at org.testng.SuiteRunner.run(SuiteRunner.java:204)
+	at org.testng.TestNG.createAndRunSuiteRunners(TestNG.java:915)
+	at org.testng.TestNG.runSuitesLocally(TestNG.java:879)
+	at org.testng.TestNG.run(TestNG.java:787)
+	at org.apache.maven.surefire.testng.TestNGExecutor.run(TestNGExecutor.java:74)
+	at org.apache.maven.surefire.testng.TestNGXmlTestSuite.execute(TestNGXmlTestSuite.java:92)
+	at org.apache.maven.surefire.Surefire.run(Surefire.java:177)
+	at sun.reflect.NativeMethodAccessorImpl.invoke0(Native Method)
+	at sun.reflect.NativeMethodAccessorImpl.invoke(NativeMethodAccessorImpl.java:39)
+	at sun.reflect.DelegatingMethodAccessorImpl.invoke(DelegatingMethodAccessorImpl.java:25)
+	at java.lang.reflect.Method.invoke(Method.java:597)
+	at org.apache.maven.surefire.booter.SurefireBooter.runSuitesInProcess(SurefireBooter.java:345)
+	at org.apache.maven.surefire.booter.SurefireBooter.main(SurefireBooter.java:1009)
+</pre></div></td>
+</tr>
+<tr>
+<td title='edu.upenn.cis.ppod.model.CharacterStateRowTest.addCellToMatrixWOneCharacter()'><b>addCellToMatrixWOneCharacter</b><br>Test class:fast</td>
+<td>edu.upenn.cis.ppod.model.CharacterStateRowTest@31a734ff</td><td>0</td>
+<td></td>
+</tr>
+<tr>
+<td title='edu.upenn.cis.ppod.model.CharacterStateRowTest.addCellToMatrixWTooFewCharacters()'><b>addCellToMatrixWTooFewCharacters</b><br>Test class:fast</td>
+<td>edu.upenn.cis.ppod.model.CharacterStateRowTest@31a734ff</td><td>0</td>
+<td><div><pre>java.lang.IllegalStateException: the matrix has different number of characters 1 than cells 2 and cells &gt; 0
+	at com.google.common.base.Preconditions.checkState(Preconditions.java:139)
+	at edu.upenn.cis.ppod.model.CategoricalRow.setCells(CharacterStateRow.java:220)
+	at edu.upenn.cis.ppod.model.CharacterStateRowTest.addCellToMatrixWTooFewCharacters(CharacterStateRowTest.java:114)
+	at org.apache.maven.surefire.testng.TestNGExecutor.run(TestNGExecutor.java:74)
+	at org.apache.maven.surefire.testng.TestNGXmlTestSuite.execute(TestNGXmlTestSuite.java:92)
+	at org.apache.maven.surefire.Surefire.run(Surefire.java:177)
+	at org.apache.maven.surefire.booter.SurefireBooter.runSuitesInProcess(SurefireBooter.java:345)
+	at org.apache.maven.surefire.booter.SurefireBooter.main(SurefireBooter.java:1009)
+... Removed 24 stack frames</pre></div><a href='#' onClick='toggleBox("stack-trace782092838", this, "Click to show all stack frames", "Click to hide stack frames")'>Click to show all stack frames</a>
+<div class='stack-trace' id='stack-trace782092838'><pre>java.lang.IllegalStateException: the matrix has different number of characters 1 than cells 2 and cells &gt; 0
+	at com.google.common.base.Preconditions.checkState(Preconditions.java:139)
+	at edu.upenn.cis.ppod.model.CategoricalRow.setCells(CharacterStateRow.java:220)
+	at edu.upenn.cis.ppod.model.CharacterStateRowTest.addCellToMatrixWTooFewCharacters(CharacterStateRowTest.java:114)
+	at sun.reflect.NativeMethodAccessorImpl.invoke0(Native Method)
+	at sun.reflect.NativeMethodAccessorImpl.invoke(NativeMethodAccessorImpl.java:39)
+	at sun.reflect.DelegatingMethodAccessorImpl.invoke(DelegatingMethodAccessorImpl.java:25)
+	at java.lang.reflect.Method.invoke(Method.java:597)
+	at org.testng.internal.MethodHelper.invokeMethod(MethodHelper.java:644)
+	at org.testng.internal.Invoker.invokeMethod(Invoker.java:546)
+	at org.testng.internal.Invoker.invokeTestMethod(Invoker.java:700)
+	at org.testng.internal.Invoker.invokeTestMethods(Invoker.java:1002)
+	at org.testng.internal.TestMethodWorker.invokeTestMethods(TestMethodWorker.java:137)
+	at org.testng.internal.TestMethodWorker.run(TestMethodWorker.java:121)
+	at org.testng.TestRunner.runWorkers(TestRunner.java:909)
+	at org.testng.TestRunner.privateRun(TestRunner.java:618)
+	at org.testng.TestRunner.run(TestRunner.java:499)
+	at org.testng.SuiteRunner.runTest(SuiteRunner.java:332)
+	at org.testng.SuiteRunner.runSequentially(SuiteRunner.java:327)
+	at org.testng.SuiteRunner.privateRun(SuiteRunner.java:299)
+	at org.testng.SuiteRunner.run(SuiteRunner.java:204)
+	at org.testng.TestNG.createAndRunSuiteRunners(TestNG.java:915)
+	at org.testng.TestNG.runSuitesLocally(TestNG.java:879)
+	at org.testng.TestNG.run(TestNG.java:787)
+	at org.apache.maven.surefire.testng.TestNGExecutor.run(TestNGExecutor.java:74)
+	at org.apache.maven.surefire.testng.TestNGXmlTestSuite.execute(TestNGXmlTestSuite.java:92)
+	at org.apache.maven.surefire.Surefire.run(Surefire.java:177)
+	at sun.reflect.NativeMethodAccessorImpl.invoke0(Native Method)
+	at sun.reflect.NativeMethodAccessorImpl.invoke(NativeMethodAccessorImpl.java:39)
+	at sun.reflect.DelegatingMethodAccessorImpl.invoke(DelegatingMethodAccessorImpl.java:25)
+	at java.lang.reflect.Method.invoke(Method.java:597)
+	at org.apache.maven.surefire.booter.SurefireBooter.runSuitesInProcess(SurefireBooter.java:345)
+	at org.apache.maven.surefire.booter.SurefireBooter.main(SurefireBooter.java:1009)
+</pre></div></td>
+</tr>
+<tr>
+<td title='edu.upenn.cis.ppod.model.CharacterStateRowTest.addCellToRowThatsNotInAMatrix()'><b>addCellToRowThatsNotInAMatrix</b><br>Test class:fast</td>
+<td>edu.upenn.cis.ppod.model.CharacterStateRowTest@31a734ff</td><td>0</td>
+<td><div><pre>java.lang.IllegalStateException: This row hasn't been added to a matrix yet
+	at com.google.common.base.Preconditions.checkState(Preconditions.java:139)
+	at edu.upenn.cis.ppod.model.CategoricalRow.setCells(CharacterStateRow.java:217)
+	at edu.upenn.cis.ppod.model.CharacterStateRowTest.addCellToRowThatsNotInAMatrix(CharacterStateRowTest.java:89)
+	at org.apache.maven.surefire.testng.TestNGExecutor.run(TestNGExecutor.java:74)
+	at org.apache.maven.surefire.testng.TestNGXmlTestSuite.execute(TestNGXmlTestSuite.java:92)
+	at org.apache.maven.surefire.Surefire.run(Surefire.java:177)
+	at org.apache.maven.surefire.booter.SurefireBooter.runSuitesInProcess(SurefireBooter.java:345)
+	at org.apache.maven.surefire.booter.SurefireBooter.main(SurefireBooter.java:1009)
+... Removed 24 stack frames</pre></div><a href='#' onClick='toggleBox("stack-trace1505607660", this, "Click to show all stack frames", "Click to hide stack frames")'>Click to show all stack frames</a>
+<div class='stack-trace' id='stack-trace1505607660'><pre>java.lang.IllegalStateException: This row hasn't been added to a matrix yet
+	at com.google.common.base.Preconditions.checkState(Preconditions.java:139)
+	at edu.upenn.cis.ppod.model.CategoricalRow.setCells(CharacterStateRow.java:217)
+	at edu.upenn.cis.ppod.model.CharacterStateRowTest.addCellToRowThatsNotInAMatrix(CharacterStateRowTest.java:89)
+	at sun.reflect.NativeMethodAccessorImpl.invoke0(Native Method)
+	at sun.reflect.NativeMethodAccessorImpl.invoke(NativeMethodAccessorImpl.java:39)
+	at sun.reflect.DelegatingMethodAccessorImpl.invoke(DelegatingMethodAccessorImpl.java:25)
+	at java.lang.reflect.Method.invoke(Method.java:597)
+	at org.testng.internal.MethodHelper.invokeMethod(MethodHelper.java:644)
+	at org.testng.internal.Invoker.invokeMethod(Invoker.java:546)
+	at org.testng.internal.Invoker.invokeTestMethod(Invoker.java:700)
+	at org.testng.internal.Invoker.invokeTestMethods(Invoker.java:1002)
+	at org.testng.internal.TestMethodWorker.invokeTestMethods(TestMethodWorker.java:137)
+	at org.testng.internal.TestMethodWorker.run(TestMethodWorker.java:121)
+	at org.testng.TestRunner.runWorkers(TestRunner.java:909)
+	at org.testng.TestRunner.privateRun(TestRunner.java:618)
+	at org.testng.TestRunner.run(TestRunner.java:499)
+	at org.testng.SuiteRunner.runTest(SuiteRunner.java:332)
+	at org.testng.SuiteRunner.runSequentially(SuiteRunner.java:327)
+	at org.testng.SuiteRunner.privateRun(SuiteRunner.java:299)
+	at org.testng.SuiteRunner.run(SuiteRunner.java:204)
+	at org.testng.TestNG.createAndRunSuiteRunners(TestNG.java:915)
+	at org.testng.TestNG.runSuitesLocally(TestNG.java:879)
+	at org.testng.TestNG.run(TestNG.java:787)
+	at org.apache.maven.surefire.testng.TestNGExecutor.run(TestNGExecutor.java:74)
+	at org.apache.maven.surefire.testng.TestNGXmlTestSuite.execute(TestNGXmlTestSuite.java:92)
+	at org.apache.maven.surefire.Surefire.run(Surefire.java:177)
+	at sun.reflect.NativeMethodAccessorImpl.invoke0(Native Method)
+	at sun.reflect.NativeMethodAccessorImpl.invoke(NativeMethodAccessorImpl.java:39)
+	at sun.reflect.DelegatingMethodAccessorImpl.invoke(DelegatingMethodAccessorImpl.java:25)
+	at java.lang.reflect.Method.invoke(Method.java:597)
+	at org.apache.maven.surefire.booter.SurefireBooter.runSuitesInProcess(SurefireBooter.java:345)
+	at org.apache.maven.surefire.booter.SurefireBooter.main(SurefireBooter.java:1009)
+</pre></div></td>
+</tr>
+<tr>
+<td title='edu.upenn.cis.ppod.model.OTUSetTest.addOTU()'><b>addOTU</b><br>Test class:fast</td>
+<td>edu.upenn.cis.ppod.model.OTUSetTest@115af049</td><td>0</td>
+<td></td>
+</tr>
+<tr>
+<td title='edu.upenn.cis.ppod.model.OTUSetTest.addOTUWAlreadyContainedOTU()'><b>addOTUWAlreadyContainedOTU</b><br>Test class:fast</td>
+<td>edu.upenn.cis.ppod.model.OTUSetTest@115af049</td><td>0</td>
+<td></td>
+</tr>
+<tr>
+<td title='edu.upenn.cis.ppod.model.OTUSetTest.addOTUWDuplicateLabel()'><b>addOTUWDuplicateLabel</b><br>Test class:fast</td>
+<td>edu.upenn.cis.ppod.model.OTUSetTest@115af049</td><td>0</td>
+<td><div><pre>java.lang.IllegalArgumentException: OTUSet labeled 'null' already has an OTU labeled 'otu0'
+	at com.google.common.base.Preconditions.checkArgument(Preconditions.java:84)
+	at edu.upenn.cis.ppod.model.OTUSet.addOTUWithoutSetOTUsOnChildren(OTUSet.java:210)
+	at edu.upenn.cis.ppod.model.OTUSet.setOTUs(OTUSet.java:514)
+	at edu.upenn.cis.ppod.model.OTUSetTest.addOTUWDuplicateLabel(OTUSetTest.java:91)
+	at org.apache.maven.surefire.testng.TestNGExecutor.run(TestNGExecutor.java:74)
+	at org.apache.maven.surefire.testng.TestNGXmlTestSuite.execute(TestNGXmlTestSuite.java:92)
+	at org.apache.maven.surefire.Surefire.run(Surefire.java:177)
+	at org.apache.maven.surefire.booter.SurefireBooter.runSuitesInProcess(SurefireBooter.java:345)
+	at org.apache.maven.surefire.booter.SurefireBooter.main(SurefireBooter.java:1009)
+... Removed 24 stack frames</pre></div><a href='#' onClick='toggleBox("stack-trace1185716172", this, "Click to show all stack frames", "Click to hide stack frames")'>Click to show all stack frames</a>
+<div class='stack-trace' id='stack-trace1185716172'><pre>java.lang.IllegalArgumentException: OTUSet labeled 'null' already has an OTU labeled 'otu0'
+	at com.google.common.base.Preconditions.checkArgument(Preconditions.java:84)
+	at edu.upenn.cis.ppod.model.OTUSet.addOTUWithoutSetOTUsOnChildren(OTUSet.java:210)
+	at edu.upenn.cis.ppod.model.OTUSet.setOTUs(OTUSet.java:514)
+	at edu.upenn.cis.ppod.model.OTUSetTest.addOTUWDuplicateLabel(OTUSetTest.java:91)
+	at sun.reflect.NativeMethodAccessorImpl.invoke0(Native Method)
+	at sun.reflect.NativeMethodAccessorImpl.invoke(NativeMethodAccessorImpl.java:39)
+	at sun.reflect.DelegatingMethodAccessorImpl.invoke(DelegatingMethodAccessorImpl.java:25)
+	at java.lang.reflect.Method.invoke(Method.java:597)
+	at org.testng.internal.MethodHelper.invokeMethod(MethodHelper.java:644)
+	at org.testng.internal.Invoker.invokeMethod(Invoker.java:546)
+	at org.testng.internal.Invoker.invokeTestMethod(Invoker.java:700)
+	at org.testng.internal.Invoker.invokeTestMethods(Invoker.java:1002)
+	at org.testng.internal.TestMethodWorker.invokeTestMethods(TestMethodWorker.java:137)
+	at org.testng.internal.TestMethodWorker.run(TestMethodWorker.java:121)
+	at org.testng.TestRunner.runWorkers(TestRunner.java:909)
+	at org.testng.TestRunner.privateRun(TestRunner.java:618)
+	at org.testng.TestRunner.run(TestRunner.java:499)
+	at org.testng.SuiteRunner.runTest(SuiteRunner.java:332)
+	at org.testng.SuiteRunner.runSequentially(SuiteRunner.java:327)
+	at org.testng.SuiteRunner.privateRun(SuiteRunner.java:299)
+	at org.testng.SuiteRunner.run(SuiteRunner.java:204)
+	at org.testng.TestNG.createAndRunSuiteRunners(TestNG.java:915)
+	at org.testng.TestNG.runSuitesLocally(TestNG.java:879)
+	at org.testng.TestNG.run(TestNG.java:787)
+	at org.apache.maven.surefire.testng.TestNGExecutor.run(TestNGExecutor.java:74)
+	at org.apache.maven.surefire.testng.TestNGXmlTestSuite.execute(TestNGXmlTestSuite.java:92)
+	at org.apache.maven.surefire.Surefire.run(Surefire.java:177)
+	at sun.reflect.NativeMethodAccessorImpl.invoke0(Native Method)
+	at sun.reflect.NativeMethodAccessorImpl.invoke(NativeMethodAccessorImpl.java:39)
+	at sun.reflect.DelegatingMethodAccessorImpl.invoke(DelegatingMethodAccessorImpl.java:25)
+	at java.lang.reflect.Method.invoke(Method.java:597)
+	at org.apache.maven.surefire.booter.SurefireBooter.runSuitesInProcess(SurefireBooter.java:345)
+	at org.apache.maven.surefire.booter.SurefireBooter.main(SurefireBooter.java:1009)
+</pre></div></td>
+</tr>
+<tr>
+<td title='edu.upenn.cis.ppod.model.CharacterStateCellTest.afterUnmarshal()'><b>afterUnmarshal</b><br>Test class:fast</td>
+<td>edu.upenn.cis.ppod.model.CharacterStateCellTest@a4133b0</td><td>0</td>
+<td></td>
+</tr>
+<tr>
+<td title='edu.upenn.cis.ppod.model.PPodEntityTest.beforeMarahal()'><b>beforeMarahal</b><br>Test class:fast</td>
+<td>edu.upenn.cis.ppod.model.PPodEntityTest@71b493c6</td><td>0</td>
+<td></td>
+</tr>
+<tr>
+<td title='edu.upenn.cis.ppod.model.CharacterStateCellTest.beforeMarshal()'><b>beforeMarshal</b><br>Test class:fast</td>
+<td>edu.upenn.cis.ppod.model.CharacterStateCellTest@a4133b0</td><td>0</td>
+<td></td>
+</tr>
+<tr>
+<td title='edu.upenn.cis.ppod.model.CharacterStateMatrixTest.beforeMarshal()'><b>beforeMarshal</b><br>Test class:fast</td>
+<td>edu.upenn.cis.ppod.model.CharacterStateMatrixTest@683c9314</td><td>0</td>
+<td></td>
+</tr>
+<tr>
+<td title='edu.upenn.cis.ppod.model.CharacterStateCellTest.beforeMarshalBeforeTypeHasBeenSet()'><b>beforeMarshalBeforeTypeHasBeenSet</b><br>Test class:fast</td>
+<td>edu.upenn.cis.ppod.model.CharacterStateCellTest@a4133b0</td><td>0</td>
+<td><div><pre>java.lang.IllegalStateException: can't marshal a cell without a type
+	at com.google.common.base.Preconditions.checkState(Preconditions.java:139)
+	at edu.upenn.cis.ppod.model.CategoricalCell.beforeMarshal(CharacterStateCell.java:229)
+	at edu.upenn.cis.ppod.model.CharacterStateCellTest.beforeMarshalBeforeTypeHasBeenSet(CharacterStateCellTest.java:248)
+	at org.apache.maven.surefire.testng.TestNGExecutor.run(TestNGExecutor.java:74)
+	at org.apache.maven.surefire.testng.TestNGXmlTestSuite.execute(TestNGXmlTestSuite.java:92)
+	at org.apache.maven.surefire.Surefire.run(Surefire.java:177)
+	at org.apache.maven.surefire.booter.SurefireBooter.runSuitesInProcess(SurefireBooter.java:345)
+	at org.apache.maven.surefire.booter.SurefireBooter.main(SurefireBooter.java:1009)
+... Removed 24 stack frames</pre></div><a href='#' onClick='toggleBox("stack-trace1282830982", this, "Click to show all stack frames", "Click to hide stack frames")'>Click to show all stack frames</a>
+<div class='stack-trace' id='stack-trace1282830982'><pre>java.lang.IllegalStateException: can't marshal a cell without a type
+	at com.google.common.base.Preconditions.checkState(Preconditions.java:139)
+	at edu.upenn.cis.ppod.model.CategoricalCell.beforeMarshal(CharacterStateCell.java:229)
+	at edu.upenn.cis.ppod.model.CharacterStateCellTest.beforeMarshalBeforeTypeHasBeenSet(CharacterStateCellTest.java:248)
+	at sun.reflect.NativeMethodAccessorImpl.invoke0(Native Method)
+	at sun.reflect.NativeMethodAccessorImpl.invoke(NativeMethodAccessorImpl.java:39)
+	at sun.reflect.DelegatingMethodAccessorImpl.invoke(DelegatingMethodAccessorImpl.java:25)
+	at java.lang.reflect.Method.invoke(Method.java:597)
+	at org.testng.internal.MethodHelper.invokeMethod(MethodHelper.java:644)
+	at org.testng.internal.Invoker.invokeMethod(Invoker.java:546)
+	at org.testng.internal.Invoker.invokeTestMethod(Invoker.java:700)
+	at org.testng.internal.Invoker.invokeTestMethods(Invoker.java:1002)
+	at org.testng.internal.TestMethodWorker.invokeTestMethods(TestMethodWorker.java:137)
+	at org.testng.internal.TestMethodWorker.run(TestMethodWorker.java:121)
+	at org.testng.TestRunner.runWorkers(TestRunner.java:909)
+	at org.testng.TestRunner.privateRun(TestRunner.java:618)
+	at org.testng.TestRunner.run(TestRunner.java:499)
+	at org.testng.SuiteRunner.runTest(SuiteRunner.java:332)
+	at org.testng.SuiteRunner.runSequentially(SuiteRunner.java:327)
+	at org.testng.SuiteRunner.privateRun(SuiteRunner.java:299)
+	at org.testng.SuiteRunner.run(SuiteRunner.java:204)
+	at org.testng.TestNG.createAndRunSuiteRunners(TestNG.java:915)
+	at org.testng.TestNG.runSuitesLocally(TestNG.java:879)
+	at org.testng.TestNG.run(TestNG.java:787)
+	at org.apache.maven.surefire.testng.TestNGExecutor.run(TestNGExecutor.java:74)
+	at org.apache.maven.surefire.testng.TestNGXmlTestSuite.execute(TestNGXmlTestSuite.java:92)
+	at org.apache.maven.surefire.Surefire.run(Surefire.java:177)
+	at sun.reflect.NativeMethodAccessorImpl.invoke0(Native Method)
+	at sun.reflect.NativeMethodAccessorImpl.invoke(NativeMethodAccessorImpl.java:39)
+	at sun.reflect.DelegatingMethodAccessorImpl.invoke(DelegatingMethodAccessorImpl.java:25)
+	at java.lang.reflect.Method.invoke(Method.java:597)
+	at org.apache.maven.surefire.booter.SurefireBooter.runSuitesInProcess(SurefireBooter.java:345)
+	at org.apache.maven.surefire.booter.SurefireBooter.main(SurefireBooter.java:1009)
+</pre></div></td>
+</tr>
+<tr>
+<td title='edu.upenn.cis.ppod.model.OTUSetTest.clearOTUs()'><b>clearOTUs</b><br>Test class:fast</td>
+<td>edu.upenn.cis.ppod.model.OTUSetTest@115af049</td><td>0</td>
+<td></td>
+</tr>
+<tr>
+<td title='edu.upenn.cis.ppod.saveorupdate.SaveOrUpdateCharacterStateMatrixTest.deleteCharacter()'><b>deleteCharacter</b><br>Test class:fast<br>Parameters: UUPPodEntity(PPodEntity(PersistentObject(edu.upenn.cis.ppod.model.Matrix@560508beid=nullversion=null)pPodVersionInfo=nullpPodVersion=null)pPodId=null)</td>
+<td>edu.upenn.cis.ppod.saveorupdate.SaveOrUpdateCharacterStateMatrixTest@2e0ca6ae</td><td>0</td>
+<td></td>
+</tr>
+<tr>
+<td title='edu.upenn.cis.ppod.saveorupdate.SaveOrUpdateCharacterStateMatrixTest.deleteCharacter()'><b>deleteCharacter</b><br>Test class:fast<br>Parameters: UUPPodEntity(PPodEntity(PersistentObject(edu.upenn.cis.ppod.model.DNAMatrix@57c501f7id=nullversion=null)pPodVersionInfo=nullpPodVersion=null)pPodId=null)</td>
+<td>edu.upenn.cis.ppod.saveorupdate.SaveOrUpdateCharacterStateMatrixTest@2e0ca6ae</td><td>0</td>
+<td></td>
+</tr>
+<tr>
+<td title='edu.upenn.cis.ppod.model.PPodEntityTest.getMarshalled()'><b>getMarshalled</b><br>Test class:fast</td>
+<td>edu.upenn.cis.ppod.model.PPodEntityTest@71b493c6</td><td>0</td>
+<td><div><pre>java.lang.IllegalStateException: can't access a PPodVersionInfo through a marshalled PPodEntity
+	at com.google.common.base.Preconditions.checkState(Preconditions.java:139)
+	at edu.upenn.cis.ppod.model.PPodEntity.getPPodVersionInfo(PPodEntity.java:252)
+	at edu.upenn.cis.ppod.model.PPodEntityTest.getMarshalled(PPodEntityTest.java:101)
+	at org.apache.maven.surefire.testng.TestNGExecutor.run(TestNGExecutor.java:74)
+	at org.apache.maven.surefire.testng.TestNGXmlTestSuite.execute(TestNGXmlTestSuite.java:92)
+	at org.apache.maven.surefire.Surefire.run(Surefire.java:177)
+	at org.apache.maven.surefire.booter.SurefireBooter.runSuitesInProcess(SurefireBooter.java:345)
+	at org.apache.maven.surefire.booter.SurefireBooter.main(SurefireBooter.java:1009)
+... Removed 24 stack frames</pre></div><a href='#' onClick='toggleBox("stack-trace646703599", this, "Click to show all stack frames", "Click to hide stack frames")'>Click to show all stack frames</a>
+<div class='stack-trace' id='stack-trace646703599'><pre>java.lang.IllegalStateException: can't access a PPodVersionInfo through a marshalled PPodEntity
+	at com.google.common.base.Preconditions.checkState(Preconditions.java:139)
+	at edu.upenn.cis.ppod.model.PPodEntity.getPPodVersionInfo(PPodEntity.java:252)
+	at edu.upenn.cis.ppod.model.PPodEntityTest.getMarshalled(PPodEntityTest.java:101)
+	at sun.reflect.NativeMethodAccessorImpl.invoke0(Native Method)
+	at sun.reflect.NativeMethodAccessorImpl.invoke(NativeMethodAccessorImpl.java:39)
+	at sun.reflect.DelegatingMethodAccessorImpl.invoke(DelegatingMethodAccessorImpl.java:25)
+	at java.lang.reflect.Method.invoke(Method.java:597)
+	at org.testng.internal.MethodHelper.invokeMethod(MethodHelper.java:644)
+	at org.testng.internal.Invoker.invokeMethod(Invoker.java:546)
+	at org.testng.internal.Invoker.invokeTestMethod(Invoker.java:700)
+	at org.testng.internal.Invoker.invokeTestMethods(Invoker.java:1002)
+	at org.testng.internal.TestMethodWorker.invokeTestMethods(TestMethodWorker.java:137)
+	at org.testng.internal.TestMethodWorker.run(TestMethodWorker.java:121)
+	at org.testng.TestRunner.runWorkers(TestRunner.java:909)
+	at org.testng.TestRunner.privateRun(TestRunner.java:618)
+	at org.testng.TestRunner.run(TestRunner.java:499)
+	at org.testng.SuiteRunner.runTest(SuiteRunner.java:332)
+	at org.testng.SuiteRunner.runSequentially(SuiteRunner.java:327)
+	at org.testng.SuiteRunner.privateRun(SuiteRunner.java:299)
+	at org.testng.SuiteRunner.run(SuiteRunner.java:204)
+	at org.testng.TestNG.createAndRunSuiteRunners(TestNG.java:915)
+	at org.testng.TestNG.runSuitesLocally(TestNG.java:879)
+	at org.testng.TestNG.run(TestNG.java:787)
+	at org.apache.maven.surefire.testng.TestNGExecutor.run(TestNGExecutor.java:74)
+	at org.apache.maven.surefire.testng.TestNGXmlTestSuite.execute(TestNGXmlTestSuite.java:92)
+	at org.apache.maven.surefire.Surefire.run(Surefire.java:177)
+	at sun.reflect.NativeMethodAccessorImpl.invoke0(Native Method)
+	at sun.reflect.NativeMethodAccessorImpl.invoke(NativeMethodAccessorImpl.java:39)
+	at sun.reflect.DelegatingMethodAccessorImpl.invoke(DelegatingMethodAccessorImpl.java:25)
+	at java.lang.reflect.Method.invoke(Method.java:597)
+	at org.apache.maven.surefire.booter.SurefireBooter.runSuitesInProcess(SurefireBooter.java:345)
+	at org.apache.maven.surefire.booter.SurefireBooter.main(SurefireBooter.java:1009)
+</pre></div></td>
+</tr>
+<tr>
+<td title='edu.upenn.cis.ppod.model.CharacterStateCellTest.getStatesWhenCellHasMultipleStates()'><b>getStatesWhenCellHasMultipleStates</b><br>Test class:fast</td>
+<td>edu.upenn.cis.ppod.model.CharacterStateCellTest@a4133b0</td><td>0</td>
+<td></td>
+</tr>
+<tr>
+<td title='edu.upenn.cis.ppod.model.CharacterStateCellTest.getStatesWhenCellHasOneState()'><b>getStatesWhenCellHasOneState</b><br>Test class:fast</td>
+<td>edu.upenn.cis.ppod.model.CharacterStateCellTest@a4133b0</td><td>0</td>
+<td></td>
+</tr>
+<tr>
+<td title='edu.upenn.cis.ppod.saveorupdate.MergeAttachmentTest.mergeOnBlankTarget()'><b>mergeOnBlankTarget</b><br>Test class:fast</td>
+<td>edu.upenn.cis.ppod.saveorupdate.MergeAttachmentTest@6e7ce842</td><td>0</td>
+<td></td>
+</tr>
+<tr>
+<td title='edu.upenn.cis.ppod.model.CharacterStateMatrixTest.moveCharacter()'><b>moveCharacter</b><br>Test class:fast</td>
+<td>edu.upenn.cis.ppod.model.CharacterStateMatrixTest@683c9314</td><td>0</td>
+<td></td>
+</tr>
+<tr>
+<td title='edu.upenn.cis.ppod.saveorupdate.SaveOrUpdateCharacterStateMatrixTest.moveCharacters()'><b>moveCharacters</b><br>Test class:fast<br>Parameters: UUPPodEntity(PPodEntity(PersistentObject(edu.upenn.cis.ppod.model.Matrix@50e26ae7id=nullversion=null)pPodVersionInfo=nullpPodVersion=null)pPodId=null)</td>
+<td>edu.upenn.cis.ppod.saveorupdate.SaveOrUpdateCharacterStateMatrixTest@2e0ca6ae</td><td>0</td>
+<td></td>
+</tr>
+<tr>
+<td title='edu.upenn.cis.ppod.saveorupdate.SaveOrUpdateCharacterStateMatrixTest.moveCharacters()'><b>moveCharacters</b><br>Test class:fast<br>Parameters: UUPPodEntity(PPodEntity(PersistentObject(edu.upenn.cis.ppod.model.DNAMatrix@2587b08did=nullversion=null)pPodVersionInfo=nullpPodVersion=null)pPodId=null)</td>
+<td>edu.upenn.cis.ppod.saveorupdate.SaveOrUpdateCharacterStateMatrixTest@2e0ca6ae</td><td>0</td>
+<td></td>
+</tr>
+<tr>
+<td title='edu.upenn.cis.ppod.saveorupdate.SaveOrUpdateCharacterStateMatrixTest.moveRows()'><b>moveRows</b><br>Test class:fast<br>Parameters: UUPPodEntity(PPodEntity(PersistentObject(edu.upenn.cis.ppod.model.Matrix@161abc23id=nullversion=null)pPodVersionInfo=nullpPodVersion=null)pPodId=null)</td>
+<td>edu.upenn.cis.ppod.saveorupdate.SaveOrUpdateCharacterStateMatrixTest@2e0ca6ae</td><td>0</td>
+<td></td>
+</tr>
+<tr>
+<td title='edu.upenn.cis.ppod.saveorupdate.SaveOrUpdateCharacterStateMatrixTest.moveRows()'><b>moveRows</b><br>Test class:fast<br>Parameters: UUPPodEntity(PPodEntity(PersistentObject(edu.upenn.cis.ppod.model.DNAMatrix@61438934id=nullversion=null)pPodVersionInfo=nullpPodVersion=null)pPodId=null)</td>
+<td>edu.upenn.cis.ppod.saveorupdate.SaveOrUpdateCharacterStateMatrixTest@2e0ca6ae</td><td>1</td>
+<td></td>
+</tr>
+<tr>
+<td title='edu.upenn.cis.ppod.model.DNAStateTest.of()'><b>of</b><br>Test class:fast</td>
+<td>edu.upenn.cis.ppod.model.DNAStateTest@38834cfb</td><td>0</td>
+<td></td>
+</tr>
+<tr>
+<td title='edu.upenn.cis.ppod.model.DNAStateTest.ofIllegalArg()'><b>ofIllegalArg</b><br>Test class:fast</td>
+<td>edu.upenn.cis.ppod.model.DNAStateTest@38834cfb</td><td>0</td>
+<td><div><pre>java.lang.IllegalArgumentException: stateNumber must be 0, 1, 2, or 3
+	at edu.upenn.cis.ppod.model.DNAState$Nucleotide.of(DNAState.java:88)
+	at edu.upenn.cis.ppod.model.DNAStateTest.ofIllegalArg(DNAStateTest.java:43)
+	at org.apache.maven.surefire.testng.TestNGExecutor.run(TestNGExecutor.java:74)
+	at org.apache.maven.surefire.testng.TestNGXmlTestSuite.execute(TestNGXmlTestSuite.java:92)
+	at org.apache.maven.surefire.Surefire.run(Surefire.java:177)
+	at org.apache.maven.surefire.booter.SurefireBooter.runSuitesInProcess(SurefireBooter.java:345)
+	at org.apache.maven.surefire.booter.SurefireBooter.main(SurefireBooter.java:1009)
+... Removed 24 stack frames</pre></div><a href='#' onClick='toggleBox("stack-trace72177013", this, "Click to show all stack frames", "Click to hide stack frames")'>Click to show all stack frames</a>
+<div class='stack-trace' id='stack-trace72177013'><pre>java.lang.IllegalArgumentException: stateNumber must be 0, 1, 2, or 3
+	at edu.upenn.cis.ppod.model.DNAState$Nucleotide.of(DNAState.java:88)
+	at edu.upenn.cis.ppod.model.DNAStateTest.ofIllegalArg(DNAStateTest.java:43)
+	at sun.reflect.NativeMethodAccessorImpl.invoke0(Native Method)
+	at sun.reflect.NativeMethodAccessorImpl.invoke(NativeMethodAccessorImpl.java:39)
+	at sun.reflect.DelegatingMethodAccessorImpl.invoke(DelegatingMethodAccessorImpl.java:25)
+	at java.lang.reflect.Method.invoke(Method.java:597)
+	at org.testng.internal.MethodHelper.invokeMethod(MethodHelper.java:644)
+	at org.testng.internal.Invoker.invokeMethod(Invoker.java:546)
+	at org.testng.internal.Invoker.invokeTestMethod(Invoker.java:700)
+	at org.testng.internal.Invoker.invokeTestMethods(Invoker.java:1002)
+	at org.testng.internal.TestMethodWorker.invokeTestMethods(TestMethodWorker.java:137)
+	at org.testng.internal.TestMethodWorker.run(TestMethodWorker.java:121)
+	at org.testng.TestRunner.runWorkers(TestRunner.java:909)
+	at org.testng.TestRunner.privateRun(TestRunner.java:618)
+	at org.testng.TestRunner.run(TestRunner.java:499)
+	at org.testng.SuiteRunner.runTest(SuiteRunner.java:332)
+	at org.testng.SuiteRunner.runSequentially(SuiteRunner.java:327)
+	at org.testng.SuiteRunner.privateRun(SuiteRunner.java:299)
+	at org.testng.SuiteRunner.run(SuiteRunner.java:204)
+	at org.testng.TestNG.createAndRunSuiteRunners(TestNG.java:915)
+	at org.testng.TestNG.runSuitesLocally(TestNG.java:879)
+	at org.testng.TestNG.run(TestNG.java:787)
+	at org.apache.maven.surefire.testng.TestNGExecutor.run(TestNGExecutor.java:74)
+	at org.apache.maven.surefire.testng.TestNGXmlTestSuite.execute(TestNGXmlTestSuite.java:92)
+	at org.apache.maven.surefire.Surefire.run(Surefire.java:177)
+	at sun.reflect.NativeMethodAccessorImpl.invoke0(Native Method)
+	at sun.reflect.NativeMethodAccessorImpl.invoke(NativeMethodAccessorImpl.java:39)
+	at sun.reflect.DelegatingMethodAccessorImpl.invoke(DelegatingMethodAccessorImpl.java:25)
+	at java.lang.reflect.Method.invoke(Method.java:597)
+	at org.apache.maven.surefire.booter.SurefireBooter.runSuitesInProcess(SurefireBooter.java:345)
+	at org.apache.maven.surefire.booter.SurefireBooter.main(SurefireBooter.java:1009)
+</pre></div></td>
+</tr>
+<tr>
+<td title='edu.upenn.cis.ppod.model.OTUsToMolecularSequencesTest.putHelperTest()'><b>putHelperTest</b><br>Test class:fast</td>
+<td>edu.upenn.cis.ppod.model.OTUsToMolecularSequencesTest@bf47ae8</td><td>0</td>
+<td></td>
+</tr>
+<tr>
+<td title='edu.upenn.cis.ppod.model.OTUsToMolecularSequencesTest.putHelperTestReplaceASequence()'><b>putHelperTestReplaceASequence</b><br>Test class:fast</td>
+<td>edu.upenn.cis.ppod.model.OTUsToMolecularSequencesTest@bf47ae8</td><td>0</td>
+<td></td>
+</tr>
+<tr>
+<td title='edu.upenn.cis.ppod.model.PPodEntityTest.removeAttachment()'><b>removeAttachment</b><br>Test class:fast</td>
+<td>edu.upenn.cis.ppod.model.PPodEntityTest@71b493c6</td><td>0</td>
+<td></td>
+</tr>
+<tr>
+<td title='edu.upenn.cis.ppod.model.OTUSetTest.removeMatrix()'><b>removeMatrix</b><br>Test class:fast</td>
+<td>edu.upenn.cis.ppod.model.OTUSetTest@115af049</td><td>0</td>
+<td></td>
+</tr>
+<tr>
+<td title='edu.upenn.cis.ppod.model.OTUSetTest.removeOTU()'><b>removeOTU</b><br>Test class:fast</td>
+<td>edu.upenn.cis.ppod.model.OTUSetTest@115af049</td><td>0</td>
+<td></td>
+</tr>
+<tr>
+<td title='edu.upenn.cis.ppod.model.OTUSetTest.removeTreeSet()'><b>removeTreeSet</b><br>Test class:fast</td>
+<td>edu.upenn.cis.ppod.model.OTUSetTest@115af049</td><td>0</td>
+<td></td>
+</tr>
+<tr>
+<td title='edu.upenn.cis.ppod.model.CharacterStateMatrixTest.replaceCharacters()'><b>replaceCharacters</b><br>Test class:fast</td>
+<td>edu.upenn.cis.ppod.model.CharacterStateMatrixTest@683c9314</td><td>0</td>
+<td></td>
+</tr>
+<tr>
+<td title='edu.upenn.cis.ppod.model.CharacterStateMatrixTest.replaceRow()'><b>replaceRow</b><br>Test class:fast</td>
+<td>edu.upenn.cis.ppod.model.CharacterStateMatrixTest@683c9314</td><td>0</td>
+<td></td>
+</tr>
+<tr>
+<td title='edu.upenn.cis.ppod.model.OTUSetTest.resetWhenNotInNeedOfNewPPodVersionInfo()'><b>resetWhenNotInNeedOfNewPPodVersionInfo</b><br>Test class:fast</td>
+<td>edu.upenn.cis.ppod.model.OTUSetTest@115af049</td><td>0</td>
+<td></td>
+</tr>
+<tr>
+<td title='edu.upenn.cis.ppod.saveorupdate.SaveOrUpdateCharacterStateMatrixTest.save()'><b>save</b><br>Test class:fast<br>Parameters: UUPPodEntity(PPodEntity(PersistentObject(edu.upenn.cis.ppod.model.Matrix@59d204cdid=nullversion=null)pPodVersionInfo=nullpPodVersion=null)pPodId=null)</td>
+<td>edu.upenn.cis.ppod.saveorupdate.SaveOrUpdateCharacterStateMatrixTest@2e0ca6ae</td><td>0</td>
+<td></td>
+</tr>
+<tr>
+<td title='edu.upenn.cis.ppod.saveorupdate.SaveOrUpdateCharacterStateMatrixTest.save()'><b>save</b><br>Test class:fast<br>Parameters: UUPPodEntity(PPodEntity(PersistentObject(edu.upenn.cis.ppod.model.DNAMatrix@78d68713id=nullversion=null)pPodVersionInfo=nullpPodVersion=null)pPodId=null)</td>
+<td>edu.upenn.cis.ppod.saveorupdate.SaveOrUpdateCharacterStateMatrixTest@2e0ca6ae</td><td>0</td>
+<td></td>
+</tr>
+<tr>
+<td title='edu.upenn.cis.ppod.model.CharacterStateMatrixTest.setCharacters()'><b>setCharacters</b><br>Test class:fast</td>
+<td>edu.upenn.cis.ppod.model.CharacterStateMatrixTest@683c9314</td><td>0</td>
+<td></td>
+</tr>
+<tr>
+<td title='edu.upenn.cis.ppod.model.MolecularStateMatrixTest.setCharacters()'><b>setCharacters</b><br>Test class:fast</td>
+<td>edu.upenn.cis.ppod.model.MolecularStateMatrixTest@71257687</td><td>0</td>
+<td></td>
+</tr>
+<tr>
+<td title='edu.upenn.cis.ppod.model.CharacterStateMatrixTest.setCharactersW2EqualsCharacters()'><b>setCharactersW2EqualsCharacters</b><br>Test class:fast</td>
+<td>edu.upenn.cis.ppod.model.CharacterStateMatrixTest@683c9314</td><td>0</td>
+<td><div><pre>java.lang.IllegalArgumentException: two characters are the same character0 at positions 0 and 0
+	at com.google.common.base.Preconditions.checkArgument(Preconditions.java:84)
+	at edu.upenn.cis.ppod.model.Matrix.setCharacters(CharacterStateMatrix.java:535)
+	at edu.upenn.cis.ppod.model.CharacterStateMatrixTest.setCharactersW2EqualsCharacters(CharacterStateMatrixTest.java:362)
+	at org.apache.maven.surefire.testng.TestNGExecutor.run(TestNGExecutor.java:74)
+	at org.apache.maven.surefire.testng.TestNGXmlTestSuite.execute(TestNGXmlTestSuite.java:92)
+	at org.apache.maven.surefire.Surefire.run(Surefire.java:177)
+	at org.apache.maven.surefire.booter.SurefireBooter.runSuitesInProcess(SurefireBooter.java:345)
+	at org.apache.maven.surefire.booter.SurefireBooter.main(SurefireBooter.java:1009)
+... Removed 24 stack frames</pre></div><a href='#' onClick='toggleBox("stack-trace1739764017", this, "Click to show all stack frames", "Click to hide stack frames")'>Click to show all stack frames</a>
+<div class='stack-trace' id='stack-trace1739764017'><pre>java.lang.IllegalArgumentException: two characters are the same character0 at positions 0 and 0
+	at com.google.common.base.Preconditions.checkArgument(Preconditions.java:84)
+	at edu.upenn.cis.ppod.model.Matrix.setCharacters(CharacterStateMatrix.java:535)
+	at edu.upenn.cis.ppod.model.CharacterStateMatrixTest.setCharactersW2EqualsCharacters(CharacterStateMatrixTest.java:362)
+	at sun.reflect.NativeMethodAccessorImpl.invoke0(Native Method)
+	at sun.reflect.NativeMethodAccessorImpl.invoke(NativeMethodAccessorImpl.java:39)
+	at sun.reflect.DelegatingMethodAccessorImpl.invoke(DelegatingMethodAccessorImpl.java:25)
+	at java.lang.reflect.Method.invoke(Method.java:597)
+	at org.testng.internal.MethodHelper.invokeMethod(MethodHelper.java:644)
+	at org.testng.internal.Invoker.invokeMethod(Invoker.java:546)
+	at org.testng.internal.Invoker.invokeTestMethod(Invoker.java:700)
+	at org.testng.internal.Invoker.invokeTestMethods(Invoker.java:1002)
+	at org.testng.internal.TestMethodWorker.invokeTestMethods(TestMethodWorker.java:137)
+	at org.testng.internal.TestMethodWorker.run(TestMethodWorker.java:121)
+	at org.testng.TestRunner.runWorkers(TestRunner.java:909)
+	at org.testng.TestRunner.privateRun(TestRunner.java:618)
+	at org.testng.TestRunner.run(TestRunner.java:499)
+	at org.testng.SuiteRunner.runTest(SuiteRunner.java:332)
+	at org.testng.SuiteRunner.runSequentially(SuiteRunner.java:327)
+	at org.testng.SuiteRunner.privateRun(SuiteRunner.java:299)
+	at org.testng.SuiteRunner.run(SuiteRunner.java:204)
+	at org.testng.TestNG.createAndRunSuiteRunners(TestNG.java:915)
+	at org.testng.TestNG.runSuitesLocally(TestNG.java:879)
+	at org.testng.TestNG.run(TestNG.java:787)
+	at org.apache.maven.surefire.testng.TestNGExecutor.run(TestNGExecutor.java:74)
+	at org.apache.maven.surefire.testng.TestNGXmlTestSuite.execute(TestNGXmlTestSuite.java:92)
+	at org.apache.maven.surefire.Surefire.run(Surefire.java:177)
+	at sun.reflect.NativeMethodAccessorImpl.invoke0(Native Method)
+	at sun.reflect.NativeMethodAccessorImpl.invoke(NativeMethodAccessorImpl.java:39)
+	at sun.reflect.DelegatingMethodAccessorImpl.invoke(DelegatingMethodAccessorImpl.java:25)
+	at java.lang.reflect.Method.invoke(Method.java:597)
+	at org.apache.maven.surefire.booter.SurefireBooter.runSuitesInProcess(SurefireBooter.java:345)
+	at org.apache.maven.surefire.booter.SurefireBooter.main(SurefireBooter.java:1009)
+</pre></div></td>
+</tr>
+<tr>
+<td title='edu.upenn.cis.ppod.model.CharacterStateMatrixTest.setCharactersWithEqualsCharacters()'><b>setCharactersWithEqualsCharacters</b><br>Test class:fast</td>
+<td>edu.upenn.cis.ppod.model.CharacterStateMatrixTest@683c9314</td><td>0</td>
+<td></td>
+</tr>
+<tr>
+<td title='edu.upenn.cis.ppod.model.CharacterStateMatrixTest.setColumnPPodVersionInfos()'><b>setColumnPPodVersionInfos</b><br>Test class:fast</td>
+<td>edu.upenn.cis.ppod.model.CharacterStateMatrixTest@683c9314</td><td>0</td>
+<td></td>
+</tr>
+<tr>
+<td title='edu.upenn.cis.ppod.model.OTUSetTest.setDNASequenceSets()'><b>setDNASequenceSets</b><br>Test class:fast</td>
+<td>edu.upenn.cis.ppod.model.OTUSetTest@115af049</td><td>0</td>
+<td></td>
+</tr>
+<tr>
+<td title='edu.upenn.cis.ppod.model.CharacterStateMatrixTest.setDescription()'><b>setDescription</b><br>Test class:fast</td>
+<td>edu.upenn.cis.ppod.model.CharacterStateMatrixTest@683c9314</td><td>0</td>
+<td></td>
+</tr>
+<tr>
+<td title='edu.upenn.cis.ppod.model.OTUSetTest.setDescription()'><b>setDescription</b><br>Test class:fast</td>
+<td>edu.upenn.cis.ppod.model.OTUSetTest@115af049</td><td>0</td>
+<td></td>
+</tr>
+<tr>
+<td title='edu.upenn.cis.ppod.model.MolecularSequenceTest.setInNeedOfNewPPodVersion()'><b>setInNeedOfNewPPodVersion</b><br>Test class:fast</td>
+<td>edu.upenn.cis.ppod.model.MolecularSequenceTest@788390b0</td><td>0</td>
+<td></td>
+</tr>
+<tr>
+<td title='edu.upenn.cis.ppod.model.MolecularSequenceTest.setName()'><b>setName</b><br>Test class:fast</td>
+<td>edu.upenn.cis.ppod.model.MolecularSequenceTest@788390b0</td><td>0</td>
+<td></td>
+</tr>
+<tr>
+<td title='edu.upenn.cis.ppod.model.CharacterStateMatrixTest.setOTUsWReorderedOTUs()'><b>setOTUsWReorderedOTUs</b><br>Test class:fast</td>
+<td>edu.upenn.cis.ppod.model.CharacterStateMatrixTest@683c9314</td><td>0</td>
+<td></td>
+</tr>
+<tr>
+<td title='edu.upenn.cis.ppod.model.CharacterStateMatrixTest.setOTUsWSameOTUs()'><b>setOTUsWSameOTUs</b><br>Test class:fast</td>
+<td>edu.upenn.cis.ppod.model.CharacterStateMatrixTest@683c9314</td><td>0</td>
+<td></td>
+</tr>
+<tr>
+<td title='edu.upenn.cis.ppod.model.CharacterStateMatrixTest.setOTUsWithLessOTUs()'><b>setOTUsWithLessOTUs</b><br>Test class:fast</td>
+<td>edu.upenn.cis.ppod.model.CharacterStateMatrixTest@683c9314</td><td>0</td>
+<td></td>
+</tr>
+<tr>
+<td title='edu.upenn.cis.ppod.model.MolecularSequenceTest.setSequence()'><b>setSequence</b><br>Test class:fast</td>
+<td>edu.upenn.cis.ppod.model.MolecularSequenceTest@788390b0</td><td>0</td>
+<td></td>
+</tr>
+<tr>
+<td title='edu.upenn.cis.ppod.model.MolecularSequenceTest.setSequenceWithAnIllegalCharacter()'><b>setSequenceWithAnIllegalCharacter</b><br>Test class:fast</td>
+<td>edu.upenn.cis.ppod.model.MolecularSequenceTest@788390b0</td><td>0</td>
+<td><div><pre>java.lang.IllegalArgumentException: Position 4 is [l] which is not a DNA state
+	at edu.upenn.cis.ppod.model.MolecularSequence.setSequence(MolecularSequence.java:213)
+	at edu.upenn.cis.ppod.model.MolecularSequenceTest.setSequenceWithAnIllegalCharacter(MolecularSequenceTest.java:70)
+	at org.apache.maven.surefire.testng.TestNGExecutor.run(TestNGExecutor.java:74)
+	at org.apache.maven.surefire.testng.TestNGXmlTestSuite.execute(TestNGXmlTestSuite.java:92)
+	at org.apache.maven.surefire.Surefire.run(Surefire.java:177)
+	at org.apache.maven.surefire.booter.SurefireBooter.runSuitesInProcess(SurefireBooter.java:345)
+	at org.apache.maven.surefire.booter.SurefireBooter.main(SurefireBooter.java:1009)
+... Removed 24 stack frames</pre></div><a href='#' onClick='toggleBox("stack-trace1655441108", this, "Click to show all stack frames", "Click to hide stack frames")'>Click to show all stack frames</a>
+<div class='stack-trace' id='stack-trace1655441108'><pre>java.lang.IllegalArgumentException: Position 4 is [l] which is not a DNA state
+	at edu.upenn.cis.ppod.model.MolecularSequence.setSequence(MolecularSequence.java:213)
+	at edu.upenn.cis.ppod.model.MolecularSequenceTest.setSequenceWithAnIllegalCharacter(MolecularSequenceTest.java:70)
+	at sun.reflect.NativeMethodAccessorImpl.invoke0(Native Method)
+	at sun.reflect.NativeMethodAccessorImpl.invoke(NativeMethodAccessorImpl.java:39)
+	at sun.reflect.DelegatingMethodAccessorImpl.invoke(DelegatingMethodAccessorImpl.java:25)
+	at java.lang.reflect.Method.invoke(Method.java:597)
+	at org.testng.internal.MethodHelper.invokeMethod(MethodHelper.java:644)
+	at org.testng.internal.Invoker.invokeMethod(Invoker.java:546)
+	at org.testng.internal.Invoker.invokeTestMethod(Invoker.java:700)
+	at org.testng.internal.Invoker.invokeTestMethods(Invoker.java:1002)
+	at org.testng.internal.TestMethodWorker.invokeTestMethods(TestMethodWorker.java:137)
+	at org.testng.internal.TestMethodWorker.run(TestMethodWorker.java:121)
+	at org.testng.TestRunner.runWorkers(TestRunner.java:909)
+	at org.testng.TestRunner.privateRun(TestRunner.java:618)
+	at org.testng.TestRunner.run(TestRunner.java:499)
+	at org.testng.SuiteRunner.runTest(SuiteRunner.java:332)
+	at org.testng.SuiteRunner.runSequentially(SuiteRunner.java:327)
+	at org.testng.SuiteRunner.privateRun(SuiteRunner.java:299)
+	at org.testng.SuiteRunner.run(SuiteRunner.java:204)
+	at org.testng.TestNG.createAndRunSuiteRunners(TestNG.java:915)
+	at org.testng.TestNG.runSuitesLocally(TestNG.java:879)
+	at org.testng.TestNG.run(TestNG.java:787)
+	at org.apache.maven.surefire.testng.TestNGExecutor.run(TestNGExecutor.java:74)
+	at org.apache.maven.surefire.testng.TestNGXmlTestSuite.execute(TestNGXmlTestSuite.java:92)
+	at org.apache.maven.surefire.Surefire.run(Surefire.java:177)
+	at sun.reflect.NativeMethodAccessorImpl.invoke0(Native Method)
+	at sun.reflect.NativeMethodAccessorImpl.invoke(NativeMethodAccessorImpl.java:39)
+	at sun.reflect.DelegatingMethodAccessorImpl.invoke(DelegatingMethodAccessorImpl.java:25)
+	at java.lang.reflect.Method.invoke(Method.java:597)
+	at org.apache.maven.surefire.booter.SurefireBooter.runSuitesInProcess(SurefireBooter.java:345)
+	at org.apache.maven.surefire.booter.SurefireBooter.main(SurefireBooter.java:1009)
+</pre></div></td>
+</tr>
+<tr>
+<td title='edu.upenn.cis.ppod.model.CharacterStateCellTest.setStatesForACellThatDoesNotBelongToARow()'><b>setStatesForACellThatDoesNotBelongToARow</b><br>Test class:fast</td>
+<td>edu.upenn.cis.ppod.model.CharacterStateCellTest@a4133b0</td><td>0</td>
+<td><div><pre>java.lang.IllegalStateException: this cell has not been assigned a row
+	at com.google.common.base.Preconditions.checkState(Preconditions.java:139)
+	at edu.upenn.cis.ppod.model.CategoricalCell.checkIncomingState(CharacterStateCell.java:240)
+	at edu.upenn.cis.ppod.model.CategoricalCell.setTypeAndStates(CharacterStateCell.java:549)
+	at edu.upenn.cis.ppod.model.CategoricalCell.setSingleState(CharacterStateCell.java:510)
+	at edu.upenn.cis.ppod.model.CharacterStateCellTest.setStatesForACellThatDoesNotBelongToARow(CharacterStateCellTest.java:121)
+	at org.apache.maven.surefire.testng.TestNGExecutor.run(TestNGExecutor.java:74)
+	at org.apache.maven.surefire.testng.TestNGXmlTestSuite.execute(TestNGXmlTestSuite.java:92)
+	at org.apache.maven.surefire.Surefire.run(Surefire.java:177)
+	at org.apache.maven.surefire.booter.SurefireBooter.runSuitesInProcess(SurefireBooter.java:345)
+	at org.apache.maven.surefire.booter.SurefireBooter.main(SurefireBooter.java:1009)
+... Removed 24 stack frames</pre></div><a href='#' onClick='toggleBox("stack-trace1086674812", this, "Click to show all stack frames", "Click to hide stack frames")'>Click to show all stack frames</a>
+<div class='stack-trace' id='stack-trace1086674812'><pre>java.lang.IllegalStateException: this cell has not been assigned a row
+	at com.google.common.base.Preconditions.checkState(Preconditions.java:139)
+	at edu.upenn.cis.ppod.model.CategoricalCell.checkIncomingState(CharacterStateCell.java:240)
+	at edu.upenn.cis.ppod.model.CategoricalCell.setTypeAndStates(CharacterStateCell.java:549)
+	at edu.upenn.cis.ppod.model.CategoricalCell.setSingleState(CharacterStateCell.java:510)
+	at edu.upenn.cis.ppod.model.CharacterStateCellTest.setStatesForACellThatDoesNotBelongToARow(CharacterStateCellTest.java:121)
+	at sun.reflect.NativeMethodAccessorImpl.invoke0(Native Method)
+	at sun.reflect.NativeMethodAccessorImpl.invoke(NativeMethodAccessorImpl.java:39)
+	at sun.reflect.DelegatingMethodAccessorImpl.invoke(DelegatingMethodAccessorImpl.java:25)
+	at java.lang.reflect.Method.invoke(Method.java:597)
+	at org.testng.internal.MethodHelper.invokeMethod(MethodHelper.java:644)
+	at org.testng.internal.Invoker.invokeMethod(Invoker.java:546)
+	at org.testng.internal.Invoker.invokeTestMethod(Invoker.java:700)
+	at org.testng.internal.Invoker.invokeTestMethods(Invoker.java:1002)
+	at org.testng.internal.TestMethodWorker.invokeTestMethods(TestMethodWorker.java:137)
+	at org.testng.internal.TestMethodWorker.run(TestMethodWorker.java:121)
+	at org.testng.TestRunner.runWorkers(TestRunner.java:909)
+	at org.testng.TestRunner.privateRun(TestRunner.java:618)
+	at org.testng.TestRunner.run(TestRunner.java:499)
+	at org.testng.SuiteRunner.runTest(SuiteRunner.java:332)
+	at org.testng.SuiteRunner.runSequentially(SuiteRunner.java:327)
+	at org.testng.SuiteRunner.privateRun(SuiteRunner.java:299)
+	at org.testng.SuiteRunner.run(SuiteRunner.java:204)
+	at org.testng.TestNG.createAndRunSuiteRunners(TestNG.java:915)
+	at org.testng.TestNG.runSuitesLocally(TestNG.java:879)
+	at org.testng.TestNG.run(TestNG.java:787)
+	at org.apache.maven.surefire.testng.TestNGExecutor.run(TestNGExecutor.java:74)
+	at org.apache.maven.surefire.testng.TestNGXmlTestSuite.execute(TestNGXmlTestSuite.java:92)
+	at org.apache.maven.surefire.Surefire.run(Surefire.java:177)
+	at sun.reflect.NativeMethodAccessorImpl.invoke0(Native Method)
+	at sun.reflect.NativeMethodAccessorImpl.invoke(NativeMethodAccessorImpl.java:39)
+	at sun.reflect.DelegatingMethodAccessorImpl.invoke(DelegatingMethodAccessorImpl.java:25)
+	at java.lang.reflect.Method.invoke(Method.java:597)
+	at org.apache.maven.surefire.booter.SurefireBooter.runSuitesInProcess(SurefireBooter.java:345)
+	at org.apache.maven.surefire.booter.SurefireBooter.main(SurefireBooter.java:1009)
+</pre></div></td>
+</tr>
+<tr>
+<td title='edu.upenn.cis.ppod.model.OTUSetTest.setTreeSets()'><b>setTreeSets</b><br>Test class:fast</td>
+<td>edu.upenn.cis.ppod.model.OTUSetTest@115af049</td><td>0</td>
+<td></td>
+</tr>
+<tr>
+<td title='edu.upenn.cis.ppod.model.CharacterStateCellTest.setTypeAndStatesFromPolymorhpicToInapplicable()'><b>setTypeAndStatesFromPolymorhpicToInapplicable</b><br>Test class:fast</td>
+<td>edu.upenn.cis.ppod.model.CharacterStateCellTest@a4133b0</td><td>0</td>
+<td></td>
+</tr>
+<tr>
+<td title='edu.upenn.cis.ppod.model.CharacterStateCellTest.setTypeAndStatesFromSingleToInapplicable()'><b>setTypeAndStatesFromSingleToInapplicable</b><br>Test class:fast</td>
+<td>edu.upenn.cis.ppod.model.CharacterStateCellTest@a4133b0</td><td>0</td>
+<td></td>
+</tr>
+<tr>
+<td title='edu.upenn.cis.ppod.model.CharacterStateCellTest.setTypeAndStatesInapplicable()'><b>setTypeAndStatesInapplicable</b><br>Test class:fast</td>
+<td>edu.upenn.cis.ppod.model.CharacterStateCellTest@a4133b0</td><td>0</td>
+<td></td>
+</tr>
+<tr>
+<td title='edu.upenn.cis.ppod.model.CharacterStateCellTest.setTypeAndStatesPolymorphic()'><b>setTypeAndStatesPolymorphic</b><br>Test class:fast</td>
+<td>edu.upenn.cis.ppod.model.CharacterStateCellTest@a4133b0</td><td>0</td>
+<td></td>
+</tr>
+<tr>
+<td title='edu.upenn.cis.ppod.model.CharacterStateCellTest.setTypeAndStatesPolymorphicTooFewStates()'><b>setTypeAndStatesPolymorphicTooFewStates</b><br>Test class:fast</td>
+<td>edu.upenn.cis.ppod.model.CharacterStateCellTest@a4133b0</td><td>0</td>
+<td><div><pre>java.lang.IllegalArgumentException: polymorphic states must be &gt; 1
+	at com.google.common.base.Preconditions.checkArgument(Preconditions.java:84)
+	at edu.upenn.cis.ppod.model.CategoricalCell.setPolymorphicStates(CharacterStateCell.java:465)
+	at edu.upenn.cis.ppod.model.CharacterStateCellTest.setTypeAndStatesPolymorphicTooFewStates(CharacterStateCellTest.java:210)
+	at org.apache.maven.surefire.testng.TestNGExecutor.run(TestNGExecutor.java:74)
+	at org.apache.maven.surefire.testng.TestNGXmlTestSuite.execute(TestNGXmlTestSuite.java:92)
+	at org.apache.maven.surefire.Surefire.run(Surefire.java:177)
+	at org.apache.maven.surefire.booter.SurefireBooter.runSuitesInProcess(SurefireBooter.java:345)
+	at org.apache.maven.surefire.booter.SurefireBooter.main(SurefireBooter.java:1009)
+... Removed 24 stack frames</pre></div><a href='#' onClick='toggleBox("stack-trace698491110", this, "Click to show all stack frames", "Click to hide stack frames")'>Click to show all stack frames</a>
+<div class='stack-trace' id='stack-trace698491110'><pre>java.lang.IllegalArgumentException: polymorphic states must be &gt; 1
+	at com.google.common.base.Preconditions.checkArgument(Preconditions.java:84)
+	at edu.upenn.cis.ppod.model.CategoricalCell.setPolymorphicStates(CharacterStateCell.java:465)
+	at edu.upenn.cis.ppod.model.CharacterStateCellTest.setTypeAndStatesPolymorphicTooFewStates(CharacterStateCellTest.java:210)
+	at sun.reflect.NativeMethodAccessorImpl.invoke0(Native Method)
+	at sun.reflect.NativeMethodAccessorImpl.invoke(NativeMethodAccessorImpl.java:39)
+	at sun.reflect.DelegatingMethodAccessorImpl.invoke(DelegatingMethodAccessorImpl.java:25)
+	at java.lang.reflect.Method.invoke(Method.java:597)
+	at org.testng.internal.MethodHelper.invokeMethod(MethodHelper.java:644)
+	at org.testng.internal.Invoker.invokeMethod(Invoker.java:546)
+	at org.testng.internal.Invoker.invokeTestMethod(Invoker.java:700)
+	at org.testng.internal.Invoker.invokeTestMethods(Invoker.java:1002)
+	at org.testng.internal.TestMethodWorker.invokeTestMethods(TestMethodWorker.java:137)
+	at org.testng.internal.TestMethodWorker.run(TestMethodWorker.java:121)
+	at org.testng.TestRunner.runWorkers(TestRunner.java:909)
+	at org.testng.TestRunner.privateRun(TestRunner.java:618)
+	at org.testng.TestRunner.run(TestRunner.java:499)
+	at org.testng.SuiteRunner.runTest(SuiteRunner.java:332)
+	at org.testng.SuiteRunner.runSequentially(SuiteRunner.java:327)
+	at org.testng.SuiteRunner.privateRun(SuiteRunner.java:299)
+	at org.testng.SuiteRunner.run(SuiteRunner.java:204)
+	at org.testng.TestNG.createAndRunSuiteRunners(TestNG.java:915)
+	at org.testng.TestNG.runSuitesLocally(TestNG.java:879)
+	at org.testng.TestNG.run(TestNG.java:787)
+	at org.apache.maven.surefire.testng.TestNGExecutor.run(TestNGExecutor.java:74)
+	at org.apache.maven.surefire.testng.TestNGXmlTestSuite.execute(TestNGXmlTestSuite.java:92)
+	at org.apache.maven.surefire.Surefire.run(Surefire.java:177)
+	at sun.reflect.NativeMethodAccessorImpl.invoke0(Native Method)
+	at sun.reflect.NativeMethodAccessorImpl.invoke(NativeMethodAccessorImpl.java:39)
+	at sun.reflect.DelegatingMethodAccessorImpl.invoke(DelegatingMethodAccessorImpl.java:25)
+	at java.lang.reflect.Method.invoke(Method.java:597)
+	at org.apache.maven.surefire.booter.SurefireBooter.runSuitesInProcess(SurefireBooter.java:345)
+	at org.apache.maven.surefire.booter.SurefireBooter.main(SurefireBooter.java:1009)
+</pre></div></td>
+</tr>
+<tr>
+<td title='edu.upenn.cis.ppod.model.CharacterStateCellTest.setTypeAndStatesSingle()'><b>setTypeAndStatesSingle</b><br>Test class:fast</td>
+<td>edu.upenn.cis.ppod.model.CharacterStateCellTest@a4133b0</td><td>0</td>
+<td></td>
+</tr>
+<tr>
+<td title='edu.upenn.cis.ppod.model.CharacterStateCellTest.setTypeAndStatesUnassigned()'><b>setTypeAndStatesUnassigned</b><br>Test class:fast</td>
+<td>edu.upenn.cis.ppod.model.CharacterStateCellTest@a4133b0</td><td>0</td>
+<td></td>
+</tr>
+<tr>
+<td title='edu.upenn.cis.ppod.model.CharacterStateCellTest.setTypeAndStatesUncertainTooFewStates()'><b>setTypeAndStatesUncertainTooFewStates</b><br>Test class:fast</td>
+<td>edu.upenn.cis.ppod.model.CharacterStateCellTest@a4133b0</td><td>0</td>
+<td><div><pre>java.lang.IllegalArgumentException: uncertain states must be &gt; 1
+	at com.google.common.base.Preconditions.checkArgument(Preconditions.java:84)
+	at edu.upenn.cis.ppod.model.CategoricalCell.setUncertainStates(CharacterStateCell.java:604)
+	at edu.upenn.cis.ppod.model.CharacterStateCellTest.setTypeAndStatesUncertainTooFewStates(CharacterStateCellTest.java:228)
+	at org.apache.maven.surefire.testng.TestNGExecutor.run(TestNGExecutor.java:74)
+	at org.apache.maven.surefire.testng.TestNGXmlTestSuite.execute(TestNGXmlTestSuite.java:92)
+	at org.apache.maven.surefire.Surefire.run(Surefire.java:177)
+	at org.apache.maven.surefire.booter.SurefireBooter.runSuitesInProcess(SurefireBooter.java:345)
+	at org.apache.maven.surefire.booter.SurefireBooter.main(SurefireBooter.java:1009)
+... Removed 24 stack frames</pre></div><a href='#' onClick='toggleBox("stack-trace1650982528", this, "Click to show all stack frames", "Click to hide stack frames")'>Click to show all stack frames</a>
+<div class='stack-trace' id='stack-trace1650982528'><pre>java.lang.IllegalArgumentException: uncertain states must be &gt; 1
+	at com.google.common.base.Preconditions.checkArgument(Preconditions.java:84)
+	at edu.upenn.cis.ppod.model.CategoricalCell.setUncertainStates(CharacterStateCell.java:604)
+	at edu.upenn.cis.ppod.model.CharacterStateCellTest.setTypeAndStatesUncertainTooFewStates(CharacterStateCellTest.java:228)
+	at sun.reflect.NativeMethodAccessorImpl.invoke0(Native Method)
+	at sun.reflect.NativeMethodAccessorImpl.invoke(NativeMethodAccessorImpl.java:39)
+	at sun.reflect.DelegatingMethodAccessorImpl.invoke(DelegatingMethodAccessorImpl.java:25)
+	at java.lang.reflect.Method.invoke(Method.java:597)
+	at org.testng.internal.MethodHelper.invokeMethod(MethodHelper.java:644)
+	at org.testng.internal.Invoker.invokeMethod(Invoker.java:546)
+	at org.testng.internal.Invoker.invokeTestMethod(Invoker.java:700)
+	at org.testng.internal.Invoker.invokeTestMethods(Invoker.java:1002)
+	at org.testng.internal.TestMethodWorker.invokeTestMethods(TestMethodWorker.java:137)
+	at org.testng.internal.TestMethodWorker.run(TestMethodWorker.java:121)
+	at org.testng.TestRunner.runWorkers(TestRunner.java:909)
+	at org.testng.TestRunner.privateRun(TestRunner.java:618)
+	at org.testng.TestRunner.run(TestRunner.java:499)
+	at org.testng.SuiteRunner.runTest(SuiteRunner.java:332)
+	at org.testng.SuiteRunner.runSequentially(SuiteRunner.java:327)
+	at org.testng.SuiteRunner.privateRun(SuiteRunner.java:299)
+	at org.testng.SuiteRunner.run(SuiteRunner.java:204)
+	at org.testng.TestNG.createAndRunSuiteRunners(TestNG.java:915)
+	at org.testng.TestNG.runSuitesLocally(TestNG.java:879)
+	at org.testng.TestNG.run(TestNG.java:787)
+	at org.apache.maven.surefire.testng.TestNGExecutor.run(TestNGExecutor.java:74)
+	at org.apache.maven.surefire.testng.TestNGXmlTestSuite.execute(TestNGXmlTestSuite.java:92)
+	at org.apache.maven.surefire.Surefire.run(Surefire.java:177)
+	at sun.reflect.NativeMethodAccessorImpl.invoke0(Native Method)
+	at sun.reflect.NativeMethodAccessorImpl.invoke(NativeMethodAccessorImpl.java:39)
+	at sun.reflect.DelegatingMethodAccessorImpl.invoke(DelegatingMethodAccessorImpl.java:25)
+	at java.lang.reflect.Method.invoke(Method.java:597)
+	at org.apache.maven.surefire.booter.SurefireBooter.runSuitesInProcess(SurefireBooter.java:345)
+	at org.apache.maven.surefire.booter.SurefireBooter.main(SurefireBooter.java:1009)
+</pre></div></td>
+</tr>
+<tr>
+<td title='edu.upenn.cis.ppod.model.CharacterStateCellTest.setUncertainStates()'><b>setUncertainStates</b><br>Test class:fast</td>
+<td>edu.upenn.cis.ppod.model.CharacterStateCellTest@a4133b0</td><td>0</td>
+<td></td>
+</tr>
+<tr>
+<td title='edu.upenn.cis.ppod.model.CharacterStateMatrixTest.setWithSameRow()'><b>setWithSameRow</b><br>Test class:fast</td>
+<td>edu.upenn.cis.ppod.model.CharacterStateMatrixTest@683c9314</td><td>0</td>
+<td></td>
+</tr>
+<tr>
+<td title='edu.upenn.cis.ppod.FactorySetup.succeed()'><b>succeed</b><br>Test class:fast</td>
+<td>edu.upenn.cis.ppod.FactorySetup@1f00aff5</td><td>0</td>
+<td></td>
+</tr>
+<tr>
+<td title='edu.upenn.cis.ppod.model.DNASequenceTest.testIsLegal()'><b>testIsLegal</b><br>Test class:fast</td>
+<td>edu.upenn.cis.ppod.model.DNASequenceTest@39607e7d</td><td>0</td>
+<td></td>
+</tr>
+<tr>
+<td title='edu.upenn.cis.ppod.model.DNASequenceTest.testIsLegalShouldReturnFalse()'><b>testIsLegalShouldReturnFalse</b><br>Test class:fast</td>
+<td>edu.upenn.cis.ppod.model.DNASequenceTest@39607e7d</td><td>0</td>
+<td></td>
+</tr>
+</table><p>
+</body>
+</html>

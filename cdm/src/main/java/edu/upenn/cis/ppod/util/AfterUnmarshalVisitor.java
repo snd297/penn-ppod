@@ -16,9 +16,9 @@
 
 package edu.upenn.cis.ppod.util;
 
+import edu.upenn.cis.ppod.model.CategoricalMatrix;
 import edu.upenn.cis.ppod.model.Character;
-import edu.upenn.cis.ppod.model.CharacterStateCell;
-import edu.upenn.cis.ppod.model.CharacterStateMatrix;
+import edu.upenn.cis.ppod.model.CategoricalCell;
 import edu.upenn.cis.ppod.model.DNASequenceSet;
 import edu.upenn.cis.ppod.model.OTUKeyedMap;
 
@@ -36,7 +36,7 @@ class AfterUnmarshalVisitor extends EmptyVisitor implements
 	 * @param matrix target
 	 */
 	@Override
-	public void visit(final CharacterStateMatrix matrix) {
+	public void visit(final CategoricalMatrix matrix) {
 		matrix.afterUnmarshal();
 	}
 
@@ -46,7 +46,7 @@ class AfterUnmarshalVisitor extends EmptyVisitor implements
 	 * @param cell target
 	 */
 	@Override
-	public void visit(final CharacterStateCell cell) {
+	public void visit(final CategoricalCell cell) {
 		cell.afterUnmarshal();
 	}
 

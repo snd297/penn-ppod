@@ -94,9 +94,12 @@ public class OTUSet extends UUPPodEntityWXmlId implements Iterable<OTU> {
 	@Cascade( { org.hibernate.annotations.CascadeType.SAVE_UPDATE })
 	private final List<OTU> otus = newArrayList();
 
-	/** The matrices which reference this OTU set. */
+	/** The categoricalMatrices which reference this OTU set. */
 	@OneToMany(mappedBy = "otuSet", cascade = CascadeType.ALL, orphanRemoval = true)
-	private final Set<CharacterStateMatrix> matrices = newHashSet();
+	private final Set<CategoricalMatrix> categoricalMatrices = newHashSet();
+
+	@OneToMany(mappedBy = "otuSet", cascade = CascadeType.ALL, orphanRemoval = true)
+	private final Set<DNAMatrix> dnaMatrices = newHashSet();
 
 	@OneToMany(mappedBy = "otuSet", cascade = CascadeType.ALL, orphanRemoval = true)
 	private final Set<DNASequenceSet> dnaSequenceSets = newHashSet();
@@ -120,17 +123,8 @@ public class OTUSet extends UUPPodEntityWXmlId implements Iterable<OTU> {
 	@Override
 	public void accept(final IVisitor visitor) {
 		checkNotNull(visitor);
-		for (final OTU otu : getOTUs()) {
-			otu.accept(visitor);
-		}
-		for (final CharacterStateMatrix matrix : getMatrices()) {
-			matrix.accept(visitor);
-		}
-		for (final TreeSet treeSet : getTreeSets()) {
-			treeSet.accept(visitor);
-		}
-		for (final DNASequenceSet dnaSequenceSet : getDNASequenceSets()) {
-			dnaSequenceSet.accept(visitor);
+		for (final PersistentObject persistentObject : getChildren()) {
+			persistentObject.accept(visitor);
 		}
 		super.accept(visitor);
 		visitor.visit(this);
@@ -154,17 +148,6 @@ public class OTUSet extends UUPPodEntityWXmlId implements Iterable<OTU> {
 		return dnaSequenceSet;
 	}
 
-	public boolean removeDNASequenceSet(
-			final DNASequenceSet dnaSequenceSet) {
-		checkNotNull(dnaSequenceSet);
-		if (getDNASequenceSets().remove(dnaSequenceSet)) {
-			dnaSequenceSet.setOTUSet(null);
-			setInNeedOfNewPPodVersionInfo();
-			return true;
-		}
-		return false;
-	}
-
 	/**
 	 * Add {@code matrix} to this {@code OTUSet}.
 	 * <p>
@@ -175,9 +158,9 @@ public class OTUSet extends UUPPodEntityWXmlId implements Iterable<OTU> {
 	 * 
 	 * @return {@code matrix}
 	 */
-	public CharacterStateMatrix addMatrix(final CharacterStateMatrix matrix) {
+	public CategoricalMatrix addMatrix(final CategoricalMatrix matrix) {
 		checkNotNull(matrix);
-		getMatrices().add(matrix);
+		getCategoricalMatrices().add(matrix);
 		matrix.setOTUSet(this);
 		setInNeedOfNewPPodVersionInfo();
 		return matrix;
@@ -256,6 +239,32 @@ public class OTUSet extends UUPPodEntityWXmlId implements Iterable<OTU> {
 		}
 	}
 
+	@XmlElement(name = "categoricalMatrix")
+	private Set<CategoricalMatrix> getCategoricalMatrices() {
+		return categoricalMatrices;
+	}
+
+	public Iterator<CategoricalMatrix> categoricalMatricesIterator() {
+		return Collections.unmodifiableSet(getCategoricalMatrices()).iterator();
+	}
+
+	private Set<UUPPodEntityWXmlId> getChildren() {
+		final Set<UUPPodEntityWXmlId> children = newHashSet();
+		for (final UUPPodEntityWXmlId pPodEntity : getOTUs()) {
+			children.add(pPodEntity);
+		}
+		for (final UUPPodEntityWXmlId pPodEntity : getCategoricalMatrices()) {
+			children.add(pPodEntity);
+		}
+		for (final UUPPodEntityWXmlId pPodEntity : getTreeSets()) {
+			children.add(pPodEntity);
+		}
+		for (final UUPPodEntityWXmlId pPodEntity : getDNASequenceSets()) {
+			children.add(pPodEntity);
+		}
+		return children;
+	}
+
 	/**
 	 * Getter.
 	 * 
@@ -267,6 +276,15 @@ public class OTUSet extends UUPPodEntityWXmlId implements Iterable<OTU> {
 		return description;
 	}
 
+	@XmlElement(name = "dnaMatrix")
+	private Set<DNAMatrix> getDNAMatrices() {
+		return dnaMatrices;
+	}
+
+	public Iterator<DNAMatrix> dnaMatricesIterator() {
+		return Collections.unmodifiableCollection(getDNAMatrices()).iterator();
+	}
+
 	@XmlElement(name = "dnaSequenceSet")
 	private Set<DNASequenceSet> getDNASequenceSets() {
 		return dnaSequenceSets;
@@ -275,7 +293,7 @@ public class OTUSet extends UUPPodEntityWXmlId implements Iterable<OTU> {
 	/**
 	 * Get an iterator over this {@code OTUSet}'s {@code DNASequenceSets}s.
 	 */
-	public Iterator<DNASequenceSet> getDNASequenceSetsIterator() {
+	public Iterator<DNASequenceSet> dnaSequenceSetsIterator() {
 		return Collections.unmodifiableSet(getDNASequenceSets()).iterator();
 	}
 
@@ -299,15 +317,6 @@ public class OTUSet extends UUPPodEntityWXmlId implements Iterable<OTU> {
 		return label;
 	}
 
-	@XmlElement(name = "matrix")
-	private Set<CharacterStateMatrix> getMatrices() {
-		return matrices;
-	}
-
-	public Iterator<CharacterStateMatrix> getMatricesIterator() {
-		return Collections.unmodifiableSet(getMatrices()).iterator();
-	}
-
 	/**
 	 * Get the number of {@code CharacterStateMatrix}s in this {@code OTUSet}.
 	 * 
@@ -315,7 +324,7 @@ public class OTUSet extends UUPPodEntityWXmlId implements Iterable<OTU> {
 	 *         OTUSet}
 	 */
 	public int getMatricesSize() {
-		return getMatrices().size();
+		return getCategoricalMatrices().size();
 	}
 
 	/**
@@ -381,6 +390,50 @@ public class OTUSet extends UUPPodEntityWXmlId implements Iterable<OTU> {
 
 	public Iterator<OTU> iterator() {
 		return Collections.unmodifiableList(getOTUs()).iterator();
+	}
+
+	public boolean removeDNASequenceSet(
+			final DNASequenceSet dnaSequenceSet) {
+		checkNotNull(dnaSequenceSet);
+		if (getDNASequenceSets().remove(dnaSequenceSet)) {
+			dnaSequenceSet.setOTUSet(null);
+			setInNeedOfNewPPodVersionInfo();
+			return true;
+		}
+		return false;
+	}
+
+	/**
+	 * Set <code>matrices</code> to this <code>OTUSet</code>'s
+	 * categoricalMatrices.
+	 * 
+	 * @param matrices new categoricalMatrices
+	 * 
+	 * @return any categoricalMatrices that were removed as a result of this
+	 *         operation
+	 */
+	public Set<CategoricalMatrix> setCategoricalMatrices(
+			final Set<? extends CategoricalMatrix> matrices) {
+		checkNotNull(matrices);
+
+		if (matrices.equals(getCategoricalMatrices())) {
+			return Collections.emptySet();
+		}
+
+		final Set<CategoricalMatrix> removedMatrices = newHashSet(getCategoricalMatrices());
+		removedMatrices.removeAll(matrices);
+
+		for (final Matrix removedMatrix : removedMatrices) {
+			removedMatrix.setOTUSet(null);
+		}
+
+		getCategoricalMatrices().clear();
+
+		for (final CategoricalMatrix newMatrix : matrices) {
+			addMatrix(newMatrix);
+		}
+		setInNeedOfNewPPodVersionInfo();
+		return removedMatrices;
 	}
 
 	/**
@@ -476,37 +529,6 @@ public class OTUSet extends UUPPodEntityWXmlId implements Iterable<OTU> {
 	}
 
 	/**
-	 * Set <code>newMatrices</code> to this <code>OTUSet</code>'s matrices.
-	 * 
-	 * @param newMatrices new matrices
-	 * 
-	 * @return any matrices that were removed as a result of this operation
-	 */
-	public Set<CharacterStateMatrix> setMatrices(
-			final Set<? extends CharacterStateMatrix> newMatrices) {
-		checkNotNull(newMatrices);
-
-		if (newMatrices.equals(getMatrices())) {
-			return Collections.emptySet();
-		}
-
-		final Set<CharacterStateMatrix> removedMatrices = newHashSet(getMatrices());
-		removedMatrices.removeAll(newMatrices);
-
-		for (final CharacterStateMatrix removedMatrix : removedMatrices) {
-			removedMatrix.setOTUSet(null);
-		}
-
-		getMatrices().clear();
-
-		for (final CharacterStateMatrix newMatrix : newMatrices) {
-			addMatrix(newMatrix);
-		}
-		setInNeedOfNewPPodVersionInfo();
-		return removedMatrices;
-	}
-
-	/**
 	 * Set this {@code OTUSet}'s {@code OTU}s.
 	 * <p>
 	 * This {@code OTUSet} makes a copy of {@code newOTUs}.
@@ -546,7 +568,7 @@ public class OTUSet extends UUPPodEntityWXmlId implements Iterable<OTU> {
 
 	private void setOTUSetOnChildren() {
 		// Now let's let everyone know about the new OTUs
-		for (final CharacterStateMatrix matrix : getMatrices()) {
+		for (final Matrix matrix : getCategoricalMatrices()) {
 			matrix.setOTUSet(this);
 		}
 
@@ -599,23 +621,17 @@ public class OTUSet extends UUPPodEntityWXmlId implements Iterable<OTU> {
 	}
 
 	/**
-	 * Constructs a <code>String</code> with all attributes in name=value
-	 * format.
+	 * Constructs a <code>String</code> representation of this object.
 	 * 
-	 * @return a <code>String</code> representation of this object.
+	 * @return a <code>String</code> representation of this object
 	 */
 	@Override
 	public String toString() {
-		final String TAB = ",";
 
 		final StringBuilder retValue = new StringBuilder();
 
-		retValue.append("OTUSet(").append(super.toString()).append(TAB).append(
-				"id=").append(TAB).append("version=").append(TAB).append(
-				"label=").append(this.label).append(TAB).append("otus=")
-				.append(this.otus).append(TAB).append(")");
+		retValue.append("OTUSet(label=").append(this.label + ")");
 
 		return retValue.toString();
 	}
-
 }

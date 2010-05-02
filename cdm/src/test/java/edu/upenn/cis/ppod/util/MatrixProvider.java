@@ -23,7 +23,7 @@ import static com.google.common.collect.Iterators.getOnlyElement;
 
 import com.google.common.collect.Iterators;
 
-import edu.upenn.cis.ppod.model.CharacterStateMatrix;
+import edu.upenn.cis.ppod.model.Matrix;
 import edu.upenn.cis.ppod.model.Study;
 
 /**
@@ -47,20 +47,20 @@ public class MatrixProvider {
 				MatrixProvider.class.getResourceAsStream("/MX540.xml"));
 		studyMX540.accept(afterUnmarshalVisitor);
 
-		final CharacterStateMatrix smallSimpleMatrix = Iterators
+		final Matrix smallSimpleMatrix = Iterators
 				.getOnlyElement(Iterators.getOnlyElement(
-						studyMX540.getOTUSetsIterator()).getMatricesIterator());
+						studyMX540.getOTUSetsIterator()).categoricalMatricesIterator());
 
 		final Study studyM1808 = (Study) ctx.createUnmarshaller().unmarshal(
 				MatrixProvider.class.getResourceAsStream("/M1808.nex.xml"));
 
 		studyM1808.accept(afterUnmarshalVisitor);
 
-		final CharacterStateMatrix smallDNAMatrix =
+		final Matrix smallDNAMatrix =
 				getOnlyElement(
 						getOnlyElement(
 								studyM1808.getOTUSetsIterator())
-								.getMatricesIterator());
+								.categoricalMatricesIterator());
 
 		return new Object[][] {
 				new Object[] { smallSimpleMatrix },

@@ -15,22 +15,22 @@
  */
 package edu.upenn.cis.ppod.dao;
 
-import edu.upenn.cis.ppod.model.Character;
+import edu.upenn.cis.ppod.model.AbstractCharacter;
 
 /**
- * A {@link Character} DAO.
+ * A {@link AbstractCharacter} DAO.
  * 
  * @author Sam Donnelly
  */
-public interface ICharacterDAO extends IDAO<Character, Long> {
+public interface ICharacterDAO extends IDAO<AbstractCharacter, Long> {
 
 	/**
-	 * Get the persisted {@link Character} with the given pPOD id, or {@code
-	 * null} if there is no such {@link Character}.
+	 * Get the persisted {@link AbstractCharacter} with the given pPOD id, or {@code
+	 * null} if there is no such {@link AbstractCharacter}.
 	 * 
 	 * @param pPodID the pPOD ID of the character we want
-	 * @return the persisted {@link Character} with the given pPOD id, or
-	 *         {@code null} if there is no such {@link Character}
+	 * @return the persisted {@link AbstractCharacter} with the given pPOD id, or
+	 *         {@code null} if there is no such {@link AbstractCharacter}
 	 */
-	Character getCharacterByPPodId(String pPodID);
+	AbstractCharacter getCharacterByPPodId(String pPodID);
 }

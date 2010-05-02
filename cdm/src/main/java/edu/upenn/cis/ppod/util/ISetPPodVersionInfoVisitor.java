@@ -19,10 +19,10 @@ import com.google.inject.ImplementedBy;
 
 import edu.upenn.cis.ppod.model.Attachment;
 import edu.upenn.cis.ppod.model.Character;
-import edu.upenn.cis.ppod.model.CharacterState;
-import edu.upenn.cis.ppod.model.CharacterStateCell;
-import edu.upenn.cis.ppod.model.CharacterStateMatrix;
-import edu.upenn.cis.ppod.model.CharacterStateRow;
+import edu.upenn.cis.ppod.model.CategoricalMatrix;
+import edu.upenn.cis.ppod.model.CategoricalState;
+import edu.upenn.cis.ppod.model.CategoricalCell;
+import edu.upenn.cis.ppod.model.CategoricalRow;
 import edu.upenn.cis.ppod.model.OTU;
 import edu.upenn.cis.ppod.model.OTUSet;
 import edu.upenn.cis.ppod.model.Study;
@@ -40,13 +40,13 @@ public interface ISetPPodVersionInfoVisitor extends IVisitor {
 
 	void visit(final Character character);
 
-	void visit(final CharacterState characterState);
+	void visit(final CategoricalState categoricalState);
 
-	void visit(final CharacterStateCell cell);
+	void visit(final CategoricalCell cell);
 
-	void visit(final CharacterStateMatrix matrix);
+	void visit(final CategoricalMatrix matrix);
 
-	void visit(final CharacterStateRow row);
+	void visit(final CategoricalRow row);
 
 	void visit(final OTU otu);
 

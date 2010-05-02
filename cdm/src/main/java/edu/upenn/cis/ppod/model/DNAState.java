@@ -90,17 +90,19 @@ public class DNAState extends MolecularState {
 		}
 	}
 
-	static final String TABLE = "DNA_STATE";
+	protected static final String TABLE = "DNA_STATE";
 
-	static final String STATE_COLUMN = "STATE";
+	protected static final String ID_COLUMN = TABLE + "_"
+												+ PersistentObject.ID_COLUMN;
+
+	protected static final String STATE_COLUMN = "STATE";
 
 	/** For hibernate. */
 	DNAState() {}
 
 	@Inject
 	DNAState(@Assisted final Nucleotide nucleotide) {
-		super.setMolecularStateLabel(nucleotide.toString());
-		super.setStateNumber(nucleotide.ordinal());
+		super.setLabel(nucleotide.toString());
 	}
 
 	@Override

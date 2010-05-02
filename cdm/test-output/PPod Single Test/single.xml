@@ -1,0 +1,6 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<testsuite name="single" failures="0" tests="2" time="0.106" errors="0">
+  <properties/>
+  <testcase name="succeed" time="0.0040" classname="edu.upenn.cis.ppod.FactorySetup"/>
+  <testcase name="putHelperTest" time="0.047" classname="edu.upenn.cis.ppod.model.OTUsToMolecularSequencesTest"/>
+</testsuite>

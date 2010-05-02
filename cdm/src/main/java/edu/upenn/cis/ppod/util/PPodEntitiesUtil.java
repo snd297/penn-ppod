@@ -18,11 +18,12 @@ package edu.upenn.cis.ppod.util;
 import java.util.Iterator;
 import java.util.Set;
 
+import edu.upenn.cis.ppod.model.AbstractCharacter;
 import edu.upenn.cis.ppod.model.Attachment;
 import edu.upenn.cis.ppod.model.AttachmentNamespace;
 import edu.upenn.cis.ppod.model.AttachmentType;
+import edu.upenn.cis.ppod.model.CategoricalMatrix;
 import edu.upenn.cis.ppod.model.Character;
-import edu.upenn.cis.ppod.model.CharacterStateMatrix;
 import edu.upenn.cis.ppod.model.OTU;
 import edu.upenn.cis.ppod.model.OTUSet;
 import edu.upenn.cis.ppod.modelinterfaces.IAttachee;
@@ -74,19 +75,20 @@ public class PPodEntitiesUtil {
 						studyWideAttachmentNamespaces,
 						studyWideAttachmentTypes, studyWideAttachments, otu);
 			}
-			for (final Iterator<CharacterStateMatrix> matrixItr = otuSet
-					.getMatricesIterator(); matrixItr.hasNext();) {
-				final CharacterStateMatrix matrix = matrixItr.next();
+			for (final Iterator<CategoricalMatrix> matrixItr = otuSet
+					.categoricalMatricesIterator(); matrixItr.hasNext();) {
+				final CategoricalMatrix matrix = matrixItr.next();
 				extractAttachmentInfoFromAttachee(
 						studyWideAttachmentNamespaces,
 						studyWideAttachmentTypes, studyWideAttachments, matrix);
-				for (final Iterator<Character> charactersItr = matrix
-						.getCharactersIterator(); charactersItr.hasNext();) {
-					final Character character = charactersItr.next();
+				for (final Iterator<Character> charactersItr =
+						matrix.getCharactersIterator(); charactersItr.hasNext();) {
+					final Character abstractCharacter = charactersItr
+							.next();
 					extractAttachmentInfoFromAttachee(
 							studyWideAttachmentNamespaces,
 							studyWideAttachmentTypes, studyWideAttachments,
-							character);
+							abstractCharacter);
 				}
 			}
 		}

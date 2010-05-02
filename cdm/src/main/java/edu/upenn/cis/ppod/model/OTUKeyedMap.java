@@ -50,6 +50,12 @@ public abstract class OTUKeyedMap<V extends PersistentObject>
 
 	@Override
 	public void accept(final IVisitor visitor) {
+		for (final V v : getOTUsToValues().values()) {
+			if (v != null) {
+				v.accept(visitor);
+			}
+		}
+
 		visitor.visit(this);
 	}
 
@@ -99,31 +105,6 @@ public abstract class OTUKeyedMap<V extends PersistentObject>
 
 	/**
 	 * Associates {@code value} with {@code key} in this map. If the map
-	 * previously contained a mapping for {@code key}, the original value is
-	 * replaced by the specified value.
-	 * <p>
-	 * This method calls {@code getParent().setInNeedOfNewPPodVersionInfo()} if
-	 * this method changes anything
-	 * 
-	 * @param key key
-	 * @param newValue new value for {@code key}
-	 * @param parent the owning object
-	 * 
-	 * @return the previous value associated with <tt>otu</tt>, or <tt>null</tt>
-	 *         if there was no mapping for <tt>otu</tt>. (A <tt>null</tt> return
-	 *         can also indicate that the map previously associated
-	 *         <tt>null</tt> with <tt>key</tt>.)
-	 * 
-	 * @throws IllegalArgumentException if {@code otu} does not belong to
-	 *             {@code parent.getOTUSet()}
-	 * @throws IllegalArgumentException if there's already a value {@code
-	 *             .equals} to {@code newT}
-	 */
-	@CheckForNull
-	public abstract V put(OTU key, V value);
-
-	/**
-	 * Associates {@code value} with {@code key} in this map. If the map
 	 * previously contained a mapping for {@code key}, the old value is replaced
 	 * by the specified value.
 	 * <p>
@@ -146,7 +127,7 @@ public abstract class OTUKeyedMap<V extends PersistentObject>
 	 * @throws IllegalArgumentException if {@code parent.getOTUSet() == null}
 	 */
 	@CheckForNull
-	protected V putHelper(final OTU key, final V value) {
+	public V put(final OTU key, final V value) {
 		checkNotNull(key);
 		checkNotNull(value);
 		checkState(getParent() != null, "no parent has been assigned");

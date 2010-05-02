@@ -1,0 +1,135 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<testsuite failures="0" time="13.014" errors="0" skipped="0" tests="68" name="TestSuite">
+  <properties>
+    <property name="java.runtime.name" value="Java(TM) SE Runtime Environment"/>
+    <property name="sun.boot.library.path" value="/System/Library/Frameworks/JavaVM.framework/Versions/1.6.0/Libraries"/>
+    <property name="java.vm.version" value="14.3-b01-101"/>
+    <property name="awt.nativeDoubleBuffering" value="true"/>
+    <property name="gopherProxySet" value="false"/>
+    <property name="mrj.build" value="10M3025"/>
+    <property name="java.vm.vendor" value="Apple Inc."/>
+    <property name="java.vendor.url" value="http://www.apple.com/"/>
+    <property name="path.separator" value=":"/>
+    <property name="java.vm.name" value="Java HotSpot(TM) 64-Bit Server VM"/>
+    <property name="file.encoding.pkg" value="sun.io"/>
+    <property name="user.country" value="US"/>
+    <property name="sun.java.launcher" value="SUN_STANDARD"/>
+    <property name="sun.os.patch.level" value="unknown"/>
+    <property name="java.vm.specification.name" value="Java Virtual Machine Specification"/>
+    <property name="user.dir" value="/Users/samd/Documents/workspacePPod/ppod/cdm"/>
+    <property name="java.runtime.version" value="1.6.0_17-b04-248-10M3025"/>
+    <property name="java.awt.graphicsenv" value="apple.awt.CGraphicsEnvironment"/>
+    <property name="basedir" value="/Users/samd/Documents/workspacePPod/ppod/cdm"/>
+    <property name="java.endorsed.dirs" value="/System/Library/Frameworks/JavaVM.framework/Versions/1.6.0/Home/lib/endorsed"/>
+    <property name="os.arch" value="x86_64"/>
+    <property name="surefire.real.class.path" value="/var/folders/yR/yRBR4Ja5FgefSIXdclthyU+++TI/-Tmp-/surefirebooter1921580138913572059.jar"/>
+    <property name="java.io.tmpdir" value="/var/folders/yR/yRBR4Ja5FgefSIXdclthyU+++TI/-Tmp-/"/>
+    <property name="line.separator" value="
+"/>
+    <property name="java.vm.specification.vendor" value="Sun Microsystems Inc."/>
+    <property name="os.name" value="Mac OS X"/>
+    <property name="sun.jnu.encoding" value="MacRoman"/>
+    <property name="java.library.path" value=".:/Library/Java/Extensions:/System/Library/Java/Extensions:/usr/lib/java"/>
+    <property name="surefire.test.class.path" value="/Users/samd/Documents/workspacePPod/ppod/cdm/target/test-classes:/Users/samd/Documents/workspacePPod/ppod/cdm/target/classes:/Users/samd/.m2/repository/javax/servlet/servlet-api/2.5/servlet-api-2.5.jar:/Users/samd/.m2/repository/org/jboss/resteasy/resteasy-guice/2.0-beta-2/resteasy-guice-2.0-beta-2.jar:/Users/samd/.m2/repository/com/google/code/guice/guice/2.0/guice-2.0.jar:/Users/samd/.m2/repository/org/jboss/resteasy/resteasy-jaxrs/2.0-beta-2/resteasy-jaxrs-2.0-beta-2.jar:/Users/samd/.m2/repository/org/jboss/resteasy/jaxrs-api/2.0-beta-2/jaxrs-api-2.0-beta-2.jar:/Users/samd/.m2/repository/org/slf4j/slf4j-api/1.5.11/slf4j-api-1.5.11.jar:/Users/samd/.m2/repository/org/slf4j/jcl-over-slf4j/1.5.8/jcl-over-slf4j-1.5.8.jar:/Users/samd/.m2/repository/org/scannotation/scannotation/1.0.2/scannotation-1.0.2.jar:/Users/samd/.m2/repository/javassist/javassist/3.11.0.GA/javassist-3.11.0.GA.jar:/Users/samd/.m2/repository/javax/annotation/jsr250-api/1.0/jsr250-api-1.0.jar:/Users/samd/.m2/repository/javax/activation/activation/1.1/activation-1.1.jar:/Users/samd/.m2/repository/commons-httpclient/commons-httpclient/3.1/commons-httpclient-3.1.jar:/Users/samd/.m2/repository/commons-codec/commons-codec/1.2/commons-codec-1.2.jar:/Users/samd/.m2/repository/org/apache/httpcomponents/httpclient/4.0/httpclient-4.0.jar:/Users/samd/.m2/repository/org/apache/httpcomponents/httpcore/4.0.1/httpcore-4.0.1.jar:/Users/samd/.m2/repository/net/jcip/jcip-annotations/1.0/jcip-annotations-1.0.jar:/Users/samd/.m2/repository/com/h2database/h2/1.2.132/h2-1.2.132.jar:/Users/samd/.m2/repository/org/apache/shiro/shiro-core/1.0-incubating-SNAPSHOT/shiro-core-1.0-incubating-SNAPSHOT.jar:/Users/samd/.m2/repository/commons-beanutils/commons-beanutils/1.7.0/commons-beanutils-1.7.0.jar:/Users/samd/.m2/repository/org/jboss/resteasy/resteasy-jaxb-provider/2.0-beta-2/resteasy-jaxb-provider-2.0-beta-2.jar:/Users/samd/.m2/repository/com/sun/xml/bind/jaxb-impl/2.1.12/jaxb-impl-2.1.12.jar:/Users/samd/.m2/repository/javax/xml/bind/jaxb-api/2.1/jaxb-api-2.1.jar:/Users/samd/.m2/repository/javax/xml/stream/stax-api/1.0/stax-api-1.0.jar:/Users/samd/.m2/repository/com/sun/xml/stream/sjsxp/1.0.1/sjsxp-1.0.1.jar:/Users/samd/.m2/repository/org/hibernate/hibernate-core/3.5.1-Final/hibernate-core-3.5.1-Final.jar:/Users/samd/.m2/repository/antlr/antlr/2.7.6/antlr-2.7.6.jar:/Users/samd/.m2/repository/commons-collections/commons-collections/3.1/commons-collections-3.1.jar:/Users/samd/.m2/repository/dom4j/dom4j/1.6.1/dom4j-1.6.1.jar:/Users/samd/.m2/repository/xml-apis/xml-apis/1.0.b2/xml-apis-1.0.b2.jar:/Users/samd/.m2/repository/javax/transaction/jta/1.1/jta-1.1.jar:/Users/samd/.m2/repository/org/hibernate/hibernate-annotations/3.5.1-Final/hibernate-annotations-3.5.1-Final.jar:/Users/samd/.m2/repository/org/hibernate/hibernate-commons-annotations/3.2.0.Final/hibernate-commons-annotations-3.2.0.Final.jar:/Users/samd/.m2/repository/org/hibernate/javax/persistence/hibernate-jpa-2.0-api/1.0.0.Final/hibernate-jpa-2.0-api-1.0.0.Final.jar:/Users/samd/.m2/repository/org/hibernate/hibernate-c3p0/3.5.1-Final/hibernate-c3p0-3.5.1-Final.jar:/Users/samd/.m2/repository/c3p0/c3p0/0.9.1/c3p0-0.9.1.jar:/Users/samd/.m2/repository/org/slf4j/slf4j-log4j12/1.5.11/slf4j-log4j12-1.5.11.jar:/Users/samd/.m2/repository/log4j/log4j/1.2.14/log4j-1.2.14.jar:/Users/samd/.m2/repository/com/google/inject/extensions/guice-assisted-inject/2.0/guice-assisted-inject-2.0.jar:/Users/samd/.m2/repository/com/google/inject/guice/2.0/guice-2.0.jar:/Users/samd/.m2/repository/aopalliance/aopalliance/1.0/aopalliance-1.0.jar:/Users/samd/.m2/repository/com/google/collections/google-collections/1.0/google-collections-1.0.jar:/Users/samd/.m2/repository/gnu-regexp/gnu-regexp/1.1.4/gnu-regexp-1.1.4.jar:/Users/samd/.m2/repository/org/dbunit/dbunit/2.4.5/dbunit-2.4.5.jar:/Users/samd/.m2/repository/junit/junit/4.1/junit-4.1.jar:/Users/samd/.m2/repository/org/testng/testng/5.11/testng-5.11-jdk15.jar:/Users/samd/.m2/repository/mysql/mysql-connector-java/5.1.10/mysql-connector-java-5.1.10.jar:/Users/samd/.m2/repository/jaxen/jaxen/1.1.1/jaxen-1.1.1.jar:/Users/samd/.m2/repository/jdom/jdom/1.0/jdom-1.0.jar:/Users/samd/.m2/repository/xerces/xercesImpl/2.6.2/xercesImpl-2.6.2.jar:/Users/samd/.m2/repository/xom/xom/1.0/xom-1.0.jar:/Users/samd/.m2/repository/xerces/xmlParserAPIs/2.6.2/xmlParserAPIs-2.6.2.jar:/Users/samd/.m2/repository/xalan/xalan/2.6.0/xalan-2.6.0.jar:/Users/samd/.m2/repository/com/ibm/icu/icu4j/2.6.1/icu4j-2.6.1.jar:/Users/samd/.m2/repository/com/google/code/findbugs/findbugs/1.3.9/findbugs-1.3.9.jar:/Users/samd/.m2/repository/com/google/code/findbugs/bcel/1.3.9/bcel-1.3.9.jar:/Users/samd/.m2/repository/com/google/code/findbugs/jsr305/1.3.9/jsr305-1.3.9.jar:/Users/samd/.m2/repository/com/google/code/findbugs/jFormatString/1.3.9/jFormatString-1.3.9.jar:/Users/samd/.m2/repository/com/google/code/findbugs/annotations/1.3.9/annotations-1.3.9.jar:/Users/samd/.m2/repository/asm/asm/3.1/asm-3.1.jar:/Users/samd/.m2/repository/asm/asm-analysis/3.1/asm-analysis-3.1.jar:/Users/samd/.m2/repository/asm/asm-tree/3.1/asm-tree-3.1.jar:/Users/samd/.m2/repository/asm/asm-commons/3.1/asm-commons-3.1.jar:/Users/samd/.m2/repository/asm/asm-util/3.1/asm-util-3.1.jar:/Users/samd/.m2/repository/asm/asm-xml/3.1/asm-xml-3.1.jar:/Users/samd/.m2/repository/commons-lang/commons-lang/2.4/commons-lang-2.4.jar:/Users/samd/.m2/repository/org/mortbay/jetty/jetty/6.1.22/jetty-6.1.22.jar:/Users/samd/.m2/repository/org/mortbay/jetty/jetty-util/6.1.22/jetty-util-6.1.22.jar:/Users/samd/.m2/repository/org/mortbay/jetty/servlet-api/2.5-20081211/servlet-api-2.5-20081211.jar:"/>
+    <property name="java.specification.name" value="Java Platform API Specification"/>
+    <property name="java.class.version" value="50.0"/>
+    <property name="sun.management.compiler" value="HotSpot 64-Bit Server Compiler"/>
+    <property name="os.version" value="10.6.3"/>
+    <property name="http.nonProxyHosts" value="local|*.local|169.254/16|*.169.254/16"/>
+    <property name="user.home" value="/Users/samd"/>
+    <property name="user.timezone" value="America/New_York"/>
+    <property name="java.awt.printerjob" value="apple.awt.CPrinterJob"/>
+    <property name="java.specification.version" value="1.6"/>
+    <property name="file.encoding" value="MacRoman"/>
+    <property name="user.name" value="samd"/>
+    <property name="java.class.path" value="/Users/samd/Documents/workspacePPod/ppod/cdm/target/test-classes:/Users/samd/Documents/workspacePPod/ppod/cdm/target/classes:/Users/samd/.m2/repository/javax/servlet/servlet-api/2.5/servlet-api-2.5.jar:/Users/samd/.m2/repository/org/jboss/resteasy/resteasy-guice/2.0-beta-2/resteasy-guice-2.0-beta-2.jar:/Users/samd/.m2/repository/com/google/code/guice/guice/2.0/guice-2.0.jar:/Users/samd/.m2/repository/org/jboss/resteasy/resteasy-jaxrs/2.0-beta-2/resteasy-jaxrs-2.0-beta-2.jar:/Users/samd/.m2/repository/org/jboss/resteasy/jaxrs-api/2.0-beta-2/jaxrs-api-2.0-beta-2.jar:/Users/samd/.m2/repository/org/slf4j/slf4j-api/1.5.11/slf4j-api-1.5.11.jar:/Users/samd/.m2/repository/org/slf4j/jcl-over-slf4j/1.5.8/jcl-over-slf4j-1.5.8.jar:/Users/samd/.m2/repository/org/scannotation/scannotation/1.0.2/scannotation-1.0.2.jar:/Users/samd/.m2/repository/javassist/javassist/3.11.0.GA/javassist-3.11.0.GA.jar:/Users/samd/.m2/repository/javax/annotation/jsr250-api/1.0/jsr250-api-1.0.jar:/Users/samd/.m2/repository/javax/activation/activation/1.1/activation-1.1.jar:/Users/samd/.m2/repository/commons-httpclient/commons-httpclient/3.1/commons-httpclient-3.1.jar:/Users/samd/.m2/repository/commons-codec/commons-codec/1.2/commons-codec-1.2.jar:/Users/samd/.m2/repository/org/apache/httpcomponents/httpclient/4.0/httpclient-4.0.jar:/Users/samd/.m2/repository/org/apache/httpcomponents/httpcore/4.0.1/httpcore-4.0.1.jar:/Users/samd/.m2/repository/net/jcip/jcip-annotations/1.0/jcip-annotations-1.0.jar:/Users/samd/.m2/repository/com/h2database/h2/1.2.132/h2-1.2.132.jar:/Users/samd/.m2/repository/org/apache/shiro/shiro-core/1.0-incubating-SNAPSHOT/shiro-core-1.0-incubating-SNAPSHOT.jar:/Users/samd/.m2/repository/commons-beanutils/commons-beanutils/1.7.0/commons-beanutils-1.7.0.jar:/Users/samd/.m2/repository/org/jboss/resteasy/resteasy-jaxb-provider/2.0-beta-2/resteasy-jaxb-provider-2.0-beta-2.jar:/Users/samd/.m2/repository/com/sun/xml/bind/jaxb-impl/2.1.12/jaxb-impl-2.1.12.jar:/Users/samd/.m2/repository/javax/xml/bind/jaxb-api/2.1/jaxb-api-2.1.jar:/Users/samd/.m2/repository/javax/xml/stream/stax-api/1.0/stax-api-1.0.jar:/Users/samd/.m2/repository/com/sun/xml/stream/sjsxp/1.0.1/sjsxp-1.0.1.jar:/Users/samd/.m2/repository/org/hibernate/hibernate-core/3.5.1-Final/hibernate-core-3.5.1-Final.jar:/Users/samd/.m2/repository/antlr/antlr/2.7.6/antlr-2.7.6.jar:/Users/samd/.m2/repository/commons-collections/commons-collections/3.1/commons-collections-3.1.jar:/Users/samd/.m2/repository/dom4j/dom4j/1.6.1/dom4j-1.6.1.jar:/Users/samd/.m2/repository/xml-apis/xml-apis/1.0.b2/xml-apis-1.0.b2.jar:/Users/samd/.m2/repository/javax/transaction/jta/1.1/jta-1.1.jar:/Users/samd/.m2/repository/org/hibernate/hibernate-annotations/3.5.1-Final/hibernate-annotations-3.5.1-Final.jar:/Users/samd/.m2/repository/org/hibernate/hibernate-commons-annotations/3.2.0.Final/hibernate-commons-annotations-3.2.0.Final.jar:/Users/samd/.m2/repository/org/hibernate/javax/persistence/hibernate-jpa-2.0-api/1.0.0.Final/hibernate-jpa-2.0-api-1.0.0.Final.jar:/Users/samd/.m2/repository/org/hibernate/hibernate-c3p0/3.5.1-Final/hibernate-c3p0-3.5.1-Final.jar:/Users/samd/.m2/repository/c3p0/c3p0/0.9.1/c3p0-0.9.1.jar:/Users/samd/.m2/repository/org/slf4j/slf4j-log4j12/1.5.11/slf4j-log4j12-1.5.11.jar:/Users/samd/.m2/repository/log4j/log4j/1.2.14/log4j-1.2.14.jar:/Users/samd/.m2/repository/com/google/inject/extensions/guice-assisted-inject/2.0/guice-assisted-inject-2.0.jar:/Users/samd/.m2/repository/com/google/inject/guice/2.0/guice-2.0.jar:/Users/samd/.m2/repository/aopalliance/aopalliance/1.0/aopalliance-1.0.jar:/Users/samd/.m2/repository/com/google/collections/google-collections/1.0/google-collections-1.0.jar:/Users/samd/.m2/repository/gnu-regexp/gnu-regexp/1.1.4/gnu-regexp-1.1.4.jar:/Users/samd/.m2/repository/org/dbunit/dbunit/2.4.5/dbunit-2.4.5.jar:/Users/samd/.m2/repository/junit/junit/4.1/junit-4.1.jar:/Users/samd/.m2/repository/org/testng/testng/5.11/testng-5.11-jdk15.jar:/Users/samd/.m2/repository/mysql/mysql-connector-java/5.1.10/mysql-connector-java-5.1.10.jar:/Users/samd/.m2/repository/jaxen/jaxen/1.1.1/jaxen-1.1.1.jar:/Users/samd/.m2/repository/jdom/jdom/1.0/jdom-1.0.jar:/Users/samd/.m2/repository/xerces/xercesImpl/2.6.2/xercesImpl-2.6.2.jar:/Users/samd/.m2/repository/xom/xom/1.0/xom-1.0.jar:/Users/samd/.m2/repository/xerces/xmlParserAPIs/2.6.2/xmlParserAPIs-2.6.2.jar:/Users/samd/.m2/repository/xalan/xalan/2.6.0/xalan-2.6.0.jar:/Users/samd/.m2/repository/com/ibm/icu/icu4j/2.6.1/icu4j-2.6.1.jar:/Users/samd/.m2/repository/com/google/code/findbugs/findbugs/1.3.9/findbugs-1.3.9.jar:/Users/samd/.m2/repository/com/google/code/findbugs/bcel/1.3.9/bcel-1.3.9.jar:/Users/samd/.m2/repository/com/google/code/findbugs/jsr305/1.3.9/jsr305-1.3.9.jar:/Users/samd/.m2/repository/com/google/code/findbugs/jFormatString/1.3.9/jFormatString-1.3.9.jar:/Users/samd/.m2/repository/com/google/code/findbugs/annotations/1.3.9/annotations-1.3.9.jar:/Users/samd/.m2/repository/asm/asm/3.1/asm-3.1.jar:/Users/samd/.m2/repository/asm/asm-analysis/3.1/asm-analysis-3.1.jar:/Users/samd/.m2/repository/asm/asm-tree/3.1/asm-tree-3.1.jar:/Users/samd/.m2/repository/asm/asm-commons/3.1/asm-commons-3.1.jar:/Users/samd/.m2/repository/asm/asm-util/3.1/asm-util-3.1.jar:/Users/samd/.m2/repository/asm/asm-xml/3.1/asm-xml-3.1.jar:/Users/samd/.m2/repository/commons-lang/commons-lang/2.4/commons-lang-2.4.jar:/Users/samd/.m2/repository/org/mortbay/jetty/jetty/6.1.22/jetty-6.1.22.jar:/Users/samd/.m2/repository/org/mortbay/jetty/jetty-util/6.1.22/jetty-util-6.1.22.jar:/Users/samd/.m2/repository/org/mortbay/jetty/servlet-api/2.5-20081211/servlet-api-2.5-20081211.jar:"/>
+    <property name="java.vm.specification.version" value="1.0"/>
+    <property name="sun.arch.data.model" value="64"/>
+    <property name="java.home" value="/System/Library/Frameworks/JavaVM.framework/Versions/1.6.0/Home"/>
+    <property name="java.specification.vendor" value="Sun Microsystems Inc."/>
+    <property name="user.language" value="en"/>
+    <property name="awt.toolkit" value="apple.awt.CToolkit"/>
+    <property name="java.vm.info" value="mixed mode"/>
+    <property name="java.version" value="1.6.0_17"/>
+    <property name="java.ext.dirs" value="/Library/Java/Extensions:/System/Library/Java/Extensions:/System/Library/Frameworks/JavaVM.framework/Versions/1.6.0/Home/lib/ext"/>
+    <property name="sun.boot.class.path" value="/System/Library/Frameworks/JavaVM.framework/Versions/1.6.0/Classes/jsfd.jar:/System/Library/Frameworks/JavaVM.framework/Versions/1.6.0/Classes/classes.jar:/System/Library/Frameworks/JavaVM.framework/Frameworks/JavaRuntimeSupport.framework/Resources/Java/JavaRuntimeSupport.jar:/System/Library/Frameworks/JavaVM.framework/Versions/1.6.0/Classes/ui.jar:/System/Library/Frameworks/JavaVM.framework/Versions/1.6.0/Classes/laf.jar:/System/Library/Frameworks/JavaVM.framework/Versions/1.6.0/Classes/sunrsasign.jar:/System/Library/Frameworks/JavaVM.framework/Versions/1.6.0/Classes/jsse.jar:/System/Library/Frameworks/JavaVM.framework/Versions/1.6.0/Classes/jce.jar:/System/Library/Frameworks/JavaVM.framework/Versions/1.6.0/Classes/charsets.jar"/>
+    <property name="java.vendor" value="Apple Inc."/>
+    <property name="localRepository" value="/Users/samd/.m2/repository"/>
+    <property name="file.separator" value="/"/>
+    <property name="java.vendor.url.bug" value="http://bugreport.apple.com/"/>
+    <property name="sun.cpu.endian" value="little"/>
+    <property name="sun.io.unicode.encoding" value="UnicodeLittle"/>
+    <property name="mrj.version" value="1060.1.6.0_17-248"/>
+    <property name="socksNonProxyHosts" value="local|*.local|169.254/16|*.169.254/16"/>
+    <property name="ftp.nonProxyHosts" value="local|*.local|169.254/16|*.169.254/16"/>
+    <property name="sun.cpu.isalist" value=""/>
+  </properties>
+  <testcase time="0.019" classname="edu.upenn.cis.ppod.FactorySetup" name="succeed"/>
+  <testcase time="0.038" classname="edu.upenn.cis.ppod.model.MolecularSequenceTest" name="setInNeedOfNewPPodVersion"/>
+  <testcase time="0.001" classname="edu.upenn.cis.ppod.model.MolecularSequenceTest" name="setName"/>
+  <testcase time="0.001" classname="edu.upenn.cis.ppod.model.MolecularSequenceTest" name="setSequence"/>
+  <testcase time="0" classname="edu.upenn.cis.ppod.model.MolecularSequenceTest" name="setSequenceWithAnIllegalCharacter"/>
+  <testcase time="0" classname="edu.upenn.cis.ppod.model.OTUsToMolecularSequencesTest" name="putHelperTest"/>
+  <testcase time="0" classname="edu.upenn.cis.ppod.model.OTUsToMolecularSequencesTest" name="putHelperTestReplaceASequence"/>
+  <testcase time="0" classname="edu.upenn.cis.ppod.model.CharacterStateCellTest" name="afterUnmarshal"/>
+  <testcase time="0.002" classname="edu.upenn.cis.ppod.model.CharacterStateCellTest" name="beforeMarshal"/>
+  <testcase time="0" classname="edu.upenn.cis.ppod.model.CharacterStateCellTest" name="beforeMarshalBeforeTypeHasBeenSet"/>
+  <testcase time="0" classname="edu.upenn.cis.ppod.model.CharacterStateCellTest" name="getStatesWhenCellHasMultipleStates"/>
+  <testcase time="0" classname="edu.upenn.cis.ppod.model.CharacterStateCellTest" name="getStatesWhenCellHasOneState"/>
+  <testcase time="0" classname="edu.upenn.cis.ppod.model.CharacterStateCellTest" name="setStatesForACellThatDoesNotBelongToARow"/>
+  <testcase time="0" classname="edu.upenn.cis.ppod.model.CharacterStateCellTest" name="setTypeAndStatesFromPolymorhpicToInapplicable"/>
+  <testcase time="0.001" classname="edu.upenn.cis.ppod.model.CharacterStateCellTest" name="setTypeAndStatesFromSingleToInapplicable"/>
+  <testcase time="0" classname="edu.upenn.cis.ppod.model.CharacterStateCellTest" name="setTypeAndStatesInapplicable"/>
+  <testcase time="0" classname="edu.upenn.cis.ppod.model.CharacterStateCellTest" name="setTypeAndStatesPolymorphic"/>
+  <testcase time="0.007" classname="edu.upenn.cis.ppod.model.CharacterStateCellTest" name="setTypeAndStatesPolymorphicTooFewStates"/>
+  <testcase time="0" classname="edu.upenn.cis.ppod.model.CharacterStateCellTest" name="setTypeAndStatesSingle"/>
+  <testcase time="0.001" classname="edu.upenn.cis.ppod.model.CharacterStateCellTest" name="setTypeAndStatesUnassigned"/>
+  <testcase time="0.001" classname="edu.upenn.cis.ppod.model.CharacterStateCellTest" name="setTypeAndStatesUncertainTooFewStates"/>
+  <testcase time="0" classname="edu.upenn.cis.ppod.model.CharacterStateCellTest" name="setUncertainStates"/>
+  <testcase time="0" classname="edu.upenn.cis.ppod.model.CharacterStateMatrixTest" name="beforeMarshal"/>
+  <testcase time="0.012" classname="edu.upenn.cis.ppod.model.CharacterStateMatrixTest" name="moveCharacter"/>
+  <testcase time="0" classname="edu.upenn.cis.ppod.model.CharacterStateMatrixTest" name="replaceCharacters"/>
+  <testcase time="0" classname="edu.upenn.cis.ppod.model.CharacterStateMatrixTest" name="replaceRow"/>
+  <testcase time="0.001" classname="edu.upenn.cis.ppod.model.CharacterStateMatrixTest" name="setCharacters"/>
+  <testcase time="0" classname="edu.upenn.cis.ppod.model.CharacterStateMatrixTest" name="setCharactersW2EqualsCharacters"/>
+  <testcase time="0" classname="edu.upenn.cis.ppod.model.CharacterStateMatrixTest" name="setCharactersWithEqualsCharacters"/>
+  <testcase time="0" classname="edu.upenn.cis.ppod.model.CharacterStateMatrixTest" name="setColumnPPodVersionInfos"/>
+  <testcase time="0" classname="edu.upenn.cis.ppod.model.CharacterStateMatrixTest" name="setDescription"/>
+  <testcase time="0.004" classname="edu.upenn.cis.ppod.model.CharacterStateMatrixTest" name="setOTUsWReorderedOTUs"/>
+  <testcase time="0.001" classname="edu.upenn.cis.ppod.model.CharacterStateMatrixTest" name="setOTUsWSameOTUs"/>
+  <testcase time="0" classname="edu.upenn.cis.ppod.model.CharacterStateMatrixTest" name="setOTUsWithLessOTUs"/>
+  <testcase time="0" classname="edu.upenn.cis.ppod.model.CharacterStateMatrixTest" name="setWithSameRow"/>
+  <testcase time="0" classname="edu.upenn.cis.ppod.model.CharacterStateRowTest" name="addCellToMatrixThatHasNoCharacters"/>
+  <testcase time="0.001" classname="edu.upenn.cis.ppod.model.CharacterStateRowTest" name="addCellToMatrixWOneCharacter"/>
+  <testcase time="0" classname="edu.upenn.cis.ppod.model.CharacterStateRowTest" name="addCellToMatrixWTooFewCharacters"/>
+  <testcase time="0" classname="edu.upenn.cis.ppod.model.CharacterStateRowTest" name="addCellToRowThatsNotInAMatrix"/>
+  <testcase time="0.002" classname="edu.upenn.cis.ppod.model.DNAStateTest" name="of"/>
+  <testcase time="0" classname="edu.upenn.cis.ppod.model.DNAStateTest" name="ofIllegalArg"/>
+  <testcase time="0.006" classname="edu.upenn.cis.ppod.model.MolecularStateMatrixTest" name="setCharacters"/>
+  <testcase time="0" classname="edu.upenn.cis.ppod.model.OTUSetTest" name="addOTU"/>
+  <testcase time="0" classname="edu.upenn.cis.ppod.model.OTUSetTest" name="addOTUWAlreadyContainedOTU"/>
+  <testcase time="0.001" classname="edu.upenn.cis.ppod.model.OTUSetTest" name="addOTUWDuplicateLabel"/>
+  <testcase time="0.001" classname="edu.upenn.cis.ppod.model.OTUSetTest" name="clearOTUs"/>
+  <testcase time="0.002" classname="edu.upenn.cis.ppod.model.OTUSetTest" name="removeMatrix"/>
+  <testcase time="0" classname="edu.upenn.cis.ppod.model.OTUSetTest" name="removeOTU"/>
+  <testcase time="0.001" classname="edu.upenn.cis.ppod.model.OTUSetTest" name="removeTreeSet"/>
+  <testcase time="0" classname="edu.upenn.cis.ppod.model.OTUSetTest" name="resetWhenNotInNeedOfNewPPodVersionInfo"/>
+  <testcase time="0" classname="edu.upenn.cis.ppod.model.OTUSetTest" name="setDNASequenceSets"/>
+  <testcase time="0" classname="edu.upenn.cis.ppod.model.OTUSetTest" name="setDescription"/>
+  <testcase time="0" classname="edu.upenn.cis.ppod.model.OTUSetTest" name="setTreeSets"/>
+  <testcase time="0" classname="edu.upenn.cis.ppod.model.PPodEntityTest" name="addAttachment"/>
+  <testcase time="0" classname="edu.upenn.cis.ppod.model.PPodEntityTest" name="beforeMarahal"/>
+  <testcase time="0.001" classname="edu.upenn.cis.ppod.model.PPodEntityTest" name="getMarshalled"/>
+  <testcase time="0" classname="edu.upenn.cis.ppod.model.PPodEntityTest" name="removeAttachment"/>
+  <testcase time="0.763" classname="edu.upenn.cis.ppod.saveorupdate.SaveOrUpdateCharacterStateMatrixTest" name="deleteCharacter"/>
+  <testcase time="0" classname="edu.upenn.cis.ppod.saveorupdate.SaveOrUpdateCharacterStateMatrixTest" name="deleteCharacter"/>
+  <testcase time="0.702" classname="edu.upenn.cis.ppod.saveorupdate.SaveOrUpdateCharacterStateMatrixTest" name="moveCharacters"/>
+  <testcase time="0" classname="edu.upenn.cis.ppod.saveorupdate.SaveOrUpdateCharacterStateMatrixTest" name="moveCharacters"/>
+  <testcase time="0.39" classname="edu.upenn.cis.ppod.saveorupdate.SaveOrUpdateCharacterStateMatrixTest" name="moveRows"/>
+  <testcase time="1.107" classname="edu.upenn.cis.ppod.saveorupdate.SaveOrUpdateCharacterStateMatrixTest" name="moveRows"/>
+  <testcase time="0.318" classname="edu.upenn.cis.ppod.saveorupdate.SaveOrUpdateCharacterStateMatrixTest" name="save"/>
+  <testcase time="0.749" classname="edu.upenn.cis.ppod.saveorupdate.SaveOrUpdateCharacterStateMatrixTest" name="save"/>
+  <testcase time="0" classname="edu.upenn.cis.ppod.model.DNASequenceTest" name="testIsLegal"/>
+  <testcase time="0" classname="edu.upenn.cis.ppod.model.DNASequenceTest" name="testIsLegalShouldReturnFalse"/>
+  <testcase time="0.022" classname="edu.upenn.cis.ppod.saveorupdate.MergeAttachmentTest" name="mergeOnBlankTarget"/>
+</testsuite>

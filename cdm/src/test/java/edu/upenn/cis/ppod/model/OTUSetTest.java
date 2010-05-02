@@ -66,7 +66,7 @@ public class OTUSetTest {
 	private Provider<PPodVersionInfo> pPodVersionInfoProvider;
 
 	@Inject
-	private Provider<CharacterStateMatrix> matrixProvider;
+	private Provider<Matrix> matrixProvider;
 
 	@Inject
 	private Provider<DNASequenceSet> dnaSequenceSetProvider;
@@ -133,29 +133,29 @@ public class OTUSetTest {
 	}
 
 	public void removeMatrix() {
-		final CharacterStateMatrix matrix0 = matrixProvider.get();
-		final CharacterStateMatrix matrix1 = matrixProvider.get();
-		final CharacterStateMatrix matrix2 = matrixProvider.get();
+		final Matrix matrix0 = matrixProvider.get();
+		final Matrix matrix1 = matrixProvider.get();
+		final Matrix matrix2 = matrixProvider.get();
 
-		final Set<CharacterStateMatrix> otuSetMatrices = newHashSet();
+		final Set<Matrix> otuSetMatrices = newHashSet();
 		otuSetMatrices.add(matrix0);
 		otuSetMatrices.add(matrix1);
 		otuSetMatrices.add(matrix2);
-		otuSet.setMatrices(otuSetMatrices);
+		otuSet.setCategoricalMatrices(otuSetMatrices);
 		otuSet.setPPodVersionInfo(pPodVersionInfoProvider.get());
 
 		study.setPPodVersionInfo(pPodVersionInfoProvider.get());
 
-		final ImmutableSet<CharacterStateMatrix> matricesMinusMatrix1 = ImmutableSet
+		final ImmutableSet<Matrix> matricesMinusMatrix1 = ImmutableSet
 				.of(matrix0, matrix2);
-		otuSet.setMatrices(matricesMinusMatrix1);
+		otuSet.setCategoricalMatrices(matricesMinusMatrix1);
 
 		assertTrue(study.isInNeedOfNewPPodVersionInfo());
 		assertTrue(otuSet.isInNeedOfNewPPodVersionInfo());
 
 		// assertNull(study.getPPodVersionInfo());
 		// assertNull(otuSet.getPPodVersionInfo());
-		assertEquals((Object) newHashSet(otuSet.getMatricesIterator()),
+		assertEquals((Object) newHashSet(otuSet.categoricalMatricesIterator()),
 					(Object) newHashSet(matricesMinusMatrix1));
 	}
 
@@ -240,7 +240,7 @@ public class OTUSetTest {
 
 		assertEquals(otuSet.getDNASequenceSetsSize(), dnaSequenceSets.size());
 
-		assertEquals((Object) newHashSet(otuSet.getDNASequenceSetsIterator()),
+		assertEquals((Object) newHashSet(otuSet.dnaSequenceSetsIterator()),
 				(Object) dnaSequenceSets);
 
 		otuSet.unsetInNeedOfNewPPodVersionInfo();

@@ -68,7 +68,7 @@ public class PPodVersionInfo extends PersistentObject {
 	@XmlAttribute
 	@Nullable
 	public Date getCreated() {
-		if (created == null) { 
+		if (created == null) {
 			return null;
 		}
 		return (Date) created.clone();

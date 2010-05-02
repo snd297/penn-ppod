@@ -33,11 +33,10 @@ import edu.upenn.cis.ppod.dao.IAttachmentTypeDAO;
 import edu.upenn.cis.ppod.dao.IDAO;
 import edu.upenn.cis.ppod.dao.IDNACharacterDAO;
 import edu.upenn.cis.ppod.dao.IStudyDAO;
-import edu.upenn.cis.ppod.dao.hibernate.DAOHibernateModule;
-import edu.upenn.cis.ppod.model.CharacterStateMatrix;
-import edu.upenn.cis.ppod.model.DNACharacter;
+import edu.upenn.cis.ppod.model.CategoricalMatrix;
 import edu.upenn.cis.ppod.model.DNASequence;
 import edu.upenn.cis.ppod.model.DNASequenceSet;
+import edu.upenn.cis.ppod.model.Matrix;
 import edu.upenn.cis.ppod.model.OTUSet;
 import edu.upenn.cis.ppod.model.Study;
 import edu.upenn.cis.ppod.model.TreeSet;
@@ -46,7 +45,7 @@ import edu.upenn.cis.ppod.modelinterfaces.IWithPPodId;
 import edu.upenn.cis.ppod.services.ppodentity.CharacterStateMatrixInfo;
 import edu.upenn.cis.ppod.services.ppodentity.OTUSetInfo;
 import edu.upenn.cis.ppod.services.ppodentity.StudyInfo;
-import edu.upenn.cis.ppod.util.ICharacterStateMatrixFactory;
+import edu.upenn.cis.ppod.util.ICategoricalMatrixFactory;
 
 /**
  * Save a new study or update an existing one.
@@ -61,12 +60,12 @@ final class SaveOrUpdateStudy implements ISaveOrUpdateStudy {
 
 	private final Provider<Study> studyProvider;
 	private final Provider<OTUSet> otuSetProvider;
-	private final ICharacterStateMatrixFactory matrixFactory;
+	private final Provider<CategoricalMatrix> categoricalMatrixProvider;
 	private final Provider<DNASequenceSet> dnaSequenceSetProvider;
 	private final Provider<TreeSet> treeSetProvider;
 
 	private final IMergeOTUSets mergeOTUSets;
-	private final ISaveOrUpdateMatrix mergeMatrices;
+	private final ISaveOrUpdateCategoricalMatrix mergeMatrices;
 	private final IMergeTreeSets mergeTreeSets;
 	private final INewPPodVersionInfo newPPodVersionInfo;
 	private final IMergeMolecularSequenceSets<DNASequenceSet, DNASequence> mergeDNASequenceSets;
@@ -79,12 +78,12 @@ final class SaveOrUpdateStudy implements ISaveOrUpdateStudy {
 	SaveOrUpdateStudy(
 			final Provider<Study> studyProvider,
 			final Provider<OTUSet> otuSetProvider,
-			final ICharacterStateMatrixFactory matrixFactory,
+			final Provider<CategoricalMatrix> categoricalMatrixProvider,
 			final Provider<DNASequenceSet> dnaSequenceSetProvider,
 			final Provider<TreeSet> treeSetProvider,
 			final IMergeOTUSets.IFactory saveOrUpdateOTUSetFactory,
 			final IMergeTreeSets.IFactory mergeTreeSetsFactory,
-			final ISaveOrUpdateMatrix.IFactory saveOrUpdateMatrixFactory,
+			final ISaveOrUpdateCategoricalMatrix.IFactory saveOrUpdateMatrixFactory,
 			final IMergeMolecularSequenceSets.IFactory<DNASequenceSet, DNASequence> mergeDNASequenceSetsFactory,
 			final IMergeAttachments.IFactory mergeAttachmentFactory,
 			final Provider<OTUSetInfo> otuSetInfoProvider,
@@ -101,7 +100,7 @@ final class SaveOrUpdateStudy implements ISaveOrUpdateStudy {
 		this.dnaCharacterDAO = dnaCharacterDAO;
 		this.studyProvider = studyProvider;
 		this.otuSetProvider = otuSetProvider;
-		this.matrixFactory = matrixFactory;
+		this.categoricalMatrixProvider = categoricalMatrixProvider;
 		this.dnaSequenceSetProvider = dnaSequenceSetProvider;
 		this.treeSetProvider = treeSetProvider;
 		this.newPPodVersionInfo = newPPodVersionInfo;
@@ -145,17 +144,18 @@ final class SaveOrUpdateStudy implements ISaveOrUpdateStudy {
 			}
 		}
 
-		final List<DNACharacter> dnaCharacters = dnaCharacterDAO.findAll();
-		if (dnaCharacters.size() == 0) {
-			throw new IllegalStateException(
-					"there are no DNACharacter's in the database: has it been populated with a DNA_STATE character and DNA_STATE states?");
-		} else if (dnaCharacters.size() > 1) {
-			throw new AssertionError(
-					"there are "
-							+ dnaCharacters.size()
-							+ " DNACharacter's in the database, it should not be possible for there to be more than 1");
-		}
-		final DNACharacter dbDNACharacter = dnaCharacters.get(0);
+// final List<DNACharacter> dnaCharacters = dnaCharacterDAO.findAll();
+// if (dnaCharacters.size() == 0) {
+// throw new IllegalStateException(
+// "there are no DNACharacter's in the database: has it been populated with a DNA_STATE character and DNA_STATE states?");
+// } else if (dnaCharacters.size() > 1) {
+// throw new AssertionError(
+// "there are "
+// + dnaCharacters.size()
+// +
+		// " DNACharacter's in the database, it should not be possible for there to be more than 1");
+// }
+// final DNACharacter dbDNACharacter = dnaCharacters.get(0);
 
 		// Save or update incoming otu sets
 		for (final Iterator<OTUSet> incomingOTUSetsItr = incomingStudy
@@ -185,17 +185,19 @@ final class SaveOrUpdateStudy implements ISaveOrUpdateStudy {
 
 			otuSetInfo.setPPodId(dbOTUSet.getPPodId());
 
-			final Set<CharacterStateMatrix> newDbMatrices = newHashSet();
-			for (final Iterator<CharacterStateMatrix> incomingMatrixItr = incomingOTUSet
-					.getMatricesIterator(); incomingMatrixItr.hasNext();) {
-				final CharacterStateMatrix incomingMatrix = incomingMatrixItr
+			final Set<CategoricalMatrix> newDbMatrices = newHashSet();
+			for (final Iterator<CategoricalMatrix> incomingMatrixItr = incomingOTUSet
+					.categoricalMatricesIterator(); incomingMatrixItr
+					.hasNext();) {
+				final CategoricalMatrix incomingMatrix = incomingMatrixItr
 						.next();
-				CharacterStateMatrix dbMatrix;
-				if (null == (dbMatrix = findIf(dbOTUSet.getMatricesIterator(),
+				CategoricalMatrix dbMatrix;
+				if (null == (dbMatrix = findIf(dbOTUSet
+						.categoricalMatricesIterator(),
 						compose(
 								equalTo(incomingMatrix.getPPodId()),
 								IWithPPodId.getPPodId)))) {
-					dbMatrix = matrixFactory.create(incomingMatrix);
+					dbMatrix = categoricalMatrixProvider.get();
 					dbMatrix.setPPodVersionInfo(newPPodVersionInfo
 							.getNewPPodVersionInfo());
 					dbMatrix.setColumnPPodVersionInfos(newPPodVersionInfo
@@ -203,20 +205,19 @@ final class SaveOrUpdateStudy implements ISaveOrUpdateStudy {
 					dbMatrix.setPPodId();
 				}
 				newDbMatrices.add(dbMatrix);
-				dbOTUSet.setMatrices(newDbMatrices);
+				dbOTUSet.setCategoricalMatrices(newDbMatrices);
 				final CharacterStateMatrixInfo dbMatrixInfo = mergeMatrices
-						.saveOrUpdate(dbMatrix,
-								incomingMatrix, dbDNACharacter);
+						.saveOrUpdate(dbMatrix, incomingMatrix);
 				otuSetInfo.getMatrixInfos().add(dbMatrixInfo);
 			}
 
 			// Let's delete sequences missing from the incoming otu set
 			for (final Iterator<DNASequenceSet> dbDNASequenceSetItr = dbOTUSet
-					.getDNASequenceSetsIterator(); dbDNASequenceSetItr
+					.dnaSequenceSetsIterator(); dbDNASequenceSetItr
 					.hasNext();) {
 				final DNASequenceSet dbDNASequenceSet = dbDNASequenceSetItr
 						.next();
-				if (null == findIf(incomingOTUSet.getDNASequenceSetsIterator(),
+				if (null == findIf(incomingOTUSet.dnaSequenceSetsIterator(),
 						compose(equalTo(dbDNASequenceSet.getPPodId()),
 								IWithPPodId.getPPodId))) {
 					dbDNASequenceSet.clear();
@@ -226,13 +227,13 @@ final class SaveOrUpdateStudy implements ISaveOrUpdateStudy {
 
 			final Set<DNASequenceSet> newDbDNASequenceSets = newHashSet();
 			for (final Iterator<DNASequenceSet> incomingDNASequenceSetItr = incomingOTUSet
-					.getDNASequenceSetsIterator(); incomingDNASequenceSetItr
+					.dnaSequenceSetsIterator(); incomingDNASequenceSetItr
 					.hasNext();) {
 				final DNASequenceSet incomingDNASequenceSet = incomingDNASequenceSetItr
 						.next();
 				DNASequenceSet dbDNASequenceSet;
 				if (null == (dbDNASequenceSet =
-						findIf(dbOTUSet.getDNASequenceSetsIterator(),
+						findIf(dbOTUSet.dnaSequenceSetsIterator(),
 								compose(equalTo(incomingDNASequenceSet
 										.getPPodId()),
 										IWithPPodId.getPPodId)))) {

@@ -243,7 +243,8 @@ public class Attachment extends UUPPodEntityWXmlId {
 	@CheckForNull
 	private String label;
 
-	// TODO: this is set to unique only to allow lookups of Character's mesquite
+	// TODO: this is set to unique only to allow lookups of AbstractCharacter's
+	// mesquite
 	// id's. See bug Bugzilla 128
 	@Column(name = STRING_VALUE_COLUMN, nullable = true, unique = true)
 	@CheckForNull

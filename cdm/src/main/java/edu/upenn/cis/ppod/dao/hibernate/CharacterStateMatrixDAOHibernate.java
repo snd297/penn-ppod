@@ -24,7 +24,7 @@ import java.util.Set;
 import com.google.inject.Inject;
 
 import edu.upenn.cis.ppod.dao.ICharacterStateMatrixDAO;
-import edu.upenn.cis.ppod.model.CharacterStateMatrix;
+import edu.upenn.cis.ppod.model.Matrix;
 import edu.upenn.cis.ppod.thirdparty.dao.hibernate.GenericHibernateDAO;
 import edu.upenn.cis.ppod.util.IPair;
 
@@ -34,7 +34,7 @@ import edu.upenn.cis.ppod.util.IPair;
  * @author Sam Donnelly
  */
 final class CharacterStateMatrixDAOHibernate extends
-		GenericHibernateDAO<CharacterStateMatrix, Long> implements
+		GenericHibernateDAO<Matrix, Long> implements
 		ICharacterStateMatrixDAO {
 
 	private final IPair.IFactory pairFactory;
@@ -45,15 +45,15 @@ final class CharacterStateMatrixDAOHibernate extends
 	}
 
 	@SuppressWarnings("unchecked")
-	public List<CharacterStateMatrix> getByLabel(final String label) {
+	public List<Matrix> getByLabel(final String label) {
 		return getSession().getNamedQuery(
-				CharacterStateMatrix.class.getSimpleName() + "-getByLabel")
+				Matrix.class.getSimpleName() + "-getByLabel")
 				.setParameter("label", label).list();
 	}
 
-	public CharacterStateMatrix getByPPodId(final String pPodId) {
-		return (CharacterStateMatrix) getSession().getNamedQuery(
-				CharacterStateMatrix.class.getSimpleName() + "-getByPPodId")
+	public Matrix getByPPodId(final String pPodId) {
+		return (Matrix) getSession().getNamedQuery(
+				Matrix.class.getSimpleName() + "-getByPPodId")
 				.setParameter("pPodId", pPodId).uniqueResult();
 	}
 
@@ -61,7 +61,7 @@ final class CharacterStateMatrixDAOHibernate extends
 	public List<Object[]> getCharacterInfosByMatrixIdAndMinPPodVersion(
 			final Long matrixId, final Long minPPodVersion) {
 		return getSession().getNamedQuery(
-				CharacterStateMatrix.class.getSimpleName()
+				Matrix.class.getSimpleName()
 						+ "-getCharacterInfosByMatrixIdandMinPPodVersion")
 				.setParameter("matrixId", matrixId).setParameter(
 						"minPPodVersion", minPPodVersion).list();
@@ -70,7 +70,7 @@ final class CharacterStateMatrixDAOHibernate extends
 	@SuppressWarnings("unchecked")
 	public List<Long> getColumnPPodVersionsByMatrixId(final Long matrixId) {
 		return getSession().getNamedQuery(
-				CharacterStateMatrix.class.getSimpleName()
+				Matrix.class.getSimpleName()
 						+ "-getColumnPPodVersionsByMatrixId").setParameter(
 				"matrixId", matrixId).list();
 	}
@@ -78,7 +78,7 @@ final class CharacterStateMatrixDAOHibernate extends
 	public Set<IPair<String, String>> getPPodIdLabelPairs() {
 		final Set<IPair<String, String>> results = newHashSet();
 		for (final Iterator<?> itr = getSession().getNamedQuery(
-				CharacterStateMatrix.class.getSimpleName()
+				Matrix.class.getSimpleName()
 						+ "-getPPodIdLabelPairs").iterate(); itr.hasNext();) {
 			final Object[] result = (Object[]) itr.next();
 			results.add(pairFactory.create((String) result[0],
@@ -89,7 +89,7 @@ final class CharacterStateMatrixDAOHibernate extends
 
 	public Long getPPodVersionById(final Long id) {
 		return (Long) getSession().getNamedQuery(
-				CharacterStateMatrix.class.getSimpleName()
+				Matrix.class.getSimpleName()
 						+ "-getPPodVersionById").setParameter("id", id)
 				.uniqueResult();
 	}
@@ -98,7 +98,7 @@ final class CharacterStateMatrixDAOHibernate extends
 	public List<Object[]> getRowIdxsIdsVersionsByMatrixIdAndMinPPodVersion(
 			final Long matrixId, final Long minPPodVersion) {
 		return getSession().getNamedQuery(
-				CharacterStateMatrix.class.getSimpleName()
+				Matrix.class.getSimpleName()
 						+ "-getRowIdxsIdsVersionsByMatrixIdAndMinPPodVersion")
 				.setParameter("matrixId", matrixId).setParameter(
 						"minPPodVersion", minPPodVersion).list();

@@ -25,7 +25,7 @@ import com.google.inject.Inject;
  */
 @Entity
 @Table(name = DNAMatrix.TABLE)
-public class DNAMatrix extends MolecularStateMatrix {
+public class DNAMatrix extends MolecularMatrix<DNARow> {
 
 	/** Database table name. */
 	public static final String TABLE = "DNA_STATE_MATRIX";
@@ -40,7 +40,14 @@ public class DNAMatrix extends MolecularStateMatrix {
 	 * @param otusToRows the {@code OTUsToCharacterStateRows} for this matrix.
 	 */
 	@Inject
-	protected DNAMatrix(final OTUsToCharacterStateRows otusToRows) {
-		super(otusToRows);
+	protected DNAMatrix(final OTUsToDNARows otusToRows) {
+		
 	}
+
+	@Override
+	protected OTUsToRows<DNARow> getOTUsToRows() {
+		// TODO Auto-generated method stub
+		throw new UnsupportedOperationException();
+	}
+
 }

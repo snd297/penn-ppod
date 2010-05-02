@@ -4,7 +4,7 @@ import com.google.inject.ImplementedBy;
 
 /**
  * Set the doc id on {@code Attachment}s, {@code AttachmentNamespace}s, {@code
- * AttachmentType}s, {@code Character}s, {@code CharacterState}s, {@code OTU}s,
+ * AttachmentType}s, {@code AbstractCharacter}s, {@code CharacterState}s, {@code OTU}s,
  * {@code OTUSet}s.
  * 
  * @author Sam Donnelly

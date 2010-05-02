@@ -45,7 +45,7 @@ public class OTUsToMolecularSequencesTest {
 		final DNASequenceSet sequenceSet = dnaSequenceSetProvider.get();
 		otuSet.addDNASequenceSet(sequenceSet);
 		((OTUsToSequences<DNASequence>) sequenceSet.getOTUsToSequences())
-				.putHelper(otu, sequence);
+				.put(otu, sequence);
 		assertSame(sequenceSet.getOTUsToSequences().getOTUsToValues().get(otu),
 				sequence);
 	}
@@ -61,12 +61,12 @@ public class OTUsToMolecularSequencesTest {
 		final DNASequenceSet sequenceSet = dnaSequenceSetProvider.get();
 		otuSet.addDNASequenceSet(sequenceSet);
 		((OTUsToSequences<DNASequence>) sequenceSet.getOTUsToSequences())
-				.putHelper(otu, sequence);
+				.put(otu, sequence);
 
 		final DNASequence sequence2 = dnaSequenceProvider.get();
 
 		((OTUsToSequences<DNASequence>) sequenceSet.getOTUsToSequences())
-				.putHelper(otu, sequence2);
+				.put(otu, sequence2);
 
 		assertNull(sequence.getOTUsToSequences());
 

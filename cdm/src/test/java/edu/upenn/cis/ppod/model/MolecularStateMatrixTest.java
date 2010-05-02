@@ -11,7 +11,7 @@ import com.google.inject.Provider;
 import edu.upenn.cis.ppod.TestGroupDefs;
 
 /**
- * Test {@link MolecularStateMatrix}.
+ * Test {@link MolecularMatrix}.
  * 
  * @author Sam Donnelly
  */
@@ -29,7 +29,7 @@ public class MolecularStateMatrixTest {
 	 * of them the same value.
 	 */
 	public void setCharacters() {
-		final MolecularStateMatrix molecularMatrix = dnaMatrixProvider.get();
+		final MolecularMatrix molecularMatrix = dnaMatrixProvider.get();
 		final MolecularCharacter molecularCharacter = dnaCharacterProvider
 				.get();
 		molecularMatrix.setCharacters(newArrayList(molecularCharacter));

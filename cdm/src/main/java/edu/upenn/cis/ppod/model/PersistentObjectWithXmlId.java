@@ -45,11 +45,11 @@ public abstract class PersistentObjectWithXmlId extends PersistentObject
 		return docId;
 	}
 
-	public IWithXmlID setDocId() {
+	public PersistentObjectWithXmlId setDocId() {
 		return setDocId(UUID.randomUUID().toString());
 	}
 
-	public IWithXmlID setDocId(final String docId) {
+	public PersistentObjectWithXmlId setDocId(final String docId) {
 		if (getDocId() != null) {
 			throw new IllegalStateException("docId was already set");
 		}

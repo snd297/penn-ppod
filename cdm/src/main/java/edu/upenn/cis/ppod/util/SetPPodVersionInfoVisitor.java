@@ -19,11 +19,11 @@ import com.google.inject.Inject;
 import com.google.inject.assistedinject.Assisted;
 
 import edu.upenn.cis.ppod.model.Attachment;
+import edu.upenn.cis.ppod.model.CategoricalCell;
+import edu.upenn.cis.ppod.model.CategoricalMatrix;
+import edu.upenn.cis.ppod.model.CategoricalRow;
+import edu.upenn.cis.ppod.model.CategoricalState;
 import edu.upenn.cis.ppod.model.Character;
-import edu.upenn.cis.ppod.model.CharacterState;
-import edu.upenn.cis.ppod.model.CharacterStateCell;
-import edu.upenn.cis.ppod.model.CharacterStateMatrix;
-import edu.upenn.cis.ppod.model.CharacterStateRow;
 import edu.upenn.cis.ppod.model.OTU;
 import edu.upenn.cis.ppod.model.OTUSet;
 import edu.upenn.cis.ppod.model.Study;
@@ -66,19 +66,19 @@ final class SetPPodVersionInfoVisitor extends EmptyVisitor implements
 	}
 
 	@Override
-	public void visit(final CharacterState characterState) {
-		setNewPPodVersionIfNeeded(characterState);
+	public void visit(final CategoricalState categoricalState) {
+		setNewPPodVersionIfNeeded(categoricalState);
 	}
 
 	@Override
-	public void visit(final CharacterStateCell cell) {
+	public void visit(final CategoricalCell cell) {
 		setNewPPodVersionIfNeeded(cell);
 	}
 
 	@Override
-	public void visit(final CharacterStateMatrix matrix) {
+	public void visit(final CategoricalMatrix matrix) {
 		setNewPPodVersionIfNeeded(matrix);
-		for (int pos = 0; pos < matrix.getCharactersSize(); pos++) {
+		for (int pos = 0; pos < matrix.getColumnsSize(); pos++) {
 			if (matrix.getColumnPPodVersionInfo(pos) == null) {
 				matrix.setColumnPPodVersionInfo(pos, newPPodVersionInfo
 						.getNewPPodVersionInfo());
@@ -92,7 +92,7 @@ final class SetPPodVersionInfoVisitor extends EmptyVisitor implements
 	 * @param row ignored
 	 */
 	@Override
-	public void visit(final CharacterStateRow row) {
+	public void visit(final CategoricalRow row) {
 		setNewPPodVersionIfNeeded(row);
 	}
 
