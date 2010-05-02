@@ -1,0 +1,607 @@
+<html>
+<head>
+<title>TestNG:  fast</title>
+<link href="../testng.css" rel="stylesheet" type="text/css" />
+<link href="../my-testng.css" rel="stylesheet" type="text/css" />
+
+<style type="text/css">
+.log { display: none;} 
+.stack-trace { display: none;} 
+</style>
+<script type="text/javascript">
+<!--
+function flip(e) {
+  current = e.style.display;
+  if (current == 'block') {
+    e.style.display = 'none';
+    return 0;
+  }
+  else {
+    e.style.display = 'block';
+    return 1;
+  }
+}
+
+function toggleBox(szDivId, elem, msg1, msg2)
+{
+  var res = -1;  if (document.getElementById) {
+    res = flip(document.getElementById(szDivId));
+  }
+  else if (document.all) {
+    // this is the way old msie versions work
+    res = flip(document.all[szDivId]);
+  }
+  if(elem) {
+    if(res == 0) elem.innerHTML = msg1; else elem.innerHTML = msg2;
+  }
+
+}
+
+function toggleAllBoxes() {
+  if (document.getElementsByTagName) {
+    d = document.getElementsByTagName('div');
+    for (i = 0; i < d.length; i++) {
+      if (d[i].className == 'log') {
+        flip(d[i]);
+      }
+    }
+  }
+}
+
+// -->
+</script>
+
+</head>
+<body>
+<h2 align='center'>fast</h2><table border='1' align="center">
+<tr>
+<td>Tests passed/Failed/Skipped:</td><td>50/0/0</td>
+</tr><tr>
+<td>Started on:</td><td>Tue Mar 02 16:42:17 EST 2010</td>
+</tr>
+<tr><td>Total time:</td><td>7 seconds (7519 ms)</td>
+</tr><tr>
+<td>Included groups:</td><td>init fast </td>
+</tr><tr>
+<td>Excluded groups:</td><td>broken in-development </td>
+</tr>
+</table><p/>
+<small><i>(Hover the method name to see the test class name)</i></small><p/>
+<table width='100%' border='1' class='invocation-passed'>
+<tr><td colspan='3' align='center'><b>PASSED TESTS</b></td></tr>
+<tr><td><b>Test method</b></td>
+<td width="10%"><b>Time (seconds)</b></td>
+<td width="30%"><b>Exception</b></td>
+</tr>
+<tr>
+<td title='edu.upenn.cis.ppod.model.PPodEntityTest.addAttachment()'>addAttachment</td>
+<td>0</td>
+<td></td>
+</tr>
+<tr>
+<td title='edu.upenn.cis.ppod.model.CharacterStateRowTest.addCellToMatrixThatHasNoCharacters()'>addCellToMatrixThatHasNoCharacters</td>
+<td>0</td>
+<td><div><pre>java.lang.IllegalStateException: the matrix has different number of characters 0 than cells 1
+	at edu.upenn.cis.ppod.model.CategoricalRow.setCells(CharacterStateRow.java:247)
+	at edu.upenn.cis.ppod.model.CharacterStateRowTest.addCellToMatrixThatHasNoCharacters(CharacterStateRowTest.java:99)
+... Removed 22 stack frames</pre></div><a href='#' onClick='toggleBox("stack-trace733491272", this, "Click to show all stack frames", "Click to hide stack frames")'>Click to show all stack frames</a>
+<div class='stack-trace' id='stack-trace733491272'><pre>java.lang.IllegalStateException: the matrix has different number of characters 0 than cells 1
+	at edu.upenn.cis.ppod.model.CategoricalRow.setCells(CharacterStateRow.java:247)
+	at edu.upenn.cis.ppod.model.CharacterStateRowTest.addCellToMatrixThatHasNoCharacters(CharacterStateRowTest.java:99)
+	at sun.reflect.NativeMethodAccessorImpl.invoke0(Native Method)
+	at sun.reflect.NativeMethodAccessorImpl.invoke(NativeMethodAccessorImpl.java:39)
+	at sun.reflect.DelegatingMethodAccessorImpl.invoke(DelegatingMethodAccessorImpl.java:25)
+	at java.lang.reflect.Method.invoke(Method.java:597)
+	at org.testng.internal.MethodHelper.invokeMethod(MethodHelper.java:607)
+	at org.testng.internal.Invoker.invokeMethod(Invoker.java:517)
+	at org.testng.internal.Invoker.invokeTestMethod(Invoker.java:669)
+	at org.testng.internal.Invoker.invokeTestMethods(Invoker.java:956)
+	at org.testng.internal.TestMethodWorker.invokeTestMethods(TestMethodWorker.java:126)
+	at org.testng.internal.TestMethodWorker.run(TestMethodWorker.java:110)
+	at org.testng.TestRunner.runWorkers(TestRunner.java:759)
+	at org.testng.TestRunner.privateRun(TestRunner.java:592)
+	at org.testng.TestRunner.run(TestRunner.java:486)
+	at org.testng.SuiteRunner.runTest(SuiteRunner.java:332)
+	at org.testng.SuiteRunner.runSequentially(SuiteRunner.java:327)
+	at org.testng.SuiteRunner.privateRun(SuiteRunner.java:299)
+	at org.testng.SuiteRunner.run(SuiteRunner.java:204)
+	at org.testng.TestNG.createAndRunSuiteRunners(TestNG.java:877)
+	at org.testng.TestNG.runSuitesLocally(TestNG.java:842)
+	at org.testng.TestNG.run(TestNG.java:751)
+	at org.testng.remote.RemoteTestNG.run(RemoteTestNG.java:73)
+	at org.testng.remote.RemoteTestNG.main(RemoteTestNG.java:124)
+</pre></div></td>
+</tr>
+<tr>
+<td title='edu.upenn.cis.ppod.model.CharacterStateRowTest.addCellToMatrixWOneCharacter()'>addCellToMatrixWOneCharacter</td>
+<td>0</td>
+<td></td>
+</tr>
+<tr>
+<td title='edu.upenn.cis.ppod.model.CharacterStateRowTest.addCellToMatrixWTooFewCharacters()'>addCellToMatrixWTooFewCharacters</td>
+<td>0</td>
+<td><div><pre>java.lang.IllegalStateException: the matrix has different number of characters 1 than cells 2
+	at edu.upenn.cis.ppod.model.CategoricalRow.setCells(CharacterStateRow.java:247)
+	at edu.upenn.cis.ppod.model.CharacterStateRowTest.addCellToMatrixWTooFewCharacters(CharacterStateRowTest.java:107)
+... Removed 22 stack frames</pre></div><a href='#' onClick='toggleBox("stack-trace1567116838", this, "Click to show all stack frames", "Click to hide stack frames")'>Click to show all stack frames</a>
+<div class='stack-trace' id='stack-trace1567116838'><pre>java.lang.IllegalStateException: the matrix has different number of characters 1 than cells 2
+	at edu.upenn.cis.ppod.model.CategoricalRow.setCells(CharacterStateRow.java:247)
+	at edu.upenn.cis.ppod.model.CharacterStateRowTest.addCellToMatrixWTooFewCharacters(CharacterStateRowTest.java:107)
+	at sun.reflect.NativeMethodAccessorImpl.invoke0(Native Method)
+	at sun.reflect.NativeMethodAccessorImpl.invoke(NativeMethodAccessorImpl.java:39)
+	at sun.reflect.DelegatingMethodAccessorImpl.invoke(DelegatingMethodAccessorImpl.java:25)
+	at java.lang.reflect.Method.invoke(Method.java:597)
+	at org.testng.internal.MethodHelper.invokeMethod(MethodHelper.java:607)
+	at org.testng.internal.Invoker.invokeMethod(Invoker.java:517)
+	at org.testng.internal.Invoker.invokeTestMethod(Invoker.java:669)
+	at org.testng.internal.Invoker.invokeTestMethods(Invoker.java:956)
+	at org.testng.internal.TestMethodWorker.invokeTestMethods(TestMethodWorker.java:126)
+	at org.testng.internal.TestMethodWorker.run(TestMethodWorker.java:110)
+	at org.testng.TestRunner.runWorkers(TestRunner.java:759)
+	at org.testng.TestRunner.privateRun(TestRunner.java:592)
+	at org.testng.TestRunner.run(TestRunner.java:486)
+	at org.testng.SuiteRunner.runTest(SuiteRunner.java:332)
+	at org.testng.SuiteRunner.runSequentially(SuiteRunner.java:327)
+	at org.testng.SuiteRunner.privateRun(SuiteRunner.java:299)
+	at org.testng.SuiteRunner.run(SuiteRunner.java:204)
+	at org.testng.TestNG.createAndRunSuiteRunners(TestNG.java:877)
+	at org.testng.TestNG.runSuitesLocally(TestNG.java:842)
+	at org.testng.TestNG.run(TestNG.java:751)
+	at org.testng.remote.RemoteTestNG.run(RemoteTestNG.java:73)
+	at org.testng.remote.RemoteTestNG.main(RemoteTestNG.java:124)
+</pre></div></td>
+</tr>
+<tr>
+<td title='edu.upenn.cis.ppod.model.CharacterStateRowTest.addCellToRowThatsNotInAMatrix()'>addCellToRowThatsNotInAMatrix</td>
+<td>0</td>
+<td><div><pre>java.lang.IllegalStateException: This row hasn't been added to a matrix yet
+	at edu.upenn.cis.ppod.model.CategoricalRow.setCells(CharacterStateRow.java:242)
+	at edu.upenn.cis.ppod.model.CharacterStateRowTest.addCellToRowThatsNotInAMatrix(CharacterStateRowTest.java:88)
+... Removed 22 stack frames</pre></div><a href='#' onClick='toggleBox("stack-trace133441329", this, "Click to show all stack frames", "Click to hide stack frames")'>Click to show all stack frames</a>
+<div class='stack-trace' id='stack-trace133441329'><pre>java.lang.IllegalStateException: This row hasn't been added to a matrix yet
+	at edu.upenn.cis.ppod.model.CategoricalRow.setCells(CharacterStateRow.java:242)
+	at edu.upenn.cis.ppod.model.CharacterStateRowTest.addCellToRowThatsNotInAMatrix(CharacterStateRowTest.java:88)
+	at sun.reflect.NativeMethodAccessorImpl.invoke0(Native Method)
+	at sun.reflect.NativeMethodAccessorImpl.invoke(NativeMethodAccessorImpl.java:39)
+	at sun.reflect.DelegatingMethodAccessorImpl.invoke(DelegatingMethodAccessorImpl.java:25)
+	at java.lang.reflect.Method.invoke(Method.java:597)
+	at org.testng.internal.MethodHelper.invokeMethod(MethodHelper.java:607)
+	at org.testng.internal.Invoker.invokeMethod(Invoker.java:517)
+	at org.testng.internal.Invoker.invokeTestMethod(Invoker.java:669)
+	at org.testng.internal.Invoker.invokeTestMethods(Invoker.java:956)
+	at org.testng.internal.TestMethodWorker.invokeTestMethods(TestMethodWorker.java:126)
+	at org.testng.internal.TestMethodWorker.run(TestMethodWorker.java:110)
+	at org.testng.TestRunner.runWorkers(TestRunner.java:759)
+	at org.testng.TestRunner.privateRun(TestRunner.java:592)
+	at org.testng.TestRunner.run(TestRunner.java:486)
+	at org.testng.SuiteRunner.runTest(SuiteRunner.java:332)
+	at org.testng.SuiteRunner.runSequentially(SuiteRunner.java:327)
+	at org.testng.SuiteRunner.privateRun(SuiteRunner.java:299)
+	at org.testng.SuiteRunner.run(SuiteRunner.java:204)
+	at org.testng.TestNG.createAndRunSuiteRunners(TestNG.java:877)
+	at org.testng.TestNG.runSuitesLocally(TestNG.java:842)
+	at org.testng.TestNG.run(TestNG.java:751)
+	at org.testng.remote.RemoteTestNG.run(RemoteTestNG.java:73)
+	at org.testng.remote.RemoteTestNG.main(RemoteTestNG.java:124)
+</pre></div></td>
+</tr>
+<tr>
+<td title='edu.upenn.cis.ppod.model.OTUSetTest.addOTUWAlreadyContainedOTU()'>addOTUWAlreadyContainedOTU</td>
+<td>0</td>
+<td></td>
+</tr>
+<tr>
+<td title='edu.upenn.cis.ppod.model.OTUSetTest.addOTUWDuplicateLabel()'>addOTUWDuplicateLabel</td>
+<td>0</td>
+<td><div><pre>java.lang.IllegalArgumentException: OTUSet labeled 'null' already has an OTU labeled 'otu0'
+	at com.google.common.base.Preconditions.checkArgument(Preconditions.java:84)
+	at edu.upenn.cis.ppod.model.OTUSet.addOTU(OTUSet.java:166)
+	at edu.upenn.cis.ppod.model.OTUSet.setOTUs(OTUSet.java:412)
+	at edu.upenn.cis.ppod.model.OTUSetTest.addOTUWDuplicateLabel(OTUSetTest.java:87)
+... Removed 22 stack frames</pre></div><a href='#' onClick='toggleBox("stack-trace225515853", this, "Click to show all stack frames", "Click to hide stack frames")'>Click to show all stack frames</a>
+<div class='stack-trace' id='stack-trace225515853'><pre>java.lang.IllegalArgumentException: OTUSet labeled 'null' already has an OTU labeled 'otu0'
+	at com.google.common.base.Preconditions.checkArgument(Preconditions.java:84)
+	at edu.upenn.cis.ppod.model.OTUSet.addOTU(OTUSet.java:166)
+	at edu.upenn.cis.ppod.model.OTUSet.setOTUs(OTUSet.java:412)
+	at edu.upenn.cis.ppod.model.OTUSetTest.addOTUWDuplicateLabel(OTUSetTest.java:87)
+	at sun.reflect.NativeMethodAccessorImpl.invoke0(Native Method)
+	at sun.reflect.NativeMethodAccessorImpl.invoke(NativeMethodAccessorImpl.java:39)
+	at sun.reflect.DelegatingMethodAccessorImpl.invoke(DelegatingMethodAccessorImpl.java:25)
+	at java.lang.reflect.Method.invoke(Method.java:597)
+	at org.testng.internal.MethodHelper.invokeMethod(MethodHelper.java:607)
+	at org.testng.internal.Invoker.invokeMethod(Invoker.java:517)
+	at org.testng.internal.Invoker.invokeTestMethod(Invoker.java:669)
+	at org.testng.internal.Invoker.invokeTestMethods(Invoker.java:956)
+	at org.testng.internal.TestMethodWorker.invokeTestMethods(TestMethodWorker.java:126)
+	at org.testng.internal.TestMethodWorker.run(TestMethodWorker.java:110)
+	at org.testng.TestRunner.runWorkers(TestRunner.java:759)
+	at org.testng.TestRunner.privateRun(TestRunner.java:592)
+	at org.testng.TestRunner.run(TestRunner.java:486)
+	at org.testng.SuiteRunner.runTest(SuiteRunner.java:332)
+	at org.testng.SuiteRunner.runSequentially(SuiteRunner.java:327)
+	at org.testng.SuiteRunner.privateRun(SuiteRunner.java:299)
+	at org.testng.SuiteRunner.run(SuiteRunner.java:204)
+	at org.testng.TestNG.createAndRunSuiteRunners(TestNG.java:877)
+	at org.testng.TestNG.runSuitesLocally(TestNG.java:842)
+	at org.testng.TestNG.run(TestNG.java:751)
+	at org.testng.remote.RemoteTestNG.run(RemoteTestNG.java:73)
+	at org.testng.remote.RemoteTestNG.main(RemoteTestNG.java:124)
+</pre></div></td>
+</tr>
+<tr>
+<td title='edu.upenn.cis.ppod.model.OTUSetTest.addTreeSet()'>addTreeSet</td>
+<td>0</td>
+<td></td>
+</tr>
+<tr>
+<td title='edu.upenn.cis.ppod.model.CharacterStateCellTest.afterUnmarshal()'>afterUnmarshal</td>
+<td>0</td>
+<td></td>
+</tr>
+<tr>
+<td title='edu.upenn.cis.ppod.model.CharacterStateMatrixTest.beforeMarshal()'>beforeMarshal</td>
+<td>0</td>
+<td></td>
+</tr>
+<tr>
+<td title='edu.upenn.cis.ppod.model.OTUSetTest.clearOTUs()'>clearOTUs</td>
+<td>0</td>
+<td></td>
+</tr>
+<tr>
+<td title='edu.upenn.cis.ppod.model.CharacterStateCellTest.getStatesWhenCellHasMultipleStates()'>getStatesWhenCellHasMultipleStates</td>
+<td>0</td>
+<td></td>
+</tr>
+<tr>
+<td title='edu.upenn.cis.ppod.model.CharacterStateCellTest.getStatesWhenCellHasOneState()'>getStatesWhenCellHasOneState</td>
+<td>0</td>
+<td></td>
+</tr>
+<tr>
+<td title='edu.upenn.cis.ppod.saveorupdate.MergeAttachmentTest.mergeOnBlankTarget()'>mergeOnBlankTarget</td>
+<td>0</td>
+<td></td>
+</tr>
+<tr>
+<td title='edu.upenn.cis.ppod.model.CharacterStateMatrixTest.moveCharacter()'>moveCharacter</td>
+<td>0</td>
+<td></td>
+</tr>
+<tr>
+<td title='edu.upenn.cis.ppod.saveorupdate.SaveOrUpdateCharacterStateMatrixTest.moveCharacters()'>moveCharacters<br/><b>Parameters:</b> UUPPodEntity(PPodEntity(PersistentObject(edu.upenn.cis.ppod.model.Matrix@7a258c74id=nullversion=null)pPodVersionInfo=nullpPodVersion=null)pPodId=null)</td>
+<td>0</td>
+<td></td>
+</tr>
+<tr>
+<td title='edu.upenn.cis.ppod.saveorupdate.SaveOrUpdateCharacterStateMatrixTest.moveCharacters()'>moveCharacters<br/><b>Parameters:</b> UUPPodEntity(PPodEntity(PersistentObject(edu.upenn.cis.ppod.model.DNAStateMatrix@4290da40id=nullversion=null)pPodVersionInfo=nullpPodVersion=null)pPodId=null)</td>
+<td>0</td>
+<td></td>
+</tr>
+<tr>
+<td title='edu.upenn.cis.ppod.model.CharacterStateMatrixTest.moveRow()'>moveRow</td>
+<td>0</td>
+<td></td>
+</tr>
+<tr>
+<td title='edu.upenn.cis.ppod.saveorupdate.SaveOrUpdateCharacterStateMatrixTest.moveRows()'>moveRows<br/><b>Parameters:</b> UUPPodEntity(PPodEntity(PersistentObject(edu.upenn.cis.ppod.model.Matrix@166f10efid=nullversion=null)pPodVersionInfo=nullpPodVersion=null)pPodId=null)</td>
+<td>0</td>
+<td></td>
+</tr>
+<tr>
+<td title='edu.upenn.cis.ppod.saveorupdate.SaveOrUpdateCharacterStateMatrixTest.moveRows()'>moveRows<br/><b>Parameters:</b> UUPPodEntity(PPodEntity(PersistentObject(edu.upenn.cis.ppod.model.DNAStateMatrix@4a7d4addid=nullversion=null)pPodVersionInfo=nullpPodVersion=null)pPodId=null)</td>
+<td>0</td>
+<td></td>
+</tr>
+<tr>
+<td title='edu.upenn.cis.ppod.model.DNAStateTest.of()'>of</td>
+<td>0</td>
+<td></td>
+</tr>
+<tr>
+<td title='edu.upenn.cis.ppod.model.PPodEntityTest.removeAttachment()'>removeAttachment</td>
+<td>0</td>
+<td></td>
+</tr>
+<tr>
+<td title='edu.upenn.cis.ppod.model.OTUSetTest.removeMatrix()'>removeMatrix</td>
+<td>0</td>
+<td></td>
+</tr>
+<tr>
+<td title='edu.upenn.cis.ppod.model.OTUSetTest.removeOTU()'>removeOTU</td>
+<td>0</td>
+<td></td>
+</tr>
+<tr>
+<td title='edu.upenn.cis.ppod.model.OTUSetTest.removeTreeSet()'>removeTreeSet</td>
+<td>0</td>
+<td></td>
+</tr>
+<tr>
+<td title='edu.upenn.cis.ppod.model.CharacterStateMatrixTest.replaceCharacters()'>replaceCharacters</td>
+<td>0</td>
+<td></td>
+</tr>
+<tr>
+<td title='edu.upenn.cis.ppod.model.CharacterStateMatrixTest.replaceRow()'>replaceRow</td>
+<td>0</td>
+<td></td>
+</tr>
+<tr>
+<td title='edu.upenn.cis.ppod.model.OTUSetTest.resetWhenNotInNeedOfNewPPodVersionInfo()'>resetWhenNotInNeedOfNewPPodVersionInfo</td>
+<td>0</td>
+<td></td>
+</tr>
+<tr>
+<td title='edu.upenn.cis.ppod.saveorupdate.SaveOrUpdateCharacterStateMatrixTest.save()'>save<br/><b>Parameters:</b> UUPPodEntity(PPodEntity(PersistentObject(edu.upenn.cis.ppod.model.Matrix@4214c93did=nullversion=null)pPodVersionInfo=nullpPodVersion=null)pPodId=null)</td>
+<td>0</td>
+<td></td>
+</tr>
+<tr>
+<td title='edu.upenn.cis.ppod.saveorupdate.SaveOrUpdateCharacterStateMatrixTest.save()'>save<br/><b>Parameters:</b> UUPPodEntity(PPodEntity(PersistentObject(edu.upenn.cis.ppod.model.DNAStateMatrix@7968afc5id=nullversion=null)pPodVersionInfo=nullpPodVersion=null)pPodId=null)</td>
+<td>0</td>
+<td></td>
+</tr>
+<tr>
+<td title='edu.upenn.cis.ppod.model.CharacterStateMatrixTest.setCharacters()'>setCharacters</td>
+<td>0</td>
+<td></td>
+</tr>
+<tr>
+<td title='edu.upenn.cis.ppod.model.CharacterStateMatrixTest.setCharactersW2EqualsCharacters()'>setCharactersW2EqualsCharacters</td>
+<td>0</td>
+<td><div><pre>java.lang.IllegalArgumentException: two characters are the same character0 at positions 0 and 0
+	at com.google.common.base.Preconditions.checkArgument(Preconditions.java:84)
+	at edu.upenn.cis.ppod.model.Matrix.setCharacters(CharacterStateMatrix.java:551)
+	at edu.upenn.cis.ppod.model.CharacterStateMatrixTest.setCharactersW2EqualsCharacters(CharacterStateMatrixTest.java:376)
+... Removed 22 stack frames</pre></div><a href='#' onClick='toggleBox("stack-trace1177681699", this, "Click to show all stack frames", "Click to hide stack frames")'>Click to show all stack frames</a>
+<div class='stack-trace' id='stack-trace1177681699'><pre>java.lang.IllegalArgumentException: two characters are the same character0 at positions 0 and 0
+	at com.google.common.base.Preconditions.checkArgument(Preconditions.java:84)
+	at edu.upenn.cis.ppod.model.Matrix.setCharacters(CharacterStateMatrix.java:551)
+	at edu.upenn.cis.ppod.model.CharacterStateMatrixTest.setCharactersW2EqualsCharacters(CharacterStateMatrixTest.java:376)
+	at sun.reflect.NativeMethodAccessorImpl.invoke0(Native Method)
+	at sun.reflect.NativeMethodAccessorImpl.invoke(NativeMethodAccessorImpl.java:39)
+	at sun.reflect.DelegatingMethodAccessorImpl.invoke(DelegatingMethodAccessorImpl.java:25)
+	at java.lang.reflect.Method.invoke(Method.java:597)
+	at org.testng.internal.MethodHelper.invokeMethod(MethodHelper.java:607)
+	at org.testng.internal.Invoker.invokeMethod(Invoker.java:517)
+	at org.testng.internal.Invoker.invokeTestMethod(Invoker.java:669)
+	at org.testng.internal.Invoker.invokeTestMethods(Invoker.java:956)
+	at org.testng.internal.TestMethodWorker.invokeTestMethods(TestMethodWorker.java:126)
+	at org.testng.internal.TestMethodWorker.run(TestMethodWorker.java:110)
+	at org.testng.TestRunner.runWorkers(TestRunner.java:759)
+	at org.testng.TestRunner.privateRun(TestRunner.java:592)
+	at org.testng.TestRunner.run(TestRunner.java:486)
+	at org.testng.SuiteRunner.runTest(SuiteRunner.java:332)
+	at org.testng.SuiteRunner.runSequentially(SuiteRunner.java:327)
+	at org.testng.SuiteRunner.privateRun(SuiteRunner.java:299)
+	at org.testng.SuiteRunner.run(SuiteRunner.java:204)
+	at org.testng.TestNG.createAndRunSuiteRunners(TestNG.java:877)
+	at org.testng.TestNG.runSuitesLocally(TestNG.java:842)
+	at org.testng.TestNG.run(TestNG.java:751)
+	at org.testng.remote.RemoteTestNG.run(RemoteTestNG.java:73)
+	at org.testng.remote.RemoteTestNG.main(RemoteTestNG.java:124)
+</pre></div></td>
+</tr>
+<tr>
+<td title='edu.upenn.cis.ppod.model.CharacterStateMatrixTest.setCharactersWithEqualsCharacters()'>setCharactersWithEqualsCharacters</td>
+<td>0</td>
+<td></td>
+</tr>
+<tr>
+<td title='edu.upenn.cis.ppod.model.CharacterStateMatrixTest.setOTUs()'>setOTUs</td>
+<td>0</td>
+<td></td>
+</tr>
+<tr>
+<td title='edu.upenn.cis.ppod.model.CharacterStateMatrixTest.setOTUsWLessOTUs()'>setOTUsWLessOTUs</td>
+<td>0</td>
+<td></td>
+</tr>
+<tr>
+<td title='edu.upenn.cis.ppod.model.CharacterStateMatrixTest.setOTUsWReorderedOTUs()'>setOTUsWReorderedOTUs</td>
+<td>0</td>
+<td></td>
+</tr>
+<tr>
+<td title='edu.upenn.cis.ppod.model.CharacterStateMatrixTest.setOTUsWSameOTUs()'>setOTUsWSameOTUs</td>
+<td>0</td>
+<td></td>
+</tr>
+<tr>
+<td title='edu.upenn.cis.ppod.model.CharacterStateCellTest.setStatesForACellThatDoesNotBelongToARow()'>setStatesForACellThatDoesNotBelongToARow</td>
+<td>0</td>
+<td><div><pre>java.lang.IllegalStateException: this cell has not been assigned a row
+	at com.google.common.base.Preconditions.checkState(Preconditions.java:139)
+	at edu.upenn.cis.ppod.model.CategoricalCell.checkIncomingState(CharacterStateCell.java:233)
+	at edu.upenn.cis.ppod.model.CategoricalCell.setStates(CharacterStateCell.java:483)
+	at edu.upenn.cis.ppod.model.CategoricalCell.setSingleState(CharacterStateCell.java:452)
+	at edu.upenn.cis.ppod.model.CharacterStateCellTest.setStatesForACellThatDoesNotBelongToARow(CharacterStateCellTest.java:111)
+... Removed 22 stack frames</pre></div><a href='#' onClick='toggleBox("stack-trace1759830872", this, "Click to show all stack frames", "Click to hide stack frames")'>Click to show all stack frames</a>
+<div class='stack-trace' id='stack-trace1759830872'><pre>java.lang.IllegalStateException: this cell has not been assigned a row
+	at com.google.common.base.Preconditions.checkState(Preconditions.java:139)
+	at edu.upenn.cis.ppod.model.CategoricalCell.checkIncomingState(CharacterStateCell.java:233)
+	at edu.upenn.cis.ppod.model.CategoricalCell.setStates(CharacterStateCell.java:483)
+	at edu.upenn.cis.ppod.model.CategoricalCell.setSingleState(CharacterStateCell.java:452)
+	at edu.upenn.cis.ppod.model.CharacterStateCellTest.setStatesForACellThatDoesNotBelongToARow(CharacterStateCellTest.java:111)
+	at sun.reflect.NativeMethodAccessorImpl.invoke0(Native Method)
+	at sun.reflect.NativeMethodAccessorImpl.invoke(NativeMethodAccessorImpl.java:39)
+	at sun.reflect.DelegatingMethodAccessorImpl.invoke(DelegatingMethodAccessorImpl.java:25)
+	at java.lang.reflect.Method.invoke(Method.java:597)
+	at org.testng.internal.MethodHelper.invokeMethod(MethodHelper.java:607)
+	at org.testng.internal.Invoker.invokeMethod(Invoker.java:517)
+	at org.testng.internal.Invoker.invokeTestMethod(Invoker.java:669)
+	at org.testng.internal.Invoker.invokeTestMethods(Invoker.java:956)
+	at org.testng.internal.TestMethodWorker.invokeTestMethods(TestMethodWorker.java:126)
+	at org.testng.internal.TestMethodWorker.run(TestMethodWorker.java:110)
+	at org.testng.TestRunner.runWorkers(TestRunner.java:759)
+	at org.testng.TestRunner.privateRun(TestRunner.java:592)
+	at org.testng.TestRunner.run(TestRunner.java:486)
+	at org.testng.SuiteRunner.runTest(SuiteRunner.java:332)
+	at org.testng.SuiteRunner.runSequentially(SuiteRunner.java:327)
+	at org.testng.SuiteRunner.privateRun(SuiteRunner.java:299)
+	at org.testng.SuiteRunner.run(SuiteRunner.java:204)
+	at org.testng.TestNG.createAndRunSuiteRunners(TestNG.java:877)
+	at org.testng.TestNG.runSuitesLocally(TestNG.java:842)
+	at org.testng.TestNG.run(TestNG.java:751)
+	at org.testng.remote.RemoteTestNG.run(RemoteTestNG.java:73)
+	at org.testng.remote.RemoteTestNG.main(RemoteTestNG.java:124)
+</pre></div></td>
+</tr>
+<tr>
+<td title='edu.upenn.cis.ppod.model.CharacterStateCellTest.setTypeAndStatesFromPolymorhpicToInapplicable()'>setTypeAndStatesFromPolymorhpicToInapplicable</td>
+<td>0</td>
+<td></td>
+</tr>
+<tr>
+<td title='edu.upenn.cis.ppod.model.CharacterStateCellTest.setTypeAndStatesFromSingleToInapplicable()'>setTypeAndStatesFromSingleToInapplicable</td>
+<td>0</td>
+<td></td>
+</tr>
+<tr>
+<td title='edu.upenn.cis.ppod.model.CharacterStateCellTest.setTypeAndStatesInapplicable()'>setTypeAndStatesInapplicable</td>
+<td>0</td>
+<td></td>
+</tr>
+<tr>
+<td title='edu.upenn.cis.ppod.model.CharacterStateCellTest.setTypeAndStatesPolymorphic()'>setTypeAndStatesPolymorphic</td>
+<td>0</td>
+<td></td>
+</tr>
+<tr>
+<td title='edu.upenn.cis.ppod.model.CharacterStateCellTest.setTypeAndStatesPolymorphicTooFewStates()'>setTypeAndStatesPolymorphicTooFewStates</td>
+<td>0</td>
+<td><div><pre>java.lang.IllegalArgumentException: polymorphic states must be &gt; 1
+	at com.google.common.base.Preconditions.checkArgument(Preconditions.java:84)
+	at edu.upenn.cis.ppod.model.CategoricalCell.setPolymorphicStates(CharacterStateCell.java:402)
+	at edu.upenn.cis.ppod.model.CharacterStateCellTest.setTypeAndStatesPolymorphicTooFewStates(CharacterStateCellTest.java:189)
+... Removed 22 stack frames</pre></div><a href='#' onClick='toggleBox("stack-trace1981402139", this, "Click to show all stack frames", "Click to hide stack frames")'>Click to show all stack frames</a>
+<div class='stack-trace' id='stack-trace1981402139'><pre>java.lang.IllegalArgumentException: polymorphic states must be &gt; 1
+	at com.google.common.base.Preconditions.checkArgument(Preconditions.java:84)
+	at edu.upenn.cis.ppod.model.CategoricalCell.setPolymorphicStates(CharacterStateCell.java:402)
+	at edu.upenn.cis.ppod.model.CharacterStateCellTest.setTypeAndStatesPolymorphicTooFewStates(CharacterStateCellTest.java:189)
+	at sun.reflect.NativeMethodAccessorImpl.invoke0(Native Method)
+	at sun.reflect.NativeMethodAccessorImpl.invoke(NativeMethodAccessorImpl.java:39)
+	at sun.reflect.DelegatingMethodAccessorImpl.invoke(DelegatingMethodAccessorImpl.java:25)
+	at java.lang.reflect.Method.invoke(Method.java:597)
+	at org.testng.internal.MethodHelper.invokeMethod(MethodHelper.java:607)
+	at org.testng.internal.Invoker.invokeMethod(Invoker.java:517)
+	at org.testng.internal.Invoker.invokeTestMethod(Invoker.java:669)
+	at org.testng.internal.Invoker.invokeTestMethods(Invoker.java:956)
+	at org.testng.internal.TestMethodWorker.invokeTestMethods(TestMethodWorker.java:126)
+	at org.testng.internal.TestMethodWorker.run(TestMethodWorker.java:110)
+	at org.testng.TestRunner.runWorkers(TestRunner.java:759)
+	at org.testng.TestRunner.privateRun(TestRunner.java:592)
+	at org.testng.TestRunner.run(TestRunner.java:486)
+	at org.testng.SuiteRunner.runTest(SuiteRunner.java:332)
+	at org.testng.SuiteRunner.runSequentially(SuiteRunner.java:327)
+	at org.testng.SuiteRunner.privateRun(SuiteRunner.java:299)
+	at org.testng.SuiteRunner.run(SuiteRunner.java:204)
+	at org.testng.TestNG.createAndRunSuiteRunners(TestNG.java:877)
+	at org.testng.TestNG.runSuitesLocally(TestNG.java:842)
+	at org.testng.TestNG.run(TestNG.java:751)
+	at org.testng.remote.RemoteTestNG.run(RemoteTestNG.java:73)
+	at org.testng.remote.RemoteTestNG.main(RemoteTestNG.java:124)
+</pre></div></td>
+</tr>
+<tr>
+<td title='edu.upenn.cis.ppod.model.CharacterStateCellTest.setTypeAndStatesSingle()'>setTypeAndStatesSingle</td>
+<td>0</td>
+<td></td>
+</tr>
+<tr>
+<td title='edu.upenn.cis.ppod.model.CharacterStateCellTest.setTypeAndStatesUnassigned()'>setTypeAndStatesUnassigned</td>
+<td>0</td>
+<td></td>
+</tr>
+<tr>
+<td title='edu.upenn.cis.ppod.model.CharacterStateCellTest.setTypeAndStatesUncertain()'>setTypeAndStatesUncertain</td>
+<td>0</td>
+<td></td>
+</tr>
+<tr>
+<td title='edu.upenn.cis.ppod.model.CharacterStateCellTest.setTypeAndStatesUncertainTooFewStates()'>setTypeAndStatesUncertainTooFewStates</td>
+<td>0</td>
+<td><div><pre>java.lang.IllegalArgumentException: uncertain states must be &gt; 1
+	at com.google.common.base.Preconditions.checkArgument(Preconditions.java:84)
+	at edu.upenn.cis.ppod.model.CategoricalCell.setUncertainStates(CharacterStateCell.java:558)
+	at edu.upenn.cis.ppod.model.CharacterStateCellTest.setTypeAndStatesUncertainTooFewStates(CharacterStateCellTest.java:205)
+... Removed 22 stack frames</pre></div><a href='#' onClick='toggleBox("stack-trace793374785", this, "Click to show all stack frames", "Click to hide stack frames")'>Click to show all stack frames</a>
+<div class='stack-trace' id='stack-trace793374785'><pre>java.lang.IllegalArgumentException: uncertain states must be &gt; 1
+	at com.google.common.base.Preconditions.checkArgument(Preconditions.java:84)
+	at edu.upenn.cis.ppod.model.CategoricalCell.setUncertainStates(CharacterStateCell.java:558)
+	at edu.upenn.cis.ppod.model.CharacterStateCellTest.setTypeAndStatesUncertainTooFewStates(CharacterStateCellTest.java:205)
+	at sun.reflect.NativeMethodAccessorImpl.invoke0(Native Method)
+	at sun.reflect.NativeMethodAccessorImpl.invoke(NativeMethodAccessorImpl.java:39)
+	at sun.reflect.DelegatingMethodAccessorImpl.invoke(DelegatingMethodAccessorImpl.java:25)
+	at java.lang.reflect.Method.invoke(Method.java:597)
+	at org.testng.internal.MethodHelper.invokeMethod(MethodHelper.java:607)
+	at org.testng.internal.Invoker.invokeMethod(Invoker.java:517)
+	at org.testng.internal.Invoker.invokeTestMethod(Invoker.java:669)
+	at org.testng.internal.Invoker.invokeTestMethods(Invoker.java:956)
+	at org.testng.internal.TestMethodWorker.invokeTestMethods(TestMethodWorker.java:126)
+	at org.testng.internal.TestMethodWorker.run(TestMethodWorker.java:110)
+	at org.testng.TestRunner.runWorkers(TestRunner.java:759)
+	at org.testng.TestRunner.privateRun(TestRunner.java:592)
+	at org.testng.TestRunner.run(TestRunner.java:486)
+	at org.testng.SuiteRunner.runTest(SuiteRunner.java:332)
+	at org.testng.SuiteRunner.runSequentially(SuiteRunner.java:327)
+	at org.testng.SuiteRunner.privateRun(SuiteRunner.java:299)
+	at org.testng.SuiteRunner.run(SuiteRunner.java:204)
+	at org.testng.TestNG.createAndRunSuiteRunners(TestNG.java:877)
+	at org.testng.TestNG.runSuitesLocally(TestNG.java:842)
+	at org.testng.TestNG.run(TestNG.java:751)
+	at org.testng.remote.RemoteTestNG.run(RemoteTestNG.java:73)
+	at org.testng.remote.RemoteTestNG.main(RemoteTestNG.java:124)
+</pre></div></td>
+</tr>
+<tr>
+<td title='edu.upenn.cis.ppod.model.CharacterStateMatrixTest.setWithSameRow()'>setWithSameRow</td>
+<td>0</td>
+<td></td>
+</tr>
+<tr>
+<td title='edu.upenn.cis.ppod.model.CharacterStateMatrixTest.setWrongOTUs()'>setWrongOTUs</td>
+<td>0</td>
+<td><div><pre>java.lang.IllegalArgumentException: otus (size 2) does not contain the same OTU's as the matrix's OTUSet (size 3).
+	at com.google.common.base.Preconditions.checkArgument(Preconditions.java:84)
+	at edu.upenn.cis.ppod.model.Matrix.setOTUs(CharacterStateMatrix.java:695)
+	at edu.upenn.cis.ppod.model.CharacterStateMatrixTest.setWrongOTUs(CharacterStateMatrixTest.java:176)
+... Removed 22 stack frames</pre></div><a href='#' onClick='toggleBox("stack-trace446544274", this, "Click to show all stack frames", "Click to hide stack frames")'>Click to show all stack frames</a>
+<div class='stack-trace' id='stack-trace446544274'><pre>java.lang.IllegalArgumentException: otus (size 2) does not contain the same OTU's as the matrix's OTUSet (size 3).
+	at com.google.common.base.Preconditions.checkArgument(Preconditions.java:84)
+	at edu.upenn.cis.ppod.model.Matrix.setOTUs(CharacterStateMatrix.java:695)
+	at edu.upenn.cis.ppod.model.CharacterStateMatrixTest.setWrongOTUs(CharacterStateMatrixTest.java:176)
+	at sun.reflect.NativeMethodAccessorImpl.invoke0(Native Method)
+	at sun.reflect.NativeMethodAccessorImpl.invoke(NativeMethodAccessorImpl.java:39)
+	at sun.reflect.DelegatingMethodAccessorImpl.invoke(DelegatingMethodAccessorImpl.java:25)
+	at java.lang.reflect.Method.invoke(Method.java:597)
+	at org.testng.internal.MethodHelper.invokeMethod(MethodHelper.java:607)
+	at org.testng.internal.Invoker.invokeMethod(Invoker.java:517)
+	at org.testng.internal.Invoker.invokeTestMethod(Invoker.java:669)
+	at org.testng.internal.Invoker.invokeTestMethods(Invoker.java:956)
+	at org.testng.internal.TestMethodWorker.invokeTestMethods(TestMethodWorker.java:126)
+	at org.testng.internal.TestMethodWorker.run(TestMethodWorker.java:110)
+	at org.testng.TestRunner.runWorkers(TestRunner.java:759)
+	at org.testng.TestRunner.privateRun(TestRunner.java:592)
+	at org.testng.TestRunner.run(TestRunner.java:486)
+	at org.testng.SuiteRunner.runTest(SuiteRunner.java:332)
+	at org.testng.SuiteRunner.runSequentially(SuiteRunner.java:327)
+	at org.testng.SuiteRunner.privateRun(SuiteRunner.java:299)
+	at org.testng.SuiteRunner.run(SuiteRunner.java:204)
+	at org.testng.TestNG.createAndRunSuiteRunners(TestNG.java:877)
+	at org.testng.TestNG.runSuitesLocally(TestNG.java:842)
+	at org.testng.TestNG.run(TestNG.java:751)
+	at org.testng.remote.RemoteTestNG.run(RemoteTestNG.java:73)
+	at org.testng.remote.RemoteTestNG.main(RemoteTestNG.java:124)
+</pre></div></td>
+</tr>
+<tr>
+<td title='edu.upenn.cis.ppod.FactorySetup.succeed()'>succeed</td>
+<td>0</td>
+<td></td>
+</tr>
+</table><p>
+</body>
+</html>

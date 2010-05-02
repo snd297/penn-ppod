@@ -1,0 +1,12 @@
+<!DOCTYPE suite SYSTEM "http://testng.org/testng-1.0.dtd">
+<suite thread-count="5" skipfailedinvocationCounts="false" verbose="1" name="Failed suite [ppod-cdm]" junit="false" parallel="false" annotations="JDK">
+  <test name="edu.upenn.cis.ppod.model.OTUsToMolecularSequencesTest(failed)" junit="false" parallel="false" annotations="JDK">
+    <classes>
+      <class name="edu.upenn.cis.ppod.model.OTUsToMolecularSequencesTest">
+        <methods>
+          <include name="putHelperTest"/>
+        </methods>
+      </class>
+    </classes>
+  </test>
+</suite>
