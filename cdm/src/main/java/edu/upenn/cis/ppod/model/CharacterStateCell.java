@@ -30,10 +30,7 @@ import java.util.SortedSet;
 
 import javax.annotation.CheckForNull;
 import javax.annotation.Nullable;
-import javax.persistence.Column;
 import javax.persistence.Entity;
-import javax.persistence.EnumType;
-import javax.persistence.Enumerated;
 import javax.persistence.FetchType;
 import javax.persistence.JoinColumn;
 import javax.persistence.JoinTable;
@@ -43,7 +40,6 @@ import javax.persistence.Table;
 import javax.persistence.Transient;
 import javax.xml.bind.Marshaller;
 import javax.xml.bind.Unmarshaller;
-import javax.xml.bind.annotation.XmlAttribute;
 import javax.xml.bind.annotation.XmlElement;
 import javax.xml.bind.annotation.XmlIDREF;
 
@@ -59,58 +55,11 @@ import edu.upenn.cis.ppod.util.IVisitor;
  */
 @Entity
 @Table(name = CharacterStateCell.TABLE)
-public class CharacterStateCell extends PPodEntity implements
-		Iterable<CharacterState> {
-
-	/**
-	 * The different types of {@code CharacterStateCell}: single, polymorphic,
-	 * uncertain, unassigned, or inapplicable.
-	 * <p>
-	 * Because we're storing these in the db as ordinals they will be:
-	 * <ul>
-	 * <li>{@code UNASSIGNED -> 0}</li>
-	 * <li>{@code SINGLE -> 1}</li>
-	 * <li>{@code POLYMORPHIC -> 2}</li>
-	 * <li>{@code UNCERTAIN -> 3}</li>
-	 * <li>{@code INAPPLICABLE -> 4}</li>
-	 * </ul>
-	 */
-	public static enum Type {
-
-		/** Unassigned, usually written as a {@code "?"} in Nexus files. */
-		UNASSIGNED,
-
-		/**
-		 * The cell has exactly one state.
-		 */
-		SINGLE,
-
-		/**
-		 * The cell is a conjunctions of states: <em>state1</em> and
-		 * <em>state2</em> and ... and <em>stateN</em>.
-		 */
-		POLYMORPHIC,
-
-		/**
-		 * The cell is a disjunction of states: <em>state1</em> or
-		 * <em>state2</em> or ... or <em>stateN</em>.
-		 */
-		UNCERTAIN,
-
-		/** Inapplicable, usually written as a {@code "-"} in Nexus files. */
-		INAPPLICABLE;
-	}
-
-	/** Position in a {@link CharacterStateRow}. */
-	@Column(name = "POSITION", nullable = false)
-	@CheckForNull
-	private Integer position;
+public class CharacterStateCell extends Cell<CharacterState> {
 
 	static final String TABLE = "CHARACTER_STATE_CELL";
 
 	static final String ID_COLUMN = TABLE + "_ID";
-
-	static final String TYPE_COLUMN = "TYPE";
 
 	/**
 	 * To handle the most-common case of a single {@code CharacterState}, we
@@ -142,15 +91,6 @@ public class CharacterStateCell extends PPodEntity implements
 	@Transient
 	@CheckForNull
 	private Set<CharacterState> xmlStates = null;
-
-	/**
-	 * Does this cell have a single state?, multiple states?, is it unassigned?,
-	 * or inapplicable?
-	 */
-	@Column(name = TYPE_COLUMN, nullable = false)
-	@Enumerated(EnumType.ORDINAL)
-	@CheckForNull
-	private Type type;
 
 	/**
 	 * The {@code CharacterStateRow} to which this {@code CharacterStateCell}
@@ -282,19 +222,6 @@ public class CharacterStateCell extends PPodEntity implements
 	}
 
 	/**
-	 * Get this cell's position value.
-	 * <p>
-	 * Generally, the position of a cell should be obtained through
-	 * {@link CharacterStateRow#getCellPosition(CharacterStateCell)}.
-	 * 
-	 * @return this cell's position value
-	 */
-	@CheckForNull
-	protected Integer getPosition() {
-		return position;
-	}
-
-	/**
 	 * Getter. This will return {@code null} until the cell is added to a row.
 	 * 
 	 * @return the {@code CharacterStateRow} to which this {@code
@@ -372,17 +299,6 @@ public class CharacterStateCell extends PPodEntity implements
 	}
 
 	/**
-	 * Get the type of this cell. {@code null} when this object is constructed.
-	 * 
-	 * @return the {@code Type}
-	 */
-	@XmlAttribute
-	@Nullable
-	public Type getType() {
-		return type;
-	}
-
-	/**
 	 * Set package-private for testing.
 	 * 
 	 * @return the states for marhsalling
@@ -447,38 +363,6 @@ public class CharacterStateCell extends PPodEntity implements
 	}
 
 	/**
-	 * Set the type to polymorphic with the given states.
-	 * 
-	 * @param polymorphicStates the states
-	 * 
-	 * @return this
-	 * 
-	 * @throw IllegalArgumentException if {@code polymorphicStates.size() < 2}
-	 */
-	public CharacterStateCell setPolymorphicStates(
-			final Set<? extends CharacterState> polymorphicStates) {
-		checkNotNull(polymorphicStates);
-		checkArgument(polymorphicStates.size() > 1,
-				"polymorphic states must be > 1");
-		setTypeAndStates(Type.POLYMORPHIC, polymorphicStates);
-		return this;
-	}
-
-	/**
-	 * Set the position.
-	 * 
-	 * @param position the position to set, pass in {@code null} if the cell is
-	 *            no longer part of a row
-	 * 
-	 * @return this
-	 */
-	protected CharacterStateCell setPosition(
-			@CheckForNull final Integer position) {
-		this.position = position;
-		return this;
-	}
-
-	/**
 	 * Set or unset the row to which this cell belongs.
 	 * <p>
 	 * This value is used for error checking. For example, to make sure that the
@@ -496,25 +380,6 @@ public class CharacterStateCell extends PPodEntity implements
 	}
 
 	/**
-	 * Set the cell to have type {@link Type#SINGLE} and the given states.
-	 * 
-	 * @param state state to assign to this cell
-	 * 
-	 * @return this
-	 */
-	public CharacterStateCell setSingleState(final CharacterState state) {
-		checkNotNull(state);
-		setTypeAndStates(Type.SINGLE, newHashSet(state));
-		return this;
-	}
-
-	private CharacterStateCell setType(final Type type) {
-		checkNotNull(type);
-		this.type = type;
-		return this;
-	}
-
-	/**
 	 * Add a set of {@code CharacterState}s to this {@code CharacterStateCell}.
 	 * <p>
 	 * Assumes that none of {@code states} is in a Hibernate-detached state.
@@ -525,7 +390,8 @@ public class CharacterStateCell extends PPodEntity implements
 	 * 
 	 * @return {@code state}
 	 */
-	private CharacterStateCell setTypeAndStates(final Type type,
+	@Override
+	protected CharacterStateCell setTypeAndStates(final Type type,
 			final Set<? extends CharacterState> states) {
 		checkNotNull(type);
 		checkNotNull(states);
@@ -568,36 +434,6 @@ public class CharacterStateCell extends PPodEntity implements
 		checkNotNull(xmlStates);
 		setType(type);
 		this.xmlStates = newHashSet(xmlStates);
-		return this;
-	}
-
-	/**
-	 * Set this cell's type to {@link Type#UNASSIGNED} to {@code
-	 * Collections.EMPTY_SET}.
-	 * 
-	 * @return this
-	 */
-	public CharacterStateCell setUnassigned() {
-		final Set<CharacterState> emptyStates = Collections.emptySet();
-		setTypeAndStates(CharacterStateCell.Type.UNASSIGNED, emptyStates);
-		return this;
-	}
-
-	/**
-	 * Set the type to uncertain with the given states.
-	 * 
-	 * @param uncertainStates the states
-	 * 
-	 * @return this
-	 * 
-	 * @throw IllegalArgumentException if {@code uncertainStates.size() < 2}
-	 */
-	public CharacterStateCell setUncertainStates(
-			final Set<? extends CharacterState> uncertainStates) {
-		checkNotNull(uncertainStates);
-		checkArgument(uncertainStates.size() > 1,
-				"uncertain states must be > 1");
-		setTypeAndStates(CharacterStateCell.Type.UNCERTAIN, uncertainStates);
 		return this;
 	}
 
