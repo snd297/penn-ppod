@@ -23,6 +23,7 @@ import java.util.Map;
 import java.util.Set;
 
 import javax.annotation.CheckForNull;
+import javax.annotation.Nullable;
 import javax.persistence.CascadeType;
 import javax.persistence.Entity;
 import javax.persistence.FetchType;
@@ -49,9 +50,9 @@ import edu.upenn.cis.ppod.util.OTUSomethingPair;
 public class OTUsToCharacterStateRows extends
 		OTUKeyedMap<CharacterStateRow> {
 
-	@OneToMany(cascade = CascadeType.ALL, orphanRemoval = true)
-	@MapKeyJoinColumn(name = OTU.ID_COLUMN)
-	private final Map<OTU, CharacterStateRow> rows = newHashMap();
+	@OneToOne(fetch = FetchType.LAZY, mappedBy = "otusToRows")
+	@CheckForNull
+	private CharacterStateMatrix matrix;
 
 	/**
 	 * For marshalling {@code rows}. Since a {@code Map}'s key couldn't be an
@@ -60,9 +61,9 @@ public class OTUsToCharacterStateRows extends
 	@Transient
 	private final Set<OTUCharacterStateRowPair> otuRowPairs = newHashSet();
 
-	@OneToOne(fetch = FetchType.LAZY, mappedBy = "otusToRows")
-	@CheckForNull
-	private CharacterStateMatrix matrix;
+	@OneToMany(cascade = CascadeType.ALL, orphanRemoval = true)
+	@MapKeyJoinColumn(name = OTU.ID_COLUMN)
+	private final Map<OTU, CharacterStateRow> rows = newHashMap();
 
 	OTUsToCharacterStateRows() {}
 
@@ -92,6 +93,7 @@ public class OTUsToCharacterStateRows extends
 		return true;
 	}
 
+	@Nullable
 	protected CharacterStateMatrix getMatrix() {
 		return matrix;
 	}
@@ -115,6 +117,7 @@ public class OTUsToCharacterStateRows extends
 		return otuValuePairs;
 	}
 
+	@Nullable
 	@Override
 	protected IPPodVersionedWithOTUSet getParent() {
 		return matrix;
