@@ -1,0 +1,124 @@
+#XXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXX
+select dataRow from Matrix m, DataRow dataRow, OTU otu where otu.label = 'homo erectus' and m.dataRows[m.taxonIdx[otu]] = dataRow
+
+select
+  dataRow
+ from
+  Matrix m
+ join
+  m.dataRows dataRow
+ join
+  m.taxonList otu
+ where
+  otu.label = 'homo erectus'
+ and m.dataRows[m.taxonIdx[otu]] = dataRow
+
+select
+  charState.state
+ from
+  Matrix matrix
+ join
+  matrix.charList char
+ join
+  matrix.taxonList otu
+ join
+  matrix.dataRows dataRow
+ join
+  dataRow.row charState
+ where
+  otu.label = 'homo sapien'
+ and dataRow = matrix.dataRows[matrix.taxonIdx[otu]]
+ and char.label = 'probiscous'
+ and index(charState) = matrix.charIdx[char]
+
+select
+  charState.state
+ from
+  Matrix matrix,
+  Char char,
+  OTU otu,
+  DataRow dataRow
+ join
+  dataRow.row charState
+ where
+  otu.label = 'homo sapien'
+ and dataRow = matrix.dataRows[matrix.taxonIdx[otu]]
+ and char.label = 'probiscous'
+ and index(charState) = matrix.charIdx[char] 
+ 
+ //Select all otu labels that are in a matrix that have a character %optic$
+ select
+  otu.label    
+ from
+  Matrix matrix   
+ join
+  matrix.otuList otu    
+ join
+  matrix.dataRows dataRow   
+ join
+  matrix.phyloCharList phyloChar   
+ where
+  dataRow = matrix.dataRows[matrix.otuIdx[otu]]    
+  and phyloChar.label like '%optic%'
+  
+ //Select all otu labels that are in a matrix that have a PhyloCharState label 'one'
+select
+  otu.label    
+ from
+  Matrix matrix   
+ join
+  matrix.otuList otu    
+ join
+  matrix.dataRows dataRow   
+ join 
+  dataRow.row phyloCharState
+ where
+  dataRow = matrix.dataRows[matrix.otuIdx[otu]]    
+  and phyloCharState.label like 'one'
+  
+
+//Select all phyloChars (rliking) for that a particular OTU has 
+  
+  select distinct 
+  phyloChar.label, otu.label, matrix.label 
+ from
+  Matrix matrix    
+ join
+  matrix.phyloCharList phyloChar    
+ join
+  matrix.otuList otu
+ join 
+  matrix.dataRows dataRow     
+ where
+  dataRow = matrix.dataRows[matrix.otuIdx[otu]]      
+  and phyloChar.label like '%Nerve%'
+  and otu.label like 'Mesonyx'
+
+//Select all phyloCharStates (rliking) that a particular OTU has   
+select distinct 
+  phyloChar.label, phyloCharState.label, otu.label, matrix.label 
+ from
+  Matrix matrix    
+ join
+  matrix.phyloCharList phyloChar    
+ join
+  matrix.otuList otu
+ join 
+  matrix.dataRows dataRow
+ join 
+  dataRow.row phyloCharState     
+ where
+  dataRow = matrix.dataRows[matrix.otuIdx[otu]]      
+  and phyloChar.label like '%Nerve%'
+  and otu.label like 'Mesonyx'
+  and phyloCharState.label like '%absent%'
+  
+  select distinct c1.label, c2.label, m1.otuSet.study.label
+from Character c1, Character c2
+join c1.matrices m1
+join c2.matrices m2
+where m1=m2
+  and c1!=c2
+  and c1.label=c2.label
+  
+
