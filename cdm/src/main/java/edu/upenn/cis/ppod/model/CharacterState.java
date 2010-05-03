@@ -18,12 +18,5 @@ public abstract class CharacterState extends PPodEntityWXmlId implements
 	 */
 	protected final static String LABEL_COLUMN = "LABEL";
 
-	/**
-	 * Get the character state label.
-	 * 
-	 * @return the character state label
-	 */
-	@XmlAttribute(required = true)
-	@Nullable
 	public abstract String getLabel();
 }

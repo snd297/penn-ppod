@@ -20,7 +20,7 @@ import com.google.inject.assistedinject.FactoryProvider;
 
 import edu.upenn.cis.ppod.dao.hibernate.DAOHibernateModule;
 import edu.upenn.cis.ppod.model.CategoricalState;
-import edu.upenn.cis.ppod.model.DNAState;
+import edu.upenn.cis.ppod.model.DNA;
 import edu.upenn.cis.ppod.model.ModelModule;
 import edu.upenn.cis.ppod.saveorupdate.IMergeAttachments;
 import edu.upenn.cis.ppod.saveorupdate.IMergeOTUSets;
@@ -61,9 +61,9 @@ public final class PPodModule extends AbstractModule {
 		bind(CategoricalState.IFactory.class).toProvider(
 				FactoryProvider.newFactory(CategoricalState.IFactory.class,
 						CategoricalState.class));
-		bind(DNAState.IFactory.class).toProvider(
-				FactoryProvider.newFactory(DNAState.IFactory.class,
-						DNAState.class));
+		bind(DNA.IFactory.class).toProvider(
+				FactoryProvider.newFactory(DNA.IFactory.class,
+						DNA.class));
 
 		bind(StringPair.IFactory.class).toProvider(
 				FactoryProvider.newFactory(

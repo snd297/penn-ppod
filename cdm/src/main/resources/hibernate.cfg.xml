@@ -35,7 +35,7 @@
 
 		<mapping class="edu.upenn.cis.ppod.model.DNAMatrix" />
 		<mapping class="edu.upenn.cis.ppod.model.DNACharacter" />
-		<mapping class="edu.upenn.cis.ppod.model.DNAState" />
+		<mapping class="edu.upenn.cis.ppod.model.DNA" />
 		<!--
 
 			<mapping class="edu.upenn.cis.ppod.model.RNACharacter" /> <mapping

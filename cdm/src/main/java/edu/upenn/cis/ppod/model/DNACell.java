@@ -2,20 +2,19 @@ package edu.upenn.cis.ppod.model;
 
 import java.util.Iterator;
 import java.util.Set;
-import java.util.SortedSet;
 
 import javax.annotation.CheckForNull;
+import javax.persistence.CollectionTable;
+import javax.persistence.Column;
+import javax.persistence.ElementCollection;
 import javax.persistence.Entity;
+import javax.persistence.EnumType;
+import javax.persistence.Enumerated;
 import javax.persistence.FetchType;
 import javax.persistence.JoinColumn;
-import javax.persistence.JoinTable;
-import javax.persistence.ManyToMany;
 import javax.persistence.ManyToOne;
 import javax.persistence.Table;
 import javax.persistence.Transient;
-
-import org.hibernate.annotations.Sort;
-import org.hibernate.annotations.SortType;
 
 import edu.upenn.cis.ppod.modelinterfaces.ICell;
 
@@ -26,7 +25,7 @@ import edu.upenn.cis.ppod.modelinterfaces.ICell;
  */
 @Entity
 @Table(name = "DNA_CELL")
-public class DNACell extends MolecularCell<DNAState> {
+public class DNACell extends Cell<DNANucleotide> {
 
 	/**
 	 * To handle the most-common case of a single {@code CharacterState}, we
@@ -35,10 +34,10 @@ public class DNACell extends MolecularCell<DNAState> {
 	 * Will be {@code null} if this is a {@link Type#INAPPLICABLE} or
 	 * {@link Type#UNASSIGNED}.
 	 */
-	@ManyToOne(fetch = FetchType.LAZY)
-	@JoinColumn(name = "FIRST_" + DNAState.ID_COLUMN)
+	@Column(name = "FIRST_STATE")
+	@Enumerated(EnumType.ORDINAL)
 	@CheckForNull
-	private DNAState firstState = null;
+	private DNANucleotide firstState = null;
 
 	/**
 	 * The {@code CharacterStateRow} to which this {@code CategoricalCell}
@@ -54,11 +53,12 @@ public class DNACell extends MolecularCell<DNAState> {
 	 * <p>
 	 * Will be {@code null} when first created, but is generally not-null.
 	 */
-	@ManyToMany
-	@Sort(type = SortType.COMPARATOR, comparator = CategoricalState.CharacterStateComparator.class)
-	@JoinTable(inverseJoinColumns = @JoinColumn(name = CategoricalState.ID_COLUMN))
+	@ElementCollection
+	@CollectionTable(name = "DNA_CELL_STATES", joinColumns = @JoinColumn(name = ID_COLUMN))
+	@Column(name = "STATE")
+	@Enumerated(EnumType.ORDINAL)
 	@CheckForNull
-	private Set<DNAState> states = null;
+	private Set<DNANucleotide> states = null;
 
 	/**
 	 * Used for serialization so we don't have to hit {@code states} directly
@@ -66,44 +66,44 @@ public class DNACell extends MolecularCell<DNAState> {
 	 */
 	@Transient
 	@CheckForNull
-	private Set<DNAState> xmlStates = null;
+	private Set<DNANucleotide> xmlStates = null;
 
 	@Override
-	protected DNAState getFirstState() {
+	protected DNANucleotide getFirstState() {
 		return firstState;
 	}
 
 	@Override
-	Row<? extends Cell<? extends DNAState>> getRow() {
+	Row<? extends Cell<? extends DNANucleotide>> getRow() {
 		return row;
 	}
 
 	@Override
-	protected Set<DNAState> getStates() {
+	protected Set<DNANucleotide> getStates() {
 		return states;
 	}
 
 	@Override
-	protected Set<DNAState> getXmlStates() {
+	protected Set<DNANucleotide> getXmlStates() {
 		return xmlStates;
 	}
 
 	@Override
-	protected Cell<DNAState> setFirstState(final DNAState firstState) {
+	protected Cell<DNANucleotide> setFirstState(final DNANucleotide firstState) {
 		this.firstState = firstState;
 		return this;
 	}
 
 	@Override
-	protected Cell<DNAState> setTypeAndStates(
+	protected Cell<DNANucleotide> setTypeAndStates(
 			edu.upenn.cis.ppod.model.Cell.Type type,
-			Set<? extends DNAState> states) {
+			Set<? extends DNANucleotide> states) {
 		// TODO Auto-generated method stub
 		throw new UnsupportedOperationException();
 	}
 
 	@Override
-	protected Cell<DNAState> unsetXmlStates() {
+	protected Cell<DNA> unsetXmlStates() {
 		// TODO Auto-generated method stub
 		throw new UnsupportedOperationException();
 	}
@@ -113,7 +113,7 @@ public class DNACell extends MolecularCell<DNAState> {
 		throw new UnsupportedOperationException();
 	}
 
-	public Iterator<DNAState> iterator() {
+	public Iterator<DNA> iterator() {
 		// TODO Auto-generated method stub
 		throw new UnsupportedOperationException();
 	}
