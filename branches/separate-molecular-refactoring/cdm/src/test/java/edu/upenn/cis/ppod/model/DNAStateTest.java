@@ -32,14 +32,14 @@ public class DNAStateTest {
 	 * correct nucleotides.
 	 */
 	public void of() {
-		assertEquals(DNAState.Nucleotide.of(0), DNAState.Nucleotide.A);
-		assertEquals(DNAState.Nucleotide.of(1), DNAState.Nucleotide.C);
-		assertEquals(DNAState.Nucleotide.of(2), DNAState.Nucleotide.G);
-		assertEquals(DNAState.Nucleotide.of(3), DNAState.Nucleotide.T);
+		assertEquals(DNA.Nucleotide.of(0), DNA.Nucleotide.A);
+		assertEquals(DNA.Nucleotide.of(1), DNA.Nucleotide.C);
+		assertEquals(DNA.Nucleotide.of(2), DNA.Nucleotide.G);
+		assertEquals(DNA.Nucleotide.of(3), DNA.Nucleotide.T);
 	}
 
 	@Test(expectedExceptions = IllegalArgumentException.class)
 	public void ofIllegalArg() {
-		assertEquals(DNAState.Nucleotide.of(4), DNAState.Nucleotide.A);
+		assertEquals(DNA.Nucleotide.of(4), DNA.Nucleotide.A);
 	}
 }

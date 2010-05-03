@@ -8,7 +8,7 @@ import edu.upenn.cis.ppod.modelinterfaces.IMatrix;
 /**
  * @author Sam Donnelly
  */
-public class DNARow extends MolecularStateRow<DNACell> {
+public class DNARow extends Row<DNACell> {
 
 	@Override
 	protected List<DNACell> getCells() {

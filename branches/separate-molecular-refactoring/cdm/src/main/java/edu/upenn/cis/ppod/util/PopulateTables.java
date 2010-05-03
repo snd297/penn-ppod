@@ -26,7 +26,7 @@ import com.google.inject.Guice;
 import com.google.inject.Injector;
 
 import edu.upenn.cis.ppod.PPodModule;
-import edu.upenn.cis.ppod.model.DNAState;
+import edu.upenn.cis.ppod.model.DNA;
 import edu.upenn.cis.ppod.modelinterfaces.INewPPodVersionInfo;
 import edu.upenn.cis.ppod.modelinterfaces.INewPPodVersionInfoHibernate;
 import edu.upenn.cis.ppod.thirdparty.util.HibernateUtil;
@@ -50,20 +50,20 @@ public class PopulateTables {
 			ManagedSessionContext.bind(session);
 			session.beginTransaction();
 
-			final DNAState.IFactory dnaStateFactory = injector
-					.getInstance(DNAState.IFactory.class);
+			final DNA.IFactory dnaStateFactory = injector
+					.getInstance(DNA.IFactory.class);
 
-			final Set<DNAState> states = newHashSet();
-			states.add(dnaStateFactory.create(DNAState.Nucleotide.A));
-			states.add(dnaStateFactory.create(DNAState.Nucleotide.C));
-			states.add(dnaStateFactory.create(DNAState.Nucleotide.T));
-			states.add(dnaStateFactory.create(DNAState.Nucleotide.G));
+			final Set<DNA> states = newHashSet();
+			states.add(dnaStateFactory.create(DNA.Nucleotide.A));
+			states.add(dnaStateFactory.create(DNA.Nucleotide.C));
+			states.add(dnaStateFactory.create(DNA.Nucleotide.T));
+			states.add(dnaStateFactory.create(DNA.Nucleotide.G));
 
 			final INewPPodVersionInfo newPPodVersionInfo = injector
 					.getInstance(INewPPodVersionInfoHibernate.IFactory.class)
 					.create(session);
 
-			for (final DNAState state : states) {
+			for (final DNA state : states) {
 				state.setPPodVersionInfo(newPPodVersionInfo
 						.getNewPPodVersionInfo());
 				session.save(state);

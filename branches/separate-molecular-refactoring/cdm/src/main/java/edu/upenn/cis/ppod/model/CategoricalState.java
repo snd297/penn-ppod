@@ -168,6 +168,12 @@ public class CategoricalState extends CharacterState {
 		return character;
 	}
 
+	/**
+	 * Get the character state label.
+	 * 
+	 * @return the character state label
+	 */
+	@XmlAttribute(required = true)
 	@Nullable
 	@Override
 	public String getLabel() {

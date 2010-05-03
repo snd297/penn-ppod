@@ -28,7 +28,7 @@ import edu.upenn.cis.ppod.modelinterfaces.IMatrix;
  * @author Sam Donnelly
  */
 @MappedSuperclass
-public abstract class Cell<S extends CharacterState> extends
+public abstract class Cell<S> extends
 		PPodEntity implements ICell, Iterable<S> {
 
 	/**
