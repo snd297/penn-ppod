@@ -84,6 +84,12 @@ public abstract class OTUKeyedMap<V extends PersistentObject>
 
 	protected abstract Set<OTUSomethingPair<V>> getOTUValuePairs();
 
+	/**
+	 * Get the object set that owns this map. This will only be {@code null}
+	 * when first created until the parent is assigned in the implementing
+	 * class. This will never be {@code null} for a persistent object.
+	 */
+	@Nullable
 	protected abstract IPPodVersionedWithOTUSet getParent();
 
 	public List<V> getValuesInOTUOrder(final OTUSet otuSet) {
