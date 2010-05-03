@@ -61,9 +61,9 @@ public class Character extends UUPPodEntityWXmlId {
 	 * with the generated SQL: {@code "CHARACTER"} means something to at least
 	 * MySQL.
 	 */
-	final static String TABLE = "PHYLO_CHARACTER";
+	public final static String TABLE = "PHYLO_CHARACTER";
 
-	final static String ID_COLUMN = TABLE + "_ID";
+	public final static String ID_COLUMN = TABLE + "_ID";
 	final static String LABEL_COLUMN = "LABEL";
 
 	/**

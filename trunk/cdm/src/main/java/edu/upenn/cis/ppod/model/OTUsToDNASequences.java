@@ -122,7 +122,7 @@ public class OTUsToDNASequences extends
 	public DNASequence put(final OTU otu, final DNASequence sequence) {
 		checkNotNull(otu);
 		checkNotNull(sequence);
-		final DNASequence originalSequence = super.putHelper(otu, sequence);
+		final DNASequence originalSequence = super.put(otu, sequence);
 
 		sequence.setOTUsToSequences(this);
 		return originalSequence;
