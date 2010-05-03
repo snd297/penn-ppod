@@ -59,7 +59,6 @@ import com.google.common.collect.BiMap;
 import com.google.common.collect.HashBiMap;
 import com.google.inject.Inject;
 
-import edu.upenn.cis.ppod.modelinterfaces.IPPodVersionedWithOTUSet;
 import edu.upenn.cis.ppod.util.IVisitor;
 
 /**
@@ -70,8 +69,7 @@ import edu.upenn.cis.ppod.util.IVisitor;
 @XmlSeeAlso( { DNAMatrix.class })
 @Entity
 @Table(name = CharacterStateMatrix.TABLE)
-public class CharacterStateMatrix extends UUPPodEntityWXmlId implements
-		IPPodVersionedWithOTUSet, Iterable<CharacterStateRow> {
+public class CharacterStateMatrix extends Matrix<CharacterStateRow> { 
 
 	/** This entity's table name. Intentionally package-private. */
 	static final String TABLE = "CHARACTER_STATE_MATRIX";

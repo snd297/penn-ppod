@@ -47,8 +47,7 @@ import edu.upenn.cis.ppod.util.OTUSomethingPair;
  */
 @Entity
 @Table(name = "OTUS_TO_CHARACTER_STATE_ROWS")
-public class OTUsToCharacterStateRows extends
-		OTUKeyedMap<CharacterStateRow> {
+public class OTUsToCharacterStateRows extends OTUsToRows<CharacterStateRow> {
 
 	@OneToOne(fetch = FetchType.LAZY, mappedBy = "otusToRows")
 	@CheckForNull
@@ -128,7 +127,7 @@ public class OTUsToCharacterStateRows extends
 		checkNotNull(otu);
 		checkNotNull(row);
 		row.setOTUsToRows(this);
-		final CharacterStateRow originalRow = super.putHelper(otu, row);
+		final CharacterStateRow originalRow = super.put(otu, row);
 		if (originalRow != null && originalRow != row) {
 			originalRow.setOTUsToRows(null);
 		}

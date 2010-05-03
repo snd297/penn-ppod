@@ -34,7 +34,6 @@ import javax.persistence.ManyToOne;
 import javax.persistence.OneToMany;
 import javax.persistence.OrderBy;
 import javax.persistence.Table;
-import javax.xml.bind.Unmarshaller;
 import javax.xml.bind.annotation.XmlElement;
 
 import edu.upenn.cis.ppod.util.IVisitor;
@@ -50,11 +49,10 @@ import edu.upenn.cis.ppod.util.IVisitor;
  */
 @Entity
 @Table(name = CharacterStateRow.TABLE)
-public class CharacterStateRow extends PPodEntity implements
-		Iterable<CharacterStateCell> {
+public class CharacterStateRow extends Row<CharacterStateCell> {
 
-	/** This entitiy's table. Intentionally package-private. */
-	static final String TABLE = "CHARACTER_STATE_ROW";
+	/** This entitiy's table name. */
+	public static final String TABLE = "CHARACTER_STATE_ROW";
 
 	static final String CELLS_INDEX_COLUMN = CharacterStateCell.TABLE
 												+ "_POSITION";
@@ -81,6 +79,9 @@ public class CharacterStateRow extends PPodEntity implements
 	@OrderBy("position")
 	private final List<CharacterStateCell> cells = newArrayList();
 
+	/**
+	 * This is the parent of the row. It lies in between this and the matrix.
+	 */
 	@ManyToOne(fetch = FetchType.LAZY)
 	@CheckForNull
 	private OTUsToCharacterStateRows otusToRows;
@@ -89,26 +90,8 @@ public class CharacterStateRow extends PPodEntity implements
 
 	@Override
 	public void accept(final IVisitor visitor) {
-		for (final CharacterStateCell cell : getCells()) {
-			cell.accept(visitor);
-		}
 		super.accept(visitor);
 		visitor.visit(this);
-	}
-
-	/**
-	 * {@link Unmarshaller} callback.
-	 * 
-	 * @param u see {@code Unmarshaller}
-	 * @param parent see {@code Unmarshaller}
-	 */
-	@Override
-	public void afterUnmarshal(final Unmarshaller u, final Object parent) {
-		super.afterUnmarshal();
-		int cellPosition = -1;
-		for (final CharacterStateCell cell : getCells()) {
-			cell.setPosition(++cellPosition);
-		}
 	}
 
 	/**
@@ -159,17 +142,9 @@ public class CharacterStateRow extends PPodEntity implements
 	}
 
 	@XmlElement(name = "cell")
-	private List<CharacterStateCell> getCells() {
+	@Override
+	protected List<CharacterStateCell> getCells() {
 		return cells;
-	}
-
-	/**
-	 * Get the number of cells this row has.
-	 * 
-	 * @return the number of cells this row has
-	 */
-	public int getCellsSize() {
-		return getCells().size();
 	}
 
 	/**
@@ -284,6 +259,12 @@ public class CharacterStateRow extends PPodEntity implements
 				"cells=").append(this.cells).append(")\n");
 
 		return retValue.toString();
+	}
+
+	@Override
+	protected CharacterStateRow unsetOTUsToRows() {
+		otusToRows = null;
+		return this;
 	}
 
 }

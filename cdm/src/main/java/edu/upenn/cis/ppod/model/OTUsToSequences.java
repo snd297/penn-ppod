@@ -25,21 +25,20 @@ import static com.google.common.base.Preconditions.checkNotNull;
 public abstract class OTUsToSequences<V extends Sequence>
 		extends OTUKeyedMap<V> {
 
-	@Override
-	public OTUsToSequences<V> clear() {
-		for (final Sequence sequence : getOTUsToValues().values()) {
-			sequence.unsetOTUsToSequences();
-		}
-		super.clear();
-		return this;
-	}
+// @Override
+// public OTUsToSequences<V> clear() {
+// for (final Sequence sequence : getOTUsToValues().values()) {
+// sequence.unsetOTUsToSequences();
+// }
+// super.clear();
+// return this;
+// }
 
 	@Override
-	protected V putHelper(final OTU key,
-			final V value) {
+	protected V put(final OTU key, final V value) {
 		checkNotNull(key);
 		checkNotNull(value);
-		final V originalSequence = super.putHelper(key, value);
+		final V originalSequence = super.put(key, value);
 
 		// If we are replacing an OTU's sequence, we need to sever the previous
 		// sequence's sequence->sequenceSet pointer.
