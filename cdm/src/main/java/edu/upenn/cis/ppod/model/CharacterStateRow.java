@@ -176,7 +176,7 @@ public class CharacterStateRow extends PPodEntity implements
 	 * Getter.
 	 * <p>
 	 * Will be {@code null} if and only if this row is not part of a matrix.
-	 * Will never be {@code null} for persistent objects.
+	 * Will never be {@code null} right after a row is pulled from the DB.
 	 * 
 	 * @return the {@code CharacterStateMatrix} of which this is a row
 	 */

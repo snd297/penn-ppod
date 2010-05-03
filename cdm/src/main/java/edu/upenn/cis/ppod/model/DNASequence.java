@@ -55,6 +55,7 @@ public class DNASequence extends Sequence {
 	/**
 	 * Created for testing.
 	 */
+	@CheckForNull
 	OTUsToDNASequences getOTUsToSequences() {
 		return otusToSequences;
 	}
@@ -73,7 +74,7 @@ public class DNASequence extends Sequence {
 		return this;
 	}
 
-	public DNASequence setOTUsToSequences(
+	protected DNASequence setOTUsToSequences(
 			@CheckForNull final OTUsToDNASequences otusToSequences) {
 		this.otusToSequences = otusToSequences;
 		return this;

@@ -61,6 +61,8 @@ public class CharacterStateCell extends Cell<CharacterState> {
 
 	static final String ID_COLUMN = TABLE + "_ID";
 
+	private static final Comparator<CharacterState> STATE_COMPARATOR = new CharacterState.CharacterStateComparator();
+
 	/**
 	 * To handle the most-common case of a single {@code CharacterState}, we
 	 * cache {@code states.get(0)}.
@@ -71,7 +73,16 @@ public class CharacterStateCell extends Cell<CharacterState> {
 	@ManyToOne(fetch = FetchType.LAZY)
 	@JoinColumn(name = "FIRST_" + CharacterState.ID_COLUMN)
 	@CheckForNull
-	private CharacterState firstState = null;
+	private CharacterState firstState;
+
+	/**
+	 * The {@code CharacterStateRow} to which this {@code CharacterStateCell}
+	 * belongs.
+	 */
+	@ManyToOne(fetch = FetchType.LAZY)
+	@JoinColumn(name = CharacterStateRow.ID_COLUMN)
+	@CheckForNull
+	private CharacterStateRow row;
 
 	/**
 	 * The heart of the cell: the states.
@@ -92,49 +103,12 @@ public class CharacterStateCell extends Cell<CharacterState> {
 	@CheckForNull
 	private Set<CharacterState> xmlStates = null;
 
-	/**
-	 * The {@code CharacterStateRow} to which this {@code CharacterStateCell}
-	 * belongs.
-	 */
-	@ManyToOne(fetch = FetchType.LAZY)
-	@JoinColumn(name = CharacterStateRow.ID_COLUMN)
-	@CheckForNull
-	private CharacterStateRow row;
-
-	/**
-	 * Tells us that this {@code CharacterStateCell} has been unmarshalled and
-	 * still needs to have {@code states} populated with {@code xmlStates}.
-	 */
-	@Transient
-	private boolean xmlStatesNeedsToBePutIntoStates = false;
-
-	private static final Comparator<CharacterState> STATE_COMPARATOR = new CharacterState.CharacterStateComparator();
-
 	/** No-arg constructor for (at least) Hibernate. */
 	CharacterStateCell() {}
 
 	@Override
 	public void accept(final IVisitor visitor) {
 		visitor.visit(this);
-	}
-
-	/**
-	 * Take actions after unmarshalling that need to occur after
-	 * {@link #afterUnmarshal(Unmarshaller, Object)} is called - specifically,
-	 * after {@code @XmlIDRef} elements are resolved
-	 */
-	@Override
-	public void afterUnmarshal() {
-		super.afterUnmarshal();
-		if (xmlStatesNeedsToBePutIntoStates) {
-			xmlStatesNeedsToBePutIntoStates = false;
-
-			// Let's reset the type to make it consistent with states
-			final Type xmlType = getType();
-			this.type = null;
-			setTypeAndStates(xmlType, getXmlStates());
-			xmlStates = null;
-		}
 	}
 
 	/**
@@ -148,7 +122,6 @@ public class CharacterStateCell extends Cell<CharacterState> {
 		super.afterUnmarshal(u, parent);
 		row = (CharacterStateRow) parent; // don't setRow call because it'll
 		// reset the ppod version info
-		xmlStatesNeedsToBePutIntoStates = true;
 	}
 
 	/**
@@ -202,23 +175,9 @@ public class CharacterStateCell extends Cell<CharacterState> {
 
 	}
 
-	/**
-	 * Clear all {@link CharacterState} info.
-	 */
-	private void clearStates() {
-		if (firstState == null) {
-			// Should be all clear, but let's check for programming errors
-			if (states != null && states.size() != 0) {
-				throw new AssertionError(
-						"programming error: firstate == null && states != null && states.size() != 0");
-			}
-		} else {
-			firstState = null;
-			if (states != null) {
-				states.clear();
-			}
-			setInNeedOfNewPPodVersionInfo();
-		}
+	@Override
+	protected CharacterState getFirstState() {
+		return firstState;
 	}
 
 	/**
@@ -232,91 +191,25 @@ public class CharacterStateCell extends Cell<CharacterState> {
 		return row;
 	}
 
-	/**
-	 * Return an unmodifiable set which contains this cell's states.
-	 * <p>
-	 * The returned set may or may not be a view of this cell's states.
-	 * 
-	 * @return an unmodifiable set which contains this cell's states
-	 * 
-	 * @throws IllegalStateException if the type of this cell has not been
-	 *             assigned
-	 */
-	private Set<CharacterState> getStates() {
-		checkState(getType() != null,
-				"type has yet to be assigned for this cell");
-
-		// One may reasonably ask why we don't just do the
-		// AfterUnmarshalVisitor's work here. Answer: We don't want to encourage
-		// bad habits.
-		checkState(
-				!xmlStatesNeedsToBePutIntoStates,
-				"xmlStateNeedsToBePutIntoStates == true, has the afterUnmarshal visitor been dispatched?");
-		switch (getType()) {
-			// Don't hit states unless we have too
-			case INAPPLICABLE:
-			case UNASSIGNED:
-				return Collections.emptySet();
-			case SINGLE:
-				return newHashSet(firstState);
-			case POLYMORPHIC:
-			case UNCERTAIN:
-
-				// We have to hit states, which we want to avoid as much as
-				// possible since it will trigger a database hit, which in the
-				// aggregate
-				// is expensive since there're are so many cells.
-				if (states == null) {
-					return Collections.emptySet();
-				}
-				return states;
-
-			default:
-				throw new AssertionError("Unknown CharacterState.Type: " + type);
-		}
+	@CheckForNull
+	@Override
+	protected Set<CharacterState> getStatesRaw() {
+		return states;
 	}
 
 	/**
-	 * Get the number of states that this cell contains.
-	 * 
-	 * @return the number of states that this cell contains
-	 */
-	public int getStatesSize() {
-		checkState(getType() != null,
-				"type has yet to be assigned for this cell");
-		switch (getType()) {
-			case INAPPLICABLE:
-			case UNASSIGNED:
-				return 0;
-			case SINGLE:
-				return 1;
-			case POLYMORPHIC:
-			case UNCERTAIN:
-				return getStates().size();
-			default:
-				throw new AssertionError("Unknown CharacterState.Type: " + type);
-		}
-	}
-
-	/**
-	 * Set package-private for testing.
+	 * The state set that will be marshalled.
 	 * 
 	 * @return the states for marhsalling
 	 */
 	@XmlElement(name = "stateDocId")
 	@XmlIDREF
-	Set<CharacterState> getXmlStates() {
+	@Override
+	protected Set<CharacterState> getXmlStates() {
 		if (xmlStates == null) {
 			xmlStates = newHashSet();
 		}
 		return xmlStates;
-	}
-
-	/**
-	 * Created for testing purposes.
-	 */
-	boolean getXmlStatesNeedsToBePutIntoStates() {
-		return xmlStatesNeedsToBePutIntoStates;
 	}
 
 	/**
@@ -327,20 +220,6 @@ public class CharacterStateCell extends Cell<CharacterState> {
 	 */
 	public Iterator<CharacterState> iterator() {
 		return Collections.unmodifiableSet(getStates()).iterator();
-	}
-
-	/**
-	 * Set this cell's type to {@link Type#INAPPLICABLE} to {@code
-	 * Collections.EMPTY_SET}.
-	 * 
-	 * @return this
-	 */
-	public CharacterStateCell setInapplicable() {
-
-		@SuppressWarnings("unchecked")
-		final Set<CharacterState> emptyStates = Collections.EMPTY_SET;
-		setTypeAndStates(Type.INAPPLICABLE, emptyStates);
-		return this;
 	}
 
 	@Override
@@ -426,27 +305,6 @@ public class CharacterStateCell extends Cell<CharacterState> {
 	}
 
 	/**
-	 * Created for testing purposes.
-	 */
-	CharacterStateCell setTypeAndXmlStates(final CharacterStateCell.Type type,
-			final Set<? extends CharacterState> xmlStates) {
-		checkNotNull(type);
-		checkNotNull(xmlStates);
-		setType(type);
-		this.xmlStates = newHashSet(xmlStates);
-		return this;
-	}
-
-	/**
-	 * Created for testing purposes.
-	 */
-	CharacterStateCell setXmlStatesNeedsToBePutIntoStates(
-			final boolean xmlStatesNeedsToBePutIntoStates) {
-		this.xmlStatesNeedsToBePutIntoStates = xmlStatesNeedsToBePutIntoStates;
-		return this;
-	}
-
-	/**
 	 * Constructs a {@code String} with attributes in name=value format.
 	 * 
 	 * @return a {@code String} representation of this object
@@ -463,4 +321,17 @@ public class CharacterStateCell extends Cell<CharacterState> {
 
 		return retValue.toString();
 	}
+
+	@Override
+	protected Cell<CharacterState> unsetFirstState() {
+		this.firstState = null;
+		return this;
+	}
+
+	@Override
+	protected Cell<CharacterState> unsetXmlStates() {
+		this.xmlStates = null;
+		return this;
+	}
+
 }

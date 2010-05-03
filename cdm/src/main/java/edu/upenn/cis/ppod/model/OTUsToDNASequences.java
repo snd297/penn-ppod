@@ -23,6 +23,7 @@ import java.util.Map;
 import java.util.Set;
 
 import javax.annotation.CheckForNull;
+import javax.annotation.Nullable;
 import javax.persistence.CascadeType;
 import javax.persistence.Entity;
 import javax.persistence.FetchType;
@@ -111,6 +112,7 @@ public class OTUsToDNASequences extends
 		return otuSomethingPairs;
 	}
 
+	@Nullable
 	@Override
 	protected DNASequenceSet getParent() {
 		return sequenceSet;
@@ -127,7 +129,9 @@ public class OTUsToDNASequences extends
 	}
 
 	protected void setInNeedOfNewPPodVersion() {
-		sequenceSet.setInNeedOfNewPPodVersionInfo();
+		if (sequenceSet != null) {
+			sequenceSet.setInNeedOfNewPPodVersionInfo();
+		}
 	}
 
 	@Override
