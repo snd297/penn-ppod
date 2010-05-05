@@ -160,7 +160,7 @@ public class CharacterStateRow extends Row<CharacterStateCell> {
 		if (otusToRows == null) {
 			return null;
 		}
-		return otusToRows.getMatrix();
+		return otusToRows.getParent();
 	}
 
 	/**

@@ -159,17 +159,17 @@ class PPodEntitiesResourceHibernate implements
 				final Set<CharacterStateMatrix> matricesToReturn = newHashSet();
 
 				for (final Iterator<CharacterStateMatrix> matrixItr = otuSet
-						.getMatricesIterator(); matrixItr.hasNext();) {
+						.characterStateMatricesIterator(); matrixItr.hasNext();) {
 					final CharacterStateMatrix matrix = matrixItr.next();
 					if (addedMatrices.contains(matrix)) {
 						matricesToReturn.add(matrix);
 					}
 				}
-				otuSet.setMatrices(matricesToReturn);
+				otuSet.setCharacterStateMatrices(matricesToReturn);
 
 				final Set<TreeSet> treeSetsToReturn = newHashSet();
 				for (final Iterator<TreeSet> treeSetItr = otuSet
-						.getTreeSetsIterator(); treeSetItr.hasNext();) {
+						.treeSetsIterator(); treeSetItr.hasNext();) {
 					final TreeSet treeSet = treeSetItr.next();
 					if (addedTreeSets.contains(treeSet)) {
 						treeSetsToReturn.add(treeSet);

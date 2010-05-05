@@ -340,45 +340,6 @@ public class CharacterStateMatrix extends Matrix<CharacterStateRow> {
 		return getOTUsToRows().getValuesInOTUSetOrder().iterator();
 	}
 
-	/**
-	 * Set row at <code>otu</code> to <code>row</code>.
-	 * <p>
-	 * Assumes {@code row} does not belong to another matrix.
-	 * <p>
-	 * Assumes {@code row} is not detached.
-	 * 
-	 * @param otu index of the row we are adding
-	 * @param newRow the row we're adding
-	 * 
-	 * @return the row that was previously there, or {@code null} if there was
-	 *         no row previously there
-	 * 
-	 * @throw IllegalArgumentException if {@code otu} does not belong to this
-	 *        matrix's {@code OTUSet}
-	 */
-	@CheckForNull
-	public CharacterStateRow putRow(final OTU otu,
-			final CharacterStateRow row) {
-		checkNotNull(otu);
-		checkNotNull(row);
-		return getOTUsToRows().put(otu, row);
-	}
-
-	/**
-	 * Set the {@link PPodVersionInfo} at {@code idx} to {@code null}. Fills
-	 * with <code>null</code>s if necessary.
-	 * <p>
-	 * Intentionally package-private.
-	 * 
-	 * @param idx see description
-	 * 
-	 * @return this {@code CharacterStateMatrix}
-	 */
-	CharacterStateMatrix resetColumnPPodVersion(@Nonnegative final int position) {
-		checkArgument(position >= 0, "position is negative");
-		nullFillAndSet(getColumnPPodVersionInfos(), position, null);
-		return this;
-	}
 
 	/**
 	 * Set the characters.
@@ -519,10 +480,10 @@ public class CharacterStateMatrix extends Matrix<CharacterStateRow> {
 	 * @return this
 	 */
 	@Override
-	protected CharacterStateMatrix setOTUSet(
+	public CharacterStateMatrix setOTUSet(
 			@CheckForNull final OTUSet otuSet) {
 		super.setOTUSet(otuSet);
-		getOTUsToRows().setOTUs(getOTUSet());
+		getOTUsToRows().setOTUs();
 		return this;
 	}
 

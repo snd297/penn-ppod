@@ -5,6 +5,7 @@ import java.util.List;
 import javax.persistence.MappedSuperclass;
 import javax.xml.bind.Unmarshaller;
 
+import edu.upenn.cis.ppod.modelinterfaces.IRow;
 import edu.upenn.cis.ppod.util.IVisitor;
 
 /**
@@ -14,7 +15,7 @@ import edu.upenn.cis.ppod.util.IVisitor;
  */
 @MappedSuperclass
 public abstract class Row<C extends Cell<?>> extends PPodEntity implements
-		Iterable<C> {
+		Iterable<C>, IRow {
 
 	Row() {}
 

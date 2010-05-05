@@ -18,7 +18,9 @@ import javax.persistence.Transient;
 import javax.xml.bind.Unmarshaller;
 import javax.xml.bind.annotation.XmlAttribute;
 
+import edu.upenn.cis.ppod.modelinterfaces.IMatrix;
 import edu.upenn.cis.ppod.modelinterfaces.IPPodVersioned;
+import edu.upenn.cis.ppod.modelinterfaces.IRow;
 
 /**
  * A cell.
@@ -27,8 +29,6 @@ import edu.upenn.cis.ppod.modelinterfaces.IPPodVersioned;
  */
 @MappedSuperclass
 public abstract class Cell<E> extends PPodEntity implements Iterable<E> {
-
-	protected abstract IPPodVersioned getParent();
 
 	/**
 	 * The different types of {@code Cell}: single, polymorphic, uncertain,
@@ -135,20 +135,6 @@ public abstract class Cell<E> extends PPodEntity implements Iterable<E> {
 		}
 	}
 
-	/**
-	 * We cache the first state, since this is the most common case.
-	 * <p>
-	 * Will be {@code null} if this is a {@link Type#INAPPLICABLE} or
-	 * {@link Type#UNASSIGNED}.
-	 */
-	@CheckForNull
-	protected abstract E getFirstElement();
-
-	@CheckForNull
-	protected Integer getPosition() {
-		return position;
-	}
-
 	protected Set<E> getElements() {
 		checkState(getType() != null,
 				"type has yet to be assigned for this cell");
@@ -210,6 +196,25 @@ public abstract class Cell<E> extends PPodEntity implements Iterable<E> {
 		}
 	}
 
+	/**
+	 * We cache the first state, since this is the most common case.
+	 * <p>
+	 * Will be {@code null} if this is a {@link Type#INAPPLICABLE} or
+	 * {@link Type#UNASSIGNED}.
+	 */
+	@CheckForNull
+	protected abstract E getFirstElement();
+
+	protected abstract IPPodVersioned getParent();
+
+	@CheckForNull
+	protected Integer getPosition() {
+		return position;
+	}
+
+	@Nullable
+	protected abstract IRow getRow();
+
 	@XmlAttribute
 	@Nullable
 	public Type getType() {
@@ -234,6 +239,25 @@ public abstract class Cell<E> extends PPodEntity implements Iterable<E> {
 	public Cell<E> setInapplicable() {
 		final Set<E> emptyStates = Collections.emptySet();
 		setTypeAndElements(Type.INAPPLICABLE, emptyStates);
+		return this;
+	}
+
+	@Override
+	public Cell<E> setInNeedOfNewPPodVersionInfo() {
+		final IRow row = getRow();
+		if (row != null) {
+			row.setInNeedOfNewPPodVersionInfo();
+			final IMatrix matrix = row.getMatrix();
+			if (matrix != null) {
+
+				// so FindBugs knows that it's okay
+				final Integer position = getPosition();
+				checkState(position != null,
+						"cell has no position, but is a part of a matrix");
+				matrix.resetColumnPPodVersion(position);
+			}
+		}
+		super.setInNeedOfNewPPodVersionInfo();
 		return this;
 	}
 
@@ -352,4 +376,5 @@ public abstract class Cell<E> extends PPodEntity implements Iterable<E> {
 	protected abstract Cell<E> unsetFirstElement();
 
 	protected abstract Cell<E> unsetXmlElements();
+
 }

@@ -48,7 +48,7 @@ public abstract class SequenceSet<S extends Sequence>
 	private String label;
 
 	@ManyToOne
-	@JoinColumn(name = OTUSet.ID_COLUMN, nullable = false)
+	@JoinColumn(name = OTUSet.JOIN_COLUMN, nullable = false)
 	@CheckForNull
 	private OTUSet otuSet;
 
@@ -174,7 +174,7 @@ public abstract class SequenceSet<S extends Sequence>
 	 * 
 	 * @return this sequence set
 	 */
-	SequenceSet<S> setOTUSet(
+	public SequenceSet<S> setOTUSet(
 			@CheckForNull final OTUSet newOTUSet) {
 		this.otuSet = newOTUSet;
 		setOTUsInOTUsToSequences(newOTUSet);

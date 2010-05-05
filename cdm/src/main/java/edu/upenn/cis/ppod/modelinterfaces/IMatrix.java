@@ -5,6 +5,6 @@ import javax.annotation.Nonnegative;
 /**
  * @author Sam Donnelly
  */
-public interface IMatrix extends IPPodVersionedWithOTUSet {
+public interface IMatrix extends ILabeled, IPPodVersionedWithOTUSet {
 	IMatrix resetColumnPPodVersion(@Nonnegative final int position);
 }

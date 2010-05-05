@@ -28,6 +28,7 @@ import javax.xml.bind.Unmarshaller;
 import javax.xml.bind.annotation.XmlAttribute;
 
 import edu.upenn.cis.ppod.modelinterfaces.ILabeled;
+import edu.upenn.cis.ppod.modelinterfaces.IPPodVersionedWithOTUSet;
 import edu.upenn.cis.ppod.util.IVisitor;
 
 /**
@@ -38,16 +39,16 @@ import edu.upenn.cis.ppod.util.IVisitor;
  */
 @Entity
 @Table(name = OTU.TABLE)
-public class OTU extends UUPPodEntityWXmlId implements ILabeled {
+public class OTU extends UUPPodEntityWXmlId implements ILabeled,
+		IPPodVersionedWithOTUSet {
 
 	/** The table for this entity. Intentionally package-private. */
 	static final String TABLE = "OTU";
 
 	/**
-	 * The column where a {@code OTU}'s {@link javax.persistence.Id} gets
-	 * stored. Intentionally package-private.
+	 * To be used for the names of foreign keys that point at this table.
 	 */
-	static final String ID_COLUMN = TABLE + "_ID";
+	static final String JOIN_COLUMN = TABLE + "_ID";
 
 	/**
 	 * The column where we store {@code #label}. Intentionally package-private.
@@ -63,7 +64,7 @@ public class OTU extends UUPPodEntityWXmlId implements ILabeled {
 	 * These are the {@code OTUSet}s that this {@code OTU} belongs to.
 	 */
 	@ManyToOne
-	@JoinColumn(name = OTUSet.ID_COLUMN, insertable = false, updatable = false, nullable = false)
+	@JoinColumn(name = OTUSet.JOIN_COLUMN, insertable = false, updatable = false, nullable = false)
 	@CheckForNull
 	private OTUSet otuSet;
 
@@ -152,7 +153,7 @@ public class OTU extends UUPPodEntityWXmlId implements ILabeled {
 	 * 
 	 * @param otuSet to be added to this <code>OTU</code>.
 	 */
-	OTU setOTUSet(@CheckForNull final OTUSet otuSet) {
+	public OTU setOTUSet(@CheckForNull final OTUSet otuSet) {
 		this.otuSet = otuSet;
 		return this;
 	}

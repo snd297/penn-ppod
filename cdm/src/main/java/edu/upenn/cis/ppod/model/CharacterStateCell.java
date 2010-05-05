@@ -201,6 +201,7 @@ public class CharacterStateCell extends Cell<CharacterState> {
 	 *         CharacterStateCell} belongs
 	 */
 	@Nullable
+	@Override
 	public CharacterStateRow getRow() {
 		return row;
 	}
@@ -228,25 +229,6 @@ public class CharacterStateCell extends Cell<CharacterState> {
 	 */
 	public Iterator<CharacterState> iterator() {
 		return Collections.unmodifiableSet(getElements()).iterator();
-	}
-
-	@Override
-	public CharacterStateCell setInNeedOfNewPPodVersionInfo() {
-		final CharacterStateRow row = getRow();
-		if (row != null) {
-			row.setInNeedOfNewPPodVersionInfo();
-			final CharacterStateMatrix matrix = row.getMatrix();
-			if (matrix != null) {
-
-				// so FindBugs knows that it's okay
-				final Integer position = getPosition();
-				checkState(position != null,
-						"cell has no position, but is a part of a matrix");
-				matrix.resetColumnPPodVersion(position);
-			}
-		}
-		super.setInNeedOfNewPPodVersionInfo();
-		return this;
 	}
 
 	/**

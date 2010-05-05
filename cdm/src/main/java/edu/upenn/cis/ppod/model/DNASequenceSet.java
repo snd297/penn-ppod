@@ -107,7 +107,7 @@ public class DNASequenceSet extends SequenceSet<DNASequence> {
 		checkState(
 				getOTUsToSequences() != null,
 				"getOTUsToSequences() == null, so there is no otusToSequences to operate on");
-		getOTUsToSequences().setOTUs(otuSet);
+		getOTUsToSequences().setOTUs();
 		return this;
 	}
 

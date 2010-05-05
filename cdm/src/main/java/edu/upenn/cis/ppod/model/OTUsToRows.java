@@ -10,7 +10,7 @@ public abstract class OTUsToRows<R extends Row<?>> extends
 		OTUKeyedMap<R> {
 
 	@Override
-	protected R put(final OTU key, final R row) {
+	public R put(final OTU key, final R row) {
 		checkNotNull(key);
 		checkNotNull(row);
 		final R originalRow = super.put(key, row);

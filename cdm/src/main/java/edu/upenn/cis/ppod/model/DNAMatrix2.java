@@ -1,5 +1,6 @@
 package edu.upenn.cis.ppod.model;
 
+import java.util.Collections;
 import java.util.Iterator;
 
 import javax.persistence.CascadeType;
@@ -19,7 +20,7 @@ public class DNAMatrix2 extends Matrix<DNARow> {
 	public final static String TABLE = "DNA_MATRIX_2";
 
 	@OneToOne(fetch = FetchType.LAZY, optional = false, cascade = CascadeType.ALL, orphanRemoval = true)
-	private OTUsToDNARows otusToRows;
+	private final OTUsToDNARows otusToRows;
 
 	@Inject
 	protected DNAMatrix2(final OTUsToDNARows otusToRows) {
@@ -27,15 +28,15 @@ public class DNAMatrix2 extends Matrix<DNARow> {
 		this.otusToRows.setMatrix(this);
 	}
 
-	public Iterator<DNARow> iterator() {
-		// TODO Auto-generated method stub
-		throw new UnsupportedOperationException();
+	@Override
+	protected OTUsToDNARows getOTUsToRows() {
+		return otusToRows;
 	}
 
-	@Override
-	protected OTUsToRows<DNARow> getOTUsToRows() {
-		// TODO Auto-generated method stub
-		throw new UnsupportedOperationException();
+	public Iterator<DNARow> iterator() {
+		return Collections
+				.unmodifiableList(otusToRows.getValuesInOTUSetOrder())
+				.iterator();
 	}
 
 }

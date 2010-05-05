@@ -1,14 +1,17 @@
 package edu.upenn.cis.ppod.model;
 
 import static com.google.common.base.Objects.equal;
+import static com.google.common.base.Preconditions.checkArgument;
 import static com.google.common.base.Preconditions.checkNotNull;
 import static com.google.common.collect.Lists.newArrayList;
+import static edu.upenn.cis.ppod.util.CollectionsUtil.nullFillAndSet;
 
 import java.util.Collections;
 import java.util.Iterator;
 import java.util.List;
 
 import javax.annotation.CheckForNull;
+import javax.annotation.Nonnegative;
 import javax.annotation.Nullable;
 import javax.persistence.Column;
 import javax.persistence.FetchType;
@@ -23,14 +26,14 @@ import javax.xml.bind.annotation.XmlAttribute;
 import javax.xml.bind.annotation.XmlElement;
 
 import edu.umd.cs.findbugs.annotations.OverrideMustInvoke;
-import edu.upenn.cis.ppod.modelinterfaces.IPPodVersionedWithOTUSet;
+import edu.upenn.cis.ppod.modelinterfaces.IMatrix;
 
 /**
  * @author Sam Donnelly
  */
 @MappedSuperclass
 public abstract class Matrix<R extends Row<?>> extends UUPPodEntityWXmlId
-		implements IPPodVersionedWithOTUSet, Iterable<R> {
+		implements IMatrix, Iterable<R> {
 
 	/** Description column. */
 	public static final String DESCRIPTION_COLUMN = "DESCRIPTION";
@@ -62,7 +65,7 @@ public abstract class Matrix<R extends Row<?>> extends UUPPodEntityWXmlId
 	 * CharacterStateMatrix}.
 	 */
 	@ManyToOne(fetch = FetchType.LAZY)
-	@JoinColumn(name = OTUSet.ID_COLUMN, nullable = false)
+	@JoinColumn(name = OTUSet.JOIN_COLUMN, nullable = false)
 	@CheckForNull
 	private OTUSet otuSet;
 
@@ -93,6 +96,30 @@ public abstract class Matrix<R extends Row<?>> extends UUPPodEntityWXmlId
 	 */
 	List<Long> getColumnPPodVersions() {
 		return columnPPodVersions;
+	}
+
+	/**
+	 * Set row at <code>otu</code> to <code>row</code>.
+	 * <p>
+	 * Assumes {@code row} does not belong to another matrix.
+	 * <p>
+	 * Assumes {@code row} is not detached.
+	 * 
+	 * @param otu index of the row we are adding
+	 * @param newRow the row we're adding
+	 * 
+	 * @return the row that was previously there, or {@code null} if there was
+	 *         no row previously there
+	 * 
+	 * @throw IllegalArgumentException if {@code otu} does not belong to this
+	 *        matrix's {@code OTUSet}
+	 */
+	@CheckForNull
+	public R putRow(final OTU otu,
+			final R row) {
+		checkNotNull(otu);
+		checkNotNull(row);
+		return getOTUsToRows().put(otu, row);
 	}
 
 	/**
@@ -231,9 +258,24 @@ public abstract class Matrix<R extends Row<?>> extends UUPPodEntityWXmlId
 	 * @return this
 	 */
 	@OverrideMustInvoke
-	protected Matrix<R> setOTUSet(
+	public Matrix<R> setOTUSet(
 			@CheckForNull final OTUSet newOTUSet) {
 		otuSet = newOTUSet;
+		return this;
+	}
+
+	/**
+	 * Set the {@link PPodVersionInfo} at {@code idx} to {@code null}. Fills
+	 * with <code>null</code>s if necessary.
+	 * 
+	 * @param position see description
+	 * 
+	 * @return this
+	 */
+	public Matrix<R> resetColumnPPodVersion(
+			@Nonnegative final int position) {
+		checkArgument(position >= 0, "position is negative");
+		nullFillAndSet(getColumnPPodVersionInfos(), position, null);
 		return this;
 	}
 
