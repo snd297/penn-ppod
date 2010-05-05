@@ -106,7 +106,7 @@ final class Study2StudyInfo implements IStudy2StudyInfo {
 
 				int characterIdx = -1;
 				for (final Iterator<Character> charactersItr = matrix
-						.getCharactersIterator(); charactersItr.hasNext();) {
+						.charactersIterator(); charactersItr.hasNext();) {
 					characterIdx++;
 					final Character character = charactersItr.next();
 					PPodEntityInfo characterInfo = pPodEntityInfoProvider.get();

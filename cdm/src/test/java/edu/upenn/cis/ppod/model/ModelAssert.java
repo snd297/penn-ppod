@@ -158,7 +158,7 @@ public class ModelAssert {
 			final Map<Character, Integer> actualMatrixCharacterIdx = actualMatrix
 					.getCharacterPosition();
 			assertEquals(actualMatrixCharacterIdx.size(), actualMatrix
-					.getCharactersSize());
+					.getColumnsSize());
 			for (final Entry<Character, Integer> actualIdxByCharacter : actualMatrixCharacterIdx
 					.entrySet()) {
 				assertTrue(actualIdxByCharacter.getKey() == actualMatrix

@@ -2,6 +2,7 @@ package edu.upenn.cis.ppod.model;
 
 import org.testng.annotations.Test;
 
+import com.google.common.collect.ImmutableSet;
 import com.google.inject.Inject;
 import com.google.inject.Provider;
 
@@ -16,27 +17,18 @@ import edu.upenn.cis.ppod.TestGroupDefs;
 public class DNACellTest {
 
 	@Inject
+	private CellTest<DNAMatrix2, DNARow, DNACell, DNANucleotide> cellTest;
+
+	@Inject
 	private Provider<DNAMatrix2> dnaMatrix2Provider;
 
-	@Inject
-	private Provider<DNACell> dnaCellProvider;
-
-	@Inject
-	private CellTest<DNARow, DNACell, DNANucleotide> cellTest;
-
 	public void getStatesWhenCellHasOneState() {
-		final DNAMatrix2 matrix = dnaMatrix2Provider.get();
-		final DNACell cell = dnaCellProvider.get();
 
-		// nothing special about C
-		cellTest.getStatesWhenCellHasOneState(matrix,
-				cell, DNANucleotide.C);
+		// nothing special about A,C,T.
+		cellTest.getStatesWhenCellHasMultipleElements(dnaMatrix2Provider.get(),
+				ImmutableSet.of(
+						DNANucleotide.A, DNANucleotide.C,
+						DNANucleotide.T));
 	}
 
-	public void setSingleElement() {
-		final DNACell cell = dnaCellProvider.get();
-
-		// nothing special about G
-		cell.setSingleElement(DNANucleotide.G);
-	}
 }

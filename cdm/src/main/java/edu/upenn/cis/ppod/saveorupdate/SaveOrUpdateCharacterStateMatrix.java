@@ -124,7 +124,7 @@ final class SaveOrUpdateCharacterStateMatrix implements ISaveOrUpdateMatrix {
 		final List<Character> newDbMatrixCharacters = newArrayList();
 		int sourceCharacterPosition = -1;
 		for (final Iterator<Character> sourceCharactersItr = sourceMatrix
-				.getCharactersIterator(); sourceCharactersItr.hasNext();) {
+				.charactersIterator(); sourceCharactersItr.hasNext();) {
 			final Character sourceCharacter = sourceCharactersItr.next();
 			sourceCharacterPosition++;
 			Character newDbCharacter;
@@ -132,7 +132,7 @@ final class SaveOrUpdateCharacterStateMatrix implements ISaveOrUpdateMatrix {
 				newDbCharacter = dnaCharacter;
 			} else if (null == (newDbCharacter =
 					findIf(dbMatrix
-							.getCharactersIterator(),
+							.charactersIterator(),
 							compose(equalTo(sourceCharacter
 									.getPPodId()),
 									IWithPPodId.getPPodId)))) {
@@ -171,7 +171,7 @@ final class SaveOrUpdateCharacterStateMatrix implements ISaveOrUpdateMatrix {
 						sourceCharacterPosition,
 						dbMatrix.getCharacterPosition(newDbCharacter));
 			} else {
-				if (dbMatrix.getCharactersSize() <= sourceCharacterPosition) {
+				if (dbMatrix.getColumnsSize() <= sourceCharacterPosition) {
 					newCharPositionsToOriginalCharPositions.put(
 							sourceCharacterPosition,
 							null);
@@ -223,7 +223,7 @@ final class SaveOrUpdateCharacterStateMatrix implements ISaveOrUpdateMatrix {
 					sourceOTUPosition);
 			CharacterStateRow dbRow = null;
 			final List<Character> characters = newArrayList(dbMatrix
-					.getCharactersIterator());
+					.charactersIterator());
 
 			boolean newRow = false;
 
@@ -250,7 +250,7 @@ final class SaveOrUpdateCharacterStateMatrix implements ISaveOrUpdateMatrix {
 
 			// First we fill with empty cells
 			for (int newCellPosition = 0; newCellPosition < dbMatrix
-					.getCharactersSize(); newCellPosition++) {
+					.getColumnsSize(); newCellPosition++) {
 				CharacterStateCell dbCell;
 				if (newRow
 						|| null == newCharPositionsToOriginalCharPositions

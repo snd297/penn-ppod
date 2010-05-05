@@ -16,7 +16,7 @@ import com.google.inject.Inject;
  */
 @Entity
 @Table(name = DNAMatrix2.TABLE)
-public class DNAMatrix2 extends Matrix<DNARow> {
+public class DNAMatrix2 extends MolecularMatrix<DNARow> {
 	public final static String TABLE = "DNA_MATRIX_2";
 
 	@OneToOne(fetch = FetchType.LAZY, optional = false, cascade = CascadeType.ALL, orphanRemoval = true)

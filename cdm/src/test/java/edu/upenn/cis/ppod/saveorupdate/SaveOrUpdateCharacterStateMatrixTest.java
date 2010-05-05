@@ -150,7 +150,7 @@ public class SaveOrUpdateCharacterStateMatrixTest {
 
 		// Simulate passing back in the persisted characters: so we need to
 		// assign the proper pPOD ID's.
-		for (int i = 0; i < sourceMatrix.getCharactersSize(); i++) {
+		for (int i = 0; i < sourceMatrix.getColumnsSize(); i++) {
 			sourceMatrix.getCharacter(i).setPPodId(
 					targetMatrix.getCharacter(i).getPPodId());
 		}
@@ -203,14 +203,14 @@ public class SaveOrUpdateCharacterStateMatrixTest {
 
 			// Simulate passing back in the persisted characters: so we need to
 			// assign the proper pPOD ID's.
-			for (int i = 0; i < sourceMatrix.getCharactersSize(); i++) {
+			for (int i = 0; i < sourceMatrix.getColumnsSize(); i++) {
 				sourceMatrix.getCharacter(i).setPPodId(
 						targetMatrix.getCharacter(i).getPPodId());
 			}
 
 			// Swap 2 and 0
 			final List<Character> newSourceMatrixCharacters = newArrayList(sourceMatrix
-					.getCharactersIterator());
+					.charactersIterator());
 
 			newSourceMatrixCharacters.set(0, sourceMatrix.getCharacter(2));
 			newSourceMatrixCharacters.set(2, sourceMatrix.getCharacter(0));
@@ -259,7 +259,7 @@ public class SaveOrUpdateCharacterStateMatrixTest {
 
 			// Simulate passing back in the persisted characters: so we need to
 			// assign the proper pPOD ID's.
-			for (int i = 0; i < sourceMatrix.getCharactersSize(); i++) {
+			for (int i = 0; i < sourceMatrix.getColumnsSize(); i++) {
 				sourceMatrix.getCharacter(i).setPPodId(
 						targetMatrix.getCharacter(i).getPPodId());
 			}
@@ -269,7 +269,7 @@ public class SaveOrUpdateCharacterStateMatrixTest {
 					.getCharacter(2);
 
 			final List<Character> newSourceMatrixCharacters = newArrayList(sourceMatrix
-					.getCharactersIterator());
+					.charactersIterator());
 
 			newSourceMatrixCharacters.remove(2);
 
