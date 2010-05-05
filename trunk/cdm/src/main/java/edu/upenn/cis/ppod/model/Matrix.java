@@ -69,6 +69,8 @@ public abstract class Matrix<R extends Row<?>> extends UUPPodEntityWXmlId
 	@CheckForNull
 	private OTUSet otuSet;
 
+	public abstract int getColumnsSize();
+
 	Matrix() {}
 
 	/**

@@ -91,7 +91,7 @@ public class PPodEntities implements IPPodEntities {
 						.characterStateMatricesIterator(); matrixItr.hasNext();) {
 					studyWideCharacters
 							.addAll(newArrayList(matrixItr.next()
-									.getCharactersIterator()));
+									.charactersIterator()));
 				}
 			}
 		}

@@ -34,7 +34,7 @@ public class MolecularStateMatrixTest {
 				.get();
 		molecularMatrix.setCharacters(newArrayList(molecularCharacter));
 
-		for (int i = 0; i < molecularMatrix.getCharactersSize(); i++) {
+		for (int i = 0; i < molecularMatrix.getColumnsSize(); i++) {
 			assertSame(molecularMatrix.getCharacter(i), molecularCharacter);
 		}
 	}

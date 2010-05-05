@@ -68,11 +68,6 @@ public class CharacterStateMatrix extends Matrix<CharacterStateRow> {
 	/** This entity's table name. */
 	public static final String TABLE = "CHARACTER_STATE_MATRIX";
 
-	/**
-	 * Name for foreign key columns that point at this table.
-	 */
-	public static final String FK_ID_COLUMN = TABLE + "_ID";
-
 	public static final String CHARACTER_IDX_COLUMN = Character.TABLE + "_IDX";
 
 	/**
@@ -81,20 +76,12 @@ public class CharacterStateMatrix extends Matrix<CharacterStateRow> {
 	static final String CHARACTERS_POSITION_COLUMN = Character.TABLE
 														+ "_POSITION";
 
-	static final String OTU_IDX_COLUMN = "OTU_IDX";
-
-	@OneToOne(fetch = FetchType.LAZY, optional = false, cascade = CascadeType.ALL, orphanRemoval = true)
-	private OTUsToCharacterStateRows otusToRows;
-
 	/**
-	 * The inverse of {@link #characters}. So it's a {@code Character}
-	 * ->columnNumber lookup.
+	 * Name for foreign key columns that point at this table.
 	 */
-	@ElementCollection
-	@JoinTable(name = TABLE + "_" + CHARACTER_IDX_COLUMN, joinColumns = @JoinColumn(name = FK_ID_COLUMN))
-	@MapKeyJoinColumn(name = Character.ID_COLUMN)
-	@Column(name = CHARACTER_IDX_COLUMN)
-	private final Map<Character, Integer> charactersToPositions = newHashMap();
+	public static final String FK_ID_COLUMN = TABLE + "_ID";
+
+	static final String OTU_IDX_COLUMN = "OTU_IDX";
 
 	/**
 	 * The position of a {@code Character} in <code>characters</code> signifies
@@ -109,6 +96,19 @@ public class CharacterStateMatrix extends Matrix<CharacterStateRow> {
 	@JoinTable(joinColumns = { @JoinColumn(name = FK_ID_COLUMN) }, inverseJoinColumns = { @JoinColumn(name = Character.ID_COLUMN) })
 	@IndexColumn(name = CHARACTERS_POSITION_COLUMN)
 	private final List<Character> characters = newArrayList();
+
+	/**
+	 * The inverse of {@link #characters}. So it's a {@code Character}
+	 * ->columnNumber lookup.
+	 */
+	@ElementCollection
+	@JoinTable(name = TABLE + "_" + CHARACTER_IDX_COLUMN, joinColumns = @JoinColumn(name = FK_ID_COLUMN))
+	@MapKeyJoinColumn(name = Character.ID_COLUMN)
+	@Column(name = CHARACTER_IDX_COLUMN)
+	private final Map<Character, Integer> charactersToPositions = newHashMap();
+
+	@OneToOne(fetch = FetchType.LAZY, optional = false, cascade = CascadeType.ALL, orphanRemoval = true)
+	private OTUsToCharacterStateRows otusToRows;
 
 	/** No-arg constructor for (at least) Hibernate. */
 	CharacterStateMatrix() {}
@@ -188,11 +188,21 @@ public class CharacterStateMatrix extends Matrix<CharacterStateRow> {
 		return true;
 	}
 
+	/**
+	 * Iterates over this matix's characters in column order.
+	 * 
+	 * @return an iterator that iterates over this matix's characters in column
+	 *         order
+	 */
+	public Iterator<Character> charactersIterator() {
+		return Collections.unmodifiableList(getCharacters()).iterator();
+	}
+
 	private List<PPodVersionInfo> determineNewColumnHeaderPPodVersionInfos(
 			final List<? extends Character> newCharacters) {
 
 		final BiMap<Integer, Integer> originalPositionsToNewPositions = HashBiMap
-				.create(getCharactersSize());
+				.create(getColumnsSize());
 		for (int originalPosition = 0; originalPosition < getCharacters()
 				.size(); originalPosition++) {
 			final Character originalCharacter = getCharacters().get(
@@ -279,25 +289,6 @@ public class CharacterStateMatrix extends Matrix<CharacterStateRow> {
 		return characters;
 	}
 
-	/**
-	 * Iterates over this matix's characters in column order.
-	 * 
-	 * @return an iterator that iterates over this matix's characters in column
-	 *         order
-	 */
-	public Iterator<Character> getCharactersIterator() {
-		return Collections.unmodifiableList(getCharacters()).iterator();
-	}
-
-	/**
-	 * Get the number of characters this matrix has.
-	 * 
-	 * @return the number of characters this matrix has
-	 */
-	public int getCharactersSize() {
-		return getCharacters().size();
-	}
-
 	public Long getColumnPPodVersion(final int columnPPodVersionPosition) {
 		return getColumnPPodVersions().get(columnPPodVersionPosition);
 	}
@@ -306,6 +297,16 @@ public class CharacterStateMatrix extends Matrix<CharacterStateRow> {
 	public PPodVersionInfo getColumnPPodVersionInfo(
 			final int columnPPodVersionInfoPosition) {
 		return getColumnPPodVersionInfos().get(columnPPodVersionInfoPosition);
+	}
+
+	/**
+	 * Get the number of characters this matrix has.
+	 * 
+	 * @return the number of characters this matrix has
+	 */
+	@Override
+	public int getColumnsSize() {
+		return getCharacters().size();
 	}
 
 	/**
@@ -339,7 +340,6 @@ public class CharacterStateMatrix extends Matrix<CharacterStateRow> {
 	public Iterator<CharacterStateRow> iterator() {
 		return getOTUsToRows().getValuesInOTUSetOrder().iterator();
 	}
-
 
 	/**
 	 * Set the characters.
