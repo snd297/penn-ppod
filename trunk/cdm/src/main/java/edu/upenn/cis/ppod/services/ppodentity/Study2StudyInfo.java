@@ -93,7 +93,7 @@ final class Study2StudyInfo implements IStudy2StudyInfo {
 			}
 
 			for (final Iterator<CharacterStateMatrix> matrixItr = otuSet
-					.getMatricesIterator(); matrixItr.hasNext();) {
+					.characterStateMatricesIterator(); matrixItr.hasNext();) {
 				final CharacterStateMatrix matrix = matrixItr.next();
 				final CharacterStateMatrixInfo matrixInfo =
 						find(otuSetInfo.getMatrixInfos(),
@@ -151,7 +151,7 @@ final class Study2StudyInfo implements IStudy2StudyInfo {
 			// TODO: this should be genericized when we support other kinds of
 			// MolecularSequenceSets
 			for (final Iterator<DNASequenceSet> dnaSequenceSetItr = otuSet
-					.getDNASequenceSetsIterator(); dnaSequenceSetItr.hasNext();) {
+					.dnaSequenceSetsIterator(); dnaSequenceSetItr.hasNext();) {
 				final DNASequenceSet dnaSequenceSet = dnaSequenceSetItr.next();
 				final MolecularSequenceSetInfo sequenceSetInfo = molecularSequenceSetInfoProvider
 						.get();
@@ -170,7 +170,7 @@ final class Study2StudyInfo implements IStudy2StudyInfo {
 			}
 
 			for (final Iterator<TreeSet> treeSetItr = otuSet
-					.getTreeSetsIterator(); treeSetItr.hasNext();) {
+					.treeSetsIterator(); treeSetItr.hasNext();) {
 				final TreeSet treeSet = treeSetItr.next();
 				final TreeSetInfo treeSetInfo = treeSetInfoProvider.get();
 				otuSetInfo.getTreeSetInfos().add(treeSetInfo);

@@ -47,6 +47,9 @@ import javax.xml.bind.annotation.XmlElement;
 import org.hibernate.annotations.Cascade;
 
 import edu.upenn.cis.ppod.modelinterfaces.ILabeled;
+import edu.upenn.cis.ppod.modelinterfaces.IPPodVersionedWithOTUSet;
+import edu.upenn.cis.ppod.modelinterfaces.IPersistentObject;
+import edu.upenn.cis.ppod.modelinterfaces.IWithOTUSet;
 import edu.upenn.cis.ppod.util.IVisitor;
 
 /**
@@ -62,22 +65,27 @@ import edu.upenn.cis.ppod.util.IVisitor;
 public class OTUSet extends UUPPodEntityWXmlId implements Iterable<OTU> {
 
 	/** The table for this entity. Intentionally package-private. */
-	static final String TABLE = "OTU_SET";
-
-	/**
-	 * The column where an {@code OTUSet}'s {@link javax.persistence.Id} gets
-	 * stored. Intentionally package-private.
-	 */
-	static final String ID_COLUMN = TABLE + "_ID";
-
-	/** The column that stores the label. */
-	static final String LABEL_COLUMN = "LABEL";
+	public static final String TABLE = "OTU_SET";
 
 	/** The column that stores the description. */
-	static final String DESCRIPTION_COLUMN = "DESCRIPTION";
+	public static final String DESCRIPTION_COLUMN = "DESCRIPTION";
 
-	/** The {@code OTUSet}-{@code OTU} join table. */
-	static final String OTU_SET_OTU_JOIN_TABLE = TABLE + "_" + OTU.TABLE;
+	/**
+	 * To be used in the names of foreign keys that point at this table.
+	 */
+	public static final String JOIN_COLUMN = TABLE + "_"
+												+ PersistentObject.ID_COLUMN;
+
+	/** The column that stores the label. */
+	public static final String LABEL_COLUMN = "LABEL";
+
+	/** Free-form description. */
+	@Column(name = DESCRIPTION_COLUMN, nullable = true)
+	@CheckForNull
+	private String description;
+
+	@OneToMany(mappedBy = "otuSet", cascade = CascadeType.ALL, orphanRemoval = true)
+	private final Set<DNASequenceSet> dnaSequenceSets = newHashSet();
 
 	/**
 	 * Non-unique label.
@@ -88,50 +96,33 @@ public class OTUSet extends UUPPodEntityWXmlId implements Iterable<OTU> {
 	@CheckForNull
 	private String label;
 
-	/** The set of {@code OTU}s that this {@code OTUSet} contains. */
-	@OneToMany(orphanRemoval = true)
-	@org.hibernate.annotations.IndexColumn(name = "POSITION")
-	@JoinColumn(name = ID_COLUMN, nullable = false)
-	@Cascade( { org.hibernate.annotations.CascadeType.SAVE_UPDATE })
-	private final List<OTU> otus = newArrayList();
-
 	/** The matrices which reference this OTU set. */
 	@OneToMany(mappedBy = "otuSet", cascade = CascadeType.ALL, orphanRemoval = true)
 	private final Set<CharacterStateMatrix> matrices = newHashSet();
 
-	@OneToMany(mappedBy = "otuSet", cascade = CascadeType.ALL, orphanRemoval = true)
-	private final Set<DNASequenceSet> dnaSequenceSets = newHashSet();
+	/** The set of {@code OTU}s that this {@code OTUSet} contains. */
+	@OneToMany(orphanRemoval = true)
+	@org.hibernate.annotations.IndexColumn(name = "POSITION")
+	@JoinColumn(name = OTU.JOIN_COLUMN, nullable = false)
+	@Cascade( { org.hibernate.annotations.CascadeType.SAVE_UPDATE })
+	private final List<OTU> otus = newArrayList();
+
+	@ManyToOne(fetch = FetchType.LAZY)
+	@JoinColumn(name = Study.JOIN_COLUMN)
+	@CheckForNull
+	private Study study;
 
 	/** The tree sets that reference this OTU set. */
 	@OneToMany(mappedBy = "otuSet", cascade = CascadeType.ALL, orphanRemoval = true)
 	private final Set<TreeSet> treeSets = newHashSet();
-
-	/** Free-form description. */
-	@Column(name = DESCRIPTION_COLUMN, nullable = true)
-	@CheckForNull
-	private String description;
-
-	@ManyToOne(fetch = FetchType.LAZY)
-	@JoinColumn(name = Study.ID_COLUMN)
-	@CheckForNull
-	private Study study;
 
 	OTUSet() {}
 
 	@Override
 	public void accept(final IVisitor visitor) {
 		checkNotNull(visitor);
-		for (final OTU otu : getOTUs()) {
-			otu.accept(visitor);
-		}
-		for (final CharacterStateMatrix matrix : getMatrices()) {
-			matrix.accept(visitor);
-		}
-		for (final TreeSet treeSet : getTreeSets()) {
-			treeSet.accept(visitor);
-		}
-		for (final DNASequenceSet dnaSequenceSet : getDNASequenceSets()) {
-			dnaSequenceSet.accept(visitor);
+		for (final IPersistentObject child : getChildren()) {
+			child.accept(visitor);
 		}
 		super.accept(visitor);
 		visitor.visit(this);
@@ -155,17 +146,6 @@ public class OTUSet extends UUPPodEntityWXmlId implements Iterable<OTU> {
 		return dnaSequenceSet;
 	}
 
-	public boolean removeDNASequenceSet(
-			final DNASequenceSet dnaSequenceSet) {
-		checkNotNull(dnaSequenceSet);
-		if (getDNASequenceSets().remove(dnaSequenceSet)) {
-			dnaSequenceSet.setOTUSet(null);
-			setInNeedOfNewPPodVersionInfo();
-			return true;
-		}
-		return false;
-	}
-
 	/**
 	 * Add {@code matrix} to this {@code OTUSet}.
 	 * <p>
@@ -178,7 +158,7 @@ public class OTUSet extends UUPPodEntityWXmlId implements Iterable<OTU> {
 	 */
 	public CharacterStateMatrix addMatrix(final CharacterStateMatrix matrix) {
 		checkNotNull(matrix);
-		getMatrices().add(matrix);
+		getCharacterStateMarices().add(matrix);
 		matrix.setOTUSet(this);
 		setInNeedOfNewPPodVersionInfo();
 		return matrix;
@@ -257,6 +237,40 @@ public class OTUSet extends UUPPodEntityWXmlId implements Iterable<OTU> {
 		}
 	}
 
+	public Iterator<CharacterStateMatrix> characterStateMatricesIterator() {
+		return Collections.unmodifiableSet(getCharacterStateMarices())
+				.iterator();
+	}
+
+	/**
+	 * Get an iterator over this {@code OTUSet}'s {@code DNASequenceSets}s.
+	 */
+	public Iterator<DNASequenceSet> dnaSequenceSetsIterator() {
+		return Collections.unmodifiableSet(getDNASequenceSets()).iterator();
+	}
+
+	@XmlElement(name = "matrix")
+	private Set<CharacterStateMatrix> getCharacterStateMarices() {
+		return matrices;
+	}
+
+	private Set<IPPodVersionedWithOTUSet> getChildren() {
+		final Set<IPPodVersionedWithOTUSet> children = newHashSet();
+		for (final IPPodVersionedWithOTUSet pPodEntity : getOTUs()) {
+			children.add(pPodEntity);
+		}
+		for (final IPPodVersionedWithOTUSet pPodEntity : getCharacterStateMarices()) {
+			children.add(pPodEntity);
+		}
+		for (final IPPodVersionedWithOTUSet pPodEntity : getTreeSets()) {
+			children.add(pPodEntity);
+		}
+		for (final IPPodVersionedWithOTUSet pPodEntity : getDNASequenceSets()) {
+			children.add(pPodEntity);
+		}
+		return children;
+	}
+
 	/**
 	 * Getter.
 	 * 
@@ -271,13 +285,6 @@ public class OTUSet extends UUPPodEntityWXmlId implements Iterable<OTU> {
 	@XmlElement(name = "dnaSequenceSet")
 	private Set<DNASequenceSet> getDNASequenceSets() {
 		return dnaSequenceSets;
-	}
-
-	/**
-	 * Get an iterator over this {@code OTUSet}'s {@code DNASequenceSets}s.
-	 */
-	public Iterator<DNASequenceSet> getDNASequenceSetsIterator() {
-		return Collections.unmodifiableSet(getDNASequenceSets()).iterator();
 	}
 
 	/**
@@ -300,15 +307,6 @@ public class OTUSet extends UUPPodEntityWXmlId implements Iterable<OTU> {
 		return label;
 	}
 
-	@XmlElement(name = "matrix")
-	private Set<CharacterStateMatrix> getMatrices() {
-		return matrices;
-	}
-
-	public Iterator<CharacterStateMatrix> getMatricesIterator() {
-		return Collections.unmodifiableSet(getMatrices()).iterator();
-	}
-
 	/**
 	 * Get the number of {@code CharacterStateMatrix}s in this {@code OTUSet}.
 	 * 
@@ -316,7 +314,7 @@ public class OTUSet extends UUPPodEntityWXmlId implements Iterable<OTU> {
 	 *         OTUSet}
 	 */
 	public int getMatricesSize() {
-		return getMatrices().size();
+		return getCharacterStateMarices().size();
 	}
 
 	/**
@@ -363,15 +361,6 @@ public class OTUSet extends UUPPodEntityWXmlId implements Iterable<OTU> {
 	}
 
 	/**
-	 * Get an iterator over this {@code OTUSet}'s {@code TreeSet}s.
-	 * 
-	 * @return an iterator over this {@code OTUSet}'s {@code TreeSet}s
-	 */
-	public Iterator<TreeSet> getTreeSetsIterator() {
-		return Collections.unmodifiableSet(getTreeSets()).iterator();
-	}
-
-	/**
 	 * Get the number of {@code TreeSet}s in this {@code OTUSet}.
 	 * 
 	 * @return the number of {@code TreeSet}s in this {@code OTUSet}
@@ -382,6 +371,17 @@ public class OTUSet extends UUPPodEntityWXmlId implements Iterable<OTU> {
 
 	public Iterator<OTU> iterator() {
 		return Collections.unmodifiableList(getOTUs()).iterator();
+	}
+
+	public boolean removeDNASequenceSet(
+			final DNASequenceSet dnaSequenceSet) {
+		checkNotNull(dnaSequenceSet);
+		if (getDNASequenceSets().remove(dnaSequenceSet)) {
+			dnaSequenceSet.setOTUSet(null);
+			setInNeedOfNewPPodVersionInfo();
+			return true;
+		}
+		return false;
 	}
 
 	/**
@@ -483,22 +483,22 @@ public class OTUSet extends UUPPodEntityWXmlId implements Iterable<OTU> {
 	 * 
 	 * @return any matrices that were removed as a result of this operation
 	 */
-	public Set<CharacterStateMatrix> setMatrices(
+	public Set<CharacterStateMatrix> setCharacterStateMatrices(
 			final Set<? extends CharacterStateMatrix> newMatrices) {
 		checkNotNull(newMatrices);
 
-		if (newMatrices.equals(getMatrices())) {
+		if (newMatrices.equals(getCharacterStateMarices())) {
 			return Collections.emptySet();
 		}
 
-		final Set<CharacterStateMatrix> removedMatrices = newHashSet(getMatrices());
+		final Set<CharacterStateMatrix> removedMatrices = newHashSet(getCharacterStateMarices());
 		removedMatrices.removeAll(newMatrices);
 
 		for (final CharacterStateMatrix removedMatrix : removedMatrices) {
 			removedMatrix.setOTUSet(null);
 		}
 
-		getMatrices().clear();
+		getCharacterStateMarices().clear();
 
 		for (final CharacterStateMatrix newMatrix : newMatrices) {
 			addMatrix(newMatrix);
@@ -547,14 +547,9 @@ public class OTUSet extends UUPPodEntityWXmlId implements Iterable<OTU> {
 
 	private void setOTUSetOnChildren() {
 		// Now let's let everyone know about the new OTUs
-		for (final CharacterStateMatrix matrix : getMatrices()) {
-			matrix.setOTUSet(this);
+		for (final IWithOTUSet child : getChildren()) {
+			child.setOTUSet(this);
 		}
-
-		for (final DNASequenceSet dnaSequenceSet : getDNASequenceSets()) {
-			dnaSequenceSet.setOTUSet(this);
-		}
-
 	}
 
 	protected OTUSet setStudy(final Study study) {
@@ -617,6 +612,15 @@ public class OTUSet extends UUPPodEntityWXmlId implements Iterable<OTU> {
 				.append(this.otus).append(TAB).append(")");
 
 		return retValue.toString();
+	}
+
+	/**
+	 * Get an iterator over this {@code OTUSet}'s {@code TreeSet}s.
+	 * 
+	 * @return an iterator over this {@code OTUSet}'s {@code TreeSet}s
+	 */
+	public Iterator<TreeSet> treeSetsIterator() {
+		return Collections.unmodifiableSet(getTreeSets()).iterator();
 	}
 
 }

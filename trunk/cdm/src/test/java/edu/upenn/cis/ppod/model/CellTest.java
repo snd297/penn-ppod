@@ -20,12 +20,15 @@ public class CellTest<R extends Row<C>, C extends Cell<E>, E> {
 
 	private final Provider<OTUSet> otuSetProvider;
 	private final Provider<OTU> otuProvider;
+	private final Provider<R> rowProvider;
 
 	@Inject
 	CellTest(final Provider<OTUSet> otuSetProvider,
-			final Provider<OTU> otuProvider) {
+			final Provider<OTU> otuProvider,
+			final Provider<R> rowProvider) {
 		this.otuSetProvider = otuSetProvider;
 		this.otuProvider = otuProvider;
+		this.rowProvider = rowProvider;
 	}
 
 	public void getStatesWhenCellHasOneState(
@@ -41,7 +44,9 @@ public class CellTest<R extends Row<C>, C extends Cell<E>, E> {
 
 		matrix.setOTUSet(otuSet);
 
-		otuSet.addOTU(otuProvider.get());
+		final OTU otu = otuSet.addOTU(otuProvider.get());
+
+		matrix.putRow(otu, rowProvider.get());
 
 		final Set<E> elements = newHashSet();
 		elements.add(element);
@@ -49,7 +54,12 @@ public class CellTest<R extends Row<C>, C extends Cell<E>, E> {
 		final List<C> cells = newArrayList();
 		cells.add(cell);
 
-		matrix.getRow(matrix.getOTUSet().getOTU(0)).setCells(cells);
+		final OTUSet matrixOTUSet = matrix.getOTUSet();
+
+		final OTU otu0 = matrixOTUSet.getOTU(0);
+
+		final Row<C> row = matrix.getRow(otu0);
+		row.setCells(cells);
 
 		cell.setSingleElement(element);
 		assertEquals((Object) cell.getElements(), (Object) elements);

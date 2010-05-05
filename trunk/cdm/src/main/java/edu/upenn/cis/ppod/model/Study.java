@@ -52,7 +52,8 @@ public class Study extends UUPPodEntity implements IOTUSetCentricEntities {
 	public static final String TABLE = "STUDY";
 
 	/** To be used when referring to this entity in foreign keys. */
-	public static final String ID_COLUMN = TABLE + "_ID";
+	public static final String JOIN_COLUMN = TABLE + "_"
+												+ PersistentObject.ID_COLUMN;
 
 	static final String LABEL_COLUMN = "LABEL";
 
@@ -116,7 +117,7 @@ public class Study extends UUPPodEntity implements IOTUSetCentricEntities {
 					studyWideAttachments, this);
 			for (final OTUSet otuSet : getOTUSets()) {
 				for (final Iterator<CharacterStateMatrix> matrixItr = otuSet
-						.getMatricesIterator(); matrixItr.hasNext();) {
+						.characterStateMatricesIterator(); matrixItr.hasNext();) {
 					studyWideCharacters
 							.addAll(matrixItr.next().getCharacters());
 				}

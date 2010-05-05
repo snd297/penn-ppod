@@ -11,6 +11,8 @@ import javax.persistence.OneToMany;
 import javax.persistence.OrderBy;
 import javax.persistence.Table;
 
+import edu.upenn.cis.ppod.modelinterfaces.IMatrix;
+
 /**
  * A row of {@link DNACell}s.
  * 
@@ -50,6 +52,10 @@ public class DNARow extends Row<DNACell> {
 		this.cells.clear();
 		this.cells.addAll(cells);
 		return null;
+	}
+
+	public IMatrix getMatrix() {
+		throw new UnsupportedOperationException();
 	}
 
 }

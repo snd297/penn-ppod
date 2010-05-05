@@ -23,6 +23,7 @@ import javax.persistence.Table;
 import javax.persistence.Transient;
 
 import edu.upenn.cis.ppod.modelinterfaces.IPPodVersioned;
+import edu.upenn.cis.ppod.modelinterfaces.IRow;
 
 /**
  * A cell that contains {@link DNANucleotide}.
@@ -145,6 +146,11 @@ public class DNACell extends Cell<DNANucleotide> {
 
 	@Override
 	public IPPodVersioned getParent() {
+		return row;
+	}
+
+	@Override
+	protected IRow getRow() {
 		return row;
 	}
 

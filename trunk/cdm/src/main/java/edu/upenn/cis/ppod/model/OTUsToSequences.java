@@ -35,7 +35,7 @@ public abstract class OTUsToSequences<V extends Sequence>
 // }
 
 	@Override
-	protected V put(final OTU key, final V value) {
+	public V put(final OTU key, final V value) {
 		checkNotNull(key);
 		checkNotNull(value);
 		final V originalSequence = super.put(key, value);

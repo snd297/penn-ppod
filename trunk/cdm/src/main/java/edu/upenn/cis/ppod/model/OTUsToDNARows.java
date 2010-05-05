@@ -14,7 +14,6 @@ import javax.persistence.OneToMany;
 import javax.persistence.OneToOne;
 import javax.persistence.Table;
 
-import edu.upenn.cis.ppod.modelinterfaces.IPPodVersionedWithOTUSet;
 import edu.upenn.cis.ppod.util.OTUSomethingPair;
 
 /**
@@ -27,7 +26,7 @@ import edu.upenn.cis.ppod.util.OTUSomethingPair;
 public class OTUsToDNARows extends OTUsToRows<DNARow> {
 
 	@OneToMany(cascade = CascadeType.ALL, orphanRemoval = true)
-	@MapKeyJoinColumn(name = OTU.ID_COLUMN)
+	@MapKeyJoinColumn(name = OTU.JOIN_COLUMN)
 	final Map<OTU, DNARow> otusToRows = newHashMap();
 
 	@OneToOne(fetch = FetchType.LAZY, mappedBy = "otusToRows")
@@ -42,8 +41,7 @@ public class OTUsToDNARows extends OTUsToRows<DNARow> {
 
 	@Override
 	protected Map<OTU, DNARow> getOTUsToValues() {
-		// TODO Auto-generated method stub
-		throw new UnsupportedOperationException();
+		return otusToRows;
 	}
 
 	@Override

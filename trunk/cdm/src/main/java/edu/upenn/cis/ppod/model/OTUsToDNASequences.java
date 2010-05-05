@@ -57,7 +57,7 @@ public class OTUsToDNASequences extends
 	private DNASequenceSet sequenceSet;
 
 	@OneToMany(cascade = CascadeType.ALL, orphanRemoval = true)
-	@MapKeyJoinColumn(name = OTU.ID_COLUMN)
+	@MapKeyJoinColumn(name = OTU.JOIN_COLUMN)
 	private final Map<OTU, DNASequence> sequences = newHashMap();
 
 	/**
@@ -115,7 +115,7 @@ public class OTUsToDNASequences extends
 	@Nullable
 	@Override
 	protected DNASequenceSet getParent() {
-		return getParent();
+		return sequenceSet;
 	}
 
 	@Override

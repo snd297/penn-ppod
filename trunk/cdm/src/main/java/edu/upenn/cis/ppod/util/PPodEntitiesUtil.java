@@ -75,7 +75,7 @@ public class PPodEntitiesUtil {
 						studyWideAttachmentTypes, studyWideAttachments, otu);
 			}
 			for (final Iterator<CharacterStateMatrix> matrixItr = otuSet
-					.getMatricesIterator(); matrixItr.hasNext();) {
+					.characterStateMatricesIterator(); matrixItr.hasNext();) {
 				final CharacterStateMatrix matrix = matrixItr.next();
 				extractAttachmentInfoFromAttachee(
 						studyWideAttachmentNamespaces,

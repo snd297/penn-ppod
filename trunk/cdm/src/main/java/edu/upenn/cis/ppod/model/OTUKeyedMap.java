@@ -131,7 +131,7 @@ public abstract class OTUKeyedMap<V extends PersistentObject>
 	 *             .equals} to {@code newT}
 	 */
 	@CheckForNull
-	protected V put(final OTU key, final V value) {
+	public V put(final OTU key, final V value) {
 		checkNotNull(key);
 		checkNotNull(value);
 		checkState(getParent() != null, "no parent has been assigned");
@@ -169,11 +169,8 @@ public abstract class OTUKeyedMap<V extends PersistentObject>
 	 * @throw IllegalArgumentException if {@code otuSet != parent.getOTUSet()}
 	 */
 	@CheckForNull
-	protected OTUKeyedMap<V> setOTUs(@Nullable final OTUSet otuSet) {
+	protected OTUKeyedMap<V> setOTUs() {
 		final IPPodVersionedWithOTUSet parent = getParent();
-
-		checkArgument(otuSet == parent.getOTUSet(),
-				"otuSet does not belong to parent");
 
 		final Set<OTU> otusToBeRemoved = newHashSet();
 		for (final OTU otu : getOTUsToValues().keySet()) {
@@ -188,7 +185,7 @@ public abstract class OTUKeyedMap<V extends PersistentObject>
 
 		getOTUsToValues().keySet().removeAll(otusToBeRemoved);
 
-		if (otuSet != null) {
+		if (getParent().getOTUSet() != null) {
 			for (final OTU otu : parent.getOTUSet()) {
 				if (getOTUsToValues().containsKey(otu)) {
 

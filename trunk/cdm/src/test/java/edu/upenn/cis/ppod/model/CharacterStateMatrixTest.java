@@ -94,7 +94,7 @@ public class CharacterStateMatrixTest {
 		final ImmutableSet<CharacterStateMatrix> matrices = ImmutableSet
 				.of(matrix);
 
-		otuSet012.setMatrices(matrices);
+		otuSet012.setCharacterStateMatrices(matrices);
 
 	}
 

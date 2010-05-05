@@ -60,7 +60,7 @@ public class OTUsToCharacterStateRows extends OTUsToRows<CharacterStateRow> {
 	private final Set<OTUCharacterStateRowPair> otuRowPairs = newHashSet();
 
 	@OneToMany(cascade = CascadeType.ALL, orphanRemoval = true)
-	@MapKeyJoinColumn(name = OTU.ID_COLUMN)
+	@MapKeyJoinColumn(name = OTU.JOIN_COLUMN)
 	private final Map<OTU, CharacterStateRow> rows = newHashMap();
 
 	OTUsToCharacterStateRows() {}
@@ -89,11 +89,6 @@ public class OTUsToCharacterStateRows extends OTUsToRows<CharacterStateRow> {
 							.getValue()));
 		}
 		return true;
-	}
-
-	@Nullable
-	protected CharacterStateMatrix getMatrix() {
-		return matrix;
 	}
 
 	@XmlElement(name = "otuRowPair")

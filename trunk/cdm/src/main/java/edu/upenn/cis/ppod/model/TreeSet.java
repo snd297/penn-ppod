@@ -40,6 +40,7 @@ import javax.xml.bind.annotation.XmlElement;
 
 import org.hibernate.annotations.Cascade;
 
+import edu.upenn.cis.ppod.modelinterfaces.IPPodVersionedWithOTUSet;
 import edu.upenn.cis.ppod.util.IVisitor;
 
 /**
@@ -50,7 +51,8 @@ import edu.upenn.cis.ppod.util.IVisitor;
 @XmlAccessorType(XmlAccessType.NONE)
 @Entity
 @Table(name = TreeSet.TABLE)
-public class TreeSet extends UUPPodEntityWXmlId implements Iterable<Tree> {
+public class TreeSet extends UUPPodEntityWXmlId implements
+		IPPodVersionedWithOTUSet, Iterable<Tree> {
 
 	static final String TABLE = "TREE_SET";
 
@@ -60,7 +62,7 @@ public class TreeSet extends UUPPodEntityWXmlId implements Iterable<Tree> {
 	private String label;
 
 	@ManyToOne(fetch = FetchType.LAZY)
-	@JoinColumn(name = OTUSet.ID_COLUMN, nullable = false)
+	@JoinColumn(name = OTUSet.JOIN_COLUMN, nullable = false)
 	private OTUSet otuSet;
 
 	@OneToMany(orphanRemoval = true)
@@ -159,7 +161,7 @@ public class TreeSet extends UUPPodEntityWXmlId implements Iterable<Tree> {
 	 * 
 	 * @return this {@code TreeSet}
 	 */
-	protected TreeSet setOTUSet(@CheckForNull final OTUSet otuSet) {
+	public TreeSet setOTUSet(@CheckForNull final OTUSet otuSet) {
 		if (equal(otuSet, getOTUSet())) {
 
 		} else {
