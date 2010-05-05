@@ -15,7 +15,6 @@
  */
 package edu.upenn.cis.ppod.model;
 
-import static com.google.common.base.Objects.equal;
 import static com.google.common.base.Preconditions.checkArgument;
 import static com.google.common.base.Preconditions.checkNotNull;
 import static com.google.common.collect.Lists.newArrayList;
@@ -31,7 +30,6 @@ import java.util.Map.Entry;
 
 import javax.annotation.CheckForNull;
 import javax.annotation.Nonnegative;
-import javax.annotation.Nullable;
 import javax.persistence.CascadeType;
 import javax.persistence.Column;
 import javax.persistence.ElementCollection;
@@ -40,15 +38,11 @@ import javax.persistence.FetchType;
 import javax.persistence.JoinColumn;
 import javax.persistence.JoinTable;
 import javax.persistence.ManyToMany;
-import javax.persistence.ManyToOne;
 import javax.persistence.MapKeyJoinColumn;
 import javax.persistence.OneToOne;
-import javax.persistence.OrderColumn;
 import javax.persistence.Table;
-import javax.persistence.Transient;
 import javax.xml.bind.Marshaller;
 import javax.xml.bind.Unmarshaller;
-import javax.xml.bind.annotation.XmlAttribute;
 import javax.xml.bind.annotation.XmlElement;
 import javax.xml.bind.annotation.XmlIDREF;
 import javax.xml.bind.annotation.XmlSeeAlso;
@@ -69,22 +63,17 @@ import edu.upenn.cis.ppod.util.IVisitor;
 @XmlSeeAlso( { DNAMatrix.class })
 @Entity
 @Table(name = CharacterStateMatrix.TABLE)
-public class CharacterStateMatrix extends Matrix<CharacterStateRow> { 
+public class CharacterStateMatrix extends Matrix<CharacterStateRow> {
 
-	/** This entity's table name. Intentionally package-private. */
-	static final String TABLE = "CHARACTER_STATE_MATRIX";
-
-	/** Description column. Intentionally package-private. */
-	static final String DESCRIPTION_COLUMN = "DESCRIPTION";
+	/** This entity's table name. */
+	public static final String TABLE = "CHARACTER_STATE_MATRIX";
 
 	/**
-	 * Name for foreign key columns. Intentionally package-private.
+	 * Name for foreign key columns that point at this table.
 	 */
-	static final String ID_COLUMN = TABLE + "_ID";
+	public static final String FK_ID_COLUMN = TABLE + "_ID";
 
-	static final String LABEL_COLUMN = "LABEL";
-
-	static final String CHARACTER_IDX_COLUMN = Character.TABLE + "_IDX";
+	public static final String CHARACTER_IDX_COLUMN = Character.TABLE + "_IDX";
 
 	/**
 	 * Column that orders the {@link Character}s. Intentionally package-private.
@@ -92,46 +81,17 @@ public class CharacterStateMatrix extends Matrix<CharacterStateRow> {
 	static final String CHARACTERS_POSITION_COLUMN = Character.TABLE
 														+ "_POSITION";
 
-	/** The pPod versions of the columns. */
-	@ManyToMany
-	@JoinTable(inverseJoinColumns = { @JoinColumn(name = PPodVersionInfo.ID_COLUMN) })
-	@OrderColumn(name = PPodVersionInfo.TABLE + "_POSITION")
-	private final List<PPodVersionInfo> columnPPodVersionInfos = newArrayList();
-
-	@XmlElement(name = "columnPPodVersion")
-	@Transient
-	private final List<Long> columnPPodVersions = newArrayList();
-
-	/** Free-form description. */
-	@Column(name = DESCRIPTION_COLUMN, nullable = true)
-	@CheckForNull
-	private String description;
-
-	/** The label for this {@code CharacterStateMatrix}. */
-	@Column(name = LABEL_COLUMN, nullable = false)
-	@CheckForNull
-	private String label;
-
 	static final String OTU_IDX_COLUMN = "OTU_IDX";
 
 	@OneToOne(fetch = FetchType.LAZY, optional = false, cascade = CascadeType.ALL, orphanRemoval = true)
 	private OTUsToCharacterStateRows otusToRows;
 
 	/**
-	 * These are the <code>OTU</code>s whose data comprises this {@code
-	 * CharacterStateMatrix}.
-	 */
-	@ManyToOne(fetch = FetchType.LAZY)
-	@JoinColumn(name = OTUSet.ID_COLUMN, nullable = false)
-	@CheckForNull
-	private OTUSet otuSet;
-
-	/**
 	 * The inverse of {@link #characters}. So it's a {@code Character}
 	 * ->columnNumber lookup.
 	 */
 	@ElementCollection
-	@JoinTable(name = TABLE + "_" + CHARACTER_IDX_COLUMN, joinColumns = @JoinColumn(name = ID_COLUMN))
+	@JoinTable(name = TABLE + "_" + CHARACTER_IDX_COLUMN, joinColumns = @JoinColumn(name = FK_ID_COLUMN))
 	@MapKeyJoinColumn(name = Character.ID_COLUMN)
 	@Column(name = CHARACTER_IDX_COLUMN)
 	private final Map<Character, Integer> charactersToPositions = newHashMap();
@@ -146,7 +106,7 @@ public class CharacterStateMatrix extends Matrix<CharacterStateRow> {
 	 * refactoring should be considered.
 	 */
 	@ManyToMany
-	@JoinTable(joinColumns = { @JoinColumn(name = ID_COLUMN) }, inverseJoinColumns = { @JoinColumn(name = Character.ID_COLUMN) })
+	@JoinTable(joinColumns = { @JoinColumn(name = FK_ID_COLUMN) }, inverseJoinColumns = { @JoinColumn(name = Character.ID_COLUMN) })
 	@IndexColumn(name = CHARACTERS_POSITION_COLUMN)
 	private final List<Character> characters = newArrayList();
 
@@ -197,7 +157,7 @@ public class CharacterStateMatrix extends Matrix<CharacterStateRow> {
 			} else {
 				charactersToPositions.put(character, i);
 			}
-			columnPPodVersionInfos.add(null);
+			getColumnPPodVersionInfos().add(null);
 			character.addMatrix(this);
 		}
 	}
@@ -220,9 +180,9 @@ public class CharacterStateMatrix extends Matrix<CharacterStateRow> {
 
 		for (final PPodVersionInfo columnVersionInfo : getColumnPPodVersionInfos()) {
 			if (columnVersionInfo == null) {
-				columnPPodVersions.add(null);
+				getColumnPPodVersions().add(null);
 			} else {
-				columnPPodVersions.add(columnVersionInfo.getPPodVersion());
+				getColumnPPodVersions().add(columnVersionInfo.getPPodVersion());
 			}
 		}
 		return true;
@@ -349,69 +309,6 @@ public class CharacterStateMatrix extends Matrix<CharacterStateRow> {
 	}
 
 	/**
-	 * Get a reference of the {@code PPodVersionInfo}s for each for the columns
-	 * of the matrix.
-	 * <p>
-	 * Intentionally package-private.
-	 * 
-	 * @return a mutable view of the {@code PPodVersionInfo}s for each for the
-	 *         columns of the matrix
-	 */
-	protected List<PPodVersionInfo> getColumnPPodVersionInfos() {
-		return columnPPodVersionInfos;
-	}
-
-	public Iterator<PPodVersionInfo> getColumnPPodVersionInfosIterator() {
-		return Collections.unmodifiableList(getColumnPPodVersionInfos())
-				.iterator();
-	}
-
-	/**
-	 * Created for testing.
-	 * 
-	 * @return
-	 */
-	List<Long> getColumnPPodVersions() {
-		return columnPPodVersions;
-	}
-
-	/**
-	 * Getter.
-	 * <p>
-	 * {@code null} is a legal value.
-	 * 
-	 * @return the description
-	 */
-	@XmlAttribute
-	@CheckForNull
-	public String getDescription() {
-		return description;
-	}
-
-	/**
-	 * Getter. {@code null} when the object is constructed, but never {@code
-	 * null} for persistent objects.
-	 * 
-	 * @return the label
-	 */
-	@XmlAttribute
-	@Nullable
-	public String getLabel() {
-		return label;
-	}
-
-	/**
-	 * Getter. Will be {@code null} when object is first created, but never
-	 * {@code null} for persistent objects.
-	 * 
-	 * @return this matrix's {@code OTUSet}
-	 */
-	@Nullable
-	public OTUSet getOTUSet() {
-		return otuSet;
-	}
-
-	/**
 	 * Get the otusToRows.
 	 * <p>
 	 * Not {@code final} for JAXB
@@ -419,26 +316,9 @@ public class CharacterStateMatrix extends Matrix<CharacterStateRow> {
 	 * @return the otusToRows
 	 */
 	@XmlElement(name = "otusToRows")
+	@Override
 	protected OTUsToCharacterStateRows getOTUsToRows() {
 		return otusToRows;
-	}
-
-	/**
-	 * Get the row indexed by an OTU or {@code null} if {@code otu} has not had
-	 * a row assigned to it.
-	 * 
-	 * @param otu the index
-	 * 
-	 * @return the row, or {@code null} if {@code otu} has not had a row
-	 *         assigned to it
-	 * 
-	 * @throws IllegalArgumentException if {@code otu} does not belong to this
-	 *             matrix's {@code OTUSet}
-	 */
-	@Nullable
-	public CharacterStateRow getRow(final OTU otu) {
-		checkNotNull(otu);
-		return getOTUsToRows().get(otu);
 	}
 
 	/**
@@ -457,7 +337,7 @@ public class CharacterStateMatrix extends Matrix<CharacterStateRow> {
 	 * @return an iterator over this matrix's rows
 	 */
 	public Iterator<CharacterStateRow> iterator() {
-		return getOTUsToRows().getValuesInOTUOrder(getOTUSet()).iterator();
+		return getOTUsToRows().getValuesInOTUSetOrder().iterator();
 	}
 
 	/**
@@ -623,65 +503,14 @@ public class CharacterStateMatrix extends Matrix<CharacterStateRow> {
 
 	/**
 	 * Setter.
-	 * 
-	 * @param description the description value, {@code null} is allowed
-	 * 
-	 * @return this matrix
-	 */
-	public CharacterStateMatrix setDescription(
-			@CheckForNull final String description) {
-		if (equal(getDescription(), description)) {
-			// nothing to do
-		} else {
-			this.description = description;
-			setInNeedOfNewPPodVersionInfo();
-		}
-		return this;
-	}
-
-	/**
-	 * {@code null} out {@code pPodVersionInfo} and the {@link PPodVersionInfo}
-	 * of the owning study.
-	 * 
-	 * @return this {@code CharacterStateMatrix}
-	 */
-	@Override
-	public CharacterStateMatrix setInNeedOfNewPPodVersionInfo() {
-		if (getOTUSet() != null) {
-			getOTUSet().setInNeedOfNewPPodVersionInfo();
-		}
-		super.setInNeedOfNewPPodVersionInfo();
-		return this;
-	}
-
-	/**
-	 * Set the label of this matrix.
-	 * 
-	 * @param label the value for the label
-	 * 
-	 * @return this matrix
-	 */
-	public CharacterStateMatrix setLabel(final String label) {
-		checkNotNull(label);
-		if (label.equals(getLabel())) {
-			// they're the same, nothing to do
-		} else {
-			this.label = label;
-			setInNeedOfNewPPodVersionInfo();
-		}
-		return this;
-	}
-
-	/**
-	 * Setter.
 	 * <p>
 	 * Meant to be called only from objects responsible for managing the {@code
-	 * OTUSET<->CharacterStateMatrix} relationship.
+	 * OTUSet<->CharacterStateMatrix} relationship.
 	 * <p>
-	 * This method will remove otusToRows from this matrix as necessary.
+	 * This method will remove rows from this matrix as necessary.
 	 * <p>
 	 * If there are any new {@code OTU}s in {@code newOTUSet}, then {@code
-	 * getRow(theNewOTU) == null}. That is, it adss {@code null} rows for new
+	 * getRow(theNewOTU) == null}. That is, it adds {@code null} rows for new
 	 * {@code OTU}s.
 	 * 
 	 * @param newOTUSet new {@code OTUSet} for this matrix, or {@code null} if
@@ -689,9 +518,10 @@ public class CharacterStateMatrix extends Matrix<CharacterStateRow> {
 	 * 
 	 * @return this
 	 */
+	@Override
 	protected CharacterStateMatrix setOTUSet(
-			@CheckForNull final OTUSet newOTUSet) {
-		otuSet = newOTUSet;
+			@CheckForNull final OTUSet otuSet) {
+		super.setOTUSet(otuSet);
 		getOTUsToRows().setOTUs(getOTUSet());
 		return this;
 	}

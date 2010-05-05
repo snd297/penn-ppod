@@ -64,7 +64,7 @@ public class DNASequenceSet extends SequenceSet<DNASequence> {
 	public void accept(final IVisitor visitor) {
 		getOTUsToSequences().accept(visitor);
 		for (final DNASequence sequence : getOTUsToSequences()
-				.getValuesInOTUOrder(getOTUSet())) {
+				.getValuesInOTUSetOrder()) {
 			sequence.accept(visitor);
 		}
 		super.accept(visitor);

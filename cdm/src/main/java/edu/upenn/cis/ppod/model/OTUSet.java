@@ -30,6 +30,7 @@ import java.util.List;
 import java.util.Set;
 
 import javax.annotation.CheckForNull;
+import javax.annotation.Nonnegative;
 import javax.annotation.Nullable;
 import javax.persistence.CascadeType;
 import javax.persistence.Column;
@@ -327,7 +328,7 @@ public class OTUSet extends UUPPodEntityWXmlId implements Iterable<OTU> {
 	 * 
 	 * @throws IndexOutOfBoundsException if {@code otuPosition} is out of bounds
 	 */
-	public OTU getOTU(final int otuPosition) {
+	public OTU getOTU(@Nonnegative final int otuPosition) {
 		return getOTUs().get(otuPosition);
 	}
 

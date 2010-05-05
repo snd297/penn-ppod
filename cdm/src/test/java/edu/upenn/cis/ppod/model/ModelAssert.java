@@ -94,7 +94,7 @@ public class ModelAssert {
 	public static void assertEqualsCharacterStateCells(
 			final CharacterStateCell actualCell,
 			final CharacterStateCell expectedCell) {
-		assertEquals(actualCell.getStatesSize(), expectedCell.getStatesSize());
+		assertEquals(actualCell.getElementsSize(), expectedCell.getElementsSize());
 		for (final Iterator<CharacterState> actualStateItr = actualCell
 				.iterator(), expectedStateItr = expectedCell
 				.iterator(); actualStateItr.hasNext()

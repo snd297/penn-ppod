@@ -36,7 +36,6 @@ import javax.xml.bind.Marshaller;
 import javax.xml.bind.Unmarshaller;
 import javax.xml.bind.annotation.XmlElement;
 
-import edu.upenn.cis.ppod.modelinterfaces.IPPodVersionedWithOTUSet;
 import edu.upenn.cis.ppod.util.OTUCharacterStateRowPair;
 import edu.upenn.cis.ppod.util.OTUSomethingPair;
 
@@ -118,7 +117,7 @@ public class OTUsToCharacterStateRows extends OTUsToRows<CharacterStateRow> {
 
 	@Nullable
 	@Override
-	protected IPPodVersionedWithOTUSet getParent() {
+	protected CharacterStateMatrix getParent() {
 		return matrix;
 	}
 

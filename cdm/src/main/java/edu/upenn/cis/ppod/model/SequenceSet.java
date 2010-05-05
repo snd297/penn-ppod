@@ -126,7 +126,7 @@ public abstract class SequenceSet<S extends Sequence>
 	 * Iterates over the sequences in {@code getOTUSet().getOTUs()} order.
 	 */
 	public Iterator<S> iterator() {
-		return getOTUsToSequences().getValuesInOTUOrder(getOTUSet()).iterator();
+		return getOTUsToSequences().getValuesInOTUSetOrder().iterator();
 	}
 
 	/**

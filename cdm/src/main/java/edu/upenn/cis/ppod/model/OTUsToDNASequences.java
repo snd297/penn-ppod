@@ -115,7 +115,7 @@ public class OTUsToDNASequences extends
 	@Nullable
 	@Override
 	protected DNASequenceSet getParent() {
-		return sequenceSet;
+		return getParent();
 	}
 
 	@Override

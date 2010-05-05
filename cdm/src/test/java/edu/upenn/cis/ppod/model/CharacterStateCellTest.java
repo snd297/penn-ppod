@@ -46,35 +46,34 @@ import edu.upenn.cis.ppod.TestGroupDefs;
 @Test(groups = TestGroupDefs.FAST, dependsOnGroups = TestGroupDefs.INIT)
 public class CharacterStateCellTest {
 
-	@Inject
-	private Provider<CharacterStateMatrix> matrixProvider;
-
-	@Inject
-	private Provider<Character> characterProvider;
-
-	@Inject
-	private Provider<CharacterStateRow> rowProvider;
+	@Nullable
+	private CharacterStateCell cell;
 
 	@Inject
 	private Provider<CharacterStateCell> cellProvider;
 
+	// This class is stateless, so don't bother tear down/setup for every
+	// method.
 	@Inject
-	private CharacterState.IFactory stateFactory;
+	private CellTest<CharacterStateRow, CharacterStateCell, CharacterState> cellTest;
+
+	@Inject
+	private Provider<Character> characterProvider;
+
+	@Nullable
+	private CharacterStateMatrix matrix;
+
+	@Inject
+	private Provider<CharacterStateMatrix> matrixProvider;
+
+	@Inject
+	private Provider<OTU> otuProvider;
 
 	@Inject
 	private Provider<OTUSet> otuSetProvider;
 
 	@Inject
-	private Provider<OTU> otuProvider;
-
-	@Nullable
-	private Set<CharacterState> states;
-
-	@Nullable
-	private CharacterStateCell cell;
-
-	@Nullable
-	private CharacterStateMatrix matrix;
+	private Provider<CharacterStateRow> rowProvider;
 
 	@Nullable
 	private CharacterState state00;
@@ -82,13 +81,64 @@ public class CharacterStateCellTest {
 	@Nullable
 	private CharacterState state01;
 
+	@Inject
+	private CharacterState.IFactory stateFactory;
+
+	@Nullable
+	private Set<CharacterState> states;
+
+	public void afterUnmarshal() {
+		cell.setXmlStatesNeedsToBePutIntoStates(true);
+		matrix.getRow(matrix.getOTUSet().getOTU(0)).setCells(
+				Arrays.asList(cell));
+		cell.setTypeAndXmlElements(CharacterStateCell.Type.UNCERTAIN, states);
+		cell.afterUnmarshal();
+		// assertEquals((Object) cell.getStates(), (Object) states);
+		assertFalse(cell.getXmlStatesNeedsToBePutIntoStates());
+	}
+
+	/**
+	 * Straight {@code beforeMarshal(...) test.
+	 */
+	public void beforeMarshal() {
+		matrix.getRow(matrix.getOTUSet().getOTU(0)).setCells(
+				Arrays.asList(cell));
+		states.add(state00);
+		states.add(state01);
+		cell.setPolymorphicElements(states);
+		cell.beforeMarshal(null);
+		final Set<CharacterState> xmlStates = cell.getXmlElements();
+		assertEquals(xmlStates.size(), states.size());
+		for (final CharacterState expectedState : states) {
+
+			// find(...) will throw an exception if what we're looking for is
+			// not there
+			final CharacterState xmlState = find(xmlStates,
+						compose(equalTo(expectedState.getStateNumber()),
+								CharacterState.getStateNumber));
+			assertEquals(xmlState.getLabel(), expectedState.getLabel());
+		}
+	}
+
+	/**
+	 * {@code beforeMarshal(...)} should throw an exception if the type has not
+	 * bee set yet.
+	 */
+	@Test(expectedExceptions = IllegalStateException.class)
+	public void beforeMarshalBeforeTypeHasBeenSet() {
+		cell.beforeMarshal(null);
+	}
+
+	private OTUSet otuSet;
+
 	@BeforeMethod
 	public void beforeMethod() {
+
 		cell = cellProvider.get();
 
 		matrix = matrixProvider.get();
 
-		final OTUSet otuSet = otuSetProvider.get();
+		otuSet = otuSetProvider.get();
 
 		final OTU otu0 = otuProvider.get().setLabel("otu0");
 		otuSet.setOTUs(newArrayList(otu0));
@@ -113,48 +163,27 @@ public class CharacterStateCellTest {
 
 	}
 
+	public void getStatesWhenCellHasMultipleStates() {
+		cellTest.getStatesWhenCellHasOneState(matrix, cell, state00);
+	}
+
+	@Test(groups = TestGroupDefs.IN_DEVELOPMENT)
+	public void getStatesWXmlStatesNeedsToBePutIntoStatesTrueSingle() {
+		cell.setXmlStatesNeedsToBePutIntoStates(true);
+		matrix.getRow(matrix.getOTUSet().getOTU(0)).setCells(
+				Arrays.asList(cell));
+		states.add(state00);
+		cell.setTypeAndXmlElements(CharacterStateCell.Type.SINGLE, states);
+		assertEquals(newHashSet(cell), states);
+		assertFalse(cell.getXmlStatesNeedsToBePutIntoStates());
+	}
+
 	/**
 	 * If a cell does not belong to a row, it is illegal to add states to it.
 	 */
 	@Test(expectedExceptions = IllegalStateException.class)
 	public void setStatesForACellThatDoesNotBelongToARow() {
-		cell.setSingleState(state00);
-	}
-
-	public void getStatesWhenCellHasOneState() {
-		states.add(state00);
-		matrix.getRow(matrix.getOTUSet().getOTU(0)).setCells(
-				Arrays.asList(cell));
-
-		cell.setSingleState(state00);
-		assertEquals((Object) newHashSet(cell), (Object) states);
-	}
-
-	public void getStatesWhenCellHasMultipleStates() {
-		states.add(state00);
-		states.add(state01);
-		matrix.getRow(matrix.getOTUSet().getOTU(0)).setCells(
-				Arrays.asList(cell));
-
-		cell.setPolymorphicStates(states);
-
-		// First of all, let's verify that we're testing what we want: a cell w/
-		// multiple states.
-		final int cellStatesSize = cell.getStatesSize();
-		assertTrue(cellStatesSize > 1, "found " + cellStatesSize + " states");
-
-		assertEquals((Object) newHashSet(cell), (Object) states);
-	}
-
-	public void setTypeAndStatesFromSingleToInapplicable() {
-		matrix.getRow(matrix.getOTUSet().getOTU(0)).setCells(
-				Arrays.asList(cell));
-		cell.setSingleState(state00);
-		cell.setInapplicable();
-		assertEquals(cell.getType(), CharacterStateCell.Type.INAPPLICABLE);
-
-		// Make sure it's empty
-		assertFalse(cell.iterator().hasNext());
+		cellTest.setSingleElement(cell, state00);
 	}
 
 	public void setTypeAndStatesFromPolymorhpicToInapplicable() {
@@ -162,10 +191,21 @@ public class CharacterStateCellTest {
 				Arrays.asList(cell));
 		states.add(state00);
 		states.add(state01);
-		cell.setPolymorphicStates(states);
+		cell.setPolymorphicElements(states);
 		cell.setInapplicable();
 		assertEquals(cell.getType(), CharacterStateCell.Type.INAPPLICABLE);
 		assertTrue(isEmpty(newHashSet(cell)));
+	}
+
+	public void setTypeAndStatesFromSingleToInapplicable() {
+		matrix.getRow(matrix.getOTUSet().getOTU(0)).setCells(
+				Arrays.asList(cell));
+		cell.setSingleElement(state00);
+		cell.setInapplicable();
+		assertEquals(cell.getType(), CharacterStateCell.Type.INAPPLICABLE);
+
+		// Make sure it's empty
+		assertFalse(cell.iterator().hasNext());
 	}
 
 	public void setTypeAndStatesInapplicable() {
@@ -173,6 +213,32 @@ public class CharacterStateCellTest {
 				Arrays.asList(cell));
 		cell.setInapplicable();
 		assertEquals(cell.getType(), CharacterStateCell.Type.INAPPLICABLE);
+		assertEquals((Object) newHashSet(cell), (Object) states);
+	}
+
+	public void setTypeAndStatesPolymorphic() {
+		matrix.getRow(matrix.getOTUSet().getOTU(0)).setCells(
+				Arrays.asList(cell));
+		states.add(state00);
+		states.add(state01);
+		cell.setPolymorphicElements(states);
+		assertEquals(cell.getType(), CharacterStateCell.Type.POLYMORPHIC);
+		assertEquals((Object) newHashSet(cell), (Object) states);
+	}
+
+	@Test(expectedExceptions = IllegalArgumentException.class)
+	public void setTypeAndStatesPolymorphicTooFewStates() {
+		matrix.getRow(matrix.getOTUSet().getOTU(0)).setCells(
+				Arrays.asList(cell));
+		cell.setPolymorphicElements(states);
+	}
+
+	public void setTypeAndStatesSingle() {
+		matrix.getRow(matrix.getOTUSet().getOTU(0)).setCells(
+				Arrays.asList(cell));
+		states.add(state00);
+		cell.setSingleElement(state00);
+		assertEquals(cell.getType(), CharacterStateCell.Type.SINGLE);
 		assertEquals((Object) newHashSet(cell), (Object) states);
 	}
 
@@ -184,30 +250,12 @@ public class CharacterStateCellTest {
 		assertEquals((Object) newHashSet(cell), (Object) states);
 	}
 
-	public void setTypeAndStatesSingle() {
-		matrix.getRow(matrix.getOTUSet().getOTU(0)).setCells(
-				Arrays.asList(cell));
-		states.add(state00);
-		cell.setSingleState(state00);
-		assertEquals(cell.getType(), CharacterStateCell.Type.SINGLE);
-		assertEquals((Object) newHashSet(cell), (Object) states);
-	}
-
-	public void setTypeAndStatesPolymorphic() {
-		matrix.getRow(matrix.getOTUSet().getOTU(0)).setCells(
-				Arrays.asList(cell));
-		states.add(state00);
-		states.add(state01);
-		cell.setPolymorphicStates(states);
-		assertEquals(cell.getType(), CharacterStateCell.Type.POLYMORPHIC);
-		assertEquals((Object) newHashSet(cell), (Object) states);
-	}
-
 	@Test(expectedExceptions = IllegalArgumentException.class)
-	public void setTypeAndStatesPolymorphicTooFewStates() {
+	public void setTypeAndStatesUncertainTooFewStates() {
 		matrix.getRow(matrix.getOTUSet().getOTU(0)).setCells(
 				Arrays.asList(cell));
-		cell.setPolymorphicStates(states);
+		states.add(state00);
+		cell.setUncertainElements(states);
 	}
 
 	public void setUncertainStates() {
@@ -215,69 +263,8 @@ public class CharacterStateCellTest {
 				Arrays.asList(cell));
 		states.add(state00);
 		states.add(state01);
-		cell.setUncertainStates(states);
+		cell.setUncertainElements(states);
 		assertEquals(cell.getType(), CharacterStateCell.Type.UNCERTAIN);
 		assertEquals((Object) newHashSet(cell), (Object) newHashSet(states));
-	}
-
-	@Test(expectedExceptions = IllegalArgumentException.class)
-	public void setTypeAndStatesUncertainTooFewStates() {
-		matrix.getRow(matrix.getOTUSet().getOTU(0)).setCells(
-				Arrays.asList(cell));
-		states.add(state00);
-		cell.setUncertainStates(states);
-	}
-
-	@Test(groups = TestGroupDefs.IN_DEVELOPMENT)
-	public void getStatesWXmlStatesNeedsToBePutIntoStatesTrueSingle() {
-		cell.setXmlStatesNeedsToBePutIntoStates(true);
-		matrix.getRow(matrix.getOTUSet().getOTU(0)).setCells(
-				Arrays.asList(cell));
-		states.add(state00);
-		cell.setTypeAndXmlStates(CharacterStateCell.Type.SINGLE, states);
-		assertEquals(newHashSet(cell), states);
-		assertFalse(cell.getXmlStatesNeedsToBePutIntoStates());
-	}
-
-	/**
-	 * {@code beforeMarshal(...)} should throw an exception if the type has not
-	 * bee set yet.
-	 */
-	@Test(expectedExceptions = IllegalStateException.class)
-	public void beforeMarshalBeforeTypeHasBeenSet() {
-		cell.beforeMarshal(null);
-	}
-
-	/**
-	 * Straight {@code beforeMarshal(...) test.
-	 */
-	public void beforeMarshal() {
-		matrix.getRow(matrix.getOTUSet().getOTU(0)).setCells(
-				Arrays.asList(cell));
-		states.add(state00);
-		states.add(state01);
-		cell.setPolymorphicStates(states);
-		cell.beforeMarshal(null);
-		final Set<CharacterState> xmlStates = cell.getXmlStates();
-		assertEquals(xmlStates.size(), states.size());
-		for (final CharacterState expectedState : states) {
-
-			// find(...) will throw an exception if what we're looking for is
-			// not there
-			final CharacterState xmlState = find(xmlStates,
-						compose(equalTo(expectedState.getStateNumber()),
-								CharacterState.getStateNumber));
-			assertEquals(xmlState.getLabel(), expectedState.getLabel());
-		}
-	}
-
-	public void afterUnmarshal() {
-		cell.setXmlStatesNeedsToBePutIntoStates(true);
-		matrix.getRow(matrix.getOTUSet().getOTU(0)).setCells(
-				Arrays.asList(cell));
-		cell.setTypeAndXmlStates(CharacterStateCell.Type.UNCERTAIN, states);
-		cell.afterUnmarshal();
-		// assertEquals((Object) cell.getStates(), (Object) states);
-		assertFalse(cell.getXmlStatesNeedsToBePutIntoStates());
 	}
 }
