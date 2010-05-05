@@ -46,6 +46,7 @@ import javax.xml.bind.annotation.XmlIDREF;
 import org.hibernate.annotations.Sort;
 import org.hibernate.annotations.SortType;
 
+import edu.upenn.cis.ppod.modelinterfaces.IPPodVersioned;
 import edu.upenn.cis.ppod.util.IVisitor;
 
 /**
@@ -57,11 +58,29 @@ import edu.upenn.cis.ppod.util.IVisitor;
 @Table(name = CharacterStateCell.TABLE)
 public class CharacterStateCell extends Cell<CharacterState> {
 
-	static final String TABLE = "CHARACTER_STATE_CELL";
+	/**
+	 * The name of the table.
+	 */
+	public static final String TABLE = "CHARACTER_STATE_CELL";
 
-	static final String ID_COLUMN = TABLE + "_ID";
+	/**
+	 * Conventionally used as the names of foreign keys that point at the
+	 * {@code CharacterStateCell} table.
+	 */
+	public static final String ID_COLUMN = TABLE + "_ID";
 
 	private static final Comparator<CharacterState> STATE_COMPARATOR = new CharacterState.CharacterStateComparator();
+
+	/**
+	 * The heart of the cell: the states.
+	 * <p>
+	 * Will be {@code null} when first created, but is generally not-null.
+	 */
+	@ManyToMany
+	@Sort(type = SortType.COMPARATOR, comparator = CharacterState.CharacterStateComparator.class)
+	@JoinTable(inverseJoinColumns = @JoinColumn(name = CharacterState.ID_COLUMN))
+	@CheckForNull
+	private SortedSet<CharacterState> elements = null;
 
 	/**
 	 * To handle the most-common case of a single {@code CharacterState}, we
@@ -73,7 +92,7 @@ public class CharacterStateCell extends Cell<CharacterState> {
 	@ManyToOne(fetch = FetchType.LAZY)
 	@JoinColumn(name = "FIRST_" + CharacterState.ID_COLUMN)
 	@CheckForNull
-	private CharacterState firstState;
+	private CharacterState firstElement;
 
 	/**
 	 * The {@code CharacterStateRow} to which this {@code CharacterStateCell}
@@ -85,23 +104,12 @@ public class CharacterStateCell extends Cell<CharacterState> {
 	private CharacterStateRow row;
 
 	/**
-	 * The heart of the cell: the states.
-	 * <p>
-	 * Will be {@code null} when first created, but is generally not-null.
-	 */
-	@ManyToMany
-	@Sort(type = SortType.COMPARATOR, comparator = CharacterState.CharacterStateComparator.class)
-	@JoinTable(inverseJoinColumns = @JoinColumn(name = CharacterState.ID_COLUMN))
-	@CheckForNull
-	private SortedSet<CharacterState> states = null;
-
-	/**
 	 * Used for serialization so we don't have to hit {@code states} directly
 	 * and thereby cause unwanted database hits.
 	 */
 	@Transient
 	@CheckForNull
-	private Set<CharacterState> xmlStates = null;
+	private Set<CharacterState> xmlElements = null;
 
 	/** No-arg constructor for (at least) Hibernate. */
 	CharacterStateCell() {}
@@ -131,9 +139,9 @@ public class CharacterStateCell extends Cell<CharacterState> {
 	public boolean beforeMarshal(@CheckForNull final Marshaller marshaller) {
 
 		// Let's not marshal it if it's in a bad state
-		checkState(type != null, "can't marshal a cell without a type");
+		checkState(getType() != null, "can't marshal a cell without a type");
 
-		getXmlStates().addAll(getStates());
+		getXmlElements().addAll(getElements());
 		return super.beforeMarshal(marshaller);
 
 	}
@@ -175,9 +183,15 @@ public class CharacterStateCell extends Cell<CharacterState> {
 
 	}
 
+	@CheckForNull
 	@Override
-	protected CharacterState getFirstState() {
-		return firstState;
+	protected Set<CharacterState> getElementsRaw() {
+		return elements;
+	}
+
+	@Override
+	protected CharacterState getFirstElement() {
+		return firstElement;
 	}
 
 	/**
@@ -191,12 +205,6 @@ public class CharacterStateCell extends Cell<CharacterState> {
 		return row;
 	}
 
-	@CheckForNull
-	@Override
-	protected Set<CharacterState> getStatesRaw() {
-		return states;
-	}
-
 	/**
 	 * The state set that will be marshalled.
 	 * 
@@ -205,11 +213,11 @@ public class CharacterStateCell extends Cell<CharacterState> {
 	@XmlElement(name = "stateDocId")
 	@XmlIDREF
 	@Override
-	protected Set<CharacterState> getXmlStates() {
-		if (xmlStates == null) {
-			xmlStates = newHashSet();
+	protected Set<CharacterState> getXmlElements() {
+		if (xmlElements == null) {
+			xmlElements = newHashSet();
 		}
-		return xmlStates;
+		return xmlElements;
 	}
 
 	/**
@@ -219,7 +227,7 @@ public class CharacterStateCell extends Cell<CharacterState> {
 	 * @return an iterator over this cell's states
 	 */
 	public Iterator<CharacterState> iterator() {
-		return Collections.unmodifiableSet(getStates()).iterator();
+		return Collections.unmodifiableSet(getElements()).iterator();
 	}
 
 	@Override
@@ -270,20 +278,20 @@ public class CharacterStateCell extends Cell<CharacterState> {
 	 * @return {@code state}
 	 */
 	@Override
-	protected CharacterStateCell setTypeAndStates(final Type type,
+	protected CharacterStateCell setTypeAndElements(final Type type,
 			final Set<? extends CharacterState> states) {
 		checkNotNull(type);
 		checkNotNull(states);
 
-		if (this.states == null) {
-			this.states = newTreeSet(STATE_COMPARATOR);
+		if (getElementsRaw() == null) {
+			this.elements = newTreeSet(STATE_COMPARATOR);
 		}
 
 		// So FindBugs knows that we got it when it wasn't null
-		final Set<CharacterState> thisStates = this.states;
+		final Set<CharacterState> thisStates = this.elements;
 
 		if (getType() != null && getType().equals(type)
-				&& states.equals(getStates())) {
+				&& states.equals(getElements())) {
 			return this;
 		}
 
@@ -291,12 +299,12 @@ public class CharacterStateCell extends Cell<CharacterState> {
 			checkIncomingState(state);
 		}
 
-		clearStates();
+		clearElements();
 
 		thisStates.addAll(states);
 
 		if (states.size() > 0) {
-			firstState = get(thisStates, 0);
+			firstElement = get(thisStates, 0);
 		}
 
 		setType(type);
@@ -317,21 +325,26 @@ public class CharacterStateCell extends Cell<CharacterState> {
 
 		retValue.append("CharacterStateCell(").append(super.toString()).append(
 				TAB).append("version=").append(TAB).append("states=").append(
-				this.states).append(TAB).append(")");
+				this.elements).append(TAB).append(")");
 
 		return retValue.toString();
 	}
 
 	@Override
-	protected Cell<CharacterState> unsetFirstState() {
-		this.firstState = null;
+	protected Cell<CharacterState> unsetFirstElement() {
+		this.firstElement = null;
 		return this;
 	}
 
 	@Override
-	protected Cell<CharacterState> unsetXmlStates() {
-		this.xmlStates = null;
+	protected Cell<CharacterState> unsetXmlElements() {
+		this.xmlElements = null;
 		return this;
+	}
+
+	@Override
+	protected IPPodVersioned getParent() {
+		return row;
 	}
 
 }

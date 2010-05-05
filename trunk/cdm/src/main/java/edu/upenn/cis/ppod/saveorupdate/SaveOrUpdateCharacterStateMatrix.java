@@ -290,17 +290,17 @@ final class SaveOrUpdateCharacterStateMatrix implements ISaveOrUpdateMatrix {
 						dbCell.setInapplicable();
 						break;
 					case POLYMORPHIC:
-						dbCell.setPolymorphicStates(newTargetStates);
+						dbCell.setPolymorphicElements(newTargetStates);
 						break;
 					case SINGLE:
 						dbCell
-								.setSingleState(getOnlyElement(newTargetStates));
+								.setSingleElement(getOnlyElement(newTargetStates));
 						break;
 					case UNASSIGNED:
 						dbCell.setUnassigned();
 						break;
 					case UNCERTAIN:
-						dbCell.setUncertainStates(newTargetStates);
+						dbCell.setUncertainElements(newTargetStates);
 						break;
 					default:
 						throw new AssertionError("unknown type");

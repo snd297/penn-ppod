@@ -172,17 +172,7 @@ public class CharacterStateRow extends Row<CharacterStateCell> {
 		return Collections.unmodifiableList(getCells()).iterator();
 	}
 
-	/**
-	 * Set the cells of this row.
-	 * 
-	 * @param newCells the cells.
-	 * 
-	 * @return any cells which were removed as a result of this operation
-	 * 
-	 * @throws IllegalStateException if {@code this.getMatrix() == null}
-	 * @throws IllegalStateException if the owning matrix does not have the same
-	 *             number of characters as {@code newCells.size()}
-	 */
+	@Override
 	public List<CharacterStateCell> setCells(
 			final List<? extends CharacterStateCell> newCells) {
 		checkNotNull(newCells);

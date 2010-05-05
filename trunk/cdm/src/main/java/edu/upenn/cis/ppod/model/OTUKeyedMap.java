@@ -92,10 +92,15 @@ public abstract class OTUKeyedMap<V extends PersistentObject>
 	@Nullable
 	protected abstract IPPodVersionedWithOTUSet getParent();
 
-	public List<V> getValuesInOTUOrder(final OTUSet otuSet) {
+	public List<V> getValuesInOTUSetOrder() {
+		if (getParent() == null) {
+			throw new IllegalStateException(
+					"parent is not set, so there is no OTU ordering to use");
+		}
+		final OTUSet parentOTUSet = getParent().getOTUSet();
 		final List<V> valuesInOTUOrder = newArrayListWithCapacity(getOTUsToValues()
 				.values().size());
-		for (final OTU otu : otuSet) {
+		for (final OTU otu : parentOTUSet) {
 			if (getOTUsToValues().containsKey(otu)) {
 				valuesInOTUOrder.add(getOTUsToValues().get(otu));
 			}

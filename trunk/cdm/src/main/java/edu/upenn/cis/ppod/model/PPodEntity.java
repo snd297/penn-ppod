@@ -70,8 +70,6 @@ public abstract class PPodEntity extends PersistentObject implements IAttachee,
 
 	static final String TABLE = "PPOD_ENTITY";
 
-	static final String ID_COLUMN = TABLE + "_ID";
-
 	/**
 	 * The pPod-version of this object. Similar in concept to Hibernate's
 	 * version, but tweaked for our purposes.

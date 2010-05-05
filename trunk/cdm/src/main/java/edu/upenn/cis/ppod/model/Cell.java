@@ -18,13 +18,17 @@ import javax.persistence.Transient;
 import javax.xml.bind.Unmarshaller;
 import javax.xml.bind.annotation.XmlAttribute;
 
+import edu.upenn.cis.ppod.modelinterfaces.IPPodVersioned;
+
 /**
- * A cell of states.
+ * A cell.
  * 
  * @author Sam Donnelly
  */
 @MappedSuperclass
-public abstract class Cell<S> extends PPodEntity implements Iterable<S> {
+public abstract class Cell<E> extends PPodEntity implements Iterable<E> {
+
+	protected abstract IPPodVersioned getParent();
 
 	/**
 	 * The different types of {@code Cell}: single, polymorphic, uncertain,
@@ -74,14 +78,16 @@ public abstract class Cell<S> extends PPodEntity implements Iterable<S> {
 	@Column(name = TYPE_COLUMN, nullable = false)
 	@Enumerated(EnumType.ORDINAL)
 	@CheckForNull
-	protected Type type;
+	private Type type;
 
 	/**
 	 * Tells us that this {@code Cell} has been unmarshalled and still needs to
 	 * have {@code states} populated with {@code xmlStates}.
 	 */
 	@Transient
-	private boolean xmlStatesNeedsToBePutIntoStates = false;
+	private boolean xmlElementsNeedsToBePutIntoElements = false;
+
+	Cell() {}
 
 	@Override
 	public void afterUnmarshal() {
@@ -92,8 +98,8 @@ public abstract class Cell<S> extends PPodEntity implements Iterable<S> {
 			// Let's reset the type to make it consistent with states
 			final Type xmlType = getType();
 			this.type = null;
-			setTypeAndStates(xmlType, getXmlStates());
-			unsetXmlStates();
+			setTypeAndElements(xmlType, getXmlElements());
+			unsetXmlElements();
 		}
 	}
 
@@ -110,20 +116,20 @@ public abstract class Cell<S> extends PPodEntity implements Iterable<S> {
 	}
 
 	/**
-	 * Clear the cell out of states. Does not touch the type.
+	 * Clear the cell out of elements. Does not touch the type.
 	 */
-	protected void clearStates() {
-		if (getFirstState() == null) {
+	protected void clearElements() {
+		if (getFirstElement() == null) {
 			// Should be all clear, but let's check for programming errors
-			if (getStatesRaw() != null && getStatesRaw().size() != 0) {
+			if (getElementsRaw() != null && getElementsRaw().size() != 0) {
 				throw new AssertionError(
 						"programming error: firstate == null && states != null && states.size() != 0");
 			}
 		} else {
-			unsetFirstState();
+			unsetFirstElement();
 
-			if (getStatesRaw() != null) {
-				getStatesRaw().clear();
+			if (getElementsRaw() != null) {
+				getElementsRaw().clear();
 			}
 			setInNeedOfNewPPodVersionInfo();
 		}
@@ -136,14 +142,14 @@ public abstract class Cell<S> extends PPodEntity implements Iterable<S> {
 	 * {@link Type#UNASSIGNED}.
 	 */
 	@CheckForNull
-	protected abstract S getFirstState();
+	protected abstract E getFirstElement();
 
 	@CheckForNull
 	protected Integer getPosition() {
 		return position;
 	}
 
-	protected Set<S> getStates() {
+	protected Set<E> getElements() {
 		checkState(getType() != null,
 				"type has yet to be assigned for this cell");
 
@@ -159,8 +165,8 @@ public abstract class Cell<S> extends PPodEntity implements Iterable<S> {
 			case UNASSIGNED:
 				return Collections.emptySet();
 			case SINGLE:
-				final Set<S> firstStateInASet = newHashSet();
-				firstStateInASet.add(getFirstState());
+				final Set<E> firstStateInASet = newHashSet();
+				firstStateInASet.add(getFirstElement());
 				return firstStateInASet;
 			case POLYMORPHIC:
 			case UNCERTAIN:
@@ -169,7 +175,7 @@ public abstract class Cell<S> extends PPodEntity implements Iterable<S> {
 				// possible since it will trigger a database hit, which in the
 				// aggregate
 				// is expensive since there're are so many cells.
-				final Set<S> states = getStatesRaw();
+				final Set<E> states = getElementsRaw();
 				if (states == null) {
 					return Collections.emptySet();
 				}
@@ -180,14 +186,14 @@ public abstract class Cell<S> extends PPodEntity implements Iterable<S> {
 		}
 	}
 
-	protected abstract Set<S> getStatesRaw();
+	protected abstract Set<E> getElementsRaw();
 
 	/**
 	 * Get the number of states in this cell.
 	 * 
 	 * @return the number of states in this cell
 	 */
-	public int getStatesSize() {
+	public int getElementsSize() {
 		checkState(getType() != null,
 				"type has yet to be assigned for this cell");
 		switch (getType()) {
@@ -198,7 +204,7 @@ public abstract class Cell<S> extends PPodEntity implements Iterable<S> {
 				return 1;
 			case POLYMORPHIC:
 			case UNCERTAIN:
-				return getStates().size();
+				return getElements().size();
 			default:
 				throw new AssertionError("Unknown CharacterState.Type: " + type);
 		}
@@ -210,13 +216,13 @@ public abstract class Cell<S> extends PPodEntity implements Iterable<S> {
 		return type;
 	}
 
-	protected abstract Set<S> getXmlStates();
+	protected abstract Set<E> getXmlElements();
 
 	/**
 	 * Package-private for testing.
 	 */
 	boolean getXmlStatesNeedsToBePutIntoStates() {
-		return xmlStatesNeedsToBePutIntoStates;
+		return xmlElementsNeedsToBePutIntoElements;
 	}
 
 	/**
@@ -225,9 +231,9 @@ public abstract class Cell<S> extends PPodEntity implements Iterable<S> {
 	 * 
 	 * @return this
 	 */
-	public Cell<S> setInapplicable() {
-		final Set<S> emptyStates = Collections.emptySet();
-		setTypeAndStates(Type.INAPPLICABLE, emptyStates);
+	public Cell<E> setInapplicable() {
+		final Set<E> emptyStates = Collections.emptySet();
+		setTypeAndElements(Type.INAPPLICABLE, emptyStates);
 		return this;
 	}
 
@@ -240,16 +246,16 @@ public abstract class Cell<S> extends PPodEntity implements Iterable<S> {
 	 * 
 	 * @throw IllegalArgumentException if {@code polymorphicStates.size() < 2}
 	 */
-	public Cell<S> setPolymorphicStates(
-			final Set<? extends S> polymorphicStates) {
-		checkNotNull(polymorphicStates);
-		checkArgument(polymorphicStates.size() > 1,
+	public Cell<E> setPolymorphicElements(
+			final Set<? extends E> polymorphicElements) {
+		checkNotNull(polymorphicElements);
+		checkArgument(polymorphicElements.size() > 1,
 				"polymorphic states must be > 1");
-		setTypeAndStates(Type.POLYMORPHIC, polymorphicStates);
+		setTypeAndElements(Type.POLYMORPHIC, polymorphicElements);
 		return this;
 	}
 
-	protected Cell<S> setPosition(@CheckForNull final Integer position) {
+	protected Cell<E> setPosition(@CheckForNull final Integer position) {
 		this.position = position;
 		return this;
 	}
@@ -261,26 +267,26 @@ public abstract class Cell<S> extends PPodEntity implements Iterable<S> {
 	 * 
 	 * @return this
 	 */
-	public Cell<S> setSingleState(final S state) {
+	public Cell<E> setSingleElement(final E state) {
 		checkNotNull(state);
 
 		// Was getting a warning if we didn't do a create and then add.
-		final Set<S> states = newHashSet();
+		final Set<E> states = newHashSet();
 		states.add(state);
-		setTypeAndStates(Type.SINGLE, states);
+		setTypeAndElements(Type.SINGLE, states);
 		return this;
 	}
 
-	protected Cell<S> setType(final Type type) {
+	protected Cell<E> setType(final Type type) {
 		checkNotNull(type);
 		this.type = type;
 		return this;
 	}
 
 	/**
-	 * Add a set of {@code CharacterState}s to this {@code CharacterStateCell}.
+	 * Add a set of {@code E} to this {@code Cell}.
 	 * <p>
-	 * Assumes that none of {@code states} is in a detached state.
+	 * Assumes that none of {@code elements} is in a detached state.
 	 * <p>
 	 * This object makes its own copy of {@code states}.
 	 * 
@@ -288,19 +294,19 @@ public abstract class Cell<S> extends PPodEntity implements Iterable<S> {
 	 * 
 	 * @return this
 	 */
-	protected abstract Cell<S> setTypeAndStates(final Type type,
-			final Set<? extends S> states);
+	protected abstract Cell<E> setTypeAndElements(final Type type,
+			final Set<? extends E> elements);
 
 	/**
 	 * Created for testing purposes.
 	 */
-	Cell<S> setTypeAndXmlStates(final Type type,
-			final Set<? extends S> xmlStates) {
+	Cell<E> setTypeAndXmlElements(final Type type,
+			final Set<? extends E> xmlStates) {
 		checkNotNull(type);
 		checkNotNull(xmlStates);
 		setType(type);
-		getXmlStates().clear();
-		getXmlStates().addAll(xmlStates);
+		getXmlElements().clear();
+		getXmlElements().addAll(xmlStates);
 		return this;
 	}
 
@@ -310,9 +316,9 @@ public abstract class Cell<S> extends PPodEntity implements Iterable<S> {
 	 * 
 	 * @return this
 	 */
-	public Cell<S> setUnassigned() {
-		final Set<S> emptyStates = Collections.emptySet();
-		setTypeAndStates(Type.UNASSIGNED, emptyStates);
+	public Cell<E> setUnassigned() {
+		final Set<E> emptyStates = Collections.emptySet();
+		setTypeAndElements(Type.UNASSIGNED, emptyStates);
 		return this;
 	}
 
@@ -325,25 +331,25 @@ public abstract class Cell<S> extends PPodEntity implements Iterable<S> {
 	 * 
 	 * @throw IllegalArgumentException if {@code uncertainStates.size() < 2}
 	 */
-	public Cell<S> setUncertainStates(
-			final Set<? extends S> uncertainStates) {
-		checkNotNull(uncertainStates);
-		checkArgument(uncertainStates.size() > 1,
-				"uncertain states must be > 1");
-		setTypeAndStates(Type.UNCERTAIN, uncertainStates);
+	public Cell<E> setUncertainElements(
+			final Set<? extends E> uncertainElements) {
+		checkNotNull(uncertainElements);
+		checkArgument(uncertainElements.size() > 1,
+				"uncertain elements must be > 1");
+		setTypeAndElements(Type.UNCERTAIN, uncertainElements);
 		return this;
 	}
 
 	/**
 	 * Package-private for testing.
 	 */
-	Cell<S> setXmlStatesNeedsToBePutIntoStates(
+	Cell<E> setXmlStatesNeedsToBePutIntoStates(
 			final boolean xmlStatesNeedsToBePutIntoStates) {
-		this.xmlStatesNeedsToBePutIntoStates = xmlStatesNeedsToBePutIntoStates;
+		this.xmlElementsNeedsToBePutIntoElements = xmlStatesNeedsToBePutIntoStates;
 		return this;
 	}
 
-	protected abstract Cell<S> unsetFirstState();
+	protected abstract Cell<E> unsetFirstElement();
 
-	protected abstract Cell<S> unsetXmlStates();
+	protected abstract Cell<E> unsetXmlElements();
 }

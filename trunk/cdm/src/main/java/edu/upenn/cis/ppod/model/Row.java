@@ -16,6 +16,16 @@ import edu.upenn.cis.ppod.util.IVisitor;
 public abstract class Row<C extends Cell<?>> extends PPodEntity implements
 		Iterable<C> {
 
+	Row() {}
+
+	@Override
+	public void accept(final IVisitor visitor) {
+		for (final C cell : getCells()) {
+			cell.accept(visitor);
+		}
+		super.accept(visitor);
+	}
+
 	/**
 	 * {@link Unmarshaller} callback.
 	 * 
@@ -47,13 +57,19 @@ public abstract class Row<C extends Cell<?>> extends PPodEntity implements
 		return getCells().size();
 	}
 
-	@Override
-	public void accept(final IVisitor visitor) {
-		for (final C cell : getCells()) {
-			cell.accept(visitor);
-		}
-		super.accept(visitor);
-	}
+	/**
+	 * Set the cells of this row.
+	 * 
+	 * @param newCells the cells.
+	 * 
+	 * @return any cells which were removed as a result of this operation
+	 * 
+	 * @throws IllegalStateException if {@code this.getParent() == null}
+	 * @throws IllegalStateException if the owning matrix does not have the same
+	 *             number of columns as {@code newCells.size()}
+	 */
+	public abstract List<C> setCells(
+			final List<? extends C> cells);
 
 	protected abstract Row<C> unsetOTUsToRows();
 

@@ -42,7 +42,7 @@ import edu.upenn.cis.ppod.util.IVisitor;
 @MappedSuperclass
 public abstract class PersistentObject implements IPersistentObject {
 
-	static final String ID_COLUMN = "ID";
+	public static final String ID_COLUMN = "ID";
 
 	@AccessType("property")
 	@Id
