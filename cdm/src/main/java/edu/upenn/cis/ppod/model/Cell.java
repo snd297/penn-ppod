@@ -163,7 +163,12 @@ public abstract class Cell<E> extends PPodEntity implements Iterable<E> {
 				// is expensive since there're are so many cells.
 				final Set<E> states = getElementsRaw();
 				if (states == null) {
-					return Collections.emptySet();
+					throw new AssertionError("getElementsRaw() == null");
+				}
+				if (states.size() < 2) {
+					throw new AssertionError("type is " + getType()
+												+ " and getElementsRaw() has "
+												+ states.size() + " elements");
 				}
 				return states;
 

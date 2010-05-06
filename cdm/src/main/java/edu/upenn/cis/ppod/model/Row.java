@@ -15,7 +15,7 @@ import edu.upenn.cis.ppod.util.IVisitor;
  */
 @MappedSuperclass
 public abstract class Row<C extends Cell<?>> extends PPodEntity implements
-		Iterable<C>, IRow {
+		IRow, Iterable<C> {
 
 	Row() {}
 
