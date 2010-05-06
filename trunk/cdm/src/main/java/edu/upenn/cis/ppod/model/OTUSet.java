@@ -44,8 +44,6 @@ import javax.xml.bind.Unmarshaller;
 import javax.xml.bind.annotation.XmlAttribute;
 import javax.xml.bind.annotation.XmlElement;
 
-import org.hibernate.annotations.Cascade;
-
 import edu.upenn.cis.ppod.modelinterfaces.ILabeled;
 import edu.upenn.cis.ppod.modelinterfaces.IPPodVersionedWithOTUSet;
 import edu.upenn.cis.ppod.modelinterfaces.IPersistentObject;
@@ -64,11 +62,11 @@ import edu.upenn.cis.ppod.util.IVisitor;
 @Table(name = OTUSet.TABLE)
 public class OTUSet extends UUPPodEntityWXmlId implements Iterable<OTU> {
 
-	/** The table for this entity. Intentionally package-private. */
-	public static final String TABLE = "OTU_SET";
-
 	/** The column that stores the description. */
 	public static final String DESCRIPTION_COLUMN = "DESCRIPTION";
+
+	/** The table for this entity. Intentionally package-private. */
+	public static final String TABLE = "OTU_SET";
 
 	/**
 	 * To be used in the names of foreign keys that point at this table.
@@ -78,6 +76,10 @@ public class OTUSet extends UUPPodEntityWXmlId implements Iterable<OTU> {
 
 	/** The column that stores the label. */
 	public static final String LABEL_COLUMN = "LABEL";
+
+	/** The matrices which reference this OTU set. */
+	@OneToMany(mappedBy = "otuSet", cascade = CascadeType.ALL, orphanRemoval = true)
+	private final Set<CharacterStateMatrix> characterStateMatrices = newHashSet();
 
 	/** Free-form description. */
 	@Column(name = DESCRIPTION_COLUMN, nullable = true)
@@ -96,15 +98,10 @@ public class OTUSet extends UUPPodEntityWXmlId implements Iterable<OTU> {
 	@CheckForNull
 	private String label;
 
-	/** The matrices which reference this OTU set. */
-	@OneToMany(mappedBy = "otuSet", cascade = CascadeType.ALL, orphanRemoval = true)
-	private final Set<CharacterStateMatrix> matrices = newHashSet();
-
 	/** The set of {@code OTU}s that this {@code OTUSet} contains. */
-	@OneToMany(orphanRemoval = true)
+	@OneToMany(orphanRemoval = true, cascade = CascadeType.ALL)
 	@org.hibernate.annotations.IndexColumn(name = "POSITION")
-	@JoinColumn(name = OTU.JOIN_COLUMN, nullable = false)
-	@Cascade( { org.hibernate.annotations.CascadeType.SAVE_UPDATE })
+	@JoinColumn(name = JOIN_COLUMN, nullable = false)
 	private final List<OTU> otus = newArrayList();
 
 	@ManyToOne(fetch = FetchType.LAZY)
@@ -158,7 +155,7 @@ public class OTUSet extends UUPPodEntityWXmlId implements Iterable<OTU> {
 	 */
 	public CharacterStateMatrix addMatrix(final CharacterStateMatrix matrix) {
 		checkNotNull(matrix);
-		getCharacterStateMarices().add(matrix);
+		getCharacterStateMatrices().add(matrix);
 		matrix.setOTUSet(this);
 		setInNeedOfNewPPodVersionInfo();
 		return matrix;
@@ -238,7 +235,7 @@ public class OTUSet extends UUPPodEntityWXmlId implements Iterable<OTU> {
 	}
 
 	public Iterator<CharacterStateMatrix> characterStateMatricesIterator() {
-		return Collections.unmodifiableSet(getCharacterStateMarices())
+		return Collections.unmodifiableSet(getCharacterStateMatrices())
 				.iterator();
 	}
 
@@ -250,8 +247,8 @@ public class OTUSet extends UUPPodEntityWXmlId implements Iterable<OTU> {
 	}
 
 	@XmlElement(name = "matrix")
-	private Set<CharacterStateMatrix> getCharacterStateMarices() {
-		return matrices;
+	private Set<CharacterStateMatrix> getCharacterStateMatrices() {
+		return characterStateMatrices;
 	}
 
 	private Set<IPPodVersionedWithOTUSet> getChildren() {
@@ -259,7 +256,7 @@ public class OTUSet extends UUPPodEntityWXmlId implements Iterable<OTU> {
 		for (final IPPodVersionedWithOTUSet pPodEntity : getOTUs()) {
 			children.add(pPodEntity);
 		}
-		for (final IPPodVersionedWithOTUSet pPodEntity : getCharacterStateMarices()) {
+		for (final IPPodVersionedWithOTUSet pPodEntity : getCharacterStateMatrices()) {
 			children.add(pPodEntity);
 		}
 		for (final IPPodVersionedWithOTUSet pPodEntity : getTreeSets()) {
@@ -314,7 +311,7 @@ public class OTUSet extends UUPPodEntityWXmlId implements Iterable<OTU> {
 	 *         OTUSet}
 	 */
 	public int getMatricesSize() {
-		return getCharacterStateMarices().size();
+		return getCharacterStateMatrices().size();
 	}
 
 	/**
@@ -336,15 +333,6 @@ public class OTUSet extends UUPPodEntityWXmlId implements Iterable<OTU> {
 	}
 
 	/**
-	 * Get the number of OTU's in this {@code OTUSet}.
-	 * 
-	 * @return the number of OTU's in this {@code OTUSet}
-	 */
-	public int getOTUsSize() {
-		return getOTUs().size();
-	}
-
-	/**
 	 * Get the study to which this OTU set belongs. Will be {@code null} until
 	 * this is added to a {@code Study}.
 	 * 
@@ -360,17 +348,17 @@ public class OTUSet extends UUPPodEntityWXmlId implements Iterable<OTU> {
 		return treeSets;
 	}
 
-	/**
-	 * Get the number of {@code TreeSet}s in this {@code OTUSet}.
-	 * 
-	 * @return the number of {@code TreeSet}s in this {@code OTUSet}
-	 */
-	public int getTreeSetsSize() {
-		return getTreeSets().size();
-	}
-
 	public Iterator<OTU> iterator() {
 		return Collections.unmodifiableList(getOTUs()).iterator();
+	}
+
+	/**
+	 * Get the number of OTU's in this {@code OTUSet}.
+	 * 
+	 * @return the number of OTU's in this {@code OTUSet}
+	 */
+	public int otusSize() {
+		return getOTUs().size();
 	}
 
 	public boolean removeDNASequenceSet(
@@ -382,6 +370,37 @@ public class OTUSet extends UUPPodEntityWXmlId implements Iterable<OTU> {
 			return true;
 		}
 		return false;
+	}
+
+	/**
+	 * Set <code>newMatrices</code> to this <code>OTUSet</code>'s matrices.
+	 * 
+	 * @param newMatrices new matrices
+	 * 
+	 * @return any matrices that were removed as a result of this operation
+	 */
+	public Set<CharacterStateMatrix> setCharacterStateMatrices(
+			final Set<? extends CharacterStateMatrix> newMatrices) {
+		checkNotNull(newMatrices);
+
+		if (newMatrices.equals(getCharacterStateMatrices())) {
+			return Collections.emptySet();
+		}
+
+		final Set<CharacterStateMatrix> removedMatrices = newHashSet(getCharacterStateMatrices());
+		removedMatrices.removeAll(newMatrices);
+
+		for (final CharacterStateMatrix removedMatrix : removedMatrices) {
+			removedMatrix.setOTUSet(null);
+		}
+
+		getCharacterStateMatrices().clear();
+
+		for (final CharacterStateMatrix newMatrix : newMatrices) {
+			addMatrix(newMatrix);
+		}
+		setInNeedOfNewPPodVersionInfo();
+		return removedMatrices;
 	}
 
 	/**
@@ -474,37 +493,6 @@ public class OTUSet extends UUPPodEntityWXmlId implements Iterable<OTU> {
 			setInNeedOfNewPPodVersionInfo();
 		}
 		return this;
-	}
-
-	/**
-	 * Set <code>newMatrices</code> to this <code>OTUSet</code>'s matrices.
-	 * 
-	 * @param newMatrices new matrices
-	 * 
-	 * @return any matrices that were removed as a result of this operation
-	 */
-	public Set<CharacterStateMatrix> setCharacterStateMatrices(
-			final Set<? extends CharacterStateMatrix> newMatrices) {
-		checkNotNull(newMatrices);
-
-		if (newMatrices.equals(getCharacterStateMarices())) {
-			return Collections.emptySet();
-		}
-
-		final Set<CharacterStateMatrix> removedMatrices = newHashSet(getCharacterStateMarices());
-		removedMatrices.removeAll(newMatrices);
-
-		for (final CharacterStateMatrix removedMatrix : removedMatrices) {
-			removedMatrix.setOTUSet(null);
-		}
-
-		getCharacterStateMarices().clear();
-
-		for (final CharacterStateMatrix newMatrix : newMatrices) {
-			addMatrix(newMatrix);
-		}
-		setInNeedOfNewPPodVersionInfo();
-		return removedMatrices;
 	}
 
 	/**
@@ -621,6 +609,15 @@ public class OTUSet extends UUPPodEntityWXmlId implements Iterable<OTU> {
 	 */
 	public Iterator<TreeSet> treeSetsIterator() {
 		return Collections.unmodifiableSet(getTreeSets()).iterator();
+	}
+
+	/**
+	 * Get the number of {@code TreeSet}s in this {@code OTUSet}.
+	 * 
+	 * @return the number of {@code TreeSet}s in this {@code OTUSet}
+	 */
+	public int treeSetsSize() {
+		return getTreeSets().size();
 	}
 
 }

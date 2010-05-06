@@ -52,7 +52,7 @@ final class MergeMolecularSequenceSets<SS extends SequenceSet<S>, S extends Sequ
 		targetSequenceSet.setLabel(sourceSequenceSet.getLabel());
 		dao.saveOrUpdate(targetSequenceSet);
 
-		for (int i = 0; i < sourceSequenceSet.getOTUSet().getOTUsSize(); i++) {
+		for (int i = 0; i < sourceSequenceSet.getOTUSet().otusSize(); i++) {
 			final OTU sourceOTU = sourceSequenceSet.getOTUSet().getOTU(i);
 
 			final S sourceSequence = sourceSequenceSet.getSequence(sourceOTU);

@@ -42,7 +42,7 @@ public class ModelAssert {
 		if (expectedOTUSet.getPPodId() != null) {
 			assertEquals(actualOTUSet.getPPodId(), expectedOTUSet.getPPodId());
 		}
-		assertEquals(actualOTUSet.getOTUsSize(), expectedOTUSet.getOTUsSize());
+		assertEquals(actualOTUSet.otusSize(), expectedOTUSet.otusSize());
 		for (final OTU expectedOTU : expectedOTUSet) {
 			boolean foundIt = false;
 			for (final OTU actualOTU : actualOTUSet) {

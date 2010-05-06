@@ -129,7 +129,7 @@ public class OTUSetTest {
 		// assertNull(otuSet.getPPodVersionInfo());
 		assertTrue(study.isInNeedOfNewPPodVersionInfo());
 		// assertNull(study.getPPodVersionInfo());
-		assertEquals(otuSet.getOTUsSize(), 0);
+		assertEquals(otuSet.otusSize(), 0);
 	}
 
 	public void removeMatrix() {

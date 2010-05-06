@@ -16,7 +16,7 @@
 	</named-query>
 
 	<named-query name="Study-getByPPodIdEager">
-		<query>select s from Study s left join fetch s.otuSets o left join fetch o.matrices m left join fetch m.otusToRows where s.pPodId=:pPodId</query>
+		<query>select s from Study s left join fetch s.otuSets o left join fetch o.characterStateMatrices m left join fetch m.otusToRows where s.pPodId=:pPodId</query>
 		<hint name="org.hibernate.comment" value="Get a Study given its pPOD ID." />
 	</named-query>
 
@@ -49,7 +49,7 @@
 
 	<named-query name="OTUSet-getMatrixInfosByOTUSetPPodIdAndMinPPodVersion">
 		<query>select m.id, m.pPodId, m.pPodVersionInfo.pPodVersion 
-		       from OTUSet os join os.matrices m 
+		       from OTUSet os join os.characterStateMatrices m 
 		       where os.pPodId=:otuSetPPodId and m.pPodVersionInfo.pPodVersion >= :minPPodVersion</query>
 	</named-query>
 
@@ -68,14 +68,18 @@
 		<query>select pc.id, pc.pPodId, pc.pPodVersionInfo.pPodVersion 
 		       from CharacterStateMatrix m join m.characters pc 
 		       where m.id=:matrixId and pc.pPodVersionInfo.pPodVersion >= :minPPodVersion</query>
-	</named-query><!--
-
-	<named-query name="CharacterStateMatrix-getColumnPPodVersionsByMatrixId">
-		<query>select versionInfo.pPodVersion from CharacterStateMatrix m join m.columnPPodVersionInfos versionInfo where m.id=:matrixId order by PPOD_VERSION_INFO_POSITION</query>
-		<hint name="org.hibernate.comment"
-			value="Get a matrixs column headers pPOD versions given the matrix id" />
 	</named-query>
-	--><!--
+	<!--
+
+		<named-query
+		name="CharacterStateMatrix-getColumnPPodVersionsByMatrixId">
+		<query>select versionInfo.pPodVersion from CharacterStateMatrix m join
+		m.columnPPodVersionInfos versionInfo where m.id=:matrixId order by
+		PPOD_VERSION_INFO_POSITION</query> <hint name="org.hibernate.comment"
+		value="Get a matrixs column headers pPOD versions given the matrix id"
+		/> </named-query>
+	-->
+	<!--
 
 		<named-query
 		name="CharacterStateMatrix-getRowIdxsIdsVersionsByMatrixIdAndMinPPodVersion">
