@@ -5,6 +5,7 @@ import java.util.List;
 import javax.persistence.MappedSuperclass;
 import javax.xml.bind.Unmarshaller;
 
+import edu.upenn.cis.ppod.modelinterfaces.IOTUKeyedMapValue;
 import edu.upenn.cis.ppod.modelinterfaces.IRow;
 import edu.upenn.cis.ppod.util.IVisitor;
 
@@ -15,7 +16,7 @@ import edu.upenn.cis.ppod.util.IVisitor;
  */
 @MappedSuperclass
 public abstract class Row<C extends Cell<?>> extends PPodEntity implements
-		IRow, Iterable<C> {
+		IRow, Iterable<C>, IOTUKeyedMapValue {
 
 	Row() {}
 
@@ -54,7 +55,7 @@ public abstract class Row<C extends Cell<?>> extends PPodEntity implements
 	 * 
 	 * @return the number of cells this row has
 	 */
-	public int getCellsSize() {
+	public int size() {
 		return getCells().size();
 	}
 
@@ -71,7 +72,5 @@ public abstract class Row<C extends Cell<?>> extends PPodEntity implements
 	 */
 	public abstract List<C> setCells(
 			final List<? extends C> cells);
-
-	protected abstract Row<C> unsetOTUsToRows();
 
 }

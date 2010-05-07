@@ -59,7 +59,7 @@ public abstract class MolecularCharacter extends Character {
 	 * a {@code MolecularCharacter} to be added to more than one matrix.
 	 */
 	@Override
-	protected boolean addMatrix(final CharacterStateMatrix matrix) {
+	protected boolean addMatrix(final StandardMatrix matrix) {
 		checkNotNull(matrix);
 		return getMatrices().add(matrix);
 	}

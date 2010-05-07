@@ -92,9 +92,10 @@ public class ModelAssert {
 	}
 
 	public static void assertEqualsCharacterStateCells(
-			final CharacterStateCell actualCell,
-			final CharacterStateCell expectedCell) {
-		assertEquals(actualCell.getElementsSize(), expectedCell.getElementsSize());
+			final StandardCell actualCell,
+			final StandardCell expectedCell) {
+		assertEquals(actualCell.elementsSize(), expectedCell
+				.elementsSize());
 		for (final Iterator<CharacterState> actualStateItr = actualCell
 				.iterator(), expectedStateItr = expectedCell
 				.iterator(); actualStateItr.hasNext()
@@ -105,16 +106,16 @@ public class ModelAssert {
 	}
 
 	public static void assertEqualsCharacterStateRows(
-			final CharacterStateRow actualRow,
-			final CharacterStateRow expectedRow) {
-		assertEquals(actualRow.getCellsSize(), expectedRow.getCellsSize());
+			final StandardRow actualRow,
+			final StandardRow expectedRow) {
+		assertEquals(actualRow.size(), expectedRow.size());
 
-		for (final Iterator<CharacterStateCell> actualCellItr = actualRow
+		for (final Iterator<StandardCell> actualCellItr = actualRow
 				.iterator(), expectedCellItr = expectedRow.iterator(); actualCellItr
 				.hasNext()
 																		&& expectedCellItr
 																				.hasNext();) {
-			final CharacterStateCell actualCell = actualCellItr.next(), expectedCell = expectedCellItr
+			final StandardCell actualCell = actualCellItr.next(), expectedCell = expectedCellItr
 					.next();
 			assertTrue(actualCell.getRow() == actualRow);
 			assertEqualsCharacterStateCells(actualCell, expectedCell);
@@ -128,8 +129,8 @@ public class ModelAssert {
 	 * @param expectedMatrix
 	 */
 	public static void assertEqualsCharacterStateMatrices(
-			final CharacterStateMatrix actualMatrix,
-			final CharacterStateMatrix expectedMatrix) {
+			final StandardMatrix actualMatrix,
+			final StandardMatrix expectedMatrix) {
 		assertEquals(actualMatrix.getLabel(), expectedMatrix.getLabel());
 		assertEquals(actualMatrix.getDescription(), expectedMatrix
 				.getDescription());
@@ -154,12 +155,13 @@ public class ModelAssert {
 		// supposed to be.
 		// We use actualMatrix.getCharacters() to check as oppose to looking at
 		// expectedMatrix sine that seems to make the most sense
-		if (actualMatrix.getClass().equals(CharacterStateMatrix.class)) {
-			final Map<Character, Integer> actualMatrixCharacterIdx = actualMatrix
-					.getCharacterPosition();
-			assertEquals(actualMatrixCharacterIdx.size(), actualMatrix
+		if (actualMatrix.getClass().equals(StandardMatrix.class)) {
+			final Map<Character, Integer> actualMatrixCharactersToPositions = actualMatrix
+					.getCharactersToPositions();
+			assertEquals(Integer.valueOf(actualMatrixCharactersToPositions
+					.size()), actualMatrix
 					.getColumnsSize());
-			for (final Entry<Character, Integer> actualIdxByCharacter : actualMatrixCharacterIdx
+			for (final Entry<Character, Integer> actualIdxByCharacter : actualMatrixCharactersToPositions
 					.entrySet()) {
 				assertTrue(actualIdxByCharacter.getKey() == actualMatrix
 						.getCharacters().get(actualIdxByCharacter.getValue()));
@@ -168,11 +170,11 @@ public class ModelAssert {
 
 		assertEquals(actualMatrix.getRowsSize(), expectedMatrix.getRowsSize());
 
-		for (final Iterator<CharacterStateRow> actualRowItr = actualMatrix
+		for (final Iterator<StandardRow> actualRowItr = actualMatrix
 				.iterator(), expectedRowItr = expectedMatrix
 				.iterator(); actualRowItr.hasNext()
 								&& expectedRowItr.hasNext();) {
-			final CharacterStateRow actualRow = actualRowItr.next(), expectedRow = expectedRowItr
+			final StandardRow actualRow = actualRowItr.next(), expectedRow = expectedRowItr
 					.next();
 			assertTrue(actualRow.getMatrix() == actualMatrix);
 			assertEqualsCharacterStateRows(actualRow, expectedRow);

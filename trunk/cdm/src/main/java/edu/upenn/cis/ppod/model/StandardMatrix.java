@@ -62,11 +62,8 @@ import edu.upenn.cis.ppod.util.IVisitor;
  */
 @XmlSeeAlso( { DNAMatrix.class })
 @Entity
-@Table(name = CharacterStateMatrix.TABLE)
-public class CharacterStateMatrix extends Matrix<CharacterStateRow> {
-
-	/** This entity's table name. */
-	public static final String TABLE = "CHARACTER_STATE_MATRIX";
+@Table(name = StandardMatrix.TABLE)
+public class StandardMatrix extends Matrix<StandardRow> {
 
 	public static final String CHARACTER_IDX_COLUMN = Character.TABLE + "_IDX";
 
@@ -75,6 +72,9 @@ public class CharacterStateMatrix extends Matrix<CharacterStateRow> {
 	 */
 	static final String CHARACTERS_POSITION_COLUMN = Character.TABLE
 														+ "_POSITION";
+
+	/** This entity's table name. */
+	public static final String TABLE = "STANDARD_MATRIX";
 
 	/**
 	 * Name for foreign key columns that point at this table.
@@ -111,7 +111,7 @@ public class CharacterStateMatrix extends Matrix<CharacterStateRow> {
 	private OTUsToCharacterStateRows otusToRows;
 
 	/** No-arg constructor for (at least) Hibernate. */
-	CharacterStateMatrix() {}
+	StandardMatrix() {}
 
 	/**
 	 * This constructor is {@code protected} to allow for injected {@code
@@ -121,7 +121,7 @@ public class CharacterStateMatrix extends Matrix<CharacterStateRow> {
 	 * @param otusToRows the {@code OTUsToCharacterStateRows} for this matrix.
 	 */
 	@Inject
-	protected CharacterStateMatrix(final OTUsToCharacterStateRows otusToRows) {
+	protected StandardMatrix(final OTUsToCharacterStateRows otusToRows) {
 		this.otusToRows = otusToRows;
 		this.otusToRows.setMatrix(this);
 	}
@@ -133,7 +133,7 @@ public class CharacterStateMatrix extends Matrix<CharacterStateRow> {
 		}
 		getOTUsToRows().accept(visitor);
 
-		for (final CharacterStateRow row : getOTUsToRows()
+		for (final StandardRow row : getOTUsToRows()
 				.getOTUsToValues().values()) {
 			if (row != null) {
 				row.accept(visitor);
@@ -261,7 +261,7 @@ public class CharacterStateMatrix extends Matrix<CharacterStateRow> {
 	/**
 	 * Created for testing.
 	 */
-	Map<Character, Integer> getCharacterPosition() {
+	Map<Character, Integer> getCharactersToPositions() {
 		return charactersToPositions;
 	}
 
@@ -305,7 +305,7 @@ public class CharacterStateMatrix extends Matrix<CharacterStateRow> {
 	 * @return the number of characters this matrix has
 	 */
 	@Override
-	public int getColumnsSize() {
+	public Integer getColumnsSize() {
 		return getCharacters().size();
 	}
 
@@ -337,7 +337,7 @@ public class CharacterStateMatrix extends Matrix<CharacterStateRow> {
 	 * 
 	 * @return an iterator over this matrix's rows
 	 */
-	public Iterator<CharacterStateRow> iterator() {
+	public Iterator<StandardRow> iterator() {
 		return getOTUsToRows().getValuesInOTUSetOrder().iterator();
 	}
 
@@ -438,7 +438,7 @@ public class CharacterStateMatrix extends Matrix<CharacterStateRow> {
 	 * @throw IllegalArgumentException if {@code pos >=
 	 *        getColumnPPodVersionInfos().size()}
 	 */
-	public CharacterStateMatrix setColumnPPodVersionInfo(final int pos,
+	public StandardMatrix setColumnPPodVersionInfo(final int pos,
 			final PPodVersionInfo pPodVersionInfo) {
 		checkNotNull(pPodVersionInfo);
 		checkArgument(pos < getColumnPPodVersionInfos().size(),
@@ -454,7 +454,7 @@ public class CharacterStateMatrix extends Matrix<CharacterStateRow> {
 	 * 
 	 * @return this
 	 */
-	public CharacterStateMatrix setColumnPPodVersionInfos(
+	public StandardMatrix setColumnPPodVersionInfos(
 			final PPodVersionInfo pPodVersionInfo) {
 		for (int pos = 0; pos < getColumnPPodVersionInfos().size(); pos++) {
 			setColumnPPodVersionInfo(pos, pPodVersionInfo);
@@ -480,7 +480,7 @@ public class CharacterStateMatrix extends Matrix<CharacterStateRow> {
 	 * @return this
 	 */
 	@Override
-	public CharacterStateMatrix setOTUSet(
+	public StandardMatrix setOTUSet(
 			@CheckForNull final OTUSet otuSet) {
 		super.setOTUSet(otuSet);
 		getOTUsToRows().setOTUs();
@@ -498,7 +498,7 @@ public class CharacterStateMatrix extends Matrix<CharacterStateRow> {
 	 */
 	@edu.umd.cs.findbugs.annotations.SuppressWarnings
 	@SuppressWarnings("unused")
-	private CharacterStateMatrix setOTUsToRows(
+	private StandardMatrix setOTUsToRows(
 			final OTUsToCharacterStateRows otusToRows) {
 		checkNotNull(otusToRows);
 		this.otusToRows = otusToRows;

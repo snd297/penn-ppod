@@ -22,10 +22,10 @@
 		<mapping class="edu.upenn.cis.ppod.model.Tree" />
 		<mapping class="edu.upenn.cis.ppod.model.TreeSet" />
 
-		<mapping class="edu.upenn.cis.ppod.model.CharacterStateMatrix" />
+		<mapping class="edu.upenn.cis.ppod.model.StandardMatrix" />
 		<mapping class="edu.upenn.cis.ppod.model.OTUsToCharacterStateRows" />
-		<mapping class="edu.upenn.cis.ppod.model.CharacterStateRow" />
-		<mapping class="edu.upenn.cis.ppod.model.CharacterStateCell" />
+		<mapping class="edu.upenn.cis.ppod.model.StandardRow" />
+		<mapping class="edu.upenn.cis.ppod.model.StandardCell" />
 
 		<mapping class="edu.upenn.cis.ppod.model.Character" />
 		<mapping class="edu.upenn.cis.ppod.model.CharacterState" />

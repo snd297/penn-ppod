@@ -60,7 +60,7 @@ public class PopulateTables {
 					.getNewPPodVersionInfo());
 
 			for (final Iterator<CharacterState> statesItr = dnaCharacter
-					.getStatesIterator(); statesItr.hasNext();) {
+					.statesIterator(); statesItr.hasNext();) {
 				final CharacterState state = statesItr.next();
 				state.setPPodVersionInfo(newPPodVersionInfo
 						.getNewPPodVersionInfo());

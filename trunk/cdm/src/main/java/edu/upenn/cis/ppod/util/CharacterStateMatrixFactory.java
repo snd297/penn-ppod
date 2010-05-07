@@ -18,7 +18,7 @@ package edu.upenn.cis.ppod.util;
 import com.google.inject.Inject;
 import com.google.inject.Provider;
 
-import edu.upenn.cis.ppod.model.CharacterStateMatrix;
+import edu.upenn.cis.ppod.model.StandardMatrix;
 import edu.upenn.cis.ppod.model.DNAMatrix;
 
 /**
@@ -26,14 +26,14 @@ import edu.upenn.cis.ppod.model.DNAMatrix;
  */
 class CharacterStateMatrixFactory implements
 		ICharacterStateMatrixFactory {
-	private final Provider<CharacterStateMatrix> standardMatrixProvider;
+	private final Provider<StandardMatrix> standardMatrixProvider;
 	private final Provider<DNAMatrix> dnaMatrixProvider;
 
 // private final Provider<RNAStateMatrix> rnaMatrixProvider;
 
 	@Inject
 	CharacterStateMatrixFactory(
-			final Provider<CharacterStateMatrix> standardMatrixProvider,
+			final Provider<StandardMatrix> standardMatrixProvider,
 			final Provider<DNAMatrix> dnaMatrixProvider) {
 		// final Provider<RNAStateMatrix> rnaMatrixProvider) {
 		this.standardMatrixProvider = standardMatrixProvider;
@@ -41,9 +41,9 @@ class CharacterStateMatrixFactory implements
 		// this.rnaMatrixProvider = rnaMatrixProvider;
 	}
 
-	public CharacterStateMatrix create(final CharacterStateMatrix matrix) {
-		CharacterStateMatrix newMatrix;
-		if (matrix.getClass().equals(CharacterStateMatrix.class)) {
+	public StandardMatrix create(final StandardMatrix matrix) {
+		StandardMatrix newMatrix;
+		if (matrix.getClass().equals(StandardMatrix.class)) {
 			newMatrix = standardMatrixProvider.get();
 		} else if (matrix.getClass().equals(DNAMatrix.class)) {
 			newMatrix = dnaMatrixProvider.get();

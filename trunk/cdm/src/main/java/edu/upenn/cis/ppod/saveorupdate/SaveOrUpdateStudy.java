@@ -34,7 +34,7 @@ import edu.upenn.cis.ppod.dao.IDAO;
 import edu.upenn.cis.ppod.dao.IDNACharacterDAO;
 import edu.upenn.cis.ppod.dao.IStudyDAO;
 import edu.upenn.cis.ppod.dao.hibernate.DAOHibernateModule;
-import edu.upenn.cis.ppod.model.CharacterStateMatrix;
+import edu.upenn.cis.ppod.model.StandardMatrix;
 import edu.upenn.cis.ppod.model.DNACharacter;
 import edu.upenn.cis.ppod.model.DNASequence;
 import edu.upenn.cis.ppod.model.DNASequenceSet;
@@ -185,12 +185,12 @@ final class SaveOrUpdateStudy implements ISaveOrUpdateStudy {
 
 			otuSetInfo.setPPodId(dbOTUSet.getPPodId());
 
-			final Set<CharacterStateMatrix> newDbMatrices = newHashSet();
-			for (final Iterator<CharacterStateMatrix> incomingMatrixItr = incomingOTUSet
+			final Set<StandardMatrix> newDbMatrices = newHashSet();
+			for (final Iterator<StandardMatrix> incomingMatrixItr = incomingOTUSet
 					.characterStateMatricesIterator(); incomingMatrixItr.hasNext();) {
-				final CharacterStateMatrix incomingMatrix = incomingMatrixItr
+				final StandardMatrix incomingMatrix = incomingMatrixItr
 						.next();
-				CharacterStateMatrix dbMatrix;
+				StandardMatrix dbMatrix;
 				if (null == (dbMatrix = findIf(dbOTUSet.characterStateMatricesIterator(),
 						compose(
 								equalTo(incomingMatrix.getPPodId()),

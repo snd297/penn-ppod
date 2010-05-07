@@ -26,8 +26,8 @@ import com.google.inject.Inject;
 import com.google.inject.Provider;
 
 import edu.upenn.cis.ppod.model.Character;
-import edu.upenn.cis.ppod.model.CharacterStateMatrix;
-import edu.upenn.cis.ppod.model.CharacterStateRow;
+import edu.upenn.cis.ppod.model.StandardMatrix;
+import edu.upenn.cis.ppod.model.StandardRow;
 import edu.upenn.cis.ppod.model.DNASequence;
 import edu.upenn.cis.ppod.model.DNASequenceSet;
 import edu.upenn.cis.ppod.model.OTU;
@@ -92,9 +92,9 @@ final class Study2StudyInfo implements IStudy2StudyInfo {
 				otuInfo.setDocId(otu.getDocId());
 			}
 
-			for (final Iterator<CharacterStateMatrix> matrixItr = otuSet
+			for (final Iterator<StandardMatrix> matrixItr = otuSet
 					.characterStateMatricesIterator(); matrixItr.hasNext();) {
-				final CharacterStateMatrix matrix = matrixItr.next();
+				final StandardMatrix matrix = matrixItr.next();
 				final CharacterStateMatrixInfo matrixInfo =
 						find(otuSetInfo.getMatrixInfos(),
 								compose(equalTo(matrix.getPPodId()),
@@ -130,7 +130,7 @@ final class Study2StudyInfo implements IStudy2StudyInfo {
 				}
 
 				int rowIdx = -1;
-				for (final CharacterStateRow row : matrix) {
+				for (final StandardRow row : matrix) {
 					rowIdx++;
 					final Long rowPPodVersion = row.getPPodVersionInfo()
 							.getPPodVersion();

@@ -2,6 +2,7 @@ package edu.upenn.cis.ppod.model;
 
 import static com.google.common.collect.Lists.newArrayList;
 
+import java.util.Collections;
 import java.util.Iterator;
 import java.util.List;
 
@@ -35,15 +36,13 @@ public class DNARow extends Row<DNACell> {
 		return cells;
 	}
 
-	@Override
-	protected Row<DNACell> unsetOTUsToRows() {
+	public Row<DNACell> unsetOTUKeyedMap() {
 		// TODO Auto-generated method stub
 		throw new UnsupportedOperationException();
 	}
 
 	public Iterator<DNACell> iterator() {
-		// TODO Auto-generated method stub
-		throw new UnsupportedOperationException();
+		return Collections.unmodifiableList(cells).iterator();
 	}
 
 	@Override

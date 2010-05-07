@@ -25,7 +25,7 @@ import java.util.List;
 /**
  * @author Sam Donnelly
  */
-public abstract class MolecularStateMatrix extends CharacterStateMatrix {
+public abstract class MolecularStateMatrix extends StandardMatrix {
 
 	/**
 	 * Default constructor.

@@ -38,7 +38,6 @@ import javax.persistence.ManyToMany;
 import javax.persistence.ManyToOne;
 import javax.persistence.Table;
 import javax.persistence.Transient;
-import javax.xml.bind.Marshaller;
 import javax.xml.bind.Unmarshaller;
 import javax.xml.bind.annotation.XmlElement;
 import javax.xml.bind.annotation.XmlIDREF;
@@ -50,24 +49,24 @@ import edu.upenn.cis.ppod.modelinterfaces.IPPodVersioned;
 import edu.upenn.cis.ppod.util.IVisitor;
 
 /**
- * A cell in a {@link CharacterStateMatrix}.
+ * A cell in a {@link StandardMatrix}.
  * 
  * @author Sam Donnelly
  */
 @Entity
-@Table(name = CharacterStateCell.TABLE)
-public class CharacterStateCell extends Cell<CharacterState> {
+@Table(name = StandardCell.TABLE)
+public class StandardCell extends Cell<CharacterState> {
 
 	/**
 	 * The name of the table.
 	 */
-	public static final String TABLE = "CHARACTER_STATE_CELL";
+	public static final String TABLE = "STANDARD_CELL";
 
 	/**
 	 * Conventionally used as the names of foreign keys that point at the
 	 * {@code CharacterStateCell} table.
 	 */
-	public static final String ID_COLUMN = TABLE + "_ID";
+	public static final String JOIN_COLUMN = TABLE + "_ID";
 
 	private static final Comparator<CharacterState> STATE_COMPARATOR = new CharacterState.CharacterStateComparator();
 
@@ -99,9 +98,9 @@ public class CharacterStateCell extends Cell<CharacterState> {
 	 * belongs.
 	 */
 	@ManyToOne(fetch = FetchType.LAZY)
-	@JoinColumn(name = CharacterStateRow.ID_COLUMN)
+	@JoinColumn(name = StandardRow.JOIN_COLUMN)
 	@CheckForNull
-	private CharacterStateRow row;
+	private StandardRow row;
 
 	/**
 	 * Used for serialization so we don't have to hit {@code states} directly
@@ -112,7 +111,7 @@ public class CharacterStateCell extends Cell<CharacterState> {
 	private Set<CharacterState> xmlElements = null;
 
 	/** No-arg constructor for (at least) Hibernate. */
-	CharacterStateCell() {}
+	StandardCell() {}
 
 	@Override
 	public void accept(final IVisitor visitor) {
@@ -128,36 +127,22 @@ public class CharacterStateCell extends Cell<CharacterState> {
 	@Override
 	public void afterUnmarshal(final Unmarshaller u, final Object parent) {
 		super.afterUnmarshal(u, parent);
-		row = (CharacterStateRow) parent; // don't setRow call because it'll
+		row = (StandardRow) parent; // don't setRow call because it'll
 		// reset the ppod version info
-	}
-
-	/**
-	 * @throws IllegalStateException if the type has not been set
-	 */
-	@Override
-	public boolean beforeMarshal(@CheckForNull final Marshaller marshaller) {
-
-		// Let's not marshal it if it's in a bad state
-		checkState(getType() != null, "can't marshal a cell without a type");
-
-		getXmlElements().addAll(getElements());
-		return super.beforeMarshal(marshaller);
-
 	}
 
 	private void checkIncomingState(final CharacterState state) {
 
 		checkNotNull(state);
 
-		final CharacterStateRow row = getRow();
+		final StandardRow row = getRow();
 
 		checkState(row != null && getPosition() != null,
 				"this cell has not been assigned a row");
 
 		final Integer position = getPosition();
 
-		final CharacterStateMatrix matrix = row.getMatrix();
+		final StandardMatrix matrix = row.getMatrix();
 
 		checkState(matrix != null,
 				"this cell's row has not had a matrix assigned");
@@ -202,7 +187,7 @@ public class CharacterStateCell extends Cell<CharacterState> {
 	 */
 	@Nullable
 	@Override
-	public CharacterStateRow getRow() {
+	public StandardRow getRow() {
 		return row;
 	}
 
@@ -242,8 +227,8 @@ public class CharacterStateCell extends Cell<CharacterState> {
 	 * 
 	 * @return this {@code CharacterStateCell}
 	 */
-	protected CharacterStateCell setRow(
-			@CheckForNull final CharacterStateRow row) {
+	protected StandardCell setRow(
+			@CheckForNull final StandardRow row) {
 		this.row = row;
 		return this;
 	}
@@ -260,7 +245,7 @@ public class CharacterStateCell extends Cell<CharacterState> {
 	 * @return {@code state}
 	 */
 	@Override
-	protected CharacterStateCell setTypeAndElements(final Type type,
+	protected StandardCell setTypeAndElements(final Type type,
 			final Set<? extends CharacterState> states) {
 		checkNotNull(type);
 		checkNotNull(states);

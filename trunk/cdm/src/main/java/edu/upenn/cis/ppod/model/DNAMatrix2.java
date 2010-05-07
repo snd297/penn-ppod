@@ -12,6 +12,8 @@ import javax.persistence.Table;
 import com.google.inject.Inject;
 
 /**
+ * A {@link MolecularMatrix} composed of {@link DNARow}s.
+ * 
  * @author Sam Donnelly
  */
 @Entity

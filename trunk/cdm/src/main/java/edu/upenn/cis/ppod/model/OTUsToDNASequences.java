@@ -45,7 +45,7 @@ import edu.upenn.cis.ppod.util.OTUSomethingPair;
 @Entity
 @Table(name = OTUsToDNASequences.TABLE)
 public class OTUsToDNASequences extends
-		OTUsToSequences<DNASequence> {
+		OTUKeyedMap<DNASequence> {
 
 	final static String TABLE = "OTUS_TO_DNA_SEQUENCES";
 
