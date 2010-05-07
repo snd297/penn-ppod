@@ -27,6 +27,8 @@ import javax.xml.bind.annotation.XmlAttribute;
 import javax.xml.bind.annotation.XmlElement;
 import javax.xml.bind.annotation.XmlSeeAlso;
 
+import edu.upenn.cis.ppod.modelinterfaces.IOTUKeyedMapValue;
+
 /**
  * A molecular sequence - DNA, RNA, protein - that is represented by a {@code
  * CharSequence}.
@@ -37,7 +39,7 @@ import javax.xml.bind.annotation.XmlSeeAlso;
  */
 @XmlSeeAlso( { DNASequence.class })
 @MappedSuperclass
-public abstract class Sequence extends PPodEntity {
+public abstract class Sequence extends PPodEntity implements IOTUKeyedMapValue {
 
 	final static String SEQUENCE_COLUMN = "SEQUENCE";
 
@@ -243,9 +245,6 @@ public abstract class Sequence extends PPodEntity {
 	 */
 // protected abstract Sequence setSequenceSet(
 // @Nullable final Object sequenceSet);
-
-	// protected abstract Sequence unsetSequenceSet();
-	protected abstract Sequence unsetOTUsToSequences();
 
 }
 

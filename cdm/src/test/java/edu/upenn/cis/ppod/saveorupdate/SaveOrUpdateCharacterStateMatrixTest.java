@@ -33,9 +33,9 @@ import com.google.inject.Provider;
 import edu.upenn.cis.ppod.TestGroupDefs;
 import edu.upenn.cis.ppod.dao.TestObjectWithLongIdDAO;
 import edu.upenn.cis.ppod.model.Character;
-import edu.upenn.cis.ppod.model.CharacterStateCell;
-import edu.upenn.cis.ppod.model.CharacterStateMatrix;
-import edu.upenn.cis.ppod.model.CharacterStateRow;
+import edu.upenn.cis.ppod.model.StandardCell;
+import edu.upenn.cis.ppod.model.StandardMatrix;
+import edu.upenn.cis.ppod.model.StandardRow;
 import edu.upenn.cis.ppod.model.DNACharacter;
 import edu.upenn.cis.ppod.model.ModelAssert;
 import edu.upenn.cis.ppod.model.OTU;
@@ -85,37 +85,37 @@ public class SaveOrUpdateCharacterStateMatrixTest {
 // s.close();
 // }
 
-	private static Map<CharacterStateRow, List<CharacterStateCell>> stashCells(
-			final CharacterStateMatrix matrix) {
-		final Map<CharacterStateRow, List<CharacterStateCell>> rowsToCells = newHashMap();
-		for (final CharacterStateRow row : matrix) {
+	private static Map<StandardRow, List<StandardCell>> stashCells(
+			final StandardMatrix matrix) {
+		final Map<StandardRow, List<StandardCell>> rowsToCells = newHashMap();
+		for (final StandardRow row : matrix) {
 			rowsToCells.put(row, newArrayList(row));
 		}
 		return rowsToCells;
 	}
 
-	private static void putBackCells(final CharacterStateMatrix matrix,
-			final Map<CharacterStateRow, List<CharacterStateCell>> rowsToCells) {
+	private static void putBackCells(final StandardMatrix matrix,
+			final Map<StandardRow, List<StandardCell>> rowsToCells) {
 		assertEquals(matrix.getRowsSize(), rowsToCells.size());
-		for (final CharacterStateRow row : matrix) {
+		for (final StandardRow row : matrix) {
 			row.setCells(rowsToCells.get(row));
 		}
 		rowsToCells.clear();
 	}
 
 	@Test(dataProvider = MatrixProvider.SMALL_MATRICES_PROVIDER, dataProviderClass = MatrixProvider.class)
-	public void save(final CharacterStateMatrix sourceMatrix) {
+	public void save(final StandardMatrix sourceMatrix) {
 
 		final ISaveOrUpdateMatrix saveOrUpdateMatrix = saveOrUpdateMatrixFactory
 				.create(mergeAttachment, dao, newPPodVersionInfo);
 		final OTUSet fakeDbOTUSet = sourceMatrix.getOTUSet();
 
-		final CharacterStateMatrix targetMatrix = matrixFactory
+		final StandardMatrix targetMatrix = matrixFactory
 				.create(sourceMatrix);
 
-		fakeDbOTUSet.addMatrix(targetMatrix);
+		fakeDbOTUSet.addStandardMatrix(targetMatrix);
 
-		final Map<CharacterStateRow, List<CharacterStateCell>> sourceRowsToCells = stashCells(sourceMatrix);
+		final Map<StandardRow, List<StandardCell>> sourceRowsToCells = stashCells(sourceMatrix);
 
 		saveOrUpdateMatrix.saveOrUpdate(targetMatrix, sourceMatrix,
 				dnaCharacter);
@@ -128,18 +128,18 @@ public class SaveOrUpdateCharacterStateMatrixTest {
 	}
 
 	@Test(dataProvider = MatrixProvider.SMALL_MATRICES_PROVIDER, dataProviderClass = MatrixProvider.class)
-	public void moveRows(final CharacterStateMatrix sourceMatrix) {
+	public void moveRows(final StandardMatrix sourceMatrix) {
 		final ISaveOrUpdateMatrix saveOrUpdateMatrix = saveOrUpdateMatrixFactory
 				.create(mergeAttachment, dao,
 						newPPodVersionInfo);
 		final OTUSet fakeDbOTUSet = sourceMatrix.getOTUSet();
 
-		final CharacterStateMatrix targetMatrix = matrixFactory
+		final StandardMatrix targetMatrix = matrixFactory
 				.create(sourceMatrix);
 
-		fakeDbOTUSet.addMatrix(targetMatrix);
+		fakeDbOTUSet.addStandardMatrix(targetMatrix);
 
-		final Map<CharacterStateRow, List<CharacterStateCell>> sourceRowsToCells =
+		final Map<StandardRow, List<StandardCell>> sourceRowsToCells =
 				stashCells(sourceMatrix);
 
 		saveOrUpdateMatrix.saveOrUpdate(targetMatrix, sourceMatrix,
@@ -161,14 +161,14 @@ public class SaveOrUpdateCharacterStateMatrixTest {
 
 		sourceMatrix.getOTUSet().setOTUs(shuffledSourceOTUs);
 
-		for (final CharacterStateRow targetRow : targetMatrix) {
+		for (final StandardRow targetRow : targetMatrix) {
 			targetRow.setPPodVersion(1L);
 		}
-		for (final CharacterStateRow sourceRow : sourceMatrix) {
+		for (final StandardRow sourceRow : sourceMatrix) {
 			sourceRow.setPPodVersion(1L);
 		}
 
-		final Map<CharacterStateRow, List<CharacterStateCell>> sourceRowsToCells2 =
+		final Map<StandardRow, List<StandardCell>> sourceRowsToCells2 =
 				stashCells(sourceMatrix);
 
 		saveOrUpdateMatrix.saveOrUpdate(targetMatrix, sourceMatrix,
@@ -182,19 +182,19 @@ public class SaveOrUpdateCharacterStateMatrixTest {
 	}
 
 	@Test(dataProvider = MatrixProvider.SMALL_MATRICES_PROVIDER, dataProviderClass = MatrixProvider.class)
-	public void moveCharacters(final CharacterStateMatrix sourceMatrix) {
+	public void moveCharacters(final StandardMatrix sourceMatrix) {
 		// It only makes sense to move characters in a standard matrix
-		if (sourceMatrix.getClass().equals(CharacterStateMatrix.class)) {
+		if (sourceMatrix.getClass().equals(StandardMatrix.class)) {
 			final ISaveOrUpdateMatrix saveOrUpdateMatrix = saveOrUpdateMatrixFactory
 					.create(mergeAttachment, dao, newPPodVersionInfo);
 			final OTUSet fakeDbOTUSet = sourceMatrix.getOTUSet();
 
-			final CharacterStateMatrix targetMatrix = matrixFactory
+			final StandardMatrix targetMatrix = matrixFactory
 					.create(sourceMatrix);
 
-			fakeDbOTUSet.addMatrix(targetMatrix);
+			fakeDbOTUSet.addStandardMatrix(targetMatrix);
 
-			final Map<CharacterStateRow, List<CharacterStateCell>> sourceRowsToCells = stashCells(sourceMatrix);
+			final Map<StandardRow, List<StandardCell>> sourceRowsToCells = stashCells(sourceMatrix);
 			saveOrUpdateMatrix.saveOrUpdate(targetMatrix, sourceMatrix,
 					dnaCharacter);
 
@@ -216,15 +216,15 @@ public class SaveOrUpdateCharacterStateMatrixTest {
 			newSourceMatrixCharacters.set(2, sourceMatrix.getCharacter(0));
 			sourceMatrix.setCharacters(newSourceMatrixCharacters);
 
-			for (final CharacterStateRow sourceRow : sourceMatrix) {
-				final List<CharacterStateCell> newSourceCells = newArrayList(sourceRow);
+			for (final StandardRow sourceRow : sourceMatrix) {
+				final List<StandardCell> newSourceCells = newArrayList(sourceRow);
 
 				newSourceCells.set(0, sourceRow.getCell(2));
 				newSourceCells.set(2, sourceRow.getCell(0));
 				sourceRow.setCells(newSourceCells);
 			}
 
-			final Map<CharacterStateRow, List<CharacterStateCell>> sourceRowsToCells2 = stashCells(sourceMatrix);
+			final Map<StandardRow, List<StandardCell>> sourceRowsToCells2 = stashCells(sourceMatrix);
 			saveOrUpdateMatrix.saveOrUpdate(targetMatrix, sourceMatrix,
 					dnaCharacter);
 			putBackCells(targetMatrix, dao.getRowsToCells());
@@ -239,19 +239,19 @@ public class SaveOrUpdateCharacterStateMatrixTest {
 	 * Test removing a character from a matrix.
 	 */
 	@Test(dataProvider = MatrixProvider.SMALL_MATRICES_PROVIDER, dataProviderClass = MatrixProvider.class)
-	public void deleteCharacter(final CharacterStateMatrix sourceMatrix) {
+	public void deleteCharacter(final StandardMatrix sourceMatrix) {
 		// It only makes sense to remove characters from a standard matrix
-		if (sourceMatrix.getClass().equals(CharacterStateMatrix.class)) {
+		if (sourceMatrix.getClass().equals(StandardMatrix.class)) {
 			final ISaveOrUpdateMatrix saveOrUpdateMatrix = saveOrUpdateMatrixFactory
 					.create(mergeAttachment, dao, newPPodVersionInfo);
 			final OTUSet fakeDbOTUSet = sourceMatrix.getOTUSet();
 
-			final CharacterStateMatrix targetMatrix = matrixFactory
+			final StandardMatrix targetMatrix = matrixFactory
 					.create(sourceMatrix);
 
-			fakeDbOTUSet.addMatrix(targetMatrix);
+			fakeDbOTUSet.addStandardMatrix(targetMatrix);
 
-			final Map<CharacterStateRow, List<CharacterStateCell>> sourceRowsToCells = stashCells(sourceMatrix);
+			final Map<StandardRow, List<StandardCell>> sourceRowsToCells = stashCells(sourceMatrix);
 			saveOrUpdateMatrix.saveOrUpdate(targetMatrix, sourceMatrix,
 					dnaCharacter);
 			putBackCells(targetMatrix, dao.getRowsToCells());
@@ -275,13 +275,13 @@ public class SaveOrUpdateCharacterStateMatrixTest {
 
 			sourceMatrix.setCharacters(newSourceMatrixCharacters);
 
-			for (final CharacterStateRow sourceRow : sourceMatrix) {
-				final List<CharacterStateCell> newSourceCells = newArrayList(sourceRow);
+			for (final StandardRow sourceRow : sourceMatrix) {
+				final List<StandardCell> newSourceCells = newArrayList(sourceRow);
 				newSourceCells.remove(2);
 				sourceRow.setCells(newSourceCells);
 			}
 
-			final Map<CharacterStateRow, List<CharacterStateCell>> sourceRowsToCells2 = stashCells(sourceMatrix);
+			final Map<StandardRow, List<StandardCell>> sourceRowsToCells2 = stashCells(sourceMatrix);
 			saveOrUpdateMatrix.saveOrUpdate(targetMatrix, sourceMatrix,
 					dnaCharacter);
 

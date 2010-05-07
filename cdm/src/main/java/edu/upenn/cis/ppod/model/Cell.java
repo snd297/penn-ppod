@@ -15,6 +15,7 @@ import javax.persistence.EnumType;
 import javax.persistence.Enumerated;
 import javax.persistence.MappedSuperclass;
 import javax.persistence.Transient;
+import javax.xml.bind.Marshaller;
 import javax.xml.bind.Unmarshaller;
 import javax.xml.bind.annotation.XmlAttribute;
 
@@ -116,6 +117,20 @@ public abstract class Cell<E> extends PPodEntity implements Iterable<E> {
 	}
 
 	/**
+	 * @throws IllegalStateException if the type has not been set
+	 */
+	@Override
+	public boolean beforeMarshal(@CheckForNull final Marshaller marshaller) {
+
+		// Let's not marshal it if it's in a bad state
+		checkState(getType() != null, "can't marshal a cell without a type");
+
+		getXmlElements().addAll(getElements());
+		return super.beforeMarshal(marshaller);
+
+	}
+
+	/**
 	 * Clear the cell out of elements. Does not touch the type.
 	 */
 	protected void clearElements() {
@@ -161,45 +176,23 @@ public abstract class Cell<E> extends PPodEntity implements Iterable<E> {
 				// possible since it will trigger a database hit, which in the
 				// aggregate
 				// is expensive since there're are so many cells.
-				final Set<E> states = getElementsRaw();
-				if (states == null) {
+				final Set<E> elements = getElementsRaw();
+				if (elements == null) {
 					throw new AssertionError("getElementsRaw() == null");
 				}
-				if (states.size() < 2) {
+				if (elements.size() < 2) {
 					throw new AssertionError("type is " + getType()
 												+ " and getElementsRaw() has "
-												+ states.size() + " elements");
+												+ elements.size() + " elements");
 				}
-				return states;
+				return elements;
 
 			default:
-				throw new AssertionError("Unknown CharacterState.Type: " + type);
+				throw new AssertionError("Unknown Cell.Type: " + type);
 		}
 	}
 
 	protected abstract Set<E> getElementsRaw();
-
-	/**
-	 * Get the number of states in this cell.
-	 * 
-	 * @return the number of states in this cell
-	 */
-	public int getElementsSize() {
-		checkState(getType() != null,
-				"type has yet to be assigned for this cell");
-		switch (getType()) {
-			case INAPPLICABLE:
-			case UNASSIGNED:
-				return 0;
-			case SINGLE:
-				return 1;
-			case POLYMORPHIC:
-			case UNCERTAIN:
-				return getElements().size();
-			default:
-				throw new AssertionError("Unknown CharacterState.Type: " + type);
-		}
-	}
 
 	/**
 	 * We cache the first state, since this is the most common case.
@@ -275,7 +268,7 @@ public abstract class Cell<E> extends PPodEntity implements Iterable<E> {
 	 * 
 	 * @throw IllegalArgumentException if {@code polymorphicStates.size() < 2}
 	 */
-	public Cell<E> setPolymorphicElements(
+	public Cell<E> setPolymorphic(
 			final Set<? extends E> polymorphicElements) {
 		checkNotNull(polymorphicElements);
 		checkArgument(polymorphicElements.size() > 1,
@@ -336,6 +329,7 @@ public abstract class Cell<E> extends PPodEntity implements Iterable<E> {
 		setType(type);
 		getXmlElements().clear();
 		getXmlElements().addAll(xmlStates);
+		setXmlStatesNeedsToBePutIntoStates(true);
 		return this;
 	}
 
@@ -360,7 +354,7 @@ public abstract class Cell<E> extends PPodEntity implements Iterable<E> {
 	 * 
 	 * @throw IllegalArgumentException if {@code uncertainStates.size() < 2}
 	 */
-	public Cell<E> setUncertainElements(
+	public Cell<E> setUncertain(
 			final Set<? extends E> uncertainElements) {
 		checkNotNull(uncertainElements);
 		checkArgument(uncertainElements.size() > 1,
@@ -376,6 +370,28 @@ public abstract class Cell<E> extends PPodEntity implements Iterable<E> {
 			final boolean xmlStatesNeedsToBePutIntoStates) {
 		this.xmlElementsNeedsToBePutIntoElements = xmlStatesNeedsToBePutIntoStates;
 		return this;
+	}
+
+	/**
+	 * Get the number of elements in this cell.
+	 * 
+	 * @return the number of elements in this cell
+	 */
+	public int elementsSize() {
+		checkState(getType() != null,
+				"type has yet to be assigned for this cell");
+		switch (getType()) {
+			case INAPPLICABLE:
+			case UNASSIGNED:
+				return 0;
+			case SINGLE:
+				return 1;
+			case POLYMORPHIC:
+			case UNCERTAIN:
+				return getElements().size();
+			default:
+				throw new AssertionError("Unknown CharacterState.Type: " + type);
+		}
 	}
 
 	protected abstract Cell<E> unsetFirstElement();

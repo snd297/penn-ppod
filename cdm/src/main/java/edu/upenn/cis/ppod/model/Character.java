@@ -55,7 +55,6 @@ import edu.upenn.cis.ppod.util.IVisitor;
 @Entity
 @Table(name = Character.TABLE)
 public class Character extends UUPPodEntityWXmlId {
-
 	/**
 	 * We don't call the table {@code "CHARACTER"} because that causes problems
 	 * with the generated SQL: {@code "CHARACTER"} means something to at least
@@ -64,7 +63,21 @@ public class Character extends UUPPodEntityWXmlId {
 	public final static String TABLE = "PHYLO_CHARACTER";
 
 	public final static String ID_COLUMN = TABLE + "_ID";
+
 	final static String LABEL_COLUMN = "LABEL";
+	/**
+	 * The non-unique label of this {@code Character}.
+	 */
+	@Column(name = LABEL_COLUMN, nullable = false)
+	private String label;
+
+	/**
+	 * The matrices that hold a reference to this {@code Character}. This is
+	 * really only a many-to-many for Molecular matrices. For standard matrices,
+	 * it is many-to-one.
+	 */
+	@ManyToMany(mappedBy = "characters")
+	private final Set<StandardMatrix> matrices = newHashSet();
 
 	/**
 	 * The states that this character can have. For example, 0->"absent",
@@ -75,20 +88,6 @@ public class Character extends UUPPodEntityWXmlId {
 	@OneToMany(mappedBy = "character", cascade = CascadeType.ALL, orphanRemoval = true)
 	@MapKey(name = "stateNumber")
 	private final Map<Integer, CharacterState> states = newHashMap();
-
-	/**
-	 * The matrices that hold a reference to this {@code Character}. This is
-	 * really only a many-to-many for Molecular matrices. For standard matrices,
-	 * it is many-to-one.
-	 */
-	@ManyToMany(mappedBy = "characters")
-	private final Set<CharacterStateMatrix> matrices = newHashSet();
-
-	/**
-	 * The non-unique label of this {@code Character}.
-	 */
-	@Column(name = LABEL_COLUMN, nullable = false)
-	private String label;
 
 	/**
 	 * Default constructor for (at least) Hibernate.
@@ -121,39 +120,12 @@ public class Character extends UUPPodEntityWXmlId {
 	 *        different matrix - it's fine to keep calling this method with the
 	 *        same matrix
 	 */
-	protected boolean addMatrix(final CharacterStateMatrix matrix) {
+	protected boolean addMatrix(final StandardMatrix matrix) {
 		Preconditions.checkNotNull(matrix);
 		checkState(getMatrices().size() == 0
 					|| getOnlyElement(getMatrices()).equals(matrix),
 				"standard characters can belong to only one matrix");
 		return matrices.add(matrix);
-	}
-
-	/**
-	 * Add <code>state</code> into this <code>Character</code>.
-	 * <p>
-	 * Calling this handles both sides of the <code>Character</code><->
-	 * <code>CharacterState</code>s. relationship.
-	 * 
-	 * @param state what we're adding
-	 * @return the state that was associated with {@code state.getStateNumber()}
-	 *         or {@code null} if there was no such state.
-	 */
-	@CheckForNull
-	public CharacterState putState(final CharacterState state) {
-		Preconditions.checkNotNull(state);
-		final CharacterState originalState = states.put(state.getStateNumber(),
-				state);
-		if (state == originalState) {
-			return originalState;
-		}
-
-		if (originalState != null) {
-			originalState.setCharacter(null);
-		}
-		state.setCharacter(this);
-		setInNeedOfNewPPodVersionInfo();
-		return originalState;
 	}
 
 	/**
@@ -195,7 +167,7 @@ public class Character extends UUPPodEntityWXmlId {
 	 * 
 	 * @return the matrices to which this character belongs
 	 */
-	public Set<CharacterStateMatrix> getMatrices() {
+	public Set<StandardMatrix> getMatrices() {
 		return matrices;
 	}
 
@@ -224,25 +196,30 @@ public class Character extends UUPPodEntityWXmlId {
 	}
 
 	/**
-	 * Get an unmodifiable iterator over this {@code Character}'s states in no
-	 * specified order.
+	 * Add <code>state</code> into this <code>Character</code>.
+	 * <p>
+	 * Calling this handles both sides of the <code>Character</code><->
+	 * <code>CharacterState</code>s. relationship.
 	 * 
-	 * @return an iterator over this {@code Character}'s states
+	 * @param state what we're adding
+	 * @return the state that was associated with {@code state.getStateNumber()}
+	 *         or {@code null} if there was no such state.
 	 */
-	public Iterator<CharacterState> getStatesIterator() {
-		return Collections.unmodifiableCollection(getStates().values())
-				.iterator();
-	}
+	@CheckForNull
+	public CharacterState putState(final CharacterState state) {
+		Preconditions.checkNotNull(state);
+		final CharacterState originalState = states.put(state.getStateNumber(),
+				state);
+		if (state == originalState) {
+			return originalState;
+		}
 
-	/**
-	 * Get the number of {@code CharacterState}s associated with this {@code
-	 * Character}.
-	 * 
-	 * @return the number of {@code CharacterState}s associated with this
-	 *         {@code Character}
-	 */
-	public int getStatesSize() {
-		return getStates().size();
+		if (originalState != null) {
+			originalState.setCharacter(null);
+		}
+		state.setCharacter(this);
+		setInNeedOfNewPPodVersionInfo();
+		return originalState;
 	}
 
 	/**
@@ -255,13 +232,13 @@ public class Character extends UUPPodEntityWXmlId {
 	 * @return <code>true</code> if <code>matrix</code> was there to be removed,
 	 *         <code>false</code> otherwise
 	 */
-	protected boolean removeMatrix(final CharacterStateMatrix matrix) {
+	protected boolean removeMatrix(final StandardMatrix matrix) {
 		return matrices.remove(matrix);
 	}
 
 	@Override
 	public Character setInNeedOfNewPPodVersionInfo() {
-		for (final CharacterStateMatrix matrix : matrices) {
+		for (final StandardMatrix matrix : matrices) {
 			matrix.setInNeedOfNewPPodVersionInfo();
 		}
 		super.setInNeedOfNewPPodVersionInfo();
@@ -283,6 +260,28 @@ public class Character extends UUPPodEntityWXmlId {
 			setInNeedOfNewPPodVersionInfo();
 		}
 		return this;
+	}
+
+	/**
+	 * Get an unmodifiable iterator over this {@code Character}'s states in no
+	 * specified order.
+	 * 
+	 * @return an iterator over this {@code Character}'s states
+	 */
+	public Iterator<CharacterState> statesIterator() {
+		return Collections.unmodifiableCollection(getStates().values())
+				.iterator();
+	}
+
+	/**
+	 * Get the number of {@code CharacterState}s associated with this {@code
+	 * Character}.
+	 * 
+	 * @return the number of {@code CharacterState}s associated with this
+	 *         {@code Character}
+	 */
+	public int statesSize() {
+		return getStates().size();
 	}
 
 	/**

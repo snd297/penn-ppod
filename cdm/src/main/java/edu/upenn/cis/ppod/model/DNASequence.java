@@ -25,6 +25,7 @@ import javax.persistence.Table;
 
 import com.google.common.collect.ImmutableSet;
 
+import edu.upenn.cis.ppod.modelinterfaces.IOTUKeyedMapValue;
 import edu.upenn.cis.ppod.util.IVisitor;
 
 /**
@@ -80,8 +81,7 @@ public class DNASequence extends Sequence {
 		return this;
 	}
 
-	@Override
-	protected Sequence unsetOTUsToSequences() {
+	public IOTUKeyedMapValue unsetOTUKeyedMap() {
 		this.otusToSequences = null;
 		return this;
 	}

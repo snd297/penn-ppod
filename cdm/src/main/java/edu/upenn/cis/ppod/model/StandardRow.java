@@ -39,29 +39,28 @@ import javax.xml.bind.annotation.XmlElement;
 import edu.upenn.cis.ppod.util.IVisitor;
 
 /**
- * Rows of a {@link CharacterStateMatrix}.
+ * Rows of a {@link StandardMatrix}.
  * <p>
  * In Hibernate, composite elements may contain components but not collections -
  * that's why this is an entity and not a component class: it needs to contain a
- * {@code List<CharacterStateCell>}.
+ * {@code List<StandardCell>}.
  * 
  * @author Sam Donnelly
  */
 @Entity
-@Table(name = CharacterStateRow.TABLE)
-public class CharacterStateRow extends Row<CharacterStateCell> {
+@Table(name = StandardRow.TABLE)
+public class StandardRow extends Row<StandardCell> {
 
 	/** This entitiy's table name. */
-	public static final String TABLE = "CHARACTER_STATE_ROW";
+	public static final String TABLE = "STANDARD_ROW";
 
-	static final String CELLS_INDEX_COLUMN = CharacterStateCell.TABLE
+	static final String CELLS_INDEX_COLUMN = StandardCell.TABLE
 												+ "_POSITION";
 
 	/**
-	 * The column where a {@code CharacterStateRow}'s
-	 * {@link javax.persistence.Id} gets stored. Intentionally package-private.
+	 * Conventionally used as for foreign keys that point at this table.
 	 */
-	static final String ID_COLUMN = TABLE + "_ID";
+	public static final String JOIN_COLUMN = TABLE + "_ID";
 
 	/**
 	 * The {@code CharacterStateCell}s that make up the row.
@@ -77,7 +76,7 @@ public class CharacterStateRow extends Row<CharacterStateCell> {
 	 */
 	@OneToMany(mappedBy = "row", cascade = CascadeType.REMOVE)
 	@OrderBy("position")
-	private final List<CharacterStateCell> cells = newArrayList();
+	private final List<StandardCell> cells = newArrayList();
 
 	/**
 	 * This is the parent of the row. It lies in between this and the matrix.
@@ -86,7 +85,7 @@ public class CharacterStateRow extends Row<CharacterStateCell> {
 	@CheckForNull
 	private OTUsToCharacterStateRows otusToRows;
 
-	CharacterStateRow() {}
+	StandardRow() {}
 
 	@Override
 	public void accept(final IVisitor visitor) {
@@ -107,9 +106,9 @@ public class CharacterStateRow extends Row<CharacterStateCell> {
 	 * @return the cleared cells - an empty list if {@code getCells() == 0} when
 	 *         this method is called
 	 */
-	public List<CharacterStateCell> clearCells() {
-		final List<CharacterStateCell> clearedCells = newArrayList(getCells());
-		for (final CharacterStateCell clearedCell : clearedCells) {
+	public List<StandardCell> clearCells() {
+		final List<StandardCell> clearedCells = newArrayList(getCells());
+		for (final StandardCell clearedCell : clearedCells) {
 			clearedCell.setRow(null);
 		}
 		cells.clear();
@@ -125,11 +124,11 @@ public class CharacterStateRow extends Row<CharacterStateCell> {
 	 * @throws IndexOutOfBoundsException if {@code pPodCellPosition} is out of
 	 *             bounds for this row
 	 */
-	public CharacterStateCell getCell(@Nonnegative final int pPodCellPosition) {
+	public StandardCell getCell(@Nonnegative final int pPodCellPosition) {
 		return getCells().get(pPodCellPosition);
 	}
 
-	public int getCellPosition(final CharacterStateCell cell) {
+	public int getCellPosition(final StandardCell cell) {
 		checkNotNull(cell);
 		checkArgument(this.equals(cell.getRow()),
 				"cell does not belong to this row");
@@ -143,7 +142,7 @@ public class CharacterStateRow extends Row<CharacterStateCell> {
 
 	@XmlElement(name = "cell")
 	@Override
-	protected List<CharacterStateCell> getCells() {
+	protected List<StandardCell> getCells() {
 		return cells;
 	}
 
@@ -156,7 +155,7 @@ public class CharacterStateRow extends Row<CharacterStateCell> {
 	 * @return the {@code CharacterStateMatrix} of which this is a row
 	 */
 	@Nullable
-	public CharacterStateMatrix getMatrix() {
+	public StandardMatrix getMatrix() {
 		if (otusToRows == null) {
 			return null;
 		}
@@ -168,20 +167,20 @@ public class CharacterStateRow extends Row<CharacterStateCell> {
 	 * 
 	 * @return an iterator over this row's cells
 	 */
-	public Iterator<CharacterStateCell> iterator() {
+	public Iterator<StandardCell> iterator() {
 		return Collections.unmodifiableList(getCells()).iterator();
 	}
 
 	@Override
-	public List<CharacterStateCell> setCells(
-			final List<? extends CharacterStateCell> newCells) {
+	public List<StandardCell> setCells(
+			final List<? extends StandardCell> newCells) {
 		checkNotNull(newCells);
 
 		if (newCells.equals(getCells())) {
 			return Collections.emptyList();
 		}
 
-		final CharacterStateMatrix matrix = getMatrix();
+		final StandardMatrix matrix = getMatrix();
 
 		checkState(matrix != null, "This row hasn't been added to a matrix yet");
 
@@ -193,7 +192,7 @@ public class CharacterStateRow extends Row<CharacterStateCell> {
 										+ newCells.size()
 										+ " and cells > 0");
 
-		final List<CharacterStateCell> removedCells = newArrayList(getCells());
+		final List<StandardCell> removedCells = newArrayList(getCells());
 		removedCells.removeAll(newCells);
 
 		clearCells();
@@ -212,8 +211,8 @@ public class CharacterStateRow extends Row<CharacterStateCell> {
 	 * @return this {@code CharacterStateRow}
 	 */
 	@Override
-	public CharacterStateRow setInNeedOfNewPPodVersionInfo() {
-		final CharacterStateMatrix matrix = getMatrix();
+	public StandardRow setInNeedOfNewPPodVersionInfo() {
+		final StandardMatrix matrix = getMatrix();
 		if (matrix != null) {
 			matrix.setInNeedOfNewPPodVersionInfo();
 		}
@@ -228,7 +227,7 @@ public class CharacterStateRow extends Row<CharacterStateCell> {
 	 * 
 	 * @return this {@code CharacterStateRow}
 	 */
-	protected CharacterStateRow setOTUsToRows(
+	protected StandardRow setOTUsToRows(
 			@CheckForNull final OTUsToCharacterStateRows otusToRows) {
 		this.otusToRows = otusToRows;
 		return this;
@@ -251,8 +250,7 @@ public class CharacterStateRow extends Row<CharacterStateCell> {
 		return retValue.toString();
 	}
 
-	@Override
-	protected CharacterStateRow unsetOTUsToRows() {
+	public StandardRow unsetOTUKeyedMap() {
 		otusToRows = null;
 		return this;
 	}

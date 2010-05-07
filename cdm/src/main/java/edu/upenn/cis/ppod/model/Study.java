@@ -116,7 +116,7 @@ public class Study extends UUPPodEntity implements IOTUSetCentricEntities {
 					studyWideAttachmentNamespaces, studyWideAttachmentTypes,
 					studyWideAttachments, this);
 			for (final OTUSet otuSet : getOTUSets()) {
-				for (final Iterator<CharacterStateMatrix> matrixItr = otuSet
+				for (final Iterator<StandardMatrix> matrixItr = otuSet
 						.characterStateMatricesIterator(); matrixItr.hasNext();) {
 					studyWideCharacters
 							.addAll(matrixItr.next().getCharacters());

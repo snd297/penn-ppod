@@ -40,7 +40,7 @@ import edu.upenn.cis.ppod.dao.ITreeSetDAO;
 import edu.upenn.cis.ppod.dao.IUserDAO;
 import edu.upenn.cis.ppod.model.Character;
 import edu.upenn.cis.ppod.model.CharacterState;
-import edu.upenn.cis.ppod.model.CharacterStateRow;
+import edu.upenn.cis.ppod.model.StandardRow;
 import edu.upenn.cis.ppod.model.OTU;
 import edu.upenn.cis.ppod.model.OTUSet;
 import edu.upenn.cis.ppod.model.Tree;
@@ -165,14 +165,14 @@ public class HibernateDAOFactory implements IDAOFactory {
 	 * A default {@link CharacterStateRow} Hibernate DAO.
 	 */
 	public static class CharacterStateRowDAOHibernate extends
-			GenericHibernateDAO<CharacterStateRow, Long> implements
+			GenericHibernateDAO<StandardRow, Long> implements
 			ICharacterStateRowDAO {
 
 		@SuppressWarnings("unchecked")
 		public List<Object[]> getCellIdxsVersionsByRowIdAndMinVersion(
 				Long rowId, Long minVersion) {
 			return (List<Object[]>) getSession().getNamedQuery(
-					CharacterStateRow.class.getSimpleName()
+					StandardRow.class.getSimpleName()
 							+ "-getCellIdxsVersionsByRowIdAndMinVersion")
 					.setParameter("rowId", rowId).setParameter("minVersion",
 							minVersion).list();

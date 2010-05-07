@@ -29,6 +29,7 @@ import java.util.Set;
 import javax.annotation.CheckForNull;
 import javax.annotation.Nullable;
 
+import edu.upenn.cis.ppod.modelinterfaces.IOTUKeyedMapValue;
 import edu.upenn.cis.ppod.modelinterfaces.IPPodVersionedWithOTUSet;
 import edu.upenn.cis.ppod.util.IVisitor;
 import edu.upenn.cis.ppod.util.OTUSomethingPair;
@@ -43,7 +44,7 @@ import edu.upenn.cis.ppod.util.OTUSomethingPair;
  * 
  * @author Sam Donnelly
  */
-public abstract class OTUKeyedMap<V extends PersistentObject>
+public abstract class OTUKeyedMap<V extends IOTUKeyedMapValue>
 		extends PersistentObject {
 
 	static final String OTU_IDX_COLUMN = "OTU_IDX";
@@ -147,7 +148,13 @@ public abstract class OTUKeyedMap<V extends PersistentObject>
 		checkArgument(!getOTUsToValues().containsValue(value),
 				"already has a value .equals() to newT: " + value);
 		getParent().setInNeedOfNewPPodVersionInfo();
-		return getOTUsToValues().put(key, value);
+		final V originalValue = getOTUsToValues().put(key, value);
+		// If we are replacing an OTU's sequence, we need to sever the previous
+		// sequence's sequence->sequenceSet pointer.
+		if (originalValue != null && !originalValue.equals(value)) {
+			originalValue.unsetOTUKeyedMap();
+		}
+		return originalValue;
 	}
 
 	protected abstract OTUKeyedMap<V> setInNeedOfNewPPodVersionInfo();

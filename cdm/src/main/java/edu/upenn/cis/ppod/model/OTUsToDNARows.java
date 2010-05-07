@@ -23,7 +23,7 @@ import edu.upenn.cis.ppod.util.OTUSomethingPair;
  */
 @Entity
 @Table(name = "OTUS_TO_DNA_ROWS")
-public class OTUsToDNARows extends OTUsToRows<DNARow> {
+public class OTUsToDNARows extends OTUKeyedMap<DNARow> {
 
 	@OneToMany(cascade = CascadeType.ALL, orphanRemoval = true)
 	@MapKeyJoinColumn(name = OTU.JOIN_COLUMN)

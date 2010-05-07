@@ -55,7 +55,7 @@ public class DNACell extends Cell<DNANucleotide> {
 	 * belongs.
 	 */
 	@ManyToOne(fetch = FetchType.LAZY)
-	@JoinColumn(name = CharacterStateRow.ID_COLUMN)
+	@JoinColumn(name = StandardRow.JOIN_COLUMN)
 	@CheckForNull
 	private DNARow row;
 

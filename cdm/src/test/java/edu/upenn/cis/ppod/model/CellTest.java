@@ -1,5 +1,6 @@
 package edu.upenn.cis.ppod.model;
 
+import static com.google.common.base.Preconditions.checkArgument;
 import static com.google.common.base.Preconditions.checkNotNull;
 import static com.google.common.collect.Lists.newArrayList;
 import static org.testng.Assert.assertEquals;
@@ -8,6 +9,7 @@ import static org.testng.Assert.assertFalse;
 import java.util.List;
 import java.util.Set;
 
+import com.google.common.collect.ImmutableList;
 import com.google.inject.Inject;
 import com.google.inject.Provider;
 
@@ -18,7 +20,6 @@ import com.google.inject.Provider;
  */
 public class CellTest<M extends Matrix<R>, R extends Row<C>, C extends Cell<E>, E> {
 
-	private final Provider<M> matrixProvider;
 	private final Provider<OTUSet> otuSetProvider;
 	private final Provider<OTU> otuProvider;
 	private final Provider<R> rowProvider;
@@ -30,18 +31,25 @@ public class CellTest<M extends Matrix<R>, R extends Row<C>, C extends Cell<E>, 
 			final Provider<OTU> otuProvider,
 			final Provider<R> rowProvider,
 			final Provider<C> cellProvider) {
-		this.matrixProvider = matrixProvider;
 		this.otuSetProvider = otuSetProvider;
 		this.otuProvider = otuProvider;
 		this.rowProvider = rowProvider;
 		this.cellProvider = cellProvider;
 	}
 
+	/**
+	 * Matrix must be ready to have a row with one cell added to it.
+	 * 
+	 * @param matrix
+	 * @param elements
+	 */
 	public void getStatesWhenCellHasMultipleElements(final M matrix,
 			final Set<E> elements) {
-
+		checkNotNull(matrix);
 		checkNotNull(elements);
-
+		checkArgument(matrix.getColumnsSize() == 1,
+				"matrix has " + matrix.getColumnsSize()
+						+ " column(s), but we need it to have 1 column");
 		final OTUSet otuSet = otuSetProvider.get();
 
 		matrix.setOTUSet(otuSet);
@@ -61,7 +69,7 @@ public class CellTest<M extends Matrix<R>, R extends Row<C>, C extends Cell<E>, 
 		final Row<C> row = matrix.getRow(otu0);
 		row.setCells(cells);
 
-		cell.setPolymorphicElements(elements);
+		cell.setPolymorphic(elements);
 		assertEquals((Object) cell.getElements(), (Object) elements);
 	}
 
@@ -74,20 +82,42 @@ public class CellTest<M extends Matrix<R>, R extends Row<C>, C extends Cell<E>, 
 		cell.setSingleElement(element);
 	}
 
-	public void afterUnmarshal(final Set<E> elements) {
-
-		final M matrix = matrixProvider.get();
+	public void afterUnmarshal(final M matrix, final Set<E> elements) {
+		checkNotNull(matrix);
+		checkNotNull(elements);
+		checkArgument(matrix.getColumnsSize() == 1,
+				"matrix has " + matrix.getColumnsSize()
+						+ " column(s), but we need it to have 1 column");
 		final C cell = cellProvider.get();
+
+		final OTUSet otuSet = otuSetProvider.get();
+
+		matrix.setOTUSet(otuSet);
+
+		final OTU otu = otuSet.addOTU(otuProvider.get());
+
+		matrix.putRow(otu, rowProvider.get());
+
 		cell.setXmlStatesNeedsToBePutIntoStates(true);
 
 		final List<C> cells = newArrayList();
 		cells.add(cell);
 		matrix.getRow(matrix.getOTUSet().getOTU(0)).setCells(cells);
 
-		cell.setTypeAndXmlElements(CharacterStateCell.Type.UNCERTAIN, elements);
+		cell.setTypeAndXmlElements(Cell.Type.UNCERTAIN, elements);
 		cell.afterUnmarshal();
 		assertEquals((Object) cell.getElements(), (Object) elements);
 		assertFalse(cell.getXmlStatesNeedsToBePutIntoStates());
 	}
+
+	/**
+	 * {@code beforeMarshal(...)} should throw an {@code IllegalStateException}
+	 * if the type has not bee set yet.
+	 */
+	public void beforeMarshalBeforeTypeHasBeenSet() {
+		final C cell = cellProvider.get();
+		cell.beforeMarshal(null);
+	}
+
 
 }

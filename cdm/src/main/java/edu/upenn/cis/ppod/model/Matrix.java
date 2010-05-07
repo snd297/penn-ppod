@@ -69,7 +69,7 @@ public abstract class Matrix<R extends Row<?>> extends UUPPodEntityWXmlId
 	@CheckForNull
 	private OTUSet otuSet;
 
-	public abstract int getColumnsSize();
+	public abstract Integer getColumnsSize();
 
 	Matrix() {}
 
@@ -168,7 +168,7 @@ public abstract class Matrix<R extends Row<?>> extends UUPPodEntityWXmlId
 	 * 
 	 * @return the otusToRows
 	 */
-	protected abstract OTUsToRows<R> getOTUsToRows();
+	protected abstract OTUKeyedMap<R> getOTUsToRows();
 
 	/**
 	 * Get the row indexed by an OTU or {@code null} if {@code otu} has not had

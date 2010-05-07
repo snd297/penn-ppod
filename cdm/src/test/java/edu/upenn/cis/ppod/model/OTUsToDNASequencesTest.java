@@ -56,8 +56,7 @@ public class OTUsToDNASequencesTest {
 		final DNASequence sequence = dnaSequenceProvider.get();
 		final DNASequenceSet sequenceSet = dnaSequenceSetProvider.get();
 		otuSet.addDNASequenceSet(sequenceSet);
-		((OTUsToSequences<DNASequence>) sequenceSet.getOTUsToSequences())
-				.put(otu, sequence);
+		sequenceSet.getOTUsToSequences().put(otu, sequence);
 
 		final DNASequence sequence2 = dnaSequenceProvider.get();
 
