@@ -20,7 +20,6 @@ import javax.xml.bind.Unmarshaller;
 import javax.xml.bind.annotation.XmlAttribute;
 
 import edu.upenn.cis.ppod.modelinterfaces.IMatrix;
-import edu.upenn.cis.ppod.modelinterfaces.IPPodVersioned;
 import edu.upenn.cis.ppod.modelinterfaces.IRow;
 
 /**
@@ -195,6 +194,28 @@ public abstract class Cell<E> extends PPodEntity implements Iterable<E> {
 	protected abstract Set<E> getElementsRaw();
 
 	/**
+	 * Get the number of elements in this cell.
+	 * 
+	 * @return the number of elements in this cell
+	 */
+	public int getElementsSize() {
+		checkState(getType() != null,
+				"type has yet to be assigned for this cell");
+		switch (getType()) {
+			case INAPPLICABLE:
+			case UNASSIGNED:
+				return 0;
+			case SINGLE:
+				return 1;
+			case POLYMORPHIC:
+			case UNCERTAIN:
+				return getElements().size();
+			default:
+				throw new AssertionError("Unknown CharacterState.Type: " + type);
+		}
+	}
+
+	/**
 	 * We cache the first state, since this is the most common case.
 	 * <p>
 	 * Will be {@code null} if this is a {@link Type#INAPPLICABLE} or
@@ -202,8 +223,6 @@ public abstract class Cell<E> extends PPodEntity implements Iterable<E> {
 	 */
 	@CheckForNull
 	protected abstract E getFirstElement();
-
-	protected abstract IPPodVersioned getParent();
 
 	@CheckForNull
 	protected Integer getPosition() {
@@ -372,29 +391,9 @@ public abstract class Cell<E> extends PPodEntity implements Iterable<E> {
 		return this;
 	}
 
-	/**
-	 * Get the number of elements in this cell.
-	 * 
-	 * @return the number of elements in this cell
-	 */
-	public int getElementsSize() {
-		checkState(getType() != null,
-				"type has yet to be assigned for this cell");
-		switch (getType()) {
-			case INAPPLICABLE:
-			case UNASSIGNED:
-				return 0;
-			case SINGLE:
-				return 1;
-			case POLYMORPHIC:
-			case UNCERTAIN:
-				return getElements().size();
-			default:
-				throw new AssertionError("Unknown CharacterState.Type: " + type);
-		}
-	}
-
 	protected abstract Cell<E> unsetFirstElement();
+
+	public abstract Cell<E> unsetRow();
 
 	protected abstract Cell<E> unsetXmlElements();
 

@@ -7,4 +7,6 @@ import javax.annotation.Nonnegative;
  */
 public interface IMatrix extends ILabeled, IPPodVersionedWithOTUSet {
 	IMatrix resetColumnPPodVersion(@Nonnegative final int position);
+
+	Integer getColumnsSize();
 }

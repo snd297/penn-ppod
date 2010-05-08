@@ -131,7 +131,7 @@ public abstract class OTUKeyedMap<V extends IOTUKeyedMapValue>
 	 *             .equals} to {@code newT}
 	 */
 	@CheckForNull
-	public V put(final OTU key, final V value) {
+	protected V putHelper(final OTU key, final V value) {
 		checkNotNull(key);
 		checkNotNull(value);
 		checkState(getParent() != null, "no parent has been assigned");
@@ -155,6 +155,8 @@ public abstract class OTUKeyedMap<V extends IOTUKeyedMapValue>
 		}
 		return originalValue;
 	}
+
+	public abstract V put(final OTU key, final V value);
 
 	protected abstract OTUKeyedMap<V> setInNeedOfNewPPodVersionInfo();
 

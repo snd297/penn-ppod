@@ -45,7 +45,6 @@ import javax.xml.bind.annotation.XmlIDREF;
 import org.hibernate.annotations.Sort;
 import org.hibernate.annotations.SortType;
 
-import edu.upenn.cis.ppod.modelinterfaces.IPPodVersioned;
 import edu.upenn.cis.ppod.util.IVisitor;
 
 /**
@@ -310,8 +309,9 @@ public class StandardCell extends Cell<CharacterState> {
 	}
 
 	@Override
-	protected IPPodVersioned getParent() {
-		return row;
+	public StandardCell unsetRow() {
+		row = null;
+		return this;
 	}
 
 }
