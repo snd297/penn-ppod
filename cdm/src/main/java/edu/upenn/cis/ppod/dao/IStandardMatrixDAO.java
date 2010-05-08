@@ -16,44 +16,16 @@
 package edu.upenn.cis.ppod.dao;
 
 import java.util.List;
-import java.util.Set;
 
 import edu.upenn.cis.ppod.model.StandardMatrix;
-import edu.upenn.cis.ppod.util.IPair;
 
 /**
  * A {@link CharacterStateMatrix} DAO.
  * 
  * @author Sam Donnelly
  */
-public interface ICharacterStateMatrixDAO extends
+public interface IStandardMatrixDAO extends
 		IDAO<StandardMatrix, Long> {
-
-	/**
-	 * Get all matrices with that have the given label.
-	 * 
-	 * @param label the label
-	 * @return all matrices with that have the given label.
-	 */
-	List<StandardMatrix> getByLabel(String label);
-
-	/**
-	 * Get a matrix given its pPOD id.
-	 * 
-	 * @param pPodId the pPOD id
-	 * @return a matrix given its pPOD id, or {@code null} if there is no such
-	 *         matrix
-	 */
-	StandardMatrix getByPPodId(String pPodId);
-
-	/**
-	 * Get a (pPOD ID, Study label) pair for every {@link CharacterStateMatrix}
-	 * in the database.
-	 * 
-	 * @return a set composed of a (pPOD ID, Study label) pair for every
-	 *         {@link CharacterStateMatrix} in the database
-	 */
-	Set<IPair<String, String>> getPPodIdLabelPairs();
 
 	List<Object[]> getCharacterInfosByMatrixIdAndMinPPodVersion(Long matrixId,
 			Long minPPodVersion);

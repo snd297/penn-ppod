@@ -57,7 +57,7 @@ final class MergeOTUSets implements IMergeOTUSets {
 		targetOTUSet.setDocId(sourceOTUSet.getDocId());
 
 		final List<OTU> newTargetOTUs = newArrayListWithCapacity(sourceOTUSet
-				.otusSize());
+				.getOTUsSize());
 
 		for (final OTU sourceOTU : sourceOTUSet) {
 			OTU targetOTU;

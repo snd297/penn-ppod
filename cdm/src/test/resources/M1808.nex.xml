@@ -21,7 +21,7 @@
         </states>
     </studyWideCharacter>
     <otuSet label="Taxa" docId="6c27b287-2d33-49b9-a1c3-86b668fe05bd">
-        <matrix xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:type="dnaMatrix" label="Character Matrix" docId="1d37ae4d-91c8-42e1-89a8-a73425e3f8e5">
+        <matrix xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:type="dnaStateMatrix" label="Character Matrix" docId="1d37ae4d-91c8-42e1-89a8-a73425e3f8e5">
             <characterDocId>b5f44b98-18a0-4377-aff1-5a62b04d0cac</characterDocId>
             <characterDocId>b5f44b98-18a0-4377-aff1-5a62b04d0cac</characterDocId>
             <characterDocId>b5f44b98-18a0-4377-aff1-5a62b04d0cac</characterDocId>

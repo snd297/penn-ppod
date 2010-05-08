@@ -165,10 +165,10 @@ public class Attachment extends UUPPodEntityWXmlId {
 	final static class IsOfNamespaceTypeLabelAndStringValue implements
 			IIsOfNamepspaceTypeLabelAndStringValue {
 
-		private final String namespaceLabel;
-		private final String typeLabel;
 		private final String attachmentLabel;
 		private final String attachmentStringValue;
+		private final String namespaceLabel;
+		private final String typeLabel;
 
 		IsOfNamespaceTypeLabelAndStringValue(final Attachment attachment) {
 			checkNotNull(attachment);
@@ -211,14 +211,6 @@ public class Attachment extends UUPPodEntityWXmlId {
 		}
 	}
 
-	static final String TABLE = "ATTACHMENT";
-
-	static final String ID_COLUMN = TABLE + "_ID";
-
-	static final String TYPE_COLUMN = "TYPE";
-
-	static final String STRING_VALUE_COLUMN = "STRING_VALUE";
-
 	static final String BYTES_VALUE_COLUMN = "BYTES_VALUE";
 
 	/**
@@ -231,12 +223,22 @@ public class Attachment extends UUPPodEntityWXmlId {
 		}
 	};
 
-	/** Like a variable typeLabel. */
-	@ManyToOne(fetch = FetchType.LAZY)
-	@JoinColumn(name = AttachmentType.ID_COLUMN, nullable = false)
-	@Cascade(org.hibernate.annotations.CascadeType.SAVE_UPDATE)
+	public static final String TABLE = "ATTACHMENT";
+
+	public static final String JOIN_COLUMN = TABLE + "_ID";
+
+	public static final String STRING_VALUE_COLUMN = "STRING_VALUE";
+
+	public static final String TYPE_COLUMN = "TYPE";
+
+	/** Objects to which this {@code Attachment} is attached. */
+	@ManyToMany(mappedBy = "attachments")
+	private final Set<PPodEntity> attachees = newHashSet();
+
+	@Lob
+	@Column(name = BYTES_VALUE_COLUMN, nullable = true)
 	@CheckForNull
-	private AttachmentType type;
+	private byte[] bytesValue;
 
 	/** Like a variable name. */
 	@Column(name = "LABEL", nullable = true)
@@ -249,14 +251,12 @@ public class Attachment extends UUPPodEntityWXmlId {
 	@CheckForNull
 	private String stringValue;
 
-	@Lob
-	@Column(name = BYTES_VALUE_COLUMN, nullable = true)
+	/** Like a variable typeLabel. */
+	@ManyToOne(fetch = FetchType.LAZY)
+	@JoinColumn(name = AttachmentType.ID_COLUMN, nullable = false)
+	@Cascade(org.hibernate.annotations.CascadeType.SAVE_UPDATE)
 	@CheckForNull
-	private byte[] bytesValue;
-
-	/** Objects to which this {@code Attachment} is attached. */
-	@ManyToMany(mappedBy = "attachments")
-	private final Set<PPodEntity> attachees = newHashSet();
+	private AttachmentType type;
 
 	/** Default constructor for (at least) Hibernate. */
 	Attachment() {}

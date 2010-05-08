@@ -56,8 +56,7 @@ public abstract class OTUKeyedMap<V extends IOTUKeyedMapValue>
 
 	public void afterUnmarshal() {
 		for (final OTUSomethingPair<V> otuValuePair : getOTUValuePairs()) {
-			getOTUsToValues().put(otuValuePair.getFirst(),
-					otuValuePair.getSecond());
+			put(otuValuePair.getFirst(), otuValuePair.getSecond());
 		}
 	}
 

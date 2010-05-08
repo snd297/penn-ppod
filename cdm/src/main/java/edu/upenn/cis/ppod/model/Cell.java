@@ -268,7 +268,7 @@ public abstract class Cell<E> extends PPodEntity implements Iterable<E> {
 	 * 
 	 * @throw IllegalArgumentException if {@code polymorphicStates.size() < 2}
 	 */
-	public Cell<E> setPolymorphic(
+	public Cell<E> setPolymorphicElements(
 			final Set<? extends E> polymorphicElements) {
 		checkNotNull(polymorphicElements);
 		checkArgument(polymorphicElements.size() > 1,
@@ -354,7 +354,7 @@ public abstract class Cell<E> extends PPodEntity implements Iterable<E> {
 	 * 
 	 * @throw IllegalArgumentException if {@code uncertainStates.size() < 2}
 	 */
-	public Cell<E> setUncertain(
+	public Cell<E> setUncertainElements(
 			final Set<? extends E> uncertainElements) {
 		checkNotNull(uncertainElements);
 		checkArgument(uncertainElements.size() > 1,
@@ -377,7 +377,7 @@ public abstract class Cell<E> extends PPodEntity implements Iterable<E> {
 	 * 
 	 * @return the number of elements in this cell
 	 */
-	public int elementsSize() {
+	public int getElementsSize() {
 		checkState(getType() != null,
 				"type has yet to be assigned for this cell");
 		switch (getType()) {

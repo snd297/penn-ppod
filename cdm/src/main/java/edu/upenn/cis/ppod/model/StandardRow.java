@@ -83,7 +83,7 @@ public class StandardRow extends Row<StandardCell> {
 	 */
 	@ManyToOne(fetch = FetchType.LAZY)
 	@CheckForNull
-	private OTUsToCharacterStateRows otusToRows;
+	private OTUsToStandardRows otusToRows;
 
 	StandardRow() {}
 
@@ -228,7 +228,7 @@ public class StandardRow extends Row<StandardCell> {
 	 * @return this {@code CharacterStateRow}
 	 */
 	protected StandardRow setOTUsToRows(
-			@CheckForNull final OTUsToCharacterStateRows otusToRows) {
+			@CheckForNull final OTUsToStandardRows otusToRows) {
 		this.otusToRows = otusToRows;
 		return this;
 	}

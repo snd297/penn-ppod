@@ -29,7 +29,7 @@ import org.testng.annotations.BeforeClass;
 import org.testng.annotations.Test;
 
 import edu.upenn.cis.ppod.TestGroupDefs;
-import edu.upenn.cis.ppod.dao.ICharacterStateMatrixDAO;
+import edu.upenn.cis.ppod.dao.IStandardMatrixDAO;
 import edu.upenn.cis.ppod.util.DbUnitUtil;
 
 @Test(groups = { TestGroupDefs.SLOW, TestGroupDefs.BROKEN })

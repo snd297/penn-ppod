@@ -23,7 +23,7 @@ import java.util.Set;
 
 import com.google.inject.Inject;
 
-import edu.upenn.cis.ppod.dao.ICharacterStateMatrixDAO;
+import edu.upenn.cis.ppod.dao.IStandardMatrixDAO;
 import edu.upenn.cis.ppod.model.StandardMatrix;
 import edu.upenn.cis.ppod.thirdparty.dao.hibernate.GenericHibernateDAO;
 import edu.upenn.cis.ppod.util.IPair;
@@ -33,22 +33,15 @@ import edu.upenn.cis.ppod.util.IPair;
  * 
  * @author Sam Donnelly
  */
-final class CharacterStateMatrixDAOHibernate extends
+final class StandardMatrixDAOHibernate extends
 		GenericHibernateDAO<StandardMatrix, Long> implements
-		ICharacterStateMatrixDAO {
+		IStandardMatrixDAO {
 
 	private final IPair.IFactory pairFactory;
 
 	@Inject
-	CharacterStateMatrixDAOHibernate(final IPair.IFactory orderedPairFactory) {
+	protected StandardMatrixDAOHibernate(final IPair.IFactory orderedPairFactory) {
 		this.pairFactory = orderedPairFactory;
-	}
-
-	@SuppressWarnings("unchecked")
-	public List<StandardMatrix> getByLabel(final String label) {
-		return getSession().getNamedQuery(
-				StandardMatrix.class.getSimpleName() + "-getByLabel")
-				.setParameter("label", label).list();
 	}
 
 	public StandardMatrix getByPPodId(final String pPodId) {

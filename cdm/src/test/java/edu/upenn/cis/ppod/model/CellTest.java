@@ -1,7 +1,23 @@
+/*
+ * Copyright (C) 2010 Trustees of the University of Pennsylvania
+ *
+ * Licensed under the Apache License, Version 2.0 (the "License");
+ * you may not use this file except in compliance with the License.
+ * You may obtain a copy of the License at
+ *
+ * http://www.apache.org/licenses/LICENSE-2.0
+ *
+ * Unless required by applicable law or agreed to in writing, software
+ * distributed under the License is distributed on an "AS IS" BASIS,
+ * WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
+ * See the License for the specific language governing permissions and
+ * limitations under the License.
+ */
 package edu.upenn.cis.ppod.model;
 
 import static com.google.common.base.Preconditions.checkArgument;
 import static com.google.common.base.Preconditions.checkNotNull;
+import static com.google.common.collect.Iterables.getOnlyElement;
 import static com.google.common.collect.Lists.newArrayList;
 import static org.testng.Assert.assertEquals;
 import static org.testng.Assert.assertFalse;
@@ -69,7 +85,7 @@ public class CellTest<M extends Matrix<R>, R extends Row<C>, C extends Cell<E>, 
 		final Row<C> row = matrix.getRow(otu0);
 		row.setCells(cells);
 
-		cell.setPolymorphic(elements);
+		cell.setPolymorphicElements(elements);
 		assertEquals((Object) cell.getElements(), (Object) elements);
 	}
 
@@ -119,5 +135,28 @@ public class CellTest<M extends Matrix<R>, R extends Row<C>, C extends Cell<E>, 
 		cell.beforeMarshal(null);
 	}
 
+	public void getStatesWhenCellHasOneElement(final M matrix,
+			final E element) {
+		checkNotNull(matrix);
+		checkNotNull(element);
+		checkArgument(matrix.getColumnsSize() == 1,
+				"matrix has " + matrix.getColumnsSize()
+						+ " column(s), but we need it to have 1 column");
+		final C cell = cellProvider.get();
+
+		final OTUSet otuSet = otuSetProvider.get();
+
+		matrix.setOTUSet(otuSet);
+
+		final OTU otu = otuSet.addOTU(otuProvider.get());
+
+		matrix.putRow(otu, rowProvider.get());
+
+		matrix.getRow(matrix.getOTUSet().getOTU(0)).setCells(
+				ImmutableList.of(cell));
+
+		cell.setSingleElement(element);
+		assertEquals(getOnlyElement(cell.getElements()), element);
+	}
 
 }

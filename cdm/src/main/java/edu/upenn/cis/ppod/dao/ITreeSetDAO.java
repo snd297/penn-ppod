@@ -22,8 +22,4 @@ import edu.upenn.cis.ppod.model.TreeSet;
  * 
  * @author Sam Donnelly
  */
-public interface ITreeSetDAO extends IDAO<TreeSet, Long> {
-
-	TreeSet getByPPodId(String pPodId);
-
-}
+public interface ITreeSetDAO extends IDAO<TreeSet, Long> {}

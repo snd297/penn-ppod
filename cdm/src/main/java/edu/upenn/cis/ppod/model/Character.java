@@ -268,7 +268,7 @@ public class Character extends UUPPodEntityWXmlId {
 	 * 
 	 * @return an iterator over this {@code Character}'s states
 	 */
-	public Iterator<CharacterState> statesIterator() {
+	public Iterator<CharacterState> getStatesIterator() {
 		return Collections.unmodifiableCollection(getStates().values())
 				.iterator();
 	}
@@ -280,7 +280,7 @@ public class Character extends UUPPodEntityWXmlId {
 	 * @return the number of {@code CharacterState}s associated with this
 	 *         {@code Character}
 	 */
-	public int statesSize() {
+	public int getStatesSize() {
 		return getStates().size();
 	}
 

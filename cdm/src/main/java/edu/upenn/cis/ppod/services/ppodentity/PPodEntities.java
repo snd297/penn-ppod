@@ -88,7 +88,7 @@ public class PPodEntities implements IPPodEntities {
 					.hasNext();) {
 				final OTUSet otuSet = otuSetsItr.next();
 				for (final Iterator<StandardMatrix> matrixItr = otuSet
-						.characterStateMatricesIterator(); matrixItr.hasNext();) {
+						.getStandardMatricesIterator(); matrixItr.hasNext();) {
 					studyWideCharacters
 							.addAll(newArrayList(matrixItr.next()
 									.charactersIterator()));

@@ -49,7 +49,7 @@ public class MatrixProvider {
 
 		final StandardMatrix smallSimpleMatrix = Iterators
 				.getOnlyElement(Iterators.getOnlyElement(
-						studyMX540.getOTUSetsIterator()).characterStateMatricesIterator());
+						studyMX540.getOTUSetsIterator()).getStandardMatricesIterator());
 
 		final Study studyM1808 = (Study) ctx.createUnmarshaller().unmarshal(
 				MatrixProvider.class.getResourceAsStream("/M1808.nex.xml"));
@@ -60,7 +60,7 @@ public class MatrixProvider {
 				getOnlyElement(
 						getOnlyElement(
 								studyM1808.getOTUSetsIterator())
-								.characterStateMatricesIterator());
+								.getStandardMatricesIterator());
 
 		return new Object[][] {
 				new Object[] { smallSimpleMatrix },
