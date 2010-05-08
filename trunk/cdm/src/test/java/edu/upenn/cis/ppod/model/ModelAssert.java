@@ -42,7 +42,7 @@ public class ModelAssert {
 		if (expectedOTUSet.getPPodId() != null) {
 			assertEquals(actualOTUSet.getPPodId(), expectedOTUSet.getPPodId());
 		}
-		assertEquals(actualOTUSet.otusSize(), expectedOTUSet.otusSize());
+		assertEquals(actualOTUSet.getOTUsSize(), expectedOTUSet.getOTUsSize());
 		for (final OTU expectedOTU : expectedOTUSet) {
 			boolean foundIt = false;
 			for (final OTU actualOTU : actualOTUSet) {
@@ -94,8 +94,8 @@ public class ModelAssert {
 	public static void assertEqualsCharacterStateCells(
 			final StandardCell actualCell,
 			final StandardCell expectedCell) {
-		assertEquals(actualCell.elementsSize(), expectedCell
-				.elementsSize());
+		assertEquals(actualCell.getElementsSize(), expectedCell
+				.getElementsSize());
 		for (final Iterator<CharacterState> actualStateItr = actualCell
 				.iterator(), expectedStateItr = expectedCell
 				.iterator(); actualStateItr.hasNext()
@@ -108,7 +108,7 @@ public class ModelAssert {
 	public static void assertEqualsCharacterStateRows(
 			final StandardRow actualRow,
 			final StandardRow expectedRow) {
-		assertEquals(actualRow.size(), expectedRow.size());
+		assertEquals(actualRow.getCellsSize(), expectedRow.getCellsSize());
 
 		for (final Iterator<StandardCell> actualCellItr = actualRow
 				.iterator(), expectedCellItr = expectedRow.iterator(); actualCellItr

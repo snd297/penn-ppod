@@ -47,7 +47,7 @@ import edu.upenn.cis.ppod.model.StandardCell;
 import edu.upenn.cis.ppod.model.StandardMatrix;
 import edu.upenn.cis.ppod.model.StandardRow;
 import edu.upenn.cis.ppod.model.DNACharacter;
-import edu.upenn.cis.ppod.model.DNAMatrix;
+import edu.upenn.cis.ppod.model.DNAStateMatrix;
 import edu.upenn.cis.ppod.model.MolecularStateMatrix;
 import edu.upenn.cis.ppod.model.OTU;
 import edu.upenn.cis.ppod.modelinterfaces.INewPPodVersionInfo;
@@ -128,7 +128,7 @@ final class SaveOrUpdateCharacterStateMatrix implements ISaveOrUpdateMatrix {
 			final Character sourceCharacter = sourceCharactersItr.next();
 			sourceCharacterPosition++;
 			Character newDbCharacter;
-			if (sourceMatrix instanceof DNAMatrix) {
+			if (sourceMatrix instanceof DNAStateMatrix) {
 				newDbCharacter = dnaCharacter;
 			} else if (null == (newDbCharacter =
 					findIf(dbMatrix
@@ -144,12 +144,12 @@ final class SaveOrUpdateCharacterStateMatrix implements ISaveOrUpdateMatrix {
 
 			newDbMatrixCharacters.add(newDbCharacter);
 
-			if (!(sourceMatrix instanceof DNAMatrix)) {
+			if (!(sourceMatrix instanceof DNAStateMatrix)) {
 				newDbCharacter.setLabel(sourceCharacter.getLabel());
 			}
 
 			for (final Iterator<CharacterState> sourceStatesItr = sourceCharacter
-					.statesIterator(); sourceStatesItr.hasNext();) {
+					.getStatesIterator(); sourceStatesItr.hasNext();) {
 				final CharacterState sourceState = sourceStatesItr.next();
 				CharacterState dbState;
 				if (null == (dbState = newDbCharacter.getState(
@@ -161,7 +161,7 @@ final class SaveOrUpdateCharacterStateMatrix implements ISaveOrUpdateMatrix {
 							.getNewPPodVersionInfo());
 				}
 
-				if (!(sourceMatrix instanceof DNAMatrix)) {
+				if (!(sourceMatrix instanceof DNAStateMatrix)) {
 					dbState.setLabel(sourceState.getLabel());
 				}
 			}
@@ -246,7 +246,7 @@ final class SaveOrUpdateCharacterStateMatrix implements ISaveOrUpdateMatrix {
 			final ImmutableList<StandardCell> originalDbCells = ImmutableList
 					.copyOf(dbRow.iterator());
 			final List<StandardCell> newDbCells = newArrayListWithCapacity(sourceRow
-					.size());
+					.getCellsSize());
 
 			// First we fill with empty cells
 			for (int newCellPosition = 0; newCellPosition < dbMatrix
@@ -290,7 +290,7 @@ final class SaveOrUpdateCharacterStateMatrix implements ISaveOrUpdateMatrix {
 						dbCell.setInapplicable();
 						break;
 					case POLYMORPHIC:
-						dbCell.setPolymorphic(newTargetStates);
+						dbCell.setPolymorphicElements(newTargetStates);
 						break;
 					case SINGLE:
 						dbCell
@@ -300,7 +300,7 @@ final class SaveOrUpdateCharacterStateMatrix implements ISaveOrUpdateMatrix {
 						dbCell.setUnassigned();
 						break;
 					case UNCERTAIN:
-						dbCell.setUncertain(newTargetStates);
+						dbCell.setUncertainElements(newTargetStates);
 						break;
 					default:
 						throw new AssertionError("unknown type");

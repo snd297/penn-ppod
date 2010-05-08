@@ -23,7 +23,7 @@
 		<mapping class="edu.upenn.cis.ppod.model.TreeSet" />
 
 		<mapping class="edu.upenn.cis.ppod.model.StandardMatrix" />
-		<mapping class="edu.upenn.cis.ppod.model.OTUsToCharacterStateRows" />
+		<mapping class="edu.upenn.cis.ppod.model.OTUsToStandardRows" />
 		<mapping class="edu.upenn.cis.ppod.model.StandardRow" />
 		<mapping class="edu.upenn.cis.ppod.model.StandardCell" />
 
@@ -33,11 +33,11 @@
 
 		<mapping class="edu.upenn.cis.ppod.model.MolecularState" />
 
-		<mapping class="edu.upenn.cis.ppod.model.DNAMatrix" />
+		<mapping class="edu.upenn.cis.ppod.model.DNAStateMatrix" />
 		<mapping class="edu.upenn.cis.ppod.model.DNACharacter" />
 		<mapping class="edu.upenn.cis.ppod.model.DNAState" />
 
-		<mapping class="edu.upenn.cis.ppod.model.DNAMatrix2" />
+		<mapping class="edu.upenn.cis.ppod.model.DNAMatrix" />
 		<mapping class="edu.upenn.cis.ppod.model.OTUsToDNARows" />
 		<mapping class="edu.upenn.cis.ppod.model.DNARow" />
 		<mapping class="edu.upenn.cis.ppod.model.DNACell" />

@@ -36,7 +36,7 @@ import javax.xml.bind.Marshaller;
 import javax.xml.bind.Unmarshaller;
 import javax.xml.bind.annotation.XmlElement;
 
-import edu.upenn.cis.ppod.util.OTUCharacterStateRowPair;
+import edu.upenn.cis.ppod.util.OTUStandardRowPair;
 import edu.upenn.cis.ppod.util.OTUSomethingPair;
 
 /**
@@ -46,7 +46,7 @@ import edu.upenn.cis.ppod.util.OTUSomethingPair;
  */
 @Entity
 @Table(name = "OTUS_TO_CHARACTER_STATE_ROWS")
-public class OTUsToCharacterStateRows extends OTUKeyedMap<StandardRow> {
+public class OTUsToStandardRows extends OTUKeyedMap<StandardRow> {
 
 	@OneToOne(fetch = FetchType.LAZY, mappedBy = "otusToRows")
 	@CheckForNull
@@ -57,13 +57,13 @@ public class OTUsToCharacterStateRows extends OTUKeyedMap<StandardRow> {
 	 * {@code XmlIDREF} in JAXB - at least not easily.
 	 */
 	@Transient
-	private final Set<OTUCharacterStateRowPair> otuRowPairs = newHashSet();
+	private final Set<OTUStandardRowPair> otuRowPairs = newHashSet();
 
 	@OneToMany(cascade = CascadeType.ALL, orphanRemoval = true)
 	@MapKeyJoinColumn(name = OTU.JOIN_COLUMN)
 	private final Map<OTU, StandardRow> rows = newHashMap();
 
-	OTUsToCharacterStateRows() {}
+	OTUsToStandardRows() {}
 
 	/**
 	 * {@link Unmarshaller} callback.
@@ -85,14 +85,14 @@ public class OTUsToCharacterStateRows extends OTUKeyedMap<StandardRow> {
 		for (final Map.Entry<OTU, StandardRow> otuToRow : getOTUsToValues()
 				.entrySet()) {
 			getOTURowPairs().add(
-					OTUCharacterStateRowPair.of(otuToRow.getKey(), otuToRow
+					OTUStandardRowPair.of(otuToRow.getKey(), otuToRow
 							.getValue()));
 		}
 		return true;
 	}
 
 	@XmlElement(name = "otuRowPair")
-	protected Set<OTUCharacterStateRowPair> getOTURowPairs() {
+	protected Set<OTUStandardRowPair> getOTURowPairs() {
 		return otuRowPairs;
 	}
 
@@ -104,7 +104,7 @@ public class OTUsToCharacterStateRows extends OTUKeyedMap<StandardRow> {
 	@Override
 	protected Set<OTUSomethingPair<StandardRow>> getOTUValuePairs() {
 		final Set<OTUSomethingPair<StandardRow>> otuValuePairs = newHashSet();
-		for (final OTUCharacterStateRowPair otuRowPair : otuRowPairs) {
+		for (final OTUStandardRowPair otuRowPair : otuRowPairs) {
 			otuValuePairs.add(otuRowPair);
 		}
 		return otuValuePairs;
@@ -129,14 +129,14 @@ public class OTUsToCharacterStateRows extends OTUKeyedMap<StandardRow> {
 	}
 
 	@Override
-	protected OTUsToCharacterStateRows setInNeedOfNewPPodVersionInfo() {
+	protected OTUsToStandardRows setInNeedOfNewPPodVersionInfo() {
 		if (matrix != null) {
 			matrix.setInNeedOfNewPPodVersionInfo();
 		}
 		return this;
 	}
 
-	protected OTUsToCharacterStateRows setMatrix(
+	protected OTUsToStandardRows setMatrix(
 			final StandardMatrix matrix) {
 		checkNotNull(matrix);
 		this.matrix = matrix;

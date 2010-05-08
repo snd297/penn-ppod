@@ -34,7 +34,7 @@ import org.testng.annotations.Test;
 import edu.upenn.cis.ppod.TestGroupDefs;
 import edu.upenn.cis.ppod.dao.ICharacterDAO;
 import edu.upenn.cis.ppod.dao.ICharacterStateDAO;
-import edu.upenn.cis.ppod.dao.ICharacterStateMatrixDAO;
+import edu.upenn.cis.ppod.dao.IStandardMatrixDAO;
 import edu.upenn.cis.ppod.dao.IOTUDAO;
 import edu.upenn.cis.ppod.dao.IOTUSetDAO;
 

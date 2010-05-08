@@ -77,8 +77,8 @@ final class MergeTreeSets implements IMergeTreeSets {
 
 			String targetNewick = sourceTree.getNewick();
 
-			if (sourceTreeSet.getOTUSet().otusSize() != targetTreeSet
-					.getOTUSet().otusSize()) {
+			if (sourceTreeSet.getOTUSet().getOTUsSize() != targetTreeSet
+					.getOTUSet().getOTUsSize()) {
 				throw new AssertionError(
 						"sourceTreeSet.getOTUSet().getOTUsSize() should be the same as targetTreeSet.getOTUSet().getOTUsSize()");
 			}

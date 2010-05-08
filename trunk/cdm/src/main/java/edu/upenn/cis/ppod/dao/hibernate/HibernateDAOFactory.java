@@ -27,7 +27,7 @@ import com.google.inject.assistedinject.Assisted;
 
 import edu.upenn.cis.ppod.dao.ICharacterDAO;
 import edu.upenn.cis.ppod.dao.ICharacterStateDAO;
-import edu.upenn.cis.ppod.dao.ICharacterStateMatrixDAO;
+import edu.upenn.cis.ppod.dao.IStandardMatrixDAO;
 import edu.upenn.cis.ppod.dao.ICharacterStateRowDAO;
 import edu.upenn.cis.ppod.dao.IDAOFactory;
 import edu.upenn.cis.ppod.dao.IOTUDAO;
@@ -83,7 +83,7 @@ public class HibernateDAOFactory implements IDAOFactory {
 	@Inject
 	public HibernateDAOFactory(
 			final Provider<StudyDAOHibernate> studyDAOProvider,
-			final Provider<CharacterStateMatrixDAOHibernate> charStateMatrixDAOProvider,
+			final Provider<StandardMatrixDAOHibernate> charStateMatrixDAOProvider,
 			@Assisted @Nullable final Session session) {
 		this.studyDAOProvider = studyDAOProvider;
 		this.charStateMatrixProvider = charStateMatrixDAOProvider;
@@ -94,14 +94,7 @@ public class HibernateDAOFactory implements IDAOFactory {
 	 * An {@link IOTUDAO} Hibernate DAO.
 	 */
 	public static class OTUDAOHibernate extends GenericHibernateDAO<OTU, Long>
-			implements IOTUDAO {
-
-		public OTU getOTUByPPodId(String pPodId) {
-			return (OTU) getSession().getNamedQuery(
-					OTU.class.getSimpleName() + "-getByPPodId").setParameter(
-					"pPodId", pPodId).uniqueResult();
-		}
-	}
+			implements IOTUDAO {}
 
 	/**
 	 * An {@link OTUSet} Hibernate DAO.
@@ -219,11 +212,6 @@ public class HibernateDAOFactory implements IDAOFactory {
 	public static class TreeSetDAOHibernate extends
 			GenericHibernateDAO<TreeSet, Long> implements ITreeSetDAO {
 
-		public TreeSet getByPPodId(final String pPodId) {
-			return (TreeSet) getSession().getNamedQuery(
-					TreeSet.class.getSimpleName() + "-getByPPodId")
-					.setParameter("pPodId", pPodId).uniqueResult();
-		}
 	}
 
 	private final Provider<StudyDAOHibernate> studyDAOProvider;
@@ -232,10 +220,10 @@ public class HibernateDAOFactory implements IDAOFactory {
 		return (StudyDAOHibernate) studyDAOProvider.get().setSession(session);
 	}
 
-	private final Provider<CharacterStateMatrixDAOHibernate> charStateMatrixProvider;
+	private final Provider<StandardMatrixDAOHibernate> charStateMatrixProvider;
 
-	public ICharacterStateMatrixDAO getCharacterStateMatrixDAO() {
-		return (ICharacterStateMatrixDAO) charStateMatrixProvider.get()
+	public IStandardMatrixDAO getCharacterStateMatrixDAO() {
+		return (IStandardMatrixDAO) charStateMatrixProvider.get()
 				.setSession(session);
 	}
 

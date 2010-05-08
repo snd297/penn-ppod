@@ -106,7 +106,7 @@ public abstract class PPodEntity extends PersistentObject implements IAttachee,
 	private Long pPodVersion;
 
 	@ManyToMany
-	@JoinTable(joinColumns = @JoinColumn(name = ID_COLUMN), inverseJoinColumns = @JoinColumn(name = Attachment.ID_COLUMN))
+	@JoinTable(joinColumns = @JoinColumn(name = ID_COLUMN), inverseJoinColumns = @JoinColumn(name = Attachment.JOIN_COLUMN))
 	@CheckForNull
 	private Set<Attachment> attachments;
 

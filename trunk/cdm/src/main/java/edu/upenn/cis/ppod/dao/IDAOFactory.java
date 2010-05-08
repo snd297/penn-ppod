@@ -35,7 +35,7 @@ public interface IDAOFactory {
 	 * 
 	 * @return a {@code CharacterStateMatrix} DAO
 	 */
-	ICharacterStateMatrixDAO getCharacterStateMatrixDAO();
+	IStandardMatrixDAO getCharacterStateMatrixDAO();
 
 	/**
 	 * Get an {@link OTU} DAO.

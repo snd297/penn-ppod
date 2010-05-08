@@ -99,7 +99,7 @@ public class StandardCellTest {
 				Arrays.asList(cell));
 		states.add(state00);
 		states.add(state01);
-		cell.setPolymorphic(states);
+		cell.setPolymorphicElements(states);
 		cell.beforeMarshal(null);
 		final Set<CharacterState> xmlStates = cell.getXmlElements();
 		assertEquals(xmlStates.size(), states.size());
@@ -161,12 +161,7 @@ public class StandardCellTest {
 	}
 
 	public void getStatesWhenCellHasOneElement() {
-		states.add(state00);
-		matrix.getRow(matrix.getOTUSet().getOTU(0)).setCells(
-				Arrays.asList(cell));
-
-		cell.setSingleElement(state00);
-		assertEquals((Object) newHashSet(cell), (Object) states);
+		cellTest.getStatesWhenCellHasOneElement(matrix, state00);
 	}
 
 	@Test(groups = TestGroupDefs.IN_DEVELOPMENT)
@@ -193,7 +188,7 @@ public class StandardCellTest {
 				Arrays.asList(cell));
 		states.add(state00);
 		states.add(state01);
-		cell.setPolymorphic(states);
+		cell.setPolymorphicElements(states);
 		cell.setInapplicable();
 		assertEquals(cell.getType(), Cell.Type.INAPPLICABLE);
 		assertTrue(isEmpty(newHashSet(cell)));
@@ -223,7 +218,7 @@ public class StandardCellTest {
 				Arrays.asList(cell));
 		states.add(state00);
 		states.add(state01);
-		cell.setPolymorphic(states);
+		cell.setPolymorphicElements(states);
 		assertEquals(cell.getType(), Cell.Type.POLYMORPHIC);
 		assertEquals((Object) newHashSet(cell), (Object) states);
 	}
@@ -232,7 +227,7 @@ public class StandardCellTest {
 	public void setTypeAndStatesPolymorphicTooFewStates() {
 		matrix.getRow(matrix.getOTUSet().getOTU(0)).setCells(
 				Arrays.asList(cell));
-		cell.setPolymorphic(states);
+		cell.setPolymorphicElements(states);
 	}
 
 	public void setTypeAndStatesSingle() {
@@ -257,7 +252,7 @@ public class StandardCellTest {
 		matrix.getRow(matrix.getOTUSet().getOTU(0)).setCells(
 				Arrays.asList(cell));
 		states.add(state00);
-		cell.setUncertain(states);
+		cell.setUncertainElements(states);
 	}
 
 	public void setUncertainStates() {
@@ -265,7 +260,7 @@ public class StandardCellTest {
 				Arrays.asList(cell));
 		states.add(state00);
 		states.add(state01);
-		cell.setUncertain(states);
+		cell.setUncertainElements(states);
 		assertEquals(cell.getType(), Cell.Type.UNCERTAIN);
 		assertEquals((Object) newHashSet(cell), (Object) newHashSet(states));
 	}

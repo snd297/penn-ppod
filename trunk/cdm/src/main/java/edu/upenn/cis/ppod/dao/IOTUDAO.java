@@ -22,11 +22,4 @@ import edu.upenn.cis.ppod.model.OTU;
  * 
  * @author Sam Donnelly
  */
-public interface IOTUDAO extends IDAO<OTU, Long> {
-
-	/**
-	 * @param pPodID
-	 * @return
-	 */
-	OTU getOTUByPPodId(String pPodId);
-}
+public interface IOTUDAO extends IDAO<OTU, Long> {}

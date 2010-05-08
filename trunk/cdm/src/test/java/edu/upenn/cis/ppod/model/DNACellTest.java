@@ -1,3 +1,18 @@
+/*
+ * Copyright (C) 2010 Trustees of the University of Pennsylvania
+ *
+ * Licensed under the Apache License, Version 2.0 (the "License");
+ * you may not use this file except in compliance with the License.
+ * You may obtain a copy of the License at
+ *
+ * http://www.apache.org/licenses/LICENSE-2.0
+ *
+ * Unless required by applicable law or agreed to in writing, software
+ * distributed under the License is distributed on an "AS IS" BASIS,
+ * WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
+ * See the License for the specific language governing permissions and
+ * limitations under the License.
+ */
 package edu.upenn.cis.ppod.model;
 
 import static org.testng.Assert.assertEquals;
@@ -23,10 +38,10 @@ import edu.upenn.cis.ppod.TestGroupDefs;
 public class DNACellTest {
 
 	@Inject
-	private CellTest<DNAMatrix2, DNARow, DNACell, DNANucleotide> cellTest;
+	private CellTest<DNAMatrix, DNARow, DNACell, DNANucleotide> cellTest;
 
 	@Inject
-	private Provider<DNAMatrix2> dnaMatrix2Provider;
+	private Provider<DNAMatrix> dnaMatrix2Provider;
 
 	@Inject
 	private Provider<DNACell> dnaCellProvider;
@@ -41,7 +56,7 @@ public class DNACellTest {
 	private Provider<DNARow> dnaRowProvider;
 
 	public void getStatesWhenCellHasOneState() {
-		final DNAMatrix2 matrix = dnaMatrix2Provider.get();
+		final DNAMatrix matrix = dnaMatrix2Provider.get();
 		matrix.setColumnsSize(1);
 		// nothing special about A,C,T.
 		cellTest.getStatesWhenCellHasMultipleElements(matrix,
@@ -51,7 +66,7 @@ public class DNACellTest {
 	}
 
 	public void afterUnmarshal() {
-		final DNAMatrix2 matrix = dnaMatrix2Provider.get();
+		final DNAMatrix matrix = dnaMatrix2Provider.get();
 		matrix.setColumnsSize(1);
 
 		// nothing special about A,C,T.
@@ -75,7 +90,7 @@ public class DNACellTest {
 	 * {@code beforeMarshal()} is called.
 	 */
 	public void beforeMarshal() {
-		final DNAMatrix2 matrix = dnaMatrix2Provider.get();
+		final DNAMatrix matrix = dnaMatrix2Provider.get();
 		final DNACell cell = dnaCellProvider.get();
 
 		final OTUSet otuSet = otuSetProvider.get();
@@ -91,7 +106,7 @@ public class DNACellTest {
 		final Set<DNANucleotide> elements = ImmutableSet.of(DNANucleotide.A,
 				DNANucleotide.C);
 
-		cell.setPolymorphic(elements);
+		cell.setPolymorphicElements(elements);
 
 		cell.beforeMarshal(null);
 		final Set<DNANucleotide> xmlStates = cell.getXmlElements();
@@ -99,5 +114,11 @@ public class DNACellTest {
 		for (final DNANucleotide expectedElement : elements) {
 			assertTrue(xmlStates.contains(expectedElement));
 		}
+	}
+
+	public void getStatesWhenCellHasOneElement() {
+		cellTest.getStatesWhenCellHasOneElement((DNAMatrix)
+				dnaMatrix2Provider.get().setColumnsSize(1),
+				DNANucleotide.C);
 	}
 }

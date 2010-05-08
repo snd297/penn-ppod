@@ -23,7 +23,7 @@
 		<mapping class="edu.upenn.cis.ppod.model.TreeSet" />
 
 		<mapping class="edu.upenn.cis.ppod.model.StandardMatrix" />
-		<mapping class="edu.upenn.cis.ppod.model.OTUsToCharacterStateRows" />
+		<mapping class="edu.upenn.cis.ppod.model.OTUsToStandardRows" />
 		<mapping class="edu.upenn.cis.ppod.model.StandardRow" />
 		<mapping class="edu.upenn.cis.ppod.model.StandardCell" />
 

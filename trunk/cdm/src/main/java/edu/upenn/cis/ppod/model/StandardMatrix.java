@@ -60,7 +60,7 @@ import edu.upenn.cis.ppod.util.IVisitor;
  * 
  * @author Sam Donnelly
  */
-@XmlSeeAlso( { DNAMatrix.class })
+@XmlSeeAlso( { DNAStateMatrix.class })
 @Entity
 @Table(name = StandardMatrix.TABLE)
 public class StandardMatrix extends Matrix<StandardRow> {
@@ -108,7 +108,7 @@ public class StandardMatrix extends Matrix<StandardRow> {
 	private final Map<Character, Integer> charactersToPositions = newHashMap();
 
 	@OneToOne(fetch = FetchType.LAZY, optional = false, cascade = CascadeType.ALL, orphanRemoval = true)
-	private OTUsToCharacterStateRows otusToRows;
+	private OTUsToStandardRows otusToRows;
 
 	/** No-arg constructor for (at least) Hibernate. */
 	StandardMatrix() {}
@@ -121,7 +121,7 @@ public class StandardMatrix extends Matrix<StandardRow> {
 	 * @param otusToRows the {@code OTUsToCharacterStateRows} for this matrix.
 	 */
 	@Inject
-	protected StandardMatrix(final OTUsToCharacterStateRows otusToRows) {
+	protected StandardMatrix(final OTUsToStandardRows otusToRows) {
 		this.otusToRows = otusToRows;
 		this.otusToRows.setMatrix(this);
 	}
@@ -318,7 +318,7 @@ public class StandardMatrix extends Matrix<StandardRow> {
 	 */
 	@XmlElement(name = "otusToRows")
 	@Override
-	protected OTUsToCharacterStateRows getOTUsToRows() {
+	protected OTUsToStandardRows getOTUsToRows() {
 		return otusToRows;
 	}
 
@@ -499,7 +499,7 @@ public class StandardMatrix extends Matrix<StandardRow> {
 	@edu.umd.cs.findbugs.annotations.SuppressWarnings
 	@SuppressWarnings("unused")
 	private StandardMatrix setOTUsToRows(
-			final OTUsToCharacterStateRows otusToRows) {
+			final OTUsToStandardRows otusToRows) {
 		checkNotNull(otusToRows);
 		this.otusToRows = otusToRows;
 		return this;

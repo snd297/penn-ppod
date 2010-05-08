@@ -55,7 +55,7 @@ public abstract class Row<C extends Cell<?>> extends PPodEntity implements
 	 * 
 	 * @return the number of cells this row has
 	 */
-	public int size() {
+	public int getCellsSize() {
 		return getCells().size();
 	}
 
