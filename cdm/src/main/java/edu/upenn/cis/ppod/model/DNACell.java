@@ -22,11 +22,8 @@ import javax.persistence.ManyToOne;
 import javax.persistence.Table;
 import javax.persistence.Transient;
 
-import edu.upenn.cis.ppod.modelinterfaces.IPPodVersioned;
-import edu.upenn.cis.ppod.modelinterfaces.IRow;
-
 /**
- * A cell that contains {@link DNANucleotide}.
+ * A cell that contains {@link DNANucleotide}s.
  * 
  * @author Sam Donnelly
  */
@@ -36,8 +33,19 @@ public class DNACell extends Cell<DNANucleotide> {
 
 	public static final String TABLE = "DNA_CELL";
 
-	public static final String ID_COLUMN = TABLE + "_"
-											+ PersistentObject.ID_COLUMN;
+	public static final String JOIN_COLUMN = TABLE + "_"
+												+ PersistentObject.ID_COLUMN;
+
+	/**
+	 * The heart of the cell: the {@code DNANucleotide}s.
+	 * <p>
+	 * Will be {@code null} when first created, but is generally not-null.
+	 */
+	@ElementCollection
+	@CollectionTable(name = "DNA_CELL_STATES", joinColumns = @JoinColumn(name = JOIN_COLUMN))
+	@Column(name = "ELEMENT")
+	@CheckForNull
+	private Set<DNANucleotide> elements = null;
 
 	/**
 	 * To handle the most-common case of a single {@code CharacterState}, we
@@ -60,17 +68,6 @@ public class DNACell extends Cell<DNANucleotide> {
 	private DNARow row;
 
 	/**
-	 * The heart of the cell: the {@code DNANucleotide}s.
-	 * <p>
-	 * Will be {@code null} when first created, but is generally not-null.
-	 */
-	@ElementCollection
-	@CollectionTable(name = "DNA_CELL_STATES", joinColumns = @JoinColumn(name = ID_COLUMN))
-	@Column(name = "ELEMENT")
-	@CheckForNull
-	private Set<DNANucleotide> elements = null;
-
-	/**
 	 * Used for serialization so we don't have to hit {@code states} directly
 	 * and thereby cause unwanted database hits.
 	 */
@@ -79,13 +76,19 @@ public class DNACell extends Cell<DNANucleotide> {
 	private Set<DNANucleotide> xmlStates = null;
 
 	@Override
+	@CheckForNull
+	protected Set<DNANucleotide> getElementsRaw() {
+		return elements;
+	}
+
+	@Override
 	protected DNANucleotide getFirstElement() {
 		return firstElement;
 	}
 
 	@Override
-	protected Set<DNANucleotide> getElementsRaw() {
-		return elements;
+	protected DNARow getRow() {
+		return row;
 	}
 
 	@Override
@@ -98,6 +101,11 @@ public class DNACell extends Cell<DNANucleotide> {
 
 	public Iterator<DNANucleotide> iterator() {
 		return Collections.unmodifiableSet(elements).iterator();
+	}
+
+	protected DNACell setRow(final DNARow row) {
+		this.row = row;
+		return this;
 	}
 
 	@Override
@@ -139,19 +147,15 @@ public class DNACell extends Cell<DNANucleotide> {
 	}
 
 	@Override
-	protected Cell<DNANucleotide> unsetXmlElements() {
-		xmlStates = null;
+	public DNACell unsetRow() {
+		row = null;
 		return this;
 	}
 
 	@Override
-	public IPPodVersioned getParent() {
-		return row;
-	}
-
-	@Override
-	protected IRow getRow() {
-		return row;
+	protected Cell<DNANucleotide> unsetXmlElements() {
+		xmlStates = null;
+		return this;
 	}
 
 }

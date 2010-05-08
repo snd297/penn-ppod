@@ -1,5 +1,6 @@
 package edu.upenn.cis.ppod.model;
 
+import static com.google.common.base.Preconditions.checkNotNull;
 import static com.google.common.collect.Maps.newHashMap;
 import static com.google.common.collect.Sets.newHashSet;
 
@@ -71,6 +72,14 @@ public class OTUsToDNARows extends OTUKeyedMap<DNARow> {
 	protected OTUsToDNARows setMatrix(final DNAMatrix matrix) {
 		this.matrix = matrix;
 		return this;
+	}
+
+	@Override
+	public DNARow put(final OTU otu, final DNARow row) {
+		checkNotNull(otu);
+		checkNotNull(row);
+		row.setOTUsToRows(this);
+		return super.putHelper(otu, row);
 	}
 
 }

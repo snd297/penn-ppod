@@ -36,8 +36,8 @@ import javax.xml.bind.Marshaller;
 import javax.xml.bind.Unmarshaller;
 import javax.xml.bind.annotation.XmlElement;
 
-import edu.upenn.cis.ppod.util.OTUStandardRowPair;
 import edu.upenn.cis.ppod.util.OTUSomethingPair;
+import edu.upenn.cis.ppod.util.OTUStandardRowPair;
 
 /**
  * Maps {@code OTU}s to {@code CharacterStateRow}s.
@@ -121,11 +121,7 @@ public class OTUsToStandardRows extends OTUKeyedMap<StandardRow> {
 		checkNotNull(otu);
 		checkNotNull(row);
 		row.setOTUsToRows(this);
-		final StandardRow originalRow = super.put(otu, row);
-		if (originalRow != null && originalRow != row) {
-			originalRow.setOTUsToRows(null);
-		}
-		return originalRow;
+		return super.putHelper(otu, row);
 	}
 
 	@Override

@@ -111,7 +111,7 @@ public class StandardMatrix extends Matrix<StandardRow> {
 	private OTUsToStandardRows otusToRows;
 
 	/** No-arg constructor for (at least) Hibernate. */
-	StandardMatrix() {}
+	protected StandardMatrix() {}
 
 	/**
 	 * This constructor is {@code protected} to allow for injected {@code

@@ -91,6 +91,7 @@ public class DNACellTest {
 	 */
 	public void beforeMarshal() {
 		final DNAMatrix matrix = dnaMatrix2Provider.get();
+		matrix.setColumnsSize(1);
 		final DNACell cell = dnaCellProvider.get();
 
 		final OTUSet otuSet = otuSetProvider.get();

@@ -29,7 +29,7 @@ public class DNARow extends Row<DNACell> {
 	public static final String TABLE = "DNA_ROW";
 
 	public static final String JOIN_COLUMN = TABLE + "_"
-											+ PersistentObject.ID_COLUMN;
+												+ PersistentObject.ID_COLUMN;
 
 	@OneToMany(mappedBy = "row", cascade = CascadeType.ALL, orphanRemoval = true)
 	@OrderBy("position")
@@ -40,7 +40,7 @@ public class DNARow extends Row<DNACell> {
 	 */
 	@ManyToOne(fetch = FetchType.LAZY)
 	@CheckForNull
-	private OTUsToStandardRows otusToRows;
+	private OTUsToDNARows otusToRows;
 
 	@Override
 	protected List<DNACell> getCells() {
@@ -48,6 +48,9 @@ public class DNARow extends Row<DNACell> {
 	}
 
 	public IMatrix getMatrix() {
+		if (otusToRows == null) {
+			return null;
+		}
 		return otusToRows.getParent();
 	}
 
@@ -56,11 +59,18 @@ public class DNARow extends Row<DNACell> {
 	}
 
 	@Override
-	public List<DNACell> setCells(
-			final List<? extends DNACell> cells) {
-		this.cells.clear();
-		this.cells.addAll(cells);
-		return null;
+	public List<DNACell> setCells(final List<? extends DNACell> cells) {
+		final List<DNACell> clearedCells = super.setCellsHelper(cells);
+
+		for (final DNACell cell : this) {
+			cell.setRow(this);
+		}
+		return clearedCells;
+	}
+
+	public DNARow setOTUsToRows(final OTUsToDNARows otusToRows) {
+		this.otusToRows = otusToRows;
+		return this;
 	}
 
 	public Row<DNACell> unsetOTUKeyedMap() {

@@ -17,7 +17,6 @@ package edu.upenn.cis.ppod.model;
 
 import static com.google.common.base.Preconditions.checkArgument;
 import static com.google.common.base.Preconditions.checkNotNull;
-import static com.google.common.base.Preconditions.checkState;
 import static com.google.common.collect.Lists.newArrayList;
 
 import java.util.Collections;
@@ -93,25 +92,13 @@ public class StandardRow extends Row<StandardCell> {
 		visitor.visit(this);
 	}
 
-	/**
-	 * Empty out and return this row's cells.
-	 *<p>
-	 * This method will not mark this object or parents as in need of a new pPOD
-	 * version. Which can be useful to free up the cells for garbage collection
-	 * after the row and cells are evicted but the matrix is still in the
-	 * persistence context.
-	 * <p>
-	 * This method {@code null}s out the cell->row relationship.
-	 * 
-	 * @return the cleared cells - an empty list if {@code getCells() == 0} when
-	 *         this method is called
-	 */
-	public List<StandardCell> clearCells() {
-		final List<StandardCell> clearedCells = newArrayList(getCells());
-		for (final StandardCell clearedCell : clearedCells) {
-			clearedCell.setRow(null);
+	@Override
+	public List<StandardCell> setCells(List<? extends StandardCell> cells) {
+		final List<StandardCell> clearedCells = super.setCellsHelper(cells);
+
+		for (final StandardCell cell : this) {
+			cell.setRow(this);
 		}
-		cells.clear();
 		return clearedCells;
 	}
 
@@ -169,40 +156,6 @@ public class StandardRow extends Row<StandardCell> {
 	 */
 	public Iterator<StandardCell> iterator() {
 		return Collections.unmodifiableList(getCells()).iterator();
-	}
-
-	@Override
-	public List<StandardCell> setCells(
-			final List<? extends StandardCell> newCells) {
-		checkNotNull(newCells);
-
-		if (newCells.equals(getCells())) {
-			return Collections.emptyList();
-		}
-
-		final StandardMatrix matrix = getMatrix();
-
-		checkState(matrix != null, "This row hasn't been added to a matrix yet");
-
-		checkState(
-				matrix.getCharacters().size() == newCells.size(),
-								"the matrix has different number of characters "
-										+ matrix.getCharacters().size()
-										+ " than cells "
-										+ newCells.size()
-										+ " and cells > 0");
-
-		final List<StandardCell> removedCells = newArrayList(getCells());
-		removedCells.removeAll(newCells);
-
-		clearCells();
-		for (int cellPos = 0; cellPos < newCells.size(); cellPos++) {
-			getCells().add(newCells.get(cellPos));
-			newCells.get(cellPos).setRow(this);
-			newCells.get(cellPos).setPosition(cellPos);
-		}
-		setInNeedOfNewPPodVersionInfo();
-		return removedCells;
 	}
 
 	/**
