@@ -91,12 +91,13 @@ public class OTUSetTest {
 		otuSet.setOTUs(newArrayList(otus));
 	}
 
-	public void setTreeSets() {
+	public void setTreeSetsAndGetTreeSetsSize() {
 		final TreeSet treeSet = treeSetProvider.get();
-		final ImmutableSet<TreeSet> treeSets = ImmutableSet.of(treeSet);
+		final Set<TreeSet> treeSets = ImmutableSet.of(treeSet);
 		otuSet.setTreeSets(treeSets);
 		assertEquals(Iterators.getOnlyElement(otuSet.getTreeSetsIterator()),
 				treeSet);
+		assertEquals(otuSet.getTreeSetsSize(), treeSets.size());
 	}
 
 	@BeforeMethod
@@ -235,7 +236,7 @@ public class OTUSetTest {
 		final DNASequenceSet dnaSequenceSet0 = dnaSequenceSetProvider.get();
 		final DNASequenceSet dnaSequenceSet1 = dnaSequenceSetProvider.get();
 		final DNASequenceSet dnaSequenceSet2 = dnaSequenceSetProvider.get();
-		final ImmutableSet<DNASequenceSet> dnaSequenceSets = ImmutableSet.of(
+		final Set<DNASequenceSet> dnaSequenceSets = ImmutableSet.of(
 				dnaSequenceSet0, dnaSequenceSet1, dnaSequenceSet2);
 		otuSet.setDNASequenceSets(dnaSequenceSets);
 
@@ -309,5 +310,31 @@ public class OTUSetTest {
 		final Study study2 = studyProvider.get();
 		otuSet.setStudy(study2);
 		assertTrue(otuSet.isInNeedOfNewPPodVersionInfo());
+	}
+
+	public void removeDNASequenceSet() {
+		final DNASequenceSet dnaSequenceSet0 = dnaSequenceSetProvider.get();
+		final DNASequenceSet dnaSequenceSet1 = dnaSequenceSetProvider.get();
+		final DNASequenceSet dnaSequenceSet2 = dnaSequenceSetProvider.get();
+		final Set<DNASequenceSet> dnaSequenceSets = ImmutableSet.of(
+				dnaSequenceSet0, dnaSequenceSet1, dnaSequenceSet2);
+		otuSet.setDNASequenceSets(dnaSequenceSets);
+
+		boolean booleanReturned = otuSet.removeDNASequenceSet(dnaSequenceSet1);
+		assertTrue(booleanReturned);
+
+		assertEquals((Object) newHashSet(otuSet.getDNASequenceSetsIterator()),
+				(Object) ImmutableSet.of(dnaSequenceSet0, dnaSequenceSet2));
+
+	}
+
+	public void getDNASequenceSetsSize() {
+		final DNASequenceSet dnaSequenceSet0 = dnaSequenceSetProvider.get();
+		final DNASequenceSet dnaSequenceSet1 = dnaSequenceSetProvider.get();
+		final DNASequenceSet dnaSequenceSet2 = dnaSequenceSetProvider.get();
+		final Set<DNASequenceSet> dnaSequenceSets = ImmutableSet.of(
+				dnaSequenceSet0, dnaSequenceSet1, dnaSequenceSet2);
+		otuSet.setDNASequenceSets(dnaSequenceSets);
+		assertEquals(otuSet.getDNASequenceSetsSize(), dnaSequenceSets.size());
 	}
 }
