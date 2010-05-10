@@ -40,10 +40,10 @@ import edu.upenn.cis.ppod.util.IVisitor;
 @Table(name = DNASequenceSet.TABLE)
 public class DNASequenceSet extends SequenceSet<DNASequence> {
 
-	final static String TABLE = "DNA_SEQUENCE_SET";
+	public final static String TABLE = "DNA_SEQUENCE_SET";
 
-	final static String ID_COLUMN = TABLE + "_"
-									+ PersistentObject.ID_COLUMN;
+	public final static String JOIN_COLUMN = TABLE + "_"
+												+ PersistentObject.ID_COLUMN;
 
 	/**
 	 * The sequences.
@@ -52,7 +52,7 @@ public class DNASequenceSet extends SequenceSet<DNASequence> {
 	@CheckForNull
 	private OTUsToDNASequences otusToSequences;
 
-	DNASequenceSet() {}
+	protected DNASequenceSet() {}
 
 	@Inject
 	protected DNASequenceSet(final OTUsToDNASequences otusToDNASequences) {
@@ -72,7 +72,7 @@ public class DNASequenceSet extends SequenceSet<DNASequence> {
 	}
 
 	@Override
-	public DNASequenceSet clear() {
+	public DNASequenceSet clearSequences() {
 		getOTUsToSequences().clear();
 		return this;
 	}
@@ -90,9 +90,9 @@ public class DNASequenceSet extends SequenceSet<DNASequence> {
 		return getOTUsToSequences().get(otu);
 	}
 
-	@Nullable
 	@Override
-	protected DNASequence putSequenceHelper(final OTU otu,
+	@CheckForNull
+	public DNASequence putSequence(final OTU otu,
 			final DNASequence newSequence) {
 		return getOTUsToSequences().put(otu, newSequence);
 	}

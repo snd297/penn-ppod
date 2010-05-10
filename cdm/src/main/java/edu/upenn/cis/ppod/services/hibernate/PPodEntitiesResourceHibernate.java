@@ -30,7 +30,7 @@ import org.hibernate.Session;
 import com.google.inject.Inject;
 import com.google.inject.Provider;
 
-import edu.upenn.cis.ppod.model.StandardMatrix;
+import edu.upenn.cis.ppod.model.CharacterStateMatrix;
 import edu.upenn.cis.ppod.model.OTU;
 import edu.upenn.cis.ppod.model.OTUSet;
 import edu.upenn.cis.ppod.model.TreeSet;
@@ -75,7 +75,7 @@ class PPodEntitiesResourceHibernate implements
 		final List<Object> queryResults = session.createQuery(query).list();
 		final PPodEntities pPodEntities = pPodEntitiesProvider.get();
 
-		final Set<StandardMatrix> addedMatrices = newHashSet();
+		final Set<CharacterStateMatrix> addedMatrices = newHashSet();
 		final Set<TreeSet> addedTreeSets = newHashSet();
 
 // final List<Object> flattenedQueryResults = newArrayList();
@@ -104,9 +104,9 @@ class PPodEntitiesResourceHibernate implements
 				// Note that otu set may have already been added in any of the
 				// other if clauses: Hibernate identity takes care of us
 				pPodEntities.addOTUSet(otuSet);
-			} else if (queryResult instanceof StandardMatrix) {
+			} else if (queryResult instanceof CharacterStateMatrix) {
 
-				final StandardMatrix matrix = (StandardMatrix) queryResult;
+				final CharacterStateMatrix matrix = (CharacterStateMatrix) queryResult;
 
 				// Extra insurance against accidental sync with database
 				session.setReadOnly(matrix, true);
@@ -156,11 +156,11 @@ class PPodEntitiesResourceHibernate implements
 
 				final OTUSet otuSet = otuSetsItr.next();
 
-				final Set<StandardMatrix> matricesToReturn = newHashSet();
+				final Set<CharacterStateMatrix> matricesToReturn = newHashSet();
 
-				for (final Iterator<StandardMatrix> matrixItr = otuSet
-						.getStandardMatricesIterator(); matrixItr.hasNext();) {
-					final StandardMatrix matrix = matrixItr.next();
+				for (final Iterator<CharacterStateMatrix> matrixItr = otuSet
+						.getCharacterStateMatricesIterator(); matrixItr.hasNext();) {
+					final CharacterStateMatrix matrix = matrixItr.next();
 					if (addedMatrices.contains(matrix)) {
 						matricesToReturn.add(matrix);
 					}

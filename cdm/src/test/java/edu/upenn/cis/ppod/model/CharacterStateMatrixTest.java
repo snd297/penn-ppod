@@ -57,16 +57,16 @@ public class CharacterStateMatrixTest {
 	private PPodVersionInfo pPodVersionInfo;
 
 	@Inject
-	private Provider<StandardMatrix> matrixProvider;
+	private Provider<CharacterStateMatrix> matrixProvider;
 
 	@Inject
 	private Provider<Character> characterProvider;
 
 	@Inject
-	private Provider<StandardRow> rowProvider;
+	private Provider<CharacterStateRow> rowProvider;
 
 	@Inject
-	private Provider<StandardCell> cellProvider;
+	private Provider<CharacterStateCell> cellProvider;
 
 	@Inject
 	private CharacterState.IFactory stateFactory;
@@ -78,7 +78,7 @@ public class CharacterStateMatrixTest {
 	private OTU otu2;
 
 	@edu.umd.cs.findbugs.annotations.SuppressWarnings
-	private StandardMatrix matrix;
+	private CharacterStateMatrix matrix;
 
 	@BeforeMethod
 	public void beforeMethod() {
@@ -91,7 +91,7 @@ public class CharacterStateMatrixTest {
 		otuSet012 = otuSetProvider.get();
 		otuSet012.setOTUs(newArrayList(otu0, otu1, otu2));
 
-		final ImmutableSet<StandardMatrix> matrices = ImmutableSet
+		final ImmutableSet<CharacterStateMatrix> matrices = ImmutableSet
 				.of(matrix);
 
 		otuSet012.setCharacterStateMatrices(matrices);
@@ -117,30 +117,30 @@ public class CharacterStateMatrixTest {
 		matrix.setCharacters(newArrayList(character));
 
 		matrix.putRow(otu0, rowProvider.get());
-		final StandardCell cell00 = cellProvider.get();
+		final CharacterStateCell cell00 = cellProvider.get();
 		matrix.getRow(otu0).setCells(
-				Arrays.asList(new StandardCell[] { cell00 }));
+				Arrays.asList(new CharacterStateCell[] { cell00 }));
 		cell00.setSingleElement(stateFactory.create(0).setCharacter(character));
 
 		matrix.putRow(otu1, rowProvider.get());
-		final StandardCell cell10 = cellProvider.get();
+		final CharacterStateCell cell10 = cellProvider.get();
 		matrix.getRow(otu1).setCells(
-				Arrays.asList(new StandardCell[] { cell10 }));
+				Arrays.asList(new CharacterStateCell[] { cell10 }));
 
 		final CharacterState state1 = stateFactory.create(1);
 		character.putState(state1);
 		cell10.setSingleElement(state1);
 
 		matrix.putRow(otu2, rowProvider.get());
-		final StandardCell cell20 = cellProvider.get();
+		final CharacterStateCell cell20 = cellProvider.get();
 		matrix.getRow(otu2).setCells(
-				Arrays.asList(new StandardCell[] { cell20 }));
+				Arrays.asList(new CharacterStateCell[] { cell20 }));
 
 		final CharacterState state0 = stateFactory.create(0);
 		character.putState(state0);
 		cell20.setSingleElement(state0);
 
-		final List<StandardRow> originalRows = newArrayList(matrix);
+		final List<CharacterStateRow> originalRows = newArrayList(matrix);
 
 		final ImmutableList<OTU> otus210 = ImmutableList.of(otu2, otu1, otu0);
 		matrix.getOTUSet().setOTUs(otus210);
@@ -292,7 +292,7 @@ public class CharacterStateMatrixTest {
 	 * not be marked as in need of a new pPOD version info.
 	 */
 	public void setWithSameRow() {
-		final StandardRow row1 = rowProvider.get();
+		final CharacterStateRow row1 = rowProvider.get();
 		matrix.putRow(otu1, row1);
 		matrix.setPPodVersionInfo(pPodVersionInfo);
 		matrix.putRow(otu1, row1);
@@ -320,10 +320,10 @@ public class CharacterStateMatrixTest {
 	 * </ul>
 	 */
 	public void replaceRow() {
-		final StandardRow row1 = rowProvider.get();
+		final CharacterStateRow row1 = rowProvider.get();
 		matrix.putRow(otu1, row1);
-		final StandardRow row2 = rowProvider.get();
-		final StandardRow someRow = matrix.putRow(otu1, row2);
+		final CharacterStateRow row2 = rowProvider.get();
+		final CharacterStateRow someRow = matrix.putRow(otu1, row2);
 		assertEquals(someRow, row1);
 		assertNull(row1.getMatrix());
 	}
@@ -364,7 +364,7 @@ public class CharacterStateMatrixTest {
 
 	public void setColumnPPodVersionInfos() {
 		final PPodVersionInfo pPodVersionInfo = pPodVersionInfoProvider.get();
-		final StandardMatrix returnedMatrix = matrix
+		final CharacterStateMatrix returnedMatrix = matrix
 				.setColumnPPodVersionInfos(pPodVersionInfo);
 		assertSame(returnedMatrix, matrix);
 

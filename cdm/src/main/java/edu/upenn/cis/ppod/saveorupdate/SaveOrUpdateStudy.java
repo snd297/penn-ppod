@@ -34,7 +34,7 @@ import edu.upenn.cis.ppod.dao.IDAO;
 import edu.upenn.cis.ppod.dao.IDNACharacterDAO;
 import edu.upenn.cis.ppod.dao.IStudyDAO;
 import edu.upenn.cis.ppod.dao.hibernate.DAOHibernateModule;
-import edu.upenn.cis.ppod.model.StandardMatrix;
+import edu.upenn.cis.ppod.model.CharacterStateMatrix;
 import edu.upenn.cis.ppod.model.DNACharacter;
 import edu.upenn.cis.ppod.model.DNASequence;
 import edu.upenn.cis.ppod.model.DNASequenceSet;
@@ -185,13 +185,13 @@ final class SaveOrUpdateStudy implements ISaveOrUpdateStudy {
 
 			otuSetInfo.setPPodId(dbOTUSet.getPPodId());
 
-			final Set<StandardMatrix> newDbMatrices = newHashSet();
-			for (final Iterator<StandardMatrix> incomingMatrixItr = incomingOTUSet
-					.getStandardMatricesIterator(); incomingMatrixItr.hasNext();) {
-				final StandardMatrix incomingMatrix = incomingMatrixItr
+			final Set<CharacterStateMatrix> newDbMatrices = newHashSet();
+			for (final Iterator<CharacterStateMatrix> incomingMatrixItr = incomingOTUSet
+					.getCharacterStateMatricesIterator(); incomingMatrixItr.hasNext();) {
+				final CharacterStateMatrix incomingMatrix = incomingMatrixItr
 						.next();
-				StandardMatrix dbMatrix;
-				if (null == (dbMatrix = findIf(dbOTUSet.getStandardMatricesIterator(),
+				CharacterStateMatrix dbMatrix;
+				if (null == (dbMatrix = findIf(dbOTUSet.getCharacterStateMatricesIterator(),
 						compose(
 								equalTo(incomingMatrix.getPPodId()),
 								IWithPPodId.getPPodId)))) {
@@ -219,7 +219,7 @@ final class SaveOrUpdateStudy implements ISaveOrUpdateStudy {
 				if (null == findIf(incomingOTUSet.getDNASequenceSetsIterator(),
 						compose(equalTo(dbDNASequenceSet.getPPodId()),
 								IWithPPodId.getPPodId))) {
-					dbDNASequenceSet.clear();
+					dbDNASequenceSet.clearSequences();
 					dbOTUSet.removeDNASequenceSet(dbDNASequenceSet);
 				}
 			}

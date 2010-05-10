@@ -40,7 +40,7 @@ public class DNAStateMatrix extends MolecularStateMatrix {
 	 * @param otusToRows the {@code OTUsToCharacterStateRows} for this matrix.
 	 */
 	@Inject
-	protected DNAStateMatrix(final OTUsToStandardRows otusToRows) {
+	protected DNAStateMatrix(final OTUsToCharacterStateRows otusToRows) {
 		super(otusToRows);
 	}
 }

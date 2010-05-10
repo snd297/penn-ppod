@@ -17,7 +17,7 @@ package edu.upenn.cis.ppod.util;
 
 import com.google.inject.ImplementedBy;
 
-import edu.upenn.cis.ppod.model.StandardMatrix;
+import edu.upenn.cis.ppod.model.CharacterStateMatrix;
 
 /**
  * Produces {@link CharacterStateMatrix}s of the given argument.
@@ -35,6 +35,6 @@ public interface ICharacterStateMatrixFactory {
 	 * 
 	 * @return the new matrix
 	 */
-	StandardMatrix create(final StandardMatrix matrix);
+	CharacterStateMatrix create(final CharacterStateMatrix matrix);
 
 }

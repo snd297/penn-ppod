@@ -19,7 +19,7 @@ import javax.xml.bind.annotation.XmlAccessType;
 import javax.xml.bind.annotation.XmlAccessorType;
 import javax.xml.bind.annotation.XmlElement;
 
-import edu.upenn.cis.ppod.model.StandardRow;
+import edu.upenn.cis.ppod.model.CharacterStateRow;
 import edu.upenn.cis.ppod.model.OTU;
 
 /**
@@ -27,7 +27,7 @@ import edu.upenn.cis.ppod.model.OTU;
  */
 @XmlAccessorType(XmlAccessType.NONE)
 public class OTUStandardRowPair extends
-		OTUSomethingPair<StandardRow> {
+		OTUSomethingPair<CharacterStateRow> {
 	/**
 	 * For JAXB.
 	 */
@@ -35,7 +35,7 @@ public class OTUStandardRowPair extends
 
 	@XmlElement
 	@Override
-	public StandardRow getSecond() {
+	public CharacterStateRow getSecond() {
 		return super.getSecond();
 	}
 
@@ -43,13 +43,13 @@ public class OTUStandardRowPair extends
 	 * This seemingly redundant setter method added for the sake of JAXB.
 	 */
 	@Override
-	public OTUSomethingPair<StandardRow> setSecond(
-			final StandardRow row) {
-		return (OTUSomethingPair<StandardRow>) super.setSecond(row);
+	public OTUSomethingPair<CharacterStateRow> setSecond(
+			final CharacterStateRow row) {
+		return (OTUSomethingPair<CharacterStateRow>) super.setSecond(row);
 	}
 
 	public static OTUStandardRowPair of(final OTU first,
-			final StandardRow second) {
+			final CharacterStateRow second) {
 		final OTUStandardRowPair otuRowPair = new OTUStandardRowPair();
 		otuRowPair.setFirst(first);
 		otuRowPair.setSecond(second);

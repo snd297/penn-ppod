@@ -39,7 +39,7 @@ import edu.upenn.cis.ppod.TestGroupDefs;
 public class CharacterStateRowTest {
 
 	@Inject
-	private Provider<StandardMatrix> matrixProvider;
+	private Provider<CharacterStateMatrix> matrixProvider;
 
 	@Inject
 	private Provider<OTUSet> otuSetProvider;
@@ -51,14 +51,14 @@ public class CharacterStateRowTest {
 	private Provider<Character> characterProvider;
 
 	@Inject
-	private Provider<StandardRow> rowProvider;
+	private Provider<CharacterStateRow> rowProvider;
 
 	@Inject
-	private Provider<StandardCell> cellProvider;
+	private Provider<CharacterStateCell> cellProvider;
 
 	private List<OTU> rowIdxs;
 
-	private StandardMatrix matrix;
+	private CharacterStateMatrix matrix;
 
 	@BeforeMethod
 	public void beforeMethod() {
@@ -73,7 +73,7 @@ public class CharacterStateRowTest {
 	}
 
 	public void addCellToMatrixWOneCharacter() {
-		final StandardCell cell = (StandardCell) cellProvider.get()
+		final CharacterStateCell cell = (CharacterStateCell) cellProvider.get()
 				.setUnassigned();
 		matrix.getRow(matrix.getOTUSet().getOTU(0)).setCells(
 				Arrays.asList(cell));
@@ -88,7 +88,7 @@ public class CharacterStateRowTest {
 		// shouldn't really matterJust call setUnassigned so that the cell is in
 		// a legal state - it shouldn't really matter
 		rowProvider.get().setCells(
-				Arrays.asList((StandardCell) cellProvider.get()
+				Arrays.asList((CharacterStateCell) cellProvider.get()
 						.setUnassigned()));
 	}
 
@@ -104,15 +104,15 @@ public class CharacterStateRowTest {
 		// shouldn't really matterJust call setUnassigned so that the cell is in
 		// a legal state - it shouldn't really matter
 		matrix.getRow(matrix.getOTUSet().getOTU(0)).setCells(
-				Arrays.asList((StandardCell) cellProvider.get()
+				Arrays.asList((CharacterStateCell) cellProvider.get()
 						.setUnassigned()));
 	}
 
 	@Test(expectedExceptions = IllegalStateException.class)
 	public void addCellToMatrixWTooFewCharacters() {
-		final List<StandardCell> cells = newArrayList(
-				(StandardCell) cellProvider.get()
-						.setUnassigned(), (StandardCell) cellProvider
+		final List<CharacterStateCell> cells = newArrayList(
+				(CharacterStateCell) cellProvider.get()
+						.setUnassigned(), (CharacterStateCell) cellProvider
 						.get().setUnassigned());
 		matrix.getRow(matrix.getOTUSet().getOTU(0)).setCells(cells);
 	}

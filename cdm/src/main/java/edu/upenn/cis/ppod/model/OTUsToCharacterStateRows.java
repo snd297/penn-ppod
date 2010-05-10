@@ -46,11 +46,11 @@ import edu.upenn.cis.ppod.util.OTUStandardRowPair;
  */
 @Entity
 @Table(name = "OTUS_TO_CHARACTER_STATE_ROWS")
-public class OTUsToStandardRows extends OTUKeyedMap<StandardRow> {
+public class OTUsToCharacterStateRows extends OTUKeyedMap<CharacterStateRow> {
 
 	@OneToOne(fetch = FetchType.LAZY, mappedBy = "otusToRows")
 	@CheckForNull
-	private StandardMatrix matrix;
+	private CharacterStateMatrix matrix;
 
 	/**
 	 * For marshalling {@code rows}. Since a {@code Map}'s key couldn't be an
@@ -61,9 +61,9 @@ public class OTUsToStandardRows extends OTUKeyedMap<StandardRow> {
 
 	@OneToMany(cascade = CascadeType.ALL, orphanRemoval = true)
 	@MapKeyJoinColumn(name = OTU.JOIN_COLUMN)
-	private final Map<OTU, StandardRow> rows = newHashMap();
+	private final Map<OTU, CharacterStateRow> rows = newHashMap();
 
-	OTUsToStandardRows() {}
+	OTUsToCharacterStateRows() {}
 
 	/**
 	 * {@link Unmarshaller} callback.
@@ -74,15 +74,15 @@ public class OTUsToStandardRows extends OTUKeyedMap<StandardRow> {
 	@Override
 	public void afterUnmarshal(final Unmarshaller u, final Object parent) {
 		super.afterUnmarshal(u, parent);
-		setMatrix((StandardMatrix) parent);
-		for (final OTUSomethingPair<StandardRow> otuRowPair : otuRowPairs) {
+		setMatrix((CharacterStateMatrix) parent);
+		for (final OTUSomethingPair<CharacterStateRow> otuRowPair : otuRowPairs) {
 			otuRowPair.getSecond().setOTUsToRows(this);
 		}
 	}
 
 	public boolean beforeMarshal(@CheckForNull final Marshaller marshaller) {
 		getOTURowPairs().clear();
-		for (final Map.Entry<OTU, StandardRow> otuToRow : getOTUsToValues()
+		for (final Map.Entry<OTU, CharacterStateRow> otuToRow : getOTUsToValues()
 				.entrySet()) {
 			getOTURowPairs().add(
 					OTUStandardRowPair.of(otuToRow.getKey(), otuToRow
@@ -97,13 +97,13 @@ public class OTUsToStandardRows extends OTUKeyedMap<StandardRow> {
 	}
 
 	@Override
-	protected Map<OTU, StandardRow> getOTUsToValues() {
+	protected Map<OTU, CharacterStateRow> getOTUsToValues() {
 		return rows;
 	}
 
 	@Override
-	protected Set<OTUSomethingPair<StandardRow>> getOTUValuePairs() {
-		final Set<OTUSomethingPair<StandardRow>> otuValuePairs = newHashSet();
+	protected Set<OTUSomethingPair<CharacterStateRow>> getOTUValuePairs() {
+		final Set<OTUSomethingPair<CharacterStateRow>> otuValuePairs = newHashSet();
 		for (final OTUStandardRowPair otuRowPair : otuRowPairs) {
 			otuValuePairs.add(otuRowPair);
 		}
@@ -112,12 +112,12 @@ public class OTUsToStandardRows extends OTUKeyedMap<StandardRow> {
 
 	@Nullable
 	@Override
-	protected StandardMatrix getParent() {
+	protected CharacterStateMatrix getParent() {
 		return matrix;
 	}
 
 	@Override
-	public StandardRow put(final OTU otu, final StandardRow row) {
+	public CharacterStateRow put(final OTU otu, final CharacterStateRow row) {
 		checkNotNull(otu);
 		checkNotNull(row);
 		row.setOTUsToRows(this);
@@ -125,15 +125,15 @@ public class OTUsToStandardRows extends OTUKeyedMap<StandardRow> {
 	}
 
 	@Override
-	protected OTUsToStandardRows setInNeedOfNewPPodVersionInfo() {
+	protected OTUsToCharacterStateRows setInNeedOfNewPPodVersionInfo() {
 		if (matrix != null) {
 			matrix.setInNeedOfNewPPodVersionInfo();
 		}
 		return this;
 	}
 
-	protected OTUsToStandardRows setMatrix(
-			final StandardMatrix matrix) {
+	protected OTUsToCharacterStateRows setMatrix(
+			final CharacterStateMatrix matrix) {
 		checkNotNull(matrix);
 		this.matrix = matrix;
 		return this;
