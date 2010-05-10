@@ -167,6 +167,9 @@ public class CharacterStateRow extends Row<CharacterStateCell> {
 	 */
 	@Override
 	public CharacterStateRow setInNeedOfNewPPodVersionInfo() {
+		if (isInNeedOfNewPPodVersionInfo()) {
+			return this;
+		}
 		final CharacterStateMatrix matrix = getMatrix();
 		if (matrix != null) {
 			matrix.setInNeedOfNewPPodVersionInfo();

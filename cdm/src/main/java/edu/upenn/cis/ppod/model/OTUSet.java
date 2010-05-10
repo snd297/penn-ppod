@@ -490,6 +490,9 @@ public class OTUSet extends UUPPodEntityWXmlId implements Iterable<OTU> {
 	 */
 	@Override
 	public OTUSet setInNeedOfNewPPodVersionInfo() {
+		if (isInNeedOfNewPPodVersionInfo()) {
+			return this;
+		}
 		final Study study = getStudy();
 		if (study != null) {
 			study.setInNeedOfNewPPodVersionInfo();

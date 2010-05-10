@@ -30,9 +30,10 @@ public interface IOTUSetCentricEntities {
 	 * Add an OTU set to this {@link IOTUSetCentricEntities}.
 	 * 
 	 * @param otuSet to be added
-	 * @return {@code otuSet}
+	 * @return <tt>true</tt> if this set did not already contain the specified
+	 *         OTU set, {@code false} otherwise
 	 */
-	OTUSet addOTUSet(OTUSet otuSet);
+	boolean addOTUSet(OTUSet otuSet);
 
 	/**
 	 * Get an iterator over the OTU sets. {@code Iterator.remove()} will not be

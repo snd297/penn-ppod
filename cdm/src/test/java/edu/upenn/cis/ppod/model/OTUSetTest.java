@@ -218,20 +218,6 @@ public class OTUSetTest {
 		assertFalse(otuSet.getTreeSetsIterator().hasNext());
 	}
 
-	/**
-	 * Call {@code OTUSet.resetPPodVersionInfo()} when {@code
-	 * OTUSet.getPPodVersionInfo() == null} and make sure that
-	 * {@link OTUSet#getpPodVersionInfo()} stays {@code null} and that the OTU
-	 * sets's {@code Study}'s pPOD Version info is unaffected.
-	 */
-	public void resetWhenNotInNeedOfNewPPodVersionInfo() {
-		final PPodVersionInfo studyPPodVersionInfo = study.getPPodVersionInfo();
-		otuSet.unsetInNeedOfNewPPodVersionInfo();
-		otuSet.setInNeedOfNewPPodVersionInfo();
-		assertTrue(otuSet.isInNeedOfNewPPodVersionInfo());
-		assertEquals(study.getPPodVersionInfo(), studyPPodVersionInfo);
-	}
-
 	public void setDNASequenceSets() {
 		final DNASequenceSet dnaSequenceSet0 = dnaSequenceSetProvider.get();
 		final DNASequenceSet dnaSequenceSet1 = dnaSequenceSetProvider.get();
@@ -336,5 +322,22 @@ public class OTUSetTest {
 				dnaSequenceSet0, dnaSequenceSet1, dnaSequenceSet2);
 		otuSet.setDNASequenceSets(dnaSequenceSets);
 		assertEquals(otuSet.getDNASequenceSetsSize(), dnaSequenceSets.size());
+	}
+
+	public void setInNeedOfNewPPodVersion() {
+		otuSet.unsetInNeedOfNewPPodVersionInfo();
+		otuSet.getStudy().unsetInNeedOfNewPPodVersionInfo();
+
+		otuSet.setInNeedOfNewPPodVersionInfo();
+		assertTrue(otuSet.isInNeedOfNewPPodVersionInfo());
+		assertTrue(otuSet.getStudy().isInNeedOfNewPPodVersionInfo());
+
+	}
+
+	public void setInNeedOfNewPPodVersionWithNoStudy() {
+		final OTUSet otuSetWithNoStudy = otuSetProvider.get();
+		otuSetWithNoStudy.unsetInNeedOfNewPPodVersionInfo();
+		otuSetWithNoStudy.setInNeedOfNewPPodVersionInfo();
+		assertTrue(otuSetWithNoStudy.isInNeedOfNewPPodVersionInfo());
 	}
 }

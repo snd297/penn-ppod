@@ -64,9 +64,8 @@ public class PPodEntities implements IPPodEntities {
 	@XmlElement(name = "studyWideCharacter")
 	private final Set<Character> studyWideCharacters = newHashSet();
 
-	public OTUSet addOTUSet(final OTUSet otuSet) {
-		otuSets.add(otuSet);
-		return otuSet;
+	public boolean addOTUSet(final OTUSet otuSet) {
+		return otuSets.add(otuSet);
 	}
 
 	/**
@@ -88,7 +87,8 @@ public class PPodEntities implements IPPodEntities {
 					.hasNext();) {
 				final OTUSet otuSet = otuSetsItr.next();
 				for (final Iterator<CharacterStateMatrix> matrixItr = otuSet
-						.getCharacterStateMatricesIterator(); matrixItr.hasNext();) {
+						.getCharacterStateMatricesIterator(); matrixItr
+						.hasNext();) {
 					studyWideCharacters
 							.addAll(newArrayList(matrixItr.next()
 									.charactersIterator()));

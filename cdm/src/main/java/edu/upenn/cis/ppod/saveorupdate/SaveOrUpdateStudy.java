@@ -166,7 +166,8 @@ final class SaveOrUpdateStudy implements ISaveOrUpdateStudy {
 					compose(
 							equalTo(incomingOTUSet.getPPodId()),
 							IWithPPodId.getPPodId)))) {
-				dbOTUSet = dbStudy.addOTUSet(otuSetProvider.get());
+				dbOTUSet = otuSetProvider.get();
+				dbStudy.addOTUSet(dbOTUSet);
 				dbOTUSet.setPPodVersionInfo(newPPodVersionInfo
 						.getNewPPodVersionInfo());
 				dbOTUSet.setPPodId();
@@ -187,11 +188,13 @@ final class SaveOrUpdateStudy implements ISaveOrUpdateStudy {
 
 			final Set<CharacterStateMatrix> newDbMatrices = newHashSet();
 			for (final Iterator<CharacterStateMatrix> incomingMatrixItr = incomingOTUSet
-					.getCharacterStateMatricesIterator(); incomingMatrixItr.hasNext();) {
+					.getCharacterStateMatricesIterator(); incomingMatrixItr
+					.hasNext();) {
 				final CharacterStateMatrix incomingMatrix = incomingMatrixItr
 						.next();
 				CharacterStateMatrix dbMatrix;
-				if (null == (dbMatrix = findIf(dbOTUSet.getCharacterStateMatricesIterator(),
+				if (null == (dbMatrix = findIf(dbOTUSet
+						.getCharacterStateMatricesIterator(),
 						compose(
 								equalTo(incomingMatrix.getPPodId()),
 								IWithPPodId.getPPodId)))) {

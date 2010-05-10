@@ -119,6 +119,9 @@ public class OTU extends UUPPodEntityWXmlId implements ILabeled,
 	 */
 	@Override
 	public OTU setInNeedOfNewPPodVersionInfo() {
+		if (isInNeedOfNewPPodVersionInfo()) {
+			return this;
+		}
 		if (getOTUSet() != null) {
 			getOTUSet().setInNeedOfNewPPodVersionInfo();
 		}

@@ -89,11 +89,15 @@ public class Study extends UUPPodEntity implements IOTUSetCentricEntities {
 		visitor.visit(this);
 	}
 
-	public OTUSet addOTUSet(final OTUSet otuSet) {
+	public boolean addOTUSet(final OTUSet otuSet) {
 		checkNotNull(otuSet);
+		if (getOTUSets().contains(otuSet)) {
+			return false;
+		}
 		otuSets.add(otuSet);
 		otuSet.setStudy(this);
-		return otuSet;
+		setInNeedOfNewPPodVersionInfo();
+		return true;
 	}
 
 	/**
@@ -117,7 +121,8 @@ public class Study extends UUPPodEntity implements IOTUSetCentricEntities {
 					studyWideAttachments, this);
 			for (final OTUSet otuSet : getOTUSets()) {
 				for (final Iterator<CharacterStateMatrix> matrixItr = otuSet
-						.getCharacterStateMatricesIterator(); matrixItr.hasNext();) {
+						.getCharacterStateMatricesIterator(); matrixItr
+						.hasNext();) {
 					studyWideCharacters
 							.addAll(matrixItr.next().getCharacters());
 				}
