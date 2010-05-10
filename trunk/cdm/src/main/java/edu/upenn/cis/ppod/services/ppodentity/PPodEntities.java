@@ -32,7 +32,7 @@ import edu.upenn.cis.ppod.model.Attachment;
 import edu.upenn.cis.ppod.model.AttachmentNamespace;
 import edu.upenn.cis.ppod.model.AttachmentType;
 import edu.upenn.cis.ppod.model.Character;
-import edu.upenn.cis.ppod.model.StandardMatrix;
+import edu.upenn.cis.ppod.model.CharacterStateMatrix;
 import edu.upenn.cis.ppod.model.OTU;
 import edu.upenn.cis.ppod.model.OTUSet;
 import edu.upenn.cis.ppod.util.PPodEntitiesUtil;
@@ -87,8 +87,8 @@ public class PPodEntities implements IPPodEntities {
 			for (final Iterator<OTUSet> otuSetsItr = getOTUSetsIterator(); otuSetsItr
 					.hasNext();) {
 				final OTUSet otuSet = otuSetsItr.next();
-				for (final Iterator<StandardMatrix> matrixItr = otuSet
-						.getStandardMatricesIterator(); matrixItr.hasNext();) {
+				for (final Iterator<CharacterStateMatrix> matrixItr = otuSet
+						.getCharacterStateMatricesIterator(); matrixItr.hasNext();) {
 					studyWideCharacters
 							.addAll(newArrayList(matrixItr.next()
 									.charactersIterator()));

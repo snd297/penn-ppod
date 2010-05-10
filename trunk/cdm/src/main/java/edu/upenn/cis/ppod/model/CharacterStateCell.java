@@ -53,13 +53,13 @@ import edu.upenn.cis.ppod.util.IVisitor;
  * @author Sam Donnelly
  */
 @Entity
-@Table(name = StandardCell.TABLE)
-public class StandardCell extends Cell<CharacterState> {
+@Table(name = CharacterStateCell.TABLE)
+public class CharacterStateCell extends Cell<CharacterState> {
 
 	/**
 	 * The name of the table.
 	 */
-	public static final String TABLE = "STANDARD_CELL";
+	public static final String TABLE = "CHARACTER_STATE_CELL";
 
 	/**
 	 * Conventionally used as the names of foreign keys that point at the
@@ -97,9 +97,9 @@ public class StandardCell extends Cell<CharacterState> {
 	 * belongs.
 	 */
 	@ManyToOne(fetch = FetchType.LAZY)
-	@JoinColumn(name = StandardRow.JOIN_COLUMN)
+	@JoinColumn(name = CharacterStateRow.JOIN_COLUMN)
 	@CheckForNull
-	private StandardRow row;
+	private CharacterStateRow row;
 
 	/**
 	 * Used for serialization so we don't have to hit {@code states} directly
@@ -110,7 +110,7 @@ public class StandardCell extends Cell<CharacterState> {
 	private Set<CharacterState> xmlElements = null;
 
 	/** No-arg constructor for (at least) Hibernate. */
-	StandardCell() {}
+	CharacterStateCell() {}
 
 	@Override
 	public void accept(final IVisitor visitor) {
@@ -126,7 +126,7 @@ public class StandardCell extends Cell<CharacterState> {
 	@Override
 	public void afterUnmarshal(final Unmarshaller u, final Object parent) {
 		super.afterUnmarshal(u, parent);
-		row = (StandardRow) parent; // don't setRow call because it'll
+		row = (CharacterStateRow) parent; // don't setRow call because it'll
 		// reset the ppod version info
 	}
 
@@ -134,14 +134,14 @@ public class StandardCell extends Cell<CharacterState> {
 
 		checkNotNull(state);
 
-		final StandardRow row = getRow();
+		final CharacterStateRow row = getRow();
 
 		checkState(row != null && getPosition() != null,
 				"this cell has not been assigned a row");
 
 		final Integer position = getPosition();
 
-		final StandardMatrix matrix = row.getMatrix();
+		final CharacterStateMatrix matrix = row.getMatrix();
 
 		checkState(matrix != null,
 				"this cell's row has not had a matrix assigned");
@@ -186,7 +186,7 @@ public class StandardCell extends Cell<CharacterState> {
 	 */
 	@Nullable
 	@Override
-	public StandardRow getRow() {
+	public CharacterStateRow getRow() {
 		return row;
 	}
 
@@ -226,8 +226,8 @@ public class StandardCell extends Cell<CharacterState> {
 	 * 
 	 * @return this {@code CharacterStateCell}
 	 */
-	protected StandardCell setRow(
-			@CheckForNull final StandardRow row) {
+	protected CharacterStateCell setRow(
+			@CheckForNull final CharacterStateRow row) {
 		this.row = row;
 		return this;
 	}
@@ -244,7 +244,7 @@ public class StandardCell extends Cell<CharacterState> {
 	 * @return {@code state}
 	 */
 	@Override
-	protected StandardCell setTypeAndElements(final Type type,
+	protected CharacterStateCell setTypeAndElements(final Type type,
 			final Set<? extends CharacterState> states) {
 		checkNotNull(type);
 		checkNotNull(states);
@@ -309,7 +309,7 @@ public class StandardCell extends Cell<CharacterState> {
 	}
 
 	@Override
-	public StandardCell unsetRow() {
+	public CharacterStateCell unsetRow() {
 		row = null;
 		return this;
 	}

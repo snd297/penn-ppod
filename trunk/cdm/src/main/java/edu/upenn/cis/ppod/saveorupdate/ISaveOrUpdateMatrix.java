@@ -18,7 +18,7 @@ package edu.upenn.cis.ppod.saveorupdate;
 import com.google.inject.ImplementedBy;
 
 import edu.upenn.cis.ppod.dao.IDAO;
-import edu.upenn.cis.ppod.model.StandardMatrix;
+import edu.upenn.cis.ppod.model.CharacterStateMatrix;
 import edu.upenn.cis.ppod.model.DNACharacter;
 import edu.upenn.cis.ppod.modelinterfaces.INewPPodVersionInfo;
 import edu.upenn.cis.ppod.services.ppodentity.CharacterStateMatrixInfo;
@@ -58,8 +58,8 @@ public interface ISaveOrUpdateMatrix {
 	 * @param dnaCharacter the {@code DNACharacter} in a persistent state that
 	 *            should be used in the target matrix
 	 */
-	CharacterStateMatrixInfo saveOrUpdate(StandardMatrix dbMatrix,
-			StandardMatrix sourceMatrix,
+	CharacterStateMatrixInfo saveOrUpdate(CharacterStateMatrix dbMatrix,
+			CharacterStateMatrix sourceMatrix,
 			DNACharacter dnaCharacter);
 
 	static interface IFactory {

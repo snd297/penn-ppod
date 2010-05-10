@@ -22,7 +22,7 @@ import edu.upenn.cis.ppod.model.Attachment;
 import edu.upenn.cis.ppod.model.AttachmentNamespace;
 import edu.upenn.cis.ppod.model.AttachmentType;
 import edu.upenn.cis.ppod.model.Character;
-import edu.upenn.cis.ppod.model.StandardMatrix;
+import edu.upenn.cis.ppod.model.CharacterStateMatrix;
 import edu.upenn.cis.ppod.model.OTU;
 import edu.upenn.cis.ppod.model.OTUSet;
 import edu.upenn.cis.ppod.modelinterfaces.IAttachee;
@@ -74,9 +74,9 @@ public class PPodEntitiesUtil {
 						studyWideAttachmentNamespaces,
 						studyWideAttachmentTypes, studyWideAttachments, otu);
 			}
-			for (final Iterator<StandardMatrix> matrixItr = otuSet
-					.getStandardMatricesIterator(); matrixItr.hasNext();) {
-				final StandardMatrix matrix = matrixItr.next();
+			for (final Iterator<CharacterStateMatrix> matrixItr = otuSet
+					.getCharacterStateMatricesIterator(); matrixItr.hasNext();) {
+				final CharacterStateMatrix matrix = matrixItr.next();
 				extractAttachmentInfoFromAttachee(
 						studyWideAttachmentNamespaces,
 						studyWideAttachmentTypes, studyWideAttachments, matrix);

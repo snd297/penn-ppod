@@ -47,13 +47,13 @@ import edu.upenn.cis.ppod.util.IVisitor;
  * @author Sam Donnelly
  */
 @Entity
-@Table(name = StandardRow.TABLE)
-public class StandardRow extends Row<StandardCell> {
+@Table(name = CharacterStateRow.TABLE)
+public class CharacterStateRow extends Row<CharacterStateCell> {
 
 	/** This entitiy's table name. */
-	public static final String TABLE = "STANDARD_ROW";
+	public static final String TABLE = "CHARACTER_STATE_ROW";
 
-	static final String CELLS_INDEX_COLUMN = StandardCell.TABLE
+	static final String CELLS_INDEX_COLUMN = CharacterStateCell.TABLE
 												+ "_POSITION";
 
 	/**
@@ -75,16 +75,16 @@ public class StandardRow extends Row<StandardCell> {
 	 */
 	@OneToMany(mappedBy = "row", cascade = CascadeType.REMOVE)
 	@OrderBy("position")
-	private final List<StandardCell> cells = newArrayList();
+	private final List<CharacterStateCell> cells = newArrayList();
 
 	/**
 	 * This is the parent of the row. It lies in between this and the matrix.
 	 */
 	@ManyToOne(fetch = FetchType.LAZY)
 	@CheckForNull
-	private OTUsToStandardRows otusToRows;
+	private OTUsToCharacterStateRows otusToRows;
 
-	StandardRow() {}
+	CharacterStateRow() {}
 
 	@Override
 	public void accept(final IVisitor visitor) {
@@ -93,10 +93,12 @@ public class StandardRow extends Row<StandardCell> {
 	}
 
 	@Override
-	public List<StandardCell> setCells(List<? extends StandardCell> cells) {
-		final List<StandardCell> clearedCells = super.setCellsHelper(cells);
+	public List<CharacterStateCell> setCells(
+			List<? extends CharacterStateCell> cells) {
+		final List<CharacterStateCell> clearedCells = super
+				.setCellsHelper(cells);
 
-		for (final StandardCell cell : this) {
+		for (final CharacterStateCell cell : this) {
 			cell.setRow(this);
 		}
 		return clearedCells;
@@ -111,11 +113,11 @@ public class StandardRow extends Row<StandardCell> {
 	 * @throws IndexOutOfBoundsException if {@code pPodCellPosition} is out of
 	 *             bounds for this row
 	 */
-	public StandardCell getCell(@Nonnegative final int pPodCellPosition) {
+	public CharacterStateCell getCell(@Nonnegative final int pPodCellPosition) {
 		return getCells().get(pPodCellPosition);
 	}
 
-	public int getCellPosition(final StandardCell cell) {
+	public int getCellPosition(final CharacterStateCell cell) {
 		checkNotNull(cell);
 		checkArgument(this.equals(cell.getRow()),
 				"cell does not belong to this row");
@@ -129,7 +131,7 @@ public class StandardRow extends Row<StandardCell> {
 
 	@XmlElement(name = "cell")
 	@Override
-	protected List<StandardCell> getCells() {
+	protected List<CharacterStateCell> getCells() {
 		return cells;
 	}
 
@@ -142,7 +144,7 @@ public class StandardRow extends Row<StandardCell> {
 	 * @return the {@code CharacterStateMatrix} of which this is a row
 	 */
 	@Nullable
-	public StandardMatrix getMatrix() {
+	public CharacterStateMatrix getMatrix() {
 		if (otusToRows == null) {
 			return null;
 		}
@@ -154,7 +156,7 @@ public class StandardRow extends Row<StandardCell> {
 	 * 
 	 * @return an iterator over this row's cells
 	 */
-	public Iterator<StandardCell> iterator() {
+	public Iterator<CharacterStateCell> iterator() {
 		return Collections.unmodifiableList(getCells()).iterator();
 	}
 
@@ -164,8 +166,8 @@ public class StandardRow extends Row<StandardCell> {
 	 * @return this {@code CharacterStateRow}
 	 */
 	@Override
-	public StandardRow setInNeedOfNewPPodVersionInfo() {
-		final StandardMatrix matrix = getMatrix();
+	public CharacterStateRow setInNeedOfNewPPodVersionInfo() {
+		final CharacterStateMatrix matrix = getMatrix();
 		if (matrix != null) {
 			matrix.setInNeedOfNewPPodVersionInfo();
 		}
@@ -180,8 +182,8 @@ public class StandardRow extends Row<StandardCell> {
 	 * 
 	 * @return this {@code CharacterStateRow}
 	 */
-	protected StandardRow setOTUsToRows(
-			@CheckForNull final OTUsToStandardRows otusToRows) {
+	protected CharacterStateRow setOTUsToRows(
+			@CheckForNull final OTUsToCharacterStateRows otusToRows) {
 		this.otusToRows = otusToRows;
 		return this;
 	}
@@ -203,7 +205,7 @@ public class StandardRow extends Row<StandardCell> {
 		return retValue.toString();
 	}
 
-	public StandardRow unsetOTUKeyedMap() {
+	public CharacterStateRow unsetOTUKeyedMap() {
 		otusToRows = null;
 		return this;
 	}

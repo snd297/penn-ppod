@@ -19,7 +19,7 @@ import com.google.inject.Inject;
 @Entity
 @Table(name = DNAMatrix.TABLE)
 public class DNAMatrix extends MolecularMatrix<DNARow> {
-	public final static String TABLE = "DNA_MATRIX_2";
+	public final static String TABLE = "DNA_MATRIX";
 
 	@OneToOne(fetch = FetchType.LAZY, optional = false, cascade = CascadeType.ALL, orphanRemoval = true)
 	private final OTUsToDNARows otusToRows;

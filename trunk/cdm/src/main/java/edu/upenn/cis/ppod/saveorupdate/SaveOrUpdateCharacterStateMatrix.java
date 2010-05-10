@@ -43,9 +43,9 @@ import edu.upenn.cis.ppod.dao.IDAO;
 import edu.upenn.cis.ppod.model.Attachment;
 import edu.upenn.cis.ppod.model.Character;
 import edu.upenn.cis.ppod.model.CharacterState;
-import edu.upenn.cis.ppod.model.StandardCell;
-import edu.upenn.cis.ppod.model.StandardMatrix;
-import edu.upenn.cis.ppod.model.StandardRow;
+import edu.upenn.cis.ppod.model.CharacterStateCell;
+import edu.upenn.cis.ppod.model.CharacterStateMatrix;
+import edu.upenn.cis.ppod.model.CharacterStateRow;
 import edu.upenn.cis.ppod.model.DNACharacter;
 import edu.upenn.cis.ppod.model.DNAStateMatrix;
 import edu.upenn.cis.ppod.model.MolecularStateMatrix;
@@ -62,8 +62,8 @@ import edu.upenn.cis.ppod.thirdparty.injectslf4j.InjectLogger;
 final class SaveOrUpdateCharacterStateMatrix implements ISaveOrUpdateMatrix {
 
 	private final Provider<Character> characterProvider;
-	private final Provider<StandardRow> rowProvider;
-	private final Provider<StandardCell> cellProvider;
+	private final Provider<CharacterStateRow> rowProvider;
+	private final Provider<CharacterStateCell> cellProvider;
 	private final Provider<CharacterStateMatrixInfo> matrixInfoProvider;
 	// private final Provider<PPodEntityInfo> pPodEntityInfoProvider;
 	private final CharacterState.IFactory stateFactory;
@@ -79,8 +79,8 @@ final class SaveOrUpdateCharacterStateMatrix implements ISaveOrUpdateMatrix {
 	@Inject
 	SaveOrUpdateCharacterStateMatrix(
 			final Provider<Character> characterProvider,
-			final Provider<StandardRow> rowProvider,
-			final Provider<StandardCell> cellProvider,
+			final Provider<CharacterStateRow> rowProvider,
+			final Provider<CharacterStateCell> cellProvider,
 			final CharacterState.IFactory stateFactory,
 			final Provider<Attachment> attachmentProvider,
 			final Provider<CharacterStateMatrixInfo> matrixInfoProvider,
@@ -101,8 +101,8 @@ final class SaveOrUpdateCharacterStateMatrix implements ISaveOrUpdateMatrix {
 	}
 
 	public CharacterStateMatrixInfo saveOrUpdate(
-			final StandardMatrix dbMatrix,
-			final StandardMatrix sourceMatrix,
+			final CharacterStateMatrix dbMatrix,
+			final CharacterStateMatrix sourceMatrix,
 			final DNACharacter dnaCharacter) {
 		final String METHOD = "saveOrUpdate(...)";
 		logger.debug("{}: entering", METHOD);
@@ -212,16 +212,16 @@ final class SaveOrUpdateCharacterStateMatrix implements ISaveOrUpdateMatrix {
 		// So the rows have a dbMatrix id
 		dao.saveOrUpdate(dbMatrix);
 
-		final Set<StandardCell> cellsToEvict = newHashSet();
+		final Set<CharacterStateCell> cellsToEvict = newHashSet();
 		int sourceOTUPosition = -1;
 
 		for (final OTU sourceOTU : sourceMatrix.getOTUSet()) {
 			sourceOTUPosition++;
-			final StandardRow sourceRow = sourceMatrix.getRow(sourceOTU);
+			final CharacterStateRow sourceRow = sourceMatrix.getRow(sourceOTU);
 
 			final OTU dbOTU = dbMatrix.getOTUSet().getOTU(
 					sourceOTUPosition);
-			StandardRow dbRow = null;
+			CharacterStateRow dbRow = null;
 			final List<Character> characters = newArrayList(dbMatrix
 					.charactersIterator());
 
@@ -243,15 +243,15 @@ final class SaveOrUpdateCharacterStateMatrix implements ISaveOrUpdateMatrix {
 // "existing row has no pPOD version number");
 // }
 
-			final ImmutableList<StandardCell> originalDbCells = ImmutableList
+			final ImmutableList<CharacterStateCell> originalDbCells = ImmutableList
 					.copyOf(dbRow.iterator());
-			final List<StandardCell> newDbCells = newArrayListWithCapacity(sourceRow
+			final List<CharacterStateCell> newDbCells = newArrayListWithCapacity(sourceRow
 					.getCellsSize());
 
 			// First we fill with empty cells
 			for (int newCellPosition = 0; newCellPosition < dbMatrix
 					.getColumnsSize(); newCellPosition++) {
-				StandardCell dbCell;
+				CharacterStateCell dbCell;
 				if (newRow
 						|| null == newCharPositionsToOriginalCharPositions
 								.get(newCellPosition)) {
@@ -266,18 +266,18 @@ final class SaveOrUpdateCharacterStateMatrix implements ISaveOrUpdateMatrix {
 				newDbCells.add(dbCell);
 			}
 
-			final List<StandardCell> clearedCells = dbRow
+			final List<CharacterStateCell> clearedCells = dbRow
 					.setCells(newDbCells);
 
-			for (final StandardCell clearedCell : clearedCells) {
+			for (final CharacterStateCell clearedCell : clearedCells) {
 				dao.delete(clearedCell);
 			}
 
 			int targetCellPosition = -1;
-			for (final StandardCell dbCell : dbRow) {
+			for (final CharacterStateCell dbCell : dbRow) {
 				targetCellPosition++;
 
-				final StandardCell sourceCell = sourceRow.getCell(
+				final CharacterStateCell sourceCell = sourceRow.getCell(
 						targetCellPosition);
 
 				final Set<CharacterState> newTargetStates = newHashSet();
@@ -368,9 +368,9 @@ final class SaveOrUpdateCharacterStateMatrix implements ISaveOrUpdateMatrix {
 	}
 
 	private void fillInCellInfo(final CharacterStateMatrixInfo matrixInfo,
-			final StandardRow row, final int rowPosition) {
+			final CharacterStateRow row, final int rowPosition) {
 		int cellPosition = -1;
-		for (final StandardCell cell : row) {
+		for (final CharacterStateCell cell : row) {
 			cellPosition++;
 			matrixInfo.setCellPPodIdAndVersion(rowPosition,
 					cellPosition,

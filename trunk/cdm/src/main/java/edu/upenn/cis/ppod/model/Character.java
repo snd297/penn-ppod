@@ -77,7 +77,7 @@ public class Character extends UUPPodEntityWXmlId {
 	 * it is many-to-one.
 	 */
 	@ManyToMany(mappedBy = "characters")
-	private final Set<StandardMatrix> matrices = newHashSet();
+	private final Set<CharacterStateMatrix> matrices = newHashSet();
 
 	/**
 	 * The states that this character can have. For example, 0->"absent",
@@ -120,7 +120,7 @@ public class Character extends UUPPodEntityWXmlId {
 	 *        different matrix - it's fine to keep calling this method with the
 	 *        same matrix
 	 */
-	protected boolean addMatrix(final StandardMatrix matrix) {
+	protected boolean addMatrix(final CharacterStateMatrix matrix) {
 		Preconditions.checkNotNull(matrix);
 		checkState(getMatrices().size() == 0
 					|| getOnlyElement(getMatrices()).equals(matrix),
@@ -167,7 +167,7 @@ public class Character extends UUPPodEntityWXmlId {
 	 * 
 	 * @return the matrices to which this character belongs
 	 */
-	public Set<StandardMatrix> getMatrices() {
+	public Set<CharacterStateMatrix> getMatrices() {
 		return matrices;
 	}
 
@@ -232,13 +232,13 @@ public class Character extends UUPPodEntityWXmlId {
 	 * @return <code>true</code> if <code>matrix</code> was there to be removed,
 	 *         <code>false</code> otherwise
 	 */
-	protected boolean removeMatrix(final StandardMatrix matrix) {
+	protected boolean removeMatrix(final CharacterStateMatrix matrix) {
 		return matrices.remove(matrix);
 	}
 
 	@Override
 	public Character setInNeedOfNewPPodVersionInfo() {
-		for (final StandardMatrix matrix : matrices) {
+		for (final CharacterStateMatrix matrix : matrices) {
 			matrix.setInNeedOfNewPPodVersionInfo();
 		}
 		super.setInNeedOfNewPPodVersionInfo();

@@ -81,7 +81,7 @@ public abstract class SequenceSet<S extends Sequence>
 	 * 
 	 * @return this
 	 */
-	public abstract SequenceSet<S> clear();
+	public abstract SequenceSet<S> clearSequences();
 
 	@XmlAttribute(name = "label")
 	public String getLabel() {
@@ -135,14 +135,7 @@ public abstract class SequenceSet<S extends Sequence>
 	 * @return
 	 */
 	@CheckForNull
-	public S putSequence(final OTU otu, final S sequence) {
-		checkNotNull(otu);
-		checkNotNull(sequence);
-		return putSequenceHelper(otu, sequence);
-	}
-
-	@Nullable
-	protected abstract S putSequenceHelper(final OTU otu, final S newSequence);
+	public abstract S putSequence(final OTU otu, final S newSequence);
 
 	@Override
 	public SequenceSet<S> setInNeedOfNewPPodVersionInfo() {
@@ -170,14 +163,14 @@ public abstract class SequenceSet<S extends Sequence>
 	 * A {@code null} value for {@code newOTUSet} indicates we're severing the
 	 * relationship.
 	 * 
-	 * @param newOTUSet the OTU set that will own this sequence set
+	 * @param otuSet the OTU set that will own this sequence set
 	 * 
 	 * @return this sequence set
 	 */
 	public SequenceSet<S> setOTUSet(
-			@CheckForNull final OTUSet newOTUSet) {
-		this.otuSet = newOTUSet;
-		setOTUsInOTUsToSequences(newOTUSet);
+			@CheckForNull final OTUSet otuSet) {
+		this.otuSet = otuSet;
+		setOTUsInOTUsToSequences(otuSet);
 		return this;
 	}
 

@@ -20,9 +20,9 @@ import edu.upenn.cis.ppod.model.AttachmentNamespace;
 import edu.upenn.cis.ppod.model.AttachmentType;
 import edu.upenn.cis.ppod.model.Character;
 import edu.upenn.cis.ppod.model.CharacterState;
-import edu.upenn.cis.ppod.model.StandardCell;
-import edu.upenn.cis.ppod.model.StandardMatrix;
-import edu.upenn.cis.ppod.model.StandardRow;
+import edu.upenn.cis.ppod.model.CharacterStateCell;
+import edu.upenn.cis.ppod.model.CharacterStateMatrix;
+import edu.upenn.cis.ppod.model.CharacterStateRow;
 import edu.upenn.cis.ppod.model.DNASequence;
 import edu.upenn.cis.ppod.model.DNASequenceSet;
 import edu.upenn.cis.ppod.model.OTU;
@@ -89,7 +89,7 @@ public abstract class EmptyVisitor implements IVisitor {
 	 * 
 	 * @param cell ignored
 	 */
-	public void visit(final StandardCell cell) {
+	public void visit(final CharacterStateCell cell) {
 
 	}
 
@@ -98,7 +98,7 @@ public abstract class EmptyVisitor implements IVisitor {
 	 * 
 	 * @param matrix ignored
 	 */
-	public void visit(final StandardMatrix matrix) {
+	public void visit(final CharacterStateMatrix matrix) {
 
 	}
 
@@ -107,7 +107,7 @@ public abstract class EmptyVisitor implements IVisitor {
 	 * 
 	 * @param row ignored
 	 */
-	public void visit(final StandardRow row) {
+	public void visit(final CharacterStateRow row) {
 
 	}
 

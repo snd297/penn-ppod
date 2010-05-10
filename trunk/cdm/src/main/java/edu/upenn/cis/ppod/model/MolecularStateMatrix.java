@@ -25,7 +25,7 @@ import java.util.List;
 /**
  * @author Sam Donnelly
  */
-public abstract class MolecularStateMatrix extends StandardMatrix {
+public abstract class MolecularStateMatrix extends CharacterStateMatrix {
 
 	/**
 	 * Default constructor.
@@ -38,7 +38,7 @@ public abstract class MolecularStateMatrix extends StandardMatrix {
 	 * 
 	 * @param otusToRows the {@code OTUsToCharacterStateRows} for this matrix.
 	 */
-	protected MolecularStateMatrix(final OTUsToStandardRows otusToRows) {
+	protected MolecularStateMatrix(final OTUsToCharacterStateRows otusToRows) {
 		super(otusToRows);
 	}
 

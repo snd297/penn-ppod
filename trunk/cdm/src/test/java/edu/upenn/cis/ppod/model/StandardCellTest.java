@@ -47,22 +47,22 @@ import edu.upenn.cis.ppod.TestGroupDefs;
 public class StandardCellTest {
 
 	@Nullable
-	private StandardCell cell;
+	private CharacterStateCell cell;
 
 	@Inject
-	private Provider<StandardCell> cellProvider;
+	private Provider<CharacterStateCell> cellProvider;
 
 	@Inject
-	private CellTest<StandardMatrix, StandardRow, StandardCell, CharacterState> cellTest;
+	private CellTest<CharacterStateMatrix, CharacterStateRow, CharacterStateCell, CharacterState> cellTest;
 
 	@Inject
 	private Provider<Character> characterProvider;
 
 	@Nullable
-	private StandardMatrix matrix;
+	private CharacterStateMatrix matrix;
 
 	@Inject
-	private Provider<StandardMatrix> matrixProvider;
+	private Provider<CharacterStateMatrix> matrixProvider;
 
 	@Inject
 	private Provider<OTU> otuProvider;
@@ -71,7 +71,7 @@ public class StandardCellTest {
 	private Provider<OTUSet> otuSetProvider;
 
 	@Inject
-	private Provider<StandardRow> rowProvider;
+	private Provider<CharacterStateRow> rowProvider;
 
 	@Nullable
 	private CharacterState state00;
@@ -138,7 +138,7 @@ public class StandardCellTest {
 		final Character character0 = characterProvider.get().setLabel(
 				"character0");
 		matrix.setCharacters(newArrayList(character0));
-		final StandardRow row0 = rowProvider.get();
+		final CharacterStateRow row0 = rowProvider.get();
 		matrix.putRow(matrix.getOTUSet().getOTU(0), row0);
 
 		states = newHashSet();

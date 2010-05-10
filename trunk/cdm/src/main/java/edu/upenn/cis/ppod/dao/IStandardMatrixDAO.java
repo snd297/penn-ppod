@@ -17,7 +17,7 @@ package edu.upenn.cis.ppod.dao;
 
 import java.util.List;
 
-import edu.upenn.cis.ppod.model.StandardMatrix;
+import edu.upenn.cis.ppod.model.CharacterStateMatrix;
 
 /**
  * A {@link CharacterStateMatrix} DAO.
@@ -25,7 +25,7 @@ import edu.upenn.cis.ppod.model.StandardMatrix;
  * @author Sam Donnelly
  */
 public interface IStandardMatrixDAO extends
-		IDAO<StandardMatrix, Long> {
+		IDAO<CharacterStateMatrix, Long> {
 
 	List<Object[]> getCharacterInfosByMatrixIdAndMinPPodVersion(Long matrixId,
 			Long minPPodVersion);

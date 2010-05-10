@@ -20,9 +20,9 @@ import edu.upenn.cis.ppod.model.AttachmentNamespace;
 import edu.upenn.cis.ppod.model.AttachmentType;
 import edu.upenn.cis.ppod.model.Character;
 import edu.upenn.cis.ppod.model.CharacterState;
-import edu.upenn.cis.ppod.model.StandardCell;
-import edu.upenn.cis.ppod.model.StandardMatrix;
-import edu.upenn.cis.ppod.model.StandardRow;
+import edu.upenn.cis.ppod.model.CharacterStateCell;
+import edu.upenn.cis.ppod.model.CharacterStateMatrix;
+import edu.upenn.cis.ppod.model.CharacterStateRow;
 import edu.upenn.cis.ppod.model.DNASequence;
 import edu.upenn.cis.ppod.model.DNASequenceSet;
 import edu.upenn.cis.ppod.model.OTU;
@@ -77,11 +77,11 @@ public interface IVisitor {
 	 */
 	void visit(CharacterState characterState);
 
-	void visit(StandardCell cell);
+	void visit(CharacterStateCell cell);
 
-	void visit(StandardMatrix matrix);
+	void visit(CharacterStateMatrix matrix);
 
-	void visit(StandardRow row);
+	void visit(CharacterStateRow row);
 
 	void visit(OTU otu);
 

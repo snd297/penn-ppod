@@ -62,8 +62,8 @@ import edu.upenn.cis.ppod.util.IVisitor;
  */
 @XmlSeeAlso( { DNAStateMatrix.class })
 @Entity
-@Table(name = StandardMatrix.TABLE)
-public class StandardMatrix extends Matrix<StandardRow> {
+@Table(name = CharacterStateMatrix.TABLE)
+public class CharacterStateMatrix extends Matrix<CharacterStateRow> {
 
 	public static final String CHARACTER_IDX_COLUMN = Character.TABLE + "_IDX";
 
@@ -74,7 +74,7 @@ public class StandardMatrix extends Matrix<StandardRow> {
 														+ "_POSITION";
 
 	/** This entity's table name. */
-	public static final String TABLE = "STANDARD_MATRIX";
+	public static final String TABLE = "CHARACTER_STATE_MATRIX";
 
 	/**
 	 * Name for foreign key columns that point at this table.
@@ -108,10 +108,10 @@ public class StandardMatrix extends Matrix<StandardRow> {
 	private final Map<Character, Integer> charactersToPositions = newHashMap();
 
 	@OneToOne(fetch = FetchType.LAZY, optional = false, cascade = CascadeType.ALL, orphanRemoval = true)
-	private OTUsToStandardRows otusToRows;
+	private OTUsToCharacterStateRows otusToRows;
 
 	/** No-arg constructor for (at least) Hibernate. */
-	protected StandardMatrix() {}
+	protected CharacterStateMatrix() {}
 
 	/**
 	 * This constructor is {@code protected} to allow for injected {@code
@@ -121,7 +121,7 @@ public class StandardMatrix extends Matrix<StandardRow> {
 	 * @param otusToRows the {@code OTUsToCharacterStateRows} for this matrix.
 	 */
 	@Inject
-	protected StandardMatrix(final OTUsToStandardRows otusToRows) {
+	protected CharacterStateMatrix(final OTUsToCharacterStateRows otusToRows) {
 		this.otusToRows = otusToRows;
 		this.otusToRows.setMatrix(this);
 	}
@@ -133,7 +133,7 @@ public class StandardMatrix extends Matrix<StandardRow> {
 		}
 		getOTUsToRows().accept(visitor);
 
-		for (final StandardRow row : getOTUsToRows()
+		for (final CharacterStateRow row : getOTUsToRows()
 				.getOTUsToValues().values()) {
 			if (row != null) {
 				row.accept(visitor);
@@ -318,7 +318,7 @@ public class StandardMatrix extends Matrix<StandardRow> {
 	 */
 	@XmlElement(name = "otusToRows")
 	@Override
-	protected OTUsToStandardRows getOTUsToRows() {
+	protected OTUsToCharacterStateRows getOTUsToRows() {
 		return otusToRows;
 	}
 
@@ -337,7 +337,7 @@ public class StandardMatrix extends Matrix<StandardRow> {
 	 * 
 	 * @return an iterator over this matrix's rows
 	 */
-	public Iterator<StandardRow> iterator() {
+	public Iterator<CharacterStateRow> iterator() {
 		return getOTUsToRows().getValuesInOTUSetOrder().iterator();
 	}
 
@@ -438,7 +438,7 @@ public class StandardMatrix extends Matrix<StandardRow> {
 	 * @throw IllegalArgumentException if {@code pos >=
 	 *        getColumnPPodVersionInfos().size()}
 	 */
-	public StandardMatrix setColumnPPodVersionInfo(final int pos,
+	public CharacterStateMatrix setColumnPPodVersionInfo(final int pos,
 			final PPodVersionInfo pPodVersionInfo) {
 		checkNotNull(pPodVersionInfo);
 		checkArgument(pos < getColumnPPodVersionInfos().size(),
@@ -454,7 +454,7 @@ public class StandardMatrix extends Matrix<StandardRow> {
 	 * 
 	 * @return this
 	 */
-	public StandardMatrix setColumnPPodVersionInfos(
+	public CharacterStateMatrix setColumnPPodVersionInfos(
 			final PPodVersionInfo pPodVersionInfo) {
 		for (int pos = 0; pos < getColumnPPodVersionInfos().size(); pos++) {
 			setColumnPPodVersionInfo(pos, pPodVersionInfo);
@@ -480,7 +480,7 @@ public class StandardMatrix extends Matrix<StandardRow> {
 	 * @return this
 	 */
 	@Override
-	public StandardMatrix setOTUSet(
+	public CharacterStateMatrix setOTUSet(
 			@CheckForNull final OTUSet otuSet) {
 		super.setOTUSet(otuSet);
 		getOTUsToRows().setOTUs();
@@ -498,8 +498,8 @@ public class StandardMatrix extends Matrix<StandardRow> {
 	 */
 	@edu.umd.cs.findbugs.annotations.SuppressWarnings
 	@SuppressWarnings("unused")
-	private StandardMatrix setOTUsToRows(
-			final OTUsToStandardRows otusToRows) {
+	private CharacterStateMatrix setOTUsToRows(
+			final OTUsToCharacterStateRows otusToRows) {
 		checkNotNull(otusToRows);
 		this.otusToRows = otusToRows;
 		return this;

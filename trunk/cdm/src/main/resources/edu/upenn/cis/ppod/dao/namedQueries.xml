@@ -16,7 +16,7 @@
 	</named-query>
 
 	<named-query name="Study-getByPPodIdEager">
-		<query>select s from Study s left join fetch s.otuSets o left join fetch o.standardMatrices m left join fetch m.otusToRows where s.pPodId=:pPodId</query>
+		<query>select s from Study s left join fetch s.otuSets o left join fetch o.characterStateMatrices m left join fetch m.otusToRows where s.pPodId=:pPodId</query>
 		<hint name="org.hibernate.comment" value="Get a Study given its pPOD ID." />
 	</named-query>
 
@@ -49,20 +49,20 @@
 
 	<named-query name="OTUSet-getMatrixInfosByOTUSetPPodIdAndMinPPodVersion">
 		<query>select m.id, m.pPodId, m.pPodVersionInfo.pPodVersion 
-		       from OTUSet os join os.standardMatrices m 
+		       from OTUSet os join os.characterStateMatrices m 
 		       where os.pPodId=:otuSetPPodId and m.pPodVersionInfo.pPodVersion >= :minPPodVersion</query>
 	</named-query>
 
 
-	<named-query name="StandardMatrix-getPPodVersionById">
-		<query>select m.pPodVersionInfo.pPodVersion from StandardMatrix m where m.id=:id</query>
+	<named-query name="CharacterStateMatrix-getPPodVersionById">
+		<query>select m.pPodVersionInfo.pPodVersion from CharacterStateMatrix m where m.id=:id</query>
 		<hint name="org.hibernate.comment" value="Get a matrix pPOD	version given its id" />
 	</named-query>
 
 	<named-query
-		name="StandardMatrix-getCharacterInfosByMatrixIdAndMinPPodVersion">
+		name="CharacterStateMatrix-getCharacterInfosByMatrixIdAndMinPPodVersion">
 		<query>select pc.id, pc.pPodId, pc.pPodVersionInfo.pPodVersion 
-		       from StandardMatrix m join m.characters pc 
+		       from CharacterStateMatrix m join m.characters pc 
 		       where m.id=:matrixId and pc.pPodVersionInfo.pPodVersion >= :minPPodVersion</query>
 	</named-query>
 	<!--
