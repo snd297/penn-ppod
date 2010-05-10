@@ -126,9 +126,6 @@ public class TreeSet extends UUPPodEntityWXmlId implements
 
 	@Override
 	public TreeSet setInNeedOfNewPPodVersionInfo() {
-		if (isInNeedOfNewPPodVersionInfo()) {
-			return this;
-		}
 		if (getOTUSet() != null) {
 			getOTUSet().setInNeedOfNewPPodVersionInfo();
 		}

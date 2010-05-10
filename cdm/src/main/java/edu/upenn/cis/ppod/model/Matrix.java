@@ -214,9 +214,6 @@ public abstract class Matrix<R extends Row<?>> extends UUPPodEntityWXmlId
 	 */
 	@Override
 	public Matrix<R> setInNeedOfNewPPodVersionInfo() {
-		if (isInNeedOfNewPPodVersionInfo()) {
-			return this;
-		}
 		if (getOTUSet() != null) {
 			getOTUSet().setInNeedOfNewPPodVersionInfo();
 		}
