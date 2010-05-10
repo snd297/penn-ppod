@@ -261,6 +261,9 @@ public abstract class Cell<E> extends PPodEntity implements Iterable<E> {
 
 	@Override
 	public Cell<E> setInNeedOfNewPPodVersionInfo() {
+		if (isInNeedOfNewPPodVersionInfo()) {
+			return this;
+		}
 		final IRow row = getRow();
 		if (row != null) {
 			row.setInNeedOfNewPPodVersionInfo();

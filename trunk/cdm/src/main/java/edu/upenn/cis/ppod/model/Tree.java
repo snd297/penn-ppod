@@ -103,6 +103,9 @@ public class Tree extends UUPPodEntity {
 
 	@Override
 	public Tree setInNeedOfNewPPodVersionInfo() {
+		if (isInNeedOfNewPPodVersionInfo()) {
+			return this;
+		}
 		if (treeSet != null) {
 			treeSet.setInNeedOfNewPPodVersionInfo();
 		}
