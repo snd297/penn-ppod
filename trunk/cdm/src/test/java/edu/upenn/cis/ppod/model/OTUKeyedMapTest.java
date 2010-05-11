@@ -1,6 +1,7 @@
 package edu.upenn.cis.ppod.model;
 
 import static org.testng.Assert.assertEquals;
+import static org.testng.Assert.assertTrue;
 
 import java.util.List;
 
@@ -60,11 +61,40 @@ public class OTUKeyedMapTest {
 		assertEquals(dnaRows.get(2), row2);
 	}
 
-	@Test(groups = TestGroupDefs.SINGLE, expectedExceptions = IllegalStateException.class)
+	@Test(expectedExceptions = IllegalStateException.class)
 	public void getValuesInOTUSetOrderWithNoParentSet() {
 
 		final OTUsToDNARows otusToRows = otusToDNARowsProvider.get();
 		otusToRows.getValuesInOTUSetOrder();
+
+	}
+
+	public void clear() {
+		final DNAMatrix matrix = dnaMatrixProvider.get();
+		final OTUSet otuSet = matrix.setOTUSet(otuSetProvider.get())
+				.getOTUSet();
+
+		final OTU otu0 = otuSet.addOTU(otuProvider.get().setLabel("otu0"));
+		final OTU otu1 = otuSet.addOTU(otuProvider.get().setLabel("otu1"));
+		final OTU otu2 = otuSet.addOTU(otuProvider.get().setLabel("otu2"));
+
+		final DNARow row0 = dnaRowProvider.get();
+		final DNARow row1 = dnaRowProvider.get();
+		final DNARow row2 = dnaRowProvider.get();
+
+		final OTUsToDNARows otusToRows = otusToDNARowsProvider.get();
+		otusToRows.setMatrix(matrix);
+
+		otusToRows.put(otu0, row0);
+		otusToRows.put(otu1, row1);
+		otusToRows.put(otu2, row2);
+
+		matrix.unsetInNeedOfNewPPodVersionInfo();
+
+		otusToRows.clear();
+
+		assertEquals(otusToRows.getOTUsToValues().size(), 0);
+		assertTrue(matrix.isInNeedOfNewPPodVersionInfo());
 
 	}
 }
