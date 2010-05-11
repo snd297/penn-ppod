@@ -1,6 +1,7 @@
 package edu.upenn.cis.ppod.model;
 
 import static org.testng.Assert.assertEquals;
+import static org.testng.Assert.assertFalse;
 import static org.testng.Assert.assertTrue;
 
 import java.util.List;
@@ -96,5 +97,19 @@ public class OTUKeyedMapTest {
 		assertEquals(otusToRows.getOTUsToValues().size(), 0);
 		assertTrue(matrix.isInNeedOfNewPPodVersionInfo());
 
+	}
+
+	/**
+	 * If it's empty and we call clear, that should have no affect on
+	 * {@link Matrix#isInNeedOfNewPPodVersionInfo()}
+	 */
+	public void clearWhileEmpty() {
+		final DNAMatrix matrix = dnaMatrixProvider.get();
+		final OTUsToDNARows otusToRows = otusToDNARowsProvider.get();
+		otusToRows.setMatrix(matrix);
+		matrix.unsetInNeedOfNewPPodVersionInfo();
+		otusToRows.clear();
+
+		assertFalse(matrix.isInNeedOfNewPPodVersionInfo());
 	}
 }

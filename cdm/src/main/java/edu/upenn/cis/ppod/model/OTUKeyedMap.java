@@ -125,6 +125,8 @@ public abstract class OTUKeyedMap<V extends IOTUKeyedMapValue>
 	 *         can also indicate that the map previously associated
 	 *         <tt>null</tt> with <tt>key</tt>.)
 	 * 
+	 * @throws IllegalStateException if {@link #getParent() == null}
+	 * @throws IllegalStateException if {@code getParent().getOTUSet() == null}
 	 * @throws IllegalArgumentException if {@code otu} does not belong to
 	 *             {@code parent.getOTUSet()}
 	 * @throws IllegalArgumentException if there's already a value {@code
@@ -156,6 +158,30 @@ public abstract class OTUKeyedMap<V extends IOTUKeyedMapValue>
 		return originalValue;
 	}
 
+	/**
+	 * Associates {@code value} with {@code key} in this map. If the map
+	 * previously contained a mapping for {@code key}, the original value is
+	 * replaced by the specified value.
+	 * <p>
+	 * This method calls {@code getParent().setInNeedOfNewPPodVersionInfo()} if
+	 * this method changes anything
+	 * 
+	 * @param key key
+	 * @param newValue new value for {@code key}
+	 * @param parent the owning object
+	 * 
+	 * @return the previous value associated with <tt>otu</tt>, or <tt>null</tt>
+	 *         if there was no mapping for <tt>otu</tt>. (A <tt>null</tt> return
+	 *         can also indicate that the map previously associated
+	 *         <tt>null</tt> with <tt>key</tt>.)
+	 * 
+	 * @throws IllegalStateException if {@link #getParent() == null}
+	 * @throws IllegalStateException if {@code getParent().getOTUSet() == null}
+	 * @throws IllegalArgumentException if {@code otu} does not belong to
+	 *             {@code parent.getOTUSet()}
+	 * @throws IllegalArgumentException if there's already a value {@code
+	 *             .equals} to {@code newT}
+	 */
 	public abstract V put(final OTU key, final V value);
 
 	protected abstract OTUKeyedMap<V> setInNeedOfNewPPodVersionInfo();
