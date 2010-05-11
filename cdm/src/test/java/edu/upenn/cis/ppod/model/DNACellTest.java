@@ -150,7 +150,6 @@ public class DNACellTest {
 		assertTrue(dnaCell.isInNeedOfNewPPodVersionInfo());
 	}
 
-	@Test(groups = TestGroupDefs.SINGLE)
 	public void setTypeAndStatesSingleWithValuesItAlreadyHad() {
 		final DNACell dnaCell = dnaCellProvider.get();
 
