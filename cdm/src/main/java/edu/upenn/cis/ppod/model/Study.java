@@ -89,15 +89,15 @@ public class Study extends UUPPodEntity implements IOTUSetCentricEntities {
 		visitor.visit(this);
 	}
 
-	public boolean addOTUSet(final OTUSet otuSet) {
+	public OTUSet addOTUSet(final OTUSet otuSet) {
 		checkNotNull(otuSet);
 		if (getOTUSets().contains(otuSet)) {
-			return false;
+			return otuSet;
 		}
 		otuSets.add(otuSet);
 		otuSet.setStudy(this);
 		setInNeedOfNewPPodVersionInfo();
-		return true;
+		return otuSet;
 	}
 
 	/**

@@ -30,7 +30,7 @@ import edu.upenn.cis.ppod.TestGroupDefs;
  * 
  * @author Sam Donnelly
  */
-@Test(groups = { TestGroupDefs.INIT, TestGroupDefs.FAST })
+@Test(groups = TestGroupDefs.FAST, dependsOnGroups = TestGroupDefs.INIT)
 public class OTUsToDNASequencesTest {
 
 	@Inject

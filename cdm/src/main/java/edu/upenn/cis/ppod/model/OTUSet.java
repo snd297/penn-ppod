@@ -77,6 +77,9 @@ public class OTUSet extends UUPPodEntityWXmlId implements Iterable<OTU> {
 	/** The column that stores the label. */
 	public static final String LABEL_COLUMN = "LABEL";
 
+	@OneToMany(mappedBy = "otuSet", cascade = CascadeType.ALL, orphanRemoval = true)
+	private final Set<CharacterStateMatrix> characterStateMatrices = newHashSet();
+
 	/** Free-form description. */
 	@Column(name = DESCRIPTION_COLUMN, nullable = true)
 	@CheckForNull
@@ -103,9 +106,6 @@ public class OTUSet extends UUPPodEntityWXmlId implements Iterable<OTU> {
 	@JoinColumn(name = JOIN_COLUMN, nullable = false)
 	private final List<OTU> otus = newArrayList();
 
-	@OneToMany(mappedBy = "otuSet", cascade = CascadeType.ALL, orphanRemoval = true)
-	private final Set<CharacterStateMatrix> characterStateMatrices = newHashSet();
-
 	@ManyToOne(fetch = FetchType.LAZY)
 	@JoinColumn(name = Study.JOIN_COLUMN)
 	@CheckForNull
@@ -115,7 +115,7 @@ public class OTUSet extends UUPPodEntityWXmlId implements Iterable<OTU> {
 	@OneToMany(mappedBy = "otuSet", cascade = CascadeType.ALL, orphanRemoval = true)
 	private final Set<TreeSet> treeSets = newHashSet();
 
-	OTUSet() {}
+	protected OTUSet() {}
 
 	@Override
 	public void accept(final IVisitor visitor) {
@@ -125,6 +125,25 @@ public class OTUSet extends UUPPodEntityWXmlId implements Iterable<OTU> {
 		}
 		super.accept(visitor);
 		visitor.visit(this);
+	}
+
+	/**
+	 * Add {@code matrix} to this {@code OTUSet}.
+	 * <p>
+	 * Also handles the {@code CharacterStateMatrix->OTUSet} side of the
+	 * relationship.
+	 * 
+	 * @param matrix matrix we're adding
+	 * 
+	 * @return {@code matrix}
+	 */
+	public CharacterStateMatrix addCharacterStateMatrix(
+			final CharacterStateMatrix matrix) {
+		checkNotNull(matrix);
+		getCharacterStateMatrices().add(matrix);
+		matrix.setOTUSet(this);
+		setInNeedOfNewPPodVersionInfo();
+		return matrix;
 	}
 
 	/**
@@ -191,25 +210,6 @@ public class OTUSet extends UUPPodEntityWXmlId implements Iterable<OTU> {
 		return otu;
 	}
 
-	/**
-	 * Add {@code matrix} to this {@code OTUSet}.
-	 * <p>
-	 * Also handles the {@code CharacterStateMatrix->OTUSet} side of the
-	 * relationship.
-	 * 
-	 * @param matrix matrix we're adding
-	 * 
-	 * @return {@code matrix}
-	 */
-	public CharacterStateMatrix addCharacterStateMatrix(
-			final CharacterStateMatrix matrix) {
-		checkNotNull(matrix);
-		getCharacterStateMatrices().add(matrix);
-		matrix.setOTUSet(this);
-		setInNeedOfNewPPodVersionInfo();
-		return matrix;
-	}
-
 	public OTUSet addTreeSet(final TreeSet newTreeSet) {
 		checkNotNull(newTreeSet);
 		getTreeSets().add(newTreeSet);
@@ -237,7 +237,27 @@ public class OTUSet extends UUPPodEntityWXmlId implements Iterable<OTU> {
 		}
 	}
 
-	private Set<IPPodVersionedWithOTUSet> getChildren() {
+	@XmlElement(name = "matrix")
+	protected Set<CharacterStateMatrix> getCharacterStateMatrices() {
+		return characterStateMatrices;
+	}
+
+	public Iterator<CharacterStateMatrix> getCharacterStateMatricesIterator() {
+		return Collections.unmodifiableSet(getCharacterStateMatrices())
+				.iterator();
+	}
+
+	/**
+	 * Get the number of {@code CharacterStateMatrix}s in this {@code OTUSet}.
+	 * 
+	 * @return the number of {@code CharacterStateMatrix}s in this {@code
+	 *         OTUSet}
+	 */
+	public int getCharacterStateMatricesSize() {
+		return getCharacterStateMatrices().size();
+	}
+
+	protected Set<IPPodVersionedWithOTUSet> getChildren() {
 		final Set<IPPodVersionedWithOTUSet> children = newHashSet();
 		children.addAll(getOTUs());
 		children.addAll(getCharacterStateMatrices());
@@ -266,7 +286,7 @@ public class OTUSet extends UUPPodEntityWXmlId implements Iterable<OTU> {
 	}
 
 	@XmlElement(name = "dnaSequenceSet")
-	private Set<DNASequenceSet> getDNASequenceSets() {
+	protected Set<DNASequenceSet> getDNASequenceSets() {
 		return dnaSequenceSets;
 	}
 
@@ -322,26 +342,6 @@ public class OTUSet extends UUPPodEntityWXmlId implements Iterable<OTU> {
 	 */
 	public int getOTUsSize() {
 		return getOTUs().size();
-	}
-
-	@XmlElement(name = "matrix")
-	protected Set<CharacterStateMatrix> getCharacterStateMatrices() {
-		return characterStateMatrices;
-	}
-
-	public Iterator<CharacterStateMatrix> getCharacterStateMatricesIterator() {
-		return Collections.unmodifiableSet(getCharacterStateMatrices())
-				.iterator();
-	}
-
-	/**
-	 * Get the number of {@code CharacterStateMatrix}s in this {@code OTUSet}.
-	 * 
-	 * @return the number of {@code CharacterStateMatrix}s in this {@code
-	 *         OTUSet}
-	 */
-	public int getCharacterStateMatricesSize() {
-		return getCharacterStateMatrices().size();
 	}
 
 	/**

@@ -15,6 +15,7 @@
  */
 package edu.upenn.cis.ppod.model;
 
+import static com.google.common.base.Objects.equal;
 import static com.google.common.base.Preconditions.checkNotNull;
 
 import java.util.Arrays;
@@ -72,19 +73,21 @@ public class Chromatogram extends UUPPodEntity {
 	}
 
 	/**
-	 * For newly constructed objects, this will return {@code null} until
-	 * {@code setSequence(...)} is called. For persisted {@code Chromatagram}s
-	 * this should never return {@code null}.
+	 * {@code null} is a valid value.
 	 * 
 	 * @return the {@code DNASequence} that this points to
 	 */
-	@Nullable
+	@CheckForNull
 	public DNASequence getSequence() {
 		return sequence;
 	}
 
 	public Chromatogram setSequence(@CheckForNull final DNASequence sequence) {
+		if (equal(sequence, this.sequence)) {
+			return this;
+		}
 		this.sequence = sequence;
+		setInNeedOfNewPPodVersionInfo();
 		return this;
 	}
 

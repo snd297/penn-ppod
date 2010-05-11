@@ -15,9 +15,11 @@
  */
 package edu.upenn.cis.ppod.model;
 
+import static com.google.common.collect.Sets.newHashSet;
 import static org.testng.Assert.assertEquals;
 import static org.testng.Assert.assertTrue;
 
+import java.util.Collections;
 import java.util.Set;
 
 import org.testng.annotations.Test;
@@ -28,13 +30,14 @@ import com.google.inject.Inject;
 import com.google.inject.Provider;
 
 import edu.upenn.cis.ppod.TestGroupDefs;
+import edu.upenn.cis.ppod.model.Cell.Type;
 
 /**
  * Test {@link DNACell}.
  * 
  * @author Sam Donnelly
  */
-@Test(groups = TestGroupDefs.FAST, dependsOnGroups = TestGroupDefs.INIT)
+@Test(groups = { TestGroupDefs.FAST }, dependsOnGroups = TestGroupDefs.INIT)
 public class DNACellTest {
 
 	@Inject
@@ -121,5 +124,44 @@ public class DNACellTest {
 		cellTest.getStatesWhenCellHasOneElement((DNAMatrix)
 				dnaMatrix2Provider.get().setColumnsSize(1),
 				DNANucleotide.C);
+	}
+
+	public void setTypeAndStatesInapplicable() {
+		final DNACell dnaCell = dnaCellProvider.get();
+		dnaCell.unsetInNeedOfNewPPodVersionInfo();
+
+		@SuppressWarnings("unchecked")
+		final Set<DNANucleotide> emptySet = Collections.EMPTY_SET;
+		dnaCell.setTypeAndElements(Type.INAPPLICABLE, emptySet);
+		assertEquals(dnaCell.getType(), Type.INAPPLICABLE);
+		assertEquals((Object) newHashSet(dnaCell.iterator()),
+					(Object) emptySet);
+		assertTrue(dnaCell.isInNeedOfNewPPodVersionInfo());
+	}
+
+	public void setTypeAndStatesSingle() {
+		final DNACell dnaCell = dnaCellProvider.get();
+		dnaCell.unsetInNeedOfNewPPodVersionInfo();
+		dnaCell.setTypeAndElements(Type.SINGLE,
+				newHashSet(DNANucleotide.A));
+		assertEquals(dnaCell.getType(), Type.SINGLE);
+		assertEquals((Object) newHashSet(dnaCell.iterator()),
+					(Object) newHashSet(DNANucleotide.A));
+		assertTrue(dnaCell.isInNeedOfNewPPodVersionInfo());
+	}
+
+	@Test(groups = TestGroupDefs.SINGLE)
+	public void setTypeAndStatesSingleWithValuesItAlreadyHad() {
+		final DNACell dnaCell = dnaCellProvider.get();
+
+		dnaCell.unsetInNeedOfNewPPodVersionInfo();
+		dnaCell.setTypeAndElements(Type.SINGLE,
+				newHashSet(DNANucleotide.A));
+		dnaCell.setTypeAndElements(Type.SINGLE, newHashSet(DNANucleotide.A));
+
+		assertEquals(dnaCell.getType(), Type.SINGLE);
+		assertEquals((Object) newHashSet(dnaCell.iterator()),
+					(Object) newHashSet(DNANucleotide.A));
+		assertTrue(dnaCell.isInNeedOfNewPPodVersionInfo());
 	}
 }
