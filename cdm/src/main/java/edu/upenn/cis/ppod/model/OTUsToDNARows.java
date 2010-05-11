@@ -64,9 +64,11 @@ public class OTUsToDNARows extends OTUKeyedMap<DNARow> {
 	}
 
 	@Override
-	protected OTUKeyedMap<DNARow> setInNeedOfNewPPodVersionInfo() {
-		// TODO Auto-generated method stub
-		throw new UnsupportedOperationException();
+	protected OTUsToDNARows setInNeedOfNewPPodVersionInfo() {
+		if (matrix != null) {
+			matrix.setInNeedOfNewPPodVersionInfo();
+		}
+		return this;
 	}
 
 	protected OTUsToDNARows setMatrix(final DNAMatrix matrix) {
