@@ -53,10 +53,9 @@ import edu.upenn.cis.ppod.util.IVisitor;
 @Table(name = TreeSet.TABLE)
 public class TreeSet extends UUPPodEntityWXmlId implements
 		IPPodVersionedWithOTUSet, Iterable<Tree> {
+	public static final String TABLE = "TREE_SET";
 
-	static final String TABLE = "TREE_SET";
-
-	static final String ID_COLUMN = TABLE + "_ID";
+	public static final String ID_COLUMN = TABLE + "_ID";
 
 	@Column(name = "LABEL", nullable = false)
 	private String label;
@@ -71,7 +70,7 @@ public class TreeSet extends UUPPodEntityWXmlId implements
 	@Cascade(org.hibernate.annotations.CascadeType.SAVE_UPDATE)
 	private final List<Tree> trees = newArrayList();
 
-	TreeSet() {}
+	protected TreeSet() {}
 
 	@Override
 	public void accept(final IVisitor visitor) {
@@ -80,6 +79,13 @@ public class TreeSet extends UUPPodEntityWXmlId implements
 		}
 		super.accept(visitor);
 		visitor.visit(this);
+	}
+
+	public TreeSet addTree(final Tree newTree) {
+		checkNotNull(newTree);
+		getTrees().add(newTree);
+		setInNeedOfNewPPodVersionInfo();
+		return this;
 	}
 
 	/**
@@ -95,7 +101,8 @@ public class TreeSet extends UUPPodEntityWXmlId implements
 	}
 
 	/**
-	 * Get the label. Will be {@code null} when the object is first contructed.
+	 * Get the label. Will be {@code null} when the object is first constructed.
+	 * Will never be {@code null} for objects in a persistent state.
 	 * 
 	 * @return the label
 	 */
@@ -116,8 +123,17 @@ public class TreeSet extends UUPPodEntityWXmlId implements
 	}
 
 	@XmlElement(name = "tree")
-	private List<Tree> getTrees() {
+	protected List<Tree> getTrees() {
 		return trees;
+	}
+
+	/**
+	 * Returns the number of trees in this tree set.
+	 * 
+	 * @return the number of trees in this tree set
+	 */
+	public int getTreesSize() {
+		return getTrees().size();
 	}
 
 	public Iterator<Tree> iterator() {
@@ -206,22 +222,6 @@ public class TreeSet extends UUPPodEntityWXmlId implements
 		}
 		setInNeedOfNewPPodVersionInfo();
 		return removedTrees;
-	}
-
-	public TreeSet addTree(final Tree newTree) {
-		checkNotNull(newTree);
-		getTrees().add(newTree);
-		setInNeedOfNewPPodVersionInfo();
-		return this;
-	}
-
-	/**
-	 * Returns the number of trees in this tree set.
-	 * 
-	 * @return the number of trees in this tree set
-	 */
-	public int getTreesSize() {
-		return getTrees().size();
 	}
 
 	/**

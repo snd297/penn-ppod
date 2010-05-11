@@ -64,8 +64,9 @@ public class PPodEntities implements IPPodEntities {
 	@XmlElement(name = "studyWideCharacter")
 	private final Set<Character> studyWideCharacters = newHashSet();
 
-	public boolean addOTUSet(final OTUSet otuSet) {
-		return otuSets.add(otuSet);
+	public OTUSet addOTUSet(final OTUSet otuSet) {
+		otuSets.add(otuSet);
+		return otuSet;
 	}
 
 	/**

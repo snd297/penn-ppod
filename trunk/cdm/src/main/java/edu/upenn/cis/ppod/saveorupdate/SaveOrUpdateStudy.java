@@ -166,8 +166,7 @@ final class SaveOrUpdateStudy implements ISaveOrUpdateStudy {
 					compose(
 							equalTo(incomingOTUSet.getPPodId()),
 							IWithPPodId.getPPodId)))) {
-				dbOTUSet = otuSetProvider.get();
-				dbStudy.addOTUSet(dbOTUSet);
+				dbOTUSet = dbStudy.addOTUSet(otuSetProvider.get());
 				dbOTUSet.setPPodVersionInfo(newPPodVersionInfo
 						.getNewPPodVersionInfo());
 				dbOTUSet.setPPodId();

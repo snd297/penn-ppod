@@ -33,7 +33,7 @@ public interface IOTUSetCentricEntities {
 	 * @return <tt>true</tt> if this set did not already contain the specified
 	 *         OTU set, {@code false} otherwise
 	 */
-	boolean addOTUSet(OTUSet otuSet);
+	OTUSet addOTUSet(OTUSet otuSet);
 
 	/**
 	 * Get an iterator over the OTU sets. {@code Iterator.remove()} will not be

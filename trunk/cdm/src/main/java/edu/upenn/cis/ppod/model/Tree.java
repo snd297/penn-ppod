@@ -40,7 +40,7 @@ import edu.upenn.cis.ppod.util.IVisitor;
 @Table(name = "TREE")
 public class Tree extends UUPPodEntity {
 
-	static final String TABLE = "TREE";
+	public static final String TABLE = "TREE";
 
 	@Column(name = "LABEL", nullable = false)
 	@CheckForNull
@@ -56,7 +56,7 @@ public class Tree extends UUPPodEntity {
 	@CheckForNull
 	private TreeSet treeSet;
 
-	Tree() {}
+	protected Tree() {}
 
 	@Override
 	public void accept(final IVisitor visitor) {
