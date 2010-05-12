@@ -26,12 +26,12 @@ import edu.upenn.cis.ppod.model.OTU;
  * @author Sam Donnelly
  */
 @XmlAccessorType(XmlAccessType.NONE)
-public class OTUStandardRowPair extends
+public class OTUCharacterStateRowPair extends
 		OTUSomethingPair<CharacterStateRow> {
 	/**
 	 * For JAXB.
 	 */
-	private OTUStandardRowPair() {}
+	private OTUCharacterStateRowPair() {}
 
 	@XmlElement
 	@Override
@@ -48,9 +48,9 @@ public class OTUStandardRowPair extends
 		return (OTUSomethingPair<CharacterStateRow>) super.setSecond(row);
 	}
 
-	public static OTUStandardRowPair of(final OTU first,
+	public static OTUCharacterStateRowPair of(final OTU first,
 			final CharacterStateRow second) {
-		final OTUStandardRowPair otuRowPair = new OTUStandardRowPair();
+		final OTUCharacterStateRowPair otuRowPair = new OTUCharacterStateRowPair();
 		otuRowPair.setFirst(first);
 		otuRowPair.setSecond(second);
 		return otuRowPair;

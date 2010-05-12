@@ -15,6 +15,7 @@
  */
 package edu.upenn.cis.ppod.model;
 
+import static com.google.common.base.Preconditions.checkArgument;
 import static com.google.common.base.Preconditions.checkNotNull;
 
 import java.util.Iterator;
@@ -75,9 +76,29 @@ public abstract class SequenceSet<S extends Sequence>
 		setOTUSet((OTUSet) parent);
 	}
 
+	protected void checkSequenceSize(final S sequence) {
+		checkNotNull(sequence);
+		checkArgument(sequence.getSequence() != null,
+				"sequence.getSequence() is null");
+
+		final Integer sequencesLength = getSequencesLength();
+		if (sequencesLength == null) {
+			return;
+		}
+
+		if (sequence.getSequence().length() != getSequencesLength()) {
+			throw new IllegalArgumentException(
+							"sequence.getSequence().length must be "
+									+ sequencesLength
+									+ ", but it is "
+									+ sequence.getSequence().length());
+		}
+	}
+
 	/**
 	 * Remove all sequences from this set. Null's out the {@code
-	 * Sequence->SequenceSet} relationship.
+	 * Sequence->SequenceSet} relationship and sets {@code getSequencesLength()}
+	 * to {@code 0}.
 	 * 
 	 * @return this
 	 */
@@ -114,6 +135,24 @@ public abstract class SequenceSet<S extends Sequence>
 	public abstract S getSequence(final OTU otu);
 
 	/**
+	 * Get the length of the sequences in this set, or {@code null} of no
+	 * sequences have been added to this set.
+	 * 
+	 * @return the length of the sequences in this set, or {@code null} of no
+	 *         sequences have been added to this set.
+	 */
+	@Nullable
+	public Integer getSequencesLength() {
+		for (final S sequenceInThisSet : getOTUsToSequences().getOTUsToValues()
+				.values()) {
+			if (sequenceInThisSet != null) {
+				return sequenceInThisSet.getSequence().length();
+			}
+		}
+		return null;
+	}
+
+	/**
 	 * Get the number of sequences in this set.
 	 * 
 	 * @return the number of sequences in this set.
@@ -130,12 +169,19 @@ public abstract class SequenceSet<S extends Sequence>
 	}
 
 	/**
+	 * 
+	 * 
 	 * @param otu
-	 * @param newSequence
+	 * @param sequence
+	 * 
+	 * @throws IllegalArgumentException if {@code sequence.getSequence() ==
+	 *             null}
+	 * @throws IllegalArgumentException if {@code
+	 *             sequence.getSequence().length() != this.getLength()}
 	 * @return
 	 */
 	@CheckForNull
-	public abstract S putSequence(final OTU otu, final S newSequence);
+	public abstract S putSequence(final OTU otu, final S sequence);
 
 	@Override
 	public SequenceSet<S> setInNeedOfNewPPodVersionInfo() {

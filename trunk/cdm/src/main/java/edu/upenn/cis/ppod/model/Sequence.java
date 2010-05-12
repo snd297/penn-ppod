@@ -60,7 +60,7 @@ public abstract class Sequence extends PPodEntity implements IOTUKeyedMapValue {
 	@CheckForNull
 	private String name;
 
-	Sequence() {}
+	protected Sequence() {}
 
 	/**
 	 * Get the accession.

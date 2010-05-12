@@ -106,6 +106,8 @@ public class MolecularSequenceTest {
 
 		sequenceSet.setOTUSet(otuSet);
 
+		sequence.setSequence("");
+
 		sequenceSet.putSequence(otu0, sequence);
 
 		sequence.unsetInNeedOfNewPPodVersionInfo();

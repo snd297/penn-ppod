@@ -193,10 +193,6 @@ public abstract class OTUKeyedMap<V extends IOTUKeyedMapValue>
 	 * Any existing keys will be removed if they are not present in {@code
 	 * otuSet.getOTUs()}.
 	 * 
-	 * @param otuSet must be {@code ==} to {@code parent.getOTUSet()} - only
-	 *            included to emphasize that {@code null} is allowed
-	 * @param parent owner of this bimap
-	 * 
 	 * @return this
 	 * 
 	 * @throw IllegalArgumentException if {@code otuSet != parent.getOTUSet()}
