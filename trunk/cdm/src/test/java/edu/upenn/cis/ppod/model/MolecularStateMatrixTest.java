@@ -43,6 +43,7 @@ public class MolecularStateMatrixTest {
 	 * Set the characters on a molecular matrix and make sure that it makes all
 	 * of them the same value.
 	 */
+	@Test
 	public void setCharacters() {
 		final MolecularStateMatrix molecularMatrix = dnaMatrixProvider.get();
 		final MolecularCharacter molecularCharacter = dnaCharacterProvider

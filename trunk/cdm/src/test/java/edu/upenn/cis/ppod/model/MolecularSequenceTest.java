@@ -55,6 +55,7 @@ public class MolecularSequenceTest {
 	 * stays false</li>
 	 * </ol>
 	 */
+	@Test
 	public void setSequence() {
 		final Sequence sequence = dnaSequenceProvider
 				.get();
@@ -93,6 +94,7 @@ public class MolecularSequenceTest {
 	 * <p>
 	 * Also make sure that it works if no parent has been set.
 	 */
+	@Test
 	public void setInNeedOfNewPPodVersion() {
 		final DNASequence sequence = dnaSequenceProvider
 				.get();
@@ -134,6 +136,7 @@ public class MolecularSequenceTest {
 	 * <li>set w/ a null value</li>
 	 * </ol>
 	 */
+	@Test
 	public void setName() {
 		final Sequence sequence = dnaSequenceProvider.get();
 
@@ -169,6 +172,7 @@ public class MolecularSequenceTest {
 	 * <li>set w/ a null value</li>
 	 * </ol>
 	 */
+	@Test
 	public void setAccession() {
 		final Sequence sequence = dnaSequenceProvider.get();
 
@@ -204,6 +208,7 @@ public class MolecularSequenceTest {
 	 * <li>set w/ a null value</li>
 	 * </ol>
 	 */
+	@Test
 	public void setDescription() {
 		final Sequence sequence = dnaSequenceProvider.get();
 

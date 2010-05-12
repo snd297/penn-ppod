@@ -50,6 +50,7 @@ public class AttachmentTest {
 	 * <li>set w/ a null value</li>
 	 * </ol>
 	 */
+	@Test
 	public void setBytesValue() {
 
 		final Attachment attachment = attachmentProvider.get();

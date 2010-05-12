@@ -31,6 +31,7 @@ public class DNAStateTest {
 	 * Make sure that the state numbers that Mesquite gives us map onto the
 	 * correct nucleotides.
 	 */
+	@Test
 	public void of() {
 		assertEquals(DNAState.Nucleotide.of(0), DNAState.Nucleotide.A);
 		assertEquals(DNAState.Nucleotide.of(1), DNAState.Nucleotide.C);

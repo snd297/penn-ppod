@@ -72,6 +72,7 @@ public class CharacterStateRowTest {
 				"CHARACTER-0")));
 	}
 
+	@Test
 	public void addCellToMatrixWOneCharacter() {
 		final CharacterStateCell cell = (CharacterStateCell) cellProvider.get()
 				.setUnassigned();

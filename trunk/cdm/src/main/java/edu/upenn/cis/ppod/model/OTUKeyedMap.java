@@ -121,9 +121,7 @@ public abstract class OTUKeyedMap<V extends IOTUKeyedMapValue>
 	 * @param parent the owning object
 	 * 
 	 * @return the previous value associated with <tt>otu</tt>, or <tt>null</tt>
-	 *         if there was no mapping for <tt>otu</tt>. (A <tt>null</tt> return
-	 *         can also indicate that the map previously associated
-	 *         <tt>null</tt> with <tt>key</tt>.)
+	 *         if there was no mapping for <tt>otu</tt>
 	 * 
 	 * @throws IllegalStateException if {@link #getParent() == null}
 	 * @throws IllegalStateException if {@code getParent().getOTUSet() == null}
@@ -182,6 +180,7 @@ public abstract class OTUKeyedMap<V extends IOTUKeyedMapValue>
 	 * @throws IllegalArgumentException if there's already a value {@code
 	 *             .equals} to {@code newT}
 	 */
+	@CheckForNull
 	public abstract V put(final OTU key, final V value);
 
 	protected abstract OTUKeyedMap<V> setInNeedOfNewPPodVersionInfo();

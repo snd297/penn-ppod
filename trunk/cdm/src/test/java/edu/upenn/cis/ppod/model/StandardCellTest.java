@@ -85,6 +85,7 @@ public class StandardCellTest {
 	@Nullable
 	private Set<CharacterState> states;
 
+	@Test
 	public void afterUnmarshal() {
 		states.add(state00);
 		states.add(state01);
@@ -94,6 +95,7 @@ public class StandardCellTest {
 	/**
 	 * Straight {@code beforeMarshal(...) test.
 	 */
+	@Test
 	public void beforeMarshal() {
 		matrix.getRow(matrix.getOTUSet().getOTU(0)).setCells(
 				Arrays.asList(cell));
@@ -154,12 +156,14 @@ public class StandardCellTest {
 
 	}
 
+	@Test
 	public void getStatesWhenCellHasMultipleElements() {
 		states.add(state00);
 		states.add(state01);
 		cellTest.getStatesWhenCellHasMultipleElements(matrix, states);
 	}
 
+	@Test
 	public void getStatesWhenCellHasOneElement() {
 		cellTest.getStatesWhenCellHasOneElement(matrix, state00);
 	}
@@ -183,6 +187,7 @@ public class StandardCellTest {
 		cellTest.setStatesForACellThatDoesNotBelongToARow(state00);
 	}
 
+	@Test
 	public void setTypeAndStatesFromPolymorhpicToInapplicable() {
 		matrix.getRow(matrix.getOTUSet().getOTU(0)).setCells(
 				Arrays.asList(cell));
@@ -194,6 +199,7 @@ public class StandardCellTest {
 		assertTrue(isEmpty(newHashSet(cell)));
 	}
 
+	@Test
 	public void setTypeAndStatesFromSingleToInapplicable() {
 		matrix.getRow(matrix.getOTUSet().getOTU(0)).setCells(
 				Arrays.asList(cell));
@@ -205,6 +211,7 @@ public class StandardCellTest {
 		assertFalse(cell.iterator().hasNext());
 	}
 
+	@Test
 	public void setTypeAndStatesInapplicable() {
 		matrix.getRow(matrix.getOTUSet().getOTU(0)).setCells(
 				Arrays.asList(cell));
@@ -213,6 +220,7 @@ public class StandardCellTest {
 		assertEquals((Object) newHashSet(cell), (Object) states);
 	}
 
+	@Test
 	public void setTypeAndStatesPolymorphic() {
 		matrix.getRow(matrix.getOTUSet().getOTU(0)).setCells(
 				Arrays.asList(cell));
@@ -230,6 +238,7 @@ public class StandardCellTest {
 		cell.setPolymorphicElements(states);
 	}
 
+	@Test
 	public void setTypeAndStatesSingle() {
 		matrix.getRow(matrix.getOTUSet().getOTU(0)).setCells(
 				Arrays.asList(cell));
@@ -239,6 +248,7 @@ public class StandardCellTest {
 		assertEquals((Object) newHashSet(cell), (Object) states);
 	}
 
+	@Test
 	public void setTypeAndStatesUnassigned() {
 		matrix.getRow(matrix.getOTUSet().getOTU(0)).setCells(
 				Arrays.asList(cell));
@@ -255,6 +265,7 @@ public class StandardCellTest {
 		cell.setUncertainElements(states);
 	}
 
+	@Test
 	public void setUncertainStates() {
 		matrix.getRow(matrix.getOTUSet().getOTU(0)).setCells(
 				Arrays.asList(cell));
