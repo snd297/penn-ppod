@@ -63,7 +63,6 @@ final class MergeMolecularSequenceSets<SS extends SequenceSet<S>, S extends Sequ
 			if (null == (targetSequence = targetSequenceSet
 					.getSequence(targetOTU))) {
 				targetSequence = sequenceProvider.get();
-				targetSequenceSet.putSequence(targetOTU, targetSequence);
 				targetSequence.setPPodVersionInfo(newPPodVersionInfo
 						.getNewPPodVersionInfo());
 			}
@@ -71,6 +70,8 @@ final class MergeMolecularSequenceSets<SS extends SequenceSet<S>, S extends Sequ
 			targetSequence.setName(sourceSequence.getName());
 			targetSequence.setDescription(sourceSequence.getDescription());
 			targetSequence.setAccession(sourceSequence.getAccession());
+
+			targetSequenceSet.putSequence(targetOTU, targetSequence);
 
 			dao.saveOrUpdate(targetSequence);
 

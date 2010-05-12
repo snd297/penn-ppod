@@ -16,6 +16,8 @@ import javax.persistence.OneToMany;
 import javax.persistence.OneToOne;
 import javax.persistence.Table;
 import javax.persistence.Transient;
+import javax.xml.bind.Marshaller;
+import javax.xml.bind.annotation.XmlElement;
 
 import edu.upenn.cis.ppod.util.OTUDNARowPair;
 import edu.upenn.cis.ppod.util.OTUSomethingPair;
@@ -82,6 +84,22 @@ public class OTUsToDNARows extends OTUKeyedMap<DNARow> {
 		checkNotNull(row);
 		row.setOTUsToRows(this);
 		return super.putHelper(otu, row);
+	}
+
+	public boolean beforeMarshal(@CheckForNull final Marshaller marshaller) {
+		getOTURowPairs().clear();
+		for (final Map.Entry<OTU, DNARow> otuToRow : getOTUsToValues()
+				.entrySet()) {
+						getOTURowPairs().add(
+					OTUDNARowPair.of(otuToRow.getKey(), otuToRow
+							.getValue()));
+		}
+		return true;
+	}
+
+	@XmlElement(name = "otuRowPair")
+	private Set<OTUDNARowPair> getOTURowPairs() {
+		return otuRowPairs;
 	}
 
 }

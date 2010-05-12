@@ -7,7 +7,6 @@ import edu.upenn.cis.ppod.model.OTU;
 
 /**
  * @author Sam Donnelly
- * 
  */
 public class OTUDNARowPair extends
 		OTUSomethingPair<DNARow> {

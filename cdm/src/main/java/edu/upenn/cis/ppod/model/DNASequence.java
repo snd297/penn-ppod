@@ -35,18 +35,21 @@ import edu.upenn.cis.ppod.util.IVisitor;
 @Table(name = DNASequence.TABLE)
 public class DNASequence extends Sequence {
 
-	@ManyToOne(fetch = FetchType.LAZY)
-	@CheckForNull
-	private OTUsToDNASequences otusToSequences;
+	/**
+	 * The characters that are legal in a {@code DNASequence}.
+	 */
+	public final static Set<java.lang.Character> LEGAL_CHARS = ImmutableSet
+			.of('A', 'C', 'G', 'T', 'R', 'Y', 'K', 'M', 'S', 'W', 'B', 'D',
+					'H', 'V', 'N', '-');
 
 	/**
 	 * The name of the {@code DNASequence} table.
 	 */
 	static final String TABLE = "DNA_SEQUENCE";
 
-	private final static Set<java.lang.Character> LEGAL_CHARS = ImmutableSet
-			.of('A', 'C', 'G', 'T', 'R', 'Y', 'K', 'M', 'S', 'W', 'B', 'D',
-					'H', 'V', 'N', '-');
+	@ManyToOne(fetch = FetchType.LAZY)
+	@CheckForNull
+	private OTUsToDNASequences otusToSequences;
 
 	@Override
 	public void accept(final IVisitor visitor) {

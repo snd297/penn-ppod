@@ -15,6 +15,7 @@
  */
 package edu.upenn.cis.ppod.model;
 
+import static com.google.common.base.Preconditions.checkArgument;
 import static com.google.common.base.Preconditions.checkNotNull;
 import static com.google.common.base.Preconditions.checkState;
 
@@ -93,8 +94,13 @@ public class DNASequenceSet extends SequenceSet<DNASequence> {
 	@Override
 	@CheckForNull
 	public DNASequence putSequence(final OTU otu,
-			final DNASequence newSequence) {
-		return getOTUsToSequences().put(otu, newSequence);
+			final DNASequence sequence) {
+		checkNotNull(otu);
+		checkNotNull(sequence);
+		checkArgument(sequence.getSequence() != null,
+				"sequence.getSequence() == null");
+		checkSequenceSize(sequence);
+		return getOTUsToSequences().put(otu, sequence);
 	}
 
 	/**

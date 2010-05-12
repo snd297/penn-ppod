@@ -172,15 +172,23 @@ public abstract class Matrix<R extends Row<?>> extends UUPPodEntityWXmlId
 	protected abstract OTUKeyedMap<R> getOTUsToRows();
 
 	/**
-	 * Get the row indexed by an OTU.
+	 * Get the row indexed by an OTU, or {@code null} if no such row has been
+	 * inserted yet.
+	 * <p>
+	 * The return value won't be {@code null} for matrices straight out of the
+	 * database.
+	 * <p>
+	 * {@code null} return values occur when {@link #setOTUSet(OTUSet)} contains
+	 * OTUs newly introduced to this matrix.
 	 * 
-	 * @param otu the index
+	 * @param otu the key
 	 * 
-	 * @return the row
+	 * @return the row, or {@code null} of no such row has been inserted yet
 	 * 
 	 * @throws IllegalArgumentException if {@code otu} does not belong to this
 	 *             matrix's {@code OTUSet}
 	 */
+	@Nullable
 	public R getRow(final OTU otu) {
 		checkNotNull(otu);
 		return getOTUsToRows().get(otu);

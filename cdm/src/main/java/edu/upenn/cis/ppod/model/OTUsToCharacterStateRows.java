@@ -37,7 +37,7 @@ import javax.xml.bind.Unmarshaller;
 import javax.xml.bind.annotation.XmlElement;
 
 import edu.upenn.cis.ppod.util.OTUSomethingPair;
-import edu.upenn.cis.ppod.util.OTUStandardRowPair;
+import edu.upenn.cis.ppod.util.OTUCharacterStateRowPair;
 
 /**
  * Maps {@code OTU}s to {@code CharacterStateRow}s.
@@ -57,7 +57,7 @@ public class OTUsToCharacterStateRows extends OTUKeyedMap<CharacterStateRow> {
 	 * {@code XmlIDREF} in JAXB - at least not easily.
 	 */
 	@Transient
-	private final Set<OTUStandardRowPair> otuRowPairs = newHashSet();
+	private final Set<OTUCharacterStateRowPair> otuRowPairs = newHashSet();
 
 	@OneToMany(cascade = CascadeType.ALL, orphanRemoval = true)
 	@MapKeyJoinColumn(name = OTU.JOIN_COLUMN)
@@ -85,14 +85,14 @@ public class OTUsToCharacterStateRows extends OTUKeyedMap<CharacterStateRow> {
 		for (final Map.Entry<OTU, CharacterStateRow> otuToRow : getOTUsToValues()
 				.entrySet()) {
 			getOTURowPairs().add(
-					OTUStandardRowPair.of(otuToRow.getKey(), otuToRow
+					OTUCharacterStateRowPair.of(otuToRow.getKey(), otuToRow
 							.getValue()));
 		}
 		return true;
 	}
 
 	@XmlElement(name = "otuRowPair")
-	protected Set<OTUStandardRowPair> getOTURowPairs() {
+	private Set<OTUCharacterStateRowPair> getOTURowPairs() {
 		return otuRowPairs;
 	}
 
@@ -104,7 +104,7 @@ public class OTUsToCharacterStateRows extends OTUKeyedMap<CharacterStateRow> {
 	@Override
 	protected Set<OTUSomethingPair<CharacterStateRow>> getOTUValuePairs() {
 		final Set<OTUSomethingPair<CharacterStateRow>> otuValuePairs = newHashSet();
-		for (final OTUStandardRowPair otuRowPair : otuRowPairs) {
+		for (final OTUCharacterStateRowPair otuRowPair : otuRowPairs) {
 			otuValuePairs.add(otuRowPair);
 		}
 		return otuValuePairs;
