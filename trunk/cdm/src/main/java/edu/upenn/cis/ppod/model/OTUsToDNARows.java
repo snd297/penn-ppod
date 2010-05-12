@@ -65,8 +65,8 @@ public class OTUsToDNARows extends OTUKeyedMap<DNARow> {
 
 	@Override
 	protected OTUsToDNARows setInNeedOfNewPPodVersionInfo() {
-		if (matrix != null) {
-			matrix.setInNeedOfNewPPodVersionInfo();
+		if (getParent() != null) {
+			getParent().setInNeedOfNewPPodVersionInfo();
 		}
 		return this;
 	}
