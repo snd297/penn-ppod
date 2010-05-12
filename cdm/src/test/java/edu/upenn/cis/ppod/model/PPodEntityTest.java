@@ -45,6 +45,7 @@ public class PPodEntityTest {
 	@Inject
 	private Provider<PPodVersionInfo> pPodVersionInfoProvider;
 
+	@Test
 	public void addAttachment() {
 		final OTUSet otuSet = otuSetProvider.get();
 		final Attachment attachment = attachmentProvider.get();
@@ -59,6 +60,7 @@ public class PPodEntityTest {
 	 * This is a pretty thorough test of {@code
 	 * PPodEntity.removeAttachment(...)}. A refactoring wouldn't hurt.
 	 */
+	@Test
 	public void removeAttachment() {
 		final OTUSet otuSet = otuSetProvider.get();
 		final Attachment attachment1 = attachmentProvider.get();
@@ -101,6 +103,7 @@ public class PPodEntityTest {
 		otuSet.getPPodVersionInfo();
 	}
 
+	@Test
 	public void beforeMarahal() {
 		final OTUSet otuSet = otuSetProvider.get();
 		final PPodVersionInfo pPodVersionInfo = pPodVersionInfoProvider.get();

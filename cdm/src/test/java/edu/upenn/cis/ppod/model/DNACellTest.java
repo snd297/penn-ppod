@@ -58,6 +58,7 @@ public class DNACellTest {
 	@Inject
 	private Provider<DNARow> dnaRowProvider;
 
+	@Test
 	public void getStatesWhenCellHasOneState() {
 		final DNAMatrix matrix = dnaMatrix2Provider.get();
 		matrix.setColumnsSize(1);
@@ -68,6 +69,7 @@ public class DNACellTest {
 						DNANucleotide.T));
 	}
 
+	@Test
 	public void afterUnmarshal() {
 		final DNAMatrix matrix = dnaMatrix2Provider.get();
 		matrix.setColumnsSize(1);
@@ -92,6 +94,7 @@ public class DNACellTest {
 	 * Makes sure that {@link Cell#getXmlElements()} contains the elements after
 	 * {@code beforeMarshal()} is called.
 	 */
+	@Test
 	public void beforeMarshal() {
 		final DNAMatrix matrix = dnaMatrix2Provider.get();
 		matrix.setColumnsSize(1);
@@ -120,12 +123,14 @@ public class DNACellTest {
 		}
 	}
 
+	@Test
 	public void getStatesWhenCellHasOneElement() {
 		cellTest.getStatesWhenCellHasOneElement((DNAMatrix)
 				dnaMatrix2Provider.get().setColumnsSize(1),
 				DNANucleotide.C);
 	}
 
+	@Test
 	public void setTypeAndStatesInapplicable() {
 		final DNACell dnaCell = dnaCellProvider.get();
 		dnaCell.unsetInNeedOfNewPPodVersionInfo();
@@ -139,6 +144,7 @@ public class DNACellTest {
 		assertTrue(dnaCell.isInNeedOfNewPPodVersionInfo());
 	}
 
+	@Test
 	public void setTypeAndStatesSingle() {
 		final DNACell dnaCell = dnaCellProvider.get();
 		dnaCell.unsetInNeedOfNewPPodVersionInfo();
@@ -150,6 +156,7 @@ public class DNACellTest {
 		assertTrue(dnaCell.isInNeedOfNewPPodVersionInfo());
 	}
 
+	@Test
 	public void setTypeAndStatesSingleWithValuesItAlreadyHad() {
 		final DNACell dnaCell = dnaCellProvider.get();
 

@@ -69,6 +69,7 @@ public class MergeAttachmentTest {
 				.setNamespacesByLabel(namespacesByLabel);
 	}
 
+	@Test
 	public void mergeOnBlankTarget() {
 		System.out.println("entering...mergeOnBlankTarget");
 		IMergeAttachments mergeAttachments = mergeAttachmentFactory.create(

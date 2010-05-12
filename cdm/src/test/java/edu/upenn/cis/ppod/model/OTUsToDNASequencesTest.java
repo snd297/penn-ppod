@@ -49,6 +49,7 @@ public class OTUsToDNASequencesTest {
 	 * Do a straight put with
 	 * {@link OTUsToSequences#putHelper(OTU, Sequence, SequenceSet)} .
 	 */
+	@Test
 	public void putTest() {
 
 		final OTUSet otuSet = new OTUSet();
@@ -65,6 +66,7 @@ public class OTUsToDNASequencesTest {
 	 * When we replace an OTU's sequence with another, check that the previous
 	 * sequence's sequence->sequenceSet relationship is severed.
 	 */
+	@Test
 	public void putTestReplaceASequence() {
 		final OTUSet otuSet = otuSetProvider.get();
 		final OTU otu = otuSet.addOTU(otuProvider.get());

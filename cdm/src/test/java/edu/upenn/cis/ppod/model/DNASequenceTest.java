@@ -18,6 +18,8 @@ package edu.upenn.cis.ppod.model;
 import static org.testng.Assert.assertFalse;
 import static org.testng.Assert.assertTrue;
 
+import java.util.List;
+
 import org.testng.annotations.Test;
 
 import com.google.common.collect.ImmutableList;
@@ -32,13 +34,13 @@ import edu.upenn.cis.ppod.TestGroupDefs;
 @Test(groups = TestGroupDefs.FAST)
 public class DNASequenceTest {
 
-	private final ImmutableList<java.lang.Character> alpabet = ImmutableList
+	private final List<java.lang.Character> alpabet = ImmutableList
 			.of('A', 'B',
 					'C', 'D', 'E', 'F', 'G', 'H', 'I', 'J', 'K', 'L', 'M', 'N',
 					'O',
 					'P', 'Q', 'R', 'S', 'T', 'U', 'V', 'W', 'X', 'Y', 'Z');
 
-	private final ImmutableList<java.lang.Character> legalDNACharacters = ImmutableList
+	private final List<java.lang.Character> legalDNACharacters = ImmutableList
 			.of('A',
 					'C',
 					'G',
@@ -59,6 +61,7 @@ public class DNASequenceTest {
 	/**
 	 * Make sure that all legal character return true for {@code isLegal(...)}.
 	 */
+	@Test
 	public void testIsLegal() {
 		final Sequence sequence = new DNASequence();
 
@@ -71,6 +74,7 @@ public class DNASequenceTest {
 	 * Make sure that all illegal character return false for {@code
 	 * isLegal(...)}.
 	 */
+	@Test
 	public void testIsLegalShouldReturnFalse() {
 		final Sequence sequence = new DNASequence();
 

@@ -108,17 +108,18 @@ public abstract class Matrix<R extends Row<?>> extends UUPPodEntityWXmlId
 	 * Assumes {@code row} is not detached.
 	 * 
 	 * @param otu index of the row we are adding
-	 * @param newRow the row we're adding
+	 * @param row the row we're adding
 	 * 
 	 * @return the row that was previously there, or {@code null} if there was
 	 *         no row previously there
 	 * 
-	 * @throw IllegalArgumentException if {@code otu} does not belong to this
-	 *        matrix's {@code OTUSet}
+	 * @throws IllegalArgumentException if {@code otu} does not belong to this
+	 *             matrix's {@code OTUSet}
+	 * @throws IllegalArgumentException if this matrix already contains a row
+	 *             {@code .equals} to {@code row}
 	 */
 	@CheckForNull
-	public R putRow(final OTU otu,
-			final R row) {
+	public R putRow(final OTU otu, final R row) {
 		checkNotNull(otu);
 		checkNotNull(row);
 		return getOTUsToRows().put(otu, row);
@@ -171,18 +172,15 @@ public abstract class Matrix<R extends Row<?>> extends UUPPodEntityWXmlId
 	protected abstract OTUKeyedMap<R> getOTUsToRows();
 
 	/**
-	 * Get the row indexed by an OTU or {@code null} if {@code otu} has not had
-	 * a row assigned to it.
+	 * Get the row indexed by an OTU.
 	 * 
 	 * @param otu the index
 	 * 
-	 * @return the row, or {@code null} if {@code otu} has not had a row
-	 *         assigned to it
+	 * @return the row
 	 * 
 	 * @throws IllegalArgumentException if {@code otu} does not belong to this
 	 *             matrix's {@code OTUSet}
 	 */
-	@Nullable
 	public R getRow(final OTU otu) {
 		checkNotNull(otu);
 		return getOTUsToRows().get(otu);

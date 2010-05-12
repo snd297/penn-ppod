@@ -34,6 +34,7 @@ public class OTUKeyedMapTest {
 	@Inject
 	private Provider<DNARow> dnaRowProvider;
 
+	@Test
 	public void getValuesInOTUSetOrder() {
 
 		final DNAMatrix matrix = dnaMatrixProvider.get();
@@ -70,6 +71,7 @@ public class OTUKeyedMapTest {
 
 	}
 
+	@Test
 	public void clear() {
 		final DNAMatrix matrix = dnaMatrixProvider.get();
 		final OTUSet otuSet = matrix.setOTUSet(otuSetProvider.get())
@@ -103,6 +105,7 @@ public class OTUKeyedMapTest {
 	 * If it's empty and we call clear, that should have no affect on
 	 * {@link Matrix#isInNeedOfNewPPodVersionInfo()}
 	 */
+	@Test
 	public void clearWhileEmpty() {
 		final DNAMatrix matrix = dnaMatrixProvider.get();
 		final OTUsToDNARows otusToRows = otusToDNARowsProvider.get();

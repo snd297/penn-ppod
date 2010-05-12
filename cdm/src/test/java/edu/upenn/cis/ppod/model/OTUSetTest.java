@@ -77,6 +77,7 @@ public class OTUSetTest {
 	 * Add an otu that's already in an otu set into an otu set. The pPOD version
 	 * should not be reset when this happens.
 	 */
+	@Test
 	public void addOTUWAlreadyContainedOTU() {
 		otuSet.setOTUs(ImmutableList.of(otuProvider.get().setLabel("OTU-0")));
 		otuSet.unsetInNeedOfNewPPodVersionInfo();
@@ -91,6 +92,7 @@ public class OTUSetTest {
 		otuSet.setOTUs(newArrayList(otus));
 	}
 
+	@Test
 	public void setTreeSetsAndGetTreeSetsSize() {
 		final TreeSet treeSet = treeSetProvider.get();
 		final Set<TreeSet> treeSets = ImmutableSet.of(treeSet);
@@ -118,6 +120,7 @@ public class OTUSetTest {
 	/**
 	 * Remove all OTUs
 	 */
+	@Test
 	public void clearOTUs() {
 		otuSet.setOTUs(newArrayList(otus));
 
@@ -133,6 +136,7 @@ public class OTUSetTest {
 		assertEquals(otuSet.getOTUsSize(), 0);
 	}
 
+	@Test
 	public void removeMatrix() {
 		final CharacterStateMatrix matrix0 = matrixProvider.get();
 		final CharacterStateMatrix matrix1 = matrixProvider.get();
@@ -166,6 +170,7 @@ public class OTUSetTest {
 	 * new pPOD version, and the return value of removeOTUs contains the removed
 	 * OTU.
 	 */
+	@Test
 	public void removeOTU() {
 		otuSet.unsetInNeedOfNewPPodVersionInfo();
 
@@ -180,6 +185,7 @@ public class OTUSetTest {
 		assertEquals(removedOTUs, newHashSet(otus.get(1)));
 	}
 
+	@Test
 	public void removeTreeSet() {
 		final TreeSet treeSet0 = treeSetProvider.get().setLabel("treeSet0");
 		final TreeSet treeSet1 = treeSetProvider.get().setLabel("treeSet1");
@@ -218,6 +224,7 @@ public class OTUSetTest {
 		assertFalse(otuSet.getTreeSetsIterator().hasNext());
 	}
 
+	@Test
 	public void setDNASequenceSets() {
 		final DNASequenceSet dnaSequenceSet0 = dnaSequenceSetProvider.get();
 		final DNASequenceSet dnaSequenceSet1 = dnaSequenceSetProvider.get();
@@ -251,6 +258,7 @@ public class OTUSetTest {
 
 	}
 
+	@Test
 	public void addOTU() {
 		final OTU otu0 = otuProvider.get();
 		final OTU shouldBeOTU0 = otuSet.addOTU(otu0);
@@ -258,6 +266,7 @@ public class OTUSetTest {
 		assertTrue(contains(otuSet, otu0));
 	}
 
+	@Test
 	public void setDescription() {
 		otuSet.unsetInNeedOfNewPPodVersionInfo();
 		final String description = "DESCRIPTION";
@@ -280,6 +289,7 @@ public class OTUSetTest {
 		assertFalse(otuSet.isInNeedOfNewPPodVersionInfo());
 	}
 
+	@Test
 	public void setStudy() {
 		otuSet.unsetInNeedOfNewPPodVersionInfo();
 		final Study study = studyProvider.get();
@@ -296,8 +306,10 @@ public class OTUSetTest {
 		final Study study2 = studyProvider.get();
 		otuSet.setStudy(study2);
 		assertTrue(otuSet.isInNeedOfNewPPodVersionInfo());
+
 	}
 
+	@Test
 	public void removeDNASequenceSet() {
 		final DNASequenceSet dnaSequenceSet0 = dnaSequenceSetProvider.get();
 		final DNASequenceSet dnaSequenceSet1 = dnaSequenceSetProvider.get();
@@ -314,6 +326,7 @@ public class OTUSetTest {
 
 	}
 
+	@Test
 	public void getDNASequenceSetsSize() {
 		final DNASequenceSet dnaSequenceSet0 = dnaSequenceSetProvider.get();
 		final DNASequenceSet dnaSequenceSet1 = dnaSequenceSetProvider.get();
@@ -324,6 +337,7 @@ public class OTUSetTest {
 		assertEquals(otuSet.getDNASequenceSetsSize(), dnaSequenceSets.size());
 	}
 
+	@Test
 	public void setInNeedOfNewPPodVersion() {
 		otuSet.unsetInNeedOfNewPPodVersionInfo();
 		otuSet.getStudy().unsetInNeedOfNewPPodVersionInfo();
@@ -334,6 +348,7 @@ public class OTUSetTest {
 
 	}
 
+	@Test
 	public void setInNeedOfNewPPodVersionWithNoStudy() {
 		final OTUSet otuSetWithNoStudy = otuSetProvider.get();
 		otuSetWithNoStudy.unsetInNeedOfNewPPodVersionInfo();

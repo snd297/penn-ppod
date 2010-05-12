@@ -51,6 +51,7 @@ public class ChromatogramTest {
 	 * this case and its another branch</li>
 	 * </ol>
 	 */
+	@Test
 	public void setBytesValue() {
 
 		final Chromatogram chromatogram = chromatogramProvider.get();

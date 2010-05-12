@@ -102,6 +102,7 @@ public class CharacterStateMatrixTest {
 	 * When we set with the same OTU's, the pPOD version number of the matrix
 	 * should not change.
 	 */
+	@Test
 	public void setOTUsWSameOTUs() {
 		matrix.setPPodVersionInfo(pPodVersionInfo);
 
@@ -110,6 +111,7 @@ public class CharacterStateMatrixTest {
 		assertNotNull(matrix.getPPodVersionInfo());
 	}
 
+	@Test
 	public void setOTUsWReorderedOTUs() {
 
 		final Character character = characterProvider.get().setLabel(
@@ -150,6 +152,7 @@ public class CharacterStateMatrixTest {
 
 	}
 
+	@Test
 	public void setOTUsWithLessOTUs() {
 
 		otuSet012.setOTUs(newArrayList(otu1, otu2));
@@ -163,6 +166,7 @@ public class CharacterStateMatrixTest {
 	/**
 	 * Straight {@link CharacterStateMatrix#setCharacters(List)} test.
 	 */
+	@Test
 	public void setCharacters() {
 
 		final ImmutableList<Character> characters = ImmutableList.of(
@@ -190,6 +194,7 @@ public class CharacterStateMatrixTest {
 	 * Make sure when we move a character it gets moved and its column version
 	 * comes with it
 	 */
+	@Test
 	public void moveCharacter() {
 
 		final ImmutableList<Character> characters = ImmutableList.of(
@@ -234,6 +239,7 @@ public class CharacterStateMatrixTest {
 	/**
 	 * Test replacing all of the characters.
 	 */
+	@Test
 	public void replaceCharacters() {
 		final ImmutableList<Character> characters = ImmutableList.of(
 				characterProvider.get().setLabel("character0"),
@@ -271,6 +277,7 @@ public class CharacterStateMatrixTest {
 	 * When we set characters to the same characters, the matrix should not be
 	 * marked in need of a new version number.
 	 */
+	@Test
 	public void setCharactersWithEqualsCharacters() {
 		final ImmutableList<Character> characters = ImmutableList.of(
 				characterProvider.get().setLabel("character0"),
@@ -291,6 +298,7 @@ public class CharacterStateMatrixTest {
 	 * When we set a character that was already at some position, then it should
 	 * not be marked as in need of a new pPOD version info.
 	 */
+	@Test
 	public void setWithSameRow() {
 		final CharacterStateRow row1 = rowProvider.get();
 		matrix.putRow(otu1, row1);
@@ -319,6 +327,7 @@ public class CharacterStateMatrixTest {
 	 * {@link CharacterStateRow#getMatrix()}) set to {@code null}</li>
 	 * </ul>
 	 */
+	@Test
 	public void replaceRow() {
 		final CharacterStateRow row1 = rowProvider.get();
 		matrix.putRow(otu1, row1);
@@ -331,6 +340,7 @@ public class CharacterStateMatrixTest {
 	@Inject
 	private Provider<PPodVersionInfo> pPodVersionInfoProvider;
 
+	@Test
 	public void beforeMarshal() {
 		nullFillAndSet(matrix.getColumnPPodVersionInfos(), 2,
 				pPodVersionInfoProvider.get().setPPodVersion(3L));
