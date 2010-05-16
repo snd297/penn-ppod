@@ -89,7 +89,7 @@ public class SaveOrUpdateCharacterStateMatrixTest {
 			final CharacterStateMatrix matrix) {
 		final Map<CharacterStateRow, List<CharacterStateCell>> rowsToCells = newHashMap();
 		for (final CharacterStateRow row : matrix) {
-			rowsToCells.put(row, newArrayList(row));
+			rowsToCells.put(row, newArrayList(row.getCells()));
 		}
 		return rowsToCells;
 	}
@@ -117,7 +117,8 @@ public class SaveOrUpdateCharacterStateMatrixTest {
 
 		final Map<CharacterStateRow, List<CharacterStateCell>> sourceRowsToCells = stashCells(sourceMatrix);
 
-		saveOrUpdateCharacterStateMatrix.saveOrUpdate(targetMatrix, sourceMatrix,
+		saveOrUpdateCharacterStateMatrix.saveOrUpdate(targetMatrix,
+				sourceMatrix,
 				dnaCharacter);
 
 		putBackCells(targetMatrix, dao.getRowsToCells());
@@ -142,7 +143,8 @@ public class SaveOrUpdateCharacterStateMatrixTest {
 		final Map<CharacterStateRow, List<CharacterStateCell>> sourceRowsToCells =
 				stashCells(sourceMatrix);
 
-		saveOrUpdateCharacterStateMatrix.saveOrUpdate(targetMatrix, sourceMatrix,
+		saveOrUpdateCharacterStateMatrix.saveOrUpdate(targetMatrix,
+				sourceMatrix,
 				dnaCharacter);
 
 		putBackCells(targetMatrix, dao.getRowsToCells());
@@ -171,7 +173,8 @@ public class SaveOrUpdateCharacterStateMatrixTest {
 		final Map<CharacterStateRow, List<CharacterStateCell>> sourceRowsToCells2 =
 				stashCells(sourceMatrix);
 
-		saveOrUpdateCharacterStateMatrix.saveOrUpdate(targetMatrix, sourceMatrix,
+		saveOrUpdateCharacterStateMatrix.saveOrUpdate(targetMatrix,
+				sourceMatrix,
 				dnaCharacter);
 
 		putBackCells(targetMatrix, dao.getRowsToCells());
@@ -195,7 +198,8 @@ public class SaveOrUpdateCharacterStateMatrixTest {
 			fakeDbOTUSet.addCharacterStateMatrix(targetMatrix);
 
 			final Map<CharacterStateRow, List<CharacterStateCell>> sourceRowsToCells = stashCells(sourceMatrix);
-			saveOrUpdateCharacterStateMatrix.saveOrUpdate(targetMatrix, sourceMatrix,
+			saveOrUpdateCharacterStateMatrix.saveOrUpdate(targetMatrix,
+					sourceMatrix,
 					dnaCharacter);
 
 			putBackCells(targetMatrix, dao.getRowsToCells());
@@ -217,15 +221,17 @@ public class SaveOrUpdateCharacterStateMatrixTest {
 			sourceMatrix.setCharacters(newSourceMatrixCharacters);
 
 			for (final CharacterStateRow sourceRow : sourceMatrix) {
-				final List<CharacterStateCell> newSourceCells = newArrayList(sourceRow);
+				final List<CharacterStateCell> newSourceCells = newArrayList(sourceRow
+						.getCells());
 
-				newSourceCells.set(0, sourceRow.getCell(2));
-				newSourceCells.set(2, sourceRow.getCell(0));
+				newSourceCells.set(0, sourceRow.getCells().get(2));
+				newSourceCells.set(2, sourceRow.getCells().get(0));
 				sourceRow.setCells(newSourceCells);
 			}
 
 			final Map<CharacterStateRow, List<CharacterStateCell>> sourceRowsToCells2 = stashCells(sourceMatrix);
-			saveOrUpdateCharacterStateMatrix.saveOrUpdate(targetMatrix, sourceMatrix,
+			saveOrUpdateCharacterStateMatrix.saveOrUpdate(targetMatrix,
+					sourceMatrix,
 					dnaCharacter);
 			putBackCells(targetMatrix, dao.getRowsToCells());
 			putBackCells(sourceMatrix, sourceRowsToCells2);
@@ -252,7 +258,8 @@ public class SaveOrUpdateCharacterStateMatrixTest {
 			fakeDbOTUSet.addCharacterStateMatrix(targetMatrix);
 
 			final Map<CharacterStateRow, List<CharacterStateCell>> sourceRowsToCells = stashCells(sourceMatrix);
-			saveOrUpdateCharacterStateMatrix.saveOrUpdate(targetMatrix, sourceMatrix,
+			saveOrUpdateCharacterStateMatrix.saveOrUpdate(targetMatrix,
+					sourceMatrix,
 					dnaCharacter);
 			putBackCells(targetMatrix, dao.getRowsToCells());
 			putBackCells(sourceMatrix, sourceRowsToCells);
@@ -276,13 +283,15 @@ public class SaveOrUpdateCharacterStateMatrixTest {
 			sourceMatrix.setCharacters(newSourceMatrixCharacters);
 
 			for (final CharacterStateRow sourceRow : sourceMatrix) {
-				final List<CharacterStateCell> newSourceCells = newArrayList(sourceRow);
+				final List<CharacterStateCell> newSourceCells = newArrayList(sourceRow
+						.getCells());
 				newSourceCells.remove(2);
 				sourceRow.setCells(newSourceCells);
 			}
 
 			final Map<CharacterStateRow, List<CharacterStateCell>> sourceRowsToCells2 = stashCells(sourceMatrix);
-			saveOrUpdateCharacterStateMatrix.saveOrUpdate(targetMatrix, sourceMatrix,
+			saveOrUpdateCharacterStateMatrix.saveOrUpdate(targetMatrix,
+					sourceMatrix,
 					dnaCharacter);
 
 			assertTrue(dao.getDeletedEntities()

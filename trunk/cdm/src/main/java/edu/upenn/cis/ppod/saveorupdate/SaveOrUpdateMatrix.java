@@ -26,7 +26,8 @@ import edu.upenn.cis.ppod.thirdparty.injectslf4j.InjectLogger;
 /**
  * @author Sam Donnelly
  */
-final class SaveOrUpdateMatrix<R extends Row<C>, C extends Cell<E>, E> {
+final class SaveOrUpdateMatrix<R extends Row<C>, C extends Cell<E>, E>
+		implements ISaveOrUpdateMatrix<R, C, E> {
 
 	private final Provider<R> rowProvider;
 	private final Provider<C> cellProvider;
@@ -37,7 +38,6 @@ final class SaveOrUpdateMatrix<R extends Row<C>, C extends Cell<E>, E> {
 	private Logger logger;
 
 	private final INewPPodVersionInfo newPPodVersionInfo;
-	private final Set<E> newTargetElements;
 
 	@Inject
 	SaveOrUpdateMatrix(
@@ -45,23 +45,21 @@ final class SaveOrUpdateMatrix<R extends Row<C>, C extends Cell<E>, E> {
 				final Provider<C> cellProvider,
 				final Provider<Attachment> attachmentProvider,
 				final Provider<MatrixInfo> matrixInfoProvider,
-				final Provider<E> cellElementProvider,
 				@Assisted final INewPPodVersionInfo newPPodVersionInfo,
-				@Assisted final IDAO<Object, Long> dao,
-				@Assisted final IMergeAttachments mergeAttachments,
-				@Assisted final Set<E> newTargetElements) {
+				@Assisted final IDAO<Object, Long> dao) {
 		this.rowProvider = rowProvider;
 		this.cellProvider = cellProvider;
 		this.matrixInfoProvider = matrixInfoProvider;
 		this.dao = dao;
 		this.newPPodVersionInfo = newPPodVersionInfo;
-		this.newTargetElements = newTargetElements;
 	}
 
-	public void saveOrUpdate(final Matrix<R> dbMatrix,
+	public MatrixInfo saveOrUpdate(final Matrix<R> dbMatrix,
 			final Matrix<R> sourceMatrix) {
 
 		final String METHOD = "saveOrUpdate(...)";
+		final MatrixInfo matrixInfo = matrixInfoProvider.get();
+		matrixInfo.setPPodId(dbMatrix.getPPodId());
 
 		// So the rows have a dbMatrix id
 		dao.saveOrUpdate(dbMatrix);
@@ -93,15 +91,15 @@ final class SaveOrUpdateMatrix<R extends Row<C>, C extends Cell<E>, E> {
 			// "existing row has no pPOD version number");
 			// }
 
-			final List<C> dbCells = newArrayList(dbRow);
+			final List<C> dbCells = newArrayList(dbRow.getCells());
 
 			// Add in cells to dbCells if needed.
-			while (dbCells.size() < sourceRow.getCellsSize()) {
+			while (dbCells.size() < sourceRow.getCells().size()) {
 				dbCells.add(cellProvider.get());
 			}
 
 			// Get rid of cells from dbCells if needed
-			while (dbCells.size() > sourceRow.getCellsSize()) {
+			while (dbCells.size() > sourceRow.getCells().size()) {
 				dbCells.remove(dbCells.size() - 1);
 			}
 
@@ -112,33 +110,29 @@ final class SaveOrUpdateMatrix<R extends Row<C>, C extends Cell<E>, E> {
 			}
 
 			int targetCellPosition = -1;
-			for (final C dbCell : dbRow) {
+			for (final C dbCell : dbRow.getCells()) {
 				targetCellPosition++;
 
-				newTargetElements.clear();
-
-				final C sourceCell = sourceRow.getCell(
+				final C sourceCell = sourceRow.getCells().get(
 						targetCellPosition);
 
-				for (final E sourceCellElement : sourceCell) {
-					newTargetElements.add(sourceCellElement);
-				}
 				switch (sourceCell.getType()) {
 					case INAPPLICABLE:
 						dbCell.setInapplicable();
 						break;
 					case POLYMORPHIC:
-						dbCell.setPolymorphicElements(newTargetElements);
+						dbCell.setPolymorphicElements(sourceCell.getElements());
 						break;
 					case SINGLE:
 						dbCell
-								.setSingleElement(getOnlyElement(newTargetElements));
+								.setSingleElement(getOnlyElement(sourceCell
+										.getElements()));
 						break;
 					case UNASSIGNED:
 						dbCell.setUnassigned();
 						break;
 					case UNCERTAIN:
-						dbCell.setUncertainElements(newTargetElements);
+						dbCell.setUncertainElements(sourceCell.getElements());
 						break;
 					default:
 						throw new AssertionError("unknown type");
@@ -173,8 +167,6 @@ final class SaveOrUpdateMatrix<R extends Row<C>, C extends Cell<E>, E> {
 
 			dao.evict(dbRow);
 
-			final MatrixInfo matrixInfo = matrixInfoProvider.get();
-
 			fillInCellInfo(matrixInfo, dbRow, sourceOTUPosition);
 
 			// This is to free up the cells for garbage collection - but depends
@@ -184,12 +176,13 @@ final class SaveOrUpdateMatrix<R extends Row<C>, C extends Cell<E>, E> {
 			// Again to free up cells for garbage collection
 			sourceRow.clearCells();
 		}
+		return matrixInfo;
 	}
 
 	private void fillInCellInfo(final MatrixInfo matrixInfo,
 			final R row, final int rowPosition) {
 		int cellPosition = -1;
-		for (final C cell : row) {
+		for (final C cell : row.getCells()) {
 			cellPosition++;
 			matrixInfo.setCellPPodIdAndVersion(rowPosition,
 					cellPosition,

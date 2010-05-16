@@ -191,8 +191,8 @@ public class CharacterStateMatrixTest {
 	}
 
 	/**
-	 * Make sure when we move a character it gets moved and its column version
-	 * comes with it
+	 * Make sure when we move a character it the character->position map is
+	 * updated.
 	 */
 	@Test
 	public void moveCharacter() {
@@ -220,19 +220,25 @@ public class CharacterStateMatrixTest {
 		assertNotSame(matrix.getCharacters(), shuffledCharacters);
 		assertEquals(matrix.getCharacters(), shuffledCharacters);
 
-		Assert.assertEquals(matrix.getCharactersToPositions().get(
-				shuffledCharacters.get(0)), Integer.valueOf(0));
-		Assert.assertEquals(matrix.getCharactersToPositions().get(
-				shuffledCharacters.get(1)), Integer.valueOf(1));
-		Assert.assertEquals(matrix.getCharactersToPositions().get(
-				shuffledCharacters.get(2)), Integer.valueOf(2));
+		Assert.assertEquals(
+				matrix.getCharactersToPositions().get(
+						shuffledCharacters.get(0)),
+				Integer.valueOf(0));
+		Assert.assertEquals(
+				matrix.getCharactersToPositions().get(
+						shuffledCharacters.get(1)),
+				Integer.valueOf(1));
+		Assert.assertEquals(
+				matrix.getCharactersToPositions().get(
+						shuffledCharacters.get(2)),
+				Integer.valueOf(2));
 
-		assertEquals(matrix.getColumnPPodVersionInfos().get(0),
-				pPodVersionInfo1);
-		assertEquals(matrix.getColumnPPodVersionInfos().get(1),
-				pPodVersionInfo2);
-		assertEquals(matrix.getColumnPPodVersionInfos().get(2),
-				pPodVersionInfo0);
+// assertEquals(matrix.getColumnPPodVersionInfos().get(0),
+// pPodVersionInfo1);
+// assertEquals(matrix.getColumnPPodVersionInfos().get(1),
+// pPodVersionInfo2);
+// assertEquals(matrix.getColumnPPodVersionInfos().get(2),
+// pPodVersionInfo0);
 
 	}
 
@@ -266,10 +272,12 @@ public class CharacterStateMatrixTest {
 		matrix.setCharacters(characters2);
 		assertTrue(matrix.isInNeedOfNewPPodVersionInfo());
 
-		for (final PPodVersionInfo columnPPodVersionInfo : matrix
-				.getColumnPPodVersionInfos()) {
-			assertNull(columnPPodVersionInfo);
-		}
+		assertEquals(matrix.getCharacterPosition(characters2.get(0)),
+				Integer.valueOf(0));
+		assertEquals(matrix.getCharacterPosition(characters2.get(1)),
+				Integer.valueOf(1));
+		assertEquals(matrix.getCharacterPosition(characters2.get(2)),
+				Integer.valueOf(2));
 
 	}
 

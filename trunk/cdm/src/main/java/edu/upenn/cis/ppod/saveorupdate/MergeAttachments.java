@@ -99,7 +99,7 @@ class MergeAttachments implements IMergeAttachments {
 				sourceAttachment.getType().getLabel());
 		if (null == targetAttachmentType) {
 			targetAttachmentType = attachmentTypeDAO
-					.getAttachmentTypeByNamespaceAndType(
+					.getTypeByNamespaceAndLabel(
 							targetAttachmentNamespace.getLabel(),
 							sourceAttachment.getType().getLabel());
 			if (null == targetAttachmentType) {

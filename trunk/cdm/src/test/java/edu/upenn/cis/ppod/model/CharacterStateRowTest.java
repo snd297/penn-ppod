@@ -83,7 +83,7 @@ public class CharacterStateRowTest {
 				Arrays.asList(cell));
 
 		ModelAssert.assertEqualsCharacterStateCells(cell, matrix.getRow(
-				otus.get(0)).getCell(0));
+				otus.get(0)).getCells().get(0));
 	}
 
 	@Test

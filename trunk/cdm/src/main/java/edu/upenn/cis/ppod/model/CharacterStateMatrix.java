@@ -18,15 +18,13 @@ package edu.upenn.cis.ppod.model;
 import static com.google.common.base.Preconditions.checkArgument;
 import static com.google.common.base.Preconditions.checkNotNull;
 import static com.google.common.collect.Lists.newArrayList;
-import static com.google.common.collect.Lists.newArrayListWithCapacity;
 import static com.google.common.collect.Maps.newHashMap;
-import static edu.upenn.cis.ppod.util.CollectionsUtil.nullFillAndSet;
+import static edu.upenn.cis.ppod.util.CollectionsUtil.nullFill;
 
 import java.util.Collections;
 import java.util.Iterator;
 import java.util.List;
 import java.util.Map;
-import java.util.Map.Entry;
 
 import javax.annotation.CheckForNull;
 import javax.annotation.Nonnegative;
@@ -49,8 +47,6 @@ import javax.xml.bind.annotation.XmlSeeAlso;
 
 import org.hibernate.annotations.IndexColumn;
 
-import com.google.common.collect.BiMap;
-import com.google.common.collect.HashBiMap;
 import com.google.inject.Inject;
 
 import edu.upenn.cis.ppod.util.IVisitor;
@@ -189,62 +185,6 @@ public class CharacterStateMatrix extends Matrix<CharacterStateRow> {
 	}
 
 	/**
-	 * Iterates over this matix's characters in column order.
-	 * 
-	 * @return an iterator that iterates over this matix's characters in column
-	 *         order
-	 */
-	public Iterator<Character> getCharactersIterator() {
-		return Collections.unmodifiableList(getCharacters()).iterator();
-	}
-
-	private List<PPodVersionInfo> determineNewColumnHeaderPPodVersionInfos(
-			final List<? extends Character> newCharacters) {
-
-		final BiMap<Integer, Integer> originalPositionsToNewPositions = HashBiMap
-				.create(getColumnsSize());
-		for (int originalPosition = 0; originalPosition < getCharacters()
-				.size(); originalPosition++) {
-			final Character originalCharacter = getCharacters().get(
-					originalPosition);
-			final Integer newPosition = newCharacters
-					.indexOf(originalCharacter);
-			// Use unique negative values to indicate not present. Unique since
-			// this is a BiMap
-			originalPositionsToNewPositions.put(originalPosition,
-					newPosition == -1 ? -(originalPosition + 1) : newPosition);
-		}
-		final List<PPodVersionInfo> newColumnHeaderPPodVersionInfos = newArrayListWithCapacity(newCharacters
-				.size());
-		for (final Entry<Integer, Integer> originalPositionToNewPosition : originalPositionsToNewPositions
-				.entrySet()) {
-			final Integer originalPosition = originalPositionToNewPosition
-					.getKey();
-			final Integer newPosition = originalPositionToNewPosition
-					.getValue();
-			if (newPosition < 0) {
-				// The character has been removed, nothing to do
-			} else {
-				nullFillAndSet(newColumnHeaderPPodVersionInfos, newPosition,
-						getColumnPPodVersionInfos().get(originalPosition));
-			}
-		}
-
-		final Map<Integer, Integer> newPositionsByOriginalPositions = originalPositionsToNewPositions
-				.inverse();
-		// Now we add in null values for newly added characters
-		for (int newCharacterPosition = 0; newCharacterPosition < newCharacters
-				.size(); newCharacterPosition++) {
-			if (null == newPositionsByOriginalPositions
-					.get(newCharacterPosition)) {
-				nullFillAndSet(newColumnHeaderPPodVersionInfos,
-						newCharacterPosition, null);
-			}
-		}
-		return newColumnHeaderPPodVersionInfos;
-	}
-
-	/**
 	 * Get the character at the given position.
 	 * 
 	 * @param characterPosition the character's position
@@ -256,13 +196,6 @@ public class CharacterStateMatrix extends Matrix<CharacterStateRow> {
 	 */
 	public Character getCharacter(@Nonnegative final int characterPosition) {
 		return getCharacters().get(characterPosition);
-	}
-
-	/**
-	 * Created for testing.
-	 */
-	Map<Character, Integer> getCharactersToPositions() {
-		return charactersToPositions;
 	}
 
 	/**
@@ -287,6 +220,23 @@ public class CharacterStateMatrix extends Matrix<CharacterStateRow> {
 	@XmlIDREF
 	protected List<Character> getCharacters() {
 		return characters;
+	}
+
+	/**
+	 * Iterates over this matix's characters in column order.
+	 * 
+	 * @return an iterator that iterates over this matix's characters in column
+	 *         order
+	 */
+	public Iterator<Character> getCharactersIterator() {
+		return Collections.unmodifiableList(getCharacters()).iterator();
+	}
+
+	/**
+	 * Created for testing.
+	 */
+	Map<Character, Integer> getCharactersToPositions() {
+		return charactersToPositions;
 	}
 
 	public Long getColumnPPodVersion(final int columnPPodVersionPosition) {
@@ -365,29 +315,29 @@ public class CharacterStateMatrix extends Matrix<CharacterStateRow> {
 	 *             hold in a {@link MolecularStateMatrix}
 	 */
 	public List<Character> setCharacters(
-			final List<? extends Character> newCharacters) {
-		checkNotNull(newCharacters);
+			final List<? extends Character> characters) {
+		checkNotNull(characters);
 
-		if (newCharacters.equals(getCharacters())) {
+		if (characters.equals(getCharacters())) {
 			return Collections.emptyList();
 		}
 
 		int newCharacterPos = -1;
-		for (final Character newCharacter : newCharacters) {
+		for (final Character newCharacter : characters) {
 			newCharacterPos++;
 			checkArgument(newCharacter != null, "newCharacters["
 												+ newCharacterPos
 												+ "] is null");
 
 			// We leave this instanceof here since it is at worst ineffectual w/
-			// proxies, but
+			// Hibernate proxies, but
 			// it should still help us on the webapp client side (eg Mesquite)
 			// where hibernate is not a factor.
 			if (newCharacter instanceof MolecularCharacter) {
 				throw new AssertionError(
 						"character should not be a MolecularCharacter");
 			}
-			for (final Iterator<? extends Character> itr = newCharacters
+			for (final Iterator<? extends Character> itr = characters
 					.listIterator(newCharacterPos + 1); itr
 					.hasNext();) {
 				final Character character2 = itr.next();
@@ -395,18 +345,23 @@ public class CharacterStateMatrix extends Matrix<CharacterStateRow> {
 						"two characters are the same "
 								+ newCharacter.getLabel()
 								+ " at positions "
-								+ newCharacters.indexOf(newCharacter) + " and "
-								+ newCharacters.indexOf(character2));
+								+ characters.indexOf(newCharacter) + " and "
+								+ characters.indexOf(character2));
 			}
 		}
 
-		final List<PPodVersionInfo> newColumnPPodVersionInfos = determineNewColumnHeaderPPodVersionInfos(newCharacters);
-		getColumnPPodVersionInfos().clear();
-		getColumnPPodVersionInfos().addAll(newColumnPPodVersionInfos);
+		// Add in column versions as necessary
+		nullFill(getColumnPPodVersionInfos(), characters.size());
+
+		// Remove column versions as necessary
+		while (getColumnPPodVersionInfos().size() > characters.size()) {
+			getColumnPPodVersionInfos().remove(
+					getColumnPPodVersionInfos().size() - 1);
+		}
 
 		final List<Character> removedCharacters = newArrayList(getCharacters());
 
-		removedCharacters.removeAll(newCharacters);
+		removedCharacters.removeAll(characters);
 		for (final Character removedCharacter : removedCharacters) {
 			removedCharacter.removeMatrix(this);
 		}
@@ -414,7 +369,7 @@ public class CharacterStateMatrix extends Matrix<CharacterStateRow> {
 		getCharacters().clear();
 		charactersToPositions.clear();
 
-		getCharacters().addAll(newCharacters);
+		getCharacters().addAll(characters);
 
 		int characterPosition = 0;
 		for (final Character character : getCharacters()) {

@@ -94,12 +94,12 @@ public class ModelAssert {
 	public static void assertEqualsCharacterStateCells(
 			final CharacterStateCell actualCell,
 			final CharacterStateCell expectedCell) {
-		assertEquals(actualCell.getElementsSize(), expectedCell
-				.getElementsSize());
+		assertEquals(actualCell.getElements().size(), expectedCell
+				.getElements().size());
 		for (final Iterator<CharacterState> actualStateItr = actualCell
-				.iterator(), expectedStateItr = expectedCell
-				.iterator(); actualStateItr.hasNext()
-								&& expectedStateItr.hasNext();) {
+				.getElements().iterator(), expectedStateItr = expectedCell
+				.getElements().iterator(); actualStateItr.hasNext()
+											&& expectedStateItr.hasNext();) {
 			assertEqualsCharacterStates(actualStateItr.next(), expectedStateItr
 					.next());
 		}
@@ -108,7 +108,7 @@ public class ModelAssert {
 	public static void assertEqualsCharacterStateRows(
 			final CharacterStateRow actualRow,
 			final CharacterStateRow expectedRow) {
-		assertEquals(actualRow.getCellsSize(), expectedRow.getCellsSize());
+		assertEquals(actualRow.getCells().size(), expectedRow.getCells().size());
 
 		for (final Iterator<CharacterStateCell> actualCellItr = actualRow
 				.iterator(), expectedCellItr = expectedRow.iterator(); actualCellItr

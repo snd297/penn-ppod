@@ -33,7 +33,7 @@ public interface IAttachmentTypeDAO extends IDAO<AttachmentType, Long> {
 	 * @return the {@link AttachmentType} of type {@code type} and in the given
 	 *         namespace
 	 */
-	AttachmentType getAttachmentTypeByNamespaceAndType(String namespaceLabel,
+	AttachmentType getTypeByNamespaceAndLabel(String namespaceLabel,
 			String typeLabel);
 
 }

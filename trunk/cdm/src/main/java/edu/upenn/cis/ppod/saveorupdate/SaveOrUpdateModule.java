@@ -19,6 +19,9 @@ import com.google.inject.AbstractModule;
 import com.google.inject.TypeLiteral;
 import com.google.inject.assistedinject.FactoryProvider;
 
+import edu.upenn.cis.ppod.model.CharacterState;
+import edu.upenn.cis.ppod.model.CharacterStateCell;
+import edu.upenn.cis.ppod.model.CharacterStateRow;
 import edu.upenn.cis.ppod.model.DNASequence;
 import edu.upenn.cis.ppod.model.DNASequenceSet;
 
@@ -28,18 +31,28 @@ import edu.upenn.cis.ppod.model.DNASequenceSet;
  */
 public class SaveOrUpdateModule extends AbstractModule {
 
-	private final static class IMergeMolecularSequenceSetsIFactoryTypeLiteral
-			extends
-			TypeLiteral<IMergeMolecularSequenceSets.IFactory<DNASequenceSet, DNASequence>> {}
-
 	private final static class MergeMolecularSequenceSetsTypeLiteral
 			extends
 			TypeLiteral<MergeMolecularSequenceSets<DNASequenceSet, DNASequence>> {}
 
+	private final static class IMergeMolecularSequenceSetsIFactoryTypeLiteral
+			extends
+			TypeLiteral<IMergeMolecularSequenceSets.IFactory<DNASequenceSet, DNASequence>> {}
+
+	private final static class SaveOrUpdateCharacterStateMatrixTypeLiteral
+			extends
+			TypeLiteral<SaveOrUpdateMatrix<CharacterStateRow, CharacterStateCell, CharacterState>> {}
+
+	private final static class ISaveOrUpdateCharacterStateMatrixIFactoryTypeLiteral
+			extends
+			TypeLiteral<ISaveOrUpdateMatrix.IFactory<CharacterStateRow, CharacterStateCell, CharacterState>> {}
+
 	@Override
 	protected void configure() {
+
 		final TypeLiteral<MergeMolecularSequenceSets<DNASequenceSet, DNASequence>> mergeDNASequenceSetTypeLiteral =
 				new MergeMolecularSequenceSetsTypeLiteral();
+
 		final TypeLiteral<IMergeMolecularSequenceSets.IFactory<DNASequenceSet, DNASequence>> mergeDNASequencesFactoryTypeLiteral =
 				new IMergeMolecularSequenceSetsIFactoryTypeLiteral();
 
@@ -47,6 +60,18 @@ public class SaveOrUpdateModule extends AbstractModule {
 				FactoryProvider.newFactory(mergeDNASequencesFactoryTypeLiteral,
 						mergeDNASequenceSetTypeLiteral));
 
-	}
+		final TypeLiteral<SaveOrUpdateMatrix<CharacterStateRow, CharacterStateCell, CharacterState>> saveOrUpdateCharacterStateMatrixTypeLiteral =
+				new SaveOrUpdateCharacterStateMatrixTypeLiteral();
 
+		final TypeLiteral<ISaveOrUpdateMatrix.IFactory<CharacterStateRow, CharacterStateCell, CharacterState>> saveOrUpdateCharacterStateMatrixFactoryTypeLiteral =
+				new ISaveOrUpdateCharacterStateMatrixIFactoryTypeLiteral();
+
+		bind(saveOrUpdateCharacterStateMatrixFactoryTypeLiteral)
+				.toProvider(
+						FactoryProvider
+								.newFactory(
+										saveOrUpdateCharacterStateMatrixFactoryTypeLiteral,
+										saveOrUpdateCharacterStateMatrixTypeLiteral));
+
+	}
 }

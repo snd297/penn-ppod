@@ -45,7 +45,12 @@ public class DNARow extends Row<DNACell> {
 	protected DNARow() {}
 
 	@Override
-	protected List<DNACell> getCells() {
+	public List<DNACell> getCells() {
+		return Collections.unmodifiableList(cells);
+	}
+
+	@Override
+	protected List<DNACell> getCellsModifiable() {
 		return cells;
 	}
 
@@ -64,7 +69,7 @@ public class DNARow extends Row<DNACell> {
 	public List<DNACell> setCells(final List<? extends DNACell> cells) {
 		final List<DNACell> clearedCells = super.setCellsHelper(cells);
 
-		for (final DNACell cell : this) {
+		for (final DNACell cell : getCells()) {
 			cell.setRow(this);
 		}
 		return clearedCells;
