@@ -51,7 +51,7 @@ final class Study2StudyInfo implements IStudy2StudyInfo {
 	@Inject
 	Study2StudyInfo(
 			final Provider<OTUSetInfo> otuSetPPodIdAndVersionProvider,
-			final Provider<CharacterStateMatrixInfo> matrixPPodIdAndVersionProvider,
+			final Provider<MatrixInfo> matrixPPodIdAndVersionProvider,
 			final Provider<MolecularSequenceSetInfo> molecularSequenceSetInfoProvider,
 			final Provider<TreeSetInfo> treeSetInfoProvider,
 			final Provider<PPodEntityInfo> pPodEntityInfoProvider,
@@ -95,7 +95,7 @@ final class Study2StudyInfo implements IStudy2StudyInfo {
 			for (final Iterator<CharacterStateMatrix> matrixItr = otuSet
 					.getCharacterStateMatricesIterator(); matrixItr.hasNext();) {
 				final CharacterStateMatrix matrix = matrixItr.next();
-				final CharacterStateMatrixInfo matrixInfo =
+				final MatrixInfo matrixInfo =
 						find(otuSetInfo.getMatrixInfos(),
 								compose(equalTo(matrix.getPPodId()),
 										IWithPPodId.getPPodId));
@@ -106,7 +106,7 @@ final class Study2StudyInfo implements IStudy2StudyInfo {
 
 				int characterIdx = -1;
 				for (final Iterator<Character> charactersItr = matrix
-						.charactersIterator(); charactersItr.hasNext();) {
+						.getCharactersIterator(); charactersItr.hasNext();) {
 					characterIdx++;
 					final Character character = charactersItr.next();
 					PPodEntityInfo characterInfo = pPodEntityInfoProvider.get();

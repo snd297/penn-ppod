@@ -21,7 +21,7 @@ import edu.upenn.cis.ppod.dao.IDAO;
 import edu.upenn.cis.ppod.model.CharacterStateMatrix;
 import edu.upenn.cis.ppod.model.DNACharacter;
 import edu.upenn.cis.ppod.modelinterfaces.INewPPodVersionInfo;
-import edu.upenn.cis.ppod.services.ppodentity.CharacterStateMatrixInfo;
+import edu.upenn.cis.ppod.services.ppodentity.MatrixInfo;
 
 /**
  * Merge two matrices.
@@ -32,24 +32,24 @@ import edu.upenn.cis.ppod.services.ppodentity.CharacterStateMatrixInfo;
  * @author Sam Donnelly
  */
 @ImplementedBy(SaveOrUpdateCharacterStateMatrix.class)
-public interface ISaveOrUpdateMatrix {
+public interface ISaveOrUpdateCharacterStateMatrix {
 
 	/**
-	 * Merge {@code sourceMatrix} onto {@code targetMatrix}.
+	 * Merge {@code sourceMatrix} onto {@code dbMatrix}.
 	 * <p>
 	 * If {@code sourceMatrix.getDocId() != null} then this method calls {@code
 	 * sourceMatrix.setDocId(sourceMatrix.getDocId())}. In other words, if
 	 * {@code targetMatrix}'s doc id is not already set, this method copies it
 	 * from {@code sourceMatrix}.
 	 * <p>
-	 * All rows in {@code sourceMatrix} must be non-null. 
+	 * All rows in {@code sourceMatrix} must be non-null.
 	 * <p>
 	 * Implementors are free to call {@code CharacterStateRow.clearCells()} on
 	 * both modify the past in matrices in order to free up objects for garbage
 	 * collection. So generally it is not safe to reattach {@code dbMatrix}.
 	 * 
 	 * 
-	 * @param targetMatrix merge into the target matrix
+	 * @param dbMatrix merge into the target matrix
 	 * @param sourceMatrix source of the merge
 	 * @param mergedOTUsBySourceOTU maps each merged OTU to its source OTU
 	 *            counterpart. This parameter is used to set the new OTU
@@ -58,12 +58,12 @@ public interface ISaveOrUpdateMatrix {
 	 * @param dnaCharacter the {@code DNACharacter} in a persistent state that
 	 *            should be used in the target matrix
 	 */
-	CharacterStateMatrixInfo saveOrUpdate(CharacterStateMatrix dbMatrix,
+	MatrixInfo saveOrUpdate(CharacterStateMatrix dbMatrix,
 			CharacterStateMatrix sourceMatrix,
 			DNACharacter dnaCharacter);
 
 	static interface IFactory {
-		ISaveOrUpdateMatrix create(IMergeAttachments mergeAttachments,
+		ISaveOrUpdateCharacterStateMatrix create(IMergeAttachments mergeAttachments,
 				IDAO<Object, Long> dao, INewPPodVersionInfo newPPodVersionInfo);
 	}
 

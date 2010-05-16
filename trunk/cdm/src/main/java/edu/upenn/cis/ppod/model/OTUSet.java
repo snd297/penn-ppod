@@ -174,7 +174,7 @@ public class OTUSet extends UUPPodEntityWXmlId implements Iterable<OTU> {
 	 * So it takes care of both sides of the <code>OTUSet</code><->
 	 * <code>OTU</code> relationship.
 	 * <p>
-	 * {@code otu} must not be in a detached state.
+	 * Assumes {@code otu} is in a detached state.
 	 * <p>
 	 * {@code otu} must have a label that is unique relative to this OTU set.
 	 * 
@@ -210,12 +210,12 @@ public class OTUSet extends UUPPodEntityWXmlId implements Iterable<OTU> {
 		return otu;
 	}
 
-	public OTUSet addTreeSet(final TreeSet newTreeSet) {
+	public TreeSet addTreeSet(final TreeSet newTreeSet) {
 		checkNotNull(newTreeSet);
 		getTreeSets().add(newTreeSet);
 		newTreeSet.setOTUSet(this);
 		setInNeedOfNewPPodVersionInfo();
-		return this;
+		return newTreeSet;
 	}
 
 	/**

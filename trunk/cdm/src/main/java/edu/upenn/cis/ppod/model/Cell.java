@@ -393,7 +393,7 @@ public abstract class Cell<E> extends PPodEntity implements Iterable<E> {
 
 	protected abstract Cell<E> unsetFirstElement();
 
-	public abstract Cell<E> unsetRow();
+	protected abstract Cell<E> unsetRow();
 
 	protected abstract Cell<E> unsetXmlElements();
 

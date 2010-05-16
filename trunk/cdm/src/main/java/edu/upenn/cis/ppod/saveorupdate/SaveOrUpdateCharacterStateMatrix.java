@@ -52,19 +52,20 @@ import edu.upenn.cis.ppod.model.MolecularStateMatrix;
 import edu.upenn.cis.ppod.model.OTU;
 import edu.upenn.cis.ppod.modelinterfaces.INewPPodVersionInfo;
 import edu.upenn.cis.ppod.modelinterfaces.IWithPPodId;
-import edu.upenn.cis.ppod.services.ppodentity.CharacterStateMatrixInfo;
+import edu.upenn.cis.ppod.services.ppodentity.MatrixInfo;
 import edu.upenn.cis.ppod.services.ppodentity.PPodEntityInfo;
 import edu.upenn.cis.ppod.thirdparty.injectslf4j.InjectLogger;
 
 /**
  * @author Sam Donnelly
  */
-final class SaveOrUpdateCharacterStateMatrix implements ISaveOrUpdateMatrix {
+final class SaveOrUpdateCharacterStateMatrix implements
+		ISaveOrUpdateCharacterStateMatrix {
 
 	private final Provider<Character> characterProvider;
-	private final Provider<CharacterStateRow> rowProvider;
+	private final Provider<CharacterStateRow> characterStateRowProvider;
 	private final Provider<CharacterStateCell> cellProvider;
-	private final Provider<CharacterStateMatrixInfo> matrixInfoProvider;
+	private final Provider<MatrixInfo> matrixInfoProvider;
 	// private final Provider<PPodEntityInfo> pPodEntityInfoProvider;
 	private final CharacterState.IFactory stateFactory;
 	private final Provider<Attachment> attachmentProvider;
@@ -83,13 +84,13 @@ final class SaveOrUpdateCharacterStateMatrix implements ISaveOrUpdateMatrix {
 			final Provider<CharacterStateCell> cellProvider,
 			final CharacterState.IFactory stateFactory,
 			final Provider<Attachment> attachmentProvider,
-			final Provider<CharacterStateMatrixInfo> matrixInfoProvider,
+			final Provider<MatrixInfo> matrixInfoProvider,
 			final Provider<PPodEntityInfo> pPodEntityInfoProvider,
 			@Assisted final INewPPodVersionInfo newPPodVersionInfo,
 			@Assisted final IDAO<Object, Long> dao,
 			@Assisted final IMergeAttachments mergeAttachments) {
 		this.characterProvider = characterProvider;
-		this.rowProvider = rowProvider;
+		this.characterStateRowProvider = rowProvider;
 		this.cellProvider = cellProvider;
 		this.stateFactory = stateFactory;
 		this.attachmentProvider = attachmentProvider;
@@ -100,7 +101,7 @@ final class SaveOrUpdateCharacterStateMatrix implements ISaveOrUpdateMatrix {
 		this.newPPodVersionInfo = newPPodVersionInfo;
 	}
 
-	public CharacterStateMatrixInfo saveOrUpdate(
+	public MatrixInfo saveOrUpdate(
 			final CharacterStateMatrix dbMatrix,
 			final CharacterStateMatrix sourceMatrix,
 			final DNACharacter dnaCharacter) {
@@ -109,7 +110,7 @@ final class SaveOrUpdateCharacterStateMatrix implements ISaveOrUpdateMatrix {
 		checkNotNull(dbMatrix);
 		checkNotNull(sourceMatrix);
 
-		final CharacterStateMatrixInfo matrixInfo = matrixInfoProvider.get();
+		final MatrixInfo matrixInfo = matrixInfoProvider.get();
 
 		dbMatrix.setLabel(sourceMatrix.getLabel());
 		dbMatrix.setDescription(sourceMatrix.getDescription());
@@ -124,7 +125,7 @@ final class SaveOrUpdateCharacterStateMatrix implements ISaveOrUpdateMatrix {
 		final List<Character> newDbMatrixCharacters = newArrayList();
 		int sourceCharacterPosition = -1;
 		for (final Iterator<Character> sourceCharactersItr = sourceMatrix
-				.charactersIterator(); sourceCharactersItr.hasNext();) {
+				.getCharactersIterator(); sourceCharactersItr.hasNext();) {
 			final Character sourceCharacter = sourceCharactersItr.next();
 			sourceCharacterPosition++;
 			Character newDbCharacter;
@@ -132,7 +133,7 @@ final class SaveOrUpdateCharacterStateMatrix implements ISaveOrUpdateMatrix {
 				newDbCharacter = dnaCharacter;
 			} else if (null == (newDbCharacter =
 					findIf(dbMatrix
-							.charactersIterator(),
+							.getCharactersIterator(),
 							compose(equalTo(sourceCharacter
 									.getPPodId()),
 									IWithPPodId.getPPodId)))) {
@@ -215,6 +216,10 @@ final class SaveOrUpdateCharacterStateMatrix implements ISaveOrUpdateMatrix {
 		final Set<CharacterStateCell> cellsToEvict = newHashSet();
 		int sourceOTUPosition = -1;
 
+		// We'll just keep using this over an over again since there a so many
+		// cells.
+		final Set<CharacterState> newTargetStates = newHashSet();
+
 		for (final OTU sourceOTU : sourceMatrix.getOTUSet()) {
 			sourceOTUPosition++;
 			final CharacterStateRow sourceRow = sourceMatrix.getRow(sourceOTU);
@@ -222,13 +227,11 @@ final class SaveOrUpdateCharacterStateMatrix implements ISaveOrUpdateMatrix {
 			final OTU dbOTU = dbMatrix.getOTUSet().getOTU(
 					sourceOTUPosition);
 			CharacterStateRow dbRow = null;
-			final List<Character> characters = newArrayList(dbMatrix
-					.charactersIterator());
 
 			boolean newRow = false;
 
 			if (null == (dbRow = dbMatrix.getRow(dbOTU))) {
-				dbRow = rowProvider.get();
+				dbRow = characterStateRowProvider.get();
 				dbRow.setPPodVersionInfo(newPPodVersionInfo
 						.getNewPPodVersionInfo());
 				dbMatrix.putRow(dbOTU, dbRow);
@@ -266,8 +269,8 @@ final class SaveOrUpdateCharacterStateMatrix implements ISaveOrUpdateMatrix {
 				newDbCells.add(dbCell);
 			}
 
-			final List<CharacterStateCell> clearedCells = dbRow
-					.setCells(newDbCells);
+			final List<CharacterStateCell> clearedCells =
+					dbRow.setCells(newDbCells);
 
 			for (final CharacterStateCell clearedCell : clearedCells) {
 				dao.delete(clearedCell);
@@ -277,14 +280,15 @@ final class SaveOrUpdateCharacterStateMatrix implements ISaveOrUpdateMatrix {
 			for (final CharacterStateCell dbCell : dbRow) {
 				targetCellPosition++;
 
+				newTargetStates.clear();
+
 				final CharacterStateCell sourceCell = sourceRow.getCell(
 						targetCellPosition);
 
-				final Set<CharacterState> newTargetStates = newHashSet();
 				for (final CharacterState sourceState : sourceCell) {
-					newTargetStates.add(characters.get(targetCellPosition)
-							.getState(sourceState.getStateNumber()));
+					newTargetStates.add(sourceState);
 				}
+
 				switch (sourceCell.getType()) {
 					case INAPPLICABLE:
 						dbCell.setInapplicable();
@@ -367,7 +371,7 @@ final class SaveOrUpdateCharacterStateMatrix implements ISaveOrUpdateMatrix {
 		return matrixInfo;
 	}
 
-	private void fillInCellInfo(final CharacterStateMatrixInfo matrixInfo,
+	private void fillInCellInfo(final MatrixInfo matrixInfo,
 			final CharacterStateRow row, final int rowPosition) {
 		int cellPosition = -1;
 		for (final CharacterStateCell cell : row) {

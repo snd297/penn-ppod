@@ -19,6 +19,7 @@ import static com.google.common.base.Preconditions.checkArgument;
 import static com.google.common.base.Preconditions.checkNotNull;
 
 import java.util.Iterator;
+import java.util.Map;
 
 import javax.annotation.CheckForNull;
 import javax.annotation.Nullable;
@@ -76,17 +77,17 @@ public abstract class SequenceSet<S extends Sequence>
 		setOTUSet((OTUSet) parent);
 	}
 
-	protected void checkSequenceSize(final S sequence) {
+	protected void checkSequenceSizes(final S sequence) {
 		checkNotNull(sequence);
 		checkArgument(sequence.getSequence() != null,
 				"sequence.getSequence() is null");
 
-		final Integer sequencesLength = getSequencesLength();
+		final Integer sequencesLength = getSequenceLengths();
 		if (sequencesLength == null) {
 			return;
 		}
 
-		if (sequence.getSequence().length() != getSequencesLength()) {
+		if (sequence.getSequence().length() != sequencesLength) {
 			throw new IllegalArgumentException(
 							"sequence.getSequence().length must be "
 									+ sequencesLength
@@ -110,7 +111,8 @@ public abstract class SequenceSet<S extends Sequence>
 	}
 
 	/**
-	 * Getter. Will be {@code null} when object is first created.
+	 * Getter. Will be {@code null} when the sequence set is not connected to an
+	 * OTU set.
 	 * 
 	 * @return this matrix's {@code OTUSet}
 	 */
@@ -120,6 +122,17 @@ public abstract class SequenceSet<S extends Sequence>
 	}
 
 	protected abstract OTUKeyedMap<S> getOTUsToSequences();
+
+	/**
+	 * Get a map which contains the {@code OTU, S} entries of this sequence set.
+	 * <p>
+	 * The returned value may be an unmodifiable view of this set's values, so
+	 * the client should make a copy of the returned value if desired.
+	 * 
+	 * @return a map which contains the {@code OTU, S} entries of this sequence
+	 *         set
+	 */
+	public abstract Map<OTU, S> getOTUsToSequencesMap();
 
 	/**
 	 * Get the sequence indexed by {@code otu}.
@@ -135,14 +148,14 @@ public abstract class SequenceSet<S extends Sequence>
 	public abstract S getSequence(final OTU otu);
 
 	/**
-	 * Get the length of the sequences in this set, or {@code null} of no
+	 * Get the length of the sequences in this set, or {@code null} if no
 	 * sequences have been added to this set.
 	 * 
-	 * @return the length of the sequences in this set, or {@code null} of no
+	 * @return the length of the sequences in this set, or {@code null} if no
 	 *         sequences have been added to this set.
 	 */
-	@Nullable
-	public Integer getSequencesLength() {
+	@CheckForNull
+	public Integer getSequenceLengths() {
 		for (final S sequenceInThisSet : getOTUsToSequences().getOTUsToValues()
 				.values()) {
 			if (sequenceInThisSet != null) {

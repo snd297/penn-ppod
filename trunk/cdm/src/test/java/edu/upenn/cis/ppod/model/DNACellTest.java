@@ -170,4 +170,11 @@ public class DNACellTest {
 					(Object) newHashSet(DNANucleotide.A));
 		assertTrue(dnaCell.isInNeedOfNewPPodVersionInfo());
 	}
+
+	@Test(groups = TestGroupDefs.SINGLE)
+	public void unsetRow() {
+		final DNAMatrix matrix = dnaMatrix2Provider.get();
+		matrix.setColumnsSize(1);
+		cellTest.unsetRow(matrix);
+	}
 }

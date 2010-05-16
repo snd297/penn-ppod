@@ -19,6 +19,9 @@ import static com.google.common.base.Preconditions.checkArgument;
 import static com.google.common.base.Preconditions.checkNotNull;
 import static com.google.common.base.Preconditions.checkState;
 
+import java.util.Collections;
+import java.util.Map;
+
 import javax.annotation.CheckForNull;
 import javax.annotation.Nullable;
 import javax.persistence.CascadeType;
@@ -86,6 +89,12 @@ public class DNASequenceSet extends SequenceSet<DNASequence> {
 	}
 
 	@Override
+	public Map<OTU, DNASequence> getOTUsToSequencesMap() {
+		return Collections.unmodifiableMap(getOTUsToSequences()
+				.getOTUsToValues());
+	}
+
+	@Override
 	public DNASequence getSequence(final OTU otu) {
 		checkNotNull(otu);
 		return getOTUsToSequences().get(otu);
@@ -99,7 +108,7 @@ public class DNASequenceSet extends SequenceSet<DNASequence> {
 		checkNotNull(sequence);
 		checkArgument(sequence.getSequence() != null,
 				"sequence.getSequence() == null");
-		checkSequenceSize(sequence);
+		checkSequenceSizes(sequence);
 		return getOTUsToSequences().put(otu, sequence);
 	}
 
@@ -126,5 +135,4 @@ public class DNASequenceSet extends SequenceSet<DNASequence> {
 		this.otusToSequences = otusToSequences;
 		return this;
 	}
-
 }
