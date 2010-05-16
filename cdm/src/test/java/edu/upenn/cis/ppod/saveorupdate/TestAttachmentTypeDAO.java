@@ -50,7 +50,7 @@ public class TestAttachmentTypeDAO implements IAttachmentTypeDAO {
 		throw new UnsupportedOperationException();
 	}
 
-	public AttachmentType getAttachmentTypeByNamespaceAndType(
+	public AttachmentType getTypeByNamespaceAndLabel(
 			final String namespaceLabel, final String typeLabel) {
 		final Map<String, AttachmentType> typesByLabel = typesByNamespaceLabelAndTypeLabel
 				.get(namespaceLabel);

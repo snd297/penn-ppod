@@ -20,20 +20,15 @@ import static com.google.common.base.Predicates.compose;
 import static com.google.common.base.Predicates.equalTo;
 import static com.google.common.collect.Iterables.getOnlyElement;
 import static com.google.common.collect.Lists.newArrayList;
-import static com.google.common.collect.Lists.newArrayListWithCapacity;
-import static com.google.common.collect.Maps.newHashMap;
 import static com.google.common.collect.Sets.filter;
-import static com.google.common.collect.Sets.newHashSet;
 import static edu.upenn.cis.ppod.util.PPodIterables.findIf;
 
 import java.util.Iterator;
 import java.util.List;
-import java.util.Map;
 import java.util.Set;
 
 import org.slf4j.Logger;
 
-import com.google.common.collect.ImmutableList;
 import com.google.common.collect.ImmutableSet;
 import com.google.inject.Inject;
 import com.google.inject.Provider;
@@ -48,12 +43,9 @@ import edu.upenn.cis.ppod.model.CharacterStateMatrix;
 import edu.upenn.cis.ppod.model.CharacterStateRow;
 import edu.upenn.cis.ppod.model.DNACharacter;
 import edu.upenn.cis.ppod.model.DNAStateMatrix;
-import edu.upenn.cis.ppod.model.MolecularStateMatrix;
-import edu.upenn.cis.ppod.model.OTU;
 import edu.upenn.cis.ppod.modelinterfaces.INewPPodVersionInfo;
 import edu.upenn.cis.ppod.modelinterfaces.IWithPPodId;
 import edu.upenn.cis.ppod.services.ppodentity.MatrixInfo;
-import edu.upenn.cis.ppod.services.ppodentity.PPodEntityInfo;
 import edu.upenn.cis.ppod.thirdparty.injectslf4j.InjectLogger;
 
 /**
@@ -63,10 +55,6 @@ final class SaveOrUpdateCharacterStateMatrix implements
 		ISaveOrUpdateCharacterStateMatrix {
 
 	private final Provider<Character> characterProvider;
-	private final Provider<CharacterStateRow> characterStateRowProvider;
-	private final Provider<CharacterStateCell> cellProvider;
-	private final Provider<MatrixInfo> matrixInfoProvider;
-	// private final Provider<PPodEntityInfo> pPodEntityInfoProvider;
 	private final CharacterState.IFactory stateFactory;
 	private final Provider<Attachment> attachmentProvider;
 	private final IMergeAttachments mergeAttachments;
@@ -76,26 +64,21 @@ final class SaveOrUpdateCharacterStateMatrix implements
 	private Logger logger;
 
 	private final INewPPodVersionInfo newPPodVersionInfo;
+	private final ISaveOrUpdateMatrix.IFactory<CharacterStateRow, CharacterStateCell, CharacterState> saveOrUpdateMatrixFactory;
 
 	@Inject
 	SaveOrUpdateCharacterStateMatrix(
 			final Provider<Character> characterProvider,
-			final Provider<CharacterStateRow> rowProvider,
-			final Provider<CharacterStateCell> cellProvider,
 			final CharacterState.IFactory stateFactory,
 			final Provider<Attachment> attachmentProvider,
-			final Provider<MatrixInfo> matrixInfoProvider,
-			final Provider<PPodEntityInfo> pPodEntityInfoProvider,
+			final ISaveOrUpdateMatrix.IFactory<CharacterStateRow, CharacterStateCell, CharacterState> saveOrUpdateMatrixFactory,
 			@Assisted final INewPPodVersionInfo newPPodVersionInfo,
 			@Assisted final IDAO<Object, Long> dao,
 			@Assisted final IMergeAttachments mergeAttachments) {
 		this.characterProvider = characterProvider;
-		this.characterStateRowProvider = rowProvider;
-		this.cellProvider = cellProvider;
 		this.stateFactory = stateFactory;
 		this.attachmentProvider = attachmentProvider;
-		this.matrixInfoProvider = matrixInfoProvider;
-		// this.pPodEntityInfoProvider = pPodEntityInfoProvider;
+		this.saveOrUpdateMatrixFactory = saveOrUpdateMatrixFactory;
 		this.dao = dao;
 		this.mergeAttachments = mergeAttachments;
 		this.newPPodVersionInfo = newPPodVersionInfo;
@@ -110,7 +93,7 @@ final class SaveOrUpdateCharacterStateMatrix implements
 		checkNotNull(dbMatrix);
 		checkNotNull(sourceMatrix);
 
-		final MatrixInfo matrixInfo = matrixInfoProvider.get();
+// final MatrixInfo matrixInfo = matrixInfoProvider.get();
 
 		dbMatrix.setLabel(sourceMatrix.getLabel());
 		dbMatrix.setDescription(sourceMatrix.getDescription());
@@ -121,7 +104,6 @@ final class SaveOrUpdateCharacterStateMatrix implements
 			dbMatrix.setDocId(sourceMatrix.getDocId());
 		}
 
-		final Map<Integer, Integer> newCharPositionsToOriginalCharPositions = newHashMap();
 		final List<Character> newDbMatrixCharacters = newArrayList();
 		int sourceCharacterPosition = -1;
 		for (final Iterator<Character> sourceCharactersItr = sourceMatrix
@@ -167,21 +149,6 @@ final class SaveOrUpdateCharacterStateMatrix implements
 				}
 			}
 
-			if (!(sourceMatrix instanceof MolecularStateMatrix)) {
-				newCharPositionsToOriginalCharPositions.put(
-						sourceCharacterPosition,
-						dbMatrix.getCharacterPosition(newDbCharacter));
-			} else {
-				if (dbMatrix.getColumnsSize() <= sourceCharacterPosition) {
-					newCharPositionsToOriginalCharPositions.put(
-							sourceCharacterPosition,
-							null);
-				} else {
-					newCharPositionsToOriginalCharPositions.put(
-							sourceCharacterPosition,
-							sourceCharacterPosition);
-				}
-			}
 			for (final Iterator<Attachment> sourceAttachmentsItr = sourceCharacter
 					.getAttachmentsIterator(); sourceAttachmentsItr.hasNext();) {
 				final Attachment sourceAttachment = sourceAttachmentsItr.next();
@@ -210,144 +177,12 @@ final class SaveOrUpdateCharacterStateMatrix implements
 		final List<Character> removedCharacters = dbMatrix
 				.setCharacters(newDbMatrixCharacters);
 
-		// So the rows have a dbMatrix id
-		dao.saveOrUpdate(dbMatrix);
+		final ISaveOrUpdateMatrix<CharacterStateRow, CharacterStateCell, CharacterState> saveOrUpdateMatrix =
+				saveOrUpdateMatrixFactory
+						.create(newPPodVersionInfo, dao);
 
-		final Set<CharacterStateCell> cellsToEvict = newHashSet();
-		int sourceOTUPosition = -1;
-
-		// We'll just keep using this over an over again since there a so many
-		// cells.
-		final Set<CharacterState> newTargetStates = newHashSet();
-
-		for (final OTU sourceOTU : sourceMatrix.getOTUSet()) {
-			sourceOTUPosition++;
-			final CharacterStateRow sourceRow = sourceMatrix.getRow(sourceOTU);
-
-			final OTU dbOTU = dbMatrix.getOTUSet().getOTU(
-					sourceOTUPosition);
-			CharacterStateRow dbRow = null;
-
-			boolean newRow = false;
-
-			if (null == (dbRow = dbMatrix.getRow(dbOTU))) {
-				dbRow = characterStateRowProvider.get();
-				dbRow.setPPodVersionInfo(newPPodVersionInfo
-						.getNewPPodVersionInfo());
-				dbMatrix.putRow(dbOTU, dbRow);
-				dao.saveOrUpdate(dbRow);
-				newRow = true;
-			} else {
-				newRow = false;
-			}
-
-// if (!newRow && targetRow.getPPodVersion() == null) {
-// throw new AssertionError(
-// "existing row has no pPOD version number");
-// }
-
-			final ImmutableList<CharacterStateCell> originalDbCells = ImmutableList
-					.copyOf(dbRow.iterator());
-			final List<CharacterStateCell> newDbCells = newArrayListWithCapacity(sourceRow
-					.getCellsSize());
-
-			// First we fill with empty cells
-			for (int newCellPosition = 0; newCellPosition < dbMatrix
-					.getColumnsSize(); newCellPosition++) {
-				CharacterStateCell dbCell;
-				if (newRow
-						|| null == newCharPositionsToOriginalCharPositions
-								.get(newCellPosition)) {
-					dbCell = cellProvider.get();
-					dbCell.setPPodVersionInfo(newPPodVersionInfo
-							.getNewPPodVersionInfo());
-				} else {
-					dbCell = originalDbCells
-							.get(newCharPositionsToOriginalCharPositions
-									.get(newCellPosition));
-				}
-				newDbCells.add(dbCell);
-			}
-
-			final List<CharacterStateCell> clearedCells =
-					dbRow.setCells(newDbCells);
-
-			for (final CharacterStateCell clearedCell : clearedCells) {
-				dao.delete(clearedCell);
-			}
-
-			int targetCellPosition = -1;
-			for (final CharacterStateCell dbCell : dbRow) {
-				targetCellPosition++;
-
-				newTargetStates.clear();
-
-				final CharacterStateCell sourceCell = sourceRow.getCell(
-						targetCellPosition);
-
-				for (final CharacterState sourceState : sourceCell) {
-					newTargetStates.add(sourceState);
-				}
-
-				switch (sourceCell.getType()) {
-					case INAPPLICABLE:
-						dbCell.setInapplicable();
-						break;
-					case POLYMORPHIC:
-						dbCell.setPolymorphicElements(newTargetStates);
-						break;
-					case SINGLE:
-						dbCell
-								.setSingleElement(getOnlyElement(newTargetStates));
-						break;
-					case UNASSIGNED:
-						dbCell.setUnassigned();
-						break;
-					case UNCERTAIN:
-						dbCell.setUncertainElements(newTargetStates);
-						break;
-					default:
-						throw new AssertionError("unknown type");
-				}
-
-				// We need to do this here since we're removing the cell from
-				// the persistence context (with evict). So it won't get handled
-				// higher up in the application when it does for most entities.
-				if (dbCell.isInNeedOfNewPPodVersionInfo()) {
-					dbCell.setPPodVersionInfo(newPPodVersionInfo
-							.getNewPPodVersionInfo());
-				}
-				dao.saveOrUpdate(dbCell);
-
-				cellsToEvict.add(dbCell);
-			}
-
-			// We need to do this here since we're removing the cell from
-			// the persistence context (with evict)
-			if (dbRow.isInNeedOfNewPPodVersionInfo()) {
-				dbRow.setPPodVersionInfo(newPPodVersionInfo
-						.getNewPPodVersionInfo());
-			}
-
-			logger.debug("{}: flushing row number {}", METHOD,
-					sourceOTUPosition);
-
-			dao.flush();
-
-			dao.evictEntities(cellsToEvict);
-			cellsToEvict.clear();
-
-			dao.evict(dbRow);
-
-			fillInCellInfo(matrixInfo, dbRow, sourceOTUPosition);
-
-			// This is to free up the cells for garbage collection - but depends
-			// on dao.evict(targetRow) to be safe!!!!!
-			dbRow.clearCells();
-
-			// Again to free up cells for garbage collection
-			sourceRow.clearCells();
-		}
+		final MatrixInfo matrixInfo = saveOrUpdateMatrix.saveOrUpdate(dbMatrix,
+				sourceMatrix);
 
 		// Do this down here because it's after any cells that reference the
 		// characters are deleted.
@@ -367,19 +202,8 @@ final class SaveOrUpdateCharacterStateMatrix implements
 			}
 		}
 
-		matrixInfo.setPPodId(dbMatrix.getPPodId());
+		// matrixInfo.setPPodId(dbMatrix.getPPodId());
 		return matrixInfo;
-	}
-
-	private void fillInCellInfo(final MatrixInfo matrixInfo,
-			final CharacterStateRow row, final int rowPosition) {
-		int cellPosition = -1;
-		for (final CharacterStateCell cell : row) {
-			cellPosition++;
-			matrixInfo.setCellPPodIdAndVersion(rowPosition,
-					cellPosition,
-					cell.getPPodVersionInfo().getPPodVersion());
-		}
 	}
 
 // private void fillInMatrixInfo(

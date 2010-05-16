@@ -28,7 +28,7 @@ import edu.upenn.cis.ppod.modelinterfaces.IRow;
  * @author Sam Donnelly
  */
 @MappedSuperclass
-public abstract class Cell<E> extends PPodEntity implements Iterable<E> {
+public abstract class Cell<E> extends PPodEntity {
 
 	/**
 	 * The different types of {@code Cell}: single, polymorphic, uncertain,
@@ -87,7 +87,7 @@ public abstract class Cell<E> extends PPodEntity implements Iterable<E> {
 	@Transient
 	private boolean xmlElementsNeedsToBePutIntoElements = false;
 
-	Cell() {}
+	protected Cell() {}
 
 	@Override
 	public void afterUnmarshal() {
@@ -149,7 +149,12 @@ public abstract class Cell<E> extends PPodEntity implements Iterable<E> {
 		}
 	}
 
-	protected Set<E> getElements() {
+	/**
+	 * Get the elements contained in this cell.
+	 * 
+	 * @return the elements contained in this cell
+	 */
+	public Set<E> getElements() {
 		checkState(getType() != null,
 				"type has yet to be assigned for this cell");
 
@@ -184,7 +189,7 @@ public abstract class Cell<E> extends PPodEntity implements Iterable<E> {
 												+ " and getElementsRaw() has "
 												+ elements.size() + " elements");
 				}
-				return elements;
+				return Collections.unmodifiableSet(elements);
 
 			default:
 				throw new AssertionError("Unknown Cell.Type: " + type);
@@ -193,27 +198,27 @@ public abstract class Cell<E> extends PPodEntity implements Iterable<E> {
 
 	protected abstract Set<E> getElementsRaw();
 
-	/**
-	 * Get the number of elements in this cell.
-	 * 
-	 * @return the number of elements in this cell
-	 */
-	public int getElementsSize() {
-		checkState(getType() != null,
-				"type has yet to be assigned for this cell");
-		switch (getType()) {
-			case INAPPLICABLE:
-			case UNASSIGNED:
-				return 0;
-			case SINGLE:
-				return 1;
-			case POLYMORPHIC:
-			case UNCERTAIN:
-				return getElements().size();
-			default:
-				throw new AssertionError("Unknown CharacterState.Type: " + type);
-		}
-	}
+// /**
+// * Get the number of elements in this cell.
+// *
+// * @return the number of elements in this cell
+// */
+// public int getElementsSize() {
+// checkState(getType() != null,
+// "type has yet to be assigned for this cell");
+// switch (getType()) {
+// case INAPPLICABLE:
+// case UNASSIGNED:
+// return 0;
+// case SINGLE:
+// return 1;
+// case POLYMORPHIC:
+// case UNCERTAIN:
+// return getElements().size();
+// default:
+// throw new AssertionError("Unknown CharacterState.Type: " + type);
+// }
+// }
 
 	/**
 	 * We cache the first state, since this is the most common case.

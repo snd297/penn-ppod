@@ -196,7 +196,7 @@ public class CharacterStateCellTest {
 		cell.setPolymorphicElements(states);
 		cell.setInapplicable();
 		assertEquals(cell.getType(), Cell.Type.INAPPLICABLE);
-		assertTrue(isEmpty(newHashSet(cell)));
+		assertTrue(isEmpty(cell.getElements()));
 	}
 
 	@Test
@@ -208,7 +208,7 @@ public class CharacterStateCellTest {
 		assertEquals(cell.getType(), Cell.Type.INAPPLICABLE);
 
 		// Make sure it's empty
-		assertFalse(cell.iterator().hasNext());
+		assertEquals(cell.getElements().size(), 0);
 	}
 
 	@Test
@@ -217,7 +217,7 @@ public class CharacterStateCellTest {
 				Arrays.asList(cell));
 		cell.setInapplicable();
 		assertEquals(cell.getType(), Cell.Type.INAPPLICABLE);
-		assertEquals((Object) newHashSet(cell), (Object) states);
+		assertEquals((Object) cell.getElements(), (Object) states);
 	}
 
 	@Test
@@ -228,7 +228,7 @@ public class CharacterStateCellTest {
 		states.add(state01);
 		cell.setPolymorphicElements(states);
 		assertEquals(cell.getType(), Cell.Type.POLYMORPHIC);
-		assertEquals((Object) newHashSet(cell), (Object) states);
+		assertEquals((Object) cell.getElements(), (Object) states);
 	}
 
 	@Test(expectedExceptions = IllegalArgumentException.class)
@@ -245,7 +245,7 @@ public class CharacterStateCellTest {
 		states.add(state00);
 		cell.setSingleElement(state00);
 		assertEquals(cell.getType(), Cell.Type.SINGLE);
-		assertEquals((Object) newHashSet(cell), (Object) states);
+		assertEquals((Object) cell.getElements(), (Object) states);
 	}
 
 	@Test
@@ -254,7 +254,7 @@ public class CharacterStateCellTest {
 				Arrays.asList(cell));
 		cell.setUnassigned();
 		assertEquals(cell.getType(), Cell.Type.UNASSIGNED);
-		assertEquals((Object) newHashSet(cell), (Object) states);
+		assertEquals((Object) cell.getElements(), (Object) states);
 	}
 
 	@Test(expectedExceptions = IllegalArgumentException.class)
@@ -273,6 +273,6 @@ public class CharacterStateCellTest {
 		states.add(state01);
 		cell.setUncertainElements(states);
 		assertEquals(cell.getType(), Cell.Type.UNCERTAIN);
-		assertEquals((Object) newHashSet(cell), (Object) newHashSet(states));
+		assertEquals((Object) cell.getElements(), (Object) newHashSet(states));
 	}
 }

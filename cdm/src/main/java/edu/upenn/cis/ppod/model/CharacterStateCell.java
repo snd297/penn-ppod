@@ -193,9 +193,9 @@ public class CharacterStateCell extends Cell<CharacterState> {
 	 * 
 	 * @return an iterator over this cell's states
 	 */
-	public Iterator<CharacterState> iterator() {
-		return Collections.unmodifiableSet(getElements()).iterator();
-	}
+// public Iterator<CharacterState> iterator() {
+// return Collections.unmodifiableSet(getElements()).iterator();
+// }
 
 	/**
 	 * Set or unset the row to which this cell belongs.

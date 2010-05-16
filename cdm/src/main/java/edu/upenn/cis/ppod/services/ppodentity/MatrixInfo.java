@@ -122,18 +122,18 @@ public final class MatrixInfo extends PPodEntityInfoWDocId {
 		return rowVersionsByIdx;
 	}
 
-	public MatrixInfo setCellPPodIdAndVersion(final Integer x,
-			final Integer y, final Long cellPPodVersion) {
-		checkNotNull(x);
-		checkNotNull(y);
+	public MatrixInfo setCellPPodIdAndVersion(final Integer m,
+			final Integer n, final Long cellPPodVersion) {
+		checkNotNull(m);
+		checkNotNull(n);
 		checkNotNull(cellPPodVersion);
-		if (cellPPodIdAndVersionsByMN.containsKey(x)) {
+		if (cellPPodIdAndVersionsByMN.containsKey(m)) {
 
 		} else {
-			cellPPodIdAndVersionsByMN.put(x,
+			cellPPodIdAndVersionsByMN.put(m,
 					cellPPodIdAndVersionsByColumnIdxProvider.get());
 		}
-		cellPPodIdAndVersionsByMN.get(x).getCellVersionsByColumnIdx().put(y,
+		cellPPodIdAndVersionsByMN.get(m).getCellVersionsByColumnIdx().put(n,
 				cellPPodVersion);
 		return this;
 	}

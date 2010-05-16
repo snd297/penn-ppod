@@ -7,7 +7,6 @@ import static com.google.common.collect.Lists.newArrayList;
 import java.util.Collections;
 import java.util.List;
 
-import javax.annotation.Nonnegative;
 import javax.persistence.MappedSuperclass;
 import javax.xml.bind.Unmarshaller;
 
@@ -23,7 +22,7 @@ import edu.upenn.cis.ppod.util.IVisitor;
  */
 @MappedSuperclass
 public abstract class Row<C extends Cell<?>> extends PPodEntity implements
-		IRow, Iterable<C>, IOTUKeyedMapValue {
+		IRow, IOTUKeyedMapValue {
 
 	protected Row() {}
 
@@ -52,7 +51,8 @@ public abstract class Row<C extends Cell<?>> extends PPodEntity implements
 		super.afterUnmarshal();
 		int cellPosition = -1;
 		for (final C cell : getCells()) {
-			cell.setPosition(++cellPosition);
+			cellPosition++;
+			cell.setPosition(cellPosition);
 		}
 	}
 
@@ -74,38 +74,23 @@ public abstract class Row<C extends Cell<?>> extends PPodEntity implements
 		for (final C clearedCell : clearedCells) {
 			clearedCell.unsetRow();
 		}
-		getCells().clear();
+		getCellsModifiable().clear();
 		return clearedCells;
 	}
 
 	/**
-	 * Get the cell at position {@code pPodCellPosition}.
+	 * Get the cells that make up this row.
 	 * 
-	 * @param pPodCellPosition the position of the cell we're interested in
-	 * @return the cell at position {@code pPodCellPosition}
-	 * 
-	 * @throws IndexOutOfBoundsException if {@code pPodCellPosition} is out of
-	 *             bounds for this row
+	 * @return the cells that make up this row
 	 */
-	public C getCell(@Nonnegative final int pPodCellPosition) {
-		return getCells().get(pPodCellPosition);
-	}
+	public abstract List<C> getCells();
 
 	/**
-	 * Get a reference to the cells that make up this row.
+	 * Get a modifiable reference to this row's cells.
 	 * 
-	 * @return a reference to the cells that make up this row
+	 * @return a modifiable reference to this row's cells
 	 */
-	protected abstract List<C> getCells();
-
-	/**
-	 * Get the number of cells this row has.
-	 * 
-	 * @return the number of cells this row has
-	 */
-	public int getCellsSize() {
-		return getCells().size();
-	}
+	protected abstract List<C> getCellsModifiable();
 
 	/**
 	 * Set the cells of this row.
@@ -151,7 +136,7 @@ public abstract class Row<C extends Cell<?>> extends PPodEntity implements
 
 		clearCells();
 		for (int cellPos = 0; cellPos < cells.size(); cellPos++) {
-			getCells().add(cells.get(cellPos));
+			getCellsModifiable().add(cells.get(cellPos));
 			cells.get(cellPos).setPosition(cellPos);
 		}
 		setInNeedOfNewPPodVersionInfo();

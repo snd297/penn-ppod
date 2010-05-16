@@ -15,6 +15,8 @@
  */
 package edu.upenn.cis.ppod.saveorupdate;
 
+import com.google.inject.ImplementedBy;
+
 import edu.upenn.cis.ppod.dao.IDAO;
 import edu.upenn.cis.ppod.model.Sequence;
 import edu.upenn.cis.ppod.model.SequenceSet;
@@ -26,6 +28,7 @@ import edu.upenn.cis.ppod.modelinterfaces.INewPPodVersionInfo;
  * @param <SS> the kind of {@link SequenceSet} we're operating on
  * @param <S> the kind of {@link Sequence} that belongs in the sequence set
  */
+@ImplementedBy(MergeMolecularSequenceSets.class)
 public interface IMergeMolecularSequenceSets<SS extends SequenceSet<S>, S extends Sequence> {
 
 	public void merge(final SS targetSequenceSet, final SS sourceSequenceSet);

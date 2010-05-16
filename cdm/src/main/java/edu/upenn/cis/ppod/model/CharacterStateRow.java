@@ -97,9 +97,14 @@ public class CharacterStateRow extends Row<CharacterStateCell> {
 		return cellPosition;
 	}
 
+	@Override
+	public List<CharacterStateCell> getCells() {
+		return Collections.unmodifiableList(cells);
+	}
+
 	@XmlElement(name = "cell")
 	@Override
-	protected List<CharacterStateCell> getCells() {
+	protected List<CharacterStateCell> getCellsModifiable() {
 		return cells;
 	}
 
@@ -134,7 +139,7 @@ public class CharacterStateRow extends Row<CharacterStateCell> {
 		final List<CharacterStateCell> clearedCells = super
 				.setCellsHelper(cells);
 
-		for (final CharacterStateCell cell : this) {
+		for (final CharacterStateCell cell : getCells()) {
 			cell.setRow(this);
 		}
 		return clearedCells;
