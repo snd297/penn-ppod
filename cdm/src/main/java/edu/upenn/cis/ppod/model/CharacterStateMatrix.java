@@ -194,7 +194,7 @@ public class CharacterStateMatrix extends Matrix<CharacterStateRow> {
 	 * @return an iterator that iterates over this matix's characters in column
 	 *         order
 	 */
-	public Iterator<Character> charactersIterator() {
+	public Iterator<Character> getCharactersIterator() {
 		return Collections.unmodifiableList(getCharacters()).iterator();
 	}
 

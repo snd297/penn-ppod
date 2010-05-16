@@ -34,7 +34,7 @@ import com.google.inject.Provider;
  */
 @XmlRootElement
 @XmlAccessorType(XmlAccessType.NONE)
-public final class CharacterStateMatrixInfo extends PPodEntityInfoWDocId {
+public final class MatrixInfo extends PPodEntityInfoWDocId {
 
 	private Map<Integer, PPodEntityInfo> characterInfosByIdx = newTreeMap();
 
@@ -80,10 +80,10 @@ public final class CharacterStateMatrixInfo extends PPodEntityInfoWDocId {
 
 	private Provider<CellVersionsByColumnIdx> cellPPodIdAndVersionsByColumnIdxProvider;
 
-	CharacterStateMatrixInfo() {}
+	MatrixInfo() {}
 
 	@Inject
-	CharacterStateMatrixInfo(
+	MatrixInfo(
 			final Provider<CellVersionsByColumnIdx> cellPPodIdAndVersionsByColumnIdxProvider) {
 		this.cellPPodIdAndVersionsByColumnIdxProvider = cellPPodIdAndVersionsByColumnIdxProvider;
 	}
@@ -122,7 +122,7 @@ public final class CharacterStateMatrixInfo extends PPodEntityInfoWDocId {
 		return rowVersionsByIdx;
 	}
 
-	public CharacterStateMatrixInfo setCellPPodIdAndVersion(final Integer x,
+	public MatrixInfo setCellPPodIdAndVersion(final Integer x,
 			final Integer y, final Long cellPPodVersion) {
 		checkNotNull(x);
 		checkNotNull(y);
@@ -145,19 +145,19 @@ public final class CharacterStateMatrixInfo extends PPodEntityInfoWDocId {
 	 * 
 	 * @return this
 	 */
-	public CharacterStateMatrixInfo setCharacterInfosByIdx(
+	public MatrixInfo setCharacterInfosByIdx(
 			final Map<Integer, PPodEntityInfo> characterInfosByIdx) {
 		this.characterInfosByIdx = characterInfosByIdx;
 		return this;
 	}
 
-	public CharacterStateMatrixInfo setColumnHeaderVersionsByIdx(
+	public MatrixInfo setColumnHeaderVersionsByIdx(
 			final SortedMap<Integer, Long> columnHeaderPPodVersions) {
 		this.columnHeaderVersionsByIdx = columnHeaderPPodVersions;
 		return this;
 	}
 
-	public CharacterStateMatrixInfo setRowHeaderVersionsByRowIdx(
+	public MatrixInfo setRowHeaderVersionsByRowIdx(
 			final SortedMap<Integer, Long> rowHeaderPPodVersions) {
 		this.rowVersionsByIdx = rowHeaderPPodVersions;
 		return this;

@@ -16,6 +16,8 @@
 package edu.upenn.cis.ppod.model;
 
 import static com.google.common.collect.Lists.newArrayList;
+import static org.testng.Assert.assertEquals;
+import static org.testng.Assert.assertSame;
 
 import java.util.Arrays;
 import java.util.Collections;
@@ -24,6 +26,7 @@ import java.util.List;
 import org.testng.annotations.BeforeMethod;
 import org.testng.annotations.Test;
 
+import com.google.common.collect.ImmutableList;
 import com.google.inject.Inject;
 import com.google.inject.Provider;
 
@@ -56,7 +59,7 @@ public class CharacterStateRowTest {
 	@Inject
 	private Provider<CharacterStateCell> cellProvider;
 
-	private List<OTU> rowIdxs;
+	private List<OTU> otus;
 
 	private CharacterStateMatrix matrix;
 
@@ -64,10 +67,10 @@ public class CharacterStateRowTest {
 	public void beforeMethod() {
 		matrix = matrixProvider.get();
 		matrix.setOTUSet(otuSetProvider.get());
-		rowIdxs = newArrayList();
-		rowIdxs.add(otuProvider.get().setLabel("OTU-0"));
-		matrix.getOTUSet().setOTUs(newArrayList(rowIdxs.get(0)));
-		matrix.putRow(rowIdxs.get(0), rowProvider.get());
+		otus = newArrayList();
+		otus.add(otuProvider.get().setLabel("OTU-0"));
+		matrix.getOTUSet().setOTUs(newArrayList(otus.get(0)));
+		matrix.putRow(otus.get(0), rowProvider.get());
 		matrix.setCharacters(newArrayList(characterProvider.get().setLabel(
 				"CHARACTER-0")));
 	}
@@ -80,7 +83,33 @@ public class CharacterStateRowTest {
 				Arrays.asList(cell));
 
 		ModelAssert.assertEqualsCharacterStateCells(cell, matrix.getRow(
-				rowIdxs.get(0)).getCell(0));
+				otus.get(0)).getCell(0));
+	}
+
+	@Test
+	void setCells() {
+		matrix = matrixProvider.get();
+		matrix.setOTUSet(otuSetProvider.get());
+		otus = newArrayList();
+		final OTU otu0 = otuProvider.get().setLabel("OTU-0");
+		otus.add(otu0);
+		matrix.getOTUSet().setOTUs(newArrayList(otus.get(0)));
+		matrix.putRow(otus.get(0), rowProvider.get());
+
+		final CharacterStateRow row = matrix.getRow(otu0);
+		matrix.
+				setCharacters(newArrayList(
+						characterProvider.get().setLabel("CHARACTER-0"),
+						characterProvider.get().setLabel("CHARACTER-1"),
+						characterProvider.get().setLabel("CHARACTER-2")));
+
+		final List<CharacterStateCell> cells =
+				ImmutableList.of(cellProvider.get(), cellProvider.get(),
+						cellProvider.get());
+		row.setCells(cells);
+		assertEquals(row.getCells(), cells);
+
+		assertSame(cells.get(0).getRow(), row);
 	}
 
 	@Test(expectedExceptions = IllegalStateException.class)

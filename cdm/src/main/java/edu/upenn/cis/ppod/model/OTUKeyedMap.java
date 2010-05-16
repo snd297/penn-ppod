@@ -177,8 +177,8 @@ public abstract class OTUKeyedMap<V extends IOTUKeyedMapValue>
 	 * @throws IllegalStateException if {@code getParent().getOTUSet() == null}
 	 * @throws IllegalArgumentException if {@code otu} does not belong to
 	 *             {@code parent.getOTUSet()}
-	 * @throws IllegalArgumentException if there's already a value {@code
-	 *             .equals} to {@code newT}
+	 * @throws IllegalArgumentException if this already a value {@code .equals}
+	 *             to {@code newT}
 	 */
 	@CheckForNull
 	public abstract V put(final OTU key, final V value);

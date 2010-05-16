@@ -150,8 +150,8 @@ public class Tree extends UUPPodEntity {
 	 * Remove {@code treeSet} form this {@code Tree}s associated {@code TreeSet}
 	 * s.
 	 * <p>
-	 * Intended to be package-private and used in conjunction with
-	 * {@link TreeSet#removeTree(Tree)}.
+	 * Intended to be called from places responsible for managing the {@code
+	 * Tree<->TreeSet} relationship.
 	 * <p>
 	 * Use {@code null} for {@code treeSet} to sever the relationship.
 	 * 

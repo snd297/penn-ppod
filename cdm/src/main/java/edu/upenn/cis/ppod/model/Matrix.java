@@ -71,7 +71,7 @@ public abstract class Matrix<R extends Row<?>> extends UUPPodEntityWXmlId
 
 	public abstract Integer getColumnsSize();
 
-	Matrix() {}
+	protected Matrix() {}
 
 	/**
 	 * Get a reference of the {@code PPodVersionInfo}s for each for the columns

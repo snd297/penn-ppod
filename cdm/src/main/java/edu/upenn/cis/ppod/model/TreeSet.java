@@ -81,11 +81,18 @@ public class TreeSet extends UUPPodEntityWXmlId implements
 		visitor.visit(this);
 	}
 
-	public TreeSet addTree(final Tree newTree) {
-		checkNotNull(newTree);
-		getTrees().add(newTree);
+	/**
+	 * Add {@code tree} to this {@code TreeSet}.
+	 * 
+	 * @param tree to be added
+	 * 
+	 * @return {@code tree}
+	 */
+	public Tree addTree(final Tree tree) {
+		checkNotNull(tree);
+		getTrees().add(tree);
 		setInNeedOfNewPPodVersionInfo();
-		return this;
+		return tree;
 	}
 
 	/**

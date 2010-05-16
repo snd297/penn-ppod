@@ -17,6 +17,9 @@ package edu.upenn.cis.ppod.saveorupdate;
 
 import static com.google.common.base.Preconditions.checkNotNull;
 
+import java.util.Map;
+
+import com.google.common.collect.ImmutableMap;
 import com.google.inject.Inject;
 import com.google.inject.Provider;
 import com.google.inject.assistedinject.Assisted;
@@ -33,9 +36,9 @@ import edu.upenn.cis.ppod.modelinterfaces.INewPPodVersionInfo;
 final class MergeMolecularSequenceSets<SS extends SequenceSet<S>, S extends Sequence>
 		implements IMergeMolecularSequenceSets<SS, S> {
 
-	final IDAO<Object, Long> dao;
-	final Provider<S> sequenceProvider;
-	final INewPPodVersionInfo newPPodVersionInfo;
+	private final IDAO<Object, Long> dao;
+	private final Provider<S> sequenceProvider;
+	private final INewPPodVersionInfo newPPodVersionInfo;
 
 	@Inject
 	MergeMolecularSequenceSets(final Provider<S> sequenceProvider,
@@ -52,6 +55,29 @@ final class MergeMolecularSequenceSets<SS extends SequenceSet<S>, S extends Sequ
 		targetSequenceSet.setLabel(sourceSequenceSet.getLabel());
 		dao.saveOrUpdate(targetSequenceSet);
 
+		final Integer targetSequenceSetLengths = targetSequenceSet
+				.getSequenceLengths();
+
+		final Integer sourceSequenceSetLengths = sourceSequenceSet
+				.getSequenceLengths();
+
+		Map<OTU, S> targetOTUsToSequences;
+
+		if (targetSequenceSetLengths == null ||
+				targetSequenceSetLengths.equals(sourceSequenceSetLengths)) {
+			// We don't need to clear it since it's either empty or the
+			// sequences are already of the correct size, so we grab the
+			// OTU->Sequence
+			// map
+			targetOTUsToSequences = targetSequenceSet
+					.getOTUsToSequencesMap();
+		} else {
+			// We need to clear it because it's of the wrong size, so we make a copy of the OTU->Sequence map
+			targetOTUsToSequences = ImmutableMap.copyOf(targetSequenceSet
+					.getOTUsToSequencesMap());
+			targetSequenceSet.clearSequences();
+		}
+
 		for (int i = 0; i < sourceSequenceSet.getOTUSet().getOTUsSize(); i++) {
 			final OTU sourceOTU = sourceSequenceSet.getOTUSet().getOTU(i);
 
@@ -60,18 +86,17 @@ final class MergeMolecularSequenceSets<SS extends SequenceSet<S>, S extends Sequ
 
 			S targetSequence;
 
-			if (null == (targetSequence = targetSequenceSet
-					.getSequence(targetOTU))) {
+			if (null == (targetSequence = targetOTUsToSequences.get(targetOTU))) {
 				targetSequence = sequenceProvider.get();
 				targetSequence.setPPodVersionInfo(newPPodVersionInfo
 						.getNewPPodVersionInfo());
 			}
 			targetSequence.setSequence(sourceSequence.getSequence());
+			targetSequenceSet.putSequence(targetOTU, targetSequence);
+
 			targetSequence.setName(sourceSequence.getName());
 			targetSequence.setDescription(sourceSequence.getDescription());
 			targetSequence.setAccession(sourceSequence.getAccession());
-
-			targetSequenceSet.putSequence(targetOTU, targetSequence);
 
 			dao.saveOrUpdate(targetSequence);
 
@@ -84,5 +109,4 @@ final class MergeMolecularSequenceSets<SS extends SequenceSet<S>, S extends Sequ
 			dao.evict(targetSequence);
 		}
 	}
-
 }

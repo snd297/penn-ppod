@@ -41,7 +41,7 @@ public final class OTUSetInfo extends PPodEntityInfoWDocId {
 	 * The pPOD version of char matrix {@code data} is {@code
 	 * matrixInfosByDocId.get(PPodUtil.getPPodId(data))}.
 	 */
-	private Set<CharacterStateMatrixInfo> matrixInfos = newHashSet();
+	private Set<MatrixInfo> matrixInfos = newHashSet();
 
 	private final Set<MolecularSequenceSetInfo> sequenceSetInfos = newHashSet();
 
@@ -50,7 +50,7 @@ public final class OTUSetInfo extends PPodEntityInfoWDocId {
 	OTUSetInfo() {}
 
 	@XmlElement(name = "matrixInfo")
-	public Set<CharacterStateMatrixInfo> getMatrixInfos() {
+	public Set<MatrixInfo> getMatrixInfos() {
 		return matrixInfos;
 	}
 
@@ -76,7 +76,7 @@ public final class OTUSetInfo extends PPodEntityInfoWDocId {
 	}
 
 	public OTUSetInfo setMatrixInfos(
-			final Set<CharacterStateMatrixInfo> matrixInfos) {
+			final Set<MatrixInfo> matrixInfos) {
 		this.matrixInfos = matrixInfos;
 		return this;
 	}

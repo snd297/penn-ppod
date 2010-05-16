@@ -15,7 +15,6 @@
  */
 package edu.upenn.cis.ppod.model;
 
-import static com.google.common.base.Preconditions.checkArgument;
 import static com.google.common.base.Preconditions.checkNotNull;
 import static com.google.common.base.Preconditions.checkState;
 import static com.google.common.collect.Iterables.get;
@@ -77,8 +76,7 @@ public class CharacterStateCell extends Cell<CharacterState> {
 	@ManyToMany
 	@Sort(type = SortType.COMPARATOR, comparator = CharacterState.CharacterStateComparator.class)
 	@JoinTable(inverseJoinColumns = @JoinColumn(name = CharacterState.ID_COLUMN))
-	@CheckForNull
-	private SortedSet<CharacterState> elements = null;
+	private SortedSet<CharacterState> elements = newTreeSet(STATE_COMPARATOR);
 
 	/**
 	 * To handle the most-common case of a single {@code CharacterState}, we
@@ -110,7 +108,7 @@ public class CharacterStateCell extends Cell<CharacterState> {
 	private Set<CharacterState> xmlElements = null;
 
 	/** No-arg constructor for (at least) Hibernate. */
-	CharacterStateCell() {}
+	protected CharacterStateCell() {}
 
 	@Override
 	public void accept(final IVisitor visitor) {
@@ -130,9 +128,7 @@ public class CharacterStateCell extends Cell<CharacterState> {
 		// reset the ppod version info
 	}
 
-	private void checkIncomingState(final CharacterState state) {
-
-		checkNotNull(state);
+	private void checkRowMatrixCharacter() {
 
 		final CharacterStateRow row = getRow();
 
@@ -152,22 +148,8 @@ public class CharacterStateCell extends Cell<CharacterState> {
 		checkState(null != matrix.getCharacters().get(position),
 				"this cell's column hasn't been assigned a character");
 
-		final Character thisCellsCharacter = matrix.getCharacters().get(
-				position);
-
-		checkArgument(state.getCharacter() != null,
-				"state " + state.getLabel()
-						+ " hasn't been assigned to a Character");
-
-		checkArgument(state.getCharacter().equals(thisCellsCharacter),
-				"state is from the wrong Character. We want "
-						+ matrix.getCharacters().get(position)
-								.getLabel() + " but got "
-						+ state.getCharacter().getLabel());
-
 	}
 
-	@CheckForNull
 	@Override
 	protected Set<CharacterState> getElementsRaw() {
 		return elements;
@@ -235,9 +217,10 @@ public class CharacterStateCell extends Cell<CharacterState> {
 	/**
 	 * Add a set of {@code CharacterState}s to this {@code CharacterStateCell}.
 	 * <p>
-	 * Assumes that none of {@code states} is in a Hibernate-detached state.
-	 * <p>
-	 * This object makes its own copy of {@code states}.
+	 * Makes no assumption about the hibernate-state of {@code states} (could be
+	 * transient, persistent, detached). Because it looks up the actual state to
+	 * hang on to through {@code getRow().getMatrix().getCharacter(
+	 * getPosition()).getState(...)}.
 	 * 
 	 * @param states to be added. Each must not be in a detached state.
 	 * 
@@ -249,28 +232,43 @@ public class CharacterStateCell extends Cell<CharacterState> {
 		checkNotNull(type);
 		checkNotNull(states);
 
-		if (getElementsRaw() == null) {
-			this.elements = newTreeSet(STATE_COMPARATOR);
-		}
+		Set<CharacterState> newStates;
 
-		// So FindBugs knows that we got it when it wasn't null
-		final Set<CharacterState> thisStates = this.elements;
+		if (states.size() == 0) {
+			newStates = Collections.emptySet();
+		} else {
+
+			checkRowMatrixCharacter();
+
+			// So FindBugs knows we got it
+			final Integer position = getPosition();
+
+			checkState(
+					position != null,
+					"this cell has not been assigned a row: it's position attribute is null");
+
+			final Character character =
+					getRow().getMatrix().getCharacter(position);
+
+			newStates = newHashSet();
+
+			for (final CharacterState sourceState : states) {
+				newStates
+						.add(character.getState(sourceState.getStateNumber()));
+			}
+		}
 
 		if (getType() != null && getType().equals(type)
-				&& states.equals(getElements())) {
+				&& newStates.equals(getElements())) {
 			return this;
-		}
-
-		for (final CharacterState state : states) {
-			checkIncomingState(state);
 		}
 
 		clearElements();
 
-		thisStates.addAll(states);
+		getElementsRaw().addAll(newStates);
 
-		if (states.size() > 0) {
-			firstElement = get(thisStates, 0);
+		if (newStates.size() > 0) {
+			firstElement = get(getElementsRaw(), 0);
 		}
 
 		setType(type);
@@ -303,14 +301,14 @@ public class CharacterStateCell extends Cell<CharacterState> {
 	}
 
 	@Override
-	protected Cell<CharacterState> unsetXmlElements() {
-		this.xmlElements = null;
+	public CharacterStateCell unsetRow() {
+		row = null;
 		return this;
 	}
 
 	@Override
-	public CharacterStateCell unsetRow() {
-		row = null;
+	protected Cell<CharacterState> unsetXmlElements() {
+		this.xmlElements = null;
 		return this;
 	}
 

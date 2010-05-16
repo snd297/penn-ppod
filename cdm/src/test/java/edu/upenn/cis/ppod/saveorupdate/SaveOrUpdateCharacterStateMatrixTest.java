@@ -53,7 +53,7 @@ import edu.upenn.cis.ppod.util.MatrixProvider;
 public class SaveOrUpdateCharacterStateMatrixTest {
 
 	@Inject
-	private ISaveOrUpdateMatrix.IFactory saveOrUpdateMatrixFactory;
+	private ISaveOrUpdateCharacterStateMatrix.IFactory saveOrUpdateMatrixFactory;
 
 	@Inject
 	private ICharacterStateMatrixFactory matrixFactory;
@@ -106,7 +106,7 @@ public class SaveOrUpdateCharacterStateMatrixTest {
 	@Test(dataProvider = MatrixProvider.SMALL_MATRICES_PROVIDER, dataProviderClass = MatrixProvider.class)
 	public void save(final CharacterStateMatrix sourceMatrix) {
 
-		final ISaveOrUpdateMatrix saveOrUpdateMatrix = saveOrUpdateMatrixFactory
+		final ISaveOrUpdateCharacterStateMatrix saveOrUpdateCharacterStateMatrix = saveOrUpdateMatrixFactory
 				.create(mergeAttachment, dao, newPPodVersionInfo);
 		final OTUSet fakeDbOTUSet = sourceMatrix.getOTUSet();
 
@@ -117,7 +117,7 @@ public class SaveOrUpdateCharacterStateMatrixTest {
 
 		final Map<CharacterStateRow, List<CharacterStateCell>> sourceRowsToCells = stashCells(sourceMatrix);
 
-		saveOrUpdateMatrix.saveOrUpdate(targetMatrix, sourceMatrix,
+		saveOrUpdateCharacterStateMatrix.saveOrUpdate(targetMatrix, sourceMatrix,
 				dnaCharacter);
 
 		putBackCells(targetMatrix, dao.getRowsToCells());
@@ -129,7 +129,7 @@ public class SaveOrUpdateCharacterStateMatrixTest {
 
 	@Test(dataProvider = MatrixProvider.SMALL_MATRICES_PROVIDER, dataProviderClass = MatrixProvider.class)
 	public void moveRows(final CharacterStateMatrix sourceMatrix) {
-		final ISaveOrUpdateMatrix saveOrUpdateMatrix = saveOrUpdateMatrixFactory
+		final ISaveOrUpdateCharacterStateMatrix saveOrUpdateCharacterStateMatrix = saveOrUpdateMatrixFactory
 				.create(mergeAttachment, dao,
 						newPPodVersionInfo);
 		final OTUSet fakeDbOTUSet = sourceMatrix.getOTUSet();
@@ -142,7 +142,7 @@ public class SaveOrUpdateCharacterStateMatrixTest {
 		final Map<CharacterStateRow, List<CharacterStateCell>> sourceRowsToCells =
 				stashCells(sourceMatrix);
 
-		saveOrUpdateMatrix.saveOrUpdate(targetMatrix, sourceMatrix,
+		saveOrUpdateCharacterStateMatrix.saveOrUpdate(targetMatrix, sourceMatrix,
 				dnaCharacter);
 
 		putBackCells(targetMatrix, dao.getRowsToCells());
@@ -171,7 +171,7 @@ public class SaveOrUpdateCharacterStateMatrixTest {
 		final Map<CharacterStateRow, List<CharacterStateCell>> sourceRowsToCells2 =
 				stashCells(sourceMatrix);
 
-		saveOrUpdateMatrix.saveOrUpdate(targetMatrix, sourceMatrix,
+		saveOrUpdateCharacterStateMatrix.saveOrUpdate(targetMatrix, sourceMatrix,
 				dnaCharacter);
 
 		putBackCells(targetMatrix, dao.getRowsToCells());
@@ -185,7 +185,7 @@ public class SaveOrUpdateCharacterStateMatrixTest {
 	public void moveCharacters(final CharacterStateMatrix sourceMatrix) {
 		// It only makes sense to move characters in a standard matrix
 		if (sourceMatrix.getClass().equals(CharacterStateMatrix.class)) {
-			final ISaveOrUpdateMatrix saveOrUpdateMatrix = saveOrUpdateMatrixFactory
+			final ISaveOrUpdateCharacterStateMatrix saveOrUpdateCharacterStateMatrix = saveOrUpdateMatrixFactory
 					.create(mergeAttachment, dao, newPPodVersionInfo);
 			final OTUSet fakeDbOTUSet = sourceMatrix.getOTUSet();
 
@@ -195,7 +195,7 @@ public class SaveOrUpdateCharacterStateMatrixTest {
 			fakeDbOTUSet.addCharacterStateMatrix(targetMatrix);
 
 			final Map<CharacterStateRow, List<CharacterStateCell>> sourceRowsToCells = stashCells(sourceMatrix);
-			saveOrUpdateMatrix.saveOrUpdate(targetMatrix, sourceMatrix,
+			saveOrUpdateCharacterStateMatrix.saveOrUpdate(targetMatrix, sourceMatrix,
 					dnaCharacter);
 
 			putBackCells(targetMatrix, dao.getRowsToCells());
@@ -210,7 +210,7 @@ public class SaveOrUpdateCharacterStateMatrixTest {
 
 			// Swap 2 and 0
 			final List<Character> newSourceMatrixCharacters = newArrayList(sourceMatrix
-					.charactersIterator());
+					.getCharactersIterator());
 
 			newSourceMatrixCharacters.set(0, sourceMatrix.getCharacter(2));
 			newSourceMatrixCharacters.set(2, sourceMatrix.getCharacter(0));
@@ -225,7 +225,7 @@ public class SaveOrUpdateCharacterStateMatrixTest {
 			}
 
 			final Map<CharacterStateRow, List<CharacterStateCell>> sourceRowsToCells2 = stashCells(sourceMatrix);
-			saveOrUpdateMatrix.saveOrUpdate(targetMatrix, sourceMatrix,
+			saveOrUpdateCharacterStateMatrix.saveOrUpdate(targetMatrix, sourceMatrix,
 					dnaCharacter);
 			putBackCells(targetMatrix, dao.getRowsToCells());
 			putBackCells(sourceMatrix, sourceRowsToCells2);
@@ -242,7 +242,7 @@ public class SaveOrUpdateCharacterStateMatrixTest {
 	public void deleteCharacter(final CharacterStateMatrix sourceMatrix) {
 		// It only makes sense to remove characters from a standard matrix
 		if (sourceMatrix.getClass().equals(CharacterStateMatrix.class)) {
-			final ISaveOrUpdateMatrix saveOrUpdateMatrix = saveOrUpdateMatrixFactory
+			final ISaveOrUpdateCharacterStateMatrix saveOrUpdateCharacterStateMatrix = saveOrUpdateMatrixFactory
 					.create(mergeAttachment, dao, newPPodVersionInfo);
 			final OTUSet fakeDbOTUSet = sourceMatrix.getOTUSet();
 
@@ -252,7 +252,7 @@ public class SaveOrUpdateCharacterStateMatrixTest {
 			fakeDbOTUSet.addCharacterStateMatrix(targetMatrix);
 
 			final Map<CharacterStateRow, List<CharacterStateCell>> sourceRowsToCells = stashCells(sourceMatrix);
-			saveOrUpdateMatrix.saveOrUpdate(targetMatrix, sourceMatrix,
+			saveOrUpdateCharacterStateMatrix.saveOrUpdate(targetMatrix, sourceMatrix,
 					dnaCharacter);
 			putBackCells(targetMatrix, dao.getRowsToCells());
 			putBackCells(sourceMatrix, sourceRowsToCells);
@@ -269,7 +269,7 @@ public class SaveOrUpdateCharacterStateMatrixTest {
 					.getCharacter(2);
 
 			final List<Character> newSourceMatrixCharacters = newArrayList(sourceMatrix
-					.charactersIterator());
+					.getCharactersIterator());
 
 			newSourceMatrixCharacters.remove(2);
 
@@ -282,7 +282,7 @@ public class SaveOrUpdateCharacterStateMatrixTest {
 			}
 
 			final Map<CharacterStateRow, List<CharacterStateCell>> sourceRowsToCells2 = stashCells(sourceMatrix);
-			saveOrUpdateMatrix.saveOrUpdate(targetMatrix, sourceMatrix,
+			saveOrUpdateCharacterStateMatrix.saveOrUpdate(targetMatrix, sourceMatrix,
 					dnaCharacter);
 
 			assertTrue(dao.getDeletedEntities()

@@ -21,6 +21,7 @@ import static com.google.common.collect.Iterables.getOnlyElement;
 import static com.google.common.collect.Lists.newArrayList;
 import static org.testng.Assert.assertEquals;
 import static org.testng.Assert.assertFalse;
+import static org.testng.Assert.assertNull;
 
 import java.util.List;
 import java.util.Set;
@@ -112,13 +113,16 @@ public class CellTest<M extends Matrix<R>, R extends Row<C>, C extends Cell<E>, 
 
 		final OTU otu = otuSet.addOTU(otuProvider.get());
 
-		matrix.putRow(otu, rowProvider.get());
+		final R row = rowProvider.get();
+
+		matrix.putRow(otu, row);
 
 		cell.setXmlStatesNeedsToBePutIntoStates(true);
 
 		final List<C> cells = newArrayList();
 		cells.add(cell);
-		matrix.getRow(matrix.getOTUSet().getOTU(0)).setCells(cells);
+
+		row.setCells(cells);
 
 		cell.setTypeAndXmlElements(Cell.Type.UNCERTAIN, elements);
 		cell.afterUnmarshal();
@@ -142,7 +146,6 @@ public class CellTest<M extends Matrix<R>, R extends Row<C>, C extends Cell<E>, 
 		checkArgument(matrix.getColumnsSize() == 1,
 				"matrix has " + matrix.getColumnsSize()
 						+ " column(s), but we need it to have 1 column");
-		final C cell = cellProvider.get();
 
 		final OTUSet otuSet = otuSetProvider.get();
 
@@ -150,13 +153,32 @@ public class CellTest<M extends Matrix<R>, R extends Row<C>, C extends Cell<E>, 
 
 		final OTU otu = otuSet.addOTU(otuProvider.get());
 
-		matrix.putRow(otu, rowProvider.get());
+		final R row = rowProvider.get();
+		matrix.putRow(otu, row);
 
-		matrix.getRow(matrix.getOTUSet().getOTU(0)).setCells(
-				ImmutableList.of(cell));
+		final C cell = cellProvider.get();
+
+		row.setCells(ImmutableList.of(cell));
+
+		matrix.getRow(matrix.getOTUSet().getOTU(0));
 
 		cell.setSingleElement(element);
 		assertEquals(getOnlyElement(cell.getElements()), element);
 	}
 
+	public void unsetRow(final M matrix) {
+		checkNotNull(matrix);
+		checkArgument(matrix.getColumnsSize() == 1,
+				"matrix has " + matrix.getColumnsSize()
+						+ " column(s), but we need it to have 1 column");
+		final C cell = cellProvider.get();
+		final R row = rowProvider.get();
+		final OTUSet otuSet = otuSetProvider.get();
+		final OTU otu = otuSet.addOTU(otuProvider.get());
+		matrix.setOTUSet(otuSet);
+		matrix.putRow(otu, row);
+		row.setCells(ImmutableList.of(cell));
+		cell.unsetRow();
+		assertNull(cell.getRow());
+	}
 }

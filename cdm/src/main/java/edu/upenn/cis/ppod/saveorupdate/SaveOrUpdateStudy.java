@@ -42,7 +42,7 @@ import edu.upenn.cis.ppod.model.Study;
 import edu.upenn.cis.ppod.model.TreeSet;
 import edu.upenn.cis.ppod.modelinterfaces.INewPPodVersionInfo;
 import edu.upenn.cis.ppod.modelinterfaces.IWithPPodId;
-import edu.upenn.cis.ppod.services.ppodentity.CharacterStateMatrixInfo;
+import edu.upenn.cis.ppod.services.ppodentity.MatrixInfo;
 import edu.upenn.cis.ppod.services.ppodentity.OTUSetInfo;
 import edu.upenn.cis.ppod.services.ppodentity.StudyInfo;
 import edu.upenn.cis.ppod.util.ICharacterStateMatrixFactory;
@@ -65,7 +65,7 @@ final class SaveOrUpdateStudy implements ISaveOrUpdateStudy {
 	private final Provider<TreeSet> treeSetProvider;
 
 	private final IMergeOTUSets mergeOTUSets;
-	private final ISaveOrUpdateMatrix mergeMatrices;
+	private final ISaveOrUpdateCharacterStateMatrix mergeMatrices;
 	private final IMergeTreeSets mergeTreeSets;
 	private final INewPPodVersionInfo newPPodVersionInfo;
 	private final IMergeMolecularSequenceSets<DNASequenceSet, DNASequence> mergeDNASequenceSets;
@@ -83,7 +83,7 @@ final class SaveOrUpdateStudy implements ISaveOrUpdateStudy {
 			final Provider<TreeSet> treeSetProvider,
 			final IMergeOTUSets.IFactory saveOrUpdateOTUSetFactory,
 			final IMergeTreeSets.IFactory mergeTreeSetsFactory,
-			final ISaveOrUpdateMatrix.IFactory saveOrUpdateMatrixFactory,
+			final ISaveOrUpdateCharacterStateMatrix.IFactory saveOrUpdateMatrixFactory,
 			final IMergeMolecularSequenceSets.IFactory<DNASequenceSet, DNASequence> mergeDNASequenceSetsFactory,
 			final IMergeAttachments.IFactory mergeAttachmentFactory,
 			final Provider<OTUSetInfo> otuSetInfoProvider,
@@ -205,7 +205,7 @@ final class SaveOrUpdateStudy implements ISaveOrUpdateStudy {
 				}
 				newDbMatrices.add(dbMatrix);
 				dbOTUSet.setCharacterStateMatrices(newDbMatrices);
-				final CharacterStateMatrixInfo dbMatrixInfo = mergeMatrices
+				final MatrixInfo dbMatrixInfo = mergeMatrices
 						.saveOrUpdate(dbMatrix,
 								incomingMatrix, dbDNACharacter);
 				otuSetInfo.getMatrixInfos().add(dbMatrixInfo);

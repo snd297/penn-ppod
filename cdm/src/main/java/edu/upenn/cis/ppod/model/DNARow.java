@@ -42,6 +42,8 @@ public class DNARow extends Row<DNACell> {
 	@CheckForNull
 	private OTUsToDNARows otusToRows;
 
+	protected DNARow() {}
+
 	@Override
 	protected List<DNACell> getCells() {
 		return cells;

@@ -24,7 +24,6 @@ import java.util.Iterator;
 import java.util.List;
 
 import javax.annotation.CheckForNull;
-import javax.annotation.Nonnegative;
 import javax.annotation.Nullable;
 import javax.persistence.CascadeType;
 import javax.persistence.Entity;
@@ -53,12 +52,6 @@ public class CharacterStateRow extends Row<CharacterStateCell> {
 	/** This entitiy's table name. */
 	public static final String TABLE = "CHARACTER_STATE_ROW";
 
-	static final String CELLS_INDEX_COLUMN = CharacterStateCell.TABLE
-												+ "_POSITION";
-
-	/**
-	 * Conventionally used as for foreign keys that point at this table.
-	 */
 	public static final String JOIN_COLUMN = TABLE + "_ID";
 
 	/**
@@ -84,37 +77,12 @@ public class CharacterStateRow extends Row<CharacterStateCell> {
 	@CheckForNull
 	private OTUsToCharacterStateRows otusToRows;
 
-	CharacterStateRow() {}
+	protected CharacterStateRow() {}
 
 	@Override
 	public void accept(final IVisitor visitor) {
 		super.accept(visitor);
 		visitor.visit(this);
-	}
-
-	@Override
-	public List<CharacterStateCell> setCells(
-			List<? extends CharacterStateCell> cells) {
-		final List<CharacterStateCell> clearedCells = super
-				.setCellsHelper(cells);
-
-		for (final CharacterStateCell cell : this) {
-			cell.setRow(this);
-		}
-		return clearedCells;
-	}
-
-	/**
-	 * Get the cell at position {@code pPodCellPosition}.
-	 * 
-	 * @param pPodCellPosition the position of the cell we're interested in
-	 * @return the cell at position {@code pPodCellPosition}
-	 * 
-	 * @throws IndexOutOfBoundsException if {@code pPodCellPosition} is out of
-	 *             bounds for this row
-	 */
-	public CharacterStateCell getCell(@Nonnegative final int pPodCellPosition) {
-		return getCells().get(pPodCellPosition);
 	}
 
 	public int getCellPosition(final CharacterStateCell cell) {
@@ -158,6 +126,18 @@ public class CharacterStateRow extends Row<CharacterStateCell> {
 	 */
 	public Iterator<CharacterStateCell> iterator() {
 		return Collections.unmodifiableList(getCells()).iterator();
+	}
+
+	@Override
+	public List<CharacterStateCell> setCells(
+			final List<? extends CharacterStateCell> cells) {
+		final List<CharacterStateCell> clearedCells = super
+				.setCellsHelper(cells);
+
+		for (final CharacterStateCell cell : this) {
+			cell.setRow(this);
+		}
+		return clearedCells;
 	}
 
 	/**

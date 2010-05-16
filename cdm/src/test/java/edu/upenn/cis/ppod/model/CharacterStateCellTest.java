@@ -44,7 +44,7 @@ import edu.upenn.cis.ppod.TestGroupDefs;
  * @author Sam Donnelly
  */
 @Test(groups = TestGroupDefs.FAST, dependsOnGroups = TestGroupDefs.INIT)
-public class StandardCellTest {
+public class CharacterStateCellTest {
 
 	@Nullable
 	private CharacterStateCell cell;

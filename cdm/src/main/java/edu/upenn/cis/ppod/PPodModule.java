@@ -25,7 +25,7 @@ import edu.upenn.cis.ppod.model.ModelModule;
 import edu.upenn.cis.ppod.saveorupdate.IMergeAttachments;
 import edu.upenn.cis.ppod.saveorupdate.IMergeOTUSets;
 import edu.upenn.cis.ppod.saveorupdate.IMergeTreeSets;
-import edu.upenn.cis.ppod.saveorupdate.ISaveOrUpdateMatrix;
+import edu.upenn.cis.ppod.saveorupdate.ISaveOrUpdateCharacterStateMatrix;
 import edu.upenn.cis.ppod.saveorupdate.ISaveOrUpdateStudy;
 import edu.upenn.cis.ppod.saveorupdate.SaveOrUpdateModule;
 import edu.upenn.cis.ppod.services.StringPair;
@@ -51,9 +51,9 @@ public final class PPodModule extends AbstractModule {
 		bind(IMergeTreeSets.IFactory.class).toProvider(
 				FactoryProvider.newFactory(IMergeTreeSets.IFactory.class,
 						IMergeTreeSets.class));
-		bind(ISaveOrUpdateMatrix.IFactory.class).toProvider(
-				FactoryProvider.newFactory(ISaveOrUpdateMatrix.IFactory.class,
-						ISaveOrUpdateMatrix.class));
+		bind(ISaveOrUpdateCharacterStateMatrix.IFactory.class).toProvider(
+				FactoryProvider.newFactory(ISaveOrUpdateCharacterStateMatrix.IFactory.class,
+						ISaveOrUpdateCharacterStateMatrix.class));
 		bind(IMergeAttachments.IFactory.class).toProvider(
 				FactoryProvider.newFactory(IMergeAttachments.IFactory.class,
 						IMergeAttachments.class));

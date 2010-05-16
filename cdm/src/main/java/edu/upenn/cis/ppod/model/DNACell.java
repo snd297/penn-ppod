@@ -75,6 +75,8 @@ public class DNACell extends Cell<DNANucleotide> {
 	@CheckForNull
 	private Set<DNANucleotide> xmlStates = null;
 
+	protected DNACell() {}
+
 	@Override
 	@CheckForNull
 	protected Set<DNANucleotide> getElementsRaw() {
@@ -147,7 +149,7 @@ public class DNACell extends Cell<DNANucleotide> {
 	}
 
 	@Override
-	public DNACell unsetRow() {
+	protected DNACell unsetRow() {
 		row = null;
 		return this;
 	}
