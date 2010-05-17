@@ -16,7 +16,7 @@
 	</named-query>
 
 	<named-query name="Study-getByPPodIdEager">
-		<query>select s from Study s left join fetch s.otuSets o left join fetch o.characterStateMatrices m left join fetch m.otusToRows where s.pPodId=:pPodId</query>
+		<query>select s from Study s left join fetch s.otuSets o left join fetch o.characterStateMatrices m left join fetch m.rows where s.pPodId=:pPodId</query>
 		<hint name="org.hibernate.comment" value="Get a Study given its pPOD ID." />
 	</named-query>
 

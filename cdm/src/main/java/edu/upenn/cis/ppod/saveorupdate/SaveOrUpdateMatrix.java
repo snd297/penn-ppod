@@ -68,7 +68,7 @@ final class SaveOrUpdateMatrix<R extends Row<C>, C extends Cell<E>, E>
 
 		int sourceOTUPosition = -1;
 
-		for (final OTU sourceOTU : sourceMatrix.getOTUSet()) {
+		for (final OTU sourceOTU : sourceMatrix.getOTUSet().getOTUs()) {
 			sourceOTUPosition++;
 			final R sourceRow = sourceMatrix.getRow(sourceOTU);
 

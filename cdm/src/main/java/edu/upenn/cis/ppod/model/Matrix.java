@@ -9,6 +9,7 @@ import static edu.upenn.cis.ppod.util.CollectionsUtil.nullFillAndSet;
 import java.util.Collections;
 import java.util.Iterator;
 import java.util.List;
+import java.util.Map;
 
 import javax.annotation.CheckForNull;
 import javax.annotation.Nonnegative;
@@ -25,15 +26,15 @@ import javax.persistence.Transient;
 import javax.xml.bind.annotation.XmlAttribute;
 import javax.xml.bind.annotation.XmlElement;
 
-import edu.umd.cs.findbugs.annotations.OverrideMustInvoke;
 import edu.upenn.cis.ppod.modelinterfaces.IMatrix;
 
 /**
  * @author Sam Donnelly
  */
 @MappedSuperclass
-public abstract class Matrix<R extends Row<?>> extends UUPPodEntityWXmlId
-		implements IMatrix, Iterable<R> {
+public abstract class Matrix<R extends Row<?>> extends
+		UUPPodEntityWXmlId
+		implements IMatrix {
 
 	/** Description column. */
 	public static final String DESCRIPTION_COLUMN = "DESCRIPTION";
@@ -69,8 +70,6 @@ public abstract class Matrix<R extends Row<?>> extends UUPPodEntityWXmlId
 	@CheckForNull
 	private OTUSet otuSet;
 
-	public abstract Integer getColumnsSize();
-
 	protected Matrix() {}
 
 	/**
@@ -100,30 +99,7 @@ public abstract class Matrix<R extends Row<?>> extends UUPPodEntityWXmlId
 		return columnPPodVersions;
 	}
 
-	/**
-	 * Set row at <code>otu</code> to <code>row</code>.
-	 * <p>
-	 * Assumes {@code row} does not belong to another matrix.
-	 * <p>
-	 * Assumes {@code row} is not detached.
-	 * 
-	 * @param otu index of the row we are adding
-	 * @param row the row we're adding
-	 * 
-	 * @return the row that was previously there, or {@code null} if there was
-	 *         no row previously there
-	 * 
-	 * @throws IllegalArgumentException if {@code otu} does not belong to this
-	 *             matrix's {@code OTUSet}
-	 * @throws IllegalArgumentException if this matrix already contains a row
-	 *             {@code .equals} to {@code row}
-	 */
-	@CheckForNull
-	public R putRow(final OTU otu, final R row) {
-		checkNotNull(otu);
-		checkNotNull(row);
-		return getOTUsToRows().put(otu, row);
-	}
+	public abstract Integer getColumnsSize();
 
 	/**
 	 * Getter.
@@ -192,6 +168,55 @@ public abstract class Matrix<R extends Row<?>> extends UUPPodEntityWXmlId
 	public R getRow(final OTU otu) {
 		checkNotNull(otu);
 		return getOTUsToRows().get(otu);
+	}
+
+	/**
+	 * Get the rows that make up this matrix.
+	 * 
+	 * @return the rows that make up this matrix
+	 */
+	public Map<OTU, R> getRows() {
+		return Collections.unmodifiableMap(getOTUsToRows().getOTUsToValues());
+	}
+
+	/**
+	 * Set row at <code>otu</code> to <code>row</code>.
+	 * <p>
+	 * Assumes {@code row} does not belong to another matrix.
+	 * <p>
+	 * Assumes {@code row} is not detached.
+	 * 
+	 * @param otu index of the row we are adding
+	 * @param row the row we're adding
+	 * 
+	 * @return the row that was previously there, or {@code null} if there was
+	 *         no row previously there
+	 * 
+	 * @throws IllegalArgumentException if {@code otu} does not belong to this
+	 *             matrix's {@code OTUSet}
+	 * @throws IllegalArgumentException if this matrix already contains a row
+	 *             {@code .equals} to {@code row}
+	 */
+	@CheckForNull
+	public R putRow(final OTU otu, final R row) {
+		checkNotNull(otu);
+		checkNotNull(row);
+		return getOTUsToRows().put(otu, row);
+	}
+
+	/**
+	 * Set the {@link PPodVersionInfo} at {@code idx} to {@code null}. Fills
+	 * with <code>null</code>s if necessary.
+	 * 
+	 * @param position see description
+	 * 
+	 * @return this
+	 */
+	public Matrix<R> resetColumnPPodVersion(
+			@Nonnegative final int position) {
+		checkArgument(position >= 0, "position is negative");
+		nullFillAndSet(getColumnPPodVersionInfos(), position, null);
+		return this;
 	}
 
 	/**
@@ -265,25 +290,10 @@ public abstract class Matrix<R extends Row<?>> extends UUPPodEntityWXmlId
 	 * 
 	 * @return this
 	 */
-	@OverrideMustInvoke
 	public Matrix<R> setOTUSet(
 			@CheckForNull final OTUSet newOTUSet) {
 		otuSet = newOTUSet;
-		return this;
-	}
-
-	/**
-	 * Set the {@link PPodVersionInfo} at {@code idx} to {@code null}. Fills
-	 * with <code>null</code>s if necessary.
-	 * 
-	 * @param position see description
-	 * 
-	 * @return this
-	 */
-	public Matrix<R> resetColumnPPodVersion(
-			@Nonnegative final int position) {
-		checkArgument(position >= 0, "position is negative");
-		nullFillAndSet(getColumnPPodVersionInfos(), position, null);
+		getOTUsToRows().setOTUs();
 		return this;
 	}
 

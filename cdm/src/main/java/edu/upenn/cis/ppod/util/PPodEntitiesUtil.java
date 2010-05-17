@@ -69,7 +69,7 @@ public class PPodEntitiesUtil {
 			final OTUSet otuSet = otuSetsItr.next();
 			extractAttachmentInfoFromAttachee(studyWideAttachmentNamespaces,
 					studyWideAttachmentTypes, studyWideAttachments, otuSet);
-			for (final OTU otu : otuSet) {
+			for (final OTU otu : otuSet.getOTUs()) {
 				extractAttachmentInfoFromAttachee(
 						studyWideAttachmentNamespaces,
 						studyWideAttachmentTypes, studyWideAttachments, otu);

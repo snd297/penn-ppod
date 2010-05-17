@@ -72,13 +72,14 @@ final class MergeMolecularSequenceSets<SS extends SequenceSet<S>, S extends Sequ
 			targetOTUsToSequences = targetSequenceSet
 					.getOTUsToSequencesMap();
 		} else {
-			// We need to clear it because it's of the wrong size, so we make a copy of the OTU->Sequence map
+			// We need to clear it because it's of the wrong size, so we make a
+			// copy of the OTU->Sequence map
 			targetOTUsToSequences = ImmutableMap.copyOf(targetSequenceSet
 					.getOTUsToSequencesMap());
 			targetSequenceSet.clearSequences();
 		}
 
-		for (int i = 0; i < sourceSequenceSet.getOTUSet().getOTUsSize(); i++) {
+		for (int i = 0; i < sourceSequenceSet.getOTUSet().getOTUs().size(); i++) {
 			final OTU sourceOTU = sourceSequenceSet.getOTUSet().getOTU(i);
 
 			final S sourceSequence = sourceSequenceSet.getSequence(sourceOTU);

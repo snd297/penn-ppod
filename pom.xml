@@ -55,8 +55,7 @@
 		</repository>
 		<repository>
 			<id>jboss</id>
-			<url>http://repository.jboss.org/maven2
-			</url>
+			<url>https://repository.jboss.org/nexus/content/groups/public/</url>
 		</repository>
 		<repository>
 			<id>Mergere</id>
@@ -116,17 +115,17 @@
 		<dependency>
 			<groupId>org.hibernate</groupId>
 			<artifactId>hibernate-core</artifactId>
-			<version>3.5.1-Final</version>
+			<version>3.5.2-Final</version>
 		</dependency>
 		<dependency>
 			<groupId>org.hibernate</groupId>
 			<artifactId>hibernate-annotations</artifactId>
-			<version>3.5.1-Final</version>
+			<version>3.5.2-Final</version>
 		</dependency>
 		<dependency>
 			<groupId>org.hibernate</groupId>
 			<artifactId>hibernate-c3p0</artifactId>
-			<version>3.5.1-Final</version>
+			<version>3.5.2-Final</version>
 			<scope>runtime</scope>
 		</dependency>
 		<dependency>

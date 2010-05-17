@@ -82,7 +82,7 @@ public class OTUSetTest {
 		otuSet.setOTUs(ImmutableList.of(otuProvider.get().setLabel("OTU-0")));
 		otuSet.unsetInNeedOfNewPPodVersionInfo();
 
-		otuSet.setOTUs(newArrayList(otuSet));
+		otuSet.setOTUs(otuSet.getOTUs());
 		assertFalse(otuSet.isInNeedOfNewPPodVersionInfo());
 	}
 
@@ -133,7 +133,7 @@ public class OTUSetTest {
 		// assertNull(otuSet.getPPodVersionInfo());
 		assertTrue(study.isInNeedOfNewPPodVersionInfo());
 		// assertNull(study.getPPodVersionInfo());
-		assertEquals(otuSet.getOTUsSize(), 0);
+		assertEquals(otuSet.getOTUs().size(), 0);
 	}
 
 	@Test
@@ -180,7 +180,7 @@ public class OTUSetTest {
 		final ImmutableList<OTU> removedOTUs = ImmutableList.copyOf(otuSet
 				.setOTUs(otus2));
 
-		assertFalse(contains(otuSet, otus.get(1)));
+		assertFalse(contains(otuSet.getOTUs(), otus.get(1)));
 		assertTrue(otuSet.isInNeedOfNewPPodVersionInfo());
 		assertEquals(removedOTUs, newHashSet(otus.get(1)));
 	}
@@ -263,7 +263,7 @@ public class OTUSetTest {
 		final OTU otu0 = otuProvider.get();
 		final OTU shouldBeOTU0 = otuSet.addOTU(otu0);
 		assertSame(shouldBeOTU0, otu0);
-		assertTrue(contains(otuSet, otu0));
+		assertTrue(contains(otuSet.getOTUs(), otu0));
 	}
 
 	@Test
