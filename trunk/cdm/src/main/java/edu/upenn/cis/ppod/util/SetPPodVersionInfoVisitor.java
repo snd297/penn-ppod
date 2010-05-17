@@ -79,7 +79,7 @@ final class SetPPodVersionInfoVisitor extends EmptyVisitor implements
 	public void visit(final CharacterStateMatrix matrix) {
 		setNewPPodVersionIfNeeded(matrix);
 		for (int pos = 0; pos < matrix.getColumnsSize(); pos++) {
-			if (matrix.getColumnPPodVersionInfo(pos) == null) {
+			if (matrix.getColumnPPodVersionInfos().get(pos) == null) {
 				matrix.setColumnPPodVersionInfo(pos, newPPodVersionInfo
 						.getNewPPodVersionInfo());
 			}

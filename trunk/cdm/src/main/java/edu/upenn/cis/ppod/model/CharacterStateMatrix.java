@@ -170,9 +170,9 @@ public class CharacterStateMatrix extends Matrix<CharacterStateRow> {
 
 		for (final PPodVersionInfo columnVersionInfo : getColumnPPodVersionInfos()) {
 			if (columnVersionInfo == null) {
-				getColumnPPodVersions().add(null);
+				getColumnPPodVersionsModifiable().add(null);
 			} else {
-				getColumnPPodVersions().add(columnVersionInfo.getPPodVersion());
+				getColumnPPodVersionsModifiable().add(columnVersionInfo.getPPodVersion());
 			}
 		}
 		return true;
@@ -216,16 +216,6 @@ public class CharacterStateMatrix extends Matrix<CharacterStateRow> {
 	 */
 	Map<Character, Integer> getCharactersToPositions() {
 		return charactersToPositions;
-	}
-
-	public Long getColumnPPodVersion(final int columnPPodVersionPosition) {
-		return getColumnPPodVersions().get(columnPPodVersionPosition);
-	}
-
-	@CheckForNull
-	public PPodVersionInfo getColumnPPodVersionInfo(
-			final int columnPPodVersionInfoPosition) {
-		return getColumnPPodVersionInfos().get(columnPPodVersionInfoPosition);
 	}
 
 	/**

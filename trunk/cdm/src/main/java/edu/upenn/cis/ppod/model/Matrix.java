@@ -49,7 +49,6 @@ public abstract class Matrix<R extends Row<?>> extends
 	@OrderColumn(name = PPodVersionInfo.TABLE + "_POSITION")
 	private final List<PPodVersionInfo> columnPPodVersionInfos = newArrayList();
 
-	@XmlElement(name = "columnPPodVersion")
 	@Transient
 	private final List<Long> columnPPodVersions = newArrayList();
 
@@ -94,12 +93,12 @@ public abstract class Matrix<R extends Row<?>> extends
 		return columnPPodVersionInfos;
 	}
 
-	/**
-	 * Created for testing.
-	 * 
-	 * @return
-	 */
-	List<Long> getColumnPPodVersions() {
+	public List<Long> getColumnPPodVersions() {
+		return Collections.unmodifiableList(columnPPodVersions);
+	}
+
+	@XmlElement(name = "columnPPodVersion")
+	protected List<Long> getColumnPPodVersionsModifiable() {
 		return columnPPodVersions;
 	}
 
