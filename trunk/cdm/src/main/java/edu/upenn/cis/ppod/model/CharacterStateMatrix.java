@@ -27,7 +27,6 @@ import java.util.List;
 import java.util.Map;
 
 import javax.annotation.CheckForNull;
-import javax.annotation.Nonnegative;
 import javax.persistence.CascadeType;
 import javax.persistence.Column;
 import javax.persistence.ElementCollection;
@@ -125,7 +124,7 @@ public class CharacterStateMatrix extends Matrix<CharacterStateRow> {
 
 	@Override
 	public void accept(final IVisitor visitor) {
-		for (final Character character : getCharacters()) {
+		for (final Character character : getCharactersModifiable()) {
 			character.accept(visitor);
 		}
 		rows.accept(visitor);
@@ -138,7 +137,7 @@ public class CharacterStateMatrix extends Matrix<CharacterStateRow> {
 	public void afterUnmarshal() {
 		super.afterUnmarshal();
 		int i = -1;
-		for (final Character character : getCharacters()) {
+		for (final Character character : getCharactersModifiable()) {
 			i++;
 			if (this instanceof MolecularStateMatrix) {
 				// charactersToPositions is meaningless for MolecularMatrix's
@@ -147,7 +146,8 @@ public class CharacterStateMatrix extends Matrix<CharacterStateRow> {
 			} else {
 				charactersToPositions.put(character, i);
 			}
-			getColumnPPodVersionInfos().add(null);
+
+			getColumnPPodVersionInfosModifiable().add(null);
 			character.addMatrix(this);
 		}
 	}
@@ -179,20 +179,6 @@ public class CharacterStateMatrix extends Matrix<CharacterStateRow> {
 	}
 
 	/**
-	 * Get the character at the given position.
-	 * 
-	 * @param characterPosition the character's position
-	 * 
-	 * @return the character at the given position\
-	 * 
-	 * @throws IndexOutOfBoundsException if {@code characterPosition} is out of
-	 *             bounds
-	 */
-	public Character getCharacter(@Nonnegative final int characterPosition) {
-		return getCharacters().get(characterPosition);
-	}
-
-	/**
 	 * Get the position of a character in this matrix, or {@code null} if the
 	 * character is not in this matrix.
 	 * 
@@ -206,24 +192,23 @@ public class CharacterStateMatrix extends Matrix<CharacterStateRow> {
 	}
 
 	/**
-	 * Get the characters.
+	 * Get the characters contained in this matrix.
 	 * 
-	 * @return a modifiable reference to the characters
+	 * @return the characters contained in this matrix
 	 */
-	@XmlElement(name = "characterDocId")
-	@XmlIDREF
-	protected List<Character> getCharacters() {
-		return characters;
+	public List<Character> getCharacters() {
+		return Collections.unmodifiableList(characters);
 	}
 
 	/**
-	 * Iterates over this matix's characters in column order.
+	 * Get a modifiable reference to this matrix's characters.
 	 * 
-	 * @return an iterator that iterates over this matix's characters in column
-	 *         order
+	 * @return a modifiable reference to this matrix's characters
 	 */
-	public Iterator<Character> getCharactersIterator() {
-		return Collections.unmodifiableList(getCharacters()).iterator();
+	@XmlElement(name = "characterDocId")
+	@XmlIDREF
+	protected List<Character> getCharactersModifiable() {
+		return characters;
 	}
 
 	/**
@@ -250,7 +235,7 @@ public class CharacterStateMatrix extends Matrix<CharacterStateRow> {
 	 */
 	@Override
 	public Integer getColumnsSize() {
-		return getCharacters().size();
+		return getCharactersModifiable().size();
 	}
 
 	/**
@@ -293,7 +278,7 @@ public class CharacterStateMatrix extends Matrix<CharacterStateRow> {
 			final List<? extends Character> characters) {
 		checkNotNull(characters);
 
-		if (characters.equals(getCharacters())) {
+		if (characters.equals(getCharactersModifiable())) {
 			return Collections.emptyList();
 		}
 
@@ -326,28 +311,28 @@ public class CharacterStateMatrix extends Matrix<CharacterStateRow> {
 		}
 
 		// Add in column versions as necessary
-		nullFill(getColumnPPodVersionInfos(), characters.size());
+		nullFill(getColumnPPodVersionInfosModifiable(), characters.size());
 
 		// Remove column versions as necessary
 		while (getColumnPPodVersionInfos().size() > characters.size()) {
-			getColumnPPodVersionInfos().remove(
+			getColumnPPodVersionInfosModifiable().remove(
 					getColumnPPodVersionInfos().size() - 1);
 		}
 
-		final List<Character> removedCharacters = newArrayList(getCharacters());
+		final List<Character> removedCharacters = newArrayList(getCharactersModifiable());
 
 		removedCharacters.removeAll(characters);
 		for (final Character removedCharacter : removedCharacters) {
 			removedCharacter.removeMatrix(this);
 		}
 
-		getCharacters().clear();
+		getCharactersModifiable().clear();
 		charactersToPositions.clear();
 
-		getCharacters().addAll(characters);
+		getCharactersModifiable().addAll(characters);
 
 		int characterPosition = 0;
-		for (final Character character : getCharacters()) {
+		for (final Character character : getCharactersModifiable()) {
 			charactersToPositions.put(character, characterPosition++);
 			character.addMatrix(this);
 		}
@@ -373,7 +358,7 @@ public class CharacterStateMatrix extends Matrix<CharacterStateRow> {
 		checkNotNull(pPodVersionInfo);
 		checkArgument(pos < getColumnPPodVersionInfos().size(),
 				"pos is bigger than getColumnPPodVersionInfos().size()");
-		getColumnPPodVersionInfos().set(pos, pPodVersionInfo);
+		getColumnPPodVersionInfosModifiable().set(pos, pPodVersionInfo);
 		return this;
 	}
 
@@ -409,13 +394,4 @@ public class CharacterStateMatrix extends Matrix<CharacterStateRow> {
 		this.rows = rows;
 		return this;
 	}
-
-// @Override
-// public CharacterStateMatrix setOTUSet(
-// @CheckForNull final OTUSet newOTUSet) {
-// super.setOTUSet(newOTUSet);
-// getOTUsToRows().setOTUs();
-// return this;
-// }
-
 }

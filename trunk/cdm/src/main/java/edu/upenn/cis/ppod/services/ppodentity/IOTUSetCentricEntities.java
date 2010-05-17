@@ -15,7 +15,7 @@
  */
 package edu.upenn.cis.ppod.services.ppodentity;
 
-import java.util.Iterator;
+import java.util.Set;
 
 import edu.upenn.cis.ppod.model.OTUSet;
 
@@ -35,12 +35,6 @@ public interface IOTUSetCentricEntities {
 	 */
 	OTUSet addOTUSet(OTUSet otuSet);
 
-	/**
-	 * Get an iterator over the OTU sets. {@code Iterator.remove()} will not be
-	 * supported by the returned iterator.
-	 * 
-	 * @return an iterator over the OTU sets
-	 */
-	Iterator<OTUSet> getOTUSetsIterator();
+	Set<OTUSet> getOTUSets();
 
 }

@@ -39,8 +39,6 @@ import javax.xml.bind.annotation.XmlAttribute;
 import javax.xml.bind.annotation.XmlElement;
 import javax.xml.bind.annotation.XmlIDREF;
 
-import org.hibernate.annotations.Cascade;
-
 import com.google.common.base.Function;
 import com.google.common.base.Predicate;
 import com.google.inject.ImplementedBy;
@@ -254,7 +252,6 @@ public class Attachment extends UUPPodEntityWXmlId {
 	/** Like a variable typeLabel. */
 	@ManyToOne(fetch = FetchType.LAZY)
 	@JoinColumn(name = AttachmentType.ID_COLUMN, nullable = false)
-	@Cascade(org.hibernate.annotations.CascadeType.SAVE_UPDATE)
 	@CheckForNull
 	private AttachmentType type;
 

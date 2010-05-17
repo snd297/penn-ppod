@@ -19,6 +19,8 @@ import edu.upenn.cis.ppod.util.IVisitor;
  * A row of cells.
  * 
  * @author Sam Donnelly
+ * 
+ * @param <C> the type of cell we have
  */
 @MappedSuperclass
 public abstract class Row<C extends Cell<?>> extends PPodEntity implements

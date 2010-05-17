@@ -58,6 +58,16 @@ final class SaveOrUpdateMatrix<R extends Row<C>, C extends Cell<E>, E>
 			final Matrix<R> sourceMatrix) {
 
 		final String METHOD = "saveOrUpdate(...)";
+
+		// We need this for the response: it's less than ideal to do this here,
+		// but easy
+		if (dbMatrix.getDocId() == null) {
+			dbMatrix.setDocId(sourceMatrix.getDocId());
+		}
+
+		dbMatrix.setLabel(sourceMatrix.getLabel());
+		dbMatrix.setDescription(sourceMatrix.getDescription());
+
 		final MatrixInfo matrixInfo = matrixInfoProvider.get();
 		matrixInfo.setPPodId(dbMatrix.getPPodId());
 

@@ -19,7 +19,6 @@ import static com.google.common.base.Preconditions.checkNotNull;
 import static com.google.common.collect.Sets.newHashSet;
 
 import java.util.Collections;
-import java.util.Iterator;
 import java.util.Set;
 
 import javax.persistence.CascadeType;
@@ -63,6 +62,10 @@ public class Study extends UUPPodEntity implements IOTUSetCentricEntities {
 	@OneToMany(mappedBy = "study", cascade = CascadeType.ALL, orphanRemoval = true)
 	private final Set<OTUSet> otuSets = newHashSet();
 
+	@XmlElement(name = "studyWideAttachmentNamespace")
+	@Transient
+	private final Set<AttachmentNamespace> studyWideAttachmentNamespaces = newHashSet();
+
 	@XmlElement(name = "studyWideAttachment")
 	@Transient
 	private final Set<Attachment> studyWideAttachments = newHashSet();
@@ -71,19 +74,15 @@ public class Study extends UUPPodEntity implements IOTUSetCentricEntities {
 	@Transient
 	private final Set<AttachmentType> studyWideAttachmentTypes = newHashSet();
 
-	@XmlElement(name = "studyWideAttachmentNamespace")
-	@Transient
-	private final Set<AttachmentNamespace> studyWideAttachmentNamespaces = newHashSet();
-
 	@XmlElement(name = "studyWideCharacter")
 	@Transient
 	private final Set<Character> studyWideCharacters = newHashSet();
 
-	Study() {}
+	protected Study() {}
 
 	@Override
 	public void accept(final IVisitor visitor) {
-		for (final OTUSet otuSet : getOTUSets()) {
+		for (final OTUSet otuSet : getOTUSetsModifiable()) {
 			otuSet.accept(visitor);
 		}
 		visitor.visit(this);
@@ -91,7 +90,7 @@ public class Study extends UUPPodEntity implements IOTUSetCentricEntities {
 
 	public OTUSet addOTUSet(final OTUSet otuSet) {
 		checkNotNull(otuSet);
-		if (getOTUSets().contains(otuSet)) {
+		if (getOTUSetsModifiable().contains(otuSet)) {
 			return otuSet;
 		}
 		otuSets.add(otuSet);
@@ -119,12 +118,11 @@ public class Study extends UUPPodEntity implements IOTUSetCentricEntities {
 			PPodEntitiesUtil.extractAttachmentInfoFromPPodEntities(
 					studyWideAttachmentNamespaces, studyWideAttachmentTypes,
 					studyWideAttachments, this);
-			for (final OTUSet otuSet : getOTUSets()) {
-				for (final Iterator<CharacterStateMatrix> matrixItr = otuSet
-						.getCharacterStateMatricesIterator(); matrixItr
-						.hasNext();) {
+			for (final OTUSet otuSet : getOTUSetsModifiable()) {
+				for (final CharacterStateMatrix matrix : otuSet
+						.getCharacterStateMatrices()) {
 					studyWideCharacters
-							.addAll(matrixItr.next().getCharacters());
+							.addAll(matrix.getCharacters());
 				}
 			}
 		}
@@ -141,8 +139,12 @@ public class Study extends UUPPodEntity implements IOTUSetCentricEntities {
 		return label;
 	}
 
+	public Set<OTUSet> getOTUSets() {
+		return Collections.unmodifiableSet(otuSets);
+	}
+
 	@XmlElement(name = "otuSet")
-	private Set<OTUSet> getOTUSets() {
+	protected Set<OTUSet> getOTUSetsModifiable() {
 		return otuSets;
 	}
 
@@ -150,11 +152,14 @@ public class Study extends UUPPodEntity implements IOTUSetCentricEntities {
 	 * Remove an OTU set from this Study.
 	 * 
 	 * @param otuSet to be removed
-	 * @return {@code true} if the item was removed or {@code false} if it
-	 *         wasn't present to begin with
+	 * 
+	 * @return this
 	 */
-	public boolean removeOTUSet(final OTUSet otuSet) {
-		return otuSets.remove(otuSet);
+	public Study removeOTUSet(final OTUSet otuSet) {
+		if (otuSets.remove(otuSet)) {
+			setInNeedOfNewPPodVersionInfo();
+		}
+		return this;
 	}
 
 	/**
@@ -199,10 +204,6 @@ public class Study extends UUPPodEntity implements IOTUSetCentricEntities {
 						")");
 
 		return retValue.toString();
-	}
-
-	public Iterator<OTUSet> getOTUSetsIterator() {
-		return Collections.unmodifiableSet(getOTUSets()).iterator();
 	}
 
 }

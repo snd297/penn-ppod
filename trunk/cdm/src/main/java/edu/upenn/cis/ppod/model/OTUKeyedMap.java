@@ -196,16 +196,12 @@ public abstract class OTUKeyedMap<V extends IOTUKeyedMapValue>
 	protected abstract OTUKeyedMap<V> setInNeedOfNewPPodVersionInfo();
 
 	/**
-	 * Set the keys of this {@code OTUKeyedMap}.
+	 * Set the keys of this {@code OTUKeyedMap} to the OTU's in {@code
+	 * getParent()}'s OTU set.
 	 * <p>
 	 * Any newly introduced keys will map to {@code null} values.
-	 * <p>
-	 * Any existing keys will be removed if they are not present in {@code
-	 * otuSet.getOTUs()}.
 	 * 
 	 * @return this
-	 * 
-	 * @throw IllegalArgumentException if {@code otuSet != parent.getOTUSet()}
 	 */
 	@CheckForNull
 	protected OTUKeyedMap<V> setOTUs() {

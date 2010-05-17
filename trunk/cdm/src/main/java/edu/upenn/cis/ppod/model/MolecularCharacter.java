@@ -61,7 +61,7 @@ public abstract class MolecularCharacter extends Character {
 	@Override
 	protected boolean addMatrix(final CharacterStateMatrix matrix) {
 		checkNotNull(matrix);
-		return getMatrices().add(matrix);
+		return getMatricesModifiable().add(matrix);
 	}
 
 	protected MolecularCharacter setMolecularCharacterLabel(

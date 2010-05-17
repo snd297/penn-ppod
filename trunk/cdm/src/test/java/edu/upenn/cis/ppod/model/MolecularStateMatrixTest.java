@@ -51,7 +51,8 @@ public class MolecularStateMatrixTest {
 		molecularMatrix.setCharacters(newArrayList(molecularCharacter));
 
 		for (int i = 0; i < molecularMatrix.getColumnsSize(); i++) {
-			assertSame(molecularMatrix.getCharacter(i), molecularCharacter);
+			assertSame(molecularMatrix.getCharacters().get(i),
+					molecularCharacter);
 		}
 	}
 }

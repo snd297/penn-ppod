@@ -18,7 +18,6 @@ package edu.upenn.cis.ppod.services.hibernate;
 import static com.google.common.base.Preconditions.checkNotNull;
 import static com.google.common.collect.Sets.newHashSet;
 
-import java.util.Iterator;
 import java.util.List;
 import java.util.Set;
 
@@ -151,16 +150,12 @@ class PPodEntitiesResourceHibernate implements
 
 			// Now we clean up our response so we don't include any extra
 			// matrices or tree sets that were pulled over with the OTUSet's
-			for (final Iterator<OTUSet> otuSetsItr = pPodEntities
-					.getOTUSetsIterator(); otuSetsItr.hasNext();) {
-
-				final OTUSet otuSet = otuSetsItr.next();
+			for (final OTUSet otuSet : pPodEntities.getOTUSets()) {
 
 				final Set<CharacterStateMatrix> matricesToReturn = newHashSet();
 
-				for (final Iterator<CharacterStateMatrix> matrixItr = otuSet
-						.getCharacterStateMatricesIterator(); matrixItr.hasNext();) {
-					final CharacterStateMatrix matrix = matrixItr.next();
+				for (final CharacterStateMatrix matrix : otuSet
+						.getCharacterStateMatrices()) {
 					if (addedMatrices.contains(matrix)) {
 						matricesToReturn.add(matrix);
 					}
@@ -168,9 +163,7 @@ class PPodEntitiesResourceHibernate implements
 				otuSet.setCharacterStateMatrices(matricesToReturn);
 
 				final Set<TreeSet> treeSetsToReturn = newHashSet();
-				for (final Iterator<TreeSet> treeSetItr = otuSet
-						.getTreeSetsIterator(); treeSetItr.hasNext();) {
-					final TreeSet treeSet = treeSetItr.next();
+				for (final TreeSet treeSet : otuSet.getTreeSets()) {
 					if (addedTreeSets.contains(treeSet)) {
 						treeSetsToReturn.add(treeSet);
 					}

@@ -93,29 +93,19 @@ final class SaveOrUpdateCharacterStateMatrix implements
 		checkNotNull(dbMatrix);
 		checkNotNull(sourceMatrix);
 
-// final MatrixInfo matrixInfo = matrixInfoProvider.get();
-
 		dbMatrix.setLabel(sourceMatrix.getLabel());
 		dbMatrix.setDescription(sourceMatrix.getDescription());
 
-		// We need this for the response: it's less than ideal to do this here,
-		// but easy
-		if (dbMatrix.getDocId() == null) {
-			dbMatrix.setDocId(sourceMatrix.getDocId());
-		}
-
 		final List<Character> newDbMatrixCharacters = newArrayList();
 		int sourceCharacterPosition = -1;
-		for (final Iterator<Character> sourceCharactersItr = sourceMatrix
-				.getCharactersIterator(); sourceCharactersItr.hasNext();) {
-			final Character sourceCharacter = sourceCharactersItr.next();
+		for (final Character sourceCharacter : sourceMatrix.getCharacters()) {
 			sourceCharacterPosition++;
 			Character newDbCharacter;
 			if (sourceMatrix instanceof DNAStateMatrix) {
 				newDbCharacter = dnaCharacter;
 			} else if (null == (newDbCharacter =
 					findIf(dbMatrix
-							.getCharactersIterator(),
+							.getCharacters(),
 							compose(equalTo(sourceCharacter
 									.getPPodId()),
 									IWithPPodId.getPPodId)))) {
@@ -131,9 +121,7 @@ final class SaveOrUpdateCharacterStateMatrix implements
 				newDbCharacter.setLabel(sourceCharacter.getLabel());
 			}
 
-			for (final Iterator<CharacterState> sourceStatesItr = sourceCharacter
-					.getStatesIterator(); sourceStatesItr.hasNext();) {
-				final CharacterState sourceState = sourceStatesItr.next();
+			for (final CharacterState sourceState : sourceCharacter.getStates()) {
 				CharacterState dbState;
 				if (null == (dbState = newDbCharacter.getState(
 						sourceState.getStateNumber()))) {
@@ -169,6 +157,8 @@ final class SaveOrUpdateCharacterStateMatrix implements
 				}
 				newDbCharacter.addAttachment(dbAttachment);
 				mergeAttachments.merge(dbAttachment, sourceAttachment);
+				dao.saveOrUpdate(dbAttachment.getType().getNamespace());
+				dao.saveOrUpdate(dbAttachment.getType());
 				dao.saveOrUpdate(dbAttachment);
 			}
 			dao.saveOrUpdate(newDbCharacter);

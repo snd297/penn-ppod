@@ -22,7 +22,6 @@ import static com.google.common.collect.Maps.newHashMap;
 import static com.google.common.collect.Sets.newHashSet;
 
 import java.util.Collections;
-import java.util.Iterator;
 import java.util.Map;
 import java.util.Set;
 
@@ -55,6 +54,7 @@ import edu.upenn.cis.ppod.util.IVisitor;
 @Entity
 @Table(name = Character.TABLE)
 public class Character extends UUPPodEntityWXmlId {
+
 	/**
 	 * We don't call the table {@code "CHARACTER"} because that causes problems
 	 * with the generated SQL: {@code "CHARACTER"} means something to at least
@@ -65,6 +65,7 @@ public class Character extends UUPPodEntityWXmlId {
 	public final static String ID_COLUMN = TABLE + "_ID";
 
 	final static String LABEL_COLUMN = "LABEL";
+
 	/**
 	 * The non-unique label of this {@code Character}.
 	 */
@@ -92,11 +93,11 @@ public class Character extends UUPPodEntityWXmlId {
 	/**
 	 * Default constructor for (at least) Hibernate.
 	 */
-	Character() {}
+	protected Character() {}
 
 	@Override
 	public void accept(final IVisitor visitor) {
-		for (final CharacterState state : getStates().values()) {
+		for (final CharacterState state : getStatesModifiable().values()) {
 			state.accept(visitor);
 		}
 		super.accept(visitor);
@@ -122,8 +123,8 @@ public class Character extends UUPPodEntityWXmlId {
 	 */
 	protected boolean addMatrix(final CharacterStateMatrix matrix) {
 		Preconditions.checkNotNull(matrix);
-		checkState(getMatrices().size() == 0
-					|| getOnlyElement(getMatrices()).equals(matrix),
+		checkState(getMatricesModifiable().size() == 0
+					|| getOnlyElement(getMatricesModifiable()).equals(matrix),
 				"standard characters can belong to only one matrix");
 		return matrices.add(matrix);
 	}
@@ -137,9 +138,9 @@ public class Character extends UUPPodEntityWXmlId {
 	@Override
 	public void afterUnmarshal(final Unmarshaller u, final Object parent) {
 		super.afterUnmarshal(u, parent);
-		if (getStates().size() > 0
-				&& get(getStates().values(), 0).getCharacter() == null) {
-			for (final CharacterState state : getStates().values()) {
+		if (getStatesModifiable().size() > 0
+				&& get(getStatesModifiable().values(), 0).getCharacter() == null) {
+			for (final CharacterState state : getStatesModifiable().values()) {
 				state.setCharacter(this);
 			}
 		}
@@ -163,11 +164,20 @@ public class Character extends UUPPodEntityWXmlId {
 	}
 
 	/**
+	 * Get the matrices that refer to this character.
+	 * 
+	 * @return the matrices that refer to this character
+	 */
+	public Set<CharacterStateMatrix> getMatrices() {
+		return Collections.unmodifiableSet(matrices);
+	}
+
+	/**
 	 * Get the matrices in which this character is used.
 	 * 
 	 * @return the matrices to which this character belongs
 	 */
-	public Set<CharacterStateMatrix> getMatrices() {
+	protected Set<CharacterStateMatrix> getMatricesModifiable() {
 		return matrices;
 	}
 
@@ -182,16 +192,25 @@ public class Character extends UUPPodEntityWXmlId {
 	 */
 	@CheckForNull
 	public CharacterState getState(final Integer stateNumber) {
-		return getStates().get(stateNumber);
+		return getStatesModifiable().get(stateNumber);
 	}
 
 	/**
-	 * Get a mutable reference to the states.
+	 * Get the states of this character.
+	 * 
+	 * @return the states of this character.
+	 */
+	public Set<CharacterState> getStates() {
+		return newHashSet(states.values());
+	}
+
+	/**
+	 * Get a modifiable reference to the states.
 	 * 
 	 * @return a mutable reference to the states
 	 */
 	@XmlElementWrapper(name = "states")
-	protected Map<Integer, CharacterState> getStates() {
+	protected Map<Integer, CharacterState> getStatesModifiable() {
 		return states;
 	}
 
@@ -260,28 +279,6 @@ public class Character extends UUPPodEntityWXmlId {
 			setInNeedOfNewPPodVersionInfo();
 		}
 		return this;
-	}
-
-	/**
-	 * Get an unmodifiable iterator over this {@code Character}'s states in no
-	 * specified order.
-	 * 
-	 * @return an iterator over this {@code Character}'s states
-	 */
-	public Iterator<CharacterState> getStatesIterator() {
-		return Collections.unmodifiableCollection(getStates().values())
-				.iterator();
-	}
-
-	/**
-	 * Get the number of {@code CharacterState}s associated with this {@code
-	 * Character}.
-	 * 
-	 * @return the number of {@code CharacterState}s associated with this
-	 *         {@code Character}
-	 */
-	public int getStatesSize() {
-		return getStates().size();
 	}
 
 	/**

@@ -19,7 +19,6 @@ import static com.google.common.collect.Lists.newArrayList;
 import static com.google.common.collect.Sets.newHashSet;
 
 import java.util.Collections;
-import java.util.Iterator;
 import java.util.Set;
 
 import javax.xml.bind.Marshaller;
@@ -84,15 +83,12 @@ public class PPodEntities implements IPPodEntities {
 					pPodEntitiesWideAttachmentNamespaces,
 					pPodEntitiesWideAttachmentTypes,
 					pPodEntitiesWideAttachment, this);
-			for (final Iterator<OTUSet> otuSetsItr = getOTUSetsIterator(); otuSetsItr
-					.hasNext();) {
-				final OTUSet otuSet = otuSetsItr.next();
-				for (final Iterator<CharacterStateMatrix> matrixItr = otuSet
-						.getCharacterStateMatricesIterator(); matrixItr
-						.hasNext();) {
+			for (final OTUSet otuSet : getOTUSets()) {
+				for (final CharacterStateMatrix matrix : otuSet
+						.getCharacterStateMatrices()) {
 					studyWideCharacters
-							.addAll(newArrayList(matrixItr.next()
-									.getCharactersIterator()));
+							.addAll(newArrayList(matrix
+									.getCharacters()));
 				}
 			}
 		}
@@ -108,8 +104,8 @@ public class PPodEntities implements IPPodEntities {
 		return otu;
 	}
 
-	public Iterator<OTUSet> getOTUSetsIterator() {
-		return otuSets.iterator();
+	public Set<OTUSet> getOTUSets() {
+		return Collections.unmodifiableSet(otuSets);
 	}
 
 }

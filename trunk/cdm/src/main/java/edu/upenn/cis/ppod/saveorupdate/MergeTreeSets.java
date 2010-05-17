@@ -64,10 +64,12 @@ final class MergeTreeSets implements IMergeTreeSets {
 
 		final List<Tree> newTargetTrees = newArrayList();
 
-		for (final Tree sourceTree : sourceTreeSet) {
+		for (final Tree sourceTree : sourceTreeSet.getTrees()) {
 			Tree targetTree;
-			if (null == (targetTree = findIf(targetTreeSet, compose(
-					equalTo(sourceTree.getPPodId()), IWithPPodId.getPPodId)))) {
+			if (null == (targetTree =
+					findIf(targetTreeSet.getTrees(), compose(
+							equalTo(sourceTree.getPPodId()),
+							IWithPPodId.getPPodId)))) {
 				targetTree = treeProvider.get();
 				targetTree.setPPodVersionInfo(newPPodVersionInfo
 						.getNewPPodVersionInfo());

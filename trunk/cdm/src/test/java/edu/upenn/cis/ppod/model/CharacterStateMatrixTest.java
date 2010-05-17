@@ -175,8 +175,8 @@ public class CharacterStateMatrixTest {
 
 		matrix.setCharacters(characters);
 
-		assertNotSame(matrix.getCharacters(), characters);
-		Assert.assertEquals(matrix.getCharacters(), characters);
+		assertNotSame(matrix.getCharactersModifiable(), characters);
+		Assert.assertEquals(matrix.getCharactersModifiable(), characters);
 
 		Assert.assertEquals(matrix.getCharactersToPositions()
 				.get(characters.get(0)),
@@ -207,17 +207,17 @@ public class CharacterStateMatrixTest {
 
 		matrix.setCharacters(characters);
 
-		matrix.getColumnPPodVersionInfos().set(0, pPodVersionInfo0);
-		matrix.getColumnPPodVersionInfos().set(1, pPodVersionInfo1);
-		matrix.getColumnPPodVersionInfos().set(2, pPodVersionInfo2);
+		matrix.getColumnPPodVersionInfosModifiable().set(0, pPodVersionInfo0);
+		matrix.getColumnPPodVersionInfosModifiable().set(1, pPodVersionInfo1);
+		matrix.getColumnPPodVersionInfosModifiable().set(2, pPodVersionInfo2);
 
 		final ImmutableList<Character> shuffledCharacters = ImmutableList.of(
 				characters.get(1), characters.get(2), characters.get(0));
 
 		matrix.setCharacters(shuffledCharacters);
 
-		assertNotSame(matrix.getCharacters(), shuffledCharacters);
-		assertEquals(matrix.getCharacters(), shuffledCharacters);
+		assertNotSame(matrix.getCharactersModifiable(), shuffledCharacters);
+		assertEquals(matrix.getCharactersModifiable(), shuffledCharacters);
 
 		Assert.assertEquals(
 				matrix.getCharactersToPositions().get(
@@ -257,9 +257,9 @@ public class CharacterStateMatrixTest {
 
 		matrix.setCharacters(characters);
 
-		matrix.getColumnPPodVersionInfos().set(0, pPodVersionInfo0);
-		matrix.getColumnPPodVersionInfos().set(1, pPodVersionInfo1);
-		matrix.getColumnPPodVersionInfos().set(2, pPodVersionInfo2);
+		matrix.getColumnPPodVersionInfosModifiable().set(0, pPodVersionInfo0);
+		matrix.getColumnPPodVersionInfosModifiable().set(1, pPodVersionInfo1);
+		matrix.getColumnPPodVersionInfosModifiable().set(2, pPodVersionInfo2);
 
 		final ImmutableList<Character> characters2 = ImmutableList.of(
 				characterProvider.get().setLabel("character2-0"),
@@ -349,9 +349,9 @@ public class CharacterStateMatrixTest {
 
 	@Test
 	public void beforeMarshal() {
-		nullFillAndSet(matrix.getColumnPPodVersionInfos(), 2,
+		nullFillAndSet(matrix.getColumnPPodVersionInfosModifiable(), 2,
 				pPodVersionInfoProvider.get().setPPodVersion(3L));
-		nullFillAndSet(matrix.getColumnPPodVersionInfos(), 5,
+		nullFillAndSet(matrix.getColumnPPodVersionInfosModifiable(), 5,
 				pPodVersionInfoProvider.get().setPPodVersion(8L));
 
 		matrix.beforeMarshal(null);
