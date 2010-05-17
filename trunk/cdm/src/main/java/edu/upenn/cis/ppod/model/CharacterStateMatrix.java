@@ -68,7 +68,6 @@ public class CharacterStateMatrix extends Matrix<CharacterStateRow> {
 	 */
 	static final String CHARACTERS_POSITION_COLUMN = Character.TABLE
 														+ "_POSITION";
-
 	/** This entity's table name. */
 	public static final String TABLE = "CHARACTER_STATE_MATRIX";
 
@@ -103,8 +102,10 @@ public class CharacterStateMatrix extends Matrix<CharacterStateRow> {
 	@Column(name = CHARACTER_IDX_COLUMN)
 	private final Map<Character, Integer> charactersToPositions = newHashMap();
 
+	// Needed to comment out the lazy or it wouldn't get initialized and mess up
+	// serialization to xml
 	@OneToOne(fetch = FetchType.LAZY, optional = false, cascade = CascadeType.ALL, orphanRemoval = true)
-	private OTUsToCharacterStateRows otusToRows;
+	private OTUsToCharacterStateRows rows;
 
 	/** No-arg constructor for (at least) Hibernate. */
 	protected CharacterStateMatrix() {}
@@ -118,8 +119,8 @@ public class CharacterStateMatrix extends Matrix<CharacterStateRow> {
 	 */
 	@Inject
 	protected CharacterStateMatrix(final OTUsToCharacterStateRows otusToRows) {
-		this.otusToRows = otusToRows;
-		this.otusToRows.setMatrix(this);
+		this.rows = otusToRows;
+		this.rows.setMatrix(this);
 	}
 
 	@Override
@@ -127,15 +128,8 @@ public class CharacterStateMatrix extends Matrix<CharacterStateRow> {
 		for (final Character character : getCharacters()) {
 			character.accept(visitor);
 		}
-		getOTUsToRows().accept(visitor);
-
-		for (final CharacterStateRow row : getOTUsToRows()
-				.getOTUsToValues().values()) {
-			if (row != null) {
-				row.accept(visitor);
-			}
-		}
-
+		rows.accept(visitor);
+		rows.getOTUsToValues().size();
 		super.accept(visitor);
 		visitor.visit(this);
 	}
@@ -266,29 +260,10 @@ public class CharacterStateMatrix extends Matrix<CharacterStateRow> {
 	 * 
 	 * @return the otusToRows
 	 */
-	@XmlElement(name = "otusToRows")
+	@XmlElement(name = "rows")
 	@Override
 	protected OTUsToCharacterStateRows getOTUsToRows() {
-		return otusToRows;
-	}
-
-	/**
-	 * Get the number of rows in this matrix.
-	 * 
-	 * @return the number of rows in this matrix
-	 */
-	public int getRowsSize() {
-		return getOTUsToRows().getOTUsToValues().size();
-	}
-
-	/**
-	 * Get an iterator over this matrix's rows. The iterator will traverse the
-	 * rows in {@code getOTUSet().getOTUs()} order.
-	 * 
-	 * @return an iterator over this matrix's rows
-	 */
-	public Iterator<CharacterStateRow> iterator() {
-		return getOTUsToRows().getValuesInOTUSetOrder().iterator();
+		return rows;
 	}
 
 	/**
@@ -418,31 +393,6 @@ public class CharacterStateMatrix extends Matrix<CharacterStateRow> {
 	}
 
 	/**
-	 * Setter.
-	 * <p>
-	 * Meant to be called only from objects responsible for managing the {@code
-	 * OTUSet<->CharacterStateMatrix} relationship.
-	 * <p>
-	 * This method will remove rows from this matrix as necessary.
-	 * <p>
-	 * If there are any new {@code OTU}s in {@code newOTUSet}, then {@code
-	 * getRow(theNewOTU) == null}. That is, it adds {@code null} rows for new
-	 * {@code OTU}s.
-	 * 
-	 * @param newOTUSet new {@code OTUSet} for this matrix, or {@code null} if
-	 *            we're destroying the association
-	 * 
-	 * @return this
-	 */
-	@Override
-	public CharacterStateMatrix setOTUSet(
-			@CheckForNull final OTUSet otuSet) {
-		super.setOTUSet(otuSet);
-		getOTUsToRows().setOTUs();
-		return this;
-	}
-
-	/**
 	 * Set the otusToRows.
 	 * <p>
 	 * Created for JAXB.
@@ -454,10 +404,18 @@ public class CharacterStateMatrix extends Matrix<CharacterStateRow> {
 	@edu.umd.cs.findbugs.annotations.SuppressWarnings
 	@SuppressWarnings("unused")
 	private CharacterStateMatrix setOTUsToRows(
-			final OTUsToCharacterStateRows otusToRows) {
-		checkNotNull(otusToRows);
-		this.otusToRows = otusToRows;
+			final OTUsToCharacterStateRows rows) {
+		checkNotNull(rows);
+		this.rows = rows;
 		return this;
 	}
+
+// @Override
+// public CharacterStateMatrix setOTUSet(
+// @CheckForNull final OTUSet newOTUSet) {
+// super.setOTUSet(newOTUSet);
+// getOTUsToRows().setOTUs();
+// return this;
+// }
 
 }

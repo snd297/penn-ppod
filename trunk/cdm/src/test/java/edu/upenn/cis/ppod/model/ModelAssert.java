@@ -42,10 +42,11 @@ public class ModelAssert {
 		if (expectedOTUSet.getPPodId() != null) {
 			assertEquals(actualOTUSet.getPPodId(), expectedOTUSet.getPPodId());
 		}
-		assertEquals(actualOTUSet.getOTUsSize(), expectedOTUSet.getOTUsSize());
-		for (final OTU expectedOTU : expectedOTUSet) {
+		assertEquals(actualOTUSet.getOTUs().size(), expectedOTUSet
+				.getOTUs().size());
+		for (final OTU expectedOTU : expectedOTUSet.getOTUs()) {
 			boolean foundIt = false;
-			for (final OTU actualOTU : actualOTUSet) {
+			for (final OTU actualOTU : actualOTUSet.getOTUs()) {
 				if (equal(actualOTU.getLabel(), expectedOTU.getLabel())) {
 					foundIt = true;
 					break;
@@ -168,14 +169,18 @@ public class ModelAssert {
 			}
 		}
 
-		assertEquals(actualMatrix.getRowsSize(), expectedMatrix.getRowsSize());
+		assertEquals(actualMatrix.getRows().size(), expectedMatrix
+				.getRows().size());
 
-		for (final Iterator<CharacterStateRow> actualRowItr = actualMatrix
-				.iterator(), expectedRowItr = expectedMatrix
-				.iterator(); actualRowItr.hasNext()
-								&& expectedRowItr.hasNext();) {
-			final CharacterStateRow actualRow = actualRowItr.next(), expectedRow = expectedRowItr
-					.next();
+		for (final Iterator<OTU> actualOTUIterator = actualMatrix.getOTUSet()
+				.getOTUs()
+				.iterator(), expectedOTUIterator = expectedMatrix.getOTUSet()
+				.getOTUs()
+				.iterator(); actualOTUIterator.hasNext()
+								&& expectedOTUIterator.hasNext();) {
+			final CharacterStateRow actualRow = actualMatrix
+					.getRow(actualOTUIterator.next()), expectedRow = expectedMatrix
+					.getRow(expectedOTUIterator.next());
 			assertTrue(actualRow.getMatrix() == actualMatrix);
 			assertEqualsCharacterStateRows(actualRow, expectedRow);
 		}

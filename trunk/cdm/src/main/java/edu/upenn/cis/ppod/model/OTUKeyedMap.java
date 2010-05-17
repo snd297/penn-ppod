@@ -28,6 +28,7 @@ import java.util.Set;
 
 import javax.annotation.CheckForNull;
 import javax.annotation.Nullable;
+import javax.persistence.MappedSuperclass;
 
 import edu.upenn.cis.ppod.modelinterfaces.IOTUKeyedMapValue;
 import edu.upenn.cis.ppod.modelinterfaces.IPPodVersionedWithOTUSet;
@@ -44,6 +45,7 @@ import edu.upenn.cis.ppod.util.OTUSomethingPair;
  * 
  * @author Sam Donnelly
  */
+@MappedSuperclass
 public abstract class OTUKeyedMap<V extends IOTUKeyedMapValue>
 		extends PersistentObject {
 
@@ -52,6 +54,12 @@ public abstract class OTUKeyedMap<V extends IOTUKeyedMapValue>
 	@Override
 	public void accept(final IVisitor visitor) {
 		visitor.visit(this);
+		for (final V value : getOTUsToValues().values()) {
+			if (value != null) {
+				value.accept(visitor);
+			}
+		}
+
 	}
 
 	public void afterUnmarshal() {
@@ -70,15 +78,16 @@ public abstract class OTUKeyedMap<V extends IOTUKeyedMapValue>
 	}
 
 	public V get(final OTU otu) {
-		checkArgument(contains(getParent().getOTUSet(), otu),
+		checkArgument(
+				contains(getParent().getOTUSet().getOTUsModifiable(), otu),
 				"otu does not belong to parent's OTUSet");
 		return getOTUsToValues().get(otu);
 	}
 
 	/**
-	 * Get the {@code OTU}-keyed items.
+	 * Get the {@code OTU}-keyed values.
 	 * 
-	 * @return the {@code OTU}-keyed items
+	 * @return the {@code OTU}-keyed values
 	 */
 	protected abstract Map<OTU, V> getOTUsToValues();
 
@@ -100,7 +109,7 @@ public abstract class OTUKeyedMap<V extends IOTUKeyedMapValue>
 		final OTUSet parentOTUSet = getParent().getOTUSet();
 		final List<V> valuesInOTUOrder = newArrayListWithCapacity(getOTUsToValues()
 				.values().size());
-		for (final OTU otu : parentOTUSet) {
+		for (final OTU otu : parentOTUSet.getOTUsModifiable()) {
 			if (getOTUsToValues().containsKey(otu)) {
 				valuesInOTUOrder.add(getOTUsToValues().get(otu));
 			}
@@ -137,7 +146,8 @@ public abstract class OTUKeyedMap<V extends IOTUKeyedMapValue>
 		checkState(getParent() != null, "no parent has been assigned");
 		checkState(getParent().getOTUSet() != null,
 				"parent.getOTUSet() == null");
-		checkArgument(contains(getParent().getOTUSet(), key),
+		checkArgument(
+				contains(getParent().getOTUSet().getOTUsModifiable(), key),
 				"otu does not belong to the parent's OTUSet");
 
 		if (null != getOTUsToValues().get(key)
@@ -204,7 +214,7 @@ public abstract class OTUKeyedMap<V extends IOTUKeyedMapValue>
 		final Set<OTU> otusToBeRemoved = newHashSet();
 		for (final OTU otu : getOTUsToValues().keySet()) {
 			if (parent.getOTUSet() != null
-					&& contains(parent.getOTUSet(), otu)) {
+					&& contains(parent.getOTUSet().getOTUsModifiable(), otu)) {
 				// it stays
 			} else {
 				otusToBeRemoved.add(otu);
@@ -215,7 +225,7 @@ public abstract class OTUKeyedMap<V extends IOTUKeyedMapValue>
 		getOTUsToValues().keySet().removeAll(otusToBeRemoved);
 
 		if (getParent().getOTUSet() != null) {
-			for (final OTU otu : parent.getOTUSet()) {
+			for (final OTU otu : parent.getOTUSet().getOTUsModifiable()) {
 				if (getOTUsToValues().containsKey(otu)) {
 
 				} else {

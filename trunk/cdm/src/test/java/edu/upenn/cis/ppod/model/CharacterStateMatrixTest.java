@@ -26,7 +26,6 @@ import static org.testng.Assert.assertSame;
 import static org.testng.Assert.assertTrue;
 
 import java.util.Arrays;
-import java.util.List;
 
 import org.testng.Assert;
 import org.testng.annotations.BeforeMethod;
@@ -142,13 +141,13 @@ public class CharacterStateMatrixTest {
 		character.putState(state0);
 		cell20.setSingleElement(state0);
 
-		final List<CharacterStateRow> originalRows = newArrayList(matrix);
+		final int originalRowsSize = matrix.getRows().size();
 
 		final ImmutableList<OTU> otus210 = ImmutableList.of(otu2, otu1, otu0);
 		matrix.getOTUSet().setOTUs(otus210);
 
-		assertEquals(newArrayList(matrix.getOTUSet()), otus210);
-		assertEquals(matrix.getRowsSize(), originalRows.size());
+		assertEquals(matrix.getOTUSet().getOTUs(), otus210);
+		assertEquals(matrix.getRows().size(), originalRowsSize);
 
 	}
 
@@ -159,8 +158,8 @@ public class CharacterStateMatrixTest {
 
 		final ImmutableList<OTU> otus12 = ImmutableList.of(otu1, otu2);
 
-		assertEquals(newArrayList(matrix.getOTUSet()), otus12);
-		assertEquals(matrix.getRowsSize(), otus12.size());
+		assertEquals(matrix.getOTUSet().getOTUs(), otus12);
+		assertEquals(matrix.getRows().size(), otus12.size());
 	}
 
 	/**

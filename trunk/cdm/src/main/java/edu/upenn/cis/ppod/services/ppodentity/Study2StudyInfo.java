@@ -81,7 +81,7 @@ final class Study2StudyInfo implements IStudy2StudyInfo {
 			otuSetInfo.setPPodVersion(otuSet.getPPodVersionInfo()
 					.getPPodVersion());
 			otuSetInfo.setDocId(otuSet.getDocId());
-			for (final OTU otu : otuSet) {
+			for (final OTU otu : otuSet.getOTUs()) {
 				final PPodEntityInfoWDocId otuInfo = pPodEntityInfoWDocIdProvider
 						.get();
 				otuSetInfo.getOTUInfos().add(otuInfo);
@@ -130,7 +130,9 @@ final class Study2StudyInfo implements IStudy2StudyInfo {
 				}
 
 				int rowIdx = -1;
-				for (final CharacterStateRow row : matrix) {
+
+				for (final OTU otu : matrix.getOTUSet().getOTUs()) {
+					final CharacterStateRow row = matrix.getRow(otu);
 					rowIdx++;
 					final Long rowPPodVersion = row.getPPodVersionInfo()
 							.getPPodVersion();
@@ -160,7 +162,7 @@ final class Study2StudyInfo implements IStudy2StudyInfo {
 				sequenceSetInfo.setPPodVersion(dnaSequenceSet
 						.getPPodVersionInfo().getPPodVersion());
 				sequenceSetInfo.setEntityId(dnaSequenceSet.getId());
-				for (final OTU otu : otuSet) {
+				for (final OTU otu : otuSet.getOTUs()) {
 					final DNASequence dnaSequence = dnaSequenceSet
 							.getSequence(otu);
 					sequenceSetInfo.getSequenceVersionsByOTUDocId().put(

@@ -36,8 +36,8 @@ import javax.xml.bind.Marshaller;
 import javax.xml.bind.Unmarshaller;
 import javax.xml.bind.annotation.XmlElement;
 
-import edu.upenn.cis.ppod.util.OTUSomethingPair;
 import edu.upenn.cis.ppod.util.OTUCharacterStateRowPair;
+import edu.upenn.cis.ppod.util.OTUSomethingPair;
 
 /**
  * Maps {@code OTU}s to {@code CharacterStateRow}s.
@@ -48,7 +48,7 @@ import edu.upenn.cis.ppod.util.OTUCharacterStateRowPair;
 @Table(name = "OTUS_TO_CHARACTER_STATE_ROWS")
 public class OTUsToCharacterStateRows extends OTUKeyedMap<CharacterStateRow> {
 
-	@OneToOne(fetch = FetchType.LAZY, mappedBy = "otusToRows")
+	@OneToOne(fetch = FetchType.LAZY, mappedBy = "rows")
 	@CheckForNull
 	private CharacterStateMatrix matrix;
 
@@ -63,7 +63,7 @@ public class OTUsToCharacterStateRows extends OTUKeyedMap<CharacterStateRow> {
 	@MapKeyJoinColumn(name = OTU.JOIN_COLUMN)
 	private final Map<OTU, CharacterStateRow> rows = newHashMap();
 
-	OTUsToCharacterStateRows() {}
+	protected OTUsToCharacterStateRows() {}
 
 	/**
 	 * {@link Unmarshaller} callback.
@@ -91,8 +91,13 @@ public class OTUsToCharacterStateRows extends OTUKeyedMap<CharacterStateRow> {
 		return true;
 	}
 
+	/**
+	 * We made this package-private instead of private for Resteasy which
+	 * apparently didn't see the the annotation or method otherwise in a
+	 * non-initialized hibernate proxy.
+	 */
 	@XmlElement(name = "otuRowPair")
-	private Set<OTUCharacterStateRowPair> getOTURowPairs() {
+	Set<OTUCharacterStateRowPair> getOTURowPairs() {
 		return otuRowPairs;
 	}
 

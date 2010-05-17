@@ -60,7 +60,7 @@ import edu.upenn.cis.ppod.util.IVisitor;
  */
 @Entity
 @Table(name = OTUSet.TABLE)
-public class OTUSet extends UUPPodEntityWXmlId implements Iterable<OTU> {
+public class OTUSet extends UUPPodEntityWXmlId {
 
 	/** The column that stores the description. */
 	public static final String DESCRIPTION_COLUMN = "DESCRIPTION";
@@ -194,7 +194,7 @@ public class OTUSet extends UUPPodEntityWXmlId implements Iterable<OTU> {
 
 	private OTU addOTUWithoutSetOTUsOnChildren(final OTU otu) {
 		checkNotNull(otu);
-		final OTU dupNameOTU = findIf(getOTUs(), compose(
+		final OTU dupNameOTU = findIf(getOTUsModifiable(), compose(
 				equalTo(otu.getLabel()), ILabeled.getLabel));
 		if (dupNameOTU == null || otu.equals(dupNameOTU)) {
 
@@ -203,7 +203,7 @@ public class OTUSet extends UUPPodEntityWXmlId implements Iterable<OTU> {
 									+ "' already has an OTU labeled '"
 									+ otu.getLabel() + "'");
 		}
-		if (getOTUs().add(otu)) {
+		if (getOTUsModifiable().add(otu)) {
 			otu.setOTUSet(this);
 			setInNeedOfNewPPodVersionInfo();
 		}
@@ -259,7 +259,7 @@ public class OTUSet extends UUPPodEntityWXmlId implements Iterable<OTU> {
 
 	protected Set<IPPodVersionedWithOTUSet> getChildren() {
 		final Set<IPPodVersionedWithOTUSet> children = newHashSet();
-		children.addAll(getOTUs());
+		children.addAll(getOTUsModifiable());
 		children.addAll(getCharacterStateMatrices());
 		children.addAll(getTreeSets());
 		children.addAll(getDNASequenceSets());
@@ -327,21 +327,16 @@ public class OTUSet extends UUPPodEntityWXmlId implements Iterable<OTU> {
 	 * @throws IndexOutOfBoundsException if {@code otuPosition} is out of bounds
 	 */
 	public OTU getOTU(@Nonnegative final int otuPosition) {
-		return getOTUs().get(otuPosition);
+		return getOTUsModifiable().get(otuPosition);
 	}
 
 	@XmlElement(name = "otu")
-	protected List<OTU> getOTUs() {
+	protected List<OTU> getOTUsModifiable() {
 		return otus;
 	}
 
-	/**
-	 * Get the number of OTU's in this {@code OTUSet}.
-	 * 
-	 * @return the number of OTU's in this {@code OTUSet}
-	 */
-	public int getOTUsSize() {
-		return getOTUs().size();
+	public List<OTU> getOTUs() {
+		return Collections.unmodifiableList(otus);
 	}
 
 	/**
@@ -376,10 +371,6 @@ public class OTUSet extends UUPPodEntityWXmlId implements Iterable<OTU> {
 	 */
 	public int getTreeSetsSize() {
 		return getTreeSets().size();
-	}
-
-	public Iterator<OTU> iterator() {
-		return Collections.unmodifiableList(getOTUs()).iterator();
 	}
 
 	public boolean removeDNASequenceSet(
@@ -531,14 +522,14 @@ public class OTUSet extends UUPPodEntityWXmlId implements Iterable<OTU> {
 	 */
 	public List<OTU> setOTUs(final List<? extends OTU> newOTUs) {
 		checkNotNull(newOTUs);
-		if (newOTUs.equals(getOTUs())) {
+		if (newOTUs.equals(getOTUsModifiable())) {
 			return Collections.emptyList();
 		}
 
-		final List<OTU> removedOTUs = newArrayList(getOTUs());
+		final List<OTU> removedOTUs = newArrayList(getOTUsModifiable());
 		removedOTUs.removeAll(newOTUs);
 
-		getOTUs().clear();
+		getOTUsModifiable().clear();
 		for (final OTU otu : newOTUs) {
 			addOTUWithoutSetOTUsOnChildren(otu);
 		}
