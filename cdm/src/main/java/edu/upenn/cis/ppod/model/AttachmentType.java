@@ -51,7 +51,6 @@ public class AttachmentType extends PersistentObjectWithXmlId {
 	static final int LABEL_COLUMN_LENGTH = 64;
 
 	@ManyToOne(fetch = FetchType.LAZY)
-	@Cascade(org.hibernate.annotations.CascadeType.SAVE_UPDATE)
 	@JoinColumn(name = AttachmentNamespace.ID_COLUMN, nullable = false)
 	@CheckForNull
 	private AttachmentNamespace namespace;

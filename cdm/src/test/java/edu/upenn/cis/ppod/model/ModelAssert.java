@@ -75,13 +75,13 @@ public class ModelAssert {
 			final Character expectedCharacter) {
 		assertEqualsPPodEntities(actualCharacter, expectedCharacter);
 		assertEquals(actualCharacter.getLabel(), expectedCharacter.getLabel());
-		assertEquals(actualCharacter.getStates().size(), expectedCharacter
-				.getStates().size());
+		assertEquals(actualCharacter.getStatesModifiable().size(), expectedCharacter
+				.getStatesModifiable().size());
 		for (final Entry<Integer, CharacterState> actualStateNumberToState : actualCharacter
-				.getStates().entrySet()) {
+				.getStatesModifiable().entrySet()) {
 			final CharacterState actualState = actualStateNumberToState
 					.getValue();
-			final CharacterState expectedState = expectedCharacter.getStates()
+			final CharacterState expectedState = expectedCharacter.getStatesModifiable()
 					.get(actualStateNumberToState.getKey());
 
 			assertNotNull(expectedState);
@@ -138,17 +138,17 @@ public class ModelAssert {
 
 		assertEqualsOTUSet(actualMatrix.getOTUSet(), expectedMatrix.getOTUSet());
 
-		assertEquals(actualMatrix.getCharacters().size(), actualMatrix
-				.getCharacters().size());
+		assertEquals(actualMatrix.getCharactersModifiable().size(), actualMatrix
+				.getCharactersModifiable().size());
 		for (final Iterator<Character> actualCharacterItr = actualMatrix
-				.getCharacters().iterator(), expectedCharacterItr = expectedMatrix
-				.getCharacters().iterator(); actualCharacterItr.hasNext()
+				.getCharactersModifiable().iterator(), expectedCharacterItr = expectedMatrix
+				.getCharactersModifiable().iterator(); actualCharacterItr.hasNext()
 												&& expectedCharacterItr
 														.hasNext();) {
 			final Character actualCharacter = actualCharacterItr.next();
 			final Character expectedCharacter = expectedCharacterItr.next();
-			assertTrue(actualCharacter.getMatrices().contains(actualMatrix));
-			assertTrue(expectedCharacter.getMatrices().contains(expectedMatrix));
+			assertTrue(actualCharacter.getMatricesModifiable().contains(actualMatrix));
+			assertTrue(expectedCharacter.getMatricesModifiable().contains(expectedMatrix));
 			assertEqualsCharacters(actualCharacter, expectedCharacter);
 		}
 
@@ -165,7 +165,7 @@ public class ModelAssert {
 			for (final Entry<Character, Integer> actualIdxByCharacter : actualMatrixCharactersToPositions
 					.entrySet()) {
 				assertTrue(actualIdxByCharacter.getKey() == actualMatrix
-						.getCharacters().get(actualIdxByCharacter.getValue()));
+						.getCharactersModifiable().get(actualIdxByCharacter.getValue()));
 			}
 		}
 

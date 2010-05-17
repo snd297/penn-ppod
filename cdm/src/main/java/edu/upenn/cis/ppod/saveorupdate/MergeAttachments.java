@@ -80,15 +80,19 @@ class MergeAttachments implements IMergeAttachments {
 				.get(sourceAttachment.getType().getNamespace().getLabel());
 		if (null == targetAttachmentNamespace) {
 			targetAttachmentNamespace = attachmentNamespaceDAO
-					.getNamespaceByLabel(sourceAttachment.getType()
-							.getNamespace().getLabel());
+					.getNamespaceByLabel(
+							sourceAttachment.getType()
+									.getNamespace().getLabel());
 			if (null == targetAttachmentNamespace) {
-				targetAttachmentNamespace = attachmentNamespaceProvider.get()
-						.setLabel(
-								sourceAttachment.getType().getNamespace()
-										.getLabel());
+				targetAttachmentNamespace =
+						attachmentNamespaceProvider.get()
+								.setLabel(
+										sourceAttachment.getType()
+												.getNamespace()
+												.getLabel());
 			}
-			labelsToNamespaces.put(targetAttachmentNamespace.getLabel(),
+			labelsToNamespaces.put(
+					targetAttachmentNamespace.getLabel(),
 					targetAttachmentNamespace);
 			typesByNamespaceAndLabel.put(targetAttachmentNamespace,
 					new HashMap<String, AttachmentType>());

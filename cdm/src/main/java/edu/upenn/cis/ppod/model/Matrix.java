@@ -7,7 +7,6 @@ import static com.google.common.collect.Lists.newArrayList;
 import static edu.upenn.cis.ppod.util.CollectionsUtil.nullFillAndSet;
 
 import java.util.Collections;
-import java.util.Iterator;
 import java.util.List;
 import java.util.Map;
 
@@ -29,6 +28,9 @@ import javax.xml.bind.annotation.XmlElement;
 import edu.upenn.cis.ppod.modelinterfaces.IMatrix;
 
 /**
+ * A matrix is a set of OTU-keyed rows with column header pPOD versions which
+ * are each equal to the largest version in the column.
+ * 
  * @author Sam Donnelly
  */
 @MappedSuperclass
@@ -73,21 +75,23 @@ public abstract class Matrix<R extends Row<?>> extends
 	protected Matrix() {}
 
 	/**
-	 * Get a reference of the {@code PPodVersionInfo}s for each for the columns
-	 * of the matrix.
-	 * <p>
-	 * Intentionally package-private.
+	 * Get the column pPOD version infos. These are equal to the largest pPOD
+	 * version in the columns.
 	 * 
-	 * @return a mutable view of the {@code PPodVersionInfo}s for each for the
-	 *         columns of the matrix
+	 * 
+	 * @return get the column pPOD version infos
 	 */
-	protected List<PPodVersionInfo> getColumnPPodVersionInfos() {
-		return columnPPodVersionInfos;
+	public List<PPodVersionInfo> getColumnPPodVersionInfos() {
+		return Collections.unmodifiableList(columnPPodVersionInfos);
 	}
 
-	public Iterator<PPodVersionInfo> getColumnPPodVersionInfosIterator() {
-		return Collections.unmodifiableList(getColumnPPodVersionInfos())
-				.iterator();
+	/**
+	 * A modifiable reference to the column pPOD version infos.
+	 * 
+	 * @return a modifiable reference to the column pPOD version infos
+	 */
+	protected List<PPodVersionInfo> getColumnPPodVersionInfosModifiable() {
+		return columnPPodVersionInfos;
 	}
 
 	/**
@@ -215,7 +219,7 @@ public abstract class Matrix<R extends Row<?>> extends
 	public Matrix<R> resetColumnPPodVersion(
 			@Nonnegative final int position) {
 		checkArgument(position >= 0, "position is negative");
-		nullFillAndSet(getColumnPPodVersionInfos(), position, null);
+		nullFillAndSet(getColumnPPodVersionInfosModifiable(), position, null);
 		return this;
 	}
 

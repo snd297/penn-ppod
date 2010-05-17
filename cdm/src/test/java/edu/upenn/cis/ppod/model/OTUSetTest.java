@@ -16,6 +16,7 @@
 package edu.upenn.cis.ppod.model;
 
 import static com.google.common.collect.Iterables.contains;
+import static com.google.common.collect.Iterables.getOnlyElement;
 import static com.google.common.collect.Lists.newArrayList;
 import static com.google.common.collect.Sets.newHashSet;
 import static org.testng.Assert.assertEquals;
@@ -34,7 +35,6 @@ import org.testng.annotations.Test;
 
 import com.google.common.collect.ImmutableList;
 import com.google.common.collect.ImmutableSet;
-import com.google.common.collect.Iterators;
 import com.google.inject.Inject;
 import com.google.inject.Provider;
 
@@ -97,9 +97,8 @@ public class OTUSetTest {
 		final TreeSet treeSet = treeSetProvider.get();
 		final Set<TreeSet> treeSets = ImmutableSet.of(treeSet);
 		otuSet.setTreeSets(treeSets);
-		assertEquals(Iterators.getOnlyElement(otuSet.getTreeSetsIterator()),
-				treeSet);
-		assertEquals(otuSet.getTreeSetsSize(), treeSets.size());
+		assertEquals(getOnlyElement(otuSet.getTreeSets()), treeSet);
+		assertEquals(otuSet.getTreeSets().size(), treeSets.size());
 	}
 
 	@BeforeMethod
@@ -161,7 +160,7 @@ public class OTUSetTest {
 		// assertNull(study.getPPodVersionInfo());
 		// assertNull(otuSet.getPPodVersionInfo());
 		assertEquals((Object) newHashSet(otuSet
-				.getCharacterStateMatricesIterator()),
+				.getCharacterStateMatrices()),
 					(Object) newHashSet(matricesMinusMatrix1));
 	}
 
@@ -209,7 +208,7 @@ public class OTUSetTest {
 
 		assertTrue(otuSet.isInNeedOfNewPPodVersionInfo());
 
-		assertEquals((Object) newHashSet(otuSet.getTreeSetsIterator()),
+		assertEquals((Object) newHashSet(otuSet.getTreeSets()),
 				(Object) newHashSet(
 						treeSet0,
 						treeSet2));
@@ -221,7 +220,7 @@ public class OTUSetTest {
 		assertEquals((Object) removedTreeSets2,
 				(Object) treeSetsMinusTreeSet1);
 
-		assertFalse(otuSet.getTreeSetsIterator().hasNext());
+		assertEquals(otuSet.getTreeSets().size(), 0);
 	}
 
 	@Test
@@ -233,9 +232,9 @@ public class OTUSetTest {
 				dnaSequenceSet0, dnaSequenceSet1, dnaSequenceSet2);
 		otuSet.setDNASequenceSets(dnaSequenceSets);
 
-		assertEquals(otuSet.getDNASequenceSetsSize(), dnaSequenceSets.size());
+		assertEquals(otuSet.getDNASequenceSets().size(), dnaSequenceSets.size());
 
-		assertEquals((Object) newHashSet(otuSet.getDNASequenceSetsIterator()),
+		assertEquals((Object) otuSet.getDNASequenceSets(),
 				(Object) dnaSequenceSets);
 
 		otuSet.unsetInNeedOfNewPPodVersionInfo();
@@ -321,7 +320,7 @@ public class OTUSetTest {
 		boolean booleanReturned = otuSet.removeDNASequenceSet(dnaSequenceSet1);
 		assertTrue(booleanReturned);
 
-		assertEquals((Object) newHashSet(otuSet.getDNASequenceSetsIterator()),
+		assertEquals((Object) otuSet.getDNASequenceSets(),
 				(Object) ImmutableSet.of(dnaSequenceSet0, dnaSequenceSet2));
 
 	}
@@ -334,7 +333,7 @@ public class OTUSetTest {
 		final Set<DNASequenceSet> dnaSequenceSets = ImmutableSet.of(
 				dnaSequenceSet0, dnaSequenceSet1, dnaSequenceSet2);
 		otuSet.setDNASequenceSets(dnaSequenceSets);
-		assertEquals(otuSet.getDNASequenceSetsSize(), dnaSequenceSets.size());
+		assertEquals(otuSet.getDNASequenceSets().size(), dnaSequenceSets.size());
 	}
 
 	@Test

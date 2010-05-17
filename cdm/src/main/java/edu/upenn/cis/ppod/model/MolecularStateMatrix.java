@@ -86,30 +86,32 @@ public abstract class MolecularStateMatrix extends CharacterStateMatrix {
 					"all characters must be .equals() in a molecular matrix");
 		}
 
-		if (getCharacters().size() == newMolecularCharacters.size()) {
+		if (getCharactersModifiable().size() == newMolecularCharacters.size()) {
 			// They are the same, nothing to do
 			return Collections.emptyList();
 		}
 
-		if (getCharacters().size() != getColumnPPodVersionInfos().size()) {
+		if (getCharactersModifiable().size() != getColumnPPodVersionInfos()
+				.size()) {
 			throw new AssertionError(
 					"programming error: getCharacters() and getColumnPPodVersionInfos() should always be the same size");
 		}
 
 		final List<Character> removedCharacters = newArrayList();
 
-		for (int i = 0; i < getCharacters().size()
+		for (int i = 0; i < getCharactersModifiable().size()
 							- newMolecularCharacters.size(); i++) {
-			removedCharacters.add(getCharacters().get(0));
+			removedCharacters.add(getCharactersModifiable().get(0));
 		}
 
-		while (getCharacters().size() < newMolecularCharacters.size()) {
-			getCharacters().add(newMolecularCharacters.get(0));
-			getColumnPPodVersionInfos().add(null);
+		while (getCharactersModifiable().size() < newMolecularCharacters.size()) {
+			getCharactersModifiable().add(newMolecularCharacters.get(0));
+			getColumnPPodVersionInfosModifiable().add(null);
 		}
 
-		while (getCharacters().size() > newMolecularCharacters.size()) {
-			getCharacters().remove(getCharacters().size() - 1);
+		while (getCharactersModifiable().size() > newMolecularCharacters.size()) {
+			getCharactersModifiable().remove(
+					getCharactersModifiable().size() - 1);
 			getColumnPPodVersionInfos().remove(
 					getColumnPPodVersionInfos().size() - 1);
 

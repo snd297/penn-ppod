@@ -25,7 +25,6 @@ import static com.google.common.collect.Sets.newHashSet;
 import static edu.upenn.cis.ppod.util.PPodIterables.findIf;
 
 import java.util.Collections;
-import java.util.Iterator;
 import java.util.List;
 import java.util.Set;
 
@@ -140,7 +139,7 @@ public class OTUSet extends UUPPodEntityWXmlId {
 	public CharacterStateMatrix addCharacterStateMatrix(
 			final CharacterStateMatrix matrix) {
 		checkNotNull(matrix);
-		getCharacterStateMatrices().add(matrix);
+		getCharacterStateMatricesModifiable().add(matrix);
 		matrix.setOTUSet(this);
 		setInNeedOfNewPPodVersionInfo();
 		return matrix;
@@ -158,7 +157,7 @@ public class OTUSet extends UUPPodEntityWXmlId {
 	public DNASequenceSet addDNASequenceSet(
 			final DNASequenceSet dnaSequenceSet) {
 		checkNotNull(dnaSequenceSet);
-		getDNASequenceSets().add(dnaSequenceSet);
+		getDNASequenceSetsModifiable().add(dnaSequenceSet);
 		dnaSequenceSet.setOTUSet(this);
 		setInNeedOfNewPPodVersionInfo();
 		return dnaSequenceSet;
@@ -212,7 +211,7 @@ public class OTUSet extends UUPPodEntityWXmlId {
 
 	public TreeSet addTreeSet(final TreeSet newTreeSet) {
 		checkNotNull(newTreeSet);
-		getTreeSets().add(newTreeSet);
+		getTreeSetsModifiable().add(newTreeSet);
 		newTreeSet.setOTUSet(this);
 		setInNeedOfNewPPodVersionInfo();
 		return newTreeSet;
@@ -237,32 +236,21 @@ public class OTUSet extends UUPPodEntityWXmlId {
 		}
 	}
 
+	public Set<CharacterStateMatrix> getCharacterStateMatrices() {
+		return Collections.unmodifiableSet(characterStateMatrices);
+	}
+
 	@XmlElement(name = "matrix")
-	protected Set<CharacterStateMatrix> getCharacterStateMatrices() {
+	protected Set<CharacterStateMatrix> getCharacterStateMatricesModifiable() {
 		return characterStateMatrices;
-	}
-
-	public Iterator<CharacterStateMatrix> getCharacterStateMatricesIterator() {
-		return Collections.unmodifiableSet(getCharacterStateMatrices())
-				.iterator();
-	}
-
-	/**
-	 * Get the number of {@code CharacterStateMatrix}s in this {@code OTUSet}.
-	 * 
-	 * @return the number of {@code CharacterStateMatrix}s in this {@code
-	 *         OTUSet}
-	 */
-	public int getCharacterStateMatricesSize() {
-		return getCharacterStateMatrices().size();
 	}
 
 	protected Set<IPPodVersionedWithOTUSet> getChildren() {
 		final Set<IPPodVersionedWithOTUSet> children = newHashSet();
 		children.addAll(getOTUsModifiable());
-		children.addAll(getCharacterStateMatrices());
-		children.addAll(getTreeSets());
-		children.addAll(getDNASequenceSets());
+		children.addAll(getCharacterStateMatricesModifiable());
+		children.addAll(getTreeSetsModifiable());
+		children.addAll(getDNASequenceSetsModifiable());
 		return children;
 	}
 
@@ -277,33 +265,17 @@ public class OTUSet extends UUPPodEntityWXmlId {
 		return description;
 	}
 
-	protected Set<DNAMatrix> getDNAMatrices() {
+	protected Set<DNAMatrix> getDNAMatricesModifiable() {
 		return dnaMatrices;
 	}
 
-	public Iterator<DNAMatrix> getDNAMatricesIterator() {
-		return Collections.unmodifiableSet(getDNAMatrices()).iterator();
+	public Set<DNASequenceSet> getDNASequenceSets() {
+		return Collections.unmodifiableSet(dnaSequenceSets);
 	}
 
 	@XmlElement(name = "dnaSequenceSet")
-	protected Set<DNASequenceSet> getDNASequenceSets() {
+	protected Set<DNASequenceSet> getDNASequenceSetsModifiable() {
 		return dnaSequenceSets;
-	}
-
-	/**
-	 * Get an iterator over this {@code OTUSet}'s {@code DNASequenceSets}s.
-	 */
-	public Iterator<DNASequenceSet> getDNASequenceSetsIterator() {
-		return Collections.unmodifiableSet(getDNASequenceSets()).iterator();
-	}
-
-	/**
-	 * Get the number of {@code DNASequenceSet}s in this {@code OTUSet}.
-	 * 
-	 * @return the number of {@code DNASequenceSet}s in this {@code OTUSet}
-	 */
-	public int getDNASequenceSetsSize() {
-		return getDNASequenceSets().size();
 	}
 
 	/**
@@ -330,13 +302,13 @@ public class OTUSet extends UUPPodEntityWXmlId {
 		return getOTUsModifiable().get(otuPosition);
 	}
 
+	public List<OTU> getOTUs() {
+		return Collections.unmodifiableList(otus);
+	}
+
 	@XmlElement(name = "otu")
 	protected List<OTU> getOTUsModifiable() {
 		return otus;
-	}
-
-	public List<OTU> getOTUs() {
-		return Collections.unmodifiableList(otus);
 	}
 
 	/**
@@ -350,33 +322,19 @@ public class OTUSet extends UUPPodEntityWXmlId {
 		return study;
 	}
 
+	public Set<TreeSet> getTreeSets() {
+		return Collections.unmodifiableSet(treeSets);
+	}
+
 	@XmlElement(name = "treeSet")
-	protected Set<TreeSet> getTreeSets() {
+	protected Set<TreeSet> getTreeSetsModifiable() {
 		return treeSets;
-	}
-
-	/**
-	 * Get an iterator over this {@code OTUSet}'s {@code TreeSet}s.
-	 * 
-	 * @return an iterator over this {@code OTUSet}'s {@code TreeSet}s
-	 */
-	public Iterator<TreeSet> getTreeSetsIterator() {
-		return Collections.unmodifiableSet(getTreeSets()).iterator();
-	}
-
-	/**
-	 * Get the number of {@code TreeSet}s in this {@code OTUSet}.
-	 * 
-	 * @return the number of {@code TreeSet}s in this {@code OTUSet}
-	 */
-	public int getTreeSetsSize() {
-		return getTreeSets().size();
 	}
 
 	public boolean removeDNASequenceSet(
 			final DNASequenceSet dnaSequenceSet) {
 		checkNotNull(dnaSequenceSet);
-		if (getDNASequenceSets().remove(dnaSequenceSet)) {
+		if (getDNASequenceSetsModifiable().remove(dnaSequenceSet)) {
 			dnaSequenceSet.setOTUSet(null);
 			setInNeedOfNewPPodVersionInfo();
 			return true;
@@ -395,18 +353,18 @@ public class OTUSet extends UUPPodEntityWXmlId {
 			final Set<? extends CharacterStateMatrix> newMatrices) {
 		checkNotNull(newMatrices);
 
-		if (newMatrices.equals(getCharacterStateMatrices())) {
+		if (newMatrices.equals(getCharacterStateMatricesModifiable())) {
 			return Collections.emptySet();
 		}
 
-		final Set<CharacterStateMatrix> removedMatrices = newHashSet(getCharacterStateMatrices());
+		final Set<CharacterStateMatrix> removedMatrices = newHashSet(getCharacterStateMatricesModifiable());
 		removedMatrices.removeAll(newMatrices);
 
 		for (final CharacterStateMatrix removedMatrix : removedMatrices) {
 			removedMatrix.setOTUSet(null);
 		}
 
-		getCharacterStateMatrices().clear();
+		getCharacterStateMatricesModifiable().clear();
 
 		for (final CharacterStateMatrix newMatrix : newMatrices) {
 			addCharacterStateMatrix(newMatrix);
@@ -450,18 +408,18 @@ public class OTUSet extends UUPPodEntityWXmlId {
 			final Set<? extends DNASequenceSet> newSequenceSets) {
 		checkNotNull(newSequenceSets);
 
-		if (newSequenceSets.equals(getDNASequenceSets())) {
+		if (newSequenceSets.equals(getDNASequenceSetsModifiable())) {
 			return Collections.emptySet();
 		}
 
-		final Set<DNASequenceSet> removedSequenceSets = newHashSet(getDNASequenceSets());
+		final Set<DNASequenceSet> removedSequenceSets = newHashSet(getDNASequenceSetsModifiable());
 		removedSequenceSets.removeAll(newSequenceSets);
 
 		for (final DNASequenceSet removedSequenceSet : removedSequenceSets) {
 			removedSequenceSet.setOTUSet(null);
 		}
 
-		getDNASequenceSets().clear();
+		getDNASequenceSetsModifiable().clear();
 
 		for (final DNASequenceSet newSequenceSet : newSequenceSets) {
 			addDNASequenceSet(newSequenceSet);
@@ -578,15 +536,15 @@ public class OTUSet extends UUPPodEntityWXmlId {
 	 */
 	public Set<TreeSet> setTreeSets(final Set<TreeSet> newTreeSets) {
 		checkNotNull(newTreeSets);
-		if (newTreeSets.equals(getTreeSets())) {
+		if (newTreeSets.equals(getTreeSetsModifiable())) {
 			return Collections.emptySet();
 		}
-		final Set<TreeSet> removedTreeSets = newHashSet(getTreeSets());
+		final Set<TreeSet> removedTreeSets = newHashSet(getTreeSetsModifiable());
 		removedTreeSets.removeAll(newTreeSets);
 		for (final TreeSet removedTreeSet : removedTreeSets) {
 			removedTreeSet.setOTUSet(null);
 		}
-		getTreeSets().clear();
+		getTreeSetsModifiable().clear();
 		for (final TreeSet treeSet : newTreeSets) {
 			addTreeSet(treeSet);
 		}

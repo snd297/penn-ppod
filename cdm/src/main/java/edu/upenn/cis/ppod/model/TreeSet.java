@@ -20,7 +20,6 @@ import static com.google.common.base.Preconditions.checkNotNull;
 import static com.google.common.collect.Lists.newArrayList;
 
 import java.util.Collections;
-import java.util.Iterator;
 import java.util.List;
 
 import javax.annotation.CheckForNull;
@@ -52,7 +51,7 @@ import edu.upenn.cis.ppod.util.IVisitor;
 @Entity
 @Table(name = TreeSet.TABLE)
 public class TreeSet extends UUPPodEntityWXmlId implements
-		IPPodVersionedWithOTUSet, Iterable<Tree> {
+		IPPodVersionedWithOTUSet {
 	public static final String TABLE = "TREE_SET";
 
 	public static final String ID_COLUMN = TABLE + "_ID";
@@ -74,7 +73,7 @@ public class TreeSet extends UUPPodEntityWXmlId implements
 
 	@Override
 	public void accept(final IVisitor visitor) {
-		for (final Tree tree : getTrees()) {
+		for (final Tree tree : getTreesModifiable()) {
 			tree.accept(visitor);
 		}
 		super.accept(visitor);
@@ -90,7 +89,7 @@ public class TreeSet extends UUPPodEntityWXmlId implements
 	 */
 	public Tree addTree(final Tree tree) {
 		checkNotNull(tree);
-		getTrees().add(tree);
+		getTreesModifiable().add(tree);
 		setInNeedOfNewPPodVersionInfo();
 		return tree;
 	}
@@ -129,22 +128,13 @@ public class TreeSet extends UUPPodEntityWXmlId implements
 		return otuSet;
 	}
 
+	public List<Tree> getTrees() {
+		return Collections.unmodifiableList(trees);
+	}
+
 	@XmlElement(name = "tree")
-	protected List<Tree> getTrees() {
+	protected List<Tree> getTreesModifiable() {
 		return trees;
-	}
-
-	/**
-	 * Returns the number of trees in this tree set.
-	 * 
-	 * @return the number of trees in this tree set
-	 */
-	public int getTreesSize() {
-		return getTrees().size();
-	}
-
-	public Iterator<Tree> iterator() {
-		return Collections.unmodifiableList(getTrees()).iterator();
 	}
 
 	@Override
@@ -212,18 +202,18 @@ public class TreeSet extends UUPPodEntityWXmlId implements
 	 */
 	public List<Tree> setTrees(final List<Tree> newTrees) {
 		checkNotNull(newTrees);
-		if (newTrees.equals(getTrees())) {
+		if (newTrees.equals(getTreesModifiable())) {
 			return Collections.emptyList();
 		}
-		for (final Tree tree : getTrees()) {
+		for (final Tree tree : getTreesModifiable()) {
 			if (!newTrees.contains(tree)) {
 				tree.setTreeSet(null);
 			}
 		}
-		final List<Tree> removedTrees = newArrayList(getTrees());
+		final List<Tree> removedTrees = newArrayList(getTreesModifiable());
 		removedTrees.removeAll(newTrees);
 
-		getTrees().clear();
+		getTreesModifiable().clear();
 		for (final Tree newTree : newTrees) {
 			addTree(newTree);
 		}

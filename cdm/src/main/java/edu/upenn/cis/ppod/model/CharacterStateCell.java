@@ -142,10 +142,10 @@ public class CharacterStateCell extends Cell<CharacterState> {
 		checkState(matrix != null,
 				"this cell's row has not had a matrix assigned");
 
-		checkState(matrix.getCharacters().size() >= position,
+		checkState(matrix.getCharactersModifiable().size() >= position,
 				"this cell's column hasn't been assigned a character");
 
-		checkState(null != matrix.getCharacters().get(position),
+		checkState(null != matrix.getCharactersModifiable().get(position),
 				"this cell's column hasn't been assigned a character");
 
 	}
@@ -248,7 +248,7 @@ public class CharacterStateCell extends Cell<CharacterState> {
 					"this cell has not been assigned a row: it's position attribute is null");
 
 			final Character character =
-					getRow().getMatrix().getCharacter(position);
+					getRow().getMatrix().getCharacters().get(position);
 
 			newStates = newHashSet();
 

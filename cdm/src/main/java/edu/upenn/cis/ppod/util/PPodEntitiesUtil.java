@@ -64,9 +64,7 @@ public class PPodEntitiesUtil {
 			final Set<AttachmentType> studyWideAttachmentTypes,
 			final Set<Attachment> studyWideAttachments,
 			final IOTUSetCentricEntities otuSetCentricEntities) {
-		for (final Iterator<OTUSet> otuSetsItr = otuSetCentricEntities
-				.getOTUSetsIterator(); otuSetsItr.hasNext();) {
-			final OTUSet otuSet = otuSetsItr.next();
+		for (final OTUSet otuSet : otuSetCentricEntities.getOTUSets()) {
 			extractAttachmentInfoFromAttachee(studyWideAttachmentNamespaces,
 					studyWideAttachmentTypes, studyWideAttachments, otuSet);
 			for (final OTU otu : otuSet.getOTUs()) {
@@ -74,15 +72,12 @@ public class PPodEntitiesUtil {
 						studyWideAttachmentNamespaces,
 						studyWideAttachmentTypes, studyWideAttachments, otu);
 			}
-			for (final Iterator<CharacterStateMatrix> matrixItr = otuSet
-					.getCharacterStateMatricesIterator(); matrixItr.hasNext();) {
-				final CharacterStateMatrix matrix = matrixItr.next();
+			for (final CharacterStateMatrix matrix : otuSet
+					.getCharacterStateMatrices()) {
 				extractAttachmentInfoFromAttachee(
 						studyWideAttachmentNamespaces,
 						studyWideAttachmentTypes, studyWideAttachments, matrix);
-				for (final Iterator<Character> charactersItr = matrix
-						.getCharactersIterator(); charactersItr.hasNext();) {
-					final Character character = charactersItr.next();
+				for (final Character character : matrix.getCharacters()) {
 					extractAttachmentInfoFromAttachee(
 							studyWideAttachmentNamespaces,
 							studyWideAttachmentTypes, studyWideAttachments,
