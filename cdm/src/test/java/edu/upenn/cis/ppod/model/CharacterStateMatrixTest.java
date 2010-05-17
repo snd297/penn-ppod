@@ -355,13 +355,13 @@ public class CharacterStateMatrixTest {
 				pPodVersionInfoProvider.get().setPPodVersion(8L));
 
 		matrix.beforeMarshal(null);
-		assertEquals(matrix.getColumnPPodVersions().size(), matrix
+		assertEquals(matrix.getColumnPPodVersionsModifiable().size(), matrix
 				.getColumnPPodVersionInfos().size());
 		for (int i = 0; i < matrix.getColumnPPodVersionInfos().size(); i++) {
 			if (matrix.getColumnPPodVersionInfos().get(i) == null) {
-				assertNull(matrix.getColumnPPodVersions().get(i));
+				assertNull(matrix.getColumnPPodVersionsModifiable().get(i));
 			} else {
-				assertEquals(matrix.getColumnPPodVersions().get(i), matrix
+				assertEquals(matrix.getColumnPPodVersionsModifiable().get(i), matrix
 						.getColumnPPodVersionInfos().get(i).getPPodVersion());
 			}
 		}
