@@ -31,6 +31,7 @@ import com.google.inject.Inject;
 import com.google.inject.Provider;
 
 import edu.upenn.cis.ppod.TestGroupDefs;
+import edu.upenn.cis.ppod.createorupdate.IMergeAndMakeCharacterStateMatrixPersistent;
 import edu.upenn.cis.ppod.dao.TestObjectWithLongIdDAO;
 import edu.upenn.cis.ppod.model.Character;
 import edu.upenn.cis.ppod.model.CharacterStateCell;
@@ -53,7 +54,7 @@ import edu.upenn.cis.ppod.util.MatrixProvider;
 public class SaveOrUpdateCharacterStateMatrixTest {
 
 	@Inject
-	private ISaveOrUpdateCharacterStateMatrix.IFactory saveOrUpdateMatrixFactory;
+	private IMergeAndMakeCharacterStateMatrixPersistent.IFactory saveOrUpdateMatrixFactory;
 
 	@Inject
 	private ICharacterStateMatrixFactory matrixFactory;
@@ -108,7 +109,7 @@ public class SaveOrUpdateCharacterStateMatrixTest {
 	@Test(dataProvider = MatrixProvider.SMALL_MATRICES_PROVIDER, dataProviderClass = MatrixProvider.class)
 	public void save(final CharacterStateMatrix sourceMatrix) {
 
-		final ISaveOrUpdateCharacterStateMatrix saveOrUpdateCharacterStateMatrix = saveOrUpdateMatrixFactory
+		final IMergeAndMakeCharacterStateMatrixPersistent mergeAndMakeCharacterStateMatrixPersistent = saveOrUpdateMatrixFactory
 				.create(mergeAttachment, dao, newPPodVersionInfo);
 		final OTUSet fakeDbOTUSet = sourceMatrix.getOTUSet();
 
@@ -119,7 +120,7 @@ public class SaveOrUpdateCharacterStateMatrixTest {
 
 		final Map<CharacterStateRow, List<CharacterStateCell>> sourceRowsToCells = stashCells(sourceMatrix);
 
-		saveOrUpdateCharacterStateMatrix.saveOrUpdate(targetMatrix,
+		mergeAndMakeCharacterStateMatrixPersistent.mergeAndMakeMatrixPersistent(targetMatrix,
 				sourceMatrix,
 				dnaCharacter);
 
@@ -132,7 +133,7 @@ public class SaveOrUpdateCharacterStateMatrixTest {
 
 	@Test(dataProvider = MatrixProvider.SMALL_MATRICES_PROVIDER, dataProviderClass = MatrixProvider.class)
 	public void moveRows(final CharacterStateMatrix sourceMatrix) {
-		final ISaveOrUpdateCharacterStateMatrix saveOrUpdateCharacterStateMatrix = saveOrUpdateMatrixFactory
+		final IMergeAndMakeCharacterStateMatrixPersistent mergeAndMakeCharacterStateMatrixPersistent = saveOrUpdateMatrixFactory
 				.create(mergeAttachment, dao,
 						newPPodVersionInfo);
 		final OTUSet fakeDbOTUSet = sourceMatrix.getOTUSet();
@@ -145,7 +146,7 @@ public class SaveOrUpdateCharacterStateMatrixTest {
 		final Map<CharacterStateRow, List<CharacterStateCell>> sourceRowsToCells =
 				stashCells(sourceMatrix);
 
-		saveOrUpdateCharacterStateMatrix.saveOrUpdate(targetMatrix,
+		mergeAndMakeCharacterStateMatrixPersistent.mergeAndMakeMatrixPersistent(targetMatrix,
 				sourceMatrix,
 				dnaCharacter);
 
@@ -178,7 +179,7 @@ public class SaveOrUpdateCharacterStateMatrixTest {
 		final Map<CharacterStateRow, List<CharacterStateCell>> sourceRowsToCells2 =
 				stashCells(sourceMatrix);
 
-		saveOrUpdateCharacterStateMatrix.saveOrUpdate(targetMatrix,
+		mergeAndMakeCharacterStateMatrixPersistent.mergeAndMakeMatrixPersistent(targetMatrix,
 				sourceMatrix,
 				dnaCharacter);
 
@@ -193,7 +194,7 @@ public class SaveOrUpdateCharacterStateMatrixTest {
 	public void moveCharacters(final CharacterStateMatrix sourceMatrix) {
 		// It only makes sense to move characters in a standard matrix
 		if (sourceMatrix.getClass().equals(CharacterStateMatrix.class)) {
-			final ISaveOrUpdateCharacterStateMatrix saveOrUpdateCharacterStateMatrix = saveOrUpdateMatrixFactory
+			final IMergeAndMakeCharacterStateMatrixPersistent mergeAndMakeCharacterStateMatrixPersistent = saveOrUpdateMatrixFactory
 					.create(mergeAttachment, dao, newPPodVersionInfo);
 			final OTUSet fakeDbOTUSet = sourceMatrix.getOTUSet();
 
@@ -203,7 +204,7 @@ public class SaveOrUpdateCharacterStateMatrixTest {
 			fakeDbOTUSet.addCharacterStateMatrix(targetMatrix);
 
 			final Map<CharacterStateRow, List<CharacterStateCell>> sourceRowsToCells = stashCells(sourceMatrix);
-			saveOrUpdateCharacterStateMatrix.saveOrUpdate(targetMatrix,
+			mergeAndMakeCharacterStateMatrixPersistent.mergeAndMakeMatrixPersistent(targetMatrix,
 					sourceMatrix,
 					dnaCharacter);
 
@@ -240,7 +241,7 @@ public class SaveOrUpdateCharacterStateMatrixTest {
 			}
 
 			final Map<CharacterStateRow, List<CharacterStateCell>> sourceRowsToCells2 = stashCells(sourceMatrix);
-			saveOrUpdateCharacterStateMatrix.saveOrUpdate(targetMatrix,
+			mergeAndMakeCharacterStateMatrixPersistent.mergeAndMakeMatrixPersistent(targetMatrix,
 					sourceMatrix,
 					dnaCharacter);
 			putBackCells(targetMatrix, dao.getRowsToCells());
@@ -258,7 +259,7 @@ public class SaveOrUpdateCharacterStateMatrixTest {
 	public void deleteCharacter(final CharacterStateMatrix sourceMatrix) {
 		// It only makes sense to remove characters from a standard matrix
 		if (sourceMatrix.getClass().equals(CharacterStateMatrix.class)) {
-			final ISaveOrUpdateCharacterStateMatrix saveOrUpdateCharacterStateMatrix = saveOrUpdateMatrixFactory
+			final IMergeAndMakeCharacterStateMatrixPersistent mergeAndMakeCharacterStateMatrixPersistent = saveOrUpdateMatrixFactory
 					.create(mergeAttachment, dao, newPPodVersionInfo);
 			final OTUSet fakeDbOTUSet = sourceMatrix.getOTUSet();
 
@@ -268,7 +269,7 @@ public class SaveOrUpdateCharacterStateMatrixTest {
 			fakeDbOTUSet.addCharacterStateMatrix(targetMatrix);
 
 			final Map<CharacterStateRow, List<CharacterStateCell>> sourceRowsToCells = stashCells(sourceMatrix);
-			saveOrUpdateCharacterStateMatrix.saveOrUpdate(targetMatrix,
+			mergeAndMakeCharacterStateMatrixPersistent.mergeAndMakeMatrixPersistent(targetMatrix,
 					sourceMatrix,
 					dnaCharacter);
 			putBackCells(targetMatrix, dao.getRowsToCells());
@@ -303,7 +304,7 @@ public class SaveOrUpdateCharacterStateMatrixTest {
 			}
 
 			final Map<CharacterStateRow, List<CharacterStateCell>> sourceRowsToCells2 = stashCells(sourceMatrix);
-			saveOrUpdateCharacterStateMatrix.saveOrUpdate(targetMatrix,
+			mergeAndMakeCharacterStateMatrixPersistent.mergeAndMakeMatrixPersistent(targetMatrix,
 					sourceMatrix,
 					dnaCharacter);
 

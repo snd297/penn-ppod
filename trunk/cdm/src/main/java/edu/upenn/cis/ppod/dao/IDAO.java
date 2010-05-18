@@ -80,7 +80,7 @@ public interface IDAO<T, ID extends Serializable> {
 	 * 
 	 * @param entity to be made transient
 	 */
-	void delete(T entity);
+	void makeTransient(T entity);
 
 	/**
 	 * Save or update <code>entity</code>.
@@ -88,7 +88,7 @@ public interface IDAO<T, ID extends Serializable> {
 	 * @param entity entity object
 	 * @return <code>entity</code>
 	 */
-	void saveOrUpdate(T entity);
+	void makePersistent(T entity);
 
 	void evict(final T entity);
 

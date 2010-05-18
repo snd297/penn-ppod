@@ -39,7 +39,7 @@ public class TestAttachmentNamespaceDAO implements IAttachmentNamespaceDAO {
 		return this;
 	}
 
-	public void delete(final AttachmentNamespace entity) {
+	public void makeTransient(final AttachmentNamespace entity) {
 		throw new UnsupportedOperationException();
 	}
 
@@ -65,7 +65,7 @@ public class TestAttachmentNamespaceDAO implements IAttachmentNamespaceDAO {
 		return namespacesByLabel.get(label);
 	}
 
-	public void saveOrUpdate(final AttachmentNamespace entity) {
+	public void makePersistent(final AttachmentNamespace entity) {
 		throw new UnsupportedOperationException();
 	}
 

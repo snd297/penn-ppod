@@ -112,7 +112,7 @@ public class PPodRealm extends AuthorizingRealm {
 					pPodUser.getRoles().add(userRole);
 				}
 			}
-			pPodUserDAO.saveOrUpdate(pPodUser);
+			pPodUserDAO.makePersistent(pPodUser);
 		}
 		return simpleAuthenticationInfoFactory.create(pPodUser.getId(),
 				pPodUser.getPassword(), getName());
