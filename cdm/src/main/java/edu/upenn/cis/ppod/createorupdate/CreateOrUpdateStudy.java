@@ -66,7 +66,7 @@ final class CreateOrUpdateStudy implements ICreateOrUpdateStudy {
 	private final Provider<TreeSet> treeSetProvider;
 
 	private final IMergeOTUSets mergeOTUSets;
-	private final IMergeAndMakeCharacterStateMatrixPersistent mergeAndMakeCharacterStateMatrixPersistent;
+	private final ICreateOrUpdateCharacterStateMatrix createOrUpdateCharacterStateMatrix;
 	private final IMergeTreeSets mergeTreeSets;
 	private final INewPPodVersionInfo newPPodVersionInfo;
 	private final IMergeSequenceSets<DNASequenceSet, DNASequence> mergeDNASequenceSets;
@@ -74,7 +74,7 @@ final class CreateOrUpdateStudy implements ICreateOrUpdateStudy {
 	private Study dbStudy;
 	private final StudyInfo dbStudyInfo;
 	private final Provider<OTUSetInfo> otuSetInfoProvider;
-	private final IMergeAndMakeDNAMatrixPersistent mergeAndMakeDNAMatrixPersistent;
+	private final ICreateOrUpdateDNAMatrix createOrUpdateDNAMatrix;
 
 	@Inject
 	CreateOrUpdateStudy(
@@ -85,8 +85,8 @@ final class CreateOrUpdateStudy implements ICreateOrUpdateStudy {
 			final Provider<TreeSet> treeSetProvider,
 			final IMergeOTUSets.IFactory saveOrUpdateOTUSetFactory,
 			final IMergeTreeSets.IFactory mergeTreeSetsFactory,
-			final IMergeAndMakeDNAMatrixPersistent.IFactory saveOrUpdateDNAMatrixFactory,
-			final IMergeAndMakeCharacterStateMatrixPersistent.IFactory saveOrUpdateMatrixFactory,
+			final ICreateOrUpdateDNAMatrix.IFactory saveOrUpdateDNAMatrixFactory,
+			final ICreateOrUpdateCharacterStateMatrix.IFactory saveOrUpdateMatrixFactory,
 			final IMergeSequenceSets.IFactory<DNASequenceSet, DNASequence> mergeDNASequenceSetsFactory,
 			final IMergeAttachments.IFactory mergeAttachmentFactory,
 			final Provider<OTUSetInfo> otuSetInfoProvider,
@@ -110,10 +110,10 @@ final class CreateOrUpdateStudy implements ICreateOrUpdateStudy {
 		this.newPPodVersionInfo = newPPodVersionInfo;
 		this.mergeOTUSets = saveOrUpdateOTUSetFactory
 				.create(newPPodVersionInfo);
-		this.mergeAndMakeDNAMatrixPersistent =
+		this.createOrUpdateDNAMatrix =
 				saveOrUpdateDNAMatrixFactory.create(
 						newPPodVersionInfo, dao);
-		this.mergeAndMakeCharacterStateMatrixPersistent =
+		this.createOrUpdateCharacterStateMatrix =
 				saveOrUpdateMatrixFactory.create(
 						mergeAttachmentFactory
 								.create(attachmentNamespaceDAO,
@@ -207,8 +207,8 @@ final class CreateOrUpdateStudy implements ICreateOrUpdateStudy {
 							.getNewPPodVersionInfo());
 					dbMatrix.setPPodId();
 				}
-				final MatrixInfo dbMatrixInfo = mergeAndMakeCharacterStateMatrixPersistent
-						.mergeAndMakeMatrixPersistent(dbMatrix,
+				final MatrixInfo dbMatrixInfo = createOrUpdateCharacterStateMatrix
+						.createOrUpdateMatrix(dbMatrix,
 								incomingMatrix, dbDNACharacter);
 				otuSetInfo.getMatrixInfos().add(dbMatrixInfo);
 			}
@@ -232,7 +232,7 @@ final class CreateOrUpdateStudy implements ICreateOrUpdateStudy {
 				}
 				dbOTUSet.addDNAMatrix(dbMatrix);
 				final MatrixInfo dbMatrixInfo =
-						mergeAndMakeDNAMatrixPersistent.mergeAndMakePersistent(dbMatrix,
+						createOrUpdateDNAMatrix.createOrUpdateMatrix(dbMatrix,
 								incomingMatrix);
 				otuSetInfo.getMatrixInfos().add(dbMatrixInfo);
 			}

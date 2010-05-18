@@ -26,8 +26,8 @@ import edu.upenn.cis.ppod.thirdparty.injectslf4j.InjectLogger;
 /**
  * @author Sam Donnelly
  */
-class MergeAndMakeMatrixPersistent<R extends Row<C>, C extends Cell<E>, E>
-		implements IMergeAndMakeMatrixPersistent<R, C, E> {
+class CreateOrUpdateMatrix<R extends Row<C>, C extends Cell<E>, E>
+		implements ICreateOrUpdateMatrix<R, C, E> {
 
 	private final Provider<R> rowProvider;
 	private final Provider<C> cellProvider;
@@ -40,7 +40,7 @@ class MergeAndMakeMatrixPersistent<R extends Row<C>, C extends Cell<E>, E>
 	private final INewPPodVersionInfo newPPodVersionInfo;
 
 	@Inject
-	MergeAndMakeMatrixPersistent(
+	CreateOrUpdateMatrix(
 				final Provider<R> rowProvider,
 				final Provider<C> cellProvider,
 				final Provider<Attachment> attachmentProvider,
@@ -54,7 +54,7 @@ class MergeAndMakeMatrixPersistent<R extends Row<C>, C extends Cell<E>, E>
 		this.newPPodVersionInfo = newPPodVersionInfo;
 	}
 
-	public MatrixInfo mergeAndMakePersistent(
+	public MatrixInfo createOrUpdateMatrix(
 			final Matrix<R> dbMatrix,
 			final Matrix<R> sourceMatrix) {
 

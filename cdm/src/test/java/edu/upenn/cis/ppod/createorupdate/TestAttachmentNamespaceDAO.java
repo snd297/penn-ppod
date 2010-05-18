@@ -13,7 +13,7 @@
  * See the License for the specific language governing permissions and
  * limitations under the License.
  */
-package edu.upenn.cis.ppod.saveorupdate;
+package edu.upenn.cis.ppod.createorupdate;
 
 import static com.google.common.collect.Maps.newHashMap;
 
@@ -22,59 +22,54 @@ import java.util.Collection;
 import java.util.List;
 import java.util.Map;
 
-import edu.upenn.cis.ppod.dao.IAttachmentTypeDAO;
-import edu.upenn.cis.ppod.model.AttachmentType;
+import edu.upenn.cis.ppod.dao.IAttachmentNamespaceDAO;
+import edu.upenn.cis.ppod.model.AttachmentNamespace;
 
 /**
  * @author Sam Donnelly
  */
-public class TestAttachmentTypeDAO implements IAttachmentTypeDAO {
+public class TestAttachmentNamespaceDAO implements IAttachmentNamespaceDAO {
 
-	private Map<String, Map<String, AttachmentType>> typesByNamespaceLabelAndTypeLabel = newHashMap();
+	private final Map<String, AttachmentNamespace> namespacesByLabel = newHashMap();
 
-	public void makeTransient(final AttachmentType entity) {
+	public TestAttachmentNamespaceDAO setNamespacesByLabel(
+			final Map<String, AttachmentNamespace> namespacesByLabel) {
+		namespacesByLabel.clear();
+		this.namespacesByLabel.putAll(namespacesByLabel);
+		return this;
+	}
+
+	public void makeTransient(final AttachmentNamespace entity) {
 		throw new UnsupportedOperationException();
 	}
 
-	public List<AttachmentType> findAll() {
+	public List<AttachmentNamespace> findAll() {
 		throw new UnsupportedOperationException();
 	}
 
-	public List<AttachmentType> findByExample(
-			final AttachmentType exampleInstance,
+	public List<AttachmentNamespace> findByExample(
+			final AttachmentNamespace exampleInstance,
 			final String... excludeProperty) {
 		throw new UnsupportedOperationException();
 	}
 
-	public AttachmentType get(final Long id, final boolean lock) {
+	public AttachmentNamespace get(final Long id, final boolean lock) {
 		throw new UnsupportedOperationException();
-	}
-
-	public AttachmentType getTypeByNamespaceAndLabel(
-			final String namespaceLabel, final String typeLabel) {
-		final Map<String, AttachmentType> typesByLabel = typesByNamespaceLabelAndTypeLabel
-				.get(namespaceLabel);
-		if (typesByLabel == null) {
-			return null;
-		}
-		return typesByLabel.get(typeLabel);
 	}
 
 	public Serializable getIdentifier(final Object o) {
 		throw new UnsupportedOperationException();
 	}
 
-	public void makePersistent(final AttachmentType entity) {
+	public AttachmentNamespace getNamespaceByLabel(final String label) {
+		return namespacesByLabel.get(label);
+	}
+
+	public void makePersistent(final AttachmentNamespace entity) {
 		throw new UnsupportedOperationException();
 	}
 
-	public TestAttachmentTypeDAO setTypesByNamespaceLabelAndTypeLabel(
-			final Map<String, Map<String, AttachmentType>> typesByNamespaceLabelAndTypeLabel) {
-		this.typesByNamespaceLabelAndTypeLabel = typesByNamespaceLabelAndTypeLabel;
-		return this;
-	}
-
-	public void evict(AttachmentType entity) {
+	public void evict(AttachmentNamespace entity) {
 		// TODO Auto-generated method stub
 		throw new UnsupportedOperationException();
 	}
@@ -84,22 +79,22 @@ public class TestAttachmentTypeDAO implements IAttachmentTypeDAO {
 		throw new UnsupportedOperationException();
 	}
 
-	public void evictEntities(Collection<? extends AttachmentType> entities) {
+	public void evictEntities(Collection<? extends AttachmentNamespace> entities) {
 		// TODO Auto-generated method stub
 		throw new UnsupportedOperationException();
 	}
 
-	public void initialize(AttachmentType entity) {
+	public void initialize(AttachmentNamespace entity) {
 		// TODO Auto-generated method stub
 		throw new UnsupportedOperationException();
 	}
 
-	public String getEntityName(AttachmentType entity) {
+	public String getEntityName(AttachmentNamespace entity) {
 		// TODO Auto-generated method stub
 		throw new UnsupportedOperationException();
 	}
 
-	public String getEntityName(Class<? extends AttachmentType> entityClass) {
+	public String getEntityName(Class<? extends AttachmentNamespace> entityClass) {
 		// TODO Auto-generated method stub
 		throw new UnsupportedOperationException();
 	}
