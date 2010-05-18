@@ -17,7 +17,7 @@ import edu.upenn.cis.ppod.services.ppodentity.MatrixInfo;
  */
 class MergeAndMakeDNAMatrixPersistent extends
 		MergeAndMakeMatrixPersistent<DNARow, DNACell, DNANucleotide> implements
-		IMakeDNAMatrixPersistent {
+		IMergeAndMakeDNAMatrixPersistent {
 	@Inject
 	MergeAndMakeDNAMatrixPersistent(Provider<DNARow> rowProvider,
 			Provider<DNACell> cellProvider,

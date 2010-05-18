@@ -12,11 +12,11 @@ import edu.upenn.cis.ppod.modelinterfaces.INewPPodVersionInfo;
  * @author Sam Donnelly
  */
 @ImplementedBy(MergeAndMakeDNAMatrixPersistent.class)
-public interface IMakeDNAMatrixPersistent extends
+public interface IMergeAndMakeDNAMatrixPersistent extends
 		IMergeAndMakeMatrixPersistent<DNARow, DNACell, DNANucleotide> {
 	static interface IFactory extends
 			IMergeAndMakeMatrixPersistent.IFactory<DNARow, DNACell, DNANucleotide> {
-		IMakeDNAMatrixPersistent create(
+		IMergeAndMakeDNAMatrixPersistent create(
 				INewPPodVersionInfo newPPodVersionInfo,
 				IDAO<Object, Long> dao);
 	}
