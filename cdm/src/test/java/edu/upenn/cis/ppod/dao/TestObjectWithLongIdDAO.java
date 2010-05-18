@@ -39,7 +39,7 @@ public class TestObjectWithLongIdDAO implements IObjectWithLongIdDAOHibernate {
 	 * 
 	 * @param entity recorded for later retrieval
 	 */
-	public void delete(final Object entity) {
+	public void makeTransient(final Object entity) {
 		deletedEntities.add(entity);
 	}
 
@@ -105,7 +105,7 @@ public class TestObjectWithLongIdDAO implements IObjectWithLongIdDAOHibernate {
 	 * 
 	 * @entity ignored
 	 */
-	public void saveOrUpdate(final Object entity) {
+	public void makePersistent(final Object entity) {
 		if (entity instanceof CharacterStateCell) {
 			final CharacterStateCell cell = (CharacterStateCell) entity;
 			final CharacterStateRow row = cell.getRow();

@@ -59,7 +59,7 @@ final class NewPPodVersionInfoHibernate implements
 					.getMaxPPodVersion() + 1);
 			newPPodVersionInfo.setPPodVersion(newPPodVersion);
 			newPPodVersionInfo.setCreated(new Date());
-			pPodVersionInfoDAO.saveOrUpdate(newPPodVersionInfo);
+			pPodVersionInfoDAO.makePersistent(newPPodVersionInfo);
 			pPodVersionInfoInitialized = true;
 		}
 	}

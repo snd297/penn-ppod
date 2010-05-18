@@ -26,6 +26,7 @@ import com.google.inject.Inject;
 import com.google.inject.Provider;
 
 import edu.upenn.cis.ppod.TestGroupDefs;
+import edu.upenn.cis.ppod.createorupdate.IMergeAttachments;
 import edu.upenn.cis.ppod.dao.IAttachmentNamespaceDAO;
 import edu.upenn.cis.ppod.model.Attachment;
 import edu.upenn.cis.ppod.model.AttachmentNamespace;
@@ -84,7 +85,7 @@ public class MergeAttachmentTest {
 						"SOURCE_ATTACHMENT_NAMESPACE"));
 		sourceAttachment.setStringValue("STRING_VALUE");
 		sourceAttachment.setBytesValue(new byte[] { 0, 1, 2 });
-		mergeAttachments.merge(targetAttachment, sourceAttachment);
+		mergeAttachments.mergeAttachments(targetAttachment, sourceAttachment);
 		ModelAssert.assertEqualsAttachments(targetAttachment, sourceAttachment);
 	}
 }

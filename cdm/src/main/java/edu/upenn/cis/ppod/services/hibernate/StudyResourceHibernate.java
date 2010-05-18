@@ -26,6 +26,7 @@ import com.google.common.base.Function;
 import com.google.inject.Inject;
 import com.google.inject.Provider;
 
+import edu.upenn.cis.ppod.createorupdate.ICreateOrUpdateStudy;
 import edu.upenn.cis.ppod.dao.IAttachmentNamespaceDAO;
 import edu.upenn.cis.ppod.dao.IAttachmentTypeDAO;
 import edu.upenn.cis.ppod.dao.IDNACharacterDAO;
@@ -41,7 +42,6 @@ import edu.upenn.cis.ppod.dao.hibernate.IStudyDAOHibernate;
 import edu.upenn.cis.ppod.model.Study;
 import edu.upenn.cis.ppod.modelinterfaces.INewPPodVersionInfo;
 import edu.upenn.cis.ppod.modelinterfaces.INewPPodVersionInfoHibernate;
-import edu.upenn.cis.ppod.saveorupdate.ISaveOrUpdateStudy;
 import edu.upenn.cis.ppod.services.IStudyResource;
 import edu.upenn.cis.ppod.services.StringPair;
 import edu.upenn.cis.ppod.services.ppodentity.IStudy2StudyInfo;
@@ -67,7 +67,7 @@ final class StudyResourceHibernate implements IStudyResource {
 
 	private final IAttachmentTypeDAO attachmentTypeDAO;
 
-	private final ISaveOrUpdateStudy.IFactory saveOrUpdateStudyFactory;
+	private final ICreateOrUpdateStudy.IFactory saveOrUpdateStudyFactory;
 
 	private final IObjectWithLongIdDAO objectWithLongIdDAO;
 
@@ -88,7 +88,7 @@ final class StudyResourceHibernate implements IStudyResource {
 			final IStudyDAOHibernate studyDAO,
 			final IOTUSetDAOHibernate otuSetDAO,
 			final IDNACharacterDAOHibernate dnaCharacterDAO,
-			final ISaveOrUpdateStudy.IFactory saveOrUpdateStudyFactory,
+			final ICreateOrUpdateStudy.IFactory saveOrUpdateStudyFactory,
 			final IStudy2StudyInfo study2StudyInfo,
 			final ISetDocIdVisitor setDocIdVisitor,
 			final Provider<IAfterUnmarshalVisitor> afterUnmarshalVisitorProvider,
@@ -130,8 +130,8 @@ final class StudyResourceHibernate implements IStudyResource {
 		this.setPPodVersionInfoVisitorFactory = setPPodVersionInfoVisitorFactory;
 	}
 
-	public StudyInfo create(final Study incomingStudy) {
-		return saveOrUpdate(incomingStudy);
+	public StudyInfo createStudy(final Study incomingStudy) {
+		return createOrUpdateStudy(incomingStudy);
 	}
 
 	public Study getStudyByPPodId(final String pPodId) {
@@ -150,10 +150,10 @@ final class StudyResourceHibernate implements IStudyResource {
 				}));
 	}
 
-	private StudyInfo saveOrUpdate(final Study incomingStudy) {
+	private StudyInfo createOrUpdateStudy(final Study incomingStudy) {
 		incomingStudy.accept(afterUnmarshalVisitorProvider.get());
 
-		final ISaveOrUpdateStudy saveOrUpdateStudy =
+		final ICreateOrUpdateStudy createOrUpdateStudy =
 				saveOrUpdateStudyFactory.create(incomingStudy,
 						studyDAO,
 						otuSetDAO,
@@ -162,17 +162,17 @@ final class StudyResourceHibernate implements IStudyResource {
 						attachmentTypeDAO,
 						objectWithLongIdDAO,
 						newPPodVersionInfo);
-		saveOrUpdateStudy.saveOrUpdate();
-		final Study dbStudy = saveOrUpdateStudy.getDbStudy();
+		createOrUpdateStudy.createOrUpdateStudy();
+		final Study dbStudy = createOrUpdateStudy.getDbStudy();
 		final ISetPPodVersionInfoVisitor setPPodVersionInfoVisitor = setPPodVersionInfoVisitorFactory
 				.create(newPPodVersionInfo);
 		dbStudy.accept(setPPodVersionInfoVisitor);
 
-		final StudyInfo dbStudyInfo = saveOrUpdateStudy.getStudyInfo();
+		final StudyInfo dbStudyInfo = createOrUpdateStudy.getStudyInfo();
 		return study2StudyInfo.toStudyInfo(dbStudy, dbStudyInfo);
 	}
 
-	public StudyInfo update(final Study incomingStudy, final String pPodId) {
-		return saveOrUpdate(incomingStudy);
+	public StudyInfo updateStudy(final Study incomingStudy, final String pPodId) {
+		return createOrUpdateStudy(incomingStudy);
 	}
 }

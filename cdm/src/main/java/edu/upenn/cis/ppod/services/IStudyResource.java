@@ -49,7 +49,7 @@ public interface IStudyResource {
 	@GZIP
 	@Consumes("application/xml")
 	@Produces("application/xml")
-	StudyInfo create(@Pretty @GZIP Study study);
+	StudyInfo createStudy(@Pretty @GZIP Study study);
 
 	/**
 	 * Get the {@link Study} that has the given pPOD ID.
@@ -85,7 +85,7 @@ public interface IStudyResource {
 	@Path("{pPodId}")
 	@Consumes("application/xml")
 	@Produces("application/xml")
-	StudyInfo update(@Pretty @GZIP Study study,
+	StudyInfo updateStudy(@Pretty @GZIP Study study,
 			@PathParam("pPodId") String pPodId);
 
 }

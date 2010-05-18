@@ -17,6 +17,7 @@ package edu.upenn.cis.ppod.saveorupdate;
 
 import static com.google.common.base.Preconditions.checkArgument;
 import static com.google.common.base.Preconditions.checkNotNull;
+import edu.upenn.cis.ppod.createorupdate.IMergeAttachments;
 import edu.upenn.cis.ppod.model.Attachment;
 
 /**
@@ -29,7 +30,7 @@ public class TestMergeAttachment implements IMergeAttachments {
 	/**
 	 * Does nothing but return {@code targetAttachment}.
 	 */
-	public void merge(final Attachment targetAttachment,
+	public void mergeAttachments(final Attachment targetAttachment,
 			final Attachment sourceAttachment) {
 		checkNotNull(targetAttachment);
 		checkNotNull(sourceAttachment);

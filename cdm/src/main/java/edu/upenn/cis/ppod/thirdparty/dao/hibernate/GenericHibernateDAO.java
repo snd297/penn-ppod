@@ -158,11 +158,11 @@ public abstract class GenericHibernateDAO<T, ID extends Serializable>
 		}
 	}
 
-	public void delete(final T entity) {
+	public void makeTransient(final T entity) {
 		getSession().delete(entity);
 	}
 
-	public void saveOrUpdate(final T entity) {
+	public void makePersistent(final T entity) {
 		getSession().saveOrUpdate(entity);
 	}
 
