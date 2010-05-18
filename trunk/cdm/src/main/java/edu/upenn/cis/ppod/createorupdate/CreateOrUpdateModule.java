@@ -41,11 +41,11 @@ public class CreateOrUpdateModule extends AbstractModule {
 
 	private final static class SaveOrUpdateCharacterStateMatrixTypeLiteral
 			extends
-			TypeLiteral<MergeAndMakeMatrixPersistent<CharacterStateRow, CharacterStateCell, CharacterState>> {}
+			TypeLiteral<CreateOrUpdateMatrix<CharacterStateRow, CharacterStateCell, CharacterState>> {}
 
 	private final static class ISaveOrUpdateCharacterStateMatrixIFactoryTypeLiteral
 			extends
-			TypeLiteral<IMergeAndMakeMatrixPersistent.IFactory<CharacterStateRow, CharacterStateCell, CharacterState>> {}
+			TypeLiteral<ICreateOrUpdateMatrix.IFactory<CharacterStateRow, CharacterStateCell, CharacterState>> {}
 
 	@Override
 	protected void configure() {
@@ -60,10 +60,10 @@ public class CreateOrUpdateModule extends AbstractModule {
 				FactoryProvider.newFactory(mergeDNASequencesFactoryTypeLiteral,
 						mergeDNASequenceSetTypeLiteral));
 
-		final TypeLiteral<MergeAndMakeMatrixPersistent<CharacterStateRow, CharacterStateCell, CharacterState>> saveOrUpdateCharacterStateMatrixTypeLiteral =
+		final TypeLiteral<CreateOrUpdateMatrix<CharacterStateRow, CharacterStateCell, CharacterState>> saveOrUpdateCharacterStateMatrixTypeLiteral =
 				new SaveOrUpdateCharacterStateMatrixTypeLiteral();
 
-		final TypeLiteral<IMergeAndMakeMatrixPersistent.IFactory<CharacterStateRow, CharacterStateCell, CharacterState>> saveOrUpdateCharacterStateMatrixFactoryTypeLiteral =
+		final TypeLiteral<ICreateOrUpdateMatrix.IFactory<CharacterStateRow, CharacterStateCell, CharacterState>> saveOrUpdateCharacterStateMatrixFactoryTypeLiteral =
 				new ISaveOrUpdateCharacterStateMatrixIFactoryTypeLiteral();
 
 		bind(saveOrUpdateCharacterStateMatrixFactoryTypeLiteral)
@@ -73,11 +73,11 @@ public class CreateOrUpdateModule extends AbstractModule {
 										saveOrUpdateCharacterStateMatrixFactoryTypeLiteral,
 										saveOrUpdateCharacterStateMatrixTypeLiteral));
 
-		bind(IMergeAndMakeDNAMatrixPersistent.IFactory.class)
+		bind(ICreateOrUpdateDNAMatrix.IFactory.class)
 				.toProvider(
 						FactoryProvider.newFactory(
-								IMergeAndMakeDNAMatrixPersistent.IFactory.class,
-								IMergeAndMakeDNAMatrixPersistent.class));
+								ICreateOrUpdateDNAMatrix.IFactory.class,
+								ICreateOrUpdateDNAMatrix.class));
 
 	}
 }

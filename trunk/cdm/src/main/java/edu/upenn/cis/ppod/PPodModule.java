@@ -22,7 +22,7 @@ import edu.upenn.cis.ppod.createorupdate.ICreateOrUpdateStudy;
 import edu.upenn.cis.ppod.createorupdate.IMergeAttachments;
 import edu.upenn.cis.ppod.createorupdate.IMergeOTUSets;
 import edu.upenn.cis.ppod.createorupdate.IMergeTreeSets;
-import edu.upenn.cis.ppod.createorupdate.IMergeAndMakeCharacterStateMatrixPersistent;
+import edu.upenn.cis.ppod.createorupdate.ICreateOrUpdateCharacterStateMatrix;
 import edu.upenn.cis.ppod.createorupdate.CreateOrUpdateModule;
 import edu.upenn.cis.ppod.dao.hibernate.DAOHibernateModule;
 import edu.upenn.cis.ppod.model.CharacterState;
@@ -51,9 +51,9 @@ public final class PPodModule extends AbstractModule {
 		bind(IMergeTreeSets.IFactory.class).toProvider(
 				FactoryProvider.newFactory(IMergeTreeSets.IFactory.class,
 						IMergeTreeSets.class));
-		bind(IMergeAndMakeCharacterStateMatrixPersistent.IFactory.class).toProvider(
-				FactoryProvider.newFactory(IMergeAndMakeCharacterStateMatrixPersistent.IFactory.class,
-						IMergeAndMakeCharacterStateMatrixPersistent.class));
+		bind(ICreateOrUpdateCharacterStateMatrix.IFactory.class).toProvider(
+				FactoryProvider.newFactory(ICreateOrUpdateCharacterStateMatrix.IFactory.class,
+						ICreateOrUpdateCharacterStateMatrix.class));
 		bind(IMergeAttachments.IFactory.class).toProvider(
 				FactoryProvider.newFactory(IMergeAttachments.IFactory.class,
 						IMergeAttachments.class));

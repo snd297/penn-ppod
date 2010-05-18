@@ -14,12 +14,12 @@ import edu.upenn.cis.ppod.services.ppodentity.MatrixInfo;
  * @param <C>
  * @param <E>
  */
-public interface IMergeAndMakeMatrixPersistent<R extends Row<C>, C extends Cell<E>, E> {
+public interface ICreateOrUpdateMatrix<R extends Row<C>, C extends Cell<E>, E> {
 
-	MatrixInfo mergeAndMakePersistent(Matrix<R> dbMatrix, Matrix<R> sourceMatrix);
+	MatrixInfo createOrUpdateMatrix(Matrix<R> dbMatrix, Matrix<R> sourceMatrix);
 
 	interface IFactory<R extends Row<C>, C extends Cell<E>, E> {
-		IMergeAndMakeMatrixPersistent<R, C, E> create(
+		ICreateOrUpdateMatrix<R, C, E> create(
 				INewPPodVersionInfo newPPodVersionInfo,
 				IDAO<Object, Long> dao);
 	}

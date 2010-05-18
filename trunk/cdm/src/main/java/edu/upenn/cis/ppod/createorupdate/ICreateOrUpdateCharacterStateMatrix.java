@@ -24,18 +24,19 @@ import edu.upenn.cis.ppod.modelinterfaces.INewPPodVersionInfo;
 import edu.upenn.cis.ppod.services.ppodentity.MatrixInfo;
 
 /**
- * Merge two matrices.
+ * Copy the state of
  * 
  * @see #saveOrUpdate(CharacterStateMatrix, CharacterStateMatrix, OTUSet, Map,
  *      DNACharacter)
  * 
  * @author Sam Donnelly
  */
-@ImplementedBy(MergeAndMakeCharacterStateMatrixPersistent.class)
-public interface IMergeAndMakeCharacterStateMatrixPersistent {
+@ImplementedBy(CreateOrUpdateCharacterStateMatrix.class)
+public interface ICreateOrUpdateCharacterStateMatrix {
 
 	/**
-	 * Merge {@code sourceMatrix} onto {@code dbMatrix}.
+	 * Copy the state of {@code sourceMatrix} onto the persistent matrix {@code
+	 * dbMatrix} and flush those changes to the database.
 	 * <p>
 	 * If {@code sourceMatrix.getDocId() != null} then this method calls {@code
 	 * sourceMatrix.setDocId(sourceMatrix.getDocId())}. In other words, if
@@ -45,9 +46,8 @@ public interface IMergeAndMakeCharacterStateMatrixPersistent {
 	 * All rows in {@code sourceMatrix} must be non-null.
 	 * <p>
 	 * Implementors are free to call {@code CharacterStateRow.clearCells()} on
-	 * both modify the past in matrices in order to free up objects for garbage
-	 * collection. So generally it is not safe to reattach {@code dbMatrix}.
-	 * 
+	 * both cells and rows in order to free up objects for garbage collection.
+	 * So generally it is not safe to reattach {@code dbMatrix}.
 	 * 
 	 * @param dbMatrix merge into the target matrix
 	 * @param sourceMatrix source of the merge
@@ -58,12 +58,12 @@ public interface IMergeAndMakeCharacterStateMatrixPersistent {
 	 * @param dnaCharacter the {@code DNACharacter} in a persistent state that
 	 *            should be used in the target matrix
 	 */
-	MatrixInfo mergeAndMakeMatrixPersistent(CharacterStateMatrix dbMatrix,
+	MatrixInfo createOrUpdateMatrix(CharacterStateMatrix dbMatrix,
 			CharacterStateMatrix sourceMatrix,
 			DNACharacter dnaCharacter);
 
 	static interface IFactory {
-		IMergeAndMakeCharacterStateMatrixPersistent create(
+		ICreateOrUpdateCharacterStateMatrix create(
 				IMergeAttachments mergeAttachments,
 				IDAO<Object, Long> dao, INewPPodVersionInfo newPPodVersionInfo);
 	}

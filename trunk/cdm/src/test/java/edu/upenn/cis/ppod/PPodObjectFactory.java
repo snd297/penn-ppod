@@ -30,9 +30,14 @@ public class PPodObjectFactory extends GuiceObjectFactory {
 	private static final long serialVersionUID = 1L;
 
 	PPodObjectFactory() {
-		setInjector(Guice.createInjector(Modules.override(new PPodModule(),
-				new PPodServicesHibernateModule()).with(new TestPPodModule()),
-				new InjectSlf4jModule()));
+		setInjector(Guice
+				.createInjector(
+						Modules.override(
+								new PPodModule(),
+								new PPodServicesHibernateModule())
+								.with(
+										new TestPPodModule()),
+						new InjectSlf4jModule()));
 	}
 
 	@Override

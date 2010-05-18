@@ -15,11 +15,11 @@ import edu.upenn.cis.ppod.services.ppodentity.MatrixInfo;
 /**
  * @author Sam Donnelly
  */
-class MergeAndMakeDNAMatrixPersistent extends
-		MergeAndMakeMatrixPersistent<DNARow, DNACell, DNANucleotide> implements
-		IMergeAndMakeDNAMatrixPersistent {
+class CreateOrUpdateDNAMatrix extends
+		CreateOrUpdateMatrix<DNARow, DNACell, DNANucleotide> implements
+		ICreateOrUpdateDNAMatrix {
 	@Inject
-	MergeAndMakeDNAMatrixPersistent(Provider<DNARow> rowProvider,
+	CreateOrUpdateDNAMatrix(Provider<DNARow> rowProvider,
 			Provider<DNACell> cellProvider,
 			Provider<Attachment> attachmentProvider,
 			Provider<MatrixInfo> matrixInfoProvider,

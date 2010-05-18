@@ -51,8 +51,8 @@ import edu.upenn.cis.ppod.thirdparty.injectslf4j.InjectLogger;
 /**
  * @author Sam Donnelly
  */
-final class MergeAndMakeCharacterStateMatrixPersistent implements
-		IMergeAndMakeCharacterStateMatrixPersistent {
+final class CreateOrUpdateCharacterStateMatrix implements
+		ICreateOrUpdateCharacterStateMatrix {
 
 	private final Provider<Character> characterProvider;
 	private final CharacterState.IFactory stateFactory;
@@ -64,14 +64,14 @@ final class MergeAndMakeCharacterStateMatrixPersistent implements
 	private Logger logger;
 
 	private final INewPPodVersionInfo newPPodVersionInfo;
-	private final IMergeAndMakeMatrixPersistent.IFactory<CharacterStateRow, CharacterStateCell, CharacterState> saveOrUpdateMatrixFactory;
+	private final ICreateOrUpdateMatrix.IFactory<CharacterStateRow, CharacterStateCell, CharacterState> saveOrUpdateMatrixFactory;
 
 	@Inject
-	MergeAndMakeCharacterStateMatrixPersistent(
+	CreateOrUpdateCharacterStateMatrix(
 			final Provider<Character> characterProvider,
 			final CharacterState.IFactory stateFactory,
 			final Provider<Attachment> attachmentProvider,
-			final IMergeAndMakeMatrixPersistent.IFactory<CharacterStateRow, CharacterStateCell, CharacterState> saveOrUpdateMatrixFactory,
+			final ICreateOrUpdateMatrix.IFactory<CharacterStateRow, CharacterStateCell, CharacterState> saveOrUpdateMatrixFactory,
 			@Assisted final INewPPodVersionInfo newPPodVersionInfo,
 			@Assisted final IDAO<Object, Long> dao,
 			@Assisted final IMergeAttachments mergeAttachments) {
@@ -84,7 +84,7 @@ final class MergeAndMakeCharacterStateMatrixPersistent implements
 		this.newPPodVersionInfo = newPPodVersionInfo;
 	}
 
-	public MatrixInfo mergeAndMakeMatrixPersistent(
+	public MatrixInfo createOrUpdateMatrix(
 			final CharacterStateMatrix dbMatrix,
 			final CharacterStateMatrix sourceMatrix,
 			final DNACharacter dnaCharacter) {
@@ -168,12 +168,12 @@ final class MergeAndMakeCharacterStateMatrixPersistent implements
 		final List<Character> removedCharacters = dbMatrix
 				.setCharacters(newDbMatrixCharacters);
 
-		final IMergeAndMakeMatrixPersistent<CharacterStateRow, CharacterStateCell, CharacterState> saveOrUpdateMatrix =
+		final ICreateOrUpdateMatrix<CharacterStateRow, CharacterStateCell, CharacterState> saveOrUpdateMatrix =
 				saveOrUpdateMatrixFactory
 						.create(newPPodVersionInfo, dao);
 
 		final MatrixInfo matrixInfo = saveOrUpdateMatrix
-				.mergeAndMakePersistent(
+				.createOrUpdateMatrix(
 						dbMatrix,
 						sourceMatrix);
 
