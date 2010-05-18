@@ -73,11 +73,11 @@ public class CreateOrUpdateModule extends AbstractModule {
 										saveOrUpdateCharacterStateMatrixFactoryTypeLiteral,
 										saveOrUpdateCharacterStateMatrixTypeLiteral));
 
-		bind(IMakeDNAMatrixPersistent.IFactory.class)
+		bind(IMergeAndMakeDNAMatrixPersistent.IFactory.class)
 				.toProvider(
 						FactoryProvider.newFactory(
-								IMakeDNAMatrixPersistent.IFactory.class,
-								IMakeDNAMatrixPersistent.class));
+								IMergeAndMakeDNAMatrixPersistent.IFactory.class,
+								IMergeAndMakeDNAMatrixPersistent.class));
 
 	}
 }
