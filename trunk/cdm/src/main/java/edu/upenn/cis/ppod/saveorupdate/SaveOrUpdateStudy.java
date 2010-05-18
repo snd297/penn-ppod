@@ -34,6 +34,7 @@ import edu.upenn.cis.ppod.dao.IDNACharacterDAO;
 import edu.upenn.cis.ppod.dao.IStudyDAO;
 import edu.upenn.cis.ppod.model.CharacterStateMatrix;
 import edu.upenn.cis.ppod.model.DNACharacter;
+import edu.upenn.cis.ppod.model.DNAMatrix;
 import edu.upenn.cis.ppod.model.DNASequence;
 import edu.upenn.cis.ppod.model.DNASequenceSet;
 import edu.upenn.cis.ppod.model.OTUSet;
@@ -60,11 +61,12 @@ final class SaveOrUpdateStudy implements ISaveOrUpdateStudy {
 	private final Provider<Study> studyProvider;
 	private final Provider<OTUSet> otuSetProvider;
 	private final ICharacterStateMatrixFactory matrixFactory;
+	private final Provider<DNAMatrix> dnaMatrixProvider;
 	private final Provider<DNASequenceSet> dnaSequenceSetProvider;
 	private final Provider<TreeSet> treeSetProvider;
 
 	private final IMergeOTUSets mergeOTUSets;
-	private final ISaveOrUpdateCharacterStateMatrix mergeMatrices;
+	private final ISaveOrUpdateCharacterStateMatrix saveOrUpdateCharacterStateMatrix;
 	private final IMergeTreeSets mergeTreeSets;
 	private final INewPPodVersionInfo newPPodVersionInfo;
 	private final IMergeMolecularSequenceSets<DNASequenceSet, DNASequence> mergeDNASequenceSets;
@@ -72,6 +74,7 @@ final class SaveOrUpdateStudy implements ISaveOrUpdateStudy {
 	private Study dbStudy;
 	private final StudyInfo dbStudyInfo;
 	private final Provider<OTUSetInfo> otuSetInfoProvider;
+	private final ISaveOrUpdateDNAMatrix saveOrUpdateDNAMatrix;
 
 	@Inject
 	SaveOrUpdateStudy(
@@ -82,11 +85,13 @@ final class SaveOrUpdateStudy implements ISaveOrUpdateStudy {
 			final Provider<TreeSet> treeSetProvider,
 			final IMergeOTUSets.IFactory saveOrUpdateOTUSetFactory,
 			final IMergeTreeSets.IFactory mergeTreeSetsFactory,
+			final ISaveOrUpdateDNAMatrix.IFactory saveOrUpdateDNAMatrixFactory,
 			final ISaveOrUpdateCharacterStateMatrix.IFactory saveOrUpdateMatrixFactory,
 			final IMergeMolecularSequenceSets.IFactory<DNASequenceSet, DNASequence> mergeDNASequenceSetsFactory,
 			final IMergeAttachments.IFactory mergeAttachmentFactory,
 			final Provider<OTUSetInfo> otuSetInfoProvider,
 			final StudyInfo studyInfo,
+			final Provider<DNAMatrix> dnaMatrixProvider,
 			@Assisted final Study incomingStudy,
 			@Assisted final IStudyDAO studyDAO,
 			@Assisted final IDNACharacterDAO dnaCharacterDAO,
@@ -105,17 +110,22 @@ final class SaveOrUpdateStudy implements ISaveOrUpdateStudy {
 		this.newPPodVersionInfo = newPPodVersionInfo;
 		this.mergeOTUSets = saveOrUpdateOTUSetFactory
 				.create(newPPodVersionInfo);
-		this.mergeMatrices = saveOrUpdateMatrixFactory.create(
-				mergeAttachmentFactory
-						.create(attachmentNamespaceDAO,
-								attachmentTypeDAO), dao,
-				newPPodVersionInfo);
+		this.saveOrUpdateDNAMatrix =
+				saveOrUpdateDNAMatrixFactory.create(
+						newPPodVersionInfo, dao);
+		this.saveOrUpdateCharacterStateMatrix =
+				saveOrUpdateMatrixFactory.create(
+						mergeAttachmentFactory
+								.create(attachmentNamespaceDAO,
+										attachmentTypeDAO), dao,
+						newPPodVersionInfo);
 		this.otuSetInfoProvider = otuSetInfoProvider;
 		this.mergeDNASequenceSets = mergeDNASequenceSetsFactory.create(
 				dao,
 				newPPodVersionInfo);
 		this.mergeTreeSets = mergeTreeSetsFactory.create(newPPodVersionInfo);
 		this.dbStudyInfo = studyInfo;
+		this.dnaMatrixProvider = dnaMatrixProvider;
 	}
 
 	public void saveOrUpdate() {
@@ -180,60 +190,54 @@ final class SaveOrUpdateStudy implements ISaveOrUpdateStudy {
 
 			otuSetInfo.setPPodId(dbOTUSet.getPPodId());
 
-			final Set<CharacterStateMatrix> newDbMatrices = newHashSet();
 			for (final CharacterStateMatrix incomingMatrix : incomingOTUSet
 					.getCharacterStateMatrices()) {
 				CharacterStateMatrix dbMatrix;
-				if (null == (dbMatrix = findIf(dbOTUSet
-						.getCharacterStateMatrices(),
-						compose(
-								equalTo(incomingMatrix.getPPodId()),
-								IWithPPodId.getPPodId)))) {
+				if (null == (dbMatrix =
+						findIf(dbOTUSet.getCharacterStateMatrices(),
+								compose(
+										equalTo(
+												incomingMatrix.getPPodId()),
+										IWithPPodId.getPPodId)))) {
 					dbMatrix = matrixFactory.create(incomingMatrix);
+					dbOTUSet.addCharacterStateMatrix(dbMatrix);
 					dbMatrix.setPPodVersionInfo(newPPodVersionInfo
 							.getNewPPodVersionInfo());
 					dbMatrix.setColumnPPodVersionInfos(newPPodVersionInfo
 							.getNewPPodVersionInfo());
 					dbMatrix.setPPodId();
 				}
-				newDbMatrices.add(dbMatrix);
-				dbOTUSet.setCharacterStateMatrices(newDbMatrices);
-				final MatrixInfo dbMatrixInfo = mergeMatrices
+				final MatrixInfo dbMatrixInfo = saveOrUpdateCharacterStateMatrix
 						.saveOrUpdate(dbMatrix,
 								incomingMatrix, dbDNACharacter);
 				otuSetInfo.getMatrixInfos().add(dbMatrixInfo);
 			}
 
-			// Let's delete sequences missing from the incoming otu set
-			for (final DNASequenceSet dbDNASequenceSet : dbOTUSet
-					.getDNASequenceSets()) {
-				if (null == findIf(incomingOTUSet.getDNASequenceSets(),
-						compose(equalTo(dbDNASequenceSet.getPPodId()),
-								IWithPPodId.getPPodId))) {
-					dbDNASequenceSet.clearSequences();
-					dbOTUSet.removeDNASequenceSet(dbDNASequenceSet);
+			for (final DNAMatrix incomingMatrix : incomingOTUSet
+					.getDNAMatrices()) {
+				DNAMatrix dbMatrix;
+				if (null == (dbMatrix =
+						findIf(
+								dbOTUSet.getDNAMatrices(),
+								compose(
+										equalTo(
+										incomingMatrix.getPPodId()),
+										IWithPPodId.getPPodId)))) {
+					dbMatrix = dnaMatrixProvider.get();
+					dbMatrix.setPPodVersionInfo(newPPodVersionInfo
+							.getNewPPodVersionInfo());
+					dbMatrix.setColumnPPodVersionInfos(newPPodVersionInfo
+							.getNewPPodVersionInfo());
+					dbMatrix.setPPodId();
 				}
+				dbOTUSet.addDNAMatrix(dbMatrix);
+				final MatrixInfo dbMatrixInfo = saveOrUpdateDNAMatrix
+						.saveOrUpdate(dbMatrix, incomingMatrix);
+				otuSetInfo.getMatrixInfos().add(dbMatrixInfo);
 			}
 
-			final Set<DNASequenceSet> newDbDNASequenceSets = newHashSet();
-			for (final DNASequenceSet incomingDNASequenceSet : incomingOTUSet
-					.getDNASequenceSets()) {
-				DNASequenceSet dbDNASequenceSet;
-				if (null == (dbDNASequenceSet =
-						findIf(dbOTUSet.getDNASequenceSets(),
-								compose(equalTo(incomingDNASequenceSet
-										.getPPodId()),
-										IWithPPodId.getPPodId)))) {
-					dbDNASequenceSet = dnaSequenceSetProvider.get();
-					dbDNASequenceSet.setPPodId();
-					dbDNASequenceSet.setPPodVersionInfo(newPPodVersionInfo
-							.getNewPPodVersionInfo());
-				}
-				newDbDNASequenceSets.add(dbDNASequenceSet);
-				dbOTUSet.setDNASequenceSets(newDbDNASequenceSets);
-				mergeDNASequenceSets.merge(dbDNASequenceSet,
-						incomingDNASequenceSet);
-			}
+			handleSequenceSets(dbOTUSet, incomingOTUSet);
+
 			final Set<TreeSet> newDbTreeSets = newHashSet();
 			for (final TreeSet incomingTreeSet : incomingOTUSet.getTreeSets()) {
 				TreeSet dbTreeSet;
@@ -263,4 +267,40 @@ final class SaveOrUpdateStudy implements ISaveOrUpdateStudy {
 		return dbStudy;
 	}
 
+	private void handleSequenceSets(final OTUSet dbOTUSet,
+			final OTUSet incomingOTUSet) {
+
+		// Let's delete sequences missing from the incoming otu set
+		for (final DNASequenceSet dbDNASequenceSet : dbOTUSet
+				.getDNASequenceSets()) {
+			if (null == findIf(
+					incomingOTUSet.getDNASequenceSets(),
+					compose(
+							equalTo(
+								dbDNASequenceSet.getPPodId()),
+							IWithPPodId.getPPodId))) {
+				dbOTUSet.removeDNASequenceSet(dbDNASequenceSet);
+			}
+		}
+
+		final Set<DNASequenceSet> newDbDNASequenceSets = newHashSet();
+		for (final DNASequenceSet incomingDNASequenceSet : incomingOTUSet
+				.getDNASequenceSets()) {
+			DNASequenceSet dbDNASequenceSet;
+			if (null == (dbDNASequenceSet =
+					findIf(dbOTUSet.getDNASequenceSets(),
+							compose(equalTo(incomingDNASequenceSet
+									.getPPodId()),
+									IWithPPodId.getPPodId)))) {
+				dbDNASequenceSet = dnaSequenceSetProvider.get();
+				dbDNASequenceSet.setPPodId();
+				dbDNASequenceSet.setPPodVersionInfo(newPPodVersionInfo
+						.getNewPPodVersionInfo());
+			}
+			newDbDNASequenceSets.add(dbDNASequenceSet);
+			dbOTUSet.setDNASequenceSets(newDbDNASequenceSets);
+			mergeDNASequenceSets.merge(dbDNASequenceSet,
+					incomingDNASequenceSet);
+		}
+	}
 }

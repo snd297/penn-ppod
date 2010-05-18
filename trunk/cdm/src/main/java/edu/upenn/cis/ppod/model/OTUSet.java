@@ -145,6 +145,13 @@ public class OTUSet extends UUPPodEntityWXmlId {
 		return matrix;
 	}
 
+	public OTUSet addDNAMatrix(final DNAMatrix matrix) {
+		if (dnaMatrices.add(matrix)) {
+			setInNeedOfNewPPodVersionInfo();
+		}
+		return this;
+	}
+
 	/**
 	 * Add a {@code DNASequenceSet}.
 	 * <p>
@@ -265,6 +272,11 @@ public class OTUSet extends UUPPodEntityWXmlId {
 		return description;
 	}
 
+	public Set<DNAMatrix> getDNAMatrices() {
+		return Collections.unmodifiableSet(dnaMatrices);
+	}
+
+	@XmlElement(name = "dnaMatrix")
 	protected Set<DNAMatrix> getDNAMatricesModifiable() {
 		return dnaMatrices;
 	}

@@ -223,6 +223,41 @@ public abstract class Matrix<R extends Row<?>> extends
 	}
 
 	/**
+	 * Set a particular column to a version
+	 * 
+	 * @param pos position of the column
+	 * @param pPodVersionInfo the version
+	 * 
+	 * @return this
+	 * 
+	 * @throw IllegalArgumentException if {@code pos >=
+	 *        getColumnPPodVersionInfos().size()}
+	 */
+	public Matrix<R> setColumnPPodVersionInfo(final int pos,
+			final PPodVersionInfo pPodVersionInfo) {
+		checkNotNull(pPodVersionInfo);
+		checkArgument(pos < getColumnPPodVersionInfos().size(),
+				"pos is bigger than getColumnPPodVersionInfos().size()");
+		getColumnPPodVersionInfosModifiable().set(pos, pPodVersionInfo);
+		return this;
+	}
+
+	/**
+	 * Set all of the columns' pPOD version infos.
+	 * 
+	 * @param pPodVersionInfo version
+	 * 
+	 * @return this
+	 */
+	public Matrix<R> setColumnPPodVersionInfos(
+			final PPodVersionInfo pPodVersionInfo) {
+		for (int pos = 0; pos < getColumnPPodVersionInfos().size(); pos++) {
+			setColumnPPodVersionInfo(pos, pPodVersionInfo);
+		}
+		return this;
+	}
+
+	/**
 	 * Setter.
 	 * 
 	 * @param description the description value, {@code null} is allowed

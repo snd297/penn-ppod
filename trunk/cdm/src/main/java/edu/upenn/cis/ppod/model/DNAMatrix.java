@@ -22,7 +22,9 @@ public class DNAMatrix extends MolecularMatrix<DNARow> {
 	public final static String TABLE = "DNA_MATRIX";
 
 	@OneToOne(fetch = FetchType.LAZY, optional = false, cascade = CascadeType.ALL, orphanRemoval = true)
-	private final OTUsToDNARows otusToRows;
+	private OTUsToDNARows otusToRows;
+
+	protected DNAMatrix() {}
 
 	@Inject
 	protected DNAMatrix(final OTUsToDNARows otusToRows) {

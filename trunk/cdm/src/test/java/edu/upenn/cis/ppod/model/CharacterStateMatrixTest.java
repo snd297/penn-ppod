@@ -361,8 +361,10 @@ public class CharacterStateMatrixTest {
 			if (matrix.getColumnPPodVersionInfos().get(i) == null) {
 				assertNull(matrix.getColumnPPodVersionsModifiable().get(i));
 			} else {
-				assertEquals(matrix.getColumnPPodVersionsModifiable().get(i), matrix
-						.getColumnPPodVersionInfos().get(i).getPPodVersion());
+				assertEquals(matrix.getColumnPPodVersionsModifiable().get(i),
+						matrix
+								.getColumnPPodVersionInfos().get(i)
+								.getPPodVersion());
 			}
 		}
 	}
@@ -381,7 +383,7 @@ public class CharacterStateMatrixTest {
 
 	public void setColumnPPodVersionInfos() {
 		final PPodVersionInfo pPodVersionInfo = pPodVersionInfoProvider.get();
-		final CharacterStateMatrix returnedMatrix = matrix
+		final CharacterStateMatrix returnedMatrix = (CharacterStateMatrix) matrix
 				.setColumnPPodVersionInfos(pPodVersionInfo);
 		assertSame(returnedMatrix, matrix);
 

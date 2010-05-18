@@ -26,7 +26,7 @@ import edu.upenn.cis.ppod.thirdparty.injectslf4j.InjectLogger;
 /**
  * @author Sam Donnelly
  */
-final class SaveOrUpdateMatrix<R extends Row<C>, C extends Cell<E>, E>
+class SaveOrUpdateMatrix<R extends Row<C>, C extends Cell<E>, E>
 		implements ISaveOrUpdateMatrix<R, C, E> {
 
 	private final Provider<R> rowProvider;
