@@ -131,8 +131,8 @@ public class OTUsToCharacterStateRows extends OTUKeyedMap<CharacterStateRow> {
 
 	@Override
 	protected OTUsToCharacterStateRows setInNeedOfNewPPodVersionInfo() {
-		if (matrix != null) {
-			matrix.setInNeedOfNewPPodVersionInfo();
+		if (getParent() != null) {
+			getParent().setInNeedOfNewPPodVersionInfo();
 		}
 		return this;
 	}

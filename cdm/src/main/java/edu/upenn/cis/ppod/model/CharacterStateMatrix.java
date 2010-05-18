@@ -101,8 +101,6 @@ public class CharacterStateMatrix extends Matrix<CharacterStateRow> {
 	@Column(name = CHARACTER_IDX_COLUMN)
 	private final Map<Character, Integer> charactersToPositions = newHashMap();
 
-	// Needed to comment out the lazy or it wouldn't get initialized and mess up
-	// serialization to xml
 	@OneToOne(fetch = FetchType.LAZY, optional = false, cascade = CascadeType.ALL, orphanRemoval = true)
 	private OTUsToCharacterStateRows rows;
 
@@ -124,7 +122,7 @@ public class CharacterStateMatrix extends Matrix<CharacterStateRow> {
 
 	@Override
 	public void accept(final IVisitor visitor) {
-		for (final Character character : getCharactersModifiable()) {
+		for (final Character character : getCharacters()) {
 			character.accept(visitor);
 		}
 		rows.accept(visitor);
@@ -137,7 +135,7 @@ public class CharacterStateMatrix extends Matrix<CharacterStateRow> {
 	public void afterUnmarshal() {
 		super.afterUnmarshal();
 		int i = -1;
-		for (final Character character : getCharactersModifiable()) {
+		for (final Character character : getCharacters()) {
 			i++;
 			if (this instanceof MolecularStateMatrix) {
 				// charactersToPositions is meaningless for MolecularMatrix's
@@ -172,7 +170,8 @@ public class CharacterStateMatrix extends Matrix<CharacterStateRow> {
 			if (columnVersionInfo == null) {
 				getColumnPPodVersionsModifiable().add(null);
 			} else {
-				getColumnPPodVersionsModifiable().add(columnVersionInfo.getPPodVersion());
+				getColumnPPodVersionsModifiable().add(
+						columnVersionInfo.getPPodVersion());
 			}
 		}
 		return true;
@@ -225,7 +224,7 @@ public class CharacterStateMatrix extends Matrix<CharacterStateRow> {
 	 */
 	@Override
 	public Integer getColumnsSize() {
-		return getCharactersModifiable().size();
+		return getCharacters().size();
 	}
 
 	/**
@@ -330,41 +329,6 @@ public class CharacterStateMatrix extends Matrix<CharacterStateRow> {
 		// the matrix has changed
 		setInNeedOfNewPPodVersionInfo();
 		return removedCharacters;
-	}
-
-	/**
-	 * Set a particular column to a version
-	 * 
-	 * @param pos position of the column
-	 * @param pPodVersionInfo the version
-	 * 
-	 * @return this
-	 * 
-	 * @throw IllegalArgumentException if {@code pos >=
-	 *        getColumnPPodVersionInfos().size()}
-	 */
-	public CharacterStateMatrix setColumnPPodVersionInfo(final int pos,
-			final PPodVersionInfo pPodVersionInfo) {
-		checkNotNull(pPodVersionInfo);
-		checkArgument(pos < getColumnPPodVersionInfos().size(),
-				"pos is bigger than getColumnPPodVersionInfos().size()");
-		getColumnPPodVersionInfosModifiable().set(pos, pPodVersionInfo);
-		return this;
-	}
-
-	/**
-	 * Set all of the columns' pPOD version infos.
-	 * 
-	 * @param pPodVersionInfo version
-	 * 
-	 * @return this
-	 */
-	public CharacterStateMatrix setColumnPPodVersionInfos(
-			final PPodVersionInfo pPodVersionInfo) {
-		for (int pos = 0; pos < getColumnPPodVersionInfos().size(); pos++) {
-			setColumnPPodVersionInfo(pos, pPodVersionInfo);
-		}
-		return this;
 	}
 
 	/**
