@@ -62,19 +62,15 @@ public class Study extends UUPPodEntity implements IOTUSetCentricEntities {
 	@OneToMany(mappedBy = "study", cascade = CascadeType.ALL, orphanRemoval = true)
 	private final Set<OTUSet> otuSets = newHashSet();
 
-	@XmlElement(name = "studyWideAttachmentNamespace")
 	@Transient
 	private final Set<AttachmentNamespace> studyWideAttachmentNamespaces = newHashSet();
 
-	@XmlElement(name = "studyWideAttachment")
 	@Transient
 	private final Set<Attachment> studyWideAttachments = newHashSet();
 
-	@XmlElement(name = "studyWideAttachmentType")
 	@Transient
 	private final Set<AttachmentType> studyWideAttachmentTypes = newHashSet();
 
-	@XmlElement(name = "studyWideCharacter")
 	@Transient
 	private final Set<Character> studyWideCharacters = newHashSet();
 
@@ -146,6 +142,26 @@ public class Study extends UUPPodEntity implements IOTUSetCentricEntities {
 	@XmlElement(name = "otuSet")
 	protected Set<OTUSet> getOTUSetsModifiable() {
 		return otuSets;
+	}
+
+	@XmlElement(name = "studyWideAttachmentNamespace")
+	protected Set<AttachmentNamespace> getStudyWideAttachmentNamespacesModifiable() {
+		return studyWideAttachmentNamespaces;
+	}
+
+	@XmlElement(name = "studyWideAttachment")
+	protected Set<Attachment> getStudyWideAttachmentsModifiable() {
+		return studyWideAttachments;
+	}
+
+	@XmlElement(name = "studyWideAttachmentType")
+	protected Set<AttachmentType> getStudyWideAttachmentTypes() {
+		return studyWideAttachmentTypes;
+	}
+
+	@XmlElement(name = "studyWideCharacter")
+	protected Set<Character> getStudyWideCharacters() {
+		return studyWideCharacters;
 	}
 
 	/**

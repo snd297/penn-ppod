@@ -8,6 +8,7 @@ import java.util.List;
 import java.util.Set;
 
 import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 
 import com.google.inject.Inject;
 import com.google.inject.Provider;
@@ -21,44 +22,44 @@ import edu.upenn.cis.ppod.model.OTU;
 import edu.upenn.cis.ppod.model.Row;
 import edu.upenn.cis.ppod.modelinterfaces.INewPPodVersionInfo;
 import edu.upenn.cis.ppod.services.ppodentity.MatrixInfo;
-import edu.upenn.cis.ppod.thirdparty.injectslf4j.InjectLogger;
 
 /**
  * @author Sam Donnelly
  */
-class CreateOrUpdateMatrix<R extends Row<C>, C extends Cell<E>, E>
-		implements ICreateOrUpdateMatrix<R, C, E> {
+class CreateOrUpdateMatrix<M extends Matrix<R>, R extends Row<C>, C extends Cell<E>, E>
+		implements ICreateOrUpdateMatrix<M, R, C, E> {
 
-	private final Provider<R> rowProvider;
 	private final Provider<C> cellProvider;
-	private final Provider<MatrixInfo> matrixInfoProvider;
+
 	private final IDAO<Object, Long> dao;
 
-	@InjectLogger
-	private Logger logger;
+	protected Logger logger = LoggerFactory.getLogger(getClass());
+
+	private final Provider<MatrixInfo> matrixInfoProvider;
 
 	private final INewPPodVersionInfo newPPodVersionInfo;
 
+	private final Provider<R> rowProvider;
+
 	@Inject
-	CreateOrUpdateMatrix(
-				final Provider<R> rowProvider,
-				final Provider<C> cellProvider,
-				final Provider<Attachment> attachmentProvider,
-				final Provider<MatrixInfo> matrixInfoProvider,
-				@Assisted final INewPPodVersionInfo newPPodVersionInfo,
-				@Assisted final IDAO<Object, Long> dao) {
+	CreateOrUpdateMatrix(final Provider<R> rowProvider,
+			final Provider<C> cellProvider,
+			final Provider<Attachment> attachmentProvider,
+			final Provider<MatrixInfo> matrixInfoProvider,
+			@Assisted final INewPPodVersionInfo newPPodVersionInfo,
+			@Assisted final IDAO<Object, Long> dao) {
 		this.rowProvider = rowProvider;
 		this.cellProvider = cellProvider;
 		this.matrixInfoProvider = matrixInfoProvider;
-		this.dao = dao;
 		this.newPPodVersionInfo = newPPodVersionInfo;
+		this.dao = dao;
 	}
 
 	public MatrixInfo createOrUpdateMatrix(
-			final Matrix<R> dbMatrix,
-			final Matrix<R> sourceMatrix) {
+			final M dbMatrix,
+			final M sourceMatrix) {
 
-		final String METHOD = "saveOrUpdate(...)";
+		final String METHOD = "createOrUpdate(...)";
 
 		// We need this for the response: it's less than ideal to do this here,
 		// but easy
@@ -66,8 +67,8 @@ class CreateOrUpdateMatrix<R extends Row<C>, C extends Cell<E>, E>
 			dbMatrix.setDocId(sourceMatrix.getDocId());
 		}
 
-		dbMatrix.setLabel(sourceMatrix.getLabel());
-		dbMatrix.setDescription(sourceMatrix.getDescription());
+		dbMatrix.setLabel(sourceMatrix.getLabel())
+				.setDescription(sourceMatrix.getDescription());
 
 		final MatrixInfo matrixInfo = matrixInfoProvider.get();
 		matrixInfo.setPPodId(dbMatrix.getPPodId());
@@ -83,16 +84,18 @@ class CreateOrUpdateMatrix<R extends Row<C>, C extends Cell<E>, E>
 			sourceOTUPosition++;
 			final R sourceRow = sourceMatrix.getRow(sourceOTU);
 
-			final OTU dbOTU =
-					dbMatrix.getOTUSet().getOTU(sourceOTUPosition);
+			final OTU dbOTU = dbMatrix
+					.getOTUSet()
+					.getOTU(sourceOTUPosition);
 
 			// Let's create rows for OTU->null row mappings in the matrix.
 			R dbRow = null;
 
 			if (null == (dbRow = dbMatrix.getRow(dbOTU))) {
 				dbRow = rowProvider.get();
-				dbRow.setPPodVersionInfo(newPPodVersionInfo
-						.getNewPPodVersionInfo());
+				dbRow
+						.setPPodVersionInfo(
+								newPPodVersionInfo.getNewPPodVersionInfo());
 				dbMatrix.putRow(dbOTU, dbRow);
 				dao.makePersistent(dbRow);
 			}
@@ -128,25 +131,24 @@ class CreateOrUpdateMatrix<R extends Row<C>, C extends Cell<E>, E>
 						targetCellPosition);
 
 				switch (sourceCell.getType()) {
-					case INAPPLICABLE:
-						dbCell.setInapplicable();
-						break;
-					case POLYMORPHIC:
-						dbCell.setPolymorphicElements(sourceCell.getElements());
-						break;
-					case SINGLE:
-						dbCell
-								.setSingleElement(getOnlyElement(sourceCell
-										.getElements()));
-						break;
-					case UNASSIGNED:
-						dbCell.setUnassigned();
-						break;
-					case UNCERTAIN:
-						dbCell.setUncertainElements(sourceCell.getElements());
-						break;
-					default:
-						throw new AssertionError("unknown type");
+				case INAPPLICABLE:
+					dbCell.setInapplicable();
+					break;
+				case POLYMORPHIC:
+					dbCell.setPolymorphicElements(sourceCell.getElements());
+					break;
+				case SINGLE:
+					dbCell.setSingleElement(
+							getOnlyElement(sourceCell.getElements()));
+					break;
+				case UNASSIGNED:
+					dbCell.setUnassigned();
+					break;
+				case UNCERTAIN:
+					dbCell.setUncertainElements(sourceCell.getElements());
+					break;
+				default:
+					throw new AssertionError("unknown type");
 				}
 
 				// We need to do this here since we're removing the cell from
@@ -164,11 +166,13 @@ class CreateOrUpdateMatrix<R extends Row<C>, C extends Cell<E>, E>
 			// We need to do this here since we're removing the cell from
 			// the persistence context (with evict)
 			if (dbRow.isInNeedOfNewPPodVersionInfo()) {
-				dbRow.setPPodVersionInfo(newPPodVersionInfo
-						.getNewPPodVersionInfo());
+				dbRow.setPPodVersionInfo(
+						newPPodVersionInfo.getNewPPodVersionInfo());
 			}
 
-			logger.debug("{}: flushing row number {}", METHOD,
+			logger.debug(
+					"{}: flushing row number {}",
+					METHOD,
 					sourceOTUPosition);
 
 			dao.flush();
@@ -190,14 +194,16 @@ class CreateOrUpdateMatrix<R extends Row<C>, C extends Cell<E>, E>
 		return matrixInfo;
 	}
 
-	private void fillInCellInfo(final MatrixInfo matrixInfo,
-			final R row, final int rowPosition) {
+	private void fillInCellInfo(final MatrixInfo matrixInfo, final R row,
+			final int rowPosition) {
 		int cellPosition = -1;
 		for (final C cell : row.getCells()) {
 			cellPosition++;
-			matrixInfo.setCellPPodIdAndVersion(rowPosition,
+			matrixInfo.setCellPPodIdAndVersion(
+					rowPosition,
 					cellPosition,
-					cell.getPPodVersionInfo().getPPodVersion());
+					cell.getPPodVersionInfo()
+							.getPPodVersion());
 		}
 	}
 }

@@ -15,7 +15,6 @@
  */
 package edu.upenn.cis.ppod.modelinterfaces;
 
-import java.util.Iterator;
 import java.util.Set;
 
 import edu.upenn.cis.ppod.model.Attachment;
@@ -31,14 +30,23 @@ public interface IAttachee {
 	 * Add an attachment to this {@code IAttachee}.
 	 * 
 	 * @param attachment to be attached
+	 * 
 	 * @return this {@code IAttachee}
 	 */
 	IAttachee addAttachment(Attachment attachment);
 
 	/**
+	 * Get the attachments of this {@code IAttachee}.
+	 * 
+	 * @return the attachments of this {@code IAttachee}
+	 */
+	Set<Attachment> getAttachments();
+
+	/**
 	 * Get all attachments within the given namespace.
 	 * 
 	 * @param namespace the namespace
+	 * 
 	 * @return all attachments within the given namespace
 	 */
 	Set<Attachment> getAttachmentsByNamespace(String namespace);
@@ -48,30 +56,17 @@ public interface IAttachee {
 	 * 
 	 * @param namespace the namespace
 	 * @param type the attachment type
+	 * 
 	 * @return all attachments within the given namespace and of the given type.
 	 */
 	Set<Attachment> getAttachmentsByNamespaceAndType(String namespace,
 			String type);
 
 	/**
-	 * Get the attachments of this {@code IAttachee}. There will be no
-	 * duplicates.
-	 * 
-	 * @return the attachments of this {@code IAttachee}
-	 */
-	Iterator<Attachment> getAttachmentsIterator();
-
-	/**
-	 * Get the number of attachments attached to this {@code IAttachee}.
-	 * 
-	 * @return the number of attachments attached to this {@code IAttachee}
-	 */
-	int getAttachmentsSize();
-
-	/**
 	 * Remove {@code attachment} from this {@code IAttachee}'s attachments.
 	 * 
 	 * @param attachment to be removed
+	 * 
 	 * @return {@code true} if the set contained the specified element
 	 */
 	boolean removeAttachment(Attachment attachment);

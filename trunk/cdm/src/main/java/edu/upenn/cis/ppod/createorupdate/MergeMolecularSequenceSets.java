@@ -70,13 +70,14 @@ final class MergeMolecularSequenceSets<SS extends SequenceSet<S>, S extends Sequ
 			// sequences are already of the correct size, so we grab the
 			// OTU->Sequence
 			// map
-			targetOTUsToSequences = targetSequenceSet
-					.getOTUsToSequencesMap();
+			targetOTUsToSequences =
+					targetSequenceSet.getSequences();
 		} else {
 			// We need to clear it because it's of the wrong size, so we make a
 			// copy of the OTU->Sequence map
-			targetOTUsToSequences = ImmutableMap.copyOf(targetSequenceSet
-					.getOTUsToSequencesMap());
+			targetOTUsToSequences =
+					ImmutableMap.copyOf(
+							targetSequenceSet.getSequences());
 			targetSequenceSet.clearSequences();
 		}
 
@@ -88,7 +89,8 @@ final class MergeMolecularSequenceSets<SS extends SequenceSet<S>, S extends Sequ
 
 			S targetSequence;
 
-			if (null == (targetSequence = targetOTUsToSequences.get(targetOTU))) {
+			if (null == (targetSequence =
+					targetOTUsToSequences.get(targetOTU))) {
 				targetSequence = sequenceProvider.get();
 				targetSequence.setPPodVersionInfo(newPPodVersionInfo
 						.getNewPPodVersionInfo());

@@ -139,17 +139,20 @@ public class OTUSet extends UUPPodEntityWXmlId {
 	public CharacterStateMatrix addCharacterStateMatrix(
 			final CharacterStateMatrix matrix) {
 		checkNotNull(matrix);
-		getCharacterStateMatricesModifiable().add(matrix);
-		matrix.setOTUSet(this);
-		setInNeedOfNewPPodVersionInfo();
+		if (characterStateMatrices.add(matrix)) {
+			matrix.setOTUSet(this);
+			setInNeedOfNewPPodVersionInfo();
+		}
 		return matrix;
 	}
 
-	public OTUSet addDNAMatrix(final DNAMatrix matrix) {
+	public DNAMatrix addDNAMatrix(final DNAMatrix matrix) {
+		checkNotNull(matrix);
 		if (dnaMatrices.add(matrix)) {
+			matrix.setOTUSet(this);
 			setInNeedOfNewPPodVersionInfo();
 		}
-		return this;
+		return matrix;
 	}
 
 	/**
@@ -162,12 +165,13 @@ public class OTUSet extends UUPPodEntityWXmlId {
 	 * @return {@code dnaSequenceSet}
 	 */
 	public DNASequenceSet addDNASequenceSet(
-			final DNASequenceSet dnaSequenceSet) {
-		checkNotNull(dnaSequenceSet);
-		getDNASequenceSetsModifiable().add(dnaSequenceSet);
-		dnaSequenceSet.setOTUSet(this);
-		setInNeedOfNewPPodVersionInfo();
-		return dnaSequenceSet;
+			final DNASequenceSet sequenceSet) {
+		checkNotNull(sequenceSet);
+		if (dnaSequenceSets.add(sequenceSet)) {
+			sequenceSet.setOTUSet(this);
+			setInNeedOfNewPPodVersionInfo();
+		}
+		return sequenceSet;
 	}
 
 	/**
@@ -216,12 +220,13 @@ public class OTUSet extends UUPPodEntityWXmlId {
 		return otu;
 	}
 
-	public TreeSet addTreeSet(final TreeSet newTreeSet) {
-		checkNotNull(newTreeSet);
-		getTreeSetsModifiable().add(newTreeSet);
-		newTreeSet.setOTUSet(this);
-		setInNeedOfNewPPodVersionInfo();
-		return newTreeSet;
+	public TreeSet addTreeSet(final TreeSet treeSet) {
+		checkNotNull(treeSet);
+		if (getTreeSetsModifiable().add(treeSet)) {
+			treeSet.setOTUSet(this);
+			setInNeedOfNewPPodVersionInfo();
+		}
+		return treeSet;
 	}
 
 	/**
@@ -254,10 +259,11 @@ public class OTUSet extends UUPPodEntityWXmlId {
 
 	protected Set<IPPodVersionedWithOTUSet> getChildren() {
 		final Set<IPPodVersionedWithOTUSet> children = newHashSet();
-		children.addAll(getOTUsModifiable());
-		children.addAll(getCharacterStateMatricesModifiable());
-		children.addAll(getTreeSetsModifiable());
-		children.addAll(getDNASequenceSetsModifiable());
+		children.addAll(getOTUs());
+		children.addAll(getCharacterStateMatrices());
+		children.addAll(getDNAMatrices());
+		children.addAll(getTreeSets());
+		children.addAll(getDNASequenceSets());
 		return children;
 	}
 
@@ -463,10 +469,8 @@ public class OTUSet extends UUPPodEntityWXmlId {
 	 * Set the label of this <code>OTUSet</code>.
 	 * 
 	 * @param label the label
-	 * 
-	 * @return this <code>OTUSet</code>
 	 */
-	public OTUSet setLabel(final String newLabel) {
+	public void setLabel(final String newLabel) {
 		checkNotNull(newLabel);
 		if (newLabel.equals(getLabel())) {
 
@@ -474,7 +478,6 @@ public class OTUSet extends UUPPodEntityWXmlId {
 			this.label = newLabel;
 			setInNeedOfNewPPodVersionInfo();
 		}
-		return this;
 	}
 
 	/**

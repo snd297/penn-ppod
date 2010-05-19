@@ -39,7 +39,6 @@ import javax.persistence.MapKeyJoinColumn;
 import javax.persistence.OneToOne;
 import javax.persistence.Table;
 import javax.xml.bind.Marshaller;
-import javax.xml.bind.Unmarshaller;
 import javax.xml.bind.annotation.XmlElement;
 import javax.xml.bind.annotation.XmlIDREF;
 import javax.xml.bind.annotation.XmlSeeAlso;
@@ -102,7 +101,7 @@ public class CharacterStateMatrix extends Matrix<CharacterStateRow> {
 	private final Map<Character, Integer> charactersToPositions = newHashMap();
 
 	@OneToOne(fetch = FetchType.LAZY, optional = false, cascade = CascadeType.ALL, orphanRemoval = true)
-	private OTUsToCharacterStateRows rows;
+	private OTUsToCharacterStateRows otusToRows;
 
 	/** No-arg constructor for (at least) Hibernate. */
 	protected CharacterStateMatrix() {}
@@ -116,8 +115,8 @@ public class CharacterStateMatrix extends Matrix<CharacterStateRow> {
 	 */
 	@Inject
 	protected CharacterStateMatrix(final OTUsToCharacterStateRows otusToRows) {
-		this.rows = otusToRows;
-		this.rows.setMatrix(this);
+		this.otusToRows = otusToRows;
+		this.otusToRows.setMatrix(this);
 	}
 
 	@Override
@@ -125,8 +124,6 @@ public class CharacterStateMatrix extends Matrix<CharacterStateRow> {
 		for (final Character character : getCharacters()) {
 			character.accept(visitor);
 		}
-		rows.accept(visitor);
-		rows.getOTUsToValues().size();
 		super.accept(visitor);
 		visitor.visit(this);
 	}
@@ -150,17 +147,6 @@ public class CharacterStateMatrix extends Matrix<CharacterStateRow> {
 		}
 	}
 
-	/**
-	 * {@link Unmarshaller} callback.
-	 * 
-	 * @param u see {@code Unmarshaller}
-	 * @param parent see {@code Unmarshaller}
-	 */
-	@Override
-	public void afterUnmarshal(final Unmarshaller u, final Object parent) {
-		super.afterUnmarshal(u, parent);
-		setOTUSet((OTUSet) parent);
-	}
 
 	@Override
 	public boolean beforeMarshal(@CheckForNull final Marshaller marshaller) {
@@ -229,15 +215,13 @@ public class CharacterStateMatrix extends Matrix<CharacterStateRow> {
 
 	/**
 	 * Get the otusToRows.
-	 * <p>
-	 * Not {@code final} for JAXB
 	 * 
 	 * @return the otusToRows
 	 */
 	@XmlElement(name = "rows")
 	@Override
 	protected OTUsToCharacterStateRows getOTUsToRows() {
-		return rows;
+		return otusToRows;
 	}
 
 	/**
@@ -341,11 +325,9 @@ public class CharacterStateMatrix extends Matrix<CharacterStateRow> {
 	 * @return this
 	 */
 	@edu.umd.cs.findbugs.annotations.SuppressWarnings
-	@SuppressWarnings("unused")
-	private CharacterStateMatrix setOTUsToRows(
+	protected CharacterStateMatrix setOTUsToRows(
 			final OTUsToCharacterStateRows rows) {
-		checkNotNull(rows);
-		this.rows = rows;
+		this.otusToRows = rows;
 		return this;
 	}
 }

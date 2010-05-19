@@ -1,15 +1,15 @@
 package edu.upenn.cis.ppod.model;
 
-import java.util.Collections;
-import java.util.Iterator;
-
 import javax.persistence.CascadeType;
 import javax.persistence.Entity;
 import javax.persistence.FetchType;
 import javax.persistence.OneToOne;
 import javax.persistence.Table;
+import javax.xml.bind.annotation.XmlElement;
 
 import com.google.inject.Inject;
+
+import edu.upenn.cis.ppod.util.IVisitor;
 
 /**
  * A {@link MolecularMatrix} composed of {@link DNARow}s.
@@ -32,15 +32,27 @@ public class DNAMatrix extends MolecularMatrix<DNARow> {
 		this.otusToRows.setMatrix(this);
 	}
 
+	/**
+	 * Created for JAXB.
+	 */
+	@XmlElement(name = "rows")
 	@Override
 	protected OTUsToDNARows getOTUsToRows() {
 		return otusToRows;
 	}
 
-	public Iterator<DNARow> iterator() {
-		return Collections
-				.unmodifiableList(otusToRows.getValuesInOTUSetOrder())
-				.iterator();
+	/**
+	 * Created for JAXB.
+	 */
+	protected DNAMatrix setOTUsToRows(final OTUsToDNARows rows) {
+		this.otusToRows = rows;
+		return this;
+	}
+
+	@Override
+	public void accept(final IVisitor visitor) {
+		super.accept(visitor);
+		visitor.visit(this);
 	}
 
 }

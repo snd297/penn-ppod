@@ -89,7 +89,7 @@ public class DNASequenceSet extends SequenceSet<DNASequence> {
 	}
 
 	@Override
-	public Map<OTU, DNASequence> getOTUsToSequencesMap() {
+	public Map<OTU, DNASequence> getSequences() {
 		return Collections.unmodifiableMap(getOTUsToSequences()
 				.getOTUsToValues());
 	}
@@ -102,7 +102,8 @@ public class DNASequenceSet extends SequenceSet<DNASequence> {
 
 	@Override
 	@CheckForNull
-	public DNASequence putSequence(final OTU otu,
+	public DNASequence putSequence(
+			final OTU otu,
 			final DNASequence sequence) {
 		checkNotNull(otu);
 		checkNotNull(sequence);

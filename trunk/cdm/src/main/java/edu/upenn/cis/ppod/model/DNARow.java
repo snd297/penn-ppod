@@ -14,6 +14,7 @@ import javax.persistence.ManyToOne;
 import javax.persistence.OneToMany;
 import javax.persistence.OrderBy;
 import javax.persistence.Table;
+import javax.xml.bind.annotation.XmlElement;
 
 import edu.upenn.cis.ppod.modelinterfaces.IMatrix;
 
@@ -49,6 +50,7 @@ public class DNARow extends Row<DNACell> {
 		return Collections.unmodifiableList(cells);
 	}
 
+	@XmlElement(name = "cell")
 	@Override
 	protected List<DNACell> getCellsModifiable() {
 		return cells;

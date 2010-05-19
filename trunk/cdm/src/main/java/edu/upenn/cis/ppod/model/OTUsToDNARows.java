@@ -17,6 +17,7 @@ import javax.persistence.OneToOne;
 import javax.persistence.Table;
 import javax.persistence.Transient;
 import javax.xml.bind.Marshaller;
+import javax.xml.bind.Unmarshaller;
 import javax.xml.bind.annotation.XmlElement;
 
 import edu.upenn.cis.ppod.util.OTUDNARowPair;
@@ -46,6 +47,37 @@ public class OTUsToDNARows extends OTUKeyedMap<DNARow> {
 	@MapKeyJoinColumn(name = OTU.JOIN_COLUMN)
 	final Map<OTU, DNARow> rows = newHashMap();
 
+	/**
+	 * {@link Unmarshaller} callback.
+	 * 
+	 * @param u see {@code Unmarshaller}
+	 * @param parent see {@code Unmarshaller}
+	 */
+	@Override
+	public void afterUnmarshal(final Unmarshaller u, final Object parent) {
+		super.afterUnmarshal(u, parent);
+		setMatrix((DNAMatrix) parent);
+		for (final OTUSomethingPair<DNARow> otuRowPair : otuRowPairs) {
+			otuRowPair.getSecond().setOTUsToRows(this);
+		}
+	}
+
+	public boolean beforeMarshal(@CheckForNull final Marshaller marshaller) {
+		getOTURowPairs().clear();
+		for (final Map.Entry<OTU, DNARow> otuToRow : getOTUsToValues()
+				.entrySet()) {
+			getOTURowPairs().add(
+					OTUDNARowPair.of(otuToRow.getKey(), otuToRow
+							.getValue()));
+		}
+		return true;
+	}
+
+	@XmlElement(name = "otuRowPair")
+	protected Set<OTUDNARowPair> getOTURowPairs() {
+		return otuRowPairs;
+	}
+
 	@Override
 	protected Map<OTU, DNARow> getOTUsToValues() {
 		return rows;
@@ -66,7 +98,15 @@ public class OTUsToDNARows extends OTUKeyedMap<DNARow> {
 	}
 
 	@Override
-	protected OTUsToDNARows setInNeedOfNewPPodVersionInfo() {
+	public DNARow put(final OTU otu, final DNARow row) {
+		checkNotNull(otu);
+		checkNotNull(row);
+		row.setOTUsToRows(this);
+		return super.putHelper(otu, row);
+	}
+
+	@Override
+	protected OTUsToDNARows setNeedsPPodVersionInfo() {
 		if (getParent() != null) {
 			getParent().setInNeedOfNewPPodVersionInfo();
 		}
@@ -76,30 +116,6 @@ public class OTUsToDNARows extends OTUKeyedMap<DNARow> {
 	protected OTUsToDNARows setMatrix(final DNAMatrix matrix) {
 		this.matrix = matrix;
 		return this;
-	}
-
-	@Override
-	public DNARow put(final OTU otu, final DNARow row) {
-		checkNotNull(otu);
-		checkNotNull(row);
-		row.setOTUsToRows(this);
-		return super.putHelper(otu, row);
-	}
-
-	public boolean beforeMarshal(@CheckForNull final Marshaller marshaller) {
-		getOTURowPairs().clear();
-		for (final Map.Entry<OTU, DNARow> otuToRow : getOTUsToValues()
-				.entrySet()) {
-						getOTURowPairs().add(
-					OTUDNARowPair.of(otuToRow.getKey(), otuToRow
-							.getValue()));
-		}
-		return true;
-	}
-
-	@XmlElement(name = "otuRowPair")
-	private Set<OTUDNARowPair> getOTURowPairs() {
-		return otuRowPairs;
 	}
 
 }

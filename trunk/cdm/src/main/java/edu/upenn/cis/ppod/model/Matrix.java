@@ -22,10 +22,12 @@ import javax.persistence.ManyToOne;
 import javax.persistence.MappedSuperclass;
 import javax.persistence.OrderColumn;
 import javax.persistence.Transient;
+import javax.xml.bind.Unmarshaller;
 import javax.xml.bind.annotation.XmlAttribute;
 import javax.xml.bind.annotation.XmlElement;
 
 import edu.upenn.cis.ppod.modelinterfaces.IMatrix;
+import edu.upenn.cis.ppod.util.IVisitor;
 
 /**
  * A matrix is a set of OTU-keyed rows with column header pPOD versions which
@@ -41,6 +43,7 @@ public abstract class Matrix<R extends Row<?>> extends
 	/** Description column. */
 	public static final String DESCRIPTION_COLUMN = "DESCRIPTION";
 
+	/** Label column. */
 	public static final String LABEL_COLUMN = "LABEL";
 
 	/** The pPod versions of the columns. */
@@ -72,6 +75,24 @@ public abstract class Matrix<R extends Row<?>> extends
 	private OTUSet otuSet;
 
 	protected Matrix() {}
+
+	@Override
+	public void accept(final IVisitor visitor) {
+		getOTUsToRows().accept(visitor);
+		super.accept(visitor);
+	}
+
+	/**
+	 * {@link Unmarshaller} callback.
+	 * 
+	 * @param u see {@code Unmarshaller}
+	 * @param parent see {@code Unmarshaller}
+	 */
+	@Override
+	public void afterUnmarshal(final Unmarshaller u, final Object parent) {
+		super.afterUnmarshal(u, parent);
+		setOTUSet((OTUSet) parent);
+	}
 
 	/**
 	 * Get the column pPOD version infos. These are equal to the largest pPOD

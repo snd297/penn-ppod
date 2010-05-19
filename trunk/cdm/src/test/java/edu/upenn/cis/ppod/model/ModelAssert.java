@@ -75,13 +75,15 @@ public class ModelAssert {
 			final Character expectedCharacter) {
 		assertEqualsPPodEntities(actualCharacter, expectedCharacter);
 		assertEquals(actualCharacter.getLabel(), expectedCharacter.getLabel());
-		assertEquals(actualCharacter.getStatesModifiable().size(), expectedCharacter
-				.getStatesModifiable().size());
+		assertEquals(actualCharacter.getStatesModifiable().size(),
+				expectedCharacter
+						.getStatesModifiable().size());
 		for (final Entry<Integer, CharacterState> actualStateNumberToState : actualCharacter
 				.getStatesModifiable().entrySet()) {
 			final CharacterState actualState = actualStateNumberToState
 					.getValue();
-			final CharacterState expectedState = expectedCharacter.getStatesModifiable()
+			final CharacterState expectedState = expectedCharacter
+					.getStatesModifiable()
 					.get(actualStateNumberToState.getKey());
 
 			assertNotNull(expectedState);
@@ -138,17 +140,21 @@ public class ModelAssert {
 
 		assertEqualsOTUSet(actualMatrix.getOTUSet(), expectedMatrix.getOTUSet());
 
-		assertEquals(actualMatrix.getCharactersModifiable().size(), actualMatrix
-				.getCharactersModifiable().size());
+		assertEquals(actualMatrix.getCharactersModifiable().size(),
+				actualMatrix
+						.getCharactersModifiable().size());
 		for (final Iterator<Character> actualCharacterItr = actualMatrix
 				.getCharactersModifiable().iterator(), expectedCharacterItr = expectedMatrix
-				.getCharactersModifiable().iterator(); actualCharacterItr.hasNext()
+				.getCharactersModifiable().iterator(); actualCharacterItr
+				.hasNext()
 												&& expectedCharacterItr
 														.hasNext();) {
 			final Character actualCharacter = actualCharacterItr.next();
 			final Character expectedCharacter = expectedCharacterItr.next();
-			assertTrue(actualCharacter.getMatricesModifiable().contains(actualMatrix));
-			assertTrue(expectedCharacter.getMatricesModifiable().contains(expectedMatrix));
+			assertTrue(actualCharacter.getMatricesModifiable().contains(
+					actualMatrix));
+			assertTrue(expectedCharacter.getMatricesModifiable().contains(
+					expectedMatrix));
 			assertEqualsCharacters(actualCharacter, expectedCharacter);
 		}
 
@@ -165,7 +171,8 @@ public class ModelAssert {
 			for (final Entry<Character, Integer> actualIdxByCharacter : actualMatrixCharactersToPositions
 					.entrySet()) {
 				assertTrue(actualIdxByCharacter.getKey() == actualMatrix
-						.getCharactersModifiable().get(actualIdxByCharacter.getValue()));
+						.getCharactersModifiable().get(
+								actualIdxByCharacter.getValue()));
 			}
 		}
 
@@ -205,9 +212,9 @@ public class ModelAssert {
 	public static void assertEqualsPPodEntities(
 			final PPodEntity actualPPodEntity,
 			final PPodEntity expectedPPodEntity) {
-		assertEqualsAttachmentSets(newHashSet(actualPPodEntity
-				.getAttachmentsIterator()),
-				newHashSet(expectedPPodEntity.getAttachmentsIterator()));
+		assertEqualsAttachmentSets(
+				actualPPodEntity.getAttachments(),
+				expectedPPodEntity.getAttachments());
 	}
 
 	public static void assertEqualsAttachmentSets(
@@ -235,9 +242,9 @@ public class ModelAssert {
 				.getBytesValue());
 		assertEqualsAttachmentTypes(actualAttachment.getType(),
 				expectedAttachment.getType());
-		assertEquals(actualAttachment.getAttachmentsSize(),
-				expectedAttachment.getAttachmentsSize());
-		if (expectedAttachment.getAttachmentsSize() > 0) {
+		assertEquals(actualAttachment.getAttachments().size(),
+				expectedAttachment.getAttachments().size());
+		if (expectedAttachment.getAttachments().size() > 0) {
 			throw new IllegalArgumentException(
 					"We don't support nested attchaments yet");
 		}

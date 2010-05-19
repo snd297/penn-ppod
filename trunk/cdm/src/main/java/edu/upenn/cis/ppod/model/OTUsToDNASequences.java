@@ -135,7 +135,7 @@ public class OTUsToDNASequences extends
 	}
 
 	@Override
-	protected OTUsToDNASequences setInNeedOfNewPPodVersionInfo() {
+	protected OTUsToDNASequences setNeedsPPodVersionInfo() {
 		if (sequenceSet != null) {
 			sequenceSet.setInNeedOfNewPPodVersionInfo();
 		}

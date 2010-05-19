@@ -46,12 +46,12 @@ import edu.upenn.cis.ppod.util.ICharacterStateMatrixFactory;
 import edu.upenn.cis.ppod.util.MatrixProvider;
 
 /**
- * Tests of {@link ISaveOrUpdateMatrix}.
+ * Tests of {@link ICreateOrUpdateCharacterStateMatrix}.
  * 
  * @author Sam Donnelly
  */
 @Test(groups = { TestGroupDefs.FAST }, sequential = true)
-public class SaveOrUpdateCharacterStateMatrixTest {
+public class CreateOrUpdateCharacterStateMatrixTest {
 
 	@Inject
 	private ICreateOrUpdateCharacterStateMatrix.IFactory createOrUpdateMatrixFactory;

@@ -98,8 +98,8 @@ public abstract class SequenceSet<S extends Sequence>
 
 	/**
 	 * Remove all sequences from this set. Null's out the {@code
-	 * Sequence->SequenceSet} relationship and sets {@code getSequencesLength()}
-	 * to {@code 0}.
+	 * Sequence->SequenceSet} relationship and sets {@code getSequenceLengths()}
+	 * to {@code null}.
 	 * 
 	 * @return this
 	 */
@@ -132,7 +132,7 @@ public abstract class SequenceSet<S extends Sequence>
 	 * @return a map which contains the {@code OTU, S} entries of this sequence
 	 *         set
 	 */
-	public abstract Map<OTU, S> getOTUsToSequencesMap();
+	public abstract Map<OTU, S> getSequences();
 
 	/**
 	 * Get the sequence indexed by {@code otu}.
@@ -152,7 +152,7 @@ public abstract class SequenceSet<S extends Sequence>
 	 * sequences have been added to this set.
 	 * 
 	 * @return the length of the sequences in this set, or {@code null} if no
-	 *         sequences have been added to this set.
+	 *         sequences have been added to this set
 	 */
 	@CheckForNull
 	public Integer getSequenceLengths() {

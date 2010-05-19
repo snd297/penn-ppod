@@ -15,6 +15,7 @@
  */
 package edu.upenn.cis.ppod.model;
 
+import static com.google.common.collect.Iterables.getOnlyElement;
 import static com.google.common.collect.Sets.newHashSet;
 import static org.testng.Assert.assertEquals;
 import static org.testng.Assert.assertTrue;
@@ -139,8 +140,7 @@ public class DNACellTest {
 		final Set<DNANucleotide> emptySet = Collections.EMPTY_SET;
 		dnaCell.setTypeAndElements(Type.INAPPLICABLE, emptySet);
 		assertEquals(dnaCell.getType(), Type.INAPPLICABLE);
-		assertEquals((Object) newHashSet(dnaCell.iterator()),
-					(Object) emptySet);
+		assertEquals(dnaCell.getElements().size(), 0);
 		assertTrue(dnaCell.isInNeedOfNewPPodVersionInfo());
 	}
 
@@ -151,8 +151,8 @@ public class DNACellTest {
 		dnaCell.setTypeAndElements(Type.SINGLE,
 				newHashSet(DNANucleotide.A));
 		assertEquals(dnaCell.getType(), Type.SINGLE);
-		assertEquals((Object) newHashSet(dnaCell.iterator()),
-					(Object) newHashSet(DNANucleotide.A));
+		assertEquals(getOnlyElement(dnaCell.getElements()),
+					DNANucleotide.A);
 		assertTrue(dnaCell.isInNeedOfNewPPodVersionInfo());
 	}
 
@@ -165,9 +165,13 @@ public class DNACellTest {
 				newHashSet(DNANucleotide.A));
 		dnaCell.setTypeAndElements(Type.SINGLE, newHashSet(DNANucleotide.A));
 
-		assertEquals(dnaCell.getType(), Type.SINGLE);
-		assertEquals((Object) newHashSet(dnaCell.iterator()),
-					(Object) newHashSet(DNANucleotide.A));
+		assertEquals(
+				dnaCell.getType(),
+				Type.SINGLE);
+		assertEquals(
+				getOnlyElement(
+						dnaCell.getElements()),
+					DNANucleotide.A);
 		assertTrue(dnaCell.isInNeedOfNewPPodVersionInfo());
 	}
 

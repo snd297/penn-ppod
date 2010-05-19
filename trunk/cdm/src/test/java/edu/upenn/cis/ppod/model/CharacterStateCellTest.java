@@ -170,13 +170,13 @@ public class CharacterStateCellTest {
 
 	@Test(groups = TestGroupDefs.IN_DEVELOPMENT)
 	public void getStatesWXmlStatesNeedsToBePutIntoStatesTrueSingle() {
-		cell.setXmlStatesNeedsToBePutIntoStates(true);
+		cell.setXmlElementsNeedToBePutIntoStates(true);
 		matrix.getRow(matrix.getOTUSet().getOTU(0)).setCells(
 				Arrays.asList(cell));
 		states.add(state00);
 		cell.setTypeAndXmlElements(Cell.Type.SINGLE, states);
 		assertEquals(newHashSet(cell), states);
-		assertFalse(cell.getXmlStatesNeedsToBePutIntoStates());
+		assertFalse(cell.getXmlElementsNeedToBePutIntoStates());
 	}
 
 	/**

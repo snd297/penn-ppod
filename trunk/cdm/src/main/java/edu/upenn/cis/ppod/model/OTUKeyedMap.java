@@ -66,6 +66,7 @@ public abstract class OTUKeyedMap<V extends IOTUKeyedMapValue>
 		for (final OTUSomethingPair<V> otuValuePair : getOTUValuePairs()) {
 			put(otuValuePair.getFirst(), otuValuePair.getSecond());
 		}
+		getOTUValuePairs().clear();
 	}
 
 	public OTUKeyedMap<V> clear() {
@@ -73,7 +74,7 @@ public abstract class OTUKeyedMap<V extends IOTUKeyedMapValue>
 			return this;
 		}
 		getOTUsToValues().clear();
-		setInNeedOfNewPPodVersionInfo();
+		setNeedsPPodVersionInfo();
 		return this;
 	}
 
@@ -193,7 +194,7 @@ public abstract class OTUKeyedMap<V extends IOTUKeyedMapValue>
 	@CheckForNull
 	public abstract V put(final OTU key, final V value);
 
-	protected abstract OTUKeyedMap<V> setInNeedOfNewPPodVersionInfo();
+	protected abstract OTUKeyedMap<V> setNeedsPPodVersionInfo();
 
 	/**
 	 * Set the keys of this {@code OTUKeyedMap} to the OTU's in {@code

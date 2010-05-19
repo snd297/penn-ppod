@@ -15,7 +15,6 @@
  */
 package edu.upenn.cis.ppod.util;
 
-import java.util.Iterator;
 import java.util.Set;
 
 import edu.upenn.cis.ppod.model.Attachment;
@@ -47,9 +46,7 @@ public class PPodEntitiesUtil {
 			final Set<AttachmentNamespace> attachmentNamespaces,
 			final Set<AttachmentType> attachmentTypes,
 			final Set<Attachment> attachments, final IAttachee attachee) {
-		for (final Iterator<Attachment> attachmentsItr = attachee
-				.getAttachmentsIterator(); attachmentsItr.hasNext();) {
-			final Attachment attachment = attachmentsItr.next();
+		for (final Attachment attachment : attachee.getAttachments()) {
 			attachmentNamespaces.add(attachment.getType().getNamespace());
 			attachmentTypes.add(attachment.getType());
 			attachments.add(attachment);

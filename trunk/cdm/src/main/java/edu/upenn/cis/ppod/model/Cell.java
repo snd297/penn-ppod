@@ -92,8 +92,8 @@ public abstract class Cell<E> extends PPodEntity {
 	@Override
 	public void afterUnmarshal() {
 		super.afterUnmarshal();
-		if (getXmlStatesNeedsToBePutIntoStates()) {
-			setXmlStatesNeedsToBePutIntoStates(false);
+		if (getXmlElementsNeedToBePutIntoStates()) {
+			setXmlElementsNeedToBePutIntoStates(false);
 
 			// Let's reset the type to make it consistent with states
 			final Type xmlType = getType();
@@ -112,7 +112,7 @@ public abstract class Cell<E> extends PPodEntity {
 	@Override
 	public void afterUnmarshal(final Unmarshaller u, final Object parent) {
 		super.afterUnmarshal(u, parent);
-		setXmlStatesNeedsToBePutIntoStates(true);
+		setXmlElementsNeedToBePutIntoStates(true);
 	}
 
 	/**
@@ -162,63 +162,41 @@ public abstract class Cell<E> extends PPodEntity {
 		// AfterUnmarshalVisitor's work here. Answer: We don't want to encourage
 		// bad habits.
 		checkState(
-				!getXmlStatesNeedsToBePutIntoStates(),
+				!getXmlElementsNeedToBePutIntoStates(),
 				"xmlStateNeedsToBePutIntoStates == true, has the afterUnmarshal visitor been dispatched?");
 		switch (getType()) {
-			// Don't hit states unless we have too
-			case INAPPLICABLE:
-			case UNASSIGNED:
-				return Collections.emptySet();
-			case SINGLE:
-				final Set<E> firstStateInASet = newHashSet();
-				firstStateInASet.add(getFirstElement());
-				return firstStateInASet;
-			case POLYMORPHIC:
-			case UNCERTAIN:
+		// Don't hit states unless we have too
+		case INAPPLICABLE:
+		case UNASSIGNED:
+			return Collections.emptySet();
+		case SINGLE:
+			final Set<E> firstStateInASet = newHashSet();
+			firstStateInASet.add(getFirstElement());
+			return firstStateInASet;
+		case POLYMORPHIC:
+		case UNCERTAIN:
 
-				// We have to hit states, which we want to avoid as much as
-				// possible since it will trigger a database hit, which in the
-				// aggregate
-				// is expensive since there're are so many cells.
-				final Set<E> elements = getElementsRaw();
-				if (elements == null) {
-					throw new AssertionError("getElementsRaw() == null");
-				}
-				if (elements.size() < 2) {
-					throw new AssertionError("type is " + getType()
+			// We have to hit states, which we want to avoid as much as
+			// possible since it will trigger a database hit, which in the
+			// aggregate
+			// is expensive since there're are so many cells.
+			final Set<E> elements = getElementsRaw();
+			if (elements == null) {
+				throw new AssertionError("getElementsRaw() == null");
+			}
+			if (elements.size() < 2) {
+				throw new AssertionError("type is " + getType()
 												+ " and getElementsRaw() has "
 												+ elements.size() + " elements");
-				}
-				return Collections.unmodifiableSet(elements);
+			}
+			return Collections.unmodifiableSet(elements);
 
-			default:
-				throw new AssertionError("Unknown Cell.Type: " + type);
+		default:
+			throw new AssertionError("Unknown Cell.Type: " + type);
 		}
 	}
 
 	protected abstract Set<E> getElementsRaw();
-
-// /**
-// * Get the number of elements in this cell.
-// *
-// * @return the number of elements in this cell
-// */
-// public int getElementsSize() {
-// checkState(getType() != null,
-// "type has yet to be assigned for this cell");
-// switch (getType()) {
-// case INAPPLICABLE:
-// case UNASSIGNED:
-// return 0;
-// case SINGLE:
-// return 1;
-// case POLYMORPHIC:
-// case UNCERTAIN:
-// return getElements().size();
-// default:
-// throw new AssertionError("Unknown CharacterState.Type: " + type);
-// }
-// }
 
 	/**
 	 * We cache the first state, since this is the most common case.
@@ -248,7 +226,7 @@ public abstract class Cell<E> extends PPodEntity {
 	/**
 	 * Package-private for testing.
 	 */
-	boolean getXmlStatesNeedsToBePutIntoStates() {
+	boolean getXmlElementsNeedToBePutIntoStates() {
 		return xmlElementsNeedsToBePutIntoElements;
 	}
 
@@ -353,7 +331,7 @@ public abstract class Cell<E> extends PPodEntity {
 		setType(type);
 		getXmlElements().clear();
 		getXmlElements().addAll(xmlStates);
-		setXmlStatesNeedsToBePutIntoStates(true);
+		setXmlElementsNeedToBePutIntoStates(true);
 		return this;
 	}
 
@@ -387,10 +365,7 @@ public abstract class Cell<E> extends PPodEntity {
 		return this;
 	}
 
-	/**
-	 * Package-private for testing.
-	 */
-	Cell<E> setXmlStatesNeedsToBePutIntoStates(
+	protected Cell<E> setXmlElementsNeedToBePutIntoStates(
 			final boolean xmlStatesNeedsToBePutIntoStates) {
 		this.xmlElementsNeedsToBePutIntoElements = xmlStatesNeedsToBePutIntoStates;
 		return this;
