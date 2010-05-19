@@ -98,7 +98,7 @@ public abstract class PPodEntity extends PersistentObject implements IAttachee,
 	 * </ul>
 	 */
 	@Transient
-	private boolean needsNewPPodVersionInfo = false;
+	private boolean inNeedOfNewPPodVersionInfo = false;
 
 	@Transient
 	@CheckForNull
@@ -232,7 +232,7 @@ public abstract class PPodEntity extends PersistentObject implements IAttachee,
 	}
 
 	public boolean isInNeedOfNewPPodVersionInfo() {
-		return needsNewPPodVersionInfo;
+		return inNeedOfNewPPodVersionInfo;
 	}
 
 	public boolean removeAttachment(final Attachment attachment) {
@@ -266,7 +266,7 @@ public abstract class PPodEntity extends PersistentObject implements IAttachee,
 	 */
 	@OverridingMethodsMustInvokeSuper
 	public PPodEntity setInNeedOfNewPPodVersionInfo() {
-		needsNewPPodVersionInfo = true;
+		inNeedOfNewPPodVersionInfo = true;
 		return this;
 	}
 
@@ -326,7 +326,7 @@ public abstract class PPodEntity extends PersistentObject implements IAttachee,
 	}
 
 	protected PPodEntity unsetInNeedOfNewPPodVersionInfo() {
-		needsNewPPodVersionInfo = false;
+		inNeedOfNewPPodVersionInfo = false;
 		return this;
 	}
 

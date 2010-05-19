@@ -51,6 +51,7 @@ import edu.upenn.cis.ppod.util.IVisitor;
 @Table(name = TreeSet.TABLE)
 public class TreeSet extends UUPPodEntityWXmlId implements
 		IPPodVersionedWithOTUSet {
+
 	public static final String TABLE = "TREE_SET";
 
 	public static final String ID_COLUMN = TABLE + "_ID";
@@ -227,9 +228,13 @@ public class TreeSet extends UUPPodEntityWXmlId implements
 
 		final StringBuilder retValue = new StringBuilder();
 
-		retValue.append("TreeSet(").append("label=").append(
-						this.label).append(TAB).append("trees=").append(
-						this.trees).append(TAB).append(")");
+		retValue.append("TreeSet(")
+				.append("label=")
+				.append(this.label)
+				.append(TAB)
+				.append("trees=")
+				.append(this.trees)
+				.append(TAB).append(")");
 
 		return retValue.toString();
 	}
