@@ -122,8 +122,8 @@ public abstract class Row<C extends Cell<?>> extends PPodEntity implements
 
 		checkState(matrix != null, "This row hasn't been added to a matrix yet");
 
-// checkState(matrix.getColumnsSize() != null,
-// "matrix.getColumnSize() == null");
+		// checkState(matrix.getColumnsSize() != null,
+		// "matrix.getColumnSize() == null");
 
 		checkState(matrix.getColumnsSize() == null ||
 					matrix.getColumnsSize() == cells.size(),

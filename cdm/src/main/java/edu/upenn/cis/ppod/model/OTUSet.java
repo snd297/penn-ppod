@@ -46,7 +46,6 @@ import javax.xml.bind.annotation.XmlElement;
 import edu.upenn.cis.ppod.modelinterfaces.ILabeled;
 import edu.upenn.cis.ppod.modelinterfaces.IPPodVersionedWithOTUSet;
 import edu.upenn.cis.ppod.modelinterfaces.IPersistentObject;
-import edu.upenn.cis.ppod.modelinterfaces.IWithOTUSet;
 import edu.upenn.cis.ppod.util.IVisitor;
 
 /**
@@ -520,8 +519,24 @@ public class OTUSet extends UUPPodEntityWXmlId {
 
 	private void setOTUSetOnChildren() {
 		// Now let's let everyone know about the new OTUs
-		for (final IWithOTUSet child : getChildren()) {
-			child.setOTUSet(this);
+		for (final OTU otu : getOTUs()) {
+			otu.setOTUSet(this);
+		}
+
+		for (final Matrix<?> matrix : getCharacterStateMatrices()) {
+			matrix.setOTUSet(this);
+		}
+
+		for (final Matrix<?> matrix : getDNAMatrices()) {
+			matrix.setOTUSet(this);
+		}
+
+		for (final SequenceSet<?> sequenceSet : getDNASequenceSets()) {
+			sequenceSet.setOTUSet(this);
+		}
+
+		for (final TreeSet treeSet : getTreeSets()) {
+			treeSet.setOTUSet(this);
 		}
 	}
 
