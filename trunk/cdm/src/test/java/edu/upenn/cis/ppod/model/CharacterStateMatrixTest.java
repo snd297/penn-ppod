@@ -232,12 +232,12 @@ public class CharacterStateMatrixTest {
 						shuffledCharacters.get(2)),
 				Integer.valueOf(2));
 
-// assertEquals(matrix.getColumnPPodVersionInfos().get(0),
-// pPodVersionInfo1);
-// assertEquals(matrix.getColumnPPodVersionInfos().get(1),
-// pPodVersionInfo2);
-// assertEquals(matrix.getColumnPPodVersionInfos().get(2),
-// pPodVersionInfo0);
+		// assertEquals(matrix.getColumnPPodVersionInfos().get(0),
+		// pPodVersionInfo1);
+		// assertEquals(matrix.getColumnPPodVersionInfos().get(1),
+		// pPodVersionInfo2);
+		// assertEquals(matrix.getColumnPPodVersionInfos().get(2),
+		// pPodVersionInfo0);
 
 	}
 
@@ -314,16 +314,17 @@ public class CharacterStateMatrixTest {
 		assertFalse(matrix.isInNeedOfNewPPodVersionInfo());
 	}
 
-// /**
-// * When we move a row, its previous position should be automatically null'd.
-// */
-// public void moveRow() {
-// final CharacterStateRow row1 = rowProvider.get();
-// matrix.putRow(otu1, row1);
-// matrix.putRow(otu0, row1);
-// assertEquals(matrix.getRows().get(matrix.getOTUIdx().get(otu0)), row1);
-// assertNull(matrix.getRows().get(matrix.getOTUIdx().get(otu1)));
-// }
+	// /**
+	// * When we move a row, its previous position should be automatically
+	// null'd.
+	// */
+	// public void moveRow() {
+	// final CharacterStateRow row1 = rowProvider.get();
+	// matrix.putRow(otu1, row1);
+	// matrix.putRow(otu0, row1);
+	// assertEquals(matrix.getRows().get(matrix.getOTUIdx().get(otu0)), row1);
+	// assertNull(matrix.getRows().get(matrix.getOTUIdx().get(otu1)));
+	// }
 
 	/**
 	 * Test replacing one row with another.
@@ -383,8 +384,9 @@ public class CharacterStateMatrixTest {
 
 	public void setColumnPPodVersionInfos() {
 		final PPodVersionInfo pPodVersionInfo = pPodVersionInfoProvider.get();
-		final CharacterStateMatrix returnedMatrix = (CharacterStateMatrix) matrix
-				.setColumnPPodVersionInfos(pPodVersionInfo);
+		final CharacterStateMatrix returnedMatrix =
+				(CharacterStateMatrix) matrix
+						.setColumnPPodVersionInfos(pPodVersionInfo);
 		assertSame(returnedMatrix, matrix);
 
 		for (final PPodVersionInfo columnPPodVersionInfo : matrix

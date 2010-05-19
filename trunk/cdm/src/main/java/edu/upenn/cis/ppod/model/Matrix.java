@@ -244,7 +244,7 @@ public abstract class Matrix<R extends Row<?>> extends
 	}
 
 	/**
-	 * Set a particular column to a version
+	 * Set a particular column to a version.
 	 * 
 	 * @param pos position of the column
 	 * @param pPodVersionInfo the version
@@ -254,7 +254,8 @@ public abstract class Matrix<R extends Row<?>> extends
 	 * @throw IllegalArgumentException if {@code pos >=
 	 *        getColumnPPodVersionInfos().size()}
 	 */
-	public Matrix<R> setColumnPPodVersionInfo(final int pos,
+	public Matrix<R> setColumnPPodVersionInfo(
+			final int pos,
 			final PPodVersionInfo pPodVersionInfo) {
 		checkNotNull(pPodVersionInfo);
 		checkArgument(pos < getColumnPPodVersionInfos().size(),
@@ -266,7 +267,7 @@ public abstract class Matrix<R extends Row<?>> extends
 	/**
 	 * Set all of the columns' pPOD version infos.
 	 * 
-	 * @param pPodVersionInfo version
+	 * @param pPodVersionInfo the pPOD version info
 	 * 
 	 * @return this
 	 */
@@ -349,7 +350,7 @@ public abstract class Matrix<R extends Row<?>> extends
 	 * 
 	 * @return this
 	 */
-	public Matrix<R> setOTUSet(
+	protected Matrix<R> setOTUSet(
 			@CheckForNull final OTUSet newOTUSet) {
 		otuSet = newOTUSet;
 		getOTUsToRows().setOTUs();

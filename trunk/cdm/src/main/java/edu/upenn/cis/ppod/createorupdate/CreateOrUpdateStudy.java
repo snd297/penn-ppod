@@ -200,17 +200,19 @@ final class CreateOrUpdateStudy implements ICreateOrUpdateStudy {
 					.getCharacterStateMatrices()) {
 				CharacterStateMatrix dbMatrix;
 				if (null == (dbMatrix =
-						findIf(dbOTUSet.getCharacterStateMatrices(),
+						findIf(
+								dbOTUSet.getCharacterStateMatrices(),
 								compose(
 										equalTo(
 												incomingMatrix.getPPodId()),
-										IWithPPodId.getPPodId)))) {
+										IWithPPodId.getPPodId
+										)))) {
 					dbMatrix = matrixFactory.create(incomingMatrix);
 					dbOTUSet.addCharacterStateMatrix(dbMatrix);
-					dbMatrix.setPPodVersionInfo(newPPodVersionInfo
-							.getNewPPodVersionInfo());
-					dbMatrix.setColumnPPodVersionInfos(newPPodVersionInfo
-							.getNewPPodVersionInfo());
+					dbMatrix.setPPodVersionInfo(
+							newPPodVersionInfo.getNewPPodVersionInfo());
+					dbMatrix.setColumnPPodVersionInfos(
+									newPPodVersionInfo.getNewPPodVersionInfo());
 					dbMatrix.setPPodId();
 				}
 				final MatrixInfo dbMatrixInfo = createOrUpdateCharacterStateMatrix

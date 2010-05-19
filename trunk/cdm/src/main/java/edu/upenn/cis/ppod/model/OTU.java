@@ -39,8 +39,9 @@ import edu.upenn.cis.ppod.util.IVisitor;
  */
 @Entity
 @Table(name = OTU.TABLE)
-public class OTU extends UUPPodEntityWXmlId implements ILabeled,
-		IPPodVersionedWithOTUSet {
+public class OTU
+		extends UUPPodEntityWXmlId
+		implements ILabeled, IPPodVersionedWithOTUSet {
 
 	/** The table for this entity. Intentionally package-private. */
 	static final String TABLE = "OTU";
@@ -154,7 +155,7 @@ public class OTU extends UUPPodEntityWXmlId implements ILabeled,
 	 * 
 	 * @param otuSet to be added to this <code>OTU</code>.
 	 */
-	public OTU setOTUSet(@CheckForNull final OTUSet otuSet) {
+	protected OTU setOTUSet(@CheckForNull final OTUSet otuSet) {
 		this.otuSet = otuSet;
 		return this;
 	}
