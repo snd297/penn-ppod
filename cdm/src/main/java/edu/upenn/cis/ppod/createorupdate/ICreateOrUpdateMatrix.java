@@ -7,19 +7,12 @@ import edu.upenn.cis.ppod.model.Row;
 import edu.upenn.cis.ppod.modelinterfaces.INewPPodVersionInfo;
 import edu.upenn.cis.ppod.services.ppodentity.MatrixInfo;
 
-/**
- * @author Sam Donnelly
- * 
- * @param <R>
- * @param <C>
- * @param <E>
- */
-public interface ICreateOrUpdateMatrix<R extends Row<C>, C extends Cell<E>, E> {
+public interface ICreateOrUpdateMatrix<M extends Matrix<R>, R extends Row<C>, C extends Cell<E>, E> {
 
-	MatrixInfo createOrUpdateMatrix(Matrix<R> dbMatrix, Matrix<R> sourceMatrix);
+	MatrixInfo createOrUpdateMatrix(M dbMatrix, M sourceMatrix);
 
-	interface IFactory<R extends Row<C>, C extends Cell<E>, E> {
-		ICreateOrUpdateMatrix<R, C, E> create(
+	interface IFactory<M extends Matrix<R>, R extends Row<C>, C extends Cell<E>, E> {
+		ICreateOrUpdateMatrix<M, R, C, E> create(
 				INewPPodVersionInfo newPPodVersionInfo,
 				IDAO<Object, Long> dao);
 	}

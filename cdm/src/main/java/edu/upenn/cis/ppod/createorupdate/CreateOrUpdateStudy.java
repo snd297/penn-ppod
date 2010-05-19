@@ -117,12 +117,14 @@ final class CreateOrUpdateStudy implements ICreateOrUpdateStudy {
 				saveOrUpdateMatrixFactory.create(
 						mergeAttachmentFactory
 								.create(attachmentNamespaceDAO,
-										attachmentTypeDAO), dao,
-						newPPodVersionInfo);
+										attachmentTypeDAO),
+										dao,
+										newPPodVersionInfo);
 		this.otuSetInfoProvider = otuSetInfoProvider;
-		this.mergeDNASequenceSets = mergeDNASequenceSetsFactory.create(
-				dao,
-				newPPodVersionInfo);
+		this.mergeDNASequenceSets =
+				mergeDNASequenceSetsFactory.create(
+						dao,
+						newPPodVersionInfo);
 		this.mergeTreeSets = mergeTreeSetsFactory.create(newPPodVersionInfo);
 		this.dbStudyInfo = studyInfo;
 		this.dnaMatrixProvider = dnaMatrixProvider;
@@ -132,8 +134,9 @@ final class CreateOrUpdateStudy implements ICreateOrUpdateStudy {
 		dbStudy = (Study) studyProvider.get().setPPodId();
 		dbStudy.setPPodVersionInfo(newPPodVersionInfo.getNewPPodVersionInfo());
 
-		if (null == (dbStudy = studyDAO.getStudyByPPodId(incomingStudy
-				.getPPodId()))) {
+		if (null == (dbStudy =
+				studyDAO.getStudyByPPodId(
+						incomingStudy.getPPodId()))) {
 			dbStudy = studyProvider.get();
 			dbStudy.setPPodVersionInfo(newPPodVersionInfo
 					.getNewPPodVersionInfo());
@@ -145,8 +148,11 @@ final class CreateOrUpdateStudy implements ICreateOrUpdateStudy {
 		// Delete otu sets in persisted study that are not in the incoming
 		// study.
 		for (final OTUSet dbOTUSet : dbStudy.getOTUSets()) {
-			if (null == findIf(incomingStudy.getOTUSets(),
-					compose(equalTo(dbOTUSet.getPPodId()),
+			if (null == findIf(
+					incomingStudy.getOTUSets(),
+					compose(
+							equalTo(
+									dbOTUSet.getPPodId()),
 							IWithPPodId.getPPodId))) {
 				dbStudy.removeOTUSet(dbOTUSet);
 			}

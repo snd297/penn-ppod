@@ -4,9 +4,7 @@ import static com.google.common.base.Preconditions.checkNotNull;
 import static com.google.common.collect.Iterables.get;
 import static com.google.common.collect.Sets.newHashSet;
 
-import java.util.Collections;
 import java.util.EnumSet;
-import java.util.Iterator;
 import java.util.Set;
 
 import javax.annotation.CheckForNull;
@@ -21,6 +19,10 @@ import javax.persistence.JoinColumn;
 import javax.persistence.ManyToOne;
 import javax.persistence.Table;
 import javax.persistence.Transient;
+import javax.xml.bind.annotation.XmlAttribute;
+import javax.xml.bind.annotation.XmlElement;
+
+import edu.upenn.cis.ppod.util.IVisitor;
 
 /**
  * A cell that contains {@link DNANucleotide}s.
@@ -58,6 +60,8 @@ public class DNACell extends Cell<DNANucleotide> {
 	@CheckForNull
 	private DNANucleotide firstElement;
 
+	private String hello = "hello";
+
 	/**
 	 * The {@code CharacterStateRow} to which this {@code CharacterStateCell}
 	 * belongs.
@@ -73,9 +77,14 @@ public class DNACell extends Cell<DNANucleotide> {
 	 */
 	@Transient
 	@CheckForNull
-	private Set<DNANucleotide> xmlStates = null;
+	private Set<DNANucleotide> xmlNucleotides = null;
 
 	protected DNACell() {}
+
+	@Override
+	public void accept(final IVisitor visitor) {
+		visitor.visit(this);
+	}
 
 	@Override
 	@CheckForNull
@@ -88,21 +97,27 @@ public class DNACell extends Cell<DNANucleotide> {
 		return firstElement;
 	}
 
+	@XmlAttribute
+	public String getHello() {
+		return hello;
+	}
+
 	@Override
 	protected DNARow getRow() {
 		return row;
 	}
 
+	@XmlElement(name = "element")
 	@Override
 	protected Set<DNANucleotide> getXmlElements() {
-		if (xmlStates == null) {
-			xmlStates = newHashSet();
+		if (xmlNucleotides == null) {
+			xmlNucleotides = newHashSet();
 		}
-		return xmlStates;
+		return xmlNucleotides;
 	}
 
-	public Iterator<DNANucleotide> iterator() {
-		return Collections.unmodifiableSet(elements).iterator();
+	public void setHello(final String hello) {
+		this.hello = hello;
 	}
 
 	protected DNACell setRow(final DNARow row) {
@@ -156,7 +171,7 @@ public class DNACell extends Cell<DNANucleotide> {
 
 	@Override
 	protected Cell<DNANucleotide> unsetXmlElements() {
-		xmlStates = null;
+		xmlNucleotides = null;
 		return this;
 	}
 

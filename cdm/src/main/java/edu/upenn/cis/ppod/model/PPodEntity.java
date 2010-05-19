@@ -20,7 +20,6 @@ import static com.google.common.base.Preconditions.checkState;
 import static com.google.common.collect.Sets.newHashSet;
 
 import java.util.Collections;
-import java.util.Iterator;
 import java.util.Set;
 
 import javax.annotation.CheckForNull;
@@ -70,17 +69,17 @@ public abstract class PPodEntity extends PersistentObject implements IAttachee,
 
 	static final String TABLE = "PPOD_ENTITY";
 
-	/**
-	 * The pPod-version of this object. Similar in concept to Hibernate's
-	 * version, but tweaked for our purposes.
-	 * 
-	 * @see PPodVersionInfo
-	 * @see PPodVersionInfoInterceptor
-	 */
-	@ManyToOne(fetch = FetchType.LAZY)
-	@JoinColumn(name = PPodVersionInfo.ID_COLUMN, nullable = false)
+	@ManyToMany
+	@JoinTable(joinColumns = @JoinColumn(name = ID_COLUMN), inverseJoinColumns = @JoinColumn(name = Attachment.JOIN_COLUMN))
 	@CheckForNull
-	private PPodVersionInfo pPodVersionInfo;
+	private Set<Attachment> attachments;
+
+	@Transient
+	@CheckForNull
+	private Set<Attachment> attachmentsXml;
+
+	@Column(name = "HAS_ATTACHMENTS", nullable = false)
+	private Boolean hasAttachments = false;
 
 	/**
 	 * Does this object need to be assigned a new pPOD version at next save or
@@ -99,30 +98,30 @@ public abstract class PPodEntity extends PersistentObject implements IAttachee,
 	 * </ul>
 	 */
 	@Transient
-	private boolean inNeedOfNewPPodVersionInfo = false;
+	private boolean needsNewPPodVersionInfo = false;
 
 	@Transient
 	@CheckForNull
 	private Long pPodVersion;
 
-	@ManyToMany
-	@JoinTable(joinColumns = @JoinColumn(name = ID_COLUMN), inverseJoinColumns = @JoinColumn(name = Attachment.JOIN_COLUMN))
+	/**
+	 * The pPod-version of this object. Similar in concept to Hibernate's
+	 * version, but tweaked for our purposes.
+	 * 
+	 * @see PPodVersionInfo
+	 * @see PPodVersionInfoInterceptor
+	 */
+	@ManyToOne(fetch = FetchType.LAZY)
+	@JoinColumn(name = PPodVersionInfo.ID_COLUMN, nullable = false)
 	@CheckForNull
-	private Set<Attachment> attachments;
+	private PPodVersionInfo pPodVersionInfo;
 
-	@Column(name = "HAS_ATTACHMENTS", nullable = false)
-	private Boolean hasAttachments = false;
-
-	@Transient
-	@CheckForNull
-	private Set<Attachment> attachmentsXml;
-
-	PPodEntity() {}
+	protected PPodEntity() {}
 
 	@Override
 	@OverridingMethodsMustInvokeSuper
 	public void accept(final IVisitor visitor) {
-		for (final Attachment attachment : getAttachments()) {
+		for (final Attachment attachment : getAttachmentsModifiable()) {
 			attachment.accept(visitor);
 		}
 	}
@@ -167,11 +166,15 @@ public abstract class PPodEntity extends PersistentObject implements IAttachee,
 		if (pPodVersionInfo != null) {
 			pPodVersion = pPodVersionInfo.getPPodVersion();
 		}
-		getAttachmentsXml().addAll(getAttachments());
+		getAttachmentsXml().addAll(getAttachmentsModifiable());
 		return true;
 	}
 
-	private Set<Attachment> getAttachments() {
+	public Set<Attachment> getAttachments() {
+		return Collections.unmodifiableSet(getAttachmentsModifiable());
+	}
+
+	private Set<Attachment> getAttachmentsModifiable() {
 		if (hasAttachments) {
 			if (attachments == null) {
 				throw new AssertionError(
@@ -185,33 +188,15 @@ public abstract class PPodEntity extends PersistentObject implements IAttachee,
 	public Set<Attachment> getAttachmentsByNamespace(
 			final String namespace) {
 		return newHashSet(Iterables
-				.filter(getAttachments(),
+				.filter(getAttachmentsModifiable(),
 						new Attachment.IsOfNamespace(namespace)));
 	}
 
 	public Set<Attachment> getAttachmentsByNamespaceAndType(
 			final String namespace, final String type) {
 		return newHashSet(Iterables
-				.filter(getAttachments(),
+				.filter(getAttachmentsModifiable(),
 						new Attachment.IsOfNamespaceAndType(namespace, type)));
-	}
-
-	/**
-	 * Get an iterator over the attachments. There will be no duplicates.
-	 * 
-	 * @return an iterator over the attachments
-	 */
-	public Iterator<Attachment> getAttachmentsIterator() {
-		return Collections.unmodifiableSet(getAttachments()).iterator();
-	}
-
-	/**
-	 * Get the number of attachments that this {@code PPodEntity} has.
-	 * 
-	 * @return the number of attachments that this {@code PPodEntity} has
-	 */
-	public int getAttachmentsSize() {
-		return getAttachments().size();
 	}
 
 	@XmlElement(name = "attachmentDocId")
@@ -247,7 +232,7 @@ public abstract class PPodEntity extends PersistentObject implements IAttachee,
 	}
 
 	public boolean isInNeedOfNewPPodVersionInfo() {
-		return inNeedOfNewPPodVersionInfo;
+		return needsNewPPodVersionInfo;
 	}
 
 	public boolean removeAttachment(final Attachment attachment) {
@@ -256,11 +241,11 @@ public abstract class PPodEntity extends PersistentObject implements IAttachee,
 		if (!hasAttachments) {
 			attachmentRemoved = false;
 		} else {
-			attachmentRemoved = getAttachments().remove(attachment);
+			attachmentRemoved = getAttachmentsModifiable().remove(attachment);
 			if (attachmentRemoved) {
 				setInNeedOfNewPPodVersionInfo();
 			}
-			if (getAttachments().size() == 0) {
+			if (getAttachmentsModifiable().size() == 0) {
 				hasAttachments = false;
 			}
 		}
@@ -281,7 +266,7 @@ public abstract class PPodEntity extends PersistentObject implements IAttachee,
 	 */
 	@OverridingMethodsMustInvokeSuper
 	public PPodEntity setInNeedOfNewPPodVersionInfo() {
-		inNeedOfNewPPodVersionInfo = true;
+		needsNewPPodVersionInfo = true;
 		return this;
 	}
 
@@ -340,8 +325,8 @@ public abstract class PPodEntity extends PersistentObject implements IAttachee,
 		return retValue.toString();
 	}
 
-	PPodEntity unsetInNeedOfNewPPodVersionInfo() {
-		inNeedOfNewPPodVersionInfo = false;
+	protected PPodEntity unsetInNeedOfNewPPodVersionInfo() {
+		needsNewPPodVersionInfo = false;
 		return this;
 	}
 

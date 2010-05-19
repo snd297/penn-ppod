@@ -13,7 +13,7 @@ import javax.persistence.MappedSuperclass;
 @MappedSuperclass
 public abstract class MolecularMatrix<R extends Row<?>> extends Matrix<R> {
 
-	@Column(name = "COLUMNS_SIZE", nullable = false)
+	@Column(name = "COLUMNS_SIZE")
 	private Integer columnsSize;
 
 	/**
@@ -21,8 +21,9 @@ public abstract class MolecularMatrix<R extends Row<?>> extends Matrix<R> {
 	 * determine the legal lengths of rows added to the matrix.
 	 * <p>
 	 * Will return {@code null} for newly created objects until
-	 * {@link #setColumnsSize(Integer)} is set. Will never be {@code null} for
-	 * persistent objects.
+	 * {@link #setColumnsSize(Integer)} is set.
+	 * <p>
+	 * This is only here for simple error checking and can be changed at will.
 	 */
 	@Nullable
 	@Override

@@ -21,6 +21,7 @@ import com.google.inject.assistedinject.FactoryProvider;
 
 import edu.upenn.cis.ppod.model.CharacterState;
 import edu.upenn.cis.ppod.model.CharacterStateCell;
+import edu.upenn.cis.ppod.model.CharacterStateMatrix;
 import edu.upenn.cis.ppod.model.CharacterStateRow;
 import edu.upenn.cis.ppod.model.DNASequence;
 import edu.upenn.cis.ppod.model.DNASequenceSet;
@@ -41,11 +42,11 @@ public class CreateOrUpdateModule extends AbstractModule {
 
 	private final static class SaveOrUpdateCharacterStateMatrixTypeLiteral
 			extends
-			TypeLiteral<CreateOrUpdateMatrix<CharacterStateRow, CharacterStateCell, CharacterState>> {}
+			TypeLiteral<CreateOrUpdateMatrix<CharacterStateMatrix, CharacterStateRow, CharacterStateCell, CharacterState>> {}
 
 	private final static class ISaveOrUpdateCharacterStateMatrixIFactoryTypeLiteral
 			extends
-			TypeLiteral<ICreateOrUpdateMatrix.IFactory<CharacterStateRow, CharacterStateCell, CharacterState>> {}
+			TypeLiteral<ICreateOrUpdateMatrix.IFactory<CharacterStateMatrix, CharacterStateRow, CharacterStateCell, CharacterState>> {}
 
 	@Override
 	protected void configure() {
@@ -60,10 +61,10 @@ public class CreateOrUpdateModule extends AbstractModule {
 				FactoryProvider.newFactory(mergeDNASequencesFactoryTypeLiteral,
 						mergeDNASequenceSetTypeLiteral));
 
-		final TypeLiteral<CreateOrUpdateMatrix<CharacterStateRow, CharacterStateCell, CharacterState>> saveOrUpdateCharacterStateMatrixTypeLiteral =
+		final TypeLiteral<CreateOrUpdateMatrix<CharacterStateMatrix, CharacterStateRow, CharacterStateCell, CharacterState>> saveOrUpdateCharacterStateMatrixTypeLiteral =
 				new SaveOrUpdateCharacterStateMatrixTypeLiteral();
 
-		final TypeLiteral<ICreateOrUpdateMatrix.IFactory<CharacterStateRow, CharacterStateCell, CharacterState>> saveOrUpdateCharacterStateMatrixFactoryTypeLiteral =
+		final TypeLiteral<ICreateOrUpdateMatrix.IFactory<CharacterStateMatrix, CharacterStateRow, CharacterStateCell, CharacterState>> saveOrUpdateCharacterStateMatrixFactoryTypeLiteral =
 				new ISaveOrUpdateCharacterStateMatrixIFactoryTypeLiteral();
 
 		bind(saveOrUpdateCharacterStateMatrixFactoryTypeLiteral)

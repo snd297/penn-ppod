@@ -117,7 +117,7 @@ public class CellTest<M extends Matrix<R>, R extends Row<C>, C extends Cell<E>, 
 
 		matrix.putRow(otu, row);
 
-		cell.setXmlStatesNeedsToBePutIntoStates(true);
+		cell.setXmlElementsNeedToBePutIntoStates(true);
 
 		final List<C> cells = newArrayList();
 		cells.add(cell);
@@ -127,7 +127,7 @@ public class CellTest<M extends Matrix<R>, R extends Row<C>, C extends Cell<E>, 
 		cell.setTypeAndXmlElements(Cell.Type.UNCERTAIN, elements);
 		cell.afterUnmarshal();
 		assertEquals((Object) cell.getElements(), (Object) elements);
-		assertFalse(cell.getXmlStatesNeedsToBePutIntoStates());
+		assertFalse(cell.getXmlElementsNeedToBePutIntoStates());
 	}
 
 	/**

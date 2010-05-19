@@ -19,6 +19,8 @@ package edu.upenn.cis.ppod.util;
 import edu.upenn.cis.ppod.model.Character;
 import edu.upenn.cis.ppod.model.CharacterStateCell;
 import edu.upenn.cis.ppod.model.CharacterStateMatrix;
+import edu.upenn.cis.ppod.model.DNACell;
+import edu.upenn.cis.ppod.model.DNAMatrix;
 import edu.upenn.cis.ppod.model.DNASequenceSet;
 import edu.upenn.cis.ppod.model.OTUKeyedMap;
 
@@ -29,6 +31,21 @@ import edu.upenn.cis.ppod.model.OTUKeyedMap;
  */
 class AfterUnmarshalVisitor extends EmptyVisitor implements
 		IAfterUnmarshalVisitor {
+
+	@Override
+	public void visit(final Character character) {
+		character.afterUnmarshal();
+	}
+
+	/**
+	 * Call {@code cell.afterUnmarshal()}.
+	 * 
+	 * @param cell target
+	 */
+	@Override
+	public void visit(final CharacterStateCell cell) {
+		cell.afterUnmarshal();
+	}
 
 	/**
 	 * Call {@code matrix.afterUnmarshal()}.
@@ -46,22 +63,27 @@ class AfterUnmarshalVisitor extends EmptyVisitor implements
 	 * @param cell target
 	 */
 	@Override
-	public void visit(final CharacterStateCell cell) {
+	public void visit(final DNACell cell) {
 		cell.afterUnmarshal();
 	}
 
+	/**
+	 * Call {@code matrix.afterUnmarshal()}.
+	 * 
+	 * @param matrix target
+	 */
 	@Override
-	public void visit(final Character character) {
-		character.afterUnmarshal();
+	public void visit(final DNAMatrix matrix) {
+		matrix.afterUnmarshal();
+	}
+
+	@Override
+	public void visit(final DNASequenceSet dnaSequenceSet) {
+		dnaSequenceSet.afterUnmarshal();
 	}
 
 	@Override
 	public void visit(final OTUKeyedMap<?> otuKeyedMap) {
 		otuKeyedMap.afterUnmarshal();
-	}
-
-	@Override
-	public void visit(DNASequenceSet dnaSequenceSet) {
-		dnaSequenceSet.afterUnmarshal();
 	}
 }

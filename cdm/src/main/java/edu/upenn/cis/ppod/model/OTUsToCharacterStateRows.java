@@ -48,7 +48,7 @@ import edu.upenn.cis.ppod.util.OTUSomethingPair;
 @Table(name = "OTUS_TO_CHARACTER_STATE_ROWS")
 public class OTUsToCharacterStateRows extends OTUKeyedMap<CharacterStateRow> {
 
-	@OneToOne(fetch = FetchType.LAZY, mappedBy = "rows")
+	@OneToOne(fetch = FetchType.LAZY, mappedBy = "otusToRows")
 	@CheckForNull
 	private CharacterStateMatrix matrix;
 
@@ -91,13 +91,8 @@ public class OTUsToCharacterStateRows extends OTUKeyedMap<CharacterStateRow> {
 		return true;
 	}
 
-	/**
-	 * We made this package-private instead of private for Resteasy which
-	 * apparently didn't see the the annotation or method otherwise in a
-	 * non-initialized hibernate proxy.
-	 */
 	@XmlElement(name = "otuRowPair")
-	Set<OTUCharacterStateRowPair> getOTURowPairs() {
+	protected Set<OTUCharacterStateRowPair> getOTURowPairs() {
 		return otuRowPairs;
 	}
 
@@ -130,7 +125,7 @@ public class OTUsToCharacterStateRows extends OTUKeyedMap<CharacterStateRow> {
 	}
 
 	@Override
-	protected OTUsToCharacterStateRows setInNeedOfNewPPodVersionInfo() {
+	protected OTUsToCharacterStateRows setNeedsPPodVersionInfo() {
 		if (getParent() != null) {
 			getParent().setInNeedOfNewPPodVersionInfo();
 		}

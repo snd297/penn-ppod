@@ -23,6 +23,9 @@ import edu.upenn.cis.ppod.model.CharacterState;
 import edu.upenn.cis.ppod.model.CharacterStateCell;
 import edu.upenn.cis.ppod.model.CharacterStateMatrix;
 import edu.upenn.cis.ppod.model.CharacterStateRow;
+import edu.upenn.cis.ppod.model.DNACell;
+import edu.upenn.cis.ppod.model.DNAMatrix;
+import edu.upenn.cis.ppod.model.DNARow;
 import edu.upenn.cis.ppod.model.DNASequence;
 import edu.upenn.cis.ppod.model.DNASequenceSet;
 import edu.upenn.cis.ppod.model.OTU;
@@ -59,7 +62,7 @@ public interface IVisitor {
 	/**
 	 * Visit an attachment type.
 	 * 
-	 * @param the attachment type visitee
+	 * @param the attachmentType visitee
 	 */
 	void visit(AttachmentType attachmentType);
 
@@ -75,7 +78,7 @@ public interface IVisitor {
 	 * 
 	 * @param characterState the character state visitee
 	 */
-	void visit(CharacterState characterState);
+	void visit(CharacterState state);
 
 	void visit(CharacterStateCell cell);
 
@@ -83,20 +86,26 @@ public interface IVisitor {
 
 	void visit(CharacterStateRow row);
 
+	void visit(DNACell cell);
+
+	void visit(DNAMatrix matrix);
+
+	void visit(DNARow row);
+
+	void visit(DNASequence sequence);
+
+	void visit(DNASequenceSet sequenceSet);
+
 	void visit(OTU otu);
 
-	void visit(OTUSet otuset);
+	void visit(OTUKeyedMap<?> otuKeyedMap);
 
-	void visit(OTUKeyedMap<?> otuKeyedBimap);
+	void visit(OTUSet otuSet);
 
 	void visit(Study study);
 
-	void visit(TreeSet treeSet);
-
 	void visit(Tree tree);
 
-	void visit(DNASequenceSet dnaSequenceSet);
-
-	void visit(DNASequence dnaSequence);
+	void visit(TreeSet treeSet);
 
 }

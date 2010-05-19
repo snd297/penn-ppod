@@ -153,7 +153,7 @@ public class CharacterStateRow extends Row<CharacterStateCell> {
 	@Override
 	public CharacterStateRow setInNeedOfNewPPodVersionInfo() {
 		if (otusToRows != null) {
-			otusToRows.setInNeedOfNewPPodVersionInfo();
+			otusToRows.setNeedsPPodVersionInfo();
 		}
 		super.setInNeedOfNewPPodVersionInfo();
 		return this;

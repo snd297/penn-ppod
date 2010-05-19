@@ -23,7 +23,6 @@ import static com.google.common.collect.Sets.newTreeSet;
 
 import java.util.Collections;
 import java.util.Comparator;
-import java.util.Iterator;
 import java.util.Set;
 import java.util.SortedSet;
 
@@ -76,7 +75,7 @@ public class CharacterStateCell extends Cell<CharacterState> {
 	@ManyToMany
 	@Sort(type = SortType.COMPARATOR, comparator = CharacterState.CharacterStateComparator.class)
 	@JoinTable(inverseJoinColumns = @JoinColumn(name = CharacterState.ID_COLUMN))
-	private SortedSet<CharacterState> elements = newTreeSet(STATE_COMPARATOR);
+	private final SortedSet<CharacterState> elements = newTreeSet(STATE_COMPARATOR);
 
 	/**
 	 * To handle the most-common case of a single {@code CharacterState}, we
@@ -105,7 +104,7 @@ public class CharacterStateCell extends Cell<CharacterState> {
 	 */
 	@Transient
 	@CheckForNull
-	private Set<CharacterState> xmlElements = null;
+	private Set<CharacterState> xmlStates = null;
 
 	/** No-arg constructor for (at least) Hibernate. */
 	protected CharacterStateCell() {}
@@ -181,21 +180,11 @@ public class CharacterStateCell extends Cell<CharacterState> {
 	@XmlIDREF
 	@Override
 	protected Set<CharacterState> getXmlElements() {
-		if (xmlElements == null) {
-			xmlElements = newHashSet();
+		if (xmlStates == null) {
+			xmlStates = newHashSet();
 		}
-		return xmlElements;
+		return xmlStates;
 	}
-
-	/**
-	 * Returns an iterator over this cell's states. Guaranteed to iterator in
-	 * {@link CharacterState#getStateNumber()} order.
-	 * 
-	 * @return an iterator over this cell's states
-	 */
-// public Iterator<CharacterState> iterator() {
-// return Collections.unmodifiableSet(getElements()).iterator();
-// }
 
 	/**
 	 * Set or unset the row to which this cell belongs.
@@ -308,7 +297,7 @@ public class CharacterStateCell extends Cell<CharacterState> {
 
 	@Override
 	protected Cell<CharacterState> unsetXmlElements() {
-		this.xmlElements = null;
+		this.xmlStates = null;
 		return this;
 	}
 

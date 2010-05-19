@@ -1,7 +1,5 @@
 package edu.upenn.cis.ppod.modelinterfaces;
 
-import com.google.common.base.Function;
-
 import edu.upenn.cis.ppod.model.OTUSet;
 
 /**

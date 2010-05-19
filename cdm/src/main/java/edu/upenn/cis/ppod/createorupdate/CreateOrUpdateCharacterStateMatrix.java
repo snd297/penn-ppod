@@ -23,7 +23,6 @@ import static com.google.common.collect.Lists.newArrayList;
 import static com.google.common.collect.Sets.filter;
 import static edu.upenn.cis.ppod.util.PPodIterables.findIf;
 
-import java.util.Iterator;
 import java.util.List;
 import java.util.Set;
 
@@ -64,14 +63,14 @@ final class CreateOrUpdateCharacterStateMatrix implements
 	private Logger logger;
 
 	private final INewPPodVersionInfo newPPodVersionInfo;
-	private final ICreateOrUpdateMatrix.IFactory<CharacterStateRow, CharacterStateCell, CharacterState> saveOrUpdateMatrixFactory;
+	private final ICreateOrUpdateMatrix.IFactory<CharacterStateMatrix, CharacterStateRow, CharacterStateCell, CharacterState> saveOrUpdateMatrixFactory;
 
 	@Inject
 	CreateOrUpdateCharacterStateMatrix(
 			final Provider<Character> characterProvider,
 			final CharacterState.IFactory stateFactory,
 			final Provider<Attachment> attachmentProvider,
-			final ICreateOrUpdateMatrix.IFactory<CharacterStateRow, CharacterStateCell, CharacterState> saveOrUpdateMatrixFactory,
+			final ICreateOrUpdateMatrix.IFactory<CharacterStateMatrix, CharacterStateRow, CharacterStateCell, CharacterState> saveOrUpdateMatrixFactory,
 			@Assisted final INewPPodVersionInfo newPPodVersionInfo,
 			@Assisted final IDAO<Object, Long> dao,
 			@Assisted final IMergeAttachments mergeAttachments) {
@@ -137,15 +136,17 @@ final class CreateOrUpdateCharacterStateMatrix implements
 				}
 			}
 
-			for (final Iterator<Attachment> sourceAttachmentsItr = sourceCharacter
-					.getAttachmentsIterator(); sourceAttachmentsItr.hasNext();) {
-				final Attachment sourceAttachment = sourceAttachmentsItr.next();
+			for (final Attachment sourceAttachment : sourceCharacter
+					.getAttachments()) {
 				final ImmutableSet<Attachment> newDbCharacterAttachments = ImmutableSet
-						.copyOf(newDbCharacter.getAttachmentsIterator());
-				final Set<Attachment> targetAttachments = filter(
-						newDbCharacterAttachments, compose(
-								equalTo(sourceAttachment.getStringValue()),
-								Attachment.getStringValue));
+						.copyOf(newDbCharacter.getAttachments());
+				final Set<Attachment> targetAttachments =
+						filter(
+								newDbCharacterAttachments,
+								compose(
+										equalTo(sourceAttachment
+												.getStringValue()),
+										Attachment.getStringValue));
 
 				Attachment dbAttachment = getOnlyElement(targetAttachments,
 						null);
@@ -168,7 +169,7 @@ final class CreateOrUpdateCharacterStateMatrix implements
 		final List<Character> removedCharacters = dbMatrix
 				.setCharacters(newDbMatrixCharacters);
 
-		final ICreateOrUpdateMatrix<CharacterStateRow, CharacterStateCell, CharacterState> saveOrUpdateMatrix =
+		final ICreateOrUpdateMatrix<CharacterStateMatrix, CharacterStateRow, CharacterStateCell, CharacterState> saveOrUpdateMatrix =
 				saveOrUpdateMatrixFactory
 						.create(newPPodVersionInfo, dao);
 
@@ -199,45 +200,45 @@ final class CreateOrUpdateCharacterStateMatrix implements
 		return matrixInfo;
 	}
 
-// private void fillInMatrixInfo(
-// final CharacterStateMatrixInfo matrixInfo,
-// final CharacterStateMatrix matrix) {
-// matrixInfo.setEntityId(matrix.getId());
-// matrixInfo.setPPodId(matrix.getPPodId());
-// matrixInfo.setPPodVersion(matrix.getPPodVersionInfo()
-// .getPPodVersion());
-// matrixInfo.setDocId(matrix.getDocId());
-//
-// int characterIdx = -1;
-// for (final Iterator<Character> charactersItr = matrix
-// .getCharactersIterator(); charactersItr.hasNext();) {
-// characterIdx++;
-// final Character character = charactersItr.next();
-// PPodEntityInfo characterInfo = pPodEntityInfoProvider.get();
-// characterInfo.setPPodId(character.getPPodId());
-// characterInfo.setEntityId(character.getId());
-// characterInfo.setPPodVersion(character.getPPodVersionInfo()
-// .getPPodVersion());
-// matrixInfo.getCharacterInfosByIdx().put(characterIdx,
-// characterInfo);
-// }
-//
-// int columnIdx = -1;
-// for (final Iterator<PPodVersionInfo> columnPPodVersionInfosItr = matrix
-// .getColumnPPodVersionInfosIterator(); columnPPodVersionInfosItr
-// .hasNext();) {
-// columnIdx++;
-// final PPodVersionInfo columnPPodVersionInfo = columnPPodVersionInfosItr
-// .next();
-// matrixInfo.getColumnHeaderVersionsByIdx().put(columnIdx,
-// columnPPodVersionInfo.getPPodVersion());
-// }
-//
-// int rowIdx = -1;
-// for (final CharacterStateRow row : matrix) {
-// rowIdx++;
-// matrixInfo.getRowHeaderVersionsByIdx().put(rowIdx,
-// row.getPPodVersionInfo().getPPodVersion());
-// }
-// }
+	// private void fillInMatrixInfo(
+	// final CharacterStateMatrixInfo matrixInfo,
+	// final CharacterStateMatrix matrix) {
+	// matrixInfo.setEntityId(matrix.getId());
+	// matrixInfo.setPPodId(matrix.getPPodId());
+	// matrixInfo.setPPodVersion(matrix.getPPodVersionInfo()
+	// .getPPodVersion());
+	// matrixInfo.setDocId(matrix.getDocId());
+	//
+	// int characterIdx = -1;
+	// for (final Iterator<Character> charactersItr = matrix
+	// .getCharactersIterator(); charactersItr.hasNext();) {
+	// characterIdx++;
+	// final Character character = charactersItr.next();
+	// PPodEntityInfo characterInfo = pPodEntityInfoProvider.get();
+	// characterInfo.setPPodId(character.getPPodId());
+	// characterInfo.setEntityId(character.getId());
+	// characterInfo.setPPodVersion(character.getPPodVersionInfo()
+	// .getPPodVersion());
+	// matrixInfo.getCharacterInfosByIdx().put(characterIdx,
+	// characterInfo);
+	// }
+	//
+	// int columnIdx = -1;
+	// for (final Iterator<PPodVersionInfo> columnPPodVersionInfosItr = matrix
+	// .getColumnPPodVersionInfosIterator(); columnPPodVersionInfosItr
+	// .hasNext();) {
+	// columnIdx++;
+	// final PPodVersionInfo columnPPodVersionInfo = columnPPodVersionInfosItr
+	// .next();
+	// matrixInfo.getColumnHeaderVersionsByIdx().put(columnIdx,
+	// columnPPodVersionInfo.getPPodVersion());
+	// }
+	//
+	// int rowIdx = -1;
+	// for (final CharacterStateRow row : matrix) {
+	// rowIdx++;
+	// matrixInfo.getRowHeaderVersionsByIdx().put(rowIdx,
+	// row.getPPodVersionInfo().getPPodVersion());
+	// }
+	// }
 }
