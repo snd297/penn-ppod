@@ -468,8 +468,10 @@ public class OTUSet extends UUPPodEntityWXmlId {
 	 * Set the label of this <code>OTUSet</code>.
 	 * 
 	 * @param label the label
+	 * 
+	 * @return this
 	 */
-	public void setLabel(final String newLabel) {
+	public OTUSet setLabel(final String newLabel) {
 		checkNotNull(newLabel);
 		if (newLabel.equals(getLabel())) {
 
@@ -477,6 +479,7 @@ public class OTUSet extends UUPPodEntityWXmlId {
 			this.label = newLabel;
 			setInNeedOfNewPPodVersionInfo();
 		}
+		return this;
 	}
 
 	/**
@@ -501,13 +504,13 @@ public class OTUSet extends UUPPodEntityWXmlId {
 		final List<OTU> removedOTUs = newArrayList(getOTUsModifiable());
 		removedOTUs.removeAll(newOTUs);
 
+		for (final OTU removedOTU : removedOTUs) {
+			removedOTU.setOTUSet(null);
+		}
+
 		getOTUsModifiable().clear();
 		for (final OTU otu : newOTUs) {
 			addOTUWithoutSetOTUsOnChildren(otu);
-		}
-
-		for (final OTU removedOTU : removedOTUs) {
-			removedOTU.setOTUSet(null);
 		}
 
 		setOTUSetOnChildren();
@@ -562,18 +565,19 @@ public class OTUSet extends UUPPodEntityWXmlId {
 	 * 
 	 * @param newTreeSets new tree sets
 	 * 
-	 * @return any tree sets which were removed as a result of this operation
+	 * @return this
 	 */
 	public Set<TreeSet> setTreeSets(final Set<TreeSet> newTreeSets) {
 		checkNotNull(newTreeSets);
 		if (newTreeSets.equals(getTreeSetsModifiable())) {
 			return Collections.emptySet();
 		}
-		final Set<TreeSet> removedTreeSets = newHashSet(getTreeSetsModifiable());
+		final Set<TreeSet> removedTreeSets = newHashSet(getTreeSets());
 		removedTreeSets.removeAll(newTreeSets);
 		for (final TreeSet removedTreeSet : removedTreeSets) {
 			removedTreeSet.setOTUSet(null);
 		}
+
 		getTreeSetsModifiable().clear();
 		for (final TreeSet treeSet : newTreeSets) {
 			addTreeSet(treeSet);

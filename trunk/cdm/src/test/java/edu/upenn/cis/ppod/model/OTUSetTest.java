@@ -93,6 +93,18 @@ public class OTUSetTest {
 	}
 
 	@Test
+	public void setTreeSetsWithTreeSetsItAlreadyHas() {
+		final TreeSet treeSet0 = treeSetProvider.get();
+		final TreeSet treeSet1 = treeSetProvider.get();
+		otuSet.setTreeSets(ImmutableSet.of(treeSet0, treeSet1));
+
+		otuSet.unsetInNeedOfNewPPodVersionInfo();
+
+		otuSet.setTreeSets(ImmutableSet.of(treeSet0, treeSet1));
+		assertFalse(otuSet.isInNeedOfNewPPodVersionInfo());
+	}
+
+	@Test
 	public void setTreeSetsAndGetTreeSetsSize() {
 		final TreeSet treeSet = treeSetProvider.get();
 		final Set<TreeSet> treeSets = ImmutableSet.of(treeSet);
