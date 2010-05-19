@@ -370,9 +370,11 @@ public class OTUSetTest {
 	@Test
 	public void afterUnmarshal() {
 		final Study study = studyProvider.get();
+		otuSet.unsetInNeedOfNewPPodVersionInfo();
 		otuSet.afterUnmarshal(null, study);
 		assertSame(otuSet.getStudy(), study);
 		assertFalse(otuSet.isInNeedOfNewPPodVersionInfo());
 
 	}
+
 }
