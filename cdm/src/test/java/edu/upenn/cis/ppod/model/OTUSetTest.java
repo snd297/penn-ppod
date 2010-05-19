@@ -325,16 +325,25 @@ public class OTUSetTest {
 		final DNASequenceSet dnaSequenceSet0 = dnaSequenceSetProvider.get();
 		final DNASequenceSet dnaSequenceSet1 = dnaSequenceSetProvider.get();
 		final DNASequenceSet dnaSequenceSet2 = dnaSequenceSetProvider.get();
-		final Set<DNASequenceSet> dnaSequenceSets = ImmutableSet.of(
-				dnaSequenceSet0, dnaSequenceSet1, dnaSequenceSet2);
+		final Set<DNASequenceSet> dnaSequenceSets =
+				ImmutableSet.of(
+						dnaSequenceSet0,
+						dnaSequenceSet1,
+						dnaSequenceSet2);
 		otuSet.setDNASequenceSets(dnaSequenceSets);
 
 		boolean booleanReturned = otuSet.removeDNASequenceSet(dnaSequenceSet1);
+
 		assertTrue(booleanReturned);
 
 		assertEquals((Object) otuSet.getDNASequenceSets(),
 				(Object) ImmutableSet.of(dnaSequenceSet0, dnaSequenceSet2));
 
+		otuSet.unsetInNeedOfNewPPodVersionInfo();
+
+		boolean booleanReturned2 = otuSet.removeDNASequenceSet(dnaSequenceSet1);
+		assertFalse(booleanReturned2);
+		assertFalse(otuSet.isInNeedOfNewPPodVersionInfo());
 	}
 
 	@Test
