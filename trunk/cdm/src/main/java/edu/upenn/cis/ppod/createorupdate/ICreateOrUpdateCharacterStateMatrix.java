@@ -20,7 +20,7 @@ import com.google.inject.ImplementedBy;
 import edu.upenn.cis.ppod.dao.IDAO;
 import edu.upenn.cis.ppod.model.CharacterStateMatrix;
 import edu.upenn.cis.ppod.model.DNACharacter;
-import edu.upenn.cis.ppod.modelinterfaces.INewPPodVersionInfo;
+import edu.upenn.cis.ppod.modelinterfaces.INewVersionInfo;
 import edu.upenn.cis.ppod.services.ppodentity.MatrixInfo;
 
 /**
@@ -65,7 +65,7 @@ public interface ICreateOrUpdateCharacterStateMatrix {
 	static interface IFactory {
 		ICreateOrUpdateCharacterStateMatrix create(
 				IMergeAttachments mergeAttachments,
-				IDAO<Object, Long> dao, INewPPodVersionInfo newPPodVersionInfo);
+				IDAO<Object, Long> dao, INewVersionInfo newVersionInfo);
 	}
 
 }

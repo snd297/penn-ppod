@@ -350,16 +350,16 @@ public class Attachment extends UUPPodEntityWXmlId {
 			System.arraycopy(this.bytesValue, 0, bytesValue, 0,
 					this.bytesValue.length);
 		}
-		setInNeedOfNewPPodVersionInfo();
+		setInNeedOfNewVersionInfo();
 		return this;
 	}
 
 	@Override
-	public Attachment setInNeedOfNewPPodVersionInfo() {
+	public Attachment setInNeedOfNewVersionInfo() {
 		for (final PPodEntity attachee : attachees) {
-			attachee.setInNeedOfNewPPodVersionInfo();
+			attachee.setInNeedOfNewVersionInfo();
 		}
-		super.setInNeedOfNewPPodVersionInfo();
+		super.setInNeedOfNewVersionInfo();
 
 		return this;
 	}
@@ -376,7 +376,7 @@ public class Attachment extends UUPPodEntityWXmlId {
 
 		} else {
 			this.label = label;
-			setInNeedOfNewPPodVersionInfo();
+			setInNeedOfNewVersionInfo();
 		}
 		return this;
 	}
@@ -394,7 +394,7 @@ public class Attachment extends UUPPodEntityWXmlId {
 
 		} else {
 			this.stringValue = stringValue;
-			setInNeedOfNewPPodVersionInfo();
+			setInNeedOfNewVersionInfo();
 		}
 		return this;
 	}
@@ -412,7 +412,7 @@ public class Attachment extends UUPPodEntityWXmlId {
 
 		} else {
 			this.type = type;
-			setInNeedOfNewPPodVersionInfo();
+			setInNeedOfNewVersionInfo();
 		}
 		return this;
 	}

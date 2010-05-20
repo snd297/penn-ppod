@@ -44,7 +44,7 @@ import javax.xml.bind.annotation.XmlIDREF;
 import com.google.common.collect.Iterables;
 
 import edu.upenn.cis.ppod.modelinterfaces.IAttachee;
-import edu.upenn.cis.ppod.modelinterfaces.IPPodVersioned;
+import edu.upenn.cis.ppod.modelinterfaces.IVersioned;
 import edu.upenn.cis.ppod.util.IVisitor;
 
 /**
@@ -65,7 +65,7 @@ import edu.upenn.cis.ppod.util.IVisitor;
 @Table(name = PPodEntity.TABLE)
 @Inheritance(strategy = InheritanceType.JOINED)
 public abstract class PPodEntity extends PersistentObject implements IAttachee,
-			IPPodVersioned {
+			IVersioned {
 
 	static final String TABLE = "PPOD_ENTITY";
 
@@ -93,28 +93,25 @@ public abstract class PPodEntity extends PersistentObject implements IAttachee,
 	 * version number by whatever mechanism is in place</li>
 	 * <li>for transient entities this flag is functionally irrelevant: the pPOD
 	 * version info needs to be set at time of creation, so this value is will
-	 * be unset anyway in {@link #setPPodVersionInfo} . Subsequent calls to the
+	 * be unset anyway in {@link #setVersionInfo} . Subsequent calls to the
 	 * setters will then turn it to {@code true} needlessly.
 	 * </ul>
 	 */
 	@Transient
-	private boolean inNeedOfNewPPodVersionInfo = false;
+	private boolean inNeedOfNewVersionInfo = false;
 
 	@Transient
 	@CheckForNull
-	private Long pPodVersion;
+	private Long version;
 
 	/**
-	 * The pPod-version of this object. Similar in concept to Hibernate's
+	 * The pPod version of this object. Similar in concept to Hibernate's
 	 * version, but tweaked for our purposes.
-	 * 
-	 * @see PPodVersionInfo
-	 * @see PPodVersionInfoInterceptor
 	 */
 	@ManyToOne(fetch = FetchType.LAZY)
-	@JoinColumn(name = PPodVersionInfo.ID_COLUMN, nullable = false)
+	@JoinColumn(name = VersionInfo.JOIN_COLUMN, nullable = false)
 	@CheckForNull
-	private PPodVersionInfo pPodVersionInfo;
+	private VersionInfo versionInfo;
 
 	protected PPodEntity() {}
 
@@ -131,7 +128,7 @@ public abstract class PPodEntity extends PersistentObject implements IAttachee,
 			attachments = newHashSet();
 		}
 		if (attachments.add(attachment)) {
-			setInNeedOfNewPPodVersionInfo();
+			setInNeedOfNewVersionInfo();
 		}
 		attachment.addAttachee(this);
 		hasAttachments = true;
@@ -163,8 +160,8 @@ public abstract class PPodEntity extends PersistentObject implements IAttachee,
 	@OverridingMethodsMustInvokeSuper
 	public boolean beforeMarshal(@CheckForNull final Marshaller marshaler) {
 		// Write out the version number for the client of the xml
-		if (pPodVersionInfo != null) {
-			pPodVersion = pPodVersionInfo.getPPodVersion();
+		if (versionInfo != null) {
+			version = versionInfo.getVersion();
 		}
 		getAttachmentsXml().addAll(getAttachmentsModifiable());
 		return true;
@@ -217,22 +214,22 @@ public abstract class PPodEntity extends PersistentObject implements IAttachee,
 
 	@XmlAttribute
 	@Nullable
-	public Long getPPodVersion() {
-		if (pPodVersionInfo != null) {
-			return pPodVersionInfo.getPPodVersion();
+	public Long getVersion() {
+		if (versionInfo != null) {
+			return versionInfo.getVersion();
 		}
-		return pPodVersion;
+		return version;
 	}
 
-	public PPodVersionInfo getPPodVersionInfo() {
+	public VersionInfo getVersionInfo() {
 		checkState(
 				!getMarshalled(),
-						"can't access a PPodVersionInfo through a marshalled PPodEntity");
-		return pPodVersionInfo;
+						"can't access a VersionInfo through a marshalled PPodEntity");
+		return versionInfo;
 	}
 
-	public boolean isInNeedOfNewPPodVersionInfo() {
-		return inNeedOfNewPPodVersionInfo;
+	public boolean isInNeedOfNewVersionInfo() {
+		return inNeedOfNewVersionInfo;
 	}
 
 	public boolean removeAttachment(final Attachment attachment) {
@@ -243,7 +240,7 @@ public abstract class PPodEntity extends PersistentObject implements IAttachee,
 		} else {
 			attachmentRemoved = getAttachmentsModifiable().remove(attachment);
 			if (attachmentRemoved) {
-				setInNeedOfNewPPodVersionInfo();
+				setInNeedOfNewVersionInfo();
 			}
 			if (getAttachmentsModifiable().size() == 0) {
 				hasAttachments = false;
@@ -253,20 +250,17 @@ public abstract class PPodEntity extends PersistentObject implements IAttachee,
 	}
 
 	/**
-	 * Mark this object's {@link PPodVersionInfo} for update to the next version
+	 * Mark this object's {@link VersionInfo} for update to the next version
 	 * number on save or update. This is done by setting it to {@code null}.
 	 * <p>
-	 * Implementors should also, if desired, call {@code resetPPodVersionInfo()}
-	 * on any owning objects.
-	 * <p>
-	 * If {@code setSuppressResetPPodVersion(true)} has been called, and not
-	 * undone, this method returns without doing anything.
+	 * Implementors should also, if desired, call {@code resetVersionInfo()} on
+	 * any owning objects.
 	 * 
 	 * @return this {@code PPodEntity}
 	 */
 	@OverridingMethodsMustInvokeSuper
-	public PPodEntity setInNeedOfNewPPodVersionInfo() {
-		inNeedOfNewPPodVersionInfo = true;
+	public PPodEntity setInNeedOfNewVersionInfo() {
+		inNeedOfNewVersionInfo = true;
 		return this;
 	}
 
@@ -277,24 +271,24 @@ public abstract class PPodEntity extends PersistentObject implements IAttachee,
 	 * 
 	 * @return this
 	 */
-	public PPodEntity setPPodVersion(final Long pPodVersion) {
-		checkNotNull(pPodVersion);
-		this.pPodVersion = pPodVersion;
+	public PPodEntity setVersion(final Long version) {
+		checkNotNull(version);
+		this.version = version;
 		return this;
 	}
 
 	/**
 	 * Set the pPod version info.
 	 * 
-	 * @param pPodVersionInfo new pPOD version
+	 * @param versionInfo new pPOD version
 	 * 
 	 * @return this
 	 */
-	public PPodEntity setPPodVersionInfo(
-			final PPodVersionInfo pPodVersionInfo) {
-		checkNotNull(pPodVersionInfo);
-		unsetInNeedOfNewPPodVersionInfo();
-		this.pPodVersionInfo = pPodVersionInfo;
+	public PPodEntity setVersionInfo(
+			final VersionInfo versionInfo) {
+		checkNotNull(versionInfo);
+		unsetInNeedOfNewVersionInfo();
+		this.versionInfo = versionInfo;
 		return this;
 	}
 
@@ -318,15 +312,15 @@ public abstract class PPodEntity extends PersistentObject implements IAttachee,
 																 * .append(this.
 																 * attachments)
 																 */.append(TAB)
-				.append("pPodVersionInfo=").append(this.pPodVersionInfo)
-				.append(TAB).append("pPodVersion=").append(this.pPodVersion)
+				.append("versionInfo=").append(this.versionInfo)
+				.append(TAB).append("version=").append(this.version)
 				.append(TAB).append(")");
 
 		return retValue.toString();
 	}
 
-	protected PPodEntity unsetInNeedOfNewPPodVersionInfo() {
-		inNeedOfNewPPodVersionInfo = false;
+	protected PPodEntity unsetInNeedOfNewVersionInfo() {
+		inNeedOfNewVersionInfo = false;
 		return this;
 	}
 

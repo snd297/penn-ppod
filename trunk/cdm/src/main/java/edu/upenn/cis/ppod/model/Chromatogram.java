@@ -68,7 +68,7 @@ public class Chromatogram extends UUPPodEntity {
 		}
 		System.arraycopy(this.chromatogram, 0, chromatogram, 0,
 					chromatogram.length);
-		setInNeedOfNewPPodVersionInfo();
+		setInNeedOfNewVersionInfo();
 		return this;
 	}
 
@@ -87,7 +87,7 @@ public class Chromatogram extends UUPPodEntity {
 			return this;
 		}
 		this.sequence = sequence;
-		setInNeedOfNewPPodVersionInfo();
+		setInNeedOfNewVersionInfo();
 		return this;
 	}
 

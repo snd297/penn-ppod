@@ -28,7 +28,7 @@ import edu.upenn.cis.ppod.dao.IDAO;
 import edu.upenn.cis.ppod.model.OTU;
 import edu.upenn.cis.ppod.model.Sequence;
 import edu.upenn.cis.ppod.model.SequenceSet;
-import edu.upenn.cis.ppod.modelinterfaces.INewPPodVersionInfo;
+import edu.upenn.cis.ppod.modelinterfaces.INewVersionInfo;
 
 /**
  * @author Sam Donnelly
@@ -38,15 +38,15 @@ final class MergeMolecularSequenceSets<SS extends SequenceSet<S>, S extends Sequ
 
 	private final IDAO<Object, Long> dao;
 	private final Provider<S> sequenceProvider;
-	private final INewPPodVersionInfo newPPodVersionInfo;
+	private final INewVersionInfo newVersionInfo;
 
 	@Inject
 	MergeMolecularSequenceSets(final Provider<S> sequenceProvider,
 			@Assisted IDAO<Object, Long> dao,
-			@Assisted INewPPodVersionInfo newPPodVersionInfo) {
+			@Assisted INewVersionInfo newVersionInfo) {
 		this.sequenceProvider = sequenceProvider;
 		this.dao = dao;
-		this.newPPodVersionInfo = newPPodVersionInfo;
+		this.newVersionInfo = newVersionInfo;
 	}
 
 	public void mergeSequenceSets(final SS targetSequenceSet,
@@ -92,8 +92,8 @@ final class MergeMolecularSequenceSets<SS extends SequenceSet<S>, S extends Sequ
 			if (null == (targetSequence =
 					targetOTUsToSequences.get(targetOTU))) {
 				targetSequence = sequenceProvider.get();
-				targetSequence.setPPodVersionInfo(newPPodVersionInfo
-						.getNewPPodVersionInfo());
+				targetSequence.setVersionInfo(newVersionInfo
+						.getNewVersionInfo());
 			}
 			targetSequence.setSequence(sourceSequence.getSequence());
 			targetSequenceSet.putSequence(targetOTU, targetSequence);
@@ -104,9 +104,9 @@ final class MergeMolecularSequenceSets<SS extends SequenceSet<S>, S extends Sequ
 
 			dao.makePersistent(targetSequence);
 
-			if (targetSequence.isInNeedOfNewPPodVersionInfo()) {
-				targetSequence.setPPodVersionInfo(newPPodVersionInfo
-						.getNewPPodVersionInfo());
+			if (targetSequence.isInNeedOfNewVersionInfo()) {
+				targetSequence.setVersionInfo(newVersionInfo
+						.getNewVersionInfo());
 			}
 
 			dao.flush();

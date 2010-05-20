@@ -2,7 +2,6 @@ package edu.upenn.cis.ppod.model;
 
 import static com.google.common.base.Preconditions.checkNotNull;
 import static com.google.common.collect.Iterables.get;
-import static com.google.common.collect.Sets.newHashSet;
 
 import java.util.EnumSet;
 import java.util.Set;
@@ -18,8 +17,6 @@ import javax.persistence.FetchType;
 import javax.persistence.JoinColumn;
 import javax.persistence.ManyToOne;
 import javax.persistence.Table;
-import javax.persistence.Transient;
-import javax.xml.bind.annotation.XmlAttribute;
 import javax.xml.bind.annotation.XmlElement;
 
 import edu.upenn.cis.ppod.util.IVisitor;
@@ -60,8 +57,6 @@ public class DNACell extends Cell<DNANucleotide> {
 	@CheckForNull
 	private DNANucleotide firstElement;
 
-	private String hello = "hello";
-
 	/**
 	 * The {@code CharacterStateRow} to which this {@code CharacterStateCell}
 	 * belongs.
@@ -71,15 +66,7 @@ public class DNACell extends Cell<DNANucleotide> {
 	@CheckForNull
 	private DNARow row;
 
-	/**
-	 * Used for serialization so we don't have to hit {@code states} directly
-	 * and thereby cause unwanted database hits.
-	 */
-	@Transient
-	@CheckForNull
-	private Set<DNANucleotide> xmlNucleotides = null;
-
-	protected DNACell() {}
+	DNACell() {}
 
 	@Override
 	public void accept(final IVisitor visitor) {
@@ -89,6 +76,9 @@ public class DNACell extends Cell<DNANucleotide> {
 	@Override
 	@CheckForNull
 	protected Set<DNANucleotide> getElementsRaw() {
+		if (elements == null) {
+			elements = EnumSet.noneOf(DNANucleotide.class);
+		}
 		return elements;
 	}
 
@@ -97,27 +87,16 @@ public class DNACell extends Cell<DNANucleotide> {
 		return firstElement;
 	}
 
-	@XmlAttribute
-	public String getHello() {
-		return hello;
-	}
-
 	@Override
 	protected DNARow getRow() {
 		return row;
 	}
 
+	/** For JAXB. */
 	@XmlElement(name = "element")
 	@Override
 	protected Set<DNANucleotide> getXmlElements() {
-		if (xmlNucleotides == null) {
-			xmlNucleotides = newHashSet();
-		}
-		return xmlNucleotides;
-	}
-
-	public void setHello(final String hello) {
-		this.hello = hello;
+		return super.getXmlElements();
 	}
 
 	protected DNACell setRow(final DNARow row) {
@@ -131,10 +110,6 @@ public class DNACell extends Cell<DNANucleotide> {
 			final Set<? extends DNANucleotide> states) {
 		checkNotNull(type);
 		checkNotNull(states);
-
-		if (getElementsRaw() == null) {
-			this.elements = EnumSet.noneOf(DNANucleotide.class);
-		}
 
 		// So FindBugs knows that we got it when it wasn't null
 		final Set<DNANucleotide> thisElements = getElementsRaw();
@@ -153,13 +128,7 @@ public class DNACell extends Cell<DNANucleotide> {
 		}
 
 		setType(type);
-		setInNeedOfNewPPodVersionInfo();
-		return this;
-	}
-
-	@Override
-	protected Cell<DNANucleotide> unsetFirstElement() {
-		firstElement = null;
+		setInNeedOfNewVersionInfo();
 		return this;
 	}
 
@@ -170,9 +139,8 @@ public class DNACell extends Cell<DNANucleotide> {
 	}
 
 	@Override
-	protected Cell<DNANucleotide> unsetXmlElements() {
-		xmlNucleotides = null;
+	protected DNACell setFirstElement(DNANucleotide firstElement) {
+		this.firstElement = firstElement;
 		return this;
 	}
-
 }

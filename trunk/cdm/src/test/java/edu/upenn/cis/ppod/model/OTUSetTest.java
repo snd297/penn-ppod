@@ -63,7 +63,7 @@ public class OTUSetTest {
 	private Provider<TreeSet> treeSetProvider;
 
 	@Inject
-	private Provider<PPodVersionInfo> pPodVersionInfoProvider;
+	private Provider<VersionInfo> pPodVersionInfoProvider;
 
 	@Inject
 	private Provider<CharacterStateMatrix> matrixProvider;
@@ -80,10 +80,10 @@ public class OTUSetTest {
 	@Test
 	public void addOTUWAlreadyContainedOTU() {
 		otuSet.setOTUs(ImmutableList.of(otuProvider.get().setLabel("OTU-0")));
-		otuSet.unsetInNeedOfNewPPodVersionInfo();
+		otuSet.unsetInNeedOfNewVersionInfo();
 
 		otuSet.setOTUs(otuSet.getOTUs());
-		assertFalse(otuSet.isInNeedOfNewPPodVersionInfo());
+		assertFalse(otuSet.isInNeedOfNewVersionInfo());
 	}
 
 	@Test(expectedExceptions = IllegalArgumentException.class)
@@ -98,10 +98,10 @@ public class OTUSetTest {
 		final TreeSet treeSet1 = treeSetProvider.get();
 		otuSet.setTreeSets(ImmutableSet.of(treeSet0, treeSet1));
 
-		otuSet.unsetInNeedOfNewPPodVersionInfo();
+		otuSet.unsetInNeedOfNewVersionInfo();
 
 		otuSet.setTreeSets(ImmutableSet.of(treeSet0, treeSet1));
-		assertFalse(otuSet.isInNeedOfNewPPodVersionInfo());
+		assertFalse(otuSet.isInNeedOfNewVersionInfo());
 	}
 
 	@Test
@@ -135,14 +135,14 @@ public class OTUSetTest {
 	public void clearOTUs() {
 		otuSet.setOTUs(newArrayList(otus));
 
-		otuSet.setPPodVersionInfo(pPodVersionInfoProvider.get());
-		study.setPPodVersionInfo(pPodVersionInfoProvider.get());
+		otuSet.setVersionInfo(pPodVersionInfoProvider.get());
+		study.setVersionInfo(pPodVersionInfoProvider.get());
 		final List<OTU> removedOTUs = otuSet.setOTUs(new ArrayList<OTU>());
 
 		assertEquals(removedOTUs, otus);
-		assertTrue(otuSet.isInNeedOfNewPPodVersionInfo());
+		assertTrue(otuSet.isInNeedOfNewVersionInfo());
 		// assertNull(otuSet.getPPodVersionInfo());
-		assertTrue(study.isInNeedOfNewPPodVersionInfo());
+		assertTrue(study.isInNeedOfNewVersionInfo());
 		// assertNull(study.getPPodVersionInfo());
 		assertEquals(otuSet.getOTUs().size(), 0);
 	}
@@ -158,16 +158,16 @@ public class OTUSetTest {
 		otuSetMatrices.add(matrix1);
 		otuSetMatrices.add(matrix2);
 		otuSet.setCharacterStateMatrices(otuSetMatrices);
-		otuSet.setPPodVersionInfo(pPodVersionInfoProvider.get());
+		otuSet.setVersionInfo(pPodVersionInfoProvider.get());
 
-		study.setPPodVersionInfo(pPodVersionInfoProvider.get());
+		study.setVersionInfo(pPodVersionInfoProvider.get());
 
 		final ImmutableSet<CharacterStateMatrix> matricesMinusMatrix1 = ImmutableSet
 				.of(matrix0, matrix2);
 		otuSet.setCharacterStateMatrices(matricesMinusMatrix1);
 
-		assertTrue(study.isInNeedOfNewPPodVersionInfo());
-		assertTrue(otuSet.isInNeedOfNewPPodVersionInfo());
+		assertTrue(study.isInNeedOfNewVersionInfo());
+		assertTrue(otuSet.isInNeedOfNewVersionInfo());
 
 		// assertNull(study.getPPodVersionInfo());
 		// assertNull(otuSet.getPPodVersionInfo());
@@ -183,7 +183,7 @@ public class OTUSetTest {
 	 */
 	@Test
 	public void removeOTU() {
-		otuSet.unsetInNeedOfNewPPodVersionInfo();
+		otuSet.unsetInNeedOfNewVersionInfo();
 
 		final ImmutableList<OTU> otus2 = ImmutableList.of(otus.get(0), otus
 				.get(2));
@@ -192,7 +192,7 @@ public class OTUSetTest {
 				.setOTUs(otus2));
 
 		assertFalse(contains(otuSet.getOTUs(), otus.get(1)));
-		assertTrue(otuSet.isInNeedOfNewPPodVersionInfo());
+		assertTrue(otuSet.isInNeedOfNewVersionInfo());
 		assertEquals(removedOTUs, newHashSet(otus.get(1)));
 	}
 
@@ -206,7 +206,7 @@ public class OTUSetTest {
 
 		otuSet.setTreeSets(treeSets);
 
-		otuSet.setPPodVersionInfo(pPodVersionInfoProvider.get());
+		otuSet.setVersionInfo(pPodVersionInfoProvider.get());
 
 		final ImmutableSet<TreeSet> treeSetsMinusTreeSet1 = ImmutableSet.of(
 				treeSet0, treeSet2);
@@ -218,7 +218,7 @@ public class OTUSetTest {
 
 		assertEquals((Object) removedTreeSets, (Object) treeSet1Set);
 
-		assertTrue(otuSet.isInNeedOfNewPPodVersionInfo());
+		assertTrue(otuSet.isInNeedOfNewVersionInfo());
 
 		assertEquals((Object) newHashSet(otuSet.getTreeSets()),
 				(Object) newHashSet(
@@ -249,14 +249,14 @@ public class OTUSetTest {
 		assertEquals((Object) otuSet.getDNASequenceSets(),
 				(Object) dnaSequenceSets);
 
-		otuSet.unsetInNeedOfNewPPodVersionInfo();
+		otuSet.unsetInNeedOfNewVersionInfo();
 
 		final Set<DNASequenceSet> shouldBeEmpty = otuSet
 				.setDNASequenceSets(dnaSequenceSets);
 
 		assertEquals(shouldBeEmpty.size(), 0);
 
-		assertFalse(otuSet.isInNeedOfNewPPodVersionInfo());
+		assertFalse(otuSet.isInNeedOfNewVersionInfo());
 
 		final ImmutableSet<DNASequenceSet> dnaSequenceSets02 = ImmutableSet.of(
 				dnaSequenceSet0, dnaSequenceSet2);
@@ -279,44 +279,44 @@ public class OTUSetTest {
 
 	@Test
 	public void setDescription() {
-		otuSet.unsetInNeedOfNewPPodVersionInfo();
+		otuSet.unsetInNeedOfNewVersionInfo();
 		final String description = "DESCRIPTION";
 		otuSet.setDescription(description);
 		assertEquals(otuSet.getDescription(), description);
-		assertTrue(otuSet.isInNeedOfNewPPodVersionInfo());
+		assertTrue(otuSet.isInNeedOfNewVersionInfo());
 
-		otuSet.unsetInNeedOfNewPPodVersionInfo();
+		otuSet.unsetInNeedOfNewVersionInfo();
 		otuSet.setDescription(description);
-		assertFalse(otuSet.isInNeedOfNewPPodVersionInfo());
+		assertFalse(otuSet.isInNeedOfNewVersionInfo());
 
-		otuSet.unsetInNeedOfNewPPodVersionInfo();
+		otuSet.unsetInNeedOfNewVersionInfo();
 		otuSet.setDescription(null);
 		assertNull(otuSet.getDescription());
-		assertTrue(otuSet.isInNeedOfNewPPodVersionInfo());
+		assertTrue(otuSet.isInNeedOfNewVersionInfo());
 
-		otuSet.unsetInNeedOfNewPPodVersionInfo();
+		otuSet.unsetInNeedOfNewVersionInfo();
 		otuSet.setDescription(null);
 		assertNull(otuSet.getDescription());
-		assertFalse(otuSet.isInNeedOfNewPPodVersionInfo());
+		assertFalse(otuSet.isInNeedOfNewVersionInfo());
 	}
 
 	@Test
 	public void setStudy() {
-		otuSet.unsetInNeedOfNewPPodVersionInfo();
+		otuSet.unsetInNeedOfNewVersionInfo();
 		final Study study = studyProvider.get();
 		final OTUSet returnedOTUSet = otuSet.setStudy(study);
 		assertSame(otuSet.getStudy(), study);
 		assertSame(returnedOTUSet, otuSet);
-		assertTrue(otuSet.isInNeedOfNewPPodVersionInfo());
+		assertTrue(otuSet.isInNeedOfNewVersionInfo());
 
-		otuSet.unsetInNeedOfNewPPodVersionInfo();
+		otuSet.unsetInNeedOfNewVersionInfo();
 		otuSet.setStudy(study);
-		assertFalse(otuSet.isInNeedOfNewPPodVersionInfo());
+		assertFalse(otuSet.isInNeedOfNewVersionInfo());
 
-		otuSet.unsetInNeedOfNewPPodVersionInfo();
+		otuSet.unsetInNeedOfNewVersionInfo();
 		final Study study2 = studyProvider.get();
 		otuSet.setStudy(study2);
-		assertTrue(otuSet.isInNeedOfNewPPodVersionInfo());
+		assertTrue(otuSet.isInNeedOfNewVersionInfo());
 
 	}
 
@@ -339,11 +339,11 @@ public class OTUSetTest {
 		assertEquals((Object) otuSet.getDNASequenceSets(),
 				(Object) ImmutableSet.of(dnaSequenceSet0, dnaSequenceSet2));
 
-		otuSet.unsetInNeedOfNewPPodVersionInfo();
+		otuSet.unsetInNeedOfNewVersionInfo();
 
 		boolean booleanReturned2 = otuSet.removeDNASequenceSet(dnaSequenceSet1);
 		assertFalse(booleanReturned2);
-		assertFalse(otuSet.isInNeedOfNewPPodVersionInfo());
+		assertFalse(otuSet.isInNeedOfNewVersionInfo());
 	}
 
 	@Test
@@ -359,30 +359,30 @@ public class OTUSetTest {
 
 	@Test
 	public void setInNeedOfNewPPodVersion() {
-		otuSet.unsetInNeedOfNewPPodVersionInfo();
-		otuSet.getStudy().unsetInNeedOfNewPPodVersionInfo();
+		otuSet.unsetInNeedOfNewVersionInfo();
+		otuSet.getStudy().unsetInNeedOfNewVersionInfo();
 
-		otuSet.setInNeedOfNewPPodVersionInfo();
-		assertTrue(otuSet.isInNeedOfNewPPodVersionInfo());
-		assertTrue(otuSet.getStudy().isInNeedOfNewPPodVersionInfo());
+		otuSet.setInNeedOfNewVersionInfo();
+		assertTrue(otuSet.isInNeedOfNewVersionInfo());
+		assertTrue(otuSet.getStudy().isInNeedOfNewVersionInfo());
 
 	}
 
 	@Test
 	public void setInNeedOfNewPPodVersionWithNoStudy() {
 		final OTUSet otuSetWithNoStudy = otuSetProvider.get();
-		otuSetWithNoStudy.unsetInNeedOfNewPPodVersionInfo();
-		otuSetWithNoStudy.setInNeedOfNewPPodVersionInfo();
-		assertTrue(otuSetWithNoStudy.isInNeedOfNewPPodVersionInfo());
+		otuSetWithNoStudy.unsetInNeedOfNewVersionInfo();
+		otuSetWithNoStudy.setInNeedOfNewVersionInfo();
+		assertTrue(otuSetWithNoStudy.isInNeedOfNewVersionInfo());
 	}
 
 	@Test
 	public void afterUnmarshal() {
 		final Study study = studyProvider.get();
-		otuSet.unsetInNeedOfNewPPodVersionInfo();
+		otuSet.unsetInNeedOfNewVersionInfo();
 		otuSet.afterUnmarshal(null, study);
 		assertSame(otuSet.getStudy(), study);
-		assertFalse(otuSet.isInNeedOfNewPPodVersionInfo());
+		assertFalse(otuSet.isInNeedOfNewVersionInfo());
 
 	}
 

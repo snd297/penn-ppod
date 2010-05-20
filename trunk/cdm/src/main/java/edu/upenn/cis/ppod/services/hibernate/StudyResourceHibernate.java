@@ -40,8 +40,8 @@ import edu.upenn.cis.ppod.dao.hibernate.IOTUSetDAOHibernate;
 import edu.upenn.cis.ppod.dao.hibernate.IObjectWithLongIdDAOHibernate;
 import edu.upenn.cis.ppod.dao.hibernate.IStudyDAOHibernate;
 import edu.upenn.cis.ppod.model.Study;
-import edu.upenn.cis.ppod.modelinterfaces.INewPPodVersionInfo;
-import edu.upenn.cis.ppod.modelinterfaces.INewPPodVersionInfoHibernate;
+import edu.upenn.cis.ppod.modelinterfaces.INewVersionInfo;
+import edu.upenn.cis.ppod.modelinterfaces.INewVersionInfoHibernate;
 import edu.upenn.cis.ppod.services.IStudyResource;
 import edu.upenn.cis.ppod.services.StringPair;
 import edu.upenn.cis.ppod.services.ppodentity.IStudy2StudyInfo;
@@ -50,7 +50,7 @@ import edu.upenn.cis.ppod.thirdparty.util.HibernateUtil;
 import edu.upenn.cis.ppod.util.IAfterUnmarshalVisitor;
 import edu.upenn.cis.ppod.util.IPair;
 import edu.upenn.cis.ppod.util.ISetDocIdVisitor;
-import edu.upenn.cis.ppod.util.ISetPPodVersionInfoVisitor;
+import edu.upenn.cis.ppod.util.ISetVersionInfoVisitor;
 
 /**
  * @author Sam Donnelly
@@ -75,13 +75,13 @@ final class StudyResourceHibernate implements IStudyResource {
 
 	private final ISetDocIdVisitor setDocIdVisitor;
 
-	private final INewPPodVersionInfo newPPodVersionInfo;
+	private final INewVersionInfo newVersionInfo;
 
 	private final Provider<IAfterUnmarshalVisitor> afterUnmarshalVisitorProvider;
 
 	private final StringPair.IFactory stringPairFactory;
 
-	private final ISetPPodVersionInfoVisitor.IFactory setPPodVersionInfoVisitorFactory;
+	private final ISetVersionInfoVisitor.IFactory setPPodVersionInfoVisitorFactory;
 
 	@Inject
 	StudyResourceHibernate(
@@ -92,8 +92,8 @@ final class StudyResourceHibernate implements IStudyResource {
 			final IStudy2StudyInfo study2StudyInfo,
 			final ISetDocIdVisitor setDocIdVisitor,
 			final Provider<IAfterUnmarshalVisitor> afterUnmarshalVisitorProvider,
-			final INewPPodVersionInfoHibernate.IFactory newPPodVersionInfoFactory,
-			final ISetPPodVersionInfoVisitor.IFactory setPPodVersionInfoVisitorFactory,
+			final INewVersionInfoHibernate.IFactory newPPodVersionInfoFactory,
+			final ISetVersionInfoVisitor.IFactory setPPodVersionInfoVisitorFactory,
 			final StringPair.IFactory stringPairFactory,
 			final IAttachmentNamespaceDAOHibernate attachmentNamespaceDAO,
 			final IAttachmentTypeDAOHibernate attachmentTypeDAO,
@@ -124,7 +124,7 @@ final class StudyResourceHibernate implements IStudyResource {
 		this.afterUnmarshalVisitorProvider = afterUnmarshalVisitorProvider;
 		this.stringPairFactory = stringPairFactory;
 
-		newPPodVersionInfo = newPPodVersionInfoFactory
+		newVersionInfo = newPPodVersionInfoFactory
 				.create(currentSession);
 
 		this.setPPodVersionInfoVisitorFactory = setPPodVersionInfoVisitorFactory;
@@ -141,7 +141,8 @@ final class StudyResourceHibernate implements IStudyResource {
 	}
 
 	public Set<StringPair> getStudyPPodIdLabelPairs() {
-		return newHashSet(transform(studyDAO.getPPodIdLabelPairs(),
+		return newHashSet(transform(
+						studyDAO.getPPodIdLabelPairs(),
 				new Function<IPair<String, String>, StringPair>() {
 					public StringPair apply(final IPair<String, String> from) {
 						return stringPairFactory.create(from.getFirst(), from
@@ -154,19 +155,20 @@ final class StudyResourceHibernate implements IStudyResource {
 		incomingStudy.accept(afterUnmarshalVisitorProvider.get());
 
 		final ICreateOrUpdateStudy createOrUpdateStudy =
-				saveOrUpdateStudyFactory.create(incomingStudy,
+				saveOrUpdateStudyFactory.create(
+						incomingStudy,
 						studyDAO,
 						otuSetDAO,
 						dnaCharacterDAO,
 						attachmentNamespaceDAO,
 						attachmentTypeDAO,
 						objectWithLongIdDAO,
-						newPPodVersionInfo);
+						newVersionInfo);
 		createOrUpdateStudy.createOrUpdateStudy();
 		final Study dbStudy = createOrUpdateStudy.getDbStudy();
-		final ISetPPodVersionInfoVisitor setPPodVersionInfoVisitor = setPPodVersionInfoVisitorFactory
-				.create(newPPodVersionInfo);
-		dbStudy.accept(setPPodVersionInfoVisitor);
+		final ISetVersionInfoVisitor setVersionInfoVisitor =
+				setPPodVersionInfoVisitorFactory.create(newVersionInfo);
+		dbStudy.accept(setVersionInfoVisitor);
 
 		final StudyInfo dbStudyInfo = createOrUpdateStudy.getStudyInfo();
 		return study2StudyInfo.toStudyInfo(dbStudy, dbStudyInfo);

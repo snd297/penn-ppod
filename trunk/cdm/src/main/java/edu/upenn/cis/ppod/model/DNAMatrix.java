@@ -22,14 +22,20 @@ public class DNAMatrix extends MolecularMatrix<DNARow> {
 	public final static String TABLE = "DNA_MATRIX";
 
 	@OneToOne(fetch = FetchType.LAZY, optional = false, cascade = CascadeType.ALL, orphanRemoval = true)
-	private OTUsToDNARows otusToRows;
+	private DNARows rows;
 
-	protected DNAMatrix() {}
+	DNAMatrix() {}
 
 	@Inject
-	protected DNAMatrix(final OTUsToDNARows otusToRows) {
-		this.otusToRows = otusToRows;
-		this.otusToRows.setMatrix(this);
+	protected DNAMatrix(final DNARows rows) {
+		this.rows = rows;
+		this.rows.setMatrix(this);
+	}
+
+	@Override
+	public void accept(final IVisitor visitor) {
+		super.accept(visitor);
+		visitor.visit(this);
 	}
 
 	/**
@@ -37,22 +43,16 @@ public class DNAMatrix extends MolecularMatrix<DNARow> {
 	 */
 	@XmlElement(name = "rows")
 	@Override
-	protected OTUsToDNARows getOTUsToRows() {
-		return otusToRows;
+	protected DNARows getOTUKeyedRows() {
+		return rows;
 	}
 
 	/**
 	 * Created for JAXB.
 	 */
-	protected DNAMatrix setOTUsToRows(final OTUsToDNARows rows) {
-		this.otusToRows = rows;
+	protected DNAMatrix setOTUKeyedRows(final DNARows rows) {
+		this.rows = rows;
 		return this;
-	}
-
-	@Override
-	public void accept(final IVisitor visitor) {
-		super.accept(visitor);
-		visitor.visit(this);
 	}
 
 }

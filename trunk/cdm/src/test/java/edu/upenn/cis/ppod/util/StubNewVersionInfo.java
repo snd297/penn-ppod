@@ -2,24 +2,24 @@ package edu.upenn.cis.ppod.util;
 
 import com.google.inject.Inject;
 
-import edu.upenn.cis.ppod.model.PPodVersionInfo;
-import edu.upenn.cis.ppod.modelinterfaces.INewPPodVersionInfo;
+import edu.upenn.cis.ppod.model.VersionInfo;
+import edu.upenn.cis.ppod.modelinterfaces.INewVersionInfo;
 
 /**
  * Return an empty {@link PPodVersionInfo}
  * 
  * @author Sam Donnelly
  */
-class StubNewVersionInfo implements INewPPodVersionInfo {
+class StubNewVersionInfo implements INewVersionInfo {
 
-	private final PPodVersionInfo newPPodVersionInfo;
+	private final VersionInfo newPPodVersionInfo;
 
 	@Inject
-	StubNewVersionInfo(final PPodVersionInfo newPPodVersionInfo) {
+	StubNewVersionInfo(final VersionInfo newPPodVersionInfo) {
 		this.newPPodVersionInfo = newPPodVersionInfo;
 	}
 
-	public PPodVersionInfo getNewPPodVersionInfo() {
+	public VersionInfo getNewVersionInfo() {
 		return newPPodVersionInfo;
 	}
 }

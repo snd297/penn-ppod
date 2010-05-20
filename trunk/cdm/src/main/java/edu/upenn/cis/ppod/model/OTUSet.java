@@ -44,8 +44,8 @@ import javax.xml.bind.annotation.XmlAttribute;
 import javax.xml.bind.annotation.XmlElement;
 
 import edu.upenn.cis.ppod.modelinterfaces.ILabeled;
-import edu.upenn.cis.ppod.modelinterfaces.IPPodVersionedWithOTUSet;
 import edu.upenn.cis.ppod.modelinterfaces.IPersistentObject;
+import edu.upenn.cis.ppod.modelinterfaces.IVersionedWithOTUSet;
 import edu.upenn.cis.ppod.util.IVisitor;
 
 /**
@@ -113,7 +113,11 @@ public class OTUSet extends UUPPodEntityWXmlId {
 	@OneToMany(mappedBy = "otuSet", cascade = CascadeType.ALL, orphanRemoval = true)
 	private final Set<TreeSet> treeSets = newHashSet();
 
-	protected OTUSet() {}
+	/**
+	 * Intentionally package-private, to block subclassing outside of this
+	 * package.
+	 */
+	OTUSet() {}
 
 	@Override
 	public void accept(final IVisitor visitor) {
@@ -140,7 +144,7 @@ public class OTUSet extends UUPPodEntityWXmlId {
 		checkNotNull(matrix);
 		if (characterStateMatrices.add(matrix)) {
 			matrix.setOTUSet(this);
-			setInNeedOfNewPPodVersionInfo();
+			setInNeedOfNewVersionInfo();
 		}
 		return matrix;
 	}
@@ -149,7 +153,7 @@ public class OTUSet extends UUPPodEntityWXmlId {
 		checkNotNull(matrix);
 		if (dnaMatrices.add(matrix)) {
 			matrix.setOTUSet(this);
-			setInNeedOfNewPPodVersionInfo();
+			setInNeedOfNewVersionInfo();
 		}
 		return matrix;
 	}
@@ -168,7 +172,7 @@ public class OTUSet extends UUPPodEntityWXmlId {
 		checkNotNull(sequenceSet);
 		if (dnaSequenceSets.add(sequenceSet)) {
 			sequenceSet.setOTUSet(this);
-			setInNeedOfNewPPodVersionInfo();
+			setInNeedOfNewVersionInfo();
 		}
 		return sequenceSet;
 	}
@@ -214,7 +218,7 @@ public class OTUSet extends UUPPodEntityWXmlId {
 		}
 		if (getOTUsModifiable().add(otu)) {
 			otu.setOTUSet(this);
-			setInNeedOfNewPPodVersionInfo();
+			setInNeedOfNewVersionInfo();
 		}
 		return otu;
 	}
@@ -223,7 +227,7 @@ public class OTUSet extends UUPPodEntityWXmlId {
 		checkNotNull(treeSet);
 		if (getTreeSetsModifiable().add(treeSet)) {
 			treeSet.setOTUSet(this);
-			setInNeedOfNewPPodVersionInfo();
+			setInNeedOfNewVersionInfo();
 		}
 		return treeSet;
 	}
@@ -243,7 +247,7 @@ public class OTUSet extends UUPPodEntityWXmlId {
 			// We don't call setStudy(...) since that would reset the pPOD
 			// version info, which is not appropriate here. (Even though it
 			// doesn't make a difference since deserialized OTU sets don't have
-			// a reference to a pPodVersionInfo. But it seems more proper to do
+			// a reference to a versionInfo. But it seems more proper to do
 			// this way.)
 			this.study = (Study) parent;
 		}
@@ -253,13 +257,20 @@ public class OTUSet extends UUPPodEntityWXmlId {
 		return Collections.unmodifiableSet(characterStateMatrices);
 	}
 
+	public Set<Matrix<?>> getMatrices() {
+		final Set<Matrix<?>> matrices = newHashSet();
+		matrices.addAll(getCharacterStateMatrices());
+		matrices.addAll(getDNAMatrices());
+		return matrices;
+	}
+
 	@XmlElement(name = "matrix")
 	protected Set<CharacterStateMatrix> getCharacterStateMatricesModifiable() {
 		return characterStateMatrices;
 	}
 
-	protected Set<IPPodVersionedWithOTUSet> getChildren() {
-		final Set<IPPodVersionedWithOTUSet> children = newHashSet();
+	protected Set<IVersionedWithOTUSet> getChildren() {
+		final Set<IVersionedWithOTUSet> children = newHashSet();
 		children.addAll(getOTUs());
 		children.addAll(getCharacterStateMatrices());
 		children.addAll(getDNAMatrices());
@@ -355,7 +366,7 @@ public class OTUSet extends UUPPodEntityWXmlId {
 		checkNotNull(dnaSequenceSet);
 		if (getDNASequenceSetsModifiable().remove(dnaSequenceSet)) {
 			dnaSequenceSet.setOTUSet(null);
-			setInNeedOfNewPPodVersionInfo();
+			setInNeedOfNewVersionInfo();
 			return true;
 		}
 		return false;
@@ -388,7 +399,7 @@ public class OTUSet extends UUPPodEntityWXmlId {
 		for (final CharacterStateMatrix newMatrix : newMatrices) {
 			addCharacterStateMatrix(newMatrix);
 		}
-		setInNeedOfNewPPodVersionInfo();
+		setInNeedOfNewVersionInfo();
 		return removedMatrices;
 	}
 
@@ -404,7 +415,7 @@ public class OTUSet extends UUPPodEntityWXmlId {
 
 		} else {
 			this.description = newDescription;
-			setInNeedOfNewPPodVersionInfo();
+			setInNeedOfNewVersionInfo();
 		}
 		return this;
 	}
@@ -444,25 +455,23 @@ public class OTUSet extends UUPPodEntityWXmlId {
 			addDNASequenceSet(newSequenceSet);
 		}
 
-		setInNeedOfNewPPodVersionInfo();
+		setInNeedOfNewVersionInfo();
 		return removedSequenceSets;
 	}
 
 	/**
 	 * Point this {@code OTUSet} and all of its children to a new {@code
-	 * pPodVersionInfo}. Only the first call has an effect.
-	 * 
-	 * @see #unsetAllowPersistAndResetPPodVersionInfo()
+	 * versionInfo}. Only the first call has an effect.
 	 * 
 	 * @return this {@code OTUSet}
 	 */
 	@Override
-	public OTUSet setInNeedOfNewPPodVersionInfo() {
+	public OTUSet setInNeedOfNewVersionInfo() {
 		final Study study = getStudy();
 		if (study != null) {
-			study.setInNeedOfNewPPodVersionInfo();
+			study.setInNeedOfNewVersionInfo();
 		}
-		super.setInNeedOfNewPPodVersionInfo();
+		super.setInNeedOfNewVersionInfo();
 		return this;
 	}
 
@@ -479,7 +488,7 @@ public class OTUSet extends UUPPodEntityWXmlId {
 
 		} else {
 			this.label = newLabel;
-			setInNeedOfNewPPodVersionInfo();
+			setInNeedOfNewVersionInfo();
 		}
 		return this;
 	}
@@ -517,7 +526,7 @@ public class OTUSet extends UUPPodEntityWXmlId {
 
 		setOTUSetOnChildren();
 
-		setInNeedOfNewPPodVersionInfo();
+		setInNeedOfNewVersionInfo();
 
 		return removedOTUs;
 	}
@@ -551,7 +560,7 @@ public class OTUSet extends UUPPodEntityWXmlId {
 
 		} else {
 			this.study = study;
-			setInNeedOfNewPPodVersionInfo();
+			setInNeedOfNewVersionInfo();
 		}
 		return this;
 	}
@@ -584,7 +593,7 @@ public class OTUSet extends UUPPodEntityWXmlId {
 		for (final TreeSet treeSet : newTreeSets) {
 			addTreeSet(treeSet);
 		}
-		setInNeedOfNewPPodVersionInfo();
+		setInNeedOfNewVersionInfo();
 		return removedTreeSets;
 	}
 

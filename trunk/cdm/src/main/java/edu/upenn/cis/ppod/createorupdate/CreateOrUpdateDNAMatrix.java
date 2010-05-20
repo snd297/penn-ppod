@@ -12,7 +12,7 @@ import edu.upenn.cis.ppod.model.DNACell;
 import edu.upenn.cis.ppod.model.DNAMatrix;
 import edu.upenn.cis.ppod.model.DNANucleotide;
 import edu.upenn.cis.ppod.model.DNARow;
-import edu.upenn.cis.ppod.modelinterfaces.INewPPodVersionInfo;
+import edu.upenn.cis.ppod.modelinterfaces.INewVersionInfo;
 import edu.upenn.cis.ppod.services.ppodentity.MatrixInfo;
 
 final class CreateOrUpdateDNAMatrix
@@ -24,11 +24,11 @@ final class CreateOrUpdateDNAMatrix
 			Provider<DNACell> cellProvider,
 			Provider<Attachment> attachmentProvider,
 			Provider<MatrixInfo> matrixInfoProvider,
-			@Assisted INewPPodVersionInfo newPPodVersionInfo,
+			@Assisted INewVersionInfo newVersionInfo,
 			@Assisted IDAO<Object, Long> dao) {
 		super(rowProvider, cellProvider, attachmentProvider,
 				matrixInfoProvider,
-				newPPodVersionInfo, dao);
+				newVersionInfo, dao);
 	}
 
 	@Override

@@ -128,16 +128,16 @@ public class OTUsToDNASequences extends
 		return originalSequence;
 	}
 
-	protected void setInNeedOfNewPPodVersion() {
+	protected void setInNeedOfNewVersion() {
 		if (sequenceSet != null) {
-			sequenceSet.setInNeedOfNewPPodVersionInfo();
+			sequenceSet.setInNeedOfNewVersionInfo();
 		}
 	}
 
 	@Override
-	protected OTUsToDNASequences setNeedsPPodVersionInfo() {
+	protected OTUsToDNASequences setIsInNeedOfNewVersionInfo() {
 		if (sequenceSet != null) {
-			sequenceSet.setInNeedOfNewPPodVersionInfo();
+			sequenceSet.setInNeedOfNewVersionInfo();
 		}
 		return this;
 	}

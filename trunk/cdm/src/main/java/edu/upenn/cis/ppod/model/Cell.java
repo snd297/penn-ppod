@@ -3,6 +3,7 @@ package edu.upenn.cis.ppod.model;
 import static com.google.common.base.Preconditions.checkArgument;
 import static com.google.common.base.Preconditions.checkNotNull;
 import static com.google.common.base.Preconditions.checkState;
+import static com.google.common.collect.Iterables.get;
 import static com.google.common.collect.Sets.newHashSet;
 
 import java.util.Collections;
@@ -81,13 +82,21 @@ public abstract class Cell<E> extends PPodEntity {
 	private Type type;
 
 	/**
+	 * Used for serialization so we don't have to hit {@code states} directly
+	 * and thereby cause unwanted database hits.
+	 */
+	@Transient
+	@CheckForNull
+	private Set<E> xmlElements = null;
+
+	/**
 	 * Tells us that this {@code Cell} has been unmarshalled and still needs to
 	 * have {@code states} populated with {@code xmlStates}.
 	 */
 	@Transient
 	private boolean xmlElementsNeedsToBePutIntoElements = false;
 
-	protected Cell() {}
+	Cell() {}
 
 	@Override
 	public void afterUnmarshal() {
@@ -95,10 +104,13 @@ public abstract class Cell<E> extends PPodEntity {
 		if (getXmlElementsNeedToBePutIntoStates()) {
 			setXmlElementsNeedToBePutIntoStates(false);
 
-			// Let's reset the type to make it consistent with states
-			final Type xmlType = getType();
-			this.type = null;
-			setTypeAndElements(xmlType, getXmlElements());
+			getElementsRaw().addAll(getXmlElements());
+
+			if (getElementsRaw().size() > 0) {
+				setFirstElement(get(getElementsRaw(), 0));
+			}
+
+			setType(type);
 			unsetXmlElements();
 		}
 	}
@@ -140,12 +152,12 @@ public abstract class Cell<E> extends PPodEntity {
 						"programming error: firstate == null && states != null && states.size() != 0");
 			}
 		} else {
-			unsetFirstElement();
+			setFirstElement(null);
 
 			if (getElementsRaw() != null) {
 				getElementsRaw().clear();
 			}
-			setInNeedOfNewPPodVersionInfo();
+			setInNeedOfNewVersionInfo();
 		}
 	}
 
@@ -221,7 +233,16 @@ public abstract class Cell<E> extends PPodEntity {
 		return type;
 	}
 
-	protected abstract Set<E> getXmlElements();
+	/**
+	 * Used for serialization so we don't have to hit {@code states} directly
+	 * and thereby cause unwanted database hits.
+	 */
+	protected Set<E> getXmlElements() {
+		if (xmlElements == null) {
+			xmlElements = newHashSet();
+		}
+		return xmlElements;
+	}
 
 	/**
 	 * Package-private for testing.
@@ -229,6 +250,8 @@ public abstract class Cell<E> extends PPodEntity {
 	boolean getXmlElementsNeedToBePutIntoStates() {
 		return xmlElementsNeedsToBePutIntoElements;
 	}
+
+	protected abstract Cell<E> setFirstElement(E firstElement);
 
 	/**
 	 * Set this cell's type to {@link Type#INAPPLICABLE} to {@code
@@ -243,10 +266,10 @@ public abstract class Cell<E> extends PPodEntity {
 	}
 
 	@Override
-	public Cell<E> setInNeedOfNewPPodVersionInfo() {
+	public Cell<E> setInNeedOfNewVersionInfo() {
 		final IRow row = getRow();
 		if (row != null) {
-			row.setInNeedOfNewPPodVersionInfo();
+			row.setInNeedOfNewVersionInfo();
 			final IMatrix matrix = row.getMatrix();
 			if (matrix != null) {
 
@@ -254,10 +277,10 @@ public abstract class Cell<E> extends PPodEntity {
 				final Integer position = getPosition();
 				checkState(position != null,
 						"cell has no position, but is a part of a matrix");
-				matrix.resetColumnPPodVersion(position);
+				matrix.resetColumnVersion(position);
 			}
 		}
-		super.setInNeedOfNewPPodVersionInfo();
+		super.setInNeedOfNewVersionInfo();
 		return this;
 	}
 
@@ -371,10 +394,11 @@ public abstract class Cell<E> extends PPodEntity {
 		return this;
 	}
 
-	protected abstract Cell<E> unsetFirstElement();
-
 	protected abstract Cell<E> unsetRow();
 
-	protected abstract Cell<E> unsetXmlElements();
+	private Cell<E> unsetXmlElements() {
+		xmlElements = null;
+		return this;
+	}
 
 }

@@ -1,12 +1,17 @@
 package edu.upenn.cis.ppod.modelinterfaces;
 
+import java.util.List;
+
 import javax.annotation.Nonnegative;
+
+import edu.upenn.cis.ppod.model.VersionInfo;
 
 /**
  * @author Sam Donnelly
  */
-public interface IMatrix extends ILabeled, IPPodVersionedWithOTUSet {
-	IMatrix resetColumnPPodVersion(@Nonnegative final int position);
+public interface IMatrix extends ILabeled, IVersionedWithOTUSet {
+	IMatrix resetColumnVersion(@Nonnegative final int position);
 
-	Integer getColumnsSize();
+	List<VersionInfo> getColumnVersionInfos();
+
 }

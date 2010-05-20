@@ -15,24 +15,23 @@
  */
 package edu.upenn.cis.ppod.modelinterfaces;
 
-import edu.upenn.cis.ppod.model.PPodVersionInfo;
+import edu.upenn.cis.ppod.model.VersionInfo;
 
 /**
- * Get the next version available from the pPOD Db.
+ * Get the next version available from the pPOD DB.
  * <p>
  * 
- * @see SetPPodVersionInfoVisitor
+ * @see SetVersionInfoVisitor
  * 
  * @author Sam Donnelly
  */
-public interface INewPPodVersionInfo {
+public interface INewVersionInfo {
 
 	/**
-	 * Get the next version available from the pPOD Db.
+	 * Get the next version available from the pPOD DB.
 	 * 
-	 * @return the next version available from the pPOD Db
+	 * @return the next version available from the pPOD DB
 	 */
-	PPodVersionInfo getNewPPodVersionInfo();
-
+	VersionInfo getNewVersionInfo();
 
 }

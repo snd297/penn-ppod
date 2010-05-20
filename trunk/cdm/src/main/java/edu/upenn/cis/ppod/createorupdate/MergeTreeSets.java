@@ -31,7 +31,7 @@ import com.google.inject.assistedinject.Assisted;
 import edu.upenn.cis.ppod.model.OTU;
 import edu.upenn.cis.ppod.model.Tree;
 import edu.upenn.cis.ppod.model.TreeSet;
-import edu.upenn.cis.ppod.modelinterfaces.INewPPodVersionInfo;
+import edu.upenn.cis.ppod.modelinterfaces.INewVersionInfo;
 import edu.upenn.cis.ppod.modelinterfaces.IWithPPodId;
 
 /**
@@ -42,14 +42,14 @@ import edu.upenn.cis.ppod.modelinterfaces.IWithPPodId;
 final class MergeTreeSets implements IMergeTreeSets {
 
 	private final Provider<Tree> treeProvider;
-	private final INewPPodVersionInfo newPPodVersionInfo;
+	private final INewVersionInfo newVersionInfo;
 
 	@Inject
 	MergeTreeSets(final Provider<Tree> treeProvider,
-			@Assisted final INewPPodVersionInfo newPPodVersionInfo) {
+			@Assisted final INewVersionInfo newVersionInfo) {
 
 		this.treeProvider = treeProvider;
-		this.newPPodVersionInfo = newPPodVersionInfo;
+		this.newVersionInfo = newVersionInfo;
 	}
 
 	public void mergeTreeSets(final TreeSet targetTreeSet,
@@ -71,8 +71,8 @@ final class MergeTreeSets implements IMergeTreeSets {
 							equalTo(sourceTree.getPPodId()),
 							IWithPPodId.getPPodId)))) {
 				targetTree = treeProvider.get();
-				targetTree.setPPodVersionInfo(newPPodVersionInfo
-						.getNewPPodVersionInfo());
+				targetTree.setVersionInfo(newVersionInfo
+						.getNewVersionInfo());
 				targetTree.setPPodId();
 			}
 			newTargetTrees.add(targetTree);

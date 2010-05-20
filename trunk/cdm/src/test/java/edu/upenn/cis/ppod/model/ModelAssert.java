@@ -165,9 +165,9 @@ public class ModelAssert {
 		if (actualMatrix.getClass().equals(CharacterStateMatrix.class)) {
 			final Map<Character, Integer> actualMatrixCharactersToPositions = actualMatrix
 					.getCharactersToPositions();
-			assertEquals(Integer.valueOf(actualMatrixCharactersToPositions
-					.size()), actualMatrix
-					.getColumnsSize());
+			assertEquals(
+					actualMatrixCharactersToPositions.size(),
+					actualMatrix.getColumnVersionInfos().size());
 			for (final Entry<Character, Integer> actualIdxByCharacter : actualMatrixCharactersToPositions
 					.entrySet()) {
 				assertTrue(actualIdxByCharacter.getKey() == actualMatrix

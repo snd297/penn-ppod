@@ -53,7 +53,7 @@ public class CharacterStateMatrixTest {
 	private Provider<OTU> otuProvider;
 
 	@Inject
-	private PPodVersionInfo pPodVersionInfo;
+	private VersionInfo versionInfo;
 
 	@Inject
 	private Provider<CharacterStateMatrix> matrixProvider;
@@ -103,11 +103,11 @@ public class CharacterStateMatrixTest {
 	 */
 	@Test
 	public void setOTUsWSameOTUs() {
-		matrix.setPPodVersionInfo(pPodVersionInfo);
+		matrix.setVersionInfo(versionInfo);
 
 		// Since they were the same, the version should not have been reset to
 		// null
-		assertNotNull(matrix.getPPodVersionInfo());
+		assertNotNull(matrix.getVersionInfo());
 	}
 
 	@Test
@@ -201,15 +201,15 @@ public class CharacterStateMatrixTest {
 				characterProvider.get().setLabel("character1"),
 				characterProvider.get().setLabel("character2"));
 
-		final PPodVersionInfo pPodVersionInfo0 = pPodVersionInfoProvider.get();
-		final PPodVersionInfo pPodVersionInfo1 = pPodVersionInfoProvider.get();
-		final PPodVersionInfo pPodVersionInfo2 = pPodVersionInfoProvider.get();
+		final VersionInfo pPodVersionInfo0 = pPodVersionInfoProvider.get();
+		final VersionInfo pPodVersionInfo1 = pPodVersionInfoProvider.get();
+		final VersionInfo pPodVersionInfo2 = pPodVersionInfoProvider.get();
 
 		matrix.setCharacters(characters);
 
-		matrix.getColumnPPodVersionInfosModifiable().set(0, pPodVersionInfo0);
-		matrix.getColumnPPodVersionInfosModifiable().set(1, pPodVersionInfo1);
-		matrix.getColumnPPodVersionInfosModifiable().set(2, pPodVersionInfo2);
+		matrix.getColumnVersionInfosModifiable().set(0, pPodVersionInfo0);
+		matrix.getColumnVersionInfosModifiable().set(1, pPodVersionInfo1);
+		matrix.getColumnVersionInfosModifiable().set(2, pPodVersionInfo2);
 
 		final ImmutableList<Character> shuffledCharacters = ImmutableList.of(
 				characters.get(1), characters.get(2), characters.get(0));
@@ -251,25 +251,25 @@ public class CharacterStateMatrixTest {
 				characterProvider.get().setLabel("character1"),
 				characterProvider.get().setLabel("character2"));
 
-		final PPodVersionInfo pPodVersionInfo0 = pPodVersionInfoProvider.get();
-		final PPodVersionInfo pPodVersionInfo1 = pPodVersionInfoProvider.get();
-		final PPodVersionInfo pPodVersionInfo2 = pPodVersionInfoProvider.get();
+		final VersionInfo pPodVersionInfo0 = pPodVersionInfoProvider.get();
+		final VersionInfo pPodVersionInfo1 = pPodVersionInfoProvider.get();
+		final VersionInfo pPodVersionInfo2 = pPodVersionInfoProvider.get();
 
 		matrix.setCharacters(characters);
 
-		matrix.getColumnPPodVersionInfosModifiable().set(0, pPodVersionInfo0);
-		matrix.getColumnPPodVersionInfosModifiable().set(1, pPodVersionInfo1);
-		matrix.getColumnPPodVersionInfosModifiable().set(2, pPodVersionInfo2);
+		matrix.getColumnVersionInfosModifiable().set(0, pPodVersionInfo0);
+		matrix.getColumnVersionInfosModifiable().set(1, pPodVersionInfo1);
+		matrix.getColumnVersionInfosModifiable().set(2, pPodVersionInfo2);
 
 		final ImmutableList<Character> characters2 = ImmutableList.of(
 				characterProvider.get().setLabel("character2-0"),
 				characterProvider.get().setLabel("character2-1"),
 				characterProvider.get().setLabel("character2-2"));
 
-		matrix.unsetInNeedOfNewPPodVersionInfo();
+		matrix.unsetInNeedOfNewVersionInfo();
 
 		matrix.setCharacters(characters2);
-		assertTrue(matrix.isInNeedOfNewPPodVersionInfo());
+		assertTrue(matrix.isInNeedOfNewVersionInfo());
 
 		assertEquals(matrix.getCharacterPosition(characters2.get(0)),
 				Integer.valueOf(0));
@@ -293,11 +293,11 @@ public class CharacterStateMatrixTest {
 
 		matrix.setCharacters(characters);
 
-		matrix.unsetInNeedOfNewPPodVersionInfo();
+		matrix.unsetInNeedOfNewVersionInfo();
 
 		matrix.setCharacters(characters);
 
-		assertFalse(matrix.isInNeedOfNewPPodVersionInfo());
+		assertFalse(matrix.isInNeedOfNewVersionInfo());
 
 	}
 
@@ -309,9 +309,9 @@ public class CharacterStateMatrixTest {
 	public void setWithSameRow() {
 		final CharacterStateRow row1 = rowProvider.get();
 		matrix.putRow(otu1, row1);
-		matrix.setPPodVersionInfo(pPodVersionInfo);
+		matrix.setVersionInfo(versionInfo);
 		matrix.putRow(otu1, row1);
-		assertFalse(matrix.isInNeedOfNewPPodVersionInfo());
+		assertFalse(matrix.isInNeedOfNewVersionInfo());
 	}
 
 	// /**
@@ -346,26 +346,30 @@ public class CharacterStateMatrixTest {
 	}
 
 	@Inject
-	private Provider<PPodVersionInfo> pPodVersionInfoProvider;
+	private Provider<VersionInfo> pPodVersionInfoProvider;
 
 	@Test
 	public void beforeMarshal() {
-		nullFillAndSet(matrix.getColumnPPodVersionInfosModifiable(), 2,
-				pPodVersionInfoProvider.get().setPPodVersion(3L));
-		nullFillAndSet(matrix.getColumnPPodVersionInfosModifiable(), 5,
-				pPodVersionInfoProvider.get().setPPodVersion(8L));
+		nullFillAndSet(
+				matrix.getColumnVersionInfosModifiable(),
+				2,
+				pPodVersionInfoProvider.get().setVersion(3L));
+		nullFillAndSet(
+				matrix.getColumnVersionInfosModifiable(),
+				5,
+				pPodVersionInfoProvider.get().setVersion(8L));
 
 		matrix.beforeMarshal(null);
-		assertEquals(matrix.getColumnPPodVersionsModifiable().size(), matrix
-				.getColumnPPodVersionInfos().size());
-		for (int i = 0; i < matrix.getColumnPPodVersionInfos().size(); i++) {
-			if (matrix.getColumnPPodVersionInfos().get(i) == null) {
-				assertNull(matrix.getColumnPPodVersionsModifiable().get(i));
+		assertEquals(matrix.getColumnVersionsModifiable().size(), matrix
+				.getColumnVersionInfos().size());
+		for (int i = 0; i < matrix.getColumnVersionInfos().size(); i++) {
+			if (matrix.getColumnVersionInfos().get(i) == null) {
+				assertNull(matrix.getColumnVersionsModifiable().get(i));
 			} else {
-				assertEquals(matrix.getColumnPPodVersionsModifiable().get(i),
+				assertEquals(matrix.getColumnVersionsModifiable().get(i),
 						matrix
-								.getColumnPPodVersionInfos().get(i)
-								.getPPodVersion());
+								.getColumnVersionInfos().get(i)
+								.getVersion());
 			}
 		}
 	}
@@ -383,37 +387,37 @@ public class CharacterStateMatrixTest {
 	}
 
 	public void setColumnPPodVersionInfos() {
-		final PPodVersionInfo pPodVersionInfo = pPodVersionInfoProvider.get();
+		final VersionInfo versionInfo = pPodVersionInfoProvider.get();
 		final CharacterStateMatrix returnedMatrix =
 				(CharacterStateMatrix) matrix
-						.setColumnPPodVersionInfos(pPodVersionInfo);
+						.setColumnVersionInfos(versionInfo);
 		assertSame(returnedMatrix, matrix);
 
-		for (final PPodVersionInfo columnPPodVersionInfo : matrix
-				.getColumnPPodVersionInfos()) {
-			assertSame(columnPPodVersionInfo, pPodVersionInfo);
+		for (final VersionInfo columnPPodVersionInfo : matrix
+				.getColumnVersionInfos()) {
+			assertSame(columnPPodVersionInfo, versionInfo);
 		}
 	}
 
 	public void setDescription() {
-		matrix.unsetInNeedOfNewPPodVersionInfo();
+		matrix.unsetInNeedOfNewVersionInfo();
 		final String description = "DESCRIPTION";
 		matrix.setDescription(description);
 		assertEquals(matrix.getDescription(), description);
-		assertTrue(matrix.isInNeedOfNewPPodVersionInfo());
+		assertTrue(matrix.isInNeedOfNewVersionInfo());
 
-		matrix.unsetInNeedOfNewPPodVersionInfo();
+		matrix.unsetInNeedOfNewVersionInfo();
 		matrix.setDescription(description);
-		assertFalse(matrix.isInNeedOfNewPPodVersionInfo());
+		assertFalse(matrix.isInNeedOfNewVersionInfo());
 
-		matrix.unsetInNeedOfNewPPodVersionInfo();
+		matrix.unsetInNeedOfNewVersionInfo();
 		matrix.setDescription(null);
 		assertNull(matrix.getDescription());
-		assertTrue(matrix.isInNeedOfNewPPodVersionInfo());
+		assertTrue(matrix.isInNeedOfNewVersionInfo());
 
-		matrix.unsetInNeedOfNewPPodVersionInfo();
+		matrix.unsetInNeedOfNewVersionInfo();
 		matrix.setDescription(null);
 		assertNull(matrix.getDescription());
-		assertFalse(matrix.isInNeedOfNewPPodVersionInfo());
+		assertFalse(matrix.isInNeedOfNewVersionInfo());
 	}
 }

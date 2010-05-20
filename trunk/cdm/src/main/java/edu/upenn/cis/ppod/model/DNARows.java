@@ -29,10 +29,10 @@ import edu.upenn.cis.ppod.util.OTUSomethingPair;
  * @author Sam Donnelly
  */
 @Entity
-@Table(name = "OTUS_TO_DNA_ROWS")
-public class OTUsToDNARows extends OTUKeyedMap<DNARow> {
+@Table(name = "DNA_ROWS")
+public class DNARows extends OTUKeyedMap<DNARow> {
 
-	@OneToOne(fetch = FetchType.LAZY, mappedBy = "otusToRows")
+	@OneToOne(fetch = FetchType.LAZY, mappedBy = "rows")
 	@CheckForNull
 	private DNAMatrix matrix;
 
@@ -45,7 +45,7 @@ public class OTUsToDNARows extends OTUKeyedMap<DNARow> {
 
 	@OneToMany(cascade = CascadeType.ALL, orphanRemoval = true)
 	@MapKeyJoinColumn(name = OTU.JOIN_COLUMN)
-	final Map<OTU, DNARow> rows = newHashMap();
+	final private Map<OTU, DNARow> rows = newHashMap();
 
 	/**
 	 * {@link Unmarshaller} callback.
@@ -106,14 +106,14 @@ public class OTUsToDNARows extends OTUKeyedMap<DNARow> {
 	}
 
 	@Override
-	protected OTUsToDNARows setNeedsPPodVersionInfo() {
+	protected DNARows setIsInNeedOfNewVersionInfo() {
 		if (getParent() != null) {
-			getParent().setInNeedOfNewPPodVersionInfo();
+			getParent().setInNeedOfNewVersionInfo();
 		}
 		return this;
 	}
 
-	protected OTUsToDNARows setMatrix(final DNAMatrix matrix) {
+	protected DNARows setMatrix(final DNAMatrix matrix) {
 		this.matrix = matrix;
 		return this;
 	}

@@ -40,7 +40,7 @@ public class DNARow extends Row<DNACell> {
 	 */
 	@ManyToOne(fetch = FetchType.LAZY)
 	@CheckForNull
-	private OTUsToDNARows otusToRows;
+	private DNARows otusToRows;
 
 	protected DNARow() {}
 
@@ -72,7 +72,7 @@ public class DNARow extends Row<DNACell> {
 		return clearedCells;
 	}
 
-	public DNARow setOTUsToRows(final OTUsToDNARows otusToRows) {
+	public DNARow setOTUsToRows(final DNARows otusToRows) {
 		this.otusToRows = otusToRows;
 		return this;
 	}

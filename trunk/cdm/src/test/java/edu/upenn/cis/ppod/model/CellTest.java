@@ -64,8 +64,8 @@ public class CellTest<M extends Matrix<R>, R extends Row<C>, C extends Cell<E>, 
 			final Set<E> elements) {
 		checkNotNull(matrix);
 		checkNotNull(elements);
-		checkArgument(matrix.getColumnsSize() == 1,
-				"matrix has " + matrix.getColumnsSize()
+		checkArgument(matrix.getColumnVersionInfos().size() == 1,
+				"matrix has " + matrix.getColumnVersionInfos()
 						+ " column(s), but we need it to have 1 column");
 		final OTUSet otuSet = otuSetProvider.get();
 
@@ -102,8 +102,8 @@ public class CellTest<M extends Matrix<R>, R extends Row<C>, C extends Cell<E>, 
 	public void afterUnmarshal(final M matrix, final Set<E> elements) {
 		checkNotNull(matrix);
 		checkNotNull(elements);
-		checkArgument(matrix.getColumnsSize() == 1,
-				"matrix has " + matrix.getColumnsSize()
+		checkArgument(matrix.getColumnVersionInfos().size() == 1,
+				"matrix has " + matrix.getColumnVersionInfos()
 						+ " column(s), but we need it to have 1 column");
 		final C cell = cellProvider.get();
 
@@ -143,8 +143,8 @@ public class CellTest<M extends Matrix<R>, R extends Row<C>, C extends Cell<E>, 
 			final E element) {
 		checkNotNull(matrix);
 		checkNotNull(element);
-		checkArgument(matrix.getColumnsSize() == 1,
-				"matrix has " + matrix.getColumnsSize()
+		checkArgument(matrix.getColumnVersionInfos().size() == 1,
+				"matrix has " + matrix.getColumnVersionInfos().size()
 						+ " column(s), but we need it to have 1 column");
 
 		final OTUSet otuSet = otuSetProvider.get();
@@ -168,8 +168,8 @@ public class CellTest<M extends Matrix<R>, R extends Row<C>, C extends Cell<E>, 
 
 	public void unsetRow(final M matrix) {
 		checkNotNull(matrix);
-		checkArgument(matrix.getColumnsSize() == 1,
-				"matrix has " + matrix.getColumnsSize()
+		checkArgument(matrix.getColumnVersionInfos().size() == 1,
+				"matrix has " + matrix.getColumnVersionInfos().size()
 						+ " column(s), but we need it to have 1 column");
 		final C cell = cellProvider.get();
 		final R row = rowProvider.get();

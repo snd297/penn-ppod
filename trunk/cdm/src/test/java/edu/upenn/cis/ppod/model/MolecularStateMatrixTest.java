@@ -50,7 +50,7 @@ public class MolecularStateMatrixTest {
 				.get();
 		molecularMatrix.setCharacters(newArrayList(molecularCharacter));
 
-		for (int i = 0; i < molecularMatrix.getColumnsSize(); i++) {
+		for (int i = 0; i < molecularMatrix.getColumnVersionInfos().size(); i++) {
 			assertSame(molecularMatrix.getCharacters().get(i),
 					molecularCharacter);
 		}

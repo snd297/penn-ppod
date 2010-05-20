@@ -15,23 +15,22 @@
  */
 package edu.upenn.cis.ppod.dao;
 
-import edu.upenn.cis.ppod.model.PPodVersionInfo;
+import edu.upenn.cis.ppod.model.VersionInfo;
 
 /**
- * A <code>PPodVersionInfo</code> DAO.
+ * A {@link VersionInfo} DAO.
  * 
  * @author Sam Donnelly
  */
-public interface IPPodVersionInfoDAO extends IDAO<PPodVersionInfo, Long> {
+public interface IVersionInfoDAO extends IDAO<VersionInfo, Long> {
 
 	/**
-	 * Get the highest persisted {@code PPodVersionInfo.getPPodVersion()}, or
-	 * {@code 0L} if there are not {@code PPodVersionInfo}s in the table.
+	 * Get the highest persisted {@code VersionInfo.getVersion()}, or {@code 0L}
+	 * if there are no {@code VersionInfo}s in the table.
 	 * 
-	 * @return the highest persisted {@code PPodVersionInfo.getPPodVersion()},
-	 *         or {@code 0L} if there are not {@code PPodVersionInfo}s in the
-	 *         table
+	 * @return the highest persisted {@code VersionInfo.getVersion()}, or
+	 *         {@code 0L} if there are not {@code VersionInfo}s in the table
 	 */
-	public long getMaxPPodVersion();
+	public long getMaxVersion();
 
 }

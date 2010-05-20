@@ -45,10 +45,10 @@ import edu.upenn.cis.ppod.util.OTUSomethingPair;
  * @author Sam Donnelly
  */
 @Entity
-@Table(name = "OTUS_TO_CHARACTER_STATE_ROWS")
-public class OTUsToCharacterStateRows extends OTUKeyedMap<CharacterStateRow> {
+@Table(name = "CHARACTER_STATE_ROWS")
+public class CharacterStateRows extends OTUKeyedMap<CharacterStateRow> {
 
-	@OneToOne(fetch = FetchType.LAZY, mappedBy = "otusToRows")
+	@OneToOne(fetch = FetchType.LAZY, mappedBy = "rows")
 	@CheckForNull
 	private CharacterStateMatrix matrix;
 
@@ -63,7 +63,7 @@ public class OTUsToCharacterStateRows extends OTUKeyedMap<CharacterStateRow> {
 	@MapKeyJoinColumn(name = OTU.JOIN_COLUMN)
 	private final Map<OTU, CharacterStateRow> rows = newHashMap();
 
-	protected OTUsToCharacterStateRows() {}
+	protected CharacterStateRows() {}
 
 	/**
 	 * {@link Unmarshaller} callback.
@@ -125,14 +125,14 @@ public class OTUsToCharacterStateRows extends OTUKeyedMap<CharacterStateRow> {
 	}
 
 	@Override
-	protected OTUsToCharacterStateRows setNeedsPPodVersionInfo() {
+	protected CharacterStateRows setIsInNeedOfNewVersionInfo() {
 		if (getParent() != null) {
-			getParent().setInNeedOfNewPPodVersionInfo();
+			getParent().setInNeedOfNewVersionInfo();
 		}
 		return this;
 	}
 
-	protected OTUsToCharacterStateRows setMatrix(
+	protected CharacterStateRows setMatrix(
 			final CharacterStateMatrix matrix) {
 		checkNotNull(matrix);
 		this.matrix = matrix;

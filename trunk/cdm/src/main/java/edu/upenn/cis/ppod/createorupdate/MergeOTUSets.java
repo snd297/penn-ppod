@@ -28,7 +28,7 @@ import com.google.inject.assistedinject.Assisted;
 
 import edu.upenn.cis.ppod.model.OTU;
 import edu.upenn.cis.ppod.model.OTUSet;
-import edu.upenn.cis.ppod.modelinterfaces.INewPPodVersionInfo;
+import edu.upenn.cis.ppod.modelinterfaces.INewVersionInfo;
 import edu.upenn.cis.ppod.modelinterfaces.IWithPPodId;
 
 /**
@@ -39,13 +39,13 @@ import edu.upenn.cis.ppod.modelinterfaces.IWithPPodId;
 final class MergeOTUSets implements IMergeOTUSets {
 
 	private final Provider<OTU> otuProvider;
-	private final INewPPodVersionInfo newPPodVersionInfo;
+	private final INewVersionInfo newVersionInfo;
 
 	@Inject
 	MergeOTUSets(final Provider<OTU> otuProvider,
-			@Assisted INewPPodVersionInfo newPPodVersionInfo) {
+			@Assisted INewVersionInfo newVersionInfo) {
 		this.otuProvider = otuProvider;
-		this.newPPodVersionInfo = newPPodVersionInfo;
+		this.newVersionInfo = newVersionInfo;
 	}
 
 	public void mergeOTUSets(final OTUSet targetOTUSet,
@@ -65,8 +65,8 @@ final class MergeOTUSets implements IMergeOTUSets {
 					equalTo(sourceOTU.getPPodId()), IWithPPodId.getPPodId)))) {
 				targetOTU = otuProvider.get();
 				targetOTU.setPPodId();
-				targetOTU.setPPodVersionInfo(newPPodVersionInfo
-						.getNewPPodVersionInfo());
+				targetOTU.setVersionInfo(newVersionInfo
+						.getNewVersionInfo());
 			}
 			newTargetOTUs.add(targetOTU);
 			targetOTU.setLabel(sourceOTU.getLabel());

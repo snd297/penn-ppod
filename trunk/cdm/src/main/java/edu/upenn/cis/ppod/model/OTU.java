@@ -28,7 +28,7 @@ import javax.xml.bind.Unmarshaller;
 import javax.xml.bind.annotation.XmlAttribute;
 
 import edu.upenn.cis.ppod.modelinterfaces.ILabeled;
-import edu.upenn.cis.ppod.modelinterfaces.IPPodVersionedWithOTUSet;
+import edu.upenn.cis.ppod.modelinterfaces.IVersionedWithOTUSet;
 import edu.upenn.cis.ppod.util.IVisitor;
 
 /**
@@ -41,7 +41,7 @@ import edu.upenn.cis.ppod.util.IVisitor;
 @Table(name = OTU.TABLE)
 public class OTU
 		extends UUPPodEntityWXmlId
-		implements ILabeled, IPPodVersionedWithOTUSet {
+		implements ILabeled, IVersionedWithOTUSet {
 
 	/** The table for this entity. Intentionally package-private. */
 	static final String TABLE = "OTU";
@@ -113,18 +113,18 @@ public class OTU
 
 	/**
 	 * Reset this OTU's pPOD version info to {@code null}, and call
-	 * {@link OTUSet#resetPPodVersionInfo()} on all of the OTU sets that contain
+	 * {@link OTUSet#resetVersionInfo()} on all of the OTU sets that contain
 	 * this OTU.
 	 * 
 	 * @return this {@code OTU}
 	 */
 	@Override
-	public OTU setInNeedOfNewPPodVersionInfo() {
+	public OTU setInNeedOfNewVersionInfo() {
 
 		if (getOTUSet() != null) {
-			getOTUSet().setInNeedOfNewPPodVersionInfo();
+			getOTUSet().setInNeedOfNewVersionInfo();
 		}
-		super.setInNeedOfNewPPodVersionInfo();
+		super.setInNeedOfNewVersionInfo();
 		return this;
 	}
 
@@ -141,7 +141,7 @@ public class OTU
 
 		} else {
 			this.label = label;
-			setInNeedOfNewPPodVersionInfo();
+			setInNeedOfNewVersionInfo();
 		}
 		return this;
 	}

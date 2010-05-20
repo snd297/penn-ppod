@@ -31,7 +31,7 @@ import javax.persistence.MappedSuperclass;
 import javax.xml.bind.Unmarshaller;
 import javax.xml.bind.annotation.XmlAttribute;
 
-import edu.upenn.cis.ppod.modelinterfaces.IPPodVersionedWithOTUSet;
+import edu.upenn.cis.ppod.modelinterfaces.IVersionedWithOTUSet;
 import edu.upenn.cis.ppod.util.IVisitor;
 
 /**
@@ -43,7 +43,7 @@ import edu.upenn.cis.ppod.util.IVisitor;
  */
 @MappedSuperclass
 public abstract class SequenceSet<S extends Sequence>
-		extends UUPPodEntityWXmlId implements IPPodVersionedWithOTUSet,
+		extends UUPPodEntityWXmlId implements IVersionedWithOTUSet,
 		Iterable<S> {
 
 	@Column(name = "LABEL", nullable = false)
@@ -197,11 +197,11 @@ public abstract class SequenceSet<S extends Sequence>
 	public abstract S putSequence(final OTU otu, final S sequence);
 
 	@Override
-	public SequenceSet<S> setInNeedOfNewPPodVersionInfo() {
+	public SequenceSet<S> setInNeedOfNewVersionInfo() {
 		if (getOTUSet() != null) {
-			getOTUSet().setInNeedOfNewPPodVersionInfo();
+			getOTUSet().setInNeedOfNewVersionInfo();
 		}
-		super.setInNeedOfNewPPodVersionInfo();
+		super.setInNeedOfNewVersionInfo();
 		return this;
 	}
 
@@ -211,7 +211,7 @@ public abstract class SequenceSet<S extends Sequence>
 
 		} else {
 			this.label = label;
-			setInNeedOfNewPPodVersionInfo();
+			setInNeedOfNewVersionInfo();
 		}
 		return this;
 	}

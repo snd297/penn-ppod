@@ -40,7 +40,7 @@ import edu.upenn.cis.ppod.model.DNASequenceSet;
 import edu.upenn.cis.ppod.model.OTUSet;
 import edu.upenn.cis.ppod.model.Study;
 import edu.upenn.cis.ppod.model.TreeSet;
-import edu.upenn.cis.ppod.modelinterfaces.INewPPodVersionInfo;
+import edu.upenn.cis.ppod.modelinterfaces.INewVersionInfo;
 import edu.upenn.cis.ppod.modelinterfaces.IWithPPodId;
 import edu.upenn.cis.ppod.services.ppodentity.MatrixInfo;
 import edu.upenn.cis.ppod.services.ppodentity.OTUSetInfo;
@@ -68,7 +68,7 @@ final class CreateOrUpdateStudy implements ICreateOrUpdateStudy {
 	private final IMergeOTUSets mergeOTUSets;
 	private final ICreateOrUpdateCharacterStateMatrix createOrUpdateCharacterStateMatrix;
 	private final IMergeTreeSets mergeTreeSets;
-	private final INewPPodVersionInfo newPPodVersionInfo;
+	private final INewVersionInfo newVersionInfo;
 	private final IMergeSequenceSets<DNASequenceSet, DNASequence> mergeDNASequenceSets;
 	private final Study incomingStudy;
 	private Study dbStudy;
@@ -98,7 +98,7 @@ final class CreateOrUpdateStudy implements ICreateOrUpdateStudy {
 			@Assisted final IAttachmentNamespaceDAO attachmentNamespaceDAO,
 			@Assisted final IAttachmentTypeDAO attachmentTypeDAO,
 			@Assisted final IDAO<Object, Long> dao,
-			@Assisted final INewPPodVersionInfo newPPodVersionInfo) {
+			@Assisted final INewVersionInfo newVersionInfo) {
 		this.incomingStudy = incomingStudy;
 		this.studyDAO = studyDAO;
 		this.dnaCharacterDAO = dnaCharacterDAO;
@@ -107,39 +107,39 @@ final class CreateOrUpdateStudy implements ICreateOrUpdateStudy {
 		this.matrixFactory = matrixFactory;
 		this.dnaSequenceSetProvider = dnaSequenceSetProvider;
 		this.treeSetProvider = treeSetProvider;
-		this.newPPodVersionInfo = newPPodVersionInfo;
+		this.newVersionInfo = newVersionInfo;
 		this.mergeOTUSets = saveOrUpdateOTUSetFactory
-				.create(newPPodVersionInfo);
+				.create(newVersionInfo);
 		this.createOrUpdateDNAMatrix =
 				saveOrUpdateDNAMatrixFactory.create(
-						newPPodVersionInfo, dao);
+						newVersionInfo, dao);
 		this.createOrUpdateCharacterStateMatrix =
 				saveOrUpdateMatrixFactory.create(
 						mergeAttachmentFactory
 								.create(attachmentNamespaceDAO,
 										attachmentTypeDAO),
 										dao,
-										newPPodVersionInfo);
+										newVersionInfo);
 		this.otuSetInfoProvider = otuSetInfoProvider;
 		this.mergeDNASequenceSets =
 				mergeDNASequenceSetsFactory.create(
 						dao,
-						newPPodVersionInfo);
-		this.mergeTreeSets = mergeTreeSetsFactory.create(newPPodVersionInfo);
+						newVersionInfo);
+		this.mergeTreeSets = mergeTreeSetsFactory.create(newVersionInfo);
 		this.dbStudyInfo = studyInfo;
 		this.dnaMatrixProvider = dnaMatrixProvider;
 	}
 
 	public void createOrUpdateStudy() {
 		dbStudy = (Study) studyProvider.get().setPPodId();
-		dbStudy.setPPodVersionInfo(newPPodVersionInfo.getNewPPodVersionInfo());
+		dbStudy.setVersionInfo(newVersionInfo.getNewVersionInfo());
 
 		if (null == (dbStudy =
 				studyDAO.getStudyByPPodId(
 						incomingStudy.getPPodId()))) {
 			dbStudy = studyProvider.get();
-			dbStudy.setPPodVersionInfo(newPPodVersionInfo
-					.getNewPPodVersionInfo());
+			dbStudy.setVersionInfo(newVersionInfo
+					.getNewVersionInfo());
 			dbStudy.setPPodId();
 		}
 
@@ -178,8 +178,8 @@ final class CreateOrUpdateStudy implements ICreateOrUpdateStudy {
 							compose(equalTo(incomingOTUSet.getPPodId()),
 									IWithPPodId.getPPodId)))) {
 				dbOTUSet = dbStudy.addOTUSet(otuSetProvider.get());
-				dbOTUSet.setPPodVersionInfo(newPPodVersionInfo
-						.getNewPPodVersionInfo());
+				dbOTUSet.setVersionInfo(newVersionInfo
+						.getNewVersionInfo());
 				dbOTUSet.setPPodId();
 			}
 
@@ -209,10 +209,10 @@ final class CreateOrUpdateStudy implements ICreateOrUpdateStudy {
 										)))) {
 					dbMatrix = matrixFactory.create(incomingMatrix);
 					dbOTUSet.addCharacterStateMatrix(dbMatrix);
-					dbMatrix.setPPodVersionInfo(
-							newPPodVersionInfo.getNewPPodVersionInfo());
-					dbMatrix.setColumnPPodVersionInfos(
-									newPPodVersionInfo.getNewPPodVersionInfo());
+					dbMatrix.setVersionInfo(
+							newVersionInfo.getNewVersionInfo());
+					dbMatrix.setColumnVersionInfos(
+									newVersionInfo.getNewVersionInfo());
 					dbMatrix.setPPodId();
 				}
 				final MatrixInfo dbMatrixInfo = createOrUpdateCharacterStateMatrix
@@ -232,10 +232,10 @@ final class CreateOrUpdateStudy implements ICreateOrUpdateStudy {
 										incomingMatrix.getPPodId()),
 										IWithPPodId.getPPodId)))) {
 					dbMatrix = dnaMatrixProvider.get();
-					dbMatrix.setPPodVersionInfo(newPPodVersionInfo
-							.getNewPPodVersionInfo());
-					dbMatrix.setColumnPPodVersionInfos(newPPodVersionInfo
-							.getNewPPodVersionInfo());
+					dbMatrix.setVersionInfo(newVersionInfo
+							.getNewVersionInfo());
+					dbMatrix.setColumnVersionInfos(newVersionInfo
+							.getNewVersionInfo());
 					dbMatrix.setPPodId();
 				}
 				dbOTUSet.addDNAMatrix(dbMatrix);
@@ -255,8 +255,8 @@ final class CreateOrUpdateStudy implements ICreateOrUpdateStudy {
 								compose(equalTo(incomingTreeSet.getPPodId()),
 										IWithPPodId.getPPodId)))) {
 					dbTreeSet = treeSetProvider.get();
-					dbTreeSet.setPPodVersionInfo(newPPodVersionInfo
-							.getNewPPodVersionInfo());
+					dbTreeSet.setVersionInfo(newVersionInfo
+							.getNewVersionInfo());
 					dbTreeSet.setPPodId();
 				}
 				newDbTreeSets.add(dbTreeSet);
@@ -303,8 +303,8 @@ final class CreateOrUpdateStudy implements ICreateOrUpdateStudy {
 									IWithPPodId.getPPodId)))) {
 				dbDNASequenceSet = dnaSequenceSetProvider.get();
 				dbDNASequenceSet.setPPodId();
-				dbDNASequenceSet.setPPodVersionInfo(newPPodVersionInfo
-						.getNewPPodVersionInfo());
+				dbDNASequenceSet.setVersionInfo(newVersionInfo
+						.getNewVersionInfo());
 			}
 			newDbDNASequenceSets.add(dbDNASequenceSet);
 			dbOTUSet.setDNASequenceSets(newDbDNASequenceSets);

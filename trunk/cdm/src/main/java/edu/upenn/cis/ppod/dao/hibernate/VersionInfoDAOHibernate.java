@@ -15,22 +15,26 @@
  */
 package edu.upenn.cis.ppod.dao.hibernate;
 
-import edu.upenn.cis.ppod.dao.IPPodVersionInfoDAO;
-import edu.upenn.cis.ppod.model.PPodVersionInfo;
+import edu.upenn.cis.ppod.dao.IVersionInfoDAO;
+import edu.upenn.cis.ppod.model.VersionInfo;
 import edu.upenn.cis.ppod.thirdparty.dao.hibernate.GenericHibernateDAO;
 
 /**
- * A Hibernate <code>IPPodVersionInfoDAO</code>.
+ * A Hibernate <code>IVersionInfoDAO</code>.
  * 
  * @author Sam Donnelly
  */
-public final class PPodVersionInfoDAOHibernate extends
-		GenericHibernateDAO<PPodVersionInfo, Long> implements
-		IPPodVersionInfoDAO {
+public final class VersionInfoDAOHibernate
+		extends GenericHibernateDAO<VersionInfo, Long>
+		implements IVersionInfoDAO {
 
-	public long getMaxPPodVersion() {
-		final Long maxPPodVersion = (Long) getSession().getNamedQuery(
-				"PPodVersionInfo-getMaxPPoddVersion").uniqueResult();
+	public long getMaxVersion() {
+		final Long maxPPodVersion =
+				(Long) getSession()
+						.getNamedQuery(
+								VersionInfo.class.getSimpleName()
+										+ "-getMaxVersionInfo")
+						.uniqueResult();
 		return maxPPodVersion == null ? 0L : maxPPodVersion;
 	}
 }

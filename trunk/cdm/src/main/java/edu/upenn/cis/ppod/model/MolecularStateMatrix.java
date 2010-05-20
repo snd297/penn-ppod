@@ -38,7 +38,7 @@ public abstract class MolecularStateMatrix extends CharacterStateMatrix {
 	 * 
 	 * @param otusToRows the {@code OTUsToCharacterStateRows} for this matrix.
 	 */
-	protected MolecularStateMatrix(final OTUsToCharacterStateRows otusToRows) {
+	protected MolecularStateMatrix(final CharacterStateRows otusToRows) {
 		super(otusToRows);
 	}
 
@@ -91,10 +91,10 @@ public abstract class MolecularStateMatrix extends CharacterStateMatrix {
 			return Collections.emptyList();
 		}
 
-		if (getCharactersModifiable().size() != getColumnPPodVersionInfos()
+		if (getCharactersModifiable().size() != getColumnVersionInfos()
 				.size()) {
 			throw new AssertionError(
-					"programming error: getCharacters() and getColumnPPodVersionInfos() should always be the same size");
+					"programming error: getCharacters() and getColumnVersionInfos() should always be the same size");
 		}
 
 		final List<Character> removedCharacters = newArrayList();
@@ -106,21 +106,21 @@ public abstract class MolecularStateMatrix extends CharacterStateMatrix {
 
 		while (getCharactersModifiable().size() < newMolecularCharacters.size()) {
 			getCharactersModifiable().add(newMolecularCharacters.get(0));
-			getColumnPPodVersionInfosModifiable().add(null);
+			getColumnVersionInfosModifiable().add(null);
 		}
 
 		while (getCharactersModifiable().size() > newMolecularCharacters.size()) {
 			getCharactersModifiable().remove(
 					getCharactersModifiable().size() - 1);
-			getColumnPPodVersionInfos().remove(
-					getColumnPPodVersionInfos().size() - 1);
+			getColumnVersionInfos().remove(
+					getColumnVersionInfos().size() - 1);
 
 		}
 
 		newMolecularCharacters.get(0).addMatrix(this);
 
 		// the matrix has changed
-		setInNeedOfNewPPodVersionInfo();
+		setInNeedOfNewVersionInfo();
 
 		return removedCharacters;
 	}

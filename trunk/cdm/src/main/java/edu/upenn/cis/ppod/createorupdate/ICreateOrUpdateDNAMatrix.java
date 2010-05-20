@@ -7,7 +7,7 @@ import edu.upenn.cis.ppod.model.DNACell;
 import edu.upenn.cis.ppod.model.DNAMatrix;
 import edu.upenn.cis.ppod.model.DNANucleotide;
 import edu.upenn.cis.ppod.model.DNARow;
-import edu.upenn.cis.ppod.modelinterfaces.INewPPodVersionInfo;
+import edu.upenn.cis.ppod.modelinterfaces.INewVersionInfo;
 
 /**
  * @author Sam Donnelly
@@ -17,7 +17,7 @@ public interface ICreateOrUpdateDNAMatrix extends
 		ICreateOrUpdateMatrix<DNAMatrix, DNARow, DNACell, DNANucleotide> {
 	static interface IFactory {
 		ICreateOrUpdateDNAMatrix create(
-				INewPPodVersionInfo newPPodVersionInfo,
+				INewVersionInfo newVersionInfo,
 				IDAO<Object, Long> dao);
 	}
 }

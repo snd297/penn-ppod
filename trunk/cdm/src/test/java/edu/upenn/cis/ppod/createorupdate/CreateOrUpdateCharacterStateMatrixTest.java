@@ -31,7 +31,6 @@ import com.google.inject.Inject;
 import com.google.inject.Provider;
 
 import edu.upenn.cis.ppod.TestGroupDefs;
-import edu.upenn.cis.ppod.createorupdate.ICreateOrUpdateCharacterStateMatrix;
 import edu.upenn.cis.ppod.dao.TestObjectWithLongIdDAO;
 import edu.upenn.cis.ppod.model.Character;
 import edu.upenn.cis.ppod.model.CharacterStateCell;
@@ -41,7 +40,7 @@ import edu.upenn.cis.ppod.model.DNACharacter;
 import edu.upenn.cis.ppod.model.ModelAssert;
 import edu.upenn.cis.ppod.model.OTU;
 import edu.upenn.cis.ppod.model.OTUSet;
-import edu.upenn.cis.ppod.modelinterfaces.INewPPodVersionInfo;
+import edu.upenn.cis.ppod.modelinterfaces.INewVersionInfo;
 import edu.upenn.cis.ppod.util.ICharacterStateMatrixFactory;
 import edu.upenn.cis.ppod.util.MatrixProvider;
 
@@ -66,7 +65,7 @@ public class CreateOrUpdateCharacterStateMatrixTest {
 	private DNACharacter dnaCharacter;
 
 	@Inject
-	private INewPPodVersionInfo newPPodVersionInfo;
+	private INewVersionInfo newVersionInfo;
 
 	@Inject
 	private Provider<TestObjectWithLongIdDAO> daoFactory;
@@ -78,13 +77,13 @@ public class CreateOrUpdateCharacterStateMatrixTest {
 		dao = daoFactory.get();
 	}
 
-//
-// @AfterMethod
-// public void afterMethod() {
-// Session s = ManagedSessionContext.unbind(HibernateUtil
-// .getSessionFactory());
-// s.close();
-// }
+	//
+	// @AfterMethod
+	// public void afterMethod() {
+	// Session s = ManagedSessionContext.unbind(HibernateUtil
+	// .getSessionFactory());
+	// s.close();
+	// }
 
 	private static Map<CharacterStateRow, List<CharacterStateCell>> stashCells(
 			final CharacterStateMatrix matrix) {
@@ -113,7 +112,7 @@ public class CreateOrUpdateCharacterStateMatrixTest {
 				createOrUpdateMatrixFactory.create(
 						mergeAttachment,
 						dao,
-						newPPodVersionInfo);
+						newVersionInfo);
 		final OTUSet fakeDbOTUSet = sourceMatrix.getOTUSet();
 
 		final CharacterStateMatrix targetMatrix = matrixFactory
@@ -138,7 +137,7 @@ public class CreateOrUpdateCharacterStateMatrixTest {
 	public void moveRows(final CharacterStateMatrix sourceMatrix) {
 		final ICreateOrUpdateCharacterStateMatrix createOrUpdateCharacterStateMatrix = createOrUpdateMatrixFactory
 				.create(mergeAttachment, dao,
-						newPPodVersionInfo);
+						newVersionInfo);
 		final OTUSet fakeDbOTUSet = sourceMatrix.getOTUSet();
 
 		final CharacterStateMatrix targetMatrix = matrixFactory
@@ -158,7 +157,7 @@ public class CreateOrUpdateCharacterStateMatrixTest {
 
 		// Simulate passing back in the persisted characters: so we need to
 		// assign the proper pPOD ID's.
-		for (int i = 0; i < sourceMatrix.getColumnsSize(); i++) {
+		for (int i = 0; i < sourceMatrix.getColumnVersionInfos().size(); i++) {
 			sourceMatrix.getCharacters().get(i).setPPodId(
 					targetMatrix.getCharacters().get(i).getPPodId());
 		}
@@ -171,12 +170,12 @@ public class CreateOrUpdateCharacterStateMatrixTest {
 
 		for (final OTU targetOTU : targetMatrix.getOTUSet().getOTUs()) {
 			final CharacterStateRow targetRow = targetMatrix.getRow(targetOTU);
-			targetRow.setPPodVersion(1L);
+			targetRow.setVersion(1L);
 		}
 
 		for (final OTU sourceOTU : sourceMatrix.getOTUSet().getOTUs()) {
 			final CharacterStateRow sourceRow = sourceMatrix.getRow(sourceOTU);
-			sourceRow.setPPodVersion(1L);
+			sourceRow.setVersion(1L);
 		}
 
 		final Map<CharacterStateRow, List<CharacterStateCell>> sourceRowsToCells2 =
@@ -203,7 +202,7 @@ public class CreateOrUpdateCharacterStateMatrixTest {
 					createOrUpdateMatrixFactory.create(
 							mergeAttachment,
 							dao,
-							newPPodVersionInfo);
+							newVersionInfo);
 			final OTUSet fakeDbOTUSet = sourceMatrix.getOTUSet();
 
 			final CharacterStateMatrix targetMatrix =
@@ -222,7 +221,7 @@ public class CreateOrUpdateCharacterStateMatrixTest {
 
 			// Simulate passing back in the persisted characters: so we need to
 			// assign the proper pPOD ID's.
-			for (int i = 0; i < sourceMatrix.getColumnsSize(); i++) {
+			for (int i = 0; i < sourceMatrix.getColumnVersionInfos().size(); i++) {
 				sourceMatrix.getCharacters().get(i).setPPodId(
 						targetMatrix.getCharacters().get(i).getPPodId());
 			}
@@ -271,7 +270,7 @@ public class CreateOrUpdateCharacterStateMatrixTest {
 		// It only makes sense to remove characters from a standard matrix
 		if (sourceMatrix.getClass().equals(CharacterStateMatrix.class)) {
 			final ICreateOrUpdateCharacterStateMatrix createOrUpdateCharacterStateMatrix = createOrUpdateMatrixFactory
-					.create(mergeAttachment, dao, newPPodVersionInfo);
+					.create(mergeAttachment, dao, newVersionInfo);
 			final OTUSet fakeDbOTUSet = sourceMatrix.getOTUSet();
 
 			final CharacterStateMatrix targetMatrix = matrixFactory
@@ -280,16 +279,17 @@ public class CreateOrUpdateCharacterStateMatrixTest {
 			fakeDbOTUSet.addCharacterStateMatrix(targetMatrix);
 
 			final Map<CharacterStateRow, List<CharacterStateCell>> sourceRowsToCells = stashCells(sourceMatrix);
-			createOrUpdateCharacterStateMatrix.createOrUpdateMatrix(
-					targetMatrix,
-					sourceMatrix,
-					dnaCharacter);
+			createOrUpdateCharacterStateMatrix
+					.createOrUpdateMatrix(
+							targetMatrix,
+							sourceMatrix,
+							dnaCharacter);
 			putBackCells(targetMatrix, dao.getRowsToCells());
 			putBackCells(sourceMatrix, sourceRowsToCells);
 
 			// Simulate passing back in the persisted characters: so we need to
 			// assign the proper pPOD ID's.
-			for (int i = 0; i < sourceMatrix.getColumnsSize(); i++) {
+			for (int i = 0; i < sourceMatrix.getColumnVersionInfos().size(); i++) {
 				sourceMatrix.getCharacters().get(i).setPPodId(
 						targetMatrix.getCharacters().get(i).getPPodId());
 			}

@@ -19,22 +19,22 @@ public class MatrixTest {
 	private Provider<DNAMatrix> dnaMatrixProvider;
 
 	@Inject
-	private Provider<PPodVersionInfo> pPodVersionInfoProvider;
+	private Provider<VersionInfo> pPodVersionInfoProvider;
 
 	@Test
 	public void setColumnPPodVersionInfo() {
 		final DNAMatrix matrix = dnaMatrixProvider.get();
-		final PPodVersionInfo pPodVersionInfo = pPodVersionInfoProvider.get();
-		matrix.setColumnPPodVersionInfos(pPodVersionInfo);
+		final VersionInfo versionInfo = pPodVersionInfoProvider.get();
+		matrix.setColumnVersionInfos(versionInfo);
 		matrix.setColumnsSize(1);
-		matrix.setColumnPPodVersionInfo(0, pPodVersionInfo);
-		assertSame(matrix.getColumnPPodVersionInfos().get(0), pPodVersionInfo);
+		matrix.setColumnVersionInfo(0, versionInfo);
+		assertSame(matrix.getColumnVersionInfos().get(0), versionInfo);
 	}
 
 	@Test(expectedExceptions = IllegalArgumentException.class)
 	public void setColumnPPodVersionInfosWTooSmallPos() {
 		final Matrix<?> matrix = dnaMatrixProvider.get();
-		final PPodVersionInfo pPodVersionInfo = pPodVersionInfoProvider.get();
-		matrix.setColumnPPodVersionInfo(0, pPodVersionInfo);
+		final VersionInfo versionInfo = pPodVersionInfoProvider.get();
+		matrix.setColumnVersionInfo(0, versionInfo);
 	}
 }
