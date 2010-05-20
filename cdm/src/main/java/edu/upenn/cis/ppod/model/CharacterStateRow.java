@@ -75,7 +75,7 @@ public class CharacterStateRow extends Row<CharacterStateCell> {
 	 */
 	@ManyToOne(fetch = FetchType.LAZY)
 	@CheckForNull
-	private OTUsToCharacterStateRows otusToRows;
+	private CharacterStateRows otusToRows;
 
 	protected CharacterStateRow() {}
 
@@ -151,11 +151,11 @@ public class CharacterStateRow extends Row<CharacterStateCell> {
 	 * @return this {@code CharacterStateRow}
 	 */
 	@Override
-	public CharacterStateRow setInNeedOfNewPPodVersionInfo() {
+	public CharacterStateRow setInNeedOfNewVersionInfo() {
 		if (otusToRows != null) {
-			otusToRows.setNeedsPPodVersionInfo();
+			otusToRows.setIsInNeedOfNewVersionInfo();
 		}
-		super.setInNeedOfNewPPodVersionInfo();
+		super.setInNeedOfNewVersionInfo();
 		return this;
 	}
 
@@ -167,7 +167,7 @@ public class CharacterStateRow extends Row<CharacterStateCell> {
 	 * @return this {@code CharacterStateRow}
 	 */
 	protected CharacterStateRow setOTUsToRows(
-			@CheckForNull final OTUsToCharacterStateRows otusToRows) {
+			@CheckForNull final CharacterStateRows otusToRows) {
 		this.otusToRows = otusToRows;
 		return this;
 	}

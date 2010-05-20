@@ -52,7 +52,7 @@ public abstract class PersistentObject implements IPersistentObject {
 
 	@Version
 	@Column(name = "OBJ_VERSION")
-	private Integer version;
+	private Integer objVersion;
 
 	@Transient
 	private boolean marshalled = false;
@@ -114,7 +114,7 @@ public abstract class PersistentObject implements IPersistentObject {
 
 		retValue.append("PersistentObject(").append(super.toString()).append(
 				TAB).append("id=").append(this.id).append(TAB).append(
-				"version=").append(this.version).append(TAB).append(")");
+				"version=").append(this.objVersion).append(TAB).append(")");
 
 		return retValue.toString();
 	}

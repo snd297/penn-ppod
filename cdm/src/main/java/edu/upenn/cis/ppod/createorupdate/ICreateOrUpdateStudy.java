@@ -24,7 +24,7 @@ import edu.upenn.cis.ppod.dao.IDNACharacterDAO;
 import edu.upenn.cis.ppod.dao.IOTUSetDAO;
 import edu.upenn.cis.ppod.dao.IStudyDAO;
 import edu.upenn.cis.ppod.model.Study;
-import edu.upenn.cis.ppod.modelinterfaces.INewPPodVersionInfo;
+import edu.upenn.cis.ppod.modelinterfaces.INewVersionInfo;
 import edu.upenn.cis.ppod.services.ppodentity.StudyInfo;
 
 /**
@@ -76,7 +76,7 @@ public interface ICreateOrUpdateStudy {
 				IAttachmentNamespaceDAO attachmentNamespaceDAO,
 				IAttachmentTypeDAO attachmentTypeDAO,
 				IDAO<Object, Long> dao,
-				INewPPodVersionInfo newPPodVersionInfo);
+				INewVersionInfo newVersionInfo);
 
 	}
 }

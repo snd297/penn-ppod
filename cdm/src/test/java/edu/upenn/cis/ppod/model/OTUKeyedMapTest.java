@@ -29,7 +29,7 @@ public class OTUKeyedMapTest {
 	private Provider<DNAMatrix> dnaMatrixProvider;
 
 	@Inject
-	private Provider<OTUsToDNARows> otusToDNARowsProvider;
+	private Provider<DNARows> otusToDNARowsProvider;
 
 	@Inject
 	private Provider<DNARow> dnaRowProvider;
@@ -49,7 +49,7 @@ public class OTUKeyedMapTest {
 		final DNARow row1 = dnaRowProvider.get();
 		final DNARow row2 = dnaRowProvider.get();
 
-		final OTUsToDNARows otusToRows = otusToDNARowsProvider.get();
+		final DNARows otusToRows = otusToDNARowsProvider.get();
 		otusToRows.setMatrix(matrix);
 
 		otusToRows.put(otu0, row0);
@@ -66,7 +66,7 @@ public class OTUKeyedMapTest {
 	@Test(expectedExceptions = IllegalStateException.class)
 	public void getValuesInOTUSetOrderWithNoParentSet() {
 
-		final OTUsToDNARows otusToRows = otusToDNARowsProvider.get();
+		final DNARows otusToRows = otusToDNARowsProvider.get();
 		otusToRows.getValuesInOTUSetOrder();
 
 	}
@@ -85,19 +85,19 @@ public class OTUKeyedMapTest {
 		final DNARow row1 = dnaRowProvider.get();
 		final DNARow row2 = dnaRowProvider.get();
 
-		final OTUsToDNARows otusToRows = otusToDNARowsProvider.get();
+		final DNARows otusToRows = otusToDNARowsProvider.get();
 		otusToRows.setMatrix(matrix);
 
 		otusToRows.put(otu0, row0);
 		otusToRows.put(otu1, row1);
 		otusToRows.put(otu2, row2);
 
-		matrix.unsetInNeedOfNewPPodVersionInfo();
+		matrix.unsetInNeedOfNewVersionInfo();
 
 		otusToRows.clear();
 
 		assertEquals(otusToRows.getOTUsToValues().size(), 0);
-		assertTrue(matrix.isInNeedOfNewPPodVersionInfo());
+		assertTrue(matrix.isInNeedOfNewVersionInfo());
 
 	}
 
@@ -108,11 +108,11 @@ public class OTUKeyedMapTest {
 	@Test
 	public void clearWhileEmpty() {
 		final DNAMatrix matrix = dnaMatrixProvider.get();
-		final OTUsToDNARows otusToRows = otusToDNARowsProvider.get();
+		final DNARows otusToRows = otusToDNARowsProvider.get();
 		otusToRows.setMatrix(matrix);
-		matrix.unsetInNeedOfNewPPodVersionInfo();
+		matrix.unsetInNeedOfNewVersionInfo();
 		otusToRows.clear();
 
-		assertFalse(matrix.isInNeedOfNewPPodVersionInfo());
+		assertFalse(matrix.isInNeedOfNewVersionInfo());
 	}
 }

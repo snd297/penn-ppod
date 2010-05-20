@@ -24,66 +24,62 @@ import edu.upenn.cis.ppod.model.CharacterState;
 import edu.upenn.cis.ppod.model.CharacterStateCell;
 import edu.upenn.cis.ppod.model.CharacterStateMatrix;
 import edu.upenn.cis.ppod.model.CharacterStateRow;
+import edu.upenn.cis.ppod.model.DNAMatrix;
+import edu.upenn.cis.ppod.model.Matrix;
 import edu.upenn.cis.ppod.model.OTU;
 import edu.upenn.cis.ppod.model.OTUSet;
 import edu.upenn.cis.ppod.model.Study;
 import edu.upenn.cis.ppod.model.Tree;
 import edu.upenn.cis.ppod.model.TreeSet;
-import edu.upenn.cis.ppod.modelinterfaces.INewPPodVersionInfo;
-import edu.upenn.cis.ppod.modelinterfaces.IPPodVersioned;
+import edu.upenn.cis.ppod.modelinterfaces.INewVersionInfo;
+import edu.upenn.cis.ppod.modelinterfaces.IVersioned;
 
 /**
  * Stuff that should be done at the very end of a pPOD session.
  * 
  * @author Sam Donnelly
  */
-final class SetPPodVersionInfoVisitor extends EmptyVisitor implements
-		ISetPPodVersionInfoVisitor {
+final class SetVersionInfoVisitor extends EmptyVisitor implements
+		ISetVersionInfoVisitor {
 
-	private final INewPPodVersionInfo newPPodVersionInfo;
+	private final INewVersionInfo newVersionInfo;
 
 	@Inject
-	SetPPodVersionInfoVisitor(
-			@Assisted final INewPPodVersionInfo newPPodVersionInfo) {
-		this.newPPodVersionInfo = newPPodVersionInfo;
+	SetVersionInfoVisitor(
+			@Assisted final INewVersionInfo newVersionInfo) {
+		this.newVersionInfo = newVersionInfo;
 	}
 
-	private void setNewPPodVersionIfNeeded(final IPPodVersioned pPodVersioned) {
-		if (pPodVersioned.isInNeedOfNewPPodVersionInfo()) {
-			pPodVersioned.setPPodVersionInfo(newPPodVersionInfo
-					.getNewPPodVersionInfo());
+	private void setNewVersionInfo(final IVersioned versioned) {
+		if (versioned.isInNeedOfNewVersionInfo()) {
+			versioned.setVersionInfo(newVersionInfo
+					.getNewVersionInfo());
 		}
 	}
 
 	@Override
 	public void visit(final Attachment attachment) {
-		setNewPPodVersionIfNeeded(attachment);
+		setNewVersionInfo(attachment);
 	}
 
 	@Override
 	public void visit(final Character character) {
-		setNewPPodVersionIfNeeded(character);
+		setNewVersionInfo(character);
 	}
 
 	@Override
 	public void visit(final CharacterState characterState) {
-		setNewPPodVersionIfNeeded(characterState);
+		setNewVersionInfo(characterState);
 	}
 
 	@Override
 	public void visit(final CharacterStateCell cell) {
-		setNewPPodVersionIfNeeded(cell);
+		setNewVersionInfo(cell);
 	}
 
 	@Override
 	public void visit(final CharacterStateMatrix matrix) {
-		setNewPPodVersionIfNeeded(matrix);
-		for (int pos = 0; pos < matrix.getColumnsSize(); pos++) {
-			if (matrix.getColumnPPodVersionInfos().get(pos) == null) {
-				matrix.setColumnPPodVersionInfo(pos, newPPodVersionInfo
-						.getNewPPodVersionInfo());
-			}
-		}
+		visitMatrix(matrix);
 	}
 
 	/**
@@ -93,42 +89,47 @@ final class SetPPodVersionInfoVisitor extends EmptyVisitor implements
 	 */
 	@Override
 	public void visit(final CharacterStateRow row) {
-		setNewPPodVersionIfNeeded(row);
+		setNewVersionInfo(row);
 	}
 
-	/**
-	 * Does nothing.
-	 * 
-	 * @param otu ignored
-	 */
+	@Override
+	public void visit(final DNAMatrix matrix) {
+		visitMatrix(matrix);
+	}
+
 	@Override
 	public void visit(final OTU otu) {
-		setNewPPodVersionIfNeeded(otu);
+		setNewVersionInfo(otu);
 	}
 
-	/**
-	 * Does nothing.
-	 * 
-	 * @param otuSet ignored
-	 */
 	@Override
 	public void visit(final OTUSet otuSet) {
-		setNewPPodVersionIfNeeded(otuSet);
+		setNewVersionInfo(otuSet);
 	}
 
 	@Override
 	public void visit(final Study study) {
-		setNewPPodVersionIfNeeded(study);
-	}
-
-	@Override
-	public void visit(final TreeSet treeSet) {
-		setNewPPodVersionIfNeeded(treeSet);
+		setNewVersionInfo(study);
 	}
 
 	@Override
 	public void visit(final Tree tree) {
-		setNewPPodVersionIfNeeded(tree);
+		setNewVersionInfo(tree);
+	}
+
+	@Override
+	public void visit(final TreeSet treeSet) {
+		setNewVersionInfo(treeSet);
+	}
+
+	public void visitMatrix(final Matrix<?> matrix) {
+		setNewVersionInfo(matrix);
+		for (int pos = 0; pos < matrix.getColumnVersions().size(); pos++) {
+			if (matrix.getColumnVersionInfos().get(pos) == null) {
+				matrix.setColumnVersionInfo(pos, newVersionInfo
+						.getNewVersionInfo());
+			}
+		}
 	}
 
 }

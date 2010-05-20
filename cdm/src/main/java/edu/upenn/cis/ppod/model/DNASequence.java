@@ -70,11 +70,11 @@ public class DNASequence extends Sequence {
 	}
 
 	@Override
-	public DNASequence setInNeedOfNewPPodVersionInfo() {
+	public DNASequence setInNeedOfNewVersionInfo() {
 		if (otusToSequences != null) {
-			this.otusToSequences.setInNeedOfNewPPodVersion();
+			this.otusToSequences.setInNeedOfNewVersion();
 		}
-		super.setInNeedOfNewPPodVersionInfo();
+		super.setInNeedOfNewVersionInfo();
 		return this;
 	}
 

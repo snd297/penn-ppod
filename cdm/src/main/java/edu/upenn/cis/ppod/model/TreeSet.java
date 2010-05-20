@@ -38,7 +38,7 @@ import javax.xml.bind.annotation.XmlElement;
 
 import org.hibernate.annotations.Cascade;
 
-import edu.upenn.cis.ppod.modelinterfaces.IPPodVersionedWithOTUSet;
+import edu.upenn.cis.ppod.modelinterfaces.IVersionedWithOTUSet;
 import edu.upenn.cis.ppod.util.IVisitor;
 
 /**
@@ -50,7 +50,7 @@ import edu.upenn.cis.ppod.util.IVisitor;
 @Entity
 @Table(name = TreeSet.TABLE)
 public class TreeSet extends UUPPodEntityWXmlId implements
-		IPPodVersionedWithOTUSet {
+		IVersionedWithOTUSet {
 
 	public static final String TABLE = "TREE_SET";
 
@@ -69,7 +69,7 @@ public class TreeSet extends UUPPodEntityWXmlId implements
 	@Cascade(org.hibernate.annotations.CascadeType.SAVE_UPDATE)
 	private final List<Tree> trees = newArrayList();
 
-	protected TreeSet() {}
+	TreeSet() {}
 
 	@Override
 	public void accept(final IVisitor visitor) {
@@ -90,7 +90,7 @@ public class TreeSet extends UUPPodEntityWXmlId implements
 	public Tree addTree(final Tree tree) {
 		checkNotNull(tree);
 		getTreesModifiable().add(tree);
-		setInNeedOfNewPPodVersionInfo();
+		setInNeedOfNewVersionInfo();
 		return tree;
 	}
 
@@ -138,11 +138,11 @@ public class TreeSet extends UUPPodEntityWXmlId implements
 	}
 
 	@Override
-	public TreeSet setInNeedOfNewPPodVersionInfo() {
+	public TreeSet setInNeedOfNewVersionInfo() {
 		if (getOTUSet() != null) {
-			getOTUSet().setInNeedOfNewPPodVersionInfo();
+			getOTUSet().setInNeedOfNewVersionInfo();
 		}
-		super.setInNeedOfNewPPodVersionInfo();
+		super.setInNeedOfNewVersionInfo();
 
 		return this;
 	}
@@ -160,7 +160,7 @@ public class TreeSet extends UUPPodEntityWXmlId implements
 
 		} else {
 			this.label = label;
-			setInNeedOfNewPPodVersionInfo();
+			setInNeedOfNewVersionInfo();
 		}
 		return this;
 	}
@@ -213,7 +213,7 @@ public class TreeSet extends UUPPodEntityWXmlId implements
 		for (final Tree newTree : newTrees) {
 			addTree(newTree);
 		}
-		setInNeedOfNewPPodVersionInfo();
+		setInNeedOfNewVersionInfo();
 		return removedTrees;
 	}
 

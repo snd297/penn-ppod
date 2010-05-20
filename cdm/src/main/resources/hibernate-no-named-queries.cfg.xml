@@ -12,7 +12,7 @@
 			class="edu.upenn.cis.ppod.model.security.PPodGroup" /> <mapping
 			class="edu.upenn.cis.ppod.model.security.PPodPermission" />
 		-->
-		<mapping class="edu.upenn.cis.ppod.model.PPodVersionInfo" />
+		<mapping class="edu.upenn.cis.ppod.model.VersionInfo" />
 
 		<mapping class="edu.upenn.cis.ppod.model.Study" />
 
@@ -23,7 +23,7 @@
 		<mapping class="edu.upenn.cis.ppod.model.TreeSet" />
 
 		<mapping class="edu.upenn.cis.ppod.model.CharacterStateMatrix" />
-		<mapping class="edu.upenn.cis.ppod.model.OTUsToCharacterStateRows" />
+		<mapping class="edu.upenn.cis.ppod.model.CharacterStateRows" />
 		<mapping class="edu.upenn.cis.ppod.model.CharacterStateRow" />
 		<mapping class="edu.upenn.cis.ppod.model.CharacterStateCell" />
 

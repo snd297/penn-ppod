@@ -18,7 +18,7 @@ package edu.upenn.cis.ppod.createorupdate;
 import com.google.inject.ImplementedBy;
 
 import edu.upenn.cis.ppod.model.TreeSet;
-import edu.upenn.cis.ppod.modelinterfaces.INewPPodVersionInfo;
+import edu.upenn.cis.ppod.modelinterfaces.INewVersionInfo;
 
 /**
  * @author Sam Donnelly
@@ -28,6 +28,6 @@ public interface IMergeTreeSets {
 	void mergeTreeSets(TreeSet targetTreeSet, TreeSet sourceTreeSet);
 
 	static interface IFactory {
-		IMergeTreeSets create(INewPPodVersionInfo newPPodVersionInfo);
+		IMergeTreeSets create(INewVersionInfo newVersionInfo);
 	}
 }

@@ -26,7 +26,6 @@ import java.util.Iterator;
 import java.util.List;
 import java.util.Map;
 
-import javax.annotation.CheckForNull;
 import javax.persistence.CascadeType;
 import javax.persistence.Column;
 import javax.persistence.ElementCollection;
@@ -38,7 +37,6 @@ import javax.persistence.ManyToMany;
 import javax.persistence.MapKeyJoinColumn;
 import javax.persistence.OneToOne;
 import javax.persistence.Table;
-import javax.xml.bind.Marshaller;
 import javax.xml.bind.annotation.XmlElement;
 import javax.xml.bind.annotation.XmlIDREF;
 import javax.xml.bind.annotation.XmlSeeAlso;
@@ -64,17 +62,16 @@ public class CharacterStateMatrix extends Matrix<CharacterStateRow> {
 	/**
 	 * Column that orders the {@link Character}s. Intentionally package-private.
 	 */
-	static final String CHARACTERS_POSITION_COLUMN = Character.TABLE
-														+ "_POSITION";
+	static final String CHARACTERS_POSITION_COLUMN =
+			Character.TABLE + "_POSITION";
+
 	/** This entity's table name. */
 	public static final String TABLE = "CHARACTER_STATE_MATRIX";
 
 	/**
 	 * Name for foreign key columns that point at this table.
 	 */
-	public static final String FK_ID_COLUMN = TABLE + "_ID";
-
-	static final String OTU_IDX_COLUMN = "OTU_IDX";
+	public static final String JOIN_COLUMN = TABLE + "_ID";
 
 	/**
 	 * The position of a {@code Character} in <code>characters</code> signifies
@@ -86,7 +83,7 @@ public class CharacterStateMatrix extends Matrix<CharacterStateRow> {
 	 * refactoring should be considered.
 	 */
 	@ManyToMany
-	@JoinTable(joinColumns = { @JoinColumn(name = FK_ID_COLUMN) }, inverseJoinColumns = { @JoinColumn(name = Character.ID_COLUMN) })
+	@JoinTable(joinColumns = { @JoinColumn(name = JOIN_COLUMN) }, inverseJoinColumns = { @JoinColumn(name = Character.ID_COLUMN) })
 	@IndexColumn(name = CHARACTERS_POSITION_COLUMN)
 	private final List<Character> characters = newArrayList();
 
@@ -95,16 +92,16 @@ public class CharacterStateMatrix extends Matrix<CharacterStateRow> {
 	 * ->columnNumber lookup.
 	 */
 	@ElementCollection
-	@JoinTable(name = TABLE + "_" + CHARACTER_IDX_COLUMN, joinColumns = @JoinColumn(name = FK_ID_COLUMN))
+	@JoinTable(name = TABLE + "_" + CHARACTER_IDX_COLUMN, joinColumns = @JoinColumn(name = JOIN_COLUMN))
 	@MapKeyJoinColumn(name = Character.ID_COLUMN)
 	@Column(name = CHARACTER_IDX_COLUMN)
 	private final Map<Character, Integer> charactersToPositions = newHashMap();
 
 	@OneToOne(fetch = FetchType.LAZY, optional = false, cascade = CascadeType.ALL, orphanRemoval = true)
-	private OTUsToCharacterStateRows otusToRows;
+	private CharacterStateRows rows;
 
 	/** No-arg constructor for (at least) Hibernate. */
-	protected CharacterStateMatrix() {}
+	CharacterStateMatrix() {}
 
 	/**
 	 * This constructor is {@code protected} to allow for injected {@code
@@ -114,9 +111,9 @@ public class CharacterStateMatrix extends Matrix<CharacterStateRow> {
 	 * @param otusToRows the {@code OTUsToCharacterStateRows} for this matrix.
 	 */
 	@Inject
-	protected CharacterStateMatrix(final OTUsToCharacterStateRows otusToRows) {
-		this.otusToRows = otusToRows;
-		this.otusToRows.setMatrix(this);
+	protected CharacterStateMatrix(final CharacterStateRows rows) {
+		this.rows = rows;
+		this.rows.setMatrix(this);
 	}
 
 	@Override
@@ -142,25 +139,9 @@ public class CharacterStateMatrix extends Matrix<CharacterStateRow> {
 				charactersToPositions.put(character, i);
 			}
 
-			getColumnPPodVersionInfosModifiable().add(null);
+			getColumnVersionInfosModifiable().add(null);
 			character.addMatrix(this);
 		}
-	}
-
-
-	@Override
-	public boolean beforeMarshal(@CheckForNull final Marshaller marshaller) {
-		super.beforeMarshal(marshaller);
-
-		for (final PPodVersionInfo columnVersionInfo : getColumnPPodVersionInfos()) {
-			if (columnVersionInfo == null) {
-				getColumnPPodVersionsModifiable().add(null);
-			} else {
-				getColumnPPodVersionsModifiable().add(
-						columnVersionInfo.getPPodVersion());
-			}
-		}
-		return true;
 	}
 
 	/**
@@ -204,24 +185,14 @@ public class CharacterStateMatrix extends Matrix<CharacterStateRow> {
 	}
 
 	/**
-	 * Get the number of characters this matrix has.
-	 * 
-	 * @return the number of characters this matrix has
-	 */
-	@Override
-	public Integer getColumnsSize() {
-		return getCharacters().size();
-	}
-
-	/**
 	 * Get the otusToRows.
 	 * 
 	 * @return the otusToRows
 	 */
 	@XmlElement(name = "rows")
 	@Override
-	protected OTUsToCharacterStateRows getOTUsToRows() {
-		return otusToRows;
+	protected CharacterStateRows getOTUKeyedRows() {
+		return rows;
 	}
 
 	/**
@@ -232,7 +203,7 @@ public class CharacterStateMatrix extends Matrix<CharacterStateRow> {
 	 * does not makes sense in a {@link MolecularStateMatrix} since all of the
 	 * characters will be the same instance.
 	 * <p>
-	 * This method does reorder {@link #getColumnPPodVersionInfos()}.
+	 * This method does reorder {@link #getColumnVersionInfos()}.
 	 * <p>
 	 * It is legal for two characters to have the same label, but not to be
 	 * {@code .equals} to each other.
@@ -284,12 +255,12 @@ public class CharacterStateMatrix extends Matrix<CharacterStateRow> {
 		}
 
 		// Add in column versions as necessary
-		nullFill(getColumnPPodVersionInfosModifiable(), characters.size());
+		nullFill(getColumnVersionInfosModifiable(), characters.size());
 
 		// Remove column versions as necessary
-		while (getColumnPPodVersionInfos().size() > characters.size()) {
-			getColumnPPodVersionInfosModifiable().remove(
-					getColumnPPodVersionInfos().size() - 1);
+		while (getColumnVersionInfos().size() > characters.size()) {
+			getColumnVersionInfosModifiable().remove(
+					getColumnVersionInfos().size() - 1);
 		}
 
 		final List<Character> removedCharacters = newArrayList(getCharactersModifiable());
@@ -311,12 +282,12 @@ public class CharacterStateMatrix extends Matrix<CharacterStateRow> {
 		}
 
 		// the matrix has changed
-		setInNeedOfNewPPodVersionInfo();
+		setInNeedOfNewVersionInfo();
 		return removedCharacters;
 	}
 
 	/**
-	 * Set the otusToRows.
+	 * Set the rows.
 	 * <p>
 	 * Created for JAXB.
 	 * 
@@ -325,9 +296,9 @@ public class CharacterStateMatrix extends Matrix<CharacterStateRow> {
 	 * @return this
 	 */
 	@edu.umd.cs.findbugs.annotations.SuppressWarnings
-	protected CharacterStateMatrix setOTUsToRows(
-			final OTUsToCharacterStateRows rows) {
-		this.otusToRows = rows;
+	protected CharacterStateMatrix setOTUKeyedRows(
+			final CharacterStateRows rows) {
+		this.rows = rows;
 		return this;
 	}
 }

@@ -72,10 +72,11 @@ public class CharacterStateCell extends Cell<CharacterState> {
 	 * <p>
 	 * Will be {@code null} when first created, but is generally not-null.
 	 */
+	@CheckForNull
 	@ManyToMany
 	@Sort(type = SortType.COMPARATOR, comparator = CharacterState.CharacterStateComparator.class)
 	@JoinTable(inverseJoinColumns = @JoinColumn(name = CharacterState.ID_COLUMN))
-	private final SortedSet<CharacterState> elements = newTreeSet(STATE_COMPARATOR);
+	private SortedSet<CharacterState> elements = null;
 
 	/**
 	 * To handle the most-common case of a single {@code CharacterState}, we
@@ -104,10 +105,10 @@ public class CharacterStateCell extends Cell<CharacterState> {
 	 */
 	@Transient
 	@CheckForNull
-	private Set<CharacterState> xmlStates = null;
+	private Set<CharacterState> xmlElements = null;
 
 	/** No-arg constructor for (at least) Hibernate. */
-	protected CharacterStateCell() {}
+	CharacterStateCell() {}
 
 	@Override
 	public void accept(final IVisitor visitor) {
@@ -151,6 +152,9 @@ public class CharacterStateCell extends Cell<CharacterState> {
 
 	@Override
 	protected Set<CharacterState> getElementsRaw() {
+		if (elements == null) {
+			elements = newTreeSet(STATE_COMPARATOR);
+		}
 		return elements;
 	}
 
@@ -180,10 +184,10 @@ public class CharacterStateCell extends Cell<CharacterState> {
 	@XmlIDREF
 	@Override
 	protected Set<CharacterState> getXmlElements() {
-		if (xmlStates == null) {
-			xmlStates = newHashSet();
+		if (xmlElements == null) {
+			xmlElements = newHashSet();
 		}
-		return xmlStates;
+		return xmlElements;
 	}
 
 	/**
@@ -261,7 +265,7 @@ public class CharacterStateCell extends Cell<CharacterState> {
 		}
 
 		setType(type);
-		setInNeedOfNewPPodVersionInfo();
+		setInNeedOfNewVersionInfo();
 		return this;
 	}
 
@@ -284,21 +288,15 @@ public class CharacterStateCell extends Cell<CharacterState> {
 	}
 
 	@Override
-	protected Cell<CharacterState> unsetFirstElement() {
-		this.firstElement = null;
-		return this;
-	}
-
-	@Override
 	public CharacterStateCell unsetRow() {
 		row = null;
 		return this;
 	}
 
 	@Override
-	protected Cell<CharacterState> unsetXmlElements() {
-		this.xmlStates = null;
+	protected Cell<CharacterState> setFirstElement(
+			@CheckForNull final CharacterState firstElement) {
+		this.firstElement = firstElement;
 		return this;
 	}
-
 }

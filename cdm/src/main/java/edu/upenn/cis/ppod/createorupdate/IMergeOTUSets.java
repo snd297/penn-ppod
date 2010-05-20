@@ -18,7 +18,7 @@ package edu.upenn.cis.ppod.createorupdate;
 import com.google.inject.ImplementedBy;
 
 import edu.upenn.cis.ppod.model.OTUSet;
-import edu.upenn.cis.ppod.modelinterfaces.INewPPodVersionInfo;
+import edu.upenn.cis.ppod.modelinterfaces.INewVersionInfo;
 
 /**
  * @author Sam Donnelly
@@ -29,7 +29,7 @@ public interface IMergeOTUSets {
 	void mergeOTUSets(OTUSet targetOTUSet, OTUSet sourceOTUSet);
 
 	static interface IFactory {
-		IMergeOTUSets create(INewPPodVersionInfo newPPodVersionInfo);
+		IMergeOTUSets create(INewVersionInfo newVersionInfo);
 	}
 
 }

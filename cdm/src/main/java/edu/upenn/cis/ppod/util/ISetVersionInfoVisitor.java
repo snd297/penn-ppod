@@ -28,13 +28,13 @@ import edu.upenn.cis.ppod.model.OTUSet;
 import edu.upenn.cis.ppod.model.Study;
 import edu.upenn.cis.ppod.model.Tree;
 import edu.upenn.cis.ppod.model.TreeSet;
-import edu.upenn.cis.ppod.modelinterfaces.INewPPodVersionInfo;
+import edu.upenn.cis.ppod.modelinterfaces.INewVersionInfo;
 
 /**
  * @author Sam Donnelly
  */
-@ImplementedBy(SetPPodVersionInfoVisitor.class)
-public interface ISetPPodVersionInfoVisitor extends IVisitor {
+@ImplementedBy(SetVersionInfoVisitor.class)
+public interface ISetVersionInfoVisitor extends IVisitor {
 
 	void visit(final Attachment attachment);
 
@@ -73,7 +73,7 @@ public interface ISetPPodVersionInfoVisitor extends IVisitor {
 		 * 
 		 * @return the new {@code SetPPodVersionInfoVisitor}
 		 */
-		ISetPPodVersionInfoVisitor create(INewPPodVersionInfo newPPodVersionInfo);
+		ISetVersionInfoVisitor create(INewVersionInfo newVersionInfo);
 	}
 
 }

@@ -20,7 +20,7 @@ import edu.upenn.cis.ppod.model.Cell;
 import edu.upenn.cis.ppod.model.Matrix;
 import edu.upenn.cis.ppod.model.OTU;
 import edu.upenn.cis.ppod.model.Row;
-import edu.upenn.cis.ppod.modelinterfaces.INewPPodVersionInfo;
+import edu.upenn.cis.ppod.modelinterfaces.INewVersionInfo;
 import edu.upenn.cis.ppod.services.ppodentity.MatrixInfo;
 
 /**
@@ -37,7 +37,7 @@ class CreateOrUpdateMatrix<M extends Matrix<R>, R extends Row<C>, C extends Cell
 
 	private final Provider<MatrixInfo> matrixInfoProvider;
 
-	private final INewPPodVersionInfo newPPodVersionInfo;
+	private final INewVersionInfo newVersionInfo;
 
 	private final Provider<R> rowProvider;
 
@@ -46,12 +46,12 @@ class CreateOrUpdateMatrix<M extends Matrix<R>, R extends Row<C>, C extends Cell
 			final Provider<C> cellProvider,
 			final Provider<Attachment> attachmentProvider,
 			final Provider<MatrixInfo> matrixInfoProvider,
-			@Assisted final INewPPodVersionInfo newPPodVersionInfo,
+			@Assisted final INewVersionInfo newVersionInfo,
 			@Assisted final IDAO<Object, Long> dao) {
 		this.rowProvider = rowProvider;
 		this.cellProvider = cellProvider;
 		this.matrixInfoProvider = matrixInfoProvider;
-		this.newPPodVersionInfo = newPPodVersionInfo;
+		this.newVersionInfo = newVersionInfo;
 		this.dao = dao;
 	}
 
@@ -94,8 +94,8 @@ class CreateOrUpdateMatrix<M extends Matrix<R>, R extends Row<C>, C extends Cell
 			if (null == (dbRow = dbMatrix.getRow(dbOTU))) {
 				dbRow = rowProvider.get();
 				dbRow
-						.setPPodVersionInfo(
-								newPPodVersionInfo.getNewPPodVersionInfo());
+						.setVersionInfo(
+								newVersionInfo.getNewVersionInfo());
 				dbMatrix.putRow(dbOTU, dbRow);
 				dao.makePersistent(dbRow);
 			}
@@ -154,9 +154,9 @@ class CreateOrUpdateMatrix<M extends Matrix<R>, R extends Row<C>, C extends Cell
 				// We need to do this here since we're removing the cell from
 				// the persistence context (with evict). So it won't get handled
 				// higher up in the application when it does for most entities.
-				if (dbCell.isInNeedOfNewPPodVersionInfo()) {
-					dbCell.setPPodVersionInfo(newPPodVersionInfo
-							.getNewPPodVersionInfo());
+				if (dbCell.isInNeedOfNewVersionInfo()) {
+					dbCell.setVersionInfo(newVersionInfo
+							.getNewVersionInfo());
 				}
 				dao.makePersistent(dbCell);
 
@@ -165,9 +165,9 @@ class CreateOrUpdateMatrix<M extends Matrix<R>, R extends Row<C>, C extends Cell
 
 			// We need to do this here since we're removing the cell from
 			// the persistence context (with evict)
-			if (dbRow.isInNeedOfNewPPodVersionInfo()) {
-				dbRow.setPPodVersionInfo(
-						newPPodVersionInfo.getNewPPodVersionInfo());
+			if (dbRow.isInNeedOfNewVersionInfo()) {
+				dbRow.setVersionInfo(
+						newVersionInfo.getNewVersionInfo());
 			}
 
 			logger.debug(
@@ -202,8 +202,8 @@ class CreateOrUpdateMatrix<M extends Matrix<R>, R extends Row<C>, C extends Cell
 			matrixInfo.setCellPPodIdAndVersion(
 					rowPosition,
 					cellPosition,
-					cell.getPPodVersionInfo()
-							.getPPodVersion());
+					cell.getVersionInfo()
+							.getVersion());
 		}
 	}
 }

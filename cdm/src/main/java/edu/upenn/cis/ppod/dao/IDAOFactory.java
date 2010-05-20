@@ -70,7 +70,7 @@ public interface IDAOFactory {
 	 * 
 	 * @return an <code>IPPodVersionInfoDAO</code>.
 	 */
-	IPPodVersionInfoDAO getPPodVersionInfoDAO();
+	IVersionInfoDAO getPPodVersionInfoDAO();
 
 	/**
 	 * Get an {@link ICharacterStateRowDAO}.

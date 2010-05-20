@@ -17,14 +17,14 @@ package edu.upenn.cis.ppod.modelinterfaces;
 
 import javax.annotation.Nullable;
 
-import edu.upenn.cis.ppod.model.PPodVersionInfo;
+import edu.upenn.cis.ppod.model.VersionInfo;
 
 /**
  * An object with a {@link PPodVersionInfo}.
  * 
  * @author Sam Donnelly
  */
-public interface IPPodVersioned extends IPersistentObject {
+public interface IVersioned extends IPersistentObject {
 
 	/**
 	 * Used when we serialize so that we don't have to serialize the
@@ -38,7 +38,7 @@ public interface IPPodVersioned extends IPersistentObject {
 	 *             available
 	 */
 	@Nullable
-	Long getPPodVersion();
+	Long getVersion();
 
 	/**
 	 * Get the version info of this {@code IPPodVersioned}.
@@ -49,11 +49,11 @@ public interface IPPodVersioned extends IPersistentObject {
 	 * @return the version info of this {@code IPPodVersioned}
 	 */
 	@Nullable
-	PPodVersionInfo getPPodVersionInfo();
+	VersionInfo getVersionInfo();
 
-	IPPodVersioned setPPodVersionInfo(final PPodVersionInfo pPodVersionInfo);
+	IVersioned setVersionInfo(final VersionInfo versionInfo);
 
-	IPPodVersioned setInNeedOfNewPPodVersionInfo();
+	IVersioned setInNeedOfNewVersionInfo();
 
 	/**
 	 * Does this object need a new pPOD version before it is saved?
@@ -61,6 +61,6 @@ public interface IPPodVersioned extends IPersistentObject {
 	 * @return {@code true} of this object needs a new pPOD version before it is
 	 *         saved, {@code false} otherwise
 	 */
-	boolean isInNeedOfNewPPodVersionInfo();
+	boolean isInNeedOfNewVersionInfo();
 
 }

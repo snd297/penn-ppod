@@ -240,11 +240,11 @@ public class CharacterState extends PPodEntityWXmlId {
 	 * @return this {@code CharacterState}
 	 */
 	@Override
-	public CharacterState setInNeedOfNewPPodVersionInfo() {
+	public CharacterState setInNeedOfNewVersionInfo() {
 		if (character != null) {
-			character.setInNeedOfNewPPodVersionInfo();
+			character.setInNeedOfNewVersionInfo();
 		}
-		super.setInNeedOfNewPPodVersionInfo();
+		super.setInNeedOfNewVersionInfo();
 		return this;
 	}
 
@@ -261,7 +261,7 @@ public class CharacterState extends PPodEntityWXmlId {
 
 		} else {
 			this.label = label;
-			setInNeedOfNewPPodVersionInfo();
+			setInNeedOfNewVersionInfo();
 		}
 		return this;
 	}

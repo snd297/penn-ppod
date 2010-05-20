@@ -37,18 +37,18 @@ import javax.xml.bind.annotation.XmlAttribute;
  * @author Sam Donnelly
  */
 @Entity
-@Table(name = PPodVersionInfo.TABLE)
-public class PPodVersionInfo extends PersistentObject {
+@Table(name = VersionInfo.TABLE)
+public class VersionInfo extends PersistentObject {
 
-	final static String TABLE = "PPOD_VERSION_INFO";
+	final static String TABLE = "VERSION_INFO";
 
-	final static String ID_COLUMN = TABLE + "_ID";
+	final static String JOIN_COLUMN = TABLE + "_ID";
 
-	final static String PPOD_VERSION_INFO_FIELD = "pPodVersionInfo";
+	final static String VERSION_INFO_FIELD = "versionInfo";
 
 	/** Global pPOD version. */
-	@Column(name = "PPOD_VERSION", unique = true, nullable = false, updatable = false)
-	private Long pPodVersion = -1L;
+	@Column(name = "VERSION", unique = true, nullable = false, updatable = false)
+	private Long version = -1L;
 
 	/** Record the creation time of this record. */
 	@Column(name = "CREATED", nullable = false)
@@ -56,9 +56,10 @@ public class PPodVersionInfo extends PersistentObject {
 	private Date created;
 
 	/**
-	 * Intentionally package-private.
+	 * Intentionally package-private, to block subclassing outside of this
+	 * package.
 	 */
-	PPodVersionInfo() {}
+	VersionInfo() {}
 
 	/**
 	 * Get a copy of the creation date.
@@ -68,7 +69,7 @@ public class PPodVersionInfo extends PersistentObject {
 	@XmlAttribute
 	@Nullable
 	public Date getCreated() {
-		if (created == null) { 
+		if (created == null) {
 			return null;
 		}
 		return (Date) created.clone();
@@ -80,8 +81,8 @@ public class PPodVersionInfo extends PersistentObject {
 	 * @return the pPOD version number
 	 */
 	@XmlAttribute
-	public Long getPPodVersion() {
-		return pPodVersion;
+	public Long getVersion() {
+		return version;
 	}
 
 	/**
@@ -89,9 +90,9 @@ public class PPodVersionInfo extends PersistentObject {
 	 * 
 	 * @param created the value
 	 * 
-	 * @return this {@link PPodVersionInfo}
+	 * @return this {@link VersionInfo}
 	 */
-	PPodVersionInfo setCreated(final Date created) {
+	VersionInfo setCreated(final Date created) {
 		checkNotNull(created);
 		this.created = (Date) created.clone();
 		return this;
@@ -104,13 +105,13 @@ public class PPodVersionInfo extends PersistentObject {
 	 * outside of the package: use {@link HibernateUtil#openSession()} to start
 	 * a session that will create these.
 	 * 
-	 * @param pPodVersion the pPOD version number
+	 * @param version the pPOD version number
 	 * 
-	 * @return this {@link PPodVersionInfo}
+	 * @return this {@link VersionInfo}
 	 */
-	PPodVersionInfo setPPodVersion(final Long pPodVersion) {
-		checkNotNull(pPodVersion);
-		this.pPodVersion = pPodVersion;
+	VersionInfo setVersion(final Long version) {
+		checkNotNull(version);
+		this.version = version;
 		return this;
 	}
 
@@ -125,8 +126,8 @@ public class PPodVersionInfo extends PersistentObject {
 
 		final StringBuilder retValue = new StringBuilder();
 
-		retValue.append("PPodVersionInfo(").append(super.toString())
-				.append(TAB).append("pPodVersion=").append(this.pPodVersion)
+		retValue.append("VersionInfo(").append(super.toString())
+				.append(TAB).append("version=").append(this.version)
 				.append(TAB).append("created=").append(this.created)
 				.append(TAB).append(")");
 

@@ -100,7 +100,7 @@ public class PPodEntityInfo implements IWithPPodId {
 	 * 
 	 * @return this
 	 */
-	public PPodEntityInfo setPPodVersion(final Long pPodVersion) {
+	public PPodEntityInfo setVersion(final Long pPodVersion) {
 		this.pPodVersion = pPodVersion;
 		return this;
 	}

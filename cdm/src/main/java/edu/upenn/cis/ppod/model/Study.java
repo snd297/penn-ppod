@@ -78,7 +78,7 @@ public class Study extends UUPPodEntity implements IOTUSetCentricEntities {
 
 	@Override
 	public void accept(final IVisitor visitor) {
-		for (final OTUSet otuSet : getOTUSetsModifiable()) {
+		for (final OTUSet otuSet : getOTUSets()) {
 			otuSet.accept(visitor);
 		}
 		visitor.visit(this);
@@ -86,12 +86,12 @@ public class Study extends UUPPodEntity implements IOTUSetCentricEntities {
 
 	public OTUSet addOTUSet(final OTUSet otuSet) {
 		checkNotNull(otuSet);
-		if (getOTUSetsModifiable().contains(otuSet)) {
+		if (getOTUSets().contains(otuSet)) {
 			return otuSet;
 		}
 		otuSets.add(otuSet);
 		otuSet.setStudy(this);
-		setInNeedOfNewPPodVersionInfo();
+		setInNeedOfNewVersionInfo();
 		return otuSet;
 	}
 
@@ -114,7 +114,7 @@ public class Study extends UUPPodEntity implements IOTUSetCentricEntities {
 			PPodEntitiesUtil.extractAttachmentInfoFromPPodEntities(
 					studyWideAttachmentNamespaces, studyWideAttachmentTypes,
 					studyWideAttachments, this);
-			for (final OTUSet otuSet : getOTUSetsModifiable()) {
+			for (final OTUSet otuSet : getOTUSets()) {
 				for (final CharacterStateMatrix matrix : otuSet
 						.getCharacterStateMatrices()) {
 					studyWideCharacters
@@ -173,7 +173,7 @@ public class Study extends UUPPodEntity implements IOTUSetCentricEntities {
 	 */
 	public Study removeOTUSet(final OTUSet otuSet) {
 		if (otuSets.remove(otuSet)) {
-			setInNeedOfNewPPodVersionInfo();
+			setInNeedOfNewVersionInfo();
 		}
 		return this;
 	}
@@ -191,7 +191,7 @@ public class Study extends UUPPodEntity implements IOTUSetCentricEntities {
 
 		} else {
 			this.label = label;
-			setInNeedOfNewPPodVersionInfo();
+			setInNeedOfNewVersionInfo();
 		}
 		return this;
 	}

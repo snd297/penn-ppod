@@ -42,7 +42,7 @@ import edu.upenn.cis.ppod.model.CharacterStateMatrix;
 import edu.upenn.cis.ppod.model.CharacterStateRow;
 import edu.upenn.cis.ppod.model.DNACharacter;
 import edu.upenn.cis.ppod.model.DNAStateMatrix;
-import edu.upenn.cis.ppod.modelinterfaces.INewPPodVersionInfo;
+import edu.upenn.cis.ppod.modelinterfaces.INewVersionInfo;
 import edu.upenn.cis.ppod.modelinterfaces.IWithPPodId;
 import edu.upenn.cis.ppod.services.ppodentity.MatrixInfo;
 import edu.upenn.cis.ppod.thirdparty.injectslf4j.InjectLogger;
@@ -62,7 +62,7 @@ final class CreateOrUpdateCharacterStateMatrix implements
 	@InjectLogger
 	private Logger logger;
 
-	private final INewPPodVersionInfo newPPodVersionInfo;
+	private final INewVersionInfo newVersionInfo;
 	private final ICreateOrUpdateMatrix.IFactory<CharacterStateMatrix, CharacterStateRow, CharacterStateCell, CharacterState> saveOrUpdateMatrixFactory;
 
 	@Inject
@@ -71,7 +71,7 @@ final class CreateOrUpdateCharacterStateMatrix implements
 			final CharacterState.IFactory stateFactory,
 			final Provider<Attachment> attachmentProvider,
 			final ICreateOrUpdateMatrix.IFactory<CharacterStateMatrix, CharacterStateRow, CharacterStateCell, CharacterState> saveOrUpdateMatrixFactory,
-			@Assisted final INewPPodVersionInfo newPPodVersionInfo,
+			@Assisted final INewVersionInfo newVersionInfo,
 			@Assisted final IDAO<Object, Long> dao,
 			@Assisted final IMergeAttachments mergeAttachments) {
 		this.characterProvider = characterProvider;
@@ -80,7 +80,7 @@ final class CreateOrUpdateCharacterStateMatrix implements
 		this.saveOrUpdateMatrixFactory = saveOrUpdateMatrixFactory;
 		this.dao = dao;
 		this.mergeAttachments = mergeAttachments;
-		this.newPPodVersionInfo = newPPodVersionInfo;
+		this.newVersionInfo = newVersionInfo;
 	}
 
 	public MatrixInfo createOrUpdateMatrix(
@@ -109,8 +109,8 @@ final class CreateOrUpdateCharacterStateMatrix implements
 									.getPPodId()),
 									IWithPPodId.getPPodId)))) {
 				newDbCharacter = characterProvider.get();
-				newDbCharacter.setPPodVersionInfo(newPPodVersionInfo
-						.getNewPPodVersionInfo());
+				newDbCharacter.setVersionInfo(newVersionInfo
+						.getNewVersionInfo());
 				newDbCharacter.setPPodId();
 			}
 
@@ -127,8 +127,8 @@ final class CreateOrUpdateCharacterStateMatrix implements
 					dbState = stateFactory
 							.create(sourceState.getStateNumber());
 					newDbCharacter.putState(dbState);
-					dbState.setPPodVersionInfo(newPPodVersionInfo
-							.getNewPPodVersionInfo());
+					dbState.setVersionInfo(newVersionInfo
+							.getNewVersionInfo());
 				}
 
 				if (!(sourceMatrix instanceof DNAStateMatrix)) {
@@ -152,8 +152,8 @@ final class CreateOrUpdateCharacterStateMatrix implements
 						null);
 				if (dbAttachment == null) {
 					dbAttachment = attachmentProvider.get();
-					dbAttachment.setPPodVersionInfo(newPPodVersionInfo
-							.getNewPPodVersionInfo());
+					dbAttachment.setVersionInfo(newVersionInfo
+							.getNewVersionInfo());
 					dbAttachment.setPPodId();
 				}
 				newDbCharacter.addAttachment(dbAttachment);
@@ -171,7 +171,7 @@ final class CreateOrUpdateCharacterStateMatrix implements
 
 		final ICreateOrUpdateMatrix<CharacterStateMatrix, CharacterStateRow, CharacterStateCell, CharacterState> saveOrUpdateMatrix =
 				saveOrUpdateMatrixFactory
-						.create(newPPodVersionInfo, dao);
+						.create(newVersionInfo, dao);
 
 		final MatrixInfo matrixInfo = saveOrUpdateMatrix
 				.createOrUpdateMatrix(

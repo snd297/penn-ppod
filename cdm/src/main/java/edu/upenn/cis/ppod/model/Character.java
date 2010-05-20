@@ -237,7 +237,7 @@ public class Character extends UUPPodEntityWXmlId {
 			originalState.setCharacter(null);
 		}
 		state.setCharacter(this);
-		setInNeedOfNewPPodVersionInfo();
+		setInNeedOfNewVersionInfo();
 		return originalState;
 	}
 
@@ -256,11 +256,11 @@ public class Character extends UUPPodEntityWXmlId {
 	}
 
 	@Override
-	public Character setInNeedOfNewPPodVersionInfo() {
+	public Character setInNeedOfNewVersionInfo() {
 		for (final CharacterStateMatrix matrix : matrices) {
-			matrix.setInNeedOfNewPPodVersionInfo();
+			matrix.setInNeedOfNewVersionInfo();
 		}
-		super.setInNeedOfNewPPodVersionInfo();
+		super.setInNeedOfNewVersionInfo();
 		return this;
 	}
 
@@ -276,7 +276,7 @@ public class Character extends UUPPodEntityWXmlId {
 			// they're the same, nothing to do.
 		} else {
 			this.label = label;
-			setInNeedOfNewPPodVersionInfo();
+			setInNeedOfNewVersionInfo();
 		}
 		return this;
 	}

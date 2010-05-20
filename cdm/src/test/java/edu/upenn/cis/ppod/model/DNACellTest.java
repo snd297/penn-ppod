@@ -134,33 +134,33 @@ public class DNACellTest {
 	@Test
 	public void setTypeAndStatesInapplicable() {
 		final DNACell dnaCell = dnaCellProvider.get();
-		dnaCell.unsetInNeedOfNewPPodVersionInfo();
+		dnaCell.unsetInNeedOfNewVersionInfo();
 
 		@SuppressWarnings("unchecked")
 		final Set<DNANucleotide> emptySet = Collections.EMPTY_SET;
 		dnaCell.setTypeAndElements(Type.INAPPLICABLE, emptySet);
 		assertEquals(dnaCell.getType(), Type.INAPPLICABLE);
 		assertEquals(dnaCell.getElements().size(), 0);
-		assertTrue(dnaCell.isInNeedOfNewPPodVersionInfo());
+		assertTrue(dnaCell.isInNeedOfNewVersionInfo());
 	}
 
 	@Test
 	public void setTypeAndStatesSingle() {
 		final DNACell dnaCell = dnaCellProvider.get();
-		dnaCell.unsetInNeedOfNewPPodVersionInfo();
+		dnaCell.unsetInNeedOfNewVersionInfo();
 		dnaCell.setTypeAndElements(Type.SINGLE,
 				newHashSet(DNANucleotide.A));
 		assertEquals(dnaCell.getType(), Type.SINGLE);
 		assertEquals(getOnlyElement(dnaCell.getElements()),
 					DNANucleotide.A);
-		assertTrue(dnaCell.isInNeedOfNewPPodVersionInfo());
+		assertTrue(dnaCell.isInNeedOfNewVersionInfo());
 	}
 
 	@Test
 	public void setTypeAndStatesSingleWithValuesItAlreadyHad() {
 		final DNACell dnaCell = dnaCellProvider.get();
 
-		dnaCell.unsetInNeedOfNewPPodVersionInfo();
+		dnaCell.unsetInNeedOfNewVersionInfo();
 		dnaCell.setTypeAndElements(Type.SINGLE,
 				newHashSet(DNANucleotide.A));
 		dnaCell.setTypeAndElements(Type.SINGLE, newHashSet(DNANucleotide.A));
@@ -172,7 +172,7 @@ public class DNACellTest {
 				getOnlyElement(
 						dnaCell.getElements()),
 					DNANucleotide.A);
-		assertTrue(dnaCell.isInNeedOfNewPPodVersionInfo());
+		assertTrue(dnaCell.isInNeedOfNewVersionInfo());
 	}
 
 	@Test(groups = TestGroupDefs.SINGLE)

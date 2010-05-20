@@ -34,7 +34,7 @@ import edu.upenn.cis.ppod.dao.IOTUDAO;
 import edu.upenn.cis.ppod.dao.IOTUSetDAO;
 import edu.upenn.cis.ppod.dao.IPPodGroupDAO;
 import edu.upenn.cis.ppod.dao.IPPodRoleDAO;
-import edu.upenn.cis.ppod.dao.IPPodVersionInfoDAO;
+import edu.upenn.cis.ppod.dao.IVersionInfoDAO;
 import edu.upenn.cis.ppod.dao.ITreeDAO;
 import edu.upenn.cis.ppod.dao.ITreeSetDAO;
 import edu.upenn.cis.ppod.dao.IUserDAO;
@@ -244,8 +244,8 @@ public class HibernateDAOFactory implements IDAOFactory {
 				.setSession(session);
 	}
 
-	public IPPodVersionInfoDAO getPPodVersionInfoDAO() {
-		return (IPPodVersionInfoDAO) new PPodVersionInfoDAOHibernate()
+	public IVersionInfoDAO getPPodVersionInfoDAO() {
+		return (IVersionInfoDAO) new VersionInfoDAOHibernate()
 				.setSession(session);
 	}
 

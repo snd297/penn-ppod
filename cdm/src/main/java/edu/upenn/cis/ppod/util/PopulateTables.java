@@ -24,8 +24,8 @@ import com.google.inject.Injector;
 import edu.upenn.cis.ppod.PPodModule;
 import edu.upenn.cis.ppod.model.CharacterState;
 import edu.upenn.cis.ppod.model.DNACharacter;
-import edu.upenn.cis.ppod.modelinterfaces.INewPPodVersionInfo;
-import edu.upenn.cis.ppod.modelinterfaces.INewPPodVersionInfoHibernate;
+import edu.upenn.cis.ppod.modelinterfaces.INewVersionInfo;
+import edu.upenn.cis.ppod.modelinterfaces.INewVersionInfoHibernate;
 import edu.upenn.cis.ppod.thirdparty.util.HibernateUtil;
 
 /**
@@ -51,15 +51,15 @@ public class PopulateTables {
 			ManagedSessionContext.bind(session);
 			session.beginTransaction();
 
-			final INewPPodVersionInfo newPPodVersionInfo = injector
-					.getInstance(INewPPodVersionInfoHibernate.IFactory.class)
+			final INewVersionInfo newVersionInfo = injector
+					.getInstance(INewVersionInfoHibernate.IFactory.class)
 					.create(session);
-			dnaCharacter.setPPodVersionInfo(newPPodVersionInfo
-					.getNewPPodVersionInfo());
+			dnaCharacter.setVersionInfo(newVersionInfo
+					.getNewVersionInfo());
 
 			for (final CharacterState state : dnaCharacter.getStates()) {
-				state.setPPodVersionInfo(newPPodVersionInfo
-						.getNewPPodVersionInfo());
+				state.setVersionInfo(newVersionInfo
+						.getNewVersionInfo());
 			}
 
 			session.save(dnaCharacter);

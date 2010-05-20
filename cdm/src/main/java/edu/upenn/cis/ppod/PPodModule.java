@@ -30,7 +30,7 @@ import edu.upenn.cis.ppod.model.DNAState;
 import edu.upenn.cis.ppod.model.ModelModule;
 import edu.upenn.cis.ppod.services.StringPair;
 import edu.upenn.cis.ppod.util.IPair;
-import edu.upenn.cis.ppod.util.ISetPPodVersionInfoVisitor;
+import edu.upenn.cis.ppod.util.ISetVersionInfoVisitor;
 import edu.upenn.cis.ppod.util.Pair;
 
 /**
@@ -70,10 +70,10 @@ public final class PPodModule extends AbstractModule {
 						StringPair.IFactory.class,
 						StringPair.class));
 
-		bind(ISetPPodVersionInfoVisitor.IFactory.class).toProvider(
+		bind(ISetVersionInfoVisitor.IFactory.class).toProvider(
 				FactoryProvider.newFactory(
-						ISetPPodVersionInfoVisitor.IFactory.class,
-						ISetPPodVersionInfoVisitor.class));
+						ISetVersionInfoVisitor.IFactory.class,
+						ISetVersionInfoVisitor.class));
 
 		bind(ICreateOrUpdateStudy.IFactory.class).toProvider(
 				FactoryProvider.newFactory(

@@ -133,9 +133,11 @@ public class CharacterStateRowTest {
 		// Just call setUnassigned so that the cell is in a legal state - it
 		// shouldn't really matterJust call setUnassigned so that the cell is in
 		// a legal state - it shouldn't really matter
-		matrix.getRow(matrix.getOTUSet().getOTU(0)).setCells(
-				Arrays.asList((CharacterStateCell) cellProvider.get()
-						.setUnassigned()));
+		matrix.getRow(
+				matrix.getOTUSet().getOTU(0))
+				.setCells(
+						Arrays.asList((CharacterStateCell) cellProvider.get()
+								.setUnassigned()));
 	}
 
 	@Test(expectedExceptions = IllegalStateException.class)

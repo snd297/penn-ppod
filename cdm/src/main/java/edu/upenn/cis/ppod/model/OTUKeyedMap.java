@@ -31,7 +31,7 @@ import javax.annotation.Nullable;
 import javax.persistence.MappedSuperclass;
 
 import edu.upenn.cis.ppod.modelinterfaces.IOTUKeyedMapValue;
-import edu.upenn.cis.ppod.modelinterfaces.IPPodVersionedWithOTUSet;
+import edu.upenn.cis.ppod.modelinterfaces.IVersionedWithOTUSet;
 import edu.upenn.cis.ppod.util.IVisitor;
 import edu.upenn.cis.ppod.util.OTUSomethingPair;
 
@@ -74,7 +74,7 @@ public abstract class OTUKeyedMap<V extends IOTUKeyedMapValue>
 			return this;
 		}
 		getOTUsToValues().clear();
-		setNeedsPPodVersionInfo();
+		setIsInNeedOfNewVersionInfo();
 		return this;
 	}
 
@@ -100,7 +100,7 @@ public abstract class OTUKeyedMap<V extends IOTUKeyedMapValue>
 	 * class. This will never be {@code null} for a persistent object.
 	 */
 	@Nullable
-	protected abstract IPPodVersionedWithOTUSet getParent();
+	protected abstract IVersionedWithOTUSet getParent();
 
 	public List<V> getValuesInOTUSetOrder() {
 		if (getParent() == null) {
@@ -123,8 +123,8 @@ public abstract class OTUKeyedMap<V extends IOTUKeyedMapValue>
 	 * previously contained a mapping for {@code key}, the original value is
 	 * replaced by the specified value.
 	 * <p>
-	 * This method calls {@code getParent().setInNeedOfNewPPodVersionInfo()} if
-	 * this method changes anything
+	 * This method calls {@code getParent().setInNeedOfNewVersionInfo()} if this
+	 * method changes anything
 	 * 
 	 * @param key key
 	 * @param newValue new value for {@code key}
@@ -157,7 +157,7 @@ public abstract class OTUKeyedMap<V extends IOTUKeyedMapValue>
 		}
 		checkArgument(!getOTUsToValues().containsValue(value),
 				"already has a value .equals() to newT: " + value);
-		getParent().setInNeedOfNewPPodVersionInfo();
+		getParent().setInNeedOfNewVersionInfo();
 		final V originalValue = getOTUsToValues().put(key, value);
 		// If we are replacing an OTU's sequence, we need to sever the previous
 		// sequence's sequence->sequenceSet pointer.
@@ -172,8 +172,8 @@ public abstract class OTUKeyedMap<V extends IOTUKeyedMapValue>
 	 * previously contained a mapping for {@code key}, the original value is
 	 * replaced by the specified value.
 	 * <p>
-	 * This method calls {@code getParent().setInNeedOfNewPPodVersionInfo()} if
-	 * this method changes anything
+	 * This method calls {@code getParent().setInNeedOfNewVersionInfo()} if this
+	 * method changes anything
 	 * 
 	 * @param key key
 	 * @param newValue new value for {@code key}
@@ -194,7 +194,7 @@ public abstract class OTUKeyedMap<V extends IOTUKeyedMapValue>
 	@CheckForNull
 	public abstract V put(final OTU key, final V value);
 
-	protected abstract OTUKeyedMap<V> setNeedsPPodVersionInfo();
+	protected abstract OTUKeyedMap<V> setIsInNeedOfNewVersionInfo();
 
 	/**
 	 * Set the keys of this {@code OTUKeyedMap} to the OTU's in {@code
@@ -206,7 +206,7 @@ public abstract class OTUKeyedMap<V extends IOTUKeyedMapValue>
 	 */
 	@CheckForNull
 	protected OTUKeyedMap<V> setOTUs() {
-		final IPPodVersionedWithOTUSet parent = getParent();
+		final IVersionedWithOTUSet parent = getParent();
 
 		final Set<OTU> otusToBeRemoved = newHashSet();
 		for (final OTU otu : getOTUsToValues().keySet()) {
@@ -215,7 +215,7 @@ public abstract class OTUKeyedMap<V extends IOTUKeyedMapValue>
 				// it stays
 			} else {
 				otusToBeRemoved.add(otu);
-				parent.isInNeedOfNewPPodVersionInfo();
+				parent.isInNeedOfNewVersionInfo();
 			}
 		}
 
@@ -227,7 +227,7 @@ public abstract class OTUKeyedMap<V extends IOTUKeyedMapValue>
 
 				} else {
 					getOTUsToValues().put(otu, null);
-					parent.setInNeedOfNewPPodVersionInfo();
+					parent.setInNeedOfNewVersionInfo();
 				}
 			}
 		}

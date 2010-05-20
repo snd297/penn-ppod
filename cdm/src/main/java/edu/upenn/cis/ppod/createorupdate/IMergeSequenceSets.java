@@ -20,7 +20,7 @@ import com.google.inject.ImplementedBy;
 import edu.upenn.cis.ppod.dao.IDAO;
 import edu.upenn.cis.ppod.model.Sequence;
 import edu.upenn.cis.ppod.model.SequenceSet;
-import edu.upenn.cis.ppod.modelinterfaces.INewPPodVersionInfo;
+import edu.upenn.cis.ppod.modelinterfaces.INewVersionInfo;
 
 /**
  * @author Sam Donnelly
@@ -36,6 +36,6 @@ public interface IMergeSequenceSets<SS extends SequenceSet<S>, S extends Sequenc
 	static interface IFactory<SS extends SequenceSet<S>, S extends Sequence> {
 
 		IMergeSequenceSets<SS, S> create(IDAO<Object, Long> dao,
-				INewPPodVersionInfo newPPodVersionInfo);
+				INewVersionInfo newVersionInfo);
 	}
 }

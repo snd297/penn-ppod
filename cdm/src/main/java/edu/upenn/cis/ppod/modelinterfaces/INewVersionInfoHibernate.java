@@ -15,15 +15,15 @@
  */
 package edu.upenn.cis.ppod.modelinterfaces;
 
-
+import org.hibernate.Session;
 
 /**
- * {@code IPPodVersioned}s that contain an {@code OTUSet}.
- * <p>
- * This interface was cooked up for {@link OTUKeyedMap}.
+ * A {@code INewPPodVersionInfo} that needs a Hibernate {@code Session}.
  * 
  * @author Sam Donnelly
  */
-public interface IPPodVersionedWithOTUSet extends IPPodVersioned, IWithOTUSet {
-
+public interface INewVersionInfoHibernate extends INewVersionInfo {
+	static interface IFactory {
+		INewVersionInfoHibernate create(Session session);
+	}
 }

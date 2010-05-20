@@ -4,7 +4,6 @@ import static com.google.common.base.Objects.equal;
 import static com.google.common.base.Preconditions.checkArgument;
 import static com.google.common.base.Preconditions.checkNotNull;
 import static com.google.common.collect.Lists.newArrayList;
-import static edu.upenn.cis.ppod.util.CollectionsUtil.nullFillAndSet;
 
 import java.util.Collections;
 import java.util.List;
@@ -22,6 +21,7 @@ import javax.persistence.ManyToOne;
 import javax.persistence.MappedSuperclass;
 import javax.persistence.OrderColumn;
 import javax.persistence.Transient;
+import javax.xml.bind.Marshaller;
 import javax.xml.bind.Unmarshaller;
 import javax.xml.bind.annotation.XmlAttribute;
 import javax.xml.bind.annotation.XmlElement;
@@ -36,8 +36,8 @@ import edu.upenn.cis.ppod.util.IVisitor;
  * @author Sam Donnelly
  */
 @MappedSuperclass
-public abstract class Matrix<R extends Row<?>> extends
-		UUPPodEntityWXmlId
+public abstract class Matrix<R extends Row<?>>
+		extends UUPPodEntityWXmlId
 		implements IMatrix {
 
 	/** Description column. */
@@ -48,12 +48,12 @@ public abstract class Matrix<R extends Row<?>> extends
 
 	/** The pPod versions of the columns. */
 	@ManyToMany
-	@JoinTable(inverseJoinColumns = { @JoinColumn(name = PPodVersionInfo.ID_COLUMN) })
-	@OrderColumn(name = PPodVersionInfo.TABLE + "_POSITION")
-	private final List<PPodVersionInfo> columnPPodVersionInfos = newArrayList();
+	@JoinTable(inverseJoinColumns = { @JoinColumn(name = VersionInfo.JOIN_COLUMN) })
+	@OrderColumn(name = VersionInfo.TABLE + "_POSITION")
+	private final List<VersionInfo> columnVersionInfos = newArrayList();
 
 	@Transient
-	private final List<Long> columnPPodVersions = newArrayList();
+	private final List<Long> columnVersions = newArrayList();
 
 	/** Free-form description. */
 	@Column(name = DESCRIPTION_COLUMN, nullable = true)
@@ -74,11 +74,11 @@ public abstract class Matrix<R extends Row<?>> extends
 	@CheckForNull
 	private OTUSet otuSet;
 
-	protected Matrix() {}
+	Matrix() {}
 
 	@Override
 	public void accept(final IVisitor visitor) {
-		getOTUsToRows().accept(visitor);
+		getOTUKeyedRows().accept(visitor);
 		super.accept(visitor);
 	}
 
@@ -91,7 +91,22 @@ public abstract class Matrix<R extends Row<?>> extends
 	@Override
 	public void afterUnmarshal(final Unmarshaller u, final Object parent) {
 		super.afterUnmarshal(u, parent);
-		setOTUSet((OTUSet) parent);
+		otuSet = (OTUSet) parent;
+	}
+
+	@Override
+	public boolean beforeMarshal(@CheckForNull final Marshaller marshaller) {
+		super.beforeMarshal(marshaller);
+
+		for (final VersionInfo columnVersionInfo : getColumnVersionInfos()) {
+			if (columnVersionInfo == null) {
+				getColumnVersionsModifiable().add(null);
+			} else {
+				getColumnVersionsModifiable()
+						.add(columnVersionInfo.getVersion());
+			}
+		}
+		return true;
 	}
 
 	/**
@@ -101,8 +116,8 @@ public abstract class Matrix<R extends Row<?>> extends
 	 * 
 	 * @return get the column pPOD version infos
 	 */
-	public List<PPodVersionInfo> getColumnPPodVersionInfos() {
-		return Collections.unmodifiableList(columnPPodVersionInfos);
+	public List<VersionInfo> getColumnVersionInfos() {
+		return Collections.unmodifiableList(columnVersionInfos);
 	}
 
 	/**
@@ -110,20 +125,18 @@ public abstract class Matrix<R extends Row<?>> extends
 	 * 
 	 * @return a modifiable reference to the column pPOD version infos
 	 */
-	protected List<PPodVersionInfo> getColumnPPodVersionInfosModifiable() {
-		return columnPPodVersionInfos;
+	protected List<VersionInfo> getColumnVersionInfosModifiable() {
+		return columnVersionInfos;
 	}
 
-	public List<Long> getColumnPPodVersions() {
-		return Collections.unmodifiableList(columnPPodVersions);
+	public List<Long> getColumnVersions() {
+		return Collections.unmodifiableList(columnVersions);
 	}
 
-	@XmlElement(name = "columnPPodVersion")
-	protected List<Long> getColumnPPodVersionsModifiable() {
-		return columnPPodVersions;
+	@XmlElement(name = "columnVersion")
+	protected List<Long> getColumnVersionsModifiable() {
+		return columnVersions;
 	}
-
-	public abstract Integer getColumnsSize();
 
 	/**
 	 * Getter.
@@ -151,6 +164,16 @@ public abstract class Matrix<R extends Row<?>> extends
 	}
 
 	/**
+	 * Get the otusToRows.
+	 * <p>
+	 * In perfect world, this would live in a subclass since it does impose a
+	 * certain implementation - storing rows in an OTU-to-row map.
+	 * 
+	 * @return the otusToRows
+	 */
+	protected abstract OTUKeyedMap<R> getOTUKeyedRows();
+
+	/**
 	 * Getter. Will be {@code null} when object is first created, but never
 	 * {@code null} for persistent objects.
 	 * 
@@ -160,16 +183,6 @@ public abstract class Matrix<R extends Row<?>> extends
 	public OTUSet getOTUSet() {
 		return otuSet;
 	}
-
-	/**
-	 * Get the otusToRows.
-	 * <p>
-	 * In perfect world, this would live in a subclass since it does impose a
-	 * certain implementation detail - storing rows in an OTU-to-row map.
-	 * 
-	 * @return the otusToRows
-	 */
-	protected abstract OTUKeyedMap<R> getOTUsToRows();
 
 	/**
 	 * Get the row indexed by an OTU, or {@code null} if no such row has been
@@ -191,7 +204,7 @@ public abstract class Matrix<R extends Row<?>> extends
 	@Nullable
 	public R getRow(final OTU otu) {
 		checkNotNull(otu);
-		return getOTUsToRows().get(otu);
+		return getOTUKeyedRows().get(otu);
 	}
 
 	/**
@@ -200,7 +213,8 @@ public abstract class Matrix<R extends Row<?>> extends
 	 * @return the rows that make up this matrix
 	 */
 	public Map<OTU, R> getRows() {
-		return Collections.unmodifiableMap(getOTUsToRows().getOTUsToValues());
+		return Collections.unmodifiableMap(getOTUKeyedRows()
+				.getOTUsToValues());
 	}
 
 	/**
@@ -225,21 +239,25 @@ public abstract class Matrix<R extends Row<?>> extends
 	public R putRow(final OTU otu, final R row) {
 		checkNotNull(otu);
 		checkNotNull(row);
-		return getOTUsToRows().put(otu, row);
+		return getOTUKeyedRows().put(otu, row);
 	}
 
 	/**
-	 * Set the {@link PPodVersionInfo} at {@code idx} to {@code null}. Fills
-	 * with <code>null</code>s if necessary.
+	 * Set the {@link VersionInfo} at {@code idx} to {@code null}. Fills with
+	 * <code>null</code>s if necessary.
 	 * 
 	 * @param position see description
 	 * 
 	 * @return this
 	 */
-	public Matrix<R> resetColumnPPodVersion(
+	public Matrix<R> resetColumnVersion(
 			@Nonnegative final int position) {
 		checkArgument(position >= 0, "position is negative");
-		nullFillAndSet(getColumnPPodVersionInfosModifiable(), position, null);
+		checkArgument(position < getColumnVersionInfos().size(),
+				"position " + position
+						+ " is too large for the number of columns "
+						+ getColumnVersionInfos().size());
+		columnVersionInfos.set(position, null);
 		return this;
 	}
 
@@ -247,34 +265,34 @@ public abstract class Matrix<R extends Row<?>> extends
 	 * Set a particular column to a version.
 	 * 
 	 * @param pos position of the column
-	 * @param pPodVersionInfo the version
+	 * @param versionInfo the version
 	 * 
 	 * @return this
 	 * 
 	 * @throw IllegalArgumentException if {@code pos >=
-	 *        getColumnPPodVersionInfos().size()}
+	 *        getColumnVersionInfos().size()}
 	 */
-	public Matrix<R> setColumnPPodVersionInfo(
+	public Matrix<R> setColumnVersionInfo(
 			final int pos,
-			final PPodVersionInfo pPodVersionInfo) {
-		checkNotNull(pPodVersionInfo);
-		checkArgument(pos < getColumnPPodVersionInfos().size(),
-				"pos is bigger than getColumnPPodVersionInfos().size()");
-		getColumnPPodVersionInfosModifiable().set(pos, pPodVersionInfo);
+			final VersionInfo versionInfo) {
+		checkNotNull(versionInfo);
+		checkArgument(pos < getColumnVersionInfos().size(),
+				"pos is bigger than getColumnVersionInfos().size()");
+		getColumnVersionInfosModifiable().set(pos, versionInfo);
 		return this;
 	}
 
 	/**
 	 * Set all of the columns' pPOD version infos.
 	 * 
-	 * @param pPodVersionInfo the pPOD version info
+	 * @param versionInfo the pPOD version info
 	 * 
 	 * @return this
 	 */
-	public Matrix<R> setColumnPPodVersionInfos(
-			final PPodVersionInfo pPodVersionInfo) {
-		for (int pos = 0; pos < getColumnPPodVersionInfos().size(); pos++) {
-			setColumnPPodVersionInfo(pos, pPodVersionInfo);
+	public Matrix<R> setColumnVersionInfos(
+			final VersionInfo versionInfo) {
+		for (int pos = 0; pos < getColumnVersionInfos().size(); pos++) {
+			setColumnVersionInfo(pos, versionInfo);
 		}
 		return this;
 	}
@@ -292,23 +310,23 @@ public abstract class Matrix<R extends Row<?>> extends
 			// nothing to do
 		} else {
 			this.description = description;
-			setInNeedOfNewPPodVersionInfo();
+			setInNeedOfNewVersionInfo();
 		}
 		return this;
 	}
 
 	/**
-	 * {@code null} out {@code pPodVersionInfo} and the {@link PPodVersionInfo}
-	 * of the owning study.
+	 * {@code null} out {@code versionInfo} and the {@link versionInfo} of the
+	 * owning study.
 	 * 
 	 * @return this {@code CharacterStateMatrix}
 	 */
 	@Override
-	public Matrix<R> setInNeedOfNewPPodVersionInfo() {
+	public Matrix<R> setInNeedOfNewVersionInfo() {
 		if (getOTUSet() != null) {
-			getOTUSet().setInNeedOfNewPPodVersionInfo();
+			getOTUSet().setInNeedOfNewVersionInfo();
 		}
-		super.setInNeedOfNewPPodVersionInfo();
+		super.setInNeedOfNewVersionInfo();
 		return this;
 	}
 
@@ -328,7 +346,7 @@ public abstract class Matrix<R extends Row<?>> extends
 			// they're the same, nothing to do
 		} else {
 			this.label = label;
-			setInNeedOfNewPPodVersionInfo();
+			setInNeedOfNewVersionInfo();
 		}
 		return this;
 	}
@@ -339,21 +357,21 @@ public abstract class Matrix<R extends Row<?>> extends
 	 * Meant to be called only from objects responsible for managing the {@code
 	 * OTUSET<->CharacterStateMatrix} relationship.
 	 * <p>
-	 * This method will remove otusToRows from this matrix as necessary.
+	 * This method will remove rows from this matrix as necessary.
 	 * <p>
 	 * If there are any new {@code OTU}s in {@code newOTUSet}, then {@code
-	 * getRow(theNewOTU) == null}. That is, it adss {@code null} rows for new
+	 * getRow(theNewOTU) == null}. That is, it adds {@code null} rows for new
 	 * {@code OTU}s.
 	 * 
-	 * @param newOTUSet new {@code OTUSet} for this matrix, or {@code null} if
+	 * @param otuSet new {@code OTUSet} for this matrix, or {@code null} if
 	 *            we're destroying the association
 	 * 
 	 * @return this
 	 */
 	protected Matrix<R> setOTUSet(
-			@CheckForNull final OTUSet newOTUSet) {
-		otuSet = newOTUSet;
-		getOTUsToRows().setOTUs();
+			@CheckForNull final OTUSet otuSet) {
+		this.otuSet = otuSet;
+		getOTUKeyedRows().setOTUs();
 		return this;
 	}
 

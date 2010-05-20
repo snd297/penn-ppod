@@ -66,15 +66,15 @@ public class ChromatogramTest {
 
 		assertEquals(chromatogram.getChromatogram(), bytes);
 
-		assertTrue(chromatogram.isInNeedOfNewPPodVersionInfo());
+		assertTrue(chromatogram.isInNeedOfNewVersionInfo());
 
-		chromatogram.unsetInNeedOfNewPPodVersionInfo();
+		chromatogram.unsetInNeedOfNewVersionInfo();
 
 		chromatogram.setChromatogram(bytes);
 
-		assertFalse(chromatogram.isInNeedOfNewPPodVersionInfo());
+		assertFalse(chromatogram.isInNeedOfNewVersionInfo());
 
-		chromatogram.unsetInNeedOfNewPPodVersionInfo();
+		chromatogram.unsetInNeedOfNewVersionInfo();
 
 		final byte[] bytes2 = new byte[] { 3, 5, 3 };
 
