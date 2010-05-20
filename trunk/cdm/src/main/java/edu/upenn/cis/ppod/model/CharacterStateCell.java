@@ -265,7 +265,7 @@ public class CharacterStateCell extends Cell<CharacterState> {
 		}
 
 		setType(type);
-		setInNeedOfNewVersionInfo();
+		setInNeedOfNewVersion();
 		return this;
 	}
 

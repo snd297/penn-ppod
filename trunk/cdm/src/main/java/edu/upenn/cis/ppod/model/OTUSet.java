@@ -144,7 +144,7 @@ public class OTUSet extends UUPPodEntityWXmlId {
 		checkNotNull(matrix);
 		if (characterStateMatrices.add(matrix)) {
 			matrix.setOTUSet(this);
-			setInNeedOfNewVersionInfo();
+			setInNeedOfNewVersion();
 		}
 		return matrix;
 	}
@@ -153,7 +153,7 @@ public class OTUSet extends UUPPodEntityWXmlId {
 		checkNotNull(matrix);
 		if (dnaMatrices.add(matrix)) {
 			matrix.setOTUSet(this);
-			setInNeedOfNewVersionInfo();
+			setInNeedOfNewVersion();
 		}
 		return matrix;
 	}
@@ -172,7 +172,7 @@ public class OTUSet extends UUPPodEntityWXmlId {
 		checkNotNull(sequenceSet);
 		if (dnaSequenceSets.add(sequenceSet)) {
 			sequenceSet.setOTUSet(this);
-			setInNeedOfNewVersionInfo();
+			setInNeedOfNewVersion();
 		}
 		return sequenceSet;
 	}
@@ -218,7 +218,7 @@ public class OTUSet extends UUPPodEntityWXmlId {
 		}
 		if (getOTUsModifiable().add(otu)) {
 			otu.setOTUSet(this);
-			setInNeedOfNewVersionInfo();
+			setInNeedOfNewVersion();
 		}
 		return otu;
 	}
@@ -227,7 +227,7 @@ public class OTUSet extends UUPPodEntityWXmlId {
 		checkNotNull(treeSet);
 		if (getTreeSetsModifiable().add(treeSet)) {
 			treeSet.setOTUSet(this);
-			setInNeedOfNewVersionInfo();
+			setInNeedOfNewVersion();
 		}
 		return treeSet;
 	}
@@ -366,7 +366,7 @@ public class OTUSet extends UUPPodEntityWXmlId {
 		checkNotNull(dnaSequenceSet);
 		if (getDNASequenceSetsModifiable().remove(dnaSequenceSet)) {
 			dnaSequenceSet.setOTUSet(null);
-			setInNeedOfNewVersionInfo();
+			setInNeedOfNewVersion();
 			return true;
 		}
 		return false;
@@ -399,7 +399,7 @@ public class OTUSet extends UUPPodEntityWXmlId {
 		for (final CharacterStateMatrix newMatrix : newMatrices) {
 			addCharacterStateMatrix(newMatrix);
 		}
-		setInNeedOfNewVersionInfo();
+		setInNeedOfNewVersion();
 		return removedMatrices;
 	}
 
@@ -415,7 +415,7 @@ public class OTUSet extends UUPPodEntityWXmlId {
 
 		} else {
 			this.description = newDescription;
-			setInNeedOfNewVersionInfo();
+			setInNeedOfNewVersion();
 		}
 		return this;
 	}
@@ -455,7 +455,7 @@ public class OTUSet extends UUPPodEntityWXmlId {
 			addDNASequenceSet(newSequenceSet);
 		}
 
-		setInNeedOfNewVersionInfo();
+		setInNeedOfNewVersion();
 		return removedSequenceSets;
 	}
 
@@ -466,12 +466,12 @@ public class OTUSet extends UUPPodEntityWXmlId {
 	 * @return this {@code OTUSet}
 	 */
 	@Override
-	public OTUSet setInNeedOfNewVersionInfo() {
+	public OTUSet setInNeedOfNewVersion() {
 		final Study study = getStudy();
 		if (study != null) {
-			study.setInNeedOfNewVersionInfo();
+			study.setInNeedOfNewVersion();
 		}
-		super.setInNeedOfNewVersionInfo();
+		super.setInNeedOfNewVersion();
 		return this;
 	}
 
@@ -488,7 +488,7 @@ public class OTUSet extends UUPPodEntityWXmlId {
 
 		} else {
 			this.label = newLabel;
-			setInNeedOfNewVersionInfo();
+			setInNeedOfNewVersion();
 		}
 		return this;
 	}
@@ -526,7 +526,7 @@ public class OTUSet extends UUPPodEntityWXmlId {
 
 		setOTUSetOnChildren();
 
-		setInNeedOfNewVersionInfo();
+		setInNeedOfNewVersion();
 
 		return removedOTUs;
 	}
@@ -560,7 +560,7 @@ public class OTUSet extends UUPPodEntityWXmlId {
 
 		} else {
 			this.study = study;
-			setInNeedOfNewVersionInfo();
+			setInNeedOfNewVersion();
 		}
 		return this;
 	}
@@ -593,7 +593,7 @@ public class OTUSet extends UUPPodEntityWXmlId {
 		for (final TreeSet treeSet : newTreeSets) {
 			addTreeSet(treeSet);
 		}
-		setInNeedOfNewVersionInfo();
+		setInNeedOfNewVersion();
 		return removedTreeSets;
 	}
 

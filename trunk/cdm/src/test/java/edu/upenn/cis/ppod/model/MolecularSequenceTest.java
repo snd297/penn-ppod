@@ -62,14 +62,14 @@ public class MolecularSequenceTest {
 		final String sequenceString = "ACGTAC-T-A";
 		sequence.setSequence(sequenceString);
 		assertEquals(sequence.getSequence(), sequenceString);
-		assertTrue(sequence.isInNeedOfNewVersionInfo());
+		assertTrue(sequence.isInNeedOfNewVersion());
 
 		// Now set the same sequence - should have no affect on need for new
 		// ppod version
-		sequence.unsetInNeedOfNewVersionInfo();
+		sequence.unsetInNeedOfNewVersion();
 		sequence.setSequence(sequenceString);
 		assertEquals(sequence.getSequence(), sequenceString);
-		assertFalse(sequence.isInNeedOfNewVersionInfo());
+		assertFalse(sequence.isInNeedOfNewVersion());
 	}
 
 	/**
@@ -110,22 +110,22 @@ public class MolecularSequenceTest {
 
 		sequenceSet.putSequence(otu0, sequence);
 
-		sequence.unsetInNeedOfNewVersionInfo();
-		sequenceSet.unsetInNeedOfNewVersionInfo();
+		sequence.unsetInNeedOfNewVersion();
+		sequenceSet.unsetInNeedOfNewVersion();
 
-		sequence.setInNeedOfNewVersionInfo();
+		sequence.setInNeedOfNewVersion();
 
-		assertTrue(sequence.isInNeedOfNewVersionInfo());
+		assertTrue(sequence.isInNeedOfNewVersion());
 
-		assertTrue(sequenceSet.isInNeedOfNewVersionInfo());
+		assertTrue(sequenceSet.isInNeedOfNewVersion());
 
 		// Let's make sure it works if no parent has been set.
 		sequence.setOTUsToSequences(null);
-		sequence.unsetInNeedOfNewVersionInfo();
+		sequence.unsetInNeedOfNewVersion();
 
-		sequence.setInNeedOfNewVersionInfo();
+		sequence.setInNeedOfNewVersion();
 
-		assertTrue(sequence.isInNeedOfNewVersionInfo());
+		assertTrue(sequence.isInNeedOfNewVersion());
 
 	}
 
@@ -149,15 +149,15 @@ public class MolecularSequenceTest {
 
 		assertEquals(sequence.getName(), sequenceName);
 
-		assertTrue(sequence.isInNeedOfNewVersionInfo());
+		assertTrue(sequence.isInNeedOfNewVersion());
 
-		sequence.unsetInNeedOfNewVersionInfo();
+		sequence.unsetInNeedOfNewVersion();
 
 		sequence.setName(sequenceName);
 
-		assertFalse(sequence.isInNeedOfNewVersionInfo());
+		assertFalse(sequence.isInNeedOfNewVersion());
 
-		sequence.unsetInNeedOfNewVersionInfo();
+		sequence.unsetInNeedOfNewVersion();
 
 		sequence.setName(null);
 
@@ -185,15 +185,15 @@ public class MolecularSequenceTest {
 
 		assertEquals(sequence.getAccession(), accession);
 
-		assertTrue(sequence.isInNeedOfNewVersionInfo());
+		assertTrue(sequence.isInNeedOfNewVersion());
 
-		sequence.unsetInNeedOfNewVersionInfo();
+		sequence.unsetInNeedOfNewVersion();
 
 		sequence.setAccession(accession);
 
-		assertFalse(sequence.isInNeedOfNewVersionInfo());
+		assertFalse(sequence.isInNeedOfNewVersion());
 
-		sequence.unsetInNeedOfNewVersionInfo();
+		sequence.unsetInNeedOfNewVersion();
 
 		sequence.setAccession(null);
 
@@ -221,15 +221,15 @@ public class MolecularSequenceTest {
 
 		assertEquals(sequence.getDescription(), description);
 
-		assertTrue(sequence.isInNeedOfNewVersionInfo());
+		assertTrue(sequence.isInNeedOfNewVersion());
 
-		sequence.unsetInNeedOfNewVersionInfo();
+		sequence.unsetInNeedOfNewVersion();
 
 		sequence.setDescription(description);
 
-		assertFalse(sequence.isInNeedOfNewVersionInfo());
+		assertFalse(sequence.isInNeedOfNewVersion());
 
-		sequence.unsetInNeedOfNewVersionInfo();
+		sequence.unsetInNeedOfNewVersion();
 
 		sequence.setDescription(null);
 

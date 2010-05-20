@@ -121,8 +121,8 @@ final class Study2StudyInfo implements IStudy2StudyInfo {
 							matrix.getColumnVersionInfos()
 									.get(columnPosition);
 					matrixInfo.getColumnHeaderVersionsByIdx()
-							.put(columnPosition,
-									columnVersionInfo.getVersion());
+								.put(columnPosition,
+										columnVersionInfo.getVersion());
 				}
 
 				int rowIdx = -1;

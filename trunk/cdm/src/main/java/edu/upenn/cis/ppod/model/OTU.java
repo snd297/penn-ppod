@@ -119,12 +119,12 @@ public class OTU
 	 * @return this {@code OTU}
 	 */
 	@Override
-	public OTU setInNeedOfNewVersionInfo() {
+	public OTU setInNeedOfNewVersion() {
 
 		if (getOTUSet() != null) {
-			getOTUSet().setInNeedOfNewVersionInfo();
+			getOTUSet().setInNeedOfNewVersion();
 		}
-		super.setInNeedOfNewVersionInfo();
+		super.setInNeedOfNewVersion();
 		return this;
 	}
 
@@ -141,7 +141,7 @@ public class OTU
 
 		} else {
 			this.label = label;
-			setInNeedOfNewVersionInfo();
+			setInNeedOfNewVersion();
 		}
 		return this;
 	}

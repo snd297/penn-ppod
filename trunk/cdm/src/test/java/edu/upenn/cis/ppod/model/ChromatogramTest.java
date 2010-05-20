@@ -66,15 +66,15 @@ public class ChromatogramTest {
 
 		assertEquals(chromatogram.getChromatogram(), bytes);
 
-		assertTrue(chromatogram.isInNeedOfNewVersionInfo());
+		assertTrue(chromatogram.isInNeedOfNewVersion());
 
-		chromatogram.unsetInNeedOfNewVersionInfo();
+		chromatogram.unsetInNeedOfNewVersion();
 
 		chromatogram.setChromatogram(bytes);
 
-		assertFalse(chromatogram.isInNeedOfNewVersionInfo());
+		assertFalse(chromatogram.isInNeedOfNewVersion());
 
-		chromatogram.unsetInNeedOfNewVersionInfo();
+		chromatogram.unsetInNeedOfNewVersion();
 
 		final byte[] bytes2 = new byte[] { 3, 5, 3 };
 

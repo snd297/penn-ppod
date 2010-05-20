@@ -157,7 +157,7 @@ public abstract class Cell<E> extends PPodEntity {
 			if (getElementsRaw() != null) {
 				getElementsRaw().clear();
 			}
-			setInNeedOfNewVersionInfo();
+			setInNeedOfNewVersion();
 		}
 	}
 
@@ -266,10 +266,10 @@ public abstract class Cell<E> extends PPodEntity {
 	}
 
 	@Override
-	public Cell<E> setInNeedOfNewVersionInfo() {
+	public Cell<E> setInNeedOfNewVersion() {
 		final IRow row = getRow();
 		if (row != null) {
-			row.setInNeedOfNewVersionInfo();
+			row.setInNeedOfNewVersion();
 			final IMatrix matrix = row.getMatrix();
 			if (matrix != null) {
 
@@ -280,7 +280,7 @@ public abstract class Cell<E> extends PPodEntity {
 				matrix.resetColumnVersion(position);
 			}
 		}
-		super.setInNeedOfNewVersionInfo();
+		super.setInNeedOfNewVersion();
 		return this;
 	}
 

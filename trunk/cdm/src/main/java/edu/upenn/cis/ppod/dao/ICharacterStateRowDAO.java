@@ -26,7 +26,8 @@ import edu.upenn.cis.ppod.model.CharacterStateRow;
  */
 public interface ICharacterStateRowDAO extends IDAO<CharacterStateRow, Long> {
 
-	List<Object[]> getCellIdxsVersionsByRowIdAndMinVersion(Long rowId,
-			Long minPPodVersion);
+	List<Object[]> getCellIdxsVersionsByRowIdAndMinVersion(
+			Long rowId,
+			Long minVersion);
 
 }

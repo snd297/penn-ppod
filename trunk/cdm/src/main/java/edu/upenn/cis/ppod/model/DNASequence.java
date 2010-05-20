@@ -45,11 +45,14 @@ public class DNASequence extends Sequence {
 	/**
 	 * The name of the {@code DNASequence} table.
 	 */
-	static final String TABLE = "DNA_SEQUENCE";
+	public static final String TABLE = "DNA_SEQUENCE";
+
+	public static final String JOIN_COLUMN =
+			TABLE + "_" + PersistentObject.ID_COLUMN;
 
 	@ManyToOne(fetch = FetchType.LAZY)
 	@CheckForNull
-	private OTUsToDNASequences otusToSequences;
+	private DNASequences otusToSequences;
 
 	@Override
 	public void accept(final IVisitor visitor) {
@@ -60,7 +63,7 @@ public class DNASequence extends Sequence {
 	 * Created for testing.
 	 */
 	@CheckForNull
-	OTUsToDNASequences getOTUsToSequences() {
+	DNASequences getOTUsToSequences() {
 		return otusToSequences;
 	}
 
@@ -70,16 +73,16 @@ public class DNASequence extends Sequence {
 	}
 
 	@Override
-	public DNASequence setInNeedOfNewVersionInfo() {
+	public DNASequence setInNeedOfNewVersion() {
 		if (otusToSequences != null) {
 			this.otusToSequences.setInNeedOfNewVersion();
 		}
-		super.setInNeedOfNewVersionInfo();
+		super.setInNeedOfNewVersion();
 		return this;
 	}
 
 	protected DNASequence setOTUsToSequences(
-			@CheckForNull final OTUsToDNASequences otusToSequences) {
+			@CheckForNull final DNASequences otusToSequences) {
 		this.otusToSequences = otusToSequences;
 		return this;
 	}

@@ -32,8 +32,8 @@ public class DNACell extends Cell<DNANucleotide> {
 
 	public static final String TABLE = "DNA_CELL";
 
-	public static final String JOIN_COLUMN = TABLE + "_"
-												+ PersistentObject.ID_COLUMN;
+	public static final String JOIN_COLUMN =
+			TABLE + "_" + PersistentObject.ID_COLUMN;
 
 	/**
 	 * The heart of the cell: the {@code DNANucleotide}s.
@@ -41,10 +41,10 @@ public class DNACell extends Cell<DNANucleotide> {
 	 * Will be {@code null} when first created, but is generally not-null.
 	 */
 	@ElementCollection
-	@CollectionTable(name = "DNA_CELL_STATES", joinColumns = @JoinColumn(name = JOIN_COLUMN))
+	@CollectionTable(name = "DNA_CELL_ELEMENTS", joinColumns = @JoinColumn(name = JOIN_COLUMN))
 	@Column(name = "ELEMENT")
 	@CheckForNull
-	private Set<DNANucleotide> elements = null;
+	private EnumSet<DNANucleotide> elements = null;
 
 	/**
 	 * To handle the most-common case of a single {@code CharacterState}, we
@@ -53,16 +53,16 @@ public class DNACell extends Cell<DNANucleotide> {
 	 * Will be {@code null} if this is a {@link Type#INAPPLICABLE} or
 	 * {@link Type#UNASSIGNED}.
 	 */
+	@Column(name = "FIRST_ELEMENT")
 	@Enumerated(EnumType.ORDINAL)
 	@CheckForNull
 	private DNANucleotide firstElement;
 
 	/**
-	 * The {@code CharacterStateRow} to which this {@code CharacterStateCell}
-	 * belongs.
+	 * The {@code Row} to which this {@code Cell} belongs.
 	 */
 	@ManyToOne(fetch = FetchType.LAZY)
-	@JoinColumn(name = CharacterStateRow.JOIN_COLUMN)
+	@JoinColumn(name = DNARow.JOIN_COLUMN)
 	@CheckForNull
 	private DNARow row;
 
@@ -99,6 +99,12 @@ public class DNACell extends Cell<DNANucleotide> {
 		return super.getXmlElements();
 	}
 
+	@Override
+	protected DNACell setFirstElement(final DNANucleotide firstElement) {
+		this.firstElement = firstElement;
+		return this;
+	}
+
 	protected DNACell setRow(final DNARow row) {
 		this.row = row;
 		return this;
@@ -114,8 +120,11 @@ public class DNACell extends Cell<DNANucleotide> {
 		// So FindBugs knows that we got it when it wasn't null
 		final Set<DNANucleotide> thisElements = getElementsRaw();
 
-		if (getType() != null && getType().equals(type)
-				&& states.equals(getElements())) {
+		if (getType() != null
+				&& getType()
+						.equals(type)
+				&& states
+						.equals(getElements())) {
 			return this;
 		}
 
@@ -128,19 +137,13 @@ public class DNACell extends Cell<DNANucleotide> {
 		}
 
 		setType(type);
-		setInNeedOfNewVersionInfo();
+		setInNeedOfNewVersion();
 		return this;
 	}
 
 	@Override
 	protected DNACell unsetRow() {
 		row = null;
-		return this;
-	}
-
-	@Override
-	protected DNACell setFirstElement(DNANucleotide firstElement) {
-		this.firstElement = firstElement;
 		return this;
 	}
 }

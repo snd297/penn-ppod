@@ -139,7 +139,7 @@ public abstract class Sequence extends PPodEntity implements IOTUKeyedMapValue {
 			return this;
 		}
 		this.accession = accession;
-		setInNeedOfNewVersionInfo();
+		setInNeedOfNewVersion();
 		return this;
 	}
 
@@ -156,7 +156,7 @@ public abstract class Sequence extends PPodEntity implements IOTUKeyedMapValue {
 			return this;
 		}
 		description = newDescription;
-		setInNeedOfNewVersionInfo();
+		setInNeedOfNewVersion();
 		return this;
 	}
 
@@ -172,7 +172,7 @@ public abstract class Sequence extends PPodEntity implements IOTUKeyedMapValue {
 			return this;
 		}
 		this.name = name;
-		setInNeedOfNewVersionInfo();
+		setInNeedOfNewVersion();
 		return this;
 	}
 
@@ -201,7 +201,7 @@ public abstract class Sequence extends PPodEntity implements IOTUKeyedMapValue {
 		}
 
 		this.sequence = sequence;
-		setInNeedOfNewVersionInfo();
+		setInNeedOfNewVersion();
 		return this;
 	}
 

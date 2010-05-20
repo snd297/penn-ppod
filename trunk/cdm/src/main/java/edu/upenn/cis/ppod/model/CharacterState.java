@@ -143,7 +143,7 @@ public class CharacterState extends PPodEntityWXmlId {
 	 * The {@code Character} of which this is a state.
 	 */
 	@ManyToOne(fetch = FetchType.LAZY)
-	@JoinColumn(name = Character.ID_COLUMN)
+	@JoinColumn(name = Character.JOIN_COLUMN)
 	@CheckForNull
 	private Character character;
 
@@ -240,11 +240,11 @@ public class CharacterState extends PPodEntityWXmlId {
 	 * @return this {@code CharacterState}
 	 */
 	@Override
-	public CharacterState setInNeedOfNewVersionInfo() {
+	public CharacterState setInNeedOfNewVersion() {
 		if (character != null) {
-			character.setInNeedOfNewVersionInfo();
+			character.setInNeedOfNewVersion();
 		}
-		super.setInNeedOfNewVersionInfo();
+		super.setInNeedOfNewVersion();
 		return this;
 	}
 
@@ -261,7 +261,7 @@ public class CharacterState extends PPodEntityWXmlId {
 
 		} else {
 			this.label = label;
-			setInNeedOfNewVersionInfo();
+			setInNeedOfNewVersion();
 		}
 		return this;
 	}

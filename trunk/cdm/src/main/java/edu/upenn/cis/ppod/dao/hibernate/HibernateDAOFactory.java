@@ -244,7 +244,7 @@ public class HibernateDAOFactory implements IDAOFactory {
 				.setSession(session);
 	}
 
-	public IVersionInfoDAO getPPodVersionInfoDAO() {
+	public IVersionInfoDAO getVersionInfoDAO() {
 		return (IVersionInfoDAO) new VersionInfoDAOHibernate()
 				.setSession(session);
 	}

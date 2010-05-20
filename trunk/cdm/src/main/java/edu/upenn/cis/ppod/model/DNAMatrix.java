@@ -18,7 +18,7 @@ import edu.upenn.cis.ppod.util.IVisitor;
  */
 @Entity
 @Table(name = DNAMatrix.TABLE)
-public class DNAMatrix extends MolecularMatrix<DNARow> {
+public class DNAMatrix extends Matrix<DNARow> {
 	public final static String TABLE = "DNA_MATRIX";
 
 	@OneToOne(fetch = FetchType.LAZY, optional = false, cascade = CascadeType.ALL, orphanRemoval = true)

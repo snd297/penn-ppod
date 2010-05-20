@@ -66,11 +66,11 @@ public interface IDAOFactory {
 	ICharacterStateDAO getCharacterStateDAO();
 
 	/**
-	 * Get an <code>IPPodVersionInfoDAO</code>.
+	 * Get an <code>IVersionInfoDAO</code>.
 	 * 
-	 * @return an <code>IPPodVersionInfoDAO</code>.
+	 * @return an <code>IVersionInfoDAO</code>.
 	 */
-	IVersionInfoDAO getPPodVersionInfoDAO();
+	IVersionInfoDAO getVersionInfoDAO();
 
 	/**
 	 * Get an {@link ICharacterStateRowDAO}.

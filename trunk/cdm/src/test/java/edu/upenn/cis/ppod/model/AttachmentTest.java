@@ -64,15 +64,15 @@ public class AttachmentTest {
 		assertSame(attachmentReturned, attachment);
 		assertEquals(attachment.getBytesValue(), bytesValue);
 
-		assertTrue(attachment.isInNeedOfNewVersionInfo());
+		assertTrue(attachment.isInNeedOfNewVersion());
 
-		attachment.unsetInNeedOfNewVersionInfo();
+		attachment.unsetInNeedOfNewVersion();
 
 		attachment.setBytesValue(bytesValue);
 
-		assertFalse(attachment.isInNeedOfNewVersionInfo());
+		assertFalse(attachment.isInNeedOfNewVersion());
 
-		attachment.unsetInNeedOfNewVersionInfo();
+		attachment.unsetInNeedOfNewVersion();
 
 		final byte[] bytesValue2 = new byte[] { 3, 5, 3 };
 
@@ -80,7 +80,7 @@ public class AttachmentTest {
 
 		assertEquals(attachment.getBytesValue(), bytesValue2);
 
-		attachment.unsetInNeedOfNewVersionInfo();
+		attachment.unsetInNeedOfNewVersion();
 
 		attachment.setBytesValue(null);
 

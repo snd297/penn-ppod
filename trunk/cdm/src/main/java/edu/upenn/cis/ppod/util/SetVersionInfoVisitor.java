@@ -51,7 +51,7 @@ final class SetVersionInfoVisitor extends EmptyVisitor implements
 	}
 
 	private void setNewVersionInfo(final IVersioned versioned) {
-		if (versioned.isInNeedOfNewVersionInfo()) {
+		if (versioned.isInNeedOfNewVersion()) {
 			versioned.setVersionInfo(newVersionInfo
 					.getNewVersionInfo());
 		}
@@ -124,12 +124,11 @@ final class SetVersionInfoVisitor extends EmptyVisitor implements
 
 	public void visitMatrix(final Matrix<?> matrix) {
 		setNewVersionInfo(matrix);
-		for (int pos = 0; pos < matrix.getColumnVersions().size(); pos++) {
+		for (int pos = 0; pos < matrix.getColumnVersionInfos().size(); pos++) {
 			if (matrix.getColumnVersionInfos().get(pos) == null) {
 				matrix.setColumnVersionInfo(pos, newVersionInfo
 						.getNewVersionInfo());
 			}
 		}
 	}
-
 }

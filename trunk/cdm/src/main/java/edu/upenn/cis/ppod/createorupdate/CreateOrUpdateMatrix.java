@@ -42,7 +42,8 @@ class CreateOrUpdateMatrix<M extends Matrix<R>, R extends Row<C>, C extends Cell
 	private final Provider<R> rowProvider;
 
 	@Inject
-	CreateOrUpdateMatrix(final Provider<R> rowProvider,
+	CreateOrUpdateMatrix(
+			final Provider<R> rowProvider,
 			final Provider<C> cellProvider,
 			final Provider<Attachment> attachmentProvider,
 			final Provider<MatrixInfo> matrixInfoProvider,
@@ -123,49 +124,50 @@ class CreateOrUpdateMatrix<M extends Matrix<R>, R extends Row<C>, C extends Cell
 				dao.makeTransient(clearedDbCell);
 			}
 
-			int targetCellPosition = -1;
+			int dbCellPosition = -1;
 			for (final C dbCell : dbRow.getCells()) {
-				targetCellPosition++;
+				dbCellPosition++;
 
-				final C sourceCell = sourceRow.getCells().get(
-						targetCellPosition);
+				final C sourceCell = sourceRow
+								.getCells()
+								.get(dbCellPosition);
 
 				switch (sourceCell.getType()) {
-				case INAPPLICABLE:
-					dbCell.setInapplicable();
-					break;
-				case POLYMORPHIC:
-					dbCell.setPolymorphicElements(sourceCell.getElements());
-					break;
-				case SINGLE:
-					dbCell.setSingleElement(
-							getOnlyElement(sourceCell.getElements()));
-					break;
-				case UNASSIGNED:
-					dbCell.setUnassigned();
-					break;
-				case UNCERTAIN:
-					dbCell.setUncertainElements(sourceCell.getElements());
-					break;
-				default:
-					throw new AssertionError("unknown type");
+					case INAPPLICABLE:
+						dbCell.setInapplicable();
+						break;
+					case POLYMORPHIC:
+						dbCell.setPolymorphicElements(sourceCell.getElements());
+						break;
+					case SINGLE:
+						dbCell.setSingleElement(
+								getOnlyElement(sourceCell.getElements()));
+						break;
+					case UNASSIGNED:
+						dbCell.setUnassigned();
+						break;
+					case UNCERTAIN:
+						dbCell.setUncertainElements(sourceCell.getElements());
+						break;
+					default:
+						throw new AssertionError("unknown type");
 				}
 
 				// We need to do this here since we're removing the cell from
 				// the persistence context (with evict). So it won't get handled
 				// higher up in the application when it does for most entities.
-				if (dbCell.isInNeedOfNewVersionInfo()) {
-					dbCell.setVersionInfo(newVersionInfo
-							.getNewVersionInfo());
+				if (dbCell.isInNeedOfNewVersion()) {
+					dbCell.setVersionInfo(
+							newVersionInfo.getNewVersionInfo());
 				}
 				dao.makePersistent(dbCell);
 
 				cellsToEvict.add(dbCell);
 			}
 
-			// We need to do this here since we're removing the cell from
+			// We need to do this here since we're removing the row from
 			// the persistence context (with evict)
-			if (dbRow.isInNeedOfNewVersionInfo()) {
+			if (dbRow.isInNeedOfNewVersion()) {
 				dbRow.setVersionInfo(
 						newVersionInfo.getNewVersionInfo());
 			}

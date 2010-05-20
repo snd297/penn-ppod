@@ -90,7 +90,7 @@ public class TreeSet extends UUPPodEntityWXmlId implements
 	public Tree addTree(final Tree tree) {
 		checkNotNull(tree);
 		getTreesModifiable().add(tree);
-		setInNeedOfNewVersionInfo();
+		setInNeedOfNewVersion();
 		return tree;
 	}
 
@@ -138,11 +138,11 @@ public class TreeSet extends UUPPodEntityWXmlId implements
 	}
 
 	@Override
-	public TreeSet setInNeedOfNewVersionInfo() {
+	public TreeSet setInNeedOfNewVersion() {
 		if (getOTUSet() != null) {
-			getOTUSet().setInNeedOfNewVersionInfo();
+			getOTUSet().setInNeedOfNewVersion();
 		}
-		super.setInNeedOfNewVersionInfo();
+		super.setInNeedOfNewVersion();
 
 		return this;
 	}
@@ -160,7 +160,7 @@ public class TreeSet extends UUPPodEntityWXmlId implements
 
 		} else {
 			this.label = label;
-			setInNeedOfNewVersionInfo();
+			setInNeedOfNewVersion();
 		}
 		return this;
 	}
@@ -213,7 +213,7 @@ public class TreeSet extends UUPPodEntityWXmlId implements
 		for (final Tree newTree : newTrees) {
 			addTree(newTree);
 		}
-		setInNeedOfNewVersionInfo();
+		setInNeedOfNewVersion();
 		return removedTrees;
 	}
 

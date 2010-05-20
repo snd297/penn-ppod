@@ -266,10 +266,10 @@ public class CharacterStateMatrixTest {
 				characterProvider.get().setLabel("character2-1"),
 				characterProvider.get().setLabel("character2-2"));
 
-		matrix.unsetInNeedOfNewVersionInfo();
+		matrix.unsetInNeedOfNewVersion();
 
 		matrix.setCharacters(characters2);
-		assertTrue(matrix.isInNeedOfNewVersionInfo());
+		assertTrue(matrix.isInNeedOfNewVersion());
 
 		assertEquals(matrix.getCharacterPosition(characters2.get(0)),
 				Integer.valueOf(0));
@@ -293,11 +293,11 @@ public class CharacterStateMatrixTest {
 
 		matrix.setCharacters(characters);
 
-		matrix.unsetInNeedOfNewVersionInfo();
+		matrix.unsetInNeedOfNewVersion();
 
 		matrix.setCharacters(characters);
 
-		assertFalse(matrix.isInNeedOfNewVersionInfo());
+		assertFalse(matrix.isInNeedOfNewVersion());
 
 	}
 
@@ -311,7 +311,7 @@ public class CharacterStateMatrixTest {
 		matrix.putRow(otu1, row1);
 		matrix.setVersionInfo(versionInfo);
 		matrix.putRow(otu1, row1);
-		assertFalse(matrix.isInNeedOfNewVersionInfo());
+		assertFalse(matrix.isInNeedOfNewVersion());
 	}
 
 	// /**
@@ -400,24 +400,24 @@ public class CharacterStateMatrixTest {
 	}
 
 	public void setDescription() {
-		matrix.unsetInNeedOfNewVersionInfo();
+		matrix.unsetInNeedOfNewVersion();
 		final String description = "DESCRIPTION";
 		matrix.setDescription(description);
 		assertEquals(matrix.getDescription(), description);
-		assertTrue(matrix.isInNeedOfNewVersionInfo());
+		assertTrue(matrix.isInNeedOfNewVersion());
 
-		matrix.unsetInNeedOfNewVersionInfo();
+		matrix.unsetInNeedOfNewVersion();
 		matrix.setDescription(description);
-		assertFalse(matrix.isInNeedOfNewVersionInfo());
+		assertFalse(matrix.isInNeedOfNewVersion());
 
-		matrix.unsetInNeedOfNewVersionInfo();
+		matrix.unsetInNeedOfNewVersion();
 		matrix.setDescription(null);
 		assertNull(matrix.getDescription());
-		assertTrue(matrix.isInNeedOfNewVersionInfo());
+		assertTrue(matrix.isInNeedOfNewVersion());
 
-		matrix.unsetInNeedOfNewVersionInfo();
+		matrix.unsetInNeedOfNewVersion();
 		matrix.setDescription(null);
 		assertNull(matrix.getDescription());
-		assertFalse(matrix.isInNeedOfNewVersionInfo());
+		assertFalse(matrix.isInNeedOfNewVersion());
 	}
 }
