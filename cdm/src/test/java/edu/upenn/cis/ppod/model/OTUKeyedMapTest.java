@@ -92,12 +92,12 @@ public class OTUKeyedMapTest {
 		otusToRows.put(otu1, row1);
 		otusToRows.put(otu2, row2);
 
-		matrix.unsetInNeedOfNewVersionInfo();
+		matrix.unsetInNeedOfNewVersion();
 
 		otusToRows.clear();
 
 		assertEquals(otusToRows.getOTUsToValues().size(), 0);
-		assertTrue(matrix.isInNeedOfNewVersionInfo());
+		assertTrue(matrix.isInNeedOfNewVersion());
 
 	}
 
@@ -110,9 +110,9 @@ public class OTUKeyedMapTest {
 		final DNAMatrix matrix = dnaMatrixProvider.get();
 		final DNARows otusToRows = otusToDNARowsProvider.get();
 		otusToRows.setMatrix(matrix);
-		matrix.unsetInNeedOfNewVersionInfo();
+		matrix.unsetInNeedOfNewVersion();
 		otusToRows.clear();
 
-		assertFalse(matrix.isInNeedOfNewVersionInfo());
+		assertFalse(matrix.isInNeedOfNewVersion());
 	}
 }

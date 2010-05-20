@@ -27,6 +27,8 @@ import javax.annotation.Nullable;
 import javax.persistence.CascadeType;
 import javax.persistence.Entity;
 import javax.persistence.FetchType;
+import javax.persistence.JoinColumn;
+import javax.persistence.JoinTable;
 import javax.persistence.MapKeyJoinColumn;
 import javax.persistence.OneToMany;
 import javax.persistence.OneToOne;
@@ -43,22 +45,14 @@ import edu.upenn.cis.ppod.util.OTUSomethingPair;
  * @author Sam Donnelly
  */
 @Entity
-@Table(name = OTUsToDNASequences.TABLE)
-public class OTUsToDNASequences extends
-		OTUKeyedMap<DNASequence> {
+@Table(name = DNASequences.TABLE)
+public class DNASequences
+		extends OTUKeyedMap<DNASequence> {
 
-	final static String TABLE = "OTUS_TO_DNA_SEQUENCES";
+	public final static String TABLE = "DNA_SEQUENCES";
 
-	final static String ID_COLUMN = TABLE + "_"
-											+ PersistentObject.ID_COLUMN;
-
-	@OneToOne(fetch = FetchType.LAZY, mappedBy = "otusToSequences")
-	@CheckForNull
-	private DNASequenceSet sequenceSet;
-
-	@OneToMany(cascade = CascadeType.ALL, orphanRemoval = true)
-	@MapKeyJoinColumn(name = OTU.JOIN_COLUMN)
-	private final Map<OTU, DNASequence> sequences = newHashMap();
+	public final static String ID_COLUMN =
+			TABLE + "_" + PersistentObject.ID_COLUMN;
 
 	/**
 	 * For marshalling {@code sequences}. Since a {@code Map}'s key couldn't be
@@ -66,6 +60,15 @@ public class OTUsToDNASequences extends
 	 */
 	@Transient
 	private final Set<OTUDNASequencePair> otuSequencePairs = newHashSet();
+
+	@OneToMany(cascade = CascadeType.ALL, orphanRemoval = true)
+	@JoinTable(inverseJoinColumns = @JoinColumn(name = DNASequence.JOIN_COLUMN))
+	@MapKeyJoinColumn(name = OTU.JOIN_COLUMN)
+	private final Map<OTU, DNASequence> sequences = newHashMap();
+
+	@OneToOne(fetch = FetchType.LAZY, mappedBy = "sequences")
+	@CheckForNull
+	private DNASequenceSet sequenceSet;
 
 	/**
 	 * {@link Unmarshaller} callback.
@@ -130,19 +133,19 @@ public class OTUsToDNASequences extends
 
 	protected void setInNeedOfNewVersion() {
 		if (sequenceSet != null) {
-			sequenceSet.setInNeedOfNewVersionInfo();
+			sequenceSet.setInNeedOfNewVersion();
 		}
 	}
 
 	@Override
-	protected OTUsToDNASequences setIsInNeedOfNewVersionInfo() {
+	protected DNASequences setIsInNeedOfNewVersionInfo() {
 		if (sequenceSet != null) {
-			sequenceSet.setInNeedOfNewVersionInfo();
+			sequenceSet.setInNeedOfNewVersion();
 		}
 		return this;
 	}
 
-	protected OTUsToDNASequences setSequenceSet(final DNASequenceSet sequenceSet) {
+	protected DNASequences setSequenceSet(final DNASequenceSet sequenceSet) {
 		checkNotNull(sequenceSet);
 		this.sequenceSet = sequenceSet;
 		return this;

@@ -104,7 +104,7 @@ final class MergeMolecularSequenceSets<SS extends SequenceSet<S>, S extends Sequ
 
 			dao.makePersistent(targetSequence);
 
-			if (targetSequence.isInNeedOfNewVersionInfo()) {
+			if (targetSequence.isInNeedOfNewVersion()) {
 				targetSequence.setVersionInfo(newVersionInfo
 						.getNewVersionInfo());
 			}

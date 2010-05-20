@@ -43,7 +43,8 @@ import edu.upenn.cis.ppod.util.IVisitor;
  */
 @MappedSuperclass
 public abstract class SequenceSet<S extends Sequence>
-		extends UUPPodEntityWXmlId implements IVersionedWithOTUSet,
+		extends UUPPodEntityWXmlId
+		implements IVersionedWithOTUSet,
 		Iterable<S> {
 
 	@Column(name = "LABEL", nullable = false)
@@ -54,10 +55,12 @@ public abstract class SequenceSet<S extends Sequence>
 	@CheckForNull
 	private OTUSet otuSet;
 
+	SequenceSet() {}
+
 	@Override
 	public void accept(final IVisitor visitor) {
-		getOTUsToSequences().accept(visitor);
-		for (final S sequence : getOTUsToSequences().getOTUsToValues()
+		getOTUKeyedMap().accept(visitor);
+		for (final S sequence : getOTUKeyedMap().getOTUsToValues()
 				.values()) {
 			sequence.accept(visitor);
 		}
@@ -110,6 +113,8 @@ public abstract class SequenceSet<S extends Sequence>
 		return label;
 	}
 
+	protected abstract OTUKeyedMap<S> getOTUKeyedMap();
+
 	/**
 	 * Getter. Will be {@code null} when the sequence set is not connected to an
 	 * OTU set.
@@ -120,19 +125,6 @@ public abstract class SequenceSet<S extends Sequence>
 	public OTUSet getOTUSet() {
 		return otuSet;
 	}
-
-	protected abstract OTUKeyedMap<S> getOTUsToSequences();
-
-	/**
-	 * Get a map which contains the {@code OTU, S} entries of this sequence set.
-	 * <p>
-	 * The returned value may be an unmodifiable view of this set's values, so
-	 * the client should make a copy of the returned value if desired.
-	 * 
-	 * @return a map which contains the {@code OTU, S} entries of this sequence
-	 *         set
-	 */
-	public abstract Map<OTU, S> getSequences();
 
 	/**
 	 * Get the sequence indexed by {@code otu}.
@@ -156,7 +148,7 @@ public abstract class SequenceSet<S extends Sequence>
 	 */
 	@CheckForNull
 	public Integer getSequenceLengths() {
-		for (final S sequenceInThisSet : getOTUsToSequences().getOTUsToValues()
+		for (final S sequenceInThisSet : getOTUKeyedMap().getOTUsToValues()
 				.values()) {
 			if (sequenceInThisSet != null) {
 				return sequenceInThisSet.getSequence().length();
@@ -166,19 +158,30 @@ public abstract class SequenceSet<S extends Sequence>
 	}
 
 	/**
+	 * Get a map which contains the {@code OTU, S} entries of this sequence set.
+	 * <p>
+	 * The returned value may be an unmodifiable view of this set's values, so
+	 * the client should make a copy of the returned value if desired.
+	 * 
+	 * @return a map which contains the {@code OTU, S} entries of this sequence
+	 *         set
+	 */
+	public abstract Map<OTU, S> getSequences();
+
+	/**
 	 * Get the number of sequences in this set.
 	 * 
 	 * @return the number of sequences in this set.
 	 */
 	public int getSequencesSize() {
-		return getOTUsToSequences().getOTUsToValues().size();
+		return getOTUKeyedMap().getOTUsToValues().size();
 	}
 
 	/**
 	 * Iterates over the sequences in {@code getOTUSet().getOTUs()} order.
 	 */
 	public Iterator<S> iterator() {
-		return getOTUsToSequences().getValuesInOTUSetOrder().iterator();
+		return getOTUKeyedMap().getValuesInOTUSetOrder().iterator();
 	}
 
 	/**
@@ -197,11 +200,11 @@ public abstract class SequenceSet<S extends Sequence>
 	public abstract S putSequence(final OTU otu, final S sequence);
 
 	@Override
-	public SequenceSet<S> setInNeedOfNewVersionInfo() {
+	public SequenceSet<S> setInNeedOfNewVersion() {
 		if (getOTUSet() != null) {
-			getOTUSet().setInNeedOfNewVersionInfo();
+			getOTUSet().setInNeedOfNewVersion();
 		}
-		super.setInNeedOfNewVersionInfo();
+		super.setInNeedOfNewVersion();
 		return this;
 	}
 
@@ -211,7 +214,7 @@ public abstract class SequenceSet<S extends Sequence>
 
 		} else {
 			this.label = label;
-			setInNeedOfNewVersionInfo();
+			setInNeedOfNewVersion();
 		}
 		return this;
 	}

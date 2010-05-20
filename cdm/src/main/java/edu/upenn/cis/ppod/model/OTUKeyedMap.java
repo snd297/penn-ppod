@@ -157,7 +157,7 @@ public abstract class OTUKeyedMap<V extends IOTUKeyedMapValue>
 		}
 		checkArgument(!getOTUsToValues().containsValue(value),
 				"already has a value .equals() to newT: " + value);
-		getParent().setInNeedOfNewVersionInfo();
+		getParent().setInNeedOfNewVersion();
 		final V originalValue = getOTUsToValues().put(key, value);
 		// If we are replacing an OTU's sequence, we need to sever the previous
 		// sequence's sequence->sequenceSet pointer.
@@ -215,7 +215,7 @@ public abstract class OTUKeyedMap<V extends IOTUKeyedMapValue>
 				// it stays
 			} else {
 				otusToBeRemoved.add(otu);
-				parent.isInNeedOfNewVersionInfo();
+				parent.isInNeedOfNewVersion();
 			}
 		}
 
@@ -227,7 +227,7 @@ public abstract class OTUKeyedMap<V extends IOTUKeyedMapValue>
 
 				} else {
 					getOTUsToValues().put(otu, null);
-					parent.setInNeedOfNewVersionInfo();
+					parent.setInNeedOfNewVersion();
 				}
 			}
 		}

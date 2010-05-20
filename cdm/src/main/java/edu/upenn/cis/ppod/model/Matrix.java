@@ -4,6 +4,7 @@ import static com.google.common.base.Objects.equal;
 import static com.google.common.base.Preconditions.checkArgument;
 import static com.google.common.base.Preconditions.checkNotNull;
 import static com.google.common.collect.Lists.newArrayList;
+import static edu.upenn.cis.ppod.util.CollectionsUtil.nullFill;
 
 import java.util.Collections;
 import java.util.List;
@@ -60,7 +61,7 @@ public abstract class Matrix<R extends Row<?>>
 	@CheckForNull
 	private String description;
 
-	/** The label for this {@code CharacterStateMatrix}. */
+	/** The label for this {@code Matrix}. */
 	@Column(name = LABEL_COLUMN, nullable = false)
 	@CheckForNull
 	private String label;
@@ -107,6 +108,10 @@ public abstract class Matrix<R extends Row<?>>
 			}
 		}
 		return true;
+	}
+
+	public Integer getColumnsSize() {
+		return Integer.valueOf(getColumnVersionInfos().size());
 	}
 
 	/**
@@ -261,6 +266,21 @@ public abstract class Matrix<R extends Row<?>>
 		return this;
 	}
 
+	public Matrix<R> setColumnsSize(@Nonnegative final int columnsSize) {
+		checkArgument(columnsSize >= 0, "columnsSize < 0");
+
+		// Add in column versions as necessary
+		nullFill(getColumnVersionInfosModifiable(), columnsSize);
+
+		// Remove column versions as necessary
+		while (getColumnVersionInfos().size() > columnsSize) {
+			getColumnVersionInfosModifiable()
+					.remove(
+							getColumnVersionInfos().size() - 1);
+		}
+		return this;
+	}
+
 	/**
 	 * Set a particular column to a version.
 	 * 
@@ -310,7 +330,7 @@ public abstract class Matrix<R extends Row<?>>
 			// nothing to do
 		} else {
 			this.description = description;
-			setInNeedOfNewVersionInfo();
+			setInNeedOfNewVersion();
 		}
 		return this;
 	}
@@ -322,11 +342,11 @@ public abstract class Matrix<R extends Row<?>>
 	 * @return this {@code CharacterStateMatrix}
 	 */
 	@Override
-	public Matrix<R> setInNeedOfNewVersionInfo() {
+	public Matrix<R> setInNeedOfNewVersion() {
 		if (getOTUSet() != null) {
-			getOTUSet().setInNeedOfNewVersionInfo();
+			getOTUSet().setInNeedOfNewVersion();
 		}
-		super.setInNeedOfNewVersionInfo();
+		super.setInNeedOfNewVersion();
 		return this;
 	}
 
@@ -346,7 +366,7 @@ public abstract class Matrix<R extends Row<?>>
 			// they're the same, nothing to do
 		} else {
 			this.label = label;
-			setInNeedOfNewVersionInfo();
+			setInNeedOfNewVersion();
 		}
 		return this;
 	}

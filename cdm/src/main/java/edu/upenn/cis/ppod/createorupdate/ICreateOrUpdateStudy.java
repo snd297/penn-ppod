@@ -65,7 +65,7 @@ public interface ICreateOrUpdateStudy {
 		 * Create {@link ISaveOrUpdateStudy}s that depend on a {@link Session}.
 		 * 
 		 * @param session dependency
-		 * @param newPPodVersionInfo
+		 * @param newVersionInfo
 		 * 
 		 * @return a new {@link ISaveOrUpdateStudy}
 		 */

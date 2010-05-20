@@ -65,7 +65,7 @@ public class PPodEntityInfo implements IWithPPodId {
 	 * @return the pPodVersion
 	 */
 	@XmlAttribute(name = "pPodVersion")
-	public Long getPPodVersion() {
+	public Long getVersion() {
 		return pPodVersion;
 	}
 

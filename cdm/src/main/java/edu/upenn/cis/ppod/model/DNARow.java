@@ -9,6 +9,7 @@ import javax.annotation.CheckForNull;
 import javax.persistence.CascadeType;
 import javax.persistence.Entity;
 import javax.persistence.FetchType;
+import javax.persistence.JoinColumn;
 import javax.persistence.ManyToOne;
 import javax.persistence.OneToMany;
 import javax.persistence.OrderBy;
@@ -39,10 +40,11 @@ public class DNARow extends Row<DNACell> {
 	 * This is the parent of the row. It lies in between this and the matrix.
 	 */
 	@ManyToOne(fetch = FetchType.LAZY)
+	@JoinColumn(name = DNARows.JOIN_COLUMN)
 	@CheckForNull
-	private DNARows otusToRows;
+	private DNARows rows;
 
-	protected DNARow() {}
+	DNARow() {}
 
 	@Override
 	public List<DNACell> getCells() {
@@ -56,10 +58,10 @@ public class DNARow extends Row<DNACell> {
 	}
 
 	public IMatrix getMatrix() {
-		if (otusToRows == null) {
+		if (rows == null) {
 			return null;
 		}
-		return otusToRows.getParent();
+		return rows.getParent();
 	}
 
 	@Override
@@ -72,13 +74,13 @@ public class DNARow extends Row<DNACell> {
 		return clearedCells;
 	}
 
-	public DNARow setOTUsToRows(final DNARows otusToRows) {
-		this.otusToRows = otusToRows;
+	public DNARow setRows(final DNARows otusToRows) {
+		this.rows = otusToRows;
 		return this;
 	}
 
 	public Row<DNACell> unsetOTUKeyedMap() {
-		otusToRows = null;
+		rows = null;
 		return this;
 	}
 

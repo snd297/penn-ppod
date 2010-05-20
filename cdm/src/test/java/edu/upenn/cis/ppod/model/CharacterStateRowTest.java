@@ -71,8 +71,9 @@ public class CharacterStateRowTest {
 		otus.add(otuProvider.get().setLabel("OTU-0"));
 		matrix.getOTUSet().setOTUs(newArrayList(otus.get(0)));
 		matrix.putRow(otus.get(0), rowProvider.get());
-		matrix.setCharacters(newArrayList(characterProvider.get().setLabel(
-				"CHARACTER-0")));
+		matrix.setCharacters(
+				newArrayList(
+						characterProvider.get().setLabel("CHARACTER-0")));
 	}
 
 	@Test
@@ -127,6 +128,8 @@ public class CharacterStateRowTest {
 
 		@SuppressWarnings("unchecked")
 		final List<Character> emptyList = (List<Character>) Collections.EMPTY_LIST;
+
+		matrix.setColumnsSize(0);
 
 		matrix.setCharacters(emptyList);
 

@@ -64,8 +64,9 @@ import edu.upenn.cis.ppod.util.IVisitor;
 @Entity
 @Table(name = PPodEntity.TABLE)
 @Inheritance(strategy = InheritanceType.JOINED)
-public abstract class PPodEntity extends PersistentObject implements IAttachee,
-			IVersioned {
+public abstract class PPodEntity
+		extends PersistentObject
+		implements IAttachee, IVersioned {
 
 	static final String TABLE = "PPOD_ENTITY";
 
@@ -88,7 +89,7 @@ public abstract class PPodEntity extends PersistentObject implements IAttachee,
 	 * <p>
 	 * We start with {@code false} because
 	 * <ul>
-	 * <li>that's appropriate for Db entities: when an object is modified, this
+	 * <li>that's appropriate for DB entities: when an object is modified, this
 	 * value will be set to {@code true} and it will be set to the newest
 	 * version number by whatever mechanism is in place</li>
 	 * <li>for transient entities this flag is functionally irrelevant: the pPOD
@@ -98,7 +99,7 @@ public abstract class PPodEntity extends PersistentObject implements IAttachee,
 	 * </ul>
 	 */
 	@Transient
-	private boolean inNeedOfNewVersionInfo = false;
+	private boolean inNeedOfNewVersion = false;
 
 	@Transient
 	@CheckForNull
@@ -128,7 +129,7 @@ public abstract class PPodEntity extends PersistentObject implements IAttachee,
 			attachments = newHashSet();
 		}
 		if (attachments.add(attachment)) {
-			setInNeedOfNewVersionInfo();
+			setInNeedOfNewVersion();
 		}
 		attachment.addAttachee(this);
 		hasAttachments = true;
@@ -228,8 +229,8 @@ public abstract class PPodEntity extends PersistentObject implements IAttachee,
 		return versionInfo;
 	}
 
-	public boolean isInNeedOfNewVersionInfo() {
-		return inNeedOfNewVersionInfo;
+	public boolean isInNeedOfNewVersion() {
+		return inNeedOfNewVersion;
 	}
 
 	public boolean removeAttachment(final Attachment attachment) {
@@ -240,7 +241,7 @@ public abstract class PPodEntity extends PersistentObject implements IAttachee,
 		} else {
 			attachmentRemoved = getAttachmentsModifiable().remove(attachment);
 			if (attachmentRemoved) {
-				setInNeedOfNewVersionInfo();
+				setInNeedOfNewVersion();
 			}
 			if (getAttachmentsModifiable().size() == 0) {
 				hasAttachments = false;
@@ -259,8 +260,8 @@ public abstract class PPodEntity extends PersistentObject implements IAttachee,
 	 * @return this {@code PPodEntity}
 	 */
 	@OverridingMethodsMustInvokeSuper
-	public PPodEntity setInNeedOfNewVersionInfo() {
-		inNeedOfNewVersionInfo = true;
+	public PPodEntity setInNeedOfNewVersion() {
+		inNeedOfNewVersion = true;
 		return this;
 	}
 
@@ -287,7 +288,7 @@ public abstract class PPodEntity extends PersistentObject implements IAttachee,
 	public PPodEntity setVersionInfo(
 			final VersionInfo versionInfo) {
 		checkNotNull(versionInfo);
-		unsetInNeedOfNewVersionInfo();
+		unsetInNeedOfNewVersion();
 		this.versionInfo = versionInfo;
 		return this;
 	}
@@ -319,8 +320,8 @@ public abstract class PPodEntity extends PersistentObject implements IAttachee,
 		return retValue.toString();
 	}
 
-	protected PPodEntity unsetInNeedOfNewVersionInfo() {
-		inNeedOfNewVersionInfo = false;
+	protected PPodEntity unsetInNeedOfNewVersion() {
+		inNeedOfNewVersion = false;
 		return this;
 	}
 

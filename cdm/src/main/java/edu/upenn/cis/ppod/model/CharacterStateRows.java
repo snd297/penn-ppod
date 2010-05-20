@@ -27,6 +27,8 @@ import javax.annotation.Nullable;
 import javax.persistence.CascadeType;
 import javax.persistence.Entity;
 import javax.persistence.FetchType;
+import javax.persistence.JoinColumn;
+import javax.persistence.JoinTable;
 import javax.persistence.MapKeyJoinColumn;
 import javax.persistence.OneToMany;
 import javax.persistence.OneToOne;
@@ -60,6 +62,7 @@ public class CharacterStateRows extends OTUKeyedMap<CharacterStateRow> {
 	private final Set<OTUCharacterStateRowPair> otuRowPairs = newHashSet();
 
 	@OneToMany(cascade = CascadeType.ALL, orphanRemoval = true)
+	@JoinTable(inverseJoinColumns = @JoinColumn(name = CharacterStateRow.JOIN_COLUMN))
 	@MapKeyJoinColumn(name = OTU.JOIN_COLUMN)
 	private final Map<OTU, CharacterStateRow> rows = newHashMap();
 
@@ -76,7 +79,7 @@ public class CharacterStateRows extends OTUKeyedMap<CharacterStateRow> {
 		super.afterUnmarshal(u, parent);
 		setMatrix((CharacterStateMatrix) parent);
 		for (final OTUSomethingPair<CharacterStateRow> otuRowPair : otuRowPairs) {
-			otuRowPair.getSecond().setOTUsToRows(this);
+			otuRowPair.getSecond().setRows(this);
 		}
 	}
 
@@ -85,8 +88,8 @@ public class CharacterStateRows extends OTUKeyedMap<CharacterStateRow> {
 		for (final Map.Entry<OTU, CharacterStateRow> otuToRow : getOTUsToValues()
 				.entrySet()) {
 			getOTURowPairs().add(
-					OTUCharacterStateRowPair.of(otuToRow.getKey(), otuToRow
-							.getValue()));
+					OTUCharacterStateRowPair.of(otuToRow.getKey(),
+							otuToRow.getValue()));
 		}
 		return true;
 	}
@@ -120,14 +123,14 @@ public class CharacterStateRows extends OTUKeyedMap<CharacterStateRow> {
 	public CharacterStateRow put(final OTU otu, final CharacterStateRow row) {
 		checkNotNull(otu);
 		checkNotNull(row);
-		row.setOTUsToRows(this);
+		row.setRows(this);
 		return super.putHelper(otu, row);
 	}
 
 	@Override
 	protected CharacterStateRows setIsInNeedOfNewVersionInfo() {
 		if (getParent() != null) {
-			getParent().setInNeedOfNewVersionInfo();
+			getParent().setInNeedOfNewVersion();
 		}
 		return this;
 	}

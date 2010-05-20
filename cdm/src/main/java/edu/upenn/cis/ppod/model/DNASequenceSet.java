@@ -46,28 +46,28 @@ public class DNASequenceSet extends SequenceSet<DNASequence> {
 
 	public final static String TABLE = "DNA_SEQUENCE_SET";
 
-	public final static String JOIN_COLUMN = TABLE + "_"
-												+ PersistentObject.ID_COLUMN;
+	public final static String JOIN_COLUMN =
+			TABLE + "_" + PersistentObject.ID_COLUMN;
 
 	/**
 	 * The sequences.
 	 */
 	@OneToOne(fetch = FetchType.LAZY, optional = false, cascade = CascadeType.ALL, orphanRemoval = true)
 	@CheckForNull
-	private OTUsToDNASequences otusToSequences;
+	private DNASequences sequences;
 
-	protected DNASequenceSet() {}
+	DNASequenceSet() {}
 
 	@Inject
-	protected DNASequenceSet(final OTUsToDNASequences otusToDNASequences) {
-		this.otusToSequences = otusToDNASequences;
-		this.otusToSequences.setSequenceSet(this);
+	protected DNASequenceSet(final DNASequences otusToDNASequences) {
+		this.sequences = otusToDNASequences;
+		this.sequences.setSequenceSet(this);
 	}
 
 	@Override
 	public void accept(final IVisitor visitor) {
-		getOTUsToSequences().accept(visitor);
-		for (final DNASequence sequence : getOTUsToSequences()
+		getOTUKeyedMap().accept(visitor);
+		for (final DNASequence sequence : getOTUKeyedMap()
 				.getValuesInOTUSetOrder()) {
 			sequence.accept(visitor);
 		}
@@ -77,27 +77,27 @@ public class DNASequenceSet extends SequenceSet<DNASequence> {
 
 	@Override
 	public DNASequenceSet clearSequences() {
-		getOTUsToSequences().clear();
+		getOTUKeyedMap().clear();
 		return this;
 	}
 
-	@XmlElement(name = "otusToSequences")
+	@XmlElement(name = "sequences")
 	@Override
 	@Nullable
-	protected OTUsToDNASequences getOTUsToSequences() {
-		return otusToSequences;
-	}
-
-	@Override
-	public Map<OTU, DNASequence> getSequences() {
-		return Collections.unmodifiableMap(getOTUsToSequences()
-				.getOTUsToValues());
+	protected DNASequences getOTUKeyedMap() {
+		return sequences;
 	}
 
 	@Override
 	public DNASequence getSequence(final OTU otu) {
 		checkNotNull(otu);
-		return getOTUsToSequences().get(otu);
+		return getOTUKeyedMap().get(otu);
+	}
+
+	@Override
+	public Map<OTU, DNASequence> getSequences() {
+		return Collections.unmodifiableMap(getOTUKeyedMap()
+				.getOTUsToValues());
 	}
 
 	@Override
@@ -110,7 +110,7 @@ public class DNASequenceSet extends SequenceSet<DNASequence> {
 		checkArgument(sequence.getSequence() != null,
 				"sequence.getSequence() == null");
 		checkSequenceSizes(sequence);
-		return getOTUsToSequences().put(otu, sequence);
+		return getOTUKeyedMap().put(otu, sequence);
 	}
 
 	/**
@@ -121,19 +121,18 @@ public class DNASequenceSet extends SequenceSet<DNASequence> {
 	protected SequenceSet<DNASequence> setOTUsInOTUsToSequences(
 			@Nullable final OTUSet otuSet) {
 		checkState(
-				getOTUsToSequences() != null,
-				"getOTUsToSequences() == null, so there is no otusToSequences to operate on");
-		getOTUsToSequences().setOTUs();
+				getOTUKeyedMap() != null,
+				"getOTUKeyed() == null, so there is no sequences to operate on");
+		getOTUKeyedMap().setOTUs();
 		return this;
 	}
 
 	/** For JAXB. */
 	@edu.umd.cs.findbugs.annotations.SuppressWarnings
-	@SuppressWarnings("unused")
-	private DNASequenceSet setOTUsToSequences(
-			final OTUsToDNASequences otusToSequences) {
-		checkNotNull(otusToSequences);
-		this.otusToSequences = otusToSequences;
+	protected DNASequenceSet setOTUKeyedMap(
+			final DNASequences sequences) {
+		checkNotNull(sequences);
+		this.sequences = sequences;
 		return this;
 	}
 }

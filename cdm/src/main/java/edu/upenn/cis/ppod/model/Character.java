@@ -62,7 +62,7 @@ public class Character extends UUPPodEntityWXmlId {
 	 */
 	public final static String TABLE = "PHYLO_CHARACTER";
 
-	public final static String ID_COLUMN = TABLE + "_ID";
+	public final static String JOIN_COLUMN = TABLE + "_ID";
 
 	final static String LABEL_COLUMN = "LABEL";
 
@@ -237,7 +237,7 @@ public class Character extends UUPPodEntityWXmlId {
 			originalState.setCharacter(null);
 		}
 		state.setCharacter(this);
-		setInNeedOfNewVersionInfo();
+		setInNeedOfNewVersion();
 		return originalState;
 	}
 
@@ -256,11 +256,11 @@ public class Character extends UUPPodEntityWXmlId {
 	}
 
 	@Override
-	public Character setInNeedOfNewVersionInfo() {
+	public Character setInNeedOfNewVersion() {
 		for (final CharacterStateMatrix matrix : matrices) {
-			matrix.setInNeedOfNewVersionInfo();
+			matrix.setInNeedOfNewVersion();
 		}
-		super.setInNeedOfNewVersionInfo();
+		super.setInNeedOfNewVersion();
 		return this;
 	}
 
@@ -276,7 +276,7 @@ public class Character extends UUPPodEntityWXmlId {
 			// they're the same, nothing to do.
 		} else {
 			this.label = label;
-			setInNeedOfNewVersionInfo();
+			setInNeedOfNewVersion();
 		}
 		return this;
 	}

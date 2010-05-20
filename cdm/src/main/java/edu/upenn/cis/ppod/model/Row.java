@@ -38,7 +38,7 @@ public abstract class Row<C extends Cell<?>> extends PPodEntity implements
 
 	protected Row<C> addCellHelper(final C cell) {
 		getCells().add(cell);
-		setInNeedOfNewVersionInfo();
+		setInNeedOfNewVersion();
 		return this;
 	}
 
@@ -125,9 +125,9 @@ public abstract class Row<C extends Cell<?>> extends PPodEntity implements
 		// checkState(matrix.getColumnsSize() != null,
 		// "matrix.getColumnSize() == null");
 
-		checkState(matrix.getColumnVersionInfos().size() == cells.size(),
+		checkState(matrix.getColumnsSize() == cells.size(),
 								"the matrix has different number of columns "
-										+ matrix.getColumnVersionInfos().size()
+										+ matrix.getColumnsSize()
 										+ " than cells "
 										+ cells.size());
 
@@ -139,7 +139,7 @@ public abstract class Row<C extends Cell<?>> extends PPodEntity implements
 			getCellsModifiable().add(cells.get(cellPos));
 			cells.get(cellPos).setPosition(cellPos);
 		}
-		setInNeedOfNewVersionInfo();
+		setInNeedOfNewVersion();
 		return removedCells;
 	}
 

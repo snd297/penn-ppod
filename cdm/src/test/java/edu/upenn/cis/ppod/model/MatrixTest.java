@@ -25,8 +25,8 @@ public class MatrixTest {
 	public void setColumnPPodVersionInfo() {
 		final DNAMatrix matrix = dnaMatrixProvider.get();
 		final VersionInfo versionInfo = pPodVersionInfoProvider.get();
-		matrix.setColumnVersionInfos(versionInfo);
 		matrix.setColumnsSize(1);
+		matrix.setColumnVersionInfos(versionInfo);
 		matrix.setColumnVersionInfo(0, versionInfo);
 		assertSame(matrix.getColumnVersionInfos().get(0), versionInfo);
 	}

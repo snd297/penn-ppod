@@ -91,7 +91,7 @@ public class Study extends UUPPodEntity implements IOTUSetCentricEntities {
 		}
 		otuSets.add(otuSet);
 		otuSet.setStudy(this);
-		setInNeedOfNewVersionInfo();
+		setInNeedOfNewVersion();
 		return otuSet;
 	}
 
@@ -173,7 +173,7 @@ public class Study extends UUPPodEntity implements IOTUSetCentricEntities {
 	 */
 	public Study removeOTUSet(final OTUSet otuSet) {
 		if (otuSets.remove(otuSet)) {
-			setInNeedOfNewVersionInfo();
+			setInNeedOfNewVersion();
 		}
 		return this;
 	}
@@ -191,7 +191,7 @@ public class Study extends UUPPodEntity implements IOTUSetCentricEntities {
 
 		} else {
 			this.label = label;
-			setInNeedOfNewVersionInfo();
+			setInNeedOfNewVersion();
 		}
 		return this;
 	}

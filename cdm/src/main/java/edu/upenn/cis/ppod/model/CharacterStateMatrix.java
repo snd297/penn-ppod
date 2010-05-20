@@ -19,7 +19,6 @@ import static com.google.common.base.Preconditions.checkArgument;
 import static com.google.common.base.Preconditions.checkNotNull;
 import static com.google.common.collect.Lists.newArrayList;
 import static com.google.common.collect.Maps.newHashMap;
-import static edu.upenn.cis.ppod.util.CollectionsUtil.nullFill;
 
 import java.util.Collections;
 import java.util.Iterator;
@@ -57,12 +56,10 @@ import edu.upenn.cis.ppod.util.IVisitor;
 @Table(name = CharacterStateMatrix.TABLE)
 public class CharacterStateMatrix extends Matrix<CharacterStateRow> {
 
-	public static final String CHARACTER_IDX_COLUMN = Character.TABLE + "_IDX";
-
 	/**
-	 * Column that orders the {@link Character}s. Intentionally package-private.
+	 * Column that orders the {@link Character}s.
 	 */
-	static final String CHARACTERS_POSITION_COLUMN =
+	public static final String CHARACTER_POSITION_COLUMN =
 			Character.TABLE + "_POSITION";
 
 	/** This entity's table name. */
@@ -83,8 +80,8 @@ public class CharacterStateMatrix extends Matrix<CharacterStateRow> {
 	 * refactoring should be considered.
 	 */
 	@ManyToMany
-	@JoinTable(joinColumns = { @JoinColumn(name = JOIN_COLUMN) }, inverseJoinColumns = { @JoinColumn(name = Character.ID_COLUMN) })
-	@IndexColumn(name = CHARACTERS_POSITION_COLUMN)
+	@JoinTable(joinColumns = { @JoinColumn(name = JOIN_COLUMN) }, inverseJoinColumns = { @JoinColumn(name = Character.JOIN_COLUMN) })
+	@IndexColumn(name = CHARACTER_POSITION_COLUMN)
 	private final List<Character> characters = newArrayList();
 
 	/**
@@ -92,9 +89,9 @@ public class CharacterStateMatrix extends Matrix<CharacterStateRow> {
 	 * ->columnNumber lookup.
 	 */
 	@ElementCollection
-	@JoinTable(name = TABLE + "_" + CHARACTER_IDX_COLUMN, joinColumns = @JoinColumn(name = JOIN_COLUMN))
-	@MapKeyJoinColumn(name = Character.ID_COLUMN)
-	@Column(name = CHARACTER_IDX_COLUMN)
+	@JoinTable(name = TABLE + "_" + CHARACTER_POSITION_COLUMN, joinColumns = @JoinColumn(name = JOIN_COLUMN))
+	@MapKeyJoinColumn(name = Character.JOIN_COLUMN)
+	@Column(name = CHARACTER_POSITION_COLUMN)
 	private final Map<Character, Integer> charactersToPositions = newHashMap();
 
 	@OneToOne(fetch = FetchType.LAZY, optional = false, cascade = CascadeType.ALL, orphanRemoval = true)
@@ -217,6 +214,8 @@ public class CharacterStateMatrix extends Matrix<CharacterStateRow> {
 	 * @throws IllegalArgumentException if any of {@code newCharacters} are
 	 *             {@code .equals} to each other. NOTE: this constraint does not
 	 *             hold in a {@link MolecularStateMatrix}
+	 * @throws IllegalStateExeption if {@code characters.size() !=
+	 *             getColumnsSize()}
 	 */
 	public List<Character> setCharacters(
 			final List<? extends Character> characters) {
@@ -254,14 +253,7 @@ public class CharacterStateMatrix extends Matrix<CharacterStateRow> {
 			}
 		}
 
-		// Add in column versions as necessary
-		nullFill(getColumnVersionInfosModifiable(), characters.size());
-
-		// Remove column versions as necessary
-		while (getColumnVersionInfos().size() > characters.size()) {
-			getColumnVersionInfosModifiable().remove(
-					getColumnVersionInfos().size() - 1);
-		}
+		setColumnsSize(characters.size());
 
 		final List<Character> removedCharacters = newArrayList(getCharactersModifiable());
 
@@ -282,7 +274,7 @@ public class CharacterStateMatrix extends Matrix<CharacterStateRow> {
 		}
 
 		// the matrix has changed
-		setInNeedOfNewVersionInfo();
+		setInNeedOfNewVersion();
 		return removedCharacters;
 	}
 

@@ -11,6 +11,8 @@ import javax.annotation.CheckForNull;
 import javax.persistence.CascadeType;
 import javax.persistence.Entity;
 import javax.persistence.FetchType;
+import javax.persistence.JoinColumn;
+import javax.persistence.JoinTable;
 import javax.persistence.MapKeyJoinColumn;
 import javax.persistence.OneToMany;
 import javax.persistence.OneToOne;
@@ -29,8 +31,13 @@ import edu.upenn.cis.ppod.util.OTUSomethingPair;
  * @author Sam Donnelly
  */
 @Entity
-@Table(name = "DNA_ROWS")
+@Table(name = DNARows.TABLE)
 public class DNARows extends OTUKeyedMap<DNARow> {
+
+	public static final String TABLE = "DNA_ROWS";
+
+	public static final String JOIN_COLUMN =
+			TABLE + "_" + PersistentObject.ID_COLUMN;
 
 	@OneToOne(fetch = FetchType.LAZY, mappedBy = "rows")
 	@CheckForNull
@@ -44,6 +51,7 @@ public class DNARows extends OTUKeyedMap<DNARow> {
 	private final Set<OTUDNARowPair> otuRowPairs = newHashSet();
 
 	@OneToMany(cascade = CascadeType.ALL, orphanRemoval = true)
+	@JoinTable(inverseJoinColumns = @JoinColumn(name = DNARow.JOIN_COLUMN))
 	@MapKeyJoinColumn(name = OTU.JOIN_COLUMN)
 	final private Map<OTU, DNARow> rows = newHashMap();
 
@@ -58,7 +66,7 @@ public class DNARows extends OTUKeyedMap<DNARow> {
 		super.afterUnmarshal(u, parent);
 		setMatrix((DNAMatrix) parent);
 		for (final OTUSomethingPair<DNARow> otuRowPair : otuRowPairs) {
-			otuRowPair.getSecond().setOTUsToRows(this);
+			otuRowPair.getSecond().setRows(this);
 		}
 	}
 
@@ -101,14 +109,14 @@ public class DNARows extends OTUKeyedMap<DNARow> {
 	public DNARow put(final OTU otu, final DNARow row) {
 		checkNotNull(otu);
 		checkNotNull(row);
-		row.setOTUsToRows(this);
+		row.setRows(this);
 		return super.putHelper(otu, row);
 	}
 
 	@Override
 	protected DNARows setIsInNeedOfNewVersionInfo() {
 		if (getParent() != null) {
-			getParent().setInNeedOfNewVersionInfo();
+			getParent().setInNeedOfNewVersion();
 		}
 		return this;
 	}
