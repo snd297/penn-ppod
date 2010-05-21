@@ -131,15 +131,17 @@ final class CreateOrUpdateStudy implements ICreateOrUpdateStudy {
 	}
 
 	public void createOrUpdateStudy() {
-		dbStudy = (Study) studyProvider.get().setPPodId();
-		dbStudy.setVersionInfo(newVersionInfo.getNewVersionInfo());
+		// dbStudy =
+		// (Study) studyProvider.get()
+		// .setPPodId()
+		// .setVersionInfo(newVersionInfo.getNewVersionInfo());
 
 		if (null == (dbStudy =
 				studyDAO.getStudyByPPodId(
 						incomingStudy.getPPodId()))) {
 			dbStudy = studyProvider.get();
-			dbStudy.setVersionInfo(newVersionInfo
-					.getNewVersionInfo());
+			dbStudy
+					.setVersionInfo(newVersionInfo.getNewVersionInfo());
 			dbStudy.setPPodId();
 		}
 
@@ -308,8 +310,8 @@ final class CreateOrUpdateStudy implements ICreateOrUpdateStudy {
 			}
 			newDbDNASequenceSets.add(dbDNASequenceSet);
 			dbOTUSet.setDNASequenceSets(newDbDNASequenceSets);
-			mergeDNASequenceSets.mergeSequenceSets(dbDNASequenceSet,
-					incomingDNASequenceSet);
+			mergeDNASequenceSets
+					.mergeSequenceSets(dbDNASequenceSet, incomingDNASequenceSet);
 		}
 	}
 }

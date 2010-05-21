@@ -1,7 +1,8 @@
 package edu.upenn.cis.ppod.model;
 
+import static com.google.common.base.Objects.equal;
+import static com.google.common.base.Preconditions.checkArgument;
 import static com.google.common.base.Preconditions.checkNotNull;
-import static com.google.common.collect.Iterables.get;
 
 import java.util.EnumSet;
 import java.util.Set;
@@ -17,6 +18,7 @@ import javax.persistence.FetchType;
 import javax.persistence.JoinColumn;
 import javax.persistence.ManyToOne;
 import javax.persistence.Table;
+import javax.xml.bind.annotation.XmlAttribute;
 import javax.xml.bind.annotation.XmlElement;
 
 import edu.upenn.cis.ppod.util.IVisitor;
@@ -38,25 +40,25 @@ public class DNACell extends Cell<DNANucleotide> {
 	/**
 	 * The heart of the cell: the {@code DNANucleotide}s.
 	 * <p>
-	 * Will be {@code null} when first created, but is generally not-null.
+	 * At most of one of {@code element} and {@code elements} will be {@code
+	 * null}.
 	 */
 	@ElementCollection
 	@CollectionTable(name = "DNA_CELL_ELEMENTS", joinColumns = @JoinColumn(name = JOIN_COLUMN))
 	@Column(name = "ELEMENT")
 	@CheckForNull
-	private EnumSet<DNANucleotide> elements = null;
+	private Set<DNANucleotide> elements;
 
 	/**
-	 * To handle the most-common case of a single {@code CharacterState}, we
-	 * cache {@code states.get(0)}.
+	 * To handle the most-common case of a single element.
 	 * <p>
-	 * Will be {@code null} if this is a {@link Type#INAPPLICABLE} or
-	 * {@link Type#UNASSIGNED}.
+	 * At most of one of {@code element} and {@code elements} will be {@code
+	 * null}.
 	 */
-	@Column(name = "FIRST_ELEMENT")
+	@Column(name = "ELEMENT", nullable = true)
 	@Enumerated(EnumType.ORDINAL)
 	@CheckForNull
-	private DNANucleotide firstElement;
+	private DNANucleotide element;
 
 	/**
 	 * The {@code Row} to which this {@code Cell} belongs.
@@ -74,7 +76,11 @@ public class DNACell extends Cell<DNANucleotide> {
 	}
 
 	@Override
-	@CheckForNull
+	protected DNANucleotide getElement() {
+		return element;
+	}
+
+	@Override
 	protected Set<DNANucleotide> getElementsRaw() {
 		if (elements == null) {
 			elements = EnumSet.noneOf(DNANucleotide.class);
@@ -82,9 +88,21 @@ public class DNACell extends Cell<DNANucleotide> {
 		return elements;
 	}
 
+	/** For JAXB. */
+	@XmlElement(name = "element")
 	@Override
-	protected DNANucleotide getFirstElement() {
-		return firstElement;
+	protected Set<DNANucleotide> getElementsXml() {
+		if (elementsXml == null) {
+			elementsXml = EnumSet.noneOf(DNANucleotide.class);
+		}
+		return elementsXml;
+	}
+
+	/** For JAXB. */
+	@Override
+	@XmlAttribute(name = "element")
+	protected DNANucleotide getElementXml() {
+		return super.getElementXml();
 	}
 
 	@Override
@@ -92,16 +110,66 @@ public class DNACell extends Cell<DNANucleotide> {
 		return row;
 	}
 
-	/** For JAXB. */
-	@XmlElement(name = "element")
 	@Override
-	protected Set<DNANucleotide> getXmlElements() {
-		return super.getXmlElements();
+	protected DNACell setElement(final DNANucleotide firstElement) {
+		this.element = firstElement;
+		return this;
 	}
 
 	@Override
-	protected DNACell setFirstElement(final DNANucleotide firstElement) {
-		this.firstElement = firstElement;
+	protected Cell<DNANucleotide> setElements(
+			@CheckForNull final Set<DNANucleotide> elements) {
+		if (equal(elements, this.elements)) {
+
+		} else {
+			if (elements == null) {
+				this.elements = null;
+			} else {
+				if (elements == null) {
+					this.elements = null;
+				} else {
+					getElementsRaw().addAll(elements);
+				}
+			}
+		}
+		return this;
+	}
+
+	@Override
+	protected void setElementXml(final DNANucleotide nucleotide) {
+		super.setElementXml(nucleotide);
+	}
+
+	@Override
+	protected Cell<DNANucleotide> setPolymorphicOrUncertain(
+			final edu.upenn.cis.ppod.model.Cell.Type type,
+			final Set<DNANucleotide> elements) {
+		checkNotNull(type);
+		checkNotNull(elements);
+
+		checkArgument(
+				type == Type.POLYMORPHIC
+						|| type == Type.UNCERTAIN,
+				" type is " + type + " but must be POLYMORPHIC OR UNCERTAIN");
+
+		checkArgument(
+				elements.size() > 1,
+				"POLYMORPIC AND UNCERTAIN must have greater than 1 element but elements has "
+						+ elements.size());
+
+		if (getType() != null
+				&& getType()
+						.equals(type)
+				&& elements
+						.equals(this.elements)) {
+			return this;
+		}
+
+		element = null;
+		setElements(elements);
+
+		setType(type);
+		setInNeedOfNewVersion();
 		return this;
 	}
 
@@ -111,32 +179,18 @@ public class DNACell extends Cell<DNANucleotide> {
 	}
 
 	@Override
-	protected Cell<DNANucleotide> setTypeAndElements(
-			final edu.upenn.cis.ppod.model.Cell.Type type,
-			final Set<? extends DNANucleotide> states) {
-		checkNotNull(type);
-		checkNotNull(states);
-
-		// So FindBugs knows that we got it when it wasn't null
-		final Set<DNANucleotide> thisElements = getElementsRaw();
-
-		if (getType() != null
-				&& getType()
-						.equals(type)
-				&& states
-						.equals(getElements())) {
+	public Cell<DNANucleotide> setSingleElement(final DNANucleotide element) {
+		checkNotNull(element);
+		if (element.equals(this.element)) {
+			if (getType() != Type.SINGLE) {
+				throw new AssertionError(
+						"element is set, but this cell is not a SINGLE");
+			}
 			return this;
 		}
-
-		clearElements();
-
-		thisElements.addAll(states);
-
-		if (states.size() > 0) {
-			firstElement = get(thisElements, 0);
-		}
-
-		setType(type);
+		setElements(null);
+		setElement(element);
+		setType(Type.SINGLE);
 		setInNeedOfNewVersion();
 		return this;
 	}

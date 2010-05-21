@@ -219,8 +219,8 @@ public class CharacterState extends PPodEntityWXmlId {
 	 * Set the <code>character</code> property of this {@code CharacterState} to
 	 * <code>character</code>.
 	 * <p>
-	 * This is intended to be package-private and called from
-	 * {@link Character#addState(CharacterState)}.
+	 * Intended to be called from classes responsible for managing the {@code
+	 * Character<->CharacterState} relationship.
 	 * <p>
 	 * {@code character} being {@code null} signifies that the relationship, if
 	 * it exists, is being severed.
@@ -229,7 +229,8 @@ public class CharacterState extends PPodEntityWXmlId {
 	 * 
 	 * @return this {@code CharacterState}
 	 */
-	CharacterState setCharacter(@Nullable final Character character) {
+	protected CharacterState setCharacter(
+			@CheckForNull final Character character) {
 		this.character = character;
 		return this;
 	}

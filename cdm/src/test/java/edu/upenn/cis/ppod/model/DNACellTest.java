@@ -16,11 +16,9 @@
 package edu.upenn.cis.ppod.model;
 
 import static com.google.common.collect.Iterables.getOnlyElement;
-import static com.google.common.collect.Sets.newHashSet;
 import static org.testng.Assert.assertEquals;
 import static org.testng.Assert.assertTrue;
 
-import java.util.Collections;
 import java.util.Set;
 
 import org.testng.annotations.Test;
@@ -117,7 +115,7 @@ public class DNACellTest {
 		cell.setPolymorphicElements(elements);
 
 		cell.beforeMarshal(null);
-		final Set<DNANucleotide> xmlStates = cell.getXmlElements();
+		final Set<DNANucleotide> xmlStates = cell.getElementsXml();
 		assertEquals(xmlStates.size(), elements.size());
 		for (final DNANucleotide expectedElement : elements) {
 			assertTrue(xmlStates.contains(expectedElement));
@@ -136,9 +134,7 @@ public class DNACellTest {
 		final DNACell dnaCell = dnaCellProvider.get();
 		dnaCell.unsetInNeedOfNewVersion();
 
-		@SuppressWarnings("unchecked")
-		final Set<DNANucleotide> emptySet = Collections.EMPTY_SET;
-		dnaCell.setTypeAndElements(Type.INAPPLICABLE, emptySet);
+		dnaCell.setInapplicable();
 		assertEquals(dnaCell.getType(), Type.INAPPLICABLE);
 		assertEquals(dnaCell.getElements().size(), 0);
 		assertTrue(dnaCell.isInNeedOfNewVersion());
@@ -148,8 +144,7 @@ public class DNACellTest {
 	public void setTypeAndStatesSingle() {
 		final DNACell dnaCell = dnaCellProvider.get();
 		dnaCell.unsetInNeedOfNewVersion();
-		dnaCell.setTypeAndElements(Type.SINGLE,
-				newHashSet(DNANucleotide.A));
+		dnaCell.setSingleElement(DNANucleotide.A);
 		assertEquals(dnaCell.getType(), Type.SINGLE);
 		assertEquals(getOnlyElement(dnaCell.getElements()),
 					DNANucleotide.A);
@@ -157,13 +152,12 @@ public class DNACellTest {
 	}
 
 	@Test
-	public void setTypeAndStatesSingleWithValuesItAlreadyHad() {
+	public void setSingleElementWithValueItAlreadyHad() {
 		final DNACell dnaCell = dnaCellProvider.get();
 
 		dnaCell.unsetInNeedOfNewVersion();
-		dnaCell.setTypeAndElements(Type.SINGLE,
-				newHashSet(DNANucleotide.A));
-		dnaCell.setTypeAndElements(Type.SINGLE, newHashSet(DNANucleotide.A));
+		dnaCell.setSingleElement(DNANucleotide.A);
+		dnaCell.setSingleElement(DNANucleotide.A);
 
 		assertEquals(
 				dnaCell.getType(),

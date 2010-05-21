@@ -180,9 +180,8 @@ class CreateOrUpdateMatrix<M extends Matrix<R>, R extends Row<C>, C extends Cell
 			dao.flush();
 
 			dao.evictEntities(cellsToEvict);
-			cellsToEvict.clear();
 
-			dao.evict(dbRow);
+			cellsToEvict.clear();
 
 			fillInCellInfo(matrixInfo, dbRow, sourceOTUPosition);
 

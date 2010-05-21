@@ -50,20 +50,18 @@ public class MatrixProvider {
 						studyMX540.getOTUSets())
 						.getCharacterStateMatrices());
 
-		final Study studyM1808 = (Study) ctx.createUnmarshaller().unmarshal(
-				MatrixProvider.class.getResourceAsStream("/M1808.nex.xml"));
+		// final Study studyM1808 = (Study) ctx.createUnmarshaller().unmarshal(
+		// MatrixProvider.class.getResourceAsStream("/M1808.nex.xml"));
+		//
+		// studyM1808.accept(afterUnmarshalVisitor);
+		//
+		// final CharacterStateMatrix smallDNAMatrix =
+		// getOnlyElement(
+		// getOnlyElement(
+		// studyM1808.getOTUSets())
+		// .getCharacterStateMatrices());
 
-		studyM1808.accept(afterUnmarshalVisitor);
-
-		final CharacterStateMatrix smallDNAMatrix =
-				getOnlyElement(
-						getOnlyElement(
-								studyM1808.getOTUSets())
-								.getCharacterStateMatrices());
-
-		return new Object[][] {
-				new Object[] { smallSimpleMatrix },
-				new Object[] { smallDNAMatrix } };
+		return new Object[][] { new Object[] { smallSimpleMatrix } };
 
 	}
 }

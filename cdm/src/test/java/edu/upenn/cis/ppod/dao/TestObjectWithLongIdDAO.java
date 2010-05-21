@@ -6,7 +6,6 @@ import static edu.upenn.cis.ppod.util.CollectionsUtil.nullFillAndSet;
 
 import java.io.Serializable;
 import java.util.ArrayList;
-import java.util.Collection;
 import java.util.List;
 import java.util.Map;
 
@@ -57,7 +56,7 @@ public class TestObjectWithLongIdDAO implements IObjectWithLongIdDAOHibernate {
 	 * 
 	 * @param entities ignored
 	 */
-	public void evictEntities(final Collection<? extends Object> entities) {}
+	public void evictEntities(final Iterable<? extends Object> entities) {}
 
 	public List<Object> findAll() {
 		// TODO Auto-generated method stub
@@ -116,8 +115,8 @@ public class TestObjectWithLongIdDAO implements IObjectWithLongIdDAOHibernate {
 			}
 			nullFillAndSet(rowsToCells.get(row), row.getCellPosition(cell),
 						cell);
-		} else { 
-			
+		} else {
+
 		}
 	}
 

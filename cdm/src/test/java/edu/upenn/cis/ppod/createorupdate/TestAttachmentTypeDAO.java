@@ -18,7 +18,6 @@ package edu.upenn.cis.ppod.createorupdate;
 import static com.google.common.collect.Maps.newHashMap;
 
 import java.io.Serializable;
-import java.util.Collection;
 import java.util.List;
 import java.util.Map;
 
@@ -84,7 +83,7 @@ public class TestAttachmentTypeDAO implements IAttachmentTypeDAO {
 		throw new UnsupportedOperationException();
 	}
 
-	public void evictEntities(Collection<? extends AttachmentType> entities) {
+	public void evictEntities(final Iterable<? extends AttachmentType> entities) {
 		// TODO Auto-generated method stub
 		throw new UnsupportedOperationException();
 	}

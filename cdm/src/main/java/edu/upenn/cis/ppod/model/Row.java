@@ -68,16 +68,14 @@ public abstract class Row<C extends Cell<?>> extends PPodEntity implements
 	 * <p>
 	 * This method {@code null}s out the cell->row relationship.
 	 * 
-	 * @return the cleared cells - an empty list if {@code getCells() == 0} when
-	 *         this method is called
+	 * @return this
 	 */
-	public List<C> clearCells() {
-		final List<C> clearedCells = newArrayList(getCells());
-		for (final C clearedCell : clearedCells) {
+	public Row<C> clearCells() {
+		for (final C clearedCell : getCells()) {
 			clearedCell.unsetRow();
 		}
 		getCellsModifiable().clear();
-		return clearedCells;
+		return this;
 	}
 
 	/**

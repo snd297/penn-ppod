@@ -34,7 +34,6 @@ import static com.google.common.base.Preconditions.checkNotNull;
 
 import java.io.Serializable;
 import java.lang.reflect.ParameterizedType;
-import java.util.Collection;
 import java.util.List;
 
 import org.hibernate.Criteria;
@@ -123,8 +122,12 @@ public abstract class GenericHibernateDAO<T, ID extends Serializable>
 		T entity;
 		if (lock) {
 			@SuppressWarnings("unchecked")
-			final T suppressUncheckedWarningEntity = (T) getSession().get(
-					getPersistentClass(), id, LockMode.PESSIMISTIC_WRITE);
+			final T suppressUncheckedWarningEntity =
+					(T) getSession()
+							.get(
+									getPersistentClass(),
+									id,
+									LockMode.PESSIMISTIC_WRITE);
 			entity = suppressUncheckedWarningEntity;
 		} else {
 			@SuppressWarnings("unchecked")
@@ -152,7 +155,7 @@ public abstract class GenericHibernateDAO<T, ID extends Serializable>
 		getSession().evict(entity);
 	}
 
-	public void evictEntities(final Collection<? extends T> entities) {
+	public void evictEntities(final Iterable<? extends T> entities) {
 		for (final T entity : entities) {
 			evict(entity);
 		}

@@ -41,10 +41,10 @@ public class DNACharacter extends MolecularCharacter {
 	@Inject
 	DNACharacter(final DNAState.IFactory dnaStateFactory) {
 		super.setMolecularCharacterLabel(LABEL);
-		putState(dnaStateFactory.create(DNAState.Nucleotide.A));
-		putState(dnaStateFactory.create(DNAState.Nucleotide.C));
-		putState(dnaStateFactory.create(DNAState.Nucleotide.G));
-		putState(dnaStateFactory.create(DNAState.Nucleotide.T));
+		addState(dnaStateFactory.create(DNAState.Nucleotide.A));
+		addState(dnaStateFactory.create(DNAState.Nucleotide.C));
+		addState(dnaStateFactory.create(DNAState.Nucleotide.G));
+		addState(dnaStateFactory.create(DNAState.Nucleotide.T));
 	}
 
 	/**
@@ -52,12 +52,12 @@ public class DNACharacter extends MolecularCharacter {
 	 *             {@link DNAState}
 	 */
 	@Override
-	public DNAState putState(final CharacterState state) {
+	public DNAState addState(final CharacterState state) {
 		// This instanceof should be safe since it only makes
 		// sense to call this method on a transient DNACharacter
 		// w/ transient CharacterState's.
 		if (state instanceof DNAState) {
-			return (DNAState) super.putState(state);
+			return (DNAState) super.addState(state);
 		}
 		throw new IllegalArgumentException(
 				"can only add a DNAState to a DNACharacter, not a "
