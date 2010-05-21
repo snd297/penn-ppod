@@ -33,9 +33,6 @@
 
 		<mapping class="edu.upenn.cis.ppod.model.MolecularState" />
 
-		<mapping class="edu.upenn.cis.ppod.model.DNAStateMatrix" />
-		<mapping class="edu.upenn.cis.ppod.model.DNACharacter" />
-		<mapping class="edu.upenn.cis.ppod.model.DNAState" />
 
 		<mapping class="edu.upenn.cis.ppod.model.DNAMatrix" />
 		<mapping class="edu.upenn.cis.ppod.model.DNARows" />

@@ -18,15 +18,14 @@ package edu.upenn.cis.ppod;
 import com.google.inject.AbstractModule;
 import com.google.inject.assistedinject.FactoryProvider;
 
+import edu.upenn.cis.ppod.createorupdate.CreateOrUpdateModule;
+import edu.upenn.cis.ppod.createorupdate.ICreateOrUpdateCharacterStateMatrix;
 import edu.upenn.cis.ppod.createorupdate.ICreateOrUpdateStudy;
 import edu.upenn.cis.ppod.createorupdate.IMergeAttachments;
 import edu.upenn.cis.ppod.createorupdate.IMergeOTUSets;
 import edu.upenn.cis.ppod.createorupdate.IMergeTreeSets;
-import edu.upenn.cis.ppod.createorupdate.ICreateOrUpdateCharacterStateMatrix;
-import edu.upenn.cis.ppod.createorupdate.CreateOrUpdateModule;
 import edu.upenn.cis.ppod.dao.hibernate.DAOHibernateModule;
 import edu.upenn.cis.ppod.model.CharacterState;
-import edu.upenn.cis.ppod.model.DNAState;
 import edu.upenn.cis.ppod.model.ModelModule;
 import edu.upenn.cis.ppod.services.StringPair;
 import edu.upenn.cis.ppod.util.IPair;
@@ -52,7 +51,8 @@ public final class PPodModule extends AbstractModule {
 				FactoryProvider.newFactory(IMergeTreeSets.IFactory.class,
 						IMergeTreeSets.class));
 		bind(ICreateOrUpdateCharacterStateMatrix.IFactory.class).toProvider(
-				FactoryProvider.newFactory(ICreateOrUpdateCharacterStateMatrix.IFactory.class,
+				FactoryProvider.newFactory(
+						ICreateOrUpdateCharacterStateMatrix.IFactory.class,
 						ICreateOrUpdateCharacterStateMatrix.class));
 		bind(IMergeAttachments.IFactory.class).toProvider(
 				FactoryProvider.newFactory(IMergeAttachments.IFactory.class,
@@ -61,9 +61,6 @@ public final class PPodModule extends AbstractModule {
 		bind(CharacterState.IFactory.class).toProvider(
 				FactoryProvider.newFactory(CharacterState.IFactory.class,
 						CharacterState.class));
-		bind(DNAState.IFactory.class).toProvider(
-				FactoryProvider.newFactory(DNAState.IFactory.class,
-						DNAState.class));
 
 		bind(StringPair.IFactory.class).toProvider(
 				FactoryProvider.newFactory(

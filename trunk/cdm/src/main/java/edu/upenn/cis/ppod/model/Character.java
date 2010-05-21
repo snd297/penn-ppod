@@ -15,13 +15,10 @@
  */
 package edu.upenn.cis.ppod.model;
 
-import static com.google.common.base.Preconditions.checkState;
 import static com.google.common.collect.Iterables.get;
-import static com.google.common.collect.Iterables.getOnlyElement;
 import static com.google.common.collect.Maps.newHashMap;
 import static com.google.common.collect.Sets.newHashSet;
 
-import java.util.Collections;
 import java.util.Map;
 import java.util.Set;
 
@@ -30,7 +27,8 @@ import javax.annotation.Nullable;
 import javax.persistence.CascadeType;
 import javax.persistence.Column;
 import javax.persistence.Entity;
-import javax.persistence.ManyToMany;
+import javax.persistence.JoinColumn;
+import javax.persistence.ManyToOne;
 import javax.persistence.MapKey;
 import javax.persistence.OneToMany;
 import javax.persistence.Table;
@@ -77,8 +75,9 @@ public class Character extends UUPPodEntityWXmlId {
 	 * really only a many-to-many for Molecular matrices. For standard matrices,
 	 * it is many-to-one.
 	 */
-	@ManyToMany(mappedBy = "characters")
-	private final Set<CharacterStateMatrix> matrices = newHashSet();
+	@ManyToOne
+	@JoinColumn(name = CharacterStateMatrix.JOIN_COLUMN, insertable = false, updatable = false, nullable = false)
+	private CharacterStateMatrix matrix;
 
 	/**
 	 * The states that this character can have. For example, 0->"absent",
@@ -93,7 +92,7 @@ public class Character extends UUPPodEntityWXmlId {
 	/**
 	 * Default constructor for (at least) Hibernate.
 	 */
-	protected Character() {}
+	Character() {}
 
 	@Override
 	public void accept(final IVisitor visitor) {
@@ -105,7 +104,7 @@ public class Character extends UUPPodEntityWXmlId {
 	}
 
 	/**
-	 * Add {@code matrix} to this {@code Character}'s matrices.
+	 * Set{@code matrix} as this character's parent.
 	 * <p>
 	 * Not public because it's meant to be called from classes who create the
 	 * {@code Character}<-> {@code CharacterStateMatrix} relationship.
@@ -121,12 +120,10 @@ public class Character extends UUPPodEntityWXmlId {
 	 *        different matrix - it's fine to keep calling this method with the
 	 *        same matrix
 	 */
-	protected boolean addMatrix(final CharacterStateMatrix matrix) {
-		Preconditions.checkNotNull(matrix);
-		checkState(getMatricesModifiable().size() == 0
-					|| getOnlyElement(getMatricesModifiable()).equals(matrix),
-				"standard characters can belong to only one matrix");
-		return matrices.add(matrix);
+	protected Character setMatrix(
+			@CheckForNull final CharacterStateMatrix matrix) {
+		this.matrix = matrix;
+		return this;
 	}
 
 	/**
@@ -168,17 +165,8 @@ public class Character extends UUPPodEntityWXmlId {
 	 * 
 	 * @return the matrices that refer to this character
 	 */
-	public Set<CharacterStateMatrix> getMatrices() {
-		return Collections.unmodifiableSet(matrices);
-	}
-
-	/**
-	 * Get the matrices in which this character is used.
-	 * 
-	 * @return the matrices to which this character belongs
-	 */
-	protected Set<CharacterStateMatrix> getMatricesModifiable() {
-		return matrices;
+	public CharacterStateMatrix getMatrix() {
+		return matrix;
 	}
 
 	/**
@@ -241,23 +229,9 @@ public class Character extends UUPPodEntityWXmlId {
 		return originalState;
 	}
 
-	/**
-	 * Remove {@code matrix} from this {@code Character}'s matrices.
-	 * <p>
-	 * Not public because it's meant to be called from classes who create the
-	 * {@code Character}<-> {@code CharacterStateMatrix} relationship.
-	 * 
-	 * @param matrix to be removed.
-	 * @return <code>true</code> if <code>matrix</code> was there to be removed,
-	 *         <code>false</code> otherwise
-	 */
-	protected boolean removeMatrix(final CharacterStateMatrix matrix) {
-		return matrices.remove(matrix);
-	}
-
 	@Override
 	public Character setInNeedOfNewVersion() {
-		for (final CharacterStateMatrix matrix : matrices) {
+		if (matrix != null) {
 			matrix.setInNeedOfNewVersion();
 		}
 		super.setInNeedOfNewVersion();

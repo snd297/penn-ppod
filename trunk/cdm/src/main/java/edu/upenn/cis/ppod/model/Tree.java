@@ -52,7 +52,7 @@ public class Tree extends UUPPodEntity {
 	private String newick;
 
 	@ManyToOne
-	@JoinColumn(name = TreeSet.ID_COLUMN, insertable = false, updatable = false, nullable = false)
+	@JoinColumn(name = TreeSet.JOIN_COLUMN, insertable = false, updatable = false, nullable = false)
 	@CheckForNull
 	private TreeSet treeSet;
 

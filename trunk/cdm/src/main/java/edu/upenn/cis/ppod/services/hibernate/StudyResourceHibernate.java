@@ -29,13 +29,11 @@ import com.google.inject.Provider;
 import edu.upenn.cis.ppod.createorupdate.ICreateOrUpdateStudy;
 import edu.upenn.cis.ppod.dao.IAttachmentNamespaceDAO;
 import edu.upenn.cis.ppod.dao.IAttachmentTypeDAO;
-import edu.upenn.cis.ppod.dao.IDNACharacterDAO;
 import edu.upenn.cis.ppod.dao.IOTUSetDAO;
 import edu.upenn.cis.ppod.dao.IObjectWithLongIdDAO;
 import edu.upenn.cis.ppod.dao.IStudyDAO;
 import edu.upenn.cis.ppod.dao.hibernate.IAttachmentNamespaceDAOHibernate;
 import edu.upenn.cis.ppod.dao.hibernate.IAttachmentTypeDAOHibernate;
-import edu.upenn.cis.ppod.dao.hibernate.IDNACharacterDAOHibernate;
 import edu.upenn.cis.ppod.dao.hibernate.IOTUSetDAOHibernate;
 import edu.upenn.cis.ppod.dao.hibernate.IObjectWithLongIdDAOHibernate;
 import edu.upenn.cis.ppod.dao.hibernate.IStudyDAOHibernate;
@@ -61,8 +59,6 @@ final class StudyResourceHibernate implements IStudyResource {
 
 	private final IOTUSetDAO otuSetDAO;
 
-	private final IDNACharacterDAO dnaCharacterDAO;
-
 	private final IAttachmentNamespaceDAO attachmentNamespaceDAO;
 
 	private final IAttachmentTypeDAO attachmentTypeDAO;
@@ -87,7 +83,6 @@ final class StudyResourceHibernate implements IStudyResource {
 	StudyResourceHibernate(
 			final IStudyDAOHibernate studyDAO,
 			final IOTUSetDAOHibernate otuSetDAO,
-			final IDNACharacterDAOHibernate dnaCharacterDAO,
 			final ICreateOrUpdateStudy.IFactory saveOrUpdateStudyFactory,
 			final IStudy2StudyInfo study2StudyInfo,
 			final ISetDocIdVisitor setDocIdVisitor,
@@ -104,9 +99,6 @@ final class StudyResourceHibernate implements IStudyResource {
 				.getSessionFactory().getCurrentSession());
 
 		this.otuSetDAO = (IOTUSetDAO) otuSetDAO.setSession(currentSession);
-
-		this.dnaCharacterDAO = (IDNACharacterDAO) dnaCharacterDAO
-				.setSession(currentSession);
 
 		this.attachmentNamespaceDAO = (IAttachmentNamespaceDAO) attachmentNamespaceDAO
 				.setSession(currentSession);
@@ -159,7 +151,6 @@ final class StudyResourceHibernate implements IStudyResource {
 						incomingStudy,
 						studyDAO,
 						otuSetDAO,
-						dnaCharacterDAO,
 						attachmentNamespaceDAO,
 						attachmentTypeDAO,
 						objectWithLongIdDAO,

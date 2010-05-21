@@ -21,6 +21,7 @@ import static com.google.common.collect.Iterables.getOnlyElement;
 import static com.google.common.collect.Sets.newHashSet;
 import static org.testng.Assert.assertEquals;
 import static org.testng.Assert.assertNotNull;
+import static org.testng.Assert.assertSame;
 import static org.testng.Assert.assertTrue;
 
 import java.util.Iterator;
@@ -151,10 +152,8 @@ public class ModelAssert {
 														.hasNext();) {
 			final Character actualCharacter = actualCharacterItr.next();
 			final Character expectedCharacter = expectedCharacterItr.next();
-			assertTrue(actualCharacter.getMatricesModifiable().contains(
-					actualMatrix));
-			assertTrue(expectedCharacter.getMatricesModifiable().contains(
-					expectedMatrix));
+			assertSame(actualCharacter.getMatrix(), actualMatrix);
+			assertSame(expectedCharacter.getMatrix(), expectedMatrix);
 			assertEqualsCharacters(actualCharacter, expectedCharacter);
 		}
 

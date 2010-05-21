@@ -20,7 +20,6 @@ import static com.google.common.base.Predicates.equalTo;
 import static com.google.common.collect.Sets.newHashSet;
 import static edu.upenn.cis.ppod.util.PPodIterables.findIf;
 
-import java.util.List;
 import java.util.Set;
 
 import com.google.inject.Inject;
@@ -30,10 +29,8 @@ import com.google.inject.assistedinject.Assisted;
 import edu.upenn.cis.ppod.dao.IAttachmentNamespaceDAO;
 import edu.upenn.cis.ppod.dao.IAttachmentTypeDAO;
 import edu.upenn.cis.ppod.dao.IDAO;
-import edu.upenn.cis.ppod.dao.IDNACharacterDAO;
 import edu.upenn.cis.ppod.dao.IStudyDAO;
 import edu.upenn.cis.ppod.model.CharacterStateMatrix;
-import edu.upenn.cis.ppod.model.DNACharacter;
 import edu.upenn.cis.ppod.model.DNAMatrix;
 import edu.upenn.cis.ppod.model.DNASequence;
 import edu.upenn.cis.ppod.model.DNASequenceSet;
@@ -45,7 +42,6 @@ import edu.upenn.cis.ppod.modelinterfaces.IWithPPodId;
 import edu.upenn.cis.ppod.services.ppodentity.MatrixInfo;
 import edu.upenn.cis.ppod.services.ppodentity.OTUSetInfo;
 import edu.upenn.cis.ppod.services.ppodentity.StudyInfo;
-import edu.upenn.cis.ppod.util.ICharacterStateMatrixFactory;
 
 /**
  * Save a new study or update an existing one.
@@ -56,11 +52,9 @@ final class CreateOrUpdateStudy implements ICreateOrUpdateStudy {
 
 	private final IStudyDAO studyDAO;
 
-	private final IDNACharacterDAO dnaCharacterDAO;
-
 	private final Provider<Study> studyProvider;
 	private final Provider<OTUSet> otuSetProvider;
-	private final ICharacterStateMatrixFactory matrixFactory;
+	private final Provider<CharacterStateMatrix> characterStateMatrixProvider;
 	private final Provider<DNAMatrix> dnaMatrixProvider;
 	private final Provider<DNASequenceSet> dnaSequenceSetProvider;
 	private final Provider<TreeSet> treeSetProvider;
@@ -80,7 +74,7 @@ final class CreateOrUpdateStudy implements ICreateOrUpdateStudy {
 	CreateOrUpdateStudy(
 			final Provider<Study> studyProvider,
 			final Provider<OTUSet> otuSetProvider,
-			final ICharacterStateMatrixFactory matrixFactory,
+			final Provider<CharacterStateMatrix> characterStateMatrix,
 			final Provider<DNASequenceSet> dnaSequenceSetProvider,
 			final Provider<TreeSet> treeSetProvider,
 			final IMergeOTUSets.IFactory saveOrUpdateOTUSetFactory,
@@ -94,17 +88,15 @@ final class CreateOrUpdateStudy implements ICreateOrUpdateStudy {
 			final Provider<DNAMatrix> dnaMatrixProvider,
 			@Assisted final Study incomingStudy,
 			@Assisted final IStudyDAO studyDAO,
-			@Assisted final IDNACharacterDAO dnaCharacterDAO,
 			@Assisted final IAttachmentNamespaceDAO attachmentNamespaceDAO,
 			@Assisted final IAttachmentTypeDAO attachmentTypeDAO,
 			@Assisted final IDAO<Object, Long> dao,
 			@Assisted final INewVersionInfo newVersionInfo) {
 		this.incomingStudy = incomingStudy;
 		this.studyDAO = studyDAO;
-		this.dnaCharacterDAO = dnaCharacterDAO;
 		this.studyProvider = studyProvider;
 		this.otuSetProvider = otuSetProvider;
-		this.matrixFactory = matrixFactory;
+		this.characterStateMatrixProvider = characterStateMatrix;
 		this.dnaSequenceSetProvider = dnaSequenceSetProvider;
 		this.treeSetProvider = treeSetProvider;
 		this.newVersionInfo = newVersionInfo;
@@ -160,18 +152,6 @@ final class CreateOrUpdateStudy implements ICreateOrUpdateStudy {
 			}
 		}
 
-		final List<DNACharacter> dnaCharacters = dnaCharacterDAO.findAll();
-		if (dnaCharacters.size() == 0) {
-			throw new IllegalStateException(
-					"there are no DNACharacter's in the database: has it been populated with a DNA_STATE character and DNA_STATE states?");
-		} else if (dnaCharacters.size() > 1) {
-			throw new AssertionError(
-					"there are "
-							+ dnaCharacters.size()
-							+ " DNACharacter's in the database, it should not be possible for there to be more than 1");
-		}
-		final DNACharacter dbDNACharacter = dnaCharacters.get(0);
-
 		// Save or update incoming otu sets
 		for (final OTUSet incomingOTUSet : incomingStudy.getOTUSets()) {
 			OTUSet dbOTUSet;
@@ -209,7 +189,7 @@ final class CreateOrUpdateStudy implements ICreateOrUpdateStudy {
 												incomingMatrix.getPPodId()),
 										IWithPPodId.getPPodId
 										)))) {
-					dbMatrix = matrixFactory.create(incomingMatrix);
+					dbMatrix = characterStateMatrixProvider.get();
 					dbOTUSet.addCharacterStateMatrix(dbMatrix);
 					dbMatrix.setVersionInfo(
 							newVersionInfo.getNewVersionInfo());
@@ -219,7 +199,7 @@ final class CreateOrUpdateStudy implements ICreateOrUpdateStudy {
 				}
 				final MatrixInfo dbMatrixInfo = createOrUpdateCharacterStateMatrix
 						.createOrUpdateMatrix(dbMatrix,
-								incomingMatrix, dbDNACharacter);
+								incomingMatrix);
 				otuSetInfo.getMatrixInfos().add(dbMatrixInfo);
 			}
 
