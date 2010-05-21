@@ -16,7 +16,6 @@
 package edu.upenn.cis.ppod.dao;
 
 import java.io.Serializable;
-import java.util.Collection;
 import java.util.List;
 
 /**
@@ -35,6 +34,10 @@ import java.util.List;
  */
 public interface IDAO<T, ID extends Serializable> {
 
+	void evict(final T entity);
+
+	void evictEntities(final Iterable<? extends T> entities);
+
 	/**
 	 * Retrieve all <code>T</code>s.
 	 * 
@@ -52,6 +55,8 @@ public interface IDAO<T, ID extends Serializable> {
 	 */
 	List<T> findByExample(T exampleInstance, String... excludeProperty);
 
+	void flush();
+
 	/**
 	 * Given a persistence id <code>id</code>, retrieve the corresponding
 	 * <code>T</code>. If <code>id</code> is <code>null</code>, returns
@@ -65,6 +70,10 @@ public interface IDAO<T, ID extends Serializable> {
 	 */
 	T get(ID id, boolean lock);
 
+	String getEntityName(Class<? extends T> entityClass);
+
+	String getEntityName(T entity);
+
 	/**
 	 * Return the identifier value of the given entity as associated with this
 	 * <code>IDAO</code>'s session. An exception is thrown if the given entity
@@ -75,12 +84,7 @@ public interface IDAO<T, ID extends Serializable> {
 	 */
 	Serializable getIdentifier(Object o);
 
-	/**
-	 * Make the given entity transient. That is, delete <code>entity</code>.
-	 * 
-	 * @param entity to be made transient
-	 */
-	void makeTransient(T entity);
+	void initialize(T entity);
 
 	/**
 	 * Save or update <code>entity</code>.
@@ -90,15 +94,10 @@ public interface IDAO<T, ID extends Serializable> {
 	 */
 	void makePersistent(T entity);
 
-	void evict(final T entity);
-
-	void evictEntities(final Collection<? extends T> entities);
-
-	void flush();
-
-	void initialize(T entity);
-
-	String getEntityName(T entity);
-
-	String getEntityName(Class<? extends T> entityClass);
+	/**
+	 * Make the given entity transient. That is, delete <code>entity</code>.
+	 * 
+	 * @param entity to be made transient
+	 */
+	void makeTransient(T entity);
 }

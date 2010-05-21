@@ -225,7 +225,7 @@ public class Character extends UUPPodEntityWXmlId {
 	 *         or {@code null} if there was no such state.
 	 */
 	@CheckForNull
-	public CharacterState putState(final CharacterState state) {
+	public CharacterState addState(final CharacterState state) {
 		Preconditions.checkNotNull(state);
 		final CharacterState originalState = states.put(state.getStateNumber(),
 				state);

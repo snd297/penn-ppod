@@ -15,13 +15,13 @@
  */
 package edu.upenn.cis.ppod.model;
 
+import static com.google.common.base.Objects.equal;
+import static com.google.common.base.Preconditions.checkArgument;
 import static com.google.common.base.Preconditions.checkNotNull;
 import static com.google.common.base.Preconditions.checkState;
-import static com.google.common.collect.Iterables.get;
 import static com.google.common.collect.Sets.newHashSet;
 import static com.google.common.collect.Sets.newTreeSet;
 
-import java.util.Collections;
 import java.util.Comparator;
 import java.util.Set;
 import java.util.SortedSet;
@@ -35,7 +35,6 @@ import javax.persistence.JoinTable;
 import javax.persistence.ManyToMany;
 import javax.persistence.ManyToOne;
 import javax.persistence.Table;
-import javax.persistence.Transient;
 import javax.xml.bind.Unmarshaller;
 import javax.xml.bind.annotation.XmlElement;
 import javax.xml.bind.annotation.XmlIDREF;
@@ -68,6 +67,18 @@ public class CharacterStateCell extends Cell<CharacterState> {
 	private static final Comparator<CharacterState> STATE_COMPARATOR = new CharacterState.CharacterStateComparator();
 
 	/**
+	 * To handle the most-common case of a single {@code CharacterState}, we
+	 * cache {@code states.get(0)}.
+	 * <p>
+	 * Will be {@code null} if this is a {@link Type#INAPPLICABLE} or
+	 * {@link Type#UNASSIGNED}.
+	 */
+	@ManyToOne(fetch = FetchType.LAZY)
+	@JoinColumn(name = CharacterState.ID_COLUMN)
+	@CheckForNull
+	private CharacterState element;
+
+	/**
 	 * The heart of the cell: the states.
 	 * <p>
 	 * Will be {@code null} when first created, but is generally not-null.
@@ -79,18 +90,6 @@ public class CharacterStateCell extends Cell<CharacterState> {
 	private SortedSet<CharacterState> elements = null;
 
 	/**
-	 * To handle the most-common case of a single {@code CharacterState}, we
-	 * cache {@code states.get(0)}.
-	 * <p>
-	 * Will be {@code null} if this is a {@link Type#INAPPLICABLE} or
-	 * {@link Type#UNASSIGNED}.
-	 */
-	@ManyToOne(fetch = FetchType.LAZY)
-	@JoinColumn(name = "FIRST_" + CharacterState.ID_COLUMN)
-	@CheckForNull
-	private CharacterState firstElement;
-
-	/**
 	 * The {@code CharacterStateRow} to which this {@code CharacterStateCell}
 	 * belongs.
 	 */
@@ -98,14 +97,6 @@ public class CharacterStateCell extends Cell<CharacterState> {
 	@JoinColumn(name = CharacterStateRow.JOIN_COLUMN)
 	@CheckForNull
 	private CharacterStateRow row;
-
-	/**
-	 * Used for serialization so we don't have to hit {@code states} directly
-	 * and thereby cause unwanted database hits.
-	 */
-	@Transient
-	@CheckForNull
-	private Set<CharacterState> xmlElements = null;
 
 	/** No-arg constructor for (at least) Hibernate. */
 	CharacterStateCell() {}
@@ -151,16 +142,32 @@ public class CharacterStateCell extends Cell<CharacterState> {
 	}
 
 	@Override
+	protected CharacterState getElement() {
+		return element;
+	}
+
+	@CheckForNull
+	@Override
 	protected Set<CharacterState> getElementsRaw() {
-		if (elements == null) {
-			elements = newTreeSet(STATE_COMPARATOR);
-		}
 		return elements;
 	}
 
+	/**
+	 * The state set that will be marshalled.
+	 * 
+	 * @return the states for marhsalling
+	 */
+	@XmlElement(name = "stateDocId")
+	@XmlIDREF
 	@Override
-	protected CharacterState getFirstElement() {
-		return firstElement;
+	protected Set<CharacterState> getElementsXml() {
+		return super.getElementsXml();
+	}
+
+	@Override
+	@XmlElement(name = "element")
+	protected CharacterState getElementXml() {
+		return super.getElementXml();
 	}
 
 	/**
@@ -175,19 +182,93 @@ public class CharacterStateCell extends Cell<CharacterState> {
 		return row;
 	}
 
-	/**
-	 * The state set that will be marshalled.
-	 * 
-	 * @return the states for marhsalling
-	 */
-	@XmlElement(name = "stateDocId")
-	@XmlIDREF
 	@Override
-	protected Set<CharacterState> getXmlElements() {
-		if (xmlElements == null) {
-			xmlElements = newHashSet();
+	protected Cell<CharacterState> setElement(
+			@CheckForNull final CharacterState element) {
+		this.element = element;
+		return this;
+	}
+
+	@Override
+	protected Cell<CharacterState> setElements(
+			@CheckForNull final Set<CharacterState> elements) {
+		if (equal(elements, this.elements)) {
+
+		} else {
+			if (elements == null) {
+				this.elements = null;
+			} else {
+				if (this.elements == null) {
+					this.elements = newTreeSet(STATE_COMPARATOR);
+				}
+				this.elements.clear();
+				this.elements.addAll(elements);
+			}
 		}
-		return xmlElements;
+		return this;
+	}
+
+	/**
+	 * Add a set of {@code CharacterState}s to this {@code CharacterStateCell}.
+	 * <p>
+	 * Makes no assumption about the hibernate-state of {@code states} (could be
+	 * transient, persistent, detached). Because it looks up the actual state to
+	 * hang on to through {@code getRow().getMatrix().getCharacter(
+	 * getPosition()).getState(...)}.
+	 * 
+	 * @param states to be added. Each must not be in a detached state.
+	 * 
+	 * @return {@code state}
+	 */
+	@Override
+	protected CharacterStateCell setPolymorphicOrUncertain(
+			final Type type,
+			final Set<CharacterState> elements) {
+		checkNotNull(type);
+		checkNotNull(elements);
+
+		checkArgument(
+				type == Type.POLYMORPHIC
+						|| type == Type.UNCERTAIN,
+				" type is " + type + " but must be POLYMORPHIC OR UNCERTAIN");
+
+		checkArgument(
+				elements.size() > 1,
+				"POLYMORPIC AND UNCERTAIN must have greater than 1 element but elements has "
+						+ elements.size());
+
+		Set<CharacterState> newElements;
+
+		checkRowMatrixCharacter();
+
+		// So FindBugs knows we got it
+		final Integer position = getPosition();
+
+		checkState(
+					position != null,
+					"this cell has not been assigned a row: it's position attribute is null");
+
+		final Character character =
+					getRow().getMatrix().getCharacters().get(position);
+
+		newElements = newHashSet();
+
+		for (final CharacterState sourceElement : elements) {
+			newElements
+						.add(character.getState(sourceElement.getStateNumber()));
+		}
+
+		if (getType() != null
+				&& getType().equals(type)
+				&& newElements.equals(this.elements)) {
+			return this;
+		}
+
+		setElement(null);
+		setElements(newElements);
+		setType(type);
+		setInNeedOfNewVersion();
+		return this;
 	}
 
 	/**
@@ -207,66 +288,47 @@ public class CharacterStateCell extends Cell<CharacterState> {
 		return this;
 	}
 
-	/**
-	 * Add a set of {@code CharacterState}s to this {@code CharacterStateCell}.
-	 * <p>
-	 * Makes no assumption about the hibernate-state of {@code states} (could be
-	 * transient, persistent, detached). Because it looks up the actual state to
-	 * hang on to through {@code getRow().getMatrix().getCharacter(
-	 * getPosition()).getState(...)}.
-	 * 
-	 * @param states to be added. Each must not be in a detached state.
-	 * 
-	 * @return {@code state}
-	 */
 	@Override
-	protected CharacterStateCell setTypeAndElements(final Type type,
-			final Set<? extends CharacterState> states) {
-		checkNotNull(type);
-		checkNotNull(states);
+	public Cell<CharacterState> setSingleElement(final CharacterState element) {
 
-		Set<CharacterState> newStates;
+		checkNotNull(element);
 
-		if (states.size() == 0) {
-			newStates = Collections.emptySet();
-		} else {
+		// So FindBugs knows we got it
+		final Integer position = getPosition();
 
-			checkRowMatrixCharacter();
-
-			// So FindBugs knows we got it
-			final Integer position = getPosition();
-
-			checkState(
+		checkState(
 					position != null,
 					"this cell has not been assigned a row: it's position attribute is null");
 
-			final Character character =
+		final Character character =
 					getRow().getMatrix().getCharacters().get(position);
 
-			newStates = newHashSet();
+		final CharacterState newElement =
+				character.getState(element.getStateNumber());
 
-			for (final CharacterState sourceState : states) {
-				newStates
-						.add(character.getState(sourceState.getStateNumber()));
+		checkState(newElement != null,
+				"cell's character has no state for element "
+						+ element.getLabel() + ", state number "
+						+ element.getStateNumber());
+
+		if (newElement.equals(getElement())) {
+			if (getType() != Type.SINGLE) {
+				throw new AssertionError(
+						"element is set, but this cell is not a SINGLE");
 			}
-		}
-
-		if (getType() != null && getType().equals(type)
-				&& newStates.equals(getElements())) {
 			return this;
 		}
 
-		clearElements();
-
-		getElementsRaw().addAll(newStates);
-
-		if (newStates.size() > 0) {
-			firstElement = get(getElementsRaw(), 0);
-		}
-
-		setType(type);
+		setElement(newElement);
+		setElements(null);
+		setType(Type.SINGLE);
 		setInNeedOfNewVersion();
 		return this;
+	}
+
+	@Override
+	protected void setElementXml(final CharacterState element) {
+		super.setElementXml(element);
 	}
 
 	/**
@@ -293,10 +355,4 @@ public class CharacterStateCell extends Cell<CharacterState> {
 		return this;
 	}
 
-	@Override
-	protected Cell<CharacterState> setFirstElement(
-			@CheckForNull final CharacterState firstElement) {
-		this.firstElement = firstElement;
-		return this;
-	}
 }

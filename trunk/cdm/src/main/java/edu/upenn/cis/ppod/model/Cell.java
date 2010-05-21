@@ -3,7 +3,6 @@ package edu.upenn.cis.ppod.model;
 import static com.google.common.base.Preconditions.checkArgument;
 import static com.google.common.base.Preconditions.checkNotNull;
 import static com.google.common.base.Preconditions.checkState;
-import static com.google.common.collect.Iterables.get;
 import static com.google.common.collect.Sets.newHashSet;
 
 import java.util.Collections;
@@ -46,8 +45,13 @@ public abstract class Cell<E> extends PPodEntity {
 	 */
 	public static enum Type {
 
-		/** Inapplicable, usually written as a {@code "-"} in Nexus files. */
-		INAPPLICABLE,
+		/** Unassigned, usually written as a {@code "?"} in Nexus files. */
+		UNASSIGNED,
+
+		/**
+		 * The cell has exactly one state.
+		 */
+		SINGLE,
 
 		/**
 		 * The cell is a conjunctions of states: <em>state1</em> and
@@ -56,18 +60,14 @@ public abstract class Cell<E> extends PPodEntity {
 		POLYMORPHIC,
 
 		/**
-		 * The cell has exactly one state.
-		 */
-		SINGLE,
-
-		/** Unassigned, usually written as a {@code "?"} in Nexus files. */
-		UNASSIGNED,
-
-		/**
 		 * The cell is a disjunction of states: <em>state1</em> or
 		 * <em>state2</em> or ... or <em>stateN</em>.
 		 */
-		UNCERTAIN;
+		UNCERTAIN,
+
+		/** Inapplicable, usually written as a {@code "-"} in Nexus files. */
+		INAPPLICABLE;
+
 	}
 
 	static final String TYPE_COLUMN = "TYPE";
@@ -81,37 +81,65 @@ public abstract class Cell<E> extends PPodEntity {
 	@CheckForNull
 	private Type type;
 
+	@Transient
+	@CheckForNull
+	private E elementXml;
+
 	/**
-	 * Used for serialization so we don't have to hit {@code states} directly
+	 * Used for serialization so we don't have to hit {@code elements} directly
 	 * and thereby cause unwanted database hits.
 	 */
 	@Transient
 	@CheckForNull
-	private Set<E> xmlElements = null;
+	protected Set<E> elementsXml;
 
 	/**
 	 * Tells us that this {@code Cell} has been unmarshalled and still needs to
 	 * have {@code states} populated with {@code xmlStates}.
 	 */
 	@Transient
-	private boolean xmlElementsNeedsToBePutIntoElements = false;
+	private boolean needsAfterMarshal = false;
 
 	Cell() {}
+
+	public void afterMarshal(@CheckForNull final Marshaller marshaller) {
+		switch (getType()) {
+			case UNASSIGNED:
+			case SINGLE:
+			case INAPPLICABLE:
+				// Let's free it up since we don't need it
+				elementsXml = null;
+				break;
+		}
+	}
 
 	@Override
 	public void afterUnmarshal() {
 		super.afterUnmarshal();
-		if (getXmlElementsNeedToBePutIntoStates()) {
-			setXmlElementsNeedToBePutIntoStates(false);
 
-			getElementsRaw().addAll(getXmlElements());
+		if (getNeedsAfterMarshal()) {
+			setNeedsAfterMarshal(false);
 
-			if (getElementsRaw().size() > 0) {
-				setFirstElement(get(getElementsRaw(), 0));
+			switch (getType()) {
+				case UNASSIGNED:
+				case INAPPLICABLE:
+					setElement(null);
+					setElements(null);
+					break;
+				case SINGLE:
+					setElement(elementXml);
+					setElements(null);
+					break;
+				case POLYMORPHIC:
+				case UNCERTAIN:
+					setElement(null);
+					setElements(elementsXml);
+					break;
+				default:
+					throw new AssertionError("unknown cell type " + getType());
 			}
-
-			setType(type);
-			unsetXmlElements();
+			this.elementXml = null;
+			this.elementsXml = null;
 		}
 	}
 
@@ -124,7 +152,7 @@ public abstract class Cell<E> extends PPodEntity {
 	@Override
 	public void afterUnmarshal(final Unmarshaller u, final Object parent) {
 		super.afterUnmarshal(u, parent);
-		setXmlElementsNeedToBePutIntoStates(true);
+		setNeedsAfterMarshal(true);
 	}
 
 	/**
@@ -136,30 +164,42 @@ public abstract class Cell<E> extends PPodEntity {
 		// Let's not marshal it if it's in a bad state
 		checkState(getType() != null, "can't marshal a cell without a type");
 
-		getXmlElements().addAll(getElements());
+		switch (getType()) {
+			case UNASSIGNED:
+			case INAPPLICABLE:
+				elementXml = null;
+				elementsXml = null;
+				break;
+			case SINGLE:
+				elementXml = getElement();
+				elementsXml = null;
+				break;
+			case POLYMORPHIC:
+			case UNCERTAIN:
+				elementXml = null;
+				if (elementsXml == null) {
+					elementsXml = newHashSet();
+				} else {
+					elementsXml.clear();
+				}
+				elementsXml.addAll(this.getElementsRaw());
+				break;
+			default:
+				throw new AssertionError("unknown cell type " + getType());
+		}
+
 		return super.beforeMarshal(marshaller);
 
 	}
 
 	/**
-	 * Clear the cell out of elements. Does not touch the type.
+	 * We cache the first state, since this is the most common case.
+	 * <p>
+	 * Will be {@code null} if this is a {@link Type#INAPPLICABLE} or
+	 * {@link Type#UNASSIGNED}.
 	 */
-	protected void clearElements() {
-		if (getFirstElement() == null) {
-			// Should be all clear, but let's check for programming errors
-			if (getElementsRaw() != null && getElementsRaw().size() != 0) {
-				throw new AssertionError(
-						"programming error: firstate == null && states != null && states.size() != 0");
-			}
-		} else {
-			setFirstElement(null);
-
-			if (getElementsRaw() != null) {
-				getElementsRaw().clear();
-			}
-			setInNeedOfNewVersion();
-		}
-	}
+	@CheckForNull
+	protected abstract E getElement();
 
 	/**
 	 * Get the elements contained in this cell.
@@ -174,50 +214,65 @@ public abstract class Cell<E> extends PPodEntity {
 		// AfterUnmarshalVisitor's work here. Answer: We don't want to encourage
 		// bad habits.
 		checkState(
-				!getXmlElementsNeedToBePutIntoStates(),
+				!getNeedsAfterMarshal(),
 				"xmlStateNeedsToBePutIntoStates == true, has the afterUnmarshal visitor been dispatched?");
 		switch (getType()) {
-		// Don't hit states unless we have too
-		case INAPPLICABLE:
-		case UNASSIGNED:
-			return Collections.emptySet();
-		case SINGLE:
-			final Set<E> firstStateInASet = newHashSet();
-			firstStateInASet.add(getFirstElement());
-			return firstStateInASet;
-		case POLYMORPHIC:
-		case UNCERTAIN:
+			// Don't hit states unless we have too
+			case INAPPLICABLE:
+			case UNASSIGNED:
+				return Collections.emptySet();
+			case SINGLE:
+				final Set<E> elementInASet = newHashSet();
+				elementInASet.add(getElement());
+				return elementInASet;
+			case POLYMORPHIC:
+			case UNCERTAIN:
 
-			// We have to hit states, which we want to avoid as much as
-			// possible since it will trigger a database hit, which in the
-			// aggregate
-			// is expensive since there're are so many cells.
-			final Set<E> elements = getElementsRaw();
-			if (elements == null) {
-				throw new AssertionError("getElementsRaw() == null");
-			}
-			if (elements.size() < 2) {
-				throw new AssertionError("type is " + getType()
+				// We have to hit states, which we want to avoid as much as
+				// possible since it will trigger a database hit, which in the
+				// aggregate
+				// is expensive since there're are so many cells.
+				final Set<E> elements = getElementsRaw();
+				if (elements.size() < 2) {
+					throw new AssertionError("type is " + getType()
 												+ " and getElementsRaw() has "
 												+ elements.size() + " elements");
-			}
-			return Collections.unmodifiableSet(elements);
+				}
+				return Collections.unmodifiableSet(elements);
 
-		default:
-			throw new AssertionError("Unknown Cell.Type: " + type);
+			default:
+				throw new AssertionError("Unknown Cell.Type: " + type);
 		}
 	}
 
+	/**
+	 * Should initialize elements as necessary before returning.
+	 * 
+	 * @return the elements in this cell
+	 */
 	protected abstract Set<E> getElementsRaw();
 
 	/**
-	 * We cache the first state, since this is the most common case.
-	 * <p>
-	 * Will be {@code null} if this is a {@link Type#INAPPLICABLE} or
-	 * {@link Type#UNASSIGNED}.
+	 * Used for serialization so we don't have to hit {@code elements} directly
+	 * and thereby cause unwanted database hits.
 	 */
-	@CheckForNull
-	protected abstract E getFirstElement();
+	protected Set<E> getElementsXml() {
+		if (elementsXml == null) {
+			elementsXml = newHashSet();
+		}
+		return elementsXml;
+	}
+
+	protected E getElementXml() {
+		return elementXml;
+	}
+
+	/**
+	 * Package-private for testing.
+	 */
+	boolean getNeedsAfterMarshal() {
+		return needsAfterMarshal;
+	}
 
 	@CheckForNull
 	protected Integer getPosition() {
@@ -234,24 +289,23 @@ public abstract class Cell<E> extends PPodEntity {
 	}
 
 	/**
-	 * Used for serialization so we don't have to hit {@code states} directly
-	 * and thereby cause unwanted database hits.
+	 * Does not affect {@link #isInNeedOfNewVersion()}.
 	 */
-	protected Set<E> getXmlElements() {
-		if (xmlElements == null) {
-			xmlElements = newHashSet();
-		}
-		return xmlElements;
-	}
+	protected abstract Cell<E> setElement(@CheckForNull E element);
 
 	/**
-	 * Package-private for testing.
+	 * Does not affect {@link #isInNeedOfNewVersion()}.
 	 */
-	boolean getXmlElementsNeedToBePutIntoStates() {
-		return xmlElementsNeedsToBePutIntoElements;
+	protected abstract Cell<E> setElements(
+			@CheckForNull Set<E> elements);
+
+	protected void setElementsXml(@CheckForNull final Set<E> elementsXml) {
+		this.elementsXml = elementsXml;
 	}
 
-	protected abstract Cell<E> setFirstElement(E firstElement);
+	protected void setElementXml(final E xmlElement) {
+		this.elementXml = xmlElement;
+	}
 
 	/**
 	 * Set this cell's type to {@link Type#INAPPLICABLE} to {@code
@@ -260,9 +314,25 @@ public abstract class Cell<E> extends PPodEntity {
 	 * @return this
 	 */
 	public Cell<E> setInapplicable() {
-		final Set<E> emptyStates = Collections.emptySet();
-		setTypeAndElements(Type.INAPPLICABLE, emptyStates);
+		return setInapplicableOrUnassigned(Type.INAPPLICABLE);
+
+	}
+
+	private Cell<E> setInapplicableOrUnassigned(final Type type) {
+		checkArgument(
+				type == Type.INAPPLICABLE
+						|| type == Type.UNASSIGNED,
+				"type was " + type + " but must be INAPPLICABLE or UNASSIGNED");
+
+		if (getType() == type) {
+			return this;
+		}
+		setType(type);
+		setElement(null);
+		setElements(null);
+		setInNeedOfNewVersion();
 		return this;
+
 	}
 
 	@Override
@@ -284,6 +354,12 @@ public abstract class Cell<E> extends PPodEntity {
 		return this;
 	}
 
+	protected Cell<E> setNeedsAfterMarshal(
+			final boolean xmlStatesNeedsToBePutIntoStates) {
+		this.needsAfterMarshal = xmlStatesNeedsToBePutIntoStates;
+		return this;
+	}
+
 	/**
 	 * Set the type to polymorphic with the given states.
 	 * 
@@ -294,39 +370,11 @@ public abstract class Cell<E> extends PPodEntity {
 	 * @throw IllegalArgumentException if {@code polymorphicStates.size() < 2}
 	 */
 	public Cell<E> setPolymorphicElements(
-			final Set<? extends E> polymorphicElements) {
+			final Set<E> polymorphicElements) {
 		checkNotNull(polymorphicElements);
 		checkArgument(polymorphicElements.size() > 1,
 				"polymorphic states must be > 1");
-		setTypeAndElements(Type.POLYMORPHIC, polymorphicElements);
-		return this;
-	}
-
-	protected Cell<E> setPosition(@CheckForNull final Integer position) {
-		this.position = position;
-		return this;
-	}
-
-	/**
-	 * Set the cell to have type {@link Type#SINGLE} and the given states.
-	 * 
-	 * @param state state to assign to this cell
-	 * 
-	 * @return this
-	 */
-	public Cell<E> setSingleElement(final E state) {
-		checkNotNull(state);
-
-		// Was getting a warning if we didn't do a create and then add.
-		final Set<E> states = newHashSet();
-		states.add(state);
-		setTypeAndElements(Type.SINGLE, states);
-		return this;
-	}
-
-	protected Cell<E> setType(final Type type) {
-		checkNotNull(type);
-		this.type = type;
+		setPolymorphicOrUncertain(Type.POLYMORPHIC, polymorphicElements);
 		return this;
 	}
 
@@ -341,8 +389,34 @@ public abstract class Cell<E> extends PPodEntity {
 	 * 
 	 * @return this
 	 */
-	protected abstract Cell<E> setTypeAndElements(final Type type,
-			final Set<? extends E> elements);
+	protected abstract Cell<E> setPolymorphicOrUncertain(final Type type,
+			final Set<E> elements);
+
+	protected Cell<E> setPosition(@CheckForNull final Integer position) {
+		this.position = position;
+		return this;
+	}
+
+	/**
+	 * Set the cell to have type {@link Type#SINGLE} and the given states.
+	 * 
+	 * @param state state to assign to this cell
+	 * 
+	 * @return this
+	 */
+	public abstract Cell<E> setSingleElement(final E state);
+
+	/**
+	 * This method has no affect on {@link #isInNeedOfNewVersion()}.
+	 * 
+	 * @param type the new type
+	 * @return this
+	 */
+	protected Cell<E> setType(final Type type) {
+		checkNotNull(type);
+		this.type = type;
+		return this;
+	}
 
 	/**
 	 * Created for testing purposes.
@@ -352,9 +426,9 @@ public abstract class Cell<E> extends PPodEntity {
 		checkNotNull(type);
 		checkNotNull(xmlStates);
 		setType(type);
-		getXmlElements().clear();
-		getXmlElements().addAll(xmlStates);
-		setXmlElementsNeedToBePutIntoStates(true);
+		getElementsXml().clear();
+		getElementsXml().addAll(xmlStates);
+		setNeedsAfterMarshal(true);
 		return this;
 	}
 
@@ -365,9 +439,7 @@ public abstract class Cell<E> extends PPodEntity {
 	 * @return this
 	 */
 	public Cell<E> setUnassigned() {
-		final Set<E> emptyStates = Collections.emptySet();
-		setTypeAndElements(Type.UNASSIGNED, emptyStates);
-		return this;
+		return setInapplicableOrUnassigned(Type.UNASSIGNED);
 	}
 
 	/**
@@ -380,25 +452,14 @@ public abstract class Cell<E> extends PPodEntity {
 	 * @throw IllegalArgumentException if {@code uncertainStates.size() < 2}
 	 */
 	public Cell<E> setUncertainElements(
-			final Set<? extends E> uncertainElements) {
+			final Set<E> uncertainElements) {
 		checkNotNull(uncertainElements);
 		checkArgument(uncertainElements.size() > 1,
 				"uncertain elements must be > 1");
-		setTypeAndElements(Type.UNCERTAIN, uncertainElements);
-		return this;
-	}
-
-	protected Cell<E> setXmlElementsNeedToBePutIntoStates(
-			final boolean xmlStatesNeedsToBePutIntoStates) {
-		this.xmlElementsNeedsToBePutIntoElements = xmlStatesNeedsToBePutIntoStates;
+		setPolymorphicOrUncertain(Type.UNCERTAIN, uncertainElements);
 		return this;
 	}
 
 	protected abstract Cell<E> unsetRow();
-
-	private Cell<E> unsetXmlElements() {
-		xmlElements = null;
-		return this;
-	}
 
 }

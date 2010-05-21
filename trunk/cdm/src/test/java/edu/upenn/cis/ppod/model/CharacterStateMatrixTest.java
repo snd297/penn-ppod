@@ -121,7 +121,8 @@ public class CharacterStateMatrixTest {
 		final CharacterStateCell cell00 = cellProvider.get();
 		matrix.getRow(otu0).setCells(
 				Arrays.asList(new CharacterStateCell[] { cell00 }));
-		cell00.setSingleElement(stateFactory.create(0).setCharacter(character));
+		character.addState(stateFactory.create(0));
+		cell00.setSingleElement(character.getState(0));
 
 		matrix.putRow(otu1, rowProvider.get());
 		final CharacterStateCell cell10 = cellProvider.get();
@@ -129,7 +130,7 @@ public class CharacterStateMatrixTest {
 				Arrays.asList(new CharacterStateCell[] { cell10 }));
 
 		final CharacterState state1 = stateFactory.create(1);
-		character.putState(state1);
+		character.addState(state1);
 		cell10.setSingleElement(state1);
 
 		matrix.putRow(otu2, rowProvider.get());
@@ -138,7 +139,7 @@ public class CharacterStateMatrixTest {
 				Arrays.asList(new CharacterStateCell[] { cell20 }));
 
 		final CharacterState state0 = stateFactory.create(0);
-		character.putState(state0);
+		character.addState(state0);
 		cell20.setSingleElement(state0);
 
 		final int originalRowsSize = matrix.getRows().size();

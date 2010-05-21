@@ -126,7 +126,7 @@ final class CreateOrUpdateCharacterStateMatrix implements
 						sourceState.getStateNumber()))) {
 					dbState = stateFactory
 							.create(sourceState.getStateNumber());
-					newDbCharacter.putState(dbState);
+					newDbCharacter.addState(dbState);
 					dbState.setVersionInfo(newVersionInfo
 							.getNewVersionInfo());
 				}

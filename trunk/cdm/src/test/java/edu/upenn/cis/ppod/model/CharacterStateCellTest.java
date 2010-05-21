@@ -103,7 +103,7 @@ public class CharacterStateCellTest {
 		states.add(state01);
 		cell.setPolymorphicElements(states);
 		cell.beforeMarshal(null);
-		final Set<CharacterState> xmlStates = cell.getXmlElements();
+		final Set<CharacterState> xmlStates = cell.getElementsXml();
 		assertEquals(xmlStates.size(), states.size());
 		for (final CharacterState expectedState : states) {
 
@@ -148,11 +148,11 @@ public class CharacterStateCellTest {
 		// State 0 of character 0
 		state00 = stateFactory.create(0);
 
-		character0.putState(state00);
+		character0.addState(state00);
 
 		// State 0 of character 1
 		state01 = stateFactory.create(1);
-		character0.putState(state01);
+		character0.addState(state01);
 
 	}
 
@@ -170,13 +170,13 @@ public class CharacterStateCellTest {
 
 	@Test(groups = TestGroupDefs.IN_DEVELOPMENT)
 	public void getStatesWXmlStatesNeedsToBePutIntoStatesTrueSingle() {
-		cell.setXmlElementsNeedToBePutIntoStates(true);
+		cell.setNeedsAfterMarshal(true);
 		matrix.getRow(matrix.getOTUSet().getOTU(0)).setCells(
 				Arrays.asList(cell));
 		states.add(state00);
 		cell.setTypeAndXmlElements(Cell.Type.SINGLE, states);
 		assertEquals(newHashSet(cell), states);
-		assertFalse(cell.getXmlElementsNeedToBePutIntoStates());
+		assertFalse(cell.getNeedsAfterMarshal());
 	}
 
 	/**
