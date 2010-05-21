@@ -133,7 +133,7 @@ public abstract class Cell<E> extends PPodEntity {
 				case POLYMORPHIC:
 				case UNCERTAIN:
 					setElement(null);
-					setElements(elementsXml);
+					setElements(getElementsXml());
 					break;
 				default:
 					throw new AssertionError("unknown cell type " + getType());
@@ -153,6 +153,15 @@ public abstract class Cell<E> extends PPodEntity {
 	public void afterUnmarshal(final Unmarshaller u, final Object parent) {
 		super.afterUnmarshal(u, parent);
 		setNeedsAfterMarshal(true);
+		switch (getType()) {
+			case UNASSIGNED:
+			case SINGLE:
+			case INAPPLICABLE:
+				// Let's free it up since we don't need it
+				elementsXml = null;
+				break;
+		}
+
 	}
 
 	/**
@@ -176,13 +185,9 @@ public abstract class Cell<E> extends PPodEntity {
 				break;
 			case POLYMORPHIC:
 			case UNCERTAIN:
-				elementXml = null;
-				if (elementsXml == null) {
-					elementsXml = newHashSet();
-				} else {
-					elementsXml.clear();
-				}
-				elementsXml.addAll(this.getElementsRaw());
+				checkState(getElementsXml().size() == 0,
+						"getElementsXml() > 0 for pre-marshalled object");
+				getElementsXml().addAll(this.getElementsRaw());
 				break;
 			default:
 				throw new AssertionError("unknown cell type " + getType());
@@ -255,13 +260,12 @@ public abstract class Cell<E> extends PPodEntity {
 	/**
 	 * Used for serialization so we don't have to hit {@code elements} directly
 	 * and thereby cause unwanted database hits.
+	 * <p>
+	 * This is abstract since subclasses may not just want a {@code HashSet}.
+	 * <p>
+	 * We could make a HashSet here, but we don't want to accidentally call it.
 	 */
-	protected Set<E> getElementsXml() {
-		if (elementsXml == null) {
-			elementsXml = newHashSet();
-		}
-		return elementsXml;
-	}
+	protected abstract Set<E> getElementsXml();
 
 	protected E getElementXml() {
 		return elementXml;
