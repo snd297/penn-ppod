@@ -161,7 +161,10 @@ public class CharacterStateCell extends Cell<CharacterState> {
 	@XmlIDREF
 	@Override
 	protected Set<CharacterState> getElementsXml() {
-		return super.getElementsXml();
+		if (elementsXml == null) {
+			elementsXml = newHashSet();
+		}
+		return elementsXml;
 	}
 
 	@Override
