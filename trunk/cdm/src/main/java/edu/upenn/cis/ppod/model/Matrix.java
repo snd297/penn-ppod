@@ -111,7 +111,9 @@ public abstract class Matrix<R extends Row<?>>
 	}
 
 	public Integer getColumnsSize() {
-		return Integer.valueOf(getColumnVersionInfos().size());
+		return Math.max(
+				Integer.valueOf(getColumnVersionInfos().size()),
+				Integer.valueOf(getColumnVersions().size()));
 	}
 
 	/**
