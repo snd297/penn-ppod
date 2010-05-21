@@ -135,9 +135,10 @@ public class CreateOrUpdateCharacterStateMatrixTest {
 
 	@Test(dataProvider = MatrixProvider.SMALL_MATRICES_PROVIDER, dataProviderClass = MatrixProvider.class)
 	public void moveRows(final CharacterStateMatrix sourceMatrix) {
-		final ICreateOrUpdateCharacterStateMatrix createOrUpdateCharacterStateMatrix = createOrUpdateMatrixFactory
-				.create(mergeAttachment, dao,
-						newVersionInfo);
+		final ICreateOrUpdateCharacterStateMatrix createOrUpdateCharacterStateMatrix =
+				createOrUpdateMatrixFactory
+						.create(mergeAttachment, dao,
+								newVersionInfo);
 		final OTUSet fakeDbOTUSet = sourceMatrix.getOTUSet();
 
 		final CharacterStateMatrix targetMatrix = matrixFactory
@@ -162,8 +163,8 @@ public class CreateOrUpdateCharacterStateMatrixTest {
 					targetMatrix.getCharacters().get(i).getPPodId());
 		}
 
-		final List<OTU> shuffledSourceOTUs = newArrayList(sourceMatrix
-				.getOTUSet().getOTUs());
+		final List<OTU> shuffledSourceOTUs =
+				newArrayList(sourceMatrix.getOTUSet().getOTUs());
 		Collections.shuffle(shuffledSourceOTUs);
 
 		sourceMatrix.getOTUSet().setOTUs(shuffledSourceOTUs);
