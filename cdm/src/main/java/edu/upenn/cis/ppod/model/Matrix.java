@@ -273,12 +273,22 @@ public abstract class Matrix<R extends Row<?>>
 
 		// Add in column versions as necessary
 		nullFill(getColumnVersionInfosModifiable(), columnsSize);
+		nullFill(getColumnVersionsModifiable(), columnsSize);
+
+		if (getColumnVersionInfos().size() != getColumnVersions().size()) {
+			throw new AssertionError(
+					"column version infos size does not match versions size: "
+							+ getColumnVersionInfos().size() + ", "
+							+ getColumnVersions().size());
+		}
 
 		// Remove column versions as necessary
 		while (getColumnVersionInfos().size() > columnsSize) {
 			getColumnVersionInfosModifiable()
 					.remove(
 							getColumnVersionInfos().size() - 1);
+			getColumnVersionsModifiable()
+					.remove(getColumnVersions().size() - 1);
 		}
 		return this;
 	}

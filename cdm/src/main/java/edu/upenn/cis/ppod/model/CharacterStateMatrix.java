@@ -32,15 +32,11 @@ import javax.persistence.Entity;
 import javax.persistence.FetchType;
 import javax.persistence.JoinColumn;
 import javax.persistence.JoinTable;
-import javax.persistence.ManyToMany;
 import javax.persistence.MapKeyJoinColumn;
+import javax.persistence.OneToMany;
 import javax.persistence.OneToOne;
 import javax.persistence.Table;
 import javax.xml.bind.annotation.XmlElement;
-import javax.xml.bind.annotation.XmlIDREF;
-import javax.xml.bind.annotation.XmlSeeAlso;
-
-import org.hibernate.annotations.IndexColumn;
 
 import com.google.inject.Inject;
 
@@ -51,14 +47,10 @@ import edu.upenn.cis.ppod.util.IVisitor;
  * 
  * @author Sam Donnelly
  */
-@XmlSeeAlso( { DNAStateMatrix.class })
 @Entity
 @Table(name = CharacterStateMatrix.TABLE)
 public class CharacterStateMatrix extends Matrix<CharacterStateRow> {
 
-	/**
-	 * Column that orders the {@link Character}s.
-	 */
 	public static final String CHARACTER_POSITION_COLUMN =
 			Character.TABLE + "_POSITION";
 
@@ -79,9 +71,9 @@ public class CharacterStateMatrix extends Matrix<CharacterStateRow> {
 	 * MolecularStateMatrix}s, for character matrices it is one-to-many and a
 	 * refactoring should be considered.
 	 */
-	@ManyToMany
-	@JoinTable(joinColumns = { @JoinColumn(name = JOIN_COLUMN) }, inverseJoinColumns = { @JoinColumn(name = Character.JOIN_COLUMN) })
-	@IndexColumn(name = CHARACTER_POSITION_COLUMN)
+	@OneToMany(cascade = CascadeType.ALL, orphanRemoval = true)
+	@org.hibernate.annotations.IndexColumn(name = "POSITION")
+	@JoinColumn(name = JOIN_COLUMN, nullable = false)
 	private final List<Character> characters = newArrayList();
 
 	/**
@@ -128,16 +120,10 @@ public class CharacterStateMatrix extends Matrix<CharacterStateRow> {
 		int i = -1;
 		for (final Character character : getCharacters()) {
 			i++;
-			if (this instanceof MolecularStateMatrix) {
-				// charactersToPositions is meaningless for MolecularMatrix's
-				// since
-				// all of their Characters are the same
-			} else {
-				charactersToPositions.put(character, i);
-			}
+			charactersToPositions.put(character, i);
 
 			getColumnVersionInfosModifiable().add(null);
-			character.addMatrix(this);
+			character.setMatrix(this);
 		}
 	}
 
@@ -168,8 +154,7 @@ public class CharacterStateMatrix extends Matrix<CharacterStateRow> {
 	 * 
 	 * @return a modifiable reference to this matrix's characters
 	 */
-	@XmlElement(name = "characterDocId")
-	@XmlIDREF
+	@XmlElement(name = "character")
 	protected List<Character> getCharactersModifiable() {
 		return characters;
 	}
@@ -221,7 +206,7 @@ public class CharacterStateMatrix extends Matrix<CharacterStateRow> {
 			final List<? extends Character> characters) {
 		checkNotNull(characters);
 
-		if (characters.equals(getCharactersModifiable())) {
+		if (characters.equals(getCharacters())) {
 			return Collections.emptyList();
 		}
 
@@ -232,14 +217,6 @@ public class CharacterStateMatrix extends Matrix<CharacterStateRow> {
 												+ newCharacterPos
 												+ "] is null");
 
-			// We leave this instanceof here since it is at worst ineffectual w/
-			// Hibernate proxies, but
-			// it should still help us on the webapp client side (eg Mesquite)
-			// where hibernate is not a factor.
-			if (newCharacter instanceof MolecularCharacter) {
-				throw new AssertionError(
-						"character should not be a MolecularCharacter");
-			}
 			for (final Iterator<? extends Character> itr = characters
 					.listIterator(newCharacterPos + 1); itr
 					.hasNext();) {
@@ -259,7 +236,7 @@ public class CharacterStateMatrix extends Matrix<CharacterStateRow> {
 
 		removedCharacters.removeAll(characters);
 		for (final Character removedCharacter : removedCharacters) {
-			removedCharacter.removeMatrix(this);
+			removedCharacter.setMatrix(null);
 		}
 
 		getCharactersModifiable().clear();
@@ -270,7 +247,7 @@ public class CharacterStateMatrix extends Matrix<CharacterStateRow> {
 		int characterPosition = 0;
 		for (final Character character : getCharactersModifiable()) {
 			charactersToPositions.put(character, characterPosition++);
-			character.addMatrix(this);
+			character.setMatrix(this);
 		}
 
 		// the matrix has changed

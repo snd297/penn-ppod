@@ -36,12 +36,10 @@ import edu.upenn.cis.ppod.model.Character;
 import edu.upenn.cis.ppod.model.CharacterStateCell;
 import edu.upenn.cis.ppod.model.CharacterStateMatrix;
 import edu.upenn.cis.ppod.model.CharacterStateRow;
-import edu.upenn.cis.ppod.model.DNACharacter;
 import edu.upenn.cis.ppod.model.ModelAssert;
 import edu.upenn.cis.ppod.model.OTU;
 import edu.upenn.cis.ppod.model.OTUSet;
 import edu.upenn.cis.ppod.modelinterfaces.INewVersionInfo;
-import edu.upenn.cis.ppod.util.ICharacterStateMatrixFactory;
 import edu.upenn.cis.ppod.util.MatrixProvider;
 
 /**
@@ -56,13 +54,10 @@ public class CreateOrUpdateCharacterStateMatrixTest {
 	private ICreateOrUpdateCharacterStateMatrix.IFactory createOrUpdateMatrixFactory;
 
 	@Inject
-	private ICharacterStateMatrixFactory matrixFactory;
+	private Provider<CharacterStateMatrix> characterStateMatrixProvider;
 
 	@Inject
 	private TestMergeAttachment mergeAttachment;
-
-	@Inject
-	private DNACharacter dnaCharacter;
 
 	@Inject
 	private INewVersionInfo newVersionInfo;
@@ -115,16 +110,15 @@ public class CreateOrUpdateCharacterStateMatrixTest {
 						newVersionInfo);
 		final OTUSet fakeDbOTUSet = sourceMatrix.getOTUSet();
 
-		final CharacterStateMatrix targetMatrix = matrixFactory
-				.create(sourceMatrix);
+		final CharacterStateMatrix targetMatrix =
+				characterStateMatrixProvider.get();
 
 		fakeDbOTUSet.addCharacterStateMatrix(targetMatrix);
 
 		final Map<CharacterStateRow, List<CharacterStateCell>> sourceRowsToCells = stashCells(sourceMatrix);
 
-		createOrUpdateCharacterStateMatrix.createOrUpdateMatrix(targetMatrix,
-				sourceMatrix,
-				dnaCharacter);
+		createOrUpdateCharacterStateMatrix
+				.createOrUpdateMatrix(targetMatrix, sourceMatrix);
 
 		putBackCells(targetMatrix, dao.getRowsToCells());
 		putBackCells(sourceMatrix, sourceRowsToCells);
@@ -141,17 +135,16 @@ public class CreateOrUpdateCharacterStateMatrixTest {
 								newVersionInfo);
 		final OTUSet fakeDbOTUSet = sourceMatrix.getOTUSet();
 
-		final CharacterStateMatrix targetMatrix = matrixFactory
-				.create(sourceMatrix);
+		final CharacterStateMatrix targetMatrix =
+				characterStateMatrixProvider.get();
 
 		fakeDbOTUSet.addCharacterStateMatrix(targetMatrix);
 
 		final Map<CharacterStateRow, List<CharacterStateCell>> sourceRowsToCells =
 				stashCells(sourceMatrix);
 
-		createOrUpdateCharacterStateMatrix.createOrUpdateMatrix(targetMatrix,
-				sourceMatrix,
-				dnaCharacter);
+		createOrUpdateCharacterStateMatrix
+				.createOrUpdateMatrix(targetMatrix, sourceMatrix);
 
 		putBackCells(targetMatrix, dao.getRowsToCells());
 		putBackCells(sourceMatrix, sourceRowsToCells);
@@ -184,8 +177,7 @@ public class CreateOrUpdateCharacterStateMatrixTest {
 
 		createOrUpdateCharacterStateMatrix.createOrUpdateMatrix(
 				targetMatrix,
-				sourceMatrix,
-				dnaCharacter);
+				sourceMatrix);
 
 		putBackCells(targetMatrix, dao.getRowsToCells());
 		putBackCells(sourceMatrix, sourceRowsToCells2);
@@ -206,16 +198,15 @@ public class CreateOrUpdateCharacterStateMatrixTest {
 							newVersionInfo);
 			final OTUSet fakeDbOTUSet = sourceMatrix.getOTUSet();
 
-			final CharacterStateMatrix targetMatrix =
-					matrixFactory.create(sourceMatrix);
+			final CharacterStateMatrix targetMatrix = characterStateMatrixProvider
+					.get();
 
 			fakeDbOTUSet.addCharacterStateMatrix(targetMatrix);
 
 			final Map<CharacterStateRow, List<CharacterStateCell>> sourceRowsToCells = stashCells(sourceMatrix);
 			createOrUpdateMatrix.createOrUpdateMatrix(
 					targetMatrix,
-					sourceMatrix,
-					dnaCharacter);
+					sourceMatrix);
 
 			putBackCells(targetMatrix, dao.getRowsToCells());
 			putBackCells(sourceMatrix, sourceRowsToCells);
@@ -253,8 +244,8 @@ public class CreateOrUpdateCharacterStateMatrixTest {
 			final Map<CharacterStateRow, List<CharacterStateCell>> sourceRowsToCells2 = stashCells(sourceMatrix);
 			createOrUpdateMatrix.createOrUpdateMatrix(
 					targetMatrix,
-					sourceMatrix,
-					dnaCharacter);
+					sourceMatrix);
+
 			putBackCells(targetMatrix, dao.getRowsToCells());
 			putBackCells(sourceMatrix, sourceRowsToCells2);
 
@@ -274,8 +265,8 @@ public class CreateOrUpdateCharacterStateMatrixTest {
 					.create(mergeAttachment, dao, newVersionInfo);
 			final OTUSet fakeDbOTUSet = sourceMatrix.getOTUSet();
 
-			final CharacterStateMatrix targetMatrix = matrixFactory
-					.create(sourceMatrix);
+			final CharacterStateMatrix targetMatrix = characterStateMatrixProvider
+					.get();
 
 			fakeDbOTUSet.addCharacterStateMatrix(targetMatrix);
 
@@ -283,8 +274,8 @@ public class CreateOrUpdateCharacterStateMatrixTest {
 			createOrUpdateCharacterStateMatrix
 					.createOrUpdateMatrix(
 							targetMatrix,
-							sourceMatrix,
-							dnaCharacter);
+							sourceMatrix);
+
 			putBackCells(targetMatrix, dao.getRowsToCells());
 			putBackCells(sourceMatrix, sourceRowsToCells);
 
@@ -319,8 +310,7 @@ public class CreateOrUpdateCharacterStateMatrixTest {
 			final Map<CharacterStateRow, List<CharacterStateCell>> sourceRowsToCells2 = stashCells(sourceMatrix);
 			createOrUpdateCharacterStateMatrix.createOrUpdateMatrix(
 					targetMatrix,
-					sourceMatrix,
-					dnaCharacter);
+					sourceMatrix);
 
 			assertTrue(dao.getDeletedEntities()
 					.contains(shouldBemovedTargetCharacter));

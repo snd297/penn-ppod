@@ -19,7 +19,6 @@ import com.google.inject.ImplementedBy;
 
 import edu.upenn.cis.ppod.dao.IDAO;
 import edu.upenn.cis.ppod.model.CharacterStateMatrix;
-import edu.upenn.cis.ppod.model.DNACharacter;
 import edu.upenn.cis.ppod.modelinterfaces.INewVersionInfo;
 import edu.upenn.cis.ppod.services.ppodentity.MatrixInfo;
 
@@ -55,12 +54,9 @@ public interface ICreateOrUpdateCharacterStateMatrix {
 	 *            counterpart. This parameter is used to set the new OTU
 	 *            ordering in {@code targetMatrix} as dictated by {@code
 	 *            sourceMatrix}
-	 * @param dnaCharacter the {@code DNACharacter} in a persistent state that
-	 *            should be used in the target matrix
 	 */
 	MatrixInfo createOrUpdateMatrix(CharacterStateMatrix dbMatrix,
-			CharacterStateMatrix sourceMatrix,
-			DNACharacter dnaCharacter);
+			CharacterStateMatrix sourceMatrix);
 
 	static interface IFactory {
 		ICreateOrUpdateCharacterStateMatrix create(

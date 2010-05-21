@@ -28,8 +28,6 @@ import javax.persistence.Table;
 import javax.xml.bind.annotation.XmlAttribute;
 import javax.xml.bind.annotation.XmlIDREF;
 
-import org.hibernate.annotations.Cascade;
-
 import edu.upenn.cis.ppod.util.IVisitor;
 
 /**

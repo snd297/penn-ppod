@@ -20,7 +20,6 @@ import com.google.inject.ImplementedBy;
 import edu.upenn.cis.ppod.dao.IAttachmentNamespaceDAO;
 import edu.upenn.cis.ppod.dao.IAttachmentTypeDAO;
 import edu.upenn.cis.ppod.dao.IDAO;
-import edu.upenn.cis.ppod.dao.IDNACharacterDAO;
 import edu.upenn.cis.ppod.dao.IOTUSetDAO;
 import edu.upenn.cis.ppod.dao.IStudyDAO;
 import edu.upenn.cis.ppod.model.Study;
@@ -72,7 +71,6 @@ public interface ICreateOrUpdateStudy {
 		ICreateOrUpdateStudy create(Study incomingStudy,
 				IStudyDAO studyDAO,
 				IOTUSetDAO otuSetDAO,
-				IDNACharacterDAO dnaCharacterDAO,
 				IAttachmentNamespaceDAO attachmentNamespaceDAO,
 				IAttachmentTypeDAO attachmentTypeDAO,
 				IDAO<Object, Long> dao,

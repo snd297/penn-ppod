@@ -23,6 +23,7 @@ import java.util.List;
 
 import javax.annotation.CheckForNull;
 import javax.annotation.Nullable;
+import javax.persistence.CascadeType;
 import javax.persistence.Column;
 import javax.persistence.Entity;
 import javax.persistence.FetchType;
@@ -35,8 +36,6 @@ import javax.xml.bind.annotation.XmlAccessType;
 import javax.xml.bind.annotation.XmlAccessorType;
 import javax.xml.bind.annotation.XmlAttribute;
 import javax.xml.bind.annotation.XmlElement;
-
-import org.hibernate.annotations.Cascade;
 
 import edu.upenn.cis.ppod.modelinterfaces.IVersionedWithOTUSet;
 import edu.upenn.cis.ppod.util.IVisitor;
@@ -54,7 +53,7 @@ public class TreeSet extends UUPPodEntityWXmlId implements
 
 	public static final String TABLE = "TREE_SET";
 
-	public static final String ID_COLUMN = TABLE + "_ID";
+	public static final String JOIN_COLUMN = TABLE + "_ID";
 
 	@Column(name = "LABEL", nullable = false)
 	private String label;
@@ -63,10 +62,9 @@ public class TreeSet extends UUPPodEntityWXmlId implements
 	@JoinColumn(name = OTUSet.JOIN_COLUMN, nullable = false)
 	private OTUSet otuSet;
 
-	@OneToMany(orphanRemoval = true)
+	@OneToMany(cascade = CascadeType.ALL, orphanRemoval = true)
 	@org.hibernate.annotations.IndexColumn(name = "POSITION")
-	@JoinColumn(name = ID_COLUMN, nullable = false)
-	@Cascade(org.hibernate.annotations.CascadeType.SAVE_UPDATE)
+	@JoinColumn(name = JOIN_COLUMN, nullable = false)
 	private final List<Tree> trees = newArrayList();
 
 	TreeSet() {}

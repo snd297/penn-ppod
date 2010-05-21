@@ -40,8 +40,6 @@ import edu.upenn.cis.ppod.model.CharacterState;
 import edu.upenn.cis.ppod.model.CharacterStateCell;
 import edu.upenn.cis.ppod.model.CharacterStateMatrix;
 import edu.upenn.cis.ppod.model.CharacterStateRow;
-import edu.upenn.cis.ppod.model.DNACharacter;
-import edu.upenn.cis.ppod.model.DNAStateMatrix;
 import edu.upenn.cis.ppod.modelinterfaces.INewVersionInfo;
 import edu.upenn.cis.ppod.modelinterfaces.IWithPPodId;
 import edu.upenn.cis.ppod.services.ppodentity.MatrixInfo;
@@ -85,8 +83,7 @@ final class CreateOrUpdateCharacterStateMatrix implements
 
 	public MatrixInfo createOrUpdateMatrix(
 			final CharacterStateMatrix dbMatrix,
-			final CharacterStateMatrix sourceMatrix,
-			final DNACharacter dnaCharacter) {
+			final CharacterStateMatrix sourceMatrix) {
 		final String METHOD = "saveOrUpdate(...)";
 		logger.debug("{}: entering", METHOD);
 		checkNotNull(dbMatrix);
@@ -100,25 +97,23 @@ final class CreateOrUpdateCharacterStateMatrix implements
 		for (final Character sourceCharacter : sourceMatrix.getCharacters()) {
 			sourceCharacterPosition++;
 			Character newDbCharacter;
-			if (sourceMatrix instanceof DNAStateMatrix) {
-				newDbCharacter = dnaCharacter;
-			} else if (null == (newDbCharacter =
+
+			if (null == (newDbCharacter =
 					findIf(dbMatrix
 							.getCharacters(),
-							compose(equalTo(sourceCharacter
-									.getPPodId()),
+							compose(
+									equalTo(
+									sourceCharacter.getPPodId()),
 									IWithPPodId.getPPodId)))) {
 				newDbCharacter = characterProvider.get();
-				newDbCharacter.setVersionInfo(newVersionInfo
-						.getNewVersionInfo());
+				newDbCharacter
+						.setVersionInfo(newVersionInfo.getNewVersionInfo());
 				newDbCharacter.setPPodId();
 			}
 
 			newDbMatrixCharacters.add(newDbCharacter);
 
-			if (!(sourceMatrix instanceof DNAStateMatrix)) {
-				newDbCharacter.setLabel(sourceCharacter.getLabel());
-			}
+			newDbCharacter.setLabel(sourceCharacter.getLabel());
 
 			for (final CharacterState sourceState : sourceCharacter.getStates()) {
 				CharacterState dbState;
@@ -131,9 +126,8 @@ final class CreateOrUpdateCharacterStateMatrix implements
 							.getNewVersionInfo());
 				}
 
-				if (!(sourceMatrix instanceof DNAStateMatrix)) {
-					dbState.setLabel(sourceState.getLabel());
-				}
+				dbState.setLabel(sourceState.getLabel());
+
 			}
 
 			for (final Attachment sourceAttachment : sourceCharacter
@@ -163,40 +157,20 @@ final class CreateOrUpdateCharacterStateMatrix implements
 				dao.makePersistent(dbAttachment.getType());
 				dao.makePersistent(dbAttachment);
 			}
-			dao.makePersistent(newDbCharacter);
-
 		}
-		final List<Character> removedCharacters = dbMatrix
-				.setCharacters(newDbMatrixCharacters);
+
+		dbMatrix.setCharacters(newDbMatrixCharacters);
 
 		final ICreateOrUpdateMatrix<CharacterStateMatrix, CharacterStateRow, CharacterStateCell, CharacterState> saveOrUpdateMatrix =
 				saveOrUpdateMatrixFactory
 						.create(newVersionInfo, dao);
 
-		final MatrixInfo matrixInfo = saveOrUpdateMatrix
-				.createOrUpdateMatrix(
-						dbMatrix,
-						sourceMatrix);
+		final MatrixInfo matrixInfo =
+				saveOrUpdateMatrix
+						.createOrUpdateMatrix(
+								dbMatrix,
+								sourceMatrix);
 
-		// Do this down here because it's after any cells that reference the
-		// characters are deleted.
-		for (final Character character : removedCharacters) {
-			// We only want to delete STANDARD characters because other kinds
-			// are shared by matrices. This is less than ideal.
-			if (dao.getEntityName(character).equals(
-					dao.getEntityName(Character.class))) {
-				if (character.getMatrices().size() != 0) {
-					logger.warn("standard character " + character.toString()
-								+ " belonged to multiple matrices: "
-								+ character.getMatrices());
-				} else {
-					logger.debug("deleting character: " + character.getLabel());
-					dao.makeTransient(character);
-				}
-			}
-		}
-
-		// matrixInfo.setPPodId(dbMatrix.getPPodId());
 		return matrixInfo;
 	}
 
