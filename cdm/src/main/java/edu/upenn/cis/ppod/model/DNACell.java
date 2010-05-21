@@ -40,8 +40,7 @@ public class DNACell extends Cell<DNANucleotide> {
 	/**
 	 * The heart of the cell: the {@code DNANucleotide}s.
 	 * <p>
-	 * At most of one of {@code element} and {@code elements} will be {@code
-	 * null}.
+	 * At most one of {@code element} and {@code elements} will be {@code null}.
 	 */
 	@ElementCollection
 	@CollectionTable(name = "DNA_CELL_ELEMENTS", joinColumns = @JoinColumn(name = JOIN_COLUMN))
