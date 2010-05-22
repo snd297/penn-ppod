@@ -36,6 +36,7 @@ import javax.persistence.MapKeyJoinColumn;
 import javax.persistence.OneToMany;
 import javax.persistence.OneToOne;
 import javax.persistence.Table;
+import javax.xml.bind.Unmarshaller;
 import javax.xml.bind.annotation.XmlElement;
 
 import com.google.inject.Inject;
@@ -121,10 +122,19 @@ public class CharacterStateMatrix extends Matrix<CharacterStateRow> {
 		for (final Character character : getCharacters()) {
 			i++;
 			charactersToPositions.put(character, i);
-
-			getColumnVersionInfosModifiable().add(null);
-			character.setMatrix(this);
 		}
+	}
+
+	/**
+	 * {@link Unmarshaller} callback.
+	 * 
+	 * @param u see {@code Unmarshaller}
+	 * @param parent see {@code Unmarshaller}
+	 */
+	@Override
+	public void afterUnmarshal(final Unmarshaller u, final Object parent) {
+		super.afterUnmarshal(u, parent);
+		setColumnsSize(getCharacters().size());
 	}
 
 	/**

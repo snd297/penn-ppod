@@ -99,7 +99,14 @@ public abstract class Matrix<R extends Row<?>>
 	public boolean beforeMarshal(@CheckForNull final Marshaller marshaller) {
 		super.beforeMarshal(marshaller);
 
+		if (getColumnVersionsModifiable().size() != 0) {
+			throw new AssertionError(
+					"getColumnsVersions().size() should be 0 before marshal");
+		}
+
+		int columnVersionInfoPos = -1;
 		for (final VersionInfo columnVersionInfo : getColumnVersionInfos()) {
+			columnVersionInfoPos++;
 			if (columnVersionInfo == null) {
 				getColumnVersionsModifiable().add(null);
 			} else {
@@ -273,22 +280,12 @@ public abstract class Matrix<R extends Row<?>>
 
 		// Add in column versions as necessary
 		nullFill(getColumnVersionInfosModifiable(), columnsSize);
-		nullFill(getColumnVersionsModifiable(), columnsSize);
-
-		if (getColumnVersionInfos().size() != getColumnVersions().size()) {
-			throw new AssertionError(
-					"column version infos size does not match versions size: "
-							+ getColumnVersionInfos().size() + ", "
-							+ getColumnVersions().size());
-		}
 
 		// Remove column versions as necessary
 		while (getColumnVersionInfos().size() > columnsSize) {
 			getColumnVersionInfosModifiable()
 					.remove(
 							getColumnVersionInfos().size() - 1);
-			getColumnVersionsModifiable()
-					.remove(getColumnVersions().size() - 1);
 		}
 		return this;
 	}

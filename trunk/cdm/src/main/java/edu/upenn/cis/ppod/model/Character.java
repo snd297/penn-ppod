@@ -135,6 +135,7 @@ public class Character extends UUPPodEntityWXmlId {
 	@Override
 	public void afterUnmarshal(final Unmarshaller u, final Object parent) {
 		super.afterUnmarshal(u, parent);
+		setMatrix((CharacterStateMatrix) parent);
 		if (getStatesModifiable().size() > 0
 				&& get(getStatesModifiable().values(), 0).getCharacter() == null) {
 			for (final CharacterState state : getStatesModifiable().values()) {

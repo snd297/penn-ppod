@@ -351,23 +351,28 @@ public class CharacterStateMatrixTest {
 
 	@Test
 	public void beforeMarshal() {
+
+		matrix.setCharacters(ImmutableList.of(
+				characterProvider.get().setLabel("character0"),
+				characterProvider.get().setLabel("character1"),
+				characterProvider.get().setLabel("character2")));
 		nullFillAndSet(
 				matrix.getColumnVersionInfosModifiable(),
-				2,
+				0,
 				pPodVersionInfoProvider.get().setVersion(3L));
 		nullFillAndSet(
 				matrix.getColumnVersionInfosModifiable(),
-				5,
+				2,
 				pPodVersionInfoProvider.get().setVersion(8L));
 
 		matrix.beforeMarshal(null);
-		assertEquals(matrix.getColumnVersionsModifiable().size(), matrix
-				.getColumnVersionInfos().size());
+		assertEquals(matrix.getColumnVersions().size(),
+				matrix.getColumnVersionInfos().size());
 		for (int i = 0; i < matrix.getColumnVersionInfos().size(); i++) {
 			if (matrix.getColumnVersionInfos().get(i) == null) {
-				assertNull(matrix.getColumnVersionsModifiable().get(i));
+				assertNull(matrix.getColumnVersions().get(i));
 			} else {
-				assertEquals(matrix.getColumnVersionsModifiable().get(i),
+				assertEquals(matrix.getColumnVersions().get(i),
 						matrix
 								.getColumnVersionInfos().get(i)
 								.getVersion());
