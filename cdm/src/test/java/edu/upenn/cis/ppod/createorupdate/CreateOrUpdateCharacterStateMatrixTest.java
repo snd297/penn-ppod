@@ -18,7 +18,6 @@ package edu.upenn.cis.ppod.createorupdate;
 import static com.google.common.collect.Lists.newArrayList;
 import static com.google.common.collect.Maps.newHashMap;
 import static org.testng.Assert.assertEquals;
-import static org.testng.Assert.assertTrue;
 
 import java.util.Collections;
 import java.util.List;
@@ -254,73 +253,4 @@ public class CreateOrUpdateCharacterStateMatrixTest {
 		}
 	}
 
-	/**
-	 * Test removing a character from a matrix.
-	 */
-	@Test(dataProvider = MatrixProvider.SMALL_MATRICES_PROVIDER, dataProviderClass = MatrixProvider.class)
-	public void deleteCharacter(final CharacterStateMatrix sourceMatrix) {
-		// It only makes sense to remove characters from a standard matrix
-		if (sourceMatrix.getClass().equals(CharacterStateMatrix.class)) {
-			final ICreateOrUpdateCharacterStateMatrix createOrUpdateCharacterStateMatrix = createOrUpdateMatrixFactory
-					.create(mergeAttachment, dao, newVersionInfo);
-			final OTUSet fakeDbOTUSet = sourceMatrix.getOTUSet();
-
-			final CharacterStateMatrix targetMatrix = characterStateMatrixProvider
-					.get();
-
-			fakeDbOTUSet.addCharacterStateMatrix(targetMatrix);
-
-			final Map<CharacterStateRow, List<CharacterStateCell>> sourceRowsToCells = stashCells(sourceMatrix);
-			createOrUpdateCharacterStateMatrix
-					.createOrUpdateMatrix(
-							targetMatrix,
-							sourceMatrix);
-
-			putBackCells(targetMatrix, dao.getRowsToCells());
-			putBackCells(sourceMatrix, sourceRowsToCells);
-
-			// Simulate passing back in the persisted characters: so we need to
-			// assign the proper pPOD ID's.
-			for (int i = 0; i < sourceMatrix.getColumnVersionInfos().size(); i++) {
-				sourceMatrix.getCharacters().get(i).setPPodId(
-						targetMatrix.getCharacters().get(i).getPPodId());
-			}
-
-			// Remove character 2
-			final Character shouldBemovedTargetCharacter = targetMatrix
-					.getCharacters().get(2);
-
-			final List<Character> newSourceMatrixCharacters = newArrayList(sourceMatrix
-					.getCharacters());
-
-			newSourceMatrixCharacters.remove(2);
-
-			sourceMatrix.setCharacters(newSourceMatrixCharacters);
-
-			for (final OTU sourceOTU : sourceMatrix.getOTUSet().getOTUs()) {
-
-				final CharacterStateRow sourceRow = sourceMatrix
-						.getRow(sourceOTU);
-				final List<CharacterStateCell> newSourceCells = newArrayList(sourceRow
-						.getCells());
-				newSourceCells.remove(2);
-				sourceRow.setCells(newSourceCells);
-			}
-
-			final Map<CharacterStateRow, List<CharacterStateCell>> sourceRowsToCells2 = stashCells(sourceMatrix);
-			createOrUpdateCharacterStateMatrix.createOrUpdateMatrix(
-					targetMatrix,
-					sourceMatrix);
-
-			assertTrue(dao.getDeletedEntities()
-					.contains(shouldBemovedTargetCharacter));
-
-			putBackCells(targetMatrix, dao.getRowsToCells());
-			putBackCells(sourceMatrix, sourceRowsToCells2);
-
-			ModelAssert.assertEqualsCharacterStateMatrices(targetMatrix,
-					sourceMatrix);
-
-		}
-	}
 }
