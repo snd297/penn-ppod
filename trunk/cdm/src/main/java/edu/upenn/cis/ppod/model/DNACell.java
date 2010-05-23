@@ -18,7 +18,7 @@ import javax.persistence.FetchType;
 import javax.persistence.JoinColumn;
 import javax.persistence.ManyToOne;
 import javax.persistence.Table;
-import javax.xml.bind.annotation.XmlAttribute;
+import javax.xml.bind.Unmarshaller;
 import javax.xml.bind.annotation.XmlElement;
 
 import edu.upenn.cis.ppod.util.IVisitor;
@@ -74,6 +74,19 @@ public class DNACell extends Cell<DNANucleotide> {
 		visitor.visit(this);
 	}
 
+	/**
+	 * {@link Unmarshaller} callback.
+	 * 
+	 * @param u see {@code Unmarshaller}
+	 * @param parent see {@code Unmarshaller}
+	 */
+	@Override
+	public void afterUnmarshal(final Unmarshaller u, final Object parent) {
+		super.afterUnmarshal(u, parent);
+		row = (DNARow) parent;
+	}
+
+	@XmlElement(name = "element")
 	@Override
 	protected DNANucleotide getElement() {
 		return element;
@@ -81,32 +94,24 @@ public class DNACell extends Cell<DNANucleotide> {
 
 	@Override
 	protected Set<DNANucleotide> getElementsRaw() {
-		if (elements == null) {
-			elements = EnumSet.noneOf(DNANucleotide.class);
-		}
 		return elements;
 	}
 
-	/** For JAXB. */
+	/** This seemingly redundant method created For JAXB. */
 	@XmlElement(name = "element")
 	@Override
 	protected Set<DNANucleotide> getElementsXml() {
-		if (elementsXml == null) {
-			elementsXml = EnumSet.noneOf(DNANucleotide.class);
-		}
-		return elementsXml;
-	}
-
-	/** For JAXB. */
-	@Override
-	@XmlAttribute(name = "element")
-	protected DNANucleotide getElementXml() {
-		return super.getElementXml();
+		return super.getElementsXml();
 	}
 
 	@Override
 	protected DNARow getRow() {
 		return row;
+	}
+
+	@Override
+	protected void initElementsXml() {
+		super.setElementsXml(EnumSet.noneOf(DNANucleotide.class));
 	}
 
 	@Override
@@ -124,19 +129,15 @@ public class DNACell extends Cell<DNANucleotide> {
 			if (elements == null) {
 				this.elements = null;
 			} else {
-				if (elements == null) {
-					this.elements = null;
+				if (this.elements == null) {
+					this.elements = EnumSet.noneOf(DNANucleotide.class);
 				} else {
-					getElementsRaw().addAll(elements);
+					this.elements.clear();
 				}
+				this.elements.addAll(elements);
 			}
 		}
 		return this;
-	}
-
-	@Override
-	protected void setElementXml(final DNANucleotide nucleotide) {
-		super.setElementXml(nucleotide);
 	}
 
 	@Override
