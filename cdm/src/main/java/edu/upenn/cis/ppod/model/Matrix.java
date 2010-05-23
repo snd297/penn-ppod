@@ -32,7 +32,7 @@ import edu.upenn.cis.ppod.util.IVisitor;
 
 /**
  * A matrix is a set of OTU-keyed rows with column header pPOD versions which
- * are each equal to the largest version in the column.
+ * are each equal to the largest cell version in the column.
  * 
  * @author Sam Donnelly
  */
@@ -168,6 +168,9 @@ public abstract class Matrix<R extends Row<?>>
 	/**
 	 * Getter. {@code null} when the object is constructed, but never {@code
 	 * null} for persistent objects.
+	 * <p>
+	 * Will {@code null} only until {@code setLabel()} is called for newly
+	 * created objects. Will never be {@code null} for persistent objects.
 	 * 
 	 * @return the label
 	 */
@@ -361,9 +364,6 @@ public abstract class Matrix<R extends Row<?>>
 
 	/**
 	 * Set the label of this matrix.
-	 * <p>
-	 * Will {@code null} only until {@code setLabel()} is called for newly
-	 * created objects. Will never be {@code null} for persistent objects.
 	 * 
 	 * @param label the value for the label
 	 * 

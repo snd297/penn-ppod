@@ -8,8 +8,6 @@ import static com.google.common.collect.Sets.newHashSet;
 import java.util.Collections;
 import java.util.Set;
 
-import javax.annotation.CheckForNull;
-import javax.annotation.Nullable;
 import javax.persistence.Column;
 import javax.persistence.EnumType;
 import javax.persistence.Enumerated;
@@ -19,6 +17,8 @@ import javax.xml.bind.Marshaller;
 import javax.xml.bind.Unmarshaller;
 import javax.xml.bind.annotation.XmlAttribute;
 
+import edu.umd.cs.findbugs.annotations.CheckForNull;
+import edu.umd.cs.findbugs.annotations.Nullable;
 import edu.upenn.cis.ppod.modelinterfaces.IMatrix;
 import edu.upenn.cis.ppod.modelinterfaces.IRow;
 
@@ -81,17 +81,14 @@ public abstract class Cell<E> extends PPodEntity {
 	@CheckForNull
 	private Type type;
 
-	@Transient
-	@CheckForNull
-	private E elementXml;
-
 	/**
 	 * Used for serialization so we don't have to hit {@code elements} directly
-	 * and thereby cause unwanted database hits.
+	 * and thereby cause unwanted database hits. Which are pretty expensive in a
+	 * large matrix.
 	 */
 	@Transient
 	@CheckForNull
-	protected Set<E> elementsXml;
+	private Set<E> elementsXml;
 
 	/**
 	 * Tells us that this {@code Cell} has been unmarshalled and still needs to
@@ -102,44 +99,31 @@ public abstract class Cell<E> extends PPodEntity {
 
 	Cell() {}
 
+	/**
+	 * {@link Marshaller} callback.
+	 */
 	public void afterMarshal(@CheckForNull final Marshaller marshaller) {
-		switch (getType()) {
-			case UNASSIGNED:
-			case SINGLE:
-			case INAPPLICABLE:
-				// Let's free it up since we don't need it
-				elementsXml = null;
-				break;
-		}
+		setElementsXml(null);
 	}
 
 	@Override
 	public void afterUnmarshal() {
 		super.afterUnmarshal();
-
 		if (getNeedsAfterMarshal()) {
-			setNeedsAfterMarshal(false);
-
 			switch (getType()) {
 				case UNASSIGNED:
-				case INAPPLICABLE:
-					setElement(null);
-					setElements(null);
-					break;
 				case SINGLE:
-					setElement(elementXml);
-					setElements(null);
+				case INAPPLICABLE:
 					break;
 				case POLYMORPHIC:
 				case UNCERTAIN:
-					setElement(null);
 					setElements(getElementsXml());
 					break;
 				default:
 					throw new AssertionError("unknown cell type " + getType());
 			}
-			this.elementXml = null;
-			this.elementsXml = null;
+			setElementsXml(null);
+			setNeedsAfterMarshal(false);
 		}
 	}
 
@@ -150,58 +134,74 @@ public abstract class Cell<E> extends PPodEntity {
 	 * @param parent see {@code Unmarshaller}
 	 */
 	@Override
-	public void afterUnmarshal(final Unmarshaller u, final Object parent) {
+	public void afterUnmarshal(
+			@CheckForNull final Unmarshaller u,
+			@CheckForNull final Object parent) {
 		super.afterUnmarshal(u, parent);
 		setNeedsAfterMarshal(true);
 		switch (getType()) {
 			case UNASSIGNED:
 			case SINGLE:
 			case INAPPLICABLE:
-				// Let's free it up since we don't need it
-				elementsXml = null;
+				// free it up for GC
+				setElementsXml(null);
 				break;
+			case POLYMORPHIC:
+			case UNCERTAIN:
+				break;
+			default:
+				throw new AssertionError("unknown cell type " + getType());
 		}
-
 	}
 
 	/**
 	 * @throws IllegalStateException if the type has not been set
 	 */
 	@Override
-	public boolean beforeMarshal(@CheckForNull final Marshaller marshaller) {
+	public boolean beforeMarshal(
+			@CheckForNull final Marshaller marshaller) {
 
 		// Let's not marshal it if it's in a bad state
 		checkState(getType() != null, "can't marshal a cell without a type");
 
+		// if (getElementsXml() != null) {
+		// throw new AssertionError(
+		// "getElementsXml() != null in beforeMarshal(...)");
+		// }
+
 		switch (getType()) {
 			case UNASSIGNED:
-			case INAPPLICABLE:
-				elementXml = null;
-				elementsXml = null;
-				break;
 			case SINGLE:
-				elementXml = getElement();
-				elementsXml = null;
+			case INAPPLICABLE:
 				break;
 			case POLYMORPHIC:
 			case UNCERTAIN:
-				checkState(getElementsXml().size() == 0,
-						"getElementsXml() > 0 for pre-marshalled object");
-				getElementsXml().addAll(this.getElementsRaw());
+				initElementsXml();
+				getElementsXml().addAll(getElements());
 				break;
 			default:
 				throw new AssertionError("unknown cell type " + getType());
 		}
-
 		return super.beforeMarshal(marshaller);
-
 	}
 
 	/**
-	 * We cache the first state, since this is the most common case.
+	 * {@link Unmarshaller} callback.
 	 * <p>
-	 * Will be {@code null} if this is a {@link Type#INAPPLICABLE} or
-	 * {@link Type#UNASSIGNED}.
+	 * For marshalling, initializing {@code xmlElemnts} is handled in
+	 * {@link #beforeMarshal(Marshaller)}.
+	 * 
+	 * @param u see {@code Unmarshaller}
+	 * @param parent see {@code Unmarshaller}
+	 */
+	public void beforeUnmarshal(
+			final Unmarshaller u,
+			final Object parent) {
+		initElementsXml();
+	}
+
+	/**
+	 * Will be {@code null} if this is cell is not {@link Type.SINGLE}.
 	 */
 	@CheckForNull
 	protected abstract E getElement();
@@ -227,6 +227,10 @@ public abstract class Cell<E> extends PPodEntity {
 			case UNASSIGNED:
 				return Collections.emptySet();
 			case SINGLE:
+				if (getElement() == null) {
+					throw new AssertionError(
+							"getElement() == null for SINGLE cell!");
+				}
 				final Set<E> elementInASet = newHashSet();
 				elementInASet.add(getElement());
 				return elementInASet;
@@ -251,7 +255,7 @@ public abstract class Cell<E> extends PPodEntity {
 	}
 
 	/**
-	 * Should initialize elements as necessary before returning.
+	 * Get the elements in this cell.
 	 * 
 	 * @return the elements in this cell
 	 */
@@ -263,12 +267,12 @@ public abstract class Cell<E> extends PPodEntity {
 	 * <p>
 	 * This is abstract since subclasses may not just want a {@code HashSet}.
 	 * <p>
-	 * We could make a HashSet here, but we don't want to accidentally call it.
+	 * We could make a HashSet here, but we don't want to accidentally call it
+	 * from, for example, {@code DNACell}.
 	 */
-	protected abstract Set<E> getElementsXml();
-
-	protected E getElementXml() {
-		return elementXml;
+	@CheckForNull
+	protected Set<E> getElementsXml() {
+		return elementsXml;
 	}
 
 	/**
@@ -286,11 +290,23 @@ public abstract class Cell<E> extends PPodEntity {
 	@Nullable
 	protected abstract IRow getRow();
 
+	/**
+	 * Get the type of this cell.
+	 * <p>
+	 * This value will be {@code null} for newly created cells until the
+	 * elements are set.
+	 * <p>
+	 * This value will never be {@code null} for a persistent cell.
+	 * 
+	 * @return the type of this cell
+	 */
 	@XmlAttribute
 	@Nullable
 	public Type getType() {
 		return type;
 	}
+
+	protected abstract void initElementsXml();
 
 	/**
 	 * Does not affect {@link #isInNeedOfNewVersion()}.
@@ -303,12 +319,9 @@ public abstract class Cell<E> extends PPodEntity {
 	protected abstract Cell<E> setElements(
 			@CheckForNull Set<E> elements);
 
-	protected void setElementsXml(@CheckForNull final Set<E> elementsXml) {
+	protected Cell<E> setElementsXml(final Set<E> elementsXml) {
 		this.elementsXml = elementsXml;
-	}
-
-	protected void setElementXml(final E xmlElement) {
-		this.elementXml = xmlElement;
+		return this;
 	}
 
 	/**
@@ -430,6 +443,7 @@ public abstract class Cell<E> extends PPodEntity {
 		checkNotNull(type);
 		checkNotNull(xmlStates);
 		setType(type);
+		initElementsXml();
 		getElementsXml().clear();
 		getElementsXml().addAll(xmlStates);
 		setNeedsAfterMarshal(true);

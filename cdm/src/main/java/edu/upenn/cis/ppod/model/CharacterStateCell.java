@@ -23,11 +23,10 @@ import static com.google.common.collect.Sets.newHashSet;
 import static com.google.common.collect.Sets.newTreeSet;
 
 import java.util.Comparator;
+import java.util.HashSet;
 import java.util.Set;
 import java.util.SortedSet;
 
-import javax.annotation.CheckForNull;
-import javax.annotation.Nullable;
 import javax.persistence.Entity;
 import javax.persistence.FetchType;
 import javax.persistence.JoinColumn;
@@ -42,6 +41,8 @@ import javax.xml.bind.annotation.XmlIDREF;
 import org.hibernate.annotations.Sort;
 import org.hibernate.annotations.SortType;
 
+import edu.umd.cs.findbugs.annotations.CheckForNull;
+import edu.umd.cs.findbugs.annotations.Nullable;
 import edu.upenn.cis.ppod.util.IVisitor;
 
 /**
@@ -115,8 +116,7 @@ public class CharacterStateCell extends Cell<CharacterState> {
 	@Override
 	public void afterUnmarshal(final Unmarshaller u, final Object parent) {
 		super.afterUnmarshal(u, parent);
-		row = (CharacterStateRow) parent; // don't setRow call because it'll
-		// reset the ppod version info
+		row = (CharacterStateRow) parent;
 	}
 
 	private void checkRowMatrixCharacter() {
@@ -141,6 +141,9 @@ public class CharacterStateCell extends Cell<CharacterState> {
 
 	}
 
+	@CheckForNull
+	@XmlElement(name = "element")
+	@XmlIDREF
 	@Override
 	protected CharacterState getElement() {
 		return element;
@@ -152,25 +155,12 @@ public class CharacterStateCell extends Cell<CharacterState> {
 		return elements;
 	}
 
-	/**
-	 * The state set that will be marshalled.
-	 * 
-	 * @return the states for marhsalling
-	 */
-	@XmlElement(name = "stateDocId")
+	@CheckForNull
+	@XmlElement(name = "elementDocId")
 	@XmlIDREF
 	@Override
 	protected Set<CharacterState> getElementsXml() {
-		if (elementsXml == null) {
-			elementsXml = newHashSet();
-		}
-		return elementsXml;
-	}
-
-	@Override
-	@XmlElement(name = "element")
-	protected CharacterState getElementXml() {
-		return super.getElementXml();
+		return super.getElementsXml();
 	}
 
 	/**
@@ -183,6 +173,11 @@ public class CharacterStateCell extends Cell<CharacterState> {
 	@Override
 	public CharacterStateRow getRow() {
 		return row;
+	}
+
+	@Override
+	protected void initElementsXml() {
+		setElementsXml(new HashSet<CharacterState>());
 	}
 
 	@Override
@@ -203,8 +198,9 @@ public class CharacterStateCell extends Cell<CharacterState> {
 			} else {
 				if (this.elements == null) {
 					this.elements = newTreeSet(STATE_COMPARATOR);
+				} else {
+					this.elements.clear();
 				}
-				this.elements.clear();
 				this.elements.addAll(elements);
 			}
 		}
@@ -327,11 +323,6 @@ public class CharacterStateCell extends Cell<CharacterState> {
 		setType(Type.SINGLE);
 		setInNeedOfNewVersion();
 		return this;
-	}
-
-	@Override
-	protected void setElementXml(final CharacterState element) {
-		super.setElementXml(element);
 	}
 
 	/**
