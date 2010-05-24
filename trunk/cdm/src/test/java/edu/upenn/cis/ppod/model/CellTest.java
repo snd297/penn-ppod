@@ -20,7 +20,6 @@ import static com.google.common.base.Preconditions.checkNotNull;
 import static com.google.common.collect.Iterables.getOnlyElement;
 import static com.google.common.collect.Lists.newArrayList;
 import static org.testng.Assert.assertEquals;
-import static org.testng.Assert.assertFalse;
 import static org.testng.Assert.assertNull;
 
 import java.util.List;
@@ -99,36 +98,6 @@ public class CellTest<M extends Matrix<R>, R extends Row<C>, C extends Cell<E>, 
 		cell.setSingleElement(element);
 	}
 
-	public void afterUnmarshal(final M matrix, final Set<E> elements) {
-		checkNotNull(matrix);
-		checkNotNull(elements);
-		checkArgument(matrix.getColumnVersionInfos().size() == 1,
-				"matrix has " + matrix.getColumnVersionInfos()
-						+ " column(s), but we need it to have 1 column");
-		final C cell = cellProvider.get();
-
-		final OTUSet otuSet = otuSetProvider.get();
-
-		matrix.setOTUSet(otuSet);
-
-		final OTU otu = otuSet.addOTU(otuProvider.get());
-
-		final R row = rowProvider.get();
-
-		matrix.putRow(otu, row);
-
-		cell.setNeedsAfterMarshal(true);
-
-		final List<C> cells = newArrayList();
-		cells.add(cell);
-
-		row.setCells(cells);
-
-		cell.setTypeAndXmlElements(Cell.Type.UNCERTAIN, elements);
-		cell.afterUnmarshal();
-		assertEquals((Object) cell.getElements(), (Object) elements);
-		assertFalse(cell.getNeedsAfterMarshal());
-	}
 
 	/**
 	 * {@code beforeMarshal(...)} should throw an {@code IllegalStateException}

@@ -68,17 +68,6 @@ public class DNACellTest {
 						DNANucleotide.T));
 	}
 
-	@Test
-	public void afterUnmarshal() {
-		final DNAMatrix matrix = dnaMatrix2Provider.get();
-		matrix.setColumnsSize(1);
-
-		// nothing special about A,C,T.
-		cellTest.afterUnmarshal(matrix, ImmutableSet.of(
-				DNANucleotide.A, DNANucleotide.C,
-				DNANucleotide.T));
-	}
-
 	/**
 	 * {@code beforeMarshal(...)} should throw an exception if the type has not
 	 * bee set yet.

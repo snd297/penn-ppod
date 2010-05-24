@@ -22,7 +22,6 @@ import static com.google.common.collect.Iterables.isEmpty;
 import static com.google.common.collect.Lists.newArrayList;
 import static com.google.common.collect.Sets.newHashSet;
 import static org.testng.Assert.assertEquals;
-import static org.testng.Assert.assertFalse;
 import static org.testng.Assert.assertTrue;
 
 import java.util.Arrays;
@@ -84,13 +83,6 @@ public class CharacterStateCellTest {
 
 	@Nullable
 	private Set<CharacterState> states;
-
-	@Test
-	public void afterUnmarshal() {
-		states.add(state00);
-		states.add(state01);
-		cellTest.afterUnmarshal(matrix, states);
-	}
 
 	/**
 	 * Straight {@code beforeMarshal(...) test.
@@ -166,17 +158,6 @@ public class CharacterStateCellTest {
 	@Test
 	public void getStatesWhenCellHasOneElement() {
 		cellTest.getStatesWhenCellHasOneElement(matrix, state00);
-	}
-
-	@Test(groups = TestGroupDefs.IN_DEVELOPMENT)
-	public void getStatesWXmlStatesNeedsToBePutIntoStatesTrueSingle() {
-		cell.setNeedsAfterMarshal(true);
-		matrix.getRow(matrix.getOTUSet().getOTU(0)).setCells(
-				Arrays.asList(cell));
-		states.add(state00);
-		cell.setTypeAndXmlElements(Cell.Type.SINGLE, states);
-		assertEquals(newHashSet(cell), states);
-		assertFalse(cell.getNeedsAfterMarshal());
 	}
 
 	/**

@@ -23,7 +23,6 @@ import static com.google.common.collect.Sets.newHashSet;
 import static com.google.common.collect.Sets.newTreeSet;
 
 import java.util.Comparator;
-import java.util.HashSet;
 import java.util.Set;
 import java.util.SortedSet;
 
@@ -35,6 +34,7 @@ import javax.persistence.ManyToMany;
 import javax.persistence.ManyToOne;
 import javax.persistence.Table;
 import javax.xml.bind.Unmarshaller;
+import javax.xml.bind.annotation.XmlAttribute;
 import javax.xml.bind.annotation.XmlElement;
 import javax.xml.bind.annotation.XmlIDREF;
 
@@ -142,7 +142,7 @@ public class CharacterStateCell extends Cell<CharacterState> {
 	}
 
 	@CheckForNull
-	@XmlElement(name = "element")
+	@XmlAttribute(name = "stateDocId")
 	@XmlIDREF
 	@Override
 	protected CharacterState getElement() {
@@ -156,7 +156,7 @@ public class CharacterStateCell extends Cell<CharacterState> {
 	}
 
 	@CheckForNull
-	@XmlElement(name = "elementDocId")
+	@XmlElement(name = "stateDocId")
 	@XmlIDREF
 	@Override
 	protected Set<CharacterState> getElementsXml() {
@@ -176,8 +176,8 @@ public class CharacterStateCell extends Cell<CharacterState> {
 	}
 
 	@Override
-	protected void initElementsXml() {
-		setElementsXml(new HashSet<CharacterState>());
+	protected void initElements() {
+		elements = newTreeSet(STATE_COMPARATOR);
 	}
 
 	@Override
@@ -197,7 +197,7 @@ public class CharacterStateCell extends Cell<CharacterState> {
 				this.elements = null;
 			} else {
 				if (this.elements == null) {
-					this.elements = newTreeSet(STATE_COMPARATOR);
+					initElements();
 				} else {
 					this.elements.clear();
 				}

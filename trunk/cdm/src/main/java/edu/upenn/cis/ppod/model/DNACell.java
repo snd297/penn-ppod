@@ -19,6 +19,7 @@ import javax.persistence.JoinColumn;
 import javax.persistence.ManyToOne;
 import javax.persistence.Table;
 import javax.xml.bind.Unmarshaller;
+import javax.xml.bind.annotation.XmlAttribute;
 import javax.xml.bind.annotation.XmlElement;
 
 import edu.upenn.cis.ppod.util.IVisitor;
@@ -86,7 +87,7 @@ public class DNACell extends Cell<DNANucleotide> {
 		row = (DNARow) parent;
 	}
 
-	@XmlElement(name = "element")
+	@XmlAttribute(name = "nucleotide")
 	@Override
 	protected DNANucleotide getElement() {
 		return element;
@@ -98,7 +99,7 @@ public class DNACell extends Cell<DNANucleotide> {
 	}
 
 	/** This seemingly redundant method created For JAXB. */
-	@XmlElement(name = "element")
+	@XmlElement(name = "nucleotide")
 	@Override
 	protected Set<DNANucleotide> getElementsXml() {
 		return super.getElementsXml();
@@ -110,14 +111,14 @@ public class DNACell extends Cell<DNANucleotide> {
 	}
 
 	@Override
-	protected void initElementsXml() {
-		super.setElementsXml(EnumSet.noneOf(DNANucleotide.class));
-	}
-
-	@Override
 	protected DNACell setElement(final DNANucleotide firstElement) {
 		this.element = firstElement;
 		return this;
+	}
+
+	@Override
+	protected void initElements() {
+		this.elements = EnumSet.noneOf(DNANucleotide.class);
 	}
 
 	@Override
@@ -130,7 +131,7 @@ public class DNACell extends Cell<DNANucleotide> {
 				this.elements = null;
 			} else {
 				if (this.elements == null) {
-					this.elements = EnumSet.noneOf(DNANucleotide.class);
+					initElements();
 				} else {
 					this.elements.clear();
 				}
@@ -200,4 +201,5 @@ public class DNACell extends Cell<DNANucleotide> {
 		row = null;
 		return this;
 	}
+
 }
