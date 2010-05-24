@@ -81,50 +81,15 @@ public abstract class Cell<E> extends PPodEntity {
 	@CheckForNull
 	private Type type;
 
-	/**
-	 * Used for serialization so we don't have to hit {@code elements} directly
-	 * and thereby cause unwanted database hits. Which are pretty expensive in a
-	 * large matrix.
-	 */
 	@Transient
-	@CheckForNull
-	private Set<E> elementsXml;
-
-	/**
-	 * Tells us that this {@code Cell} has been unmarshalled and still needs to
-	 * have {@code states} populated with {@code xmlStates}.
-	 */
-	@Transient
-	private boolean needsAfterMarshal = false;
+	private boolean beingUnmarshalled = false;
 
 	Cell() {}
-
-	/**
-	 * {@link Marshaller} callback.
-	 */
-	public void afterMarshal(@CheckForNull final Marshaller marshaller) {
-		setElementsXml(null);
-	}
 
 	@Override
 	public void afterUnmarshal() {
 		super.afterUnmarshal();
-		if (getNeedsAfterMarshal()) {
-			switch (getType()) {
-				case UNASSIGNED:
-				case SINGLE:
-				case INAPPLICABLE:
-					break;
-				case POLYMORPHIC:
-				case UNCERTAIN:
-					setElements(getElementsXml());
-					break;
-				default:
-					throw new AssertionError("unknown cell type " + getType());
-			}
-			setElementsXml(null);
-			setNeedsAfterMarshal(false);
-		}
+		beingUnmarshalled = false;
 	}
 
 	/**
@@ -138,13 +103,12 @@ public abstract class Cell<E> extends PPodEntity {
 			@CheckForNull final Unmarshaller u,
 			@CheckForNull final Object parent) {
 		super.afterUnmarshal(u, parent);
-		setNeedsAfterMarshal(true);
 		switch (getType()) {
 			case UNASSIGNED:
 			case SINGLE:
 			case INAPPLICABLE:
 				// free it up for GC
-				setElementsXml(null);
+				setElements(null);
 				break;
 			case POLYMORPHIC:
 			case UNCERTAIN:
@@ -154,50 +118,17 @@ public abstract class Cell<E> extends PPodEntity {
 		}
 	}
 
-	/**
-	 * @throws IllegalStateException if the type has not been set
-	 */
-	@Override
-	public boolean beforeMarshal(
-			@CheckForNull final Marshaller marshaller) {
-
-		// Let's not marshal it if it's in a bad state
-		checkState(getType() != null, "can't marshal a cell without a type");
-
-		// if (getElementsXml() != null) {
-		// throw new AssertionError(
-		// "getElementsXml() != null in beforeMarshal(...)");
-		// }
-
-		switch (getType()) {
-			case UNASSIGNED:
-			case SINGLE:
-			case INAPPLICABLE:
-				break;
-			case POLYMORPHIC:
-			case UNCERTAIN:
-				initElementsXml();
-				getElementsXml().addAll(getElements());
-				break;
-			default:
-				throw new AssertionError("unknown cell type " + getType());
-		}
-		return super.beforeMarshal(marshaller);
-	}
-
-	/**
-	 * {@link Unmarshaller} callback.
-	 * <p>
-	 * For marshalling, initializing {@code xmlElemnts} is handled in
-	 * {@link #beforeMarshal(Marshaller)}.
-	 * 
-	 * @param u see {@code Unmarshaller}
-	 * @param parent see {@code Unmarshaller}
-	 */
 	public void beforeUnmarshal(
-			final Unmarshaller u,
-			final Object parent) {
-		initElementsXml();
+			@CheckForNull final Unmarshaller u,
+			@CheckForNull final Object parent) {
+		beingUnmarshalled = true;
+	}
+
+	@Override
+	public boolean beforeMarshal(@CheckForNull final Marshaller marshaller) {
+		super.beforeMarshal(marshaller);
+		checkState(getType() != null, "can't marshal a cell with no type");
+		return true;
 	}
 
 	/**
@@ -215,12 +146,6 @@ public abstract class Cell<E> extends PPodEntity {
 		checkState(getType() != null,
 				"type has yet to be assigned for this cell");
 
-		// One may reasonably ask why we don't just do the
-		// AfterUnmarshalVisitor's work here. Answer: We don't want to encourage
-		// bad habits.
-		checkState(
-				!getNeedsAfterMarshal(),
-				"xmlStateNeedsToBePutIntoStates == true, has the afterUnmarshal visitor been dispatched?");
 		switch (getType()) {
 			// Don't hit states unless we have too
 			case INAPPLICABLE:
@@ -264,22 +189,27 @@ public abstract class Cell<E> extends PPodEntity {
 	/**
 	 * Used for serialization so we don't have to hit {@code elements} directly
 	 * and thereby cause unwanted database hits.
-	 * <p>
-	 * This is abstract since subclasses may not just want a {@code HashSet}.
-	 * <p>
-	 * We could make a HashSet here, but we don't want to accidentally call it
-	 * from, for example, {@code DNACell}.
 	 */
 	@CheckForNull
 	protected Set<E> getElementsXml() {
-		return elementsXml;
-	}
-
-	/**
-	 * Package-private for testing.
-	 */
-	boolean getNeedsAfterMarshal() {
-		return needsAfterMarshal;
+		// Since we don't know what the type is yet, we just have to initialize
+		// elements and return: it could be POLYMORPHIC or UNCERTAIN.
+		if (beingUnmarshalled) {
+			initElements();
+			return getElementsRaw();
+		}
+		switch (getType()) {
+			case UNASSIGNED:
+			case SINGLE:
+			case INAPPLICABLE:
+				return null;
+			case POLYMORPHIC:
+			case UNCERTAIN:
+				// We only want to hit elements if necessary to avoid db hits
+				return getElementsRaw();
+			default:
+				throw new AssertionError("unknown type: " + getType());
+		}
 	}
 
 	@CheckForNull
@@ -306,7 +236,7 @@ public abstract class Cell<E> extends PPodEntity {
 		return type;
 	}
 
-	protected abstract void initElementsXml();
+	protected abstract void initElements();
 
 	/**
 	 * Does not affect {@link #isInNeedOfNewVersion()}.
@@ -318,11 +248,6 @@ public abstract class Cell<E> extends PPodEntity {
 	 */
 	protected abstract Cell<E> setElements(
 			@CheckForNull Set<E> elements);
-
-	protected Cell<E> setElementsXml(final Set<E> elementsXml) {
-		this.elementsXml = elementsXml;
-		return this;
-	}
 
 	/**
 	 * Set this cell's type to {@link Type#INAPPLICABLE} to {@code
@@ -368,12 +293,6 @@ public abstract class Cell<E> extends PPodEntity {
 			}
 		}
 		super.setInNeedOfNewVersion();
-		return this;
-	}
-
-	protected Cell<E> setNeedsAfterMarshal(
-			final boolean xmlStatesNeedsToBePutIntoStates) {
-		this.needsAfterMarshal = xmlStatesNeedsToBePutIntoStates;
 		return this;
 	}
 
@@ -443,10 +362,8 @@ public abstract class Cell<E> extends PPodEntity {
 		checkNotNull(type);
 		checkNotNull(xmlStates);
 		setType(type);
-		initElementsXml();
 		getElementsXml().clear();
 		getElementsXml().addAll(xmlStates);
-		setNeedsAfterMarshal(true);
 		return this;
 	}
 
