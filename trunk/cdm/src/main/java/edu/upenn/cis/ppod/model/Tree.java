@@ -163,4 +163,13 @@ public class Tree extends UUPPodEntity {
 		this.treeSet = treeSet;
 		return this;
 	}
+
+	/**
+	 * Get the tree set that owns this tree.
+	 * 
+	 * @return the tree set that owns this tree
+	 */
+	public TreeSet getTreeSet() {
+		return treeSet;
+	}
 }
