@@ -30,6 +30,9 @@ public class PPodIterables {
 	/**
 	 * Find the first member of {@code iterable} that satisfies {@code
 	 * predicate}, or return {@code null} if there is no such element.
+	 * <p>
+	 * What is the first element is determined by the iterator order of {@code
+	 * iterable}.
 	 * 
 	 * @param <T>
 	 * @param iterable
@@ -37,13 +40,15 @@ public class PPodIterables {
 	 * @return
 	 */
 	@CheckForNull
-	public static <T> T findIf(final Iterable<T> iterable,
+	public static <T> T findIf(
+			final Iterable<T> iterable,
 			final Predicate<? super T> predicate) {
 		return findIf(iterable.iterator(), predicate);
 	}
 
 	@CheckForNull
-	public static <T> T findIf(final Iterator<T> iterator,
+	public static <T> T findIf(
+			final Iterator<? extends T> iterator,
 			final Predicate<? super T> predicate) {
 
 		// NOTE: we had this implemented in terms of filter(...), but the
@@ -57,7 +62,8 @@ public class PPodIterables {
 		return null;
 	}
 
-	public static <T> boolean removeIf(final Collection<T> collection,
+	public static <T> boolean removeIf(
+			final Collection<T> collection,
 			final Predicate<? super T> predicate) {
 		final int preSize = collection.size();
 		for (final Iterator<T> iterator = collection.iterator(); iterator
@@ -75,6 +81,6 @@ public class PPodIterables {
 	}
 
 	private PPodIterables() {
-		throw new IllegalStateException("Can't instantiate a PPodIterables");
+		throw new AssertionError("Can't instantiate a PPodIterables");
 	}
 }

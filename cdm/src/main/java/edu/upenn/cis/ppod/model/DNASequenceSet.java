@@ -109,7 +109,7 @@ public class DNASequenceSet extends SequenceSet<DNASequence> {
 		checkNotNull(sequence);
 		checkArgument(sequence.getSequence() != null,
 				"sequence.getSequence() == null");
-		checkSequenceSizes(sequence);
+		checkSequenceLength(sequence);
 		return getOTUKeyedMap().put(otu, sequence);
 	}
 
