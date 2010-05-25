@@ -52,7 +52,7 @@ public class CharacterStateCellTest {
 	private Provider<CharacterStateCell> cellProvider;
 
 	@Inject
-	private CellTest<CharacterStateMatrix, CharacterStateRow, CharacterStateCell, CharacterState> cellTest;
+	private CellTestSupport<CharacterStateMatrix, CharacterStateRow, CharacterStateCell, CharacterState> cellTestSupport;
 
 	@Inject
 	private Provider<Character> characterProvider;
@@ -114,7 +114,7 @@ public class CharacterStateCellTest {
 	 */
 	@Test(expectedExceptions = IllegalStateException.class)
 	public void beforeMarshalBeforeTypeHasBeenSet() {
-		cellTest.beforeMarshalBeforeTypeHasBeenSet();
+		cellTestSupport.beforeMarshalBeforeTypeHasBeenSet();
 	}
 
 	@BeforeMethod
@@ -129,8 +129,10 @@ public class CharacterStateCellTest {
 		otuSet.setOTUs(newArrayList(otu0));
 		matrix.setOTUSet(otuSet);
 
-		final Character character0 = characterProvider.get().setLabel(
-				"character0");
+		final Character character0 =
+				characterProvider
+						.get()
+						.setLabel("character0");
 		matrix.setCharacters(newArrayList(character0));
 		final CharacterStateRow row0 = rowProvider.get();
 		matrix.putRow(matrix.getOTUSet().getOTU(0), row0);
@@ -149,15 +151,15 @@ public class CharacterStateCellTest {
 	}
 
 	@Test
-	public void getStatesWhenCellHasMultipleElements() {
+	public void getElementsWhenCellHasMultipleElements() {
 		states.add(state00);
 		states.add(state01);
-		cellTest.getStatesWhenCellHasMultipleElements(matrix, states);
+		cellTestSupport.getStatesWhenCellHasMultipleElements(matrix, states);
 	}
 
 	@Test
-	public void getStatesWhenCellHasOneElement() {
-		cellTest.getStatesWhenCellHasOneElement(matrix, state00);
+	public void getElementsWhenCellHasOneElement() {
+		cellTestSupport.getStatesWhenCellHasOneElement(matrix, state00);
 	}
 
 	/**
@@ -165,7 +167,7 @@ public class CharacterStateCellTest {
 	 */
 	@Test(expectedExceptions = IllegalStateException.class)
 	public void setStatesForACellThatDoesNotBelongToARow() {
-		cellTest.setStatesForACellThatDoesNotBelongToARow(state00);
+		cellTestSupport.setStatesForACellThatDoesNotBelongToARow(state00);
 	}
 
 	@Test
@@ -194,8 +196,9 @@ public class CharacterStateCellTest {
 
 	@Test
 	public void setTypeAndStatesInapplicable() {
-		matrix.getRow(matrix.getOTUSet().getOTU(0)).setCells(
-				Arrays.asList(cell));
+		matrix
+				.getRow(matrix.getOTUSet().getOTU(0)).setCells(
+						Arrays.asList(cell));
 		cell.setInapplicable();
 		assertEquals(cell.getType(), Cell.Type.INAPPLICABLE);
 		assertEquals((Object) cell.getElements(), (Object) states);

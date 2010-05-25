@@ -118,17 +118,24 @@ public abstract class Cell<E> extends PPodEntity {
 		}
 	}
 
+	@Override
+	public boolean beforeMarshal(@CheckForNull final Marshaller marshaller) {
+		super.beforeMarshal(marshaller);
+		checkState(getType() != null, "can't marshal a cell with no type");
+		return true;
+	}
+
 	public void beforeUnmarshal(
 			@CheckForNull final Unmarshaller u,
 			@CheckForNull final Object parent) {
 		beingUnmarshalled = true;
 	}
 
-	@Override
-	public boolean beforeMarshal(@CheckForNull final Marshaller marshaller) {
-		super.beforeMarshal(marshaller);
-		checkState(getType() != null, "can't marshal a cell with no type");
-		return true;
+	/**
+	 * For testing.
+	 */
+	boolean getBeingUnmarshalled() {
+		return beingUnmarshalled;
 	}
 
 	/**
@@ -167,6 +174,7 @@ public abstract class Cell<E> extends PPodEntity {
 				// aggregate
 				// is expensive since there're are so many cells.
 				final Set<E> elements = getElementsRaw();
+
 				if (elements.size() < 2) {
 					throw new AssertionError("type is " + getType()
 												+ " and getElementsRaw() has "
