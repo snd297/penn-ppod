@@ -40,7 +40,7 @@ import edu.upenn.cis.ppod.model.Cell.Type;
 public class DNACellTest {
 
 	@Inject
-	private CellTest<DNAMatrix, DNARow, DNACell, DNANucleotide> cellTest;
+	private CellTestSupport<DNAMatrix, DNARow, DNACell, DNANucleotide> cellTestSupport;
 
 	@Inject
 	private Provider<DNAMatrix> dnaMatrix2Provider;
@@ -62,7 +62,7 @@ public class DNACellTest {
 		final DNAMatrix matrix = dnaMatrix2Provider.get();
 		matrix.setColumnsSize(1);
 		// nothing special about A,C,T.
-		cellTest.getStatesWhenCellHasMultipleElements(matrix,
+		cellTestSupport.getStatesWhenCellHasMultipleElements(matrix,
 				ImmutableSet.of(
 						DNANucleotide.A, DNANucleotide.C,
 						DNANucleotide.T));
@@ -74,7 +74,7 @@ public class DNACellTest {
 	 */
 	@Test(expectedExceptions = IllegalStateException.class)
 	public void beforeMarshalBeforeTypeHasBeenSet() {
-		cellTest.beforeMarshalBeforeTypeHasBeenSet();
+		cellTestSupport.beforeMarshalBeforeTypeHasBeenSet();
 	}
 
 	/**
@@ -113,7 +113,7 @@ public class DNACellTest {
 
 	@Test
 	public void getStatesWhenCellHasOneElement() {
-		cellTest.getStatesWhenCellHasOneElement((DNAMatrix)
+		cellTestSupport.getStatesWhenCellHasOneElement((DNAMatrix)
 				dnaMatrix2Provider.get().setColumnsSize(1),
 				DNANucleotide.C);
 	}
@@ -162,6 +162,6 @@ public class DNACellTest {
 	public void unsetRow() {
 		final DNAMatrix matrix = dnaMatrix2Provider.get();
 		matrix.setColumnsSize(1);
-		cellTest.unsetRow(matrix);
+		cellTestSupport.unsetRow(matrix);
 	}
 }

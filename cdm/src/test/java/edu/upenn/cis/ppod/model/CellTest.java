@@ -1,153 +1,109 @@
-/*
- * Copyright (C) 2010 Trustees of the University of Pennsylvania
- *
- * Licensed under the Apache License, Version 2.0 (the "License");
- * you may not use this file except in compliance with the License.
- * You may obtain a copy of the License at
- *
- * http://www.apache.org/licenses/LICENSE-2.0
- *
- * Unless required by applicable law or agreed to in writing, software
- * distributed under the License is distributed on an "AS IS" BASIS,
- * WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
- * See the License for the specific language governing permissions and
- * limitations under the License.
- */
 package edu.upenn.cis.ppod.model;
 
-import static com.google.common.base.Preconditions.checkArgument;
-import static com.google.common.base.Preconditions.checkNotNull;
-import static com.google.common.collect.Iterables.getOnlyElement;
-import static com.google.common.collect.Lists.newArrayList;
 import static org.testng.Assert.assertEquals;
+import static org.testng.Assert.assertFalse;
+import static org.testng.Assert.assertNotNull;
 import static org.testng.Assert.assertNull;
 
-import java.util.List;
+import java.util.EnumSet;
 import java.util.Set;
 
-import com.google.common.collect.ImmutableList;
+import org.testng.annotations.Test;
+
 import com.google.inject.Inject;
 import com.google.inject.Provider;
 
-/**
- * Methods for testing {@link Cell}.
- * 
- * @author Sam Donnelly
- */
-public class CellTest<M extends Matrix<R>, R extends Row<C>, C extends Cell<E>, E> {
+import edu.upenn.cis.ppod.TestGroupDefs;
 
-	private final Provider<OTUSet> otuSetProvider;
-	private final Provider<OTU> otuProvider;
-	private final Provider<R> rowProvider;
-	private final Provider<C> cellProvider;
+@Test(groups = TestGroupDefs.FAST)
+public class CellTest {
 
 	@Inject
-	CellTest(final Provider<M> matrixProvider,
-			final Provider<OTUSet> otuSetProvider,
-			final Provider<OTU> otuProvider,
-			final Provider<R> rowProvider,
-			final Provider<C> cellProvider) {
-		this.otuSetProvider = otuSetProvider;
-		this.otuProvider = otuProvider;
-		this.rowProvider = rowProvider;
-		this.cellProvider = cellProvider;
+	private Provider<DNACell> dnaCellProvider;
+
+	@Test(expectedExceptions = IllegalStateException.class)
+	public void getElementsWhenNoTypeSet() {
+		final Cell<?> cell = dnaCellProvider.get();
+		cell.getElements();
 	}
 
-	/**
-	 * Matrix must be ready to have a row with one cell added to it.
-	 * 
-	 * @param matrix
-	 * @param elements
-	 */
-	public void getStatesWhenCellHasMultipleElements(final M matrix,
-			final Set<E> elements) {
-		checkNotNull(matrix);
-		checkNotNull(elements);
-		checkArgument(matrix.getColumnVersionInfos().size() == 1,
-				"matrix has " + matrix.getColumnVersionInfos()
-						+ " column(s), but we need it to have 1 column");
-		final OTUSet otuSet = otuSetProvider.get();
+	@Test
+	public void getElementsXml() {
+		final DNACell cell = dnaCellProvider.get();
+		cell.beforeUnmarshal(null, null);
+		final Set<DNANucleotide> cellElementsXml = cell.getElementsXml();
+		assertNotNull(cellElementsXml);
+		assertEquals(cellElementsXml.size(), 0);
 
-		matrix.setOTUSet(otuSet);
+		cell.afterUnmarshal();
 
-		final OTU otu = otuSet.addOTU(otuProvider.get());
+		cell.setUnassigned();
+		assertNull(cell.getElementsXml());
 
-		matrix.putRow(otu, rowProvider.get());
+		cell.setSingleElement(DNANucleotide.A);
+		assertNull(cell.getElementsXml());
 
-		final List<C> cells = newArrayList();
-		final C cell = cellProvider.get();
-		cells.add(cell);
+		cell.setInapplicable();
+		assertNull(cell.getElementsXml());
 
-		final OTUSet matrixOTUSet = matrix.getOTUSet();
+		final Set<DNANucleotide> nucleotides = EnumSet.of(DNANucleotide.A,
+				DNANucleotide.G);
+		cell.setPolymorphicElements(nucleotides);
+		assertEquals((Object) cell.getElementsXml(), (Object) nucleotides);
 
-		final OTU otu0 = matrixOTUSet.getOTU(0);
+		cell.setUncertainElements(nucleotides);
+		assertEquals((Object) cell.getElementsXml(), (Object) nucleotides);
 
-		final Row<C> row = matrix.getRow(otu0);
-		row.setCells(cells);
-
-		cell.setPolymorphicElements(elements);
-		assertEquals((Object) cell.getElements(), (Object) elements);
 	}
 
-	/**
-	 * If a cell does not belong to a row, it is illegal to add states to it and
-	 * should throw an {@code IllegalStateException}.
-	 */
-	public void setStatesForACellThatDoesNotBelongToARow(final E element) {
-		final C cell = cellProvider.get();
-		cell.setSingleElement(element);
+	@Test
+	public void afterUnmarshalUnassigned() {
+		final DNACell cell = dnaCellProvider.get();
+		cell.setUnassigned();
+		cell.afterUnmarshal();
+		assertFalse(cell.getBeingUnmarshalled());
+		assertNull(cell.getElementsRaw());
 	}
 
-
-	/**
-	 * {@code beforeMarshal(...)} should throw an {@code IllegalStateException}
-	 * if the type has not bee set yet.
-	 */
-	public void beforeMarshalBeforeTypeHasBeenSet() {
-		final C cell = cellProvider.get();
-		cell.beforeMarshal(null);
+	@Test
+	public void afterUnmarshalSingle() {
+		final DNACell cell = dnaCellProvider.get();
+		cell.setSingleElement(DNANucleotide.G);
+		cell.afterUnmarshal();
+		assertFalse(cell.getBeingUnmarshalled());
+		assertNull(cell.getElementsRaw());
 	}
 
-	public void getStatesWhenCellHasOneElement(final M matrix,
-			final E element) {
-		checkNotNull(matrix);
-		checkNotNull(element);
-		checkArgument(matrix.getColumnVersionInfos().size() == 1,
-				"matrix has " + matrix.getColumnVersionInfos().size()
-						+ " column(s), but we need it to have 1 column");
-
-		final OTUSet otuSet = otuSetProvider.get();
-
-		matrix.setOTUSet(otuSet);
-
-		final OTU otu = otuSet.addOTU(otuProvider.get());
-
-		final R row = rowProvider.get();
-		matrix.putRow(otu, row);
-
-		final C cell = cellProvider.get();
-
-		row.setCells(ImmutableList.of(cell));
-
-		matrix.getRow(matrix.getOTUSet().getOTU(0));
-
-		cell.setSingleElement(element);
-		assertEquals(getOnlyElement(cell.getElements()), element);
+	@Test
+	public void afterUnmarshalPolymorphic() {
+		final DNACell cell = dnaCellProvider.get();
+		Set<DNANucleotide> nucleotides =
+				EnumSet.of(DNANucleotide.G, DNANucleotide.T);
+		cell.setPolymorphicElements(nucleotides);
+		cell.afterUnmarshal();
+		assertFalse(cell.getBeingUnmarshalled());
+		assertEquals((Object) cell.getElementsRaw(),
+				(Object) nucleotides);
 	}
 
-	public void unsetRow(final M matrix) {
-		checkNotNull(matrix);
-		checkArgument(matrix.getColumnVersionInfos().size() == 1,
-				"matrix has " + matrix.getColumnVersionInfos().size()
-						+ " column(s), but we need it to have 1 column");
-		final C cell = cellProvider.get();
-		final R row = rowProvider.get();
-		final OTUSet otuSet = otuSetProvider.get();
-		final OTU otu = otuSet.addOTU(otuProvider.get());
-		matrix.setOTUSet(otuSet);
-		matrix.putRow(otu, row);
-		row.setCells(ImmutableList.of(cell));
-		cell.unsetRow();
-		assertNull(cell.getRow());
+	@Test
+	public void afterUnmarshalUncertain() {
+		final DNACell cell = dnaCellProvider.get();
+		Set<DNANucleotide> nucleotides =
+				EnumSet.of(DNANucleotide.G, DNANucleotide.T);
+		cell.setUncertainElements(nucleotides);
+		cell.afterUnmarshal();
+		assertFalse(cell.getBeingUnmarshalled());
+		assertEquals((Object) cell.getElementsRaw(),
+				(Object) nucleotides);
+	}
+
+	@Test
+	public void afterUnmarshalInapplicable() {
+		final DNACell cell = dnaCellProvider.get();
+		cell.setInapplicable();
+		cell.afterUnmarshal();
+		assertFalse(cell.getBeingUnmarshalled());
+		assertNull(cell.getElementsRaw());
 	}
 }
