@@ -363,19 +363,6 @@ public abstract class Cell<E> extends PPodEntity {
 	}
 
 	/**
-	 * Created for testing purposes.
-	 */
-	Cell<E> setTypeAndXmlElements(final Type type,
-			final Set<? extends E> xmlStates) {
-		checkNotNull(type);
-		checkNotNull(xmlStates);
-		setType(type);
-		getElementsXml().clear();
-		getElementsXml().addAll(xmlStates);
-		return this;
-	}
-
-	/**
 	 * Set this cell's type to {@link Type#UNASSIGNED} to {@code
 	 * Collections.EMPTY_SET}.
 	 * 
