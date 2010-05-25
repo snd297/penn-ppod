@@ -62,7 +62,7 @@ public class CellTest {
 		cell.setUnassigned();
 		cell.afterUnmarshal();
 		assertFalse(cell.getBeingUnmarshalled());
-		assertNull(cell.getElementsRaw());
+		assertNull(cell.getElementsModifiable());
 	}
 
 	@Test
@@ -71,7 +71,7 @@ public class CellTest {
 		cell.setSingleElement(DNANucleotide.G);
 		cell.afterUnmarshal();
 		assertFalse(cell.getBeingUnmarshalled());
-		assertNull(cell.getElementsRaw());
+		assertNull(cell.getElementsModifiable());
 	}
 
 	@Test
@@ -82,7 +82,7 @@ public class CellTest {
 		cell.setPolymorphicElements(nucleotides);
 		cell.afterUnmarshal();
 		assertFalse(cell.getBeingUnmarshalled());
-		assertEquals((Object) cell.getElementsRaw(),
+		assertEquals((Object) cell.getElementsModifiable(),
 				(Object) nucleotides);
 	}
 
@@ -94,7 +94,7 @@ public class CellTest {
 		cell.setUncertainElements(nucleotides);
 		cell.afterUnmarshal();
 		assertFalse(cell.getBeingUnmarshalled());
-		assertEquals((Object) cell.getElementsRaw(),
+		assertEquals((Object) cell.getElementsModifiable(),
 				(Object) nucleotides);
 	}
 
@@ -104,6 +104,6 @@ public class CellTest {
 		cell.setInapplicable();
 		cell.afterUnmarshal();
 		assertFalse(cell.getBeingUnmarshalled());
-		assertNull(cell.getElementsRaw());
+		assertNull(cell.getElementsModifiable());
 	}
 }
