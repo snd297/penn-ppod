@@ -398,6 +398,7 @@ public class OTUSetTest {
 		final DNAMatrix dnaMatrixReturned = otuSet.addDNAMatrix(dnaMatrix);
 		assertSame(dnaMatrixReturned, dnaMatrix);
 		assertEquals(getOnlyElement(otuSet.getDNAMatrices()), dnaMatrix);
+		assertSame(dnaMatrix.getOTUSet(), otuSet);
 		assertTrue(otuSet.isInNeedOfNewVersion());
 
 		otuSet.unsetInNeedOfNewVersion();

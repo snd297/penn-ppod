@@ -87,8 +87,11 @@ public class TreeSet extends UUPPodEntityWXmlId implements
 	 */
 	public Tree addTree(final Tree tree) {
 		checkNotNull(tree);
-		getTreesModifiable().add(tree);
-		setInNeedOfNewVersion();
+		if (!trees.contains(tree)) {
+			trees.add(tree);
+			tree.setTreeSet(this);
+			setInNeedOfNewVersion();
+		}
 		return tree;
 	}
 
@@ -141,7 +144,6 @@ public class TreeSet extends UUPPodEntityWXmlId implements
 			getOTUSet().setInNeedOfNewVersion();
 		}
 		super.setInNeedOfNewVersion();
-
 		return this;
 	}
 

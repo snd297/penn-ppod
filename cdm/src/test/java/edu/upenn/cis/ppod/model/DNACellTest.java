@@ -158,7 +158,6 @@ public class DNACellTest {
 		assertTrue(dnaCell.isInNeedOfNewVersion());
 	}
 
-	@Test(groups = TestGroupDefs.SINGLE)
 	public void unsetRow() {
 		final DNAMatrix matrix = dnaMatrix2Provider.get();
 		matrix.setColumnsSize(1);
