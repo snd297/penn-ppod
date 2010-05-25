@@ -94,7 +94,7 @@ public class DNACell extends Cell<DNANucleotide> {
 	}
 
 	@Override
-	protected Set<DNANucleotide> getElementsRaw() {
+	protected Set<DNANucleotide> getElementsModifiable() {
 		return elements;
 	}
 

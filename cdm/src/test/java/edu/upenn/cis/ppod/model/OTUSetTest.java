@@ -71,6 +71,9 @@ public class OTUSetTest {
 	@Inject
 	private Provider<DNASequenceSet> dnaSequenceSetProvider;
 
+	@Inject
+	private Provider<DNAMatrix> dnaMatrixProvider;
+
 	private Study study;
 
 	/**
@@ -386,4 +389,38 @@ public class OTUSetTest {
 
 	}
 
+	@Test
+	public void addDNAMatrix() {
+		final DNAMatrix dnaMatrix = dnaMatrixProvider.get();
+
+		otuSet.unsetInNeedOfNewVersion();
+
+		final DNAMatrix dnaMatrixReturned = otuSet.addDNAMatrix(dnaMatrix);
+		assertSame(dnaMatrixReturned, dnaMatrix);
+		assertEquals(getOnlyElement(otuSet.getDNAMatrices()), dnaMatrix);
+		assertTrue(otuSet.isInNeedOfNewVersion());
+
+		otuSet.unsetInNeedOfNewVersion();
+		otuSet.addDNAMatrix(dnaMatrix);
+
+		assertEquals(getOnlyElement(otuSet.getDNAMatrices()), dnaMatrix);
+		assertFalse(otuSet.isInNeedOfNewVersion());
+
+	}
+
+	@Test
+	public void setLabel() {
+		otuSet.unsetInNeedOfNewVersion();
+		final String otuSetLabel = "otu-set-label";
+		final OTUSet returnedOTUSet = otuSet.setLabel(otuSetLabel);
+		assertTrue(otuSet.isInNeedOfNewVersion());
+		assertSame(returnedOTUSet, otuSet);
+		otuSet.isInNeedOfNewVersion();
+		assertEquals(otuSet.getLabel(), otuSetLabel);
+
+		otuSet.unsetInNeedOfNewVersion();
+		otuSet.setLabel(otuSetLabel);
+		assertFalse(otuSet.isInNeedOfNewVersion());
+		assertEquals(otuSet.getLabel(), otuSetLabel);
+	}
 }

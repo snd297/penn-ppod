@@ -151,7 +151,7 @@ public class CharacterStateCell extends Cell<CharacterState> {
 
 	@CheckForNull
 	@Override
-	protected Set<CharacterState> getElementsRaw() {
+	protected Set<CharacterState> getElementsModifiable() {
 		return elements;
 	}
 

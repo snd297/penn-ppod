@@ -173,7 +173,7 @@ public abstract class Cell<E> extends PPodEntity {
 				// possible since it will trigger a database hit, which in the
 				// aggregate
 				// is expensive since there're are so many cells.
-				final Set<E> elements = getElementsRaw();
+				final Set<E> elements = getElementsModifiable();
 
 				if (elements.size() < 2) {
 					throw new AssertionError("type is " + getType()
@@ -188,11 +188,11 @@ public abstract class Cell<E> extends PPodEntity {
 	}
 
 	/**
-	 * Get the elements in this cell.
+	 * Get a modifiable reference to the elements in this cell.
 	 * 
-	 * @return the elements in this cell
+	 * @return a modifiable referernce to the elements in this cell
 	 */
-	protected abstract Set<E> getElementsRaw();
+	protected abstract Set<E> getElementsModifiable();
 
 	/**
 	 * Used for serialization so we don't have to hit {@code elements} directly
@@ -204,7 +204,7 @@ public abstract class Cell<E> extends PPodEntity {
 		// elements and return: it could be POLYMORPHIC or UNCERTAIN.
 		if (beingUnmarshalled) {
 			initElements();
-			return getElementsRaw();
+			return getElementsModifiable();
 		}
 		switch (getType()) {
 			case UNASSIGNED:
@@ -214,7 +214,7 @@ public abstract class Cell<E> extends PPodEntity {
 			case POLYMORPHIC:
 			case UNCERTAIN:
 				// We only want to hit elements if necessary to avoid db hits
-				return getElementsRaw();
+				return getElementsModifiable();
 			default:
 				throw new AssertionError("unknown type: " + getType());
 		}

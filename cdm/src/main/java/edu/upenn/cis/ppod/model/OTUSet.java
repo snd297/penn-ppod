@@ -257,13 +257,6 @@ public class OTUSet extends UUPPodEntityWXmlId {
 		return Collections.unmodifiableSet(characterStateMatrices);
 	}
 
-	public Set<Matrix<?>> getMatrices() {
-		final Set<Matrix<?>> matrices = newHashSet();
-		matrices.addAll(getCharacterStateMatrices());
-		matrices.addAll(getDNAMatrices());
-		return matrices;
-	}
-
 	@XmlElement(name = "matrix")
 	protected Set<CharacterStateMatrix> getCharacterStateMatricesModifiable() {
 		return characterStateMatrices;
