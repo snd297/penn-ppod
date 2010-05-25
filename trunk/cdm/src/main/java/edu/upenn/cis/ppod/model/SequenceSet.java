@@ -80,9 +80,10 @@ public abstract class SequenceSet<S extends Sequence>
 		setOTUSet((OTUSet) parent);
 	}
 
-	protected void checkSequenceSizes(final S sequence) {
+	protected void checkSequenceLength(final S sequence) {
 		checkNotNull(sequence);
-		checkArgument(sequence.getSequence() != null,
+		checkArgument(
+				sequence.getSequence() != null,
 				"sequence.getSequence() is null");
 
 		final Integer sequencesLength = getSequenceLengths();
