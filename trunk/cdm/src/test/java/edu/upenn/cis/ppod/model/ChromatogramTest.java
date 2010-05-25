@@ -39,6 +39,9 @@ public class ChromatogramTest {
 	@Inject
 	private Provider<Chromatogram> chromatogramProvider;
 
+	@Inject
+	private Provider<DNASequence> dnaSequenceProvider;
+
 	/**
 	 * Run {@link Chromatogram#setChromatogram(byte[])} and
 	 * {@link Chromatogram#getChromatogram()} through its paces:
@@ -82,5 +85,22 @@ public class ChromatogramTest {
 
 		assertEquals(chromatogram.getChromatogram(), bytes2);
 
+	}
+
+	@Test
+	public void setSequence() {
+		final Chromatogram chromatogram = chromatogramProvider.get();
+		final DNASequence sequence = dnaSequenceProvider.get();
+
+		final Chromatogram returnedChromatogram =
+				chromatogram.setSequence(sequence);
+		assertSame(returnedChromatogram, chromatogram);
+		assertSame(chromatogram.getSequence(), sequence);
+		assertTrue(chromatogram.isInNeedOfNewVersion());
+
+		chromatogram.unsetInNeedOfNewVersion();
+		chromatogram.setSequence(sequence);
+		assertEquals(chromatogram.getSequence(), sequence);
+		assertFalse(chromatogram.isInNeedOfNewVersion());
 	}
 }
