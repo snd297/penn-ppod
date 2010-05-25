@@ -41,7 +41,7 @@ public class Chromatogram extends UUPPodEntity {
 	@CheckForNull
 	private byte[] chromatogram;
 
-	@OneToOne(fetch = FetchType.LAZY)
+	@OneToOne(fetch = FetchType.LAZY, optional = true)
 	@CheckForNull
 	private DNASequence sequence;
 
