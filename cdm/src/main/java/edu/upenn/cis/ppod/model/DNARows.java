@@ -53,7 +53,7 @@ public class DNARows extends OTUKeyedMap<DNARow> {
 	@OneToMany(cascade = CascadeType.ALL, orphanRemoval = true)
 	@JoinTable(inverseJoinColumns = @JoinColumn(name = DNARow.JOIN_COLUMN))
 	@MapKeyJoinColumn(name = OTU.JOIN_COLUMN)
-	final private Map<OTU, DNARow> rows = newHashMap();
+	private final Map<OTU, DNARow> rows = newHashMap();
 
 	/**
 	 * {@link Unmarshaller} callback.

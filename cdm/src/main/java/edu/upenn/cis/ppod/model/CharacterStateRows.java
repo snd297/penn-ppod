@@ -66,7 +66,7 @@ public class CharacterStateRows extends OTUKeyedMap<CharacterStateRow> {
 	@MapKeyJoinColumn(name = OTU.JOIN_COLUMN)
 	private final Map<OTU, CharacterStateRow> rows = newHashMap();
 
-	protected CharacterStateRows() {}
+	CharacterStateRows() {}
 
 	/**
 	 * {@link Unmarshaller} callback.

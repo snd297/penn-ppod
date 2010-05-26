@@ -15,6 +15,12 @@
  */
 package edu.upenn.cis.ppod.model;
 
+import static org.testng.Assert.assertEquals;
+import static org.testng.Assert.assertFalse;
+import static org.testng.Assert.assertNull;
+import static org.testng.Assert.assertSame;
+import static org.testng.Assert.assertTrue;
+
 import org.testng.annotations.Test;
 
 import com.google.inject.Inject;
@@ -123,5 +129,42 @@ public class SequenceSetTest {
 
 		// This should not throw an exception - that's the test
 		seqSet.checkSequenceLength(seq0);
+	}
+
+	@Test
+	public void setInNeedOfNewVersion() {
+		final DNASequenceSet seqSet = dnaSequenceSetProvider.get();
+		assertFalse(seqSet.isInNeedOfNewVersion());
+		seqSet.setInNeedOfNewVersion();
+		assertTrue(seqSet.isInNeedOfNewVersion());
+
+		final OTUSet otuSet = otuSetProvider.get();
+		otuSet.addDNASequenceSet(seqSet);
+		seqSet.unsetInNeedOfNewVersion();
+		otuSet.unsetInNeedOfNewVersion();
+
+		seqSet.setInNeedOfNewVersion();
+		assertTrue(seqSet.isInNeedOfNewVersion());
+		assertTrue(otuSet.isInNeedOfNewVersion());
+	}
+
+	@Test
+	public void setLabel() {
+		final SequenceSet<?> seqSet = dnaSequenceSetProvider.get();
+		assertNull(seqSet.getLabel());
+
+		assertFalse(seqSet.isInNeedOfNewVersion());
+		final String label = "seq-set";
+		final SequenceSet<?> seqSetReturned = seqSet.setLabel(label);
+		assertSame(seqSetReturned, seqSet);
+		assertTrue(seqSet.isInNeedOfNewVersion());
+		assertEquals(seqSet.getLabel(), label);
+
+		seqSet.unsetInNeedOfNewVersion();
+		assertFalse(seqSet.isInNeedOfNewVersion());
+		seqSet.setLabel(label);
+		assertEquals(seqSet.getLabel(), label);
+		assertFalse(seqSet.isInNeedOfNewVersion());
+
 	}
 }

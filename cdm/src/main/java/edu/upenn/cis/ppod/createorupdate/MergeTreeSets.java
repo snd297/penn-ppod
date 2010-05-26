@@ -52,7 +52,8 @@ final class MergeTreeSets implements IMergeTreeSets {
 		this.newVersionInfo = newVersionInfo;
 	}
 
-	public void mergeTreeSets(final TreeSet targetTreeSet,
+	public void mergeTreeSets(
+			final TreeSet targetTreeSet,
 			final TreeSet sourceTreeSet) {
 		checkNotNull(targetTreeSet);
 		checkNotNull(sourceTreeSet);

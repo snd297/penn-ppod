@@ -41,7 +41,7 @@ import edu.upenn.cis.ppod.modelinterfaces.IVersionedWithOTUSet;
 import edu.upenn.cis.ppod.util.IVisitor;
 
 /**
- * An ordered collection of {@link Tree}s.
+ * An ordered, unique collection of {@link Tree}s.
  * 
  * @author Sam Donnelly
  */
@@ -80,6 +80,9 @@ public class TreeSet extends UUPPodEntityWXmlId implements
 
 	/**
 	 * Add {@code tree} to this {@code TreeSet}.
+	 * <p>
+	 * If this tree set already contains the tree, calling this method does
+	 * nothing.
 	 * 
 	 * @param tree to be added
 	 * 
@@ -170,6 +173,8 @@ public class TreeSet extends UUPPodEntityWXmlId implements
 	 * <p>
 	 * Meant to be called from objects responsible for maintaining the {@code
 	 * OTUSet<->TreeSet]}
+	 * <p>
+	 * Calling with {@code null} severs the relationship.
 	 * 
 	 * @param otuSet the {@code OTUSet}
 	 * 
