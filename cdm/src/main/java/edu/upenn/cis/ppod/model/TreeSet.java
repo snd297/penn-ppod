@@ -199,20 +199,21 @@ public class TreeSet extends UUPPodEntityWXmlId implements
 	 * 
 	 * @param newTrees the new trees to be set
 	 * 
-	 * @return the trees that were removed as a result of this operation
+	 * @return the trees that were removed as a result of this operation, in
+	 *         their original order
 	 */
 	public List<Tree> setTrees(final List<Tree> newTrees) {
 		checkNotNull(newTrees);
 		if (newTrees.equals(getTreesModifiable())) {
 			return Collections.emptyList();
 		}
-		for (final Tree tree : getTreesModifiable()) {
-			if (!newTrees.contains(tree)) {
-				tree.setTreeSet(null);
-			}
-		}
-		final List<Tree> removedTrees = newArrayList(getTreesModifiable());
+
+		final List<Tree> removedTrees = newArrayList(getTrees());
 		removedTrees.removeAll(newTrees);
+
+		for (final Tree removedTree : removedTrees) {
+			removedTree.setTreeSet(null);
+		}
 
 		getTreesModifiable().clear();
 		for (final Tree newTree : newTrees) {
