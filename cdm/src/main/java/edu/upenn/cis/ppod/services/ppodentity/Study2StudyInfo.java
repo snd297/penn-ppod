@@ -23,9 +23,9 @@ import static com.google.common.collect.Iterables.find;
 import com.google.inject.Inject;
 import com.google.inject.Provider;
 
-import edu.upenn.cis.ppod.model.Character;
-import edu.upenn.cis.ppod.model.CharacterStateMatrix;
-import edu.upenn.cis.ppod.model.CharacterStateRow;
+import edu.upenn.cis.ppod.model.StandardCharacter;
+import edu.upenn.cis.ppod.model.StandardMatrix;
+import edu.upenn.cis.ppod.model.StandardRow;
 import edu.upenn.cis.ppod.model.DNAMatrix;
 import edu.upenn.cis.ppod.model.DNARow;
 import edu.upenn.cis.ppod.model.DNASequence;
@@ -91,8 +91,8 @@ final class Study2StudyInfo implements IStudy2StudyInfo {
 				otuInfo.setDocId(otu.getDocId());
 			}
 
-			for (final CharacterStateMatrix matrix : otuSet
-					.getCharacterStateMatrices()) {
+			for (final StandardMatrix matrix : otuSet
+					.getStandardMatrices()) {
 				final MatrixInfo matrixInfo =
 						find(otuSetInfo.getMatrixInfos(),
 								compose(equalTo(matrix.getPPodId()),
@@ -103,13 +103,13 @@ final class Study2StudyInfo implements IStudy2StudyInfo {
 				matrixInfo.setDocId(matrix.getDocId());
 
 				int characterIdx = -1;
-				for (final Character character : matrix.getCharacters()) {
+				for (final StandardCharacter standardCharacter : matrix.getCharacters()) {
 					characterIdx++;
 					final PPodEntityInfo characterInfo = pPodEntityInfoProvider
 							.get();
-					characterInfo.setPPodId(character.getPPodId());
-					characterInfo.setEntityId(character.getId());
-					characterInfo.setVersion(character.getVersionInfo()
+					characterInfo.setPPodId(standardCharacter.getPPodId());
+					characterInfo.setEntityId(standardCharacter.getId());
+					characterInfo.setVersion(standardCharacter.getVersionInfo()
 							.getVersion());
 					matrixInfo.getCharacterInfosByIdx().put(characterIdx,
 							characterInfo);
@@ -128,7 +128,7 @@ final class Study2StudyInfo implements IStudy2StudyInfo {
 				int rowIdx = -1;
 
 				for (final OTU otu : matrix.getOTUSet().getOTUs()) {
-					final CharacterStateRow row = matrix.getRow(otu);
+					final StandardRow row = matrix.getRow(otu);
 					rowIdx++;
 					final Long rowVersion = row.getVersionInfo()
 							.getVersion();

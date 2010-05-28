@@ -19,11 +19,11 @@ import com.google.inject.Inject;
 import com.google.inject.assistedinject.Assisted;
 
 import edu.upenn.cis.ppod.model.Attachment;
-import edu.upenn.cis.ppod.model.Character;
-import edu.upenn.cis.ppod.model.CharacterState;
-import edu.upenn.cis.ppod.model.CharacterStateCell;
-import edu.upenn.cis.ppod.model.CharacterStateMatrix;
-import edu.upenn.cis.ppod.model.CharacterStateRow;
+import edu.upenn.cis.ppod.model.StandardCharacter;
+import edu.upenn.cis.ppod.model.StandardState;
+import edu.upenn.cis.ppod.model.StandardCell;
+import edu.upenn.cis.ppod.model.StandardMatrix;
+import edu.upenn.cis.ppod.model.StandardRow;
 import edu.upenn.cis.ppod.model.DNAMatrix;
 import edu.upenn.cis.ppod.model.Matrix;
 import edu.upenn.cis.ppod.model.OTU;
@@ -63,22 +63,22 @@ final class SetVersionInfoVisitor extends EmptyVisitor implements
 	}
 
 	@Override
-	public void visit(final Character character) {
-		setNewVersionInfo(character);
+	public void visit(final StandardCharacter standardCharacter) {
+		setNewVersionInfo(standardCharacter);
 	}
 
 	@Override
-	public void visit(final CharacterState characterState) {
-		setNewVersionInfo(characterState);
+	public void visit(final StandardState standardState) {
+		setNewVersionInfo(standardState);
 	}
 
 	@Override
-	public void visit(final CharacterStateCell cell) {
+	public void visit(final StandardCell cell) {
 		setNewVersionInfo(cell);
 	}
 
 	@Override
-	public void visit(final CharacterStateMatrix matrix) {
+	public void visit(final StandardMatrix matrix) {
 		visitMatrix(matrix);
 	}
 
@@ -88,7 +88,7 @@ final class SetVersionInfoVisitor extends EmptyVisitor implements
 	 * @param row ignored
 	 */
 	@Override
-	public void visit(final CharacterStateRow row) {
+	public void visit(final StandardRow row) {
 		setNewVersionInfo(row);
 	}
 

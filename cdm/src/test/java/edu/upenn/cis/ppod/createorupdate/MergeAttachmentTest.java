@@ -38,7 +38,7 @@ import edu.upenn.cis.ppod.model.ModelAssert;
  * 
  * @author Sam Donnelly
  */
-@Test(groups = { TestGroupDefs.FAST })
+@Test(groups = { TestGroupDefs.FAST }, dependsOnGroups = TestGroupDefs.INIT)
 public class MergeAttachmentTest {
 
 	@Inject

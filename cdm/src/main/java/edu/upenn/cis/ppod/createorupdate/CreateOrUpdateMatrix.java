@@ -85,9 +85,10 @@ class CreateOrUpdateMatrix<M extends Matrix<R>, R extends Row<C>, C extends Cell
 			sourceOTUPosition++;
 			final R sourceRow = sourceMatrix.getRow(sourceOTU);
 
-			final OTU dbOTU = dbMatrix
-					.getOTUSet()
-					.getOTU(sourceOTUPosition);
+			final OTU dbOTU =
+					dbMatrix.getOTUSet()
+							.getOTUs()
+							.get(sourceOTUPosition);
 
 			// Let's create rows for OTU->null row mappings in the matrix.
 			R dbRow = null;

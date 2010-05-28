@@ -18,11 +18,11 @@ package edu.upenn.cis.ppod.util;
 import edu.upenn.cis.ppod.model.Attachment;
 import edu.upenn.cis.ppod.model.AttachmentNamespace;
 import edu.upenn.cis.ppod.model.AttachmentType;
-import edu.upenn.cis.ppod.model.Character;
-import edu.upenn.cis.ppod.model.CharacterState;
-import edu.upenn.cis.ppod.model.CharacterStateCell;
-import edu.upenn.cis.ppod.model.CharacterStateMatrix;
-import edu.upenn.cis.ppod.model.CharacterStateRow;
+import edu.upenn.cis.ppod.model.StandardCharacter;
+import edu.upenn.cis.ppod.model.StandardState;
+import edu.upenn.cis.ppod.model.StandardCell;
+import edu.upenn.cis.ppod.model.StandardMatrix;
+import edu.upenn.cis.ppod.model.StandardRow;
 import edu.upenn.cis.ppod.model.DNACell;
 import edu.upenn.cis.ppod.model.DNAMatrix;
 import edu.upenn.cis.ppod.model.DNARow;
@@ -71,20 +71,20 @@ public interface IVisitor {
 	 * 
 	 * @param the character visitee
 	 */
-	void visit(Character character);
+	void visit(StandardCharacter standardCharacter);
 
 	/**
 	 * Visit the character state.
 	 * 
 	 * @param characterState the character state visitee
 	 */
-	void visit(CharacterState state);
+	void visit(StandardState state);
 
-	void visit(CharacterStateCell cell);
+	void visit(StandardCell cell);
 
-	void visit(CharacterStateMatrix matrix);
+	void visit(StandardMatrix matrix);
 
-	void visit(CharacterStateRow row);
+	void visit(StandardRow row);
 
 	void visit(DNACell cell);
 

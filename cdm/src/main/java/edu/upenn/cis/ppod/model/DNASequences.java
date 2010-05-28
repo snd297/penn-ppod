@@ -42,6 +42,8 @@ import edu.upenn.cis.ppod.util.OTUDNASequencePair;
 import edu.upenn.cis.ppod.util.OTUSomethingPair;
 
 /**
+ * An OTU-keyed map of {@link DNASequence}s.
+ * 
  * @author Sam Donnelly
  */
 @Entity
@@ -66,6 +68,7 @@ public class DNASequences
 	@MapKeyJoinColumn(name = OTU.JOIN_COLUMN)
 	private final Map<OTU, DNASequence> sequences = newHashMap();
 
+	/** The owning sequence set. */
 	@OneToOne(fetch = FetchType.LAZY, mappedBy = "sequences")
 	@CheckForNull
 	private DNASequenceSet sequenceSet;
@@ -131,14 +134,8 @@ public class DNASequences
 		return originalSequence;
 	}
 
-	protected void setInNeedOfNewVersion() {
-		if (sequenceSet != null) {
-			sequenceSet.setInNeedOfNewVersion();
-		}
-	}
-
 	@Override
-	protected DNASequences setIsInNeedOfNewVersionInfo() {
+	protected DNASequences setInNeedOfNewVersion() {
 		if (sequenceSet != null) {
 			sequenceSet.setInNeedOfNewVersion();
 		}

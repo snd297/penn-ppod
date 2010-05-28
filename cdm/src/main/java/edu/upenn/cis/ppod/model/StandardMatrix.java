@@ -49,14 +49,14 @@ import edu.upenn.cis.ppod.util.IVisitor;
  * @author Sam Donnelly
  */
 @Entity
-@Table(name = CharacterStateMatrix.TABLE)
-public class CharacterStateMatrix extends Matrix<CharacterStateRow> {
+@Table(name = StandardMatrix.TABLE)
+public class StandardMatrix extends Matrix<StandardRow> {
 
 	public static final String CHARACTER_POSITION_COLUMN =
-			Character.TABLE + "_POSITION";
+			StandardCharacter.TABLE + "_POSITION";
 
 	/** This entity's table name. */
-	public static final String TABLE = "CHARACTER_STATE_MATRIX";
+	public static final String TABLE = "STANDARD_MATRIX";
 
 	/**
 	 * Name for foreign key columns that point at this table.
@@ -75,7 +75,7 @@ public class CharacterStateMatrix extends Matrix<CharacterStateRow> {
 	@OneToMany(cascade = CascadeType.ALL, orphanRemoval = true)
 	@org.hibernate.annotations.IndexColumn(name = "POSITION")
 	@JoinColumn(name = JOIN_COLUMN, nullable = false)
-	private final List<Character> characters = newArrayList();
+	private final List<StandardCharacter> characters = newArrayList();
 
 	/**
 	 * The inverse of {@link #characters}. So it's a {@code Character}
@@ -83,15 +83,15 @@ public class CharacterStateMatrix extends Matrix<CharacterStateRow> {
 	 */
 	@ElementCollection
 	@JoinTable(name = TABLE + "_" + CHARACTER_POSITION_COLUMN, joinColumns = @JoinColumn(name = JOIN_COLUMN))
-	@MapKeyJoinColumn(name = Character.JOIN_COLUMN)
+	@MapKeyJoinColumn(name = StandardCharacter.JOIN_COLUMN)
 	@Column(name = CHARACTER_POSITION_COLUMN)
-	private final Map<Character, Integer> charactersToPositions = newHashMap();
+	private final Map<StandardCharacter, Integer> charactersToPositions = newHashMap();
 
 	@OneToOne(fetch = FetchType.LAZY, optional = false, cascade = CascadeType.ALL, orphanRemoval = true)
-	private CharacterStateRows rows;
+	private StandardRows rows;
 
 	/** No-arg constructor for (at least) Hibernate. */
-	CharacterStateMatrix() {}
+	StandardMatrix() {}
 
 	/**
 	 * This constructor is {@code protected} to allow for injected {@code
@@ -101,14 +101,14 @@ public class CharacterStateMatrix extends Matrix<CharacterStateRow> {
 	 * @param otusToRows the {@code OTUsToCharacterStateRows} for this matrix.
 	 */
 	@Inject
-	protected CharacterStateMatrix(final CharacterStateRows rows) {
+	protected StandardMatrix(final StandardRows rows) {
 		this.rows = rows;
 		this.rows.setMatrix(this);
 	}
 
 	@Override
 	public void accept(final IVisitor visitor) {
-		for (final Character character : getCharacters()) {
+		for (final StandardCharacter character : getCharacters()) {
 			character.accept(visitor);
 		}
 		super.accept(visitor);
@@ -119,7 +119,7 @@ public class CharacterStateMatrix extends Matrix<CharacterStateRow> {
 	public void afterUnmarshal() {
 		super.afterUnmarshal();
 		int i = -1;
-		for (final Character character : getCharacters()) {
+		for (final StandardCharacter character : getCharacters()) {
 			i++;
 			charactersToPositions.put(character, i);
 		}
@@ -146,7 +146,8 @@ public class CharacterStateMatrix extends Matrix<CharacterStateRow> {
 	 * @return the position of a character in this matrix, or {@code null} if
 	 *         the character is not in this matrix
 	 */
-	public Integer getCharacterPosition(final Character character) {
+	public Integer getCharacterPosition(
+			final StandardCharacter character) {
 		return charactersToPositions.get(character);
 	}
 
@@ -155,7 +156,7 @@ public class CharacterStateMatrix extends Matrix<CharacterStateRow> {
 	 * 
 	 * @return the characters contained in this matrix
 	 */
-	public List<Character> getCharacters() {
+	public List<StandardCharacter> getCharacters() {
 		return Collections.unmodifiableList(characters);
 	}
 
@@ -165,14 +166,14 @@ public class CharacterStateMatrix extends Matrix<CharacterStateRow> {
 	 * @return a modifiable reference to this matrix's characters
 	 */
 	@XmlElement(name = "character")
-	protected List<Character> getCharactersModifiable() {
+	protected List<StandardCharacter> getCharactersModifiable() {
 		return characters;
 	}
 
 	/**
 	 * Created for testing.
 	 */
-	Map<Character, Integer> getCharactersToPositions() {
+	Map<StandardCharacter, Integer> getCharactersToPositions() {
 		return charactersToPositions;
 	}
 
@@ -183,17 +184,14 @@ public class CharacterStateMatrix extends Matrix<CharacterStateRow> {
 	 */
 	@XmlElement(name = "rows")
 	@Override
-	protected CharacterStateRows getOTUKeyedRows() {
+	protected StandardRows getOTUKeyedRows() {
 		return rows;
 	}
 
 	/**
 	 * Set the characters.
 	 * <p>
-	 * This method is does not reorder the columns of the matrix, unlike
-	 * {@link #setOTUSet(OTUSet)} which reorders the rows. Reordering definitely
-	 * does not makes sense in a {@link MolecularStateMatrix} since all of the
-	 * characters will be the same instance.
+	 * This method is does not reorder the columns of the matrix.
 	 * <p>
 	 * This method does reorder {@link #getColumnVersionInfos()}.
 	 * <p>
@@ -212,8 +210,8 @@ public class CharacterStateMatrix extends Matrix<CharacterStateRow> {
 	 * @throws IllegalStateExeption if {@code characters.size() !=
 	 *             getColumnsSize()}
 	 */
-	public List<Character> setCharacters(
-			final List<? extends Character> characters) {
+	public List<StandardCharacter> setCharacters(
+			final List<? extends StandardCharacter> characters) {
 		checkNotNull(characters);
 
 		if (characters.equals(getCharacters())) {
@@ -221,31 +219,32 @@ public class CharacterStateMatrix extends Matrix<CharacterStateRow> {
 		}
 
 		int newCharacterPos = -1;
-		for (final Character newCharacter : characters) {
+		for (final StandardCharacter newCharacter : characters) {
 			newCharacterPos++;
 			checkArgument(newCharacter != null, "newCharacters["
 												+ newCharacterPos
 												+ "] is null");
 
-			for (final Iterator<? extends Character> itr = characters
+			for (final Iterator<? extends StandardCharacter> itr = characters
 					.listIterator(newCharacterPos + 1); itr
 					.hasNext();) {
-				final Character character2 = itr.next();
+				final StandardCharacter character2 = itr.next();
 				checkArgument(!newCharacter.equals(character2),
 						"two characters are the same "
 								+ newCharacter.getLabel()
 								+ " at positions "
-								+ characters.indexOf(newCharacter) + " and "
+								+ characters.indexOf(newCharacter)
+								+ " and "
 								+ characters.indexOf(character2));
 			}
 		}
 
 		setColumnsSize(characters.size());
 
-		final List<Character> removedCharacters = newArrayList(getCharactersModifiable());
+		final List<StandardCharacter> removedCharacters = newArrayList(getCharactersModifiable());
 
 		removedCharacters.removeAll(characters);
-		for (final Character removedCharacter : removedCharacters) {
+		for (final StandardCharacter removedCharacter : removedCharacters) {
 			removedCharacter.setMatrix(null);
 		}
 
@@ -255,7 +254,7 @@ public class CharacterStateMatrix extends Matrix<CharacterStateRow> {
 		getCharactersModifiable().addAll(characters);
 
 		int characterPosition = 0;
-		for (final Character character : getCharactersModifiable()) {
+		for (final StandardCharacter character : getCharactersModifiable()) {
 			charactersToPositions.put(character, characterPosition++);
 			character.setMatrix(this);
 		}
@@ -275,8 +274,8 @@ public class CharacterStateMatrix extends Matrix<CharacterStateRow> {
 	 * @return this
 	 */
 	@edu.umd.cs.findbugs.annotations.SuppressWarnings
-	protected CharacterStateMatrix setOTUKeyedRows(
-			final CharacterStateRows rows) {
+	protected StandardMatrix setOTUKeyedRows(
+			final StandardRows rows) {
 		this.rows = rows;
 		return this;
 	}

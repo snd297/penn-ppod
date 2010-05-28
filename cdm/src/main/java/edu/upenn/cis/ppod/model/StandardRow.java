@@ -20,7 +20,6 @@ import static com.google.common.base.Preconditions.checkNotNull;
 import static com.google.common.collect.Lists.newArrayList;
 
 import java.util.Collections;
-import java.util.Iterator;
 import java.util.List;
 
 import javax.annotation.CheckForNull;
@@ -46,11 +45,11 @@ import edu.upenn.cis.ppod.util.IVisitor;
  * @author Sam Donnelly
  */
 @Entity
-@Table(name = CharacterStateRow.TABLE)
-public class CharacterStateRow extends Row<CharacterStateCell> {
+@Table(name = StandardRow.TABLE)
+public class StandardRow extends Row<StandardCell> {
 
 	/** This entitiy's table name. */
-	public static final String TABLE = "CHARACTER_STATE_ROW";
+	public static final String TABLE = "STANDARD_ROW";
 
 	public static final String JOIN_COLUMN = TABLE + "_ID";
 
@@ -68,16 +67,16 @@ public class CharacterStateRow extends Row<CharacterStateCell> {
 	 */
 	@OneToMany(mappedBy = "row", cascade = CascadeType.REMOVE)
 	@OrderBy("position")
-	private final List<CharacterStateCell> cells = newArrayList();
+	private final List<StandardCell> cells = newArrayList();
 
 	/**
 	 * This is the parent of the row. It lies in between this and the matrix.
 	 */
 	@ManyToOne(fetch = FetchType.LAZY)
 	@CheckForNull
-	private CharacterStateRows rows;
+	private StandardRows rows;
 
-	protected CharacterStateRow() {}
+	protected StandardRow() {}
 
 	@Override
 	public void accept(final IVisitor visitor) {
@@ -85,7 +84,7 @@ public class CharacterStateRow extends Row<CharacterStateCell> {
 		visitor.visit(this);
 	}
 
-	public int getCellPosition(final CharacterStateCell cell) {
+	public int getCellPosition(final StandardCell cell) {
 		checkNotNull(cell);
 		checkArgument(this.equals(cell.getRow()),
 				"cell does not belong to this row");
@@ -98,13 +97,13 @@ public class CharacterStateRow extends Row<CharacterStateCell> {
 	}
 
 	@Override
-	public List<CharacterStateCell> getCells() {
+	public List<StandardCell> getCells() {
 		return Collections.unmodifiableList(cells);
 	}
 
 	@XmlElement(name = "cell")
 	@Override
-	protected List<CharacterStateCell> getCellsModifiable() {
+	protected List<StandardCell> getCellsModifiable() {
 		return cells;
 	}
 
@@ -117,29 +116,20 @@ public class CharacterStateRow extends Row<CharacterStateCell> {
 	 * @return the {@code CharacterStateMatrix} of which this is a row
 	 */
 	@Nullable
-	public CharacterStateMatrix getMatrix() {
+	public StandardMatrix getMatrix() {
 		if (rows == null) {
 			return null;
 		}
 		return rows.getParent();
 	}
 
-	/**
-	 * Get a no-remove iterator over this row's cells.
-	 * 
-	 * @return an iterator over this row's cells
-	 */
-	public Iterator<CharacterStateCell> iterator() {
-		return Collections.unmodifiableList(getCells()).iterator();
-	}
-
 	@Override
-	public List<CharacterStateCell> setCells(
-			final List<? extends CharacterStateCell> cells) {
-		final List<CharacterStateCell> clearedCells = super
+	public List<StandardCell> setCells(
+			final List<? extends StandardCell> cells) {
+		final List<StandardCell> clearedCells = super
 				.setCellsHelper(cells);
 
-		for (final CharacterStateCell cell : getCells()) {
+		for (final StandardCell cell : getCells()) {
 			cell.setRow(this);
 		}
 		return clearedCells;
@@ -151,9 +141,9 @@ public class CharacterStateRow extends Row<CharacterStateCell> {
 	 * @return this {@code CharacterStateRow}
 	 */
 	@Override
-	public CharacterStateRow setInNeedOfNewVersion() {
+	public StandardRow setInNeedOfNewVersion() {
 		if (rows != null) {
-			rows.setIsInNeedOfNewVersionInfo();
+			rows.setInNeedOfNewVersion();
 		}
 		super.setInNeedOfNewVersion();
 		return this;
@@ -166,8 +156,8 @@ public class CharacterStateRow extends Row<CharacterStateCell> {
 	 * 
 	 * @return this {@code CharacterStateRow}
 	 */
-	protected CharacterStateRow setRows(
-			@CheckForNull final CharacterStateRows otusToRows) {
+	protected StandardRow setRows(
+			@CheckForNull final StandardRows otusToRows) {
 		this.rows = otusToRows;
 		return this;
 	}
@@ -189,7 +179,7 @@ public class CharacterStateRow extends Row<CharacterStateCell> {
 		return retValue.toString();
 	}
 
-	public CharacterStateRow unsetOTUKeyedMap() {
+	public StandardRow unsetOTUKeyedMap() {
 		rows = null;
 		return this;
 	}

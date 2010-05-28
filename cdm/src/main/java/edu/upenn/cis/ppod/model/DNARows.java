@@ -114,7 +114,7 @@ public class DNARows extends OTUKeyedMap<DNARow> {
 	}
 
 	@Override
-	protected DNARows setIsInNeedOfNewVersionInfo() {
+	protected DNARows setInNeedOfNewVersion() {
 		if (getParent() != null) {
 			getParent().setInNeedOfNewVersion();
 		}

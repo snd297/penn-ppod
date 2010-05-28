@@ -19,10 +19,10 @@ import com.google.inject.AbstractModule;
 import com.google.inject.TypeLiteral;
 import com.google.inject.assistedinject.FactoryProvider;
 
-import edu.upenn.cis.ppod.model.CharacterState;
-import edu.upenn.cis.ppod.model.CharacterStateCell;
-import edu.upenn.cis.ppod.model.CharacterStateMatrix;
-import edu.upenn.cis.ppod.model.CharacterStateRow;
+import edu.upenn.cis.ppod.model.StandardState;
+import edu.upenn.cis.ppod.model.StandardCell;
+import edu.upenn.cis.ppod.model.StandardMatrix;
+import edu.upenn.cis.ppod.model.StandardRow;
 import edu.upenn.cis.ppod.model.DNASequence;
 import edu.upenn.cis.ppod.model.DNASequenceSet;
 
@@ -32,39 +32,39 @@ import edu.upenn.cis.ppod.model.DNASequenceSet;
  */
 public class CreateOrUpdateModule extends AbstractModule {
 
-	private final static class MergeMolecularSequenceSetsTypeLiteral
+	private final static class MergeSequenceSetsTypeLiteral
 			extends
-			TypeLiteral<MergeMolecularSequenceSets<DNASequenceSet, DNASequence>> {}
+			TypeLiteral<MergeSequenceSets<DNASequenceSet, DNASequence>> {}
 
-	private final static class IMergeMolecularSequenceSetsIFactoryTypeLiteral
+	private final static class IMergeSequenceSetsIFactoryTypeLiteral
 			extends
 			TypeLiteral<IMergeSequenceSets.IFactory<DNASequenceSet, DNASequence>> {}
 
 	private final static class SaveOrUpdateCharacterStateMatrixTypeLiteral
 			extends
-			TypeLiteral<CreateOrUpdateMatrix<CharacterStateMatrix, CharacterStateRow, CharacterStateCell, CharacterState>> {}
+			TypeLiteral<CreateOrUpdateMatrix<StandardMatrix, StandardRow, StandardCell, StandardState>> {}
 
 	private final static class ISaveOrUpdateCharacterStateMatrixIFactoryTypeLiteral
 			extends
-			TypeLiteral<ICreateOrUpdateMatrix.IFactory<CharacterStateMatrix, CharacterStateRow, CharacterStateCell, CharacterState>> {}
+			TypeLiteral<ICreateOrUpdateMatrix.IFactory<StandardMatrix, StandardRow, StandardCell, StandardState>> {}
 
 	@Override
 	protected void configure() {
 
-		final TypeLiteral<MergeMolecularSequenceSets<DNASequenceSet, DNASequence>> mergeDNASequenceSetTypeLiteral =
-				new MergeMolecularSequenceSetsTypeLiteral();
+		final TypeLiteral<MergeSequenceSets<DNASequenceSet, DNASequence>> mergeDNASequenceSetTypeLiteral =
+				new MergeSequenceSetsTypeLiteral();
 
 		final TypeLiteral<IMergeSequenceSets.IFactory<DNASequenceSet, DNASequence>> mergeDNASequencesFactoryTypeLiteral =
-				new IMergeMolecularSequenceSetsIFactoryTypeLiteral();
+				new IMergeSequenceSetsIFactoryTypeLiteral();
 
 		bind(mergeDNASequencesFactoryTypeLiteral).toProvider(
 				FactoryProvider.newFactory(mergeDNASequencesFactoryTypeLiteral,
 						mergeDNASequenceSetTypeLiteral));
 
-		final TypeLiteral<CreateOrUpdateMatrix<CharacterStateMatrix, CharacterStateRow, CharacterStateCell, CharacterState>> saveOrUpdateCharacterStateMatrixTypeLiteral =
+		final TypeLiteral<CreateOrUpdateMatrix<StandardMatrix, StandardRow, StandardCell, StandardState>> saveOrUpdateCharacterStateMatrixTypeLiteral =
 				new SaveOrUpdateCharacterStateMatrixTypeLiteral();
 
-		final TypeLiteral<ICreateOrUpdateMatrix.IFactory<CharacterStateMatrix, CharacterStateRow, CharacterStateCell, CharacterState>> saveOrUpdateCharacterStateMatrixFactoryTypeLiteral =
+		final TypeLiteral<ICreateOrUpdateMatrix.IFactory<StandardMatrix, StandardRow, StandardCell, StandardState>> saveOrUpdateCharacterStateMatrixFactoryTypeLiteral =
 				new ISaveOrUpdateCharacterStateMatrixIFactoryTypeLiteral();
 
 		bind(saveOrUpdateCharacterStateMatrixFactoryTypeLiteral)

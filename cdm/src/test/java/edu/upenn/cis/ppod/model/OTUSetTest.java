@@ -66,7 +66,7 @@ public class OTUSetTest {
 	private Provider<VersionInfo> pPodVersionInfoProvider;
 
 	@Inject
-	private Provider<CharacterStateMatrix> matrixProvider;
+	private Provider<StandardMatrix> matrixProvider;
 
 	@Inject
 	private Provider<DNASequenceSet> dnaSequenceSetProvider;
@@ -152,22 +152,22 @@ public class OTUSetTest {
 
 	@Test
 	public void removeMatrix() {
-		final CharacterStateMatrix matrix0 = matrixProvider.get();
-		final CharacterStateMatrix matrix1 = matrixProvider.get();
-		final CharacterStateMatrix matrix2 = matrixProvider.get();
+		final StandardMatrix matrix0 = matrixProvider.get();
+		final StandardMatrix matrix1 = matrixProvider.get();
+		final StandardMatrix matrix2 = matrixProvider.get();
 
-		final Set<CharacterStateMatrix> otuSetMatrices = newHashSet();
+		final Set<StandardMatrix> otuSetMatrices = newHashSet();
 		otuSetMatrices.add(matrix0);
 		otuSetMatrices.add(matrix1);
 		otuSetMatrices.add(matrix2);
-		otuSet.setCharacterStateMatrices(otuSetMatrices);
+		otuSet.setStandardMatrices(otuSetMatrices);
 		otuSet.setVersionInfo(pPodVersionInfoProvider.get());
 
 		study.setVersionInfo(pPodVersionInfoProvider.get());
 
-		final ImmutableSet<CharacterStateMatrix> matricesMinusMatrix1 = ImmutableSet
+		final ImmutableSet<StandardMatrix> matricesMinusMatrix1 = ImmutableSet
 				.of(matrix0, matrix2);
-		otuSet.setCharacterStateMatrices(matricesMinusMatrix1);
+		otuSet.setStandardMatrices(matricesMinusMatrix1);
 
 		assertTrue(study.isInNeedOfNewVersion());
 		assertTrue(otuSet.isInNeedOfNewVersion());
@@ -175,7 +175,7 @@ public class OTUSetTest {
 		// assertNull(study.getPPodVersionInfo());
 		// assertNull(otuSet.getPPodVersionInfo());
 		assertEquals((Object) newHashSet(otuSet
-				.getCharacterStateMatrices()),
+				.getStandardMatrices()),
 					(Object) newHashSet(matricesMinusMatrix1));
 	}
 

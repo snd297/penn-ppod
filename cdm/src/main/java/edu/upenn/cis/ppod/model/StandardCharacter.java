@@ -50,15 +50,10 @@ import edu.upenn.cis.ppod.util.IVisitor;
  * @author Sam Donnelly
  */
 @Entity
-@Table(name = Character.TABLE)
-public class Character extends UUPPodEntityWXmlId {
+@Table(name = StandardCharacter.TABLE)
+public class StandardCharacter extends UUPPodEntityWXmlId {
 
-	/**
-	 * We don't call the table {@code "CHARACTER"} because that causes problems
-	 * with the generated SQL: {@code "CHARACTER"} means something to at least
-	 * MySQL.
-	 */
-	public final static String TABLE = "PHYLO_CHARACTER";
+	public final static String TABLE = "STANDARD_CHARACTER";
 
 	public final static String JOIN_COLUMN = TABLE + "_ID";
 
@@ -71,13 +66,11 @@ public class Character extends UUPPodEntityWXmlId {
 	private String label;
 
 	/**
-	 * The matrices that hold a reference to this {@code Character}. This is
-	 * really only a many-to-many for Molecular matrices. For standard matrices,
-	 * it is many-to-one.
+	 * The matrices that hold a reference to this {@code StandardCharacter}.
 	 */
 	@ManyToOne
-	@JoinColumn(name = CharacterStateMatrix.JOIN_COLUMN, insertable = false, updatable = false, nullable = false)
-	private CharacterStateMatrix matrix;
+	@JoinColumn(name = StandardMatrix.JOIN_COLUMN, insertable = false, updatable = false, nullable = false)
+	private StandardMatrix matrix;
 
 	/**
 	 * The states that this character can have. For example, 0->"absent",
@@ -87,16 +80,16 @@ public class Character extends UUPPodEntityWXmlId {
 	 */
 	@OneToMany(mappedBy = "character", cascade = CascadeType.ALL, orphanRemoval = true)
 	@MapKey(name = "stateNumber")
-	private final Map<Integer, CharacterState> states = newHashMap();
+	private final Map<Integer, StandardState> states = newHashMap();
 
 	/**
 	 * Default constructor for (at least) Hibernate.
 	 */
-	Character() {}
+	StandardCharacter() {}
 
 	@Override
 	public void accept(final IVisitor visitor) {
-		for (final CharacterState state : getStatesModifiable().values()) {
+		for (final StandardState state : getStatesModifiable().values()) {
 			state.accept(visitor);
 		}
 		super.accept(visitor);
@@ -104,26 +97,30 @@ public class Character extends UUPPodEntityWXmlId {
 	}
 
 	/**
-	 * Set{@code matrix} as this character's parent.
+	 * Add <code>state</code> into this <code>Character</code>.
 	 * <p>
-	 * Not public because it's meant to be called from classes who create the
-	 * {@code Character}<-> {@code CharacterStateMatrix} relationship.
-	 * <p>
-	 * Unlike {@code MolecularCharacter}s, standard characters can belong to
-	 * exactly one matrix.
+	 * Calling this handles both sides of the <code>Character</code><->
+	 * <code>CharacterState</code>s. relationship.
 	 * 
-	 * @param matrix to be added.
-	 * @return <code>true</code> if <code>matrix</code> was not there before,
-	 *         <code>false</code> otherwise
-	 * 
-	 * @throw IllegalStateException if this character already belongs to a
-	 *        different matrix - it's fine to keep calling this method with the
-	 *        same matrix
+	 * @param state what we're adding
+	 * @return the state that was associated with {@code state.getStateNumber()}
+	 *         or {@code null} if there was no such state.
 	 */
-	protected Character setMatrix(
-			@CheckForNull final CharacterStateMatrix matrix) {
-		this.matrix = matrix;
-		return this;
+	@CheckForNull
+	public StandardState addState(final StandardState state) {
+		Preconditions.checkNotNull(state);
+		final StandardState originalState = states.put(state.getStateNumber(),
+				state);
+		if (state == originalState) {
+			return originalState;
+		}
+
+		if (originalState != null) {
+			originalState.setCharacter(null);
+		}
+		state.setCharacter(this);
+		setInNeedOfNewVersion();
+		return originalState;
 	}
 
 	/**
@@ -135,10 +132,10 @@ public class Character extends UUPPodEntityWXmlId {
 	@Override
 	public void afterUnmarshal(final Unmarshaller u, final Object parent) {
 		super.afterUnmarshal(u, parent);
-		setMatrix((CharacterStateMatrix) parent);
+		setMatrix((StandardMatrix) parent);
 		if (getStatesModifiable().size() > 0
 				&& get(getStatesModifiable().values(), 0).getCharacter() == null) {
-			for (final CharacterState state : getStatesModifiable().values()) {
+			for (final StandardState state : getStatesModifiable().values()) {
 				state.setCharacter(this);
 			}
 		}
@@ -166,7 +163,7 @@ public class Character extends UUPPodEntityWXmlId {
 	 * 
 	 * @return the matrices that refer to this character
 	 */
-	public CharacterStateMatrix getMatrix() {
+	public StandardMatrix getMatrix() {
 		return matrix;
 	}
 
@@ -180,7 +177,7 @@ public class Character extends UUPPodEntityWXmlId {
 	 *         is no such state.
 	 */
 	@CheckForNull
-	public CharacterState getState(final Integer stateNumber) {
+	public StandardState getState(final Integer stateNumber) {
 		return getStatesModifiable().get(stateNumber);
 	}
 
@@ -189,7 +186,7 @@ public class Character extends UUPPodEntityWXmlId {
 	 * 
 	 * @return the states of this character.
 	 */
-	public Set<CharacterState> getStates() {
+	public Set<StandardState> getStates() {
 		return newHashSet(states.values());
 	}
 
@@ -199,39 +196,12 @@ public class Character extends UUPPodEntityWXmlId {
 	 * @return a mutable reference to the states
 	 */
 	@XmlElementWrapper(name = "states")
-	protected Map<Integer, CharacterState> getStatesModifiable() {
+	protected Map<Integer, StandardState> getStatesModifiable() {
 		return states;
 	}
 
-	/**
-	 * Add <code>state</code> into this <code>Character</code>.
-	 * <p>
-	 * Calling this handles both sides of the <code>Character</code><->
-	 * <code>CharacterState</code>s. relationship.
-	 * 
-	 * @param state what we're adding
-	 * @return the state that was associated with {@code state.getStateNumber()}
-	 *         or {@code null} if there was no such state.
-	 */
-	@CheckForNull
-	public CharacterState addState(final CharacterState state) {
-		Preconditions.checkNotNull(state);
-		final CharacterState originalState = states.put(state.getStateNumber(),
-				state);
-		if (state == originalState) {
-			return originalState;
-		}
-
-		if (originalState != null) {
-			originalState.setCharacter(null);
-		}
-		state.setCharacter(this);
-		setInNeedOfNewVersion();
-		return originalState;
-	}
-
 	@Override
-	public Character setInNeedOfNewVersion() {
+	public StandardCharacter setInNeedOfNewVersion() {
 		if (matrix != null) {
 			matrix.setInNeedOfNewVersion();
 		}
@@ -245,7 +215,7 @@ public class Character extends UUPPodEntityWXmlId {
 	 * @param label the value for the label.
 	 * @return this <code>Character</code>.
 	 */
-	public Character setLabel(final String label) {
+	public StandardCharacter setLabel(final String label) {
 		Preconditions.checkNotNull(label);
 		if (label.equals(this.label)) {
 			// they're the same, nothing to do.
@@ -253,6 +223,29 @@ public class Character extends UUPPodEntityWXmlId {
 			this.label = label;
 			setInNeedOfNewVersion();
 		}
+		return this;
+	}
+
+	/**
+	 * Set{@code matrix} as this character's parent.
+	 * <p>
+	 * Not public because it's meant to be called from classes who create the
+	 * {@code Character}<-> {@code CharacterStateMatrix} relationship.
+	 * <p>
+	 * Unlike {@code MolecularCharacter}s, standard characters can belong to
+	 * exactly one matrix.
+	 * 
+	 * @param matrix to be added.
+	 * @return <code>true</code> if <code>matrix</code> was not there before,
+	 *         <code>false</code> otherwise
+	 * 
+	 * @throw IllegalStateException if this character already belongs to a
+	 *        different matrix - it's fine to keep calling this method with the
+	 *        same matrix
+	 */
+	protected StandardCharacter setMatrix(
+			@CheckForNull final StandardMatrix matrix) {
+		this.matrix = matrix;
 		return this;
 	}
 

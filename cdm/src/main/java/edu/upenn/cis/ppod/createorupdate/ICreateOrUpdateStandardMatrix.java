@@ -18,7 +18,7 @@ package edu.upenn.cis.ppod.createorupdate;
 import com.google.inject.ImplementedBy;
 
 import edu.upenn.cis.ppod.dao.IDAO;
-import edu.upenn.cis.ppod.model.CharacterStateMatrix;
+import edu.upenn.cis.ppod.model.StandardMatrix;
 import edu.upenn.cis.ppod.modelinterfaces.INewVersionInfo;
 import edu.upenn.cis.ppod.services.ppodentity.MatrixInfo;
 
@@ -30,8 +30,8 @@ import edu.upenn.cis.ppod.services.ppodentity.MatrixInfo;
  * 
  * @author Sam Donnelly
  */
-@ImplementedBy(CreateOrUpdateCharacterStateMatrix.class)
-public interface ICreateOrUpdateCharacterStateMatrix {
+@ImplementedBy(CreateOrUpdateStandardMatrix.class)
+public interface ICreateOrUpdateStandardMatrix {
 
 	/**
 	 * Copy the state of {@code sourceMatrix} onto the persistent matrix {@code
@@ -55,13 +55,15 @@ public interface ICreateOrUpdateCharacterStateMatrix {
 	 *            ordering in {@code targetMatrix} as dictated by {@code
 	 *            sourceMatrix}
 	 */
-	MatrixInfo createOrUpdateMatrix(CharacterStateMatrix dbMatrix,
-			CharacterStateMatrix sourceMatrix);
+	MatrixInfo createOrUpdateMatrix(
+			StandardMatrix dbMatrix,
+			StandardMatrix sourceMatrix);
 
 	static interface IFactory {
-		ICreateOrUpdateCharacterStateMatrix create(
+		ICreateOrUpdateStandardMatrix create(
 				IMergeAttachments mergeAttachments,
-				IDAO<Object, Long> dao, INewVersionInfo newVersionInfo);
+				IDAO<Object, Long> dao,
+				INewVersionInfo newVersionInfo);
 	}
 
 }

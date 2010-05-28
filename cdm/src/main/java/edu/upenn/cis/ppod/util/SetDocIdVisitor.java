@@ -18,8 +18,8 @@ package edu.upenn.cis.ppod.util;
 import edu.upenn.cis.ppod.model.Attachment;
 import edu.upenn.cis.ppod.model.AttachmentNamespace;
 import edu.upenn.cis.ppod.model.AttachmentType;
-import edu.upenn.cis.ppod.model.Character;
-import edu.upenn.cis.ppod.model.CharacterState;
+import edu.upenn.cis.ppod.model.StandardCharacter;
+import edu.upenn.cis.ppod.model.StandardState;
 import edu.upenn.cis.ppod.model.OTU;
 import edu.upenn.cis.ppod.model.OTUSet;
 
@@ -62,9 +62,9 @@ final class SetDocIdVisitor extends EmptyVisitor implements ISetDocIdVisitor {
 	 * @param character target
 	 */
 	@Override
-	public void visit(final Character character) {
-		if (character.getDocId() == null) {
-			character.setDocId();
+	public void visit(final StandardCharacter standardCharacter) {
+		if (standardCharacter.getDocId() == null) {
+			standardCharacter.setDocId();
 		}
 	}
 
@@ -74,9 +74,9 @@ final class SetDocIdVisitor extends EmptyVisitor implements ISetDocIdVisitor {
 	 * @param characterState target
 	 */
 	@Override
-	public void visit(final CharacterState characterState) {
-		if (characterState.getDocId() == null) {
-			characterState.setDocId();
+	public void visit(final StandardState standardState) {
+		if (standardState.getDocId() == null) {
+			standardState.setDocId();
 		}
 	}
 

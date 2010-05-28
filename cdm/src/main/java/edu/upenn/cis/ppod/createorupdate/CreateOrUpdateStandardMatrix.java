@@ -35,11 +35,11 @@ import com.google.inject.assistedinject.Assisted;
 
 import edu.upenn.cis.ppod.dao.IDAO;
 import edu.upenn.cis.ppod.model.Attachment;
-import edu.upenn.cis.ppod.model.Character;
-import edu.upenn.cis.ppod.model.CharacterState;
-import edu.upenn.cis.ppod.model.CharacterStateCell;
-import edu.upenn.cis.ppod.model.CharacterStateMatrix;
-import edu.upenn.cis.ppod.model.CharacterStateRow;
+import edu.upenn.cis.ppod.model.StandardCharacter;
+import edu.upenn.cis.ppod.model.StandardState;
+import edu.upenn.cis.ppod.model.StandardCell;
+import edu.upenn.cis.ppod.model.StandardMatrix;
+import edu.upenn.cis.ppod.model.StandardRow;
 import edu.upenn.cis.ppod.modelinterfaces.INewVersionInfo;
 import edu.upenn.cis.ppod.modelinterfaces.IWithPPodId;
 import edu.upenn.cis.ppod.services.ppodentity.MatrixInfo;
@@ -48,11 +48,11 @@ import edu.upenn.cis.ppod.thirdparty.injectslf4j.InjectLogger;
 /**
  * @author Sam Donnelly
  */
-final class CreateOrUpdateCharacterStateMatrix implements
-		ICreateOrUpdateCharacterStateMatrix {
+final class CreateOrUpdateStandardMatrix
+		implements ICreateOrUpdateStandardMatrix {
 
-	private final Provider<Character> characterProvider;
-	private final CharacterState.IFactory stateFactory;
+	private final Provider<StandardCharacter> characterProvider;
+	private final StandardState.IFactory stateFactory;
 	private final Provider<Attachment> attachmentProvider;
 	private final IMergeAttachments mergeAttachments;
 	private final IDAO<Object, Long> dao;
@@ -61,14 +61,14 @@ final class CreateOrUpdateCharacterStateMatrix implements
 	private Logger logger;
 
 	private final INewVersionInfo newVersionInfo;
-	private final ICreateOrUpdateMatrix.IFactory<CharacterStateMatrix, CharacterStateRow, CharacterStateCell, CharacterState> saveOrUpdateMatrixFactory;
+	private final ICreateOrUpdateMatrix.IFactory<StandardMatrix, StandardRow, StandardCell, StandardState> saveOrUpdateMatrixFactory;
 
 	@Inject
-	CreateOrUpdateCharacterStateMatrix(
-			final Provider<Character> characterProvider,
-			final CharacterState.IFactory stateFactory,
+	CreateOrUpdateStandardMatrix(
+			final Provider<StandardCharacter> characterProvider,
+			final StandardState.IFactory stateFactory,
 			final Provider<Attachment> attachmentProvider,
-			final ICreateOrUpdateMatrix.IFactory<CharacterStateMatrix, CharacterStateRow, CharacterStateCell, CharacterState> saveOrUpdateMatrixFactory,
+			final ICreateOrUpdateMatrix.IFactory<StandardMatrix, StandardRow, StandardCell, StandardState> saveOrUpdateMatrixFactory,
 			@Assisted final INewVersionInfo newVersionInfo,
 			@Assisted final IDAO<Object, Long> dao,
 			@Assisted final IMergeAttachments mergeAttachments) {
@@ -82,8 +82,8 @@ final class CreateOrUpdateCharacterStateMatrix implements
 	}
 
 	public MatrixInfo createOrUpdateMatrix(
-			final CharacterStateMatrix dbMatrix,
-			final CharacterStateMatrix sourceMatrix) {
+			final StandardMatrix dbMatrix,
+			final StandardMatrix sourceMatrix) {
 		final String METHOD = "saveOrUpdate(...)";
 		logger.debug("{}: entering", METHOD);
 		checkNotNull(dbMatrix);
@@ -92,11 +92,12 @@ final class CreateOrUpdateCharacterStateMatrix implements
 		dbMatrix.setLabel(sourceMatrix.getLabel());
 		dbMatrix.setDescription(sourceMatrix.getDescription());
 
-		final List<Character> newDbMatrixCharacters = newArrayList();
+		final List<StandardCharacter> newDbMatrixCharacters = newArrayList();
 		int sourceCharacterPosition = -1;
-		for (final Character sourceCharacter : sourceMatrix.getCharacters()) {
+		for (final StandardCharacter sourceCharacter : sourceMatrix
+				.getCharacters()) {
 			sourceCharacterPosition++;
-			Character newDbCharacter;
+			StandardCharacter newDbCharacter;
 
 			if (null == (newDbCharacter =
 					findIf(dbMatrix
@@ -115,8 +116,8 @@ final class CreateOrUpdateCharacterStateMatrix implements
 
 			newDbCharacter.setLabel(sourceCharacter.getLabel());
 
-			for (final CharacterState sourceState : sourceCharacter.getStates()) {
-				CharacterState dbState;
+			for (final StandardState sourceState : sourceCharacter.getStates()) {
+				StandardState dbState;
 				if (null == (dbState = newDbCharacter.getState(
 						sourceState.getStateNumber()))) {
 					dbState = stateFactory
@@ -161,7 +162,7 @@ final class CreateOrUpdateCharacterStateMatrix implements
 
 		dbMatrix.setCharacters(newDbMatrixCharacters);
 
-		final ICreateOrUpdateMatrix<CharacterStateMatrix, CharacterStateRow, CharacterStateCell, CharacterState> saveOrUpdateMatrix =
+		final ICreateOrUpdateMatrix<StandardMatrix, StandardRow, StandardCell, StandardState> saveOrUpdateMatrix =
 				saveOrUpdateMatrixFactory
 						.create(newVersionInfo, dao);
 

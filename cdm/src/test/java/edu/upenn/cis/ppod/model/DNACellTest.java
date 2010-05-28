@@ -93,9 +93,9 @@ public class DNACellTest {
 
 		matrix.setOTUSet(otuSet);
 
-		matrix.putRow(otuSet.getOTU(0), dnaRowProvider.get());
+		matrix.putRow(otuSet.getOTUs().get(0), dnaRowProvider.get());
 
-		matrix.getRow(matrix.getOTUSet().getOTU(0)).setCells(
+		matrix.getRow(matrix.getOTUSet().getOTUs().get(0)).setCells(
 				ImmutableList.of(cell));
 
 		final Set<DNANucleotide> elements = ImmutableSet.of(DNANucleotide.A,

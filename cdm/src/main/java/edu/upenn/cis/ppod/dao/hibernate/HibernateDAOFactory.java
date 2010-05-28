@@ -38,9 +38,9 @@ import edu.upenn.cis.ppod.dao.IVersionInfoDAO;
 import edu.upenn.cis.ppod.dao.ITreeDAO;
 import edu.upenn.cis.ppod.dao.ITreeSetDAO;
 import edu.upenn.cis.ppod.dao.IUserDAO;
-import edu.upenn.cis.ppod.model.Character;
-import edu.upenn.cis.ppod.model.CharacterState;
-import edu.upenn.cis.ppod.model.CharacterStateRow;
+import edu.upenn.cis.ppod.model.StandardCharacter;
+import edu.upenn.cis.ppod.model.StandardState;
+import edu.upenn.cis.ppod.model.StandardRow;
 import edu.upenn.cis.ppod.model.OTU;
 import edu.upenn.cis.ppod.model.OTUSet;
 import edu.upenn.cis.ppod.model.Tree;
@@ -135,14 +135,14 @@ public class HibernateDAOFactory implements IDAOFactory {
 	 * An {@link Character} Hibernate DAO.
 	 */
 	public static class CharacterDAOHibernate extends
-			GenericHibernateDAO<Character, Long> implements ICharacterDAO {
+			GenericHibernateDAO<StandardCharacter, Long> implements ICharacterDAO {
 
-		public Character getCharacterByPPodId(String pPodId) {
+		public StandardCharacter getCharacterByPPodId(String pPodId) {
 			if (pPodId == null) {
 				return null;
 			}
-			return (Character) getSession().getNamedQuery(
-					Character.class.getSimpleName() + "-getByPPodId")
+			return (StandardCharacter) getSession().getNamedQuery(
+					StandardCharacter.class.getSimpleName() + "-getByPPodId")
 					.setParameter("pPodId", pPodId).uniqueResult();
 		}
 	}
@@ -151,21 +151,21 @@ public class HibernateDAOFactory implements IDAOFactory {
 	 * A default {@link CharacterState} Hibernate DAO.
 	 */
 	public static class CharacterStateDAOHibernate extends
-			GenericHibernateDAO<CharacterState, Long> implements
+			GenericHibernateDAO<StandardState, Long> implements
 			ICharacterStateDAO {}
 
 	/**
 	 * A default {@link CharacterStateRow} Hibernate DAO.
 	 */
 	public static class CharacterStateRowDAOHibernate extends
-			GenericHibernateDAO<CharacterStateRow, Long> implements
+			GenericHibernateDAO<StandardRow, Long> implements
 			ICharacterStateRowDAO {
 
 		@SuppressWarnings("unchecked")
 		public List<Object[]> getCellIdxsVersionsByRowIdAndMinVersion(
 				Long rowId, Long minVersion) {
 			return (List<Object[]>) getSession().getNamedQuery(
-					CharacterStateRow.class.getSimpleName()
+					StandardRow.class.getSimpleName()
 							+ "-getCellIdxsVersionsByRowIdAndMinVersion")
 					.setParameter("rowId", rowId).setParameter("minVersion",
 							minVersion).list();

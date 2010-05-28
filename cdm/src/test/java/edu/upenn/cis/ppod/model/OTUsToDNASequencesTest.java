@@ -79,7 +79,7 @@ public class OTUsToDNASequencesTest {
 
 		sequenceSet.getOTUKeyedMap().put(otu, sequence2);
 
-		assertNull(sequence.getOTUsToSequences());
+		assertNull(sequence.getSequences());
 
 	}
 }

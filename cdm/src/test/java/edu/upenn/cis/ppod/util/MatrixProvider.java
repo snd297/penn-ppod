@@ -21,7 +21,7 @@ import javax.xml.bind.JAXBContext;
 
 import org.testng.annotations.DataProvider;
 
-import edu.upenn.cis.ppod.model.CharacterStateMatrix;
+import edu.upenn.cis.ppod.model.StandardMatrix;
 import edu.upenn.cis.ppod.model.Study;
 
 /**
@@ -45,10 +45,10 @@ public class MatrixProvider {
 				MatrixProvider.class.getResourceAsStream("/MX540.xml"));
 		studyMX540.accept(afterUnmarshalVisitor);
 
-		final CharacterStateMatrix smallSimpleMatrix =
+		final StandardMatrix smallSimpleMatrix =
 				getOnlyElement(getOnlyElement(
 						studyMX540.getOTUSets())
-						.getCharacterStateMatrices());
+						.getStandardMatrices());
 
 		// final Study studyM1808 = (Study) ctx.createUnmarshaller().unmarshal(
 		// MatrixProvider.class.getResourceAsStream("/M1808.nex.xml"));

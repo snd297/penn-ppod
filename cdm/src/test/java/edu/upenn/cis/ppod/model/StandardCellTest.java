@@ -43,25 +43,25 @@ import edu.upenn.cis.ppod.TestGroupDefs;
  * @author Sam Donnelly
  */
 @Test(groups = TestGroupDefs.FAST, dependsOnGroups = TestGroupDefs.INIT)
-public class CharacterStateCellTest {
+public class StandardCellTest {
 
 	@Nullable
-	private CharacterStateCell cell;
+	private StandardCell cell;
 
 	@Inject
-	private Provider<CharacterStateCell> cellProvider;
+	private Provider<StandardCell> cellProvider;
 
 	@Inject
-	private CellTestSupport<CharacterStateMatrix, CharacterStateRow, CharacterStateCell, CharacterState> cellTestSupport;
+	private CellTestSupport<StandardMatrix, StandardRow, StandardCell, StandardState> cellTestSupport;
 
 	@Inject
-	private Provider<Character> characterProvider;
+	private Provider<StandardCharacter> characterProvider;
 
 	@Nullable
-	private CharacterStateMatrix matrix;
+	private StandardMatrix matrix;
 
 	@Inject
-	private Provider<CharacterStateMatrix> matrixProvider;
+	private Provider<StandardMatrix> matrixProvider;
 
 	@Inject
 	private Provider<OTU> otuProvider;
@@ -70,40 +70,40 @@ public class CharacterStateCellTest {
 	private Provider<OTUSet> otuSetProvider;
 
 	@Inject
-	private Provider<CharacterStateRow> rowProvider;
+	private Provider<StandardRow> rowProvider;
 
 	@Nullable
-	private CharacterState state00;
+	private StandardState state00;
 
 	@Nullable
-	private CharacterState state01;
+	private StandardState state01;
 
 	@Inject
-	private CharacterState.IFactory stateFactory;
+	private StandardState.IFactory stateFactory;
 
 	@Nullable
-	private Set<CharacterState> states;
+	private Set<StandardState> states;
 
 	/**
 	 * Straight {@code beforeMarshal(...) test.
 	 */
 	@Test
 	public void beforeMarshal() {
-		matrix.getRow(matrix.getOTUSet().getOTU(0)).setCells(
+		matrix.getRow(matrix.getOTUSet().getOTUs().get(0)).setCells(
 				Arrays.asList(cell));
 		states.add(state00);
 		states.add(state01);
 		cell.setPolymorphicElements(states);
 		cell.beforeMarshal(null);
-		final Set<CharacterState> xmlStates = cell.getElementsXml();
+		final Set<StandardState> xmlStates = cell.getElementsXml();
 		assertEquals(xmlStates.size(), states.size());
-		for (final CharacterState expectedState : states) {
+		for (final StandardState expectedState : states) {
 
 			// find(...) will throw an exception if what we're looking for is
 			// not there
-			final CharacterState xmlState = find(xmlStates,
+			final StandardState xmlState = find(xmlStates,
 						compose(equalTo(expectedState.getStateNumber()),
-								CharacterState.getStateNumber));
+								StandardState.getStateNumber));
 			assertEquals(xmlState.getLabel(), expectedState.getLabel());
 		}
 	}
@@ -129,13 +129,13 @@ public class CharacterStateCellTest {
 		otuSet.setOTUs(newArrayList(otu0));
 		matrix.setOTUSet(otuSet);
 
-		final Character character0 =
+		final StandardCharacter character0 =
 				characterProvider
 						.get()
 						.setLabel("character0");
 		matrix.setCharacters(newArrayList(character0));
-		final CharacterStateRow row0 = rowProvider.get();
-		matrix.putRow(matrix.getOTUSet().getOTU(0), row0);
+		final StandardRow row0 = rowProvider.get();
+		matrix.putRow(matrix.getOTUSet().getOTUs().get(0), row0);
 
 		states = newHashSet();
 
@@ -172,7 +172,7 @@ public class CharacterStateCellTest {
 
 	@Test
 	public void setTypeAndStatesFromPolymorhpicToInapplicable() {
-		matrix.getRow(matrix.getOTUSet().getOTU(0)).setCells(
+		matrix.getRow(matrix.getOTUSet().getOTUs().get(0)).setCells(
 				Arrays.asList(cell));
 		states.add(state00);
 		states.add(state01);
@@ -184,7 +184,7 @@ public class CharacterStateCellTest {
 
 	@Test
 	public void setTypeAndStatesFromSingleToInapplicable() {
-		matrix.getRow(matrix.getOTUSet().getOTU(0)).setCells(
+		matrix.getRow(matrix.getOTUSet().getOTUs().get(0)).setCells(
 				Arrays.asList(cell));
 		cell.setSingleElement(state00);
 		cell.setInapplicable();
@@ -197,7 +197,7 @@ public class CharacterStateCellTest {
 	@Test
 	public void setTypeAndStatesInapplicable() {
 		matrix
-				.getRow(matrix.getOTUSet().getOTU(0)).setCells(
+				.getRow(matrix.getOTUSet().getOTUs().get(0)).setCells(
 						Arrays.asList(cell));
 		cell.setInapplicable();
 		assertEquals(cell.getType(), Cell.Type.INAPPLICABLE);
@@ -206,7 +206,7 @@ public class CharacterStateCellTest {
 
 	@Test
 	public void setTypeAndStatesPolymorphic() {
-		matrix.getRow(matrix.getOTUSet().getOTU(0)).setCells(
+		matrix.getRow(matrix.getOTUSet().getOTUs().get(0)).setCells(
 				Arrays.asList(cell));
 		states.add(state00);
 		states.add(state01);
@@ -217,14 +217,14 @@ public class CharacterStateCellTest {
 
 	@Test(expectedExceptions = IllegalArgumentException.class)
 	public void setTypeAndStatesPolymorphicTooFewStates() {
-		matrix.getRow(matrix.getOTUSet().getOTU(0)).setCells(
+		matrix.getRow(matrix.getOTUSet().getOTUs().get(0)).setCells(
 				Arrays.asList(cell));
 		cell.setPolymorphicElements(states);
 	}
 
 	@Test
 	public void setTypeAndStatesSingle() {
-		matrix.getRow(matrix.getOTUSet().getOTU(0)).setCells(
+		matrix.getRow(matrix.getOTUSet().getOTUs().get(0)).setCells(
 				Arrays.asList(cell));
 		states.add(state00);
 		cell.setSingleElement(state00);
@@ -234,7 +234,7 @@ public class CharacterStateCellTest {
 
 	@Test
 	public void setTypeAndStatesUnassigned() {
-		matrix.getRow(matrix.getOTUSet().getOTU(0)).setCells(
+		matrix.getRow(matrix.getOTUSet().getOTUs().get(0)).setCells(
 				Arrays.asList(cell));
 		cell.setUnassigned();
 		assertEquals(cell.getType(), Cell.Type.UNASSIGNED);
@@ -243,7 +243,7 @@ public class CharacterStateCellTest {
 
 	@Test(expectedExceptions = IllegalArgumentException.class)
 	public void setTypeAndStatesUncertainTooFewStates() {
-		matrix.getRow(matrix.getOTUSet().getOTU(0)).setCells(
+		matrix.getRow(matrix.getOTUSet().getOTUs().get(0)).setCells(
 				Arrays.asList(cell));
 		states.add(state00);
 		cell.setUncertainElements(states);
@@ -251,7 +251,7 @@ public class CharacterStateCellTest {
 
 	@Test
 	public void setUncertainStates() {
-		matrix.getRow(matrix.getOTUSet().getOTU(0)).setCells(
+		matrix.getRow(matrix.getOTUSet().getOTUs().get(0)).setCells(
 				Arrays.asList(cell));
 		states.add(state00);
 		states.add(state01);

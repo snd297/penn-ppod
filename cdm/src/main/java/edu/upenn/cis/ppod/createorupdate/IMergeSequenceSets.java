@@ -15,23 +15,23 @@
  */
 package edu.upenn.cis.ppod.createorupdate;
 
-import com.google.inject.ImplementedBy;
-
 import edu.upenn.cis.ppod.dao.IDAO;
 import edu.upenn.cis.ppod.model.Sequence;
 import edu.upenn.cis.ppod.model.SequenceSet;
 import edu.upenn.cis.ppod.modelinterfaces.INewVersionInfo;
 
 /**
+ * Merges the state of one sequence set onto another.
+ * 
  * @author Sam Donnelly
  * 
  * @param <SS> the kind of {@link SequenceSet} we're operating on
  * @param <S> the kind of {@link Sequence} that belongs in the sequence set
  */
-@ImplementedBy(MergeMolecularSequenceSets.class)
 public interface IMergeSequenceSets<SS extends SequenceSet<S>, S extends Sequence> {
 
-	public void mergeSequenceSets(final SS targetSequenceSet, final SS sourceSequenceSet);
+	public void mergeSequenceSets(final SS targetSequenceSet,
+			final SS sourceSequenceSet);
 
 	static interface IFactory<SS extends SequenceSet<S>, S extends Sequence> {
 

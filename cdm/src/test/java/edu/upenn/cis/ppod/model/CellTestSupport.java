@@ -80,7 +80,7 @@ public class CellTestSupport<M extends Matrix<R>, R extends Row<C>, C extends Ce
 
 		final OTUSet matrixOTUSet = matrix.getOTUSet();
 
-		final OTU otu0 = matrixOTUSet.getOTU(0);
+		final OTU otu0 = matrixOTUSet.getOTUs().get(0);
 
 		final Row<C> row = matrix.getRow(otu0);
 		row.setCells(cells);
@@ -128,7 +128,7 @@ public class CellTestSupport<M extends Matrix<R>, R extends Row<C>, C extends Ce
 
 		row.setCells(ImmutableList.of(cell));
 
-		matrix.getRow(matrix.getOTUSet().getOTU(0));
+		matrix.getRow(matrix.getOTUSet().getOTUs().get(0));
 
 		cell.setSingleElement(element);
 		assertEquals(getOnlyElement(cell.getElements()), element);

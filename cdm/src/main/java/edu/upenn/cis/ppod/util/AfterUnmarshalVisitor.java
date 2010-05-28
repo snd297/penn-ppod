@@ -16,9 +16,9 @@
 
 package edu.upenn.cis.ppod.util;
 
-import edu.upenn.cis.ppod.model.Character;
-import edu.upenn.cis.ppod.model.CharacterStateCell;
-import edu.upenn.cis.ppod.model.CharacterStateMatrix;
+import edu.upenn.cis.ppod.model.StandardCharacter;
+import edu.upenn.cis.ppod.model.StandardCell;
+import edu.upenn.cis.ppod.model.StandardMatrix;
 import edu.upenn.cis.ppod.model.DNACell;
 import edu.upenn.cis.ppod.model.DNAMatrix;
 import edu.upenn.cis.ppod.model.DNASequenceSet;
@@ -33,8 +33,8 @@ class AfterUnmarshalVisitor extends EmptyVisitor implements
 		IAfterUnmarshalVisitor {
 
 	@Override
-	public void visit(final Character character) {
-		character.afterUnmarshal();
+	public void visit(final StandardCharacter standardCharacter) {
+		standardCharacter.afterUnmarshal();
 	}
 
 	/**
@@ -43,7 +43,7 @@ class AfterUnmarshalVisitor extends EmptyVisitor implements
 	 * @param cell target
 	 */
 	@Override
-	public void visit(final CharacterStateCell cell) {
+	public void visit(final StandardCell cell) {
 		cell.afterUnmarshal();
 	}
 
@@ -53,7 +53,7 @@ class AfterUnmarshalVisitor extends EmptyVisitor implements
 	 * @param matrix target
 	 */
 	@Override
-	public void visit(final CharacterStateMatrix matrix) {
+	public void visit(final StandardMatrix matrix) {
 		matrix.afterUnmarshal();
 	}
 
