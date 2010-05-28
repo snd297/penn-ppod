@@ -29,7 +29,7 @@ import org.hibernate.Session;
 import com.google.inject.Inject;
 import com.google.inject.Provider;
 
-import edu.upenn.cis.ppod.model.CharacterStateMatrix;
+import edu.upenn.cis.ppod.model.StandardMatrix;
 import edu.upenn.cis.ppod.model.OTU;
 import edu.upenn.cis.ppod.model.OTUSet;
 import edu.upenn.cis.ppod.model.TreeSet;
@@ -74,7 +74,7 @@ class PPodEntitiesResourceHibernate implements
 		final List<Object> queryResults = session.createQuery(query).list();
 		final PPodEntities pPodEntities = pPodEntitiesProvider.get();
 
-		final Set<CharacterStateMatrix> addedMatrices = newHashSet();
+		final Set<StandardMatrix> addedMatrices = newHashSet();
 		final Set<TreeSet> addedTreeSets = newHashSet();
 
 // final List<Object> flattenedQueryResults = newArrayList();
@@ -103,9 +103,9 @@ class PPodEntitiesResourceHibernate implements
 				// Note that otu set may have already been added in any of the
 				// other if clauses: Hibernate identity takes care of us
 				pPodEntities.addOTUSet(otuSet);
-			} else if (queryResult instanceof CharacterStateMatrix) {
+			} else if (queryResult instanceof StandardMatrix) {
 
-				final CharacterStateMatrix matrix = (CharacterStateMatrix) queryResult;
+				final StandardMatrix matrix = (StandardMatrix) queryResult;
 
 				// Extra insurance against accidental sync with database
 				session.setReadOnly(matrix, true);
@@ -152,15 +152,15 @@ class PPodEntitiesResourceHibernate implements
 			// matrices or tree sets that were pulled over with the OTUSet's
 			for (final OTUSet otuSet : pPodEntities.getOTUSets()) {
 
-				final Set<CharacterStateMatrix> matricesToReturn = newHashSet();
+				final Set<StandardMatrix> matricesToReturn = newHashSet();
 
-				for (final CharacterStateMatrix matrix : otuSet
-						.getCharacterStateMatrices()) {
+				for (final StandardMatrix matrix : otuSet
+						.getStandardMatrices()) {
 					if (addedMatrices.contains(matrix)) {
 						matricesToReturn.add(matrix);
 					}
 				}
-				otuSet.setCharacterStateMatrices(matricesToReturn);
+				otuSet.setStandardMatrices(matricesToReturn);
 
 				final Set<TreeSet> treeSetsToReturn = newHashSet();
 				for (final TreeSet treeSet : otuSet.getTreeSets()) {

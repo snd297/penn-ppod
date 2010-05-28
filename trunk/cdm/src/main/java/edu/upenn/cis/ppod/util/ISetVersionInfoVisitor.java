@@ -18,11 +18,11 @@ package edu.upenn.cis.ppod.util;
 import com.google.inject.ImplementedBy;
 
 import edu.upenn.cis.ppod.model.Attachment;
-import edu.upenn.cis.ppod.model.Character;
-import edu.upenn.cis.ppod.model.CharacterState;
-import edu.upenn.cis.ppod.model.CharacterStateCell;
-import edu.upenn.cis.ppod.model.CharacterStateMatrix;
-import edu.upenn.cis.ppod.model.CharacterStateRow;
+import edu.upenn.cis.ppod.model.StandardCharacter;
+import edu.upenn.cis.ppod.model.StandardState;
+import edu.upenn.cis.ppod.model.StandardCell;
+import edu.upenn.cis.ppod.model.StandardMatrix;
+import edu.upenn.cis.ppod.model.StandardRow;
 import edu.upenn.cis.ppod.model.OTU;
 import edu.upenn.cis.ppod.model.OTUSet;
 import edu.upenn.cis.ppod.model.Study;
@@ -38,15 +38,15 @@ public interface ISetVersionInfoVisitor extends IVisitor {
 
 	void visit(final Attachment attachment);
 
-	void visit(final Character character);
+	void visit(final StandardCharacter standardCharacter);
 
-	void visit(final CharacterState characterState);
+	void visit(final StandardState standardState);
 
-	void visit(final CharacterStateCell cell);
+	void visit(final StandardCell cell);
 
-	void visit(final CharacterStateMatrix matrix);
+	void visit(final StandardMatrix matrix);
 
-	void visit(final CharacterStateRow row);
+	void visit(final StandardRow row);
 
 	void visit(final OTU otu);
 

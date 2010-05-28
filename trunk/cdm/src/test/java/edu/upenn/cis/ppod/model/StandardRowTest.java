@@ -39,10 +39,10 @@ import edu.upenn.cis.ppod.TestGroupDefs;
  * 
  */
 @Test(groups = TestGroupDefs.FAST, dependsOnGroups = TestGroupDefs.INIT)
-public class CharacterStateRowTest {
+public class StandardRowTest {
 
 	@Inject
-	private Provider<CharacterStateMatrix> matrixProvider;
+	private Provider<StandardMatrix> matrixProvider;
 
 	@Inject
 	private Provider<OTUSet> otuSetProvider;
@@ -51,17 +51,17 @@ public class CharacterStateRowTest {
 	private Provider<OTU> otuProvider;
 
 	@Inject
-	private Provider<Character> characterProvider;
+	private Provider<StandardCharacter> characterProvider;
 
 	@Inject
-	private Provider<CharacterStateRow> rowProvider;
+	private Provider<StandardRow> rowProvider;
 
 	@Inject
-	private Provider<CharacterStateCell> cellProvider;
+	private Provider<StandardCell> cellProvider;
 
 	private List<OTU> otus;
 
-	private CharacterStateMatrix matrix;
+	private StandardMatrix matrix;
 
 	@BeforeMethod
 	public void beforeMethod() {
@@ -78,9 +78,9 @@ public class CharacterStateRowTest {
 
 	@Test
 	public void addCellToMatrixWOneCharacter() {
-		final CharacterStateCell cell = (CharacterStateCell) cellProvider.get()
+		final StandardCell cell = (StandardCell) cellProvider.get()
 				.setUnassigned();
-		matrix.getRow(matrix.getOTUSet().getOTU(0)).setCells(
+		matrix.getRow(matrix.getOTUSet().getOTUs().get(0)).setCells(
 				Arrays.asList(cell));
 
 		ModelAssert.assertEqualsCharacterStateCells(cell, matrix.getRow(
@@ -97,14 +97,14 @@ public class CharacterStateRowTest {
 		matrix.getOTUSet().setOTUs(newArrayList(otus.get(0)));
 		matrix.putRow(otus.get(0), rowProvider.get());
 
-		final CharacterStateRow row = matrix.getRow(otu0);
+		final StandardRow row = matrix.getRow(otu0);
 		matrix.
 				setCharacters(newArrayList(
 						characterProvider.get().setLabel("CHARACTER-0"),
 						characterProvider.get().setLabel("CHARACTER-1"),
 						characterProvider.get().setLabel("CHARACTER-2")));
 
-		final List<CharacterStateCell> cells =
+		final List<StandardCell> cells =
 				ImmutableList.of(cellProvider.get(), cellProvider.get(),
 						cellProvider.get());
 		row.setCells(cells);
@@ -119,7 +119,7 @@ public class CharacterStateRowTest {
 		// shouldn't really matterJust call setUnassigned so that the cell is in
 		// a legal state - it shouldn't really matter
 		rowProvider.get().setCells(
-				Arrays.asList((CharacterStateCell) cellProvider.get()
+				Arrays.asList((StandardCell) cellProvider.get()
 						.setUnassigned()));
 	}
 
@@ -127,7 +127,7 @@ public class CharacterStateRowTest {
 	public void addCellToMatrixThatHasNoCharacters() {
 
 		@SuppressWarnings("unchecked")
-		final List<Character> emptyList = (List<Character>) Collections.EMPTY_LIST;
+		final List<StandardCharacter> emptyList = (List<StandardCharacter>) Collections.EMPTY_LIST;
 
 		matrix.setColumnsSize(0);
 
@@ -137,18 +137,18 @@ public class CharacterStateRowTest {
 		// shouldn't really matterJust call setUnassigned so that the cell is in
 		// a legal state - it shouldn't really matter
 		matrix.getRow(
-				matrix.getOTUSet().getOTU(0))
+				matrix.getOTUSet().getOTUs().get(0))
 				.setCells(
-						Arrays.asList((CharacterStateCell) cellProvider.get()
+						Arrays.asList((StandardCell) cellProvider.get()
 								.setUnassigned()));
 	}
 
 	@Test(expectedExceptions = IllegalStateException.class)
 	public void addCellToMatrixWTooFewCharacters() {
-		final List<CharacterStateCell> cells = newArrayList(
-				(CharacterStateCell) cellProvider.get()
-						.setUnassigned(), (CharacterStateCell) cellProvider
+		final List<StandardCell> cells = newArrayList(
+				(StandardCell) cellProvider.get()
+						.setUnassigned(), (StandardCell) cellProvider
 						.get().setUnassigned());
-		matrix.getRow(matrix.getOTUSet().getOTU(0)).setCells(cells);
+		matrix.getRow(matrix.getOTUSet().getOTUs().get(0)).setCells(cells);
 	}
 }

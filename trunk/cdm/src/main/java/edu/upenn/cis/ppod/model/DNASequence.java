@@ -25,7 +25,6 @@ import javax.persistence.Table;
 
 import com.google.common.collect.ImmutableSet;
 
-import edu.upenn.cis.ppod.modelinterfaces.IOTUKeyedMapValue;
 import edu.upenn.cis.ppod.util.IVisitor;
 
 /**
@@ -38,9 +37,9 @@ public class DNASequence extends Sequence {
 	/**
 	 * The characters that are legal in a {@code DNASequence}.
 	 */
-	public final static Set<java.lang.Character> LEGAL_CHARS = ImmutableSet
-			.of('A', 'C', 'G', 'T', 'R', 'Y', 'K', 'M', 'S', 'W', 'B', 'D',
-					'H', 'V', 'N', '-');
+	public final static Set<java.lang.Character> LEGAL_CHARS =
+			ImmutableSet.of('A', 'C', 'G', 'T', 'R', 'Y', 'K', 'M', 'S', 'W',
+					'B', 'D', 'H', 'V', 'N', '-');
 
 	/**
 	 * The name of the {@code DNASequence} table.
@@ -50,9 +49,10 @@ public class DNASequence extends Sequence {
 	public static final String JOIN_COLUMN =
 			TABLE + "_" + PersistentObject.ID_COLUMN;
 
+	/** The owning object. */
 	@ManyToOne(fetch = FetchType.LAZY)
 	@CheckForNull
-	private DNASequences otusToSequences;
+	private DNASequences sequences;
 
 	@Override
 	public void accept(final IVisitor visitor) {
@@ -63,8 +63,8 @@ public class DNASequence extends Sequence {
 	 * Created for testing.
 	 */
 	@CheckForNull
-	DNASequences getOTUsToSequences() {
-		return otusToSequences;
+	DNASequences getSequences() {
+		return sequences;
 	}
 
 	@Override
@@ -74,8 +74,8 @@ public class DNASequence extends Sequence {
 
 	@Override
 	public DNASequence setInNeedOfNewVersion() {
-		if (otusToSequences != null) {
-			this.otusToSequences.setInNeedOfNewVersion();
+		if (sequences != null) {
+			sequences.setInNeedOfNewVersion();
 		}
 		super.setInNeedOfNewVersion();
 		return this;
@@ -83,12 +83,12 @@ public class DNASequence extends Sequence {
 
 	protected DNASequence setOTUsToSequences(
 			@CheckForNull final DNASequences otusToSequences) {
-		this.otusToSequences = otusToSequences;
+		this.sequences = otusToSequences;
 		return this;
 	}
 
-	public IOTUKeyedMapValue unsetOTUKeyedMap() {
-		this.otusToSequences = null;
+	public DNASequence unsetOTUKeyedMap() {
+		this.sequences = null;
 		return this;
 	}
 

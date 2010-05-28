@@ -30,7 +30,7 @@ import edu.upenn.cis.ppod.dao.IAttachmentNamespaceDAO;
 import edu.upenn.cis.ppod.dao.IAttachmentTypeDAO;
 import edu.upenn.cis.ppod.dao.IDAO;
 import edu.upenn.cis.ppod.dao.IStudyDAO;
-import edu.upenn.cis.ppod.model.CharacterStateMatrix;
+import edu.upenn.cis.ppod.model.StandardMatrix;
 import edu.upenn.cis.ppod.model.DNAMatrix;
 import edu.upenn.cis.ppod.model.DNASequence;
 import edu.upenn.cis.ppod.model.DNASequenceSet;
@@ -54,13 +54,13 @@ final class CreateOrUpdateStudy implements ICreateOrUpdateStudy {
 
 	private final Provider<Study> studyProvider;
 	private final Provider<OTUSet> otuSetProvider;
-	private final Provider<CharacterStateMatrix> characterStateMatrixProvider;
+	private final Provider<StandardMatrix> characterStateMatrixProvider;
 	private final Provider<DNAMatrix> dnaMatrixProvider;
 	private final Provider<DNASequenceSet> dnaSequenceSetProvider;
 	private final Provider<TreeSet> treeSetProvider;
 
 	private final IMergeOTUSets mergeOTUSets;
-	private final ICreateOrUpdateCharacterStateMatrix createOrUpdateCharacterStateMatrix;
+	private final ICreateOrUpdateStandardMatrix createOrUpdateStandardMatrix;
 	private final IMergeTreeSets mergeTreeSets;
 	private final INewVersionInfo newVersionInfo;
 	private final IMergeSequenceSets<DNASequenceSet, DNASequence> mergeDNASequenceSets;
@@ -74,13 +74,13 @@ final class CreateOrUpdateStudy implements ICreateOrUpdateStudy {
 	CreateOrUpdateStudy(
 			final Provider<Study> studyProvider,
 			final Provider<OTUSet> otuSetProvider,
-			final Provider<CharacterStateMatrix> characterStateMatrix,
+			final Provider<StandardMatrix> standardMatrix,
 			final Provider<DNASequenceSet> dnaSequenceSetProvider,
 			final Provider<TreeSet> treeSetProvider,
 			final IMergeOTUSets.IFactory saveOrUpdateOTUSetFactory,
 			final IMergeTreeSets.IFactory mergeTreeSetsFactory,
 			final ICreateOrUpdateDNAMatrix.IFactory saveOrUpdateDNAMatrixFactory,
-			final ICreateOrUpdateCharacterStateMatrix.IFactory saveOrUpdateMatrixFactory,
+			final ICreateOrUpdateStandardMatrix.IFactory saveOrUpdateMatrixFactory,
 			final IMergeSequenceSets.IFactory<DNASequenceSet, DNASequence> mergeDNASequenceSetsFactory,
 			final IMergeAttachments.IFactory mergeAttachmentFactory,
 			final Provider<OTUSetInfo> otuSetInfoProvider,
@@ -96,7 +96,7 @@ final class CreateOrUpdateStudy implements ICreateOrUpdateStudy {
 		this.studyDAO = studyDAO;
 		this.studyProvider = studyProvider;
 		this.otuSetProvider = otuSetProvider;
-		this.characterStateMatrixProvider = characterStateMatrix;
+		this.characterStateMatrixProvider = standardMatrix;
 		this.dnaSequenceSetProvider = dnaSequenceSetProvider;
 		this.treeSetProvider = treeSetProvider;
 		this.newVersionInfo = newVersionInfo;
@@ -105,7 +105,7 @@ final class CreateOrUpdateStudy implements ICreateOrUpdateStudy {
 		this.createOrUpdateDNAMatrix =
 				saveOrUpdateDNAMatrixFactory.create(
 						newVersionInfo, dao);
-		this.createOrUpdateCharacterStateMatrix =
+		this.createOrUpdateStandardMatrix =
 				saveOrUpdateMatrixFactory.create(
 						mergeAttachmentFactory
 								.create(attachmentNamespaceDAO,
@@ -178,26 +178,26 @@ final class CreateOrUpdateStudy implements ICreateOrUpdateStudy {
 
 			otuSetInfo.setPPodId(dbOTUSet.getPPodId());
 
-			for (final CharacterStateMatrix incomingMatrix : incomingOTUSet
-					.getCharacterStateMatrices()) {
-				CharacterStateMatrix dbMatrix;
+			for (final StandardMatrix incomingMatrix : incomingOTUSet
+					.getStandardMatrices()) {
+				StandardMatrix dbMatrix;
 				if (null == (dbMatrix =
 						findIf(
-								dbOTUSet.getCharacterStateMatrices(),
+								dbOTUSet.getStandardMatrices(),
 								compose(
 										equalTo(
 												incomingMatrix.getPPodId()),
 										IWithPPodId.getPPodId
 										)))) {
 					dbMatrix = characterStateMatrixProvider.get();
-					dbOTUSet.addCharacterStateMatrix(dbMatrix);
+					dbOTUSet.addStandardMatrix(dbMatrix);
 					dbMatrix.setVersionInfo(
 							newVersionInfo.getNewVersionInfo());
 					dbMatrix.setColumnVersionInfos(
 									newVersionInfo.getNewVersionInfo());
 					dbMatrix.setPPodId();
 				}
-				final MatrixInfo dbMatrixInfo = createOrUpdateCharacterStateMatrix
+				final MatrixInfo dbMatrixInfo = createOrUpdateStandardMatrix
 						.createOrUpdateMatrix(dbMatrix,
 								incomingMatrix);
 				otuSetInfo.getMatrixInfos().add(dbMatrixInfo);

@@ -27,7 +27,7 @@ import javax.persistence.MappedSuperclass;
  * @author Sam Donnelly
  */
 @MappedSuperclass
-public abstract class MolecularState extends CharacterState {
+public abstract class MolecularState extends StandardState {
 
 	/**
 	 * This column should be the same as {@link CharacterState#getLabel()} and

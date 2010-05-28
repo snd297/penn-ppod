@@ -18,11 +18,11 @@ package edu.upenn.cis.ppod.util;
 import edu.upenn.cis.ppod.model.Attachment;
 import edu.upenn.cis.ppod.model.AttachmentNamespace;
 import edu.upenn.cis.ppod.model.AttachmentType;
-import edu.upenn.cis.ppod.model.Character;
-import edu.upenn.cis.ppod.model.CharacterState;
-import edu.upenn.cis.ppod.model.CharacterStateCell;
-import edu.upenn.cis.ppod.model.CharacterStateMatrix;
-import edu.upenn.cis.ppod.model.CharacterStateRow;
+import edu.upenn.cis.ppod.model.StandardCharacter;
+import edu.upenn.cis.ppod.model.StandardState;
+import edu.upenn.cis.ppod.model.StandardCell;
+import edu.upenn.cis.ppod.model.StandardMatrix;
+import edu.upenn.cis.ppod.model.StandardRow;
 import edu.upenn.cis.ppod.model.DNACell;
 import edu.upenn.cis.ppod.model.DNAMatrix;
 import edu.upenn.cis.ppod.model.DNARow;
@@ -74,7 +74,7 @@ public abstract class EmptyVisitor implements IVisitor {
 	 * 
 	 * @param character ignored
 	 */
-	public void visit(final Character character) {
+	public void visit(final StandardCharacter standardCharacter) {
 
 	}
 
@@ -83,28 +83,28 @@ public abstract class EmptyVisitor implements IVisitor {
 	 * 
 	 * @param characterState ignored
 	 */
-	public void visit(final CharacterState characterState) {}
+	public void visit(final StandardState standardState) {}
 
 	/**
 	 * Does nothing.
 	 * 
 	 * @param cell ignored
 	 */
-	public void visit(final CharacterStateCell cell) {}
+	public void visit(final StandardCell cell) {}
 
 	/**
 	 * Does nothing.
 	 * 
 	 * @param matrix ignored
 	 */
-	public void visit(final CharacterStateMatrix matrix) {}
+	public void visit(final StandardMatrix matrix) {}
 
 	/**
 	 * Does nothing.
 	 * 
 	 * @param row ignored
 	 */
-	public void visit(final CharacterStateRow row) {}
+	public void visit(final StandardRow row) {}
 
 	public void visit(final DNACell cell) {}
 

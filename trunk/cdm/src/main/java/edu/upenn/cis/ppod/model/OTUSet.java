@@ -29,7 +29,6 @@ import java.util.List;
 import java.util.Set;
 
 import javax.annotation.CheckForNull;
-import javax.annotation.Nonnegative;
 import javax.annotation.Nullable;
 import javax.persistence.CascadeType;
 import javax.persistence.Column;
@@ -51,7 +50,7 @@ import edu.upenn.cis.ppod.util.IVisitor;
 /**
  * A set of {@link OTU}s.
  *<p>
- * The relationship between {@code OTU} and {@code OTUSet} is one-to-many.
+ * The relationship between {@code OTUSet} and {@code OTU} is one-to-many.
  * 
  * @author Shirley Cohen
  * @author Sam Donnelly
@@ -76,7 +75,7 @@ public class OTUSet extends UUPPodEntityWXmlId {
 	public static final String LABEL_COLUMN = "LABEL";
 
 	@OneToMany(mappedBy = "otuSet", cascade = CascadeType.ALL, orphanRemoval = true)
-	private final Set<CharacterStateMatrix> characterStateMatrices = newHashSet();
+	private final Set<StandardMatrix> standardMatrices = newHashSet();
 
 	/** Free-form description. */
 	@Column(name = DESCRIPTION_COLUMN, nullable = true)
@@ -127,26 +126,6 @@ public class OTUSet extends UUPPodEntityWXmlId {
 		}
 		super.accept(visitor);
 		visitor.visit(this);
-	}
-
-	/**
-	 * Add {@code matrix} to this {@code OTUSet}.
-	 * <p>
-	 * Also handles the {@code CharacterStateMatrix->OTUSet} side of the
-	 * relationship.
-	 * 
-	 * @param matrix matrix we're adding
-	 * 
-	 * @return {@code matrix}
-	 */
-	public CharacterStateMatrix addCharacterStateMatrix(
-			final CharacterStateMatrix matrix) {
-		checkNotNull(matrix);
-		if (characterStateMatrices.add(matrix)) {
-			matrix.setOTUSet(this);
-			setInNeedOfNewVersion();
-		}
-		return matrix;
 	}
 
 	public DNAMatrix addDNAMatrix(final DNAMatrix matrix) {
@@ -223,6 +202,26 @@ public class OTUSet extends UUPPodEntityWXmlId {
 		return otu;
 	}
 
+	/**
+	 * Add {@code matrix} to this {@code OTUSet}.
+	 * <p>
+	 * Also handles the {@code CharacterStateMatrix->OTUSet} side of the
+	 * relationship.
+	 * 
+	 * @param matrix matrix we're adding
+	 * 
+	 * @return {@code matrix}
+	 */
+	public StandardMatrix addStandardMatrix(
+			final StandardMatrix matrix) {
+		checkNotNull(matrix);
+		if (standardMatrices.add(matrix)) {
+			matrix.setOTUSet(this);
+			setInNeedOfNewVersion();
+		}
+		return matrix;
+	}
+
 	public TreeSet addTreeSet(final TreeSet treeSet) {
 		checkNotNull(treeSet);
 		if (getTreeSetsModifiable().add(treeSet)) {
@@ -253,19 +252,10 @@ public class OTUSet extends UUPPodEntityWXmlId {
 		}
 	}
 
-	public Set<CharacterStateMatrix> getCharacterStateMatrices() {
-		return Collections.unmodifiableSet(characterStateMatrices);
-	}
-
-	@XmlElement(name = "matrix")
-	protected Set<CharacterStateMatrix> getCharacterStateMatricesModifiable() {
-		return characterStateMatrices;
-	}
-
 	protected Set<IVersionedWithOTUSet> getChildren() {
 		final Set<IVersionedWithOTUSet> children = newHashSet();
 		children.addAll(getOTUs());
-		children.addAll(getCharacterStateMatrices());
+		children.addAll(getStandardMatrices());
 		children.addAll(getDNAMatrices());
 		children.addAll(getTreeSets());
 		children.addAll(getDNASequenceSets());
@@ -313,25 +303,31 @@ public class OTUSet extends UUPPodEntityWXmlId {
 	}
 
 	/**
-	 * Get the OTU at position {@code otuPosition}.
+	 * Get the {@code OTU}s that make up this {@code OTUSet}.
 	 * 
-	 * @param otuPosition the position we want
-	 * 
-	 * @return the OTU at position {@code otuPosition}
-	 * 
-	 * @throws IndexOutOfBoundsException if {@code otuPosition} is out of bounds
+	 * @return the {@code OTU}s that make up this {@code OTUSet}
 	 */
-	public OTU getOTU(@Nonnegative final int otuPosition) {
-		return getOTUsModifiable().get(otuPosition);
-	}
-
 	public List<OTU> getOTUs() {
 		return Collections.unmodifiableList(otus);
 	}
 
+	/**
+	 * Get a modifiable reference to this the otus.
+	 * 
+	 * @return a modifiable reference to this the otus.
+	 */
 	@XmlElement(name = "otu")
 	protected List<OTU> getOTUsModifiable() {
 		return otus;
+	}
+
+	public Set<StandardMatrix> getStandardMatrices() {
+		return Collections.unmodifiableSet(standardMatrices);
+	}
+
+	@XmlElement(name = "matrix")
+	protected Set<StandardMatrix> getStandardMatricesModifiable() {
+		return standardMatrices;
 	}
 
 	/**
@@ -366,48 +362,17 @@ public class OTUSet extends UUPPodEntityWXmlId {
 	}
 
 	/**
-	 * Set <code>newMatrices</code> to this <code>OTUSet</code>'s matrices.
-	 * 
-	 * @param newMatrices new matrices
-	 * 
-	 * @return any matrices that were removed as a result of this operation
-	 */
-	public Set<CharacterStateMatrix> setCharacterStateMatrices(
-			final Set<? extends CharacterStateMatrix> newMatrices) {
-		checkNotNull(newMatrices);
-
-		if (newMatrices.equals(getCharacterStateMatricesModifiable())) {
-			return Collections.emptySet();
-		}
-
-		final Set<CharacterStateMatrix> removedMatrices = newHashSet(getCharacterStateMatricesModifiable());
-		removedMatrices.removeAll(newMatrices);
-
-		for (final CharacterStateMatrix removedMatrix : removedMatrices) {
-			removedMatrix.setOTUSet(null);
-		}
-
-		getCharacterStateMatricesModifiable().clear();
-
-		for (final CharacterStateMatrix newMatrix : newMatrices) {
-			addCharacterStateMatrix(newMatrix);
-		}
-		setInNeedOfNewVersion();
-		return removedMatrices;
-	}
-
-	/**
 	 * Setter.
 	 * 
 	 * @param description the description
 	 * 
 	 * @return this {@code OTUSet}
 	 */
-	public OTUSet setDescription(@CheckForNull final String newDescription) {
-		if (equal(getDescription(), newDescription)) {
+	public OTUSet setDescription(@CheckForNull final String description) {
+		if (equal(getDescription(), description)) {
 
 		} else {
-			this.description = newDescription;
+			this.description = description;
 			setInNeedOfNewVersion();
 		}
 		return this;
@@ -475,12 +440,12 @@ public class OTUSet extends UUPPodEntityWXmlId {
 	 * 
 	 * @return this
 	 */
-	public OTUSet setLabel(final String newLabel) {
-		checkNotNull(newLabel);
-		if (newLabel.equals(getLabel())) {
+	public OTUSet setLabel(final String label) {
+		checkNotNull(label);
+		if (label.equals(getLabel())) {
 
 		} else {
-			this.label = newLabel;
+			this.label = label;
 			setInNeedOfNewVersion();
 		}
 		return this;
@@ -530,7 +495,7 @@ public class OTUSet extends UUPPodEntityWXmlId {
 			otu.setOTUSet(this);
 		}
 
-		for (final Matrix<?> matrix : getCharacterStateMatrices()) {
+		for (final Matrix<?> matrix : getStandardMatrices()) {
 			matrix.setOTUSet(this);
 		}
 
@@ -545,6 +510,37 @@ public class OTUSet extends UUPPodEntityWXmlId {
 		for (final TreeSet treeSet : getTreeSets()) {
 			treeSet.setOTUSet(this);
 		}
+	}
+
+	/**
+	 * Copy <code>matrices</code> to this <code>OTUSet</code>'s matrices.
+	 * 
+	 * @param matrices new matrices
+	 * 
+	 * @return any matrices that were removed as a result of this operation
+	 */
+	public Set<StandardMatrix> setStandardMatrices(
+			final Set<? extends StandardMatrix> matrices) {
+		checkNotNull(matrices);
+
+		if (matrices.equals(getStandardMatricesModifiable())) {
+			return Collections.emptySet();
+		}
+
+		final Set<StandardMatrix> removedMatrices = newHashSet(getStandardMatricesModifiable());
+		removedMatrices.removeAll(matrices);
+
+		for (final StandardMatrix removedMatrix : removedMatrices) {
+			removedMatrix.setOTUSet(null);
+		}
+
+		getStandardMatricesModifiable().clear();
+
+		for (final StandardMatrix newMatrix : matrices) {
+			addStandardMatrix(newMatrix);
+		}
+		setInNeedOfNewVersion();
+		return removedMatrices;
 	}
 
 	protected OTUSet setStudy(final Study study) {
@@ -562,7 +558,7 @@ public class OTUSet extends UUPPodEntityWXmlId {
 	 * Add {@code treeSet} to this {@code OTUSet}'s tree sets and add this OTU
 	 * set to {@code treeSet}.
 	 * <p>
-	 * All of {@code newTreeSets} must not be in a detached state.
+	 * All of {@code treeSets} must not be in a detached state.
 	 * <p>
 	 * The {@code TreeSet->OTUSet} relationship will be taken care of, including
 	 * severing removed tree sets.
@@ -571,19 +567,19 @@ public class OTUSet extends UUPPodEntityWXmlId {
 	 * 
 	 * @return this
 	 */
-	public Set<TreeSet> setTreeSets(final Set<TreeSet> newTreeSets) {
-		checkNotNull(newTreeSets);
-		if (newTreeSets.equals(getTreeSetsModifiable())) {
+	public Set<TreeSet> setTreeSets(final Set<? extends TreeSet> treeSets) {
+		checkNotNull(treeSets);
+		if (treeSets.equals(getTreeSetsModifiable())) {
 			return Collections.emptySet();
 		}
 		final Set<TreeSet> removedTreeSets = newHashSet(getTreeSets());
-		removedTreeSets.removeAll(newTreeSets);
+		removedTreeSets.removeAll(treeSets);
 		for (final TreeSet removedTreeSet : removedTreeSets) {
 			removedTreeSet.setOTUSet(null);
 		}
 
 		getTreeSetsModifiable().clear();
-		for (final TreeSet treeSet : newTreeSets) {
+		for (final TreeSet treeSet : treeSets) {
 			addTreeSet(treeSet);
 		}
 		setInNeedOfNewVersion();

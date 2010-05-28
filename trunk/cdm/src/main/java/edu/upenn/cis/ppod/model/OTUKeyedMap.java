@@ -73,7 +73,7 @@ public abstract class OTUKeyedMap<V extends IOTUKeyedMapValue>
 			return this;
 		}
 		getOTUsToValues().clear();
-		setIsInNeedOfNewVersionInfo();
+		setInNeedOfNewVersion();
 		return this;
 	}
 
@@ -193,7 +193,7 @@ public abstract class OTUKeyedMap<V extends IOTUKeyedMapValue>
 	@CheckForNull
 	public abstract V put(final OTU key, final V value);
 
-	protected abstract OTUKeyedMap<V> setIsInNeedOfNewVersionInfo();
+	protected abstract OTUKeyedMap<V> setInNeedOfNewVersion();
 
 	/**
 	 * Set the keys of this {@code OTUKeyedMap} to the OTU's in {@code

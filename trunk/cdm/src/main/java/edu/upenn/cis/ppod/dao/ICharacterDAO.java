@@ -15,14 +15,14 @@
  */
 package edu.upenn.cis.ppod.dao;
 
-import edu.upenn.cis.ppod.model.Character;
+import edu.upenn.cis.ppod.model.StandardCharacter;
 
 /**
  * A {@link Character} DAO.
  * 
  * @author Sam Donnelly
  */
-public interface ICharacterDAO extends IDAO<Character, Long> {
+public interface ICharacterDAO extends IDAO<StandardCharacter, Long> {
 
 	/**
 	 * Get the persisted {@link Character} with the given pPOD id, or {@code
@@ -32,5 +32,5 @@ public interface ICharacterDAO extends IDAO<Character, Long> {
 	 * @return the persisted {@link Character} with the given pPOD id, or
 	 *         {@code null} if there is no such {@link Character}
 	 */
-	Character getCharacterByPPodId(String pPodID);
+	StandardCharacter getCharacterByPPodId(String pPodID);
 }

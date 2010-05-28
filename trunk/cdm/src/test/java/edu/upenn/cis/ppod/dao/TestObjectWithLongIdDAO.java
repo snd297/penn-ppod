@@ -27,8 +27,8 @@ import java.util.Map;
 import org.hibernate.Session;
 
 import edu.upenn.cis.ppod.dao.hibernate.IObjectWithLongIdDAOHibernate;
-import edu.upenn.cis.ppod.model.CharacterStateCell;
-import edu.upenn.cis.ppod.model.CharacterStateRow;
+import edu.upenn.cis.ppod.model.StandardCell;
+import edu.upenn.cis.ppod.model.StandardRow;
 
 /**
  * A {@code IObjectWithLongIdDAO} that stores the entities that operations were
@@ -112,7 +112,7 @@ public class TestObjectWithLongIdDAO implements IObjectWithLongIdDAOHibernate {
 		throw new UnsupportedOperationException();
 	}
 
-	private Map<CharacterStateRow, List<CharacterStateCell>> rowsToCells = newHashMap();
+	private Map<StandardRow, List<StandardCell>> rowsToCells = newHashMap();
 
 	/**
 	 * Does nothing.
@@ -120,13 +120,13 @@ public class TestObjectWithLongIdDAO implements IObjectWithLongIdDAOHibernate {
 	 * @entity ignored
 	 */
 	public void makePersistent(final Object entity) {
-		if (entity instanceof CharacterStateCell) {
-			final CharacterStateCell cell = (CharacterStateCell) entity;
-			final CharacterStateRow row = cell.getRow();
+		if (entity instanceof StandardCell) {
+			final StandardCell cell = (StandardCell) entity;
+			final StandardRow row = cell.getRow();
 			if (rowsToCells.containsKey(cell.getRow())) {
 
 			} else {
-				rowsToCells.put(row, new ArrayList<CharacterStateCell>());
+				rowsToCells.put(row, new ArrayList<StandardCell>());
 			}
 			nullFillAndSet(rowsToCells.get(row), row.getCellPosition(cell),
 						cell);
@@ -135,7 +135,7 @@ public class TestObjectWithLongIdDAO implements IObjectWithLongIdDAOHibernate {
 		}
 	}
 
-	public Map<CharacterStateRow, List<CharacterStateCell>> getRowsToCells() {
+	public Map<StandardRow, List<StandardCell>> getRowsToCells() {
 		return rowsToCells;
 	}
 

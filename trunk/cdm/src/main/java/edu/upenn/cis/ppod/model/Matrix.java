@@ -93,6 +93,7 @@ public abstract class Matrix<R extends Row<?>>
 	public void afterUnmarshal(final Unmarshaller u, final Object parent) {
 		super.afterUnmarshal(u, parent);
 		otuSet = (OTUSet) parent;
+		setColumnsSize(getColumnVersions().size());
 	}
 
 	@Override
@@ -118,9 +119,7 @@ public abstract class Matrix<R extends Row<?>>
 	}
 
 	public Integer getColumnsSize() {
-		return Math.max(
-				Integer.valueOf(getColumnVersionInfos().size()),
-				Integer.valueOf(getColumnVersions().size()));
+		return Integer.valueOf(getColumnVersionInfos().size());
 	}
 
 	/**

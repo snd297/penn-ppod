@@ -37,39 +37,39 @@ import edu.umd.cs.findbugs.annotations.CheckForNull;
 import edu.upenn.cis.ppod.util.IVisitor;
 
 /**
- * A stateNumber of a {@link Character}. Represents things like "absent",
- * "short", and "long" for some character, say "proboscis".
+ * A stateNumber of a {@link StandardCharacter}. Represents things like
+ * "absent", "short", and "long" for some character, say "proboscis".
  * <p>
- * A {@code CharacterState} can belong to exactly one {@code Character}.
+ * A {@code StandardState} can belong to exactly one {@code StandardCharacter}.
  * <p>
  * This is <em>not</em> a {@link UUPPodEntity} because its uniqueness is a
- * function of its {@link Character} + {@link #getStateNumber()}
+ * function of its {@link StandardCharacter} + {@link #getStateNumber()}
  * 
  * @author Sam Donnelly
  */
 @Entity
-@Table(name = CharacterState.TABLE)
-public class CharacterState extends PPodEntityWXmlId {
+@Table(name = StandardState.TABLE)
+public class StandardState extends PPodEntityWXmlId {
 
 	/**
 	 * Orders character states by the natural ordering of
 	 * {@link CharacterState#getStateNumber()}.
 	 * <p>
-	 * We use an external comparator for {@code CharacterState} instead of
+	 * We use an external comparator for {@code StandardState} instead of
 	 * implementing {@code CharacterStateComparator} because we don't want to
 	 * have to worry (as much) about being incompatible with equals. See
 	 * {@link Comparable} and {@link CharacterStateComparator} for information
 	 * about that.
 	 * <p>
-	 * Note that the state number of a {@code CharacterState} is immutable, so
+	 * Note that the state number of a {@code StandardState} is immutable, so
 	 * this comparator should be safe to use in a {@code SortedSet}.
 	 */
-	public static class CharacterStateComparator implements
-			java.util.Comparator<CharacterState>, Serializable {
+	public static class StandardStateComparator implements
+			java.util.Comparator<StandardState>, Serializable {
 
 		private static final long serialVersionUID = 1L;
 
-		public int compare(final CharacterState o1, final CharacterState o2) {
+		public int compare(final StandardState o1, final StandardState o2) {
 			checkNotNull(o1);
 			checkArgument(o1.getStateNumber() != null,
 					"o1.getStateNumber() == null");
@@ -93,24 +93,24 @@ public class CharacterState extends PPodEntityWXmlId {
 		 * @param stateNumber the state number for the new state
 		 * @return the new state
 		 */
-		CharacterState create(Integer stateNumber);
+		StandardState create(Integer stateNumber);
 	}
 
 	/**
 	 * {@link Function} wrapper of {@link #getStateNumber()}.
 	 */
-	public static final Function<CharacterState, Integer> getStateNumber = new Function<CharacterState, Integer>() {
+	public static final Function<StandardState, Integer> getStateNumber = new Function<StandardState, Integer>() {
 
-		public Integer apply(final CharacterState from) {
+		public Integer apply(final StandardState from) {
 			return from.getStateNumber();
 		}
 
 	};
 
 	/** The name of this entity's table. Intentionally package-private. */
-	final static String TABLE = "CHARACTER_STATE";
+	final static String TABLE = "STANDARD_STATE";
 
-	final static String ID_COLUMN = TABLE + "_ID";
+	final static String JOIN_COLUMN = TABLE + "_ID";
 
 	/**
 	 * The column where the stateNumber is stored. Intentionally
@@ -143,14 +143,14 @@ public class CharacterState extends PPodEntityWXmlId {
 	 * The {@code Character} of which this is a state.
 	 */
 	@ManyToOne(fetch = FetchType.LAZY)
-	@JoinColumn(name = Character.JOIN_COLUMN)
+	@JoinColumn(name = StandardCharacter.JOIN_COLUMN)
 	@CheckForNull
-	private Character character;
+	private StandardCharacter character;
 
-	CharacterState() {}
+	StandardState() {}
 
 	@Inject
-	CharacterState(@Assisted final Integer stateNumber) {
+	StandardState(@Assisted final Integer stateNumber) {
 		checkNotNull(stateNumber);
 		this.stateNumber = stateNumber;
 	}
@@ -186,7 +186,7 @@ public class CharacterState extends PPodEntityWXmlId {
 	 * @return this character stateNumber's owning character
 	 */
 	@Nullable
-	public Character getCharacter() {
+	public StandardCharacter getCharacter() {
 		return character;
 	}
 
@@ -229,8 +229,8 @@ public class CharacterState extends PPodEntityWXmlId {
 	 * 
 	 * @return this {@code CharacterState}
 	 */
-	protected CharacterState setCharacter(
-			@CheckForNull final Character character) {
+	protected StandardState setCharacter(
+			@CheckForNull final StandardCharacter character) {
 		this.character = character;
 		return this;
 	}
@@ -241,7 +241,7 @@ public class CharacterState extends PPodEntityWXmlId {
 	 * @return this {@code CharacterState}
 	 */
 	@Override
-	public CharacterState setInNeedOfNewVersion() {
+	public StandardState setInNeedOfNewVersion() {
 		if (character != null) {
 			character.setInNeedOfNewVersion();
 		}
@@ -256,7 +256,7 @@ public class CharacterState extends PPodEntityWXmlId {
 	 * 
 	 * @return this
 	 */
-	public CharacterState setLabel(final String label) {
+	public StandardState setLabel(final String label) {
 		checkNotNull(label);
 		if (label.equals(getLabel())) {
 
@@ -277,7 +277,7 @@ public class CharacterState extends PPodEntityWXmlId {
 	 * 
 	 * @return this
 	 */
-	protected CharacterState setStateNumber(final Integer stateNumber) {
+	protected StandardState setStateNumber(final Integer stateNumber) {
 		this.stateNumber = stateNumber;
 		return this;
 	}

@@ -23,8 +23,9 @@ import edu.upenn.cis.ppod.util.IVisitor;
  * @param <C> the type of cell we have
  */
 @MappedSuperclass
-public abstract class Row<C extends Cell<?>> extends PPodEntity implements
-		IRow, IOTUKeyedMapValue {
+public abstract class Row<C extends Cell<?>>
+		extends PPodEntity
+		implements IRow, IOTUKeyedMapValue {
 
 	protected Row() {}
 
