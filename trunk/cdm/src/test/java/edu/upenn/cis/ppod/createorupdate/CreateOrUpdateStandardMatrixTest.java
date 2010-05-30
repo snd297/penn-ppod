@@ -129,9 +129,9 @@ public class CreateOrUpdateStandardMatrixTest {
 	@Test(dataProvider = MatrixProvider.SMALL_MATRICES_PROVIDER, dataProviderClass = MatrixProvider.class)
 	public void moveRows(final StandardMatrix sourceMatrix) {
 		final ICreateOrUpdateStandardMatrix createOrUpdateStandardMatrix =
-				createOrUpdateMatrixFactory
-						.create(mergeAttachment, dao,
-								newVersionInfo);
+				createOrUpdateMatrixFactory.create(mergeAttachment,
+						dao,
+						newVersionInfo);
 		final OTUSet fakeDbOTUSet = sourceMatrix.getOTUSet();
 
 		final StandardMatrix targetMatrix =
@@ -174,9 +174,8 @@ public class CreateOrUpdateStandardMatrixTest {
 		final Map<StandardRow, List<StandardCell>> sourceRowsToCells2 =
 				stashCells(sourceMatrix);
 
-		createOrUpdateStandardMatrix.createOrUpdateMatrix(
-				targetMatrix,
-				sourceMatrix);
+		createOrUpdateStandardMatrix
+				.createOrUpdateMatrix(targetMatrix, sourceMatrix);
 
 		putBackCells(targetMatrix, dao.getRowsToCells());
 		putBackCells(sourceMatrix, sourceRowsToCells2);
