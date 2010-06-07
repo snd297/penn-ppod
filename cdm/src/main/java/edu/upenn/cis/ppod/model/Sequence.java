@@ -34,8 +34,6 @@ import edu.upenn.cis.ppod.modelinterfaces.IOTUKeyedMapValue;
  * CharSequence}.
  * 
  * @author Sam Donnelly
- * @param <SS> the type of {@link MolecularSequenceSet} that contains this
- *            {@code Sequence}
  */
 @XmlSeeAlso( { DNASequence.class })
 @MappedSuperclass
@@ -243,8 +241,8 @@ public abstract class Sequence extends PPodEntity implements IOTUKeyedMapValue {
 	 * 
 	 * @return this
 	 */
-// protected abstract Sequence setSequenceSet(
-// @Nullable final Object sequenceSet);
+	// protected abstract Sequence setSequenceSet(
+	// @Nullable final Object sequenceSet);
 
 }
 

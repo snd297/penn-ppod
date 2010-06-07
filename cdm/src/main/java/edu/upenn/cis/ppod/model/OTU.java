@@ -149,6 +149,9 @@ public class OTU
 	 * <p>
 	 * Intended to be called from methods that manage the {@code OTUSet<->OTU}
 	 * relationship.
+	 * <p>
+	 * A {@code null} value for {@code otuSet} means that the relationship will
+	 * be severed.
 	 * 
 	 * @param the owning {@code OTUSet}.
 	 * 

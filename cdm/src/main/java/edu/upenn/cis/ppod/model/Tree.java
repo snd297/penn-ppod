@@ -80,7 +80,8 @@ public class Tree extends UUPPodEntity {
 	}
 
 	/**
-	 * Return the label. {@code null} when the tree is constructed.
+	 * Return the label. {@code null} when the tree is constructed, but will
+	 * never be {@code null} for a tree in a persistent state.
 	 * 
 	 * @return the label
 	 */
@@ -91,7 +92,8 @@ public class Tree extends UUPPodEntity {
 	}
 
 	/**
-	 * Get the newick string. {@code null} when the tree is constructed.
+	 * Get the newick string. {@code null} when the tree is constructed, but
+	 * will never be {@code null} for a tree in a persistent state.
 	 * 
 	 * @return the newick string
 	 */
@@ -131,7 +133,7 @@ public class Tree extends UUPPodEntity {
 	/**
 	 * Setter.
 	 * 
-	 * @param newick the Newick tree, with name - not integer descriptions
+	 * @param newick the Newick tree, composed of pPOD id's.
 	 * 
 	 * @return this {@code Tree}
 	 */
@@ -147,13 +149,12 @@ public class Tree extends UUPPodEntity {
 	}
 
 	/**
-	 * Remove {@code treeSet} form this {@code Tree}s associated {@code TreeSet}
-	 * s.
+	 * Set the owning {@code TreeSet}.
 	 * <p>
 	 * Intended to be called from places responsible for managing the {@code
 	 * Tree<->TreeSet} relationship.
 	 * <p>
-	 * Use {@code null} for {@code treeSet} to sever the relationship.
+	 * Use {@code null} to sever the relationship.
 	 * 
 	 * @param treeSet the {@code TreeSet} that we're removing
 	 * 
