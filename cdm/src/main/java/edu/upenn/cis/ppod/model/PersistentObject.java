@@ -94,8 +94,7 @@ public abstract class PersistentObject implements IPersistentObject {
 	}
 
 	/** Created for Jaxb. */
-	@SuppressWarnings("unused")
-	private PersistentObject setId(final Long id) {
+	protected PersistentObject setId(final Long id) {
 		this.id = id;
 		return this;
 	}

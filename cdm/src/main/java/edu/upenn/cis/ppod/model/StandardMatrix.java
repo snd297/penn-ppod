@@ -93,15 +93,8 @@ public class StandardMatrix extends Matrix<StandardRow> {
 	/** No-arg constructor for (at least) Hibernate. */
 	StandardMatrix() {}
 
-	/**
-	 * This constructor is {@code protected} to allow for injected {@code
-	 * OTUsToCharacterStateRows} in subclasses to be passed up the inheritance
-	 * hierarchy.
-	 * 
-	 * @param otusToRows the {@code OTUsToCharacterStateRows} for this matrix.
-	 */
 	@Inject
-	protected StandardMatrix(final StandardRows rows) {
+	StandardMatrix(final StandardRows rows) {
 		this.rows = rows;
 		this.rows.setMatrix(this);
 	}

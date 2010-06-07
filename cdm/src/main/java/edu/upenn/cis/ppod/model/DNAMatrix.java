@@ -27,7 +27,7 @@ public class DNAMatrix extends Matrix<DNARow> {
 	DNAMatrix() {}
 
 	@Inject
-	protected DNAMatrix(final DNARows rows) {
+	DNAMatrix(final DNARows rows) {
 		this.rows = rows;
 		this.rows.setMatrix(this);
 	}
