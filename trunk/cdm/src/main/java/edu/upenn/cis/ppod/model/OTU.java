@@ -43,13 +43,13 @@ public class OTU
 		extends UUPPodEntityWXmlId
 		implements ILabeled, IVersionedWithOTUSet {
 
-	/** The table for this entity. Intentionally package-private. */
-	static final String TABLE = "OTU";
+	/** The table for this entity. */
+	public static final String TABLE = "OTU";
 
 	/**
 	 * To be used for the names of foreign keys that point at this table.
 	 */
-	static final String JOIN_COLUMN = TABLE + "_ID";
+	public static final String JOIN_COLUMN = TABLE + "_ID";
 
 	/**
 	 * The column where we store {@code #label}. Intentionally package-private.
@@ -62,7 +62,7 @@ public class OTU
 	private String label;
 
 	/**
-	 * These are the {@code OTUSet}s that this {@code OTU} belongs to.
+	 * The {@code OTUSet} that this {@code OTU} belongs to.
 	 */
 	@ManyToOne
 	@JoinColumn(name = OTUSet.JOIN_COLUMN, insertable = false, updatable = false, nullable = false)
@@ -112,15 +112,13 @@ public class OTU
 	}
 
 	/**
-	 * Reset this OTU's pPOD version info to {@code null}, and call
-	 * {@link OTUSet#resetVersionInfo()} on all of the OTU sets that contain
-	 * this OTU.
+	 * Mark this {@code OTU} and its {@code OTUSet}, if it has one, as in need
+	 * of a new pPod version info.
 	 * 
 	 * @return this {@code OTU}
 	 */
 	@Override
 	public OTU setInNeedOfNewVersion() {
-
 		if (getOTUSet() != null) {
 			getOTUSet().setInNeedOfNewVersion();
 		}
@@ -147,13 +145,14 @@ public class OTU
 	}
 
 	/**
-	 * Add <code>otuSet</code> to this <code>OTU</code>'s associated
-	 * <code>OTUSet</code>s.
+	 * Set the {@code OTUSet} that owns this {@code OTU}.
 	 * <p>
-	 * Intended to be package protected and used in conjunction with
-	 * {@link OTUSet#addOTU(OTU)}.
+	 * Intended to be called from methods that manage the {@code OTUSet<->OTU}
+	 * relationship.
 	 * 
-	 * @param otuSet to be added to this <code>OTU</code>.
+	 * @param the owning {@code OTUSet}.
+	 * 
+	 * @return this
 	 */
 	protected OTU setOTUSet(@CheckForNull final OTUSet otuSet) {
 		this.otuSet = otuSet;
