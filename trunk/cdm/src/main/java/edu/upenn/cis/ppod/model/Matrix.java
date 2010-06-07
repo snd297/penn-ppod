@@ -387,7 +387,7 @@ public abstract class Matrix<R extends Row<?>>
 	 * <p>
 	 * This method will remove rows from this matrix as necessary.
 	 * <p>
-	 * If there are any new {@code OTU}s in {@code newOTUSet}, then {@code
+	 * If there are any new {@code OTU}s in {@code otuSet}, then {@code
 	 * getRow(theNewOTU) == null}. That is, it adds {@code null} rows for new
 	 * {@code OTU}s.
 	 * 

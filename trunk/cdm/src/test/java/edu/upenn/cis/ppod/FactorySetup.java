@@ -19,9 +19,11 @@ import org.testng.IObjectFactory;
 import org.testng.annotations.ObjectFactory;
 import org.testng.annotations.Test;
 
+import edu.upenn.cis.ppod.TestGroupDefs;
+
 /**
  * Get an {@link ObjectFactory} into the current TestNG environment. Should be
- * called before any classes that need on Guice injection.
+ * called before any classes that need Guice injection.
  * 
  * @author Sam Donnelly
  */
