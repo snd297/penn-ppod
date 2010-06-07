@@ -45,7 +45,8 @@ public abstract class GuiceObjectFactory extends AbstractModule implements
 	@SuppressWarnings("unchecked")
 	// We're implementing a method from TestNG library - no choice but to
 	// suppress
-	public Object newInstance(final Constructor constructor,
+	public Object newInstance(
+			final Constructor constructor,
 			final Object... objects) {
 		final Object o = creator.newInstance(constructor, objects);
 		injector.injectMembers(o);
