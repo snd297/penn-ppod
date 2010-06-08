@@ -167,4 +167,12 @@ public class SequenceSetTest {
 		assertFalse(seqSet.isInNeedOfNewVersion());
 
 	}
+
+	@Test
+	public void afterUnmarshal() {
+		final SequenceSet<?> seqSet = dnaSequenceSetProvider.get();
+		final OTUSet otuSet = otuSetProvider.get();
+		seqSet.afterUnmarshal(null, otuSet);
+		assertSame(seqSet.getOTUSet(), otuSet);
+	}
 }
