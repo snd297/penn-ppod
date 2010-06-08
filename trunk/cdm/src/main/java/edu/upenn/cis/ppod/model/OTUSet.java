@@ -121,11 +121,11 @@ public class OTUSet extends UUPPodEntityWXmlId {
 	@Override
 	public void accept(final IVisitor visitor) {
 		checkNotNull(visitor);
+		visitor.visit(this);
 		for (final IPersistentObject child : getChildren()) {
 			child.accept(visitor);
 		}
 		super.accept(visitor);
-		visitor.visit(this);
 	}
 
 	public DNAMatrix addDNAMatrix(final DNAMatrix matrix) {

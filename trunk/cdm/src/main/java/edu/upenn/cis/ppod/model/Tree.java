@@ -60,8 +60,9 @@ public class Tree extends UUPPodEntity {
 
 	@Override
 	public void accept(final IVisitor visitor) {
-		super.accept(visitor);
+		checkNotNull(visitor);
 		visitor.visit(this);
+		super.accept(visitor);
 	}
 
 	/**

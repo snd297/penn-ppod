@@ -21,12 +21,15 @@ import static org.testng.Assert.assertNull;
 import static org.testng.Assert.assertSame;
 import static org.testng.Assert.assertTrue;
 
+import java.util.List;
+
 import org.testng.annotations.Test;
 
 import com.google.inject.Inject;
 import com.google.inject.Provider;
 
 import edu.upenn.cis.ppod.TestGroupDefs;
+import edu.upenn.cis.ppod.util.TestVisitor;
 
 /**
  * Test {@link SequenceSet}.
@@ -174,5 +177,45 @@ public class SequenceSetTest {
 		final OTUSet otuSet = otuSetProvider.get();
 		seqSet.afterUnmarshal(null, otuSet);
 		assertSame(seqSet.getOTUSet(), otuSet);
+	}
+
+	@Test
+	public void accept() {
+		final OTUSet otuSet = otuSetProvider.get();
+		otuSet.addOTU(otuProvider.get().setLabel("otu-0"));
+		otuSet.addOTU(otuProvider.get().setLabel("otu-1"));
+		otuSet.addOTU(otuProvider.get().setLabel("otu-2"));
+
+		final DNASequenceSet seqSet = dnaSequenceSetProvider.get();
+
+		otuSet.addDNASequenceSet(seqSet);
+
+		seqSet.putSequence(otuSet.getOTUs().get(0),
+				(DNASequence) dnaSequenceProvider.get().setSequence("ATG"));
+		seqSet.putSequence(otuSet.getOTUs().get(1),
+				(DNASequence) dnaSequenceProvider.get().setSequence("CTA"));
+		seqSet.putSequence(otuSet.getOTUs().get(2),
+				(DNASequence) dnaSequenceProvider.get().setSequence("TTT"));
+
+		final TestVisitor visitor = new TestVisitor();
+
+		seqSet.accept(visitor);
+
+		final List<Object> visited = visitor.getVisited();
+
+			assertEquals(visited.size(), seqSet.getSequences().values().size() + 1); // add
+		// in
+		// one
+		// for
+		// parent
+
+		assertSame(visited.get(0), seqSet);
+
+		// Order undefined for visiting the children
+		final List<Object> visitedChildren = visited.subList(1, visited.size());
+		for (final Object sequence : seqSet.getSequences().values()) {
+			assertTrue(visitedChildren.contains(sequence));
+		}
+
 	}
 }

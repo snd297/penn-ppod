@@ -72,6 +72,7 @@ public class DNACell extends Cell<DNANucleotide> {
 
 	@Override
 	public void accept(final IVisitor visitor) {
+		checkNotNull(visitor);
 		visitor.visit(this);
 	}
 

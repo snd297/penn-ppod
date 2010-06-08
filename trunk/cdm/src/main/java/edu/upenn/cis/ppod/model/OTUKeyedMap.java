@@ -53,12 +53,13 @@ public abstract class OTUKeyedMap<V extends IOTUKeyedMapValue>
 
 	@Override
 	public void accept(final IVisitor visitor) {
+		checkNotNull(visitor);
+		visitor.visit(this);
 		for (final V value : getOTUsToValues().values()) {
 			if (value != null) {
 				value.accept(visitor);
 			}
 		}
-		visitor.visit(this);
 	}
 
 	public void afterUnmarshal() {

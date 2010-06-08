@@ -260,6 +260,7 @@ public class Attachment extends UUPPodEntityWXmlId {
 
 	@Override
 	public void accept(final IVisitor visitor) {
+		checkNotNull(visitor);
 		visitor.visit(this);
 		getType().accept(visitor);
 		super.accept(visitor);

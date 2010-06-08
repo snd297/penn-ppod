@@ -101,11 +101,12 @@ public class StandardMatrix extends Matrix<StandardRow> {
 
 	@Override
 	public void accept(final IVisitor visitor) {
+		checkNotNull(visitor);
+		visitor.visit(this);
 		for (final StandardCharacter character : getCharacters()) {
 			character.accept(visitor);
 		}
 		super.accept(visitor);
-		visitor.visit(this);
 	}
 
 	@Override

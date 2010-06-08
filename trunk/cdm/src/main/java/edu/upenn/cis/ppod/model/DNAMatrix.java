@@ -1,5 +1,7 @@
 package edu.upenn.cis.ppod.model;
 
+import static com.google.common.base.Preconditions.checkNotNull;
+
 import javax.persistence.CascadeType;
 import javax.persistence.Entity;
 import javax.persistence.FetchType;
@@ -34,8 +36,9 @@ public class DNAMatrix extends Matrix<DNARow> {
 
 	@Override
 	public void accept(final IVisitor visitor) {
-		super.accept(visitor);
+		checkNotNull(visitor);
 		visitor.visit(this);
+		super.accept(visitor);
 	}
 
 	/**

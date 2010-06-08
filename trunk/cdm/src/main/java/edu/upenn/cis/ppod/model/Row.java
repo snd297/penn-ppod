@@ -31,6 +31,7 @@ public abstract class Row<C extends Cell<?>>
 
 	@Override
 	public void accept(final IVisitor visitor) {
+		checkNotNull(visitor);
 		for (final C cell : getCells()) {
 			cell.accept(visitor);
 		}

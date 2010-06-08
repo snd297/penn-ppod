@@ -15,6 +15,7 @@
  */
 package edu.upenn.cis.ppod.model;
 
+import static com.google.common.base.Preconditions.checkNotNull;
 import static com.google.common.collect.Iterables.get;
 import static com.google.common.collect.Maps.newHashMap;
 import static com.google.common.collect.Sets.newHashSet;
@@ -90,11 +91,12 @@ public class StandardCharacter extends UUPPodEntityWXmlId {
 
 	@Override
 	public void accept(final IVisitor visitor) {
+		checkNotNull(visitor);
+		visitor.visit(this);
 		for (final StandardState state : getStatesModifiable().values()) {
 			state.accept(visitor);
 		}
 		super.accept(visitor);
-		visitor.visit(this);
 	}
 
 	/**

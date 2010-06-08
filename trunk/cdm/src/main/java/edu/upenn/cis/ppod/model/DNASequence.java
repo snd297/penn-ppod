@@ -15,6 +15,8 @@
  */
 package edu.upenn.cis.ppod.model;
 
+import static com.google.common.base.Preconditions.checkNotNull;
+
 import java.util.Set;
 
 import javax.annotation.CheckForNull;
@@ -56,6 +58,7 @@ public class DNASequence extends Sequence {
 
 	@Override
 	public void accept(final IVisitor visitor) {
+		checkNotNull(visitor);
 		visitor.visit(this);
 	}
 
