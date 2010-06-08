@@ -18,7 +18,6 @@ package edu.upenn.cis.ppod.model;
 import static com.google.common.base.Preconditions.checkArgument;
 import static com.google.common.base.Preconditions.checkNotNull;
 
-import java.util.Iterator;
 import java.util.Map;
 
 import javax.annotation.CheckForNull;
@@ -44,8 +43,7 @@ import edu.upenn.cis.ppod.util.IVisitor;
 @MappedSuperclass
 public abstract class SequenceSet<S extends Sequence>
 		extends UUPPodEntityWXmlId
-		implements IVersionedWithOTUSet,
-		Iterable<S> {
+		implements IVersionedWithOTUSet {
 
 	@Column(name = "LABEL", nullable = false)
 	private String label;
@@ -176,13 +174,6 @@ public abstract class SequenceSet<S extends Sequence>
 	 */
 	public int getSequencesSize() {
 		return getOTUKeyedMap().getOTUsToValues().size();
-	}
-
-	/**
-	 * Iterates over the sequences in {@code getOTUSet().getOTUs()} order.
-	 */
-	public Iterator<S> iterator() {
-		return getOTUKeyedMap().getValuesInOTUSetOrder().iterator();
 	}
 
 	/**

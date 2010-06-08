@@ -189,9 +189,16 @@ public abstract class Cell<E> extends PPodEntity {
 
 	/**
 	 * Get a modifiable reference to the elements in this cell.
+	 * <p>
+	 * Will never be {@code null} for POLYMORPHIC and UNCERTAIN cells.
+	 * <p>
+	 * Will be {@code null} for SINGLE, UNASSIGNED, and INAPPLICABLE cells.
+	 * <p>
+	 * Will be {@code null} for newly created objects.
 	 * 
-	 * @return a modifiable referernce to the elements in this cell
+	 * @return a modifiable reference to the elements in this cell
 	 */
+	@Nullable
 	protected abstract Set<E> getElementsModifiable();
 
 	/**

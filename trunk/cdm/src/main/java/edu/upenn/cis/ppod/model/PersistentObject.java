@@ -30,6 +30,7 @@ import javax.xml.bind.annotation.XmlAttribute;
 
 import org.hibernate.annotations.AccessType;
 
+import edu.umd.cs.findbugs.annotations.CheckForNull;
 import edu.upenn.cis.ppod.modelinterfaces.IPersistentObject;
 import edu.upenn.cis.ppod.util.IVisitor;
 
@@ -71,7 +72,9 @@ public abstract class PersistentObject implements IPersistentObject {
 	 * @param parent see {@code Unmarshaller}
 	 */
 	@OverridingMethodsMustInvokeSuper
-	public void afterUnmarshal(final Unmarshaller u, final Object parent) {
+	public void afterUnmarshal(
+			@CheckForNull final Unmarshaller u,
+			@CheckForNull final Object parent) {
 		marshalled = true;
 	}
 

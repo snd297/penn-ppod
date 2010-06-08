@@ -240,7 +240,7 @@ public class OTUSet extends UUPPodEntityWXmlId {
 	@Override
 	public void afterUnmarshal(
 			@CheckForNull final Unmarshaller u,
-			final Object parent) {
+			@CheckForNull final Object parent) {
 		super.afterUnmarshal(u, parent);
 		if (parent instanceof Study) {
 			// We don't call setStudy(...) since that would reset the pPOD

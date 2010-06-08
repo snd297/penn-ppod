@@ -17,6 +17,7 @@ package edu.upenn.cis.ppod.model;
 
 import static com.google.common.collect.Iterables.getOnlyElement;
 import static org.testng.Assert.assertEquals;
+import static org.testng.Assert.assertNotNull;
 import static org.testng.Assert.assertTrue;
 
 import java.util.Set;
@@ -98,13 +99,14 @@ public class DNACellTest {
 		matrix.getRow(matrix.getOTUSet().getOTUs().get(0)).setCells(
 				ImmutableList.of(cell));
 
-		final Set<DNANucleotide> elements = ImmutableSet.of(DNANucleotide.A,
-				DNANucleotide.C);
+		final Set<DNANucleotide> elements =
+				ImmutableSet.of(DNANucleotide.A, DNANucleotide.C);
 
 		cell.setPolymorphicElements(elements);
 
 		cell.beforeMarshal(null);
 		final Set<DNANucleotide> xmlStates = cell.getElementsXml();
+		assertNotNull(xmlStates);
 		assertEquals(xmlStates.size(), elements.size());
 		for (final DNANucleotide expectedElement : elements) {
 			assertTrue(xmlStates.contains(expectedElement));

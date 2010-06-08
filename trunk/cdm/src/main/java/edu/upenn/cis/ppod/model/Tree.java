@@ -167,9 +167,13 @@ public class Tree extends UUPPodEntity {
 
 	/**
 	 * Get the tree set that owns this tree.
+	 * <p>
+	 * Will be {@code null} for newly created trees. Will never be {@code null}
+	 * for trees in a persistent state.
 	 * 
 	 * @return the tree set that owns this tree
 	 */
+	@Nullable
 	public TreeSet getTreeSet() {
 		return treeSet;
 	}

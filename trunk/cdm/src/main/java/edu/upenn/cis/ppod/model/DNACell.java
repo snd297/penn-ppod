@@ -135,7 +135,12 @@ public class DNACell extends Cell<DNANucleotide> {
 				} else {
 					this.elements.clear();
 				}
-				this.elements.addAll(elements);
+				if (this.elements == null) {
+					// Added for FindBugs
+					throw new AssertionError("elements should not be null");
+				} else {
+					this.elements.addAll(elements);
+				}
 			}
 		}
 		return this;
