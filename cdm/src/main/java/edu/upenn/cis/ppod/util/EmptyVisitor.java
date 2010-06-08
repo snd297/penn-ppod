@@ -18,11 +18,6 @@ package edu.upenn.cis.ppod.util;
 import edu.upenn.cis.ppod.model.Attachment;
 import edu.upenn.cis.ppod.model.AttachmentNamespace;
 import edu.upenn.cis.ppod.model.AttachmentType;
-import edu.upenn.cis.ppod.model.StandardCharacter;
-import edu.upenn.cis.ppod.model.StandardState;
-import edu.upenn.cis.ppod.model.StandardCell;
-import edu.upenn.cis.ppod.model.StandardMatrix;
-import edu.upenn.cis.ppod.model.StandardRow;
 import edu.upenn.cis.ppod.model.DNACell;
 import edu.upenn.cis.ppod.model.DNAMatrix;
 import edu.upenn.cis.ppod.model.DNARow;
@@ -31,6 +26,11 @@ import edu.upenn.cis.ppod.model.DNASequenceSet;
 import edu.upenn.cis.ppod.model.OTU;
 import edu.upenn.cis.ppod.model.OTUKeyedMap;
 import edu.upenn.cis.ppod.model.OTUSet;
+import edu.upenn.cis.ppod.model.StandardCell;
+import edu.upenn.cis.ppod.model.StandardCharacter;
+import edu.upenn.cis.ppod.model.StandardMatrix;
+import edu.upenn.cis.ppod.model.StandardRow;
+import edu.upenn.cis.ppod.model.StandardState;
 import edu.upenn.cis.ppod.model.Study;
 import edu.upenn.cis.ppod.model.Tree;
 import edu.upenn.cis.ppod.model.TreeSet;
@@ -47,74 +47,56 @@ public abstract class EmptyVisitor implements IVisitor {
 	 * 
 	 * @param attachment ignored
 	 */
-	public void visit(final Attachment attachment) {
-
-	}
+	public void visit(final Attachment attachment) {}
 
 	/**
 	 * Does nothing.
 	 * 
 	 * @param attachmentNamespace ignored
 	 */
-	public void visit(final AttachmentNamespace attachmentNamespace) {
-
-	}
+	public void visit(final AttachmentNamespace attachmentNamespace) {}
 
 	/**
 	 * Does nothing.
 	 * 
 	 * @param attachmentType ignored
 	 */
-	public void visit(final AttachmentType attachmentType) {
-
-	}
-
-	/**
-	 * Does nothing.
-	 * 
-	 * @param character ignored
-	 */
-	public void visit(final StandardCharacter standardCharacter) {
-
-	}
-
-	/**
-	 * Does nothing.
-	 * 
-	 * @param characterState ignored
-	 */
-	public void visit(final StandardState standardState) {}
+	public void visit(final AttachmentType attachmentType) {}
 
 	/**
 	 * Does nothing.
 	 * 
 	 * @param cell ignored
 	 */
-	public void visit(final StandardCell cell) {}
+	public void visit(final DNACell cell) {}
 
 	/**
 	 * Does nothing.
 	 * 
 	 * @param matrix ignored
 	 */
-	public void visit(final StandardMatrix matrix) {}
+	public void visit(final DNAMatrix matrix) {}
 
 	/**
 	 * Does nothing.
 	 * 
 	 * @param row ignored
 	 */
-	public void visit(final StandardRow row) {}
-
-	public void visit(final DNACell cell) {}
-
-	public void visit(final DNAMatrix dnaMatrix) {}
-
 	public void visit(final DNARow row) {}
 
-	public void visit(final DNASequence dnaSequence) {}
+	/**
+	 * Does nothing.
+	 * 
+	 * @param sequence ignored
+	 */
+	public void visit(final DNASequence sequence) {}
 
-	public void visit(final DNASequenceSet dnaSequenceSet) {}
+	/**
+	 * Does nothing.
+	 * 
+	 * @param sequenceSet ignored
+	 */
+	public void visit(final DNASequenceSet sequenceSet) {}
 
 	/**
 	 * Does nothing.
@@ -136,6 +118,41 @@ public abstract class EmptyVisitor implements IVisitor {
 	 * @param otuSet ignored
 	 */
 	public void visit(final OTUSet otuSet) {}
+
+	/**
+	 * Does nothing.
+	 * 
+	 * @param cell ignored
+	 */
+	public void visit(final StandardCell cell) {}
+
+	/**
+	 * Does nothing.
+	 * 
+	 * @param character ignored
+	 */
+	public void visit(final StandardCharacter standardCharacter) {}
+
+	/**
+	 * Does nothing.
+	 * 
+	 * @param matrix ignored
+	 */
+	public void visit(final StandardMatrix matrix) {}
+
+	/**
+	 * Does nothing.
+	 * 
+	 * @param row ignored
+	 */
+	public void visit(final StandardRow row) {}
+
+	/**
+	 * Does nothing.
+	 * 
+	 * @param characterState ignored
+	 */
+	public void visit(final StandardState standardState) {}
 
 	/**
 	 * Does nothing.

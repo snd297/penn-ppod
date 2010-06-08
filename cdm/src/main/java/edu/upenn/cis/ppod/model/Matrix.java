@@ -79,6 +79,7 @@ public abstract class Matrix<R extends Row<?>>
 
 	@Override
 	public void accept(final IVisitor visitor) {
+		checkNotNull(visitor);
 		getOTUKeyedRows().accept(visitor);
 		super.accept(visitor);
 	}

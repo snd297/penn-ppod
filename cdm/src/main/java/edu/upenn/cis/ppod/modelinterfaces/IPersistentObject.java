@@ -26,11 +26,6 @@ import edu.upenn.cis.ppod.util.IVisitor;
  */
 public interface IPersistentObject {
 
-	/**
-	 * Visitor pattern accept method.
-	 * 
-	 * @param visitor the visitor
-	 */
 	void accept(IVisitor visitor);
 
 	/**
@@ -40,6 +35,5 @@ public interface IPersistentObject {
 	 */
 	@Nullable
 	Long getId();
-
 
 }

@@ -104,6 +104,7 @@ public class StandardCell extends Cell<StandardState> {
 
 	@Override
 	public void accept(final IVisitor visitor) {
+		checkNotNull(visitor);
 		visitor.visit(this);
 	}
 

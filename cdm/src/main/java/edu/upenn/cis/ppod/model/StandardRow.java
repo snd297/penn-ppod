@@ -80,8 +80,9 @@ public class StandardRow extends Row<StandardCell> {
 
 	@Override
 	public void accept(final IVisitor visitor) {
-		super.accept(visitor);
+		checkNotNull(visitor);
 		visitor.visit(this);
+		super.accept(visitor);
 	}
 
 	public int getCellPosition(final StandardCell cell) {

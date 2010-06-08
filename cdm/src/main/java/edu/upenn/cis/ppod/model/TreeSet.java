@@ -72,11 +72,12 @@ public class TreeSet extends UUPPodEntityWXmlId implements
 
 	@Override
 	public void accept(final IVisitor visitor) {
+		checkNotNull(visitor);
+		visitor.visit(this);
 		for (final Tree tree : getTreesModifiable()) {
 			tree.accept(visitor);
 		}
 		super.accept(visitor);
-		visitor.visit(this);
 	}
 
 	/**

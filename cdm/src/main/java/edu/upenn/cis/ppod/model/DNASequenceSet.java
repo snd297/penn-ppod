@@ -66,13 +66,9 @@ public class DNASequenceSet extends SequenceSet<DNASequence> {
 
 	@Override
 	public void accept(final IVisitor visitor) {
-		getOTUKeyedMap().accept(visitor);
-		for (final DNASequence sequence : getOTUKeyedMap()
-				.getValuesInOTUSetOrder()) {
-			sequence.accept(visitor);
-		}
-		super.accept(visitor);
+		checkNotNull(visitor);
 		visitor.visit(this);
+		super.accept(visitor);
 	}
 
 	@Override

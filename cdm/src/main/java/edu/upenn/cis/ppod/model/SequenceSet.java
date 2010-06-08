@@ -57,11 +57,8 @@ public abstract class SequenceSet<S extends Sequence>
 
 	@Override
 	public void accept(final IVisitor visitor) {
+		checkNotNull(visitor);
 		getOTUKeyedMap().accept(visitor);
-		for (final S sequence : getOTUKeyedMap().getOTUsToValues()
-				.values()) {
-			sequence.accept(visitor);
-		}
 		super.accept(visitor);
 	}
 
@@ -166,15 +163,6 @@ public abstract class SequenceSet<S extends Sequence>
 	 *         set
 	 */
 	public abstract Map<OTU, S> getSequences();
-
-	/**
-	 * Get the number of sequences in this set.
-	 * 
-	 * @return the number of sequences in this set.
-	 */
-	public int getSequencesSize() {
-		return getOTUKeyedMap().getOTUsToValues().size();
-	}
 
 	/**
 	 * 
