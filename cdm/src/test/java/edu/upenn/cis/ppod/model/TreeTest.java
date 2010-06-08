@@ -15,7 +15,9 @@
  */
 package edu.upenn.cis.ppod.model;
 
+import static org.testng.Assert.assertEquals;
 import static org.testng.Assert.assertFalse;
+import static org.testng.Assert.assertSame;
 import static org.testng.Assert.assertTrue;
 
 import org.testng.annotations.Test;
@@ -54,5 +56,20 @@ public class TreeTest {
 
 		assertTrue(tree.isInNeedOfNewVersion());
 		assertTrue(treeSet.isInNeedOfNewVersion());
+	}
+
+	@Test
+	public void setNewick() {
+		final Tree tree = treeProvider.get();
+		final String newick = "arbitrary string";
+		tree.unsetInNeedOfNewVersion();
+		final Tree returnedTree = tree.setNewick(newick);
+		assertSame(returnedTree, tree);
+		assertEquals(tree.getNewick(), newick);
+		assertTrue(tree.isInNeedOfNewVersion());
+
+		tree.unsetInNeedOfNewVersion();
+		tree.setNewick(newick);
+		assertFalse(tree.isInNeedOfNewVersion());
 	}
 }
