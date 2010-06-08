@@ -66,10 +66,11 @@ public class StandardCharacter extends UUPPodEntityWXmlId {
 	private String label;
 
 	/**
-	 * The matrices that hold a reference to this {@code StandardCharacter}.
+	 * The matrix that owns this {@code StandardCharacter}.
 	 */
 	@ManyToOne
 	@JoinColumn(name = StandardMatrix.JOIN_COLUMN, insertable = false, updatable = false, nullable = false)
+	@CheckForNull
 	private StandardMatrix matrix;
 
 	/**
@@ -159,10 +160,14 @@ public class StandardCharacter extends UUPPodEntityWXmlId {
 	}
 
 	/**
-	 * Get the matrices that refer to this character.
+	 * Get the matrix that owns this character.
+	 * <p>
+	 * Will be {@code null} for newly created characters. Will never be {@code
+	 * null} for characters in a persistent state.
 	 * 
-	 * @return the matrices that refer to this character
+	 * @return the matrix that owns this character
 	 */
+	@Nullable
 	public StandardMatrix getMatrix() {
 		return matrix;
 	}

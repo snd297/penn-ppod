@@ -201,7 +201,12 @@ public class StandardCell extends Cell<StandardState> {
 				} else {
 					this.elements.clear();
 				}
-				this.elements.addAll(elements);
+				if (this.elements == null) {
+					// Added for FindBugs
+					throw new AssertionError("elements is null");
+				} else {
+					this.elements.addAll(elements);
+				}
 			}
 		}
 		return this;

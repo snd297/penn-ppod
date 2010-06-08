@@ -60,6 +60,7 @@ public class TreeSet extends UUPPodEntityWXmlId implements
 
 	@ManyToOne(fetch = FetchType.LAZY)
 	@JoinColumn(name = OTUSet.JOIN_COLUMN, nullable = false)
+	@CheckForNull
 	private OTUSet otuSet;
 
 	@OneToMany(cascade = CascadeType.ALL, orphanRemoval = true)

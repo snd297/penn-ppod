@@ -22,6 +22,7 @@ import static com.google.common.collect.Iterables.isEmpty;
 import static com.google.common.collect.Lists.newArrayList;
 import static com.google.common.collect.Sets.newHashSet;
 import static org.testng.Assert.assertEquals;
+import static org.testng.Assert.assertNotNull;
 import static org.testng.Assert.assertTrue;
 
 import java.util.Arrays;
@@ -96,6 +97,7 @@ public class StandardCellTest {
 		cell.setPolymorphicElements(states);
 		cell.beforeMarshal(null);
 		final Set<StandardState> xmlStates = cell.getElementsXml();
+		assertNotNull(xmlStates);
 		assertEquals(xmlStates.size(), states.size());
 		for (final StandardState expectedState : states) {
 
