@@ -1,5 +1,6 @@
 package edu.upenn.cis.ppod.model;
 
+import static com.google.common.base.Preconditions.checkNotNull;
 import static com.google.common.collect.Lists.newArrayList;
 
 import java.util.Collections;
@@ -17,6 +18,7 @@ import javax.persistence.Table;
 import javax.xml.bind.annotation.XmlElement;
 
 import edu.upenn.cis.ppod.modelinterfaces.IMatrix;
+import edu.upenn.cis.ppod.util.IVisitor;
 
 /**
  * A row of {@link DNACell}s.
@@ -56,6 +58,13 @@ public class DNARow extends Row<DNACell> {
 	private DNARows rows;
 
 	DNARow() {}
+
+	@Override
+	public void accept(final IVisitor visitor) {
+		checkNotNull(visitor);
+		visitor.visit(this);
+		super.accept(visitor);
+	}
 
 	@Override
 	public List<DNACell> getCells() {
