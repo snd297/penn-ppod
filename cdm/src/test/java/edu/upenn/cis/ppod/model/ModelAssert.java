@@ -105,14 +105,15 @@ public class ModelAssert {
 		assertEquals(actualOTU.getLabel(), expectedOTU.getLabel());
 	}
 
-	public static void assertEqualsCharacterStates(
+	public static void assertEqualsStandardStates(
 			final StandardState actualState, final StandardState expectedState) {
 		assertEquals(actualState.getLabel(), expectedState.getLabel());
 		assertEquals(actualState.getStateNumber(), expectedState
 				.getStateNumber());
 	}
 
-	public static void assertEqualsCharacters(final StandardCharacter actualCharacter,
+	public static void assertEqualsCharacters(
+			final StandardCharacter actualCharacter,
 			final StandardCharacter expectedCharacter) {
 		assertEqualsPPodEntities(actualCharacter, expectedCharacter);
 		assertEquals(actualCharacter.getLabel(), expectedCharacter.getLabel());
@@ -129,27 +130,28 @@ public class ModelAssert {
 
 			assertNotNull(expectedState);
 			assertTrue(expectedState.getCharacter() == expectedCharacter);
-			assertEqualsCharacterStates(actualState,
+			assertEqualsStandardStates(actualState,
 					expectedState);
 		}
 
 	}
 
-	public static void assertEqualsCharacterStateCells(
+	public static void assertEqualsStandardCells(
 			final StandardCell actualCell,
 			final StandardCell expectedCell) {
+		assertEquals(actualCell.getType(), expectedCell.getType());
 		assertEquals(actualCell.getElements().size(), expectedCell
 				.getElements().size());
 		for (final Iterator<StandardState> actualStateItr = actualCell
 				.getElements().iterator(), expectedStateItr = expectedCell
 				.getElements().iterator(); actualStateItr.hasNext()
 											&& expectedStateItr.hasNext();) {
-			assertEqualsCharacterStates(actualStateItr.next(), expectedStateItr
+			assertEqualsStandardStates(actualStateItr.next(), expectedStateItr
 					.next());
 		}
 	}
 
-	public static void assertEqualsCharacterStateRows(
+	public static void assertEqualsStandardRows(
 			final StandardRow actualRow,
 			final StandardRow expectedRow) {
 		assertEquals(actualRow.getCells().size(), expectedRow.getCells().size());
@@ -164,7 +166,7 @@ public class ModelAssert {
 			final StandardCell actualCell = actualCellItr.next(), expectedCell = expectedCellItr
 					.next();
 			assertTrue(actualCell.getRow() == actualRow);
-			assertEqualsCharacterStateCells(actualCell, expectedCell);
+			assertEqualsStandardCells(actualCell, expectedCell);
 		}
 	}
 
@@ -174,7 +176,7 @@ public class ModelAssert {
 	 * @param actualMatrix
 	 * @param expectedMatrix
 	 */
-	public static void assertEqualsCharacterStateMatrices(
+	public static void assertEqualsStandardMatrices(
 			final StandardMatrix actualMatrix,
 			final StandardMatrix expectedMatrix) {
 		assertEquals(actualMatrix.getLabel(), expectedMatrix.getLabel());
@@ -193,7 +195,8 @@ public class ModelAssert {
 												&& expectedCharacterItr
 														.hasNext();) {
 			final StandardCharacter actualCharacter = actualCharacterItr.next();
-			final StandardCharacter expectedCharacter = expectedCharacterItr.next();
+			final StandardCharacter expectedCharacter = expectedCharacterItr
+					.next();
 			assertSame(actualCharacter.getMatrix(), actualMatrix);
 			assertSame(expectedCharacter.getMatrix(), expectedMatrix);
 			assertEqualsCharacters(actualCharacter, expectedCharacter);
@@ -230,7 +233,7 @@ public class ModelAssert {
 					.getRow(actualOTUIterator.next()), expectedRow = expectedMatrix
 					.getRow(expectedOTUIterator.next());
 			assertTrue(actualRow.getMatrix() == actualMatrix);
-			assertEqualsCharacterStateRows(actualRow, expectedRow);
+			assertEqualsStandardRows(actualRow, expectedRow);
 		}
 	}
 

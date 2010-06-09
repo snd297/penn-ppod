@@ -127,8 +127,8 @@ public class StandardRow extends Row<StandardCell> {
 	@Override
 	public List<StandardCell> setCells(
 			final List<? extends StandardCell> cells) {
-		final List<StandardCell> clearedCells = super
-				.setCellsHelper(cells);
+		final List<StandardCell> clearedCells =
+				super.setCellsHelper(cells);
 
 		for (final StandardCell cell : getCells()) {
 			cell.setRow(this);

@@ -89,5 +89,6 @@ public class MergeSequenceSetsTest {
 		mergeSeqSets.mergeSequenceSets(trgSeqSet, srcSeqSet);
 
 		ModelAssert.assertEqualsSequenceSets(trgSeqSet, srcSeqSet);
+
 	}
 }
