@@ -99,7 +99,7 @@ public class CreateOrUpdateStandardMatrixTest {
 	}
 
 	@Test(dataProvider = MatrixProvider.SMALL_MATRICES_PROVIDER, dataProviderClass = MatrixProvider.class)
-	public void save(final StandardMatrix sourceMatrix) {
+	public void create(final StandardMatrix sourceMatrix) {
 
 		final ICreateOrUpdateStandardMatrix createOrUpdateStandardMatrix =
 				createOrUpdateMatrixFactory.create(

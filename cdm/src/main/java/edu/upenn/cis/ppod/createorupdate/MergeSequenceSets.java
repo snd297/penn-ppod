@@ -49,29 +49,29 @@ final class MergeSequenceSets<SS extends SequenceSet<S>, S extends Sequence>
 	}
 
 	public void mergeSequenceSets(
-			final SS trgSeqSet,
+			final SS targSeqSet,
 			final SS srcSeqSet) {
-		checkNotNull(trgSeqSet);
+		checkNotNull(targSeqSet);
 		checkArgument(
-				trgSeqSet.getOTUSet() != null,
-				"trgSeqSet does not belong to an OTUSet");
+				targSeqSet.getOTUSet() != null,
+				"targSeqSet does not belong to an OTUSet");
 
 		checkNotNull(srcSeqSet);
 		checkArgument(
 				srcSeqSet.getOTUSet() != null,
 				"srcSeqSet does not belong to an OTUSet");
 
-		trgSeqSet.setLabel(srcSeqSet.getLabel());
+		targSeqSet.setLabel(srcSeqSet.getLabel());
 
-		dao.makePersistent(trgSeqSet);
+		dao.makePersistent(targSeqSet);
 
 		final Integer trgSeqSetLengths =
-				trgSeqSet.getSequenceLengths();
+				targSeqSet.getSequenceLengths();
 
 		final Integer srcSeqSetLengths =
 				srcSeqSet.getSequenceLengths();
 
-		Map<OTU, S> trgOTUsToSeqs;
+		Map<OTU, S> targOTUsToSeqs;
 
 		if (trgSeqSetLengths == null ||
 				trgSeqSetLengths.equals(srcSeqSetLengths)) {
@@ -79,15 +79,15 @@ final class MergeSequenceSets<SS extends SequenceSet<S>, S extends Sequence>
 			// sequences are already of the correct size, so we grab the
 			// OTU->Sequence
 			// map
-			trgOTUsToSeqs =
-					trgSeqSet.getSequences();
+			targOTUsToSeqs =
+					targSeqSet.getSequences();
 		} else {
 			// We need to clear it because it's of the wrong size, so we make a
 			// copy of the OTU->Sequence map
-			trgOTUsToSeqs =
+			targOTUsToSeqs =
 					ImmutableMap.copyOf(
-							trgSeqSet.getSequences());
-			trgSeqSet.clearSequences();
+							targSeqSet.getSequences());
+			targSeqSet.clearSequences();
 		}
 
 		for (int i = 0; i < srcSeqSet.getOTUSet().getOTUs().size(); i++) {
@@ -97,37 +97,35 @@ final class MergeSequenceSets<SS extends SequenceSet<S>, S extends Sequence>
 							.get(i);
 
 			final S srcSeq = srcSeqSet.getSequence(sourceOTU);
-			final OTU trgOTU =
-					trgSeqSet
-							.getOTUSet()
+			final OTU trgOTU = targSeqSet.getOTUSet()
 							.getOTUs()
 							.get(i);
 
-			S trgSeq;
+			S targSeq;
 
-			if (null == (trgSeq =
-					trgOTUsToSeqs.get(trgOTU))) {
-				trgSeq = sequenceProvider.get();
-				trgSeq.setVersionInfo(newVersionInfo
+			if (null == (targSeq =
+					targOTUsToSeqs.get(trgOTU))) {
+				targSeq = sequenceProvider.get();
+				targSeq.setVersionInfo(newVersionInfo
 						.getNewVersionInfo());
 			}
-			trgSeq.setSequence(srcSeq.getSequence());
-			trgSeqSet.putSequence(trgOTU, trgSeq);
+			targSeq.setSequence(srcSeq.getSequence());
+			targSeqSet.putSequence(trgOTU, targSeq);
 
-			trgSeq.setName(srcSeq.getName());
-			trgSeq.setDescription(srcSeq.getDescription());
-			trgSeq.setAccession(srcSeq.getAccession());
+			targSeq.setName(srcSeq.getName());
+			targSeq.setDescription(srcSeq.getDescription());
+			targSeq.setAccession(srcSeq.getAccession());
 
-			dao.makePersistent(trgSeq);
+			dao.makePersistent(targSeq);
 
-			if (trgSeq.isInNeedOfNewVersion()) {
-				trgSeq
+			if (targSeq.isInNeedOfNewVersion()) {
+				targSeq
 						.setVersionInfo(
 								newVersionInfo.getNewVersionInfo());
 			}
 
 			dao.flush();
-			dao.evict(trgSeq);
+			dao.evict(targSeq);
 		}
 	}
 }

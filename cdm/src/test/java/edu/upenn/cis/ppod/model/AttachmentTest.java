@@ -35,6 +35,10 @@ import edu.upenn.cis.ppod.TestGroupDefs;
  */
 @Test(groups = TestGroupDefs.FAST, dependsOnGroups = TestGroupDefs.INIT)
 public class AttachmentTest {
+
+	@Inject
+	private Provider<StandardCharacter> standardCharacterProvider;
+
 	@Inject
 	private Provider<Attachment> attachmentProvider;
 
@@ -171,5 +175,24 @@ public class AttachmentTest {
 		assertTrue(attachment.isInNeedOfNewVersion());
 
 		assertNull(attachment.getStringValue());
+	}
+
+	/**
+	 * Verify that when {@link Attachment#setInNeedOfNewVersion()} is called,
+	 * it's owner's {@code setInNeedOfNewVersion()} is also called.ax
+	 */
+	@Test
+	public void setInNeedOfNewVersion() {
+		final Attachment attachment = attachmentProvider.get();
+		final StandardCharacter character = standardCharacterProvider.get();
+		character.addAttachment(attachment);
+		attachment.unsetInNeedOfNewVersion();
+		character.unsetInNeedOfNewVersion();
+
+		attachment.setStringValue("arbitraray string");
+
+		assertTrue(attachment.isInNeedOfNewVersion());
+		assertTrue(character.isInNeedOfNewVersion());
+
 	}
 }
