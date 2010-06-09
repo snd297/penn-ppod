@@ -133,8 +133,9 @@ final class CreateOrUpdateStandardMatrix
 
 			for (final Attachment sourceAttachment : sourceCharacter
 					.getAttachments()) {
-				final ImmutableSet<Attachment> newDbCharacterAttachments = ImmutableSet
-						.copyOf(newDbCharacter.getAttachments());
+				final ImmutableSet<Attachment> newDbCharacterAttachments =
+						ImmutableSet
+								.copyOf(newDbCharacter.getAttachments());
 				final Set<Attachment> targetAttachments =
 						filter(
 								newDbCharacterAttachments,
@@ -143,8 +144,8 @@ final class CreateOrUpdateStandardMatrix
 												.getStringValue()),
 										Attachment.getStringValue));
 
-				Attachment dbAttachment = getOnlyElement(targetAttachments,
-						null);
+				Attachment dbAttachment =
+						getOnlyElement(targetAttachments, null);
 				if (dbAttachment == null) {
 					dbAttachment = attachmentProvider.get();
 					dbAttachment.setVersionInfo(newVersionInfo
