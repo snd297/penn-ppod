@@ -37,6 +37,139 @@ public class MergeSequenceSetsTest {
 	@Inject
 	private TestObjectWithLongIdDAO dao;
 
+	@Test
+	public void modifySequencesKeepLength() {
+		final IMergeSequenceSets<DNASequenceSet, DNASequence> mergeSeqSets =
+					mergeDNASequenceSetsFactory.create(dao, newVersionInfo);
+
+		final DNASequenceSet srcSeqSet =
+					(DNASequenceSet) dnaSequenceSetProvider
+							.get()
+							.setLabel("src-seq-set-0");
+		final DNASequenceSet trgSeqSet = dnaSequenceSetProvider.get();
+
+		final OTUSet trgOTUSet = otuSetProvider.get();
+		trgOTUSet.addOTU(otuProvider.get().setLabel("otu-0"));
+		trgOTUSet.addOTU(otuProvider.get().setLabel("otu-1"));
+		trgOTUSet.addOTU(otuProvider.get().setLabel("otu-2"));
+		trgOTUSet.addDNASequenceSet(trgSeqSet);
+
+		final OTUSet srcOTUSet = otuSetProvider.get();
+		srcOTUSet.addOTU(otuProvider.get().setLabel("otu-0"));
+		srcOTUSet.addOTU(otuProvider.get().setLabel("otu-1"));
+		srcOTUSet.addOTU(otuProvider.get().setLabel("otu-2"));
+
+		srcOTUSet.addDNASequenceSet(srcSeqSet);
+
+		final DNASequence srcSeq0 =
+					(DNASequence) dnaSequenceProvider
+							.get()
+							.setSequence("ACT")
+							.setAccession("jkjkj")
+							.setName("jkejfke")
+							.setDescription("jkfjeijf");
+		final DNASequence srcSeq1 =
+					(DNASequence) dnaSequenceProvider
+							.get()
+							.setSequence("TCA")
+							.setAccession("jjijk")
+							.setName("jefeji")
+							.setDescription("ejfiejiji");
+		final DNASequence srcSeq2 =
+					(DNASequence) dnaSequenceProvider
+							.get()
+							.setSequence("ATC")
+							.setAccession("jfje")
+							.setName("jfifjiji")
+							.setDescription("fjijeifji");
+
+		srcSeqSet.putSequence(srcOTUSet.getOTUs().get(0), srcSeq0);
+		srcSeqSet.putSequence(srcOTUSet.getOTUs().get(1), srcSeq1);
+		srcSeqSet.putSequence(srcOTUSet.getOTUs().get(2), srcSeq2);
+
+		mergeSeqSets.mergeSequenceSets(trgSeqSet, srcSeqSet);
+
+		srcSeq0.setSequence("ACC");
+		srcSeq1.setSequence("TCT");
+		srcSeq2.setSequence("ATA");
+
+		srcSeqSet.putSequence(srcOTUSet.getOTUs().get(0), srcSeq0);
+		srcSeqSet.putSequence(srcOTUSet.getOTUs().get(1), srcSeq1);
+		srcSeqSet.putSequence(srcOTUSet.getOTUs().get(2), srcSeq2);
+
+		mergeSeqSets.mergeSequenceSets(trgSeqSet, srcSeqSet);
+
+		ModelAssert.assertEqualsSequenceSets(trgSeqSet, srcSeqSet);
+	}
+
+	@Test
+	public void shortenSequences() {
+		final IMergeSequenceSets<DNASequenceSet, DNASequence> mergeSeqSets =
+					mergeDNASequenceSetsFactory.create(dao, newVersionInfo);
+
+		final DNASequenceSet srcSeqSet =
+					(DNASequenceSet) dnaSequenceSetProvider
+							.get()
+							.setLabel("src-seq-set-0");
+		final DNASequenceSet trgSeqSet = dnaSequenceSetProvider.get();
+
+		final OTUSet trgOTUSet = otuSetProvider.get();
+		trgOTUSet.addOTU(otuProvider.get().setLabel("otu-0"));
+		trgOTUSet.addOTU(otuProvider.get().setLabel("otu-1"));
+		trgOTUSet.addOTU(otuProvider.get().setLabel("otu-2"));
+		trgOTUSet.addDNASequenceSet(trgSeqSet);
+
+		final OTUSet srcOTUSet = otuSetProvider.get();
+		srcOTUSet.addOTU(otuProvider.get().setLabel("otu-0"));
+		srcOTUSet.addOTU(otuProvider.get().setLabel("otu-1"));
+		srcOTUSet.addOTU(otuProvider.get().setLabel("otu-2"));
+
+		srcOTUSet.addDNASequenceSet(srcSeqSet);
+
+		final DNASequence srcSeq0 =
+					(DNASequence) dnaSequenceProvider
+							.get()
+							.setSequence("ACT")
+							.setAccession("jkjkj")
+							.setName("jkejfke")
+							.setDescription("jkfjeijf");
+		final DNASequence srcSeq1 =
+					(DNASequence) dnaSequenceProvider
+							.get()
+							.setSequence("TCA")
+							.setAccession("jjijk")
+							.setName("jefeji")
+							.setDescription("ejfiejiji");
+		final DNASequence srcSeq2 =
+					(DNASequence) dnaSequenceProvider
+							.get()
+							.setSequence("ATC")
+							.setAccession("jfje")
+							.setName("jfifjiji")
+							.setDescription("fjijeifji");
+
+		srcSeqSet.putSequence(srcOTUSet.getOTUs().get(0), srcSeq0);
+		srcSeqSet.putSequence(srcOTUSet.getOTUs().get(1), srcSeq1);
+		srcSeqSet.putSequence(srcOTUSet.getOTUs().get(2), srcSeq2);
+
+		mergeSeqSets.mergeSequenceSets(trgSeqSet, srcSeqSet);
+
+		srcSeqSet.clearSequences();
+
+		srcSeq0.setSequence("AC");
+		srcSeq1.setSequence("TC");
+		srcSeq2.setSequence("AT");
+
+		srcSeqSet.putSequence(srcOTUSet.getOTUs().get(0), srcSeq0);
+		srcSeqSet.putSequence(srcOTUSet.getOTUs().get(1), srcSeq1);
+		srcSeqSet.putSequence(srcOTUSet.getOTUs().get(2), srcSeq2);
+
+		mergeSeqSets.mergeSequenceSets(trgSeqSet, srcSeqSet);
+
+		ModelAssert.assertEqualsSequenceSets(trgSeqSet, srcSeqSet);
+	}
+
+	@Test
 	public void mergeOnBlankTarget() {
 		final IMergeSequenceSets<DNASequenceSet, DNASequence> mergeSeqSets =
 				mergeDNASequenceSetsFactory.create(dao, newVersionInfo);
@@ -60,21 +193,21 @@ public class MergeSequenceSetsTest {
 
 		srcOTUSet.addDNASequenceSet(srcSeqSet);
 
-		final DNASequence trgSeq0 =
+		final DNASequence srcSeq0 =
 				(DNASequence) dnaSequenceProvider
 						.get()
 						.setSequence("ACT")
 						.setAccession("jkjkj")
 						.setName("jkejfke")
 						.setDescription("jkfjeijf");
-		final DNASequence trgSeq1 =
+		final DNASequence srcSeq1 =
 				(DNASequence) dnaSequenceProvider
 						.get()
 						.setSequence("TCA")
 						.setAccession("jjijk")
 						.setName("jefeji")
 						.setDescription("ejfiejiji");
-		final DNASequence trgSeq2 =
+		final DNASequence srcSeq2 =
 				(DNASequence) dnaSequenceProvider
 						.get()
 						.setSequence("ATC")
@@ -82,9 +215,9 @@ public class MergeSequenceSetsTest {
 						.setName("jfifjiji")
 						.setDescription("fjijeifji");
 
-		srcSeqSet.putSequence(srcOTUSet.getOTUs().get(0), trgSeq0);
-		srcSeqSet.putSequence(srcOTUSet.getOTUs().get(1), trgSeq1);
-		srcSeqSet.putSequence(srcOTUSet.getOTUs().get(2), trgSeq2);
+		srcSeqSet.putSequence(srcOTUSet.getOTUs().get(0), srcSeq0);
+		srcSeqSet.putSequence(srcOTUSet.getOTUs().get(1), srcSeq1);
+		srcSeqSet.putSequence(srcOTUSet.getOTUs().get(2), srcSeq2);
 
 		mergeSeqSets.mergeSequenceSets(trgSeqSet, srcSeqSet);
 
