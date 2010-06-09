@@ -83,7 +83,7 @@ public class StandardRowTest {
 		matrix.getRow(matrix.getOTUSet().getOTUs().get(0)).setCells(
 				Arrays.asList(cell));
 
-		ModelAssert.assertEqualsCharacterStateCells(cell, matrix.getRow(
+		ModelAssert.assertEqualsStandardCells(cell, matrix.getRow(
 				otus.get(0)).getCells().get(0));
 	}
 

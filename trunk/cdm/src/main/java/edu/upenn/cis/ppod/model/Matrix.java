@@ -101,7 +101,7 @@ public abstract class Matrix<R extends Row<?>>
 	public boolean beforeMarshal(@CheckForNull final Marshaller marshaller) {
 		super.beforeMarshal(marshaller);
 
-		if (getColumnVersionsModifiable().size() != 0) {
+		if (getColumnVersions().size() != 0) {
 			throw new AssertionError(
 					"getColumnsVersions().size() should be 0 before marshal");
 		}

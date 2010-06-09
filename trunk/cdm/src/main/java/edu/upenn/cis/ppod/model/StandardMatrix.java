@@ -192,7 +192,7 @@ public class StandardMatrix extends Matrix<StandardRow> {
 	 * It is legal for two characters to have the same label, but not to be
 	 * {@code .equals} to each other.
 	 * 
-	 * @param newCharacters the new characters
+	 * @param characters the new characters
 	 * 
 	 * @return the characters removed as a result of this operation
 	 * 
