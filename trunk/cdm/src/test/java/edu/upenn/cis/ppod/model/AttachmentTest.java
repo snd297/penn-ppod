@@ -129,4 +129,47 @@ public class AttachmentTest {
 
 		assertNull(attachment.getLabel());
 	}
+
+	@Test
+	public void setStringValue() {
+		final Attachment attachment = attachmentProvider.get();
+		assertNull(attachment.getStringValue());
+
+		final String stringVal = "STRING-VALUE";
+
+		assertFalse(attachment.isInNeedOfNewVersion());
+
+		final Attachment attachmentReturned =
+				attachment.setStringValue(stringVal);
+		assertSame(attachmentReturned, attachment);
+		assertEquals(attachment.getStringValue(), stringVal);
+
+		assertTrue(attachment.isInNeedOfNewVersion());
+
+		attachment.unsetInNeedOfNewVersion();
+
+		attachment.setStringValue(stringVal);
+
+		assertEquals(attachment.getStringValue(), stringVal);
+
+		assertFalse(attachment.isInNeedOfNewVersion());
+
+		final String stringVal2 = "STRING-VALUE2";
+
+		attachment.unsetInNeedOfNewVersion();
+
+		attachment.setStringValue(stringVal2);
+
+		assertEquals(attachment.getStringValue(), stringVal2);
+
+		assertTrue(attachment.isInNeedOfNewVersion());
+
+		attachment.unsetInNeedOfNewVersion();
+
+		attachment.setStringValue(null);
+
+		assertTrue(attachment.isInNeedOfNewVersion());
+
+		assertNull(attachment.getStringValue());
+	}
 }
