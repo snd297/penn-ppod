@@ -23,6 +23,7 @@ import java.util.List;
 
 import org.testng.annotations.Test;
 
+import com.google.common.collect.ImmutableList;
 import com.google.inject.Inject;
 import com.google.inject.Provider;
 
@@ -139,27 +140,36 @@ public class OTUKeyedMapTest {
 		otuSet.addDNAMatrix(matrix);
 
 		final OTU otu0 = otuSet.addOTU(otuProvider.get().setLabel("otu0"));
+		final OTU otu1 = otuSet.addOTU(otuProvider.get().setLabel("otu1"));
 		final OTU otu2 = otuSet.addOTU(otuProvider.get().setLabel("otu2"));
 
 		final DNARow row0 = dnaRowProvider.get();
-		final DNARow row1 = dnaRowProvider.get();
 		final DNARow row2 = dnaRowProvider.get();
 
 		matrix.putRow(otu0, row0);
-		matrix.putRow(null, row1); // the accept method should handle null
-		// values
+		matrix.getOTUKeyedRows().getOTUsToValues().put(otu1, null); // the
+		// accept
+		// method
+		// should
+		// handle
+		// null
+		// values, but we need to sneak around the matrix to get it in there
 		matrix.putRow(otu2, row2);
 
 		final TestVisitor visitor = new TestVisitor();
 
 		matrix.getOTUKeyedRows().accept(visitor);
 
-		// Size should be the same as all of the rows plus the
+		// Size should be the same as all of the rows minus the null row and
+		// plus the
 		// OTUKeyedMap
 		assertEquals(visitor.getVisited().size(),
-				matrix.getRows().values().size() + 1);
+				matrix.getRows().values().size() - 1 + 1);
 
 		assertTrue(visitor.getVisited().contains(matrix.getOTUKeyedRows()));
-		assertTrue(visitor.getVisited().containsAll(matrix.getRows().values()));
+		assertTrue(visitor
+				.getVisited()
+				.containsAll(ImmutableList
+						.of(row0, row2)));
 	}
 }
