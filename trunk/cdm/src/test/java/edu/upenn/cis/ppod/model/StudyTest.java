@@ -21,6 +21,29 @@ public class StudyTest {
 	@Inject
 	private Provider<Study> studyProvider;
 
+	@Inject
+	private Provider<OTUSet> otuSetProvider;
+
+	@Test
+	public void removeOTUSet() {
+		final Study study = studyProvider.get();
+		final OTUSet otuSet = otuSetProvider.get();
+		study.addOTUSet(otuSet);
+
+		assertTrue(study.getOTUSets().contains(otuSet));
+
+		study.unsetInNeedOfNewVersion();
+		final Study returnedStudy = study.removeOTUSet(otuSet);
+		assertSame(returnedStudy, study);
+		assertTrue(study.isInNeedOfNewVersion());
+		assertFalse(study.getOTUSets().contains(otuSet));
+
+		study.unsetInNeedOfNewVersion();
+
+		study.removeOTUSet(otuSet);
+		assertFalse(study.isInNeedOfNewVersion());
+	}
+
 	@Test
 	public void setLabel() {
 		final Study study = studyProvider.get();
