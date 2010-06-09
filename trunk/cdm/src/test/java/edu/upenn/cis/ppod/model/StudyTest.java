@@ -29,9 +29,6 @@ public class StudyTest {
 		final Study study = studyProvider.get();
 		final OTUSet otuSet = otuSetProvider.get();
 		study.addOTUSet(otuSet);
-
-		assertTrue(study.getOTUSets().contains(otuSet));
-
 		study.unsetInNeedOfNewVersion();
 		final Study returnedStudy = study.removeOTUSet(otuSet);
 		assertSame(returnedStudy, study);
@@ -61,5 +58,26 @@ public class StudyTest {
 
 		assertFalse(study.isInNeedOfNewVersion());
 		assertEquals(study.getLabel(), label);
+	}
+
+	@Test
+	public void addOTUSet() {
+		final Study study = studyProvider.get();
+		final OTUSet otuSet = otuSetProvider.get();
+		study.unsetInNeedOfNewVersion();
+
+		study.addOTUSet(otuSet);
+
+		assertTrue(study.isInNeedOfNewVersion());
+		assertEquals(study.getOTUSets().size(), 1);
+		assertTrue(study.getOTUSets().contains(otuSet));
+
+		study.unsetInNeedOfNewVersion();
+
+		study.addOTUSet(otuSet);
+
+		assertFalse(study.isInNeedOfNewVersion());
+		assertEquals(study.getOTUSets().size(), 1);
+		assertTrue(study.getOTUSets().contains(otuSet));
 	}
 }
