@@ -189,7 +189,7 @@ public class AttachmentTest {
 		attachment.unsetInNeedOfNewVersion();
 		character.unsetInNeedOfNewVersion();
 
-		attachment.setStringValue("arbitraray string");
+		attachment.setInNeedOfNewVersion();
 
 		assertTrue(attachment.isInNeedOfNewVersion());
 		assertTrue(character.isInNeedOfNewVersion());
