@@ -27,6 +27,7 @@ import com.google.inject.Inject;
 import com.google.inject.Provider;
 
 import edu.upenn.cis.ppod.TestGroupDefs;
+import edu.upenn.cis.ppod.util.TestVisitor;
 
 /**
  * @author Sam Donnelly
@@ -44,10 +45,10 @@ public class OTUKeyedMapTest {
 	private Provider<DNAMatrix> dnaMatrixProvider;
 
 	@Inject
-	private Provider<DNARows> otusToDNARowsProvider;
+	private Provider<DNARow> dnaRowProvider;
 
 	@Inject
-	private Provider<DNARow> dnaRowProvider;
+	private Provider<DNARows> dnaRowsProvider;
 
 	@Test
 	public void getValuesInOTUSetOrder() {
@@ -64,8 +65,7 @@ public class OTUKeyedMapTest {
 		final DNARow row1 = dnaRowProvider.get();
 		final DNARow row2 = dnaRowProvider.get();
 
-		final DNARows otusToRows = otusToDNARowsProvider.get();
-		otusToRows.setMatrix(matrix);
+		final DNARows otusToRows = matrix.getOTUKeyedRows();
 
 		otusToRows.put(otu0, row0);
 		otusToRows.put(otu1, row1);
@@ -81,7 +81,7 @@ public class OTUKeyedMapTest {
 	@Test(expectedExceptions = IllegalStateException.class)
 	public void getValuesInOTUSetOrderWithNoParentSet() {
 
-		final DNARows otusToRows = otusToDNARowsProvider.get();
+		final DNARows otusToRows = dnaRowsProvider.get();
 		otusToRows.getValuesInOTUSetOrder();
 
 	}
@@ -100,18 +100,18 @@ public class OTUKeyedMapTest {
 		final DNARow row1 = dnaRowProvider.get();
 		final DNARow row2 = dnaRowProvider.get();
 
-		final DNARows otusToRows = otusToDNARowsProvider.get();
-		otusToRows.setMatrix(matrix);
+		final DNARows rows = dnaRowsProvider.get();
+		rows.setMatrix(matrix);
 
-		otusToRows.put(otu0, row0);
-		otusToRows.put(otu1, row1);
-		otusToRows.put(otu2, row2);
+		rows.put(otu0, row0);
+		rows.put(otu1, row1);
+		rows.put(otu2, row2);
 
 		matrix.unsetInNeedOfNewVersion();
 
-		otusToRows.clear();
+		rows.clear();
 
-		assertEquals(otusToRows.getOTUsToValues().size(), 0);
+		assertEquals(rows.getOTUsToValues().size(), 0);
 		assertTrue(matrix.isInNeedOfNewVersion());
 
 	}
@@ -123,11 +123,43 @@ public class OTUKeyedMapTest {
 	@Test
 	public void clearWhileEmpty() {
 		final DNAMatrix matrix = dnaMatrixProvider.get();
-		final DNARows otusToRows = otusToDNARowsProvider.get();
+		final DNARows otusToRows = matrix.getOTUKeyedRows();
 		otusToRows.setMatrix(matrix);
 		matrix.unsetInNeedOfNewVersion();
 		otusToRows.clear();
 
 		assertFalse(matrix.isInNeedOfNewVersion());
+	}
+
+	@Test
+	public void accept() {
+		final DNAMatrix matrix = dnaMatrixProvider.get();
+
+		final OTUSet otuSet = otuSetProvider.get();
+		otuSet.addDNAMatrix(matrix);
+
+		final OTU otu0 = otuSet.addOTU(otuProvider.get().setLabel("otu0"));
+		final OTU otu2 = otuSet.addOTU(otuProvider.get().setLabel("otu2"));
+
+		final DNARow row0 = dnaRowProvider.get();
+		final DNARow row1 = dnaRowProvider.get();
+		final DNARow row2 = dnaRowProvider.get();
+
+		matrix.putRow(otu0, row0);
+		matrix.putRow(null, row1); // the accept method should handle null
+		// values
+		matrix.putRow(otu2, row2);
+
+		final TestVisitor visitor = new TestVisitor();
+
+		matrix.getOTUKeyedRows().accept(visitor);
+
+		// Size should be the same as all of the rows plus the
+		// OTUKeyedMap
+		assertEquals(visitor.getVisited().size(),
+				matrix.getRows().values().size() + 1);
+
+		assertTrue(visitor.getVisited().contains(matrix.getOTUKeyedRows()));
+		assertTrue(visitor.getVisited().containsAll(matrix.getRows().values()));
 	}
 }
