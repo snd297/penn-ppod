@@ -193,7 +193,6 @@ public class DNACellTest {
 
 	}
 
-	@Test(groups = TestGroupDefs.SINGLE, dependsOnGroups = TestGroupDefs.INIT)
 	public void setPolymorphicOrUncertain() {
 		final DNACell cell = dnaCellProvider.get();
 		final Set<DNANucleotide> nucleotides =

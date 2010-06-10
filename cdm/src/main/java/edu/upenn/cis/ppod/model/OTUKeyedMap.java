@@ -159,6 +159,7 @@ public abstract class OTUKeyedMap<V extends IOTUKeyedMapValue>
 				"already has a value .equals() to newT: " + value);
 		getParent().setInNeedOfNewVersion();
 		final V originalValue = getOTUsToValues().put(key, value);
+
 		// If we are replacing an OTU's sequence, we need to sever the previous
 		// sequence's sequence->sequenceSet pointer.
 		if (originalValue != null && !originalValue.equals(value)) {

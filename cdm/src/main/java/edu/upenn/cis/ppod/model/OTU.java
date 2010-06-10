@@ -154,7 +154,7 @@ public class OTU
 	 * A {@code null} value for {@code otuSet} means that the relationship will
 	 * be severed.
 	 * 
-	 * @param the owning {@code OTUSet}.
+	 * @param the owning {@code OTUSet}
 	 * 
 	 * @return this
 	 */
@@ -164,10 +164,9 @@ public class OTU
 	}
 
 	/**
-	 * Constructs a <code>String</code> with all attributes in name = value
-	 * format.
+	 * Constructs a <code>String</code> with attributes in name = value format.
 	 * 
-	 * @return a <code>String</code> representation of this object.
+	 * @return a <code>String</code> representation of this object
 	 */
 	@Override
 	public String toString() {

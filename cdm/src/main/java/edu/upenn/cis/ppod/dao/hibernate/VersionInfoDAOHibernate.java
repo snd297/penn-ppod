@@ -27,13 +27,13 @@ public final class VersionInfoDAOHibernate
 		extends GenericHibernateDAO<VersionInfo, Long>
 		implements IVersionInfoDAOHibernate {
 
-	public long getMaxVersion() {
+	public Long getMaxVersion() {
 		final Long maxPPodVersion =
 				(Long) getSession()
 						.getNamedQuery(
 								VersionInfo.class.getSimpleName()
 										+ "-getMaxVersionInfo")
 						.uniqueResult();
-		return maxPPodVersion == null ? 0L : maxPPodVersion;
+		return maxPPodVersion == null ? Long.valueOf(0L) : maxPPodVersion;
 	}
 }

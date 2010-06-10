@@ -17,6 +17,7 @@ package edu.upenn.cis.ppod.model;
 
 import java.util.Date;
 
+import com.google.common.annotations.VisibleForTesting;
 import com.google.inject.Inject;
 import com.google.inject.assistedinject.Assisted;
 
@@ -46,7 +47,11 @@ final class NewVersionInfoDB implements
 		return newVersionInfo;
 	}
 
-	private void initializeVersionInfo() {
+	/**
+	 * Made package-private for testing.
+	 */
+	@VisibleForTesting
+	void initializeVersionInfo() {
 		if (versionInfoInitialized) {
 
 		} else {
