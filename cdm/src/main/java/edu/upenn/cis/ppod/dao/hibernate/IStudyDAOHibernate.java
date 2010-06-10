@@ -26,8 +26,7 @@ import edu.upenn.cis.ppod.model.Study;
  * @author Sam Donnelly
  */
 @ImplementedBy(StudyDAOHibernate.class)
-public interface IStudyDAOHibernate extends
-		IStudyDAO,
-		IDAOHibernate<Study, Long> {
+public interface IStudyDAOHibernate
+		extends IStudyDAO, IDAOHibernate<Study, Long> {
 
 }

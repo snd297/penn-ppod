@@ -17,12 +17,10 @@ package edu.upenn.cis.ppod.model;
 
 import java.util.Date;
 
-import org.hibernate.Session;
-
 import com.google.inject.Inject;
 import com.google.inject.assistedinject.Assisted;
 
-import edu.upenn.cis.ppod.dao.hibernate.VersionInfoDAOHibernate;
+import edu.upenn.cis.ppod.dao.IVersionInfoDAO;
 import edu.upenn.cis.ppod.modelinterfaces.INewVersionInfoHibernate;
 
 /**
@@ -32,18 +30,16 @@ final class NewVersionInfoHibernate implements
 		INewVersionInfoHibernate {
 
 	private final VersionInfo newVersionInfo;
-	private final VersionInfoDAOHibernate versionInfoDAO;
+	private final IVersionInfoDAO versionInfoDAO;
 
 	private boolean versionInfoInitialized = false;
 
 	@Inject
 	NewVersionInfoHibernate(
-			final VersionInfoDAOHibernate versionInfoDAO,
-			final VersionInfo newVersionInfo,
-			@Assisted final Session session) {
+					final VersionInfo newVersionInfo,
+			@Assisted final IVersionInfoDAO versionInfoDAO) {
 		this.newVersionInfo = newVersionInfo;
 		this.versionInfoDAO = versionInfoDAO;
-		this.versionInfoDAO.setSession(session);
 	}
 
 	public VersionInfo getNewVersionInfo() {

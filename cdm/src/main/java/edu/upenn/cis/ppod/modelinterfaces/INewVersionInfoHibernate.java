@@ -15,7 +15,7 @@
  */
 package edu.upenn.cis.ppod.modelinterfaces;
 
-import org.hibernate.Session;
+import edu.upenn.cis.ppod.dao.IVersionInfoDAO;
 
 /**
  * A {@code INewPPodVersionInfo} that needs a Hibernate {@code Session}.
@@ -24,6 +24,6 @@ import org.hibernate.Session;
  */
 public interface INewVersionInfoHibernate extends INewVersionInfo {
 	static interface IFactory {
-		INewVersionInfoHibernate create(Session session);
+		INewVersionInfoHibernate create(IVersionInfoDAO versionInfoDAO);
 	}
 }

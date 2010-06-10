@@ -37,6 +37,7 @@ import edu.upenn.cis.ppod.dao.hibernate.IAttachmentTypeDAOHibernate;
 import edu.upenn.cis.ppod.dao.hibernate.IOTUSetDAOHibernate;
 import edu.upenn.cis.ppod.dao.hibernate.IObjectWithLongIdDAOHibernate;
 import edu.upenn.cis.ppod.dao.hibernate.IStudyDAOHibernate;
+import edu.upenn.cis.ppod.dao.hibernate.IVersionInfoDAOHibernate;
 import edu.upenn.cis.ppod.model.Study;
 import edu.upenn.cis.ppod.modelinterfaces.INewVersionInfo;
 import edu.upenn.cis.ppod.modelinterfaces.INewVersionInfoHibernate;
@@ -83,25 +84,29 @@ final class StudyResourceHibernate implements IStudyResource {
 	StudyResourceHibernate(
 			final IStudyDAOHibernate studyDAO,
 			final IOTUSetDAOHibernate otuSetDAO,
-			final ICreateOrUpdateStudy.IFactory saveOrUpdateStudyFactory,
+			final ICreateOrUpdateStudy.IFactory createOrUpdateStudyFactory,
 			final IStudy2StudyInfo study2StudyInfo,
+			final IVersionInfoDAOHibernate versionInfoDAO,
 			final ISetDocIdVisitor setDocIdVisitor,
 			final Provider<IAfterUnmarshalVisitor> afterUnmarshalVisitorProvider,
-			final INewVersionInfoHibernate.IFactory newPPodVersionInfoFactory,
-			final ISetVersionInfoVisitor.IFactory setPPodVersionInfoVisitorFactory,
+			final INewVersionInfoHibernate.IFactory newVersionInfoFactory,
+			final ISetVersionInfoVisitor.IFactory setVersionInfoVisitorFactory,
 			final StringPair.IFactory stringPairFactory,
 			final IAttachmentNamespaceDAOHibernate attachmentNamespaceDAO,
 			final IAttachmentTypeDAOHibernate attachmentTypeDAO,
 			final IObjectWithLongIdDAOHibernate dao) {
 		final Session currentSession = HibernateUtil
 				.getSessionFactory().getCurrentSession();
-		this.studyDAO = (IStudyDAO) studyDAO.setSession(HibernateUtil
-				.getSessionFactory().getCurrentSession());
+		this.studyDAO =
+				(IStudyDAO) studyDAO.setSession(currentSession);
+
+		versionInfoDAO.setSession(currentSession);
 
 		this.otuSetDAO = (IOTUSetDAO) otuSetDAO.setSession(currentSession);
 
-		this.attachmentNamespaceDAO = (IAttachmentNamespaceDAO) attachmentNamespaceDAO
-				.setSession(currentSession);
+		this.attachmentNamespaceDAO =
+				(IAttachmentNamespaceDAO) attachmentNamespaceDAO
+						.setSession(currentSession);
 
 		this.attachmentTypeDAO = (IAttachmentTypeDAO) attachmentTypeDAO
 				.setSession(currentSession);
@@ -109,17 +114,17 @@ final class StudyResourceHibernate implements IStudyResource {
 		this.objectWithLongIdDAO = (IObjectWithLongIdDAO) dao
 				.setSession(currentSession);
 
-		this.saveOrUpdateStudyFactory = saveOrUpdateStudyFactory;
+		this.saveOrUpdateStudyFactory = createOrUpdateStudyFactory;
 
 		this.study2StudyInfo = study2StudyInfo;
 		this.setDocIdVisitor = setDocIdVisitor;
 		this.afterUnmarshalVisitorProvider = afterUnmarshalVisitorProvider;
 		this.stringPairFactory = stringPairFactory;
 
-		newVersionInfo = newPPodVersionInfoFactory
-				.create(currentSession);
+		this.newVersionInfo =
+				newVersionInfoFactory.create(versionInfoDAO);
 
-		this.setPPodVersionInfoVisitorFactory = setPPodVersionInfoVisitorFactory;
+		this.setPPodVersionInfoVisitorFactory = setVersionInfoVisitorFactory;
 	}
 
 	public StudyInfo createStudy(final Study incomingStudy) {

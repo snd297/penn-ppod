@@ -15,7 +15,6 @@
  */
 package edu.upenn.cis.ppod.dao.hibernate;
 
-import edu.upenn.cis.ppod.dao.IVersionInfoDAO;
 import edu.upenn.cis.ppod.model.VersionInfo;
 import edu.upenn.cis.ppod.thirdparty.dao.hibernate.GenericHibernateDAO;
 
@@ -26,7 +25,7 @@ import edu.upenn.cis.ppod.thirdparty.dao.hibernate.GenericHibernateDAO;
  */
 public final class VersionInfoDAOHibernate
 		extends GenericHibernateDAO<VersionInfo, Long>
-		implements IVersionInfoDAO {
+		implements IVersionInfoDAOHibernate {
 
 	public long getMaxVersion() {
 		final Long maxPPodVersion =
