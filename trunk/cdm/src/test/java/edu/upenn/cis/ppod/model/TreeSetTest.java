@@ -38,7 +38,7 @@ import edu.upenn.cis.ppod.TestGroupDefs;
  * 
  * @author Sam Donnelly
  */
-@Test(groups = { TestGroupDefs.FAST }, dependsOnGroups = TestGroupDefs.INIT)
+@Test(groups = { TestGroupDefs.FAST, TestGroupDefs.SINGLE }, dependsOnGroups = TestGroupDefs.INIT)
 public class TreeSetTest {
 
 	@Inject
@@ -46,6 +46,9 @@ public class TreeSetTest {
 
 	@Inject
 	private Provider<Tree> treeProvider;
+
+	@Inject
+	private Provider<OTUSet> otuSetProvider;
 
 	@Test
 	public void addTree() {
@@ -106,5 +109,31 @@ public class TreeSetTest {
 		for (final Tree returnedTree3 : returnedTrees3) {
 			assertNull(returnedTree3.getTreeSet());
 		}
+	}
+
+	/**
+	 * Verify that the owning OTUSet gets marked as in need of a new version too
+	 * and that it works too if there is no parent OTUSet.
+	 */
+	@Test
+	public void setInNeedOfNewVersionInfo() {
+
+		final TreeSet treeSet = treeSetProvider.get();
+		treeSet.unsetInNeedOfNewVersion();
+
+		treeSet.setInNeedOfNewVersion();
+
+		assertTrue(treeSet.isInNeedOfNewVersion());
+
+		final OTUSet otuSet = otuSetProvider.get();
+		otuSet.addTreeSet(treeSet);
+		otuSet.unsetInNeedOfNewVersion();
+		treeSet.unsetInNeedOfNewVersion();
+
+		treeSet.setInNeedOfNewVersion();
+
+		assertTrue(treeSet.isInNeedOfNewVersion());
+		assertTrue(otuSet.isInNeedOfNewVersion());
+
 	}
 }

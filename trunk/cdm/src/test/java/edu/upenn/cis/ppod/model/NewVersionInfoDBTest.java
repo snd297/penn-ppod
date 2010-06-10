@@ -28,7 +28,7 @@ import edu.upenn.cis.ppod.dao.TestVersionInfoDAO;
 @Test(groups = TestGroupDefs.FAST)
 public class NewVersionInfoDBTest {
 
-	@Test(groups = TestGroupDefs.SINGLE)
+	@Test
 	public void initializeVersionInfo() {
 
 		final TestVersionInfoDAO dao = new TestVersionInfoDAO();
