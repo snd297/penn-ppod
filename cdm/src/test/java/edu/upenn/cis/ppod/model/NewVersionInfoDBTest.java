@@ -29,7 +29,7 @@ import edu.upenn.cis.ppod.dao.TestVersionInfoDAO;
 public class NewVersionInfoDBTest {
 
 	@Test(groups = TestGroupDefs.SINGLE)
-	public void initialize() {
+	public void initializeVersionInfo() {
 
 		final TestVersionInfoDAO dao = new TestVersionInfoDAO();
 
@@ -37,13 +37,15 @@ public class NewVersionInfoDBTest {
 
 		final NewVersionInfoDB newVersionInfo =
 				new NewVersionInfoDB(versionInfo, dao);
-		newVersionInfo.initializeVersionInfo();
+		final VersionInfo returnedVersionInfo = newVersionInfo
+				.getNewVersionInfo();
+		assertSame(returnedVersionInfo, versionInfo);
 		assertNotNull(versionInfo.getCreated());
 		assertSame(getOnlyElement(dao.getMadePersistent()), versionInfo);
 		assertEquals(versionInfo.getVersion(),
 				Long.valueOf(dao.getMaxVersion() + 1));
 
-		newVersionInfo.initializeVersionInfo();
+		newVersionInfo.getNewVersionInfo();
 
 		// Make sure that newVersionInfo only calls initialization code once.
 		assertEquals(dao.getMadePersistent().size(), 1);
