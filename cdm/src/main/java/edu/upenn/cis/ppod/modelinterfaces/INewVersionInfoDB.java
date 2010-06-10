@@ -18,12 +18,13 @@ package edu.upenn.cis.ppod.modelinterfaces;
 import edu.upenn.cis.ppod.dao.IVersionInfoDAO;
 
 /**
- * A {@code INewPPodVersionInfo} that needs a Hibernate {@code Session}.
+ * A {@code INewPPodVersionInfo} that needs a DAO.
  * 
  * @author Sam Donnelly
  */
-public interface INewVersionInfoHibernate extends INewVersionInfo {
+public interface INewVersionInfoDB extends INewVersionInfo {
 	static interface IFactory {
-		INewVersionInfoHibernate create(IVersionInfoDAO versionInfoDAO);
+		INewVersionInfoDB create(IVersionInfoDAO versionInfoDAO);
 	}
+
 }

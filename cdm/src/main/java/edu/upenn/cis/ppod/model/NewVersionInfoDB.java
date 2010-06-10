@@ -21,13 +21,13 @@ import com.google.inject.Inject;
 import com.google.inject.assistedinject.Assisted;
 
 import edu.upenn.cis.ppod.dao.IVersionInfoDAO;
-import edu.upenn.cis.ppod.modelinterfaces.INewVersionInfoHibernate;
+import edu.upenn.cis.ppod.modelinterfaces.INewVersionInfoDB;
 
 /**
  * @author Sam Donnelly
  */
-final class NewVersionInfoHibernate implements
-		INewVersionInfoHibernate {
+final class NewVersionInfoDB implements
+		INewVersionInfoDB {
 
 	private final VersionInfo newVersionInfo;
 	private final IVersionInfoDAO versionInfoDAO;
@@ -35,8 +35,7 @@ final class NewVersionInfoHibernate implements
 	private boolean versionInfoInitialized = false;
 
 	@Inject
-	NewVersionInfoHibernate(
-					final VersionInfo newVersionInfo,
+	NewVersionInfoDB(final VersionInfo newVersionInfo,
 			@Assisted final IVersionInfoDAO versionInfoDAO) {
 		this.newVersionInfo = newVersionInfo;
 		this.versionInfoDAO = versionInfoDAO;
