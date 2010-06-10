@@ -15,6 +15,37 @@
  */
 package edu.upenn.cis.ppod.model;
 
+import static com.google.common.collect.Iterables.getOnlyElement;
+import static org.testng.Assert.assertEquals;
+import static org.testng.Assert.assertNotNull;
+import static org.testng.Assert.assertSame;
+
+import org.testng.annotations.Test;
+
+import edu.upenn.cis.ppod.TestGroupDefs;
+import edu.upenn.cis.ppod.dao.TestVersionInfoDAO;
+
+@Test(groups = TestGroupDefs.FAST)
 public class NewVersionInfoDBTest {
 
+	@Test(groups = TestGroupDefs.SINGLE)
+	public void initialize() {
+
+		final TestVersionInfoDAO dao = new TestVersionInfoDAO();
+
+		final VersionInfo versionInfo = new VersionInfo();
+
+		final NewVersionInfoDB newVersionInfo =
+				new NewVersionInfoDB(versionInfo, dao);
+		newVersionInfo.initializeVersionInfo();
+		assertNotNull(versionInfo.getCreated());
+		assertSame(getOnlyElement(dao.getMadePersistent()), versionInfo);
+		assertEquals(versionInfo.getVersion(),
+				Long.valueOf(dao.getMaxVersion() + 1));
+
+		newVersionInfo.initializeVersionInfo();
+
+		// Make sure that newVersionInfo only calls initialization code once.
+		assertEquals(dao.getMadePersistent().size(), 1);
+	}
 }

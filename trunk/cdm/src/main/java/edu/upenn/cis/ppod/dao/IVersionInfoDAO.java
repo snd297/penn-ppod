@@ -31,6 +31,6 @@ public interface IVersionInfoDAO extends IDAO<VersionInfo, Long> {
 	 * @return the highest persisted {@code VersionInfo.getVersion()}, or
 	 *         {@code 0L} if there are not {@code VersionInfo}s in the table
 	 */
-	public long getMaxVersion();
+	public Long getMaxVersion();
 
 }
