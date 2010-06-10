@@ -18,6 +18,7 @@ package edu.upenn.cis.ppod.createorupdate;
 import static com.google.common.collect.Lists.newArrayList;
 import static com.google.common.collect.Maps.newHashMap;
 import static org.testng.Assert.assertEquals;
+import static org.testng.Assert.assertTrue;
 
 import java.util.List;
 import java.util.Map;
@@ -304,14 +305,25 @@ public class CreateOrUpdateStandardMatrixTest {
 			final StandardRow sourceRow = sourceMatrix.getRow(sourceOTU);
 			final List<StandardCell> newSourceCells =
 					newArrayList(sourceRow.getCells());
-			removedSourceCells.add(
-					newSourceCells.remove(
+			newSourceCells.remove(
 							sourceRow.getCells()
-									.size() / 2));
+									.size() / 2);
+
 			sourceRow.setCells(newSourceCells);
 		}
 
-		dao.getDeletedEntities().clear();
+		for (final OTU targetOTU : targetMatrix.getOTUSet().getOTUs()) {
+			final StandardRow targetRow = targetMatrix.getRow(targetOTU);
+			// It will be the _last_ cell in the row that is deleted by the dao
+			removedSourceCells
+					.add(targetRow
+							.getCells()
+							.get(targetRow
+									.getCells()
+									.size() - 1));
+		}
+
+		dao.getTransientEntities().clear();
 
 		final Map<StandardRow, List<StandardCell>> sourceRowsToCells2 = stashCells(sourceMatrix);
 		createOrUpdateMatrix.createOrUpdateMatrix(
@@ -324,20 +336,20 @@ public class CreateOrUpdateStandardMatrixTest {
 		ModelAssert.assertEqualsStandardMatrices(targetMatrix, sourceMatrix);
 
 		// Make sure that everything was deleted, only what was necessary was
-		// deleted. But we can't compare content because the content will have
-		// been shifted around. And
-		// we can't even compare what rows each of the cells were in since that
-		// info for the transient cells - they will have been separated from
-		// their owning rows.
+		// deleted.
 		final List<StandardCell> transientCells = newArrayList();
 
-		for (final Object transientObject : dao.getDeletedEntities()) {
+		for (final Object transientObject : dao.getTransientEntities()) {
 			if (transientObject instanceof StandardCell) {
 				transientCells.add((StandardCell) transientObject);
 			}
 		}
 
 		assertEquals(transientCells.size(), removedSourceCells.size());
+
+		for (final StandardCell transientCell : transientCells) {
+			assertTrue(removedSourceCells.contains(transientCell));
+		}
 
 	}
 }

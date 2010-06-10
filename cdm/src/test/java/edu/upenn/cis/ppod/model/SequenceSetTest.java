@@ -51,6 +51,9 @@ public class SequenceSetTest {
 	@Inject
 	private Provider<OTU> otuProvider;
 
+	@Inject
+	private Provider<TestVisitor> testVisitorProvider;
+
 	@Test
 	public void checkSequenceSizesOnEmptySequenceSet() {
 		final SequenceSet<DNASequence> seqSet = dnaSequenceSetProvider.get();
@@ -197,7 +200,7 @@ public class SequenceSetTest {
 		seqSet.putSequence(otuSet.getOTUs().get(2),
 				(DNASequence) dnaSequenceProvider.get().setSequence("TTT"));
 
-		final TestVisitor visitor = new TestVisitor();
+		final TestVisitor visitor = testVisitorProvider.get();
 
 		seqSet.accept(visitor);
 

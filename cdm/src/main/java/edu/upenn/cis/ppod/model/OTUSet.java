@@ -128,6 +128,13 @@ public class OTUSet extends UUPPodEntityWXmlId {
 		super.accept(visitor);
 	}
 
+	/**
+	 * Add a {@code DNAMatrix} to this {@code OTUSet}.
+	 * 
+	 * @param matrix to be added to this {@code OTUSet}
+	 * 
+	 * @return {@code matrix}
+	 */
 	public DNAMatrix addDNAMatrix(final DNAMatrix matrix) {
 		checkNotNull(matrix);
 		if (dnaMatrices.add(matrix)) {

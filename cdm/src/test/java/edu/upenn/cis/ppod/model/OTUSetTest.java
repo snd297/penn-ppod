@@ -39,11 +39,12 @@ import com.google.inject.Inject;
 import com.google.inject.Provider;
 
 import edu.upenn.cis.ppod.TestGroupDefs;
+import edu.upenn.cis.ppod.util.TestVisitor;
 
 /**
  * @author Sam Donnelly
  */
-@Test(groups = TestGroupDefs.FAST, dependsOnGroups = TestGroupDefs.INIT)
+@Test(groups = { TestGroupDefs.FAST, TestGroupDefs.SINGLE }, dependsOnGroups = TestGroupDefs.INIT)
 public class OTUSetTest {
 
 	@Inject
@@ -66,13 +67,16 @@ public class OTUSetTest {
 	private Provider<VersionInfo> pPodVersionInfoProvider;
 
 	@Inject
-	private Provider<StandardMatrix> matrixProvider;
+	private Provider<StandardMatrix> standardMatrixProvider;
 
 	@Inject
 	private Provider<DNASequenceSet> dnaSequenceSetProvider;
 
 	@Inject
 	private Provider<DNAMatrix> dnaMatrixProvider;
+
+	@Inject
+	private Provider<Attachment> attachmentProvider;
 
 	private Study study;
 
@@ -152,9 +156,9 @@ public class OTUSetTest {
 
 	@Test
 	public void removeMatrix() {
-		final StandardMatrix matrix0 = matrixProvider.get();
-		final StandardMatrix matrix1 = matrixProvider.get();
-		final StandardMatrix matrix2 = matrixProvider.get();
+		final StandardMatrix matrix0 = standardMatrixProvider.get();
+		final StandardMatrix matrix1 = standardMatrixProvider.get();
+		final StandardMatrix matrix2 = standardMatrixProvider.get();
 
 		final Set<StandardMatrix> otuSetMatrices = newHashSet();
 		otuSetMatrices.add(matrix0);
@@ -423,5 +427,72 @@ public class OTUSetTest {
 		otuSet.setLabel(otuSetLabel);
 		assertFalse(otuSet.isInNeedOfNewVersion());
 		assertEquals(otuSet.getLabel(), otuSetLabel);
+	}
+
+	@Inject
+	private Provider<TestVisitor> testVisitorProvider;
+
+	@Test
+	public void accept() {
+		final OTUSet otuSet = otuSetProvider.get();
+
+		otuSet.addOTU(otuProvider.get().setLabel("otu-0"));
+		otuSet.addOTU(otuProvider.get().setLabel("otu-1"));
+		otuSet.addOTU(otuProvider.get().setLabel("otu-2"));
+
+		otuSet.addStandardMatrix(standardMatrixProvider.get());
+		otuSet.addStandardMatrix(standardMatrixProvider.get());
+		otuSet.addStandardMatrix(standardMatrixProvider.get());
+
+		otuSet.addDNAMatrix(dnaMatrixProvider.get());
+		otuSet.addDNAMatrix(dnaMatrixProvider.get());
+		otuSet.addDNAMatrix(dnaMatrixProvider.get());
+
+		otuSet.addDNASequenceSet(dnaSequenceSetProvider.get());
+		otuSet.addDNASequenceSet(dnaSequenceSetProvider.get());
+		otuSet.addDNASequenceSet(dnaSequenceSetProvider.get());
+
+		otuSet.addTreeSet(treeSetProvider.get());
+		otuSet.addTreeSet(treeSetProvider.get());
+		otuSet.addTreeSet(treeSetProvider.get());
+
+		otuSet.addAttachment(attachmentProvider.get());
+		otuSet.addAttachment(attachmentProvider.get());
+		otuSet.addAttachment(attachmentProvider.get());
+
+		final TestVisitor visitor = testVisitorProvider.get();
+		otuSet.accept(visitor);
+
+		// Get rid of stuff we don't care about
+		final Set<Object> visited = newHashSet();
+
+		for (final Object visitedObject : visitor.getVisited()) {
+			if (visitedObject.getClass() == OTUSet.class
+					|| visitedObject.getClass() == OTU.class
+					|| visitedObject.getClass() == StandardMatrix.class
+					|| visitedObject.getClass() == DNAMatrix.class
+					|| visitedObject.getClass() == DNASequenceSet.class
+					|| visitedObject.getClass() == TreeSet.class
+					|| visitedObject.getClass() == Attachment.class) {
+				visited.add(visitedObject);
+			}
+		}
+
+		// We make a set of the objects visited just to make it clear what we're
+		// counting here.
+		assertEquals(visited.size(),
+				otuSet.getChildren().size()
+						+ otuSet.getAttachments().size()
+						+ ImmutableSet.of(otuSet).size());
+
+		assertTrue(visited.contains(otuSet));
+
+		for (final Object child : otuSet.getChildren()) {
+			assertTrue(visited.contains(child));
+		}
+
+		for (final Attachment attachment : otuSet.getAttachments()) {
+			assertTrue(visited.contains(attachment));
+		}
 	}
 }

@@ -57,8 +57,8 @@ public class OTUsToDNASequencesTest {
 		final DNASequence sequence = new DNASequence();
 		final DNASequenceSet sequenceSet = dnaSequenceSetProvider.get();
 		otuSet.addDNASequenceSet(sequenceSet);
-		sequenceSet.getOTUKeyedMap().put(otu, sequence);
-		assertSame(sequenceSet.getOTUKeyedMap().getOTUsToValues().get(otu),
+		sequenceSet.getOTUKeyedSequences().put(otu, sequence);
+		assertSame(sequenceSet.getOTUKeyedSequences().getOTUsToValues().get(otu),
 				sequence);
 	}
 
@@ -73,11 +73,11 @@ public class OTUsToDNASequencesTest {
 		final DNASequence sequence = dnaSequenceProvider.get();
 		final DNASequenceSet sequenceSet = dnaSequenceSetProvider.get();
 		otuSet.addDNASequenceSet(sequenceSet);
-		sequenceSet.getOTUKeyedMap().put(otu, sequence);
+		sequenceSet.getOTUKeyedSequences().put(otu, sequence);
 
 		final DNASequence sequence2 = dnaSequenceProvider.get();
 
-		sequenceSet.getOTUKeyedMap().put(otu, sequence2);
+		sequenceSet.getOTUKeyedSequences().put(otu, sequence2);
 
 		assertNull(sequence.getSequences());
 

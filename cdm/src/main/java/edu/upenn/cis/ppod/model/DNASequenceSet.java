@@ -73,26 +73,26 @@ public class DNASequenceSet extends SequenceSet<DNASequence> {
 
 	@Override
 	public DNASequenceSet clearSequences() {
-		getOTUKeyedMap().clear();
+		getOTUKeyedSequences().clear();
 		return this;
 	}
 
 	@XmlElement(name = "sequences")
 	@Override
 	@Nullable
-	protected DNASequences getOTUKeyedMap() {
+	protected DNASequences getOTUKeyedSequences() {
 		return sequences;
 	}
 
 	@Override
 	public DNASequence getSequence(final OTU otu) {
 		checkNotNull(otu);
-		return getOTUKeyedMap().get(otu);
+		return getOTUKeyedSequences().get(otu);
 	}
 
 	@Override
 	public Map<OTU, DNASequence> getSequences() {
-		return Collections.unmodifiableMap(getOTUKeyedMap()
+		return Collections.unmodifiableMap(getOTUKeyedSequences()
 				.getOTUsToValues());
 	}
 
@@ -106,7 +106,7 @@ public class DNASequenceSet extends SequenceSet<DNASequence> {
 		checkArgument(sequence.getSequence() != null,
 				"sequence.getSequence() == null");
 		checkSequenceLength(sequence);
-		return getOTUKeyedMap().put(otu, sequence);
+		return getOTUKeyedSequences().put(otu, sequence);
 	}
 
 	/**
@@ -117,9 +117,9 @@ public class DNASequenceSet extends SequenceSet<DNASequence> {
 	protected SequenceSet<DNASequence> setOTUsInOTUsToSequences(
 			@Nullable final OTUSet otuSet) {
 		checkState(
-				getOTUKeyedMap() != null,
+				getOTUKeyedSequences() != null,
 				"getOTUKeyed() == null, so there is no sequences to operate on");
-		getOTUKeyedMap().setOTUs();
+		getOTUKeyedSequences().setOTUs();
 		return this;
 	}
 
