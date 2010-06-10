@@ -38,7 +38,7 @@ import edu.upenn.cis.ppod.model.Cell.Type;
  * 
  * @author Sam Donnelly
  */
-@Test(groups = { TestGroupDefs.FAST, }, dependsOnGroups = TestGroupDefs.INIT)
+@Test(groups = { TestGroupDefs.FAST }, dependsOnGroups = TestGroupDefs.INIT)
 public class DNACellTest {
 
 	@Inject
