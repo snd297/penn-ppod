@@ -132,6 +132,9 @@ public class OTUKeyedMapTest {
 		assertFalse(matrix.isInNeedOfNewVersion());
 	}
 
+	@Inject
+	private Provider<TestVisitor> testVisitorProvider;
+
 	@Test
 	public void accept() {
 		final DNAMatrix matrix = dnaMatrixProvider.get();
@@ -156,7 +159,7 @@ public class OTUKeyedMapTest {
 		// values, but we need to sneak around the matrix to get it in there
 		matrix.putRow(otu2, row2);
 
-		final TestVisitor visitor = new TestVisitor();
+		final TestVisitor visitor = testVisitorProvider.get();
 
 		matrix.getOTUKeyedRows().accept(visitor);
 

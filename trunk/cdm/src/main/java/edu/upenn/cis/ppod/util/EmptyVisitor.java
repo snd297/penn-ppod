@@ -131,7 +131,7 @@ public abstract class EmptyVisitor implements IVisitor {
 	 * 
 	 * @param character ignored
 	 */
-	public void visit(final StandardCharacter standardCharacter) {}
+	public void visit(final StandardCharacter character) {}
 
 	/**
 	 * Does nothing.

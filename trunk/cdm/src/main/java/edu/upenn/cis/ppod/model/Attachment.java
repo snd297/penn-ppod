@@ -262,7 +262,9 @@ public class Attachment extends UUPPodEntityWXmlId {
 	public void accept(final IVisitor visitor) {
 		checkNotNull(visitor);
 		visitor.visit(this);
-		getType().accept(visitor);
+		if (getType() != null) {
+			getType().accept(visitor);
+		}
 		super.accept(visitor);
 	}
 

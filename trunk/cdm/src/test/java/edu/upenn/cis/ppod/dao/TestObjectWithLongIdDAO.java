@@ -43,7 +43,7 @@ public class TestObjectWithLongIdDAO implements IObjectWithLongIdDAOHibernate {
 
 	private List<Object> deletedEntities = newArrayList();
 
-	public List<Object> getDeletedEntities() {
+	public List<Object> getTransientEntities() {
 		return deletedEntities;
 	}
 

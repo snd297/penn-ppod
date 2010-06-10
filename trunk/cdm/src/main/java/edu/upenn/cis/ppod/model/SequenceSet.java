@@ -58,7 +58,7 @@ public abstract class SequenceSet<S extends Sequence>
 	@Override
 	public void accept(final IVisitor visitor) {
 		checkNotNull(visitor);
-		getOTUKeyedMap().accept(visitor);
+		getOTUKeyedSequences().accept(visitor);
 		super.accept(visitor);
 	}
 
@@ -109,7 +109,7 @@ public abstract class SequenceSet<S extends Sequence>
 		return label;
 	}
 
-	protected abstract OTUKeyedMap<S> getOTUKeyedMap();
+	protected abstract OTUKeyedMap<S> getOTUKeyedSequences();
 
 	/**
 	 * Getter. Will be {@code null} when the sequence set is not connected to an
@@ -144,7 +144,8 @@ public abstract class SequenceSet<S extends Sequence>
 	 */
 	@CheckForNull
 	public Integer getSequenceLengths() {
-		for (final S sequenceInThisSet : getOTUKeyedMap().getOTUsToValues()
+		for (final S sequenceInThisSet : getOTUKeyedSequences()
+				.getOTUsToValues()
 				.values()) {
 			if (sequenceInThisSet != null) {
 				return sequenceInThisSet.getSequence().length();
