@@ -18,7 +18,7 @@ package edu.upenn.cis.ppod.modelinterfaces;
 import edu.upenn.cis.ppod.model.VersionInfo;
 
 /**
- * Get the next version available from the pPOD DB.
+ * Get the next version available version info.
  * <p>
  * 
  * @see SetVersionInfoVisitor

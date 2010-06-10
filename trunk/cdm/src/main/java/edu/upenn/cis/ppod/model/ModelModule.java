@@ -18,7 +18,7 @@ package edu.upenn.cis.ppod.model;
 import com.google.inject.AbstractModule;
 import com.google.inject.assistedinject.FactoryProvider;
 
-import edu.upenn.cis.ppod.modelinterfaces.INewVersionInfoHibernate;
+import edu.upenn.cis.ppod.modelinterfaces.INewVersionInfoDB;
 
 /**
  * @author Sam Donnelly
@@ -28,10 +28,10 @@ public class ModelModule extends AbstractModule {
 
 	@Override
 	protected void configure() {
-		bind(INewVersionInfoHibernate.IFactory.class).toProvider(
+		bind(INewVersionInfoDB.IFactory.class).toProvider(
 				FactoryProvider.newFactory(
-						INewVersionInfoHibernate.IFactory.class,
-						NewVersionInfoHibernate.class));
+						INewVersionInfoDB.IFactory.class,
+						NewVersionInfoDB.class));
 		bind(Attachment.IIsOfNamespace.IFactory.class)
 				.toProvider(
 						FactoryProvider.newFactory(

@@ -13,16 +13,8 @@
  * See the License for the specific language governing permissions and
  * limitations under the License.
  */
-package edu.upenn.cis.ppod.modelinterfaces;
+package edu.upenn.cis.ppod.model;
 
-import javax.annotation.Nonnegative;
-
-/**
- * @author Sam Donnelly
- */
-public interface IMatrix extends ILabeled, IVersionedWithOTUSet {
-	IMatrix resetColumnVersion(@Nonnegative final int position);
-
-	Integer getColumnsSize();
+public class NewVersionInfoDBTest {
 
 }

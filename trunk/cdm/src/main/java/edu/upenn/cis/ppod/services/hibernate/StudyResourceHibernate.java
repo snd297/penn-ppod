@@ -40,7 +40,7 @@ import edu.upenn.cis.ppod.dao.hibernate.IStudyDAOHibernate;
 import edu.upenn.cis.ppod.dao.hibernate.IVersionInfoDAOHibernate;
 import edu.upenn.cis.ppod.model.Study;
 import edu.upenn.cis.ppod.modelinterfaces.INewVersionInfo;
-import edu.upenn.cis.ppod.modelinterfaces.INewVersionInfoHibernate;
+import edu.upenn.cis.ppod.modelinterfaces.INewVersionInfoDB;
 import edu.upenn.cis.ppod.services.IStudyResource;
 import edu.upenn.cis.ppod.services.StringPair;
 import edu.upenn.cis.ppod.services.ppodentity.IStudy2StudyInfo;
@@ -89,7 +89,7 @@ final class StudyResourceHibernate implements IStudyResource {
 			final IVersionInfoDAOHibernate versionInfoDAO,
 			final ISetDocIdVisitor setDocIdVisitor,
 			final Provider<IAfterUnmarshalVisitor> afterUnmarshalVisitorProvider,
-			final INewVersionInfoHibernate.IFactory newVersionInfoFactory,
+			final INewVersionInfoDB.IFactory newVersionInfoFactory,
 			final ISetVersionInfoVisitor.IFactory setVersionInfoVisitorFactory,
 			final StringPair.IFactory stringPairFactory,
 			final IAttachmentNamespaceDAOHibernate attachmentNamespaceDAO,
