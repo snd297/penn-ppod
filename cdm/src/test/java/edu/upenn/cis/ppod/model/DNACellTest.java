@@ -17,8 +17,10 @@ package edu.upenn.cis.ppod.model;
 
 import static com.google.common.collect.Iterables.getOnlyElement;
 import static org.testng.Assert.assertEquals;
+import static org.testng.Assert.assertFalse;
 import static org.testng.Assert.assertNotNull;
 import static org.testng.Assert.assertNull;
+import static org.testng.Assert.assertSame;
 import static org.testng.Assert.assertTrue;
 
 import java.util.Set;
@@ -168,7 +170,7 @@ public class DNACellTest {
 		cellTestSupport.unsetRow(matrix);
 	}
 
-	@Test(groups = TestGroupDefs.SINGLE, dependsOnGroups = TestGroupDefs.INIT)
+	@Test
 	public void setElements() {
 		final DNACell cell = dnaCellProvider.get();
 
@@ -188,6 +190,35 @@ public class DNACellTest {
 		// Set it to null
 		cell.setElements(null);
 		assertNull(cell.getElementsModifiable());
+
+	}
+
+	@Test(groups = TestGroupDefs.SINGLE, dependsOnGroups = TestGroupDefs.INIT)
+	public void setPolymorphicOrUncertain() {
+		final DNACell cell = dnaCellProvider.get();
+		final Set<DNANucleotide> nucleotides =
+				ImmutableSet.of(DNANucleotide.A, DNANucleotide.T);
+		cell.unsetInNeedOfNewVersion();
+
+		final DNACell returnedCell =
+				cell.setPolymorphicOrUncertain(
+						Cell.Type.POLYMORPHIC,
+						nucleotides);
+
+		assertSame(returnedCell, cell);
+		assertTrue(cell.isInNeedOfNewVersion());
+		assertEquals(cell.getType(), Cell.Type.POLYMORPHIC);
+		assertEquals((Object) cell.getElementsModifiable(),
+				(Object) nucleotides);
+
+		cell.unsetInNeedOfNewVersion();
+
+		cell.setPolymorphicOrUncertain(Cell.Type.POLYMORPHIC, nucleotides);
+
+		assertFalse(cell.isInNeedOfNewVersion());
+		assertEquals(cell.getType(), Cell.Type.POLYMORPHIC);
+		assertEquals((Object) cell.getElementsModifiable(),
+				(Object) nucleotides);
 
 	}
 }

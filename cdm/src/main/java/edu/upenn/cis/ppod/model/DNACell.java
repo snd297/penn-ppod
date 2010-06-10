@@ -148,7 +148,7 @@ public class DNACell extends Cell<DNANucleotide> {
 	}
 
 	@Override
-	protected Cell<DNANucleotide> setPolymorphicOrUncertain(
+	protected DNACell setPolymorphicOrUncertain(
 			final edu.upenn.cis.ppod.model.Cell.Type type,
 			final Set<DNANucleotide> elements) {
 		checkNotNull(type);
