@@ -107,7 +107,9 @@ public class TreeSet extends UUPPodEntityWXmlId implements
 	 * @param parent {@code Unmarshaller}
 	 */
 	@Override
-	public void afterUnmarshal(final Unmarshaller u, final Object parent) {
+	public void afterUnmarshal(
+			@CheckForNull final Unmarshaller u,
+			@CheckForNull final Object parent) {
 		super.afterUnmarshal(u, parent);
 		this.otuSet = (OTUSet) parent;
 	}
