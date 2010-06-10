@@ -44,8 +44,14 @@ import edu.upenn.cis.ppod.util.IVisitor;
 @Table(name = DNASequenceSet.TABLE)
 public class DNASequenceSet extends SequenceSet<DNASequence> {
 
+	/**
+	 * The name of the entity's table.
+	 */
 	public final static String TABLE = "DNA_SEQUENCE_SET";
 
+	/**
+	 * Used for foreign keys that point at this table.
+	 */
 	public final static String JOIN_COLUMN =
 			TABLE + "_" + PersistentObject.ID_COLUMN;
 
@@ -109,6 +115,15 @@ public class DNASequenceSet extends SequenceSet<DNASequence> {
 		return getOTUKeyedSequences().put(otu, sequence);
 	}
 
+	/** For JAXB. */
+	@edu.umd.cs.findbugs.annotations.SuppressWarnings
+	protected DNASequenceSet setOTUKeyedSequences(
+			final DNASequences sequences) {
+		checkNotNull(sequences);
+		this.sequences = sequences;
+		return this;
+	}
+
 	/**
 	 * @throws IllegalStateException if {@link #getOTUsToSequences()} {@code ==
 	 *             null}.
@@ -118,17 +133,8 @@ public class DNASequenceSet extends SequenceSet<DNASequence> {
 			@Nullable final OTUSet otuSet) {
 		checkState(
 				getOTUKeyedSequences() != null,
-				"getOTUKeyed() == null, so there is no sequences to operate on");
+				"getOTUKeyedSequences() == null, so there are no sequences to operate on");
 		getOTUKeyedSequences().setOTUs();
-		return this;
-	}
-
-	/** For JAXB. */
-	@edu.umd.cs.findbugs.annotations.SuppressWarnings
-	protected DNASequenceSet setOTUKeyedMap(
-			final DNASequences sequences) {
-		checkNotNull(sequences);
-		this.sequences = sequences;
 		return this;
 	}
 }
