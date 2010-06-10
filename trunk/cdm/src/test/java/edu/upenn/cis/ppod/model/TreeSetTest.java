@@ -28,10 +28,12 @@ import java.util.List;
 import org.testng.annotations.Test;
 
 import com.google.common.collect.ImmutableList;
+import com.google.common.collect.ImmutableSet;
 import com.google.inject.Inject;
 import com.google.inject.Provider;
 
 import edu.upenn.cis.ppod.TestGroupDefs;
+import edu.upenn.cis.ppod.util.TestVisitor;
 
 /**
  * Test {@link TreeSet}.
@@ -49,6 +51,9 @@ public class TreeSetTest {
 
 	@Inject
 	private Provider<OTUSet> otuSetProvider;
+
+	@Inject
+	private Provider<Attachment> attachmentProvider;
 
 	@Test
 	public void addTree() {
@@ -134,6 +139,54 @@ public class TreeSetTest {
 
 		assertTrue(treeSet.isInNeedOfNewVersion());
 		assertTrue(otuSet.isInNeedOfNewVersion());
+
+	}
+
+	@Test
+	public void setLabel() {
+		final TreeSet treeSet = treeSetProvider.get();
+		treeSet.unsetInNeedOfNewVersion();
+		final String otuSetLabel = "otu-set-label";
+		final TreeSet returnedTreeSet = treeSet.setLabel(otuSetLabel);
+		assertTrue(treeSet.isInNeedOfNewVersion());
+		assertSame(returnedTreeSet, treeSet);
+		treeSet.isInNeedOfNewVersion();
+		assertEquals(treeSet.getLabel(), otuSetLabel);
+
+		treeSet.unsetInNeedOfNewVersion();
+		treeSet.setLabel(otuSetLabel);
+		assertFalse(treeSet.isInNeedOfNewVersion());
+		assertEquals(treeSet.getLabel(), otuSetLabel);
+	}
+
+	@Inject
+	private TestVisitor visitor;
+
+	@Test
+	public void accept() {
+		final TreeSet treeSet = treeSetProvider.get();
+		treeSet.addTree(treeProvider.get());
+		treeSet.addTree(treeProvider.get());
+		treeSet.addTree(treeProvider.get());
+
+		treeSet.addAttachment(attachmentProvider.get());
+		treeSet.addAttachment(attachmentProvider.get());
+		treeSet.addAttachment(attachmentProvider.get());
+
+		treeSet.accept(visitor);
+
+		assertEquals(visitor.getVisited().size(),
+				ImmutableSet.of(treeSet).size()
+						+ treeSet.getTrees().size()
+						+ treeSet.getAttachments().size());
+
+		for (final Tree tree : treeSet.getTrees()) {
+			assertTrue(visitor.getVisited().contains(tree));
+		}
+
+		for (final Attachment attachment : treeSet.getAttachments()) {
+			assertTrue(visitor.getVisited().contains(attachment));
+		}
 
 	}
 }

@@ -80,6 +80,101 @@ public class OTUSetTest {
 
 	private Study study;
 
+	@Inject
+	private Provider<TestVisitor> testVisitorProvider;
+
+	@Test
+	public void accept() {
+		final OTUSet otuSet = otuSetProvider.get();
+
+		otuSet.addOTU(otuProvider.get().setLabel("otu-0"));
+		otuSet.addOTU(otuProvider.get().setLabel("otu-1"));
+		otuSet.addOTU(otuProvider.get().setLabel("otu-2"));
+
+		otuSet.addStandardMatrix(standardMatrixProvider.get());
+		otuSet.addStandardMatrix(standardMatrixProvider.get());
+		otuSet.addStandardMatrix(standardMatrixProvider.get());
+
+		otuSet.addDNAMatrix(dnaMatrixProvider.get());
+		otuSet.addDNAMatrix(dnaMatrixProvider.get());
+		otuSet.addDNAMatrix(dnaMatrixProvider.get());
+
+		otuSet.addDNASequenceSet(dnaSequenceSetProvider.get());
+		otuSet.addDNASequenceSet(dnaSequenceSetProvider.get());
+		otuSet.addDNASequenceSet(dnaSequenceSetProvider.get());
+
+		otuSet.addTreeSet(treeSetProvider.get());
+		otuSet.addTreeSet(treeSetProvider.get());
+		otuSet.addTreeSet(treeSetProvider.get());
+
+		otuSet.addAttachment(attachmentProvider.get());
+		otuSet.addAttachment(attachmentProvider.get());
+		otuSet.addAttachment(attachmentProvider.get());
+
+		final TestVisitor visitor = testVisitorProvider.get();
+		otuSet.accept(visitor);
+
+		// Get rid of stuff we don't care about
+		final Set<Object> visited = newHashSet();
+
+		for (final Object visitedObject : visitor.getVisited()) {
+			if (visitedObject.getClass() == OTUSet.class
+					|| visitedObject.getClass() == OTU.class
+					|| visitedObject.getClass() == StandardMatrix.class
+					|| visitedObject.getClass() == DNAMatrix.class
+					|| visitedObject.getClass() == DNASequenceSet.class
+					|| visitedObject.getClass() == TreeSet.class
+					|| visitedObject.getClass() == Attachment.class) {
+				visited.add(visitedObject);
+			}
+		}
+
+		// We make a set of the objects visited just to make it clear what we're
+		// counting here.
+		assertEquals(visited.size(),
+				otuSet.getChildren().size()
+						+ otuSet.getAttachments().size()
+						+ ImmutableSet.of(otuSet).size());
+
+		assertTrue(visited.contains(otuSet));
+
+		for (final Object child : otuSet.getChildren()) {
+			assertTrue(visited.contains(child));
+		}
+
+		for (final Attachment attachment : otuSet.getAttachments()) {
+			assertTrue(visited.contains(attachment));
+		}
+	}
+
+	@Test
+	public void addDNAMatrix() {
+		final DNAMatrix dnaMatrix = dnaMatrixProvider.get();
+
+		otuSet.unsetInNeedOfNewVersion();
+
+		final DNAMatrix dnaMatrixReturned = otuSet.addDNAMatrix(dnaMatrix);
+		assertSame(dnaMatrixReturned, dnaMatrix);
+		assertEquals(getOnlyElement(otuSet.getDNAMatrices()), dnaMatrix);
+		assertSame(dnaMatrix.getOTUSet(), otuSet);
+		assertTrue(otuSet.isInNeedOfNewVersion());
+
+		otuSet.unsetInNeedOfNewVersion();
+		otuSet.addDNAMatrix(dnaMatrix);
+
+		assertEquals(getOnlyElement(otuSet.getDNAMatrices()), dnaMatrix);
+		assertFalse(otuSet.isInNeedOfNewVersion());
+
+	}
+
+	@Test
+	public void addOTU() {
+		final OTU otu0 = otuProvider.get();
+		final OTU shouldBeOTU0 = otuSet.addOTU(otu0);
+		assertSame(shouldBeOTU0, otu0);
+		assertTrue(contains(otuSet.getOTUs(), otu0));
+	}
+
 	/**
 	 * Add an otu that's already in an otu set into an otu set. The pPOD version
 	 * should not be reset when this happens.
@@ -100,24 +195,13 @@ public class OTUSetTest {
 	}
 
 	@Test
-	public void setTreeSetsWithTreeSetsItAlreadyHas() {
-		final TreeSet treeSet0 = treeSetProvider.get();
-		final TreeSet treeSet1 = treeSetProvider.get();
-		otuSet.setTreeSets(ImmutableSet.of(treeSet0, treeSet1));
-
+	public void afterUnmarshal() {
+		final Study study = studyProvider.get();
 		otuSet.unsetInNeedOfNewVersion();
-
-		otuSet.setTreeSets(ImmutableSet.of(treeSet0, treeSet1));
+		otuSet.afterUnmarshal(null, study);
+		assertSame(otuSet.getStudy(), study);
 		assertFalse(otuSet.isInNeedOfNewVersion());
-	}
 
-	@Test
-	public void setTreeSetsAndGetTreeSetsSize() {
-		final TreeSet treeSet = treeSetProvider.get();
-		final Set<TreeSet> treeSets = ImmutableSet.of(treeSet);
-		otuSet.setTreeSets(treeSets);
-		assertEquals(getOnlyElement(otuSet.getTreeSets()), treeSet);
-		assertEquals(otuSet.getTreeSets().size(), treeSets.size());
 	}
 
 	@BeforeMethod
@@ -152,6 +236,45 @@ public class OTUSetTest {
 		assertTrue(study.isInNeedOfNewVersion());
 		// assertNull(study.getPPodVersionInfo());
 		assertEquals(otuSet.getOTUs().size(), 0);
+	}
+
+	@Test
+	public void getDNASequenceSetsSize() {
+		final DNASequenceSet dnaSequenceSet0 = dnaSequenceSetProvider.get();
+		final DNASequenceSet dnaSequenceSet1 = dnaSequenceSetProvider.get();
+		final DNASequenceSet dnaSequenceSet2 = dnaSequenceSetProvider.get();
+		final Set<DNASequenceSet> dnaSequenceSets = ImmutableSet.of(
+				dnaSequenceSet0, dnaSequenceSet1, dnaSequenceSet2);
+		otuSet.setDNASequenceSets(dnaSequenceSets);
+		assertEquals(otuSet.getDNASequenceSets().size(), dnaSequenceSets.size());
+	}
+
+	@Test
+	public void removeDNASequenceSet() {
+		final DNASequenceSet dnaSequenceSet0 = dnaSequenceSetProvider.get();
+		final DNASequenceSet dnaSequenceSet1 = dnaSequenceSetProvider.get();
+		final DNASequenceSet dnaSequenceSet2 = dnaSequenceSetProvider.get();
+		final Set<DNASequenceSet> dnaSequenceSets =
+				ImmutableSet.of(
+						dnaSequenceSet0,
+						dnaSequenceSet1,
+						dnaSequenceSet2);
+		otuSet.setDNASequenceSets(dnaSequenceSets);
+
+		final boolean booleanReturned = otuSet
+				.removeDNASequenceSet(dnaSequenceSet1);
+
+		assertTrue(booleanReturned);
+
+		assertEquals((Object) otuSet.getDNASequenceSets(),
+				(Object) ImmutableSet.of(dnaSequenceSet0, dnaSequenceSet2));
+
+		otuSet.unsetInNeedOfNewVersion();
+
+		final boolean booleanReturned2 = otuSet
+				.removeDNASequenceSet(dnaSequenceSet1);
+		assertFalse(booleanReturned2);
+		assertFalse(otuSet.isInNeedOfNewVersion());
 	}
 
 	@Test
@@ -243,6 +366,29 @@ public class OTUSetTest {
 	}
 
 	@Test
+	public void setDescription() {
+		otuSet.unsetInNeedOfNewVersion();
+		final String description = "DESCRIPTION";
+		otuSet.setDescription(description);
+		assertEquals(otuSet.getDescription(), description);
+		assertTrue(otuSet.isInNeedOfNewVersion());
+
+		otuSet.unsetInNeedOfNewVersion();
+		otuSet.setDescription(description);
+		assertFalse(otuSet.isInNeedOfNewVersion());
+
+		otuSet.unsetInNeedOfNewVersion();
+		otuSet.setDescription(null);
+		assertNull(otuSet.getDescription());
+		assertTrue(otuSet.isInNeedOfNewVersion());
+
+		otuSet.unsetInNeedOfNewVersion();
+		otuSet.setDescription(null);
+		assertNull(otuSet.getDescription());
+		assertFalse(otuSet.isInNeedOfNewVersion());
+	}
+
+	@Test
 	public void setDNASequenceSets() {
 		final DNASequenceSet dnaSequenceSet0 = dnaSequenceSetProvider.get();
 		final DNASequenceSet dnaSequenceSet1 = dnaSequenceSetProvider.get();
@@ -277,34 +423,38 @@ public class OTUSetTest {
 	}
 
 	@Test
-	public void addOTU() {
-		final OTU otu0 = otuProvider.get();
-		final OTU shouldBeOTU0 = otuSet.addOTU(otu0);
-		assertSame(shouldBeOTU0, otu0);
-		assertTrue(contains(otuSet.getOTUs(), otu0));
+	public void setInNeedOfNewPPodVersion() {
+		otuSet.unsetInNeedOfNewVersion();
+		otuSet.getStudy().unsetInNeedOfNewVersion();
+
+		otuSet.setInNeedOfNewVersion();
+		assertTrue(otuSet.isInNeedOfNewVersion());
+		assertTrue(otuSet.getStudy().isInNeedOfNewVersion());
+
 	}
 
 	@Test
-	public void setDescription() {
+	public void setInNeedOfNewPPodVersionWithNoStudy() {
+		final OTUSet otuSetWithNoStudy = otuSetProvider.get();
+		otuSetWithNoStudy.unsetInNeedOfNewVersion();
+		otuSetWithNoStudy.setInNeedOfNewVersion();
+		assertTrue(otuSetWithNoStudy.isInNeedOfNewVersion());
+	}
+
+	@Test
+	public void setLabel() {
 		otuSet.unsetInNeedOfNewVersion();
-		final String description = "DESCRIPTION";
-		otuSet.setDescription(description);
-		assertEquals(otuSet.getDescription(), description);
+		final String otuSetLabel = "otu-set-label";
+		final OTUSet returnedOTUSet = otuSet.setLabel(otuSetLabel);
 		assertTrue(otuSet.isInNeedOfNewVersion());
+		assertSame(returnedOTUSet, otuSet);
+		otuSet.isInNeedOfNewVersion();
+		assertEquals(otuSet.getLabel(), otuSetLabel);
 
 		otuSet.unsetInNeedOfNewVersion();
-		otuSet.setDescription(description);
+		otuSet.setLabel(otuSetLabel);
 		assertFalse(otuSet.isInNeedOfNewVersion());
-
-		otuSet.unsetInNeedOfNewVersion();
-		otuSet.setDescription(null);
-		assertNull(otuSet.getDescription());
-		assertTrue(otuSet.isInNeedOfNewVersion());
-
-		otuSet.unsetInNeedOfNewVersion();
-		otuSet.setDescription(null);
-		assertNull(otuSet.getDescription());
-		assertFalse(otuSet.isInNeedOfNewVersion());
+		assertEquals(otuSet.getLabel(), otuSetLabel);
 	}
 
 	@Test
@@ -328,171 +478,23 @@ public class OTUSetTest {
 	}
 
 	@Test
-	public void removeDNASequenceSet() {
-		final DNASequenceSet dnaSequenceSet0 = dnaSequenceSetProvider.get();
-		final DNASequenceSet dnaSequenceSet1 = dnaSequenceSetProvider.get();
-		final DNASequenceSet dnaSequenceSet2 = dnaSequenceSetProvider.get();
-		final Set<DNASequenceSet> dnaSequenceSets =
-				ImmutableSet.of(
-						dnaSequenceSet0,
-						dnaSequenceSet1,
-						dnaSequenceSet2);
-		otuSet.setDNASequenceSets(dnaSequenceSets);
+	public void setTreeSetsAndGetTreeSetsSize() {
+		final TreeSet treeSet = treeSetProvider.get();
+		final Set<TreeSet> treeSets = ImmutableSet.of(treeSet);
+		otuSet.setTreeSets(treeSets);
+		assertEquals(getOnlyElement(otuSet.getTreeSets()), treeSet);
+		assertEquals(otuSet.getTreeSets().size(), treeSets.size());
+	}
 
-		boolean booleanReturned = otuSet.removeDNASequenceSet(dnaSequenceSet1);
-
-		assertTrue(booleanReturned);
-
-		assertEquals((Object) otuSet.getDNASequenceSets(),
-				(Object) ImmutableSet.of(dnaSequenceSet0, dnaSequenceSet2));
+	@Test
+	public void setTreeSetsWithTreeSetsItAlreadyHas() {
+		final TreeSet treeSet0 = treeSetProvider.get();
+		final TreeSet treeSet1 = treeSetProvider.get();
+		otuSet.setTreeSets(ImmutableSet.of(treeSet0, treeSet1));
 
 		otuSet.unsetInNeedOfNewVersion();
 
-		boolean booleanReturned2 = otuSet.removeDNASequenceSet(dnaSequenceSet1);
-		assertFalse(booleanReturned2);
+		otuSet.setTreeSets(ImmutableSet.of(treeSet0, treeSet1));
 		assertFalse(otuSet.isInNeedOfNewVersion());
-	}
-
-	@Test
-	public void getDNASequenceSetsSize() {
-		final DNASequenceSet dnaSequenceSet0 = dnaSequenceSetProvider.get();
-		final DNASequenceSet dnaSequenceSet1 = dnaSequenceSetProvider.get();
-		final DNASequenceSet dnaSequenceSet2 = dnaSequenceSetProvider.get();
-		final Set<DNASequenceSet> dnaSequenceSets = ImmutableSet.of(
-				dnaSequenceSet0, dnaSequenceSet1, dnaSequenceSet2);
-		otuSet.setDNASequenceSets(dnaSequenceSets);
-		assertEquals(otuSet.getDNASequenceSets().size(), dnaSequenceSets.size());
-	}
-
-	@Test
-	public void setInNeedOfNewPPodVersion() {
-		otuSet.unsetInNeedOfNewVersion();
-		otuSet.getStudy().unsetInNeedOfNewVersion();
-
-		otuSet.setInNeedOfNewVersion();
-		assertTrue(otuSet.isInNeedOfNewVersion());
-		assertTrue(otuSet.getStudy().isInNeedOfNewVersion());
-
-	}
-
-	@Test
-	public void setInNeedOfNewPPodVersionWithNoStudy() {
-		final OTUSet otuSetWithNoStudy = otuSetProvider.get();
-		otuSetWithNoStudy.unsetInNeedOfNewVersion();
-		otuSetWithNoStudy.setInNeedOfNewVersion();
-		assertTrue(otuSetWithNoStudy.isInNeedOfNewVersion());
-	}
-
-	@Test
-	public void afterUnmarshal() {
-		final Study study = studyProvider.get();
-		otuSet.unsetInNeedOfNewVersion();
-		otuSet.afterUnmarshal(null, study);
-		assertSame(otuSet.getStudy(), study);
-		assertFalse(otuSet.isInNeedOfNewVersion());
-
-	}
-
-	@Test
-	public void addDNAMatrix() {
-		final DNAMatrix dnaMatrix = dnaMatrixProvider.get();
-
-		otuSet.unsetInNeedOfNewVersion();
-
-		final DNAMatrix dnaMatrixReturned = otuSet.addDNAMatrix(dnaMatrix);
-		assertSame(dnaMatrixReturned, dnaMatrix);
-		assertEquals(getOnlyElement(otuSet.getDNAMatrices()), dnaMatrix);
-		assertSame(dnaMatrix.getOTUSet(), otuSet);
-		assertTrue(otuSet.isInNeedOfNewVersion());
-
-		otuSet.unsetInNeedOfNewVersion();
-		otuSet.addDNAMatrix(dnaMatrix);
-
-		assertEquals(getOnlyElement(otuSet.getDNAMatrices()), dnaMatrix);
-		assertFalse(otuSet.isInNeedOfNewVersion());
-
-	}
-
-	@Test
-	public void setLabel() {
-		otuSet.unsetInNeedOfNewVersion();
-		final String otuSetLabel = "otu-set-label";
-		final OTUSet returnedOTUSet = otuSet.setLabel(otuSetLabel);
-		assertTrue(otuSet.isInNeedOfNewVersion());
-		assertSame(returnedOTUSet, otuSet);
-		otuSet.isInNeedOfNewVersion();
-		assertEquals(otuSet.getLabel(), otuSetLabel);
-
-		otuSet.unsetInNeedOfNewVersion();
-		otuSet.setLabel(otuSetLabel);
-		assertFalse(otuSet.isInNeedOfNewVersion());
-		assertEquals(otuSet.getLabel(), otuSetLabel);
-	}
-
-	@Inject
-	private Provider<TestVisitor> testVisitorProvider;
-
-	@Test
-	public void accept() {
-		final OTUSet otuSet = otuSetProvider.get();
-
-		otuSet.addOTU(otuProvider.get().setLabel("otu-0"));
-		otuSet.addOTU(otuProvider.get().setLabel("otu-1"));
-		otuSet.addOTU(otuProvider.get().setLabel("otu-2"));
-
-		otuSet.addStandardMatrix(standardMatrixProvider.get());
-		otuSet.addStandardMatrix(standardMatrixProvider.get());
-		otuSet.addStandardMatrix(standardMatrixProvider.get());
-
-		otuSet.addDNAMatrix(dnaMatrixProvider.get());
-		otuSet.addDNAMatrix(dnaMatrixProvider.get());
-		otuSet.addDNAMatrix(dnaMatrixProvider.get());
-
-		otuSet.addDNASequenceSet(dnaSequenceSetProvider.get());
-		otuSet.addDNASequenceSet(dnaSequenceSetProvider.get());
-		otuSet.addDNASequenceSet(dnaSequenceSetProvider.get());
-
-		otuSet.addTreeSet(treeSetProvider.get());
-		otuSet.addTreeSet(treeSetProvider.get());
-		otuSet.addTreeSet(treeSetProvider.get());
-
-		otuSet.addAttachment(attachmentProvider.get());
-		otuSet.addAttachment(attachmentProvider.get());
-		otuSet.addAttachment(attachmentProvider.get());
-
-		final TestVisitor visitor = testVisitorProvider.get();
-		otuSet.accept(visitor);
-
-		// Get rid of stuff we don't care about
-		final Set<Object> visited = newHashSet();
-
-		for (final Object visitedObject : visitor.getVisited()) {
-			if (visitedObject.getClass() == OTUSet.class
-					|| visitedObject.getClass() == OTU.class
-					|| visitedObject.getClass() == StandardMatrix.class
-					|| visitedObject.getClass() == DNAMatrix.class
-					|| visitedObject.getClass() == DNASequenceSet.class
-					|| visitedObject.getClass() == TreeSet.class
-					|| visitedObject.getClass() == Attachment.class) {
-				visited.add(visitedObject);
-			}
-		}
-
-		// We make a set of the objects visited just to make it clear what we're
-		// counting here.
-		assertEquals(visited.size(),
-				otuSet.getChildren().size()
-						+ otuSet.getAttachments().size()
-						+ ImmutableSet.of(otuSet).size());
-
-		assertTrue(visited.contains(otuSet));
-
-		for (final Object child : otuSet.getChildren()) {
-			assertTrue(visited.contains(child));
-		}
-
-		for (final Attachment attachment : otuSet.getAttachments()) {
-			assertTrue(visited.contains(attachment));
-		}
 	}
 }
