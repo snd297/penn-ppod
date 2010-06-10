@@ -18,6 +18,7 @@ package edu.upenn.cis.ppod.model;
 import static com.google.common.collect.Iterables.getOnlyElement;
 import static org.testng.Assert.assertEquals;
 import static org.testng.Assert.assertNotNull;
+import static org.testng.Assert.assertNull;
 import static org.testng.Assert.assertTrue;
 
 import java.util.Set;
@@ -37,7 +38,7 @@ import edu.upenn.cis.ppod.model.Cell.Type;
  * 
  * @author Sam Donnelly
  */
-@Test(groups = { TestGroupDefs.FAST }, dependsOnGroups = TestGroupDefs.INIT)
+@Test(groups = { TestGroupDefs.FAST, }, dependsOnGroups = TestGroupDefs.INIT)
 public class DNACellTest {
 
 	@Inject
@@ -160,9 +161,33 @@ public class DNACellTest {
 		assertTrue(dnaCell.isInNeedOfNewVersion());
 	}
 
+	@Test
 	public void unsetRow() {
 		final DNAMatrix matrix = dnaMatrix2Provider.get();
 		matrix.setColumnsSize(1);
 		cellTestSupport.unsetRow(matrix);
+	}
+
+	@Test(groups = TestGroupDefs.SINGLE, dependsOnGroups = TestGroupDefs.INIT)
+	public void setElements() {
+		final DNACell cell = dnaCellProvider.get();
+
+		final Set<DNANucleotide> nucleotides =
+				ImmutableSet.of(DNANucleotide.A, DNANucleotide.T);
+		cell.setElements(nucleotides);
+		assertEquals((Object) cell.getElementsModifiable(),
+				(Object) nucleotides);
+
+		final Set<DNANucleotide> nucleotides2 =
+				ImmutableSet.of(DNANucleotide.T);
+
+		cell.setElements(nucleotides2);
+		assertEquals((Object) cell.getElementsModifiable(),
+				(Object) nucleotides2);
+
+		// Set it to null
+		cell.setElements(null);
+		assertNull(cell.getElementsModifiable());
+
 	}
 }
