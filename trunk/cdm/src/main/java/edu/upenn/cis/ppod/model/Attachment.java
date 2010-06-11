@@ -63,8 +63,8 @@ public class Attachment extends UUPPodEntityWXmlId {
 	 * Is an attachment of a the given's attachments namespace and type? And
 	 * does it have the given attachment's label and string value?
 	 */
-	public static interface IIsOfNamepspaceTypeLabelAndStringValue extends
-			Predicate<Attachment> {
+	public static interface IIsOfNamepspaceTypeLabelAndStringValue
+			extends Predicate<Attachment> {
 
 		/**
 		 * Creates {@code IIsOfNamepspaceTypeLabelAndStringValue}s. For Guice.
@@ -135,8 +135,8 @@ public class Attachment extends UUPPodEntityWXmlId {
 	 * Is an attachment of a particular {@link AttachmentNamespace} and
 	 * {@link AttachmentType}?
 	 */
-	public final static class IsOfNamespaceAndType implements
-			Predicate<Attachment> {
+	public final static class IsOfNamespaceAndType
+			implements Predicate<Attachment> {
 
 		private final String namespaceLabel;
 
@@ -245,9 +245,9 @@ public class Attachment extends UUPPodEntityWXmlId {
 	@CheckForNull
 	private String label;
 
-	// TODO: this is set to unique only to allow lookups of Character's mesquite
+	// ATODO: we create an index here to allow lookups of Character's mesquite
 	// id's. See bug 24 http://code.google.com/p/penn-ppod/issues/detail?id=24
-	@Column(name = STRING_VALUE_COLUMN, nullable = true, unique = true)
+	@Column(name = STRING_VALUE_COLUMN, nullable = true)
 	@Index(name = STRING_VALUE_COLUMN + "IDX")
 	@CheckForNull
 	private String stringValue;
@@ -282,6 +282,15 @@ public class Attachment extends UUPPodEntityWXmlId {
 		checkNotNull(attachee);
 		attachees.add(attachee);
 		return attachee;
+	}
+
+	/**
+	 * Get the entities that have this has an attachment.
+	 * 
+	 * @return the entities that have this has an attachment
+	 */
+	public Set<PPodEntity> getAttachees() {
+		return attachees;
 	}
 
 	/**
@@ -446,5 +455,4 @@ public class Attachment extends UUPPodEntityWXmlId {
 
 		return retValue.toString();
 	}
-
 }

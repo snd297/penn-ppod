@@ -52,7 +52,7 @@ public class PPodIterables {
 			final Predicate<? super T> predicate) {
 
 		// NOTE: we had this implemented in terms of filter(...), but the
-		// javadoc for that doesn't guarantee order preserving.
+		// javadoc for that doesn't guarantee order preservation.
 		while (iterator.hasNext()) {
 			final T thisItem = iterator.next();
 			if (predicate.apply(thisItem)) {

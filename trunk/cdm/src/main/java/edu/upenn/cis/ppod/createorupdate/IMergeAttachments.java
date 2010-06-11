@@ -33,7 +33,8 @@ public interface IMergeAttachments {
 	 * @throws IllegalArgumentException if {@code
 	 *             sourceAttachment.getType().getNamespace() == null}
 	 */
-	void mergeAttachments(final Attachment targetAttachment,
+	void mergeAttachments(
+			final Attachment targetAttachment,
 			final Attachment sourceAttachment);
 
 	static interface IFactory {

@@ -28,6 +28,8 @@ import javax.persistence.Table;
 import javax.xml.bind.annotation.XmlAttribute;
 import javax.xml.bind.annotation.XmlIDREF;
 
+import org.hibernate.annotations.Index;
+
 import edu.upenn.cis.ppod.util.IVisitor;
 
 /**
@@ -53,7 +55,12 @@ public class AttachmentType extends PersistentObjectWithXmlId {
 	@CheckForNull
 	private AttachmentNamespace namespace;
 
-	@Column(name = LABEL_COLUMN, unique = true, nullable = false, length = LABEL_COLUMN_LENGTH)
+	/**
+	 * Label's are unique in a given attachment namespace, but not unique
+	 * globally.
+	 */
+	@Column(name = LABEL_COLUMN, nullable = false, length = LABEL_COLUMN_LENGTH)
+	@Index(name = LABEL_COLUMN + "_IDX")
 	@CheckForNull
 	private String label;
 
