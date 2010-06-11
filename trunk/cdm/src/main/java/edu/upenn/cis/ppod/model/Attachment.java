@@ -39,6 +39,8 @@ import javax.xml.bind.annotation.XmlAttribute;
 import javax.xml.bind.annotation.XmlElement;
 import javax.xml.bind.annotation.XmlIDREF;
 
+import org.hibernate.annotations.Index;
+
 import com.google.common.base.Function;
 import com.google.common.base.Predicate;
 import com.google.inject.ImplementedBy;
@@ -160,8 +162,8 @@ public class Attachment extends UUPPodEntityWXmlId {
 
 	}
 
-	final static class IsOfNamespaceTypeLabelAndStringValue implements
-			IIsOfNamepspaceTypeLabelAndStringValue {
+	final static class IsOfNamespaceTypeLabelAndStringValue
+			implements IIsOfNamepspaceTypeLabelAndStringValue {
 
 		private final String attachmentLabel;
 		private final String attachmentStringValue;
@@ -244,8 +246,9 @@ public class Attachment extends UUPPodEntityWXmlId {
 	private String label;
 
 	// TODO: this is set to unique only to allow lookups of Character's mesquite
-	// id's. See bug Bugzilla 128
+	// id's. See bug 24 http://code.google.com/p/penn-ppod/issues/detail?id=24
 	@Column(name = STRING_VALUE_COLUMN, nullable = true, unique = true)
+	@Index(name = STRING_VALUE_COLUMN + "IDX")
 	@CheckForNull
 	private String stringValue;
 

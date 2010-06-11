@@ -35,7 +35,7 @@ import edu.upenn.cis.ppod.modelinterfaces.INewVersionInfo;
 import edu.upenn.cis.ppod.modelinterfaces.IWithPPodId;
 
 /**
- * An {@code IMergeTreeSetes} with no explicit outside dependencies.
+ * An {@code IMergeTreeSets}.
  * 
  * @author Sam Donnelly
  */
