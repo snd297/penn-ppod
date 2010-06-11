@@ -86,9 +86,7 @@ public class OTU
 	@Override
 	public void afterUnmarshal(final Unmarshaller u, final Object parent) {
 		super.afterUnmarshal(u, parent);
-		if (parent instanceof OTUSet) {
-			this.otuSet = (OTUSet) parent;
-		}
+		this.otuSet = (OTUSet) parent;
 	}
 
 	/**
