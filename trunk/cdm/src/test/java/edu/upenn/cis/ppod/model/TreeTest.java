@@ -37,15 +37,7 @@ public class TreeTest {
 	private Provider<Tree> treeProvider;
 
 	@Test
-	public void setInNeedOfNewVersionForMotherlessTree() {
-		final Tree tree = treeProvider.get();
-		assertFalse(tree.isInNeedOfNewVersion());
-		tree.setInNeedOfNewVersion();
-		assertTrue(tree.isInNeedOfNewVersion());
-	}
-
-	@Test
-	public void setInNeedOfNewVersionForMotheredTree() {
+	public void setInNeedOfNewVersionForParentedTree() {
 		final TreeSet treeSet = treeSetProvider.get();
 		final Tree tree = treeProvider.get();
 		treeSet.addTree(tree);
@@ -56,6 +48,31 @@ public class TreeTest {
 
 		assertTrue(tree.isInNeedOfNewVersion());
 		assertTrue(treeSet.isInNeedOfNewVersion());
+	}
+
+	@Test
+	public void setInNeedOfNewVersionForParentlessTree() {
+		final Tree tree = treeProvider.get();
+		assertFalse(tree.isInNeedOfNewVersion());
+		tree.setInNeedOfNewVersion();
+		assertTrue(tree.isInNeedOfNewVersion());
+	}
+
+	@Test
+	public void setLabel() {
+		final Tree tree = treeProvider.get();
+		tree.unsetInNeedOfNewVersion();
+		final String label = "otu-label";
+		final Tree returnedOTU = tree.setLabel(label);
+		assertTrue(tree.isInNeedOfNewVersion());
+		assertSame(returnedOTU, tree);
+		tree.isInNeedOfNewVersion();
+		assertEquals(tree.getLabel(), label);
+
+		tree.unsetInNeedOfNewVersion();
+		tree.setLabel(label);
+		assertFalse(tree.isInNeedOfNewVersion());
+		assertEquals(tree.getLabel(), label);
 	}
 
 	@Test
@@ -71,5 +88,6 @@ public class TreeTest {
 		tree.unsetInNeedOfNewVersion();
 		tree.setNewick(newick);
 		assertFalse(tree.isInNeedOfNewVersion());
+		assertEquals(tree.getNewick(), newick);
 	}
 }
