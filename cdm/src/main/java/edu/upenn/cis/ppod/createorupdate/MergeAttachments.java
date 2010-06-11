@@ -62,7 +62,8 @@ class MergeAttachments implements IMergeAttachments {
 		this.attachmentTypeProvider = attachmentTypeProvider;
 	}
 
-	public void mergeAttachments(final Attachment targetAttachment,
+	public void mergeAttachments(
+			final Attachment targetAttachment,
 			final Attachment sourceAttachment) {
 		checkNotNull(targetAttachment);
 		checkNotNull(sourceAttachment);

@@ -249,14 +249,7 @@ public class OTUSet extends UUPPodEntityWXmlId {
 			@CheckForNull final Unmarshaller u,
 			@CheckForNull final Object parent) {
 		super.afterUnmarshal(u, parent);
-		if (parent instanceof Study) {
-			// We don't call setStudy(...) since that would reset the pPOD
-			// version info, which is not appropriate here. (Even though it
-			// doesn't make a difference since deserialized OTU sets don't have
-			// a reference to a versionInfo. But it seems more proper to do
-			// this way.)
-			this.study = (Study) parent;
-		}
+		this.study = (Study) parent;
 	}
 
 	protected Set<IVersionedWithOTUSet> getChildren() {

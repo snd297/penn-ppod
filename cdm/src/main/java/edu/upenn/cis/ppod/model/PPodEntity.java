@@ -17,6 +17,7 @@ package edu.upenn.cis.ppod.model;
 
 import static com.google.common.base.Preconditions.checkNotNull;
 import static com.google.common.base.Preconditions.checkState;
+import static com.google.common.collect.Iterables.filter;
 import static com.google.common.collect.Sets.newHashSet;
 
 import java.util.Collections;
@@ -192,8 +193,8 @@ public abstract class PPodEntity
 
 	public Set<Attachment> getAttachmentsByNamespaceAndType(
 			final String namespace, final String type) {
-		return newHashSet(Iterables
-				.filter(getAttachmentsModifiable(),
+		return newHashSet(filter(
+						getAttachments(),
 						new Attachment.IsOfNamespaceAndType(namespace, type)));
 	}
 

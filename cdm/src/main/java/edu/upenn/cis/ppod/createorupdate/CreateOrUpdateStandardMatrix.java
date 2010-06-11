@@ -18,9 +18,8 @@ package edu.upenn.cis.ppod.createorupdate;
 import static com.google.common.base.Preconditions.checkNotNull;
 import static com.google.common.base.Predicates.compose;
 import static com.google.common.base.Predicates.equalTo;
-import static com.google.common.collect.Iterables.getOnlyElement;
 import static com.google.common.collect.Lists.newArrayList;
-import static com.google.common.collect.Sets.filter;
+import static com.google.common.collect.Sets.newHashSet;
 import static edu.upenn.cis.ppod.util.PPodIterables.findIf;
 
 import java.util.List;
@@ -35,11 +34,11 @@ import com.google.inject.assistedinject.Assisted;
 
 import edu.upenn.cis.ppod.dao.IDAO;
 import edu.upenn.cis.ppod.model.Attachment;
-import edu.upenn.cis.ppod.model.StandardCharacter;
-import edu.upenn.cis.ppod.model.StandardState;
 import edu.upenn.cis.ppod.model.StandardCell;
+import edu.upenn.cis.ppod.model.StandardCharacter;
 import edu.upenn.cis.ppod.model.StandardMatrix;
 import edu.upenn.cis.ppod.model.StandardRow;
+import edu.upenn.cis.ppod.model.StandardState;
 import edu.upenn.cis.ppod.modelinterfaces.INewVersionInfo;
 import edu.upenn.cis.ppod.modelinterfaces.IWithPPodId;
 import edu.upenn.cis.ppod.services.ppodentity.MatrixInfo;
@@ -131,33 +130,47 @@ final class CreateOrUpdateStandardMatrix
 
 			}
 
+			final Set<Attachment> dontDeleteDbAttachments = newHashSet();
+
 			for (final Attachment sourceAttachment : sourceCharacter
 					.getAttachments()) {
 				final ImmutableSet<Attachment> newDbCharacterAttachments =
 						ImmutableSet
 								.copyOf(newDbCharacter.getAttachments());
-				final Set<Attachment> targetAttachments =
-						filter(
-								newDbCharacterAttachments,
-								compose(
-										equalTo(sourceAttachment
-												.getStringValue()),
-										Attachment.getStringValue));
-
 				Attachment dbAttachment =
-						getOnlyElement(targetAttachments, null);
+						findIf(newDbCharacterAttachments,
+										compose(
+												equalTo(sourceAttachment
+														.getStringValue()),
+												Attachment.getStringValue));
+
 				if (dbAttachment == null) {
 					dbAttachment = attachmentProvider.get();
-					dbAttachment.setVersionInfo(newVersionInfo
-							.getNewVersionInfo());
+					dbAttachment
+							.setVersionInfo(
+									newVersionInfo.getNewVersionInfo());
 					dbAttachment.setPPodId();
 				}
+
 				newDbCharacter.addAttachment(dbAttachment);
-				mergeAttachments.mergeAttachments(dbAttachment,
-						sourceAttachment);
+				mergeAttachments
+						.mergeAttachments(dbAttachment, sourceAttachment);
 				dao.makePersistent(dbAttachment.getType().getNamespace());
 				dao.makePersistent(dbAttachment.getType());
 				dao.makePersistent(dbAttachment);
+				dontDeleteDbAttachments.add(dbAttachment);
+			}
+
+			// Let's delete the attachments that are no longer being used
+			for (final Attachment dbAttachment : newDbCharacter
+					.getAttachments()) {
+				if (dontDeleteDbAttachments.contains(dbAttachment)) {
+
+				} else {
+					if (dbAttachment.getAttachees().size() == 0) {
+						dao.makeTransient(dbAttachment);
+					}
+				}
 			}
 		}
 
