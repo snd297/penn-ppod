@@ -76,7 +76,7 @@ public class StandardRow extends Row<StandardCell> {
 	@CheckForNull
 	private StandardRows rows;
 
-	protected StandardRow() {}
+	StandardRow() {}
 
 	@Override
 	public void accept(final IVisitor visitor) {
