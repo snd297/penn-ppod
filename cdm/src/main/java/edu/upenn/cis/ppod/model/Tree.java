@@ -75,9 +75,7 @@ public class Tree extends UUPPodEntity {
 	@Override
 	public void afterUnmarshal(final Unmarshaller u, final Object parent) {
 		super.afterUnmarshal(u, parent);
-		if (parent instanceof TreeSet) {
-			setTreeSet(treeSet);
-		}
+		setTreeSet(treeSet);
 	}
 
 	/**
