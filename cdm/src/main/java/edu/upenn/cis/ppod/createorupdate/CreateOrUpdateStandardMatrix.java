@@ -167,6 +167,7 @@ final class CreateOrUpdateStandardMatrix
 				if (dontDeleteDbAttachments.contains(dbAttachment)) {
 
 				} else {
+					newDbCharacter.removeAttachment(dbAttachment);
 					if (dbAttachment.getAttachees().size() == 0) {
 						dao.makeTransient(dbAttachment);
 					}
@@ -174,7 +175,20 @@ final class CreateOrUpdateStandardMatrix
 			}
 		}
 
-		dbMatrix.setCharacters(newDbMatrixCharacters);
+		final List<StandardCharacter> removedCharacters =
+				dbMatrix.setCharacters(newDbMatrixCharacters);
+
+		// Let's get rid of any attachments that are not longer needed
+		for (final StandardCharacter removedCharacter : removedCharacters) {
+			// Let's delete the attachments that are no longer being used
+			for (final Attachment dbAttachment : removedCharacter
+					.getAttachments()) {
+				removedCharacter.removeAttachment(dbAttachment);
+				if (dbAttachment.getAttachees().size() == 0) {
+					dao.makeTransient(dbAttachment);
+				}
+			}
+		}
 
 		final ICreateOrUpdateMatrix<StandardMatrix, StandardRow, StandardCell, StandardState> saveOrUpdateMatrix =
 				saveOrUpdateMatrixFactory
