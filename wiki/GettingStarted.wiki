@@ -7,8 +7,10 @@ _Be aware that the pPOD Mesquite Modules which use pPOD have not been released y
   # Install Apache Tomcat http://tomcat.apache.org/ 
   # Install [http://www.mysql.com/downloads/mysql/ MySQL]
   # Get the Eclipse IDE for Java EE developers from, for example, http://www.eclipse.org/downloads/
-  # Install the [http://m2eclipse.sonatype.org/ M2Eclipse] Eclipse plugin. Of the m2eclipse Extras you'll need at least
-    * Maven SCM handler for Subclipse
+  # Install the [http://m2eclipse.sonatype.org/ M2Eclipse] Eclipse plugin. At a minimum you'll need:
+    * m2eclipse Core
+    * m2eclipse Extras 
+      * Maven SCM handler for Subclipse
   # Install the [http://subclipse.tigris.org/ Subclipse] Eclipse plugin. At a minimum you'll need the required items: 
     * Subclipse/Subclipse
     * Subclipse/Subversion Client Adapter
