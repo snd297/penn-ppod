@@ -18,10 +18,8 @@ package edu.upenn.cis.ppod.model;
 import static com.google.common.base.Objects.equal;
 import static com.google.common.base.Preconditions.checkArgument;
 import static com.google.common.base.Preconditions.checkNotNull;
-import static com.google.common.collect.Sets.newHashSet;
 
 import java.util.Arrays;
-import java.util.Set;
 
 import javax.annotation.CheckForNull;
 import javax.annotation.Nullable;
@@ -30,16 +28,14 @@ import javax.persistence.Entity;
 import javax.persistence.FetchType;
 import javax.persistence.JoinColumn;
 import javax.persistence.Lob;
-import javax.persistence.ManyToMany;
 import javax.persistence.ManyToOne;
 import javax.persistence.Table;
+import javax.xml.bind.Unmarshaller;
 import javax.xml.bind.annotation.XmlAccessType;
 import javax.xml.bind.annotation.XmlAccessorType;
 import javax.xml.bind.annotation.XmlAttribute;
 import javax.xml.bind.annotation.XmlElement;
 import javax.xml.bind.annotation.XmlIDREF;
-
-import org.hibernate.annotations.Index;
 
 import com.google.common.base.Function;
 import com.google.common.base.Predicate;
@@ -57,7 +53,7 @@ import edu.upenn.cis.ppod.util.IVisitor;
 @XmlAccessorType(XmlAccessType.NONE)
 @Entity
 @Table(name = Attachment.TABLE)
-public class Attachment extends UUPPodEntityWXmlId {
+public class Attachment extends UUPPodEntity {
 
 	/**
 	 * Is an attachment of a the given's attachments namespace and type? And
@@ -231,9 +227,11 @@ public class Attachment extends UUPPodEntityWXmlId {
 
 	public static final String TYPE_COLUMN = "TYPE";
 
-	/** Objects to which this {@code Attachment} is attached. */
-	@ManyToMany(mappedBy = "attachments")
-	private final Set<PPodEntity> attachees = newHashSet();
+	/** Object to which this {@code Attachment} is attached. */
+	@ManyToOne(fetch = FetchType.LAZY)
+	@JoinColumn(name = PPodEntity.JOIN_COLUMN)
+	@CheckForNull
+	private PPodEntity attachee;
 
 	@Lob
 	@Column(name = BYTES_VALUE_COLUMN, nullable = true)
@@ -245,16 +243,13 @@ public class Attachment extends UUPPodEntityWXmlId {
 	@CheckForNull
 	private String label;
 
-	// ATODO: we create an index here to allow lookups of Character's mesquite
-	// id's. See bug 24 http://code.google.com/p/penn-ppod/issues/detail?id=24
 	@Column(name = STRING_VALUE_COLUMN, nullable = true)
-	@Index(name = STRING_VALUE_COLUMN + "IDX")
 	@CheckForNull
 	private String stringValue;
 
 	/** Like a variable typeLabel. */
 	@ManyToOne(fetch = FetchType.LAZY)
-	@JoinColumn(name = AttachmentType.ID_COLUMN, nullable = false)
+	@JoinColumn(name = AttachmentType.JOIN_COLUMN, nullable = false)
 	@CheckForNull
 	private AttachmentType type;
 
@@ -272,25 +267,28 @@ public class Attachment extends UUPPodEntityWXmlId {
 	}
 
 	/**
-	 * Add an item to which this is attached.
+	 * See {@link Unmarshaller}.
 	 * 
-	 * @param attachee to which this is attached
-	 * 
-	 * @return {@code attachee}
+	 * @param u see {@code Unmarshaller}
+	 * @param parent see {@code Unmarshaller}
 	 */
-	protected PPodEntity addAttachee(final PPodEntity attachee) {
-		checkNotNull(attachee);
-		attachees.add(attachee);
-		return attachee;
+	@Override
+	public void afterUnmarshal(final Unmarshaller u, final Object parent) {
+		super.afterUnmarshal(u, parent);
+		attachee = (PPodEntity) parent;
 	}
 
 	/**
 	 * Get the entities that have this has an attachment.
+	 * <p>
+	 * Will be {@code null} for newly create attachments, will never be {@code
+	 * null} for persistent attachments.
 	 * 
 	 * @return the entities that have this has an attachment
 	 */
-	public Set<PPodEntity> getAttachees() {
-		return attachees;
+	@Nullable
+	public PPodEntity getAttachee() {
+		return attachee;
 	}
 
 	/**
@@ -344,6 +342,19 @@ public class Attachment extends UUPPodEntityWXmlId {
 	}
 
 	/**
+	 * Add an item to which this is attached.
+	 * 
+	 * @param attachee to which this is attached
+	 * 
+	 * @return {@code attachee}
+	 */
+	protected PPodEntity setAttachee(final PPodEntity attachee) {
+		checkNotNull(attachee);
+		this.attachee = attachee;
+		return attachee;
+	}
+
+	/**
 	 * Set the byteValue.
 	 * 
 	 * @param bytesValue the byteValue to set
@@ -371,7 +382,7 @@ public class Attachment extends UUPPodEntityWXmlId {
 
 	@Override
 	public Attachment setInNeedOfNewVersion() {
-		for (final PPodEntity attachee : attachees) {
+		if (attachee != null) {
 			attachee.setInNeedOfNewVersion();
 		}
 		super.setInNeedOfNewVersion();

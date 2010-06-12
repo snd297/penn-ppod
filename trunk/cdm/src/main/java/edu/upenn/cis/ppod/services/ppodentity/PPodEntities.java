@@ -15,7 +15,6 @@
  */
 package edu.upenn.cis.ppod.services.ppodentity;
 
-import static com.google.common.collect.Lists.newArrayList;
 import static com.google.common.collect.Sets.newHashSet;
 
 import java.util.Collections;
@@ -27,11 +26,8 @@ import javax.xml.bind.annotation.XmlAccessorType;
 import javax.xml.bind.annotation.XmlElement;
 import javax.xml.bind.annotation.XmlRootElement;
 
-import edu.upenn.cis.ppod.model.Attachment;
 import edu.upenn.cis.ppod.model.AttachmentNamespace;
 import edu.upenn.cis.ppod.model.AttachmentType;
-import edu.upenn.cis.ppod.model.StandardCharacter;
-import edu.upenn.cis.ppod.model.StandardMatrix;
 import edu.upenn.cis.ppod.model.OTU;
 import edu.upenn.cis.ppod.model.OTUSet;
 import edu.upenn.cis.ppod.util.PPodEntitiesUtil;
@@ -51,17 +47,11 @@ public class PPodEntities implements IPPodEntities {
 	@XmlElement(name = "otu")
 	private final Set<OTU> otus = newHashSet();
 
-	@XmlElement(name = "pPodEntitiesWideAttachmentNamespace")
+	@XmlElement(name = "attachmentNamespace")
 	private final Set<AttachmentNamespace> pPodEntitiesWideAttachmentNamespaces = newHashSet();
 
-	@XmlElement(name = "pPodEntitiesWideAttachmentType")
+	@XmlElement(name = "attachmentType")
 	private final Set<AttachmentType> pPodEntitiesWideAttachmentTypes = newHashSet();
-
-	@XmlElement(name = "pPodEntitiesWideAttachment")
-	private final Set<Attachment> pPodEntitiesWideAttachment = newHashSet();
-
-	@XmlElement(name = "studyWideCharacter")
-	private final Set<StandardCharacter> studyWideCharacters = newHashSet();
 
 	public OTUSet addOTUSet(final OTUSet otuSet) {
 		otuSets.add(otuSet);
@@ -82,15 +72,7 @@ public class PPodEntities implements IPPodEntities {
 			PPodEntitiesUtil.extractAttachmentInfoFromPPodEntities(
 					pPodEntitiesWideAttachmentNamespaces,
 					pPodEntitiesWideAttachmentTypes,
-					pPodEntitiesWideAttachment, this);
-			for (final OTUSet otuSet : getOTUSets()) {
-				for (final StandardMatrix matrix : otuSet
-						.getStandardMatrices()) {
-					studyWideCharacters
-							.addAll(newArrayList(matrix
-									.getCharacters()));
-				}
-			}
+					this);
 		}
 		return true;
 	}

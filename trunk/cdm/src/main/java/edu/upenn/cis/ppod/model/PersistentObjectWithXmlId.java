@@ -29,7 +29,8 @@ import edu.upenn.cis.ppod.modelinterfaces.IWithXmlID;
  * 
  * @author Sam Donnelly
  */
-public abstract class PersistentObjectWithXmlId extends PersistentObject
+public abstract class PersistentObjectWithXmlId
+		extends PersistentObject
 		implements IWithXmlID {
 	/**
 	 * Intended for referencing elements within a document - be it XML, JSON,

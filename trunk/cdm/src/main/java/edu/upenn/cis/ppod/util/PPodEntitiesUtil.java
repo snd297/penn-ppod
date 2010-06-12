@@ -20,10 +20,10 @@ import java.util.Set;
 import edu.upenn.cis.ppod.model.Attachment;
 import edu.upenn.cis.ppod.model.AttachmentNamespace;
 import edu.upenn.cis.ppod.model.AttachmentType;
-import edu.upenn.cis.ppod.model.StandardCharacter;
-import edu.upenn.cis.ppod.model.StandardMatrix;
 import edu.upenn.cis.ppod.model.OTU;
 import edu.upenn.cis.ppod.model.OTUSet;
+import edu.upenn.cis.ppod.model.StandardCharacter;
+import edu.upenn.cis.ppod.model.StandardMatrix;
 import edu.upenn.cis.ppod.modelinterfaces.IAttachee;
 import edu.upenn.cis.ppod.services.ppodentity.IOTUSetCentricEntities;
 
@@ -45,13 +45,12 @@ public class PPodEntitiesUtil {
 	public static IAttachee extractAttachmentInfoFromAttachee(
 			final Set<AttachmentNamespace> attachmentNamespaces,
 			final Set<AttachmentType> attachmentTypes,
-			final Set<Attachment> attachments, final IAttachee attachee) {
+			final IAttachee attachee) {
 		for (final Attachment attachment : attachee.getAttachments()) {
 			attachmentNamespaces.add(attachment.getType().getNamespace());
 			attachmentTypes.add(attachment.getType());
-			attachments.add(attachment);
 			extractAttachmentInfoFromAttachee(attachmentNamespaces,
-					attachmentTypes, attachments, attachment);
+					attachmentTypes, attachment);
 		}
 		return attachee;
 	}
@@ -59,25 +58,25 @@ public class PPodEntitiesUtil {
 	public static IOTUSetCentricEntities extractAttachmentInfoFromPPodEntities(
 			final Set<AttachmentNamespace> studyWideAttachmentNamespaces,
 			final Set<AttachmentType> studyWideAttachmentTypes,
-			final Set<Attachment> studyWideAttachments,
-			final IOTUSetCentricEntities otuSetCentricEntities) {
+				final IOTUSetCentricEntities otuSetCentricEntities) {
 		for (final OTUSet otuSet : otuSetCentricEntities.getOTUSets()) {
 			extractAttachmentInfoFromAttachee(studyWideAttachmentNamespaces,
-					studyWideAttachmentTypes, studyWideAttachments, otuSet);
+					studyWideAttachmentTypes, otuSet);
 			for (final OTU otu : otuSet.getOTUs()) {
 				extractAttachmentInfoFromAttachee(
 						studyWideAttachmentNamespaces,
-						studyWideAttachmentTypes, studyWideAttachments, otu);
+						studyWideAttachmentTypes, otu);
 			}
 			for (final StandardMatrix matrix : otuSet
 					.getStandardMatrices()) {
 				extractAttachmentInfoFromAttachee(
 						studyWideAttachmentNamespaces,
-						studyWideAttachmentTypes, studyWideAttachments, matrix);
-				for (final StandardCharacter standardCharacter : matrix.getCharacters()) {
+						studyWideAttachmentTypes, matrix);
+				for (final StandardCharacter standardCharacter : matrix
+						.getCharacters()) {
 					extractAttachmentInfoFromAttachee(
 							studyWideAttachmentNamespaces,
-							studyWideAttachmentTypes, studyWideAttachments,
+							studyWideAttachmentTypes,
 							standardCharacter);
 				}
 			}

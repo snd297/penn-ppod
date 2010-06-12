@@ -19,11 +19,9 @@ import static com.google.common.base.Preconditions.checkNotNull;
 import static com.google.common.base.Predicates.compose;
 import static com.google.common.base.Predicates.equalTo;
 import static com.google.common.collect.Lists.newArrayList;
-import static com.google.common.collect.Sets.newHashSet;
 import static edu.upenn.cis.ppod.util.PPodIterables.findIf;
 
 import java.util.List;
-import java.util.Set;
 
 import org.slf4j.Logger;
 
@@ -130,13 +128,11 @@ final class CreateOrUpdateStandardMatrix
 
 			}
 
-			final Set<Attachment> dontDeleteDbAttachments = newHashSet();
-
 			for (final Attachment sourceAttachment : sourceCharacter
 					.getAttachments()) {
 				final ImmutableSet<Attachment> newDbCharacterAttachments =
-						ImmutableSet
-								.copyOf(newDbCharacter.getAttachments());
+						ImmutableSet.copyOf(
+								newDbCharacter.getAttachments());
 				Attachment dbAttachment =
 						findIf(newDbCharacterAttachments,
 										compose(
@@ -157,38 +153,11 @@ final class CreateOrUpdateStandardMatrix
 						.mergeAttachments(dbAttachment, sourceAttachment);
 				dao.makePersistent(dbAttachment.getType().getNamespace());
 				dao.makePersistent(dbAttachment.getType());
-				dao.makePersistent(dbAttachment);
-				dontDeleteDbAttachments.add(dbAttachment);
-			}
-
-			// Let's delete the attachments that are no longer being used
-			for (final Attachment dbAttachment : newDbCharacter
-					.getAttachments()) {
-				if (dontDeleteDbAttachments.contains(dbAttachment)) {
-
-				} else {
-					newDbCharacter.removeAttachment(dbAttachment);
-					if (dbAttachment.getAttachees().size() == 0) {
-						dao.makeTransient(dbAttachment);
-					}
-				}
+				// dao.makePersistent(dbAttachment);
 			}
 		}
 
-		final List<StandardCharacter> removedCharacters =
-				dbMatrix.setCharacters(newDbMatrixCharacters);
-
-		// Let's get rid of any attachments that are not longer needed
-		for (final StandardCharacter removedCharacter : removedCharacters) {
-			// Let's delete the attachments that are no longer being used
-			for (final Attachment dbAttachment : removedCharacter
-					.getAttachments()) {
-				removedCharacter.removeAttachment(dbAttachment);
-				if (dbAttachment.getAttachees().size() == 0) {
-					dao.makeTransient(dbAttachment);
-				}
-			}
-		}
+		dbMatrix.setCharacters(newDbMatrixCharacters);
 
 		final ICreateOrUpdateMatrix<StandardMatrix, StandardRow, StandardCell, StandardState> saveOrUpdateMatrix =
 				saveOrUpdateMatrixFactory

@@ -63,13 +63,10 @@ public class Study extends UUPPodEntity implements IOTUSetCentricEntities {
 	private final Set<OTUSet> otuSets = newHashSet();
 
 	@Transient
-	private final Set<AttachmentNamespace> studyWideAttachmentNamespaces = newHashSet();
+	private final Set<AttachmentNamespace> attachmentNamespaces = newHashSet();
 
 	@Transient
-	private final Set<Attachment> studyWideAttachments = newHashSet();
-
-	@Transient
-	private final Set<AttachmentType> studyWideAttachmentTypes = newHashSet();
+	private final Set<AttachmentType> attachmentTypes = newHashSet();
 
 	protected Study() {}
 
@@ -105,13 +102,13 @@ public class Study extends UUPPodEntity implements IOTUSetCentricEntities {
 	@Override
 	public boolean beforeMarshal(final Marshaller m) {
 		super.beforeMarshal(m);
-		if (studyWideAttachmentNamespaces.size() == 0) {
+		if (attachmentNamespaces.size() == 0) {
 			PPodEntitiesUtil.extractAttachmentInfoFromAttachee(
-					studyWideAttachmentNamespaces, studyWideAttachmentTypes,
-					studyWideAttachments, this);
+					attachmentNamespaces, attachmentTypes,
+					this);
 			PPodEntitiesUtil.extractAttachmentInfoFromPPodEntities(
-					studyWideAttachmentNamespaces, studyWideAttachmentTypes,
-					studyWideAttachments, this);
+					attachmentNamespaces, attachmentTypes,
+					this);
 		}
 		return true;
 	}
@@ -137,17 +134,12 @@ public class Study extends UUPPodEntity implements IOTUSetCentricEntities {
 
 	@XmlElement(name = "studyWideAttachmentNamespace")
 	protected Set<AttachmentNamespace> getStudyWideAttachmentNamespacesModifiable() {
-		return studyWideAttachmentNamespaces;
-	}
-
-	@XmlElement(name = "studyWideAttachment")
-	protected Set<Attachment> getStudyWideAttachmentsModifiable() {
-		return studyWideAttachments;
+		return attachmentNamespaces;
 	}
 
 	@XmlElement(name = "studyWideAttachmentType")
 	protected Set<AttachmentType> getStudyWideAttachmentTypes() {
-		return studyWideAttachmentTypes;
+		return attachmentTypes;
 	}
 
 	/**
@@ -197,12 +189,10 @@ public class Study extends UUPPodEntity implements IOTUSetCentricEntities {
 		retValue.append("Study(").append(super.toString()).append(TAB).append(
 				"label=").append(this.label).append(TAB).append("otuSets=")
 				.append(this.otuSets).append(TAB).append(
-						"studyWideAttachments=").append(
-						this.studyWideAttachments).append(TAB).append(
 						"studyWideAttachmentTypes=").append(
-						this.studyWideAttachmentTypes).append(TAB).append(
+						this.attachmentTypes).append(TAB).append(
 						"studyWideAttachmentNamespaces=").append(
-						this.studyWideAttachmentNamespaces).append(TAB).append(
+						this.attachmentNamespaces).append(TAB).append(
 						")");
 
 		return retValue.toString();

@@ -42,16 +42,16 @@ import edu.upenn.cis.ppod.util.IVisitor;
 @Table(name = AttachmentType.TABLE)
 public class AttachmentType extends PersistentObjectWithXmlId {
 
-	static final String TABLE = "ATTACHMENT_TYPE";
+	public static final String TABLE = "ATTACHMENT_TYPE";
 
-	static final String ID_COLUMN = TABLE + "_ID";
+	public static final String JOIN_COLUMN = TABLE + "_ID";
 
-	static final String LABEL_COLUMN = "LABEL";
+	public static final String LABEL_COLUMN = "LABEL";
 
-	static final int LABEL_COLUMN_LENGTH = 64;
+	public static final int LABEL_COLUMN_LENGTH = 64;
 
 	@ManyToOne(fetch = FetchType.LAZY)
-	@JoinColumn(name = AttachmentNamespace.ID_COLUMN, nullable = false)
+	@JoinColumn(name = AttachmentNamespace.JOIN_COLUMN, nullable = false)
 	@CheckForNull
 	private AttachmentNamespace namespace;
 
