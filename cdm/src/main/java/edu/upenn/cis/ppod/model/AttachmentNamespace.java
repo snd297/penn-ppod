@@ -35,13 +35,13 @@ import edu.upenn.cis.ppod.util.IVisitor;
 @Table(name = AttachmentNamespace.TABLE)
 public class AttachmentNamespace extends PersistentObjectWithXmlId {
 
-	static final String TABLE = "ATTACHMENT_NAMESPACE";
+	public static final String TABLE = "ATTACHMENT_NAMESPACE";
 
-	static final String ID_COLUMN = TABLE + "_ID";
+	public static final String JOIN_COLUMN = TABLE + "_ID";
 
-	static final String LABEL_COLUMN = "LABEL";
+	public static final String LABEL_COLUMN = "LABEL";
 
-	static final int LABEL_COLUMN_LENGTH = 64;
+	public static final int LABEL_COLUMN_LENGTH = 64;
 
 	@Column(name = LABEL_COLUMN, unique = true, nullable = false, length = LABEL_COLUMN_LENGTH)
 	@CheckForNull

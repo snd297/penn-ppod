@@ -26,21 +26,21 @@ import java.util.Set;
 import javax.annotation.CheckForNull;
 import javax.annotation.Nullable;
 import javax.annotation.OverridingMethodsMustInvokeSuper;
+import javax.persistence.CascadeType;
 import javax.persistence.Column;
 import javax.persistence.Entity;
 import javax.persistence.FetchType;
 import javax.persistence.Inheritance;
 import javax.persistence.InheritanceType;
 import javax.persistence.JoinColumn;
-import javax.persistence.JoinTable;
-import javax.persistence.ManyToMany;
 import javax.persistence.ManyToOne;
+import javax.persistence.OneToMany;
 import javax.persistence.Table;
 import javax.persistence.Transient;
 import javax.xml.bind.Marshaller;
+import javax.xml.bind.Unmarshaller;
 import javax.xml.bind.annotation.XmlAttribute;
 import javax.xml.bind.annotation.XmlElement;
-import javax.xml.bind.annotation.XmlIDREF;
 
 import com.google.common.collect.Iterables;
 
@@ -69,10 +69,11 @@ public abstract class PPodEntity
 		extends PersistentObject
 		implements IAttachee, IVersioned {
 
-	static final String TABLE = "PPOD_ENTITY";
+	public static final String TABLE = "PPOD_ENTITY";
 
-	@ManyToMany
-	@JoinTable(joinColumns = @JoinColumn(name = ID_COLUMN), inverseJoinColumns = @JoinColumn(name = Attachment.JOIN_COLUMN))
+	public static final String JOIN_COLUMN = TABLE + "_ID";
+
+	@OneToMany(mappedBy = "attachee", cascade = CascadeType.ALL, orphanRemoval = true)
 	@CheckForNull
 	private Set<Attachment> attachments;
 
@@ -120,7 +121,7 @@ public abstract class PPodEntity
 	@Override
 	public void accept(final IVisitor visitor) {
 		checkNotNull(visitor);
-		for (final Attachment attachment : getAttachmentsModifiable()) {
+		for (final Attachment attachment : getAttachments()) {
 			attachment.accept(visitor);
 		}
 	}
@@ -132,7 +133,7 @@ public abstract class PPodEntity
 		if (attachments.add(attachment)) {
 			setInNeedOfNewVersion();
 		}
-		attachment.addAttachee(this);
+		attachment.setAttachee(this);
 		hasAttachments = true;
 
 		return this;
@@ -144,7 +145,19 @@ public abstract class PPodEntity
 	 * after {@code @XmlIDRef} elements are resolved.
 	 */
 	@OverridingMethodsMustInvokeSuper
-	public void afterUnmarshal() {
+	public void afterUnmarshal() {}
+
+	/**
+	 * {@link Unmarshaller} callback.
+	 * 
+	 * @param u see {@code Unmarshaller}
+	 * @param parent see {@code Unmarshaller}
+	 */
+	@Override
+	public void afterUnmarshal(
+			@CheckForNull final Unmarshaller u,
+			@CheckForNull final Object parent) {
+		super.afterUnmarshal(u, parent);
 		if (attachmentsXml != null) {
 			for (final Attachment attachment : getAttachmentsXml()) {
 				addAttachment(attachment);
@@ -198,8 +211,7 @@ public abstract class PPodEntity
 						new Attachment.IsOfNamespaceAndType(namespace, type)));
 	}
 
-	@XmlElement(name = "attachmentDocId")
-	@XmlIDREF
+	@XmlElement(name = "attachment")
 	private Set<Attachment> getAttachmentsXml() {
 		if (attachmentsXml == null) {
 			attachmentsXml = newHashSet();
