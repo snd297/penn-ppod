@@ -193,8 +193,11 @@ public class OTUSet extends UUPPodEntityWXmlId {
 
 	private OTU addOTUWithoutSetOTUsOnChildren(final OTU otu) {
 		checkNotNull(otu);
-		final OTU dupNameOTU = findIf(getOTUsModifiable(), compose(
-				equalTo(otu.getLabel()), ILabeled.getLabel));
+		final OTU dupNameOTU = findIf(getOTUs(),
+				compose(
+						equalTo(
+								otu.getLabel()),
+								ILabeled.getLabel));
 		if (dupNameOTU == null || otu.equals(dupNameOTU)) {
 
 		} else {
@@ -466,11 +469,11 @@ public class OTUSet extends UUPPodEntityWXmlId {
 	 */
 	public List<OTU> setOTUs(final List<? extends OTU> newOTUs) {
 		checkNotNull(newOTUs);
-		if (newOTUs.equals(getOTUsModifiable())) {
+		if (newOTUs.equals(getOTUs())) {
 			return Collections.emptyList();
 		}
 
-		final List<OTU> removedOTUs = newArrayList(getOTUsModifiable());
+		final List<OTU> removedOTUs = newArrayList(getOTUs());
 		removedOTUs.removeAll(newOTUs);
 
 		for (final OTU removedOTU : removedOTUs) {

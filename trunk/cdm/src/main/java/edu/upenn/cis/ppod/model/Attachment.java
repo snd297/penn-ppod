@@ -342,14 +342,14 @@ public class Attachment extends UUPPodEntity {
 	}
 
 	/**
-	 * Add an item to which this is attached.
+	 * Set the item to which this is attached, {@code null} to sever the
+	 * relationship.
 	 * 
 	 * @param attachee to which this is attached
 	 * 
 	 * @return {@code attachee}
 	 */
-	protected PPodEntity setAttachee(final PPodEntity attachee) {
-		checkNotNull(attachee);
+	protected PPodEntity setAttachee(@CheckForNull final PPodEntity attachee) {
 		this.attachee = attachee;
 		return attachee;
 	}

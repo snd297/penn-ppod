@@ -95,7 +95,9 @@ final class Study2StudyInfo implements IStudy2StudyInfo {
 					.getStandardMatrices()) {
 				final MatrixInfo matrixInfo =
 						find(otuSetInfo.getMatrixInfos(),
-								compose(equalTo(matrix.getPPodId()),
+								compose(
+										equalTo(
+												matrix.getPPodId()),
 										IWithPPodId.getPPodId));
 				matrixInfo.setEntityId(matrix.getId());
 				matrixInfo.setVersion(matrix.getVersionInfo()
@@ -103,7 +105,8 @@ final class Study2StudyInfo implements IStudy2StudyInfo {
 				matrixInfo.setDocId(matrix.getDocId());
 
 				int characterIdx = -1;
-				for (final StandardCharacter standardCharacter : matrix.getCharacters()) {
+				for (final StandardCharacter standardCharacter : matrix
+						.getCharacters()) {
 					characterIdx++;
 					final PPodEntityInfo characterInfo = pPodEntityInfoProvider
 							.get();
@@ -135,7 +138,7 @@ final class Study2StudyInfo implements IStudy2StudyInfo {
 					matrixInfo.getRowHeaderVersionsByIdx().put(rowIdx,
 							rowVersion);
 
-					// This bit is not handled in
+					// This bit is now handled in
 					// SaveOrUpdateCharacterStateMatrix
 
 					// int cellIdx = -1;
@@ -153,7 +156,9 @@ final class Study2StudyInfo implements IStudy2StudyInfo {
 					.getDNAMatrices()) {
 				final MatrixInfo matrixInfo =
 						find(otuSetInfo.getMatrixInfos(),
-								compose(equalTo(matrix.getPPodId()),
+								compose(
+										equalTo(
+												matrix.getPPodId()),
 										IWithPPodId.getPPodId));
 				matrixInfo.setEntityId(matrix.getId());
 				matrixInfo.setVersion(matrix.getVersionInfo()
@@ -180,7 +185,7 @@ final class Study2StudyInfo implements IStudy2StudyInfo {
 					matrixInfo.getRowHeaderVersionsByIdx()
 							.put(rowIdx, rowVersion);
 
-					// This bit is not handled in
+					// This bit is now handled in
 					// SaveOrUpdateCharacterStateMatrix
 
 					// int cellIdx = -1;

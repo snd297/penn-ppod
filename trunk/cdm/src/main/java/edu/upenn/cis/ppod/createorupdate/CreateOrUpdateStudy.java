@@ -157,7 +157,9 @@ final class CreateOrUpdateStudy implements ICreateOrUpdateStudy {
 			OTUSet dbOTUSet;
 			if (null == (dbOTUSet =
 					findIf(dbStudy.getOTUSets(),
-							compose(equalTo(incomingOTUSet.getPPodId()),
+							compose(
+									equalTo(
+											incomingOTUSet.getPPodId()),
 									IWithPPodId.getPPodId)))) {
 				dbOTUSet = dbStudy.addOTUSet(otuSetProvider.get());
 				dbOTUSet.setVersionInfo(newVersionInfo
@@ -222,8 +224,8 @@ final class CreateOrUpdateStudy implements ICreateOrUpdateStudy {
 				}
 				dbOTUSet.addDNAMatrix(dbMatrix);
 				final MatrixInfo dbMatrixInfo =
-						createOrUpdateDNAMatrix.createOrUpdateMatrix(dbMatrix,
-								incomingMatrix);
+						createOrUpdateDNAMatrix
+								.createOrUpdateMatrix(dbMatrix, incomingMatrix);
 				otuSetInfo.getMatrixInfos().add(dbMatrixInfo);
 			}
 

@@ -23,9 +23,9 @@ import edu.upenn.cis.ppod.thirdparty.dao.hibernate.GenericHibernateDAO;
  * 
  * @author Sam Donnelly
  */
-final class AttachmentTypeDAOHibernate extends
-		GenericHibernateDAO<AttachmentType, Long> implements
-		IAttachmentTypeDAOHibernate {
+final class AttachmentTypeDAOHibernate
+		extends GenericHibernateDAO<AttachmentType, Long>
+		implements IAttachmentTypeDAOHibernate {
 
 	public AttachmentType getTypeByNamespaceAndLabel(
 			final String namespaceLabel, final String typeLabel) {

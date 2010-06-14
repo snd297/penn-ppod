@@ -25,6 +25,7 @@ import java.util.List;
 import javax.persistence.MappedSuperclass;
 import javax.xml.bind.Unmarshaller;
 
+import edu.umd.cs.findbugs.annotations.CheckForNull;
 import edu.upenn.cis.ppod.modelinterfaces.IMatrix;
 import edu.upenn.cis.ppod.modelinterfaces.IOTUKeyedMapValue;
 import edu.upenn.cis.ppod.modelinterfaces.IRow;
@@ -42,7 +43,7 @@ public abstract class Row<C extends Cell<?>>
 		extends PPodEntity
 		implements IRow, IOTUKeyedMapValue {
 
-	protected Row() {}
+	Row() {}
 
 	@Override
 	public void accept(final IVisitor visitor) {
@@ -58,6 +59,30 @@ public abstract class Row<C extends Cell<?>>
 		setInNeedOfNewVersion();
 		return this;
 	}
+
+	/**
+	 * Reset the pPOD version info of this row and that of its matrix.
+	 * 
+	 * @return this {@code CharacterStateRow}
+	 */
+	@Override
+	public Row<C> setInNeedOfNewVersion() {
+		if (getParent() != null) {
+			getParent().setInNeedOfNewVersion();
+		}
+		super.setInNeedOfNewVersion();
+		return this;
+	}
+
+	/**
+	 * Get the owner of this row.
+	 * <p>
+	 * TODO: eliminate wildcard in return by creating an interface.
+	 * 
+	 * @return
+	 */
+	@CheckForNull
+	protected abstract OTUKeyedMap<?> getParent();
 
 	/**
 	 * {@link Unmarshaller} callback.
@@ -157,5 +182,4 @@ public abstract class Row<C extends Cell<?>>
 		setInNeedOfNewVersion();
 		return removedCells;
 	}
-
 }

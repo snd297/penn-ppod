@@ -80,7 +80,7 @@ public abstract class OTUKeyedMap<V extends IOTUKeyedMapValue>
 
 	public V get(final OTU otu) {
 		checkArgument(
-				contains(getParent().getOTUSet().getOTUsModifiable(), otu),
+				contains(getParent().getOTUSet().getOTUs(), otu),
 				"otu does not belong to parent's OTUSet");
 		return getOTUsToValues().get(otu);
 	}
@@ -110,7 +110,7 @@ public abstract class OTUKeyedMap<V extends IOTUKeyedMapValue>
 		final OTUSet parentOTUSet = getParent().getOTUSet();
 		final List<V> valuesInOTUOrder = newArrayListWithCapacity(getOTUsToValues()
 				.values().size());
-		for (final OTU otu : parentOTUSet.getOTUsModifiable()) {
+		for (final OTU otu : parentOTUSet.getOTUs()) {
 			if (getOTUsToValues().containsKey(otu)) {
 				valuesInOTUOrder.add(getOTUsToValues().get(otu));
 			}
@@ -148,7 +148,11 @@ public abstract class OTUKeyedMap<V extends IOTUKeyedMapValue>
 		checkState(getParent().getOTUSet() != null,
 				"parent.getOTUSet() == null");
 		checkArgument(
-				contains(getParent().getOTUSet().getOTUsModifiable(), key),
+				contains(
+						getParent()
+								.getOTUSet()
+								.getOTUs(),
+								key),
 				"otu does not belong to the parent's OTUSet");
 
 		if (null != getOTUsToValues().get(key)
@@ -212,7 +216,7 @@ public abstract class OTUKeyedMap<V extends IOTUKeyedMapValue>
 		final Set<OTU> otusToBeRemoved = newHashSet();
 		for (final OTU otu : getOTUsToValues().keySet()) {
 			if (parent.getOTUSet() != null
-					&& contains(parent.getOTUSet().getOTUsModifiable(), otu)) {
+					&& contains(parent.getOTUSet().getOTUs(), otu)) {
 				// it stays
 			} else {
 				otusToBeRemoved.add(otu);
@@ -223,7 +227,7 @@ public abstract class OTUKeyedMap<V extends IOTUKeyedMapValue>
 		getOTUsToValues().keySet().removeAll(otusToBeRemoved);
 
 		if (getParent().getOTUSet() != null) {
-			for (final OTU otu : parent.getOTUSet().getOTUsModifiable()) {
+			for (final OTU otu : parent.getOTUSet().getOTUs()) {
 				if (getOTUsToValues().containsKey(otu)) {
 
 				} else {

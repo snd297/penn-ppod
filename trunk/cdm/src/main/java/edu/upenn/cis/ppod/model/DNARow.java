@@ -119,4 +119,9 @@ public class DNARow extends Row<DNACell> {
 		return this;
 	}
 
+	@Override
+	protected OTUKeyedMap<DNARow> getParent() {
+		return rows;
+	}
+
 }

@@ -19,21 +19,14 @@ import static org.testng.Assert.assertEquals;
 
 import org.testng.annotations.Test;
 
-import com.google.inject.Inject;
-import com.google.inject.Provider;
-
 import edu.upenn.cis.ppod.TestGroupDefs;
 
-@Test(groups = { TestGroupDefs.FAST, TestGroupDefs.SINGLE }, dependsOnGroups = TestGroupDefs.INIT)
+@Test(groups = { TestGroupDefs.FAST, TestGroupDefs.SINGLE })
 public class PersistentObjectWithXmlIdTest {
-
-	@Inject
-	private Provider<AttachmentNamespace> attachmentNamespaceProvider;
 
 	@Test
 	public void setDocId() {
-		final PersistentObjectWithXmlId persistentObjectWXmlId =
-				attachmentNamespaceProvider.get();
+		final PersistentObjectWithXmlId persistentObjectWXmlId = new AttachmentNamespace();
 		final String docId = "arbitrary string";
 		persistentObjectWXmlId.setDocId(docId);
 		assertEquals(persistentObjectWXmlId.getDocId(), docId);
@@ -41,8 +34,7 @@ public class PersistentObjectWithXmlIdTest {
 
 	@Test(expectedExceptions = IllegalStateException.class)
 	public void setDocIdWhenDocIdIsAlreadySet() {
-		final PersistentObjectWithXmlId persistentObjectWXmlId =
-				attachmentNamespaceProvider.get();
+		final PersistentObjectWithXmlId persistentObjectWXmlId = new AttachmentNamespace();
 		final String docId = "arbitrary string";
 		persistentObjectWXmlId.setDocId(docId);
 		persistentObjectWXmlId.setDocId("another arbitrary string");
