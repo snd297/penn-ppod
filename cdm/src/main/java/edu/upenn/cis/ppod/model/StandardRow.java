@@ -137,20 +137,6 @@ public class StandardRow extends Row<StandardCell> {
 	}
 
 	/**
-	 * Reset the pPOD version info of this row and that of its matrix.
-	 * 
-	 * @return this {@code CharacterStateRow}
-	 */
-	@Override
-	public StandardRow setInNeedOfNewVersion() {
-		if (rows != null) {
-			rows.setInNeedOfNewVersion();
-		}
-		super.setInNeedOfNewVersion();
-		return this;
-	}
-
-	/**
 	 * Setter.
 	 * 
 	 * @param otusToRows the {@code CharacterStateMatrix} of which this is a row
@@ -183,6 +169,11 @@ public class StandardRow extends Row<StandardCell> {
 	public StandardRow unsetOTUKeyedMap() {
 		rows = null;
 		return this;
+	}
+
+	@Override
+	protected OTUKeyedMap<StandardRow> getParent() {
+		return rows;
 	}
 
 }

@@ -139,6 +139,29 @@ public abstract class PPodEntity
 		return this;
 	}
 
+	public Set<Attachment> setAttachments(final Set<Attachment> attachments) {
+		checkNotNull(attachments);
+		if (attachments.equals(getAttachments())) {
+			return Collections.emptySet();
+		}
+
+		final Set<Attachment> removedAttachments = newHashSet(getAttachments());
+		removedAttachments.removeAll(attachments);
+
+		for (final Attachment removedAttachment : removedAttachments) {
+			removedAttachment.setAttachee(null);
+		}
+
+		getAttachmentsModifiable().clear();
+
+		for (final Attachment attachment : attachments) {
+			addAttachment(attachment);
+		}
+
+		setInNeedOfNewVersion();
+		return removedAttachments;
+	}
+
 	/**
 	 * Take actions after unmarshalling that need to occur after
 	 * {@link #afterUnmarshal(Unmarshaller, Object)} is called, specifically

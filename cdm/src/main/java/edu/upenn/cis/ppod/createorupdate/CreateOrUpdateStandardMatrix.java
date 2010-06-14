@@ -19,9 +19,11 @@ import static com.google.common.base.Preconditions.checkNotNull;
 import static com.google.common.base.Predicates.compose;
 import static com.google.common.base.Predicates.equalTo;
 import static com.google.common.collect.Lists.newArrayList;
+import static com.google.common.collect.Sets.newHashSet;
 import static edu.upenn.cis.ppod.util.PPodIterables.findIf;
 
 import java.util.List;
+import java.util.Set;
 
 import org.slf4j.Logger;
 
@@ -128,6 +130,8 @@ final class CreateOrUpdateStandardMatrix
 
 			}
 
+			final Set<Attachment> newDbAttachments = newHashSet();
+
 			for (final Attachment sourceAttachment : sourceCharacter
 					.getAttachments()) {
 				final ImmutableSet<Attachment> newDbCharacterAttachments =
@@ -148,13 +152,14 @@ final class CreateOrUpdateStandardMatrix
 					dbAttachment.setPPodId();
 				}
 
-				newDbCharacter.addAttachment(dbAttachment);
+				newDbAttachments.add(dbAttachment);
 				mergeAttachments
 						.mergeAttachments(dbAttachment, sourceAttachment);
 				dao.makePersistent(dbAttachment.getType().getNamespace());
 				dao.makePersistent(dbAttachment.getType());
 				// dao.makePersistent(dbAttachment);
 			}
+			newDbCharacter.setAttachments(newDbAttachments);
 		}
 
 		dbMatrix.setCharacters(newDbMatrixCharacters);
