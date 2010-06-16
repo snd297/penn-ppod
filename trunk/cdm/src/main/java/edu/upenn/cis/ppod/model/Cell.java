@@ -327,20 +327,24 @@ public abstract class Cell<E> extends PPodEntity {
 	}
 
 	/**
-	 * Set the type to polymorphic with the given states.
+	 * Set the type to polymorphic with the appropriate states equivalent to
+	 * {@code states}.
+	 * <p>
+	 * Note that the elements that are used may or may not be the same as the
+	 * elements passed in, but the cell will be set to equivalent elements.
 	 * 
-	 * @param polymorphicStates the states
+	 * @param elements the elements
 	 * 
 	 * @return this
 	 * 
 	 * @throw IllegalArgumentException if {@code polymorphicStates.size() < 2}
 	 */
 	public Cell<E> setPolymorphicElements(
-			final Set<E> polymorphicElements) {
-		checkNotNull(polymorphicElements);
-		checkArgument(polymorphicElements.size() > 1,
+			final Set<E> elements) {
+		checkNotNull(elements);
+		checkArgument(elements.size() > 1,
 				"polymorphic states must be > 1");
-		setPolymorphicOrUncertain(Type.POLYMORPHIC, polymorphicElements);
+		setPolymorphicOrUncertain(Type.POLYMORPHIC, elements);
 		return this;
 	}
 

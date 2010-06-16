@@ -16,7 +16,7 @@
  * specific language governing permissions and limitations
  * under the License.
  */
-package edu.upenn.cis.ppod.thirdparty.model.security;
+package edu.upenn.cis.ppod.model.security;
 
 import static com.google.common.collect.Sets.newHashSet;
 
@@ -32,7 +32,6 @@ import javax.persistence.Table;
 import org.hibernate.annotations.Cascade;
 import org.hibernate.annotations.Index;
 
-import edu.upenn.cis.ppod.model.security.Party;
 
 /**
  * Simple class that represents any User domain entity in any application.

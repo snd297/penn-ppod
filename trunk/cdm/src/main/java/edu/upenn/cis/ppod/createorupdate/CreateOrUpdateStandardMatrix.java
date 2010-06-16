@@ -60,21 +60,21 @@ final class CreateOrUpdateStandardMatrix
 	private Logger logger;
 
 	private final INewVersionInfo newVersionInfo;
-	private final ICreateOrUpdateMatrix.IFactory<StandardMatrix, StandardRow, StandardCell, StandardState> saveOrUpdateMatrixFactory;
+	private final ICreateOrUpdateMatrix.IFactory<StandardMatrix, StandardRow, StandardCell, StandardState> createOrUpdatMatrixFactory;
 
 	@Inject
 	CreateOrUpdateStandardMatrix(
 			final Provider<StandardCharacter> characterProvider,
 			final StandardState.IFactory stateFactory,
 			final Provider<Attachment> attachmentProvider,
-			final ICreateOrUpdateMatrix.IFactory<StandardMatrix, StandardRow, StandardCell, StandardState> saveOrUpdateMatrixFactory,
+			final ICreateOrUpdateMatrix.IFactory<StandardMatrix, StandardRow, StandardCell, StandardState> createOrUpdatMatrixFactory,
 			@Assisted final INewVersionInfo newVersionInfo,
 			@Assisted final IDAO<Object, Long> dao,
 			@Assisted final IMergeAttachments mergeAttachments) {
 		this.characterProvider = characterProvider;
 		this.stateFactory = stateFactory;
 		this.attachmentProvider = attachmentProvider;
-		this.saveOrUpdateMatrixFactory = saveOrUpdateMatrixFactory;
+		this.createOrUpdatMatrixFactory = createOrUpdatMatrixFactory;
 		this.dao = dao;
 		this.mergeAttachments = mergeAttachments;
 		this.newVersionInfo = newVersionInfo;
@@ -83,13 +83,16 @@ final class CreateOrUpdateStandardMatrix
 	public MatrixInfo createOrUpdateMatrix(
 			final StandardMatrix dbMatrix,
 			final StandardMatrix sourceMatrix) {
-		final String METHOD = "saveOrUpdate(...)";
+		final String METHOD = "createOrUpdate(...)";
 		logger.debug("{}: entering", METHOD);
 		checkNotNull(dbMatrix);
 		checkNotNull(sourceMatrix);
 
+		// This value will be set again by
+		// createOrUpdateMartrix.creatOrUpdate(...), but we need it to be
+		// non-null since dbMatrix is persistent at this point and so set it
+		// here.
 		dbMatrix.setLabel(sourceMatrix.getLabel());
-		dbMatrix.setDescription(sourceMatrix.getDescription());
 
 		final List<StandardCharacter> newDbMatrixCharacters = newArrayList();
 		int sourceCharacterPosition = -1;
@@ -164,12 +167,12 @@ final class CreateOrUpdateStandardMatrix
 
 		dbMatrix.setCharacters(newDbMatrixCharacters);
 
-		final ICreateOrUpdateMatrix<StandardMatrix, StandardRow, StandardCell, StandardState> saveOrUpdateMatrix =
-				saveOrUpdateMatrixFactory
+		final ICreateOrUpdateMatrix<StandardMatrix, StandardRow, StandardCell, StandardState> createOrUpdatMatrix =
+				createOrUpdatMatrixFactory
 						.create(newVersionInfo, dao);
 
 		final MatrixInfo matrixInfo =
-				saveOrUpdateMatrix
+				createOrUpdatMatrix
 						.createOrUpdateMatrix(
 								dbMatrix,
 								sourceMatrix);

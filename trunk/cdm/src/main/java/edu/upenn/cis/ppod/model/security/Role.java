@@ -16,7 +16,7 @@
  * specific language governing permissions and limitations
  * under the License.
  */
-package edu.upenn.cis.ppod.thirdparty.model.security;
+package edu.upenn.cis.ppod.model.security;
 
 import static com.google.common.collect.Sets.newHashSet;
 
@@ -33,7 +33,6 @@ import org.hibernate.annotations.Cascade;
 import org.hibernate.annotations.Index;
 
 import edu.upenn.cis.ppod.model.PersistentObject;
-import edu.upenn.cis.ppod.model.security.PPodPermission;
 
 /**
  * Model object that represents a security role.
