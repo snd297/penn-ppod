@@ -126,7 +126,11 @@ class CreateOrUpdateMatrix<M extends Matrix<R>, R extends Row<C>, C extends Cell
 
 			// Add in cells to dbCells if needed.
 			while (dbCells.size() < sourceRow.getCells().size()) {
-				dbCells.add(cellProvider.get());
+				final C dbCell = cellProvider.get();
+				dbCells.add(dbCell);
+				dbCell.setVersionInfo(newVersionInfo.getNewVersionInfo());
+				// Don't make it persistent here because the position isn't
+				// filled in yet and that's a non-null property
 			}
 
 			// Get rid of cells from dbCells if needed
@@ -202,7 +206,7 @@ class CreateOrUpdateMatrix<M extends Matrix<R>, R extends Row<C>, C extends Cell
 			fillInCellInfo(matrixInfo, dbRow, sourceOTUPosition);
 
 			// This is to free up the cells for garbage collection - but depends
-			// on dao.evict(targetRow) to be safe!!!!!
+			// on dao.evictEntities(all of the cells) to be safe!!!!!
 			dbRow.clearCells();
 
 			// Again to free up cells for garbage collection

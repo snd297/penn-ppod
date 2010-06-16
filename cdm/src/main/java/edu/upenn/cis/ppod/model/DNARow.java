@@ -53,7 +53,7 @@ public class DNARow extends Row<DNACell> {
 	 * <p>
 	 * We don't cascade {@code SAVE_UPDATE} since there are so many cells and it
 	 * slows things down quite a bit - at least for saves (haven't looked at
-	 * update yet).
+	 * updates yet).
 	 * <p>
 	 * There is evidence that {@code DELETE_ORPHAN} slows things down so we're
 	 * not including that either.
@@ -100,6 +100,11 @@ public class DNARow extends Row<DNACell> {
 	}
 
 	@Override
+	protected OTUKeyedMap<DNARow> getParent() {
+		return rows;
+	}
+
+	@Override
 	public List<DNACell> setCells(final List<? extends DNACell> cells) {
 		final List<DNACell> clearedCells = super.setCellsHelper(cells);
 
@@ -117,11 +122,6 @@ public class DNARow extends Row<DNACell> {
 	public Row<DNACell> unsetOTUKeyedMap() {
 		rows = null;
 		return this;
-	}
-
-	@Override
-	protected OTUKeyedMap<DNARow> getParent() {
-		return rows;
 	}
 
 }

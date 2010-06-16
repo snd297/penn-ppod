@@ -45,7 +45,7 @@ public final class PPodGroup extends Party {
 
 	@ManyToMany
 	@Cascade(org.hibernate.annotations.CascadeType.SAVE_UPDATE)
-	@JoinTable(name = TABLE + "_" + Party.TABLE, joinColumns = { @JoinColumn(name = ID_COLUMN) }, inverseJoinColumns = { @JoinColumn(name = Party.ID_COLUMN) })
+	@JoinTable(name = TABLE + "_" + Party.TABLE, joinColumns = { @JoinColumn(name = ID_COLUMN) }, inverseJoinColumns = { @JoinColumn(name = Party.JOIN_COLUMN) })
 	private final Set<Party> parties = newHashSet();
 
 	/**

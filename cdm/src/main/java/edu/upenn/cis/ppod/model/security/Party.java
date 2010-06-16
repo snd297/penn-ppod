@@ -21,6 +21,7 @@ import static com.google.common.collect.Sets.newHashSet;
 import java.util.Collections;
 import java.util.Set;
 
+import javax.persistence.CascadeType;
 import javax.persistence.Column;
 import javax.persistence.Entity;
 import javax.persistence.Inheritance;
@@ -31,7 +32,6 @@ import javax.persistence.ManyToMany;
 import javax.persistence.OneToMany;
 import javax.persistence.Table;
 
-import org.hibernate.annotations.Cascade;
 import org.hibernate.annotations.Index;
 
 import edu.upenn.cis.ppod.model.PersistentObject;
@@ -47,15 +47,40 @@ import edu.upenn.cis.ppod.model.PersistentObject;
 @Inheritance(strategy = InheritanceType.JOINED)
 public abstract class Party extends PersistentObject {
 
-	static final String TABLE = "PARTY";
-	static final String ID_COLUMN = TABLE + "_ID";
+	public static final String TABLE = "PARTY";
+	public static final String JOIN_COLUMN = TABLE + "_ID";
 
-	@OneToMany
-	@Cascade( { org.hibernate.annotations.CascadeType.SAVE_UPDATE,
-			org.hibernate.annotations.CascadeType.DELETE_ORPHAN })
-	@JoinColumn(name = ID_COLUMN)
+	@OneToMany(cascade = CascadeType.ALL, orphanRemoval = true)
+	@JoinColumn(name = JOIN_COLUMN)
 	// @Cache(usage = CacheConcurrencyStrategy.READ_WRITE)
 	private final Set<PPodPermission> permissions = newHashSet();
+
+	@ManyToMany
+	@JoinTable(name = TABLE + "_" + PPodGroup.TABLE, joinColumns = { @JoinColumn(name = JOIN_COLUMN) }, inverseJoinColumns = { @JoinColumn(name = PPodGroup.ID_COLUMN) })
+	private final Set<PPodGroup> groups = newHashSet();
+
+	@Column(name = "NAME", length = 100, nullable = false)
+	@Index(name = "IDX_PPOD_PARTY_NAME")
+	private String name;
+
+	/**
+	 * Get an unmodifiable view of the the groups to which this party belongs.
+	 * 
+	 * @return an unmodifiable view of the the groups to which this party
+	 *         belongs
+	 */
+	public Set<PPodGroup> getGroups() {
+		return Collections.unmodifiableSet(groups);
+	}
+
+	/**
+	 * Get the name.
+	 * 
+	 * @return the name
+	 */
+	public String getName() {
+		return name;
+	}
 
 	/**
 	 * Get an this party's permissions.
@@ -67,32 +92,16 @@ public abstract class Party extends PersistentObject {
 	}
 
 	/**
-	 * Set this party's permissions.
+	 * Set the groups.
 	 * 
-	 * @param pPodPermissions new permissions.
-	 * @return this party
+	 * @param groups the groups to set
+	 * 
+	 * @return this
 	 */
-	public final Party setPermissions(final Set<PPodPermission> pPodPermissions) {
-		this.permissions.clear();
-		this.permissions.addAll(pPodPermissions);
+	public Party setGroups(final Set<PPodGroup> groups) {
+		this.groups.clear();
+		this.groups.addAll(groups);
 		return this;
-	}
-
-	@ManyToMany
-	@JoinTable(name = TABLE + "_" + PPodGroup.TABLE, joinColumns = { @JoinColumn(name = ID_COLUMN) }, inverseJoinColumns = { @JoinColumn(name = PPodGroup.ID_COLUMN) })
-	private final Set<PPodGroup> groups = newHashSet();
-
-	@Column(name = "NAME", length = 100, nullable = false)
-	@Index(name = "IDX_PPOD_PARTY_NAME")
-	private String name;
-
-	/**
-	 * Get the name.
-	 * 
-	 * @return the name
-	 */
-	public String getName() {
-		return name;
 	}
 
 	/**
@@ -109,25 +118,14 @@ public abstract class Party extends PersistentObject {
 	}
 
 	/**
-	 * Get an unmodifiable view of the the groups to which this party belongs.
+	 * Set this party's permissions.
 	 * 
-	 * @return an unmodifiable view of the the groups to which this party
-	 *         belongs
+	 * @param pPodPermissions new permissions.
+	 * @return this party
 	 */
-	public Set<PPodGroup> getGroups() {
-		return Collections.unmodifiableSet(groups);
-	}
-
-	/**
-	 * Set the groups.
-	 * 
-	 * @param groups the groups to set
-	 * 
-	 * @return this
-	 */
-	public Party setGroups(final Set<PPodGroup> groups) {
-		this.groups.clear();
-		this.groups.addAll(groups);
+	public final Party setPermissions(final Set<PPodPermission> pPodPermissions) {
+		this.permissions.clear();
+		this.permissions.addAll(pPodPermissions);
 		return this;
 	}
 }

@@ -61,30 +61,6 @@ public abstract class Row<C extends Cell<?>>
 	}
 
 	/**
-	 * Reset the pPOD version info of this row and that of its matrix.
-	 * 
-	 * @return this {@code CharacterStateRow}
-	 */
-	@Override
-	public Row<C> setInNeedOfNewVersion() {
-		if (getParent() != null) {
-			getParent().setInNeedOfNewVersion();
-		}
-		super.setInNeedOfNewVersion();
-		return this;
-	}
-
-	/**
-	 * Get the owner of this row.
-	 * <p>
-	 * TODO: eliminate wildcard in return by creating an interface.
-	 * 
-	 * @return
-	 */
-	@CheckForNull
-	protected abstract OTUKeyedMap<?> getParent();
-
-	/**
 	 * {@link Unmarshaller} callback.
 	 * 
 	 * @param u see {@code Unmarshaller}
@@ -135,6 +111,16 @@ public abstract class Row<C extends Cell<?>>
 	protected abstract List<C> getCellsModifiable();
 
 	/**
+	 * Get the owner of this row.
+	 * <p>
+	 * TODO: eliminate wildcard in return by creating an interface.
+	 * 
+	 * @return
+	 */
+	@CheckForNull
+	protected abstract OTUKeyedMap<?> getParent();
+
+	/**
 	 * Set the cells of this row.
 	 * <p>
 	 * This only handles the {@code Row} side of the {@code Row->Cell}
@@ -181,5 +167,19 @@ public abstract class Row<C extends Cell<?>>
 		}
 		setInNeedOfNewVersion();
 		return removedCells;
+	}
+
+	/**
+	 * Reset the pPOD version info of this row and that of its matrix.
+	 * 
+	 * @return this {@code CharacterStateRow}
+	 */
+	@Override
+	public Row<C> setInNeedOfNewVersion() {
+		if (getParent() != null) {
+			getParent().setInNeedOfNewVersion();
+		}
+		super.setInNeedOfNewVersion();
+		return this;
 	}
 }

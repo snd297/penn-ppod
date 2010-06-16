@@ -253,14 +253,14 @@ public class StandardCell extends Cell<StandardState> {
 					position != null,
 					"this cell has not been assigned a row: it's position attribute is null");
 
-		final StandardCharacter standardCharacter =
+		final StandardCharacter character =
 					getRow().getMatrix().getCharacters().get(position);
 
 		newElements = newHashSet();
 
 		for (final StandardState sourceElement : elements) {
 			newElements
-						.add(standardCharacter.getState(sourceElement
+						.add(character.getState(sourceElement
 								.getStateNumber()));
 		}
 
