@@ -188,8 +188,8 @@ public class PPodEntityTest {
 		assertTrue(isEmpty(otuSet.getAttachments()));
 		assertEquals(returnedAttachments3, attachments02);
 
-		for (final Attachment attachment : otuSet.getAttachments()) {
-			assertSame(attachment.getAttachee(), otuSet);
+		for (final Attachment attachment : attachments) {
+			assertNull(attachment.getAttachee());
 		}
 	}
 }
