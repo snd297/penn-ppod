@@ -88,17 +88,17 @@ public abstract class PersistentObject implements IPersistentObject {
 		return marshalled;
 	}
 
+	/** Created for Jaxb. */
+	protected PersistentObject setId(final Long id) {
+		this.id = id;
+		return this;
+	}
+
 	/**
 	 * For testing.
 	 */
 	PersistentObject setMarshalled(final boolean marshalled) {
 		this.marshalled = marshalled;
-		return this;
-	}
-
-	/** Created for Jaxb. */
-	protected PersistentObject setId(final Long id) {
-		this.id = id;
 		return this;
 	}
 

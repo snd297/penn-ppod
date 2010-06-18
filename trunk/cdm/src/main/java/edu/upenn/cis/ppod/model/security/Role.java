@@ -23,13 +23,13 @@ import static com.google.common.collect.Sets.newHashSet;
 import java.util.Collections;
 import java.util.Set;
 
+import javax.persistence.CascadeType;
 import javax.persistence.Column;
 import javax.persistence.Entity;
 import javax.persistence.JoinColumn;
 import javax.persistence.OneToMany;
 import javax.persistence.Table;
 
-import org.hibernate.annotations.Cascade;
 import org.hibernate.annotations.Index;
 
 import edu.upenn.cis.ppod.model.PersistentObject;
@@ -44,7 +44,7 @@ public final class Role extends PersistentObject {
 
 	static final String TABLE = "ROLE";
 
-	static final String ID_COLUMN = TABLE + "_ID";
+	static final String JOIN_COLUMN = TABLE + "_ID";
 
 	@Column(name = "NAME", length = 100, nullable = false)
 	@Index(name = "IDX_PPOD_ROLE_NAME")
@@ -93,10 +93,8 @@ public final class Role extends PersistentObject {
 		return this;
 	}
 
-	@OneToMany
-	@Cascade( { org.hibernate.annotations.CascadeType.SAVE_UPDATE,
-			org.hibernate.annotations.CascadeType.DELETE_ORPHAN })
-	@JoinColumn(name = ID_COLUMN)
+	@OneToMany(cascade = CascadeType.ALL, orphanRemoval = true)
+	@JoinColumn(name = JOIN_COLUMN)
 	// @Cache(usage = CacheConcurrencyStrategy.READ_WRITE)
 	private final Set<PPodPermission> pPodPermissions = newHashSet();
 

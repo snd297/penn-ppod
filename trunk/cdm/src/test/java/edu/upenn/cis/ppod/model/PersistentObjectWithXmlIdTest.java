@@ -21,7 +21,7 @@ import org.testng.annotations.Test;
 
 import edu.upenn.cis.ppod.TestGroupDefs;
 
-@Test(groups = { TestGroupDefs.FAST, TestGroupDefs.SINGLE })
+@Test(groups = { TestGroupDefs.FAST })
 public class PersistentObjectWithXmlIdTest {
 
 	@Test
