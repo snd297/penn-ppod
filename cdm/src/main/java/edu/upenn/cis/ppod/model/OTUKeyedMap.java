@@ -49,8 +49,6 @@ import edu.upenn.cis.ppod.util.OTUSomethingPair;
 public abstract class OTUKeyedMap<V extends IOTUKeyedMapValue>
 		extends PersistentObject {
 
-	static final String OTU_IDX_COLUMN = "OTU_IDX";
-
 	@Override
 	public void accept(final IVisitor visitor) {
 		checkNotNull(visitor);
@@ -165,7 +163,7 @@ public abstract class OTUKeyedMap<V extends IOTUKeyedMapValue>
 	 * @throws IllegalArgumentException if {@code otu} does not belong to
 	 *             {@code parent.getOTUSet()}
 	 * @throws IllegalArgumentException if there's already a value {@code
-	 *             .equals} to {@code newT}
+	 *             .equals} to {@code value}
 	 */
 	@CheckForNull
 	protected V putHelper(final OTU key, final V value) {

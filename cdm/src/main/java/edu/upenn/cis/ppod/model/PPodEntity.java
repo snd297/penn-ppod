@@ -139,29 +139,6 @@ public abstract class PPodEntity
 		return this;
 	}
 
-	public Set<Attachment> setAttachments(final Set<Attachment> attachments) {
-		checkNotNull(attachments);
-		if (attachments.equals(getAttachments())) {
-			return Collections.emptySet();
-		}
-
-		final Set<Attachment> removedAttachments = newHashSet(getAttachments());
-		removedAttachments.removeAll(attachments);
-
-		for (final Attachment removedAttachment : removedAttachments) {
-			removedAttachment.setAttachee(null);
-		}
-
-		getAttachmentsModifiable().clear();
-
-		for (final Attachment attachment : attachments) {
-			addAttachment(attachment);
-		}
-
-		setInNeedOfNewVersion();
-		return removedAttachments;
-	}
-
 	/**
 	 * Take actions after unmarshalling that need to occur after
 	 * {@link #afterUnmarshal(Unmarshaller, Object)} is called, specifically
@@ -209,17 +186,6 @@ public abstract class PPodEntity
 		return Collections.unmodifiableSet(getAttachmentsModifiable());
 	}
 
-	private Set<Attachment> getAttachmentsModifiable() {
-		if (hasAttachments) {
-			if (attachments == null) {
-				throw new AssertionError(
-						"programming errors: attachments == null and hasAttachments == true");
-			}
-			return attachments;
-		}
-		return Collections.emptySet();
-	}
-
 	public Set<Attachment> getAttachmentsByNamespace(
 			final String namespace) {
 		return newHashSet(Iterables
@@ -232,6 +198,17 @@ public abstract class PPodEntity
 		return newHashSet(filter(
 						getAttachments(),
 						new Attachment.IsOfNamespaceAndType(namespace, type)));
+	}
+
+	private Set<Attachment> getAttachmentsModifiable() {
+		if (hasAttachments) {
+			if (attachments == null) {
+				throw new AssertionError(
+						"programming errors: attachments == null and hasAttachments == true");
+			}
+			return attachments;
+		}
+		return Collections.emptySet();
 	}
 
 	@XmlElement(name = "attachment")
@@ -284,6 +261,42 @@ public abstract class PPodEntity
 			}
 		}
 		return attachmentRemoved;
+	}
+
+	/**
+	 * Set the {@code Attachments}s of this {@code PPodEntity}.
+	 * <p>
+	 * This {@code PPodEntity} makes a shallow copy of {@code attachments}.
+	 * <p>
+	 * If this method is effectively removing any of this sets's original
+	 * attachments, then the {@code PPodEntity->Attachments} relationship is
+	 * severed.
+	 * 
+	 * @param attachments the otus to assign to this {@code PPodEntity}
+	 * 
+	 * @return any attachments that were removed as a result of this operation
+	 */
+	public Set<Attachment> setAttachments(final Set<Attachment> attachments) {
+		checkNotNull(attachments);
+		if (attachments.equals(getAttachments())) {
+			return Collections.emptySet();
+		}
+
+		final Set<Attachment> removedAttachments = newHashSet(getAttachments());
+		removedAttachments.removeAll(attachments);
+
+		for (final Attachment removedAttachment : removedAttachments) {
+			removedAttachment.setAttachee(null);
+		}
+
+		getAttachmentsModifiable().clear();
+
+		for (final Attachment attachment : attachments) {
+			addAttachment(attachment);
+		}
+
+		setInNeedOfNewVersion();
+		return removedAttachments;
 	}
 
 	/**
