@@ -90,7 +90,8 @@ public abstract class Matrix<R extends Row<?>>
 	@CheckForNull
 	private OTUSet otuSet;
 
-	Matrix() {}
+	/** Default constructor. */
+	protected Matrix() {}
 
 	@Override
 	public void accept(final IVisitor visitor) {
@@ -278,7 +279,7 @@ public abstract class Matrix<R extends Row<?>>
 	 * Set the {@link VersionInfo} at {@code idx} to {@code null}. Fills with
 	 * <code>null</code>s if necessary.
 	 * 
-	 * @param position see description
+	 * @param position see des cription
 	 * 
 	 * @return this
 	 */
