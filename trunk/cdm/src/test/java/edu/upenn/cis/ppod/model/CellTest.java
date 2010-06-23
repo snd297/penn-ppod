@@ -97,7 +97,7 @@ public class CellTest {
 		cell.setPolymorphicElements(nucleotides);
 		cell.afterUnmarshal();
 		assertFalse(cell.getBeingUnmarshalled());
-		assertEquals((Object) cell.getElementsModifiable(),
+		assertEquals((Object) cell.getElements(),
 				(Object) nucleotides);
 	}
 
@@ -109,7 +109,7 @@ public class CellTest {
 		cell.setUncertainElements(nucleotides);
 		cell.afterUnmarshal();
 		assertFalse(cell.getBeingUnmarshalled());
-		assertEquals((Object) cell.getElementsModifiable(),
+		assertEquals((Object) cell.getElements(),
 				(Object) nucleotides);
 	}
 

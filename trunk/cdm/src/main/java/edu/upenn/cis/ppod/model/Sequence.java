@@ -39,7 +39,7 @@ import edu.upenn.cis.ppod.modelinterfaces.IOTUKeyedMapValue;
 @MappedSuperclass
 public abstract class Sequence extends PPodEntity implements IOTUKeyedMapValue {
 
-	final static String SEQUENCE_COLUMN = "SEQUENCE";
+	private final static String SEQUENCE_COLUMN = "SEQUENCE";
 
 	@Lob
 	@Column(name = SEQUENCE_COLUMN, nullable = false)

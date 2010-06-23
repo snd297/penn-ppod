@@ -16,9 +16,9 @@
 package edu.upenn.cis.ppod.model;
 
 import static org.testng.Assert.assertEquals;
-import static org.testng.Assert.assertFalse;
-import static org.testng.Assert.assertSame;
-import static org.testng.Assert.assertTrue;
+import static org.testng.Assert.assertNull;
+
+import java.util.Date;
 
 import org.testng.annotations.Test;
 
@@ -27,27 +27,26 @@ import com.google.inject.Provider;
 
 import edu.upenn.cis.ppod.TestGroupDefs;
 
+/**
+ * Test {@link VersionInfo}.
+ * 
+ * @author Sam Donnelly
+ */
 @Test(groups = TestGroupDefs.FAST, dependsOnGroups = TestGroupDefs.INIT)
-public class OTUTest {
+public class VersionInfoTest {
 
 	@Inject
-	private Provider<OTU> otuProvider;
+	private Provider<VersionInfo> versionInfoProvider;
 
 	@Test
-	public void setLabel() {
-		final OTU otu = otuProvider.get();
-		otu.unsetInNeedOfNewVersion();
-		final String label = "otu-label";
-		final OTU returnedOTU = otu.setLabel(label);
-		assertTrue(otu.isInNeedOfNewVersion());
-		assertSame(returnedOTU, otu);
-		otu.isInNeedOfNewVersion();
-		assertEquals(otu.getLabel(), label);
+	public void getCreated() {
+		final VersionInfo versionInfo = versionInfoProvider.get();
 
-		otu.unsetInNeedOfNewVersion();
-		otu.setLabel(label);
-		assertFalse(otu.isInNeedOfNewVersion());
-		assertEquals(otu.getLabel(), label);
+		assertNull(versionInfo.getCreated());
+
+		final Date now = new Date();
+		versionInfo.setCreated(now);
+
+		assertEquals(versionInfo.getCreated(), now);
 	}
-
 }

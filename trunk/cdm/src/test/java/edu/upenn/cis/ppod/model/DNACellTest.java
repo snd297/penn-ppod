@@ -207,7 +207,7 @@ public class DNACellTest {
 		assertSame(returnedCell, cell);
 		assertTrue(cell.isInNeedOfNewVersion());
 		assertEquals(cell.getType(), Cell.Type.POLYMORPHIC);
-		assertEquals((Object) cell.getElementsModifiable(),
+		assertEquals((Object) cell.getElements(),
 				(Object) nucleotides);
 
 		cell.unsetInNeedOfNewVersion();
@@ -216,7 +216,7 @@ public class DNACellTest {
 
 		assertFalse(cell.isInNeedOfNewVersion());
 		assertEquals(cell.getType(), Cell.Type.POLYMORPHIC);
-		assertEquals((Object) cell.getElementsModifiable(),
+		assertEquals((Object) cell.getElements(),
 				(Object) nucleotides);
 
 	}

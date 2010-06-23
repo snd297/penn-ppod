@@ -85,7 +85,7 @@ public abstract class Cell<E> extends PPodEntity {
 
 	}
 
-	static final String TYPE_COLUMN = "TYPE";
+	protected static final String TYPE_COLUMN = "TYPE";
 
 	@Column(name = "POSITION", nullable = false)
 	@CheckForNull
@@ -99,7 +99,7 @@ public abstract class Cell<E> extends PPodEntity {
 	@Transient
 	private boolean beingUnmarshalled = false;
 
-	Cell() {}
+	protected Cell() {}
 
 	@Override
 	public void afterUnmarshal() {
@@ -163,6 +163,9 @@ public abstract class Cell<E> extends PPodEntity {
 	 * Get the elements contained in this cell.
 	 * 
 	 * @return the elements contained in this cell
+	 * 
+	 * @throws IllegalStateException if the type has not been set for this cell,
+	 *             i.e. if {@link #getType() == null}
 	 */
 	public Set<E> getElements() {
 		checkState(getType() != null,
@@ -191,7 +194,8 @@ public abstract class Cell<E> extends PPodEntity {
 				final Set<E> elements = getElementsModifiable();
 
 				if (elements.size() < 2) {
-					throw new AssertionError("type is " + getType()
+					throw new AssertionError("type is "
+														+ getType()
 												+ " and getElementsRaw() has "
 												+ elements.size() + " elements");
 				}
@@ -291,6 +295,7 @@ public abstract class Cell<E> extends PPodEntity {
 	}
 
 	private Cell<E> setInapplicableOrUnassigned(final Type type) {
+		checkNotNull(type);
 		checkArgument(
 				type == Type.INAPPLICABLE
 						|| type == Type.UNASSIGNED,
@@ -339,8 +344,7 @@ public abstract class Cell<E> extends PPodEntity {
 	 * 
 	 * @throw IllegalArgumentException if {@code polymorphicStates.size() < 2}
 	 */
-	public Cell<E> setPolymorphicElements(
-			final Set<E> elements) {
+	public Cell<E> setPolymorphicElements(final Set<E> elements) {
 		checkNotNull(elements);
 		checkArgument(elements.size() > 1,
 				"polymorphic states must be > 1");
@@ -359,7 +363,8 @@ public abstract class Cell<E> extends PPodEntity {
 	 * 
 	 * @return this
 	 */
-	protected abstract Cell<E> setPolymorphicOrUncertain(final Type type,
+	protected abstract Cell<E> setPolymorphicOrUncertain(
+			final Type type,
 			final Set<E> elements);
 
 	protected Cell<E> setPosition(@CheckForNull final Integer position) {

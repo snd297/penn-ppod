@@ -43,7 +43,7 @@ public abstract class Row<C extends Cell<?>>
 		extends PPodEntity
 		implements IRow, IOTUKeyedMapValue {
 
-	Row() {}
+	protected Row() {}
 
 	@Override
 	public void accept(final IVisitor visitor) {
@@ -81,8 +81,8 @@ public abstract class Row<C extends Cell<?>>
 	 *<p>
 	 * This method will not mark this object or parents as in need of a new pPOD
 	 * version. Which can be useful to free up the cells for garbage collection
-	 * after the row and cells are evicted but the matrix is still in the
-	 * persistence context.
+	 * after the cells are evicted but the matrix is still in the persistence
+	 * context.
 	 * <p>
 	 * This method {@code null}s out the cell->row relationship.
 	 * 
