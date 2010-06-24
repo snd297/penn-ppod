@@ -110,9 +110,8 @@ class CreateOrUpdateMatrix<M extends Matrix<R>, R extends Row<C>, C extends Cell
 
 			if (null == (dbRow = dbMatrix.getRow(dbOTU))) {
 				dbRow = rowProvider.get();
-				dbRow
-						.setVersionInfo(
-								newVersionInfo.getNewVersionInfo());
+				dbRow.setVersionInfo(newVersionInfo
+						.getNewVersionInfo());
 				dbMatrix.putRow(dbOTU, dbRow);
 				dao.makePersistent(dbRow);
 			}
@@ -149,8 +148,8 @@ class CreateOrUpdateMatrix<M extends Matrix<R>, R extends Row<C>, C extends Cell
 				dbCellPosition++;
 
 				final C sourceCell = sourceRow
-								.getCells()
-								.get(dbCellPosition);
+						.getCells()
+						.get(dbCellPosition);
 
 				switch (sourceCell.getType()) {
 					case INAPPLICABLE:
@@ -207,6 +206,7 @@ class CreateOrUpdateMatrix<M extends Matrix<R>, R extends Row<C>, C extends Cell
 
 			// This is to free up the cells for garbage collection - but depends
 			// on dao.evictEntities(all of the cells) to be safe!!!!!
+			dao.evict(dbRow);
 			dbRow.clearCells();
 
 			// Again to free up cells for garbage collection
