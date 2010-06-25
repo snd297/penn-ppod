@@ -42,7 +42,7 @@ import edu.upenn.cis.ppod.util.IVisitor;
  */
 @MappedSuperclass
 public abstract class SequenceSet<S extends Sequence>
-		extends UUPPodEntityWXmlId
+		extends UUPPodEntityWithXmlId
 		implements IVersionedWithOTUSet {
 
 	@Column(name = "LABEL", nullable = false)

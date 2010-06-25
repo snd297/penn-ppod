@@ -52,7 +52,7 @@ import edu.upenn.cis.ppod.util.IVisitor;
  */
 @Entity
 @Table(name = StandardCharacter.TABLE)
-public class StandardCharacter extends UUPPodEntityWXmlId {
+public class StandardCharacter extends UUPPodEntityWithXmlId {
 
 	public final static String TABLE = "STANDARD_CHARACTER";
 
