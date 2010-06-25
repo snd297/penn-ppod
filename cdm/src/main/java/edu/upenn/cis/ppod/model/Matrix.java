@@ -53,7 +53,7 @@ import edu.upenn.cis.ppod.util.IVisitor;
  */
 @MappedSuperclass
 public abstract class Matrix<R extends Row<?>>
-		extends UUPPodEntityWXmlId
+		extends UUPPodEntityWithXmlId
 		implements IMatrix {
 
 	/** Description column. */
@@ -82,8 +82,8 @@ public abstract class Matrix<R extends Row<?>>
 	private String label;
 
 	/**
-	 * These are the <code>OTU</code>s whose data comprises this {@code
-	 * CharacterStateMatrix}.
+	 * These are the <code>OTU</code>s whose data comprises this
+	 * {@code CharacterStateMatrix}.
 	 */
 	@ManyToOne(fetch = FetchType.LAZY)
 	@JoinColumn(name = OTUSet.JOIN_COLUMN, nullable = false)
@@ -100,12 +100,6 @@ public abstract class Matrix<R extends Row<?>>
 		super.accept(visitor);
 	}
 
-	/**
-	 * {@link Unmarshaller} callback.
-	 * 
-	 * @param u see {@code Unmarshaller}
-	 * @param parent see {@code Unmarshaller}
-	 */
 	@Override
 	public void afterUnmarshal(final Unmarshaller u, final Object parent) {
 		super.afterUnmarshal(u, parent);
@@ -142,7 +136,6 @@ public abstract class Matrix<R extends Row<?>>
 	/**
 	 * Get the column pPOD version infos. These are equal to the largest pPOD
 	 * version in the columns.
-	 * 
 	 * 
 	 * @return get the column pPOD version infos
 	 */
@@ -182,8 +175,8 @@ public abstract class Matrix<R extends Row<?>>
 	}
 
 	/**
-	 * Getter. {@code null} when the object is constructed, but never {@code
-	 * null} for persistent objects.
+	 * Getter. {@code null} when the object is constructed, but never
+	 * {@code null} for persistent objects.
 	 * <p>
 	 * Will {@code null} only until {@code setLabel()} is called for newly
 	 * created objects. Will never be {@code null} for persistent objects.
@@ -399,14 +392,14 @@ public abstract class Matrix<R extends Row<?>>
 	/**
 	 * Setter.
 	 * <p>
-	 * Meant to be called only from objects responsible for managing the {@code
-	 * OTUSET<->CharacterStateMatrix} relationship.
+	 * Meant to be called only from objects responsible for managing the
+	 * {@code OTUSET<->CharacterStateMatrix} relationship.
 	 * <p>
 	 * This method will remove rows from this matrix as necessary.
 	 * <p>
-	 * If there are any new {@code OTU}s in {@code otuSet}, then {@code
-	 * getRow(theNewOTU) == null}. That is, it adds {@code null} rows for new
-	 * {@code OTU}s.
+	 * If there are any new {@code OTU}s in {@code otuSet}, then
+	 * {@code getRow(theNewOTU) == null}. That is, it adds {@code null} rows for
+	 * new {@code OTU}s.
 	 * 
 	 * @param otuSet new {@code OTUSet} for this matrix, or {@code null} if
 	 *            we're destroying the association

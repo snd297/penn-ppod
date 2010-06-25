@@ -284,8 +284,8 @@ public abstract class Cell<E> extends PPodEntity {
 			@CheckForNull Set<E> elements);
 
 	/**
-	 * Set this cell's type to {@link Type#INAPPLICABLE} to {@code
-	 * Collections.EMPTY_SET}.
+	 * Set this cell's type to {@link Type#INAPPLICABLE} to
+	 * {@code Collections.EMPTY_SET}.
 	 * 
 	 * @return this
 	 */
@@ -394,8 +394,8 @@ public abstract class Cell<E> extends PPodEntity {
 	}
 
 	/**
-	 * Set this cell's type to {@link Type#UNASSIGNED} to {@code
-	 * Collections.EMPTY_SET}.
+	 * Set this cell's type to {@link Type#UNASSIGNED} to
+	 * {@code Collections.EMPTY_SET}.
 	 * 
 	 * @return this
 	 */

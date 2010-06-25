@@ -28,7 +28,7 @@ import edu.upenn.cis.ppod.modelinterfaces.IUUPPodEntityWithXmlID;
  * 
  * @author Sam Donnelly
  */
-public abstract class UUPPodEntityWXmlId extends UUPPodEntity implements
+public abstract class UUPPodEntityWithXmlId extends UUPPodEntity implements
 		IUUPPodEntityWithXmlID {
 
 	/**
@@ -63,7 +63,7 @@ public abstract class UUPPodEntityWXmlId extends UUPPodEntity implements
 	 * @throws IllegalStateException if {@code getDocId() != null} when this
 	 *             method is called
 	 */
-	public UUPPodEntityWXmlId setDocId() {
+	public UUPPodEntityWithXmlId setDocId() {
 		return setDocId(UUID.randomUUID().toString());
 	}
 
@@ -77,7 +77,7 @@ public abstract class UUPPodEntityWXmlId extends UUPPodEntity implements
 	 * @throws IllegalStateException if {@code getDocId() != null} when this
 	 *             method is called
 	 */
-	public UUPPodEntityWXmlId setDocId(final String docId) {
+	public UUPPodEntityWithXmlId setDocId(final String docId) {
 		if (getDocId() != null) {
 			throw new IllegalStateException("docId was already set");
 		}
