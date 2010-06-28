@@ -86,8 +86,10 @@ public class StandardCell extends Cell<StandardState> {
 	 */
 	@CheckForNull
 	@ManyToMany
-	@Sort(type = SortType.COMPARATOR, comparator = StandardState.StandardStateComparator.class)
-	@JoinTable(inverseJoinColumns = @JoinColumn(name = StandardState.JOIN_COLUMN))
+	@Sort(type = SortType.COMPARATOR,
+			comparator = StandardState.StandardStateComparator.class)
+	@JoinTable(inverseJoinColumns = @JoinColumn(
+			name = StandardState.JOIN_COLUMN))
 	private SortedSet<StandardState> elements;
 
 	/**
@@ -167,8 +169,8 @@ public class StandardCell extends Cell<StandardState> {
 	/**
 	 * Getter. This will return {@code null} until the cell is added to a row.
 	 * 
-	 * @return the {@code CharacterStateRow} to which this {@code
-	 *         CharacterStateCell} belongs
+	 * @return the {@code CharacterStateRow} to which this
+	 *         {@code CharacterStateCell} belongs
 	 */
 	@Nullable
 	@Override

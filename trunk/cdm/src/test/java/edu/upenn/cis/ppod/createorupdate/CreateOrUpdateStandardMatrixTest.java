@@ -84,7 +84,9 @@ public class CreateOrUpdateStandardMatrixTest {
 		final Map<StandardRow, List<StandardCell>> rowsToCells = newHashMap();
 		for (final OTU otu : matrix.getOTUSet().getOTUs()) {
 			final StandardRow row = matrix.getRow(otu);
-			rowsToCells.put(row, newArrayList(row.getCells()));
+			rowsToCells.put(row,
+							newArrayList(row
+											.getCells()));
 		}
 		return rowsToCells;
 	}
@@ -99,7 +101,8 @@ public class CreateOrUpdateStandardMatrixTest {
 		rowsToCells.clear();
 	}
 
-	@Test(dataProvider = MatrixProvider.SMALL_MATRICES_PROVIDER, dataProviderClass = MatrixProvider.class)
+	@Test(dataProvider = MatrixProvider.SMALL_MATRICES_PROVIDER,
+			dataProviderClass = MatrixProvider.class)
 	public void create(final StandardMatrix sourceMatrix) {
 
 		final ICreateOrUpdateStandardMatrix createOrUpdateStandardMatrix =
@@ -127,7 +130,8 @@ public class CreateOrUpdateStandardMatrixTest {
 				sourceMatrix);
 	}
 
-	@Test(dataProvider = MatrixProvider.SMALL_MATRICES_PROVIDER, dataProviderClass = MatrixProvider.class)
+	@Test(dataProvider = MatrixProvider.SMALL_MATRICES_PROVIDER,
+			dataProviderClass = MatrixProvider.class)
 	public void moveRows(final StandardMatrix sourceMatrix) {
 		final ICreateOrUpdateStandardMatrix createOrUpdateStandardMatrix =
 				createOrUpdateMatrixFactory.create(mergeAttachment,
@@ -193,7 +197,8 @@ public class CreateOrUpdateStandardMatrixTest {
 				sourceMatrix);
 	}
 
-	@Test(dataProvider = MatrixProvider.SMALL_MATRICES_PROVIDER, dataProviderClass = MatrixProvider.class)
+	@Test(dataProvider = MatrixProvider.SMALL_MATRICES_PROVIDER,
+			dataProviderClass = MatrixProvider.class)
 	public void moveCharacters(final StandardMatrix sourceMatrix) {
 		final ICreateOrUpdateStandardMatrix createOrUpdateMatrix =
 					createOrUpdateMatrixFactory.create(
@@ -257,7 +262,8 @@ public class CreateOrUpdateStandardMatrixTest {
 				targetMatrix, sourceMatrix);
 	}
 
-	@Test(dataProvider = MatrixProvider.SMALL_MATRICES_PROVIDER, dataProviderClass = MatrixProvider.class)
+	@Test(dataProvider = MatrixProvider.SMALL_MATRICES_PROVIDER,
+			dataProviderClass = MatrixProvider.class)
 	public void removeColumn(final StandardMatrix sourceMatrix) {
 		final ICreateOrUpdateStandardMatrix createOrUpdateMatrix =
 				createOrUpdateMatrixFactory

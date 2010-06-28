@@ -98,8 +98,11 @@ public class PPodRealm extends AuthorizingRealm {
 				permission.setDomain("*");
 				permission.setActions("*");
 				permission.setTargets("*");
-				Role adminRole = roleProvider.get().setName("admin")
-						.setPermissions(newHashSet(permission));
+				Role adminRole =
+						roleProvider.get()
+								.setName("admin")
+								.setPermissions(
+										newHashSet(permission));
 				pPodUser.getRoles().add(adminRole);
 			} else {
 				if (roleDAO.getByName("user") == null) {
@@ -107,9 +110,12 @@ public class PPodRealm extends AuthorizingRealm {
 					permission.setDomain("*");
 					permission.setActions("create,view");
 					permission.setTargets("*");
-					Role userRole = roleProvider.get().setName("user")
+					final Role userRole = roleProvider
+							.get()
+							.setName("user")
 							.setPermissions(newHashSet(permission));
-					pPodUser.getRoles().add(userRole);
+					pPodUser.getRoles()
+							.add(userRole);
 				}
 			}
 			pPodUserDAO.makePersistent(pPodUser);

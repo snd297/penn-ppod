@@ -19,7 +19,14 @@
 						<suiteXmlFile>src/test/resources/testng-fast.xml</suiteXmlFile>
 					</suiteXmlFiles>
 				</configuration>
-			</plugin>
+			</plugin><!-- <plugin> <groupId>org.codehaus.mojo</groupId> <artifactId>hibernate3-maven-plugin</artifactId> 
+				<version>2.2</version> <executions> <execution> <phase>process-classes</phase> 
+				<goals> <goal>hbm2ddl</goal> </goals> </execution> </executions> <configuration> 
+				<components> <component> <name>hbm2ddl</name> <implementation>annotationconfiguration</implementation> 
+				</component> </components> <componentProperties> <propertyfile>src/main/resources/hibernate-export-ddl.properties</propertyfile> 
+				<create>true</create> <drop>false</drop> <export>false</export> <format>true</format> 
+				<outputfilename>ppod.ddl</outputfilename> </componentProperties> </configuration> 
+				</plugin> -->
 		</plugins>
 	</build>
-</project>
+</project> 

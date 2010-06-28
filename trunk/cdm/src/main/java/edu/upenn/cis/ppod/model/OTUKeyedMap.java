@@ -60,7 +60,9 @@ public abstract class OTUKeyedMap<V extends IOTUKeyedMapValue>
 		}
 	}
 
+	@Override
 	public void afterUnmarshal() {
+		super.afterUnmarshal();
 		for (final OTUSomethingPair<V> otuValuePair : getOTUValuePairs()) {
 			put(otuValuePair.getFirst(), otuValuePair.getSecond());
 		}
@@ -162,8 +164,8 @@ public abstract class OTUKeyedMap<V extends IOTUKeyedMapValue>
 	 * @throws IllegalStateException if {@code getParent().getOTUSet() == null}
 	 * @throws IllegalArgumentException if {@code otu} does not belong to
 	 *             {@code parent.getOTUSet()}
-	 * @throws IllegalArgumentException if there's already a value {@code
-	 *             .equals} to {@code value}
+	 * @throws IllegalArgumentException if there's already a value
+	 *             {@code .equals} to {@code value}
 	 */
 	@CheckForNull
 	protected V putHelper(final OTU key, final V value) {
@@ -200,8 +202,8 @@ public abstract class OTUKeyedMap<V extends IOTUKeyedMapValue>
 	protected abstract OTUKeyedMap<V> setInNeedOfNewVersion();
 
 	/**
-	 * Set the keys of this {@code OTUKeyedMap} to the OTU's in {@code
-	 * getParent()}'s OTU set.
+	 * Set the keys of this {@code OTUKeyedMap} to the OTU's in
+	 * {@code getParent()}'s OTU set.
 	 * <p>
 	 * Any newly introduced keys will map to {@code null} values.
 	 * 

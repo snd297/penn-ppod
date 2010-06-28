@@ -16,7 +16,6 @@
 package edu.upenn.cis.ppod.model;
 
 import javax.annotation.Nullable;
-import javax.annotation.OverridingMethodsMustInvokeSuper;
 import javax.persistence.Column;
 import javax.persistence.GeneratedValue;
 import javax.persistence.Id;
@@ -30,7 +29,10 @@ import javax.xml.bind.annotation.XmlAttribute;
 
 import org.hibernate.annotations.AccessType;
 
+import com.google.common.annotations.VisibleForTesting;
+
 import edu.umd.cs.findbugs.annotations.CheckForNull;
+import edu.umd.cs.findbugs.annotations.OverrideMustInvoke;
 import edu.upenn.cis.ppod.modelinterfaces.IPersistentObject;
 import edu.upenn.cis.ppod.util.IVisitor;
 
@@ -56,7 +58,7 @@ public abstract class PersistentObject implements IPersistentObject {
 	private Integer objVersion;
 
 	@Transient
-	private boolean marshalled = false;
+	private boolean unmarshalled = false;
 
 	/** Default constructor. */
 	protected PersistentObject() {}
@@ -66,16 +68,17 @@ public abstract class PersistentObject implements IPersistentObject {
 	}
 
 	/**
-	 * {@link Unmarshaller} callback.
-	 * 
-	 * @param u see {@code Unmarshaller}
-	 * @param parent see {@code Unmarshaller}
+	 * Take actions after unmarshalling that need to occur after
+	 * {@link #afterUnmarshal(Unmarshaller, Object)} is called, specifically
+	 * after {@code @XmlIDRef} elements are resolved.
 	 */
-	@OverridingMethodsMustInvokeSuper
-	public void afterUnmarshal(
+	@OverrideMustInvoke
+	public void afterUnmarshal() {}
+
+	public void beforeUnmarshal(
 			@CheckForNull final Unmarshaller u,
 			@CheckForNull final Object parent) {
-		marshalled = true;
+		setUnmarshalled(true);
 	}
 
 	@XmlAttribute
@@ -84,8 +87,8 @@ public abstract class PersistentObject implements IPersistentObject {
 		return id;
 	}
 
-	protected boolean getMarshalled() {
-		return marshalled;
+	protected boolean isUnmarshalled() {
+		return unmarshalled;
 	}
 
 	/** Created for Jaxb. */
@@ -94,11 +97,9 @@ public abstract class PersistentObject implements IPersistentObject {
 		return this;
 	}
 
-	/**
-	 * For testing.
-	 */
-	PersistentObject setMarshalled(final boolean marshalled) {
-		this.marshalled = marshalled;
+	@VisibleForTesting
+	PersistentObject setUnmarshalled(final boolean marshalled) {
+		this.unmarshalled = marshalled;
 		return this;
 	}
 

@@ -45,12 +45,10 @@ public class CellTest {
 	@Test
 	public void getElementsXml() {
 		final DNACell cell = dnaCellProvider.get();
-		cell.beforeUnmarshal(null, null);
+		cell.setType(Cell.Type.UNCERTAIN);
 		final Set<DNANucleotide> cellElementsXml = cell.getElementsXml();
 		assertNotNull(cellElementsXml);
 		assertEquals(cellElementsXml.size(), 0);
-
-		cell.afterUnmarshal();
 
 		cell.setUnassigned();
 		assertNull(cell.getElementsXml());
@@ -71,54 +69,4 @@ public class CellTest {
 
 	}
 
-	@Test
-	public void afterUnmarshalUnassigned() {
-		final DNACell cell = dnaCellProvider.get();
-		cell.setUnassigned();
-		cell.afterUnmarshal();
-		assertFalse(cell.getBeingUnmarshalled());
-		assertNull(cell.getElementsModifiable());
-	}
-
-	@Test
-	public void afterUnmarshalSingle() {
-		final DNACell cell = dnaCellProvider.get();
-		cell.setSingleElement(DNANucleotide.G);
-		cell.afterUnmarshal();
-		assertFalse(cell.getBeingUnmarshalled());
-		assertNull(cell.getElementsModifiable());
-	}
-
-	@Test
-	public void afterUnmarshalPolymorphic() {
-		final DNACell cell = dnaCellProvider.get();
-		Set<DNANucleotide> nucleotides =
-				EnumSet.of(DNANucleotide.G, DNANucleotide.T);
-		cell.setPolymorphicElements(nucleotides);
-		cell.afterUnmarshal();
-		assertFalse(cell.getBeingUnmarshalled());
-		assertEquals((Object) cell.getElements(),
-				(Object) nucleotides);
-	}
-
-	@Test
-	public void afterUnmarshalUncertain() {
-		final DNACell cell = dnaCellProvider.get();
-		Set<DNANucleotide> nucleotides =
-				EnumSet.of(DNANucleotide.G, DNANucleotide.T);
-		cell.setUncertainElements(nucleotides);
-		cell.afterUnmarshal();
-		assertFalse(cell.getBeingUnmarshalled());
-		assertEquals((Object) cell.getElements(),
-				(Object) nucleotides);
-	}
-
-	@Test
-	public void afterUnmarshalInapplicable() {
-		final DNACell cell = dnaCellProvider.get();
-		cell.setInapplicable();
-		cell.afterUnmarshal();
-		assertFalse(cell.getBeingUnmarshalled());
-		assertNull(cell.getElementsModifiable());
-	}
 }

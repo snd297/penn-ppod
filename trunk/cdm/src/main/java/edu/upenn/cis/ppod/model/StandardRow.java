@@ -19,7 +19,6 @@ import static com.google.common.base.Preconditions.checkArgument;
 import static com.google.common.base.Preconditions.checkNotNull;
 import static com.google.common.collect.Lists.newArrayList;
 
-import java.util.Collections;
 import java.util.List;
 
 import javax.annotation.CheckForNull;
@@ -95,11 +94,6 @@ public class StandardRow extends Row<StandardCell> {
 					"cell has been assigned to a row but has now position set");
 		}
 		return cellPosition;
-	}
-
-	@Override
-	public List<StandardCell> getCells() {
-		return Collections.unmodifiableList(cells);
 	}
 
 	@XmlElement(name = "cell")

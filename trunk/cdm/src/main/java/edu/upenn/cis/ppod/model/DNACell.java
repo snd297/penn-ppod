@@ -59,7 +59,8 @@ public class DNACell extends Cell<DNANucleotide> {
 	 * At most one of {@code element} and {@code elements} will be {@code null}.
 	 */
 	@ElementCollection
-	@CollectionTable(name = "DNA_CELL_ELEMENTS", joinColumns = @JoinColumn(name = JOIN_COLUMN))
+	@CollectionTable(name = "DNA_CELL_ELEMENTS", joinColumns = @JoinColumn(
+			name = JOIN_COLUMN))
 	@Column(name = "ELEMENT")
 	@CheckForNull
 	private Set<DNANucleotide> elements;
@@ -67,8 +68,8 @@ public class DNACell extends Cell<DNANucleotide> {
 	/**
 	 * To handle the most-common case of a single element.
 	 * <p>
-	 * At most of one of {@code element} and {@code elements} will be {@code
-	 * null}.
+	 * At most of one of {@code element} and {@code elements} will be
+	 * {@code null}.
 	 */
 	@Column(name = "ELEMENT", nullable = true)
 	@Enumerated(EnumType.ORDINAL)
@@ -140,7 +141,7 @@ public class DNACell extends Cell<DNANucleotide> {
 	@Override
 	protected Cell<DNANucleotide> setElements(
 			@CheckForNull final Set<DNANucleotide> elements) {
-		if (equal(elements, this.elements)) {
+		if (equal(elements, getElementsModifiable())) {
 
 		} else {
 			if (elements == null) {
@@ -149,13 +150,13 @@ public class DNACell extends Cell<DNANucleotide> {
 				if (this.elements == null) {
 					initElements();
 				} else {
-					this.elements.clear();
+					getElementsModifiable().clear();
 				}
 				if (this.elements == null) {
 					// Added for FindBugs
 					throw new AssertionError("elements should not be null");
 				} else {
-					this.elements.addAll(elements);
+					getElementsModifiable().addAll(elements);
 				}
 			}
 		}

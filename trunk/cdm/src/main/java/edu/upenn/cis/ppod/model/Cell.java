@@ -27,7 +27,6 @@ import javax.persistence.Column;
 import javax.persistence.EnumType;
 import javax.persistence.Enumerated;
 import javax.persistence.MappedSuperclass;
-import javax.persistence.Transient;
 import javax.xml.bind.Marshaller;
 import javax.xml.bind.Unmarshaller;
 import javax.xml.bind.annotation.XmlAttribute;
@@ -96,16 +95,7 @@ public abstract class Cell<E> extends PPodEntity {
 	@CheckForNull
 	private Type type;
 
-	@Transient
-	private boolean beingUnmarshalled = false;
-
 	protected Cell() {}
-
-	@Override
-	public void afterUnmarshal() {
-		super.afterUnmarshal();
-		beingUnmarshalled = false;
-	}
 
 	/**
 	 * {@link Unmarshaller} callback.
@@ -138,19 +128,6 @@ public abstract class Cell<E> extends PPodEntity {
 		super.beforeMarshal(marshaller);
 		checkState(getType() != null, "can't marshal a cell with no type");
 		return true;
-	}
-
-	public void beforeUnmarshal(
-			@CheckForNull final Unmarshaller u,
-			@CheckForNull final Object parent) {
-		beingUnmarshalled = true;
-	}
-
-	/**
-	 * For testing.
-	 */
-	boolean getBeingUnmarshalled() {
-		return beingUnmarshalled;
 	}
 
 	/**
@@ -209,11 +186,12 @@ public abstract class Cell<E> extends PPodEntity {
 	/**
 	 * Get a modifiable reference to the elements in this cell.
 	 * <p>
-	 * Will never be {@code null} for POLYMORPHIC and UNCERTAIN cells.
+	 * Will be non-{@code null} for POLYMORPHIC and UNCERTAIN cells.
 	 * <p>
 	 * Will be {@code null} for SINGLE, UNASSIGNED, and INAPPLICABLE cells.
 	 * <p>
-	 * Will be {@code null} for newly created objects.
+	 * Will be {@code null} if {@link #getType()}{@code == null}. This will only
+	 * happen for newly created cells.
 	 * 
 	 * @return a modifiable reference to the elements in this cell
 	 */
@@ -223,14 +201,16 @@ public abstract class Cell<E> extends PPodEntity {
 	/**
 	 * Used for serialization so we don't have to hit {@code elements} directly
 	 * and thereby cause unwanted database hits.
+	 * <p>
+	 * This method assumes that {@link #getType()} is non-null. So it assumes
+	 * that the unmarshaller will have set the type before it calls this method.
+	 * 
+	 * @throws IllegalStateException if {@code getType() == null}
 	 */
 	@CheckForNull
 	protected Set<E> getElementsXml() {
-		// Since we don't know what the type is yet, we just have to initialize
-		// elements and return: it could be POLYMORPHIC or UNCERTAIN.
-		if (beingUnmarshalled) {
-			initElements();
-			return getElementsModifiable();
+		if (getType() == null) {
+			throw new IllegalStateException("getType == null");
 		}
 		switch (getType()) {
 			case UNASSIGNED:
@@ -239,6 +219,9 @@ public abstract class Cell<E> extends PPodEntity {
 				return null;
 			case POLYMORPHIC:
 			case UNCERTAIN:
+				if (getElementsModifiable() == null) {
+					initElements();
+				}
 				// We only want to hit elements if necessary to avoid db hits
 				return getElementsModifiable();
 			default:
@@ -270,6 +253,10 @@ public abstract class Cell<E> extends PPodEntity {
 		return type;
 	}
 
+	/**
+	 * Subclasses must do whatever is necessary to make
+	 * {@link #getElementsModifiable()} non-null.
+	 */
 	protected abstract void initElements();
 
 	/**
