@@ -28,7 +28,6 @@ import javax.persistence.EnumType;
 import javax.persistence.Enumerated;
 import javax.persistence.MappedSuperclass;
 import javax.xml.bind.Marshaller;
-import javax.xml.bind.Unmarshaller;
 import javax.xml.bind.annotation.XmlAttribute;
 
 import edu.umd.cs.findbugs.annotations.CheckForNull;
@@ -96,32 +95,6 @@ public abstract class Cell<E> extends PPodEntity {
 	private Type type;
 
 	protected Cell() {}
-
-	/**
-	 * {@link Unmarshaller} callback.
-	 * 
-	 * @param u see {@code Unmarshaller}
-	 * @param parent see {@code Unmarshaller}
-	 */
-	@Override
-	public void afterUnmarshal(
-			@CheckForNull final Unmarshaller u,
-			@CheckForNull final Object parent) {
-		super.afterUnmarshal(u, parent);
-		switch (getType()) {
-			case UNASSIGNED:
-			case SINGLE:
-			case INAPPLICABLE:
-				// free it up for GC
-				setElements(null);
-				break;
-			case POLYMORPHIC:
-			case UNCERTAIN:
-				break;
-			default:
-				throw new AssertionError("unknown cell type " + getType());
-		}
-	}
 
 	@Override
 	public boolean beforeMarshal(@CheckForNull final Marshaller marshaller) {

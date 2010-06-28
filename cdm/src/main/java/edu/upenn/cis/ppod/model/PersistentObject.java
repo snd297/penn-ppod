@@ -32,7 +32,6 @@ import org.hibernate.annotations.AccessType;
 import com.google.common.annotations.VisibleForTesting;
 
 import edu.umd.cs.findbugs.annotations.CheckForNull;
-import edu.umd.cs.findbugs.annotations.OverrideMustInvoke;
 import edu.upenn.cis.ppod.modelinterfaces.IPersistentObject;
 import edu.upenn.cis.ppod.util.IVisitor;
 
@@ -66,14 +65,6 @@ public abstract class PersistentObject implements IPersistentObject {
 	public void accept(final IVisitor visitor) {
 		throw new UnsupportedOperationException();
 	}
-
-	/**
-	 * Take actions after unmarshalling that need to occur after
-	 * {@link #afterUnmarshal(Unmarshaller, Object)} is called, specifically
-	 * after {@code @XmlIDRef} elements are resolved.
-	 */
-	@OverrideMustInvoke
-	public void afterUnmarshal() {}
 
 	public void beforeUnmarshal(
 			@CheckForNull final Unmarshaller u,

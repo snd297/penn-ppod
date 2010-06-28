@@ -60,9 +60,11 @@ public abstract class OTUKeyedMap<V extends IOTUKeyedMapValue>
 		}
 	}
 
-	@Override
+	/**
+	 * Take care of work that can only be done after {@link XmlIDREF}s have been
+	 * resolved.
+	 */
 	public void afterUnmarshal() {
-		super.afterUnmarshal();
 		for (final OTUSomethingPair<V> otuValuePair : getOTUValuePairs()) {
 			put(otuValuePair.getFirst(), otuValuePair.getSecond());
 		}
