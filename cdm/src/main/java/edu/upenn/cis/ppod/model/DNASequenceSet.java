@@ -58,7 +58,8 @@ public class DNASequenceSet extends SequenceSet<DNASequence> {
 	/**
 	 * The sequences.
 	 */
-	@OneToOne(fetch = FetchType.LAZY, optional = false, cascade = CascadeType.ALL, orphanRemoval = true)
+	@OneToOne(fetch = FetchType.LAZY, optional = false,
+			cascade = CascadeType.ALL, orphanRemoval = true)
 	@CheckForNull
 	private DNASequences sequences;
 
@@ -133,7 +134,8 @@ public class DNASequenceSet extends SequenceSet<DNASequence> {
 			@Nullable final OTUSet otuSet) {
 		checkState(
 				getOTUKeyedSequences() != null,
-				"getOTUKeyedSequences() == null, so there are no sequences to operate on");
+				"getOTUKeyedSequences() == null, "
+						+ "so there are no sequences to operate on");
 		getOTUKeyedSequences().setOTUs();
 		return this;
 	}

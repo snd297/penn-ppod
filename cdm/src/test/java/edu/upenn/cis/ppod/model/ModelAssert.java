@@ -206,19 +206,21 @@ public class ModelAssert {
 		// supposed to be.
 		// We use actualMatrix.getCharacters() to check as oppose to looking at
 		// expectedMatrix sine that seems to make the most sense
-		if (actualMatrix.getClass().equals(StandardMatrix.class)) {
-			final Map<StandardCharacter, Integer> actualMatrixCharactersToPositions = actualMatrix
-					.getCharactersToPositions();
-			assertEquals(
-					actualMatrixCharactersToPositions.size(),
-					actualMatrix.getColumnVersionInfos().size());
-			for (final Entry<StandardCharacter, Integer> actualIdxByCharacter : actualMatrixCharactersToPositions
-					.entrySet()) {
-				assertTrue(actualIdxByCharacter.getKey() == actualMatrix
-						.getCharactersModifiable().get(
-								actualIdxByCharacter.getValue()));
-			}
-		}
+		// if (actualMatrix.getClass().equals(StandardMatrix.class)) {
+		// final Map<StandardCharacter, Integer>
+		// actualMatrixCharactersToPositions = actualMatrix
+		// .getCharactersToPositions();
+		// assertEquals(
+		// actualMatrixCharactersToPositions.size(),
+		// actualMatrix.getColumnVersionInfos().size());
+		// for (final Entry<StandardCharacter, Integer> actualIdxByCharacter :
+		// actualMatrixCharactersToPositions
+		// .entrySet()) {
+		// assertTrue(actualIdxByCharacter.getKey() == actualMatrix
+		// .getCharactersModifiable().get(
+		// actualIdxByCharacter.getValue()));
+		// }
+		// }
 
 		assertEquals(actualMatrix.getRows().size(), expectedMatrix
 				.getRows().size());

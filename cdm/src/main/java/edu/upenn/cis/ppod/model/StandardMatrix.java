@@ -68,9 +68,9 @@ public class StandardMatrix extends Matrix<StandardRow> {
 	 * its column number in each <code>row</cod>. So <code>characters</code> is
 	 * a columnNumber-> <code>Character</code> lookup.
 	 * <p>
-	 * This relationship is really only many-to-many for {@code
-	 * MolecularStateMatrix}s, for character matrices it is one-to-many and a
-	 * refactoring should be considered.
+	 * This relationship is really only many-to-many for
+	 * {@code MolecularStateMatrix}s, for character matrices it is one-to-many
+	 * and a refactoring should be considered.
 	 */
 	@OneToMany(cascade = CascadeType.ALL, orphanRemoval = true)
 	@org.hibernate.annotations.IndexColumn(name = "POSITION")
@@ -82,12 +82,14 @@ public class StandardMatrix extends Matrix<StandardRow> {
 	 * ->columnNumber lookup.
 	 */
 	@ElementCollection
-	@JoinTable(name = TABLE + "_" + CHARACTER_POSITION_COLUMN, joinColumns = @JoinColumn(name = JOIN_COLUMN))
+	@JoinTable(name = TABLE + "_" + CHARACTER_POSITION_COLUMN,
+			joinColumns = @JoinColumn(name = JOIN_COLUMN))
 	@MapKeyJoinColumn(name = StandardCharacter.JOIN_COLUMN)
 	@Column(name = CHARACTER_POSITION_COLUMN)
 	private final Map<StandardCharacter, Integer> charactersToPositions = newHashMap();
 
-	@OneToOne(fetch = FetchType.LAZY, optional = false, cascade = CascadeType.ALL, orphanRemoval = true)
+	@OneToOne(fetch = FetchType.LAZY, optional = false,
+			cascade = CascadeType.ALL, orphanRemoval = true)
 	private StandardRows rows;
 
 	/** No-arg constructor for (at least) Hibernate. */

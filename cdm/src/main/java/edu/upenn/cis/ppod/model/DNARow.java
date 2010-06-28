@@ -18,7 +18,6 @@ package edu.upenn.cis.ppod.model;
 import static com.google.common.base.Preconditions.checkNotNull;
 import static com.google.common.collect.Lists.newArrayList;
 
-import java.util.Collections;
 import java.util.List;
 
 import javax.annotation.CheckForNull;
@@ -79,11 +78,6 @@ public class DNARow extends Row<DNACell> {
 		checkNotNull(visitor);
 		visitor.visit(this);
 		super.accept(visitor);
-	}
-
-	@Override
-	public List<DNACell> getCells() {
-		return Collections.unmodifiableList(cells);
 	}
 
 	@XmlElement(name = "cell")

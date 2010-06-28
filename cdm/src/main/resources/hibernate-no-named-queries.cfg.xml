@@ -23,29 +23,30 @@
 		<mapping class="edu.upenn.cis.ppod.model.TreeSet" />
 
 		<mapping class="edu.upenn.cis.ppod.model.StandardMatrix" />
+		<mapping class="edu.upenn.cis.ppod.model.StandardCharacter" />
+		<mapping class="edu.upenn.cis.ppod.model.StandardState" />
 		<mapping class="edu.upenn.cis.ppod.model.StandardRows" />
 		<mapping class="edu.upenn.cis.ppod.model.StandardRow" />
 		<mapping class="edu.upenn.cis.ppod.model.StandardCell" />
 
-		<mapping class="edu.upenn.cis.ppod.model.StandardCharacter" />
-		<mapping class="edu.upenn.cis.ppod.model.StandardState" />
+		<mapping class="edu.upenn.cis.ppod.model.DNAMatrix" />
+		<mapping class="edu.upenn.cis.ppod.model.DNARows" />
+		<mapping class="edu.upenn.cis.ppod.model.DNARow" />
+		<mapping class="edu.upenn.cis.ppod.model.DNACell" />
 
-		<mapping class="edu.upenn.cis.ppod.model.DNAStateMatrix" />
-		<mapping class="edu.upenn.cis.ppod.model.DNACharacter" />
-		<mapping class="edu.upenn.cis.ppod.model.DNAState" />
+		<!--
 
-		<mapping class="edu.upenn.cis.ppod.model.RNACharacter" />
-		<mapping class="edu.upenn.cis.ppod.model.RNAState" />
-
+			<mapping class="edu.upenn.cis.ppod.model.RNACharacter" /> <mapping
+			class="edu.upenn.cis.ppod.model.RNAState" />
+		-->
 		<mapping class="edu.upenn.cis.ppod.model.Attachment" />
 		<mapping class="edu.upenn.cis.ppod.model.AttachmentNamespace" />
 		<mapping class="edu.upenn.cis.ppod.model.AttachmentType" />
-
-		<mapping class="edu.upenn.cis.ppod.model.MolecularSequenceSet" />
 
 		<mapping class="edu.upenn.cis.ppod.model.DNASequenceSet" />
 		<mapping class="edu.upenn.cis.ppod.model.DNASequences" />
 		<mapping class="edu.upenn.cis.ppod.model.DNASequence" />
 
-	</session-factory>
+		<!--  metadata --><!-- <mapping resource="edu/upenn/cis/ppod/persistence/namedQueries.xml" 
+		/> --></session-factory>
 </hibernate-configuration>

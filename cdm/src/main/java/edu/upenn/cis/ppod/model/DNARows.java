@@ -76,9 +76,7 @@ public class DNARows extends OTUKeyedMap<DNARow> {
 	 * @param u see {@code Unmarshaller}
 	 * @param parent see {@code Unmarshaller}
 	 */
-	@Override
 	public void afterUnmarshal(final Unmarshaller u, final Object parent) {
-		super.afterUnmarshal(u, parent);
 		setMatrix((DNAMatrix) parent);
 		for (final OTUSomethingPair<DNARow> otuRowPair : otuRowPairs) {
 			otuRowPair.getSecond().setRows(this);

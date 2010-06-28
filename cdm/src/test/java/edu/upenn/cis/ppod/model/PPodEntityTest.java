@@ -82,13 +82,13 @@ public class PPodEntityTest {
 	@Test(expectedExceptions = IllegalStateException.class)
 	public void getMarshalled() {
 		final OTUSet otuSet = otuSetProvider.get();
-		((PersistentObject) otuSet).setMarshalled(true);
+		((PersistentObject) otuSet).setUnmarshalled(true);
 		otuSet.getVersionInfo();
 	}
 
 	/**
-	 * This is a pretty thorough test of {@code
-	 * PPodEntity.removeAttachment(...)}. A refactoring wouldn't hurt.
+	 * This is a pretty thorough test of
+	 * {@code PPodEntity.removeAttachment(...)}. A refactoring wouldn't hurt.
 	 */
 	@Test
 	public void removeAttachment() {

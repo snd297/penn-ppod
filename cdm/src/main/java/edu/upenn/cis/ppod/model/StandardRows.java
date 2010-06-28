@@ -50,6 +50,11 @@ import edu.upenn.cis.ppod.util.OTUStandardRowPair;
 @Table(name = "STANDARD_ROWS")
 public class StandardRows extends OTUKeyedMap<StandardRow> {
 
+	public static final String TABLE = "STANDARD_ROWS";
+
+	public static final String JOIN_COLUMN =
+			TABLE + "_" + ID_COLUMN;
+
 	@OneToOne(fetch = FetchType.LAZY, mappedBy = "rows")
 	@CheckForNull
 	private StandardMatrix matrix;
@@ -74,9 +79,7 @@ public class StandardRows extends OTUKeyedMap<StandardRow> {
 	 * @param u see {@code Unmarshaller}
 	 * @param parent see {@code Unmarshaller}
 	 */
-	@Override
 	public void afterUnmarshal(final Unmarshaller u, final Object parent) {
-		super.afterUnmarshal(u, parent);
 		setMatrix((StandardMatrix) parent);
 		for (final OTUSomethingPair<StandardRow> otuRowPair : otuRowPairs) {
 			otuRowPair.getSecond().setRows(this);

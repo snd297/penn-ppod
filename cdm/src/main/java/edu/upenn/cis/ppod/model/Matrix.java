@@ -64,7 +64,8 @@ public abstract class Matrix<R extends Row<?>>
 
 	/** The pPod versions of the columns. */
 	@ManyToMany
-	@JoinTable(inverseJoinColumns = { @JoinColumn(name = VersionInfo.JOIN_COLUMN) })
+	@JoinTable(inverseJoinColumns =
+		{ @JoinColumn(name = VersionInfo.JOIN_COLUMN) })
 	@OrderColumn(name = VersionInfo.TABLE + "_POSITION")
 	private final List<VersionInfo> columnVersionInfos = newArrayList();
 

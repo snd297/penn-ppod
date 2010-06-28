@@ -64,34 +64,20 @@
 		       from StandardMatrix m join m.characters pc 
 		       where m.id=:matrixId and pc.versionInfo.version >= :minVersion</query>
 	</named-query>
-	<!--
+	<!-- <named-query name="CharacterStateMatrix-getColumnPPodVersionsByMatrixId"> 
+		<query>select versionInfo.pPodVersion from CharacterStateMatrix m join m.columnPPodVersionInfos 
+		versionInfo where m.id=:matrixId order by VERSION_INFO_POSITION</query> <hint 
+		name="org.hibernate.comment" value="Get a matrixs column headers pPOD versions 
+		given the matrix id" /> </named-query> -->
+	<!-- <named-query name="CharacterStateMatrix-getRowIdxsIdsVersionsByMatrixIdAndMinPPodVersion"> 
+		<query>select index(r), r.id, r.pPodVersionInfo.pPodVersion from CharacterStateMatrix 
+		m join m.rows r where m.id=:matrixId and r.pPodVersionInfo.pPodVersion >= 
+		:minPPodVersion</query> </named-query> -->
 
-		<named-query
-		name="CharacterStateMatrix-getColumnPPodVersionsByMatrixId">
-		<query>select versionInfo.pPodVersion from CharacterStateMatrix m join
-		m.columnPPodVersionInfos versionInfo where m.id=:matrixId order by
-		VERSION_INFO_POSITION</query> <hint name="org.hibernate.comment"
-		value="Get a matrixs column headers pPOD versions given the matrix id"
-		/> </named-query>
-	-->
-	<!--
-
-		<named-query
-		name="CharacterStateMatrix-getRowIdxsIdsVersionsByMatrixIdAndMinPPodVersion">
-		<query>select index(r), r.id, r.pPodVersionInfo.pPodVersion from
-		CharacterStateMatrix m join m.rows r where m.id=:matrixId and
-		r.pPodVersionInfo.pPodVersion >= :minPPodVersion</query>
-		</named-query>
-	-->
-
-	<!--
-
-		<named-query
-		name="CharacterState-getCellIdxsVersionsByRowIdAndMinVersion">
-		<query>select index(c), c.pPodVersionInfo.pPodVersion from
-		CharacterStateRow r join r.cells c where r.id=:rowId and
-		c.pPodVersionInfo.pPodVersion >= :minVersion</query> </named-query>
-	-->
+	<!-- <named-query name="CharacterState-getCellIdxsVersionsByRowIdAndMinVersion"> 
+		<query>select index(c), c.pPodVersionInfo.pPodVersion from CharacterStateRow 
+		r join r.cells c where r.id=:rowId and c.pPodVersionInfo.pPodVersion >= :minVersion</query> 
+		</named-query> -->
 
 	<named-query name="AttachmentNamespace-getByNamespace">
 		<query>select n from AttachmentNamespace n where n.label=:namespace</query>

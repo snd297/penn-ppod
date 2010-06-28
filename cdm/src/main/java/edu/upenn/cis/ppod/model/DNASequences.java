@@ -79,9 +79,7 @@ public class DNASequences
 	 * @param u see {@code Unmarshaller}
 	 * @param parent see {@code Unmarshaller}
 	 */
-	@Override
 	public void afterUnmarshal(final Unmarshaller u, final Object parent) {
-		super.afterUnmarshal(u, parent);
 		setSequenceSet((DNASequenceSet) parent);
 		for (final OTUSomethingPair<DNASequence> otuSequencePair : getOTUValuePairs()) {
 			otuSequencePair.getSecond().setOTUsToSequences(this);

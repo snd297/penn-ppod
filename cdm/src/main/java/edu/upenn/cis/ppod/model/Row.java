@@ -68,7 +68,7 @@ public abstract class Row<C extends Cell<?>>
 	 */
 	@Override
 	public void afterUnmarshal(final Unmarshaller u, final Object parent) {
-		super.afterUnmarshal();
+		super.afterUnmarshal(u, parent);
 		int cellPosition = -1;
 		for (final C cell : getCells()) {
 			cellPosition++;
@@ -78,7 +78,7 @@ public abstract class Row<C extends Cell<?>>
 
 	/**
 	 * Empty out and return this row's cells.
-	 *<p>
+	 * <p>
 	 * This method will not mark this object or parents as in need of a new pPOD
 	 * version. Which can be useful to free up the cells for garbage collection
 	 * after the cells are evicted but the matrix is still in the persistence
@@ -101,7 +101,9 @@ public abstract class Row<C extends Cell<?>>
 	 * 
 	 * @return the cells that make up this row
 	 */
-	public abstract List<C> getCells();
+	public List<C> getCells() {
+		return Collections.unmodifiableList(getCellsModifiable());
+	}
 
 	/**
 	 * Get a modifiable reference to this row's cells.

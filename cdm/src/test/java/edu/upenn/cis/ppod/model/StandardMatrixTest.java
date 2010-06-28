@@ -186,15 +186,15 @@ public class StandardMatrixTest {
 		Assert.assertEquals(matrix.getCharactersModifiable(),
 				standardCharacters);
 
-		Assert.assertEquals(matrix.getCharactersToPositions()
-				.get(standardCharacters.get(0)),
-				Integer.valueOf(0));
-		Assert.assertEquals(matrix.getCharactersToPositions()
-				.get(standardCharacters.get(1)),
-				Integer.valueOf(1));
-		Assert.assertEquals(matrix.getCharactersToPositions()
-				.get(standardCharacters.get(2)),
-				Integer.valueOf(2));
+		// Assert.assertEquals(matrix.getCharactersToPositions()
+		// .get(standardCharacters.get(0)),
+		// Integer.valueOf(0));
+		// Assert.assertEquals(matrix.getCharactersToPositions()
+		// .get(standardCharacters.get(1)),
+		// Integer.valueOf(1));
+		// Assert.assertEquals(matrix.getCharactersToPositions()
+		// .get(standardCharacters.get(2)),
+		// Integer.valueOf(2));
 	}
 
 	/**
@@ -227,21 +227,21 @@ public class StandardMatrixTest {
 
 		matrix.setCharacters(shuffledCharacters);
 
-		assertNotSame(matrix.getCharactersModifiable(), shuffledCharacters);
-		assertEquals(matrix.getCharactersModifiable(), shuffledCharacters);
+		assertNotSame(matrix.getCharacters(), shuffledCharacters);
+		assertEquals(matrix.getCharacters(), shuffledCharacters);
 
-		Assert.assertEquals(
-				matrix.getCharactersToPositions().get(
-						shuffledCharacters.get(0)),
-				Integer.valueOf(0));
-		Assert.assertEquals(
-				matrix.getCharactersToPositions().get(
-						shuffledCharacters.get(1)),
-				Integer.valueOf(1));
-		Assert.assertEquals(
-				matrix.getCharactersToPositions().get(
-						shuffledCharacters.get(2)),
-				Integer.valueOf(2));
+		// Assert.assertEquals(
+		// matrix.getCharactersToPositions().get(
+		// shuffledCharacters.get(0)),
+		// Integer.valueOf(0));
+		// Assert.assertEquals(
+		// matrix.getCharactersToPositions().get(
+		// shuffledCharacters.get(1)),
+		// Integer.valueOf(1));
+		// Assert.assertEquals(
+		// matrix.getCharactersToPositions().get(
+		// shuffledCharacters.get(2)),
+		// Integer.valueOf(2));
 
 		// assertEquals(matrix.getColumnPPodVersionInfos().get(0),
 		// pPodVersionInfo1);
@@ -273,22 +273,24 @@ public class StandardMatrixTest {
 		matrix.getColumnVersionInfosModifiable().set(1, pPodVersionInfo1);
 		matrix.getColumnVersionInfosModifiable().set(2, pPodVersionInfo2);
 
-		final ImmutableList<StandardCharacter> characters2 = ImmutableList.of(
-				characterProvider.get().setLabel("character2-0"),
-				characterProvider.get().setLabel("character2-1"),
-				characterProvider.get().setLabel("character2-2"));
+		final ImmutableList<StandardCharacter> characters2 =
+				ImmutableList.of(
+						characterProvider.get().setLabel("character2-0"),
+						characterProvider.get().setLabel("character2-1"),
+						characterProvider.get().setLabel("character2-2"));
 
 		matrix.unsetInNeedOfNewVersion();
 
 		matrix.setCharacters(characters2);
 		assertTrue(matrix.isInNeedOfNewVersion());
+		assertEquals(matrix.getCharacters(), characters2);
 
-		assertEquals(matrix.getCharacterPosition(characters2.get(0)),
-				Integer.valueOf(0));
-		assertEquals(matrix.getCharacterPosition(characters2.get(1)),
-				Integer.valueOf(1));
-		assertEquals(matrix.getCharacterPosition(characters2.get(2)),
-				Integer.valueOf(2));
+		// assertEquals(matrix.getCharacterPosition(characters2.get(0)),
+		// Integer.valueOf(0));
+		// assertEquals(matrix.getCharacterPosition(characters2.get(1)),
+		// Integer.valueOf(1));
+		// assertEquals(matrix.getCharacterPosition(characters2.get(2)),
+		// Integer.valueOf(2));
 
 	}
 

@@ -73,7 +73,8 @@ public abstract class PPodEntity
 
 	public static final String JOIN_COLUMN = TABLE + "_ID";
 
-	@OneToMany(mappedBy = "attachee", cascade = CascadeType.ALL, orphanRemoval = true)
+	@OneToMany(mappedBy = "attachee", cascade = CascadeType.ALL,
+			orphanRemoval = true)
 	@CheckForNull
 	private Set<Attachment> attachments;
 
@@ -140,24 +141,14 @@ public abstract class PPodEntity
 	}
 
 	/**
-	 * Take actions after unmarshalling that need to occur after
-	 * {@link #afterUnmarshal(Unmarshaller, Object)} is called, specifically
-	 * after {@code @XmlIDRef} elements are resolved.
-	 */
-	@OverridingMethodsMustInvokeSuper
-	public void afterUnmarshal() {}
-
-	/**
 	 * {@link Unmarshaller} callback.
 	 * 
 	 * @param u see {@code Unmarshaller}
 	 * @param parent see {@code Unmarshaller}
 	 */
-	@Override
 	public void afterUnmarshal(
 			@CheckForNull final Unmarshaller u,
 			@CheckForNull final Object parent) {
-		super.afterUnmarshal(u, parent);
 		if (attachmentsXml != null) {
 			for (final Attachment attachment : getAttachmentsXml()) {
 				addAttachment(attachment);
@@ -237,7 +228,7 @@ public abstract class PPodEntity
 
 	public VersionInfo getVersionInfo() {
 		checkState(
-				!getMarshalled(),
+				!isUnmarshalled(),
 						"can't access a VersionInfo through a marshalled PPodEntity");
 		return versionInfo;
 	}
