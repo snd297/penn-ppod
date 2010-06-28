@@ -18,21 +18,15 @@ package edu.upenn.cis.ppod.model;
 import static com.google.common.base.Preconditions.checkArgument;
 import static com.google.common.base.Preconditions.checkNotNull;
 import static com.google.common.collect.Lists.newArrayList;
-import static com.google.common.collect.Maps.newHashMap;
 
 import java.util.Collections;
 import java.util.Iterator;
 import java.util.List;
-import java.util.Map;
 
 import javax.persistence.CascadeType;
-import javax.persistence.Column;
-import javax.persistence.ElementCollection;
 import javax.persistence.Entity;
 import javax.persistence.FetchType;
 import javax.persistence.JoinColumn;
-import javax.persistence.JoinTable;
-import javax.persistence.MapKeyJoinColumn;
 import javax.persistence.OneToMany;
 import javax.persistence.OneToOne;
 import javax.persistence.Table;
@@ -77,17 +71,6 @@ public class StandardMatrix extends Matrix<StandardRow> {
 	@JoinColumn(name = JOIN_COLUMN, nullable = false)
 	private final List<StandardCharacter> characters = newArrayList();
 
-	/**
-	 * The inverse of {@link #characters}. So it's a {@code Character}
-	 * ->columnNumber lookup.
-	 */
-	@ElementCollection
-	@JoinTable(name = TABLE + "_" + CHARACTER_POSITION_COLUMN,
-			joinColumns = @JoinColumn(name = JOIN_COLUMN))
-	@MapKeyJoinColumn(name = StandardCharacter.JOIN_COLUMN)
-	@Column(name = CHARACTER_POSITION_COLUMN)
-	private final Map<StandardCharacter, Integer> charactersToPositions = newHashMap();
-
 	@OneToOne(fetch = FetchType.LAZY, optional = false,
 			cascade = CascadeType.ALL, orphanRemoval = true)
 	private StandardRows rows;
@@ -111,16 +94,6 @@ public class StandardMatrix extends Matrix<StandardRow> {
 		super.accept(visitor);
 	}
 
-	@Override
-	public void afterUnmarshal() {
-		super.afterUnmarshal();
-		int i = -1;
-		for (final StandardCharacter character : getCharacters()) {
-			i++;
-			charactersToPositions.put(character, i);
-		}
-	}
-
 	/**
 	 * {@link Unmarshaller} callback.
 	 * 
@@ -131,20 +104,6 @@ public class StandardMatrix extends Matrix<StandardRow> {
 	public void afterUnmarshal(final Unmarshaller u, final Object parent) {
 		super.afterUnmarshal(u, parent);
 		setColumnsSize(getCharacters().size());
-	}
-
-	/**
-	 * Get the position of a character in this matrix, or {@code null} if the
-	 * character is not in this matrix.
-	 * 
-	 * @param character the character who's position we want
-	 * 
-	 * @return the position of a character in this matrix, or {@code null} if
-	 *         the character is not in this matrix
-	 */
-	public Integer getCharacterPosition(
-			final StandardCharacter character) {
-		return charactersToPositions.get(character);
 	}
 
 	/**
@@ -164,13 +123,6 @@ public class StandardMatrix extends Matrix<StandardRow> {
 	@XmlElement(name = "character")
 	protected List<StandardCharacter> getCharactersModifiable() {
 		return characters;
-	}
-
-	/**
-	 * Created for testing.
-	 */
-	Map<StandardCharacter, Integer> getCharactersToPositions() {
-		return charactersToPositions;
 	}
 
 	/**
@@ -245,13 +197,10 @@ public class StandardMatrix extends Matrix<StandardRow> {
 		}
 
 		getCharactersModifiable().clear();
-		charactersToPositions.clear();
 
 		getCharactersModifiable().addAll(characters);
 
-		int characterPosition = 0;
 		for (final StandardCharacter character : getCharactersModifiable()) {
-			charactersToPositions.put(character, characterPosition++);
 			character.setMatrix(this);
 		}
 

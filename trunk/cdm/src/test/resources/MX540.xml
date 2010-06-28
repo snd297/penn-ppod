@@ -2766,7 +2766,7 @@
 						<cell stateDocId="7189a5a5-c21c-4fff-af86-f650eb3704dd" type="SINGLE" />
 						<cell stateDocId="a07aeb0d-694c-4692-b58f-924e1b320942" type="SINGLE" />
 						<cell stateDocId="40ef2b97-1eb2-4fa6-ad8d-c3df994b4006" type="SINGLE" />
-						<cell type="POLYMORPHIC">
+						<cell type="UNCERTAIN">
 							<stateDocId>2fb110f4-b667-40de-a3b1-de7a2c4d2dc5</stateDocId>
 							<stateDocId>b870bbc2-4d53-427c-9d7e-b48ca9e9fb74</stateDocId>
 						</cell>
