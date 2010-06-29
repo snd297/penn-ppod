@@ -45,8 +45,8 @@ public class DNARow extends Row<DNACell> {
 
 	public static final String TABLE = "DNA_ROW";
 
-	public static final String JOIN_COLUMN = TABLE + "_"
-												+ PersistentObject.ID_COLUMN;
+	public static final String JOIN_COLUMN =
+			TABLE + "_" + PersistentObject.ID_COLUMN;
 	/**
 	 * The {@code CharacterStateCell}s that make up the row.
 	 * <p>
@@ -54,8 +54,7 @@ public class DNARow extends Row<DNACell> {
 	 * slows things down quite a bit - at least for saves (haven't looked at
 	 * updates yet).
 	 * <p>
-	 * There is evidence that {@code DELETE_ORPHAN} slows things down so we're
-	 * not including that either.
+	 * {@code orphanRemoval = true} slows things down, so we don't include it.
 	 * <p>
 	 * {@code REMOVE} is here so that the cells are deleted when owning row is.
 	 */
