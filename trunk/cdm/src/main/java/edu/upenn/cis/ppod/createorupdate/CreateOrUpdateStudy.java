@@ -30,11 +30,11 @@ import edu.upenn.cis.ppod.dao.IAttachmentNamespaceDAO;
 import edu.upenn.cis.ppod.dao.IAttachmentTypeDAO;
 import edu.upenn.cis.ppod.dao.IDAO;
 import edu.upenn.cis.ppod.dao.IStudyDAO;
-import edu.upenn.cis.ppod.model.StandardMatrix;
 import edu.upenn.cis.ppod.model.DNAMatrix;
 import edu.upenn.cis.ppod.model.DNASequence;
 import edu.upenn.cis.ppod.model.DNASequenceSet;
 import edu.upenn.cis.ppod.model.OTUSet;
+import edu.upenn.cis.ppod.model.StandardMatrix;
 import edu.upenn.cis.ppod.model.Study;
 import edu.upenn.cis.ppod.model.TreeSet;
 import edu.upenn.cis.ppod.modelinterfaces.INewVersionInfo;
@@ -54,7 +54,7 @@ final class CreateOrUpdateStudy implements ICreateOrUpdateStudy {
 
 	private final Provider<Study> studyProvider;
 	private final Provider<OTUSet> otuSetProvider;
-	private final Provider<StandardMatrix> characterStateMatrixProvider;
+	private final Provider<StandardMatrix> standardMatrixProvider;
 	private final Provider<DNAMatrix> dnaMatrixProvider;
 	private final Provider<DNASequenceSet> dnaSequenceSetProvider;
 	private final Provider<TreeSet> treeSetProvider;
@@ -96,7 +96,7 @@ final class CreateOrUpdateStudy implements ICreateOrUpdateStudy {
 		this.studyDAO = studyDAO;
 		this.studyProvider = studyProvider;
 		this.otuSetProvider = otuSetProvider;
-		this.characterStateMatrixProvider = standardMatrix;
+		this.standardMatrixProvider = standardMatrix;
 		this.dnaSequenceSetProvider = dnaSequenceSetProvider;
 		this.treeSetProvider = treeSetProvider;
 		this.newVersionInfo = newVersionInfo;
@@ -175,55 +175,9 @@ final class CreateOrUpdateStudy implements ICreateOrUpdateStudy {
 
 			otuSetInfo.setPPodId(dbOTUSet.getPPodId());
 
-			for (final StandardMatrix incomingMatrix : incomingOTUSet
-					.getStandardMatrices()) {
-				StandardMatrix dbMatrix;
-				if (null == (dbMatrix =
-						findIf(
-								dbOTUSet.getStandardMatrices(),
-								compose(
-										equalTo(
-												incomingMatrix.getPPodId()),
-										IWithPPodId.getPPodId
-										)))) {
-					dbMatrix = characterStateMatrixProvider.get();
-					dbOTUSet.addStandardMatrix(dbMatrix);
-					dbMatrix.setVersionInfo(
-							newVersionInfo.getNewVersionInfo());
-					dbMatrix.setColumnVersionInfos(
-									newVersionInfo.getNewVersionInfo());
-					dbMatrix.setPPodId();
-				}
-				final MatrixInfo dbMatrixInfo = createOrUpdateStandardMatrix
-						.createOrUpdateMatrix(dbMatrix, incomingMatrix);
-				otuSetInfo.getMatrixInfos().add(dbMatrixInfo);
-			}
-
-			for (final DNAMatrix incomingMatrix : incomingOTUSet
-					.getDNAMatrices()) {
-				DNAMatrix dbMatrix;
-				if (null == (dbMatrix =
-						findIf(
-								dbOTUSet.getDNAMatrices(),
-								compose(
-										equalTo(
-										incomingMatrix.getPPodId()),
-										IWithPPodId.getPPodId)))) {
-					dbMatrix = dnaMatrixProvider.get();
-					dbMatrix.setVersionInfo(newVersionInfo
-							.getNewVersionInfo());
-					dbMatrix.setColumnVersionInfos(newVersionInfo
-							.getNewVersionInfo());
-					dbMatrix.setPPodId();
-				}
-				dbOTUSet.addDNAMatrix(dbMatrix);
-				final MatrixInfo dbMatrixInfo =
-						createOrUpdateDNAMatrix
-								.createOrUpdateMatrix(dbMatrix, incomingMatrix);
-				otuSetInfo.getMatrixInfos().add(dbMatrixInfo);
-			}
-
-			handleSequenceSets(dbOTUSet, incomingOTUSet);
+			handleStandardMatrices(dbOTUSet, incomingOTUSet, otuSetInfo);
+			handleDNAMatrices(dbOTUSet, incomingOTUSet, otuSetInfo);
+			handleDNASequenceSets(dbOTUSet, incomingOTUSet);
 
 			final Set<TreeSet> newDbTreeSets = newHashSet();
 			for (final TreeSet incomingTreeSet : incomingOTUSet.getTreeSets()) {
@@ -246,15 +200,59 @@ final class CreateOrUpdateStudy implements ICreateOrUpdateStudy {
 		studyDAO.makePersistent(dbStudy);
 	}
 
-	public StudyInfo getStudyInfo() {
-		return dbStudyInfo;
-	}
-
 	public Study getDbStudy() {
 		return dbStudy;
 	}
 
-	private void handleSequenceSets(
+	public StudyInfo getStudyInfo() {
+		return dbStudyInfo;
+	}
+
+	private void handleDNAMatrices(
+			final OTUSet dbOTUSet,
+			final OTUSet incomingOTUSet,
+			final OTUSetInfo otuSetInfo) {
+
+		// Let's delete matrices missing from the incoming OTU set
+		for (final DNAMatrix dbMatrix : dbOTUSet.getDNAMatrices()) {
+			if (null == findIf(
+							incomingOTUSet.getDNAMatrices(),
+							compose(
+									equalTo(
+										dbMatrix.getPPodId()),
+										IWithPPodId.getPPodId))) {
+				dbOTUSet.removeDNAMatrix(dbMatrix);
+			}
+		}
+
+		for (final DNAMatrix incomingMatrix : incomingOTUSet
+				.getDNAMatrices()) {
+			DNAMatrix dbMatrix;
+			if (null == (dbMatrix =
+					findIf(
+							dbOTUSet.getDNAMatrices(),
+							compose(
+									equalTo(
+											incomingMatrix.getPPodId()),
+									IWithPPodId.getPPodId
+									)))) {
+				dbMatrix = dnaMatrixProvider.get();
+				dbMatrix.setVersionInfo(
+						newVersionInfo.getNewVersionInfo());
+				dbMatrix.setColumnVersionInfos(
+								newVersionInfo.getNewVersionInfo());
+				dbMatrix.setPPodId();
+				dbOTUSet.addDNAMatrix(dbMatrix);
+			}
+			final MatrixInfo dbMatrixInfo =
+					createOrUpdateDNAMatrix
+							.createOrUpdateMatrix(
+									dbMatrix, incomingMatrix);
+			otuSetInfo.getMatrixInfos().add(dbMatrixInfo);
+		}
+	}
+
+	private void handleDNASequenceSets(
 			final OTUSet dbOTUSet,
 			final OTUSet incomingOTUSet) {
 
@@ -276,8 +274,9 @@ final class CreateOrUpdateStudy implements ICreateOrUpdateStudy {
 			DNASequenceSet dbDNASequenceSet;
 			if (null == (dbDNASequenceSet =
 					findIf(dbOTUSet.getDNASequenceSets(),
-							compose(equalTo(incomingDNASequenceSet
-									.getPPodId()),
+							compose(
+									equalTo(incomingDNASequenceSet
+											.getPPodId()),
 									IWithPPodId.getPPodId)))) {
 				dbDNASequenceSet = dnaSequenceSetProvider.get();
 				dbDNASequenceSet.setPPodId();
@@ -287,6 +286,48 @@ final class CreateOrUpdateStudy implements ICreateOrUpdateStudy {
 			dbOTUSet.addDNASequenceSet(dbDNASequenceSet);
 			mergeDNASequenceSets
 					.mergeSequenceSets(dbDNASequenceSet, incomingDNASequenceSet);
+		}
+	}
+
+	private void handleStandardMatrices(
+			final OTUSet dbOTUSet,
+			final OTUSet incomingOTUSet,
+			final OTUSetInfo otuSetInfo) {
+
+		// Let's delete matrices missing from the incoming OTU set
+		for (final StandardMatrix dbMatrix : dbOTUSet.getStandardMatrices()) {
+			if (null == findIf(
+							incomingOTUSet.getStandardMatrices(),
+							compose(
+									equalTo(
+										dbMatrix.getPPodId()),
+										IWithPPodId.getPPodId))) {
+				dbOTUSet.removeStandardMatrix(dbMatrix);
+			}
+		}
+
+		for (final StandardMatrix incomingMatrix : incomingOTUSet
+				.getStandardMatrices()) {
+			StandardMatrix dbMatrix;
+			if (null == (dbMatrix =
+					findIf(
+							dbOTUSet.getStandardMatrices(),
+							compose(
+									equalTo(
+											incomingMatrix.getPPodId()),
+									IWithPPodId.getPPodId
+									)))) {
+				dbMatrix = standardMatrixProvider.get();
+				dbMatrix.setVersionInfo(
+						newVersionInfo.getNewVersionInfo());
+				dbMatrix.setColumnVersionInfos(
+								newVersionInfo.getNewVersionInfo());
+				dbMatrix.setPPodId();
+				dbOTUSet.addStandardMatrix(dbMatrix);
+			}
+			final MatrixInfo dbMatrixInfo = createOrUpdateStandardMatrix
+					.createOrUpdateMatrix(dbMatrix, incomingMatrix);
+			otuSetInfo.getMatrixInfos().add(dbMatrixInfo);
 		}
 	}
 }
