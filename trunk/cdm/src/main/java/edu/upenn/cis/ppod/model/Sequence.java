@@ -16,6 +16,7 @@
 package edu.upenn.cis.ppod.model;
 
 import static com.google.common.base.Objects.equal;
+import static com.google.common.base.Preconditions.checkArgument;
 import static com.google.common.base.Preconditions.checkNotNull;
 
 import javax.annotation.CheckForNull;
@@ -30,14 +31,16 @@ import javax.xml.bind.annotation.XmlSeeAlso;
 import edu.upenn.cis.ppod.modelinterfaces.IOTUKeyedMapValue;
 
 /**
- * A molecular sequence - DNA, RNA, protein - that is represented by a {@code
- * CharSequence}.
+ * A molecular sequence - DNA, RNA, protein - that is represented by a
+ * {@code CharSequence}.
  * 
  * @author Sam Donnelly
  */
-@XmlSeeAlso( { DNASequence.class })
+@XmlSeeAlso({ DNASequence.class })
 @MappedSuperclass
-public abstract class Sequence extends PPodEntity implements IOTUKeyedMapValue {
+public abstract class Sequence
+		extends PPodEntity
+		implements IOTUKeyedMapValue {
 
 	private final static String SEQUENCE_COLUMN = "SEQUENCE";
 
@@ -190,12 +193,12 @@ public abstract class Sequence extends PPodEntity implements IOTUKeyedMapValue {
 			return this;
 		}
 		for (int i = 0; i < sequence.length(); i++) {
-			if (!isLegal(sequence.charAt(i))) {
-				throw new IllegalArgumentException(
+			checkArgument(
+					isLegal(
+							sequence.charAt(i)),
 						"Position " + i + " is ["
 								+ sequence.charAt(i)
 								+ "] which is not a legal DNA char");
-			}
 		}
 
 		this.sequence = sequence;
@@ -223,26 +226,6 @@ public abstract class Sequence extends PPodEntity implements IOTUKeyedMapValue {
 
 		return retValue.toString();
 	}
-
-	// private final Map<Integer, CharacterStates> statesByPosition =
-	// newHashMap();
-
-	// protected Map<Integer, CharacterStates> getStatesByPosition() {
-	// return statesByPosition;
-	// }
-
-	/**
-	 * Set the sequence set that contains this sequence.
-	 * <p>
-	 * A {@code null} value for {@code sequenceSet} indicates that the
-	 * relationship is being severed.
-	 * 
-	 * @param sequenceSet the sequence set that contains this sequence.
-	 * 
-	 * @return this
-	 */
-	// protected abstract Sequence setSequenceSet(
-	// @Nullable final Object sequenceSet);
 
 }
 
