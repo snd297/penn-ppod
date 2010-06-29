@@ -326,7 +326,8 @@ public abstract class Cell<E> extends PPodEntity {
 			final Type type,
 			final Set<E> elements);
 
-	protected Cell<E> setPosition(@CheckForNull final Integer position) {
+	protected Cell<E> setPosition(final Integer position) {
+		checkNotNull(position);
 		this.position = position;
 		return this;
 	}
@@ -378,6 +379,13 @@ public abstract class Cell<E> extends PPodEntity {
 				"uncertain elements must be > 1");
 		setPolymorphicOrUncertain(Type.UNCERTAIN, uncertainElements);
 		return this;
+	}
+
+	/**
+	 * For testing.
+	 */
+	void unsetPosition() {
+		this.position = null;
 	}
 
 	protected abstract Cell<E> unsetRow();

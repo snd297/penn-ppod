@@ -158,7 +158,7 @@ public class CellTest {
 		matrix.putRow(otu, row);
 		row.setCells(ImmutableList.of(cell));
 
-		cell.setPosition(null);
+		cell.unsetPosition();
 
 		cell.setInNeedOfNewVersion();
 
