@@ -279,7 +279,6 @@ public abstract class Cell<E> extends PPodEntity {
 			row.setInNeedOfNewVersion();
 			final IMatrix matrix = row.getMatrix();
 			if (matrix != null) {
-
 				// so FindBugs knows that it's okay
 				final Integer position = getPosition();
 				checkState(position != null,

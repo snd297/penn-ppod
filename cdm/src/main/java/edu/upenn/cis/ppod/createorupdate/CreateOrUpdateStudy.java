@@ -123,17 +123,12 @@ final class CreateOrUpdateStudy implements ICreateOrUpdateStudy {
 	}
 
 	public void createOrUpdateStudy() {
-		// dbStudy =
-		// (Study) studyProvider.get()
-		// .setPPodId()
-		// .setVersionInfo(newVersionInfo.getNewVersionInfo());
-
 		if (null == (dbStudy =
 				studyDAO.getStudyByPPodId(
 						incomingStudy.getPPodId()))) {
 			dbStudy = studyProvider.get();
-			dbStudy
-					.setVersionInfo(newVersionInfo.getNewVersionInfo());
+			dbStudy.setVersionInfo(newVersionInfo
+									.getNewVersionInfo());
 			dbStudy.setPPodId();
 		}
 
@@ -200,8 +195,7 @@ final class CreateOrUpdateStudy implements ICreateOrUpdateStudy {
 					dbMatrix.setPPodId();
 				}
 				final MatrixInfo dbMatrixInfo = createOrUpdateStandardMatrix
-						.createOrUpdateMatrix(dbMatrix,
-								incomingMatrix);
+						.createOrUpdateMatrix(dbMatrix, incomingMatrix);
 				otuSetInfo.getMatrixInfos().add(dbMatrixInfo);
 			}
 
@@ -260,7 +254,8 @@ final class CreateOrUpdateStudy implements ICreateOrUpdateStudy {
 		return dbStudy;
 	}
 
-	private void handleSequenceSets(final OTUSet dbOTUSet,
+	private void handleSequenceSets(
+			final OTUSet dbOTUSet,
 			final OTUSet incomingOTUSet) {
 
 		// Let's delete sequences missing from the incoming otu set
@@ -276,7 +271,6 @@ final class CreateOrUpdateStudy implements ICreateOrUpdateStudy {
 			}
 		}
 
-		final Set<DNASequenceSet> newDbDNASequenceSets = newHashSet();
 		for (final DNASequenceSet incomingDNASequenceSet : incomingOTUSet
 				.getDNASequenceSets()) {
 			DNASequenceSet dbDNASequenceSet;
@@ -290,8 +284,7 @@ final class CreateOrUpdateStudy implements ICreateOrUpdateStudy {
 				dbDNASequenceSet.setVersionInfo(newVersionInfo
 						.getNewVersionInfo());
 			}
-			newDbDNASequenceSets.add(dbDNASequenceSet);
-			dbOTUSet.setDNASequenceSets(newDbDNASequenceSets);
+			dbOTUSet.addDNASequenceSet(dbDNASequenceSet);
 			mergeDNASequenceSets
 					.mergeSequenceSets(dbDNASequenceSet, incomingDNASequenceSet);
 		}

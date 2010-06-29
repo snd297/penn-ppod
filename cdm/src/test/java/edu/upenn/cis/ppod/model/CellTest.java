@@ -19,22 +19,39 @@ import static org.testng.Assert.assertEquals;
 import static org.testng.Assert.assertFalse;
 import static org.testng.Assert.assertNotNull;
 import static org.testng.Assert.assertNull;
+import static org.testng.Assert.assertTrue;
 
 import java.util.EnumSet;
 import java.util.Set;
 
 import org.testng.annotations.Test;
 
+import com.google.common.collect.ImmutableList;
 import com.google.inject.Inject;
 import com.google.inject.Provider;
 
 import edu.upenn.cis.ppod.TestGroupDefs;
 
-@Test(groups = TestGroupDefs.FAST)
+@Test(groups = { TestGroupDefs.FAST })
 public class CellTest {
 
 	@Inject
+	private Provider<OTUSet> otuSetProvider;
+
+	@Inject
+	private Provider<OTU> otuProvider;
+
+	@Inject
+	private Provider<DNAMatrix> dnaMatrixProvider;
+
+	@Inject
+	private Provider<DNARow> dnaRowProvider;
+
+	@Inject
 	private Provider<DNACell> dnaCellProvider;
+
+	@Inject
+	private Provider<VersionInfo> versionInfoProvider;
 
 	@Test(expectedExceptions = IllegalStateException.class)
 	public void getElementsWhenNoTypeSet() {
@@ -69,4 +86,81 @@ public class CellTest {
 
 	}
 
+	@Test
+	public void setInNeedOfNewVersion() {
+		// First let's test when a cell isn't attached to anything
+		final DNACell cell = dnaCellProvider.get();
+		cell.unsetInNeedOfNewVersion();
+		cell.setInNeedOfNewVersion();
+		assertTrue(cell.isInNeedOfNewVersion());
+
+		// Now let's put it into a matrix.
+		final OTUSet otuSet = otuSetProvider.get();
+		final OTU otu = otuSet.addOTU(otuProvider.get().setLabel("otu0"));
+		final DNAMatrix matrix = dnaMatrixProvider.get();
+		matrix.setColumnsSize(1);
+
+		otuSet.addDNAMatrix(matrix);
+
+		final DNARow row = dnaRowProvider.get();
+
+		matrix.putRow(otu, row);
+		row.setCells(ImmutableList.of(cell));
+
+		otuSet.unsetInNeedOfNewVersion();
+		otu.unsetInNeedOfNewVersion();
+		matrix.unsetInNeedOfNewVersion();
+		matrix.setColumnVersionInfos(versionInfoProvider.get());
+		row.unsetInNeedOfNewVersion();
+		cell.unsetInNeedOfNewVersion();
+
+		cell.setInNeedOfNewVersion();
+
+		assertTrue(otuSet.isInNeedOfNewVersion());
+		assertFalse(otu.isInNeedOfNewVersion());
+		assertTrue(matrix.isInNeedOfNewVersion());
+		assertNull(matrix.getColumnVersionInfos().get(cell.getPosition()));
+		assertTrue(row.isInNeedOfNewVersion());
+		assertTrue(cell.isInNeedOfNewVersion());
+
+		// Now let's test it in a row w/ no matrix, which should only happen
+		// when we remove a row from a matrix.
+		otuSet.removeDNAMatrix(matrix);
+		otuSet.unsetInNeedOfNewVersion();
+		otu.unsetInNeedOfNewVersion();
+		matrix.unsetInNeedOfNewVersion();
+		row.unsetInNeedOfNewVersion();
+		cell.unsetInNeedOfNewVersion();
+
+		cell.setInNeedOfNewVersion();
+
+		assertFalse(otuSet.isInNeedOfNewVersion());
+		assertFalse(otu.isInNeedOfNewVersion());
+		assertFalse(matrix.isInNeedOfNewVersion());
+		assertTrue(row.isInNeedOfNewVersion());
+		assertTrue(cell.isInNeedOfNewVersion());
+
+	}
+
+	@Test(expectedExceptions = IllegalStateException.class)
+	public void setInNeedOfNewVersionWithNullPosition() {
+
+		final DNACell cell = dnaCellProvider.get();
+		final OTUSet otuSet = otuSetProvider.get();
+		final OTU otu = otuSet.addOTU(otuProvider.get().setLabel("otu0"));
+		final DNAMatrix matrix = dnaMatrixProvider.get();
+		matrix.setColumnsSize(1);
+
+		otuSet.addDNAMatrix(matrix);
+
+		final DNARow row = dnaRowProvider.get();
+
+		matrix.putRow(otu, row);
+		row.setCells(ImmutableList.of(cell));
+
+		cell.setPosition(null);
+
+		cell.setInNeedOfNewVersion();
+
+	}
 }

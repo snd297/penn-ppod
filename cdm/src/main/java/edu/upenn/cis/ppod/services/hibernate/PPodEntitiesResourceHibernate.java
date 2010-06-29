@@ -77,17 +77,17 @@ class PPodEntitiesResourceHibernate implements
 		final Set<StandardMatrix> addedMatrices = newHashSet();
 		final Set<TreeSet> addedTreeSets = newHashSet();
 
-// final List<Object> flattenedQueryResults = newArrayList();
-// for (final Object queryResult : queryResults) {
-// if (queryResult instanceof Object[]) {
-// final Object[] objects = (Object[]) queryResult;
-// for (final Object object : objects) {
-// flattenedQueryResults.add(object);
-// }
-// } else {
-// flattenedQueryResults.add(queryResult);
-// }
-// }
+		// final List<Object> flattenedQueryResults = newArrayList();
+		// for (final Object queryResult : queryResults) {
+		// if (queryResult instanceof Object[]) {
+		// final Object[] objects = (Object[]) queryResult;
+		// for (final Object object : objects) {
+		// flattenedQueryResults.add(object);
+		// }
+		// } else {
+		// flattenedQueryResults.add(queryResult);
+		// }
+		// }
 
 		for (final Object queryResult : queryResults) {
 			if (queryResult instanceof OTUSet) {
@@ -151,16 +151,12 @@ class PPodEntitiesResourceHibernate implements
 			// Now we clean up our response so we don't include any extra
 			// matrices or tree sets that were pulled over with the OTUSet's
 			for (final OTUSet otuSet : pPodEntities.getOTUSets()) {
-
-				final Set<StandardMatrix> matricesToReturn = newHashSet();
-
 				for (final StandardMatrix matrix : otuSet
 						.getStandardMatrices()) {
 					if (addedMatrices.contains(matrix)) {
-						matricesToReturn.add(matrix);
+						otuSet.addStandardMatrix(matrix);
 					}
 				}
-				otuSet.setStandardMatrices(matricesToReturn);
 
 				final Set<TreeSet> treeSetsToReturn = newHashSet();
 				for (final TreeSet treeSet : otuSet.getTreeSets()) {
