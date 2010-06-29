@@ -37,7 +37,7 @@ import edu.upenn.cis.ppod.util.IVisitor;
  * @author Sam Donnelly
  */
 @Entity
-@Table(name = "TREE")
+@Table(name = Tree.TABLE)
 public class Tree extends UUPPodEntity {
 
 	public static final String TABLE = "TREE";
@@ -52,7 +52,8 @@ public class Tree extends UUPPodEntity {
 	private String newick;
 
 	@ManyToOne
-	@JoinColumn(name = TreeSet.JOIN_COLUMN, insertable = false, updatable = false, nullable = false)
+	@JoinColumn(name = TreeSet.JOIN_COLUMN, insertable = false,
+				updatable = false, nullable = false)
 	@CheckForNull
 	private TreeSet treeSet;
 
@@ -150,8 +151,8 @@ public class Tree extends UUPPodEntity {
 	/**
 	 * Set the owning {@code TreeSet}.
 	 * <p>
-	 * Intended to be called from places responsible for managing the {@code
-	 * Tree<->TreeSet} relationship.
+	 * Intended to be called from places responsible for managing the
+	 * {@code Tree<->TreeSet} relationship.
 	 * <p>
 	 * Use {@code null} to sever the relationship.
 	 * 

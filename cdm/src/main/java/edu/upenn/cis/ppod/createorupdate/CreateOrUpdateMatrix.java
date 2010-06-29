@@ -15,6 +15,7 @@
  */
 package edu.upenn.cis.ppod.createorupdate;
 
+import static com.google.common.base.Preconditions.checkNotNull;
 import static com.google.common.collect.Iterables.getOnlyElement;
 import static com.google.common.collect.Lists.newArrayList;
 
@@ -72,6 +73,9 @@ class CreateOrUpdateMatrix<M extends Matrix<R>, R extends Row<C>, C extends Cell
 	public MatrixInfo createOrUpdateMatrix(
 			final M dbMatrix,
 			final M sourceMatrix) {
+
+		checkNotNull(dbMatrix);
+		checkNotNull(sourceMatrix);
 
 		final String METHOD = "createOrUpdate(...)";
 

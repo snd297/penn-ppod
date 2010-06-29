@@ -44,7 +44,7 @@ import edu.upenn.cis.ppod.services.ppodentity.OTUSetInfo;
 import edu.upenn.cis.ppod.services.ppodentity.StudyInfo;
 
 /**
- * Save a new study or update an existing one.
+ * Create a new study or update an existing one.
  * 
  * @author Sam Donnelly
  */

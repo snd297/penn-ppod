@@ -65,7 +65,7 @@ final class MergeSequenceSets<SS extends SequenceSet<S>, S extends Sequence>
 
 		dao.makePersistent(targSeqSet);
 
-		final Integer trgSeqSetLengths =
+		final Integer targSeqSetLengths =
 				targSeqSet.getSequenceLengths();
 
 		final Integer srcSeqSetLengths =
@@ -73,8 +73,8 @@ final class MergeSequenceSets<SS extends SequenceSet<S>, S extends Sequence>
 
 		Map<OTU, S> targOTUsToSeqs;
 
-		if (trgSeqSetLengths == null ||
-				trgSeqSetLengths.equals(srcSeqSetLengths)) {
+		if (targSeqSetLengths == null ||
+				targSeqSetLengths.equals(srcSeqSetLengths)) {
 			// We don't need to clear it since it's either empty or the
 			// sequences are already of the correct size, so we grab the
 			// OTU->Sequence
