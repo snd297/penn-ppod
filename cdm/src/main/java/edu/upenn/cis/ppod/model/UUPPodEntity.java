@@ -48,7 +48,11 @@ public abstract class UUPPodEntity extends PPodEntity implements IWithPPodId {
 	final static String PPOD_ID_COLUMN = "PPOD_ID";
 	final static int PPOD_ID_COLUMN_LENGTH = 36;
 
-	@Column(name = PPOD_ID_COLUMN, unique = true, nullable = false, length = PPOD_ID_COLUMN_LENGTH)
+	/**
+	 * {@code updatable = false} makes this property immutable
+	 */
+	@Column(name = PPOD_ID_COLUMN, unique = true, nullable = false,
+			length = PPOD_ID_COLUMN_LENGTH, updatable = false)
 	@CheckForNull
 	private String pPodId;
 

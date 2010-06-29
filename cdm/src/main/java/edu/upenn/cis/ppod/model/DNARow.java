@@ -20,7 +20,6 @@ import static com.google.common.collect.Lists.newArrayList;
 
 import java.util.List;
 
-import javax.annotation.CheckForNull;
 import javax.persistence.CascadeType;
 import javax.persistence.Entity;
 import javax.persistence.FetchType;
@@ -31,6 +30,7 @@ import javax.persistence.OrderBy;
 import javax.persistence.Table;
 import javax.xml.bind.annotation.XmlElement;
 
+import edu.umd.cs.findbugs.annotations.CheckForNull;
 import edu.upenn.cis.ppod.modelinterfaces.IMatrix;
 import edu.upenn.cis.ppod.util.IVisitor;
 
@@ -65,9 +65,9 @@ public class DNARow extends Row<DNACell> {
 	/**
 	 * This is the parent of the row. It lies in between this and the matrix.
 	 */
+	@CheckForNull
 	@ManyToOne(fetch = FetchType.LAZY)
 	@JoinColumn(name = DNARows.JOIN_COLUMN)
-	@CheckForNull
 	private DNARows rows;
 
 	DNARow() {}

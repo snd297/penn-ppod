@@ -73,6 +73,7 @@ public class StandardMatrix extends Matrix<StandardRow> {
 
 	@OneToOne(fetch = FetchType.LAZY, optional = false,
 			cascade = CascadeType.ALL, orphanRemoval = true)
+	@JoinColumn(name = StandardRows.JOIN_COLUMN)
 	private StandardRows rows;
 
 	/** No-arg constructor for (at least) Hibernate. */

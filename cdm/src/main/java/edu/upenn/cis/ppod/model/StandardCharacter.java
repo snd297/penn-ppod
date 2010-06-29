@@ -43,10 +43,8 @@ import com.google.common.base.Preconditions;
 import edu.upenn.cis.ppod.util.IVisitor;
 
 /**
- * A standard character. For example, "length_of_infraorb_canal".
- * <p>
- * This class has a non-accessible {@code @XmlId} (only used by the marshaller
- * and unmarshaller) and so doesn't extend from {@code UUPPodEntityWXmlId}.
+ * A standard character, aka a morphological character. For example,
+ * "length_of_infraorb_canal".
  * 
  * @author Sam Donnelly
  */
@@ -70,7 +68,8 @@ public class StandardCharacter extends UUPPodEntityWithXmlId {
 	 * The matrix that owns this {@code StandardCharacter}.
 	 */
 	@ManyToOne
-	@JoinColumn(name = StandardMatrix.JOIN_COLUMN, insertable = false, updatable = false, nullable = false)
+	@JoinColumn(name = StandardMatrix.JOIN_COLUMN, insertable = false,
+			updatable = false, nullable = false)
 	@CheckForNull
 	private StandardMatrix matrix;
 
@@ -80,7 +79,8 @@ public class StandardCharacter extends UUPPodEntityWithXmlId {
 	 * non-contiguous integers in the keys - so, for example, you might have 0,
 	 * 2, and 3.
 	 */
-	@OneToMany(mappedBy = "character", cascade = CascadeType.ALL, orphanRemoval = true)
+	@OneToMany(mappedBy = "character", cascade = CascadeType.ALL,
+			orphanRemoval = true)
 	@MapKey(name = "stateNumber")
 	private final Map<Integer, StandardState> states = newHashMap();
 
@@ -164,8 +164,8 @@ public class StandardCharacter extends UUPPodEntityWithXmlId {
 	/**
 	 * Get the matrix that owns this character.
 	 * <p>
-	 * Will be {@code null} for newly created characters. Will never be {@code
-	 * null} for characters in a persistent state.
+	 * Will be {@code null} for newly created characters. Will never be
+	 * {@code null} for characters in a persistent state.
 	 * 
 	 * @return the matrix that owns this character
 	 */

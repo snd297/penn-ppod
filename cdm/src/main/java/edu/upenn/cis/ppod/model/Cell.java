@@ -202,7 +202,7 @@ public abstract class Cell<E> extends PPodEntity {
 		}
 	}
 
-	@CheckForNull
+	@Nullable
 	protected Integer getPosition() {
 		return position;
 	}

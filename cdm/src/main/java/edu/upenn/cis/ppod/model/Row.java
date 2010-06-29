@@ -91,6 +91,7 @@ public abstract class Row<C extends Cell<?>>
 	public Row<C> clearCells() {
 		for (final C clearedCell : getCells()) {
 			clearedCell.unsetRow();
+			clearedCell.setPosition(Integer.valueOf(-1));
 		}
 		getCellsModifiable().clear();
 		return this;
@@ -174,8 +175,11 @@ public abstract class Row<C extends Cell<?>>
 	 */
 	@Override
 	public Row<C> setInNeedOfNewVersion() {
-		if (getParent() != null) {
-			getParent().setInNeedOfNewVersion();
+
+		// So FindBugs knows it's okay
+		final OTUKeyedMap<?> parent = getParent();
+		if (parent != null) {
+			parent.setInNeedOfNewVersion();
 		}
 		super.setInNeedOfNewVersion();
 		return this;

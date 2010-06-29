@@ -53,7 +53,7 @@ public class DNASequences
 
 	public final static String TABLE = "DNA_SEQUENCES";
 
-	public final static String ID_COLUMN =
+	public final static String JOIN_COLUMN =
 			TABLE + "_" + PersistentObject.ID_COLUMN;
 
 	/**
