@@ -21,8 +21,6 @@ import static com.google.common.base.Preconditions.checkNotNull;
 
 import java.util.Arrays;
 
-import javax.annotation.CheckForNull;
-import javax.annotation.Nullable;
 import javax.persistence.Column;
 import javax.persistence.Entity;
 import javax.persistence.FetchType;
@@ -43,6 +41,8 @@ import com.google.inject.ImplementedBy;
 import com.google.inject.Inject;
 import com.google.inject.assistedinject.Assisted;
 
+import edu.umd.cs.findbugs.annotations.CheckForNull;
+import edu.umd.cs.findbugs.annotations.Nullable;
 import edu.upenn.cis.ppod.util.IVisitor;
 
 /**
@@ -228,14 +228,14 @@ public class Attachment extends UUPPodEntity {
 	public static final String TYPE_COLUMN = "TYPE";
 
 	/** Object to which this {@code Attachment} is attached. */
+	@CheckForNull
 	@ManyToOne(fetch = FetchType.LAZY)
 	@JoinColumn(name = PPodEntity.JOIN_COLUMN)
-	@CheckForNull
 	private PPodEntity attachee;
 
+	@CheckForNull
 	@Lob
 	@Column(name = BYTES_VALUE_COLUMN, nullable = true)
-	@CheckForNull
 	private byte[] bytesValue;
 
 	/** Like a variable name. */
@@ -281,8 +281,8 @@ public class Attachment extends UUPPodEntity {
 	/**
 	 * Get the entities that have this has an attachment.
 	 * <p>
-	 * Will be {@code null} for newly create attachments, will never be {@code
-	 * null} for persistent attachments.
+	 * Will be {@code null} for newly create attachments, will never be
+	 * {@code null} for persistent attachments.
 	 * 
 	 * @return the entities that have this has an attachment
 	 */

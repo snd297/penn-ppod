@@ -21,17 +21,18 @@ import static com.google.common.collect.Lists.newArrayList;
 
 import java.util.List;
 
-import javax.annotation.CheckForNull;
-import javax.annotation.Nullable;
 import javax.persistence.CascadeType;
 import javax.persistence.Entity;
 import javax.persistence.FetchType;
+import javax.persistence.JoinColumn;
 import javax.persistence.ManyToOne;
 import javax.persistence.OneToMany;
 import javax.persistence.OrderBy;
 import javax.persistence.Table;
 import javax.xml.bind.annotation.XmlElement;
 
+import edu.umd.cs.findbugs.annotations.CheckForNull;
+import edu.umd.cs.findbugs.annotations.Nullable;
 import edu.upenn.cis.ppod.util.IVisitor;
 
 /**
@@ -71,8 +72,9 @@ public class StandardRow extends Row<StandardCell> {
 	/**
 	 * This is the parent of the row. It lies in between this and the matrix.
 	 */
-	@ManyToOne(fetch = FetchType.LAZY)
 	@CheckForNull
+	@ManyToOne(fetch = FetchType.LAZY)
+	@JoinColumn(name = DNASequences.JOIN_COLUMN)
 	private StandardRows rows;
 
 	StandardRow() {}

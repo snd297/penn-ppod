@@ -22,6 +22,7 @@ import java.util.Set;
 import javax.annotation.CheckForNull;
 import javax.persistence.Entity;
 import javax.persistence.FetchType;
+import javax.persistence.JoinColumn;
 import javax.persistence.ManyToOne;
 import javax.persistence.Table;
 
@@ -52,8 +53,9 @@ public class DNASequence extends Sequence {
 			TABLE + "_" + PersistentObject.ID_COLUMN;
 
 	/** The owning object. */
-	@ManyToOne(fetch = FetchType.LAZY)
 	@CheckForNull
+	@ManyToOne(fetch = FetchType.LAZY)
+	@JoinColumn(name = DNASequences.JOIN_COLUMN)
 	private DNASequences sequences;
 
 	@Override

@@ -26,6 +26,7 @@ import javax.annotation.Nullable;
 import javax.persistence.CascadeType;
 import javax.persistence.Entity;
 import javax.persistence.FetchType;
+import javax.persistence.JoinColumn;
 import javax.persistence.OneToOne;
 import javax.persistence.Table;
 import javax.xml.bind.annotation.XmlElement;
@@ -59,6 +60,7 @@ public class DNASequenceSet extends SequenceSet<DNASequence> {
 	 */
 	@OneToOne(fetch = FetchType.LAZY, optional = false,
 			cascade = CascadeType.ALL, orphanRemoval = true)
+	@JoinColumn(name = DNASequences.JOIN_COLUMN)
 	@CheckForNull
 	private DNASequences sequences;
 
