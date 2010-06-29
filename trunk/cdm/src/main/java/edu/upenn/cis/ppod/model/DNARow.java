@@ -57,7 +57,7 @@ public class DNARow extends Row<DNACell> {
 	 * There is evidence that {@code DELETE_ORPHAN} slows things down so we're
 	 * not including that either.
 	 * <p>
-	 * Remove is here so that the cells are deleted when owning row is.
+	 * {@code REMOVE} is here so that the cells are deleted when owning row is.
 	 */
 	@OneToMany(mappedBy = "row", cascade = CascadeType.REMOVE)
 	@OrderBy("position")

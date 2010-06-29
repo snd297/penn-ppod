@@ -32,14 +32,13 @@ import org.testng.annotations.BeforeMethod;
 import org.testng.annotations.Test;
 
 import com.google.common.collect.ImmutableList;
-import com.google.common.collect.ImmutableSet;
 import com.google.inject.Inject;
 import com.google.inject.Provider;
 
 import edu.upenn.cis.ppod.TestGroupDefs;
 
 /**
- * Logic tests of {@link CharacterStateMatrix}.
+ * Logic tests of {@link StandardMatrix}.
  * 
  * @author Sam Donnelly
  */
@@ -90,10 +89,7 @@ public class StandardMatrixTest {
 		otuSet012 = otuSetProvider.get();
 		otuSet012.setOTUs(newArrayList(otu0, otu1, otu2));
 
-		final ImmutableSet<StandardMatrix> matrices = ImmutableSet
-				.of(matrix);
-
-		otuSet012.setStandardMatrices(matrices);
+		otuSet012.addStandardMatrix(matrix);
 
 	}
 

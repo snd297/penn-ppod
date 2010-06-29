@@ -17,10 +17,8 @@ package edu.upenn.cis.ppod.createorupdate;
 
 import static com.google.common.collect.Iterables.getOnlyElement;
 import static com.google.common.collect.Lists.newArrayList;
-import static com.google.common.collect.Sets.newHashSet;
 
 import java.util.List;
-import java.util.Set;
 
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
@@ -92,8 +90,6 @@ class CreateOrUpdateMatrix<M extends Matrix<R>, R extends Row<C>, C extends Cell
 		// So the rows have a dbMatrix id
 		dao.makePersistent(dbMatrix);
 
-		final Set<C> cellsToEvict = newHashSet();
-
 		int sourceOTUPosition = -1;
 
 		for (final OTU sourceOTU : sourceMatrix.getOTUSet().getOTUs()) {
@@ -115,11 +111,6 @@ class CreateOrUpdateMatrix<M extends Matrix<R>, R extends Row<C>, C extends Cell
 				dbMatrix.putRow(dbOTU, dbRow);
 				dao.makePersistent(dbRow);
 			}
-
-			// if (!newRow && targetRow.getPPodVersion() == null) {
-			// throw new AssertionError(
-			// "existing row has no pPOD version number");
-			// }
 
 			final List<C> dbCells = newArrayList(dbRow.getCells());
 
@@ -180,8 +171,6 @@ class CreateOrUpdateMatrix<M extends Matrix<R>, R extends Row<C>, C extends Cell
 							newVersionInfo.getNewVersionInfo());
 				}
 				dao.makePersistent(dbCell);
-
-				cellsToEvict.add(dbCell);
 			}
 
 			// We need to do this here since we're removing the row from
@@ -198,9 +187,7 @@ class CreateOrUpdateMatrix<M extends Matrix<R>, R extends Row<C>, C extends Cell
 
 			dao.flush();
 
-			dao.evictEntities(cellsToEvict);
-
-			cellsToEvict.clear();
+			dao.evictEntities(dbRow.getCells());
 
 			fillInCellInfo(matrixInfo, dbRow, sourceOTUPosition);
 

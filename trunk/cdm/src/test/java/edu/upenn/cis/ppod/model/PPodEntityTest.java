@@ -120,7 +120,6 @@ public class PPodEntityTest {
 		assertFalse(returnBoolean2);
 	}
 
-	@Test(groups = TestGroupDefs.SINGLE)
 	public void setAttachments() {
 
 		final Attachment attachment0 = attachmentProvider.get();

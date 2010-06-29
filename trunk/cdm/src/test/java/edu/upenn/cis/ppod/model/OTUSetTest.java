@@ -44,7 +44,8 @@ import edu.upenn.cis.ppod.util.TestVisitor;
 /**
  * @author Sam Donnelly
  */
-@Test(groups = { TestGroupDefs.FAST }, dependsOnGroups = TestGroupDefs.INIT)
+@Test(groups = { TestGroupDefs.FAST, TestGroupDefs.SINGLE },
+		dependsOnGroups = TestGroupDefs.INIT)
 public class OTUSetTest {
 
 	@Inject
@@ -239,27 +240,15 @@ public class OTUSetTest {
 	}
 
 	@Test
-	public void getDNASequenceSetsSize() {
-		final DNASequenceSet dnaSequenceSet0 = dnaSequenceSetProvider.get();
-		final DNASequenceSet dnaSequenceSet1 = dnaSequenceSetProvider.get();
-		final DNASequenceSet dnaSequenceSet2 = dnaSequenceSetProvider.get();
-		final Set<DNASequenceSet> dnaSequenceSets = ImmutableSet.of(
-				dnaSequenceSet0, dnaSequenceSet1, dnaSequenceSet2);
-		otuSet.setDNASequenceSets(dnaSequenceSets);
-		assertEquals(otuSet.getDNASequenceSets().size(), dnaSequenceSets.size());
-	}
-
-	@Test
 	public void removeDNASequenceSet() {
-		final DNASequenceSet dnaSequenceSet0 = dnaSequenceSetProvider.get();
-		final DNASequenceSet dnaSequenceSet1 = dnaSequenceSetProvider.get();
-		final DNASequenceSet dnaSequenceSet2 = dnaSequenceSetProvider.get();
-		final Set<DNASequenceSet> dnaSequenceSets =
-				ImmutableSet.of(
-						dnaSequenceSet0,
-						dnaSequenceSet1,
-						dnaSequenceSet2);
-		otuSet.setDNASequenceSets(dnaSequenceSets);
+
+		final OTUSet otuSet = otuSetProvider.get();
+		final DNASequenceSet dnaSequenceSet0 =
+				otuSet.addDNASequenceSet(dnaSequenceSetProvider.get());
+		final DNASequenceSet dnaSequenceSet1 =
+				otuSet.addDNASequenceSet(dnaSequenceSetProvider.get());
+		final DNASequenceSet dnaSequenceSet2 =
+				otuSet.addDNASequenceSet(dnaSequenceSetProvider.get());
 
 		final boolean booleanReturned = otuSet
 				.removeDNASequenceSet(dnaSequenceSet1);
@@ -279,31 +268,25 @@ public class OTUSetTest {
 
 	@Test
 	public void removeMatrix() {
-		final StandardMatrix matrix0 = standardMatrixProvider.get();
-		final StandardMatrix matrix1 = standardMatrixProvider.get();
-		final StandardMatrix matrix2 = standardMatrixProvider.get();
+		final StandardMatrix matrix0 =
+				otuSet.addStandardMatrix(standardMatrixProvider.get());
+		final StandardMatrix matrix1 =
+				otuSet.addStandardMatrix(standardMatrixProvider.get());
+		final StandardMatrix matrix2 =
+				otuSet.addStandardMatrix(standardMatrixProvider.get());
 
-		final Set<StandardMatrix> otuSetMatrices = newHashSet();
-		otuSetMatrices.add(matrix0);
-		otuSetMatrices.add(matrix1);
-		otuSetMatrices.add(matrix2);
-		otuSet.setStandardMatrices(otuSetMatrices);
-		otuSet.setVersionInfo(pPodVersionInfoProvider.get());
+		otuSet.unsetInNeedOfNewVersion();
 
-		study.setVersionInfo(pPodVersionInfoProvider.get());
+		study.unsetInNeedOfNewVersion();
 
-		final ImmutableSet<StandardMatrix> matricesMinusMatrix1 = ImmutableSet
-				.of(matrix0, matrix2);
-		otuSet.setStandardMatrices(matricesMinusMatrix1);
+		otuSet.removeStandardMatrix(matrix1);
 
 		assertTrue(study.isInNeedOfNewVersion());
 		assertTrue(otuSet.isInNeedOfNewVersion());
 
-		// assertNull(study.getPPodVersionInfo());
-		// assertNull(otuSet.getPPodVersionInfo());
-		assertEquals((Object) newHashSet(otuSet
-				.getStandardMatrices()),
-					(Object) newHashSet(matricesMinusMatrix1));
+		assertEquals(
+				otuSet.getStandardMatrices(),
+				ImmutableSet.of(matrix0, matrix2));
 	}
 
 	/**
@@ -386,40 +369,6 @@ public class OTUSetTest {
 		otuSet.setDescription(null);
 		assertNull(otuSet.getDescription());
 		assertFalse(otuSet.isInNeedOfNewVersion());
-	}
-
-	@Test
-	public void setDNASequenceSets() {
-		final DNASequenceSet dnaSequenceSet0 = dnaSequenceSetProvider.get();
-		final DNASequenceSet dnaSequenceSet1 = dnaSequenceSetProvider.get();
-		final DNASequenceSet dnaSequenceSet2 = dnaSequenceSetProvider.get();
-		final Set<DNASequenceSet> dnaSequenceSets = ImmutableSet.of(
-				dnaSequenceSet0, dnaSequenceSet1, dnaSequenceSet2);
-		otuSet.setDNASequenceSets(dnaSequenceSets);
-
-		assertEquals(otuSet.getDNASequenceSets().size(), dnaSequenceSets.size());
-
-		assertEquals((Object) otuSet.getDNASequenceSets(),
-				(Object) dnaSequenceSets);
-
-		otuSet.unsetInNeedOfNewVersion();
-
-		final Set<DNASequenceSet> shouldBeEmpty = otuSet
-				.setDNASequenceSets(dnaSequenceSets);
-
-		assertEquals(shouldBeEmpty.size(), 0);
-
-		assertFalse(otuSet.isInNeedOfNewVersion());
-
-		final ImmutableSet<DNASequenceSet> dnaSequenceSets02 = ImmutableSet.of(
-				dnaSequenceSet0, dnaSequenceSet2);
-
-		final Set<DNASequenceSet> removedDNASequenceSets = otuSet
-				.setDNASequenceSets(dnaSequenceSets02);
-
-		assertEquals((Object) removedDNASequenceSets, (Object) ImmutableSet
-				.of(dnaSequenceSet1));
-
 	}
 
 	@Test

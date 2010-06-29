@@ -17,6 +17,7 @@ package edu.upenn.cis.ppod.model;
 
 import static com.google.common.base.Preconditions.checkArgument;
 import static com.google.common.base.Preconditions.checkNotNull;
+import static com.google.common.base.Preconditions.checkState;
 
 import java.util.Map;
 
@@ -53,7 +54,7 @@ public abstract class SequenceSet<S extends Sequence>
 	@CheckForNull
 	private OTUSet otuSet;
 
-	SequenceSet() {}
+	protected SequenceSet() {}
 
 	@Override
 	public void accept(final IVisitor visitor) {
@@ -96,9 +97,9 @@ public abstract class SequenceSet<S extends Sequence>
 	}
 
 	/**
-	 * Remove all sequences from this set. Null's out the {@code
-	 * Sequence->SequenceSet} relationship and sets {@code getSequenceLengths()}
-	 * to {@code null}.
+	 * Remove all sequences from this set. Null's out the
+	 * {@code Sequence->SequenceSet} relationship and sets
+	 * {@code getSequenceLengths()} to {@code null}.
 	 * 
 	 * @return this
 	 */
@@ -173,8 +174,8 @@ public abstract class SequenceSet<S extends Sequence>
 	 * 
 	 * @throws IllegalArgumentException if {@code sequence.getSequence() ==
 	 *             null}
-	 * @throws IllegalArgumentException if {@code
-	 *             sequence.getSequence().length() != this.getLength()}
+	 * @throws IllegalArgumentException if
+	 *             {@code sequence.getSequence().length() != this.getLength()}
 	 * @return
 	 */
 	@CheckForNull
@@ -213,11 +214,17 @@ public abstract class SequenceSet<S extends Sequence>
 	protected SequenceSet<S> setOTUSet(
 			@CheckForNull final OTUSet otuSet) {
 		this.otuSet = otuSet;
-		setOTUsInOTUsToSequences(otuSet);
+		setOTUs();
 		return this;
 	}
 
-	protected abstract SequenceSet<S> setOTUsInOTUsToSequences(
-			@Nullable final OTUSet otuSet);
+	protected SequenceSet<S> setOTUs() {
+		checkState(getOTUKeyedSequences() != null,
+					"getOTUKeyedSequences() == null, "
+							+ "so there are no sequences to operate on");
+
+		getOTUKeyedSequences().setOTUs();
+		return this;
+	}
 
 }

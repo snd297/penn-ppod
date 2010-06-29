@@ -49,7 +49,7 @@ import edu.upenn.cis.ppod.util.IVisitor;
 
 /**
  * A set of {@link OTU}s.
- *<p>
+ * <p>
  * The relationship between {@code OTUSet} and {@code OTU} is one-to-many.
  * 
  * @author Shirley Cohen
@@ -74,7 +74,8 @@ public class OTUSet extends UUPPodEntityWithXmlId {
 	/** The column that stores the label. */
 	public static final String LABEL_COLUMN = "LABEL";
 
-	@OneToMany(mappedBy = "otuSet", cascade = CascadeType.ALL, orphanRemoval = true)
+	@OneToMany(mappedBy = "otuSet", cascade = CascadeType.ALL,
+			orphanRemoval = true)
 	private final Set<StandardMatrix> standardMatrices = newHashSet();
 
 	/** Free-form description. */
@@ -82,10 +83,12 @@ public class OTUSet extends UUPPodEntityWithXmlId {
 	@CheckForNull
 	private String description;
 
-	@OneToMany(mappedBy = "otuSet", cascade = CascadeType.ALL, orphanRemoval = true)
+	@OneToMany(mappedBy = "otuSet", cascade = CascadeType.ALL,
+			orphanRemoval = true)
 	private final Set<DNAMatrix> dnaMatrices = newHashSet();
 
-	@OneToMany(mappedBy = "otuSet", cascade = CascadeType.ALL, orphanRemoval = true)
+	@OneToMany(mappedBy = "otuSet", cascade = CascadeType.ALL,
+			orphanRemoval = true)
 	private final Set<DNASequenceSet> dnaSequenceSets = newHashSet();
 
 	/**
@@ -109,7 +112,8 @@ public class OTUSet extends UUPPodEntityWithXmlId {
 	private Study study;
 
 	/** The tree sets that reference this OTU set. */
-	@OneToMany(mappedBy = "otuSet", cascade = CascadeType.ALL, orphanRemoval = true)
+	@OneToMany(mappedBy = "otuSet", cascade = CascadeType.ALL,
+			orphanRemoval = true)
 	private final Set<TreeSet> treeSets = newHashSet();
 
 	/**
@@ -166,8 +170,8 @@ public class OTUSet extends UUPPodEntityWithXmlId {
 	/**
 	 * Scaffolding code that does two things:
 	 * <ol>
-	 * <li>Adds <code>otu</code> to this {@code OTUSet}'s constituent {@code
-	 * OTU}s</li>
+	 * <li>Adds <code>otu</code> to this {@code OTUSet}'s constituent
+	 * {@code OTU}s</li>
 	 * <li>Adds this {@code OTUSet} to {@code otu}'s {@code OTUSet}s</li>
 	 * </ol>
 	 * So it takes care of both sides of the <code>OTUSet</code><->
@@ -353,8 +357,27 @@ public class OTUSet extends UUPPodEntityWithXmlId {
 		return treeSets;
 	}
 
-	public boolean removeDNASequenceSet(
-			final DNASequenceSet dnaSequenceSet) {
+	public boolean removeDNAMatrix(final DNAMatrix dnaMatrix) {
+		checkNotNull(dnaMatrix);
+		if (getDNAMatricesModifiable().remove(dnaMatrix)) {
+			dnaMatrix.setOTUSet(null);
+			setInNeedOfNewVersion();
+			return true;
+		}
+		return false;
+	}
+
+	public boolean removeStandardMatrix(final StandardMatrix dnaMatrix) {
+		checkNotNull(dnaMatrix);
+		if (getStandardMatricesModifiable().remove(dnaMatrix)) {
+			dnaMatrix.setOTUSet(null);
+			setInNeedOfNewVersion();
+			return true;
+		}
+		return false;
+	}
+
+	public boolean removeDNASequenceSet(final DNASequenceSet dnaSequenceSet) {
 		checkNotNull(dnaSequenceSet);
 		if (getDNASequenceSetsModifiable().remove(dnaSequenceSet)) {
 			dnaSequenceSet.setOTUSet(null);
@@ -395,34 +418,35 @@ public class OTUSet extends UUPPodEntityWithXmlId {
 	 * @return any sequence sets which are removed as a result of this operation
 	 *         are returned
 	 */
-	public Set<DNASequenceSet> setDNASequenceSets(
-			final Set<? extends DNASequenceSet> newSequenceSets) {
-		checkNotNull(newSequenceSets);
-
-		if (newSequenceSets.equals(getDNASequenceSetsModifiable())) {
-			return Collections.emptySet();
-		}
-
-		final Set<DNASequenceSet> removedSequenceSets = newHashSet(getDNASequenceSetsModifiable());
-		removedSequenceSets.removeAll(newSequenceSets);
-
-		for (final DNASequenceSet removedSequenceSet : removedSequenceSets) {
-			removedSequenceSet.setOTUSet(null);
-		}
-
-		getDNASequenceSetsModifiable().clear();
-
-		for (final DNASequenceSet newSequenceSet : newSequenceSets) {
-			addDNASequenceSet(newSequenceSet);
-		}
-
-		setInNeedOfNewVersion();
-		return removedSequenceSets;
-	}
+	// public Set<DNASequenceSet> setDNASequenceSets(
+	// final Set<? extends DNASequenceSet> newSequenceSets) {
+	// checkNotNull(newSequenceSets);
+	//
+	// if (newSequenceSets.equals(getDNASequenceSetsModifiable())) {
+	// return Collections.emptySet();
+	// }
+	//
+	// final Set<DNASequenceSet> removedSequenceSets =
+	// newHashSet(getDNASequenceSetsModifiable());
+	// removedSequenceSets.removeAll(newSequenceSets);
+	//
+	// for (final DNASequenceSet removedSequenceSet : removedSequenceSets) {
+	// removedSequenceSet.setOTUSet(null);
+	// }
+	//
+	// getDNASequenceSetsModifiable().clear();
+	//
+	// for (final DNASequenceSet newSequenceSet : newSequenceSets) {
+	// addDNASequenceSet(newSequenceSet);
+	// }
+	//
+	// setInNeedOfNewVersion();
+	// return removedSequenceSets;
+	// }
 
 	/**
-	 * Point this {@code OTUSet} and all of its children to a new {@code
-	 * versionInfo}. Only the first call has an effect.
+	 * Point this {@code OTUSet} and all of its children to a new
+	 * {@code versionInfo}. Only the first call has an effect.
 	 * 
 	 * @return this {@code OTUSet}
 	 */
@@ -513,37 +537,6 @@ public class OTUSet extends UUPPodEntityWithXmlId {
 		for (final TreeSet treeSet : getTreeSets()) {
 			treeSet.setOTUSet(this);
 		}
-	}
-
-	/**
-	 * Copy <code>matrices</code> to this <code>OTUSet</code>'s matrices.
-	 * 
-	 * @param matrices new matrices
-	 * 
-	 * @return any matrices that were removed as a result of this operation
-	 */
-	public Set<StandardMatrix> setStandardMatrices(
-			final Set<? extends StandardMatrix> matrices) {
-		checkNotNull(matrices);
-
-		if (matrices.equals(getStandardMatricesModifiable())) {
-			return Collections.emptySet();
-		}
-
-		final Set<StandardMatrix> removedMatrices = newHashSet(getStandardMatricesModifiable());
-		removedMatrices.removeAll(matrices);
-
-		for (final StandardMatrix removedMatrix : removedMatrices) {
-			removedMatrix.setOTUSet(null);
-		}
-
-		getStandardMatricesModifiable().clear();
-
-		for (final StandardMatrix newMatrix : matrices) {
-			addStandardMatrix(newMatrix);
-		}
-		setInNeedOfNewVersion();
-		return removedMatrices;
 	}
 
 	protected OTUSet setStudy(final Study study) {

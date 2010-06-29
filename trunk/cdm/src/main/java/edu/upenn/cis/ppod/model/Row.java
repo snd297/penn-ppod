@@ -91,6 +91,7 @@ public abstract class Row<C extends Cell<?>>
 	public Row<C> clearCells() {
 		for (final C clearedCell : getCells()) {
 			clearedCell.unsetRow();
+			clearedCell.setPosition(null);
 		}
 		getCellsModifiable().clear();
 		return this;
@@ -125,10 +126,9 @@ public abstract class Row<C extends Cell<?>>
 	/**
 	 * Set the cells of this row.
 	 * <p>
-	 * This only handles the {@code Row} side of the {@code Row->Cell}
-	 * relationship.
+	 * This only handles both sides of the {@code Row<->Cell} relationship.
 	 * 
-	 * @param newCells the cells.
+	 * @param cells the cells
 	 * 
 	 * @return any cells which were removed as a result of this operation
 	 * 
@@ -149,9 +149,6 @@ public abstract class Row<C extends Cell<?>>
 		final IMatrix matrix = getMatrix();
 
 		checkState(matrix != null, "This row hasn't been added to a matrix yet");
-
-		// checkState(matrix.getColumnsSize() != null,
-		// "matrix.getColumnSize() == null");
 
 		checkState(matrix.getColumnsSize() == cells.size(),
 								"the matrix has different number of columns "

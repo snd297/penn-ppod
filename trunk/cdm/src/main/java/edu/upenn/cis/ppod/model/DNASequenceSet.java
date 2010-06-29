@@ -17,7 +17,6 @@ package edu.upenn.cis.ppod.model;
 
 import static com.google.common.base.Preconditions.checkArgument;
 import static com.google.common.base.Preconditions.checkNotNull;
-import static com.google.common.base.Preconditions.checkState;
 
 import java.util.Collections;
 import java.util.Map;
@@ -99,8 +98,9 @@ public class DNASequenceSet extends SequenceSet<DNASequence> {
 
 	@Override
 	public Map<OTU, DNASequence> getSequences() {
-		return Collections.unmodifiableMap(getOTUKeyedSequences()
-				.getOTUsToValues());
+		return Collections.unmodifiableMap(
+				getOTUKeyedSequences()
+						.getOTUsToValues());
 	}
 
 	@Override
@@ -111,13 +111,12 @@ public class DNASequenceSet extends SequenceSet<DNASequence> {
 		checkNotNull(otu);
 		checkNotNull(sequence);
 		checkArgument(sequence.getSequence() != null,
-				"sequence.getSequence() == null");
+						"sequence.getSequence() == null");
 		checkSequenceLength(sequence);
 		return getOTUKeyedSequences().put(otu, sequence);
 	}
 
 	/** For JAXB. */
-	@edu.umd.cs.findbugs.annotations.SuppressWarnings
 	protected DNASequenceSet setOTUKeyedSequences(
 			final DNASequences sequences) {
 		checkNotNull(sequences);
@@ -125,18 +124,4 @@ public class DNASequenceSet extends SequenceSet<DNASequence> {
 		return this;
 	}
 
-	/**
-	 * @throws IllegalStateException if {@link #getOTUsToSequences()} {@code ==
-	 *             null}.
-	 */
-	@Override
-	protected SequenceSet<DNASequence> setOTUsInOTUsToSequences(
-			@Nullable final OTUSet otuSet) {
-		checkState(
-				getOTUKeyedSequences() != null,
-				"getOTUKeyedSequences() == null, "
-						+ "so there are no sequences to operate on");
-		getOTUKeyedSequences().setOTUs();
-		return this;
-	}
 }
