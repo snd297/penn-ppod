@@ -26,7 +26,6 @@ import static org.testng.Assert.assertSame;
 import static org.testng.Assert.assertTrue;
 
 import java.util.ArrayList;
-import java.util.Collections;
 import java.util.List;
 import java.util.Set;
 
@@ -311,41 +310,30 @@ public class OTUSetTest {
 
 	@Test
 	public void removeTreeSet() {
-		final TreeSet treeSet0 = treeSetProvider.get().setLabel("treeSet0");
-		final TreeSet treeSet1 = treeSetProvider.get().setLabel("treeSet1");
-		final TreeSet treeSet2 = treeSetProvider.get().setLabel("treeSet2");
-		final ImmutableSet<TreeSet> treeSets = ImmutableSet.of(treeSet0,
-				treeSet1, treeSet2);
-
-		otuSet.setTreeSets(treeSets);
+		final TreeSet treeSet0 =
+				otuSet.addTreeSet(treeSetProvider.get().setLabel("treeSet0"));
+		final TreeSet treeSet1 =
+				otuSet.addTreeSet(treeSetProvider.get().setLabel("treeSet1"));
+		final TreeSet treeSet2 =
+				otuSet.addTreeSet(treeSetProvider.get().setLabel("treeSet2"));
 
 		otuSet.setVersionInfo(pPodVersionInfoProvider.get());
 
-		final ImmutableSet<TreeSet> treeSetsMinusTreeSet1 = ImmutableSet.of(
-				treeSet0, treeSet2);
+		final boolean returnedBoolean = otuSet.removeTreeSet(treeSet1);
 
-		final Set<TreeSet> removedTreeSets = otuSet
-				.setTreeSets(treeSetsMinusTreeSet1);
-
-		final ImmutableSet<TreeSet> treeSet1Set = ImmutableSet.of(treeSet1);
-
-		assertEquals((Object) removedTreeSets, (Object) treeSet1Set);
+		assertTrue(returnedBoolean);
 
 		assertTrue(otuSet.isInNeedOfNewVersion());
 
-		assertEquals((Object) newHashSet(otuSet.getTreeSets()),
-				(Object) newHashSet(
-						treeSet0,
-						treeSet2));
+		assertEquals(otuSet.getTreeSets(),
+						ImmutableSet.of(treeSet0, treeSet2));
 
-		@SuppressWarnings("unchecked")
-		final Set<TreeSet> removedTreeSets2 = otuSet
-				.setTreeSets(Collections.EMPTY_SET);
+		otuSet.unsetInNeedOfNewVersion();
 
-		assertEquals((Object) removedTreeSets2,
-				(Object) treeSetsMinusTreeSet1);
+		final boolean returnedBoolean2 = otuSet.removeTreeSet(treeSet1);
+		assertFalse(returnedBoolean2);
+		assertFalse(otuSet.isInNeedOfNewVersion());
 
-		assertEquals(otuSet.getTreeSets().size(), 0);
 	}
 
 	@Test
@@ -427,23 +415,13 @@ public class OTUSetTest {
 	}
 
 	@Test
-	public void setTreeSetsAndGetTreeSetsSize() {
-		final TreeSet treeSet = treeSetProvider.get();
-		final Set<TreeSet> treeSets = ImmutableSet.of(treeSet);
-		otuSet.setTreeSets(treeSets);
-		assertEquals(getOnlyElement(otuSet.getTreeSets()), treeSet);
-		assertEquals(otuSet.getTreeSets().size(), treeSets.size());
-	}
-
-	@Test
-	public void setTreeSetsWithTreeSetsItAlreadyHas() {
+	public void addTreeSet() {
 		final TreeSet treeSet0 = treeSetProvider.get();
-		final TreeSet treeSet1 = treeSetProvider.get();
-		otuSet.setTreeSets(ImmutableSet.of(treeSet0, treeSet1));
 
 		otuSet.unsetInNeedOfNewVersion();
+		final TreeSet returnedTreeSet0 = otuSet.addTreeSet(treeSet0);
+		assertSame(returnedTreeSet0, treeSet0);
+		assertTrue(otuSet.isInNeedOfNewVersion());
 
-		otuSet.setTreeSets(ImmutableSet.of(treeSet0, treeSet1));
-		assertFalse(otuSet.isInNeedOfNewVersion());
 	}
 }
