@@ -158,13 +158,11 @@ class PPodEntitiesResourceHibernate implements
 					}
 				}
 
-				final Set<TreeSet> treeSetsToReturn = newHashSet();
 				for (final TreeSet treeSet : otuSet.getTreeSets()) {
 					if (addedTreeSets.contains(treeSet)) {
-						treeSetsToReturn.add(treeSet);
+						otuSet.addTreeSet(treeSet);
 					}
 				}
-				otuSet.setTreeSets(treeSetsToReturn);
 			}
 		}
 		return pPodEntities;

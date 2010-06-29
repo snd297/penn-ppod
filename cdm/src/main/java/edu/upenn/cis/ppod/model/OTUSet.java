@@ -219,8 +219,7 @@ public class OTUSet extends UUPPodEntityWithXmlId {
 	/**
 	 * Add {@code matrix} to this {@code OTUSet}.
 	 * <p>
-	 * Also handles the {@code CharacterStateMatrix->OTUSet} side of the
-	 * relationship.
+	 * Also handles the {@code StandardMatrix->OTUSet} side of the relationship.
 	 * 
 	 * @param matrix matrix we're adding
 	 * 
@@ -236,6 +235,14 @@ public class OTUSet extends UUPPodEntityWithXmlId {
 		return matrix;
 	}
 
+	/**
+	 * Add a tree set to this OTU set.
+	 * <p>
+	 * Also handles the {@code TreeSet->OTUSet} side of the relationship.
+	 * 
+	 * @param treeSet to be added
+	 * @return {@code treeSet}
+	 */
 	public TreeSet addTreeSet(final TreeSet treeSet) {
 		checkNotNull(treeSet);
 		if (getTreeSetsModifiable().add(treeSet)) {
@@ -348,6 +355,11 @@ public class OTUSet extends UUPPodEntityWithXmlId {
 		return study;
 	}
 
+	/**
+	 * Get the {@code TreeSet}s contained in this {@code OTUSet}.
+	 * 
+	 * @return the {@code TreeSet}s contained in this {@code OTUSet}
+	 */
 	public Set<TreeSet> getTreeSets() {
 		return Collections.unmodifiableSet(treeSets);
 	}
@@ -367,6 +379,16 @@ public class OTUSet extends UUPPodEntityWithXmlId {
 		return false;
 	}
 
+	public boolean removeDNASequenceSet(final DNASequenceSet dnaSequenceSet) {
+		checkNotNull(dnaSequenceSet);
+		if (getDNASequenceSetsModifiable().remove(dnaSequenceSet)) {
+			dnaSequenceSet.setOTUSet(null);
+			setInNeedOfNewVersion();
+			return true;
+		}
+		return false;
+	}
+
 	public boolean removeStandardMatrix(final StandardMatrix dnaMatrix) {
 		checkNotNull(dnaMatrix);
 		if (getStandardMatricesModifiable().remove(dnaMatrix)) {
@@ -377,10 +399,10 @@ public class OTUSet extends UUPPodEntityWithXmlId {
 		return false;
 	}
 
-	public boolean removeDNASequenceSet(final DNASequenceSet dnaSequenceSet) {
-		checkNotNull(dnaSequenceSet);
-		if (getDNASequenceSetsModifiable().remove(dnaSequenceSet)) {
-			dnaSequenceSet.setOTUSet(null);
+	public boolean removeTreeSet(final TreeSet treeSet) {
+		checkNotNull(treeSet);
+		if (getTreeSetsModifiable().remove(treeSet)) {
+			treeSet.setOTUSet(null);
 			setInNeedOfNewVersion();
 			return true;
 		}
@@ -403,46 +425,6 @@ public class OTUSet extends UUPPodEntityWithXmlId {
 		}
 		return this;
 	}
-
-	/**
-	 * Set the {@code DNASequenceSet}s. Any sequence sets which are removed as a
-	 * result of this operation are returned.
-	 * <p>
-	 * This method handles both sides of the {@code OTUSet<->DNASequenceSet}
-	 * relationship: if a sequence set is added, then this {@code OTUSet} is set
-	 * as its {@code OTUSet}, and if a set is deleted, the relationship is
-	 * severed.
-	 * 
-	 * @param newSequenceSets the new sequence sets
-	 * 
-	 * @return any sequence sets which are removed as a result of this operation
-	 *         are returned
-	 */
-	// public Set<DNASequenceSet> setDNASequenceSets(
-	// final Set<? extends DNASequenceSet> newSequenceSets) {
-	// checkNotNull(newSequenceSets);
-	//
-	// if (newSequenceSets.equals(getDNASequenceSetsModifiable())) {
-	// return Collections.emptySet();
-	// }
-	//
-	// final Set<DNASequenceSet> removedSequenceSets =
-	// newHashSet(getDNASequenceSetsModifiable());
-	// removedSequenceSets.removeAll(newSequenceSets);
-	//
-	// for (final DNASequenceSet removedSequenceSet : removedSequenceSets) {
-	// removedSequenceSet.setOTUSet(null);
-	// }
-	//
-	// getDNASequenceSetsModifiable().clear();
-	//
-	// for (final DNASequenceSet newSequenceSet : newSequenceSets) {
-	// addDNASequenceSet(newSequenceSet);
-	// }
-	//
-	// setInNeedOfNewVersion();
-	// return removedSequenceSets;
-	// }
 
 	/**
 	 * Point this {@code OTUSet} and all of its children to a new
@@ -548,38 +530,6 @@ public class OTUSet extends UUPPodEntityWithXmlId {
 			setInNeedOfNewVersion();
 		}
 		return this;
-	}
-
-	/**
-	 * Add {@code treeSet} to this {@code OTUSet}'s tree sets and add this OTU
-	 * set to {@code treeSet}.
-	 * <p>
-	 * All of {@code treeSets} must not be in a detached state.
-	 * <p>
-	 * The {@code TreeSet->OTUSet} relationship will be taken care of, including
-	 * severing removed tree sets.
-	 * 
-	 * @param newTreeSets new tree sets
-	 * 
-	 * @return this
-	 */
-	public Set<TreeSet> setTreeSets(final Set<? extends TreeSet> treeSets) {
-		checkNotNull(treeSets);
-		if (treeSets.equals(getTreeSetsModifiable())) {
-			return Collections.emptySet();
-		}
-		final Set<TreeSet> removedTreeSets = newHashSet(getTreeSets());
-		removedTreeSets.removeAll(treeSets);
-		for (final TreeSet removedTreeSet : removedTreeSets) {
-			removedTreeSet.setOTUSet(null);
-		}
-
-		getTreeSetsModifiable().clear();
-		for (final TreeSet treeSet : treeSets) {
-			addTreeSet(treeSet);
-		}
-		setInNeedOfNewVersion();
-		return removedTreeSets;
 	}
 
 	/**

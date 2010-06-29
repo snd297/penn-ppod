@@ -179,7 +179,6 @@ final class CreateOrUpdateStudy implements ICreateOrUpdateStudy {
 			handleDNAMatrices(dbOTUSet, incomingOTUSet, otuSetInfo);
 			handleDNASequenceSets(dbOTUSet, incomingOTUSet);
 
-			final Set<TreeSet> newDbTreeSets = newHashSet();
 			for (final TreeSet incomingTreeSet : incomingOTUSet.getTreeSets()) {
 				TreeSet dbTreeSet;
 				if (null == (dbTreeSet =
@@ -191,10 +190,8 @@ final class CreateOrUpdateStudy implements ICreateOrUpdateStudy {
 							.getNewVersionInfo());
 					dbTreeSet.setPPodId();
 				}
-				newDbTreeSets.add(dbTreeSet);
-				dbOTUSet.setTreeSets(newDbTreeSets);
+				dbOTUSet.addTreeSet(dbTreeSet);
 				mergeTreeSets.mergeTreeSets(dbTreeSet, incomingTreeSet);
-
 			}
 		}
 		studyDAO.makePersistent(dbStudy);
