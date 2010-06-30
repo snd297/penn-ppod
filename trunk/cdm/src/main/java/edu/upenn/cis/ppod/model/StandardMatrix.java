@@ -29,6 +29,7 @@ import javax.persistence.FetchType;
 import javax.persistence.JoinColumn;
 import javax.persistence.OneToMany;
 import javax.persistence.OneToOne;
+import javax.persistence.OrderColumn;
 import javax.persistence.Table;
 import javax.xml.bind.Unmarshaller;
 import javax.xml.bind.annotation.XmlElement;
@@ -67,7 +68,7 @@ public class StandardMatrix extends Matrix<StandardRow> {
 	 * and a refactoring should be considered.
 	 */
 	@OneToMany(cascade = CascadeType.ALL, orphanRemoval = true)
-	@org.hibernate.annotations.IndexColumn(name = "POSITION")
+	@OrderColumn(name = "POSITION")
 	@JoinColumn(name = JOIN_COLUMN, nullable = false)
 	private final List<StandardCharacter> characters = newArrayList();
 
