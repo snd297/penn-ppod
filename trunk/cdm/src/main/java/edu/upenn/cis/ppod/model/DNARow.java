@@ -50,15 +50,10 @@ public class DNARow extends Row<DNACell> {
 	/**
 	 * The {@code CharacterStateCell}s that make up the row.
 	 * <p>
-	 * We don't cascade {@code SAVE_UPDATE} since there are so many cells and it
-	 * slows things down quite a bit - at least for saves (haven't looked at
-	 * updates yet).
-	 * <p>
-	 * {@code orphanRemoval = true} slows things down, so we don't include it.
-	 * <p>
-	 * {@code REMOVE} is here so that the cells are deleted when owning row is.
+	 * {@code orphanRemoval = true} slows things down for matrices w/ many
+	 * columns, so we don't include it. 
 	 */
-	@OneToMany(mappedBy = "row", cascade = CascadeType.REMOVE)
+	@OneToMany(mappedBy = "row", cascade = CascadeType.ALL)
 	@OrderBy("position")
 	private final List<DNACell> cells = newArrayList();
 

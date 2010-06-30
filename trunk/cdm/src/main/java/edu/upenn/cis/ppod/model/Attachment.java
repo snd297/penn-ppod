@@ -347,11 +347,11 @@ public class Attachment extends UUPPodEntity {
 	 * 
 	 * @param attachee to which this is attached
 	 * 
-	 * @return {@code attachee}
+	 * @return this
 	 */
 	protected PPodEntity setAttachee(@CheckForNull final PPodEntity attachee) {
 		this.attachee = attachee;
-		return attachee;
+		return this;
 	}
 
 	/**

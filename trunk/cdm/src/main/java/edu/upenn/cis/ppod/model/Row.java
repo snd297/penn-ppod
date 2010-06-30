@@ -91,7 +91,7 @@ public abstract class Row<C extends Cell<?>>
 	public Row<C> clearCells() {
 		for (final C clearedCell : getCells()) {
 			clearedCell.unsetRow();
-			clearedCell.setPosition(Integer.valueOf(-1));
+			clearedCell.setPosition(null);
 		}
 		getCellsModifiable().clear();
 		return this;

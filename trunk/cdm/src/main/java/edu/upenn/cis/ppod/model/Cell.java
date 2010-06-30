@@ -85,13 +85,13 @@ public abstract class Cell<E> extends PPodEntity {
 
 	protected static final String TYPE_COLUMN = "TYPE";
 
-	@Column(name = "POSITION", nullable = false)
 	@CheckForNull
+	@Column(name = "POSITION", nullable = false)
 	private Integer position;
 
+	@CheckForNull
 	@Column(name = TYPE_COLUMN, nullable = false)
 	@Enumerated(EnumType.ORDINAL)
-	@CheckForNull
 	private Type type;
 
 	protected Cell() {}
@@ -326,8 +326,11 @@ public abstract class Cell<E> extends PPodEntity {
 			final Type type,
 			final Set<E> elements);
 
-	protected Cell<E> setPosition(final Integer position) {
-		checkNotNull(position);
+	protected Cell<E> setPosition(@CheckForNull final Integer position) {
+		if (position == null && getRow() != null) {
+			throw new IllegalArgumentException(
+					"position == null but this cell belongs to a row");
+		}
 		this.position = position;
 		return this;
 	}
