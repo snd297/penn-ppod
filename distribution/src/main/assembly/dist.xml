@@ -22,17 +22,14 @@
 			<outputDirectory>docs/javadocs</outputDirectory>
 		</fileSet>
 		<fileSet>
-			<directory>../conf</directory>
-			<outputDirectory>conf</outputDirectory>
+			<directory>../config</directory>
+			<outputDirectory>config</outputDirectory>
 		</fileSet>
 	</fileSets>
 
 	<dependencySets>
 		<dependencySet>
-			<!--
-				for useProjectArtifact, just following orders: see
-				http://www.sonatype.com/books/mvnref-book/reference/assemblies-sect-output-algorithm.html#assemblies-sect-transitive
-			-->
+			<!-- for useProjectArtifact, just following orders: see http://www.sonatype.com/books/mvnref-book/reference/assemblies-sect-output-algorithm.html#assemblies-sect-transitive -->
 			<useProjectArtifact>false</useProjectArtifact>
 			<unpack>true</unpack>
 			<includes>

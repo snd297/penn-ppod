@@ -423,5 +423,11 @@ public class OTUSetTest {
 		assertSame(returnedTreeSet0, treeSet0);
 		assertTrue(otuSet.isInNeedOfNewVersion());
 
+		otuSet.unsetInNeedOfNewVersion();
+
+		final TreeSet returnedTreeSet1 = otuSet.addTreeSet(treeSet0);
+		assertSame(returnedTreeSet1, treeSet0);
+		assertFalse(otuSet.isInNeedOfNewVersion());
+
 	}
 }

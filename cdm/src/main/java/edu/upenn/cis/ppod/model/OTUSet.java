@@ -37,6 +37,7 @@ import javax.persistence.FetchType;
 import javax.persistence.JoinColumn;
 import javax.persistence.ManyToOne;
 import javax.persistence.OneToMany;
+import javax.persistence.OrderColumn;
 import javax.persistence.Table;
 import javax.xml.bind.Unmarshaller;
 import javax.xml.bind.annotation.XmlAttribute;
@@ -102,7 +103,7 @@ public class OTUSet extends UUPPodEntityWithXmlId {
 
 	/** The set of {@code OTU}s that this {@code OTUSet} contains. */
 	@OneToMany(orphanRemoval = true, cascade = CascadeType.ALL)
-	@org.hibernate.annotations.IndexColumn(name = "POSITION")
+	@OrderColumn(name = "POSITION")
 	@JoinColumn(name = JOIN_COLUMN, nullable = false)
 	private final List<OTU> otus = newArrayList();
 

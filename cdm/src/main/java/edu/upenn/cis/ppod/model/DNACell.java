@@ -58,11 +58,12 @@ public class DNACell extends Cell<DNANucleotide> {
 	 * <p>
 	 * At most one of {@code element} and {@code elements} will be {@code null}.
 	 */
-	@ElementCollection
-	@CollectionTable(name = "DNA_CELL_ELEMENTS", joinColumns = @JoinColumn(
-			name = JOIN_COLUMN))
-	@Column(name = "ELEMENT")
 	@CheckForNull
+	@ElementCollection
+	@CollectionTable(name = "DNA_CELL_ELEMENTS",
+						joinColumns = @JoinColumn(name = JOIN_COLUMN))
+	@Column(name = "ELEMENT")
+	@Enumerated(EnumType.ORDINAL)
 	private Set<DNANucleotide> elements;
 
 	/**
@@ -71,9 +72,9 @@ public class DNACell extends Cell<DNANucleotide> {
 	 * At most of one of {@code element} and {@code elements} will be
 	 * {@code null}.
 	 */
+	@CheckForNull
 	@Column(name = "ELEMENT", nullable = true)
 	@Enumerated(EnumType.ORDINAL)
-	@CheckForNull
 	private DNANucleotide element;
 
 	/**

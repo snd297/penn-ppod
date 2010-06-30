@@ -30,6 +30,7 @@ import javax.persistence.FetchType;
 import javax.persistence.JoinColumn;
 import javax.persistence.ManyToOne;
 import javax.persistence.OneToMany;
+import javax.persistence.OrderColumn;
 import javax.persistence.Table;
 import javax.xml.bind.Unmarshaller;
 import javax.xml.bind.annotation.XmlAccessType;
@@ -64,7 +65,7 @@ public class TreeSet extends UUPPodEntityWithXmlId implements
 	private OTUSet otuSet;
 
 	@OneToMany(cascade = CascadeType.ALL, orphanRemoval = true)
-	@org.hibernate.annotations.IndexColumn(name = "POSITION")
+	@OrderColumn(name = "POSITION")
 	@JoinColumn(name = JOIN_COLUMN, nullable = false)
 	private final List<Tree> trees = newArrayList();
 
@@ -175,8 +176,8 @@ public class TreeSet extends UUPPodEntityWithXmlId implements
 	/**
 	 * Setter.
 	 * <p>
-	 * Meant to be called from objects responsible for maintaining the {@code
-	 * OTUSet<->TreeSet]}
+	 * Meant to be called from objects responsible for maintaining the
+	 * {@code OTUSet<->TreeSet]}
 	 * <p>
 	 * Calling with {@code null} severs the relationship.
 	 * 
@@ -195,8 +196,7 @@ public class TreeSet extends UUPPodEntityWithXmlId implements
 	 * <li>Removes <code>tree</code> from this <code>TreeSet</code>'s
 	 * constituent <code>Tree</code>s.</li>
 	 * <li>Removes this <code>TreeSet
-	 * </code> from <code> tree</code>'s <code>TreeSet</code>s.
-	 * </li>
+	 * </code> from <code> tree</code>'s <code>TreeSet</code>s.</li>
 	 * </ol>
 	 * So it takes care of both sides of the <code>TreeSet</code><->
 	 * <code>Tree</code> relationship.
