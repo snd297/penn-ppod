@@ -59,7 +59,8 @@ public class Study extends UUPPodEntity implements IOTUSetCentricEntities {
 	@Column(name = LABEL_COLUMN, nullable = false)
 	private String label;
 
-	@OneToMany(mappedBy = "study", cascade = CascadeType.ALL, orphanRemoval = true)
+	@OneToMany(mappedBy = "study", cascade = CascadeType.ALL,
+			orphanRemoval = true)
 	private final Set<OTUSet> otuSets = newHashSet();
 
 	@Transient
@@ -151,6 +152,7 @@ public class Study extends UUPPodEntity implements IOTUSetCentricEntities {
 	 */
 	public Study removeOTUSet(final OTUSet otuSet) {
 		if (otuSets.remove(otuSet)) {
+			otuSet.setStudy(null);
 			setInNeedOfNewVersion();
 		}
 		return this;
