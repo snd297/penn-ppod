@@ -43,7 +43,7 @@ import edu.upenn.cis.ppod.util.TestVisitor;
 /**
  * @author Sam Donnelly
  */
-@Test(groups = { TestGroupDefs.FAST, TestGroupDefs.SINGLE },
+@Test(groups = { TestGroupDefs.FAST },
 		dependsOnGroups = TestGroupDefs.INIT)
 public class OTUSetTest {
 
@@ -266,7 +266,38 @@ public class OTUSetTest {
 	}
 
 	@Test
-	public void removeMatrix() {
+	public void removeDNAMatrix() {
+		final DNAMatrix matrix0 =
+				otuSet.addDNAMatrix(dnaMatrixProvider.get());
+		final DNAMatrix matrix1 =
+				otuSet.addDNAMatrix(dnaMatrixProvider.get());
+		final DNAMatrix matrix2 =
+				otuSet.addDNAMatrix(dnaMatrixProvider.get());
+
+		otuSet.unsetInNeedOfNewVersion();
+
+		study.unsetInNeedOfNewVersion();
+
+		boolean returnedBoolean = otuSet.removeDNAMatrix(matrix1);
+
+		assertTrue(returnedBoolean);
+		assertTrue(otuSet.isInNeedOfNewVersion());
+		assertNull(matrix1.getOTUSet());
+
+		assertEquals(
+				otuSet.getDNAMatrices(),
+				ImmutableSet.of(matrix0, matrix2));
+
+		otuSet.unsetInNeedOfNewVersion();
+
+		boolean returnedBoolean2 = otuSet.removeDNAMatrix(matrix1);
+		assertFalse(returnedBoolean2);
+		assertFalse(otuSet.isInNeedOfNewVersion());
+		assertNull(matrix1.getOTUSet());
+	}
+
+	@Test
+	public void removeStandardMatrix() {
 		final StandardMatrix matrix0 =
 				otuSet.addStandardMatrix(standardMatrixProvider.get());
 		final StandardMatrix matrix1 =
@@ -278,14 +309,22 @@ public class OTUSetTest {
 
 		study.unsetInNeedOfNewVersion();
 
-		otuSet.removeStandardMatrix(matrix1);
+		boolean returnedBoolean = otuSet.removeStandardMatrix(matrix1);
 
-		assertTrue(study.isInNeedOfNewVersion());
+		assertTrue(returnedBoolean);
 		assertTrue(otuSet.isInNeedOfNewVersion());
+		assertNull(matrix1.getOTUSet());
 
 		assertEquals(
 				otuSet.getStandardMatrices(),
 				ImmutableSet.of(matrix0, matrix2));
+
+		otuSet.unsetInNeedOfNewVersion();
+
+		boolean returnedBoolean2 = otuSet.removeStandardMatrix(matrix1);
+		assertFalse(returnedBoolean2);
+		assertFalse(otuSet.isInNeedOfNewVersion());
+		assertNull(matrix1.getOTUSet());
 	}
 
 	/**

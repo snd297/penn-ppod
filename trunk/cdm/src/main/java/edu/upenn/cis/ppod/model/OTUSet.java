@@ -370,30 +370,54 @@ public class OTUSet extends UUPPodEntityWithXmlId {
 		return treeSets;
 	}
 
-	public boolean removeDNAMatrix(final DNAMatrix dnaMatrix) {
-		checkNotNull(dnaMatrix);
-		if (getDNAMatricesModifiable().remove(dnaMatrix)) {
-			dnaMatrix.setOTUSet(null);
+	/**
+	 * Remove {@code matrix} from this OTU set.
+	 * 
+	 * @param matrix to be removed
+	 * 
+	 * @return {@code true} if this OTU set contained the specified matrix,
+	 *         {@code false} otherwise
+	 */
+	public boolean removeDNAMatrix(final DNAMatrix matrix) {
+		checkNotNull(matrix);
+		if (getDNAMatricesModifiable().remove(matrix)) {
+			matrix.setOTUSet(null);
 			setInNeedOfNewVersion();
 			return true;
 		}
 		return false;
 	}
 
-	public boolean removeDNASequenceSet(final DNASequenceSet dnaSequenceSet) {
-		checkNotNull(dnaSequenceSet);
-		if (getDNASequenceSetsModifiable().remove(dnaSequenceSet)) {
-			dnaSequenceSet.setOTUSet(null);
+	/**
+	 * Remove {@code sequenceSet} from this OTU set.
+	 * 
+	 * @param sequenceSet to be removed
+	 * 
+	 * @return {@code true} if this OTU set contained the specified sequence
+	 *         set, {@code false} otherwise
+	 */
+	public boolean removeDNASequenceSet(final DNASequenceSet sequenceSet) {
+		checkNotNull(sequenceSet);
+		if (getDNASequenceSetsModifiable().remove(sequenceSet)) {
+			sequenceSet.setOTUSet(null);
 			setInNeedOfNewVersion();
 			return true;
 		}
 		return false;
 	}
 
-	public boolean removeStandardMatrix(final StandardMatrix dnaMatrix) {
-		checkNotNull(dnaMatrix);
-		if (getStandardMatricesModifiable().remove(dnaMatrix)) {
-			dnaMatrix.setOTUSet(null);
+	/**
+	 * Remove {@code matrix} from this OTU set.
+	 * 
+	 * @param matrix to be removed
+	 * 
+	 * @return {@code true} if this OTU set contained the specified matrix,
+	 *         {@code false} otherwise
+	 */
+	public boolean removeStandardMatrix(final StandardMatrix matrix) {
+		checkNotNull(matrix);
+		if (getStandardMatricesModifiable().remove(matrix)) {
+			matrix.setOTUSet(null);
 			setInNeedOfNewVersion();
 			return true;
 		}
@@ -522,9 +546,8 @@ public class OTUSet extends UUPPodEntityWithXmlId {
 		}
 	}
 
-	protected OTUSet setStudy(final Study study) {
-		checkNotNull(study);
-		if (study.equals(this.study)) {
+	protected OTUSet setStudy(@CheckForNull final Study study) {
+		if (equal(study, this.study)) {
 
 		} else {
 			this.study = study;
