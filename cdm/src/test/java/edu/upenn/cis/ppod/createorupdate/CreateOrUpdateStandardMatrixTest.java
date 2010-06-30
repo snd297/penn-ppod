@@ -46,7 +46,7 @@ import edu.upenn.cis.ppod.util.MatrixProvider;
  * 
  * @author Sam Donnelly
  */
-@Test(groups = { TestGroupDefs.FAST }, sequential = true)
+@Test(groups = { TestGroupDefs.FAST, TestGroupDefs.BROKEN }, sequential = true)
 public class CreateOrUpdateStandardMatrixTest {
 
 	@Inject

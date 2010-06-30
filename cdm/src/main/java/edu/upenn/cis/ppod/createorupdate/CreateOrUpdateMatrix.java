@@ -123,8 +123,6 @@ class CreateOrUpdateMatrix<M extends Matrix<R>, R extends Row<C>, C extends Cell
 				final C dbCell = cellProvider.get();
 				dbCells.add(dbCell);
 				dbCell.setVersionInfo(newVersionInfo.getNewVersionInfo());
-				// Don't make it persistent here because the position isn't
-				// filled in yet and that's a non-null property
 			}
 
 			// Get rid of cells from dbCells if needed
@@ -174,7 +172,6 @@ class CreateOrUpdateMatrix<M extends Matrix<R>, R extends Row<C>, C extends Cell
 					dbCell.setVersionInfo(
 							newVersionInfo.getNewVersionInfo());
 				}
-				dao.makePersistent(dbCell);
 			}
 
 			// We need to do this here since we're removing the row from

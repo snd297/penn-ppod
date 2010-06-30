@@ -56,16 +56,11 @@ public class StandardRow extends Row<StandardCell> {
 	/**
 	 * The {@code CharacterStateCell}s that make up the row.
 	 * <p>
-	 * We don't cascade {@code SAVE_UPDATE} since there are so many cells and it
-	 * slows things down quite a bit - at least for saves (haven't looked at
-	 * update yet).
-	 * <p>
 	 * There is evidence that {@code DELETE_ORPHAN} slows things down so we're
-	 * not including that either.
-	 * <p>
-	 * Remove is here so that the cells are deleted when owning row is.
+	 * not including that either.(More of an issue for Protein matrices, but
+	 * they share code.)
 	 */
-	@OneToMany(mappedBy = "row", cascade = CascadeType.REMOVE)
+	@OneToMany(mappedBy = "row", cascade = CascadeType.ALL)
 	@OrderBy("position")
 	private final List<StandardCell> cells = newArrayList();
 
