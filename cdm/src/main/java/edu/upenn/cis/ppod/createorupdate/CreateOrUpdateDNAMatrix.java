@@ -42,12 +42,11 @@ final class CreateOrUpdateDNAMatrix
 			@Assisted INewVersionInfo newVersionInfo,
 			@Assisted IDAO<Object, Long> dao) {
 		super(rowProvider, cellProvider, attachmentProvider,
-				matrixInfoProvider,
 				newVersionInfo, dao);
 	}
 
 	@Override
-	public MatrixInfo createOrUpdateMatrix(
+	public void createOrUpdateMatrix(
 			final DNAMatrix dbMatrix,
 			final DNAMatrix sourceMatrix) {
 		dbMatrix.setColumnsSize(
@@ -55,7 +54,7 @@ final class CreateOrUpdateDNAMatrix
 								.values(), 0)
 						.getCells()
 						.size());
-		return super.createOrUpdateMatrix(dbMatrix, sourceMatrix);
+		super.createOrUpdateMatrix(dbMatrix, sourceMatrix);
 	}
 
 }

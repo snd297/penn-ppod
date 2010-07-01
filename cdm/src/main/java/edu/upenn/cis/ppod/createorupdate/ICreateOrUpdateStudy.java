@@ -24,7 +24,6 @@ import edu.upenn.cis.ppod.dao.IOTUSetDAO;
 import edu.upenn.cis.ppod.dao.IStudyDAO;
 import edu.upenn.cis.ppod.model.Study;
 import edu.upenn.cis.ppod.modelinterfaces.INewVersionInfo;
-import edu.upenn.cis.ppod.services.ppodentity.StudyInfo;
 
 /**
  * If study is new, make it persistent. If it was already persisted, update it.
@@ -41,15 +40,6 @@ public interface ICreateOrUpdateStudy {
 	 * @param incomingStudy to be made persistent or updated
 	 */
 	void createOrUpdateStudy();
-
-	/**
-	 * Get all of the {@code StudyInfo} data that is a result of the operation
-	 * called.
-	 * 
-	 * @return the {@code StudyInfo} data that is a result of the operation
-	 *         called
-	 */
-	StudyInfo getStudyInfo();
 
 	/**
 	 * Return the {@code Study} in a persistent state.
