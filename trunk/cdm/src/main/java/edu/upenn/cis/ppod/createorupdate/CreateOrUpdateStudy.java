@@ -242,8 +242,8 @@ final class CreateOrUpdateStudy implements ICreateOrUpdateStudy {
 				dbDNASequenceSet.setVersionInfo(newVersionInfo
 						.getNewVersionInfo());
 				dbDNASequenceSet.setLabel(incomingDNASequenceSet.getLabel());
+				dbOTUSet.addDNASequenceSet(dbDNASequenceSet);
 			}
-			dbOTUSet.addDNASequenceSet(dbDNASequenceSet);
 			mergeDNASequenceSets
 					.mergeSequenceSets(dbDNASequenceSet, incomingDNASequenceSet);
 		}
