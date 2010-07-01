@@ -16,27 +16,25 @@
 package edu.upenn.cis.ppod.services.ppodentity;
 
 import static com.google.common.base.Preconditions.checkNotNull;
-import static com.google.common.base.Predicates.compose;
-import static com.google.common.base.Predicates.equalTo;
-import static com.google.common.collect.Iterables.find;
 
 import com.google.inject.Inject;
 import com.google.inject.Provider;
 
-import edu.upenn.cis.ppod.model.StandardCharacter;
-import edu.upenn.cis.ppod.model.StandardMatrix;
-import edu.upenn.cis.ppod.model.StandardRow;
+import edu.upenn.cis.ppod.model.DNACell;
 import edu.upenn.cis.ppod.model.DNAMatrix;
 import edu.upenn.cis.ppod.model.DNARow;
 import edu.upenn.cis.ppod.model.DNASequence;
 import edu.upenn.cis.ppod.model.DNASequenceSet;
 import edu.upenn.cis.ppod.model.OTU;
 import edu.upenn.cis.ppod.model.OTUSet;
-import edu.upenn.cis.ppod.model.VersionInfo;
+import edu.upenn.cis.ppod.model.StandardCell;
+import edu.upenn.cis.ppod.model.StandardCharacter;
+import edu.upenn.cis.ppod.model.StandardMatrix;
+import edu.upenn.cis.ppod.model.StandardRow;
 import edu.upenn.cis.ppod.model.Study;
 import edu.upenn.cis.ppod.model.Tree;
 import edu.upenn.cis.ppod.model.TreeSet;
-import edu.upenn.cis.ppod.modelinterfaces.IWithPPodId;
+import edu.upenn.cis.ppod.model.VersionInfo;
 
 /**
  * @author Sam Donnelly
@@ -47,6 +45,9 @@ final class Study2StudyInfo implements IStudy2StudyInfo {
 	private final Provider<TreeSetInfo> treeSetInfoProvider;
 	private final Provider<PPodEntityInfo> pPodEntityInfoProvider;
 	private final Provider<PPodEntityInfoWDocId> pPodEntityInfoWDocIdProvider;
+	private final Provider<MatrixInfo> matrixInfoProvider;
+	private final Provider<StudyInfo> studyInfoProvider;
+	private final Provider<OTUSetInfo> otuSetInfoProvider;
 
 	@Inject
 	Study2StudyInfo(
@@ -55,24 +56,28 @@ final class Study2StudyInfo implements IStudy2StudyInfo {
 			final Provider<MolecularSequenceSetInfo> molecularSequenceSetInfoProvider,
 			final Provider<TreeSetInfo> treeSetInfoProvider,
 			final Provider<PPodEntityInfo> pPodEntityInfoProvider,
-			final Provider<PPodEntityInfoWDocId> pPodEntityInfoWDocIdProvider) {
+			final Provider<PPodEntityInfoWDocId> pPodEntityInfoWDocIdProvider,
+			final Provider<MatrixInfo> matrixInfoProvider,
+			final Provider<StudyInfo> studyInfoProvider,
+			final Provider<OTUSetInfo> otuSetInfoProvider) {
 		this.molecularSequenceSetInfoProvider = molecularSequenceSetInfoProvider;
 		this.treeSetInfoProvider = treeSetInfoProvider;
 		this.pPodEntityInfoProvider = pPodEntityInfoProvider;
 		this.pPodEntityInfoWDocIdProvider = pPodEntityInfoWDocIdProvider;
+		this.matrixInfoProvider = matrixInfoProvider;
+		this.studyInfoProvider = studyInfoProvider;
+		this.otuSetInfoProvider = otuSetInfoProvider;
 	}
 
-	public StudyInfo toStudyInfo(final Study study, final StudyInfo studyInfo) {
+	public StudyInfo toStudyInfo(final Study study) {
 		checkNotNull(study);
+		final StudyInfo studyInfo = studyInfoProvider.get();
 		studyInfo.setEntityId(study.getId());
 		studyInfo.setPPodId(study.getPPodId());
 		studyInfo.setVersion(study.getVersionInfo().getVersion());
 
 		for (final OTUSet otuSet : study.getOTUSets()) {
-			final OTUSetInfo otuSetInfo =
-					find(studyInfo.getOTUSetInfos(),
-							compose(equalTo(otuSet.getPPodId()),
-									IWithPPodId.getPPodId));
+			final OTUSetInfo otuSetInfo = otuSetInfoProvider.get();
 
 			studyInfo.getOTUSetInfos().add(otuSetInfo);
 			otuSetInfo.setEntityId(otuSet.getId());
@@ -81,8 +86,8 @@ final class Study2StudyInfo implements IStudy2StudyInfo {
 					.getVersion());
 			otuSetInfo.setDocId(otuSet.getDocId());
 			for (final OTU otu : otuSet.getOTUs()) {
-				final PPodEntityInfoWDocId otuInfo = pPodEntityInfoWDocIdProvider
-						.get();
+				final PPodEntityInfoWDocId otuInfo =
+						pPodEntityInfoWDocIdProvider.get();
 				otuSetInfo.getOTUInfos().add(otuInfo);
 				otuInfo.setEntityId(otu.getId());
 				otuInfo.setPPodId(otu.getPPodId());
@@ -93,12 +98,9 @@ final class Study2StudyInfo implements IStudy2StudyInfo {
 
 			for (final StandardMatrix matrix : otuSet
 					.getStandardMatrices()) {
-				final MatrixInfo matrixInfo =
-						find(otuSetInfo.getMatrixInfos(),
-								compose(
-										equalTo(
-												matrix.getPPodId()),
-										IWithPPodId.getPPodId));
+				final MatrixInfo matrixInfo = matrixInfoProvider.get();
+				otuSetInfo.getMatrixInfos().add(matrixInfo);
+				matrixInfo.setPPodId(matrix.getPPodId());
 				matrixInfo.setEntityId(matrix.getId());
 				matrixInfo.setVersion(matrix.getVersionInfo()
 						.getVersion());
@@ -108,8 +110,8 @@ final class Study2StudyInfo implements IStudy2StudyInfo {
 				for (final StandardCharacter standardCharacter : matrix
 						.getCharacters()) {
 					characterIdx++;
-					final PPodEntityInfo characterInfo = pPodEntityInfoProvider
-							.get();
+					final PPodEntityInfo characterInfo =
+							pPodEntityInfoProvider.get();
 					characterInfo.setPPodId(standardCharacter.getPPodId());
 					characterInfo.setEntityId(standardCharacter.getId());
 					characterInfo.setVersion(standardCharacter.getVersionInfo()
@@ -138,15 +140,15 @@ final class Study2StudyInfo implements IStudy2StudyInfo {
 					matrixInfo.getRowHeaderVersionsByIdx().put(rowIdx,
 							rowVersion);
 
-					// This bit is now handled in
-					// SaveOrUpdateCharacterStateMatrix
-
-					// int cellIdx = -1;
-					// for (final CharacterStateCell cell : row) {
-					// cellIdx++;
-					// matrixInfo.setCellPPodIdAndVersion(rowIdx, cellIdx,
-					// cell.getVersionInfo().getPPodVersion());
-					// }
+					int cellIdx = -1;
+					for (final StandardCell cell : row.getCells()) {
+						cellIdx++;
+						matrixInfo.setCellPPodIdAndVersion(
+								rowIdx, cellIdx,
+								cell
+										.getVersionInfo()
+										.getVersion());
+					}
 				}
 			}
 
@@ -154,12 +156,9 @@ final class Study2StudyInfo implements IStudy2StudyInfo {
 			// duplicate code.
 			for (final DNAMatrix matrix : otuSet
 					.getDNAMatrices()) {
-				final MatrixInfo matrixInfo =
-						find(otuSetInfo.getMatrixInfos(),
-								compose(
-										equalTo(
-												matrix.getPPodId()),
-										IWithPPodId.getPPodId));
+				final MatrixInfo matrixInfo = matrixInfoProvider.get();
+				otuSetInfo.getMatrixInfos().add(matrixInfo);
+				matrixInfo.setPPodId(matrix.getPPodId());
 				matrixInfo.setEntityId(matrix.getId());
 				matrixInfo.setVersion(matrix.getVersionInfo()
 						.getVersion());
@@ -185,15 +184,13 @@ final class Study2StudyInfo implements IStudy2StudyInfo {
 					matrixInfo.getRowHeaderVersionsByIdx()
 							.put(rowIdx, rowVersion);
 
-					// This bit is now handled in
-					// SaveOrUpdateCharacterStateMatrix
-
-					// int cellIdx = -1;
-					// for (final CharacterStateCell cell : row) {
-					// cellIdx++;
-					// matrixInfo.setCellPPodIdAndVersion(rowIdx, cellIdx,
-					// cell.getPPodVersionInfo().getPPodVersion());
-					// }
+					int cellIdx = -1;
+					for (final DNACell cell : row.getCells()) {
+						cellIdx++;
+						matrixInfo
+								.setCellPPodIdAndVersion(rowIdx, cellIdx,
+										cell.getVersionInfo().getVersion());
+					}
 				}
 			}
 

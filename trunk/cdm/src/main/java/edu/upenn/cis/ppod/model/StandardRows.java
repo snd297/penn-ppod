@@ -67,7 +67,16 @@ public class StandardRows extends OTUKeyedMap<StandardRow> {
 	@Transient
 	private final Set<OTUStandardRowPair> otuRowPairs = newHashSet();
 
-	@OneToMany(cascade = CascadeType.ALL, orphanRemoval = true)
+	/**
+	 * No merge, once it's evicted out of the persistence context, we don't want
+	 * it back in. So that we can run leaner for large matrices. This very well
+	 * may never make a difference for standard matrices which are much smaller,
+	 * generally, than protein matrices.
+	 */
+	@OneToMany(cascade = { CascadeType.PERSIST, CascadeType.REMOVE,
+			CascadeType.DETACH,
+			CascadeType.REFRESH },
+			orphanRemoval = true)
 	@JoinTable(inverseJoinColumns = @JoinColumn(name = StandardRow.JOIN_COLUMN))
 	@MapKeyJoinColumn(name = OTU.JOIN_COLUMN)
 	private final Map<OTU, StandardRow> rows = newHashMap();

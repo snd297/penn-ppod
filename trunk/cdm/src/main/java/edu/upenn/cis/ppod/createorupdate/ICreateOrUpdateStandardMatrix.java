@@ -20,7 +20,6 @@ import com.google.inject.ImplementedBy;
 import edu.upenn.cis.ppod.dao.IDAO;
 import edu.upenn.cis.ppod.model.StandardMatrix;
 import edu.upenn.cis.ppod.modelinterfaces.INewVersionInfo;
-import edu.upenn.cis.ppod.services.ppodentity.MatrixInfo;
 
 /**
  * Copy the state of
@@ -34,28 +33,24 @@ import edu.upenn.cis.ppod.services.ppodentity.MatrixInfo;
 public interface ICreateOrUpdateStandardMatrix {
 
 	/**
-	 * Copy the state of {@code sourceMatrix} onto the persistent matrix {@code
-	 * dbMatrix} and flush those changes to the database.
+	 * Copy the state of {@code sourceMatrix} onto the persistent matrix
+	 * {@code dbMatrix} and flush those changes to the database.
 	 * <p>
-	 * If {@code sourceMatrix.getDocId() != null} then this method calls {@code
-	 * sourceMatrix.setDocId(sourceMatrix.getDocId())}. In other words, if
-	 * {@code targetMatrix}'s doc id is not already set, this method copies it
-	 * from {@code sourceMatrix}.
+	 * If {@code sourceMatrix.getDocId() != null} then this method calls
+	 * {@code dbMatrix.setDocId(sourceMatrix.getDocId())}. In other words, if
+	 * {@code dbMatrix}'s doc id is not already set, this method copies it from
+	 * {@code sourceMatrix}.
 	 * <p>
 	 * All rows in {@code sourceMatrix} must be non-null.
-	 * <p>
-	 * Implementors are free to call {@code CharacterStateRow.clearCells()} on
-	 * both cells and rows in order to free up objects for garbage collection.
-	 * So generally it is not safe to reattach {@code dbMatrix}.
 	 * 
 	 * @param dbMatrix merge into the target matrix
 	 * @param sourceMatrix source of the merge
 	 * @param mergedOTUsBySourceOTU maps each merged OTU to its source OTU
 	 *            counterpart. This parameter is used to set the new OTU
-	 *            ordering in {@code targetMatrix} as dictated by {@code
-	 *            sourceMatrix}
+	 *            ordering in {@code targetMatrix} as dictated by
+	 *            {@code sourceMatrix}
 	 */
-	MatrixInfo createOrUpdateMatrix(
+	void createOrUpdateMatrix(
 			StandardMatrix dbMatrix,
 			StandardMatrix sourceMatrix);
 

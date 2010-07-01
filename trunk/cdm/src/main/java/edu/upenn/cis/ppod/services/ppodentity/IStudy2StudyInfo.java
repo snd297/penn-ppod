@@ -31,9 +31,9 @@ public interface IStudy2StudyInfo {
 	 * Distill a {@link Study} to a {@link StudyInfo}.
 	 * 
 	 * @param study input
-	 * @param studyInfo target
+	 * 
 	 * @return output
 	 */
-	StudyInfo toStudyInfo(Study study, StudyInfo studyInfo);
+	StudyInfo toStudyInfo(Study study);
 
 }

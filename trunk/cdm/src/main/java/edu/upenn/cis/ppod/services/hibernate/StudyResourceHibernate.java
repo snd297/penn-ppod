@@ -166,8 +166,7 @@ final class StudyResourceHibernate implements IStudyResource {
 				setPPodVersionInfoVisitorFactory.create(newVersionInfo);
 		dbStudy.accept(setVersionInfoVisitor);
 
-		final StudyInfo dbStudyInfo = createOrUpdateStudy.getStudyInfo();
-		return study2StudyInfo.toStudyInfo(dbStudy, dbStudyInfo);
+		return study2StudyInfo.toStudyInfo(dbStudy);
 	}
 
 	public StudyInfo updateStudy(final Study incomingStudy, final String pPodId) {

@@ -41,7 +41,6 @@ import edu.upenn.cis.ppod.model.StandardRow;
 import edu.upenn.cis.ppod.model.StandardState;
 import edu.upenn.cis.ppod.modelinterfaces.INewVersionInfo;
 import edu.upenn.cis.ppod.modelinterfaces.IWithPPodId;
-import edu.upenn.cis.ppod.services.ppodentity.MatrixInfo;
 import edu.upenn.cis.ppod.thirdparty.injectslf4j.InjectLogger;
 
 /**
@@ -80,7 +79,7 @@ final class CreateOrUpdateStandardMatrix
 		this.newVersionInfo = newVersionInfo;
 	}
 
-	public MatrixInfo createOrUpdateMatrix(
+	public void createOrUpdateMatrix(
 			final StandardMatrix dbMatrix,
 			final StandardMatrix sourceMatrix) {
 		final String METHOD = "createOrUpdate(...)";
@@ -162,54 +161,10 @@ final class CreateOrUpdateStandardMatrix
 				createOrUpdatMatrixFactory
 						.create(newVersionInfo, dao);
 
-		final MatrixInfo matrixInfo =
-				createOrUpdatMatrix
+		createOrUpdatMatrix
 						.createOrUpdateMatrix(
 								dbMatrix,
 								sourceMatrix);
 
-		return matrixInfo;
 	}
-
-	// private void fillInMatrixInfo(
-	// final CharacterStateMatrixInfo matrixInfo,
-	// final CharacterStateMatrix matrix) {
-	// matrixInfo.setEntityId(matrix.getId());
-	// matrixInfo.setPPodId(matrix.getPPodId());
-	// matrixInfo.setPPodVersion(matrix.getPPodVersionInfo()
-	// .getPPodVersion());
-	// matrixInfo.setDocId(matrix.getDocId());
-	//
-	// int characterIdx = -1;
-	// for (final Iterator<Character> charactersItr = matrix
-	// .getCharactersIterator(); charactersItr.hasNext();) {
-	// characterIdx++;
-	// final Character character = charactersItr.next();
-	// PPodEntityInfo characterInfo = pPodEntityInfoProvider.get();
-	// characterInfo.setPPodId(character.getPPodId());
-	// characterInfo.setEntityId(character.getId());
-	// characterInfo.setPPodVersion(character.getPPodVersionInfo()
-	// .getPPodVersion());
-	// matrixInfo.getCharacterInfosByIdx().put(characterIdx,
-	// characterInfo);
-	// }
-	//
-	// int columnIdx = -1;
-	// for (final Iterator<PPodVersionInfo> columnPPodVersionInfosItr = matrix
-	// .getColumnPPodVersionInfosIterator(); columnPPodVersionInfosItr
-	// .hasNext();) {
-	// columnIdx++;
-	// final PPodVersionInfo columnPPodVersionInfo = columnPPodVersionInfosItr
-	// .next();
-	// matrixInfo.getColumnHeaderVersionsByIdx().put(columnIdx,
-	// columnPPodVersionInfo.getPPodVersion());
-	// }
-	//
-	// int rowIdx = -1;
-	// for (final CharacterStateRow row : matrix) {
-	// rowIdx++;
-	// matrixInfo.getRowHeaderVersionsByIdx().put(rowIdx,
-	// row.getPPodVersionInfo().getPPodVersion());
-	// }
-	// }
 }

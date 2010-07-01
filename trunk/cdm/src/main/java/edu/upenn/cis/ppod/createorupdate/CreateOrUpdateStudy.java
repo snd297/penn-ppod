@@ -36,9 +36,6 @@ import edu.upenn.cis.ppod.model.Study;
 import edu.upenn.cis.ppod.model.TreeSet;
 import edu.upenn.cis.ppod.modelinterfaces.INewVersionInfo;
 import edu.upenn.cis.ppod.modelinterfaces.IWithPPodId;
-import edu.upenn.cis.ppod.services.ppodentity.MatrixInfo;
-import edu.upenn.cis.ppod.services.ppodentity.OTUSetInfo;
-import edu.upenn.cis.ppod.services.ppodentity.StudyInfo;
 
 /**
  * Create a new study or update an existing one.
@@ -63,8 +60,6 @@ final class CreateOrUpdateStudy implements ICreateOrUpdateStudy {
 	private final IMergeSequenceSets<DNASequenceSet, DNASequence> mergeDNASequenceSets;
 	private final Study incomingStudy;
 	private Study dbStudy;
-	private final StudyInfo dbStudyInfo;
-	private final Provider<OTUSetInfo> otuSetInfoProvider;
 	private final ICreateOrUpdateDNAMatrix createOrUpdateDNAMatrix;
 
 	@Inject
@@ -80,8 +75,6 @@ final class CreateOrUpdateStudy implements ICreateOrUpdateStudy {
 			final ICreateOrUpdateStandardMatrix.IFactory saveOrUpdateMatrixFactory,
 			final IMergeSequenceSets.IFactory<DNASequenceSet, DNASequence> mergeDNASequenceSetsFactory,
 			final IMergeAttachments.IFactory mergeAttachmentFactory,
-			final Provider<OTUSetInfo> otuSetInfoProvider,
-			final StudyInfo studyInfo,
 			final Provider<DNAMatrix> dnaMatrixProvider,
 			@Assisted final Study incomingStudy,
 			@Assisted final IStudyDAO studyDAO,
@@ -109,13 +102,11 @@ final class CreateOrUpdateStudy implements ICreateOrUpdateStudy {
 										attachmentTypeDAO),
 										dao,
 										newVersionInfo);
-		this.otuSetInfoProvider = otuSetInfoProvider;
 		this.mergeDNASequenceSets =
 				mergeDNASequenceSetsFactory.create(
 						dao,
 						newVersionInfo);
 		this.mergeTreeSets = mergeTreeSetsFactory.create(newVersionInfo);
-		this.dbStudyInfo = studyInfo;
 		this.dnaMatrixProvider = dnaMatrixProvider;
 	}
 
@@ -162,15 +153,11 @@ final class CreateOrUpdateStudy implements ICreateOrUpdateStudy {
 
 			mergeOTUSets.mergeOTUSets(dbOTUSet, incomingOTUSet);
 
-			final OTUSetInfo otuSetInfo = otuSetInfoProvider.get();
-			dbStudyInfo.getOTUSetInfos().add(otuSetInfo);
-			otuSetInfo.setPPodId(dbOTUSet.getPPodId());
-
 			// Persist the study and all OTUSet's for the "handle" methods
 			studyDAO.makePersistent(dbStudy);
 
-			handleDNAMatrices(dbOTUSet, incomingOTUSet, otuSetInfo);
-			handleStandardMatrices(dbOTUSet, incomingOTUSet, otuSetInfo);
+			handleDNAMatrices(dbOTUSet, incomingOTUSet);
+			handleStandardMatrices(dbOTUSet, incomingOTUSet);
 			handleDNASequenceSets(dbOTUSet, incomingOTUSet);
 			handleTreeSets(dbOTUSet, incomingOTUSet);
 		}
@@ -180,14 +167,9 @@ final class CreateOrUpdateStudy implements ICreateOrUpdateStudy {
 		return dbStudy;
 	}
 
-	public StudyInfo getStudyInfo() {
-		return dbStudyInfo;
-	}
-
 	private void handleDNAMatrices(
 			final OTUSet dbOTUSet,
-			final OTUSet incomingOTUSet,
-			final OTUSetInfo otuSetInfo) {
+			final OTUSet incomingOTUSet) {
 
 		// Let's delete matrices missing from the incoming OTU set
 		for (final DNAMatrix dbMatrix : dbOTUSet.getDNAMatrices()) {
@@ -223,11 +205,9 @@ final class CreateOrUpdateStudy implements ICreateOrUpdateStudy {
 				dbMatrix.setLabel(incomingMatrix.getLabel());
 				dbOTUSet.addDNAMatrix(dbMatrix);
 			}
-			final MatrixInfo dbMatrixInfo =
-					createOrUpdateDNAMatrix
+			createOrUpdateDNAMatrix
 							.createOrUpdateMatrix(
 									dbMatrix, incomingMatrix);
-			otuSetInfo.getMatrixInfos().add(dbMatrixInfo);
 		}
 	}
 
@@ -271,8 +251,7 @@ final class CreateOrUpdateStudy implements ICreateOrUpdateStudy {
 
 	private void handleStandardMatrices(
 			final OTUSet dbOTUSet,
-			final OTUSet incomingOTUSet,
-			final OTUSetInfo otuSetInfo) {
+			final OTUSet incomingOTUSet) {
 
 		// Let's delete matrices missing from the incoming OTU set
 		for (final StandardMatrix dbMatrix : dbOTUSet.getStandardMatrices()) {
@@ -306,9 +285,8 @@ final class CreateOrUpdateStudy implements ICreateOrUpdateStudy {
 				dbMatrix.setLabel(incomingMatrix.getLabel());
 				dbOTUSet.addStandardMatrix(dbMatrix);
 			}
-			final MatrixInfo dbMatrixInfo = createOrUpdateStandardMatrix
+			createOrUpdateStandardMatrix
 					.createOrUpdateMatrix(dbMatrix, incomingMatrix);
-			otuSetInfo.getMatrixInfos().add(dbMatrixInfo);
 		}
 	}
 

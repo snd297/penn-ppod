@@ -35,7 +35,6 @@ import edu.upenn.cis.ppod.model.Matrix;
 import edu.upenn.cis.ppod.model.OTU;
 import edu.upenn.cis.ppod.model.Row;
 import edu.upenn.cis.ppod.modelinterfaces.INewVersionInfo;
-import edu.upenn.cis.ppod.services.ppodentity.MatrixInfo;
 
 /**
  * @author Sam Donnelly
@@ -49,8 +48,6 @@ class CreateOrUpdateMatrix<M extends Matrix<R>, R extends Row<C>, C extends Cell
 
 	protected Logger logger = LoggerFactory.getLogger(getClass());
 
-	private final Provider<MatrixInfo> matrixInfoProvider;
-
 	private final INewVersionInfo newVersionInfo;
 
 	private final Provider<R> rowProvider;
@@ -60,17 +57,15 @@ class CreateOrUpdateMatrix<M extends Matrix<R>, R extends Row<C>, C extends Cell
 			final Provider<R> rowProvider,
 			final Provider<C> cellProvider,
 			final Provider<Attachment> attachmentProvider,
-			final Provider<MatrixInfo> matrixInfoProvider,
 			@Assisted final INewVersionInfo newVersionInfo,
 			@Assisted final IDAO<Object, Long> dao) {
 		this.rowProvider = rowProvider;
 		this.cellProvider = cellProvider;
-		this.matrixInfoProvider = matrixInfoProvider;
 		this.newVersionInfo = newVersionInfo;
 		this.dao = dao;
 	}
 
-	public MatrixInfo createOrUpdateMatrix(
+	public void createOrUpdateMatrix(
 			final M dbMatrix,
 			final M sourceMatrix) {
 
@@ -88,9 +83,7 @@ class CreateOrUpdateMatrix<M extends Matrix<R>, R extends Row<C>, C extends Cell
 		dbMatrix.setLabel(sourceMatrix.getLabel())
 				.setDescription(sourceMatrix.getDescription());
 
-		final MatrixInfo matrixInfo = matrixInfoProvider.get();
-		matrixInfo.setPPodId(dbMatrix.getPPodId());
-
+		// So that makePersistenct(dbRow) below has a persistent parent.
 		dao.makePersistent(dbMatrix);
 
 		int sourceOTUPos = -1;
@@ -184,29 +177,9 @@ class CreateOrUpdateMatrix<M extends Matrix<R>, R extends Row<C>, C extends Cell
 			dao.flush();
 			dao.evict(dbRow);
 
-			fillInCellInfo(matrixInfo, dbRow, sourceOTUPos);
-
-			// This is to free up the cells for garbage collection - but depends
-			// on all of the cells being evicted, which they are by
-			// dao.evict(dbRow)
-			dbRow.clearCells();
-
-			// Again to free up cells for garbage collection
+			// Free up cells for garbage collection - harmless at worst
 			sourceRow.clearCells();
 		}
-		return matrixInfo;
 	}
 
-	private void fillInCellInfo(final MatrixInfo matrixInfo, final R row,
-			final int rowPosition) {
-		int cellPosition = -1;
-		for (final C cell : row.getCells()) {
-			cellPosition++;
-			matrixInfo.setCellPPodIdAndVersion(
-					rowPosition,
-					cellPosition,
-					cell.getVersionInfo()
-							.getVersion());
-		}
-	}
 }
