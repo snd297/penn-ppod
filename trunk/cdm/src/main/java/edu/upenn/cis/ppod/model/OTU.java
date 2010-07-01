@@ -17,8 +17,6 @@ package edu.upenn.cis.ppod.model;
 
 import static com.google.common.base.Preconditions.checkNotNull;
 
-import javax.annotation.CheckForNull;
-import javax.annotation.Nullable;
 import javax.persistence.Column;
 import javax.persistence.Entity;
 import javax.persistence.JoinColumn;
@@ -27,6 +25,8 @@ import javax.persistence.Table;
 import javax.xml.bind.Unmarshaller;
 import javax.xml.bind.annotation.XmlAttribute;
 
+import edu.umd.cs.findbugs.annotations.CheckForNull;
+import edu.umd.cs.findbugs.annotations.Nullable;
 import edu.upenn.cis.ppod.modelinterfaces.ILabeled;
 import edu.upenn.cis.ppod.modelinterfaces.IVersionedWithOTUSet;
 import edu.upenn.cis.ppod.util.IVisitor;
@@ -57,16 +57,17 @@ public class OTU
 	static final String LABEL_COLUMN = "LABEL";
 
 	/** Non-unique label. */
-	@Column(name = LABEL_COLUMN, nullable = false)
 	@CheckForNull
+	@Column(name = LABEL_COLUMN, nullable = false)
 	private String label;
 
 	/**
 	 * The {@code OTUSet} that this {@code OTU} belongs to.
 	 */
-	@ManyToOne
-	@JoinColumn(name = OTUSet.JOIN_COLUMN, insertable = false, updatable = false, nullable = false)
 	@CheckForNull
+	@ManyToOne
+	@JoinColumn(name = OTUSet.JOIN_COLUMN, insertable = false,
+			updatable = false, nullable = false)
 	private OTUSet otuSet;
 
 	OTU() {}
@@ -146,8 +147,7 @@ public class OTU
 	/**
 	 * Set the {@code OTUSet} that owns this {@code OTU}.
 	 * <p>
-	 * Intended to be called from methods that manage the {@code OTUSet<->OTU}
-	 * relationship.
+	 * Intentionally package-private and meant to be called from {@link OTUSet}.
 	 * <p>
 	 * A {@code null} value for {@code otuSet} means that the relationship will
 	 * be severed.
@@ -156,7 +156,7 @@ public class OTU
 	 * 
 	 * @return this
 	 */
-	protected OTU setOTUSet(@CheckForNull final OTUSet otuSet) {
+	OTU setOTUSet(@CheckForNull final OTUSet otuSet) {
 		this.otuSet = otuSet;
 		return this;
 	}

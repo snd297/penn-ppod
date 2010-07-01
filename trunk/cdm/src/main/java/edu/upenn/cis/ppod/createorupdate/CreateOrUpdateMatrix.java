@@ -91,19 +91,16 @@ class CreateOrUpdateMatrix<M extends Matrix<R>, R extends Row<C>, C extends Cell
 		final MatrixInfo matrixInfo = matrixInfoProvider.get();
 		matrixInfo.setPPodId(dbMatrix.getPPodId());
 
-		// So the rows have a dbMatrix id
-		dao.makePersistent(dbMatrix);
-
-		int sourceOTUPosition = -1;
+		int sourceOTUPos = -1;
 
 		for (final OTU sourceOTU : sourceMatrix.getOTUSet().getOTUs()) {
-			sourceOTUPosition++;
+			sourceOTUPos++;
 			final R sourceRow = sourceMatrix.getRow(sourceOTU);
 
 			final OTU dbOTU =
 					dbMatrix.getOTUSet()
 							.getOTUs()
-							.get(sourceOTUPosition);
+							.get(sourceOTUPos);
 
 			// Let's create rows for OTU->null row mappings in the matrix.
 			R dbRow = null;
@@ -113,7 +110,6 @@ class CreateOrUpdateMatrix<M extends Matrix<R>, R extends Row<C>, C extends Cell
 				dbRow.setVersionInfo(newVersionInfo
 						.getNewVersionInfo());
 				dbMatrix.putRow(dbOTU, dbRow);
-				dao.makePersistent(dbRow);
 			}
 
 			final List<C> dbCells = newArrayList(dbRow.getCells());
@@ -123,6 +119,8 @@ class CreateOrUpdateMatrix<M extends Matrix<R>, R extends Row<C>, C extends Cell
 				final C dbCell = cellProvider.get();
 				dbCells.add(dbCell);
 				dbCell.setVersionInfo(newVersionInfo.getNewVersionInfo());
+				// We don't call makePersistent (as we normally would) here
+				// because it still has null non-nullable properties.
 			}
 
 			// Get rid of cells from dbCells if needed
@@ -172,6 +170,7 @@ class CreateOrUpdateMatrix<M extends Matrix<R>, R extends Row<C>, C extends Cell
 					dbCell.setVersionInfo(
 							newVersionInfo.getNewVersionInfo());
 				}
+				dao.makePersistent(dbCell);
 			}
 
 			// We need to do this here since we're removing the row from
@@ -184,17 +183,16 @@ class CreateOrUpdateMatrix<M extends Matrix<R>, R extends Row<C>, C extends Cell
 			logger.debug(
 					"{}: flushing row number {}",
 					METHOD,
-					sourceOTUPosition);
+					sourceOTUPos);
 
 			dao.flush();
-
+			dao.evict(dbRow);
 			dao.evictEntities(dbRow.getCells());
 
-			fillInCellInfo(matrixInfo, dbRow, sourceOTUPosition);
+			fillInCellInfo(matrixInfo, dbRow, sourceOTUPos);
 
 			// This is to free up the cells for garbage collection - but depends
 			// on dao.evictEntities(all of the cells) to be safe!!!!!
-			dao.evict(dbRow);
 			dbRow.clearCells();
 
 			// Again to free up cells for garbage collection

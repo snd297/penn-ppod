@@ -91,7 +91,7 @@ public abstract class Row<C extends Cell<?>>
 	public Row<C> clearCells() {
 		for (final C clearedCell : getCells()) {
 			clearedCell.unsetRow();
-			clearedCell.setPosition(null);
+			clearedCell.unsetPosition();
 		}
 		getCellsModifiable().clear();
 		return this;
@@ -160,9 +160,12 @@ public abstract class Row<C extends Cell<?>>
 		removedCells.removeAll(cells);
 
 		clearCells();
-		for (int cellPos = 0; cellPos < cells.size(); cellPos++) {
-			getCellsModifiable().add(cells.get(cellPos));
-			cells.get(cellPos).setPosition(cellPos);
+
+		int cellPos = -1;
+		getCellsModifiable().addAll(cells);
+		for (final Cell<?> cell : getCells()) {
+			cellPos++;
+			cell.setPosition(cellPos);
 		}
 		setInNeedOfNewVersion();
 		return removedCells;

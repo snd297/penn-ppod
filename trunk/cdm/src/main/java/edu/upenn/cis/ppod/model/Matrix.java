@@ -25,9 +25,6 @@ import java.util.Collections;
 import java.util.List;
 import java.util.Map;
 
-import javax.annotation.CheckForNull;
-import javax.annotation.Nonnegative;
-import javax.annotation.Nullable;
 import javax.persistence.Column;
 import javax.persistence.FetchType;
 import javax.persistence.JoinColumn;
@@ -42,6 +39,8 @@ import javax.xml.bind.Unmarshaller;
 import javax.xml.bind.annotation.XmlAttribute;
 import javax.xml.bind.annotation.XmlElement;
 
+import edu.umd.cs.findbugs.annotations.CheckForNull;
+import edu.umd.cs.findbugs.annotations.Nullable;
 import edu.upenn.cis.ppod.modelinterfaces.IMatrix;
 import edu.upenn.cis.ppod.util.IVisitor;
 
@@ -277,8 +276,7 @@ public abstract class Matrix<R extends Row<?>>
 	 * 
 	 * @return this
 	 */
-	public Matrix<R> resetColumnVersion(
-			@Nonnegative final int position) {
+	public Matrix<R> resetColumnVersion(final int position) {
 		checkArgument(position >= 0, "position is negative");
 		checkArgument(position < getColumnVersionInfos().size(),
 				"position " + position
@@ -288,7 +286,7 @@ public abstract class Matrix<R extends Row<?>>
 		return this;
 	}
 
-	public Matrix<R> setColumnsSize(@Nonnegative final int columnsSize) {
+	public Matrix<R> setColumnsSize(final int columnsSize) {
 		checkArgument(columnsSize >= 0, "columnsSize < 0");
 
 		// Add in column versions as necessary
@@ -407,7 +405,7 @@ public abstract class Matrix<R extends Row<?>>
 	 * 
 	 * @return this
 	 */
-	protected Matrix<R> setOTUSet(
+	Matrix<R> setOTUSet(
 			@CheckForNull final OTUSet otuSet) {
 		this.otuSet = otuSet;
 		getOTUKeyedRows().setOTUs();

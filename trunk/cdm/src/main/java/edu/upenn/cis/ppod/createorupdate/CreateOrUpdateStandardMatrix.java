@@ -158,9 +158,6 @@ final class CreateOrUpdateStandardMatrix
 				newDbAttachments.add(dbAttachment);
 				mergeAttachments
 						.mergeAttachments(dbAttachment, sourceAttachment);
-				dao.makePersistent(dbAttachment.getType().getNamespace());
-				dao.makePersistent(dbAttachment.getType());
-				// dao.makePersistent(dbAttachment);
 			}
 			newDbCharacter.setAttachments(newDbAttachments);
 		}

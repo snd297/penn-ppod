@@ -546,13 +546,8 @@ public class OTUSet extends UUPPodEntityWithXmlId {
 		}
 	}
 
-	protected OTUSet setStudy(@CheckForNull final Study study) {
-		if (equal(study, this.study)) {
-
-		} else {
-			this.study = study;
-			setInNeedOfNewVersion();
-		}
+	OTUSet setStudy(@CheckForNull final Study study) {
+		this.study = study;
 		return this;
 	}
 

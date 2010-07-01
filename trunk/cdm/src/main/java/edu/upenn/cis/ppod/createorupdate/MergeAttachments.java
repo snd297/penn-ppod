@@ -91,6 +91,8 @@ class MergeAttachments implements IMergeAttachments {
 										sourceAttachment.getType()
 												.getNamespace()
 												.getLabel());
+				attachmentNamespaceDAO
+						.makePersistent(targetAttachmentNamespace);
 			}
 			labelsToNamespaces.put(
 					targetAttachmentNamespace.getLabel(),
@@ -109,12 +111,17 @@ class MergeAttachments implements IMergeAttachments {
 							sourceAttachment.getType()
 									.getLabel());
 			if (null == targetAttachmentType) {
-				targetAttachmentType = attachmentTypeProvider.get().setLabel(
-						sourceAttachment.getType().getLabel());
+				targetAttachmentType = attachmentTypeProvider.get()
+						.setLabel(sourceAttachment
+								.getType()
+								.getLabel());
 				targetAttachmentType.setNamespace(targetAttachmentNamespace);
+				attachmentTypeDAO.makePersistent(targetAttachmentType);
 			}
-			typesByNamespaceAndLabel.get(targetAttachmentNamespace).put(
-					targetAttachmentType.getLabel(), targetAttachmentType);
+			typesByNamespaceAndLabel.get(targetAttachmentNamespace)
+					.put(targetAttachmentType
+							.getLabel(),
+							targetAttachmentType);
 		}
 
 		targetAttachment.setLabel(sourceAttachment.getLabel());

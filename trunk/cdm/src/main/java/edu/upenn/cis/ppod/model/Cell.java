@@ -85,9 +85,12 @@ public abstract class Cell<E> extends PPodEntity {
 
 	protected static final String TYPE_COLUMN = "TYPE";
 
-	@CheckForNull
+	/**
+	 * We use {@code -1} instead of {@code null} - see
+	 * {@link #setPosition(Integer)} for why.
+	 */
 	@Column(name = "POSITION", nullable = false)
-	private Integer position;
+	private Integer position = -1;
 
 	@CheckForNull
 	@Column(name = TYPE_COLUMN, nullable = false)
@@ -202,7 +205,6 @@ public abstract class Cell<E> extends PPodEntity {
 		}
 	}
 
-	@Nullable
 	protected Integer getPosition() {
 		return position;
 	}
@@ -281,8 +283,8 @@ public abstract class Cell<E> extends PPodEntity {
 			if (matrix != null) {
 				// so FindBugs knows that it's okay
 				final Integer position = getPosition();
-				checkState(position != null,
-						"cell has no position, but is a part of a matrix");
+				checkState(getPosition() >= 0,
+							"cell has no position, but is a part of a matrix");
 				matrix.resetColumnVersion(position);
 			}
 		}
@@ -326,11 +328,25 @@ public abstract class Cell<E> extends PPodEntity {
 			final Type type,
 			final Set<E> elements);
 
-	protected Cell<E> setPosition(@CheckForNull final Integer position) {
-		if (position == null && getRow() != null) {
-			throw new IllegalArgumentException(
-					"position == null but this cell belongs to a row");
-		}
+	/**
+	 * Set the position of this cell in its row.
+	 * <p>
+	 * Even though it makes the most sense to set this to {@code null} when
+	 * removing a cell from a row, we don't allow {@code null} value for this
+	 * because it's a non-null attribute when we flush and causes an
+	 * {@code org.hibernate.PropertyValueException} - call {@link
+	 * unsetPosition()} instead.
+	 * <p>
+	 * Intentionally package-private and meant to be called from {@link Row}.
+	 * 
+	 * @param position the position of this cell in its row
+	 * 
+	 * @return this
+	 * 
+	 * @throw IllegalArgumentException if position < 0
+	 */
+	Cell<E> setPosition(final Integer position) {
+		checkArgument(position >= 0, "position < 0");
 		this.position = position;
 		return this;
 	}
@@ -385,10 +401,10 @@ public abstract class Cell<E> extends PPodEntity {
 	}
 
 	/**
-	 * For testing.
+	 * Intentionally package-private and meant to be called from {@link Row}.
 	 */
 	void unsetPosition() {
-		this.position = null;
+		this.position = -1;
 	}
 
 	protected abstract Cell<E> unsetRow();

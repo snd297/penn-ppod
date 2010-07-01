@@ -24,6 +24,13 @@ import edu.upenn.cis.ppod.services.ppodentity.MatrixInfo;
 
 public interface ICreateOrUpdateMatrix<M extends Matrix<R>, R extends Row<C>, C extends Cell<E>, E> {
 
+	/**
+	 * Assumes {@code dbMatrix} is in a persistent state.
+	 * 
+	 * @param dbMatrix
+	 * @param sourceMatrix
+	 * @return
+	 */
 	MatrixInfo createOrUpdateMatrix(M dbMatrix, M sourceMatrix);
 
 	interface IFactory<M extends Matrix<R>, R extends Row<C>, C extends Cell<E>, E> {

@@ -17,10 +17,7 @@ package edu.upenn.cis.ppod.createorupdate;
 
 import static com.google.common.base.Predicates.compose;
 import static com.google.common.base.Predicates.equalTo;
-import static com.google.common.collect.Sets.newHashSet;
 import static edu.upenn.cis.ppod.util.PPodIterables.findIf;
-
-import java.util.Set;
 
 import com.google.inject.Inject;
 import com.google.inject.Provider;
@@ -130,9 +127,11 @@ final class CreateOrUpdateStudy implements ICreateOrUpdateStudy {
 			dbStudy.setVersionInfo(newVersionInfo
 									.getNewVersionInfo());
 			dbStudy.setPPodId();
+			dbStudy.setLabel(incomingStudy.getLabel());
+			studyDAO.makePersistent(dbStudy);
+		} else {
+			dbStudy.setLabel(incomingStudy.getLabel());
 		}
-
-		dbStudy.setLabel(incomingStudy.getLabel());
 
 		// Delete otu sets in persisted study that are not in the incoming
 		// study.
@@ -156,27 +155,22 @@ final class CreateOrUpdateStudy implements ICreateOrUpdateStudy {
 									equalTo(
 											incomingOTUSet.getPPodId()),
 									IWithPPodId.getPPodId)))) {
-				dbOTUSet = dbStudy.addOTUSet(otuSetProvider.get());
+				dbOTUSet = otuSetProvider.get();
 				dbOTUSet.setVersionInfo(newVersionInfo
 						.getNewVersionInfo());
 				dbOTUSet.setPPodId();
+				dbOTUSet = dbStudy.addOTUSet(dbOTUSet);
 			}
 
 			mergeOTUSets.mergeOTUSets(dbOTUSet, incomingOTUSet);
-
-			// mergeMatrices needs for dbOTUSet to have an id so that
-			// we can give it to the matrix. dbOTUSet needs for dbStudy to
-			// have an id. Note that cascade from the study takes care of
-			// the OTUSet.
-			studyDAO.makePersistent(dbStudy);
 
 			final OTUSetInfo otuSetInfo = otuSetInfoProvider.get();
 			dbStudyInfo.getOTUSetInfos().add(otuSetInfo);
 
 			otuSetInfo.setPPodId(dbOTUSet.getPPodId());
 
-			handleStandardMatrices(dbOTUSet, incomingOTUSet, otuSetInfo);
 			handleDNAMatrices(dbOTUSet, incomingOTUSet, otuSetInfo);
+			handleStandardMatrices(dbOTUSet, incomingOTUSet, otuSetInfo);
 			handleDNASequenceSets(dbOTUSet, incomingOTUSet);
 
 			for (final TreeSet incomingTreeSet : incomingOTUSet.getTreeSets()) {
@@ -194,7 +188,6 @@ final class CreateOrUpdateStudy implements ICreateOrUpdateStudy {
 				mergeTreeSets.mergeTreeSets(dbTreeSet, incomingTreeSet);
 			}
 		}
-		studyDAO.makePersistent(dbStudy);
 	}
 
 	public Study getDbStudy() {
