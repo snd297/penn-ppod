@@ -115,8 +115,8 @@ final class CreateOrUpdateStudy implements ICreateOrUpdateStudy {
 				studyDAO.getStudyByPPodId(
 						incomingStudy.getPPodId()))) {
 			dbStudy = studyProvider.get();
-			dbStudy.setVersionInfo(newVersionInfo
-									.getNewVersionInfo());
+			dbStudy.setVersionInfo(
+					newVersionInfo.getNewVersionInfo());
 			dbStudy.setPPodId();
 		}
 		dbStudy.setLabel(incomingStudy.getLabel());

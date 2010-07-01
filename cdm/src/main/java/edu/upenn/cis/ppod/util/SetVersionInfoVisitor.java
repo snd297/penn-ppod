@@ -19,15 +19,17 @@ import com.google.inject.Inject;
 import com.google.inject.assistedinject.Assisted;
 
 import edu.upenn.cis.ppod.model.Attachment;
-import edu.upenn.cis.ppod.model.StandardCharacter;
-import edu.upenn.cis.ppod.model.StandardState;
-import edu.upenn.cis.ppod.model.StandardCell;
-import edu.upenn.cis.ppod.model.StandardMatrix;
-import edu.upenn.cis.ppod.model.StandardRow;
+import edu.upenn.cis.ppod.model.DNACell;
 import edu.upenn.cis.ppod.model.DNAMatrix;
+import edu.upenn.cis.ppod.model.DNARow;
 import edu.upenn.cis.ppod.model.Matrix;
 import edu.upenn.cis.ppod.model.OTU;
 import edu.upenn.cis.ppod.model.OTUSet;
+import edu.upenn.cis.ppod.model.StandardCell;
+import edu.upenn.cis.ppod.model.StandardCharacter;
+import edu.upenn.cis.ppod.model.StandardMatrix;
+import edu.upenn.cis.ppod.model.StandardRow;
+import edu.upenn.cis.ppod.model.StandardState;
 import edu.upenn.cis.ppod.model.Study;
 import edu.upenn.cis.ppod.model.Tree;
 import edu.upenn.cis.ppod.model.TreeSet;
@@ -63,38 +65,18 @@ final class SetVersionInfoVisitor extends EmptyVisitor implements
 	}
 
 	@Override
-	public void visit(final StandardCharacter standardCharacter) {
-		setNewVersionInfo(standardCharacter);
-	}
-
-	@Override
-	public void visit(final StandardState standardState) {
-		setNewVersionInfo(standardState);
-	}
-
-	@Override
-	public void visit(final StandardCell cell) {
+	public void visit(final DNACell cell) {
 		setNewVersionInfo(cell);
-	}
-
-	@Override
-	public void visit(final StandardMatrix matrix) {
-		visitMatrix(matrix);
-	}
-
-	/**
-	 * Does nothing.
-	 * 
-	 * @param row ignored
-	 */
-	@Override
-	public void visit(final StandardRow row) {
-		setNewVersionInfo(row);
 	}
 
 	@Override
 	public void visit(final DNAMatrix matrix) {
 		visitMatrix(matrix);
+	}
+
+	@Override
+	public void visit(final DNARow row) {
+		setNewVersionInfo(row);
 	}
 
 	@Override
@@ -105,6 +87,31 @@ final class SetVersionInfoVisitor extends EmptyVisitor implements
 	@Override
 	public void visit(final OTUSet otuSet) {
 		setNewVersionInfo(otuSet);
+	}
+
+	@Override
+	public void visit(final StandardCell cell) {
+		setNewVersionInfo(cell);
+	}
+
+	@Override
+	public void visit(final StandardCharacter standardCharacter) {
+		setNewVersionInfo(standardCharacter);
+	}
+
+	@Override
+	public void visit(final StandardMatrix matrix) {
+		visitMatrix(matrix);
+	}
+
+	@Override
+	public void visit(final StandardRow row) {
+		setNewVersionInfo(row);
+	}
+
+	@Override
+	public void visit(final StandardState standardState) {
+		setNewVersionInfo(standardState);
 	}
 
 	@Override
@@ -126,8 +133,8 @@ final class SetVersionInfoVisitor extends EmptyVisitor implements
 		setNewVersionInfo(matrix);
 		for (int pos = 0; pos < matrix.getColumnVersionInfos().size(); pos++) {
 			if (matrix.getColumnVersionInfos().get(pos) == null) {
-				matrix.setColumnVersionInfo(pos, newVersionInfo
-						.getNewVersionInfo());
+				matrix.setColumnVersionInfo(pos,
+						newVersionInfo.getNewVersionInfo());
 			}
 		}
 	}

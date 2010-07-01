@@ -150,9 +150,9 @@ public abstract class EmptyVisitor implements IVisitor {
 	/**
 	 * Does nothing.
 	 * 
-	 * @param characterState ignored
+	 * @param state ignored
 	 */
-	public void visit(final StandardState standardState) {}
+	public void visit(final StandardState state) {}
 
 	/**
 	 * Does nothing.
