@@ -205,7 +205,7 @@ public class DNACell extends Cell<DNANucleotide> {
 	@Override
 	public Cell<DNANucleotide> setSingleElement(final DNANucleotide element) {
 		checkNotNull(element);
-		if (element.equals(this.element)) {
+		if (element == this.element) {
 			if (getType() != Type.SINGLE) {
 				throw new AssertionError(
 						"element is set, but this cell is not a SINGLE");

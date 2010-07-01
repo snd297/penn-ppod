@@ -440,17 +440,14 @@ public class OTUSetTest {
 		final OTUSet returnedOTUSet = otuSet.setStudy(study);
 		assertSame(otuSet.getStudy(), study);
 		assertSame(returnedOTUSet, otuSet);
-		assertTrue(otuSet.isInNeedOfNewVersion());
 
-		otuSet.unsetInNeedOfNewVersion();
-		otuSet.setStudy(study);
+		// Setting the study should have no affect
 		assertFalse(otuSet.isInNeedOfNewVersion());
 
 		otuSet.unsetInNeedOfNewVersion();
-		final Study study2 = studyProvider.get();
-		otuSet.setStudy(study2);
-		assertTrue(otuSet.isInNeedOfNewVersion());
-
+		otuSet.setStudy(null);
+		assertNull(otuSet.getStudy());
+		assertFalse(otuSet.isInNeedOfNewVersion());
 	}
 
 	@Test

@@ -51,9 +51,9 @@ public class DNARow extends Row<DNACell> {
 	 * The {@code CharacterStateCell}s that make up the row.
 	 * <p>
 	 * {@code orphanRemoval = true} slows things down for matrices w/ many
-	 * columns, so we don't include it. 
+	 * columns, so we don't include it. Plus it seems to break things.
 	 */
-	@OneToMany(mappedBy = "row", cascade = CascadeType.ALL)
+	@OneToMany(mappedBy = "row", cascade = CascadeType.REMOVE)
 	@OrderBy("position")
 	private final List<DNACell> cells = newArrayList();
 

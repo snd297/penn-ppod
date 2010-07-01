@@ -63,8 +63,6 @@ final class MergeSequenceSets<SS extends SequenceSet<S>, S extends Sequence>
 
 		targSeqSet.setLabel(srcSeqSet.getLabel());
 
-		dao.makePersistent(targSeqSet);
-
 		final Integer targSeqSetLengths =
 				targSeqSet.getSequenceLengths();
 
@@ -115,8 +113,6 @@ final class MergeSequenceSets<SS extends SequenceSet<S>, S extends Sequence>
 			targSeq.setName(srcSeq.getName());
 			targSeq.setDescription(srcSeq.getDescription());
 			targSeq.setAccession(srcSeq.getAccession());
-
-			dao.makePersistent(targSeq);
 
 			if (targSeq.isInNeedOfNewVersion()) {
 				targSeq

@@ -60,7 +60,7 @@ public class StandardRow extends Row<StandardCell> {
 	 * not including that either.(More of an issue for Protein matrices, but
 	 * they share code.)
 	 */
-	@OneToMany(mappedBy = "row", cascade = CascadeType.ALL)
+	@OneToMany(mappedBy = "row", cascade = CascadeType.REMOVE)
 	@OrderBy("position")
 	private final List<StandardCell> cells = newArrayList();
 
@@ -116,6 +116,11 @@ public class StandardRow extends Row<StandardCell> {
 	}
 
 	@Override
+	protected OTUKeyedMap<StandardRow> getParent() {
+		return rows;
+	}
+
+	@Override
 	public List<StandardCell> setCells(
 			final List<? extends StandardCell> cells) {
 		final List<StandardCell> clearedCells =
@@ -128,15 +133,15 @@ public class StandardRow extends Row<StandardCell> {
 	}
 
 	/**
-	 * Setter.
+	 * Set the owner of this row.
 	 * 
-	 * @param otusToRows the {@code CharacterStateMatrix} of which this is a row
+	 * @param rows the owner
 	 * 
-	 * @return this {@code CharacterStateRow}
+	 * @return this row
 	 */
 	protected StandardRow setRows(
-			@CheckForNull final StandardRows otusToRows) {
-		this.rows = otusToRows;
+			@CheckForNull final StandardRows rows) {
+		this.rows = rows;
 		return this;
 	}
 
@@ -160,11 +165,6 @@ public class StandardRow extends Row<StandardCell> {
 	public StandardRow unsetOTUKeyedMap() {
 		rows = null;
 		return this;
-	}
-
-	@Override
-	protected OTUKeyedMap<StandardRow> getParent() {
-		return rows;
 	}
 
 }

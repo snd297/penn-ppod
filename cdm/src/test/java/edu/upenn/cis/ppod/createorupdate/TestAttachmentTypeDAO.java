@@ -64,7 +64,7 @@ public class TestAttachmentTypeDAO implements IAttachmentTypeDAO {
 	}
 
 	public void makePersistent(final AttachmentType entity) {
-		throw new UnsupportedOperationException();
+		return;
 	}
 
 	public TestAttachmentTypeDAO setTypesByNamespaceLabelAndTypeLabel(

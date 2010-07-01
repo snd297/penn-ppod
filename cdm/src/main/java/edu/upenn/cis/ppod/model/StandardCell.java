@@ -301,15 +301,12 @@ public class StandardCell extends Cell<StandardState> {
 
 		checkNotNull(element);
 
-		// So FindBugs knows we got it
-		final Integer position = getPosition();
-
 		checkState(
-					position != null,
+					getPosition() >= 0,
 					"this cell has not been assigned a row: it's position attribute is null");
 
 		final StandardCharacter standardCharacter =
-					getRow().getMatrix().getCharacters().get(position);
+					getRow().getMatrix().getCharacters().get(getPosition());
 
 		final StandardState newElement =
 				standardCharacter.getState(element.getStateNumber());

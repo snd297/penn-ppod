@@ -65,7 +65,7 @@ public class TestAttachmentNamespaceDAO implements IAttachmentNamespaceDAO {
 	}
 
 	public void makePersistent(final AttachmentNamespace entity) {
-		throw new UnsupportedOperationException();
+		return;
 	}
 
 	public void evict(AttachmentNamespace entity) {

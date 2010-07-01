@@ -103,6 +103,19 @@ public class Tree extends UUPPodEntity {
 		return newick;
 	}
 
+	/**
+	 * Get the tree set that owns this tree.
+	 * <p>
+	 * Will be {@code null} for newly created trees. Will never be {@code null}
+	 * for trees in a persistent state.
+	 * 
+	 * @return the tree set that owns this tree
+	 */
+	@Nullable
+	public TreeSet getTreeSet() {
+		return treeSet;
+	}
+
 	@Override
 	public Tree setInNeedOfNewVersion() {
 		if (treeSet != null) {
@@ -160,21 +173,8 @@ public class Tree extends UUPPodEntity {
 	 * 
 	 * @return this
 	 */
-	protected Tree setTreeSet(@CheckForNull final TreeSet treeSet) {
+	Tree setTreeSet(@CheckForNull final TreeSet treeSet) {
 		this.treeSet = treeSet;
 		return this;
-	}
-
-	/**
-	 * Get the tree set that owns this tree.
-	 * <p>
-	 * Will be {@code null} for newly created trees. Will never be {@code null}
-	 * for trees in a persistent state.
-	 * 
-	 * @return the tree set that owns this tree
-	 */
-	@Nullable
-	public TreeSet getTreeSet() {
-		return treeSet;
 	}
 }
