@@ -119,9 +119,6 @@ final class MergeSequenceSets<SS extends SequenceSet<S>, S extends Sequence>
 						.setVersionInfo(
 								newVersionInfo.getNewVersionInfo());
 			}
-
-			dao.flush();
-			dao.evict(targSeq);
 		}
 	}
 }

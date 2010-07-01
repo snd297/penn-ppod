@@ -66,9 +66,9 @@ public class DNARows extends OTUKeyedMap<DNARow> {
 	private final Set<OTUDNARowPair> otuRowPairs = newHashSet();
 
 	/**
-	 * Everything but SAVE_UPDATE, once it's evicted out of the persistence
-	 * context, we don't want it back in via cascading UPDATE. So that we can
-	 * run leaner for large matrices.
+	 * We want everything but SAVE_UPDATE (which ALL will give us) - once it's
+	 * evicted out of the persistence context, we don't want it back in via
+	 * cascading UPDATE. So that we can run leaner for large matrices.
 	 */
 	@OneToMany(cascade = { CascadeType.PERSIST, CascadeType.MERGE,
 			CascadeType.REMOVE,
