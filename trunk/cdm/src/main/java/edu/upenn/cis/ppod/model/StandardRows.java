@@ -139,7 +139,7 @@ public class StandardRows extends OTUKeyedMap<StandardRow> {
 		return this;
 	}
 
-	protected StandardRows setMatrix(
+	StandardRows setMatrix(
 			final StandardMatrix matrix) {
 		checkNotNull(matrix);
 		this.matrix = matrix;

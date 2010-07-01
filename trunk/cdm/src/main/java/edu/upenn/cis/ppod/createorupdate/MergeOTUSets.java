@@ -15,6 +15,7 @@
  */
 package edu.upenn.cis.ppod.createorupdate;
 
+import static com.google.common.base.Preconditions.checkNotNull;
 import static com.google.common.base.Predicates.compose;
 import static com.google.common.base.Predicates.equalTo;
 import static com.google.common.collect.Lists.newArrayListWithCapacity;
@@ -50,6 +51,8 @@ final class MergeOTUSets implements IMergeOTUSets {
 
 	public void mergeOTUSets(final OTUSet targetOTUSet,
 			final OTUSet sourceOTUSet) {
+		checkNotNull(targetOTUSet);
+		checkNotNull(sourceOTUSet);
 		targetOTUSet.setLabel(sourceOTUSet.getLabel());
 		targetOTUSet.setDescription(sourceOTUSet.getDescription());
 

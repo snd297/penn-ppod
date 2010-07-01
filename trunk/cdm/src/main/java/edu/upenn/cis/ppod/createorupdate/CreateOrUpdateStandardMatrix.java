@@ -88,12 +88,6 @@ final class CreateOrUpdateStandardMatrix
 		checkNotNull(dbMatrix);
 		checkNotNull(sourceMatrix);
 
-		// This value will be set again by
-		// createOrUpdateMartrix.creatOrUpdate(...), but we need it to be
-		// non-null since dbMatrix is persistent at this point and so set it
-		// here.
-		dbMatrix.setLabel(sourceMatrix.getLabel());
-
 		final List<StandardCharacter> newDbMatrixCharacters = newArrayList();
 		int sourceCharacterPosition = -1;
 		for (final StandardCharacter sourceCharacter : sourceMatrix

@@ -207,12 +207,14 @@ public abstract class SequenceSet<S extends Sequence>
 	 * <p>
 	 * A {@code null} value for {@code newOTUSet} indicates we're severing the
 	 * relationship.
+	 * <p>
+	 * Intentionally package-private.
 	 * 
 	 * @param otuSet the OTU set that will own this sequence set
 	 * 
 	 * @return this sequence set
 	 */
-	protected SequenceSet<S> setOTUSet(
+	SequenceSet<S> setOTUSet(
 			@CheckForNull final OTUSet otuSet) {
 		this.otuSet = otuSet;
 		setOTUs();

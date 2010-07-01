@@ -282,15 +282,14 @@ public class StandardCell extends Cell<StandardState> {
 	/**
 	 * Set or unset the row to which this cell belongs.
 	 * <p>
-	 * This value is used for error checking. For example, to make sure that the
-	 * states that are assigned to this cell belong to the correct character.
+	 * Intentionally package-private.
 	 * 
 	 * @param row value, {@code null} to indicate that the cell is removed from
 	 *            the row
 	 * 
 	 * @return this {@code CharacterStateCell}
 	 */
-	protected StandardCell setRow(
+	StandardCell setRow(
 			@CheckForNull final StandardRow row) {
 		this.row = row;
 		return this;

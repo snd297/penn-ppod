@@ -175,11 +175,11 @@ public abstract class Cell<E> extends PPodEntity {
 	protected abstract Set<E> getElementsModifiable();
 
 	/**
-	 * Used for serialization so we don't have to hit {@code elements} directly
-	 * and thereby cause unwanted database hits.
+	 * Used for serialization.
 	 * <p>
-	 * This method assumes that {@link #getType()} is non-null. So it assumes
-	 * that the unmarshaller will have set the type before it calls this method.
+	 * This method assumes that {@link #getType()} is non-null. So, for
+	 * instance, it assumes that the unmarshaller will have set the type before
+	 * it calls this method.
 	 * 
 	 * @throws IllegalStateException if {@code getType() == null}
 	 */
@@ -198,7 +198,6 @@ public abstract class Cell<E> extends PPodEntity {
 				if (getElementsModifiable() == null) {
 					initElements();
 				}
-				// We only want to hit elements if necessary to avoid db hits
 				return getElementsModifiable();
 			default:
 				throw new AssertionError("unknown type: " + getType());
@@ -263,7 +262,7 @@ public abstract class Cell<E> extends PPodEntity {
 						|| type == Type.UNASSIGNED,
 				"type was " + type + " but must be INAPPLICABLE or UNASSIGNED");
 
-		if (getType() == type) {
+		if (type == getType()) {
 			return this;
 		}
 		setType(type);

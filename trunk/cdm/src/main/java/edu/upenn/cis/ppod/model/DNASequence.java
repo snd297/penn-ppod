@@ -54,7 +54,7 @@ public class DNASequence extends Sequence {
 
 	/**
 	 * The owning object - we make this optional because a DNA sequence is more
-	 * of a standalone thing, though not yet..
+	 * of a standalone thing, though not yet...
 	 */
 	@CheckForNull
 	@ManyToOne(fetch = FetchType.LAZY, optional = true)
@@ -89,7 +89,7 @@ public class DNASequence extends Sequence {
 		return this;
 	}
 
-	protected DNASequence setOTUsToSequences(
+	DNASequence setOTUsToSequences(
 			@CheckForNull final DNASequences otusToSequences) {
 		this.sequences = otusToSequences;
 		return this;
