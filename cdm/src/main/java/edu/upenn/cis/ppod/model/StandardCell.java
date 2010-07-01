@@ -96,7 +96,7 @@ public class StandardCell extends Cell<StandardState> {
 	 * The {@code CharacterStateRow} to which this {@code CharacterStateCell}
 	 * belongs.
 	 */
-	@ManyToOne(fetch = FetchType.LAZY)
+	@ManyToOne(fetch = FetchType.LAZY, optional = false)
 	@JoinColumn(name = StandardRow.JOIN_COLUMN)
 	@CheckForNull
 	private StandardRow row;

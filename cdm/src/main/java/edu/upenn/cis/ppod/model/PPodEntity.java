@@ -112,8 +112,8 @@ public abstract class PPodEntity
 	 * The pPod version of this object. Similar in concept to Hibernate's
 	 * version, but tweaked for our purposes.
 	 */
-	@ManyToOne(fetch = FetchType.LAZY)
-	@JoinColumn(name = VersionInfo.JOIN_COLUMN, nullable = false)
+	@ManyToOne(fetch = FetchType.LAZY, optional = false)
+	@JoinColumn(name = VersionInfo.JOIN_COLUMN)
 	@CheckForNull
 	private VersionInfo versionInfo;
 

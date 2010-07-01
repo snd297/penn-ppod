@@ -59,9 +59,9 @@ public class TreeSet extends UUPPodEntityWithXmlId implements
 	@Column(name = "LABEL", nullable = false)
 	private String label;
 
-	@ManyToOne(fetch = FetchType.LAZY)
-	@JoinColumn(name = OTUSet.JOIN_COLUMN, nullable = false)
 	@CheckForNull
+	@ManyToOne(fetch = FetchType.LAZY, optional = false)
+	@JoinColumn(name = OTUSet.JOIN_COLUMN)
 	private OTUSet otuSet;
 
 	@OneToMany(cascade = CascadeType.ALL, orphanRemoval = true)

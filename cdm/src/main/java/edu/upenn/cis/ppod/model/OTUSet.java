@@ -107,9 +107,9 @@ public class OTUSet extends UUPPodEntityWithXmlId {
 	@JoinColumn(name = JOIN_COLUMN, nullable = false)
 	private final List<OTU> otus = newArrayList();
 
-	@ManyToOne(fetch = FetchType.LAZY)
-	@JoinColumn(name = Study.JOIN_COLUMN)
 	@CheckForNull
+	@ManyToOne(fetch = FetchType.LAZY, optional = false)
+	@JoinColumn(name = Study.JOIN_COLUMN)
 	private Study study;
 
 	/** The tree sets that reference this OTU set. */

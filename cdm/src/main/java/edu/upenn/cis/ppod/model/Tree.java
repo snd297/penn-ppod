@@ -51,7 +51,7 @@ public class Tree extends UUPPodEntity {
 	@CheckForNull
 	private String newick;
 
-	@ManyToOne
+	@ManyToOne(optional = false)
 	@JoinColumn(name = TreeSet.JOIN_COLUMN, insertable = false,
 				updatable = false, nullable = false)
 	@CheckForNull

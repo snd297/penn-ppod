@@ -55,8 +55,9 @@ public class StandardRows extends OTUKeyedMap<StandardRow> {
 	public static final String JOIN_COLUMN =
 			TABLE + "_" + ID_COLUMN;
 
-	@OneToOne(fetch = FetchType.LAZY, mappedBy = "rows")
+	/** The owner. */
 	@CheckForNull
+	@OneToOne(fetch = FetchType.LAZY, mappedBy = "rows", optional = false)
 	private StandardMatrix matrix;
 
 	/**

@@ -80,7 +80,7 @@ public class DNACell extends Cell<DNANucleotide> {
 	/**
 	 * The {@code Row} to which this {@code Cell} belongs.
 	 */
-	@ManyToOne(fetch = FetchType.LAZY)
+	@ManyToOne(fetch = FetchType.LAZY, optional = false)
 	@JoinColumn(name = DNARow.JOIN_COLUMN)
 	@CheckForNull
 	private DNARow row;

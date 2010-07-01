@@ -85,8 +85,8 @@ public abstract class Matrix<R extends Row<?>>
 	 * These are the <code>OTU</code>s whose data comprises this
 	 * {@code CharacterStateMatrix}.
 	 */
-	@ManyToOne(fetch = FetchType.LAZY)
-	@JoinColumn(name = OTUSet.JOIN_COLUMN, nullable = false)
+	@ManyToOne(fetch = FetchType.LAZY, optional = false)
+	@JoinColumn(name = OTUSet.JOIN_COLUMN)
 	@CheckForNull
 	private OTUSet otuSet;
 
