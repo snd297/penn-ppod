@@ -122,8 +122,6 @@ class CreateOrUpdateMatrix<M extends Matrix<R>, R extends Row<C>, C extends Cell
 				final C dbCell = cellProvider.get();
 				dbCells.add(dbCell);
 				dbCell.setVersionInfo(newVersionInfo.getNewVersionInfo());
-				// We don't call makePersistent (as we normally would) here
-				// because it still has null non-nullable properties.
 			}
 
 			// Get rid of cells from dbCells if needed
@@ -131,11 +129,7 @@ class CreateOrUpdateMatrix<M extends Matrix<R>, R extends Row<C>, C extends Cell
 				dbCells.remove(dbCells.size() - 1);
 			}
 
-			final List<C> clearedDbCells = dbRow.setCells(dbCells);
-
-			for (final C clearedDbCell : clearedDbCells) {
-				dao.makeTransient(clearedDbCell);
-			}
+			dbRow.setCells(dbCells);
 
 			int dbCellPosition = -1;
 			for (final C dbCell : dbRow.getCells()) {
@@ -173,7 +167,6 @@ class CreateOrUpdateMatrix<M extends Matrix<R>, R extends Row<C>, C extends Cell
 					dbCell.setVersionInfo(
 							newVersionInfo.getNewVersionInfo());
 				}
-				dao.makePersistent(dbCell);
 			}
 
 			// We need to do this here since we're removing the row from
@@ -190,12 +183,12 @@ class CreateOrUpdateMatrix<M extends Matrix<R>, R extends Row<C>, C extends Cell
 
 			dao.flush();
 			dao.evict(dbRow);
-			dao.evictEntities(dbRow.getCells());
 
 			fillInCellInfo(matrixInfo, dbRow, sourceOTUPos);
 
 			// This is to free up the cells for garbage collection - but depends
-			// on dao.evictEntities(all of the cells) to be safe!!!!!
+			// on all of the cells being evicted, which they are by
+			// dao.evict(dbRow)
 			dbRow.clearCells();
 
 			// Again to free up cells for garbage collection

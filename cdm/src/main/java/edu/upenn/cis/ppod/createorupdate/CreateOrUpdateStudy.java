@@ -127,9 +127,9 @@ final class CreateOrUpdateStudy implements ICreateOrUpdateStudy {
 			dbStudy.setVersionInfo(newVersionInfo
 									.getNewVersionInfo());
 			dbStudy.setPPodId();
-
 		}
 		dbStudy.setLabel(incomingStudy.getLabel());
+
 		// Delete otu sets in persisted study that are not in the incoming
 		// study.
 		for (final OTUSet dbOTUSet : dbStudy.getOTUSets()) {
@@ -156,6 +156,7 @@ final class CreateOrUpdateStudy implements ICreateOrUpdateStudy {
 				dbOTUSet.setVersionInfo(newVersionInfo
 						.getNewVersionInfo());
 				dbOTUSet.setPPodId();
+				dbOTUSet.setLabel(incomingOTUSet.getLabel());
 				dbOTUSet = dbStudy.addOTUSet(dbOTUSet);
 			}
 
@@ -163,28 +164,15 @@ final class CreateOrUpdateStudy implements ICreateOrUpdateStudy {
 
 			final OTUSetInfo otuSetInfo = otuSetInfoProvider.get();
 			dbStudyInfo.getOTUSetInfos().add(otuSetInfo);
+			otuSetInfo.setPPodId(dbOTUSet.getPPodId());
 
+			// Persist the study and all OTUSet's for the "handle" methods
 			studyDAO.makePersistent(dbStudy);
+
 			handleDNAMatrices(dbOTUSet, incomingOTUSet, otuSetInfo);
 			handleStandardMatrices(dbOTUSet, incomingOTUSet, otuSetInfo);
 			handleDNASequenceSets(dbOTUSet, incomingOTUSet);
-
-			otuSetInfo.setPPodId(dbOTUSet.getPPodId());
-
-			for (final TreeSet incomingTreeSet : incomingOTUSet.getTreeSets()) {
-				TreeSet dbTreeSet;
-				if (null == (dbTreeSet =
-						findIf(dbOTUSet.getTreeSets(),
-								compose(equalTo(incomingTreeSet.getPPodId()),
-										IWithPPodId.getPPodId)))) {
-					dbTreeSet = treeSetProvider.get();
-					dbTreeSet.setVersionInfo(newVersionInfo
-							.getNewVersionInfo());
-					dbTreeSet.setPPodId();
-				}
-				dbOTUSet.addTreeSet(dbTreeSet);
-				mergeTreeSets.mergeTreeSets(dbTreeSet, incomingTreeSet);
-			}
+			handleTreeSets(dbOTUSet, incomingOTUSet);
 		}
 	}
 
@@ -230,6 +218,9 @@ final class CreateOrUpdateStudy implements ICreateOrUpdateStudy {
 				dbMatrix.setColumnVersionInfos(
 								newVersionInfo.getNewVersionInfo());
 				dbMatrix.setPPodId();
+
+				// Do this here because it's non-nullable
+				dbMatrix.setLabel(incomingMatrix.getLabel());
 				dbOTUSet.addDNAMatrix(dbMatrix);
 			}
 			final MatrixInfo dbMatrixInfo =
@@ -270,6 +261,7 @@ final class CreateOrUpdateStudy implements ICreateOrUpdateStudy {
 				dbDNASequenceSet.setPPodId();
 				dbDNASequenceSet.setVersionInfo(newVersionInfo
 						.getNewVersionInfo());
+				dbDNASequenceSet.setLabel(incomingDNASequenceSet.getLabel());
 			}
 			dbOTUSet.addDNASequenceSet(dbDNASequenceSet);
 			mergeDNASequenceSets
@@ -311,11 +303,46 @@ final class CreateOrUpdateStudy implements ICreateOrUpdateStudy {
 				dbMatrix.setColumnVersionInfos(
 								newVersionInfo.getNewVersionInfo());
 				dbMatrix.setPPodId();
+				dbMatrix.setLabel(incomingMatrix.getLabel());
 				dbOTUSet.addStandardMatrix(dbMatrix);
 			}
 			final MatrixInfo dbMatrixInfo = createOrUpdateStandardMatrix
 					.createOrUpdateMatrix(dbMatrix, incomingMatrix);
 			otuSetInfo.getMatrixInfos().add(dbMatrixInfo);
 		}
+	}
+
+	private void handleTreeSets(
+			final OTUSet dbOTUSet,
+			final OTUSet incomingOTUSet) {
+
+		// Let's delete tree sets missing from incoming OTU set
+		for (final TreeSet dbTreeSet : dbOTUSet.getTreeSets()) {
+			if (null == findIf(incomingOTUSet.getTreeSets(),
+						compose(
+								equalTo(
+										dbTreeSet.getPPodId()),
+										IWithPPodId.getPPodId))) {
+				dbOTUSet.removeTreeSet(dbTreeSet);
+			}
+		}
+
+		// Now let's add in new ones
+		for (final TreeSet incomingTreeSet : incomingOTUSet.getTreeSets()) {
+			TreeSet dbTreeSet;
+			if (null == (dbTreeSet =
+					findIf(dbOTUSet.getTreeSets(),
+							compose(equalTo(incomingTreeSet.getPPodId()),
+									IWithPPodId.getPPodId)))) {
+				dbTreeSet = treeSetProvider.get();
+				dbTreeSet.setVersionInfo(newVersionInfo
+						.getNewVersionInfo());
+				dbTreeSet.setPPodId();
+				dbTreeSet.setLabel(incomingTreeSet.getLabel());
+				dbOTUSet.addTreeSet(dbTreeSet);
+			}
+			mergeTreeSets.mergeTreeSets(dbTreeSet, incomingTreeSet);
+		}
+
 	}
 }

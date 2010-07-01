@@ -22,7 +22,6 @@ import static com.google.common.collect.Lists.newArrayList;
 import java.util.Collections;
 import java.util.List;
 
-import javax.persistence.MappedSuperclass;
 import javax.xml.bind.Unmarshaller;
 
 import edu.umd.cs.findbugs.annotations.CheckForNull;
@@ -38,7 +37,6 @@ import edu.upenn.cis.ppod.util.IVisitor;
  * 
  * @param <C> the type of cell we have
  */
-@MappedSuperclass
 public abstract class Row<C extends Cell<?>>
 		extends PPodEntity
 		implements IRow, IOTUKeyedMapValue {

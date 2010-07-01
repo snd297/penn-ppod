@@ -197,7 +197,13 @@ public class DNACell extends Cell<DNANucleotide> {
 		return this;
 	}
 
-	protected DNACell setRow(final DNARow row) {
+	/**
+	 * Intentionally package-private.
+	 * 
+	 * @param row
+	 * @return
+	 */
+	DNACell setRow(@CheckForNull final DNARow row) {
 		this.row = row;
 		return this;
 	}

@@ -65,7 +65,13 @@ public class DNARows extends OTUKeyedMap<DNARow> {
 	@Transient
 	private final Set<OTUDNARowPair> otuRowPairs = newHashSet();
 
-	@OneToMany(cascade = CascadeType.ALL, orphanRemoval = true)
+	/**
+	 * No merge, once it's out, we don't want it back in.
+	 */
+	@OneToMany(cascade = { CascadeType.PERSIST, CascadeType.REMOVE,
+			CascadeType.DETACH,
+			CascadeType.REFRESH },
+			orphanRemoval = true)
 	@JoinTable(inverseJoinColumns = @JoinColumn(name = DNARow.JOIN_COLUMN))
 	@MapKeyJoinColumn(name = OTU.JOIN_COLUMN)
 	private final Map<OTU, DNARow> rows = newHashMap();
@@ -134,7 +140,14 @@ public class DNARows extends OTUKeyedMap<DNARow> {
 		return this;
 	}
 
-	protected DNARows setMatrix(final DNAMatrix matrix) {
+	/**
+	 * Intentionally package-private.
+	 * 
+	 * @param matrix
+	 * @return
+	 */
+	DNARows setMatrix(final DNAMatrix matrix) {
+		checkNotNull(matrix);
 		this.matrix = matrix;
 		return this;
 	}

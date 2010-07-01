@@ -62,7 +62,8 @@ public class StandardRow extends Row<StandardCell> {
 	 * {@link #clearCells()} to free up cells for garbage collection, even if we
 	 * evict the cells and the row.
 	 */
-	@OneToMany(mappedBy = "row", cascade = CascadeType.REMOVE)
+	@OneToMany(mappedBy = "row", cascade = CascadeType.ALL,
+			orphanRemoval = true)
 	@OrderBy("position")
 	private final List<StandardCell> cells = newArrayList();
 
