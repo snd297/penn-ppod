@@ -25,6 +25,7 @@ import javax.annotation.CheckForNull;
 import javax.annotation.Nullable;
 import javax.annotation.OverridingMethodsMustInvokeSuper;
 import javax.persistence.Column;
+import javax.persistence.FetchType;
 import javax.persistence.JoinColumn;
 import javax.persistence.ManyToOne;
 import javax.persistence.MappedSuperclass;
@@ -49,9 +50,9 @@ public abstract class SequenceSet<S extends Sequence>
 	@Column(name = "LABEL", nullable = false)
 	private String label;
 
-	@ManyToOne
-	@JoinColumn(name = OTUSet.JOIN_COLUMN, nullable = false)
 	@CheckForNull
+	@ManyToOne(fetch = FetchType.LAZY, optional = false)
+	@JoinColumn(name = OTUSet.JOIN_COLUMN)
 	private OTUSet otuSet;
 
 	protected SequenceSet() {}

@@ -52,9 +52,12 @@ public class DNASequence extends Sequence {
 	public static final String JOIN_COLUMN =
 			TABLE + "_" + PersistentObject.ID_COLUMN;
 
-	/** The owning object. */
+	/**
+	 * The owning object - we make this optional because a DNA sequence is more
+	 * of a standalone thing, though not yet..
+	 */
 	@CheckForNull
-	@ManyToOne(fetch = FetchType.LAZY)
+	@ManyToOne(fetch = FetchType.LAZY, optional = true)
 	@JoinColumn(name = DNASequences.JOIN_COLUMN)
 	private DNASequences sequences;
 

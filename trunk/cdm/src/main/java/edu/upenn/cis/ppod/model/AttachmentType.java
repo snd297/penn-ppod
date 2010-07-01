@@ -50,8 +50,8 @@ public class AttachmentType extends PersistentObjectWithXmlId {
 
 	public static final int LABEL_COLUMN_LENGTH = 64;
 
-	@ManyToOne(fetch = FetchType.LAZY)
-	@JoinColumn(name = AttachmentNamespace.JOIN_COLUMN, nullable = false)
+	@ManyToOne(fetch = FetchType.LAZY, optional = false)
+	@JoinColumn(name = AttachmentNamespace.JOIN_COLUMN)
 	@CheckForNull
 	private AttachmentNamespace namespace;
 

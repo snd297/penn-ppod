@@ -229,7 +229,7 @@ public class Attachment extends UUPPodEntity {
 
 	/** Object to which this {@code Attachment} is attached. */
 	@CheckForNull
-	@ManyToOne(fetch = FetchType.LAZY)
+	@ManyToOne(fetch = FetchType.LAZY, optional = false)
 	@JoinColumn(name = PPodEntity.JOIN_COLUMN)
 	private PPodEntity attachee;
 
@@ -248,8 +248,8 @@ public class Attachment extends UUPPodEntity {
 	private String stringValue;
 
 	/** Like a variable typeLabel. */
-	@ManyToOne(fetch = FetchType.LAZY)
-	@JoinColumn(name = AttachmentType.JOIN_COLUMN, nullable = false)
+	@ManyToOne(fetch = FetchType.LAZY, optional = false)
+	@JoinColumn(name = AttachmentType.JOIN_COLUMN)
 	@CheckForNull
 	private AttachmentType type;
 

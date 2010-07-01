@@ -91,6 +91,8 @@ class CreateOrUpdateMatrix<M extends Matrix<R>, R extends Row<C>, C extends Cell
 		final MatrixInfo matrixInfo = matrixInfoProvider.get();
 		matrixInfo.setPPodId(dbMatrix.getPPodId());
 
+		dao.makePersistent(dbMatrix);
+
 		int sourceOTUPos = -1;
 
 		for (final OTU sourceOTU : sourceMatrix.getOTUSet().getOTUs()) {
@@ -110,6 +112,7 @@ class CreateOrUpdateMatrix<M extends Matrix<R>, R extends Row<C>, C extends Cell
 				dbRow.setVersionInfo(newVersionInfo
 						.getNewVersionInfo());
 				dbMatrix.putRow(dbOTU, dbRow);
+				dao.makePersistent(dbRow);
 			}
 
 			final List<C> dbCells = newArrayList(dbRow.getCells());

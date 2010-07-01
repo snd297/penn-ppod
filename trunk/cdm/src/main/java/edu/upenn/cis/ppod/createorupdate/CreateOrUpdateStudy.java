@@ -127,12 +127,9 @@ final class CreateOrUpdateStudy implements ICreateOrUpdateStudy {
 			dbStudy.setVersionInfo(newVersionInfo
 									.getNewVersionInfo());
 			dbStudy.setPPodId();
-			dbStudy.setLabel(incomingStudy.getLabel());
-			studyDAO.makePersistent(dbStudy);
-		} else {
-			dbStudy.setLabel(incomingStudy.getLabel());
-		}
 
+		}
+		dbStudy.setLabel(incomingStudy.getLabel());
 		// Delete otu sets in persisted study that are not in the incoming
 		// study.
 		for (final OTUSet dbOTUSet : dbStudy.getOTUSets()) {
@@ -167,11 +164,12 @@ final class CreateOrUpdateStudy implements ICreateOrUpdateStudy {
 			final OTUSetInfo otuSetInfo = otuSetInfoProvider.get();
 			dbStudyInfo.getOTUSetInfos().add(otuSetInfo);
 
-			otuSetInfo.setPPodId(dbOTUSet.getPPodId());
-
+			studyDAO.makePersistent(dbStudy);
 			handleDNAMatrices(dbOTUSet, incomingOTUSet, otuSetInfo);
 			handleStandardMatrices(dbOTUSet, incomingOTUSet, otuSetInfo);
 			handleDNASequenceSets(dbOTUSet, incomingOTUSet);
+
+			otuSetInfo.setPPodId(dbOTUSet.getPPodId());
 
 			for (final TreeSet incomingTreeSet : incomingOTUSet.getTreeSets()) {
 				TreeSet dbTreeSet;

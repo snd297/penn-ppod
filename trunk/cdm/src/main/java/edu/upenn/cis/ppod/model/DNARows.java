@@ -54,7 +54,7 @@ public class DNARows extends OTUKeyedMap<DNARow> {
 	public static final String JOIN_COLUMN =
 			TABLE + "_" + PersistentObject.ID_COLUMN;
 
-	@OneToOne(fetch = FetchType.LAZY, mappedBy = "rows")
+	@OneToOne(fetch = FetchType.LAZY, mappedBy = "rows", optional = false)
 	@CheckForNull
 	private DNAMatrix matrix;
 

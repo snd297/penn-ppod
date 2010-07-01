@@ -51,7 +51,9 @@ public class DNARow extends Row<DNACell> {
 	 * The {@code CharacterStateCell}s that make up the row.
 	 * <p>
 	 * {@code orphanRemoval = true} slows things down for matrices w/ many
-	 * columns, so we don't include it. Plus it seems to break things.
+	 * columns, so we don't include it. Plus it seems to break things when we
+	 * use {@link #clearCells()} to free up cells for garbage collection, even
+	 * if we evict the cells and the row.
 	 */
 	@OneToMany(mappedBy = "row", cascade = CascadeType.REMOVE)
 	@OrderBy("position")
@@ -61,7 +63,7 @@ public class DNARow extends Row<DNACell> {
 	 * This is the parent of the row. It lies in between this and the matrix.
 	 */
 	@CheckForNull
-	@ManyToOne(fetch = FetchType.LAZY)
+	@ManyToOne(fetch = FetchType.LAZY, optional = false)
 	@JoinColumn(name = DNARows.JOIN_COLUMN)
 	private DNARows rows;
 

@@ -58,7 +58,9 @@ public class StandardRow extends Row<StandardCell> {
 	 * <p>
 	 * There is evidence that {@code DELETE_ORPHAN} slows things down so we're
 	 * not including that either.(More of an issue for Protein matrices, but
-	 * they share code.)
+	 * they share code.) Plus it seems to break things when we use
+	 * {@link #clearCells()} to free up cells for garbage collection, even if we
+	 * evict the cells and the row.
 	 */
 	@OneToMany(mappedBy = "row", cascade = CascadeType.REMOVE)
 	@OrderBy("position")
@@ -68,7 +70,7 @@ public class StandardRow extends Row<StandardCell> {
 	 * This is the parent of the row. It lies in between this and the matrix.
 	 */
 	@CheckForNull
-	@ManyToOne(fetch = FetchType.LAZY)
+	@ManyToOne(fetch = FetchType.LAZY, optional = false)
 	@JoinColumn(name = DNASequences.JOIN_COLUMN)
 	private StandardRows rows;
 
