@@ -152,7 +152,6 @@ class CreateOrUpdateMatrix<M extends Matrix<R>, R extends Row<C>, C extends Cell
 					default:
 						throw new AssertionError("unknown type");
 				}
-
 				// We need to do this here since we're removing the cell from
 				// the persistence context (with evict). So it won't get handled
 				// higher up in the application when it does for most entities.
