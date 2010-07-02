@@ -67,9 +67,9 @@ public class StandardCharacter extends UUPPodEntityWithXmlId {
 	/**
 	 * The matrix that owns this {@code StandardCharacter}.
 	 */
-	@ManyToOne
+	@ManyToOne(optional = false)
 	@JoinColumn(name = StandardMatrix.JOIN_COLUMN, insertable = false,
-			updatable = false, nullable = false)
+			updatable = false)
 	@CheckForNull
 	private StandardMatrix matrix;
 
