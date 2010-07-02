@@ -17,6 +17,7 @@ package edu.upenn.cis.ppod.model;
 
 import static com.google.common.base.Preconditions.checkArgument;
 import static com.google.common.base.Preconditions.checkNotNull;
+import static com.google.common.base.Preconditions.checkState;
 
 import java.io.Serializable;
 
@@ -53,16 +54,22 @@ public class StandardState extends PPodEntityWXmlId {
 
 	/**
 	 * Orders character states by the natural ordering of
-	 * {@link CharacterState#getStateNumber()}.
+	 * {@link StandardState#getStateNumber()}.
+	 * <p>
+	 * Note: this comparator imposes orderings that are inconsistent with
+	 * equals. If two states have the same state numbers, this comparator
+	 * returns {@code 0} whether they are {@code .equals} or not.
 	 * <p>
 	 * We use an external comparator for {@code StandardState} instead of
 	 * implementing {@code CharacterStateComparator} because we don't want to
 	 * have to worry (as much) about being incompatible with equals. See
-	 * {@link Comparable} and {@link CharacterStateComparator} for information
-	 * about that.
+	 * {@link Comparable} for information about that.
 	 * <p>
-	 * Note that the state number of a {@code StandardState} is immutable, so
-	 * this comparator should be safe to use in a {@code SortedSet}.
+	 * Note that the state number of a {@code StandardState} is immutable once
+	 * assigned, so since the comparator does not allow {@code null} arguments,
+	 * this comparator will be safe to use in a {@code SortedSet} . See
+	 * {@link StandardState#setStateNumber(Integer)} for the why's of the
+	 * mutability.
 	 */
 	public static class StandardStateComparator implements
 			java.util.Comparator<StandardState>, Serializable {
@@ -107,10 +114,11 @@ public class StandardState extends PPodEntityWXmlId {
 
 	};
 
-	/** The name of this entity's table. Intentionally package-private. */
-	final static String TABLE = "STANDARD_STATE";
+	/** The name of this entity's table. */
+	public final static String TABLE = "STANDARD_STATE";
 
-	final static String JOIN_COLUMN = TABLE + "_ID";
+	/** For foreign keys that point at this table. */
+	public final static String JOIN_COLUMN = TABLE + "_ID";
 
 	/**
 	 * The column where the stateNumber is stored. Intentionally
@@ -125,7 +133,7 @@ public class StandardState extends PPodEntityWXmlId {
 
 	/**
 	 * The state number of this {@code CharacterState}. This is the core value
-	 * of these objects.
+	 * of these objects. Write-once-read-many.
 	 */
 	@Column(name = STATE_NUMBER_COLUMN, nullable = false, updatable = false)
 	@CheckForNull
@@ -142,7 +150,7 @@ public class StandardState extends PPodEntityWXmlId {
 	/**
 	 * The {@code Character} of which this is a state.
 	 */
-	@ManyToOne(fetch = FetchType.LAZY)
+	@ManyToOne(fetch = FetchType.LAZY, optional = false)
 	@JoinColumn(name = StandardCharacter.JOIN_COLUMN)
 	@CheckForNull
 	private StandardCharacter character;
@@ -205,7 +213,8 @@ public class StandardState extends PPodEntityWXmlId {
 	 * Get the integer value of this character stateNumber. The integer value is
 	 * the heart of the class.
 	 * <p>
-	 * {@code null} when the object is created.
+	 * {@code null} when the object is created. Never {@code null} for
+	 * persistent objects.
 	 * 
 	 * @return get the integer value of this character stateNumber
 	 */
@@ -219,8 +228,8 @@ public class StandardState extends PPodEntityWXmlId {
 	 * Set the <code>character</code> property of this {@code CharacterState} to
 	 * <code>character</code>.
 	 * <p>
-	 * Intended to be called from classes responsible for managing the {@code
-	 * Character<->CharacterState} relationship.
+	 * Intentionally package-private and meant to be called from
+	 * {@link StandardCharacter}.
 	 * <p>
 	 * {@code character} being {@code null} signifies that the relationship, if
 	 * it exists, is being severed.
@@ -229,7 +238,7 @@ public class StandardState extends PPodEntityWXmlId {
 	 * 
 	 * @return this {@code CharacterState}
 	 */
-	protected StandardState setCharacter(
+	StandardState setCharacter(
 			@CheckForNull final StandardCharacter character) {
 		this.character = character;
 		return this;
@@ -272,12 +281,18 @@ public class StandardState extends PPodEntityWXmlId {
 	 * <p>
 	 * {@code stateNumber} must be an {@code Integer} and not an {@code int} to
 	 * play nicely with JAXB.
+	 * <p>
+	 * This method was created for JAXB - we'd rather if the state number had no
+	 * setter.
 	 * 
 	 * @param stateNumber the integer value to use for this state
 	 * 
 	 * @return this
 	 */
 	protected StandardState setStateNumber(final Integer stateNumber) {
+		checkNotNull(stateNumber);
+		checkState(this.stateNumber == null,
+				"this.stateNumber is non-null: this is a WORM property.");
 		this.stateNumber = stateNumber;
 		return this;
 	}

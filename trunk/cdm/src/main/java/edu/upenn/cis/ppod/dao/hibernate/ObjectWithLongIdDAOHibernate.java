@@ -18,12 +18,12 @@ package edu.upenn.cis.ppod.dao.hibernate;
 import edu.upenn.cis.ppod.thirdparty.dao.hibernate.GenericHibernateDAO;
 
 /**
- * A pretty generic DAO for when we just need the basic operations.
+ * A generic DAO for when we just need the basic operations.
  * 
  * @author Sam Donnelly
  */
-final class ObjectWithLongIdDAOHibernate extends
-		GenericHibernateDAO<Object, Long> implements
-		IObjectWithLongIdDAOHibernate {
+final class ObjectWithLongIdDAOHibernate
+		extends GenericHibernateDAO<Object, Long>
+		implements IObjectWithLongIdDAOHibernate {
 
 }
