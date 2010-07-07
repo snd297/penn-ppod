@@ -70,7 +70,9 @@ public class DNARows extends OTUKeyedMap<DNARow> {
 	 * evicted out of the persistence context, we don't want it back in via
 	 * cascading UPDATE. So that we can run leaner for large matrices.
 	 */
-	@OneToMany(cascade = { CascadeType.PERSIST, CascadeType.MERGE,
+	@OneToMany(cascade = {
+			CascadeType.PERSIST,
+			CascadeType.MERGE,
 			CascadeType.REMOVE,
 			CascadeType.DETACH,
 			CascadeType.REFRESH },

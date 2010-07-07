@@ -40,14 +40,13 @@ import javax.xml.bind.annotation.XmlAttribute;
 @Table(name = VersionInfo.TABLE)
 public class VersionInfo extends PersistentObject {
 
-	final static String TABLE = "VERSION_INFO";
+	public final static String TABLE = "VERSION_INFO";
 
-	final static String JOIN_COLUMN = TABLE + "_ID";
-
-	final static String VERSION_INFO_FIELD = "versionInfo";
+	public final static String JOIN_COLUMN = TABLE + "_ID";
 
 	/** Global pPOD version. */
-	@Column(name = "VERSION", unique = true, nullable = false, updatable = false)
+	@Column(name = "VERSION", unique = true, nullable = false,
+			updatable = false)
 	private Long version = -1L;
 
 	/** Record the creation time of this record. */

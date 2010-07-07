@@ -61,6 +61,7 @@ final class CreateOrUpdateStudy implements ICreateOrUpdateStudy {
 	private final Study incomingStudy;
 	private Study dbStudy;
 	private final ICreateOrUpdateDNAMatrix createOrUpdateDNAMatrix;
+	private final IDAO<Object, Long> dao;
 
 	@Inject
 	CreateOrUpdateStudy(
@@ -71,8 +72,8 @@ final class CreateOrUpdateStudy implements ICreateOrUpdateStudy {
 			final Provider<TreeSet> treeSetProvider,
 			final IMergeOTUSets.IFactory saveOrUpdateOTUSetFactory,
 			final IMergeTreeSets.IFactory mergeTreeSetsFactory,
-			final ICreateOrUpdateDNAMatrix.IFactory saveOrUpdateDNAMatrixFactory,
-			final ICreateOrUpdateStandardMatrix.IFactory saveOrUpdateMatrixFactory,
+			final ICreateOrUpdateDNAMatrix.IFactory createOrUpdateDNAMatrixFactory,
+			final ICreateOrUpdateStandardMatrix.IFactory createOrUpdateMatrixFactory,
 			final IMergeSequenceSets.IFactory<DNASequenceSet, DNASequence> mergeDNASequenceSetsFactory,
 			final IMergeAttachments.IFactory mergeAttachmentFactory,
 			final Provider<DNAMatrix> dnaMatrixProvider,
@@ -93,10 +94,10 @@ final class CreateOrUpdateStudy implements ICreateOrUpdateStudy {
 		this.mergeOTUSets = saveOrUpdateOTUSetFactory
 				.create(newVersionInfo);
 		this.createOrUpdateDNAMatrix =
-				saveOrUpdateDNAMatrixFactory.create(
-						newVersionInfo, dao);
+				createOrUpdateDNAMatrixFactory
+						.create(newVersionInfo, dao);
 		this.createOrUpdateStandardMatrix =
-				saveOrUpdateMatrixFactory.create(
+				createOrUpdateMatrixFactory.create(
 						mergeAttachmentFactory
 								.create(attachmentNamespaceDAO,
 										attachmentTypeDAO),
@@ -108,9 +109,11 @@ final class CreateOrUpdateStudy implements ICreateOrUpdateStudy {
 						newVersionInfo);
 		this.mergeTreeSets = mergeTreeSetsFactory.create(newVersionInfo);
 		this.dnaMatrixProvider = dnaMatrixProvider;
+		this.dao = dao;
 	}
 
 	public void createOrUpdateStudy() {
+		boolean makeStudyPersistent = false;
 		if (null == (dbStudy =
 				studyDAO.getStudyByPPodId(
 						incomingStudy.getPPodId()))) {
@@ -118,8 +121,19 @@ final class CreateOrUpdateStudy implements ICreateOrUpdateStudy {
 			dbStudy.setVersionInfo(
 					newVersionInfo.getNewVersionInfo());
 			dbStudy.setPPodId();
+			makeStudyPersistent = true;
 		}
 		dbStudy.setLabel(incomingStudy.getLabel());
+
+		if (makeStudyPersistent) {
+			// It's okay to pass makePersistent a persistent study, but we do
+			// this just in case
+			// it's an expensive operation - which one could imagine it may be
+			// w/ cascades. Though saveOrUpdate cascades don't get to the cells
+			// (they get stopped at the OTUKeyedMaps) so it really may not
+			// matter anyway.
+			studyDAO.makePersistent(dbStudy);
+		}
 
 		// Delete otu sets in persisted study that are not in the incoming
 		// study.
@@ -147,14 +161,13 @@ final class CreateOrUpdateStudy implements ICreateOrUpdateStudy {
 				dbOTUSet.setVersionInfo(newVersionInfo
 						.getNewVersionInfo());
 				dbOTUSet.setPPodId();
-				dbOTUSet.setLabel(incomingOTUSet.getLabel());
+				dbOTUSet.setLabel(incomingOTUSet.getLabel()); // non-null, do it
+																// now
 				dbOTUSet = dbStudy.addOTUSet(dbOTUSet);
+				dao.makePersistent(dbOTUSet);
 			}
 
 			mergeOTUSets.mergeOTUSets(dbOTUSet, incomingOTUSet);
-
-			// Persist the study and all OTUSet's for the "handle" methods
-			studyDAO.makePersistent(dbStudy);
 
 			handleDNAMatrices(dbOTUSet, incomingOTUSet);
 			handleStandardMatrices(dbOTUSet, incomingOTUSet);

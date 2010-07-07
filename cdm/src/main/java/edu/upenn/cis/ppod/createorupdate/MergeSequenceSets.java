@@ -25,7 +25,6 @@ import com.google.inject.Inject;
 import com.google.inject.Provider;
 import com.google.inject.assistedinject.Assisted;
 
-import edu.upenn.cis.ppod.dao.IDAO;
 import edu.upenn.cis.ppod.model.OTU;
 import edu.upenn.cis.ppod.model.Sequence;
 import edu.upenn.cis.ppod.model.SequenceSet;
@@ -34,17 +33,14 @@ import edu.upenn.cis.ppod.modelinterfaces.INewVersionInfo;
 final class MergeSequenceSets<SS extends SequenceSet<S>, S extends Sequence>
 		implements IMergeSequenceSets<SS, S> {
 
-	private final IDAO<Object, Long> dao;
 	private final Provider<S> sequenceProvider;
 	private final INewVersionInfo newVersionInfo;
 
 	@Inject
 	MergeSequenceSets(
 			final Provider<S> sequenceProvider,
-			@Assisted IDAO<Object, Long> dao,
 			@Assisted INewVersionInfo newVersionInfo) {
 		this.sequenceProvider = sequenceProvider;
-		this.dao = dao;
 		this.newVersionInfo = newVersionInfo;
 	}
 
@@ -95,30 +91,24 @@ final class MergeSequenceSets<SS extends SequenceSet<S>, S extends Sequence>
 							.get(i);
 
 			final S srcSeq = srcSeqSet.getSequence(sourceOTU);
-			final OTU trgOTU = targSeqSet.getOTUSet()
+			final OTU targOTU = targSeqSet.getOTUSet()
 							.getOTUs()
 							.get(i);
 
 			S targSeq;
 
 			if (null == (targSeq =
-					targOTUsToSeqs.get(trgOTU))) {
+					targOTUsToSeqs.get(targOTU))) {
 				targSeq = sequenceProvider.get();
 				targSeq.setVersionInfo(newVersionInfo
 						.getNewVersionInfo());
 			}
 			targSeq.setSequence(srcSeq.getSequence());
-			targSeqSet.putSequence(trgOTU, targSeq);
+			targSeqSet.putSequence(targOTU, targSeq);
 
 			targSeq.setName(srcSeq.getName());
 			targSeq.setDescription(srcSeq.getDescription());
 			targSeq.setAccession(srcSeq.getAccession());
-
-			if (targSeq.isInNeedOfNewVersion()) {
-				targSeq
-						.setVersionInfo(
-								newVersionInfo.getNewVersionInfo());
-			}
 		}
 	}
 }
