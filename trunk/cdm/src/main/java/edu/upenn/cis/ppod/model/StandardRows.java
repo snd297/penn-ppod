@@ -68,12 +68,17 @@ public class StandardRows extends OTUKeyedMap<StandardRow> {
 	private final Set<OTUStandardRowPair> otuRowPairs = newHashSet();
 
 	/**
-	 * No merge, once it's evicted out of the persistence context, we don't want
-	 * it back in. So that we can run leaner for large matrices. This very well
-	 * may never make a difference for standard matrices which are much smaller,
-	 * generally, than protein matrices.
+	 * We want everything but SAVE_UPDATE (which ALL will give us) - once it's
+	 * evicted out of the persistence context, we don't want it back in via
+	 * cascading UPDATE. So that we can run leaner for large matrices. This is
+	 * more important for protein matrices but we do it here for at least
+	 * consistency since the same client code works with the different kinds of
+	 * matrices.
 	 */
-	@OneToMany(cascade = { CascadeType.PERSIST, CascadeType.REMOVE,
+	@OneToMany(cascade = {
+			CascadeType.PERSIST,
+			CascadeType.MERGE,
+			CascadeType.REMOVE,
 			CascadeType.DETACH,
 			CascadeType.REFRESH },
 			orphanRemoval = true)

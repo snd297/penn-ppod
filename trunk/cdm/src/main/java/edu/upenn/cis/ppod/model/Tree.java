@@ -53,7 +53,7 @@ public class Tree extends UUPPodEntity {
 
 	@ManyToOne(optional = false)
 	@JoinColumn(name = TreeSet.JOIN_COLUMN, insertable = false,
-				updatable = false, nullable = false)
+				updatable = false)
 	@CheckForNull
 	private TreeSet treeSet;
 
