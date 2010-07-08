@@ -27,6 +27,7 @@ import javax.persistence.Column;
 import javax.persistence.EnumType;
 import javax.persistence.Enumerated;
 import javax.persistence.MappedSuperclass;
+import javax.persistence.Transient;
 import javax.xml.bind.Marshaller;
 import javax.xml.bind.annotation.XmlAttribute;
 
@@ -85,19 +86,35 @@ public abstract class Cell<E> extends PPodEntity {
 
 	protected static final String TYPE_COLUMN = "TYPE";
 
-	/**
-	 * We use {@code -1} instead of {@code null} - see
-	 * {@link #setPosition(Integer)} for why.
-	 */
 	@Column(name = "POSITION", nullable = false)
-	private Integer position = -1;
+	private Integer position;
 
 	@CheckForNull
 	@Column(name = TYPE_COLUMN, nullable = false)
 	@Enumerated(EnumType.ORDINAL)
 	private Type type;
 
-	protected Cell() {}
+	/**
+	 * The heart of the cell: the {@code DNANucleotide}s.
+	 * <p>
+	 * At most one of {@code element} and {@code elements} will be non-
+	 * {@code null}.
+	 */
+	@CheckForNull
+	@Transient
+	private Set<E> elements;
+
+	/**
+	 * To handle the most-common case of a single element.
+	 * <p>
+	 * At most of one of {@code element} and {@code elements} will be
+	 * {@code null}.
+	 */
+	@CheckForNull
+	@Transient
+	private E element;
+
+	Cell() {}
 
 	@Override
 	public boolean beforeMarshal(@CheckForNull final Marshaller marshaller) {
@@ -110,7 +127,9 @@ public abstract class Cell<E> extends PPodEntity {
 	 * Will be {@code null} if this is cell is not {@link Type.SINGLE}.
 	 */
 	@CheckForNull
-	protected abstract E getElement();
+	protected E getElement() {
+		return element;
+	}
 
 	/**
 	 * Get the elements contained in this cell.
@@ -144,7 +163,6 @@ public abstract class Cell<E> extends PPodEntity {
 				// possible since it will trigger a database hit, which in the
 				// aggregate
 				// is expensive since there're are so many cells.
-				final Set<E> elements = getElementsModifiable();
 
 				if (elements.size() < 2) {
 					throw new AssertionError("type is "
@@ -159,20 +177,10 @@ public abstract class Cell<E> extends PPodEntity {
 		}
 	}
 
-	/**
-	 * Get a modifiable reference to the elements in this cell.
-	 * <p>
-	 * Will be non-{@code null} for POLYMORPHIC and UNCERTAIN cells.
-	 * <p>
-	 * Will be {@code null} for SINGLE, UNASSIGNED, and INAPPLICABLE cells.
-	 * <p>
-	 * Will be {@code null} if {@link #getType()}{@code == null}. This will only
-	 * happen for newly created cells.
-	 * 
-	 * @return a modifiable reference to the elements in this cell
-	 */
-	@Nullable
-	protected abstract Set<E> getElementsModifiable();
+	@CheckForNull
+	protected Set<E> getElementsRaw() {
+		return elements;
+	}
 
 	/**
 	 * Used for serialization.
@@ -195,15 +203,16 @@ public abstract class Cell<E> extends PPodEntity {
 				return null;
 			case POLYMORPHIC:
 			case UNCERTAIN:
-				if (getElementsModifiable() == null) {
+				if (elements == null) {
 					initElements();
 				}
-				return getElementsModifiable();
+				return elements;
 			default:
 				throw new AssertionError("unknown type: " + getType());
 		}
 	}
 
+	@Nullable
 	protected Integer getPosition() {
 		return position;
 	}
@@ -231,18 +240,24 @@ public abstract class Cell<E> extends PPodEntity {
 	 * Subclasses must do whatever is necessary to make
 	 * {@link #getElementsModifiable()} non-null.
 	 */
-	protected abstract void initElements();
+	protected void initElements() {
+		elements = newHashSet();
+	}
 
 	/**
 	 * Does not affect {@link #isInNeedOfNewVersion()}.
 	 */
-	protected abstract Cell<E> setElement(@CheckForNull E element);
+	protected void setElement(@CheckForNull final E element) {
+		this.element = element;
+	}
 
 	/**
 	 * Does not affect {@link #isInNeedOfNewVersion()}.
 	 */
-	protected abstract Cell<E> setElements(
-			@CheckForNull Set<E> elements);
+	protected void setElementsRaw(
+			@CheckForNull final Set<E> elements) {
+		this.elements = elements;
+	}
 
 	/**
 	 * Set this cell's type to {@link Type#INAPPLICABLE} to
@@ -251,11 +266,11 @@ public abstract class Cell<E> extends PPodEntity {
 	 * @return this
 	 */
 	public Cell<E> setInapplicable() {
-		return setInapplicableOrUnassigned(Type.INAPPLICABLE);
-
+		setInapplicableOrUnassigned(Type.INAPPLICABLE);
+		return this;
 	}
 
-	private Cell<E> setInapplicableOrUnassigned(final Type type) {
+	private void setInapplicableOrUnassigned(final Type type) {
 		checkNotNull(type);
 		checkArgument(
 				type == Type.INAPPLICABLE
@@ -263,14 +278,13 @@ public abstract class Cell<E> extends PPodEntity {
 				"type was " + type + " but must be INAPPLICABLE or UNASSIGNED");
 
 		if (type == getType()) {
-			return this;
+			return;
 		}
 		setType(type);
 		setElement(null);
-		setElements(null);
+		setElementsRaw(null);
 		setInNeedOfNewVersion();
-		return this;
-
+		return;
 	}
 
 	@Override
@@ -282,7 +296,7 @@ public abstract class Cell<E> extends PPodEntity {
 			if (matrix != null) {
 				// so FindBugs knows that it's okay
 				final Integer position = getPosition();
-				checkState(getPosition() >= 0,
+				checkState(getPosition() != null,
 							"cell has no position, but is a part of a matrix");
 				matrix.resetColumnVersion(position);
 			}
@@ -295,8 +309,9 @@ public abstract class Cell<E> extends PPodEntity {
 	 * Set the type to polymorphic with the appropriate states equivalent to
 	 * {@code states}.
 	 * <p>
-	 * Note that the elements that are used may or may not be the same as the
-	 * elements passed in, but the cell will be set to equivalent elements.
+	 * Note that the elements that are actually assigned may or may not be the
+	 * {@code ==} to the elements passed in, but the cell will be set to
+	 * equivalent (not necessarily {@code .equals()}) elements.
 	 * 
 	 * @param elements the elements
 	 * 
@@ -304,7 +319,7 @@ public abstract class Cell<E> extends PPodEntity {
 	 * 
 	 * @throw IllegalArgumentException if {@code polymorphicStates.size() < 2}
 	 */
-	public Cell<E> setPolymorphicElements(final Set<E> elements) {
+	public Cell<E> setPolymorphicElements(final Set<? extends E> elements) {
 		checkNotNull(elements);
 		checkArgument(elements.size() > 1,
 				"polymorphic states must be > 1");
@@ -318,36 +333,65 @@ public abstract class Cell<E> extends PPodEntity {
 	 * Assumes that none of {@code elements} is in a detached state.
 	 * <p>
 	 * This object makes its own copy of {@code states}.
+	 * <p>
+	 * This implementation calls {@link #initElements()}.
 	 * 
 	 * @param states to be added
 	 * 
 	 * @return this
 	 */
-	protected abstract Cell<E> setPolymorphicOrUncertain(
+	protected void setPolymorphicOrUncertain(
 			final Type type,
-			final Set<E> elements);
+			final Set<? extends E> elements) {
+		checkNotNull(type);
+		checkNotNull(elements);
+
+		checkArgument(
+				type == Type.POLYMORPHIC
+						|| type == Type.UNCERTAIN,
+				" type is " + type + " but must be POLYMORPHIC OR UNCERTAIN");
+
+		checkArgument(
+				elements.size() > 1,
+				"POLYMORPIC AND UNCERTAIN must have greater than 1 element but elements has "
+						+ elements.size());
+
+		if (getType() != null
+				&& getType()
+						.equals(type)
+				&& elements
+						.equals(this.elements)) {
+			return;
+		}
+
+		setElement(null);
+
+		if (getElementsRaw() == null) {
+			initElements();
+		}
+
+		setType(type);
+		getElementsRaw().clear();
+		getElementsRaw().addAll(elements);
+
+		setInNeedOfNewVersion();
+	}
 
 	/**
 	 * Set the position of this cell in its row.
 	 * <p>
-	 * Even though it makes the most sense to set this to {@code null} when
-	 * removing a cell from a row, we don't allow {@code null} value for this
-	 * because it's a non-null attribute when we flush and causes an
-	 * {@code org.hibernate.PropertyValueException} - call {@link
-	 * unsetPosition()} instead.
-	 * <p>
 	 * Intentionally package-private and meant to be called from {@link Row}.
+	 * <p>
+	 * Use a {@code null} when removing a cell from a row.
 	 * 
 	 * @param position the position of this cell in its row
 	 * 
-	 * @return this
-	 * 
 	 * @throw IllegalArgumentException if position < 0
 	 */
-	Cell<E> setPosition(final Integer position) {
-		checkArgument(position >= 0, "position < 0");
+	void setPosition(final Integer position) {
+		checkArgument(position == null || position >= 0, "position < 0");
 		this.position = position;
-		return this;
+		return;
 	}
 
 	/**
@@ -357,18 +401,33 @@ public abstract class Cell<E> extends PPodEntity {
 	 * 
 	 * @return this
 	 */
-	public abstract Cell<E> setSingleElement(final E state);
+	public Cell<E> setSingleElement(final E element) {
+		checkNotNull(element);
+		if (element == this.element) {
+			if (getType() != Type.SINGLE) {
+				throw new AssertionError(
+						"element is set, but this cell is not a SINGLE");
+			}
+			return this;
+		}
+		setType(Type.SINGLE);
+		setElementsRaw(null);
+		setElement(element);
+		setInNeedOfNewVersion();
+		return this;
+	}
 
 	/**
 	 * This method has no affect on {@link #isInNeedOfNewVersion()}.
+	 * <p>
+	 * Visible for testing.
 	 * 
 	 * @param type the new type
-	 * @return this
 	 */
-	protected Cell<E> setType(final Type type) {
+	void setType(final Type type) {
 		checkNotNull(type);
 		this.type = type;
-		return this;
+		return;
 	}
 
 	/**
@@ -378,7 +437,8 @@ public abstract class Cell<E> extends PPodEntity {
 	 * @return this
 	 */
 	public Cell<E> setUnassigned() {
-		return setInapplicableOrUnassigned(Type.UNASSIGNED);
+		setInapplicableOrUnassigned(Type.UNASSIGNED);
+		return this;
 	}
 
 	/**
@@ -391,7 +451,7 @@ public abstract class Cell<E> extends PPodEntity {
 	 * @throw IllegalArgumentException if {@code uncertainStates.size() < 2}
 	 */
 	public Cell<E> setUncertainElements(
-			final Set<E> uncertainElements) {
+			final Set<? extends E> uncertainElements) {
 		checkNotNull(uncertainElements);
 		checkArgument(uncertainElements.size() > 1,
 				"uncertain elements must be > 1");
@@ -399,13 +459,6 @@ public abstract class Cell<E> extends PPodEntity {
 		return this;
 	}
 
-	/**
-	 * Intentionally package-private and meant to be called from {@link Row}.
-	 */
-	void unsetPosition() {
-		this.position = -1;
-	}
-
-	protected abstract Cell<E> unsetRow();
+	protected abstract void unsetRow();
 
 }

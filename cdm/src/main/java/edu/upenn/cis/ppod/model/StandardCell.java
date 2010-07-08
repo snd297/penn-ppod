@@ -15,17 +15,15 @@
  */
 package edu.upenn.cis.ppod.model;
 
-import static com.google.common.base.Objects.equal;
 import static com.google.common.base.Preconditions.checkArgument;
 import static com.google.common.base.Preconditions.checkNotNull;
 import static com.google.common.base.Preconditions.checkState;
 import static com.google.common.collect.Sets.newHashSet;
-import static com.google.common.collect.Sets.newTreeSet;
 
-import java.util.Comparator;
 import java.util.Set;
-import java.util.SortedSet;
 
+import javax.persistence.Access;
+import javax.persistence.AccessType;
 import javax.persistence.Entity;
 import javax.persistence.FetchType;
 import javax.persistence.JoinColumn;
@@ -33,13 +31,11 @@ import javax.persistence.JoinTable;
 import javax.persistence.ManyToMany;
 import javax.persistence.ManyToOne;
 import javax.persistence.Table;
+import javax.persistence.Transient;
 import javax.xml.bind.Unmarshaller;
 import javax.xml.bind.annotation.XmlAttribute;
 import javax.xml.bind.annotation.XmlElement;
 import javax.xml.bind.annotation.XmlIDREF;
-
-import org.hibernate.annotations.Sort;
-import org.hibernate.annotations.SortType;
 
 import edu.umd.cs.findbugs.annotations.CheckForNull;
 import edu.umd.cs.findbugs.annotations.Nullable;
@@ -52,6 +48,7 @@ import edu.upenn.cis.ppod.util.IVisitor;
  */
 @Entity
 @Table(name = StandardCell.TABLE)
+@Access(AccessType.PROPERTY)
 public class StandardCell extends Cell<StandardState> {
 
 	/**
@@ -65,39 +62,10 @@ public class StandardCell extends Cell<StandardState> {
 	 */
 	public static final String JOIN_COLUMN = TABLE + "_ID";
 
-	private static final Comparator<StandardState> STATE_COMPARATOR = new StandardState.StandardStateComparator();
-
-	/**
-	 * To handle the most-common case of a single {@code CharacterState}, we
-	 * cache {@code states.get(0)}.
-	 * <p>
-	 * Will be {@code null} if this is a {@link Type#INAPPLICABLE} or
-	 * {@link Type#UNASSIGNED}.
-	 */
-	@ManyToOne(fetch = FetchType.LAZY)
-	@JoinColumn(name = StandardState.JOIN_COLUMN)
-	@CheckForNull
-	private StandardState element;
-
-	/**
-	 * The heart of the cell: the states.
-	 * <p>
-	 * Will be {@code null} when first created, but is generally not-null.
-	 */
-	@CheckForNull
-	@ManyToMany
-	@Sort(type = SortType.COMPARATOR,
-			comparator = StandardState.StandardStateComparator.class)
-	@JoinTable(inverseJoinColumns = @JoinColumn(
-			name = StandardState.JOIN_COLUMN))
-	private SortedSet<StandardState> elements;
-
 	/**
 	 * The {@code CharacterStateRow} to which this {@code CharacterStateCell}
 	 * belongs.
 	 */
-	@ManyToOne(fetch = FetchType.LAZY, optional = false)
-	@JoinColumn(name = StandardRow.JOIN_COLUMN)
 	@CheckForNull
 	private StandardRow row;
 
@@ -147,20 +115,26 @@ public class StandardCell extends Cell<StandardState> {
 	@CheckForNull
 	@XmlAttribute(name = "stateDocId")
 	@XmlIDREF
+	@ManyToOne(fetch = FetchType.LAZY, optional = true)
+	@JoinColumn(name = StandardState.JOIN_COLUMN)
 	@Override
 	protected StandardState getElement() {
-		return element;
+		return super.getElement();
 	}
 
 	@CheckForNull
+	@ManyToMany
+	@JoinTable(inverseJoinColumns =
+			@JoinColumn(name = StandardState.JOIN_COLUMN))
 	@Override
-	protected Set<StandardState> getElementsModifiable() {
-		return elements;
+	protected Set<StandardState> getElementsRaw() {
+		return super.getElementsRaw();
 	}
 
 	@CheckForNull
 	@XmlElement(name = "stateDocId")
 	@XmlIDREF
+	@Transient
 	@Override
 	protected Set<StandardState> getElementsXml() {
 		return super.getElementsXml();
@@ -173,46 +147,19 @@ public class StandardCell extends Cell<StandardState> {
 	 *         {@code CharacterStateCell} belongs
 	 */
 	@Nullable
+	@ManyToOne(fetch = FetchType.LAZY, optional = false)
+	@JoinColumn(name = StandardRow.JOIN_COLUMN)
 	@Override
 	public StandardRow getRow() {
 		return row;
 	}
 
+	/**
+	 * For JAXB.
+	 */
 	@Override
-	protected void initElements() {
-		elements = newTreeSet(STATE_COMPARATOR);
-	}
-
-	@Override
-	protected Cell<StandardState> setElement(
-			@CheckForNull final StandardState element) {
-		this.element = element;
-		return this;
-	}
-
-	@Override
-	protected Cell<StandardState> setElements(
-			@CheckForNull final Set<StandardState> elements) {
-		if (equal(elements, this.elements)) {
-
-		} else {
-			if (elements == null) {
-				this.elements = null;
-			} else {
-				if (this.elements == null) {
-					initElements();
-				} else {
-					this.elements.clear();
-				}
-				if (this.elements == null) {
-					// Added for FindBugs
-					throw new AssertionError("elements is null");
-				} else {
-					this.elements.addAll(elements);
-				}
-			}
-		}
-		return this;
+	protected void setElement(final StandardState state) {
+		super.setElement(state);
 	}
 
 	/**
@@ -228,12 +175,11 @@ public class StandardCell extends Cell<StandardState> {
 	 * @return {@code state}
 	 */
 	@Override
-	protected StandardCell setPolymorphicOrUncertain(
+	protected void setPolymorphicOrUncertain(
 			final Type type,
-			final Set<StandardState> elements) {
+			final Set<? extends StandardState> elements) {
 		checkNotNull(type);
 		checkNotNull(elements);
-
 		checkArgument(
 				type == Type.POLYMORPHIC
 						|| type == Type.UNCERTAIN,
@@ -266,17 +212,9 @@ public class StandardCell extends Cell<StandardState> {
 								.getStateNumber()));
 		}
 
-		if (getType() != null
-				&& getType().equals(type)
-				&& newElements.equals(this.elements)) {
-			return this;
-		}
+		super.setPolymorphicOrUncertain(type, newElements);
 
-		setElement(null);
-		setElements(newElements);
-		setType(type);
-		setInNeedOfNewVersion();
-		return this;
+		return;
 	}
 
 	/**
@@ -286,13 +224,9 @@ public class StandardCell extends Cell<StandardState> {
 	 * 
 	 * @param row value, {@code null} to indicate that the cell is removed from
 	 *            the row
-	 * 
-	 * @return this {@code CharacterStateCell}
 	 */
-	StandardCell setRow(
-			@CheckForNull final StandardRow row) {
+	protected void setRow(@CheckForNull final StandardRow row) {
 		this.row = row;
-		return this;
 	}
 
 	@Override
@@ -323,35 +257,14 @@ public class StandardCell extends Cell<StandardState> {
 			return this;
 		}
 
-		setElement(newElement);
-		setElements(null);
-		setType(Type.SINGLE);
+		super.setSingleElement(newElement);
+
 		setInNeedOfNewVersion();
 		return this;
 	}
 
-	/**
-	 * Constructs a {@code String} with attributes in name=value format.
-	 * 
-	 * @return a {@code String} representation of this object
-	 */
 	@Override
-	public String toString() {
-		final String TAB = " ";
-
-		final StringBuilder retValue = new StringBuilder();
-
-		retValue.append("CharacterStateCell(").append(super.toString()).append(
-				TAB).append("version=").append(TAB).append("states=").append(
-				this.elements).append(TAB).append(")");
-
-		return retValue.toString();
-	}
-
-	@Override
-	public StandardCell unsetRow() {
+	public void unsetRow() {
 		row = null;
-		return this;
 	}
-
 }

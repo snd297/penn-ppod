@@ -91,7 +91,7 @@ public abstract class Matrix<R extends Row<?>>
 	private OTUSet otuSet;
 
 	/** Default constructor. */
-	protected Matrix() {}
+	Matrix() {}
 
 	@Override
 	public void accept(final IVisitor visitor) {

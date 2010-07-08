@@ -69,7 +69,7 @@ public class Study extends UUPPodEntity implements IOTUSetCentricEntities {
 	@Transient
 	private final Set<AttachmentType> attachmentTypes = newHashSet();
 
-	protected Study() {}
+	Study() {}
 
 	@Override
 	public void accept(final IVisitor visitor) {

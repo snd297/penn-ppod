@@ -20,7 +20,6 @@ import static org.testng.Assert.assertEquals;
 import static org.testng.Assert.assertFalse;
 import static org.testng.Assert.assertNotNull;
 import static org.testng.Assert.assertNull;
-import static org.testng.Assert.assertSame;
 import static org.testng.Assert.assertTrue;
 
 import java.util.Set;
@@ -176,20 +175,20 @@ public class DNACellTest {
 
 		final Set<DNANucleotide> nucleotides =
 				ImmutableSet.of(DNANucleotide.A, DNANucleotide.T);
-		cell.setElements(nucleotides);
-		assertEquals((Object) cell.getElementsModifiable(),
+		cell.setElementsRaw(nucleotides);
+		assertEquals((Object) cell.getElementsRaw(),
 				(Object) nucleotides);
 
 		final Set<DNANucleotide> nucleotides2 =
 				ImmutableSet.of(DNANucleotide.T);
 
-		cell.setElements(nucleotides2);
-		assertEquals((Object) cell.getElementsModifiable(),
+		cell.setElementsRaw(nucleotides2);
+		assertEquals((Object) cell.getElementsRaw(),
 				(Object) nucleotides2);
 
 		// Set it to null
-		cell.setElements(null);
-		assertNull(cell.getElementsModifiable());
+		cell.setElementsRaw(null);
+		assertNull(cell.getElementsRaw());
 
 	}
 
@@ -199,12 +198,10 @@ public class DNACellTest {
 				ImmutableSet.of(DNANucleotide.A, DNANucleotide.T);
 		cell.unsetInNeedOfNewVersion();
 
-		final DNACell returnedCell =
-				cell.setPolymorphicOrUncertain(
+		cell.setPolymorphicOrUncertain(
 						Cell.Type.POLYMORPHIC,
 						nucleotides);
 
-		assertSame(returnedCell, cell);
 		assertTrue(cell.isInNeedOfNewVersion());
 		assertEquals(cell.getType(), Cell.Type.POLYMORPHIC);
 		assertEquals((Object) cell.getElements(),

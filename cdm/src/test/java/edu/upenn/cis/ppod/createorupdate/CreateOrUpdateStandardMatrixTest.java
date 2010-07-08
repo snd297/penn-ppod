@@ -149,7 +149,6 @@ public class CreateOrUpdateStandardMatrixTest {
 		createOrUpdateStandardMatrix
 				.createOrUpdateMatrix(targetMatrix, sourceMatrix);
 
-		// putBackCells(targetMatrix, dao.getRowsToCells());
 		putBackCells(sourceMatrix, sourceRowsToCells);
 
 		// Simulate passing back in the persisted characters: so we need to
@@ -188,7 +187,6 @@ public class CreateOrUpdateStandardMatrixTest {
 		createOrUpdateStandardMatrix
 				.createOrUpdateMatrix(targetMatrix, sourceMatrix);
 
-		// putBackCells(targetMatrix, dao.getRowsToCells());
 		putBackCells(sourceMatrix, sourceRowsToCells2);
 
 		ModelAssert.assertEqualsStandardMatrices(
@@ -335,7 +333,6 @@ public class CreateOrUpdateStandardMatrixTest {
 					targetMatrix,
 					sourceMatrix);
 
-		// putBackCells(targetMatrix, dao.getRowsToCells());
 		putBackCells(sourceMatrix, sourceRowsToCells2);
 
 		ModelAssert.assertEqualsStandardMatrices(targetMatrix, sourceMatrix);
