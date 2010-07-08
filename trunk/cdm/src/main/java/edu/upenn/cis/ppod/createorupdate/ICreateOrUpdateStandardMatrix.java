@@ -22,7 +22,8 @@ import edu.upenn.cis.ppod.model.StandardMatrix;
 import edu.upenn.cis.ppod.modelinterfaces.INewVersionInfo;
 
 /**
- * Copy the state of
+ * Copy the state of {@code sourceMatrix} onto the persistent matrix
+ * {@code dbMatrix} and flush all changes to the database.
  * 
  * @see #saveOrUpdate(CharacterStateMatrix, CharacterStateMatrix, OTUSet, Map,
  *      DNACharacter)
@@ -34,7 +35,7 @@ public interface ICreateOrUpdateStandardMatrix {
 
 	/**
 	 * Copy the state of {@code sourceMatrix} onto the persistent matrix
-	 * {@code dbMatrix} and flush those changes to the database.
+	 * {@code dbMatrix} and flush all changes to the database.
 	 * <p>
 	 * If {@code sourceMatrix.getDocId() != null} then this method calls
 	 * {@code dbMatrix.setDocId(sourceMatrix.getDocId())}. In other words, if
@@ -42,12 +43,14 @@ public interface ICreateOrUpdateStandardMatrix {
 	 * {@code sourceMatrix}.
 	 * <p>
 	 * All rows in {@code sourceMatrix} must be non-null.
+	 * <p>
+	 * Implementors are free
 	 * 
 	 * @param dbMatrix merge into the target matrix
 	 * @param sourceMatrix source of the merge
 	 * @param mergedOTUsBySourceOTU maps each merged OTU to its source OTU
 	 *            counterpart. This parameter is used to set the new OTU
-	 *            ordering in {@code targetMatrix} as dictated by
+	 *            ordering in {@code dbMatrix} as dictated by
 	 *            {@code sourceMatrix}
 	 */
 	void createOrUpdateMatrix(

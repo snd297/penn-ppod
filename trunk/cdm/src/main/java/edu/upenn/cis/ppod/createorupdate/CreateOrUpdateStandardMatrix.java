@@ -49,8 +49,8 @@ import edu.upenn.cis.ppod.thirdparty.injectslf4j.InjectLogger;
 final class CreateOrUpdateStandardMatrix
 		implements ICreateOrUpdateStandardMatrix {
 
-	private final Provider<StandardCharacter> characterProvider;
-	private final StandardState.IFactory stateFactory;
+	private final Provider<StandardCharacter> standardCharacterProvider;
+	private final StandardState.IFactory standardStateFactory;
 	private final Provider<Attachment> attachmentProvider;
 	private final IMergeAttachments mergeAttachments;
 	private final IDAO<Object, Long> dao;
@@ -70,8 +70,8 @@ final class CreateOrUpdateStandardMatrix
 			@Assisted final INewVersionInfo newVersionInfo,
 			@Assisted final IDAO<Object, Long> dao,
 			@Assisted final IMergeAttachments mergeAttachments) {
-		this.characterProvider = characterProvider;
-		this.stateFactory = stateFactory;
+		this.standardCharacterProvider = characterProvider;
+		this.standardStateFactory = stateFactory;
 		this.attachmentProvider = attachmentProvider;
 		this.createOrUpdatMatrixFactory = createOrUpdatMatrixFactory;
 		this.dao = dao;
@@ -99,11 +99,11 @@ final class CreateOrUpdateStandardMatrix
 							.getCharacters(),
 							compose(
 									equalTo(
-									sourceCharacter.getPPodId()),
-									IWithPPodId.getPPodId)))) {
-				newDbCharacter = characterProvider.get();
-				newDbCharacter
-						.setVersionInfo(newVersionInfo.getNewVersionInfo());
+											sourceCharacter.getPPodId()),
+											IWithPPodId.getPPodId)))) {
+				newDbCharacter = standardCharacterProvider.get();
+				newDbCharacter.setVersionInfo(
+						newVersionInfo.getNewVersionInfo());
 				newDbCharacter.setPPodId();
 			}
 
@@ -115,7 +115,7 @@ final class CreateOrUpdateStandardMatrix
 				StandardState dbState;
 				if (null == (dbState = newDbCharacter.getState(
 						sourceState.getStateNumber()))) {
-					dbState = stateFactory
+					dbState = standardStateFactory
 							.create(sourceState.getStateNumber());
 					newDbCharacter.addState(dbState);
 					dbState.setVersionInfo(newVersionInfo
@@ -161,10 +161,7 @@ final class CreateOrUpdateStandardMatrix
 				createOrUpdatMatrixFactory
 						.create(newVersionInfo, dao);
 
-		createOrUpdatMatrix
-						.createOrUpdateMatrix(
-								dbMatrix,
-								sourceMatrix);
+		createOrUpdatMatrix.createOrUpdateMatrix(dbMatrix, sourceMatrix);
 
 	}
 }

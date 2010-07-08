@@ -16,6 +16,8 @@
 package edu.upenn.cis.ppod.model;
 
 import javax.annotation.Nullable;
+import javax.persistence.Access;
+import javax.persistence.AccessType;
 import javax.persistence.Column;
 import javax.persistence.GeneratedValue;
 import javax.persistence.Id;
@@ -26,8 +28,6 @@ import javax.xml.bind.Unmarshaller;
 import javax.xml.bind.annotation.XmlAccessType;
 import javax.xml.bind.annotation.XmlAccessorType;
 import javax.xml.bind.annotation.XmlAttribute;
-
-import org.hibernate.annotations.AccessType;
 
 import com.google.common.annotations.VisibleForTesting;
 
@@ -46,7 +46,19 @@ public abstract class PersistentObject implements IPersistentObject {
 
 	public static final String ID_COLUMN = "ID";
 
-	@AccessType("property")
+	/**
+	 * We changed this to PROPERTY because on page 564 of
+	 * <em>Java persistence with Hibernate</em>, Fourth, corrected printing, by
+	 * Christian Bauer, Gavin King. Copyright 2007 Manning Publications Co.,
+	 * 1-932394-88-5 it says:
+	 * <p>
+	 * As long as you access only the database identifier property, no
+	 * initialization of the proxy is necessary. (Note that this isn't true if
+	 * you map the identifier property with direct field access; Hibernate then
+	 * doesn't even know that the {@code getId()} method exists. If you call i,
+	 * the proxy has to be initialized.)
+	 */
+	@Access(AccessType.PROPERTY)
 	@Id
 	@GeneratedValue
 	@Column(name = ID_COLUMN)

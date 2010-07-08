@@ -148,7 +148,7 @@ public abstract class PPodEntity
 	 */
 	public void afterUnmarshal(
 			@CheckForNull final Unmarshaller u,
-			@CheckForNull final Object parent) {
+			final Object parent) {
 		if (attachmentsXml != null) {
 			for (final Attachment attachment : getAttachmentsXml()) {
 				addAttachment(attachment);

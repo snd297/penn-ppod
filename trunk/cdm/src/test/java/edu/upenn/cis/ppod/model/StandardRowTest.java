@@ -99,7 +99,7 @@ public class StandardRowTest {
 
 		final StandardRow row = matrix.getRow(otu0);
 		matrix.
-				setCharacters(newArrayList(
+				setCharacters(ImmutableList.of(
 						characterProvider.get().setLabel("CHARACTER-0"),
 						characterProvider.get().setLabel("CHARACTER-1"),
 						characterProvider.get().setLabel("CHARACTER-2")));
