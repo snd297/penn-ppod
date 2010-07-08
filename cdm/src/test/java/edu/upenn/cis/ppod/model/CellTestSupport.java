@@ -90,15 +90,6 @@ public class CellTestSupport<M extends Matrix<R>, R extends Row<C>, C extends Ce
 	}
 
 	/**
-	 * If a cell does not belong to a row, it is illegal to add states to it and
-	 * should throw an {@code IllegalStateException}.
-	 */
-	public void setStatesForACellThatDoesNotBelongToARow(final E element) {
-		final C cell = cellProvider.get();
-		cell.setSingleElement(element);
-	}
-
-	/**
 	 * {@code beforeMarshal(...)} should throw an {@code IllegalStateException}
 	 * if the type has not bee set yet.
 	 */

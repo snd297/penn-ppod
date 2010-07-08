@@ -87,6 +87,7 @@ public class StandardCellTest {
 
 	/**
 	 * Straight {@code beforeMarshal(...) test.
+
 	 */
 	@Test
 	public void beforeMarshal() {
@@ -169,7 +170,8 @@ public class StandardCellTest {
 	 */
 	@Test(expectedExceptions = IllegalStateException.class)
 	public void setStatesForACellThatDoesNotBelongToARow() {
-		cellTestSupport.setStatesForACellThatDoesNotBelongToARow(state00);
+		final StandardCell cell = cellProvider.get();
+		cell.setSingleElement(state00);
 	}
 
 	@Test
