@@ -27,9 +27,8 @@ import static org.testng.Assert.assertSame;
 import static org.testng.Assert.assertTrue;
 
 import java.util.Iterator;
-import java.util.Map;
-import java.util.Set;
 import java.util.Map.Entry;
+import java.util.Set;
 
 import edu.upenn.cis.ppod.modelinterfaces.ILabeled;
 
@@ -108,8 +107,8 @@ public class ModelAssert {
 	public static void assertEqualsStandardStates(
 			final StandardState actualState, final StandardState expectedState) {
 		assertEquals(actualState.getLabel(), expectedState.getLabel());
-		assertEquals(actualState.getStateNumber(), expectedState
-				.getStateNumber());
+		assertEquals(actualState.getStateNumber(),
+				expectedState.getStateNumber());
 	}
 
 	public static void assertEqualsCharacters(
@@ -122,15 +121,21 @@ public class ModelAssert {
 						.getStatesModifiable().size());
 		for (final Entry<Integer, StandardState> actualStateNumberToState : actualCharacter
 				.getStatesModifiable().entrySet()) {
-			final StandardState actualState = actualStateNumberToState
-					.getValue();
-			final StandardState expectedState = expectedCharacter
-					.getStatesModifiable()
-					.get(actualStateNumberToState.getKey());
+			final StandardState actualState =
+					actualStateNumberToState.getValue();
+
+			final StandardState expectedState =
+					findIf(
+							expectedCharacter.getStates(),
+							compose(
+									equalTo(
+										actualStateNumberToState.getKey()),
+									StandardState.getStateNumber));
 
 			assertNotNull(expectedState);
 			assertTrue(expectedState.getCharacter() == expectedCharacter);
-			assertEqualsStandardStates(actualState,
+			assertEqualsStandardStates(
+					actualState,
 					expectedState);
 		}
 
@@ -142,12 +147,17 @@ public class ModelAssert {
 		assertEquals(actualCell.getType(), expectedCell.getType());
 		assertEquals(actualCell.getElements().size(), expectedCell
 				.getElements().size());
-		for (final Iterator<StandardState> actualStateItr = actualCell
-				.getElements().iterator(), expectedStateItr = expectedCell
-				.getElements().iterator(); actualStateItr.hasNext()
-											&& expectedStateItr.hasNext();) {
-			assertEqualsStandardStates(actualStateItr.next(), expectedStateItr
-					.next());
+		for (final StandardState actualState : actualCell.getElements()) {
+			final StandardState expectedState =
+					findIf(
+							expectedCell.getElements(),
+							compose(
+									equalTo(
+										actualState.getStateNumber()),
+									StandardState.getStateNumber));
+			assertEqualsStandardStates(
+					actualState,
+					expectedState);
 		}
 	}
 
@@ -201,27 +211,6 @@ public class ModelAssert {
 			assertSame(expectedCharacter.getMatrix(), expectedMatrix);
 			assertEqualsCharacters(actualCharacter, expectedCharacter);
 		}
-
-		// Let's make sure that actualMatrix.getCharacterIdx() is what it's
-		// supposed to be.
-		// We use actualMatrix.getCharacters() to check as oppose to looking at
-		// expectedMatrix sine that seems to make the most sense
-		// if (actualMatrix.getClass().equals(StandardMatrix.class)) {
-		// final Map<StandardCharacter, Integer>
-		// actualMatrixCharactersToPositions = actualMatrix
-		// .getCharactersToPositions();
-		// assertEquals(
-		// actualMatrixCharactersToPositions.size(),
-		// actualMatrix.getColumnVersionInfos().size());
-		// for (final Entry<StandardCharacter, Integer> actualIdxByCharacter :
-		// actualMatrixCharactersToPositions
-		// .entrySet()) {
-		// assertTrue(actualIdxByCharacter.getKey() == actualMatrix
-		// .getCharactersModifiable().get(
-		// actualIdxByCharacter.getValue()));
-		// }
-		// }
-
 		assertEquals(actualMatrix.getRows().size(), expectedMatrix
 				.getRows().size());
 

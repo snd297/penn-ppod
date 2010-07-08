@@ -235,7 +235,7 @@ public class StandardCell extends Cell<StandardState> {
 		checkNotNull(element);
 
 		checkState(
-					getPosition() >= 0,
+					getPosition() != null,
 					"this cell has not been assigned a row: it's position attribute is null");
 
 		final StandardCharacter standardCharacter =
