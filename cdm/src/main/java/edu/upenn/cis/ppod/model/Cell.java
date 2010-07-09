@@ -21,6 +21,7 @@ import static com.google.common.base.Preconditions.checkState;
 import static com.google.common.collect.Sets.newHashSet;
 
 import java.util.Collections;
+import java.util.HashSet;
 import java.util.Set;
 
 import javax.persistence.Access;
@@ -165,7 +166,14 @@ public abstract class Cell<E> extends PPodEntity {
 				// aggregate
 				// is expensive since there're are so many cells.
 
-				if (getElementsRaw().size() < 2) {
+				final Set<E> elements = getElementsRaw();
+
+				if (elements == null) {
+					throw new AssertionError(
+							"elements is null in a POLYMORPHIC or UNCERTAIN cell");
+				}
+
+				if (elements.size() < 2) {
 					throw new AssertionError("type is "
 														+ getType()
 												+ " and getElementsRaw() has "
@@ -252,7 +260,7 @@ public abstract class Cell<E> extends PPodEntity {
 	 * example using an {@code EnumSet<E>}.
 	 */
 	protected void initElements() {
-		elements = newHashSet();
+		setElementsRaw(new HashSet<E>());
 	}
 
 	/**
@@ -371,7 +379,7 @@ public abstract class Cell<E> extends PPodEntity {
 				&& getType()
 						.equals(type)
 				&& elements
-						.equals(this.elements)) {
+						.equals(getElementsRaw())) {
 			return;
 		}
 
@@ -382,8 +390,14 @@ public abstract class Cell<E> extends PPodEntity {
 		}
 
 		setType(type);
-		getElementsRaw().clear();
-		getElementsRaw().addAll(elements);
+
+		final Set<E> thisElements = getElementsRaw();
+		if (thisElements == null) {
+			throw new AssertionError(
+					"initElements() was called but elements is null");
+		}
+		thisElements.clear();
+		thisElements.addAll(thisElements);
 
 		setInNeedOfNewVersion();
 	}
@@ -400,7 +414,7 @@ public abstract class Cell<E> extends PPodEntity {
 	 * @throw IllegalArgumentException if
 	 *        {@code position !=null && position < 0}
 	 */
-	void setPosition(final Integer position) {
+	void setPosition(@CheckForNull final Integer position) {
 		checkArgument(position == null || position >= 0, "position < 0");
 		this.position = position;
 		return;

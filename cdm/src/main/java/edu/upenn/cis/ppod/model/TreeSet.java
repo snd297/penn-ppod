@@ -110,7 +110,8 @@ public class TreeSet extends UUPPodEntityWithXmlId implements
 	@Override
 	public void afterUnmarshal(
 			@CheckForNull final Unmarshaller u,
-			@CheckForNull final Object parent) {
+			final Object parent) {
+		checkNotNull(parent);
 		super.afterUnmarshal(u, parent);
 		this.otuSet = (OTUSet) parent;
 	}
