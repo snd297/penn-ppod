@@ -23,6 +23,8 @@ import static com.google.common.collect.Sets.newHashSet;
 import java.util.Collections;
 import java.util.Set;
 
+import javax.persistence.Access;
+import javax.persistence.AccessType;
 import javax.persistence.Column;
 import javax.persistence.EnumType;
 import javax.persistence.Enumerated;
@@ -42,6 +44,7 @@ import edu.upenn.cis.ppod.modelinterfaces.IRow;
  * @author Sam Donnelly
  */
 @MappedSuperclass
+@Access(AccessType.PROPERTY)
 public abstract class Cell<E> extends PPodEntity {
 
 	/**
@@ -86,12 +89,10 @@ public abstract class Cell<E> extends PPodEntity {
 
 	protected static final String TYPE_COLUMN = "TYPE";
 
-	@Column(name = "POSITION", nullable = false)
+	@CheckForNull
 	private Integer position;
 
 	@CheckForNull
-	@Column(name = TYPE_COLUMN, nullable = false)
-	@Enumerated(EnumType.ORDINAL)
 	private Type type;
 
 	/**
@@ -101,7 +102,6 @@ public abstract class Cell<E> extends PPodEntity {
 	 * {@code null}.
 	 */
 	@CheckForNull
-	@Transient
 	private Set<E> elements;
 
 	/**
@@ -111,7 +111,6 @@ public abstract class Cell<E> extends PPodEntity {
 	 * {@code null}.
 	 */
 	@CheckForNull
-	@Transient
 	private E element;
 
 	Cell() {}
@@ -126,6 +125,7 @@ public abstract class Cell<E> extends PPodEntity {
 	/**
 	 * Will be {@code null} if this is cell is not {@link Type.SINGLE}.
 	 */
+	@Transient
 	@CheckForNull
 	protected E getElement() {
 		return element;
@@ -139,6 +139,7 @@ public abstract class Cell<E> extends PPodEntity {
 	 * @throws IllegalStateException if the type has not been set for this cell,
 	 *             i.e. if {@link #getType() == null}
 	 */
+	@Transient
 	public Set<E> getElements() {
 		checkState(getType() != null,
 				"type has yet to be assigned for this cell");
@@ -164,7 +165,7 @@ public abstract class Cell<E> extends PPodEntity {
 				// aggregate
 				// is expensive since there're are so many cells.
 
-				if (elements.size() < 2) {
+				if (getElementsRaw().size() < 2) {
 					throw new AssertionError("type is "
 														+ getType()
 												+ " and getElementsRaw() has "
@@ -177,6 +178,7 @@ public abstract class Cell<E> extends PPodEntity {
 		}
 	}
 
+	@Transient
 	@CheckForNull
 	protected Set<E> getElementsRaw() {
 		return elements;
@@ -191,6 +193,7 @@ public abstract class Cell<E> extends PPodEntity {
 	 * 
 	 * @throws IllegalStateException if {@code getType() == null}
 	 */
+	@Transient
 	@CheckForNull
 	protected Set<E> getElementsXml() {
 		if (getType() == null) {
@@ -212,11 +215,16 @@ public abstract class Cell<E> extends PPodEntity {
 		}
 	}
 
+	/**
+	 * Package-private for testing.
+	 */
 	@Nullable
-	protected Integer getPosition() {
+	@Column(name = "POSITION", nullable = false)
+	Integer getPosition() {
 		return position;
 	}
 
+	@Transient
 	@Nullable
 	protected abstract IRow getRow();
 
@@ -231,14 +239,17 @@ public abstract class Cell<E> extends PPodEntity {
 	 * @return the type of this cell
 	 */
 	@XmlAttribute
+	@Column(name = TYPE_COLUMN, nullable = false)
+	@Enumerated(EnumType.ORDINAL)
 	@Nullable
 	public Type getType() {
 		return type;
 	}
 
 	/**
-	 * Subclasses must do whatever is necessary to make
-	 * {@link #getElementsModifiable()} non-null.
+	 * This initializes the cells elements to {@code new HashSet<E>()}.
+	 * Subclasses may wish to override this for more efficient solutions, for
+	 * example using an {@code EnumSet<E>}.
 	 */
 	protected void initElements() {
 		elements = newHashSet();
@@ -386,7 +397,8 @@ public abstract class Cell<E> extends PPodEntity {
 	 * 
 	 * @param position the position of this cell in its row
 	 * 
-	 * @throw IllegalArgumentException if position < 0
+	 * @throw IllegalArgumentException if
+	 *        {@code position !=null && position < 0}
 	 */
 	void setPosition(final Integer position) {
 		checkArgument(position == null || position >= 0, "position < 0");

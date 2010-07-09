@@ -61,22 +61,14 @@ public class CreateOrUpdateStandardMatrixTest {
 	private INewVersionInfo newVersionInfo;
 
 	@Inject
-	private Provider<TestObjectWithLongIdDAO> daoFactory;
+	private Provider<TestObjectWithLongIdDAO> daoProvider;
 
 	private TestObjectWithLongIdDAO dao;
 
 	@BeforeMethod
 	public void beforeMethod() {
-		dao = daoFactory.get();
+		dao = daoProvider.get();
 	}
-
-	//
-	// @AfterMethod
-	// public void afterMethod() {
-	// Session s = ManagedSessionContext.unbind(HibernateUtil
-	// .getSessionFactory());
-	// s.close();
-	// }
 
 	private static Map<StandardRow, List<StandardCell>> stashCells(
 			final StandardMatrix matrix) {

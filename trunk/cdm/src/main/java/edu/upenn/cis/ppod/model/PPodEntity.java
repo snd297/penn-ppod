@@ -229,7 +229,7 @@ public abstract class PPodEntity
 	public VersionInfo getVersionInfo() {
 		checkState(
 				!isUnmarshalled(),
-						"can't access a VersionInfo through a marshalled PPodEntity");
+						"can't access a VersionInfo through an unmarshalled PPodEntity");
 		return versionInfo;
 	}
 
