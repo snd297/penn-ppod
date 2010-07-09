@@ -262,7 +262,8 @@ public class OTUSet extends UUPPodEntityWithXmlId {
 	@Override
 	public void afterUnmarshal(
 			@CheckForNull final Unmarshaller u,
-			@CheckForNull final Object parent) {
+			final Object parent) {
+		checkNotNull(parent);
 		super.afterUnmarshal(u, parent);
 		this.study = (Study) parent;
 	}
