@@ -17,10 +17,11 @@ package edu.upenn.cis.ppod.model;
 
 import static com.google.common.base.Preconditions.checkArgument;
 import static com.google.common.base.Preconditions.checkNotNull;
-import static com.google.common.collect.Lists.newArrayList;
 
 import java.util.List;
 
+import javax.persistence.Access;
+import javax.persistence.AccessType;
 import javax.persistence.CascadeType;
 import javax.persistence.Entity;
 import javax.persistence.FetchType;
@@ -29,6 +30,7 @@ import javax.persistence.ManyToOne;
 import javax.persistence.OneToMany;
 import javax.persistence.OrderBy;
 import javax.persistence.Table;
+import javax.persistence.Transient;
 import javax.xml.bind.annotation.XmlElement;
 
 import edu.umd.cs.findbugs.annotations.CheckForNull;
@@ -46,6 +48,7 @@ import edu.upenn.cis.ppod.util.IVisitor;
  */
 @Entity
 @Table(name = StandardRow.TABLE)
+@Access(AccessType.PROPERTY)
 public class StandardRow extends Row<StandardCell> {
 
 	/** This entitiy's table name. */
@@ -54,25 +57,9 @@ public class StandardRow extends Row<StandardCell> {
 	public static final String JOIN_COLUMN = TABLE + "_ID";
 
 	/**
-	 * The {@code CharacterStateCell}s that make up the row.
-	 * <p>
-	 * There is evidence that {@code DELETE_ORPHAN} slows things down so we're
-	 * not including that either.(More of an issue for Protein matrices, but
-	 * they share code.) Plus it seems to break things when we use
-	 * {@link #clearCells()} to free up cells for garbage collection, even if we
-	 * evict the cells and the row.
-	 */
-	@OneToMany(mappedBy = "row", cascade = CascadeType.ALL,
-			orphanRemoval = true)
-	@OrderBy("position")
-	private final List<StandardCell> cells = newArrayList();
-
-	/**
 	 * This is the parent of the row. It lies in between this and the matrix.
 	 */
 	@CheckForNull
-	@ManyToOne(fetch = FetchType.LAZY, optional = false)
-	@JoinColumn(name = DNASequences.JOIN_COLUMN)
 	private StandardRows rows;
 
 	StandardRow() {}
@@ -84,6 +71,7 @@ public class StandardRow extends Row<StandardCell> {
 		super.accept(visitor);
 	}
 
+	@Transient
 	public int getCellPosition(final StandardCell cell) {
 		checkNotNull(cell);
 		checkArgument(this.equals(cell.getRow()),
@@ -97,9 +85,12 @@ public class StandardRow extends Row<StandardCell> {
 	}
 
 	@XmlElement(name = "cell")
+	@OneToMany(mappedBy = "row", cascade = CascadeType.ALL,
+			orphanRemoval = true)
+	@OrderBy("position")
 	@Override
-	protected List<StandardCell> getCellsModifiable() {
-		return cells;
+	protected List<StandardCell> getCellsRaw() {
+		return super.getCellsRaw();
 	}
 
 	/**
@@ -108,8 +99,9 @@ public class StandardRow extends Row<StandardCell> {
 	 * Will be {@code null} if and only if this row is not part of a matrix.
 	 * Will never be {@code null} right after a row is pulled from the DB.
 	 * 
-	 * @return the {@code CharacterStateMatrix} of which this is a row
+	 * @return the {@code StandardMatrix} of which this is a row
 	 */
+	@Transient
 	@Nullable
 	public StandardMatrix getMatrix() {
 		if (rows == null) {
@@ -118,8 +110,10 @@ public class StandardRow extends Row<StandardCell> {
 		return rows.getParent();
 	}
 
+	@ManyToOne(fetch = FetchType.LAZY, optional = false)
+	@JoinColumn(name = DNASequences.JOIN_COLUMN)
 	@Override
-	protected OTUKeyedMap<StandardRow> getParent() {
+	protected StandardRows getRows() {
 		return rows;
 	}
 
@@ -142,28 +136,11 @@ public class StandardRow extends Row<StandardCell> {
 	 * 
 	 * @return this row
 	 */
-	protected StandardRow setRows(
-			@CheckForNull final StandardRows rows) {
+	StandardRow setRows(@CheckForNull final StandardRows rows) {
 		this.rows = rows;
 		return this;
 	}
 
-	/**
-	 * Constructs a {@code String} with all attributes in name=value format.
-	 * 
-	 * @return a {@code String} representation of this object
-	 */
-	@Override
-	public String toString() {
-		final String TAB = ",";
-
-		final StringBuilder retValue = new StringBuilder();
-
-		retValue.append("CharacterStateRow(").append("id=").append(TAB).append(
-				"cells=").append(this.cells).append(")\n");
-
-		return retValue.toString();
-	}
 
 	public StandardRow unsetOTUKeyedMap() {
 		rows = null;

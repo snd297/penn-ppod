@@ -41,6 +41,8 @@ public abstract class Row<C extends Cell<?>>
 		extends PPodEntity
 		implements IRow, IOTUKeyedMapValue {
 
+	private List<C> cells = newArrayList();
+
 	Row() {}
 
 	@Override
@@ -93,7 +95,7 @@ public abstract class Row<C extends Cell<?>>
 			clearedCell.unsetRow();
 			clearedCell.setPosition(null);
 		}
-		getCellsModifiable().clear();
+		getCellsRaw().clear();
 		return this;
 	}
 
@@ -103,7 +105,7 @@ public abstract class Row<C extends Cell<?>>
 	 * @return the cells that make up this row
 	 */
 	public List<C> getCells() {
-		return Collections.unmodifiableList(getCellsModifiable());
+		return Collections.unmodifiableList(getCellsRaw());
 	}
 
 	/**
@@ -111,7 +113,13 @@ public abstract class Row<C extends Cell<?>>
 	 * 
 	 * @return a modifiable reference to this row's cells
 	 */
-	protected abstract List<C> getCellsModifiable();
+	protected List<C> getCellsRaw() {
+		return cells;
+	}
+
+	protected void setCellsRaw(final List<C> cells) {
+		this.cells = cells;
+	}
 
 	/**
 	 * Get the owner of this row.
@@ -121,7 +129,7 @@ public abstract class Row<C extends Cell<?>>
 	 * @return
 	 */
 	@CheckForNull
-	protected abstract OTUKeyedMap<?> getParent();
+	protected abstract OTUKeyedMap<?> getRows();
 
 	/**
 	 * Set the cells of this row.
@@ -162,7 +170,7 @@ public abstract class Row<C extends Cell<?>>
 		clearCells();
 
 		int cellPos = -1;
-		getCellsModifiable().addAll(cells);
+		getCellsRaw().addAll(cells);
 		for (final Cell<?> cell : getCells()) {
 			cellPos++;
 			cell.setPosition(cellPos);
@@ -180,7 +188,7 @@ public abstract class Row<C extends Cell<?>>
 	public Row<C> setInNeedOfNewVersion() {
 
 		// So FindBugs knows it's okay
-		final OTUKeyedMap<?> parent = getParent();
+		final OTUKeyedMap<?> parent = getRows();
 		if (parent != null) {
 			parent.setInNeedOfNewVersion();
 		}

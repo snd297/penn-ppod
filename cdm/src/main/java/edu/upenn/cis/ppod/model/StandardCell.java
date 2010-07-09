@@ -112,29 +112,29 @@ public class StandardCell extends Cell<StandardState> {
 
 	}
 
-	@CheckForNull
 	@XmlAttribute(name = "stateDocId")
 	@XmlIDREF
 	@ManyToOne(fetch = FetchType.LAZY, optional = true)
 	@JoinColumn(name = StandardState.JOIN_COLUMN)
+	@CheckForNull
 	@Override
 	protected StandardState getElement() {
 		return super.getElement();
 	}
 
-	@CheckForNull
 	@ManyToMany
 	@JoinTable(inverseJoinColumns =
 			@JoinColumn(name = StandardState.JOIN_COLUMN))
+	@CheckForNull
 	@Override
 	protected Set<StandardState> getElementsRaw() {
 		return super.getElementsRaw();
 	}
 
-	@CheckForNull
 	@XmlElement(name = "stateDocId")
 	@XmlIDREF
 	@Transient
+	@CheckForNull
 	@Override
 	protected Set<StandardState> getElementsXml() {
 		return super.getElementsXml();

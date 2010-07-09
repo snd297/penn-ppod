@@ -18,7 +18,6 @@ package edu.upenn.cis.ppod.model;
 import static com.google.common.collect.Iterables.getOnlyElement;
 import static org.testng.Assert.assertEquals;
 import static org.testng.Assert.assertFalse;
-import static org.testng.Assert.assertNotNull;
 import static org.testng.Assert.assertNull;
 import static org.testng.Assert.assertTrue;
 
@@ -26,7 +25,6 @@ import java.util.Set;
 
 import org.testng.annotations.Test;
 
-import com.google.common.collect.ImmutableList;
 import com.google.common.collect.ImmutableSet;
 import com.google.inject.Inject;
 import com.google.inject.Provider;
@@ -53,74 +51,6 @@ public class DNACellTest {
 
 	@Inject
 	private Provider<OTUSet> otuSetProvider;
-
-	@Inject
-	private Provider<OTU> otuProvider;
-
-	@Inject
-	private Provider<DNARow> dnaRowProvider;
-
-	@Test
-	public void getStatesWhenCellHasOneState() {
-		final DNAMatrix matrix = dnaMatrix2Provider.get();
-		matrix.setColumnsSize(1);
-		// nothing special about A,C,T.
-		cellTestSupport.getStatesWhenCellHasMultipleElements(matrix,
-				ImmutableSet.of(
-						DNANucleotide.A, DNANucleotide.C,
-						DNANucleotide.T));
-	}
-
-	/**
-	 * {@code beforeMarshal(...)} should throw an exception if the type has not
-	 * bee set yet.
-	 */
-	@Test(expectedExceptions = IllegalStateException.class)
-	public void beforeMarshalBeforeTypeHasBeenSet() {
-		cellTestSupport.beforeMarshalBeforeTypeHasBeenSet();
-	}
-
-	/**
-	 * Straight {@link Cell#beforeMarshal(javax.xml.bind.Marshaller)} test.
-	 * Makes sure that {@link Cell#getXmlElements()} contains the elements after
-	 * {@code beforeMarshal()} is called.
-	 */
-	@Test
-	public void beforeMarshal() {
-		final DNAMatrix matrix = dnaMatrix2Provider.get();
-		matrix.setColumnsSize(1);
-		final DNACell cell = dnaCellProvider.get();
-
-		final OTUSet otuSet = otuSetProvider.get();
-		otuSet.addOTU(otuProvider.get());
-
-		matrix.setOTUSet(otuSet);
-
-		matrix.putRow(otuSet.getOTUs().get(0), dnaRowProvider.get());
-
-		matrix.getRow(matrix.getOTUSet().getOTUs().get(0)).setCells(
-				ImmutableList.of(cell));
-
-		final Set<DNANucleotide> elements =
-				ImmutableSet.of(DNANucleotide.A, DNANucleotide.C);
-
-		cell.setPolymorphicElements(elements);
-
-		cell.beforeMarshal(null);
-		final Set<DNANucleotide> xmlStates = cell.getElementsXml();
-		assertNotNull(xmlStates);
-		assertEquals(xmlStates.size(), elements.size());
-		for (final DNANucleotide expectedElement : elements) {
-			assertTrue(xmlStates.contains(expectedElement));
-		}
-	}
-
-	@Test
-	public void getStatesWhenCellHasOneElement() {
-		cellTestSupport.getStatesWhenCellHasOneElement((DNAMatrix)
-				dnaMatrix2Provider.get().setColumnsSize(1),
-				DNANucleotide.C);
-	}
 
 	@Test
 	public void setTypeAndStatesInapplicable() {

@@ -21,18 +21,20 @@ import static org.testng.Assert.assertNotNull;
 import static org.testng.Assert.assertNull;
 import static org.testng.Assert.assertTrue;
 
+import java.util.Collections;
 import java.util.EnumSet;
 import java.util.Set;
 
 import org.testng.annotations.Test;
 
 import com.google.common.collect.ImmutableList;
+import com.google.common.collect.ImmutableSet;
 import com.google.inject.Inject;
 import com.google.inject.Provider;
 
 import edu.upenn.cis.ppod.TestGroupDefs;
 
-@Test(groups = { TestGroupDefs.FAST })
+@Test(groups = { TestGroupDefs.FAST, TestGroupDefs.SINGLE })
 public class CellTest {
 
 	@Inject
@@ -163,4 +165,102 @@ public class CellTest {
 		cell.setInNeedOfNewVersion();
 
 	}
+
+	/**
+	 * Matrix must be ready to have a row with one cell added to it.
+	 * 
+	 * @param matrix
+	 * @param elements
+	 */
+	@Test
+	public void getElementsWhenCellHasMultipleElements() {
+		final Cell<DNANucleotide> cell = dnaCellProvider.get();
+
+		final Set<DNANucleotide> elements =
+				ImmutableSet.of(DNANucleotide.A, DNANucleotide.T);
+
+		cell.setType(Cell.Type.POLYMORPHIC);
+		cell.setElementsRaw(elements);
+		assertEquals(cell.getElements(), elements);
+
+		cell.setType(Cell.Type.UNCERTAIN);
+		assertEquals(cell.getElements(), elements);
+	}
+
+	/**
+	 * {@code beforeMarshal(...)} should throw an {@code IllegalStateException}
+	 * if the type has not bee set yet.
+	 */
+	@Test(expectedExceptions = IllegalStateException.class)
+	public void beforeMarshalBeforeTypeHasBeenSet() {
+		final DNACell cell = dnaCellProvider.get();
+		cell.beforeMarshal(null);
+	}
+
+	@Test
+	public void getStatesWhenCellHasOneElement() {
+		final Cell<DNANucleotide> cell = dnaCellProvider.get();
+
+		final DNANucleotide nucleotide = DNANucleotide.C;
+
+		cell.setElement(nucleotide);
+		cell.setType(Cell.Type.SINGLE);
+		assertEquals(cell.getElements(), ImmutableSet.of(nucleotide));
+	}
+
+	@Test
+	public void getStatesWhenCellHasNoElements() {
+		final Cell<DNANucleotide> cell = dnaCellProvider.get();
+		cell.setType(Cell.Type.UNASSIGNED);
+		cell.setElement(null);
+		cell.setElementsRaw(null);
+		assertEquals(cell.getElements(), Collections.emptyList());
+
+		cell.setType(Cell.Type.INAPPLICABLE);
+		assertEquals(cell.getElements(), Collections.emptyList());
+	}
+
+	@Test(expectedExceptions = IllegalArgumentException.class)
+	public void setUncertainElementsTooFewStates() {
+		final Cell<DNANucleotide> cell = dnaCellProvider.get();
+		cell.setUncertainElements(ImmutableSet.of(DNANucleotide.G));
+	}
+
+	@Test
+	public void setInapplicable() {
+		final Cell<DNANucleotide> cell = dnaCellProvider.get();
+		cell.unsetInNeedOfNewVersion();
+		cell.setInapplicable();
+
+		assertTrue(cell.isInNeedOfNewVersion());
+		assertEquals(cell.getType(), Cell.Type.INAPPLICABLE);
+		assertEquals(cell.getElements(), Collections.emptySet());
+
+		cell.unsetInNeedOfNewVersion();
+		cell.setInapplicable();
+
+		assertFalse(cell.isInNeedOfNewVersion());
+		assertEquals(cell.getType(), Cell.Type.INAPPLICABLE);
+		assertEquals(cell.getElements(), Collections.emptySet());
+	}
+
+	@Test
+	public void setUnassigned() {
+		final Cell<DNANucleotide> cell = dnaCellProvider.get();
+		cell.unsetInNeedOfNewVersion();
+		cell.setUnassigned();
+
+		assertTrue(cell.isInNeedOfNewVersion());
+		assertEquals(cell.getType(), Cell.Type.UNASSIGNED);
+		assertEquals(cell.getElements(), Collections.emptySet());
+
+		cell.unsetInNeedOfNewVersion();
+		cell.setUnassigned();
+
+		assertFalse(cell.isInNeedOfNewVersion());
+		assertEquals(cell.getType(), Cell.Type.UNASSIGNED);
+		assertEquals(cell.getElements(), Collections.emptySet());
+
+	}
+
 }

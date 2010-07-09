@@ -346,8 +346,8 @@ public class OTUSet extends UUPPodEntityWithXmlId {
 	}
 
 	/**
-	 * Get the study to which this OTU set belongs. Will be {@code null} until
-	 * this is added to a {@code Study}.
+	 * Get the study to which this OTU set belongs. Will be {@code null} when
+	 * this OTU set does not belong to a {@code Study}.
 	 * 
 	 * @return the study to which this OTU set belongs
 	 */
