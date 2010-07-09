@@ -134,8 +134,8 @@ public class DNACellTest {
 
 		assertTrue(cell.isInNeedOfNewVersion());
 		assertEquals(cell.getType(), Cell.Type.POLYMORPHIC);
-		assertEquals((Object) cell.getElements(),
-				(Object) nucleotides);
+		assertEquals(cell.getElements(),
+					nucleotides);
 
 		cell.unsetInNeedOfNewVersion();
 

@@ -118,6 +118,10 @@ public abstract class Row<C extends Cell<?>>
 	}
 
 	protected void setCellsRaw(final List<C> cells) {
+		// Let's not do a checkNotNull(cells) because we can't control what
+		// Hibernate does. But we will assume that the value at least never ends
+		// up as null. NOTE: I don't know if hibernate ever calls this with
+		// null, but this seems a safe strategy.
 		this.cells = cells;
 	}
 

@@ -397,7 +397,7 @@ public abstract class Cell<E> extends PPodEntity {
 					"initElements() was called but elements is null");
 		}
 		thisElements.clear();
-		thisElements.addAll(thisElements);
+		thisElements.addAll(elements);
 
 		setInNeedOfNewVersion();
 	}
