@@ -20,16 +20,10 @@ import static com.google.common.collect.Iterables.isEmpty;
 import static com.google.common.collect.Sets.newHashSet;
 import static org.testng.Assert.assertEquals;
 import static org.testng.Assert.assertFalse;
-import static org.testng.Assert.assertNull;
-import static org.testng.Assert.assertSame;
 import static org.testng.Assert.assertTrue;
-
-import java.util.Collections;
-import java.util.Set;
 
 import org.testng.annotations.Test;
 
-import com.google.common.collect.ImmutableSet;
 import com.google.inject.Inject;
 import com.google.inject.Provider;
 
@@ -38,7 +32,8 @@ import edu.upenn.cis.ppod.TestGroupDefs;
 /**
  * @author Sam Donnelly
  */
-@Test(groups = { TestGroupDefs.FAST }, dependsOnGroups = TestGroupDefs.INIT)
+@Test(groups = { TestGroupDefs.FAST },
+		dependsOnGroups = TestGroupDefs.INIT)
 public class PPodEntityTest {
 
 	@Inject
@@ -120,75 +115,5 @@ public class PPodEntityTest {
 		assertFalse(returnBoolean2);
 	}
 
-	public void setAttachments() {
 
-		final Attachment attachment0 = attachmentProvider.get();
-		final Attachment attachment1 = attachmentProvider.get();
-		final Attachment attachment2 = attachmentProvider.get();
-		final Set<Attachment> attachments =
-				ImmutableSet.of(attachment0,
-						attachment1,
-						attachment2);
-
-		final OTUSet otuSet = otuSetProvider.get();
-		otuSet.unsetInNeedOfNewVersion();
-
-		final Set<Attachment> returnedAttachments =
-				otuSet.setAttachments(attachments);
-
-		assertTrue(otuSet.isInNeedOfNewVersion());
-		assertTrue(isEmpty(returnedAttachments));
-		assertEquals(otuSet.getAttachments(),
-				attachments);
-
-		for (final Attachment attachment : otuSet.getAttachments()) {
-			assertSame(attachment.getAttachee(), otuSet);
-		}
-
-		otuSet.unsetInNeedOfNewVersion();
-
-		final Set<Attachment> attachments02 =
-				ImmutableSet.of(attachment0, attachment2);
-
-		final Set<Attachment> attachments1 =
-				ImmutableSet.of(attachment1);
-
-		final Set<Attachment> returnedAttachments2 =
-				otuSet.setAttachments(attachments02);
-
-		assertTrue(otuSet.isInNeedOfNewVersion());
-		assertEquals(returnedAttachments2, attachments1);
-		assertEquals(otuSet.getAttachments(), attachments02);
-		assertNull(attachment1.getAttachee());
-
-		for (final Attachment attachment : otuSet.getAttachments()) {
-			assertSame(attachment.getAttachee(), otuSet);
-		}
-
-		otuSet.unsetInNeedOfNewVersion();
-
-		final Set<Attachment> returnedAttachments4 =
-				otuSet.setAttachments(attachments02);
-		assertFalse(otuSet.isInNeedOfNewVersion());
-		assertTrue(isEmpty(returnedAttachments4));
-		assertEquals(otuSet.getAttachments(), attachments02);
-
-		for (final Attachment attachment : otuSet.getAttachments()) {
-			assertSame(attachment.getAttachee(), otuSet);
-		}
-
-		final Set<Attachment> noAttachments = Collections.emptySet();
-
-		otuSet.unsetInNeedOfNewVersion();
-
-		final Set<Attachment> returnedAttachments3 =
-				otuSet.setAttachments(noAttachments);
-		assertTrue(otuSet.isInNeedOfNewVersion());
-		assertTrue(isEmpty(otuSet.getAttachments()));
-		assertEquals(returnedAttachments3, attachments02);
-
-		for (final Attachment attachment : attachments) {
-			assertNull(attachment.getAttachee());
-		}
-	}
 }

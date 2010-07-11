@@ -59,17 +59,21 @@ final class MergeOTUSets implements IMergeOTUSets {
 		// This is for a response to the service client.
 		targetOTUSet.setDocId(sourceOTUSet.getDocId());
 
-		final List<OTU> newTargetOTUs = newArrayListWithCapacity(sourceOTUSet
-				.getOTUs().size());
+		final List<OTU> newTargetOTUs =
+				newArrayListWithCapacity(sourceOTUSet.getOTUs().size());
 
 		for (final OTU sourceOTU : sourceOTUSet.getOTUs()) {
 			OTU targetOTU;
-			if (null == (targetOTU = findIf(targetOTUSet.getOTUs(), compose(
-					equalTo(sourceOTU.getPPodId()), IWithPPodId.getPPodId)))) {
+			if (null == (targetOTU =
+					findIf(targetOTUSet.getOTUs(),
+							compose(
+									equalTo(sourceOTU.getPPodId()),
+									IWithPPodId.getPPodId)))) {
 				targetOTU = otuProvider.get();
 				targetOTU.setPPodId();
-				targetOTU.setVersionInfo(newVersionInfo
-						.getNewVersionInfo());
+				targetOTU
+						.setVersionInfo(newVersionInfo
+								.getNewVersionInfo());
 			}
 			newTargetOTUs.add(targetOTU);
 			targetOTU.setLabel(sourceOTU.getLabel());

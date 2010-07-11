@@ -66,11 +66,6 @@ public class TreeSetTest {
 		assertSame(returnedTree, tree);
 		assertSame(tree.getTreeSet(), treeSet);
 		assertEquals(getOnlyElement(treeSet.getTrees()), tree);
-
-		treeSet.unsetInNeedOfNewVersion();
-		treeSet.addTree(tree);
-		assertFalse(treeSet.isInNeedOfNewVersion());
-		assertEquals(getOnlyElement(treeSet.getTrees()), tree);
 	}
 
 	@Test

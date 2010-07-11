@@ -93,18 +93,6 @@ public class StandardMatrixTest {
 
 	}
 
-	/**
-	 * When we set with the same OTU's, the pPOD version number of the matrix
-	 * should not change.
-	 */
-	@Test
-	public void setOTUsWSameOTUs() {
-		matrix.setVersionInfo(versionInfo);
-
-		// Since they were the same, the version should not have been reset to
-		// null
-		assertNotNull(matrix.getVersionInfo());
-	}
 
 	@Test
 	public void setOTUsWReorderedOTUs() {
@@ -225,27 +213,6 @@ public class StandardMatrixTest {
 
 		assertNotSame(matrix.getCharacters(), shuffledCharacters);
 		assertEquals(matrix.getCharacters(), shuffledCharacters);
-
-		// Assert.assertEquals(
-		// matrix.getCharactersToPositions().get(
-		// shuffledCharacters.get(0)),
-		// Integer.valueOf(0));
-		// Assert.assertEquals(
-		// matrix.getCharactersToPositions().get(
-		// shuffledCharacters.get(1)),
-		// Integer.valueOf(1));
-		// Assert.assertEquals(
-		// matrix.getCharactersToPositions().get(
-		// shuffledCharacters.get(2)),
-		// Integer.valueOf(2));
-
-		// assertEquals(matrix.getColumnPPodVersionInfos().get(0),
-		// pPodVersionInfo1);
-		// assertEquals(matrix.getColumnPPodVersionInfos().get(1),
-		// pPodVersionInfo2);
-		// assertEquals(matrix.getColumnPPodVersionInfos().get(2),
-		// pPodVersionInfo0);
-
 	}
 
 	/**
