@@ -21,9 +21,12 @@ import static com.google.common.base.Preconditions.checkNotNull;
 
 import javax.annotation.CheckForNull;
 import javax.annotation.Nullable;
+import javax.persistence.Access;
+import javax.persistence.AccessType;
 import javax.persistence.Column;
 import javax.persistence.Lob;
 import javax.persistence.MappedSuperclass;
+import javax.persistence.Transient;
 import javax.xml.bind.annotation.XmlAttribute;
 import javax.xml.bind.annotation.XmlElement;
 import javax.xml.bind.annotation.XmlSeeAlso;
@@ -38,26 +41,25 @@ import edu.upenn.cis.ppod.modelinterfaces.IOTUKeyedMapValue;
  */
 @XmlSeeAlso({ DNASequence.class })
 @MappedSuperclass
-public abstract class Sequence
+@Access(AccessType.PROPERTY)
+public abstract class Sequence<SS extends SequenceSet<?>>
 		extends PPodEntity
-		implements IOTUKeyedMapValue {
+		implements IOTUKeyedMapValue<SS> {
 
 	private final static String SEQUENCE_COLUMN = "SEQUENCE";
 
-	@Lob
-	@Column(name = SEQUENCE_COLUMN, nullable = false)
+	@CheckForNull
+	private SS sequenceSet;
+
 	@CheckForNull
 	private String sequence;
 
-	@Column(name = "ACCESSION", nullable = true)
 	@CheckForNull
 	private String accession;
 
-	@Column(name = "DESCRIPTION", nullable = true)
 	@CheckForNull
 	private String description;
 
-	@Column(name = "NAME", nullable = true)
 	@CheckForNull
 	private String name;
 
@@ -69,6 +71,7 @@ public abstract class Sequence
 	 * @return the accession
 	 */
 	@XmlAttribute
+	@Column(name = "ACCESSION", nullable = true)
 	@CheckForNull
 	public String getAccession() {
 		return accession;
@@ -80,6 +83,7 @@ public abstract class Sequence
 	 * @return the description
 	 */
 	@XmlAttribute
+	@Column(name = "DESCRIPTION", nullable = true)
 	@CheckForNull
 	public String getDescription() {
 		return description;
@@ -91,9 +95,16 @@ public abstract class Sequence
 	 * @return the name
 	 */
 	@XmlAttribute
+	@Column(name = "NAME", nullable = true)
 	@CheckForNull
 	public String getName() {
 		return name;
+	}
+
+	@Transient
+	@Nullable
+	public SS getParent() {
+		return sequenceSet;
 	}
 
 	/**
@@ -107,6 +118,8 @@ public abstract class Sequence
 	 * @return the sequence string
 	 */
 	@XmlElement
+	@Lob
+	@Column(name = SEQUENCE_COLUMN, nullable = false)
 	@Nullable
 	public String getSequence() {
 		return sequence;
@@ -134,7 +147,7 @@ public abstract class Sequence
 	 * 
 	 * @return this
 	 */
-	public Sequence setAccession(
+	public Sequence<SS> setAccession(
 				@CheckForNull final String accession) {
 		if (equal(accession, getAccession())) {
 			return this;
@@ -151,7 +164,7 @@ public abstract class Sequence
 	 * 
 	 * @return this
 	 */
-	public Sequence setDescription(
+	public Sequence<SS> setDescription(
 			@CheckForNull final String newDescription) {
 		if (equal(newDescription, getDescription())) {
 			return this;
@@ -168,12 +181,18 @@ public abstract class Sequence
 	 * 
 	 * @return this
 	 */
-	public Sequence setName(@CheckForNull final String name) {
+	public Sequence<SS> setName(@CheckForNull final String name) {
 		if (equal(name, getName())) {
 			return this;
 		}
 		this.name = name;
 		setInNeedOfNewVersion();
+		return this;
+	}
+
+	/** {@inheritDoc} */
+	public Sequence<SS> setParent(final SS sequenceSet) {
+		this.sequenceSet = sequenceSet;
 		return this;
 	}
 
@@ -187,7 +206,7 @@ public abstract class Sequence
 	 * @throws IllegalArgumentException if any characters in newSequence are
 	 *             such that {@link #isLegal(char)} is false.
 	 */
-	public Sequence setSequence(final String sequence) {
+	public Sequence<SS> setSequence(final String sequence) {
 		checkNotNull(sequence);
 		if (sequence.equals(getSequence())) {
 			return this;

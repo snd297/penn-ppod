@@ -42,6 +42,7 @@ import javax.xml.bind.annotation.XmlElement;
 import edu.umd.cs.findbugs.annotations.CheckForNull;
 import edu.umd.cs.findbugs.annotations.Nullable;
 import edu.upenn.cis.ppod.modelinterfaces.IMatrix;
+import edu.upenn.cis.ppod.modelinterfaces.IOTUKeyedMap;
 import edu.upenn.cis.ppod.util.IVisitor;
 
 /**
@@ -51,7 +52,7 @@ import edu.upenn.cis.ppod.util.IVisitor;
  * @author Sam Donnelly
  */
 @MappedSuperclass
-public abstract class Matrix<R extends Row<?>>
+public abstract class Matrix<R extends Row<?, ?>>
 		extends UUPPodEntityWithXmlId
 		implements IMatrix {
 
@@ -194,10 +195,11 @@ public abstract class Matrix<R extends Row<?>>
 	 * <p>
 	 * In perfect world, this would live in a subclass since it does impose a
 	 * certain implementation - storing rows in an OTU-to-row map.
+	 * <p>
 	 * 
 	 * @return the otusToRows
 	 */
-	protected abstract OTUKeyedMap<R> getOTUKeyedRows();
+	protected abstract IOTUKeyedMap<R, ?, ?> getOTUKeyedRows();
 
 	/**
 	 * Getter. Will be {@code null} when object is first created, but never
@@ -240,7 +242,7 @@ public abstract class Matrix<R extends Row<?>>
 	 */
 	public Map<OTU, R> getRows() {
 		return Collections.unmodifiableMap(getOTUKeyedRows()
-				.getOTUsToValues());
+				.getValues());
 	}
 
 	/**

@@ -15,14 +15,12 @@
  */
 package edu.upenn.cis.ppod.model;
 
-import static com.google.common.base.Preconditions.checkNotNull;
-import static com.google.common.collect.Maps.newHashMap;
-import static com.google.common.collect.Sets.newHashSet;
-
 import java.util.Map;
 import java.util.Set;
 
 import javax.annotation.CheckForNull;
+import javax.persistence.Access;
+import javax.persistence.AccessType;
 import javax.persistence.CascadeType;
 import javax.persistence.Embeddable;
 import javax.persistence.JoinColumn;
@@ -32,30 +30,65 @@ import javax.persistence.OneToMany;
 import javax.persistence.Transient;
 import javax.xml.bind.Marshaller;
 import javax.xml.bind.Unmarshaller;
+import javax.xml.bind.annotation.XmlAccessType;
+import javax.xml.bind.annotation.XmlAccessorType;
 import javax.xml.bind.annotation.XmlElement;
 
 import org.hibernate.annotations.Parent;
 
+import edu.upenn.cis.ppod.modelinterfaces.IOTUKeyedMap;
+import edu.upenn.cis.ppod.util.IVisitor;
 import edu.upenn.cis.ppod.util.OTUDNARowPair;
-import edu.upenn.cis.ppod.util.OTUSomethingPair;
 
 /**
  * Maps {@link OTU}s to {@link DNARow}s.
  * 
  * @author Sam Donnelly
  */
+@XmlAccessorType(XmlAccessType.NONE)
 @Embeddable
-public class DNARows extends OTUKeyedMap<DNARow> {
+@Access(AccessType.PROPERTY)
+public class DNARows implements IOTUKeyedMap<DNARow, DNAMatrix, OTUDNARowPair> {
+
+	private final IOTUKeyedMap<DNARow, DNAMatrix, OTUDNARowPair> rows = new OTUKeyedMap<DNARow, DNAMatrix, OTUDNARowPair>();
+
+	public void accept(final IVisitor visitor) {
+		rows.accept(visitor);
+	}
+
+	public void afterUnmarshal(final Unmarshaller u, final Object parent) {
+		rows.afterUnmarshal(u, parent);
+	}
+
+	public boolean beforeMarshal(@CheckForNull final Marshaller marshaller) {
+		getOTUSomethingPairs().clear();
+		for (final Map.Entry<OTU, DNARow> otuToRow : getValues()
+				.entrySet()) {
+			getOTUSomethingPairs().add(
+					OTUDNARowPair.of(otuToRow.getKey(), otuToRow
+							.getValue()));
+		}
+		return true;
+	}
+
+	public IOTUKeyedMap<DNARow, DNAMatrix, OTUDNARowPair> clear() {
+		return rows.clear();
+	}
+
+	public DNARow get(final OTU key) {
+		return rows.get(key);
+	}
+
+	@XmlElement(name = "otuRowPair")
+	@Transient
+	public Set<OTUDNARowPair> getOTUSomethingPairs() {
+		return rows.getOTUSomethingPairs();
+	}
 
 	@Parent
-	private DNAMatrix matrix;
-
-	/**
-	 * For marshalling {@code rows}. Since a {@code Map}'s key couldn't be an
-	 * {@code XmlIDREF} in JAXB - at least not easily.
-	 */
-	@Transient
-	private final Set<OTUDNARowPair> otuRowPairs = newHashSet();
+	public DNAMatrix getParent() {
+		return rows.getParent();
+	}
 
 	/**
 	 * We want everything but SAVE_UPDATE (which ALL will give us) - once it's
@@ -71,81 +104,25 @@ public class DNARows extends OTUKeyedMap<DNARow> {
 			orphanRemoval = true)
 	@JoinTable(inverseJoinColumns = @JoinColumn(name = DNARow.JOIN_COLUMN))
 	@MapKeyJoinColumn(name = OTU.JOIN_COLUMN)
-	private final Map<OTU, DNARow> rows = newHashMap();
-
-	/**
-	 * {@link Unmarshaller} callback.
-	 * 
-	 * @param u see {@code Unmarshaller}
-	 * @param parent see {@code Unmarshaller}
-	 */
-	public void afterUnmarshal(final Unmarshaller u, final Object parent) {
-		setMatrix((DNAMatrix) parent);
-		for (final OTUSomethingPair<DNARow> otuRowPair : otuRowPairs) {
-			otuRowPair.getSecond().setMatrix(getParent());
-		}
+	public Map<OTU, DNARow> getValues() {
+		return rows.getValues();
 	}
 
-	public boolean beforeMarshal(@CheckForNull final Marshaller marshaller) {
-		getOTURowPairs().clear();
-		for (final Map.Entry<OTU, DNARow> otuToRow : getOTUsToValues()
-				.entrySet()) {
-			getOTURowPairs().add(
-					OTUDNARowPair.of(otuToRow.getKey(), otuToRow
-							.getValue()));
-		}
-		return true;
+	public DNARow put(final OTU key, final DNARow value) {
+		return rows.put(key, value);
 	}
 
-	/**
-	 * Hibernate requires this method.
-	 */
-	private DNAMatrix getMatrix() {
-		return matrix;
+	public IOTUKeyedMap<DNARow, DNAMatrix, OTUDNARowPair> setOTUs() {
+		return rows.setOTUs();
 	}
 
-	@XmlElement(name = "otuRowPair")
-	protected Set<OTUDNARowPair> getOTURowPairs() {
-		return otuRowPairs;
+	public DNARows setParent(final DNAMatrix parent) {
+		rows.setParent(parent);
+		return this;
 	}
 
-	@Override
-	protected Map<OTU, DNARow> getOTUsToValues() {
-		return rows;
-	}
-
-	@Override
-	protected Set<OTUSomethingPair<DNARow>> getOTUValuePairs() {
-		final Set<OTUSomethingPair<DNARow>> otuValuePairs = newHashSet();
-		for (final OTUDNARowPair otuRowPair : otuRowPairs) {
-			otuValuePairs.add(otuRowPair);
-		}
-		return otuValuePairs;
-	}
-
-	@Override
-	protected DNAMatrix getParent() {
-		return getMatrix();
-	}
-
-	@Override
-	public DNARow put(final OTU otu, final DNARow row) {
-		checkNotNull(otu);
-		checkNotNull(row);
-		row.setMatrix(getParent());
-		return super.putHelper(otu, row);
-	}
-
-	/**
-	 * Intentionally package-private.
-	 * <p>
-	 * Hibernate requires that this method is called "setMatrix". Otherwise,
-	 * we'd call it "setParent" for symmetry w/ {@link getParent()}.
-	 * 
-	 * @param matrix the owning matrix.
-	 */
-	void setMatrix(final DNAMatrix matrix) {
-		checkNotNull(matrix);
-		this.matrix = matrix;
+	public IOTUKeyedMap<DNARow, DNAMatrix, OTUDNARowPair> setValues(
+			final Map<OTU, DNARow> values) {
+		return rows.setValues(values);
 	}
 }

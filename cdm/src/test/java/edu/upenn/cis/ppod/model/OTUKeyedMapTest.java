@@ -19,8 +19,6 @@ import static org.testng.Assert.assertEquals;
 import static org.testng.Assert.assertFalse;
 import static org.testng.Assert.assertTrue;
 
-import java.util.List;
-
 import org.testng.annotations.Test;
 
 import com.google.common.collect.ImmutableList;
@@ -66,7 +64,7 @@ public class OTUKeyedMapTest {
 		final DNARow row2 = dnaRowProvider.get();
 
 		final DNARows rows = dnaRowsProvider.get();
-		rows.setMatrix(matrix);
+		rows.setParent(matrix);
 
 		rows.put(otu0, row0);
 		rows.put(otu1, row1);
@@ -76,7 +74,7 @@ public class OTUKeyedMapTest {
 
 		rows.clear();
 
-		assertEquals(rows.getOTUsToValues().size(), 0);
+		assertEquals(rows.getValues().size(), 0);
 		assertTrue(matrix.isInNeedOfNewVersion());
 
 	}
@@ -89,7 +87,7 @@ public class OTUKeyedMapTest {
 	public void clearWhileEmpty() {
 		final DNAMatrix matrix = dnaMatrixProvider.get();
 		final DNARows otusToRows = matrix.getOTUKeyedRows();
-		otusToRows.setMatrix(matrix);
+		otusToRows.setParent(matrix);
 		matrix.unsetInNeedOfNewVersion();
 		otusToRows.clear();
 
@@ -114,7 +112,7 @@ public class OTUKeyedMapTest {
 		final DNARow row2 = dnaRowProvider.get();
 
 		matrix.putRow(otu0, row0);
-		matrix.getOTUKeyedRows().getOTUsToValues().put(otu1, null); // the
+		matrix.getOTUKeyedRows().getValues().put(otu1, null); // the
 		// accept
 		// method
 		// should
@@ -133,7 +131,7 @@ public class OTUKeyedMapTest {
 		assertEquals(visitor.getVisited().size(),
 				matrix.getRows().values().size() - 1 + 1);
 
-		assertTrue(visitor.getVisited().contains(matrix.getOTUKeyedRows()));
+		// assertTrue(visitor.getVisited().contains(matrix.getOTUKeyedRows()));
 		assertTrue(visitor
 				.getVisited()
 				.containsAll(ImmutableList

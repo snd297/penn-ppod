@@ -49,9 +49,6 @@ public class StandardCellTest {
 	private Provider<StandardCell> cellProvider;
 
 	@Inject
-	private CellTestSupport<StandardMatrix, StandardRow, StandardCell, StandardState> cellTestSupport;
-
-	@Inject
 	private Provider<StandardCharacter> characterProvider;
 
 	@Nullable
@@ -186,10 +183,4 @@ public class StandardCellTest {
 		assertEquals((Object) cell.getElements(), (Object) newHashSet(states));
 	}
 
-	@Test
-	public void unsetRow() {
-		final StandardMatrix matrix = standardMatrixProvider.get();
-		matrix.setColumnsSize(1);
-		cellTestSupport.unsetRow(matrix);
-	}
 }

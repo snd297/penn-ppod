@@ -41,16 +41,7 @@ import edu.upenn.cis.ppod.model.Cell.Type;
 public class DNACellTest {
 
 	@Inject
-	private CellTestSupport<DNAMatrix, DNARow, DNACell, DNANucleotide> cellTestSupport;
-
-	@Inject
-	private Provider<DNAMatrix> dnaMatrix2Provider;
-
-	@Inject
 	private Provider<DNACell> dnaCellProvider;
-
-	@Inject
-	private Provider<OTUSet> otuSetProvider;
 
 	@Test
 	public void setTypeAndStatesInapplicable() {
@@ -90,13 +81,6 @@ public class DNACellTest {
 						dnaCell.getElements()),
 					DNANucleotide.A);
 		assertTrue(dnaCell.isInNeedOfNewVersion());
-	}
-
-	@Test
-	public void unsetRow() {
-		final DNAMatrix matrix = dnaMatrix2Provider.get();
-		matrix.setColumnsSize(1);
-		cellTestSupport.unsetRow(matrix);
 	}
 
 	@Test

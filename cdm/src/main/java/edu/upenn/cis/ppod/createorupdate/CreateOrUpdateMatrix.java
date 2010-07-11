@@ -39,7 +39,7 @@ import edu.upenn.cis.ppod.modelinterfaces.INewVersionInfo;
 /**
  * @author Sam Donnelly
  */
-class CreateOrUpdateMatrix<M extends Matrix<R>, R extends Row<C>, C extends Cell<E>, E>
+class CreateOrUpdateMatrix<M extends Matrix<R>, R extends Row<C, ?>, C extends Cell<E, ?>, E>
 		implements ICreateOrUpdateMatrix<M, R, C, E> {
 
 	private final Provider<C> cellProvider;

@@ -64,7 +64,7 @@ public class DNASequenceSet extends SequenceSet<DNASequence> {
 	@Inject
 	protected DNASequenceSet(final DNASequences otusToDNASequences) {
 		this.sequences = otusToDNASequences;
-		this.sequences.setSequenceSet(this);
+		this.sequences.setParent(this);
 	}
 
 	@Override
@@ -97,7 +97,7 @@ public class DNASequenceSet extends SequenceSet<DNASequence> {
 	public Map<OTU, DNASequence> getSequences() {
 		return Collections.unmodifiableMap(
 				getOTUKeyedSequences()
-						.getOTUsToValues());
+						.getValues());
 	}
 
 	@Override

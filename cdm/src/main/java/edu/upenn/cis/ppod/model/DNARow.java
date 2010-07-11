@@ -19,7 +19,6 @@ import static com.google.common.base.Preconditions.checkNotNull;
 
 import java.util.List;
 
-import javax.annotation.CheckForNull;
 import javax.persistence.Access;
 import javax.persistence.AccessType;
 import javax.persistence.CascadeType;
@@ -32,7 +31,6 @@ import javax.persistence.OrderBy;
 import javax.persistence.Table;
 import javax.xml.bind.annotation.XmlElement;
 
-import edu.upenn.cis.ppod.modelinterfaces.IOTUKeyedMapValue;
 import edu.upenn.cis.ppod.util.IVisitor;
 
 /**
@@ -43,15 +41,12 @@ import edu.upenn.cis.ppod.util.IVisitor;
 @Entity
 @Table(name = DNARow.TABLE)
 @Access(AccessType.PROPERTY)
-public class DNARow extends Row<DNACell> {
+public class DNARow extends Row<DNACell, DNAMatrix> {
 
 	public static final String TABLE = "DNA_ROW";
 
 	public static final String JOIN_COLUMN =
 			TABLE + "_" + PersistentObject.ID_COLUMN;
-
-	@CheckForNull
-	private DNAMatrix matrix;
 
 	DNARow() {}
 
@@ -74,8 +69,9 @@ public class DNARow extends Row<DNACell> {
 	/** {@inheritDoc} */
 	@ManyToOne(fetch = FetchType.LAZY, optional = false)
 	@JoinColumn(name = DNAMatrix.JOIN_COLUMN)
-	public DNAMatrix getMatrix() {
-		return matrix;
+	@Override
+	public DNAMatrix getParent() {
+		return super.getParent();
 	}
 
 	@Override
@@ -86,15 +82,6 @@ public class DNARow extends Row<DNACell> {
 			cell.setRow(this);
 		}
 		return clearedCells;
-	}
-
-	void setMatrix(final DNAMatrix matrix) {
-		this.matrix = matrix;
-	}
-
-	public IOTUKeyedMapValue unsetParent() {
-		matrix = null;
-		return this;
 	}
 
 }

@@ -21,7 +21,7 @@ import edu.upenn.cis.ppod.model.Matrix;
 import edu.upenn.cis.ppod.model.Row;
 import edu.upenn.cis.ppod.modelinterfaces.INewVersionInfo;
 
-public interface ICreateOrUpdateMatrix<M extends Matrix<R>, R extends Row<C>, C extends Cell<E>, E> {
+public interface ICreateOrUpdateMatrix<M extends Matrix<R>, R extends Row<C, ?>, C extends Cell<E, ?>, E> {
 
 	/**
 	 * Assumes {@code dbMatrix} is in a persistent state.
@@ -31,7 +31,7 @@ public interface ICreateOrUpdateMatrix<M extends Matrix<R>, R extends Row<C>, C 
 	 */
 	void createOrUpdateMatrix(M dbMatrix, M sourceMatrix);
 
-	interface IFactory<M extends Matrix<R>, R extends Row<C>, C extends Cell<E>, E> {
+	interface IFactory<M extends Matrix<R>, R extends Row<C, ?>, C extends Cell<E, ?>, E> {
 		ICreateOrUpdateMatrix<M, R, C, E> create(
 				INewVersionInfo newVersionInfo,
 				IDAO<Object, Long> dao);

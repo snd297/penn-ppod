@@ -20,7 +20,6 @@ import static com.google.common.base.Preconditions.checkNotNull;
 
 import java.util.List;
 
-import javax.annotation.CheckForNull;
 import javax.persistence.Access;
 import javax.persistence.AccessType;
 import javax.persistence.CascadeType;
@@ -34,7 +33,6 @@ import javax.persistence.Table;
 import javax.persistence.Transient;
 import javax.xml.bind.annotation.XmlElement;
 
-import edu.upenn.cis.ppod.modelinterfaces.IOTUKeyedMapValue;
 import edu.upenn.cis.ppod.util.IVisitor;
 
 /**
@@ -45,15 +43,12 @@ import edu.upenn.cis.ppod.util.IVisitor;
 @Entity
 @Table(name = StandardRow.TABLE)
 @Access(AccessType.PROPERTY)
-public class StandardRow extends Row<StandardCell> {
+public class StandardRow extends Row<StandardCell, StandardMatrix> {
 
 	/** This entitiy's table name. */
 	public static final String TABLE = "STANDARD_ROW";
 
 	public static final String JOIN_COLUMN = TABLE + "_ID";
-
-	@CheckForNull
-	private StandardMatrix matrix;
 
 	StandardRow() {}
 
@@ -96,8 +91,9 @@ public class StandardRow extends Row<StandardCell> {
 	 */
 	@ManyToOne(fetch = FetchType.LAZY, optional = false)
 	@JoinColumn(name = StandardMatrix.JOIN_COLUMN)
-	public StandardMatrix getMatrix() {
-		return matrix;
+	@Override
+	public StandardMatrix getParent() {
+		return super.getParent();
 	}
 
 	@Override
@@ -110,15 +106,5 @@ public class StandardRow extends Row<StandardCell> {
 			cell.setRow(this);
 		}
 		return clearedCells;
-	}
-
-	void setMatrix(final StandardMatrix matrix) {
-		this.matrix = matrix;
-	}
-
-	/** {@inheritDoc} */
-	public IOTUKeyedMapValue unsetParent() {
-		matrix = null;
-		return this;
 	}
 }

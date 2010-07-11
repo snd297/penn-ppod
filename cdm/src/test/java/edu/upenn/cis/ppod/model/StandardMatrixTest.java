@@ -320,7 +320,7 @@ public class StandardMatrixTest {
 		final StandardRow row2 = rowProvider.get();
 		final StandardRow someRow = matrix.putRow(otu1, row2);
 		assertEquals(someRow, row1);
-		assertNull(row1.getMatrix());
+		assertNull(row1.getParent());
 	}
 
 	@Inject

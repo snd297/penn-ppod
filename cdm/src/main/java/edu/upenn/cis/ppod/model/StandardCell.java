@@ -32,7 +32,6 @@ import javax.persistence.ManyToMany;
 import javax.persistence.ManyToOne;
 import javax.persistence.Table;
 import javax.persistence.Transient;
-import javax.xml.bind.Unmarshaller;
 import javax.xml.bind.annotation.XmlAttribute;
 import javax.xml.bind.annotation.XmlElement;
 import javax.xml.bind.annotation.XmlIDREF;
@@ -49,7 +48,7 @@ import edu.upenn.cis.ppod.util.IVisitor;
 @Entity
 @Table(name = StandardCell.TABLE)
 @Access(AccessType.PROPERTY)
-public class StandardCell extends Cell<StandardState> {
+public class StandardCell extends Cell<StandardState, StandardRow> {
 
 	/**
 	 * The name of the table.
@@ -62,13 +61,6 @@ public class StandardCell extends Cell<StandardState> {
 	 */
 	public static final String JOIN_COLUMN = TABLE + "_ID";
 
-	/**
-	 * The {@code CharacterStateRow} to which this {@code CharacterStateCell}
-	 * belongs.
-	 */
-	@CheckForNull
-	private StandardRow row;
-
 	/** No-arg constructor for (at least) Hibernate. */
 	StandardCell() {}
 
@@ -76,18 +68,6 @@ public class StandardCell extends Cell<StandardState> {
 	public void accept(final IVisitor visitor) {
 		checkNotNull(visitor);
 		visitor.visit(this);
-	}
-
-	/**
-	 * {@link Unmarshaller} callback.
-	 * 
-	 * @param u see {@code Unmarshaller}
-	 * @param parent see {@code Unmarshaller}
-	 */
-	@Override
-	public void afterUnmarshal(final Unmarshaller u, final Object parent) {
-		super.afterUnmarshal(u, parent);
-		row = (StandardRow) parent;
 	}
 
 	private void checkRowMatrixCharacter() {
@@ -99,7 +79,7 @@ public class StandardCell extends Cell<StandardState> {
 
 		final Integer position = getPosition();
 
-		final StandardMatrix matrix = row.getMatrix();
+		final StandardMatrix matrix = row.getParent();
 
 		checkState(matrix != null,
 				"this cell's row has not had a matrix assigned");
@@ -151,7 +131,7 @@ public class StandardCell extends Cell<StandardState> {
 	@JoinColumn(name = StandardRow.JOIN_COLUMN)
 	@Override
 	public StandardRow getRow() {
-		return row;
+		return super.getRow();
 	}
 
 	/**
@@ -202,7 +182,7 @@ public class StandardCell extends Cell<StandardState> {
 					"this cell has not been assigned a row: it's position attribute is null");
 
 		final StandardCharacter character =
-					getRow().getMatrix().getCharacters().get(position);
+					getRow().getParent().getCharacters().get(position);
 
 		newElements = newHashSet();
 
@@ -217,20 +197,9 @@ public class StandardCell extends Cell<StandardState> {
 		return;
 	}
 
-	/**
-	 * Set or unset the row to which this cell belongs.
-	 * <p>
-	 * Intentionally package-private.
-	 * 
-	 * @param row value, {@code null} to indicate that the cell is removed from
-	 *            the row
-	 */
-	protected void setRow(@CheckForNull final StandardRow row) {
-		this.row = row;
-	}
-
 	@Override
-	public Cell<StandardState> setSingleElement(final StandardState element) {
+	public Cell<StandardState, StandardRow> setSingleElement(
+			final StandardState element) {
 
 		checkNotNull(element);
 
@@ -239,7 +208,7 @@ public class StandardCell extends Cell<StandardState> {
 					"this cell has not been assigned a row: it's position attribute is null");
 
 		final StandardCharacter standardCharacter =
-					getRow().getMatrix().getCharacters().get(getPosition());
+					getRow().getParent().getCharacters().get(getPosition());
 
 		final StandardState newElement =
 				standardCharacter.getState(element.getStateNumber());
@@ -263,8 +232,4 @@ public class StandardCell extends Cell<StandardState> {
 		return this;
 	}
 
-	@Override
-	public void unsetRow() {
-		row = null;
-	}
 }

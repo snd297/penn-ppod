@@ -19,7 +19,6 @@ import static com.google.common.base.Preconditions.checkNotNull;
 
 import java.util.Set;
 
-import javax.annotation.CheckForNull;
 import javax.persistence.Entity;
 import javax.persistence.FetchType;
 import javax.persistence.ManyToOne;
@@ -27,7 +26,6 @@ import javax.persistence.Table;
 
 import com.google.common.collect.ImmutableSet;
 
-import edu.upenn.cis.ppod.modelinterfaces.IOTUKeyedMapValue;
 import edu.upenn.cis.ppod.util.IVisitor;
 
 /**
@@ -37,7 +35,7 @@ import edu.upenn.cis.ppod.util.IVisitor;
  */
 @Entity
 @Table(name = DNASequence.TABLE)
-public class DNASequence extends Sequence {
+public class DNASequence extends Sequence<DNASequenceSet> {
 
 	/**
 	 * The characters that are legal in a {@code DNASequence}.
@@ -54,19 +52,16 @@ public class DNASequence extends Sequence {
 	public static final String JOIN_COLUMN =
 			TABLE + "_" + PersistentObject.ID_COLUMN;
 
-	@CheckForNull
-	@ManyToOne(fetch = FetchType.LAZY, optional = false)
-	private DNASequenceSet sequenceSet;
-
 	@Override
 	public void accept(final IVisitor visitor) {
 		checkNotNull(visitor);
 		visitor.visit(this);
 	}
 
-	@CheckForNull
-	DNASequenceSet getSequenceSet() {
-		return sequenceSet;
+	@ManyToOne(fetch = FetchType.LAZY, optional = false)
+	@Override
+	public DNASequenceSet getParent() {
+		return super.getParent();
 	}
 
 	@Override
@@ -76,21 +71,10 @@ public class DNASequence extends Sequence {
 
 	@Override
 	public DNASequence setInNeedOfNewVersion() {
-		if (sequenceSet != null) {
-			sequenceSet.setInNeedOfNewVersion();
+		if (getParent() != null) {
+			getParent().setInNeedOfNewVersion();
 		}
 		super.setInNeedOfNewVersion();
 		return this;
 	}
-
-	void setSequenceSet(@CheckForNull final DNASequenceSet sequenceSet) {
-		this.sequenceSet = sequenceSet;
-	}
-
-	/** {@inheritDoc} */
-	public IOTUKeyedMapValue unsetParent() {
-		sequenceSet = null;
-		return this;
-	}
-
 }
