@@ -56,6 +56,16 @@ public class Chromatogram extends UUPPodEntity {
 		return chromatogramCopy;
 	}
 
+	/**
+	 * {@code null} is a valid value.
+	 * 
+	 * @return the {@code DNASequence} that this points to
+	 */
+	@CheckForNull
+	public DNASequence getSequence() {
+		return sequence;
+	}
+
 	public Chromatogram setChromatogram(final byte[] chromatogram) {
 		checkNotNull(chromatogram);
 		if (Arrays.equals(chromatogram, this.chromatogram)) {
@@ -70,16 +80,6 @@ public class Chromatogram extends UUPPodEntity {
 					chromatogram.length);
 		setInNeedOfNewVersion();
 		return this;
-	}
-
-	/**
-	 * {@code null} is a valid value.
-	 * 
-	 * @return the {@code DNASequence} that this points to
-	 */
-	@CheckForNull
-	public DNASequence getSequence() {
-		return sequence;
 	}
 
 	public Chromatogram setSequence(@CheckForNull final DNASequence sequence) {

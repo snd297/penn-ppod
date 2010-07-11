@@ -76,9 +76,9 @@ public class MolecularSequenceTest {
 	 * {@code setSequence(...)} with an illegal character. Note that since
 	 * {@link DNASequenceSet.isLegal} is tested separately and should be testing
 	 * all illegal characters, we don't need to test all illegal characters
-	 * here. Note that the fact that {@code setSequence(...)} is calling {@code
-	 * isLegal(...)} is part of its public contract, so it's all right for us to
-	 * reason about it here.
+	 * here. Note that the fact that {@code setSequence(...)} is calling
+	 * {@code isLegal(...)} is part of its public contract, so it's all right
+	 * for us to reason about it here.
 	 */
 	@Test(expectedExceptions = IllegalArgumentException.class)
 	public void setSequenceWithAnIllegalCharacter() {
@@ -120,7 +120,7 @@ public class MolecularSequenceTest {
 		assertTrue(sequenceSet.isInNeedOfNewVersion());
 
 		// Let's make sure it works if no parent has been set.
-		sequence.setOTUsToSequences(null);
+		sequence.setSequenceSet(null);
 		sequence.unsetInNeedOfNewVersion();
 
 		sequence.setInNeedOfNewVersion();

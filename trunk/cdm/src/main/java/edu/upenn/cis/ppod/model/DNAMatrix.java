@@ -17,11 +17,8 @@ package edu.upenn.cis.ppod.model;
 
 import static com.google.common.base.Preconditions.checkNotNull;
 
-import javax.persistence.CascadeType;
+import javax.persistence.Embedded;
 import javax.persistence.Entity;
-import javax.persistence.FetchType;
-import javax.persistence.JoinColumn;
-import javax.persistence.OneToOne;
 import javax.persistence.Table;
 import javax.xml.bind.annotation.XmlElement;
 
@@ -39,9 +36,7 @@ import edu.upenn.cis.ppod.util.IVisitor;
 public class DNAMatrix extends Matrix<DNARow> {
 	public final static String TABLE = "DNA_MATRIX";
 
-	@OneToOne(fetch = FetchType.LAZY, optional = false,
-			cascade = CascadeType.ALL, orphanRemoval = true)
-	@JoinColumn(name = DNARows.JOIN_COLUMN)
+	@Embedded
 	private DNARows rows;
 
 	DNAMatrix() {}

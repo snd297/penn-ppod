@@ -24,18 +24,17 @@ import java.util.Set;
 
 import javax.annotation.CheckForNull;
 import javax.persistence.CascadeType;
-import javax.persistence.Entity;
-import javax.persistence.FetchType;
+import javax.persistence.Embeddable;
 import javax.persistence.JoinColumn;
 import javax.persistence.JoinTable;
 import javax.persistence.MapKeyJoinColumn;
 import javax.persistence.OneToMany;
-import javax.persistence.OneToOne;
-import javax.persistence.Table;
 import javax.persistence.Transient;
 import javax.xml.bind.Marshaller;
 import javax.xml.bind.Unmarshaller;
 import javax.xml.bind.annotation.XmlElement;
+
+import org.hibernate.annotations.Parent;
 
 import edu.upenn.cis.ppod.util.OTUDNARowPair;
 import edu.upenn.cis.ppod.util.OTUSomethingPair;
@@ -45,17 +44,10 @@ import edu.upenn.cis.ppod.util.OTUSomethingPair;
  * 
  * @author Sam Donnelly
  */
-@Entity
-@Table(name = DNARows.TABLE)
+@Embeddable
 public class DNARows extends OTUKeyedMap<DNARow> {
 
-	public static final String TABLE = "DNA_ROWS";
-
-	public static final String JOIN_COLUMN =
-			TABLE + "_" + PersistentObject.ID_COLUMN;
-
-	@OneToOne(fetch = FetchType.LAZY, mappedBy = "rows", optional = false)
-	@CheckForNull
+	@Parent
 	private DNAMatrix matrix;
 
 	/**
@@ -90,7 +82,7 @@ public class DNARows extends OTUKeyedMap<DNARow> {
 	public void afterUnmarshal(final Unmarshaller u, final Object parent) {
 		setMatrix((DNAMatrix) parent);
 		for (final OTUSomethingPair<DNARow> otuRowPair : otuRowPairs) {
-			otuRowPair.getSecond().setRows(this);
+			otuRowPair.getSecond().setMatrix(getParent());
 		}
 	}
 
@@ -103,6 +95,13 @@ public class DNARows extends OTUKeyedMap<DNARow> {
 							.getValue()));
 		}
 		return true;
+	}
+
+	/**
+	 * Hibernate requires this method.
+	 */
+	private DNAMatrix getMatrix() {
+		return matrix;
 	}
 
 	@XmlElement(name = "otuRowPair")
@@ -126,35 +125,27 @@ public class DNARows extends OTUKeyedMap<DNARow> {
 
 	@Override
 	protected DNAMatrix getParent() {
-		return matrix;
+		return getMatrix();
 	}
 
 	@Override
 	public DNARow put(final OTU otu, final DNARow row) {
 		checkNotNull(otu);
 		checkNotNull(row);
-		row.setRows(this);
+		row.setMatrix(getParent());
 		return super.putHelper(otu, row);
-	}
-
-	@Override
-	protected DNARows setInNeedOfNewVersion() {
-		if (getParent() != null) {
-			getParent().setInNeedOfNewVersion();
-		}
-		return this;
 	}
 
 	/**
 	 * Intentionally package-private.
+	 * <p>
+	 * Hibernate requires that this method is called "setMatrix". Otherwise,
+	 * we'd call it "setParent" for symmetry w/ {@link getParent()}.
 	 * 
-	 * @param matrix
-	 * @return
+	 * @param matrix the owning matrix.
 	 */
-	DNARows setMatrix(final DNAMatrix matrix) {
+	void setMatrix(final DNAMatrix matrix) {
 		checkNotNull(matrix);
 		this.matrix = matrix;
-		return this;
 	}
-
 }

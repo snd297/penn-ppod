@@ -24,11 +24,10 @@ import java.util.Iterator;
 import java.util.List;
 
 import javax.persistence.CascadeType;
+import javax.persistence.Embedded;
 import javax.persistence.Entity;
-import javax.persistence.FetchType;
 import javax.persistence.JoinColumn;
 import javax.persistence.OneToMany;
-import javax.persistence.OneToOne;
 import javax.persistence.OrderColumn;
 import javax.persistence.Table;
 import javax.xml.bind.Unmarshaller;
@@ -72,9 +71,10 @@ public class StandardMatrix extends Matrix<StandardRow> {
 	@JoinColumn(name = JOIN_COLUMN, nullable = false)
 	private final List<StandardCharacter> characters = newArrayList();
 
-	@OneToOne(fetch = FetchType.LAZY, optional = false,
-			cascade = CascadeType.ALL, orphanRemoval = true)
-	@JoinColumn(name = StandardRows.JOIN_COLUMN)
+	// @OneToOne(fetch = FetchType.LAZY, optional = false,
+	// cascade = CascadeType.ALL, orphanRemoval = true)
+	// @JoinColumn(name = StandardRows.JOIN_COLUMN)
+	@Embedded
 	private StandardRows rows;
 
 	/** No-arg constructor for (at least) Hibernate. */

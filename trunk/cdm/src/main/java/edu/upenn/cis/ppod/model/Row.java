@@ -24,7 +24,6 @@ import java.util.List;
 
 import javax.xml.bind.Unmarshaller;
 
-import edu.umd.cs.findbugs.annotations.CheckForNull;
 import edu.upenn.cis.ppod.modelinterfaces.IMatrix;
 import edu.upenn.cis.ppod.modelinterfaces.IOTUKeyedMapValue;
 import edu.upenn.cis.ppod.modelinterfaces.IRow;
@@ -117,24 +116,6 @@ public abstract class Row<C extends Cell<?>>
 		return cells;
 	}
 
-	protected void setCellsRaw(final List<C> cells) {
-		// Let's not do a checkNotNull(cells) because we can't control what
-		// Hibernate does. But we will assume that the value at least never ends
-		// up as null. NOTE: I don't know if hibernate ever calls this with
-		// null, but this seems a safe strategy.
-		this.cells = cells;
-	}
-
-	/**
-	 * Get the owner of this row.
-	 * <p>
-	 * TODO: eliminate wildcard in return by creating an interface.
-	 * 
-	 * @return
-	 */
-	@CheckForNull
-	protected abstract OTUKeyedMap<?> getRows();
-
 	/**
 	 * Set the cells of this row.
 	 * <p>
@@ -183,6 +164,14 @@ public abstract class Row<C extends Cell<?>>
 		return removedCells;
 	}
 
+	protected void setCellsRaw(final List<C> cells) {
+		// Let's not do a checkNotNull(cells) because we can't control what
+		// Hibernate does. But we will assume that the value at least never ends
+		// up as null. NOTE: I don't know if hibernate ever calls this with
+		// null, but this seems a safe strategy.
+		this.cells = cells;
+	}
+
 	/**
 	 * Reset the pPOD version info of this row and that of its matrix.
 	 * 
@@ -192,11 +181,12 @@ public abstract class Row<C extends Cell<?>>
 	public Row<C> setInNeedOfNewVersion() {
 
 		// So FindBugs knows it's okay
-		final OTUKeyedMap<?> parent = getRows();
-		if (parent != null) {
-			parent.setInNeedOfNewVersion();
+		final IMatrix matrix = getMatrix();
+		if (matrix != null) {
+			matrix.setInNeedOfNewVersion();
 		}
 		super.setInNeedOfNewVersion();
 		return this;
 	}
+
 }

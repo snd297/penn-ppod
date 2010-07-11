@@ -19,6 +19,7 @@ import static com.google.common.base.Preconditions.checkNotNull;
 
 import java.util.List;
 
+import javax.annotation.CheckForNull;
 import javax.persistence.Access;
 import javax.persistence.AccessType;
 import javax.persistence.CascadeType;
@@ -29,11 +30,9 @@ import javax.persistence.ManyToOne;
 import javax.persistence.OneToMany;
 import javax.persistence.OrderBy;
 import javax.persistence.Table;
-import javax.persistence.Transient;
 import javax.xml.bind.annotation.XmlElement;
 
-import edu.umd.cs.findbugs.annotations.CheckForNull;
-import edu.upenn.cis.ppod.modelinterfaces.IMatrix;
+import edu.upenn.cis.ppod.modelinterfaces.IOTUKeyedMapValue;
 import edu.upenn.cis.ppod.util.IVisitor;
 
 /**
@@ -51,11 +50,8 @@ public class DNARow extends Row<DNACell> {
 	public static final String JOIN_COLUMN =
 			TABLE + "_" + PersistentObject.ID_COLUMN;
 
-	/**
-	 * This is the parent of the row. It lies in between this and the matrix.
-	 */
 	@CheckForNull
-	private DNARows rows;
+	private DNAMatrix matrix;
 
 	DNARow() {}
 
@@ -76,19 +72,10 @@ public class DNARow extends Row<DNACell> {
 	}
 
 	/** {@inheritDoc} */
-	@Transient
-	public IMatrix getMatrix() {
-		if (rows == null) {
-			return null;
-		}
-		return rows.getParent();
-	}
-
 	@ManyToOne(fetch = FetchType.LAZY, optional = false)
-	@JoinColumn(name = DNARows.JOIN_COLUMN)
-	@Override
-	protected DNARows getRows() {
-		return rows;
+	@JoinColumn(name = DNAMatrix.JOIN_COLUMN)
+	public DNAMatrix getMatrix() {
+		return matrix;
 	}
 
 	@Override
@@ -101,12 +88,12 @@ public class DNARow extends Row<DNACell> {
 		return clearedCells;
 	}
 
-	void setRows(final DNARows otusToRows) {
-		this.rows = otusToRows;
+	void setMatrix(final DNAMatrix matrix) {
+		this.matrix = matrix;
 	}
 
-	public Row<DNACell> unsetOTUKeyedMap() {
-		rows = null;
+	public IOTUKeyedMapValue unsetParent() {
+		matrix = null;
 		return this;
 	}
 

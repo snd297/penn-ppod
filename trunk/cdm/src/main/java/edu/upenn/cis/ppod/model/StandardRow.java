@@ -20,6 +20,7 @@ import static com.google.common.base.Preconditions.checkNotNull;
 
 import java.util.List;
 
+import javax.annotation.CheckForNull;
 import javax.persistence.Access;
 import javax.persistence.AccessType;
 import javax.persistence.CascadeType;
@@ -33,16 +34,11 @@ import javax.persistence.Table;
 import javax.persistence.Transient;
 import javax.xml.bind.annotation.XmlElement;
 
-import edu.umd.cs.findbugs.annotations.CheckForNull;
-import edu.umd.cs.findbugs.annotations.Nullable;
+import edu.upenn.cis.ppod.modelinterfaces.IOTUKeyedMapValue;
 import edu.upenn.cis.ppod.util.IVisitor;
 
 /**
  * Rows of a {@link StandardMatrix}.
- * <p>
- * In Hibernate, composite elements may contain components but not collections -
- * that's why this is an entity and not a component class: it needs to contain a
- * {@code List<StandardCell>}.
  * 
  * @author Sam Donnelly
  */
@@ -56,11 +52,8 @@ public class StandardRow extends Row<StandardCell> {
 
 	public static final String JOIN_COLUMN = TABLE + "_ID";
 
-	/**
-	 * This is the parent of the row. It lies in between this and the matrix.
-	 */
 	@CheckForNull
-	private StandardRows rows;
+	private StandardMatrix matrix;
 
 	StandardRow() {}
 
@@ -101,20 +94,10 @@ public class StandardRow extends Row<StandardCell> {
 	 * 
 	 * @return the {@code StandardMatrix} of which this is a row
 	 */
-	@Transient
-	@Nullable
-	public StandardMatrix getMatrix() {
-		if (rows == null) {
-			return null;
-		}
-		return rows.getParent();
-	}
-
 	@ManyToOne(fetch = FetchType.LAZY, optional = false)
-	@JoinColumn(name = DNASequences.JOIN_COLUMN)
-	@Override
-	protected StandardRows getRows() {
-		return rows;
+	@JoinColumn(name = StandardMatrix.JOIN_COLUMN)
+	public StandardMatrix getMatrix() {
+		return matrix;
 	}
 
 	@Override
@@ -129,22 +112,13 @@ public class StandardRow extends Row<StandardCell> {
 		return clearedCells;
 	}
 
-	/**
-	 * Set the owner of this row.
-	 * 
-	 * @param rows the owner
-	 * 
-	 * @return this row
-	 */
-	StandardRow setRows(@CheckForNull final StandardRows rows) {
-		this.rows = rows;
-		return this;
+	void setMatrix(final StandardMatrix matrix) {
+		this.matrix = matrix;
 	}
 
-
-	public StandardRow unsetOTUKeyedMap() {
-		rows = null;
+	/** {@inheritDoc} */
+	public IOTUKeyedMapValue unsetParent() {
+		matrix = null;
 		return this;
 	}
-
 }

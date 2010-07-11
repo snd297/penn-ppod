@@ -19,16 +19,15 @@ import static com.google.common.base.Preconditions.checkArgument;
 import static com.google.common.base.Preconditions.checkNotNull;
 import static com.google.common.base.Preconditions.checkState;
 import static com.google.common.collect.Iterables.contains;
-import static com.google.common.collect.Lists.newArrayListWithCapacity;
 import static com.google.common.collect.Sets.newHashSet;
 
-import java.util.List;
 import java.util.Map;
 import java.util.Set;
 
 import javax.annotation.CheckForNull;
 import javax.annotation.Nullable;
-import javax.persistence.MappedSuperclass;
+import javax.xml.bind.annotation.XmlAccessType;
+import javax.xml.bind.annotation.XmlAccessorType;
 
 import edu.upenn.cis.ppod.modelinterfaces.IOTUKeyedMapValue;
 import edu.upenn.cis.ppod.modelinterfaces.IVersionedWithOTUSet;
@@ -45,11 +44,9 @@ import edu.upenn.cis.ppod.util.OTUSomethingPair;
  * 
  * @author Sam Donnelly
  */
-@MappedSuperclass
-public abstract class OTUKeyedMap<V extends IOTUKeyedMapValue>
-		extends PersistentObject {
+@XmlAccessorType(XmlAccessType.NONE)
+public abstract class OTUKeyedMap<V extends IOTUKeyedMapValue> {
 
-	@Override
 	public void accept(final IVisitor visitor) {
 		checkNotNull(visitor);
 		visitor.visit(this);
@@ -104,22 +101,6 @@ public abstract class OTUKeyedMap<V extends IOTUKeyedMapValue>
 	 */
 	@Nullable
 	protected abstract IVersionedWithOTUSet getParent();
-
-	public List<V> getValuesInOTUSetOrder() {
-		if (getParent() == null) {
-			throw new IllegalStateException(
-					"parent is not set, so there is no OTU ordering to use");
-		}
-		final OTUSet parentOTUSet = getParent().getOTUSet();
-		final List<V> valuesInOTUOrder = newArrayListWithCapacity(getOTUsToValues()
-				.values().size());
-		for (final OTU otu : parentOTUSet.getOTUs()) {
-			if (getOTUsToValues().containsKey(otu)) {
-				valuesInOTUOrder.add(getOTUsToValues().get(otu));
-			}
-		}
-		return valuesInOTUOrder;
-	}
 
 	/**
 	 * Associates {@code value} with {@code key} in this map. If the map
@@ -191,18 +172,22 @@ public abstract class OTUKeyedMap<V extends IOTUKeyedMapValue>
 		}
 		checkArgument(!getOTUsToValues().containsValue(value),
 				"already has a value .equals() to newT: " + value);
-		getParent().setInNeedOfNewVersion();
+		setInNeedOfNewVersion();
 		final V originalValue = getOTUsToValues().put(key, value);
 
 		// If we are replacing an OTU's sequence, we need to sever the previous
 		// sequence's sequence->sequenceSet pointer.
 		if (originalValue != null && !originalValue.equals(value)) {
-			originalValue.unsetOTUKeyedMap();
+			originalValue.unsetParent();
 		}
 		return originalValue;
 	}
 
-	protected abstract OTUKeyedMap<V> setInNeedOfNewVersion();
+	private void setInNeedOfNewVersion() {
+		if (getParent() != null) {
+			getParent().setInNeedOfNewVersion();
+		}
+	}
 
 	/**
 	 * Set the keys of this {@code OTUKeyedMap} to the OTU's in
@@ -232,7 +217,7 @@ public abstract class OTUKeyedMap<V extends IOTUKeyedMapValue>
 		for (final OTU otuToBeRemoved : otusToBeRemoved) {
 			final V value = get(otuToBeRemoved);
 			if (value != null) {
-				value.unsetOTUKeyedMap();
+				value.unsetParent();
 			}
 		}
 

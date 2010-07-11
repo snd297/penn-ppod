@@ -24,8 +24,8 @@ import javax.xml.bind.annotation.XmlID;
 import edu.upenn.cis.ppod.modelinterfaces.IWithXmlID;
 
 /**
- * A {@code PersistentObject} w/ an {@link XmlID} attribute called {@code
- * "docId"}.
+ * A {@code PersistentObject} w/ an {@link XmlID} attribute called
+ * {@code "docId"}.
  * 
  * @author Sam Donnelly
  */
