@@ -214,7 +214,10 @@ public class TreeSet extends UUPPodEntityWithXmlId implements
 	 */
 	public List<Tree> setTrees(final List<Tree> trees) {
 		checkNotNull(trees);
-		if (trees.equals(getTreesModifiable())) {;;;
+		if (trees.equals(getTreesModifiable())) {
+			;
+			;
+			;
 			return Collections.emptyList();
 		}
 

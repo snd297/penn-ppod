@@ -25,18 +25,17 @@ import java.util.Set;
 import javax.annotation.CheckForNull;
 import javax.annotation.Nullable;
 import javax.persistence.CascadeType;
-import javax.persistence.Entity;
-import javax.persistence.FetchType;
+import javax.persistence.Embeddable;
 import javax.persistence.JoinColumn;
 import javax.persistence.JoinTable;
 import javax.persistence.MapKeyJoinColumn;
 import javax.persistence.OneToMany;
-import javax.persistence.OneToOne;
-import javax.persistence.Table;
 import javax.persistence.Transient;
 import javax.xml.bind.Marshaller;
 import javax.xml.bind.Unmarshaller;
 import javax.xml.bind.annotation.XmlElement;
+
+import org.hibernate.annotations.Parent;
 
 import edu.upenn.cis.ppod.util.OTUDNASequencePair;
 import edu.upenn.cis.ppod.util.OTUSomethingPair;
@@ -46,15 +45,9 @@ import edu.upenn.cis.ppod.util.OTUSomethingPair;
  * 
  * @author Sam Donnelly
  */
-@Entity
-@Table(name = DNASequences.TABLE)
+@Embeddable
 public class DNASequences
 		extends OTUKeyedMap<DNASequence> {
-
-	public final static String TABLE = "DNA_SEQUENCES";
-
-	public final static String JOIN_COLUMN =
-			TABLE + "_" + PersistentObject.ID_COLUMN;
 
 	/**
 	 * For marshalling {@code sequences}. Since a {@code Map}'s key couldn't be
@@ -68,9 +61,7 @@ public class DNASequences
 	@MapKeyJoinColumn(name = OTU.JOIN_COLUMN)
 	private final Map<OTU, DNASequence> sequences = newHashMap();
 
-	/** The owning sequence set. */
-	@OneToOne(fetch = FetchType.LAZY, mappedBy = "sequences")
-	@CheckForNull
+	@Parent
 	private DNASequenceSet sequenceSet;
 
 	/**
@@ -82,7 +73,7 @@ public class DNASequences
 	public void afterUnmarshal(final Unmarshaller u, final Object parent) {
 		setSequenceSet((DNASequenceSet) parent);
 		for (final OTUSomethingPair<DNASequence> otuSequencePair : getOTUValuePairs()) {
-			otuSequencePair.getSecond().setOTUsToSequences(this);
+			otuSequencePair.getSecond().setSequenceSet(getParent());
 		}
 	}
 
@@ -119,6 +110,10 @@ public class DNASequences
 	@Nullable
 	@Override
 	protected DNASequenceSet getParent() {
+		return getSequenceSet();
+	}
+
+	private DNASequenceSet getSequenceSet() {
 		return sequenceSet;
 	}
 
@@ -128,11 +123,10 @@ public class DNASequences
 		checkNotNull(sequence);
 		final DNASequence originalSequence = super.putHelper(otu, sequence);
 
-		sequence.setOTUsToSequences(this);
+		sequence.setSequenceSet(getParent());
 		return originalSequence;
 	}
 
-	@Override
 	protected DNASequences setInNeedOfNewVersion() {
 		if (sequenceSet != null) {
 			sequenceSet.setInNeedOfNewVersion();

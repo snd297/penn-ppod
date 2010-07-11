@@ -25,18 +25,17 @@ import java.util.Set;
 import javax.annotation.CheckForNull;
 import javax.annotation.Nullable;
 import javax.persistence.CascadeType;
-import javax.persistence.Entity;
-import javax.persistence.FetchType;
+import javax.persistence.Embeddable;
 import javax.persistence.JoinColumn;
 import javax.persistence.JoinTable;
 import javax.persistence.MapKeyJoinColumn;
 import javax.persistence.OneToMany;
-import javax.persistence.OneToOne;
-import javax.persistence.Table;
 import javax.persistence.Transient;
 import javax.xml.bind.Marshaller;
 import javax.xml.bind.Unmarshaller;
 import javax.xml.bind.annotation.XmlElement;
+
+import org.hibernate.annotations.Parent;
 
 import edu.upenn.cis.ppod.util.OTUSomethingPair;
 import edu.upenn.cis.ppod.util.OTUStandardRowPair;
@@ -46,19 +45,11 @@ import edu.upenn.cis.ppod.util.OTUStandardRowPair;
  * 
  * @author Sam Donnelly
  */
-@Entity
-@Table(name = "STANDARD_ROWS")
+@Embeddable
 public class StandardRows extends OTUKeyedMap<StandardRow> {
 
-	public static final String TABLE = "STANDARD_ROWS";
-
-	public static final String JOIN_COLUMN =
-			TABLE + "_" + ID_COLUMN;
-
-	/** The owner. */
-	@CheckForNull
-	@OneToOne(fetch = FetchType.LAZY, mappedBy = "rows", optional = false)
-	private StandardMatrix matrix;
+	@Parent
+	public StandardMatrix matrix;
 
 	/**
 	 * For marshalling {@code rows}. Since a {@code Map}'s key couldn't be an
@@ -97,7 +88,7 @@ public class StandardRows extends OTUKeyedMap<StandardRow> {
 	public void afterUnmarshal(final Unmarshaller u, final Object parent) {
 		setMatrix((StandardMatrix) parent);
 		for (final OTUSomethingPair<StandardRow> otuRowPair : otuRowPairs) {
-			otuRowPair.getSecond().setRows(this);
+			otuRowPair.getSecond().setMatrix(getParent());
 		}
 	}
 
@@ -110,6 +101,10 @@ public class StandardRows extends OTUKeyedMap<StandardRow> {
 							otuToRow.getValue()));
 		}
 		return true;
+	}
+
+	private StandardMatrix getMatrix() {
+		return matrix;
 	}
 
 	@XmlElement(name = "otuRowPair")
@@ -134,29 +129,19 @@ public class StandardRows extends OTUKeyedMap<StandardRow> {
 	@Nullable
 	@Override
 	protected StandardMatrix getParent() {
-		return matrix;
+		return getMatrix();
 	}
 
 	@Override
 	public StandardRow put(final OTU otu, final StandardRow row) {
 		checkNotNull(otu);
 		checkNotNull(row);
-		row.setRows(this);
+		row.setMatrix(getParent());
 		return super.putHelper(otu, row);
 	}
 
-	@Override
-	protected StandardRows setInNeedOfNewVersion() {
-		if (getParent() != null) {
-			getParent().setInNeedOfNewVersion();
-		}
-		return this;
-	}
-
-	StandardRows setMatrix(
-			final StandardMatrix matrix) {
+	void setMatrix(final StandardMatrix matrix) {
 		checkNotNull(matrix);
 		this.matrix = matrix;
-		return this;
 	}
 }

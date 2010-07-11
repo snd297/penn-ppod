@@ -43,7 +43,8 @@ public class AttachmentNamespace extends PersistentObjectWithXmlId {
 
 	public static final int LABEL_COLUMN_LENGTH = 64;
 
-	@Column(name = LABEL_COLUMN, unique = true, nullable = false, length = LABEL_COLUMN_LENGTH)
+	@Column(name = LABEL_COLUMN, unique = true, nullable = false,
+			length = LABEL_COLUMN_LENGTH)
 	@CheckForNull
 	private String label;
 

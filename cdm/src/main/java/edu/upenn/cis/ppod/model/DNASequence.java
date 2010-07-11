@@ -22,15 +22,17 @@ import java.util.Set;
 import javax.annotation.CheckForNull;
 import javax.persistence.Entity;
 import javax.persistence.FetchType;
-import javax.persistence.JoinColumn;
 import javax.persistence.ManyToOne;
 import javax.persistence.Table;
 
 import com.google.common.collect.ImmutableSet;
 
+import edu.upenn.cis.ppod.modelinterfaces.IOTUKeyedMapValue;
 import edu.upenn.cis.ppod.util.IVisitor;
 
 /**
+ * A DNA sequence.
+ * 
  * @author Sam Donnelly
  */
 @Entity
@@ -54,8 +56,7 @@ public class DNASequence extends Sequence {
 
 	@CheckForNull
 	@ManyToOne(fetch = FetchType.LAZY, optional = false)
-	@JoinColumn(name = DNASequences.JOIN_COLUMN)
-	private DNASequences sequences;
+	private DNASequenceSet sequenceSet;
 
 	@Override
 	public void accept(final IVisitor visitor) {
@@ -63,12 +64,9 @@ public class DNASequence extends Sequence {
 		visitor.visit(this);
 	}
 
-	/**
-	 * Created for testing.
-	 */
 	@CheckForNull
-	DNASequences getSequences() {
-		return sequences;
+	DNASequenceSet getSequenceSet() {
+		return sequenceSet;
 	}
 
 	@Override
@@ -78,21 +76,20 @@ public class DNASequence extends Sequence {
 
 	@Override
 	public DNASequence setInNeedOfNewVersion() {
-		if (sequences != null) {
-			sequences.setInNeedOfNewVersion();
+		if (sequenceSet != null) {
+			sequenceSet.setInNeedOfNewVersion();
 		}
 		super.setInNeedOfNewVersion();
 		return this;
 	}
 
-	DNASequence setOTUsToSequences(
-			@CheckForNull final DNASequences otusToSequences) {
-		this.sequences = otusToSequences;
-		return this;
+	void setSequenceSet(@CheckForNull final DNASequenceSet sequenceSet) {
+		this.sequenceSet = sequenceSet;
 	}
 
-	public DNASequence unsetOTUKeyedMap() {
-		this.sequences = null;
+	/** {@inheritDoc} */
+	public IOTUKeyedMapValue unsetParent() {
+		sequenceSet = null;
 		return this;
 	}
 

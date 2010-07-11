@@ -202,6 +202,15 @@ public abstract class SequenceSet<S extends Sequence>
 		return this;
 	}
 
+	protected SequenceSet<S> setOTUs() {
+		checkState(getOTUKeyedSequences() != null,
+					"getOTUKeyedSequences() == null, "
+							+ "so there are no sequences to operate on");
+
+		getOTUKeyedSequences().setOTUs();
+		return this;
+	}
+
 	/**
 	 * Set the owning {@code OTUSet}.
 	 * <p>
@@ -218,15 +227,6 @@ public abstract class SequenceSet<S extends Sequence>
 			@CheckForNull final OTUSet otuSet) {
 		this.otuSet = otuSet;
 		setOTUs();
-		return this;
-	}
-
-	protected SequenceSet<S> setOTUs() {
-		checkState(getOTUKeyedSequences() != null,
-					"getOTUKeyedSequences() == null, "
-							+ "so there are no sequences to operate on");
-
-		getOTUKeyedSequences().setOTUs();
 		return this;
 	}
 
