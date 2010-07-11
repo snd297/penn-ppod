@@ -211,8 +211,8 @@ public class ModelAssert {
 			assertSame(expectedCharacter.getMatrix(), expectedMatrix);
 			assertEqualsCharacters(actualCharacter, expectedCharacter);
 		}
-		assertEquals(actualMatrix.getRows().size(), expectedMatrix
-				.getRows().size());
+		assertEquals(actualMatrix.getRows().size(),
+				expectedMatrix.getRows().size());
 
 		for (final Iterator<OTU> actualOTUIterator = actualMatrix.getOTUSet()
 				.getOTUs()

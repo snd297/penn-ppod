@@ -167,12 +167,89 @@ public class OTUSetTest {
 
 	}
 
-	@Test
+	@Test(groups = TestGroupDefs.SINGLE)
 	public void addOTU() {
-		final OTU otu0 = otuProvider.get();
+		final OTUSet otuSet = otuSetProvider.get();
+		final StandardMatrix standardMatrix = standardMatrixProvider.get();
+		otuSet.addStandardMatrix(standardMatrix);
+
+		final DNAMatrix dnaMatrix = dnaMatrixProvider.get();
+		otuSet.addDNAMatrix(dnaMatrix);
+
+		final DNASequenceSet dnaSequenceSet = dnaSequenceSetProvider.get();
+		otuSet.addDNASequenceSet(dnaSequenceSet);
+
+		final OTU otu0 = otuProvider.get().setLabel("otu-0");
+		final OTU otu1 = otuProvider.get().setLabel("otu-1");
+		final OTU otu2 = otuProvider.get().setLabel("otu-2");
+
+		otuSet.unsetInNeedOfNewVersion();
+		standardMatrix.unsetInNeedOfNewVersion();
+		dnaMatrix.unsetInNeedOfNewVersion();
+		dnaSequenceSet.unsetInNeedOfNewVersion();
 		final OTU shouldBeOTU0 = otuSet.addOTU(otu0);
+		assertTrue(otuSet.isInNeedOfNewVersion());
+		assertTrue(standardMatrix.isInNeedOfNewVersion());
+		assertTrue(dnaMatrix.isInNeedOfNewVersion());
+		assertTrue(dnaSequenceSet.isInNeedOfNewVersion());
+
+		otuSet.unsetInNeedOfNewVersion();
+		standardMatrix.unsetInNeedOfNewVersion();
+		dnaMatrix.unsetInNeedOfNewVersion();
+		dnaSequenceSet.unsetInNeedOfNewVersion();
+		final OTU shouldBeOTU1 = otuSet.addOTU(otu1);
+		assertTrue(otuSet.isInNeedOfNewVersion());
+		assertTrue(standardMatrix.isInNeedOfNewVersion());
+		assertTrue(dnaMatrix.isInNeedOfNewVersion());
+		assertTrue(dnaSequenceSet.isInNeedOfNewVersion());
+
+		otuSet.unsetInNeedOfNewVersion();
+		standardMatrix.unsetInNeedOfNewVersion();
+		dnaMatrix.unsetInNeedOfNewVersion();
+		dnaSequenceSet.unsetInNeedOfNewVersion();
+		final OTU shouldBeOTU2 = otuSet.addOTU(otu2);
+		assertTrue(otuSet.isInNeedOfNewVersion());
+		assertTrue(standardMatrix.isInNeedOfNewVersion());
+		assertTrue(dnaMatrix.isInNeedOfNewVersion());
+		assertTrue(dnaSequenceSet.isInNeedOfNewVersion());
+
 		assertSame(shouldBeOTU0, otu0);
-		assertTrue(contains(otuSet.getOTUs(), otu0));
+		assertSame(shouldBeOTU1, otu1);
+		assertSame(shouldBeOTU2, otu2);
+
+		final List<OTU> otus012 = ImmutableList.of(otu0, otu1, otu2);
+		final Set<OTU> otusSet012 = ImmutableSet.copyOf(otus012);
+
+		assertEquals(otuSet.getOTUs(), otus012);
+
+		assertEquals(
+				standardMatrix
+						.getOTUKeyedRows()
+						.getOTUsToValues()
+						.keySet(),
+				otusSet012);
+		assertNull(standardMatrix.getRow(otu0));
+		assertNull(standardMatrix.getRow(otu1));
+		assertNull(standardMatrix.getRow(otu2));
+
+		assertEquals(
+				dnaMatrix.getOTUKeyedRows().getOTUsToValues().keySet(),
+				otusSet012);
+		assertNull(dnaMatrix.getRow(otu0));
+		assertNull(dnaMatrix.getRow(otu1));
+		assertNull(dnaMatrix.getRow(otu2));
+
+		assertEquals(
+				dnaSequenceSet
+						.getOTUKeyedSequences()
+						.getOTUsToValues()
+						.keySet(),
+						otusSet012);
+
+		assertNull(dnaSequenceSet.getSequence(otu0));
+		assertNull(dnaSequenceSet.getSequence(otu1));
+		assertNull(dnaSequenceSet.getSequence(otu2));
+
 	}
 
 	/**
