@@ -15,15 +15,12 @@
  */
 package edu.upenn.cis.ppod.model;
 
-import static com.google.common.base.Preconditions.checkNotNull;
-import static com.google.common.collect.Maps.newHashMap;
-import static com.google.common.collect.Sets.newHashSet;
-
 import java.util.Map;
 import java.util.Set;
 
 import javax.annotation.CheckForNull;
-import javax.annotation.Nullable;
+import javax.persistence.Access;
+import javax.persistence.AccessType;
 import javax.persistence.CascadeType;
 import javax.persistence.Embeddable;
 import javax.persistence.JoinColumn;
@@ -33,11 +30,14 @@ import javax.persistence.OneToMany;
 import javax.persistence.Transient;
 import javax.xml.bind.Marshaller;
 import javax.xml.bind.Unmarshaller;
+import javax.xml.bind.annotation.XmlAccessType;
+import javax.xml.bind.annotation.XmlAccessorType;
 import javax.xml.bind.annotation.XmlElement;
 
 import org.hibernate.annotations.Parent;
 
-import edu.upenn.cis.ppod.util.OTUSomethingPair;
+import edu.upenn.cis.ppod.modelinterfaces.IOTUKeyedMap;
+import edu.upenn.cis.ppod.util.IVisitor;
 import edu.upenn.cis.ppod.util.OTUStandardRowPair;
 
 /**
@@ -45,18 +45,54 @@ import edu.upenn.cis.ppod.util.OTUStandardRowPair;
  * 
  * @author Sam Donnelly
  */
+@XmlAccessorType(XmlAccessType.NONE)
 @Embeddable
-public class StandardRows extends OTUKeyedMap<StandardRow> {
+@Access(AccessType.PROPERTY)
+public class StandardRows
+		implements
+		IOTUKeyedMap<StandardRow, StandardMatrix, OTUStandardRowPair> {
+
+	private final IOTUKeyedMap<StandardRow, StandardMatrix, OTUStandardRowPair> rows = new OTUKeyedMap<StandardRow, StandardMatrix, OTUStandardRowPair>();
+
+	StandardRows() {}
+
+	public void accept(final IVisitor visitor) {
+		rows.accept(visitor);
+	}
+
+	public void afterUnmarshal(final Unmarshaller u, final Object parent) {
+		rows.afterUnmarshal(u, parent);
+	}
+
+	public boolean beforeMarshal(@CheckForNull final Marshaller marshaller) {
+		getOTUSomethingPairs().clear();
+		for (final Map.Entry<OTU, StandardRow> otuToRow : getValues()
+				.entrySet()) {
+			getOTUSomethingPairs().add(
+					OTUStandardRowPair.of(otuToRow.getKey(),
+							otuToRow.getValue()));
+		}
+		return true;
+	}
+
+	public IOTUKeyedMap<StandardRow, StandardMatrix, OTUStandardRowPair> clear() {
+		return rows.clear();
+	}
+
+	public StandardRow get(final OTU key) {
+		return rows.get(key);
+	}
+
+	@XmlElement(name = "otuRowPair")
+	@Transient
+	public Set<OTUStandardRowPair> getOTUSomethingPairs() {
+		return rows.getOTUSomethingPairs();
+	}
 
 	@Parent
-	public StandardMatrix matrix;
-
-	/**
-	 * For marshalling {@code rows}. Since a {@code Map}'s key couldn't be an
-	 * {@code XmlIDREF} in JAXB - at least not easily.
-	 */
-	@Transient
-	private final Set<OTUStandardRowPair> otuRowPairs = newHashSet();
+	public StandardMatrix getParent() {
+		return rows.getParent();
+	}
 
 	/**
 	 * We want everything but SAVE_UPDATE (which ALL will give us) - once it's
@@ -75,73 +111,26 @@ public class StandardRows extends OTUKeyedMap<StandardRow> {
 			orphanRemoval = true)
 	@JoinTable(inverseJoinColumns = @JoinColumn(name = StandardRow.JOIN_COLUMN))
 	@MapKeyJoinColumn(name = OTU.JOIN_COLUMN)
-	private final Map<OTU, StandardRow> rows = newHashMap();
-
-	StandardRows() {}
-
-	/**
-	 * {@link Unmarshaller} callback.
-	 * 
-	 * @param u see {@code Unmarshaller}
-	 * @param parent see {@code Unmarshaller}
-	 */
-	public void afterUnmarshal(final Unmarshaller u, final Object parent) {
-		setMatrix((StandardMatrix) parent);
-		for (final OTUSomethingPair<StandardRow> otuRowPair : otuRowPairs) {
-			otuRowPair.getSecond().setMatrix(getParent());
-		}
+	public Map<OTU, StandardRow> getValues() {
+		return rows.getValues();
 	}
 
-	public boolean beforeMarshal(@CheckForNull final Marshaller marshaller) {
-		getOTURowPairs().clear();
-		for (final Map.Entry<OTU, StandardRow> otuToRow : getOTUsToValues()
-				.entrySet()) {
-			getOTURowPairs().add(
-					OTUStandardRowPair.of(otuToRow.getKey(),
-							otuToRow.getValue()));
-		}
-		return true;
+	public StandardRow put(final OTU key, final StandardRow value) {
+		return rows.put(key, value);
 	}
 
-	private StandardMatrix getMatrix() {
-		return matrix;
+	public IOTUKeyedMap<StandardRow, StandardMatrix, OTUStandardRowPair> setOTUs() {
+		return rows.setOTUs();
 	}
 
-	@XmlElement(name = "otuRowPair")
-	protected Set<OTUStandardRowPair> getOTURowPairs() {
-		return otuRowPairs;
+	public IOTUKeyedMap<StandardRow, StandardMatrix, OTUStandardRowPair> setParent(
+			final StandardMatrix parent) {
+		return rows.setParent(parent);
 	}
 
-	@Override
-	protected Map<OTU, StandardRow> getOTUsToValues() {
-		return rows;
+	public IOTUKeyedMap<StandardRow, StandardMatrix, OTUStandardRowPair> setValues(
+			Map<OTU, StandardRow> values) {
+		return rows.setValues(values);
 	}
 
-	@Override
-	protected Set<OTUSomethingPair<StandardRow>> getOTUValuePairs() {
-		final Set<OTUSomethingPair<StandardRow>> otuValuePairs = newHashSet();
-		for (final OTUStandardRowPair otuRowPair : otuRowPairs) {
-			otuValuePairs.add(otuRowPair);
-		}
-		return otuValuePairs;
-	}
-
-	@Nullable
-	@Override
-	protected StandardMatrix getParent() {
-		return getMatrix();
-	}
-
-	@Override
-	public StandardRow put(final OTU otu, final StandardRow row) {
-		checkNotNull(otu);
-		checkNotNull(row);
-		row.setMatrix(getParent());
-		return super.putHelper(otu, row);
-	}
-
-	void setMatrix(final StandardMatrix matrix) {
-		checkNotNull(matrix);
-		this.matrix = matrix;
-	}
 }

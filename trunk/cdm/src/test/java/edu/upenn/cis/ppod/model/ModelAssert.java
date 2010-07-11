@@ -223,7 +223,7 @@ public class ModelAssert {
 			final StandardRow actualRow = actualMatrix
 					.getRow(actualOTUIterator.next()), expectedRow = expectedMatrix
 					.getRow(expectedOTUIterator.next());
-			assertTrue(actualRow.getMatrix() == actualMatrix);
+			assertTrue(actualRow.getParent() == actualMatrix);
 			assertEqualsStandardRows(actualRow, expectedRow);
 		}
 	}

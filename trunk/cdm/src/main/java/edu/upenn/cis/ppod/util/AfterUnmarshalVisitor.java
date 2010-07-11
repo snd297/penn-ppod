@@ -27,7 +27,7 @@ class AfterUnmarshalVisitor extends EmptyVisitor implements
 		IAfterUnmarshalVisitor {
 
 	@Override
-	public void visit(final OTUKeyedMap<?> otuKeyedMap) {
+	public void visit(final OTUKeyedMap<?, ?, ?> otuKeyedMap) {
 		otuKeyedMap.afterUnmarshal();
 	}
 }

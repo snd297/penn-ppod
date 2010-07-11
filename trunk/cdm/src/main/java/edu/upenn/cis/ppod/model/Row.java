@@ -22,6 +22,7 @@ import static com.google.common.collect.Lists.newArrayList;
 import java.util.Collections;
 import java.util.List;
 
+import javax.annotation.CheckForNull;
 import javax.xml.bind.Unmarshaller;
 
 import edu.upenn.cis.ppod.modelinterfaces.IMatrix;
@@ -36,9 +37,12 @@ import edu.upenn.cis.ppod.util.IVisitor;
  * 
  * @param <C> the type of cell we have
  */
-public abstract class Row<C extends Cell<?>>
+public abstract class Row<C extends Cell<?, ?>, M extends Matrix<?>>
 		extends PPodEntity
-		implements IRow, IOTUKeyedMapValue {
+		implements IRow, IOTUKeyedMapValue<M> {
+
+	@CheckForNull
+	private M matrix;
 
 	private List<C> cells = newArrayList();
 
@@ -53,7 +57,7 @@ public abstract class Row<C extends Cell<?>>
 		super.accept(visitor);
 	}
 
-	protected Row<C> addCellHelper(final C cell) {
+	protected Row<C, M> addCellHelper(final C cell) {
 		getCells().add(cell);
 		setInNeedOfNewVersion();
 		return this;
@@ -89,9 +93,9 @@ public abstract class Row<C extends Cell<?>>
 	 * 
 	 * @return this
 	 */
-	public Row<C> clearCells() {
+	public Row<C, M> clearCells() {
 		for (final C clearedCell : getCells()) {
-			clearedCell.unsetRow();
+			clearedCell.setRow(null);
 			clearedCell.setPosition(null);
 		}
 		getCellsRaw().clear();
@@ -114,6 +118,11 @@ public abstract class Row<C extends Cell<?>>
 	 */
 	protected List<C> getCellsRaw() {
 		return cells;
+	}
+
+	/** {@inheritDoc} */
+	public M getParent() {
+		return matrix;
 	}
 
 	/**
@@ -139,7 +148,7 @@ public abstract class Row<C extends Cell<?>>
 			return Collections.emptyList();
 		}
 
-		final IMatrix matrix = getMatrix();
+		final IMatrix matrix = getParent();
 
 		checkState(matrix != null, "This row hasn't been added to a matrix yet");
 
@@ -156,7 +165,7 @@ public abstract class Row<C extends Cell<?>>
 
 		int cellPos = -1;
 		getCellsRaw().addAll(cells);
-		for (final Cell<?> cell : getCells()) {
+		for (final Cell<?, ?> cell : getCells()) {
 			cellPos++;
 			cell.setPosition(cellPos);
 		}
@@ -178,14 +187,20 @@ public abstract class Row<C extends Cell<?>>
 	 * @return this {@code CharacterStateRow}
 	 */
 	@Override
-	public Row<C> setInNeedOfNewVersion() {
+	public Row<C, M> setInNeedOfNewVersion() {
 
 		// So FindBugs knows it's okay
-		final IMatrix matrix = getMatrix();
+		final IMatrix matrix = getParent();
 		if (matrix != null) {
 			matrix.setInNeedOfNewVersion();
 		}
 		super.setInNeedOfNewVersion();
+		return this;
+	}
+
+	/** {@inheritDoc} */
+	public Row<C, M> setParent(@CheckForNull final M matrix) {
+		this.matrix = matrix;
 		return this;
 	}
 

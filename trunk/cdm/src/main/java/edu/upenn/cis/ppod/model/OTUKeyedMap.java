@@ -19,6 +19,7 @@ import static com.google.common.base.Preconditions.checkArgument;
 import static com.google.common.base.Preconditions.checkNotNull;
 import static com.google.common.base.Preconditions.checkState;
 import static com.google.common.collect.Iterables.contains;
+import static com.google.common.collect.Maps.newHashMap;
 import static com.google.common.collect.Sets.newHashSet;
 
 import java.util.Map;
@@ -26,9 +27,9 @@ import java.util.Set;
 
 import javax.annotation.CheckForNull;
 import javax.annotation.Nullable;
-import javax.xml.bind.annotation.XmlAccessType;
-import javax.xml.bind.annotation.XmlAccessorType;
+import javax.xml.bind.Unmarshaller;
 
+import edu.upenn.cis.ppod.modelinterfaces.IOTUKeyedMap;
 import edu.upenn.cis.ppod.modelinterfaces.IOTUKeyedMapValue;
 import edu.upenn.cis.ppod.modelinterfaces.IVersionedWithOTUSet;
 import edu.upenn.cis.ppod.util.IVisitor;
@@ -44,13 +45,19 @@ import edu.upenn.cis.ppod.util.OTUSomethingPair;
  * 
  * @author Sam Donnelly
  */
-@XmlAccessorType(XmlAccessType.NONE)
-public abstract class OTUKeyedMap<V extends IOTUKeyedMapValue> {
+public class OTUKeyedMap<V extends IOTUKeyedMapValue<P>, P extends IVersionedWithOTUSet, OP extends OTUSomethingPair<V>>
+		implements IOTUKeyedMap<V, P, OP> {
+
+	private P parent;
+
+	private Map<OTU, V> values = newHashMap();
+
+	private final Set<OP> otuSomethingPairs = newHashSet();
 
 	public void accept(final IVisitor visitor) {
 		checkNotNull(visitor);
 		visitor.visit(this);
-		for (final V value : getOTUsToValues().values()) {
+		for (final V value : getValues().values()) {
 			if (value != null) {
 				value.accept(visitor);
 			}
@@ -62,17 +69,38 @@ public abstract class OTUKeyedMap<V extends IOTUKeyedMapValue> {
 	 * resolved.
 	 */
 	public void afterUnmarshal() {
-		for (final OTUSomethingPair<V> otuValuePair : getOTUValuePairs()) {
+		for (final OP otuValuePair : getOTUSomethingPairs()) {
 			put(otuValuePair.getFirst(), otuValuePair.getSecond());
 		}
-		getOTUValuePairs().clear();
+		getOTUSomethingPairs().clear();
 	}
 
-	public OTUKeyedMap<V> clear() {
-		if (getOTUsToValues().size() == 0) {
+	/**
+	 * {@link Unmarshaller} callback.
+	 * 
+	 * @param u see {@code Unmarshaller}
+	 * @param parent see {@code Unmarshaller}
+	 */
+	public void afterUnmarshal(
+			@CheckForNull final Unmarshaller u,
+			final Object parent) {
+		checkNotNull(parent);
+
+		@SuppressWarnings("unchecked")
+		final P parentAsP = (P) parent;
+		setParent(parentAsP);
+
+		for (final OP otuSomethingPair : getOTUSomethingPairs()) {
+			otuSomethingPair.getSecond().setParent(getParent());
+		}
+
+	}
+
+	public OTUKeyedMap<V, P, OP> clear() {
+		if (getValues().size() == 0) {
 			return this;
 		}
-		getOTUsToValues().clear();
+		getValues().clear();
 		setInNeedOfNewVersion();
 		return this;
 	}
@@ -80,19 +108,14 @@ public abstract class OTUKeyedMap<V extends IOTUKeyedMapValue> {
 	@Nullable
 	public V get(final OTU otu) {
 		checkNotNull(otu);
-		checkArgument(getOTUsToValues().keySet().contains(otu),
+		checkArgument(getValues().keySet().contains(otu),
 				"otu is not in the keys");
-		return getOTUsToValues().get(otu);
+		return getValues().get(otu);
 	}
 
-	/**
-	 * Get the {@code OTU}-keyed values.
-	 * 
-	 * @return the {@code OTU}-keyed values
-	 */
-	protected abstract Map<OTU, V> getOTUsToValues();
-
-	protected abstract Set<OTUSomethingPair<V>> getOTUValuePairs();
+	public Set<OP> getOTUSomethingPairs() {
+		return otuSomethingPairs;
+	}
 
 	/**
 	 * Get the object set that owns this map. This will only be {@code null}
@@ -100,59 +123,21 @@ public abstract class OTUKeyedMap<V extends IOTUKeyedMapValue> {
 	 * class. This will never be {@code null} for a persistent object.
 	 */
 	@Nullable
-	protected abstract IVersionedWithOTUSet getParent();
+	public P getParent() {
+		return parent;
+	}
 
 	/**
-	 * Associates {@code value} with {@code key} in this map. If the map
-	 * previously contained a mapping for {@code key}, the original value is
-	 * replaced by the specified value.
-	 * <p>
-	 * This method calls {@code getParent().setInNeedOfNewVersionInfo()} if this
-	 * method changes anything
+	 * Get the {@code OTU}-keyed values.
 	 * 
-	 * @param key key
-	 * @param newValue new value for {@code key}
-	 * @param parent the owning object
-	 * 
-	 * @return the previous value associated with <tt>otu</tt>, or <tt>null</tt>
-	 *         if there was no mapping for <tt>otu</tt>. (A <tt>null</tt> return
-	 *         can also indicate that the map previously associated
-	 *         <tt>null</tt> with <tt>key</tt>.)
-	 * 
-	 * @throws IllegalStateException if {@link #getParent() == null}
-	 * @throws IllegalStateException if {@code getParent().getOTUSet() == null}
-	 * @throws IllegalArgumentException if {@code otu} does not belong to
-	 *             {@code parent.getOTUSet()}
-	 * @throws IllegalArgumentException if this already a value {@code .equals}
-	 *             to {@code newT}
+	 * @return the {@code OTU}-keyed values
 	 */
-	@CheckForNull
-	public abstract V put(final OTU key, final V value);
+	public Map<OTU, V> getValues() {
+		return values;
+	}
 
-	/**
-	 * Associates {@code value} with {@code key} in this map. If the map
-	 * previously contained a mapping for {@code key}, the original value is
-	 * replaced by the specified value.
-	 * <p>
-	 * This method calls {@code getParent().setInNeedOfNewVersionInfo()} if this
-	 * method changes anything
-	 * 
-	 * @param key key
-	 * @param newValue new value for {@code key}
-	 * @param parent the owning object
-	 * 
-	 * @return the previous value associated with <tt>otu</tt>, or <tt>null</tt>
-	 *         if there was no mapping for <tt>otu</tt>
-	 * 
-	 * @throws IllegalStateException if {@link #getParent() == null}
-	 * @throws IllegalStateException if {@code getParent().getOTUSet() == null}
-	 * @throws IllegalArgumentException if {@code otu} does not belong to
-	 *             {@code parent.getOTUSet()}
-	 * @throws IllegalArgumentException if there's already a value
-	 *             {@code .equals} to {@code value}
-	 */
 	@CheckForNull
-	protected V putHelper(final OTU key, final V value) {
+	public V put(final OTU key, final V value) {
 		checkNotNull(key);
 		checkNotNull(value);
 		checkState(getParent() != null, "no parent has been assigned");
@@ -166,20 +151,21 @@ public abstract class OTUKeyedMap<V extends IOTUKeyedMapValue> {
 								key),
 				"otu does not belong to the parent's OTUSet");
 
-		if (null != getOTUsToValues().get(key)
-				&& getOTUsToValues().get(key).equals(value)) {
-			return getOTUsToValues().get(key);
+		if (null != getValues().get(key)
+				&& getValues().get(key).equals(value)) {
+			return getValues().get(key);
 		}
-		checkArgument(!getOTUsToValues().containsValue(value),
+		checkArgument(!getValues().containsValue(value),
 				"already has a value .equals() to newT: " + value);
-		setInNeedOfNewVersion();
-		final V originalValue = getOTUsToValues().put(key, value);
+		final V originalValue = getValues().put(key, value);
 
 		// If we are replacing an OTU's sequence, we need to sever the previous
 		// sequence's sequence->sequenceSet pointer.
 		if (originalValue != null && !originalValue.equals(value)) {
-			originalValue.unsetParent();
+			originalValue.setParent(null);
 		}
+		value.setParent(getParent());
+		setInNeedOfNewVersion();
 		return originalValue;
 	}
 
@@ -189,20 +175,11 @@ public abstract class OTUKeyedMap<V extends IOTUKeyedMapValue> {
 		}
 	}
 
-	/**
-	 * Set the keys of this {@code OTUKeyedMap} to the OTU's in
-	 * {@code getParent()}'s OTU set.
-	 * <p>
-	 * Any newly introduced keys will map to {@code null} values.
-	 * 
-	 * @return this
-	 */
-	@CheckForNull
-	protected OTUKeyedMap<V> setOTUs() {
+	public OTUKeyedMap<V, P, OP> setOTUs() {
 		final IVersionedWithOTUSet parent = getParent();
 
 		final Set<OTU> otusToBeRemoved = newHashSet();
-		for (final OTU otu : getOTUsToValues().keySet()) {
+		for (final OTU otu : getValues().keySet()) {
 			if (parent.getOTUSet() != null
 					&& contains(parent
 									.getOTUSet()
@@ -217,24 +194,35 @@ public abstract class OTUKeyedMap<V extends IOTUKeyedMapValue> {
 		for (final OTU otuToBeRemoved : otusToBeRemoved) {
 			final V value = get(otuToBeRemoved);
 			if (value != null) {
-				value.unsetParent();
+				value.setParent(null);
 			}
 		}
 
-		getOTUsToValues()
+		getValues()
 				.keySet()
 				.removeAll(otusToBeRemoved);
 
 		if (getParent().getOTUSet() != null) {
 			for (final OTU otu : parent.getOTUSet().getOTUs()) {
-				if (getOTUsToValues().containsKey(otu)) {
+				if (getValues().containsKey(otu)) {
 
 				} else {
-					getOTUsToValues().put(otu, null);
+					getValues().put(otu, null);
 					parent.setInNeedOfNewVersion();
 				}
 			}
 		}
+		return this;
+	}
+
+	public OTUKeyedMap<V, P, OP> setParent(final P parent) {
+		checkNotNull(parent);
+		this.parent = parent;
+		return this;
+	}
+
+	public OTUKeyedMap<V, P, OP> setValues(final Map<OTU, V> values) {
+		this.values = values;
 		return this;
 	}
 }

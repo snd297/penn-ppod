@@ -102,7 +102,7 @@ public class TestVisitor extends EmptyVisitor {
 	}
 
 	@Override
-	public void visit(final OTUKeyedMap<?> otuKeyedMap) {
+	public void visit(final OTUKeyedMap<?, ?, ?> otuKeyedMap) {
 		visited.add(otuKeyedMap);
 	}
 

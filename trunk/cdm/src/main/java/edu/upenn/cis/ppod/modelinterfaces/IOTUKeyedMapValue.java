@@ -15,6 +15,8 @@
  */
 package edu.upenn.cis.ppod.modelinterfaces;
 
+import edu.umd.cs.findbugs.annotations.CheckForNull;
+
 /**
  * Indicates a class that is stored in {@link OTUKeyedMap} and so has a
  * relationship back to the owner of the {@code OTUKeyedMap} that can be
@@ -22,13 +24,13 @@ package edu.upenn.cis.ppod.modelinterfaces;
  * 
  * @author Sam Donnelly
  */
-public interface IOTUKeyedMapValue extends IPersistentObject {
+public interface IOTUKeyedMapValue<P> extends IPersistentObject {
 
 	/**
-	 * Unset the parent reference.
+	 * Set or unset the parent.
 	 * 
 	 * @return this
 	 */
-	IOTUKeyedMapValue unsetParent();
+	IOTUKeyedMapValue<P> setParent(@CheckForNull P parent);
 
 }

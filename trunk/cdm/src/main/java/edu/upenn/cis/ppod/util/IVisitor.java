@@ -98,7 +98,7 @@ public interface IVisitor {
 
 	void visit(OTU otu);
 
-	void visit(OTUKeyedMap<?> otuKeyedMap);
+	void visit(OTUKeyedMap<?, ?, ?> otuKeyedMap);
 
 	void visit(OTUSet otuSet);
 

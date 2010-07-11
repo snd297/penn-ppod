@@ -32,6 +32,7 @@ import javax.persistence.MappedSuperclass;
 import javax.xml.bind.Unmarshaller;
 import javax.xml.bind.annotation.XmlAttribute;
 
+import edu.upenn.cis.ppod.modelinterfaces.IOTUKeyedMap;
 import edu.upenn.cis.ppod.modelinterfaces.IVersionedWithOTUSet;
 import edu.upenn.cis.ppod.util.IVisitor;
 
@@ -43,7 +44,7 @@ import edu.upenn.cis.ppod.util.IVisitor;
  * @param <S> the type of {@code Sequence} this set contains
  */
 @MappedSuperclass
-public abstract class SequenceSet<S extends Sequence>
+public abstract class SequenceSet<S extends Sequence<?>>
 		extends UUPPodEntityWithXmlId
 		implements IVersionedWithOTUSet {
 
@@ -111,7 +112,7 @@ public abstract class SequenceSet<S extends Sequence>
 		return label;
 	}
 
-	protected abstract OTUKeyedMap<S> getOTUKeyedSequences();
+	protected abstract IOTUKeyedMap<S, ?, ?> getOTUKeyedSequences();
 
 	/**
 	 * Getter. Will be {@code null} when the sequence set is not connected to an
@@ -147,7 +148,7 @@ public abstract class SequenceSet<S extends Sequence>
 	@CheckForNull
 	public Integer getSequenceLengths() {
 		for (final S sequenceInThisSet : getOTUKeyedSequences()
-				.getOTUsToValues()
+				.getValues()
 				.values()) {
 			if (sequenceInThisSet != null) {
 				return sequenceInThisSet.getSequence().length();

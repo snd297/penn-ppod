@@ -57,13 +57,13 @@ public class CellTest {
 
 	@Test(expectedExceptions = IllegalStateException.class)
 	public void getElementsWhenNoTypeSet() {
-		final Cell<?> cell = dnaCellProvider.get();
+		final Cell<?, ?> cell = dnaCellProvider.get();
 		cell.getElements();
 	}
 
 	@Test
 	public void getElementsXml() {
-		final DNACell cell = dnaCellProvider.get();
+		final Cell<DNANucleotide, ?> cell = dnaCellProvider.get();
 		cell.setType(Cell.Type.UNCERTAIN);
 		final Set<DNANucleotide> cellElementsXml = cell.getElementsXml();
 		assertNotNull(cellElementsXml);
@@ -174,7 +174,7 @@ public class CellTest {
 	 */
 	@Test
 	public void getElementsWhenCellHasMultipleElements() {
-		final Cell<DNANucleotide> cell = dnaCellProvider.get();
+		final Cell<DNANucleotide, ?> cell = dnaCellProvider.get();
 
 		final Set<DNANucleotide> elements =
 				ImmutableSet.of(DNANucleotide.A, DNANucleotide.T);
@@ -199,7 +199,7 @@ public class CellTest {
 
 	@Test
 	public void getStatesWhenCellHasOneElement() {
-		final Cell<DNANucleotide> cell = dnaCellProvider.get();
+		final Cell<DNANucleotide, ?> cell = dnaCellProvider.get();
 
 		final DNANucleotide nucleotide = DNANucleotide.C;
 
@@ -210,7 +210,7 @@ public class CellTest {
 
 	@Test
 	public void getStatesWhenCellHasNoElements() {
-		final Cell<DNANucleotide> cell = dnaCellProvider.get();
+		final Cell<DNANucleotide, ?> cell = dnaCellProvider.get();
 		cell.setType(Cell.Type.UNASSIGNED);
 		cell.setElement(null);
 		cell.setElementsRaw(null);
@@ -222,13 +222,13 @@ public class CellTest {
 
 	@Test(expectedExceptions = IllegalArgumentException.class)
 	public void setUncertainElementsTooFewStates() {
-		final Cell<DNANucleotide> cell = dnaCellProvider.get();
+		final Cell<DNANucleotide, ?> cell = dnaCellProvider.get();
 		cell.setUncertainElements(ImmutableSet.of(DNANucleotide.G));
 	}
 
 	@Test
 	public void setInapplicable() {
-		final Cell<DNANucleotide> cell = dnaCellProvider.get();
+		final Cell<DNANucleotide, ?> cell = dnaCellProvider.get();
 		cell.unsetInNeedOfNewVersion();
 		cell.setInapplicable();
 
@@ -246,7 +246,7 @@ public class CellTest {
 
 	@Test
 	public void setUnassigned() {
-		final Cell<DNANucleotide> cell = dnaCellProvider.get();
+		final Cell<DNANucleotide, ?> cell = dnaCellProvider.get();
 		cell.unsetInNeedOfNewVersion();
 		cell.setUnassigned();
 

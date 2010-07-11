@@ -120,7 +120,7 @@ public class MolecularSequenceTest {
 		assertTrue(sequenceSet.isInNeedOfNewVersion());
 
 		// Let's make sure it works if no parent has been set.
-		sequence.setSequenceSet(null);
+		sequence.setParent(null);
 		sequence.unsetInNeedOfNewVersion();
 
 		sequence.setInNeedOfNewVersion();

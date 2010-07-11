@@ -32,6 +32,7 @@ import javax.persistence.Enumerated;
 import javax.persistence.MappedSuperclass;
 import javax.persistence.Transient;
 import javax.xml.bind.Marshaller;
+import javax.xml.bind.Unmarshaller;
 import javax.xml.bind.annotation.XmlAttribute;
 
 import edu.umd.cs.findbugs.annotations.CheckForNull;
@@ -46,7 +47,10 @@ import edu.upenn.cis.ppod.modelinterfaces.IRow;
  */
 @MappedSuperclass
 @Access(AccessType.PROPERTY)
-public abstract class Cell<E> extends PPodEntity {
+public abstract class Cell<E, R extends Row<?, ?>> extends PPodEntity {
+
+	@CheckForNull
+	private R row;
 
 	/**
 	 * The different types of {@code Cell}: single, polymorphic, uncertain,
@@ -234,7 +238,13 @@ public abstract class Cell<E> extends PPodEntity {
 
 	@Transient
 	@Nullable
-	protected abstract IRow getRow();
+	protected R getRow() {
+		return row;
+	}
+
+	void setRow(@CheckForNull final R row) {
+		this.row = row;
+	}
 
 	/**
 	 * Get the type of this cell.
@@ -264,6 +274,23 @@ public abstract class Cell<E> extends PPodEntity {
 	}
 
 	/**
+	 * {@link Unmarshaller} callback.
+	 * 
+	 * @param u see {@code Unmarshaller}
+	 * @param parent see {@code Unmarshaller}
+	 */
+	@Override
+	public void afterUnmarshal(
+			@CheckForNull final Unmarshaller u,
+			final Object parent) {
+		checkNotNull(parent);
+		super.afterUnmarshal(u, parent);
+		@SuppressWarnings("unchecked")
+		final R row = (R) parent;
+		setRow(row);
+	}
+
+	/**
 	 * Does not affect {@link #isInNeedOfNewVersion()}.
 	 */
 	protected void setElement(@CheckForNull final E element) {
@@ -284,7 +311,7 @@ public abstract class Cell<E> extends PPodEntity {
 	 * 
 	 * @return this
 	 */
-	public Cell<E> setInapplicable() {
+	public Cell<E, R> setInapplicable() {
 		setInapplicableOrUnassigned(Type.INAPPLICABLE);
 		return this;
 	}
@@ -307,11 +334,11 @@ public abstract class Cell<E> extends PPodEntity {
 	}
 
 	@Override
-	public Cell<E> setInNeedOfNewVersion() {
+	public Cell<E, R> setInNeedOfNewVersion() {
 		final IRow row = getRow();
 		if (row != null) {
 			row.setInNeedOfNewVersion();
-			final IMatrix matrix = row.getMatrix();
+			final IMatrix matrix = row.getParent();
 			if (matrix != null) {
 				// so FindBugs knows that it's okay
 				final Integer position = getPosition();
@@ -338,7 +365,7 @@ public abstract class Cell<E> extends PPodEntity {
 	 * 
 	 * @throw IllegalArgumentException if {@code polymorphicStates.size() < 2}
 	 */
-	public Cell<E> setPolymorphicElements(final Set<? extends E> elements) {
+	public Cell<E, R> setPolymorphicElements(final Set<? extends E> elements) {
 		checkNotNull(elements);
 		checkArgument(elements.size() > 1,
 				"polymorphic states must be > 1");
@@ -427,7 +454,7 @@ public abstract class Cell<E> extends PPodEntity {
 	 * 
 	 * @return this
 	 */
-	public Cell<E> setSingleElement(final E element) {
+	public Cell<E, R> setSingleElement(final E element) {
 		checkNotNull(element);
 		if (element == this.element) {
 			if (getType() != Type.SINGLE) {
@@ -462,7 +489,7 @@ public abstract class Cell<E> extends PPodEntity {
 	 * 
 	 * @return this
 	 */
-	public Cell<E> setUnassigned() {
+	public Cell<E, R> setUnassigned() {
 		setInapplicableOrUnassigned(Type.UNASSIGNED);
 		return this;
 	}
@@ -476,7 +503,7 @@ public abstract class Cell<E> extends PPodEntity {
 	 * 
 	 * @throw IllegalArgumentException if {@code uncertainStates.size() < 2}
 	 */
-	public Cell<E> setUncertainElements(
+	public Cell<E, R> setUncertainElements(
 			final Set<? extends E> uncertainElements) {
 		checkNotNull(uncertainElements);
 		checkArgument(uncertainElements.size() > 1,
@@ -484,7 +511,5 @@ public abstract class Cell<E> extends PPodEntity {
 		setPolymorphicOrUncertain(Type.UNCERTAIN, uncertainElements);
 		return this;
 	}
-
-	protected abstract void unsetRow();
 
 }

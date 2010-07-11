@@ -44,7 +44,7 @@ public class DNAMatrix extends Matrix<DNARow> {
 	@Inject
 	DNAMatrix(final DNARows rows) {
 		this.rows = rows;
-		this.rows.setMatrix(this);
+		this.rows.setParent(this);
 	}
 
 	@Override

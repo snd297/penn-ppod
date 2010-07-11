@@ -110,7 +110,7 @@ public abstract class EmptyVisitor implements IVisitor {
 	 * 
 	 * @param otuKeyedMap ignored
 	 */
-	public void visit(final OTUKeyedMap<?> otuKeyedMap) {}
+	public void visit(final OTUKeyedMap<?, ?, ?> otuKeyedMap) {}
 
 	/**
 	 * Does nothing.

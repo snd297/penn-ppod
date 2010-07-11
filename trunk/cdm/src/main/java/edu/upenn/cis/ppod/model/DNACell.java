@@ -20,7 +20,6 @@ import static com.google.common.base.Preconditions.checkNotNull;
 import java.util.EnumSet;
 import java.util.Set;
 
-import javax.annotation.CheckForNull;
 import javax.persistence.Access;
 import javax.persistence.AccessType;
 import javax.persistence.CollectionTable;
@@ -34,7 +33,6 @@ import javax.persistence.JoinColumn;
 import javax.persistence.ManyToOne;
 import javax.persistence.Table;
 import javax.persistence.Transient;
-import javax.xml.bind.Unmarshaller;
 import javax.xml.bind.annotation.XmlAttribute;
 import javax.xml.bind.annotation.XmlElement;
 
@@ -48,18 +46,12 @@ import edu.upenn.cis.ppod.util.IVisitor;
 @Entity
 @Table(name = DNACell.TABLE)
 @Access(AccessType.PROPERTY)
-public class DNACell extends Cell<DNANucleotide> {
+public class DNACell extends Cell<DNANucleotide, DNARow> {
 
 	public static final String TABLE = "DNA_CELL";
 
 	public static final String JOIN_COLUMN =
 			TABLE + "_" + PersistentObject.ID_COLUMN;
-
-	/**
-	 * The {@code Row} to which this {@code Cell} belongs.
-	 */
-	@CheckForNull
-	private DNARow row;
 
 	DNACell() {}
 
@@ -67,21 +59,6 @@ public class DNACell extends Cell<DNANucleotide> {
 	public void accept(final IVisitor visitor) {
 		checkNotNull(visitor);
 		visitor.visit(this);
-	}
-
-	/**
-	 * {@link Unmarshaller} callback.
-	 * 
-	 * @param u see {@code Unmarshaller}
-	 * @param parent see {@code Unmarshaller}
-	 */
-	@Override
-	public void afterUnmarshal(
-			@CheckForNull final Unmarshaller u,
-			final Object parent) {
-		checkNotNull(parent);
-		super.afterUnmarshal(u, parent);
-		row = (DNARow) parent;
 	}
 
 	@XmlAttribute(name = "nucleotide")
@@ -113,7 +90,7 @@ public class DNACell extends Cell<DNANucleotide> {
 	@JoinColumn(name = DNARow.JOIN_COLUMN)
 	@Override
 	protected DNARow getRow() {
-		return row;
+		return super.getRow();
 	}
 
 	@Override
@@ -129,18 +106,4 @@ public class DNACell extends Cell<DNANucleotide> {
 		super.setElement(nucleotide);
 	}
 
-	/**
-	 * Intentionally package-private.
-	 * 
-	 * @param row
-	 */
-	void setRow(@CheckForNull final DNARow row) {
-		this.row = row;
-		return;
-	}
-
-	@Override
-	protected void unsetRow() {
-		row = null;
-	}
 }

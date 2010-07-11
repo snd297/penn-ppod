@@ -15,15 +15,12 @@
  */
 package edu.upenn.cis.ppod.model;
 
-import static com.google.common.base.Preconditions.checkNotNull;
-import static com.google.common.collect.Maps.newHashMap;
-import static com.google.common.collect.Sets.newHashSet;
-
 import java.util.Map;
 import java.util.Set;
 
 import javax.annotation.CheckForNull;
-import javax.annotation.Nullable;
+import javax.persistence.Access;
+import javax.persistence.AccessType;
 import javax.persistence.CascadeType;
 import javax.persistence.Embeddable;
 import javax.persistence.JoinColumn;
@@ -33,111 +30,91 @@ import javax.persistence.OneToMany;
 import javax.persistence.Transient;
 import javax.xml.bind.Marshaller;
 import javax.xml.bind.Unmarshaller;
+import javax.xml.bind.annotation.XmlAccessType;
+import javax.xml.bind.annotation.XmlAccessorType;
 import javax.xml.bind.annotation.XmlElement;
 
 import org.hibernate.annotations.Parent;
 
+import edu.upenn.cis.ppod.modelinterfaces.IOTUKeyedMap;
+import edu.upenn.cis.ppod.util.IVisitor;
 import edu.upenn.cis.ppod.util.OTUDNASequencePair;
-import edu.upenn.cis.ppod.util.OTUSomethingPair;
 
 /**
  * An OTU-keyed map of {@link DNASequence}s.
  * 
  * @author Sam Donnelly
  */
+@XmlAccessorType(XmlAccessType.NONE)
 @Embeddable
+@Access(AccessType.PROPERTY)
 public class DNASequences
-		extends OTUKeyedMap<DNASequence> {
+		implements
+		IOTUKeyedMap<DNASequence, DNASequenceSet, OTUDNASequencePair> {
 
-	/**
-	 * For marshalling {@code sequences}. Since a {@code Map}'s key couldn't be
-	 * an {@code XmlIDREF} in JAXB - at least not easily.
-	 */
-	@Transient
-	private final Set<OTUDNASequencePair> otuSequencePairs = newHashSet();
+	private final IOTUKeyedMap<DNASequence, DNASequenceSet, OTUDNASequencePair> sequences =
+			new OTUKeyedMap<DNASequence, DNASequenceSet, OTUDNASequencePair>();
 
-	@OneToMany(cascade = CascadeType.ALL, orphanRemoval = true)
-	@JoinTable(inverseJoinColumns = @JoinColumn(name = DNASequence.JOIN_COLUMN))
-	@MapKeyJoinColumn(name = OTU.JOIN_COLUMN)
-	private final Map<OTU, DNASequence> sequences = newHashMap();
+	public void accept(final IVisitor visitor) {
+		sequences.accept(visitor);
+	}
 
-	@Parent
-	private DNASequenceSet sequenceSet;
-
-	/**
-	 * {@link Unmarshaller} callback.
-	 * 
-	 * @param u see {@code Unmarshaller}
-	 * @param parent see {@code Unmarshaller}
-	 */
 	public void afterUnmarshal(final Unmarshaller u, final Object parent) {
-		setSequenceSet((DNASequenceSet) parent);
-		for (final OTUSomethingPair<DNASequence> otuSequencePair : getOTUValuePairs()) {
-			otuSequencePair.getSecond().setSequenceSet(getParent());
-		}
+		sequences.afterUnmarshal(u, parent);
 	}
 
 	public boolean beforeMarshal(@CheckForNull final Marshaller marshaller) {
-		getOTUSequencePairs().clear();
-		for (final Map.Entry<OTU, DNASequence> otuToRow : getOTUsToValues()
+		getOTUSomethingPairs().clear();
+		for (final Map.Entry<OTU, DNASequence> otuToRow : getValues()
 				.entrySet()) {
-			getOTUSequencePairs().add(
+			getOTUSomethingPairs().add(
 					OTUDNASequencePair.of(otuToRow.getKey(), otuToRow
 							.getValue()));
 		}
 		return true;
 	}
 
+	public IOTUKeyedMap<DNASequence, DNASequenceSet, OTUDNASequencePair> clear() {
+		return sequences.clear();
+	}
+
+	public DNASequence get(final OTU key) {
+		return sequences.get(key);
+	}
+
 	@XmlElement(name = "otuSequencePair")
-	protected Set<OTUDNASequencePair> getOTUSequencePairs() {
-		return otuSequencePairs;
+	@Transient
+	public Set<OTUDNASequencePair> getOTUSomethingPairs() {
+		return sequences.getOTUSomethingPairs();
 	}
 
-	@Override
-	protected Map<OTU, DNASequence> getOTUsToValues() {
-		return sequences;
+	@Parent
+	public DNASequenceSet getParent() {
+		return sequences.getParent();
 	}
 
-	@Override
-	protected Set<OTUSomethingPair<DNASequence>> getOTUValuePairs() {
-		final Set<OTUSomethingPair<DNASequence>> otuSomethingPairs = newHashSet();
-		for (final OTUDNASequencePair otuDNASequencePair : getOTUSequencePairs()) {
-			otuSomethingPairs.add(otuDNASequencePair);
-		}
-		return otuSomethingPairs;
+	@OneToMany(cascade = CascadeType.ALL, orphanRemoval = true)
+	@JoinTable(inverseJoinColumns = @JoinColumn(name = DNASequence.JOIN_COLUMN))
+	@MapKeyJoinColumn(name = OTU.JOIN_COLUMN)
+	public Map<OTU, DNASequence> getValues() {
+		return sequences.getValues();
 	}
 
-	@Nullable
-	@Override
-	protected DNASequenceSet getParent() {
-		return getSequenceSet();
+	public DNASequence put(final OTU key, final DNASequence value) {
+		return sequences.put(key, value);
 	}
 
-	private DNASequenceSet getSequenceSet() {
-		return sequenceSet;
+	public IOTUKeyedMap<DNASequence, DNASequenceSet, OTUDNASequencePair> setOTUs() {
+		return sequences.setOTUs();
 	}
 
-	@Override
-	public DNASequence put(final OTU otu, final DNASequence sequence) {
-		checkNotNull(otu);
-		checkNotNull(sequence);
-		final DNASequence originalSequence = super.putHelper(otu, sequence);
-
-		sequence.setSequenceSet(getParent());
-		return originalSequence;
+	public IOTUKeyedMap<DNASequence, DNASequenceSet, OTUDNASequencePair> setParent(
+			final DNASequenceSet parent) {
+		return sequences.setParent(parent);
 	}
 
-	protected DNASequences setInNeedOfNewVersion() {
-		if (sequenceSet != null) {
-			sequenceSet.setInNeedOfNewVersion();
-		}
-		return this;
+	public IOTUKeyedMap<DNASequence, DNASequenceSet, OTUDNASequencePair> setValues(
+			final Map<OTU, DNASequence> values) {
+		return sequences.setValues(values);
 	}
-
-	protected DNASequences setSequenceSet(final DNASequenceSet sequenceSet) {
-		checkNotNull(sequenceSet);
-		this.sequenceSet = sequenceSet;
-		return this;
-	}
-
 }

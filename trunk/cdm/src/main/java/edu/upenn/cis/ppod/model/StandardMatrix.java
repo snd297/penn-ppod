@@ -71,9 +71,6 @@ public class StandardMatrix extends Matrix<StandardRow> {
 	@JoinColumn(name = JOIN_COLUMN, nullable = false)
 	private final List<StandardCharacter> characters = newArrayList();
 
-	// @OneToOne(fetch = FetchType.LAZY, optional = false,
-	// cascade = CascadeType.ALL, orphanRemoval = true)
-	// @JoinColumn(name = StandardRows.JOIN_COLUMN)
 	@Embedded
 	private StandardRows rows;
 
@@ -83,7 +80,7 @@ public class StandardMatrix extends Matrix<StandardRow> {
 	@Inject
 	StandardMatrix(final StandardRows rows) {
 		this.rows = rows;
-		this.rows.setMatrix(this);
+		this.rows.setParent(this);
 	}
 
 	@Override
