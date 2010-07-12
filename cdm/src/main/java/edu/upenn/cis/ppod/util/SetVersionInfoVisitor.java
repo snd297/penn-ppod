@@ -60,76 +60,76 @@ final class SetVersionInfoVisitor extends EmptyVisitor implements
 	}
 
 	@Override
-	public void visit(final Attachment attachment) {
+	public void visitAttachment(final Attachment attachment) {
 		setNewVersionInfo(attachment);
 	}
 
 	@Override
-	public void visit(final DNACell cell) {
+	public void visitDNACell(final DNACell cell) {
 		setNewVersionInfo(cell);
 	}
 
 	@Override
-	public void visit(final DNAMatrix matrix) {
+	public void visitDNAMatrix(final DNAMatrix matrix) {
 		visitMatrix(matrix);
 	}
 
 	@Override
-	public void visit(final DNARow row) {
+	public void visitDNARow(final DNARow row) {
 		setNewVersionInfo(row);
 	}
 
 	@Override
-	public void visit(final OTU otu) {
+	public void visitOTU(final OTU otu) {
 		setNewVersionInfo(otu);
 	}
 
 	@Override
-	public void visit(final OTUSet otuSet) {
+	public void visitOTUSet(final OTUSet otuSet) {
 		setNewVersionInfo(otuSet);
 	}
 
 	@Override
-	public void visit(final StandardCell cell) {
+	public void visitStandardCell(final StandardCell cell) {
 		setNewVersionInfo(cell);
 	}
 
 	@Override
-	public void visit(final StandardCharacter standardCharacter) {
+	public void visitStandardCharacter(final StandardCharacter standardCharacter) {
 		setNewVersionInfo(standardCharacter);
 	}
 
 	@Override
-	public void visit(final StandardMatrix matrix) {
+	public void visitStandardMatrix(final StandardMatrix matrix) {
 		visitMatrix(matrix);
 	}
 
 	@Override
-	public void visit(final StandardRow row) {
+	public void visitStandardRow(final StandardRow row) {
 		setNewVersionInfo(row);
 	}
 
 	@Override
-	public void visit(final StandardState standardState) {
+	public void visitStandardState(final StandardState standardState) {
 		setNewVersionInfo(standardState);
 	}
 
 	@Override
-	public void visit(final Study study) {
+	public void visitStudy(final Study study) {
 		setNewVersionInfo(study);
 	}
 
 	@Override
-	public void visit(final Tree tree) {
+	public void visitTree(final Tree tree) {
 		setNewVersionInfo(tree);
 	}
 
 	@Override
-	public void visit(final TreeSet treeSet) {
+	public void visitTreeSet(final TreeSet treeSet) {
 		setNewVersionInfo(treeSet);
 	}
 
-	public void visitMatrix(final Matrix<?> matrix) {
+	private void visitMatrix(final Matrix<?> matrix) {
 		setNewVersionInfo(matrix);
 		for (int pos = 0; pos < matrix.getColumnVersionInfos().size(); pos++) {
 			if (matrix.getColumnVersionInfos().get(pos) == null) {

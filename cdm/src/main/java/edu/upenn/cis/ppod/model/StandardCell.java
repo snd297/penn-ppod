@@ -67,7 +67,7 @@ public class StandardCell extends Cell<StandardState, StandardRow> {
 	@Override
 	public void accept(final IVisitor visitor) {
 		checkNotNull(visitor);
-		visitor.visit(this);
+		visitor.visitStandardCell(this);
 	}
 
 	private void checkRowMatrixCharacter() {
@@ -107,8 +107,8 @@ public class StandardCell extends Cell<StandardState, StandardRow> {
 			@JoinColumn(name = StandardState.JOIN_COLUMN))
 	@CheckForNull
 	@Override
-	protected Set<StandardState> getElementsRaw() {
-		return super.getElementsRaw();
+	protected Set<StandardState> getElements() {
+		return super.getElements();
 	}
 
 	@XmlElement(name = "stateDocId")

@@ -50,7 +50,7 @@ public class DNACellTest {
 
 		dnaCell.setInapplicable();
 		assertEquals(dnaCell.getType(), Type.INAPPLICABLE);
-		assertEquals(dnaCell.getElements().size(), 0);
+		assertEquals(dnaCell.getElementsPublic().size(), 0);
 		assertTrue(dnaCell.isInNeedOfNewVersion());
 	}
 
@@ -60,7 +60,7 @@ public class DNACellTest {
 		dnaCell.unsetInNeedOfNewVersion();
 		dnaCell.setSingleElement(DNANucleotide.A);
 		assertEquals(dnaCell.getType(), Type.SINGLE);
-		assertEquals(getOnlyElement(dnaCell.getElements()),
+		assertEquals(getOnlyElement(dnaCell.getElementsPublic()),
 					DNANucleotide.A);
 		assertTrue(dnaCell.isInNeedOfNewVersion());
 	}
@@ -78,7 +78,7 @@ public class DNACellTest {
 				Type.SINGLE);
 		assertEquals(
 				getOnlyElement(
-						dnaCell.getElements()),
+						dnaCell.getElementsPublic()),
 					DNANucleotide.A);
 		assertTrue(dnaCell.isInNeedOfNewVersion());
 	}
@@ -89,20 +89,20 @@ public class DNACellTest {
 
 		final Set<DNANucleotide> nucleotides =
 				ImmutableSet.of(DNANucleotide.A, DNANucleotide.T);
-		cell.setElementsRaw(nucleotides);
-		assertEquals((Object) cell.getElementsRaw(),
+		cell.setElements(nucleotides);
+		assertEquals((Object) cell.getElements(),
 				(Object) nucleotides);
 
 		final Set<DNANucleotide> nucleotides2 =
 				ImmutableSet.of(DNANucleotide.T);
 
-		cell.setElementsRaw(nucleotides2);
-		assertEquals((Object) cell.getElementsRaw(),
+		cell.setElements(nucleotides2);
+		assertEquals((Object) cell.getElements(),
 				(Object) nucleotides2);
 
 		// Set it to null
-		cell.setElementsRaw(null);
-		assertNull(cell.getElementsRaw());
+		cell.setElements(null);
+		assertNull(cell.getElements());
 
 	}
 
@@ -118,7 +118,7 @@ public class DNACellTest {
 
 		assertTrue(cell.isInNeedOfNewVersion());
 		assertEquals(cell.getType(), Cell.Type.POLYMORPHIC);
-		assertEquals(cell.getElements(),
+		assertEquals(cell.getElementsPublic(),
 					nucleotides);
 
 		cell.unsetInNeedOfNewVersion();
@@ -127,7 +127,7 @@ public class DNACellTest {
 
 		assertFalse(cell.isInNeedOfNewVersion());
 		assertEquals(cell.getType(), Cell.Type.POLYMORPHIC);
-		assertEquals((Object) cell.getElements(),
+		assertEquals((Object) cell.getElementsPublic(),
 				(Object) nucleotides);
 
 	}

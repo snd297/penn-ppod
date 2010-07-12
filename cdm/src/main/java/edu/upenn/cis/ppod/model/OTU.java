@@ -75,7 +75,7 @@ public class OTU
 	@Override
 	public void accept(final IVisitor visitor) {
 		checkNotNull(visitor);
-		visitor.visit(this);
+		visitor.visitOTU(this);
 	}
 
 	/**

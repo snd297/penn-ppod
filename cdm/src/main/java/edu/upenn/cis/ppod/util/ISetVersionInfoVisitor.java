@@ -17,17 +17,6 @@ package edu.upenn.cis.ppod.util;
 
 import com.google.inject.ImplementedBy;
 
-import edu.upenn.cis.ppod.model.Attachment;
-import edu.upenn.cis.ppod.model.StandardCharacter;
-import edu.upenn.cis.ppod.model.StandardState;
-import edu.upenn.cis.ppod.model.StandardCell;
-import edu.upenn.cis.ppod.model.StandardMatrix;
-import edu.upenn.cis.ppod.model.StandardRow;
-import edu.upenn.cis.ppod.model.OTU;
-import edu.upenn.cis.ppod.model.OTUSet;
-import edu.upenn.cis.ppod.model.Study;
-import edu.upenn.cis.ppod.model.Tree;
-import edu.upenn.cis.ppod.model.TreeSet;
 import edu.upenn.cis.ppod.modelinterfaces.INewVersionInfo;
 
 /**
@@ -36,37 +25,15 @@ import edu.upenn.cis.ppod.modelinterfaces.INewVersionInfo;
 @ImplementedBy(SetVersionInfoVisitor.class)
 public interface ISetVersionInfoVisitor extends IVisitor {
 
-	void visit(final Attachment attachment);
-
-	void visit(final StandardCharacter standardCharacter);
-
-	void visit(final StandardState standardState);
-
-	void visit(final StandardCell cell);
-
-	void visit(final StandardMatrix matrix);
-
-	void visit(final StandardRow row);
-
-	void visit(final OTU otu);
-
-	void visit(final OTUSet otuSet);
-
-	void visit(final Study study);
-
-	void visit(final TreeSet treeSet);
-
-	void visit(final Tree tree);
-
 	/**
-	 * Create a {@code SetPPodVersionInfoVisitor} with the given {@code
-	 * INewPPodVersionInfo}.
+	 * Create a {@code SetPPodVersionInfoVisitor} with the given
+	 * {@code INewPPodVersionInfo}.
 	 */
 	static interface IFactory {
 
 		/**
-		 * Create a {@code SetPPodVersionInfoVisitor} with the given {@code
-		 * INewPPodVersionInfo}.
+		 * Create a {@code SetPPodVersionInfoVisitor} with the given
+		 * {@code INewPPodVersionInfo}.
 		 * 
 		 * @param newPPodVersionInfo to be assigned to objects that are
 		 *            {@link PPodEntity#isInNeedOfNewPPodVersionInfo()}

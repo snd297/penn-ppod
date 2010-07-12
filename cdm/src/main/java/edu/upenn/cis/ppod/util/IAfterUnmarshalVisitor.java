@@ -19,6 +19,8 @@ import com.google.inject.ImplementedBy;
 
 /**
  * For straightening up or filling data structures after we've unmarshalled.
+ * This can be necessary because {@code @XmlIDRef}'s are not resolved until
+ * after the unmarshaller callbacks are called.
  * 
  * @author Sam Donnelly
  */

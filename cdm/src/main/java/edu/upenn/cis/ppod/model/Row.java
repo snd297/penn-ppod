@@ -57,12 +57,6 @@ public abstract class Row<C extends Cell<?, ?>, M extends Matrix<?>>
 		super.accept(visitor);
 	}
 
-	protected Row<C, M> addCellHelper(final C cell) {
-		getCells().add(cell);
-		setInNeedOfNewVersion();
-		return this;
-	}
-
 	/**
 	 * {@link Unmarshaller} callback.
 	 * 
@@ -87,9 +81,7 @@ public abstract class Row<C extends Cell<?, ?>, M extends Matrix<?>>
 	 * <p>
 	 * This method {@code null}s out the cell->row relationship.
 	 * <p>
-	 * This method calls {@link Cell#unsetPosition()} on all cleared cells.
-	 * <p>
-	 * This implementation calls {@link #getCellsModifiable()}.
+	 * This method calls {@code Cell.setPosition(null)} on all cleared cells.
 	 * 
 	 * @return this
 	 */
@@ -98,7 +90,7 @@ public abstract class Row<C extends Cell<?, ?>, M extends Matrix<?>>
 			clearedCell.setRow(null);
 			clearedCell.setPosition(null);
 		}
-		getCellsRaw().clear();
+		cells.clear();
 		return this;
 	}
 
@@ -107,17 +99,17 @@ public abstract class Row<C extends Cell<?, ?>, M extends Matrix<?>>
 	 * 
 	 * @return the cells that make up this row
 	 */
-	public List<C> getCells() {
-		return Collections.unmodifiableList(getCellsRaw());
+	protected List<C> getCells() {
+		return cells;
 	}
 
 	/**
-	 * Get a modifiable reference to this row's cells.
+	 * Get the cells that make up this row.
 	 * 
-	 * @return a modifiable reference to this row's cells
+	 * @return the cells that make up this row
 	 */
-	protected List<C> getCellsRaw() {
-		return cells;
+	public List<C> getCellsPublic() {
+		return Collections.unmodifiableList(cells);
 	}
 
 	/** {@inheritDoc} */
@@ -125,20 +117,11 @@ public abstract class Row<C extends Cell<?, ?>, M extends Matrix<?>>
 		return matrix;
 	}
 
-	/**
-	 * Set the cells of this row.
-	 * <p>
-	 * This only handles both sides of the {@code Row<->Cell} relationship.
-	 * 
-	 * @param cells the cells
-	 * 
-	 * @return any cells which were removed as a result of this operation
-	 * 
-	 * @throws IllegalStateException if {@code this.getMatrix() == null}
-	 * @throws IllegalStateException if the owning matrix does not have the same
-	 *             number of columns as {@code cells.size()}
-	 */
-	public abstract List<C> setCells(final List<? extends C> cells);
+	/** For Hibernate. */
+	@SuppressWarnings("unused")
+	private void setCells(final List<C> cells) {
+		this.cells = cells;
+	}
 
 	protected List<C> setCellsHelper(
 			final List<? extends C> cells) {
@@ -147,7 +130,6 @@ public abstract class Row<C extends Cell<?, ?>, M extends Matrix<?>>
 		if (cells.equals(getCells())) {
 			return Collections.emptyList();
 		}
-
 		final IMatrix matrix = getParent();
 
 		checkState(matrix != null, "This row hasn't been added to a matrix yet");
@@ -164,7 +146,7 @@ public abstract class Row<C extends Cell<?, ?>, M extends Matrix<?>>
 		clearCells();
 
 		int cellPos = -1;
-		getCellsRaw().addAll(cells);
+		this.cells.addAll(cells);
 		for (final Cell<?, ?> cell : getCells()) {
 			cellPos++;
 			cell.setPosition(cellPos);
@@ -173,13 +155,20 @@ public abstract class Row<C extends Cell<?, ?>, M extends Matrix<?>>
 		return removedCells;
 	}
 
-	protected void setCellsRaw(final List<C> cells) {
-		// Let's not do a checkNotNull(cells) because we can't control what
-		// Hibernate does. But we will assume that the value at least never ends
-		// up as null. NOTE: I don't know if hibernate ever calls this with
-		// null, but this seems a safe strategy.
-		this.cells = cells;
-	}
+	/**
+	 * Set the cells of this row.
+	 * <p>
+	 * This only handles both sides of the {@code Row<->Cell} relationship.
+	 * 
+	 * @param cells the cells
+	 * 
+	 * @return any cells which were removed as a result of this operation
+	 * 
+	 * @throws IllegalStateException if {@code this.getMatrix() == null}
+	 * @throws IllegalStateException if the owning matrix does not have the same
+	 *             number of columns as {@code cells.size()}
+	 */
+	public abstract List<C> setCellsPublic(final List<? extends C> cells);
 
 	/**
 	 * Reset the pPOD version info of this row and that of its matrix.

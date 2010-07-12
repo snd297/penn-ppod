@@ -69,7 +69,7 @@ public class AttachmentType extends PersistentObjectWithXmlId {
 	@Override
 	public void accept(final IVisitor visitor) {
 		checkNotNull(visitor);
-		visitor.visit(this);
+		visitor.visitAttachmentType(this);
 		getNamespace().accept(visitor);
 	}
 

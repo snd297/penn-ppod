@@ -80,7 +80,7 @@ public class StandardRowTest {
 	public void addCellToMatrixWOneCharacter() {
 		final StandardCell cell = (StandardCell) cellProvider.get()
 				.setUnassigned();
-		matrix.getRow(matrix.getOTUSet().getOTUs().get(0)).setCells(
+		matrix.getRow(matrix.getOTUSet().getOTUs().get(0)).setCellsPublic(
 				Arrays.asList(cell));
 
 		ModelAssert.assertEqualsStandardCells(cell, matrix.getRow(
@@ -107,7 +107,7 @@ public class StandardRowTest {
 		final List<StandardCell> cells =
 				ImmutableList.of(cellProvider.get(), cellProvider.get(),
 						cellProvider.get());
-		row.setCells(cells);
+		row.setCellsPublic(cells);
 		assertEquals(row.getCells(), cells);
 
 		assertSame(cells.get(0).getRow(), row);
@@ -118,7 +118,7 @@ public class StandardRowTest {
 		// Just call setUnassigned so that the cell is in a legal state - it
 		// shouldn't really matterJust call setUnassigned so that the cell is in
 		// a legal state - it shouldn't really matter
-		rowProvider.get().setCells(
+		rowProvider.get().setCellsPublic(
 				Arrays.asList((StandardCell) cellProvider.get()
 						.setUnassigned()));
 	}
@@ -138,7 +138,7 @@ public class StandardRowTest {
 		// a legal state - it shouldn't really matter
 		matrix.getRow(
 				matrix.getOTUSet().getOTUs().get(0))
-				.setCells(
+				.setCellsPublic(
 						Arrays.asList((StandardCell) cellProvider.get()
 								.setUnassigned()));
 	}
@@ -149,6 +149,6 @@ public class StandardRowTest {
 				(StandardCell) cellProvider.get()
 						.setUnassigned(), (StandardCell) cellProvider
 						.get().setUnassigned());
-		matrix.getRow(matrix.getOTUSet().getOTUs().get(0)).setCells(cells);
+		matrix.getRow(matrix.getOTUSet().getOTUs().get(0)).setCellsPublic(cells);
 	}
 }

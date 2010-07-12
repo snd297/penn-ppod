@@ -59,7 +59,13 @@ public class DNASequences
 		sequences.accept(visitor);
 	}
 
-	public void afterUnmarshal(final Unmarshaller u, final Object parent) {
+	public void afterUnmarshal() {
+		sequences.afterUnmarshal();
+	}
+
+	public void afterUnmarshal(
+			@CheckForNull final Unmarshaller u,
+			final Object parent) {
 		sequences.afterUnmarshal(u, parent);
 	}
 

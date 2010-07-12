@@ -86,7 +86,7 @@ public class StandardMatrix extends Matrix<StandardRow> {
 	@Override
 	public void accept(final IVisitor visitor) {
 		checkNotNull(visitor);
-		visitor.visit(this);
+		visitor.visitStandardMatrix(this);
 		for (final StandardCharacter character : getCharacters()) {
 			character.accept(visitor);
 		}
@@ -222,5 +222,9 @@ public class StandardMatrix extends Matrix<StandardRow> {
 			final StandardRows rows) {
 		this.rows = rows;
 		return this;
+	}
+
+	public void afterUnmarshal() {
+		this.rows.afterUnmarshal();
 	}
 }

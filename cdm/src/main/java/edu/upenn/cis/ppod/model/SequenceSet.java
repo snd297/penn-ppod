@@ -65,6 +65,10 @@ public abstract class SequenceSet<S extends Sequence<?>>
 		super.accept(visitor);
 	}
 
+	public void afterUnmarshal() {
+		getOTUKeyedSequences().afterUnmarshal();
+	}
+
 	/**
 	 * See {@link Unmarshaller}.
 	 * 
@@ -73,7 +77,10 @@ public abstract class SequenceSet<S extends Sequence<?>>
 	 */
 	@OverridingMethodsMustInvokeSuper
 	@Override
-	public void afterUnmarshal(final Unmarshaller u, final Object parent) {
+	public void afterUnmarshal(
+			@CheckForNull final Unmarshaller u,
+			final Object parent) {
+		checkNotNull(parent);
 		super.afterUnmarshal(u, parent);
 		setOTUSet((OTUSet) parent);
 	}

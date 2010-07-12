@@ -126,7 +126,7 @@ public class StandardState extends PPodEntityWXmlId {
 	@Override
 	public void accept(final IVisitor visitor) {
 		super.accept(visitor);
-		visitor.visit(this);
+		visitor.visitStandardState(this);
 	}
 
 	/**

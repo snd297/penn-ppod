@@ -58,7 +58,7 @@ public class DNACell extends Cell<DNANucleotide, DNARow> {
 	@Override
 	public void accept(final IVisitor visitor) {
 		checkNotNull(visitor);
-		visitor.visit(this);
+		visitor.visitDNACell(this);
 	}
 
 	@XmlAttribute(name = "nucleotide")
@@ -75,8 +75,8 @@ public class DNACell extends Cell<DNANucleotide, DNARow> {
 	@Column(name = "ELEMENT")
 	@Enumerated(EnumType.ORDINAL)
 	@Override
-	protected Set<DNANucleotide> getElementsRaw() {
-		return super.getElementsRaw();
+	protected Set<DNANucleotide> getElements() {
+		return super.getElements();
 	}
 
 	@XmlElement(name = "nucleotide")
@@ -95,7 +95,7 @@ public class DNACell extends Cell<DNANucleotide, DNARow> {
 
 	@Override
 	protected void initElements() {
-		setElementsRaw(EnumSet.noneOf(DNANucleotide.class));
+		setElements(EnumSet.noneOf(DNANucleotide.class));
 	}
 
 	/**

@@ -92,7 +92,7 @@ public class StandardCharacter extends UUPPodEntityWithXmlId {
 	@Override
 	public void accept(final IVisitor visitor) {
 		checkNotNull(visitor);
-		visitor.visit(this);
+		visitor.visitStandardCharacter(this);
 		for (final StandardState state : getStatesModifiable().values()) {
 			state.accept(visitor);
 		}

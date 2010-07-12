@@ -56,6 +56,10 @@ public class DNARows implements IOTUKeyedMap<DNARow, DNAMatrix, OTUDNARowPair> {
 		rows.accept(visitor);
 	}
 
+	public void afterUnmarshal() {
+		rows.afterUnmarshal();
+	}
+
 	public void afterUnmarshal(final Unmarshaller u, final Object parent) {
 		rows.afterUnmarshal(u, parent);
 	}

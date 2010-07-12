@@ -56,7 +56,6 @@ public class OTUKeyedMap<V extends IOTUKeyedMapValue<P>, P extends IVersionedWit
 
 	public void accept(final IVisitor visitor) {
 		checkNotNull(visitor);
-		visitor.visit(this);
 		for (final V value : getValues().values()) {
 			if (value != null) {
 				value.accept(visitor);

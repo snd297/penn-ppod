@@ -125,11 +125,9 @@ public class OTUKeyedMapTest {
 
 		matrix.getOTUKeyedRows().accept(visitor);
 
-		// Size should be the same as all of the rows minus the null row and
-		// plus the
-		// OTUKeyedMap
+		// Size should be the same as all of the rows minus the null row
 		assertEquals(visitor.getVisited().size(),
-				matrix.getRows().values().size() - 1 + 1);
+				matrix.getRows().values().size() - 1);
 
 		// assertTrue(visitor.getVisited().contains(matrix.getOTUKeyedRows()));
 		assertTrue(visitor

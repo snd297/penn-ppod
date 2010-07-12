@@ -55,7 +55,7 @@ public class DNASequence extends Sequence<DNASequenceSet> {
 	@Override
 	public void accept(final IVisitor visitor) {
 		checkNotNull(visitor);
-		visitor.visit(this);
+		visitor.visitDNASequence(this);
 	}
 
 	@ManyToOne(fetch = FetchType.LAZY, optional = false)
