@@ -40,7 +40,7 @@ import edu.upenn.cis.ppod.modelinterfaces.ILabeled;
  */
 public class ModelAssert {
 
-	public static <S extends Sequence> void assertEqualsSequenceSets(
+	public static <S extends Sequence<?>> void assertEqualsSequenceSets(
 			final SequenceSet<S> actualSeqSet,
 			final SequenceSet<S> expectedSeqSet) {
 		assertEquals(actualSeqSet.getLabel(), actualSeqSet.getLabel());
@@ -67,8 +67,8 @@ public class ModelAssert {
 	}
 
 	public static void assertEqualsSequences(
-			final Sequence actualSeq,
-			final Sequence expectedSeq) {
+			final Sequence<?> actualSeq,
+			final Sequence<?> expectedSeq) {
 		assertEquals(actualSeq.getSequence(), expectedSeq.getSequence());
 		assertEquals(actualSeq.getAccession(), expectedSeq.getAccession());
 		assertEquals(actualSeq.getDescription(), expectedSeq.getDescription());
