@@ -37,6 +37,7 @@ import javax.xml.bind.annotation.XmlElement;
 import org.hibernate.annotations.Parent;
 
 import edu.upenn.cis.ppod.modelinterfaces.IOTUKeyedMap;
+import edu.upenn.cis.ppod.modelinterfaces.IOTUKeyedMapPlus;
 import edu.upenn.cis.ppod.util.IVisitor;
 import edu.upenn.cis.ppod.util.OTUStandardRowPair;
 
@@ -50,9 +51,9 @@ import edu.upenn.cis.ppod.util.OTUStandardRowPair;
 @Access(AccessType.PROPERTY)
 public class StandardRows
 		implements
-		IOTUKeyedMap<StandardRow, StandardMatrix, OTUStandardRowPair> {
+		IOTUKeyedMap<StandardRow> {
 
-	private final IOTUKeyedMap<StandardRow, StandardMatrix, OTUStandardRowPair> rows = new OTUKeyedMap<StandardRow, StandardMatrix, OTUStandardRowPair>();
+	private final IOTUKeyedMapPlus<StandardRow, StandardMatrix, OTUStandardRowPair> rows = new OTUKeyedMapPlus<StandardRow, StandardMatrix, OTUStandardRowPair>();
 
 	StandardRows() {}
 
@@ -79,8 +80,9 @@ public class StandardRows
 		return true;
 	}
 
-	public IOTUKeyedMap<StandardRow, StandardMatrix, OTUStandardRowPair> clear() {
-		return rows.clear();
+	public StandardRows clear() {
+		rows.clear();
+		return this;
 	}
 
 	public StandardRow get(final OTU key) {
@@ -123,18 +125,19 @@ public class StandardRows
 		return rows.put(key, value);
 	}
 
-	public IOTUKeyedMap<StandardRow, StandardMatrix, OTUStandardRowPair> setOTUs() {
-		return rows.setOTUs();
+	public StandardRows setOTUs() {
+		rows.setOTUs();
+		return this;
 	}
 
-	public IOTUKeyedMap<StandardRow, StandardMatrix, OTUStandardRowPair> setParent(
-			final StandardMatrix parent) {
-		return rows.setParent(parent);
+	public StandardRows setParent(final StandardMatrix parent) {
+		rows.setParent(parent);
+		return this;
 	}
 
-	public IOTUKeyedMap<StandardRow, StandardMatrix, OTUStandardRowPair> setValues(
-			final Map<OTU, StandardRow> values) {
-		return rows.setValues(values);
+	public StandardRows setValues(final Map<OTU, StandardRow> values) {
+		rows.setValues(values);
+		return this;
 	}
 
 }

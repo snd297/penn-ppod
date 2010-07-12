@@ -90,13 +90,6 @@ public abstract class Row<C extends Cell<?, ?>, M extends Matrix<?>>
 	}
 
 	/**
-	 * Get a modifiable reference to this row's cells.
-	 * 
-	 * @return a modifiable reference to this row's cells
-	 */
-	protected abstract List<C> getCellsModifiable();
-
-	/**
 	 * Get the cells that make up this row.
 	 * 
 	 * @return the cells that make up this row
@@ -104,6 +97,28 @@ public abstract class Row<C extends Cell<?, ?>, M extends Matrix<?>>
 	public List<C> getCells() {
 		return Collections.unmodifiableList(getCellsModifiable());
 	}
+
+	/**
+	 * Get a modifiable reference to this row's cells.
+	 * 
+	 * @return a modifiable reference to this row's cells
+	 */
+	protected abstract List<C> getCellsModifiable();
+
+	/**
+	 * Set the cells of this row.
+	 * <p>
+	 * This only handles both sides of the {@code Row<->Cell} relationship.
+	 * 
+	 * @param cells the cells
+	 * 
+	 * @return any cells which were removed as a result of this operation
+	 * 
+	 * @throws IllegalStateException if {@code this.getMatrix() == null}
+	 * @throws IllegalStateException if the owning matrix does not have the same
+	 *             number of columns as {@code cells.size()}
+	 */
+	public abstract List<C> setCells(final List<? extends C> cells);
 
 	protected List<C> setCellsHelper(
 			final List<? extends C> cells) {
@@ -137,21 +152,6 @@ public abstract class Row<C extends Cell<?, ?>, M extends Matrix<?>>
 		setInNeedOfNewVersion();
 		return removedCells;
 	}
-
-	/**
-	 * Set the cells of this row.
-	 * <p>
-	 * This only handles both sides of the {@code Row<->Cell} relationship.
-	 * 
-	 * @param cells the cells
-	 * 
-	 * @return any cells which were removed as a result of this operation
-	 * 
-	 * @throws IllegalStateException if {@code this.getMatrix() == null}
-	 * @throws IllegalStateException if the owning matrix does not have the same
-	 *             number of columns as {@code cells.size()}
-	 */
-	public abstract List<C> setCells(final List<? extends C> cells);
 
 	/**
 	 * Reset the pPOD version info of this row and that of its matrix.

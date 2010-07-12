@@ -203,7 +203,7 @@ public abstract class Matrix<R extends Row<?, ?>>
 	 * 
 	 * @return the otusToRows
 	 */
-	protected abstract IOTUKeyedMap<R, ?, ?> getOTUKeyedRows();
+	protected abstract IOTUKeyedMap<R> getOTUKeyedRows();
 
 	/**
 	 * Getter. Will be {@code null} when object is first created, but never

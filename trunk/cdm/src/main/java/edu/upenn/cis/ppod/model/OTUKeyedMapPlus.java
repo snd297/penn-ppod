@@ -29,7 +29,7 @@ import javax.annotation.CheckForNull;
 import javax.annotation.Nullable;
 import javax.xml.bind.Unmarshaller;
 
-import edu.upenn.cis.ppod.modelinterfaces.IOTUKeyedMap;
+import edu.upenn.cis.ppod.modelinterfaces.IOTUKeyedMapPlus;
 import edu.upenn.cis.ppod.modelinterfaces.IOTUKeyedMapValue;
 import edu.upenn.cis.ppod.modelinterfaces.IVersionedWithOTUSet;
 import edu.upenn.cis.ppod.util.IVisitor;
@@ -45,8 +45,8 @@ import edu.upenn.cis.ppod.util.OTUSomethingPair;
  * 
  * @author Sam Donnelly
  */
-public class OTUKeyedMap<V extends IOTUKeyedMapValue<P>, P extends IVersionedWithOTUSet, OP extends OTUSomethingPair<V>>
-		implements IOTUKeyedMap<V, P, OP> {
+public class OTUKeyedMapPlus<V extends IOTUKeyedMapValue<P>, P extends IVersionedWithOTUSet, OP extends OTUSomethingPair<V>>
+		implements IOTUKeyedMapPlus<V, P, OP> {
 
 	private P parent;
 
@@ -95,7 +95,7 @@ public class OTUKeyedMap<V extends IOTUKeyedMapValue<P>, P extends IVersionedWit
 
 	}
 
-	public OTUKeyedMap<V, P, OP> clear() {
+	public OTUKeyedMapPlus<V, P, OP> clear() {
 		if (getValues().size() == 0) {
 			return this;
 		}
@@ -174,7 +174,7 @@ public class OTUKeyedMap<V extends IOTUKeyedMapValue<P>, P extends IVersionedWit
 		}
 	}
 
-	public OTUKeyedMap<V, P, OP> setOTUs() {
+	public OTUKeyedMapPlus<V, P, OP> setOTUs() {
 		final IVersionedWithOTUSet parent = getParent();
 
 		final Set<OTU> otusToBeRemoved = newHashSet();
@@ -214,13 +214,13 @@ public class OTUKeyedMap<V extends IOTUKeyedMapValue<P>, P extends IVersionedWit
 		return this;
 	}
 
-	public OTUKeyedMap<V, P, OP> setParent(final P parent) {
+	public OTUKeyedMapPlus<V, P, OP> setParent(final P parent) {
 		checkNotNull(parent);
 		this.parent = parent;
 		return this;
 	}
 
-	public OTUKeyedMap<V, P, OP> setValues(final Map<OTU, V> values) {
+	public OTUKeyedMapPlus<V, P, OP> setValues(final Map<OTU, V> values) {
 		this.values = values;
 		return this;
 	}

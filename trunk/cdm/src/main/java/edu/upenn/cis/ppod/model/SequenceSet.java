@@ -119,7 +119,7 @@ public abstract class SequenceSet<S extends Sequence<?>>
 		return label;
 	}
 
-	protected abstract IOTUKeyedMap<S, ?, ?> getOTUKeyedSequences();
+	protected abstract IOTUKeyedMap<S> getOTUKeyedSequences();
 
 	/**
 	 * Getter. Will be {@code null} when the sequence set is not connected to an

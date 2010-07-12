@@ -37,6 +37,7 @@ import javax.xml.bind.annotation.XmlElement;
 import org.hibernate.annotations.Parent;
 
 import edu.upenn.cis.ppod.modelinterfaces.IOTUKeyedMap;
+import edu.upenn.cis.ppod.modelinterfaces.IOTUKeyedMapPlus;
 import edu.upenn.cis.ppod.util.IVisitor;
 import edu.upenn.cis.ppod.util.OTUDNARowPair;
 
@@ -48,9 +49,10 @@ import edu.upenn.cis.ppod.util.OTUDNARowPair;
 @XmlAccessorType(XmlAccessType.NONE)
 @Embeddable
 @Access(AccessType.PROPERTY)
-public class DNARows implements IOTUKeyedMap<DNARow, DNAMatrix, OTUDNARowPair> {
+public class DNARows implements
+		IOTUKeyedMap<DNARow> {
 
-	private final IOTUKeyedMap<DNARow, DNAMatrix, OTUDNARowPair> rows = new OTUKeyedMap<DNARow, DNAMatrix, OTUDNARowPair>();
+	private final IOTUKeyedMapPlus<DNARow, DNAMatrix, OTUDNARowPair> rows = new OTUKeyedMapPlus<DNARow, DNAMatrix, OTUDNARowPair>();
 
 	public void accept(final IVisitor visitor) {
 		rows.accept(visitor);
@@ -75,7 +77,7 @@ public class DNARows implements IOTUKeyedMap<DNARow, DNAMatrix, OTUDNARowPair> {
 		return true;
 	}
 
-	public IOTUKeyedMap<DNARow, DNAMatrix, OTUDNARowPair> clear() {
+	public IOTUKeyedMapPlus<DNARow, DNAMatrix, OTUDNARowPair> clear() {
 		return rows.clear();
 	}
 
@@ -116,8 +118,9 @@ public class DNARows implements IOTUKeyedMap<DNARow, DNAMatrix, OTUDNARowPair> {
 		return rows.put(key, value);
 	}
 
-	public IOTUKeyedMap<DNARow, DNAMatrix, OTUDNARowPair> setOTUs() {
-		return rows.setOTUs();
+	public DNARows setOTUs() {
+		rows.setOTUs();
+		return this;
 	}
 
 	public DNARows setParent(final DNAMatrix parent) {
@@ -125,8 +128,9 @@ public class DNARows implements IOTUKeyedMap<DNARow, DNAMatrix, OTUDNARowPair> {
 		return this;
 	}
 
-	public IOTUKeyedMap<DNARow, DNAMatrix, OTUDNARowPair> setValues(
+	public DNARows setValues(
 			final Map<OTU, DNARow> values) {
-		return rows.setValues(values);
+		rows.setValues(values);
+		return this;
 	}
 }
