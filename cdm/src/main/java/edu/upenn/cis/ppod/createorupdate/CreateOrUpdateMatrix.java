@@ -137,19 +137,21 @@ class CreateOrUpdateMatrix<M extends Matrix<R>, R extends Row<C, ?>, C extends C
 						dbCell.setInapplicable();
 						break;
 					case POLYMORPHIC:
-						dbCell.setPolymorphicElements(sourceCell
-								.getElements());
+						dbCell
+								.setPolymorphicElements(
+										sourceCell.getElements());
 						break;
 					case SINGLE:
-						dbCell.setSingleElement(
-								getOnlyElement(sourceCell.getElements()));
+						dbCell
+								.setSingleElement(
+										getOnlyElement(sourceCell.getElements()));
 						break;
 					case UNASSIGNED:
 						dbCell.setUnassigned();
 						break;
 					case UNCERTAIN:
-						dbCell.setUncertainElements(sourceCell
-								.getElements());
+						dbCell
+								.setUncertainElements(sourceCell.getElements());
 						break;
 					default:
 						throw new AssertionError("unknown type");
