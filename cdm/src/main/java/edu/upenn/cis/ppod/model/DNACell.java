@@ -94,7 +94,7 @@ public class DNACell extends Cell<DNANucleotide, DNARow> {
 	}
 
 	@Override
-	protected Set<DNANucleotide> getElementsModifiable() {
+	Set<DNANucleotide> getElementsModifiable() {
 		return elements;
 	}
 
@@ -110,12 +110,12 @@ public class DNACell extends Cell<DNANucleotide, DNARow> {
 	}
 
 	@Override
-	protected void initElements() {
+	void initElements() {
 		setElements(EnumSet.noneOf(DNANucleotide.class));
 	}
 
 	/**
-	 * For Jaxb.
+	 * Protected for Jaxb.
 	 */
 	@Override
 	protected void setElement(final DNANucleotide element) {
@@ -123,12 +123,12 @@ public class DNACell extends Cell<DNANucleotide, DNARow> {
 	}
 
 	@Override
-	protected void setElements(final Set<DNANucleotide> elements) {
+	void setElements(final Set<DNANucleotide> elements) {
 		this.elements = elements;
 	}
 
 	@Override
-	protected void setParent(final DNARow parent) {
+	void setParent(final DNARow parent) {
 		this.parent = parent;
 	}
 

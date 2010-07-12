@@ -33,6 +33,8 @@ import javax.xml.bind.annotation.XmlAttribute;
  * The constructors and mutators of this class are intentionally package-private
  * because we don't want for these to be manipulated outside of this package due
  * to their trickiness.
+ * <p>
+ * We don't make the entity immutable since it's not a root object.
  * 
  * @author Sam Donnelly
  */

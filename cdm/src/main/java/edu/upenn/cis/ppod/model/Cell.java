@@ -85,11 +85,14 @@ public abstract class Cell<E, R extends Row<?, ?>> extends PPodEntity {
 
 	}
 
-	protected static final String TYPE_COLUMN = "TYPE";
+	static final String TYPE_COLUMN = "TYPE";
 
+	@Column(name = "POSITION", nullable = false)
 	@CheckForNull
 	private Integer position;
 
+	@Column(name = TYPE_COLUMN, nullable = false)
+	@Enumerated(EnumType.ORDINAL)
 	@CheckForNull
 	private Type type;
 
@@ -123,7 +126,7 @@ public abstract class Cell<E, R extends Row<?, ?>> extends PPodEntity {
 	 * Will be {@code null} if this is cell is not {@link Type.SINGLE}.
 	 */
 	@CheckForNull
-	protected abstract E getElement();
+	abstract E getElement();
 
 	/**
 	 * Get the elements contained in this cell.
@@ -179,7 +182,7 @@ public abstract class Cell<E, R extends Row<?, ?>> extends PPodEntity {
 	}
 
 	@CheckForNull
-	protected abstract Set<E> getElementsModifiable();
+	abstract Set<E> getElementsModifiable();
 
 	/**
 	 * Used for serialization.
@@ -191,7 +194,7 @@ public abstract class Cell<E, R extends Row<?, ?>> extends PPodEntity {
 	 * @throws IllegalStateException if {@code getType() == null}
 	 */
 	@CheckForNull
-	protected Set<E> getElementsXml() {
+	Set<E> getElementsXml() {
 		if (getType() == null) {
 			throw new IllegalStateException("getType == null");
 		}
@@ -218,7 +221,6 @@ public abstract class Cell<E, R extends Row<?, ?>> extends PPodEntity {
 	 * Package-private for testing.
 	 */
 	@Nullable
-	@Column(name = "POSITION", nullable = false)
 	Integer getPosition() {
 		return position;
 	}
@@ -234,8 +236,6 @@ public abstract class Cell<E, R extends Row<?, ?>> extends PPodEntity {
 	 * @return the type of this cell
 	 */
 	@XmlAttribute
-	@Column(name = TYPE_COLUMN, nullable = false)
-	@Enumerated(EnumType.ORDINAL)
 	@Nullable
 	public Type getType() {
 		return type;
@@ -246,19 +246,19 @@ public abstract class Cell<E, R extends Row<?, ?>> extends PPodEntity {
 	 * Subclasses may wish to override this for more efficient solutions, for
 	 * example using an {@code EnumSet<E>}.
 	 */
-	protected void initElements() {
+	void initElements() {
 		setElements(new HashSet<E>());
 	}
 
 	/**
 	 * Does not affect {@link #isInNeedOfNewVersion()}.
 	 */
-	protected abstract void setElement(@CheckForNull final E element);
+	abstract void setElement(@CheckForNull final E element);
 
 	/**
 	 * Does not affect {@link #isInNeedOfNewVersion()}.
 	 */
-	protected abstract void setElements(
+	abstract void setElements(
 			@CheckForNull final Set<E> elements);
 
 	/**
@@ -307,7 +307,7 @@ public abstract class Cell<E, R extends Row<?, ?>> extends PPodEntity {
 		return this;
 	}
 
-	protected abstract void setParent(@CheckForNull final R row);
+	abstract void setParent(@CheckForNull final R row);
 
 	/**
 	 * Set the type to polymorphic with the appropriate states equivalent to
@@ -344,7 +344,7 @@ public abstract class Cell<E, R extends Row<?, ?>> extends PPodEntity {
 	 * 
 	 * @return this
 	 */
-	protected void setPolymorphicOrUncertain(
+	void setPolymorphicOrUncertain(
 			final Type type,
 			final Set<? extends E> elements) {
 		checkNotNull(type);
