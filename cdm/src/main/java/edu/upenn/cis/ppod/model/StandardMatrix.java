@@ -93,6 +93,11 @@ public class StandardMatrix extends Matrix<StandardRow> {
 		super.accept(visitor);
 	}
 
+	@Override
+	public void afterUnmarshal() {
+		this.rows.afterUnmarshal();
+	}
+
 	/**
 	 * {@link Unmarshaller} callback.
 	 * 
@@ -222,9 +227,5 @@ public class StandardMatrix extends Matrix<StandardRow> {
 			final StandardRows rows) {
 		this.rows = rows;
 		return this;
-	}
-
-	public void afterUnmarshal() {
-		this.rows.afterUnmarshal();
 	}
 }

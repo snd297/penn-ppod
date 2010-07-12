@@ -37,6 +37,7 @@ import javax.xml.bind.annotation.XmlElement;
 import org.hibernate.annotations.Parent;
 
 import edu.upenn.cis.ppod.modelinterfaces.IOTUKeyedMap;
+import edu.upenn.cis.ppod.modelinterfaces.IOTUKeyedMapPlus;
 import edu.upenn.cis.ppod.util.IVisitor;
 import edu.upenn.cis.ppod.util.OTUDNASequencePair;
 
@@ -49,11 +50,10 @@ import edu.upenn.cis.ppod.util.OTUDNASequencePair;
 @Embeddable
 @Access(AccessType.PROPERTY)
 public class DNASequences
-		implements
-		IOTUKeyedMap<DNASequence, DNASequenceSet, OTUDNASequencePair> {
+		implements IOTUKeyedMap<DNASequence> {
 
-	private final IOTUKeyedMap<DNASequence, DNASequenceSet, OTUDNASequencePair> sequences =
-			new OTUKeyedMap<DNASequence, DNASequenceSet, OTUDNASequencePair>();
+	private final IOTUKeyedMapPlus<DNASequence, DNASequenceSet, OTUDNASequencePair> sequences =
+			new OTUKeyedMapPlus<DNASequence, DNASequenceSet, OTUDNASequencePair>();
 
 	public void accept(final IVisitor visitor) {
 		sequences.accept(visitor);
@@ -80,7 +80,7 @@ public class DNASequences
 		return true;
 	}
 
-	public IOTUKeyedMap<DNASequence, DNASequenceSet, OTUDNASequencePair> clear() {
+	public IOTUKeyedMapPlus<DNASequence, DNASequenceSet, OTUDNASequencePair> clear() {
 		return sequences.clear();
 	}
 
@@ -110,17 +110,18 @@ public class DNASequences
 		return sequences.put(key, value);
 	}
 
-	public IOTUKeyedMap<DNASequence, DNASequenceSet, OTUDNASequencePair> setOTUs() {
-		return sequences.setOTUs();
+	public DNASequences setOTUs() {
+		sequences.setOTUs();
+		return this;
 	}
 
-	public IOTUKeyedMap<DNASequence, DNASequenceSet, OTUDNASequencePair> setParent(
-			final DNASequenceSet parent) {
-		return sequences.setParent(parent);
+	public DNASequences setParent(final DNASequenceSet parent) {
+		sequences.setParent(parent);
+		return this;
 	}
 
-	public IOTUKeyedMap<DNASequence, DNASequenceSet, OTUDNASequencePair> setValues(
-			final Map<OTU, DNASequence> values) {
-		return sequences.setValues(values);
+	public DNASequences setValues(final Map<OTU, DNASequence> values) {
+		sequences.setValues(values);
+		return this;
 	}
 }
