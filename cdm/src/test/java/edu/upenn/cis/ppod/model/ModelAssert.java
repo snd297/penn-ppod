@@ -145,12 +145,12 @@ public class ModelAssert {
 			final StandardCell actualCell,
 			final StandardCell expectedCell) {
 		assertEquals(actualCell.getType(), expectedCell.getType());
-		assertEquals(actualCell.getElementsPublic().size(), expectedCell
-				.getElementsPublic().size());
-		for (final StandardState actualState : actualCell.getElementsPublic()) {
+		assertEquals(actualCell.getElements().size(), expectedCell
+				.getElements().size());
+		for (final StandardState actualState : actualCell.getElements()) {
 			final StandardState expectedState =
 					findIf(
-							expectedCell.getElementsPublic(),
+							expectedCell.getElements(),
 							compose(
 									equalTo(
 										actualState.getStateNumber()),
@@ -175,7 +175,7 @@ public class ModelAssert {
 																				.hasNext();) {
 			final StandardCell actualCell = actualCellItr.next(), expectedCell = expectedCellItr
 					.next();
-			assertTrue(actualCell.getRow() == actualRow);
+			assertTrue(actualCell.getParent() == actualRow);
 			assertEqualsStandardCells(actualCell, expectedCell);
 		}
 	}

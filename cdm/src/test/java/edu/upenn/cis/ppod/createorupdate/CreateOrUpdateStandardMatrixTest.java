@@ -87,7 +87,7 @@ public class CreateOrUpdateStandardMatrixTest {
 		assertEquals(matrix.getRows().size(), rowsToCells.size());
 		for (final OTU otu : matrix.getOTUSet().getOTUs()) {
 			final StandardRow row = matrix.getRow(otu);
-			row.setCellsPublic(rowsToCells.get(row));
+			row.setCells(rowsToCells.get(row));
 		}
 		rowsToCells.clear();
 	}
@@ -236,7 +236,7 @@ public class CreateOrUpdateStandardMatrixTest {
 
 			newSourceCells.set(0, sourceRow.getCells().get(2));
 			newSourceCells.set(2, sourceRow.getCells().get(0));
-			sourceRow.setCellsPublic(newSourceCells);
+			sourceRow.setCells(newSourceCells);
 		}
 
 		final Map<StandardRow, List<StandardCell>> sourceRowsToCells2 = stashCells(sourceMatrix);
@@ -304,7 +304,7 @@ public class CreateOrUpdateStandardMatrixTest {
 							sourceRow.getCells()
 									.size() / 2);
 
-			sourceRow.setCellsPublic(newSourceCells);
+			sourceRow.setCells(newSourceCells);
 		}
 
 		for (final OTU targetOTU : targetMatrix.getOTUSet().getOTUs()) {

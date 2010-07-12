@@ -185,7 +185,7 @@ final class Study2StudyInfo implements IStudy2StudyInfo {
 							.put(rowIdx, rowVersion);
 
 					int cellIdx = -1;
-					for (final DNACell cell : row.getCellsPublic()) {
+					for (final DNACell cell : row.getCells()) {
 						cellIdx++;
 						matrixInfo
 								.setCellPPodIdAndVersion(rowIdx, cellIdx,

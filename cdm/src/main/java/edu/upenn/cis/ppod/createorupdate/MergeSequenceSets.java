@@ -30,7 +30,7 @@ import edu.upenn.cis.ppod.model.Sequence;
 import edu.upenn.cis.ppod.model.SequenceSet;
 import edu.upenn.cis.ppod.modelinterfaces.INewVersionInfo;
 
-final class MergeSequenceSets<SS extends SequenceSet<S>, S extends Sequence>
+final class MergeSequenceSets<SS extends SequenceSet<S>, S extends Sequence<?>>
 		implements IMergeSequenceSets<SS, S> {
 
 	private final Provider<S> sequenceProvider;

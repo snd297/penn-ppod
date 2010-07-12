@@ -17,11 +17,10 @@ package edu.upenn.cis.ppod.model;
 
 import static com.google.common.base.Preconditions.checkArgument;
 import static com.google.common.base.Preconditions.checkNotNull;
+import static com.google.common.collect.Lists.newArrayList;
 
 import java.util.List;
 
-import javax.persistence.Access;
-import javax.persistence.AccessType;
 import javax.persistence.CascadeType;
 import javax.persistence.Entity;
 import javax.persistence.FetchType;
@@ -30,7 +29,6 @@ import javax.persistence.ManyToOne;
 import javax.persistence.OneToMany;
 import javax.persistence.OrderBy;
 import javax.persistence.Table;
-import javax.persistence.Transient;
 import javax.xml.bind.annotation.XmlElement;
 
 import edu.upenn.cis.ppod.util.IVisitor;
@@ -42,13 +40,21 @@ import edu.upenn.cis.ppod.util.IVisitor;
  */
 @Entity
 @Table(name = StandardRow.TABLE)
-@Access(AccessType.PROPERTY)
 public class StandardRow extends Row<StandardCell, StandardMatrix> {
 
 	/** This entitiy's table name. */
 	public static final String TABLE = "STANDARD_ROW";
 
 	public static final String JOIN_COLUMN = TABLE + "_ID";
+
+	@OneToMany(mappedBy = "parent", cascade = CascadeType.ALL,
+			orphanRemoval = true)
+	@OrderBy("position")
+	private final List<StandardCell> cells = newArrayList();
+
+	@ManyToOne(fetch = FetchType.LAZY, optional = false)
+	@JoinColumn(name = StandardMatrix.JOIN_COLUMN)
+	private StandardMatrix parent;
 
 	StandardRow() {}
 
@@ -59,10 +65,9 @@ public class StandardRow extends Row<StandardCell, StandardMatrix> {
 		super.accept(visitor);
 	}
 
-	@Transient
 	public int getCellPosition(final StandardCell cell) {
 		checkNotNull(cell);
-		checkArgument(this.equals(cell.getRow()),
+		checkArgument(this.equals(cell.getParent()),
 				"cell does not belong to this row");
 		final Integer cellPosition = cell.getPosition();
 		if (cellPosition == null) {
@@ -73,12 +78,9 @@ public class StandardRow extends Row<StandardCell, StandardMatrix> {
 	}
 
 	@XmlElement(name = "cell")
-	@OneToMany(mappedBy = "row", cascade = CascadeType.ALL,
-			orphanRemoval = true)
-	@OrderBy("position")
 	@Override
-	public List<StandardCell> getCells() {
-		return super.getCells();
+	protected List<StandardCell> getCellsModifiable() {
+		return cells;
 	}
 
 	/**
@@ -89,22 +91,26 @@ public class StandardRow extends Row<StandardCell, StandardMatrix> {
 	 * 
 	 * @return the {@code StandardMatrix} of which this is a row
 	 */
-	@ManyToOne(fetch = FetchType.LAZY, optional = false)
-	@JoinColumn(name = StandardMatrix.JOIN_COLUMN)
-	@Override
 	public StandardMatrix getParent() {
-		return super.getParent();
+		return parent;
 	}
 
 	@Override
-	public List<StandardCell> setCellsPublic(
+	public List<StandardCell> setCells(
 			final List<? extends StandardCell> cells) {
 		final List<StandardCell> clearedCells =
 				super.setCellsHelper(cells);
 
 		for (final StandardCell cell : getCells()) {
-			cell.setRow(this);
+			cell.setParent(this);
 		}
 		return clearedCells;
+	}
+
+	/** {@inheritDoc} */
+	public Row<StandardCell, StandardMatrix> setParent(
+			final StandardMatrix parent) {
+		this.parent = parent;
+		return this;
 	}
 }

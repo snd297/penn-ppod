@@ -122,8 +122,8 @@ public class TestObjectWithLongIdDAO implements IObjectWithLongIdDAOHibernate {
 	public void makePersistent(final Object entity) {
 		if (entity instanceof StandardCell) {
 			final StandardCell cell = (StandardCell) entity;
-			final StandardRow row = cell.getRow();
-			if (rowsToCells.containsKey(cell.getRow())) {
+			final StandardRow row = cell.getParent();
+			if (rowsToCells.containsKey(cell.getParent())) {
 
 			} else {
 				rowsToCells.put(row, new ArrayList<StandardCell>());

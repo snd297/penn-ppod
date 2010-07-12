@@ -22,8 +22,6 @@ import static com.google.common.collect.Sets.newHashSet;
 
 import java.util.Set;
 
-import javax.persistence.Access;
-import javax.persistence.AccessType;
 import javax.persistence.Entity;
 import javax.persistence.FetchType;
 import javax.persistence.JoinColumn;
@@ -31,7 +29,7 @@ import javax.persistence.JoinTable;
 import javax.persistence.ManyToMany;
 import javax.persistence.ManyToOne;
 import javax.persistence.Table;
-import javax.persistence.Transient;
+import javax.xml.bind.Unmarshaller;
 import javax.xml.bind.annotation.XmlAttribute;
 import javax.xml.bind.annotation.XmlElement;
 import javax.xml.bind.annotation.XmlIDREF;
@@ -47,7 +45,6 @@ import edu.upenn.cis.ppod.util.IVisitor;
  */
 @Entity
 @Table(name = StandardCell.TABLE)
-@Access(AccessType.PROPERTY)
 public class StandardCell extends Cell<StandardState, StandardRow> {
 
 	/**
@@ -61,6 +58,38 @@ public class StandardCell extends Cell<StandardState, StandardRow> {
 	 */
 	public static final String JOIN_COLUMN = TABLE + "_ID";
 
+	/**
+	 * To handle the most-common case of a single {@code CharacterState}, we
+	 * cache {@code states.get(0)}.
+	 * <p>
+	 * Will be {@code null} if this is a {@link Type#INAPPLICABLE} or
+	 * {@link Type#UNASSIGNED}.
+	 */
+	@ManyToOne(fetch = FetchType.LAZY)
+	@JoinColumn(name = StandardState.JOIN_COLUMN)
+	@CheckForNull
+	private StandardState element;
+
+	/**
+	 * The heart of the cell: the states.
+	 * <p>
+	 * Will be {@code null} when first created, but is generally not-null.
+	 */
+	@CheckForNull
+	@ManyToMany
+	@JoinTable(inverseJoinColumns = @JoinColumn(
+			name = StandardState.JOIN_COLUMN))
+	private Set<StandardState> elements;
+
+	/**
+	 * The {@code CharacterStateRow} to which this {@code CharacterStateCell}
+	 * belongs.
+	 */
+	@ManyToOne(fetch = FetchType.LAZY, optional = false)
+	@JoinColumn(name = StandardRow.JOIN_COLUMN)
+	@CheckForNull
+	private StandardRow parent;
+
 	/** No-arg constructor for (at least) Hibernate. */
 	StandardCell() {}
 
@@ -70,9 +99,21 @@ public class StandardCell extends Cell<StandardState, StandardRow> {
 		visitor.visitStandardCell(this);
 	}
 
+	/**
+	 * {@link Unmarshaller} callback.
+	 * 
+	 * @param u see {@code Unmarshaller}
+	 * @param parent see {@code Unmarshaller}
+	 */
+	@Override
+	public void afterUnmarshal(final Unmarshaller u, final Object parent) {
+		super.afterUnmarshal(u, parent);
+		this.parent = (StandardRow) parent;
+	}
+
 	private void checkRowMatrixCharacter() {
 
-		final StandardRow row = getRow();
+		final StandardRow row = getParent();
 
 		checkState(row != null && getPosition() != null,
 				"this cell has not been assigned a row");
@@ -92,29 +133,23 @@ public class StandardCell extends Cell<StandardState, StandardRow> {
 
 	}
 
+	@CheckForNull
 	@XmlAttribute(name = "stateDocId")
 	@XmlIDREF
-	@ManyToOne(fetch = FetchType.LAZY, optional = true)
-	@JoinColumn(name = StandardState.JOIN_COLUMN)
-	@CheckForNull
 	@Override
 	protected StandardState getElement() {
-		return super.getElement();
+		return element;
 	}
 
-	@ManyToMany
-	@JoinTable(inverseJoinColumns =
-			@JoinColumn(name = StandardState.JOIN_COLUMN))
 	@CheckForNull
 	@Override
-	protected Set<StandardState> getElements() {
-		return super.getElements();
+	protected Set<StandardState> getElementsModifiable() {
+		return elements;
 	}
 
+	@CheckForNull
 	@XmlElement(name = "stateDocId")
 	@XmlIDREF
-	@Transient
-	@CheckForNull
 	@Override
 	protected Set<StandardState> getElementsXml() {
 		return super.getElementsXml();
@@ -127,19 +162,26 @@ public class StandardCell extends Cell<StandardState, StandardRow> {
 	 *         {@code CharacterStateCell} belongs
 	 */
 	@Nullable
-	@ManyToOne(fetch = FetchType.LAZY, optional = false)
-	@JoinColumn(name = StandardRow.JOIN_COLUMN)
 	@Override
-	public StandardRow getRow() {
-		return super.getRow();
+	public StandardRow getParent() {
+		return parent;
 	}
 
-	/**
-	 * For JAXB.
-	 */
 	@Override
-	protected void setElement(final StandardState state) {
-		super.setElement(state);
+	protected void setElement(
+			@CheckForNull final StandardState element) {
+		this.element = element;
+	}
+
+	@Override
+	protected void setElements(
+			@CheckForNull final Set<StandardState> elements) {
+		this.elements = elements;
+	}
+
+	@Override
+	protected void setParent(final StandardRow parent) {
+		this.parent = parent;
 	}
 
 	/**
@@ -160,6 +202,7 @@ public class StandardCell extends Cell<StandardState, StandardRow> {
 			final Set<? extends StandardState> elements) {
 		checkNotNull(type);
 		checkNotNull(elements);
+
 		checkArgument(
 				type == Type.POLYMORPHIC
 						|| type == Type.UNCERTAIN,
@@ -182,7 +225,7 @@ public class StandardCell extends Cell<StandardState, StandardRow> {
 					"this cell has not been assigned a row: it's position attribute is null");
 
 		final StandardCharacter character =
-					getRow().getParent().getCharacters().get(position);
+					getParent().getParent().getCharacters().get(position);
 
 		newElements = newHashSet();
 
@@ -191,15 +234,12 @@ public class StandardCell extends Cell<StandardState, StandardRow> {
 						.add(character.getState(sourceElement
 								.getStateNumber()));
 		}
-
 		super.setPolymorphicOrUncertain(type, newElements);
 
-		return;
 	}
 
 	@Override
-	public Cell<StandardState, StandardRow> setSingleElement(
-			final StandardState element) {
+	public StandardCell setSingleElement(final StandardState element) {
 
 		checkNotNull(element);
 
@@ -208,7 +248,7 @@ public class StandardCell extends Cell<StandardState, StandardRow> {
 					"this cell has not been assigned a row: it's position attribute is null");
 
 		final StandardCharacter standardCharacter =
-					getRow().getParent().getCharacters().get(getPosition());
+					getParent().getParent().getCharacters().get(getPosition());
 
 		final StandardState newElement =
 				standardCharacter.getState(element.getStateNumber());
@@ -226,10 +266,29 @@ public class StandardCell extends Cell<StandardState, StandardRow> {
 			return this;
 		}
 
-		super.setSingleElement(newElement);
-
+		setElement(newElement);
+		setElements(null);
+		setType(Type.SINGLE);
 		setInNeedOfNewVersion();
 		return this;
+	}
+
+	/**
+	 * Constructs a {@code String} with attributes in name=value format.
+	 * 
+	 * @return a {@code String} representation of this object
+	 */
+	@Override
+	public String toString() {
+		final String TAB = " ";
+
+		final StringBuilder retValue = new StringBuilder();
+
+		retValue.append("CharacterStateCell(").append(super.toString()).append(
+				TAB).append("version=").append(TAB).append("states=").append(
+				this.elements).append(TAB).append(")");
+
+		return retValue.toString();
 	}
 
 }

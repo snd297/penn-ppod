@@ -16,11 +16,10 @@
 package edu.upenn.cis.ppod.model;
 
 import static com.google.common.base.Preconditions.checkNotNull;
+import static com.google.common.collect.Lists.newArrayList;
 
 import java.util.List;
 
-import javax.persistence.Access;
-import javax.persistence.AccessType;
 import javax.persistence.CascadeType;
 import javax.persistence.Entity;
 import javax.persistence.FetchType;
@@ -31,6 +30,7 @@ import javax.persistence.OrderBy;
 import javax.persistence.Table;
 import javax.xml.bind.annotation.XmlElement;
 
+import edu.umd.cs.findbugs.annotations.CheckForNull;
 import edu.upenn.cis.ppod.util.IVisitor;
 
 /**
@@ -40,13 +40,22 @@ import edu.upenn.cis.ppod.util.IVisitor;
  */
 @Entity
 @Table(name = DNARow.TABLE)
-@Access(AccessType.PROPERTY)
 public class DNARow extends Row<DNACell, DNAMatrix> {
 
 	public static final String TABLE = "DNA_ROW";
 
 	public static final String JOIN_COLUMN =
 			TABLE + "_" + PersistentObject.ID_COLUMN;
+
+	@ManyToOne(fetch = FetchType.LAZY, optional = false)
+	@JoinColumn(name = DNAMatrix.JOIN_COLUMN)
+	@CheckForNull
+	private DNAMatrix parent;
+
+	@OneToMany(mappedBy = "parent", cascade = CascadeType.ALL,
+			orphanRemoval = true)
+	@OrderBy("position")
+	private final List<DNACell> cells = newArrayList();
 
 	DNARow() {}
 
@@ -58,30 +67,30 @@ public class DNARow extends Row<DNACell, DNAMatrix> {
 	}
 
 	@XmlElement(name = "cell")
-	@OneToMany(mappedBy = "row", cascade = CascadeType.ALL,
-			orphanRemoval = true)
-	@OrderBy("position")
 	@Override
-	protected List<DNACell> getCells() {
-		return super.getCells();
+	protected List<DNACell> getCellsModifiable() {
+		return cells;
 	}
 
 	/** {@inheritDoc} */
-	@ManyToOne(fetch = FetchType.LAZY, optional = false)
-	@JoinColumn(name = DNAMatrix.JOIN_COLUMN)
-	@Override
 	public DNAMatrix getParent() {
-		return super.getParent();
+		return parent;
 	}
 
 	@Override
-	public List<DNACell> setCellsPublic(final List<? extends DNACell> cells) {
+	public List<DNACell> setCells(final List<? extends DNACell> cells) {
 		final List<DNACell> clearedCells = super.setCellsHelper(cells);
 
 		for (final DNACell cell : getCells()) {
-			cell.setRow(this);
+			cell.setParent(this);
 		}
 		return clearedCells;
+	}
+
+	/** {@inheritDoc} */
+	public Row<DNACell, DNAMatrix> setParent(final DNAMatrix parent) {
+		this.parent = parent;
+		return this;
 	}
 
 }
