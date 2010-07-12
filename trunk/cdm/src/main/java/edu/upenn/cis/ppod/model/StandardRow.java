@@ -55,7 +55,7 @@ public class StandardRow extends Row<StandardCell, StandardMatrix> {
 	@Override
 	public void accept(final IVisitor visitor) {
 		checkNotNull(visitor);
-		visitor.visit(this);
+		visitor.visitStandardRow(this);
 		super.accept(visitor);
 	}
 
@@ -77,8 +77,8 @@ public class StandardRow extends Row<StandardCell, StandardMatrix> {
 			orphanRemoval = true)
 	@OrderBy("position")
 	@Override
-	protected List<StandardCell> getCellsRaw() {
-		return super.getCellsRaw();
+	public List<StandardCell> getCells() {
+		return super.getCells();
 	}
 
 	/**
@@ -97,7 +97,7 @@ public class StandardRow extends Row<StandardCell, StandardMatrix> {
 	}
 
 	@Override
-	public List<StandardCell> setCells(
+	public List<StandardCell> setCellsPublic(
 			final List<? extends StandardCell> cells) {
 		final List<StandardCell> clearedCells =
 				super.setCellsHelper(cells);

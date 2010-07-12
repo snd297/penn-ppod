@@ -126,7 +126,7 @@ public class OTUSet extends UUPPodEntityWithXmlId {
 	@Override
 	public void accept(final IVisitor visitor) {
 		checkNotNull(visitor);
-		visitor.visit(this);
+		visitor.visitOTUSet(this);
 		for (final IPersistentObject child : getChildren()) {
 			child.accept(visitor);
 		}

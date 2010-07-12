@@ -16,10 +16,14 @@
 
 package edu.upenn.cis.ppod.util;
 
-import edu.upenn.cis.ppod.model.OTUKeyedMap;
+import edu.upenn.cis.ppod.model.DNAMatrix;
+import edu.upenn.cis.ppod.model.DNASequenceSet;
+import edu.upenn.cis.ppod.model.StandardMatrix;
 
 /**
  * For straightening up or filling data structures after we've unmarshalled.
+ * This can be necessary because {@code @XmlIDRef}'s are not resolved until
+ * after the unmarshaller callbacks are called.
  * 
  * @author Sam Donnelly
  */
@@ -27,7 +31,17 @@ class AfterUnmarshalVisitor extends EmptyVisitor implements
 		IAfterUnmarshalVisitor {
 
 	@Override
-	public void visit(final OTUKeyedMap<?, ?, ?> otuKeyedMap) {
-		otuKeyedMap.afterUnmarshal();
+	public void visitDNAMatrix(final DNAMatrix matrix) {
+		matrix.afterUnmarshal();
+	}
+
+	@Override
+	public void visitDNASequenceSet(final DNASequenceSet sequenceSet) {
+		sequenceSet.afterUnmarshal();
+	}
+
+	@Override
+	public void visitStandardMatrix(final StandardMatrix matrix) {
+		matrix.afterUnmarshal();
 	}
 }

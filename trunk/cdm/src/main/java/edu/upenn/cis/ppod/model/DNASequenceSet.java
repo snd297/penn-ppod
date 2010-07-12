@@ -70,7 +70,7 @@ public class DNASequenceSet extends SequenceSet<DNASequence> {
 	@Override
 	public void accept(final IVisitor visitor) {
 		checkNotNull(visitor);
-		visitor.visit(this);
+		visitor.visitDNASequenceSet(this);
 		super.accept(visitor);
 	}
 

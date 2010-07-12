@@ -53,7 +53,7 @@ public class DNARow extends Row<DNACell, DNAMatrix> {
 	@Override
 	public void accept(final IVisitor visitor) {
 		checkNotNull(visitor);
-		visitor.visit(this);
+		visitor.visitDNARow(this);
 		super.accept(visitor);
 	}
 
@@ -62,8 +62,8 @@ public class DNARow extends Row<DNACell, DNAMatrix> {
 			orphanRemoval = true)
 	@OrderBy("position")
 	@Override
-	protected List<DNACell> getCellsRaw() {
-		return super.getCellsRaw();
+	protected List<DNACell> getCells() {
+		return super.getCells();
 	}
 
 	/** {@inheritDoc} */
@@ -75,7 +75,7 @@ public class DNARow extends Row<DNACell, DNAMatrix> {
 	}
 
 	@Override
-	public List<DNACell> setCells(final List<? extends DNACell> cells) {
+	public List<DNACell> setCellsPublic(final List<? extends DNACell> cells) {
 		final List<DNACell> clearedCells = super.setCellsHelper(cells);
 
 		for (final DNACell cell : getCells()) {

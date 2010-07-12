@@ -58,7 +58,7 @@ public class CellTest {
 	@Test(expectedExceptions = IllegalStateException.class)
 	public void getElementsWhenNoTypeSet() {
 		final Cell<?, ?> cell = dnaCellProvider.get();
-		cell.getElements();
+		cell.getElementsPublic();
 	}
 
 	@Test
@@ -107,7 +107,7 @@ public class CellTest {
 		final DNARow row = dnaRowProvider.get();
 
 		matrix.putRow(otu, row);
-		row.setCells(ImmutableList.of(cell));
+		row.setCellsPublic(ImmutableList.of(cell));
 
 		otuSet.unsetInNeedOfNewVersion();
 		otu.unsetInNeedOfNewVersion();
@@ -158,7 +158,7 @@ public class CellTest {
 		final DNARow row = dnaRowProvider.get();
 
 		matrix.putRow(otu, row);
-		row.setCells(ImmutableList.of(cell));
+		row.setCellsPublic(ImmutableList.of(cell));
 
 		cell.setPosition(null);
 
@@ -180,11 +180,11 @@ public class CellTest {
 				ImmutableSet.of(DNANucleotide.A, DNANucleotide.T);
 
 		cell.setType(Cell.Type.POLYMORPHIC);
-		cell.setElementsRaw(elements);
-		assertEquals(cell.getElements(), elements);
+		cell.setElements(elements);
+		assertEquals(cell.getElementsPublic(), elements);
 
 		cell.setType(Cell.Type.UNCERTAIN);
-		assertEquals(cell.getElements(), elements);
+		assertEquals(cell.getElementsPublic(), elements);
 	}
 
 	/**
@@ -205,7 +205,7 @@ public class CellTest {
 
 		cell.setElement(nucleotide);
 		cell.setType(Cell.Type.SINGLE);
-		assertEquals(cell.getElements(), ImmutableSet.of(nucleotide));
+		assertEquals(cell.getElementsPublic(), ImmutableSet.of(nucleotide));
 	}
 
 	@Test
@@ -213,11 +213,11 @@ public class CellTest {
 		final Cell<DNANucleotide, ?> cell = dnaCellProvider.get();
 		cell.setType(Cell.Type.UNASSIGNED);
 		cell.setElement(null);
-		cell.setElementsRaw(null);
-		assertEquals(cell.getElements(), Collections.emptyList());
+		cell.setElements(null);
+		assertEquals(cell.getElementsPublic(), Collections.emptyList());
 
 		cell.setType(Cell.Type.INAPPLICABLE);
-		assertEquals(cell.getElements(), Collections.emptyList());
+		assertEquals(cell.getElementsPublic(), Collections.emptyList());
 	}
 
 	@Test(expectedExceptions = IllegalArgumentException.class)
@@ -234,14 +234,14 @@ public class CellTest {
 
 		assertTrue(cell.isInNeedOfNewVersion());
 		assertEquals(cell.getType(), Cell.Type.INAPPLICABLE);
-		assertEquals(cell.getElements(), Collections.emptySet());
+		assertEquals(cell.getElementsPublic(), Collections.emptySet());
 
 		cell.unsetInNeedOfNewVersion();
 		cell.setInapplicable();
 
 		assertFalse(cell.isInNeedOfNewVersion());
 		assertEquals(cell.getType(), Cell.Type.INAPPLICABLE);
-		assertEquals(cell.getElements(), Collections.emptySet());
+		assertEquals(cell.getElementsPublic(), Collections.emptySet());
 	}
 
 	@Test
@@ -252,14 +252,14 @@ public class CellTest {
 
 		assertTrue(cell.isInNeedOfNewVersion());
 		assertEquals(cell.getType(), Cell.Type.UNASSIGNED);
-		assertEquals(cell.getElements(), Collections.emptySet());
+		assertEquals(cell.getElementsPublic(), Collections.emptySet());
 
 		cell.unsetInNeedOfNewVersion();
 		cell.setUnassigned();
 
 		assertFalse(cell.isInNeedOfNewVersion());
 		assertEquals(cell.getType(), Cell.Type.UNASSIGNED);
-		assertEquals(cell.getElements(), Collections.emptySet());
+		assertEquals(cell.getElementsPublic(), Collections.emptySet());
 
 	}
 

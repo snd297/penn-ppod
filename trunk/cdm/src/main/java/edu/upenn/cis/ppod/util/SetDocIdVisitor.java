@@ -23,9 +23,9 @@ import edu.upenn.cis.ppod.model.StandardCharacter;
 import edu.upenn.cis.ppod.model.StandardState;
 
 /**
- * Set the doc id on {@code Attachment}s, {@code AttachmentNamespace}s, {@code
- * AttachmentType}s, {@code Character}s, {@code CharacterState}s, {@code OTU}s,
- * {@code OTUSet}s.
+ * Set the doc id on {@code Attachment}s, {@code AttachmentNamespace}s,
+ * {@code AttachmentType}s, {@code Character}s, {@code CharacterState}s,
+ * {@code OTU}s, {@code OTUSet}s.
  * 
  * @author Sam Donnelly
  */
@@ -37,7 +37,7 @@ final class SetDocIdVisitor extends EmptyVisitor implements ISetDocIdVisitor {
 	 * @param otuSet target
 	 */
 	@Override
-	public void visit(final OTUSet otuSet) {
+	public void visitOTUSet(final OTUSet otuSet) {
 		if (otuSet.getDocId() == null) {
 			otuSet.setDocId();
 		}
@@ -49,7 +49,7 @@ final class SetDocIdVisitor extends EmptyVisitor implements ISetDocIdVisitor {
 	 * @param otu target
 	 */
 	@Override
-	public void visit(final OTU otu) {
+	public void visitOTU(final OTU otu) {
 		if (otu.getDocId() == null) {
 			otu.setDocId();
 		}
@@ -61,7 +61,7 @@ final class SetDocIdVisitor extends EmptyVisitor implements ISetDocIdVisitor {
 	 * @param character target
 	 */
 	@Override
-	public void visit(final StandardCharacter standardCharacter) {
+	public void visitStandardCharacter(final StandardCharacter standardCharacter) {
 		if (standardCharacter.getDocId() == null) {
 			standardCharacter.setDocId();
 		}
@@ -73,7 +73,7 @@ final class SetDocIdVisitor extends EmptyVisitor implements ISetDocIdVisitor {
 	 * @param characterState target
 	 */
 	@Override
-	public void visit(final StandardState standardState) {
+	public void visitStandardState(final StandardState standardState) {
 		if (standardState.getDocId() == null) {
 			standardState.setDocId();
 		}
@@ -85,7 +85,8 @@ final class SetDocIdVisitor extends EmptyVisitor implements ISetDocIdVisitor {
 	 * @param attachmentNamespace target
 	 */
 	@Override
-	public void visit(final AttachmentNamespace attachmentNamespace) {
+	public void visitAttachmentNamespace(
+			final AttachmentNamespace attachmentNamespace) {
 		// Since this will be visited once for every attachment that is out
 		// there,
 		// we need to check it first.
@@ -100,7 +101,7 @@ final class SetDocIdVisitor extends EmptyVisitor implements ISetDocIdVisitor {
 	 * @param attachmentType target
 	 */
 	@Override
-	public void visit(final AttachmentType attachmentType) {
+	public void visitAttachmentType(final AttachmentType attachmentType) {
 		// Since this will be visited once for every attachment that is out
 		// there,
 		// we need to check it first.

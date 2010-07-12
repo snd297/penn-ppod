@@ -24,7 +24,6 @@ import edu.upenn.cis.ppod.model.DNARow;
 import edu.upenn.cis.ppod.model.DNASequence;
 import edu.upenn.cis.ppod.model.DNASequenceSet;
 import edu.upenn.cis.ppod.model.OTU;
-import edu.upenn.cis.ppod.model.OTUKeyedMap;
 import edu.upenn.cis.ppod.model.OTUSet;
 import edu.upenn.cis.ppod.model.StandardCell;
 import edu.upenn.cis.ppod.model.StandardCharacter;
@@ -47,131 +46,125 @@ public abstract class EmptyVisitor implements IVisitor {
 	 * 
 	 * @param attachment ignored
 	 */
-	public void visit(final Attachment attachment) {}
+	public void visitAttachment(final Attachment attachment) {}
 
 	/**
 	 * Does nothing.
 	 * 
 	 * @param attachmentNamespace ignored
 	 */
-	public void visit(final AttachmentNamespace attachmentNamespace) {}
+	public void visitAttachmentNamespace(
+			final AttachmentNamespace attachmentNamespace) {}
 
 	/**
 	 * Does nothing.
 	 * 
 	 * @param attachmentType ignored
 	 */
-	public void visit(final AttachmentType attachmentType) {}
+	public void visitAttachmentType(final AttachmentType attachmentType) {}
 
 	/**
 	 * Does nothing.
 	 * 
 	 * @param cell ignored
 	 */
-	public void visit(final DNACell cell) {}
+	public void visitDNACell(final DNACell cell) {}
 
 	/**
 	 * Does nothing.
 	 * 
 	 * @param matrix ignored
 	 */
-	public void visit(final DNAMatrix matrix) {}
+	public void visitDNAMatrix(final DNAMatrix matrix) {}
 
 	/**
 	 * Does nothing.
 	 * 
 	 * @param row ignored
 	 */
-	public void visit(final DNARow row) {}
+	public void visitDNARow(final DNARow row) {}
 
 	/**
 	 * Does nothing.
 	 * 
 	 * @param sequence ignored
 	 */
-	public void visit(final DNASequence sequence) {}
+	public void visitDNASequence(final DNASequence sequence) {}
 
 	/**
 	 * Does nothing.
 	 * 
 	 * @param sequenceSet ignored
 	 */
-	public void visit(final DNASequenceSet sequenceSet) {}
+	public void visitDNASequenceSet(final DNASequenceSet sequenceSet) {}
 
 	/**
 	 * Does nothing.
 	 * 
 	 * @param otu ignored
 	 */
-	public void visit(final OTU otu) {}
-
-	/**
-	 * Does nothing.
-	 * 
-	 * @param otuKeyedMap ignored
-	 */
-	public void visit(final OTUKeyedMap<?, ?, ?> otuKeyedMap) {}
+	public void visitOTU(final OTU otu) {}
 
 	/**
 	 * Does nothing.
 	 * 
 	 * @param otuSet ignored
 	 */
-	public void visit(final OTUSet otuSet) {}
+	public void visitOTUSet(final OTUSet otuSet) {}
 
 	/**
 	 * Does nothing.
 	 * 
 	 * @param cell ignored
 	 */
-	public void visit(final StandardCell cell) {}
+	public void visitStandardCell(final StandardCell cell) {}
 
 	/**
 	 * Does nothing.
 	 * 
 	 * @param character ignored
 	 */
-	public void visit(final StandardCharacter character) {}
+	public void visitStandardCharacter(final StandardCharacter character) {}
 
 	/**
 	 * Does nothing.
 	 * 
 	 * @param matrix ignored
 	 */
-	public void visit(final StandardMatrix matrix) {}
+	public void visitStandardMatrix(final StandardMatrix matrix) {}
 
 	/**
 	 * Does nothing.
 	 * 
 	 * @param row ignored
 	 */
-	public void visit(final StandardRow row) {}
+	public void visitStandardRow(final StandardRow row) {}
 
 	/**
 	 * Does nothing.
 	 * 
 	 * @param state ignored
 	 */
-	public void visit(final StandardState state) {}
+	public void visitStandardState(final StandardState state) {}
 
 	/**
 	 * Does nothing.
 	 * 
 	 * @param study ignored
 	 */
-	public void visit(final Study study) {}
+	public void visitStudy(final Study study) {}
 
 	/**
 	 * Does nothing.
 	 * 
 	 * @param tree ignored
 	 */
-	public void visit(final Tree tree) {}
+	public void visitTree(final Tree tree) {}
 
 	/**
 	 * Does nothing.
 	 * 
 	 * @param treeSet ignored
 	 */
-	public void visit(final TreeSet treeSet) {}
+	public void visitTreeSet(final TreeSet treeSet) {}
 }

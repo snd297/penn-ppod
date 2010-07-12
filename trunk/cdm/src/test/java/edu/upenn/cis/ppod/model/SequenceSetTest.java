@@ -207,12 +207,11 @@ public class SequenceSetTest {
 		final List<Object> visited = visitor.getVisited();
 
 		assertEquals(visited.size(),
-				seqSet.getSequences().values().size() + 1 + 1); // add
+				seqSet.getSequences().values().size() + 1); // add
 		// in
 		// one
 		// for
 		// parent
-		// and one for OTUKeyedMap held by parent
 
 		assertSame(visited.get(0), seqSet);
 

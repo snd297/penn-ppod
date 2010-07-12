@@ -28,7 +28,6 @@ import edu.upenn.cis.ppod.model.DNARow;
 import edu.upenn.cis.ppod.model.DNASequence;
 import edu.upenn.cis.ppod.model.DNASequenceSet;
 import edu.upenn.cis.ppod.model.OTU;
-import edu.upenn.cis.ppod.model.OTUKeyedMap;
 import edu.upenn.cis.ppod.model.OTUSet;
 import edu.upenn.cis.ppod.model.StandardCell;
 import edu.upenn.cis.ppod.model.StandardCharacter;
@@ -57,97 +56,93 @@ public class TestVisitor extends EmptyVisitor {
 	}
 
 	@Override
-	public void visit(final Attachment attachment) {
+	public void visitAttachment(final Attachment attachment) {
 		visited.add(attachment);
 	}
 
 	@Override
-	public void visit(final AttachmentNamespace attachmentNamespace) {
+	public void visitAttachmentNamespace(
+			final AttachmentNamespace attachmentNamespace) {
 		visited.add(attachmentNamespace);
 	}
 
 	@Override
-	public void visit(final AttachmentType attachmentType) {
+	public void visitAttachmentType(final AttachmentType attachmentType) {
 		visited.add(attachmentType);
 	}
 
 	@Override
-	public void visit(final DNACell cell) {
+	public void visitDNACell(final DNACell cell) {
 		visited.add(cell);
 	}
 
 	@Override
-	public void visit(final DNAMatrix matrix) {
+	public void visitDNAMatrix(final DNAMatrix matrix) {
 		visited.add(matrix);
 	}
 
 	@Override
-	public void visit(final DNARow row) {
+	public void visitDNARow(final DNARow row) {
 		visited.add(row);
 	}
 
 	@Override
-	public void visit(final DNASequence sequence) {
+	public void visitDNASequence(final DNASequence sequence) {
 		visited.add(sequence);
 	}
 
 	@Override
-	public void visit(final DNASequenceSet sequenceSet) {
+	public void visitDNASequenceSet(final DNASequenceSet sequenceSet) {
 		visited.add(sequenceSet);
 	}
 
 	@Override
-	public void visit(final OTU otu) {
+	public void visitOTU(final OTU otu) {
 		visited.add(otu);
 	}
 
 	@Override
-	public void visit(final OTUKeyedMap<?, ?, ?> otuKeyedMap) {
-		visited.add(otuKeyedMap);
-	}
-
-	@Override
-	public void visit(final OTUSet otuSet) {
+	public void visitOTUSet(final OTUSet otuSet) {
 		visited.add(otuSet);
 	}
 
 	@Override
-	public void visit(final StandardCell cell) {
+	public void visitStandardCell(final StandardCell cell) {
 		visited.add(cell);
 	}
 
 	@Override
-	public void visit(final StandardCharacter character) {
+	public void visitStandardCharacter(final StandardCharacter character) {
 		visited.add(character);
 	}
 
 	@Override
-	public void visit(final StandardMatrix matrix) {
+	public void visitStandardMatrix(final StandardMatrix matrix) {
 		visited.add(matrix);
 	}
 
 	@Override
-	public void visit(final StandardRow row) {
+	public void visitStandardRow(final StandardRow row) {
 		visited.add(row);
 	}
 
 	@Override
-	public void visit(final StandardState state) {
+	public void visitStandardState(final StandardState state) {
 		visited.add(state);
 	}
 
 	@Override
-	public void visit(final Study study) {
+	public void visitStudy(final Study study) {
 		visited.add(study);
 	}
 
 	@Override
-	public void visit(final Tree tree) {
+	public void visitTree(final Tree tree) {
 		visited.add(tree);
 	}
 
 	@Override
-	public void visit(final TreeSet treeSet) {
+	public void visitTreeSet(final TreeSet treeSet) {
 		visited.add(treeSet);
 	}
 }

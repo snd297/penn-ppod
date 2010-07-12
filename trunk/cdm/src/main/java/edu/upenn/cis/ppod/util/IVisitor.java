@@ -18,19 +18,18 @@ package edu.upenn.cis.ppod.util;
 import edu.upenn.cis.ppod.model.Attachment;
 import edu.upenn.cis.ppod.model.AttachmentNamespace;
 import edu.upenn.cis.ppod.model.AttachmentType;
-import edu.upenn.cis.ppod.model.StandardCharacter;
-import edu.upenn.cis.ppod.model.StandardState;
-import edu.upenn.cis.ppod.model.StandardCell;
-import edu.upenn.cis.ppod.model.StandardMatrix;
-import edu.upenn.cis.ppod.model.StandardRow;
 import edu.upenn.cis.ppod.model.DNACell;
 import edu.upenn.cis.ppod.model.DNAMatrix;
 import edu.upenn.cis.ppod.model.DNARow;
 import edu.upenn.cis.ppod.model.DNASequence;
 import edu.upenn.cis.ppod.model.DNASequenceSet;
 import edu.upenn.cis.ppod.model.OTU;
-import edu.upenn.cis.ppod.model.OTUKeyedMap;
 import edu.upenn.cis.ppod.model.OTUSet;
+import edu.upenn.cis.ppod.model.StandardCell;
+import edu.upenn.cis.ppod.model.StandardCharacter;
+import edu.upenn.cis.ppod.model.StandardMatrix;
+import edu.upenn.cis.ppod.model.StandardRow;
+import edu.upenn.cis.ppod.model.StandardState;
 import edu.upenn.cis.ppod.model.Study;
 import edu.upenn.cis.ppod.model.Tree;
 import edu.upenn.cis.ppod.model.TreeSet;
@@ -50,62 +49,60 @@ public interface IVisitor {
 	 * 
 	 * @param attachment visitee
 	 */
-	void visit(Attachment attachment);
+	void visitAttachment(Attachment attachment);
 
 	/**
 	 * Visit an attachment namespace.
 	 * 
 	 * @param the attachmentNamespace visitee
 	 */
-	void visit(AttachmentNamespace attachemntNamespace);
+	void visitAttachmentNamespace(AttachmentNamespace attachemntNamespace);
 
 	/**
 	 * Visit an attachment type.
 	 * 
 	 * @param the attachmentType visitee
 	 */
-	void visit(AttachmentType attachmentType);
+	void visitAttachmentType(AttachmentType attachmentType);
+
+	void visitDNACell(DNACell cell);
+
+	void visitDNAMatrix(DNAMatrix matrix);
+
+	void visitDNARow(DNARow row);
+
+	void visitDNASequence(DNASequence sequence);
+
+	void visitDNASequenceSet(DNASequenceSet sequenceSet);
+
+	void visitOTU(OTU otu);
+
+	void visitOTUSet(OTUSet otuSet);
+
+	void visitStandardCell(StandardCell cell);
 
 	/**
 	 * Visit a character
 	 * 
 	 * @param the character visitee
 	 */
-	void visit(StandardCharacter standardCharacter);
+	void visitStandardCharacter(StandardCharacter standardCharacter);
+
+	void visitStandardMatrix(StandardMatrix matrix);
+
+	void visitStandardRow(StandardRow row);
 
 	/**
 	 * Visit the character state.
 	 * 
 	 * @param characterState the character state visitee
 	 */
-	void visit(StandardState state);
+	void visitStandardState(StandardState state);
 
-	void visit(StandardCell cell);
+	void visitStudy(Study study);
 
-	void visit(StandardMatrix matrix);
+	void visitTree(Tree tree);
 
-	void visit(StandardRow row);
-
-	void visit(DNACell cell);
-
-	void visit(DNAMatrix matrix);
-
-	void visit(DNARow row);
-
-	void visit(DNASequence sequence);
-
-	void visit(DNASequenceSet sequenceSet);
-
-	void visit(OTU otu);
-
-	void visit(OTUKeyedMap<?, ?, ?> otuKeyedMap);
-
-	void visit(OTUSet otuSet);
-
-	void visit(Study study);
-
-	void visit(Tree tree);
-
-	void visit(TreeSet treeSet);
+	void visitTreeSet(TreeSet treeSet);
 
 }

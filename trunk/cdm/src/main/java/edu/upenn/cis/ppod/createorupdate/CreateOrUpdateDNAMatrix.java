@@ -52,7 +52,7 @@ final class CreateOrUpdateDNAMatrix
 		dbMatrix.setColumnsSize(
 				get(sourceMatrix.getRows()
 								.values(), 0)
-						.getCells()
+						.getCellsPublic()
 						.size());
 		super.createOrUpdateMatrix(dbMatrix, sourceMatrix);
 	}

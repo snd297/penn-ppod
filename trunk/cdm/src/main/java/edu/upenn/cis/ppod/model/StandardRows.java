@@ -60,6 +60,10 @@ public class StandardRows
 		rows.accept(visitor);
 	}
 
+	public void afterUnmarshal() {
+		rows.afterUnmarshal();
+	}
+
 	public void afterUnmarshal(final Unmarshaller u, final Object parent) {
 		rows.afterUnmarshal(u, parent);
 	}
@@ -129,7 +133,7 @@ public class StandardRows
 	}
 
 	public IOTUKeyedMap<StandardRow, StandardMatrix, OTUStandardRowPair> setValues(
-			Map<OTU, StandardRow> values) {
+			final Map<OTU, StandardRow> values) {
 		return rows.setValues(values);
 	}
 

@@ -113,54 +113,54 @@ public class StandardCellTest {
 
 	@Test
 	public void setInapplcableWasSingle() {
-		matrix.getRow(matrix.getOTUSet().getOTUs().get(0)).setCells(
+		matrix.getRow(matrix.getOTUSet().getOTUs().get(0)).setCellsPublic(
 				Arrays.asList(cell));
 		cell.setSingleElement(state00);
 		cell.setInapplicable();
 		assertEquals(cell.getType(), Cell.Type.INAPPLICABLE);
 
 		// Make sure it's empty
-		assertEquals(cell.getElements().size(), 0);
+		assertEquals(cell.getElementsPublic().size(), 0);
 	}
 
 	@Test
 	public void setInapplicableWasPolymorphic() {
-		matrix.getRow(matrix.getOTUSet().getOTUs().get(0)).setCells(
+		matrix.getRow(matrix.getOTUSet().getOTUs().get(0)).setCellsPublic(
 				Arrays.asList(cell));
 		states.add(state00);
 		states.add(state01);
 		cell.setPolymorphicElements(states);
 		cell.setInapplicable();
 		assertEquals(cell.getType(), Cell.Type.INAPPLICABLE);
-		assertTrue(isEmpty(cell.getElements()));
+		assertTrue(isEmpty(cell.getElementsPublic()));
 	}
 
 	@Test
 	public void setPolymorphicElements() {
-		matrix.getRow(matrix.getOTUSet().getOTUs().get(0)).setCells(
+		matrix.getRow(matrix.getOTUSet().getOTUs().get(0)).setCellsPublic(
 				Arrays.asList(cell));
 		states.add(state00);
 		states.add(state01);
 		cell.setPolymorphicElements(states);
 		assertEquals(cell.getType(), Cell.Type.POLYMORPHIC);
-		assertEquals((Object) cell.getElements(), (Object) states);
+		assertEquals((Object) cell.getElementsPublic(), (Object) states);
 	}
 
 	@Test(expectedExceptions = IllegalArgumentException.class)
 	public void setPolymorphicElementsTooFewStates() {
-		matrix.getRow(matrix.getOTUSet().getOTUs().get(0)).setCells(
+		matrix.getRow(matrix.getOTUSet().getOTUs().get(0)).setCellsPublic(
 				Arrays.asList(cell));
 		cell.setPolymorphicElements(states);
 	}
 
 	@Test
 	public void setSingleElement() {
-		matrix.getRow(matrix.getOTUSet().getOTUs().get(0)).setCells(
+		matrix.getRow(matrix.getOTUSet().getOTUs().get(0)).setCellsPublic(
 				Arrays.asList(cell));
 		states.add(state00);
 		cell.setSingleElement(state00);
 		assertEquals(cell.getType(), Cell.Type.SINGLE);
-		assertEquals((Object) cell.getElements(), (Object) states);
+		assertEquals((Object) cell.getElementsPublic(), (Object) states);
 	}
 
 	/**
@@ -174,13 +174,13 @@ public class StandardCellTest {
 
 	@Test
 	public void setUncertainElements() {
-		matrix.getRow(matrix.getOTUSet().getOTUs().get(0)).setCells(
+		matrix.getRow(matrix.getOTUSet().getOTUs().get(0)).setCellsPublic(
 				Arrays.asList(cell));
 		states.add(state00);
 		states.add(state01);
 		cell.setUncertainElements(states);
 		assertEquals(cell.getType(), Cell.Type.UNCERTAIN);
-		assertEquals((Object) cell.getElements(), (Object) newHashSet(states));
+		assertEquals((Object) cell.getElementsPublic(), (Object) newHashSet(states));
 	}
 
 }

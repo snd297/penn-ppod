@@ -50,7 +50,7 @@ public class DNAMatrix extends Matrix<DNARow> {
 	@Override
 	public void accept(final IVisitor visitor) {
 		checkNotNull(visitor);
-		visitor.visit(this);
+		visitor.visitDNAMatrix(this);
 		super.accept(visitor);
 	}
 

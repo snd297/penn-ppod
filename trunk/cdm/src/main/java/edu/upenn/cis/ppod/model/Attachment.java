@@ -259,7 +259,7 @@ public class Attachment extends UUPPodEntity {
 	@Override
 	public void accept(final IVisitor visitor) {
 		checkNotNull(visitor);
-		visitor.visit(this);
+		visitor.visitAttachment(this);
 		if (getType() != null) {
 			getType().accept(visitor);
 		}

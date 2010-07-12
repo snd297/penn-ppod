@@ -52,7 +52,7 @@ public class AttachmentNamespace extends PersistentObjectWithXmlId {
 
 	@Override
 	public void accept(final IVisitor visitor) {
-		visitor.visit(this);
+		visitor.visitAttachmentNamespace(this);
 	}
 
 	/**

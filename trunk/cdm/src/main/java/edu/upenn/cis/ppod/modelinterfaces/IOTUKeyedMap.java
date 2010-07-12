@@ -11,9 +11,32 @@ import edu.upenn.cis.ppod.util.IPair;
 import edu.upenn.cis.ppod.util.IVisitor;
 
 public interface IOTUKeyedMap<V extends IOTUKeyedMapValue<?>, P extends IVersionedWithOTUSet, OP extends IPair<OTU, V>> {
+
 	void accept(IVisitor visitor);
 
+	void afterUnmarshal();
+
+	/**
+	 * {@link Unmarshaller} callback.
+	 * 
+	 * @param u see {@code Unmarshaller}
+	 * @param parent see {@code Unmarshaller}
+	 */
+	void afterUnmarshal(
+			@CheckForNull final Unmarshaller u,
+			final Object parent);
+
+	IOTUKeyedMap<V, P, OP> clear();
+
 	V get(OTU key);
+
+	/**
+	 * For marshalling {@code rows}. Since a {@code Map}'s key couldn't be an
+	 * {@code XmlIDREF} in JAXB - at least not easily.
+	 */
+	Set<OP> getOTUSomethingPairs();
+
+	P getParent();
 
 	Map<OTU, V> getValues();
 
@@ -52,27 +75,7 @@ public interface IOTUKeyedMap<V extends IOTUKeyedMapValue<?>, P extends IVersion
 	@CheckForNull
 	IOTUKeyedMap<V, P, OP> setOTUs();
 
-	/**
-	 * For marshalling {@code rows}. Since a {@code Map}'s key couldn't be an
-	 * {@code XmlIDREF} in JAXB - at least not easily.
-	 */
-	Set<OP> getOTUSomethingPairs();
-
-	P getParent();
-
 	IOTUKeyedMap<V, P, OP> setParent(final P parent);
-
-	IOTUKeyedMap<V, P, OP> clear();
-
-	/**
-	 * {@link Unmarshaller} callback.
-	 * 
-	 * @param u see {@code Unmarshaller}
-	 * @param parent see {@code Unmarshaller}
-	 */
-	void afterUnmarshal(
-			@CheckForNull final Unmarshaller u,
-			final Object parent);
 
 	IOTUKeyedMap<V, P, OP> setValues(final Map<OTU, V> values);
 

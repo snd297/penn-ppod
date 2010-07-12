@@ -108,28 +108,28 @@ class CreateOrUpdateMatrix<M extends Matrix<R>, R extends Row<C, ?>, C extends C
 				dao.makePersistent(dbRow);
 			}
 
-			final List<C> dbCells = newArrayList(dbRow.getCells());
+			final List<C> dbCells = newArrayList(dbRow.getCellsPublic());
 
 			// Add in cells to dbCells if needed.
-			while (dbCells.size() < sourceRow.getCells().size()) {
+			while (dbCells.size() < sourceRow.getCellsPublic().size()) {
 				final C dbCell = cellProvider.get();
 				dbCells.add(dbCell);
 				dbCell.setVersionInfo(newVersionInfo.getNewVersionInfo());
 			}
 
 			// Get rid of cells from dbCells if needed
-			while (dbCells.size() > sourceRow.getCells().size()) {
+			while (dbCells.size() > sourceRow.getCellsPublic().size()) {
 				dbCells.remove(dbCells.size() - 1);
 			}
 
-			dbRow.setCells(dbCells);
+			dbRow.setCellsPublic(dbCells);
 
 			int dbCellPosition = -1;
-			for (final C dbCell : dbRow.getCells()) {
+			for (final C dbCell : dbRow.getCellsPublic()) {
 				dbCellPosition++;
 
 				final C sourceCell = sourceRow
-						.getCells()
+						.getCellsPublic()
 						.get(dbCellPosition);
 
 				switch (sourceCell.getType()) {
@@ -137,17 +137,17 @@ class CreateOrUpdateMatrix<M extends Matrix<R>, R extends Row<C, ?>, C extends C
 						dbCell.setInapplicable();
 						break;
 					case POLYMORPHIC:
-						dbCell.setPolymorphicElements(sourceCell.getElements());
+						dbCell.setPolymorphicElements(sourceCell.getElementsPublic());
 						break;
 					case SINGLE:
 						dbCell.setSingleElement(
-								getOnlyElement(sourceCell.getElements()));
+								getOnlyElement(sourceCell.getElementsPublic()));
 						break;
 					case UNASSIGNED:
 						dbCell.setUnassigned();
 						break;
 					case UNCERTAIN:
-						dbCell.setUncertainElements(sourceCell.getElements());
+						dbCell.setUncertainElements(sourceCell.getElementsPublic());
 						break;
 					default:
 						throw new AssertionError("unknown type");

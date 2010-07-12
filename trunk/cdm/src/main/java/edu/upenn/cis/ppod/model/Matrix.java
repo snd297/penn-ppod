@@ -101,6 +101,10 @@ public abstract class Matrix<R extends Row<?, ?>>
 		super.accept(visitor);
 	}
 
+	public void afterUnmarshal() {
+		getOTUKeyedRows().afterUnmarshal();
+	}
+
 	@Override
 	public void afterUnmarshal(final Unmarshaller u, final Object parent) {
 		super.afterUnmarshal(u, parent);
