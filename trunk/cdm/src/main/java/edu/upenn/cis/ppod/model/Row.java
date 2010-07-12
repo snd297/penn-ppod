@@ -22,7 +22,6 @@ import static com.google.common.collect.Lists.newArrayList;
 import java.util.Collections;
 import java.util.List;
 
-import javax.annotation.CheckForNull;
 import javax.xml.bind.Unmarshaller;
 
 import edu.upenn.cis.ppod.modelinterfaces.IMatrix;
@@ -36,15 +35,11 @@ import edu.upenn.cis.ppod.util.IVisitor;
  * @author Sam Donnelly
  * 
  * @param <C> the type of cell we have
+ * @param <M> the parent of the row
  */
 public abstract class Row<C extends Cell<?, ?>, M extends Matrix<?>>
 		extends PPodEntity
 		implements IRow, IOTUKeyedMapValue<M> {
-
-	@CheckForNull
-	private M matrix;
-
-	private List<C> cells = newArrayList();
 
 	Row() {}
 
@@ -87,40 +82,27 @@ public abstract class Row<C extends Cell<?, ?>, M extends Matrix<?>>
 	 */
 	public Row<C, M> clearCells() {
 		for (final C clearedCell : getCells()) {
-			clearedCell.setRow(null);
+			clearedCell.setParent(null);
 			clearedCell.setPosition(null);
 		}
-		cells.clear();
+		getCellsModifiable().clear();
 		return this;
 	}
 
 	/**
-	 * Get the cells that make up this row.
+	 * Get a modifiable reference to this row's cells.
 	 * 
-	 * @return the cells that make up this row
+	 * @return a modifiable reference to this row's cells
 	 */
-	protected List<C> getCells() {
-		return cells;
-	}
+	protected abstract List<C> getCellsModifiable();
 
 	/**
 	 * Get the cells that make up this row.
 	 * 
 	 * @return the cells that make up this row
 	 */
-	public List<C> getCellsPublic() {
-		return Collections.unmodifiableList(cells);
-	}
-
-	/** {@inheritDoc} */
-	public M getParent() {
-		return matrix;
-	}
-
-	/** For Hibernate. */
-	@SuppressWarnings("unused")
-	private void setCells(final List<C> cells) {
-		this.cells = cells;
+	public List<C> getCells() {
+		return Collections.unmodifiableList(getCellsModifiable());
 	}
 
 	protected List<C> setCellsHelper(
@@ -146,7 +128,8 @@ public abstract class Row<C extends Cell<?, ?>, M extends Matrix<?>>
 		clearCells();
 
 		int cellPos = -1;
-		this.cells.addAll(cells);
+		getCellsModifiable().addAll(cells);
+
 		for (final Cell<?, ?> cell : getCells()) {
 			cellPos++;
 			cell.setPosition(cellPos);
@@ -168,7 +151,7 @@ public abstract class Row<C extends Cell<?, ?>, M extends Matrix<?>>
 	 * @throws IllegalStateException if the owning matrix does not have the same
 	 *             number of columns as {@code cells.size()}
 	 */
-	public abstract List<C> setCellsPublic(final List<? extends C> cells);
+	public abstract List<C> setCells(final List<? extends C> cells);
 
 	/**
 	 * Reset the pPOD version info of this row and that of its matrix.
@@ -184,12 +167,6 @@ public abstract class Row<C extends Cell<?, ?>, M extends Matrix<?>>
 			matrix.setInNeedOfNewVersion();
 		}
 		super.setInNeedOfNewVersion();
-		return this;
-	}
-
-	/** {@inheritDoc} */
-	public Row<C, M> setParent(@CheckForNull final M matrix) {
-		this.matrix = matrix;
 		return this;
 	}
 

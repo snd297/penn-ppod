@@ -58,7 +58,7 @@ public class CellTest {
 	@Test(expectedExceptions = IllegalStateException.class)
 	public void getElementsWhenNoTypeSet() {
 		final Cell<?, ?> cell = dnaCellProvider.get();
-		cell.getElementsPublic();
+		cell.getElements();
 	}
 
 	@Test
@@ -107,7 +107,7 @@ public class CellTest {
 		final DNARow row = dnaRowProvider.get();
 
 		matrix.putRow(otu, row);
-		row.setCellsPublic(ImmutableList.of(cell));
+		row.setCells(ImmutableList.of(cell));
 
 		otuSet.unsetInNeedOfNewVersion();
 		otu.unsetInNeedOfNewVersion();
@@ -158,7 +158,7 @@ public class CellTest {
 		final DNARow row = dnaRowProvider.get();
 
 		matrix.putRow(otu, row);
-		row.setCellsPublic(ImmutableList.of(cell));
+		row.setCells(ImmutableList.of(cell));
 
 		cell.setPosition(null);
 
@@ -181,10 +181,10 @@ public class CellTest {
 
 		cell.setType(Cell.Type.POLYMORPHIC);
 		cell.setElements(elements);
-		assertEquals(cell.getElementsPublic(), elements);
+		assertEquals(cell.getElements(), elements);
 
 		cell.setType(Cell.Type.UNCERTAIN);
-		assertEquals(cell.getElementsPublic(), elements);
+		assertEquals(cell.getElements(), elements);
 	}
 
 	/**
@@ -205,7 +205,7 @@ public class CellTest {
 
 		cell.setElement(nucleotide);
 		cell.setType(Cell.Type.SINGLE);
-		assertEquals(cell.getElementsPublic(), ImmutableSet.of(nucleotide));
+		assertEquals(cell.getElements(), ImmutableSet.of(nucleotide));
 	}
 
 	@Test
@@ -214,10 +214,10 @@ public class CellTest {
 		cell.setType(Cell.Type.UNASSIGNED);
 		cell.setElement(null);
 		cell.setElements(null);
-		assertEquals(cell.getElementsPublic(), Collections.emptyList());
+		assertEquals(cell.getElements(), Collections.emptyList());
 
 		cell.setType(Cell.Type.INAPPLICABLE);
-		assertEquals(cell.getElementsPublic(), Collections.emptyList());
+		assertEquals(cell.getElements(), Collections.emptyList());
 	}
 
 	@Test(expectedExceptions = IllegalArgumentException.class)
@@ -234,14 +234,14 @@ public class CellTest {
 
 		assertTrue(cell.isInNeedOfNewVersion());
 		assertEquals(cell.getType(), Cell.Type.INAPPLICABLE);
-		assertEquals(cell.getElementsPublic(), Collections.emptySet());
+		assertEquals(cell.getElements(), Collections.emptySet());
 
 		cell.unsetInNeedOfNewVersion();
 		cell.setInapplicable();
 
 		assertFalse(cell.isInNeedOfNewVersion());
 		assertEquals(cell.getType(), Cell.Type.INAPPLICABLE);
-		assertEquals(cell.getElementsPublic(), Collections.emptySet());
+		assertEquals(cell.getElements(), Collections.emptySet());
 	}
 
 	@Test
@@ -252,14 +252,14 @@ public class CellTest {
 
 		assertTrue(cell.isInNeedOfNewVersion());
 		assertEquals(cell.getType(), Cell.Type.UNASSIGNED);
-		assertEquals(cell.getElementsPublic(), Collections.emptySet());
+		assertEquals(cell.getElements(), Collections.emptySet());
 
 		cell.unsetInNeedOfNewVersion();
 		cell.setUnassigned();
 
 		assertFalse(cell.isInNeedOfNewVersion());
 		assertEquals(cell.getType(), Cell.Type.UNASSIGNED);
-		assertEquals(cell.getElementsPublic(), Collections.emptySet());
+		assertEquals(cell.getElements(), Collections.emptySet());
 
 	}
 

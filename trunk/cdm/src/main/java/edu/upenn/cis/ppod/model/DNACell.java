@@ -20,8 +20,6 @@ import static com.google.common.base.Preconditions.checkNotNull;
 import java.util.EnumSet;
 import java.util.Set;
 
-import javax.persistence.Access;
-import javax.persistence.AccessType;
 import javax.persistence.CollectionTable;
 import javax.persistence.Column;
 import javax.persistence.ElementCollection;
@@ -32,10 +30,10 @@ import javax.persistence.FetchType;
 import javax.persistence.JoinColumn;
 import javax.persistence.ManyToOne;
 import javax.persistence.Table;
-import javax.persistence.Transient;
 import javax.xml.bind.annotation.XmlAttribute;
 import javax.xml.bind.annotation.XmlElement;
 
+import edu.umd.cs.findbugs.annotations.CheckForNull;
 import edu.upenn.cis.ppod.util.IVisitor;
 
 /**
@@ -45,13 +43,41 @@ import edu.upenn.cis.ppod.util.IVisitor;
  */
 @Entity
 @Table(name = DNACell.TABLE)
-@Access(AccessType.PROPERTY)
 public class DNACell extends Cell<DNANucleotide, DNARow> {
 
 	public static final String TABLE = "DNA_CELL";
 
 	public static final String JOIN_COLUMN =
 			TABLE + "_" + PersistentObject.ID_COLUMN;
+
+	/**
+	 * The heart of the cell: the {@code DNANucleotide}s.
+	 * <p>
+	 * At most one of {@code element} and {@code elements} will be non-
+	 * {@code null}.
+	 */
+	@ElementCollection
+	@CollectionTable(name = "DNA_CELL_ELEMENTS",
+						joinColumns = @JoinColumn(name = JOIN_COLUMN))
+	@Column(name = "ELEMENT")
+	@Enumerated(EnumType.ORDINAL)
+	@CheckForNull
+	private Set<DNANucleotide> elements;
+
+	/**
+	 * To handle the most-common case of a single element.
+	 * <p>
+	 * At most of one of {@code element} and {@code elements} will be
+	 * {@code null}.
+	 */
+	@Column(name = "ELEMENT", nullable = true)
+	@Enumerated(EnumType.ORDINAL)
+	@CheckForNull
+	private DNANucleotide element;
+
+	@ManyToOne(fetch = FetchType.LAZY, optional = false)
+	@JoinColumn(name = DNARow.JOIN_COLUMN)
+	private DNARow parent;
 
 	DNACell() {}
 
@@ -62,35 +88,25 @@ public class DNACell extends Cell<DNANucleotide, DNARow> {
 	}
 
 	@XmlAttribute(name = "nucleotide")
-	@Column(name = "ELEMENT", nullable = true)
-	@Enumerated(EnumType.ORDINAL)
 	@Override
 	protected DNANucleotide getElement() {
-		return super.getElement();
+		return element;
 	}
 
-	@ElementCollection
-	@CollectionTable(name = "DNA_CELL_ELEMENTS",
-						joinColumns = @JoinColumn(name = JOIN_COLUMN))
-	@Column(name = "ELEMENT")
-	@Enumerated(EnumType.ORDINAL)
 	@Override
-	protected Set<DNANucleotide> getElements() {
-		return super.getElements();
+	protected Set<DNANucleotide> getElementsModifiable() {
+		return elements;
 	}
 
 	@XmlElement(name = "nucleotide")
-	@Transient
 	@Override
 	protected Set<DNANucleotide> getElementsXml() {
 		return super.getElementsXml();
 	}
 
-	@ManyToOne(fetch = FetchType.LAZY, optional = false)
-	@JoinColumn(name = DNARow.JOIN_COLUMN)
 	@Override
-	protected DNARow getRow() {
-		return super.getRow();
+	public DNARow getParent() {
+		return parent;
 	}
 
 	@Override
@@ -102,8 +118,18 @@ public class DNACell extends Cell<DNANucleotide, DNARow> {
 	 * For Jaxb.
 	 */
 	@Override
-	protected void setElement(final DNANucleotide nucleotide) {
-		super.setElement(nucleotide);
+	protected void setElement(final DNANucleotide element) {
+		this.element = element;
+	}
+
+	@Override
+	protected void setElements(final Set<DNANucleotide> elements) {
+		this.elements = elements;
+	}
+
+	@Override
+	protected void setParent(final DNARow parent) {
+		this.parent = parent;
 	}
 
 }

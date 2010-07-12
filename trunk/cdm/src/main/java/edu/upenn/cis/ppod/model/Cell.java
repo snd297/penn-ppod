@@ -24,13 +24,10 @@ import java.util.Collections;
 import java.util.HashSet;
 import java.util.Set;
 
-import javax.persistence.Access;
-import javax.persistence.AccessType;
 import javax.persistence.Column;
 import javax.persistence.EnumType;
 import javax.persistence.Enumerated;
 import javax.persistence.MappedSuperclass;
-import javax.persistence.Transient;
 import javax.xml.bind.Marshaller;
 import javax.xml.bind.Unmarshaller;
 import javax.xml.bind.annotation.XmlAttribute;
@@ -46,7 +43,6 @@ import edu.upenn.cis.ppod.modelinterfaces.IRow;
  * @author Sam Donnelly
  */
 @MappedSuperclass
-@Access(AccessType.PROPERTY)
 public abstract class Cell<E, R extends Row<?, ?>> extends PPodEntity {
 
 	/**
@@ -89,9 +85,6 @@ public abstract class Cell<E, R extends Row<?, ?>> extends PPodEntity {
 
 	}
 
-	@CheckForNull
-	private R row;
-
 	protected static final String TYPE_COLUMN = "TYPE";
 
 	@CheckForNull
@@ -99,24 +92,6 @@ public abstract class Cell<E, R extends Row<?, ?>> extends PPodEntity {
 
 	@CheckForNull
 	private Type type;
-
-	/**
-	 * The heart of the cell: the {@code DNANucleotide}s.
-	 * <p>
-	 * At most one of {@code element} and {@code elements} will be non-
-	 * {@code null}.
-	 */
-	@CheckForNull
-	private Set<E> elements;
-
-	/**
-	 * To handle the most-common case of a single element.
-	 * <p>
-	 * At most of one of {@code element} and {@code elements} will be
-	 * {@code null}.
-	 */
-	@CheckForNull
-	private E element;
 
 	Cell() {}
 
@@ -134,7 +109,7 @@ public abstract class Cell<E, R extends Row<?, ?>> extends PPodEntity {
 		super.afterUnmarshal(u, parent);
 		@SuppressWarnings("unchecked")
 		final R row = (R) parent;
-		setRow(row);
+		setParent(row);
 	}
 
 	@Override
@@ -147,17 +122,8 @@ public abstract class Cell<E, R extends Row<?, ?>> extends PPodEntity {
 	/**
 	 * Will be {@code null} if this is cell is not {@link Type.SINGLE}.
 	 */
-	@Transient
 	@CheckForNull
-	protected E getElement() {
-		return element;
-	}
-
-	@Transient
-	@CheckForNull
-	protected Set<E> getElements() {
-		return elements;
-	}
+	protected abstract E getElement();
 
 	/**
 	 * Get the elements contained in this cell.
@@ -167,8 +133,7 @@ public abstract class Cell<E, R extends Row<?, ?>> extends PPodEntity {
 	 * @throws IllegalStateException if the type has not been set for this cell,
 	 *             i.e. if {@link #getType() == null}
 	 */
-	@Transient
-	public Set<E> getElementsPublic() {
+	public Set<E> getElements() {
 		checkState(getType() != null,
 				"type has yet to be assigned for this cell");
 
@@ -193,7 +158,7 @@ public abstract class Cell<E, R extends Row<?, ?>> extends PPodEntity {
 				// aggregate
 				// is expensive since there're are so many cells.
 
-				final Set<E> elements = getElements();
+				final Set<E> elements = getElementsModifiable();
 
 				if (elements == null) {
 					throw new AssertionError(
@@ -213,6 +178,9 @@ public abstract class Cell<E, R extends Row<?, ?>> extends PPodEntity {
 		}
 	}
 
+	@CheckForNull
+	protected abstract Set<E> getElementsModifiable();
+
 	/**
 	 * Used for serialization.
 	 * <p>
@@ -222,7 +190,6 @@ public abstract class Cell<E, R extends Row<?, ?>> extends PPodEntity {
 	 * 
 	 * @throws IllegalStateException if {@code getType() == null}
 	 */
-	@Transient
 	@CheckForNull
 	protected Set<E> getElementsXml() {
 		if (getType() == null) {
@@ -235,14 +202,17 @@ public abstract class Cell<E, R extends Row<?, ?>> extends PPodEntity {
 				return null;
 			case POLYMORPHIC:
 			case UNCERTAIN:
-				if (elements == null) {
+				if (getElementsModifiable() == null) {
 					initElements();
 				}
-				return elements;
+				return getElementsModifiable();
 			default:
 				throw new AssertionError("unknown type: " + getType());
 		}
 	}
+
+	@Nullable
+	public abstract R getParent();
 
 	/**
 	 * Package-private for testing.
@@ -251,12 +221,6 @@ public abstract class Cell<E, R extends Row<?, ?>> extends PPodEntity {
 	@Column(name = "POSITION", nullable = false)
 	Integer getPosition() {
 		return position;
-	}
-
-	@Transient
-	@Nullable
-	protected R getRow() {
-		return row;
 	}
 
 	/**
@@ -289,17 +253,13 @@ public abstract class Cell<E, R extends Row<?, ?>> extends PPodEntity {
 	/**
 	 * Does not affect {@link #isInNeedOfNewVersion()}.
 	 */
-	protected void setElement(@CheckForNull final E element) {
-		this.element = element;
-	}
+	protected abstract void setElement(@CheckForNull final E element);
 
 	/**
 	 * Does not affect {@link #isInNeedOfNewVersion()}.
 	 */
-	protected void setElements(
-			@CheckForNull final Set<E> elements) {
-		this.elements = elements;
-	}
+	protected abstract void setElements(
+			@CheckForNull final Set<E> elements);
 
 	/**
 	 * Set this cell's type to {@link Type#INAPPLICABLE} to
@@ -331,7 +291,7 @@ public abstract class Cell<E, R extends Row<?, ?>> extends PPodEntity {
 
 	@Override
 	public Cell<E, R> setInNeedOfNewVersion() {
-		final IRow row = getRow();
+		final IRow row = getParent();
 		if (row != null) {
 			row.setInNeedOfNewVersion();
 			final IMatrix matrix = row.getParent();
@@ -346,6 +306,8 @@ public abstract class Cell<E, R extends Row<?, ?>> extends PPodEntity {
 		super.setInNeedOfNewVersion();
 		return this;
 	}
+
+	protected abstract void setParent(@CheckForNull final R row);
 
 	/**
 	 * Set the type to polymorphic with the appropriate states equivalent to
@@ -402,19 +364,19 @@ public abstract class Cell<E, R extends Row<?, ?>> extends PPodEntity {
 				&& getType()
 						.equals(type)
 				&& elements
-						.equals(getElements())) {
+						.equals(getElementsModifiable())) {
 			return;
 		}
 
 		setElement(null);
 
-		if (getElements() == null) {
+		if (getElementsModifiable() == null) {
 			initElements();
 		}
 
 		setType(type);
 
-		final Set<E> thisElements = getElements();
+		final Set<E> thisElements = getElementsModifiable();
 		if (thisElements == null) {
 			throw new AssertionError(
 					"initElements() was called but elements is null");
@@ -443,10 +405,6 @@ public abstract class Cell<E, R extends Row<?, ?>> extends PPodEntity {
 		return;
 	}
 
-	void setRow(@CheckForNull final R row) {
-		this.row = row;
-	}
-
 	/**
 	 * Set the cell to have type {@link Type#SINGLE} and the given states.
 	 * 
@@ -456,7 +414,7 @@ public abstract class Cell<E, R extends Row<?, ?>> extends PPodEntity {
 	 */
 	public Cell<E, R> setSingleElement(final E element) {
 		checkNotNull(element);
-		if (element == this.element) {
+		if (element == getElement()) {
 			if (getType() != Type.SINGLE) {
 				throw new AssertionError(
 						"element is set, but this cell is not a SINGLE");

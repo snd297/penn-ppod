@@ -26,6 +26,7 @@ import javax.persistence.Table;
 
 import com.google.common.collect.ImmutableSet;
 
+import edu.upenn.cis.ppod.modelinterfaces.IOTUKeyedMapValue;
 import edu.upenn.cis.ppod.util.IVisitor;
 
 /**
@@ -52,16 +53,17 @@ public class DNASequence extends Sequence<DNASequenceSet> {
 	public static final String JOIN_COLUMN =
 			TABLE + "_" + PersistentObject.ID_COLUMN;
 
+	@ManyToOne(fetch = FetchType.LAZY, optional = false)
+	private DNASequenceSet parent;
+
 	@Override
 	public void accept(final IVisitor visitor) {
 		checkNotNull(visitor);
 		visitor.visitDNASequence(this);
 	}
 
-	@ManyToOne(fetch = FetchType.LAZY, optional = false)
-	@Override
 	public DNASequenceSet getParent() {
-		return super.getParent();
+		return parent;
 	}
 
 	@Override
@@ -75,6 +77,12 @@ public class DNASequence extends Sequence<DNASequenceSet> {
 			getParent().setInNeedOfNewVersion();
 		}
 		super.setInNeedOfNewVersion();
+		return this;
+	}
+
+	public IOTUKeyedMapValue<DNASequenceSet> setParent(
+			final DNASequenceSet parent) {
+		this.parent = parent;
 		return this;
 	}
 }
