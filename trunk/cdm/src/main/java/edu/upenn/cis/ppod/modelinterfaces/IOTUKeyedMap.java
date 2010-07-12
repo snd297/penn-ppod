@@ -8,7 +8,6 @@ import edu.upenn.cis.ppod.util.IVisitor;
 
 /**
  * @author Sam Donnelly
- * 
  */
 public interface IOTUKeyedMap<V extends IOTUKeyedMapValue<?>> {
 
@@ -16,8 +15,26 @@ public interface IOTUKeyedMap<V extends IOTUKeyedMapValue<?>> {
 
 	void afterUnmarshal();
 
+	/**
+	 * Returns the value to which the specified key is mapped which will be
+	 * {@code null} if {@link #setOTUs()} has been called with newly introduced
+	 * OTUs.
+	 * 
+	 * @param key the key whose associated value is to be returned
+	 * @return the value to which the specified key is mapped which will be
+	 *         {@code null} if {@link #setOTUs()} has been called with newly
+	 *         introduced OTUs
+	 * @throws IllegalArgumentException if {@code key} is not a key in this
+	 *             OTU-keyed map
+	 * @throws NullPointerException if the specified key is null
+	 */
 	V get(OTU key);
 
+	/**
+	 * Get the map that makes up this OTU-keyed map.
+	 * 
+	 * @return the map that makes up this OTU-keyed map
+	 */
 	Map<OTU, V> getValues();
 
 	/**
@@ -45,12 +62,16 @@ public interface IOTUKeyedMap<V extends IOTUKeyedMapValue<?>> {
 	V put(OTU key, V value);
 
 	/**
-	 * Set the keys of this {@code OTUKeyedMap} to the OTU's in
-	 * {@code getParent()}'s OTU set.
+	 * Set the keys of this {@code OTUKeyedMap} to the OTU's in its parent's
+	 * {@code OTUSet}.
 	 * <p>
 	 * Any newly introduced keys will map to {@code null} values.
+	 * <p>
+	 * See {@code IOTUKeyedMapPlus} for a subinterface with a parent-setting
+	 * operation
 	 * 
 	 * @return this
+	 * @see IOTUKeyedMapPlus
 	 */
 	@CheckForNull
 	IOTUKeyedMap<V> setOTUs();

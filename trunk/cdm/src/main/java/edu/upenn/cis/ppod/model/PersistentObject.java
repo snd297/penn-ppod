@@ -55,7 +55,7 @@ public abstract class PersistentObject implements IPersistentObject {
 	 * As long as you access only the database identifier property, no
 	 * initialization of the proxy is necessary. (Note that this isn't true if
 	 * you map the identifier property with direct field access; Hibernate then
-	 * doesn't even know that the {@code getId()} method exists. If you call i,
+	 * doesn't even know that the {@code getId()} method exists. If you call it,
 	 * the proxy has to be initialized.)
 	 */
 	@Access(AccessType.PROPERTY)
@@ -94,7 +94,7 @@ public abstract class PersistentObject implements IPersistentObject {
 		return unmarshalled;
 	}
 
-	/** Created for Jaxb. */
+	/** Protected for Jaxb. */
 	protected PersistentObject setId(final Long id) {
 		this.id = id;
 		return this;

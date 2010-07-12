@@ -54,10 +54,12 @@ public class DNARows implements
 
 	private final IOTUKeyedMapPlus<DNARow, DNAMatrix, OTUDNARowPair> rows = new OTUKeyedMapPlus<DNARow, DNAMatrix, OTUDNARowPair>();
 
+	/** {@inheritDoc} */
 	public void accept(final IVisitor visitor) {
 		rows.accept(visitor);
 	}
 
+	/** {@inheritDoc} */
 	public void afterUnmarshal() {
 		rows.afterUnmarshal();
 	}
@@ -77,20 +79,24 @@ public class DNARows implements
 		return true;
 	}
 
+	/** {@inheritDoc} */
 	public IOTUKeyedMapPlus<DNARow, DNAMatrix, OTUDNARowPair> clear() {
 		return rows.clear();
 	}
 
+	/** {@inheritDoc} */
 	public DNARow get(final OTU key) {
 		return rows.get(key);
 	}
 
+	/** {@inheritDoc} */
 	@XmlElement(name = "otuRowPair")
 	@Transient
 	public Set<OTUDNARowPair> getOTUSomethingPairs() {
 		return rows.getOTUSomethingPairs();
 	}
 
+	/** {@inheritDoc} */
 	@Parent
 	public DNAMatrix getParent() {
 		return rows.getParent();
@@ -114,20 +120,24 @@ public class DNARows implements
 		return rows.getValues();
 	}
 
+	/** {@inheritDoc} */
 	public DNARow put(final OTU key, final DNARow value) {
 		return rows.put(key, value);
 	}
 
+	/** {@inheritDoc} */
 	public DNARows setOTUs() {
 		rows.setOTUs();
 		return this;
 	}
 
+	/** {@inheritDoc} */
 	public DNARows setParent(final DNAMatrix parent) {
 		rows.setParent(parent);
 		return this;
 	}
 
+	/** {@inheritDoc} */
 	public DNARows setValues(
 			final Map<OTU, DNARow> values) {
 		rows.setValues(values);

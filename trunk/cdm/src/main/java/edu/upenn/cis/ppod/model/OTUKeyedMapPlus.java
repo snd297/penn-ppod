@@ -104,6 +104,7 @@ public class OTUKeyedMapPlus<V extends IOTUKeyedMapValue<P>, P extends IVersione
 		return this;
 	}
 
+	/** {@code inheritDoc} */
 	@Nullable
 	public V get(final OTU otu) {
 		checkNotNull(otu);

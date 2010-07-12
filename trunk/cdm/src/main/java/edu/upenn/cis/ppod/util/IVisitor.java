@@ -65,8 +65,18 @@ public interface IVisitor {
 	 */
 	void visitAttachmentType(AttachmentType attachmentType);
 
+	/**
+	 * Visit a {@code DNACell}.
+	 * 
+	 * @param cell visitee
+	 */
 	void visitDNACell(DNACell cell);
 
+	/**
+	 * Visit a {@code DNAMatrix}
+	 * 
+	 * @param matrix visitee
+	 */
 	void visitDNAMatrix(DNAMatrix matrix);
 
 	void visitDNARow(DNARow row);
