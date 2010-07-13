@@ -80,8 +80,9 @@ public class DNASequences
 		return true;
 	}
 
-	public IOTUKeyedMapPlus<DNASequence, DNASequenceSet, OTUDNASequencePair> clear() {
-		return sequences.clear();
+	public DNASequences clear() {
+		sequences.clear();
+		return this;
 	}
 
 	public DNASequence get(final OTU key) {

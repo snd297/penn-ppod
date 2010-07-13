@@ -34,8 +34,6 @@ import javax.xml.bind.annotation.XmlAttribute;
 
 import edu.umd.cs.findbugs.annotations.CheckForNull;
 import edu.umd.cs.findbugs.annotations.Nullable;
-import edu.upenn.cis.ppod.modelinterfaces.IMatrix;
-import edu.upenn.cis.ppod.modelinterfaces.IRow;
 
 /**
  * A cell.
@@ -291,10 +289,10 @@ public abstract class Cell<E, R extends Row<?, ?>> extends PPodEntity {
 
 	@Override
 	public Cell<E, R> setInNeedOfNewVersion() {
-		final IRow row = getParent();
+		final R row = getParent();
 		if (row != null) {
 			row.setInNeedOfNewVersion();
-			final IMatrix matrix = row.getParent();
+			final Matrix<?> matrix = row.getParent();
 			if (matrix != null) {
 				// so FindBugs knows that it's okay
 				final Integer position = getPosition();

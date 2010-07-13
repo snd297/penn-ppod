@@ -19,12 +19,18 @@ import edu.umd.cs.findbugs.annotations.CheckForNull;
 
 /**
  * Indicates a class that is stored in {@link OTUKeyedMap} and so has a
- * relationship back to the owner of the {@code OTUKeyedMap} that can be
- * severed.
+ * relationship back to the owner of the {@code OTUKeyedMap}.
  * 
  * @author Sam Donnelly
  */
 public interface IOTUKeyedMapValue<P> extends IPersistentObject {
+
+	/**
+	 * Get the parent.
+	 * 
+	 * @return the parent
+	 */
+	P getParent();
 
 	/**
 	 * Set or unset the parent.

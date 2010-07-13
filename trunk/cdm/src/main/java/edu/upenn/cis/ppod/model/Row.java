@@ -24,9 +24,7 @@ import java.util.List;
 
 import javax.xml.bind.Unmarshaller;
 
-import edu.upenn.cis.ppod.modelinterfaces.IMatrix;
 import edu.upenn.cis.ppod.modelinterfaces.IOTUKeyedMapValue;
-import edu.upenn.cis.ppod.modelinterfaces.IRow;
 import edu.upenn.cis.ppod.util.IVisitor;
 
 /**
@@ -39,7 +37,7 @@ import edu.upenn.cis.ppod.util.IVisitor;
  */
 public abstract class Row<C extends Cell<?, ?>, M extends Matrix<?>>
 		extends PPodEntity
-		implements IRow, IOTUKeyedMapValue<M> {
+		implements IOTUKeyedMapValue<M> {
 
 	Row() {}
 
@@ -127,7 +125,7 @@ public abstract class Row<C extends Cell<?, ?>, M extends Matrix<?>>
 		if (cells.equals(getCells())) {
 			return Collections.emptyList();
 		}
-		final IMatrix matrix = getParent();
+		final M matrix = getParent();
 
 		checkState(matrix != null, "This row hasn't been added to a matrix yet");
 
@@ -145,7 +143,7 @@ public abstract class Row<C extends Cell<?, ?>, M extends Matrix<?>>
 		int cellPos = -1;
 		getCellsModifiable().addAll(cells);
 
-		for (final Cell<?, ?> cell : getCells()) {
+		for (final C cell : getCells()) {
 			cellPos++;
 			cell.setPosition(cellPos);
 		}
@@ -162,7 +160,7 @@ public abstract class Row<C extends Cell<?, ?>, M extends Matrix<?>>
 	public Row<C, M> setInNeedOfNewVersion() {
 
 		// So FindBugs knows it's okay
-		final IMatrix matrix = getParent();
+		final M matrix = getParent();
 		if (matrix != null) {
 			matrix.setInNeedOfNewVersion();
 		}
