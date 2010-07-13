@@ -143,7 +143,7 @@ public class StandardCell extends Cell<StandardState, StandardRow> {
 
 	@CheckForNull
 	@Override
-	protected Set<StandardState> getElementsModifiable() {
+	Set<StandardState> getElementsModifiable() {
 		return elements;
 	}
 
@@ -167,6 +167,7 @@ public class StandardCell extends Cell<StandardState, StandardRow> {
 		return parent;
 	}
 
+	/** Protected for JAXB. */
 	@Override
 	protected void setElement(
 			@CheckForNull final StandardState element) {
@@ -174,13 +175,13 @@ public class StandardCell extends Cell<StandardState, StandardRow> {
 	}
 
 	@Override
-	protected void setElements(
+	void setElements(
 			@CheckForNull final Set<StandardState> elements) {
 		this.elements = elements;
 	}
 
 	@Override
-	protected void setParent(final StandardRow parent) {
+	void setParent(final StandardRow parent) {
 		this.parent = parent;
 	}
 
@@ -197,7 +198,7 @@ public class StandardCell extends Cell<StandardState, StandardRow> {
 	 * @return {@code state}
 	 */
 	@Override
-	protected void setPolymorphicOrUncertain(
+	void setPolymorphicOrUncertain(
 			final Type type,
 			final Set<? extends StandardState> elements) {
 		checkNotNull(type);

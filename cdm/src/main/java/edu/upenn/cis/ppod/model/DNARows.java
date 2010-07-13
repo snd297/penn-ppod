@@ -49,8 +49,7 @@ import edu.upenn.cis.ppod.util.OTUDNARowPair;
 @XmlAccessorType(XmlAccessType.NONE)
 @Embeddable
 @Access(AccessType.PROPERTY)
-public class DNARows implements
-		IOTUKeyedMap<DNARow> {
+public class DNARows implements IOTUKeyedMap<DNARow> {
 
 	private final IOTUKeyedMapPlus<DNARow, DNAMatrix, OTUDNARowPair> rows = new OTUKeyedMapPlus<DNARow, DNAMatrix, OTUDNARowPair>();
 
@@ -80,8 +79,9 @@ public class DNARows implements
 	}
 
 	/** {@inheritDoc} */
-	public IOTUKeyedMapPlus<DNARow, DNAMatrix, OTUDNARowPair> clear() {
-		return rows.clear();
+	public DNARows clear() {
+		rows.clear();
+		return this;
 	}
 
 	/** {@inheritDoc} */

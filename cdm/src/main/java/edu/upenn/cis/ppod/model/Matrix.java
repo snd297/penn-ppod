@@ -41,8 +41,8 @@ import javax.xml.bind.annotation.XmlElement;
 
 import edu.umd.cs.findbugs.annotations.CheckForNull;
 import edu.umd.cs.findbugs.annotations.Nullable;
-import edu.upenn.cis.ppod.modelinterfaces.IMatrix;
 import edu.upenn.cis.ppod.modelinterfaces.IOTUKeyedMap;
+import edu.upenn.cis.ppod.modelinterfaces.IVersionedWithOTUSet;
 import edu.upenn.cis.ppod.util.IVisitor;
 
 /**
@@ -54,7 +54,7 @@ import edu.upenn.cis.ppod.util.IVisitor;
 @MappedSuperclass
 public abstract class Matrix<R extends Row<?, ?>>
 		extends UUPPodEntityWithXmlId
-		implements IMatrix {
+		implements IVersionedWithOTUSet {
 
 	/** Description column. */
 	public static final String DESCRIPTION_COLUMN = "DESCRIPTION";
