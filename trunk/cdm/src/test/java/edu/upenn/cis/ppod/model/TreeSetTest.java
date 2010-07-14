@@ -64,7 +64,7 @@ public class TreeSetTest {
 		final Tree returnedTree = treeSet.addTree(tree);
 		assertTrue(treeSet.isInNeedOfNewVersion());
 		assertSame(returnedTree, tree);
-		assertSame(tree.getTreeSet(), treeSet);
+		assertSame(tree.getParent(), treeSet);
 		assertEquals(getOnlyElement(treeSet.getTrees()), tree);
 	}
 
@@ -107,7 +107,7 @@ public class TreeSetTest {
 						trees.get(2)));
 		assertEquals(treeSet.getTrees(), trees2);
 		for (final Tree returnedTree3 : returnedTrees3) {
-			assertNull(returnedTree3.getTreeSet());
+			assertNull(returnedTree3.getParent());
 		}
 	}
 

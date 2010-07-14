@@ -88,7 +88,7 @@ public class StandardCellTest {
 
 		final OTU otu0 = otuProvider.get().setLabel("otu0");
 		otuSet.setOTUs(newArrayList(otu0));
-		matrix.setOTUSet(otuSet);
+		matrix.setParent(otuSet);
 
 		final StandardCharacter character0 =
 				characterProvider
@@ -96,7 +96,7 @@ public class StandardCellTest {
 						.setLabel("character0");
 		matrix.setCharacters(newArrayList(character0));
 		final StandardRow row0 = rowProvider.get();
-		matrix.putRow(matrix.getOTUSet().getOTUs().get(0), row0);
+		matrix.putRow(matrix.getParent().getOTUs().get(0), row0);
 
 		states = newHashSet();
 
@@ -113,7 +113,7 @@ public class StandardCellTest {
 
 	@Test
 	public void setInapplcableWasSingle() {
-		matrix.getRow(matrix.getOTUSet().getOTUs().get(0)).setCells(
+		matrix.getRow(matrix.getParent().getOTUs().get(0)).setCells(
 				Arrays.asList(cell));
 		cell.setSingleElement(state00);
 		cell.setInapplicable();
@@ -125,7 +125,7 @@ public class StandardCellTest {
 
 	@Test
 	public void setInapplicableWasPolymorphic() {
-		matrix.getRow(matrix.getOTUSet().getOTUs().get(0)).setCells(
+		matrix.getRow(matrix.getParent().getOTUs().get(0)).setCells(
 				Arrays.asList(cell));
 		states.add(state00);
 		states.add(state01);
@@ -137,7 +137,7 @@ public class StandardCellTest {
 
 	@Test
 	public void setPolymorphicElements() {
-		matrix.getRow(matrix.getOTUSet().getOTUs().get(0)).setCells(
+		matrix.getRow(matrix.getParent().getOTUs().get(0)).setCells(
 				Arrays.asList(cell));
 		states.add(state00);
 		states.add(state01);
@@ -148,14 +148,14 @@ public class StandardCellTest {
 
 	@Test(expectedExceptions = IllegalArgumentException.class)
 	public void setPolymorphicElementsTooFewStates() {
-		matrix.getRow(matrix.getOTUSet().getOTUs().get(0)).setCells(
+		matrix.getRow(matrix.getParent().getOTUs().get(0)).setCells(
 				Arrays.asList(cell));
 		cell.setPolymorphicElements(states);
 	}
 
 	@Test
 	public void setSingleElement() {
-		matrix.getRow(matrix.getOTUSet().getOTUs().get(0)).setCells(
+		matrix.getRow(matrix.getParent().getOTUs().get(0)).setCells(
 				Arrays.asList(cell));
 		states.add(state00);
 		cell.setSingleElement(state00);
@@ -174,7 +174,7 @@ public class StandardCellTest {
 
 	@Test
 	public void setUncertainElements() {
-		matrix.getRow(matrix.getOTUSet().getOTUs().get(0)).setCells(
+		matrix.getRow(matrix.getParent().getOTUs().get(0)).setCells(
 				Arrays.asList(cell));
 		states.add(state00);
 		states.add(state01);

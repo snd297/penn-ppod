@@ -54,7 +54,7 @@ public abstract class SequenceSet<S extends Sequence<?>>
 	@CheckForNull
 	@ManyToOne(fetch = FetchType.LAZY, optional = false)
 	@JoinColumn(name = OTUSet.JOIN_COLUMN)
-	private OTUSet otuSet;
+	private OTUSet parent;
 
 	protected SequenceSet() {}
 
@@ -82,7 +82,7 @@ public abstract class SequenceSet<S extends Sequence<?>>
 			final Object parent) {
 		checkNotNull(parent);
 		super.afterUnmarshal(u, parent);
-		setOTUSet((OTUSet) parent);
+		setParent((OTUSet) parent);
 	}
 
 	protected void checkSequenceLength(final S sequence) {
@@ -128,8 +128,8 @@ public abstract class SequenceSet<S extends Sequence<?>>
 	 * @return this matrix's {@code OTUSet}
 	 */
 	@Nullable
-	public OTUSet getOTUSet() {
-		return otuSet;
+	public OTUSet getParent() {
+		return parent;
 	}
 
 	/**
@@ -192,8 +192,8 @@ public abstract class SequenceSet<S extends Sequence<?>>
 
 	@Override
 	public SequenceSet<S> setInNeedOfNewVersion() {
-		if (getOTUSet() != null) {
-			getOTUSet().setInNeedOfNewVersion();
+		if (getParent() != null) {
+			getParent().setInNeedOfNewVersion();
 		}
 		super.setInNeedOfNewVersion();
 		return this;
@@ -231,9 +231,9 @@ public abstract class SequenceSet<S extends Sequence<?>>
 	 * 
 	 * @return this sequence set
 	 */
-	SequenceSet<S> setOTUSet(
-			@CheckForNull final OTUSet otuSet) {
-		this.otuSet = otuSet;
+	SequenceSet<S> setParent(
+			@CheckForNull final OTUSet parent) {
+		this.parent = parent;
 		setOTUs();
 		return this;
 	}

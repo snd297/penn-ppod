@@ -55,7 +55,7 @@ public class Tree extends UUPPodEntity {
 	@JoinColumn(name = TreeSet.JOIN_COLUMN, insertable = false,
 				updatable = false)
 	@CheckForNull
-	private TreeSet treeSet;
+	private TreeSet parent;
 
 	Tree() {}
 
@@ -74,9 +74,12 @@ public class Tree extends UUPPodEntity {
 	 * 
 	 */
 	@Override
-	public void afterUnmarshal(final Unmarshaller u, final Object parent) {
+	public void afterUnmarshal(
+			@CheckForNull final Unmarshaller u,
+			final Object parent) {
+		// don't checkNotNull(parent) since it's a jaxb callback
 		super.afterUnmarshal(u, parent);
-		setTreeSet(treeSet);
+		setParent((TreeSet) parent);
 	}
 
 	/**
@@ -112,14 +115,14 @@ public class Tree extends UUPPodEntity {
 	 * @return the tree set that owns this tree
 	 */
 	@Nullable
-	public TreeSet getTreeSet() {
-		return treeSet;
+	public TreeSet getParent() {
+		return parent;
 	}
 
 	@Override
 	public Tree setInNeedOfNewVersion() {
-		if (treeSet != null) {
-			treeSet.setInNeedOfNewVersion();
+		if (parent != null) {
+			parent.setInNeedOfNewVersion();
 		}
 		super.setInNeedOfNewVersion();
 		return this;
@@ -169,12 +172,12 @@ public class Tree extends UUPPodEntity {
 	 * <p>
 	 * Use {@code null} to sever the relationship.
 	 * 
-	 * @param treeSet the {@code TreeSet} that we're removing
+	 * @param parent the {@code TreeSet} that we're removing
 	 * 
 	 * @return this
 	 */
-	Tree setTreeSet(@CheckForNull final TreeSet treeSet) {
-		this.treeSet = treeSet;
+	Tree setParent(@CheckForNull final TreeSet parent) {
+		this.parent = parent;
 		return this;
 	}
 }

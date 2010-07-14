@@ -79,7 +79,7 @@ public class StandardCharacter extends UUPPodEntityWithXmlId {
 	 * non-contiguous integers in the keys - so, for example, you might have 0,
 	 * 2, and 3.
 	 */
-	@OneToMany(mappedBy = "character", cascade = CascadeType.ALL,
+	@OneToMany(mappedBy = "parent", cascade = CascadeType.ALL,
 			orphanRemoval = true)
 	@MapKey(name = "stateNumber")
 	private final Map<Integer, StandardState> states = newHashMap();
@@ -119,9 +119,9 @@ public class StandardCharacter extends UUPPodEntityWithXmlId {
 		}
 
 		if (originalState != null) {
-			originalState.setCharacter(null);
+			originalState.setParent(null);
 		}
-		state.setCharacter(this);
+		state.setParent(this);
 		setInNeedOfNewVersion();
 		return originalState;
 	}
@@ -137,9 +137,9 @@ public class StandardCharacter extends UUPPodEntityWithXmlId {
 		super.afterUnmarshal(u, parent);
 		setMatrix((StandardMatrix) parent);
 		if (getStatesModifiable().size() > 0
-				&& get(getStatesModifiable().values(), 0).getCharacter() == null) {
+				&& get(getStatesModifiable().values(), 0).getParent() == null) {
 			for (final StandardState state : getStatesModifiable().values()) {
-				state.setCharacter(this);
+				state.setParent(this);
 			}
 		}
 	}

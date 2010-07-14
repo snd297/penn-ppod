@@ -141,12 +141,12 @@ public class OTUKeyedMapPlus<V extends IOTUKeyedMapValue<P>, P extends IVersione
 		checkNotNull(key);
 		checkNotNull(value);
 		checkState(getParent() != null, "no parent has been assigned");
-		checkState(getParent().getOTUSet() != null,
+		checkState(getParent().getParent() != null,
 				"parent.getOTUSet() == null");
 		checkArgument(
 				contains(
 						getParent()
-								.getOTUSet()
+								.getParent()
 								.getOTUs(),
 								key),
 				"otu does not belong to the parent's OTUSet");
@@ -180,9 +180,9 @@ public class OTUKeyedMapPlus<V extends IOTUKeyedMapValue<P>, P extends IVersione
 
 		final Set<OTU> otusToBeRemoved = newHashSet();
 		for (final OTU otu : getValues().keySet()) {
-			if (parent.getOTUSet() != null
+			if (parent.getParent() != null
 					&& contains(parent
-									.getOTUSet()
+									.getParent()
 									.getOTUs(), otu)) {
 				// it stays
 			} else {
@@ -202,8 +202,8 @@ public class OTUKeyedMapPlus<V extends IOTUKeyedMapValue<P>, P extends IVersione
 				.keySet()
 				.removeAll(otusToBeRemoved);
 
-		if (getParent().getOTUSet() != null) {
-			for (final OTU otu : parent.getOTUSet().getOTUs()) {
+		if (getParent().getParent() != null) {
+			for (final OTU otu : parent.getParent().getOTUs()) {
 				if (getValues().containsKey(otu)) {
 
 				} else {

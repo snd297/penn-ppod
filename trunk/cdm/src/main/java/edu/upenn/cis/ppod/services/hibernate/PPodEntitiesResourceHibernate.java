@@ -111,13 +111,13 @@ class PPodEntitiesResourceHibernate implements
 				session.setReadOnly(matrix, true);
 
 				addedMatrices.add(matrix);
-				if (matrix.getOTUSet().getDocId() == null) {
-					matrix.getOTUSet().accept(setDocIdVisitor);
+				if (matrix.getParent().getDocId() == null) {
+					matrix.getParent().accept(setDocIdVisitor);
 				}
 
 				// Note that otu set may have already been added in any of the
 				// other if clauses: Hibernate identity takes care of us
-				pPodEntities.addOTUSet(matrix.getOTUSet());
+				pPodEntities.addOTUSet(matrix.getParent());
 			} else if (queryResult instanceof TreeSet) {
 				final TreeSet treeSet = (TreeSet) queryResult;
 
@@ -125,13 +125,13 @@ class PPodEntitiesResourceHibernate implements
 				session.setReadOnly(treeSet, true);
 
 				addedTreeSets.add(treeSet);
-				if (treeSet.getOTUSet().getDocId() == null) {
-					treeSet.getOTUSet().accept(setDocIdVisitor);
+				if (treeSet.getParent().getDocId() == null) {
+					treeSet.getParent().accept(setDocIdVisitor);
 				}
 
 				// Note that otu set may have already been added in any of the
 				// other if clauses: Hibernate identity takes care of us
-				pPodEntities.addOTUSet(treeSet.getOTUSet());
+				pPodEntities.addOTUSet(treeSet.getParent());
 			} else if (queryResult instanceof OTU) {
 				final OTU otu = (OTU) queryResult;
 				session.setReadOnly(otu, true);

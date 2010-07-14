@@ -52,8 +52,9 @@ import edu.upenn.cis.ppod.util.IVisitor;
 @XmlAccessorType(XmlAccessType.NONE)
 @Entity
 @Table(name = TreeSet.TABLE)
-public class TreeSet extends UUPPodEntityWithXmlId implements
-		IVersionedWithOTUSet {
+public class TreeSet
+		extends UUPPodEntityWithXmlId
+		implements IVersionedWithOTUSet {
 
 	public static final String TABLE = "TREE_SET";
 
@@ -65,7 +66,7 @@ public class TreeSet extends UUPPodEntityWithXmlId implements
 	@CheckForNull
 	@ManyToOne(fetch = FetchType.LAZY, optional = false)
 	@JoinColumn(name = OTUSet.JOIN_COLUMN)
-	private OTUSet otuSet;
+	private OTUSet parent;
 
 	@OneToMany(cascade = CascadeType.ALL, orphanRemoval = true)
 	@OrderColumn(name = "POSITION")
@@ -98,7 +99,7 @@ public class TreeSet extends UUPPodEntityWithXmlId implements
 		checkArgument(!trees.contains(tree),
 				"tree set already contains the tree " + tree.getLabel());
 		trees.add(tree);
-		tree.setTreeSet(this);
+		tree.setParent(this);
 		setInNeedOfNewVersion();
 		return tree;
 	}
@@ -115,7 +116,7 @@ public class TreeSet extends UUPPodEntityWithXmlId implements
 			final Object parent) {
 		checkNotNull(parent);
 		super.afterUnmarshal(u, parent);
-		this.otuSet = (OTUSet) parent;
+		this.parent = (OTUSet) parent;
 	}
 
 	/**
@@ -131,13 +132,13 @@ public class TreeSet extends UUPPodEntityWithXmlId implements
 	}
 
 	/**
-	 * Get the OTU set.
+	 * Get the parent OTU set.
 	 * 
 	 * @return the value
 	 */
 	@Nullable
-	public OTUSet getOTUSet() {
-		return otuSet;
+	public OTUSet getParent() {
+		return parent;
 	}
 
 	public List<Tree> getTrees() {
@@ -151,8 +152,8 @@ public class TreeSet extends UUPPodEntityWithXmlId implements
 
 	@Override
 	public TreeSet setInNeedOfNewVersion() {
-		if (getOTUSet() != null) {
-			getOTUSet().setInNeedOfNewVersion();
+		if (getParent() != null) {
+			getParent().setInNeedOfNewVersion();
 		}
 		super.setInNeedOfNewVersion();
 		return this;
@@ -188,8 +189,8 @@ public class TreeSet extends UUPPodEntityWithXmlId implements
 	 * 
 	 * @return this {@code TreeSet}
 	 */
-	protected TreeSet setOTUSet(@CheckForNull final OTUSet otuSet) {
-		this.otuSet = otuSet;
+	TreeSet setParent(@CheckForNull final OTUSet parent) {
+		this.parent = parent;
 		return this;
 	}
 
@@ -212,12 +213,9 @@ public class TreeSet extends UUPPodEntityWithXmlId implements
 	 * @throws IllegalArgumentException if {@code trees} contains any
 	 *             {@code .equals(...)} duplicates
 	 */
-	public List<Tree> setTrees(final List<Tree> trees) {
+	public List<Tree> setTrees(final List<? extends Tree> trees) {
 		checkNotNull(trees);
 		if (trees.equals(getTreesModifiable())) {
-			;
-			;
-			;
 			return Collections.emptyList();
 		}
 
@@ -233,7 +231,7 @@ public class TreeSet extends UUPPodEntityWithXmlId implements
 		removedTrees.removeAll(trees);
 
 		for (final Tree removedTree : removedTrees) {
-			removedTree.setTreeSet(null);
+			removedTree.setParent(null);
 		}
 
 		getTreesModifiable().clear();

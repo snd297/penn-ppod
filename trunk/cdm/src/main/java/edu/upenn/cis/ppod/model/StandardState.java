@@ -113,7 +113,7 @@ public class StandardState extends PPodEntityWXmlId {
 	@ManyToOne(fetch = FetchType.LAZY, optional = false)
 	@JoinColumn(name = StandardCharacter.JOIN_COLUMN)
 	@CheckForNull
-	private StandardCharacter character;
+	private StandardCharacter parent;
 
 	StandardState() {}
 
@@ -148,17 +148,6 @@ public class StandardState extends PPodEntityWXmlId {
 	// }
 
 	/**
-	 * Get this character owning character. Will be {@code null} when newly
-	 * constructed.
-	 * 
-	 * @return this character stateNumber's owning character
-	 */
-	@Nullable
-	public StandardCharacter getCharacter() {
-		return character;
-	}
-
-	/**
 	 * Get this character stateNumber's label.
 	 * 
 	 * @return this character stateNumber's label
@@ -167,6 +156,17 @@ public class StandardState extends PPodEntityWXmlId {
 	@Nullable
 	public String getLabel() {
 		return label;
+	}
+
+	/**
+	 * Get this character owning character. Will be {@code null} when newly
+	 * constructed.
+	 * 
+	 * @return this character stateNumber's owning character
+	 */
+	@Nullable
+	public StandardCharacter getParent() {
+		return parent;
 	}
 
 	/**
@@ -185,34 +185,14 @@ public class StandardState extends PPodEntityWXmlId {
 	}
 
 	/**
-	 * Set the <code>character</code> property of this {@code CharacterState} to
-	 * <code>character</code>.
-	 * <p>
-	 * Intentionally package-private and meant to be called from
-	 * {@link StandardCharacter}.
-	 * <p>
-	 * {@code character} being {@code null} signifies that the relationship, if
-	 * it exists, is being severed.
-	 * 
-	 * @param character see description.
-	 * 
-	 * @return this {@code CharacterState}
-	 */
-	StandardState setCharacter(
-			@CheckForNull final StandardCharacter character) {
-		this.character = character;
-		return this;
-	}
-
-	/**
 	 * Mark this object as needed a new pPOD version.
 	 * 
 	 * @return this {@code CharacterState}
 	 */
 	@Override
 	public StandardState setInNeedOfNewVersion() {
-		if (character != null) {
-			character.setInNeedOfNewVersion();
+		if (parent != null) {
+			parent.setInNeedOfNewVersion();
 		}
 		super.setInNeedOfNewVersion();
 		return this;
@@ -233,6 +213,25 @@ public class StandardState extends PPodEntityWXmlId {
 			this.label = label;
 			setInNeedOfNewVersion();
 		}
+		return this;
+	}
+
+	/**
+	 * Set the parent {@code StandardCharacter}.
+	 * <p>
+	 * Intentionally package-private and meant to be called from
+	 * {@link StandardCharacter}.
+	 * <p>
+	 * {@code parent} being {@code null} signifies that the relationship, if it
+	 * exists, is being severed.
+	 * 
+	 * @param character see description.
+	 * 
+	 * @return this {@code CharacterState}
+	 */
+	StandardState setParent(
+			@CheckForNull final StandardCharacter parent) {
+		this.parent = parent;
 		return this;
 	}
 

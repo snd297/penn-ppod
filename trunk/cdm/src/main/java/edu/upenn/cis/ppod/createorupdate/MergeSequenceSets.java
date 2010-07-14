@@ -49,12 +49,12 @@ final class MergeSequenceSets<SS extends SequenceSet<S>, S extends Sequence<?>>
 			final SS srcSeqSet) {
 		checkNotNull(targSeqSet);
 		checkArgument(
-				targSeqSet.getOTUSet() != null,
+				targSeqSet.getParent() != null,
 				"targSeqSet does not belong to an OTUSet");
 
 		checkNotNull(srcSeqSet);
 		checkArgument(
-				srcSeqSet.getOTUSet() != null,
+				srcSeqSet.getParent() != null,
 				"srcSeqSet does not belong to an OTUSet");
 
 		targSeqSet.setLabel(srcSeqSet.getLabel());
@@ -84,14 +84,14 @@ final class MergeSequenceSets<SS extends SequenceSet<S>, S extends Sequence<?>>
 			targSeqSet.clearSequences();
 		}
 
-		for (int i = 0; i < srcSeqSet.getOTUSet().getOTUs().size(); i++) {
+		for (int i = 0; i < srcSeqSet.getParent().getOTUs().size(); i++) {
 			final OTU sourceOTU =
-					srcSeqSet.getOTUSet()
+					srcSeqSet.getParent()
 							.getOTUs()
 							.get(i);
 
 			final S srcSeq = srcSeqSet.getSequence(sourceOTU);
-			final OTU targOTU = targSeqSet.getOTUSet()
+			final OTU targOTU = targSeqSet.getParent()
 							.getOTUs()
 							.get(i);
 

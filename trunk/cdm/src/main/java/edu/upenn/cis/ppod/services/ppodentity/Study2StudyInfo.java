@@ -132,7 +132,7 @@ final class Study2StudyInfo implements IStudy2StudyInfo {
 
 				int rowIdx = -1;
 
-				for (final OTU otu : matrix.getOTUSet().getOTUs()) {
+				for (final OTU otu : matrix.getParent().getOTUs()) {
 					final StandardRow row = matrix.getRow(otu);
 					rowIdx++;
 					final Long rowVersion = row.getVersionInfo()
@@ -176,7 +176,7 @@ final class Study2StudyInfo implements IStudy2StudyInfo {
 
 				int rowIdx = -1;
 
-				for (final OTU otu : matrix.getOTUSet().getOTUs()) {
+				for (final OTU otu : matrix.getParent().getOTUs()) {
 					final DNARow row = matrix.getRow(otu);
 					rowIdx++;
 					final Long rowVersion =
@@ -224,13 +224,14 @@ final class Study2StudyInfo implements IStudy2StudyInfo {
 				treeSetInfo.setDocId(treeSet.getDocId());
 
 				for (final Tree tree : treeSet.getTrees()) {
-					final PPodEntityInfo treeInfo = pPodEntityInfoProvider
-							.get();
+					final PPodEntityInfo treeInfo = 
+						pPodEntityInfoProvider.get();
 					treeSetInfo.getTreeInfos().add(treeInfo);
 					treeInfo.setEntityId(tree.getId());
 					treeInfo.setPPodId(tree.getPPodId());
-					treeInfo.setVersion(tree.getVersionInfo()
-							.getVersion());
+					treeInfo.setVersion(
+							tree.getVersionInfo()
+									.getVersion());
 				}
 			}
 		}

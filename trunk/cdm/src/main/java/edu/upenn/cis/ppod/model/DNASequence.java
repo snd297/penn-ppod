@@ -26,6 +26,8 @@ import javax.persistence.Table;
 
 import com.google.common.collect.ImmutableSet;
 
+import edu.umd.cs.findbugs.annotations.CheckForNull;
+import edu.umd.cs.findbugs.annotations.Nullable;
 import edu.upenn.cis.ppod.modelinterfaces.IOTUKeyedMapValue;
 import edu.upenn.cis.ppod.util.IVisitor;
 
@@ -42,8 +44,23 @@ public class DNASequence extends Sequence<DNASequenceSet> {
 	 * The characters that are legal in a {@code DNASequence}.
 	 */
 	public final static Set<java.lang.Character> LEGAL_CHARS =
-			ImmutableSet.of('A', 'C', 'G', 'T', 'R', 'Y', 'K', 'M', 'S', 'W',
-					'B', 'D', 'H', 'V', 'N', '-');
+			ImmutableSet.of(
+					'A',
+					'C',
+					'G',
+					'T',
+					'R',
+					'Y',
+					'K',
+					'M',
+					'S',
+					'W',
+					'B',
+					'D',
+					'H',
+					'V',
+					'N',
+					'-');
 
 	/**
 	 * The name of the {@code DNASequence} table.
@@ -54,6 +71,7 @@ public class DNASequence extends Sequence<DNASequenceSet> {
 			TABLE + "_" + PersistentObject.ID_COLUMN;
 
 	@ManyToOne(fetch = FetchType.LAZY, optional = false)
+	@CheckForNull
 	private DNASequenceSet parent;
 
 	@Override
@@ -62,6 +80,7 @@ public class DNASequence extends Sequence<DNASequenceSet> {
 		visitor.visitDNASequence(this);
 	}
 
+	@Nullable
 	public DNASequenceSet getParent() {
 		return parent;
 	}
@@ -81,7 +100,7 @@ public class DNASequence extends Sequence<DNASequenceSet> {
 	}
 
 	public IOTUKeyedMapValue<DNASequenceSet> setParent(
-			final DNASequenceSet parent) {
+			@CheckForNull final DNASequenceSet parent) {
 		this.parent = parent;
 		return this;
 	}

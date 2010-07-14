@@ -48,19 +48,19 @@ public class ModelAssert {
 				actualSeqSet.getSequences().size(),
 				expectedSeqSet.getSequences().size());
 
-		assertEquals(actualSeqSet.getOTUSet().getOTUs().size(),
-				expectedSeqSet.getOTUSet().getOTUs().size());
+		assertEquals(actualSeqSet.getParent().getOTUs().size(),
+				expectedSeqSet.getParent().getOTUs().size());
 
-		for (int otuPos = 0; otuPos < actualSeqSet.getOTUSet().getOTUs().size(); otuPos++) {
+		for (int otuPos = 0; otuPos < actualSeqSet.getParent().getOTUs().size(); otuPos++) {
 			assertEqualsSequences(
 					actualSeqSet
 							.getSequence(actualSeqSet
-									.getOTUSet()
+									.getParent()
 									.getOTUs()
 									.get(otuPos)),
 									expectedSeqSet
 											.getSequence(expectedSeqSet
-													.getOTUSet()
+													.getParent()
 													.getOTUs()
 													.get(otuPos)));
 		}
@@ -133,7 +133,7 @@ public class ModelAssert {
 									StandardState.getStateNumber));
 
 			assertNotNull(expectedState);
-			assertTrue(expectedState.getCharacter() == expectedCharacter);
+			assertTrue(expectedState.getParent() == expectedCharacter);
 			assertEqualsStandardStates(
 					actualState,
 					expectedState);
@@ -193,7 +193,7 @@ public class ModelAssert {
 		assertEquals(actualMatrix.getDescription(), expectedMatrix
 				.getDescription());
 
-		assertEqualsOTUSet(actualMatrix.getOTUSet(), expectedMatrix.getOTUSet());
+		assertEqualsOTUSet(actualMatrix.getParent(), expectedMatrix.getParent());
 
 		assertEquals(actualMatrix.getCharactersModifiable().size(),
 				actualMatrix
@@ -214,9 +214,9 @@ public class ModelAssert {
 		assertEquals(actualMatrix.getRows().size(),
 				expectedMatrix.getRows().size());
 
-		for (final Iterator<OTU> actualOTUIterator = actualMatrix.getOTUSet()
+		for (final Iterator<OTU> actualOTUIterator = actualMatrix.getParent()
 				.getOTUs()
-				.iterator(), expectedOTUIterator = expectedMatrix.getOTUSet()
+				.iterator(), expectedOTUIterator = expectedMatrix.getParent()
 				.getOTUs()
 				.iterator(); actualOTUIterator.hasNext()
 								&& expectedOTUIterator.hasNext();) {
