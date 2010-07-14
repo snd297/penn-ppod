@@ -61,7 +61,7 @@ public abstract class Sequence<SS extends SequenceSet<?>>
 	@CheckForNull
 	private String name;
 
-	protected Sequence() {}
+	Sequence() {}
 
 	/**
 	 * Get the accession.

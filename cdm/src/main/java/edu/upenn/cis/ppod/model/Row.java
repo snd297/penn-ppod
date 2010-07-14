@@ -101,7 +101,7 @@ public abstract class Row<C extends Cell<?, ?>, M extends Matrix<?>>
 	 * 
 	 * @return a modifiable reference to this row's cells
 	 */
-	protected abstract List<C> getCellsModifiable();
+	abstract List<C> getCellsModifiable();
 
 	/**
 	 * Set the cells of this row.
@@ -118,7 +118,7 @@ public abstract class Row<C extends Cell<?, ?>, M extends Matrix<?>>
 	 */
 	public abstract List<C> setCells(final List<? extends C> cells);
 
-	protected List<C> setCellsHelper(
+	List<C> setCellsHelper(
 			final List<? extends C> cells) {
 		checkNotNull(cells);
 

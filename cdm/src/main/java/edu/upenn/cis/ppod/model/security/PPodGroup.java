@@ -28,6 +28,8 @@ import javax.persistence.Table;
 
 import org.hibernate.annotations.Cascade;
 
+import edu.upenn.cis.ppod.util.IVisitor;
+
 /**
  * Group permissions.
  * <p>
@@ -68,5 +70,10 @@ public final class PPodGroup extends Party {
 	 */
 	public Set<Party> getParties() {
 		return Collections.unmodifiableSet(parties);
+	}
+
+	public void accept(IVisitor visitor) {
+		// TODO Auto-generated method stub
+		throw new UnsupportedOperationException();
 	}
 }

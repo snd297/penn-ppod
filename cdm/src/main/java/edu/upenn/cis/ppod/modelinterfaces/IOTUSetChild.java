@@ -15,13 +15,18 @@
  */
 package edu.upenn.cis.ppod.modelinterfaces;
 
+import edu.upenn.cis.ppod.model.OTUSet;
+
 /**
- * {@code IVersioned}s that contain an {@code OTUSet}.
- * <p>
- * This interface was cooked up for {@link OTUKeyedMap}.
+ * A child of an {@code OTUSet}.
  * 
  * @author Sam Donnelly
  */
-public interface IVersionedWithOTUSet extends IVersioned, IWithOTUSet {
-
+public interface IOTUSetChild extends IVersioned, IVisitable {
+	/**
+	 * Get the parent OTU set.
+	 * 
+	 * @return the parent OTU set
+	 */
+	OTUSet getParent();
 }

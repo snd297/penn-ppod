@@ -9,7 +9,7 @@ import edu.umd.cs.findbugs.annotations.CheckForNull;
 import edu.upenn.cis.ppod.model.OTU;
 import edu.upenn.cis.ppod.util.IPair;
 
-public interface IOTUKeyedMapPlus<V extends IOTUKeyedMapValue<?>, P extends IVersionedWithOTUSet, OP extends IPair<OTU, V>>
+public interface IOTUKeyedMapPlus<V extends IOTUKeyedMapValue<?>, P extends IOTUSetChild, OP extends IPair<OTU, V>>
 		extends IOTUKeyedMap<V> {
 
 	/**

@@ -119,7 +119,6 @@ public abstract class PPodEntity
 
 	protected PPodEntity() {}
 
-	@Override
 	public void accept(final IVisitor visitor) {
 		checkNotNull(visitor);
 		for (final Attachment attachment : getAttachments()) {

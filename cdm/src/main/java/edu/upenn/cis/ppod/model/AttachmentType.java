@@ -66,7 +66,6 @@ public class AttachmentType extends PersistentObjectWithXmlId {
 
 	AttachmentType() {}
 
-	@Override
 	public void accept(final IVisitor visitor) {
 		checkNotNull(visitor);
 		visitor.visitAttachmentType(this);

@@ -33,7 +33,6 @@ import com.google.common.annotations.VisibleForTesting;
 
 import edu.umd.cs.findbugs.annotations.CheckForNull;
 import edu.upenn.cis.ppod.modelinterfaces.IPersistentObject;
-import edu.upenn.cis.ppod.util.IVisitor;
 
 /**
  * Base class for {@code edu.upenn.cis.ppod.model} (and subpackages) entities.
@@ -73,10 +72,6 @@ public abstract class PersistentObject implements IPersistentObject {
 
 	/** Default constructor. */
 	protected PersistentObject() {}
-
-	public void accept(final IVisitor visitor) {
-		throw new UnsupportedOperationException();
-	}
 
 	public void beforeUnmarshal(
 			@CheckForNull final Unmarshaller u,

@@ -23,7 +23,7 @@ import edu.umd.cs.findbugs.annotations.CheckForNull;
  * 
  * @author Sam Donnelly
  */
-public interface IOTUKeyedMapValue<P> extends IPersistentObject {
+public interface IOTUKeyedMapValue<P> extends IVisitable {
 
 	/**
 	 * Get the parent.

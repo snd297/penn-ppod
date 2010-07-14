@@ -41,7 +41,7 @@ import javax.xml.bind.annotation.XmlElement;
 
 import com.google.common.collect.Iterators;
 
-import edu.upenn.cis.ppod.modelinterfaces.IVersionedWithOTUSet;
+import edu.upenn.cis.ppod.modelinterfaces.IOTUSetChild;
 import edu.upenn.cis.ppod.util.IVisitor;
 
 /**
@@ -54,7 +54,7 @@ import edu.upenn.cis.ppod.util.IVisitor;
 @Table(name = TreeSet.TABLE)
 public class TreeSet
 		extends UUPPodEntityWithXmlId
-		implements IVersionedWithOTUSet {
+		implements IOTUSetChild {
 
 	public static final String TABLE = "TREE_SET";
 

@@ -19,6 +19,7 @@ import static org.testng.Assert.assertEquals;
 import static org.testng.Assert.assertFalse;
 import static org.testng.Assert.assertNotNull;
 import static org.testng.Assert.assertNull;
+import static org.testng.Assert.assertSame;
 import static org.testng.Assert.assertTrue;
 
 import java.util.Collections;
@@ -34,7 +35,7 @@ import com.google.inject.Provider;
 
 import edu.upenn.cis.ppod.TestGroupDefs;
 
-@Test(groups = { TestGroupDefs.FAST })
+@Test(groups = { TestGroupDefs.FAST, TestGroupDefs.SINGLE })
 public class CellTest {
 
 	@Inject
@@ -263,4 +264,84 @@ public class CellTest {
 
 	}
 
+	@Test(expectedExceptions = IllegalArgumentException.class)
+	public void setPolymorphicOrUncertainWSingle() {
+		final Cell<DNANucleotide, ?> cell = dnaCellProvider.get();
+		cell.setPolymorphicOrUncertain(
+				Cell.Type.SINGLE,
+				ImmutableSet.of(DNANucleotide.A, DNANucleotide.C));
+	}
+
+	@Test(expectedExceptions = IllegalArgumentException.class)
+	public void setPolymorphicOrUncertainWInapplicable() {
+		final Cell<DNANucleotide, ?> cell = dnaCellProvider.get();
+		cell.setPolymorphicOrUncertain(
+				Cell.Type.INAPPLICABLE,
+				ImmutableSet.of(DNANucleotide.A, DNANucleotide.C));
+	}
+
+	@Test(expectedExceptions = IllegalArgumentException.class)
+	public void setPolymorphicOrUncertainWUnassigned() {
+		final Cell<DNANucleotide, ?> cell = dnaCellProvider.get();
+		cell.setPolymorphicOrUncertain(
+				Cell.Type.UNASSIGNED,
+				ImmutableSet.of(DNANucleotide.A, DNANucleotide.C));
+	}
+
+	@Test(expectedExceptions = IllegalArgumentException.class)
+	public void setPolymorphicOrUncertainWTooFewElements() {
+		final Cell<DNANucleotide, ?> cell = dnaCellProvider.get();
+		cell.setPolymorphicOrUncertain(
+				Cell.Type.POLYMORPHIC,
+				ImmutableSet.of(DNANucleotide.A));
+	}
+
+	/**
+	 * Straight test of
+	 * {@link Cell#setPolymorphicOrUncertain(edu.upenn.cis.ppod.model.Cell.Type, Set)}
+	 * . NOTE: we don't check to see if the pPOD version number has been
+	 * incremented since that's really not part of the method spec. That
+	 * functionality is only guaranteed in the public mutators.
+	 */
+	@Test
+	public void setPolymorphicOrUncertain() {
+		final Cell<DNANucleotide, ?> cell = dnaCellProvider.get();
+
+		final Set<DNANucleotide> nucleotides =
+				EnumSet.of(DNANucleotide.A, DNANucleotide.C);
+
+		cell.setPolymorphicOrUncertain(
+				Cell.Type.UNCERTAIN,
+				nucleotides);
+
+		assertSame(Cell.Type.UNCERTAIN, cell.getType());
+		assertEquals(nucleotides, cell.getElements());
+	}
+
+	/**
+	 * Test to make sure
+	 * {@link Cell#setPolymorphicOrUncertain(edu.upenn.cis.ppod.model.Cell.Type, Set)}
+	 * works when we call it with the same values a cell already has. NOTE: we
+	 * don't check to see if the pPOD version number has been incremented since
+	 * that's really not part of the method spec. That functionality is only
+	 * guaranteed in the public mutators.
+	 */
+	@Test
+	public void setPolymorphicOrUncertainWSameTypeAndNucleotides() {
+		final Cell<DNANucleotide, ?> cell = dnaCellProvider.get();
+
+		final Set<DNANucleotide> nucleotides =
+				EnumSet.of(DNANucleotide.A, DNANucleotide.C);
+
+		cell.setPolymorphicOrUncertain(
+				Cell.Type.UNCERTAIN,
+				nucleotides);
+
+		cell.setPolymorphicOrUncertain(
+				Cell.Type.UNCERTAIN,
+				nucleotides);
+
+		assertSame(Cell.Type.UNCERTAIN, cell.getType());
+		assertEquals(nucleotides, cell.getElements());
+	}
 }
