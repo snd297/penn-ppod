@@ -32,6 +32,8 @@ import javax.persistence.Table;
 import org.hibernate.annotations.Cascade;
 import org.hibernate.annotations.Index;
 
+import edu.upenn.cis.ppod.util.IVisitor;
+
 
 /**
  * Simple class that represents any User domain entity in any application.
@@ -126,5 +128,10 @@ public final class User extends Party {
 		this.roles.clear();
 		this.roles.addAll(roles);
 		return this;
+	}
+
+	public void accept(IVisitor visitor) {
+		// TODO Auto-generated method stub
+		throw new UnsupportedOperationException();
 	}
 }

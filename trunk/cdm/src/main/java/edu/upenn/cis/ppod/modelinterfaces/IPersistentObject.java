@@ -17,16 +17,12 @@ package edu.upenn.cis.ppod.modelinterfaces;
 
 import javax.annotation.Nullable;
 
-import edu.upenn.cis.ppod.util.IVisitor;
-
 /**
  * A Hibernate-persisted entity.
  * 
  * @author Sam Donnelly
  */
 public interface IPersistentObject {
-
-	void accept(IVisitor visitor);
 
 	/**
 	 * The surrogate key of the entity

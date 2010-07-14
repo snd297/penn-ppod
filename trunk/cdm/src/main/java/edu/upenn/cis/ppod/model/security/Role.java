@@ -33,6 +33,7 @@ import javax.persistence.Table;
 import org.hibernate.annotations.Index;
 
 import edu.upenn.cis.ppod.model.PersistentObject;
+import edu.upenn.cis.ppod.util.IVisitor;
 
 /**
  * Model object that represents a security role.
@@ -117,6 +118,11 @@ public final class Role extends PersistentObject {
 		this.pPodPermissions.clear();
 		this.pPodPermissions.addAll(pPodPermissions);
 		return this;
+	}
+
+	public void accept(IVisitor visitor) {
+		// TODO Auto-generated method stub
+		throw new UnsupportedOperationException();
 	}
 
 }

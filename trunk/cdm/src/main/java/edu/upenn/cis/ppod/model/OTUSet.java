@@ -44,8 +44,7 @@ import javax.xml.bind.annotation.XmlAttribute;
 import javax.xml.bind.annotation.XmlElement;
 
 import edu.upenn.cis.ppod.modelinterfaces.ILabeled;
-import edu.upenn.cis.ppod.modelinterfaces.IPersistentObject;
-import edu.upenn.cis.ppod.modelinterfaces.IVersionedWithOTUSet;
+import edu.upenn.cis.ppod.modelinterfaces.IOTUSetChild;
 import edu.upenn.cis.ppod.util.IVisitor;
 
 /**
@@ -127,7 +126,7 @@ public class OTUSet extends UUPPodEntityWithXmlId {
 	public void accept(final IVisitor visitor) {
 		checkNotNull(visitor);
 		visitor.visitOTUSet(this);
-		for (final IPersistentObject child : getChildren()) {
+		for (final IOTUSetChild child : getChildren()) {
 			child.accept(visitor);
 		}
 		super.accept(visitor);
@@ -268,8 +267,8 @@ public class OTUSet extends UUPPodEntityWithXmlId {
 		this.parent = (Study) parent;
 	}
 
-	protected Set<IVersionedWithOTUSet> getChildren() {
-		final Set<IVersionedWithOTUSet> children = newHashSet();
+	protected Set<IOTUSetChild> getChildren() {
+		final Set<IOTUSetChild> children = newHashSet();
 		children.addAll(getOTUs());
 		children.addAll(getStandardMatrices());
 		children.addAll(getDNAMatrices());

@@ -28,7 +28,7 @@ import javax.xml.bind.annotation.XmlAttribute;
 import edu.umd.cs.findbugs.annotations.CheckForNull;
 import edu.umd.cs.findbugs.annotations.Nullable;
 import edu.upenn.cis.ppod.modelinterfaces.ILabeled;
-import edu.upenn.cis.ppod.modelinterfaces.IVersionedWithOTUSet;
+import edu.upenn.cis.ppod.modelinterfaces.IOTUSetChild;
 import edu.upenn.cis.ppod.util.IVisitor;
 
 /**
@@ -41,7 +41,7 @@ import edu.upenn.cis.ppod.util.IVisitor;
 @Table(name = OTU.TABLE)
 public class OTU
 		extends UUPPodEntityWithXmlId
-		implements ILabeled, IVersionedWithOTUSet {
+		implements ILabeled, IOTUSetChild {
 
 	/** The table for this entity. */
 	public static final String TABLE = "OTU";
