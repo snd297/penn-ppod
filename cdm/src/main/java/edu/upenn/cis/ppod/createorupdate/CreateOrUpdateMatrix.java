@@ -88,12 +88,12 @@ class CreateOrUpdateMatrix<M extends Matrix<R>, R extends Row<C, ?>, C extends C
 
 		int sourceOTUPos = -1;
 
-		for (final OTU sourceOTU : sourceMatrix.getOTUSet().getOTUs()) {
+		for (final OTU sourceOTU : sourceMatrix.getParent().getOTUs()) {
 			sourceOTUPos++;
 			final R sourceRow = sourceMatrix.getRow(sourceOTU);
 
 			final OTU dbOTU =
-					dbMatrix.getOTUSet()
+					dbMatrix.getParent()
 							.getOTUs()
 							.get(sourceOTUPos);
 

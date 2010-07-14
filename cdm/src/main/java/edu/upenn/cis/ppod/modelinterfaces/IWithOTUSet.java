@@ -24,5 +24,5 @@ public interface IWithOTUSet {
 	 * 
 	 * @return the {@code OTUSet} associated with this object
 	 */
-	OTUSet getOTUSet();
+	OTUSet getParent();
 }

@@ -73,7 +73,7 @@ public class CreateOrUpdateStandardMatrixTest {
 	private static Map<StandardRow, List<StandardCell>> stashCells(
 			final StandardMatrix matrix) {
 		final Map<StandardRow, List<StandardCell>> rowsToCells = newHashMap();
-		for (final OTU otu : matrix.getOTUSet().getOTUs()) {
+		for (final OTU otu : matrix.getParent().getOTUs()) {
 			final StandardRow row = matrix.getRow(otu);
 			rowsToCells.put(row,
 							newArrayList(row
@@ -85,7 +85,7 @@ public class CreateOrUpdateStandardMatrixTest {
 	private static void putBackCells(final StandardMatrix matrix,
 			final Map<StandardRow, List<StandardCell>> rowsToCells) {
 		assertEquals(matrix.getRows().size(), rowsToCells.size());
-		for (final OTU otu : matrix.getOTUSet().getOTUs()) {
+		for (final OTU otu : matrix.getParent().getOTUs()) {
 			final StandardRow row = matrix.getRow(otu);
 			row.setCells(rowsToCells.get(row));
 		}
@@ -101,7 +101,7 @@ public class CreateOrUpdateStandardMatrixTest {
 						mergeAttachment,
 						dao,
 						newVersionInfo);
-		final OTUSet fakeDbOTUSet = sourceMatrix.getOTUSet();
+		final OTUSet fakeDbOTUSet = sourceMatrix.getParent();
 
 		final StandardMatrix targetMatrix =
 				characterStateMatrixProvider.get();
@@ -128,7 +128,7 @@ public class CreateOrUpdateStandardMatrixTest {
 				createOrUpdateMatrixFactory.create(mergeAttachment,
 						dao,
 						newVersionInfo);
-		final OTUSet fakeDbOTUSet = sourceMatrix.getOTUSet();
+		final OTUSet fakeDbOTUSet = sourceMatrix.getParent();
 
 		final StandardMatrix targetMatrix =
 				characterStateMatrixProvider.get();
@@ -151,24 +151,24 @@ public class CreateOrUpdateStandardMatrixTest {
 		}
 
 		final List<OTU> shuffledSourceOTUs =
-				newArrayList(sourceMatrix.getOTUSet().getOTUs());
+				newArrayList(sourceMatrix.getParent().getOTUs());
 		shuffledSourceOTUs.set(0,
-				sourceMatrix.getOTUSet()
+				sourceMatrix.getParent()
 						.getOTUs()
 						.get(shuffledSourceOTUs.size() / 2));
 		shuffledSourceOTUs.set(shuffledSourceOTUs.size() / 2,
-				sourceMatrix.getOTUSet()
+				sourceMatrix.getParent()
 						.getOTUs()
 						.get(0));
 
-		sourceMatrix.getOTUSet().setOTUs(shuffledSourceOTUs);
+		sourceMatrix.getParent().setOTUs(shuffledSourceOTUs);
 
-		for (final OTU targetOTU : targetMatrix.getOTUSet().getOTUs()) {
+		for (final OTU targetOTU : targetMatrix.getParent().getOTUs()) {
 			final StandardRow targetRow = targetMatrix.getRow(targetOTU);
 			targetRow.setVersion(1L);
 		}
 
-		for (final OTU sourceOTU : sourceMatrix.getOTUSet().getOTUs()) {
+		for (final OTU sourceOTU : sourceMatrix.getParent().getOTUs()) {
 			final StandardRow sourceRow = sourceMatrix.getRow(sourceOTU);
 			sourceRow.setVersion(1L);
 		}
@@ -194,7 +194,7 @@ public class CreateOrUpdateStandardMatrixTest {
 							mergeAttachment,
 							dao,
 							newVersionInfo);
-		final OTUSet fakeDbOTUSet = sourceMatrix.getOTUSet();
+		final OTUSet fakeDbOTUSet = sourceMatrix.getParent();
 
 		final StandardMatrix targetMatrix = characterStateMatrixProvider
 					.get();
@@ -227,7 +227,7 @@ public class CreateOrUpdateStandardMatrixTest {
 					sourceMatrix.getCharacters().get(0));
 		sourceMatrix.setCharacters(newSourceMatrixCharacters);
 
-		for (final OTU sourceOTU : sourceMatrix.getOTUSet().getOTUs()) {
+		for (final OTU sourceOTU : sourceMatrix.getParent().getOTUs()) {
 			final StandardRow sourceRow = sourceMatrix
 						.getRow(sourceOTU);
 
@@ -259,7 +259,7 @@ public class CreateOrUpdateStandardMatrixTest {
 						.create(mergeAttachment,
 								dao,
 								newVersionInfo);
-		final OTUSet fakeDbOTUSet = sourceMatrix.getOTUSet();
+		final OTUSet fakeDbOTUSet = sourceMatrix.getParent();
 
 		final StandardMatrix targetMatrix =
 				characterStateMatrixProvider.get();
@@ -296,7 +296,7 @@ public class CreateOrUpdateStandardMatrixTest {
 
 		final List<StandardCell> removedSourceCells = newArrayList();
 
-		for (final OTU sourceOTU : sourceMatrix.getOTUSet().getOTUs()) {
+		for (final OTU sourceOTU : sourceMatrix.getParent().getOTUs()) {
 			final StandardRow sourceRow = sourceMatrix.getRow(sourceOTU);
 			final List<StandardCell> newSourceCells =
 					newArrayList(sourceRow.getCells());
@@ -307,7 +307,7 @@ public class CreateOrUpdateStandardMatrixTest {
 			sourceRow.setCells(newSourceCells);
 		}
 
-		for (final OTU targetOTU : targetMatrix.getOTUSet().getOTUs()) {
+		for (final OTU targetOTU : targetMatrix.getParent().getOTUs()) {
 			final StandardRow targetRow = targetMatrix.getRow(targetOTU);
 			// It will be the _last_ cell in the row that is deleted by the dao
 			removedSourceCells

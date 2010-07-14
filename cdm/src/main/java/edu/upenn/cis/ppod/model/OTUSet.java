@@ -75,7 +75,7 @@ public class OTUSet extends UUPPodEntityWithXmlId {
 	/** The column that stores the label. */
 	public static final String LABEL_COLUMN = "LABEL";
 
-	@OneToMany(mappedBy = "otuSet", cascade = CascadeType.ALL,
+	@OneToMany(mappedBy = "parent", cascade = CascadeType.ALL,
 			orphanRemoval = true)
 	private final Set<StandardMatrix> standardMatrices = newHashSet();
 
@@ -84,11 +84,11 @@ public class OTUSet extends UUPPodEntityWithXmlId {
 	@CheckForNull
 	private String description;
 
-	@OneToMany(mappedBy = "otuSet", cascade = CascadeType.ALL,
+	@OneToMany(mappedBy = "parent", cascade = CascadeType.ALL,
 			orphanRemoval = true)
 	private final Set<DNAMatrix> dnaMatrices = newHashSet();
 
-	@OneToMany(mappedBy = "otuSet", cascade = CascadeType.ALL,
+	@OneToMany(mappedBy = "parent", cascade = CascadeType.ALL,
 			orphanRemoval = true)
 	private final Set<DNASequenceSet> dnaSequenceSets = newHashSet();
 
@@ -110,10 +110,10 @@ public class OTUSet extends UUPPodEntityWithXmlId {
 	@CheckForNull
 	@ManyToOne(fetch = FetchType.LAZY, optional = false)
 	@JoinColumn(name = Study.JOIN_COLUMN)
-	private Study study;
+	private Study parent;
 
 	/** The tree sets that reference this OTU set. */
-	@OneToMany(mappedBy = "otuSet", cascade = CascadeType.ALL,
+	@OneToMany(mappedBy = "parent", cascade = CascadeType.ALL,
 			orphanRemoval = true)
 	private final Set<TreeSet> treeSets = newHashSet();
 
@@ -143,7 +143,7 @@ public class OTUSet extends UUPPodEntityWithXmlId {
 	public DNAMatrix addDNAMatrix(final DNAMatrix matrix) {
 		checkNotNull(matrix);
 		if (dnaMatrices.add(matrix)) {
-			matrix.setOTUSet(this);
+			matrix.setParent(this);
 			setInNeedOfNewVersion();
 		}
 		return matrix;
@@ -162,7 +162,7 @@ public class OTUSet extends UUPPodEntityWithXmlId {
 			final DNASequenceSet sequenceSet) {
 		checkNotNull(sequenceSet);
 		if (dnaSequenceSets.add(sequenceSet)) {
-			sequenceSet.setOTUSet(this);
+			sequenceSet.setParent(this);
 			setInNeedOfNewVersion();
 		}
 		return sequenceSet;
@@ -211,7 +211,7 @@ public class OTUSet extends UUPPodEntityWithXmlId {
 									+ otu.getLabel() + "'");
 		}
 		if (getOTUsModifiable().add(otu)) {
-			otu.setOTUSet(this);
+			otu.setParent(this);
 			setInNeedOfNewVersion();
 		}
 		return otu;
@@ -230,7 +230,7 @@ public class OTUSet extends UUPPodEntityWithXmlId {
 			final StandardMatrix matrix) {
 		checkNotNull(matrix);
 		if (standardMatrices.add(matrix)) {
-			matrix.setOTUSet(this);
+			matrix.setParent(this);
 			setInNeedOfNewVersion();
 		}
 		return matrix;
@@ -247,7 +247,7 @@ public class OTUSet extends UUPPodEntityWithXmlId {
 	public TreeSet addTreeSet(final TreeSet treeSet) {
 		checkNotNull(treeSet);
 		if (getTreeSetsModifiable().add(treeSet)) {
-			treeSet.setOTUSet(this);
+			treeSet.setParent(this);
 			setInNeedOfNewVersion();
 		}
 		return treeSet;
@@ -265,7 +265,7 @@ public class OTUSet extends UUPPodEntityWithXmlId {
 			final Object parent) {
 		checkNotNull(parent);
 		super.afterUnmarshal(u, parent);
-		this.study = (Study) parent;
+		this.parent = (Study) parent;
 	}
 
 	protected Set<IVersionedWithOTUSet> getChildren() {
@@ -337,15 +337,6 @@ public class OTUSet extends UUPPodEntityWithXmlId {
 		return otus;
 	}
 
-	public Set<StandardMatrix> getStandardMatrices() {
-		return Collections.unmodifiableSet(standardMatrices);
-	}
-
-	@XmlElement(name = "matrix")
-	protected Set<StandardMatrix> getStandardMatricesModifiable() {
-		return standardMatrices;
-	}
-
 	/**
 	 * Get the study to which this OTU set belongs. Will be {@code null} when
 	 * this OTU set does not belong to a {@code Study}.
@@ -353,8 +344,17 @@ public class OTUSet extends UUPPodEntityWithXmlId {
 	 * @return the study to which this OTU set belongs
 	 */
 	@Nullable
-	public Study getStudy() {
-		return study;
+	public Study getParent() {
+		return parent;
+	}
+
+	public Set<StandardMatrix> getStandardMatrices() {
+		return Collections.unmodifiableSet(standardMatrices);
+	}
+
+	@XmlElement(name = "matrix")
+	protected Set<StandardMatrix> getStandardMatricesModifiable() {
+		return standardMatrices;
 	}
 
 	/**
@@ -382,7 +382,7 @@ public class OTUSet extends UUPPodEntityWithXmlId {
 	public boolean removeDNAMatrix(final DNAMatrix matrix) {
 		checkNotNull(matrix);
 		if (getDNAMatricesModifiable().remove(matrix)) {
-			matrix.setOTUSet(null);
+			matrix.setParent(null);
 			setInNeedOfNewVersion();
 			return true;
 		}
@@ -400,7 +400,7 @@ public class OTUSet extends UUPPodEntityWithXmlId {
 	public boolean removeDNASequenceSet(final DNASequenceSet sequenceSet) {
 		checkNotNull(sequenceSet);
 		if (getDNASequenceSetsModifiable().remove(sequenceSet)) {
-			sequenceSet.setOTUSet(null);
+			sequenceSet.setParent(null);
 			setInNeedOfNewVersion();
 			return true;
 		}
@@ -418,7 +418,7 @@ public class OTUSet extends UUPPodEntityWithXmlId {
 	public boolean removeStandardMatrix(final StandardMatrix matrix) {
 		checkNotNull(matrix);
 		if (getStandardMatricesModifiable().remove(matrix)) {
-			matrix.setOTUSet(null);
+			matrix.setParent(null);
 			setInNeedOfNewVersion();
 			return true;
 		}
@@ -428,7 +428,7 @@ public class OTUSet extends UUPPodEntityWithXmlId {
 	public boolean removeTreeSet(final TreeSet treeSet) {
 		checkNotNull(treeSet);
 		if (getTreeSetsModifiable().remove(treeSet)) {
-			treeSet.setOTUSet(null);
+			treeSet.setParent(null);
 			setInNeedOfNewVersion();
 			return true;
 		}
@@ -460,7 +460,7 @@ public class OTUSet extends UUPPodEntityWithXmlId {
 	 */
 	@Override
 	public OTUSet setInNeedOfNewVersion() {
-		final Study study = getStudy();
+		final Study study = getParent();
 		if (study != null) {
 			study.setInNeedOfNewVersion();
 		}
@@ -509,7 +509,7 @@ public class OTUSet extends UUPPodEntityWithXmlId {
 		removedOTUs.removeAll(newOTUs);
 
 		for (final OTU removedOTU : removedOTUs) {
-			removedOTU.setOTUSet(null);
+			removedOTU.setParent(null);
 		}
 
 		getOTUsModifiable().clear();
@@ -527,28 +527,28 @@ public class OTUSet extends UUPPodEntityWithXmlId {
 	private void setOTUSetOnChildren() {
 		// Now let's let everyone know about the new OTUs
 		for (final OTU otu : getOTUs()) {
-			otu.setOTUSet(this);
+			otu.setParent(this);
 		}
 
 		for (final Matrix<?> matrix : getStandardMatrices()) {
-			matrix.setOTUSet(this);
+			matrix.setParent(this);
 		}
 
 		for (final Matrix<?> matrix : getDNAMatrices()) {
-			matrix.setOTUSet(this);
+			matrix.setParent(this);
 		}
 
 		for (final SequenceSet<?> sequenceSet : getDNASequenceSets()) {
-			sequenceSet.setOTUSet(this);
+			sequenceSet.setParent(this);
 		}
 
 		for (final TreeSet treeSet : getTreeSets()) {
-			treeSet.setOTUSet(this);
+			treeSet.setParent(this);
 		}
 	}
 
-	OTUSet setStudy(@CheckForNull final Study study) {
-		this.study = study;
+	OTUSet setParent(@CheckForNull final Study parent) {
+		this.parent = parent;
 		return this;
 	}
 

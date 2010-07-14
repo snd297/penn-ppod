@@ -89,7 +89,7 @@ public abstract class Matrix<R extends Row<?, ?>>
 	@ManyToOne(fetch = FetchType.LAZY, optional = false)
 	@JoinColumn(name = OTUSet.JOIN_COLUMN)
 	@CheckForNull
-	private OTUSet otuSet;
+	private OTUSet parent;
 
 	/** Default constructor. */
 	Matrix() {}
@@ -108,7 +108,7 @@ public abstract class Matrix<R extends Row<?, ?>>
 	@Override
 	public void afterUnmarshal(final Unmarshaller u, final Object parent) {
 		super.afterUnmarshal(u, parent);
-		otuSet = (OTUSet) parent;
+		this.parent = (OTUSet) parent;
 		setColumnsSize(getColumnVersions().size());
 	}
 
@@ -212,8 +212,8 @@ public abstract class Matrix<R extends Row<?, ?>>
 	 * @return this matrix's {@code OTUSet}
 	 */
 	@Nullable
-	public OTUSet getOTUSet() {
-		return otuSet;
+	public OTUSet getParent() {
+		return parent;
 	}
 
 	/**
@@ -369,8 +369,8 @@ public abstract class Matrix<R extends Row<?, ?>>
 	 */
 	@Override
 	public Matrix<R> setInNeedOfNewVersion() {
-		if (getOTUSet() != null) {
-			getOTUSet().setInNeedOfNewVersion();
+		if (getParent() != null) {
+			getParent().setInNeedOfNewVersion();
 		}
 		super.setInNeedOfNewVersion();
 		return this;
@@ -411,9 +411,9 @@ public abstract class Matrix<R extends Row<?, ?>>
 	 * 
 	 * @return this
 	 */
-	Matrix<R> setOTUSet(
+	Matrix<R> setParent(
 			@CheckForNull final OTUSet otuSet) {
-		this.otuSet = otuSet;
+		this.parent = otuSet;
 		getOTUKeyedRows().setOTUs();
 		return this;
 	}

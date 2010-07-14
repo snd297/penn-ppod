@@ -88,7 +88,7 @@ public class SequenceSetTest {
 		seq3.setSequence(seqStr3);
 
 		final OTUSet otuSet0 = otuSetProvider.get();
-		seqSet.setOTUSet(otuSet0);
+		seqSet.setParent(otuSet0);
 
 		final OTU otu0 = otuSet0.addOTU(otuProvider.get()).setLabel("otu-0");
 		final OTU otu1 = otuSet0.addOTU(otuProvider.get()).setLabel("otu-1");
@@ -123,7 +123,7 @@ public class SequenceSetTest {
 		seq3.setSequence(seqStr3);
 
 		final OTUSet otuSet0 = otuSetProvider.get();
-		seqSet.setOTUSet(otuSet0);
+		seqSet.setParent(otuSet0);
 
 		final OTU otu0 = otuSet0.addOTU(otuProvider.get()).setLabel("otu-0");
 		final OTU otu1 = otuSet0.addOTU(otuProvider.get()).setLabel("otu-1");
@@ -179,7 +179,7 @@ public class SequenceSetTest {
 		final SequenceSet<?> seqSet = dnaSequenceSetProvider.get();
 		final OTUSet otuSet = otuSetProvider.get();
 		seqSet.afterUnmarshal(null, otuSet);
-		assertSame(seqSet.getOTUSet(), otuSet);
+		assertSame(seqSet.getParent(), otuSet);
 	}
 
 	@Test

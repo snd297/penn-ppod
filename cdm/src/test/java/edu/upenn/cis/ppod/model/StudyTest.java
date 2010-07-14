@@ -55,7 +55,7 @@ public class StudyTest {
 
 		study.removeOTUSet(otuSet);
 		assertFalse(study.isInNeedOfNewVersion());
-		assertNull(otuSet.getStudy());
+		assertNull(otuSet.getParent());
 	}
 
 	@Test

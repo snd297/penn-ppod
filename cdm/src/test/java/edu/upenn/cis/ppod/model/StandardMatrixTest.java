@@ -134,9 +134,9 @@ public class StandardMatrixTest {
 		final int originalRowsSize = matrix.getRows().size();
 
 		final ImmutableList<OTU> otus210 = ImmutableList.of(otu2, otu1, otu0);
-		matrix.getOTUSet().setOTUs(otus210);
+		matrix.getParent().setOTUs(otus210);
 
-		assertEquals(matrix.getOTUSet().getOTUs(), otus210);
+		assertEquals(matrix.getParent().getOTUs(), otus210);
 		assertEquals(matrix.getRows().size(), originalRowsSize);
 
 	}
@@ -148,7 +148,7 @@ public class StandardMatrixTest {
 
 		final ImmutableList<OTU> otus12 = ImmutableList.of(otu1, otu2);
 
-		assertEquals(matrix.getOTUSet().getOTUs(), otus12);
+		assertEquals(matrix.getParent().getOTUs(), otus12);
 		assertEquals(matrix.getRows().size(), otus12.size());
 	}
 

@@ -66,10 +66,10 @@ public class StandardRowTest {
 	@BeforeMethod
 	public void beforeMethod() {
 		matrix = matrixProvider.get();
-		matrix.setOTUSet(otuSetProvider.get());
+		matrix.setParent(otuSetProvider.get());
 		otus = newArrayList();
 		otus.add(otuProvider.get().setLabel("OTU-0"));
-		matrix.getOTUSet().setOTUs(newArrayList(otus.get(0)));
+		matrix.getParent().setOTUs(newArrayList(otus.get(0)));
 		matrix.putRow(otus.get(0), rowProvider.get());
 		matrix.setCharacters(
 				newArrayList(
@@ -80,7 +80,7 @@ public class StandardRowTest {
 	public void addCellToMatrixWOneCharacter() {
 		final StandardCell cell = (StandardCell) cellProvider.get()
 				.setUnassigned();
-		matrix.getRow(matrix.getOTUSet().getOTUs().get(0)).setCells(
+		matrix.getRow(matrix.getParent().getOTUs().get(0)).setCells(
 				Arrays.asList(cell));
 
 		ModelAssert.assertEqualsStandardCells(cell, matrix.getRow(
@@ -90,11 +90,11 @@ public class StandardRowTest {
 	@Test
 	void setCells() {
 		matrix = matrixProvider.get();
-		matrix.setOTUSet(otuSetProvider.get());
+		matrix.setParent(otuSetProvider.get());
 		otus = newArrayList();
 		final OTU otu0 = otuProvider.get().setLabel("OTU-0");
 		otus.add(otu0);
-		matrix.getOTUSet().setOTUs(newArrayList(otus.get(0)));
+		matrix.getParent().setOTUs(newArrayList(otus.get(0)));
 		matrix.putRow(otus.get(0), rowProvider.get());
 
 		final StandardRow row = matrix.getRow(otu0);
@@ -137,7 +137,7 @@ public class StandardRowTest {
 		// shouldn't really matterJust call setUnassigned so that the cell is in
 		// a legal state - it shouldn't really matter
 		matrix.getRow(
-				matrix.getOTUSet().getOTUs().get(0))
+				matrix.getParent().getOTUs().get(0))
 				.setCells(
 						Arrays.asList((StandardCell) cellProvider.get()
 								.setUnassigned()));
@@ -149,6 +149,6 @@ public class StandardRowTest {
 				(StandardCell) cellProvider.get()
 						.setUnassigned(), (StandardCell) cellProvider
 						.get().setUnassigned());
-		matrix.getRow(matrix.getOTUSet().getOTUs().get(0)).setCells(cells);
+		matrix.getRow(matrix.getParent().getOTUs().get(0)).setCells(cells);
 	}
 }

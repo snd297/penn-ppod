@@ -68,7 +68,7 @@ public class OTU
 	@ManyToOne
 	@JoinColumn(name = OTUSet.JOIN_COLUMN, insertable = false,
 			updatable = false, nullable = false)
-	private OTUSet otuSet;
+	private OTUSet parent;
 
 	OTU() {}
 
@@ -87,7 +87,7 @@ public class OTU
 	@Override
 	public void afterUnmarshal(final Unmarshaller u, final Object parent) {
 		super.afterUnmarshal(u, parent);
-		this.otuSet = (OTUSet) parent;
+		this.parent = (OTUSet) parent;
 	}
 
 	/**
@@ -107,8 +107,8 @@ public class OTU
 	 * @return the {@code OTUSet} that owns this {@code OTU}
 	 */
 	@Nullable
-	public OTUSet getOTUSet() {
-		return otuSet;
+	public OTUSet getParent() {
+		return parent;
 	}
 
 	/**
@@ -119,8 +119,8 @@ public class OTU
 	 */
 	@Override
 	public OTU setInNeedOfNewVersion() {
-		if (getOTUSet() != null) {
-			getOTUSet().setInNeedOfNewVersion();
+		if (getParent() != null) {
+			getParent().setInNeedOfNewVersion();
 		}
 		super.setInNeedOfNewVersion();
 		return this;
@@ -156,8 +156,8 @@ public class OTU
 	 * 
 	 * @return this
 	 */
-	OTU setOTUSet(@CheckForNull final OTUSet otuSet) {
-		this.otuSet = otuSet;
+	OTU setParent(@CheckForNull final OTUSet parent) {
+		this.parent = parent;
 		return this;
 	}
 

@@ -104,7 +104,7 @@ public class MolecularSequenceTest {
 		final SequenceSet<DNASequence> sequenceSet = dnaSequenceSetProvider
 				.get();
 
-		sequenceSet.setOTUSet(otuSet);
+		sequenceSet.setParent(otuSet);
 
 		sequence.setSequence("");
 
