@@ -110,12 +110,10 @@ public class TreeSet
 	 * @param u See {@code Unmarshaller}
 	 * @param parent {@code Unmarshaller}
 	 */
-	@Override
 	public void afterUnmarshal(
 			@CheckForNull final Unmarshaller u,
 			final Object parent) {
 		checkNotNull(parent);
-		super.afterUnmarshal(u, parent);
 		this.parent = (OTUSet) parent;
 	}
 

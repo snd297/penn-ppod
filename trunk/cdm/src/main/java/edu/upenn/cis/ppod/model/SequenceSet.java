@@ -76,12 +76,10 @@ public abstract class SequenceSet<S extends Sequence<?>>
 	 * @param parent see {@code Unmarshaller}
 	 */
 	@OverridingMethodsMustInvokeSuper
-	@Override
 	public void afterUnmarshal(
 			@CheckForNull final Unmarshaller u,
 			final Object parent) {
 		checkNotNull(parent);
-		super.afterUnmarshal(u, parent);
 		setParent((OTUSet) parent);
 	}
 

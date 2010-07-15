@@ -272,9 +272,9 @@ public class Attachment extends UUPPodEntity {
 	 * @param u see {@code Unmarshaller}
 	 * @param parent see {@code Unmarshaller}
 	 */
-	@Override
-	public void afterUnmarshal(final Unmarshaller u, final Object parent) {
-		super.afterUnmarshal(u, parent);
+	public void afterUnmarshal(
+			@CheckForNull final Unmarshaller u,
+			final Object parent) {
 		attachee = (PPodEntity) parent;
 	}
 

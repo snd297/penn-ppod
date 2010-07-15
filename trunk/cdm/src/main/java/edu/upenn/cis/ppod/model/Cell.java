@@ -104,12 +104,10 @@ public abstract class Cell<E, R extends Row<?, ?>> extends PPodEntity {
 	 * @param u see {@code Unmarshaller}
 	 * @param parent see {@code Unmarshaller}
 	 */
-	@Override
 	public void afterUnmarshal(
 			@CheckForNull final Unmarshaller u,
 			final Object parent) {
 		checkNotNull(parent);
-		super.afterUnmarshal(u, parent);
 
 		@SuppressWarnings("unchecked")
 		final R row = (R) parent;
