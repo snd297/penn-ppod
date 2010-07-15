@@ -32,6 +32,8 @@ import javax.xml.bind.Marshaller;
 import javax.xml.bind.Unmarshaller;
 import javax.xml.bind.annotation.XmlAttribute;
 
+import com.google.common.annotations.VisibleForTesting;
+
 import edu.umd.cs.findbugs.annotations.CheckForNull;
 import edu.umd.cs.findbugs.annotations.Nullable;
 
@@ -108,6 +110,7 @@ public abstract class Cell<E, R extends Row<?, ?>> extends PPodEntity {
 			final Object parent) {
 		checkNotNull(parent);
 		super.afterUnmarshal(u, parent);
+
 		@SuppressWarnings("unchecked")
 		final R row = (R) parent;
 		setParent(row);
@@ -342,6 +345,7 @@ public abstract class Cell<E, R extends Row<?, ?>> extends PPodEntity {
 	 * 
 	 * @return this
 	 */
+	@VisibleForTesting
 	void setPolymorphicOrUncertain(
 			final Type type,
 			final Set<? extends E> elements) {

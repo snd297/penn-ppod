@@ -167,7 +167,7 @@ public class OTUSetTest {
 
 	}
 
-	@Test(groups = TestGroupDefs.SINGLE)
+	@Test
 	public void addOTU() {
 		final OTUSet otuSet = otuSetProvider.get();
 		final StandardMatrix standardMatrix = standardMatrixProvider.get();
@@ -249,7 +249,6 @@ public class OTUSetTest {
 		assertNull(dnaSequenceSet.getSequence(otu0));
 		assertNull(dnaSequenceSet.getSequence(otu1));
 		assertNull(dnaSequenceSet.getSequence(otu2));
-
 	}
 
 	/**

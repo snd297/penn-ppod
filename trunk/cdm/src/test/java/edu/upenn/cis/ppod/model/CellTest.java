@@ -344,4 +344,24 @@ public class CellTest {
 		assertSame(Cell.Type.UNCERTAIN, cell.getType());
 		assertEquals(nucleotides, cell.getElements());
 	}
+
+	@Test(expectedExceptions = IllegalStateException.class)
+	public void beforeMarshalWNoType() {
+		final Cell<DNANucleotide, ?> cell = dnaCellProvider.get();
+		cell.beforeMarshal(null);
+	}
+
+	/**
+	 * Verify that {@link PPodEntity#beforeMarshal(javax.xml.bind.Marshaller)}
+	 * is called when {@link Cell#beforeMarshal(javax.xml.bind.Marshaller)} is
+	 * called.
+	 */
+	public void beforeMarshal() {
+		final VersionInfo versionInfo = new VersionInfo().setVersion(23L);
+		final Cell<DNANucleotide, ?> cell = new DNACell();
+		cell.setType(Cell.Type.INAPPLICABLE);
+		cell.setVersionInfo(versionInfo);
+		cell.beforeMarshal(null);
+		assertEquals(cell.getVersion(), versionInfo.getVersion());
+	}
 }
