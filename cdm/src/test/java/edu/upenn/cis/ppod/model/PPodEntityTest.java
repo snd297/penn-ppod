@@ -20,10 +20,15 @@ import static com.google.common.collect.Iterables.isEmpty;
 import static com.google.common.collect.Sets.newHashSet;
 import static org.testng.Assert.assertEquals;
 import static org.testng.Assert.assertFalse;
+import static org.testng.Assert.assertNull;
+import static org.testng.Assert.assertSame;
 import static org.testng.Assert.assertTrue;
+
+import java.util.Set;
 
 import org.testng.annotations.Test;
 
+import com.google.common.collect.ImmutableSet;
 import com.google.inject.Inject;
 import com.google.inject.Provider;
 
@@ -32,7 +37,7 @@ import edu.upenn.cis.ppod.TestGroupDefs;
 /**
  * @author Sam Donnelly
  */
-@Test(groups = { TestGroupDefs.FAST },
+@Test(groups = { TestGroupDefs.FAST, TestGroupDefs.SINGLE },
 		dependsOnGroups = TestGroupDefs.INIT)
 public class PPodEntityTest {
 
@@ -115,5 +120,80 @@ public class PPodEntityTest {
 		assertFalse(returnBoolean2);
 	}
 
+	@Test
+	public void getAttachmentsNoAttachments() {
+		final StandardCharacter character = new StandardCharacter();
+		assertFalse(character.getHasAttachments());
+		assertTrue(isEmpty(character.getAttachments()));
+	}
 
+	@Test
+	public void getAttachmentsHasAttachments() {
+		final StandardCharacter character = new StandardCharacter();
+
+		final Attachment attachment0 = new Attachment();
+		final Attachment attachment1 = new Attachment();
+		final Attachment attachment2 = new Attachment();
+		final Set<Attachment> expectedAttachments =
+				ImmutableSet.of(attachment0,
+								attachment1,
+								attachment2);
+
+		character.addAttachment(attachment0);
+		character.addAttachment(attachment1);
+		character.addAttachment(attachment2);
+		assertEquals(character.getAttachments(), expectedAttachments);
+
+	}
+
+	@Test
+	public void getVersion() {
+		final OTUSet otuSet = new OTUSet();
+		assertNull(otuSet.getVersion());
+
+		final VersionInfo versionInfo = new VersionInfo();
+
+		final Long versionNo = 454L;
+
+		versionInfo.setVersion(versionNo);
+		otuSet.setVersionInfo(versionInfo);
+
+		assertEquals(otuSet.getVersion(), versionNo);
+	}
+
+	@Test
+	public void getVersionInfo() {
+		final OTUSet otuSet = new OTUSet();
+		final VersionInfo versionInfo = new VersionInfo();
+		otuSet.setVersionInfo(versionInfo);
+		assertSame(otuSet.getVersionInfo(), versionInfo);
+	}
+
+	@Test(expectedExceptions = IllegalStateException.class)
+	public void getVersionInfoNotUnmarshalled() {
+		final OTUSet otuSet = new OTUSet();
+		otuSet.setUnmarshalled(true);
+		otuSet.getVersionInfo();
+	}
+
+	@Test
+	public void afterUnmarshalWAttachemnts() {
+		final OTUSet otuSet = new OTUSet();
+		otuSet.addAttachment(new Attachment());
+		otuSet.addAttachment(new Attachment());
+		otuSet.addAttachment(new Attachment());
+
+		otuSet.setHasAttachments(false);
+
+		otuSet.afterUnmarshal(null, new Study());
+		assertTrue(otuSet.getHasAttachments());
+	}
+
+	@Test
+	public void afterUnmarshalWNoAttachments() {
+		final OTUSet otuSet = new OTUSet();
+		assertFalse(otuSet.getHasAttachments());
+		otuSet.afterUnmarshal(null, new Study());
+		assertFalse(otuSet.getHasAttachments());
+	}
 }

@@ -78,10 +78,6 @@ public abstract class PPodEntity
 	@CheckForNull
 	private Set<Attachment> attachments;
 
-	@Transient
-	@CheckForNull
-	private Set<Attachment> attachmentsXml;
-
 	@Column(name = "HAS_ATTACHMENTS", nullable = false)
 	private Boolean hasAttachments = false;
 
@@ -147,12 +143,11 @@ public abstract class PPodEntity
 	 */
 	public void afterUnmarshal(
 			@CheckForNull final Unmarshaller u,
-			@CheckForNull final Object parent) {
-		if (attachmentsXml != null) {
-			for (final Attachment attachment : getAttachmentsXml()) {
-				addAttachment(attachment);
-			}
-			attachmentsXml = null;
+			@Nullable final Object parent) {
+		if (attachments == null) {
+			hasAttachments = false;
+		} else {
+			hasAttachments = true;
 		}
 	}
 
@@ -168,18 +163,25 @@ public abstract class PPodEntity
 		if (versionInfo != null) {
 			version = versionInfo.getVersion();
 		}
-		getAttachmentsXml().addAll(getAttachmentsModifiable());
 		return true;
 	}
 
 	public Set<Attachment> getAttachments() {
-		return Collections.unmodifiableSet(getAttachmentsModifiable());
+		if (hasAttachments) {
+			if (attachments == null) {
+				throw new AssertionError(
+						"programming errors: attachments == null and hasAttachments == true");
+			}
+			return Collections.unmodifiableSet(attachments);
+		}
+		return Collections.emptySet();
+
 	}
 
 	public Set<Attachment> getAttachmentsByNamespace(
 			final String namespace) {
 		return newHashSet(Iterables
-				.filter(getAttachmentsModifiable(),
+				.filter(getAttachments(),
 						new Attachment.IsOfNamespace(namespace)));
 	}
 
@@ -190,23 +192,17 @@ public abstract class PPodEntity
 						new Attachment.IsOfNamespaceAndType(namespace, type)));
 	}
 
-	private Set<Attachment> getAttachmentsModifiable() {
+	/**
+	 * So we can avoid hitting attachments.
+	 */
+	@XmlElement(name = "attachment")
+	@edu.umd.cs.findbugs.annotations.Nullable
+	@SuppressWarnings("unused")
+	private Set<Attachment> getAttachmentsXml() {
 		if (hasAttachments) {
-			if (attachments == null) {
-				throw new AssertionError(
-						"programming errors: attachments == null and hasAttachments == true");
-			}
 			return attachments;
 		}
-		return Collections.emptySet();
-	}
-
-	@XmlElement(name = "attachment")
-	private Set<Attachment> getAttachmentsXml() {
-		if (attachmentsXml == null) {
-			attachmentsXml = newHashSet();
-		}
-		return attachmentsXml;
+		return null;
 	}
 
 	/**
@@ -214,6 +210,13 @@ public abstract class PPodEntity
 	 */
 	final Boolean getHasAttachments() {
 		return hasAttachments;
+	}
+
+	/**
+	 * Created for testing.
+	 */
+	final void setHasAttachments(final boolean hasAttachments) {
+		this.hasAttachments = hasAttachments;
 	}
 
 	@XmlAttribute
@@ -242,11 +245,11 @@ public abstract class PPodEntity
 		if (!hasAttachments) {
 			attachmentRemoved = false;
 		} else {
-			attachmentRemoved = getAttachmentsModifiable().remove(attachment);
+			attachmentRemoved = attachments.remove(attachment);
 			if (attachmentRemoved) {
 				setInNeedOfNewVersion();
 			}
-			if (getAttachmentsModifiable().size() == 0) {
+			if (attachments.size() == 0) {
 				hasAttachments = false;
 			}
 		}
