@@ -33,8 +33,11 @@ import com.google.inject.Inject;
 import com.google.inject.Provider;
 
 import edu.upenn.cis.ppod.TestGroupDefs;
+import edu.upenn.cis.ppod.util.TestVisitor;
 
 /**
+ * Test {@link PPodEntity}.
+ * 
  * @author Sam Donnelly
  */
 @Test(groups = { TestGroupDefs.FAST, TestGroupDefs.SINGLE },
@@ -49,6 +52,9 @@ public class PPodEntityTest {
 
 	@Inject
 	private Provider<VersionInfo> pPodVersionInfoProvider;
+
+	@Inject
+	private Provider<TestVisitor> testVisitorProvider;
 
 	@Test
 	public void addAttachment() {
@@ -195,5 +201,55 @@ public class PPodEntityTest {
 		assertFalse(otuSet.getHasAttachments());
 		otuSet.afterUnmarshal(null, new Study());
 		assertFalse(otuSet.getHasAttachments());
+	}
+
+	@Test
+	public void getAttachmentsXmlWAttachments() {
+		final OTUSet otuSet = new OTUSet();
+		final Attachment attachment0 = new Attachment();
+		final Attachment attachment1 = new Attachment();
+		final Attachment attachment2 = new Attachment();
+		final Set<Attachment> expectedAttachments =
+				ImmutableSet.of(attachment0,
+								attachment1,
+								attachment2);
+		otuSet.addAttachment(attachment0);
+		otuSet.addAttachment(attachment1);
+		otuSet.addAttachment(attachment2);
+
+		assertEquals(otuSet.getAttachmentsXml(), expectedAttachments);
+
+	}
+
+	@Test
+	public void getAttachmensXmlWNoAttachments() {
+		final OTUSet otuSet = new OTUSet();
+		assertNull(otuSet.getAttachmentsXml());
+	}
+
+	@Test
+	public void accept() {
+		final OTUSet otuSet = new OTUSet();
+		final Attachment attachment0 = new Attachment();
+		final Attachment attachment1 = new Attachment();
+		final Attachment attachment2 = new Attachment();
+		final Set<Attachment> expectedAttachments =
+				ImmutableSet.of(attachment0,
+								attachment1,
+								attachment2);
+
+		otuSet.addAttachment(attachment0);
+		otuSet.addAttachment(attachment1);
+		otuSet.addAttachment(attachment2);
+
+		final TestVisitor testVisitor = testVisitorProvider.get();
+
+		otuSet.accept(testVisitor);
+
+		assertEquals(testVisitor.getVisited().size(),
+				1 + otuSet.getAttachments().size());
+
+		assertTrue(testVisitor.getVisited().containsAll(expectedAttachments));
+
 	}
 }
