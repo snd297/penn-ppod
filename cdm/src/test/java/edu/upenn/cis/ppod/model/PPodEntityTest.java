@@ -183,27 +183,6 @@ public class PPodEntityTest {
 	}
 
 	@Test
-	public void afterUnmarshalWAttachemnts() {
-		final OTUSet otuSet = new OTUSet();
-		otuSet.addAttachment(new Attachment());
-		otuSet.addAttachment(new Attachment());
-		otuSet.addAttachment(new Attachment());
-
-		otuSet.setHasAttachments(false);
-
-		otuSet.afterUnmarshal(null, new Study());
-		assertTrue(otuSet.getHasAttachments());
-	}
-
-	@Test
-	public void afterUnmarshalWNoAttachments() {
-		final OTUSet otuSet = new OTUSet();
-		assertFalse(otuSet.getHasAttachments());
-		otuSet.afterUnmarshal(null, new Study());
-		assertFalse(otuSet.getHasAttachments());
-	}
-
-	@Test
 	public void getAttachmentsXmlWAttachments() {
 		final OTUSet otuSet = new OTUSet();
 		final Attachment attachment0 = new Attachment();

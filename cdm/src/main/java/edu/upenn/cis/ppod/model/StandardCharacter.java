@@ -132,9 +132,8 @@ public class StandardCharacter extends UUPPodEntityWithXmlId {
 	 * @param u see {@code Unmarshaller}
 	 * @param parent see {@code Unmarshaller}
 	 */
-	@Override
-	public void afterUnmarshal(final Unmarshaller u, final Object parent) {
-		super.afterUnmarshal(u, parent);
+	public void afterUnmarshal(
+			@CheckForNull final Unmarshaller u, final Object parent) {
 		setMatrix((StandardMatrix) parent);
 		if (getStatesModifiable().size() > 0
 				&& get(getStatesModifiable().values(), 0).getParent() == null) {

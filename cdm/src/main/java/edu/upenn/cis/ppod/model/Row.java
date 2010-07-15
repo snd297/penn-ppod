@@ -24,6 +24,7 @@ import java.util.List;
 
 import javax.xml.bind.Unmarshaller;
 
+import edu.umd.cs.findbugs.annotations.CheckForNull;
 import edu.upenn.cis.ppod.modelinterfaces.IOTUKeyedMapValue;
 import edu.upenn.cis.ppod.util.IVisitor;
 
@@ -56,9 +57,9 @@ public abstract class Row<C extends Cell<?, ?>, M extends Matrix<?>>
 	 * @param u see {@code Unmarshaller}
 	 * @param parent see {@code Unmarshaller}
 	 */
-	@Override
-	public void afterUnmarshal(final Unmarshaller u, final Object parent) {
-		super.afterUnmarshal(u, parent);
+	public void afterUnmarshal(
+			@CheckForNull final Unmarshaller u, 
+			final Object parent) {
 		int cellPosition = -1;
 		for (final C cell : getCells()) {
 			cellPosition++;

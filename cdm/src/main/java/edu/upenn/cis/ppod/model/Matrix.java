@@ -105,9 +105,9 @@ public abstract class Matrix<R extends Row<?, ?>>
 		getOTUKeyedRows().afterUnmarshal();
 	}
 
-	@Override
-	public void afterUnmarshal(final Unmarshaller u, final Object parent) {
-		super.afterUnmarshal(u, parent);
+	public void afterUnmarshal(
+			@CheckForNull final Unmarshaller u,
+			final Object parent) {
 		this.parent = (OTUSet) parent;
 		setColumnsSize(getColumnVersions().size());
 	}

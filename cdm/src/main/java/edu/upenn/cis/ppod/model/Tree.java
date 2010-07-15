@@ -73,12 +73,10 @@ public class Tree extends UUPPodEntity {
 	 * @param parent see see {@code Unmarshaller}
 	 * 
 	 */
-	@Override
 	public void afterUnmarshal(
 			@CheckForNull final Unmarshaller u,
 			final Object parent) {
 		// don't checkNotNull(parent) since it's a jaxb callback
-		super.afterUnmarshal(u, parent);
 		setParent((TreeSet) parent);
 	}
 

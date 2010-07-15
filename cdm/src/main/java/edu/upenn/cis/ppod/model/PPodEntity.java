@@ -23,8 +23,6 @@ import static com.google.common.collect.Sets.newHashSet;
 import java.util.Collections;
 import java.util.Set;
 
-import javax.annotation.CheckForNull;
-import javax.annotation.Nullable;
 import javax.annotation.OverridingMethodsMustInvokeSuper;
 import javax.persistence.CascadeType;
 import javax.persistence.Column;
@@ -38,12 +36,13 @@ import javax.persistence.OneToMany;
 import javax.persistence.Table;
 import javax.persistence.Transient;
 import javax.xml.bind.Marshaller;
-import javax.xml.bind.Unmarshaller;
 import javax.xml.bind.annotation.XmlAttribute;
 import javax.xml.bind.annotation.XmlElement;
 
 import com.google.common.collect.Iterables;
 
+import edu.umd.cs.findbugs.annotations.CheckForNull;
+import edu.umd.cs.findbugs.annotations.Nullable;
 import edu.upenn.cis.ppod.modelinterfaces.IAttachee;
 import edu.upenn.cis.ppod.modelinterfaces.IVersioned;
 import edu.upenn.cis.ppod.util.IVisitor;
@@ -136,22 +135,6 @@ public abstract class PPodEntity
 	}
 
 	/**
-	 * {@link Unmarshaller} callback.
-	 * 
-	 * @param u see {@code Unmarshaller}
-	 * @param parent see {@code Unmarshaller}
-	 */
-	public void afterUnmarshal(
-			@CheckForNull final Unmarshaller u,
-			@Nullable final Object parent) {
-		if (attachments == null) {
-			hasAttachments = false;
-		} else {
-			hasAttachments = true;
-		}
-	}
-
-	/**
 	 * See {@link Marshaller}.
 	 * 
 	 * @param marshaler see {@code Marshaller}
@@ -175,7 +158,6 @@ public abstract class PPodEntity
 			return Collections.unmodifiableSet(attachments);
 		}
 		return Collections.emptySet();
-
 	}
 
 	public Set<Attachment> getAttachmentsByNamespace(
@@ -193,29 +175,28 @@ public abstract class PPodEntity
 	}
 
 	/**
-	 * So we can avoid hitting attachments.
+	 * So we can avoid hitting attachments. Protected for JAXB.
 	 */
 	@XmlElement(name = "attachment")
 	@edu.umd.cs.findbugs.annotations.Nullable
 	protected Set<Attachment> getAttachmentsXml() {
 		if (hasAttachments) {
+			if (attachments == null) {
+				attachments = newHashSet();
+			}
 			return attachments;
 		}
 		return null;
 	}
 
 	/**
-	 * Created for testing.
+	 * We send this over the wire so that {@link #setAttachmentsXml()} only
+	 * creates a set to hold attachments when necessary. We do this because
+	 * there can be many cells, all of which may contain attachments.
 	 */
-	final Boolean getHasAttachments() {
+	@XmlAttribute(name = "hasAttachments")
+	protected Boolean getHasAttachments() {
 		return hasAttachments;
-	}
-
-	/**
-	 * Created for testing.
-	 */
-	final void setHasAttachments(final boolean hasAttachments) {
-		this.hasAttachments = hasAttachments;
 	}
 
 	@XmlAttribute
@@ -253,6 +234,13 @@ public abstract class PPodEntity
 			}
 		}
 		return attachmentRemoved;
+	}
+
+	/**
+	 * Protected for JAXB.
+	 */
+	protected void setHasAttachments(final Boolean hasAttachments) {
+		this.hasAttachments = hasAttachments;
 	}
 
 	/**
