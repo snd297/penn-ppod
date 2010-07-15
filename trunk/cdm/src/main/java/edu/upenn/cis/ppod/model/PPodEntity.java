@@ -197,8 +197,7 @@ public abstract class PPodEntity
 	 */
 	@XmlElement(name = "attachment")
 	@edu.umd.cs.findbugs.annotations.Nullable
-	@SuppressWarnings("unused")
-	private Set<Attachment> getAttachmentsXml() {
+	protected Set<Attachment> getAttachmentsXml() {
 		if (hasAttachments) {
 			return attachments;
 		}
