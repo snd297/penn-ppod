@@ -16,11 +16,19 @@
 package edu.upenn.cis.ppod.model;
 
 import static com.google.common.base.Preconditions.checkNotNull;
+import static com.google.common.collect.Lists.newArrayList;
 
+import java.util.List;
 import java.util.Set;
 
+import javax.persistence.CollectionTable;
+import javax.persistence.Column;
+import javax.persistence.ElementCollection;
 import javax.persistence.Entity;
+import javax.persistence.EnumType;
+import javax.persistence.Enumerated;
 import javax.persistence.FetchType;
+import javax.persistence.JoinColumn;
 import javax.persistence.ManyToOne;
 import javax.persistence.Table;
 
@@ -74,6 +82,13 @@ public class DNASequence extends Sequence<DNASequenceSet> {
 	@CheckForNull
 	private DNASequenceSet parent;
 
+	@ElementCollection
+	@CollectionTable(name = "DNA_SEQUENCE_PHRED_PHRAP_SCORES",
+						joinColumns = @JoinColumn(name = JOIN_COLUMN))
+	@Column(name = "ELEMENT")
+	@Enumerated(EnumType.ORDINAL)
+	private final List<Double> phredPhrapScores = newArrayList();
+
 	@Override
 	public void accept(final IVisitor visitor) {
 		checkNotNull(visitor);
@@ -87,7 +102,8 @@ public class DNASequence extends Sequence<DNASequenceSet> {
 
 	@Override
 	public boolean isLegal(final char c) {
-		return LEGAL_CHARS.contains(c);
+		return LEGAL_CHARS.contains(
+				Character.toUpperCase(c));
 	}
 
 	@Override
