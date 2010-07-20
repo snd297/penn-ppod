@@ -63,30 +63,30 @@ public class DNASequenceTest {
 	 */
 	@Test
 	public void testIsLegal() {
-		final Sequence sequence = new DNASequence();
+		final Sequence<?> sequence = new DNASequence();
 
 		for (final java.lang.Character character : legalDNACharacters) {
 			assertTrue(sequence.isLegal(character));
+			assertTrue(sequence.isLegal(Character.toLowerCase(character)));
 		}
 	}
 
 	/**
-	 * Make sure that all illegal character return false for {@code
-	 * isLegal(...)}.
+	 * Make sure that all illegal character return false for
+	 * {@code isLegal(...)}.
 	 */
 	@Test
 	public void testIsLegalShouldReturnFalse() {
-		final Sequence sequence = new DNASequence();
+		final Sequence<?> sequence = new DNASequence();
 
 		for (final java.lang.Character illegalCharacter : alpabet) {
 			if (legalDNACharacters.contains(illegalCharacter)) {
 				// it's legal don't see if it's false
 			} else {
 				assertFalse(sequence.isLegal(illegalCharacter));
+				assertFalse(sequence.isLegal(Character
+						.toLowerCase(illegalCharacter)));
 			}
-			final java.lang.Character lowerCaseIllegalCharacter = java.lang.Character
-					.toLowerCase(illegalCharacter);
-			assertFalse(sequence.isLegal(lowerCaseIllegalCharacter));
 		}
 	}
 }

@@ -113,7 +113,7 @@ public abstract class Sequence<SS extends SequenceSet<?>>
 	}
 
 	/**
-	 * Is it a legal DNA Sequence character? As defined by <a
+	 * Is it a legal Sequence character? As defined by <a
 	 * href=http://www.ncbi.nlm.nih.gov/blast/fasta.shtml>Fasta format
 	 * description</a>.
 	 * <p>
