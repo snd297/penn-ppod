@@ -47,7 +47,7 @@ public class VersionInfo extends PersistentObject {
 	public final static String JOIN_COLUMN = TABLE + "_ID";
 
 	/** The pPOD version number. Immutable. */
-	@Column(name = "VERSION", unique = true, nullable = false,
+	@Column(name = "PPOD_VERSION", unique = true, nullable = false,
 			updatable = false)
 	private Long version = -1L;
 
