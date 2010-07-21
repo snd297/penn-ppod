@@ -7,8 +7,6 @@ How to set up the pPOD Mesquite package under Eclipse to talk to a pPOD server.
 {{{
 	<classpath>../../pPODMesquitePackage/Mesquite_Folder/</classpath>
 }}}
-  # Now we need to tell the pPOD Mesquite package about the pPOD server. You'll need to put a file _ppod.properties_ onto your classpath. There is an empty file _pPODMesquitePackage/Extras/ppod.properties_ that you can copy and modify. Take care not to check in your own configuration as this will put your password into a more-or-less public place. In order to avoid this problem I made a directory _pPODMesquitePackage/Extras/config_ which I created an svn:ignore property for. 
-
-  Then I put _ppod.properties_ in there and add _config_ to my build path. (It only needs to be on the runtime classpath, but putting it onto the build path seems like the easiest way to make that happen if you have multiple run configurations.)
+  # Now we need to tell the pPOD Mesquite package about the pPOD server. You'll need to put a file _ppod.properties_ onto your classpath. There is an empty file _pPODMesquitePackage/Extras/ppod.properties_ that you can copy and modify. Take care not to check in your own configuration as this will put your password into a more-or-less public place. In order to avoid this problem I made a directory _pPODMesquitePackage/Extras/config_ which I created an svn:ignore property for. Then I put _ppod.properties_ in there and add _config_ to my build path. (It only needs to be on the runtime classpath, but putting it onto the build path seems like the easiest way to make that happen if you have multiple run configurations.)
 
 Assuming you called your project pPODMesquitePackage.
