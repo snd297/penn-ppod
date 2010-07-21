@@ -3,12 +3,12 @@
 How to set up the pPOD Mesquite package under Eclipse to talk to a pPOD server.
 
   # Check out from the branch you're interested in. Trunk is at https://dbappserv.cis.upenn.edu/svnroot/develop/pPOD/mesquite/trunk/. You'll need to get a dbgroup Subversion account to access that repository. We'll assume that you call your project _pPODMesquitePackage_.
-
   # Assuming you already have Mesquite installed, add this entry to your _classpath.xml_ file: 
 {{{
 	<classpath>../../pPODMesquitePackage/Mesquite_Folder/</classpath>
 }}}
   # Now we need to tell the pPOD Mesquite package about the pPOD server. You'll need to put a file _ppod.properties_ onto your classpath. There is an empty file _pPODMesquitePackage/Extras/ppod.properties_ that you can copy and modify. Take care not to check in your own configuration as this will put your password into a more-or-less public place. In order to avoid this problem I made a directory _pPODMesquitePackage/Extras/config_ which I created an svn:ignore property for. Then I put _ppod.properties_ in there and add _config_ to my build path. (It only needs to be on the runtime classpath, but putting it onto the build path seems like the easiest way to make that happen if you have multiple run configurations.)
-  # _File>Open Other>Download from pPOD Database_ will query pPOD server for the projects it has stored and return a list for you to choose from. (The _File>Open Other>HQL Query against Database_ is experimental (aka "not guaranteed to work", but [HQLSelectEquusSus here's] what that looks like when it's working.)
+  # _File>Open Other>Download from pPOD Database_ will query pPOD server for the projects it has stored and return a list for you to choose from. 
+  The _File>Open Other>HQL Query against Database_ is experimental (aka "not guaranteed to work", but [HQLSelectEquusSus here's] what that looks like when it's working.)
 
 Assuming you called your project pPODMesquitePackage.
