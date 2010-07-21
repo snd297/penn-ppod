@@ -19,10 +19,10 @@ And that should be that.
 
 ==Working with the pPOD Server==
 
-  ===Downloading from the pPOD Server===
-  *_File>Open Other>Download from pPOD Database_* will query pPOD server for the projects it has stored and return a list for you to choose from. 
+===Downloading from the pPOD Server===
+*_File>Open Other>Download from pPOD Database_* will query pPOD server for the projects it has stored and return a list for you to choose from. 
 
-  *_File>Open Other>HQL Query against Database_* is experimental (aka "not guaranteed to work"), but [HQLSelectEquusSus here's] what that looks like when it's working.
+*_File>Open Other>HQL Query against Database_* is experimental (aka "not guaranteed to work"), but [HQLSelectEquusSus here's] what that looks like when it's working.
 
   Uploading to the pPOD server:
 
