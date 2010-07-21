@@ -4,7 +4,7 @@
 
   # Check out from the branch you're interested in. Trunk is at https://dbappserv.cis.upenn.edu/svnroot/develop/pPOD/mesquite/trunk/. You'll need to get a dbgroup Subversion account to access that repository. We'll assume that you call your project _pPODMesquitePackage_.
 
-We have this project checked in with the Eclipse config files, so you should just be able to do _Checkout..._ followed by _Check out as a project in the workspace_ and end up with a working Eclipse project.
+  We have this project checked in with the Eclipse config files, so you should just be able to do _Checkout..._ followed by _Check out as a project in the workspace_ and end up with a working Eclipse project.
   # Assuming you already have Mesquite installed, add this entry to Mesquite's _classpath.xml_ file: 
 {{{
         <classpath>../../pPODMesquitePackage/Mesquite_Folder/</classpath>
