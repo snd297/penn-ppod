@@ -14,7 +14,7 @@ ppod.uri=https://someserver.edu/ppod-services
 ppod.username=myname
 ppod.password=mypassword
 }}}
-  Take care not to check in your _ppod.properties_ as this will put your password into a more-or-less public place. In order to avoid this problem I made a directory _pPODMesquitePackage/Extras/config_ which is on the build path and who's contents will be ignored by svn. So you can put _ppod.properties_ in there and it will be seen by the runtime and not checked in. (It only needs to be on the runtime classpath, but putting it onto the build path seems like the easiest way to make that happen if you have multiple run configurations.) 
+  Copy the example _ppod.properties_ into _pPODMesquitePackage/Extras/config_ and modify it with your values.
 
 And that should be that. 
 
