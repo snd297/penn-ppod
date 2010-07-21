@@ -1,5 +1,5 @@
 #summary documentation outline
   * [GettingStarted Getting Started]
-  * [HQLSelectEquusSus Example HQL Query Against pPOD Db]
+  * [HQLSelectEquusSus Example HQL Query Against pPOD DB]
   * [InfoPropagation How Information Travels Through the CDM Hierarchy]
   * [DeveloperFAQ Frequently Anticipated Questions]
