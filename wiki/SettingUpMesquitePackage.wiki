@@ -24,9 +24,9 @@ And that should be that.
 
 After firing up Mesquite, here's how to download from the pPOD server:
 
-  **_File>Open Other>Download from pPOD Database_* will query pPOD server for the projects it has stored and return a list for you to choose from. 
+  * *_File>Open Other>Download from pPOD Database_* will query pPOD server for the projects it has stored and return a list for you to choose from. 
 
-  **_File>Open Other>HQL Query against Database_* is experimental (aka "not guaranteed to work"), but [HQLSelectEquusSus here's] what that looks like when it's working.
+  * *_File>Open Other>HQL Query against Database_* is experimental (aka "not guaranteed to work"), but [HQLSelectEquusSus here's] what that looks like when it's working.
 
 ===Uploading to the pPOD server===
 
