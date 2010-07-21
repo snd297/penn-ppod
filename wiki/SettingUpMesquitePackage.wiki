@@ -1,6 +1,6 @@
 #summary How to set up the pPOD Mesquite package to talk to a pPOD server
 
-How to set up the pPOD Mesquite package under Eclipse to talk to a pPOD server.
+==How to set up the pPOD Mesquite package under Eclipse to talk to a pPOD server==
 
   # Check out from the branch you're interested in. Trunk is at https://dbappserv.cis.upenn.edu/svnroot/develop/pPOD/mesquite/trunk/. You'll need to get a dbgroup Subversion account to access that repository. We'll assume that you call your project _pPODMesquitePackage_.
   I have this project checked in with the Eclipse config files, so you should just be able to do _Checkout..._ followed by _Check out as a project in the workspace_ and end up with a working Eclipse project.
@@ -14,7 +14,7 @@ And that should be that.
 
 ==Working with the pPOD Server==
 
-  =Downloading from the pPOD Server=
+  ===Downloading from the pPOD Server===
   _File>Open Other>Download from pPOD Database_ will query pPOD server for the projects it has stored and return a list for you to choose from. 
 
   (_File>Open Other>HQL Query against Database_ is experimental (aka "not guaranteed to work"), but [HQLSelectEquusSus here's] what that looks like when it's working.)
