@@ -3,14 +3,18 @@
 How to set up the pPOD Mesquite package under Eclipse to talk to a pPOD server.
 
   # Check out from the branch you're interested in. Trunk is at https://dbappserv.cis.upenn.edu/svnroot/develop/pPOD/mesquite/trunk/. You'll need to get a dbgroup Subversion account to access that repository. We'll assume that you call your project _pPODMesquitePackage_.
-I have this project checked in with the Eclipse config files, so you should just be able to do _Checkout..._ followed by _Check out as a project in the workspace_ and end up with a working Eclipse project.
+  I have this project checked in with the Eclipse config files, so you should just be able to do _Checkout..._ followed by _Check out as a project in the workspace_ and end up with a working Eclipse project.
   # Assuming you already have Mesquite installed, add this entry to Mesquite's _classpath.xml_ file: 
 {{{
         <classpath>../../pPODMesquitePackage/Mesquite_Folder/</classpath>
 }}}
   # Now we need to tell the pPOD Mesquite package about the pPOD server. You'll need to put a file _ppod.properties_ onto your classpath. There is an empty file _pPODMesquitePackage/Extras/ppod.properties_ that you can copy and modify. Take care not to check in your _ppod.properties_ as this will put your password into a more-or-less public place. In order to avoid this problem I made a directory _pPODMesquitePackage/Extras/config_ which is on the build path and who's contents will be ignored by svn. So you can put _ppod.properties_ in there and it will be seen by the runtime and not checked in. (It only needs to be on the runtime classpath, but putting it onto the build path seems like the easiest way to make that happen if you have multiple run configurations.) 
-  # Downloading from the pPOD Server: 
 
+And that should be that. 
+
+==Working with the pPOD Server==
+
+  =Downloading from the pPOD Server=
   _File>Open Other>Download from pPOD Database_ will query pPOD server for the projects it has stored and return a list for you to choose from. 
 
   (_File>Open Other>HQL Query against Database_ is experimental (aka "not guaranteed to work"), but [HQLSelectEquusSus here's] what that looks like when it's working.)
