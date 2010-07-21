@@ -10,7 +10,7 @@
 }}}
   # Now we need to tell the pPOD Mesquite package about the pPOD server. You'll need to put a file _ppod.properties_ onto your classpath. There is an empty file _pPODMesquitePackage/Extras/ppod.properties_ that you can copy and modify. Here's an example _ppod.properties_ file: 
 {{{
-ppod.uri=https://someserver.somewhere.tv/ppod-services
+ppod.uri=https://someserver.somewhere.edu/ppod-services
 ppod.username=myname
 ppod.password=mypassword
 }}}
