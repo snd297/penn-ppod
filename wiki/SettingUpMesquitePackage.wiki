@@ -1,0 +1,3 @@
+#summary How to set up the pPOD/Mesquite package to talk to a pPOD server
+
+Check out from the branch you're interested in. Trunk is at https://dbappserv.cis.upenn.edu/svnroot/develop/pPOD/mesquite/trunk/
