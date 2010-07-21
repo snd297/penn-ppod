@@ -17,8 +17,8 @@ How to set up the pPOD Mesquite package under Eclipse to talk to a pPOD server.
   Uploading to the pPOD server:
 
   Open up a Nexus file (currently only standard and DNA matrices are supported.) There is a _pPOD_ item in the project window which if clicked will reveal
-    * _Set pPOD Server_ this is not functional
-    * _Download changes_ this will download changes from the pPOD server to your project. This is not supposed to overwrite any local changes, however this is not a well-tested feature and is known not to work with trees.
+    * *_Set pPOD Server_* this is not functional
+    * *_Download changes_* this will download changes from the pPOD server to your project. This is not supposed to overwrite any local changes, however this is not a well-tested feature and is known not to work with trees.
     * _Upload changes to Server w/ Molecular Matrices as pPOD Matrices_ this will upload your project storing the data as matrices in the pPOD server. 
     * _Upload changes to Server w/ Molecular Matrices as pPOD Sequences_ this will upload your project storing the data as sequences in the pPOD server.
 
