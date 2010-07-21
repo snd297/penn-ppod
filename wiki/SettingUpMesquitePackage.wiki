@@ -22,4 +22,4 @@ How to set up the pPOD Mesquite package under Eclipse to talk to a pPOD server.
     * _Upload changes to Server w/ Molecular Matrices as pPOD Matrices_ this will upload your project storing the data as matrices in the pPOD server. 
     * _Upload changes to Server w/ Molecular Matrices as pPOD Sequences_ this will upload your project storing the data as sequences in the pPOD server.
 
-Assuming you called your project pPODMesquitePackage.
+  Note that the last two items should appear identical to the user. 
