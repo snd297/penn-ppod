@@ -23,13 +23,16 @@ These were created to enable quick notification to a client of changes in a pPOD
   * `StandardCharacterState -> StandardCharacter`
   * `StandardCharacter -> StandardMatrix`
 
-  * `Cell -> Row, Matrix.getColumnPPodVersionInfos()`
+  * `Cell -> Row, Matrix.getColumnVersionInfos()`
   * `Row -> Matrix`
 
   * `Matrix` -> `OTUSet`
 
   * `OTU -> OTUSet`
  
+  * `Sequence -> SequenceSet`
+  * `SequenceSet -> OTUSet`
+
   * `Tree -> TreeSet`
   * `TreeSet -> OTUSet`
 
