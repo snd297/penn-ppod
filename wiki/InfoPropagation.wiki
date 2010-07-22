@@ -21,7 +21,7 @@ All parent-child relationships are one-to-many.
 
 These were created to enable quick notification to a client of changes in a pPOD database and to record when changes occur. The idea is that if you update an object, a new version number will get assigned up the chain of ownership. So, for example, modifying a cell in a matrix will cause the matrix, OTUSet, and Study all to get a new version number.  
  
-  * `Attachment -> whatever they're attached to`
+    * `Attachment -> whatever they're attached to`
   * `StandardCharacterState -> StandardCharacter`
   * `StandardCharacter -> StandardMatrix`
 
