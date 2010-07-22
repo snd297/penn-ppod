@@ -106,14 +106,16 @@ public class StandardCharacter extends UUPPodEntityWithXmlId {
 	 * <code>CharacterState</code>s. relationship.
 	 * 
 	 * @param state what we're adding
-	 * @return the state that was associated with {@code state.getStateNumber()}
-	 *         or {@code null} if there was no such state.
+	 * 
+	 * @return the previous state that was associated with
+	 *         {@code state.getStateNumber()} or {@code null} if there was no
+	 *         such state.
 	 */
 	@CheckForNull
 	public StandardState addState(final StandardState state) {
 		Preconditions.checkNotNull(state);
-		final StandardState originalState = states.put(state.getStateNumber(),
-				state);
+		final StandardState originalState =
+				states.put(state.getStateNumber(), state);
 		if (state == originalState) {
 			return originalState;
 		}
@@ -137,7 +139,7 @@ public class StandardCharacter extends UUPPodEntityWithXmlId {
 		setParent((StandardMatrix) parent);
 		if (getStatesModifiable().size() > 0
 				&& get(getStatesModifiable().values(), 0).getParent() == null) {
-			for (final StandardState state : getStatesModifiable().values()) {
+			for (final StandardState state : states.values()) {
 				state.setParent(this);
 			}
 		}
