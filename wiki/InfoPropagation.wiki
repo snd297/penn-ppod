@@ -46,16 +46,18 @@ The `accept` method on the pPOD entities follows the pattern of the pPOD version
 
   * `Study -> OTUSet`
 
-  * `OTUSet -> OTU, Matrix, TreeSet`
+    * `OTUSet -> OTU, Matrix, TreeSet`
 
-  * `Matrix -> Row`
-  * `Row -> Cell`
+    * `Matrix -> Row`
+      * `Row -> Cell`
 
-  * `StandardMatrix -> StandardCharacter`
-  * `StandardCharacter -> StandardState`
+    * `StandardMatrix -> StandardCharacter`
+      * `StandardCharacter -> StandardState`
 
-  * `TreeSet -> Tree`
+    * `SequenceSet -> Sequence`
 
-  * `PPodEntity -> Attachment`
+    * `TreeSet -> Tree`
+
+    * `PPodEntity -> Attachment`
 
 [http://upload.wikimedia.org/wikipedia/en/4/4a/Professor_Challenger.jpg]
