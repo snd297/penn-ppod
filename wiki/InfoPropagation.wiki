@@ -2,7 +2,7 @@
 
 = Introduction =
 
-How information is propagated roughly a function of the pPOD entity hierarchy:
+How information is propagated is roughly a function of the pPOD entity hierarchy:
 
   * `Study -> OTUSet`
     * `OTUSet -> OTU`, `Matrix`, `TreeSet`
