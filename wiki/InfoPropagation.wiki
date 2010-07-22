@@ -52,6 +52,6 @@ The `accept` method on the pPOD entities follows the pattern of the pPOD version
         * `StandardCharacter -> StandardState`
       * `SequenceSet -> Sequence`
       * `TreeSet -> Tree`
-      * `PPodEntity -> Attachment`
+  * `PPodEntity -> Attachment`
 
 [http://upload.wikimedia.org/wikipedia/en/4/4a/Professor_Challenger.jpg]
