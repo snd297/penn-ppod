@@ -82,7 +82,7 @@ final class MergeTreeSets implements IMergeTreeSets {
 
 			if (sourceTreeSet.getParent().getOTUs().size() != targetTreeSet
 					.getParent().getOTUs().size()) {
-				throw new AssertionError(
+				throw new IllegalArgumentException(
 						"sourceTreeSet.getOTUSet().getOTUsSize() should be the same as targetTreeSet.getOTUSet().getOTUsSize()");
 			}
 			for (final Iterator<OTU> sourceOTUItr = sourceTreeSet.getParent()

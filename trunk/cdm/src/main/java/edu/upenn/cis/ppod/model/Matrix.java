@@ -153,7 +153,7 @@ public abstract class Matrix<R extends Row<?, ?>>
 	 * 
 	 * @return a modifiable reference to the column pPOD version infos
 	 */
-	protected List<VersionInfo> getColumnVersionInfosModifiable() {
+	List<VersionInfo> getColumnVersionInfosModifiable() {
 		return columnVersionInfos;
 	}
 
@@ -203,7 +203,7 @@ public abstract class Matrix<R extends Row<?, ?>>
 	 * 
 	 * @return the otusToRows
 	 */
-	protected abstract IOTUKeyedMap<R> getOTUKeyedRows();
+	abstract IOTUKeyedMap<R> getOTUKeyedRows();
 
 	/**
 	 * Getter. Will be {@code null} when object is first created, but never

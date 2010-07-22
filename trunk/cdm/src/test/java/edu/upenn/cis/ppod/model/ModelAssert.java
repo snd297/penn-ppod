@@ -207,8 +207,8 @@ public class ModelAssert {
 			final StandardCharacter actualCharacter = actualCharacterItr.next();
 			final StandardCharacter expectedCharacter = expectedCharacterItr
 					.next();
-			assertSame(actualCharacter.getMatrix(), actualMatrix);
-			assertSame(expectedCharacter.getMatrix(), expectedMatrix);
+			assertSame(actualCharacter.getParent(), actualMatrix);
+			assertSame(expectedCharacter.getParent(), expectedMatrix);
 			assertEqualsCharacters(actualCharacter, expectedCharacter);
 		}
 		assertEquals(actualMatrix.getRows().size(),
