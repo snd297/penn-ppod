@@ -39,7 +39,7 @@ These were created to enable quick notification to a client of changes in a pPOD
 
 = pPOD Visitor =
 
-The `accept` method on the pPOD entities follows the pattern of the pPOD version number propagation, but travels in the opposite direction: it goes from `Study` downward. (It is undefined whether children are visited before or after their parent.)
+The `accept` method on the pPOD entities follows the pattern of the pPOD version number propagation, but travels in the opposite direction: it goes from `Study` downward. (It is undefined whether children are visited before or after their parent. Which has so far been okay.)
 
   * `Study -> OTUSet`
 
