@@ -15,8 +15,6 @@ Some information is propagated through the pPOD object tree. The hierarchy is as
 
 All parent-child relationships are one-to-many.
 
-For `MolecularStateMatrix`s, this is a little awkward since `MolecularCharacter`s are shared between matrices. If necessary, checks must be put in place in new `IVisitor`s to avoid processing `MolecularCharacter`s multiple times.
-
 = pPOD Version Number =
 
 These were created to enable quick notification to a client of changes in a pPOD database and to record when changes occur. The idea is that if you update an object, a new version number will get assigned up the chain of ownership. So, for example, modifying a cell in a matrix will cause the matrix, OTUSet, and Study all to get a new version number.  
