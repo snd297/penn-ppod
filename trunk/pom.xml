@@ -173,7 +173,7 @@
 			<groupId>org.testng</groupId>
 			<artifactId>testng</artifactId>
 			<version>5.12.1</version>
-			<!-- Eclipse was giving an error when this was uncommented out. <scope>test</scope> -->
+			<scope>test</scope>
 		</dependency>
 		<dependency>
 			<groupId>mysql</groupId>
