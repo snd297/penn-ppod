@@ -36,4 +36,4 @@ Open up a Nexus file (currently only standard and DNA matrices are supported.) T
     * *_Upload changes to Server w/ Molecular Matrices as pPOD Matrices_* this will upload your project storing the data as matrices in the pPOD server. 
     * *_Upload changes to Server w/ Molecular Matrices as pPOD Sequences_* this will upload your project storing the data as sequences in the pPOD server.
 
-  Note that the last two items should appear identical to the user. 
+  Note that the last two items should appear identical to the user and have to do with how pPOD is storing the matrices internally.
