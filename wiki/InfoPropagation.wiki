@@ -5,7 +5,7 @@
 Some information is propagated through the pPOD object tree. The hierarchy is as follows:
 
   * `Study -> OTUSet`
-    * `OTUSet -> OTU`, `CharacterStateMatrix`, `TreeSet`
+    * `OTUSet -> OTU`, `Matrix`, `TreeSet`
       * `StandardMatrix -> StandardCharacter`
       * `Matrix -> Row`
         * `Row -> Cell`
