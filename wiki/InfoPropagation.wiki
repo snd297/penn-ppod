@@ -11,7 +11,7 @@ Some information is propagated through the pPOD object tree. The hierarchy is as
         * `Row -> Cell`
       * `SequenceSet -> Sequence`
       * `TreeSet -> Tree`
-    * An `Attachment` can be attached to any `PPodEntity`
+  * An `Attachment` can be attached to any `PPodEntity`
   * `AttachmentNamespace`
   * `AttachmentType`
 
