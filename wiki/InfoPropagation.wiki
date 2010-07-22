@@ -2,7 +2,7 @@
 
 = Introduction =
 
-How information is propagated is roughly a function of the pPOD entity hierarchy ("roughly" because of `AttachmentNamespace` and `AttachmentType`):
+How information is propagated is roughly a function of the pPOD entity hierarchy ("roughly" because of `AttachmentNamespace` and `AttachmentType` which can only be reached through `Attachment` but which are not owned by `Attachment`):
 
   * `Study -> OTUSet`
     * `OTUSet -> OTU`, `Matrix`, `TreeSet`
