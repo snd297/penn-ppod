@@ -14,7 +14,7 @@ ppod.uri=https://someserver.edu/ppod-services
 ppod.username=myname
 ppod.password=mypassword
 }}}
-  Copy the example _ppod.properties_ into _pPODMesquitePackage/Extras/config_ and modify it with your values. Once in the _config_ folder, it will be on Mesquite's classpath owing to step 2. It should be noted that the _config_ folder has an svn:ignore=* property on it, so _ppod.properties_ (or anything else you put in there) will not be committed to the repository. Which is a good thing both to prevent config conflicts with others and to preserve your password's secrecy.
+  Copy the example _ppod.properties_ into _pPODMesquitePackage/Extras/config_ and modify it with your values. Once in the _config_ folder, it will be on Mesquite's classpath owing to step 2. It should be noted that the _config_ folder has an svn:ignore=** property on it, so _ppod.properties_ (or anything else you put in there) will not be committed to the repository. Which is a good thing both to prevent config conflicts with others and to preserve your password's secrecy.
 
 And that should be that. 
 
