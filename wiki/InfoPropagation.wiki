@@ -2,7 +2,7 @@
 
 = Introduction =
 
-The pPOD entity hierarchy is as follows:
+How information is propagated roughly a function of the pPOD entity hierarchy:
 
   * `Study -> OTUSet`
     * `OTUSet -> OTU`, `Matrix`, `TreeSet`
@@ -11,7 +11,7 @@ The pPOD entity hierarchy is as follows:
         * `Row -> Cell`
       * `SequenceSet -> Sequence`
       * `TreeSet -> Tree`
-  * An `Attachment` can be attached to any `PPodEntity`
+  * `PPodEntity -> Attachment`
   * `AttachmentNamespace`
   * `AttachmentType`
 
