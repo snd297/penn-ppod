@@ -2,7 +2,7 @@
 
 = Introduction =
 
-How information is propagated is roughly a function of the pPOD entity hierarchy:
+How information is propagated is roughly a function of the pPOD entity hierarchy ("roughly" because of `AttachmentNamespace` and `AttachmentType`):
 
   * `Study -> OTUSet`
     * `OTUSet -> OTU`, `Matrix`, `TreeSet`
@@ -55,7 +55,7 @@ The `accept` method on the pPOD entities follows the pattern of the pPOD version
       * `SequenceSet -> Sequence`
       * `TreeSet -> Tree`
   * `PPodEntity -> Attachment`
-    * `Attachment -> AttachmentType`
-    * `AttachmentType -> AttachmentNamespace`
+      * `Attachment -> AttachmentType`
+      * `AttachmentType -> AttachmentNamespace`
 
 [http://upload.wikimedia.org/wikipedia/en/4/4a/Professor_Challenger.jpg]
