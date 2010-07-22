@@ -46,9 +46,6 @@ import edu.upenn.cis.ppod.util.IVisitor;
 @Table(name = StandardMatrix.TABLE)
 public class StandardMatrix extends Matrix<StandardRow> {
 
-	public static final String CHARACTER_POSITION_COLUMN =
-			StandardCharacter.TABLE + "_POSITION";
-
 	/** This entity's table name. */
 	public static final String TABLE = "STANDARD_MATRIX";
 
@@ -197,15 +194,15 @@ public class StandardMatrix extends Matrix<StandardRow> {
 
 		removedCharacters.removeAll(characters);
 		for (final StandardCharacter removedCharacter : removedCharacters) {
-			removedCharacter.setMatrix(null);
+			removedCharacter.setParent(null);
 		}
 
 		getCharactersModifiable().clear();
 
 		getCharactersModifiable().addAll(characters);
 
-		for (final StandardCharacter character : getCharactersModifiable()) {
-			character.setMatrix(this);
+		for (final StandardCharacter character : getCharacters()) {
+			character.setParent(this);
 		}
 
 		// the matrix has changed

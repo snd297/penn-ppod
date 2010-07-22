@@ -53,12 +53,22 @@ public class DNARows implements IOTUKeyedMap<DNARow> {
 
 	private final IOTUKeyedMapPlus<DNARow, DNAMatrix, OTUDNARowPair> rows = new OTUKeyedMapPlus<DNARow, DNAMatrix, OTUDNARowPair>();
 
-	/** {@inheritDoc} */
+	/*
+	 * (non-Javadoc)
+	 * 
+	 * @see
+	 * edu.upenn.cis.ppod.modelinterfaces.IOTUKeyedMap#accept(edu.upenn.cis.
+	 * ppod.util.IVisitor)
+	 */
 	public void accept(final IVisitor visitor) {
 		rows.accept(visitor);
 	}
 
-	/** {@inheritDoc} */
+	/*
+	 * (non-Javadoc)
+	 * 
+	 * @see edu.upenn.cis.ppod.modelinterfaces.IOTUKeyedMap#afterUnmarshal()
+	 */
 	public void afterUnmarshal() {
 		rows.afterUnmarshal();
 	}

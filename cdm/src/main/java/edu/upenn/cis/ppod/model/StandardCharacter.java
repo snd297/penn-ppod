@@ -71,7 +71,7 @@ public class StandardCharacter extends UUPPodEntityWithXmlId {
 	@JoinColumn(name = StandardMatrix.JOIN_COLUMN, insertable = false,
 			updatable = false)
 	@CheckForNull
-	private StandardMatrix matrix;
+	private StandardMatrix parent;
 
 	/**
 	 * The states that this character can have. For example, 0->"absent",
@@ -134,7 +134,7 @@ public class StandardCharacter extends UUPPodEntityWithXmlId {
 	 */
 	public void afterUnmarshal(
 			@CheckForNull final Unmarshaller u, final Object parent) {
-		setMatrix((StandardMatrix) parent);
+		setParent((StandardMatrix) parent);
 		if (getStatesModifiable().size() > 0
 				&& get(getStatesModifiable().values(), 0).getParent() == null) {
 			for (final StandardState state : getStatesModifiable().values()) {
@@ -169,8 +169,8 @@ public class StandardCharacter extends UUPPodEntityWithXmlId {
 	 * @return the matrix that owns this character
 	 */
 	@Nullable
-	public StandardMatrix getMatrix() {
-		return matrix;
+	public StandardMatrix getParent() {
+		return parent;
 	}
 
 	/**
@@ -198,6 +198,8 @@ public class StandardCharacter extends UUPPodEntityWithXmlId {
 
 	/**
 	 * Get a modifiable reference to the states.
+	 * <p>
+	 * protected for JAXB.
 	 * 
 	 * @return a mutable reference to the states
 	 */
@@ -208,8 +210,8 @@ public class StandardCharacter extends UUPPodEntityWithXmlId {
 
 	@Override
 	public StandardCharacter setInNeedOfNewVersion() {
-		if (matrix != null) {
-			matrix.setInNeedOfNewVersion();
+		if (parent != null) {
+			parent.setInNeedOfNewVersion();
 		}
 		super.setInNeedOfNewVersion();
 		return this;
@@ -249,9 +251,9 @@ public class StandardCharacter extends UUPPodEntityWithXmlId {
 	 *        different matrix - it's fine to keep calling this method with the
 	 *        same matrix
 	 */
-	protected StandardCharacter setMatrix(
-			@CheckForNull final StandardMatrix matrix) {
-		this.matrix = matrix;
+	StandardCharacter setParent(
+			@CheckForNull final StandardMatrix parent) {
+		this.parent = parent;
 		return this;
 	}
 

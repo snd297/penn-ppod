@@ -3,16 +3,26 @@ package edu.upenn.cis.ppod.modelinterfaces;
 import java.util.Map;
 
 import edu.umd.cs.findbugs.annotations.CheckForNull;
+import edu.umd.cs.findbugs.annotations.Nullable;
 import edu.upenn.cis.ppod.model.OTU;
 import edu.upenn.cis.ppod.util.IVisitor;
 
-/**
- * @author Sam Donnelly
- */
-public interface IOTUKeyedMap<V extends IOTUKeyedMapValue<?>> {
+	public interface IOTUKeyedMap<V extends IOTUKeyedMapValue<?>>
+		extends IVisitable {
 
+	/*
+	 * (non-Javadoc)
+	 * 
+	 * @see
+	 * edu.upenn.cis.ppod.modelinterfaces.IVisitable#accept(edu.upenn.cis.ppod
+	 * .util.IVisitor)
+	 */
 	void accept(IVisitor visitor);
 
+	/**
+	 * Do processing that must occur after JAXB unmarshalling is complete and so
+	 * {@code @XmlIDREF}'s have been resolved
+	 */
 	void afterUnmarshal();
 
 	/**
@@ -28,6 +38,7 @@ public interface IOTUKeyedMap<V extends IOTUKeyedMapValue<?>> {
 	 *             OTU-keyed map
 	 * @throws NullPointerException if the specified key is null
 	 */
+	@Nullable
 	V get(OTU key);
 
 	/**
@@ -59,6 +70,7 @@ public interface IOTUKeyedMap<V extends IOTUKeyedMapValue<?>> {
 	 * @throws IllegalArgumentException if there's already a value
 	 *             {@code .equals} to {@code value}
 	 */
+	@CheckForNull
 	V put(OTU key, V value);
 
 	/**
@@ -73,7 +85,6 @@ public interface IOTUKeyedMap<V extends IOTUKeyedMapValue<?>> {
 	 * @return this
 	 * @see IOTUKeyedMapPlus
 	 */
-	@CheckForNull
 	IOTUKeyedMap<V> setOTUs();
 
 }

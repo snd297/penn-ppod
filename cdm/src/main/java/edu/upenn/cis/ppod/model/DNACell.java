@@ -87,6 +87,9 @@ public class DNACell extends Cell<DNANucleotide, DNARow> {
 		visitor.visitDNACell(this);
 	}
 
+	/**
+	 * Protected for JAXB.
+	 */
 	@XmlAttribute(name = "nucleotide")
 	@Override
 	protected DNANucleotide getElement() {
@@ -98,6 +101,9 @@ public class DNACell extends Cell<DNANucleotide, DNARow> {
 		return elements;
 	}
 
+	/**
+	 * Protected for JAXB.
+	 */
 	@XmlElement(name = "nucleotide")
 	@Override
 	protected Set<DNANucleotide> getElementsXml() {

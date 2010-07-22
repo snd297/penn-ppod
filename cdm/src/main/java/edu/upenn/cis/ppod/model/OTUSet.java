@@ -265,7 +265,7 @@ public class OTUSet extends UUPPodEntityWithXmlId {
 		this.parent = (Study) parent;
 	}
 
-	protected Set<IOTUSetChild> getChildren() {
+	Set<IOTUSetChild> getChildren() {
 		final Set<IOTUSetChild> children = newHashSet();
 		children.addAll(getOTUs());
 		children.addAll(getStandardMatrices());
