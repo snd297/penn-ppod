@@ -40,3 +40,5 @@ Because it used to be many-to-many and since there're are so few trees in tree s
 Because our setter's are used to figure out when we need a new pPOD version number, and we didn't want that flag set when loading entities from the database. 
 
 For better and for worse, we take the view that the accessors are for Java clients and the fields are for the database. There are exceptions to this, see for example `DNARows`, `StandardRows`, and `DNASequences`.
+
+Christian Bauer seems to think that this approach is fine https://forum.hibernate.org/viewtopic.php?p=2349555.
