@@ -12,6 +12,8 @@ Some information is propagated through the pPOD object tree. The hierarchy is as
       * `SequenceSet -> Sequence`
       * `TreeSet -> Tree`
     * An `Attachment` can be attached to any `PPodEntity`
+  * `AttachmentNamespace`
+  * `AttachmentType`
 
 All parent-child relationships are one-to-many.
 
