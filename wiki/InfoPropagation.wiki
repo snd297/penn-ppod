@@ -46,10 +46,10 @@ The `accept` method on the pPOD entities follows the pattern of the pPOD version
 
   * `Study -> OTUSet`
 
-  * `OTUSet -> OTU, CharacterStateMatrix, TreeSet`
+  * `OTUSet -> OTU, Matrix, TreeSet`
 
-  * `CharacterStateMatrix -> CharacterStateRow`
-  * `CharacterStateRow -> CharacterStateCell`
+  * `StandardMatrix -> StandardRow`
+  * `StandardRow -> StandardCell`
 
   * `TreeSet -> Tree`
 
