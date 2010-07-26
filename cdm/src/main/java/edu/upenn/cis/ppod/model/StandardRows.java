@@ -50,10 +50,10 @@ import edu.upenn.cis.ppod.util.OTUStandardRowPair;
 @Embeddable
 @Access(AccessType.PROPERTY)
 public class StandardRows
-		implements
-		IOTUKeyedMap<StandardRow> {
+		implements IOTUKeyedMap<StandardRow> {
 
-	private final IOTUKeyedMapPlus<StandardRow, StandardMatrix, OTUStandardRowPair> rows = new OTUKeyedMapPlus<StandardRow, StandardMatrix, OTUStandardRowPair>();
+	private final IOTUKeyedMapPlus<StandardRow, StandardMatrix, OTUStandardRowPair> rows =
+			new OTUKeyedMapPlus<StandardRow, StandardMatrix, OTUStandardRowPair>();
 
 	StandardRows() {}
 

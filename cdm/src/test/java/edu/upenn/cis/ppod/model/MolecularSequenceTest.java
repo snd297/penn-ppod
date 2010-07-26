@@ -57,9 +57,9 @@ public class MolecularSequenceTest {
 	 */
 	@Test
 	public void setSequence() {
-		final Sequence sequence = dnaSequenceProvider
+		final Sequence<?> sequence = dnaSequenceProvider
 				.get();
-		final String sequenceString = "ACGTAC-T-A";
+		final String sequenceString = "ACGMTARC-T-A";
 		sequence.setSequence(sequenceString);
 		assertEquals(sequence.getSequence(), sequenceString);
 		assertTrue(sequence.isInNeedOfNewVersion());
@@ -82,7 +82,7 @@ public class MolecularSequenceTest {
 	 */
 	@Test(expectedExceptions = IllegalArgumentException.class)
 	public void setSequenceWithAnIllegalCharacter() {
-		final Sequence sequence = dnaSequenceProvider
+		final Sequence<?> sequence = dnaSequenceProvider
 				.get();
 		final String sequenceString = "ACGTlC-T-A";
 		sequence.setSequence(sequenceString);
@@ -140,7 +140,7 @@ public class MolecularSequenceTest {
 	 */
 	@Test
 	public void setName() {
-		final Sequence sequence = dnaSequenceProvider.get();
+		final Sequence<?> sequence = dnaSequenceProvider.get();
 
 		assertNull(sequence.getName());
 
@@ -176,7 +176,7 @@ public class MolecularSequenceTest {
 	 */
 	@Test
 	public void setAccession() {
-		final Sequence sequence = dnaSequenceProvider.get();
+		final Sequence<?> sequence = dnaSequenceProvider.get();
 
 		assertNull(sequence.getAccession());
 
@@ -212,7 +212,7 @@ public class MolecularSequenceTest {
 	 */
 	@Test
 	public void setDescription() {
-		final Sequence sequence = dnaSequenceProvider.get();
+		final Sequence<?> sequence = dnaSequenceProvider.get();
 
 		assertNull(sequence.getDescription());
 
