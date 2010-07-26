@@ -29,7 +29,7 @@ import edu.upenn.cis.ppod.modelinterfaces.INewVersionInfo;
  */
 @ImplementedBy(CreateOrUpdateDNAMatrix.class)
 public interface ICreateOrUpdateDNAMatrix extends
-		ICreateOrUpdateMatrix<DNAMatrix, DNARow, DNACell, DNANucleotide> {
+ICreateOrUpdateMatrix<DNAMatrix, DNARow, DNACell, DNANucleotide> {
 	static interface IFactory {
 		ICreateOrUpdateDNAMatrix create(
 				INewVersionInfo newVersionInfo,

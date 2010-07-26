@@ -16,7 +16,6 @@
 package edu.upenn.cis.ppod.createorupdate;
 
 import static com.google.common.base.Preconditions.checkNotNull;
-import static com.google.common.collect.Iterables.getOnlyElement;
 import static com.google.common.collect.Lists.newArrayList;
 
 import java.util.List;
@@ -39,7 +38,7 @@ import edu.upenn.cis.ppod.modelinterfaces.INewVersionInfo;
 /**
  * @author Sam Donnelly
  */
-class CreateOrUpdateMatrix<M extends Matrix<R>, R extends Row<C, ?>, C extends Cell<E, ?>, E>
+abstract class CreateOrUpdateMatrix<M extends Matrix<R>, R extends Row<C, ?>, C extends Cell<E, ?>, E>
 		implements ICreateOrUpdateMatrix<M, R, C, E> {
 
 	private final Provider<C> cellProvider;
@@ -65,9 +64,7 @@ class CreateOrUpdateMatrix<M extends Matrix<R>, R extends Row<C, ?>, C extends C
 		this.dao = dao;
 	}
 
-	void takeSpecificAction(final C dbCell, final C sourceCell) {
-
-	}
+	abstract void handleSingleCell(final C dbCell, final C sourceCell);
 
 	public void createOrUpdateMatrix(
 			final M dbMatrix,
@@ -146,9 +143,7 @@ class CreateOrUpdateMatrix<M extends Matrix<R>, R extends Row<C, ?>, C extends C
 										sourceCell.getElements());
 						break;
 					case SINGLE:
-						dbCell
-								.setSingleElement(
-										getOnlyElement(sourceCell.getElements()));
+						handleSingleCell(dbCell, sourceCell);
 						break;
 					case UNASSIGNED:
 						dbCell.setUnassigned();
@@ -160,8 +155,6 @@ class CreateOrUpdateMatrix<M extends Matrix<R>, R extends Row<C, ?>, C extends C
 					default:
 						throw new AssertionError("unknown type");
 				}
-
-				takeSpecificAction(dbCell, sourceCell);
 
 				// We need to do this here since we're removing the cell from
 				// the persistence context (with evict). So it won't get handled

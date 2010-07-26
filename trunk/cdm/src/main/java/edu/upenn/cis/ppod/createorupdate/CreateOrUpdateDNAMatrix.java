@@ -15,7 +15,10 @@
  */
 package edu.upenn.cis.ppod.createorupdate;
 
+import static com.google.common.base.Preconditions.checkArgument;
+import static com.google.common.base.Preconditions.checkNotNull;
 import static com.google.common.collect.Iterables.get;
+import static com.google.common.collect.Iterables.getOnlyElement;
 
 import com.google.inject.Inject;
 import com.google.inject.Provider;
@@ -23,6 +26,7 @@ import com.google.inject.assistedinject.Assisted;
 
 import edu.upenn.cis.ppod.dao.IDAO;
 import edu.upenn.cis.ppod.model.Attachment;
+import edu.upenn.cis.ppod.model.Cell;
 import edu.upenn.cis.ppod.model.DNACell;
 import edu.upenn.cis.ppod.model.DNAMatrix;
 import edu.upenn.cis.ppod.model.DNANucleotide;
@@ -58,7 +62,13 @@ final class CreateOrUpdateDNAMatrix
 	}
 
 	@Override
-	void takeSpecificAction(final DNACell dbCell, final DNACell sourceCell) {
-		dbCell.setUpperCase(sourceCell.isUpperCase());
+	void handleSingleCell(final DNACell dbCell, final DNACell sourceCell) {
+		checkNotNull(dbCell);
+		checkArgument(dbCell.getType() == Cell.Type.SINGLE);
+		checkNotNull(sourceCell);
+		checkArgument(sourceCell.getType() == Cell.Type.SINGLE);
+		dbCell.setSingleElement(
+				getOnlyElement(sourceCell.getElements()),
+				sourceCell.isUpperCase());
 	}
 }

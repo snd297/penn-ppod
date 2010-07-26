@@ -239,7 +239,6 @@ public class StandardCell extends Cell<StandardState, StandardRow> {
 
 	}
 
-	@Override
 	public StandardCell setSingleElement(final StandardState element) {
 
 		checkNotNull(element);

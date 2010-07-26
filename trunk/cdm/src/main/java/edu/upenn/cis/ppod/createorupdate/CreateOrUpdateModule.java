@@ -19,10 +19,6 @@ import com.google.inject.AbstractModule;
 import com.google.inject.TypeLiteral;
 import com.google.inject.assistedinject.FactoryProvider;
 
-import edu.upenn.cis.ppod.model.StandardState;
-import edu.upenn.cis.ppod.model.StandardCell;
-import edu.upenn.cis.ppod.model.StandardMatrix;
-import edu.upenn.cis.ppod.model.StandardRow;
 import edu.upenn.cis.ppod.model.DNASequence;
 import edu.upenn.cis.ppod.model.DNASequenceSet;
 
@@ -40,14 +36,6 @@ public class CreateOrUpdateModule extends AbstractModule {
 			extends
 			TypeLiteral<IMergeSequenceSets.IFactory<DNASequenceSet, DNASequence>> {}
 
-	private final static class SaveOrUpdateCharacterStateMatrixTypeLiteral
-			extends
-			TypeLiteral<CreateOrUpdateMatrix<StandardMatrix, StandardRow, StandardCell, StandardState>> {}
-
-	private final static class ISaveOrUpdateCharacterStateMatrixIFactoryTypeLiteral
-			extends
-			TypeLiteral<ICreateOrUpdateMatrix.IFactory<StandardMatrix, StandardRow, StandardCell, StandardState>> {}
-
 	@Override
 	protected void configure() {
 
@@ -60,25 +48,6 @@ public class CreateOrUpdateModule extends AbstractModule {
 		bind(mergeDNASequencesFactoryTypeLiteral).toProvider(
 				FactoryProvider.newFactory(mergeDNASequencesFactoryTypeLiteral,
 						mergeDNASequenceSetTypeLiteral));
-
-		final TypeLiteral<CreateOrUpdateMatrix<StandardMatrix, StandardRow, StandardCell, StandardState>> saveOrUpdateCharacterStateMatrixTypeLiteral =
-				new SaveOrUpdateCharacterStateMatrixTypeLiteral();
-
-		final TypeLiteral<ICreateOrUpdateMatrix.IFactory<StandardMatrix, StandardRow, StandardCell, StandardState>> saveOrUpdateCharacterStateMatrixFactoryTypeLiteral =
-				new ISaveOrUpdateCharacterStateMatrixIFactoryTypeLiteral();
-
-		bind(saveOrUpdateCharacterStateMatrixFactoryTypeLiteral)
-				.toProvider(
-						FactoryProvider
-								.newFactory(
-										saveOrUpdateCharacterStateMatrixFactoryTypeLiteral,
-										saveOrUpdateCharacterStateMatrixTypeLiteral));
-
-		bind(ICreateOrUpdateDNAMatrix.IFactory.class)
-				.toProvider(
-						FactoryProvider.newFactory(
-								ICreateOrUpdateDNAMatrix.IFactory.class,
-								ICreateOrUpdateDNAMatrix.class));
 
 	}
 }

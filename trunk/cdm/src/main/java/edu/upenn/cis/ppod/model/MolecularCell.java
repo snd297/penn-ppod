@@ -1,8 +1,6 @@
 package edu.upenn.cis.ppod.model;
 
-import static com.google.common.base.Objects.equal;
 import static com.google.common.base.Preconditions.checkNotNull;
-import static com.google.common.base.Preconditions.checkState;
 
 import java.util.Set;
 
@@ -20,16 +18,12 @@ abstract public class MolecularCell<E, R extends Row<?, ?>> extends Cell<E, R> {
 	@CheckForNull
 	private Boolean upperCase;
 
-	@Nullable
-	public Boolean isUpperCase() {
-		return upperCase;
-	}
-
 	/**
 	 * So JAXB can have a raw (no arg checking) setter.
 	 */
+	@Nullable
 	@XmlAttribute(name = "upperCase")
-	protected Boolean isUpperCaseXml() {
+	public Boolean isUpperCase() {
 		return upperCase;
 	}
 
@@ -50,24 +44,37 @@ abstract public class MolecularCell<E, R extends Row<?, ?>> extends Cell<E, R> {
 		setUpperCase(null);
 	}
 
-	public MolecularCell<E, R> setUpperCase(
-			@CheckForNull final Boolean upperCase) {
-		checkState(getType() != null,
-				"called setUpperCase but getType() == null");
-		checkState(getType() == Type.SINGLE
-				|| upperCase == null, // if (type is not single) ->
-										// upperCase must be null
-				"if a cell is not single, it can't have a case");
-		if (equal(upperCase, this.upperCase)) {
-
-		} else {
-			this.upperCase = upperCase;
-			setInNeedOfNewVersion();
+	/**
+	 * Set the cell to have type {@link Type#SINGLE} and the given states.
+	 * 
+	 * @param state state to assign to this cell
+	 * 
+	 * @return this
+	 */
+	public Cell<E, R> setSingleElement(final E element, final Boolean upperCase) {
+		checkNotNull(element);
+		if (element.equals(getElement())
+				&& upperCase.equals(isUpperCase())) {
+			if (getType() != Type.SINGLE) {
+				throw new AssertionError(
+						"element is set, but this cell is not a SINGLE");
+			}
+			return this;
 		}
+		setType(Type.SINGLE);
+		setElements(null);
+		setElement(element);
+		setUpperCase(upperCase);
+		setInNeedOfNewVersion();
 		return this;
 	}
 
-	protected void setUpperCaseXml(@CheckForNull final Boolean upperCase) {
+	protected void setUpperCase(
+			@CheckForNull Boolean upperCase) {
+		this.upperCase = upperCase;
+	}
+
+	protected void setUpperCaseRaw(@CheckForNull final Boolean upperCase) {
 		this.upperCase = upperCase;
 	}
 }

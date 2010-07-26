@@ -405,28 +405,6 @@ public abstract class Cell<E, R extends Row<?, ?>> extends PPodEntity {
 		return;
 	}
 
-	/**
-	 * Set the cell to have type {@link Type#SINGLE} and the given states.
-	 * 
-	 * @param state state to assign to this cell
-	 * 
-	 * @return this
-	 */
-	public Cell<E, R> setSingleElement(final E element) {
-		checkNotNull(element);
-		if (element == getElement()) {
-			if (getType() != Type.SINGLE) {
-				throw new AssertionError(
-						"element is set, but this cell is not a SINGLE");
-			}
-			return this;
-		}
-		setType(Type.SINGLE);
-		setElements(null);
-		setElement(element);
-		setInNeedOfNewVersion();
-		return this;
-	}
 
 	/**
 	 * This method has no affect on {@link #isInNeedOfNewVersion()}.
