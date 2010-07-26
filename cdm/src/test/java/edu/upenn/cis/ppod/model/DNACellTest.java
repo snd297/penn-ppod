@@ -58,10 +58,10 @@ public class DNACellTest {
 	public void setTypeAndStatesSingle() {
 		final DNACell dnaCell = dnaCellProvider.get();
 		dnaCell.unsetInNeedOfNewVersion();
-		dnaCell.setSingleElement(DNANucleotide.A);
+		dnaCell.setSingleElement(DNANucleotide.A, true);
 		assertEquals(dnaCell.getType(), Type.SINGLE);
 		assertEquals(getOnlyElement(dnaCell.getElements()),
-					DNANucleotide.A);
+				DNANucleotide.A);
 		assertTrue(dnaCell.isInNeedOfNewVersion());
 	}
 
@@ -70,8 +70,8 @@ public class DNACellTest {
 		final DNACell dnaCell = dnaCellProvider.get();
 
 		dnaCell.unsetInNeedOfNewVersion();
-		dnaCell.setSingleElement(DNANucleotide.A);
-		dnaCell.setSingleElement(DNANucleotide.A);
+		dnaCell.setSingleElement(DNANucleotide.A, true);
+		dnaCell.setSingleElement(DNANucleotide.A, true);
 
 		assertEquals(
 				dnaCell.getType(),

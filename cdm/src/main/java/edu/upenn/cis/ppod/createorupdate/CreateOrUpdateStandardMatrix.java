@@ -18,6 +18,7 @@ package edu.upenn.cis.ppod.createorupdate;
 import static com.google.common.base.Preconditions.checkNotNull;
 import static com.google.common.base.Predicates.compose;
 import static com.google.common.base.Predicates.equalTo;
+import static com.google.common.collect.Iterables.getOnlyElement;
 import static com.google.common.collect.Lists.newArrayList;
 import static edu.upenn.cis.ppod.util.PPodIterables.findIf;
 
@@ -45,38 +46,40 @@ import edu.upenn.cis.ppod.thirdparty.injectslf4j.InjectLogger;
  * @author Sam Donnelly
  */
 final class CreateOrUpdateStandardMatrix
+		extends
+		CreateOrUpdateMatrix<StandardMatrix, StandardRow, StandardCell, StandardState>
 		implements ICreateOrUpdateStandardMatrix {
 
 	private final Provider<StandardCharacter> standardCharacterProvider;
 	private final StandardState.IFactory standardStateFactory;
 	private final Provider<Attachment> attachmentProvider;
 	private final IMergeAttachments mergeAttachments;
-	private final IDAO<Object, Long> dao;
 
 	@InjectLogger
 	private Logger logger;
 
 	private final INewVersionInfo newVersionInfo;
-	private final ICreateOrUpdateMatrix.IFactory<StandardMatrix, StandardRow, StandardCell, StandardState> createOrUpdatMatrixFactory;
 
 	@Inject
 	CreateOrUpdateStandardMatrix(
+			final Provider<StandardRow> rowProvider,
+			final Provider<StandardCell> cellProvider,
 			final Provider<StandardCharacter> characterProvider,
 			final StandardState.IFactory stateFactory,
 			final Provider<Attachment> attachmentProvider,
-			final ICreateOrUpdateMatrix.IFactory<StandardMatrix, StandardRow, StandardCell, StandardState> createOrUpdatMatrixFactory,
-			@Assisted final INewVersionInfo newVersionInfo,
+			@Assisted final IMergeAttachments mergeAttachments,
 			@Assisted final IDAO<Object, Long> dao,
-			@Assisted final IMergeAttachments mergeAttachments) {
+			@Assisted final INewVersionInfo newVersionInfo) {
+		super(rowProvider, cellProvider, attachmentProvider,
+				newVersionInfo, dao);
 		this.standardCharacterProvider = characterProvider;
 		this.standardStateFactory = stateFactory;
 		this.attachmentProvider = attachmentProvider;
-		this.createOrUpdatMatrixFactory = createOrUpdatMatrixFactory;
-		this.dao = dao;
 		this.mergeAttachments = mergeAttachments;
 		this.newVersionInfo = newVersionInfo;
 	}
 
+	@Override
 	public void createOrUpdateMatrix(
 			final StandardMatrix dbMatrix,
 			final StandardMatrix sourceMatrix) {
@@ -152,11 +155,14 @@ final class CreateOrUpdateStandardMatrix
 
 		dbMatrix.setCharacters(newDbMatrixCharacters);
 
-		final ICreateOrUpdateMatrix<StandardMatrix, StandardRow, StandardCell, StandardState> createOrUpdatMatrix =
-				createOrUpdatMatrixFactory
-						.create(newVersionInfo, dao);
+		super.createOrUpdateMatrix(dbMatrix, sourceMatrix);
 
-		createOrUpdatMatrix.createOrUpdateMatrix(dbMatrix, sourceMatrix);
+	}
 
+	@Override
+	void handleSingleCell(
+			final StandardCell dbCell,
+			final StandardCell sourceCell) {
+		dbCell.setSingleElement(getOnlyElement(sourceCell.getElements()));
 	}
 }

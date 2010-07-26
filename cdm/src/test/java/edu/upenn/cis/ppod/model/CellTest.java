@@ -98,32 +98,32 @@ public class CellTest {
 		cell.getElementsXml();
 	}
 
-	@Test
-	public void getElementsXml() {
-		final Cell<DNANucleotide, ?> cell = dnaCellProvider.get();
-		cell.setType(Cell.Type.UNCERTAIN);
-		final Set<DNANucleotide> cellElementsXml = cell.getElementsXml();
-		assertNotNull(cellElementsXml);
-		assertEquals(cellElementsXml.size(), 0);
-
-		cell.setUnassigned();
-		assertNull(cell.getElementsXml());
-
-		cell.setSingleElement(DNANucleotide.A);
-		assertNull(cell.getElementsXml());
-
-		cell.setInapplicable();
-		assertNull(cell.getElementsXml());
-
-		final Set<DNANucleotide> nucleotides = EnumSet.of(DNANucleotide.A,
-				DNANucleotide.G);
-		cell.setPolymorphicElements(nucleotides);
-		assertEquals((Object) cell.getElementsXml(), (Object) nucleotides);
-
-		cell.setUncertainElements(nucleotides);
-		assertEquals((Object) cell.getElementsXml(), (Object) nucleotides);
-
-	}
+	// @Test
+	// public void getElementsXml() {
+	// final Cell<DNANucleotide, ?> cell = dnaCellProvider.get();
+	// cell.setType(Cell.Type.UNCERTAIN);
+	// final Set<DNANucleotide> cellElementsXml = cell.getElementsXml();
+	// assertNotNull(cellElementsXml);
+	// assertEquals(cellElementsXml.size(), 0);
+	//
+	// cell.setUnassigned();
+	// assertNull(cell.getElementsXml());
+	//
+	// cell.setSingleElement(DNANucleotide.A);
+	// assertNull(cell.getElementsXml());
+	//
+	// cell.setInapplicable();
+	// assertNull(cell.getElementsXml());
+	//
+	// final Set<DNANucleotide> nucleotides = EnumSet.of(DNANucleotide.A,
+	// DNANucleotide.G);
+	// cell.setPolymorphicElements(nucleotides);
+	// assertEquals((Object) cell.getElementsXml(), (Object) nucleotides);
+	//
+	// cell.setUncertainElements(nucleotides);
+	// assertEquals((Object) cell.getElementsXml(), (Object) nucleotides);
+	//
+	// }
 
 	@Test
 	public void setInNeedOfNewVersion() {
