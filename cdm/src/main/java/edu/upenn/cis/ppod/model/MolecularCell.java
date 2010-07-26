@@ -18,6 +18,8 @@ abstract public class MolecularCell<E, R extends Row<?, ?>> extends Cell<E, R> {
 	@CheckForNull
 	private Boolean upperCase;
 
+	MolecularCell() {}
+
 	/**
 	 * So JAXB can have a raw (no arg checking) setter.
 	 */
@@ -69,12 +71,11 @@ abstract public class MolecularCell<E, R extends Row<?, ?>> extends Cell<E, R> {
 		return this;
 	}
 
+	/**
+	 * Protected for JAXB.
+	 */
 	protected void setUpperCase(
-			@CheckForNull Boolean upperCase) {
-		this.upperCase = upperCase;
-	}
-
-	protected void setUpperCaseRaw(@CheckForNull final Boolean upperCase) {
+			@CheckForNull final Boolean upperCase) {
 		this.upperCase = upperCase;
 	}
 }
