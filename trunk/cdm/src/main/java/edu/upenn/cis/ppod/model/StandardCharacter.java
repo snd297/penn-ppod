@@ -186,7 +186,8 @@ public class StandardCharacter extends UUPPodEntityWithXmlId {
 	 */
 	@CheckForNull
 	public StandardState getState(final Integer stateNumber) {
-		return getStatesModifiable().get(stateNumber);
+		checkNotNull(stateNumber);
+		return states.get(stateNumber);
 	}
 
 	/**

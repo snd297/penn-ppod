@@ -35,7 +35,7 @@ import com.google.inject.Provider;
 
 import edu.upenn.cis.ppod.TestGroupDefs;
 
-@Test(groups = { TestGroupDefs.FAST })
+@Test(groups = { TestGroupDefs.FAST, TestGroupDefs.SINGLE })
 public class CellTest {
 
 	@Inject
@@ -56,10 +56,34 @@ public class CellTest {
 	@Inject
 	private Provider<VersionInfo> versionInfoProvider;
 
+	@Test
+	public void afterUnmarshal() {
+		final DNARow row = new DNARow();
+		final DNACell cell = new DNACell();
+		cell.afterUnmarshal(null, row);
+		assertSame(cell.getParent(), row);
+	}
+
 	@Test(expectedExceptions = IllegalStateException.class)
 	public void getElementsWhenNoTypeSet() {
 		final Cell<?, ?> cell = dnaCellProvider.get();
 		cell.getElements();
+	}
+
+	@Test(expectedExceptions = IllegalArgumentException.class)
+	public void setPolymorphicElementsTooFewStates() {
+		final DNACell cell = new DNACell();
+		final Set<DNANucleotide> nucleotides =
+				ImmutableSet.of(DNANucleotide.A);
+		cell.setPolymorphicElements(nucleotides);
+	}
+
+	@Test
+	public void initElements() {
+		final Cell<?, ?> cell = new StandardCell();
+		cell.initElements();
+		assertNotNull(cell.getElementsModifiable());
+		assertEquals(cell.getElementsModifiable().size(), 0);
 	}
 
 	@Test

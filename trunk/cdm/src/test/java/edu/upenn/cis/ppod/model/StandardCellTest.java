@@ -146,13 +146,6 @@ public class StandardCellTest {
 		assertEquals((Object) cell.getElements(), (Object) states);
 	}
 
-	@Test(expectedExceptions = IllegalArgumentException.class)
-	public void setPolymorphicElementsTooFewStates() {
-		matrix.getRow(matrix.getParent().getOTUs().get(0)).setCells(
-				Arrays.asList(cell));
-		cell.setPolymorphicElements(states);
-	}
-
 	@Test
 	public void setSingleElement() {
 		matrix.getRow(matrix.getParent().getOTUs().get(0)).setCells(

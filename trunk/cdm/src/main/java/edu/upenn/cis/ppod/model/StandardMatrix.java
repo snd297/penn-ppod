@@ -55,13 +55,8 @@ public class StandardMatrix extends Matrix<StandardRow> {
 	public static final String JOIN_COLUMN = TABLE + "_ID";
 
 	/**
-	 * The position of a {@code Character} in <code>characters</code> signifies
-	 * its column number in each <code>row</cod>. So <code>characters</code> is
-	 * a columnNumber-> <code>Character</code> lookup.
-	 * <p>
-	 * This relationship is really only many-to-many for
-	 * {@code MolecularStateMatrix}s, for character matrices it is one-to-many
-	 * and a refactoring should be considered.
+	 * The position of a {@code StandardCharacter} in <code>characters</code> is
+	 * its column.
 	 */
 	@OneToMany(cascade = CascadeType.ALL, orphanRemoval = true)
 	@OrderColumn(name = "POSITION")
@@ -92,7 +87,7 @@ public class StandardMatrix extends Matrix<StandardRow> {
 
 	@Override
 	public void afterUnmarshal() {
-		this.rows.afterUnmarshal();
+		rows.afterUnmarshal();
 	}
 
 	/**

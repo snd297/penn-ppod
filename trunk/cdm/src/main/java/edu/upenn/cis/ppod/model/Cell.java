@@ -271,7 +271,7 @@ public abstract class Cell<E, R extends Row<?, ?>> extends PPodEntity {
 		return this;
 	}
 
-	private void setInapplicableOrUnassigned(final Type type) {
+	void setInapplicableOrUnassigned(final Type type) {
 		checkNotNull(type);
 		checkArgument(
 				type == Type.INAPPLICABLE

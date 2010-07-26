@@ -225,11 +225,17 @@ public abstract class PPodEntity
 		if (!hasAttachments) {
 			attachmentRemoved = false;
 		} else {
-			attachmentRemoved = attachments.remove(attachment);
+			final Set<Attachment> thisAttachments = attachments;
+			if (thisAttachments == null) {
+				throw new AssertionError(
+						"hasAttachments is true but attachmesn == null");
+			}
+
+			attachmentRemoved = thisAttachments.remove(attachment);
 			if (attachmentRemoved) {
 				setInNeedOfNewVersion();
 			}
-			if (attachments.size() == 0) {
+			if (thisAttachments.size() == 0) {
 				hasAttachments = false;
 			}
 		}

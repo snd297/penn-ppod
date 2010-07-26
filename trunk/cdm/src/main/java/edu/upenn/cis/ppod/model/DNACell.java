@@ -43,7 +43,7 @@ import edu.upenn.cis.ppod.util.IVisitor;
  */
 @Entity
 @Table(name = DNACell.TABLE)
-public class DNACell extends Cell<DNANucleotide, DNARow> {
+public class DNACell extends MolecularCell<DNANucleotide, DNARow> {
 
 	public static final String TABLE = "DNA_CELL";
 

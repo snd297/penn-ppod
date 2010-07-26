@@ -35,12 +35,12 @@ final class CreateOrUpdateDNAMatrix
 		implements ICreateOrUpdateDNAMatrix {
 
 	@Inject
-	CreateOrUpdateDNAMatrix(Provider<DNARow> rowProvider,
-			Provider<DNACell> cellProvider,
-			Provider<Attachment> attachmentProvider,
-			Provider<MatrixInfo> matrixInfoProvider,
-			@Assisted INewVersionInfo newVersionInfo,
-			@Assisted IDAO<Object, Long> dao) {
+	CreateOrUpdateDNAMatrix(final Provider<DNARow> rowProvider,
+			final Provider<DNACell> cellProvider,
+			final Provider<Attachment> attachmentProvider,
+			final Provider<MatrixInfo> matrixInfoProvider,
+			@Assisted final INewVersionInfo newVersionInfo,
+			@Assisted final IDAO<Object, Long> dao) {
 		super(rowProvider, cellProvider, attachmentProvider,
 				newVersionInfo, dao);
 	}
@@ -57,4 +57,8 @@ final class CreateOrUpdateDNAMatrix
 		super.createOrUpdateMatrix(dbMatrix, sourceMatrix);
 	}
 
+	@Override
+	void takeSpecificAction(final DNACell dbCell, final DNACell sourceCell) {
+		dbCell.setUpperCase(sourceCell.isUpperCase());
+	}
 }

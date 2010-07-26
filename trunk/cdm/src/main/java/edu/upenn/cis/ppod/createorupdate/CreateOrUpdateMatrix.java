@@ -65,6 +65,10 @@ class CreateOrUpdateMatrix<M extends Matrix<R>, R extends Row<C, ?>, C extends C
 		this.dao = dao;
 	}
 
+	void takeSpecificAction(final C dbCell, final C sourceCell) {
+
+	}
+
 	public void createOrUpdateMatrix(
 			final M dbMatrix,
 			final M sourceMatrix) {
@@ -156,6 +160,9 @@ class CreateOrUpdateMatrix<M extends Matrix<R>, R extends Row<C, ?>, C extends C
 					default:
 						throw new AssertionError("unknown type");
 				}
+
+				takeSpecificAction(dbCell, sourceCell);
+
 				// We need to do this here since we're removing the cell from
 				// the persistence context (with evict). So it won't get handled
 				// higher up in the application when it does for most entities.
@@ -179,10 +186,6 @@ class CreateOrUpdateMatrix<M extends Matrix<R>, R extends Row<C, ?>, C extends C
 
 			dao.flush();
 			dao.evict(dbRow);
-
-			// Free up cells for garbage collection - harmless at worst
-			sourceRow.clearCells();
 		}
 	}
-
 }
