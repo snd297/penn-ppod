@@ -49,14 +49,14 @@ import edu.upenn.cis.ppod.util.IVisitor;
 public class DNASequence extends Sequence<DNASequenceSet> {
 
 	/**
-	 * The characters that are legal in a {@code DNASequence}.
+	 * The characters that are legal in a {@code DNASequence} .
 	 */
-	public final static Set<java.lang.Character> LEGAL_CHARS =
+	private final static Set<java.lang.Character> LEGAL_CHARS =
 			ImmutableSet.of(
-					'A',
-					'C',
-					'G',
-					'T',
+					'A', 'a',
+					'C', 'c',
+					'G', 'g',
+					'T', 't',
 					'R',
 					'Y',
 					'K',
@@ -102,8 +102,7 @@ public class DNASequence extends Sequence<DNASequenceSet> {
 
 	@Override
 	public boolean isLegal(final char c) {
-		return LEGAL_CHARS.contains(
-				Character.toUpperCase(c));
+		return LEGAL_CHARS.contains(c);
 	}
 
 	@Override
