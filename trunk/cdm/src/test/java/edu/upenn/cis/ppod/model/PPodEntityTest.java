@@ -20,6 +20,7 @@ import static com.google.common.collect.Iterables.isEmpty;
 import static com.google.common.collect.Sets.newHashSet;
 import static org.testng.Assert.assertEquals;
 import static org.testng.Assert.assertFalse;
+import static org.testng.Assert.assertNotNull;
 import static org.testng.Assert.assertNull;
 import static org.testng.Assert.assertSame;
 import static org.testng.Assert.assertTrue;
@@ -40,7 +41,7 @@ import edu.upenn.cis.ppod.util.TestVisitor;
  * 
  * @author Sam Donnelly
  */
-@Test(groups = { TestGroupDefs.FAST },
+@Test(groups = { TestGroupDefs.FAST, TestGroupDefs.SINGLE },
 		dependsOnGroups = TestGroupDefs.INIT)
 public class PPodEntityTest {
 
@@ -70,6 +71,38 @@ public class PPodEntityTest {
 		assertTrue(otuSet.getHasAttachments());
 		assertTrue(otuSet.isInNeedOfNewVersion());
 
+	}
+
+	@Test
+	public void getElementsXmlWNullAttachments() {
+		final OTUSet otuSet = otuSetProvider.get();
+		assertNull(otuSet.getAttachmentsXml());
+
+		otuSet.setHasAttachments(true);
+
+		assertNotNull(otuSet.getAttachmentsXml());
+		assertEquals(otuSet.getAttachmentsXml().size(), 0);
+
+	}
+
+	@Test
+	public void getElementsXmlWAttachments() {
+		final Attachment attachment0 = attachmentProvider.get();
+		final Attachment attachment1 = attachmentProvider.get();
+		final Attachment attachment2 = attachmentProvider.get();
+
+		final Set<Attachment> attachments =
+				ImmutableSet.of(attachment0,
+						attachment1,
+						attachment2);
+
+		final OTUSet otuSet = otuSetProvider.get();
+
+		otuSet.addAttachment(attachment0);
+		otuSet.addAttachment(attachment1);
+		otuSet.addAttachment(attachment2);
+
+		assertEquals(otuSet.getAttachmentsXml(), attachments);
 	}
 
 	@Test

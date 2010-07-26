@@ -35,7 +35,7 @@ import com.google.inject.Provider;
 
 import edu.upenn.cis.ppod.TestGroupDefs;
 
-@Test(groups = { TestGroupDefs.FAST, TestGroupDefs.SINGLE })
+@Test(groups = { TestGroupDefs.FAST })
 public class CellTest {
 
 	@Inject
