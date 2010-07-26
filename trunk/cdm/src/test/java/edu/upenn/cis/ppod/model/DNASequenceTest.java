@@ -35,17 +35,45 @@ import edu.upenn.cis.ppod.TestGroupDefs;
 public class DNASequenceTest {
 
 	private final List<java.lang.Character> alpabet = ImmutableList
-			.of('A', 'B',
-					'C', 'D', 'E', 'F', 'G', 'H', 'I', 'J', 'K', 'L', 'M', 'N',
-					'O',
-					'P', 'Q', 'R', 'S', 'T', 'U', 'V', 'W', 'X', 'Y', 'Z');
+			.of(
+					'A', 'a',
+					'B', 'b',
+					'C', 'c',
+					'D', 'd',
+					'E', 'e',
+					'F', 'f',
+					'G', 'g',
+					'H', 'h',
+					'I', 'i',
+					'J', 'j',
+					'K', 'k',
+					'L', 'l',
+					'M', 'm',
+					'N', 'n',
+					'O', 'o',
+					'P', 'p',
+					'Q', 'q',
+					'R', 'r',
+					'S', 's',
+					'T', 't',
+					'U', 'u',
+					'V', 'v',
+					'W', 'w',
+					'X', 'x',
+					'Y', 'y',
+					'Z', 'z'
+					);
 
+	/**
+	 * All of these characters are legal, upper or lower case.
+	 */
 	private final List<java.lang.Character> legalDNACharacters = ImmutableList
-			.of('A',
-					'C',
-					'G',
+			.of(
+					'A', 'a',
+					'C', 'c',
+					'G', 'g',
+					'T', 't',
 					'R',
-					'T',
 					'Y',
 					'K',
 					'M',
@@ -56,7 +84,8 @@ public class DNASequenceTest {
 					'H',
 					'V',
 					'N',
-					'-');
+					'-'
+					);
 
 	/**
 	 * Make sure that all legal character return true for {@code isLegal(...)}.
@@ -67,7 +96,6 @@ public class DNASequenceTest {
 
 		for (final java.lang.Character character : legalDNACharacters) {
 			assertTrue(sequence.isLegal(character));
-			assertTrue(sequence.isLegal(Character.toLowerCase(character)));
 		}
 	}
 
@@ -83,9 +111,8 @@ public class DNASequenceTest {
 			if (legalDNACharacters.contains(illegalCharacter)) {
 				// it's legal don't see if it's false
 			} else {
-				assertFalse(sequence.isLegal(illegalCharacter));
-				assertFalse(sequence.isLegal(Character
-						.toLowerCase(illegalCharacter)));
+				assertFalse(sequence.isLegal(illegalCharacter),
+						"illegalChar: " + illegalCharacter);
 			}
 		}
 	}

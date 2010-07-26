@@ -66,7 +66,7 @@ public class StandardMatrix extends Matrix<StandardRow> {
 	@Embedded
 	private StandardRows rows;
 
-	/** No-arg constructor for (at least) Hibernate. */
+	/** No-arg constructor for Hibernate. */
 	StandardMatrix() {}
 
 	@Inject
@@ -149,8 +149,7 @@ public class StandardMatrix extends Matrix<StandardRow> {
 	 * @throws IllegalArgumentException if any of {code newCharacters} is
 	 *             {@code null}
 	 * @throws IllegalArgumentException if any of {@code newCharacters} are
-	 *             {@code .equals} to each other. NOTE: this constraint does not
-	 *             hold in a {@link MolecularStateMatrix}
+	 *             {@code .equals} to each other
 	 * @throws IllegalStateExeption if {@code characters.size() !=
 	 *             getColumnsSize()}
 	 */
@@ -163,9 +162,9 @@ public class StandardMatrix extends Matrix<StandardRow> {
 		}
 
 		int newCharacterPos = -1;
-		for (final StandardCharacter newCharacter : characters) {
+		for (final StandardCharacter character : characters) {
 			newCharacterPos++;
-			checkArgument(newCharacter != null, "newCharacters["
+			checkArgument(character != null, "newCharacters["
 												+ newCharacterPos
 												+ "] is null");
 
@@ -173,11 +172,11 @@ public class StandardMatrix extends Matrix<StandardRow> {
 					.listIterator(newCharacterPos + 1); itr
 					.hasNext();) {
 				final StandardCharacter character2 = itr.next();
-				checkArgument(!newCharacter.equals(character2),
+				checkArgument(!character.equals(character2),
 						"two characters are the same "
-								+ newCharacter.getLabel()
+								+ character.getLabel()
 								+ " at positions "
-								+ characters.indexOf(newCharacter)
+								+ characters.indexOf(character)
 								+ " and "
 								+ characters.indexOf(character2));
 			}

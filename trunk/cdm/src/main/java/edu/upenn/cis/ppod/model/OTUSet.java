@@ -62,14 +62,14 @@ public class OTUSet extends UUPPodEntityWithXmlId {
 	/** The column that stores the description. */
 	public static final String DESCRIPTION_COLUMN = "DESCRIPTION";
 
-	/** The table for this entity. Intentionally package-private. */
+	/** The table for this entity. */
 	public static final String TABLE = "OTU_SET";
 
 	/**
 	 * To be used in the names of foreign keys that point at this table.
 	 */
-	public static final String JOIN_COLUMN = TABLE + "_"
-												+ PersistentObject.ID_COLUMN;
+	public static final String JOIN_COLUMN =
+			TABLE + "_" + PersistentObject.ID_COLUMN;
 
 	/** The column that stores the label. */
 	public static final String LABEL_COLUMN = "LABEL";

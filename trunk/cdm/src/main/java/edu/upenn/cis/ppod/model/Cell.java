@@ -140,7 +140,7 @@ public abstract class Cell<E, R extends Row<?, ?>> extends PPodEntity {
 				"type has yet to be assigned for this cell");
 
 		switch (getType()) {
-			// Don't hit states unless we have too
+			// Don't hit states unless we have to
 			case INAPPLICABLE:
 			case UNASSIGNED:
 				return Collections.emptySet();
