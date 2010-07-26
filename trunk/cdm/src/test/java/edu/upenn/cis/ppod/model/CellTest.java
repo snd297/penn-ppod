@@ -56,6 +56,12 @@ public class CellTest {
 	@Inject
 	private Provider<VersionInfo> versionInfoProvider;
 
+	@Test(expectedExceptions = IllegalArgumentException.class)
+	public void setPosition() {
+		final Cell<?, ?> cell = new DNACell();
+		cell.setPosition(-1);
+	}
+
 	@Test
 	public void afterUnmarshal() {
 		final DNARow row = new DNARow();
