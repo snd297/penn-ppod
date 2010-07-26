@@ -35,7 +35,7 @@ import com.google.inject.Provider;
 
 import edu.upenn.cis.ppod.TestGroupDefs;
 
-@Test(groups = { TestGroupDefs.FAST })
+@Test(groups = { TestGroupDefs.FAST, TestGroupDefs.SINGLE })
 public class CellTest {
 
 	@Inject
@@ -90,6 +90,12 @@ public class CellTest {
 		cell.initElements();
 		assertNotNull(cell.getElementsModifiable());
 		assertEquals(cell.getElementsModifiable().size(), 0);
+	}
+
+	@Test(expectedExceptions = IllegalStateException.class)
+	public void getElementsXmlWNoType() {
+		final Cell<?, ?> cell = new DNACell();
+		cell.getElementsXml();
 	}
 
 	@Test
