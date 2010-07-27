@@ -170,4 +170,14 @@ final class CreateOrUpdateStandardMatrix
 		checkArgument(sourceCell.getType() == Cell.Type.SINGLE);
 		dbCell.setSingleElement(getOnlyElement(sourceCell.getElements()));
 	}
+
+	@Override
+	void handlePolymorphicCell(
+			final StandardCell dbCell,
+			final StandardCell sourceCell) {
+		checkNotNull(dbCell);
+		checkNotNull(sourceCell);
+		checkArgument(sourceCell.getType() == Cell.Type.POLYMORPHIC);
+		dbCell.setPolymorphicElements(sourceCell.getElements());
+	}
 }

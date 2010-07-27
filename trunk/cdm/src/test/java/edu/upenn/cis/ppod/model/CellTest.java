@@ -76,21 +76,13 @@ public class CellTest {
 		cell.getElements();
 	}
 
-	@Test(expectedExceptions = IllegalArgumentException.class)
-	public void setPolymorphicElementsTooFewStates() {
-		final DNACell cell = new DNACell();
-		final Set<DNANucleotide> nucleotides =
-				ImmutableSet.of(DNANucleotide.A);
-		cell.setPolymorphicElements(nucleotides);
-	}
-
-	@Test
-	public void initElements() {
-		final Cell<?, ?> cell = new StandardCell();
-		cell.initElements();
-		assertNotNull(cell.getElementsModifiable());
-		assertEquals(cell.getElementsModifiable().size(), 0);
-	}
+	// @Test(expectedExceptions = IllegalArgumentException.class)
+	// public void setPolymorphicElementsTooFewStates() {
+	// final DNACell cell = new DNACell();
+	// final Set<DNANucleotide> nucleotides =
+	// ImmutableSet.of(DNANucleotide.A);
+	// cell.setPolymorphicElements(nucleotides);
+	// }
 
 	@Test(expectedExceptions = IllegalStateException.class)
 	public void getElementsXmlWNoType() {

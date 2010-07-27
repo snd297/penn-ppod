@@ -70,4 +70,14 @@ final class CreateOrUpdateDNAMatrix
 				getOnlyElement(sourceCell.getElements()),
 				sourceCell.isUpperCase());
 	}
+
+	@Override
+	void handlePolymorphicCell(final DNACell dbCell, final DNACell sourceCell) {
+		checkNotNull(dbCell);
+		checkNotNull(sourceCell);
+		checkArgument(sourceCell.getType() == Cell.Type.POLYMORPHIC);
+		dbCell.setPolymorphicElements(
+				sourceCell.getElements(),
+				sourceCell.isUpperCase());
+	}
 }
