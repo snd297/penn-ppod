@@ -1,5 +1,6 @@
 package edu.upenn.cis.ppod.model;
 
+import static com.google.common.base.Preconditions.checkArgument;
 import static com.google.common.base.Preconditions.checkNotNull;
 
 import java.util.Set;
@@ -36,14 +37,12 @@ abstract public class MolecularCell<E, R extends Row<?, ?>> extends Cell<E, R> {
 		setUpperCase(null);
 	}
 
-	@Override
-	void setPolymorphicOrUncertain(
-			final Type type,
-			final Set<? extends E> elements) {
-		checkNotNull(type);
-		checkNotNull(elements);
-		super.setPolymorphicOrUncertain(type, elements);
-		setUpperCase(null);
+	public MolecularCell<E, R> setPolymorphicElements(
+			final Set<? extends E> elements, final Boolean upperCase) {
+		checkNotNull(upperCase);
+		super.setPolymorphicOrUncertain(Type.POLYMORPHIC, elements);
+		setUpperCase(upperCase);
+		return this;
 	}
 
 	/**
@@ -68,6 +67,14 @@ abstract public class MolecularCell<E, R extends Row<?, ?>> extends Cell<E, R> {
 		setElement(element);
 		setUpperCase(upperCase);
 		setInNeedOfNewVersion();
+		return this;
+	}
+
+	@Override
+	public MolecularCell<E, R> setUncertainElements(
+			final Set<? extends E> elements) {
+		super.setUncertainElements(elements);
+		setUpperCase(null);
 		return this;
 	}
 

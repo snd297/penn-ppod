@@ -309,28 +309,6 @@ public abstract class Cell<E, R extends Row<?, ?>> extends PPodEntity {
 	abstract void setParent(@CheckForNull final R row);
 
 	/**
-	 * Set the type to polymorphic with the appropriate states equivalent to
-	 * {@code states}.
-	 * <p>
-	 * Note that the elements that are actually assigned may or may not be the
-	 * {@code ==} to the elements passed in, but the cell will be set to
-	 * equivalent (not necessarily {@code .equals()}) elements.
-	 * 
-	 * @param elements the elements
-	 * 
-	 * @return this
-	 * 
-	 * @throw IllegalArgumentException if {@code polymorphicStates.size() < 2}
-	 */
-	public Cell<E, R> setPolymorphicElements(final Set<? extends E> elements) {
-		checkNotNull(elements);
-		checkArgument(elements.size() > 1,
-				"polymorphic states must be > 1");
-		setPolymorphicOrUncertain(Type.POLYMORPHIC, elements);
-		return this;
-	}
-
-	/**
 	 * Add a set of {@code E} to this {@code Cell}.
 	 * <p>
 	 * Assumes that none of {@code elements} is in a detached state.
@@ -343,7 +321,6 @@ public abstract class Cell<E, R extends Row<?, ?>> extends PPodEntity {
 	 * 
 	 * @return this
 	 */
-	@VisibleForTesting
 	void setPolymorphicOrUncertain(
 			final Type type,
 			final Set<? extends E> elements) {
@@ -404,7 +381,6 @@ public abstract class Cell<E, R extends Row<?, ?>> extends PPodEntity {
 		this.position = position;
 		return;
 	}
-
 
 	/**
 	 * This method has no affect on {@link #isInNeedOfNewVersion()}.

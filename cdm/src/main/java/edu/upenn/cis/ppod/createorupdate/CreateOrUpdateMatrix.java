@@ -66,6 +66,8 @@ abstract class CreateOrUpdateMatrix<M extends Matrix<R>, R extends Row<C, ?>, C 
 
 	abstract void handleSingleCell(final C dbCell, final C sourceCell);
 
+	abstract void handlePolymorphicCell(final C dbCell, final C sourceCell);
+
 	public void createOrUpdateMatrix(
 			final M dbMatrix,
 			final M sourceMatrix) {
@@ -138,9 +140,7 @@ abstract class CreateOrUpdateMatrix<M extends Matrix<R>, R extends Row<C, ?>, C 
 						dbCell.setInapplicable();
 						break;
 					case POLYMORPHIC:
-						dbCell
-								.setPolymorphicElements(
-										sourceCell.getElements());
+						handlePolymorphicCell(dbCell, sourceCell);
 						break;
 					case SINGLE:
 						handleSingleCell(dbCell, sourceCell);
