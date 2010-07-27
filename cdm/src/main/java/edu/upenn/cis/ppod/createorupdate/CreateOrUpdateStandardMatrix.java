@@ -15,6 +15,7 @@
  */
 package edu.upenn.cis.ppod.createorupdate;
 
+import static com.google.common.base.Preconditions.checkArgument;
 import static com.google.common.base.Preconditions.checkNotNull;
 import static com.google.common.base.Predicates.compose;
 import static com.google.common.base.Predicates.equalTo;
@@ -33,6 +34,7 @@ import com.google.inject.assistedinject.Assisted;
 
 import edu.upenn.cis.ppod.dao.IDAO;
 import edu.upenn.cis.ppod.model.Attachment;
+import edu.upenn.cis.ppod.model.Cell;
 import edu.upenn.cis.ppod.model.StandardCell;
 import edu.upenn.cis.ppod.model.StandardCharacter;
 import edu.upenn.cis.ppod.model.StandardMatrix;
@@ -163,6 +165,9 @@ final class CreateOrUpdateStandardMatrix
 	void handleSingleCell(
 			final StandardCell dbCell,
 			final StandardCell sourceCell) {
+		checkNotNull(dbCell);
+		checkNotNull(sourceCell);
+		checkArgument(sourceCell.getType() == Cell.Type.SINGLE);
 		dbCell.setSingleElement(getOnlyElement(sourceCell.getElements()));
 	}
 }

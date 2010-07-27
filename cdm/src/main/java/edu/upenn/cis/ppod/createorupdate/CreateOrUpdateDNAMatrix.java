@@ -64,7 +64,6 @@ final class CreateOrUpdateDNAMatrix
 	@Override
 	void handleSingleCell(final DNACell dbCell, final DNACell sourceCell) {
 		checkNotNull(dbCell);
-		checkArgument(dbCell.getType() == Cell.Type.SINGLE);
 		checkNotNull(sourceCell);
 		checkArgument(sourceCell.getType() == Cell.Type.SINGLE);
 		dbCell.setSingleElement(
