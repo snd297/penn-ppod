@@ -92,6 +92,11 @@ public class DNARow extends Row<DNACell, DNAMatrix> {
 		return parent;
 	}
 
+	/*
+	 * (non-Javadoc)
+	 * 
+	 * @see edu.upenn.cis.ppod.model.Row#setCells(java.util.List)
+	 */
 	@Override
 	public List<DNACell> setCells(final List<? extends DNACell> cells) {
 		final List<DNACell> clearedCells = super.setCellsHelper(cells);

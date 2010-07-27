@@ -62,7 +62,7 @@ public class DNASequenceSet extends SequenceSet<DNASequence> {
 	DNASequenceSet() {}
 
 	@Inject
-	protected DNASequenceSet(final DNASequences otusToDNASequences) {
+	DNASequenceSet(final DNASequences otusToDNASequences) {
 		this.sequences = otusToDNASequences;
 		this.sequences.setParent(this);
 	}
