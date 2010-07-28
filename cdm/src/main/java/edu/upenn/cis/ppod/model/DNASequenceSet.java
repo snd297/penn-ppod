@@ -113,12 +113,11 @@ public class DNASequenceSet extends SequenceSet<DNASequence> {
 		return getOTUKeyedSequences().put(otu, sequence);
 	}
 
-	/** For JAXB. */
-	protected DNASequenceSet setOTUKeyedSequences(
+	/** Protected For JAXB. */
+	protected void setOTUKeyedSequences(
 			final DNASequences sequences) {
 		checkNotNull(sequences);
 		this.sequences = sequences;
-		return this;
 	}
 
 }

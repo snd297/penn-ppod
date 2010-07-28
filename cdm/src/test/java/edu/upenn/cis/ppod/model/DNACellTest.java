@@ -43,6 +43,14 @@ public class DNACellTest {
 	@Inject
 	private Provider<DNACell> dnaCellProvider;
 
+	@Test(expectedExceptions = IllegalArgumentException.class)
+	public void setPolymorphicElementsTooFewStates() {
+		final DNACell cell = new DNACell();
+		final Set<DNANucleotide> nucleotides =
+				ImmutableSet.of(DNANucleotide.A);
+		cell.setPolymorphicElements(nucleotides, true);
+	}
+
 	@Test
 	public void setTypeAndStatesInapplicable() {
 		final DNACell dnaCell = dnaCellProvider.get();

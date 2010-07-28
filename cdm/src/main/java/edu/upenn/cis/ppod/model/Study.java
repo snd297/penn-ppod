@@ -51,8 +51,8 @@ public class Study extends UUPPodEntity implements IOTUSetCentricEntities {
 	public static final String TABLE = "STUDY";
 
 	/** To be used when referring to this entity in foreign keys. */
-	public static final String JOIN_COLUMN = TABLE + "_"
-												+ PersistentObject.ID_COLUMN;
+	public static final String JOIN_COLUMN =
+			TABLE + "_" + PersistentObject.ID_COLUMN;
 
 	static final String LABEL_COLUMN = "LABEL";
 

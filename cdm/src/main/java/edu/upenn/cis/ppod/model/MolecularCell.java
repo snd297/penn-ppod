@@ -12,7 +12,7 @@ import javax.xml.bind.annotation.XmlAttribute;
 import edu.umd.cs.findbugs.annotations.CheckForNull;
 
 @MappedSuperclass
-abstract public class MolecularCell<E, R extends Row<?, ?>> extends Cell<E, R> {
+public abstract class MolecularCell<E, R extends Row<?, ?>> extends Cell<E, R> {
 
 	@Column(name = "UPPER_CASE", nullable = true)
 	@CheckForNull

@@ -56,7 +56,7 @@ public abstract class SequenceSet<S extends Sequence<?>>
 	@JoinColumn(name = OTUSet.JOIN_COLUMN)
 	private OTUSet parent;
 
-	protected SequenceSet() {}
+	SequenceSet() {}
 
 	@Override
 	public void accept(final IVisitor visitor) {
@@ -83,7 +83,7 @@ public abstract class SequenceSet<S extends Sequence<?>>
 		setParent((OTUSet) parent);
 	}
 
-	protected void checkSequenceLength(final S sequence) {
+	void checkSequenceLength(final S sequence) {
 		checkNotNull(sequence);
 		checkArgument(
 				sequence.getSequence() != null,
@@ -117,7 +117,7 @@ public abstract class SequenceSet<S extends Sequence<?>>
 		return label;
 	}
 
-	protected abstract IOTUKeyedMap<S> getOTUKeyedSequences();
+	abstract IOTUKeyedMap<S> getOTUKeyedSequences();
 
 	/**
 	 * Getter. Will be {@code null} when the sequence set is not connected to an
@@ -208,13 +208,12 @@ public abstract class SequenceSet<S extends Sequence<?>>
 		return this;
 	}
 
-	protected SequenceSet<S> setOTUs() {
+	void setOTUs() {
 		checkState(getOTUKeyedSequences() != null,
 					"getOTUKeyedSequences() == null, "
 							+ "so there are no sequences to operate on");
 
 		getOTUKeyedSequences().setOTUs();
-		return this;
 	}
 
 	/**
@@ -226,14 +225,11 @@ public abstract class SequenceSet<S extends Sequence<?>>
 	 * Intentionally package-private.
 	 * 
 	 * @param otuSet the OTU set that will own this sequence set
-	 * 
-	 * @return this sequence set
 	 */
-	SequenceSet<S> setParent(
+	void setParent(
 			@CheckForNull final OTUSet parent) {
 		this.parent = parent;
 		setOTUs();
-		return this;
 	}
 
 }
