@@ -120,17 +120,13 @@
 			<groupId>org.hibernate</groupId>
 			<artifactId>hibernate-core</artifactId>
 			<version>3.5.4-Final</version>
+			<scope>provided</scope>
 		</dependency>
 		<dependency>
 			<groupId>org.hibernate</groupId>
 			<artifactId>hibernate-annotations</artifactId>
 			<version>3.5.4-Final</version>
-		</dependency>
-		<dependency>
-			<groupId>org.hibernate</groupId>
-			<artifactId>hibernate-c3p0</artifactId>
-			<version>3.5.4-Final</version>
-			<scope>runtime</scope>
+			<scope>provided</scope>
 		</dependency>
 		<dependency>
 			<groupId>org.slf4j</groupId>
@@ -202,6 +198,12 @@
 			<artifactId>jetty</artifactId>
 			<version>6.1.22</version>
 			<scope>test</scope>
+		</dependency>
+		<dependency>
+			<groupId>xml-apis</groupId>
+			<artifactId>xml-apis</artifactId>
+			<version>1.3.02</version>
+			<scope>provided</scope>
 		</dependency>
 		<!-- <dependency> <groupId>org.mortbay.jetty</groupId> <artifactId>jetty-test</artifactId> 
 			<version>6.1.22</version> <scope>test</scope> </dependency> -->
