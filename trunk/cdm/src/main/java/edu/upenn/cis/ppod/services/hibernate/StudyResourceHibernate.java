@@ -95,8 +95,8 @@ final class StudyResourceHibernate implements IStudyResource {
 			final IAttachmentNamespaceDAOHibernate attachmentNamespaceDAO,
 			final IAttachmentTypeDAOHibernate attachmentTypeDAO,
 			final IObjectWithLongIdDAOHibernate dao) {
-		final Session currentSession = HibernateUtil
-				.getSessionFactory().getCurrentSession();
+		final Session currentSession =
+				HibernateUtil.getSessionFactory().getCurrentSession();
 		this.studyDAO =
 				(IStudyDAO) studyDAO.setSession(currentSession);
 

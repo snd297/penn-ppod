@@ -57,8 +57,10 @@ public final class HibernateSessionPerRequestFilter implements Filter {
 
 	public void destroy() {}
 
-	public void doFilter(final ServletRequest request,
-			final ServletResponse response, final FilterChain chain)
+	public void doFilter(
+			final ServletRequest request,
+			final ServletResponse response,
+			final FilterChain chain)
 			throws IOException, ServletException {
 		final long inTime = new Date().getTime();
 		org.hibernate.classic.Session currentSession;
