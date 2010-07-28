@@ -111,6 +111,18 @@ public class StandardCellTest {
 
 	}
 
+	@Test(expectedExceptions = IllegalArgumentException.class)
+	public void setPolymorphicElementsTooFewStates() {
+		matrix.getRow(
+				matrix.getParent()
+						.getOTUs()
+						.get(0))
+				.setCells(
+						Arrays.asList(cell));
+		states.add(state00);
+		cell.setPolymorphicElements(states);
+	}
+
 	@Test
 	public void setInapplcableWasSingle() {
 		matrix.getRow(matrix.getParent().getOTUs().get(0)).setCells(
@@ -125,8 +137,12 @@ public class StandardCellTest {
 
 	@Test
 	public void setInapplicableWasPolymorphic() {
-		matrix.getRow(matrix.getParent().getOTUs().get(0)).setCells(
-				Arrays.asList(cell));
+		matrix.getRow(
+				matrix.getParent()
+						.getOTUs()
+						.get(0))
+				.setCells(
+						Arrays.asList(cell));
 		states.add(state00);
 		states.add(state01);
 		cell.setPolymorphicElements(states);

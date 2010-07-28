@@ -7,7 +7,7 @@ import edu.umd.cs.findbugs.annotations.Nullable;
 import edu.upenn.cis.ppod.model.OTU;
 import edu.upenn.cis.ppod.util.IVisitor;
 
-	public interface IOTUKeyedMap<V extends IOTUKeyedMapValue<?>>
+public interface IOTUKeyedMap<V extends IOTUKeyedMapValue<?>>
 		extends IVisitable {
 
 	/*
@@ -21,7 +21,7 @@ import edu.upenn.cis.ppod.util.IVisitor;
 
 	/**
 	 * Do processing that must occur after JAXB unmarshalling is complete and so
-	 * {@code @XmlIDREF}'s have been resolved
+	 * the OTUs' {@code @XmlIDREF}'s have been resolved.
 	 */
 	void afterUnmarshal();
 
@@ -74,7 +74,7 @@ import edu.upenn.cis.ppod.util.IVisitor;
 	V put(OTU key, V value);
 
 	/**
-	 * Set the keys of this {@code OTUKeyedMap} to the OTU's in its parent's
+	 * Set the keys of this {@code OTUKeyedMap} to the OTUs in its parent's
 	 * {@code OTUSet}.
 	 * <p>
 	 * Any newly introduced keys will map to {@code null} values.
@@ -83,6 +83,7 @@ import edu.upenn.cis.ppod.util.IVisitor;
 	 * operation
 	 * 
 	 * @return this
+	 * 
 	 * @see IOTUKeyedMapPlus
 	 */
 	IOTUKeyedMap<V> setOTUs();

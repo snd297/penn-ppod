@@ -87,8 +87,8 @@ public class DNACell extends MolecularCell<DNANucleotide, DNARow> {
 		visitor.visitDNACell(this);
 	}
 
-	/**
-	 * Protected for JAXB.
+	/*
+	 * (non-javadoc) Protected for JAXB.
 	 */
 	@XmlAttribute(name = "nucleotide")
 	@Override
@@ -101,8 +101,8 @@ public class DNACell extends MolecularCell<DNANucleotide, DNARow> {
 		return elements;
 	}
 
-	/**
-	 * Protected for JAXB.
+	/*
+	 * (Non-javadoc) Protected for JAXB.
 	 */
 	@XmlElement(name = "nucleotide")
 	@Override
@@ -120,8 +120,8 @@ public class DNACell extends MolecularCell<DNANucleotide, DNARow> {
 		setElements(EnumSet.noneOf(DNANucleotide.class));
 	}
 
-	/**
-	 * Protected for Jaxb.
+	/*
+	 * (non-Javadoc) Protected for Jaxb.
 	 */
 	@Override
 	protected void setElement(final DNANucleotide element) {
@@ -133,6 +133,12 @@ public class DNACell extends MolecularCell<DNANucleotide, DNARow> {
 		this.elements = elements;
 	}
 
+	/*
+	 * (non-Javadoc)
+	 * 
+	 * @see
+	 * edu.upenn.cis.ppod.model.Cell#setParent(edu.upenn.cis.ppod.model.Row)
+	 */
 	@Override
 	void setParent(final DNARow parent) {
 		this.parent = parent;
