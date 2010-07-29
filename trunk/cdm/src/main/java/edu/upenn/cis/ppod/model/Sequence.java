@@ -113,19 +113,13 @@ public abstract class Sequence<SS extends SequenceSet<?>>
 	}
 
 	/**
-	 * Is it a legal Sequence character? As defined by <a
-	 * href=http://www.ncbi.nlm.nih.gov/blast/fasta.shtml>Fasta format
-	 * description</a>.
-	 * <p>
-	 * Note: this method is case sensitive and only upper-case characters are
-	 * legal.
+	 * Is it a legal Sequence character?
 	 * 
 	 * @param c candidate
 	 * 
-	 * @return {@code true} if the character is Fasta DNA legal, {@code false}
-	 *         otherwise
+	 * @return {@code true} if the character is legal, {@code false} otherwise
 	 */
-	public abstract boolean isLegal(char c);
+	abstract boolean isLegal(char c);
 
 	/**
 	 * Set the accession.

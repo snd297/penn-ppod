@@ -88,7 +88,6 @@ public class DNARows implements IOTUKeyedMap<DNARow> {
 		return true;
 	}
 
-	/** {@inheritDoc} */
 	public DNARows clear() {
 		rows.clear();
 		return this;
@@ -106,7 +105,6 @@ public class DNARows implements IOTUKeyedMap<DNARow> {
 		return rows.getOTUSomethingPairs();
 	}
 
-	/** {@inheritDoc} */
 	@Parent
 	public DNAMatrix getParent() {
 		return rows.getParent();
@@ -130,18 +128,34 @@ public class DNARows implements IOTUKeyedMap<DNARow> {
 		return rows.getValues();
 	}
 
-	/** {@inheritDoc} */
+	/*
+	 * (non-Javadoc)
+	 * 
+	 * @see
+	 * edu.upenn.cis.ppod.modelinterfaces.IOTUKeyedMap#put(edu.upenn.cis.ppod
+	 * .model.OTU, edu.upenn.cis.ppod.modelinterfaces.IOTUKeyedMapValue)
+	 */
 	public DNARow put(final OTU key, final DNARow value) {
 		return rows.put(key, value);
 	}
 
-	/** {@inheritDoc} */
+	/*
+	 * (non-Javadoc)
+	 * 
+	 * @see edu.upenn.cis.ppod.modelinterfaces.IOTUKeyedMap#setOTUs()
+	 */
 	public DNARows setOTUs() {
 		rows.setOTUs();
 		return this;
 	}
 
-	/** {@inheritDoc} */
+	/**
+	 * Set the owner of this object.
+	 * 
+	 * @param parent the owner
+	 * 
+	 * @return this
+	 */
 	public DNARows setParent(final DNAMatrix parent) {
 		rows.setParent(parent);
 		return this;

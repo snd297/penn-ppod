@@ -259,7 +259,6 @@ public class StandardCell extends Cell<StandardState, StandardRow> {
 								.getStateNumber()));
 		}
 		super.setPolymorphicOrUncertain(type, newElements);
-
 	}
 
 	public StandardCell setSingleElement(final StandardState element) {
@@ -307,9 +306,13 @@ public class StandardCell extends Cell<StandardState, StandardRow> {
 
 		final StringBuilder retValue = new StringBuilder();
 
-		retValue.append("CharacterStateCell(").append(super.toString()).append(
-				TAB).append("version=").append(TAB).append("states=").append(
-				this.elements).append(TAB).append(")");
+		retValue.append("CharacterStateCell(")
+				.append(super.toString())
+				.append(TAB)
+				.append("version=")
+				.append(TAB)
+				.append("states=")
+				.append(this.elements).append(TAB).append(")");
 
 		return retValue.toString();
 	}

@@ -69,6 +69,10 @@ public abstract class Matrix<R extends Row<?, ?>>
 	@OrderColumn(name = VersionInfo.TABLE + "_POSITION")
 	private final List<VersionInfo> columnVersionInfos = newArrayList();
 
+	/**
+	 * For sending over the wire to web clients. Because we don't want to send
+	 * the whole {@link VersionInfo}.
+	 */
 	@Transient
 	private final List<Long> columnVersions = newArrayList();
 
