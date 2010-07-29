@@ -41,6 +41,7 @@ import javax.servlet.ServletRequest;
 import javax.servlet.ServletResponse;
 
 import org.hibernate.SessionFactory;
+import org.hibernate.Transaction;
 import org.hibernate.context.ManagedSessionContext;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
@@ -74,7 +75,8 @@ public final class HibernateSessionPerRequestFilter implements Filter {
 			ManagedSessionContext.bind(currentSession);
 
 			logger.debug("Starting a database transaction");
-			currentSession.beginTransaction();
+			final Transaction tx = currentSession.beginTransaction();
+			tx.setTimeout(-1);
 
 			logger.debug("Processing the event");
 			chain.doFilter(request, response);

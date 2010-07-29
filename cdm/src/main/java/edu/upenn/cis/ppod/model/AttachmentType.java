@@ -117,6 +117,7 @@ public class AttachmentType extends PersistentObjectWithXmlId {
 	 * @return this
 	 */
 	public AttachmentType setNamespace(final AttachmentNamespace namespace) {
+		checkNotNull(namespace);
 		this.namespace = namespace;
 		return this;
 	}

@@ -43,7 +43,7 @@ import edu.upenn.cis.ppod.util.TestVisitor;
 /**
  * @author Sam Donnelly
  */
-@Test(groups = { TestGroupDefs.FAST },
+@Test(groups = { TestGroupDefs.FAST, TestGroupDefs.SINGLE },
 		dependsOnGroups = TestGroupDefs.INIT)
 public class OTUSetTest {
 
