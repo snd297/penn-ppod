@@ -134,7 +134,7 @@ public class StandardCharacter extends UUPPodEntityWithXmlId {
 	 * @param u see {@code Unmarshaller}
 	 * @param parent see {@code Unmarshaller}
 	 */
-	public void afterUnmarshal(
+	protected void afterUnmarshal(
 			@CheckForNull final Unmarshaller u, final Object parent) {
 		setParent((StandardMatrix) parent);
 		if (getStatesModifiable().size() > 0
@@ -146,7 +146,7 @@ public class StandardCharacter extends UUPPodEntityWithXmlId {
 	}
 
 	@Override
-	public boolean beforeMarshal(final Marshaller marshaller) {
+	protected boolean beforeMarshal(final Marshaller marshaller) {
 		super.beforeMarshal(marshaller);
 		return true;
 	}

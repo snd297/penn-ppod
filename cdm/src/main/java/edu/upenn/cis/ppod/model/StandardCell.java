@@ -129,7 +129,7 @@ public class StandardCell extends Cell<StandardState, StandardRow> {
 	 * @param parent see {@code Unmarshaller}
 	 */
 	@Override
-	public void afterUnmarshal(final Unmarshaller u, final Object parent) {
+	protected void afterUnmarshal(final Unmarshaller u, final Object parent) {
 		super.afterUnmarshal(u, parent);
 		this.parent = (StandardRow) parent;
 	}

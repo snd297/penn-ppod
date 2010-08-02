@@ -73,8 +73,12 @@ public class DNARows implements IOTUKeyedMap<DNARow> {
 		rows.afterUnmarshal();
 	}
 
-	public void afterUnmarshal(final Unmarshaller u, final Object parent) {
-		rows.afterUnmarshal(u, parent);
+	public void afterUnmarshal(
+			@CheckForNull final Unmarshaller u,
+			final Object parent) {
+		// Don't checkNotNull(parent) since JAXB is the caller and we can't
+		// control what it does
+		rows.afterUnmarshal((DNAMatrix) parent);
 	}
 
 	public boolean beforeMarshal(@CheckForNull final Marshaller marshaller) {
