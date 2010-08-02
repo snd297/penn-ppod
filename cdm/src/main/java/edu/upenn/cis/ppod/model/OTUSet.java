@@ -544,9 +544,8 @@ public class OTUSet extends UUPPodEntityWithXmlId {
 		}
 	}
 
-	OTUSet setParent(@CheckForNull final Study parent) {
+	void setParent(@CheckForNull final Study parent) {
 		this.parent = parent;
-		return this;
 	}
 
 	/**

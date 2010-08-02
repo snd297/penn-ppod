@@ -120,14 +120,21 @@ public class DNACell extends MolecularCell<DNANucleotide, DNARow> {
 		setElements(EnumSet.noneOf(DNANucleotide.class));
 	}
 
-	/*
-	 * (non-Javadoc) Protected for Jaxb.
+	/**
+	 * {@inheritDoc}
+	 * 
+	 * Protected for JAXB.
 	 */
 	@Override
 	protected void setElement(final DNANucleotide element) {
 		this.element = element;
 	}
 
+	/*
+	 * (non-Javadoc)
+	 * 
+	 * @see edu.upenn.cis.ppod.model.Cell#setElements(java.util.Set)
+	 */
 	@Override
 	void setElements(final Set<DNANucleotide> elements) {
 		this.elements = elements;

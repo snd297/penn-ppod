@@ -15,8 +15,6 @@
  */
 package edu.upenn.cis.ppod.security;
 
-import static com.google.common.collect.Sets.newHashSet;
-
 import org.apache.shiro.authc.AuthenticationException;
 import org.apache.shiro.authc.AuthenticationInfo;
 import org.apache.shiro.authc.AuthenticationToken;
@@ -32,11 +30,9 @@ import com.google.inject.Inject;
 import com.google.inject.Provider;
 
 import edu.upenn.cis.ppod.dao.IDAOFactory;
-import edu.upenn.cis.ppod.dao.IPPodRoleDAO;
 import edu.upenn.cis.ppod.dao.IUserDAO;
-import edu.upenn.cis.ppod.model.security.PPodGroup;
-import edu.upenn.cis.ppod.model.security.PPodPermission;
 import edu.upenn.cis.ppod.model.security.Role;
+import edu.upenn.cis.ppod.model.security.StudyPermission;
 import edu.upenn.cis.ppod.model.security.User;
 
 /**
@@ -60,24 +56,18 @@ public class PPodRealm extends AuthorizingRealm {
 	private IDAOFactory daoFactory;
 
 	private final ISimpleAuthenticationInfoFactory simpleAuthenticationInfoFactory;
-	private final Provider<User> userProvider;
-	private final Provider<Role> roleProvider;
-	private final Provider<PPodPermission> permissionProvider;
 
 	@Inject
 	public PPodRealm(
 			final ISimpleAuthenticationInfoFactory simpleAutehnciationInfoFactory,
 			final Provider<User> userProvider,
 			final Provider<Role> roleProvider,
-			final Provider<PPodPermission> permissionProvider) {
-		setName("pPodRealm"); // This name must match the name in the Subject
+			final Provider<StudyPermission> permissionProvider) {
+		setName("iniRealm"); // This name must match the name in the Subject
 		// class's getPrincipals() method
 		// setCredentialsMatcher(new Sha256CredentialsMatcher());
 		setCredentialsMatcher(new AllowAllCredentialsMatcher());
 		this.simpleAuthenticationInfoFactory = simpleAutehnciationInfoFactory;
-		this.userProvider = userProvider;
-		this.roleProvider = roleProvider;
-		this.permissionProvider = permissionProvider;
 	}
 
 	@Override
@@ -87,48 +77,23 @@ public class PPodRealm extends AuthorizingRealm {
 		final UsernamePasswordToken token = (UsernamePasswordToken) authcToken;
 
 		IUserDAO pPodUserDAO = daoFactory.getPPodUserDAO();
-		IPPodRoleDAO roleDAO = daoFactory.getPPodRoleDAO();
 
 		User pPodUser = pPodUserDAO.getUserByName(token.getUsername());
 		if (pPodUser == null) {
-			pPodUser = ((User) userProvider.get().setName(token.getUsername()))
-					.setPassword("");
-			if (token.getUsername().equals("root")) {
-				PPodPermission permission = permissionProvider.get();
-				permission.setDomain("*");
-				permission.setActions("*");
-				permission.setTargets("*");
-				Role adminRole =
-						roleProvider.get()
-								.setName("admin")
-								.setPermissions(
-										newHashSet(permission));
-				pPodUser.getRoles().add(adminRole);
-			} else {
-				if (roleDAO.getByName("user") == null) {
-					PPodPermission permission = permissionProvider.get();
-					permission.setDomain("*");
-					permission.setActions("create,view");
-					permission.setTargets("*");
-					final Role userRole = roleProvider
-							.get()
-							.setName("user")
-							.setPermissions(newHashSet(permission));
-					pPodUser.getRoles()
-							.add(userRole);
-				}
-			}
-			pPodUserDAO.makePersistent(pPodUser);
+			throw new IllegalArgumentException(
+					"unknown user " + token.getUsername());
 		}
-		return simpleAuthenticationInfoFactory.create(pPodUser.getId(),
-				pPodUser.getPassword(), getName());
+		return simpleAuthenticationInfoFactory.create(
+				pPodUser.getId(),
+				pPodUser.getPassword(),
+				getName());
 	}
 
 	@Override
 	protected AuthorizationInfo doGetAuthorizationInfo(
 			final PrincipalCollection principals) {
-		final Long userId = (Long) principals.fromRealm(getName()).iterator()
-				.next();
+		final Long userId =
+				(Long) principals.fromRealm(getName()).iterator().next();
 		final User pPodUser = daoFactory.getPPodUserDAO().get(userId, false);
 		if (pPodUser != null) {
 			final SimpleAuthorizationInfo info = new SimpleAuthorizationInfo();
@@ -141,11 +106,7 @@ public class PPodRealm extends AuthorizingRealm {
 					info.addObjectPermission(permission);
 				}
 			}
-			for (final PPodGroup group : pPodUser.getGroups()) {
-				for (final Permission permission : group.getPermissions()) {
-					info.addObjectPermission(permission);
-				}
-			}
+
 			return info;
 		} else {
 			return null;

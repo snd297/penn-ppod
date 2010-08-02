@@ -64,7 +64,7 @@ public abstract class PersistentObject implements IPersistentObject {
 	private Long id;
 
 	@Version
-	@Column(name = "VERSION")
+	@Column(name = "OBJ_VERSION")
 	private Integer objVersion;
 
 	@Transient

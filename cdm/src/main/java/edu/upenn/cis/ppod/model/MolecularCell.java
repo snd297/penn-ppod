@@ -14,33 +14,29 @@ import edu.umd.cs.findbugs.annotations.CheckForNull;
 @MappedSuperclass
 public abstract class MolecularCell<E, R extends Row<?, ?>> extends Cell<E, R> {
 
-	@Column(name = "UPPER_CASE", nullable = true)
+	@Column(name = "LOWER_CASE", nullable = true)
 	@CheckForNull
-	private Boolean upperCase;
+	private Boolean lowerCase;
 
 	MolecularCell() {}
 
-	/**
-	 * So JAXB can have a raw (no arg checking) setter.
-	 */
 	@Nullable
 	@XmlAttribute(name = "upperCase")
-	public Boolean isUpperCase() {
-		return upperCase;
+	public Boolean isLowerCase() {
+		return lowerCase;
 	}
 
 	@Override
 	void setInapplicableOrUnassigned(final Type type) {
-		checkNotNull(type);
 		super.setInapplicableOrUnassigned(type);
-		setUpperCase(null);
+		setLowerCase(null);
 	}
 
 	public MolecularCell<E, R> setPolymorphicElements(
-			final Set<? extends E> elements, final Boolean upperCase) {
-		checkNotNull(upperCase);
+			final Set<? extends E> elements, final Boolean lowerCase) {
+		checkNotNull(lowerCase);
 		super.setPolymorphicOrUncertain(Type.POLYMORPHIC, elements);
-		setUpperCase(upperCase);
+		setLowerCase(lowerCase);
 		return this;
 	}
 
@@ -51,10 +47,11 @@ public abstract class MolecularCell<E, R extends Row<?, ?>> extends Cell<E, R> {
 	 * 
 	 * @return this
 	 */
-	public Cell<E, R> setSingleElement(final E element, final Boolean upperCase) {
+	public Cell<E, R> setSingleElement(final E element, final Boolean lowerCase) {
 		checkNotNull(element);
+		checkNotNull(lowerCase);
 		if (element.equals(getElement())
-				&& upperCase.equals(isUpperCase())) {
+				&& lowerCase.equals(isLowerCase())) {
 			if (getType() != Type.SINGLE) {
 				throw new AssertionError(
 						"element is set, but this cell is not a SINGLE");
@@ -64,7 +61,7 @@ public abstract class MolecularCell<E, R extends Row<?, ?>> extends Cell<E, R> {
 		setType(Type.SINGLE);
 		setElements(null);
 		setElement(element);
-		setUpperCase(upperCase);
+		setLowerCase(lowerCase);
 		setInNeedOfNewVersion();
 		return this;
 	}
@@ -73,15 +70,15 @@ public abstract class MolecularCell<E, R extends Row<?, ?>> extends Cell<E, R> {
 	public MolecularCell<E, R> setUncertainElements(
 			final Set<? extends E> elements) {
 		super.setUncertainElements(elements);
-		setUpperCase(null);
+		setLowerCase(null);
 		return this;
 	}
 
 	/**
 	 * Protected for JAXB.
 	 */
-	protected void setUpperCase(
+	protected void setLowerCase(
 			@CheckForNull final Boolean upperCase) {
-		this.upperCase = upperCase;
+		this.lowerCase = upperCase;
 	}
 }

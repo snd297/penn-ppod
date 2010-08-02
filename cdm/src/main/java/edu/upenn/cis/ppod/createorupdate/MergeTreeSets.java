@@ -72,16 +72,21 @@ final class MergeTreeSets implements IMergeTreeSets {
 							equalTo(sourceTree.getPPodId()),
 							IWithPPodId.getPPodId)))) {
 				targetTree = treeProvider.get();
-				targetTree.setVersionInfo(newVersionInfo
-						.getNewVersionInfo());
+				targetTree.setVersionInfo(
+						newVersionInfo.getNewVersionInfo());
 				targetTree.setPPodId();
 			}
 			newTargetTrees.add(targetTree);
 
 			String targetNewick = sourceTree.getNewick();
 
-			if (sourceTreeSet.getParent().getOTUs().size() != targetTreeSet
-					.getParent().getOTUs().size()) {
+			if (sourceTreeSet
+					.getParent()
+					.getOTUs()
+					.size() != targetTreeSet
+					.getParent()
+					.getOTUs()
+					.size()) {
 				throw new IllegalArgumentException(
 						"sourceTreeSet.getOTUSet().getOTUsSize() should be the same as targetTreeSet.getOTUSet().getOTUsSize()");
 			}

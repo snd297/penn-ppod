@@ -102,7 +102,9 @@ public class OTU
 	}
 
 	/**
-	 * Get the owning {@code OTUSet}.
+	 * Get the owning {@code OTUSet}. Will be {@code null} for parentless
+	 * {@code OTU}s. Will never be {@code null} for {@code OTU}s just pulled out
+	 * of the database since persisted {@code OTU}s must have parents.
 	 * 
 	 * @return the {@code OTUSet} that owns this {@code OTU}
 	 */
@@ -153,12 +155,9 @@ public class OTU
 	 * be severed.
 	 * 
 	 * @param the owning {@code OTUSet}
-	 * 
-	 * @return this
 	 */
-	OTU setParent(@CheckForNull final OTUSet parent) {
+	void setParent(@CheckForNull final OTUSet parent) {
 		this.parent = parent;
-		return this;
 	}
 
 	/**

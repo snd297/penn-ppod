@@ -325,18 +325,19 @@ public class OTUSetTest {
 		final DNASequenceSet dnaSequenceSet2 =
 				otuSet.addDNASequenceSet(dnaSequenceSetProvider.get());
 
-		final boolean booleanReturned = otuSet
-				.removeDNASequenceSet(dnaSequenceSet1);
+		final boolean booleanReturned =
+				otuSet.removeDNASequenceSet(dnaSequenceSet1);
 
 		assertTrue(booleanReturned);
 
-		assertEquals((Object) otuSet.getDNASequenceSets(),
-				(Object) ImmutableSet.of(dnaSequenceSet0, dnaSequenceSet2));
+		assertEquals(
+				otuSet.getDNASequenceSets(),
+				ImmutableSet.of(dnaSequenceSet0, dnaSequenceSet2));
 
 		otuSet.unsetInNeedOfNewVersion();
 
-		final boolean booleanReturned2 = otuSet
-				.removeDNASequenceSet(dnaSequenceSet1);
+		final boolean booleanReturned2 =
+				otuSet.removeDNASequenceSet(dnaSequenceSet1);
 		assertFalse(booleanReturned2);
 		assertFalse(otuSet.isInNeedOfNewVersion());
 	}
@@ -513,9 +514,8 @@ public class OTUSetTest {
 	public void setStudy() {
 		otuSet.unsetInNeedOfNewVersion();
 		final Study study = studyProvider.get();
-		final OTUSet returnedOTUSet = otuSet.setParent(study);
+		otuSet.setParent(study);
 		assertSame(otuSet.getParent(), study);
-		assertSame(returnedOTUSet, otuSet);
 
 		// Setting the study should have no affect
 		assertFalse(otuSet.isInNeedOfNewVersion());

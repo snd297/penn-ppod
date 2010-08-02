@@ -27,25 +27,23 @@ import com.google.inject.assistedinject.Assisted;
 
 import edu.upenn.cis.ppod.dao.ICharacterDAO;
 import edu.upenn.cis.ppod.dao.ICharacterStateDAO;
-import edu.upenn.cis.ppod.dao.IStandardMatrixDAO;
 import edu.upenn.cis.ppod.dao.ICharacterStateRowDAO;
 import edu.upenn.cis.ppod.dao.IDAOFactory;
 import edu.upenn.cis.ppod.dao.IOTUDAO;
 import edu.upenn.cis.ppod.dao.IOTUSetDAO;
-import edu.upenn.cis.ppod.dao.IPPodGroupDAO;
 import edu.upenn.cis.ppod.dao.IPPodRoleDAO;
-import edu.upenn.cis.ppod.dao.IVersionInfoDAO;
+import edu.upenn.cis.ppod.dao.IStandardMatrixDAO;
 import edu.upenn.cis.ppod.dao.ITreeDAO;
 import edu.upenn.cis.ppod.dao.ITreeSetDAO;
 import edu.upenn.cis.ppod.dao.IUserDAO;
-import edu.upenn.cis.ppod.model.StandardCharacter;
-import edu.upenn.cis.ppod.model.StandardState;
-import edu.upenn.cis.ppod.model.StandardRow;
+import edu.upenn.cis.ppod.dao.IVersionInfoDAO;
 import edu.upenn.cis.ppod.model.OTU;
 import edu.upenn.cis.ppod.model.OTUSet;
+import edu.upenn.cis.ppod.model.StandardCharacter;
+import edu.upenn.cis.ppod.model.StandardRow;
+import edu.upenn.cis.ppod.model.StandardState;
 import edu.upenn.cis.ppod.model.Tree;
 import edu.upenn.cis.ppod.model.TreeSet;
-import edu.upenn.cis.ppod.model.security.PPodGroup;
 import edu.upenn.cis.ppod.model.security.Role;
 import edu.upenn.cis.ppod.thirdparty.dao.hibernate.GenericHibernateDAO;
 
@@ -135,7 +133,8 @@ public class HibernateDAOFactory implements IDAOFactory {
 	 * An {@link Character} Hibernate DAO.
 	 */
 	public static class CharacterDAOHibernate extends
-			GenericHibernateDAO<StandardCharacter, Long> implements ICharacterDAO {
+			GenericHibernateDAO<StandardCharacter, Long> implements
+			ICharacterDAO {
 
 		public StandardCharacter getCharacterByPPodId(String pPodId) {
 			if (pPodId == null) {
@@ -172,9 +171,6 @@ public class HibernateDAOFactory implements IDAOFactory {
 		}
 
 	}
-
-	public static class PPodGroupDAOHibernate extends
-			GenericHibernateDAO<PPodGroup, Long> implements IPPodGroupDAO {}
 
 	/**
 	 * The Class PPodRoleDAOHibernate.
@@ -264,10 +260,6 @@ public class HibernateDAOFactory implements IDAOFactory {
 
 	public IUserDAO getPPodUserDAO() {
 		return (IUserDAO) new UserDAOHibernate().setSession(session);
-	}
-
-	public IPPodGroupDAO getPPodGroupDAO() {
-		return (IPPodGroupDAO) new PPodGroupDAOHibernate().setSession(session);
 	}
 
 	public IPPodRoleDAO getPPodRoleDAO() {
