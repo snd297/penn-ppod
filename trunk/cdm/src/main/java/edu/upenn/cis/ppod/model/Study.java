@@ -32,7 +32,6 @@ import javax.xml.bind.annotation.XmlAttribute;
 import javax.xml.bind.annotation.XmlElement;
 import javax.xml.bind.annotation.XmlRootElement;
 
-import edu.upenn.cis.ppod.model.security.StudyPermission;
 import edu.upenn.cis.ppod.services.ppodentity.IOTUSetCentricEntities;
 import edu.upenn.cis.ppod.util.IVisitor;
 import edu.upenn.cis.ppod.util.PPodEntitiesUtil;
@@ -71,9 +70,6 @@ public class Study extends UUPPodEntity implements IOTUSetCentricEntities {
 	private final Set<AttachmentType> attachmentTypes = newHashSet();
 
 	Study() {}
-
-	@Transient
-	private Set<StudyPermission> permissions = newHashSet();
 
 	@Override
 	public void accept(final IVisitor visitor) {
