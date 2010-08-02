@@ -141,7 +141,7 @@ public abstract class PPodEntity
 	 * @return see {@code Marshaller}
 	 */
 	@OverridingMethodsMustInvokeSuper
-	public boolean beforeMarshal(@CheckForNull final Marshaller marshaler) {
+	protected boolean beforeMarshal(@CheckForNull final Marshaller marshaler) {
 		// Write out the version number for the client of the xml
 		if (versionInfo != null) {
 			version = versionInfo.getVersion();

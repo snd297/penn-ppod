@@ -52,8 +52,8 @@ public class OTUKeyedMapTest {
 	@Test
 	public void clear() {
 		final DNAMatrix matrix = dnaMatrixProvider.get();
-		final OTUSet otuSet = matrix.setParent(otuSetProvider.get())
-				.getParent();
+		final OTUSet otuSet = otuSetProvider.get();
+		matrix.setParent(otuSet);
 
 		final OTU otu0 = otuSet.addOTU(otuProvider.get().setLabel("otu0"));
 		final OTU otu1 = otuSet.addOTU(otuProvider.get().setLabel("otu1"));

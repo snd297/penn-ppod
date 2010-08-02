@@ -27,7 +27,6 @@ import java.util.Set;
 
 import javax.annotation.CheckForNull;
 import javax.annotation.Nullable;
-import javax.xml.bind.Unmarshaller;
 
 import edu.upenn.cis.ppod.modelinterfaces.IOTUKeyedMapPlus;
 import edu.upenn.cis.ppod.modelinterfaces.IOTUKeyedMapValue;
@@ -76,20 +75,10 @@ public class OTUKeyedMapPlus<V extends IOTUKeyedMapValue<P>, P extends IOTUSetCh
 		getOTUSomethingPairs().clear();
 	}
 
-	/**
-	 * {@link Unmarshaller} callback.
-	 * 
-	 * @param u see {@code Unmarshaller}
-	 * @param parent see {@code Unmarshaller}
-	 */
-	public void afterUnmarshal(
-			@CheckForNull final Unmarshaller u,
-			final Object parent) {
+	public void afterUnmarshal(final P parent) {
 		checkNotNull(parent);
 
-		@SuppressWarnings("unchecked")
-		final P parentAsP = (P) parent;
-		setParent(parentAsP);
+		setParent(parent);
 
 		for (final OP otuSomethingPair : getOTUSomethingPairs()) {
 			otuSomethingPair.getSecond().setParent(getParent());
@@ -144,7 +133,8 @@ public class OTUKeyedMapPlus<V extends IOTUKeyedMapValue<P>, P extends IOTUSetCh
 		checkNotNull(value);
 		checkState(getParent() != null, "no parent has been assigned");
 		checkState(getParent().getParent() != null,
-				"parent.getOTUSet() == null");
+				"parent " + getParent().getClass().getSimpleName()
+						+ " has not been added to an OTUSet");
 		checkArgument(
 				contains(
 						getParent()

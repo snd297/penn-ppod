@@ -41,8 +41,9 @@ public class MatrixProvider {
 	public static Object[][] createMatrix() throws Exception {
 
 		final JAXBContext ctx = JAXBContext.newInstance(Study.class);
-		final Study studyMX540 = (Study) ctx.createUnmarshaller().unmarshal(
-				MatrixProvider.class.getResourceAsStream("/MX540.xml"));
+		final Study studyMX540 =
+				(Study) ctx.createUnmarshaller().unmarshal(
+						MatrixProvider.class.getResourceAsStream("/MX540.xml"));
 		studyMX540.accept(afterUnmarshalVisitor);
 
 		final StandardMatrix smallSimpleMatrix =

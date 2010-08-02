@@ -66,7 +66,9 @@ public class DNASequences
 	public void afterUnmarshal(
 			@CheckForNull final Unmarshaller u,
 			final Object parent) {
-		sequences.afterUnmarshal(u, parent);
+		// Don't checkNotNull(parent) since it's called by JAXB and we can't
+		// control what it does
+		sequences.afterUnmarshal((DNASequenceSet) parent);
 	}
 
 	public boolean beforeMarshal(@CheckForNull final Marshaller marshaller) {

@@ -73,7 +73,7 @@ public abstract class PersistentObject implements IPersistentObject {
 	/** Default constructor. */
 	protected PersistentObject() {}
 
-	public void beforeUnmarshal(
+	protected void beforeUnmarshal(
 			@CheckForNull final Unmarshaller u,
 			@CheckForNull final Object parent) {
 		setUnmarshalled(true);

@@ -39,6 +39,8 @@ import javax.xml.bind.Unmarshaller;
 import javax.xml.bind.annotation.XmlAttribute;
 import javax.xml.bind.annotation.XmlElement;
 
+import com.google.common.annotations.VisibleForTesting;
+
 import edu.umd.cs.findbugs.annotations.CheckForNull;
 import edu.umd.cs.findbugs.annotations.Nullable;
 import edu.upenn.cis.ppod.modelinterfaces.IOTUKeyedMap;
@@ -109,7 +111,7 @@ public abstract class Matrix<R extends Row<?, ?>>
 		getOTUKeyedRows().afterUnmarshal();
 	}
 
-	public void afterUnmarshal(
+	protected void afterUnmarshal(
 			@CheckForNull final Unmarshaller u,
 			final Object parent) {
 		this.parent = (OTUSet) parent;
@@ -117,7 +119,7 @@ public abstract class Matrix<R extends Row<?, ?>>
 	}
 
 	@Override
-	public boolean beforeMarshal(@CheckForNull final Marshaller marshaller) {
+	protected boolean beforeMarshal(@CheckForNull final Marshaller marshaller) {
 		super.beforeMarshal(marshaller);
 
 		if (getColumnVersions().size() != 0) {
@@ -305,8 +307,7 @@ public abstract class Matrix<R extends Row<?, ?>>
 		// Remove column versions as necessary
 		while (getColumnVersionInfos().size() > columnsSize) {
 			getColumnVersionInfosModifiable()
-					.remove(
-							getColumnVersionInfos().size() - 1);
+					.remove(getColumnVersionInfos().size() - 1);
 		}
 		return this;
 	}
@@ -345,6 +346,12 @@ public abstract class Matrix<R extends Row<?, ?>>
 			setColumnVersionInfo(pos, versionInfo);
 		}
 		return this;
+	}
+
+	@VisibleForTesting
+	void setColumnVersions(final List<Integer> columnVersions) {
+		this.columnVersions.clear();
+		this.columnVersions.addAll(this.columnVersions);
 	}
 
 	/**
@@ -412,14 +419,10 @@ public abstract class Matrix<R extends Row<?, ?>>
 	 * 
 	 * @param otuSet new {@code OTUSet} for this matrix, or {@code null} if
 	 *            we're destroying the association
-	 * 
-	 * @return this
 	 */
-	Matrix<R> setParent(
+	void setParent(
 			@CheckForNull final OTUSet otuSet) {
 		this.parent = otuSet;
 		getOTUKeyedRows().setOTUs();
-		return this;
 	}
-
 }

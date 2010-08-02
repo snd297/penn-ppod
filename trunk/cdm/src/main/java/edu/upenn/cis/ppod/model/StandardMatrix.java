@@ -210,13 +210,10 @@ public class StandardMatrix extends Matrix<StandardRow> {
 	 * Created for JAXB.
 	 * 
 	 * @param otusToRows the otusToRows to set
-	 * 
-	 * @return this
 	 */
 	@edu.umd.cs.findbugs.annotations.SuppressWarnings
-	protected StandardMatrix setOTUKeyedRows(
+	protected void setOTUKeyedRows(
 			final StandardRows rows) {
 		this.rows = rows;
-		return this;
 	}
 }

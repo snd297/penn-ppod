@@ -65,8 +65,12 @@ public class StandardRows
 		rows.afterUnmarshal();
 	}
 
-	public void afterUnmarshal(final Unmarshaller u, final Object parent) {
-		rows.afterUnmarshal(u, parent);
+	public void afterUnmarshal(
+			@CheckForNull final Unmarshaller u,
+			final Object parent) {
+		// Don't do checkNotNull(parent) since this is called by JAXB and we
+		// can't control it
+		rows.afterUnmarshal((StandardMatrix) parent);
 	}
 
 	public boolean beforeMarshal(@CheckForNull final Marshaller marshaller) {
