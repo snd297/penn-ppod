@@ -130,8 +130,4 @@ public final class User extends Party {
 		return this;
 	}
 
-	public void accept(IVisitor visitor) {
-		// TODO Auto-generated method stub
-		throw new UnsupportedOperationException();
-	}
 }

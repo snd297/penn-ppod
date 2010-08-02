@@ -97,15 +97,15 @@ public final class Role extends PersistentObject {
 	@OneToMany(cascade = CascadeType.ALL, orphanRemoval = true)
 	@JoinColumn(name = JOIN_COLUMN)
 	// @Cache(usage = CacheConcurrencyStrategy.READ_WRITE)
-	private final Set<PPodPermission> pPodPermissions = newHashSet();
+	private final Set<StudyPermission> studyPermissions = newHashSet();
 
 	/**
 	 * Get an unmodifiable view of this role's permissions.
 	 * 
 	 * @return an unmodifiable view of this role's permissions
 	 */
-	public final Set<PPodPermission> getPermissions() {
-		return Collections.unmodifiableSet(pPodPermissions);
+	public final Set<StudyPermission> getPermissions() {
+		return Collections.unmodifiableSet(studyPermissions);
 	}
 
 	/**
@@ -114,9 +114,9 @@ public final class Role extends PersistentObject {
 	 * @param pPodPermissions the new permissions
 	 * @return this role
 	 */
-	public final Role setPermissions(final Set<PPodPermission> pPodPermissions) {
-		this.pPodPermissions.clear();
-		this.pPodPermissions.addAll(pPodPermissions);
+	public final Role setPermissions(final Set<StudyPermission> studyPermissions) {
+		this.studyPermissions.clear();
+		this.studyPermissions.addAll(studyPermissions);
 		return this;
 	}
 

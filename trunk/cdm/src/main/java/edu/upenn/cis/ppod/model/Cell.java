@@ -259,8 +259,8 @@ public abstract class Cell<E, R extends Row<?, ?>> extends PPodEntity {
 			@CheckForNull final Set<E> elements);
 
 	/**
-	 * Set this cell's type to {@link Type#INAPPLICABLE} to
-	 * {@code Collections.EMPTY_SET}.
+	 * Set this cell's type to {@link Type#INAPPLICABLE} its elements to the
+	 * empty set.
 	 * 
 	 * @return this
 	 */

@@ -18,6 +18,8 @@ package edu.upenn.cis.ppod.security;
 import java.io.Serializable;
 
 import org.apache.shiro.SecurityUtils;
+import org.apache.shiro.authz.Permission;
+import org.apache.shiro.authz.permission.WildcardPermission;
 import org.hibernate.CallbackException;
 import org.hibernate.type.Type;
 
@@ -25,7 +27,6 @@ import com.google.inject.Inject;
 import com.google.inject.Provider;
 
 import edu.upenn.cis.ppod.model.Study;
-import edu.upenn.cis.ppod.model.security.PPodPermission;
 import edu.upenn.cis.ppod.thirdparty.util.ChainedInterceptor;
 
 /**
@@ -41,12 +42,8 @@ public final class AccessInterceptor extends ChainedInterceptor {
 	 */
 	private static final long serialVersionUID = 1L;
 
-	private transient final Provider<PPodPermission> permissionFactory;
-
 	@Inject
-	AccessInterceptor(final Provider<PPodPermission> permissionFactory) {
-		this.permissionFactory = permissionFactory;
-	}
+	AccessInterceptor() {}
 
 	/**
 	 * Common routine that performs table- and row-level access checks for
@@ -58,7 +55,9 @@ public final class AccessInterceptor extends ChainedInterceptor {
 	 *            database.
 	 * @throws CallbackException if the action is not permitted
 	 */
-	private void check(final Class clazz, final String action,
+	private void check(
+			final Class clazz,
+			final String action,
 			final Serializable id) throws CallbackException {
 
 		// We're only checking studies
@@ -67,11 +66,9 @@ public final class AccessInterceptor extends ChainedInterceptor {
 		}
 
 		try {
-			PPodPermission permission = permissionFactory.get();
-			permission.setDomain(clazz.getName());
-			permission.setActions(action);
-			permission.setTargets(id == null ? null : id.toString());
-
+			Permission permission =
+					new WildcardPermission(
+							"study:" + action + ":" + id.toString());
 			if (SecurityUtils.getSubject().isPermitted(permission)) {
 				return;
 			}

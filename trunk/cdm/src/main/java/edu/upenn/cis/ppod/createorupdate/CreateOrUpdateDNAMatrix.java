@@ -68,7 +68,7 @@ final class CreateOrUpdateDNAMatrix
 		checkArgument(sourceCell.getType() == Cell.Type.SINGLE);
 		dbCell.setSingleElement(
 				getOnlyElement(sourceCell.getElements()),
-				sourceCell.isUpperCase());
+				sourceCell.isLowerCase());
 	}
 
 	@Override
@@ -78,6 +78,6 @@ final class CreateOrUpdateDNAMatrix
 		checkArgument(sourceCell.getType() == Cell.Type.POLYMORPHIC);
 		dbCell.setPolymorphicElements(
 				sourceCell.getElements(),
-				sourceCell.isUpperCase());
+				sourceCell.isLowerCase());
 	}
 }

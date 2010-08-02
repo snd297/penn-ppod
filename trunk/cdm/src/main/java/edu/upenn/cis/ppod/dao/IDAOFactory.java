@@ -15,7 +15,6 @@
  */
 package edu.upenn.cis.ppod.dao;
 
-
 /**
  * Manufactures {@link IDAO}s.
  * 
@@ -94,8 +93,6 @@ public interface IDAOFactory {
 	ITreeSetDAO getTreeSetDAO();
 
 	IUserDAO getPPodUserDAO();
-
-	IPPodGroupDAO getPPodGroupDAO();
 
 	IPPodRoleDAO getPPodRoleDAO();
 }

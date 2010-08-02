@@ -7,8 +7,8 @@
 		<!-- List of annotated classes -->
 		<!-- <mapping class="edu.upenn.cis.ppod.thirdparty.model.security.Role" 
 			/> <mapping class="edu.upenn.cis.ppod.thirdparty.model.security.User" /> 
-			<mapping class="edu.upenn.cis.ppod.model.security.Party" /> <mapping class="edu.upenn.cis.ppod.model.security.PPodGroup" 
-			/> <mapping class="edu.upenn.cis.ppod.model.security.PPodPermission" /> -->
+			<mapping class="edu.upenn.cis.ppod.model.security.Party" /> <mapping class="edu.upenn.cis.ppod.model.security.Group" 
+			/> <mapping class="edu.upenn.cis.ppod.model.security.StudyPermission" /> -->
 		<mapping class="edu.upenn.cis.ppod.model.VersionInfo" />
 
 		<mapping class="edu.upenn.cis.ppod.model.Study" />

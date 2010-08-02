@@ -18,7 +18,6 @@ package edu.upenn.cis.ppod.model.security;
 import static com.google.common.base.Preconditions.checkNotNull;
 import static com.google.common.collect.Sets.newHashSet;
 
-import java.util.Collections;
 import java.util.Set;
 
 import javax.persistence.CascadeType;
@@ -27,8 +26,6 @@ import javax.persistence.Entity;
 import javax.persistence.Inheritance;
 import javax.persistence.InheritanceType;
 import javax.persistence.JoinColumn;
-import javax.persistence.JoinTable;
-import javax.persistence.ManyToMany;
 import javax.persistence.OneToMany;
 import javax.persistence.Table;
 
@@ -53,25 +50,11 @@ public abstract class Party extends PersistentObject {
 	@OneToMany(cascade = CascadeType.ALL, orphanRemoval = true)
 	@JoinColumn(name = JOIN_COLUMN)
 	// @Cache(usage = CacheConcurrencyStrategy.READ_WRITE)
-	private final Set<PPodPermission> permissions = newHashSet();
-
-	@ManyToMany
-	@JoinTable(name = TABLE + "_" + PPodGroup.TABLE, joinColumns = { @JoinColumn(name = JOIN_COLUMN) }, inverseJoinColumns = { @JoinColumn(name = PPodGroup.ID_COLUMN) })
-	private final Set<PPodGroup> groups = newHashSet();
+	private final Set<StudyPermission> permissions = newHashSet();
 
 	@Column(name = "NAME", length = 100, nullable = false)
 	@Index(name = "IDX_PPOD_PARTY_NAME")
 	private String name;
-
-	/**
-	 * Get an unmodifiable view of the the groups to which this party belongs.
-	 * 
-	 * @return an unmodifiable view of the the groups to which this party
-	 *         belongs
-	 */
-	public Set<PPodGroup> getGroups() {
-		return Collections.unmodifiableSet(groups);
-	}
 
 	/**
 	 * Get the name.
@@ -87,21 +70,8 @@ public abstract class Party extends PersistentObject {
 	 * 
 	 * @return this party's permissions
 	 */
-	public final Set<PPodPermission> getPermissions() {
+	public final Set<StudyPermission> getPermissions() {
 		return permissions;
-	}
-
-	/**
-	 * Set the groups.
-	 * 
-	 * @param groups the groups to set
-	 * 
-	 * @return this
-	 */
-	public Party setGroups(final Set<PPodGroup> groups) {
-		this.groups.clear();
-		this.groups.addAll(groups);
-		return this;
 	}
 
 	/**
@@ -123,9 +93,10 @@ public abstract class Party extends PersistentObject {
 	 * @param pPodPermissions new permissions.
 	 * @return this party
 	 */
-	public final Party setPermissions(final Set<PPodPermission> pPodPermissions) {
+	public final Party setPermissions(
+			final Set<StudyPermission> studyPermissions) {
 		this.permissions.clear();
-		this.permissions.addAll(pPodPermissions);
+		this.permissions.addAll(studyPermissions);
 		return this;
 	}
 }

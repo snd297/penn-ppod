@@ -38,8 +38,8 @@ import edu.upenn.cis.ppod.util.IVisitor;
  * @author Sam Donnelly
  */
 @Entity
-@Table(name = PPodGroup.TABLE)
-public final class PPodGroup extends Party {
+@Table(name = Group.TABLE)
+public final class Group extends Party {
 
 	static final String TABLE = "PPOD_GROUP";
 
@@ -47,8 +47,10 @@ public final class PPodGroup extends Party {
 
 	@ManyToMany
 	@Cascade(org.hibernate.annotations.CascadeType.SAVE_UPDATE)
-	@JoinTable(name = TABLE + "_" + Party.TABLE, joinColumns = { @JoinColumn(name = ID_COLUMN) }, inverseJoinColumns = { @JoinColumn(name = Party.JOIN_COLUMN) })
-	private final Set<Party> parties = newHashSet();
+	@JoinTable(name = TABLE + "_" + Party.TABLE, joinColumns = { @JoinColumn(
+			name = ID_COLUMN) }, inverseJoinColumns = { @JoinColumn(
+			name = Party.JOIN_COLUMN) })
+	private final Set<User> users = newHashSet();
 
 	/**
 	 * Set the parties.
@@ -57,9 +59,9 @@ public final class PPodGroup extends Party {
 	 * 
 	 * @return this
 	 */
-	public PPodGroup setParties(final Set<Party> parties) {
-		this.parties.clear();
-		this.parties.addAll(parties);
+	public Group setParties(final Set<User> parties) {
+		this.users.clear();
+		this.users.addAll(parties);
 		return this;
 	}
 
@@ -68,8 +70,8 @@ public final class PPodGroup extends Party {
 	 * 
 	 * @return an unmodifiable view of this group's members
 	 */
-	public Set<Party> getParties() {
-		return Collections.unmodifiableSet(parties);
+	public Set<User> getUsers() {
+		return Collections.unmodifiableSet(users);
 	}
 
 	public void accept(IVisitor visitor) {
