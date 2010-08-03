@@ -12,7 +12,8 @@ import javax.xml.bind.annotation.XmlAttribute;
 import edu.umd.cs.findbugs.annotations.CheckForNull;
 
 @MappedSuperclass
-public abstract class MolecularCell<E, R extends Row<?, ?>> extends Cell<E, R> {
+public abstract class MolecularCell<E extends Enum<?>, R extends Row<?, ?>>
+		extends Cell<E, R> {
 
 	@Column(name = "LOWER_CASE", nullable = true)
 	@CheckForNull
@@ -32,6 +33,14 @@ public abstract class MolecularCell<E, R extends Row<?, ?>> extends Cell<E, R> {
 		setLowerCase(null);
 	}
 
+	/**
+	 * Protected for JAXB.
+	 */
+	protected void setLowerCase(
+			@CheckForNull final Boolean upperCase) {
+		this.lowerCase = upperCase;
+	}
+
 	public MolecularCell<E, R> setPolymorphicElements(
 			final Set<? extends E> elements, final Boolean lowerCase) {
 		checkNotNull(lowerCase);
@@ -47,10 +56,14 @@ public abstract class MolecularCell<E, R extends Row<?, ?>> extends Cell<E, R> {
 	 * 
 	 * @return this
 	 */
-	public Cell<E, R> setSingleElement(final E element, final Boolean lowerCase) {
+	public MolecularCell<E, R> setSingleElement(
+			final E element,
+			final Boolean lowerCase) {
 		checkNotNull(element);
 		checkNotNull(lowerCase);
-		if (element.equals(getElement())
+
+		// == is safe since we know E is an Enum
+		if (element == getElement()
 				&& lowerCase.equals(isLowerCase())) {
 			if (getType() != Type.SINGLE) {
 				throw new AssertionError(
@@ -72,13 +85,5 @@ public abstract class MolecularCell<E, R extends Row<?, ?>> extends Cell<E, R> {
 		super.setUncertainElements(elements);
 		setLowerCase(null);
 		return this;
-	}
-
-	/**
-	 * Protected for JAXB.
-	 */
-	protected void setLowerCase(
-			@CheckForNull final Boolean upperCase) {
-		this.lowerCase = upperCase;
 	}
 }

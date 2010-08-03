@@ -61,6 +61,7 @@ public class StandardRows
 		rows.accept(visitor);
 	}
 
+	/** {@inheritDoc} */
 	public void afterUnmarshal() {
 		rows.afterUnmarshal();
 	}
@@ -125,21 +126,31 @@ public class StandardRows
 		return rows.getValues();
 	}
 
+	/** {@inheritDoc} */
 	public StandardRow put(final OTU key, final StandardRow value) {
 		return rows.put(key, value);
 	}
 
+	/** {@inheritDoc} */
 	public StandardRows setOTUs() {
 		rows.setOTUs();
 		return this;
 	}
 
+	/**
+	 * Set the owner of this {@code StandardRows}.
+	 * 
+	 * @param parent the owner
+	 * 
+	 * @return this
+	 */
 	public StandardRows setParent(final StandardMatrix parent) {
 		rows.setParent(parent);
 		return this;
 	}
 
-	public StandardRows setValues(final Map<OTU, StandardRow> values) {
+	@SuppressWarnings("unused")
+	private StandardRows setValues(final Map<OTU, StandardRow> values) {
 		rows.setValues(values);
 		return this;
 	}

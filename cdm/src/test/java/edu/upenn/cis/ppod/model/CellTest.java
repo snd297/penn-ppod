@@ -39,28 +39,7 @@ import edu.upenn.cis.ppod.TestGroupDefs;
 public class CellTest {
 
 	@Inject
-	private Provider<OTUSet> otuSetProvider;
-
-	@Inject
-	private Provider<OTU> otuProvider;
-
-	@Inject
-	private Provider<DNAMatrix> dnaMatrixProvider;
-
-	@Inject
-	private Provider<DNARow> dnaRowProvider;
-
-	@Inject
 	private Provider<DNACell> dnaCellProvider;
-
-	@Inject
-	private Provider<VersionInfo> versionInfoProvider;
-
-	@Test(expectedExceptions = IllegalArgumentException.class)
-	public void setPosition() {
-		final Cell<?, ?> cell = new DNACell();
-		cell.setPosition(-1);
-	}
 
 	@Test
 	public void afterUnmarshal() {
@@ -70,17 +49,62 @@ public class CellTest {
 		assertSame(cell.getParent(), row);
 	}
 
+	/**
+	 * Verify that {@link PPodEntity#beforeMarshal(javax.xml.bind.Marshaller)}
+	 * is called when {@link Cell#beforeMarshal(javax.xml.bind.Marshaller)} is
+	 * called.
+	 */
+	@Test
+	public void beforeMarshal() {
+		final VersionInfo versionInfo = new VersionInfo().setVersion(23L);
+		final Cell<DNANucleotide, ?> cell = new DNACell();
+		cell.setType(Cell.Type.INAPPLICABLE);
+		cell.setVersionInfo(versionInfo);
+		cell.beforeMarshal(null);
+		assertEquals(cell.getVersion(), versionInfo.getVersion());
+	}
+
+	/**
+	 * {@code beforeMarshal(...)} should throw an {@code IllegalStateException}
+	 * if the type has not bee set yet.
+	 */
+	@Test(expectedExceptions = IllegalStateException.class)
+	public void beforeMarshalBeforeTypeHasBeenSet() {
+		final DNACell cell = dnaCellProvider.get();
+		cell.beforeMarshal(null);
+	}
+
+	@Test(expectedExceptions = IllegalStateException.class)
+	public void beforeMarshalWNoType() {
+		final Cell<DNANucleotide, ?> cell = dnaCellProvider.get();
+		cell.beforeMarshal(null);
+	}
+
+	/**
+	 * Matrix must be ready to have a row with one cell added to it.
+	 * 
+	 * @param matrix
+	 * @param elements
+	 */
+	@Test
+	public void getElementsWhenCellHasMultipleElements() {
+		final Cell<DNANucleotide, ?> cell = dnaCellProvider.get();
+
+		final Set<DNANucleotide> elements =
+				ImmutableSet.of(DNANucleotide.A, DNANucleotide.T);
+
+		cell.setType(Cell.Type.POLYMORPHIC);
+		cell.setElements(elements);
+		assertEquals(cell.getElements(), elements);
+
+		cell.setType(Cell.Type.UNCERTAIN);
+		assertEquals(cell.getElements(), elements);
+	}
+
 	@Test(expectedExceptions = IllegalStateException.class)
 	public void getElementsWhenNoTypeSet() {
 		final Cell<?, ?> cell = dnaCellProvider.get();
 		cell.getElements();
-	}
-
-
-	@Test(expectedExceptions = IllegalStateException.class)
-	public void getElementsXmlWNoType() {
-		final Cell<?, ?> cell = new DNACell();
-		cell.getElementsXml();
 	}
 
 	@Test
@@ -109,124 +133,10 @@ public class CellTest {
 
 	}
 
-	@Test
-	public void setInNeedOfNewVersion() {
-		// First let's test when a cell isn't attached to anything
-		final DNACell cell = dnaCellProvider.get();
-		cell.unsetInNeedOfNewVersion();
-		cell.setInNeedOfNewVersion();
-		assertTrue(cell.isInNeedOfNewVersion());
-
-		// Now let's put it into a matrix.
-		final OTUSet otuSet = otuSetProvider.get();
-		final OTU otu = otuSet.addOTU(otuProvider.get().setLabel("otu0"));
-		final DNAMatrix matrix = dnaMatrixProvider.get();
-		matrix.setColumnsSize(1);
-
-		otuSet.addDNAMatrix(matrix);
-
-		final DNARow row = dnaRowProvider.get();
-
-		matrix.putRow(otu, row);
-		row.setCells(ImmutableList.of(cell));
-
-		otuSet.unsetInNeedOfNewVersion();
-		otu.unsetInNeedOfNewVersion();
-		matrix.unsetInNeedOfNewVersion();
-		matrix.setColumnVersionInfos(versionInfoProvider.get());
-		row.unsetInNeedOfNewVersion();
-		cell.unsetInNeedOfNewVersion();
-
-		cell.setInNeedOfNewVersion();
-
-		assertTrue(otuSet.isInNeedOfNewVersion());
-		assertFalse(otu.isInNeedOfNewVersion());
-		assertTrue(matrix.isInNeedOfNewVersion());
-		assertNull(matrix.getColumnVersionInfos().get(cell.getPosition()));
-		assertTrue(row.isInNeedOfNewVersion());
-		assertTrue(cell.isInNeedOfNewVersion());
-
-		// Now let's test it in a row w/ no matrix, which should only happen
-		// when we remove a row from a matrix.
-		otuSet.removeDNAMatrix(matrix);
-		otuSet.unsetInNeedOfNewVersion();
-		otu.unsetInNeedOfNewVersion();
-		matrix.unsetInNeedOfNewVersion();
-		row.unsetInNeedOfNewVersion();
-		cell.unsetInNeedOfNewVersion();
-
-		cell.setInNeedOfNewVersion();
-
-		assertFalse(otuSet.isInNeedOfNewVersion());
-		assertFalse(otu.isInNeedOfNewVersion());
-		assertFalse(matrix.isInNeedOfNewVersion());
-		assertTrue(row.isInNeedOfNewVersion());
-		assertTrue(cell.isInNeedOfNewVersion());
-
-	}
-
 	@Test(expectedExceptions = IllegalStateException.class)
-	public void setInNeedOfNewVersionWithNullPosition() {
-
-		final DNACell cell = dnaCellProvider.get();
-		final OTUSet otuSet = otuSetProvider.get();
-		final OTU otu = otuSet.addOTU(otuProvider.get().setLabel("otu0"));
-		final DNAMatrix matrix = dnaMatrixProvider.get();
-		matrix.setColumnsSize(1);
-
-		otuSet.addDNAMatrix(matrix);
-
-		final DNARow row = dnaRowProvider.get();
-
-		matrix.putRow(otu, row);
-		row.setCells(ImmutableList.of(cell));
-
-		cell.setPosition(null);
-
-		cell.setInNeedOfNewVersion();
-
-	}
-
-	/**
-	 * Matrix must be ready to have a row with one cell added to it.
-	 * 
-	 * @param matrix
-	 * @param elements
-	 */
-	@Test
-	public void getElementsWhenCellHasMultipleElements() {
-		final Cell<DNANucleotide, ?> cell = dnaCellProvider.get();
-
-		final Set<DNANucleotide> elements =
-				ImmutableSet.of(DNANucleotide.A, DNANucleotide.T);
-
-		cell.setType(Cell.Type.POLYMORPHIC);
-		cell.setElements(elements);
-		assertEquals(cell.getElements(), elements);
-
-		cell.setType(Cell.Type.UNCERTAIN);
-		assertEquals(cell.getElements(), elements);
-	}
-
-	/**
-	 * {@code beforeMarshal(...)} should throw an {@code IllegalStateException}
-	 * if the type has not bee set yet.
-	 */
-	@Test(expectedExceptions = IllegalStateException.class)
-	public void beforeMarshalBeforeTypeHasBeenSet() {
-		final DNACell cell = dnaCellProvider.get();
-		cell.beforeMarshal(null);
-	}
-
-	@Test
-	public void getStatesWhenCellHasOneElement() {
-		final Cell<DNANucleotide, ?> cell = dnaCellProvider.get();
-
-		final DNANucleotide nucleotide = DNANucleotide.C;
-
-		cell.setElement(nucleotide);
-		cell.setType(Cell.Type.SINGLE);
-		assertEquals(cell.getElements(), ImmutableSet.of(nucleotide));
+	public void getElementsXmlWNoType() {
+		final Cell<?, ?> cell = new DNACell();
+		cell.getElementsXml();
 	}
 
 	@Test
@@ -241,10 +151,58 @@ public class CellTest {
 		assertEquals(cell.getElements(), Collections.emptyList());
 	}
 
-	@Test(expectedExceptions = IllegalArgumentException.class)
-	public void setUncertainElementsTooFewStates() {
+	@Test
+	public void getStatesWhenCellHasOneElement() {
 		final Cell<DNANucleotide, ?> cell = dnaCellProvider.get();
-		cell.setUncertainElements(ImmutableSet.of(DNANucleotide.G));
+
+		final DNANucleotide nucleotide = DNANucleotide.C;
+
+		cell.setElement(nucleotide);
+		cell.setType(Cell.Type.SINGLE);
+		assertEquals(cell.getElements(), ImmutableSet.of(nucleotide));
+	}
+
+	@Test(groups = TestGroupDefs.SINGLE)
+	public void setInNeedOfNewVersion() {
+		final DNACell cell = new DNACell();
+		cell.unsetInNeedOfNewVersion();
+
+		cell.setInNeedOfNewVersion();
+		assertTrue(cell.isInNeedOfNewVersion());
+
+		final DNARow row = new DNARow();
+
+		final DNAMatrix matrix = new DNAMatrix(new DNARows());
+		matrix.setColumnsSize(1);
+		final OTUSet otuSet = new OTUSet();
+		otuSet.addDNAMatrix(matrix);
+		otuSet.addOTU(new OTU().setLabel("otu-0"));
+
+		matrix.putRow(otuSet.getOTUs().get(0), row);
+
+		row.setCells(ImmutableList.of(cell));
+
+		cell.unsetInNeedOfNewVersion();
+		row.unsetInNeedOfNewVersion();
+		matrix.setInNeedOfNewColumnVersion(0);
+
+		cell.setInNeedOfNewVersion();
+		assertTrue(cell.isInNeedOfNewVersion());
+		assertTrue(row.isInNeedOfNewVersion());
+		assertNull(matrix.getColumnVersionInfos().get(0));
+
+		matrix.putRow(otuSet.getOTUs().get(0), new DNARow());
+
+		cell.unsetInNeedOfNewVersion();
+		row.unsetInNeedOfNewVersion();
+		matrix.setColumnVersionInfos(new VersionInfo());
+
+		cell.setInNeedOfNewVersion();
+
+		assertTrue(cell.isInNeedOfNewVersion());
+		assertTrue(row.isInNeedOfNewVersion());
+		assertNotNull(matrix.getColumnVersionInfos().get(0));
+
 	}
 
 	@Test
@@ -263,57 +221,6 @@ public class CellTest {
 		assertFalse(cell.isInNeedOfNewVersion());
 		assertEquals(cell.getType(), Cell.Type.INAPPLICABLE);
 		assertEquals(cell.getElements(), Collections.emptySet());
-	}
-
-	@Test
-	public void setUnassigned() {
-		final Cell<DNANucleotide, ?> cell = dnaCellProvider.get();
-		cell.unsetInNeedOfNewVersion();
-		cell.setUnassigned();
-
-		assertTrue(cell.isInNeedOfNewVersion());
-		assertEquals(cell.getType(), Cell.Type.UNASSIGNED);
-		assertEquals(cell.getElements(), Collections.emptySet());
-
-		cell.unsetInNeedOfNewVersion();
-		cell.setUnassigned();
-
-		assertFalse(cell.isInNeedOfNewVersion());
-		assertEquals(cell.getType(), Cell.Type.UNASSIGNED);
-		assertEquals(cell.getElements(), Collections.emptySet());
-
-	}
-
-	@Test(expectedExceptions = IllegalArgumentException.class)
-	public void setPolymorphicOrUncertainWSingle() {
-		final Cell<DNANucleotide, ?> cell = dnaCellProvider.get();
-		cell.setPolymorphicOrUncertain(
-				Cell.Type.SINGLE,
-				ImmutableSet.of(DNANucleotide.A, DNANucleotide.C));
-	}
-
-	@Test(expectedExceptions = IllegalArgumentException.class)
-	public void setPolymorphicOrUncertainWInapplicable() {
-		final Cell<DNANucleotide, ?> cell = dnaCellProvider.get();
-		cell.setPolymorphicOrUncertain(
-				Cell.Type.INAPPLICABLE,
-				ImmutableSet.of(DNANucleotide.A, DNANucleotide.C));
-	}
-
-	@Test(expectedExceptions = IllegalArgumentException.class)
-	public void setPolymorphicOrUncertainWUnassigned() {
-		final Cell<DNANucleotide, ?> cell = dnaCellProvider.get();
-		cell.setPolymorphicOrUncertain(
-				Cell.Type.UNASSIGNED,
-				ImmutableSet.of(DNANucleotide.A, DNANucleotide.C));
-	}
-
-	@Test(expectedExceptions = IllegalArgumentException.class)
-	public void setPolymorphicOrUncertainWTooFewElements() {
-		final Cell<DNANucleotide, ?> cell = dnaCellProvider.get();
-		cell.setPolymorphicOrUncertain(
-				Cell.Type.POLYMORPHIC,
-				ImmutableSet.of(DNANucleotide.A));
 	}
 
 	/**
@@ -336,6 +243,14 @@ public class CellTest {
 
 		assertSame(Cell.Type.UNCERTAIN, cell.getType());
 		assertEquals(nucleotides, cell.getElements());
+	}
+
+	@Test(expectedExceptions = IllegalArgumentException.class)
+	public void setPolymorphicOrUncertainWInapplicable() {
+		final Cell<DNANucleotide, ?> cell = dnaCellProvider.get();
+		cell.setPolymorphicOrUncertain(
+				Cell.Type.INAPPLICABLE,
+				ImmutableSet.of(DNANucleotide.A, DNANucleotide.C));
 	}
 
 	/**
@@ -365,23 +280,58 @@ public class CellTest {
 		assertEquals(nucleotides, cell.getElements());
 	}
 
-	@Test(expectedExceptions = IllegalStateException.class)
-	public void beforeMarshalWNoType() {
+	@Test(expectedExceptions = IllegalArgumentException.class)
+	public void setPolymorphicOrUncertainWSingle() {
 		final Cell<DNANucleotide, ?> cell = dnaCellProvider.get();
-		cell.beforeMarshal(null);
+		cell.setPolymorphicOrUncertain(
+				Cell.Type.SINGLE,
+				ImmutableSet.of(DNANucleotide.A, DNANucleotide.C));
 	}
 
-	/**
-	 * Verify that {@link PPodEntity#beforeMarshal(javax.xml.bind.Marshaller)}
-	 * is called when {@link Cell#beforeMarshal(javax.xml.bind.Marshaller)} is
-	 * called.
-	 */
-	public void beforeMarshal() {
-		final VersionInfo versionInfo = new VersionInfo().setVersion(23L);
-		final Cell<DNANucleotide, ?> cell = new DNACell();
-		cell.setType(Cell.Type.INAPPLICABLE);
-		cell.setVersionInfo(versionInfo);
-		cell.beforeMarshal(null);
-		assertEquals(cell.getVersion(), versionInfo.getVersion());
+	@Test(expectedExceptions = IllegalArgumentException.class)
+	public void setPolymorphicOrUncertainWTooFewElements() {
+		final Cell<DNANucleotide, ?> cell = dnaCellProvider.get();
+		cell.setPolymorphicOrUncertain(
+				Cell.Type.POLYMORPHIC,
+				ImmutableSet.of(DNANucleotide.A));
+	}
+
+	@Test(expectedExceptions = IllegalArgumentException.class)
+	public void setPolymorphicOrUncertainWUnassigned() {
+		final Cell<DNANucleotide, ?> cell = dnaCellProvider.get();
+		cell.setPolymorphicOrUncertain(
+				Cell.Type.UNASSIGNED,
+				ImmutableSet.of(DNANucleotide.A, DNANucleotide.C));
+	}
+
+	@Test(expectedExceptions = IllegalArgumentException.class)
+	public void setPosition() {
+		final Cell<?, ?> cell = new DNACell();
+		cell.setPosition(-1);
+	}
+
+	@Test
+	public void setUnassigned() {
+		final Cell<DNANucleotide, ?> cell = dnaCellProvider.get();
+		cell.unsetInNeedOfNewVersion();
+		cell.setUnassigned();
+
+		assertTrue(cell.isInNeedOfNewVersion());
+		assertEquals(cell.getType(), Cell.Type.UNASSIGNED);
+		assertEquals(cell.getElements(), Collections.emptySet());
+
+		cell.unsetInNeedOfNewVersion();
+		cell.setUnassigned();
+
+		assertFalse(cell.isInNeedOfNewVersion());
+		assertEquals(cell.getType(), Cell.Type.UNASSIGNED);
+		assertEquals(cell.getElements(), Collections.emptySet());
+
+	}
+
+	@Test(expectedExceptions = IllegalArgumentException.class)
+	public void setUncertainElementsTooFewStates() {
+		final Cell<DNANucleotide, ?> cell = dnaCellProvider.get();
+		cell.setUncertainElements(ImmutableSet.of(DNANucleotide.G));
 	}
 }

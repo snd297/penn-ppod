@@ -42,6 +42,4 @@ public class PPodObjectFactory extends GuiceObjectFactory {
 						new InjectSlf4jModule()));
 	}
 
-	@Override
-	protected void configure() {}
 }
