@@ -295,9 +295,11 @@ public abstract class Cell<E, R extends Row<?, ?>> extends PPodEntity {
 			if (matrix != null) {
 				// so FindBugs knows that it's okay
 				final Integer position = getPosition();
-				checkState(getPosition() != null,
+				if (getPosition() == null) {
+					throw new AssertionError(
 							"cell has no position, but is a part of a matrix");
-				matrix.resetColumnVersion(position);
+				}
+				matrix.setInNeedOfNewColumnVersion(position);
 			}
 		}
 		super.setInNeedOfNewVersion();

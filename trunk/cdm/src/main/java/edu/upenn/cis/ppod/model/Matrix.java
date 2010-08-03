@@ -18,6 +18,7 @@ package edu.upenn.cis.ppod.model;
 import static com.google.common.base.Objects.equal;
 import static com.google.common.base.Preconditions.checkArgument;
 import static com.google.common.base.Preconditions.checkNotNull;
+import static com.google.common.base.Preconditions.checkState;
 import static com.google.common.collect.Lists.newArrayList;
 import static edu.upenn.cis.ppod.util.CollectionsUtil.nullFill;
 
@@ -280,24 +281,6 @@ public abstract class Matrix<R extends Row<?, ?>>
 		return getOTUKeyedRows().put(otu, row);
 	}
 
-	/**
-	 * Set the {@link VersionInfo} at {@code idx} to {@code null}. Fills with
-	 * <code>null</code>s if necessary.
-	 * 
-	 * @param position see des cription
-	 * 
-	 * @return this
-	 */
-	public Matrix<R> resetColumnVersion(final int position) {
-		checkArgument(position >= 0, "position is negative");
-		checkArgument(position < getColumnVersionInfos().size(),
-				"position " + position
-						+ " is too large for the number of columns "
-						+ getColumnVersionInfos().size());
-		columnVersionInfos.set(position, null);
-		return this;
-	}
-
 	public Matrix<R> setColumnsSize(final int columnsSize) {
 		checkArgument(columnsSize >= 0, "columnsSize < 0");
 
@@ -373,6 +356,24 @@ public abstract class Matrix<R extends Row<?, ?>>
 	}
 
 	/**
+	 * Set the {@link VersionInfo} at {@code idx} to {@code null}. Fills with
+	 * <code>null</code>s if necessary.
+	 * 
+	 * @param position see description
+	 * 
+	 * @return this
+	 */
+	public Matrix<R> setInNeedOfNewColumnVersion(final int position) {
+		checkArgument(position >= 0, "position is negative");
+		checkArgument(position < getColumnVersionInfos().size(),
+				"position " + position
+						+ " is too large for the number of columns "
+						+ getColumnVersionInfos().size());
+		columnVersionInfos.set(position, null);
+		return this;
+	}
+
+	/**
 	 * {@code null} out {@code versionInfo} and the {@link versionInfo} of the
 	 * owning study.
 	 * 
@@ -422,6 +423,9 @@ public abstract class Matrix<R extends Row<?, ?>>
 	 */
 	void setParent(
 			@CheckForNull final OTUSet otuSet) {
+		checkState(
+				getOTUKeyedRows() != null,
+				"getOTUKeyedRows() returned null - has the conrete class been constructed correctly, w/ its OTU->X dependency?");
 		this.parent = otuSet;
 		getOTUKeyedRows().setOTUs();
 	}

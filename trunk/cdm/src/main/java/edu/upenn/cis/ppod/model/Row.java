@@ -58,7 +58,7 @@ public abstract class Row<C extends Cell<?, ?>, M extends Matrix<?>>
 	 * @param parent see {@code Unmarshaller}
 	 */
 	public void afterUnmarshal(
-			@CheckForNull final Unmarshaller u, 
+			@CheckForNull final Unmarshaller u,
 			final Object parent) {
 		int cellPosition = -1;
 		for (final C cell : getCells()) {
@@ -79,13 +79,12 @@ public abstract class Row<C extends Cell<?, ?>, M extends Matrix<?>>
 	 * 
 	 * @return this
 	 */
-	public Row<C, M> clearCells() {
+	private void clearCells() {
 		for (final C clearedCell : getCells()) {
 			clearedCell.setParent(null);
 			clearedCell.setPosition(null);
 		}
 		getCellsModifiable().clear();
-		return this;
 	}
 
 	/**
