@@ -45,7 +45,11 @@ public abstract class MolecularCell<E extends Enum<?>, R extends Row<?, ?>>
 			final Set<? extends E> elements, final Boolean lowerCase) {
 		checkNotNull(lowerCase);
 		super.setPolymorphicOrUncertain(Type.POLYMORPHIC, elements);
+		if (lowerCase.equals(isLowerCase())) {
+			return this;
+		}
 		setLowerCase(lowerCase);
+		setInNeedOfNewVersion();
 		return this;
 	}
 

@@ -20,7 +20,7 @@ package edu.upenn.cis.ppod;
  * 
  * @author Sam Donnelly
  */
-public class TestGroupDefs {
+public final class TestGroupDefs {
 	/**
 	 * Handler group for tests that take a long amount of time, generally >=.1s.
 	 * Such tests would not be suitable to run on every check-in, but instead on

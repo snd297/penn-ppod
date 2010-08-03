@@ -162,7 +162,7 @@ public class CellTest {
 		assertEquals(cell.getElements(), ImmutableSet.of(nucleotide));
 	}
 
-	@Test(groups = TestGroupDefs.SINGLE)
+	@Test
 	public void setInNeedOfNewVersion() {
 		final DNACell cell = new DNACell();
 		cell.unsetInNeedOfNewVersion();
