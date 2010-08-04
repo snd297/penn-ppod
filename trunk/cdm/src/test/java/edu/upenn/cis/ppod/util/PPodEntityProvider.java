@@ -21,6 +21,7 @@ import javax.xml.bind.JAXBContext;
 
 import org.testng.annotations.DataProvider;
 
+import edu.upenn.cis.ppod.model.OTUSet;
 import edu.upenn.cis.ppod.model.StandardMatrix;
 import edu.upenn.cis.ppod.model.Study;
 
@@ -31,25 +32,25 @@ import edu.upenn.cis.ppod.model.Study;
  * 
  * @author Sam Donnelly
  */
-public class MatrixProvider {
+public class PPodEntityProvider {
 
-	public static final String SMALL_MATRICES_PROVIDER = "SMALL_MATRICES_PROVIDER";
+	public static final String STANDARD_MATRICES_PROVIDER = "standard-matrices-provider";
 
-	private static AfterUnmarshalVisitor afterUnmarshalVisitor = new AfterUnmarshalVisitor();
-
-	@DataProvider(name = SMALL_MATRICES_PROVIDER)
+	@DataProvider(name = STANDARD_MATRICES_PROVIDER)
 	public static Object[][] createMatrix() throws Exception {
 
 		final JAXBContext ctx = JAXBContext.newInstance(Study.class);
 		final Study studyMX540 =
 				(Study) ctx.createUnmarshaller().unmarshal(
-						MatrixProvider.class.getResourceAsStream("/MX540.xml"));
-		studyMX540.accept(afterUnmarshalVisitor);
+						PPodEntityProvider.class
+								.getResourceAsStream("/MX540.xml"));
+		studyMX540.accept(new AfterUnmarshalVisitor());
 
-		final StandardMatrix smallSimpleMatrix =
-				getOnlyElement(getOnlyElement(
-						studyMX540.getOTUSets())
-						.getStandardMatrices());
+		final StandardMatrix smallStandardMatrix =
+				getOnlyElement(
+						getOnlyElement(
+								studyMX540.getOTUSets())
+								.getStandardMatrices());
 
 		// final Study studyM1808 = (Study) ctx.createUnmarshaller().unmarshal(
 		// MatrixProvider.class.getResourceAsStream("/M1808.nex.xml"));
@@ -62,7 +63,26 @@ public class MatrixProvider {
 		// studyM1808.getOTUSets())
 		// .getCharacterStateMatrices());
 
-		return new Object[][] { new Object[] { smallSimpleMatrix } };
+		return new Object[][] { new Object[] { smallStandardMatrix } };
 
 	}
+
+	public static final String OTU_SETS_PROVIDER = "otu-set-provider";
+
+	@DataProvider(name = OTU_SETS_PROVIDER)
+	public static Object[][] createOTUSet() throws Exception {
+		final JAXBContext ctx = JAXBContext.newInstance(Study.class);
+		final Study studyMX540 =
+				(Study) ctx.createUnmarshaller().unmarshal(
+						PPodEntityProvider.class
+								.getResourceAsStream("/MX540.xml"));
+		studyMX540.accept(new AfterUnmarshalVisitor());
+
+		final OTUSet otuSet =
+				getOnlyElement(studyMX540.getOTUSets());
+
+		return new Object[][] { new Object[] { otuSet } };
+
+	}
+	
 }

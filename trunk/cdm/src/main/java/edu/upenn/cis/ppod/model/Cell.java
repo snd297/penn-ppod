@@ -113,8 +113,7 @@ public abstract class Cell<E, R extends Row<?, ?>> extends PPodEntity {
 	}
 
 	@Override
-	public boolean beforeMarshal(@CheckForNull final Marshaller marshaller) {
-		super.beforeMarshal(marshaller);
+	protected boolean beforeMarshal(@CheckForNull final Marshaller marshaller) {
 		checkState(getType() != null, "can't marshal a cell with no type");
 		return true;
 	}

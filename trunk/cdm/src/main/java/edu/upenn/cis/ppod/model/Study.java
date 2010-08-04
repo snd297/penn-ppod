@@ -101,8 +101,8 @@ public class Study extends UUPPodEntity implements IOTUSetCentricEntities {
 	 * @return see {@code Marshaller}
 	 */
 	@Override
-	public boolean beforeMarshal(final Marshaller m) {
-		super.beforeMarshal(m);
+	protected boolean beforeMarshal(final Marshaller m) {
+		// super.beforeMarshal(m);
 		if (attachmentNamespaces.size() == 0) {
 			PPodEntitiesUtil.extractAttachmentInfoFromAttachee(
 					attachmentNamespaces, attachmentTypes,

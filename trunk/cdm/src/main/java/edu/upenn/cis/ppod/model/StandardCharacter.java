@@ -145,12 +145,6 @@ public class StandardCharacter extends UUPPodEntityWithXmlId {
 		}
 	}
 
-	@Override
-	protected boolean beforeMarshal(final Marshaller marshaller) {
-		super.beforeMarshal(marshaller);
-		return true;
-	}
-
 	/**
 	 * Get the label of this {@code Character}.
 	 * 

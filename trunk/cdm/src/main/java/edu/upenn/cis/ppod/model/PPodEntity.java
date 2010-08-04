@@ -39,6 +39,7 @@ import javax.xml.bind.Marshaller;
 import javax.xml.bind.annotation.XmlAttribute;
 import javax.xml.bind.annotation.XmlElement;
 
+import com.google.common.annotations.VisibleForTesting;
 import com.google.common.collect.Iterables;
 
 import edu.umd.cs.findbugs.annotations.CheckForNull;
@@ -136,13 +137,20 @@ public abstract class PPodEntity
 
 	/**
 	 * See {@link Marshaller}.
+	 * <p>
+	 * Overriders of this method <em>should not</em> call this method (as in
+	 * {@code super.beforeMarshal(...)}) because that will result in this method
+	 * being called multiple times.
 	 * 
 	 * @param marshaler see {@code Marshaller}
 	 * @return see {@code Marshaller}
 	 */
-	@OverridingMethodsMustInvokeSuper
 	protected boolean beforeMarshal(@CheckForNull final Marshaller marshaler) {
 		// Write out the version number for the client of the xml
+		if (version != null) {
+			throw new IllegalStateException(
+					"about to marshal, but version != null. Outside of testing, this value should never be set in client code.");
+		}
 		if (versionInfo != null) {
 			version = versionInfo.getVersion();
 		}
@@ -266,11 +274,15 @@ public abstract class PPodEntity
 
 	/**
 	 * Set the pPOD version number.
+	 * <p>
+	 * <strong>Outside of testing, there is no reason for client code to call
+	 * this method.</strong>
 	 * 
 	 * @param pPodVersion the pPOD version number
 	 * 
 	 * @return this
 	 */
+	@VisibleForTesting
 	public PPodEntity setVersion(final Long version) {
 		checkNotNull(version);
 		this.version = version;
