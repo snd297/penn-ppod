@@ -121,7 +121,6 @@ public abstract class Matrix<R extends Row<?, ?>>
 
 	@Override
 	protected boolean beforeMarshal(@CheckForNull final Marshaller marshaller) {
-		super.beforeMarshal(marshaller);
 
 		if (getColumnVersions().size() != 0) {
 			throw new AssertionError(
@@ -252,8 +251,8 @@ public abstract class Matrix<R extends Row<?, ?>>
 	 * @return the rows that make up this matrix
 	 */
 	public Map<OTU, R> getRows() {
-		return Collections.unmodifiableMap(getOTUKeyedRows()
-				.getValues());
+		return Collections
+				.unmodifiableMap(getOTUKeyedRows().getValues());
 	}
 
 	/**
@@ -331,8 +330,21 @@ public abstract class Matrix<R extends Row<?, ?>>
 		return this;
 	}
 
+	/**
+	 * Set the values of the column version numbers for marshalled matrices.
+	 * <p>
+	 * <strong>Outside of testing, clients should never call this
+	 * method.</strong> In normal usage, these values are populated when an
+	 * object in marshalled.
+	 * 
+	 * @param columnVersions values
+	 */
 	@VisibleForTesting
-	void setColumnVersions(final List<Integer> columnVersions) {
+	public void setColumnVersions(final List<Integer> columnVersions) {
+		checkNotNull(columnVersions);
+		checkArgument(columnVersions.size() == getColumnsSize(),
+				"columnVersions size is not the same as getColumnsSize()");
+
 		this.columnVersions.clear();
 		this.columnVersions.addAll(this.columnVersions);
 	}

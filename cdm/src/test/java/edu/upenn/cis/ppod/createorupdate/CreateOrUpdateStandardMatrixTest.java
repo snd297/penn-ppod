@@ -16,11 +16,8 @@
 package edu.upenn.cis.ppod.createorupdate;
 
 import static com.google.common.collect.Lists.newArrayList;
-import static com.google.common.collect.Maps.newHashMap;
-import static org.testng.Assert.assertEquals;
 
 import java.util.List;
-import java.util.Map;
 
 import org.testng.annotations.BeforeMethod;
 import org.testng.annotations.Test;
@@ -38,7 +35,7 @@ import edu.upenn.cis.ppod.model.StandardCharacter;
 import edu.upenn.cis.ppod.model.StandardMatrix;
 import edu.upenn.cis.ppod.model.StandardRow;
 import edu.upenn.cis.ppod.modelinterfaces.INewVersionInfo;
-import edu.upenn.cis.ppod.util.MatrixProvider;
+import edu.upenn.cis.ppod.util.PPodEntityProvider;
 
 /**
  * Tests of {@link ICreateOrUpdateCharacterStateMatrix}.
@@ -70,30 +67,8 @@ public class CreateOrUpdateStandardMatrixTest {
 		dao = daoProvider.get();
 	}
 
-	private static Map<StandardRow, List<StandardCell>> stashCells(
-			final StandardMatrix matrix) {
-		final Map<StandardRow, List<StandardCell>> rowsToCells = newHashMap();
-		for (final OTU otu : matrix.getParent().getOTUs()) {
-			final StandardRow row = matrix.getRow(otu);
-			rowsToCells.put(row,
-							newArrayList(row
-											.getCells()));
-		}
-		return rowsToCells;
-	}
-
-	private static void putBackCells(final StandardMatrix matrix,
-			final Map<StandardRow, List<StandardCell>> rowsToCells) {
-		assertEquals(matrix.getRows().size(), rowsToCells.size());
-		for (final OTU otu : matrix.getParent().getOTUs()) {
-			final StandardRow row = matrix.getRow(otu);
-			row.setCells(rowsToCells.get(row));
-		}
-		rowsToCells.clear();
-	}
-
-	@Test(dataProvider = MatrixProvider.SMALL_MATRICES_PROVIDER,
-			dataProviderClass = MatrixProvider.class)
+	@Test(dataProvider = PPodEntityProvider.STANDARD_MATRICES_PROVIDER,
+			dataProviderClass = PPodEntityProvider.class)
 	public void create(final StandardMatrix sourceMatrix) {
 
 		final ICreateOrUpdateStandardMatrix createOrUpdateStandardMatrix =
@@ -108,21 +83,16 @@ public class CreateOrUpdateStandardMatrixTest {
 
 		fakeDbOTUSet.addStandardMatrix(targetMatrix);
 
-		final Map<StandardRow, List<StandardCell>> sourceRowsToCells = stashCells(sourceMatrix);
-
 		createOrUpdateStandardMatrix
 				.createOrUpdateMatrix(targetMatrix, sourceMatrix);
-
-		// putBackCells(targetMatrix, dao.getRowsToCells());
-		putBackCells(sourceMatrix, sourceRowsToCells);
 
 		ModelAssert.assertEqualsStandardMatrices(
 				targetMatrix,
 				sourceMatrix);
 	}
 
-	@Test(dataProvider = MatrixProvider.SMALL_MATRICES_PROVIDER,
-			dataProviderClass = MatrixProvider.class)
+	@Test(dataProvider = PPodEntityProvider.STANDARD_MATRICES_PROVIDER,
+			dataProviderClass = PPodEntityProvider.class)
 	public void moveRows(final StandardMatrix sourceMatrix) {
 		final ICreateOrUpdateStandardMatrix createOrUpdateStandardMatrix =
 				createOrUpdateMatrixFactory.create(mergeAttachment,
@@ -135,13 +105,8 @@ public class CreateOrUpdateStandardMatrixTest {
 
 		fakeDbOTUSet.addStandardMatrix(targetMatrix);
 
-		final Map<StandardRow, List<StandardCell>> sourceRowsToCells =
-				stashCells(sourceMatrix);
-
 		createOrUpdateStandardMatrix
 				.createOrUpdateMatrix(targetMatrix, sourceMatrix);
-
-		putBackCells(sourceMatrix, sourceRowsToCells);
 
 		// Simulate passing back in the persisted characters: so we need to
 		// assign the proper pPOD ID's.
@@ -163,31 +128,16 @@ public class CreateOrUpdateStandardMatrixTest {
 
 		sourceMatrix.getParent().setOTUs(shuffledSourceOTUs);
 
-		for (final OTU targetOTU : targetMatrix.getParent().getOTUs()) {
-			final StandardRow targetRow = targetMatrix.getRow(targetOTU);
-			targetRow.setVersion(1L);
-		}
-
-		for (final OTU sourceOTU : sourceMatrix.getParent().getOTUs()) {
-			final StandardRow sourceRow = sourceMatrix.getRow(sourceOTU);
-			sourceRow.setVersion(1L);
-		}
-
-		final Map<StandardRow, List<StandardCell>> sourceRowsToCells2 =
-				stashCells(sourceMatrix);
-
 		createOrUpdateStandardMatrix
 				.createOrUpdateMatrix(targetMatrix, sourceMatrix);
-
-		putBackCells(sourceMatrix, sourceRowsToCells2);
 
 		ModelAssert.assertEqualsStandardMatrices(
 				targetMatrix,
 				sourceMatrix);
 	}
 
-	@Test(dataProvider = MatrixProvider.SMALL_MATRICES_PROVIDER,
-			dataProviderClass = MatrixProvider.class)
+	@Test(dataProvider = PPodEntityProvider.STANDARD_MATRICES_PROVIDER,
+			dataProviderClass = PPodEntityProvider.class)
 	public void moveCharacters(final StandardMatrix sourceMatrix) {
 		final ICreateOrUpdateStandardMatrix createOrUpdateMatrix =
 					createOrUpdateMatrixFactory.create(
@@ -201,13 +151,9 @@ public class CreateOrUpdateStandardMatrixTest {
 
 		fakeDbOTUSet.addStandardMatrix(targetMatrix);
 
-		final Map<StandardRow, List<StandardCell>> sourceRowsToCells = stashCells(sourceMatrix);
 		createOrUpdateMatrix.createOrUpdateMatrix(
 					targetMatrix,
 					sourceMatrix);
-
-		// putBackCells(targetMatrix, dao.getRowsToCells());
-		putBackCells(sourceMatrix, sourceRowsToCells);
 
 		// Simulate passing back in the persisted characters: so we need to
 		// assign the proper pPOD ID's.
@@ -239,20 +185,16 @@ public class CreateOrUpdateStandardMatrixTest {
 			sourceRow.setCells(newSourceCells);
 		}
 
-		final Map<StandardRow, List<StandardCell>> sourceRowsToCells2 = stashCells(sourceMatrix);
 		createOrUpdateMatrix.createOrUpdateMatrix(
 					targetMatrix,
 					sourceMatrix);
-
-		// putBackCells(targetMatrix, dao.getRowsToCells());
-		putBackCells(sourceMatrix, sourceRowsToCells2);
 
 		ModelAssert.assertEqualsStandardMatrices(
 				targetMatrix, sourceMatrix);
 	}
 
-	@Test(dataProvider = MatrixProvider.SMALL_MATRICES_PROVIDER,
-			dataProviderClass = MatrixProvider.class)
+	@Test(dataProvider = PPodEntityProvider.STANDARD_MATRICES_PROVIDER,
+			dataProviderClass = PPodEntityProvider.class)
 	public void removeColumn(final StandardMatrix sourceMatrix) {
 		final ICreateOrUpdateStandardMatrix createOrUpdateMatrix =
 				createOrUpdateMatrixFactory
@@ -266,14 +208,8 @@ public class CreateOrUpdateStandardMatrixTest {
 
 		fakeDbOTUSet.addStandardMatrix(targetMatrix);
 
-		final Map<StandardRow, List<StandardCell>> sourceRowsToCells =
-				stashCells(sourceMatrix);
-
 		createOrUpdateMatrix
 				.createOrUpdateMatrix(targetMatrix, sourceMatrix);
-
-		// putBackCells(targetMatrix, dao.getRowsToCells());
-		putBackCells(sourceMatrix, sourceRowsToCells);
 
 		// Simulate passing back in the persisted characters: so we need to
 		// assign the proper pPOD ID's.
@@ -318,14 +254,9 @@ public class CreateOrUpdateStandardMatrixTest {
 									.size() - 1));
 		}
 
-		dao.getTransientEntities().clear();
-
-		final Map<StandardRow, List<StandardCell>> sourceRowsToCells2 = stashCells(sourceMatrix);
 		createOrUpdateMatrix.createOrUpdateMatrix(
 					targetMatrix,
 					sourceMatrix);
-
-		putBackCells(sourceMatrix, sourceRowsToCells2);
 
 		ModelAssert.assertEqualsStandardMatrices(targetMatrix, sourceMatrix);
 	}
