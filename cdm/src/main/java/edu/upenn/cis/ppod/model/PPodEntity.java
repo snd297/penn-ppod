@@ -273,10 +273,12 @@ public abstract class PPodEntity
 	}
 
 	/**
-	 * Set the pPOD version number.
+	 * Set the pPOD version number for marshalling so that an entire
+	 * {@link VersionInfo} need not be sent over the wire.
 	 * <p>
 	 * <strong>Outside of testing, there is no reason for client code to call
-	 * this method.</strong>
+	 * this method.</strong> It will be called when marshalling
+	 * {@code PPodEntity}s.
 	 * 
 	 * @param pPodVersion the pPOD version number
 	 * 
