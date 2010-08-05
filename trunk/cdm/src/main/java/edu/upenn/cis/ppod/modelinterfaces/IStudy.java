@@ -1,10 +1,7 @@
-package edu.upenn.cis.ppod.model;
+package edu.upenn.cis.ppod.modelinterfaces;
 
 import java.util.Set;
 
-import edu.upenn.cis.ppod.modelinterfaces.ILabeled;
-import edu.upenn.cis.ppod.modelinterfaces.IOTUSet;
-import edu.upenn.cis.ppod.modelinterfaces.IUUPPodEntity;
 import edu.upenn.cis.ppod.services.ppodentity.IOTUSetCentricEntities;
 
 /**
