@@ -30,6 +30,7 @@ import edu.upenn.cis.ppod.dao.IStudyDAO;
 import edu.upenn.cis.ppod.model.DNAMatrix;
 import edu.upenn.cis.ppod.model.DNASequence;
 import edu.upenn.cis.ppod.model.DNASequenceSet;
+import edu.upenn.cis.ppod.model.IStudy;
 import edu.upenn.cis.ppod.model.OTUSet;
 import edu.upenn.cis.ppod.model.StandardMatrix;
 import edu.upenn.cis.ppod.model.Study;
@@ -59,7 +60,7 @@ final class CreateOrUpdateStudy implements ICreateOrUpdateStudy {
 	private final IMergeTreeSets mergeTreeSets;
 	private final INewVersionInfo newVersionInfo;
 	private final IMergeSequenceSets<DNASequenceSet, DNASequence> mergeDNASequenceSets;
-	private final Study incomingStudy;
+	private final IStudy incomingStudy;
 	private Study dbStudy;
 	private final ICreateOrUpdateDNAMatrix createOrUpdateDNAMatrix;
 	private final IDAO<Object, Long> dao;
@@ -78,7 +79,7 @@ final class CreateOrUpdateStudy implements ICreateOrUpdateStudy {
 			final IMergeSequenceSets.IFactory<DNASequenceSet, DNASequence> mergeDNASequenceSetsFactory,
 			final IMergeAttachments.IFactory mergeAttachmentFactory,
 			final Provider<DNAMatrix> dnaMatrixProvider,
-			@Assisted final Study incomingStudy,
+			@Assisted final IStudy incomingStudy,
 			@Assisted final IStudyDAO studyDAO,
 			@Assisted final IAttachmentNamespaceDAO attachmentNamespaceDAO,
 			@Assisted final IAttachmentTypeDAO attachmentTypeDAO,

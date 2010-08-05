@@ -66,6 +66,19 @@ public class OTUSet
 		extends UUPPodEntityWithXmlId
 		implements IOTUSet {
 
+	public static class Adapter extends XmlAdapter<OTUSet, IOTUSet> {
+
+		@Override
+		public OTUSet marshal(final IOTUSet otuSet) {
+			return (OTUSet) otuSet;
+		}
+
+		@Override
+		public IOTUSet unmarshal(final OTUSet otuSet) {
+			return otuSet;
+		}
+	}
+
 	/** The column that stores the description. */
 	public static final String DESCRIPTION_COLUMN = "DESCRIPTION";
 
@@ -108,15 +121,21 @@ public class OTUSet
 	private String label;
 
 	/** The set of {@code OTU}s that this {@code OTUSet} contains. */
-	@OneToMany(orphanRemoval = true, cascade = CascadeType.ALL, targetEntity = OTU.class)
+	@OneToMany(
+			orphanRemoval = true,
+			cascade = CascadeType.ALL,
+			targetEntity = OTU.class)
 	@OrderColumn(name = "POSITION")
 	@JoinColumn(name = JOIN_COLUMN, nullable = false)
 	private final List<IOTU> otus = newArrayList();
 
 	@CheckForNull
-	@ManyToOne(fetch = FetchType.LAZY, optional = false)
+	@ManyToOne(
+			fetch = FetchType.LAZY,
+			optional = false,
+			targetEntity = Study.class)
 	@JoinColumn(name = Study.JOIN_COLUMN)
-	private Study parent;
+	private IStudy parent;
 
 	/** The tree sets that reference this OTU set. */
 	@OneToMany(mappedBy = "parent", cascade = CascadeType.ALL,
@@ -349,7 +368,7 @@ public class OTUSet
 	 * @return the study to which this OTU set belongs
 	 */
 	@Nullable
-	public Study getParent() {
+	public IStudy getParent() {
 		return parent;
 	}
 
@@ -465,7 +484,7 @@ public class OTUSet
 	 */
 	@Override
 	public OTUSet setInNeedOfNewVersion() {
-		final Study study = getParent();
+		final IStudy study = getParent();
 		if (study != null) {
 			study.setInNeedOfNewVersion();
 		}
@@ -553,7 +572,7 @@ public class OTUSet
 	}
 
 	/** {@inheritDoc} */
-	public OTUSet setParent(@CheckForNull final Study parent) {
+	public OTUSet setParent(@CheckForNull final IStudy parent) {
 		this.parent = parent;
 		return this;
 	}
@@ -576,18 +595,5 @@ public class OTUSet
 				.append(this.otus).append(TAB).append(")");
 
 		return retValue.toString();
-	}
-
-	public static class Adapter extends XmlAdapter<OTUSet, IOTUSet> {
-
-		@Override
-		public IOTUSet unmarshal(OTUSet otuSet) {
-			return otuSet;
-		}
-
-		@Override
-		public OTUSet marshal(IOTUSet otuSet) {
-			return (OTUSet) otuSet;
-		}
 	}
 }

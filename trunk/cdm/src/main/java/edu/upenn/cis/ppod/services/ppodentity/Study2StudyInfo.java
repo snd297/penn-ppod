@@ -25,11 +25,11 @@ import edu.upenn.cis.ppod.model.DNAMatrix;
 import edu.upenn.cis.ppod.model.DNARow;
 import edu.upenn.cis.ppod.model.DNASequence;
 import edu.upenn.cis.ppod.model.DNASequenceSet;
+import edu.upenn.cis.ppod.model.IStudy;
 import edu.upenn.cis.ppod.model.StandardCell;
 import edu.upenn.cis.ppod.model.StandardCharacter;
 import edu.upenn.cis.ppod.model.StandardMatrix;
 import edu.upenn.cis.ppod.model.StandardRow;
-import edu.upenn.cis.ppod.model.Study;
 import edu.upenn.cis.ppod.model.Tree;
 import edu.upenn.cis.ppod.model.TreeSet;
 import edu.upenn.cis.ppod.model.VersionInfo;
@@ -69,7 +69,7 @@ final class Study2StudyInfo implements IStudy2StudyInfo {
 		this.otuSetInfoProvider = otuSetInfoProvider;
 	}
 
-	public StudyInfo toStudyInfo(final Study study) {
+	public StudyInfo toStudyInfo(final IStudy study) {
 		checkNotNull(study);
 		final StudyInfo studyInfo = studyInfoProvider.get();
 		studyInfo.setEntityId(study.getId());

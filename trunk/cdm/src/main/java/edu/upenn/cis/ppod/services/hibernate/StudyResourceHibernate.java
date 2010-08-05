@@ -38,6 +38,7 @@ import edu.upenn.cis.ppod.dao.hibernate.IOTUSetDAOHibernate;
 import edu.upenn.cis.ppod.dao.hibernate.IObjectWithLongIdDAOHibernate;
 import edu.upenn.cis.ppod.dao.hibernate.IStudyDAOHibernate;
 import edu.upenn.cis.ppod.dao.hibernate.IVersionInfoDAOHibernate;
+import edu.upenn.cis.ppod.model.IStudy;
 import edu.upenn.cis.ppod.model.Study;
 import edu.upenn.cis.ppod.modelinterfaces.INewVersionInfo;
 import edu.upenn.cis.ppod.modelinterfaces.INewVersionInfoDB;
@@ -48,8 +49,8 @@ import edu.upenn.cis.ppod.services.ppodentity.StudyInfo;
 import edu.upenn.cis.ppod.thirdparty.util.HibernateUtil;
 import edu.upenn.cis.ppod.util.IAfterUnmarshalVisitor;
 import edu.upenn.cis.ppod.util.IPair;
-import edu.upenn.cis.ppod.util.ISetXmlIdVisitor;
 import edu.upenn.cis.ppod.util.ISetVersionInfoVisitor;
+import edu.upenn.cis.ppod.util.ISetXmlIdVisitor;
 
 /**
  * @author Sam Donnelly
@@ -161,7 +162,7 @@ final class StudyResourceHibernate implements IStudyResource {
 						objectWithLongIdDAO,
 						newVersionInfo);
 		createOrUpdateStudy.createOrUpdateStudy();
-		final Study dbStudy = createOrUpdateStudy.getDbStudy();
+		final IStudy dbStudy = createOrUpdateStudy.getDbStudy();
 		final ISetVersionInfoVisitor setVersionInfoVisitor =
 				setPPodVersionInfoVisitorFactory.create(newVersionInfo);
 		dbStudy.accept(setVersionInfoVisitor);

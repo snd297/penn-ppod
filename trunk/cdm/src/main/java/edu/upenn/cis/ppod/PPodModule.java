@@ -26,10 +26,12 @@ import edu.upenn.cis.ppod.createorupdate.IMergeAttachments;
 import edu.upenn.cis.ppod.createorupdate.IMergeOTUSets;
 import edu.upenn.cis.ppod.createorupdate.IMergeTreeSets;
 import edu.upenn.cis.ppod.dao.hibernate.DAOHibernateModule;
+import edu.upenn.cis.ppod.model.IStudy;
 import edu.upenn.cis.ppod.model.ModelModule;
 import edu.upenn.cis.ppod.model.OTU;
 import edu.upenn.cis.ppod.model.OTUSet;
 import edu.upenn.cis.ppod.model.StandardState;
+import edu.upenn.cis.ppod.model.Study;
 import edu.upenn.cis.ppod.modelinterfaces.IOTU;
 import edu.upenn.cis.ppod.modelinterfaces.IOTUSet;
 import edu.upenn.cis.ppod.services.StringPair;
@@ -88,6 +90,7 @@ public final class PPodModule extends AbstractModule {
 						ICreateOrUpdateStudy.IFactory.class,
 						ICreateOrUpdateStudy.class));
 
+		bind(IStudy.class).to(Study.class);
 		bind(IOTUSet.class).to(OTUSet.class);
 		bind(IOTU.class).to(OTU.class);
 
