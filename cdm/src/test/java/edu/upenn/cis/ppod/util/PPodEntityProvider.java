@@ -21,10 +21,10 @@ import javax.xml.bind.JAXBContext;
 
 import org.testng.annotations.DataProvider;
 
-import edu.upenn.cis.ppod.model.IStudy;
 import edu.upenn.cis.ppod.model.StandardMatrix;
 import edu.upenn.cis.ppod.model.Study;
 import edu.upenn.cis.ppod.modelinterfaces.IOTUSet;
+import edu.upenn.cis.ppod.modelinterfaces.IStudy;
 
 /**
  * A TestNG {@link DataProvider} that reads xml-serialized {@link Study}s from

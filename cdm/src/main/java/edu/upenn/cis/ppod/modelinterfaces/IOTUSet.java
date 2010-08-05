@@ -9,7 +9,6 @@ import javax.xml.bind.annotation.adapters.XmlJavaTypeAdapter;
 
 import edu.upenn.cis.ppod.model.DNAMatrix;
 import edu.upenn.cis.ppod.model.DNASequenceSet;
-import edu.upenn.cis.ppod.model.IStudy;
 import edu.upenn.cis.ppod.model.OTUSet;
 import edu.upenn.cis.ppod.model.StandardMatrix;
 import edu.upenn.cis.ppod.model.TreeSet;
@@ -17,7 +16,7 @@ import edu.upenn.cis.ppod.util.IVisitor;
 
 @XmlJavaTypeAdapter(OTUSet.Adapter.class)
 public interface IOTUSet
-		extends IAttachee, ILabeled, IVersioned, IWithXmlID, IUUPPodEntity {
+		extends ILabeled, IWithXmlID, IUUPPodEntity {
 
 	void accept(IVisitor visitor);
 
