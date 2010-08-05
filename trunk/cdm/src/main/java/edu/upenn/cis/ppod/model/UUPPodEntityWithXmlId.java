@@ -21,6 +21,7 @@ import javax.annotation.Nullable;
 import javax.xml.bind.annotation.XmlAttribute;
 import javax.xml.bind.annotation.XmlID;
 
+import edu.umd.cs.findbugs.annotations.CheckForNull;
 import edu.upenn.cis.ppod.modelinterfaces.IUUPPodEntityWithXmlID;
 
 /**
@@ -28,25 +29,22 @@ import edu.upenn.cis.ppod.modelinterfaces.IUUPPodEntityWithXmlID;
  * 
  * @author Sam Donnelly
  */
-public abstract class UUPPodEntityWithXmlId extends UUPPodEntity implements
-		IUUPPodEntityWithXmlID {
+public abstract class UUPPodEntityWithXmlId
+		extends UUPPodEntity
+		implements IUUPPodEntityWithXmlID {
 
 	/**
 	 * Intended for referencing elements within a document - be it XML, JSON,
 	 * etc. This is distinct from the pPOD Id of {@link UUPPodEntity}.
-	 * <p>
-	 * Called "docId" and not "xmlId" so that it's format agnostic.
 	 */
-	@Nullable
+	@CheckForNull
 	private String docId;
 
 	/**
-	 * Get the {@link XmlID} attribute.
+	 * {@inheritDoc}
 	 * <p>
-	 * Will be {@code null} until one of the {@code setDocId(...)}s are called
-	 * by the client.
-	 * 
-	 * @return the {@code XmlID} attribute
+	 * We call the xml attribute {@code "docId"} so it's format agnostic: we
+	 * could be serializing to, eg, JSON.
 	 */
 	@XmlAttribute
 	@XmlID
@@ -55,31 +53,17 @@ public abstract class UUPPodEntityWithXmlId extends UUPPodEntity implements
 		return docId;
 	}
 
-	/**
-	 * Create and set this {@code UUPPodEntityWXmlId}'s doc id.
-	 * 
-	 * @return this {@code UUPPodEntityWXmlId}
-	 * 
-	 * @throws IllegalStateException if {@code getDocId() != null} when this
-	 *             method is called
-	 */
+	/** {@inheritDoc} */
 	public UUPPodEntityWithXmlId setDocId() {
 		return setDocId(UUID.randomUUID().toString());
 	}
 
-	/**
-	 * Set this {@code UUPPodEntityWXmlId}'s doc id.
-	 * 
-	 * @param docId the doc id
-	 * 
-	 * @return this {@code UUPPodEntityWXmlId}
-	 * 
-	 * @throws IllegalStateException if {@code getDocId() != null} when this
-	 *             method is called
-	 */
+	/** {@inheritDoc} */
 	public UUPPodEntityWithXmlId setDocId(final String docId) {
+		// Let's not checkNotNul(xmlId) since JAXB calls this and we can't
+		// control what it does.a
 		if (getDocId() != null) {
-			throw new IllegalStateException("docId was already set");
+			throw new IllegalStateException("xmlId was already set");
 		}
 		this.docId = docId;
 		return this;

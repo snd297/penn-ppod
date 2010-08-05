@@ -29,10 +29,10 @@ import edu.upenn.cis.ppod.modelinterfaces.IOTUSet;
  * 
  * @author Sam Donnelly
  */
-final class SetDocIdVisitor extends EmptyVisitor implements ISetDocIdVisitor {
+final class SetXmlIdVisitor extends EmptyVisitor implements ISetXmlIdVisitor {
 
 	/**
-	 * Call {@code otuSet.setDocId()}.
+	 * Call {@link IOTUSet#setXmlId()}.
 	 * 
 	 * @param otuSet target
 	 */
@@ -44,7 +44,7 @@ final class SetDocIdVisitor extends EmptyVisitor implements ISetDocIdVisitor {
 	}
 
 	/**
-	 * Call {@code otu.setDocId()}.
+	 * Call {@link IOTU#setXmlId()}
 	 * 
 	 * @param otu target
 	 */
@@ -56,14 +56,14 @@ final class SetDocIdVisitor extends EmptyVisitor implements ISetDocIdVisitor {
 	}
 
 	/**
-	 * Call {@code character.setDocId()}.
+	 * Call {@link StandardCharacter#setXmlId()}
 	 * 
 	 * @param character target
 	 */
 	@Override
-	public void visitStandardCharacter(final StandardCharacter standardCharacter) {
-		if (standardCharacter.getDocId() == null) {
-			standardCharacter.setDocId();
+	public void visitStandardCharacter(final StandardCharacter character) {
+		if (character.getDocId() == null) {
+			character.setDocId();
 		}
 	}
 

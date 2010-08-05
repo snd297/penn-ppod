@@ -20,20 +20,28 @@ import javax.annotation.Nullable;
 /**
  * An object that holds a write-once-read-many {@link XmlID}.
  * <p>
- * One may ask, why require that the client explicitly set the doc id? And why
+ * One may ask: why require that the client explicitly set the doc id? And why
  * only allow it to be sent once? Why not just have it assigned automatically at
  * construction and have it freely reset if required. The reason is that
  * sometimes a client needs to set it to a certain value using
  * {@link #setDocId(String)} and since the {@link #getDocId()} is an identifier,
  * it seems dangerous to allow it to be reset since as soon as it's assigned,
  * something may be depending on that value.
+ * <p>
+ * One may also ask: if this interface is called {@code IWithXmlID}, why are the
+ * methods called {@code get/setDocId}? Because we like to call the attributes
+ * {@code "docId"} when serialized and it's easier to let JAXB name the
+ * attributes after the method names than manually setting the names.
  * 
  * @author Sam Donnelly
  */
 public interface IWithXmlID {
 
 	/**
-	 * Get the {@link XmlID} attribute.
+	 * Get the {@link javax.xml.bind.annotation.XmlID} attribute.
+	 * <p>
+	 * Will be {@code null} until one of the {@code setDocId(...)}s are called
+	 * by the client, but never {@code null} after that.
 	 * 
 	 * @return the {@code XmlID} attribute
 	 */
@@ -45,20 +53,20 @@ public interface IWithXmlID {
 	 * 
 	 * @return this
 	 * 
-	 * @throws IllegalStateException if {@code getDocId() != null} when this
-	 *             method is called
+	 * @throws IllegalStateException if {@link #getDocId()}{@code != null} when
+	 *             this method is called
 	 */
 	IWithXmlID setDocId();
 
 	/**
-	 * Set this {@code UUPPodEntityWXmlId}'s doc id.
+	 * Set this {@code IWithXmlID}'s xml id.
 	 * 
-	 * @param docId the doc id
+	 * @param docId the xml id
 	 * 
-	 * @return this {@code UUPPodEntityWXmlId}
+	 * @return this
 	 * 
-	 * @throws IllegalStateException if {@code getDocId() != null} when this
-	 *             method is called
+	 * @throws IllegalStateException if {@link #getDocId()}{@code != null} when
+	 *             this method is called
 	 */
 	IWithXmlID setDocId(final String docId);
 
