@@ -4,13 +4,10 @@ import javax.xml.bind.annotation.adapters.XmlJavaTypeAdapter;
 
 import edu.umd.cs.findbugs.annotations.Nullable;
 import edu.upenn.cis.ppod.model.OTU;
-import edu.upenn.cis.ppod.util.IVisitor;
 
 @XmlJavaTypeAdapter(OTU.Adapter.class)
 public interface IOTU
-		extends IAttachee, ILabeled, IOTUSetChild, IVersioned, IWithXmlID, IWithPPodId {
-
-	void accept(final IVisitor visitor);
+		extends IUUPPodEntity, ILabeled, IOTUSetChild, IWithXmlID {
 
 	/**
 	 * Return the label of this {@code OTU}.
@@ -22,8 +19,6 @@ public interface IOTU
 	 */
 	@Nullable
 	String getLabel();
-
-	IOTU setInNeedOfNewVersion();
 
 	/**
 	 * Set this OTU's label.

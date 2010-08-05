@@ -37,8 +37,8 @@ public abstract class PPodEntityWXmlId extends PPodEntity implements IWithXmlID 
 	@Nullable
 	private String docId;
 
-	@XmlAttribute
 	@XmlID
+	@XmlAttribute
 	@Nullable
 	public String getDocId() {
 		return docId;
