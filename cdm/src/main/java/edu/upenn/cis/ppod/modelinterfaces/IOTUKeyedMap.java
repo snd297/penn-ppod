@@ -4,7 +4,6 @@ import java.util.Map;
 
 import edu.umd.cs.findbugs.annotations.CheckForNull;
 import edu.umd.cs.findbugs.annotations.Nullable;
-import edu.upenn.cis.ppod.model.OTU;
 import edu.upenn.cis.ppod.util.IVisitor;
 
 public interface IOTUKeyedMap<V extends IOTUKeyedMapValue<?>>
@@ -39,14 +38,14 @@ public interface IOTUKeyedMap<V extends IOTUKeyedMapValue<?>>
 	 * @throws NullPointerException if the specified key is null
 	 */
 	@Nullable
-	V get(OTU key);
+	V get(IOTU key);
 
 	/**
 	 * Get the map that makes up this OTU-keyed map.
 	 * 
 	 * @return the map that makes up this OTU-keyed map
 	 */
-	Map<OTU, V> getValues();
+	Map<IOTU, V> getValues();
 
 	/**
 	 * Associates {@code value} with {@code key} in this map. If the map
@@ -71,7 +70,7 @@ public interface IOTUKeyedMap<V extends IOTUKeyedMapValue<?>>
 	 *             {@code .equals} to {@code value}
 	 */
 	@CheckForNull
-	V put(OTU key, V value);
+	V put(IOTU key, V value);
 
 	/**
 	 * Set the keys of this {@code OTUKeyedMap} to the OTUs in its parent's

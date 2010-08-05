@@ -25,6 +25,7 @@ import javax.persistence.CascadeType;
 import javax.persistence.Embeddable;
 import javax.persistence.JoinColumn;
 import javax.persistence.JoinTable;
+import javax.persistence.MapKeyClass;
 import javax.persistence.MapKeyJoinColumn;
 import javax.persistence.OneToMany;
 import javax.persistence.Transient;
@@ -36,6 +37,7 @@ import javax.xml.bind.annotation.XmlElement;
 
 import org.hibernate.annotations.Parent;
 
+import edu.upenn.cis.ppod.modelinterfaces.IOTU;
 import edu.upenn.cis.ppod.modelinterfaces.IOTUKeyedMap;
 import edu.upenn.cis.ppod.modelinterfaces.IOTUKeyedMapPlus;
 import edu.upenn.cis.ppod.util.IVisitor;
@@ -73,7 +75,7 @@ public class DNASequences
 
 	public boolean beforeMarshal(@CheckForNull final Marshaller marshaller) {
 		getOTUSomethingPairs().clear();
-		for (final Map.Entry<OTU, DNASequence> otuToRow : getValues()
+		for (final Map.Entry<IOTU, DNASequence> otuToRow : getValues()
 				.entrySet()) {
 			getOTUSomethingPairs().add(
 					OTUDNASequencePair.of(otuToRow.getKey(), otuToRow
@@ -87,7 +89,7 @@ public class DNASequences
 		return this;
 	}
 
-	public DNASequence get(final OTU key) {
+	public DNASequence get(final IOTU key) {
 		return sequences.get(key);
 	}
 
@@ -105,11 +107,12 @@ public class DNASequences
 	@OneToMany(cascade = CascadeType.ALL, orphanRemoval = true)
 	@JoinTable(inverseJoinColumns = @JoinColumn(name = DNASequence.JOIN_COLUMN))
 	@MapKeyJoinColumn(name = OTU.JOIN_COLUMN)
-	public Map<OTU, DNASequence> getValues() {
+	@MapKeyClass(OTU.class)
+	public Map<IOTU, DNASequence> getValues() {
 		return sequences.getValues();
 	}
 
-	public DNASequence put(final OTU key, final DNASequence value) {
+	public DNASequence put(final IOTU key, final DNASequence value) {
 		return sequences.put(key, value);
 	}
 
@@ -123,7 +126,7 @@ public class DNASequences
 		return this;
 	}
 
-	public DNASequences setValues(final Map<OTU, DNASequence> values) {
+	public DNASequences setValues(final Map<IOTU, DNASequence> values) {
 		sequences.setValues(values);
 		return this;
 	}

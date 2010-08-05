@@ -32,6 +32,7 @@ import javax.xml.bind.annotation.XmlAttribute;
 import javax.xml.bind.annotation.XmlElement;
 import javax.xml.bind.annotation.XmlRootElement;
 
+import edu.upenn.cis.ppod.modelinterfaces.IOTUSet;
 import edu.upenn.cis.ppod.services.ppodentity.IOTUSetCentricEntities;
 import edu.upenn.cis.ppod.util.IVisitor;
 import edu.upenn.cis.ppod.util.PPodEntitiesUtil;
@@ -60,8 +61,8 @@ public class Study extends UUPPodEntity implements IOTUSetCentricEntities {
 	private String label;
 
 	@OneToMany(mappedBy = "parent", cascade = CascadeType.ALL,
-			orphanRemoval = true)
-	private final Set<OTUSet> otuSets = newHashSet();
+			orphanRemoval = true, targetEntity = OTUSet.class)
+	private final Set<IOTUSet> otuSets = newHashSet();
 
 	@Transient
 	private final Set<AttachmentNamespace> attachmentNamespaces = newHashSet();
@@ -74,12 +75,12 @@ public class Study extends UUPPodEntity implements IOTUSetCentricEntities {
 	@Override
 	public void accept(final IVisitor visitor) {
 		visitor.visitStudy(this);
-		for (final OTUSet otuSet : getOTUSets()) {
+		for (final IOTUSet otuSet : getOTUSets()) {
 			otuSet.accept(visitor);
 		}
 	}
 
-	public OTUSet addOTUSet(final OTUSet otuSet) {
+	public IOTUSet addOTUSet(final IOTUSet otuSet) {
 		checkNotNull(otuSet);
 		if (getOTUSets().contains(otuSet)) {
 
@@ -124,12 +125,12 @@ public class Study extends UUPPodEntity implements IOTUSetCentricEntities {
 		return label;
 	}
 
-	public Set<OTUSet> getOTUSets() {
+	public Set<IOTUSet> getOTUSets() {
 		return Collections.unmodifiableSet(otuSets);
 	}
 
 	@XmlElement(name = "otuSet")
-	protected Set<OTUSet> getOTUSetsModifiable() {
+	protected Set<IOTUSet> getOTUSetsModifiable() {
 		return otuSets;
 	}
 
@@ -150,7 +151,7 @@ public class Study extends UUPPodEntity implements IOTUSetCentricEntities {
 	 * 
 	 * @return this
 	 */
-	public Study removeOTUSet(final OTUSet otuSet) {
+	public Study removeOTUSet(final IOTUSet otuSet) {
 		if (otuSets.remove(otuSet)) {
 			otuSet.setParent(null);
 			setInNeedOfNewVersion();

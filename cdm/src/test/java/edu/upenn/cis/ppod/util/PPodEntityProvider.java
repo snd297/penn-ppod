@@ -21,9 +21,9 @@ import javax.xml.bind.JAXBContext;
 
 import org.testng.annotations.DataProvider;
 
-import edu.upenn.cis.ppod.model.OTUSet;
 import edu.upenn.cis.ppod.model.StandardMatrix;
 import edu.upenn.cis.ppod.model.Study;
+import edu.upenn.cis.ppod.modelinterfaces.IOTUSet;
 
 /**
  * A TestNG {@link DataProvider} that reads xml-serialized {@link Study}s from
@@ -78,11 +78,11 @@ public class PPodEntityProvider {
 								.getResourceAsStream("/MX540.xml"));
 		studyMX540.accept(new AfterUnmarshalVisitor());
 
-		final OTUSet otuSet =
+		final IOTUSet otuSet =
 				getOnlyElement(studyMX540.getOTUSets());
 
 		return new Object[][] { new Object[] { otuSet } };
 
 	}
-	
+
 }

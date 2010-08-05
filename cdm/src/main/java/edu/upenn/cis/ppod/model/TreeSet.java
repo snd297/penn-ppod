@@ -39,8 +39,11 @@ import javax.xml.bind.annotation.XmlAccessorType;
 import javax.xml.bind.annotation.XmlAttribute;
 import javax.xml.bind.annotation.XmlElement;
 
+import org.hibernate.annotations.Target;
+
 import com.google.common.collect.Iterators;
 
+import edu.upenn.cis.ppod.modelinterfaces.IOTUSet;
 import edu.upenn.cis.ppod.modelinterfaces.IOTUSetChild;
 import edu.upenn.cis.ppod.util.IVisitor;
 
@@ -66,7 +69,8 @@ public class TreeSet
 	@CheckForNull
 	@ManyToOne(fetch = FetchType.LAZY, optional = false)
 	@JoinColumn(name = OTUSet.JOIN_COLUMN)
-	private OTUSet parent;
+	@Target(OTUSet.class)
+	private IOTUSet parent;
 
 	@OneToMany(cascade = CascadeType.ALL, orphanRemoval = true)
 	@OrderColumn(name = "POSITION")
@@ -135,7 +139,7 @@ public class TreeSet
 	 * @return the value
 	 */
 	@Nullable
-	public OTUSet getParent() {
+	public IOTUSet getParent() {
 		return parent;
 	}
 
@@ -187,7 +191,7 @@ public class TreeSet
 	 * 
 	 * @return this {@code TreeSet}
 	 */
-	TreeSet setParent(@CheckForNull final OTUSet parent) {
+	public TreeSet setParent(@CheckForNull final IOTUSet parent) {
 		this.parent = parent;
 		return this;
 	}

@@ -35,6 +35,7 @@ import edu.upenn.cis.ppod.model.StandardMatrix;
 import edu.upenn.cis.ppod.model.Study;
 import edu.upenn.cis.ppod.model.TreeSet;
 import edu.upenn.cis.ppod.modelinterfaces.INewVersionInfo;
+import edu.upenn.cis.ppod.modelinterfaces.IOTUSet;
 import edu.upenn.cis.ppod.modelinterfaces.IWithPPodId;
 
 /**
@@ -137,7 +138,7 @@ final class CreateOrUpdateStudy implements ICreateOrUpdateStudy {
 
 		// Delete otu sets in persisted study that are not in the incoming
 		// study.
-		for (final OTUSet dbOTUSet : dbStudy.getOTUSets()) {
+		for (final IOTUSet dbOTUSet : dbStudy.getOTUSets()) {
 			if (null == findIf(
 					incomingStudy.getOTUSets(),
 					compose(
@@ -149,8 +150,8 @@ final class CreateOrUpdateStudy implements ICreateOrUpdateStudy {
 		}
 
 		// Save or update incoming otu sets
-		for (final OTUSet incomingOTUSet : incomingStudy.getOTUSets()) {
-			OTUSet dbOTUSet;
+		for (final IOTUSet incomingOTUSet : incomingStudy.getOTUSets()) {
+			IOTUSet dbOTUSet;
 			if (null == (dbOTUSet =
 					findIf(dbStudy.getOTUSets(),
 							compose(
@@ -181,8 +182,8 @@ final class CreateOrUpdateStudy implements ICreateOrUpdateStudy {
 	}
 
 	private void handleDNAMatrices(
-			final OTUSet dbOTUSet,
-			final OTUSet incomingOTUSet) {
+			final IOTUSet dbOTUSet,
+			final IOTUSet incomingOTUSet) {
 
 		// Let's delete matrices missing from the incoming OTU set
 		for (final DNAMatrix dbMatrix : dbOTUSet.getDNAMatrices()) {
@@ -225,8 +226,8 @@ final class CreateOrUpdateStudy implements ICreateOrUpdateStudy {
 	}
 
 	private void handleDNASequenceSets(
-			final OTUSet dbOTUSet,
-			final OTUSet incomingOTUSet) {
+			final IOTUSet dbOTUSet,
+			final IOTUSet incomingOTUSet) {
 
 		// Let's delete sequences missing from the incoming otu set
 		for (final DNASequenceSet dbDNASequenceSet : dbOTUSet
@@ -263,8 +264,8 @@ final class CreateOrUpdateStudy implements ICreateOrUpdateStudy {
 	}
 
 	private void handleStandardMatrices(
-			final OTUSet dbOTUSet,
-			final OTUSet incomingOTUSet) {
+			final IOTUSet dbOTUSet,
+			final IOTUSet incomingOTUSet) {
 
 		// Let's delete matrices missing from the incoming OTU set
 		for (final StandardMatrix dbMatrix : dbOTUSet.getStandardMatrices()) {
@@ -304,8 +305,8 @@ final class CreateOrUpdateStudy implements ICreateOrUpdateStudy {
 	}
 
 	private void handleTreeSets(
-			final OTUSet dbOTUSet,
-			final OTUSet incomingOTUSet) {
+			final IOTUSet dbOTUSet,
+			final IOTUSet incomingOTUSet) {
 
 		// Let's delete tree sets missing from incoming OTU set
 		for (final TreeSet dbTreeSet : dbOTUSet.getTreeSets()) {

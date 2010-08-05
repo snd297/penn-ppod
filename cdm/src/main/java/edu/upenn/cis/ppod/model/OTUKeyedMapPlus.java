@@ -28,6 +28,7 @@ import java.util.Set;
 import javax.annotation.CheckForNull;
 import javax.annotation.Nullable;
 
+import edu.upenn.cis.ppod.modelinterfaces.IOTU;
 import edu.upenn.cis.ppod.modelinterfaces.IOTUKeyedMapPlus;
 import edu.upenn.cis.ppod.modelinterfaces.IOTUKeyedMapValue;
 import edu.upenn.cis.ppod.modelinterfaces.IOTUSetChild;
@@ -49,7 +50,7 @@ public class OTUKeyedMapPlus<V extends IOTUKeyedMapValue<P>, P extends IOTUSetCh
 
 	private P parent;
 
-	private Map<OTU, V> values = newHashMap();
+	private Map<IOTU, V> values = newHashMap();
 
 	private final Set<OP> otuSomethingPairs = newHashSet();
 
@@ -97,7 +98,7 @@ public class OTUKeyedMapPlus<V extends IOTUKeyedMapValue<P>, P extends IOTUSetCh
 
 	/** {@code inheritDoc} */
 	@Nullable
-	public V get(final OTU otu) {
+	public V get(final IOTU otu) {
 		checkNotNull(otu);
 		checkArgument(getValues().keySet().contains(otu),
 				"otu is not in the keys");
@@ -118,17 +119,13 @@ public class OTUKeyedMapPlus<V extends IOTUKeyedMapValue<P>, P extends IOTUSetCh
 		return parent;
 	}
 
-	/**
-	 * Get the {@code OTU}-keyed values.
-	 * 
-	 * @return the {@code OTU}-keyed values
-	 */
-	public Map<OTU, V> getValues() {
+	/** {@inheritDoc} */
+	public Map<IOTU, V> getValues() {
 		return values;
 	}
 
 	@CheckForNull
-	public V put(final OTU key, final V value) {
+	public V put(final IOTU key, final V value) {
 		checkNotNull(key);
 		checkNotNull(value);
 		checkState(getParent() != null, "no parent has been assigned");
@@ -170,8 +167,8 @@ public class OTUKeyedMapPlus<V extends IOTUKeyedMapValue<P>, P extends IOTUSetCh
 	public OTUKeyedMapPlus<V, P, OP> setOTUs() {
 		final IOTUSetChild parent = getParent();
 
-		final Set<OTU> otusToBeRemoved = newHashSet();
-		for (final OTU otu : getValues().keySet()) {
+		final Set<IOTU> otusToBeRemoved = newHashSet();
+		for (final IOTU otu : getValues().keySet()) {
 			if (parent.getParent() != null
 					&& contains(parent
 									.getParent()
@@ -183,7 +180,7 @@ public class OTUKeyedMapPlus<V extends IOTUKeyedMapValue<P>, P extends IOTUSetCh
 			}
 		}
 
-		for (final OTU otuToBeRemoved : otusToBeRemoved) {
+		for (final IOTU otuToBeRemoved : otusToBeRemoved) {
 			final V value = get(otuToBeRemoved);
 			if (value != null) {
 				value.setParent(null);
@@ -195,7 +192,7 @@ public class OTUKeyedMapPlus<V extends IOTUKeyedMapValue<P>, P extends IOTUSetCh
 				.removeAll(otusToBeRemoved);
 
 		if (getParent().getParent() != null) {
-			for (final OTU otu : parent.getParent().getOTUs()) {
+			for (final IOTU otu : parent.getParent().getOTUs()) {
 				if (getValues().containsKey(otu)) {
 
 				} else {
@@ -213,7 +210,7 @@ public class OTUKeyedMapPlus<V extends IOTUKeyedMapValue<P>, P extends IOTUSetCh
 		return this;
 	}
 
-	public OTUKeyedMapPlus<V, P, OP> setValues(final Map<OTU, V> values) {
+	public OTUKeyedMapPlus<V, P, OP> setValues(final Map<IOTU, V> values) {
 		this.values = values;
 		return this;
 	}

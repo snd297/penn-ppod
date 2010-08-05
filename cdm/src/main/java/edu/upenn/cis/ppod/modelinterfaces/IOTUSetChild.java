@@ -15,7 +15,6 @@
  */
 package edu.upenn.cis.ppod.modelinterfaces;
 
-import edu.upenn.cis.ppod.model.OTUSet;
 
 /**
  * A child of an {@code OTUSet}.
@@ -28,5 +27,7 @@ public interface IOTUSetChild extends IVersioned, IVisitable {
 	 * 
 	 * @return the parent OTU set
 	 */
-	OTUSet getParent();
+	IOTUSet getParent();
+
+	IOTUSetChild setParent(IOTUSet otuSet);
 }

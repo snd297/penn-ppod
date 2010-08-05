@@ -23,8 +23,6 @@ import edu.upenn.cis.ppod.model.DNAMatrix;
 import edu.upenn.cis.ppod.model.DNARow;
 import edu.upenn.cis.ppod.model.DNASequence;
 import edu.upenn.cis.ppod.model.DNASequenceSet;
-import edu.upenn.cis.ppod.model.OTU;
-import edu.upenn.cis.ppod.model.OTUSet;
 import edu.upenn.cis.ppod.model.StandardCell;
 import edu.upenn.cis.ppod.model.StandardCharacter;
 import edu.upenn.cis.ppod.model.StandardMatrix;
@@ -33,6 +31,8 @@ import edu.upenn.cis.ppod.model.StandardState;
 import edu.upenn.cis.ppod.model.Study;
 import edu.upenn.cis.ppod.model.Tree;
 import edu.upenn.cis.ppod.model.TreeSet;
+import edu.upenn.cis.ppod.modelinterfaces.IOTU;
+import edu.upenn.cis.ppod.modelinterfaces.IOTUSet;
 
 /**
  * An {@link IVisitor} that does nothing.
@@ -103,14 +103,14 @@ public abstract class EmptyVisitor implements IVisitor {
 	 * 
 	 * @param otu ignored
 	 */
-	public void visitOTU(final OTU otu) {}
+	public void visitOTU(final IOTU otu) {}
 
 	/**
 	 * Does nothing.
 	 * 
 	 * @param otuSet ignored
 	 */
-	public void visitOTUSet(final OTUSet otuSet) {}
+	public void visitOTUSet(final IOTUSet otuSet) {}
 
 	/**
 	 * Does nothing.
