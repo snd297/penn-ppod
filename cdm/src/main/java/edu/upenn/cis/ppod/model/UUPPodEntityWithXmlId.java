@@ -46,23 +46,23 @@ public abstract class UUPPodEntityWithXmlId
 	 * We call the xml attribute {@code "docId"} so it's format agnostic: we
 	 * could be serializing to, eg, JSON.
 	 */
-	@XmlAttribute
+	@XmlAttribute(name = "docId")
 	@XmlID
 	@Nullable
-	public String getDocId() {
+	public String getXmlId() {
 		return docId;
 	}
 
 	/** {@inheritDoc} */
-	public UUPPodEntityWithXmlId setDocId() {
-		return setDocId(UUID.randomUUID().toString());
+	public UUPPodEntityWithXmlId setXmlId() {
+		return setXmlId(UUID.randomUUID().toString());
 	}
 
 	/** {@inheritDoc} */
-	public UUPPodEntityWithXmlId setDocId(final String docId) {
+	public UUPPodEntityWithXmlId setXmlId(final String docId) {
 		// Let's not checkNotNul(xmlId) since JAXB calls this and we can't
 		// control what it does.a
-		if (getDocId() != null) {
+		if (getXmlId() != null) {
 			throw new IllegalStateException("xmlId was already set");
 		}
 		this.docId = docId;

@@ -80,8 +80,8 @@ abstract class CreateOrUpdateMatrix<M extends Matrix<R>, R extends Row<C, ?>, C 
 
 		// We need this for the response: it's less than ideal to do this here,
 		// but easy
-		if (dbMatrix.getDocId() == null) {
-			dbMatrix.setDocId(sourceMatrix.getDocId());
+		if (dbMatrix.getXmlId() == null) {
+			dbMatrix.setXmlId(sourceMatrix.getXmlId());
 		}
 
 		dbMatrix.setLabel(sourceMatrix.getLabel())
