@@ -31,6 +31,8 @@ import java.util.Map.Entry;
 import java.util.Set;
 
 import edu.upenn.cis.ppod.modelinterfaces.ILabeled;
+import edu.upenn.cis.ppod.modelinterfaces.IOTU;
+import edu.upenn.cis.ppod.modelinterfaces.IOTUSet;
 
 /**
  * For asserting that various {@code edu.upenn.cis.ppod.model} elements are the
@@ -48,7 +50,8 @@ public class ModelAssert {
 				actualSeqSet.getSequences().size(),
 				expectedSeqSet.getSequences().size());
 
-		assertEquals(actualSeqSet.getParent().getOTUs().size(),
+		assertEquals(
+				actualSeqSet.getParent().getOTUs().size(),
 				expectedSeqSet.getParent().getOTUs().size());
 
 		for (int otuPos = 0; otuPos < actualSeqSet.getParent().getOTUs().size(); otuPos++) {
@@ -75,16 +78,17 @@ public class ModelAssert {
 		assertEquals(actualSeq.getName(), expectedSeq.getName());
 	}
 
-	public static void assertEqualsOTUSet(final OTUSet actualOTUSet,
-			final OTUSet expectedOTUSet) {
+	public static void assertEqualsOTUSet(
+			final IOTUSet actualOTUSet,
+			final IOTUSet expectedOTUSet) {
 		assertEquals(actualOTUSet.getLabel(), expectedOTUSet.getLabel());
 		if (expectedOTUSet.getPPodId() != null) {
 			assertEquals(actualOTUSet.getPPodId(), expectedOTUSet.getPPodId());
 		}
 		assertEquals(actualOTUSet.getOTUs().size(), expectedOTUSet
 				.getOTUs().size());
-		for (final OTU expectedOTU : expectedOTUSet.getOTUs()) {
-			final OTU foundOTU =
+		for (final IOTU expectedOTU : expectedOTUSet.getOTUs()) {
+			final IOTU foundOTU =
 					findIf(
 							actualOTUSet.getOTUs(),
 							compose(
@@ -99,8 +103,9 @@ public class ModelAssert {
 		}
 	}
 
-	public static void assertEqualsOTUs(final OTU actualOTU,
-			final OTU expectedOTU) {
+	public static void assertEqualsOTUs(
+			final IOTU actualOTU,
+			final IOTU expectedOTU) {
 		assertEquals(actualOTU.getLabel(), expectedOTU.getLabel());
 	}
 
@@ -190,8 +195,9 @@ public class ModelAssert {
 			final StandardMatrix actualMatrix,
 			final StandardMatrix expectedMatrix) {
 		assertEquals(actualMatrix.getLabel(), expectedMatrix.getLabel());
-		assertEquals(actualMatrix.getDescription(), expectedMatrix
-				.getDescription());
+		assertEquals(
+				actualMatrix.getDescription(),
+				expectedMatrix.getDescription());
 
 		assertEqualsOTUSet(actualMatrix.getParent(), expectedMatrix.getParent());
 
@@ -214,7 +220,7 @@ public class ModelAssert {
 		assertEquals(actualMatrix.getRows().size(),
 				expectedMatrix.getRows().size());
 
-		for (final Iterator<OTU> actualOTUIterator = actualMatrix.getParent()
+		for (final Iterator<IOTU> actualOTUIterator = actualMatrix.getParent()
 				.getOTUs()
 				.iterator(), expectedOTUIterator = expectedMatrix.getParent()
 				.getOTUs()

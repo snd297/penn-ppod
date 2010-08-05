@@ -23,8 +23,6 @@ import edu.upenn.cis.ppod.model.DNACell;
 import edu.upenn.cis.ppod.model.DNAMatrix;
 import edu.upenn.cis.ppod.model.DNARow;
 import edu.upenn.cis.ppod.model.Matrix;
-import edu.upenn.cis.ppod.model.OTU;
-import edu.upenn.cis.ppod.model.OTUSet;
 import edu.upenn.cis.ppod.model.StandardCell;
 import edu.upenn.cis.ppod.model.StandardCharacter;
 import edu.upenn.cis.ppod.model.StandardMatrix;
@@ -34,6 +32,8 @@ import edu.upenn.cis.ppod.model.Study;
 import edu.upenn.cis.ppod.model.Tree;
 import edu.upenn.cis.ppod.model.TreeSet;
 import edu.upenn.cis.ppod.modelinterfaces.INewVersionInfo;
+import edu.upenn.cis.ppod.modelinterfaces.IOTU;
+import edu.upenn.cis.ppod.modelinterfaces.IOTUSet;
 import edu.upenn.cis.ppod.modelinterfaces.IVersioned;
 
 /**
@@ -80,12 +80,12 @@ final class SetVersionInfoVisitor extends EmptyVisitor implements
 	}
 
 	@Override
-	public void visitOTU(final OTU otu) {
+	public void visitOTU(final IOTU otu) {
 		setNewVersionInfo(otu);
 	}
 
 	@Override
-	public void visitOTUSet(final OTUSet otuSet) {
+	public void visitOTUSet(final IOTUSet otuSet) {
 		setNewVersionInfo(otuSet);
 	}
 

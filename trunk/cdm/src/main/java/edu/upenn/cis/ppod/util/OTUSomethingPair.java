@@ -18,18 +18,18 @@ package edu.upenn.cis.ppod.util;
 import javax.xml.bind.annotation.XmlElement;
 import javax.xml.bind.annotation.XmlIDREF;
 
-import edu.upenn.cis.ppod.model.OTU;
+import edu.upenn.cis.ppod.modelinterfaces.IOTU;
 
 /**
  * @author Sam Donnelly
  * 
  */
-public class OTUSomethingPair<U> extends Pair<OTU, U> {
+public class OTUSomethingPair<U> extends Pair<IOTU, U> {
 
 	@XmlElement
 	@XmlIDREF
 	@Override
-	public OTU getFirst() {
+	public IOTU getFirst() {
 		return super.getFirst();
 	}
 
@@ -37,7 +37,7 @@ public class OTUSomethingPair<U> extends Pair<OTU, U> {
 	 * This seemingly redundant setter method added for the sake of JAXB.
 	 */
 	@Override
-	public OTUSomethingPair<U> setFirst(final OTU otu) {
+	public OTUSomethingPair<U> setFirst(final IOTU otu) {
 		return (OTUSomethingPair<U>) super.setFirst(otu);
 	}
 

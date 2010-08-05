@@ -27,8 +27,6 @@ import edu.upenn.cis.ppod.model.DNAMatrix;
 import edu.upenn.cis.ppod.model.DNARow;
 import edu.upenn.cis.ppod.model.DNASequence;
 import edu.upenn.cis.ppod.model.DNASequenceSet;
-import edu.upenn.cis.ppod.model.OTU;
-import edu.upenn.cis.ppod.model.OTUSet;
 import edu.upenn.cis.ppod.model.StandardCell;
 import edu.upenn.cis.ppod.model.StandardCharacter;
 import edu.upenn.cis.ppod.model.StandardMatrix;
@@ -37,6 +35,8 @@ import edu.upenn.cis.ppod.model.StandardState;
 import edu.upenn.cis.ppod.model.Study;
 import edu.upenn.cis.ppod.model.Tree;
 import edu.upenn.cis.ppod.model.TreeSet;
+import edu.upenn.cis.ppod.modelinterfaces.IOTU;
+import edu.upenn.cis.ppod.modelinterfaces.IOTUSet;
 
 /**
  * Made so we can test the various {@code accept(IVisitor)} methods.
@@ -97,12 +97,12 @@ public class TestVisitor extends EmptyVisitor {
 	}
 
 	@Override
-	public void visitOTU(final OTU otu) {
+	public void visitOTU(final IOTU otu) {
 		visited.add(otu);
 	}
 
 	@Override
-	public void visitOTUSet(final OTUSet otuSet) {
+	public void visitOTUSet(final IOTUSet otuSet) {
 		visited.add(otuSet);
 	}
 

@@ -41,9 +41,9 @@ public interface IWithXmlID {
 	String getDocId();
 
 	/**
-	 * Create and set this {@code UUPPodEntityWXmlId}'s doc id.
+	 * Create and set this {@code IWithXmlID}'s doc id.
 	 * 
-	 * @return this {@code UUPPodEntityWXmlId}
+	 * @return this
 	 * 
 	 * @throws IllegalStateException if {@code getDocId() != null} when this
 	 *             method is called
