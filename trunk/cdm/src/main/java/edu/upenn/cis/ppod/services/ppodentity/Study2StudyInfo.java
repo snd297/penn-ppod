@@ -84,7 +84,7 @@ final class Study2StudyInfo implements IStudy2StudyInfo {
 			otuSetInfo.setPPodId(otuSet.getPPodId());
 			otuSetInfo.setVersion(otuSet.getVersionInfo()
 					.getVersion());
-			otuSetInfo.setDocId(otuSet.getDocId());
+			otuSetInfo.setDocId(otuSet.getXmlId());
 			for (final IOTU otu : otuSet.getOTUs()) {
 				final PPodEntityInfoWDocId otuInfo =
 						pPodEntityInfoWDocIdProvider.get();
@@ -93,7 +93,7 @@ final class Study2StudyInfo implements IStudy2StudyInfo {
 				otuInfo.setPPodId(otu.getPPodId());
 				otuInfo.setVersion(otu.getVersionInfo()
 						.getVersion());
-				otuInfo.setDocId(otu.getDocId());
+				otuInfo.setDocId(otu.getXmlId());
 			}
 
 			for (final StandardMatrix matrix : otuSet
@@ -104,7 +104,7 @@ final class Study2StudyInfo implements IStudy2StudyInfo {
 				matrixInfo.setEntityId(matrix.getId());
 				matrixInfo.setVersion(matrix.getVersionInfo()
 						.getVersion());
-				matrixInfo.setDocId(matrix.getDocId());
+				matrixInfo.setDocId(matrix.getXmlId());
 
 				int characterIdx = -1;
 				for (final StandardCharacter standardCharacter : matrix
@@ -162,7 +162,7 @@ final class Study2StudyInfo implements IStudy2StudyInfo {
 				matrixInfo.setEntityId(matrix.getId());
 				matrixInfo.setVersion(matrix.getVersionInfo()
 						.getVersion());
-				matrixInfo.setDocId(matrix.getDocId());
+				matrixInfo.setDocId(matrix.getXmlId());
 
 				for (int columnPosition = 0; columnPosition < matrix
 						.getColumnVersionInfos().size(); columnPosition++) {
@@ -211,7 +211,7 @@ final class Study2StudyInfo implements IStudy2StudyInfo {
 					sequenceSetInfo
 							.getSequenceVersionsByOTUDocId()
 							.put(
-									otu.getDocId(),
+									otu.getXmlId(),
 									dnaSequence.getVersionInfo().getVersion());
 				}
 			}
@@ -223,7 +223,7 @@ final class Study2StudyInfo implements IStudy2StudyInfo {
 				treeSetInfo.setPPodId(treeSet.getPPodId());
 				treeSetInfo.setVersion(treeSet.getVersionInfo()
 						.getVersion());
-				treeSetInfo.setDocId(treeSet.getDocId());
+				treeSetInfo.setDocId(treeSet.getXmlId());
 
 				for (final Tree tree : treeSet.getTrees()) {
 					final PPodEntityInfo treeInfo =

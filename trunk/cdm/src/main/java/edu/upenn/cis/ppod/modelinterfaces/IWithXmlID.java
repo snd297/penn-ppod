@@ -24,14 +24,9 @@ import javax.annotation.Nullable;
  * only allow it to be sent once? Why not just have it assigned automatically at
  * construction and have it freely reset if required. The reason is that
  * sometimes a client needs to set it to a certain value using
- * {@link #setDocId(String)} and since the {@link #getDocId()} is an identifier,
+ * {@link #setXmlId(String)} and since the {@link #getXmlId()} is an identifier,
  * it seems dangerous to allow it to be reset since as soon as it's assigned,
  * something may be depending on that value.
- * <p>
- * One may also ask: if this interface is called {@code IWithXmlID}, why are the
- * methods called {@code get/setDocId}? Because we like to call the attributes
- * {@code "docId"} when serialized and it's easier to let JAXB name the
- * attributes after the method names than manually setting the names.
  * 
  * @author Sam Donnelly
  */
@@ -40,23 +35,23 @@ public interface IWithXmlID {
 	/**
 	 * Get the {@link javax.xml.bind.annotation.XmlID} attribute.
 	 * <p>
-	 * Will be {@code null} until one of the {@code setDocId(...)}s are called
+	 * Will be {@code null} until one of the {@code setXmlId(...)}s are called
 	 * by the client, but never {@code null} after that.
 	 * 
 	 * @return the {@code XmlID} attribute
 	 */
 	@Nullable
-	String getDocId();
+	String getXmlId();
 
 	/**
 	 * Create and set this {@code IWithXmlID}'s doc id.
 	 * 
 	 * @return this
 	 * 
-	 * @throws IllegalStateException if {@link #getDocId()}{@code != null} when
+	 * @throws IllegalStateException if {@link #getXmlId()}{@code != null} when
 	 *             this method is called
 	 */
-	IWithXmlID setDocId();
+	IWithXmlID setXmlId();
 
 	/**
 	 * Set this {@code IWithXmlID}'s xml id.
@@ -65,9 +60,9 @@ public interface IWithXmlID {
 	 * 
 	 * @return this
 	 * 
-	 * @throws IllegalStateException if {@link #getDocId()}{@code != null} when
+	 * @throws IllegalStateException if {@link #getXmlId()}{@code != null} when
 	 *             this method is called
 	 */
-	IWithXmlID setDocId(final String docId);
+	IWithXmlID setXmlId(final String xmlId);
 
 }
