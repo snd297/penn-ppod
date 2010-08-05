@@ -44,6 +44,19 @@ public class OTU
 		extends UUPPodEntityWithXmlId
 		implements IOTU {
 
+	public static class Adapter extends XmlAdapter<OTU, IOTU> {
+
+		@Override
+		public OTU marshal(final IOTU otu) {
+			return (OTU) otu;
+		}
+
+		@Override
+		public IOTU unmarshal(final OTU otu) {
+			return otu;
+		}
+	}
+
 	/** The table for this entity. */
 	public static final String TABLE = "OTU";
 
@@ -176,18 +189,5 @@ public class OTU
 		retValue.append("OTU(").append("label=").append(this.label).append(")");
 
 		return retValue.toString();
-	}
-
-	public static class Adapter extends XmlAdapter<OTU, IOTU> {
-
-		@Override
-		public IOTU unmarshal(OTU otu) {
-			return otu;
-		}
-
-		@Override
-		public OTU marshal(IOTU otu) {
-			return (OTU) otu;
-		}
 	}
 }

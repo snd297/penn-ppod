@@ -278,7 +278,7 @@ public class OTUSetTest {
 
 	@Test
 	public void afterUnmarshal() {
-		final Study study = studyProvider.get();
+		final IStudy study = studyProvider.get();
 		otuSet.unsetInNeedOfNewVersion();
 		otuSet.afterUnmarshal(null, study);
 		assertSame(otuSet.getParent(), study);

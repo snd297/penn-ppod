@@ -9,15 +9,15 @@ import javax.xml.bind.annotation.adapters.XmlJavaTypeAdapter;
 
 import edu.upenn.cis.ppod.model.DNAMatrix;
 import edu.upenn.cis.ppod.model.DNASequenceSet;
+import edu.upenn.cis.ppod.model.IStudy;
 import edu.upenn.cis.ppod.model.OTUSet;
 import edu.upenn.cis.ppod.model.StandardMatrix;
-import edu.upenn.cis.ppod.model.Study;
 import edu.upenn.cis.ppod.model.TreeSet;
 import edu.upenn.cis.ppod.util.IVisitor;
 
 @XmlJavaTypeAdapter(OTUSet.Adapter.class)
 public interface IOTUSet
-		extends IAttachee, ILabeled, IVersioned, IWithXmlID, IWithPPodId {
+		extends IAttachee, ILabeled, IVersioned, IWithXmlID, IUUPPodEntity {
 
 	void accept(IVisitor visitor);
 
@@ -121,7 +121,7 @@ public interface IOTUSet
 	 * @return the study to which this OTU set belongs
 	 */
 	@Nullable
-	Study getParent();
+	IStudy getParent();
 
 	Set<StandardMatrix> getStandardMatrices();
 
@@ -205,6 +205,6 @@ public interface IOTUSet
 	 */
 	List<IOTU> setOTUs(final List<? extends IOTU> otus);
 
-	IOTUSet setParent(@CheckForNull Study study);
+	IOTUSet setParent(@CheckForNull IStudy study);
 
 }

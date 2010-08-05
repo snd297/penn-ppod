@@ -334,7 +334,7 @@ public abstract class PPodEntity
 	}
 
 	@VisibleForTesting
-	PPodEntity unsetInNeedOfNewVersion() {
+	public PPodEntity unsetInNeedOfNewVersion() {
 		inNeedOfNewVersion = false;
 		return this;
 	}

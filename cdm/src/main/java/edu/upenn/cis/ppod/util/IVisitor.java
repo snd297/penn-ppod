@@ -23,12 +23,12 @@ import edu.upenn.cis.ppod.model.DNAMatrix;
 import edu.upenn.cis.ppod.model.DNARow;
 import edu.upenn.cis.ppod.model.DNASequence;
 import edu.upenn.cis.ppod.model.DNASequenceSet;
+import edu.upenn.cis.ppod.model.IStudy;
 import edu.upenn.cis.ppod.model.StandardCell;
 import edu.upenn.cis.ppod.model.StandardCharacter;
 import edu.upenn.cis.ppod.model.StandardMatrix;
 import edu.upenn.cis.ppod.model.StandardRow;
 import edu.upenn.cis.ppod.model.StandardState;
-import edu.upenn.cis.ppod.model.Study;
 import edu.upenn.cis.ppod.model.Tree;
 import edu.upenn.cis.ppod.model.TreeSet;
 import edu.upenn.cis.ppod.modelinterfaces.IOTU;
@@ -109,7 +109,7 @@ public interface IVisitor {
 	 */
 	void visitStandardState(StandardState state);
 
-	void visitStudy(Study study);
+	void visitStudy(IStudy study);
 
 	void visitTree(Tree tree);
 
