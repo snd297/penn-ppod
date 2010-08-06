@@ -19,10 +19,10 @@ import edu.upenn.cis.ppod.model.Attachment;
 import edu.upenn.cis.ppod.model.AttachmentNamespace;
 import edu.upenn.cis.ppod.model.AttachmentType;
 import edu.upenn.cis.ppod.model.DNACell;
-import edu.upenn.cis.ppod.model.DNAMatrix;
 import edu.upenn.cis.ppod.model.DNARow;
 import edu.upenn.cis.ppod.model.DNASequence;
 import edu.upenn.cis.ppod.model.DNASequenceSet;
+import edu.upenn.cis.ppod.model.IDNAMatrix;
 import edu.upenn.cis.ppod.model.StandardCell;
 import edu.upenn.cis.ppod.model.StandardCharacter;
 import edu.upenn.cis.ppod.model.StandardMatrix;
@@ -73,11 +73,11 @@ public interface IVisitor {
 	void visitDNACell(DNACell cell);
 
 	/**
-	 * Visit a {@code DNAMatrix}
+	 * Visit a {@code IDNAMatrix}
 	 * 
 	 * @param matrix visitee
 	 */
-	void visitDNAMatrix(DNAMatrix matrix);
+	void visitDNAMatrix(IDNAMatrix matrix);
 
 	void visitDNARow(DNARow row);
 

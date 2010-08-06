@@ -30,7 +30,7 @@ import com.google.inject.assistedinject.Assisted;
 import edu.upenn.cis.ppod.dao.IDAO;
 import edu.upenn.cis.ppod.model.Attachment;
 import edu.upenn.cis.ppod.model.Cell;
-import edu.upenn.cis.ppod.model.Matrix;
+import edu.upenn.cis.ppod.model.IMatrix;
 import edu.upenn.cis.ppod.model.OTU;
 import edu.upenn.cis.ppod.model.Row;
 import edu.upenn.cis.ppod.modelinterfaces.INewVersionInfo;
@@ -39,7 +39,7 @@ import edu.upenn.cis.ppod.modelinterfaces.IOTU;
 /**
  * @author Sam Donnelly
  */
-abstract class CreateOrUpdateMatrix<M extends Matrix<R>, R extends Row<C, ?>, C extends Cell<E, ?>, E>
+abstract class CreateOrUpdateMatrix<M extends IMatrix<R>, R extends Row<C, ?>, C extends Cell<E, ?>, E>
 		implements ICreateOrUpdateMatrix<M, R, C, E> {
 
 	private final Provider<C> cellProvider;

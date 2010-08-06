@@ -7,8 +7,8 @@ import javax.annotation.CheckForNull;
 import javax.annotation.Nullable;
 import javax.xml.bind.annotation.adapters.XmlJavaTypeAdapter;
 
-import edu.upenn.cis.ppod.model.DNAMatrix;
 import edu.upenn.cis.ppod.model.DNASequenceSet;
+import edu.upenn.cis.ppod.model.IDNAMatrix;
 import edu.upenn.cis.ppod.model.OTUSet;
 import edu.upenn.cis.ppod.model.StandardMatrix;
 import edu.upenn.cis.ppod.model.TreeSet;
@@ -21,13 +21,13 @@ public interface IOTUSet
 	void accept(IVisitor visitor);
 
 	/**
-	 * Add a {@code DNAMatrix} to this {@code OTUSet}.
+	 * Add a DNA matrix to this OTU set.
 	 * 
-	 * @param matrix to be added to this {@code OTUSet}
+	 * @param matrix to be added
 	 * 
 	 * @return {@code matrix}
 	 */
-	DNAMatrix addDNAMatrix(DNAMatrix matrix);
+	IDNAMatrix addDNAMatrix(IDNAMatrix matrix);
 
 	/**
 	 * Add a {@code DNASequenceSet}.
@@ -93,7 +93,7 @@ public interface IOTUSet
 	@CheckForNull
 	String getDescription();
 
-	Set<DNAMatrix> getDNAMatrices();
+	Set<IDNAMatrix> getDNAMatrices();
 
 	Set<DNASequenceSet> getDNASequenceSets();
 
@@ -139,7 +139,7 @@ public interface IOTUSet
 	 * @return {@code true} if this OTU set contained the specified matrix,
 	 *         {@code false} otherwise
 	 */
-	boolean removeDNAMatrix(DNAMatrix matrix);
+	boolean removeDNAMatrix(IDNAMatrix matrix);
 
 	/**
 	 * Remove {@code sequenceSet} from this OTU set.

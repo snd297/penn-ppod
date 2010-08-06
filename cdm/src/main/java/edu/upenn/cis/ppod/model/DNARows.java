@@ -53,7 +53,8 @@ import edu.upenn.cis.ppod.util.OTUDNARowPair;
 @Access(AccessType.PROPERTY)
 public class DNARows implements IOTUKeyedMap<DNARow> {
 
-	private final IOTUKeyedMapPlus<DNARow, DNAMatrix, OTUDNARowPair> rows = new OTUKeyedMapPlus<DNARow, DNAMatrix, OTUDNARowPair>();
+	private final IOTUKeyedMapPlus<DNARow, IDNAMatrix, OTUDNARowPair> rows =
+			new OTUKeyedMapPlus<DNARow, IDNAMatrix, OTUDNARowPair>();
 
 	/** {@inheritDoc} */
 	public void accept(final IVisitor visitor) {
@@ -102,7 +103,7 @@ public class DNARows implements IOTUKeyedMap<DNARow> {
 	}
 
 	@Parent
-	public DNAMatrix getParent() {
+	public IDNAMatrix getParent() {
 		return rows.getParent();
 	}
 
@@ -143,7 +144,7 @@ public class DNARows implements IOTUKeyedMap<DNARow> {
 	 * 
 	 * @return this
 	 */
-	public DNARows setParent(final DNAMatrix parent) {
+	public DNARows setParent(final IDNAMatrix parent) {
 		rows.setParent(parent);
 		return this;
 	}

@@ -16,8 +16,8 @@
 
 package edu.upenn.cis.ppod.util;
 
-import edu.upenn.cis.ppod.model.DNAMatrix;
 import edu.upenn.cis.ppod.model.DNASequenceSet;
+import edu.upenn.cis.ppod.model.IDNAMatrix;
 import edu.upenn.cis.ppod.model.StandardMatrix;
 
 /**
@@ -32,7 +32,7 @@ class AfterUnmarshalVisitor
 		implements IAfterUnmarshalVisitor {
 
 	@Override
-	public void visitDNAMatrix(final DNAMatrix matrix) {
+	public void visitDNAMatrix(final IDNAMatrix matrix) {
 		matrix.afterUnmarshal();
 	}
 

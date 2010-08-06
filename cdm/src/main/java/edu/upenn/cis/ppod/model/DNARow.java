@@ -40,17 +40,17 @@ import edu.upenn.cis.ppod.util.IVisitor;
  */
 @Entity
 @Table(name = DNARow.TABLE)
-public class DNARow extends Row<DNACell, DNAMatrix> {
+public class DNARow extends Row<DNACell, IDNAMatrix> {
 
 	public static final String TABLE = "DNA_ROW";
 
 	public static final String JOIN_COLUMN =
 			TABLE + "_" + PersistentObject.ID_COLUMN;
 
-	@ManyToOne(fetch = FetchType.LAZY, optional = false)
+	@ManyToOne(fetch = FetchType.LAZY, optional = false, targetEntity = DNAMatrix.class)
 	@JoinColumn(name = DNAMatrix.JOIN_COLUMN)
 	@CheckForNull
-	private DNAMatrix parent;
+	private IDNAMatrix parent;
 
 	@OneToMany(mappedBy = "parent", cascade = CascadeType.ALL,
 			orphanRemoval = true)
@@ -75,7 +75,7 @@ public class DNARow extends Row<DNACell, DNAMatrix> {
 	}
 
 	/** {@inheritDoc} */
-	public DNAMatrix getParent() {
+	public IDNAMatrix getParent() {
 		return parent;
 	}
 
@@ -91,7 +91,7 @@ public class DNARow extends Row<DNACell, DNAMatrix> {
 	}
 
 	/** {@inheritDoc} */
-	public DNARow setParent(final DNAMatrix parent) {
+	public DNARow setParent(final IDNAMatrix parent) {
 		this.parent = parent;
 		return this;
 	}

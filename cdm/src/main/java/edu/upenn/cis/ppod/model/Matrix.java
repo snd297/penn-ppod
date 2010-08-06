@@ -61,7 +61,7 @@ import edu.upenn.cis.ppod.util.IVisitor;
 @MappedSuperclass
 public abstract class Matrix<R extends Row<?, ?>>
 		extends UUPPodEntityWithXmlId
-		implements IOTUSetChild {
+		implements IOTUSetChild, IMatrix<R> {
 
 	/** Description column. */
 	public static final String DESCRIPTION_COLUMN = "DESCRIPTION";
@@ -217,8 +217,9 @@ public abstract class Matrix<R extends Row<?, ?>>
 	abstract IOTUKeyedMap<R> getOTUKeyedRows();
 
 	/**
-	 * Getter. Will be {@code null} when object is first created, but never
-	 * {@code null} for persistent objects.
+	 * Getter. Will be {@code null} when object is first created or matrices
+	 * that have been severed from their parent, but never {@code null} for
+	 * objects freshly pulled out of the database.
 	 * 
 	 * @return this matrix's {@code OTUSet}
 	 */
@@ -285,7 +286,7 @@ public abstract class Matrix<R extends Row<?, ?>>
 		return getOTUKeyedRows().put(otu, row);
 	}
 
-	public Matrix<R> setColumnsSize(final int columnsSize) {
+	public IMatrix<R> setColumnsSize(final int columnsSize) {
 		checkArgument(columnsSize >= 0, "columnsSize < 0");
 
 		// Add in column versions as necessary
@@ -310,7 +311,7 @@ public abstract class Matrix<R extends Row<?, ?>>
 	 * @throw IllegalArgumentException if {@code pos >=
 	 *        getColumnVersionInfos().size()}
 	 */
-	public Matrix<R> setColumnVersionInfo(
+	public IMatrix<R> setColumnVersionInfo(
 			final int pos,
 			final VersionInfo versionInfo) {
 		checkNotNull(versionInfo);
@@ -327,7 +328,7 @@ public abstract class Matrix<R extends Row<?, ?>>
 	 * 
 	 * @return this
 	 */
-	public Matrix<R> setColumnVersionInfos(
+	public IMatrix<R> setColumnVersionInfos(
 			final VersionInfo versionInfo) {
 		for (int pos = 0; pos < getColumnVersionInfos().size(); pos++) {
 			setColumnVersionInfo(pos, versionInfo);
@@ -361,7 +362,7 @@ public abstract class Matrix<R extends Row<?, ?>>
 	 * 
 	 * @return this matrix
 	 */
-	public Matrix<R> setDescription(
+	public IMatrix<R> setDescription(
 			@CheckForNull final String description) {
 		if (equal(description, getDescription())) {
 			// nothing to do
@@ -380,7 +381,7 @@ public abstract class Matrix<R extends Row<?, ?>>
 	 * 
 	 * @return this
 	 */
-	public Matrix<R> setInNeedOfNewColumnVersion(final int position) {
+	public IMatrix<R> setInNeedOfNewColumnVersion(final int position) {
 		checkArgument(position >= 0, "position is negative");
 		checkArgument(position < getColumnVersionInfos().size(),
 				"position " + position
@@ -412,7 +413,7 @@ public abstract class Matrix<R extends Row<?, ?>>
 	 * 
 	 * @return this matrix
 	 */
-	public Matrix<R> setLabel(final String label) {
+	public IMatrix<R> setLabel(final String label) {
 		checkNotNull(label);
 		if (label.equals(getLabel())) {
 			// they're the same, nothing to do

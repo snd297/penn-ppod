@@ -99,14 +99,14 @@ public class OTUSet
 			orphanRemoval = true)
 	private final Set<StandardMatrix> standardMatrices = newHashSet();
 
-	/** Free-form description. */
+	/** Nullable free-form description. */
 	@Column(name = DESCRIPTION_COLUMN, nullable = true)
 	@CheckForNull
 	private String description;
 
 	@OneToMany(mappedBy = "parent", cascade = CascadeType.ALL,
-			orphanRemoval = true)
-	private final Set<DNAMatrix> dnaMatrices = newHashSet();
+			orphanRemoval = true, targetEntity = DNAMatrix.class)
+	private final Set<IDNAMatrix> dnaMatrices = newHashSet();
 
 	@OneToMany(mappedBy = "parent", cascade = CascadeType.ALL,
 			orphanRemoval = true)
@@ -166,7 +166,7 @@ public class OTUSet
 	 * 
 	 * @return {@code matrix}
 	 */
-	public DNAMatrix addDNAMatrix(final DNAMatrix matrix) {
+	public IDNAMatrix addDNAMatrix(final IDNAMatrix matrix) {
 		checkNotNull(matrix);
 		if (dnaMatrices.add(matrix)) {
 			matrix.setParent(this);
@@ -314,12 +314,12 @@ public class OTUSet
 		return description;
 	}
 
-	public Set<DNAMatrix> getDNAMatrices() {
+	public Set<IDNAMatrix> getDNAMatrices() {
 		return Collections.unmodifiableSet(dnaMatrices);
 	}
 
 	@XmlElement(name = "dnaMatrix")
-	protected Set<DNAMatrix> getDNAMatricesModifiable() {
+	protected Set<IDNAMatrix> getDNAMatricesModifiable() {
 		return dnaMatrices;
 	}
 
@@ -404,7 +404,7 @@ public class OTUSet
 	 * @return {@code true} if this OTU set contained the specified matrix,
 	 *         {@code false} otherwise
 	 */
-	public boolean removeDNAMatrix(final DNAMatrix matrix) {
+	public boolean removeDNAMatrix(final IDNAMatrix matrix) {
 		checkNotNull(matrix);
 		if (getDNAMatricesModifiable().remove(matrix)) {
 			matrix.setParent(null);
@@ -559,7 +559,7 @@ public class OTUSet
 			matrix.setParent(this);
 		}
 
-		for (final Matrix<?> matrix : getDNAMatrices()) {
+		for (final IMatrix<?> matrix : getDNAMatrices()) {
 			matrix.setParent(this);
 		}
 

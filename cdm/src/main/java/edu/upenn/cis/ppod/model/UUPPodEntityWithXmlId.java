@@ -22,7 +22,7 @@ import javax.xml.bind.annotation.XmlAttribute;
 import javax.xml.bind.annotation.XmlID;
 
 import edu.umd.cs.findbugs.annotations.CheckForNull;
-import edu.upenn.cis.ppod.modelinterfaces.IUUPPodEntityWithXmlID;
+import edu.upenn.cis.ppod.modelinterfaces.IWithXmlID;
 
 /**
  * A {@code UUPPodEntity} w/ an {@link XmlID} attribute called {@code "docId"}.
@@ -31,7 +31,7 @@ import edu.upenn.cis.ppod.modelinterfaces.IUUPPodEntityWithXmlID;
  */
 public abstract class UUPPodEntityWithXmlId
 		extends UUPPodEntity
-		implements IUUPPodEntityWithXmlID {
+		implements IWithXmlID {
 
 	/**
 	 * Intended for referencing elements within a document - be it XML, JSON,

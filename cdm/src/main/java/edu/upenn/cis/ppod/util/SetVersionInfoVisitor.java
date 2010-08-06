@@ -20,9 +20,9 @@ import com.google.inject.assistedinject.Assisted;
 
 import edu.upenn.cis.ppod.model.Attachment;
 import edu.upenn.cis.ppod.model.DNACell;
-import edu.upenn.cis.ppod.model.DNAMatrix;
 import edu.upenn.cis.ppod.model.DNARow;
-import edu.upenn.cis.ppod.model.Matrix;
+import edu.upenn.cis.ppod.model.IDNAMatrix;
+import edu.upenn.cis.ppod.model.IMatrix;
 import edu.upenn.cis.ppod.model.StandardCell;
 import edu.upenn.cis.ppod.model.StandardCharacter;
 import edu.upenn.cis.ppod.model.StandardMatrix;
@@ -70,7 +70,7 @@ final class SetVersionInfoVisitor extends EmptyVisitor implements
 	}
 
 	@Override
-	public void visitDNAMatrix(final DNAMatrix matrix) {
+	public void visitDNAMatrix(final IDNAMatrix matrix) {
 		visitMatrix(matrix);
 	}
 
@@ -129,7 +129,7 @@ final class SetVersionInfoVisitor extends EmptyVisitor implements
 		setNewVersionInfo(treeSet);
 	}
 
-	private void visitMatrix(final Matrix<?> matrix) {
+	private void visitMatrix(final IMatrix<?> matrix) {
 		setNewVersionInfo(matrix);
 		for (int pos = 0; pos < matrix.getColumnVersionInfos().size(); pos++) {
 			if (matrix.getColumnVersionInfos().get(pos) == null) {
