@@ -1,3 +1,18 @@
+/*
+ * Copyright (C) 2010 Trustees of the University of Pennsylvania
+ *
+ * Licensed under the Apache License, Version 2.0 (the "License");
+ * you may not use this file except in compliance with the License.
+ * You may obtain a copy of the License at
+ *
+ * http://www.apache.org/licenses/LICENSE-2.0
+ *
+ * Unless required by applicable law or agreed to in writing, software
+ * distributed under the License is distributed on an "AS IS" BASIS,
+ * WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
+ * See the License for the specific language governing permissions and
+ * limitations under the License.
+ */
 package edu.upenn.cis.ppod.modelinterfaces;
 
 import java.util.List;
@@ -8,10 +23,9 @@ import javax.annotation.Nullable;
 import javax.xml.bind.annotation.adapters.XmlJavaTypeAdapter;
 
 import edu.upenn.cis.ppod.model.DNASequenceSet;
-import edu.upenn.cis.ppod.model.IDNAMatrix;
+import edu.upenn.cis.ppod.model.ITreeSet;
 import edu.upenn.cis.ppod.model.OTUSet;
 import edu.upenn.cis.ppod.model.StandardMatrix;
-import edu.upenn.cis.ppod.model.TreeSet;
 import edu.upenn.cis.ppod.util.IVisitor;
 
 @XmlJavaTypeAdapter(OTUSet.Adapter.class)
@@ -83,7 +97,7 @@ public interface IOTUSet
 	 * @param treeSet to be added
 	 * @return {@code treeSet}
 	 */
-	TreeSet addTreeSet(TreeSet treeSet);
+	ITreeSet addTreeSet(ITreeSet treeSet);
 
 	/**
 	 * Get the description.
@@ -125,11 +139,11 @@ public interface IOTUSet
 	Set<StandardMatrix> getStandardMatrices();
 
 	/**
-	 * Get the {@code TreeSet}s contained in this {@code OTUSet}.
+	 * Get the tree sets contained in this OTU set.
 	 * 
-	 * @return the {@code TreeSet}s contained in this {@code OTUSet}
+	 * @return the tree sets contained in this OTU set
 	 */
-	Set<TreeSet> getTreeSets();
+	Set<ITreeSet> getTreeSets();
 
 	/**
 	 * Remove {@code matrix} from this OTU set.
@@ -169,7 +183,7 @@ public interface IOTUSet
 	 * @return {@code true} if this OTU set contained the specified tree set,
 	 *         {@code false} otherwise
 	 */
-	boolean removeTreeSet(TreeSet treeSet);
+	boolean removeTreeSet(ITreeSet treeSet);
 
 	/**
 	 * Setter.

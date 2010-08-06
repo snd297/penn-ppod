@@ -26,28 +26,33 @@ import com.google.inject.assistedinject.Assisted;
 
 import edu.upenn.cis.ppod.dao.IDAO;
 import edu.upenn.cis.ppod.model.Attachment;
-import edu.upenn.cis.ppod.model.Cell;
-import edu.upenn.cis.ppod.model.DNACell;
 import edu.upenn.cis.ppod.model.DNANucleotide;
-import edu.upenn.cis.ppod.model.DNARow;
-import edu.upenn.cis.ppod.model.IDNAMatrix;
+import edu.upenn.cis.ppod.modelinterfaces.ICell;
+import edu.upenn.cis.ppod.modelinterfaces.IDNACell;
+import edu.upenn.cis.ppod.modelinterfaces.IDNAMatrix;
+import edu.upenn.cis.ppod.modelinterfaces.IDNARow;
 import edu.upenn.cis.ppod.modelinterfaces.INewVersionInfo;
 import edu.upenn.cis.ppod.services.ppodentity.MatrixInfo;
 
-
 final class CreateOrUpdateDNAMatrix
-		extends CreateOrUpdateMatrix<IDNAMatrix, DNARow, DNACell, DNANucleotide>
+		extends
+		CreateOrUpdateMatrix<IDNAMatrix, IDNARow, IDNACell, DNANucleotide>
 		implements ICreateOrUpdateDNAMatrix {
 
 	@Inject
-	CreateOrUpdateDNAMatrix(final Provider<DNARow> rowProvider,
-			final Provider<DNACell> cellProvider,
+	CreateOrUpdateDNAMatrix(
+			final Provider<IDNARow> rowProvider,
+			final Provider<IDNACell> cellProvider,
 			final Provider<Attachment> attachmentProvider,
 			final Provider<MatrixInfo> matrixInfoProvider,
 			@Assisted final INewVersionInfo newVersionInfo,
 			@Assisted final IDAO<Object, Long> dao) {
-		super(rowProvider, cellProvider, attachmentProvider,
-				newVersionInfo, dao);
+		super(
+				rowProvider,
+				cellProvider,
+				attachmentProvider,
+				newVersionInfo,
+				dao);
 	}
 
 	@Override
@@ -63,20 +68,20 @@ final class CreateOrUpdateDNAMatrix
 	}
 
 	@Override
-	void handleSingleCell(final DNACell dbCell, final DNACell sourceCell) {
+	void handleSingleCell(final IDNACell dbCell, final IDNACell sourceCell) {
 		checkNotNull(dbCell);
 		checkNotNull(sourceCell);
-		checkArgument(sourceCell.getType() == Cell.Type.SINGLE);
+		checkArgument(sourceCell.getType() == ICell.Type.SINGLE);
 		dbCell.setSingleElement(
 				getOnlyElement(sourceCell.getElements()),
 				sourceCell.isLowerCase());
 	}
 
 	@Override
-	void handlePolymorphicCell(final DNACell dbCell, final DNACell sourceCell) {
+	void handlePolymorphicCell(final IDNACell dbCell, final IDNACell sourceCell) {
 		checkNotNull(dbCell);
 		checkNotNull(sourceCell);
-		checkArgument(sourceCell.getType() == Cell.Type.POLYMORPHIC);
+		checkArgument(sourceCell.getType() == ICell.Type.POLYMORPHIC);
 		dbCell.setPolymorphicElements(
 				sourceCell.getElements(),
 				sourceCell.isLowerCase());

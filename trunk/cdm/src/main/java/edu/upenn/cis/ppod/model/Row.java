@@ -25,7 +25,10 @@ import java.util.List;
 import javax.xml.bind.Unmarshaller;
 
 import edu.umd.cs.findbugs.annotations.CheckForNull;
+import edu.upenn.cis.ppod.modelinterfaces.ICell;
+import edu.upenn.cis.ppod.modelinterfaces.IMatrix;
 import edu.upenn.cis.ppod.modelinterfaces.IOTUKeyedMapValue;
+import edu.upenn.cis.ppod.modelinterfaces.IRow;
 import edu.upenn.cis.ppod.util.IVisitor;
 
 /**
@@ -36,9 +39,9 @@ import edu.upenn.cis.ppod.util.IVisitor;
  * @param <C> the type of cell we have
  * @param <M> the parent of the row
  */
-public abstract class Row<C extends Cell<?, ?>, M extends IMatrix<?>>
+public abstract class Row<C extends ICell<?, ?>, M extends IMatrix<?>>
 		extends PPodEntity
-		implements IOTUKeyedMapValue<M> {
+		implements IOTUKeyedMapValue<M>, IRow<C, M> {
 
 	Row() {}
 
@@ -87,11 +90,7 @@ public abstract class Row<C extends Cell<?, ?>, M extends IMatrix<?>>
 		getCellsModifiable().clear();
 	}
 
-	/**
-	 * Get the cells that make up this row.
-	 * 
-	 * @return the cells that make up this row
-	 */
+	/** {@inheritDoc} */
 	public List<C> getCells() {
 		return Collections.unmodifiableList(getCellsModifiable());
 	}
@@ -104,13 +103,7 @@ public abstract class Row<C extends Cell<?, ?>, M extends IMatrix<?>>
 	abstract List<C> getCellsModifiable();
 
 	/**
-	 * Set the cells of this row.
-	 * <p>
-	 * This only handles both sides of the {@code Row<->Cell} relationship.
-	 * 
-	 * @param cells the cells
-	 * 
-	 * @return any cells which were removed as a result of this operation
+	 * {@inheritDoc}
 	 * 
 	 * @throws IllegalStateException if {@code this.getParent() == null}
 	 * @throws IllegalStateException if the owning matrix does not have the same

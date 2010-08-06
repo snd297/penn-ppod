@@ -46,7 +46,9 @@ import javax.xml.bind.annotation.adapters.XmlAdapter;
 
 import com.google.common.annotations.VisibleForTesting;
 
+import edu.upenn.cis.ppod.modelinterfaces.IDNAMatrix;
 import edu.upenn.cis.ppod.modelinterfaces.ILabeled;
+import edu.upenn.cis.ppod.modelinterfaces.IMatrix;
 import edu.upenn.cis.ppod.modelinterfaces.IOTU;
 import edu.upenn.cis.ppod.modelinterfaces.IOTUSet;
 import edu.upenn.cis.ppod.modelinterfaces.IOTUSetChild;
@@ -121,7 +123,7 @@ public class OTUSet
 	@CheckForNull
 	private String label;
 
-	/** The set of {@code OTU}s that this {@code OTUSet} contains. */
+	/** The OTUs in this OTU set. */
 	@OneToMany(
 			orphanRemoval = true,
 			cascade = CascadeType.ALL,
@@ -139,9 +141,12 @@ public class OTUSet
 	private IStudy parent;
 
 	/** The tree sets that reference this OTU set. */
-	@OneToMany(mappedBy = "parent", cascade = CascadeType.ALL,
-			orphanRemoval = true)
-	private final Set<TreeSet> treeSets = newHashSet();
+	@OneToMany(
+			mappedBy = "parent",
+			cascade = CascadeType.ALL,
+			orphanRemoval = true,
+			targetEntity = TreeSet.class)
+	private final Set<ITreeSet> treeSets = newHashSet();
 
 	/**
 	 * Intentionally package-private, to block subclassing outside of this
@@ -270,7 +275,7 @@ public class OTUSet
 	 * @param treeSet to be added
 	 * @return {@code treeSet}
 	 */
-	public TreeSet addTreeSet(final TreeSet treeSet) {
+	public ITreeSet addTreeSet(final ITreeSet treeSet) {
 		checkNotNull(treeSet);
 		if (getTreeSetsModifiable().add(treeSet)) {
 			treeSet.setParent(this);
@@ -387,12 +392,12 @@ public class OTUSet
 	 * 
 	 * @return the {@code TreeSet}s contained in this {@code OTUSet}
 	 */
-	public Set<TreeSet> getTreeSets() {
+	public Set<ITreeSet> getTreeSets() {
 		return Collections.unmodifiableSet(treeSets);
 	}
 
 	@XmlElement(name = "treeSet")
-	protected Set<TreeSet> getTreeSetsModifiable() {
+	protected Set<ITreeSet> getTreeSetsModifiable() {
 		return treeSets;
 	}
 
@@ -450,7 +455,7 @@ public class OTUSet
 		return false;
 	}
 
-	public boolean removeTreeSet(final TreeSet treeSet) {
+	public boolean removeTreeSet(final ITreeSet treeSet) {
 		checkNotNull(treeSet);
 		if (getTreeSetsModifiable().remove(treeSet)) {
 			treeSet.setParent(null);
@@ -567,7 +572,7 @@ public class OTUSet
 			sequenceSet.setParent(this);
 		}
 
-		for (final TreeSet treeSet : getTreeSets()) {
+		for (final ITreeSet treeSet : getTreeSets()) {
 			treeSet.setParent(this);
 		}
 	}

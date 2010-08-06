@@ -38,6 +38,7 @@ import com.google.inject.Inject;
 import com.google.inject.Provider;
 
 import edu.upenn.cis.ppod.TestGroupDefs;
+import edu.upenn.cis.ppod.modelinterfaces.IDNAMatrix;
 import edu.upenn.cis.ppod.modelinterfaces.IOTU;
 import edu.upenn.cis.ppod.modelinterfaces.IStudy;
 import edu.upenn.cis.ppod.util.TestVisitor;
@@ -433,11 +434,11 @@ public class OTUSetTest {
 
 	@Test
 	public void removeTreeSet() {
-		final TreeSet treeSet0 =
+		final ITreeSet treeSet0 =
 				otuSet.addTreeSet(treeSetProvider.get().setLabel("treeSet0"));
-		final TreeSet treeSet1 =
+		final ITreeSet treeSet1 =
 				otuSet.addTreeSet(treeSetProvider.get().setLabel("treeSet1"));
-		final TreeSet treeSet2 =
+		final ITreeSet treeSet2 =
 				otuSet.addTreeSet(treeSetProvider.get().setLabel("treeSet2"));
 
 		otuSet.setVersionInfo(pPodVersionInfoProvider.get());
@@ -538,13 +539,13 @@ public class OTUSetTest {
 		final TreeSet treeSet0 = treeSetProvider.get();
 
 		otuSet.unsetInNeedOfNewVersion();
-		final TreeSet returnedTreeSet0 = otuSet.addTreeSet(treeSet0);
+		final ITreeSet returnedTreeSet0 = otuSet.addTreeSet(treeSet0);
 		assertSame(returnedTreeSet0, treeSet0);
 		assertTrue(otuSet.isInNeedOfNewVersion());
 
 		otuSet.unsetInNeedOfNewVersion();
 
-		final TreeSet returnedTreeSet1 = otuSet.addTreeSet(treeSet0);
+		final ITreeSet returnedTreeSet1 = otuSet.addTreeSet(treeSet0);
 		assertSame(returnedTreeSet1, treeSet0);
 		assertFalse(otuSet.isInNeedOfNewVersion());
 

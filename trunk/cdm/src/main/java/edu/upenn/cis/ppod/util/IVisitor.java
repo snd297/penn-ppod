@@ -18,18 +18,18 @@ package edu.upenn.cis.ppod.util;
 import edu.upenn.cis.ppod.model.Attachment;
 import edu.upenn.cis.ppod.model.AttachmentNamespace;
 import edu.upenn.cis.ppod.model.AttachmentType;
-import edu.upenn.cis.ppod.model.DNACell;
-import edu.upenn.cis.ppod.model.DNARow;
 import edu.upenn.cis.ppod.model.DNASequence;
 import edu.upenn.cis.ppod.model.DNASequenceSet;
-import edu.upenn.cis.ppod.model.IDNAMatrix;
+import edu.upenn.cis.ppod.model.ITreeSet;
 import edu.upenn.cis.ppod.model.StandardCell;
 import edu.upenn.cis.ppod.model.StandardCharacter;
 import edu.upenn.cis.ppod.model.StandardMatrix;
 import edu.upenn.cis.ppod.model.StandardRow;
 import edu.upenn.cis.ppod.model.StandardState;
 import edu.upenn.cis.ppod.model.Tree;
-import edu.upenn.cis.ppod.model.TreeSet;
+import edu.upenn.cis.ppod.modelinterfaces.IDNACell;
+import edu.upenn.cis.ppod.modelinterfaces.IDNAMatrix;
+import edu.upenn.cis.ppod.modelinterfaces.IDNARow;
 import edu.upenn.cis.ppod.modelinterfaces.IOTU;
 import edu.upenn.cis.ppod.modelinterfaces.IOTUSet;
 import edu.upenn.cis.ppod.modelinterfaces.IStudy;
@@ -70,7 +70,7 @@ public interface IVisitor {
 	 * 
 	 * @param cell visitee
 	 */
-	void visitDNACell(DNACell cell);
+	void visitDNACell(IDNACell cell);
 
 	/**
 	 * Visit a {@code IDNAMatrix}
@@ -79,7 +79,7 @@ public interface IVisitor {
 	 */
 	void visitDNAMatrix(IDNAMatrix matrix);
 
-	void visitDNARow(DNARow row);
+	void visitDNARow(IDNARow row);
 
 	void visitDNASequence(DNASequence sequence);
 
@@ -113,6 +113,6 @@ public interface IVisitor {
 
 	void visitTree(Tree tree);
 
-	void visitTreeSet(TreeSet treeSet);
+	void visitTreeSet(ITreeSet treeSet);
 
 }

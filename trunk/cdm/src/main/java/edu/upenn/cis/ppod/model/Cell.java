@@ -34,6 +34,9 @@ import javax.xml.bind.annotation.XmlAttribute;
 
 import edu.umd.cs.findbugs.annotations.CheckForNull;
 import edu.umd.cs.findbugs.annotations.Nullable;
+import edu.upenn.cis.ppod.modelinterfaces.ICell;
+import edu.upenn.cis.ppod.modelinterfaces.IMatrix;
+import edu.upenn.cis.ppod.modelinterfaces.IRow;
 
 /**
  * A cell.
@@ -41,47 +44,9 @@ import edu.umd.cs.findbugs.annotations.Nullable;
  * @author Sam Donnelly
  */
 @MappedSuperclass
-public abstract class Cell<E, R extends Row<?, ?>> extends PPodEntity {
-
-	/**
-	 * The different types of {@code Cell}: single, polymorphic, uncertain,
-	 * unassigned, or inapplicable.
-	 * <p>
-	 * Because we're storing these in the db as ordinals they will be:
-	 * <ul>
-	 * <li>{@code UNASSIGNED -> 0}</li>
-	 * <li>{@code SINGLE -> 1}</li>
-	 * <li>{@code POLYMORPHIC -> 2}</li>
-	 * <li>{@code UNCERTAIN -> 3}</li>
-	 * <li>{@code INAPPLICABLE -> 4}</li>
-	 * </ul>
-	 */
-	public static enum Type {
-
-		/** Unassigned, usually written as a {@code "?"} in Nexus files. */
-		UNASSIGNED,
-
-		/**
-		 * The cell has exactly one state.
-		 */
-		SINGLE,
-
-		/**
-		 * The cell is a conjunctions of states: <em>state1</em> and
-		 * <em>state2</em> and ... and <em>stateN</em>.
-		 */
-		POLYMORPHIC,
-
-		/**
-		 * The cell is a disjunction of states: <em>state1</em> or
-		 * <em>state2</em> or ... or <em>stateN</em>.
-		 */
-		UNCERTAIN,
-
-		/** Inapplicable, usually written as a {@code "-"} in Nexus files. */
-		INAPPLICABLE;
-
-	}
+public abstract class Cell<E, R extends IRow<?, ?>>
+		extends PPodEntity
+		implements ICell<E, R> {
 
 	static final String TYPE_COLUMN = "TYPE";
 
@@ -125,9 +90,7 @@ public abstract class Cell<E, R extends Row<?, ?>> extends PPodEntity {
 	abstract E getElement();
 
 	/**
-	 * Get the elements contained in this cell.
-	 * 
-	 * @return the elements contained in this cell
+	 * {@inheritDoc}
 	 * 
 	 * @throws IllegalStateException if the type has not been set for this cell,
 	 *             i.e. if {@link #getType() == null}
@@ -263,7 +226,7 @@ public abstract class Cell<E, R extends Row<?, ?>> extends PPodEntity {
 	 * 
 	 * @return this
 	 */
-	public Cell<E, R> setInapplicable() {
+	public ICell<E, R> setInapplicable() {
 		setInapplicableOrUnassigned(Type.INAPPLICABLE);
 		return this;
 	}
@@ -304,8 +267,6 @@ public abstract class Cell<E, R extends Row<?, ?>> extends PPodEntity {
 		super.setInNeedOfNewVersion();
 		return this;
 	}
-
-	abstract void setParent(@CheckForNull final R row);
 
 	/**
 	 * Add a set of {@code E} to this {@code Cell}.
@@ -364,18 +325,12 @@ public abstract class Cell<E, R extends Row<?, ?>> extends PPodEntity {
 	}
 
 	/**
-	 * Set the position of this cell in its row.
-	 * <p>
-	 * Intentionally package-private and meant to be called from {@link Row}.
-	 * <p>
-	 * Use a {@code null} when removing a cell from a row.
-	 * 
-	 * @param position the position of this cell in its row
+	 * {@inheritDoc}
 	 * 
 	 * @throw IllegalArgumentException if
 	 *        {@code position !=null && position < 0}
 	 */
-	void setPosition(@CheckForNull final Integer position) {
+	public void setPosition(@CheckForNull final Integer position) {
 		checkArgument(position == null || position >= 0, "position < 0");
 		this.position = position;
 		return;
@@ -400,7 +355,7 @@ public abstract class Cell<E, R extends Row<?, ?>> extends PPodEntity {
 	 * 
 	 * @return this
 	 */
-	public Cell<E, R> setUnassigned() {
+	public ICell<E, R> setUnassigned() {
 		setInapplicableOrUnassigned(Type.UNASSIGNED);
 		return this;
 	}
@@ -414,7 +369,7 @@ public abstract class Cell<E, R extends Row<?, ?>> extends PPodEntity {
 	 * 
 	 * @throw IllegalArgumentException if {@code uncertainStates.size() < 2}
 	 */
-	public Cell<E, R> setUncertainElements(
+	public ICell<E, R> setUncertainElements(
 			final Set<? extends E> uncertainElements) {
 		checkNotNull(uncertainElements);
 		checkArgument(uncertainElements.size() > 1,

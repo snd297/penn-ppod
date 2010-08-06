@@ -26,6 +26,7 @@ import com.google.inject.Inject;
 import com.google.inject.Provider;
 
 import edu.upenn.cis.ppod.TestGroupDefs;
+import edu.upenn.cis.ppod.modelinterfaces.IDNARow;
 import edu.upenn.cis.ppod.modelinterfaces.IOTU;
 import edu.upenn.cis.ppod.util.TestVisitor;
 
@@ -60,9 +61,9 @@ public class OTUKeyedMapTest {
 		final IOTU otu1 = otuSet.addOTU(otuProvider.get().setLabel("otu1"));
 		final IOTU otu2 = otuSet.addOTU(otuProvider.get().setLabel("otu2"));
 
-		final DNARow row0 = dnaRowProvider.get();
-		final DNARow row1 = dnaRowProvider.get();
-		final DNARow row2 = dnaRowProvider.get();
+		final IDNARow row0 = dnaRowProvider.get();
+		final IDNARow row1 = dnaRowProvider.get();
+		final IDNARow row2 = dnaRowProvider.get();
 
 		final DNARows rows = dnaRowsProvider.get();
 		rows.setParent(matrix);

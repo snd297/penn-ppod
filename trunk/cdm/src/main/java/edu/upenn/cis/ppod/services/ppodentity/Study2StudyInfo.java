@@ -20,18 +20,18 @@ import static com.google.common.base.Preconditions.checkNotNull;
 import com.google.inject.Inject;
 import com.google.inject.Provider;
 
-import edu.upenn.cis.ppod.model.DNACell;
-import edu.upenn.cis.ppod.model.DNARow;
 import edu.upenn.cis.ppod.model.DNASequence;
 import edu.upenn.cis.ppod.model.DNASequenceSet;
-import edu.upenn.cis.ppod.model.IDNAMatrix;
+import edu.upenn.cis.ppod.model.ITreeSet;
 import edu.upenn.cis.ppod.model.StandardCell;
 import edu.upenn.cis.ppod.model.StandardCharacter;
 import edu.upenn.cis.ppod.model.StandardMatrix;
 import edu.upenn.cis.ppod.model.StandardRow;
 import edu.upenn.cis.ppod.model.Tree;
-import edu.upenn.cis.ppod.model.TreeSet;
 import edu.upenn.cis.ppod.model.VersionInfo;
+import edu.upenn.cis.ppod.modelinterfaces.IDNACell;
+import edu.upenn.cis.ppod.modelinterfaces.IDNAMatrix;
+import edu.upenn.cis.ppod.modelinterfaces.IDNARow;
 import edu.upenn.cis.ppod.modelinterfaces.IOTU;
 import edu.upenn.cis.ppod.modelinterfaces.IOTUSet;
 import edu.upenn.cis.ppod.modelinterfaces.IStudy;
@@ -177,7 +177,7 @@ final class Study2StudyInfo implements IStudy2StudyInfo {
 				int rowIdx = -1;
 
 				for (final IOTU otu : matrix.getParent().getOTUs()) {
-					final DNARow row = matrix.getRow(otu);
+					final IDNARow row = matrix.getRow(otu);
 					rowIdx++;
 					final Long rowVersion =
 							row.getVersionInfo().getVersion();
@@ -185,7 +185,7 @@ final class Study2StudyInfo implements IStudy2StudyInfo {
 							.put(rowIdx, rowVersion);
 
 					int cellIdx = -1;
-					for (final DNACell cell : row.getCells()) {
+					for (final IDNACell cell : row.getCells()) {
 						cellIdx++;
 						matrixInfo
 								.setCellPPodIdAndVersion(rowIdx, cellIdx,
@@ -216,7 +216,7 @@ final class Study2StudyInfo implements IStudy2StudyInfo {
 				}
 			}
 
-			for (final TreeSet treeSet : otuSet.getTreeSets()) {
+			for (final ITreeSet treeSet : otuSet.getTreeSets()) {
 				final TreeSetInfo treeSetInfo = treeSetInfoProvider.get();
 				otuSetInfo.getTreeSetInfos().add(treeSetInfo);
 				treeSetInfo.setEntityId(treeSet.getId());

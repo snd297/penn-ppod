@@ -18,10 +18,10 @@ package edu.upenn.cis.ppod.createorupdate;
 import com.google.inject.ImplementedBy;
 
 import edu.upenn.cis.ppod.dao.IDAO;
-import edu.upenn.cis.ppod.model.DNACell;
 import edu.upenn.cis.ppod.model.DNANucleotide;
-import edu.upenn.cis.ppod.model.DNARow;
-import edu.upenn.cis.ppod.model.IDNAMatrix;
+import edu.upenn.cis.ppod.modelinterfaces.IDNACell;
+import edu.upenn.cis.ppod.modelinterfaces.IDNAMatrix;
+import edu.upenn.cis.ppod.modelinterfaces.IDNARow;
 import edu.upenn.cis.ppod.modelinterfaces.INewVersionInfo;
 
 /**
@@ -29,7 +29,7 @@ import edu.upenn.cis.ppod.modelinterfaces.INewVersionInfo;
  */
 @ImplementedBy(CreateOrUpdateDNAMatrix.class)
 public interface ICreateOrUpdateDNAMatrix extends
-ICreateOrUpdateMatrix<IDNAMatrix, DNARow, DNACell, DNANucleotide> {
+ICreateOrUpdateMatrix<IDNAMatrix, IDNARow, IDNACell, DNANucleotide> {
 	static interface IFactory {
 		ICreateOrUpdateDNAMatrix create(
 				INewVersionInfo newVersionInfo,

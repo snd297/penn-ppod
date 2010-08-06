@@ -25,6 +25,8 @@ import javax.xml.bind.annotation.adapters.XmlAdapter;
 
 import com.google.inject.Inject;
 
+import edu.upenn.cis.ppod.modelinterfaces.IDNAMatrix;
+import edu.upenn.cis.ppod.modelinterfaces.IDNARow;
 import edu.upenn.cis.ppod.util.IVisitor;
 
 /**
@@ -34,7 +36,7 @@ import edu.upenn.cis.ppod.util.IVisitor;
  */
 @Entity
 @Table(name = DNAMatrix.TABLE)
-public class DNAMatrix extends Matrix<DNARow> implements IDNAMatrix {
+public class DNAMatrix extends Matrix<IDNARow> implements IDNAMatrix {
 
 	public static class Adapter extends XmlAdapter<DNAMatrix, IDNAMatrix> {
 

@@ -22,18 +22,18 @@ import java.util.List;
 import edu.upenn.cis.ppod.model.Attachment;
 import edu.upenn.cis.ppod.model.AttachmentNamespace;
 import edu.upenn.cis.ppod.model.AttachmentType;
-import edu.upenn.cis.ppod.model.DNACell;
-import edu.upenn.cis.ppod.model.DNARow;
 import edu.upenn.cis.ppod.model.DNASequence;
 import edu.upenn.cis.ppod.model.DNASequenceSet;
-import edu.upenn.cis.ppod.model.IDNAMatrix;
+import edu.upenn.cis.ppod.model.ITreeSet;
 import edu.upenn.cis.ppod.model.StandardCell;
 import edu.upenn.cis.ppod.model.StandardCharacter;
 import edu.upenn.cis.ppod.model.StandardMatrix;
 import edu.upenn.cis.ppod.model.StandardRow;
 import edu.upenn.cis.ppod.model.StandardState;
 import edu.upenn.cis.ppod.model.Tree;
-import edu.upenn.cis.ppod.model.TreeSet;
+import edu.upenn.cis.ppod.modelinterfaces.IDNACell;
+import edu.upenn.cis.ppod.modelinterfaces.IDNAMatrix;
+import edu.upenn.cis.ppod.modelinterfaces.IDNARow;
 import edu.upenn.cis.ppod.modelinterfaces.IOTU;
 import edu.upenn.cis.ppod.modelinterfaces.IOTUSet;
 import edu.upenn.cis.ppod.modelinterfaces.IStudy;
@@ -72,7 +72,7 @@ public class TestVisitor extends EmptyVisitor {
 	}
 
 	@Override
-	public void visitDNACell(final DNACell cell) {
+	public void visitDNACell(final IDNACell cell) {
 		visited.add(cell);
 	}
 
@@ -82,7 +82,7 @@ public class TestVisitor extends EmptyVisitor {
 	}
 
 	@Override
-	public void visitDNARow(final DNARow row) {
+	public void visitDNARow(final IDNARow row) {
 		visited.add(row);
 	}
 
@@ -142,7 +142,7 @@ public class TestVisitor extends EmptyVisitor {
 	}
 
 	@Override
-	public void visitTreeSet(final TreeSet treeSet) {
+	public void visitTreeSet(final ITreeSet treeSet) {
 		visited.add(treeSet);
 	}
 }
