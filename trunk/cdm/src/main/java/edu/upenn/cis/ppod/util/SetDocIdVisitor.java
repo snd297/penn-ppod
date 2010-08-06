@@ -17,10 +17,10 @@ package edu.upenn.cis.ppod.util;
 
 import edu.upenn.cis.ppod.model.AttachmentNamespace;
 import edu.upenn.cis.ppod.model.AttachmentType;
+import edu.upenn.cis.ppod.model.OTU;
+import edu.upenn.cis.ppod.model.OTUSet;
 import edu.upenn.cis.ppod.model.StandardCharacter;
 import edu.upenn.cis.ppod.model.StandardState;
-import edu.upenn.cis.ppod.modelinterfaces.IOTU;
-import edu.upenn.cis.ppod.modelinterfaces.IOTUSet;
 
 /**
  * Set the doc id on {@code Attachment}s, {@code AttachmentNamespace}s,
@@ -29,41 +29,41 @@ import edu.upenn.cis.ppod.modelinterfaces.IOTUSet;
  * 
  * @author Sam Donnelly
  */
-final class SetXmlIdVisitor extends EmptyVisitor implements ISetXmlIdVisitor {
+final class SetDocIdVisitor extends EmptyVisitor implements ISetDocIdVisitor {
 
 	/**
-	 * Call {@link IOTUSet#setXmlId()}.
+	 * Call {@code otuSet.setDocId()}.
 	 * 
 	 * @param otuSet target
 	 */
 	@Override
-	public void visitOTUSet(final IOTUSet otuSet) {
-		if (otuSet.getXmlId() == null) {
-			otuSet.setXmlId();
+	public void visitOTUSet(final OTUSet otuSet) {
+		if (otuSet.getDocId() == null) {
+			otuSet.setDocId();
 		}
 	}
 
 	/**
-	 * Call {@link IOTU#setXmlId()}
+	 * Call {@code otu.setDocId()}.
 	 * 
 	 * @param otu target
 	 */
 	@Override
-	public void visitOTU(final IOTU otu) {
-		if (otu.getXmlId() == null) {
-			otu.setXmlId();
+	public void visitOTU(final OTU otu) {
+		if (otu.getDocId() == null) {
+			otu.setDocId();
 		}
 	}
 
 	/**
-	 * Call {@link StandardCharacter#setXmlId()}
+	 * Call {@code character.setDocId()}.
 	 * 
 	 * @param character target
 	 */
 	@Override
-	public void visitStandardCharacter(final StandardCharacter character) {
-		if (character.getXmlId() == null) {
-			character.setXmlId();
+	public void visitStandardCharacter(final StandardCharacter standardCharacter) {
+		if (standardCharacter.getDocId() == null) {
+			standardCharacter.setDocId();
 		}
 	}
 
@@ -74,8 +74,8 @@ final class SetXmlIdVisitor extends EmptyVisitor implements ISetXmlIdVisitor {
 	 */
 	@Override
 	public void visitStandardState(final StandardState standardState) {
-		if (standardState.getXmlId() == null) {
-			standardState.setXmlId();
+		if (standardState.getDocId() == null) {
+			standardState.setDocId();
 		}
 	}
 
@@ -90,8 +90,8 @@ final class SetXmlIdVisitor extends EmptyVisitor implements ISetXmlIdVisitor {
 		// Since this will be visited once for every attachment that is out
 		// there,
 		// we need to check it first.
-		if (attachmentNamespace.getXmlId() == null) {
-			attachmentNamespace.setXmlId();
+		if (attachmentNamespace.getDocId() == null) {
+			attachmentNamespace.setDocId();
 		}
 	}
 
@@ -105,8 +105,8 @@ final class SetXmlIdVisitor extends EmptyVisitor implements ISetXmlIdVisitor {
 		// Since this will be visited once for every attachment that is out
 		// there,
 		// we need to check it first.
-		if (attachmentType.getXmlId() == null) {
-			attachmentType.setXmlId();
+		if (attachmentType.getDocId() == null) {
+			attachmentType.setDocId();
 		}
 	}
 }

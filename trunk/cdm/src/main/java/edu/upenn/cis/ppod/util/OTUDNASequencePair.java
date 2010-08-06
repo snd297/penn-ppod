@@ -18,7 +18,7 @@ package edu.upenn.cis.ppod.util;
 import javax.xml.bind.annotation.XmlElement;
 
 import edu.upenn.cis.ppod.model.DNASequence;
-import edu.upenn.cis.ppod.modelinterfaces.IOTU;
+import edu.upenn.cis.ppod.model.OTU;
 
 /**
  * @author Sam Donnelly
@@ -44,8 +44,7 @@ public class OTUDNASequencePair extends OTUSomethingPair<DNASequence> {
 		return (OTUDNASequencePair) super.setSecond(sequence);
 	}
 
-	public static OTUDNASequencePair of(
-			final IOTU first,
+	public static OTUDNASequencePair of(final OTU first,
 			final DNASequence second) {
 		final OTUDNASequencePair otuSequencePair = new OTUDNASequencePair();
 		otuSequencePair.setFirst(first);

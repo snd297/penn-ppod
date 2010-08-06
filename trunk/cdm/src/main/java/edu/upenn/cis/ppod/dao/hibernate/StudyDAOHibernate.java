@@ -63,23 +63,20 @@ final class StudyDAOHibernate extends GenericHibernateDAO<Study, Long>
 	}
 
 	public Study getStudyByPPodIdEager(final String pPodId) {
-		throw new UnsupportedOperationException();
-		// return (Study) getSession()
-		// .createCriteria(Study.class)
-		// .add(Restrictions.eq("pPodId", pPodId))
-		// .setFetchMode("otuSets", FetchMode.JOIN)
-		// .createCriteria("otuSets")
-		// .setFetchMode("otus", FetchMode.JOIN)
-		// .setFetchMode("matrices", FetchMode.JOIN)
-		// .setFetchMode("dnaSequenceSets", FetchMode.JOIN)
-		// .setFetchMode("treeSets", FetchMode.JOIN)
-		// .createCriteria("matrices")
-		// .setFetchMode("characters", FetchMode.JOIN)
-		// .setFetchMode("characterIdx", FetchMode.JOIN)
-		// .setFetchMode("otusToRows", FetchMode.JOIN)
-		// .createCriteria("otusToRows")
-		// .setFetchMode("otusToRows", FetchMode.JOIN)
-		// .uniqueResult();
+		return (Study) getSession().createCriteria(Study.class).add(
+				Restrictions.eq("pPodId", pPodId)).setFetchMode("otuSets",
+				FetchMode.JOIN).createCriteria("otuSets").setFetchMode("otus",
+				FetchMode.JOIN).setFetchMode("matrices", FetchMode.JOIN)
+				.setFetchMode("dnaSequenceSets", FetchMode.JOIN)
+				.setFetchMode("treeSets", FetchMode.JOIN).createCriteria(
+						"matrices").setFetchMode("characters", FetchMode.JOIN)
+				.setFetchMode("characterIdx", FetchMode.JOIN).setFetchMode(
+						"otusToRows",
+						FetchMode.JOIN)
+				.createCriteria("otusToRows").setFetchMode("otusToRows",
+						FetchMode.JOIN).
+				uniqueResult();
+		// Extending to cells.firstState causes us to run out of memory
 	}
 
 	@SuppressWarnings("unchecked")

@@ -27,9 +27,8 @@ import edu.upenn.cis.ppod.model.StandardMatrix;
  * 
  * @author Sam Donnelly
  */
-class AfterUnmarshalVisitor
-		extends EmptyVisitor
-		implements IAfterUnmarshalVisitor {
+class AfterUnmarshalVisitor extends EmptyVisitor implements
+		IAfterUnmarshalVisitor {
 
 	@Override
 	public void visitDNAMatrix(final DNAMatrix matrix) {

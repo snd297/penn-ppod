@@ -38,8 +38,6 @@ import com.google.inject.Inject;
 import com.google.inject.Provider;
 
 import edu.upenn.cis.ppod.TestGroupDefs;
-import edu.upenn.cis.ppod.modelinterfaces.IOTU;
-import edu.upenn.cis.ppod.modelinterfaces.IStudy;
 import edu.upenn.cis.ppod.util.TestVisitor;
 
 /**
@@ -59,7 +57,7 @@ public class OTUSetTest {
 
 	private OTUSet otuSet;
 
-	private List<IOTU> otus;
+	private List<OTU> otus;
 
 	@Inject
 	private Provider<Study> studyProvider;
@@ -191,8 +189,7 @@ public class OTUSetTest {
 		standardMatrix.unsetInNeedOfNewVersion();
 		dnaMatrix.unsetInNeedOfNewVersion();
 		dnaSequenceSet.unsetInNeedOfNewVersion();
-		final IOTU shouldBeOTU0 = otuSet.addOTU(otu0);
-		assertSame(shouldBeOTU0, otu0);
+		final OTU shouldBeOTU0 = otuSet.addOTU(otu0);
 		assertTrue(otuSet.isInNeedOfNewVersion());
 		assertTrue(standardMatrix.isInNeedOfNewVersion());
 		assertTrue(dnaMatrix.isInNeedOfNewVersion());
@@ -202,8 +199,7 @@ public class OTUSetTest {
 		standardMatrix.unsetInNeedOfNewVersion();
 		dnaMatrix.unsetInNeedOfNewVersion();
 		dnaSequenceSet.unsetInNeedOfNewVersion();
-		final IOTU shouldBeOTU1 = otuSet.addOTU(otu1);
-		assertSame(shouldBeOTU1, otu1);
+		final OTU shouldBeOTU1 = otuSet.addOTU(otu1);
 		assertTrue(otuSet.isInNeedOfNewVersion());
 		assertTrue(standardMatrix.isInNeedOfNewVersion());
 		assertTrue(dnaMatrix.isInNeedOfNewVersion());
@@ -213,8 +209,7 @@ public class OTUSetTest {
 		standardMatrix.unsetInNeedOfNewVersion();
 		dnaMatrix.unsetInNeedOfNewVersion();
 		dnaSequenceSet.unsetInNeedOfNewVersion();
-		final IOTU shouldBeOTU2 = otuSet.addOTU(otu2);
-		assertSame(shouldBeOTU2, otu2);
+		final OTU shouldBeOTU2 = otuSet.addOTU(otu2);
 		assertTrue(otuSet.isInNeedOfNewVersion());
 		assertTrue(standardMatrix.isInNeedOfNewVersion());
 		assertTrue(dnaMatrix.isInNeedOfNewVersion());
@@ -279,7 +274,7 @@ public class OTUSetTest {
 
 	@Test
 	public void afterUnmarshal() {
-		final IStudy study = studyProvider.get();
+		final Study study = studyProvider.get();
 		otuSet.unsetInNeedOfNewVersion();
 		otuSet.afterUnmarshal(null, study);
 		assertSame(otuSet.getParent(), study);
@@ -291,9 +286,9 @@ public class OTUSetTest {
 	public void beforeMethod() {
 		otuSet = otuSetProvider.get();
 		otus = newArrayList();
-		otus.add((IOTU) otuProvider.get().setLabel("otu0").setPPodId());
-		otus.add((IOTU) otuProvider.get().setLabel("otu1").setPPodId());
-		otus.add((IOTU) otuProvider.get().setLabel("otu2").setPPodId());
+		otus.add((OTU) otuProvider.get().setLabel("otu0").setPPodId());
+		otus.add((OTU) otuProvider.get().setLabel("otu1").setPPodId());
+		otus.add((OTU) otuProvider.get().setLabel("otu2").setPPodId());
 
 		otuSet.setOTUs(newArrayList(otus));
 
@@ -311,7 +306,7 @@ public class OTUSetTest {
 
 		otuSet.setVersionInfo(pPodVersionInfoProvider.get());
 		study.setVersionInfo(pPodVersionInfoProvider.get());
-		final List<IOTU> removedOTUs = otuSet.setOTUs(new ArrayList<OTU>());
+		final List<OTU> removedOTUs = otuSet.setOTUs(new ArrayList<OTU>());
 
 		assertEquals(removedOTUs, otus);
 		assertTrue(otuSet.isInNeedOfNewVersion());
@@ -420,11 +415,11 @@ public class OTUSetTest {
 	public void removeOTU() {
 		otuSet.unsetInNeedOfNewVersion();
 
-		final ImmutableList<IOTU> otus2 =
-				ImmutableList.of(otus.get(0), otus.get(2));
+		final ImmutableList<OTU> otus2 = ImmutableList.of(otus.get(0), otus
+				.get(2));
 
-		final ImmutableList<IOTU> removedOTUs =
-				ImmutableList.copyOf(otuSet.setOTUs(otus2));
+		final ImmutableList<OTU> removedOTUs = ImmutableList.copyOf(otuSet
+				.setOTUs(otus2));
 
 		assertFalse(contains(otuSet.getOTUs(), otus.get(1)));
 		assertTrue(otuSet.isInNeedOfNewVersion());

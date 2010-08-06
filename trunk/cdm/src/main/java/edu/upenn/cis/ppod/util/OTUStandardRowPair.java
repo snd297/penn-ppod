@@ -20,7 +20,7 @@ import javax.xml.bind.annotation.XmlAccessorType;
 import javax.xml.bind.annotation.XmlElement;
 
 import edu.upenn.cis.ppod.model.StandardRow;
-import edu.upenn.cis.ppod.modelinterfaces.IOTU;
+import edu.upenn.cis.ppod.model.OTU;
 
 /**
  * @author Sam Donnelly
@@ -48,8 +48,7 @@ public class OTUStandardRowPair extends
 		return (OTUSomethingPair<StandardRow>) super.setSecond(row);
 	}
 
-	public static OTUStandardRowPair of(
-			final IOTU first,
+	public static OTUStandardRowPair of(final OTU first,
 			final StandardRow second) {
 		final OTUStandardRowPair otuRowPair = new OTUStandardRowPair();
 		otuRowPair.setFirst(first);

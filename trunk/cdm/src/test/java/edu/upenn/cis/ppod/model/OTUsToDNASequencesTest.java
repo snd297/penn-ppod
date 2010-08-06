@@ -24,8 +24,6 @@ import com.google.inject.Inject;
 import com.google.inject.Provider;
 
 import edu.upenn.cis.ppod.TestGroupDefs;
-import edu.upenn.cis.ppod.modelinterfaces.IOTU;
-import edu.upenn.cis.ppod.modelinterfaces.IOTUSet;
 
 /**
  * Test {@link OTUsToDNASequences}.
@@ -54,8 +52,8 @@ public class OTUsToDNASequencesTest {
 	@Test
 	public void putTest() {
 
-		final IOTUSet otuSet = new OTUSet();
-		final IOTU otu = otuSet.addOTU(new OTU());
+		final OTUSet otuSet = new OTUSet();
+		final OTU otu = otuSet.addOTU(new OTU());
 		final DNASequence sequence = new DNASequence();
 		final DNASequenceSet sequenceSet = dnaSequenceSetProvider.get();
 		otuSet.addDNASequenceSet(sequenceSet);
@@ -71,8 +69,8 @@ public class OTUsToDNASequencesTest {
 	 */
 	@Test
 	public void putTestReplaceASequence() {
-		final IOTUSet otuSet = otuSetProvider.get();
-		final IOTU otu = otuSet.addOTU(otuProvider.get());
+		final OTUSet otuSet = otuSetProvider.get();
+		final OTU otu = otuSet.addOTU(otuProvider.get());
 		final DNASequence sequence = dnaSequenceProvider.get();
 		final DNASequenceSet sequenceSet = dnaSequenceSetProvider.get();
 		otuSet.addDNASequenceSet(sequenceSet);

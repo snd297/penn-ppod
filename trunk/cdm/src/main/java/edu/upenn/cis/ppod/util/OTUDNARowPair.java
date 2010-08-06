@@ -18,7 +18,7 @@ package edu.upenn.cis.ppod.util;
 import javax.xml.bind.annotation.XmlElement;
 
 import edu.upenn.cis.ppod.model.DNARow;
-import edu.upenn.cis.ppod.modelinterfaces.IOTU;
+import edu.upenn.cis.ppod.model.OTU;
 
 /**
  * @author Sam Donnelly
@@ -41,8 +41,7 @@ public class OTUDNARowPair extends
 		return (OTUDNARowPair) super.setSecond(row);
 	}
 
-	public static OTUDNARowPair of(
-			final IOTU first,
+	public static OTUDNARowPair of(final OTU first,
 			final DNARow second) {
 		final OTUDNARowPair otuRowPair = new OTUDNARowPair();
 		otuRowPair.setFirst(first);

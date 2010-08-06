@@ -1,5 +1,5 @@
 /*
-I * Copyright (C) 2010 Trustees of the University of Pennsylvania
+ * Copyright (C) 2010 Trustees of the University of Pennsylvania
  *
  * Licensed under the Apache License, Version 2.0 (the "License");
  * you may not use this file except in compliance with the License.
@@ -25,7 +25,6 @@ import javax.persistence.CascadeType;
 import javax.persistence.Embeddable;
 import javax.persistence.JoinColumn;
 import javax.persistence.JoinTable;
-import javax.persistence.MapKeyClass;
 import javax.persistence.MapKeyJoinColumn;
 import javax.persistence.OneToMany;
 import javax.persistence.Transient;
@@ -37,7 +36,6 @@ import javax.xml.bind.annotation.XmlElement;
 
 import org.hibernate.annotations.Parent;
 
-import edu.upenn.cis.ppod.modelinterfaces.IOTU;
 import edu.upenn.cis.ppod.modelinterfaces.IOTUKeyedMap;
 import edu.upenn.cis.ppod.modelinterfaces.IOTUKeyedMapPlus;
 import edu.upenn.cis.ppod.util.IVisitor;
@@ -78,7 +76,7 @@ public class StandardRows
 
 	public boolean beforeMarshal(@CheckForNull final Marshaller marshaller) {
 		getOTUSomethingPairs().clear();
-		for (final Map.Entry<IOTU, StandardRow> otuToRow : getValues()
+		for (final Map.Entry<OTU, StandardRow> otuToRow : getValues()
 				.entrySet()) {
 			getOTUSomethingPairs().add(
 					OTUStandardRowPair.of(otuToRow.getKey(),
@@ -92,7 +90,7 @@ public class StandardRows
 		return this;
 	}
 
-	public StandardRow get(final IOTU key) {
+	public StandardRow get(final OTU key) {
 		return rows.get(key);
 	}
 
@@ -124,13 +122,12 @@ public class StandardRows
 			orphanRemoval = true)
 	@JoinTable(inverseJoinColumns = @JoinColumn(name = StandardRow.JOIN_COLUMN))
 	@MapKeyJoinColumn(name = OTU.JOIN_COLUMN)
-	@MapKeyClass(OTU.class)
-	public Map<IOTU, StandardRow> getValues() {
+	public Map<OTU, StandardRow> getValues() {
 		return rows.getValues();
 	}
 
 	/** {@inheritDoc} */
-	public StandardRow put(final IOTU key, final StandardRow value) {
+	public StandardRow put(final OTU key, final StandardRow value) {
 		return rows.put(key, value);
 	}
 
@@ -153,7 +150,7 @@ public class StandardRows
 	}
 
 	@SuppressWarnings("unused")
-	private StandardRows setValues(final Map<IOTU, StandardRow> values) {
+	private StandardRows setValues(final Map<OTU, StandardRow> values) {
 		rows.setValues(values);
 		return this;
 	}

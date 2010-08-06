@@ -112,7 +112,7 @@ public abstract class Row<C extends Cell<?, ?>, M extends Matrix<?>>
 	 * 
 	 * @return any cells which were removed as a result of this operation
 	 * 
-	 * @throws IllegalStateException if {@code this.getParent() == null}
+	 * @throws IllegalStateException if {@code this.getMatrix() == null}
 	 * @throws IllegalStateException if the owning matrix does not have the same
 	 *             number of columns as {@code cells.size()}
 	 */

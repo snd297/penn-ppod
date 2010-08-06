@@ -51,6 +51,10 @@ public interface IVersioned extends IPersistentObject {
 	@Nullable
 	VersionInfo getVersionInfo();
 
+	IVersioned setVersionInfo(final VersionInfo versionInfo);
+
+	IVersioned setInNeedOfNewVersion();
+
 	/**
 	 * Does this object need a new pPOD version before it is saved?
 	 * 
@@ -58,11 +62,5 @@ public interface IVersioned extends IPersistentObject {
 	 *         saved, {@code false} otherwise
 	 */
 	boolean isInNeedOfNewVersion();
-
-	IVersioned setInNeedOfNewVersion();
-
-	IVersioned setVersionInfo(final VersionInfo versionInfo);
-
-	IVersioned unsetInNeedOfNewVersion();
 
 }

@@ -29,8 +29,6 @@ import com.google.inject.Inject;
 import com.google.inject.Provider;
 
 import edu.upenn.cis.ppod.TestGroupDefs;
-import edu.upenn.cis.ppod.modelinterfaces.IOTU;
-import edu.upenn.cis.ppod.modelinterfaces.IOTUSet;
 import edu.upenn.cis.ppod.util.TestVisitor;
 
 /**
@@ -89,12 +87,12 @@ public class SequenceSetTest {
 		final String seqStr3 = "CTCCTCGTCAGCAG";
 		seq3.setSequence(seqStr3);
 
-		final IOTUSet otuSet0 = otuSetProvider.get();
+		final OTUSet otuSet0 = otuSetProvider.get();
 		seqSet.setParent(otuSet0);
 
-		final IOTU otu0 = otuSet0.addOTU(otuProvider.get()).setLabel("otu-0");
-		final IOTU otu1 = otuSet0.addOTU(otuProvider.get()).setLabel("otu-1");
-		final IOTU otu2 = otuSet0.addOTU(otuProvider.get()).setLabel("otu-2");
+		final OTU otu0 = otuSet0.addOTU(otuProvider.get()).setLabel("otu-0");
+		final OTU otu1 = otuSet0.addOTU(otuProvider.get()).setLabel("otu-1");
+		final OTU otu2 = otuSet0.addOTU(otuProvider.get()).setLabel("otu-2");
 
 		seqSet.putSequence(otu0, seq1);
 		seqSet.putSequence(otu1, seq2);
@@ -124,12 +122,12 @@ public class SequenceSetTest {
 		final String seqStr3 = "CTCCTCGTCAGCAG";
 		seq3.setSequence(seqStr3);
 
-		final IOTUSet otuSet0 = otuSetProvider.get();
+		final OTUSet otuSet0 = otuSetProvider.get();
 		seqSet.setParent(otuSet0);
 
-		final IOTU otu0 = otuSet0.addOTU(otuProvider.get()).setLabel("otu-0");
-		final IOTU otu1 = otuSet0.addOTU(otuProvider.get()).setLabel("otu-1");
-		final IOTU otu2 = otuSet0.addOTU(otuProvider.get()).setLabel("otu-2");
+		final OTU otu0 = otuSet0.addOTU(otuProvider.get()).setLabel("otu-0");
+		final OTU otu1 = otuSet0.addOTU(otuProvider.get()).setLabel("otu-1");
+		final OTU otu2 = otuSet0.addOTU(otuProvider.get()).setLabel("otu-2");
 
 		seqSet.putSequence(otu0, seq1);
 		seqSet.putSequence(otu1, seq2);

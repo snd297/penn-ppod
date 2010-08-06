@@ -148,15 +148,10 @@ public class StandardCell extends Cell<StandardState, StandardRow> {
 		checkState(matrix != null,
 				"this cell's row has not had a matrix assigned");
 
-		if (matrix.getColumnsSize() <= position) {
-			throw new AssertionError(
-					"position "
-							+ position
-							+ " is >= than the number of columns in the owning matrix"
-							+ matrix.getColumnsSize());
-		}
+		checkState(matrix.getCharactersModifiable().size() >= position,
+				"this cell's column hasn't been assigned a character");
 
-		checkState(null != matrix.getCharacters().get(position),
+		checkState(null != matrix.getCharactersModifiable().get(position),
 				"this cell's column hasn't been assigned a character");
 
 	}

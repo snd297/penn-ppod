@@ -26,7 +26,6 @@ import com.google.inject.Inject;
 import com.google.inject.Provider;
 
 import edu.upenn.cis.ppod.TestGroupDefs;
-import edu.upenn.cis.ppod.modelinterfaces.IOTU;
 import edu.upenn.cis.ppod.util.TestVisitor;
 
 /**
@@ -56,9 +55,9 @@ public class OTUKeyedMapTest {
 		final OTUSet otuSet = otuSetProvider.get();
 		matrix.setParent(otuSet);
 
-		final IOTU otu0 = otuSet.addOTU(otuProvider.get().setLabel("otu0"));
-		final IOTU otu1 = otuSet.addOTU(otuProvider.get().setLabel("otu1"));
-		final IOTU otu2 = otuSet.addOTU(otuProvider.get().setLabel("otu2"));
+		final OTU otu0 = otuSet.addOTU(otuProvider.get().setLabel("otu0"));
+		final OTU otu1 = otuSet.addOTU(otuProvider.get().setLabel("otu1"));
+		final OTU otu2 = otuSet.addOTU(otuProvider.get().setLabel("otu2"));
 
 		final DNARow row0 = dnaRowProvider.get();
 		final DNARow row1 = dnaRowProvider.get();
@@ -105,9 +104,9 @@ public class OTUKeyedMapTest {
 		final OTUSet otuSet = otuSetProvider.get();
 		otuSet.addDNAMatrix(matrix);
 
-		final IOTU otu0 = otuSet.addOTU(otuProvider.get().setLabel("otu0"));
-		final IOTU otu1 = otuSet.addOTU(otuProvider.get().setLabel("otu1"));
-		final IOTU otu2 = otuSet.addOTU(otuProvider.get().setLabel("otu2"));
+		final OTU otu0 = otuSet.addOTU(otuProvider.get().setLabel("otu0"));
+		final OTU otu1 = otuSet.addOTU(otuProvider.get().setLabel("otu1"));
+		final OTU otu2 = otuSet.addOTU(otuProvider.get().setLabel("otu2"));
 
 		final DNARow row0 = dnaRowProvider.get();
 		final DNARow row2 = dnaRowProvider.get();

@@ -59,7 +59,12 @@ public class DNARow extends Row<DNACell, DNAMatrix> {
 
 	DNARow() {}
 
-	/** {@inheritDoc} */
+	/*
+	 * (non-Javadoc)
+	 * 
+	 * @see
+	 * edu.upenn.cis.ppod.model.Row#accept(edu.upenn.cis.ppod.util.IVisitor)
+	 */
 	@Override
 	public void accept(final IVisitor visitor) {
 		checkNotNull(visitor);
@@ -67,19 +72,31 @@ public class DNARow extends Row<DNACell, DNAMatrix> {
 		super.accept(visitor);
 	}
 
-	/** {@inheritDoc} */
+	/*
+	 * (non-Javadoc)
+	 * 
+	 * @see edu.upenn.cis.ppod.model.Row#getCellsModifiable()
+	 */
 	@XmlElement(name = "cell")
 	@Override
 	protected List<DNACell> getCellsModifiable() {
 		return cells;
 	}
 
-	/** {@inheritDoc} */
+	/*
+	 * (non-Javadoc)
+	 * 
+	 * @see edu.upenn.cis.ppod.modelinterfaces.IOTUKeyedMapValue#getParent()
+	 */
 	public DNAMatrix getParent() {
 		return parent;
 	}
 
-	/** {@inheritDoc} */
+	/*
+	 * (non-Javadoc)
+	 * 
+	 * @see edu.upenn.cis.ppod.model.Row#setCells(java.util.List)
+	 */
 	@Override
 	public List<DNACell> setCells(final List<? extends DNACell> cells) {
 		final List<DNACell> clearedCells = super.setCellsHelper(cells);
@@ -90,8 +107,14 @@ public class DNARow extends Row<DNACell, DNAMatrix> {
 		return clearedCells;
 	}
 
-	/** {@inheritDoc} */
-	public DNARow setParent(final DNAMatrix parent) {
+	/*
+	 * (non-Javadoc)
+	 * 
+	 * @see
+	 * edu.upenn.cis.ppod.modelinterfaces.IOTUKeyedMapValue#setParent(java.lang
+	 * .Object)
+	 */
+	public Row<DNACell, DNAMatrix> setParent(final DNAMatrix parent) {
 		this.parent = parent;
 		return this;
 	}

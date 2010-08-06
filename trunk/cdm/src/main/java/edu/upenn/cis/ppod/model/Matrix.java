@@ -40,15 +40,11 @@ import javax.xml.bind.Unmarshaller;
 import javax.xml.bind.annotation.XmlAttribute;
 import javax.xml.bind.annotation.XmlElement;
 
-import org.hibernate.annotations.Target;
-
 import com.google.common.annotations.VisibleForTesting;
 
 import edu.umd.cs.findbugs.annotations.CheckForNull;
 import edu.umd.cs.findbugs.annotations.Nullable;
-import edu.upenn.cis.ppod.modelinterfaces.IOTU;
 import edu.upenn.cis.ppod.modelinterfaces.IOTUKeyedMap;
-import edu.upenn.cis.ppod.modelinterfaces.IOTUSet;
 import edu.upenn.cis.ppod.modelinterfaces.IOTUSetChild;
 import edu.upenn.cis.ppod.util.IVisitor;
 
@@ -100,8 +96,7 @@ public abstract class Matrix<R extends Row<?, ?>>
 	@ManyToOne(fetch = FetchType.LAZY, optional = false)
 	@JoinColumn(name = OTUSet.JOIN_COLUMN)
 	@CheckForNull
-	@Target(OTUSet.class)
-	private IOTUSet parent;
+	private OTUSet parent;
 
 	/** Default constructor. */
 	Matrix() {}
@@ -223,7 +218,7 @@ public abstract class Matrix<R extends Row<?, ?>>
 	 * @return this matrix's {@code OTUSet}
 	 */
 	@Nullable
-	public IOTUSet getParent() {
+	public OTUSet getParent() {
 		return parent;
 	}
 
@@ -245,7 +240,7 @@ public abstract class Matrix<R extends Row<?, ?>>
 	 *             matrix's {@code OTUSet}
 	 */
 	@Nullable
-	public R getRow(final IOTU otu) {
+	public R getRow(final OTU otu) {
 		checkNotNull(otu);
 		return getOTUKeyedRows().get(otu);
 	}
@@ -255,7 +250,7 @@ public abstract class Matrix<R extends Row<?, ?>>
 	 * 
 	 * @return the rows that make up this matrix
 	 */
-	public Map<IOTU, R> getRows() {
+	public Map<OTU, R> getRows() {
 		return Collections
 				.unmodifiableMap(getOTUKeyedRows().getValues());
 	}
@@ -279,7 +274,7 @@ public abstract class Matrix<R extends Row<?, ?>>
 	 *             {@code .equals} to {@code row}
 	 */
 	@CheckForNull
-	public R putRow(final IOTU otu, final R row) {
+	public R putRow(final OTU otu, final R row) {
 		checkNotNull(otu);
 		checkNotNull(row);
 		return getOTUKeyedRows().put(otu, row);
@@ -437,16 +432,13 @@ public abstract class Matrix<R extends Row<?, ?>>
 	 * 
 	 * @param otuSet new {@code OTUSet} for this matrix, or {@code null} if
 	 *            we're destroying the association
-	 * 
-	 * @return this
 	 */
-	public Matrix<?> setParent(
-			@CheckForNull final IOTUSet otuSet) {
+	void setParent(
+			@CheckForNull final OTUSet otuSet) {
 		checkState(
 				getOTUKeyedRows() != null,
 				"getOTUKeyedRows() returned null - has the conrete class been constructed correctly, w/ its OTU->X dependency?");
 		this.parent = otuSet;
 		getOTUKeyedRows().setOTUs();
-		return this;
 	}
 }

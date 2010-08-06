@@ -31,9 +31,9 @@ public interface IAttachee {
 	 * 
 	 * @param attachment to be attached
 	 * 
-	 * @return {@code attachment}.
+	 * @return this {@code IAttachee}
 	 */
-	Attachment addAttachment(Attachment attachment);
+	IAttachee addAttachment(Attachment attachment);
 
 	/**
 	 * Get the attachments of this {@code IAttachee}.
