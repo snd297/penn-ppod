@@ -34,6 +34,7 @@ import javax.xml.bind.Unmarshaller;
 import javax.xml.bind.annotation.XmlAccessType;
 import javax.xml.bind.annotation.XmlAccessorType;
 import javax.xml.bind.annotation.XmlElement;
+import javax.xml.bind.annotation.XmlElementWrapper;
 
 import org.hibernate.annotations.Parent;
 
@@ -95,7 +96,6 @@ public class DNARows implements IOTUKeyedMap<DNARow> {
 		return rows.get(key);
 	}
 
-	/** {@inheritDoc} */
 	@XmlElement(name = "otuRowPair")
 	@Transient
 	public Set<OTUDNARowPair> getOTUSomethingPairs() {

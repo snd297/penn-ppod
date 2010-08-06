@@ -101,7 +101,9 @@ public class OTU
 	public void afterUnmarshal(
 			@CheckForNull final Unmarshaller u,
 			final Object parent) {
-		this.parent = (OTUSet) parent;
+		if (parent instanceof OTUSet) {
+			this.parent = (OTUSet) parent;
+		}
 	}
 
 	/**

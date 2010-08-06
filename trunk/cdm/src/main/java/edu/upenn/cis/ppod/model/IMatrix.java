@@ -18,8 +18,6 @@ import edu.upenn.cis.ppod.modelinterfaces.IWithXmlID;
 public interface IMatrix<R extends Row<?, ?>>
 		extends IOTUSetChild, IUUPPodEntity, IWithXmlID {
 
-	void afterUnmarshal();
-
 	Integer getColumnsSize();
 
 	List<VersionInfo> getColumnVersionInfos();

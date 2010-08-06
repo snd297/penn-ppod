@@ -14,7 +14,7 @@ public interface IOTUKeyedMapPlus<V extends IOTUKeyedMapValue<?>, P extends IOTU
 
 	/**
 	 * For marshalling {@code rows}. Since a {@code Map}'s key couldn't be an
-	 * {@code XmlIDREF} in JAXB - at least not easily.
+	 * {@code XmlIDREF} in JAXB as far as we can tell.
 	 */
 	Set<OP> getOTUSomethingPairs();
 
