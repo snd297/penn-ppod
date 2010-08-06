@@ -9,13 +9,7 @@ import edu.upenn.cis.ppod.util.IVisitor;
 public interface IOTUKeyedMap<V extends IOTUKeyedMapValue<?>>
 		extends IVisitable {
 
-	/*
-	 * (non-Javadoc)
-	 * 
-	 * @see
-	 * edu.upenn.cis.ppod.modelinterfaces.IVisitable#accept(edu.upenn.cis.ppod
-	 * .util.IVisitor)
-	 */
+	/** {@inheritDoc} */
 	void accept(IVisitor visitor);
 
 	/**

@@ -147,10 +147,10 @@ public abstract class PPodEntity
 	 */
 	protected boolean beforeMarshal(@CheckForNull final Marshaller marshaler) {
 		// Write out the version number for the client of the xml
-		if (version != null) {
-			throw new IllegalStateException(
-					"about to marshal, but version != null. Outside of testing, this value should never be set in client code.");
-		}
+		// if (version != null) {
+		// throw new IllegalStateException(
+		// "about to marshal, but version != null. Outside of testing, this value should never be set in client code.");
+		// }
 		if (versionInfo != null) {
 			version = versionInfo.getVersion();
 		}
