@@ -39,19 +39,19 @@ public abstract class PersistentObjectWithXmlId
 	@Nullable
 	private String docId;
 
-	@XmlAttribute
+	@XmlAttribute(name = "docId")
 	@XmlID
 	@Nullable
-	public String getDocId() {
+	public String getXmlId() {
 		return docId;
 	}
 
-	public IWithXmlID setDocId() {
-		return setDocId(UUID.randomUUID().toString());
+	public IWithXmlID setXmlId() {
+		return setXmlId(UUID.randomUUID().toString());
 	}
 
-	public IWithXmlID setDocId(final String docId) {
-		if (getDocId() != null) {
+	public IWithXmlID setXmlId(final String docId) {
+		if (getXmlId() != null) {
 			throw new IllegalStateException("docId was already set");
 		}
 		this.docId = docId;

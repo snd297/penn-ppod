@@ -32,6 +32,7 @@ import edu.upenn.cis.ppod.model.OTU;
 import edu.upenn.cis.ppod.model.Tree;
 import edu.upenn.cis.ppod.model.TreeSet;
 import edu.upenn.cis.ppod.modelinterfaces.INewVersionInfo;
+import edu.upenn.cis.ppod.modelinterfaces.IOTU;
 import edu.upenn.cis.ppod.modelinterfaces.IWithPPodId;
 
 /**
@@ -59,7 +60,7 @@ final class MergeTreeSets implements IMergeTreeSets {
 		checkNotNull(sourceTreeSet);
 
 		// For the response to the client
-		targetTreeSet.setDocId(sourceTreeSet.getDocId());
+		targetTreeSet.setXmlId(sourceTreeSet.getXmlId());
 
 		targetTreeSet.setLabel(sourceTreeSet.getLabel());
 
@@ -90,13 +91,13 @@ final class MergeTreeSets implements IMergeTreeSets {
 				throw new IllegalArgumentException(
 						"sourceTreeSet.getOTUSet().getOTUsSize() should be the same as targetTreeSet.getOTUSet().getOTUsSize()");
 			}
-			for (final Iterator<OTU> sourceOTUItr = sourceTreeSet.getParent()
+			for (final Iterator<IOTU> sourceOTUItr = sourceTreeSet.getParent()
 					.getOTUs().iterator(), targetOTUItr = targetTreeSet
 					.getParent().getOTUs().iterator(); sourceOTUItr.hasNext();) {
-				final OTU sourceOTU = sourceOTUItr.next();
-				final OTU targetOTU = targetOTUItr.next();
+				final IOTU sourceOTU = sourceOTUItr.next();
+				final IOTU targetOTU = targetOTUItr.next();
 				targetNewick = targetNewick.replace(
-						sourceOTU.getDocId(),
+						sourceOTU.getXmlId(),
 						targetOTU.getPPodId());
 			}
 			targetTree.setNewick(targetNewick);

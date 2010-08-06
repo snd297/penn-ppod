@@ -30,12 +30,12 @@ import com.google.inject.Inject;
 import com.google.inject.Provider;
 
 import edu.upenn.cis.ppod.model.StandardMatrix;
-import edu.upenn.cis.ppod.model.OTU;
-import edu.upenn.cis.ppod.model.OTUSet;
 import edu.upenn.cis.ppod.model.TreeSet;
+import edu.upenn.cis.ppod.modelinterfaces.IOTU;
+import edu.upenn.cis.ppod.modelinterfaces.IOTUSet;
 import edu.upenn.cis.ppod.services.ppodentity.PPodEntities;
 import edu.upenn.cis.ppod.thirdparty.util.HibernateUtil;
-import edu.upenn.cis.ppod.util.ISetDocIdVisitor;
+import edu.upenn.cis.ppod.util.ISetXmlIdVisitor;
 import edu.upenn.cis.ppod.util.IVisitor;
 
 /**
@@ -53,9 +53,9 @@ class PPodEntitiesResourceHibernate implements
 
 	@Inject
 	PPodEntitiesResourceHibernate(final Provider<PPodEntities> pPodEntities,
-			final ISetDocIdVisitor setDocIdVisitor) {
+			final ISetXmlIdVisitor setXmlIdVisitor) {
 		this.pPodEntitiesProvider = pPodEntities;
-		this.setDocIdVisitor = setDocIdVisitor;
+		this.setDocIdVisitor = setXmlIdVisitor;
 	}
 
 	public PPodEntities getEntitiesByHqlQuery(final String query) {
@@ -90,13 +90,13 @@ class PPodEntitiesResourceHibernate implements
 		// }
 
 		for (final Object queryResult : queryResults) {
-			if (queryResult instanceof OTUSet) {
-				final OTUSet otuSet = (OTUSet) queryResult;
+			if (queryResult instanceof IOTUSet) {
+				final IOTUSet otuSet = (IOTUSet) queryResult;
 
 				// Extra insurance against accidental sync with database
 				session.setReadOnly(otuSet, true);
 
-				if (otuSet.getDocId() == null) {
+				if (otuSet.getXmlId() == null) {
 					otuSet.accept(setDocIdVisitor);
 				}
 
@@ -111,7 +111,7 @@ class PPodEntitiesResourceHibernate implements
 				session.setReadOnly(matrix, true);
 
 				addedMatrices.add(matrix);
-				if (matrix.getParent().getDocId() == null) {
+				if (matrix.getParent().getXmlId() == null) {
 					matrix.getParent().accept(setDocIdVisitor);
 				}
 
@@ -125,15 +125,15 @@ class PPodEntitiesResourceHibernate implements
 				session.setReadOnly(treeSet, true);
 
 				addedTreeSets.add(treeSet);
-				if (treeSet.getParent().getDocId() == null) {
+				if (treeSet.getParent().getXmlId() == null) {
 					treeSet.getParent().accept(setDocIdVisitor);
 				}
 
 				// Note that otu set may have already been added in any of the
 				// other if clauses: Hibernate identity takes care of us
 				pPodEntities.addOTUSet(treeSet.getParent());
-			} else if (queryResult instanceof OTU) {
-				final OTU otu = (OTU) queryResult;
+			} else if (queryResult instanceof IOTU) {
+				final IOTU otu = (IOTU) queryResult;
 				session.setReadOnly(otu, true);
 				pPodEntities.addOTU(otu);
 			} else if (queryResult instanceof Object[]) {
@@ -150,7 +150,7 @@ class PPodEntitiesResourceHibernate implements
 
 			// Now we clean up our response so we don't include any extra
 			// matrices or tree sets that were pulled over with the OTUSet's
-			for (final OTUSet otuSet : pPodEntities.getOTUSets()) {
+			for (final IOTUSet otuSet : pPodEntities.getOTUSets()) {
 				for (final StandardMatrix matrix : otuSet
 						.getStandardMatrices()) {
 					if (addedMatrices.contains(matrix)) {
