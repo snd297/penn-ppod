@@ -34,6 +34,7 @@ import edu.upenn.cis.ppod.model.Matrix;
 import edu.upenn.cis.ppod.model.OTU;
 import edu.upenn.cis.ppod.model.Row;
 import edu.upenn.cis.ppod.modelinterfaces.INewVersionInfo;
+import edu.upenn.cis.ppod.modelinterfaces.IOTU;
 
 /**
  * @author Sam Donnelly
@@ -79,8 +80,8 @@ abstract class CreateOrUpdateMatrix<M extends Matrix<R>, R extends Row<C, ?>, C 
 
 		// We need this for the response: it's less than ideal to do this here,
 		// but easy
-		if (dbMatrix.getDocId() == null) {
-			dbMatrix.setDocId(sourceMatrix.getDocId());
+		if (dbMatrix.getXmlId() == null) {
+			dbMatrix.setXmlId(sourceMatrix.getXmlId());
 		}
 
 		dbMatrix.setLabel(sourceMatrix.getLabel())
@@ -91,11 +92,11 @@ abstract class CreateOrUpdateMatrix<M extends Matrix<R>, R extends Row<C, ?>, C 
 
 		int sourceOTUPos = -1;
 
-		for (final OTU sourceOTU : sourceMatrix.getParent().getOTUs()) {
+		for (final IOTU sourceOTU : sourceMatrix.getParent().getOTUs()) {
 			sourceOTUPos++;
 			final R sourceRow = sourceMatrix.getRow(sourceOTU);
 
-			final OTU dbOTU =
+			final IOTU dbOTU =
 					dbMatrix.getParent()
 							.getOTUs()
 							.get(sourceOTUPos);

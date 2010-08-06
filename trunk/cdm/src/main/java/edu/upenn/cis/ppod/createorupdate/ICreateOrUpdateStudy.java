@@ -22,8 +22,8 @@ import edu.upenn.cis.ppod.dao.IAttachmentTypeDAO;
 import edu.upenn.cis.ppod.dao.IDAO;
 import edu.upenn.cis.ppod.dao.IOTUSetDAO;
 import edu.upenn.cis.ppod.dao.IStudyDAO;
-import edu.upenn.cis.ppod.model.Study;
 import edu.upenn.cis.ppod.modelinterfaces.INewVersionInfo;
+import edu.upenn.cis.ppod.modelinterfaces.IStudy;
 
 /**
  * If study is new, make it persistent. If it was already persisted, update it.
@@ -46,7 +46,7 @@ public interface ICreateOrUpdateStudy {
 	 * 
 	 * @return the {@code Study} in a persistent state.
 	 */
-	Study getDbStudy();
+	IStudy getDbStudy();
 
 	static interface IFactory {
 
@@ -58,7 +58,7 @@ public interface ICreateOrUpdateStudy {
 		 * 
 		 * @return a new {@link ISaveOrUpdateStudy}
 		 */
-		ICreateOrUpdateStudy create(Study incomingStudy,
+		ICreateOrUpdateStudy create(IStudy incomingStudy,
 				IStudyDAO studyDAO,
 				IOTUSetDAO otuSetDAO,
 				IAttachmentNamespaceDAO attachmentNamespaceDAO,

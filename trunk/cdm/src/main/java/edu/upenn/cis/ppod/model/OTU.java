@@ -24,11 +24,12 @@ import javax.persistence.ManyToOne;
 import javax.persistence.Table;
 import javax.xml.bind.Unmarshaller;
 import javax.xml.bind.annotation.XmlAttribute;
+import javax.xml.bind.annotation.adapters.XmlAdapter;
 
 import edu.umd.cs.findbugs.annotations.CheckForNull;
 import edu.umd.cs.findbugs.annotations.Nullable;
-import edu.upenn.cis.ppod.modelinterfaces.ILabeled;
-import edu.upenn.cis.ppod.modelinterfaces.IOTUSetChild;
+import edu.upenn.cis.ppod.modelinterfaces.IOTU;
+import edu.upenn.cis.ppod.modelinterfaces.IOTUSet;
 import edu.upenn.cis.ppod.util.IVisitor;
 
 /**
@@ -41,7 +42,20 @@ import edu.upenn.cis.ppod.util.IVisitor;
 @Table(name = OTU.TABLE)
 public class OTU
 		extends UUPPodEntityWithXmlId
-		implements ILabeled, IOTUSetChild {
+		implements IOTU {
+
+	public static class Adapter extends XmlAdapter<OTU, IOTU> {
+
+		@Override
+		public OTU marshal(final IOTU otu) {
+			return (OTU) otu;
+		}
+
+		@Override
+		public IOTU unmarshal(final OTU otu) {
+			return otu;
+		}
+	}
 
 	/** The table for this entity. */
 	public static final String TABLE = "OTU";
@@ -65,10 +79,10 @@ public class OTU
 	 * The {@code OTUSet} that this {@code OTU} belongs to.
 	 */
 	@CheckForNull
-	@ManyToOne
+	@ManyToOne(targetEntity = OTUSet.class)
 	@JoinColumn(name = OTUSet.JOIN_COLUMN, insertable = false,
 			updatable = false, nullable = false)
-	private OTUSet parent;
+	private IOTUSet parent;
 
 	OTU() {}
 
@@ -110,7 +124,7 @@ public class OTU
 	 */
 	@Nullable
 	public OTUSet getParent() {
-		return parent;
+		return (OTUSet) parent;
 	}
 
 	/**
@@ -155,9 +169,12 @@ public class OTU
 	 * be severed.
 	 * 
 	 * @param the owning {@code OTUSet}
+	 * 
+	 * @return this
 	 */
-	void setParent(@CheckForNull final OTUSet parent) {
+	public IOTU setParent(@CheckForNull final IOTUSet parent) {
 		this.parent = parent;
+		return this;
 	}
 
 	/**

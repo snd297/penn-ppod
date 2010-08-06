@@ -85,7 +85,8 @@ public interface IStudyResource {
 	@Path("{pPodId}")
 	@Consumes("application/xml")
 	@Produces("application/xml")
-	StudyInfo updateStudy(@Pretty @GZIP Study study,
+	StudyInfo updateStudy(
+			@Pretty @GZIP Study study,
 			@PathParam("pPodId") String pPodId);
 
 }

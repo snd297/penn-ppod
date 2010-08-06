@@ -42,9 +42,15 @@ import javax.persistence.Table;
 import javax.xml.bind.Unmarshaller;
 import javax.xml.bind.annotation.XmlAttribute;
 import javax.xml.bind.annotation.XmlElement;
+import javax.xml.bind.annotation.adapters.XmlAdapter;
+
+import com.google.common.annotations.VisibleForTesting;
 
 import edu.upenn.cis.ppod.modelinterfaces.ILabeled;
+import edu.upenn.cis.ppod.modelinterfaces.IOTU;
+import edu.upenn.cis.ppod.modelinterfaces.IOTUSet;
 import edu.upenn.cis.ppod.modelinterfaces.IOTUSetChild;
+import edu.upenn.cis.ppod.modelinterfaces.IStudy;
 import edu.upenn.cis.ppod.util.IVisitor;
 
 /**
@@ -57,7 +63,22 @@ import edu.upenn.cis.ppod.util.IVisitor;
  */
 @Entity
 @Table(name = OTUSet.TABLE)
-public class OTUSet extends UUPPodEntityWithXmlId {
+public class OTUSet
+		extends UUPPodEntityWithXmlId
+		implements IOTUSet {
+
+	public static class Adapter extends XmlAdapter<OTUSet, IOTUSet> {
+
+		@Override
+		public OTUSet marshal(final IOTUSet otuSet) {
+			return (OTUSet) otuSet;
+		}
+
+		@Override
+		public IOTUSet unmarshal(final OTUSet otuSet) {
+			return otuSet;
+		}
+	}
 
 	/** The column that stores the description. */
 	public static final String DESCRIPTION_COLUMN = "DESCRIPTION";
@@ -101,15 +122,21 @@ public class OTUSet extends UUPPodEntityWithXmlId {
 	private String label;
 
 	/** The set of {@code OTU}s that this {@code OTUSet} contains. */
-	@OneToMany(orphanRemoval = true, cascade = CascadeType.ALL)
+	@OneToMany(
+			orphanRemoval = true,
+			cascade = CascadeType.ALL,
+			targetEntity = OTU.class)
 	@OrderColumn(name = "POSITION")
 	@JoinColumn(name = JOIN_COLUMN, nullable = false)
-	private final List<OTU> otus = newArrayList();
+	private final List<IOTU> otus = newArrayList();
 
 	@CheckForNull
-	@ManyToOne(fetch = FetchType.LAZY, optional = false)
+	@ManyToOne(
+			fetch = FetchType.LAZY,
+			optional = false,
+			targetEntity = Study.class)
 	@JoinColumn(name = Study.JOIN_COLUMN)
-	private Study parent;
+	private IStudy parent;
 
 	/** The tree sets that reference this OTU set. */
 	@OneToMany(mappedBy = "parent", cascade = CascadeType.ALL,
@@ -188,16 +215,16 @@ public class OTUSet extends UUPPodEntityWithXmlId {
 	 * @throws IllegalArgumentException if this OTU set already has an OTU with
 	 *             {@code otu}'s label
 	 */
-	public OTU addOTU(final OTU otu) {
+	public IOTU addOTU(final IOTU otu) {
 		checkNotNull(otu);
 		addOTUWithoutSetOTUsOnChildren(otu);
 		setOTUSetOnChildren();
 		return otu;
 	}
 
-	private OTU addOTUWithoutSetOTUsOnChildren(final OTU otu) {
+	private IOTU addOTUWithoutSetOTUsOnChildren(final IOTU otu) {
 		checkNotNull(otu);
-		final OTU dupNameOTU = findIf(getOTUs(),
+		final IOTU dupNameOTU = findIf(getOTUs(),
 				compose(
 						equalTo(
 								otu.getLabel()),
@@ -265,6 +292,7 @@ public class OTUSet extends UUPPodEntityWithXmlId {
 		this.parent = (Study) parent;
 	}
 
+	@VisibleForTesting
 	Set<IOTUSetChild> getChildren() {
 		final Set<IOTUSetChild> children = newHashSet();
 		children.addAll(getOTUs());
@@ -320,7 +348,7 @@ public class OTUSet extends UUPPodEntityWithXmlId {
 	 * 
 	 * @return the {@code OTU}s that make up this {@code OTUSet}
 	 */
-	public List<OTU> getOTUs() {
+	public List<IOTU> getOTUs() {
 		return Collections.unmodifiableList(otus);
 	}
 
@@ -330,7 +358,7 @@ public class OTUSet extends UUPPodEntityWithXmlId {
 	 * @return a modifiable reference to this the otus.
 	 */
 	@XmlElement(name = "otu")
-	protected List<OTU> getOTUsModifiable() {
+	protected List<IOTU> getOTUsModifiable() {
 		return otus;
 	}
 
@@ -341,7 +369,7 @@ public class OTUSet extends UUPPodEntityWithXmlId {
 	 * @return the study to which this OTU set belongs
 	 */
 	@Nullable
-	public Study getParent() {
+	public IStudy getParent() {
 		return parent;
 	}
 
@@ -457,7 +485,7 @@ public class OTUSet extends UUPPodEntityWithXmlId {
 	 */
 	@Override
 	public OTUSet setInNeedOfNewVersion() {
-		final Study study = getParent();
+		final IStudy study = getParent();
 		if (study != null) {
 			study.setInNeedOfNewVersion();
 		}
@@ -496,21 +524,21 @@ public class OTUSet extends UUPPodEntityWithXmlId {
 	 * @return any {@code OTU}s that were removed as a result of this operation,
 	 *         in their original order
 	 */
-	public List<OTU> setOTUs(final List<? extends OTU> newOTUs) {
+	public List<IOTU> setOTUs(final List<? extends IOTU> newOTUs) {
 		checkNotNull(newOTUs);
 		if (newOTUs.equals(getOTUs())) {
 			return Collections.emptyList();
 		}
 
-		final List<OTU> removedOTUs = newArrayList(getOTUs());
+		final List<IOTU> removedOTUs = newArrayList(getOTUs());
 		removedOTUs.removeAll(newOTUs);
 
-		for (final OTU removedOTU : removedOTUs) {
+		for (final IOTU removedOTU : removedOTUs) {
 			removedOTU.setParent(null);
 		}
 
 		getOTUsModifiable().clear();
-		for (final OTU otu : newOTUs) {
+		for (final IOTU otu : newOTUs) {
 			addOTUWithoutSetOTUsOnChildren(otu);
 		}
 
@@ -523,7 +551,7 @@ public class OTUSet extends UUPPodEntityWithXmlId {
 
 	private void setOTUSetOnChildren() {
 		// Now let's let everyone know about the new OTUs
-		for (final OTU otu : getOTUs()) {
+		for (final IOTU otu : getOTUs()) {
 			otu.setParent(this);
 		}
 
@@ -544,8 +572,10 @@ public class OTUSet extends UUPPodEntityWithXmlId {
 		}
 	}
 
-	void setParent(@CheckForNull final Study parent) {
+	/** {@inheritDoc} */
+	public OTUSet setParent(@CheckForNull final IStudy parent) {
 		this.parent = parent;
+		return this;
 	}
 
 	/**
@@ -567,5 +597,4 @@ public class OTUSet extends UUPPodEntityWithXmlId {
 
 		return retValue.toString();
 	}
-
 }

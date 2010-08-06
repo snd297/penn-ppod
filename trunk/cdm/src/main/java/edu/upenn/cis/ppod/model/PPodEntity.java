@@ -122,7 +122,7 @@ public abstract class PPodEntity
 		}
 	}
 
-	public PPodEntity addAttachment(final Attachment attachment) {
+	public Attachment addAttachment(final Attachment attachment) {
 		if (attachments == null) {
 			attachments = newHashSet();
 		}
@@ -132,7 +132,7 @@ public abstract class PPodEntity
 		attachment.setAttachee(this);
 		hasAttachments = true;
 
-		return this;
+		return attachment;
 	}
 
 	/**
@@ -333,7 +333,8 @@ public abstract class PPodEntity
 		return retValue.toString();
 	}
 
-	protected PPodEntity unsetInNeedOfNewVersion() {
+	@VisibleForTesting
+	public PPodEntity unsetInNeedOfNewVersion() {
 		inNeedOfNewVersion = false;
 		return this;
 	}
