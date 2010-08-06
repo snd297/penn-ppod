@@ -26,8 +26,6 @@ import com.google.inject.Inject;
 import com.google.inject.Provider;
 
 import edu.upenn.cis.ppod.TestGroupDefs;
-import edu.upenn.cis.ppod.modelinterfaces.IOTU;
-import edu.upenn.cis.ppod.modelinterfaces.IOTUSet;
 
 /**
  * Tests for {@link Sequence}.
@@ -100,11 +98,11 @@ public class MolecularSequenceTest {
 	public void setInNeedOfNewPPodVersion() {
 		final DNASequence sequence = dnaSequenceProvider
 				.get();
-		final IOTUSet otuSet = otuSetProvider.get();
-		final IOTU otu0 = otuSet.addOTU(otuProvider.get());
+		final OTUSet otuSet = otuSetProvider.get();
+		final OTU otu0 = otuSet.addOTU(otuProvider.get());
 
-		final SequenceSet<DNASequence> sequenceSet =
-				dnaSequenceSetProvider.get();
+		final SequenceSet<DNASequence> sequenceSet = dnaSequenceSetProvider
+				.get();
 
 		sequenceSet.setParent(otuSet);
 

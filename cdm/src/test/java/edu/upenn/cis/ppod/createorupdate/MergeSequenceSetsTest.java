@@ -25,9 +25,9 @@ import edu.upenn.cis.ppod.dao.TestObjectWithLongIdDAO;
 import edu.upenn.cis.ppod.model.DNASequence;
 import edu.upenn.cis.ppod.model.DNASequenceSet;
 import edu.upenn.cis.ppod.model.ModelAssert;
+import edu.upenn.cis.ppod.model.OTU;
+import edu.upenn.cis.ppod.model.OTUSet;
 import edu.upenn.cis.ppod.modelinterfaces.INewVersionInfo;
-import edu.upenn.cis.ppod.modelinterfaces.IOTU;
-import edu.upenn.cis.ppod.modelinterfaces.IOTUSet;
 
 @Test(groups = TestGroupDefs.FAST, dependsOnGroups = TestGroupDefs.INIT)
 public class MergeSequenceSetsTest {
@@ -41,10 +41,10 @@ public class MergeSequenceSetsTest {
 	private Provider<DNASequence> dnaSequenceProvider;
 
 	@Inject
-	private Provider<IOTUSet> otuSetProvider;
+	private Provider<OTUSet> otuSetProvider;
 
 	@Inject
-	private Provider<IOTU> otuProvider;
+	private Provider<OTU> otuProvider;
 
 	@Inject
 	private INewVersionInfo newVersionInfo;
@@ -63,13 +63,13 @@ public class MergeSequenceSetsTest {
 							.setLabel("src-seq-set-0");
 		final DNASequenceSet trgSeqSet = dnaSequenceSetProvider.get();
 
-		final IOTUSet trgOTUSet = otuSetProvider.get();
+		final OTUSet trgOTUSet = otuSetProvider.get();
 		trgOTUSet.addOTU(otuProvider.get().setLabel("otu-0"));
 		trgOTUSet.addOTU(otuProvider.get().setLabel("otu-1"));
 		trgOTUSet.addOTU(otuProvider.get().setLabel("otu-2"));
 		trgOTUSet.addDNASequenceSet(trgSeqSet);
 
-		final IOTUSet srcOTUSet = otuSetProvider.get();
+		final OTUSet srcOTUSet = otuSetProvider.get();
 		srcOTUSet.addOTU(otuProvider.get().setLabel("otu-0"));
 		srcOTUSet.addOTU(otuProvider.get().setLabel("otu-1"));
 		srcOTUSet.addOTU(otuProvider.get().setLabel("otu-2"));
@@ -128,13 +128,13 @@ public class MergeSequenceSetsTest {
 							.setLabel("src-seq-set-0");
 		final DNASequenceSet trgSeqSet = dnaSequenceSetProvider.get();
 
-		final IOTUSet trgOTUSet = otuSetProvider.get();
+		final OTUSet trgOTUSet = otuSetProvider.get();
 		trgOTUSet.addOTU(otuProvider.get().setLabel("otu-0"));
 		trgOTUSet.addOTU(otuProvider.get().setLabel("otu-1"));
 		trgOTUSet.addOTU(otuProvider.get().setLabel("otu-2"));
 		trgOTUSet.addDNASequenceSet(trgSeqSet);
 
-		final IOTUSet srcOTUSet = otuSetProvider.get();
+		final OTUSet srcOTUSet = otuSetProvider.get();
 		srcOTUSet.addOTU(otuProvider.get().setLabel("otu-0"));
 		srcOTUSet.addOTU(otuProvider.get().setLabel("otu-1"));
 		srcOTUSet.addOTU(otuProvider.get().setLabel("otu-2"));
@@ -195,13 +195,13 @@ public class MergeSequenceSetsTest {
 						.setLabel("src-seq-set-0");
 		final DNASequenceSet trgSeqSet = dnaSequenceSetProvider.get();
 
-		final IOTUSet trgOTUSet = otuSetProvider.get();
+		final OTUSet trgOTUSet = otuSetProvider.get();
 		trgOTUSet.addOTU(otuProvider.get().setLabel("otu-0"));
 		trgOTUSet.addOTU(otuProvider.get().setLabel("otu-1"));
 		trgOTUSet.addOTU(otuProvider.get().setLabel("otu-2"));
 		trgOTUSet.addDNASequenceSet(trgSeqSet);
 
-		final IOTUSet srcOTUSet = otuSetProvider.get();
+		final OTUSet srcOTUSet = otuSetProvider.get();
 		srcOTUSet.addOTU(otuProvider.get().setLabel("otu-0"));
 		srcOTUSet.addOTU(otuProvider.get().setLabel("otu-1"));
 		srcOTUSet.addOTU(otuProvider.get().setLabel("otu-2"));

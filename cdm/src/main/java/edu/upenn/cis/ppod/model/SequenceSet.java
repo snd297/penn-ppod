@@ -32,11 +32,7 @@ import javax.persistence.MappedSuperclass;
 import javax.xml.bind.Unmarshaller;
 import javax.xml.bind.annotation.XmlAttribute;
 
-import org.hibernate.annotations.Target;
-
-import edu.upenn.cis.ppod.modelinterfaces.IOTU;
 import edu.upenn.cis.ppod.modelinterfaces.IOTUKeyedMap;
-import edu.upenn.cis.ppod.modelinterfaces.IOTUSet;
 import edu.upenn.cis.ppod.modelinterfaces.IOTUSetChild;
 import edu.upenn.cis.ppod.util.IVisitor;
 
@@ -58,8 +54,7 @@ public abstract class SequenceSet<S extends Sequence<?>>
 	@CheckForNull
 	@ManyToOne(fetch = FetchType.LAZY, optional = false)
 	@JoinColumn(name = OTUSet.JOIN_COLUMN)
-	@Target(OTUSet.class)
-	private IOTUSet parent;
+	private OTUSet parent;
 
 	SequenceSet() {}
 
@@ -131,7 +126,7 @@ public abstract class SequenceSet<S extends Sequence<?>>
 	 * @return this matrix's {@code OTUSet}
 	 */
 	@Nullable
-	public IOTUSet getParent() {
+	public OTUSet getParent() {
 		return parent;
 	}
 
@@ -146,7 +141,7 @@ public abstract class SequenceSet<S extends Sequence<?>>
 	 *             sequence's {@code OTUSet}
 	 */
 	@Nullable
-	public abstract S getSequence(final IOTU otu);
+	public abstract S getSequence(final OTU otu);
 
 	/**
 	 * Get the length of the sequences in this set, or {@code null} if no
@@ -176,7 +171,7 @@ public abstract class SequenceSet<S extends Sequence<?>>
 	 * @return a map which contains the {@code OTU, S} entries of this sequence
 	 *         set
 	 */
-	public abstract Map<IOTU, S> getSequences();
+	public abstract Map<OTU, S> getSequences();
 
 	/**
 	 * 
@@ -191,7 +186,7 @@ public abstract class SequenceSet<S extends Sequence<?>>
 	 * @return
 	 */
 	@CheckForNull
-	public abstract S putSequence(final IOTU otu, final S sequence);
+	public abstract S putSequence(final OTU otu, final S sequence);
 
 	@Override
 	public SequenceSet<S> setInNeedOfNewVersion() {
@@ -230,14 +225,11 @@ public abstract class SequenceSet<S extends Sequence<?>>
 	 * Intentionally package-private.
 	 * 
 	 * @param otuSet the OTU set that will own this sequence set
-	 * 
-	 * @return this
 	 */
-	public SequenceSet<S> setParent(
-			@CheckForNull final IOTUSet parent) {
+	void setParent(
+			@CheckForNull final OTUSet parent) {
 		this.parent = parent;
 		setOTUs();
-		return this;
 	}
 
 }

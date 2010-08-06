@@ -29,7 +29,6 @@ import edu.upenn.cis.ppod.model.OTU;
 import edu.upenn.cis.ppod.model.Sequence;
 import edu.upenn.cis.ppod.model.SequenceSet;
 import edu.upenn.cis.ppod.modelinterfaces.INewVersionInfo;
-import edu.upenn.cis.ppod.modelinterfaces.IOTU;
 
 final class MergeSequenceSets<SS extends SequenceSet<S>, S extends Sequence<?>>
 		implements IMergeSequenceSets<SS, S> {
@@ -66,7 +65,7 @@ final class MergeSequenceSets<SS extends SequenceSet<S>, S extends Sequence<?>>
 		final Integer srcSeqSetLengths =
 				srcSeqSet.getSequenceLengths();
 
-		Map<IOTU, S> targOTUsToSeqs;
+		Map<OTU, S> targOTUsToSeqs;
 
 		if (targSeqSetLengths == null ||
 				targSeqSetLengths.equals(srcSeqSetLengths)) {
@@ -86,13 +85,13 @@ final class MergeSequenceSets<SS extends SequenceSet<S>, S extends Sequence<?>>
 		}
 
 		for (int i = 0; i < srcSeqSet.getParent().getOTUs().size(); i++) {
-			final IOTU sourceOTU =
+			final OTU sourceOTU =
 					srcSeqSet.getParent()
 							.getOTUs()
 							.get(i);
 
 			final S srcSeq = srcSeqSet.getSequence(sourceOTU);
-			final IOTU targOTU = targSeqSet.getParent()
+			final OTU targOTU = targSeqSet.getParent()
 							.getOTUs()
 							.get(i);
 

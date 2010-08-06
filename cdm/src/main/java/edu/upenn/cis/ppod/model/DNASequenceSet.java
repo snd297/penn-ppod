@@ -30,7 +30,6 @@ import javax.xml.bind.annotation.XmlElement;
 
 import com.google.inject.Inject;
 
-import edu.upenn.cis.ppod.modelinterfaces.IOTU;
 import edu.upenn.cis.ppod.util.IVisitor;
 
 /**
@@ -89,13 +88,13 @@ public class DNASequenceSet extends SequenceSet<DNASequence> {
 	}
 
 	@Override
-	public DNASequence getSequence(final IOTU otu) {
+	public DNASequence getSequence(final OTU otu) {
 		checkNotNull(otu);
 		return getOTUKeyedSequences().get(otu);
 	}
 
 	@Override
-	public Map<IOTU, DNASequence> getSequences() {
+	public Map<OTU, DNASequence> getSequences() {
 		return Collections.unmodifiableMap(
 				getOTUKeyedSequences()
 						.getValues());
@@ -104,7 +103,7 @@ public class DNASequenceSet extends SequenceSet<DNASequence> {
 	@Override
 	@CheckForNull
 	public DNASequence putSequence(
-			final IOTU otu,
+			final OTU otu,
 			final DNASequence sequence) {
 		checkNotNull(otu);
 		checkNotNull(sequence);

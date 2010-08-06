@@ -91,8 +91,7 @@ public class HibernateDAOFactory implements IDAOFactory {
 	/**
 	 * An {@link IOTUDAO} Hibernate DAO.
 	 */
-	public static class OTUDAOHibernate
-			extends GenericHibernateDAO<OTU, Long>
+	public static class OTUDAOHibernate extends GenericHibernateDAO<OTU, Long>
 			implements IOTUDAO {}
 
 	/**

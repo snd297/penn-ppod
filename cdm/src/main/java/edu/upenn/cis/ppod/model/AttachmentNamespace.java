@@ -24,7 +24,6 @@ import javax.persistence.Entity;
 import javax.persistence.Table;
 import javax.xml.bind.annotation.XmlAttribute;
 
-import edu.upenn.cis.ppod.modelinterfaces.ILabeled;
 import edu.upenn.cis.ppod.util.IVisitor;
 
 /**
@@ -34,9 +33,7 @@ import edu.upenn.cis.ppod.util.IVisitor;
  */
 @Entity
 @Table(name = AttachmentNamespace.TABLE)
-public class AttachmentNamespace
-		extends PersistentObjectWithXmlId
-		implements ILabeled {
+public class AttachmentNamespace extends PersistentObjectWithXmlId {
 
 	public static final String TABLE = "ATTACHMENT_NAMESPACE";
 

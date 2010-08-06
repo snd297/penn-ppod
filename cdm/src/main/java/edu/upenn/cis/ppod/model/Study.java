@@ -31,10 +31,7 @@ import javax.xml.bind.Marshaller;
 import javax.xml.bind.annotation.XmlAttribute;
 import javax.xml.bind.annotation.XmlElement;
 import javax.xml.bind.annotation.XmlRootElement;
-import javax.xml.bind.annotation.adapters.XmlAdapter;
 
-import edu.upenn.cis.ppod.modelinterfaces.IOTUSet;
-import edu.upenn.cis.ppod.modelinterfaces.IStudy;
 import edu.upenn.cis.ppod.services.ppodentity.IOTUSetCentricEntities;
 import edu.upenn.cis.ppod.util.IVisitor;
 import edu.upenn.cis.ppod.util.PPodEntitiesUtil;
@@ -48,22 +45,7 @@ import edu.upenn.cis.ppod.util.PPodEntitiesUtil;
 @XmlRootElement
 @Entity
 @Table(name = Study.TABLE)
-public class Study
-		extends UUPPodEntity
-		implements IOTUSetCentricEntities, IStudy {
-
-	public static class Adapter extends XmlAdapter<Study, IStudy> {
-
-		@Override
-		public Study marshal(final IStudy study) {
-			return (Study) study;
-		}
-
-		@Override
-		public IStudy unmarshal(final Study study) {
-			return study;
-		}
-	}
+public class Study extends UUPPodEntity implements IOTUSetCentricEntities {
 
 	/** The table name for this entity. */
 	public static final String TABLE = "STUDY";
@@ -78,8 +60,8 @@ public class Study
 	private String label;
 
 	@OneToMany(mappedBy = "parent", cascade = CascadeType.ALL,
-			orphanRemoval = true, targetEntity = OTUSet.class)
-	private final Set<IOTUSet> otuSets = newHashSet();
+			orphanRemoval = true)
+	private final Set<OTUSet> otuSets = newHashSet();
 
 	@Transient
 	private final Set<AttachmentNamespace> attachmentNamespaces = newHashSet();
@@ -92,13 +74,12 @@ public class Study
 	@Override
 	public void accept(final IVisitor visitor) {
 		visitor.visitStudy(this);
-		for (final IOTUSet otuSet : getOTUSets()) {
+		for (final OTUSet otuSet : getOTUSets()) {
 			otuSet.accept(visitor);
 		}
 	}
 
-	/** {@inheritDoc} */
-	public IOTUSet addOTUSet(final IOTUSet otuSet) {
+	public OTUSet addOTUSet(final OTUSet otuSet) {
 		checkNotNull(otuSet);
 		if (getOTUSets().contains(otuSet)) {
 
@@ -133,19 +114,22 @@ public class Study
 		return true;
 	}
 
-	/** {@inheritDoc} */
+	/**
+	 * Get the label.
+	 * 
+	 * @return the label
+	 */
 	@XmlAttribute
 	public String getLabel() {
 		return label;
 	}
 
-	/** {@inheritDoc} */
-	public Set<IOTUSet> getOTUSets() {
+	public Set<OTUSet> getOTUSets() {
 		return Collections.unmodifiableSet(otuSets);
 	}
 
 	@XmlElement(name = "otuSet")
-	protected Set<IOTUSet> getOTUSetsModifiable() {
+	protected Set<OTUSet> getOTUSetsModifiable() {
 		return otuSets;
 	}
 
@@ -159,8 +143,14 @@ public class Study
 		return attachmentTypes;
 	}
 
-	/** {@inheritDoc} */
-	public IStudy removeOTUSet(final IOTUSet otuSet) {
+	/**
+	 * Remove an OTU set from this Study.
+	 * 
+	 * @param otuSet to be removed
+	 * 
+	 * @return this
+	 */
+	public Study removeOTUSet(final OTUSet otuSet) {
 		if (otuSets.remove(otuSet)) {
 			otuSet.setParent(null);
 			setInNeedOfNewVersion();
@@ -168,8 +158,14 @@ public class Study
 		return this;
 	}
 
-	/** {@inheritDoc} */
-	public IStudy setLabel(final String label) {
+	/**
+	 * Set the label.
+	 * 
+	 * @param label the label to set
+	 * 
+	 * @return this
+	 */
+	public Study setLabel(final String label) {
 		checkNotNull(label);
 		if (label.equals(this.label)) {
 
@@ -203,4 +199,5 @@ public class Study
 
 		return retValue.toString();
 	}
+
 }

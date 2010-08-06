@@ -25,7 +25,6 @@ import javax.persistence.CascadeType;
 import javax.persistence.Embeddable;
 import javax.persistence.JoinColumn;
 import javax.persistence.JoinTable;
-import javax.persistence.MapKeyClass;
 import javax.persistence.MapKeyJoinColumn;
 import javax.persistence.OneToMany;
 import javax.persistence.Transient;
@@ -37,7 +36,6 @@ import javax.xml.bind.annotation.XmlElement;
 
 import org.hibernate.annotations.Parent;
 
-import edu.upenn.cis.ppod.modelinterfaces.IOTU;
 import edu.upenn.cis.ppod.modelinterfaces.IOTUKeyedMap;
 import edu.upenn.cis.ppod.modelinterfaces.IOTUKeyedMapPlus;
 import edu.upenn.cis.ppod.util.IVisitor;
@@ -55,12 +53,22 @@ public class DNARows implements IOTUKeyedMap<DNARow> {
 
 	private final IOTUKeyedMapPlus<DNARow, DNAMatrix, OTUDNARowPair> rows = new OTUKeyedMapPlus<DNARow, DNAMatrix, OTUDNARowPair>();
 
-	/** {@inheritDoc} */
+	/*
+	 * (non-Javadoc)
+	 * 
+	 * @see
+	 * edu.upenn.cis.ppod.modelinterfaces.IOTUKeyedMap#accept(edu.upenn.cis.
+	 * ppod.util.IVisitor)
+	 */
 	public void accept(final IVisitor visitor) {
 		rows.accept(visitor);
 	}
 
-	/** {@inheritDoc} */
+	/*
+	 * (non-Javadoc)
+	 * 
+	 * @see edu.upenn.cis.ppod.modelinterfaces.IOTUKeyedMap#afterUnmarshal()
+	 */
 	public void afterUnmarshal() {
 		rows.afterUnmarshal();
 	}
@@ -75,7 +83,7 @@ public class DNARows implements IOTUKeyedMap<DNARow> {
 
 	public boolean beforeMarshal(@CheckForNull final Marshaller marshaller) {
 		getOTUSomethingPairs().clear();
-		for (final Map.Entry<IOTU, DNARow> otuToRow : getValues()
+		for (final Map.Entry<OTU, DNARow> otuToRow : getValues()
 				.entrySet()) {
 			getOTUSomethingPairs().add(
 					OTUDNARowPair.of(otuToRow.getKey(), otuToRow
@@ -90,7 +98,7 @@ public class DNARows implements IOTUKeyedMap<DNARow> {
 	}
 
 	/** {@inheritDoc} */
-	public DNARow get(final IOTU key) {
+	public DNARow get(final OTU key) {
 		return rows.get(key);
 	}
 
@@ -120,17 +128,26 @@ public class DNARows implements IOTUKeyedMap<DNARow> {
 			orphanRemoval = true)
 	@JoinTable(inverseJoinColumns = @JoinColumn(name = DNARow.JOIN_COLUMN))
 	@MapKeyJoinColumn(name = OTU.JOIN_COLUMN)
-	@MapKeyClass(OTU.class)
-	public Map<IOTU, DNARow> getValues() {
+	public Map<OTU, DNARow> getValues() {
 		return rows.getValues();
 	}
 
-	/** {@inheritDoc} */
-	public DNARow put(final IOTU key, final DNARow value) {
+	/*
+	 * (non-Javadoc)
+	 * 
+	 * @see
+	 * edu.upenn.cis.ppod.modelinterfaces.IOTUKeyedMap#put(edu.upenn.cis.ppod
+	 * .model.OTU, edu.upenn.cis.ppod.modelinterfaces.IOTUKeyedMapValue)
+	 */
+	public DNARow put(final OTU key, final DNARow value) {
 		return rows.put(key, value);
 	}
 
-	/** {@inheritDoc} */
+	/*
+	 * (non-Javadoc)
+	 * 
+	 * @see edu.upenn.cis.ppod.modelinterfaces.IOTUKeyedMap#setOTUs()
+	 */
 	public DNARows setOTUs() {
 		rows.setOTUs();
 		return this;
@@ -150,7 +167,7 @@ public class DNARows implements IOTUKeyedMap<DNARow> {
 
 	/** {@inheritDoc} */
 	public DNARows setValues(
-			final Map<IOTU, DNARow> values) {
+			final Map<OTU, DNARow> values) {
 		rows.setValues(values);
 		return this;
 	}
