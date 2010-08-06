@@ -21,10 +21,10 @@ import com.google.inject.Inject;
 import com.google.inject.Provider;
 
 import edu.upenn.cis.ppod.model.DNACell;
-import edu.upenn.cis.ppod.model.DNAMatrix;
 import edu.upenn.cis.ppod.model.DNARow;
 import edu.upenn.cis.ppod.model.DNASequence;
 import edu.upenn.cis.ppod.model.DNASequenceSet;
+import edu.upenn.cis.ppod.model.IDNAMatrix;
 import edu.upenn.cis.ppod.model.StandardCell;
 import edu.upenn.cis.ppod.model.StandardCharacter;
 import edu.upenn.cis.ppod.model.StandardMatrix;
@@ -154,7 +154,7 @@ final class Study2StudyInfo implements IStudy2StudyInfo {
 
 			// TODO: refactor so CharacterStateMatrix and DNAMatrix don't have
 			// duplicate code.
-			for (final DNAMatrix matrix : otuSet
+			for (final IDNAMatrix matrix : otuSet
 					.getDNAMatrices()) {
 				final MatrixInfo matrixInfo = matrixInfoProvider.get();
 				otuSetInfo.getMatrixInfos().add(matrixInfo);

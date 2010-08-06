@@ -26,6 +26,8 @@ import edu.upenn.cis.ppod.createorupdate.IMergeAttachments;
 import edu.upenn.cis.ppod.createorupdate.IMergeOTUSets;
 import edu.upenn.cis.ppod.createorupdate.IMergeTreeSets;
 import edu.upenn.cis.ppod.dao.hibernate.DAOHibernateModule;
+import edu.upenn.cis.ppod.model.DNAMatrix;
+import edu.upenn.cis.ppod.model.IDNAMatrix;
 import edu.upenn.cis.ppod.model.ModelModule;
 import edu.upenn.cis.ppod.model.OTU;
 import edu.upenn.cis.ppod.model.OTUSet;
@@ -93,6 +95,7 @@ public final class PPodModule extends AbstractModule {
 		bind(IStudy.class).to(Study.class);
 		bind(IOTUSet.class).to(OTUSet.class);
 		bind(IOTU.class).to(OTU.class);
+		bind(IDNAMatrix.class).to(DNAMatrix.class);
 
 		install(new ModelModule());
 		install(new DAOHibernateModule());

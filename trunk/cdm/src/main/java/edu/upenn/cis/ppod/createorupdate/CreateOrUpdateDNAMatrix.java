@@ -28,14 +28,15 @@ import edu.upenn.cis.ppod.dao.IDAO;
 import edu.upenn.cis.ppod.model.Attachment;
 import edu.upenn.cis.ppod.model.Cell;
 import edu.upenn.cis.ppod.model.DNACell;
-import edu.upenn.cis.ppod.model.DNAMatrix;
 import edu.upenn.cis.ppod.model.DNANucleotide;
 import edu.upenn.cis.ppod.model.DNARow;
+import edu.upenn.cis.ppod.model.IDNAMatrix;
 import edu.upenn.cis.ppod.modelinterfaces.INewVersionInfo;
 import edu.upenn.cis.ppod.services.ppodentity.MatrixInfo;
 
+
 final class CreateOrUpdateDNAMatrix
-		extends CreateOrUpdateMatrix<DNAMatrix, DNARow, DNACell, DNANucleotide>
+		extends CreateOrUpdateMatrix<IDNAMatrix, DNARow, DNACell, DNANucleotide>
 		implements ICreateOrUpdateDNAMatrix {
 
 	@Inject
@@ -51,8 +52,8 @@ final class CreateOrUpdateDNAMatrix
 
 	@Override
 	public void createOrUpdateMatrix(
-			final DNAMatrix dbMatrix,
-			final DNAMatrix sourceMatrix) {
+			final IDNAMatrix dbMatrix,
+			final IDNAMatrix sourceMatrix) {
 		dbMatrix.setColumnsSize(
 				get(sourceMatrix.getRows()
 								.values(), 0)

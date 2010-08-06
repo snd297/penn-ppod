@@ -157,7 +157,7 @@ public class OTUSetTest {
 
 		otuSet.unsetInNeedOfNewVersion();
 
-		final DNAMatrix dnaMatrixReturned = otuSet.addDNAMatrix(dnaMatrix);
+		final IDNAMatrix dnaMatrixReturned = otuSet.addDNAMatrix(dnaMatrix);
 		assertSame(dnaMatrixReturned, dnaMatrix);
 		assertEquals(getOnlyElement(otuSet.getDNAMatrices()), dnaMatrix);
 		assertSame(dnaMatrix.getParent(), otuSet);
@@ -351,11 +351,11 @@ public class OTUSetTest {
 
 	@Test
 	public void removeDNAMatrix() {
-		final DNAMatrix matrix0 =
+		final IDNAMatrix matrix0 =
 				otuSet.addDNAMatrix(dnaMatrixProvider.get());
-		final DNAMatrix matrix1 =
+		final IDNAMatrix matrix1 =
 				otuSet.addDNAMatrix(dnaMatrixProvider.get());
-		final DNAMatrix matrix2 =
+		final IDNAMatrix matrix2 =
 				otuSet.addDNAMatrix(dnaMatrixProvider.get());
 
 		otuSet.unsetInNeedOfNewVersion();

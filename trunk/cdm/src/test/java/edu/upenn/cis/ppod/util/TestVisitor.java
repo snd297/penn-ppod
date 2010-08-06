@@ -23,10 +23,10 @@ import edu.upenn.cis.ppod.model.Attachment;
 import edu.upenn.cis.ppod.model.AttachmentNamespace;
 import edu.upenn.cis.ppod.model.AttachmentType;
 import edu.upenn.cis.ppod.model.DNACell;
-import edu.upenn.cis.ppod.model.DNAMatrix;
 import edu.upenn.cis.ppod.model.DNARow;
 import edu.upenn.cis.ppod.model.DNASequence;
 import edu.upenn.cis.ppod.model.DNASequenceSet;
+import edu.upenn.cis.ppod.model.IDNAMatrix;
 import edu.upenn.cis.ppod.model.StandardCell;
 import edu.upenn.cis.ppod.model.StandardCharacter;
 import edu.upenn.cis.ppod.model.StandardMatrix;
@@ -77,7 +77,7 @@ public class TestVisitor extends EmptyVisitor {
 	}
 
 	@Override
-	public void visitDNAMatrix(final DNAMatrix matrix) {
+	public void visitDNAMatrix(final IDNAMatrix matrix) {
 		visited.add(matrix);
 	}
 

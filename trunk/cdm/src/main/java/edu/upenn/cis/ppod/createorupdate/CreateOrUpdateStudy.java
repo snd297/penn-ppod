@@ -27,9 +27,9 @@ import edu.upenn.cis.ppod.dao.IAttachmentNamespaceDAO;
 import edu.upenn.cis.ppod.dao.IAttachmentTypeDAO;
 import edu.upenn.cis.ppod.dao.IDAO;
 import edu.upenn.cis.ppod.dao.IStudyDAO;
-import edu.upenn.cis.ppod.model.DNAMatrix;
 import edu.upenn.cis.ppod.model.DNASequence;
 import edu.upenn.cis.ppod.model.DNASequenceSet;
+import edu.upenn.cis.ppod.model.IDNAMatrix;
 import edu.upenn.cis.ppod.model.OTUSet;
 import edu.upenn.cis.ppod.model.StandardMatrix;
 import edu.upenn.cis.ppod.model.Study;
@@ -51,7 +51,7 @@ final class CreateOrUpdateStudy implements ICreateOrUpdateStudy {
 	private final Provider<Study> studyProvider;
 	private final Provider<OTUSet> otuSetProvider;
 	private final Provider<StandardMatrix> standardMatrixProvider;
-	private final Provider<DNAMatrix> dnaMatrixProvider;
+	private final Provider<IDNAMatrix> dnaMatrixProvider;
 	private final Provider<DNASequenceSet> dnaSequenceSetProvider;
 	private final Provider<TreeSet> treeSetProvider;
 
@@ -78,7 +78,7 @@ final class CreateOrUpdateStudy implements ICreateOrUpdateStudy {
 			final ICreateOrUpdateStandardMatrix.IFactory createOrUpdateMatrixFactory,
 			final IMergeSequenceSets.IFactory<DNASequenceSet, DNASequence> mergeDNASequenceSetsFactory,
 			final IMergeAttachments.IFactory mergeAttachmentFactory,
-			final Provider<DNAMatrix> dnaMatrixProvider,
+			final Provider<IDNAMatrix> dnaMatrixProvider,
 			@Assisted final IStudy incomingStudy,
 			@Assisted final IStudyDAO studyDAO,
 			@Assisted final IAttachmentNamespaceDAO attachmentNamespaceDAO,
@@ -187,7 +187,7 @@ final class CreateOrUpdateStudy implements ICreateOrUpdateStudy {
 			final IOTUSet incomingOTUSet) {
 
 		// Let's delete matrices missing from the incoming OTU set
-		for (final DNAMatrix dbMatrix : dbOTUSet.getDNAMatrices()) {
+		for (final IDNAMatrix dbMatrix : dbOTUSet.getDNAMatrices()) {
 			if (null == findIf(
 							incomingOTUSet.getDNAMatrices(),
 							compose(
@@ -198,9 +198,9 @@ final class CreateOrUpdateStudy implements ICreateOrUpdateStudy {
 			}
 		}
 
-		for (final DNAMatrix incomingMatrix : incomingOTUSet
+		for (final IDNAMatrix incomingMatrix : incomingOTUSet
 				.getDNAMatrices()) {
-			DNAMatrix dbMatrix;
+			IDNAMatrix dbMatrix;
 			if (null == (dbMatrix =
 					findIf(
 							dbOTUSet.getDNAMatrices(),
