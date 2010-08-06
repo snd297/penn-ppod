@@ -46,10 +46,12 @@ import com.google.common.annotations.VisibleForTesting;
 
 import edu.umd.cs.findbugs.annotations.CheckForNull;
 import edu.umd.cs.findbugs.annotations.Nullable;
+import edu.upenn.cis.ppod.modelinterfaces.IMatrix;
 import edu.upenn.cis.ppod.modelinterfaces.IOTU;
 import edu.upenn.cis.ppod.modelinterfaces.IOTUKeyedMap;
 import edu.upenn.cis.ppod.modelinterfaces.IOTUSet;
 import edu.upenn.cis.ppod.modelinterfaces.IOTUSetChild;
+import edu.upenn.cis.ppod.modelinterfaces.IRow;
 import edu.upenn.cis.ppod.util.IVisitor;
 
 /**
@@ -59,7 +61,7 @@ import edu.upenn.cis.ppod.util.IVisitor;
  * @author Sam Donnelly
  */
 @MappedSuperclass
-public abstract class Matrix<R extends Row<?, ?>>
+public abstract class Matrix<R extends IRow<?, ?>>
 		extends UUPPodEntityWithXmlId
 		implements IOTUSetChild, IMatrix<R> {
 

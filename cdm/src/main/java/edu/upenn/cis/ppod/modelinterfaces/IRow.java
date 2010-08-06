@@ -15,28 +15,28 @@
  */
 package edu.upenn.cis.ppod.modelinterfaces;
 
-import java.util.Map;
-import java.util.Set;
+import java.util.List;
 
-import edu.upenn.cis.ppod.util.IPair;
 
-public interface IOTUKeyedMapPlus<V extends IOTUKeyedMapValue<?>, P extends IOTUSetChild, OP extends IPair<IOTU, V>>
-		extends IOTUKeyedMap<V> {
-
-	void afterUnmarshal(final P parent);
-
-	IOTUKeyedMapPlus<V, P, OP> clear();
+public interface IRow<C extends ICell<?, ?>, M extends IMatrix<?>>
+		extends IOTUKeyedMapValue<M>, IPPodEntity, IVisitable {
+	/**
+	 * Get the cells that make up this row.
+	 * 
+	 * @return the cells that make up this row
+	 */
+	List<C> getCells();
 
 	/**
-	 * For marshalling {@code rows}. Since a {@code Map}'s key couldn't be an
-	 * {@code XmlIDREF} in JAXB as far as we can tell.
+	 * Set the cells of this row.
+	 * <p>
+	 * This handles both sides of the {@code Row<->Cell} relationship.
+	 * 
+	 * @param cells the cells
+	 * 
+	 * @return any cells which were removed as a result of this operation
+	 * 
 	 */
-	Set<OP> getOTUSomethingPairs();
-
-	P getParent();
-
-	IOTUKeyedMapPlus<V, P, OP> setParent(final P parent);
-
-	IOTUKeyedMapPlus<V, P, OP> setValues(final Map<IOTU, V> values);
+	List<C> setCells(final List<? extends C> cells);
 
 }

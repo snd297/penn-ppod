@@ -32,8 +32,11 @@ import javax.persistence.ManyToOne;
 import javax.persistence.Table;
 import javax.xml.bind.annotation.XmlAttribute;
 import javax.xml.bind.annotation.XmlElement;
+import javax.xml.bind.annotation.adapters.XmlAdapter;
 
 import edu.umd.cs.findbugs.annotations.CheckForNull;
+import edu.upenn.cis.ppod.modelinterfaces.IDNACell;
+import edu.upenn.cis.ppod.modelinterfaces.IDNARow;
 import edu.upenn.cis.ppod.util.IVisitor;
 
 /**
@@ -43,7 +46,22 @@ import edu.upenn.cis.ppod.util.IVisitor;
  */
 @Entity
 @Table(name = DNACell.TABLE)
-public class DNACell extends MolecularCell<DNANucleotide, DNARow> {
+public class DNACell
+		extends MolecularCell<DNANucleotide, IDNARow>
+		implements IDNACell {
+
+	public static class Adapter extends XmlAdapter<DNACell, IDNACell> {
+
+		@Override
+		public DNACell marshal(final IDNACell dnaCell) {
+			return (DNACell) dnaCell;
+		}
+
+		@Override
+		public IDNACell unmarshal(final DNACell dnaCell) {
+			return dnaCell;
+		}
+	}
 
 	public static final String TABLE = "DNA_CELL";
 
@@ -75,9 +93,10 @@ public class DNACell extends MolecularCell<DNANucleotide, DNARow> {
 	@CheckForNull
 	private DNANucleotide element;
 
-	@ManyToOne(fetch = FetchType.LAZY, optional = false)
+	@ManyToOne(fetch = FetchType.LAZY, optional = false,
+			targetEntity = DNARow.class)
 	@JoinColumn(name = DNARow.JOIN_COLUMN)
-	private DNARow parent;
+	private IDNARow parent;
 
 	DNACell() {}
 
@@ -87,9 +106,7 @@ public class DNACell extends MolecularCell<DNANucleotide, DNARow> {
 		visitor.visitDNACell(this);
 	}
 
-	/*
-	 * (non-javadoc) Protected for JAXB.
-	 */
+	/** {@inheritDoc} */
 	@XmlAttribute(name = "nucleotide")
 	@Override
 	protected DNANucleotide getElement() {
@@ -101,8 +118,10 @@ public class DNACell extends MolecularCell<DNANucleotide, DNARow> {
 		return elements;
 	}
 
-	/*
-	 * (Non-javadoc) Protected for JAXB.
+	/**
+	 * {@inheritDoc}
+	 * <p>
+	 * Protected for JAXB.
 	 */
 	@XmlElement(name = "nucleotide")
 	@Override
@@ -111,7 +130,7 @@ public class DNACell extends MolecularCell<DNANucleotide, DNARow> {
 	}
 
 	@Override
-	public DNARow getParent() {
+	public IDNARow getParent() {
 		return parent;
 	}
 
@@ -122,7 +141,7 @@ public class DNACell extends MolecularCell<DNANucleotide, DNARow> {
 
 	/**
 	 * {@inheritDoc}
-	 * 
+	 * <p>
 	 * Protected for JAXB.
 	 */
 	@Override
@@ -130,25 +149,16 @@ public class DNACell extends MolecularCell<DNANucleotide, DNARow> {
 		this.element = element;
 	}
 
-	/*
-	 * (non-Javadoc)
-	 * 
-	 * @see edu.upenn.cis.ppod.model.Cell#setElements(java.util.Set)
-	 */
+	/** {@inheritDoc} */
 	@Override
 	void setElements(final Set<DNANucleotide> elements) {
 		this.elements = elements;
 	}
 
-	/*
-	 * (non-Javadoc)
-	 * 
-	 * @see
-	 * edu.upenn.cis.ppod.model.Cell#setParent(edu.upenn.cis.ppod.model.Row)
-	 */
-	@Override
-	void setParent(final DNARow parent) {
+	/** {@inheritDoc} */
+	public DNACell setParent(final IDNARow parent) {
 		this.parent = parent;
+		return this;
 	}
 
 }

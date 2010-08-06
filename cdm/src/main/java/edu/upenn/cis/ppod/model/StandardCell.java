@@ -48,29 +48,6 @@ import edu.upenn.cis.ppod.util.IVisitor;
 public class StandardCell extends Cell<StandardState, StandardRow> {
 
 	/**
-	 * Set the type to polymorphic with the appropriate states equivalent to
-	 * {@code states}.
-	 * <p>
-	 * Note that the elements that are actually assigned may or may not be the
-	 * {@code ==} to the elements passed in, but the cell will be set to
-	 * equivalent (not necessarily {@code .equals()}) elements.
-	 * 
-	 * @param elements the elements
-	 * 
-	 * @return this
-	 * 
-	 * @throw IllegalArgumentException if {@code polymorphicStates.size() < 2}
-	 */
-	public StandardCell setPolymorphicElements(
-			final Set<? extends StandardState> elements) {
-		checkNotNull(elements);
-		checkArgument(elements.size() > 1,
-				"polymorphic states must be > 1");
-		setPolymorphicOrUncertain(Type.POLYMORPHIC, elements);
-		return this;
-	}
-
-	/**
 	 * The name of the table.
 	 */
 	public static final String TABLE = "STANDARD_CELL";
@@ -208,9 +185,32 @@ public class StandardCell extends Cell<StandardState, StandardRow> {
 		this.elements = elements;
 	}
 
-	@Override
-	void setParent(final StandardRow parent) {
+	public StandardCell setParent(final StandardRow parent) {
 		this.parent = parent;
+		return this;
+	}
+
+	/**
+	 * Set the type to polymorphic with the appropriate states equivalent to
+	 * {@code states}.
+	 * <p>
+	 * Note that the elements that are actually assigned may or may not be the
+	 * {@code ==} to the elements passed in, but the cell will be set to
+	 * equivalent (not necessarily {@code .equals()}) elements.
+	 * 
+	 * @param elements the elements
+	 * 
+	 * @return this
+	 * 
+	 * @throw IllegalArgumentException if {@code polymorphicStates.size() < 2}
+	 */
+	public StandardCell setPolymorphicElements(
+			final Set<? extends StandardState> elements) {
+		checkNotNull(elements);
+		checkArgument(elements.size() > 1,
+				"polymorphic states must be > 1");
+		setPolymorphicOrUncertain(Type.POLYMORPHIC, elements);
+		return this;
 	}
 
 	/**

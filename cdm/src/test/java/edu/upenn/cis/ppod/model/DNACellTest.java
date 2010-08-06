@@ -30,7 +30,8 @@ import com.google.inject.Inject;
 import com.google.inject.Provider;
 
 import edu.upenn.cis.ppod.TestGroupDefs;
-import edu.upenn.cis.ppod.model.Cell.Type;
+import edu.upenn.cis.ppod.modelinterfaces.ICell;
+import edu.upenn.cis.ppod.modelinterfaces.ICell.Type;
 
 /**
  * Test {@link DNACell}.
@@ -121,20 +122,20 @@ public class DNACellTest {
 		cell.unsetInNeedOfNewVersion();
 
 		cell.setPolymorphicOrUncertain(
-						Cell.Type.POLYMORPHIC,
+						ICell.Type.POLYMORPHIC,
 						nucleotides);
 
 		assertTrue(cell.isInNeedOfNewVersion());
-		assertEquals(cell.getType(), Cell.Type.POLYMORPHIC);
+		assertEquals(cell.getType(), ICell.Type.POLYMORPHIC);
 		assertEquals(cell.getElements(),
 					nucleotides);
 
 		cell.unsetInNeedOfNewVersion();
 
-		cell.setPolymorphicOrUncertain(Cell.Type.POLYMORPHIC, nucleotides);
+		cell.setPolymorphicOrUncertain(ICell.Type.POLYMORPHIC, nucleotides);
 
 		assertFalse(cell.isInNeedOfNewVersion());
-		assertEquals(cell.getType(), Cell.Type.POLYMORPHIC);
+		assertEquals(cell.getType(), ICell.Type.POLYMORPHIC);
 		assertEquals((Object) cell.getElements(),
 				(Object) nucleotides);
 

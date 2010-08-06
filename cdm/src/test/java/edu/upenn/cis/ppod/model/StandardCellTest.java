@@ -33,6 +33,7 @@ import com.google.inject.Inject;
 import com.google.inject.Provider;
 
 import edu.upenn.cis.ppod.TestGroupDefs;
+import edu.upenn.cis.ppod.modelinterfaces.ICell;
 
 /**
  * Test {@link CharacterStateCell}.
@@ -129,7 +130,7 @@ public class StandardCellTest {
 				Arrays.asList(cell));
 		cell.setSingleElement(state00);
 		cell.setInapplicable();
-		assertEquals(cell.getType(), Cell.Type.INAPPLICABLE);
+		assertEquals(cell.getType(), ICell.Type.INAPPLICABLE);
 
 		// Make sure it's empty
 		assertEquals(cell.getElements().size(), 0);
@@ -147,7 +148,7 @@ public class StandardCellTest {
 		states.add(state01);
 		cell.setPolymorphicElements(states);
 		cell.setInapplicable();
-		assertEquals(cell.getType(), Cell.Type.INAPPLICABLE);
+		assertEquals(cell.getType(), ICell.Type.INAPPLICABLE);
 		assertTrue(isEmpty(cell.getElements()));
 	}
 
@@ -158,7 +159,7 @@ public class StandardCellTest {
 		states.add(state00);
 		states.add(state01);
 		cell.setPolymorphicElements(states);
-		assertEquals(cell.getType(), Cell.Type.POLYMORPHIC);
+		assertEquals(cell.getType(), ICell.Type.POLYMORPHIC);
 		assertEquals((Object) cell.getElements(), (Object) states);
 	}
 
@@ -168,7 +169,7 @@ public class StandardCellTest {
 				Arrays.asList(cell));
 		states.add(state00);
 		cell.setSingleElement(state00);
-		assertEquals(cell.getType(), Cell.Type.SINGLE);
+		assertEquals(cell.getType(), ICell.Type.SINGLE);
 		assertEquals((Object) cell.getElements(), (Object) states);
 	}
 
@@ -188,7 +189,7 @@ public class StandardCellTest {
 		states.add(state00);
 		states.add(state01);
 		cell.setUncertainElements(states);
-		assertEquals(cell.getType(), Cell.Type.UNCERTAIN);
+		assertEquals(cell.getType(), ICell.Type.UNCERTAIN);
 		assertEquals((Object) cell.getElements(), (Object) newHashSet(states));
 	}
 

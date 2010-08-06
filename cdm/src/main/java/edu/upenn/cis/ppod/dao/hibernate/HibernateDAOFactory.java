@@ -207,9 +207,7 @@ public class HibernateDAOFactory implements IDAOFactory {
 
 	/** A default {@code TreeSet} Hibernate DAO. */
 	public static class TreeSetDAOHibernate extends
-			GenericHibernateDAO<TreeSet, Long> implements ITreeSetDAO {
-
-	}
+			GenericHibernateDAO<TreeSet, Long> implements ITreeSetDAO {}
 
 	private final Provider<StudyDAOHibernate> studyDAOProvider;
 

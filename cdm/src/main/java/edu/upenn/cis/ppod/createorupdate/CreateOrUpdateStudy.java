@@ -29,11 +29,11 @@ import edu.upenn.cis.ppod.dao.IDAO;
 import edu.upenn.cis.ppod.dao.IStudyDAO;
 import edu.upenn.cis.ppod.model.DNASequence;
 import edu.upenn.cis.ppod.model.DNASequenceSet;
-import edu.upenn.cis.ppod.model.IDNAMatrix;
+import edu.upenn.cis.ppod.model.ITreeSet;
 import edu.upenn.cis.ppod.model.OTUSet;
 import edu.upenn.cis.ppod.model.StandardMatrix;
 import edu.upenn.cis.ppod.model.Study;
-import edu.upenn.cis.ppod.model.TreeSet;
+import edu.upenn.cis.ppod.modelinterfaces.IDNAMatrix;
 import edu.upenn.cis.ppod.modelinterfaces.INewVersionInfo;
 import edu.upenn.cis.ppod.modelinterfaces.IOTUSet;
 import edu.upenn.cis.ppod.modelinterfaces.IStudy;
@@ -53,7 +53,7 @@ final class CreateOrUpdateStudy implements ICreateOrUpdateStudy {
 	private final Provider<StandardMatrix> standardMatrixProvider;
 	private final Provider<IDNAMatrix> dnaMatrixProvider;
 	private final Provider<DNASequenceSet> dnaSequenceSetProvider;
-	private final Provider<TreeSet> treeSetProvider;
+	private final Provider<ITreeSet> treeSetProvider;
 
 	private final IMergeOTUSets mergeOTUSets;
 	private final ICreateOrUpdateStandardMatrix createOrUpdateStandardMatrix;
@@ -71,7 +71,7 @@ final class CreateOrUpdateStudy implements ICreateOrUpdateStudy {
 			final Provider<OTUSet> otuSetProvider,
 			final Provider<StandardMatrix> standardMatrix,
 			final Provider<DNASequenceSet> dnaSequenceSetProvider,
-			final Provider<TreeSet> treeSetProvider,
+			final Provider<ITreeSet> treeSetProvider,
 			final IMergeOTUSets.IFactory saveOrUpdateOTUSetFactory,
 			final IMergeTreeSets.IFactory mergeTreeSetsFactory,
 			final ICreateOrUpdateDNAMatrix.IFactory createOrUpdateDNAMatrixFactory,
@@ -310,7 +310,7 @@ final class CreateOrUpdateStudy implements ICreateOrUpdateStudy {
 			final IOTUSet incomingOTUSet) {
 
 		// Let's delete tree sets missing from incoming OTU set
-		for (final TreeSet dbTreeSet : dbOTUSet.getTreeSets()) {
+		for (final ITreeSet dbTreeSet : dbOTUSet.getTreeSets()) {
 			if (null == findIf(incomingOTUSet.getTreeSets(),
 						compose(
 								equalTo(
@@ -321,8 +321,8 @@ final class CreateOrUpdateStudy implements ICreateOrUpdateStudy {
 		}
 
 		// Now let's add in new ones
-		for (final TreeSet incomingTreeSet : incomingOTUSet.getTreeSets()) {
-			TreeSet dbTreeSet;
+		for (final ITreeSet incomingTreeSet : incomingOTUSet.getTreeSets()) {
+			ITreeSet dbTreeSet;
 			if (null == (dbTreeSet =
 					findIf(dbOTUSet.getTreeSets(),
 							compose(equalTo(incomingTreeSet.getPPodId()),

@@ -15,28 +15,19 @@
  */
 package edu.upenn.cis.ppod.modelinterfaces;
 
-import java.util.Map;
-import java.util.Set;
+import java.util.List;
 
-import edu.upenn.cis.ppod.util.IPair;
+import javax.xml.bind.annotation.adapters.XmlJavaTypeAdapter;
 
-public interface IOTUKeyedMapPlus<V extends IOTUKeyedMapValue<?>, P extends IOTUSetChild, OP extends IPair<IOTU, V>>
-		extends IOTUKeyedMap<V> {
+import edu.upenn.cis.ppod.model.DNARow;
 
-	void afterUnmarshal(final P parent);
+@XmlJavaTypeAdapter(DNARow.Adapter.class)
+public interface IDNARow extends IRow<IDNACell, IDNAMatrix> {
 
-	IOTUKeyedMapPlus<V, P, OP> clear();
+	IDNAMatrix getParent();
 
-	/**
-	 * For marshalling {@code rows}. Since a {@code Map}'s key couldn't be an
-	 * {@code XmlIDREF} in JAXB as far as we can tell.
-	 */
-	Set<OP> getOTUSomethingPairs();
+	List<IDNACell> setCells(final List<? extends IDNACell> cells);
 
-	P getParent();
-
-	IOTUKeyedMapPlus<V, P, OP> setParent(final P parent);
-
-	IOTUKeyedMapPlus<V, P, OP> setValues(final Map<IOTU, V> values);
+	IDNARow setParent(final IDNAMatrix parent);
 
 }

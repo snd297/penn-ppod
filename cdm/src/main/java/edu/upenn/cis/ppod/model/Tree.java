@@ -113,7 +113,7 @@ public class Tree extends UUPPodEntity {
 	 * @return the tree set that owns this tree
 	 */
 	@Nullable
-	public TreeSet getParent() {
+	public ITreeSet getParent() {
 		return parent;
 	}
 

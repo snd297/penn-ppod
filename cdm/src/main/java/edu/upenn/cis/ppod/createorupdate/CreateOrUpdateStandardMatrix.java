@@ -34,12 +34,12 @@ import com.google.inject.assistedinject.Assisted;
 
 import edu.upenn.cis.ppod.dao.IDAO;
 import edu.upenn.cis.ppod.model.Attachment;
-import edu.upenn.cis.ppod.model.Cell;
 import edu.upenn.cis.ppod.model.StandardCell;
 import edu.upenn.cis.ppod.model.StandardCharacter;
 import edu.upenn.cis.ppod.model.StandardMatrix;
 import edu.upenn.cis.ppod.model.StandardRow;
 import edu.upenn.cis.ppod.model.StandardState;
+import edu.upenn.cis.ppod.modelinterfaces.ICell;
 import edu.upenn.cis.ppod.modelinterfaces.INewVersionInfo;
 import edu.upenn.cis.ppod.modelinterfaces.IWithPPodId;
 import edu.upenn.cis.ppod.thirdparty.injectslf4j.InjectLogger;
@@ -167,7 +167,7 @@ final class CreateOrUpdateStandardMatrix
 			final StandardCell sourceCell) {
 		checkNotNull(dbCell);
 		checkNotNull(sourceCell);
-		checkArgument(sourceCell.getType() == Cell.Type.SINGLE);
+		checkArgument(sourceCell.getType() == ICell.Type.SINGLE);
 		dbCell.setSingleElement(getOnlyElement(sourceCell.getElements()));
 	}
 
@@ -177,7 +177,7 @@ final class CreateOrUpdateStandardMatrix
 			final StandardCell sourceCell) {
 		checkNotNull(dbCell);
 		checkNotNull(sourceCell);
-		checkArgument(sourceCell.getType() == Cell.Type.POLYMORPHIC);
+		checkArgument(sourceCell.getType() == ICell.Type.POLYMORPHIC);
 		dbCell.setPolymorphicElements(sourceCell.getElements());
 	}
 }

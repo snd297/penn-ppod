@@ -28,9 +28,8 @@ import com.google.inject.Inject;
 import com.google.inject.Provider;
 import com.google.inject.assistedinject.Assisted;
 
-import edu.upenn.cis.ppod.model.OTU;
+import edu.upenn.cis.ppod.model.ITreeSet;
 import edu.upenn.cis.ppod.model.Tree;
-import edu.upenn.cis.ppod.model.TreeSet;
 import edu.upenn.cis.ppod.modelinterfaces.INewVersionInfo;
 import edu.upenn.cis.ppod.modelinterfaces.IOTU;
 import edu.upenn.cis.ppod.modelinterfaces.IWithPPodId;
@@ -54,8 +53,8 @@ final class MergeTreeSets implements IMergeTreeSets {
 	}
 
 	public void mergeTreeSets(
-			final TreeSet targetTreeSet,
-			final TreeSet sourceTreeSet) {
+			final ITreeSet targetTreeSet,
+			final ITreeSet sourceTreeSet) {
 		checkNotNull(targetTreeSet);
 		checkNotNull(sourceTreeSet);
 

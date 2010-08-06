@@ -17,8 +17,8 @@
 package edu.upenn.cis.ppod.util;
 
 import edu.upenn.cis.ppod.model.DNASequenceSet;
-import edu.upenn.cis.ppod.model.IDNAMatrix;
 import edu.upenn.cis.ppod.model.StandardMatrix;
+import edu.upenn.cis.ppod.modelinterfaces.IDNAMatrix;
 
 /**
  * For straightening up or filling data structures after we've unmarshalled.

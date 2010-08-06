@@ -38,13 +38,13 @@ import javax.xml.bind.annotation.XmlAccessType;
 import javax.xml.bind.annotation.XmlAccessorType;
 import javax.xml.bind.annotation.XmlAttribute;
 import javax.xml.bind.annotation.XmlElement;
+import javax.xml.bind.annotation.adapters.XmlAdapter;
 
 import org.hibernate.annotations.Target;
 
 import com.google.common.collect.Iterators;
 
 import edu.upenn.cis.ppod.modelinterfaces.IOTUSet;
-import edu.upenn.cis.ppod.modelinterfaces.IOTUSetChild;
 import edu.upenn.cis.ppod.util.IVisitor;
 
 /**
@@ -57,7 +57,20 @@ import edu.upenn.cis.ppod.util.IVisitor;
 @Table(name = TreeSet.TABLE)
 public class TreeSet
 		extends UUPPodEntityWithXmlId
-		implements IOTUSetChild {
+		implements ITreeSet {
+
+	public static class Adapter extends XmlAdapter<TreeSet, ITreeSet> {
+
+		@Override
+		public TreeSet marshal(final ITreeSet treeSet) {
+			return (TreeSet) treeSet;
+		}
+
+		@Override
+		public ITreeSet unmarshal(final TreeSet treeSet) {
+			return treeSet;
+		}
+	}
 
 	public static final String TABLE = "TREE_SET";
 
@@ -90,11 +103,7 @@ public class TreeSet
 	}
 
 	/**
-	 * Add {@code tree} to this {@code TreeSet}.
-	 * 
-	 * @param tree to be added
-	 * 
-	 * @return {@code tree}
+	 * {@inheritDoc}
 	 * 
 	 * @throws IllegalArgumentException if {@code getTrees().contains(tree)}
 	 */

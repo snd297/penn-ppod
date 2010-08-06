@@ -15,11 +15,11 @@
  */
 package edu.upenn.cis.ppod.createorupdate;
 
-import edu.upenn.cis.ppod.model.Cell;
-import edu.upenn.cis.ppod.model.IMatrix;
-import edu.upenn.cis.ppod.model.Row;
+import edu.upenn.cis.ppod.modelinterfaces.ICell;
+import edu.upenn.cis.ppod.modelinterfaces.IMatrix;
+import edu.upenn.cis.ppod.modelinterfaces.IRow;
 
-public interface ICreateOrUpdateMatrix<M extends IMatrix<R>, R extends Row<C, ?>, C extends Cell<E, ?>, E> {
+public interface ICreateOrUpdateMatrix<M extends IMatrix<R>, R extends IRow<C, ?>, C extends ICell<E, ?>, E> {
 
 	/**
 	 * Assumes {@code dbMatrix} is in a persistent state.
