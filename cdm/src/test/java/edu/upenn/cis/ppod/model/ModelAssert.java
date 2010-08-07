@@ -33,6 +33,7 @@ import java.util.Set;
 import edu.upenn.cis.ppod.modelinterfaces.ILabeled;
 import edu.upenn.cis.ppod.modelinterfaces.IOTU;
 import edu.upenn.cis.ppod.modelinterfaces.IOTUSet;
+import edu.upenn.cis.ppod.modelinterfaces.IPPodEntity;
 
 /**
  * For asserting that various {@code edu.upenn.cis.ppod.model} elements are the
@@ -251,20 +252,20 @@ public class ModelAssert {
 	}
 
 	public static void assertEqualsPPodEntities(
-			final PPodEntity actualPPodEntity,
-			final PPodEntity expectedPPodEntity) {
+			final IPPodEntity actualPPodEntity,
+			final IPPodEntity expectedPPodEntity) {
 		assertEqualsAttachmentSets(
 				actualPPodEntity.getAttachments(),
 				expectedPPodEntity.getAttachments());
 	}
 
 	public static void assertEqualsAttachmentSets(
-			final Set<Attachment> actualAttachments,
-			final Set<Attachment> expectedAttachments) {
+			final Set<IAttachment> actualAttachments,
+			final Set<IAttachment> expectedAttachments) {
 		assertEquals(actualAttachments.size(), expectedAttachments.size());
-		final Set<Attachment> expectedAttachmentsCopy = newHashSet(expectedAttachments);
-		for (final Attachment actualAttachment : actualAttachments) {
-			final Attachment expectedAttachment = getOnlyElement(filter(
+		final Set<IAttachment> expectedAttachmentsCopy = newHashSet(expectedAttachments);
+		for (final IAttachment actualAttachment : actualAttachments) {
+			final IAttachment expectedAttachment = getOnlyElement(filter(
 							expectedAttachmentsCopy,
 							new Attachment.IsOfNamespaceTypeLabelAndStringValue(
 									actualAttachment)));
@@ -274,8 +275,8 @@ public class ModelAssert {
 	}
 
 	public static void assertEqualsAttachments(
-			final Attachment actualAttachment,
-			final Attachment expectedAttachment) {
+			final IAttachment actualAttachment,
+			final IAttachment expectedAttachment) {
 		assertEquals(actualAttachment.getLabel(), expectedAttachment.getLabel());
 		assertEquals(actualAttachment.getStringValue(), expectedAttachment
 				.getStringValue());

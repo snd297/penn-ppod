@@ -25,8 +25,8 @@ import com.google.inject.Provider;
 import com.google.inject.assistedinject.Assisted;
 
 import edu.upenn.cis.ppod.dao.IDAO;
-import edu.upenn.cis.ppod.model.Attachment;
 import edu.upenn.cis.ppod.model.DNANucleotide;
+import edu.upenn.cis.ppod.model.IAttachment;
 import edu.upenn.cis.ppod.modelinterfaces.ICell;
 import edu.upenn.cis.ppod.modelinterfaces.IDNACell;
 import edu.upenn.cis.ppod.modelinterfaces.IDNAMatrix;
@@ -43,7 +43,7 @@ final class CreateOrUpdateDNAMatrix
 	CreateOrUpdateDNAMatrix(
 			final Provider<IDNARow> rowProvider,
 			final Provider<IDNACell> cellProvider,
-			final Provider<Attachment> attachmentProvider,
+			final Provider<IAttachment> attachmentProvider,
 			final Provider<MatrixInfo> matrixInfoProvider,
 			@Assisted final INewVersionInfo newVersionInfo,
 			@Assisted final IDAO<Object, Long> dao) {

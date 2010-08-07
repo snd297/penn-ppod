@@ -16,7 +16,6 @@
 package edu.upenn.cis.ppod.model;
 
 import static com.google.common.base.Objects.equal;
-import static com.google.common.base.Preconditions.checkArgument;
 import static com.google.common.base.Preconditions.checkNotNull;
 
 import java.util.Arrays;
@@ -34,15 +33,14 @@ import javax.xml.bind.annotation.XmlAccessorType;
 import javax.xml.bind.annotation.XmlAttribute;
 import javax.xml.bind.annotation.XmlElement;
 import javax.xml.bind.annotation.XmlIDREF;
+import javax.xml.bind.annotation.adapters.XmlAdapter;
 
-import com.google.common.base.Function;
 import com.google.common.base.Predicate;
-import com.google.inject.ImplementedBy;
-import com.google.inject.Inject;
 import com.google.inject.assistedinject.Assisted;
 
 import edu.umd.cs.findbugs.annotations.CheckForNull;
 import edu.umd.cs.findbugs.annotations.Nullable;
+import edu.upenn.cis.ppod.modelinterfaces.IPPodEntity;
 import edu.upenn.cis.ppod.util.IVisitor;
 
 /**
@@ -53,14 +51,27 @@ import edu.upenn.cis.ppod.util.IVisitor;
 @XmlAccessorType(XmlAccessType.NONE)
 @Entity
 @Table(name = Attachment.TABLE)
-public class Attachment extends UUPPodEntity {
+public class Attachment extends UUPPodEntity implements IAttachment {
+
+	public static class Adapter extends XmlAdapter<Attachment, IAttachment> {
+
+		@Override
+		public Attachment marshal(final IAttachment attachment) {
+			return (Attachment) attachment;
+		}
+
+		@Override
+		public IAttachment unmarshal(final Attachment attachment) {
+			return attachment;
+		}
+	}
 
 	/**
 	 * Is an attachment of a the given's attachments namespace and type? And
 	 * does it have the given attachment's label and string value?
 	 */
 	public static interface IIsOfNamepspaceTypeLabelAndStringValue
-			extends Predicate<Attachment> {
+			extends Predicate<IAttachment> {
 
 		/**
 		 * Creates {@code IIsOfNamepspaceTypeLabelAndStringValue}s. For Guice.
@@ -77,147 +88,11 @@ public class Attachment extends UUPPodEntity {
 			 * @return a new {@code IIsOfNamepspaceTypeLabelAndStringValue}
 			 */
 			IIsOfNamepspaceTypeLabelAndStringValue create(
-					@Assisted Attachment attachment);
-		}
-	}
-
-	/**
-	 * Is an attachment of a particular {@link AttachmentNamespace}?
-	 */
-	@ImplementedBy(IsOfNamespace.class)
-	public static interface IIsOfNamespace extends Predicate<Attachment> {
-
-		/**
-		 * Makes {@code IIsOfNamespace}s.
-		 */
-		public static interface IFactory {
-
-			/**
-			 * Create a {@code IIsOfNamespace} that will return {@code true} if
-			 * and only if the attachment's namespaceLabel has the given
-			 * attachmentLabel.
-			 * 
-			 * @param namespaceLabel the attachmentLabel of the namespaceLabel
-			 *            we're interested in
-			 * 
-			 * @return a new {@code IIsOfNamespace}
-			 */
-			IIsOfNamespace create(String namespaceLabel);
-		}
-	}
-
-	final static class IsOfNamespace implements IIsOfNamespace {
-
-		private final String namespaceLabel;
-
-		/**
-		 * @param namespaceLabel is the typeLabel of this namespaceLabel?
-		 */
-		@Inject
-		IsOfNamespace(@Assisted final String namespaceLabel) {
-			checkNotNull(namespaceLabel);
-			this.namespaceLabel = namespaceLabel;
-		}
-
-		public boolean apply(final Attachment input) {
-			checkNotNull(input);
-			return namespaceLabel.equals(input.getType().getNamespace()
-					.getLabel());
-		}
-
-	}
-
-	/**
-	 * Is an attachment of a particular {@link AttachmentNamespace} and
-	 * {@link AttachmentType}?
-	 */
-	public final static class IsOfNamespaceAndType
-			implements Predicate<Attachment> {
-
-		private final String namespaceLabel;
-
-		private final String typeLabel;
-
-		/**
-		 * @param typeLabel is the attachment of this typeLabel?
-		 * @param namespaceLabel is the typeLabel of this namespaceLabel?
-		 */
-		IsOfNamespaceAndType(final String namespaceLabel, final String typeLabel) {
-			checkNotNull(namespaceLabel);
-			checkNotNull(typeLabel);
-			this.typeLabel = typeLabel;
-			this.namespaceLabel = namespaceLabel;
-		}
-
-		public boolean apply(final Attachment input) {
-			checkNotNull(input);
-			return namespaceLabel.equals(input.getType().getNamespace()
-					.getLabel())
-					&& typeLabel.equals(input.getType().getLabel());
-		}
-
-	}
-
-	final static class IsOfNamespaceTypeLabelAndStringValue
-			implements IIsOfNamepspaceTypeLabelAndStringValue {
-
-		private final String attachmentLabel;
-		private final String attachmentStringValue;
-		private final String namespaceLabel;
-		private final String typeLabel;
-
-		IsOfNamespaceTypeLabelAndStringValue(final Attachment attachment) {
-			checkNotNull(attachment);
-
-			checkArgument(attachment.getType() != null,
-					"attachment.getType() == null");
-
-			checkArgument(attachment.getType().getNamespace() != null,
-					"attachment.getType().getNamespace() == null");
-
-			checkArgument(
-					attachment.getType().getNamespace().getLabel() != null,
-					"attachment's typeLabel's namespaceLabel has null attachmentLabel");
-
-			checkArgument(attachment.getType().getLabel() != null,
-					"attachment's typeLabel has null attachmentLabel");
-
-			final String attachmentLabel = attachment.getLabel();
-			checkArgument(attachmentLabel != null,
-					"attachment.getLabel() == null");
-
-			final String attachmentStringValue = attachment.getStringValue();
-
-			checkArgument(attachmentStringValue != null,
-					"attachment.getStringValue() == null");
-
-			this.namespaceLabel = attachment.getType().getNamespace()
-					.getLabel();
-			this.typeLabel = attachment.getType().getLabel();
-			this.attachmentLabel = attachmentLabel;
-			this.attachmentStringValue = attachmentStringValue;
-		}
-
-		public boolean apply(final Attachment input) {
-			return namespaceLabel.equals(input.getType().getNamespace()
-					.getLabel())
-					&& typeLabel.equals(input.getType().getLabel())
-					&& attachmentLabel.equals(input.getLabel())
-					&& attachmentStringValue.equals(input.getStringValue());
+					@Assisted IAttachment attachment);
 		}
 	}
 
 	static final String BYTES_VALUE_COLUMN = "BYTES_VALUE";
-
-	/**
-	 * {@link Function} wrapper of {@link #getStringValue()}.
-	 */
-	public static final Function<Attachment, String> getStringValue = new Function<Attachment, String>() {
-
-		public String apply(final Attachment from) {
-			return from.getStringValue();
-		}
-	};
 
 	public static final String TABLE = "ATTACHMENT";
 
@@ -227,11 +102,11 @@ public class Attachment extends UUPPodEntity {
 
 	public static final String TYPE_COLUMN = "TYPE";
 
-	/** Object to which this {@code Attachment} is attached. */
+	/** Object to which this attachment is attached. */
 	@CheckForNull
-	@ManyToOne(fetch = FetchType.LAZY, optional = false)
+	@ManyToOne(fetch = FetchType.LAZY, optional = false, targetEntity = PPodEntity.class)
 	@JoinColumn(name = PPodEntity.JOIN_COLUMN)
-	private PPodEntity attachee;
+	private IPPodEntity attachee;
 
 	@CheckForNull
 	@Lob
@@ -275,7 +150,7 @@ public class Attachment extends UUPPodEntity {
 	public void afterUnmarshal(
 			@CheckForNull final Unmarshaller u,
 			final Object parent) {
-		attachee = (PPodEntity) parent;
+		attachee = (IPPodEntity) parent;
 	}
 
 	/**
@@ -287,7 +162,7 @@ public class Attachment extends UUPPodEntity {
 	 * @return the entities that have this has an attachment
 	 */
 	@Nullable
-	public PPodEntity getAttachee() {
+	public IPPodEntity getAttachee() {
 		return attachee;
 	}
 
@@ -341,15 +216,8 @@ public class Attachment extends UUPPodEntity {
 		return type;
 	}
 
-	/**
-	 * Set the item to which this is attached, {@code null} to sever the
-	 * relationship.
-	 * 
-	 * @param attachee to which this is attached
-	 * 
-	 * @return this
-	 */
-	protected PPodEntity setAttachee(@CheckForNull final PPodEntity attachee) {
+	/** {@inheritDoc} */
+	public IPPodEntity setAttachee(@CheckForNull final IPPodEntity attachee) {
 		this.attachee = attachee;
 		return this;
 	}
@@ -361,7 +229,7 @@ public class Attachment extends UUPPodEntity {
 	 * 
 	 * @return this
 	 */
-	public Attachment setBytesValue(@CheckForNull final byte[] bytesValue) {
+	public IAttachment setBytesValue(@CheckForNull final byte[] bytesValue) {
 		if (Arrays.equals(bytesValue, this.bytesValue)) {
 			return this;
 		}
@@ -397,7 +265,7 @@ public class Attachment extends UUPPodEntity {
 	 * 
 	 * @return this
 	 */
-	public Attachment setLabel(@CheckForNull final String label) {
+	public IAttachment setLabel(@CheckForNull final String label) {
 		if (equal(label, getLabel())) {
 
 		} else {
@@ -415,7 +283,7 @@ public class Attachment extends UUPPodEntity {
 	 * 
 	 * @return this
 	 */
-	public Attachment setStringValue(@CheckForNull final String stringValue) {
+	public IAttachment setStringValue(@CheckForNull final String stringValue) {
 		if (equal(stringValue, getStringValue())) {
 
 		} else {
@@ -432,7 +300,7 @@ public class Attachment extends UUPPodEntity {
 	 * 
 	 * @return this
 	 */
-	public Attachment setType(final AttachmentType type) {
+	public IAttachment setType(final AttachmentType type) {
 		checkNotNull(type);
 		if (type.equals(getType())) {
 
@@ -466,4 +334,5 @@ public class Attachment extends UUPPodEntity {
 
 		return retValue.toString();
 	}
+
 }

@@ -181,7 +181,7 @@ public class TreeSetTest {
 			assertTrue(visitor.getVisited().contains(tree));
 		}
 
-		for (final Attachment attachment : treeSet.getAttachments()) {
+		for (final IAttachment attachment : treeSet.getAttachments()) {
 			assertTrue(visitor.getVisited().contains(attachment));
 		}
 

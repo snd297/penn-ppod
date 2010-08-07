@@ -148,7 +148,7 @@ public class OTUSetTest {
 			assertTrue(visited.contains(child));
 		}
 
-		for (final Attachment attachment : otuSet.getAttachments()) {
+		for (final IAttachment attachment : otuSet.getAttachments()) {
 			assertTrue(visited.contains(attachment));
 		}
 	}

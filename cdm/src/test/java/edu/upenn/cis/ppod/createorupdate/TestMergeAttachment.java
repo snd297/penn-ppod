@@ -17,8 +17,7 @@ package edu.upenn.cis.ppod.createorupdate;
 
 import static com.google.common.base.Preconditions.checkArgument;
 import static com.google.common.base.Preconditions.checkNotNull;
-import edu.upenn.cis.ppod.createorupdate.IMergeAttachments;
-import edu.upenn.cis.ppod.model.Attachment;
+import edu.upenn.cis.ppod.model.IAttachment;
 
 /**
  * Stub {@link IMergeAttachments}.
@@ -30,8 +29,9 @@ public class TestMergeAttachment implements IMergeAttachments {
 	/**
 	 * Does nothing but return {@code targetAttachment}.
 	 */
-	public void mergeAttachments(final Attachment targetAttachment,
-			final Attachment sourceAttachment) {
+	public void mergeAttachments(
+			final IAttachment targetAttachment,
+			final IAttachment sourceAttachment) {
 		checkNotNull(targetAttachment);
 		checkNotNull(sourceAttachment);
 		checkArgument(sourceAttachment.getType() != null,

@@ -17,9 +17,9 @@ package edu.upenn.cis.ppod.util;
 
 import java.util.Set;
 
-import edu.upenn.cis.ppod.model.Attachment;
 import edu.upenn.cis.ppod.model.AttachmentNamespace;
 import edu.upenn.cis.ppod.model.AttachmentType;
+import edu.upenn.cis.ppod.model.IAttachment;
 import edu.upenn.cis.ppod.model.StandardCharacter;
 import edu.upenn.cis.ppod.model.StandardMatrix;
 import edu.upenn.cis.ppod.modelinterfaces.IAttachee;
@@ -46,7 +46,7 @@ public class PPodEntitiesUtil {
 			final Set<AttachmentNamespace> attachmentNamespaces,
 			final Set<AttachmentType> attachmentTypes,
 			final IAttachee attachee) {
-		for (final Attachment attachment : attachee.getAttachments()) {
+		for (final IAttachment attachment : attachee.getAttachments()) {
 			attachmentNamespaces.add(attachment.getType().getNamespace());
 			attachmentTypes.add(attachment.getType());
 			extractAttachmentInfoFromAttachee(attachmentNamespaces,

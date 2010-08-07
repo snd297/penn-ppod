@@ -57,12 +57,12 @@ public class AttachmentTest {
 	@Test
 	public void setBytesValue() {
 
-		final Attachment attachment = attachmentProvider.get();
+		final IAttachment attachment = attachmentProvider.get();
 
 		assertNull(attachment.getBytesValue());
 
 		final byte[] bytesValue = new byte[] { 1, 3, 5 };
-		final Attachment attachmentReturned = attachment
+		final IAttachment attachmentReturned = attachment
 				.setBytesValue(bytesValue);
 
 		assertSame(attachmentReturned, attachment);
@@ -94,14 +94,14 @@ public class AttachmentTest {
 
 	@Test
 	public void setLabel() {
-		final Attachment attachment = attachmentProvider.get();
+		final IAttachment attachment = attachmentProvider.get();
 		assertNull(attachment.getLabel());
 
 		final String label = "LABEL";
 
 		assertFalse(attachment.isInNeedOfNewVersion());
 
-		final Attachment attachmentReturned = attachment.setLabel(label);
+		final IAttachment attachmentReturned = attachment.setLabel(label);
 		assertSame(attachmentReturned, attachment);
 		assertEquals(attachment.getLabel(), label);
 
@@ -136,14 +136,14 @@ public class AttachmentTest {
 
 	@Test
 	public void setStringValue() {
-		final Attachment attachment = attachmentProvider.get();
+		final IAttachment attachment = attachmentProvider.get();
 		assertNull(attachment.getStringValue());
 
 		final String stringVal = "STRING-VALUE";
 
 		assertFalse(attachment.isInNeedOfNewVersion());
 
-		final Attachment attachmentReturned =
+		final IAttachment attachmentReturned =
 				attachment.setStringValue(stringVal);
 		assertSame(attachmentReturned, attachment);
 		assertEquals(attachment.getStringValue(), stringVal);

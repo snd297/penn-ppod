@@ -17,7 +17,7 @@ package edu.upenn.cis.ppod.modelinterfaces;
 
 import java.util.Set;
 
-import edu.upenn.cis.ppod.model.Attachment;
+import edu.upenn.cis.ppod.model.IAttachment;
 
 /**
  * An object to which we can add and remove attachments.
@@ -33,14 +33,14 @@ public interface IAttachee {
 	 * 
 	 * @return {@code attachment}.
 	 */
-	Attachment addAttachment(Attachment attachment);
+	IAttachment addAttachment(IAttachment attachment);
 
 	/**
 	 * Get the attachments of this {@code IAttachee}.
 	 * 
 	 * @return the attachments of this {@code IAttachee}
 	 */
-	Set<Attachment> getAttachments();
+	Set<IAttachment> getAttachments();
 
 	/**
 	 * Get all attachments within the given namespace.
@@ -49,7 +49,7 @@ public interface IAttachee {
 	 * 
 	 * @return all attachments within the given namespace
 	 */
-	Set<Attachment> getAttachmentsByNamespace(String namespace);
+	Set<IAttachment> getAttachmentsByNamespace(String namespace);
 
 	/**
 	 * Get all attachments within the given namespace and of the given type.
@@ -59,7 +59,8 @@ public interface IAttachee {
 	 * 
 	 * @return all attachments within the given namespace and of the given type.
 	 */
-	Set<Attachment> getAttachmentsByNamespaceAndType(String namespace,
+	Set<IAttachment> getAttachmentsByNamespaceAndType(
+			String namespace,
 			String type);
 
 	/**
@@ -69,5 +70,5 @@ public interface IAttachee {
 	 * 
 	 * @return {@code true} if the set contained the specified element
 	 */
-	boolean removeAttachment(Attachment attachment);
+	boolean removeAttachment(IAttachment attachment);
 }
