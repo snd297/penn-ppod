@@ -24,9 +24,6 @@ import edu.upenn.cis.ppod.model.Tree;
  */
 public interface ITreeDAO extends IDAO<Tree, Long> {
 
-	/**
-	 * @param pPodId
-	 * @return
-	 */
+
 	Tree getByPPodId(String pPodId);
 }

@@ -53,6 +53,7 @@ import edu.upenn.cis.ppod.modelinterfaces.IOTU;
 import edu.upenn.cis.ppod.modelinterfaces.IOTUSet;
 import edu.upenn.cis.ppod.modelinterfaces.IOTUSetChild;
 import edu.upenn.cis.ppod.modelinterfaces.IStudy;
+import edu.upenn.cis.ppod.modelinterfaces.ITreeSet;
 import edu.upenn.cis.ppod.util.IVisitor;
 
 /**
@@ -106,11 +107,16 @@ public class OTUSet
 	@CheckForNull
 	private String description;
 
-	@OneToMany(mappedBy = "parent", cascade = CascadeType.ALL,
-			orphanRemoval = true, targetEntity = DNAMatrix.class)
+	@OneToMany(
+			mappedBy = "parent",
+			cascade = CascadeType.ALL,
+			orphanRemoval = true,
+			targetEntity = DNAMatrix.class)
 	private final Set<IDNAMatrix> dnaMatrices = newHashSet();
 
-	@OneToMany(mappedBy = "parent", cascade = CascadeType.ALL,
+	@OneToMany(
+			mappedBy = "parent",
+			cascade = CascadeType.ALL,
 			orphanRemoval = true)
 	private final Set<DNASequenceSet> dnaSequenceSets = newHashSet();
 

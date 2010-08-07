@@ -1,5 +1,5 @@
 /*
- * Copyright (C) 2010 Trustees of the University of Pennsylvania
+s * Copyright (C) 2010 Trustees of the University of Pennsylvania
  *
  * Licensed under the Apache License, Version 2.0 (the "License");
  * you may not use this file except in compliance with the License.

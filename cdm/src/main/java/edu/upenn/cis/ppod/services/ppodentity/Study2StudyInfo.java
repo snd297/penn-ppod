@@ -22,12 +22,10 @@ import com.google.inject.Provider;
 
 import edu.upenn.cis.ppod.model.DNASequence;
 import edu.upenn.cis.ppod.model.DNASequenceSet;
-import edu.upenn.cis.ppod.model.ITreeSet;
 import edu.upenn.cis.ppod.model.StandardCell;
 import edu.upenn.cis.ppod.model.StandardCharacter;
 import edu.upenn.cis.ppod.model.StandardMatrix;
 import edu.upenn.cis.ppod.model.StandardRow;
-import edu.upenn.cis.ppod.model.Tree;
 import edu.upenn.cis.ppod.model.VersionInfo;
 import edu.upenn.cis.ppod.modelinterfaces.IDNACell;
 import edu.upenn.cis.ppod.modelinterfaces.IDNAMatrix;
@@ -35,6 +33,8 @@ import edu.upenn.cis.ppod.modelinterfaces.IDNARow;
 import edu.upenn.cis.ppod.modelinterfaces.IOTU;
 import edu.upenn.cis.ppod.modelinterfaces.IOTUSet;
 import edu.upenn.cis.ppod.modelinterfaces.IStudy;
+import edu.upenn.cis.ppod.modelinterfaces.ITree;
+import edu.upenn.cis.ppod.modelinterfaces.ITreeSet;
 
 /**
  * @author Sam Donnelly
@@ -225,7 +225,7 @@ final class Study2StudyInfo implements IStudy2StudyInfo {
 						.getVersion());
 				treeSetInfo.setDocId(treeSet.getXmlId());
 
-				for (final Tree tree : treeSet.getTrees()) {
+				for (final ITree tree : treeSet.getTrees()) {
 					final PPodEntityInfo treeInfo =
 							pPodEntityInfoProvider.get();
 					treeSetInfo.getTreeInfos().add(treeInfo);

@@ -33,6 +33,8 @@ import com.google.inject.Inject;
 import com.google.inject.Provider;
 
 import edu.upenn.cis.ppod.TestGroupDefs;
+import edu.upenn.cis.ppod.modelinterfaces.ITree;
+import edu.upenn.cis.ppod.modelinterfaces.ITreeSet;
 import edu.upenn.cis.ppod.util.TestVisitor;
 
 /**
@@ -44,10 +46,10 @@ import edu.upenn.cis.ppod.util.TestVisitor;
 public class TreeSetTest {
 
 	@Inject
-	private Provider<TreeSet> treeSetProvider;
+	private Provider<ITreeSet> treeSetProvider;
 
 	@Inject
-	private Provider<Tree> treeProvider;
+	private Provider<ITree> treeProvider;
 
 	@Inject
 	private Provider<OTUSet> otuSetProvider;
@@ -57,11 +59,11 @@ public class TreeSetTest {
 
 	@Test
 	public void addTree() {
-		final TreeSet treeSet = treeSetProvider.get();
-		final Tree tree = treeProvider.get();
+		final ITreeSet treeSet = treeSetProvider.get();
+		final ITree tree = treeProvider.get();
 
 		assertFalse(treeSet.isInNeedOfNewVersion());
-		final Tree returnedTree = treeSet.addTree(tree);
+		final ITree returnedTree = treeSet.addTree(tree);
 		assertTrue(treeSet.isInNeedOfNewVersion());
 		assertSame(returnedTree, tree);
 		assertSame(tree.getParent(), treeSet);
@@ -70,16 +72,16 @@ public class TreeSetTest {
 
 	@Test
 	public void setTrees() {
-		final TreeSet treeSet = treeSetProvider.get();
+		final ITreeSet treeSet = treeSetProvider.get();
 
 		assertFalse(treeSet.isInNeedOfNewVersion());
 
-		final List<Tree> trees =
+		final List<ITree> trees =
 				ImmutableList.of(
 						treeProvider.get(),
 						treeProvider.get(),
 						treeProvider.get());
-		final List<Tree> returnedTrees = treeSet.setTrees(trees);
+		final List<ITree> returnedTrees = treeSet.setTrees(trees);
 
 		assertTrue(treeSet.isInNeedOfNewVersion());
 
@@ -89,24 +91,24 @@ public class TreeSetTest {
 
 		treeSet.unsetInNeedOfNewVersion();
 		assertFalse(treeSet.isInNeedOfNewVersion());
-		final List<Tree> returnedTrees2 = treeSet.setTrees(trees);
+		final List<ITree> returnedTrees2 = treeSet.setTrees(trees);
 		assertTrue(isEmpty(returnedTrees2));
 		assertFalse(treeSet.isInNeedOfNewVersion());
 		assertEquals(treeSet.getTrees(), trees);
 
 		treeSet.unsetInNeedOfNewVersion();
 
-		final List<Tree> trees2 =
+		final List<ITree> trees2 =
 				ImmutableList.of(trees.get(1));
 
-		final List<Tree> returnedTrees3 = treeSet.setTrees(trees2);
+		final List<ITree> returnedTrees3 = treeSet.setTrees(trees2);
 		assertTrue(treeSet.isInNeedOfNewVersion());
 		assertEquals(returnedTrees3,
 				ImmutableList.of(
 						trees.get(0),
 						trees.get(2)));
 		assertEquals(treeSet.getTrees(), trees2);
-		for (final Tree returnedTree3 : returnedTrees3) {
+		for (final ITree returnedTree3 : returnedTrees3) {
 			assertNull(returnedTree3.getParent());
 		}
 	}
@@ -118,7 +120,7 @@ public class TreeSetTest {
 	@Test
 	public void setInNeedOfNewVersionInfo() {
 
-		final TreeSet treeSet = treeSetProvider.get();
+		final ITreeSet treeSet = treeSetProvider.get();
 		treeSet.unsetInNeedOfNewVersion();
 
 		treeSet.setInNeedOfNewVersion();
@@ -139,7 +141,7 @@ public class TreeSetTest {
 
 	@Test
 	public void setLabel() {
-		final TreeSet treeSet = treeSetProvider.get();
+		final ITreeSet treeSet = treeSetProvider.get();
 		treeSet.unsetInNeedOfNewVersion();
 		final String otuSetLabel = "otu-set-label";
 		final ITreeSet returnedTreeSet = treeSet.setLabel(otuSetLabel);
@@ -159,7 +161,7 @@ public class TreeSetTest {
 
 	@Test
 	public void accept() {
-		final TreeSet treeSet = treeSetProvider.get();
+		final ITreeSet treeSet = treeSetProvider.get();
 		treeSet.addTree(treeProvider.get());
 		treeSet.addTree(treeProvider.get());
 		treeSet.addTree(treeProvider.get());
@@ -175,7 +177,7 @@ public class TreeSetTest {
 						+ treeSet.getTrees().size()
 						+ treeSet.getAttachments().size());
 
-		for (final Tree tree : treeSet.getTrees()) {
+		for (final ITree tree : treeSet.getTrees()) {
 			assertTrue(visitor.getVisited().contains(tree));
 		}
 

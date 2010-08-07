@@ -23,7 +23,6 @@ import javax.annotation.Nullable;
 import javax.xml.bind.annotation.adapters.XmlJavaTypeAdapter;
 
 import edu.upenn.cis.ppod.model.DNASequenceSet;
-import edu.upenn.cis.ppod.model.ITreeSet;
 import edu.upenn.cis.ppod.model.OTUSet;
 import edu.upenn.cis.ppod.model.StandardMatrix;
 import edu.upenn.cis.ppod.util.IVisitor;
@@ -58,12 +57,12 @@ public interface IOTUSet
 	/**
 	 * Scaffolding code that does two things:
 	 * <ol>
-	 * <li>Adds <code>otu</code> to this {@code OTUSet}'s constituent
-	 * {@code OTU}s</li>
-	 * <li>Adds this {@code OTUSet} to {@code otu}'s {@code OTUSet}s</li>
+	 * <li>Adds <code>otu</code> to this {@code IOTUSet}'s constituent
+	 * {@code IOTU}s</li>
+	 * <li>Adds this {@code IOTUSet} to {@code otu}'s {@code IOTUSet}s</li>
 	 * </ol>
-	 * So it takes care of both sides of the <code>OTUSet</code><->
-	 * <code>OTU</code> relationship.
+	 * So it takes care of both sides of the <code>IOTUSet</code><->
+	 * <code>IOTU</code> relationship.
 	 * <p>
 	 * Assumes {@code otu} is in a detached state.
 	 * <p>
@@ -92,9 +91,10 @@ public interface IOTUSet
 	/**
 	 * Add a tree set to this OTU set.
 	 * <p>
-	 * Also handles the {@code TreeSet->OTUSet} side of the relationship.
+	 * Also handles the {@code ITreeSet->IOTUSet} side of the relationship.
 	 * 
 	 * @param treeSet to be added
+	 * 
 	 * @return {@code treeSet}
 	 */
 	ITreeSet addTreeSet(ITreeSet treeSet);

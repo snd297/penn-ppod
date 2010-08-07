@@ -44,8 +44,7 @@ import com.google.common.collect.Iterables;
 
 import edu.umd.cs.findbugs.annotations.CheckForNull;
 import edu.umd.cs.findbugs.annotations.Nullable;
-import edu.upenn.cis.ppod.modelinterfaces.IAttachee;
-import edu.upenn.cis.ppod.modelinterfaces.IVersioned;
+import edu.upenn.cis.ppod.modelinterfaces.IPPodEntity;
 import edu.upenn.cis.ppod.util.IVisitor;
 
 /**
@@ -67,7 +66,7 @@ import edu.upenn.cis.ppod.util.IVisitor;
 @Inheritance(strategy = InheritanceType.JOINED)
 public abstract class PPodEntity
 		extends PersistentObject
-		implements IAttachee, IVersioned {
+		implements IPPodEntity {
 
 	public static final String TABLE = "PPOD_ENTITY";
 

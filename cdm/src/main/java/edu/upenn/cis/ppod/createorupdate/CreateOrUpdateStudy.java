@@ -29,7 +29,6 @@ import edu.upenn.cis.ppod.dao.IDAO;
 import edu.upenn.cis.ppod.dao.IStudyDAO;
 import edu.upenn.cis.ppod.model.DNASequence;
 import edu.upenn.cis.ppod.model.DNASequenceSet;
-import edu.upenn.cis.ppod.model.ITreeSet;
 import edu.upenn.cis.ppod.model.OTUSet;
 import edu.upenn.cis.ppod.model.StandardMatrix;
 import edu.upenn.cis.ppod.model.Study;
@@ -37,6 +36,7 @@ import edu.upenn.cis.ppod.modelinterfaces.IDNAMatrix;
 import edu.upenn.cis.ppod.modelinterfaces.INewVersionInfo;
 import edu.upenn.cis.ppod.modelinterfaces.IOTUSet;
 import edu.upenn.cis.ppod.modelinterfaces.IStudy;
+import edu.upenn.cis.ppod.modelinterfaces.ITreeSet;
 import edu.upenn.cis.ppod.modelinterfaces.IWithPPodId;
 
 /**
