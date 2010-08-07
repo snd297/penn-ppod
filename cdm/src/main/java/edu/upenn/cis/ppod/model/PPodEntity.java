@@ -50,6 +50,9 @@ import edu.upenn.cis.ppod.util.IVisitor;
 /**
  * A {@code PersistentObject} with pPOD version information and to which we can
  * add/remove attachments.
+ * <p>
+ * Made this class public because otherwise we were getting this exception when
+ * we marshalled:
  * 
  * <pre>
  * Caused by: java.lang.IllegalAccessException: Class org.hibernate.proxy.pojo.javassist.JavassistLazyInitializer can not access a member of class edu.upenn.cis.ppod.model.PPodEntity with modifiers "public"

@@ -25,13 +25,10 @@ import javax.xml.bind.annotation.adapters.XmlJavaTypeAdapter;
 import edu.upenn.cis.ppod.model.DNASequenceSet;
 import edu.upenn.cis.ppod.model.OTUSet;
 import edu.upenn.cis.ppod.model.StandardMatrix;
-import edu.upenn.cis.ppod.util.IVisitor;
 
 @XmlJavaTypeAdapter(OTUSet.Adapter.class)
 public interface IOTUSet
 		extends ILabeled, IWithXmlID, IUUPPodEntity {
-
-	void accept(IVisitor visitor);
 
 	/**
 	 * Add a DNA matrix to this OTU set.
@@ -64,16 +61,11 @@ public interface IOTUSet
 	 * So it takes care of both sides of the <code>IOTUSet</code><->
 	 * <code>IOTU</code> relationship.
 	 * <p>
-	 * Assumes {@code otu} is in a detached state.
-	 * <p>
 	 * {@code otu} must have a label that is unique relative to this OTU set.
 	 * 
 	 * @param otu see description
 	 * 
 	 * @return {@code otu}
-	 * 
-	 * @throws IllegalArgumentException if this OTU set already has an OTU with
-	 *             {@code otu}'s label
 	 */
 	IOTU addOTU(IOTU otu);
 

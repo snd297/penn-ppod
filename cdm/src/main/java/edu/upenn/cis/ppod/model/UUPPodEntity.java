@@ -29,16 +29,6 @@ import edu.upenn.cis.ppod.imodel.IUUPPodEntity;
 
 /**
  * A universally unique pPOD entity.
- * <p>
- * Made public for Hibernate. Otherwise we get:
- * 
- * <pre>
- * Caused by: java.lang.IllegalAccessException: Class org.hibernate.proxy.pojo.javassist.JavassistLazyInitializer can not access a member of class edu.upenn.cis.ppod.model.PPodEntity with modifiers "public"
- *  	at sun.reflect.Reflection.ensureMemberAccess(Reflection.java:65)
- *  	at java.lang.reflect.Method.invoke(Method.java:588)
- *  	at org.hibernate.proxy.pojo.javassist.JavassistLazyInitializer.invoke(JavassistLazyInitializer.java:197)
- *  	at edu.upenn.cis.ppod.model.CharacterState_$$_javassist_0.beforeMarshal(CharacterState_$$_javassist_0.java)
- * </pre>
  * 
  * @author Sam Donnelly
  */
