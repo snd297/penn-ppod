@@ -36,7 +36,7 @@ public interface ITreeSet
 	 * 
 	 * @return {@code tree}
 	 */
-	ITree addTree(final ITree tree);
+	ITree addTree(ITree tree);
 
 	/**
 	 * Get the parent OTU set.
@@ -48,10 +48,10 @@ public interface ITreeSet
 
 	List<ITree> getTrees();
 
-	ITreeSet setLabel(final String label);
+	ITreeSet setLabel(String label);
 
 	ITreeSet setParent(@CheckForNull final IOTUSet parent);
 
-	List<ITree> setTrees(final List<? extends ITree> trees);
+	List<ITree> setTrees(List<? extends ITree> trees);
 
 }

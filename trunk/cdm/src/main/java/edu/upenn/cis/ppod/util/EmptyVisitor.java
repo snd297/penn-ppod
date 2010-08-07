@@ -15,11 +15,11 @@
  */
 package edu.upenn.cis.ppod.util;
 
-import edu.upenn.cis.ppod.model.Attachment;
 import edu.upenn.cis.ppod.model.AttachmentNamespace;
 import edu.upenn.cis.ppod.model.AttachmentType;
 import edu.upenn.cis.ppod.model.DNASequence;
 import edu.upenn.cis.ppod.model.DNASequenceSet;
+import edu.upenn.cis.ppod.model.IAttachment;
 import edu.upenn.cis.ppod.model.StandardCell;
 import edu.upenn.cis.ppod.model.StandardCharacter;
 import edu.upenn.cis.ppod.model.StandardMatrix;
@@ -46,7 +46,7 @@ public abstract class EmptyVisitor implements IVisitor {
 	 * 
 	 * @param attachment ignored
 	 */
-	public void visitAttachment(final Attachment attachment) {}
+	public void visitAttachment(final IAttachment attachment) {}
 
 	/**
 	 * Does nothing.

@@ -40,7 +40,6 @@ import javax.xml.bind.annotation.XmlAttribute;
 import javax.xml.bind.annotation.XmlElement;
 
 import com.google.common.annotations.VisibleForTesting;
-import com.google.common.collect.Iterables;
 
 import edu.umd.cs.findbugs.annotations.CheckForNull;
 import edu.umd.cs.findbugs.annotations.Nullable;
@@ -73,9 +72,9 @@ public abstract class PPodEntity
 	public static final String JOIN_COLUMN = TABLE + "_ID";
 
 	@OneToMany(mappedBy = "attachee", cascade = CascadeType.ALL,
-			orphanRemoval = true)
+			orphanRemoval = true, targetEntity = Attachment.class)
 	@CheckForNull
-	private Set<Attachment> attachments;
+	private Set<IAttachment> attachments;
 
 	@Column(name = "HAS_ATTACHMENTS", nullable = false)
 	private Boolean hasAttachments = false;
@@ -116,12 +115,12 @@ public abstract class PPodEntity
 
 	public void accept(final IVisitor visitor) {
 		checkNotNull(visitor);
-		for (final Attachment attachment : getAttachments()) {
+		for (final IAttachment attachment : getAttachments()) {
 			attachment.accept(visitor);
 		}
 	}
 
-	public Attachment addAttachment(final Attachment attachment) {
+	public IAttachment addAttachment(final IAttachment attachment) {
 		if (attachments == null) {
 			attachments = newHashSet();
 		}
@@ -146,17 +145,18 @@ public abstract class PPodEntity
 	 */
 	protected boolean beforeMarshal(@CheckForNull final Marshaller marshaler) {
 		// Write out the version number for the client of the xml
-		// if (version != null) {
-		// throw new IllegalStateException(
-		// "about to marshal, but version != null. Outside of testing, this value should never be set in client code.");
-		// }
+		if (version != null) {
+			throw new IllegalStateException(
+					"about to marshal, but version != null. Outside of testing, this value should never be set in client code.");
+		}
 		if (versionInfo != null) {
 			version = versionInfo.getVersion();
 		}
 		return true;
 	}
 
-	public Set<Attachment> getAttachments() {
+	/** {@inheritDoc} */
+	public Set<IAttachment> getAttachments() {
 		if (hasAttachments) {
 			if (attachments == null) {
 				throw new AssertionError(
@@ -167,18 +167,19 @@ public abstract class PPodEntity
 		return Collections.emptySet();
 	}
 
-	public Set<Attachment> getAttachmentsByNamespace(
+	/** {@inheritDoc} */
+	public Set<IAttachment> getAttachmentsByNamespace(
 			final String namespace) {
-		return newHashSet(Iterables
-				.filter(getAttachments(),
-						new Attachment.IsOfNamespace(namespace)));
+		return newHashSet(filter(
+				getAttachments(),
+						new IAttachment.IsOfNamespace(namespace)));
 	}
 
-	public Set<Attachment> getAttachmentsByNamespaceAndType(
+	public Set<IAttachment> getAttachmentsByNamespaceAndType(
 			final String namespace, final String type) {
 		return newHashSet(filter(
 						getAttachments(),
-						new Attachment.IsOfNamespaceAndType(namespace, type)));
+						new IAttachment.IsOfNamespaceAndType(namespace, type)));
 	}
 
 	/**
@@ -186,7 +187,7 @@ public abstract class PPodEntity
 	 */
 	@XmlElement(name = "attachment")
 	@edu.umd.cs.findbugs.annotations.Nullable
-	protected Set<Attachment> getAttachmentsXml() {
+	protected Set<IAttachment> getAttachmentsXml() {
 		if (hasAttachments) {
 			if (attachments == null) {
 				attachments = newHashSet();
@@ -226,13 +227,14 @@ public abstract class PPodEntity
 		return inNeedOfNewVersion;
 	}
 
-	public boolean removeAttachment(final Attachment attachment) {
+	/** {@inheritDoc} */
+	public boolean removeAttachment(final IAttachment attachment) {
 		checkNotNull(attachment);
 		Boolean attachmentRemoved;
 		if (!hasAttachments) {
 			attachmentRemoved = false;
 		} else {
-			final Set<Attachment> thisAttachments = attachments;
+			final Set<IAttachment> thisAttachments = attachments;
 			if (thisAttachments == null) {
 				throw new AssertionError(
 						"hasAttachments is true but attachmesn == null");
@@ -275,16 +277,13 @@ public abstract class PPodEntity
 	 * Set the pPOD version number for marshalling so that an entire
 	 * {@link VersionInfo} need not be sent over the wire.
 	 * <p>
-	 * <strong>Outside of testing, there is no reason for client code to call
-	 * this method.</strong> It will be called when marshalling
-	 * {@code PPodEntity}s.
+	 * {@code protected} for JAXB.
 	 * 
 	 * @param pPodVersion the pPOD version number
 	 * 
 	 * @return this
 	 */
-	@VisibleForTesting
-	public PPodEntity setVersion(final Long version) {
+	protected IPPodEntity setVersion(final Long version) {
 		checkNotNull(version);
 		this.version = version;
 		return this;
@@ -297,7 +296,7 @@ public abstract class PPodEntity
 	 * 
 	 * @return this
 	 */
-	public PPodEntity setVersionInfo(
+	public IPPodEntity setVersionInfo(
 			final VersionInfo versionInfo) {
 		checkNotNull(versionInfo);
 		unsetInNeedOfNewVersion();
@@ -333,7 +332,7 @@ public abstract class PPodEntity
 	}
 
 	@VisibleForTesting
-	public PPodEntity unsetInNeedOfNewVersion() {
+	public IPPodEntity unsetInNeedOfNewVersion() {
 		inNeedOfNewVersion = false;
 		return this;
 	}

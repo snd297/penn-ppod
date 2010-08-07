@@ -15,11 +15,11 @@
  */
 package edu.upenn.cis.ppod.util;
 
-import edu.upenn.cis.ppod.model.Attachment;
 import edu.upenn.cis.ppod.model.AttachmentNamespace;
 import edu.upenn.cis.ppod.model.AttachmentType;
 import edu.upenn.cis.ppod.model.DNASequence;
 import edu.upenn.cis.ppod.model.DNASequenceSet;
+import edu.upenn.cis.ppod.model.IAttachment;
 import edu.upenn.cis.ppod.model.StandardCell;
 import edu.upenn.cis.ppod.model.StandardCharacter;
 import edu.upenn.cis.ppod.model.StandardMatrix;
@@ -49,7 +49,7 @@ public interface IVisitor {
 	 * 
 	 * @param attachment visitee
 	 */
-	void visitAttachment(Attachment attachment);
+	void visitAttachment(IAttachment attachment);
 
 	/**
 	 * Visit an attachment namespace.
@@ -109,6 +109,11 @@ public interface IVisitor {
 	 */
 	void visitStandardState(StandardState state);
 
+	/**
+	 * Visit the study
+	 * 
+	 * @param study visitee
+	 */
 	void visitStudy(IStudy study);
 
 	void visitTree(ITree tree);

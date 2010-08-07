@@ -18,7 +18,7 @@ package edu.upenn.cis.ppod.util;
 import com.google.inject.Inject;
 import com.google.inject.assistedinject.Assisted;
 
-import edu.upenn.cis.ppod.model.Attachment;
+import edu.upenn.cis.ppod.model.IAttachment;
 import edu.upenn.cis.ppod.model.StandardCell;
 import edu.upenn.cis.ppod.model.StandardCharacter;
 import edu.upenn.cis.ppod.model.StandardMatrix;
@@ -60,7 +60,7 @@ final class SetVersionInfoVisitor extends EmptyVisitor implements
 	}
 
 	@Override
-	public void visitAttachment(final Attachment attachment) {
+	public void visitAttachment(final IAttachment attachment) {
 		setNewVersionInfo(attachment);
 	}
 

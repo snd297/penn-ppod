@@ -28,8 +28,7 @@ import com.google.inject.Provider;
 import com.google.inject.assistedinject.Assisted;
 
 import edu.upenn.cis.ppod.dao.IDAO;
-import edu.upenn.cis.ppod.model.Attachment;
-import edu.upenn.cis.ppod.model.OTU;
+import edu.upenn.cis.ppod.model.IAttachment;
 import edu.upenn.cis.ppod.modelinterfaces.ICell;
 import edu.upenn.cis.ppod.modelinterfaces.IMatrix;
 import edu.upenn.cis.ppod.modelinterfaces.INewVersionInfo;
@@ -56,7 +55,7 @@ abstract class CreateOrUpdateMatrix<M extends IMatrix<R>, R extends IRow<C, ?>, 
 	CreateOrUpdateMatrix(
 			final Provider<R> rowProvider,
 			final Provider<C> cellProvider,
-			final Provider<Attachment> attachmentProvider,
+			final Provider<IAttachment> attachmentProvider,
 			@Assisted final INewVersionInfo newVersionInfo,
 			@Assisted final IDAO<Object, Long> dao) {
 		this.rowProvider = rowProvider;
@@ -150,8 +149,7 @@ abstract class CreateOrUpdateMatrix<M extends IMatrix<R>, R extends IRow<C, ?>, 
 						dbCell.setUnassigned();
 						break;
 					case UNCERTAIN:
-						dbCell
-								.setUncertainElements(sourceCell.getElements());
+						dbCell.setUncertainElements(sourceCell.getElements());
 						break;
 					default:
 						throw new AssertionError("unknown type");

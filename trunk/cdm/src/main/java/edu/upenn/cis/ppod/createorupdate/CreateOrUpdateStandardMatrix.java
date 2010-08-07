@@ -33,7 +33,7 @@ import com.google.inject.Provider;
 import com.google.inject.assistedinject.Assisted;
 
 import edu.upenn.cis.ppod.dao.IDAO;
-import edu.upenn.cis.ppod.model.Attachment;
+import edu.upenn.cis.ppod.model.IAttachment;
 import edu.upenn.cis.ppod.model.StandardCell;
 import edu.upenn.cis.ppod.model.StandardCharacter;
 import edu.upenn.cis.ppod.model.StandardMatrix;
@@ -54,7 +54,7 @@ final class CreateOrUpdateStandardMatrix
 
 	private final Provider<StandardCharacter> standardCharacterProvider;
 	private final StandardState.IFactory standardStateFactory;
-	private final Provider<Attachment> attachmentProvider;
+	private final Provider<IAttachment> attachmentProvider;
 	private final IMergeAttachments mergeAttachments;
 
 	@InjectLogger
@@ -68,7 +68,7 @@ final class CreateOrUpdateStandardMatrix
 			final Provider<StandardCell> cellProvider,
 			final Provider<StandardCharacter> characterProvider,
 			final StandardState.IFactory stateFactory,
-			final Provider<Attachment> attachmentProvider,
+			final Provider<IAttachment> attachmentProvider,
 			@Assisted final IMergeAttachments mergeAttachments,
 			@Assisted final IDAO<Object, Long> dao,
 			@Assisted final INewVersionInfo newVersionInfo) {
@@ -129,17 +129,17 @@ final class CreateOrUpdateStandardMatrix
 
 			}
 
-			for (final Attachment sourceAttachment : sourceCharacter
+			for (final IAttachment sourceAttachment : sourceCharacter
 					.getAttachments()) {
-				final ImmutableSet<Attachment> newDbCharacterAttachments =
+				final ImmutableSet<IAttachment> newDbCharacterAttachments =
 						ImmutableSet.copyOf(
 								newDbCharacter.getAttachments());
-				Attachment dbAttachment =
+				IAttachment dbAttachment =
 						findIf(newDbCharacterAttachments,
 										compose(
 												equalTo(sourceAttachment
 														.getStringValue()),
-												Attachment.getStringValue));
+												IAttachment.getStringValue));
 
 				if (dbAttachment == null) {
 					dbAttachment = attachmentProvider.get();

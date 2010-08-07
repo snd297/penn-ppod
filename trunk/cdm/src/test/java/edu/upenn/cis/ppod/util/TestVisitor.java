@@ -19,11 +19,11 @@ import static com.google.common.collect.Lists.newArrayList;
 
 import java.util.List;
 
-import edu.upenn.cis.ppod.model.Attachment;
 import edu.upenn.cis.ppod.model.AttachmentNamespace;
 import edu.upenn.cis.ppod.model.AttachmentType;
 import edu.upenn.cis.ppod.model.DNASequence;
 import edu.upenn.cis.ppod.model.DNASequenceSet;
+import edu.upenn.cis.ppod.model.IAttachment;
 import edu.upenn.cis.ppod.model.StandardCell;
 import edu.upenn.cis.ppod.model.StandardCharacter;
 import edu.upenn.cis.ppod.model.StandardMatrix;
@@ -56,7 +56,7 @@ public class TestVisitor extends EmptyVisitor {
 	}
 
 	@Override
-	public void visitAttachment(final Attachment attachment) {
+	public void visitAttachment(final IAttachment attachment) {
 		visited.add(attachment);
 	}
 
