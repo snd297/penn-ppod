@@ -50,7 +50,6 @@ import edu.upenn.cis.ppod.imodel.IMatrix;
 import edu.upenn.cis.ppod.imodel.IOTU;
 import edu.upenn.cis.ppod.imodel.IOTUKeyedMap;
 import edu.upenn.cis.ppod.imodel.IOTUSet;
-import edu.upenn.cis.ppod.imodel.IOTUSetChild;
 import edu.upenn.cis.ppod.imodel.IRow;
 import edu.upenn.cis.ppod.util.IVisitor;
 
@@ -63,7 +62,7 @@ import edu.upenn.cis.ppod.util.IVisitor;
 @MappedSuperclass
 public abstract class Matrix<R extends IRow<?, ?>>
 		extends UUPPodEntityWithXmlId
-		implements IOTUSetChild, IMatrix<R> {
+		implements IMatrix<R> {
 
 	/** Description column. */
 	public static final String DESCRIPTION_COLUMN = "DESCRIPTION";
