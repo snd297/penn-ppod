@@ -30,6 +30,7 @@ import java.util.Iterator;
 import java.util.Map.Entry;
 import java.util.Set;
 
+import edu.upenn.cis.ppod.imodel.IAttachment;
 import edu.upenn.cis.ppod.imodel.ILabeled;
 import edu.upenn.cis.ppod.imodel.IOTU;
 import edu.upenn.cis.ppod.imodel.IOTUSet;
@@ -267,7 +268,7 @@ public class ModelAssert {
 		for (final IAttachment actualAttachment : actualAttachments) {
 			final IAttachment expectedAttachment = getOnlyElement(filter(
 							expectedAttachmentsCopy,
-							new Attachment.IsOfNamespaceTypeLabelAndStringValue(
+							new IAttachment.IsOfNamespaceTypeLabelAndStringValue(
 									actualAttachment)));
 			expectedAttachmentsCopy.remove(expectedAttachment);
 			assertEqualsAttachments(actualAttachment, expectedAttachment);

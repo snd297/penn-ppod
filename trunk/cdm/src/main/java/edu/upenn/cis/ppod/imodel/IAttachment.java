@@ -1,4 +1,19 @@
-package edu.upenn.cis.ppod.model;
+/*
+ * Copyright (C) 2010 Trustees of the University of Pennsylvania
+ *
+ * Licensed under the Apache License, Version 2.0 (the "License");
+ * you may not use this file except in compliance with the License.
+ * You may obtain a copy of the License at
+ *
+ * http://www.apache.org/licenses/LICENSE-2.0
+ *
+ * Unless required by applicable law or agreed to in writing, software
+ * distributed under the License is distributed on an "AS IS" BASIS,
+ * WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
+ * See the License for the specific language governing permissions and
+ * limitations under the License.
+ */
+package edu.upenn.cis.ppod.imodel;
 
 import static com.google.common.base.Preconditions.checkArgument;
 import static com.google.common.base.Preconditions.checkNotNull;
@@ -16,9 +31,9 @@ import com.google.inject.assistedinject.Assisted;
 
 import edu.umd.cs.findbugs.annotations.CheckForNull;
 import edu.umd.cs.findbugs.annotations.Nullable;
-import edu.upenn.cis.ppod.imodel.IPPodEntity;
-import edu.upenn.cis.ppod.imodel.IUUPPodEntity;
+import edu.upenn.cis.ppod.model.Attachment;
 import edu.upenn.cis.ppod.model.Attachment.IIsOfNamepspaceTypeLabelAndStringValue;
+import edu.upenn.cis.ppod.model.AttachmentType;
 
 @XmlJavaTypeAdapter(Attachment.Adapter.class)
 public interface IAttachment extends IUUPPodEntity {
@@ -56,7 +71,7 @@ public interface IAttachment extends IUUPPodEntity {
 		 * @param namespaceLabel is the typeLabel of this namespaceLabel?
 		 */
 		@Inject
-		IsOfNamespace(@Assisted final String namespaceLabel) {
+		public IsOfNamespace(@Assisted final String namespaceLabel) {
 			checkNotNull(namespaceLabel);
 			this.namespaceLabel = namespaceLabel;
 		}
@@ -80,10 +95,10 @@ public interface IAttachment extends IUUPPodEntity {
 
 		private final String typeLabel;
 
-		/**
-		 * @param typeLabel is the attachment of this typeLabel?
-		 * @param namespaceLabel is the typeLabel of this namespaceLabel?
-		 */
+		public/**
+				 * @param typeLabel is the attachment of this typeLabel?
+				 * @param namespaceLabel is the typeLabel of this namespaceLabel?
+				 */
 		IsOfNamespaceAndType(final String namespaceLabel, final String typeLabel) {
 			checkNotNull(namespaceLabel);
 			checkNotNull(typeLabel);
@@ -108,7 +123,7 @@ public interface IAttachment extends IUUPPodEntity {
 		private final String namespaceLabel;
 		private final String typeLabel;
 
-		IsOfNamespaceTypeLabelAndStringValue(final IAttachment attachment) {
+		public IsOfNamespaceTypeLabelAndStringValue(final IAttachment attachment) {
 			checkNotNull(attachment);
 			checkArgument(attachment.getType() != null,
 						"attachment.getType() == null");

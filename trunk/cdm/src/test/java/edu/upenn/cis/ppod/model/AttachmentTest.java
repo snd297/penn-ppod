@@ -27,6 +27,7 @@ import com.google.inject.Inject;
 import com.google.inject.Provider;
 
 import edu.upenn.cis.ppod.TestGroupDefs;
+import edu.upenn.cis.ppod.imodel.IAttachment;
 
 /**
  * Tests for {@link Attachment}.

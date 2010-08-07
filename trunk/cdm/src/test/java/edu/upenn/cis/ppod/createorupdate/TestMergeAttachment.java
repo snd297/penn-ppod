@@ -17,7 +17,7 @@ package edu.upenn.cis.ppod.createorupdate;
 
 import static com.google.common.base.Preconditions.checkArgument;
 import static com.google.common.base.Preconditions.checkNotNull;
-import edu.upenn.cis.ppod.model.IAttachment;
+import edu.upenn.cis.ppod.imodel.IAttachment;
 
 /**
  * Stub {@link IMergeAttachments}.
