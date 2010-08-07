@@ -68,7 +68,7 @@ public class StandardRows
 		rows.afterUnmarshal();
 	}
 
-	public void afterUnmarshal(
+	protected void afterUnmarshal(
 			@CheckForNull final Unmarshaller u,
 			final Object parent) {
 		// Don't do checkNotNull(parent) since this is called by JAXB and we
@@ -76,7 +76,7 @@ public class StandardRows
 		rows.afterUnmarshal((StandardMatrix) parent);
 	}
 
-	public boolean beforeMarshal(@CheckForNull final Marshaller marshaller) {
+	protected boolean beforeMarshal(@CheckForNull final Marshaller marshaller) {
 		getOTUSomethingPairs().clear();
 		for (final Map.Entry<IOTU, StandardRow> otuToRow : getValues()
 				.entrySet()) {

@@ -65,7 +65,7 @@ public class DNASequences
 		sequences.afterUnmarshal();
 	}
 
-	public void afterUnmarshal(
+	protected void afterUnmarshal(
 			@CheckForNull final Unmarshaller u,
 			final Object parent) {
 		// Don't checkNotNull(parent) since it's called by JAXB and we can't
@@ -73,7 +73,7 @@ public class DNASequences
 		sequences.afterUnmarshal((DNASequenceSet) parent);
 	}
 
-	public boolean beforeMarshal(@CheckForNull final Marshaller marshaller) {
+	protected boolean beforeMarshal(@CheckForNull final Marshaller marshaller) {
 		getOTUSomethingPairs().clear();
 		for (final Map.Entry<IOTU, DNASequence> otuToRow : getValues()
 				.entrySet()) {

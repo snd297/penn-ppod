@@ -68,7 +68,7 @@ public class DNARows implements IOTUKeyedMap<IDNARow> {
 		rows.afterUnmarshal();
 	}
 
-	public void afterUnmarshal(
+	protected void afterUnmarshal(
 			@CheckForNull final Unmarshaller u,
 			final Object parent) {
 		// Don't checkNotNull(parent) since JAXB is the caller and we can't
@@ -76,7 +76,7 @@ public class DNARows implements IOTUKeyedMap<IDNARow> {
 		rows.afterUnmarshal((DNAMatrix) parent);
 	}
 
-	public boolean beforeMarshal(@CheckForNull final Marshaller marshaller) {
+	protected boolean beforeMarshal(@CheckForNull final Marshaller marshaller) {
 		getOTUSomethingPairs().clear();
 		for (final Map.Entry<IOTU, IDNARow> otuToRow : getValues()
 				.entrySet()) {
