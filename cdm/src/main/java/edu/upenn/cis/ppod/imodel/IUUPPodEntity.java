@@ -13,30 +13,6 @@
  * See the License for the specific language governing permissions and
  * limitations under the License.
  */
-package edu.upenn.cis.ppod.modelinterfaces;
+package edu.upenn.cis.ppod.imodel;
 
-import java.util.List;
-
-
-public interface IRow<C extends ICell<?, ?>, M extends IMatrix<?>>
-		extends IOTUKeyedMapValue<M>, IPPodEntity, IVisitable {
-	/**
-	 * Get the cells that make up this row.
-	 * 
-	 * @return the cells that make up this row
-	 */
-	List<C> getCells();
-
-	/**
-	 * Set the cells of this row.
-	 * <p>
-	 * This handles both sides of the {@code Row<->Cell} relationship.
-	 * 
-	 * @param cells the cells
-	 * 
-	 * @return any cells which were removed as a result of this operation
-	 * 
-	 */
-	List<C> setCells(final List<? extends C> cells);
-
-}
+public interface IUUPPodEntity extends IPPodEntity, IWithPPodId {}

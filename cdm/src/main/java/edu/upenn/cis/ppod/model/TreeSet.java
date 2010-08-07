@@ -44,9 +44,9 @@ import org.hibernate.annotations.Target;
 
 import com.google.common.collect.Iterators;
 
-import edu.upenn.cis.ppod.modelinterfaces.IOTUSet;
-import edu.upenn.cis.ppod.modelinterfaces.ITree;
-import edu.upenn.cis.ppod.modelinterfaces.ITreeSet;
+import edu.upenn.cis.ppod.imodel.IOTUSet;
+import edu.upenn.cis.ppod.imodel.ITree;
+import edu.upenn.cis.ppod.imodel.ITreeSet;
 import edu.upenn.cis.ppod.util.IVisitor;
 
 /**

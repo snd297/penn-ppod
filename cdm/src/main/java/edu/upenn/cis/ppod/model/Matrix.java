@@ -46,12 +46,12 @@ import com.google.common.annotations.VisibleForTesting;
 
 import edu.umd.cs.findbugs.annotations.CheckForNull;
 import edu.umd.cs.findbugs.annotations.Nullable;
-import edu.upenn.cis.ppod.modelinterfaces.IMatrix;
-import edu.upenn.cis.ppod.modelinterfaces.IOTU;
-import edu.upenn.cis.ppod.modelinterfaces.IOTUKeyedMap;
-import edu.upenn.cis.ppod.modelinterfaces.IOTUSet;
-import edu.upenn.cis.ppod.modelinterfaces.IOTUSetChild;
-import edu.upenn.cis.ppod.modelinterfaces.IRow;
+import edu.upenn.cis.ppod.imodel.IMatrix;
+import edu.upenn.cis.ppod.imodel.IOTU;
+import edu.upenn.cis.ppod.imodel.IOTUKeyedMap;
+import edu.upenn.cis.ppod.imodel.IOTUSet;
+import edu.upenn.cis.ppod.imodel.IOTUSetChild;
+import edu.upenn.cis.ppod.imodel.IRow;
 import edu.upenn.cis.ppod.util.IVisitor;
 
 /**

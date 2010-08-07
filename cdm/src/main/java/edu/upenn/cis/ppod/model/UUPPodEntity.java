@@ -25,7 +25,7 @@ import javax.persistence.Column;
 import javax.persistence.MappedSuperclass;
 import javax.xml.bind.annotation.XmlAttribute;
 
-import edu.upenn.cis.ppod.modelinterfaces.IUUPPodEntity;
+import edu.upenn.cis.ppod.imodel.IUUPPodEntity;
 
 /**
  * A universally unique pPOD entity.

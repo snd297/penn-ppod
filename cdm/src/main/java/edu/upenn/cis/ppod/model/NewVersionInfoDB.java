@@ -21,7 +21,7 @@ import com.google.inject.Inject;
 import com.google.inject.assistedinject.Assisted;
 
 import edu.upenn.cis.ppod.dao.IVersionInfoDAO;
-import edu.upenn.cis.ppod.modelinterfaces.INewVersionInfoDB;
+import edu.upenn.cis.ppod.imodel.INewVersionInfoDB;
 
 /**
  * @author Sam Donnelly

@@ -34,10 +34,10 @@ import javax.xml.bind.annotation.XmlAttribute;
 
 import org.hibernate.annotations.Target;
 
-import edu.upenn.cis.ppod.modelinterfaces.IOTU;
-import edu.upenn.cis.ppod.modelinterfaces.IOTUKeyedMap;
-import edu.upenn.cis.ppod.modelinterfaces.IOTUSet;
-import edu.upenn.cis.ppod.modelinterfaces.IOTUSetChild;
+import edu.upenn.cis.ppod.imodel.IOTU;
+import edu.upenn.cis.ppod.imodel.IOTUKeyedMap;
+import edu.upenn.cis.ppod.imodel.IOTUSet;
+import edu.upenn.cis.ppod.imodel.IOTUSetChild;
 import edu.upenn.cis.ppod.util.IVisitor;
 
 /**

@@ -46,14 +46,14 @@ import javax.xml.bind.annotation.adapters.XmlAdapter;
 
 import com.google.common.annotations.VisibleForTesting;
 
-import edu.upenn.cis.ppod.modelinterfaces.IDNAMatrix;
-import edu.upenn.cis.ppod.modelinterfaces.ILabeled;
-import edu.upenn.cis.ppod.modelinterfaces.IMatrix;
-import edu.upenn.cis.ppod.modelinterfaces.IOTU;
-import edu.upenn.cis.ppod.modelinterfaces.IOTUSet;
-import edu.upenn.cis.ppod.modelinterfaces.IOTUSetChild;
-import edu.upenn.cis.ppod.modelinterfaces.IStudy;
-import edu.upenn.cis.ppod.modelinterfaces.ITreeSet;
+import edu.upenn.cis.ppod.imodel.IDNAMatrix;
+import edu.upenn.cis.ppod.imodel.ILabeled;
+import edu.upenn.cis.ppod.imodel.IMatrix;
+import edu.upenn.cis.ppod.imodel.IOTU;
+import edu.upenn.cis.ppod.imodel.IOTUSet;
+import edu.upenn.cis.ppod.imodel.IOTUSetChild;
+import edu.upenn.cis.ppod.imodel.IStudy;
+import edu.upenn.cis.ppod.imodel.ITreeSet;
 import edu.upenn.cis.ppod.util.IVisitor;
 
 /**

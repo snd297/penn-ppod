@@ -34,9 +34,9 @@ import javax.xml.bind.annotation.XmlAttribute;
 
 import edu.umd.cs.findbugs.annotations.CheckForNull;
 import edu.umd.cs.findbugs.annotations.Nullable;
-import edu.upenn.cis.ppod.modelinterfaces.ICell;
-import edu.upenn.cis.ppod.modelinterfaces.IMatrix;
-import edu.upenn.cis.ppod.modelinterfaces.IRow;
+import edu.upenn.cis.ppod.imodel.ICell;
+import edu.upenn.cis.ppod.imodel.IMatrix;
+import edu.upenn.cis.ppod.imodel.IRow;
 
 /**
  * A cell.

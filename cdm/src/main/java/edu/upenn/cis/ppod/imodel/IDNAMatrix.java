@@ -13,25 +13,13 @@
  * See the License for the specific language governing permissions and
  * limitations under the License.
  */
-package edu.upenn.cis.ppod.modelinterfaces;
+package edu.upenn.cis.ppod.imodel;
 
-import edu.upenn.cis.ppod.model.VersionInfo;
+import javax.xml.bind.annotation.adapters.XmlJavaTypeAdapter;
 
-/**
- * Get the next version available version info.
- * <p>
- * 
- * @see SetVersionInfoVisitor
- * 
- * @author Sam Donnelly
- */
-public interface INewVersionInfo {
+import edu.upenn.cis.ppod.model.DNAMatrix;
 
-	/**
-	 * Get the next version available from the pPOD DB.
-	 * 
-	 * @return the next version available from the pPOD DB
-	 */
-	VersionInfo getNewVersionInfo();
-
+@XmlJavaTypeAdapter(DNAMatrix.Adapter.class)
+public interface IDNAMatrix extends IMatrix<IDNARow> {
+	void afterUnmarshal();
 }

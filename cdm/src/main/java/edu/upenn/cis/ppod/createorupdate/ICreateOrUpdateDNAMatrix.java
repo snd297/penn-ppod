@@ -18,11 +18,11 @@ package edu.upenn.cis.ppod.createorupdate;
 import com.google.inject.ImplementedBy;
 
 import edu.upenn.cis.ppod.dao.IDAO;
+import edu.upenn.cis.ppod.imodel.IDNACell;
+import edu.upenn.cis.ppod.imodel.IDNAMatrix;
+import edu.upenn.cis.ppod.imodel.IDNARow;
+import edu.upenn.cis.ppod.imodel.INewVersionInfo;
 import edu.upenn.cis.ppod.model.DNANucleotide;
-import edu.upenn.cis.ppod.modelinterfaces.IDNACell;
-import edu.upenn.cis.ppod.modelinterfaces.IDNAMatrix;
-import edu.upenn.cis.ppod.modelinterfaces.IDNARow;
-import edu.upenn.cis.ppod.modelinterfaces.INewVersionInfo;
 
 /**
  * @author Sam Donnelly

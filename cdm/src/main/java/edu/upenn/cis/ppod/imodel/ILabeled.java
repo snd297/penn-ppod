@@ -13,40 +13,38 @@
  * See the License for the specific language governing permissions and
  * limitations under the License.
  */
-package edu.upenn.cis.ppod.modelinterfaces;
+package edu.upenn.cis.ppod.imodel;
 
-import java.util.Set;
-
-import edu.upenn.cis.ppod.services.ppodentity.IOTUSetCentricEntities;
+import com.google.common.base.Function;
 
 /**
- * A collection of work - inspired by a Mesquite project - sets of OTU sets and,
- * through the OTU sets, matrices and tree sets.
+ * An object with a label.
  * 
  * @author Sam Donnelly
  */
-public interface IStudy extends ILabeled, IOTUSetCentricEntities, IUUPPodEntity {
-
-	IOTUSet addOTUSet(final IOTUSet otuSet);
-
-	Set<IOTUSet> getOTUSets();
+public interface ILabeled {
 
 	/**
-	 * Remove an OTU set from this Study.
-	 * 
-	 * @param otuSet to be removed
-	 * 
-	 * @return this
+	 * {@link Function} wrapper of {@link #getLabel()}.
 	 */
-	IStudy removeOTUSet(final IOTUSet otuSet);
+	public static final Function<ILabeled, String> getLabel = new Function<ILabeled, String>() {
+
+		/**
+		 * Return {@code labeled.getLabel()}.
+		 * 
+		 * @param labeled on which to call {@code getLabel()}.
+		 * 
+		 * @return {@code labeled.getLabel()}.
+		 */
+		public String apply(final ILabeled labeled) {
+			return labeled.getLabel();
+		}
+	};
 
 	/**
-	 * Set the label.
+	 * Get the label.
 	 * 
-	 * @param label the label to set
-	 * 
-	 * @return this
+	 * @return the label
 	 */
-	IStudy setLabel(final String label);
-
+	String getLabel();
 }

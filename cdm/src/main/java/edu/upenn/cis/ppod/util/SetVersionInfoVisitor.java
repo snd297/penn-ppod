@@ -18,23 +18,23 @@ package edu.upenn.cis.ppod.util;
 import com.google.inject.Inject;
 import com.google.inject.assistedinject.Assisted;
 
+import edu.upenn.cis.ppod.imodel.IDNACell;
+import edu.upenn.cis.ppod.imodel.IDNAMatrix;
+import edu.upenn.cis.ppod.imodel.IDNARow;
+import edu.upenn.cis.ppod.imodel.IMatrix;
+import edu.upenn.cis.ppod.imodel.INewVersionInfo;
+import edu.upenn.cis.ppod.imodel.IOTU;
+import edu.upenn.cis.ppod.imodel.IOTUSet;
+import edu.upenn.cis.ppod.imodel.IStudy;
+import edu.upenn.cis.ppod.imodel.ITree;
+import edu.upenn.cis.ppod.imodel.ITreeSet;
+import edu.upenn.cis.ppod.imodel.IVersioned;
 import edu.upenn.cis.ppod.model.IAttachment;
 import edu.upenn.cis.ppod.model.StandardCell;
 import edu.upenn.cis.ppod.model.StandardCharacter;
 import edu.upenn.cis.ppod.model.StandardMatrix;
 import edu.upenn.cis.ppod.model.StandardRow;
 import edu.upenn.cis.ppod.model.StandardState;
-import edu.upenn.cis.ppod.modelinterfaces.IDNACell;
-import edu.upenn.cis.ppod.modelinterfaces.IDNAMatrix;
-import edu.upenn.cis.ppod.modelinterfaces.IDNARow;
-import edu.upenn.cis.ppod.modelinterfaces.IMatrix;
-import edu.upenn.cis.ppod.modelinterfaces.INewVersionInfo;
-import edu.upenn.cis.ppod.modelinterfaces.IOTU;
-import edu.upenn.cis.ppod.modelinterfaces.IOTUSet;
-import edu.upenn.cis.ppod.modelinterfaces.IStudy;
-import edu.upenn.cis.ppod.modelinterfaces.ITree;
-import edu.upenn.cis.ppod.modelinterfaces.ITreeSet;
-import edu.upenn.cis.ppod.modelinterfaces.IVersioned;
 
 /**
  * Stuff that should be done at the very end of a pPOD session.

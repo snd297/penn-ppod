@@ -22,7 +22,7 @@ import javax.xml.bind.annotation.XmlAttribute;
 import javax.xml.bind.annotation.XmlID;
 
 import edu.umd.cs.findbugs.annotations.CheckForNull;
-import edu.upenn.cis.ppod.modelinterfaces.IWithXmlID;
+import edu.upenn.cis.ppod.imodel.IWithXmlID;
 
 /**
  * A {@code UUPPodEntity} w/ an {@link XmlID} attribute called {@code "docId"}.

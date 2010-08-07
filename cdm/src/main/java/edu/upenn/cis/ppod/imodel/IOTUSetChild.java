@@ -13,12 +13,21 @@
  * See the License for the specific language governing permissions and
  * limitations under the License.
  */
-package edu.upenn.cis.ppod.modelinterfaces;
+package edu.upenn.cis.ppod.imodel;
 
-import javax.xml.bind.annotation.adapters.XmlJavaTypeAdapter;
 
-import edu.upenn.cis.ppod.model.DNACell;
-import edu.upenn.cis.ppod.model.DNANucleotide;
+/**
+ * A child of an {@code OTUSet}.
+ * 
+ * @author Sam Donnelly
+ */
+public interface IOTUSetChild extends IVersioned, IVisitable {
+	/**
+	 * Get the parent OTU set.
+	 * 
+	 * @return the parent OTU set
+	 */
+	IOTUSet getParent();
 
-@XmlJavaTypeAdapter(DNACell.Adapter.class)
-public interface IDNACell extends IMolecularCell<DNANucleotide, IDNARow> {}
+	IOTUSetChild setParent(IOTUSet otuSet);
+}

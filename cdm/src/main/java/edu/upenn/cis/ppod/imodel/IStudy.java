@@ -13,30 +13,40 @@
  * See the License for the specific language governing permissions and
  * limitations under the License.
  */
-package edu.upenn.cis.ppod.modelinterfaces;
+package edu.upenn.cis.ppod.imodel;
 
-import edu.umd.cs.findbugs.annotations.CheckForNull;
+import java.util.Set;
+
+import edu.upenn.cis.ppod.services.ppodentity.IOTUSetCentricEntities;
 
 /**
- * Indicates a class that is stored in {@link OTUKeyedMap} and so has a
- * relationship back to the owner of the {@code OTUKeyedMap}.
+ * A collection of work - inspired by a Mesquite project - sets of OTU sets and,
+ * through the OTU sets, matrices and tree sets.
  * 
  * @author Sam Donnelly
  */
-public interface IOTUKeyedMapValue<P> extends IVisitable {
+public interface IStudy extends ILabeled, IOTUSetCentricEntities, IUUPPodEntity {
+
+	IOTUSet addOTUSet(final IOTUSet otuSet);
+
+	Set<IOTUSet> getOTUSets();
 
 	/**
-	 * Get the parent.
+	 * Remove an OTU set from this Study.
 	 * 
-	 * @return the parent
-	 */
-	P getParent();
-
-	/**
-	 * Set or unset the parent.
+	 * @param otuSet to be removed
 	 * 
 	 * @return this
 	 */
-	IOTUKeyedMapValue<P> setParent(@CheckForNull P parent);
+	IStudy removeOTUSet(final IOTUSet otuSet);
+
+	/**
+	 * Set the label.
+	 * 
+	 * @param label the label to set
+	 * 
+	 * @return this
+	 */
+	IStudy setLabel(final String label);
 
 }

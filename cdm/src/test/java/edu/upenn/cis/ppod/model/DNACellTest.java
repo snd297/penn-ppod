@@ -30,8 +30,8 @@ import com.google.inject.Inject;
 import com.google.inject.Provider;
 
 import edu.upenn.cis.ppod.TestGroupDefs;
-import edu.upenn.cis.ppod.modelinterfaces.ICell;
-import edu.upenn.cis.ppod.modelinterfaces.ICell.Type;
+import edu.upenn.cis.ppod.imodel.ICell;
+import edu.upenn.cis.ppod.imodel.ICell.Type;
 
 /**
  * Test {@link DNACell}.

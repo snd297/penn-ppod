@@ -33,7 +33,7 @@ import com.google.inject.Inject;
 import com.google.inject.Provider;
 
 import edu.upenn.cis.ppod.TestGroupDefs;
-import edu.upenn.cis.ppod.modelinterfaces.ICell;
+import edu.upenn.cis.ppod.imodel.ICell;
 
 /**
  * Test {@link CharacterStateCell}.

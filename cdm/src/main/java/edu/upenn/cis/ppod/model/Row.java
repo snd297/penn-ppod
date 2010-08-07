@@ -25,10 +25,10 @@ import java.util.List;
 import javax.xml.bind.Unmarshaller;
 
 import edu.umd.cs.findbugs.annotations.CheckForNull;
-import edu.upenn.cis.ppod.modelinterfaces.ICell;
-import edu.upenn.cis.ppod.modelinterfaces.IMatrix;
-import edu.upenn.cis.ppod.modelinterfaces.IOTUKeyedMapValue;
-import edu.upenn.cis.ppod.modelinterfaces.IRow;
+import edu.upenn.cis.ppod.imodel.ICell;
+import edu.upenn.cis.ppod.imodel.IMatrix;
+import edu.upenn.cis.ppod.imodel.IOTUKeyedMapValue;
+import edu.upenn.cis.ppod.imodel.IRow;
 import edu.upenn.cis.ppod.util.IVisitor;
 
 /**

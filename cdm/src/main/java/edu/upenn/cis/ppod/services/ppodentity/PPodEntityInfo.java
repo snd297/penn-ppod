@@ -20,7 +20,7 @@ import javax.xml.bind.annotation.XmlAccessorType;
 import javax.xml.bind.annotation.XmlAttribute;
 import javax.xml.bind.annotation.XmlRootElement;
 
-import edu.upenn.cis.ppod.modelinterfaces.IWithPPodId;
+import edu.upenn.cis.ppod.imodel.IWithPPodId;
 
 /**
  * For communicating back to a client certain information about a pPOD entity

@@ -24,7 +24,7 @@ import javax.persistence.Entity;
 import javax.persistence.Table;
 import javax.xml.bind.annotation.XmlAttribute;
 
-import edu.upenn.cis.ppod.modelinterfaces.ILabeled;
+import edu.upenn.cis.ppod.imodel.ILabeled;
 import edu.upenn.cis.ppod.util.IVisitor;
 
 /**

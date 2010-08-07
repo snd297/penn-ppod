@@ -30,7 +30,7 @@ import javax.xml.bind.annotation.XmlElement;
 
 import com.google.inject.Inject;
 
-import edu.upenn.cis.ppod.modelinterfaces.IOTU;
+import edu.upenn.cis.ppod.imodel.IOTU;
 import edu.upenn.cis.ppod.util.IVisitor;
 
 /**

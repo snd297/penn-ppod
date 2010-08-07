@@ -13,7 +13,7 @@
  * See the License for the specific language governing permissions and
  * limitations under the License.
  */
-package edu.upenn.cis.ppod.modelinterfaces;
+package edu.upenn.cis.ppod.imodel;
 
 import java.util.Set;
 
@@ -27,7 +27,8 @@ public interface IMolecularCell<E extends Enum<?>, R extends IRow<?, ?>>
 	 * lower-case?
 	 * 
 	 * @return {@code true} if the contained
-	 *         {@link edu.upenn.cis.ppod.model.DNANucleotide} lower-case, {@code false} otherwise
+	 *         {@link edu.upenn.cis.ppod.model.DNANucleotide} lower-case,
+	 *         {@code false} otherwise
 	 */
 	@Nullable
 	Boolean isLowerCase();

@@ -35,8 +35,8 @@ import javax.xml.bind.annotation.XmlElement;
 import javax.xml.bind.annotation.adapters.XmlAdapter;
 
 import edu.umd.cs.findbugs.annotations.CheckForNull;
-import edu.upenn.cis.ppod.modelinterfaces.IDNACell;
-import edu.upenn.cis.ppod.modelinterfaces.IDNARow;
+import edu.upenn.cis.ppod.imodel.IDNACell;
+import edu.upenn.cis.ppod.imodel.IDNARow;
 import edu.upenn.cis.ppod.util.IVisitor;
 
 /**

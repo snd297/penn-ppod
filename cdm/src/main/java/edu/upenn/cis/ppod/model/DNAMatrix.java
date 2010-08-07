@@ -25,8 +25,8 @@ import javax.xml.bind.annotation.adapters.XmlAdapter;
 
 import com.google.inject.Inject;
 
-import edu.upenn.cis.ppod.modelinterfaces.IDNAMatrix;
-import edu.upenn.cis.ppod.modelinterfaces.IDNARow;
+import edu.upenn.cis.ppod.imodel.IDNAMatrix;
+import edu.upenn.cis.ppod.imodel.IDNARow;
 import edu.upenn.cis.ppod.util.IVisitor;
 
 /**

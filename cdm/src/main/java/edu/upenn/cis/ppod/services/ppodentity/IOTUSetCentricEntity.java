@@ -17,7 +17,7 @@ package edu.upenn.cis.ppod.services.ppodentity;
 
 import java.util.Set;
 
-import edu.upenn.cis.ppod.modelinterfaces.IOTUSet;
+import edu.upenn.cis.ppod.imodel.IOTUSet;
 
 /**
  * A collection of OTU sets, matrices and tree sets.

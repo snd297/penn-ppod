@@ -17,7 +17,7 @@ package edu.upenn.cis.ppod.services.ppodentity;
 
 import com.google.inject.ImplementedBy;
 
-import edu.upenn.cis.ppod.modelinterfaces.IStudy;
+import edu.upenn.cis.ppod.imodel.IStudy;
 
 /**
  * Distill a {@link Study} to a {@link StudyInfo}.

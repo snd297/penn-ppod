@@ -36,7 +36,7 @@ import com.google.common.collect.ImmutableSet;
 
 import edu.umd.cs.findbugs.annotations.CheckForNull;
 import edu.umd.cs.findbugs.annotations.Nullable;
-import edu.upenn.cis.ppod.modelinterfaces.IOTUKeyedMapValue;
+import edu.upenn.cis.ppod.imodel.IOTUKeyedMapValue;
 import edu.upenn.cis.ppod.util.IVisitor;
 
 /**

@@ -28,11 +28,11 @@ import com.google.inject.Inject;
 import com.google.inject.Provider;
 import com.google.inject.assistedinject.Assisted;
 
-import edu.upenn.cis.ppod.modelinterfaces.INewVersionInfo;
-import edu.upenn.cis.ppod.modelinterfaces.IOTU;
-import edu.upenn.cis.ppod.modelinterfaces.ITree;
-import edu.upenn.cis.ppod.modelinterfaces.ITreeSet;
-import edu.upenn.cis.ppod.modelinterfaces.IWithPPodId;
+import edu.upenn.cis.ppod.imodel.INewVersionInfo;
+import edu.upenn.cis.ppod.imodel.IOTU;
+import edu.upenn.cis.ppod.imodel.ITree;
+import edu.upenn.cis.ppod.imodel.ITreeSet;
+import edu.upenn.cis.ppod.imodel.IWithPPodId;
 
 /**
  * An {@code IMergeTreeSets}.

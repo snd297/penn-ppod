@@ -25,8 +25,8 @@ import javax.persistence.MappedSuperclass;
 import javax.xml.bind.annotation.XmlAttribute;
 
 import edu.umd.cs.findbugs.annotations.CheckForNull;
-import edu.upenn.cis.ppod.modelinterfaces.IMolecularCell;
-import edu.upenn.cis.ppod.modelinterfaces.IRow;
+import edu.upenn.cis.ppod.imodel.IMolecularCell;
+import edu.upenn.cis.ppod.imodel.IRow;
 
 @MappedSuperclass
 public abstract class MolecularCell<E extends Enum<?>, R extends IRow<?, ?>>

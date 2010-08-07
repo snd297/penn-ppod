@@ -30,10 +30,10 @@ import java.util.Iterator;
 import java.util.Map.Entry;
 import java.util.Set;
 
-import edu.upenn.cis.ppod.modelinterfaces.ILabeled;
-import edu.upenn.cis.ppod.modelinterfaces.IOTU;
-import edu.upenn.cis.ppod.modelinterfaces.IOTUSet;
-import edu.upenn.cis.ppod.modelinterfaces.IPPodEntity;
+import edu.upenn.cis.ppod.imodel.ILabeled;
+import edu.upenn.cis.ppod.imodel.IOTU;
+import edu.upenn.cis.ppod.imodel.IOTUSet;
+import edu.upenn.cis.ppod.imodel.IPPodEntity;
 
 /**
  * For asserting that various {@code edu.upenn.cis.ppod.model} elements are the

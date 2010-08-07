@@ -28,7 +28,7 @@ import org.testng.annotations.Test;
 import com.google.common.collect.ImmutableSet;
 
 import edu.upenn.cis.ppod.TestGroupDefs;
-import edu.upenn.cis.ppod.modelinterfaces.IMolecularCell;
+import edu.upenn.cis.ppod.imodel.IMolecularCell;
 
 /**
  * {@link MolecularCell} testing.

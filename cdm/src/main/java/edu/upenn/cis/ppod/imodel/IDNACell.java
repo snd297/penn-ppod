@@ -13,10 +13,12 @@
  * See the License for the specific language governing permissions and
  * limitations under the License.
  */
-package edu.upenn.cis.ppod.modelinterfaces;
+package edu.upenn.cis.ppod.imodel;
 
+import javax.xml.bind.annotation.adapters.XmlJavaTypeAdapter;
 
-public interface IPPodEntity extends IAttachee, IPersistentObject, IVersioned,
-		IVisitable {
+import edu.upenn.cis.ppod.model.DNACell;
+import edu.upenn.cis.ppod.model.DNANucleotide;
 
-}
+@XmlJavaTypeAdapter(DNACell.Adapter.class)
+public interface IDNACell extends IMolecularCell<DNANucleotide, IDNARow> {}
