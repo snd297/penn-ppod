@@ -218,6 +218,13 @@ public interface IOTUSet
 	 */
 	List<IOTU> setOTUs(final List<? extends IOTU> otus);
 
-	IOTUSet setParent(@CheckForNull IStudy study);
+	/**
+	 * Set the parent study.
+	 * 
+	 * @param study parent
+	 * 
+	 * @return this
+	 */
+	IOTUSet setParent(@CheckForNull IStudy parent);
 
 }
