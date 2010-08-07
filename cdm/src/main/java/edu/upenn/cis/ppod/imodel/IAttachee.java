@@ -17,7 +17,6 @@ package edu.upenn.cis.ppod.imodel;
 
 import java.util.Set;
 
-import edu.upenn.cis.ppod.model.IAttachment;
 
 /**
  * An object to which we can add and remove attachments.

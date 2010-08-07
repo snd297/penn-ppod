@@ -19,7 +19,7 @@ import com.google.inject.ImplementedBy;
 
 import edu.upenn.cis.ppod.dao.IAttachmentNamespaceDAO;
 import edu.upenn.cis.ppod.dao.IAttachmentTypeDAO;
-import edu.upenn.cis.ppod.model.IAttachment;
+import edu.upenn.cis.ppod.imodel.IAttachment;
 
 /**
  * @author Sam Donnelly
