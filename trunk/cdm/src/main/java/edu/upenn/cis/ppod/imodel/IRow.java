@@ -13,38 +13,29 @@
  * See the License for the specific language governing permissions and
  * limitations under the License.
  */
-package edu.upenn.cis.ppod.modelinterfaces;
+package edu.upenn.cis.ppod.imodel;
 
-import com.google.common.base.Function;
+import java.util.List;
 
-/**
- * An object with a label.
- * 
- * @author Sam Donnelly
- */
-public interface ILabeled {
-
+public interface IRow<C extends ICell<?, ?>, M extends IMatrix<?>>
+		extends IOTUKeyedMapValue<M>, IPPodEntity, IVisitable {
 	/**
-	 * {@link Function} wrapper of {@link #getLabel()}.
-	 */
-	public static final Function<ILabeled, String> getLabel = new Function<ILabeled, String>() {
-
-		/**
-		 * Return {@code labeled.getLabel()}.
-		 * 
-		 * @param labeled on which to call {@code getLabel()}.
-		 * 
-		 * @return {@code labeled.getLabel()}.
-		 */
-		public String apply(final ILabeled labeled) {
-			return labeled.getLabel();
-		}
-	};
-
-	/**
-	 * Get the label.
+	 * Get the cells that make up this row.
 	 * 
-	 * @return the label
+	 * @return the cells that make up this row
 	 */
-	String getLabel();
+	List<C> getCells();
+
+	/**
+	 * Set the cells of this row.
+	 * <p>
+	 * This handles both sides of the {@code Row<->Cell} relationship.
+	 * 
+	 * @param cells the cells
+	 * 
+	 * @return any cells which were removed as a result of this operation
+	 * 
+	 */
+	List<C> setCells(final List<? extends C> cells);
+
 }

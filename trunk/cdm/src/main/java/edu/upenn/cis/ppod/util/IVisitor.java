@@ -15,6 +15,14 @@
  */
 package edu.upenn.cis.ppod.util;
 
+import edu.upenn.cis.ppod.imodel.IDNACell;
+import edu.upenn.cis.ppod.imodel.IDNAMatrix;
+import edu.upenn.cis.ppod.imodel.IDNARow;
+import edu.upenn.cis.ppod.imodel.IOTU;
+import edu.upenn.cis.ppod.imodel.IOTUSet;
+import edu.upenn.cis.ppod.imodel.IStudy;
+import edu.upenn.cis.ppod.imodel.ITree;
+import edu.upenn.cis.ppod.imodel.ITreeSet;
 import edu.upenn.cis.ppod.model.AttachmentNamespace;
 import edu.upenn.cis.ppod.model.AttachmentType;
 import edu.upenn.cis.ppod.model.DNASequence;
@@ -25,14 +33,6 @@ import edu.upenn.cis.ppod.model.StandardCharacter;
 import edu.upenn.cis.ppod.model.StandardMatrix;
 import edu.upenn.cis.ppod.model.StandardRow;
 import edu.upenn.cis.ppod.model.StandardState;
-import edu.upenn.cis.ppod.modelinterfaces.IDNACell;
-import edu.upenn.cis.ppod.modelinterfaces.IDNAMatrix;
-import edu.upenn.cis.ppod.modelinterfaces.IDNARow;
-import edu.upenn.cis.ppod.modelinterfaces.IOTU;
-import edu.upenn.cis.ppod.modelinterfaces.IOTUSet;
-import edu.upenn.cis.ppod.modelinterfaces.IStudy;
-import edu.upenn.cis.ppod.modelinterfaces.ITree;
-import edu.upenn.cis.ppod.modelinterfaces.ITreeSet;
 
 /**
  * The visitor in the visitor pattern.

@@ -17,7 +17,7 @@ package edu.upenn.cis.ppod.util;
 
 import com.google.inject.AbstractModule;
 
-import edu.upenn.cis.ppod.modelinterfaces.INewVersionInfo;
+import edu.upenn.cis.ppod.imodel.INewVersionInfo;
 
 /**
  * @author Sam Donnelly

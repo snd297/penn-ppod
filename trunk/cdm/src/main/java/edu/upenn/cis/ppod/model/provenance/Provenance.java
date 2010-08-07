@@ -19,7 +19,7 @@ import static com.google.common.collect.Lists.newArrayList;
 
 import java.util.List;
 
-import edu.upenn.cis.ppod.modelinterfaces.IOTU;
+import edu.upenn.cis.ppod.imodel.IOTU;
 
 /**
  * @author Sam Donnelly

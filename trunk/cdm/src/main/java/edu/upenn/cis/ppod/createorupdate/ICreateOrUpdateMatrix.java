@@ -15,9 +15,9 @@
  */
 package edu.upenn.cis.ppod.createorupdate;
 
-import edu.upenn.cis.ppod.modelinterfaces.ICell;
-import edu.upenn.cis.ppod.modelinterfaces.IMatrix;
-import edu.upenn.cis.ppod.modelinterfaces.IRow;
+import edu.upenn.cis.ppod.imodel.ICell;
+import edu.upenn.cis.ppod.imodel.IMatrix;
+import edu.upenn.cis.ppod.imodel.IRow;
 
 public interface ICreateOrUpdateMatrix<M extends IMatrix<R>, R extends IRow<C, ?>, C extends ICell<E, ?>, E> {
 

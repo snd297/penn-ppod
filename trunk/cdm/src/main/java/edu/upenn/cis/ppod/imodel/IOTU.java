@@ -13,21 +13,35 @@
  * See the License for the specific language governing permissions and
  * limitations under the License.
  */
-package edu.upenn.cis.ppod.modelinterfaces;
-
-import java.util.List;
+package edu.upenn.cis.ppod.imodel;
 
 import javax.xml.bind.annotation.adapters.XmlJavaTypeAdapter;
 
-import edu.upenn.cis.ppod.model.DNARow;
+import edu.umd.cs.findbugs.annotations.Nullable;
+import edu.upenn.cis.ppod.model.OTU;
 
-@XmlJavaTypeAdapter(DNARow.Adapter.class)
-public interface IDNARow extends IRow<IDNACell, IDNAMatrix> {
+@XmlJavaTypeAdapter(OTU.Adapter.class)
+public interface IOTU
+		extends IUUPPodEntity, ILabeled, IOTUSetChild, IWithXmlID {
 
-	IDNAMatrix getParent();
+	/**
+	 * Return the label of this {@code OTU}.
+	 * <p>
+	 * Until the label is set, it is {@code null}. Once the label is set, it
+	 * will never be {@code null}.
+	 * 
+	 * @return the label
+	 */
+	@Nullable
+	String getLabel();
 
-	List<IDNACell> setCells(final List<? extends IDNACell> cells);
-
-	IDNARow setParent(final IDNAMatrix parent);
+	/**
+	 * Set this OTU's label.
+	 * 
+	 * @param label the label
+	 * 
+	 * @return this
+	 */
+	IOTU setLabel(final String label);
 
 }

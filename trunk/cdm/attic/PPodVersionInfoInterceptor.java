@@ -33,7 +33,7 @@ import com.google.inject.Provider;
 
 import edu.upenn.cis.ppod.dao.IVersionInfoDAO;
 import edu.upenn.cis.ppod.dao.hibernate.HibernateDAOFactory;
-import edu.upenn.cis.ppod.modelinterfaces.IVersioned;
+import edu.upenn.cis.ppod.imodel.IVersioned;
 
 /**
  * Assign a new {@link PPodVersionInfo} to any {@code PPodEntity}s that are

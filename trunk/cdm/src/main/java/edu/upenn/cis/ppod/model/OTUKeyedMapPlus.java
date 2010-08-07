@@ -28,10 +28,10 @@ import java.util.Set;
 import javax.annotation.CheckForNull;
 import javax.annotation.Nullable;
 
-import edu.upenn.cis.ppod.modelinterfaces.IOTU;
-import edu.upenn.cis.ppod.modelinterfaces.IOTUKeyedMapPlus;
-import edu.upenn.cis.ppod.modelinterfaces.IOTUKeyedMapValue;
-import edu.upenn.cis.ppod.modelinterfaces.IOTUSetChild;
+import edu.upenn.cis.ppod.imodel.IOTU;
+import edu.upenn.cis.ppod.imodel.IOTUKeyedMapPlus;
+import edu.upenn.cis.ppod.imodel.IOTUKeyedMapValue;
+import edu.upenn.cis.ppod.imodel.IOTUSetChild;
 import edu.upenn.cis.ppod.util.IVisitor;
 import edu.upenn.cis.ppod.util.OTUSomethingPair;
 

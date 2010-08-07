@@ -34,8 +34,8 @@ import com.google.inject.Inject;
 import com.google.inject.Provider;
 
 import edu.upenn.cis.ppod.TestGroupDefs;
-import edu.upenn.cis.ppod.modelinterfaces.ICell;
-import edu.upenn.cis.ppod.modelinterfaces.IDNARow;
+import edu.upenn.cis.ppod.imodel.ICell;
+import edu.upenn.cis.ppod.imodel.IDNARow;
 
 @Test(groups = { TestGroupDefs.FAST })
 public class CellTest {

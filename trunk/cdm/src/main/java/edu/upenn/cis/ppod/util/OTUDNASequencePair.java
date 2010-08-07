@@ -17,8 +17,8 @@ package edu.upenn.cis.ppod.util;
 
 import javax.xml.bind.annotation.XmlElement;
 
+import edu.upenn.cis.ppod.imodel.IOTU;
 import edu.upenn.cis.ppod.model.DNASequence;
-import edu.upenn.cis.ppod.modelinterfaces.IOTU;
 
 /**
  * @author Sam Donnelly

@@ -16,9 +16,9 @@
 package edu.upenn.cis.ppod.createorupdate;
 
 import edu.upenn.cis.ppod.dao.IDAO;
+import edu.upenn.cis.ppod.imodel.INewVersionInfo;
 import edu.upenn.cis.ppod.model.Sequence;
 import edu.upenn.cis.ppod.model.SequenceSet;
-import edu.upenn.cis.ppod.modelinterfaces.INewVersionInfo;
 
 /**
  * Merges the state of one sequence set onto another.

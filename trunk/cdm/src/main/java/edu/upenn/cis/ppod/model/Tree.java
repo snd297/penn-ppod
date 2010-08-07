@@ -30,8 +30,8 @@ import javax.xml.bind.annotation.XmlAttribute;
 import javax.xml.bind.annotation.XmlElement;
 import javax.xml.bind.annotation.adapters.XmlAdapter;
 
-import edu.upenn.cis.ppod.modelinterfaces.ITree;
-import edu.upenn.cis.ppod.modelinterfaces.ITreeSet;
+import edu.upenn.cis.ppod.imodel.ITree;
+import edu.upenn.cis.ppod.imodel.ITreeSet;
 import edu.upenn.cis.ppod.util.IVisitor;
 
 /**

@@ -28,7 +28,7 @@ import javax.xml.bind.annotation.XmlAttribute;
 import javax.xml.bind.annotation.XmlElement;
 import javax.xml.bind.annotation.XmlSeeAlso;
 
-import edu.upenn.cis.ppod.modelinterfaces.IOTUKeyedMapValue;
+import edu.upenn.cis.ppod.imodel.IOTUKeyedMapValue;
 
 /**
  * A molecular sequence - DNA, RNA, protein - that is represented by a

@@ -27,17 +27,17 @@ import edu.upenn.cis.ppod.dao.IAttachmentNamespaceDAO;
 import edu.upenn.cis.ppod.dao.IAttachmentTypeDAO;
 import edu.upenn.cis.ppod.dao.IDAO;
 import edu.upenn.cis.ppod.dao.IStudyDAO;
+import edu.upenn.cis.ppod.imodel.IDNAMatrix;
+import edu.upenn.cis.ppod.imodel.INewVersionInfo;
+import edu.upenn.cis.ppod.imodel.IOTUSet;
+import edu.upenn.cis.ppod.imodel.IStudy;
+import edu.upenn.cis.ppod.imodel.ITreeSet;
+import edu.upenn.cis.ppod.imodel.IWithPPodId;
 import edu.upenn.cis.ppod.model.DNASequence;
 import edu.upenn.cis.ppod.model.DNASequenceSet;
 import edu.upenn.cis.ppod.model.OTUSet;
 import edu.upenn.cis.ppod.model.StandardMatrix;
 import edu.upenn.cis.ppod.model.Study;
-import edu.upenn.cis.ppod.modelinterfaces.IDNAMatrix;
-import edu.upenn.cis.ppod.modelinterfaces.INewVersionInfo;
-import edu.upenn.cis.ppod.modelinterfaces.IOTUSet;
-import edu.upenn.cis.ppod.modelinterfaces.IStudy;
-import edu.upenn.cis.ppod.modelinterfaces.ITreeSet;
-import edu.upenn.cis.ppod.modelinterfaces.IWithPPodId;
 
 /**
  * Create a new study or update an existing one.

@@ -13,7 +13,7 @@ s * Copyright (C) 2010 Trustees of the University of Pennsylvania
  * See the License for the specific language governing permissions and
  * limitations under the License.
  */
-package edu.upenn.cis.ppod.modelinterfaces;
+package edu.upenn.cis.ppod.imodel;
 
 import javax.annotation.Nullable;
 

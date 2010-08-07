@@ -13,18 +13,21 @@
  * See the License for the specific language governing permissions and
  * limitations under the License.
  */
-package edu.upenn.cis.ppod.modelinterfaces;
+package edu.upenn.cis.ppod.imodel;
 
-import edu.upenn.cis.ppod.dao.IVersionInfoDAO;
+import edu.upenn.cis.ppod.util.IVisitor;
 
 /**
- * A {@code INewPPodVersionInfo} that needs a DAO.
+ * Has an {@code accept(IVisitor)} method.
  * 
  * @author Sam Donnelly
  */
-public interface INewVersionInfoDB extends INewVersionInfo {
-	static interface IFactory {
-		INewVersionInfoDB create(IVersionInfoDAO versionInfoDAO);
-	}
+public interface IVisitable {
 
+	/**
+	 * Accept the visitor
+	 * 
+	 * @param visitor the visitor
+	 */
+	void accept(IVisitor visitor);
 }

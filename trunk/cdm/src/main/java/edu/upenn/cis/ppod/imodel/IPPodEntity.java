@@ -13,21 +13,9 @@
  * See the License for the specific language governing permissions and
  * limitations under the License.
  */
-package edu.upenn.cis.ppod.modelinterfaces;
+package edu.upenn.cis.ppod.imodel;
 
-import edu.upenn.cis.ppod.util.IVisitor;
+public interface IPPodEntity extends IAttachee, IPersistentObject, IVersioned,
+		IVisitable {
 
-/**
- * Has an {@code accept(IVisitor)} method.
- * 
- * @author Sam Donnelly
- */
-public interface IVisitable {
-
-	/**
-	 * Accept the visitor
-	 * 
-	 * @param visitor the visitor
-	 */
-	void accept(IVisitor visitor);
 }

@@ -43,7 +43,7 @@ import com.google.common.annotations.VisibleForTesting;
 
 import edu.umd.cs.findbugs.annotations.CheckForNull;
 import edu.umd.cs.findbugs.annotations.Nullable;
-import edu.upenn.cis.ppod.modelinterfaces.IPPodEntity;
+import edu.upenn.cis.ppod.imodel.IPPodEntity;
 import edu.upenn.cis.ppod.util.IVisitor;
 
 /**

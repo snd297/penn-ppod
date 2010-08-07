@@ -13,21 +13,30 @@
  * See the License for the specific language governing permissions and
  * limitations under the License.
  */
-package edu.upenn.cis.ppod.modelinterfaces;
+package edu.upenn.cis.ppod.imodel;
 
+import edu.umd.cs.findbugs.annotations.CheckForNull;
 
 /**
- * A child of an {@code OTUSet}.
+ * Indicates a class that is stored in {@link OTUKeyedMap} and so has a
+ * relationship back to the owner of the {@code OTUKeyedMap}.
  * 
  * @author Sam Donnelly
  */
-public interface IOTUSetChild extends IVersioned, IVisitable {
-	/**
-	 * Get the parent OTU set.
-	 * 
-	 * @return the parent OTU set
-	 */
-	IOTUSet getParent();
+public interface IOTUKeyedMapValue<P> extends IVisitable {
 
-	IOTUSetChild setParent(IOTUSet otuSet);
+	/**
+	 * Get the parent.
+	 * 
+	 * @return the parent
+	 */
+	P getParent();
+
+	/**
+	 * Set or unset the parent.
+	 * 
+	 * @return this
+	 */
+	IOTUKeyedMapValue<P> setParent(@CheckForNull P parent);
+
 }

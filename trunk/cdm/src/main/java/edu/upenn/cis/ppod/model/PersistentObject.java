@@ -32,7 +32,7 @@ import javax.xml.bind.annotation.XmlAttribute;
 import com.google.common.annotations.VisibleForTesting;
 
 import edu.umd.cs.findbugs.annotations.CheckForNull;
-import edu.upenn.cis.ppod.modelinterfaces.IPersistentObject;
+import edu.upenn.cis.ppod.imodel.IPersistentObject;
 
 /**
  * Base class for {@code edu.upenn.cis.ppod.model} (and subpackages) entities.
