@@ -41,6 +41,7 @@ import edu.upenn.cis.ppod.TestGroupDefs;
 import edu.upenn.cis.ppod.modelinterfaces.IDNAMatrix;
 import edu.upenn.cis.ppod.modelinterfaces.IOTU;
 import edu.upenn.cis.ppod.modelinterfaces.IStudy;
+import edu.upenn.cis.ppod.modelinterfaces.ITreeSet;
 import edu.upenn.cis.ppod.util.TestVisitor;
 
 /**

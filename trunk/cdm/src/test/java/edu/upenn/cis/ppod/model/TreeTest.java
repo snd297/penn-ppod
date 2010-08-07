@@ -26,6 +26,7 @@ import com.google.inject.Inject;
 import com.google.inject.Provider;
 
 import edu.upenn.cis.ppod.TestGroupDefs;
+import edu.upenn.cis.ppod.modelinterfaces.ITree;
 
 @Test(groups = TestGroupDefs.FAST, dependsOnGroups = TestGroupDefs.INIT)
 public class TreeTest {
@@ -63,7 +64,7 @@ public class TreeTest {
 		final Tree tree = treeProvider.get();
 		tree.unsetInNeedOfNewVersion();
 		final String label = "otu-label";
-		final Tree returnedOTU = tree.setLabel(label);
+		final ITree returnedOTU = tree.setLabel(label);
 		assertTrue(tree.isInNeedOfNewVersion());
 		assertSame(returnedOTU, tree);
 		tree.isInNeedOfNewVersion();
@@ -80,7 +81,7 @@ public class TreeTest {
 		final Tree tree = treeProvider.get();
 		final String newick = "arbitrary string";
 		tree.unsetInNeedOfNewVersion();
-		final Tree returnedTree = tree.setNewick(newick);
+		final ITree returnedTree = tree.setNewick(newick);
 		assertSame(returnedTree, tree);
 		assertEquals(tree.getNewick(), newick);
 		assertTrue(tree.isInNeedOfNewVersion());

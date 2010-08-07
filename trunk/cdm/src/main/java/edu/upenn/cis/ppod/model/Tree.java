@@ -28,7 +28,10 @@ import javax.persistence.Table;
 import javax.xml.bind.Unmarshaller;
 import javax.xml.bind.annotation.XmlAttribute;
 import javax.xml.bind.annotation.XmlElement;
+import javax.xml.bind.annotation.adapters.XmlAdapter;
 
+import edu.upenn.cis.ppod.modelinterfaces.ITree;
+import edu.upenn.cis.ppod.modelinterfaces.ITreeSet;
 import edu.upenn.cis.ppod.util.IVisitor;
 
 /**
@@ -38,7 +41,20 @@ import edu.upenn.cis.ppod.util.IVisitor;
  */
 @Entity
 @Table(name = Tree.TABLE)
-public class Tree extends UUPPodEntity {
+public class Tree extends UUPPodEntity implements ITree {
+
+	public static class Adapter extends XmlAdapter<Tree, ITree> {
+
+		@Override
+		public Tree marshal(final ITree tree) {
+			return (Tree) tree;
+		}
+
+		@Override
+		public ITree unmarshal(final Tree tree) {
+			return tree;
+		}
+	}
 
 	public static final String TABLE = "TREE";
 
@@ -51,11 +67,11 @@ public class Tree extends UUPPodEntity {
 	@CheckForNull
 	private String newick;
 
-	@ManyToOne(optional = false)
+	@ManyToOne(optional = false, targetEntity = TreeSet.class)
 	@JoinColumn(name = TreeSet.JOIN_COLUMN, insertable = false,
 				updatable = false)
 	@CheckForNull
-	private TreeSet parent;
+	private ITreeSet parent;
 
 	Tree() {}
 
@@ -81,10 +97,7 @@ public class Tree extends UUPPodEntity {
 	}
 
 	/**
-	 * Return the label. {@code null} when the tree is constructed, but will
-	 * never be {@code null} for a tree in a persistent state.
-	 * 
-	 * @return the label
+	 * @return
 	 */
 	@XmlAttribute
 	@Nullable
@@ -133,7 +146,7 @@ public class Tree extends UUPPodEntity {
 	 * 
 	 * @return this <code>Tree</code>
 	 */
-	public Tree setLabel(final String label) {
+	public ITree setLabel(final String label) {
 		checkNotNull(label);
 		if (label.equals(this.label)) {
 			// nothing to do
@@ -144,14 +157,8 @@ public class Tree extends UUPPodEntity {
 		return this;
 	}
 
-	/**
-	 * Setter.
-	 * 
-	 * @param newick the Newick tree, composed of pPOD id's.
-	 * 
-	 * @return this {@code Tree}
-	 */
-	public Tree setNewick(final String newick) {
+	/** {@inheritDoc} */
+	public ITree setNewick(final String newick) {
 		checkNotNull(newick);
 		if (newick.equals(getNewick())) {
 
@@ -162,19 +169,7 @@ public class Tree extends UUPPodEntity {
 		return this;
 	}
 
-	/**
-	 * Set the owning {@code TreeSet}.
-	 * <p>
-	 * Intended to be called from places responsible for managing the
-	 * {@code Tree<->TreeSet} relationship.
-	 * <p>
-	 * Use {@code null} to sever the relationship.
-	 * 
-	 * @param parent the {@code TreeSet} that we're removing
-	 * 
-	 * @return this
-	 */
-	Tree setParent(@CheckForNull final TreeSet parent) {
+	public ITree setParent(@CheckForNull final ITreeSet parent) {
 		this.parent = parent;
 		return this;
 	}

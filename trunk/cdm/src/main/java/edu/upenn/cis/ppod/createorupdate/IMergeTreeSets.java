@@ -17,8 +17,8 @@ package edu.upenn.cis.ppod.createorupdate;
 
 import com.google.inject.ImplementedBy;
 
-import edu.upenn.cis.ppod.model.ITreeSet;
 import edu.upenn.cis.ppod.modelinterfaces.INewVersionInfo;
+import edu.upenn.cis.ppod.modelinterfaces.ITreeSet;
 
 /**
  * @author Sam Donnelly

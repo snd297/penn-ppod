@@ -28,10 +28,10 @@ import com.google.inject.Inject;
 import com.google.inject.Provider;
 import com.google.inject.assistedinject.Assisted;
 
-import edu.upenn.cis.ppod.model.ITreeSet;
-import edu.upenn.cis.ppod.model.Tree;
 import edu.upenn.cis.ppod.modelinterfaces.INewVersionInfo;
 import edu.upenn.cis.ppod.modelinterfaces.IOTU;
+import edu.upenn.cis.ppod.modelinterfaces.ITree;
+import edu.upenn.cis.ppod.modelinterfaces.ITreeSet;
 import edu.upenn.cis.ppod.modelinterfaces.IWithPPodId;
 
 /**
@@ -41,11 +41,11 @@ import edu.upenn.cis.ppod.modelinterfaces.IWithPPodId;
  */
 final class MergeTreeSets implements IMergeTreeSets {
 
-	private final Provider<Tree> treeProvider;
+	private final Provider<ITree> treeProvider;
 	private final INewVersionInfo newVersionInfo;
 
 	@Inject
-	MergeTreeSets(final Provider<Tree> treeProvider,
+	MergeTreeSets(final Provider<ITree> treeProvider,
 			@Assisted final INewVersionInfo newVersionInfo) {
 
 		this.treeProvider = treeProvider;
@@ -63,10 +63,10 @@ final class MergeTreeSets implements IMergeTreeSets {
 
 		targetTreeSet.setLabel(sourceTreeSet.getLabel());
 
-		final List<Tree> newTargetTrees = newArrayList();
+		final List<ITree> newTargetTrees = newArrayList();
 
-		for (final Tree sourceTree : sourceTreeSet.getTrees()) {
-			Tree targetTree;
+		for (final ITree sourceTree : sourceTreeSet.getTrees()) {
+			ITree targetTree;
 			if (null == (targetTree =
 					findIf(targetTreeSet.getTrees(), compose(
 							equalTo(sourceTree.getPPodId()),
