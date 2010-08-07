@@ -48,7 +48,6 @@ import com.google.common.annotations.VisibleForTesting;
 
 import edu.upenn.cis.ppod.imodel.IDNAMatrix;
 import edu.upenn.cis.ppod.imodel.ILabeled;
-import edu.upenn.cis.ppod.imodel.IMatrix;
 import edu.upenn.cis.ppod.imodel.IOTU;
 import edu.upenn.cis.ppod.imodel.IOTUSet;
 import edu.upenn.cis.ppod.imodel.IOTUSetChild;
@@ -562,23 +561,23 @@ public class OTUSet
 
 	private void setOTUSetOnChildren() {
 		// Now let's let everyone know about the new OTUs
-		for (final IOTU otu : getOTUs()) {
+		for (final IOTUSetChild otu : getOTUs()) {
 			otu.setParent(this);
 		}
 
-		for (final Matrix<?> matrix : getStandardMatrices()) {
+		for (final IOTUSetChild matrix : getStandardMatrices()) {
 			matrix.setParent(this);
 		}
 
-		for (final IMatrix<?> matrix : getDNAMatrices()) {
+		for (final IOTUSetChild matrix : getDNAMatrices()) {
 			matrix.setParent(this);
 		}
 
-		for (final SequenceSet<?> sequenceSet : getDNASequenceSets()) {
+		for (final IOTUSetChild sequenceSet : getDNASequenceSets()) {
 			sequenceSet.setParent(this);
 		}
 
-		for (final ITreeSet treeSet : getTreeSets()) {
+		for (final IOTUSetChild treeSet : getTreeSets()) {
 			treeSet.setParent(this);
 		}
 	}
