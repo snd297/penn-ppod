@@ -36,7 +36,7 @@ import com.google.common.collect.ImmutableSet;
 
 import edu.umd.cs.findbugs.annotations.CheckForNull;
 import edu.umd.cs.findbugs.annotations.Nullable;
-import edu.upenn.cis.ppod.imodel.IOTUKeyedMapValue;
+import edu.upenn.cis.ppod.imodel.IVisitableChild;
 import edu.upenn.cis.ppod.util.IVisitor;
 
 /**
@@ -114,7 +114,7 @@ public class DNASequence extends Sequence<DNASequenceSet> {
 		return this;
 	}
 
-	public IOTUKeyedMapValue<DNASequenceSet> setParent(
+	public IVisitableChild<DNASequenceSet> setParent(
 			@CheckForNull final DNASequenceSet parent) {
 		this.parent = parent;
 		return this;

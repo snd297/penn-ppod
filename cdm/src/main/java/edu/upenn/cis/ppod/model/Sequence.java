@@ -26,9 +26,8 @@ import javax.persistence.Lob;
 import javax.persistence.MappedSuperclass;
 import javax.xml.bind.annotation.XmlAttribute;
 import javax.xml.bind.annotation.XmlElement;
-import javax.xml.bind.annotation.XmlSeeAlso;
 
-import edu.upenn.cis.ppod.imodel.IOTUKeyedMapValue;
+import edu.upenn.cis.ppod.imodel.IVisitableChild;
 
 /**
  * A molecular sequence - DNA, RNA, protein - that is represented by a
@@ -36,11 +35,10 @@ import edu.upenn.cis.ppod.imodel.IOTUKeyedMapValue;
  * 
  * @author Sam Donnelly
  */
-@XmlSeeAlso({ DNASequence.class })
 @MappedSuperclass
 public abstract class Sequence<SS extends SequenceSet<?>>
 		extends PPodEntity
-		implements IOTUKeyedMapValue<SS> {
+		implements IVisitableChild<SS> {
 
 	private final static String SEQUENCE_COLUMN = "SEQUENCE";
 

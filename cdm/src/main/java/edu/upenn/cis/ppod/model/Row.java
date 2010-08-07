@@ -27,7 +27,7 @@ import javax.xml.bind.Unmarshaller;
 import edu.umd.cs.findbugs.annotations.CheckForNull;
 import edu.upenn.cis.ppod.imodel.ICell;
 import edu.upenn.cis.ppod.imodel.IMatrix;
-import edu.upenn.cis.ppod.imodel.IOTUKeyedMapValue;
+import edu.upenn.cis.ppod.imodel.IVisitableChild;
 import edu.upenn.cis.ppod.imodel.IRow;
 import edu.upenn.cis.ppod.util.IVisitor;
 
@@ -41,7 +41,7 @@ import edu.upenn.cis.ppod.util.IVisitor;
  */
 public abstract class Row<C extends ICell<?, ?>, M extends IMatrix<?>>
 		extends PPodEntity
-		implements IOTUKeyedMapValue<M>, IRow<C, M> {
+		implements IVisitableChild<M>, IRow<C, M> {
 
 	Row() {}
 

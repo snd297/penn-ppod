@@ -15,19 +15,9 @@
  */
 package edu.upenn.cis.ppod.imodel;
 
-import java.util.List;
-
 import javax.xml.bind.annotation.adapters.XmlJavaTypeAdapter;
 
 import edu.upenn.cis.ppod.model.DNARow;
 
 @XmlJavaTypeAdapter(DNARow.Adapter.class)
-public interface IDNARow extends IRow<IDNACell, IDNAMatrix> {
-
-	IDNAMatrix getParent();
-
-	List<IDNACell> setCells(final List<? extends IDNACell> cells);
-
-	IDNARow setParent(final IDNAMatrix parent);
-
-}
+public interface IDNARow extends IRow<IDNACell, IDNAMatrix> {}

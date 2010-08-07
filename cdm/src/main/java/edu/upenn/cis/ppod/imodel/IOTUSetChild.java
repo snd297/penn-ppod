@@ -15,19 +15,9 @@
  */
 package edu.upenn.cis.ppod.imodel;
 
-
 /**
  * A child of an {@code OTUSet}.
  * 
  * @author Sam Donnelly
  */
-public interface IOTUSetChild extends IVersioned, IVisitable {
-	/**
-	 * Get the parent OTU set.
-	 * 
-	 * @return the parent OTU set
-	 */
-	IOTUSet getParent();
-
-	IOTUSetChild setParent(IOTUSet otuSet);
-}
+public interface IOTUSetChild extends IVisitableChild<IOTUSet>, IVersioned {}
