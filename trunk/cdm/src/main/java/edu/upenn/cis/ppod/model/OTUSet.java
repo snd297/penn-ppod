@@ -170,9 +170,9 @@ public class OTUSet
 	}
 
 	/**
-	 * Add a {@code DNAMatrix} to this {@code OTUSet}.
+	 * Add a DNA matrix to this OTU set.
 	 * 
-	 * @param matrix to be added to this {@code OTUSet}
+	 * @param matrix to be added to this OTU set
 	 * 
 	 * @return {@code matrix}
 	 */

@@ -141,7 +141,6 @@ public interface IMatrix<R extends IRow<?, ?>>
 
 	IMatrix<R> setLabel(final String label);
 
-	IMatrix<?> setParent(
-			@CheckForNull final IOTUSet otuSet);
+	IMatrix<R> setParent(@CheckForNull final IOTUSet otuSet);
 
 }

@@ -30,7 +30,7 @@ import javax.annotation.Nullable;
 
 import edu.upenn.cis.ppod.imodel.IOTU;
 import edu.upenn.cis.ppod.imodel.IOTUKeyedMapPlus;
-import edu.upenn.cis.ppod.imodel.IOTUKeyedMapValue;
+import edu.upenn.cis.ppod.imodel.IVisitableChild;
 import edu.upenn.cis.ppod.imodel.IOTUSetChild;
 import edu.upenn.cis.ppod.util.IVisitor;
 import edu.upenn.cis.ppod.util.OTUSomethingPair;
@@ -45,7 +45,7 @@ import edu.upenn.cis.ppod.util.OTUSomethingPair;
  * 
  * @author Sam Donnelly
  */
-public class OTUKeyedMapPlus<V extends IOTUKeyedMapValue<P>, P extends IOTUSetChild, OP extends OTUSomethingPair<V>>
+public class OTUKeyedMapPlus<V extends IVisitableChild<P>, P extends IOTUSetChild, OP extends OTUSomethingPair<V>>
 		implements IOTUKeyedMapPlus<V, P, OP> {
 
 	private P parent;

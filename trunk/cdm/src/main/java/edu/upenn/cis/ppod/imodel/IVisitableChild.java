@@ -18,12 +18,11 @@ package edu.upenn.cis.ppod.imodel;
 import edu.umd.cs.findbugs.annotations.CheckForNull;
 
 /**
- * Indicates a class that is stored in {@link OTUKeyedMap} and so has a
- * relationship back to the owner of the {@code OTUKeyedMap}.
+ * Indicates a class that has a parent and is visitable.
  * 
  * @author Sam Donnelly
  */
-public interface IOTUKeyedMapValue<P> extends IVisitable {
+public interface IVisitableChild<P> extends IVisitable {
 
 	/**
 	 * Get the parent.
@@ -37,6 +36,6 @@ public interface IOTUKeyedMapValue<P> extends IVisitable {
 	 * 
 	 * @return this
 	 */
-	IOTUKeyedMapValue<P> setParent(@CheckForNull P parent);
+	IVisitableChild<P> setParent(@CheckForNull P parent);
 
 }

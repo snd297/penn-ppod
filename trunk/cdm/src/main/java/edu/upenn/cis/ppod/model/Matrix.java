@@ -442,7 +442,7 @@ public abstract class Matrix<R extends IRow<?, ?>>
 	 * 
 	 * @return this
 	 */
-	public Matrix<?> setParent(
+	public Matrix<R> setParent(
 			@CheckForNull final IOTUSet otuSet) {
 		checkState(
 				getOTUKeyedRows() != null,

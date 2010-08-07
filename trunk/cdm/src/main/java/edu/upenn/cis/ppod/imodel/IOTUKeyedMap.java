@@ -21,7 +21,7 @@ import edu.umd.cs.findbugs.annotations.CheckForNull;
 import edu.umd.cs.findbugs.annotations.Nullable;
 import edu.upenn.cis.ppod.util.IVisitor;
 
-public interface IOTUKeyedMap<V extends IOTUKeyedMapValue<?>>
+public interface IOTUKeyedMap<V extends IVisitableChild<?>>
 		extends IVisitable {
 
 	/** {@inheritDoc} */
