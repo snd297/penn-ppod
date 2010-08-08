@@ -20,7 +20,7 @@ import javax.annotation.Nullable;
 import com.google.common.base.Function;
 
 /**
- * A universally-unique pPOD entity.
+ * Has a PPod ID.
  * 
  * @author Sam Donnelly
  */

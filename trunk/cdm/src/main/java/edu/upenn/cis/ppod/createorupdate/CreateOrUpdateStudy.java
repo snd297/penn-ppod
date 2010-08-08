@@ -28,13 +28,13 @@ import edu.upenn.cis.ppod.dao.IAttachmentTypeDAO;
 import edu.upenn.cis.ppod.dao.IDAO;
 import edu.upenn.cis.ppod.dao.IStudyDAO;
 import edu.upenn.cis.ppod.imodel.IDNAMatrix;
+import edu.upenn.cis.ppod.imodel.IDNASequenceSet;
 import edu.upenn.cis.ppod.imodel.INewVersionInfo;
 import edu.upenn.cis.ppod.imodel.IOTUSet;
 import edu.upenn.cis.ppod.imodel.IStudy;
 import edu.upenn.cis.ppod.imodel.ITreeSet;
 import edu.upenn.cis.ppod.imodel.IWithPPodId;
 import edu.upenn.cis.ppod.model.DNASequence;
-import edu.upenn.cis.ppod.model.DNASequenceSet;
 import edu.upenn.cis.ppod.model.OTUSet;
 import edu.upenn.cis.ppod.model.StandardMatrix;
 import edu.upenn.cis.ppod.model.Study;
@@ -52,14 +52,14 @@ final class CreateOrUpdateStudy implements ICreateOrUpdateStudy {
 	private final Provider<OTUSet> otuSetProvider;
 	private final Provider<StandardMatrix> standardMatrixProvider;
 	private final Provider<IDNAMatrix> dnaMatrixProvider;
-	private final Provider<DNASequenceSet> dnaSequenceSetProvider;
+	private final Provider<IDNASequenceSet> dnaSequenceSetProvider;
 	private final Provider<ITreeSet> treeSetProvider;
 
 	private final IMergeOTUSets mergeOTUSets;
 	private final ICreateOrUpdateStandardMatrix createOrUpdateStandardMatrix;
 	private final IMergeTreeSets mergeTreeSets;
 	private final INewVersionInfo newVersionInfo;
-	private final IMergeSequenceSets<DNASequenceSet, DNASequence> mergeDNASequenceSets;
+	private final IMergeSequenceSets<IDNASequenceSet, DNASequence> mergeDNASequenceSets;
 	private final IStudy incomingStudy;
 	private Study dbStudy;
 	private final ICreateOrUpdateDNAMatrix createOrUpdateDNAMatrix;
@@ -70,13 +70,13 @@ final class CreateOrUpdateStudy implements ICreateOrUpdateStudy {
 			final Provider<Study> studyProvider,
 			final Provider<OTUSet> otuSetProvider,
 			final Provider<StandardMatrix> standardMatrix,
-			final Provider<DNASequenceSet> dnaSequenceSetProvider,
+			final Provider<IDNASequenceSet> dnaSequenceSetProvider,
 			final Provider<ITreeSet> treeSetProvider,
 			final IMergeOTUSets.IFactory saveOrUpdateOTUSetFactory,
 			final IMergeTreeSets.IFactory mergeTreeSetsFactory,
 			final ICreateOrUpdateDNAMatrix.IFactory createOrUpdateDNAMatrixFactory,
 			final ICreateOrUpdateStandardMatrix.IFactory createOrUpdateMatrixFactory,
-			final IMergeSequenceSets.IFactory<DNASequenceSet, DNASequence> mergeDNASequenceSetsFactory,
+			final IMergeSequenceSets.IFactory<IDNASequenceSet, DNASequence> mergeDNASequenceSetsFactory,
 			final IMergeAttachments.IFactory mergeAttachmentFactory,
 			final Provider<IDNAMatrix> dnaMatrixProvider,
 			@Assisted final IStudy incomingStudy,
@@ -231,7 +231,7 @@ final class CreateOrUpdateStudy implements ICreateOrUpdateStudy {
 			final IOTUSet incomingOTUSet) {
 
 		// Let's delete sequences missing from the incoming otu set
-		for (final DNASequenceSet dbDNASequenceSet : dbOTUSet
+		for (final IDNASequenceSet dbDNASequenceSet : dbOTUSet
 				.getDNASequenceSets()) {
 			if (null == findIf(
 					incomingOTUSet.getDNASequenceSets(),
@@ -243,9 +243,9 @@ final class CreateOrUpdateStudy implements ICreateOrUpdateStudy {
 			}
 		}
 
-		for (final DNASequenceSet incomingDNASequenceSet : incomingOTUSet
+		for (final IDNASequenceSet incomingDNASequenceSet : incomingOTUSet
 				.getDNASequenceSets()) {
-			DNASequenceSet dbDNASequenceSet;
+			IDNASequenceSet dbDNASequenceSet;
 			if (null == (dbDNASequenceSet =
 					findIf(dbOTUSet.getDNASequenceSets(),
 							compose(

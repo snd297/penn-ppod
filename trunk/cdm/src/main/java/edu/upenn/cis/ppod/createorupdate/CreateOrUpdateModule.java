@@ -19,8 +19,8 @@ import com.google.inject.AbstractModule;
 import com.google.inject.TypeLiteral;
 import com.google.inject.assistedinject.FactoryProvider;
 
+import edu.upenn.cis.ppod.imodel.IDNASequenceSet;
 import edu.upenn.cis.ppod.model.DNASequence;
-import edu.upenn.cis.ppod.model.DNASequenceSet;
 
 /**
  * @author Sam Donnelly
@@ -30,19 +30,19 @@ public class CreateOrUpdateModule extends AbstractModule {
 
 	private final static class MergeSequenceSetsTypeLiteral
 			extends
-			TypeLiteral<MergeSequenceSets<DNASequenceSet, DNASequence>> {}
+			TypeLiteral<MergeSequenceSets<IDNASequenceSet, DNASequence>> {}
 
 	private final static class IMergeSequenceSetsIFactoryTypeLiteral
 			extends
-			TypeLiteral<IMergeSequenceSets.IFactory<DNASequenceSet, DNASequence>> {}
+			TypeLiteral<IMergeSequenceSets.IFactory<IDNASequenceSet, DNASequence>> {}
 
 	@Override
 	protected void configure() {
 
-		final TypeLiteral<MergeSequenceSets<DNASequenceSet, DNASequence>> mergeDNASequenceSetTypeLiteral =
+		final TypeLiteral<MergeSequenceSets<IDNASequenceSet, DNASequence>> mergeDNASequenceSetTypeLiteral =
 				new MergeSequenceSetsTypeLiteral();
 
-		final TypeLiteral<IMergeSequenceSets.IFactory<DNASequenceSet, DNASequence>> mergeDNASequencesFactoryTypeLiteral =
+		final TypeLiteral<IMergeSequenceSets.IFactory<IDNASequenceSet, DNASequence>> mergeDNASequencesFactoryTypeLiteral =
 				new IMergeSequenceSetsIFactoryTypeLiteral();
 
 		bind(mergeDNASequencesFactoryTypeLiteral).toProvider(

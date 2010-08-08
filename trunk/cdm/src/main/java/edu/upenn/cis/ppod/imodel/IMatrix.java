@@ -31,8 +31,34 @@ public interface IMatrix<R extends IRow<?, ?>>
 
 	Integer getColumnsSize();
 
+	/**
+	 * Get the column pPOD version infos. These are equal to the largest pPOD
+	 * version in the columns, where largest list determined determined by
+	 * {@link VersionInfo#getVersion()} .
+	 * <p>
+	 * The behavior of this method is undefined for unmarshalled matrices.
+	 * 
+	 * @return get the column pPOD version infos
+	 */
 	List<VersionInfo> getColumnVersionInfos();
 
+	/**
+	 * Get the pPOD version numbers of each column. The version number is the
+	 * value of the largest cell version in the column.
+	 * <p>
+	 * This method was created for getting at the version number in unmarshalled
+	 * matrices, but it is fine to call for any matrix. When
+	 * {@link #getColumnVersionInfos()} is defined the following calls are
+	 * equivalent:
+	 * <ul>
+	 * <li>
+	 * {@code getColumnVersionInfos().get(n).getVersion()}</li>
+	 * <li>
+	 * {@code getColumnVersions().get(n)}</li>
+	 * </ul>
+	 * 
+	 * @return the pPOD version number of each column
+	 */
 	List<Long> getColumnVersions();
 
 	/**
@@ -113,10 +139,25 @@ public interface IMatrix<R extends IRow<?, ?>>
 
 	IMatrix<R> setColumnsSize(final int columnsSize);
 
+	/**
+	 * Set a particular column to a version.
+	 * 
+	 * @param pos position of the column
+	 * @param versionInfo the version
+	 * 
+	 * @return this
+	 */
 	IMatrix<R> setColumnVersionInfo(
 			final int pos,
 			final VersionInfo versionInfo);
 
+	/**
+	 * Set all of the columns' pPOD version infos.
+	 * 
+	 * @param versionInfo the pPOD version info
+	 * 
+	 * @return this
+	 */
 	IMatrix<R> setColumnVersionInfos(
 			final VersionInfo versionInfo);
 

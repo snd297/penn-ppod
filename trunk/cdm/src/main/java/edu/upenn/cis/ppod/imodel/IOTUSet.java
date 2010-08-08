@@ -18,11 +18,10 @@ package edu.upenn.cis.ppod.imodel;
 import java.util.List;
 import java.util.Set;
 
-import javax.annotation.CheckForNull;
-import javax.annotation.Nullable;
 import javax.xml.bind.annotation.adapters.XmlJavaTypeAdapter;
 
-import edu.upenn.cis.ppod.model.DNASequenceSet;
+import edu.umd.cs.findbugs.annotations.CheckForNull;
+import edu.umd.cs.findbugs.annotations.Nullable;
 import edu.upenn.cis.ppod.model.OTUSet;
 import edu.upenn.cis.ppod.model.StandardMatrix;
 
@@ -40,16 +39,16 @@ public interface IOTUSet
 	IDNAMatrix addDNAMatrix(IDNAMatrix matrix);
 
 	/**
-	 * Add a {@code DNASequenceSet}.
+	 * Add an {@code IDNASequenceSet}.
 	 * <p>
-	 * Also handles the {@code DNASequenceSet->IOTUSet} side of the
+	 * Also handles the {@code IDNASequenceSet->IOTUSet} side of the
 	 * relationship.
 	 * 
 	 * @param dnaSequenceSet the new {@code DNASequenceSet}
 	 * 
 	 * @return {@code dnaSequenceSet}
 	 */
-	DNASequenceSet addDNASequenceSet(DNASequenceSet sequenceSet);
+	IDNASequenceSet addDNASequenceSet(IDNASequenceSet sequenceSet);
 
 	/**
 	 * Scaffolding code that does two things:
@@ -101,7 +100,7 @@ public interface IOTUSet
 
 	Set<IDNAMatrix> getDNAMatrices();
 
-	Set<DNASequenceSet> getDNASequenceSets();
+	Set<IDNASequenceSet> getDNASequenceSets();
 
 	/**
 	 * Getter. {@code null} when the object is created. Once set, it will never
@@ -155,7 +154,7 @@ public interface IOTUSet
 	 * @return {@code true} if this OTU set contained the specified sequence
 	 *         set, {@code false} otherwise
 	 */
-	boolean removeDNASequenceSet(DNASequenceSet sequenceSet);
+	boolean removeDNASequenceSet(IDNASequenceSet sequenceSet);
 
 	/**
 	 * Remove {@code matrix} from this OTU set.
