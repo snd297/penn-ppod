@@ -27,9 +27,11 @@ import javax.persistence.Embedded;
 import javax.persistence.Entity;
 import javax.persistence.Table;
 import javax.xml.bind.annotation.XmlElement;
+import javax.xml.bind.annotation.adapters.XmlAdapter;
 
 import com.google.inject.Inject;
 
+import edu.upenn.cis.ppod.imodel.IDNASequenceSet;
 import edu.upenn.cis.ppod.imodel.IOTU;
 import edu.upenn.cis.ppod.util.IVisitor;
 
@@ -40,7 +42,22 @@ import edu.upenn.cis.ppod.util.IVisitor;
  */
 @Entity
 @Table(name = DNASequenceSet.TABLE)
-public class DNASequenceSet extends SequenceSet<DNASequence> {
+public class DNASequenceSet extends SequenceSet<DNASequence> implements
+		IDNASequenceSet {
+
+	public static class Adapter extends
+			XmlAdapter<DNASequenceSet, IDNASequenceSet> {
+
+		@Override
+		public DNASequenceSet marshal(final IDNASequenceSet sequenceSet) {
+			return (DNASequenceSet) sequenceSet;
+		}
+
+		@Override
+		public IDNASequenceSet unmarshal(final DNASequenceSet sequenceSet) {
+			return sequenceSet;
+		}
+	}
 
 	/**
 	 * The name of the entity's table.
@@ -75,7 +92,6 @@ public class DNASequenceSet extends SequenceSet<DNASequence> {
 		super.accept(visitor);
 	}
 
-	@Override
 	public DNASequenceSet clearSequences() {
 		getOTUKeyedSequences().clear();
 		return this;

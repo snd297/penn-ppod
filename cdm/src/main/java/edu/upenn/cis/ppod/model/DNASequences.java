@@ -37,6 +37,7 @@ import javax.xml.bind.annotation.XmlElement;
 
 import org.hibernate.annotations.Parent;
 
+import edu.upenn.cis.ppod.imodel.IDNASequenceSet;
 import edu.upenn.cis.ppod.imodel.IOTU;
 import edu.upenn.cis.ppod.imodel.IOTUKeyedMap;
 import edu.upenn.cis.ppod.imodel.IOTUKeyedMapPlus;
@@ -54,8 +55,8 @@ import edu.upenn.cis.ppod.util.OTUDNASequencePair;
 public class DNASequences
 		implements IOTUKeyedMap<DNASequence> {
 
-	private final IOTUKeyedMapPlus<DNASequence, DNASequenceSet, OTUDNASequencePair> sequences =
-			new OTUKeyedMapPlus<DNASequence, DNASequenceSet, OTUDNASequencePair>();
+	private final IOTUKeyedMapPlus<DNASequence, IDNASequenceSet, OTUDNASequencePair> sequences =
+			new OTUKeyedMapPlus<DNASequence, IDNASequenceSet, OTUDNASequencePair>();
 
 	public void accept(final IVisitor visitor) {
 		sequences.accept(visitor);
@@ -70,7 +71,7 @@ public class DNASequences
 			final Object parent) {
 		// Don't checkNotNull(parent) since it's called by JAXB and we can't
 		// control what it does
-		sequences.afterUnmarshal((DNASequenceSet) parent);
+		sequences.afterUnmarshal((IDNASequenceSet) parent);
 	}
 
 	protected boolean beforeMarshal(@CheckForNull final Marshaller marshaller) {
@@ -100,7 +101,7 @@ public class DNASequences
 	}
 
 	@Parent
-	public DNASequenceSet getParent() {
+	public IDNASequenceSet getParent() {
 		return sequences.getParent();
 	}
 
@@ -121,7 +122,7 @@ public class DNASequences
 		return this;
 	}
 
-	public DNASequences setParent(final DNASequenceSet parent) {
+	public DNASequences setParent(final IDNASequenceSet parent) {
 		sequences.setParent(parent);
 		return this;
 	}

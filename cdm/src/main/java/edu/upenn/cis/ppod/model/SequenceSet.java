@@ -38,6 +38,7 @@ import edu.upenn.cis.ppod.imodel.IOTU;
 import edu.upenn.cis.ppod.imodel.IOTUKeyedMap;
 import edu.upenn.cis.ppod.imodel.IOTUSet;
 import edu.upenn.cis.ppod.imodel.IOTUSetChild;
+import edu.upenn.cis.ppod.imodel.ISequenceSet;
 import edu.upenn.cis.ppod.util.IVisitor;
 
 /**
@@ -48,9 +49,9 @@ import edu.upenn.cis.ppod.util.IVisitor;
  * @param <S> the type of {@code Sequence} this set contains
  */
 @MappedSuperclass
-public abstract class SequenceSet<S extends Sequence<?>>
+abstract class SequenceSet<S extends Sequence<?>>
 		extends UUPPodEntityWithXmlId
-		implements IOTUSetChild {
+		implements IOTUSetChild, ISequenceSet<S> {
 
 	@Column(name = "LABEL", nullable = false)
 	private String label;
@@ -108,15 +109,6 @@ public abstract class SequenceSet<S extends Sequence<?>>
 		}
 	}
 
-	/**
-	 * Remove all sequences from this set. Null's out the
-	 * {@code Sequence->SequenceSet} relationship and sets
-	 * {@code getSequenceLengths()} to {@code null}.
-	 * 
-	 * @return this
-	 */
-	public abstract SequenceSet<S> clearSequences();
-
 	@XmlAttribute(name = "label")
 	public String getLabel() {
 		return label;
@@ -124,12 +116,7 @@ public abstract class SequenceSet<S extends Sequence<?>>
 
 	abstract IOTUKeyedMap<S> getOTUKeyedSequences();
 
-	/**
-	 * Getter. Will be {@code null} when the sequence set is not connected to an
-	 * OTU set.
-	 * 
-	 * @return this matrix's {@code OTUSet}
-	 */
+	/** {@inheritDoc} */
 	@Nullable
 	public IOTUSet getParent() {
 		return parent;
@@ -202,7 +189,8 @@ public abstract class SequenceSet<S extends Sequence<?>>
 		return this;
 	}
 
-	public SequenceSet<S> setLabel(final String label) {
+	/** {@inheritDoc} */
+	public ISequenceSet<S> setLabel(final String label) {
 		checkNotNull(label);
 		if (label.equals(getLabel())) {
 
@@ -233,7 +221,7 @@ public abstract class SequenceSet<S extends Sequence<?>>
 	 * 
 	 * @return this
 	 */
-	public SequenceSet<S> setParent(
+	public ISequenceSet<S> setParent(
 			@CheckForNull final IOTUSet parent) {
 		this.parent = parent;
 		setOTUs();

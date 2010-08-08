@@ -40,6 +40,7 @@ import com.google.inject.Provider;
 import edu.upenn.cis.ppod.TestGroupDefs;
 import edu.upenn.cis.ppod.imodel.IAttachment;
 import edu.upenn.cis.ppod.imodel.IDNAMatrix;
+import edu.upenn.cis.ppod.imodel.IDNASequenceSet;
 import edu.upenn.cis.ppod.imodel.IOTU;
 import edu.upenn.cis.ppod.imodel.IStudy;
 import edu.upenn.cis.ppod.imodel.ITreeSet;
@@ -328,11 +329,11 @@ public class OTUSetTest {
 	public void removeDNASequenceSet() {
 
 		final OTUSet otuSet = otuSetProvider.get();
-		final DNASequenceSet dnaSequenceSet0 =
+		final IDNASequenceSet dnaSequenceSet0 =
 				otuSet.addDNASequenceSet(dnaSequenceSetProvider.get());
-		final DNASequenceSet dnaSequenceSet1 =
+		final IDNASequenceSet dnaSequenceSet1 =
 				otuSet.addDNASequenceSet(dnaSequenceSetProvider.get());
-		final DNASequenceSet dnaSequenceSet2 =
+		final IDNASequenceSet dnaSequenceSet2 =
 				otuSet.addDNASequenceSet(dnaSequenceSetProvider.get());
 
 		final boolean booleanReturned =

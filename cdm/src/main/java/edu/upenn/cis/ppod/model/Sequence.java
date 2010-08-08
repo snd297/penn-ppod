@@ -27,6 +27,7 @@ import javax.persistence.MappedSuperclass;
 import javax.xml.bind.annotation.XmlAttribute;
 import javax.xml.bind.annotation.XmlElement;
 
+import edu.upenn.cis.ppod.imodel.ISequenceSet;
 import edu.upenn.cis.ppod.imodel.IVisitableChild;
 
 /**
@@ -36,7 +37,7 @@ import edu.upenn.cis.ppod.imodel.IVisitableChild;
  * @author Sam Donnelly
  */
 @MappedSuperclass
-public abstract class Sequence<SS extends SequenceSet<?>>
+public abstract class Sequence<SS extends ISequenceSet<?>>
 		extends PPodEntity
 		implements IVisitableChild<SS> {
 

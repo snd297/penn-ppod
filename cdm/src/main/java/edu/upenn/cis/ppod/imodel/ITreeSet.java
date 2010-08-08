@@ -34,9 +34,10 @@ public interface ITreeSet
 	 * 
 	 * @param tree to be added
 	 * 
-	 * @return {@code tree}
+	 * @return {@code false} if the tree was already contained, {@code true}
+	 *         otherwise
 	 */
-	ITree addTree(ITree tree);
+	boolean addTree(ITree tree);
 
 	/**
 	 * Get the parent OTU set.

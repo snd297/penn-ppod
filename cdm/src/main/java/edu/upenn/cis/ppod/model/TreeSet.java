@@ -107,17 +107,16 @@ public class TreeSet
 
 	/**
 	 * {@inheritDoc}
-	 * 
-	 * @throws IllegalArgumentException if {@code getTrees().contains(tree)}
 	 */
-	public ITree addTree(final ITree tree) {
+	public boolean addTree(final ITree tree) {
 		checkNotNull(tree);
-		checkArgument(!trees.contains(tree),
-				"tree set already contains the tree " + tree.getLabel());
+		if (trees.contains(tree)) {
+			return false;
+		}
 		trees.add(tree);
 		tree.setParent(this);
 		setInNeedOfNewVersion();
-		return tree;
+		return true;
 	}
 
 	/**

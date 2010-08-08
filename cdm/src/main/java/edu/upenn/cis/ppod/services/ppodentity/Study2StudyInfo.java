@@ -23,13 +23,13 @@ import com.google.inject.Provider;
 import edu.upenn.cis.ppod.imodel.IDNACell;
 import edu.upenn.cis.ppod.imodel.IDNAMatrix;
 import edu.upenn.cis.ppod.imodel.IDNARow;
+import edu.upenn.cis.ppod.imodel.IDNASequenceSet;
 import edu.upenn.cis.ppod.imodel.IOTU;
 import edu.upenn.cis.ppod.imodel.IOTUSet;
 import edu.upenn.cis.ppod.imodel.IStudy;
 import edu.upenn.cis.ppod.imodel.ITree;
 import edu.upenn.cis.ppod.imodel.ITreeSet;
 import edu.upenn.cis.ppod.model.DNASequence;
-import edu.upenn.cis.ppod.model.DNASequenceSet;
 import edu.upenn.cis.ppod.model.StandardCell;
 import edu.upenn.cis.ppod.model.StandardCharacter;
 import edu.upenn.cis.ppod.model.StandardMatrix;
@@ -196,10 +196,10 @@ final class Study2StudyInfo implements IStudy2StudyInfo {
 
 			// TODO: this should be genericized when we support other kinds of
 			// MolecularSequenceSets
-			for (final DNASequenceSet dnaSequenceSet : otuSet
+			for (final IDNASequenceSet dnaSequenceSet : otuSet
 					.getDNASequenceSets()) {
-				final MolecularSequenceSetInfo sequenceSetInfo = molecularSequenceSetInfoProvider
-						.get();
+				final MolecularSequenceSetInfo sequenceSetInfo =
+						molecularSequenceSetInfoProvider.get();
 				otuSetInfo.getSequenceSetInfos().add(sequenceSetInfo);
 				sequenceSetInfo.setPPodId(dnaSequenceSet.getPPodId());
 				sequenceSetInfo.setVersion(dnaSequenceSet

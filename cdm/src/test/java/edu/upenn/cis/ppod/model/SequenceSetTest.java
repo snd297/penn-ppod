@@ -31,6 +31,7 @@ import com.google.inject.Provider;
 import edu.upenn.cis.ppod.TestGroupDefs;
 import edu.upenn.cis.ppod.imodel.IOTU;
 import edu.upenn.cis.ppod.imodel.IOTUSet;
+import edu.upenn.cis.ppod.imodel.ISequenceSet;
 import edu.upenn.cis.ppod.util.TestVisitor;
 
 /**
@@ -158,12 +159,12 @@ public class SequenceSetTest {
 
 	@Test
 	public void setLabel() {
-		final SequenceSet<?> seqSet = dnaSequenceSetProvider.get();
+		final ISequenceSet<DNASequence> seqSet = dnaSequenceSetProvider.get();
 		assertNull(seqSet.getLabel());
 
 		assertFalse(seqSet.isInNeedOfNewVersion());
 		final String label = "seq-set";
-		final SequenceSet<?> seqSetReturned = seqSet.setLabel(label);
+		final ISequenceSet<?> seqSetReturned = seqSet.setLabel(label);
 		assertSame(seqSetReturned, seqSet);
 		assertTrue(seqSet.isInNeedOfNewVersion());
 		assertEquals(seqSet.getLabel(), label);

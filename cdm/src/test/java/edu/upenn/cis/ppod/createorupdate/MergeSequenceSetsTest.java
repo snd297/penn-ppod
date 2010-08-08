@@ -22,20 +22,20 @@ import com.google.inject.Provider;
 
 import edu.upenn.cis.ppod.TestGroupDefs;
 import edu.upenn.cis.ppod.dao.TestObjectWithLongIdDAO;
+import edu.upenn.cis.ppod.imodel.IDNASequenceSet;
 import edu.upenn.cis.ppod.imodel.INewVersionInfo;
 import edu.upenn.cis.ppod.imodel.IOTU;
 import edu.upenn.cis.ppod.imodel.IOTUSet;
 import edu.upenn.cis.ppod.model.DNASequence;
-import edu.upenn.cis.ppod.model.DNASequenceSet;
 import edu.upenn.cis.ppod.model.ModelAssert;
 
 @Test(groups = TestGroupDefs.FAST, dependsOnGroups = TestGroupDefs.INIT)
 public class MergeSequenceSetsTest {
 	@Inject
-	private IMergeSequenceSets.IFactory<DNASequenceSet, DNASequence> mergeDNASequenceSetsFactory;
+	private IMergeSequenceSets.IFactory<IDNASequenceSet, DNASequence> mergeDNASequenceSetsFactory;
 
 	@Inject
-	private Provider<DNASequenceSet> dnaSequenceSetProvider;
+	private Provider<IDNASequenceSet> dnaSequenceSetProvider;
 
 	@Inject
 	private Provider<DNASequence> dnaSequenceProvider;
@@ -54,14 +54,14 @@ public class MergeSequenceSetsTest {
 
 	@Test
 	public void modifySequencesKeepLength() {
-		final IMergeSequenceSets<DNASequenceSet, DNASequence> mergeSeqSets =
+		final IMergeSequenceSets<IDNASequenceSet, DNASequence> mergeSeqSets =
 					mergeDNASequenceSetsFactory.create(dao, newVersionInfo);
 
-		final DNASequenceSet srcSeqSet =
-					(DNASequenceSet) dnaSequenceSetProvider
+		final IDNASequenceSet srcSeqSet =
+					(IDNASequenceSet) dnaSequenceSetProvider
 							.get()
 							.setLabel("src-seq-set-0");
-		final DNASequenceSet trgSeqSet = dnaSequenceSetProvider.get();
+		final IDNASequenceSet trgSeqSet = dnaSequenceSetProvider.get();
 
 		final IOTUSet trgOTUSet = otuSetProvider.get();
 		trgOTUSet.addOTU(otuProvider.get().setLabel("otu-0"));
@@ -119,14 +119,14 @@ public class MergeSequenceSetsTest {
 
 	@Test
 	public void shortenSequences() {
-		final IMergeSequenceSets<DNASequenceSet, DNASequence> mergeSeqSets =
+		final IMergeSequenceSets<IDNASequenceSet, DNASequence> mergeSeqSets =
 					mergeDNASequenceSetsFactory.create(dao, newVersionInfo);
 
-		final DNASequenceSet srcSeqSet =
-					(DNASequenceSet) dnaSequenceSetProvider
+		final IDNASequenceSet srcSeqSet =
+					(IDNASequenceSet) dnaSequenceSetProvider
 							.get()
 							.setLabel("src-seq-set-0");
-		final DNASequenceSet trgSeqSet = dnaSequenceSetProvider.get();
+		final IDNASequenceSet trgSeqSet = dnaSequenceSetProvider.get();
 
 		final IOTUSet trgOTUSet = otuSetProvider.get();
 		trgOTUSet.addOTU(otuProvider.get().setLabel("otu-0"));
@@ -186,14 +186,14 @@ public class MergeSequenceSetsTest {
 
 	@Test
 	public void mergeOnBlankTarget() {
-		final IMergeSequenceSets<DNASequenceSet, DNASequence> mergeSeqSets =
+		final IMergeSequenceSets<IDNASequenceSet, DNASequence> mergeSeqSets =
 				mergeDNASequenceSetsFactory.create(dao, newVersionInfo);
 
-		final DNASequenceSet srcSeqSet =
-				(DNASequenceSet) dnaSequenceSetProvider
+		final IDNASequenceSet srcSeqSet =
+				(IDNASequenceSet) dnaSequenceSetProvider
 						.get()
 						.setLabel("src-seq-set-0");
-		final DNASequenceSet trgSeqSet = dnaSequenceSetProvider.get();
+		final IDNASequenceSet trgSeqSet = dnaSequenceSetProvider.get();
 
 		final IOTUSet trgOTUSet = otuSetProvider.get();
 		trgOTUSet.addOTU(otuProvider.get().setLabel("otu-0"));

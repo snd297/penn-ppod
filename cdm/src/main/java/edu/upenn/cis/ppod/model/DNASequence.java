@@ -36,7 +36,7 @@ import com.google.common.collect.ImmutableSet;
 
 import edu.umd.cs.findbugs.annotations.CheckForNull;
 import edu.umd.cs.findbugs.annotations.Nullable;
-import edu.upenn.cis.ppod.imodel.IVisitableChild;
+import edu.upenn.cis.ppod.imodel.IDNASequenceSet;
 import edu.upenn.cis.ppod.util.IVisitor;
 
 /**
@@ -46,7 +46,7 @@ import edu.upenn.cis.ppod.util.IVisitor;
  */
 @Entity
 @Table(name = DNASequence.TABLE)
-public class DNASequence extends Sequence<DNASequenceSet> {
+public class DNASequence extends Sequence<IDNASequenceSet> {
 
 	/**
 	 * The characters that are legal in a {@code DNASequence} .
@@ -78,9 +78,12 @@ public class DNASequence extends Sequence<DNASequenceSet> {
 	public static final String JOIN_COLUMN =
 			TABLE + "_" + PersistentObject.ID_COLUMN;
 
-	@ManyToOne(fetch = FetchType.LAZY, optional = false)
+	@ManyToOne(
+			fetch = FetchType.LAZY,
+			optional = false,
+			targetEntity = DNASequenceSet.class)
 	@CheckForNull
-	private DNASequenceSet parent;
+	private IDNASequenceSet parent;
 
 	@ElementCollection
 	@CollectionTable(name = "DNA_SEQUENCE_PHRED_PHRAP_SCORES",
@@ -96,7 +99,7 @@ public class DNASequence extends Sequence<DNASequenceSet> {
 	}
 
 	@Nullable
-	public DNASequenceSet getParent() {
+	public IDNASequenceSet getParent() {
 		return parent;
 	}
 
@@ -114,8 +117,8 @@ public class DNASequence extends Sequence<DNASequenceSet> {
 		return this;
 	}
 
-	public IVisitableChild<DNASequenceSet> setParent(
-			@CheckForNull final DNASequenceSet parent) {
+	public DNASequence setParent(
+			@CheckForNull final IDNASequenceSet parent) {
 		this.parent = parent;
 		return this;
 	}

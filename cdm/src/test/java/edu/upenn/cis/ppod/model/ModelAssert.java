@@ -35,6 +35,7 @@ import edu.upenn.cis.ppod.imodel.ILabeled;
 import edu.upenn.cis.ppod.imodel.IOTU;
 import edu.upenn.cis.ppod.imodel.IOTUSet;
 import edu.upenn.cis.ppod.imodel.IPPodEntity;
+import edu.upenn.cis.ppod.imodel.ISequenceSet;
 
 /**
  * For asserting that various {@code edu.upenn.cis.ppod.model} elements are the
@@ -45,8 +46,8 @@ import edu.upenn.cis.ppod.imodel.IPPodEntity;
 public class ModelAssert {
 
 	public static <S extends Sequence<?>> void assertEqualsSequenceSets(
-			final SequenceSet<S> actualSeqSet,
-			final SequenceSet<S> expectedSeqSet) {
+			final ISequenceSet<S> actualSeqSet,
+			final ISequenceSet<S> expectedSeqSet) {
 		assertEquals(actualSeqSet.getLabel(), actualSeqSet.getLabel());
 		assertEquals(
 				actualSeqSet.getSequences().size(),

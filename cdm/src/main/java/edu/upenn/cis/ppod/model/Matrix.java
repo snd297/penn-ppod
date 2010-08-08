@@ -150,12 +150,7 @@ public abstract class Matrix<R extends IRow<?, ?>>
 		return Integer.valueOf(getColumnVersionInfos().size());
 	}
 
-	/**
-	 * Get the column pPOD version infos. These are equal to the largest pPOD
-	 * version in the columns.
-	 * 
-	 * @return get the column pPOD version infos
-	 */
+	/** {@inheritDoc} */
 	public List<VersionInfo> getColumnVersionInfos() {
 		return Collections.unmodifiableList(columnVersionInfos);
 	}
@@ -169,6 +164,7 @@ public abstract class Matrix<R extends IRow<?, ?>>
 		return columnVersionInfos;
 	}
 
+	/** {@inheritDoc} */
 	public List<Long> getColumnVersions() {
 		return Collections.unmodifiableList(columnVersions);
 	}
@@ -302,12 +298,7 @@ public abstract class Matrix<R extends IRow<?, ?>>
 	}
 
 	/**
-	 * Set a particular column to a version.
-	 * 
-	 * @param pos position of the column
-	 * @param versionInfo the version
-	 * 
-	 * @return this
+	 * {@inheritDoc}
 	 * 
 	 * @throw IllegalArgumentException if {@code pos >=
 	 *        getColumnVersionInfos().size()}
@@ -322,13 +313,7 @@ public abstract class Matrix<R extends IRow<?, ?>>
 		return this;
 	}
 
-	/**
-	 * Set all of the columns' pPOD version infos.
-	 * 
-	 * @param versionInfo the pPOD version info
-	 * 
-	 * @return this
-	 */
+	/** {@inheritDoc} */
 	public IMatrix<R> setColumnVersionInfos(
 			final VersionInfo versionInfo) {
 		for (int pos = 0; pos < getColumnVersionInfos().size(); pos++) {

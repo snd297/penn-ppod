@@ -47,6 +47,7 @@ import javax.xml.bind.annotation.adapters.XmlAdapter;
 import com.google.common.annotations.VisibleForTesting;
 
 import edu.upenn.cis.ppod.imodel.IDNAMatrix;
+import edu.upenn.cis.ppod.imodel.IDNASequenceSet;
 import edu.upenn.cis.ppod.imodel.ILabeled;
 import edu.upenn.cis.ppod.imodel.IOTU;
 import edu.upenn.cis.ppod.imodel.IOTUSet;
@@ -116,8 +117,9 @@ public class OTUSet
 	@OneToMany(
 			mappedBy = "parent",
 			cascade = CascadeType.ALL,
-			orphanRemoval = true)
-	private final Set<DNASequenceSet> dnaSequenceSets = newHashSet();
+			orphanRemoval = true,
+			targetEntity = DNASequenceSet.class)
+	private final Set<IDNASequenceSet> dnaSequenceSets = newHashSet();
 
 	/**
 	 * Non-unique label.
@@ -186,16 +188,16 @@ public class OTUSet
 	}
 
 	/**
-	 * Add a {@code DNASequenceSet}.
+	 * Add an {@code IDNASequenceSet}.
 	 * <p>
-	 * Also handles the {@code DNASequenceSet->OTUSet} side of the relationship.
+	 * Also handles the {@code IDNASequenceSet->IOTUSet} side of the relationship.
 	 * 
-	 * @param dnaSequenceSet the new {@code DNASequenceSet}
+	 * @param dnaSequenceSet the new {@code IDNASequenceSet}
 	 * 
 	 * @return {@code dnaSequenceSet}
 	 */
-	public DNASequenceSet addDNASequenceSet(
-			final DNASequenceSet sequenceSet) {
+	public IDNASequenceSet addDNASequenceSet(
+			final IDNASequenceSet sequenceSet) {
 		checkNotNull(sequenceSet);
 		if (dnaSequenceSets.add(sequenceSet)) {
 			sequenceSet.setParent(this);
@@ -333,12 +335,12 @@ public class OTUSet
 		return dnaMatrices;
 	}
 
-	public Set<DNASequenceSet> getDNASequenceSets() {
+	public Set<IDNASequenceSet> getDNASequenceSets() {
 		return Collections.unmodifiableSet(dnaSequenceSets);
 	}
 
 	@XmlElement(name = "dnaSequenceSet")
-	protected Set<DNASequenceSet> getDNASequenceSetsModifiable() {
+	protected Set<IDNASequenceSet> getDNASequenceSetsModifiable() {
 		return dnaSequenceSets;
 	}
 
@@ -432,7 +434,7 @@ public class OTUSet
 	 * @return {@code true} if this OTU set contained the specified sequence
 	 *         set, {@code false} otherwise
 	 */
-	public boolean removeDNASequenceSet(final DNASequenceSet sequenceSet) {
+	public boolean removeDNASequenceSet(final IDNASequenceSet sequenceSet) {
 		checkNotNull(sequenceSet);
 		if (getDNASequenceSetsModifiable().remove(sequenceSet)) {
 			sequenceSet.setParent(null);
