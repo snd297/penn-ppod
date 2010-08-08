@@ -59,6 +59,12 @@ public interface IVersioned extends IPersistentObject {
 	 */
 	boolean isInNeedOfNewVersion();
 
+	/**
+	 * Mark this object and defined connected objects (often a parent object) as
+	 * in need of a new pPOD version.
+	 * 
+	 * @return this
+	 */
 	IVersioned setInNeedOfNewVersion();
 
 	IVersioned setVersionInfo(final VersionInfo versionInfo);

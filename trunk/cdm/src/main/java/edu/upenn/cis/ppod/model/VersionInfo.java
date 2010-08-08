@@ -87,13 +87,15 @@ public class VersionInfo extends PersistentObject {
 	}
 
 	/**
-	 * Setter. Intentionally package-private.
+	 * Setter.
+	 * <p>
+	 * {@code protected} for JAXB.
 	 * 
 	 * @param created the value
 	 * 
 	 * @return this {@link VersionInfo}
 	 */
-	VersionInfo setCreated(final Date created) {
+	protected VersionInfo setCreated(final Date created) {
 		checkNotNull(created);
 		this.created = (Date) created.clone();
 		return this;
@@ -102,15 +104,14 @@ public class VersionInfo extends PersistentObject {
 	/**
 	 * Set the value for the pPOD version number.
 	 * <p>
-	 * Intentionally package-private: we don't want for these to be manipulated
-	 * outside of the package: use {@link HibernateUtil#openSession()} to start
-	 * a session that will create these.
+	 * Intentionally non-public (protected for JAXB): we don't want for these to
+	 * be manipulated outside of the package: use
 	 * 
 	 * @param version the pPOD version number
 	 * 
 	 * @return this {@link VersionInfo}
 	 */
-	VersionInfo setVersion(final Long version) {
+	protected VersionInfo setVersion(final Long version) {
 		checkNotNull(version);
 		this.version = version;
 		return this;

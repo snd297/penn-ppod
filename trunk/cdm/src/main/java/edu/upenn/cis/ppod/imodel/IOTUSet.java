@@ -197,8 +197,6 @@ public interface IOTUSet
 	/**
 	 * Set this {@code IOTUSet}'s {@code IOTU}s.
 	 * <p>
-	 * This {@code IOTUSet} makes a copy of {@code newOTUs}.
-	 * <p>
 	 * If this method is effectively removing any of this sets's original OTUs,
 	 * then the {@code IOTU->IOTUSet} relationship is severed.
 	 * 
@@ -217,5 +215,11 @@ public interface IOTUSet
 	 * @return this
 	 */
 	IOTUSet setParent(@CheckForNull IStudy parent);
+
+	/**
+	 * Mark this {@code IOTUSet} and {@link #getParent()} as in need of a new
+	 * pPOD version.
+	 */
+	IOTUSet setInNeedOfNewVersion();
 
 }

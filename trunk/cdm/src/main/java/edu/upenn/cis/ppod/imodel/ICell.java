@@ -90,8 +90,6 @@ public interface ICell<E, R extends IRow<?, ?>> extends IPPodEntity, IVisitable 
 
 	ICell<E, R> setInapplicable();
 
-	ICell<E, R> setInNeedOfNewVersion();
-
 	ICell<E, R> setUnassigned();
 
 	ICell<E, R> setUncertainElements(
