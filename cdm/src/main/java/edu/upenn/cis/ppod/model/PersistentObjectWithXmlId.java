@@ -21,7 +21,7 @@ import javax.annotation.Nullable;
 import javax.xml.bind.annotation.XmlAttribute;
 import javax.xml.bind.annotation.XmlID;
 
-import edu.upenn.cis.ppod.imodel.IWithXmlID;
+import edu.upenn.cis.ppod.imodel.IWithDocId;
 
 /**
  * A {@code PersistentObject} w/ an {@link XmlID} attribute called
@@ -46,7 +46,7 @@ import edu.upenn.cis.ppod.imodel.IWithXmlID;
  */
 public abstract class PersistentObjectWithXmlId
 		extends PersistentObject
-		implements IWithXmlID {
+		implements IWithDocId {
 	/**
 	 * Intended for referencing elements within a document - be it XML, JSON,
 	 * etc. This is distinct from the pPOD Id of {@link UUPPodEntity}.
@@ -57,16 +57,16 @@ public abstract class PersistentObjectWithXmlId
 	@XmlAttribute(name = "docId")
 	@XmlID
 	@Nullable
-	public String getXmlId() {
+	public String getDocId() {
 		return docId;
 	}
 
-	public IWithXmlID setXmlId() {
-		return setXmlId(UUID.randomUUID().toString());
+	public IWithDocId setDocId() {
+		return setDocId(UUID.randomUUID().toString());
 	}
 
-	public IWithXmlID setXmlId(final String docId) {
-		if (getXmlId() != null) {
+	public IWithDocId setDocId(final String docId) {
+		if (getDocId() != null) {
 			throw new IllegalStateException("docId was already set");
 		}
 		this.docId = docId;

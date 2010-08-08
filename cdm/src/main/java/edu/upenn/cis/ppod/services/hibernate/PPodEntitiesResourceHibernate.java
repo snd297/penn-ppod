@@ -96,7 +96,7 @@ class PPodEntitiesResourceHibernate implements
 				// Extra insurance against accidental sync with database
 				session.setReadOnly(otuSet, true);
 
-				if (otuSet.getXmlId() == null) {
+				if (otuSet.getDocId() == null) {
 					otuSet.accept(setDocIdVisitor);
 				}
 
@@ -111,7 +111,7 @@ class PPodEntitiesResourceHibernate implements
 				session.setReadOnly(matrix, true);
 
 				addedMatrices.add(matrix);
-				if (matrix.getParent().getXmlId() == null) {
+				if (matrix.getParent().getDocId() == null) {
 					matrix.getParent().accept(setDocIdVisitor);
 				}
 
@@ -125,7 +125,7 @@ class PPodEntitiesResourceHibernate implements
 				session.setReadOnly(treeSet, true);
 
 				addedTreeSets.add(treeSet);
-				if (treeSet.getParent().getXmlId() == null) {
+				if (treeSet.getParent().getDocId() == null) {
 					treeSet.getParent().accept(setDocIdVisitor);
 				}
 

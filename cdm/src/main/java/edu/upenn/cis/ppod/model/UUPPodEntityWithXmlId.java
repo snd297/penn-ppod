@@ -15,6 +15,8 @@
  */
 package edu.upenn.cis.ppod.model;
 
+import static com.google.common.base.Preconditions.checkNotNull;
+
 import java.util.UUID;
 
 import javax.annotation.Nullable;
@@ -22,7 +24,7 @@ import javax.xml.bind.annotation.XmlAttribute;
 import javax.xml.bind.annotation.XmlID;
 
 import edu.umd.cs.findbugs.annotations.CheckForNull;
-import edu.upenn.cis.ppod.imodel.IWithXmlID;
+import edu.upenn.cis.ppod.imodel.IWithDocId;
 
 /**
  * A {@code UUPPodEntity} w/ an {@link XmlID} attribute called {@code "docId"}.
@@ -31,7 +33,7 @@ import edu.upenn.cis.ppod.imodel.IWithXmlID;
  */
 public abstract class UUPPodEntityWithXmlId
 		extends UUPPodEntity
-		implements IWithXmlID {
+		implements IWithDocId {
 
 	/**
 	 * Intended for referencing elements within a document - be it XML, JSON,
@@ -49,20 +51,19 @@ public abstract class UUPPodEntityWithXmlId
 	@XmlAttribute(name = "docId")
 	@XmlID
 	@Nullable
-	public String getXmlId() {
+	public String getDocId() {
 		return docId;
 	}
 
 	/** {@inheritDoc} */
-	public UUPPodEntityWithXmlId setXmlId() {
-		return setXmlId(UUID.randomUUID().toString());
+	public UUPPodEntityWithXmlId setDocId() {
+		return setDocId(UUID.randomUUID().toString());
 	}
 
 	/** {@inheritDoc} */
-	public UUPPodEntityWithXmlId setXmlId(final String docId) {
-		// Let's not checkNotNul(xmlId) since JAXB calls this and we can't
-		// control what it does.a
-		if (getXmlId() != null) {
+	public UUPPodEntityWithXmlId setDocId(final String docId) {
+		checkNotNull(docId);
+		if (getDocId() != null) {
 			throw new IllegalStateException("xmlId was already set");
 		}
 		this.docId = docId;

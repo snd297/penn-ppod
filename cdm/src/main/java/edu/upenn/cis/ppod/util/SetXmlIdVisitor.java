@@ -38,8 +38,8 @@ final class SetXmlIdVisitor extends EmptyVisitor implements ISetXmlIdVisitor {
 	 */
 	@Override
 	public void visitOTUSet(final IOTUSet otuSet) {
-		if (otuSet.getXmlId() == null) {
-			otuSet.setXmlId();
+		if (otuSet.getDocId() == null) {
+			otuSet.setDocId();
 		}
 	}
 
@@ -50,8 +50,8 @@ final class SetXmlIdVisitor extends EmptyVisitor implements ISetXmlIdVisitor {
 	 */
 	@Override
 	public void visitOTU(final IOTU otu) {
-		if (otu.getXmlId() == null) {
-			otu.setXmlId();
+		if (otu.getDocId() == null) {
+			otu.setDocId();
 		}
 	}
 
@@ -62,8 +62,8 @@ final class SetXmlIdVisitor extends EmptyVisitor implements ISetXmlIdVisitor {
 	 */
 	@Override
 	public void visitStandardCharacter(final StandardCharacter character) {
-		if (character.getXmlId() == null) {
-			character.setXmlId();
+		if (character.getDocId() == null) {
+			character.setDocId();
 		}
 	}
 
@@ -74,8 +74,8 @@ final class SetXmlIdVisitor extends EmptyVisitor implements ISetXmlIdVisitor {
 	 */
 	@Override
 	public void visitStandardState(final StandardState standardState) {
-		if (standardState.getXmlId() == null) {
-			standardState.setXmlId();
+		if (standardState.getDocId() == null) {
+			standardState.setDocId();
 		}
 	}
 
@@ -90,8 +90,8 @@ final class SetXmlIdVisitor extends EmptyVisitor implements ISetXmlIdVisitor {
 		// Since this will be visited once for every attachment that is out
 		// there,
 		// we need to check it first.
-		if (attachmentNamespace.getXmlId() == null) {
-			attachmentNamespace.setXmlId();
+		if (attachmentNamespace.getDocId() == null) {
+			attachmentNamespace.setDocId();
 		}
 	}
 
@@ -105,8 +105,8 @@ final class SetXmlIdVisitor extends EmptyVisitor implements ISetXmlIdVisitor {
 		// Since this will be visited once for every attachment that is out
 		// there,
 		// we need to check it first.
-		if (attachmentType.getXmlId() == null) {
-			attachmentType.setXmlId();
+		if (attachmentType.getDocId() == null) {
+			attachmentType.setDocId();
 		}
 	}
 }
