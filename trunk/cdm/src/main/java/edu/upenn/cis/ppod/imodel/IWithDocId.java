@@ -30,7 +30,7 @@ import javax.annotation.Nullable;
  * 
  * @author Sam Donnelly
  */
-public interface IWithXmlID {
+public interface IWithDocId {
 
 	/**
 	 * Get the {@link javax.xml.bind.annotation.XmlID} attribute.
@@ -41,7 +41,7 @@ public interface IWithXmlID {
 	 * @return the {@code XmlID} attribute
 	 */
 	@Nullable
-	String getXmlId();
+	String getDocId();
 
 	/**
 	 * Create and set this {@code IWithXmlID}'s doc id.
@@ -51,7 +51,7 @@ public interface IWithXmlID {
 	 * @throws IllegalStateException if {@link #getXmlId()}{@code != null} when
 	 *             this method is called
 	 */
-	IWithXmlID setXmlId();
+	IWithDocId setDocId();
 
 	/**
 	 * Set this {@code IWithXmlID}'s xml id.
@@ -63,6 +63,6 @@ public interface IWithXmlID {
 	 * @throws IllegalStateException if {@link #getXmlId()}{@code != null} when
 	 *             this method is called
 	 */
-	IWithXmlID setXmlId(final String xmlId);
+	IWithDocId setDocId(final String xmlId);
 
 }

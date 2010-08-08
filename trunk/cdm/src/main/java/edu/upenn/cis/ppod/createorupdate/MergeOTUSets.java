@@ -59,7 +59,7 @@ final class MergeOTUSets implements IMergeOTUSets {
 		targetOTUSet.setDescription(sourceOTUSet.getDescription());
 
 		// This is for a response to the service client.
-		targetOTUSet.setXmlId(sourceOTUSet.getXmlId());
+		targetOTUSet.setDocId(sourceOTUSet.getDocId());
 
 		final List<IOTU> newTargetOTUs =
 				newArrayListWithCapacity(sourceOTUSet.getOTUs().size());
@@ -81,7 +81,7 @@ final class MergeOTUSets implements IMergeOTUSets {
 			targetOTU.setLabel(sourceOTU.getLabel());
 
 			// This is for a response to the service client.
-			targetOTU.setXmlId(sourceOTU.getXmlId());
+			targetOTU.setDocId(sourceOTU.getDocId());
 		}
 		targetOTUSet.setOTUs(newTargetOTUs);
 	}

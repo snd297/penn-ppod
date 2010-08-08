@@ -79,7 +79,9 @@ abstract class CreateOrUpdateMatrix<M extends IMatrix<R>, R extends IRow<C, ?>, 
 
 		// We need this for the response: it's less than ideal to do this here,
 		// but easy
-		dbMatrix.setXmlId(sourceMatrix.getXmlId());
+		if (dbMatrix.getDocId() == null) {
+			dbMatrix.setDocId(sourceMatrix.getDocId());
+		}
 
 		dbMatrix.setLabel(sourceMatrix.getLabel())
 				.setDescription(sourceMatrix.getDescription());

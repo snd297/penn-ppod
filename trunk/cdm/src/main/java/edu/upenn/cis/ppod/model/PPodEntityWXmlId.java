@@ -21,14 +21,14 @@ import javax.annotation.Nullable;
 import javax.xml.bind.annotation.XmlAttribute;
 import javax.xml.bind.annotation.XmlID;
 
-import edu.upenn.cis.ppod.imodel.IWithXmlID;
+import edu.upenn.cis.ppod.imodel.IWithDocId;
 
 /**
  * A {@code PPodEntity} w/ an {@link XmlID} attribute called {@code "docId"}.
  * 
  * @author Sam Donnelly
  */
-public abstract class PPodEntityWXmlId extends PPodEntity implements IWithXmlID {
+public abstract class PPodEntityWXmlId extends PPodEntity implements IWithDocId {
 
 	/**
 	 * Intended for referencing elements within a document - be it XML, JSON,
@@ -41,18 +41,18 @@ public abstract class PPodEntityWXmlId extends PPodEntity implements IWithXmlID 
 	@XmlID
 	@XmlAttribute(name = "docId")
 	@Nullable
-	public String getXmlId() {
+	public String getDocId() {
 		return docId;
 	}
 
 	/** {@inheritDoc} */
-	public IWithXmlID setXmlId() {
-		return setXmlId(UUID.randomUUID().toString());
+	public IWithDocId setDocId() {
+		return setDocId(UUID.randomUUID().toString());
 	}
 
 	/** {@inheritDoc} */
-	public IWithXmlID setXmlId(final String docId) {
-		if (getXmlId() != null) {
+	public IWithDocId setDocId(final String docId) {
+		if (getDocId() != null) {
 			throw new IllegalStateException("docId was already set");
 		}
 		this.docId = docId;

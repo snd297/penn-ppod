@@ -59,7 +59,7 @@ final class MergeTreeSets implements IMergeTreeSets {
 		checkNotNull(sourceTreeSet);
 
 		// For the response to the client
-		targetTreeSet.setXmlId(sourceTreeSet.getXmlId());
+		targetTreeSet.setDocId(sourceTreeSet.getDocId());
 
 		targetTreeSet.setLabel(sourceTreeSet.getLabel());
 
@@ -96,7 +96,7 @@ final class MergeTreeSets implements IMergeTreeSets {
 				final IOTU sourceOTU = sourceOTUItr.next();
 				final IOTU targetOTU = targetOTUItr.next();
 				targetNewick = targetNewick.replace(
-						sourceOTU.getXmlId(),
+						sourceOTU.getDocId(),
 						targetOTU.getPPodId());
 			}
 			targetTree.setNewick(targetNewick);
