@@ -190,7 +190,8 @@ public class OTUSet
 	/**
 	 * Add an {@code IDNASequenceSet}.
 	 * <p>
-	 * Also handles the {@code IDNASequenceSet->IOTUSet} side of the relationship.
+	 * Also handles the {@code IDNASequenceSet->IOTUSet} side of the
+	 * relationship.
 	 * 
 	 * @param dnaSequenceSet the new {@code IDNASequenceSet}
 	 * 
@@ -489,12 +490,6 @@ public class OTUSet
 		return this;
 	}
 
-	/**
-	 * Point this {@code OTUSet} and all of its children to a new
-	 * {@code versionInfo}. Only the first call has an effect.
-	 * 
-	 * @return this {@code OTUSet}
-	 */
 	@Override
 	public OTUSet setInNeedOfNewVersion() {
 		final IStudy study = getParent();
@@ -505,13 +500,7 @@ public class OTUSet
 		return this;
 	}
 
-	/**
-	 * Set the label of this <code>OTUSet</code>.
-	 * 
-	 * @param label the label
-	 * 
-	 * @return this
-	 */
+	/** {@inheritDoc} */
 	public OTUSet setLabel(final String label) {
 		checkNotNull(label);
 		if (label.equals(getLabel())) {
@@ -523,34 +512,22 @@ public class OTUSet
 		return this;
 	}
 
-	/**
-	 * Set this {@code OTUSet}'s {@code OTU}s.
-	 * <p>
-	 * This {@code OTUSet} makes a copy of {@code newOTUs}.
-	 * <p>
-	 * If this method is effectively removing any of this sets's original OTUs,
-	 * then the {@code OTU->OTUSet} relationship is severed.
-	 * 
-	 * @param newOTUs the otus to assign to this OTU set
-	 * 
-	 * @return any {@code OTU}s that were removed as a result of this operation,
-	 *         in their original order
-	 */
-	public List<IOTU> setOTUs(final List<? extends IOTU> newOTUs) {
-		checkNotNull(newOTUs);
-		if (newOTUs.equals(getOTUs())) {
+	/** {@inheritDoc} */
+	public List<IOTU> setOTUs(final List<? extends IOTU> otus) {
+		checkNotNull(otus);
+		if (otus.equals(getOTUs())) {
 			return Collections.emptyList();
 		}
 
 		final List<IOTU> removedOTUs = newArrayList(getOTUs());
-		removedOTUs.removeAll(newOTUs);
+		removedOTUs.removeAll(otus);
 
 		for (final IOTU removedOTU : removedOTUs) {
 			removedOTU.setParent(null);
 		}
 
 		getOTUsModifiable().clear();
-		for (final IOTU otu : newOTUs) {
+		for (final IOTU otu : otus) {
 			addOTUWithoutSetOTUsOnChildren(otu);
 		}
 
