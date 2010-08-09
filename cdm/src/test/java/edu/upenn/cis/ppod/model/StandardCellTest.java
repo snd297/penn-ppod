@@ -35,6 +35,7 @@ import com.google.inject.Provider;
 import edu.upenn.cis.ppod.TestGroupDefs;
 import edu.upenn.cis.ppod.imodel.ICell;
 import edu.upenn.cis.ppod.imodel.IStandardMatrix;
+import edu.upenn.cis.ppod.imodel.IStandardRow;
 
 /**
  * Test {@link CharacterStateCell}.
@@ -180,7 +181,7 @@ public class StandardCellTest {
 	 */
 	@Test(expectedExceptions = IllegalStateException.class)
 	public void setStatesForACellThatDoesNotBelongToARow() {
-		final StandardCell cell = cellProvider.get();
+		final IStandardCell cell = cellProvider.get();
 		cell.setSingleElement(state00);
 	}
 

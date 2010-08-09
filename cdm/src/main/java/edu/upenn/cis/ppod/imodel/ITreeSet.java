@@ -40,6 +40,15 @@ public interface ITreeSet
 
 	ITreeSet setLabel(String label);
 
+	/**
+	 * Set the trees in this tree set.
+	 * <p>
+	 * This handles both sides of the {@code ITreeSet<->ITree} relationship.
+	 * 
+	 * @param trees the trees we're setting
+	 * 
+	 * @return any trees which were removed as a result of this operation
+	 */
 	List<ITree> setTrees(List<? extends ITree> trees);
 
 }

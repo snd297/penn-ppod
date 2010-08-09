@@ -13,12 +13,12 @@
  * See the License for the specific language governing permissions and
  * limitations under the License.
  */
-package edu.upenn.cis.ppod.model;
+package edu.upenn.cis.ppod.imodel;
 
 import javax.xml.bind.annotation.adapters.XmlJavaTypeAdapter;
 
-import edu.upenn.cis.ppod.imodel.IRow;
-import edu.upenn.cis.ppod.imodel.IStandardMatrix;
+import edu.upenn.cis.ppod.model.IStandardCell;
+import edu.upenn.cis.ppod.model.StandardRow;
 
 @XmlJavaTypeAdapter(StandardRow.Adapter.class)
-public interface IStandardRow extends IRow<StandardCell, IStandardMatrix> {}
+public interface IStandardRow extends IRow<IStandardCell, IStandardMatrix> {}

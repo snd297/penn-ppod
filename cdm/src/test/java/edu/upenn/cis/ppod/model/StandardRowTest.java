@@ -32,6 +32,7 @@ import com.google.inject.Provider;
 
 import edu.upenn.cis.ppod.TestGroupDefs;
 import edu.upenn.cis.ppod.imodel.IOTU;
+import edu.upenn.cis.ppod.imodel.IStandardRow;
 
 /**
  * {@link CharacterStateRow} test.

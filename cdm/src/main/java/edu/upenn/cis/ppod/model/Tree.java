@@ -168,8 +168,8 @@ public class Tree extends UUPPodEntity implements ITree {
 		return this;
 	}
 
-	public ITree setParent(@CheckForNull final ITreeSet parent) {
+	/** {@inheritDoc} */
+	public void setParent(@CheckForNull final ITreeSet parent) {
 		this.parent = parent;
-		return this;
 	}
 }

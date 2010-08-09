@@ -32,6 +32,7 @@ import javax.xml.bind.annotation.XmlElement;
 import javax.xml.bind.annotation.adapters.XmlAdapter;
 
 import edu.upenn.cis.ppod.imodel.IStandardMatrix;
+import edu.upenn.cis.ppod.imodel.IStandardRow;
 import edu.upenn.cis.ppod.util.IVisitor;
 
 /**
@@ -42,7 +43,7 @@ import edu.upenn.cis.ppod.util.IVisitor;
 @Entity
 @Table(name = StandardRow.TABLE)
 public class StandardRow
-		extends Row<StandardCell, IStandardMatrix>
+		extends Row<IStandardCell, IStandardMatrix>
 		implements IStandardRow {
 
 	public static class Adapter extends XmlAdapter<StandardRow, IStandardRow> {
@@ -63,10 +64,13 @@ public class StandardRow
 
 	public static final String JOIN_COLUMN = TABLE + "_ID";
 
-	@OneToMany(mappedBy = "parent", cascade = CascadeType.ALL,
-			orphanRemoval = true)
+	@OneToMany(
+			mappedBy = "parent", 
+			cascade = CascadeType.ALL,
+			orphanRemoval = true, 
+			targetEntity = StandardCell.class)
 	@OrderBy("position")
-	private final List<StandardCell> cells = newArrayList();
+	private final List<IStandardCell> cells = newArrayList();
 
 	@ManyToOne(fetch = FetchType.LAZY, optional = false,
 			targetEntity = StandardMatrix.class)
@@ -84,7 +88,7 @@ public class StandardRow
 
 	@XmlElement(name = "cell")
 	@Override
-	protected List<StandardCell> getCellsModifiable() {
+	protected List<IStandardCell> getCellsModifiable() {
 		return cells;
 	}
 
@@ -101,12 +105,12 @@ public class StandardRow
 	}
 
 	@Override
-	public List<StandardCell> setCells(
-			final List<? extends StandardCell> cells) {
-		final List<StandardCell> clearedCells =
+	public List<IStandardCell> setCells(
+			final List<? extends IStandardCell> cells) {
+		final List<IStandardCell> clearedCells =
 				super.setCellsHelper(cells);
 
-		for (final StandardCell cell : getCells()) {
+		for (final IStandardCell cell : getCells()) {
 			cell.setParent(this);
 		}
 		return clearedCells;
