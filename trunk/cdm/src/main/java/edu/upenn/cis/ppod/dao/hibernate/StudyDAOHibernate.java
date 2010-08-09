@@ -23,6 +23,7 @@ import java.util.Set;
 
 import com.google.inject.Inject;
 
+import edu.upenn.cis.ppod.imodel.IStudy;
 import edu.upenn.cis.ppod.model.Study;
 import edu.upenn.cis.ppod.thirdparty.dao.hibernate.GenericHibernateDAO;
 import edu.upenn.cis.ppod.util.IPair;
@@ -32,7 +33,7 @@ import edu.upenn.cis.ppod.util.IPair;
  * 
  * @author Sam Donnelly
  */
-final class StudyDAOHibernate extends GenericHibernateDAO<Study, Long>
+final class StudyDAOHibernate extends GenericHibernateDAO<IStudy, Long>
 		implements IStudyDAOHibernate {
 
 	private final IPair.IFactory pairFactory;

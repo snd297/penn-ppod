@@ -18,7 +18,7 @@ package edu.upenn.cis.ppod.dao;
 import java.util.List;
 import java.util.Set;
 
-import edu.upenn.cis.ppod.model.Study;
+import edu.upenn.cis.ppod.imodel.IStudy;
 import edu.upenn.cis.ppod.util.IPair;
 
 /**
@@ -26,7 +26,7 @@ import edu.upenn.cis.ppod.util.IPair;
  * 
  * @author Sam Donnelly
  */
-public interface IStudyDAO extends IDAO<Study, Long> {
+public interface IStudyDAO extends IDAO<IStudy, Long> {
 
 	/**
 	 * Get a (pPOD ID, Study label) pair for every {@link Study} in the
@@ -46,8 +46,8 @@ public interface IStudyDAO extends IDAO<Study, Long> {
 	 * @return a {@link Study} given its pPOD id or {@code null} if {@code
 	 *         pPodId == null}
 	 */
-	Study getStudyByPPodId(String pPodId);
-	Study getStudyByPPodIdEager(String pPodId);
+	IStudy getStudyByPPodId(String pPodId);
+	IStudy getStudyByPPodIdEager(String pPodId);
 
 	/**
 	 * Get the pPOD version of the study with the given pPOD id.

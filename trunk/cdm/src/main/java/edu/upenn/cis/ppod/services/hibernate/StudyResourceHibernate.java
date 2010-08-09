@@ -132,8 +132,8 @@ final class StudyResourceHibernate implements IStudyResource {
 		return createOrUpdateStudy(incomingStudy);
 	}
 
-	public Study getStudyByPPodId(final String pPodId) {
-		final Study study = studyDAO.getStudyByPPodId(pPodId);
+	public IStudy getStudyByPPodId(final String pPodId) {
+		final IStudy study = studyDAO.getStudyByPPodId(pPodId);
 		study.accept(setXmlIdVisitor);
 		return study;
 	}

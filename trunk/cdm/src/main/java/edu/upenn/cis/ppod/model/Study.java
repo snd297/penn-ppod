@@ -35,7 +35,6 @@ import javax.xml.bind.annotation.adapters.XmlAdapter;
 
 import edu.upenn.cis.ppod.imodel.IOTUSet;
 import edu.upenn.cis.ppod.imodel.IStudy;
-import edu.upenn.cis.ppod.services.ppodentity.IOTUSets;
 import edu.upenn.cis.ppod.util.IVisitor;
 import edu.upenn.cis.ppod.util.PPodEntitiesUtil;
 
@@ -50,20 +49,7 @@ import edu.upenn.cis.ppod.util.PPodEntitiesUtil;
 @Table(name = Study.TABLE)
 public class Study
 		extends UUPPodEntity
-		implements IOTUSets, IStudy {
-
-	public static class Adapter extends XmlAdapter<Study, IStudy> {
-
-		@Override
-		public Study marshal(final IStudy study) {
-			return (Study) study;
-		}
-
-		@Override
-		public IStudy unmarshal(final Study study) {
-			return study;
-		}
-	}
+		implements IStudy {
 
 	/** The table name for this entity. */
 	public static final String TABLE = "STUDY";
