@@ -34,6 +34,7 @@ import com.google.inject.Provider;
 
 import edu.upenn.cis.ppod.TestGroupDefs;
 import edu.upenn.cis.ppod.imodel.ICell;
+import edu.upenn.cis.ppod.imodel.IStandardMatrix;
 
 /**
  * Test {@link CharacterStateCell}.
@@ -53,7 +54,7 @@ public class StandardCellTest {
 	private Provider<StandardCharacter> characterProvider;
 
 	@Nullable
-	private StandardMatrix matrix;
+	private IStandardMatrix matrix;
 
 	@Inject
 	private Provider<StandardMatrix> standardMatrixProvider;
@@ -96,7 +97,7 @@ public class StandardCellTest {
 						.get()
 						.setLabel("character0");
 		matrix.setCharacters(newArrayList(character0));
-		final StandardRow row0 = rowProvider.get();
+		final IStandardRow row0 = rowProvider.get();
 		matrix.putRow(matrix.getParent().getOTUs().get(0), row0);
 
 		states = newHashSet();
@@ -114,7 +115,7 @@ public class StandardCellTest {
 
 	@Test(expectedExceptions = IllegalArgumentException.class)
 	public void setPolymorphicElementsTooFewStates() {
-		matrix.getRow(
+		matrix.getRows().get(
 				matrix.getParent()
 						.getOTUs()
 						.get(0))
@@ -126,8 +127,9 @@ public class StandardCellTest {
 
 	@Test
 	public void setInapplcableWasSingle() {
-		matrix.getRow(matrix.getParent().getOTUs().get(0)).setCells(
-				Arrays.asList(cell));
+		matrix.getRows()
+				.get(matrix.getParent().getOTUs().get(0)).setCells(
+						Arrays.asList(cell));
 		cell.setSingleElement(state00);
 		cell.setInapplicable();
 		assertEquals(cell.getType(), ICell.Type.INAPPLICABLE);
@@ -138,7 +140,7 @@ public class StandardCellTest {
 
 	@Test
 	public void setInapplicableWasPolymorphic() {
-		matrix.getRow(
+		matrix.getRows().get(
 				matrix.getParent()
 						.getOTUs()
 						.get(0))
@@ -154,7 +156,7 @@ public class StandardCellTest {
 
 	@Test
 	public void setPolymorphicElements() {
-		matrix.getRow(matrix.getParent().getOTUs().get(0)).setCells(
+		matrix.getRows().get(matrix.getParent().getOTUs().get(0)).setCells(
 				Arrays.asList(cell));
 		states.add(state00);
 		states.add(state01);
@@ -165,7 +167,7 @@ public class StandardCellTest {
 
 	@Test
 	public void setSingleElement() {
-		matrix.getRow(matrix.getParent().getOTUs().get(0)).setCells(
+		matrix.getRows().get(matrix.getParent().getOTUs().get(0)).setCells(
 				Arrays.asList(cell));
 		states.add(state00);
 		cell.setSingleElement(state00);
@@ -184,7 +186,7 @@ public class StandardCellTest {
 
 	@Test
 	public void setUncertainElements() {
-		matrix.getRow(matrix.getParent().getOTUs().get(0)).setCells(
+		matrix.getRows().get(matrix.getParent().getOTUs().get(0)).setCells(
 				Arrays.asList(cell));
 		states.add(state00);
 		states.add(state01);

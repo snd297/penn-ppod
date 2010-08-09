@@ -49,7 +49,7 @@ import edu.upenn.cis.ppod.util.IVisitor;
  */
 /**
  * @author Sam Donnelly
- *
+ * 
  * @param <S>
  */
 @MappedSuperclass
@@ -170,7 +170,7 @@ abstract class SequenceSet<S extends Sequence<?>>
 	public abstract Map<IOTU, S> getSequences();
 
 	/**
-	 * 
+	 * {@inheritDoc}
 	 * 
 	 * @param otu
 	 * @param sequence

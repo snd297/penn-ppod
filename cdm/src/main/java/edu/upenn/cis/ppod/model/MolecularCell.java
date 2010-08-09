@@ -59,20 +59,21 @@ public abstract class MolecularCell<E extends Enum<?>, R extends IRow<?, ?>>
 		this.lowerCase = upperCase;
 	}
 
-	public IMolecularCell<E, R> setPolymorphicElements(
+	/** {@inheritDoc} */
+	public void setPolymorphicElements(
 			final Set<? extends E> elements, final Boolean lowerCase) {
 		checkNotNull(lowerCase);
 		super.setPolymorphicOrUncertain(Type.POLYMORPHIC, elements);
 		if (lowerCase.equals(isLowerCase())) {
-			return this;
+
+		} else {
+			setLowerCase(lowerCase);
+			setInNeedOfNewVersion();
 		}
-		setLowerCase(lowerCase);
-		setInNeedOfNewVersion();
-		return this;
 	}
 
 	/** {@inheritDoc} */
-	public IMolecularCell<E, R> setSingleElement(
+	public void setSingleElement(
 			final E element,
 			final Boolean lowerCase) {
 		checkNotNull(element);
@@ -85,22 +86,24 @@ public abstract class MolecularCell<E extends Enum<?>, R extends IRow<?, ?>>
 				throw new AssertionError(
 						"element is set, but this cell is not a SINGLE");
 			}
-			return this;
+		} else {
+			setType(Type.SINGLE);
+			setElements(null);
+			setElement(element);
+			setLowerCase(lowerCase);
+			setInNeedOfNewVersion();
 		}
-		setType(Type.SINGLE);
-		setElements(null);
-		setElement(element);
-		setLowerCase(lowerCase);
-		setInNeedOfNewVersion();
-		return this;
 	}
 
-	/** {@inheritDoc} */
 	@Override
-	public MolecularCell<E, R> setUncertainElements(
+	public void setUncertainElements(
 			final Set<? extends E> elements) {
 		super.setUncertainElements(elements);
-		setLowerCase(null);
-		return this;
+		if (isLowerCase() == null) {
+
+		} else {
+			setLowerCase(null);
+			setInNeedOfNewVersion();
+		}
 	}
 }

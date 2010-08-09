@@ -28,7 +28,6 @@ import org.testng.annotations.Test;
 import com.google.common.collect.ImmutableSet;
 
 import edu.upenn.cis.ppod.TestGroupDefs;
-import edu.upenn.cis.ppod.imodel.IMolecularCell;
 
 /**
  * {@link MolecularCell} testing.
@@ -46,23 +45,20 @@ public class MolecularCellTest {
 		final Set<DNANucleotide> nucleotides =
 				ImmutableSet.of(DNANucleotide.A, DNANucleotide.T);
 
-		final IMolecularCell<?, ?> returnedCell =
-				cell.setPolymorphicElements(
+		cell.setPolymorphicElements(
 						nucleotides,
 						false);
 		assertTrue(cell.isInNeedOfNewVersion());
-		assertSame(returnedCell, cell);
+
 		assertEquals(cell.getElements(), nucleotides);
 		assertFalse(cell.isLowerCase());
 
 		cell.unsetInNeedOfNewVersion();
 
-		final IMolecularCell<?, ?> returnedCell1 =
-				cell.setPolymorphicElements(
+		cell.setPolymorphicElements(
 						nucleotides,
 						false);
 		assertFalse(cell.isInNeedOfNewVersion());
-		assertSame(returnedCell1, cell);
 		assertEquals(cell.getElements(), nucleotides);
 		assertFalse(cell.isLowerCase());
 
@@ -71,23 +67,19 @@ public class MolecularCellTest {
 		final Set<DNANucleotide> nucleotides2 =
 				ImmutableSet.of(DNANucleotide.T, DNANucleotide.G);
 
-		final IMolecularCell<?, ?> returnedCell2 =
-				cell.setPolymorphicElements(
+		cell.setPolymorphicElements(
 						nucleotides2,
 						false);
 		assertTrue(cell.isInNeedOfNewVersion());
-		assertSame(returnedCell2, cell);
 		assertEquals(cell.getElements(), nucleotides2);
 		assertFalse(cell.isLowerCase());
 
 		cell.unsetInNeedOfNewVersion();
 
-		final IMolecularCell<?, ?> returnedCell3 =
-				cell.setPolymorphicElements(
+		cell.setPolymorphicElements(
 						nucleotides2,
 						true);
 		assertTrue(cell.isInNeedOfNewVersion());
-		assertSame(returnedCell3, cell);
 		assertEquals(cell.getElements(), nucleotides2);
 		assertTrue(cell.isLowerCase());
 	}
@@ -97,31 +89,23 @@ public class MolecularCellTest {
 		final MolecularCell<DNANucleotide, ?> cell = new DNACell();
 
 		cell.unsetInNeedOfNewVersion();
-		final IMolecularCell<?, ?> returnedCell =
-				cell.setSingleElement(DNANucleotide.C, false);
+		cell.setSingleElement(DNANucleotide.C, false);
 		assertTrue(cell.isInNeedOfNewVersion());
-		assertSame(returnedCell, cell);
 		assertSame(getOnlyElement(cell.getElements()), DNANucleotide.C);
 
 		cell.unsetInNeedOfNewVersion();
-		final IMolecularCell<?, ?> returnedCell1 =
-				cell.setSingleElement(DNANucleotide.C, false);
+		cell.setSingleElement(DNANucleotide.C, false);
 		assertFalse(cell.isInNeedOfNewVersion());
-		assertSame(returnedCell1, cell);
 		assertSame(getOnlyElement(cell.getElements()), DNANucleotide.C);
 
 		cell.unsetInNeedOfNewVersion();
-		final IMolecularCell<?, ?> returnedCell2 =
-				cell.setSingleElement(DNANucleotide.C, true);
+		cell.setSingleElement(DNANucleotide.C, true);
 		assertTrue(cell.isInNeedOfNewVersion());
-		assertSame(returnedCell2, cell);
 		assertSame(getOnlyElement(cell.getElements()), DNANucleotide.C);
 
 		cell.unsetInNeedOfNewVersion();
-		final IMolecularCell<?, ?> returnedCell3 =
-				cell.setSingleElement(DNANucleotide.A, true);
+		cell.setSingleElement(DNANucleotide.A, true);
 		assertTrue(cell.isInNeedOfNewVersion());
-		assertSame(returnedCell3, cell);
 		assertSame(getOnlyElement(cell.getElements()), DNANucleotide.A);
 	}
 }

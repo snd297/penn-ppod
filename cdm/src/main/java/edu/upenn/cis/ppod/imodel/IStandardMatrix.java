@@ -19,11 +19,11 @@ import java.util.List;
 
 import javax.xml.bind.annotation.adapters.XmlJavaTypeAdapter;
 
+import edu.upenn.cis.ppod.model.IStandardRow;
 import edu.upenn.cis.ppod.model.StandardMatrix;
-import edu.upenn.cis.ppod.model.StandardRow;
 
 @XmlJavaTypeAdapter(StandardMatrix.Adapter.class)
-public interface IStandardMatrix extends IMatrix<StandardRow> {
+public interface IStandardMatrix extends IMatrix<IStandardRow> {
 
 	void afterUnmarshal();
 

@@ -92,9 +92,9 @@ public class DNASequenceSet extends SequenceSet<DNASequence> implements
 		super.accept(visitor);
 	}
 
-	public DNASequenceSet clearSequences() {
+	/** {@inheritDoc} */
+	public void clearSequences() {
 		getOTUKeyedSequences().clear();
-		return this;
 	}
 
 	@XmlElement(name = "sequences")

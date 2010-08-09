@@ -20,14 +20,14 @@ import javax.xml.bind.annotation.XmlAccessorType;
 import javax.xml.bind.annotation.XmlElement;
 
 import edu.upenn.cis.ppod.imodel.IOTU;
-import edu.upenn.cis.ppod.model.StandardRow;
+import edu.upenn.cis.ppod.model.IStandardRow;
 
 /**
  * @author Sam Donnelly
  */
 @XmlAccessorType(XmlAccessType.NONE)
 public class OTUStandardRowPair extends
-		OTUSomethingPair<StandardRow> {
+		OTUSomethingPair<IStandardRow> {
 	/**
 	 * For JAXB.
 	 */
@@ -35,7 +35,7 @@ public class OTUStandardRowPair extends
 
 	@XmlElement
 	@Override
-	public StandardRow getSecond() {
+	public IStandardRow getSecond() {
 		return super.getSecond();
 	}
 
@@ -43,14 +43,14 @@ public class OTUStandardRowPair extends
 	 * This seemingly redundant setter method added for the sake of JAXB.
 	 */
 	@Override
-	public OTUSomethingPair<StandardRow> setSecond(
-			final StandardRow row) {
-		return (OTUSomethingPair<StandardRow>) super.setSecond(row);
+	public OTUSomethingPair<IStandardRow> setSecond(
+			final IStandardRow row) {
+		return (OTUSomethingPair<IStandardRow>) super.setSecond(row);
 	}
 
 	public static OTUStandardRowPair of(
 			final IOTU first,
-			final StandardRow second) {
+			final IStandardRow second) {
 		final OTUStandardRowPair otuRowPair = new OTUStandardRowPair();
 		otuRowPair.setFirst(first);
 		otuRowPair.setSecond(second);

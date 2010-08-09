@@ -69,11 +69,9 @@ public interface ISequenceSet<S extends Sequence<?>>
 
 	/**
 	 * Remove all sequences from this set. Null's out the
-	 * {@code Sequence->SequenceSet} relationship and sets
+	 * {@code ISequence->ISequenceSet} relationships and sets
 	 * {@code getSequenceLengths()} to {@code null}.
-	 * 
-	 * @return this
 	 */
-	ISequenceSet<S> clearSequences();
+	void clearSequences();
 
 }

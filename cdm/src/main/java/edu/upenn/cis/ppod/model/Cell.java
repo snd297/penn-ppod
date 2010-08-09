@@ -220,15 +220,9 @@ public abstract class Cell<E, R extends IRow<?, ?>>
 	abstract void setElements(
 			@CheckForNull final Set<E> elements);
 
-	/**
-	 * Set this cell's type to {@link Type#INAPPLICABLE} its elements to the
-	 * empty set.
-	 * 
-	 * @return this
-	 */
-	public ICell<E, R> setInapplicable() {
+	/** {@inheritDoc} */
+	public void setInapplicable() {
 		setInapplicableOrUnassigned(Type.INAPPLICABLE);
-		return this;
 	}
 
 	void setInapplicableOrUnassigned(final Type type) {
@@ -347,33 +341,22 @@ public abstract class Cell<E, R extends IRow<?, ?>>
 		return;
 	}
 
-	/**
-	 * Set this cell's type to {@link Type#UNASSIGNED} to
-	 * {@code Collections.EMPTY_SET}.
-	 * 
-	 * @return this
-	 */
-	public ICell<E, R> setUnassigned() {
+	/** {@inheritDoc} */
+	public void setUnassigned() {
 		setInapplicableOrUnassigned(Type.UNASSIGNED);
-		return this;
 	}
 
 	/**
-	 * Set the type to uncertain with the given states.
-	 * 
-	 * @param uncertainStates the states
-	 * 
-	 * @return this
+	 * {@inheritDoc}
 	 * 
 	 * @throw IllegalArgumentException if {@code uncertainStates.size() < 2}
 	 */
-	public ICell<E, R> setUncertainElements(
+	public void setUncertainElements(
 			final Set<? extends E> uncertainElements) {
 		checkNotNull(uncertainElements);
 		checkArgument(uncertainElements.size() > 1,
 				"uncertain elements must be > 1");
 		setPolymorphicOrUncertain(Type.UNCERTAIN, uncertainElements);
-		return this;
 	}
 
 }

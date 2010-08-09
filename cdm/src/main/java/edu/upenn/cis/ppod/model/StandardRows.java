@@ -53,10 +53,10 @@ import edu.upenn.cis.ppod.util.OTUStandardRowPair;
 @Embeddable
 @Access(AccessType.PROPERTY)
 public class StandardRows
-		implements IOTUKeyedMap<StandardRow> {
+		implements IOTUKeyedMap<IStandardRow> {
 
-	private final IOTUKeyedMapPlus<StandardRow, IStandardMatrix, OTUStandardRowPair> rows =
-			new OTUKeyedMapPlus<StandardRow, IStandardMatrix, OTUStandardRowPair>();
+	private final IOTUKeyedMapPlus<IStandardRow, IStandardMatrix, OTUStandardRowPair> rows =
+			new OTUKeyedMapPlus<IStandardRow, IStandardMatrix, OTUStandardRowPair>();
 
 	StandardRows() {}
 
@@ -79,7 +79,7 @@ public class StandardRows
 
 	protected boolean beforeMarshal(@CheckForNull final Marshaller marshaller) {
 		getOTUSomethingPairs().clear();
-		for (final Map.Entry<IOTU, StandardRow> otuToRow : getValues()
+		for (final Map.Entry<IOTU, IStandardRow> otuToRow : getValues()
 				.entrySet()) {
 			getOTUSomethingPairs().add(
 					OTUStandardRowPair.of(otuToRow.getKey(),
@@ -93,7 +93,7 @@ public class StandardRows
 		return this;
 	}
 
-	public StandardRow get(final IOTU key) {
+	public IStandardRow get(final IOTU key) {
 		return rows.get(key);
 	}
 
@@ -122,16 +122,17 @@ public class StandardRows
 			CascadeType.REMOVE,
 			CascadeType.DETACH,
 			CascadeType.REFRESH },
-			orphanRemoval = true)
+			orphanRemoval = true, 
+			targetEntity = StandardRow.class)
 	@JoinTable(inverseJoinColumns = @JoinColumn(name = StandardRow.JOIN_COLUMN))
 	@MapKeyJoinColumn(name = OTU.JOIN_COLUMN)
 	@MapKeyClass(OTU.class)
-	public Map<IOTU, StandardRow> getValues() {
+	public Map<IOTU, IStandardRow> getValues() {
 		return rows.getValues();
 	}
 
 	/** {@inheritDoc} */
-	public StandardRow put(final IOTU key, final StandardRow value) {
+	public IStandardRow put(final IOTU key, final IStandardRow value) {
 		return rows.put(key, value);
 	}
 
@@ -154,7 +155,7 @@ public class StandardRows
 	}
 
 	@SuppressWarnings("unused")
-	private StandardRows setValues(final Map<IOTU, StandardRow> values) {
+	private StandardRows setValues(final Map<IOTU, IStandardRow> values) {
 		rows.setValues(values);
 		return this;
 	}

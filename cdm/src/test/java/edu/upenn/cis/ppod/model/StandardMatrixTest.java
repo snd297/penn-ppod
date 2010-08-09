@@ -103,7 +103,7 @@ public class StandardMatrixTest {
 
 		matrix.putRow(otu0, rowProvider.get());
 		final StandardCell cell00 = cellProvider.get();
-		matrix.getRow(otu0).setCells(
+		matrix.getRows().get(otu0).setCells(
 				Arrays.asList(new StandardCell[] { cell00 }));
 		standardCharacter.addState(stateFactory.create(0));
 
@@ -114,7 +114,7 @@ public class StandardMatrixTest {
 
 		matrix.putRow(otu1, rowProvider.get());
 		final StandardCell cell10 = cellProvider.get();
-		matrix.getRow(otu1).setCells(
+		matrix.getRows().get(otu1).setCells(
 				Arrays.asList(new StandardCell[] { cell10 }));
 
 		final StandardState state1 = stateFactory.create(1);
@@ -123,7 +123,7 @@ public class StandardMatrixTest {
 
 		matrix.putRow(otu2, rowProvider.get());
 		final StandardCell cell20 = cellProvider.get();
-		matrix.getRow(otu2).setCells(
+		matrix.getRows().get(otu2).setCells(
 				Arrays.asList(new StandardCell[] { cell20 }));
 
 		final StandardState state0 = stateFactory.create(0);
@@ -284,7 +284,7 @@ public class StandardMatrixTest {
 	 */
 	@Test
 	public void setWithSameRow() {
-		final StandardRow row1 = rowProvider.get();
+		final IStandardRow row1 = rowProvider.get();
 		matrix.putRow(otu1, row1);
 		matrix.setVersionInfo(versionInfo);
 		matrix.putRow(otu1, row1);
@@ -316,8 +316,8 @@ public class StandardMatrixTest {
 	public void replaceRow() {
 		final StandardRow row1 = rowProvider.get();
 		matrix.putRow(otu1, row1);
-		final StandardRow row2 = rowProvider.get();
-		final StandardRow someRow = matrix.putRow(otu1, row2);
+		final IStandardRow row2 = rowProvider.get();
+		final IStandardRow someRow = matrix.putRow(otu1, row2);
 		assertEquals(someRow, row1);
 		assertNull(row1.getParent());
 	}

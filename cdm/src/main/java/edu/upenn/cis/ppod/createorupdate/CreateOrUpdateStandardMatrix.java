@@ -39,8 +39,8 @@ import edu.upenn.cis.ppod.imodel.INewVersionInfo;
 import edu.upenn.cis.ppod.imodel.IStandardCharacter;
 import edu.upenn.cis.ppod.imodel.IStandardMatrix;
 import edu.upenn.cis.ppod.imodel.IWithPPodId;
+import edu.upenn.cis.ppod.model.IStandardRow;
 import edu.upenn.cis.ppod.model.StandardCell;
-import edu.upenn.cis.ppod.model.StandardRow;
 import edu.upenn.cis.ppod.model.StandardState;
 import edu.upenn.cis.ppod.thirdparty.injectslf4j.InjectLogger;
 
@@ -49,7 +49,7 @@ import edu.upenn.cis.ppod.thirdparty.injectslf4j.InjectLogger;
  */
 final class CreateOrUpdateStandardMatrix
 		extends
-		CreateOrUpdateMatrix<IStandardMatrix, StandardRow, StandardCell, StandardState>
+		CreateOrUpdateMatrix<IStandardMatrix, IStandardRow, StandardCell, StandardState>
 		implements ICreateOrUpdateStandardMatrix {
 
 	private final Provider<IStandardCharacter> standardCharacterProvider;
@@ -64,7 +64,7 @@ final class CreateOrUpdateStandardMatrix
 
 	@Inject
 	CreateOrUpdateStandardMatrix(
-			final Provider<StandardRow> rowProvider,
+			final Provider<IStandardRow> rowProvider,
 			final Provider<StandardCell> cellProvider,
 			final Provider<IStandardCharacter> characterProvider,
 			final StandardState.IFactory stateFactory,
