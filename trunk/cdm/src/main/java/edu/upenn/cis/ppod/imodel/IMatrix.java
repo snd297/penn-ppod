@@ -109,8 +109,8 @@ public interface IMatrix<R extends IRow<?, ?>>
 	 * @throws IllegalArgumentException if {@code otu} does not belong to this
 	 *             matrix's {@code OTUSet}
 	 */
-	@Nullable
-	R getRow(final IOTU otu);
+	// @Nullable
+	// R getRow(final IOTU otu);
 
 	Map<IOTU, R> getRows();
 
@@ -156,7 +156,6 @@ public interface IMatrix<R extends IRow<?, ?>>
 	 */
 	void setColumnVersionInfos(
 			final VersionInfo versionInfo);
-
 
 	IMatrix<R> setDescription(
 			@CheckForNull final String description);

@@ -35,26 +35,24 @@ public interface IMolecularCell<E extends Enum<?>, R extends IRow<?, ?>>
 
 	/**
 	 * Set the cell to have type {@link Type#POLYMORPHIC}, the given elements,
-	 * and case.
+	 * and the given case.
+	 * <p>
+	 * {@code elements} must contain at least two elements.
 	 * 
 	 * @param elements the elements to assign to this cell
 	 * @param lowerCase is it lower-case?
-	 * 
-	 * @return this
 	 */
-	IMolecularCell<E, R> setPolymorphicElements(
+	void setPolymorphicElements(
 			final Set<? extends E> elements, final Boolean lowerCase);
 
 	/**
-	 * Set the cell to have type {@link Type#SINGLE}, the given element, and
-	 * case.
+	 * Set the cell to have type {@link Type#SINGLE}, the given element, and the
+	 * given case.
 	 * 
 	 * @param element element to assign to this cell
 	 * @param lowerCase is it lower-case?
-	 * 
-	 * @return this
 	 */
-	IMolecularCell<E, R> setSingleElement(
+	void setSingleElement(
 			final E element,
 			final Boolean lowerCase);
 

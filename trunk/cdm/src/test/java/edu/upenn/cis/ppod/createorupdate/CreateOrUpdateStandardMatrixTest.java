@@ -32,9 +32,9 @@ import edu.upenn.cis.ppod.imodel.IOTU;
 import edu.upenn.cis.ppod.imodel.IOTUSet;
 import edu.upenn.cis.ppod.imodel.IStandardCharacter;
 import edu.upenn.cis.ppod.imodel.IStandardMatrix;
+import edu.upenn.cis.ppod.model.IStandardRow;
 import edu.upenn.cis.ppod.model.ModelAssert;
 import edu.upenn.cis.ppod.model.StandardCell;
-import edu.upenn.cis.ppod.model.StandardRow;
 import edu.upenn.cis.ppod.util.PPodEntityProvider;
 
 /**
@@ -175,8 +175,8 @@ public class CreateOrUpdateStandardMatrixTest {
 		sourceMatrix.setCharacters(newSourceMatrixCharacters);
 
 		for (final IOTU sourceOTU : sourceMatrix.getParent().getOTUs()) {
-			final StandardRow sourceRow = sourceMatrix
-						.getRow(sourceOTU);
+			final IStandardRow sourceRow =
+					sourceMatrix.getRows().get(sourceOTU);
 
 			final List<StandardCell> newSourceCells = newArrayList(sourceRow
 						.getCells());
@@ -233,7 +233,7 @@ public class CreateOrUpdateStandardMatrixTest {
 		final List<StandardCell> removedSourceCells = newArrayList();
 
 		for (final IOTU sourceOTU : sourceMatrix.getParent().getOTUs()) {
-			final StandardRow sourceRow = sourceMatrix.getRow(sourceOTU);
+			final IStandardRow sourceRow = sourceMatrix.getRows().get(sourceOTU);
 			final List<StandardCell> newSourceCells =
 					newArrayList(sourceRow.getCells());
 			newSourceCells.remove(
@@ -244,7 +244,7 @@ public class CreateOrUpdateStandardMatrixTest {
 		}
 
 		for (final IOTU targetOTU : targetMatrix.getParent().getOTUs()) {
-			final StandardRow targetRow = targetMatrix.getRow(targetOTU);
+			final IStandardRow targetRow = targetMatrix.getRows().get(targetOTU);
 			// It will be the _last_ cell in the row that is deleted by the dao
 			removedSourceCells
 					.add(targetRow

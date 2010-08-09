@@ -15,7 +15,6 @@
  */
 package edu.upenn.cis.ppod.model;
 
-import static com.google.common.base.Preconditions.checkArgument;
 import static com.google.common.base.Preconditions.checkNotNull;
 import static com.google.common.collect.Lists.newArrayList;
 
@@ -30,6 +29,7 @@ import javax.persistence.OneToMany;
 import javax.persistence.OrderBy;
 import javax.persistence.Table;
 import javax.xml.bind.annotation.XmlElement;
+import javax.xml.bind.annotation.adapters.XmlAdapter;
 
 import edu.upenn.cis.ppod.imodel.IStandardMatrix;
 import edu.upenn.cis.ppod.util.IVisitor;
@@ -41,7 +41,22 @@ import edu.upenn.cis.ppod.util.IVisitor;
  */
 @Entity
 @Table(name = StandardRow.TABLE)
-public class StandardRow extends Row<StandardCell, IStandardMatrix> {
+public class StandardRow
+		extends Row<StandardCell, IStandardMatrix>
+		implements IStandardRow {
+
+	public static class Adapter extends XmlAdapter<StandardRow, IStandardRow> {
+
+		@Override
+		public StandardRow marshal(final IStandardRow row) {
+			return (StandardRow) row;
+		}
+
+		@Override
+		public IStandardRow unmarshal(final StandardRow row) {
+			return row;
+		}
+	}
 
 	/** This entitiy's table name. */
 	public static final String TABLE = "STANDARD_ROW";
@@ -65,18 +80,6 @@ public class StandardRow extends Row<StandardCell, IStandardMatrix> {
 		checkNotNull(visitor);
 		visitor.visitStandardRow(this);
 		super.accept(visitor);
-	}
-
-	public int getCellPosition(final StandardCell cell) {
-		checkNotNull(cell);
-		checkArgument(this.equals(cell.getParent()),
-				"cell does not belong to this row");
-		final Integer cellPosition = cell.getPosition();
-		if (cellPosition == null) {
-			throw new AssertionError(
-					"cell has been assigned to a row but has now position set");
-		}
-		return cellPosition;
 	}
 
 	@XmlElement(name = "cell")

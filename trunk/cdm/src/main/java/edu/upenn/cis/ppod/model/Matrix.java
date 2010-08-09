@@ -240,11 +240,11 @@ public abstract class Matrix<R extends IRow<?, ?>>
 	 * @throws IllegalArgumentException if {@code otu} does not belong to this
 	 *             matrix's {@code OTUSet}
 	 */
-	@Nullable
-	public R getRow(final IOTU otu) {
-		checkNotNull(otu);
-		return getOTUKeyedRows().get(otu);
-	}
+	// @Nullable
+	// public R getRow(final IOTU otu) {
+	// checkNotNull(otu);
+	// return getOTUKeyedRows().get(otu);
+	// }
 
 	/**
 	 * Get the rows that make up this matrix.

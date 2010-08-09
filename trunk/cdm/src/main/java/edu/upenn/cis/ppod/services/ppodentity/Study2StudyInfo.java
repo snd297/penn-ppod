@@ -32,8 +32,8 @@ import edu.upenn.cis.ppod.imodel.IStudy;
 import edu.upenn.cis.ppod.imodel.ITree;
 import edu.upenn.cis.ppod.imodel.ITreeSet;
 import edu.upenn.cis.ppod.model.DNASequence;
+import edu.upenn.cis.ppod.model.IStandardRow;
 import edu.upenn.cis.ppod.model.StandardCell;
-import edu.upenn.cis.ppod.model.StandardRow;
 import edu.upenn.cis.ppod.model.VersionInfo;
 
 /**
@@ -133,7 +133,7 @@ final class Study2StudyInfo implements IStudy2StudyInfo {
 				int rowIdx = -1;
 
 				for (final IOTU otu : matrix.getParent().getOTUs()) {
-					final StandardRow row = matrix.getRow(otu);
+					final IStandardRow row = matrix.getRows().get(otu);
 					rowIdx++;
 					final Long rowVersion = row.getVersionInfo()
 							.getVersion();
@@ -177,7 +177,7 @@ final class Study2StudyInfo implements IStudy2StudyInfo {
 				int rowIdx = -1;
 
 				for (final IOTU otu : matrix.getParent().getOTUs()) {
-					final IDNARow row = matrix.getRow(otu);
+					final IDNARow row = matrix.getRows().get(otu);
 					rowIdx++;
 					final Long rowVersion =
 							row.getVersionInfo().getVersion();

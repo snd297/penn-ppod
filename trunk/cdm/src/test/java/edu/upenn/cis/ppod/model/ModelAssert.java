@@ -168,8 +168,8 @@ public class ModelAssert {
 	}
 
 	public static void assertEqualsStandardRows(
-			final StandardRow actualRow,
-			final StandardRow expectedRow) {
+			final IStandardRow actualRow,
+			final IStandardRow expectedRow) {
 		assertEquals(actualRow.getCells().size(), expectedRow.getCells().size());
 
 		for (final Iterator<StandardCell> actualCellItr = actualRow
@@ -228,9 +228,9 @@ public class ModelAssert {
 				.getOTUs()
 				.iterator(); actualOTUIterator.hasNext()
 								&& expectedOTUIterator.hasNext();) {
-			final StandardRow actualRow = actualMatrix
-					.getRow(actualOTUIterator.next()), expectedRow = expectedMatrix
-					.getRow(expectedOTUIterator.next());
+			final IStandardRow actualRow = actualMatrix
+					.getRows().get(actualOTUIterator.next()), expectedRow = expectedMatrix
+					.getRows().get(expectedOTUIterator.next());
 			assertTrue(actualRow.getParent() == actualMatrix);
 			assertEqualsStandardRows(actualRow, expectedRow);
 		}

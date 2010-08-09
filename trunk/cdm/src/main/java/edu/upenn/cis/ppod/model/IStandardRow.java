@@ -13,28 +13,12 @@
  * See the License for the specific language governing permissions and
  * limitations under the License.
  */
-package edu.upenn.cis.ppod.imodel;
+package edu.upenn.cis.ppod.model;
 
-import java.util.List;
+import javax.xml.bind.annotation.adapters.XmlJavaTypeAdapter;
 
-public interface IRow<C extends ICell<?, ?>, M extends IMatrix<?>>
-		extends IChild<M> {
-	/**
-	 * Get the cells that make up this row.
-	 * 
-	 * @return the cells that make up this row
-	 */
-	List<C> getCells();
+import edu.upenn.cis.ppod.imodel.IRow;
+import edu.upenn.cis.ppod.imodel.IStandardMatrix;
 
-	/**
-	 * Set the cells of this row.
-	 * <p>
-	 * This handles both sides of the {@code Row<->Cell} relationship.
-	 * 
-	 * @param cells the cells
-	 * 
-	 * @return any cells which were removed as a result of this operation
-	 */
-	List<C> setCells(final List<? extends C> cells);
-
-}
+@XmlJavaTypeAdapter(StandardRow.Adapter.class)
+public interface IStandardRow extends IRow<StandardCell, IStandardMatrix> {}

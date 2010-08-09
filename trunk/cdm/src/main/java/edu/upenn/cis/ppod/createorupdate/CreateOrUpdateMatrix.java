@@ -93,7 +93,7 @@ abstract class CreateOrUpdateMatrix<M extends IMatrix<R>, R extends IRow<C, ?>, 
 
 		for (final IOTU sourceOTU : sourceMatrix.getParent().getOTUs()) {
 			sourceOTUPos++;
-			final R sourceRow = sourceMatrix.getRow(sourceOTU);
+			final R sourceRow = sourceMatrix.getRows().get(sourceOTU);
 
 			final IOTU dbOTU =
 					dbMatrix.getParent()
@@ -103,7 +103,7 @@ abstract class CreateOrUpdateMatrix<M extends IMatrix<R>, R extends IRow<C, ?>, 
 			// Let's create rows for OTU->null row mappings in the matrix.
 			R dbRow = null;
 
-			if (null == (dbRow = dbMatrix.getRow(dbOTU))) {
+			if (null == (dbRow = dbMatrix.getRows().get(dbOTU))) {
 				dbRow = rowProvider.get();
 				dbRow.setVersionInfo(newVersionInfo
 						.getNewVersionInfo());

@@ -240,16 +240,16 @@ public class OTUSetTest {
 						.getValues()
 						.keySet(),
 				otusSet012);
-		assertNull(standardMatrix.getRow(otu0));
-		assertNull(standardMatrix.getRow(otu1));
-		assertNull(standardMatrix.getRow(otu2));
+		assertNull(standardMatrix.getRows().get(otu0));
+		assertNull(standardMatrix.getRows().get(otu1));
+		assertNull(standardMatrix.getRows().get(otu2));
 
 		assertEquals(
 				dnaMatrix.getOTUKeyedRows().getValues().keySet(),
 				otusSet012);
-		assertNull(dnaMatrix.getRow(otu0));
-		assertNull(dnaMatrix.getRow(otu1));
-		assertNull(dnaMatrix.getRow(otu2));
+		assertNull(dnaMatrix.getRows().get(otu0));
+		assertNull(dnaMatrix.getRows().get(otu1));
+		assertNull(dnaMatrix.getRows().get(otu2));
 
 		assertEquals(
 				dnaSequenceSet

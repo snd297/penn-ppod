@@ -21,7 +21,7 @@ import javax.xml.bind.annotation.XmlAttribute;
 
 import edu.umd.cs.findbugs.annotations.Nullable;
 
-public interface ICell<E, R extends IRow<?, ?>> extends IOrderedChild<R> { 
+public interface ICell<E, R extends IRow<?, ?>> extends IOrderedChild<R> {
 
 	/**
 	 * The different types of {@code Cell}: single, polymorphic, uncertain,
@@ -70,9 +70,6 @@ public interface ICell<E, R extends IRow<?, ?>> extends IOrderedChild<R> {
 	 */
 	Set<E> getElements();
 
-	@Nullable
-	R getParent();
-
 	/**
 	 * Get the type of this cell.
 	 * <p>
@@ -87,11 +84,26 @@ public interface ICell<E, R extends IRow<?, ?>> extends IOrderedChild<R> {
 	@Nullable
 	Type getType();
 
-	ICell<E, R> setInapplicable();
+	/**
+	 * Set this cell's type to {@link Type#INAPPLICABLE} its elements to the
+	 * empty set.
+	 */
+	void setInapplicable();
 
-	ICell<E, R> setUnassigned();
+	/**
+	 * Set this cell's type to {@link Type#UNASSIGNED} to
+	 * {@code Collections.EMPTY_SET}.
+	 */
+	void setUnassigned();
 
-	ICell<E, R> setUncertainElements(
+	/**
+	 * Set the type to uncertain with the given elements.
+	 * <p>
+	 * {@code elements.size()} must be greater than 2.
+	 * 
+	 * @param uncertainStates the elements
+	 */
+	void setUncertainElements(
 			final Set<? extends E> uncertainElements);
 
 }

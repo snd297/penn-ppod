@@ -43,11 +43,13 @@ import edu.upenn.cis.ppod.model.DNACell;
 import edu.upenn.cis.ppod.model.DNAMatrix;
 import edu.upenn.cis.ppod.model.DNARow;
 import edu.upenn.cis.ppod.model.DNASequenceSet;
+import edu.upenn.cis.ppod.model.IStandardRow;
 import edu.upenn.cis.ppod.model.ModelModule;
 import edu.upenn.cis.ppod.model.OTU;
 import edu.upenn.cis.ppod.model.OTUSet;
 import edu.upenn.cis.ppod.model.StandardCharacter;
 import edu.upenn.cis.ppod.model.StandardMatrix;
+import edu.upenn.cis.ppod.model.StandardRow;
 import edu.upenn.cis.ppod.model.StandardState;
 import edu.upenn.cis.ppod.model.Study;
 import edu.upenn.cis.ppod.model.Tree;
@@ -115,6 +117,7 @@ public final class PPodModule extends AbstractModule {
 
 		bind(IStandardMatrix.class).to(StandardMatrix.class);
 		bind(IStandardCharacter.class).to(StandardCharacter.class);
+		bind(IStandardRow.class).to(StandardRow.class);
 
 		bind(IDNAMatrix.class).to(DNAMatrix.class);
 		bind(IDNARow.class).to(DNARow.class);

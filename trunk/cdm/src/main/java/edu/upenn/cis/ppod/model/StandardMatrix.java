@@ -47,7 +47,7 @@ import edu.upenn.cis.ppod.util.IVisitor;
  */
 @Entity
 @Table(name = StandardMatrix.TABLE)
-public class StandardMatrix extends Matrix<StandardRow>
+public class StandardMatrix extends Matrix<IStandardRow>
 		implements IStandardMatrix {
 
 	public static class Adapter extends

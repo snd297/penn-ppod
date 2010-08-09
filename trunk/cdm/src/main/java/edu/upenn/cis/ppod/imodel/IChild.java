@@ -36,14 +36,15 @@ public interface IChild<P> extends IPPodEntity {
 
 	/**
 	 * Set or unset the parent.
+	 * <p>
+	 * Generally, there is no reason for client code to call this method as the
+	 * parent-child relationships are managed by the parents' adder/setters.
 	 */
 	void setParent(@CheckForNull P parent);
-	
+
 	/**
-	 * Mark this and {@link #getParent()} as in need of a new
-	 * pPOD version.
+	 * Mark this and {@link #getParent()} as in need of a new pPOD version.
 	 */
 	void setInNeedOfNewVersion();
-
 
 }
