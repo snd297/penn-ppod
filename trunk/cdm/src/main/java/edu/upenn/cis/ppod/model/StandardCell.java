@@ -33,11 +33,13 @@ import javax.xml.bind.Unmarshaller;
 import javax.xml.bind.annotation.XmlAttribute;
 import javax.xml.bind.annotation.XmlElement;
 import javax.xml.bind.annotation.XmlIDREF;
+import javax.xml.bind.annotation.adapters.XmlAdapter;
 
 import edu.umd.cs.findbugs.annotations.CheckForNull;
 import edu.umd.cs.findbugs.annotations.Nullable;
 import edu.upenn.cis.ppod.imodel.IStandardCharacter;
 import edu.upenn.cis.ppod.imodel.IStandardMatrix;
+import edu.upenn.cis.ppod.imodel.IStandardRow;
 import edu.upenn.cis.ppod.util.IVisitor;
 
 /**
@@ -47,7 +49,22 @@ import edu.upenn.cis.ppod.util.IVisitor;
  */
 @Entity
 @Table(name = StandardCell.TABLE)
-public class StandardCell extends Cell<StandardState, StandardRow> {
+public class StandardCell
+		extends Cell<StandardState, IStandardRow>
+		implements IStandardCell {
+
+	public static class Adapter extends XmlAdapter<StandardCell, IStandardCell> {
+
+		@Override
+		public StandardCell marshal(final IStandardCell cell) {
+			return (StandardCell) cell;
+		}
+
+		@Override
+		public IStandardCell unmarshal(final StandardCell cell) {
+			return cell;
+		}
+	}
 
 	/**
 	 * The name of the table.
@@ -87,10 +104,11 @@ public class StandardCell extends Cell<StandardState, StandardRow> {
 	 * The {@code CharacterStateRow} to which this {@code CharacterStateCell}
 	 * belongs.
 	 */
-	@ManyToOne(fetch = FetchType.LAZY, optional = false)
+	@ManyToOne(fetch = FetchType.LAZY, optional = false,
+			targetEntity = StandardRow.class)
 	@JoinColumn(name = StandardRow.JOIN_COLUMN)
 	@CheckForNull
-	private StandardRow parent;
+	private IStandardRow parent;
 
 	/** No-arg constructor for (at least) Hibernate. */
 	StandardCell() {}
@@ -115,7 +133,7 @@ public class StandardCell extends Cell<StandardState, StandardRow> {
 
 	private void checkRowMatrixCharacter() {
 
-		final StandardRow row = getParent();
+		final IStandardRow row = getParent();
 
 		checkState(row != null && getPosition() != null,
 				"this cell has not been assigned a row");
@@ -170,7 +188,7 @@ public class StandardCell extends Cell<StandardState, StandardRow> {
 	 */
 	@Nullable
 	@Override
-	public StandardRow getParent() {
+	public IStandardRow getParent() {
 		return parent;
 	}
 
@@ -188,7 +206,7 @@ public class StandardCell extends Cell<StandardState, StandardRow> {
 	}
 
 	/** {@inheritDoc} */
-	public void setParent(final StandardRow parent) {
+	public void setParent(final IStandardRow parent) {
 		this.parent = parent;
 	}
 
@@ -206,7 +224,7 @@ public class StandardCell extends Cell<StandardState, StandardRow> {
 	 * 
 	 * @throw IllegalArgumentException if {@code polymorphicStates.size() < 2}
 	 */
-	public StandardCell setPolymorphicElements(
+	public IStandardCell setPolymorphicElements(
 			final Set<? extends StandardState> elements) {
 		checkNotNull(elements);
 		checkArgument(elements.size() > 1,
@@ -268,7 +286,7 @@ public class StandardCell extends Cell<StandardState, StandardRow> {
 		super.setPolymorphicOrUncertain(type, newElements);
 	}
 
-	public StandardCell setSingleElement(final StandardState element) {
+	public IStandardCell setSingleElement(final StandardState element) {
 
 		checkNotNull(element);
 

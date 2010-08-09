@@ -337,13 +337,7 @@ public abstract class Matrix<R extends IRow<?, ?>>
 	// this.columnVersions.addAll(this.columnVersions);
 	// }
 
-	/**
-	 * Setter.
-	 * 
-	 * @param description the description value, {@code null} is allowed
-	 * 
-	 * @return this matrix
-	 */
+	/** {@inheritDoc} */
 	public IMatrix<R> setDescription(
 			@CheckForNull final String description) {
 		if (equal(description, getDescription())) {
@@ -373,13 +367,7 @@ public abstract class Matrix<R extends IRow<?, ?>>
 		super.setInNeedOfNewVersion();
 	}
 
-	/**
-	 * Set the label of this matrix.
-	 * 
-	 * @param label the value for the label
-	 * 
-	 * @return this matrix
-	 */
+	/** {@inheritDoc} */
 	public IMatrix<R> setLabel(final String label) {
 		checkNotNull(label);
 		if (label.equals(getLabel())) {
@@ -391,21 +379,7 @@ public abstract class Matrix<R extends IRow<?, ?>>
 		return this;
 	}
 
-	/**
-	 * Setter.
-	 * <p>
-	 * Meant to be called only from objects responsible for managing the
-	 * {@code OTUSET<->CharacterStateMatrix} relationship.
-	 * <p>
-	 * This method will remove rows from this matrix as necessary.
-	 * <p>
-	 * If there are any new {@code OTU}s in {@code otuSet}, then
-	 * {@code getRow(theNewOTU) == null}. That is, it adds {@code null} rows for
-	 * new {@code OTU}s.
-	 * 
-	 * @param otuSet new {@code OTUSet} for this matrix, or {@code null} if
-	 *            we're destroying the association
-	 */
+	/** {@inheritDoc} */
 	public void setParent(
 			@CheckForNull final IOTUSet otuSet) {
 		checkState(

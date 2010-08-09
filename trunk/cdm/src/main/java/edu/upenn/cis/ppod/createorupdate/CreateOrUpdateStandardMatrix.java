@@ -38,9 +38,9 @@ import edu.upenn.cis.ppod.imodel.ICell;
 import edu.upenn.cis.ppod.imodel.INewVersionInfo;
 import edu.upenn.cis.ppod.imodel.IStandardCharacter;
 import edu.upenn.cis.ppod.imodel.IStandardMatrix;
+import edu.upenn.cis.ppod.imodel.IStandardRow;
 import edu.upenn.cis.ppod.imodel.IWithPPodId;
-import edu.upenn.cis.ppod.model.IStandardRow;
-import edu.upenn.cis.ppod.model.StandardCell;
+import edu.upenn.cis.ppod.model.IStandardCell;
 import edu.upenn.cis.ppod.model.StandardState;
 import edu.upenn.cis.ppod.thirdparty.injectslf4j.InjectLogger;
 
@@ -49,7 +49,7 @@ import edu.upenn.cis.ppod.thirdparty.injectslf4j.InjectLogger;
  */
 final class CreateOrUpdateStandardMatrix
 		extends
-		CreateOrUpdateMatrix<IStandardMatrix, IStandardRow, StandardCell, StandardState>
+		CreateOrUpdateMatrix<IStandardMatrix, IStandardRow, IStandardCell, StandardState>
 		implements ICreateOrUpdateStandardMatrix {
 
 	private final Provider<IStandardCharacter> standardCharacterProvider;
@@ -65,8 +65,8 @@ final class CreateOrUpdateStandardMatrix
 	@Inject
 	CreateOrUpdateStandardMatrix(
 			final Provider<IStandardRow> rowProvider,
-			final Provider<StandardCell> cellProvider,
 			final Provider<IStandardCharacter> characterProvider,
+			final Provider<IStandardCell> cellProvider,
 			final StandardState.IFactory stateFactory,
 			final Provider<IAttachment> attachmentProvider,
 			@Assisted final IMergeAttachments mergeAttachments,
@@ -163,8 +163,8 @@ final class CreateOrUpdateStandardMatrix
 
 	@Override
 	void handleSingleCell(
-			final StandardCell dbCell,
-			final StandardCell sourceCell) {
+			final IStandardCell dbCell,
+			final IStandardCell sourceCell) {
 		checkNotNull(dbCell);
 		checkNotNull(sourceCell);
 		checkArgument(sourceCell.getType() == ICell.Type.SINGLE);
@@ -173,8 +173,8 @@ final class CreateOrUpdateStandardMatrix
 
 	@Override
 	void handlePolymorphicCell(
-			final StandardCell dbCell,
-			final StandardCell sourceCell) {
+			final IStandardCell dbCell,
+			final IStandardCell sourceCell) {
 		checkNotNull(dbCell);
 		checkNotNull(sourceCell);
 		checkArgument(sourceCell.getType() == ICell.Type.POLYMORPHIC);

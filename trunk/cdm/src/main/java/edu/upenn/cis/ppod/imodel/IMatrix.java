@@ -79,39 +79,22 @@ public interface IMatrix<R extends IRow<?, ?>>
 	 * 
 	 * @return the label
 	 */
-	@XmlAttribute
 	@Nullable
 	String getLabel();
 
 	/**
-	 * Getter. Will be {@code null} when object is first created, but never
-	 * {@code null} for persistent objects.
-	 * 
-	 * @return this matrix's {@code OTUSet}
-	 */
-	@Nullable
-	IOTUSet getParent();
-
-	/**
-	 * Get the row indexed by an OTU, or {@code null} if no such row has been
-	 * inserted yet.
+	 * Get the rows that make up this matrix.
 	 * <p>
-	 * The return value won't be {@code null} for matrices straight out of the
+	 * The values won't be {@code null} for matrices straight out of the
 	 * database.
 	 * <p>
-	 * {@code null} return values occur when {@link #setOTUSet(OTUSet)} contains
+	 * {@code null} values occur only when {@link #setOTUSet(OTUSet)} contains
 	 * OTUs newly introduced to this matrix.
 	 * 
 	 * @param otu the key
 	 * 
 	 * @return the row, or {@code null} of no such row has been inserted yet
-	 * 
-	 * @throws IllegalArgumentException if {@code otu} does not belong to this
-	 *             matrix's {@code OTUSet}
 	 */
-	// @Nullable
-	// R getRow(final IOTU otu);
-
 	Map<IOTU, R> getRows();
 
 	/**
@@ -157,6 +140,13 @@ public interface IMatrix<R extends IRow<?, ?>>
 	void setColumnVersionInfos(
 			final VersionInfo versionInfo);
 
+	/**
+	 * Setter.
+	 * 
+	 * @param description the description value, {@code null} is allowed
+	 * 
+	 * @return this matrix
+	 */
 	IMatrix<R> setDescription(
 			@CheckForNull final String description);
 
@@ -169,10 +159,13 @@ public interface IMatrix<R extends IRow<?, ?>>
 	 */
 	void setInNeedOfNewColumnVersion(final int position);
 
-	void setInNeedOfNewVersion();
-
+	/**
+	 * Set the label of this matrix.
+	 * 
+	 * @param label the value for the label
+	 * 
+	 * @return this matrix
+	 */
 	IMatrix<R> setLabel(final String label);
-
-	void setParent(@CheckForNull final IOTUSet otuSet);
 
 }

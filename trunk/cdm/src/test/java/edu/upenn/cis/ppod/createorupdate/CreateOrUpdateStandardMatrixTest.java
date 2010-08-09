@@ -32,9 +32,9 @@ import edu.upenn.cis.ppod.imodel.IOTU;
 import edu.upenn.cis.ppod.imodel.IOTUSet;
 import edu.upenn.cis.ppod.imodel.IStandardCharacter;
 import edu.upenn.cis.ppod.imodel.IStandardMatrix;
-import edu.upenn.cis.ppod.model.IStandardRow;
+import edu.upenn.cis.ppod.imodel.IStandardRow;
+import edu.upenn.cis.ppod.model.IStandardCell;
 import edu.upenn.cis.ppod.model.ModelAssert;
-import edu.upenn.cis.ppod.model.StandardCell;
 import edu.upenn.cis.ppod.util.PPodEntityProvider;
 
 /**
@@ -178,8 +178,8 @@ public class CreateOrUpdateStandardMatrixTest {
 			final IStandardRow sourceRow =
 					sourceMatrix.getRows().get(sourceOTU);
 
-			final List<StandardCell> newSourceCells = newArrayList(sourceRow
-						.getCells());
+			final List<IStandardCell> newSourceCells =
+					newArrayList(sourceRow.getCells());
 
 			newSourceCells.set(0, sourceRow.getCells().get(2));
 			newSourceCells.set(2, sourceRow.getCells().get(0));
@@ -230,11 +230,12 @@ public class CreateOrUpdateStandardMatrixTest {
 						.getCharacters().size() / 2);
 		sourceMatrix.setCharacters(newSourceCharacters);
 
-		final List<StandardCell> removedSourceCells = newArrayList();
+		final List<IStandardCell> removedSourceCells = newArrayList();
 
 		for (final IOTU sourceOTU : sourceMatrix.getParent().getOTUs()) {
-			final IStandardRow sourceRow = sourceMatrix.getRows().get(sourceOTU);
-			final List<StandardCell> newSourceCells =
+			final IStandardRow sourceRow = sourceMatrix.getRows()
+					.get(sourceOTU);
+			final List<IStandardCell> newSourceCells =
 					newArrayList(sourceRow.getCells());
 			newSourceCells.remove(
 							sourceRow.getCells()
@@ -244,7 +245,8 @@ public class CreateOrUpdateStandardMatrixTest {
 		}
 
 		for (final IOTU targetOTU : targetMatrix.getParent().getOTUs()) {
-			final IStandardRow targetRow = targetMatrix.getRows().get(targetOTU);
+			final IStandardRow targetRow = targetMatrix.getRows()
+					.get(targetOTU);
 			// It will be the _last_ cell in the row that is deleted by the dao
 			removedSourceCells
 					.add(targetRow

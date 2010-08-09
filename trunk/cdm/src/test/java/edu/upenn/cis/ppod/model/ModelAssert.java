@@ -37,6 +37,7 @@ import edu.upenn.cis.ppod.imodel.IPPodEntity;
 import edu.upenn.cis.ppod.imodel.ISequenceSet;
 import edu.upenn.cis.ppod.imodel.IStandardCharacter;
 import edu.upenn.cis.ppod.imodel.IStandardMatrix;
+import edu.upenn.cis.ppod.imodel.IStandardRow;
 
 /**
  * For asserting that various {@code edu.upenn.cis.ppod.model} elements are the
@@ -148,8 +149,8 @@ public class ModelAssert {
 	}
 
 	public static void assertEqualsStandardCells(
-			final StandardCell actualCell,
-			final StandardCell expectedCell) {
+			final IStandardCell actualCell,
+			final IStandardCell expectedCell) {
 		assertEquals(actualCell.getType(), expectedCell.getType());
 		assertEquals(actualCell.getElements().size(), expectedCell
 				.getElements().size());
@@ -172,14 +173,14 @@ public class ModelAssert {
 			final IStandardRow expectedRow) {
 		assertEquals(actualRow.getCells().size(), expectedRow.getCells().size());
 
-		for (final Iterator<StandardCell> actualCellItr = actualRow
+		for (final Iterator<IStandardCell> actualCellItr = actualRow
 				.getCells()
 				.iterator(), expectedCellItr = expectedRow.getCells()
 				.iterator(); actualCellItr
 				.hasNext()
 																		&& expectedCellItr
 																				.hasNext();) {
-			final StandardCell actualCell = actualCellItr.next(), expectedCell = expectedCellItr
+			final IStandardCell actualCell = actualCellItr.next(), expectedCell = expectedCellItr
 					.next();
 			assertTrue(actualCell.getParent() == actualRow);
 			assertEqualsStandardCells(actualCell, expectedCell);

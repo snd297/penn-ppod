@@ -35,6 +35,7 @@ import edu.upenn.cis.ppod.imodel.IOTU;
 import edu.upenn.cis.ppod.imodel.IOTUSet;
 import edu.upenn.cis.ppod.imodel.IStandardCharacter;
 import edu.upenn.cis.ppod.imodel.IStandardMatrix;
+import edu.upenn.cis.ppod.imodel.IStandardRow;
 import edu.upenn.cis.ppod.imodel.IStudy;
 import edu.upenn.cis.ppod.imodel.ITree;
 import edu.upenn.cis.ppod.imodel.ITreeSet;
@@ -43,10 +44,11 @@ import edu.upenn.cis.ppod.model.DNACell;
 import edu.upenn.cis.ppod.model.DNAMatrix;
 import edu.upenn.cis.ppod.model.DNARow;
 import edu.upenn.cis.ppod.model.DNASequenceSet;
-import edu.upenn.cis.ppod.model.IStandardRow;
+import edu.upenn.cis.ppod.model.IStandardCell;
 import edu.upenn.cis.ppod.model.ModelModule;
 import edu.upenn.cis.ppod.model.OTU;
 import edu.upenn.cis.ppod.model.OTUSet;
+import edu.upenn.cis.ppod.model.StandardCell;
 import edu.upenn.cis.ppod.model.StandardCharacter;
 import edu.upenn.cis.ppod.model.StandardMatrix;
 import edu.upenn.cis.ppod.model.StandardRow;
@@ -56,6 +58,9 @@ import edu.upenn.cis.ppod.model.Tree;
 import edu.upenn.cis.ppod.model.TreeSet;
 import edu.upenn.cis.ppod.services.StringPair;
 import edu.upenn.cis.ppod.util.IPair;
+import edu.upenn.cis.ppod.util.ISetVersionInfoVisitor;
+import edu.upenn.cis.ppod.util.Pair;
+
 import edu.upenn.cis.ppod.util.ISetVersionInfoVisitor;
 import edu.upenn.cis.ppod.util.Pair;
 
@@ -118,6 +123,7 @@ public final class PPodModule extends AbstractModule {
 		bind(IStandardMatrix.class).to(StandardMatrix.class);
 		bind(IStandardCharacter.class).to(StandardCharacter.class);
 		bind(IStandardRow.class).to(StandardRow.class);
+		bind(IStandardCell.class).to(StandardCell.class);
 
 		bind(IDNAMatrix.class).to(DNAMatrix.class);
 		bind(IDNARow.class).to(DNARow.class);

@@ -19,16 +19,18 @@ import javax.annotation.Nullable;
 import javax.xml.bind.annotation.XmlElement;
 import javax.xml.bind.annotation.adapters.XmlJavaTypeAdapter;
 
-import edu.umd.cs.findbugs.annotations.CheckForNull;
 import edu.upenn.cis.ppod.model.Tree;
 
 /**
  * A phylogenetic tree.
+ * <p>
+ * The trees are stored in Newick format composed of pPOD IDs of the
+ * constituent OTUs.
  * 
  * @author Sam Donnelly
  */
 @XmlJavaTypeAdapter(Tree.Adapter.class)
-public interface ITree extends ILabeled, IUUPPodEntity {
+public interface ITree extends ILabeled, IUUPPodEntity, IChild<ITreeSet> {
 
 	/**
 	 * Return the label. {@code null} when the tree is constructed, but will
@@ -50,17 +52,6 @@ public interface ITree extends ILabeled, IUUPPodEntity {
 	String getNewick();
 
 	/**
-	 * Get the tree set that owns this tree.
-	 * <p>
-	 * Will be {@code null} for newly created trees. Will never be {@code null}
-	 * for trees in a persistent state.
-	 * 
-	 * @return the tree set that owns this tree
-	 */
-	@Nullable
-	ITreeSet getParent();
-
-	/**
 	 * Set the label of this tree.
 	 * 
 	 * @param label the label
@@ -77,21 +68,5 @@ public interface ITree extends ILabeled, IUUPPodEntity {
 	 * @return this {@code Tree}
 	 */
 	ITree setNewick(final String newick);
-
-	/**
-	 * Set the owning {@code TreeSet}.
-	 * <p>
-	 * Generall there is not need for client code to call this method - it is
-	 * intended to be called from places responsible for managing the
-	 * {@code Tree<->TreeSet} relationship, for example implements of
-	 * {@link #ITreeSet}.
-	 * <p>
-	 * Use {@code null} to sever the relationship.
-	 * 
-	 * @param parent the {@code TreeSet} that we're removing
-	 * 
-	 * @return this
-	 */
-	ITree setParent(@CheckForNull final ITreeSet parent);
 
 }

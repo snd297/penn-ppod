@@ -27,15 +27,15 @@ import edu.upenn.cis.ppod.imodel.IDNASequenceSet;
 import edu.upenn.cis.ppod.imodel.IOTU;
 import edu.upenn.cis.ppod.imodel.IOTUSet;
 import edu.upenn.cis.ppod.imodel.IStandardMatrix;
+import edu.upenn.cis.ppod.imodel.IStandardRow;
 import edu.upenn.cis.ppod.imodel.IStudy;
 import edu.upenn.cis.ppod.imodel.ITree;
 import edu.upenn.cis.ppod.imodel.ITreeSet;
 import edu.upenn.cis.ppod.model.AttachmentNamespace;
 import edu.upenn.cis.ppod.model.AttachmentType;
 import edu.upenn.cis.ppod.model.DNASequence;
-import edu.upenn.cis.ppod.model.StandardCell;
+import edu.upenn.cis.ppod.model.IStandardCell;
 import edu.upenn.cis.ppod.model.StandardCharacter;
-import edu.upenn.cis.ppod.model.StandardRow;
 import edu.upenn.cis.ppod.model.StandardState;
 
 /**
@@ -107,7 +107,7 @@ public class TestVisitor extends EmptyVisitor {
 	}
 
 	@Override
-	public void visitStandardCell(final StandardCell cell) {
+	public void visitStandardCell(final IStandardCell cell) {
 		visited.add(cell);
 	}
 
@@ -122,7 +122,7 @@ public class TestVisitor extends EmptyVisitor {
 	}
 
 	@Override
-	public void visitStandardRow(final StandardRow row) {
+	public void visitStandardRow(final IStandardRow row) {
 		visited.add(row);
 	}
 

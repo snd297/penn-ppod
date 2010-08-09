@@ -36,6 +36,7 @@ import com.google.inject.Inject;
 import com.google.inject.Provider;
 
 import edu.upenn.cis.ppod.TestGroupDefs;
+import edu.upenn.cis.ppod.imodel.IStandardRow;
 
 /**
  * Logic tests of {@link StandardMatrix}.
