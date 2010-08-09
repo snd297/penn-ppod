@@ -69,15 +69,16 @@ public class CollectionsUtil {
 		return new Vector<T>();
 	}
 
-	public static <T> void nullFillAndSet(final List<T> coll,
+	public static <T> void nullFillAndSet(
+			final List<T> list,
 			@Nonnegative final int i,
 			@CheckForNull final T t) {
-		checkNotNull(coll);
+		checkNotNull(list);
 		checkArgument(i >= 0, "i is negative");
-		while (coll.size() < i + 1) {
-			coll.add(null);
+		while (list.size() < i + 1) {
+			list.add(null);
 		}
-		coll.set(i, t);
+		list.set(i, t);
 	}
 
 	public static <T> void nullFill(final Collection<T> coll,

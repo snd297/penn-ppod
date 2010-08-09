@@ -272,9 +272,8 @@ public abstract class PPodEntity
 	 * @return this {@code PPodEntity}
 	 */
 	@OverridingMethodsMustInvokeSuper
-	public PPodEntity setInNeedOfNewVersion() {
+	public void setInNeedOfNewVersion() {
 		inNeedOfNewVersion = true;
-		return this;
 	}
 
 	/**

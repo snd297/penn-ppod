@@ -249,7 +249,7 @@ public abstract class Cell<E, R extends IRow<?, ?>>
 	}
 
 	@Override
-	public Cell<E, R> setInNeedOfNewVersion() {
+	public void setInNeedOfNewVersion() {
 		final R row = getParent();
 		if (row != null) {
 			row.setInNeedOfNewVersion();
@@ -265,7 +265,6 @@ public abstract class Cell<E, R extends IRow<?, ?>>
 			}
 		}
 		super.setInNeedOfNewVersion();
-		return this;
 	}
 
 	/**
@@ -333,7 +332,6 @@ public abstract class Cell<E, R extends IRow<?, ?>>
 	public void setPosition(@CheckForNull final Integer position) {
 		checkArgument(position == null || position >= 0, "position < 0");
 		this.position = position;
-		return;
 	}
 
 	/**

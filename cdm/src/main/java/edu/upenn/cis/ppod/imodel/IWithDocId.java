@@ -46,23 +46,19 @@ public interface IWithDocId {
 	/**
 	 * Create and set this {@code IWithXmlID}'s doc id.
 	 * 
-	 * @return this
-	 * 
 	 * @throws IllegalStateException if {@link #getXmlId()}{@code != null} when
 	 *             this method is called
 	 */
-	IWithDocId setDocId();
+	void setDocId();
 
 	/**
 	 * Set this {@code IWithXmlID}'s xml id.
 	 * 
 	 * @param docId the xml id
 	 * 
-	 * @return this
-	 * 
 	 * @throws IllegalStateException if {@link #getXmlId()}{@code != null} when
 	 *             this method is called
 	 */
-	IWithDocId setDocId(final String xmlId);
+	void setDocId(final String xmlId);
 
 }

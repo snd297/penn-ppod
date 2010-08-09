@@ -40,6 +40,7 @@ import org.hibernate.annotations.Parent;
 import edu.upenn.cis.ppod.imodel.IOTU;
 import edu.upenn.cis.ppod.imodel.IOTUKeyedMap;
 import edu.upenn.cis.ppod.imodel.IOTUKeyedMapPlus;
+import edu.upenn.cis.ppod.imodel.IStandardMatrix;
 import edu.upenn.cis.ppod.util.IVisitor;
 import edu.upenn.cis.ppod.util.OTUStandardRowPair;
 
@@ -54,8 +55,8 @@ import edu.upenn.cis.ppod.util.OTUStandardRowPair;
 public class StandardRows
 		implements IOTUKeyedMap<StandardRow> {
 
-	private final IOTUKeyedMapPlus<StandardRow, StandardMatrix, OTUStandardRowPair> rows =
-			new OTUKeyedMapPlus<StandardRow, StandardMatrix, OTUStandardRowPair>();
+	private final IOTUKeyedMapPlus<StandardRow, IStandardMatrix, OTUStandardRowPair> rows =
+			new OTUKeyedMapPlus<StandardRow, IStandardMatrix, OTUStandardRowPair>();
 
 	StandardRows() {}
 
@@ -73,7 +74,7 @@ public class StandardRows
 			final Object parent) {
 		// Don't do checkNotNull(parent) since this is called by JAXB and we
 		// can't control it
-		rows.afterUnmarshal((StandardMatrix) parent);
+		rows.afterUnmarshal((IStandardMatrix) parent);
 	}
 
 	protected boolean beforeMarshal(@CheckForNull final Marshaller marshaller) {
@@ -103,7 +104,7 @@ public class StandardRows
 	}
 
 	@Parent
-	public StandardMatrix getParent() {
+	public IStandardMatrix getParent() {
 		return rows.getParent();
 	}
 
@@ -147,7 +148,7 @@ public class StandardRows
 	 * 
 	 * @return this
 	 */
-	public StandardRows setParent(final StandardMatrix parent) {
+	public StandardRows setParent(final IStandardMatrix parent) {
 		rows.setParent(parent);
 		return this;
 	}

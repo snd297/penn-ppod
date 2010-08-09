@@ -19,10 +19,9 @@ import java.util.Set;
 
 import javax.xml.bind.annotation.XmlAttribute;
 
-import edu.umd.cs.findbugs.annotations.CheckForNull;
 import edu.umd.cs.findbugs.annotations.Nullable;
 
-public interface ICell<E, R extends IRow<?, ?>> extends IPPodEntity, IVisitable {
+public interface ICell<E, R extends IRow<?, ?>> extends IOrderedChild<R> { 
 
 	/**
 	 * The different types of {@code Cell}: single, polymorphic, uncertain,
@@ -95,14 +94,4 @@ public interface ICell<E, R extends IRow<?, ?>> extends IPPodEntity, IVisitable 
 	ICell<E, R> setUncertainElements(
 			final Set<? extends E> uncertainElements);
 
-	/**
-	 * Set the position of this cell in its row.
-	 * <p>
-	 * Use a {@code null} when removing a cell from a row.
-	 * 
-	 * @param position the position of this cell in its row
-	 */
-	void setPosition(@CheckForNull final Integer position);
-
-	ICell<E, R> setParent(@CheckForNull final R row);
 }

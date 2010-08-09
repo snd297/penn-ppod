@@ -28,7 +28,7 @@ import javax.xml.bind.annotation.XmlAttribute;
 import javax.xml.bind.annotation.XmlElement;
 
 import edu.upenn.cis.ppod.imodel.ISequenceSet;
-import edu.upenn.cis.ppod.imodel.IVisitableChild;
+import edu.upenn.cis.ppod.imodel.IChild;
 
 /**
  * A molecular sequence - DNA, RNA, protein - that is represented by a
@@ -39,7 +39,7 @@ import edu.upenn.cis.ppod.imodel.IVisitableChild;
 @MappedSuperclass
 public abstract class Sequence<SS extends ISequenceSet<?>>
 		extends PPodEntity
-		implements IVisitableChild<SS> {
+		implements IChild<SS> {
 
 	private final static String SEQUENCE_COLUMN = "SEQUENCE";
 

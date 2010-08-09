@@ -184,18 +184,12 @@ public class StandardState extends PPodEntityWXmlId {
 		return stateNumber;
 	}
 
-	/**
-	 * Mark this object as needed a new pPOD version.
-	 * 
-	 * @return this {@code CharacterState}
-	 */
 	@Override
-	public StandardState setInNeedOfNewVersion() {
+	public void setInNeedOfNewVersion() {
 		if (parent != null) {
 			parent.setInNeedOfNewVersion();
 		}
 		super.setInNeedOfNewVersion();
-		return this;
 	}
 
 	/**

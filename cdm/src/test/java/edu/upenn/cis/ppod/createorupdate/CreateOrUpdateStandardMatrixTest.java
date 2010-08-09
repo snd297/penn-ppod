@@ -30,10 +30,10 @@ import edu.upenn.cis.ppod.dao.TestObjectWithLongIdDAO;
 import edu.upenn.cis.ppod.imodel.INewVersionInfo;
 import edu.upenn.cis.ppod.imodel.IOTU;
 import edu.upenn.cis.ppod.imodel.IOTUSet;
+import edu.upenn.cis.ppod.imodel.IStandardMatrix;
 import edu.upenn.cis.ppod.model.ModelAssert;
 import edu.upenn.cis.ppod.model.StandardCell;
 import edu.upenn.cis.ppod.model.StandardCharacter;
-import edu.upenn.cis.ppod.model.StandardMatrix;
 import edu.upenn.cis.ppod.model.StandardRow;
 import edu.upenn.cis.ppod.util.PPodEntityProvider;
 
@@ -42,14 +42,14 @@ import edu.upenn.cis.ppod.util.PPodEntityProvider;
  * 
  * @author Sam Donnelly
  */
-@Test(groups = { TestGroupDefs.FAST }, sequential = true)
+@Test(groups = { TestGroupDefs.FAST }, singleThreaded = true)
 public class CreateOrUpdateStandardMatrixTest {
 
 	@Inject
 	private ICreateOrUpdateStandardMatrix.IFactory createOrUpdateMatrixFactory;
 
 	@Inject
-	private Provider<StandardMatrix> characterStateMatrixProvider;
+	private Provider<IStandardMatrix> characterStateMatrixProvider;
 
 	@Inject
 	private TestMergeAttachment mergeAttachment;
@@ -69,7 +69,7 @@ public class CreateOrUpdateStandardMatrixTest {
 
 	@Test(dataProvider = PPodEntityProvider.STANDARD_MATRICES_PROVIDER,
 			dataProviderClass = PPodEntityProvider.class)
-	public void create(final StandardMatrix sourceMatrix) {
+	public void create(final IStandardMatrix sourceMatrix) {
 
 		final ICreateOrUpdateStandardMatrix createOrUpdateStandardMatrix =
 				createOrUpdateMatrixFactory.create(
@@ -78,7 +78,7 @@ public class CreateOrUpdateStandardMatrixTest {
 						newVersionInfo);
 		final IOTUSet fakeDbOTUSet = sourceMatrix.getParent();
 
-		final StandardMatrix targetMatrix =
+		final IStandardMatrix targetMatrix =
 				characterStateMatrixProvider.get();
 
 		fakeDbOTUSet.addStandardMatrix(targetMatrix);
@@ -93,14 +93,14 @@ public class CreateOrUpdateStandardMatrixTest {
 
 	@Test(dataProvider = PPodEntityProvider.STANDARD_MATRICES_PROVIDER,
 			dataProviderClass = PPodEntityProvider.class)
-	public void moveRows(final StandardMatrix sourceMatrix) {
+	public void moveRows(final IStandardMatrix sourceMatrix) {
 		final ICreateOrUpdateStandardMatrix createOrUpdateStandardMatrix =
 				createOrUpdateMatrixFactory.create(mergeAttachment,
 						dao,
 						newVersionInfo);
 		final IOTUSet fakeDbOTUSet = sourceMatrix.getParent();
 
-		final StandardMatrix targetMatrix =
+		final IStandardMatrix targetMatrix =
 				characterStateMatrixProvider.get();
 
 		fakeDbOTUSet.addStandardMatrix(targetMatrix);
@@ -139,7 +139,7 @@ public class CreateOrUpdateStandardMatrixTest {
 
 	@Test(dataProvider = PPodEntityProvider.STANDARD_MATRICES_PROVIDER,
 			dataProviderClass = PPodEntityProvider.class)
-	public void moveCharacters(final StandardMatrix sourceMatrix) {
+	public void moveCharacters(final IStandardMatrix sourceMatrix) {
 		final ICreateOrUpdateStandardMatrix createOrUpdateMatrix =
 					createOrUpdateMatrixFactory.create(
 							mergeAttachment,
@@ -147,7 +147,7 @@ public class CreateOrUpdateStandardMatrixTest {
 							newVersionInfo);
 		final IOTUSet fakeDbOTUSet = sourceMatrix.getParent();
 
-		final StandardMatrix targetMatrix = characterStateMatrixProvider
+		final IStandardMatrix targetMatrix = characterStateMatrixProvider
 					.get();
 
 		fakeDbOTUSet.addStandardMatrix(targetMatrix);
@@ -196,7 +196,7 @@ public class CreateOrUpdateStandardMatrixTest {
 
 	@Test(dataProvider = PPodEntityProvider.STANDARD_MATRICES_PROVIDER,
 			dataProviderClass = PPodEntityProvider.class)
-	public void removeColumn(final StandardMatrix sourceMatrix) {
+	public void removeColumn(final IStandardMatrix sourceMatrix) {
 		final ICreateOrUpdateStandardMatrix createOrUpdateMatrix =
 				createOrUpdateMatrixFactory
 						.create(mergeAttachment,
@@ -204,7 +204,7 @@ public class CreateOrUpdateStandardMatrixTest {
 								newVersionInfo);
 		final IOTUSet fakeDbOTUSet = sourceMatrix.getParent();
 
-		final StandardMatrix targetMatrix =
+		final IStandardMatrix targetMatrix =
 				characterStateMatrixProvider.get();
 
 		fakeDbOTUSet.addStandardMatrix(targetMatrix);

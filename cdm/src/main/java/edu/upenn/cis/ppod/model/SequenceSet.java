@@ -37,7 +37,6 @@ import org.hibernate.annotations.Target;
 import edu.upenn.cis.ppod.imodel.IOTU;
 import edu.upenn.cis.ppod.imodel.IOTUKeyedMap;
 import edu.upenn.cis.ppod.imodel.IOTUSet;
-import edu.upenn.cis.ppod.imodel.IOTUSetChild;
 import edu.upenn.cis.ppod.imodel.ISequenceSet;
 import edu.upenn.cis.ppod.util.IVisitor;
 
@@ -48,10 +47,15 @@ import edu.upenn.cis.ppod.util.IVisitor;
  * 
  * @param <S> the type of {@code Sequence} this set contains
  */
+/**
+ * @author Sam Donnelly
+ *
+ * @param <S>
+ */
 @MappedSuperclass
 abstract class SequenceSet<S extends Sequence<?>>
 		extends UUPPodEntityWithXmlId
-		implements IOTUSetChild, ISequenceSet<S> {
+		implements ISequenceSet<S> {
 
 	@Column(name = "LABEL", nullable = false)
 	private String label;
@@ -181,12 +185,11 @@ abstract class SequenceSet<S extends Sequence<?>>
 	public abstract S putSequence(final IOTU otu, final S sequence);
 
 	@Override
-	public SequenceSet<S> setInNeedOfNewVersion() {
+	public void setInNeedOfNewVersion() {
 		if (getParent() != null) {
 			getParent().setInNeedOfNewVersion();
 		}
 		super.setInNeedOfNewVersion();
-		return this;
 	}
 
 	/** {@inheritDoc} */
@@ -209,23 +212,11 @@ abstract class SequenceSet<S extends Sequence<?>>
 		getOTUKeyedSequences().setOTUs();
 	}
 
-	/**
-	 * Set the owning {@code OTUSet}.
-	 * <p>
-	 * A {@code null} value for {@code newOTUSet} indicates we're severing the
-	 * relationship.
-	 * <p>
-	 * Intentionally package-private.
-	 * 
-	 * @param otuSet the OTU set that will own this sequence set
-	 * 
-	 * @return this
-	 */
-	public ISequenceSet<S> setParent(
+	/** {@inheritDoc} */
+	public void setParent(
 			@CheckForNull final IOTUSet parent) {
 		this.parent = parent;
 		setOTUs();
-		return this;
 	}
 
 }

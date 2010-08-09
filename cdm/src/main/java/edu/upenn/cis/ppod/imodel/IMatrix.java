@@ -27,7 +27,7 @@ import edu.umd.cs.findbugs.annotations.Nullable;
 import edu.upenn.cis.ppod.model.VersionInfo;
 
 public interface IMatrix<R extends IRow<?, ?>>
-		extends IOTUSetChild, IUUPPodEntity, IWithDocId { 
+		extends IChild<IOTUSet>, IUUPPodEntity, IWithDocId { 
 
 	Integer getColumnsSize();
 
@@ -178,10 +178,10 @@ public interface IMatrix<R extends IRow<?, ?>>
 
 	IMatrix<R> setInNeedOfNewColumnVersion(final int position);
 
-	IMatrix<R> setInNeedOfNewVersion();
+	void setInNeedOfNewVersion();
 
 	IMatrix<R> setLabel(final String label);
 
-	IMatrix<R> setParent(@CheckForNull final IOTUSet otuSet);
+	void setParent(@CheckForNull final IOTUSet otuSet);
 
 }

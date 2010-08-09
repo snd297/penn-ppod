@@ -31,6 +31,7 @@ import javax.persistence.OrderBy;
 import javax.persistence.Table;
 import javax.xml.bind.annotation.XmlElement;
 
+import edu.upenn.cis.ppod.imodel.IStandardMatrix;
 import edu.upenn.cis.ppod.util.IVisitor;
 
 /**
@@ -40,7 +41,7 @@ import edu.upenn.cis.ppod.util.IVisitor;
  */
 @Entity
 @Table(name = StandardRow.TABLE)
-public class StandardRow extends Row<StandardCell, StandardMatrix> {
+public class StandardRow extends Row<StandardCell, IStandardMatrix> {
 
 	/** This entitiy's table name. */
 	public static final String TABLE = "STANDARD_ROW";
@@ -52,9 +53,10 @@ public class StandardRow extends Row<StandardCell, StandardMatrix> {
 	@OrderBy("position")
 	private final List<StandardCell> cells = newArrayList();
 
-	@ManyToOne(fetch = FetchType.LAZY, optional = false)
+	@ManyToOne(fetch = FetchType.LAZY, optional = false,
+			targetEntity = StandardMatrix.class)
 	@JoinColumn(name = StandardMatrix.JOIN_COLUMN)
-	private StandardMatrix parent;
+	private IStandardMatrix parent;
 
 	StandardRow() {}
 
@@ -91,7 +93,7 @@ public class StandardRow extends Row<StandardCell, StandardMatrix> {
 	 * 
 	 * @return the {@code StandardMatrix} of which this is a row
 	 */
-	public StandardMatrix getParent() {
+	public IStandardMatrix getParent() {
 		return parent;
 	}
 
@@ -108,9 +110,8 @@ public class StandardRow extends Row<StandardCell, StandardMatrix> {
 	}
 
 	/** {@inheritDoc} */
-	public Row<StandardCell, StandardMatrix> setParent(
-			final StandardMatrix parent) {
+	public void setParent(
+			final IStandardMatrix parent) {
 		this.parent = parent;
-		return this;
 	}
 }

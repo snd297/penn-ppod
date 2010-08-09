@@ -19,13 +19,9 @@ import java.util.Map;
 
 import edu.umd.cs.findbugs.annotations.CheckForNull;
 import edu.umd.cs.findbugs.annotations.Nullable;
-import edu.upenn.cis.ppod.util.IVisitor;
 
-public interface IOTUKeyedMap<V extends IVisitableChild<?>>
+public interface IOTUKeyedMap<V extends IChild<?>>
 		extends IVisitable {
-
-	/** {@inheritDoc} */
-	void accept(IVisitor visitor);
 
 	/**
 	 * Do processing that must occur after JAXB unmarshalling is complete and so

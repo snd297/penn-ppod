@@ -15,9 +15,35 @@
  */
 package edu.upenn.cis.ppod.imodel;
 
+import edu.umd.cs.findbugs.annotations.CheckForNull;
+import edu.umd.cs.findbugs.annotations.Nullable;
+
 /**
- * A child of an {@code OTUSet}.
+ * A child of something.
  * 
  * @author Sam Donnelly
  */
-public interface IOTUSetChild extends IVisitableChild<IOTUSet>, IVersioned {}
+public interface IChild<P> extends IPPodEntity {
+
+	/**
+	 * Get the parent. Will be {@code null} when this object is not attached to
+	 * a parent.
+	 * 
+	 * @return the parent
+	 */
+	@Nullable
+	P getParent();
+
+	/**
+	 * Set or unset the parent.
+	 */
+	void setParent(@CheckForNull P parent);
+	
+	/**
+	 * Mark this and {@link #getParent()} as in need of a new
+	 * pPOD version.
+	 */
+	void setInNeedOfNewVersion();
+
+
+}

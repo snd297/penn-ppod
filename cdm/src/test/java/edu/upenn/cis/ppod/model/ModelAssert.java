@@ -36,6 +36,7 @@ import edu.upenn.cis.ppod.imodel.IOTU;
 import edu.upenn.cis.ppod.imodel.IOTUSet;
 import edu.upenn.cis.ppod.imodel.IPPodEntity;
 import edu.upenn.cis.ppod.imodel.ISequenceSet;
+import edu.upenn.cis.ppod.imodel.IStandardMatrix;
 
 /**
  * For asserting that various {@code edu.upenn.cis.ppod.model} elements are the
@@ -195,8 +196,8 @@ public class ModelAssert {
 	 * @param expectedMatrix
 	 */
 	public static void assertEqualsStandardMatrices(
-			final StandardMatrix actualMatrix,
-			final StandardMatrix expectedMatrix) {
+			final IStandardMatrix actualMatrix,
+			final IStandardMatrix expectedMatrix) {
 		assertEquals(actualMatrix.getLabel(), expectedMatrix.getLabel());
 		assertEquals(
 				actualMatrix.getDescription(),
@@ -204,12 +205,12 @@ public class ModelAssert {
 
 		assertEqualsOTUSet(actualMatrix.getParent(), expectedMatrix.getParent());
 
-		assertEquals(actualMatrix.getCharactersModifiable().size(),
-				actualMatrix
-						.getCharactersModifiable().size());
+		assertEquals(
+				actualMatrix.getCharacters().size(),
+				actualMatrix.getCharacters().size());
 		for (final Iterator<StandardCharacter> actualCharacterItr = actualMatrix
-				.getCharactersModifiable().iterator(), expectedCharacterItr = expectedMatrix
-				.getCharactersModifiable().iterator(); actualCharacterItr
+				.getCharacters().iterator(), expectedCharacterItr = expectedMatrix
+				.getCharacters().iterator(); actualCharacterItr
 				.hasNext()
 												&& expectedCharacterItr
 														.hasNext();) {

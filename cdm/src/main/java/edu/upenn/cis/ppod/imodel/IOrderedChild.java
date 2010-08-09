@@ -17,25 +17,15 @@ package edu.upenn.cis.ppod.imodel;
 
 import edu.umd.cs.findbugs.annotations.CheckForNull;
 
-/**
- * Indicates a class that has a parent and is visitable.
- * 
- * @author Sam Donnelly
- */
-public interface IVisitableChild<P> extends IVisitable {
+public interface IOrderedChild<P> extends IChild<P> {
 
 	/**
-	 * Get the parent.
+	 * Set the position of this child.
+	 * <p>
+	 * Use a {@code null} when removing a child from its parent
 	 * 
-	 * @return the parent
+	 * @param position the position of this child
 	 */
-	P getParent();
-
-	/**
-	 * Set or unset the parent.
-	 * 
-	 * @return this
-	 */
-	IVisitableChild<P> setParent(@CheckForNull P parent);
+	void setPosition(@CheckForNull final Integer position);
 
 }

@@ -36,6 +36,7 @@ import com.google.inject.Inject;
 import com.google.inject.Provider;
 
 import edu.upenn.cis.ppod.TestGroupDefs;
+import edu.upenn.cis.ppod.imodel.IStandardMatrix;
 
 /**
  * Logic tests of {@link StandardMatrix}.
@@ -372,8 +373,8 @@ public class StandardMatrixTest {
 
 	public void setColumnPPodVersionInfos() {
 		final VersionInfo versionInfo = pPodVersionInfoProvider.get();
-		final StandardMatrix returnedMatrix =
-				(StandardMatrix) matrix
+		final IStandardMatrix returnedMatrix =
+				(IStandardMatrix) matrix
 						.setColumnVersionInfos(versionInfo);
 		assertSame(returnedMatrix, matrix);
 

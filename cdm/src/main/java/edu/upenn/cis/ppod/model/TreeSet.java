@@ -164,12 +164,11 @@ public class TreeSet
 	}
 
 	@Override
-	public TreeSet setInNeedOfNewVersion() {
+	public void setInNeedOfNewVersion() {
 		if (getParent() != null) {
 			getParent().setInNeedOfNewVersion();
 		}
 		super.setInNeedOfNewVersion();
-		return this;
 	}
 
 	/**
@@ -190,21 +189,9 @@ public class TreeSet
 		return this;
 	}
 
-	/**
-	 * Setter.
-	 * <p>
-	 * Meant to be called from objects responsible for maintaining the
-	 * {@code OTUSet<->TreeSet]}
-	 * <p>
-	 * Calling with {@code null} severs the relationship.
-	 * 
-	 * @param otuSet the {@code OTUSet}
-	 * 
-	 * @return this {@code TreeSet}
-	 */
-	public TreeSet setParent(@CheckForNull final IOTUSet parent) {
+	/** {@inheritDoc} */
+	public void setParent(@CheckForNull final IOTUSet parent) {
 		this.parent = parent;
-		return this;
 	}
 
 	/**

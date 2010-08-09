@@ -18,7 +18,7 @@ package edu.upenn.cis.ppod.imodel;
 import java.util.List;
 
 public interface IRow<C extends ICell<?, ?>, M extends IMatrix<?>>
-		extends IVisitableChild<M>, IPPodEntity, IVisitable {
+		extends IChild<M> {
 	/**
 	 * Get the cells that make up this row.
 	 * 

@@ -27,7 +27,6 @@ import javax.xml.bind.Unmarshaller;
 import edu.umd.cs.findbugs.annotations.CheckForNull;
 import edu.upenn.cis.ppod.imodel.ICell;
 import edu.upenn.cis.ppod.imodel.IMatrix;
-import edu.upenn.cis.ppod.imodel.IVisitableChild;
 import edu.upenn.cis.ppod.imodel.IRow;
 import edu.upenn.cis.ppod.util.IVisitor;
 
@@ -41,7 +40,7 @@ import edu.upenn.cis.ppod.util.IVisitor;
  */
 public abstract class Row<C extends ICell<?, ?>, M extends IMatrix<?>>
 		extends PPodEntity
-		implements IVisitableChild<M>, IRow<C, M> {
+		implements IRow<C, M> {
 
 	Row() {}
 
@@ -146,11 +145,9 @@ public abstract class Row<C extends ICell<?, ?>, M extends IMatrix<?>>
 
 	/**
 	 * Reset the pPOD version info of this row and that of its matrix.
-	 * 
-	 * @return this {@code CharacterStateRow}
 	 */
 	@Override
-	public Row<C, M> setInNeedOfNewVersion() {
+	public void setInNeedOfNewVersion() {
 
 		// So FindBugs knows it's okay
 		final M matrix = getParent();
@@ -158,7 +155,5 @@ public abstract class Row<C extends ICell<?, ?>, M extends IMatrix<?>>
 			matrix.setInNeedOfNewVersion();
 		}
 		super.setInNeedOfNewVersion();
-		return this;
 	}
-
 }

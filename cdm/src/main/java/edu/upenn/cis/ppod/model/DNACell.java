@@ -156,9 +156,7 @@ public class DNACell
 	}
 
 	/** {@inheritDoc} */
-	public DNACell setParent(final IDNARow parent) {
+	public void setParent(final IDNARow parent) {
 		this.parent = parent;
-		return this;
 	}
-
 }

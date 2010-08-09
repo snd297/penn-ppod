@@ -39,6 +39,7 @@ import javax.xml.bind.annotation.XmlElementWrapper;
 
 import com.google.common.base.Preconditions;
 
+import edu.upenn.cis.ppod.imodel.IStandardMatrix;
 import edu.upenn.cis.ppod.util.IVisitor;
 
 /**
@@ -164,7 +165,7 @@ public class StandardCharacter extends UUPPodEntityWithXmlId {
 	 * @return the matrix that owns this character
 	 */
 	@Nullable
-	public StandardMatrix getParent() {
+	public IStandardMatrix getParent() {
 		return parent;
 	}
 
@@ -205,12 +206,11 @@ public class StandardCharacter extends UUPPodEntityWithXmlId {
 	}
 
 	@Override
-	public StandardCharacter setInNeedOfNewVersion() {
+	public void setInNeedOfNewVersion() {
 		if (parent != null) {
 			parent.setInNeedOfNewVersion();
 		}
 		super.setInNeedOfNewVersion();
-		return this;
 	}
 
 	/**

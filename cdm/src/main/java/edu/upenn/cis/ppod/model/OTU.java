@@ -130,18 +130,17 @@ public class OTU
 	}
 
 	/**
-	 * Mark this {@code OTU} and its {@code OTUSet}, if it has one, as in need
+	 * Mark this {@code OTU} and its parent {@code IOTUSet}, if it has one, as in need
 	 * of a new pPod version info.
 	 * 
 	 * @return this {@code OTU}
 	 */
 	@Override
-	public OTU setInNeedOfNewVersion() {
+	public void setInNeedOfNewVersion() {
 		if (getParent() != null) {
 			getParent().setInNeedOfNewVersion();
 		}
 		super.setInNeedOfNewVersion();
-		return this;
 	}
 
 	/**
@@ -171,12 +170,9 @@ public class OTU
 	 * be severed.
 	 * 
 	 * @param the owning {@code OTUSet}
-	 * 
-	 * @return this
 	 */
-	public IOTU setParent(@CheckForNull final IOTUSet parent) {
+	public void setParent(@CheckForNull final IOTUSet parent) {
 		this.parent = parent;
-		return this;
 	}
 
 	/**

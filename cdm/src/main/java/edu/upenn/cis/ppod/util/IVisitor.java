@@ -22,6 +22,7 @@ import edu.upenn.cis.ppod.imodel.IDNARow;
 import edu.upenn.cis.ppod.imodel.IDNASequenceSet;
 import edu.upenn.cis.ppod.imodel.IOTU;
 import edu.upenn.cis.ppod.imodel.IOTUSet;
+import edu.upenn.cis.ppod.imodel.IStandardMatrix;
 import edu.upenn.cis.ppod.imodel.IStudy;
 import edu.upenn.cis.ppod.imodel.ITree;
 import edu.upenn.cis.ppod.imodel.ITreeSet;
@@ -30,7 +31,6 @@ import edu.upenn.cis.ppod.model.AttachmentType;
 import edu.upenn.cis.ppod.model.DNASequence;
 import edu.upenn.cis.ppod.model.StandardCell;
 import edu.upenn.cis.ppod.model.StandardCharacter;
-import edu.upenn.cis.ppod.model.StandardMatrix;
 import edu.upenn.cis.ppod.model.StandardRow;
 import edu.upenn.cis.ppod.model.StandardState;
 
@@ -99,7 +99,7 @@ public interface IVisitor {
 	 */
 	void visitStandardCharacter(StandardCharacter standardCharacter);
 
-	void visitStandardMatrix(StandardMatrix matrix);
+	void visitStandardMatrix(IStandardMatrix matrix);
 
 	void visitStandardRow(StandardRow row);
 

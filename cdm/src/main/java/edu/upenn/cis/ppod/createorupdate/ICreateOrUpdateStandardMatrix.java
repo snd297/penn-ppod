@@ -19,8 +19,8 @@ import com.google.inject.ImplementedBy;
 
 import edu.upenn.cis.ppod.dao.IDAO;
 import edu.upenn.cis.ppod.imodel.INewVersionInfo;
+import edu.upenn.cis.ppod.imodel.IStandardMatrix;
 import edu.upenn.cis.ppod.model.StandardCell;
-import edu.upenn.cis.ppod.model.StandardMatrix;
 import edu.upenn.cis.ppod.model.StandardRow;
 import edu.upenn.cis.ppod.model.StandardState;
 
@@ -36,7 +36,7 @@ import edu.upenn.cis.ppod.model.StandardState;
 @ImplementedBy(CreateOrUpdateStandardMatrix.class)
 public interface ICreateOrUpdateStandardMatrix
 		extends
-		ICreateOrUpdateMatrix<StandardMatrix, StandardRow, StandardCell, StandardState> {
+		ICreateOrUpdateMatrix<IStandardMatrix, StandardRow, StandardCell, StandardState> {
 
 	/**
 	 * Copy the state of {@code sourceMatrix} onto the persistent matrix
@@ -48,8 +48,6 @@ public interface ICreateOrUpdateStandardMatrix
 	 * {@code sourceMatrix}.
 	 * <p>
 	 * All rows in {@code sourceMatrix} must be non-null.
-	 * <p>
-	 * Implementors are free
 	 * 
 	 * @param dbMatrix merge into the target matrix
 	 * @param sourceMatrix source of the merge
@@ -59,8 +57,8 @@ public interface ICreateOrUpdateStandardMatrix
 	 *            {@code sourceMatrix}
 	 */
 	void createOrUpdateMatrix(
-			StandardMatrix dbMatrix,
-			StandardMatrix sourceMatrix);
+			IStandardMatrix dbMatrix,
+			IStandardMatrix sourceMatrix);
 
 	static interface IFactory {
 		ICreateOrUpdateStandardMatrix create(
