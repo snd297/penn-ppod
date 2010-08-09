@@ -36,6 +36,7 @@ import javax.xml.bind.annotation.adapters.XmlAdapter;
 
 import com.google.inject.Inject;
 
+import edu.upenn.cis.ppod.imodel.IStandardCharacter;
 import edu.upenn.cis.ppod.imodel.IStandardMatrix;
 import edu.upenn.cis.ppod.util.IVisitor;
 
@@ -46,8 +47,8 @@ import edu.upenn.cis.ppod.util.IVisitor;
  */
 @Entity
 @Table(name = StandardMatrix.TABLE)
-public class StandardMatrix extends Matrix<StandardRow> implements
-		IStandardMatrix {
+public class StandardMatrix extends Matrix<StandardRow>
+		implements IStandardMatrix {
 
 	public static class Adapter extends
 			XmlAdapter<StandardMatrix, IStandardMatrix> {
@@ -71,14 +72,13 @@ public class StandardMatrix extends Matrix<StandardRow> implements
 	 */
 	public static final String JOIN_COLUMN = TABLE + "_ID";
 
-	/**
-	 * The position of a {@code StandardCharacter} in <code>characters</code> is
-	 * its column.
-	 */
-	@OneToMany(cascade = CascadeType.ALL, orphanRemoval = true)
+	@OneToMany(
+			cascade = CascadeType.ALL,
+			orphanRemoval = true,
+			targetEntity = StandardCharacter.class)
 	@OrderColumn(name = "POSITION")
 	@JoinColumn(name = JOIN_COLUMN, nullable = false)
-	private final List<StandardCharacter> characters = newArrayList();
+	private final List<IStandardCharacter> characters = newArrayList();
 
 	@Embedded
 	private StandardRows rows;
@@ -96,7 +96,7 @@ public class StandardMatrix extends Matrix<StandardRow> implements
 	public void accept(final IVisitor visitor) {
 		checkNotNull(visitor);
 		visitor.visitStandardMatrix(this);
-		for (final StandardCharacter character : getCharacters()) {
+		for (final IStandardCharacter character : getCharacters()) {
 			character.accept(visitor);
 		}
 		super.accept(visitor);
@@ -120,7 +120,7 @@ public class StandardMatrix extends Matrix<StandardRow> implements
 	}
 
 	/** {@inheritDoc} */
-	public List<StandardCharacter> getCharacters() {
+	public List<IStandardCharacter> getCharacters() {
 		return Collections.unmodifiableList(characters);
 	}
 
@@ -130,7 +130,7 @@ public class StandardMatrix extends Matrix<StandardRow> implements
 	 * @return a modifiable reference to this matrix's characters
 	 */
 	@XmlElement(name = "character")
-	protected List<StandardCharacter> getCharactersModifiable() {
+	protected List<IStandardCharacter> getCharactersModifiable() {
 		return characters;
 	}
 
@@ -155,8 +155,8 @@ public class StandardMatrix extends Matrix<StandardRow> implements
 	 * @throws IllegalStateExeption if {@code characters.size() !=
 	 *             getColumnsSize()}
 	 */
-	public List<StandardCharacter> setCharacters(
-			final List<? extends StandardCharacter> characters) {
+	public List<IStandardCharacter> setCharacters(
+			final List<? extends IStandardCharacter> characters) {
 		checkNotNull(characters);
 
 		if (characters.equals(getCharacters())) {
@@ -164,16 +164,16 @@ public class StandardMatrix extends Matrix<StandardRow> implements
 		}
 
 		int newCharacterPos = -1;
-		for (final StandardCharacter character : characters) {
+		for (final IStandardCharacter character : characters) {
 			newCharacterPos++;
 			checkArgument(character != null, "newCharacters["
 												+ newCharacterPos
 												+ "] is null");
 
-			for (final Iterator<? extends StandardCharacter> itr = characters
+			for (final Iterator<? extends IStandardCharacter> itr = characters
 					.listIterator(newCharacterPos + 1); itr
 					.hasNext();) {
-				final StandardCharacter character2 = itr.next();
+				final IStandardCharacter character2 = itr.next();
 				checkArgument(!character.equals(character2),
 						"two characters are the same "
 								+ character.getLabel()
@@ -186,10 +186,10 @@ public class StandardMatrix extends Matrix<StandardRow> implements
 
 		setColumnsSize(characters.size());
 
-		final List<StandardCharacter> removedCharacters = newArrayList(getCharactersModifiable());
+		final List<IStandardCharacter> removedCharacters = newArrayList(getCharactersModifiable());
 
 		removedCharacters.removeAll(characters);
-		for (final StandardCharacter removedCharacter : removedCharacters) {
+		for (final IStandardCharacter removedCharacter : removedCharacters) {
 			removedCharacter.setParent(null);
 		}
 
@@ -197,7 +197,7 @@ public class StandardMatrix extends Matrix<StandardRow> implements
 
 		getCharactersModifiable().addAll(characters);
 
-		for (final StandardCharacter character : getCharacters()) {
+		for (final IStandardCharacter character : getCharacters()) {
 			character.setParent(this);
 		}
 

@@ -30,10 +30,10 @@ import edu.upenn.cis.ppod.dao.TestObjectWithLongIdDAO;
 import edu.upenn.cis.ppod.imodel.INewVersionInfo;
 import edu.upenn.cis.ppod.imodel.IOTU;
 import edu.upenn.cis.ppod.imodel.IOTUSet;
+import edu.upenn.cis.ppod.imodel.IStandardCharacter;
 import edu.upenn.cis.ppod.imodel.IStandardMatrix;
 import edu.upenn.cis.ppod.model.ModelAssert;
 import edu.upenn.cis.ppod.model.StandardCell;
-import edu.upenn.cis.ppod.model.StandardCharacter;
 import edu.upenn.cis.ppod.model.StandardRow;
 import edu.upenn.cis.ppod.util.PPodEntityProvider;
 
@@ -164,7 +164,7 @@ public class CreateOrUpdateStandardMatrixTest {
 		}
 
 		// Swap 2 and 0
-		final List<StandardCharacter> newSourceMatrixCharacters =
+		final List<IStandardCharacter> newSourceMatrixCharacters =
 				newArrayList(sourceMatrix.getCharacters());
 
 		newSourceMatrixCharacters.set(0,
@@ -223,9 +223,8 @@ public class CreateOrUpdateStandardMatrixTest {
 							.getPPodId());
 		}
 
-		final List<StandardCharacter> newSourceCharacters =
-				newArrayList(sourceMatrix
-						.getCharacters());
+		final List<IStandardCharacter> newSourceCharacters =
+				newArrayList(sourceMatrix.getCharacters());
 		newSourceCharacters.remove(
 				sourceMatrix
 						.getCharacters().size() / 2);

@@ -26,13 +26,13 @@ import edu.upenn.cis.ppod.imodel.IDNARow;
 import edu.upenn.cis.ppod.imodel.IDNASequenceSet;
 import edu.upenn.cis.ppod.imodel.IOTU;
 import edu.upenn.cis.ppod.imodel.IOTUSet;
+import edu.upenn.cis.ppod.imodel.IStandardCharacter;
 import edu.upenn.cis.ppod.imodel.IStandardMatrix;
 import edu.upenn.cis.ppod.imodel.IStudy;
 import edu.upenn.cis.ppod.imodel.ITree;
 import edu.upenn.cis.ppod.imodel.ITreeSet;
 import edu.upenn.cis.ppod.model.DNASequence;
 import edu.upenn.cis.ppod.model.StandardCell;
-import edu.upenn.cis.ppod.model.StandardCharacter;
 import edu.upenn.cis.ppod.model.StandardRow;
 import edu.upenn.cis.ppod.model.VersionInfo;
 
@@ -107,7 +107,7 @@ final class Study2StudyInfo implements IStudy2StudyInfo {
 				matrixInfo.setDocId(matrix.getDocId());
 
 				int characterIdx = -1;
-				for (final StandardCharacter standardCharacter : matrix
+				for (final IStandardCharacter standardCharacter : matrix
 						.getCharacters()) {
 					characterIdx++;
 					final PPodEntityInfo characterInfo =

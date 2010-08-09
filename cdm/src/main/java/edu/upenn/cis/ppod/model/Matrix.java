@@ -42,8 +42,6 @@ import javax.xml.bind.annotation.XmlElement;
 
 import org.hibernate.annotations.Target;
 
-import com.google.common.annotations.VisibleForTesting;
-
 import edu.umd.cs.findbugs.annotations.CheckForNull;
 import edu.umd.cs.findbugs.annotations.Nullable;
 import edu.upenn.cis.ppod.imodel.IMatrix;
@@ -283,7 +281,8 @@ public abstract class Matrix<R extends IRow<?, ?>>
 		return getOTUKeyedRows().put(otu, row);
 	}
 
-	public IMatrix<R> setColumnsSize(final int columnsSize) {
+	/** {@inheritDoc} */
+	public void setColumnsSize(final int columnsSize) {
 		checkArgument(columnsSize >= 0, "columnsSize < 0");
 
 		// Add in column versions as necessary
@@ -294,7 +293,6 @@ public abstract class Matrix<R extends IRow<?, ?>>
 			getColumnVersionInfosModifiable()
 					.remove(getColumnVersionInfos().size() - 1);
 		}
-		return this;
 	}
 
 	/**
@@ -303,23 +301,21 @@ public abstract class Matrix<R extends IRow<?, ?>>
 	 * @throw IllegalArgumentException if {@code pos >=
 	 *        getColumnVersionInfos().size()}
 	 */
-	public IMatrix<R> setColumnVersionInfo(
+	public void setColumnVersionInfo(
 			final int pos,
 			final VersionInfo versionInfo) {
 		checkNotNull(versionInfo);
 		checkArgument(pos < getColumnVersionInfos().size(),
 				"pos is bigger than getColumnVersionInfos().size()");
 		getColumnVersionInfosModifiable().set(pos, versionInfo);
-		return this;
 	}
 
 	/** {@inheritDoc} */
-	public IMatrix<R> setColumnVersionInfos(
+	public void setColumnVersionInfos(
 			final VersionInfo versionInfo) {
 		for (int pos = 0; pos < getColumnVersionInfos().size(); pos++) {
 			setColumnVersionInfo(pos, versionInfo);
 		}
-		return this;
 	}
 
 	/**
@@ -331,15 +327,15 @@ public abstract class Matrix<R extends IRow<?, ?>>
 	 * 
 	 * @param columnVersions values
 	 */
-	@VisibleForTesting
-	public void setColumnVersions(final List<Integer> columnVersions) {
-		checkNotNull(columnVersions);
-		checkArgument(columnVersions.size() == getColumnsSize(),
-				"columnVersions size is not the same as getColumnsSize()");
-
-		this.columnVersions.clear();
-		this.columnVersions.addAll(this.columnVersions);
-	}
+	// @VisibleForTesting
+	// private void setColumnVersions(final List<Integer> columnVersions) {
+	// checkNotNull(columnVersions);
+	// checkArgument(columnVersions.size() == getColumnsSize(),
+	// "columnVersions size is not the same as getColumnsSize()");
+	//
+	// this.columnVersions.clear();
+	// this.columnVersions.addAll(this.columnVersions);
+	// }
 
 	/**
 	 * Setter.
@@ -359,22 +355,14 @@ public abstract class Matrix<R extends IRow<?, ?>>
 		return this;
 	}
 
-	/**
-	 * Set the {@link VersionInfo} at {@code idx} to {@code null}. Fills with
-	 * <code>null</code>s if necessary.
-	 * 
-	 * @param position see description
-	 * 
-	 * @return this
-	 */
-	public IMatrix<R> setInNeedOfNewColumnVersion(final int position) {
+	/** {@inheritDoc} */
+	public void setInNeedOfNewColumnVersion(final int position) {
 		checkArgument(position >= 0, "position is negative");
-		checkArgument(position < getColumnVersionInfos().size(),
+		checkArgument(position < getColumnsSize(),
 				"position " + position
 						+ " is too large for the number of columns "
 						+ getColumnVersionInfos().size());
 		columnVersionInfos.set(position, null);
-		return this;
 	}
 
 	@Override

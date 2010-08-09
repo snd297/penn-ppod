@@ -36,10 +36,10 @@ import edu.upenn.cis.ppod.dao.IDAO;
 import edu.upenn.cis.ppod.imodel.IAttachment;
 import edu.upenn.cis.ppod.imodel.ICell;
 import edu.upenn.cis.ppod.imodel.INewVersionInfo;
+import edu.upenn.cis.ppod.imodel.IStandardCharacter;
 import edu.upenn.cis.ppod.imodel.IStandardMatrix;
 import edu.upenn.cis.ppod.imodel.IWithPPodId;
 import edu.upenn.cis.ppod.model.StandardCell;
-import edu.upenn.cis.ppod.model.StandardCharacter;
 import edu.upenn.cis.ppod.model.StandardRow;
 import edu.upenn.cis.ppod.model.StandardState;
 import edu.upenn.cis.ppod.thirdparty.injectslf4j.InjectLogger;
@@ -52,7 +52,7 @@ final class CreateOrUpdateStandardMatrix
 		CreateOrUpdateMatrix<IStandardMatrix, StandardRow, StandardCell, StandardState>
 		implements ICreateOrUpdateStandardMatrix {
 
-	private final Provider<StandardCharacter> standardCharacterProvider;
+	private final Provider<IStandardCharacter> standardCharacterProvider;
 	private final StandardState.IFactory standardStateFactory;
 	private final Provider<IAttachment> attachmentProvider;
 	private final IMergeAttachments mergeAttachments;
@@ -66,7 +66,7 @@ final class CreateOrUpdateStandardMatrix
 	CreateOrUpdateStandardMatrix(
 			final Provider<StandardRow> rowProvider,
 			final Provider<StandardCell> cellProvider,
-			final Provider<StandardCharacter> characterProvider,
+			final Provider<IStandardCharacter> characterProvider,
 			final StandardState.IFactory stateFactory,
 			final Provider<IAttachment> attachmentProvider,
 			@Assisted final IMergeAttachments mergeAttachments,
@@ -90,12 +90,12 @@ final class CreateOrUpdateStandardMatrix
 		checkNotNull(dbMatrix);
 		checkNotNull(sourceMatrix);
 
-		final List<StandardCharacter> newDbMatrixCharacters = newArrayList();
+		final List<IStandardCharacter> newDbMatrixCharacters = newArrayList();
 		int sourceCharacterPosition = -1;
-		for (final StandardCharacter sourceCharacter : sourceMatrix
+		for (final IStandardCharacter sourceCharacter : sourceMatrix
 				.getCharacters()) {
 			sourceCharacterPosition++;
-			StandardCharacter newDbCharacter;
+			IStandardCharacter newDbCharacter;
 
 			if (null == (newDbCharacter =
 					findIf(dbMatrix

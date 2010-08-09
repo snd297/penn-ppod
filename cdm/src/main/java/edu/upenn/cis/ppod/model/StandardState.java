@@ -32,6 +32,7 @@ import com.google.inject.Inject;
 import com.google.inject.assistedinject.Assisted;
 
 import edu.umd.cs.findbugs.annotations.CheckForNull;
+import edu.upenn.cis.ppod.imodel.IStandardCharacter;
 import edu.upenn.cis.ppod.util.IVisitor;
 
 /**
@@ -110,10 +111,10 @@ public class StandardState extends PPodEntityWXmlId {
 	/**
 	 * The {@code Character} of which this is a state.
 	 */
-	@ManyToOne(fetch = FetchType.LAZY, optional = false)
+	@ManyToOne(fetch = FetchType.LAZY, optional = false, targetEntity = StandardCharacter.class)
 	@JoinColumn(name = StandardCharacter.JOIN_COLUMN)
 	@CheckForNull
-	private StandardCharacter parent;
+	private IStandardCharacter parent;
 
 	StandardState() {}
 
@@ -165,7 +166,7 @@ public class StandardState extends PPodEntityWXmlId {
 	 * @return this character stateNumber's owning character
 	 */
 	@Nullable
-	public StandardCharacter getParent() {
+	public IStandardCharacter getParent() {
 		return parent;
 	}
 
@@ -224,7 +225,7 @@ public class StandardState extends PPodEntityWXmlId {
 	 * @return this {@code CharacterState}
 	 */
 	StandardState setParent(
-			@CheckForNull final StandardCharacter parent) {
+			@CheckForNull final IStandardCharacter parent) {
 		this.parent = parent;
 		return this;
 	}

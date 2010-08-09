@@ -27,7 +27,6 @@ import static org.testng.Assert.assertSame;
 import static org.testng.Assert.assertTrue;
 
 import java.util.Iterator;
-import java.util.Map.Entry;
 import java.util.Set;
 
 import edu.upenn.cis.ppod.imodel.IAttachment;
@@ -36,6 +35,7 @@ import edu.upenn.cis.ppod.imodel.IOTU;
 import edu.upenn.cis.ppod.imodel.IOTUSet;
 import edu.upenn.cis.ppod.imodel.IPPodEntity;
 import edu.upenn.cis.ppod.imodel.ISequenceSet;
+import edu.upenn.cis.ppod.imodel.IStandardCharacter;
 import edu.upenn.cis.ppod.imodel.IStandardMatrix;
 
 /**
@@ -121,24 +121,21 @@ public class ModelAssert {
 	}
 
 	public static void assertEqualsCharacters(
-			final StandardCharacter actualCharacter,
-			final StandardCharacter expectedCharacter) {
+			final IStandardCharacter actualCharacter,
+			final IStandardCharacter expectedCharacter) {
 		assertEqualsPPodEntities(actualCharacter, expectedCharacter);
 		assertEquals(actualCharacter.getLabel(), expectedCharacter.getLabel());
-		assertEquals(actualCharacter.getStatesModifiable().size(),
+		assertEquals(actualCharacter.getStates().size(),
 				expectedCharacter
-						.getStatesModifiable().size());
-		for (final Entry<Integer, StandardState> actualStateNumberToState : actualCharacter
-				.getStatesModifiable().entrySet()) {
-			final StandardState actualState =
-					actualStateNumberToState.getValue();
+						.getStates().size());
+		for (final StandardState actualState : actualCharacter
+				.getStates()) {
 
 			final StandardState expectedState =
 					findIf(
 							expectedCharacter.getStates(),
 							compose(
-									equalTo(
-										actualStateNumberToState.getKey()),
+									equalTo(actualState.getStateNumber()),
 									StandardState.getStateNumber));
 
 			assertNotNull(expectedState);
@@ -208,15 +205,16 @@ public class ModelAssert {
 		assertEquals(
 				actualMatrix.getCharacters().size(),
 				actualMatrix.getCharacters().size());
-		for (final Iterator<StandardCharacter> actualCharacterItr = actualMatrix
+		for (final Iterator<IStandardCharacter> actualCharacterItr = actualMatrix
 				.getCharacters().iterator(), expectedCharacterItr = expectedMatrix
 				.getCharacters().iterator(); actualCharacterItr
 				.hasNext()
 												&& expectedCharacterItr
 														.hasNext();) {
-			final StandardCharacter actualCharacter = actualCharacterItr.next();
-			final StandardCharacter expectedCharacter = expectedCharacterItr
+			final IStandardCharacter actualCharacter = actualCharacterItr
 					.next();
+			final IStandardCharacter expectedCharacter =
+					expectedCharacterItr.next();
 			assertSame(actualCharacter.getParent(), actualMatrix);
 			assertSame(expectedCharacter.getParent(), expectedMatrix);
 			assertEqualsCharacters(actualCharacter, expectedCharacter);
