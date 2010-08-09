@@ -25,7 +25,7 @@ import edu.upenn.cis.ppod.imodel.IStandardMatrix;
 import edu.upenn.cis.ppod.model.AttachmentNamespace;
 import edu.upenn.cis.ppod.model.AttachmentType;
 import edu.upenn.cis.ppod.model.StandardCharacter;
-import edu.upenn.cis.ppod.services.ppodentity.IOTUSetCentricEntities;
+import edu.upenn.cis.ppod.services.ppodentity.IOTUSets;
 
 /**
  * @author Sam Donnelly
@@ -55,10 +55,10 @@ public class PPodEntitiesUtil {
 		return attachee;
 	}
 
-	public static IOTUSetCentricEntities extractAttachmentInfoFromPPodEntities(
+	public static IOTUSets extractAttachmentInfoFromPPodEntities(
 			final Set<AttachmentNamespace> studyWideAttachmentNamespaces,
 			final Set<AttachmentType> studyWideAttachmentTypes,
-				final IOTUSetCentricEntities otuSetCentricEntities) {
+				final IOTUSets otuSetCentricEntities) {
 		for (final IOTUSet otuSet : otuSetCentricEntities.getOTUSets()) {
 			extractAttachmentInfoFromAttachee(studyWideAttachmentNamespaces,
 					studyWideAttachmentTypes, otuSet);

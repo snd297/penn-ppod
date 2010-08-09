@@ -20,14 +20,14 @@ import java.util.Set;
 import edu.upenn.cis.ppod.imodel.IOTUSet;
 
 /**
- * A collection of OTU sets, matrices and tree sets.
+ * A collection of OTU sets.
  * 
  * @author Sam Donnelly
  */
-public interface IOTUSetCentricEntities {
+public interface IOTUSets {
 
 	/**
-	 * Add an OTU set to this {@link IOTUSetCentricEntities}.
+	 * Add an OTU set to this {@link IOTUSets}.
 	 * 
 	 * @param otuSet to be added
 	 * 
@@ -35,6 +35,11 @@ public interface IOTUSetCentricEntities {
 	 */
 	IOTUSet addOTUSet(IOTUSet otuSet);
 
+	/**
+	 * Get the OTU sets contained in this {@code IOTUSets}.
+	 * 
+	 * @return the OTU sets contained in this {@code IOTUSets}
+	 */
 	Set<IOTUSet> getOTUSets();
 
 }

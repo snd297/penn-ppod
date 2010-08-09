@@ -27,7 +27,7 @@ import edu.upenn.cis.ppod.imodel.IOTUSet;
 public interface IOTUSetCentricEntity {
 
 	/**
-	 * Add an OTU set to this {@link IOTUSetCentricEntities}.
+	 * Add an OTU set to this {@link IOTUSets}.
 	 * 
 	 * @param otuSet to be added
 	 * @return <tt>true</tt> if this set did not already contain the specified

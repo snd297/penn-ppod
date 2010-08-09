@@ -35,7 +35,7 @@ import javax.xml.bind.annotation.adapters.XmlAdapter;
 
 import edu.upenn.cis.ppod.imodel.IOTUSet;
 import edu.upenn.cis.ppod.imodel.IStudy;
-import edu.upenn.cis.ppod.services.ppodentity.IOTUSetCentricEntities;
+import edu.upenn.cis.ppod.services.ppodentity.IOTUSets;
 import edu.upenn.cis.ppod.util.IVisitor;
 import edu.upenn.cis.ppod.util.PPodEntitiesUtil;
 
@@ -50,7 +50,7 @@ import edu.upenn.cis.ppod.util.PPodEntitiesUtil;
 @Table(name = Study.TABLE)
 public class Study
 		extends UUPPodEntity
-		implements IOTUSetCentricEntities, IStudy {
+		implements IOTUSets, IStudy {
 
 	public static class Adapter extends XmlAdapter<Study, IStudy> {
 
@@ -160,16 +160,17 @@ public class Study
 	}
 
 	/** {@inheritDoc} */
-	public IStudy removeOTUSet(final IOTUSet otuSet) {
+	public boolean removeOTUSet(final IOTUSet otuSet) {
 		if (otuSets.remove(otuSet)) {
 			otuSet.setParent(null);
 			setInNeedOfNewVersion();
+			return true;
 		}
-		return this;
+		return false;
 	}
 
 	/** {@inheritDoc} */
-	public IStudy setLabel(final String label) {
+	public Study setLabel(final String label) {
 		checkNotNull(label);
 		if (label.equals(this.label)) {
 

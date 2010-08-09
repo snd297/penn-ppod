@@ -33,6 +33,7 @@ import edu.upenn.cis.ppod.imodel.IDNARow;
 import edu.upenn.cis.ppod.imodel.IDNASequenceSet;
 import edu.upenn.cis.ppod.imodel.IOTU;
 import edu.upenn.cis.ppod.imodel.IOTUSet;
+import edu.upenn.cis.ppod.imodel.IStandardMatrix;
 import edu.upenn.cis.ppod.imodel.IStudy;
 import edu.upenn.cis.ppod.imodel.ITree;
 import edu.upenn.cis.ppod.imodel.ITreeSet;
@@ -44,6 +45,7 @@ import edu.upenn.cis.ppod.model.DNASequenceSet;
 import edu.upenn.cis.ppod.model.ModelModule;
 import edu.upenn.cis.ppod.model.OTU;
 import edu.upenn.cis.ppod.model.OTUSet;
+import edu.upenn.cis.ppod.model.StandardMatrix;
 import edu.upenn.cis.ppod.model.StandardState;
 import edu.upenn.cis.ppod.model.Study;
 import edu.upenn.cis.ppod.model.Tree;
@@ -109,15 +111,17 @@ public final class PPodModule extends AbstractModule {
 		bind(IOTUSet.class).to(OTUSet.class);
 		bind(IOTU.class).to(OTU.class);
 
+		bind(IStandardMatrix.class).to(StandardMatrix.class);
+
 		bind(IDNAMatrix.class).to(DNAMatrix.class);
 		bind(IDNARow.class).to(DNARow.class);
 		bind(IDNACell.class).to(DNACell.class);
 
 		bind(IDNASequenceSet.class).to(DNASequenceSet.class);
-		
+
 		bind(ITreeSet.class).to(TreeSet.class);
 		bind(ITree.class).to(Tree.class);
-		
+
 		bind(IAttachment.class).to(Attachment.class);
 
 		install(new ModelModule());

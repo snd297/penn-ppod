@@ -17,18 +17,20 @@ package edu.upenn.cis.ppod.imodel;
 
 import java.util.Set;
 
-import edu.upenn.cis.ppod.services.ppodentity.IOTUSetCentricEntities;
+import edu.upenn.cis.ppod.services.ppodentity.IOTUSets;
 
 /**
  * A collection of work - inspired by a Mesquite project - sets of OTU sets and,
- * through the OTU sets, matrices and tree sets.
+ * through the OTU sets, matrices, and tree sets.
  * 
  * @author Sam Donnelly
  */
-public interface IStudy extends ILabeled, IOTUSetCentricEntities, IUUPPodEntity {
+public interface IStudy extends ILabeled, IOTUSets, IUUPPodEntity {
 
+	/** {@inheritDoc} */
 	IOTUSet addOTUSet(final IOTUSet otuSet);
 
+	/** {@inheritDoc} */
 	Set<IOTUSet> getOTUSets();
 
 	/**
@@ -36,9 +38,9 @@ public interface IStudy extends ILabeled, IOTUSetCentricEntities, IUUPPodEntity 
 	 * 
 	 * @param otuSet to be removed
 	 * 
-	 * @return this
+	 * @return {@code true} if the study contained the specified OTU set
 	 */
-	IStudy removeOTUSet(final IOTUSet otuSet);
+	boolean removeOTUSet(final IOTUSet otuSet);
 
 	/**
 	 * Set the label.
