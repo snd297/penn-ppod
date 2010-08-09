@@ -36,9 +36,6 @@ import edu.upenn.cis.ppod.imodel.IStudy;
 import edu.upenn.cis.ppod.imodel.ITreeSet;
 import edu.upenn.cis.ppod.imodel.IWithPPodId;
 import edu.upenn.cis.ppod.model.DNASequence;
-import edu.upenn.cis.ppod.model.OTUSet;
-import edu.upenn.cis.ppod.model.StandardMatrix;
-import edu.upenn.cis.ppod.model.Study;
 
 /**
  * Create a new study or update an existing one.
@@ -49,9 +46,9 @@ final class CreateOrUpdateStudy implements ICreateOrUpdateStudy {
 
 	private final IStudyDAO studyDAO;
 
-	private final Provider<Study> studyProvider;
-	private final Provider<OTUSet> otuSetProvider;
-	private final Provider<StandardMatrix> standardMatrixProvider;
+	private final Provider<IStudy> studyProvider;
+	private final Provider<IOTUSet> otuSetProvider;
+	private final Provider<IStandardMatrix> standardMatrixProvider;
 	private final Provider<IDNAMatrix> dnaMatrixProvider;
 	private final Provider<IDNASequenceSet> dnaSequenceSetProvider;
 	private final Provider<ITreeSet> treeSetProvider;
@@ -62,15 +59,15 @@ final class CreateOrUpdateStudy implements ICreateOrUpdateStudy {
 	private final INewVersionInfo newVersionInfo;
 	private final IMergeSequenceSets<IDNASequenceSet, DNASequence> mergeDNASequenceSets;
 	private final IStudy incomingStudy;
-	private Study dbStudy;
+	private IStudy dbStudy;
 	private final ICreateOrUpdateDNAMatrix createOrUpdateDNAMatrix;
 	private final IDAO<Object, Long> dao;
 
 	@Inject
 	CreateOrUpdateStudy(
-			final Provider<Study> studyProvider,
-			final Provider<OTUSet> otuSetProvider,
-			final Provider<StandardMatrix> standardMatrix,
+			final Provider<IStudy> studyProvider,
+			final Provider<IOTUSet> otuSetProvider,
+			final Provider<IStandardMatrix> standardMatrix,
 			final Provider<IDNASequenceSet> dnaSequenceSetProvider,
 			final Provider<ITreeSet> treeSetProvider,
 			final IMergeOTUSets.IFactory saveOrUpdateOTUSetFactory,
@@ -179,7 +176,7 @@ final class CreateOrUpdateStudy implements ICreateOrUpdateStudy {
 		}
 	}
 
-	public Study getDbStudy() {
+	public IStudy getDbStudy() {
 		return dbStudy;
 	}
 
@@ -337,6 +334,5 @@ final class CreateOrUpdateStudy implements ICreateOrUpdateStudy {
 			}
 			mergeTreeSets.mergeTreeSets(dbTreeSet, incomingTreeSet);
 		}
-
 	}
 }

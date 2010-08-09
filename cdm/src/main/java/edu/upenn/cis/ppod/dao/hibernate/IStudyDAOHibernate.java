@@ -18,7 +18,7 @@ package edu.upenn.cis.ppod.dao.hibernate;
 import com.google.inject.ImplementedBy;
 
 import edu.upenn.cis.ppod.dao.IStudyDAO;
-import edu.upenn.cis.ppod.model.Study;
+import edu.upenn.cis.ppod.imodel.IStudy;
 
 /**
  * The Interface IStudyDAOHibernate.
@@ -27,6 +27,6 @@ import edu.upenn.cis.ppod.model.Study;
  */
 @ImplementedBy(StudyDAOHibernate.class)
 public interface IStudyDAOHibernate
-		extends IStudyDAO, IDAOHibernate<Study, Long> {
+		extends IStudyDAO, IDAOHibernate<IStudy, Long> {
 
 }
