@@ -128,7 +128,7 @@ public class OTUSet
 	/**
 	 * Non-unique label.
 	 * <p>
-	 * OTU set labels are unique within a particular <code>Study</code>.
+	 * OTU set labels are unique within a particular {@code IStudy}
 	 */
 	@Column(name = "LABEL", nullable = false)
 	@CheckForNull
@@ -477,18 +477,15 @@ public class OTUSet
 		return false;
 	}
 
-	/**
-	 * Setter.
-	 * 
-	 * @param description the description
-	 */
-	public void setDescription(@CheckForNull final String description) {
+	/** {@inheritDoc} */
+	public OTUSet setDescription(@CheckForNull final String description) {
 		if (equal(getDescription(), description)) {
 
 		} else {
 			this.description = description;
 			setInNeedOfNewVersion();
 		}
+		return this;
 	}
 
 	@Override
@@ -501,7 +498,7 @@ public class OTUSet
 	}
 
 	/** {@inheritDoc} */
-	public void setLabel(final String label) {
+	public OTUSet setLabel(final String label) {
 		checkNotNull(label);
 		if (label.equals(getLabel())) {
 
@@ -509,6 +506,7 @@ public class OTUSet
 			this.label = label;
 			setInNeedOfNewVersion();
 		}
+		return this;
 	}
 
 	/** {@inheritDoc} */

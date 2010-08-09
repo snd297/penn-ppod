@@ -18,7 +18,6 @@ package edu.upenn.cis.ppod.model;
 import static org.testng.Assert.assertEquals;
 import static org.testng.Assert.assertFalse;
 import static org.testng.Assert.assertNull;
-import static org.testng.Assert.assertSame;
 import static org.testng.Assert.assertTrue;
 
 import org.testng.annotations.Test;
@@ -27,7 +26,6 @@ import com.google.inject.Inject;
 import com.google.inject.Provider;
 
 import edu.upenn.cis.ppod.TestGroupDefs;
-import edu.upenn.cis.ppod.imodel.IStudy;
 
 /**
  * @author Sam Donnelly
@@ -47,8 +45,8 @@ public class StudyTest {
 		final OTUSet otuSet = otuSetProvider.get();
 		study.addOTUSet(otuSet);
 		study.unsetInNeedOfNewVersion();
-		final IStudy returnedStudy = study.removeOTUSet(otuSet);
-		assertSame(returnedStudy, study);
+		boolean returnedValue = study.removeOTUSet(otuSet);
+		assertTrue(returnedValue);
 		assertTrue(study.isInNeedOfNewVersion());
 		assertFalse(study.getOTUSets().contains(otuSet));
 
@@ -64,9 +62,8 @@ public class StudyTest {
 		final Study study = studyProvider.get();
 		study.unsetInNeedOfNewVersion();
 		final String label = "otu-set-label";
-		final IStudy returnedStudy = study.setLabel(label);
+		study.setLabel(label);
 		assertTrue(study.isInNeedOfNewVersion());
-		assertSame(returnedStudy, study);
 		study.isInNeedOfNewVersion();
 
 		assertEquals(study.getLabel(), label);

@@ -99,7 +99,7 @@ public class PPodEntitiesResourceTest {
 // public void getEntitiesByHqlQuery() {
 // ManagedSessionContext.bind(HibernateUtil.getSessionFactory()
 // .openSession());
-// final IOTUSetCentricEntities entities = pPodEntitiesResource
+// final IOTUSets entities = pPodEntitiesResource
 // .getEntitiesByHqlQuery("from CharacterStateMatrix m join fetch m.otuSet os join fetch os.otus o where o.label='Sus'");
 // System.out.println(entities);
 // ManagedSessionContext.unbind(HibernateUtil.getSessionFactory());

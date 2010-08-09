@@ -130,8 +130,8 @@ public class OTU
 	}
 
 	/**
-	 * Mark this {@code OTU} and its parent {@code IOTUSet}, if it has one, as in need
-	 * of a new pPod version info.
+	 * Mark this {@code OTU} and its parent {@code IOTUSet}, if it has one, as
+	 * in need of a new pPod version info.
 	 * 
 	 * @return this {@code OTU}
 	 */
@@ -161,16 +161,7 @@ public class OTU
 		return this;
 	}
 
-	/**
-	 * Set the {@code OTUSet} that owns this {@code OTU}.
-	 * <p>
-	 * Intentionally package-private and meant to be called from {@link OTUSet}.
-	 * <p>
-	 * A {@code null} value for {@code otuSet} means that the relationship will
-	 * be severed.
-	 * 
-	 * @param the owning {@code OTUSet}
-	 */
+	/** {@inheritDoc} */
 	public void setParent(@CheckForNull final IOTUSet parent) {
 		this.parent = parent;
 	}
