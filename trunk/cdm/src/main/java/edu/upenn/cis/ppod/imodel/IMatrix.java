@@ -20,14 +20,12 @@ import java.util.Map;
 
 import javax.xml.bind.annotation.XmlAttribute;
 
-import com.google.common.annotations.VisibleForTesting;
-
 import edu.umd.cs.findbugs.annotations.CheckForNull;
 import edu.umd.cs.findbugs.annotations.Nullable;
 import edu.upenn.cis.ppod.model.VersionInfo;
 
 public interface IMatrix<R extends IRow<?, ?>>
-		extends IChild<IOTUSet>, IUUPPodEntity, IWithDocId { 
+		extends IChild<IOTUSet>, IUUPPodEntity, IWithDocId {
 
 	Integer getColumnsSize();
 
@@ -137,17 +135,15 @@ public interface IMatrix<R extends IRow<?, ?>>
 	@CheckForNull
 	R putRow(final IOTU otu, final R row);
 
-	IMatrix<R> setColumnsSize(final int columnsSize);
+	void setColumnsSize(final int columnsSize);
 
 	/**
 	 * Set a particular column to a version.
 	 * 
 	 * @param pos position of the column
 	 * @param versionInfo the version
-	 * 
-	 * @return this
 	 */
-	IMatrix<R> setColumnVersionInfo(
+	void setColumnVersionInfo(
 			final int pos,
 			final VersionInfo versionInfo);
 
@@ -158,25 +154,21 @@ public interface IMatrix<R extends IRow<?, ?>>
 	 * 
 	 * @return this
 	 */
-	IMatrix<R> setColumnVersionInfos(
+	void setColumnVersionInfos(
 			final VersionInfo versionInfo);
 
-	/**
-	 * Set the values of the column version numbers for marshalled matrices.
-	 * <p>
-	 * <strong>Outside of testing, clients should never call this
-	 * method.</strong> In normal usage, these values are populated when an
-	 * object in marshalled.
-	 * 
-	 * @param columnVersions values
-	 */
-	@VisibleForTesting
-	void setColumnVersions(final List<Integer> columnVersions);
 
 	IMatrix<R> setDescription(
 			@CheckForNull final String description);
 
-	IMatrix<R> setInNeedOfNewColumnVersion(final int position);
+	/**
+	 * Set the column at {@code position} as in need of a new
+	 * {@link VersionInfo}. Which means to set {@link #getColumnVersionInfos()}
+	 * {@code .get(position)} to {@code null}.
+	 * 
+	 * @param position the column that needs the new {@code VersionInfo}
+	 */
+	void setInNeedOfNewColumnVersion(final int position);
 
 	void setInNeedOfNewVersion();
 

@@ -19,7 +19,6 @@ import java.util.List;
 
 import javax.xml.bind.annotation.adapters.XmlJavaTypeAdapter;
 
-import edu.upenn.cis.ppod.model.StandardCharacter;
 import edu.upenn.cis.ppod.model.StandardMatrix;
 import edu.upenn.cis.ppod.model.StandardRow;
 
@@ -33,7 +32,7 @@ public interface IStandardMatrix extends IMatrix<StandardRow> {
 	 * 
 	 * @return the characters contained in this matrix
 	 */
-	List<StandardCharacter> getCharacters();
+	List<IStandardCharacter> getCharacters();
 
 	/**
 	 * Set the characters.
@@ -49,7 +48,7 @@ public interface IStandardMatrix extends IMatrix<StandardRow> {
 	 * 
 	 * @return the characters removed as a result of this operation
 	 */
-	List<StandardCharacter> setCharacters(
-			final List<? extends StandardCharacter> characters);
+	List<IStandardCharacter> setCharacters(
+			final List<? extends IStandardCharacter> characters);
 
 }

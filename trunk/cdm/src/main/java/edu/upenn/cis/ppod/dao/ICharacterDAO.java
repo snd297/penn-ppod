@@ -15,6 +15,7 @@
  */
 package edu.upenn.cis.ppod.dao;
 
+import edu.upenn.cis.ppod.imodel.IStandardCharacter;
 import edu.upenn.cis.ppod.model.StandardCharacter;
 
 /**
@@ -32,5 +33,5 @@ public interface ICharacterDAO extends IDAO<StandardCharacter, Long> {
 	 * @return the persisted {@link Character} with the given pPOD id, or
 	 *         {@code null} if there is no such {@link Character}
 	 */
-	StandardCharacter getCharacterByPPodId(String pPodID);
+	IStandardCharacter getCharacterByPPodId(String pPodID);
 }

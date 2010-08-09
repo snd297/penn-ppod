@@ -36,9 +36,11 @@ import javax.persistence.Table;
 import javax.xml.bind.Unmarshaller;
 import javax.xml.bind.annotation.XmlAttribute;
 import javax.xml.bind.annotation.XmlElementWrapper;
+import javax.xml.bind.annotation.adapters.XmlAdapter;
 
 import com.google.common.base.Preconditions;
 
+import edu.upenn.cis.ppod.imodel.IStandardCharacter;
 import edu.upenn.cis.ppod.imodel.IStandardMatrix;
 import edu.upenn.cis.ppod.util.IVisitor;
 
@@ -50,8 +52,23 @@ import edu.upenn.cis.ppod.util.IVisitor;
  */
 @Entity
 @Table(name = StandardCharacter.TABLE)
-public class StandardCharacter extends UUPPodEntityWithXmlId {
+public class StandardCharacter extends UUPPodEntityWithXmlId
+		implements IStandardCharacter {
 
+	public static class Adapter extends XmlAdapter<StandardCharacter, IStandardCharacter> {
+
+		@Override
+		public StandardCharacter marshal(final IStandardCharacter character) {
+			return (StandardCharacter) character;
+		}
+
+		@Override
+		public IStandardCharacter unmarshal(final StandardCharacter character) {
+			return character;
+		}
+	}
+
+	
 	public final static String TABLE = "STANDARD_CHARACTER";
 
 	public final static String JOIN_COLUMN = TABLE + "_ID";
@@ -67,11 +84,13 @@ public class StandardCharacter extends UUPPodEntityWithXmlId {
 	/**
 	 * The matrix that owns this {@code StandardCharacter}.
 	 */
-	@ManyToOne(optional = false)
-	@JoinColumn(name = StandardMatrix.JOIN_COLUMN, insertable = false,
+	@ManyToOne(optional = false, targetEntity = StandardMatrix.class)
+	@JoinColumn(
+			name = StandardMatrix.JOIN_COLUMN,
+			insertable = false,
 			updatable = false)
 	@CheckForNull
-	private StandardMatrix parent;
+	private IStandardMatrix parent;
 
 	/**
 	 * The states that this character can have. For example, 0->"absent",
@@ -99,18 +118,7 @@ public class StandardCharacter extends UUPPodEntityWithXmlId {
 		super.accept(visitor);
 	}
 
-	/**
-	 * Add <code>state</code> into this <code>Character</code>.
-	 * <p>
-	 * Calling this handles both sides of the <code>Character</code><->
-	 * <code>CharacterState</code>s. relationship.
-	 * 
-	 * @param state what we're adding
-	 * 
-	 * @return the previous state that was associated with
-	 *         {@code state.getStateNumber()} or {@code null} if there was no
-	 *         such state.
-	 */
+	/** {@inheritDoc} */
 	@CheckForNull
 	public StandardState addState(final StandardState state) {
 		Preconditions.checkNotNull(state);
@@ -169,26 +177,14 @@ public class StandardCharacter extends UUPPodEntityWithXmlId {
 		return parent;
 	}
 
-	/**
-	 * Get the state with the given state number, or {@code null} if there is no
-	 * such state.
-	 * 
-	 * @param stateNumber the state number of the state we want to retrieve
-	 * 
-	 * @return the state with the given state number, or {@code null} if there
-	 *         is no such state.
-	 */
+	/** {@inheritDoc} */
 	@CheckForNull
 	public StandardState getState(final Integer stateNumber) {
 		checkNotNull(stateNumber);
 		return states.get(stateNumber);
 	}
 
-	/**
-	 * Get the states of this character.
-	 * 
-	 * @return the states of this character.
-	 */
+	/** {@inheritDoc} */
 	public Set<StandardState> getStates() {
 		return newHashSet(states.values());
 	}
@@ -213,12 +209,7 @@ public class StandardCharacter extends UUPPodEntityWithXmlId {
 		super.setInNeedOfNewVersion();
 	}
 
-	/**
-	 * Set the label of this <code>StdChar</code>.
-	 * 
-	 * @param label the value for the label.
-	 * @return this <code>Character</code>.
-	 */
+	/** {@inheritDoc} */
 	public StandardCharacter setLabel(final String label) {
 		Preconditions.checkNotNull(label);
 		if (label.equals(this.label)) {
@@ -230,27 +221,10 @@ public class StandardCharacter extends UUPPodEntityWithXmlId {
 		return this;
 	}
 
-	/**
-	 * Set{@code matrix} as this character's parent.
-	 * <p>
-	 * Not public because it's meant to be called from classes who create the
-	 * {@code Character}<-> {@code CharacterStateMatrix} relationship.
-	 * <p>
-	 * Unlike {@code MolecularCharacter}s, standard characters can belong to
-	 * exactly one matrix.
-	 * 
-	 * @param matrix to be added.
-	 * @return <code>true</code> if <code>matrix</code> was not there before,
-	 *         <code>false</code> otherwise
-	 * 
-	 * @throw IllegalStateException if this character already belongs to a
-	 *        different matrix - it's fine to keep calling this method with the
-	 *        same matrix
-	 */
-	StandardCharacter setParent(
-			@CheckForNull final StandardMatrix parent) {
+	/** {@inheritDoc} */
+	public void setParent(
+			@CheckForNull final IStandardMatrix parent) {
 		this.parent = parent;
-		return this;
 	}
 
 	/**

@@ -36,6 +36,7 @@ import javax.xml.bind.annotation.XmlIDREF;
 
 import edu.umd.cs.findbugs.annotations.CheckForNull;
 import edu.umd.cs.findbugs.annotations.Nullable;
+import edu.upenn.cis.ppod.imodel.IStandardCharacter;
 import edu.upenn.cis.ppod.imodel.IStandardMatrix;
 import edu.upenn.cis.ppod.util.IVisitor;
 
@@ -254,7 +255,7 @@ public class StandardCell extends Cell<StandardState, StandardRow> {
 					position != null,
 					"this cell has not been assigned a row: it's position attribute is null");
 
-		final StandardCharacter character =
+		final IStandardCharacter character =
 					getParent().getParent().getCharacters().get(position);
 
 		newElements = newHashSet();
@@ -275,7 +276,7 @@ public class StandardCell extends Cell<StandardState, StandardRow> {
 					getPosition() != null,
 					"this cell has not been assigned a row: it's position attribute is null");
 
-		final StandardCharacter standardCharacter =
+		final IStandardCharacter standardCharacter =
 					getParent().getParent().getCharacters().get(getPosition());
 
 		final StandardState newElement =

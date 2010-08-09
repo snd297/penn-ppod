@@ -37,6 +37,7 @@ import edu.upenn.cis.ppod.dao.ITreeDAO;
 import edu.upenn.cis.ppod.dao.ITreeSetDAO;
 import edu.upenn.cis.ppod.dao.IUserDAO;
 import edu.upenn.cis.ppod.dao.IVersionInfoDAO;
+import edu.upenn.cis.ppod.imodel.IStandardCharacter;
 import edu.upenn.cis.ppod.model.OTU;
 import edu.upenn.cis.ppod.model.OTUSet;
 import edu.upenn.cis.ppod.model.StandardCharacter;
@@ -137,11 +138,11 @@ public class HibernateDAOFactory implements IDAOFactory {
 			GenericHibernateDAO<StandardCharacter, Long> implements
 			ICharacterDAO {
 
-		public StandardCharacter getCharacterByPPodId(String pPodId) {
+		public IStandardCharacter getCharacterByPPodId(String pPodId) {
 			if (pPodId == null) {
 				return null;
 			}
-			return (StandardCharacter) getSession().getNamedQuery(
+			return (IStandardCharacter) getSession().getNamedQuery(
 					StandardCharacter.class.getSimpleName() + "-getByPPodId")
 					.setParameter("pPodId", pPodId).uniqueResult();
 		}
