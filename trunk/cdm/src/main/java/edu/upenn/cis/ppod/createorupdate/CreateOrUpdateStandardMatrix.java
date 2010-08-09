@@ -36,10 +36,10 @@ import edu.upenn.cis.ppod.dao.IDAO;
 import edu.upenn.cis.ppod.imodel.IAttachment;
 import edu.upenn.cis.ppod.imodel.ICell;
 import edu.upenn.cis.ppod.imodel.INewVersionInfo;
+import edu.upenn.cis.ppod.imodel.IStandardMatrix;
 import edu.upenn.cis.ppod.imodel.IWithPPodId;
 import edu.upenn.cis.ppod.model.StandardCell;
 import edu.upenn.cis.ppod.model.StandardCharacter;
-import edu.upenn.cis.ppod.model.StandardMatrix;
 import edu.upenn.cis.ppod.model.StandardRow;
 import edu.upenn.cis.ppod.model.StandardState;
 import edu.upenn.cis.ppod.thirdparty.injectslf4j.InjectLogger;
@@ -49,7 +49,7 @@ import edu.upenn.cis.ppod.thirdparty.injectslf4j.InjectLogger;
  */
 final class CreateOrUpdateStandardMatrix
 		extends
-		CreateOrUpdateMatrix<StandardMatrix, StandardRow, StandardCell, StandardState>
+		CreateOrUpdateMatrix<IStandardMatrix, StandardRow, StandardCell, StandardState>
 		implements ICreateOrUpdateStandardMatrix {
 
 	private final Provider<StandardCharacter> standardCharacterProvider;
@@ -83,8 +83,8 @@ final class CreateOrUpdateStandardMatrix
 
 	@Override
 	public void createOrUpdateMatrix(
-			final StandardMatrix dbMatrix,
-			final StandardMatrix sourceMatrix) {
+			final IStandardMatrix dbMatrix,
+			final IStandardMatrix sourceMatrix) {
 		final String METHOD = "createOrUpdate(...)";
 		logger.debug("{}: entering", METHOD);
 		checkNotNull(dbMatrix);

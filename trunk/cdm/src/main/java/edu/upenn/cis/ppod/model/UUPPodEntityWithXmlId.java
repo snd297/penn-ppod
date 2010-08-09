@@ -15,8 +15,6 @@
  */
 package edu.upenn.cis.ppod.model;
 
-import static com.google.common.base.Preconditions.checkNotNull;
-
 import java.util.UUID;
 
 import javax.annotation.Nullable;
@@ -48,25 +46,24 @@ public abstract class UUPPodEntityWithXmlId
 	 * We call the xml attribute {@code "docId"} so it's format agnostic: we
 	 * could be serializing to, eg, JSON.
 	 */
-	@XmlAttribute(name = "docId")
 	@XmlID
+	@XmlAttribute
 	@Nullable
 	public String getDocId() {
 		return docId;
 	}
 
 	/** {@inheritDoc} */
-	public UUPPodEntityWithXmlId setDocId() {
-		return setDocId(UUID.randomUUID().toString());
+	public void setDocId() {
+		setDocId(UUID.randomUUID().toString());
 	}
 
 	/** {@inheritDoc} */
-	public UUPPodEntityWithXmlId setDocId(final String docId) {
-		checkNotNull(docId);
+	public void setDocId(final String docId) {
+		//checkNotNull(docId);
 		if (getDocId() != null) {
-			throw new IllegalStateException("xmlId was already set");
+			throw new IllegalStateException("docId was already set");
 		}
 		this.docId = docId;
-		return this;
 	}
 }

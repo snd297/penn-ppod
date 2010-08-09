@@ -377,19 +377,12 @@ public abstract class Matrix<R extends IRow<?, ?>>
 		return this;
 	}
 
-	/**
-	 * {@code null} out {@code versionInfo} and the {@link versionInfo} of the
-	 * owning study.
-	 * 
-	 * @return this {@code CharacterStateMatrix}
-	 */
 	@Override
-	public Matrix<R> setInNeedOfNewVersion() {
+	public void setInNeedOfNewVersion() {
 		if (getParent() != null) {
 			getParent().setInNeedOfNewVersion();
 		}
 		super.setInNeedOfNewVersion();
-		return this;
 	}
 
 	/**
@@ -424,16 +417,13 @@ public abstract class Matrix<R extends IRow<?, ?>>
 	 * 
 	 * @param otuSet new {@code OTUSet} for this matrix, or {@code null} if
 	 *            we're destroying the association
-	 * 
-	 * @return this
 	 */
-	public Matrix<R> setParent(
+	public void setParent(
 			@CheckForNull final IOTUSet otuSet) {
 		checkState(
 				getOTUKeyedRows() != null,
 				"getOTUKeyedRows() returned null - has the conrete class been constructed correctly, w/ its OTU->X dependency?");
 		this.parent = otuSet;
 		getOTUKeyedRows().setOTUs();
-		return this;
 	}
 }

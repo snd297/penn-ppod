@@ -29,6 +29,7 @@ import edu.upenn.cis.ppod.imodel.IWithDocId;
  * <p>
  * We only made this class public because we were getting this exception when we
  * marshalled (full stack trace at bottom of file):
+ * 
  * <pre>
  * Caused by: java.lang.IllegalAccessException: Class org.hibernate.proxy.pojo.javassist.JavassistLazyInitializer can not access a member of class edu.upenn.cis.ppod.model.PersistentObjectWithXmlId with modifiers "public"
  * 	at sun.reflect.Reflection.ensureMemberAccess(Reflection.java:65)
@@ -54,23 +55,22 @@ public abstract class PersistentObjectWithXmlId
 	@Nullable
 	private String docId;
 
-	@XmlAttribute(name = "docId")
 	@XmlID
+	@XmlAttribute
 	@Nullable
 	public String getDocId() {
 		return docId;
 	}
 
-	public IWithDocId setDocId() {
-		return setDocId(UUID.randomUUID().toString());
+	public void setDocId() {
+		setDocId(UUID.randomUUID().toString());
 	}
 
-	public IWithDocId setDocId(final String docId) {
+	public void setDocId(final String docId) {
 		if (getDocId() != null) {
 			throw new IllegalStateException("docId was already set");
 		}
 		this.docId = docId;
-		return this;
 	}
 }
 

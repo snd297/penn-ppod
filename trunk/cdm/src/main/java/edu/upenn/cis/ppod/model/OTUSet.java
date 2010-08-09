@@ -46,12 +46,13 @@ import javax.xml.bind.annotation.adapters.XmlAdapter;
 
 import com.google.common.annotations.VisibleForTesting;
 
+import edu.upenn.cis.ppod.imodel.IChild;
 import edu.upenn.cis.ppod.imodel.IDNAMatrix;
 import edu.upenn.cis.ppod.imodel.IDNASequenceSet;
 import edu.upenn.cis.ppod.imodel.ILabeled;
 import edu.upenn.cis.ppod.imodel.IOTU;
 import edu.upenn.cis.ppod.imodel.IOTUSet;
-import edu.upenn.cis.ppod.imodel.IOTUSetChild;
+import edu.upenn.cis.ppod.imodel.IStandardMatrix;
 import edu.upenn.cis.ppod.imodel.IStudy;
 import edu.upenn.cis.ppod.imodel.ITreeSet;
 import edu.upenn.cis.ppod.util.IVisitor;
@@ -98,9 +99,12 @@ public class OTUSet
 	/** The column that stores the label. */
 	public static final String LABEL_COLUMN = "LABEL";
 
-	@OneToMany(mappedBy = "parent", cascade = CascadeType.ALL,
-			orphanRemoval = true)
-	private final Set<StandardMatrix> standardMatrices = newHashSet();
+	@OneToMany(
+			mappedBy = "parent",
+			cascade = CascadeType.ALL,
+			orphanRemoval = true,
+			targetEntity = StandardMatrix.class)
+	private final Set<IStandardMatrix> standardMatrices = newHashSet();
 
 	/** Nullable free-form description. */
 	@Column(name = DESCRIPTION_COLUMN, nullable = true)
@@ -165,7 +169,7 @@ public class OTUSet
 	public void accept(final IVisitor visitor) {
 		checkNotNull(visitor);
 		visitor.visitOTUSet(this);
-		for (final IOTUSetChild child : getChildren()) {
+		for (final IChild<IOTUSet> child : getChildren()) {
 			child.accept(visitor);
 		}
 		super.accept(visitor);
@@ -265,8 +269,8 @@ public class OTUSet
 	 * 
 	 * @return {@code matrix}
 	 */
-	public StandardMatrix addStandardMatrix(
-			final StandardMatrix matrix) {
+	public IStandardMatrix addStandardMatrix(
+			final IStandardMatrix matrix) {
 		checkNotNull(matrix);
 		if (standardMatrices.add(matrix)) {
 			matrix.setParent(this);
@@ -306,8 +310,8 @@ public class OTUSet
 	}
 
 	@VisibleForTesting
-	Set<IOTUSetChild> getChildren() {
-		final Set<IOTUSetChild> children = newHashSet();
+	Set<IChild<IOTUSet>> getChildren() {
+		final Set<IChild<IOTUSet>> children = newHashSet();
 		children.addAll(getOTUs());
 		children.addAll(getStandardMatrices());
 		children.addAll(getDNAMatrices());
@@ -386,12 +390,12 @@ public class OTUSet
 		return parent;
 	}
 
-	public Set<StandardMatrix> getStandardMatrices() {
+	public Set<IStandardMatrix> getStandardMatrices() {
 		return Collections.unmodifiableSet(standardMatrices);
 	}
 
 	@XmlElement(name = "matrix")
-	protected Set<StandardMatrix> getStandardMatricesModifiable() {
+	protected Set<IStandardMatrix> getStandardMatricesModifiable() {
 		return standardMatrices;
 	}
 
@@ -453,7 +457,7 @@ public class OTUSet
 	 * @return {@code true} if this OTU set contained the specified matrix,
 	 *         {@code false} otherwise
 	 */
-	public boolean removeStandardMatrix(final StandardMatrix matrix) {
+	public boolean removeStandardMatrix(final IStandardMatrix matrix) {
 		checkNotNull(matrix);
 		if (getStandardMatricesModifiable().remove(matrix)) {
 			matrix.setParent(null);
@@ -477,31 +481,27 @@ public class OTUSet
 	 * Setter.
 	 * 
 	 * @param description the description
-	 * 
-	 * @return this {@code OTUSet}
 	 */
-	public OTUSet setDescription(@CheckForNull final String description) {
+	public void setDescription(@CheckForNull final String description) {
 		if (equal(getDescription(), description)) {
 
 		} else {
 			this.description = description;
 			setInNeedOfNewVersion();
 		}
-		return this;
 	}
 
 	@Override
-	public OTUSet setInNeedOfNewVersion() {
+	public void setInNeedOfNewVersion() {
 		final IStudy study = getParent();
 		if (study != null) {
 			study.setInNeedOfNewVersion();
 		}
 		super.setInNeedOfNewVersion();
-		return this;
 	}
 
 	/** {@inheritDoc} */
-	public OTUSet setLabel(final String label) {
+	public void setLabel(final String label) {
 		checkNotNull(label);
 		if (label.equals(getLabel())) {
 
@@ -509,7 +509,6 @@ public class OTUSet
 			this.label = label;
 			setInNeedOfNewVersion();
 		}
-		return this;
 	}
 
 	/** {@inheritDoc} */
@@ -540,31 +539,30 @@ public class OTUSet
 
 	private void setOTUSetOnChildren() {
 		// Now let's let everyone know about the new OTUs
-		for (final IOTUSetChild otu : getOTUs()) {
+		for (final IChild<IOTUSet> otu : getOTUs()) {
 			otu.setParent(this);
 		}
 
-		for (final IOTUSetChild matrix : getStandardMatrices()) {
+		for (final IChild<IOTUSet> matrix : getStandardMatrices()) {
 			matrix.setParent(this);
 		}
 
-		for (final IOTUSetChild matrix : getDNAMatrices()) {
+		for (final IChild<IOTUSet> matrix : getDNAMatrices()) {
 			matrix.setParent(this);
 		}
 
-		for (final IOTUSetChild sequenceSet : getDNASequenceSets()) {
+		for (final IChild<IOTUSet> sequenceSet : getDNASequenceSets()) {
 			sequenceSet.setParent(this);
 		}
 
-		for (final IOTUSetChild treeSet : getTreeSets()) {
+		for (final IChild<IOTUSet> treeSet : getTreeSets()) {
 			treeSet.setParent(this);
 		}
 	}
 
 	/** {@inheritDoc} */
-	public OTUSet setParent(@CheckForNull final IStudy parent) {
+	public void setParent(@CheckForNull final IStudy parent) {
 		this.parent = parent;
-		return this;
 	}
 
 	/**

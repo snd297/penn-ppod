@@ -109,17 +109,16 @@ public class DNASequence extends Sequence<IDNASequenceSet> {
 	}
 
 	@Override
-	public DNASequence setInNeedOfNewVersion() {
+	public void setInNeedOfNewVersion() {
 		if (getParent() != null) {
 			getParent().setInNeedOfNewVersion();
 		}
 		super.setInNeedOfNewVersion();
-		return this;
 	}
 
-	public DNASequence setParent(
+	/** {@inheritDoc} */
+	public void setParent(
 			@CheckForNull final IDNASequenceSet parent) {
 		this.parent = parent;
-		return this;
 	}
 }

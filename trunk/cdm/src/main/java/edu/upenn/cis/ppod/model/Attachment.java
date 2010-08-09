@@ -250,13 +250,11 @@ public class Attachment extends UUPPodEntity implements IAttachment {
 	}
 
 	@Override
-	public Attachment setInNeedOfNewVersion() {
+	public void setInNeedOfNewVersion() {
 		if (attachee != null) {
 			attachee.setInNeedOfNewVersion();
 		}
 		super.setInNeedOfNewVersion();
-
-		return this;
 	}
 
 	/**

@@ -109,9 +109,7 @@ public class DNARow extends Row<IDNACell, IDNAMatrix> implements IDNARow {
 	}
 
 	/** {@inheritDoc} */
-	public IDNARow setParent(final IDNAMatrix parent) {
+	public void setParent(final IDNAMatrix parent) {
 		this.parent = parent;
-		return this;
 	}
-
 }

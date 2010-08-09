@@ -17,7 +17,6 @@ package edu.upenn.cis.ppod.imodel;
 
 import java.util.List;
 
-import javax.annotation.CheckForNull;
 import javax.annotation.Nullable;
 import javax.xml.bind.annotation.adapters.XmlJavaTypeAdapter;
 
@@ -25,7 +24,7 @@ import edu.upenn.cis.ppod.model.TreeSet;
 
 @XmlJavaTypeAdapter(TreeSet.Adapter.class)
 public interface ITreeSet
-		extends ILabeled, IUUPPodEntity, IOTUSetChild, IVisitable, IWithDocId {
+		extends ILabeled, IUUPPodEntity, IChild<IOTUSet>, IVisitable, IWithDocId {
 
 	/**
 	 * Add {@code tree} to this {@code TreeSet}.
@@ -50,8 +49,6 @@ public interface ITreeSet
 	List<ITree> getTrees();
 
 	ITreeSet setLabel(String label);
-
-	ITreeSet setParent(@CheckForNull final IOTUSet parent);
 
 	List<ITree> setTrees(List<? extends ITree> trees);
 

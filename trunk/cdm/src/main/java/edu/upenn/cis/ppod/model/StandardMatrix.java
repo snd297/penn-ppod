@@ -32,9 +32,11 @@ import javax.persistence.OrderColumn;
 import javax.persistence.Table;
 import javax.xml.bind.Unmarshaller;
 import javax.xml.bind.annotation.XmlElement;
+import javax.xml.bind.annotation.adapters.XmlAdapter;
 
 import com.google.inject.Inject;
 
+import edu.upenn.cis.ppod.imodel.IStandardMatrix;
 import edu.upenn.cis.ppod.util.IVisitor;
 
 /**
@@ -44,7 +46,22 @@ import edu.upenn.cis.ppod.util.IVisitor;
  */
 @Entity
 @Table(name = StandardMatrix.TABLE)
-public class StandardMatrix extends Matrix<StandardRow> {
+public class StandardMatrix extends Matrix<StandardRow> implements
+		IStandardMatrix {
+
+	public static class Adapter extends
+			XmlAdapter<StandardMatrix, IStandardMatrix> {
+
+		@Override
+		public StandardMatrix marshal(final IStandardMatrix matrix) {
+			return (StandardMatrix) matrix;
+		}
+
+		@Override
+		public IStandardMatrix unmarshal(final StandardMatrix matrix) {
+			return matrix;
+		}
+	}
 
 	/** This entity's table name. */
 	public static final String TABLE = "STANDARD_MATRIX";
@@ -102,11 +119,7 @@ public class StandardMatrix extends Matrix<StandardRow> {
 		setColumnsSize(getCharacters().size());
 	}
 
-	/**
-	 * Get the characters contained in this matrix.
-	 * 
-	 * @return the characters contained in this matrix
-	 */
+	/** {@inheritDoc} */
 	public List<StandardCharacter> getCharacters() {
 		return Collections.unmodifiableList(characters);
 	}
@@ -133,18 +146,7 @@ public class StandardMatrix extends Matrix<StandardRow> {
 	}
 
 	/**
-	 * Set the characters.
-	 * <p>
-	 * This method is does not reorder the columns of the matrix.
-	 * <p>
-	 * This method does reorder {@link #getColumnVersionInfos()}.
-	 * <p>
-	 * It is legal for two characters to have the same label, but not to be
-	 * {@code .equals} to each other.
-	 * 
-	 * @param characters the new characters
-	 * 
-	 * @return the characters removed as a result of this operation
+	 * {@inheritDoc}
 	 * 
 	 * @throws IllegalArgumentException if any of {code newCharacters} is
 	 *             {@code null}

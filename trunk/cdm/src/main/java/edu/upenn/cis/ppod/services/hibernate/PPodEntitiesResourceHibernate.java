@@ -31,8 +31,8 @@ import com.google.inject.Provider;
 
 import edu.upenn.cis.ppod.imodel.IOTU;
 import edu.upenn.cis.ppod.imodel.IOTUSet;
+import edu.upenn.cis.ppod.imodel.IStandardMatrix;
 import edu.upenn.cis.ppod.imodel.ITreeSet;
-import edu.upenn.cis.ppod.model.StandardMatrix;
 import edu.upenn.cis.ppod.services.ppodentity.PPodEntities;
 import edu.upenn.cis.ppod.thirdparty.util.HibernateUtil;
 import edu.upenn.cis.ppod.util.ISetXmlIdVisitor;
@@ -74,7 +74,7 @@ class PPodEntitiesResourceHibernate implements
 		final List<Object> queryResults = session.createQuery(query).list();
 		final PPodEntities pPodEntities = pPodEntitiesProvider.get();
 
-		final Set<StandardMatrix> addedMatrices = newHashSet();
+		final Set<IStandardMatrix> addedMatrices = newHashSet();
 		final Set<ITreeSet> addedTreeSets = newHashSet();
 
 		// final List<Object> flattenedQueryResults = newArrayList();
@@ -103,9 +103,9 @@ class PPodEntitiesResourceHibernate implements
 				// Note that otu set may have already been added in any of the
 				// other if clauses: Hibernate identity takes care of us
 				pPodEntities.addOTUSet(otuSet);
-			} else if (queryResult instanceof StandardMatrix) {
+			} else if (queryResult instanceof IStandardMatrix) {
 
-				final StandardMatrix matrix = (StandardMatrix) queryResult;
+				final IStandardMatrix matrix = (IStandardMatrix) queryResult;
 
 				// Extra insurance against accidental sync with database
 				session.setReadOnly(matrix, true);
@@ -151,7 +151,7 @@ class PPodEntitiesResourceHibernate implements
 			// Now we clean up our response so we don't include any extra
 			// matrices or tree sets that were pulled over with the OTUSet's
 			for (final IOTUSet otuSet : pPodEntities.getOTUSets()) {
-				for (final StandardMatrix matrix : otuSet
+				for (final IStandardMatrix matrix : otuSet
 						.getStandardMatrices()) {
 					if (addedMatrices.contains(matrix)) {
 						otuSet.addStandardMatrix(matrix);

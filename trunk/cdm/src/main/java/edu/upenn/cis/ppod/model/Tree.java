@@ -131,12 +131,11 @@ public class Tree extends UUPPodEntity implements ITree {
 	}
 
 	@Override
-	public Tree setInNeedOfNewVersion() {
+	public void setInNeedOfNewVersion() {
 		if (parent != null) {
 			parent.setInNeedOfNewVersion();
 		}
 		super.setInNeedOfNewVersion();
-		return this;
 	}
 
 	/**

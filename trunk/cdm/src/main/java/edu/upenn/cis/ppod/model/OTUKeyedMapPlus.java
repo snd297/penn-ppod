@@ -28,15 +28,15 @@ import java.util.Set;
 import javax.annotation.CheckForNull;
 import javax.annotation.Nullable;
 
+import edu.upenn.cis.ppod.imodel.IChild;
 import edu.upenn.cis.ppod.imodel.IOTU;
 import edu.upenn.cis.ppod.imodel.IOTUKeyedMapPlus;
-import edu.upenn.cis.ppod.imodel.IVisitableChild;
-import edu.upenn.cis.ppod.imodel.IOTUSetChild;
+import edu.upenn.cis.ppod.imodel.IOTUSet;
 import edu.upenn.cis.ppod.util.IVisitor;
 import edu.upenn.cis.ppod.util.OTUSomethingPair;
 
 /**
- * An {@code OTU -> PersistentObject} map with {@code equals}-unique values.
+ * An {@code IOTU -> PersistentObject} map with {@code equals}-unique values.
  * <p>
  * Even though this object is guaranteed to have unique values, we don't call it
  * a bidirectional map because it doesn't support an inverse view. It will
@@ -45,7 +45,7 @@ import edu.upenn.cis.ppod.util.OTUSomethingPair;
  * 
  * @author Sam Donnelly
  */
-public class OTUKeyedMapPlus<V extends IVisitableChild<P>, P extends IOTUSetChild, OP extends OTUSomethingPair<V>>
+public class OTUKeyedMapPlus<V extends IChild<P>, P extends IChild<IOTUSet>, OP extends OTUSomethingPair<V>>
 		implements IOTUKeyedMapPlus<V, P, OP> {
 
 	private P parent;
@@ -165,7 +165,7 @@ public class OTUKeyedMapPlus<V extends IVisitableChild<P>, P extends IOTUSetChil
 	}
 
 	public OTUKeyedMapPlus<V, P, OP> setOTUs() {
-		final IOTUSetChild parent = getParent();
+		final IChild<IOTUSet> parent = getParent();
 
 		final Set<IOTU> otusToBeRemoved = newHashSet();
 		for (final IOTU otu : getValues().keySet()) {

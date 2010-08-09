@@ -23,11 +23,10 @@ import javax.xml.bind.annotation.adapters.XmlJavaTypeAdapter;
 import edu.umd.cs.findbugs.annotations.CheckForNull;
 import edu.umd.cs.findbugs.annotations.Nullable;
 import edu.upenn.cis.ppod.model.OTUSet;
-import edu.upenn.cis.ppod.model.StandardMatrix;
 
 @XmlJavaTypeAdapter(OTUSet.Adapter.class)
 public interface IOTUSet
-		extends ILabeled, IWithDocId, IUUPPodEntity {
+		extends ILabeled, IWithDocId, IUUPPodEntity, IChild<IStudy> {
 
 	/**
 	 * Add a DNA matrix to this OTU set.
@@ -71,13 +70,14 @@ public interface IOTUSet
 	/**
 	 * Add {@code matrix} to this {@code OTUSet}.
 	 * <p>
-	 * Also handles the {@code StandardMatrix->OTUSet} side of the relationship.
+	 * Also handles the {@code IStandardMatrix->IOTUSet} side of the
+	 * relationship.
 	 * 
 	 * @param matrix matrix we're adding
 	 * 
 	 * @return {@code matrix}
 	 */
-	StandardMatrix addStandardMatrix(StandardMatrix matrix);
+	IStandardMatrix addStandardMatrix(IStandardMatrix matrix);
 
 	/**
 	 * Add a tree set to this OTU set.
@@ -112,22 +112,13 @@ public interface IOTUSet
 	String getLabel();
 
 	/**
-	 * Get the {@code IOTU}s that make up this {@code OTUSet}.
+	 * Get the {@code IOTU}s that make up this {@code IOTUSet}.
 	 * 
-	 * @return the {@code IOTU}s that make up this {@code OTUSet}
+	 * @return the {@code IOTU}s that make up this {@code IOTUSet}
 	 */
 	List<IOTU> getOTUs();
 
-	/**
-	 * Get the study to which this OTU set belongs. Will be {@code null} when
-	 * this OTU set does not belong to a {@code Study}.
-	 * 
-	 * @return the study to which this OTU set belongs
-	 */
-	@Nullable
-	IStudy getParent();
-
-	Set<StandardMatrix> getStandardMatrices();
+	Set<IStandardMatrix> getStandardMatrices();
 
 	/**
 	 * Get the tree sets contained in this OTU set.
@@ -164,7 +155,7 @@ public interface IOTUSet
 	 * @return {@code true} if this OTU set contained the specified matrix,
 	 *         {@code false} otherwise
 	 */
-	boolean removeStandardMatrix(StandardMatrix matrix);
+	boolean removeStandardMatrix(IStandardMatrix matrix);
 
 	/**
 	 * Remove {@code treeSet} from this OTU set.
@@ -180,19 +171,15 @@ public interface IOTUSet
 	 * Setter.
 	 * 
 	 * @param description the description
-	 * 
-	 * @return this
 	 */
-	IOTUSet setDescription(@CheckForNull String description);
+	void setDescription(@CheckForNull String description);
 
 	/**
-	 * Set the label of this <code>OTUSet</code>.
+	 * Set the label of this OTU set
 	 * 
 	 * @param label the label
-	 * 
-	 * @return this
 	 */
-	IOTUSet setLabel(String label);
+	void setLabel(String label);
 
 	/**
 	 * Set this {@code IOTUSet}'s {@code IOTU}s.
@@ -206,20 +193,5 @@ public interface IOTUSet
 	 *         in their original order
 	 */
 	List<IOTU> setOTUs(final List<? extends IOTU> otus);
-
-	/**
-	 * Set the parent study.
-	 * 
-	 * @param study parent
-	 * 
-	 * @return this
-	 */
-	IOTUSet setParent(@CheckForNull IStudy parent);
-
-	/**
-	 * Mark this {@code IOTUSet} and {@link #getParent()} as in need of a new
-	 * pPOD version.
-	 */
-	IOTUSet setInNeedOfNewVersion();
 
 }

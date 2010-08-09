@@ -31,6 +31,7 @@ import edu.upenn.cis.ppod.imodel.IDNAMatrix;
 import edu.upenn.cis.ppod.imodel.IDNASequenceSet;
 import edu.upenn.cis.ppod.imodel.INewVersionInfo;
 import edu.upenn.cis.ppod.imodel.IOTUSet;
+import edu.upenn.cis.ppod.imodel.IStandardMatrix;
 import edu.upenn.cis.ppod.imodel.IStudy;
 import edu.upenn.cis.ppod.imodel.ITreeSet;
 import edu.upenn.cis.ppod.imodel.IWithPPodId;
@@ -269,7 +270,7 @@ final class CreateOrUpdateStudy implements ICreateOrUpdateStudy {
 			final IOTUSet incomingOTUSet) {
 
 		// Let's delete matrices missing from the incoming OTU set
-		for (final StandardMatrix dbMatrix : dbOTUSet.getStandardMatrices()) {
+		for (final IStandardMatrix dbMatrix : dbOTUSet.getStandardMatrices()) {
 			if (null == findIf(
 							incomingOTUSet.getStandardMatrices(),
 							compose(
@@ -280,9 +281,9 @@ final class CreateOrUpdateStudy implements ICreateOrUpdateStudy {
 			}
 		}
 
-		for (final StandardMatrix incomingMatrix : incomingOTUSet
+		for (final IStandardMatrix incomingMatrix : incomingOTUSet
 				.getStandardMatrices()) {
-			StandardMatrix dbMatrix;
+			IStandardMatrix dbMatrix;
 			if (null == (dbMatrix =
 					findIf(
 							dbOTUSet.getStandardMatrices(),

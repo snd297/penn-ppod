@@ -36,6 +36,7 @@ import javax.xml.bind.annotation.XmlIDREF;
 
 import edu.umd.cs.findbugs.annotations.CheckForNull;
 import edu.umd.cs.findbugs.annotations.Nullable;
+import edu.upenn.cis.ppod.imodel.IStandardMatrix;
 import edu.upenn.cis.ppod.util.IVisitor;
 
 /**
@@ -120,7 +121,7 @@ public class StandardCell extends Cell<StandardState, StandardRow> {
 
 		final Integer position = getPosition();
 
-		final StandardMatrix matrix = row.getParent();
+		final IStandardMatrix matrix = row.getParent();
 
 		checkState(matrix != null,
 				"this cell's row has not had a matrix assigned");
@@ -185,9 +186,9 @@ public class StandardCell extends Cell<StandardState, StandardRow> {
 		this.elements = elements;
 	}
 
-	public StandardCell setParent(final StandardRow parent) {
+	/** {@inheritDoc} */
+	public void setParent(final StandardRow parent) {
 		this.parent = parent;
-		return this;
 	}
 
 	/**

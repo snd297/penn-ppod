@@ -16,19 +16,13 @@
 package edu.upenn.cis.ppod.dao;
 
 import static com.google.common.collect.Lists.newArrayList;
-import static com.google.common.collect.Maps.newHashMap;
-import static edu.upenn.cis.ppod.util.CollectionsUtil.nullFillAndSet;
 
 import java.io.Serializable;
-import java.util.ArrayList;
 import java.util.List;
-import java.util.Map;
 
 import org.hibernate.Session;
 
 import edu.upenn.cis.ppod.dao.hibernate.IObjectWithLongIdDAOHibernate;
-import edu.upenn.cis.ppod.model.StandardCell;
-import edu.upenn.cis.ppod.model.StandardRow;
 
 /**
  * A {@code IObjectWithLongIdDAO} that stores the entities that operations were
@@ -112,7 +106,6 @@ public class TestObjectWithLongIdDAO implements IObjectWithLongIdDAOHibernate {
 		throw new UnsupportedOperationException();
 	}
 
-	private Map<StandardRow, List<StandardCell>> rowsToCells = newHashMap();
 
 	/**
 	 * Does nothing.
@@ -120,24 +113,9 @@ public class TestObjectWithLongIdDAO implements IObjectWithLongIdDAOHibernate {
 	 * @entity ignored
 	 */
 	public void makePersistent(final Object entity) {
-		if (entity instanceof StandardCell) {
-			final StandardCell cell = (StandardCell) entity;
-			final StandardRow row = cell.getParent();
-			if (rowsToCells.containsKey(cell.getParent())) {
-
-			} else {
-				rowsToCells.put(row, new ArrayList<StandardCell>());
-			}
-			nullFillAndSet(rowsToCells.get(row), row.getCellPosition(cell),
-						cell);
-		} else {
-
-		}
+		return;
 	}
 
-	public Map<StandardRow, List<StandardCell>> getRowsToCells() {
-		return rowsToCells;
-	}
 
 	/**
 	 * Does nothing and returns.

@@ -23,7 +23,7 @@ import javax.annotation.Nullable;
 import edu.upenn.cis.ppod.model.Sequence;
 
 public interface ISequenceSet<S extends Sequence<?>>
-		extends ILabeled, IOTUSetChild, IUUPPodEntity {
+		extends ILabeled, IChild<IOTUSet>, IUUPPodEntity {
 
 	/**
 	 * Get the sequence indexed by {@code otu}.

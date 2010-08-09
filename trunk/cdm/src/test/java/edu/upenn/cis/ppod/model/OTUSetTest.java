@@ -42,6 +42,7 @@ import edu.upenn.cis.ppod.imodel.IAttachment;
 import edu.upenn.cis.ppod.imodel.IDNAMatrix;
 import edu.upenn.cis.ppod.imodel.IDNASequenceSet;
 import edu.upenn.cis.ppod.imodel.IOTU;
+import edu.upenn.cis.ppod.imodel.IStandardMatrix;
 import edu.upenn.cis.ppod.imodel.IStudy;
 import edu.upenn.cis.ppod.imodel.ITreeSet;
 import edu.upenn.cis.ppod.util.TestVisitor;
@@ -386,11 +387,11 @@ public class OTUSetTest {
 
 	@Test
 	public void removeStandardMatrix() {
-		final StandardMatrix matrix0 =
+		final IStandardMatrix matrix0 =
 				otuSet.addStandardMatrix(standardMatrixProvider.get());
-		final StandardMatrix matrix1 =
+		final IStandardMatrix matrix1 =
 				otuSet.addStandardMatrix(standardMatrixProvider.get());
-		final StandardMatrix matrix2 =
+		final IStandardMatrix matrix2 =
 				otuSet.addStandardMatrix(standardMatrixProvider.get());
 
 		otuSet.unsetInNeedOfNewVersion();
@@ -509,9 +510,9 @@ public class OTUSetTest {
 	public void setLabel() {
 		otuSet.unsetInNeedOfNewVersion();
 		final String otuSetLabel = "otu-set-label";
-		final OTUSet returnedOTUSet = otuSet.setLabel(otuSetLabel);
+		otuSet.setLabel(otuSetLabel);
 		assertTrue(otuSet.isInNeedOfNewVersion());
-		assertSame(returnedOTUSet, otuSet);
+
 		otuSet.isInNeedOfNewVersion();
 		assertEquals(otuSet.getLabel(), otuSetLabel);
 

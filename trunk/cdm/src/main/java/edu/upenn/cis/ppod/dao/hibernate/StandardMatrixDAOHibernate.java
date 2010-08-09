@@ -24,6 +24,7 @@ import java.util.Set;
 import com.google.inject.Inject;
 
 import edu.upenn.cis.ppod.dao.IStandardMatrixDAO;
+import edu.upenn.cis.ppod.imodel.IStandardMatrix;
 import edu.upenn.cis.ppod.model.StandardMatrix;
 import edu.upenn.cis.ppod.thirdparty.dao.hibernate.GenericHibernateDAO;
 import edu.upenn.cis.ppod.util.IPair;
@@ -44,8 +45,8 @@ final class StandardMatrixDAOHibernate extends
 		this.pairFactory = orderedPairFactory;
 	}
 
-	public StandardMatrix getByPPodId(final String pPodId) {
-		return (StandardMatrix) getSession().getNamedQuery(
+	public IStandardMatrix getByPPodId(final String pPodId) {
+		return (IStandardMatrix) getSession().getNamedQuery(
 				StandardMatrix.class.getSimpleName() + "-getByPPodId")
 				.setParameter("pPodId", pPodId).uniqueResult();
 	}

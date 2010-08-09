@@ -64,15 +64,34 @@ public class MergeSequenceSetsTest {
 		final IDNASequenceSet trgSeqSet = dnaSequenceSetProvider.get();
 
 		final IOTUSet trgOTUSet = otuSetProvider.get();
-		trgOTUSet.addOTU(otuProvider.get().setLabel("otu-0"));
-		trgOTUSet.addOTU(otuProvider.get().setLabel("otu-1"));
-		trgOTUSet.addOTU(otuProvider.get().setLabel("otu-2"));
+
+		final IOTU targOTU0 = otuProvider.get();
+		targOTU0.setLabel("otu-0");
+		trgOTUSet.addOTU(targOTU0);
+
+		final IOTU targOTU1 = otuProvider.get();
+		targOTU1.setLabel("otu-1");
+		trgOTUSet.addOTU(targOTU1);
+
+		final IOTU targOTU2 = otuProvider.get();
+		targOTU2.setLabel("otu-2");
+		trgOTUSet.addOTU(targOTU2);
+
 		trgOTUSet.addDNASequenceSet(trgSeqSet);
 
 		final IOTUSet srcOTUSet = otuSetProvider.get();
-		srcOTUSet.addOTU(otuProvider.get().setLabel("otu-0"));
-		srcOTUSet.addOTU(otuProvider.get().setLabel("otu-1"));
-		srcOTUSet.addOTU(otuProvider.get().setLabel("otu-2"));
+
+		final IOTU srcOTU0 = otuProvider.get();
+		srcOTU0.setLabel("otu-0");
+		srcOTUSet.addOTU(srcOTU0);
+
+		final IOTU srcOTU1 = otuProvider.get();
+		srcOTU0.setLabel("otu-1");
+		srcOTUSet.addOTU(srcOTU1);
+
+		final IOTU srcOTU2 = otuProvider.get();
+		srcOTU0.setLabel("otu-2");
+		srcOTUSet.addOTU(srcOTU2);
 
 		srcOTUSet.addDNASequenceSet(srcSeqSet);
 

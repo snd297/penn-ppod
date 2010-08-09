@@ -39,24 +39,23 @@ public abstract class PPodEntityWXmlId extends PPodEntity implements IWithDocId 
 
 	/** {@inheritDoc} */
 	@XmlID
-	@XmlAttribute(name = "docId")
+	@XmlAttribute
 	@Nullable
 	public String getDocId() {
 		return docId;
 	}
 
 	/** {@inheritDoc} */
-	public IWithDocId setDocId() {
-		return setDocId(UUID.randomUUID().toString());
+	public void setDocId() {
+		setDocId(UUID.randomUUID().toString());
 	}
 
 	/** {@inheritDoc} */
-	public IWithDocId setDocId(final String docId) {
+	public void setDocId(final String docId) {
 		if (getDocId() != null) {
 			throw new IllegalStateException("docId was already set");
 		}
 		this.docId = docId;
-		return this;
 	}
 
 }
