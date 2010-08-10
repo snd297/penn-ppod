@@ -22,23 +22,23 @@ import com.google.inject.Provider;
 
 import edu.upenn.cis.ppod.TestGroupDefs;
 import edu.upenn.cis.ppod.dao.TestObjectWithLongIdDAO;
+import edu.upenn.cis.ppod.imodel.IDNASequence;
 import edu.upenn.cis.ppod.imodel.IDNASequenceSet;
 import edu.upenn.cis.ppod.imodel.INewVersionInfo;
 import edu.upenn.cis.ppod.imodel.IOTU;
 import edu.upenn.cis.ppod.imodel.IOTUSet;
-import edu.upenn.cis.ppod.model.DNASequence;
 import edu.upenn.cis.ppod.model.ModelAssert;
 
 @Test(groups = TestGroupDefs.FAST, dependsOnGroups = TestGroupDefs.INIT)
 public class MergeSequenceSetsTest {
 	@Inject
-	private IMergeSequenceSets.IFactory<IDNASequenceSet, DNASequence> mergeDNASequenceSetsFactory;
+	private IMergeSequenceSets.IFactory<IDNASequenceSet, IDNASequence> mergeDNASequenceSetsFactory;
 
 	@Inject
 	private Provider<IDNASequenceSet> dnaSequenceSetProvider;
 
 	@Inject
-	private Provider<DNASequence> dnaSequenceProvider;
+	private Provider<IDNASequence> dnaSequenceProvider;
 
 	@Inject
 	private Provider<IOTUSet> otuSetProvider;
@@ -54,7 +54,7 @@ public class MergeSequenceSetsTest {
 
 	@Test
 	public void modifySequencesKeepLength() {
-		final IMergeSequenceSets<IDNASequenceSet, DNASequence> mergeSeqSets =
+		final IMergeSequenceSets<IDNASequenceSet, IDNASequence> mergeSeqSets =
 					mergeDNASequenceSetsFactory.create(dao, newVersionInfo);
 
 		final IDNASequenceSet srcSeqSet =
@@ -76,22 +76,22 @@ public class MergeSequenceSetsTest {
 
 		srcOTUSet.addDNASequenceSet(srcSeqSet);
 
-		final DNASequence srcSeq0 =
-					(DNASequence) dnaSequenceProvider
+		final IDNASequence srcSeq0 =
+					(IDNASequence) dnaSequenceProvider
 							.get()
 							.setSequence("ACT")
 							.setAccession("jkjkj")
 							.setName("jkejfke")
 							.setDescription("jkfjeijf");
-		final DNASequence srcSeq1 =
-					(DNASequence) dnaSequenceProvider
+		final IDNASequence srcSeq1 =
+					(IDNASequence) dnaSequenceProvider
 							.get()
 							.setSequence("TCA")
 							.setAccession("jjijk")
 							.setName("jefeji")
 							.setDescription("ejfiejiji");
-		final DNASequence srcSeq2 =
-					(DNASequence) dnaSequenceProvider
+		final IDNASequence srcSeq2 =
+					(IDNASequence) dnaSequenceProvider
 							.get()
 							.setSequence("ATC")
 							.setAccession("jfje")
@@ -119,7 +119,7 @@ public class MergeSequenceSetsTest {
 
 	@Test
 	public void shortenSequences() {
-		final IMergeSequenceSets<IDNASequenceSet, DNASequence> mergeSeqSets =
+		final IMergeSequenceSets<IDNASequenceSet, IDNASequence> mergeSeqSets =
 					mergeDNASequenceSetsFactory.create(dao, newVersionInfo);
 
 		final IDNASequenceSet srcSeqSet =
@@ -141,22 +141,22 @@ public class MergeSequenceSetsTest {
 
 		srcOTUSet.addDNASequenceSet(srcSeqSet);
 
-		final DNASequence srcSeq0 =
-					(DNASequence) dnaSequenceProvider
+		final IDNASequence srcSeq0 =
+					(IDNASequence) dnaSequenceProvider
 							.get()
 							.setSequence("ACT")
 							.setAccession("jkjkj")
 							.setName("jkejfke")
 							.setDescription("jkfjeijf");
-		final DNASequence srcSeq1 =
-					(DNASequence) dnaSequenceProvider
+		final IDNASequence srcSeq1 =
+					(IDNASequence) dnaSequenceProvider
 							.get()
 							.setSequence("TCA")
 							.setAccession("jjijk")
 							.setName("jefeji")
 							.setDescription("ejfiejiji");
-		final DNASequence srcSeq2 =
-					(DNASequence) dnaSequenceProvider
+		final IDNASequence srcSeq2 =
+					(IDNASequence) dnaSequenceProvider
 							.get()
 							.setSequence("ATC")
 							.setAccession("jfje")
@@ -186,7 +186,7 @@ public class MergeSequenceSetsTest {
 
 	@Test
 	public void mergeOnBlankTarget() {
-		final IMergeSequenceSets<IDNASequenceSet, DNASequence> mergeSeqSets =
+		final IMergeSequenceSets<IDNASequenceSet, IDNASequence> mergeSeqSets =
 				mergeDNASequenceSetsFactory.create(dao, newVersionInfo);
 
 		final IDNASequenceSet srcSeqSet =
@@ -208,22 +208,22 @@ public class MergeSequenceSetsTest {
 
 		srcOTUSet.addDNASequenceSet(srcSeqSet);
 
-		final DNASequence srcSeq0 =
-				(DNASequence) dnaSequenceProvider
+		final IDNASequence srcSeq0 =
+				(IDNASequence) dnaSequenceProvider
 						.get()
 						.setSequence("ACT")
 						.setAccession("jkjkj")
 						.setName("jkejfke")
 						.setDescription("jkfjeijf");
-		final DNASequence srcSeq1 =
-				(DNASequence) dnaSequenceProvider
+		final IDNASequence srcSeq1 =
+				(IDNASequence) dnaSequenceProvider
 						.get()
 						.setSequence("TCA")
 						.setAccession("jjijk")
 						.setName("jefeji")
 						.setDescription("ejfiejiji");
-		final DNASequence srcSeq2 =
-				(DNASequence) dnaSequenceProvider
+		final IDNASequence srcSeq2 =
+				(IDNASequence) dnaSequenceProvider
 						.get()
 						.setSequence("ATC")
 						.setAccession("jfje")

@@ -17,14 +17,14 @@ package edu.upenn.cis.ppod.util;
 
 import javax.xml.bind.annotation.XmlElement;
 
+import edu.upenn.cis.ppod.imodel.IDNASequence;
 import edu.upenn.cis.ppod.imodel.IOTU;
-import edu.upenn.cis.ppod.model.DNASequence;
 
 /**
  * @author Sam Donnelly
  * 
  */
-public class OTUDNASequencePair extends OTUSomethingPair<DNASequence> {
+public class OTUDNASequencePair extends OTUSomethingPair<IDNASequence> {
 	/**
 	 * For JAXB.
 	 */
@@ -32,7 +32,7 @@ public class OTUDNASequencePair extends OTUSomethingPair<DNASequence> {
 
 	@XmlElement
 	@Override
-	public DNASequence getSecond() {
+	public IDNASequence getSecond() {
 		return super.getSecond();
 	}
 
@@ -40,13 +40,13 @@ public class OTUDNASequencePair extends OTUSomethingPair<DNASequence> {
 	 * This seemingly redundant setter method added for the sake of JAXB.
 	 */
 	@Override
-	public OTUDNASequencePair setSecond(final DNASequence sequence) {
+	public OTUDNASequencePair setSecond(final IDNASequence sequence) {
 		return (OTUDNASequencePair) super.setSecond(sequence);
 	}
 
 	public static OTUDNASequencePair of(
 			final IOTU first,
-			final DNASequence second) {
+			final IDNASequence second) {
 		final OTUDNASequencePair otuSequencePair = new OTUDNASequencePair();
 		otuSequencePair.setFirst(first);
 		otuSequencePair.setSecond(second);

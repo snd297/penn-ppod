@@ -26,6 +26,7 @@ import com.google.inject.Inject;
 import com.google.inject.Provider;
 
 import edu.upenn.cis.ppod.TestGroupDefs;
+import edu.upenn.cis.ppod.imodel.IDNASequence;
 import edu.upenn.cis.ppod.imodel.IOTU;
 import edu.upenn.cis.ppod.imodel.IOTUSet;
 import edu.upenn.cis.ppod.imodel.ISequence;
@@ -106,7 +107,7 @@ public class MolecularSequenceTest {
 		final IOTU otu0 = otuProvider.get();
 		otuSet.addOTU(otu0);
 
-		final ISequenceSet<DNASequence> sequenceSet =
+		final ISequenceSet<IDNASequence> sequenceSet =
 				dnaSequenceSetProvider.get();
 
 		sequenceSet.setParent(otuSet);

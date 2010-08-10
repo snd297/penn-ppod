@@ -31,6 +31,7 @@ import javax.xml.bind.annotation.adapters.XmlAdapter;
 
 import com.google.inject.Inject;
 
+import edu.upenn.cis.ppod.imodel.IDNASequence;
 import edu.upenn.cis.ppod.imodel.IDNASequenceSet;
 import edu.upenn.cis.ppod.imodel.IOTU;
 import edu.upenn.cis.ppod.util.IVisitor;
@@ -42,8 +43,9 @@ import edu.upenn.cis.ppod.util.IVisitor;
  */
 @Entity
 @Table(name = DNASequenceSet.TABLE)
-public class DNASequenceSet extends SequenceSet<DNASequence> implements
-		IDNASequenceSet {
+public class DNASequenceSet
+		extends SequenceSet<IDNASequence>
+		implements IDNASequenceSet {
 
 	public static class Adapter extends
 			XmlAdapter<DNASequenceSet, IDNASequenceSet> {
@@ -105,13 +107,13 @@ public class DNASequenceSet extends SequenceSet<DNASequence> implements
 	}
 
 	@Override
-	public DNASequence getSequence(final IOTU otu) {
+	public IDNASequence getSequence(final IOTU otu) {
 		checkNotNull(otu);
 		return getOTUKeyedSequences().get(otu);
 	}
 
 	@Override
-	public Map<IOTU, DNASequence> getSequences() {
+	public Map<IOTU, IDNASequence> getSequences() {
 		return Collections.unmodifiableMap(
 				getOTUKeyedSequences()
 						.getValues());
@@ -119,9 +121,9 @@ public class DNASequenceSet extends SequenceSet<DNASequence> implements
 
 	@Override
 	@CheckForNull
-	public DNASequence putSequence(
+	public IDNASequence putSequence(
 			final IOTU otu,
-			final DNASequence sequence) {
+			final IDNASequence sequence) {
 		checkNotNull(otu);
 		checkNotNull(sequence);
 		checkArgument(sequence.getSequence() != null,

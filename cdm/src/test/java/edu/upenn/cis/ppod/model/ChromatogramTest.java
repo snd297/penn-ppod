@@ -27,6 +27,7 @@ import com.google.inject.Inject;
 import com.google.inject.Provider;
 
 import edu.upenn.cis.ppod.TestGroupDefs;
+import edu.upenn.cis.ppod.imodel.IDNASequence;
 
 /**
  * {@link Chromatogram} tests.
@@ -91,7 +92,7 @@ public class ChromatogramTest {
 	@Test
 	public void setSequence() {
 		final Chromatogram chromatogram = chromatogramProvider.get();
-		final DNASequence sequence = dnaSequenceProvider.get();
+		final IDNASequence sequence = dnaSequenceProvider.get();
 
 		final Chromatogram returnedChromatogram =
 				chromatogram.setSequence(sequence);
