@@ -123,7 +123,7 @@ public class StandardRows
 			CascadeType.REMOVE,
 			CascadeType.DETACH,
 			CascadeType.REFRESH },
-			orphanRemoval = true, 
+			orphanRemoval = true,
 			targetEntity = StandardRow.class)
 	@JoinTable(inverseJoinColumns = @JoinColumn(name = StandardRow.JOIN_COLUMN))
 	@MapKeyJoinColumn(name = OTU.JOIN_COLUMN)
@@ -138,27 +138,22 @@ public class StandardRows
 	}
 
 	/** {@inheritDoc} */
-	public StandardRows setOTUs() {
+	public void setOTUs() {
 		rows.setOTUs();
-		return this;
 	}
 
 	/**
 	 * Set the owner of this {@code StandardRows}.
 	 * 
 	 * @param parent the owner
-	 * 
-	 * @return this
 	 */
-	public StandardRows setParent(final IStandardMatrix parent) {
+	public void setParent(final IStandardMatrix parent) {
 		rows.setParent(parent);
-		return this;
 	}
 
 	@SuppressWarnings("unused")
-	private StandardRows setValues(final Map<IOTU, IStandardRow> values) {
+	private void setValues(final Map<IOTU, IStandardRow> values) {
 		rows.setValues(values);
-		return this;
 	}
 
 }

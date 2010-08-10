@@ -86,10 +86,8 @@ public interface IOTUKeyedMap<V extends IChild<?>>
 	 * See {@code IOTUKeyedMapPlus} for a subinterface with a parent-setting
 	 * operation
 	 * 
-	 * @return this
-	 * 
 	 * @see IOTUKeyedMapPlus
 	 */
-	IOTUKeyedMap<V> setOTUs();
+	void setOTUs();
 
 }

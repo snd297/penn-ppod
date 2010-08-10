@@ -87,13 +87,14 @@ public class OTUKeyedMapPlus<V extends IChild<P>, P extends IChild<IOTUSet>, OP 
 
 	}
 
-	public OTUKeyedMapPlus<V, P, OP> clear() {
+	/** {@inheritDoc} */
+	public void clear() {
 		if (getValues().size() == 0) {
-			return this;
+
+		} else {
+			getValues().clear();
+			setInNeedOfNewVersion();
 		}
-		getValues().clear();
-		setInNeedOfNewVersion();
-		return this;
 	}
 
 	/** {@code inheritDoc} */
@@ -164,7 +165,7 @@ public class OTUKeyedMapPlus<V extends IChild<P>, P extends IChild<IOTUSet>, OP 
 		}
 	}
 
-	public OTUKeyedMapPlus<V, P, OP> setOTUs() {
+	public void setOTUs() {
 		final IChild<IOTUSet> parent = getParent();
 
 		final Set<IOTU> otusToBeRemoved = newHashSet();
@@ -201,17 +202,16 @@ public class OTUKeyedMapPlus<V extends IChild<P>, P extends IChild<IOTUSet>, OP 
 				}
 			}
 		}
-		return this;
 	}
 
-	public OTUKeyedMapPlus<V, P, OP> setParent(final P parent) {
+	/** {@inheritDoc} */
+	public void setParent(final P parent) {
 		checkNotNull(parent);
 		this.parent = parent;
-		return this;
 	}
 
-	public OTUKeyedMapPlus<V, P, OP> setValues(final Map<IOTU, V> values) {
+	/** {@inheritDoc} */
+	public void setValues(final Map<IOTU, V> values) {
 		this.values = values;
-		return this;
 	}
 }
