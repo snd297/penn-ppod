@@ -25,7 +25,7 @@ public interface IOTUKeyedMapPlus<V extends IChild<?>, P extends IChild<IOTUSet>
 
 	void afterUnmarshal(final P parent);
 
-	IOTUKeyedMapPlus<V, P, OP> clear();
+	void clear();
 
 	/**
 	 * For marshalling {@code rows}. Since a {@code Map}'s key couldn't be an
@@ -35,8 +35,8 @@ public interface IOTUKeyedMapPlus<V extends IChild<?>, P extends IChild<IOTUSet>
 
 	P getParent();
 
-	IOTUKeyedMapPlus<V, P, OP> setParent(final P parent);
+	void setParent(final P parent);
 
-	IOTUKeyedMapPlus<V, P, OP> setValues(final Map<IOTU, V> values);
+	void setValues(final Map<IOTU, V> values);
 
 }

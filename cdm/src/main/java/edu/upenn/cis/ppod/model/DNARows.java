@@ -134,9 +134,8 @@ public class DNARows implements IOTUKeyedMap<IDNARow> {
 	}
 
 	/** {@inheritDoc} */
-	public DNARows setOTUs() {
+	public void setOTUs() {
 		rows.setOTUs();
-		return this;
 	}
 
 	/**

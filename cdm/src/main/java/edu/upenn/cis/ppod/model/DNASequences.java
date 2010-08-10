@@ -117,9 +117,9 @@ public class DNASequences
 		return sequences.put(key, value);
 	}
 
-	public DNASequences setOTUs() {
+	/** {@inheritDoc} */
+	public void setOTUs() {
 		sequences.setOTUs();
-		return this;
 	}
 
 	public DNASequences setParent(final IDNASequenceSet parent) {
