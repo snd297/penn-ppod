@@ -34,6 +34,7 @@ import edu.upenn.cis.ppod.imodel.ILabeled;
 import edu.upenn.cis.ppod.imodel.IOTU;
 import edu.upenn.cis.ppod.imodel.IOTUSet;
 import edu.upenn.cis.ppod.imodel.IPPodEntity;
+import edu.upenn.cis.ppod.imodel.ISequence;
 import edu.upenn.cis.ppod.imodel.ISequenceSet;
 import edu.upenn.cis.ppod.imodel.IStandardCell;
 import edu.upenn.cis.ppod.imodel.IStandardCharacter;
@@ -48,7 +49,7 @@ import edu.upenn.cis.ppod.imodel.IStandardRow;
  */
 public class ModelAssert {
 
-	public static <S extends Sequence<?>> void assertEqualsSequenceSets(
+	public static <S extends ISequence<?>> void assertEqualsSequenceSets(
 			final ISequenceSet<S> actualSeqSet,
 			final ISequenceSet<S> expectedSeqSet) {
 		assertEquals(actualSeqSet.getLabel(), actualSeqSet.getLabel());
@@ -76,8 +77,8 @@ public class ModelAssert {
 	}
 
 	public static void assertEqualsSequences(
-			final Sequence<?> actualSeq,
-			final Sequence<?> expectedSeq) {
+			final ISequence<?> actualSeq,
+			final ISequence<?> expectedSeq) {
 		assertEquals(actualSeq.getSequence(), expectedSeq.getSequence());
 		assertEquals(actualSeq.getAccession(), expectedSeq.getAccession());
 		assertEquals(actualSeq.getDescription(), expectedSeq.getDescription());

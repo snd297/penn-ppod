@@ -20,9 +20,8 @@ import java.util.Map;
 import javax.annotation.CheckForNull;
 import javax.annotation.Nullable;
 
-import edu.upenn.cis.ppod.model.Sequence;
 
-public interface ISequenceSet<S extends Sequence<?>>
+public interface ISequenceSet<S extends ISequence<?>>
 		extends ILabeled, IChild<IOTUSet>, IUUPPodEntity {
 
 	/**

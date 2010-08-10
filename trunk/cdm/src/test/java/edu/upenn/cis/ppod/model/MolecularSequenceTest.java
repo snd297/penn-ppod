@@ -28,6 +28,7 @@ import com.google.inject.Provider;
 import edu.upenn.cis.ppod.TestGroupDefs;
 import edu.upenn.cis.ppod.imodel.IOTU;
 import edu.upenn.cis.ppod.imodel.IOTUSet;
+import edu.upenn.cis.ppod.imodel.ISequence;
 import edu.upenn.cis.ppod.imodel.ISequenceSet;
 
 /**
@@ -85,7 +86,7 @@ public class MolecularSequenceTest {
 	 */
 	@Test(expectedExceptions = IllegalArgumentException.class)
 	public void setSequenceWithAnIllegalCharacter() {
-		final Sequence<?> sequence = dnaSequenceProvider
+		final ISequence<?> sequence = dnaSequenceProvider
 				.get();
 		final String sequenceString = "ACGTlC-T-A";
 		sequence.setSequence(sequenceString);

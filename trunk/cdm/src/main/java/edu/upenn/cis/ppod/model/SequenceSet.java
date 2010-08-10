@@ -37,6 +37,7 @@ import org.hibernate.annotations.Target;
 import edu.upenn.cis.ppod.imodel.IOTU;
 import edu.upenn.cis.ppod.imodel.IOTUKeyedMap;
 import edu.upenn.cis.ppod.imodel.IOTUSet;
+import edu.upenn.cis.ppod.imodel.ISequence;
 import edu.upenn.cis.ppod.imodel.ISequenceSet;
 import edu.upenn.cis.ppod.util.IVisitor;
 
@@ -53,7 +54,7 @@ import edu.upenn.cis.ppod.util.IVisitor;
  * @param <S>
  */
 @MappedSuperclass
-abstract class SequenceSet<S extends Sequence<?>>
+abstract class SequenceSet<S extends ISequence<?>>
 		extends UUPPodEntityWithDocId
 		implements ISequenceSet<S> {
 

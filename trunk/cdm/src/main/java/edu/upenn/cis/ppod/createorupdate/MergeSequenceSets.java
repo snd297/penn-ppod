@@ -27,10 +27,10 @@ import com.google.inject.assistedinject.Assisted;
 
 import edu.upenn.cis.ppod.imodel.INewVersionInfo;
 import edu.upenn.cis.ppod.imodel.IOTU;
+import edu.upenn.cis.ppod.imodel.ISequence;
 import edu.upenn.cis.ppod.imodel.ISequenceSet;
-import edu.upenn.cis.ppod.model.Sequence;
 
-final class MergeSequenceSets<SS extends ISequenceSet<S>, S extends Sequence<?>>
+final class MergeSequenceSets<SS extends ISequenceSet<S>, S extends ISequence<?>>
 		implements IMergeSequenceSets<SS, S> {
 
 	private final Provider<S> sequenceProvider;
