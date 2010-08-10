@@ -16,18 +16,17 @@
 package edu.upenn.cis.ppod.dao;
 
 import edu.upenn.cis.ppod.imodel.IStandardCharacter;
-import edu.upenn.cis.ppod.model.StandardCharacter;
 
 /**
  * A {@link Character} DAO.
  * 
  * @author Sam Donnelly
  */
-public interface ICharacterDAO extends IDAO<StandardCharacter, Long> {
+public interface ICharacterDAO extends IDAO<IStandardCharacter, Long> {
 
 	/**
-	 * Get the persisted {@link Character} with the given pPOD id, or {@code
-	 * null} if there is no such {@link Character}.
+	 * Get the persisted {@link Character} with the given pPOD id, or
+	 * {@code null} if there is no such {@link Character}.
 	 * 
 	 * @param pPodID the pPOD ID of the character we want
 	 * @return the persisted {@link Character} with the given pPOD id, or

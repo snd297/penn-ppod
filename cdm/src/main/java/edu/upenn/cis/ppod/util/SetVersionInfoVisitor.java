@@ -27,14 +27,14 @@ import edu.upenn.cis.ppod.imodel.INewVersionInfo;
 import edu.upenn.cis.ppod.imodel.IOTU;
 import edu.upenn.cis.ppod.imodel.IOTUSet;
 import edu.upenn.cis.ppod.imodel.IStandardCell;
+import edu.upenn.cis.ppod.imodel.IStandardCharacter;
 import edu.upenn.cis.ppod.imodel.IStandardMatrix;
 import edu.upenn.cis.ppod.imodel.IStandardRow;
 import edu.upenn.cis.ppod.imodel.IStudy;
 import edu.upenn.cis.ppod.imodel.ITree;
 import edu.upenn.cis.ppod.imodel.ITreeSet;
 import edu.upenn.cis.ppod.imodel.IVersioned;
-import edu.upenn.cis.ppod.model.StandardCharacter;
-import edu.upenn.cis.ppod.model.StandardState;
+import edu.upenn.cis.ppod.model.IStandardState;
 
 /**
  * Stuff that should be done at the very end of a pPOD session.
@@ -95,8 +95,8 @@ final class SetVersionInfoVisitor extends EmptyVisitor implements
 	}
 
 	@Override
-	public void visitStandardCharacter(final StandardCharacter standardCharacter) {
-		setNewVersionInfo(standardCharacter);
+	public void visitStandardCharacter(final IStandardCharacter character) {
+		setNewVersionInfo(character);
 	}
 
 	@Override
@@ -110,7 +110,7 @@ final class SetVersionInfoVisitor extends EmptyVisitor implements
 	}
 
 	@Override
-	public void visitStandardState(final StandardState standardState) {
+	public void visitStandardState(final IStandardState standardState) {
 		setNewVersionInfo(standardState);
 	}
 

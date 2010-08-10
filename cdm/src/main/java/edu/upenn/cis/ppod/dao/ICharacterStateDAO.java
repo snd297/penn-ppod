@@ -15,9 +15,9 @@
  */
 package edu.upenn.cis.ppod.dao;
 
-import edu.upenn.cis.ppod.model.StandardState;
+import edu.upenn.cis.ppod.model.IStandardState;
 
 /**
  * @author Sam Donnelly
  */
-public interface ICharacterStateDAO extends IDAO<StandardState, Long> {}
+public interface ICharacterStateDAO extends IDAO<IStandardState, Long> {}

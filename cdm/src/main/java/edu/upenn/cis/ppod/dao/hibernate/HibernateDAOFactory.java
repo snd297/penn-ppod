@@ -38,11 +38,11 @@ import edu.upenn.cis.ppod.dao.ITreeSetDAO;
 import edu.upenn.cis.ppod.dao.IUserDAO;
 import edu.upenn.cis.ppod.dao.IVersionInfoDAO;
 import edu.upenn.cis.ppod.imodel.IStandardCharacter;
+import edu.upenn.cis.ppod.model.IStandardState;
 import edu.upenn.cis.ppod.model.OTU;
 import edu.upenn.cis.ppod.model.OTUSet;
 import edu.upenn.cis.ppod.model.StandardCharacter;
 import edu.upenn.cis.ppod.model.StandardRow;
-import edu.upenn.cis.ppod.model.StandardState;
 import edu.upenn.cis.ppod.model.Tree;
 import edu.upenn.cis.ppod.model.TreeSet;
 import edu.upenn.cis.ppod.model.security.Role;
@@ -134,9 +134,9 @@ public class HibernateDAOFactory implements IDAOFactory {
 	/**
 	 * An {@link Character} Hibernate DAO.
 	 */
-	public static class CharacterDAOHibernate extends
-			GenericHibernateDAO<StandardCharacter, Long> implements
-			ICharacterDAO {
+	public static class CharacterDAOHibernate
+			extends GenericHibernateDAO<IStandardCharacter, Long>
+			implements ICharacterDAO {
 
 		public IStandardCharacter getCharacterByPPodId(String pPodId) {
 			if (pPodId == null) {
@@ -152,7 +152,7 @@ public class HibernateDAOFactory implements IDAOFactory {
 	 * A default {@link CharacterState} Hibernate DAO.
 	 */
 	public static class CharacterStateDAOHibernate extends
-			GenericHibernateDAO<StandardState, Long> implements
+			GenericHibernateDAO<IStandardState, Long> implements
 			ICharacterStateDAO {}
 
 	/**

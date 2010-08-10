@@ -20,8 +20,8 @@ import java.util.Set;
 import javax.annotation.CheckForNull;
 import javax.xml.bind.annotation.adapters.XmlJavaTypeAdapter;
 
+import edu.upenn.cis.ppod.model.IStandardState;
 import edu.upenn.cis.ppod.model.StandardCharacter;
-import edu.upenn.cis.ppod.model.StandardState;
 
 @XmlJavaTypeAdapter(StandardCharacter.Adapter.class)
 public interface IStandardCharacter
@@ -40,7 +40,7 @@ public interface IStandardCharacter
 	 *         such state.
 	 */
 	@CheckForNull
-	StandardState addState(StandardState state);
+	IStandardState addState(IStandardState state);
 
 	/**
 	 * Get the state with the given state number, or {@code null} if there is no
@@ -52,14 +52,14 @@ public interface IStandardCharacter
 	 *         is no such state.
 	 */
 	@CheckForNull
-	StandardState getState(Integer stateNumber);
+	IStandardState getState(Integer stateNumber);
 
 	/**
 	 * Get the states of this character.
 	 * 
 	 * @return the states of this character.
 	 */
-	Set<StandardState> getStates();
+	Set<IStandardState> getStates();
 
 	/**
 	 * Set the label of this character

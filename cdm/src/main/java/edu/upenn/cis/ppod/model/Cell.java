@@ -146,7 +146,7 @@ public abstract class Cell<E, R extends IRow<?, ?>>
 	abstract Set<E> getElementsModifiable();
 
 	/**
-	 * Used for serialization.
+	 * Can be used for serialization.
 	 * <p>
 	 * This method assumes that {@link #getType()} is non-null. So, for
 	 * instance, it assumes that the unmarshaller will have set the type before
@@ -155,7 +155,7 @@ public abstract class Cell<E, R extends IRow<?, ?>>
 	 * @throws IllegalStateException if {@code getType() == null}
 	 */
 	@CheckForNull
-	Set<E> getElementsXml() {
+	Set<E> getElementsIfMultiple() {
 		if (getType() == null) {
 			throw new IllegalStateException("getType == null");
 		}

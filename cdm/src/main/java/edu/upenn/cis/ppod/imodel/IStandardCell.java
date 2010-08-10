@@ -19,11 +19,11 @@ import java.util.Set;
 
 import javax.xml.bind.annotation.adapters.XmlJavaTypeAdapter;
 
+import edu.upenn.cis.ppod.model.IStandardState;
 import edu.upenn.cis.ppod.model.StandardCell;
-import edu.upenn.cis.ppod.model.StandardState;
 
 @XmlJavaTypeAdapter(StandardCell.Adapter.class)
-public interface IStandardCell extends ICell<StandardState, IStandardRow> {
+public interface IStandardCell extends ICell<IStandardState, IStandardRow> {
 
 	/**
 	 * Set the type to polymorphic with the appropriate states equivalent to
@@ -38,7 +38,7 @@ public interface IStandardCell extends ICell<StandardState, IStandardRow> {
 	 * @param elements the elements
 	 */
 	void setPolymorphicElements(
-			final Set<? extends StandardState> elements);
+			final Set<? extends IStandardState> elements);
 
 	/**
 	 * Set this cell to {@link Type.SINGLE} and its elements to contain just
@@ -46,6 +46,7 @@ public interface IStandardCell extends ICell<StandardState, IStandardRow> {
 	 * 
 	 * @param element the single element to be contained in this cell
 	 */
-	void setSingleElement(final StandardState element);
+	void setSingleElement(final IStandardState element);
 
+	void afterUnmarshal();
 }

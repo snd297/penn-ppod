@@ -24,6 +24,7 @@ import edu.upenn.cis.ppod.imodel.IDNASequenceSet;
 import edu.upenn.cis.ppod.imodel.IOTU;
 import edu.upenn.cis.ppod.imodel.IOTUSet;
 import edu.upenn.cis.ppod.imodel.IStandardCell;
+import edu.upenn.cis.ppod.imodel.IStandardCharacter;
 import edu.upenn.cis.ppod.imodel.IStandardMatrix;
 import edu.upenn.cis.ppod.imodel.IStandardRow;
 import edu.upenn.cis.ppod.imodel.IStudy;
@@ -31,9 +32,7 @@ import edu.upenn.cis.ppod.imodel.ITree;
 import edu.upenn.cis.ppod.imodel.ITreeSet;
 import edu.upenn.cis.ppod.model.AttachmentNamespace;
 import edu.upenn.cis.ppod.model.AttachmentType;
-import edu.upenn.cis.ppod.model.StandardCharacter;
-import edu.upenn.cis.ppod.model.StandardState;
-
+import edu.upenn.cis.ppod.model.IStandardState;
 
 /**
  * The visitor in the visitor pattern.
@@ -97,7 +96,7 @@ public interface IVisitor {
 	 * 
 	 * @param the character visitee
 	 */
-	void visitStandardCharacter(StandardCharacter standardCharacter);
+	void visitStandardCharacter(IStandardCharacter standardCharacter);
 
 	void visitStandardMatrix(IStandardMatrix matrix);
 
@@ -106,9 +105,9 @@ public interface IVisitor {
 	/**
 	 * Visit the character state.
 	 * 
-	 * @param characterState the character state visitee
+	 * @param state the visitee
 	 */
-	void visitStandardState(StandardState state);
+	void visitStandardState(IStandardState state);
 
 	/**
 	 * Visit the study

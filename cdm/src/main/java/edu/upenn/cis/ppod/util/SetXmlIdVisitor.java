@@ -17,10 +17,10 @@ package edu.upenn.cis.ppod.util;
 
 import edu.upenn.cis.ppod.imodel.IOTU;
 import edu.upenn.cis.ppod.imodel.IOTUSet;
+import edu.upenn.cis.ppod.imodel.IStandardCharacter;
 import edu.upenn.cis.ppod.model.AttachmentNamespace;
 import edu.upenn.cis.ppod.model.AttachmentType;
-import edu.upenn.cis.ppod.model.StandardCharacter;
-import edu.upenn.cis.ppod.model.StandardState;
+import edu.upenn.cis.ppod.model.IStandardState;
 
 /**
  * Set the doc id on {@code Attachment}s, {@code AttachmentNamespace}s,
@@ -61,7 +61,7 @@ final class SetXmlIdVisitor extends EmptyVisitor implements ISetXmlIdVisitor {
 	 * @param character target
 	 */
 	@Override
-	public void visitStandardCharacter(final StandardCharacter character) {
+	public void visitStandardCharacter(final IStandardCharacter character) {
 		if (character.getDocId() == null) {
 			character.setDocId();
 		}
@@ -73,7 +73,7 @@ final class SetXmlIdVisitor extends EmptyVisitor implements ISetXmlIdVisitor {
 	 * @param characterState target
 	 */
 	@Override
-	public void visitStandardState(final StandardState standardState) {
+	public void visitStandardState(final IStandardState standardState) {
 		if (standardState.getDocId() == null) {
 			standardState.setDocId();
 		}

@@ -125,8 +125,8 @@ public class DNACell
 	 */
 	@XmlElement(name = "nucleotide")
 	@Override
-	protected Set<DNANucleotide> getElementsXml() {
-		return super.getElementsXml();
+	protected Set<DNANucleotide> getElementsIfMultiple() {
+		return super.getElementsIfMultiple();
 	}
 
 	@Override

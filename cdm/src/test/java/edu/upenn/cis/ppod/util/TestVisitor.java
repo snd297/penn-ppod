@@ -28,6 +28,7 @@ import edu.upenn.cis.ppod.imodel.IDNASequenceSet;
 import edu.upenn.cis.ppod.imodel.IOTU;
 import edu.upenn.cis.ppod.imodel.IOTUSet;
 import edu.upenn.cis.ppod.imodel.IStandardCell;
+import edu.upenn.cis.ppod.imodel.IStandardCharacter;
 import edu.upenn.cis.ppod.imodel.IStandardMatrix;
 import edu.upenn.cis.ppod.imodel.IStandardRow;
 import edu.upenn.cis.ppod.imodel.IStudy;
@@ -35,8 +36,7 @@ import edu.upenn.cis.ppod.imodel.ITree;
 import edu.upenn.cis.ppod.imodel.ITreeSet;
 import edu.upenn.cis.ppod.model.AttachmentNamespace;
 import edu.upenn.cis.ppod.model.AttachmentType;
-import edu.upenn.cis.ppod.model.StandardCharacter;
-import edu.upenn.cis.ppod.model.StandardState;
+import edu.upenn.cis.ppod.model.IStandardState;
 
 /**
  * Made so we can test the various {@code accept(IVisitor)} methods.
@@ -112,7 +112,7 @@ public class TestVisitor extends EmptyVisitor {
 	}
 
 	@Override
-	public void visitStandardCharacter(final StandardCharacter character) {
+	public void visitStandardCharacter(final IStandardCharacter character) {
 		visited.add(character);
 	}
 
@@ -127,7 +127,7 @@ public class TestVisitor extends EmptyVisitor {
 	}
 
 	@Override
-	public void visitStandardState(final StandardState state) {
+	public void visitStandardState(final IStandardState state) {
 		visited.add(state);
 	}
 

@@ -26,8 +26,8 @@ import javax.persistence.JoinColumn;
 import javax.persistence.ManyToOne;
 import javax.persistence.Table;
 import javax.xml.bind.annotation.XmlAttribute;
+import javax.xml.bind.annotation.adapters.XmlAdapter;
 
-import com.google.common.base.Function;
 import com.google.inject.Inject;
 import com.google.inject.assistedinject.Assisted;
 
@@ -48,32 +48,21 @@ import edu.upenn.cis.ppod.util.IVisitor;
  */
 @Entity
 @Table(name = StandardState.TABLE)
-public class StandardState extends PPodEntityWDocId {
+public class StandardState extends PPodEntityWDocId implements IStandardState {
 
-	/**
-	 * For assisted injections.
-	 */
-	public static interface IFactory {
+	public static class Adapter extends
+			XmlAdapter<StandardState, IStandardState> {
 
-		/**
-		 * Create a character state with the given state number.
-		 * 
-		 * @param stateNumber the state number for the new state
-		 * @return the new state
-		 */
-		StandardState create(Integer stateNumber);
-	}
-
-	/**
-	 * {@link Function} wrapper of {@link #getStateNumber()}.
-	 */
-	public static final Function<StandardState, Integer> getStateNumber = new Function<StandardState, Integer>() {
-
-		public Integer apply(final StandardState from) {
-			return from.getStateNumber();
+		@Override
+		public StandardState marshal(final IStandardState state) {
+			return (StandardState) state;
 		}
 
-	};
+		@Override
+		public IStandardState unmarshal(final StandardState state) {
+			return state;
+		}
+	}
 
 	/** The name of this entity's table. */
 	public final static String TABLE = "STANDARD_STATE";
@@ -111,7 +100,8 @@ public class StandardState extends PPodEntityWDocId {
 	/**
 	 * The {@code Character} of which this is a state.
 	 */
-	@ManyToOne(fetch = FetchType.LAZY, optional = false, targetEntity = StandardCharacter.class)
+	@ManyToOne(fetch = FetchType.LAZY, optional = false,
+			targetEntity = StandardCharacter.class)
 	@JoinColumn(name = StandardCharacter.JOIN_COLUMN)
 	@CheckForNull
 	private IStandardCharacter parent;
@@ -200,7 +190,7 @@ public class StandardState extends PPodEntityWDocId {
 	 * 
 	 * @return this
 	 */
-	public StandardState setLabel(final String label) {
+	public IStandardState setLabel(final String label) {
 		checkNotNull(label);
 		if (label.equals(getLabel())) {
 
@@ -221,13 +211,10 @@ public class StandardState extends PPodEntityWDocId {
 	 * exists, is being severed.
 	 * 
 	 * @param character see description.
-	 * 
-	 * @return this {@code CharacterState}
 	 */
-	StandardState setParent(
+	public void setParent(
 			@CheckForNull final IStandardCharacter parent) {
 		this.parent = parent;
-		return this;
 	}
 
 	/**
@@ -243,7 +230,7 @@ public class StandardState extends PPodEntityWDocId {
 	 * 
 	 * @return this
 	 */
-	protected StandardState setStateNumber(final Integer stateNumber) {
+	protected IStandardState setStateNumber(final Integer stateNumber) {
 		checkNotNull(stateNumber);
 		checkState(this.stateNumber == null,
 				"this.stateNumber is non-null: this is a WORM property.");

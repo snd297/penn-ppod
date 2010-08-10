@@ -47,6 +47,7 @@ import edu.upenn.cis.ppod.model.DNAMatrix;
 import edu.upenn.cis.ppod.model.DNARow;
 import edu.upenn.cis.ppod.model.DNASequence;
 import edu.upenn.cis.ppod.model.DNASequenceSet;
+import edu.upenn.cis.ppod.model.IStandardState;
 import edu.upenn.cis.ppod.model.ModelModule;
 import edu.upenn.cis.ppod.model.OTU;
 import edu.upenn.cis.ppod.model.OTUSet;
@@ -95,10 +96,6 @@ public final class PPodModule extends AbstractModule {
 				FactoryProvider.newFactory(IMergeAttachments.IFactory.class,
 						IMergeAttachments.class));
 
-		bind(StandardState.IFactory.class).toProvider(
-				FactoryProvider.newFactory(StandardState.IFactory.class,
-						StandardState.class));
-
 		bind(StringPair.IFactory.class).toProvider(
 				FactoryProvider.newFactory(
 						StringPair.IFactory.class,
@@ -121,6 +118,9 @@ public final class PPodModule extends AbstractModule {
 
 		bind(IStandardMatrix.class).to(StandardMatrix.class);
 		bind(IStandardCharacter.class).to(StandardCharacter.class);
+		bind(IStandardState.IFactory.class).toProvider(
+				FactoryProvider.newFactory(IStandardState.IFactory.class,
+						StandardState.class));
 		bind(IStandardRow.class).to(StandardRow.class);
 		bind(IStandardCell.class).to(StandardCell.class);
 
