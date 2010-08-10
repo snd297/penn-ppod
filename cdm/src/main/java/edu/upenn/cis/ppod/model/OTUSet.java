@@ -175,68 +175,35 @@ public class OTUSet
 		super.accept(visitor);
 	}
 
-	/**
-	 * Add a DNA matrix to this OTU set.
-	 * 
-	 * @param matrix to be added to this OTU set
-	 * 
-	 * @return {@code matrix}
-	 */
-	public IDNAMatrix addDNAMatrix(final IDNAMatrix matrix) {
+	/** {@inheritDoc} */
+	public void addDNAMatrix(final IDNAMatrix matrix) {
 		checkNotNull(matrix);
 		if (dnaMatrices.add(matrix)) {
 			matrix.setParent(this);
 			setInNeedOfNewVersion();
 		}
-		return matrix;
 	}
 
-	/**
-	 * Add an {@code IDNASequenceSet}.
-	 * <p>
-	 * Also handles the {@code IDNASequenceSet->IOTUSet} side of the
-	 * relationship.
-	 * 
-	 * @param dnaSequenceSet the new {@code IDNASequenceSet}
-	 * 
-	 * @return {@code dnaSequenceSet}
-	 */
-	public IDNASequenceSet addDNASequenceSet(
+	/** {@inheritDoc} */
+	public void addDNASequenceSet(
 			final IDNASequenceSet sequenceSet) {
 		checkNotNull(sequenceSet);
 		if (dnaSequenceSets.add(sequenceSet)) {
 			sequenceSet.setParent(this);
 			setInNeedOfNewVersion();
 		}
-		return sequenceSet;
 	}
 
 	/**
-	 * Scaffolding code that does two things:
-	 * <ol>
-	 * <li>Adds <code>otu</code> to this {@code OTUSet}'s constituent
-	 * {@code OTU}s</li>
-	 * <li>Adds this {@code OTUSet} to {@code otu}'s {@code OTUSet}s</li>
-	 * </ol>
-	 * So it takes care of both sides of the <code>OTUSet</code><->
-	 * <code>OTU</code> relationship.
-	 * <p>
-	 * Assumes {@code otu} is in a detached state.
-	 * <p>
-	 * {@code otu} must have a label that is unique relative to this OTU set.
-	 * 
-	 * @param otu see description
-	 * 
-	 * @return {@code otu}
+	 * {@inheritDoc}
 	 * 
 	 * @throws IllegalArgumentException if this OTU set already has an OTU with
 	 *             {@code otu}'s label
 	 */
-	public IOTU addOTU(final IOTU otu) {
+	public void addOTU(final IOTU otu) {
 		checkNotNull(otu);
 		addOTUWithoutSetOTUsOnChildren(otu);
 		setOTUSetOnChildren();
-		return otu;
 	}
 
 	private IOTU addOTUWithoutSetOTUsOnChildren(final IOTU otu) {
@@ -260,40 +227,23 @@ public class OTUSet
 		return otu;
 	}
 
-	/**
-	 * Add {@code matrix} to this {@code OTUSet}.
-	 * <p>
-	 * Also handles the {@code StandardMatrix->OTUSet} side of the relationship.
-	 * 
-	 * @param matrix matrix we're adding
-	 * 
-	 * @return {@code matrix}
-	 */
-	public IStandardMatrix addStandardMatrix(
+	/** {@inheritDoc} */
+	public void addStandardMatrix(
 			final IStandardMatrix matrix) {
 		checkNotNull(matrix);
 		if (standardMatrices.add(matrix)) {
 			matrix.setParent(this);
 			setInNeedOfNewVersion();
 		}
-		return matrix;
 	}
 
-	/**
-	 * Add a tree set to this OTU set.
-	 * <p>
-	 * Also handles the {@code TreeSet->OTUSet} side of the relationship.
-	 * 
-	 * @param treeSet to be added
-	 * @return {@code treeSet}
-	 */
-	public ITreeSet addTreeSet(final ITreeSet treeSet) {
+	/** {@inheritDoc} */
+	public void addTreeSet(final ITreeSet treeSet) {
 		checkNotNull(treeSet);
 		if (getTreeSetsModifiable().add(treeSet)) {
 			treeSet.setParent(this);
 			setInNeedOfNewVersion();
 		}
-		return treeSet;
 	}
 
 	/**
@@ -331,6 +281,7 @@ public class OTUSet
 		return description;
 	}
 
+	/** {@inheritDoc} */
 	public Set<IDNAMatrix> getDNAMatrices() {
 		return Collections.unmodifiableSet(dnaMatrices);
 	}
@@ -340,6 +291,7 @@ public class OTUSet
 		return dnaMatrices;
 	}
 
+	/** {@inheritDoc} */
 	public Set<IDNASequenceSet> getDNASequenceSets() {
 		return Collections.unmodifiableSet(dnaSequenceSets);
 	}
@@ -390,6 +342,7 @@ public class OTUSet
 		return parent;
 	}
 
+	/** {@inheritDoc} */
 	public Set<IStandardMatrix> getStandardMatrices() {
 		return Collections.unmodifiableSet(standardMatrices);
 	}
@@ -399,11 +352,7 @@ public class OTUSet
 		return standardMatrices;
 	}
 
-	/**
-	 * Get the {@code TreeSet}s contained in this {@code OTUSet}.
-	 * 
-	 * @return the {@code TreeSet}s contained in this {@code OTUSet}
-	 */
+	/** {@inheritDoc} */
 	public Set<ITreeSet> getTreeSets() {
 		return Collections.unmodifiableSet(treeSets);
 	}

@@ -89,9 +89,8 @@ public class StandardRows
 		return true;
 	}
 
-	public StandardRows clear() {
+	public void clear() {
 		rows.clear();
-		return this;
 	}
 
 	public IStandardRow get(final IOTU key) {

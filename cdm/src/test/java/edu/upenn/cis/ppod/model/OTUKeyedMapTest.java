@@ -57,9 +57,12 @@ public class OTUKeyedMapTest {
 		final OTUSet otuSet = otuSetProvider.get();
 		matrix.setParent(otuSet);
 
-		final IOTU otu0 = otuSet.addOTU(otuProvider.get().setLabel("otu0"));
-		final IOTU otu1 = otuSet.addOTU(otuProvider.get().setLabel("otu1"));
-		final IOTU otu2 = otuSet.addOTU(otuProvider.get().setLabel("otu2"));
+		final IOTU otu0 = otuProvider.get().setLabel("otu0");
+		final IOTU otu1 = otuProvider.get().setLabel("otu1");
+		final IOTU otu2 = otuProvider.get().setLabel("otu2");
+		otuSet.addOTU(otu0);
+		otuSet.addOTU(otu1);
+		otuSet.addOTU(otu2);
 
 		final IDNARow row0 = dnaRowProvider.get();
 		final IDNARow row1 = dnaRowProvider.get();
@@ -106,9 +109,12 @@ public class OTUKeyedMapTest {
 		final OTUSet otuSet = otuSetProvider.get();
 		otuSet.addDNAMatrix(matrix);
 
-		final IOTU otu0 = otuSet.addOTU(otuProvider.get().setLabel("otu0"));
-		final IOTU otu1 = otuSet.addOTU(otuProvider.get().setLabel("otu1"));
-		final IOTU otu2 = otuSet.addOTU(otuProvider.get().setLabel("otu2"));
+		final IOTU otu0 = otuProvider.get().setLabel("otu0");
+		final IOTU otu1 = otuProvider.get().setLabel("otu1");
+		final IOTU otu2 = otuProvider.get().setLabel("otu2");
+		otuSet.addOTU(otu0);
+		otuSet.addOTU(otu1);
+		otuSet.addOTU(otu2);
 
 		final DNARow row0 = dnaRowProvider.get();
 		final DNARow row2 = dnaRowProvider.get();

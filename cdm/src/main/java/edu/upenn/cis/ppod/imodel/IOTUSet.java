@@ -30,12 +30,12 @@ public interface IOTUSet
 
 	/**
 	 * Add a DNA matrix to this OTU set.
+	 * <p>
+	 * Handles the {@code IDNAMatrix->IOTUSet} side of the relationship.
 	 * 
 	 * @param matrix to be added
-	 * 
-	 * @return {@code matrix}
 	 */
-	IDNAMatrix addDNAMatrix(IDNAMatrix matrix);
+	void addDNAMatrix(IDNAMatrix matrix);
 
 	/**
 	 * Add an {@code IDNASequenceSet}.
@@ -44,10 +44,8 @@ public interface IOTUSet
 	 * relationship.
 	 * 
 	 * @param dnaSequenceSet the new {@code DNASequenceSet}
-	 * 
-	 * @return {@code dnaSequenceSet}
 	 */
-	IDNASequenceSet addDNASequenceSet(IDNASequenceSet sequenceSet);
+	void addDNASequenceSet(IDNASequenceSet sequenceSet);
 
 	/**
 	 * Scaffolding code that does two things:
@@ -62,10 +60,8 @@ public interface IOTUSet
 	 * {@code otu} must have a label that is unique relative to this OTU set.
 	 * 
 	 * @param otu see description
-	 * 
-	 * @return {@code otu}
 	 */
-	IOTU addOTU(IOTU otu);
+	void addOTU(IOTU otu);
 
 	/**
 	 * Add {@code matrix} to this {@code OTUSet}.
@@ -74,10 +70,8 @@ public interface IOTUSet
 	 * relationship.
 	 * 
 	 * @param matrix matrix we're adding
-	 * 
-	 * @return {@code matrix}
 	 */
-	IStandardMatrix addStandardMatrix(IStandardMatrix matrix);
+	void addStandardMatrix(IStandardMatrix matrix);
 
 	/**
 	 * Add a tree set to this OTU set.
@@ -85,10 +79,8 @@ public interface IOTUSet
 	 * Also handles the {@code ITreeSet->IOTUSet} side of the relationship.
 	 * 
 	 * @param treeSet to be added
-	 * 
-	 * @return {@code treeSet}
 	 */
-	ITreeSet addTreeSet(ITreeSet treeSet);
+	void addTreeSet(ITreeSet treeSet);
 
 	/**
 	 * Get the description.

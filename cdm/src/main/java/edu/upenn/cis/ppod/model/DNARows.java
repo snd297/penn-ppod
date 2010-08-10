@@ -87,9 +87,8 @@ public class DNARows implements IOTUKeyedMap<IDNARow> {
 		return true;
 	}
 
-	public DNARows clear() {
+	public void clear() {
 		rows.clear();
-		return this;
 	}
 
 	/** {@inheritDoc} */
@@ -142,18 +141,14 @@ public class DNARows implements IOTUKeyedMap<IDNARow> {
 	 * Set the owner of this object.
 	 * 
 	 * @param parent the owner
-	 * 
-	 * @return this
 	 */
-	public DNARows setParent(final IDNAMatrix parent) {
+	public void setParent(final IDNAMatrix parent) {
 		rows.setParent(parent);
-		return this;
 	}
 
 	/** {@inheritDoc} */
-	public DNARows setValues(
+	public void setValues(
 			final Map<IOTU, IDNARow> values) {
 		rows.setValues(values);
-		return this;
 	}
 }

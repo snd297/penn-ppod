@@ -93,9 +93,12 @@ public class SequenceSetTest {
 		final IOTUSet otuSet0 = otuSetProvider.get();
 		seqSet.setParent(otuSet0);
 
-		final IOTU otu0 = otuSet0.addOTU(otuProvider.get()).setLabel("otu-0");
-		final IOTU otu1 = otuSet0.addOTU(otuProvider.get()).setLabel("otu-1");
-		final IOTU otu2 = otuSet0.addOTU(otuProvider.get()).setLabel("otu-2");
+		final IOTU otu0 = otuProvider.get().setLabel("otu0");
+		final IOTU otu1 = otuProvider.get().setLabel("otu1");
+		final IOTU otu2 = otuProvider.get().setLabel("otu2");
+		otuSet0.addOTU(otu0);
+		otuSet0.addOTU(otu1);
+		otuSet0.addOTU(otu2);
 
 		seqSet.putSequence(otu0, seq1);
 		seqSet.putSequence(otu1, seq2);
@@ -128,9 +131,12 @@ public class SequenceSetTest {
 		final IOTUSet otuSet0 = otuSetProvider.get();
 		seqSet.setParent(otuSet0);
 
-		final IOTU otu0 = otuSet0.addOTU(otuProvider.get()).setLabel("otu-0");
-		final IOTU otu1 = otuSet0.addOTU(otuProvider.get()).setLabel("otu-1");
-		final IOTU otu2 = otuSet0.addOTU(otuProvider.get()).setLabel("otu-2");
+		final IOTU otu0 = otuProvider.get().setLabel("otu0");
+		final IOTU otu1 = otuProvider.get().setLabel("otu1");
+		final IOTU otu2 = otuProvider.get().setLabel("otu2");
+		otuSet0.addOTU(otu0);
+		otuSet0.addOTU(otu1);
+		otuSet0.addOTU(otu2);
 
 		seqSet.putSequence(otu0, seq1);
 		seqSet.putSequence(otu1, seq2);
