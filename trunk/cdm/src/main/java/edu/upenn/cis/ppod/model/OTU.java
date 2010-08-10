@@ -143,13 +143,7 @@ public class OTU
 		super.setInNeedOfNewVersion();
 	}
 
-	/**
-	 * Set this OTU's label.
-	 * 
-	 * @param label the label
-	 * 
-	 * @return this OTU
-	 */
+	/** {@inheritDoc} */
 	public OTU setLabel(final String label) {
 		checkNotNull(label);
 		if (label.equals(getLabel())) {

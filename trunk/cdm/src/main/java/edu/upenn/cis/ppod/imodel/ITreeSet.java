@@ -23,16 +23,15 @@ import edu.upenn.cis.ppod.model.TreeSet;
 
 @XmlJavaTypeAdapter(TreeSet.Adapter.class)
 public interface ITreeSet
-		extends ILabeled, IUUPPodEntity, IChild<IOTUSet>, IVisitable,
-		IWithDocId {
+		extends ILabeled, IUUPPodEntity, IChild<IOTUSet>, IWithDocId {
 
 	/**
 	 * Add {@code tree} to this {@code TreeSet}.
 	 * 
 	 * @param tree to be added
 	 * 
-	 * @return {@code false} if the tree was already contained, {@code true}
-	 *         otherwise
+	 * @return {@code true} if the element was added (duplicate trees are not
+	 *         allowed)
 	 */
 	boolean addTree(ITree tree);
 
