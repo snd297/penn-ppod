@@ -41,7 +41,7 @@ import edu.upenn.cis.ppod.imodel.IStandardCharacter;
 import edu.upenn.cis.ppod.imodel.IStandardMatrix;
 import edu.upenn.cis.ppod.imodel.IStandardRow;
 import edu.upenn.cis.ppod.imodel.IWithPPodId;
-import edu.upenn.cis.ppod.model.StandardState;
+import edu.upenn.cis.ppod.model.IStandardState;
 import edu.upenn.cis.ppod.thirdparty.injectslf4j.InjectLogger;
 
 /**
@@ -49,11 +49,11 @@ import edu.upenn.cis.ppod.thirdparty.injectslf4j.InjectLogger;
  */
 final class CreateOrUpdateStandardMatrix
 		extends
-		CreateOrUpdateMatrix<IStandardMatrix, IStandardRow, IStandardCell, StandardState>
+		CreateOrUpdateMatrix<IStandardMatrix, IStandardRow, IStandardCell, IStandardState>
 		implements ICreateOrUpdateStandardMatrix {
 
 	private final Provider<IStandardCharacter> standardCharacterProvider;
-	private final StandardState.IFactory standardStateFactory;
+	private final IStandardState.IFactory standardStateFactory;
 	private final Provider<IAttachment> attachmentProvider;
 	private final IMergeAttachments mergeAttachments;
 
@@ -67,7 +67,7 @@ final class CreateOrUpdateStandardMatrix
 			final Provider<IStandardRow> rowProvider,
 			final Provider<IStandardCharacter> characterProvider,
 			final Provider<IStandardCell> cellProvider,
-			final StandardState.IFactory stateFactory,
+			final IStandardState.IFactory stateFactory,
 			final Provider<IAttachment> attachmentProvider,
 			@Assisted final IMergeAttachments mergeAttachments,
 			@Assisted final IDAO<Object, Long> dao,
@@ -114,8 +114,8 @@ final class CreateOrUpdateStandardMatrix
 
 			newDbCharacter.setLabel(sourceCharacter.getLabel());
 
-			for (final StandardState sourceState : sourceCharacter.getStates()) {
-				StandardState dbState;
+			for (final IStandardState sourceState : sourceCharacter.getStates()) {
+				IStandardState dbState;
 				if (null == (dbState = newDbCharacter.getState(
 						sourceState.getStateNumber()))) {
 					dbState = standardStateFactory

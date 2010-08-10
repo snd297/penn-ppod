@@ -117,7 +117,7 @@ public class ModelAssert {
 	}
 
 	public static void assertEqualsStandardStates(
-			final StandardState actualState, final StandardState expectedState) {
+			final IStandardState actualState, final IStandardState expectedState) {
 		assertEquals(actualState.getLabel(), expectedState.getLabel());
 		assertEquals(actualState.getStateNumber(),
 				expectedState.getStateNumber());
@@ -131,15 +131,15 @@ public class ModelAssert {
 		assertEquals(actualCharacter.getStates().size(),
 				expectedCharacter
 						.getStates().size());
-		for (final StandardState actualState : actualCharacter
+		for (final IStandardState actualState : actualCharacter
 				.getStates()) {
 
-			final StandardState expectedState =
+			final IStandardState expectedState =
 					findIf(
 							expectedCharacter.getStates(),
 							compose(
 									equalTo(actualState.getStateNumber()),
-									StandardState.getStateNumber));
+									IStandardState.getStateNumber));
 
 			assertNotNull(expectedState);
 			assertTrue(expectedState.getParent() == expectedCharacter);
@@ -156,14 +156,14 @@ public class ModelAssert {
 		assertEquals(actualCell.getType(), expectedCell.getType());
 		assertEquals(actualCell.getElements().size(), expectedCell
 				.getElements().size());
-		for (final StandardState actualState : actualCell.getElements()) {
-			final StandardState expectedState =
+		for (final IStandardState actualState : actualCell.getElements()) {
+			final IStandardState expectedState =
 					findIf(
 							expectedCell.getElements(),
 							compose(
 									equalTo(
 										actualState.getStateNumber()),
-									StandardState.getStateNumber));
+									IStandardState.getStateNumber));
 			assertEqualsStandardStates(
 					actualState,
 					expectedState);

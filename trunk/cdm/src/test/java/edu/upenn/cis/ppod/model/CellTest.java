@@ -113,32 +113,32 @@ public class CellTest {
 	public void getElementsXml() {
 		final DNACell cell = dnaCellProvider.get();
 		cell.setType(ICell.Type.UNCERTAIN);
-		final Set<DNANucleotide> cellElementsXml = cell.getElementsXml();
+		final Set<DNANucleotide> cellElementsXml = cell.getElementsIfMultiple();
 		assertNotNull(cellElementsXml);
 		assertEquals(cellElementsXml.size(), 0);
 
 		cell.setUnassigned();
-		assertNull(cell.getElementsXml());
+		assertNull(cell.getElementsIfMultiple());
 
 		cell.setSingleElement(DNANucleotide.A, true);
-		assertNull(cell.getElementsXml());
+		assertNull(cell.getElementsIfMultiple());
 
 		cell.setInapplicable();
-		assertNull(cell.getElementsXml());
+		assertNull(cell.getElementsIfMultiple());
 
 		final Set<DNANucleotide> nucleotides = EnumSet.of(DNANucleotide.A,
 				DNANucleotide.G);
 		cell.setPolymorphicElements(nucleotides, true);
-		assertEquals((Object) cell.getElementsXml(), (Object) nucleotides);
+		assertEquals((Object) cell.getElementsIfMultiple(), (Object) nucleotides);
 		cell.setUncertainElements(nucleotides);
-		assertEquals((Object) cell.getElementsXml(), (Object) nucleotides);
+		assertEquals((Object) cell.getElementsIfMultiple(), (Object) nucleotides);
 
 	}
 
 	@Test(expectedExceptions = IllegalStateException.class)
-	public void getElementsXmlWNoType() {
+	public void getElementsIfMultipleWNoType() {
 		final Cell<?, ?> cell = new DNACell();
-		cell.getElementsXml();
+		cell.getElementsIfMultiple();
 	}
 
 	@Test

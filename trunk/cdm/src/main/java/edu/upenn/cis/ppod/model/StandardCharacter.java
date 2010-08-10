@@ -16,7 +16,6 @@
 package edu.upenn.cis.ppod.model;
 
 import static com.google.common.base.Preconditions.checkNotNull;
-import static com.google.common.collect.Iterables.get;
 import static com.google.common.collect.Maps.newHashMap;
 import static com.google.common.collect.Sets.newHashSet;
 
@@ -33,9 +32,11 @@ import javax.persistence.ManyToOne;
 import javax.persistence.MapKey;
 import javax.persistence.OneToMany;
 import javax.persistence.Table;
+import javax.persistence.Transient;
+import javax.xml.bind.Marshaller;
 import javax.xml.bind.Unmarshaller;
 import javax.xml.bind.annotation.XmlAttribute;
-import javax.xml.bind.annotation.XmlElementWrapper;
+import javax.xml.bind.annotation.XmlElement;
 import javax.xml.bind.annotation.adapters.XmlAdapter;
 
 import com.google.common.base.Preconditions;
@@ -55,7 +56,8 @@ import edu.upenn.cis.ppod.util.IVisitor;
 public class StandardCharacter extends UUPPodEntityWithDocId
 		implements IStandardCharacter {
 
-	public static class Adapter extends XmlAdapter<StandardCharacter, IStandardCharacter> {
+	public static class Adapter extends
+			XmlAdapter<StandardCharacter, IStandardCharacter> {
 
 		@Override
 		public StandardCharacter marshal(final IStandardCharacter character) {
@@ -68,7 +70,6 @@ public class StandardCharacter extends UUPPodEntityWithDocId
 		}
 	}
 
-	
 	public final static String TABLE = "STANDARD_CHARACTER";
 
 	public final static String JOIN_COLUMN = TABLE + "_ID";
@@ -99,9 +100,12 @@ public class StandardCharacter extends UUPPodEntityWithDocId
 	 * 2, and 3.
 	 */
 	@OneToMany(mappedBy = "parent", cascade = CascadeType.ALL,
-			orphanRemoval = true)
+			orphanRemoval = true, targetEntity = StandardState.class)
 	@MapKey(name = "stateNumber")
-	private final Map<Integer, StandardState> states = newHashMap();
+	private final Map<Integer, IStandardState> states = newHashMap();
+
+	@Transient
+	private Set<IStandardState> statesXml;
 
 	/**
 	 * Default constructor for (at least) Hibernate.
@@ -112,7 +116,7 @@ public class StandardCharacter extends UUPPodEntityWithDocId
 	public void accept(final IVisitor visitor) {
 		checkNotNull(visitor);
 		visitor.visitStandardCharacter(this);
-		for (final StandardState state : getStatesModifiable().values()) {
+		for (final IStandardState state : getStates()) {
 			state.accept(visitor);
 		}
 		super.accept(visitor);
@@ -120,9 +124,9 @@ public class StandardCharacter extends UUPPodEntityWithDocId
 
 	/** {@inheritDoc} */
 	@CheckForNull
-	public StandardState addState(final StandardState state) {
+	public IStandardState addState(final IStandardState state) {
 		Preconditions.checkNotNull(state);
-		final StandardState originalState =
+		final IStandardState originalState =
 				states.put(state.getStateNumber(), state);
 		if (state == originalState) {
 			return originalState;
@@ -136,21 +140,42 @@ public class StandardCharacter extends UUPPodEntityWithDocId
 		return originalState;
 	}
 
+	protected boolean afterMarshal(@CheckForNull final Marshaller marshaller) {
+		statesXml = null;
+		return true;
+	}
+
 	/**
-	 * See {@link Unmarshaller}.
+	 * {@link Unmarshaller} callback.
 	 * 
 	 * @param u see {@code Unmarshaller}
 	 * @param parent see {@code Unmarshaller}
 	 */
 	protected void afterUnmarshal(
 			@CheckForNull final Unmarshaller u, final Object parent) {
-		setParent((StandardMatrix) parent);
-		if (getStatesModifiable().size() > 0
-				&& get(getStatesModifiable().values(), 0).getParent() == null) {
-			for (final StandardState state : states.values()) {
-				state.setParent(this);
-			}
+		setParent((IStandardMatrix) parent);
+		for (final IStandardState stateXml : statesXml) {
+			stateXml.setParent(this);
+			states.put(stateXml.getStateNumber(), stateXml);
 		}
+		statesXml = null;
+	}
+
+	@Override
+	protected boolean beforeMarshal(@CheckForNull final Marshaller marshaller) {
+		statesXml = newHashSet();
+		for (final IStandardState state : states.values()) {
+			// Load it if it's a proxy ;-)
+			state.getStateNumber();
+			statesXml.add(state);
+		}
+		return true;
+	}
+
+	@Override
+	protected void beforeUnmarshal(
+			@CheckForNull final Unmarshaller u, final Object parent) {
+		statesXml = newHashSet();
 	}
 
 	/**
@@ -179,26 +204,19 @@ public class StandardCharacter extends UUPPodEntityWithDocId
 
 	/** {@inheritDoc} */
 	@CheckForNull
-	public StandardState getState(final Integer stateNumber) {
+	public IStandardState getState(final Integer stateNumber) {
 		checkNotNull(stateNumber);
 		return states.get(stateNumber);
 	}
 
 	/** {@inheritDoc} */
-	public Set<StandardState> getStates() {
+	public Set<IStandardState> getStates() {
 		return newHashSet(states.values());
 	}
 
-	/**
-	 * Get a modifiable reference to the states.
-	 * <p>
-	 * protected for JAXB.
-	 * 
-	 * @return a mutable reference to the states
-	 */
-	@XmlElementWrapper(name = "states")
-	protected Map<Integer, StandardState> getStatesModifiable() {
-		return states;
+	@XmlElement(name = "state")
+	protected Set<IStandardState> getStatesXml() {
+		return statesXml;
 	}
 
 	@Override

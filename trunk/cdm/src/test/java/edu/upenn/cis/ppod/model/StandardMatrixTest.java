@@ -108,7 +108,7 @@ public class StandardMatrixTest {
 				Arrays.asList(new StandardCell[] { cell00 }));
 		standardCharacter.addState(stateFactory.create(0));
 
-		final StandardState state = standardCharacter.getState(0);
+		final IStandardState state = standardCharacter.getState(0);
 		assertNotNull(state);
 
 		cell00.setSingleElement(state);
@@ -118,7 +118,7 @@ public class StandardMatrixTest {
 		matrix.getRows().get(otu1).setCells(
 				Arrays.asList(new StandardCell[] { cell10 }));
 
-		final StandardState state1 = stateFactory.create(1);
+		final IStandardState state1 = stateFactory.create(1);
 		standardCharacter.addState(state1);
 		cell10.setSingleElement(state1);
 
@@ -127,7 +127,7 @@ public class StandardMatrixTest {
 		matrix.getRows().get(otu2).setCells(
 				Arrays.asList(new StandardCell[] { cell20 }));
 
-		final StandardState state0 = stateFactory.create(0);
+		final IStandardState state0 = stateFactory.create(0);
 		standardCharacter.addState(state0);
 		cell20.setSingleElement(state0);
 

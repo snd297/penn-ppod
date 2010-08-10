@@ -29,6 +29,8 @@ import javax.persistence.JoinTable;
 import javax.persistence.ManyToMany;
 import javax.persistence.ManyToOne;
 import javax.persistence.Table;
+import javax.persistence.Transient;
+import javax.xml.bind.Marshaller;
 import javax.xml.bind.Unmarshaller;
 import javax.xml.bind.annotation.XmlAttribute;
 import javax.xml.bind.annotation.XmlElement;
@@ -51,7 +53,7 @@ import edu.upenn.cis.ppod.util.IVisitor;
 @Entity
 @Table(name = StandardCell.TABLE)
 public class StandardCell
-		extends Cell<StandardState, IStandardRow>
+		extends Cell<IStandardState, IStandardRow>
 		implements IStandardCell {
 
 	public static class Adapter extends XmlAdapter<StandardCell, IStandardCell> {
@@ -85,10 +87,10 @@ public class StandardCell
 	 * Will be {@code null} if this is a {@link Type#INAPPLICABLE} or
 	 * {@link Type#UNASSIGNED}.
 	 */
-	@ManyToOne(fetch = FetchType.LAZY)
+	@ManyToOne(fetch = FetchType.LAZY, targetEntity = StandardState.class)
 	@JoinColumn(name = StandardState.JOIN_COLUMN)
 	@CheckForNull
-	private StandardState element;
+	private IStandardState element;
 
 	/**
 	 * The heart of the cell: the states.
@@ -96,10 +98,10 @@ public class StandardCell
 	 * Will be {@code null} when first created, but is generally not-null.
 	 */
 	@CheckForNull
-	@ManyToMany
+	@ManyToMany(targetEntity = StandardState.class)
 	@JoinTable(inverseJoinColumns = @JoinColumn(
 			name = StandardState.JOIN_COLUMN))
-	private Set<StandardState> elements;
+	private Set<IStandardState> elements;
 
 	/**
 	 * The {@code CharacterStateRow} to which this {@code CharacterStateCell}
@@ -111,6 +113,9 @@ public class StandardCell
 	@CheckForNull
 	private IStandardRow parent;
 
+	@Transient
+	private Set<StandardState> elementsXml;
+
 	/** No-arg constructor for (at least) Hibernate. */
 	StandardCell() {}
 
@@ -118,6 +123,21 @@ public class StandardCell
 	public void accept(final IVisitor visitor) {
 		checkNotNull(visitor);
 		visitor.visitStandardCell(this);
+	}
+
+	protected boolean afterMarshal(@CheckForNull final Marshaller marshaller) {
+		elementsXml = null;
+		return true;
+	}
+
+	public void afterUnmarshal() {
+		if (getType() == Type.POLYMORPHIC || getType() == Type.UNCERTAIN) {
+			initElements();
+			for (final IStandardState elementXml : elementsXml) {
+				getElementsModifiable().add(elementXml);
+			}
+		}
+		elementsXml = null;
 	}
 
 	/**
@@ -128,8 +148,25 @@ public class StandardCell
 	 */
 	@Override
 	protected void afterUnmarshal(final Unmarshaller u, final Object parent) {
-		super.afterUnmarshal(u, parent);
-		this.parent = (StandardRow) parent;
+		this.parent = (IStandardRow) parent;
+	}
+
+	@Override
+	protected boolean beforeMarshal(@CheckForNull final Marshaller marshaller) {
+		if (getType() == Type.POLYMORPHIC || getType() == Type.UNCERTAIN) {
+			this.elementsXml = newHashSet();
+			for (final IStandardState element : elements) {
+				// Load it if it's a proxy ;-)
+				element.getStateNumber();
+				this.elementsXml.add((StandardState) element);
+			}
+		}
+		return true;
+	}
+
+	@Override
+	protected void beforeUnmarshal(final Unmarshaller u, final Object parent) {
+		elementsXml = newHashSet();
 	}
 
 	private void checkRowMatrixCharacter() {
@@ -163,22 +200,20 @@ public class StandardCell
 	@XmlAttribute(name = "stateDocId")
 	@XmlIDREF
 	@Override
-	protected StandardState getElement() {
+	protected IStandardState getElement() {
 		return element;
 	}
 
 	@CheckForNull
 	@Override
-	Set<StandardState> getElementsModifiable() {
+	Set<IStandardState> getElementsModifiable() {
 		return elements;
 	}
 
-	@CheckForNull
 	@XmlElement(name = "stateDocId")
 	@XmlIDREF
-	@Override
 	protected Set<StandardState> getElementsXml() {
-		return super.getElementsXml();
+		return elementsXml;
 	}
 
 	/**
@@ -196,13 +231,13 @@ public class StandardCell
 	/** Protected for JAXB. */
 	@Override
 	protected void setElement(
-			@CheckForNull final StandardState element) {
+			@CheckForNull final IStandardState element) {
 		this.element = element;
 	}
 
 	@Override
 	void setElements(
-			@CheckForNull final Set<StandardState> elements) {
+			@CheckForNull final Set<IStandardState> elements) {
 		this.elements = elements;
 	}
 
@@ -217,7 +252,7 @@ public class StandardCell
 	 * @throw IllegalArgumentException if {@code polymorphicStates.size() < 2}
 	 */
 	public void setPolymorphicElements(
-			final Set<? extends StandardState> elements) {
+			final Set<? extends IStandardState> elements) {
 		checkNotNull(elements);
 		checkArgument(elements.size() > 1,
 				"polymorphic states must be > 1");
@@ -239,7 +274,7 @@ public class StandardCell
 	@Override
 	void setPolymorphicOrUncertain(
 			final Type type,
-			final Set<? extends StandardState> elements) {
+			final Set<? extends IStandardState> elements) {
 		checkNotNull(type);
 		checkNotNull(elements);
 
@@ -253,7 +288,7 @@ public class StandardCell
 				"POLYMORPIC AND UNCERTAIN must have greater than 1 element but elements has "
 						+ elements.size());
 
-		Set<StandardState> newElements;
+		Set<IStandardState> newElements;
 
 		checkRowMatrixCharacter();
 
@@ -269,7 +304,7 @@ public class StandardCell
 
 		newElements = newHashSet();
 
-		for (final StandardState sourceElement : elements) {
+		for (final IStandardState sourceElement : elements) {
 			newElements
 						.add(character.getState(sourceElement
 								.getStateNumber()));
@@ -278,7 +313,7 @@ public class StandardCell
 	}
 
 	/** {@inheritDoc} */
-	public void setSingleElement(final StandardState element) {
+	public void setSingleElement(final IStandardState element) {
 
 		checkNotNull(element);
 
@@ -289,7 +324,7 @@ public class StandardCell
 		final IStandardCharacter standardCharacter =
 					getParent().getParent().getCharacters().get(getPosition());
 
-		final StandardState newElement =
+		final IStandardState newElement =
 				standardCharacter.getState(element.getStateNumber());
 
 		checkState(newElement != null,
@@ -331,5 +366,4 @@ public class StandardCell
 
 		return retValue.toString();
 	}
-
 }

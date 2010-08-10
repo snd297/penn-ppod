@@ -18,6 +18,7 @@ package edu.upenn.cis.ppod.util;
 
 import edu.upenn.cis.ppod.imodel.IDNAMatrix;
 import edu.upenn.cis.ppod.imodel.IDNASequenceSet;
+import edu.upenn.cis.ppod.imodel.IStandardCell;
 import edu.upenn.cis.ppod.imodel.IStandardMatrix;
 
 /**
@@ -30,6 +31,11 @@ import edu.upenn.cis.ppod.imodel.IStandardMatrix;
 class AfterUnmarshalVisitor
 		extends EmptyVisitor
 		implements IAfterUnmarshalVisitor {
+
+	@Override
+	public void visitStandardCell(final IStandardCell cell) {
+		cell.afterUnmarshal();
+	}
 
 	@Override
 	public void visitDNAMatrix(final IDNAMatrix matrix) {

@@ -36,10 +36,10 @@ public class StandardCharacterTest {
 	@Test
 	public void addState() {
 		final StandardCharacter character = new StandardCharacter();
-		final StandardState state0 = new StandardState().setStateNumber(0);
+		final IStandardState state0 = new StandardState().setStateNumber(0);
 
 		character.unsetInNeedOfNewVersion();
-		final StandardState returnedState0 = character.addState(state0);
+		final IStandardState returnedState0 = character.addState(state0);
 		assertTrue(character.isInNeedOfNewVersion());
 		assertNull(returnedState0);
 		assertEquals(character.getStates().size(), 1);
@@ -47,7 +47,7 @@ public class StandardCharacterTest {
 		assertSame(state0.getParent(), character);
 
 		character.unsetInNeedOfNewVersion();
-		final StandardState returnedState1 = character.addState(state0);
+		final IStandardState returnedState1 = character.addState(state0);
 		assertFalse(character.isInNeedOfNewVersion());
 		assertSame(returnedState1, state0);
 		assertEquals(character.getStates().size(), 1);
@@ -56,8 +56,8 @@ public class StandardCharacterTest {
 		assertSame(state0.getParent(), character);
 
 		character.unsetInNeedOfNewVersion();
-		final StandardState state01 = new StandardState().setStateNumber(0);
-		final StandardState returnedState2 = character.addState(state01);
+		final IStandardState state01 = new StandardState().setStateNumber(0);
+		final IStandardState returnedState2 = character.addState(state01);
 		assertTrue(character.isInNeedOfNewVersion());
 		assertSame(state0, returnedState2);
 		assertEquals(character.getStates().size(), 1);

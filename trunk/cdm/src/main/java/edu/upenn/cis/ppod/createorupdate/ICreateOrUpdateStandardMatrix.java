@@ -22,7 +22,7 @@ import edu.upenn.cis.ppod.imodel.INewVersionInfo;
 import edu.upenn.cis.ppod.imodel.IStandardCell;
 import edu.upenn.cis.ppod.imodel.IStandardMatrix;
 import edu.upenn.cis.ppod.imodel.IStandardRow;
-import edu.upenn.cis.ppod.model.StandardState;
+import edu.upenn.cis.ppod.model.IStandardState;
 
 /**
  * Copy the state of {@code sourceMatrix} onto the persistent matrix
@@ -36,7 +36,7 @@ import edu.upenn.cis.ppod.model.StandardState;
 @ImplementedBy(CreateOrUpdateStandardMatrix.class)
 public interface ICreateOrUpdateStandardMatrix
 		extends
-		ICreateOrUpdateMatrix<IStandardMatrix, IStandardRow, IStandardCell, StandardState> {
+		ICreateOrUpdateMatrix<IStandardMatrix, IStandardRow, IStandardCell, IStandardState> {
 
 	/**
 	 * Copy the state of {@code sourceMatrix} onto the persistent matrix

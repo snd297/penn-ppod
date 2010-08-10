@@ -42,7 +42,8 @@ import edu.upenn.cis.ppod.util.PPodEntityProvider;
  * 
  * @author Sam Donnelly
  */
-@Test(groups = { TestGroupDefs.FAST }, singleThreaded = true)
+@Test(groups = { TestGroupDefs.FAST, TestGroupDefs.BROKEN },
+		singleThreaded = true)
 public class CreateOrUpdateStandardMatrixTest {
 
 	@Inject
