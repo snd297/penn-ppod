@@ -212,26 +212,16 @@ public class StandardCell
 	}
 
 	/**
-	 * Set the type to polymorphic with the appropriate states equivalent to
-	 * {@code states}.
-	 * <p>
-	 * Note that the elements that are actually assigned may or may not be the
-	 * {@code ==} to the elements passed in, but the cell will be set to
-	 * equivalent (not necessarily {@code .equals()}) elements.
-	 * 
-	 * @param elements the elements
-	 * 
-	 * @return this
+	 * {@inheritDoc}n
 	 * 
 	 * @throw IllegalArgumentException if {@code polymorphicStates.size() < 2}
 	 */
-	public IStandardCell setPolymorphicElements(
+	public void setPolymorphicElements(
 			final Set<? extends StandardState> elements) {
 		checkNotNull(elements);
 		checkArgument(elements.size() > 1,
 				"polymorphic states must be > 1");
 		setPolymorphicOrUncertain(Type.POLYMORPHIC, elements);
-		return this;
 	}
 
 	/**
@@ -287,7 +277,8 @@ public class StandardCell
 		super.setPolymorphicOrUncertain(type, newElements);
 	}
 
-	public IStandardCell setSingleElement(final StandardState element) {
+	/** {@inheritDoc} */
+	public void setSingleElement(final StandardState element) {
 
 		checkNotNull(element);
 
@@ -311,14 +302,12 @@ public class StandardCell
 				throw new AssertionError(
 						"element is set, but this cell is not a SINGLE");
 			}
-			return this;
+		} else {
+			setElement(newElement);
+			setElements(null);
+			setType(Type.SINGLE);
+			setInNeedOfNewVersion();
 		}
-
-		setElement(newElement);
-		setElements(null);
-		setType(Type.SINGLE);
-		setInNeedOfNewVersion();
-		return this;
 	}
 
 	/**

@@ -25,9 +25,27 @@ import edu.upenn.cis.ppod.model.StandardState;
 @XmlJavaTypeAdapter(StandardCell.Adapter.class)
 public interface IStandardCell extends ICell<StandardState, IStandardRow> {
 
-	IStandardCell setPolymorphicElements(
+	/**
+	 * Set the type to polymorphic with the appropriate states equivalent to
+	 * {@code states}.
+	 * <p>
+	 * {@code elements} must contain more than one element.
+	 * <p>
+	 * Note that the elements that are actually assigned may or may not be the
+	 * {@code ==} to the elements passed in, but the cell will be set to
+	 * equivalent (not necessarily {@code .equals()}) elements.
+	 * 
+	 * @param elements the elements
+	 */
+	void setPolymorphicElements(
 			final Set<? extends StandardState> elements);
 
-	IStandardCell setSingleElement(final StandardState element);
+	/**
+	 * Set this cell to {@link Type.SINGLE} and its elements to contain just
+	 * {@code element}.
+	 * 
+	 * @param element the single element to be contained in this cell
+	 */
+	void setSingleElement(final StandardState element);
 
 }
