@@ -32,6 +32,8 @@ import javax.xml.bind.Marshaller;
 import javax.xml.bind.Unmarshaller;
 import javax.xml.bind.annotation.XmlAttribute;
 
+import com.google.common.annotations.VisibleForTesting;
+
 import edu.umd.cs.findbugs.annotations.CheckForNull;
 import edu.umd.cs.findbugs.annotations.Nullable;
 import edu.upenn.cis.ppod.imodel.ICell;
@@ -330,11 +332,10 @@ public abstract class Cell<E, R extends IRow<?, ?>>
 
 	/**
 	 * This method has no affect on {@link #isInNeedOfNewVersion()}.
-	 * <p>
-	 * Visible for testing.
 	 * 
 	 * @param type the new type
 	 */
+	@VisibleForTesting
 	void setType(final Type type) {
 		checkNotNull(type);
 		this.type = type;
