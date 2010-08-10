@@ -28,6 +28,7 @@ import edu.upenn.cis.ppod.dao.IAttachmentTypeDAO;
 import edu.upenn.cis.ppod.dao.IDAO;
 import edu.upenn.cis.ppod.dao.IStudyDAO;
 import edu.upenn.cis.ppod.imodel.IDNAMatrix;
+import edu.upenn.cis.ppod.imodel.IDNASequence;
 import edu.upenn.cis.ppod.imodel.IDNASequenceSet;
 import edu.upenn.cis.ppod.imodel.INewVersionInfo;
 import edu.upenn.cis.ppod.imodel.IOTUSet;
@@ -35,7 +36,6 @@ import edu.upenn.cis.ppod.imodel.IStandardMatrix;
 import edu.upenn.cis.ppod.imodel.IStudy;
 import edu.upenn.cis.ppod.imodel.ITreeSet;
 import edu.upenn.cis.ppod.imodel.IWithPPodId;
-import edu.upenn.cis.ppod.model.DNASequence;
 
 /**
  * Create a new study or update an existing one.
@@ -57,7 +57,7 @@ final class CreateOrUpdateStudy implements ICreateOrUpdateStudy {
 	private final ICreateOrUpdateStandardMatrix createOrUpdateStandardMatrix;
 	private final IMergeTreeSets mergeTreeSets;
 	private final INewVersionInfo newVersionInfo;
-	private final IMergeSequenceSets<IDNASequenceSet, DNASequence> mergeDNASequenceSets;
+	private final IMergeSequenceSets<IDNASequenceSet, IDNASequence> mergeDNASequenceSets;
 	private final IStudy incomingStudy;
 	private IStudy dbStudy;
 	private final ICreateOrUpdateDNAMatrix createOrUpdateDNAMatrix;
@@ -74,7 +74,7 @@ final class CreateOrUpdateStudy implements ICreateOrUpdateStudy {
 			final IMergeTreeSets.IFactory mergeTreeSetsFactory,
 			final ICreateOrUpdateDNAMatrix.IFactory createOrUpdateDNAMatrixFactory,
 			final ICreateOrUpdateStandardMatrix.IFactory createOrUpdateMatrixFactory,
-			final IMergeSequenceSets.IFactory<IDNASequenceSet, DNASequence> mergeDNASequenceSetsFactory,
+			final IMergeSequenceSets.IFactory<IDNASequenceSet, IDNASequence> mergeDNASequenceSetsFactory,
 			final IMergeAttachments.IFactory mergeAttachmentFactory,
 			final Provider<IDNAMatrix> dnaMatrixProvider,
 			@Assisted final IStudy incomingStudy,

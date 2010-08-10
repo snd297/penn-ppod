@@ -29,6 +29,7 @@ import com.google.inject.Inject;
 import com.google.inject.Provider;
 
 import edu.upenn.cis.ppod.TestGroupDefs;
+import edu.upenn.cis.ppod.imodel.IDNASequence;
 import edu.upenn.cis.ppod.imodel.IOTU;
 import edu.upenn.cis.ppod.imodel.IOTUSet;
 import edu.upenn.cis.ppod.imodel.ISequenceSet;
@@ -46,21 +47,21 @@ public class SequenceSetTest {
 	private Provider<DNASequenceSet> dnaSequenceSetProvider;
 
 	@Inject
-	private Provider<DNASequence> dnaSequenceProvider;
+	private Provider<IDNASequence> dnaSequenceProvider;
 
 	@Inject
-	private Provider<OTUSet> otuSetProvider;
+	private Provider<IOTUSet> otuSetProvider;
 
 	@Inject
-	private Provider<OTU> otuProvider;
+	private Provider<IOTU> otuProvider;
 
 	@Inject
 	private Provider<TestVisitor> testVisitorProvider;
 
 	@Test
 	public void checkSequenceSizesOnEmptySequenceSet() {
-		final SequenceSet<DNASequence> seqSet = dnaSequenceSetProvider.get();
-		final DNASequence seq0 = dnaSequenceProvider.get();
+		final SequenceSet<IDNASequence> seqSet = dnaSequenceSetProvider.get();
+		final IDNASequence seq0 = dnaSequenceProvider.get();
 
 		final String seqStr0 = "ATACCCGACCGCTA";
 
@@ -72,21 +73,21 @@ public class SequenceSetTest {
 
 	@Test
 	public void checkSequenceSizesNonEmptySequenceSet() {
-		final SequenceSet<DNASequence> seqSet = dnaSequenceSetProvider.get();
+		final SequenceSet<IDNASequence> seqSet = dnaSequenceSetProvider.get();
 
-		final DNASequence seq0 = dnaSequenceProvider.get();
+		final IDNASequence seq0 = dnaSequenceProvider.get();
 		final String seqStr0 = "ATACCCGACCGCTA";
 		seq0.setSequence(seqStr0);
 
-		final DNASequence seq1 = dnaSequenceProvider.get();
+		final IDNASequence seq1 = dnaSequenceProvider.get();
 		final String seqStr1 = "ATACACGTCCGCTG";
 		seq1.setSequence(seqStr1);
 
-		final DNASequence seq2 = dnaSequenceProvider.get();
+		final IDNASequence seq2 = dnaSequenceProvider.get();
 		final String seqStr2 = "TTCCTCGTCCGCTG";
 		seq2.setSequence(seqStr2);
 
-		final DNASequence seq3 = dnaSequenceProvider.get();
+		final IDNASequence seq3 = dnaSequenceProvider.get();
 		final String seqStr3 = "CTCCTCGTCAGCAG";
 		seq3.setSequence(seqStr3);
 
@@ -110,21 +111,21 @@ public class SequenceSetTest {
 
 	@Test(expectedExceptions = IllegalArgumentException.class)
 	public void checkSequenceSizesNonEmptySequenceSetWrongLength() {
-		final SequenceSet<DNASequence> seqSet = dnaSequenceSetProvider.get();
+		final SequenceSet<IDNASequence> seqSet = dnaSequenceSetProvider.get();
 
-		final DNASequence seq0 = dnaSequenceProvider.get();
+		final IDNASequence seq0 = dnaSequenceProvider.get();
 		final String seqStr0 = "ATACCCGACCGCT";
 		seq0.setSequence(seqStr0);
 
-		final DNASequence seq1 = dnaSequenceProvider.get();
+		final IDNASequence seq1 = dnaSequenceProvider.get();
 		final String seqStr1 = "ATACACGTCCGCTG";
 		seq1.setSequence(seqStr1);
 
-		final DNASequence seq2 = dnaSequenceProvider.get();
+		final IDNASequence seq2 = dnaSequenceProvider.get();
 		final String seqStr2 = "TTCCTCGTCCGCTG";
 		seq2.setSequence(seqStr2);
 
-		final DNASequence seq3 = dnaSequenceProvider.get();
+		final IDNASequence seq3 = dnaSequenceProvider.get();
 		final String seqStr3 = "CTCCTCGTCAGCAG";
 		seq3.setSequence(seqStr3);
 
@@ -153,7 +154,7 @@ public class SequenceSetTest {
 		seqSet.setInNeedOfNewVersion();
 		assertTrue(seqSet.isInNeedOfNewVersion());
 
-		final OTUSet otuSet = otuSetProvider.get();
+		final IOTUSet otuSet = otuSetProvider.get();
 		otuSet.addDNASequenceSet(seqSet);
 		seqSet.unsetInNeedOfNewVersion();
 		otuSet.unsetInNeedOfNewVersion();
@@ -165,7 +166,7 @@ public class SequenceSetTest {
 
 	@Test
 	public void setLabel() {
-		final ISequenceSet<DNASequence> seqSet = dnaSequenceSetProvider.get();
+		final ISequenceSet<IDNASequence> seqSet = dnaSequenceSetProvider.get();
 		assertNull(seqSet.getLabel());
 
 		assertFalse(seqSet.isInNeedOfNewVersion());
@@ -186,14 +187,14 @@ public class SequenceSetTest {
 	@Test
 	public void afterUnmarshal() {
 		final SequenceSet<?> seqSet = dnaSequenceSetProvider.get();
-		final OTUSet otuSet = otuSetProvider.get();
+		final IOTUSet otuSet = otuSetProvider.get();
 		seqSet.afterUnmarshal(null, otuSet);
 		assertSame(seqSet.getParent(), otuSet);
 	}
 
 	@Test
 	public void accept() {
-		final OTUSet otuSet = otuSetProvider.get();
+		final IOTUSet otuSet = otuSetProvider.get();
 		otuSet.addOTU(otuProvider.get().setLabel("otu-0"));
 		otuSet.addOTU(otuProvider.get().setLabel("otu-1"));
 		otuSet.addOTU(otuProvider.get().setLabel("otu-2"));

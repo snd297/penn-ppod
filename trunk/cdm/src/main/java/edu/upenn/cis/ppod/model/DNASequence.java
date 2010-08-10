@@ -31,11 +31,13 @@ import javax.persistence.FetchType;
 import javax.persistence.JoinColumn;
 import javax.persistence.ManyToOne;
 import javax.persistence.Table;
+import javax.xml.bind.annotation.adapters.XmlAdapter;
 
 import com.google.common.collect.ImmutableSet;
 
 import edu.umd.cs.findbugs.annotations.CheckForNull;
 import edu.umd.cs.findbugs.annotations.Nullable;
+import edu.upenn.cis.ppod.imodel.IDNASequence;
 import edu.upenn.cis.ppod.imodel.IDNASequenceSet;
 import edu.upenn.cis.ppod.util.IVisitor;
 
@@ -46,7 +48,21 @@ import edu.upenn.cis.ppod.util.IVisitor;
  */
 @Entity
 @Table(name = DNASequence.TABLE)
-public class DNASequence extends Sequence<IDNASequenceSet> {
+public class DNASequence extends Sequence<IDNASequenceSet> implements
+		IDNASequence {
+
+	public static class Adapter extends XmlAdapter<DNASequence, IDNASequence> {
+
+		@Override
+		public DNASequence marshal(final IDNASequence sequence) {
+			return (DNASequence) sequence;
+		}
+
+		@Override
+		public IDNASequence unmarshal(final DNASequence sequence) {
+			return sequence;
+		}
+	}
 
 	/**
 	 * The characters that are legal in a {@code DNASequence} .

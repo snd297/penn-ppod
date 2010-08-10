@@ -37,6 +37,7 @@ import javax.xml.bind.annotation.XmlElement;
 
 import org.hibernate.annotations.Parent;
 
+import edu.upenn.cis.ppod.imodel.IDNASequence;
 import edu.upenn.cis.ppod.imodel.IDNASequenceSet;
 import edu.upenn.cis.ppod.imodel.IOTU;
 import edu.upenn.cis.ppod.imodel.IOTUKeyedMap;
@@ -53,10 +54,10 @@ import edu.upenn.cis.ppod.util.OTUDNASequencePair;
 @Embeddable
 @Access(AccessType.PROPERTY)
 public class DNASequences
-		implements IOTUKeyedMap<DNASequence> {
+		implements IOTUKeyedMap<IDNASequence> {
 
-	private final IOTUKeyedMapPlus<DNASequence, IDNASequenceSet, OTUDNASequencePair> sequences =
-			new OTUKeyedMapPlus<DNASequence, IDNASequenceSet, OTUDNASequencePair>();
+	private final IOTUKeyedMapPlus<IDNASequence, IDNASequenceSet, OTUDNASequencePair> sequences =
+			new OTUKeyedMapPlus<IDNASequence, IDNASequenceSet, OTUDNASequencePair>();
 
 	public void accept(final IVisitor visitor) {
 		sequences.accept(visitor);
@@ -76,7 +77,7 @@ public class DNASequences
 
 	protected boolean beforeMarshal(@CheckForNull final Marshaller marshaller) {
 		getOTUSomethingPairs().clear();
-		for (final Map.Entry<IOTU, DNASequence> otuToRow : getValues()
+		for (final Map.Entry<IOTU, IDNASequence> otuToRow : getValues()
 				.entrySet()) {
 			getOTUSomethingPairs().add(
 					OTUDNASequencePair.of(otuToRow.getKey(), otuToRow
@@ -89,7 +90,7 @@ public class DNASequences
 		sequences.clear();
 	}
 
-	public DNASequence get(final IOTU key) {
+	public IDNASequence get(final IOTU key) {
 		return sequences.get(key);
 	}
 
@@ -104,15 +105,15 @@ public class DNASequences
 		return sequences.getParent();
 	}
 
-	@OneToMany(cascade = CascadeType.ALL, orphanRemoval = true)
+	@OneToMany(cascade = CascadeType.ALL, orphanRemoval = true, targetEntity = DNASequence.class)
 	@JoinTable(inverseJoinColumns = @JoinColumn(name = DNASequence.JOIN_COLUMN))
 	@MapKeyJoinColumn(name = OTU.JOIN_COLUMN)
 	@MapKeyClass(OTU.class)
-	public Map<IOTU, DNASequence> getValues() {
+	public Map<IOTU, IDNASequence> getValues() {
 		return sequences.getValues();
 	}
 
-	public DNASequence put(final IOTU key, final DNASequence value) {
+	public IDNASequence put(final IOTU key, final IDNASequence value) {
 		return sequences.put(key, value);
 	}
 
@@ -125,7 +126,7 @@ public class DNASequences
 		sequences.setParent(parent);
 	}
 
-	public void setValues(final Map<IOTU, DNASequence> values) {
+	public void setValues(final Map<IOTU, IDNASequence> values) {
 		sequences.setValues(values);
 	}
 }
