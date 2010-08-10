@@ -22,6 +22,7 @@ import edu.upenn.cis.ppod.imodel.IDNARow;
 import edu.upenn.cis.ppod.imodel.IDNASequenceSet;
 import edu.upenn.cis.ppod.imodel.IOTU;
 import edu.upenn.cis.ppod.imodel.IOTUSet;
+import edu.upenn.cis.ppod.imodel.IStandardCell;
 import edu.upenn.cis.ppod.imodel.IStandardMatrix;
 import edu.upenn.cis.ppod.imodel.IStandardRow;
 import edu.upenn.cis.ppod.imodel.IStudy;
@@ -30,7 +31,6 @@ import edu.upenn.cis.ppod.imodel.ITreeSet;
 import edu.upenn.cis.ppod.model.AttachmentNamespace;
 import edu.upenn.cis.ppod.model.AttachmentType;
 import edu.upenn.cis.ppod.model.DNASequence;
-import edu.upenn.cis.ppod.model.IStandardCell;
 import edu.upenn.cis.ppod.model.StandardCharacter;
 import edu.upenn.cis.ppod.model.StandardState;
 

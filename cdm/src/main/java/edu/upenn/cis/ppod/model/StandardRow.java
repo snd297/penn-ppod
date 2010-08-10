@@ -31,6 +31,7 @@ import javax.persistence.Table;
 import javax.xml.bind.annotation.XmlElement;
 import javax.xml.bind.annotation.adapters.XmlAdapter;
 
+import edu.upenn.cis.ppod.imodel.IStandardCell;
 import edu.upenn.cis.ppod.imodel.IStandardMatrix;
 import edu.upenn.cis.ppod.imodel.IStandardRow;
 import edu.upenn.cis.ppod.util.IVisitor;

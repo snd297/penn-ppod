@@ -34,6 +34,7 @@ import com.google.inject.Provider;
 
 import edu.upenn.cis.ppod.TestGroupDefs;
 import edu.upenn.cis.ppod.imodel.ICell;
+import edu.upenn.cis.ppod.imodel.IStandardCell;
 import edu.upenn.cis.ppod.imodel.IStandardMatrix;
 import edu.upenn.cis.ppod.imodel.IStandardRow;
 

@@ -35,6 +35,7 @@ import edu.upenn.cis.ppod.imodel.IOTU;
 import edu.upenn.cis.ppod.imodel.IOTUSet;
 import edu.upenn.cis.ppod.imodel.IPPodEntity;
 import edu.upenn.cis.ppod.imodel.ISequenceSet;
+import edu.upenn.cis.ppod.imodel.IStandardCell;
 import edu.upenn.cis.ppod.imodel.IStandardCharacter;
 import edu.upenn.cis.ppod.imodel.IStandardMatrix;
 import edu.upenn.cis.ppod.imodel.IStandardRow;
