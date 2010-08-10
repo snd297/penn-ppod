@@ -55,7 +55,8 @@ public class OTUsToDNASequencesTest {
 	public void putTest() {
 
 		final IOTUSet otuSet = new OTUSet();
-		final IOTU otu = otuSet.addOTU(new OTU());
+		final IOTU otu = new OTU();
+		otuSet.addOTU(otu);
 		final DNASequence sequence = new DNASequence();
 		final DNASequenceSet sequenceSet = dnaSequenceSetProvider.get();
 		otuSet.addDNASequenceSet(sequenceSet);
@@ -72,7 +73,8 @@ public class OTUsToDNASequencesTest {
 	@Test
 	public void putTestReplaceASequence() {
 		final IOTUSet otuSet = otuSetProvider.get();
-		final IOTU otu = otuSet.addOTU(otuProvider.get());
+		final IOTU otu = otuProvider.get();
+		otuSet.addOTU(otu);
 		final DNASequence sequence = dnaSequenceProvider.get();
 		final DNASequenceSet sequenceSet = dnaSequenceSetProvider.get();
 		otuSet.addDNASequenceSet(sequenceSet);

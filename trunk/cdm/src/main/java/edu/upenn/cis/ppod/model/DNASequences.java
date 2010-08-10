@@ -85,9 +85,8 @@ public class DNASequences
 		return true;
 	}
 
-	public DNASequences clear() {
+	public void clear() {
 		sequences.clear();
-		return this;
 	}
 
 	public DNASequence get(final IOTU key) {
@@ -122,13 +121,11 @@ public class DNASequences
 		sequences.setOTUs();
 	}
 
-	public DNASequences setParent(final IDNASequenceSet parent) {
+	public void setParent(final IDNASequenceSet parent) {
 		sequences.setParent(parent);
-		return this;
 	}
 
-	public DNASequences setValues(final Map<IOTU, DNASequence> values) {
+	public void setValues(final Map<IOTU, DNASequence> values) {
 		sequences.setValues(values);
-		return this;
 	}
 }

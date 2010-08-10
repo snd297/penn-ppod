@@ -103,7 +103,8 @@ public class MolecularSequenceTest {
 		final DNASequence sequence = dnaSequenceProvider
 				.get();
 		final IOTUSet otuSet = otuSetProvider.get();
-		final IOTU otu0 = otuSet.addOTU(otuProvider.get());
+		final IOTU otu0 = otuProvider.get();
+		otuSet.addOTU(otu0);
 
 		final ISequenceSet<DNASequence> sequenceSet =
 				dnaSequenceSetProvider.get();
