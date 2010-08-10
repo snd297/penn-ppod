@@ -17,7 +17,6 @@ package edu.upenn.cis.ppod.imodel;
 
 import javax.xml.bind.annotation.adapters.XmlJavaTypeAdapter;
 
-import edu.upenn.cis.ppod.model.IStandardCell;
 import edu.upenn.cis.ppod.model.StandardRow;
 
 @XmlJavaTypeAdapter(StandardRow.Adapter.class)

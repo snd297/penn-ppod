@@ -26,7 +26,7 @@ public class PersistentObjectWithXmlIdTest {
 
 	@Test
 	public void setDocId() {
-		final PersistentObjectWithXmlId persistentObjectWXmlId = new AttachmentNamespace();
+		final PersistentObjectWithDocId persistentObjectWXmlId = new AttachmentNamespace();
 		final String docId = "arbitrary string";
 		persistentObjectWXmlId.setDocId(docId);
 		assertEquals(persistentObjectWXmlId.getDocId(), docId);
@@ -34,7 +34,7 @@ public class PersistentObjectWithXmlIdTest {
 
 	@Test(expectedExceptions = IllegalStateException.class)
 	public void setDocIdWhenDocIdIsAlreadySet() {
-		final PersistentObjectWithXmlId persistentObjectWXmlId = new AttachmentNamespace();
+		final PersistentObjectWithDocId persistentObjectWXmlId = new AttachmentNamespace();
 		final String docId = "arbitrary string";
 		persistentObjectWXmlId.setDocId(docId);
 		persistentObjectWXmlId.setDocId("another arbitrary string");

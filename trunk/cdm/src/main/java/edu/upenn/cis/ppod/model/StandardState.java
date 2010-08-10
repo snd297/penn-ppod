@@ -48,7 +48,7 @@ import edu.upenn.cis.ppod.util.IVisitor;
  */
 @Entity
 @Table(name = StandardState.TABLE)
-public class StandardState extends PPodEntityWXmlId {
+public class StandardState extends PPodEntityWDocId {
 
 	/**
 	 * For assisted injections.

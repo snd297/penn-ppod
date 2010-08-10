@@ -54,7 +54,7 @@ import edu.upenn.cis.ppod.util.IVisitor;
  */
 @MappedSuperclass
 abstract class SequenceSet<S extends Sequence<?>>
-		extends UUPPodEntityWithXmlId
+		extends UUPPodEntityWithDocId
 		implements ISequenceSet<S> {
 
 	@Column(name = "LABEL", nullable = false)

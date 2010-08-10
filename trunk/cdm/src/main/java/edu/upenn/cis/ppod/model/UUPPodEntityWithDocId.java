@@ -29,7 +29,7 @@ import edu.upenn.cis.ppod.imodel.IWithDocId;
  * 
  * @author Sam Donnelly
  */
-public abstract class UUPPodEntityWithXmlId
+public abstract class UUPPodEntityWithDocId
 		extends UUPPodEntity
 		implements IWithDocId {
 

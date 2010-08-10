@@ -31,7 +31,7 @@ import edu.upenn.cis.ppod.imodel.IWithDocId;
  * marshalled (full stack trace at bottom of file):
  * 
  * <pre>
- * Caused by: java.lang.IllegalAccessException: Class org.hibernate.proxy.pojo.javassist.JavassistLazyInitializer can not access a member of class edu.upenn.cis.ppod.model.PersistentObjectWithXmlId with modifiers "public"
+ * Caused by: java.lang.IllegalAccessException: Class org.hibernate.proxy.pojo.javassist.JavassistLazyInitializer can not access a member of class edu.upenn.cis.ppod.model.PersistentObjectWithDocId with modifiers "public"
  * 	at sun.reflect.Reflection.ensureMemberAccess(Reflection.java:65)
  * 	at java.lang.reflect.Method.invoke(Method.java:588)
  * 	at org.hibernate.proxy.pojo.javassist.JavassistLazyInitializer.invoke(JavassistLazyInitializer.java:198)
@@ -45,7 +45,7 @@ import edu.upenn.cis.ppod.imodel.IWithDocId;
  * 
  * @author Sam Donnelly
  */
-public abstract class PersistentObjectWithXmlId
+public abstract class PersistentObjectWithDocId
 		extends PersistentObject
 		implements IWithDocId {
 	/**
@@ -78,7 +78,7 @@ public abstract class PersistentObjectWithXmlId
  * <pre>
  *    org.jboss.resteasy.plugins.providers.jaxb.JAXBMarshalException: javax.xml.bind.MarshalException
  *  - with linked exception:
- * [com.sun.xml.bind.api.AccessorException: java.lang.IllegalAccessException: Class org.hibernate.proxy.pojo.javassist.JavassistLazyInitializer can not access a member of class edu.upenn.cis.ppod.model.PersistentObjectWithXmlId with modifiers "public"]
+ * [com.sun.xml.bind.api.AccessorException: java.lang.IllegalAccessException: Class org.hibernate.proxy.pojo.javassist.JavassistLazyInitializer can not access a member of class edu.upenn.cis.ppod.model.PersistentObjectWithDocId with modifiers "public"]
  * 	at org.jboss.resteasy.plugins.providers.jaxb.AbstractJAXBProvider.writeTo(AbstractJAXBProvider.java:109)
  * 	at org.jboss.resteasy.core.interception.MessageBodyWriterContextImpl.proceed(MessageBodyWriterContextImpl.java:117)
  * 	at org.jboss.resteasy.plugins.interceptors.encoding.GZIPEncodingInterceptor.write(GZIPEncodingInterceptor.java:37)
@@ -127,13 +127,13 @@ public abstract class PersistentObjectWithXmlId
  * 	at org.mortbay.thread.QueuedThreadPool$PoolThread.run(QueuedThreadPool.java:582)
  * Caused by: javax.xml.bind.MarshalException
  *  - with linked exception:
- * [com.sun.xml.bind.api.AccessorException: java.lang.IllegalAccessException: Class org.hibernate.proxy.pojo.javassist.JavassistLazyInitializer can not access a member of class edu.upenn.cis.ppod.model.PersistentObjectWithXmlId with modifiers "public"]
+ * [com.sun.xml.bind.api.AccessorException: java.lang.IllegalAccessException: Class org.hibernate.proxy.pojo.javassist.JavassistLazyInitializer can not access a member of class edu.upenn.cis.ppod.model.PersistentObjectWithDocId with modifiers "public"]
  * 	at com.sun.xml.bind.v2.runtime.MarshallerImpl.write(MarshallerImpl.java:318)
  * 	at com.sun.xml.bind.v2.runtime.MarshallerImpl.marshal(MarshallerImpl.java:244)
  * 	at javax.xml.bind.helpers.AbstractMarshallerImpl.marshal(AbstractMarshallerImpl.java:75)
  * 	at org.jboss.resteasy.plugins.providers.jaxb.AbstractJAXBProvider.writeTo(AbstractJAXBProvider.java:105)
  * 	... 45 more
- * Caused by: com.sun.xml.bind.api.AccessorException: java.lang.IllegalAccessException: Class org.hibernate.proxy.pojo.javassist.JavassistLazyInitializer can not access a member of class edu.upenn.cis.ppod.model.PersistentObjectWithXmlId with modifiers "public"
+ * Caused by: com.sun.xml.bind.api.AccessorException: java.lang.IllegalAccessException: Class org.hibernate.proxy.pojo.javassist.JavassistLazyInitializer can not access a member of class edu.upenn.cis.ppod.model.PersistentObjectWithDocId with modifiers "public"
  * 	at com.sun.xml.bind.v2.runtime.XMLSerializer.reportError(XMLSerializer.java:246)
  * 	at com.sun.xml.bind.v2.runtime.XMLSerializer.reportError(XMLSerializer.java:261)
  * 	at com.sun.xml.bind.v2.runtime.ClassBeanInfoImpl.getId(ClassBeanInfoImpl.java:299)
@@ -169,14 +169,14 @@ public abstract class PersistentObjectWithXmlId
  * 	at com.sun.xml.bind.v2.runtime.XMLSerializer.childAsRoot(XMLSerializer.java:494)
  * 	at com.sun.xml.bind.v2.runtime.MarshallerImpl.write(MarshallerImpl.java:315)
  * 	... 48 more
- * Caused by: com.sun.xml.bind.api.AccessorException: java.lang.IllegalAccessException: Class org.hibernate.proxy.pojo.javassist.JavassistLazyInitializer can not access a member of class edu.upenn.cis.ppod.model.PersistentObjectWithXmlId with modifiers "public"
+ * Caused by: com.sun.xml.bind.api.AccessorException: java.lang.IllegalAccessException: Class org.hibernate.proxy.pojo.javassist.JavassistLazyInitializer can not access a member of class edu.upenn.cis.ppod.model.PersistentObjectWithDocId with modifiers "public"
  * 	at com.sun.xml.bind.v2.runtime.reflect.Accessor$GetterSetterReflection.handleInvocationTargetException(Accessor.java:357)
  * 	at com.sun.xml.bind.v2.runtime.reflect.Accessor$GetterSetterReflection.get(Accessor.java:328)
  * 	at com.sun.xml.bind.v2.runtime.reflect.TransducedAccessor$CompositeTransducedAccessorImpl.print(TransducedAccessor.java:235)
  * 	at com.sun.xml.bind.v2.runtime.property.AttributeProperty.getIdValue(AttributeProperty.java:124)
  * 	at com.sun.xml.bind.v2.runtime.ClassBeanInfoImpl.getId(ClassBeanInfoImpl.java:297)
  * 	... 79 more
- * Caused by: java.lang.IllegalAccessException: Class org.hibernate.proxy.pojo.javassist.JavassistLazyInitializer can not access a member of class edu.upenn.cis.ppod.model.PersistentObjectWithXmlId with modifiers "public"
+ * Caused by: java.lang.IllegalAccessException: Class org.hibernate.proxy.pojo.javassist.JavassistLazyInitializer can not access a member of class edu.upenn.cis.ppod.model.PersistentObjectWithDocId with modifiers "public"
  * 	at sun.reflect.Reflection.ensureMemberAccess(Reflection.java:65)
  * 	at java.lang.reflect.Method.invoke(Method.java:588)
  * 	at org.hibernate.proxy.pojo.javassist.JavassistLazyInitializer.invoke(JavassistLazyInitializer.java:198)

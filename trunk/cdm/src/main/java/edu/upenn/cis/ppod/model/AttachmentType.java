@@ -40,7 +40,7 @@ import edu.upenn.cis.ppod.util.IVisitor;
  */
 @Entity
 @Table(name = AttachmentType.TABLE)
-public class AttachmentType extends PersistentObjectWithXmlId {
+public class AttachmentType extends PersistentObjectWithDocId {
 
 	public static final String TABLE = "ATTACHMENT_TYPE";
 
