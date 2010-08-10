@@ -144,16 +144,13 @@ public class TreeSet
 		return label;
 	}
 
-	/**
-	 * Get the parent OTU set.
-	 * 
-	 * @return the value
-	 */
+	/** {@inheritDoc} */
 	@Nullable
 	public IOTUSet getParent() {
 		return parent;
 	}
 
+	/** {@inheritDoc} */
 	public List<ITree> getTrees() {
 		return Collections.unmodifiableList(trees);
 	}
