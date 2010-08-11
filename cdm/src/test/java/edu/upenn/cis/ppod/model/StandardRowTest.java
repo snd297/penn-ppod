@@ -32,6 +32,7 @@ import com.google.inject.Provider;
 
 import edu.upenn.cis.ppod.TestGroupDefs;
 import edu.upenn.cis.ppod.imodel.IOTU;
+import edu.upenn.cis.ppod.imodel.IStandardCharacter;
 import edu.upenn.cis.ppod.imodel.IStandardRow;
 
 /**
@@ -73,9 +74,9 @@ public class StandardRowTest {
 		otus.add(otuProvider.get().setLabel("OTU-0"));
 		matrix.getParent().setOTUs(newArrayList(otus.get(0)));
 		matrix.putRow(otus.get(0), rowProvider.get());
-		matrix.setCharacters(
-				newArrayList(
-						characterProvider.get().setLabel("CHARACTER-0")));
+		final IStandardCharacter character0 = characterProvider.get();
+		character0.setLabel("character-0");
+		matrix.setCharacters(newArrayList(character0));
 	}
 
 	@Test
@@ -100,11 +101,18 @@ public class StandardRowTest {
 		matrix.putRow(otus.get(0), rowProvider.get());
 
 		final IStandardRow row = matrix.getRows().get(otu0);
-		matrix.
-				setCharacters(ImmutableList.of(
-						characterProvider.get().setLabel("CHARACTER-0"),
-						characterProvider.get().setLabel("CHARACTER-1"),
-						characterProvider.get().setLabel("CHARACTER-2")));
+
+		final ImmutableList<StandardCharacter> characters =
+				ImmutableList.of(
+						characterProvider.get(),
+						characterProvider.get(),
+						characterProvider.get());
+
+		characters.get(0).setLabel("character-0");
+		characters.get(1).setLabel("character-1");
+		characters.get(2).setLabel("character-2");
+
+		matrix.setCharacters(characters);
 
 		final List<StandardCell> cells =
 				ImmutableList.of(cellProvider.get(), cellProvider.get(),
@@ -154,6 +162,7 @@ public class StandardRowTest {
 		final List<StandardCell> cells =
 				newArrayList(cell0, cell1);
 
-		matrix.getRows().get(matrix.getParent().getOTUs().get(0)).setCells(cells);
+		matrix.getRows().get(matrix.getParent().getOTUs().get(0))
+				.setCells(cells);
 	}
 }

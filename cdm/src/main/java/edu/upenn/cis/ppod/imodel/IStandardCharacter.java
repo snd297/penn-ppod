@@ -64,9 +64,7 @@ public interface IStandardCharacter
 	 * Set the label of this character
 	 * 
 	 * @param label the value for the label
-	 * 
-	 * @return this
 	 */
-	IStandardCharacter setLabel(String label);
+	void setLabel(String label);
 
 }

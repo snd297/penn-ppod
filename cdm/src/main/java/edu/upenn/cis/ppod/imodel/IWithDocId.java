@@ -16,6 +16,8 @@ s * Copyright (C) 2010 Trustees of the University of Pennsylvania
 package edu.upenn.cis.ppod.imodel;
 
 import javax.annotation.Nullable;
+import javax.xml.bind.annotation.XmlAttribute;
+import javax.xml.bind.annotation.XmlID;
 
 /**
  * An object that holds a write-once-read-many {@link XmlID}.

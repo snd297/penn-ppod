@@ -28,7 +28,9 @@ import edu.upenn.cis.ppod.imodel.IWithDocId;
  * 
  * @author Sam Donnelly
  */
-public abstract class PPodEntityWDocId extends PPodEntity implements IWithDocId {
+public abstract class PPodEntityWDocId
+		extends PPodEntity
+		implements IWithDocId {
 
 	/**
 	 * Intended for referencing elements within a document - be it XML, JSON,

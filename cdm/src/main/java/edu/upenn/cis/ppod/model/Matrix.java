@@ -338,7 +338,7 @@ public abstract class Matrix<R extends IRow<?, ?>>
 	// }
 
 	/** {@inheritDoc} */
-	public IMatrix<R> setDescription(
+	public void setDescription(
 			@CheckForNull final String description) {
 		if (equal(description, getDescription())) {
 			// nothing to do
@@ -346,7 +346,6 @@ public abstract class Matrix<R extends IRow<?, ?>>
 			this.description = description;
 			setInNeedOfNewVersion();
 		}
-		return this;
 	}
 
 	/** {@inheritDoc} */
@@ -368,7 +367,7 @@ public abstract class Matrix<R extends IRow<?, ?>>
 	}
 
 	/** {@inheritDoc} */
-	public IMatrix<R> setLabel(final String label) {
+	public void setLabel(final String label) {
 		checkNotNull(label);
 		if (label.equals(getLabel())) {
 			// they're the same, nothing to do
@@ -376,7 +375,6 @@ public abstract class Matrix<R extends IRow<?, ?>>
 			this.label = label;
 			setInNeedOfNewVersion();
 		}
-		return this;
 	}
 
 	/** {@inheritDoc} */

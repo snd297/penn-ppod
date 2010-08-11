@@ -144,10 +144,8 @@ public interface IMatrix<R extends IRow<?, ?>>
 	 * Setter.
 	 * 
 	 * @param description the description value, {@code null} is allowed
-	 * 
-	 * @return this matrix
 	 */
-	IMatrix<R> setDescription(
+	void setDescription(
 			@CheckForNull final String description);
 
 	/**
@@ -163,9 +161,7 @@ public interface IMatrix<R extends IRow<?, ?>>
 	 * Set the label of this matrix.
 	 * 
 	 * @param label the value for the label
-	 * 
-	 * @return this matrix
 	 */
-	IMatrix<R> setLabel(final String label);
+	void setLabel(final String label);
 
 }
