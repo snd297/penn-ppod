@@ -18,6 +18,7 @@ package edu.upenn.cis.ppod.model;
 import static com.google.common.collect.Iterables.getOnlyElement;
 import static org.testng.Assert.assertEquals;
 import static org.testng.Assert.assertFalse;
+import static org.testng.Assert.assertNull;
 import static org.testng.Assert.assertSame;
 import static org.testng.Assert.assertTrue;
 
@@ -51,7 +52,7 @@ public class MolecularCellTest {
 		assertTrue(cell.isInNeedOfNewVersion());
 
 		assertEquals(cell.getElements(), nucleotides);
-		assertFalse(cell.isLowerCase());
+		assertFalse(cell.getLowerCase());
 
 		cell.unsetInNeedOfNewVersion();
 
@@ -60,7 +61,7 @@ public class MolecularCellTest {
 						false);
 		assertFalse(cell.isInNeedOfNewVersion());
 		assertEquals(cell.getElements(), nucleotides);
-		assertFalse(cell.isLowerCase());
+		assertFalse(cell.getLowerCase());
 
 		cell.unsetInNeedOfNewVersion();
 
@@ -72,7 +73,7 @@ public class MolecularCellTest {
 						false);
 		assertTrue(cell.isInNeedOfNewVersion());
 		assertEquals(cell.getElements(), nucleotides2);
-		assertFalse(cell.isLowerCase());
+		assertFalse(cell.getLowerCase());
 
 		cell.unsetInNeedOfNewVersion();
 
@@ -81,7 +82,7 @@ public class MolecularCellTest {
 						true);
 		assertTrue(cell.isInNeedOfNewVersion());
 		assertEquals(cell.getElements(), nucleotides2);
-		assertTrue(cell.isLowerCase());
+		assertTrue(cell.getLowerCase());
 	}
 
 	@Test
@@ -107,5 +108,31 @@ public class MolecularCellTest {
 		cell.setSingleElement(DNANucleotide.A, true);
 		assertTrue(cell.isInNeedOfNewVersion());
 		assertSame(getOnlyElement(cell.getElements()), DNANucleotide.A);
+	}
+
+	@Test
+	public void setUncertainElements() {
+		final MolecularCell<DNANucleotide, ?> cell = new DNACell();
+		cell.unsetInNeedOfNewVersion();
+		final Set<DNANucleotide> nucleotides =
+				ImmutableSet.of(DNANucleotide.A, DNANucleotide.C);
+		cell.setUncertainElements(nucleotides);
+		assertTrue(cell.isInNeedOfNewVersion());
+		assertEquals(cell.getElements(), nucleotides);
+		assertNull(cell.getLowerCase());
+
+		cell.setPolymorphicElements(nucleotides, false);
+
+		cell.unsetInNeedOfNewVersion();
+		cell.setUncertainElements(nucleotides);
+		assertTrue(cell.isInNeedOfNewVersion());
+		assertEquals(cell.getElements(), nucleotides);
+		assertNull(cell.getLowerCase());
+
+		cell.unsetInNeedOfNewVersion();
+		cell.setUncertainElements(nucleotides);
+		assertFalse(cell.isInNeedOfNewVersion());
+		assertEquals(cell.getElements(), nucleotides);
+		assertNull(cell.getLowerCase());
 	}
 }

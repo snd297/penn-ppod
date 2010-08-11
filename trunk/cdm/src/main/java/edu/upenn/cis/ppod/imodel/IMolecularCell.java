@@ -34,7 +34,7 @@ public interface IMolecularCell<E extends Enum<?>, R extends IRow<?, ?>>
 	 *         {@code false} otherwise
 	 */
 	@Nullable
-	Boolean isLowerCase();
+	Boolean getLowerCase();
 
 	/**
 	 * Set the cell to have type {@link Type#POLYMORPHIC}, the given elements,
