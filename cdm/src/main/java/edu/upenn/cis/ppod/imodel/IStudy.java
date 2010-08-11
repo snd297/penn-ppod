@@ -47,9 +47,7 @@ public interface IStudy extends ILabeled, IOTUSets, IUUPPodEntity {
 	 * Set the label.
 	 * 
 	 * @param label the label to set
-	 * 
-	 * @return this
 	 */
-	IStudy setLabel(final String label);
+	void setLabel(final String label);
 
 }

@@ -65,6 +65,6 @@ public interface IStandardState
 	@Nullable
 	Integer getStateNumber();
 
-	IStandardState setLabel(final String label);
+	void setLabel(final String label);
 
 }

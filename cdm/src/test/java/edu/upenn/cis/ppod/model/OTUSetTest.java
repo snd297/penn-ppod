@@ -431,11 +431,14 @@ public class OTUSetTest {
 
 	@Test
 	public void removeTreeSet() {
-		final ITreeSet treeSet0 = treeSetProvider.get().setLabel("treeSet0");
+		final ITreeSet treeSet0 = treeSetProvider.get();
+		treeSet0.setLabel("treeSet0");
 		otuSet.addTreeSet(treeSet0);
-		final ITreeSet treeSet1 = treeSetProvider.get().setLabel("treeSet1");
+		final ITreeSet treeSet1 = treeSetProvider.get();
+		treeSet1.setLabel("treeSet1");
 		otuSet.addTreeSet(treeSet1);
-		final ITreeSet treeSet2 = treeSetProvider.get().setLabel("treeSet2");
+		final ITreeSet treeSet2 = treeSetProvider.get();
+		treeSet2.setLabel("treeSet2");
 		otuSet.addTreeSet(treeSet2);
 
 		otuSet.setVersionInfo(pPodVersionInfoProvider.get());

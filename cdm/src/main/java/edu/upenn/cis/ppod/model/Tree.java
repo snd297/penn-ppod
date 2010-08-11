@@ -89,42 +89,27 @@ public class Tree extends UUPPodEntity implements ITree {
 	 * @param parent see see {@code Unmarshaller}
 	 * 
 	 */
-	public void afterUnmarshal(
+	protected void afterUnmarshal(
 			@CheckForNull final Unmarshaller u,
 			final Object parent) {
 		// don't checkNotNull(parent) since it's a jaxb callback
 		setParent((TreeSet) parent);
 	}
 
-	/**
-	 * @return
-	 */
+	/** {@inheritDoc} */
 	@XmlAttribute
 	@Nullable
 	public String getLabel() {
 		return label;
 	}
 
-	/**
-	 * Get the newick string. {@code null} when the tree is constructed, but
-	 * will never be {@code null} for a tree in a persistent state.
-	 * 
-	 * @return the newick string
-	 */
+	/** {@inheritDoc} */
 	@XmlElement
 	@Nullable
 	public String getNewick() {
 		return newick;
 	}
 
-	/**
-	 * Get the tree set that owns this tree.
-	 * <p>
-	 * Will be {@code null} for newly created trees. Will never be {@code null}
-	 * for trees in a persistent state.
-	 * 
-	 * @return the tree set that owns this tree
-	 */
 	@Nullable
 	public ITreeSet getParent() {
 		return parent;
@@ -138,14 +123,8 @@ public class Tree extends UUPPodEntity implements ITree {
 		super.setInNeedOfNewVersion();
 	}
 
-	/**
-	 * Set the label of this <code>Tree</code>.
-	 * 
-	 * @param label the label
-	 * 
-	 * @return this <code>Tree</code>
-	 */
-	public ITree setLabel(final String label) {
+	/** {@inheritDoc} */
+	public void setLabel(final String label) {
 		checkNotNull(label);
 		if (label.equals(this.label)) {
 			// nothing to do
@@ -153,11 +132,10 @@ public class Tree extends UUPPodEntity implements ITree {
 			this.label = label;
 			setInNeedOfNewVersion();
 		}
-		return this;
 	}
 
 	/** {@inheritDoc} */
-	public ITree setNewick(final String newick) {
+	public void setNewick(final String newick) {
 		checkNotNull(newick);
 		if (newick.equals(getNewick())) {
 
@@ -165,7 +143,6 @@ public class Tree extends UUPPodEntity implements ITree {
 			this.newick = newick;
 			setInNeedOfNewVersion();
 		}
-		return this;
 	}
 
 	/** {@inheritDoc} */

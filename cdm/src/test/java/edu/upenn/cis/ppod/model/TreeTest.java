@@ -17,7 +17,6 @@ package edu.upenn.cis.ppod.model;
 
 import static org.testng.Assert.assertEquals;
 import static org.testng.Assert.assertFalse;
-import static org.testng.Assert.assertSame;
 import static org.testng.Assert.assertTrue;
 
 import org.testng.annotations.Test;
@@ -26,7 +25,6 @@ import com.google.inject.Inject;
 import com.google.inject.Provider;
 
 import edu.upenn.cis.ppod.TestGroupDefs;
-import edu.upenn.cis.ppod.imodel.ITree;
 
 @Test(groups = TestGroupDefs.FAST, dependsOnGroups = TestGroupDefs.INIT)
 public class TreeTest {
@@ -64,9 +62,8 @@ public class TreeTest {
 		final Tree tree = treeProvider.get();
 		tree.unsetInNeedOfNewVersion();
 		final String label = "otu-label";
-		final ITree returnedOTU = tree.setLabel(label);
+		tree.setLabel(label);
 		assertTrue(tree.isInNeedOfNewVersion());
-		assertSame(returnedOTU, tree);
 		tree.isInNeedOfNewVersion();
 		assertEquals(tree.getLabel(), label);
 
@@ -81,8 +78,7 @@ public class TreeTest {
 		final Tree tree = treeProvider.get();
 		final String newick = "arbitrary string";
 		tree.unsetInNeedOfNewVersion();
-		final ITree returnedTree = tree.setNewick(newick);
-		assertSame(returnedTree, tree);
+		tree.setNewick(newick);
 		assertEquals(tree.getNewick(), newick);
 		assertTrue(tree.isInNeedOfNewVersion());
 

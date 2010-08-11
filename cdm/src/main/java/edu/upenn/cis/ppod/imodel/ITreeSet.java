@@ -37,7 +37,7 @@ public interface ITreeSet
 
 	List<ITree> getTrees();
 
-	ITreeSet setLabel(String label);
+	void setLabel(String label);
 
 	/**
 	 * Set the trees in this tree set.
