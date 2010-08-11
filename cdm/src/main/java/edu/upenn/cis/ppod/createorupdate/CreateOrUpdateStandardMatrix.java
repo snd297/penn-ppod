@@ -116,13 +116,13 @@ final class CreateOrUpdateStandardMatrix
 
 			for (final IStandardState sourceState : sourceCharacter.getStates()) {
 				IStandardState dbState;
-				if (null == (dbState = newDbCharacter.getState(
-						sourceState.getStateNumber()))) {
+				if (null == (dbState =
+						newDbCharacter.getState(sourceState.getStateNumber()))) {
 					dbState = standardStateFactory
 							.create(sourceState.getStateNumber());
 					newDbCharacter.addState(dbState);
-					dbState.setVersionInfo(newVersionInfo
-							.getNewVersionInfo());
+					dbState.setVersionInfo(
+							newVersionInfo.getNewVersionInfo());
 				}
 
 				dbState.setLabel(sourceState.getLabel());

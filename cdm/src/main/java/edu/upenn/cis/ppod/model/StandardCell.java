@@ -82,11 +82,9 @@ public class StandardCell
 	public static final String JOIN_COLUMN = TABLE + "_ID";
 
 	/**
-	 * To handle the most-common case of a single {@code CharacterState}, we
-	 * cache {@code states.get(0)}.
+	 * To handle the most-common case of a single state.
 	 * <p>
-	 * Will be {@code null} if this is a {@link Type#INAPPLICABLE} or
-	 * {@link Type#UNASSIGNED}.
+	 * Will be {@code null} if type is not {@link Type.SINGLE}.
 	 */
 	@ManyToOne(fetch = FetchType.LAZY, targetEntity = StandardState.class)
 	@JoinColumn(name = StandardState.JOIN_COLUMN)
@@ -98,7 +96,7 @@ public class StandardCell
 	 * <p>
 	 * Will be {@code null} when first created, but is generally not-null.
 	 */
-	@CheckForNull
+	@Nullable
 	@ManyToMany(targetEntity = StandardState.class)
 	@JoinTable(inverseJoinColumns = @JoinColumn(
 			name = StandardState.JOIN_COLUMN))
@@ -115,6 +113,7 @@ public class StandardCell
 	private IStandardRow parent;
 
 	@Transient
+	@Nullable
 	private Set<StandardState> elementsXml;
 
 	/** No-arg constructor for (at least) Hibernate. */
@@ -205,7 +204,7 @@ public class StandardCell
 		return element;
 	}
 
-	@CheckForNull
+	@Nullable
 	@Override
 	Set<IStandardState> getElementsModifiable() {
 		return elements;
@@ -248,9 +247,9 @@ public class StandardCell
 	}
 
 	/**
-	 * {@inheritDoc}n
+	 * {@inheritDoc}
 	 * 
-	 * @throw IllegalArgumentException if {@code polymorphicStates.size() < 2}
+	 * @throw IllegalArgumentException if {@code elements.size() < 2}
 	 */
 	public void setPolymorphicElements(
 			final Set<? extends IStandardState> elements) {

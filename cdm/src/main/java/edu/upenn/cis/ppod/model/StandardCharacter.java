@@ -22,8 +22,6 @@ import static com.google.common.collect.Sets.newHashSet;
 import java.util.Map;
 import java.util.Set;
 
-import javax.annotation.CheckForNull;
-import javax.annotation.Nullable;
 import javax.persistence.CascadeType;
 import javax.persistence.Column;
 import javax.persistence.Entity;
@@ -41,6 +39,8 @@ import javax.xml.bind.annotation.adapters.XmlAdapter;
 
 import com.google.common.base.Preconditions;
 
+import edu.umd.cs.findbugs.annotations.CheckForNull;
+import edu.umd.cs.findbugs.annotations.Nullable;
 import edu.upenn.cis.ppod.imodel.IStandardCharacter;
 import edu.upenn.cis.ppod.imodel.IStandardMatrix;
 import edu.upenn.cis.ppod.imodel.IStandardState;
@@ -106,6 +106,7 @@ public class StandardCharacter extends UUPPodEntityWithDocId
 	private final Map<Integer, IStandardState> states = newHashMap();
 
 	@Transient
+	@Nullable
 	private Set<IStandardState> statesXml;
 
 	/**
@@ -166,8 +167,6 @@ public class StandardCharacter extends UUPPodEntityWithDocId
 	protected boolean beforeMarshal(@CheckForNull final Marshaller marshaller) {
 		statesXml = newHashSet();
 		for (final IStandardState state : states.values()) {
-			// Load it if it's a proxy ;-)
-			state.getStateNumber();
 			statesXml.add(state);
 		}
 		return true;

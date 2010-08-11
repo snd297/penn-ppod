@@ -26,13 +26,13 @@ public interface IStandardCell extends ICell<IStandardState, IStandardRow> {
 
 	/**
 	 * Set the type to polymorphic with the appropriate states equivalent to
-	 * {@code states}.
+	 * {@code elements}.
 	 * <p>
 	 * {@code elements} must contain more than one element.
 	 * <p>
-	 * Note that the elements that are actually assigned may or may not be the
-	 * {@code ==} to the elements passed in, but the cell will be set to
-	 * equivalent (not necessarily {@code .equals()}) elements.
+	 * Note that the elements that are actually assigned won't be {@code ==} to
+	 * the elements passed in, but will be the ones with the same state numbers
+	 * from the owning matrix's characters' states.
 	 * 
 	 * @param elements the elements
 	 */
@@ -42,6 +42,10 @@ public interface IStandardCell extends ICell<IStandardState, IStandardRow> {
 	/**
 	 * Set this cell to {@link Type.SINGLE} and its elements to contain just
 	 * {@code element}.
+	 * <p>
+	 * Note that the element that is actually assigned won't be {@code ==} to
+	 * the element passed in, but will be the one with the same state number
+	 * from the owning matrix's characters' states.
 	 * 
 	 * @param element the single element to be contained in this cell
 	 */

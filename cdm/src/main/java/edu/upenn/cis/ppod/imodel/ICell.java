@@ -65,6 +65,9 @@ public interface ICell<E, R extends IRow<?, ?>> extends IOrderedChild<R> {
 
 	/**
 	 * Get the elements contained in this cell.
+	 * <p>
+	 * Will be the the empty set if type is {@link Type.INAPPLICABLE} or
+	 * {@link Type.UNASSIGNED}.
 	 * 
 	 * @return the elements contained in this cell
 	 */
@@ -74,9 +77,7 @@ public interface ICell<E, R extends IRow<?, ?>> extends IOrderedChild<R> {
 	 * Get the type of this cell.
 	 * <p>
 	 * This value will be {@code null} for newly created cells until the
-	 * elements are set.
-	 * <p>
-	 * This value will never be {@code null} for a persistent cell.
+	 * elements are set. Once set, this will never be {@code null}.
 	 * 
 	 * @return the type of this cell
 	 */
@@ -91,7 +92,7 @@ public interface ICell<E, R extends IRow<?, ?>> extends IOrderedChild<R> {
 	void setInapplicable();
 
 	/**
-	 * Set this cell's type to {@link Type#UNASSIGNED} to
+	 * Set this cell's type to {@link Type#UNASSIGNED} and its elements to
 	 * {@code Collections.EMPTY_SET}.
 	 */
 	void setUnassigned();
@@ -100,10 +101,15 @@ public interface ICell<E, R extends IRow<?, ?>> extends IOrderedChild<R> {
 	 * Set the type to uncertain with the given elements.
 	 * <p>
 	 * {@code elements.size()} must be greater than 2.
+	 * <p>
+	 * The elements that are actually assigned may not be {@code ==} to the
+	 * members of {@code elements}, but will be the equivalent appropriate for
+	 * the owning matrix. See {@link IStandardCell} for an example of that
+	 * behavior.
 	 * 
-	 * @param uncertainStates the elements
+	 * @param elements the elements
 	 */
 	void setUncertainElements(
-			final Set<? extends E> uncertainElements);
+			final Set<? extends E> elements);
 
 }
