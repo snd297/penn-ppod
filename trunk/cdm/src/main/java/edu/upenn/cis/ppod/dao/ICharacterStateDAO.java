@@ -15,7 +15,7 @@
  */
 package edu.upenn.cis.ppod.dao;
 
-import edu.upenn.cis.ppod.model.IStandardState;
+import edu.upenn.cis.ppod.imodel.IStandardState;
 
 /**
  * @author Sam Donnelly

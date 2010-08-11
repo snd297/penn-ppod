@@ -33,6 +33,7 @@ import com.google.inject.assistedinject.Assisted;
 
 import edu.umd.cs.findbugs.annotations.CheckForNull;
 import edu.upenn.cis.ppod.imodel.IStandardCharacter;
+import edu.upenn.cis.ppod.imodel.IStandardState;
 import edu.upenn.cis.ppod.util.IVisitor;
 
 /**

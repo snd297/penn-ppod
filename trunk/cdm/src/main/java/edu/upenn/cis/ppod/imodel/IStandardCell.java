@@ -19,7 +19,6 @@ import java.util.Set;
 
 import javax.xml.bind.annotation.adapters.XmlJavaTypeAdapter;
 
-import edu.upenn.cis.ppod.model.IStandardState;
 import edu.upenn.cis.ppod.model.StandardCell;
 
 @XmlJavaTypeAdapter(StandardCell.Adapter.class)

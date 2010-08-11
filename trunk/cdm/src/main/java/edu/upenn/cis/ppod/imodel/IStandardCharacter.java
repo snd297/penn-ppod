@@ -20,7 +20,6 @@ import java.util.Set;
 import javax.annotation.CheckForNull;
 import javax.xml.bind.annotation.adapters.XmlJavaTypeAdapter;
 
-import edu.upenn.cis.ppod.model.IStandardState;
 import edu.upenn.cis.ppod.model.StandardCharacter;
 
 @XmlJavaTypeAdapter(StandardCharacter.Adapter.class)
