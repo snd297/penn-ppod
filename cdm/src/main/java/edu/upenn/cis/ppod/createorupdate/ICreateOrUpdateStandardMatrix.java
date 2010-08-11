@@ -22,7 +22,7 @@ import edu.upenn.cis.ppod.imodel.INewVersionInfo;
 import edu.upenn.cis.ppod.imodel.IStandardCell;
 import edu.upenn.cis.ppod.imodel.IStandardMatrix;
 import edu.upenn.cis.ppod.imodel.IStandardRow;
-import edu.upenn.cis.ppod.model.IStandardState;
+import edu.upenn.cis.ppod.imodel.IStandardState;
 
 /**
  * Copy the state of {@code sourceMatrix} onto the persistent matrix

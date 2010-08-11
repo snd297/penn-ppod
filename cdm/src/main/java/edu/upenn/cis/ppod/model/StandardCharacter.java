@@ -43,6 +43,7 @@ import com.google.common.base.Preconditions;
 
 import edu.upenn.cis.ppod.imodel.IStandardCharacter;
 import edu.upenn.cis.ppod.imodel.IStandardMatrix;
+import edu.upenn.cis.ppod.imodel.IStandardState;
 import edu.upenn.cis.ppod.util.IVisitor;
 
 /**
