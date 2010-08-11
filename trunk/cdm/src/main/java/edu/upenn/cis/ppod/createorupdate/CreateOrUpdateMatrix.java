@@ -83,8 +83,8 @@ abstract class CreateOrUpdateMatrix<M extends IMatrix<R>, R extends IRow<C, ?>, 
 			dbMatrix.setDocId(sourceMatrix.getDocId());
 		}
 
-		dbMatrix.setLabel(sourceMatrix.getLabel())
-				.setDescription(sourceMatrix.getDescription());
+		dbMatrix.setLabel(sourceMatrix.getLabel());
+		dbMatrix.setDescription(sourceMatrix.getDescription());
 
 		// So that makePersistenct(dbRow) below has a persistent parent.
 		dao.makePersistent(dbMatrix);

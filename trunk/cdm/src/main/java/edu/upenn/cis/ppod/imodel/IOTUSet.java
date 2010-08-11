@@ -163,19 +163,15 @@ public interface IOTUSet
 	 * Setter.
 	 * 
 	 * @param description the description
-	 * 
-	 * @return this
 	 */
-	IOTUSet setDescription(@CheckForNull String description);
+	void setDescription(@CheckForNull String description);
 
 	/**
 	 * Set the label of this OTU set
 	 * 
 	 * @param label the label
-	 * 
-	 * @return this
 	 */
-	IOTUSet setLabel(String label);
+	void setLabel(String label);
 
 	/**
 	 * Set this {@code IOTUSet}'s {@code IOTU}s.

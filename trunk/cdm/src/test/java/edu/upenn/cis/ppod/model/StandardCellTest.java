@@ -95,9 +95,8 @@ public class StandardCellTest {
 		matrix.setParent(otuSet);
 
 		final StandardCharacter character0 =
-				characterProvider
-						.get()
-						.setLabel("character0");
+				characterProvider.get();
+		character0.setLabel("character0");
 		matrix.setCharacters(newArrayList(character0));
 		final IStandardRow row0 = rowProvider.get();
 		matrix.putRow(matrix.getParent().getOTUs().get(0), row0);

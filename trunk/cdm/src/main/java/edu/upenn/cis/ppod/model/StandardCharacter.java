@@ -228,7 +228,7 @@ public class StandardCharacter extends UUPPodEntityWithDocId
 	}
 
 	/** {@inheritDoc} */
-	public StandardCharacter setLabel(final String label) {
+	public void setLabel(final String label) {
 		Preconditions.checkNotNull(label);
 		if (label.equals(this.label)) {
 			// they're the same, nothing to do.
@@ -236,7 +236,6 @@ public class StandardCharacter extends UUPPodEntityWithDocId
 			this.label = label;
 			setInNeedOfNewVersion();
 		}
-		return this;
 	}
 
 	/** {@inheritDoc} */

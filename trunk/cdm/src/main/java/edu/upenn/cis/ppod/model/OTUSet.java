@@ -427,14 +427,13 @@ public class OTUSet
 	}
 
 	/** {@inheritDoc} */
-	public OTUSet setDescription(@CheckForNull final String description) {
+	public void setDescription(@CheckForNull final String description) {
 		if (equal(getDescription(), description)) {
 
 		} else {
 			this.description = description;
 			setInNeedOfNewVersion();
 		}
-		return this;
 	}
 
 	@Override
@@ -447,7 +446,7 @@ public class OTUSet
 	}
 
 	/** {@inheritDoc} */
-	public OTUSet setLabel(final String label) {
+	public void setLabel(final String label) {
 		checkNotNull(label);
 		if (label.equals(getLabel())) {
 
@@ -455,7 +454,6 @@ public class OTUSet
 			this.label = label;
 			setInNeedOfNewVersion();
 		}
-		return this;
 	}
 
 	/** {@inheritDoc} */

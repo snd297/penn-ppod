@@ -98,9 +98,8 @@ public class StandardMatrixTest {
 	@Test
 	public void setOTUsWReorderedOTUs() {
 
-		final StandardCharacter standardCharacter = characterProvider.get()
-				.setLabel(
-						"testLabel");
+		final StandardCharacter standardCharacter = characterProvider.get();
+		standardCharacter.setLabel("testLabel");
 		matrix.setCharacters(newArrayList(standardCharacter));
 
 		matrix.putRow(otu0, rowProvider.get());
@@ -159,11 +158,15 @@ public class StandardMatrixTest {
 	@Test
 	public void setCharacters() {
 
-		final ImmutableList<StandardCharacter> standardCharacters = ImmutableList
-				.of(
-						characterProvider.get().setLabel("character0"),
-						characterProvider.get().setLabel("character1"),
-						characterProvider.get().setLabel("character2"));
+		final ImmutableList<StandardCharacter> standardCharacters =
+				ImmutableList.of(
+						characterProvider.get(),
+						characterProvider.get(),
+						characterProvider.get());
+
+		standardCharacters.get(0).setLabel("character-0");
+		standardCharacters.get(1).setLabel("character-1");
+		standardCharacters.get(2).setLabel("character-2");
 
 		matrix.setCharacters(standardCharacters);
 
@@ -188,12 +191,15 @@ public class StandardMatrixTest {
 	 */
 	@Test
 	public void moveCharacter() {
+		final ImmutableList<StandardCharacter> standardCharacters =
+				ImmutableList.of(
+						characterProvider.get(),
+						characterProvider.get(),
+						characterProvider.get());
 
-		final ImmutableList<StandardCharacter> standardCharacters = ImmutableList
-				.of(
-						characterProvider.get().setLabel("character0"),
-						characterProvider.get().setLabel("character1"),
-						characterProvider.get().setLabel("character2"));
+		standardCharacters.get(0).setLabel("character-0");
+		standardCharacters.get(1).setLabel("character-1");
+		standardCharacters.get(2).setLabel("character-2");
 
 		final VersionInfo pPodVersionInfo0 = pPodVersionInfoProvider.get();
 		final VersionInfo pPodVersionInfo1 = pPodVersionInfoProvider.get();
@@ -221,17 +227,21 @@ public class StandardMatrixTest {
 	 */
 	@Test
 	public void replaceCharacters() {
-		final ImmutableList<StandardCharacter> standardCharacters = ImmutableList
-				.of(
-						characterProvider.get().setLabel("character0"),
-						characterProvider.get().setLabel("character1"),
-						characterProvider.get().setLabel("character2"));
+		final ImmutableList<StandardCharacter> characters =
+				ImmutableList.of(
+						characterProvider.get(),
+						characterProvider.get(),
+						characterProvider.get());
+
+		characters.get(0).setLabel("character-0");
+		characters.get(1).setLabel("character-1");
+		characters.get(2).setLabel("character-2");
 
 		final VersionInfo pPodVersionInfo0 = pPodVersionInfoProvider.get();
 		final VersionInfo pPodVersionInfo1 = pPodVersionInfoProvider.get();
 		final VersionInfo pPodVersionInfo2 = pPodVersionInfoProvider.get();
 
-		matrix.setCharacters(standardCharacters);
+		matrix.setCharacters(characters);
 
 		matrix.getColumnVersionInfosModifiable().set(0, pPodVersionInfo0);
 		matrix.getColumnVersionInfosModifiable().set(1, pPodVersionInfo1);
@@ -239,9 +249,13 @@ public class StandardMatrixTest {
 
 		final ImmutableList<StandardCharacter> characters2 =
 				ImmutableList.of(
-						characterProvider.get().setLabel("character2-0"),
-						characterProvider.get().setLabel("character2-1"),
-						characterProvider.get().setLabel("character2-2"));
+						characterProvider.get(),
+						characterProvider.get(),
+						characterProvider.get());
+
+		characters.get(0).setLabel("character-2-0");
+		characters.get(1).setLabel("character-2-1");
+		characters.get(2).setLabel("character-2-2");
 
 		matrix.unsetInNeedOfNewVersion();
 
@@ -264,17 +278,21 @@ public class StandardMatrixTest {
 	 */
 	@Test
 	public void setCharactersWithEqualsCharacters() {
-		final ImmutableList<StandardCharacter> standardCharacters = ImmutableList
-				.of(
-						characterProvider.get().setLabel("character0"),
-						characterProvider.get().setLabel("character1"),
-						characterProvider.get().setLabel("character2"));
+		final ImmutableList<StandardCharacter> characters =
+				ImmutableList.of(
+						characterProvider.get(),
+						characterProvider.get(),
+						characterProvider.get());
 
-		matrix.setCharacters(standardCharacters);
+		characters.get(0).setLabel("character-0");
+		characters.get(1).setLabel("character-1");
+		characters.get(2).setLabel("character-2");
+
+		matrix.setCharacters(characters);
 
 		matrix.unsetInNeedOfNewVersion();
 
-		matrix.setCharacters(standardCharacters);
+		matrix.setCharacters(characters);
 
 		assertFalse(matrix.isInNeedOfNewVersion());
 
@@ -330,10 +348,16 @@ public class StandardMatrixTest {
 	@Test
 	public void beforeMarshal() {
 
-		matrix.setCharacters(ImmutableList.of(
-				characterProvider.get().setLabel("character0"),
-				characterProvider.get().setLabel("character1"),
-				characterProvider.get().setLabel("character2")));
+		final ImmutableList<StandardCharacter> characters =
+				ImmutableList.of(
+						characterProvider.get(),
+						characterProvider.get(),
+						characterProvider.get());
+
+		characters.get(0).setLabel("character-0");
+		characters.get(1).setLabel("character-1");
+		characters.get(2).setLabel("character-2");
+
 		nullFillAndSet(
 				matrix.getColumnVersionInfosModifiable(),
 				0,
@@ -360,10 +384,10 @@ public class StandardMatrixTest {
 
 	@Test(expectedExceptions = IllegalArgumentException.class)
 	public void setCharactersW2EqualsCharacters() {
-		final StandardCharacter character0 = characterProvider.get().setLabel(
-				"character0");
-		final StandardCharacter character1 = characterProvider.get().setLabel(
-				"character1");
+		final StandardCharacter character0 = characterProvider.get();
+		character0.setLabel("character0");
+		final StandardCharacter character1 = characterProvider.get();
+		character1.setLabel("character1");
 
 		final ImmutableList<StandardCharacter> standardCharacters = ImmutableList
 				.of(
