@@ -355,7 +355,8 @@ public abstract class Cell<E, R extends IRow<?, ?>>
 	public void setUncertainElements(
 			final Set<? extends E> uncertainElements) {
 		checkNotNull(uncertainElements);
-		checkArgument(uncertainElements.size() > 1,
+		checkArgument(
+				uncertainElements.size() > 1,
 				"uncertain elements must be > 1");
 		setPolymorphicOrUncertain(Type.UNCERTAIN, uncertainElements);
 	}

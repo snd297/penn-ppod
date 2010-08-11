@@ -41,7 +41,7 @@ public abstract class MolecularCell<E extends Enum<?>, R extends IRow<?, ?>>
 
 	@Nullable
 	@XmlAttribute(name = "upperCase")
-	public Boolean isLowerCase() {
+	public Boolean getLowerCase() {
 		return lowerCase;
 	}
 
@@ -64,7 +64,7 @@ public abstract class MolecularCell<E extends Enum<?>, R extends IRow<?, ?>>
 			final Set<? extends E> elements, final Boolean lowerCase) {
 		checkNotNull(lowerCase);
 		super.setPolymorphicOrUncertain(Type.POLYMORPHIC, elements);
-		if (lowerCase.equals(isLowerCase())) {
+		if (lowerCase.equals(getLowerCase())) {
 
 		} else {
 			setLowerCase(lowerCase);
@@ -81,7 +81,7 @@ public abstract class MolecularCell<E extends Enum<?>, R extends IRow<?, ?>>
 
 		// == is safe since we know E is an Enum
 		if (element == getElement()
-				&& lowerCase.equals(isLowerCase())) {
+				&& lowerCase.equals(getLowerCase())) {
 			if (getType() != Type.SINGLE) {
 				throw new AssertionError(
 						"element is set, but this cell is not a SINGLE");
@@ -99,11 +99,6 @@ public abstract class MolecularCell<E extends Enum<?>, R extends IRow<?, ?>>
 	public void setUncertainElements(
 			final Set<? extends E> elements) {
 		super.setUncertainElements(elements);
-		if (isLowerCase() == null) {
-
-		} else {
-			setLowerCase(null);
-			setInNeedOfNewVersion();
-		}
+		setLowerCase(null);
 	}
 }
