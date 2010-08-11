@@ -142,7 +142,7 @@ public abstract class Cell<E, R extends IRow<?, ?>>
 		}
 	}
 
-	@CheckForNull
+	@Nullable
 	abstract Set<E> getElementsModifiable();
 
 	/**
