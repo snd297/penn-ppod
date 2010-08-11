@@ -53,9 +53,8 @@ public class PPodEntities implements IPPodEntities {
 	@XmlElement(name = "attachmentType")
 	private final Set<AttachmentType> pPodEntitiesWideAttachmentTypes = newHashSet();
 
-	public IOTUSet addOTUSet(final IOTUSet otuSet) {
+	public void addOTUSet(final IOTUSet otuSet) {
 		otuSets.add(otuSet);
-		return otuSet;
 	}
 
 	/**

@@ -25,7 +25,7 @@ import edu.upenn.cis.ppod.model.StandardCell;
 public interface IStandardCell extends ICell<IStandardState, IStandardRow> {
 
 	/**
-	 * Set the type to polymorphic with the appropriate states equivalent to
+	 * Set the type to polymorphic with the appropriate elements equivalent to
 	 * {@code elements}.
 	 * <p>
 	 * {@code elements} must contain more than one element.
@@ -40,8 +40,8 @@ public interface IStandardCell extends ICell<IStandardState, IStandardRow> {
 			final Set<? extends IStandardState> elements);
 
 	/**
-	 * Set this cell to {@link Type.SINGLE} and its elements to contain just
-	 * {@code element}.
+	 * Set this cell to {@link Type.SINGLE} and its elements to contain the
+	 * owning matrix's equivalent of {@code element}.
 	 * <p>
 	 * Note that the element that is actually assigned won't be {@code ==} to
 	 * the element passed in, but will be the one with the same state number

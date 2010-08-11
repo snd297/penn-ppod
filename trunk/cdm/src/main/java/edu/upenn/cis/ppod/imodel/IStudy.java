@@ -32,9 +32,6 @@ import edu.upenn.cis.ppod.services.ppodentity.IOTUSets;
 public interface IStudy extends ILabeled, IOTUSets, IUUPPodEntity {
 
 	/** {@inheritDoc} */
-	IOTUSet addOTUSet(final IOTUSet otuSet);
-
-	/** {@inheritDoc} */
 	Set<IOTUSet> getOTUSets();
 
 	/**

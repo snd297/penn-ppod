@@ -30,10 +30,8 @@ public interface IOTUSets {
 	 * Add an OTU set to this {@link IOTUSets}.
 	 * 
 	 * @param otuSet to be added
-	 * 
-	 * @return {@code otuSet}
 	 */
-	IOTUSet addOTUSet(IOTUSet otuSet);
+	void addOTUSet(IOTUSet otuSet);
 
 	/**
 	 * Get the OTU sets contained in this {@code IOTUSets}.

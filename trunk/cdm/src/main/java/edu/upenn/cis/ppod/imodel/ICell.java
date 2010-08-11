@@ -86,19 +86,20 @@ public interface ICell<E, R extends IRow<?, ?>> extends IOrderedChild<R> {
 	Type getType();
 
 	/**
-	 * Set this cell's type to {@link Type#INAPPLICABLE} its elements to the
+	 * Set this cell's type to {@link Type#INAPPLICABLE}, its elements to the
 	 * empty set.
 	 */
 	void setInapplicable();
 
 	/**
-	 * Set this cell's type to {@link Type#UNASSIGNED} and its elements to
-	 * {@code Collections.EMPTY_SET}.
+	 * Set this cell's type to {@link Type#UNASSIGNED}, its elements to the
+	 * empty set.
 	 */
 	void setUnassigned();
 
 	/**
-	 * Set the type to uncertain with the given elements.
+	 * Set the type to uncertain and this cell's elements to the values
+	 * equivalent to {@code elements}.
 	 * <p>
 	 * {@code elements.size()} must be greater than 2.
 	 * <p>
