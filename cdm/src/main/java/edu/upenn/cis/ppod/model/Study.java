@@ -31,7 +31,6 @@ import javax.xml.bind.Marshaller;
 import javax.xml.bind.annotation.XmlAttribute;
 import javax.xml.bind.annotation.XmlElement;
 import javax.xml.bind.annotation.XmlRootElement;
-import javax.xml.bind.annotation.adapters.XmlAdapter;
 
 import edu.upenn.cis.ppod.imodel.IOTUSet;
 import edu.upenn.cis.ppod.imodel.IStudy;
@@ -84,7 +83,7 @@ public class Study
 	}
 
 	/** {@inheritDoc} */
-	public IOTUSet addOTUSet(final IOTUSet otuSet) {
+	public void addOTUSet(final IOTUSet otuSet) {
 		checkNotNull(otuSet);
 		if (getOTUSets().contains(otuSet)) {
 
@@ -93,7 +92,6 @@ public class Study
 			otuSet.setParent(this);
 			setInNeedOfNewVersion();
 		}
-		return otuSet;
 	}
 
 	/**

@@ -17,7 +17,7 @@ package edu.upenn.cis.ppod.imodel;
 
 import java.util.Set;
 
-import javax.annotation.Nullable;
+import edu.umd.cs.findbugs.annotations.Nullable;
 
 public interface IMolecularCell<E extends Enum<?>, R extends IRow<?, ?>>
 		extends ICell<E, R> {
@@ -25,9 +25,12 @@ public interface IMolecularCell<E extends Enum<?>, R extends IRow<?, ?>>
 	/**
 	 * Are the contained {@link edu.upenn.cis.ppod.model.DNANucleotide}
 	 * lower-case?
+	 * <p>
+	 * Will be {@code null} for {@link Type.INAPPLICABLE},
+	 * {@link Type.UNASSIGNED}, and {@link Type.UNCERTAIN} cells.
 	 * 
 	 * @return {@code true} if the contained
-	 *         {@link edu.upenn.cis.ppod.model.DNANucleotide} lower-case,
+	 *         {@link edu.upenn.cis.ppod.model.DNANucleotide} is lower-case,
 	 *         {@code false} otherwise
 	 */
 	@Nullable
