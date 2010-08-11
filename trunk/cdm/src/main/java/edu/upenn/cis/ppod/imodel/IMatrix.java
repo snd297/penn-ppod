@@ -102,18 +102,13 @@ public interface IMatrix<R extends IRow<?, ?>>
 	 * <p>
 	 * Assumes {@code row} does not belong to another matrix.
 	 * <p>
-	 * Assumes {@code row} is not detached.
+	 * {@code otu} must be a member of {@link #getParent()}.
 	 * 
 	 * @param otu index of the row we are adding
 	 * @param row the row we're adding
 	 * 
 	 * @return the row that was previously there, or {@code null} if there was
 	 *         no row previously there
-	 * 
-	 * @throws IllegalArgumentException if {@code otu} does not belong to this
-	 *             matrix's {@code OTUSet}
-	 * @throws IllegalArgumentException if this matrix already contains a row
-	 *             {@code .equals} to {@code row}
 	 */
 	@CheckForNull
 	R putRow(final IOTU otu, final R row);

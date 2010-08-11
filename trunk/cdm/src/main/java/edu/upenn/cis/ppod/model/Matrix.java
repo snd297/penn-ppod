@@ -116,6 +116,25 @@ public abstract class Matrix<R extends IRow<?, ?>>
 		getOTUKeyedRows().afterUnmarshal();
 	}
 
+	/**
+	 * Set the values of the column version numbers for marshalled matrices.
+	 * <p>
+	 * <strong>Outside of testing, clients should never call this
+	 * method.</strong> In normal usage, these values are populated when an
+	 * object in marshalled.
+	 * 
+	 * @param columnVersions values
+	 */
+	// @VisibleForTesting
+	// private void setColumnVersions(final List<Integer> columnVersions) {
+	// checkNotNull(columnVersions);
+	// checkArgument(columnVersions.size() == getColumnsSize(),
+	// "columnVersions size is not the same as getColumnsSize()");
+	//
+	// this.columnVersions.clear();
+	// this.columnVersions.addAll(this.columnVersions);
+	// }
+
 	protected void afterUnmarshal(
 			@CheckForNull final Unmarshaller u,
 			final Object parent) {
@@ -257,17 +276,9 @@ public abstract class Matrix<R extends IRow<?, ?>>
 	}
 
 	/**
-	 * Set row at <code>otu</code> to <code>row</code>.
-	 * <p>
-	 * Assumes {@code row} does not belong to another matrix.
+	 * {@inheritDoc}
 	 * <p>
 	 * Assumes {@code row} is not detached.
-	 * 
-	 * @param otu index of the row we are adding
-	 * @param row the row we're adding
-	 * 
-	 * @return the row that was previously there, or {@code null} if there was
-	 *         no row previously there
 	 * 
 	 * @throws IllegalArgumentException if {@code otu} does not belong to this
 	 *             matrix's {@code OTUSet}
@@ -317,25 +328,6 @@ public abstract class Matrix<R extends IRow<?, ?>>
 			setColumnVersionInfo(pos, versionInfo);
 		}
 	}
-
-	/**
-	 * Set the values of the column version numbers for marshalled matrices.
-	 * <p>
-	 * <strong>Outside of testing, clients should never call this
-	 * method.</strong> In normal usage, these values are populated when an
-	 * object in marshalled.
-	 * 
-	 * @param columnVersions values
-	 */
-	// @VisibleForTesting
-	// private void setColumnVersions(final List<Integer> columnVersions) {
-	// checkNotNull(columnVersions);
-	// checkArgument(columnVersions.size() == getColumnsSize(),
-	// "columnVersions size is not the same as getColumnsSize()");
-	//
-	// this.columnVersions.clear();
-	// this.columnVersions.addAll(this.columnVersions);
-	// }
 
 	/** {@inheritDoc} */
 	public void setDescription(

@@ -145,9 +145,8 @@ public class TreeSetTest {
 		final ITreeSet treeSet = treeSetProvider.get();
 		treeSet.unsetInNeedOfNewVersion();
 		final String otuSetLabel = "otu-set-label";
-		final ITreeSet returnedTreeSet = treeSet.setLabel(otuSetLabel);
+		treeSet.setLabel(otuSetLabel);
 		assertTrue(treeSet.isInNeedOfNewVersion());
-		assertSame(returnedTreeSet, treeSet);
 		treeSet.isInNeedOfNewVersion();
 		assertEquals(treeSet.getLabel(), otuSetLabel);
 

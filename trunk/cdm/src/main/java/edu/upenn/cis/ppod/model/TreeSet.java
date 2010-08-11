@@ -168,14 +168,8 @@ public class TreeSet
 		super.setInNeedOfNewVersion();
 	}
 
-	/**
-	 * Set the label.
-	 * 
-	 * @param label the label
-	 * 
-	 * @return this {@code TreeSet}
-	 */
-	public TreeSet setLabel(final String label) {
+	/** {@inheritDoc} */
+	public void setLabel(final String label) {
 		checkNotNull(label);
 		if (label.equals(getLabel())) {
 
@@ -183,7 +177,6 @@ public class TreeSet
 			this.label = label;
 			setInNeedOfNewVersion();
 		}
-		return this;
 	}
 
 	/** {@inheritDoc} */

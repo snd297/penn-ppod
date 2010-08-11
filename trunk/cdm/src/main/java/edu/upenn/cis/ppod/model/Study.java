@@ -154,7 +154,7 @@ public class Study
 	}
 
 	/** {@inheritDoc} */
-	public Study setLabel(final String label) {
+	public void setLabel(final String label) {
 		checkNotNull(label);
 		if (label.equals(this.label)) {
 
@@ -162,7 +162,6 @@ public class Study
 			this.label = label;
 			setInNeedOfNewVersion();
 		}
-		return this;
 	}
 
 	/**

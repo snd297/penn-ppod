@@ -24,8 +24,8 @@ import edu.upenn.cis.ppod.model.Tree;
 /**
  * A phylogenetic tree.
  * <p>
- * The trees are stored in Newick format composed of pPOD IDs of the
- * constituent OTUs.
+ * The trees are stored in Newick format composed of pPOD IDs of the constituent
+ * OTUs.
  * 
  * @author Sam Donnelly
  */
@@ -55,10 +55,8 @@ public interface ITree extends ILabeled, IUUPPodEntity, IChild<ITreeSet> {
 	 * Set the label of this tree.
 	 * 
 	 * @param label the label
-	 * 
-	 * @return this tree
 	 */
-	ITree setLabel(final String label);
+	void setLabel(final String label);
 
 	/**
 	 * Setter.
@@ -67,6 +65,6 @@ public interface ITree extends ILabeled, IUUPPodEntity, IChild<ITreeSet> {
 	 * 
 	 * @return this {@code Tree}
 	 */
-	ITree setNewick(final String newick);
+	void setNewick(final String newick);
 
 }

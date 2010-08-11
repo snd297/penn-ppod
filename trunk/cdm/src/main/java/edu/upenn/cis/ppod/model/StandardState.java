@@ -188,10 +188,8 @@ public class StandardState extends PPodEntityWDocId implements IStandardState {
 	 * Set the label.
 	 * 
 	 * @param label the label
-	 * 
-	 * @return this
 	 */
-	public IStandardState setLabel(final String label) {
+	public void setLabel(final String label) {
 		checkNotNull(label);
 		if (label.equals(getLabel())) {
 
@@ -199,7 +197,6 @@ public class StandardState extends PPodEntityWDocId implements IStandardState {
 			this.label = label;
 			setInNeedOfNewVersion();
 		}
-		return this;
 	}
 
 	/**
@@ -228,15 +225,12 @@ public class StandardState extends PPodEntityWDocId implements IStandardState {
 	 * setter.
 	 * 
 	 * @param stateNumber the integer value to use for this state
-	 * 
-	 * @return this
 	 */
-	protected IStandardState setStateNumber(final Integer stateNumber) {
+	protected void setStateNumber(final Integer stateNumber) {
 		checkNotNull(stateNumber);
 		checkState(this.stateNumber == null,
 				"this.stateNumber is non-null: this is a WORM property.");
 		this.stateNumber = stateNumber;
-		return this;
 	}
 
 	/**

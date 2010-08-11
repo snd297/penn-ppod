@@ -48,24 +48,12 @@ import edu.upenn.cis.ppod.util.IVisitor;
  */
 @Entity
 @Table(name = DNASequence.TABLE)
-public class DNASequence extends Sequence<IDNASequenceSet> implements
-		IDNASequence {
-
-	public static class Adapter extends XmlAdapter<DNASequence, IDNASequence> {
-
-		@Override
-		public DNASequence marshal(final IDNASequence sequence) {
-			return (DNASequence) sequence;
-		}
-
-		@Override
-		public IDNASequence unmarshal(final DNASequence sequence) {
-			return sequence;
-		}
-	}
+public class DNASequence
+		extends Sequence<IDNASequenceSet>
+		implements IDNASequence {
 
 	/**
-	 * The characters that are legal in a {@code DNASequence} .
+	 * The characters that are legal in a {@code DNASequence}.
 	 */
 	private final static Set<java.lang.Character> LEGAL_CHARS =
 			ImmutableSet.of(
@@ -137,4 +125,18 @@ public class DNASequence extends Sequence<IDNASequenceSet> implements
 			@CheckForNull final IDNASequenceSet parent) {
 		this.parent = parent;
 	}
+
+	public static class Adapter extends XmlAdapter<DNASequence, IDNASequence> {
+
+		@Override
+		public DNASequence marshal(final IDNASequence sequence) {
+			return (DNASequence) sequence;
+		}
+
+		@Override
+		public IDNASequence unmarshal(final DNASequence sequence) {
+			return sequence;
+		}
+	}
+
 }
