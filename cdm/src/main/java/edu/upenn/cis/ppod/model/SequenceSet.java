@@ -194,7 +194,7 @@ abstract class SequenceSet<S extends ISequence<?>>
 	}
 
 	/** {@inheritDoc} */
-	public ISequenceSet<S> setLabel(final String label) {
+	public void setLabel(final String label) {
 		checkNotNull(label);
 		if (label.equals(getLabel())) {
 
@@ -202,7 +202,6 @@ abstract class SequenceSet<S extends ISequence<?>>
 			this.label = label;
 			setInNeedOfNewVersion();
 		}
-		return this;
 	}
 
 	void setOTUs() {

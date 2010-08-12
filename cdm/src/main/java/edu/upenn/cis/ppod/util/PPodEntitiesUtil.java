@@ -40,9 +40,8 @@ public class PPodEntitiesUtil {
 	 *            namespaces
 	 * @param attachmentTypes to which to add the extracted attachment types
 	 * @param attachments to which to add the extracted attachments
-	 * @return {@code attachee}
 	 */
-	public static IAttachee extractAttachmentInfoFromAttachee(
+	public static void extractAttachmentInfoFromAttachee(
 			final Set<AttachmentNamespace> attachmentNamespaces,
 			final Set<AttachmentType> attachmentTypes,
 			final IAttachee attachee) {
@@ -52,16 +51,17 @@ public class PPodEntitiesUtil {
 			extractAttachmentInfoFromAttachee(attachmentNamespaces,
 					attachmentTypes, attachment);
 		}
-		return attachee;
 	}
 
-	public static IOTUSets extractAttachmentInfoFromPPodEntities(
+	public static void extractAttachmentInfoFromPPodEntities(
 			final Set<AttachmentNamespace> studyWideAttachmentNamespaces,
 			final Set<AttachmentType> studyWideAttachmentTypes,
-				final IOTUSets otuSetCentricEntities) {
+			final IOTUSets otuSetCentricEntities) {
 		for (final IOTUSet otuSet : otuSetCentricEntities.getOTUSets()) {
-			extractAttachmentInfoFromAttachee(studyWideAttachmentNamespaces,
-					studyWideAttachmentTypes, otuSet);
+			extractAttachmentInfoFromAttachee(
+					studyWideAttachmentNamespaces,
+					studyWideAttachmentTypes,
+					otuSet);
 			for (final IOTU otu : otuSet.getOTUs()) {
 				extractAttachmentInfoFromAttachee(
 						studyWideAttachmentNamespaces,
@@ -81,7 +81,5 @@ public class PPodEntitiesUtil {
 				}
 			}
 		}
-
-		return otuSetCentricEntities;
 	}
 }

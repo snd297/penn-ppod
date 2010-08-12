@@ -171,8 +171,7 @@ public class SequenceSetTest {
 
 		assertFalse(seqSet.isInNeedOfNewVersion());
 		final String label = "seq-set";
-		final ISequenceSet<?> seqSetReturned = seqSet.setLabel(label);
-		assertSame(seqSetReturned, seqSet);
+		seqSet.setLabel(label);
 		assertTrue(seqSet.isInNeedOfNewVersion());
 		assertEquals(seqSet.getLabel(), label);
 

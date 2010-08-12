@@ -66,7 +66,7 @@ public class PPodEntities implements IPPodEntities {
 	 * @param m see {@code Marshaller}
 	 * @return see {@code Marshaller}
 	 */
-	public boolean beforeMarshal(final Marshaller m) {
+	protected boolean beforeMarshal(final Marshaller m) {
 		if (pPodEntitiesWideAttachmentNamespaces.size() == 0) {
 			PPodEntitiesUtil.extractAttachmentInfoFromPPodEntities(
 					pPodEntitiesWideAttachmentNamespaces,

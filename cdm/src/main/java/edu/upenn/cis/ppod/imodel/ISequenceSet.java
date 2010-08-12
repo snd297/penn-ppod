@@ -20,7 +20,6 @@ import java.util.Map;
 import javax.annotation.CheckForNull;
 import javax.annotation.Nullable;
 
-
 public interface ISequenceSet<S extends ISequence<?>>
 		extends ILabeled, IChild<IOTUSet>, IUUPPodEntity {
 
@@ -64,7 +63,7 @@ public interface ISequenceSet<S extends ISequence<?>>
 	@CheckForNull
 	S putSequence(IOTU otu, S sequence);
 
-	ISequenceSet<S> setLabel(String label);
+	void setLabel(String label);
 
 	/**
 	 * Remove all sequences from this set. Null's out the
