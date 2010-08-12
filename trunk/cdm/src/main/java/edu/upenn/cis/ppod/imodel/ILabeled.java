@@ -17,6 +17,8 @@ package edu.upenn.cis.ppod.imodel;
 
 import com.google.common.base.Function;
 
+import edu.umd.cs.findbugs.annotations.Nullable;
+
 /**
  * An object with a label.
  * 
@@ -46,5 +48,6 @@ public interface ILabeled {
 	 * 
 	 * @return the label
 	 */
+	@Nullable
 	String getLabel();
 }

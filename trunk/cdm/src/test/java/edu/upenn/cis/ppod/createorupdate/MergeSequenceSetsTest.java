@@ -58,9 +58,8 @@ public class MergeSequenceSetsTest {
 					mergeDNASequenceSetsFactory.create(dao, newVersionInfo);
 
 		final IDNASequenceSet srcSeqSet =
-					(IDNASequenceSet) dnaSequenceSetProvider
-							.get()
-							.setLabel("src-seq-set-0");
+					dnaSequenceSetProvider.get();
+		srcSeqSet.setLabel("src-seq-set-0");
 		final IDNASequenceSet trgSeqSet = dnaSequenceSetProvider.get();
 
 		final IOTUSet trgOTUSet = otuSetProvider.get();
@@ -123,9 +122,8 @@ public class MergeSequenceSetsTest {
 					mergeDNASequenceSetsFactory.create(dao, newVersionInfo);
 
 		final IDNASequenceSet srcSeqSet =
-					(IDNASequenceSet) dnaSequenceSetProvider
-							.get()
-							.setLabel("src-seq-set-0");
+				dnaSequenceSetProvider.get();
+		srcSeqSet.setLabel("src-seq-set-0");
 		final IDNASequenceSet trgSeqSet = dnaSequenceSetProvider.get();
 
 		final IOTUSet trgOTUSet = otuSetProvider.get();
@@ -190,9 +188,8 @@ public class MergeSequenceSetsTest {
 				mergeDNASequenceSetsFactory.create(dao, newVersionInfo);
 
 		final IDNASequenceSet srcSeqSet =
-				(IDNASequenceSet) dnaSequenceSetProvider
-						.get()
-						.setLabel("src-seq-set-0");
+				dnaSequenceSetProvider.get();
+		srcSeqSet.setLabel("src-seq-set-0");
 		final IDNASequenceSet trgSeqSet = dnaSequenceSetProvider.get();
 
 		final IOTUSet trgOTUSet = otuSetProvider.get();
