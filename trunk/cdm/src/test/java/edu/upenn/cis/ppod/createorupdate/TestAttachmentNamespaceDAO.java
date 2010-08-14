@@ -22,37 +22,37 @@ import java.util.List;
 import java.util.Map;
 
 import edu.upenn.cis.ppod.dao.IAttachmentNamespaceDAO;
-import edu.upenn.cis.ppod.model.AttachmentNamespace;
+import edu.upenn.cis.ppod.model.IAttachmentNamespace;
 
 /**
  * @author Sam Donnelly
  */
 public class TestAttachmentNamespaceDAO implements IAttachmentNamespaceDAO {
 
-	private final Map<String, AttachmentNamespace> namespacesByLabel = newHashMap();
+	private final Map<String, IAttachmentNamespace> namespacesByLabel = newHashMap();
 
 	public TestAttachmentNamespaceDAO setNamespacesByLabel(
-			final Map<String, AttachmentNamespace> namespacesByLabel) {
+			final Map<String, ? extends IAttachmentNamespace> namespacesByLabel) {
 		namespacesByLabel.clear();
 		this.namespacesByLabel.putAll(namespacesByLabel);
 		return this;
 	}
 
-	public void makeTransient(final AttachmentNamespace entity) {
+	public void makeTransient(final IAttachmentNamespace entity) {
 		throw new UnsupportedOperationException();
 	}
 
-	public List<AttachmentNamespace> findAll() {
+	public List<IAttachmentNamespace> findAll() {
 		throw new UnsupportedOperationException();
 	}
 
-	public List<AttachmentNamespace> findByExample(
-			final AttachmentNamespace exampleInstance,
+	public List<IAttachmentNamespace> findByExample(
+			final IAttachmentNamespace exampleInstance,
 			final String... excludeProperty) {
 		throw new UnsupportedOperationException();
 	}
 
-	public AttachmentNamespace get(final Long id, final boolean lock) {
+	public IAttachmentNamespace get(final Long id, final boolean lock) {
 		throw new UnsupportedOperationException();
 	}
 
@@ -60,15 +60,15 @@ public class TestAttachmentNamespaceDAO implements IAttachmentNamespaceDAO {
 		throw new UnsupportedOperationException();
 	}
 
-	public AttachmentNamespace getNamespaceByLabel(final String label) {
+	public IAttachmentNamespace getNamespaceByLabel(final String label) {
 		return namespacesByLabel.get(label);
 	}
 
-	public void makePersistent(final AttachmentNamespace entity) {
+	public void makePersistent(final IAttachmentNamespace entity) {
 		return;
 	}
 
-	public void evict(AttachmentNamespace entity) {
+	public void evict(IAttachmentNamespace entity) {
 		// TODO Auto-generated method stub
 		throw new UnsupportedOperationException();
 	}
@@ -79,22 +79,23 @@ public class TestAttachmentNamespaceDAO implements IAttachmentNamespaceDAO {
 	}
 
 	public void evictEntities(
-			final Iterable<? extends AttachmentNamespace> entities) {
+			final Iterable<? extends IAttachmentNamespace> entities) {
 		// TODO Auto-generated method stub
 		throw new UnsupportedOperationException();
 	}
 
-	public void initialize(AttachmentNamespace entity) {
+	public void initialize(IAttachmentNamespace entity) {
 		// TODO Auto-generated method stub
 		throw new UnsupportedOperationException();
 	}
 
-	public String getEntityName(AttachmentNamespace entity) {
+	public String getEntityName(IAttachmentNamespace entity) {
 		// TODO Auto-generated method stub
 		throw new UnsupportedOperationException();
 	}
 
-	public String getEntityName(Class<? extends AttachmentNamespace> entityClass) {
+	public String getEntityName(
+			Class<? extends IAttachmentNamespace> entityClass) {
 		// TODO Auto-generated method stub
 		throw new UnsupportedOperationException();
 	}

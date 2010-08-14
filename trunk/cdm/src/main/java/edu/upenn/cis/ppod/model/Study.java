@@ -67,10 +67,10 @@ public class Study
 	private final Set<IOTUSet> otuSets = newHashSet();
 
 	@Transient
-	private final Set<AttachmentNamespace> attachmentNamespaces = newHashSet();
+	private final Set<IAttachmentNamespace> attachmentNamespaces = newHashSet();
 
 	@Transient
-	private final Set<AttachmentType> attachmentTypes = newHashSet();
+	private final Set<IAttachmentType> attachmentTypes = newHashSet();
 
 	Study() {}
 
@@ -108,10 +108,12 @@ public class Study
 		// super.beforeMarshal(m);
 		if (attachmentNamespaces.size() == 0) {
 			PPodEntitiesUtil.extractAttachmentInfoFromAttachee(
-					attachmentNamespaces, attachmentTypes,
+					attachmentNamespaces,
+					attachmentTypes,
 					this);
 			PPodEntitiesUtil.extractAttachmentInfoFromPPodEntities(
-					attachmentNamespaces, attachmentTypes,
+					attachmentNamespaces,
+					attachmentTypes,
 					this);
 		}
 		return true;
@@ -134,12 +136,12 @@ public class Study
 	}
 
 	@XmlElement(name = "studyWideAttachmentNamespace")
-	protected Set<AttachmentNamespace> getStudyWideAttachmentNamespacesModifiable() {
+	protected Set<IAttachmentNamespace> getStudyWideAttachmentNamespacesModifiable() {
 		return attachmentNamespaces;
 	}
 
 	@XmlElement(name = "studyWideAttachmentType")
-	protected Set<AttachmentType> getStudyWideAttachmentTypes() {
+	protected Set<IAttachmentType> getStudyWideAttachmentTypes() {
 		return attachmentTypes;
 	}
 

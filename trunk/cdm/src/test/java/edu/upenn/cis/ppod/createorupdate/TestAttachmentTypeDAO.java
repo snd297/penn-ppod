@@ -22,37 +22,38 @@ import java.util.List;
 import java.util.Map;
 
 import edu.upenn.cis.ppod.dao.IAttachmentTypeDAO;
-import edu.upenn.cis.ppod.model.AttachmentType;
+import edu.upenn.cis.ppod.model.IAttachmentType;
 
 /**
  * @author Sam Donnelly
  */
 public class TestAttachmentTypeDAO implements IAttachmentTypeDAO {
 
-	private Map<String, Map<String, AttachmentType>> typesByNamespaceLabelAndTypeLabel = newHashMap();
+	private Map<String, Map<String, IAttachmentType>> typesByNamespaceLabelAndTypeLabel = newHashMap();
 
-	public void makeTransient(final AttachmentType entity) {
+	public void makeTransient(final IAttachmentType entity) {
 		throw new UnsupportedOperationException();
 	}
 
-	public List<AttachmentType> findAll() {
+	public List<IAttachmentType> findAll() {
 		throw new UnsupportedOperationException();
 	}
 
-	public List<AttachmentType> findByExample(
-			final AttachmentType exampleInstance,
+	public List<IAttachmentType> findByExample(
+			final IAttachmentType exampleInstance,
 			final String... excludeProperty) {
 		throw new UnsupportedOperationException();
 	}
 
-	public AttachmentType get(final Long id, final boolean lock) {
+	public IAttachmentType get(final Long id, final boolean lock) {
 		throw new UnsupportedOperationException();
 	}
 
-	public AttachmentType getTypeByNamespaceAndLabel(
-			final String namespaceLabel, final String typeLabel) {
-		final Map<String, AttachmentType> typesByLabel = typesByNamespaceLabelAndTypeLabel
-				.get(namespaceLabel);
+	public IAttachmentType getTypeByNamespaceAndLabel(
+			final String namespaceLabel,
+			final String typeLabel) {
+		final Map<String, IAttachmentType> typesByLabel =
+				typesByNamespaceLabelAndTypeLabel.get(namespaceLabel);
 		if (typesByLabel == null) {
 			return null;
 		}
@@ -63,17 +64,17 @@ public class TestAttachmentTypeDAO implements IAttachmentTypeDAO {
 		throw new UnsupportedOperationException();
 	}
 
-	public void makePersistent(final AttachmentType entity) {
+	public void makePersistent(final IAttachmentType entity) {
 		return;
 	}
 
 	public TestAttachmentTypeDAO setTypesByNamespaceLabelAndTypeLabel(
-			final Map<String, Map<String, AttachmentType>> typesByNamespaceLabelAndTypeLabel) {
+			final Map<String, Map<String, IAttachmentType>> typesByNamespaceLabelAndTypeLabel) {
 		this.typesByNamespaceLabelAndTypeLabel = typesByNamespaceLabelAndTypeLabel;
 		return this;
 	}
 
-	public void evict(AttachmentType entity) {
+	public void evict(IAttachmentType entity) {
 		// TODO Auto-generated method stub
 		throw new UnsupportedOperationException();
 	}
@@ -83,22 +84,22 @@ public class TestAttachmentTypeDAO implements IAttachmentTypeDAO {
 		throw new UnsupportedOperationException();
 	}
 
-	public void evictEntities(final Iterable<? extends AttachmentType> entities) {
+	public void evictEntities(final Iterable<? extends IAttachmentType> entities) {
 		// TODO Auto-generated method stub
 		throw new UnsupportedOperationException();
 	}
 
-	public void initialize(AttachmentType entity) {
+	public void initialize(IAttachmentType entity) {
 		// TODO Auto-generated method stub
 		throw new UnsupportedOperationException();
 	}
 
-	public String getEntityName(AttachmentType entity) {
+	public String getEntityName(IAttachmentType entity) {
 		// TODO Auto-generated method stub
 		throw new UnsupportedOperationException();
 	}
 
-	public String getEntityName(Class<? extends AttachmentType> entityClass) {
+	public String getEntityName(Class<? extends IAttachmentType> entityClass) {
 		// TODO Auto-generated method stub
 		throw new UnsupportedOperationException();
 	}

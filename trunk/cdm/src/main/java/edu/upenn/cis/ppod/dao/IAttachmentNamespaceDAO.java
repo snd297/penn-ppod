@@ -15,15 +15,15 @@
  */
 package edu.upenn.cis.ppod.dao;
 
-import edu.upenn.cis.ppod.model.AttachmentNamespace;
+import edu.upenn.cis.ppod.model.IAttachmentNamespace;
 
 /**
  * {@link AttachmentNamespace} DAO.
  * 
  * @author Sam Donnelly
  */
-public interface IAttachmentNamespaceDAO extends
-		IDAO<AttachmentNamespace, Long> {
+public interface IAttachmentNamespaceDAO
+		extends IDAO<IAttachmentNamespace, Long> {
 
 	/**
 	 * Get the {@link AttachmentNamespace} with the given namespace.
@@ -31,5 +31,5 @@ public interface IAttachmentNamespaceDAO extends
 	 * @param label the namespace
 	 * @return the {@link AttachmentNamespace} with the given namespace
 	 */
-	AttachmentNamespace getNamespaceByLabel(String label);
+	IAttachmentNamespace getNamespaceByLabel(String label);
 }

@@ -16,6 +16,7 @@
 package edu.upenn.cis.ppod.dao.hibernate;
 
 import edu.upenn.cis.ppod.model.AttachmentType;
+import edu.upenn.cis.ppod.model.IAttachmentType;
 import edu.upenn.cis.ppod.thirdparty.dao.hibernate.GenericHibernateDAO;
 
 /**
@@ -24,17 +25,17 @@ import edu.upenn.cis.ppod.thirdparty.dao.hibernate.GenericHibernateDAO;
  * @author Sam Donnelly
  */
 final class AttachmentTypeDAOHibernate
-		extends GenericHibernateDAO<AttachmentType, Long>
+		extends GenericHibernateDAO<IAttachmentType, Long>
 		implements IAttachmentTypeDAOHibernate {
 
-	public AttachmentType getTypeByNamespaceAndLabel(
+	public IAttachmentType getTypeByNamespaceAndLabel(
 			final String namespaceLabel, final String typeLabel) {
-		return (AttachmentType) getSession()
+		return (IAttachmentType) getSession()
 				.getNamedQuery(
 						AttachmentType.class.getSimpleName()
-								+ "-getByNamespaceAndType").setParameter(
-						"namespaceLabel", namespaceLabel).setParameter(
-						"typeLabel", typeLabel).uniqueResult();
+								+ "-getByNamespaceAndType")
+								.setParameter("namespaceLabel", namespaceLabel)
+								.setParameter("typeLabel", typeLabel)
+								.uniqueResult();
 	}
-
 }

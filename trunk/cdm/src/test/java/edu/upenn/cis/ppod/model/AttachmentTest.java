@@ -18,7 +18,6 @@ package edu.upenn.cis.ppod.model;
 import static org.testng.Assert.assertEquals;
 import static org.testng.Assert.assertFalse;
 import static org.testng.Assert.assertNull;
-import static org.testng.Assert.assertSame;
 import static org.testng.Assert.assertTrue;
 
 import org.testng.annotations.Test;
@@ -63,10 +62,9 @@ public class AttachmentTest {
 		assertNull(attachment.getBytesValue());
 
 		final byte[] bytesValue = new byte[] { 1, 3, 5 };
-		final IAttachment attachmentReturned = attachment
-				.setBytesValue(bytesValue);
 
-		assertSame(attachmentReturned, attachment);
+		attachment.setBytesValue(bytesValue);
+
 		assertEquals(attachment.getBytesValue(), bytesValue);
 
 		assertTrue(attachment.isInNeedOfNewVersion());
@@ -102,8 +100,7 @@ public class AttachmentTest {
 
 		assertFalse(attachment.isInNeedOfNewVersion());
 
-		final IAttachment attachmentReturned = attachment.setLabel(label);
-		assertSame(attachmentReturned, attachment);
+		attachment.setLabel(label);
 		assertEquals(attachment.getLabel(), label);
 
 		assertTrue(attachment.isInNeedOfNewVersion());
@@ -144,9 +141,8 @@ public class AttachmentTest {
 
 		assertFalse(attachment.isInNeedOfNewVersion());
 
-		final IAttachment attachmentReturned =
-				attachment.setStringValue(stringVal);
-		assertSame(attachmentReturned, attachment);
+		attachment.setStringValue(stringVal);
+
 		assertEquals(attachment.getStringValue(), stringVal);
 
 		assertTrue(attachment.isInNeedOfNewVersion());

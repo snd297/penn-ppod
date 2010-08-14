@@ -18,7 +18,7 @@ package edu.upenn.cis.ppod.dao.hibernate;
 import com.google.inject.ImplementedBy;
 
 import edu.upenn.cis.ppod.dao.IAttachmentTypeDAO;
-import edu.upenn.cis.ppod.model.AttachmentType;
+import edu.upenn.cis.ppod.model.IAttachmentType;
 
 /**
  * The Interface IAttachmentTypeDAOHibernate.
@@ -28,6 +28,6 @@ import edu.upenn.cis.ppod.model.AttachmentType;
 @ImplementedBy(AttachmentTypeDAOHibernate.class)
 public interface IAttachmentTypeDAOHibernate extends
 		IAttachmentTypeDAO,
-		IDAOHibernate<AttachmentType, Long> {
+		IDAOHibernate<IAttachmentType, Long> {
 
 }

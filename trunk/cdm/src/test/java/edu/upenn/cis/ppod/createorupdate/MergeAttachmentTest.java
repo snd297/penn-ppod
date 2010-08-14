@@ -28,8 +28,8 @@ import com.google.inject.Provider;
 import edu.upenn.cis.ppod.TestGroupDefs;
 import edu.upenn.cis.ppod.dao.IAttachmentNamespaceDAO;
 import edu.upenn.cis.ppod.imodel.IAttachment;
-import edu.upenn.cis.ppod.model.AttachmentNamespace;
-import edu.upenn.cis.ppod.model.AttachmentType;
+import edu.upenn.cis.ppod.model.IAttachmentNamespace;
+import edu.upenn.cis.ppod.model.IAttachmentType;
 import edu.upenn.cis.ppod.model.ModelAssert;
 
 /**
@@ -55,33 +55,40 @@ public class MergeAttachmentTest {
 	private Provider<IAttachment> attachmentProvider;
 
 	@Inject
-	private Provider<AttachmentNamespace> attachmentNamespaceProvider;
+	private Provider<IAttachmentNamespace> attachmentNamespaceProvider;
 
 	@Inject
-	private Provider<AttachmentType> attachmentTypeProvider;
+	private Provider<IAttachmentType> attachmentTypeProvider;
 
 	@BeforeMethod
 	public void beforeMethod() {
-		final Map<String, AttachmentNamespace> namespacesByLabel = newHashMap();
-		namespacesByLabel.put("TEST_ATTACHMENT_NAMESPACE",
+		final Map<String, IAttachmentNamespace> namespacesByLabel = newHashMap();
+		namespacesByLabel.put(
+				"TEST_ATTACHMENT_NAMESPACE",
 				attachmentNamespaceProvider.get());
-		attachmentNamespaceDAO = attachmentNamespaceDAOProvider.get()
-				.setNamespacesByLabel(namespacesByLabel);
+		attachmentNamespaceDAO =
+				attachmentNamespaceDAOProvider.get()
+						.setNamespacesByLabel(namespacesByLabel);
 	}
 
 	@Test
 	public void mergeOnBlankTarget() {
-		System.out.println("entering...mergeOnBlankTarget");
 		IMergeAttachments mergeAttachments = mergeAttachmentFactory.create(
 				attachmentNamespaceDAO, attachmentTypeDAO);
 		final IAttachment targetAttachment = attachmentProvider.get(), sourceAttachment = attachmentProvider
 				.get();
 		sourceAttachment.setLabel("target attachment");
-		sourceAttachment.setType(attachmentTypeProvider.get().setLabel(
-				"SOURCE_ATTACHMENT_TYPE"));
-		sourceAttachment.getType().setNamespace(
-				attachmentNamespaceProvider.get().setLabel(
-						"SOURCE_ATTACHMENT_NAMESPACE"));
+		final IAttachmentType sourceAttachmentType =
+				attachmentTypeProvider.get();
+		sourceAttachmentType.setLabel("SOURCE_ATTACHMENT_TYPE");
+		sourceAttachment.setType(sourceAttachmentType);
+
+		final IAttachmentNamespace srcNamespace =
+				attachmentNamespaceProvider.get();
+		srcNamespace.setLabel("SOURCE_ATTACHMENT_NAMESPACE");
+
+		sourceAttachment.getType().setNamespace(srcNamespace);
+
 		sourceAttachment.setStringValue("STRING_VALUE");
 		sourceAttachment.setBytesValue(new byte[] { 0, 1, 2 });
 		mergeAttachments.mergeAttachments(targetAttachment, sourceAttachment);

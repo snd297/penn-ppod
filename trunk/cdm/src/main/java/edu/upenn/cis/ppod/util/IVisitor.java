@@ -31,8 +31,8 @@ import edu.upenn.cis.ppod.imodel.IStandardState;
 import edu.upenn.cis.ppod.imodel.IStudy;
 import edu.upenn.cis.ppod.imodel.ITree;
 import edu.upenn.cis.ppod.imodel.ITreeSet;
-import edu.upenn.cis.ppod.model.AttachmentNamespace;
-import edu.upenn.cis.ppod.model.AttachmentType;
+import edu.upenn.cis.ppod.model.IAttachmentNamespace;
+import edu.upenn.cis.ppod.model.IAttachmentType;
 
 /**
  * The visitor in the visitor pattern.
@@ -56,14 +56,14 @@ public interface IVisitor {
 	 * 
 	 * @param the attachmentNamespace visitee
 	 */
-	void visitAttachmentNamespace(AttachmentNamespace attachemntNamespace);
+	void visitAttachmentNamespace(IAttachmentNamespace attachemntNamespace);
 
 	/**
 	 * Visit an attachment type.
 	 * 
 	 * @param the attachmentType visitee
 	 */
-	void visitAttachmentType(AttachmentType attachmentType);
+	void visitAttachmentType(IAttachmentType attachmentType);
 
 	/**
 	 * Visit a {@code DNACell}.

@@ -105,7 +105,8 @@ public class Attachment extends UUPPodEntity implements IAttachment {
 
 	/** Object to which this attachment is attached. */
 	@CheckForNull
-	@ManyToOne(fetch = FetchType.LAZY, optional = false, targetEntity = PPodEntity.class)
+	@ManyToOne(fetch = FetchType.LAZY, optional = false,
+			targetEntity = PPodEntity.class)
 	@JoinColumn(name = PPodEntity.JOIN_COLUMN)
 	private IPPodEntity attachee;
 
@@ -124,10 +125,13 @@ public class Attachment extends UUPPodEntity implements IAttachment {
 	private String stringValue;
 
 	/** Like a variable typeLabel. */
-	@ManyToOne(fetch = FetchType.LAZY, optional = false)
+	@ManyToOne(
+			fetch = FetchType.LAZY,
+			optional = false,
+			targetEntity = AttachmentType.class)
 	@JoinColumn(name = AttachmentType.JOIN_COLUMN)
 	@CheckForNull
-	private AttachmentType type;
+	private IAttachmentType type;
 
 	/** Default constructor for (at least) Hibernate. */
 	Attachment() {}
@@ -213,40 +217,37 @@ public class Attachment extends UUPPodEntity implements IAttachment {
 	@XmlAttribute(name = "attachmentTypeDocId")
 	@XmlIDREF
 	@Nullable
-	public AttachmentType getType() {
+	public IAttachmentType getType() {
 		return type;
 	}
 
 	/** {@inheritDoc} */
-	public IPPodEntity setAttachee(@CheckForNull final IPPodEntity attachee) {
+	public void setAttachee(@CheckForNull final IPPodEntity attachee) {
 		this.attachee = attachee;
-		return this;
 	}
 
 	/**
 	 * Set the byteValue.
 	 * 
 	 * @param bytesValue the byteValue to set
-	 * 
-	 * @return this
 	 */
-	public IAttachment setBytesValue(@CheckForNull final byte[] bytesValue) {
+	public void setBytesValue(@CheckForNull final byte[] bytesValue) {
 		if (Arrays.equals(bytesValue, this.bytesValue)) {
-			return this;
-		}
 
-		if (bytesValue == null) {
-			this.bytesValue = null;
 		} else {
-			if (this.bytesValue == null
-					|| this.bytesValue.length != bytesValue.length) {
-				this.bytesValue = new byte[bytesValue.length];
+
+			if (bytesValue == null) {
+				this.bytesValue = null;
+			} else {
+				if (this.bytesValue == null
+						|| this.bytesValue.length != bytesValue.length) {
+					this.bytesValue = new byte[bytesValue.length];
+				}
+				System.arraycopy(this.bytesValue, 0, bytesValue, 0,
+						this.bytesValue.length);
 			}
-			System.arraycopy(this.bytesValue, 0, bytesValue, 0,
-					this.bytesValue.length);
+			setInNeedOfNewVersion();
 		}
-		setInNeedOfNewVersion();
-		return this;
 	}
 
 	@Override
@@ -261,17 +262,14 @@ public class Attachment extends UUPPodEntity implements IAttachment {
 	 * Set the label.
 	 * 
 	 * @param label the label
-	 * 
-	 * @return this
 	 */
-	public IAttachment setLabel(@CheckForNull final String label) {
+	public void setLabel(@CheckForNull final String label) {
 		if (equal(label, getLabel())) {
 
 		} else {
 			this.label = label;
 			setInNeedOfNewVersion();
 		}
-		return this;
 	}
 
 	/**
@@ -279,27 +277,22 @@ public class Attachment extends UUPPodEntity implements IAttachment {
 	 * value.
 	 * 
 	 * @param stringValue the string value
-	 * 
-	 * @return this
 	 */
-	public IAttachment setStringValue(@CheckForNull final String stringValue) {
+	public void setStringValue(@CheckForNull final String stringValue) {
 		if (equal(stringValue, getStringValue())) {
 
 		} else {
 			this.stringValue = stringValue;
 			setInNeedOfNewVersion();
 		}
-		return this;
 	}
 
 	/**
 	 * Set the type of this attachment.
 	 * 
 	 * @param type the type
-	 * 
-	 * @return this
 	 */
-	public IAttachment setType(final AttachmentType type) {
+	public void setType(final IAttachmentType type) {
 		checkNotNull(type);
 		if (type.equals(getType())) {
 
@@ -307,7 +300,6 @@ public class Attachment extends UUPPodEntity implements IAttachment {
 			this.type = type;
 			setInNeedOfNewVersion();
 		}
-		return this;
 	}
 
 	/**
