@@ -61,7 +61,7 @@ public interface IAttachee {
 	Set<IAttachment> getAttachmentsByNamespaceAndType(
 			String namespace,
 			String type);
-
+	
 	/**
 	 * Remove {@code attachment} from this {@code IAttachee}'s attachments.
 	 * 

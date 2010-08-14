@@ -33,7 +33,7 @@ import edu.umd.cs.findbugs.annotations.CheckForNull;
 import edu.umd.cs.findbugs.annotations.Nullable;
 import edu.upenn.cis.ppod.model.Attachment;
 import edu.upenn.cis.ppod.model.Attachment.IIsOfNamepspaceTypeLabelAndStringValue;
-import edu.upenn.cis.ppod.model.AttachmentType;
+import edu.upenn.cis.ppod.model.IAttachmentType;
 
 @XmlJavaTypeAdapter(Attachment.Adapter.class)
 public interface IAttachment extends IUUPPodEntity {
@@ -220,24 +220,22 @@ public interface IAttachment extends IUUPPodEntity {
 	@XmlAttribute(name = "attachmentTypeDocId")
 	@XmlIDREF
 	@Nullable
-	AttachmentType getType();
+	IAttachmentType getType();
 
 	/**
 	 * Set the item to which this is attached, {@code null} to sever the
 	 * relationship.
 	 * 
 	 * @param attachee to which this is attached
-	 * 
-	 * @return this
 	 */
-	IPPodEntity setAttachee(@CheckForNull final IPPodEntity attachee);
+	void setAttachee(@CheckForNull final IPPodEntity attachee);
 
-	IAttachment setBytesValue(@CheckForNull final byte[] bytesValue);
+	void setBytesValue(@CheckForNull final byte[] bytesValue);
 
-	IAttachment setLabel(@CheckForNull final String label);
+	void setLabel(@CheckForNull final String label);
 
-	IAttachment setStringValue(@CheckForNull final String stringValue);
+	void setStringValue(@CheckForNull final String stringValue);
 
-	IAttachment setType(final AttachmentType type);
+	void setType(final IAttachmentType type);
 
 }

@@ -109,8 +109,9 @@ final class StudyResourceHibernate implements IStudyResource {
 				(IAttachmentNamespaceDAO) attachmentNamespaceDAO
 						.setSession(currentSession);
 
-		this.attachmentTypeDAO = (IAttachmentTypeDAO) attachmentTypeDAO
-				.setSession(currentSession);
+		this.attachmentTypeDAO =
+				(IAttachmentTypeDAO) attachmentTypeDAO
+						.setSession(currentSession);
 
 		this.objectWithLongIdDAO = (IObjectWithLongIdDAO) dao
 				.setSession(currentSession);

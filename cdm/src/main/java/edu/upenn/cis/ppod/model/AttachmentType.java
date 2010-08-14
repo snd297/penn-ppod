@@ -27,6 +27,7 @@ import javax.persistence.ManyToOne;
 import javax.persistence.Table;
 import javax.xml.bind.annotation.XmlAttribute;
 import javax.xml.bind.annotation.XmlIDREF;
+import javax.xml.bind.annotation.adapters.XmlAdapter;
 
 import org.hibernate.annotations.Index;
 
@@ -40,7 +41,23 @@ import edu.upenn.cis.ppod.util.IVisitor;
  */
 @Entity
 @Table(name = AttachmentType.TABLE)
-public class AttachmentType extends PersistentObjectWithDocId {
+public class AttachmentType
+		extends PersistentObjectWithDocId
+		implements IAttachmentType {
+
+	public static class Adapter extends
+			XmlAdapter<AttachmentType, IAttachmentType> {
+
+		@Override
+		public AttachmentType marshal(final IAttachmentType type) {
+			return (AttachmentType) type;
+		}
+
+		@Override
+		public IAttachmentType unmarshal(final AttachmentType type) {
+			return type;
+		}
+	}
 
 	public static final String TABLE = "ATTACHMENT_TYPE";
 
@@ -50,10 +67,13 @@ public class AttachmentType extends PersistentObjectWithDocId {
 
 	public static final int LABEL_COLUMN_LENGTH = 64;
 
-	@ManyToOne(fetch = FetchType.LAZY, optional = false)
+	@ManyToOne(
+			fetch = FetchType.LAZY,
+			optional = false,
+			targetEntity = AttachmentNamespace.class)
 	@JoinColumn(name = AttachmentNamespace.JOIN_COLUMN)
 	@CheckForNull
-	private AttachmentNamespace namespace;
+	private IAttachmentNamespace namespace;
 
 	/**
 	 * Label's are unique in a given attachment namespace, but not unique
@@ -72,53 +92,30 @@ public class AttachmentType extends PersistentObjectWithDocId {
 		getNamespace().accept(visitor);
 	}
 
-	/**
-	 * Get the label. Will be {@code null} for newly created objects until
-	 * {@link #setLabel(String)} is called. Will never be {@code null} for
-	 * persistent objects.
-	 * 
-	 * @return the label
-	 */
+	/** {@inheritDoc} */
 	@XmlAttribute
 	@Nullable
 	public String getLabel() {
 		return label;
 	}
 
-	/**
-	 * Get the namespace. Will be {@code null} for newly constructed objects.
-	 * 
-	 * @return the namespace
-	 */
+	/** {@inheritDoc} */
 	@XmlAttribute(name = "attachmentNamespaceDocId")
 	@XmlIDREF
 	@Nullable
-	public AttachmentNamespace getNamespace() {
+	public IAttachmentNamespace getNamespace() {
 		return namespace;
 	}
 
-	/**
-	 * Set the label.
-	 * 
-	 * @param label the label
-	 * @return this
-	 */
-	public AttachmentType setLabel(final String label) {
+	/** {@inheritDoc} */
+	public void setLabel(final String label) {
 		checkNotNull(label);
 		this.label = label;
-		return this;
 	}
 
-	/**
-	 * Set the namespace.
-	 * 
-	 * @param namespace the namespace to set
-	 * 
-	 * @return this
-	 */
-	public AttachmentType setNamespace(final AttachmentNamespace namespace) {
+	/** {@inheritDoc} */
+	public void setNamespace(final IAttachmentNamespace namespace) {
 		checkNotNull(namespace);
 		this.namespace = namespace;
-		return this;
 	}
 }

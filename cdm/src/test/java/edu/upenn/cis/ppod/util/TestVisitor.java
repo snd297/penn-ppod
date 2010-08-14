@@ -35,8 +35,8 @@ import edu.upenn.cis.ppod.imodel.IStandardState;
 import edu.upenn.cis.ppod.imodel.IStudy;
 import edu.upenn.cis.ppod.imodel.ITree;
 import edu.upenn.cis.ppod.imodel.ITreeSet;
-import edu.upenn.cis.ppod.model.AttachmentNamespace;
-import edu.upenn.cis.ppod.model.AttachmentType;
+import edu.upenn.cis.ppod.model.IAttachmentNamespace;
+import edu.upenn.cis.ppod.model.IAttachmentType;
 
 /**
  * Made so we can test the various {@code accept(IVisitor)} methods.
@@ -62,12 +62,12 @@ public class TestVisitor extends EmptyVisitor {
 
 	@Override
 	public void visitAttachmentNamespace(
-			final AttachmentNamespace attachmentNamespace) {
+			final IAttachmentNamespace attachmentNamespace) {
 		visited.add(attachmentNamespace);
 	}
 
 	@Override
-	public void visitAttachmentType(final AttachmentType attachmentType) {
+	public void visitAttachmentType(final IAttachmentType attachmentType) {
 		visited.add(attachmentType);
 	}
 

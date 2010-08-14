@@ -23,8 +23,8 @@ import javax.persistence.Column;
 import javax.persistence.Entity;
 import javax.persistence.Table;
 import javax.xml.bind.annotation.XmlAttribute;
+import javax.xml.bind.annotation.adapters.XmlAdapter;
 
-import edu.upenn.cis.ppod.imodel.ILabeled;
 import edu.upenn.cis.ppod.util.IVisitor;
 
 /**
@@ -36,7 +36,23 @@ import edu.upenn.cis.ppod.util.IVisitor;
 @Table(name = AttachmentNamespace.TABLE)
 public class AttachmentNamespace
 		extends PersistentObjectWithDocId
-		implements ILabeled {
+		implements IAttachmentNamespace {
+
+	public static class Adapter extends
+			XmlAdapter<AttachmentNamespace, IAttachmentNamespace> {
+
+		@Override
+		public AttachmentNamespace marshal(
+				final IAttachmentNamespace namespace) {
+			return (AttachmentNamespace) namespace;
+		}
+
+		@Override
+		public IAttachmentNamespace unmarshal(
+				final AttachmentNamespace namespace) {
+			return namespace;
+		}
+	}
 
 	public static final String TABLE = "ATTACHMENT_NAMESPACE";
 
@@ -46,7 +62,9 @@ public class AttachmentNamespace
 
 	public static final int LABEL_COLUMN_LENGTH = 64;
 
-	@Column(name = LABEL_COLUMN, unique = true, nullable = false,
+	@Column(name = LABEL_COLUMN,
+			unique = true,
+			nullable = false,
 			length = LABEL_COLUMN_LENGTH)
 	@CheckForNull
 	private String label;
@@ -57,28 +75,16 @@ public class AttachmentNamespace
 		visitor.visitAttachmentNamespace(this);
 	}
 
-	/**
-	 * Get the label. Will be {@code null} for newly created objects until
-	 * {@link #setLabel(String)} is called. For persistent objects, this value
-	 * will never be {@code null}.
-	 * 
-	 * @return the label
-	 */
+	/** {@inheritDoc} */
 	@XmlAttribute
 	@Nullable
 	public String getLabel() {
 		return label;
 	}
 
-	/**
-	 * Set the label.
-	 * 
-	 * @param label the label
-	 * @return this
-	 */
-	public AttachmentNamespace setLabel(final String label) {
+	/** {@inheritDoc} */
+	public void setLabel(final String label) {
 		checkNotNull(label);
 		this.label = label;
-		return this;
 	}
 }

@@ -19,8 +19,8 @@ import edu.upenn.cis.ppod.imodel.IOTU;
 import edu.upenn.cis.ppod.imodel.IOTUSet;
 import edu.upenn.cis.ppod.imodel.IStandardCharacter;
 import edu.upenn.cis.ppod.imodel.IStandardState;
-import edu.upenn.cis.ppod.model.AttachmentNamespace;
-import edu.upenn.cis.ppod.model.AttachmentType;
+import edu.upenn.cis.ppod.model.IAttachmentNamespace;
+import edu.upenn.cis.ppod.model.IAttachmentType;
 
 /**
  * Set the doc id on {@code Attachment}s, {@code AttachmentNamespace}s,
@@ -86,7 +86,7 @@ final class SetXmlIdVisitor extends EmptyVisitor implements ISetXmlIdVisitor {
 	 */
 	@Override
 	public void visitAttachmentNamespace(
-			final AttachmentNamespace attachmentNamespace) {
+			final IAttachmentNamespace attachmentNamespace) {
 		// Since this will be visited once for every attachment that is out
 		// there,
 		// we need to check it first.
@@ -101,7 +101,7 @@ final class SetXmlIdVisitor extends EmptyVisitor implements ISetXmlIdVisitor {
 	 * @param attachmentType target
 	 */
 	@Override
-	public void visitAttachmentType(final AttachmentType attachmentType) {
+	public void visitAttachmentType(final IAttachmentType attachmentType) {
 		// Since this will be visited once for every attachment that is out
 		// there,
 		// we need to check it first.

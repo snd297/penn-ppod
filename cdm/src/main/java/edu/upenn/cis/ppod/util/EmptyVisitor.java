@@ -31,8 +31,8 @@ import edu.upenn.cis.ppod.imodel.IStandardState;
 import edu.upenn.cis.ppod.imodel.IStudy;
 import edu.upenn.cis.ppod.imodel.ITree;
 import edu.upenn.cis.ppod.imodel.ITreeSet;
-import edu.upenn.cis.ppod.model.AttachmentNamespace;
-import edu.upenn.cis.ppod.model.AttachmentType;
+import edu.upenn.cis.ppod.model.IAttachmentNamespace;
+import edu.upenn.cis.ppod.model.IAttachmentType;
 
 /**
  * An {@link IVisitor} that does nothing.
@@ -54,14 +54,14 @@ public abstract class EmptyVisitor implements IVisitor {
 	 * @param attachmentNamespace ignored
 	 */
 	public void visitAttachmentNamespace(
-			final AttachmentNamespace attachmentNamespace) {}
+			final IAttachmentNamespace attachmentNamespace) {}
 
 	/**
 	 * Does nothing.
 	 * 
 	 * @param attachmentType ignored
 	 */
-	public void visitAttachmentType(final AttachmentType attachmentType) {}
+	public void visitAttachmentType(final IAttachmentType attachmentType) {}
 
 	/**
 	 * Does nothing.

@@ -23,8 +23,8 @@ import edu.upenn.cis.ppod.imodel.IOTU;
 import edu.upenn.cis.ppod.imodel.IOTUSet;
 import edu.upenn.cis.ppod.imodel.IStandardCharacter;
 import edu.upenn.cis.ppod.imodel.IStandardMatrix;
-import edu.upenn.cis.ppod.model.AttachmentNamespace;
-import edu.upenn.cis.ppod.model.AttachmentType;
+import edu.upenn.cis.ppod.model.IAttachmentNamespace;
+import edu.upenn.cis.ppod.model.IAttachmentType;
 import edu.upenn.cis.ppod.services.ppodentity.IOTUSets;
 
 /**
@@ -42,8 +42,8 @@ public class PPodEntitiesUtil {
 	 * @param attachments to which to add the extracted attachments
 	 */
 	public static void extractAttachmentInfoFromAttachee(
-			final Set<AttachmentNamespace> attachmentNamespaces,
-			final Set<AttachmentType> attachmentTypes,
+			final Set<? super IAttachmentNamespace> attachmentNamespaces,
+			final Set<? super IAttachmentType> attachmentTypes,
 			final IAttachee attachee) {
 		for (final IAttachment attachment : attachee.getAttachments()) {
 			attachmentNamespaces.add(attachment.getType().getNamespace());
@@ -54,8 +54,8 @@ public class PPodEntitiesUtil {
 	}
 
 	public static void extractAttachmentInfoFromPPodEntities(
-			final Set<AttachmentNamespace> studyWideAttachmentNamespaces,
-			final Set<AttachmentType> studyWideAttachmentTypes,
+			final Set<? super IAttachmentNamespace> studyWideAttachmentNamespaces,
+			final Set<? super IAttachmentType> studyWideAttachmentTypes,
 			final IOTUSets otuSetCentricEntities) {
 		for (final IOTUSet otuSet : otuSetCentricEntities.getOTUSets()) {
 			extractAttachmentInfoFromAttachee(

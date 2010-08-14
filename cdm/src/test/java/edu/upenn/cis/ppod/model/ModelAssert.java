@@ -241,18 +241,20 @@ public class ModelAssert {
 	}
 
 	public static void assertEqualsAttachmentNamespaces(
-			final AttachmentNamespace actualAttachmentNamespace,
-			final AttachmentNamespace expectedAttachmentNamespace) {
+			final IAttachmentNamespace actualAttachmentNamespace,
+			final IAttachmentNamespace expectedAttachmentNamespace) {
 		assertEquals(actualAttachmentNamespace.getLabel(),
 				expectedAttachmentNamespace.getLabel());
 	}
 
 	public static void assertEqualsAttachmentTypes(
-			final AttachmentType actualAttachmentType,
-			final AttachmentType expectedAttachmentType) {
-		assertEquals(actualAttachmentType.getLabel(), expectedAttachmentType
-				.getLabel());
-		assertEqualsAttachmentNamespaces(actualAttachmentType.getNamespace(),
+			final IAttachmentType actualAttachmentType,
+			final IAttachmentType expectedAttachmentType) {
+		assertEquals(
+				actualAttachmentType.getLabel(),
+				expectedAttachmentType.getLabel());
+		assertEqualsAttachmentNamespaces(
+				actualAttachmentType.getNamespace(),
 				expectedAttachmentType.getNamespace());
 	}
 

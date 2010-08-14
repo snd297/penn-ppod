@@ -16,20 +16,23 @@
 package edu.upenn.cis.ppod.dao.hibernate;
 
 import edu.upenn.cis.ppod.model.AttachmentNamespace;
+import edu.upenn.cis.ppod.model.IAttachmentNamespace;
 import edu.upenn.cis.ppod.thirdparty.dao.hibernate.GenericHibernateDAO;
 
 /**
- * The Class AttachmentNamespaceDAOHibernate.
- * 
  * @author Sam Donnelly
  */
 final class AttachmentNamespaceDAOHibernate extends
-		GenericHibernateDAO<AttachmentNamespace, Long> implements
+		GenericHibernateDAO<IAttachmentNamespace, Long> implements
 		IAttachmentNamespaceDAOHibernate {
 
-	public AttachmentNamespace getNamespaceByLabel(final String namespace) {
-		return (AttachmentNamespace) getSession().getNamedQuery(
-				AttachmentNamespace.class.getSimpleName() + "-getByNamespace")
-				.setParameter("namespace", namespace).uniqueResult();
+	/** {@inheritDoc} */
+	public IAttachmentNamespace getNamespaceByLabel(final String namespace) {
+		return (IAttachmentNamespace) getSession()
+				.getNamedQuery(
+						AttachmentNamespace.class.getSimpleName()
+								+ "-getByNamespace")
+				.setParameter("namespace", namespace)
+				.uniqueResult();
 	}
 }

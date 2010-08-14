@@ -15,25 +15,25 @@
  */
 package edu.upenn.cis.ppod.dao;
 
-import edu.upenn.cis.ppod.model.AttachmentType;
+import edu.upenn.cis.ppod.model.IAttachmentType;
 
 /**
  * A {@link AttachmentType} DAO.
  * 
  * @author Sam Donnelly
  */
-public interface IAttachmentTypeDAO extends IDAO<AttachmentType, Long> {
+public interface IAttachmentTypeDAO extends IDAO<IAttachmentType, Long> {
 
 	/**
-	 * Get the {@link AttachmentType} with label {@code typeLabel} and in the
-	 * given namespace.
+	 * Get the attachment type with label {@code typeLabel} and in the given
+	 * namespace.
 	 * 
 	 * @param namespaceLabel the label of namespace
 	 * @param typeLabel the label of the type we're interested in
-	 * @return the {@link AttachmentType} of type {@code type} and in the given
+	 * @return the attachment type with label {@code typeLabel} and in the given
 	 *         namespace
 	 */
-	AttachmentType getTypeByNamespaceAndLabel(
+	IAttachmentType getTypeByNamespaceAndLabel(
 			String namespaceLabel,
 			String typeLabel);
 

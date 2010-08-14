@@ -29,8 +29,8 @@ import com.google.inject.assistedinject.Assisted;
 import edu.upenn.cis.ppod.dao.IAttachmentNamespaceDAO;
 import edu.upenn.cis.ppod.dao.IAttachmentTypeDAO;
 import edu.upenn.cis.ppod.imodel.IAttachment;
-import edu.upenn.cis.ppod.model.AttachmentNamespace;
-import edu.upenn.cis.ppod.model.AttachmentType;
+import edu.upenn.cis.ppod.model.IAttachmentNamespace;
+import edu.upenn.cis.ppod.model.IAttachmentType;
 
 /**
  * @author Sam Donnelly
@@ -40,19 +40,20 @@ class MergeAttachments implements IMergeAttachments {
 	private final IAttachmentNamespaceDAO attachmentNamespaceDAO;
 	private final IAttachmentTypeDAO attachmentTypeDAO;
 
-	private final Provider<AttachmentNamespace> attachmentNamespaceProvider;
-	private final Provider<AttachmentType> attachmentTypeProvider;
+	private final Provider<IAttachmentNamespace> attachmentNamespaceProvider;
+	private final Provider<IAttachmentType> attachmentTypeProvider;
 
 	// Temporary measure: both the the type and namespace should be passed in
 	// from caller (is that really true?)
-	private final Map<String, AttachmentNamespace> labelsToNamespaces = newHashMap();
+	private final Map<String, IAttachmentNamespace> labelsToNamespaces = newHashMap();
 
-	private final Map<AttachmentNamespace, Map<String, AttachmentType>> typesByNamespaceAndLabel = newHashMap();
+	private final Map<IAttachmentNamespace, Map<String, IAttachmentType>> typesByNamespaceAndLabel =
+			newHashMap();
 
 	@Inject
 	MergeAttachments(
-			final Provider<AttachmentNamespace> attachmentNamespaceProvider,
-			final Provider<AttachmentType> attachmentTypeProvider,
+			final Provider<IAttachmentNamespace> attachmentNamespaceProvider,
+			final Provider<IAttachmentType> attachmentTypeProvider,
 			@Assisted final IAttachmentNamespaceDAO attachmentNamespaceDAO,
 			@Assisted final IAttachmentTypeDAO attachmentTypeDAO) {
 
@@ -77,8 +78,12 @@ class MergeAttachments implements IMergeAttachments {
 				sourceAttachment.getType().getNamespace().getLabel() != null,
 				"sourceAttachment.getType().getNamespace().getLabel() == null");
 
-		AttachmentNamespace targetAttachmentNamespace = labelsToNamespaces
-				.get(sourceAttachment.getType().getNamespace().getLabel());
+		IAttachmentNamespace targetAttachmentNamespace =
+				labelsToNamespaces
+						.get(sourceAttachment
+								.getType()
+								.getNamespace()
+								.getLabel());
 		if (null == targetAttachmentNamespace) {
 			targetAttachmentNamespace = attachmentNamespaceDAO
 					.getNamespaceByLabel(
@@ -86,7 +91,8 @@ class MergeAttachments implements IMergeAttachments {
 									.getNamespace().getLabel());
 			if (null == targetAttachmentNamespace) {
 				targetAttachmentNamespace =
-						attachmentNamespaceProvider.get()
+						attachmentNamespaceProvider.get();
+				targetAttachmentNamespace
 								.setLabel(
 										sourceAttachment.getType()
 												.getNamespace()
@@ -97,21 +103,24 @@ class MergeAttachments implements IMergeAttachments {
 			labelsToNamespaces.put(
 					targetAttachmentNamespace.getLabel(),
 					targetAttachmentNamespace);
-			typesByNamespaceAndLabel.put(targetAttachmentNamespace,
-					new HashMap<String, AttachmentType>());
+			typesByNamespaceAndLabel
+					.put(
+							targetAttachmentNamespace,
+							new HashMap<String, IAttachmentType>());
 		}
 
-		AttachmentType targetAttachmentType = typesByNamespaceAndLabel.get(
-				targetAttachmentNamespace).get(
-				sourceAttachment.getType().getLabel());
+		IAttachmentType targetAttachmentType =
+				typesByNamespaceAndLabel
+						.get(targetAttachmentNamespace)
+						.get(sourceAttachment.getType().getLabel());
 		if (null == targetAttachmentType) {
 			targetAttachmentType =
 					attachmentTypeDAO.getTypeByNamespaceAndLabel(
 							targetAttachmentNamespace.getLabel(),
-							sourceAttachment.getType()
-									.getLabel());
+							sourceAttachment.getType().getLabel());
 			if (null == targetAttachmentType) {
-				targetAttachmentType = attachmentTypeProvider.get()
+				targetAttachmentType = attachmentTypeProvider.get();
+				targetAttachmentType
 						.setLabel(sourceAttachment
 								.getType()
 								.getLabel());
