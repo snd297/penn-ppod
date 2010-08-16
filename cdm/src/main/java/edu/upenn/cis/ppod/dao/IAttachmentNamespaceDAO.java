@@ -15,7 +15,7 @@
  */
 package edu.upenn.cis.ppod.dao;
 
-import edu.upenn.cis.ppod.model.IAttachmentNamespace;
+import edu.upenn.cis.ppod.imodel.IAttachmentNamespace;
 
 /**
  * {@link AttachmentNamespace} DAO.

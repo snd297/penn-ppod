@@ -18,7 +18,7 @@ package edu.upenn.cis.ppod.dao.hibernate;
 import com.google.inject.ImplementedBy;
 
 import edu.upenn.cis.ppod.dao.IAttachmentNamespaceDAO;
-import edu.upenn.cis.ppod.model.IAttachmentNamespace;
+import edu.upenn.cis.ppod.imodel.IAttachmentNamespace;
 
 /**
  * The Interface IAttachmentNamespaceDAOHibernate.

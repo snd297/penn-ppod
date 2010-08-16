@@ -22,7 +22,7 @@ import java.util.List;
 import java.util.Map;
 
 import edu.upenn.cis.ppod.dao.IAttachmentTypeDAO;
-import edu.upenn.cis.ppod.model.IAttachmentType;
+import edu.upenn.cis.ppod.imodel.IAttachmentType;
 
 /**
  * @author Sam Donnelly

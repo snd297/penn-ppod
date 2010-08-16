@@ -15,12 +15,12 @@
  */
 package edu.upenn.cis.ppod.util;
 
+import edu.upenn.cis.ppod.imodel.IAttachmentNamespace;
+import edu.upenn.cis.ppod.imodel.IAttachmentType;
 import edu.upenn.cis.ppod.imodel.IOTU;
 import edu.upenn.cis.ppod.imodel.IOTUSet;
 import edu.upenn.cis.ppod.imodel.IStandardCharacter;
 import edu.upenn.cis.ppod.imodel.IStandardState;
-import edu.upenn.cis.ppod.model.IAttachmentNamespace;
-import edu.upenn.cis.ppod.model.IAttachmentType;
 
 /**
  * Set the doc id on {@code Attachment}s, {@code AttachmentNamespace}s,

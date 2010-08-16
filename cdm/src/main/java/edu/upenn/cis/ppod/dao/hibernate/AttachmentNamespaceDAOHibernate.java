@@ -15,8 +15,8 @@
  */
 package edu.upenn.cis.ppod.dao.hibernate;
 
+import edu.upenn.cis.ppod.imodel.IAttachmentNamespace;
 import edu.upenn.cis.ppod.model.AttachmentNamespace;
-import edu.upenn.cis.ppod.model.IAttachmentNamespace;
 import edu.upenn.cis.ppod.thirdparty.dao.hibernate.GenericHibernateDAO;
 
 /**

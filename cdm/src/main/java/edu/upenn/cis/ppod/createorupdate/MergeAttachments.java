@@ -29,8 +29,8 @@ import com.google.inject.assistedinject.Assisted;
 import edu.upenn.cis.ppod.dao.IAttachmentNamespaceDAO;
 import edu.upenn.cis.ppod.dao.IAttachmentTypeDAO;
 import edu.upenn.cis.ppod.imodel.IAttachment;
-import edu.upenn.cis.ppod.model.IAttachmentNamespace;
-import edu.upenn.cis.ppod.model.IAttachmentType;
+import edu.upenn.cis.ppod.imodel.IAttachmentNamespace;
+import edu.upenn.cis.ppod.imodel.IAttachmentType;
 
 /**
  * @author Sam Donnelly

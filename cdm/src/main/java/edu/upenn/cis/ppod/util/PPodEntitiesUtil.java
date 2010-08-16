@@ -19,12 +19,12 @@ import java.util.Set;
 
 import edu.upenn.cis.ppod.imodel.IAttachee;
 import edu.upenn.cis.ppod.imodel.IAttachment;
+import edu.upenn.cis.ppod.imodel.IAttachmentNamespace;
+import edu.upenn.cis.ppod.imodel.IAttachmentType;
 import edu.upenn.cis.ppod.imodel.IOTU;
 import edu.upenn.cis.ppod.imodel.IOTUSet;
 import edu.upenn.cis.ppod.imodel.IStandardCharacter;
 import edu.upenn.cis.ppod.imodel.IStandardMatrix;
-import edu.upenn.cis.ppod.model.IAttachmentNamespace;
-import edu.upenn.cis.ppod.model.IAttachmentType;
 import edu.upenn.cis.ppod.services.ppodentity.IOTUSets;
 
 /**

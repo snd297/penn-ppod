@@ -34,9 +34,9 @@ import edu.upenn.cis.ppod.util.IPair;
  * 
  * @author Sam Donnelly
  */
-final class StandardMatrixDAOHibernate extends
-		GenericHibernateDAO<StandardMatrix, Long> implements
-		IStandardMatrixDAO {
+final class StandardMatrixDAOHibernate
+		extends GenericHibernateDAO<StandardMatrix, Long>
+		implements IStandardMatrixDAO {
 
 	private final IPair.IFactory pairFactory;
 

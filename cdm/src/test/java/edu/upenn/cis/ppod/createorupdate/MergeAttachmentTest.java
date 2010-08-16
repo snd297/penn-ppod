@@ -28,8 +28,8 @@ import com.google.inject.Provider;
 import edu.upenn.cis.ppod.TestGroupDefs;
 import edu.upenn.cis.ppod.dao.IAttachmentNamespaceDAO;
 import edu.upenn.cis.ppod.imodel.IAttachment;
-import edu.upenn.cis.ppod.model.IAttachmentNamespace;
-import edu.upenn.cis.ppod.model.IAttachmentType;
+import edu.upenn.cis.ppod.imodel.IAttachmentNamespace;
+import edu.upenn.cis.ppod.imodel.IAttachmentType;
 import edu.upenn.cis.ppod.model.ModelAssert;
 
 /**

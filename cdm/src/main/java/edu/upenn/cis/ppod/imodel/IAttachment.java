@@ -33,7 +33,6 @@ import edu.umd.cs.findbugs.annotations.CheckForNull;
 import edu.umd.cs.findbugs.annotations.Nullable;
 import edu.upenn.cis.ppod.model.Attachment;
 import edu.upenn.cis.ppod.model.Attachment.IIsOfNamepspaceTypeLabelAndStringValue;
-import edu.upenn.cis.ppod.model.IAttachmentType;
 
 @XmlJavaTypeAdapter(Attachment.Adapter.class)
 public interface IAttachment extends IUUPPodEntity {

@@ -15,8 +15,8 @@
  */
 package edu.upenn.cis.ppod.dao.hibernate;
 
+import edu.upenn.cis.ppod.imodel.IAttachmentType;
 import edu.upenn.cis.ppod.model.AttachmentType;
-import edu.upenn.cis.ppod.model.IAttachmentType;
 import edu.upenn.cis.ppod.thirdparty.dao.hibernate.GenericHibernateDAO;
 
 /**

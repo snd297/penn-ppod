@@ -31,6 +31,8 @@ import javax.xml.bind.annotation.adapters.XmlAdapter;
 
 import org.hibernate.annotations.Index;
 
+import edu.upenn.cis.ppod.imodel.IAttachmentNamespace;
+import edu.upenn.cis.ppod.imodel.IAttachmentType;
 import edu.upenn.cis.ppod.util.IVisitor;
 
 /**

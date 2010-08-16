@@ -15,7 +15,7 @@
  */
 package edu.upenn.cis.ppod.dao;
 
-import edu.upenn.cis.ppod.model.IAttachmentType;
+import edu.upenn.cis.ppod.imodel.IAttachmentType;
 
 /**
  * A {@link AttachmentType} DAO.

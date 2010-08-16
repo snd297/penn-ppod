@@ -24,7 +24,7 @@ import edu.upenn.cis.ppod.model.StandardRow;
  * 
  * @author Sam Donnelly
  */
-public interface ICharacterStateRowDAO extends IDAO<StandardRow, Long> {
+public interface IStandardRowDAO extends IDAO<StandardRow, Long> {
 
 	List<Object[]> getCellIdxsVersionsByRowIdAndMinVersion(
 			Long rowId,

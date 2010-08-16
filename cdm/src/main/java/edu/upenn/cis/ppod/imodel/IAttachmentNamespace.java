@@ -13,14 +13,13 @@
  * See the License for the specific language governing permissions and
  * limitations under the License.
  */
-package edu.upenn.cis.ppod.model;
+package edu.upenn.cis.ppod.imodel;
 
 import javax.xml.bind.annotation.adapters.XmlJavaTypeAdapter;
 
 import edu.umd.cs.findbugs.annotations.Nullable;
-import edu.upenn.cis.ppod.imodel.ILabeled;
-import edu.upenn.cis.ppod.imodel.IVisitable;
-import edu.upenn.cis.ppod.imodel.IWithDocId;
+import edu.upenn.cis.ppod.model.AttachmentNamespace;
+import edu.upenn.cis.ppod.model.AttachmentNamespace.Adapter;
 
 @XmlJavaTypeAdapter(AttachmentNamespace.Adapter.class)
 public interface IAttachmentNamespace
@@ -31,7 +30,7 @@ public interface IAttachmentNamespace
 	 * 
 	 * @param label the label
 	 */
-	void setLabel(final String label);
+	void setLabel(String label);
 
 	/**
 	 * Get the label. Will be {@code null} for newly created objects until
