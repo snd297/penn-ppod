@@ -32,8 +32,6 @@ public interface IDAOHibernate<T, ID extends Serializable> extends IDAO<T, ID> {
 	 * Set the {@code session}.
 	 * 
 	 * @param s the session
-	 * 
-	 * @return this
 	 */
-	IDAOHibernate<T, ID> setSession(Session s);
+	void setSession(Session s);
 }

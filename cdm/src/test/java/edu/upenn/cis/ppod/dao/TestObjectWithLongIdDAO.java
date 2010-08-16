@@ -106,26 +106,22 @@ public class TestObjectWithLongIdDAO implements IObjectWithLongIdDAOHibernate {
 		throw new UnsupportedOperationException();
 	}
 
-
 	/**
 	 * Does nothing.
 	 * 
 	 * @entity ignored
 	 */
 	public void makePersistent(final Object entity) {
-		return;
-	}
 
+	}
 
 	/**
 	 * Does nothing and returns.
 	 * 
 	 * @param s ignored
-	 * 
-	 * @return this
 	 */
-	public TestObjectWithLongIdDAO setSession(final Session s) {
-		return this;
+	public void setSession(final Session s) {
+
 	}
 
 }
