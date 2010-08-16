@@ -67,7 +67,7 @@ final class StudyResourceHibernate implements IStudyResource {
 
 	private final ICreateOrUpdateStudy.IFactory saveOrUpdateStudyFactory;
 
-	private final IObjectWithLongIdDAO objectWithLongIdDAO;
+	private final IObjectWithLongIdDAO dao;
 
 	private final IStudy2StudyInfo study2StudyInfo;
 
@@ -98,23 +98,22 @@ final class StudyResourceHibernate implements IStudyResource {
 			final IObjectWithLongIdDAOHibernate dao) {
 		final Session currentSession =
 				HibernateUtil.getSessionFactory().getCurrentSession();
-		this.studyDAO =
-				(IStudyDAO) studyDAO.setSession(currentSession);
+		studyDAO.setSession(currentSession);
+		this.studyDAO = studyDAO;
 
 		versionInfoDAO.setSession(currentSession);
 
-		this.otuSetDAO = (IOTUSetDAO) otuSetDAO.setSession(currentSession);
+		otuSetDAO.setSession(currentSession);
+		this.otuSetDAO = otuSetDAO;
 
-		this.attachmentNamespaceDAO =
-				(IAttachmentNamespaceDAO) attachmentNamespaceDAO
-						.setSession(currentSession);
+		attachmentNamespaceDAO.setSession(currentSession);
+		this.attachmentNamespaceDAO = attachmentNamespaceDAO;
 
-		this.attachmentTypeDAO =
-				(IAttachmentTypeDAO) attachmentTypeDAO
-						.setSession(currentSession);
+		this.attachmentTypeDAO = attachmentTypeDAO;
+		attachmentTypeDAO.setSession(currentSession);
 
-		this.objectWithLongIdDAO = (IObjectWithLongIdDAO) dao
-				.setSession(currentSession);
+		dao.setSession(currentSession);
+		this.dao = dao;
 
 		this.saveOrUpdateStudyFactory = createOrUpdateStudyFactory;
 
@@ -160,7 +159,7 @@ final class StudyResourceHibernate implements IStudyResource {
 						otuSetDAO,
 						attachmentNamespaceDAO,
 						attachmentTypeDAO,
-						objectWithLongIdDAO,
+						dao,
 						newVersionInfo);
 		createOrUpdateStudy.createOrUpdateStudy();
 		final IStudy dbStudy = createOrUpdateStudy.getDbStudy();

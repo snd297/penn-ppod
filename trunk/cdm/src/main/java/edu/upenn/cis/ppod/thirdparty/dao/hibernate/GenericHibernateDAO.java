@@ -169,15 +169,9 @@ public abstract class GenericHibernateDAO<T, ID extends Serializable>
 		getSession().saveOrUpdate(entity);
 	}
 
-	/**
-	 * Setter.
-	 * 
-	 * @param s a {@code Session}, can be {@code null}
-	 * @return this
-	 */
-	public GenericHibernateDAO<T, ID> setSession(final Session s) {
+	/** {@inheritDoc} */
+	public void setSession(final Session s) {
 		this.session = s;
-		return this;
 	}
 
 	/**
