@@ -34,6 +34,7 @@ import com.google.inject.Inject;
 import com.google.inject.Provider;
 
 import edu.upenn.cis.ppod.TestGroupDefs;
+import edu.upenn.cis.ppod.imodel.IStandardCharacter;
 import edu.upenn.cis.ppod.util.TestVisitor;
 
 /**
@@ -168,7 +169,7 @@ public class PPodEntityTest {
 
 	@Test
 	public void getAttachmentsHasAttachments() {
-		final StandardCharacter character = new StandardCharacter();
+		final IStandardCharacter character = new StandardCharacter();
 
 		final Attachment attachment0 = new Attachment();
 		final Attachment attachment1 = new Attachment();

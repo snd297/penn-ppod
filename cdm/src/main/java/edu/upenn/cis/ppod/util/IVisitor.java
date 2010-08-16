@@ -47,35 +47,35 @@ public interface IVisitor {
 	/**
 	 * Visit an attachment
 	 * 
-	 * @param attachment visitee
+	 * @param attachment to be visited
 	 */
 	void visitAttachment(IAttachment attachment);
 
 	/**
 	 * Visit an attachment namespace.
 	 * 
-	 * @param the attachmentNamespace visitee
+	 * @param the attachmentNamespace to be visited
 	 */
 	void visitAttachmentNamespace(IAttachmentNamespace attachemntNamespace);
 
 	/**
 	 * Visit an attachment type.
 	 * 
-	 * @param the attachmentType visitee
+	 * @param the attachmentType to be visited
 	 */
 	void visitAttachmentType(IAttachmentType attachmentType);
 
 	/**
-	 * Visit a {@code DNACell}.
+	 * Visit a DNA cell
 	 * 
-	 * @param cell visitee
+	 * @param cell to be visited
 	 */
 	void visitDNACell(IDNACell cell);
 
 	/**
-	 * Visit a {@code IDNAMatrix}
+	 * Visit a DNA matrix.
 	 * 
-	 * @param matrix visitee
+	 * @param matrix to be visited
 	 */
 	void visitDNAMatrix(IDNAMatrix matrix);
 
@@ -94,28 +94,38 @@ public interface IVisitor {
 	/**
 	 * Visit a character
 	 * 
-	 * @param the character visitee
+	 * @param to be visited
 	 */
-	void visitStandardCharacter(IStandardCharacter standardCharacter);
+	void visitStandardCharacter(IStandardCharacter character);
 
 	void visitStandardMatrix(IStandardMatrix matrix);
 
+	/**
+	 * Visit the row
+	 * 
+	 * @param row to be visited
+	 */
 	void visitStandardRow(IStandardRow row);
 
 	/**
-	 * Visit the character state.
+	 * Visit the standard state.
 	 * 
-	 * @param state the visitee
+	 * @param state to be visited
 	 */
 	void visitStandardState(IStandardState state);
 
 	/**
-	 * Visit the study
+	 * Visit the study.
 	 * 
-	 * @param study visitee
+	 * @param study to be visited
 	 */
 	void visitStudy(IStudy study);
 
+	/**
+	 * Visit the tree
+	 * 
+	 * @param tree to be visited
+	 */
 	void visitTree(ITree tree);
 
 	void visitTreeSet(ITreeSet treeSet);

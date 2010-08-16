@@ -27,6 +27,7 @@ import com.google.inject.Provider;
 
 import edu.upenn.cis.ppod.TestGroupDefs;
 import edu.upenn.cis.ppod.imodel.IAttachment;
+import edu.upenn.cis.ppod.imodel.IStandardCharacter;
 
 /**
  * Tests for {@link Attachment}.
@@ -181,7 +182,7 @@ public class AttachmentTest {
 	@Test
 	public void setInNeedOfNewVersion() {
 		final Attachment attachment = attachmentProvider.get();
-		final StandardCharacter character = standardCharacterProvider.get();
+		final IStandardCharacter character = standardCharacterProvider.get();
 		character.addAttachment(attachment);
 		attachment.unsetInNeedOfNewVersion();
 		character.unsetInNeedOfNewVersion();

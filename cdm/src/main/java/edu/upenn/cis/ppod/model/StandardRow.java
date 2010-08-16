@@ -66,9 +66,9 @@ public class StandardRow
 	public static final String JOIN_COLUMN = TABLE + "_ID";
 
 	@OneToMany(
-			mappedBy = "parent", 
+			mappedBy = "parent",
 			cascade = CascadeType.ALL,
-			orphanRemoval = true, 
+			orphanRemoval = true,
 			targetEntity = StandardCell.class)
 	@OrderBy("position")
 	private final List<IStandardCell> cells = newArrayList();
@@ -93,14 +93,7 @@ public class StandardRow
 		return cells;
 	}
 
-	/**
-	 * Getter.
-	 * <p>
-	 * Will be {@code null} if and only if this row is not part of a matrix.
-	 * Will never be {@code null} right after a row is pulled from the DB.
-	 * 
-	 * @return the {@code StandardMatrix} of which this is a row
-	 */
+	/** {@inheritDoc} */
 	public IStandardMatrix getParent() {
 		return parent;
 	}

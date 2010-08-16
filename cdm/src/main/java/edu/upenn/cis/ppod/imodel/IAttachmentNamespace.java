@@ -19,7 +19,6 @@ import javax.xml.bind.annotation.adapters.XmlJavaTypeAdapter;
 
 import edu.umd.cs.findbugs.annotations.Nullable;
 import edu.upenn.cis.ppod.model.AttachmentNamespace;
-import edu.upenn.cis.ppod.model.AttachmentNamespace.Adapter;
 
 @XmlJavaTypeAdapter(AttachmentNamespace.Adapter.class)
 public interface IAttachmentNamespace

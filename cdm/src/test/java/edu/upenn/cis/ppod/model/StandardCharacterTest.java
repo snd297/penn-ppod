@@ -24,6 +24,7 @@ import static org.testng.Assert.assertTrue;
 import org.testng.annotations.Test;
 
 import edu.upenn.cis.ppod.TestGroupDefs;
+import edu.upenn.cis.ppod.imodel.IStandardCharacter;
 import edu.upenn.cis.ppod.imodel.IStandardState;
 
 /**
@@ -36,7 +37,7 @@ public class StandardCharacterTest {
 
 	@Test
 	public void addState() {
-		final StandardCharacter character = new StandardCharacter();
+		final IStandardCharacter character = new StandardCharacter();
 		final IStandardState state0 = new StandardState(0);
 
 		character.unsetInNeedOfNewVersion();
