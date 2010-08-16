@@ -15,10 +15,10 @@
  */
 
 /**
- * This is the heart of the project: the CDM classes.
+ * The CDM interfaces.
  */
 @DefaultAnnotation(NonNull.class)
-package edu.upenn.cis.ppod.model;
+package edu.upenn.cis.ppod.imodel;
 
 import edu.umd.cs.findbugs.annotations.DefaultAnnotation;
 import edu.umd.cs.findbugs.annotations.NonNull;

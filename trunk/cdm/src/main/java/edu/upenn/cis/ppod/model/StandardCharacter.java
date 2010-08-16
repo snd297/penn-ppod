@@ -94,6 +94,9 @@ public class StandardCharacter extends UUPPodEntityWithDocId
 	@CheckForNull
 	private IStandardMatrix parent;
 
+	@Column(name = "MESQUITE_ID", nullable = false, unique = true)
+	private String mesquiteId;
+
 	/**
 	 * The states that this character can have. For example, 0->"absent",
 	 * 1->"present", 2->"one", or 3->"two". NOTE: it is legal to have
@@ -154,7 +157,8 @@ public class StandardCharacter extends UUPPodEntityWithDocId
 	 * @param parent see {@code Unmarshaller}
 	 */
 	protected void afterUnmarshal(
-			@CheckForNull final Unmarshaller u, final Object parent) {
+			@CheckForNull final Unmarshaller u,
+			final Object parent) {
 		setParent((IStandardMatrix) parent);
 		for (final IStandardState stateXml : statesXml) {
 			stateXml.setParent(this);
@@ -187,6 +191,11 @@ public class StandardCharacter extends UUPPodEntityWithDocId
 	@Nullable
 	public String getLabel() {
 		return label;
+	}
+
+	@XmlAttribute
+	public String getMesquiteId() {
+		return mesquiteId;
 	}
 
 	/**
@@ -234,6 +243,16 @@ public class StandardCharacter extends UUPPodEntityWithDocId
 			// they're the same, nothing to do.
 		} else {
 			this.label = label;
+			setInNeedOfNewVersion();
+		}
+	}
+
+	public void setMesquiteId(final String mesquiteId) {
+		checkNotNull(mesquiteId);
+		if (mesquiteId.equals(getMesquiteId())) {
+
+		} else {
+			this.mesquiteId = mesquiteId;
 			setInNeedOfNewVersion();
 		}
 	}

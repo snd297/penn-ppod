@@ -67,4 +67,8 @@ public interface IStandardCharacter
 	 */
 	void setLabel(String label);
 
+	void setMesquiteId(String mesquiteId);
+
+	String getMesquiteId();
+
 }

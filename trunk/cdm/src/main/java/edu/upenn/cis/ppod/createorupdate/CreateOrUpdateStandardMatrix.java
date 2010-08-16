@@ -113,6 +113,7 @@ final class CreateOrUpdateStandardMatrix
 			newDbMatrixCharacters.add(newDbCharacter);
 
 			newDbCharacter.setLabel(sourceCharacter.getLabel());
+			newDbCharacter.setMesquiteId(sourceCharacter.getMesquiteId());
 
 			for (final IStandardState sourceState : sourceCharacter.getStates()) {
 				IStandardState dbState;
@@ -124,34 +125,7 @@ final class CreateOrUpdateStandardMatrix
 					dbState.setVersionInfo(
 							newVersionInfo.getNewVersionInfo());
 				}
-
 				dbState.setLabel(sourceState.getLabel());
-
-			}
-
-			for (final IAttachment sourceAttachment : sourceCharacter
-					.getAttachments()) {
-				final ImmutableSet<IAttachment> newDbCharacterAttachments =
-						ImmutableSet.copyOf(
-								newDbCharacter.getAttachments());
-				IAttachment dbAttachment =
-						findIf(newDbCharacterAttachments,
-										compose(
-												equalTo(sourceAttachment
-														.getStringValue()),
-												IAttachment.getStringValue));
-
-				if (dbAttachment == null) {
-					dbAttachment = attachmentProvider.get();
-					dbAttachment
-							.setVersionInfo(
-									newVersionInfo.getNewVersionInfo());
-					dbAttachment.setPPodId();
-				}
-
-				newDbCharacter.addAttachment(dbAttachment);
-				mergeAttachments
-						.mergeAttachments(dbAttachment, sourceAttachment);
 			}
 		}
 
