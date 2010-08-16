@@ -22,7 +22,7 @@ import java.util.List;
 import java.util.Map;
 
 import edu.upenn.cis.ppod.dao.IAttachmentNamespaceDAO;
-import edu.upenn.cis.ppod.model.IAttachmentNamespace;
+import edu.upenn.cis.ppod.imodel.IAttachmentNamespace;
 
 /**
  * @author Sam Donnelly

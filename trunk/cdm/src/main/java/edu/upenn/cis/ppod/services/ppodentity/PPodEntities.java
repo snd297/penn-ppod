@@ -26,10 +26,10 @@ import javax.xml.bind.annotation.XmlAccessorType;
 import javax.xml.bind.annotation.XmlElement;
 import javax.xml.bind.annotation.XmlRootElement;
 
+import edu.upenn.cis.ppod.imodel.IAttachmentNamespace;
+import edu.upenn.cis.ppod.imodel.IAttachmentType;
 import edu.upenn.cis.ppod.imodel.IOTU;
 import edu.upenn.cis.ppod.imodel.IOTUSet;
-import edu.upenn.cis.ppod.model.IAttachmentNamespace;
-import edu.upenn.cis.ppod.model.IAttachmentType;
 import edu.upenn.cis.ppod.util.PPodEntitiesUtil;
 
 /**

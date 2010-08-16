@@ -30,6 +30,8 @@ import java.util.Iterator;
 import java.util.Set;
 
 import edu.upenn.cis.ppod.imodel.IAttachment;
+import edu.upenn.cis.ppod.imodel.IAttachmentNamespace;
+import edu.upenn.cis.ppod.imodel.IAttachmentType;
 import edu.upenn.cis.ppod.imodel.ILabeled;
 import edu.upenn.cis.ppod.imodel.IOTU;
 import edu.upenn.cis.ppod.imodel.IOTUSet;

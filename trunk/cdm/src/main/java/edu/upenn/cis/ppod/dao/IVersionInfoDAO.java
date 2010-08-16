@@ -29,7 +29,7 @@ public interface IVersionInfoDAO extends IDAO<VersionInfo, Long> {
 	 * if there are no {@code VersionInfo}s in the table.
 	 * 
 	 * @return the highest persisted {@code VersionInfo.getVersion()}, or
-	 *         {@code 0L} if there are not {@code VersionInfo}s in the table
+	 *         {@code 0L} if there are no {@code VersionInfo}s in the table
 	 */
 	public Long getMaxVersion();
 

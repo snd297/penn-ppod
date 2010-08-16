@@ -18,7 +18,6 @@ package edu.upenn.cis.ppod.dao.hibernate;
 import com.google.inject.ImplementedBy;
 
 import edu.upenn.cis.ppod.dao.IOTUSetDAO;
-import edu.upenn.cis.ppod.dao.hibernate.HibernateDAOFactory.OTUSetDAOHibernate;
 import edu.upenn.cis.ppod.model.OTUSet;
 
 /**

@@ -33,7 +33,8 @@ import edu.upenn.cis.ppod.util.IPair;
  * 
  * @author Sam Donnelly
  */
-final class StudyDAOHibernate extends GenericHibernateDAO<IStudy, Long>
+final class StudyDAOHibernate
+		extends GenericHibernateDAO<IStudy, Long>
 		implements IStudyDAOHibernate {
 
 	private final IPair.IFactory pairFactory;
@@ -55,9 +56,11 @@ final class StudyDAOHibernate extends GenericHibernateDAO<IStudy, Long>
 	}
 
 	public Study getStudyByPPodId(final String pPodId) {
-		return (Study) getSession().getNamedQuery(
-				Study.class.getSimpleName() + "-getByPPodId").setParameter(
-				"pPodId", pPodId).uniqueResult();
+		return (Study) getSession()
+				.getNamedQuery(
+						Study.class.getSimpleName() + "-getByPPodId")
+				.setParameter("pPodId", pPodId)
+				.uniqueResult();
 	}
 
 	public Study getStudyByPPodIdEager(final String pPodId) {

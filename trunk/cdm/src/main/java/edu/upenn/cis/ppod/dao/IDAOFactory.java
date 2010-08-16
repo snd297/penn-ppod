@@ -30,18 +30,11 @@ public interface IDAOFactory {
 	IStudyDAO getStudyDAO();
 
 	/**
-	 * Get a {@link CharacterStateMatrix} DAO.
+	 * Get a standard matrix DAO.
 	 * 
-	 * @return a {@code CharacterStateMatrix} DAO
+	 * @return a standard matrix DAO
 	 */
-	IStandardMatrixDAO getCharacterStateMatrixDAO();
-
-	/**
-	 * Get an {@link OTU} DAO.
-	 * 
-	 * @return an <code>OTU</code> DAO.
-	 */
-	IOTUDAO getOTUDAO();
+	IStandardMatrixDAO getStandardMatrixDAO();
 
 	/**
 	 * Get a {@link IOTUSetDAO}.
@@ -51,20 +44,6 @@ public interface IDAOFactory {
 	IOTUSetDAO getOTUSetDAO();
 
 	/**
-	 * Get an <code>ICharacterDAO</code>.
-	 * 
-	 * @return and <code>ICharacterDAO</code>.
-	 */
-	ICharacterDAO getCharacterDAO();
-
-	/**
-	 * Get an {@link ICharacterStateDAO}.
-	 * 
-	 * @return an {@code ICharacterStateDAO}
-	 */
-	ICharacterStateDAO getCharacterStateDAO();
-
-	/**
 	 * Get an <code>IVersionInfoDAO</code>.
 	 * 
 	 * @return an <code>IVersionInfoDAO</code>.
@@ -72,25 +51,11 @@ public interface IDAOFactory {
 	IVersionInfoDAO getVersionInfoDAO();
 
 	/**
-	 * Get an {@link ICharacterStateRowDAO}.
+	 * Get an {@link IStandardRowDAO}.
 	 * 
-	 * @return an {@code ICharacterStateRowDAO}
+	 * @return an {@code IStandardRowDAO}
 	 */
-	ICharacterStateRowDAO getCharacterStateRowDAO();
-
-	/**
-	 * Get a {@link Tree} DAO.
-	 * 
-	 * @return a {@code Tree} DAO
-	 */
-	ITreeDAO getTreeDAO();
-
-	/**
-	 * Get a {@link TreeSet} DAO.
-	 * 
-	 * @return a {@code TreeSet} DAO
-	 */
-	ITreeSetDAO getTreeSetDAO();
+	IStandardRowDAO getCharacterStateRowDAO();
 
 	IUserDAO getPPodUserDAO();
 

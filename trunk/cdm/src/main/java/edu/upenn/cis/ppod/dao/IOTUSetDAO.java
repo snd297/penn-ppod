@@ -29,9 +29,11 @@ public interface IOTUSetDAO extends IDAO<OTUSet, Long> {
 	OTUSet getOTUSetByPPodId(String pPodId);
 
 	List<Object[]> getOTUIdsVersionsByOTUSetIdAndMinPPodVersion(
-			Long otuSetPPodId, Long minPPodVersion);
+			Long otuSetPPodId,
+			Long minPPodVersion);
 
-	List<Object[]> getMatrixInfosByOTUSetPPodIdAndMinPPodVersion(String pPodId,
+	List<Object[]> getMatrixInfosByOTUSetPPodIdAndMinPPodVersion(
+			String pPodId,
 			Long pPodVersion);
 
 }

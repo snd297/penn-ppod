@@ -15,15 +15,19 @@
  */
 package edu.upenn.cis.ppod.dao.hibernate;
 
-import com.google.inject.ImplementedBy;
-
-import edu.upenn.cis.ppod.dao.IObjectWithLongIdDAO;
+import edu.upenn.cis.ppod.dao.IPPodRoleDAO;
+import edu.upenn.cis.ppod.model.security.Role;
+import edu.upenn.cis.ppod.thirdparty.dao.hibernate.GenericHibernateDAO;
 
 /**
- * @author Sam Donnelly
+ * The Class PPodRoleDAOHibernate.
  */
-@ImplementedBy(ObjectWithLongIdDAOHibernate.class)
-public interface IObjectWithLongIdDAOHibernate
-		extends IObjectWithLongIdDAO, IDAOHibernate<Object, Long> {
+public class PPodRoleDAOHibernate extends
+		GenericHibernateDAO<Role, Long> implements IPPodRoleDAO {
 
+	public Role getByName(String name) {
+		return (Role) getSession().createQuery(
+				"select role from Role role where role.name=:name")
+				.setParameter("name", name).uniqueResult();
+	}
 }

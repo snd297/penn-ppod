@@ -30,9 +30,10 @@ public class DAOHibernateModule extends AbstractModule {
 	@Override
 	protected void configure() {
 
-		bind(IAttachmentNamespaceDAO.class).to(
-				AttachmentNamespaceDAOHibernate.class);
-		bind(IAttachmentTypeDAO.class).to(AttachmentTypeDAOHibernate.class);
+		bind(IAttachmentNamespaceDAO.class)
+				.to(AttachmentNamespaceDAOHibernate.class);
+		bind(IAttachmentTypeDAO.class)
+				.to(AttachmentTypeDAOHibernate.class);
 
 	}
 }

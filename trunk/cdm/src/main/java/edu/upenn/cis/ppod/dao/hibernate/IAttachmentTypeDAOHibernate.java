@@ -18,7 +18,7 @@ package edu.upenn.cis.ppod.dao.hibernate;
 import com.google.inject.ImplementedBy;
 
 import edu.upenn.cis.ppod.dao.IAttachmentTypeDAO;
-import edu.upenn.cis.ppod.model.IAttachmentType;
+import edu.upenn.cis.ppod.imodel.IAttachmentType;
 
 /**
  * The Interface IAttachmentTypeDAOHibernate.
