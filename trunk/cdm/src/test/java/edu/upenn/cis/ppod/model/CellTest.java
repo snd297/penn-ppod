@@ -95,8 +95,7 @@ public class CellTest {
 		final Set<DNANucleotide> elements =
 				ImmutableSet.of(DNANucleotide.A, DNANucleotide.T);
 
-		cell.setType(ICell.Type.POLYMORPHIC);
-		cell.setElements(elements);
+		cell.setPolymorphicOrUncertain(ICell.Type.POLYMORPHIC, elements);
 		assertEquals(cell.getElements(), elements);
 
 		cell.setType(ICell.Type.UNCERTAIN);
@@ -129,9 +128,11 @@ public class CellTest {
 		final Set<DNANucleotide> nucleotides = EnumSet.of(DNANucleotide.A,
 				DNANucleotide.G);
 		cell.setPolymorphicElements(nucleotides, true);
-		assertEquals((Object) cell.getElementsIfMultiple(), (Object) nucleotides);
+		assertEquals((Object) cell.getElementsIfMultiple(),
+				(Object) nucleotides);
 		cell.setUncertainElements(nucleotides);
-		assertEquals((Object) cell.getElementsIfMultiple(), (Object) nucleotides);
+		assertEquals((Object) cell.getElementsIfMultiple(),
+				(Object) nucleotides);
 
 	}
 

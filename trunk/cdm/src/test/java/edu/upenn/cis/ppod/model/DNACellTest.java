@@ -18,7 +18,6 @@ package edu.upenn.cis.ppod.model;
 import static com.google.common.collect.Iterables.getOnlyElement;
 import static org.testng.Assert.assertEquals;
 import static org.testng.Assert.assertFalse;
-import static org.testng.Assert.assertNull;
 import static org.testng.Assert.assertTrue;
 
 import java.util.Set;
@@ -90,29 +89,6 @@ public class DNACellTest {
 						dnaCell.getElements()),
 					DNANucleotide.A);
 		assertTrue(dnaCell.isInNeedOfNewVersion());
-	}
-
-	@Test
-	public void setElements() {
-		final DNACell cell = dnaCellProvider.get();
-
-		final Set<DNANucleotide> nucleotides =
-				ImmutableSet.of(DNANucleotide.A, DNANucleotide.T);
-		cell.setElements(nucleotides);
-		assertEquals((Object) cell.getElementsModifiable(),
-				(Object) nucleotides);
-
-		final Set<DNANucleotide> nucleotides2 =
-				ImmutableSet.of(DNANucleotide.T);
-
-		cell.setElements(nucleotides2);
-		assertEquals((Object) cell.getElementsModifiable(),
-				(Object) nucleotides2);
-
-		// Set it to null
-		cell.setElements(null);
-		assertNull(cell.getElementsModifiable());
-
 	}
 
 	public void setPolymorphicOrUncertain() {
