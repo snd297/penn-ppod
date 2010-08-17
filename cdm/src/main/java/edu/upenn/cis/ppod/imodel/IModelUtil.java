@@ -15,12 +15,10 @@
  */
 package edu.upenn.cis.ppod.imodel;
 
-import static com.google.common.collect.Lists.newArrayList;
-import static com.google.common.collect.Maps.newHashMap;
+import static com.google.common.base.Preconditions.checkArgument;
+import static com.google.common.base.Preconditions.checkNotNull;
 
-import java.util.List;
-import java.util.Map;
-import java.util.Set;
+import java.io.Serializable;
 
 /**
  * Utility methods for the {@code imodel} package.
@@ -30,42 +28,46 @@ import java.util.Set;
 public class IModelUtil {
 
 	/**
-	 * Take a set of {@link IStandardState}s and put them into a map with their
-	 * state numbers as keys.
-	 * 
-	 * @param states from which to make the map
-	 * 
-	 * @return a map where the keys are the state numbers and the values are the
-	 *         corresponding states
+	 * Orders character states by the natural ordering of
+	 * {@link IStandardState#getStateNumber()}.
+	 * <p>
+	 * Note: this comparator imposes orderings that are inconsistent with
+	 * equals. If two states have the same state numbers, this comparator
+	 * returns {@code 0} whether they are {@code .equals} or not.
+	 * <p>
+	 * We use an external comparator for {@code IStandardState} instead of
+	 * implementing {@code CharacterStateComparator} because we don't want to
+	 * have to worry (as much) about being incompatible with equals. See
+	 * {@link Comparable} for information about that.
+	 * <p>
+	 * Note that the state number of a {@code StandardState} is immutable once
+	 * assigned, so since the comparator does not allow {@code null} values for
+	 * {@link IStandardState#getStateNumber()} this comparator will be safe to
+	 * use in a {@code SortedSet}. See
+	 * {@link StandardState#setStateNumber(Integer)} for the why's of the
+	 * mutability.
 	 */
-	public static Map<Integer, IStandardState> toIntegerStateMap(
-			final Set<? extends IStandardState> states) {
-		final Map<Integer, IStandardState> integersToStates = newHashMap();
-		for (final IStandardState state : states) {
-			integersToStates.put(state.getStateNumber(), state);
+	public static class StandardStateComparator implements
+			java.util.Comparator<IStandardState>, Serializable {
+
+		private static final long serialVersionUID = 1L;
+
+		public int compare(final IStandardState o1, final IStandardState o2) {
+			checkNotNull(o1);
+			checkArgument(
+					o1.getStateNumber() != null,
+					"o1.getStateNumber() == null");
+
+			checkNotNull(o2);
+			checkArgument(o2.getStateNumber() != null,
+					"o2.getStateNumber() == null");
+
+			return o2.getStateNumber() - o1.getStateNumber();
 		}
-		return integersToStates;
 	}
 
-	/**
-	 * Take a set of {@link IStandardState}s and put them into a list ordered by
-	 * their state numbers.
-	 * 
-	 * @param states from which to make the list
-	 * 
-	 * @return a list ordered by the state numbers
-	 */
-	public static List<IStandardState> toOrderedStates(
-			final Set<? extends IStandardState> states) {
-		final List<IStandardState> orderedStates = newArrayList();
-		final Map<Integer, IStandardState> integersToStates = toIntegerStateMap(states);
-		int integersToStatesPos = -1;
-		while (orderedStates.size() < states.size()) {
-			integersToStatesPos++;
-			if (integersToStates.containsKey(integersToStatesPos)) {
-				orderedStates.add(integersToStates.get(integersToStatesPos));
-			}
-		}
-		return orderedStates;
+	/** Prevent inheritance and instantiation. */
+	private IModelUtil() {
+		throw new AssertionError("Can't instantiate an IModelUtil");
 	}
 }
