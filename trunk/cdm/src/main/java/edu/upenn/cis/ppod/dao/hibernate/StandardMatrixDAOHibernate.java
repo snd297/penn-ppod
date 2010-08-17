@@ -35,7 +35,7 @@ import edu.upenn.cis.ppod.util.IPair;
  * @author Sam Donnelly
  */
 final class StandardMatrixDAOHibernate
-		extends GenericHibernateDAO<StandardMatrix, Long>
+		extends GenericHibernateDAO<IStandardMatrix, Long>
 		implements IStandardMatrixDAO {
 
 	private final IPair.IFactory pairFactory;
@@ -46,27 +46,31 @@ final class StandardMatrixDAOHibernate
 	}
 
 	public IStandardMatrix getByPPodId(final String pPodId) {
-		return (IStandardMatrix) getSession().getNamedQuery(
-				StandardMatrix.class.getSimpleName() + "-getByPPodId")
-				.setParameter("pPodId", pPodId).uniqueResult();
+		return (IStandardMatrix) getSession()
+				.getNamedQuery(
+						StandardMatrix.class.getSimpleName() + "-getByPPodId")
+				.setParameter("pPodId", pPodId)
+				.uniqueResult();
 	}
 
 	@SuppressWarnings("unchecked")
 	public List<Object[]> getCharacterInfosByMatrixIdAndMinPPodVersion(
 			final Long matrixId, final Long minPPodVersion) {
-		return getSession().getNamedQuery(
-				StandardMatrix.class.getSimpleName()
+		return getSession()
+				.getNamedQuery(StandardMatrix.class.getSimpleName()
 						+ "-getCharacterInfosByMatrixIdandMinPPodVersion")
-				.setParameter("matrixId", matrixId).setParameter(
-						"minPPodVersion", minPPodVersion).list();
+				.setParameter("matrixId", matrixId)
+				.setParameter("minPPodVersion", minPPodVersion)
+				.list();
 	}
 
 	@SuppressWarnings("unchecked")
 	public List<Long> getColumnPPodVersionsByMatrixId(final Long matrixId) {
-		return getSession().getNamedQuery(
-				StandardMatrix.class.getSimpleName()
-						+ "-getColumnPPodVersionsByMatrixId").setParameter(
-				"matrixId", matrixId).list();
+		return getSession()
+				.getNamedQuery(StandardMatrix.class.getSimpleName()
+						+ "-getColumnPPodVersionsByMatrixId")
+				.setParameter("matrixId", matrixId)
+				.list();
 	}
 
 	public Set<IPair<String, String>> getPPodIdLabelPairs() {
@@ -75,17 +79,20 @@ final class StandardMatrixDAOHibernate
 				StandardMatrix.class.getSimpleName()
 						+ "-getPPodIdLabelPairs").iterate(); itr.hasNext();) {
 			final Object[] result = (Object[]) itr.next();
-			results.add(pairFactory.create((String) result[0],
-					(String) result[1]));
+			results.add(
+					pairFactory.create((String) result[0],
+							(String) result[1]));
 		}
 		return results;
 	}
 
 	public Long getPPodVersionById(final Long id) {
-		return (Long) getSession().getNamedQuery(
-				StandardMatrix.class.getSimpleName()
-						+ "-getPPodVersionById").setParameter("id", id)
-				.uniqueResult();
+		return (Long) getSession()
+				.getNamedQuery(
+						StandardMatrix.class.getSimpleName()
+								+ "-getPPodVersionById")
+						.setParameter("id", id)
+						.uniqueResult();
 	}
 
 	@SuppressWarnings("unchecked")
@@ -94,8 +101,9 @@ final class StandardMatrixDAOHibernate
 		return getSession().getNamedQuery(
 				StandardMatrix.class.getSimpleName()
 						+ "-getRowIdxsIdsVersionsByMatrixIdAndMinPPodVersion")
-				.setParameter("matrixId", matrixId).setParameter(
-						"minPPodVersion", minPPodVersion).list();
+				.setParameter("matrixId", matrixId)
+				.setParameter("minPPodVersion", minPPodVersion)
+				.list();
 	}
 
 }
