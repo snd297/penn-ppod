@@ -51,6 +51,7 @@ import edu.upenn.cis.ppod.util.IVisitor;
 @Table(name = StandardState.TABLE)
 public class StandardState extends PPodEntityWDocId implements IStandardState {
 
+
 	public static class Adapter extends
 			XmlAdapter<StandardState, IStandardState> {
 

@@ -306,8 +306,8 @@ public class StandardCell
 
 		for (final IStandardState sourceElement : elements) {
 			newElements
-						.add(character.getState(sourceElement
-								.getStateNumber()));
+						.add(character.getState(
+								sourceElement.getStateNumber()));
 		}
 		super.setPolymorphicOrUncertain(type, newElements);
 	}
