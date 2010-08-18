@@ -21,6 +21,14 @@ import javax.xml.bind.annotation.XmlAttribute;
 
 import edu.umd.cs.findbugs.annotations.Nullable;
 
+/**
+ * A cell in a matrix
+ * 
+ * @author Sam Donnelly
+ * 
+ * @param <E> the elements in the cell
+ * @param <R> the parent row
+ */
 public interface ICell<E, R extends IRow<?, ?>> extends IOrderedChild<R> {
 
 	/**
@@ -66,8 +74,8 @@ public interface ICell<E, R extends IRow<?, ?>> extends IOrderedChild<R> {
 	/**
 	 * Get the elements contained in this cell.
 	 * <p>
-	 * Will be the the empty set if type is {@link Type.INAPPLICABLE} or
-	 * {@link Type.UNASSIGNED}.
+	 * Will be the the empty set if and only if type is
+	 * {@link Type.INAPPLICABLE} or {@link Type.UNASSIGNED}.
 	 * 
 	 * @return the elements contained in this cell
 	 */
@@ -77,7 +85,8 @@ public interface ICell<E, R extends IRow<?, ?>> extends IOrderedChild<R> {
 	 * Get the type of this cell.
 	 * <p>
 	 * This value will be {@code null} for newly created cells until the
-	 * elements are set. Once set, this will never be {@code null}.
+	 * elements are set. Once set, this will never be {@code null}. This value
+	 * will never be {@code null} for persistent cells.
 	 * 
 	 * @return the type of this cell
 	 */

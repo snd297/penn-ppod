@@ -27,7 +27,6 @@ import java.util.List;
 
 import org.slf4j.Logger;
 
-import com.google.common.collect.ImmutableSet;
 import com.google.inject.Inject;
 import com.google.inject.Provider;
 import com.google.inject.assistedinject.Assisted;
@@ -54,8 +53,6 @@ final class CreateOrUpdateStandardMatrix
 
 	private final Provider<IStandardCharacter> standardCharacterProvider;
 	private final IStandardState.IFactory standardStateFactory;
-	private final Provider<IAttachment> attachmentProvider;
-	private final IMergeAttachments mergeAttachments;
 
 	@InjectLogger
 	private Logger logger;
@@ -76,8 +73,6 @@ final class CreateOrUpdateStandardMatrix
 				newVersionInfo, dao);
 		this.standardCharacterProvider = characterProvider;
 		this.standardStateFactory = stateFactory;
-		this.attachmentProvider = attachmentProvider;
-		this.mergeAttachments = mergeAttachments;
 		this.newVersionInfo = newVersionInfo;
 	}
 
