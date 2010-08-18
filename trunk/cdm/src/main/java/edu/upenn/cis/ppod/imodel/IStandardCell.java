@@ -24,32 +24,33 @@ import edu.upenn.cis.ppod.model.StandardCell;
 @XmlJavaTypeAdapter(StandardCell.Adapter.class)
 public interface IStandardCell extends ICell<IStandardState, IStandardRow> {
 
+	void afterUnmarshal();
+
 	/**
 	 * Set the type to polymorphic with the appropriate elements equivalent to
-	 * {@code elements}.
+	 * {@code stateNumbers}.
 	 * <p>
-	 * {@code elements} must contain more than one element.
-	 * <p>
-	 * Note that the elements that are actually assigned won't be {@code ==} to
-	 * the elements passed in, but will be the ones with the same state numbers
-	 * from the owning matrix's characters' states.
+	 * {@code stateNumbers} must contain more than one element.
 	 * 
 	 * @param elements the elements
 	 */
-	void setPolymorphicElements(
-			final Set<? extends IStandardState> elements);
+	void setPolymorphicElements(Set<Integer> stateNumbers);
 
 	/**
-	 * Set this cell to {@link Type.SINGLE} and its elements to contain the
-	 * owning matrix's equivalent of {@code element}.
-	 * <p>
-	 * Note that the element that is actually assigned won't be {@code ==} to
-	 * the element passed in, but will be the one with the same state number
-	 * from the owning matrix's characters' states.
+	 * Set this cell to {@link Type.SINGLE} and its elements to contain this
+	 * cell's character's state with the given state number.
 	 * 
-	 * @param element the single element to be contained in this cell
+	 * @param stateNumber the state number of the state for this cell
 	 */
-	void setSingleElement(final IStandardState element);
+	void setSingleElement(Integer stateNumber);
 
-	void afterUnmarshal();
+	/**
+	 * Set the type to uncertain and this cell's elements to the values
+	 * equivalent to {@code elements}.
+	 * <p>
+	 * {@code elements.size()} must be greater than 2.
+	 * 
+	 * @param elements the elements
+	 */
+	void setUncertainElements(Set<Integer> stateNumbers);
 }

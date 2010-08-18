@@ -86,4 +86,13 @@ final class CreateOrUpdateDNAMatrix
 				sourceCell.getElements(),
 				sourceCell.getLowerCase());
 	}
+
+	@Override
+	void handleUncertainCell(IDNACell dbCell, IDNACell sourceCell) {
+		checkNotNull(dbCell);
+		checkNotNull(sourceCell);
+		checkArgument(sourceCell.getType() == ICell.Type.UNCERTAIN);
+		dbCell.setUncertainElements(
+				sourceCell.getElements());
+	}
 }

@@ -215,7 +215,7 @@ public class StandardCharacter extends UUPPodEntityWithDocId
 	@CheckForNull
 	public IStandardState getState(final Integer stateNumber) {
 		checkNotNull(stateNumber);
-		return states.get(stateNumber);
+		return states.get(stateNumber.intValue());
 	}
 
 	/** {@inheritDoc} */

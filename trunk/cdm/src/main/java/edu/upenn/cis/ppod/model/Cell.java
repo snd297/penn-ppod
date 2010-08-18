@@ -347,18 +347,4 @@ public abstract class Cell<E, R extends IRow<?, ?>>
 		setInapplicableOrUnassigned(Type.UNASSIGNED);
 	}
 
-	/**
-	 * {@inheritDoc}
-	 * 
-	 * @throw IllegalArgumentException if {@code uncertainStates.size() < 2}
-	 */
-	public void setUncertainElements(
-			final Set<? extends E> uncertainElements) {
-		checkNotNull(uncertainElements);
-		checkArgument(
-				uncertainElements.size() > 1,
-				"uncertain elements must be > 1");
-		setPolymorphicOrUncertain(Type.UNCERTAIN, uncertainElements);
-	}
-
 }

@@ -15,6 +15,7 @@
  */
 package edu.upenn.cis.ppod.model;
 
+import static com.google.common.base.Preconditions.checkArgument;
 import static com.google.common.base.Preconditions.checkNotNull;
 
 import java.util.Set;
@@ -95,10 +96,20 @@ public abstract class MolecularCell<E extends Enum<?>, R extends IRow<?, ?>>
 		}
 	}
 
-	@Override
+	/**
+	 * {@inheritDoc}
+	 * 
+	 * @throw IllegalArgumentException if {@code uncertainStates.size() < 2}
+	 */
 	public void setUncertainElements(
-			final Set<? extends E> elements) {
-		super.setUncertainElements(elements);
+			final Set<? extends E> uncertainElements) {
+		checkNotNull(uncertainElements);
+		checkArgument(
+				uncertainElements.size() > 1,
+				"uncertain elements must be > 1");
+		setPolymorphicOrUncertain(
+				Type.UNCERTAIN,
+				uncertainElements);
 		setLowerCase(null);
 	}
 }

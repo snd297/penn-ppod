@@ -20,7 +20,9 @@ import static com.google.common.base.Preconditions.checkNotNull;
 import static com.google.common.base.Predicates.compose;
 import static com.google.common.base.Predicates.equalTo;
 import static com.google.common.collect.Iterables.getOnlyElement;
+import static com.google.common.collect.Iterables.transform;
 import static com.google.common.collect.Lists.newArrayList;
+import static com.google.common.collect.Sets.newHashSet;
 import static edu.upenn.cis.ppod.util.PPodIterables.findIf;
 
 import java.util.List;
@@ -137,7 +139,9 @@ final class CreateOrUpdateStandardMatrix
 		checkNotNull(dbCell);
 		checkNotNull(sourceCell);
 		checkArgument(sourceCell.getType() == ICell.Type.SINGLE);
-		dbCell.setSingleElement(getOnlyElement(sourceCell.getElements()));
+		dbCell.setSingleElement(
+				getOnlyElement(sourceCell.getElements())
+						.getStateNumber());
 	}
 
 	@Override
@@ -147,6 +151,22 @@ final class CreateOrUpdateStandardMatrix
 		checkNotNull(dbCell);
 		checkNotNull(sourceCell);
 		checkArgument(sourceCell.getType() == ICell.Type.POLYMORPHIC);
-		dbCell.setPolymorphicElements(sourceCell.getElements());
+		dbCell.setPolymorphicElements(
+				newHashSet(
+						transform(
+								sourceCell.getElements(),
+								IStandardState.getStateNumber)));
+	}
+
+	@Override
+	void handleUncertainCell(IStandardCell dbCell, IStandardCell sourceCell) {
+		checkNotNull(dbCell);
+		checkNotNull(sourceCell);
+		checkArgument(sourceCell.getType() == ICell.Type.UNCERTAIN);
+		dbCell.setUncertainElements(
+				newHashSet(
+						transform(
+								sourceCell.getElements(),
+								IStandardState.getStateNumber)));
 	}
 }

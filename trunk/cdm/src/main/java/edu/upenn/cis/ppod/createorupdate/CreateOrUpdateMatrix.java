@@ -68,6 +68,8 @@ abstract class CreateOrUpdateMatrix<M extends IMatrix<R>, R extends IRow<C, ?>, 
 
 	abstract void handlePolymorphicCell(final C dbCell, final C sourceCell);
 
+	abstract void handleUncertainCell(final C dbCell, final C sourceCell);
+
 	public void createOrUpdateMatrix(
 			final M dbMatrix,
 			final M sourceMatrix) {
@@ -149,7 +151,7 @@ abstract class CreateOrUpdateMatrix<M extends IMatrix<R>, R extends IRow<C, ?>, 
 						dbCell.setUnassigned();
 						break;
 					case UNCERTAIN:
-						dbCell.setUncertainElements(sourceCell.getElements());
+						handleUncertainCell(dbCell, sourceCell);
 						break;
 					default:
 						throw new AssertionError("unknown type");

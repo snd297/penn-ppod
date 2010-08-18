@@ -332,9 +332,4 @@ public class CellTest {
 
 	}
 
-	@Test(expectedExceptions = IllegalArgumentException.class)
-	public void setUncertainElementsTooFewStates() {
-		final ICell<DNANucleotide, ?> cell = dnaCellProvider.get();
-		cell.setUncertainElements(ImmutableSet.of(DNANucleotide.G));
-	}
 }
