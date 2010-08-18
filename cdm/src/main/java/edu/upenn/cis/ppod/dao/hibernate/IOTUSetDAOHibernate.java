@@ -18,13 +18,13 @@ package edu.upenn.cis.ppod.dao.hibernate;
 import com.google.inject.ImplementedBy;
 
 import edu.upenn.cis.ppod.dao.IOTUSetDAO;
-import edu.upenn.cis.ppod.model.OTUSet;
+import edu.upenn.cis.ppod.imodel.IOTUSet;
 
 /**
  * @author Sam Donnelly
  */
 @ImplementedBy(OTUSetDAOHibernate.class)
-public interface IOTUSetDAOHibernate extends IOTUSetDAO,
-IDAOHibernate<OTUSet, Long> {
+public interface IOTUSetDAOHibernate
+		extends IOTUSetDAO, IDAOHibernate<IOTUSet, Long> {
 
 }
