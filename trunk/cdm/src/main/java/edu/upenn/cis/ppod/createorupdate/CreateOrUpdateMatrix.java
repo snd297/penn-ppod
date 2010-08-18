@@ -64,6 +64,12 @@ abstract class CreateOrUpdateMatrix<M extends IMatrix<R>, R extends IRow<C, ?>, 
 		this.dao = dao;
 	}
 
+	/**
+	 * Put the state of the source cell into the target cell.
+	 * 
+	 * @param targetCell target
+	 * @param sourceCell source
+	 */
 	abstract void handleCell(final C targetCell, final C sourceCell);
 
 	public void createOrUpdateMatrix(

@@ -131,76 +131,27 @@ final class CreateOrUpdateStandardMatrix
 
 	}
 
+	/**
+	 * {@inheritDoc}
+	 * <p>
+	 * This method assumes that all of the characters in the source and target
+	 * matrices are equivalent (including their character states), and their
+	 * order the same. In other words, this method doesn't do any checking of
+	 * the characters and states to make sure that they have the same labels and
+	 * state numbers in the source and target matrices.
+	 */
 	@Override
 	void handleCell(
 			final IStandardCell targetCell,
 			final IStandardCell sourceCell) {
 
 		checkArgument(targetCell.getPosition().equals(sourceCell.getPosition()));
-
-		// First let's make sure the characters for the target and source cell
-		// are the same.
-		// We do that by looking at all of the values
 		final IStandardCharacter targetCharacter =
 				targetCell
 						.getParent()
 						.getParent()
 						.getCharacters()
 						.get(targetCell.getPosition());
-		final IStandardCharacter sourceCharacter =
-				sourceCell
-						.getParent()
-						.getParent()
-						.getCharacters()
-						.get(sourceCell.getPosition());
-		checkArgument(targetCharacter
-				.getLabel()
-				.equals(
-						sourceCharacter.getLabel()));
-
-		checkArgument(targetCharacter
-				.getMesquiteId()
-				.equals(
-						sourceCharacter.getMesquiteId()));
-
-		checkArgument(targetCharacter.getStates().size() == sourceCharacter
-				.getStates().size());
-		int statePos = -1;
-		int stateCount = 0;
-		while (stateCount < sourceCharacter.getStates().size()) {
-			statePos++;
-			final IStandardState sourceState =
-					sourceCharacter.getState(statePos);
-			if (sourceState == null) {
-				continue;
-			} else {
-				stateCount++;
-			}
-			final IStandardState targetState =
-					targetCharacter.getState(statePos);
-			checkArgument(targetState != null);
-
-			checkArgument(
-					targetState
-							.getLabel()
-							.equals(sourceState
-									.getLabel()),
-							"target and source characters have states with same state number "
-									+ statePos
-									+ " but different labels source ["
-									+ sourceState.getLabel()
-									+ "] target ["
-									+ targetState.getLabel() + "]");
-			if (!targetState.getStateNumber().equals(
-					sourceState.getStateNumber())) {
-				throw new AssertionError(
-						"target and source state numbers don't match");
-			}
-
-		}
-
-		// Now we are pretty sure that the characters and states are all the
-		// same, so let's do the assigning.
 
 		switch (sourceCell.getType()) {
 			case UNASSIGNED:
