@@ -252,11 +252,11 @@ public class StandardCell
 	 * @throw IllegalArgumentException if {@code elements.size() < 2}
 	 */
 	public void setPolymorphicElements(
-			final Set<Integer> elements) {
+			final Set<? extends IStandardState> elements) {
 		checkNotNull(elements);
 		checkArgument(elements.size() > 1,
 				"polymorphic states must be > 1");
-		setPolymorphicOrUncertainWithStateNumbers(Type.POLYMORPHIC, elements);
+		setPolymorphicOrUncertain(Type.POLYMORPHIC, elements);
 	}
 
 	/**
@@ -271,9 +271,10 @@ public class StandardCell
 	 * 
 	 * @return {@code state}
 	 */
-	void setPolymorphicOrUncertainWithStateNumbers(
+	@Override
+	void setPolymorphicOrUncertain(
 			final Type type,
-			final Set<Integer> elements) {
+			final Set<? extends IStandardState> elements) {
 		checkNotNull(type);
 		checkNotNull(elements);
 
@@ -287,34 +288,15 @@ public class StandardCell
 				"POLYMORPIC AND UNCERTAIN must have greater than 1 element but elements has "
 						+ elements.size());
 
-		Set<IStandardState> newElements;
-
 		checkRowMatrixCharacter();
 
-		// So FindBugs knows we got it
-		final Integer position = getPosition();
-
-		checkState(
-					position != null,
-					"this cell has not been assigned a row: it's position attribute is null");
-
-		final IStandardCharacter character =
-					getParent().getParent().getCharacters().get(position);
-
-		newElements = newHashSet();
-
-		for (final Integer sourceElement : elements) {
-			newElements
-						.add(character.getState(
-								sourceElement));
-		}
-		super.setPolymorphicOrUncertain(type, newElements);
+		super.setPolymorphicOrUncertain(type, elements);
 	}
 
 	/** {@inheritDoc} */
-	public void setSingleElement(final Integer stateNumber) {
+	public void setSingleElement(final IStandardState element) {
 
-		checkNotNull(stateNumber);
+		checkNotNull(element);
 
 		checkState(
 					getPosition() != null,
@@ -322,22 +304,15 @@ public class StandardCell
 
 		final IStandardCharacter standardCharacter =
 					getParent().getParent().getCharacters().get(getPosition());
+		checkArgument(standardCharacter.equals(element.getParent()));
 
-		final IStandardState newElement =
-				standardCharacter.getState(stateNumber);
-
-		checkState(newElement != null,
-				"cell's character has no state for with "
-						+ " state number "
-						+ stateNumber);
-
-		if (newElement.equals(getElement())) {
+		if (element.equals(getElement())) {
 			if (getType() != Type.SINGLE) {
 				throw new AssertionError(
 						"element is set, but this cell is not a SINGLE");
 			}
 		} else {
-			setElement(newElement);
+			setElement(element);
 			setElements(null);
 			setType(Type.SINGLE);
 			setInNeedOfNewVersion();
@@ -364,21 +339,5 @@ public class StandardCell
 				.append(this.elements).append(TAB).append(")");
 
 		return retValue.toString();
-	}
-
-	/**
-	 * {@inheritDoc}
-	 * 
-	 * @throw IllegalArgumentException if {@code uncertainStates.size() < 2}
-	 */
-	public void setUncertainElements(
-			final Set<Integer> uncertainElements) {
-		checkNotNull(uncertainElements);
-		checkArgument(
-				uncertainElements.size() > 1,
-				"uncertain elements must be > 1");
-		setPolymorphicOrUncertainWithStateNumbers(
-				Type.UNCERTAIN,
-				uncertainElements);
 	}
 }

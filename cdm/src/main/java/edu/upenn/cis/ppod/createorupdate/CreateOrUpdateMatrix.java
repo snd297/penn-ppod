@@ -64,11 +64,7 @@ abstract class CreateOrUpdateMatrix<M extends IMatrix<R>, R extends IRow<C, ?>, 
 		this.dao = dao;
 	}
 
-	abstract void handleSingleCell(final C dbCell, final C sourceCell);
-
-	abstract void handlePolymorphicCell(final C dbCell, final C sourceCell);
-
-	abstract void handleUncertainCell(final C dbCell, final C sourceCell);
+	abstract void handleCell(final C targetCell, final C sourceCell);
 
 	public void createOrUpdateMatrix(
 			final M dbMatrix,
@@ -137,25 +133,7 @@ abstract class CreateOrUpdateMatrix<M extends IMatrix<R>, R extends IRow<C, ?>, 
 						.getCells()
 						.get(dbCellPosition);
 
-				switch (sourceCell.getType()) {
-					case INAPPLICABLE:
-						dbCell.setInapplicable();
-						break;
-					case POLYMORPHIC:
-						handlePolymorphicCell(dbCell, sourceCell);
-						break;
-					case SINGLE:
-						handleSingleCell(dbCell, sourceCell);
-						break;
-					case UNASSIGNED:
-						dbCell.setUnassigned();
-						break;
-					case UNCERTAIN:
-						handleUncertainCell(dbCell, sourceCell);
-						break;
-					default:
-						throw new AssertionError("unknown type");
-				}
+				handleCell(dbCell, sourceCell);
 
 				// We need to do this here since we're removing the cell from
 				// the persistence context (with evict). So it won't get handled

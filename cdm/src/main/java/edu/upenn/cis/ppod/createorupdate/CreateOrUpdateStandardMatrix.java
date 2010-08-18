@@ -20,12 +20,12 @@ import static com.google.common.base.Preconditions.checkNotNull;
 import static com.google.common.base.Predicates.compose;
 import static com.google.common.base.Predicates.equalTo;
 import static com.google.common.collect.Iterables.getOnlyElement;
-import static com.google.common.collect.Iterables.transform;
 import static com.google.common.collect.Lists.newArrayList;
 import static com.google.common.collect.Sets.newHashSet;
 import static edu.upenn.cis.ppod.util.PPodIterables.findIf;
 
 import java.util.List;
+import java.util.Set;
 
 import org.slf4j.Logger;
 
@@ -35,7 +35,6 @@ import com.google.inject.assistedinject.Assisted;
 
 import edu.upenn.cis.ppod.dao.IDAO;
 import edu.upenn.cis.ppod.imodel.IAttachment;
-import edu.upenn.cis.ppod.imodel.ICell;
 import edu.upenn.cis.ppod.imodel.INewVersionInfo;
 import edu.upenn.cis.ppod.imodel.IStandardCell;
 import edu.upenn.cis.ppod.imodel.IStandardCharacter;
@@ -133,43 +132,116 @@ final class CreateOrUpdateStandardMatrix
 	}
 
 	@Override
-	void handlePolymorphicCell(
-			final IStandardCell dbCell,
+	void handleCell(
+			final IStandardCell targetCell,
 			final IStandardCell sourceCell) {
-		checkNotNull(dbCell);
-		checkNotNull(sourceCell);
-		checkArgument(sourceCell.getType() == ICell.Type.POLYMORPHIC);
-		dbCell.setPolymorphicElements(
-				newHashSet(
-						transform(
-								sourceCell.getElements(),
-								IStandardState.getStateNumber)));
-	}
 
-	@Override
-	void handleSingleCell(
-			final IStandardCell dbCell,
-			final IStandardCell sourceCell) {
-		checkNotNull(dbCell);
-		checkNotNull(sourceCell);
-		checkArgument(sourceCell.getType() == ICell.Type.SINGLE);
-		dbCell.setSingleElement(
-				getOnlyElement(
-						sourceCell.getElements())
-						.getStateNumber());
-	}
+		checkArgument(targetCell.getPosition().equals(sourceCell.getPosition()));
 
-	@Override
-	void handleUncertainCell(
-			final IStandardCell dbCell,
-			final IStandardCell sourceCell) {
-		checkNotNull(dbCell);
-		checkNotNull(sourceCell);
-		checkArgument(sourceCell.getType() == ICell.Type.UNCERTAIN);
-		dbCell.setUncertainElements(
-				newHashSet(
-						transform(
-								sourceCell.getElements(),
-								IStandardState.getStateNumber)));
+		// First let's make sure the characters for the target and source cell
+		// are the same.
+		// We do that by looking at all of the values
+		final IStandardCharacter targetCharacter =
+				targetCell
+						.getParent()
+						.getParent()
+						.getCharacters()
+						.get(targetCell.getPosition());
+		final IStandardCharacter sourceCharacter =
+				sourceCell
+						.getParent()
+						.getParent()
+						.getCharacters()
+						.get(sourceCell.getPosition());
+		checkArgument(targetCharacter
+				.getLabel()
+				.equals(
+						sourceCharacter.getLabel()));
+
+		checkArgument(targetCharacter
+				.getMesquiteId()
+				.equals(
+						sourceCharacter.getMesquiteId()));
+
+		checkArgument(targetCharacter.getStates().size() == sourceCharacter
+				.getStates().size());
+		int statePos = -1;
+		int stateCount = 0;
+		while (stateCount < sourceCharacter.getStates().size()) {
+			statePos++;
+			final IStandardState sourceState =
+					sourceCharacter.getState(statePos);
+			if (sourceState == null) {
+				continue;
+			} else {
+				stateCount++;
+			}
+			final IStandardState targetState =
+					targetCharacter.getState(statePos);
+			checkArgument(targetState != null);
+
+			checkArgument(
+					targetState
+							.getLabel()
+							.equals(sourceState
+									.getLabel()),
+							"target and source characters have states with same state number "
+									+ statePos
+									+ " but different labels source ["
+									+ sourceState.getLabel()
+									+ "] target ["
+									+ targetState.getLabel() + "]");
+			if (!targetState.getStateNumber().equals(
+					sourceState.getStateNumber())) {
+				throw new AssertionError(
+						"target and source state numbers don't match");
+			}
+
+		}
+
+		// Now we are pretty sure that the characters and states are all the
+		// same, so let's do the assigning.
+
+		switch (sourceCell.getType()) {
+			case UNASSIGNED:
+				targetCell.setUnassigned();
+				return;
+			case SINGLE: {
+				final IStandardState sourceState =
+						getOnlyElement(sourceCell.getElements());
+				final IStandardState targetState =
+						targetCharacter.getState(sourceState.getStateNumber());
+				targetCell.setSingleElement(targetState);
+			}
+				break;
+			case POLYMORPHIC:
+			case UNCERTAIN: {
+				final Set<IStandardState> targetStates = newHashSet();
+				for (final IStandardState sourceState : sourceCell
+						.getElements()) {
+					final IStandardState targetState =
+							targetCharacter.getState(
+									sourceState.getStateNumber());
+					targetStates.add(targetState);
+				}
+				switch (sourceCell.getType()) {
+					case POLYMORPHIC:
+						targetCell.setPolymorphicElements(targetStates);
+						break;
+					case UNCERTAIN:
+						targetCell.setUncertainElements(targetStates);
+					default:
+						throw new AssertionError(
+								"type should be POLYMORPHIC or UNCERTAIN but is "
+										+ sourceCell.getType());
+				}
+			}
+				break;
+			case INAPPLICABLE:
+				targetCell.setInapplicable();
+				break;
+			default:
+				break;
+		}
 	}
 }
