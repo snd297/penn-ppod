@@ -106,20 +106,5 @@ public interface ICell<E, R extends IRow<?, ?>> extends IOrderedChild<R> {
 	 */
 	void setUnassigned();
 
-	/**
-	 * Set the type to uncertain and this cell's elements to the values
-	 * equivalent to {@code elements}.
-	 * <p>
-	 * {@code elements.size()} must be greater than 2.
-	 * <p>
-	 * The elements that are actually assigned may not be {@code ==} to the
-	 * members of {@code elements}, but will be the equivalent appropriate for
-	 * the owning matrix. See {@link IStandardCell} for an example of that
-	 * behavior.
-	 * 
-	 * @param elements the elements
-	 */
-	void setUncertainElements(
-			final Set<? extends E> elements);
 
 }

@@ -252,11 +252,11 @@ public class StandardCell
 	 * @throw IllegalArgumentException if {@code elements.size() < 2}
 	 */
 	public void setPolymorphicElements(
-			final Set<? extends IStandardState> elements) {
+			final Set<Integer> elements) {
 		checkNotNull(elements);
 		checkArgument(elements.size() > 1,
 				"polymorphic states must be > 1");
-		setPolymorphicOrUncertain(Type.POLYMORPHIC, elements);
+		setPolymorphicOrUncertainWithStateNumbers(Type.POLYMORPHIC, elements);
 	}
 
 	/**
@@ -271,10 +271,9 @@ public class StandardCell
 	 * 
 	 * @return {@code state}
 	 */
-	@Override
-	void setPolymorphicOrUncertain(
+	void setPolymorphicOrUncertainWithStateNumbers(
 			final Type type,
-			final Set<? extends IStandardState> elements) {
+			final Set<Integer> elements) {
 		checkNotNull(type);
 		checkNotNull(elements);
 
@@ -304,18 +303,18 @@ public class StandardCell
 
 		newElements = newHashSet();
 
-		for (final IStandardState sourceElement : elements) {
+		for (final Integer sourceElement : elements) {
 			newElements
 						.add(character.getState(
-								sourceElement.getStateNumber()));
+								sourceElement));
 		}
 		super.setPolymorphicOrUncertain(type, newElements);
 	}
 
 	/** {@inheritDoc} */
-	public void setSingleElement(final IStandardState element) {
+	public void setSingleElement(final Integer stateNumber) {
 
-		checkNotNull(element);
+		checkNotNull(stateNumber);
 
 		checkState(
 					getPosition() != null,
@@ -325,12 +324,12 @@ public class StandardCell
 					getParent().getParent().getCharacters().get(getPosition());
 
 		final IStandardState newElement =
-				standardCharacter.getState(element.getStateNumber());
+				standardCharacter.getState(stateNumber);
 
 		checkState(newElement != null,
-				"cell's character has no state for element "
-						+ element.getLabel() + ", state number "
-						+ element.getStateNumber());
+				"cell's character has no state for with "
+						+ " state number "
+						+ stateNumber);
 
 		if (newElement.equals(getElement())) {
 			if (getType() != Type.SINGLE) {
@@ -365,5 +364,21 @@ public class StandardCell
 				.append(this.elements).append(TAB).append(")");
 
 		return retValue.toString();
+	}
+
+	/**
+	 * {@inheritDoc}
+	 * 
+	 * @throw IllegalArgumentException if {@code uncertainStates.size() < 2}
+	 */
+	public void setUncertainElements(
+			final Set<Integer> uncertainElements) {
+		checkNotNull(uncertainElements);
+		checkArgument(
+				uncertainElements.size() > 1,
+				"uncertain elements must be > 1");
+		setPolymorphicOrUncertainWithStateNumbers(
+				Type.UNCERTAIN,
+				uncertainElements);
 	}
 }
