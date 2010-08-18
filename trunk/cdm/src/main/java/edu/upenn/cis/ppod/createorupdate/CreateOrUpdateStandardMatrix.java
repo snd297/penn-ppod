@@ -133,18 +133,6 @@ final class CreateOrUpdateStandardMatrix
 	}
 
 	@Override
-	void handleSingleCell(
-			final IStandardCell dbCell,
-			final IStandardCell sourceCell) {
-		checkNotNull(dbCell);
-		checkNotNull(sourceCell);
-		checkArgument(sourceCell.getType() == ICell.Type.SINGLE);
-		dbCell.setSingleElement(
-				getOnlyElement(sourceCell.getElements())
-						.getStateNumber());
-	}
-
-	@Override
 	void handlePolymorphicCell(
 			final IStandardCell dbCell,
 			final IStandardCell sourceCell) {
@@ -159,7 +147,22 @@ final class CreateOrUpdateStandardMatrix
 	}
 
 	@Override
-	void handleUncertainCell(IStandardCell dbCell, IStandardCell sourceCell) {
+	void handleSingleCell(
+			final IStandardCell dbCell,
+			final IStandardCell sourceCell) {
+		checkNotNull(dbCell);
+		checkNotNull(sourceCell);
+		checkArgument(sourceCell.getType() == ICell.Type.SINGLE);
+		dbCell.setSingleElement(
+				getOnlyElement(
+						sourceCell.getElements())
+						.getStateNumber());
+	}
+
+	@Override
+	void handleUncertainCell(
+			final IStandardCell dbCell,
+			final IStandardCell sourceCell) {
 		checkNotNull(dbCell);
 		checkNotNull(sourceCell);
 		checkArgument(sourceCell.getType() == ICell.Type.UNCERTAIN);

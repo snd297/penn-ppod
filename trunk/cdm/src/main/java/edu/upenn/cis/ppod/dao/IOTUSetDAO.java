@@ -17,16 +17,16 @@ package edu.upenn.cis.ppod.dao;
 
 import java.util.List;
 
-import edu.upenn.cis.ppod.model.OTUSet;
+import edu.upenn.cis.ppod.imodel.IOTUSet;
 
 /**
  * An <code>OTUSet</code> DAO.
  * 
  * @author Sam Donnelly
  */
-public interface IOTUSetDAO extends IDAO<OTUSet, Long> {
+public interface IOTUSetDAO extends IDAO<IOTUSet, Long> {
 
-	OTUSet getOTUSetByPPodId(String pPodId);
+	IOTUSet getOTUSetByPPodId(String pPodId);
 
 	List<Object[]> getOTUIdsVersionsByOTUSetIdAndMinPPodVersion(
 			Long otuSetPPodId,
