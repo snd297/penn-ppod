@@ -53,7 +53,7 @@ public abstract class Cell<E, R extends IRow<?, ?>>
 	static final String TYPE_COLUMN = "TYPE";
 
 	@Column(name = "POSITION", nullable = false)
-	@CheckForNull
+	@Nullable
 	private Integer position;
 
 	@Column(name = TYPE_COLUMN, nullable = false)
@@ -142,9 +142,6 @@ public abstract class Cell<E, R extends IRow<?, ?>>
 		}
 	}
 
-	@Nullable
-	abstract Set<E> getElementsModifiable();
-
 	/**
 	 * Can be used for serialization.
 	 * <p>
@@ -176,13 +173,14 @@ public abstract class Cell<E, R extends IRow<?, ?>>
 	}
 
 	@Nullable
+	abstract Set<E> getElementsModifiable();
+
+	@Nullable
 	public abstract R getParent();
 
-	/**
-	 * Package-private for testing.
-	 */
+	/** {@inheritDoc} */
 	@Nullable
-	Integer getPosition() {
+	public Integer getPosition() {
 		return position;
 	}
 
@@ -347,4 +345,19 @@ public abstract class Cell<E, R extends IRow<?, ?>>
 		setInapplicableOrUnassigned(Type.UNASSIGNED);
 	}
 
+	/**
+	 * {@inheritDoc}
+	 * 
+	 * @throw IllegalArgumentException if {@code uncertainStates.size() < 2}
+	 */
+	public void setUncertainElements(
+			final Set<? extends E> elements) {
+		checkNotNull(elements);
+		checkArgument(
+				elements.size() > 1,
+				"uncertain elements must be > 1");
+		setPolymorphicOrUncertain(
+				Type.UNCERTAIN,
+				elements);
+	}
 }

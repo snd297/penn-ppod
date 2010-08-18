@@ -24,33 +24,25 @@ import edu.upenn.cis.ppod.model.StandardCell;
 @XmlJavaTypeAdapter(StandardCell.Adapter.class)
 public interface IStandardCell extends ICell<IStandardState, IStandardRow> {
 
+	/**
+	 * Take actions that must be performed after
+	 * {@link javax.xml.bind.annotation.XmlIDREF}s have been resolved.
+	 */
 	void afterUnmarshal();
 
 	/**
-	 * Set the type to polymorphic with the appropriate elements equivalent to
-	 * {@code stateNumbers}.
-	 * <p>
-	 * {@code stateNumbers} must contain more than one element.
+	 * Set the cell's type to {@link Type.POLYMORPHIC} and its elements to
+	 * contain only {@code elements}
 	 * 
-	 * @param elements the elements
+	 * @param elements the elements for this cell to contain
 	 */
-	void setPolymorphicElements(Set<Integer> stateNumbers);
+	void setPolymorphicElements(Set<? extends IStandardState> elements);
 
 	/**
-	 * Set this cell to {@link Type.SINGLE} and its elements to contain this
-	 * cell's character's state with the given state number.
+	 * Set the cell's type to {@link Type.SINGLE} and its elements to contain
+	 * only {@code element}.
 	 * 
-	 * @param stateNumber the state number of the state for this cell
+	 * @param element the element for this cell to contain
 	 */
-	void setSingleElement(Integer stateNumber);
-
-	/**
-	 * Set the type to uncertain and this cell's elements to the values
-	 * equivalent to {@code elements}.
-	 * <p>
-	 * {@code elements.size()} must be greater than 2.
-	 * 
-	 * @param elements the elements
-	 */
-	void setUncertainElements(Set<Integer> stateNumbers);
+	void setSingleElement(IStandardState element);
 }

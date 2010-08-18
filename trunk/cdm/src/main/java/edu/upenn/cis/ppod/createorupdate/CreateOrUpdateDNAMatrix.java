@@ -15,8 +15,6 @@
  */
 package edu.upenn.cis.ppod.createorupdate;
 
-import static com.google.common.base.Preconditions.checkArgument;
-import static com.google.common.base.Preconditions.checkNotNull;
 import static com.google.common.collect.Iterables.get;
 import static com.google.common.collect.Iterables.getOnlyElement;
 
@@ -26,7 +24,6 @@ import com.google.inject.assistedinject.Assisted;
 
 import edu.upenn.cis.ppod.dao.IDAO;
 import edu.upenn.cis.ppod.imodel.IAttachment;
-import edu.upenn.cis.ppod.imodel.ICell;
 import edu.upenn.cis.ppod.imodel.IDNACell;
 import edu.upenn.cis.ppod.imodel.IDNAMatrix;
 import edu.upenn.cis.ppod.imodel.IDNARow;
@@ -68,31 +65,30 @@ final class CreateOrUpdateDNAMatrix
 	}
 
 	@Override
-	void handleSingleCell(final IDNACell dbCell, final IDNACell sourceCell) {
-		checkNotNull(dbCell);
-		checkNotNull(sourceCell);
-		checkArgument(sourceCell.getType() == ICell.Type.SINGLE);
-		dbCell.setSingleElement(
-				getOnlyElement(sourceCell.getElements()),
-				sourceCell.getLowerCase());
-	}
-
-	@Override
-	void handlePolymorphicCell(final IDNACell dbCell, final IDNACell sourceCell) {
-		checkNotNull(dbCell);
-		checkNotNull(sourceCell);
-		checkArgument(sourceCell.getType() == ICell.Type.POLYMORPHIC);
-		dbCell.setPolymorphicElements(
-				sourceCell.getElements(),
-				sourceCell.getLowerCase());
-	}
-
-	@Override
-	void handleUncertainCell(IDNACell dbCell, IDNACell sourceCell) {
-		checkNotNull(dbCell);
-		checkNotNull(sourceCell);
-		checkArgument(sourceCell.getType() == ICell.Type.UNCERTAIN);
-		dbCell.setUncertainElements(
-				sourceCell.getElements());
+	void handleCell(final IDNACell targetCell, final IDNACell sourceCell) {
+		switch (sourceCell.getType()) {
+			case UNASSIGNED:
+				targetCell.setUnassigned();
+				break;
+			case SINGLE:
+				targetCell.setSingleElement(
+						getOnlyElement(sourceCell.getElements()),
+						sourceCell.getLowerCase());
+				break;
+			case POLYMORPHIC:
+				targetCell.setPolymorphicElements(
+						sourceCell.getElements(),
+						sourceCell.getLowerCase());
+				break;
+			case UNCERTAIN:
+				targetCell.setUncertainElements(sourceCell.getElements());
+				break;
+			case INAPPLICABLE:
+				targetCell.setInapplicable();
+				break;
+			default:
+				throw new AssertionError(
+						"unknown type: " + sourceCell.getType());
+		}
 	}
 }

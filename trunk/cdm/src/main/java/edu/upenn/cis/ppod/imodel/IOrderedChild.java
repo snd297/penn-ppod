@@ -16,8 +16,12 @@
 package edu.upenn.cis.ppod.imodel;
 
 import edu.umd.cs.findbugs.annotations.CheckForNull;
+import edu.umd.cs.findbugs.annotations.Nullable;
 
 public interface IOrderedChild<P> extends IChild<P> {
+
+	@Nullable
+	Integer getPosition();
 
 	/**
 	 * Set the position of this child.
