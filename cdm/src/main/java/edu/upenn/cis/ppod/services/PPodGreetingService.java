@@ -23,7 +23,8 @@ import javax.ws.rs.core.Response;
 final class PPodGreetingService implements IPPodGreetingResource {
 
 	public Response greeting() {
-		return Response.status(200).entity("pPOD Services v0.2-SNAPSHOT")
+		return Response.status(200)
+				.entity("pPOD Services v0.2-SNAPSHOT")
 				.build();
 	}
 }

@@ -89,5 +89,4 @@ public interface IStudyResource {
 	StudyInfo updateStudy(
 			@Pretty @GZIP Study study,
 			@PathParam("pPodId") String pPodId);
-
 }

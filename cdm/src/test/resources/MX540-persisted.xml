@@ -702,7 +702,7 @@
                         <cell stateDocId="11ac3410-a7fc-4222-b33e-3d2765752856" type="SINGLE" version="1" hasAttachments="false" id="1072"/>
                         <cell stateDocId="068c56a8-efc7-4c76-8ff0-de689fc5851a" type="SINGLE" version="1" hasAttachments="false" id="1073"/>
                         <cell type="UNASSIGNED" version="1" hasAttachments="false" id="1074"/>
-                        <cell type="UNASSIGNED" version="1" hasAttachments="false" id="1075"/>
+                        <cell type="INAPPLICABLE" version="1" hasAttachments="false" id="1075"/>
                         <cell stateDocId="4c2f3006-5a27-4052-ae77-4dfbe93d18c9" type="SINGLE" version="1" hasAttachments="false" id="1076"/>
                         <cell stateDocId="4bd551ed-104d-46e7-b13c-189f2dca5afb" type="SINGLE" version="1" hasAttachments="false" id="1077"/>
                         <cell stateDocId="e45edd3e-fc4e-4a07-b2dd-c48fb36bb323" type="SINGLE" version="1" hasAttachments="false" id="1078"/>
@@ -1241,7 +1241,7 @@
                         <cell stateDocId="23270d9a-1924-4084-a6f3-434163278080" type="SINGLE" version="1" hasAttachments="false" id="721"/>
                         <cell stateDocId="1e93bdf1-85b8-42d5-86ea-5ed44b416f53" type="SINGLE" version="1" hasAttachments="false" id="722"/>
                         <cell stateDocId="3058859d-6168-497a-8e43-c8349a0cf229" type="SINGLE" version="1" hasAttachments="false" id="723"/>
-                        <cell type="POLYMORPHIC" version="1" hasAttachments="false" id="724">
+                        <cell type="UNCERTAIN" version="1" hasAttachments="false" id="724">
                             <stateDocId>38461815-8943-4d20-834c-d5c353d0c325</stateDocId>
                             <stateDocId>47be85d9-bb8c-4ac5-8dad-c5f9283a1403</stateDocId>
                         </cell>

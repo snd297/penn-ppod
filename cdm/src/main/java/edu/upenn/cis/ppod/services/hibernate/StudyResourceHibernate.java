@@ -173,4 +173,5 @@ final class StudyResourceHibernate implements IStudyResource {
 	public StudyInfo updateStudy(final Study incomingStudy, final String pPodId) {
 		return createOrUpdateStudy(incomingStudy);
 	}
+
 }
