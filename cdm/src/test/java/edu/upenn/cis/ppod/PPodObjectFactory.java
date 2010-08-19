@@ -18,10 +18,7 @@ package edu.upenn.cis.ppod;
 import com.google.inject.Guice;
 import com.google.inject.util.Modules;
 
-import edu.upenn.cis.ppod.PPodModule;
-import edu.upenn.cis.ppod.TestPPodModule;
 import edu.upenn.cis.ppod.services.hibernate.PPodServicesHibernateModule;
-import edu.upenn.cis.ppod.thirdparty.injectslf4j.InjectSlf4jModule;
 import edu.upenn.cis.ppod.util.GuiceObjectFactory;
 
 /**
@@ -38,8 +35,6 @@ public class PPodObjectFactory extends GuiceObjectFactory {
 								new PPodModule(),
 								new PPodServicesHibernateModule())
 								.with(
-										new TestPPodModule()),
-						new InjectSlf4jModule()));
+										new TestPPodModule())));
 	}
-
 }
