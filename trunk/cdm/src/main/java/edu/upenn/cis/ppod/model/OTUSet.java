@@ -24,6 +24,7 @@ import static com.google.common.collect.Lists.newArrayList;
 import static com.google.common.collect.Sets.newHashSet;
 import static edu.upenn.cis.ppod.util.PPodIterables.findIf;
 
+import java.util.Collection;
 import java.util.Collections;
 import java.util.List;
 import java.util.Set;
@@ -287,7 +288,7 @@ public class OTUSet
 	}
 
 	@XmlElement(name = "dnaMatrix")
-	protected Set<IDNAMatrix> getDNAMatricesModifiable() {
+	protected Collection<IDNAMatrix> getDNAMatricesModifiable() {
 		return dnaMatrices;
 	}
 

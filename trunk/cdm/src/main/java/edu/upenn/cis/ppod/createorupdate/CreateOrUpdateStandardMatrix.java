@@ -139,6 +139,9 @@ final class CreateOrUpdateStandardMatrix
 	 * order the same. In other words, this method doesn't do any checking of
 	 * the characters and states to make sure that they have the same labels and
 	 * state numbers in the source and target matrices.
+	 * 
+	 * @throws IllegalArgumentException if
+	 *             {@code targetCell.getPosition() != sourceCell.getPosition()}
 	 */
 	@Override
 	void handleCell(
@@ -156,7 +159,7 @@ final class CreateOrUpdateStandardMatrix
 		switch (sourceCell.getType()) {
 			case UNASSIGNED:
 				targetCell.setUnassigned();
-				return;
+				break;
 			case SINGLE: {
 				final IStandardState sourceState =
 						getOnlyElement(sourceCell.getElements());
@@ -181,6 +184,7 @@ final class CreateOrUpdateStandardMatrix
 						break;
 					case UNCERTAIN:
 						targetCell.setUncertainElements(targetStates);
+						break;
 					default:
 						throw new AssertionError(
 								"type should be POLYMORPHIC or UNCERTAIN but is "

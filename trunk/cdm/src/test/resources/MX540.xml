@@ -579,7 +579,7 @@
                         <cell stateDocId="ef0815c6-26cf-4efb-9d67-f2e6a8c0a9ab" type="SINGLE" hasAttachments="false"/>
                         <cell stateDocId="720aa215-2ebe-4017-9ee1-9b9d9faa443f" type="SINGLE" hasAttachments="false"/>
                         <cell type="UNASSIGNED" hasAttachments="false"/>
-                        <cell type="UNASSIGNED" hasAttachments="false"/>
+                        <cell type="INAPPLICABLE" hasAttachments="false"/>
                         <cell stateDocId="ba5b8c3f-3a57-44fb-8c67-4fa832bfb276" type="SINGLE" hasAttachments="false"/>
                         <cell stateDocId="923464a7-89bd-40e2-b423-aefbfed89a95" type="SINGLE" hasAttachments="false"/>
                         <cell stateDocId="06434106-fbd0-4166-8293-c85a7e63e196" type="SINGLE" hasAttachments="false"/>
@@ -1424,7 +1424,7 @@
                         <cell stateDocId="5b9b3fb1-8ac0-4849-b7a1-f4fdae065a89" type="SINGLE" hasAttachments="false"/>
                         <cell stateDocId="d64e847d-809b-4d5a-8e91-a965b899c3ef" type="SINGLE" hasAttachments="false"/>
                         <cell stateDocId="272766aa-61e2-48f8-b1f4-28a48b546888" type="SINGLE" hasAttachments="false"/>
-                        <cell type="POLYMORPHIC" hasAttachments="false">
+                        <cell type="UNCERTAIN" hasAttachments="false">
                             <stateDocId>d32eb5eb-4251-4ce7-86ad-f30fac3647b2</stateDocId>
                             <stateDocId>bbf563d6-852f-41c6-862f-6724b72affa1</stateDocId>
                         </cell>
