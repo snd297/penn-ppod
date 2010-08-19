@@ -101,6 +101,7 @@ public abstract class MolecularCell<E extends Enum<?>, R extends IRow<?, ?>>
 	 * 
 	 * @throw IllegalArgumentException if {@code uncertainStates.size() < 2}
 	 */
+	@Override
 	public void setUncertainElements(
 			final Set<? extends E> uncertainElements) {
 		checkNotNull(uncertainElements);
