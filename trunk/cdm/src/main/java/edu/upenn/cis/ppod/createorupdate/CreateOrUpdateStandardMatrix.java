@@ -28,6 +28,7 @@ import java.util.List;
 import java.util.Set;
 
 import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 
 import com.google.inject.Inject;
 import com.google.inject.Provider;
@@ -42,7 +43,6 @@ import edu.upenn.cis.ppod.imodel.IStandardMatrix;
 import edu.upenn.cis.ppod.imodel.IStandardRow;
 import edu.upenn.cis.ppod.imodel.IStandardState;
 import edu.upenn.cis.ppod.imodel.IWithPPodId;
-import edu.upenn.cis.ppod.thirdparty.injectslf4j.InjectLogger;
 
 /**
  * @author Sam Donnelly
@@ -55,8 +55,8 @@ final class CreateOrUpdateStandardMatrix
 	private final Provider<IStandardCharacter> standardCharacterProvider;
 	private final IStandardState.IFactory standardStateFactory;
 
-	@InjectLogger
-	private Logger logger;
+	private static Logger logger =
+			LoggerFactory.getLogger(CreateOrUpdateMatrix.class);
 
 	private final INewVersionInfo newVersionInfo;
 
