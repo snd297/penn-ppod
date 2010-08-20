@@ -49,7 +49,7 @@ public class MatrixTest {
 
 	@Test(expectedExceptions = IllegalArgumentException.class)
 	public void setColumnPPodVersionInfosWTooSmallPos() {
-		final IMatrix<?> matrix = dnaMatrixProvider.get();
+		final IMatrix<?, ?> matrix = dnaMatrixProvider.get();
 		final VersionInfo versionInfo = pPodVersionInfoProvider.get();
 		matrix.setColumnVersionInfo(0, versionInfo);
 	}

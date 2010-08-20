@@ -15,6 +15,7 @@
  */
 package edu.upenn.cis.ppod.model;
 
+import static com.google.common.base.Preconditions.checkArgument;
 import static com.google.common.base.Preconditions.checkNotNull;
 import static com.google.common.base.Preconditions.checkState;
 import static com.google.common.collect.Lists.newArrayList;
@@ -38,7 +39,7 @@ import edu.upenn.cis.ppod.util.IVisitor;
  * @param <C> the type of cell we have
  * @param <M> the parent of the row
  */
-public abstract class Row<C extends ICell<?, ?>, M extends IMatrix<?>>
+public abstract class Row<C extends ICell<?, ?>, M extends IMatrix<?, ?>>
 		extends PPodEntity
 		implements IRow<C, M> {
 
@@ -100,6 +101,22 @@ public abstract class Row<C extends ICell<?, ?>, M extends IMatrix<?>>
 	 * @return a modifiable reference to this row's cells
 	 */
 	abstract List<C> getCellsModifiable();
+
+	/** {@inheritDoc} */
+	public void moveCell(final int src, final int dest) {
+		checkArgument(src >= 0);
+		final int cellsSize = getCells().size();
+		checkArgument(src < cellsSize);
+		checkArgument(dest >= 0);
+		checkArgument(dest < cellsSize);
+		if (src == dest) {
+			return;
+		}
+		final List<C> cells = getCellsModifiable();
+		final C cell = cells.remove(src);
+		cells.add(dest - 1, cell);
+		setInNeedOfNewVersion();
+	}
 
 	/**
 	 * {@inheritDoc}
