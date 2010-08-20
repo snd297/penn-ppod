@@ -125,10 +125,9 @@ public class TreeSet
 	 * @param u See {@code Unmarshaller}
 	 * @param parent {@code Unmarshaller}
 	 */
-	public void afterUnmarshal(
+	protected void afterUnmarshal(
 			@CheckForNull final Unmarshaller u,
 			final Object parent) {
-		checkNotNull(parent);
 		this.parent = (OTUSet) parent;
 	}
 
@@ -185,20 +184,7 @@ public class TreeSet
 	}
 
 	/**
-	 * Scaffolding codes that does two things:
-	 * <ol>
-	 * <li>Removes <code>tree</code> from this <code>TreeSet</code>'s
-	 * constituent <code>Tree</code>s.</li>
-	 * <li>Removes this <code>TreeSet
-	 * </code> from <code> tree</code>'s <code>TreeSet</code>s.</li>
-	 * </ol>
-	 * So it takes care of both sides of the <code>TreeSet</code><->
-	 * <code>Tree</code> relationship.
-	 * 
-	 * @param trees the new trees to be set
-	 * 
-	 * @return the trees that were removed as a result of this operation, in
-	 *         their original order
+	 * {@inheritDoc}
 	 * 
 	 * @throws IllegalArgumentException if {@code trees} contains any
 	 *             {@code .equals(...)} duplicates

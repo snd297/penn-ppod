@@ -27,7 +27,7 @@ import edu.umd.cs.findbugs.annotations.Nullable;
  * @author Sam Donnelly
  * 
  * @param <E> the elements in the cell
- * @param <R> the parent row
+ * @param <R> the parent row type
  */
 public interface ICell<E, R extends IRow<?, ?>> extends IOrderedChild<R> {
 

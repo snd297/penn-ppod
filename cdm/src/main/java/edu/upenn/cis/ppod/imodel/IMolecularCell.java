@@ -19,6 +19,16 @@ import java.util.Set;
 
 import edu.umd.cs.findbugs.annotations.Nullable;
 
+/**
+ * A cell in a molecular matrix. The elements are subclasses of {@code Enum} so
+ * implementors are free to, for example, put the elements into an
+ * {@link java.util.EnumSet} or use {@code ==} when comparing elements.
+ * 
+ * @author Sam Donnelly
+ * 
+ * @param <E> see {@link ICell}
+ * @param <R> see {@link ICell}
+ */
 public interface IMolecularCell<E extends Enum<?>, R extends IRow<?, ?>>
 		extends ICell<E, R> {
 

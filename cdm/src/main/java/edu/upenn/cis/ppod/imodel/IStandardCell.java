@@ -21,31 +21,48 @@ import javax.xml.bind.annotation.adapters.XmlJavaTypeAdapter;
 
 import edu.upenn.cis.ppod.model.StandardCell;
 
+/**
+ * A cell in a {@link IStandardMatrix}.
+ * 
+ * @author Sam Donnelly
+ */
 @XmlJavaTypeAdapter(StandardCell.Adapter.class)
 public interface IStandardCell extends ICell<IStandardState, IStandardRow> {
 
 	/**
 	 * Take actions that must be performed after
-	 * {@link javax.xml.bind.annotation.XmlIDREF}s have been resolved.
+	 * {@link javax.xml.bind.annotation.XmlIDREF}s have been resolved, that is,
+	 * after unmarshalling is finished.
 	 */
 	void afterUnmarshal();
 
 	/**
-	 * Set the cell's type to {@link Type.POLYMORPHIC} and its elements to
-	 * contain only {@code elements}
+	 * Set the cell's type to {@link Type.POLYMORPHIC} and its states to contain
+	 * only the states with the given state numbers. The states are pulled from
+	 * this column's character, so it is not legal to call this method if this
+	 * cell is not part of a matrix with a character in the column.
 	 * 
-	 * @param elements the elements for this cell to contain
+	 * @param stateNumbers the state numbers of the states we want
 	 */
 	void setPolymorphicWithStateNos(Set<Integer> stateNumbers);
 
-	void setUncertainWithStateNos(Set<Integer> stateNumbers);
-
 	/**
 	 * Set the cell's type to {@link Type.SINGLE} and its states to contain only
-	 * {@code getParent().getParent().getCharacters().get(getPosition()).getState(stateNumber)}
-	 * .
+	 * the state with the given state number. The state is pulled from this
+	 * column's character, so it is not legal to call this method if this cell
+	 * is not part of a matrix with a character in the column.
 	 * 
-	 * @param element the element for this cell to contain
+	 * @param stateNumber the state number of the state we want
 	 */
 	void setSingleWithStateNo(Integer stateNumber);
+
+	/**
+	 * Set the cell's type to {@link Type.UNCERTAIN} and its states to contain
+	 * only the states with the given state numbers. The states are pulled from
+	 * this column's character, so it is not legal to call this method if this
+	 * cell is not part of a matrix with a character in the column.
+	 * 
+	 * @param stateNumbers the state numbers of the states we want
+	 */
+	void setUncertainWithStateNos(Set<Integer> stateNumbers);
 }
