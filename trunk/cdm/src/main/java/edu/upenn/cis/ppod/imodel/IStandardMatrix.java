@@ -22,7 +22,7 @@ import javax.xml.bind.annotation.adapters.XmlJavaTypeAdapter;
 import edu.upenn.cis.ppod.model.StandardMatrix;
 
 @XmlJavaTypeAdapter(StandardMatrix.Adapter.class)
-public interface IStandardMatrix extends IMatrix<IStandardRow> {
+public interface IStandardMatrix extends IMatrix<IStandardRow, IStandardCell> {
 
 	void afterUnmarshal();
 

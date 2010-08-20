@@ -129,7 +129,7 @@ final class SetVersionInfoVisitor extends EmptyVisitor implements
 		setNewVersionInfo(treeSet);
 	}
 
-	private void visitMatrix(final IMatrix<?> matrix) {
+	private void visitMatrix(final IMatrix<?, ?> matrix) {
 		setNewVersionInfo(matrix);
 		for (int pos = 0; pos < matrix.getColumnVersionInfos().size(); pos++) {
 			if (matrix.getColumnVersionInfos().get(pos) == null) {

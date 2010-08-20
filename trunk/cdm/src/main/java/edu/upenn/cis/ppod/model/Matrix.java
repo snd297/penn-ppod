@@ -44,6 +44,7 @@ import org.hibernate.annotations.Target;
 
 import edu.umd.cs.findbugs.annotations.CheckForNull;
 import edu.umd.cs.findbugs.annotations.Nullable;
+import edu.upenn.cis.ppod.imodel.ICell;
 import edu.upenn.cis.ppod.imodel.IMatrix;
 import edu.upenn.cis.ppod.imodel.IOTU;
 import edu.upenn.cis.ppod.imodel.IOTUKeyedMap;
@@ -58,9 +59,9 @@ import edu.upenn.cis.ppod.util.IVisitor;
  * @author Sam Donnelly
  */
 @MappedSuperclass
-public abstract class Matrix<R extends IRow<?, ?>>
+public abstract class Matrix<R extends IRow<C, ?>, C extends ICell<?, ?>>
 		extends UUPPodEntityWithDocId
-		implements IMatrix<R> {
+		implements IMatrix<R, C> {
 
 	/** Description column. */
 	public static final String DESCRIPTION_COLUMN = "DESCRIPTION";
@@ -275,6 +276,26 @@ public abstract class Matrix<R extends IRow<?, ?>>
 				.unmodifiableMap(getOTUKeyedRows().getValues());
 	}
 
+	/** {@inheritDoc} */
+	public void moveColumn(final int src, final int dest) {
+		checkArgument(src >= 0);
+		checkArgument(src < getColumnsSize());
+		checkArgument(dest >= 0);
+		checkArgument(dest < getColumnsSize());
+		if (src == dest) {
+			return;
+		}
+		for (final R row : getRows().values()) {
+			row.moveCell(src, dest);
+		}
+		final VersionInfo versionInfo =
+				getColumnVersionInfosModifiable().remove(src);
+		getColumnVersionInfosModifiable().add(dest - 1, versionInfo);
+
+		final Long version = getColumnVersionsModifiable().remove(src);
+		getColumnVersionsModifiable().add(dest - 1, version);
+	}
+
 	/**
 	 * {@inheritDoc}
 	 * <p>
@@ -377,5 +398,9 @@ public abstract class Matrix<R extends IRow<?, ?>>
 				"getOTUKeyedRows() returned null - has the conrete class been constructed correctly, w/ its OTU->X dependency?");
 		this.parent = otuSet;
 		getOTUKeyedRows().setOTUs();
+	}
+
+	public List<C> removeColumn(final int columnNo) {
+		throw new UnsupportedOperationException();
 	}
 }

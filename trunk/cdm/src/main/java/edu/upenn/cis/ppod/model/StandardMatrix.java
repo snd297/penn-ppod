@@ -36,6 +36,7 @@ import javax.xml.bind.annotation.adapters.XmlAdapter;
 
 import com.google.inject.Inject;
 
+import edu.upenn.cis.ppod.imodel.IStandardCell;
 import edu.upenn.cis.ppod.imodel.IStandardCharacter;
 import edu.upenn.cis.ppod.imodel.IStandardMatrix;
 import edu.upenn.cis.ppod.imodel.IStandardRow;
@@ -48,7 +49,7 @@ import edu.upenn.cis.ppod.util.IVisitor;
  */
 @Entity
 @Table(name = StandardMatrix.TABLE)
-public class StandardMatrix extends Matrix<IStandardRow>
+public class StandardMatrix extends Matrix<IStandardRow, IStandardCell>
 		implements IStandardMatrix {
 
 	public static class Adapter extends
@@ -144,6 +145,19 @@ public class StandardMatrix extends Matrix<IStandardRow>
 	@Override
 	protected StandardRows getOTUKeyedRows() {
 		return rows;
+	}
+
+	@Override
+	public void moveColumn(final int src, final int dest) {
+		checkArgument(src >= 0);
+		final int columnsSize = getColumnsSize();
+		checkArgument(src < columnsSize);
+		checkArgument(dest >= 0);
+		checkArgument(dest < columnsSize);
+		final IStandardCharacter character =
+				getCharactersModifiable().remove(src);
+		getCharactersModifiable().add(dest - 1, character);
+		super.moveColumn(src, dest);
 	}
 
 	/**

@@ -247,7 +247,7 @@ public abstract class Cell<E, R extends IRow<?, ?>>
 		final R row = getParent();
 		if (row != null) {
 			row.setInNeedOfNewVersion();
-			final IMatrix<?> matrix = row.getParent();
+			final IMatrix<?, ?> matrix = row.getParent();
 			if (matrix != null) {
 				// so FindBugs knows that it's okay
 				final Integer position = getPosition();

@@ -24,7 +24,7 @@ import edu.umd.cs.findbugs.annotations.CheckForNull;
 import edu.umd.cs.findbugs.annotations.Nullable;
 import edu.upenn.cis.ppod.model.VersionInfo;
 
-public interface IMatrix<R extends IRow<?, ?>>
+public interface IMatrix<R extends IRow<C, ?>, C extends ICell<?, ?>>
 		extends IChild<IOTUSet>, IUUPPodEntity, IWithDocId {
 
 	Integer getColumnsSize();
@@ -158,5 +158,18 @@ public interface IMatrix<R extends IRow<?, ?>>
 	 * @param label the value for the label
 	 */
 	void setLabel(final String label);
+
+	/**
+	 * Move column {@code src} to column {@code dest}.
+	 * <p>
+	 * One should be aware that for persisted matrices, this can be an expensive
+	 * operation since all of the cells in the matrix will be loaded.
+	 * 
+	 * @param src column to move
+	 * @param dest where to move it
+	 */
+	void moveColumn(int src, int dest);
+
+	List<C> removeColumn(int columnNo);
 
 }

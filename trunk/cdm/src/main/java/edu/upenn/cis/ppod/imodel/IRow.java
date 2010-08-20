@@ -17,7 +17,7 @@ package edu.upenn.cis.ppod.imodel;
 
 import java.util.List;
 
-public interface IRow<C extends ICell<?, ?>, M extends IMatrix<?>>
+public interface IRow<C extends ICell<?, ?>, M extends IMatrix<?, ?>>
 		extends IChild<M> {
 	/**
 	 * Get the cells that make up this row.
@@ -35,6 +35,8 @@ public interface IRow<C extends ICell<?, ?>, M extends IMatrix<?>>
 	 * 
 	 * @return any cells which were removed as a result of this operation
 	 */
-	List<C> setCells(final List<? extends C> cells);
+	List<C> setCells(List<? extends C> cells);
+
+	void moveCell(int src, int dest);
 
 }

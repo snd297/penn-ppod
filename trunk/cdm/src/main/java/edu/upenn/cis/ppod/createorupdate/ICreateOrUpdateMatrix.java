@@ -19,7 +19,7 @@ import edu.upenn.cis.ppod.imodel.ICell;
 import edu.upenn.cis.ppod.imodel.IMatrix;
 import edu.upenn.cis.ppod.imodel.IRow;
 
-public interface ICreateOrUpdateMatrix<M extends IMatrix<R>, R extends IRow<C, ?>, C extends ICell<E, ?>, E> {
+public interface ICreateOrUpdateMatrix<M extends IMatrix<R, C>, R extends IRow<C, ?>, C extends ICell<E, ?>, E> {
 
 	/**
 	 * Assumes {@code dbMatrix} is in a persistent state.

@@ -38,7 +38,7 @@ import edu.upenn.cis.ppod.imodel.IRow;
 /**
  * @author Sam Donnelly
  */
-abstract class CreateOrUpdateMatrix<M extends IMatrix<R>, R extends IRow<C, ?>, C extends ICell<E, ?>, E>
+abstract class CreateOrUpdateMatrix<M extends IMatrix<R, C>, R extends IRow<C, ?>, C extends ICell<E, ?>, E>
 		implements ICreateOrUpdateMatrix<M, R, C, E> {
 
 	private final Provider<C> cellProvider;

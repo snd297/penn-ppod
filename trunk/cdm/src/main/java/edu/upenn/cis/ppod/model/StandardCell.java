@@ -264,20 +264,6 @@ public class StandardCell
 	}
 
 	/**
-	 * {@inheritDoc}
-	 * 
-	 * @throw IllegalArgumentException if {@code elements.size() < 2}
-	 */
-	public void setPolymorphicWithStateNos(
-			final Set<Integer> stateNumbers) {
-		checkNotNull(stateNumbers);
-		checkArgument(
-				stateNumbers.size() > 1,
-				"polymorphic states must be > 1");
-		setPolymorphicOrUncertain(Type.POLYMORPHIC, getStates(stateNumbers));
-	}
-
-	/**
 	 * Add a set of {@code CharacterState}s to this {@code CharacterStateCell}.
 	 * <p>
 	 * Makes no assumption about the hibernate-state of {@code states} (could be
@@ -309,6 +295,20 @@ public class StandardCell
 		checkRowMatrixCharacter();
 
 		super.setPolymorphicOrUncertain(type, elements);
+	}
+
+	/**
+	 * {@inheritDoc}
+	 * 
+	 * @throw IllegalArgumentException if {@code elements.size() < 2}
+	 */
+	public void setPolymorphicWithStateNos(
+			final Set<Integer> stateNumbers) {
+		checkNotNull(stateNumbers);
+		checkArgument(
+				stateNumbers.size() > 1,
+				"polymorphic states must be > 1");
+		setPolymorphicOrUncertain(Type.POLYMORPHIC, getStates(stateNumbers));
 	}
 
 	/** {@inheritDoc} */
@@ -351,6 +351,7 @@ public class StandardCell
 		}
 	}
 
+	/** {@inheritDoc} */
 	public void setUncertainWithStateNos(
 			final Set<Integer> stateNumbers) {
 		checkNotNull(stateNumbers);

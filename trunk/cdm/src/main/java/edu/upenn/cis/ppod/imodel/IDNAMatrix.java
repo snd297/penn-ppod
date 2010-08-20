@@ -20,6 +20,6 @@ import javax.xml.bind.annotation.adapters.XmlJavaTypeAdapter;
 import edu.upenn.cis.ppod.model.DNAMatrix;
 
 @XmlJavaTypeAdapter(DNAMatrix.Adapter.class)
-public interface IDNAMatrix extends IMatrix<IDNARow> { 
+public interface IDNAMatrix extends IMatrix<IDNARow, IDNACell> {
 	void afterUnmarshal();
 }
