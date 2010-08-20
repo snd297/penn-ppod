@@ -29,8 +29,6 @@ import java.util.Collections;
 import java.util.List;
 import java.util.Set;
 
-import javax.annotation.CheckForNull;
-import javax.annotation.Nullable;
 import javax.persistence.CascadeType;
 import javax.persistence.Column;
 import javax.persistence.Entity;
@@ -47,6 +45,8 @@ import javax.xml.bind.annotation.adapters.XmlAdapter;
 
 import com.google.common.annotations.VisibleForTesting;
 
+import edu.umd.cs.findbugs.annotations.CheckForNull;
+import edu.umd.cs.findbugs.annotations.Nullable;
 import edu.upenn.cis.ppod.imodel.IChild;
 import edu.upenn.cis.ppod.imodel.IDNAMatrix;
 import edu.upenn.cis.ppod.imodel.IDNASequenceSet;
@@ -159,6 +159,10 @@ public class OTUSet
 			orphanRemoval = true,
 			targetEntity = TreeSet.class)
 	private final Set<ITreeSet> treeSets = newHashSet();
+
+	@Nullable
+	@Column(name = "POSITION")
+	private Integer position;
 
 	/**
 	 * Intentionally package-private, to block subclassing outside of this
@@ -344,6 +348,12 @@ public class OTUSet
 	}
 
 	/** {@inheritDoc} */
+	@Nullable
+	public Integer getPosition() {
+		return position;
+	}
+
+	/** {@inheritDoc} */
 	public Set<IStandardMatrix> getStandardMatrices() {
 		return Collections.unmodifiableSet(standardMatrices);
 	}
@@ -509,6 +519,12 @@ public class OTUSet
 	/** {@inheritDoc} */
 	public void setParent(@CheckForNull final IStudy parent) {
 		this.parent = parent;
+	}
+
+	/** {@inheritDoc} */
+	public void setPosition(
+			@CheckForNull final Integer position) {
+		this.position = position;
 	}
 
 	/**

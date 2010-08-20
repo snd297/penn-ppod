@@ -15,8 +15,6 @@
  */
 package edu.upenn.cis.ppod.imodel;
 
-import java.util.Set;
-
 import javax.xml.bind.annotation.XmlSeeAlso;
 
 import edu.upenn.cis.ppod.model.Study;
@@ -30,9 +28,6 @@ import edu.upenn.cis.ppod.services.ppodentity.IOTUSets;
  */
 @XmlSeeAlso(Study.class)
 public interface IStudy extends ILabeled, IOTUSets, IUUPPodEntity {
-
-	/** {@inheritDoc} */
-	Set<IOTUSet> getOTUSets();
 
 	/**
 	 * Remove an OTU set from this Study.

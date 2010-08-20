@@ -228,6 +228,23 @@ public class StandardCell
 		return parent;
 	}
 
+	private Set<IStandardState> getStates(final Set<Integer> stateNumbers) {
+		final Set<IStandardState> states = newHashSet();
+		final IStandardCharacter character = getParent().getParent()
+				.getCharacters().get(getPosition());
+		for (final Integer stateNumber : stateNumbers) {
+			final IStandardState state = character.getState(stateNumber);
+			checkArgument(
+					state != null,
+					"This matrix doesn't have a state number "
+							+ stateNumber + " for character ["
+							+ character.getLabel()
+							+ "]");
+			states.add(state);
+		}
+		return states;
+	}
+
 	/** Protected for JAXB. */
 	@Override
 	protected void setElement(
@@ -251,12 +268,13 @@ public class StandardCell
 	 * 
 	 * @throw IllegalArgumentException if {@code elements.size() < 2}
 	 */
-	public void setPolymorphicElements(
-			final Set<? extends IStandardState> elements) {
-		checkNotNull(elements);
-		checkArgument(elements.size() > 1,
+	public void setPolymorphicWithStateNos(
+			final Set<Integer> stateNumbers) {
+		checkNotNull(stateNumbers);
+		checkArgument(
+				stateNumbers.size() > 1,
 				"polymorphic states must be > 1");
-		setPolymorphicOrUncertain(Type.POLYMORPHIC, elements);
+		setPolymorphicOrUncertain(Type.POLYMORPHIC, getStates(stateNumbers));
 	}
 
 	/**
@@ -294,29 +312,52 @@ public class StandardCell
 	}
 
 	/** {@inheritDoc} */
-	public void setSingleElement(final IStandardState element) {
+	public void setSingleWithStateNo(final Integer stateNumber) {
 
-		checkNotNull(element);
+		checkNotNull(stateNumber);
 
 		checkState(
 					getPosition() != null,
 					"this cell has not been assigned a row: it's position attribute is null");
 
-		final IStandardCharacter standardCharacter =
-					getParent().getParent().getCharacters().get(getPosition());
-		checkArgument(standardCharacter.equals(element.getParent()));
+		final IStandardCharacter character =
+				getParent()
+						.getParent()
+						.getCharacters()
+						.get(getPosition());
 
-		if (element.equals(getElement())) {
+		checkState(character != null,
+				"no character has been assigned for column " + getPosition());
+
+		final IStandardState state = character.getState(stateNumber);
+
+		checkArgument(
+				state != null,
+				"This matrix doesn't have a state number "
+						+ stateNumber + " for character ["
+						+ character.getLabel()
+						+ "]");
+
+		if (state.equals(getElement())) {
 			if (getType() != Type.SINGLE) {
 				throw new AssertionError(
 						"element is set, but this cell is not a SINGLE");
 			}
 		} else {
-			setElement(element);
+			setElement(state);
 			setElements(null);
 			setType(Type.SINGLE);
 			setInNeedOfNewVersion();
 		}
+	}
+
+	public void setUncertainWithStateNos(
+			final Set<Integer> stateNumbers) {
+		checkNotNull(stateNumbers);
+		checkArgument(
+				stateNumbers.size() > 1,
+				"polymorphic states must be > 1");
+		setPolymorphicOrUncertain(Type.UNCERTAIN, getStates(stateNumbers));
 	}
 
 	/**
