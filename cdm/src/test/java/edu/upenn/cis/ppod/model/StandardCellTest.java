@@ -37,7 +37,10 @@ import com.google.inject.Provider;
 
 import edu.upenn.cis.ppod.TestGroupDefs;
 import edu.upenn.cis.ppod.imodel.ICell;
+import edu.upenn.cis.ppod.imodel.IOTU;
+import edu.upenn.cis.ppod.imodel.IOTUSet;
 import edu.upenn.cis.ppod.imodel.IStandardCell;
+import edu.upenn.cis.ppod.imodel.IStandardCharacter;
 import edu.upenn.cis.ppod.imodel.IStandardMatrix;
 import edu.upenn.cis.ppod.imodel.IStandardRow;
 import edu.upenn.cis.ppod.imodel.IStandardState;
@@ -57,19 +60,19 @@ public class StandardCellTest {
 	private Provider<StandardCell> cellProvider;
 
 	@Inject
-	private Provider<StandardCharacter> characterProvider;
+	private Provider<IStandardCharacter> characterProvider;
 
 	@Nullable
 	private IStandardMatrix matrix;
 
 	@Inject
-	private Provider<StandardMatrix> standardMatrixProvider;
+	private Provider<IStandardMatrix> standardMatrixProvider;
 
 	@Inject
-	private Provider<OTU> otuProvider;
+	private Provider<IOTU> otuProvider;
 
 	@Inject
-	private Provider<OTUSet> otuSetProvider;
+	private Provider<IOTUSet> otuSetProvider;
 
 	@Inject
 	private Provider<IStandardRow> rowProvider;
@@ -92,13 +95,13 @@ public class StandardCellTest {
 
 		matrix = standardMatrixProvider.get();
 
-		final OTUSet otuSet = otuSetProvider.get();
+		final IOTUSet otuSet = otuSetProvider.get();
 
-		final OTU otu0 = otuProvider.get().setLabel("otu0");
+		final IOTU otu0 = otuProvider.get().setLabel("otu0");
 		otuSet.setOTUs(newArrayList(otu0));
 		matrix.setParent(otuSet);
 
-		final StandardCharacter character0 =
+		final IStandardCharacter character0 =
 				characterProvider.get();
 		character0.setLabel("character0");
 		matrix.setCharacters(newArrayList(character0));
