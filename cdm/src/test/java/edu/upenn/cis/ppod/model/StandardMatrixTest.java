@@ -111,7 +111,7 @@ public class StandardMatrixTest {
 		final IStandardState state = standardCharacter.getState(0);
 		assertNotNull(state);
 
-		cell00.setSingleElement(state);
+		cell00.setSingleWithStateNo(state.getStateNumber());
 
 		matrix.putRow(otu1, rowProvider.get());
 		final StandardCell cell10 = cellProvider.get();
@@ -120,7 +120,7 @@ public class StandardMatrixTest {
 
 		final IStandardState state1 = stateFactory.create(1);
 		standardCharacter.addState(state1);
-		cell10.setSingleElement(state1);
+		cell10.setSingleWithStateNo(state1.getStateNumber());
 
 		matrix.putRow(otu2, rowProvider.get());
 		final StandardCell cell20 = cellProvider.get();
@@ -129,7 +129,7 @@ public class StandardMatrixTest {
 
 		final IStandardState state0 = stateFactory.create(0);
 		standardCharacter.addState(state0);
-		cell20.setSingleElement(state0);
+		cell20.setSingleWithStateNo(state0.getStateNumber());
 
 		final int originalRowsSize = matrix.getRows().size();
 

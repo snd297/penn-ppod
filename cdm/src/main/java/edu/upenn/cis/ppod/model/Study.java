@@ -16,22 +16,27 @@
 package edu.upenn.cis.ppod.model;
 
 import static com.google.common.base.Preconditions.checkNotNull;
+import static com.google.common.collect.Lists.newArrayList;
 import static com.google.common.collect.Sets.newHashSet;
 
 import java.util.Collections;
+import java.util.List;
 import java.util.Set;
 
 import javax.persistence.CascadeType;
 import javax.persistence.Column;
 import javax.persistence.Entity;
 import javax.persistence.OneToMany;
+import javax.persistence.OrderBy;
 import javax.persistence.Table;
 import javax.persistence.Transient;
 import javax.xml.bind.Marshaller;
+import javax.xml.bind.Unmarshaller;
 import javax.xml.bind.annotation.XmlAttribute;
 import javax.xml.bind.annotation.XmlElement;
 import javax.xml.bind.annotation.XmlRootElement;
 
+import edu.umd.cs.findbugs.annotations.CheckForNull;
 import edu.upenn.cis.ppod.imodel.IAttachmentNamespace;
 import edu.upenn.cis.ppod.imodel.IAttachmentType;
 import edu.upenn.cis.ppod.imodel.IOTUSet;
@@ -64,9 +69,13 @@ public class Study
 	@Column(name = LABEL_COLUMN, nullable = false)
 	private String label;
 
-	@OneToMany(mappedBy = "parent", cascade = CascadeType.ALL,
-			orphanRemoval = true, targetEntity = OTUSet.class)
-	private final Set<IOTUSet> otuSets = newHashSet();
+	@OneToMany(
+			mappedBy = "parent",
+			cascade = CascadeType.ALL,
+			orphanRemoval = true,
+			targetEntity = OTUSet.class)
+	@OrderBy("position")
+	private final List<IOTUSet> otuSets = newArrayList();
 
 	@Transient
 	private final Set<IAttachmentNamespace> attachmentNamespaces = newHashSet();
@@ -85,14 +94,32 @@ public class Study
 	}
 
 	/** {@inheritDoc} */
-	public void addOTUSet(final IOTUSet otuSet) {
+	public boolean addOTUSet(final IOTUSet otuSet) {
 		checkNotNull(otuSet);
 		if (getOTUSets().contains(otuSet)) {
-
+			return false;
 		} else {
 			otuSets.add(otuSet);
 			otuSet.setParent(this);
+			otuSet.setPosition(otuSets.size() - 1);
 			setInNeedOfNewVersion();
+			return true;
+		}
+	}
+
+	/**
+	 * {@link Unmarshaller} callback.
+	 * 
+	 * @param u see {@code Unmarshaller}
+	 * @param parent see {@code Unmarshaller}
+	 */
+	protected void afterUnmarshal(
+			@CheckForNull final Unmarshaller u,
+			@CheckForNull final Object parent) {
+		int otuSetPosition = -1;
+		for (final IOTUSet otuSet : getOTUSets()) {
+			otuSetPosition++;
+			otuSet.setPosition(otuSetPosition);
 		}
 	}
 
@@ -128,12 +155,12 @@ public class Study
 	}
 
 	/** {@inheritDoc} */
-	public Set<IOTUSet> getOTUSets() {
-		return Collections.unmodifiableSet(otuSets);
+	public List<IOTUSet> getOTUSets() {
+		return Collections.unmodifiableList(otuSets);
 	}
 
 	@XmlElement(name = "otuSet")
-	protected Set<IOTUSet> getOTUSetsModifiable() {
+	protected List<IOTUSet> getOTUSetsModifiable() {
 		return otuSets;
 	}
 
@@ -151,6 +178,7 @@ public class Study
 	public boolean removeOTUSet(final IOTUSet otuSet) {
 		if (otuSets.remove(otuSet)) {
 			otuSet.setParent(null);
+			otuSet.setPosition(null);
 			setInNeedOfNewVersion();
 			return true;
 		}

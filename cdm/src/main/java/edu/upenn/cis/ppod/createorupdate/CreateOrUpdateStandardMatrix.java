@@ -20,6 +20,7 @@ import static com.google.common.base.Preconditions.checkNotNull;
 import static com.google.common.base.Predicates.compose;
 import static com.google.common.base.Predicates.equalTo;
 import static com.google.common.collect.Iterables.getOnlyElement;
+import static com.google.common.collect.Iterables.transform;
 import static com.google.common.collect.Lists.newArrayList;
 import static com.google.common.collect.Sets.newHashSet;
 import static edu.upenn.cis.ppod.util.PPodIterables.findIf;
@@ -149,48 +150,37 @@ final class CreateOrUpdateStandardMatrix
 			final IStandardCell sourceCell) {
 
 		checkArgument(targetCell.getPosition().equals(sourceCell.getPosition()));
-		final IStandardCharacter targetCharacter =
-				targetCell
-						.getParent()
-						.getParent()
-						.getCharacters()
-						.get(targetCell.getPosition());
 
 		switch (sourceCell.getType()) {
 			case UNASSIGNED:
 				targetCell.setUnassigned();
 				break;
-			case SINGLE: {
+			case SINGLE:
 				final IStandardState sourceState =
 						getOnlyElement(sourceCell.getElements());
-				final IStandardState targetState =
-						targetCharacter.getState(sourceState.getStateNumber());
-				targetCell.setSingleElement(targetState);
-			}
+				targetCell.setSingleWithStateNo(sourceState.getStateNumber());
 				break;
 			case POLYMORPHIC:
-			case UNCERTAIN: {
-				final Set<IStandardState> targetStates = newHashSet();
-				for (final IStandardState sourceState : sourceCell
-						.getElements()) {
-					final IStandardState targetState =
-							targetCharacter.getState(
-									sourceState.getStateNumber());
-					targetStates.add(targetState);
-				}
+			case UNCERTAIN:
+				final Set<Integer> sourceStateNumbers =
+						newHashSet(
+						transform(
+								sourceCell.getElements(),
+								IStandardState.getStateNumber));
 				switch (sourceCell.getType()) {
 					case POLYMORPHIC:
-						targetCell.setPolymorphicElements(targetStates);
+						targetCell
+								.setPolymorphicWithStateNos(sourceStateNumbers);
 						break;
 					case UNCERTAIN:
-						targetCell.setUncertainElements(targetStates);
+						targetCell
+								.setUncertainWithStateNos(sourceStateNumbers);
 						break;
 					default:
 						throw new AssertionError(
 								"type should be POLYMORPHIC or UNCERTAIN but is "
 										+ sourceCell.getType());
 				}
-			}
 				break;
 			case INAPPLICABLE:
 				targetCell.setInapplicable();

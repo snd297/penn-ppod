@@ -36,13 +36,16 @@ public interface IStandardCell extends ICell<IStandardState, IStandardRow> {
 	 * 
 	 * @param elements the elements for this cell to contain
 	 */
-	void setPolymorphicElements(Set<? extends IStandardState> elements);
+	void setPolymorphicWithStateNos(Set<Integer> stateNumbers);
+
+	void setUncertainWithStateNos(Set<Integer> stateNumbers);
 
 	/**
-	 * Set the cell's type to {@link Type.SINGLE} and its elements to contain
-	 * only {@code element}.
+	 * Set the cell's type to {@link Type.SINGLE} and its states to contain only
+	 * {@code getParent().getParent().getCharacters().get(getPosition()).getState(stateNumber)}
+	 * .
 	 * 
 	 * @param element the element for this cell to contain
 	 */
-	void setSingleElement(IStandardState element);
+	void setSingleWithStateNo(Integer stateNumber);
 }

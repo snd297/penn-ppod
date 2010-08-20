@@ -18,6 +18,13 @@ package edu.upenn.cis.ppod.imodel;
 import edu.umd.cs.findbugs.annotations.CheckForNull;
 import edu.umd.cs.findbugs.annotations.Nullable;
 
+/**
+ * A child that is in an ordered list in its parent.
+ * 
+ * @author Sam Donnelly
+ * 
+ * @param <P>
+ */
 public interface IOrderedChild<P> extends IChild<P> {
 
 	@Nullable
@@ -27,6 +34,9 @@ public interface IOrderedChild<P> extends IChild<P> {
 	 * Set the position of this child.
 	 * <p>
 	 * Use a {@code null} when removing a child from its parent
+	 * <p>
+	 * There is no reason for client code to call this method as the value will
+	 * always be set by the parent object.
 	 * 
 	 * @param position the position of this child
 	 */

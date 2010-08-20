@@ -15,7 +15,7 @@
  */
 package edu.upenn.cis.ppod.services.ppodentity;
 
-import java.util.Set;
+import java.util.List;
 
 import edu.upenn.cis.ppod.imodel.IOTUSet;
 
@@ -30,14 +30,17 @@ public interface IOTUSets {
 	 * Add an OTU set to this {@link IOTUSets}.
 	 * 
 	 * @param otuSet to be added
+	 * 
+	 * @return {@code true} if this set did not already contain the specified
+	 *         element, {@code false} otherwise
 	 */
-	void addOTUSet(IOTUSet otuSet);
+	boolean addOTUSet(IOTUSet otuSet);
 
 	/**
 	 * Get the OTU sets contained in this {@code IOTUSets}.
 	 * 
 	 * @return the OTU sets contained in this {@code IOTUSets}
 	 */
-	Set<IOTUSet> getOTUSets();
+	List<IOTUSet> getOTUSets();
 
 }

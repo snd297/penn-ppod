@@ -15,9 +15,12 @@
  */
 package edu.upenn.cis.ppod.services.ppodentity;
 
+import static com.google.common.base.Preconditions.checkNotNull;
+import static com.google.common.collect.Lists.newArrayList;
 import static com.google.common.collect.Sets.newHashSet;
 
 import java.util.Collections;
+import java.util.List;
 import java.util.Set;
 
 import javax.xml.bind.Marshaller;
@@ -42,7 +45,7 @@ import edu.upenn.cis.ppod.util.PPodEntitiesUtil;
 public class PPodEntities implements IPPodEntities {
 
 	@XmlElement(name = "otuSet")
-	private final Set<IOTUSet> otuSets = newHashSet();
+	private final List<IOTUSet> otuSets = newArrayList();
 
 	@XmlElement(name = "otu")
 	private final Set<IOTU> otus = newHashSet();
@@ -53,8 +56,14 @@ public class PPodEntities implements IPPodEntities {
 	@XmlElement(name = "attachmentType")
 	private final Set<IAttachmentType> pPodEntitiesWideAttachmentTypes = newHashSet();
 
-	public void addOTUSet(final IOTUSet otuSet) {
-		otuSets.add(otuSet);
+	public boolean addOTUSet(final IOTUSet otuSet) {
+		checkNotNull(otuSet);
+		if (getOTUSets().contains(otuSet)) {
+			return false;
+		} else {
+			otuSets.add(otuSet);
+			return true;
+		}
 	}
 
 	/**
@@ -85,8 +94,8 @@ public class PPodEntities implements IPPodEntities {
 		return otu;
 	}
 
-	public Set<IOTUSet> getOTUSets() {
-		return Collections.unmodifiableSet(otuSets);
+	public List<IOTUSet> getOTUSets() {
+		return Collections.unmodifiableList(otuSets);
 	}
 
 }
