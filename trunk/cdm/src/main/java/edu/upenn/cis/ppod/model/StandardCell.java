@@ -212,7 +212,7 @@ public class StandardCell
 
 	@XmlElement(name = "stateDocId")
 	@XmlIDREF
-	@CheckForNull
+	@Nullable
 	protected Set<StandardState> getElementsXml() {
 		return elementsXml;
 	}
