@@ -170,6 +170,6 @@ public interface IMatrix<R extends IRow<C, ?>, C extends ICell<?, ?>>
 	 */
 	void moveColumn(int src, int dest);
 
-	List<C> removeColumn(int columnNo);
+	public List<C> removeColumn(int columnNo);
 
 }

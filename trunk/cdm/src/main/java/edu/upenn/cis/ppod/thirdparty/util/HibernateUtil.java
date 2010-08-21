@@ -87,16 +87,16 @@ public class HibernateUtil {
 			// Read hibernate.cfg.xml (has to be present)
 			configuration.configure();
 
-// final PPodVersionInfoInterceptor pPodVersionInfoInterceptor = new
+			// final PPodVersionInfoInterceptor pPodVersionInfoInterceptor = new
 			// PPodCoreFactory()
 			// .create(PPodVersionInfoInterceptor.class);
 
-// configuration.setInterceptor(pPodVersionInfoInterceptor);
+			// configuration.setInterceptor(pPodVersionInfoInterceptor);
 
 			// Build and store (either in JNDI or static variable)
 			rebuildSessionFactory(configuration);
 
-// pPodVersionInfoInterceptor.setSessionFactory(getSessionFactory());
+			// pPodVersionInfoInterceptor.setSessionFactory(getSessionFactory());
 
 			logger
 					.debug("Hibernate initialized, call HibernateUtil.getSessionFactory()");

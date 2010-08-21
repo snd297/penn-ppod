@@ -132,7 +132,6 @@ public class OTUSet
 	 * OTU set labels are unique within a particular {@code IStudy}
 	 */
 	@Column(name = "LABEL", nullable = false)
-	@CheckForNull
 	private String label;
 
 	/** The OTUs in this OTU set. */
@@ -144,12 +143,12 @@ public class OTUSet
 	@JoinColumn(name = JOIN_COLUMN, nullable = false)
 	private final List<IOTU> otus = newArrayList();
 
-	@CheckForNull
 	@ManyToOne(
 			fetch = FetchType.LAZY,
 			optional = false,
 			targetEntity = Study.class)
 	@JoinColumn(name = Study.JOIN_COLUMN)
+	@CheckForNull
 	private IStudy parent;
 
 	/** The tree sets that reference this OTU set. */
@@ -160,8 +159,8 @@ public class OTUSet
 			targetEntity = TreeSet.class)
 	private final Set<ITreeSet> treeSets = newHashSet();
 
-	@Nullable
 	@Column(name = "POSITION")
+	@CheckForNull
 	private Integer position;
 
 	/**
@@ -312,7 +311,6 @@ public class OTUSet
 	 * @return the label
 	 */
 	@XmlAttribute
-	@Nullable
 	public String getLabel() {
 		return label;
 	}

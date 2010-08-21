@@ -88,7 +88,7 @@ public class StandardCell
 	 */
 	@ManyToOne(fetch = FetchType.LAZY, targetEntity = StandardState.class)
 	@JoinColumn(name = StandardState.JOIN_COLUMN)
-	@CheckForNull
+	@Nullable
 	private IStandardState element;
 
 	/**
@@ -96,10 +96,10 @@ public class StandardCell
 	 * <p>
 	 * Will be {@code null} when first created, but is generally not-null.
 	 */
-	@Nullable
 	@ManyToMany(targetEntity = StandardState.class)
 	@JoinTable(inverseJoinColumns = @JoinColumn(
 			name = StandardState.JOIN_COLUMN))
+	@Nullable
 	private Set<IStandardState> elements;
 
 	/**
@@ -196,22 +196,23 @@ public class StandardCell
 
 	}
 
-	@CheckForNull
 	@XmlAttribute(name = "stateDocId")
 	@XmlIDREF
+	@Nullable
 	@Override
 	protected IStandardState getElement() {
 		return element;
 	}
 
-	@Nullable
 	@Override
+	@Nullable
 	Set<IStandardState> getElementsModifiable() {
 		return elements;
 	}
 
 	@XmlElement(name = "stateDocId")
 	@XmlIDREF
+	@CheckForNull
 	protected Set<StandardState> getElementsXml() {
 		return elementsXml;
 	}
