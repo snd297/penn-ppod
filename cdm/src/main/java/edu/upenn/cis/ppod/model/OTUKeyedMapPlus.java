@@ -165,7 +165,7 @@ public class OTUKeyedMapPlus<V extends IChild<P>, P extends IChild<IOTUSet>, OP 
 		}
 	}
 
-	public void setOTUs() {
+	public void updateOTUs() {
 		final IChild<IOTUSet> parent = getParent();
 
 		final Set<IOTU> otusToBeRemoved = newHashSet();

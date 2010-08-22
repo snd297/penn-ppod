@@ -181,6 +181,15 @@ public class TreeSet
 	/** {@inheritDoc} */
 	public void setParent(@CheckForNull final IOTUSet parent) {
 		this.parent = parent;
+		updateOTUs();
+	}
+
+	/**
+	 * There's nothing for a tree set to do since the OTU's are stored as pPOD
+	 * IDs in the newick strings which can't be modified.
+	 */
+	public void updateOTUs() {
+
 	}
 
 	/**

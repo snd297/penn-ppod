@@ -25,7 +25,7 @@ import edu.umd.cs.findbugs.annotations.Nullable;
 import edu.upenn.cis.ppod.model.VersionInfo;
 
 public interface IMatrix<R extends IRow<C, ?>, C extends ICell<?, ?>>
-		extends IChild<IOTUSet>, IUUPPodEntity, IWithDocId {
+		extends IOTUSetChild, IUUPPodEntity, IWithDocId {
 
 	Integer getColumnsSize();
 

@@ -204,19 +204,19 @@ abstract class SequenceSet<S extends ISequence<?>>
 		}
 	}
 
-	void setOTUs() {
+	/** {@inheritDoc} */
+	public void updateOTUs() {
 		checkState(getOTUKeyedSequences() != null,
 					"getOTUKeyedSequences() == null, "
 							+ "so there are no sequences to operate on");
 
-		getOTUKeyedSequences().setOTUs();
+		getOTUKeyedSequences().updateOTUs();
 	}
 
 	/** {@inheritDoc} */
 	public void setParent(
 			@CheckForNull final IOTUSet parent) {
 		this.parent = parent;
-		setOTUs();
+		updateOTUs();
 	}
-
 }

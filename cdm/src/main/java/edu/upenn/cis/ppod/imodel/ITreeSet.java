@@ -23,7 +23,7 @@ import edu.upenn.cis.ppod.model.TreeSet;
 
 @XmlJavaTypeAdapter(TreeSet.Adapter.class)
 public interface ITreeSet
-		extends ILabeled, IUUPPodEntity, IChild<IOTUSet>, IWithDocId {
+		extends ILabeled, IUUPPodEntity, IOTUSetChild, IWithDocId {
 
 	/**
 	 * Add {@code tree} to this {@code TreeSet}.

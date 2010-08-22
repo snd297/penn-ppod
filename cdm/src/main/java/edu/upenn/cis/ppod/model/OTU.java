@@ -27,7 +27,6 @@ import javax.xml.bind.annotation.XmlAttribute;
 import javax.xml.bind.annotation.adapters.XmlAdapter;
 
 import edu.umd.cs.findbugs.annotations.CheckForNull;
-import edu.umd.cs.findbugs.annotations.Nullable;
 import edu.upenn.cis.ppod.imodel.IOTU;
 import edu.upenn.cis.ppod.imodel.IOTUSet;
 import edu.upenn.cis.ppod.util.IVisitor;
@@ -71,7 +70,6 @@ public class OTU
 	static final String LABEL_COLUMN = "LABEL";
 
 	/** Non-unique label. */
-	@CheckForNull
 	@Column(name = LABEL_COLUMN, nullable = false)
 	private String label;
 
@@ -110,7 +108,6 @@ public class OTU
 	 * @return the label of this {@code OTU}
 	 */
 	@XmlAttribute
-	@Nullable
 	public String getLabel() {
 		return label;
 	}
@@ -122,7 +119,6 @@ public class OTU
 	 * 
 	 * @return the {@code OTUSet} that owns this {@code OTU}
 	 */
-	@Nullable
 	public OTUSet getParent() {
 		return (OTUSet) parent;
 	}
