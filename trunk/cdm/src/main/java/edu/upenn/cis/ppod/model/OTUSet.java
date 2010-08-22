@@ -203,7 +203,7 @@ public class OTUSet
 	public void addOTU(final IOTU otu) {
 		checkNotNull(otu);
 		addOTUWithoutSetOTUsOnChildren(otu);
-		setOTUSetOnChildren();
+		setParentOnChildren();
 	}
 
 	private IOTU addOTUWithoutSetOTUsOnChildren(final IOTU otu) {
@@ -477,14 +477,14 @@ public class OTUSet
 			addOTUWithoutSetOTUsOnChildren(otu);
 		}
 
-		setOTUSetOnChildren();
+		setParentOnChildren();
 
 		setInNeedOfNewVersion();
 
 		return removedOTUs;
 	}
 
-	private void setOTUSetOnChildren() {
+	private void setParentOnChildren() {
 		// Now let's let everyone know about the new OTUs
 		for (final IChild<IOTUSet> otu : getOTUs()) {
 			otu.setParent(this);

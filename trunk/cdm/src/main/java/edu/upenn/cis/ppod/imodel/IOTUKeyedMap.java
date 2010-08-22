@@ -86,6 +86,6 @@ public interface IOTUKeyedMap<V extends IChild<?>>
 	 * 
 	 * @see IOTUKeyedMapPlus
 	 */
-	void setOTUs();
+	void updateOTUs();
 
 }

@@ -42,7 +42,6 @@ import javax.xml.bind.annotation.XmlElement;
 
 import org.hibernate.annotations.Target;
 
-import edu.umd.cs.findbugs.annotations.CheckForNull;
 import edu.umd.cs.findbugs.annotations.Nullable;
 import edu.upenn.cis.ppod.imodel.ICell;
 import edu.upenn.cis.ppod.imodel.IMatrix;
@@ -85,12 +84,10 @@ public abstract class Matrix<R extends IRow<C, ?>, C extends ICell<?, ?>>
 
 	/** Free-form description. */
 	@Column(name = DESCRIPTION_COLUMN, nullable = true)
-	@CheckForNull
 	private String description;
 
 	/** The label for this {@code Matrix}. */
 	@Column(name = LABEL_COLUMN, nullable = false)
-	@CheckForNull
 	private String label;
 
 	/**
@@ -99,7 +96,6 @@ public abstract class Matrix<R extends IRow<C, ?>, C extends ICell<?, ?>>
 	 */
 	@ManyToOne(fetch = FetchType.LAZY, optional = false)
 	@JoinColumn(name = OTUSet.JOIN_COLUMN)
-	@CheckForNull
 	@Target(OTUSet.class)
 	private IOTUSet parent;
 
@@ -137,14 +133,14 @@ public abstract class Matrix<R extends IRow<C, ?>, C extends ICell<?, ?>>
 	// }
 
 	protected void afterUnmarshal(
-			@CheckForNull final Unmarshaller u,
+			@Nullable final Unmarshaller u,
 			final Object parent) {
 		this.parent = (OTUSet) parent;
 		setColumnsSize(getColumnVersions().size());
 	}
 
 	@Override
-	protected boolean beforeMarshal(@CheckForNull final Marshaller marshaller) {
+	protected boolean beforeMarshal(@Nullable final Marshaller marshaller) {
 
 		if (getColumnVersions().size() != 0) {
 			throw new AssertionError(
@@ -200,7 +196,6 @@ public abstract class Matrix<R extends IRow<C, ?>, C extends ICell<?, ?>>
 	 * @return the description
 	 */
 	@XmlAttribute
-	@CheckForNull
 	public String getDescription() {
 		return description;
 	}
@@ -215,7 +210,6 @@ public abstract class Matrix<R extends IRow<C, ?>, C extends ICell<?, ?>>
 	 * @return the label
 	 */
 	@XmlAttribute
-	@Nullable
 	public String getLabel() {
 		return label;
 	}
@@ -238,36 +232,15 @@ public abstract class Matrix<R extends IRow<C, ?>, C extends ICell<?, ?>>
 	 * 
 	 * @return this matrix's {@code OTUSet}
 	 */
-	@Nullable
 	public IOTUSet getParent() {
 		return parent;
 	}
 
 	/**
-	 * Get the row indexed by an OTU, or {@code null} if no such row has been
-	 * inserted yet.
-	 * <p>
-	 * The return value won't be {@code null} for matrices straight out of the
-	 * database.
-	 * <p>
-	 * {@code null} return values occur when {@link #setOTUSet(OTUSet)} contains
-	 * OTUs newly introduced to this matrix.
-	 * 
-	 * @param otu the key
-	 * 
-	 * @return the row, or {@code null} of no such row has been inserted yet
-	 * 
-	 * @throws IllegalArgumentException if {@code otu} does not belong to this
-	 *             matrix's {@code OTUSet}
-	 */
-	// @Nullable
-	// public R getRow(final IOTU otu) {
-	// checkNotNull(otu);
-	// return getOTUKeyedRows().get(otu);
-	// }
-
-	/**
 	 * Get the rows that make up this matrix.
+	 * <p>
+	 * Rows will only be {@code null} for OTUs newly introduced to this matrix
+	 * by {@link #setOTUs}.
 	 * 
 	 * @return the rows that make up this matrix
 	 */
@@ -306,11 +279,14 @@ public abstract class Matrix<R extends IRow<C, ?>, C extends ICell<?, ?>>
 	 * @throws IllegalArgumentException if this matrix already contains a row
 	 *             {@code .equals} to {@code row}
 	 */
-	@CheckForNull
 	public R putRow(final IOTU otu, final R row) {
 		checkNotNull(otu);
 		checkNotNull(row);
 		return getOTUKeyedRows().put(otu, row);
+	}
+
+	public List<C> removeColumn(final int columnNo) {
+		throw new UnsupportedOperationException();
 	}
 
 	/** {@inheritDoc} */
@@ -352,7 +328,7 @@ public abstract class Matrix<R extends IRow<C, ?>, C extends ICell<?, ?>>
 
 	/** {@inheritDoc} */
 	public void setDescription(
-			@CheckForNull final String description) {
+			@Nullable final String description) {
 		if (equal(description, getDescription())) {
 			// nothing to do
 		} else {
@@ -392,15 +368,16 @@ public abstract class Matrix<R extends IRow<C, ?>, C extends ICell<?, ?>>
 
 	/** {@inheritDoc} */
 	public void setParent(
-			@CheckForNull final IOTUSet otuSet) {
+			@Nullable final IOTUSet otuSet) {
 		checkState(
 				getOTUKeyedRows() != null,
 				"getOTUKeyedRows() returned null - has the conrete class been constructed correctly, w/ its OTU->X dependency?");
 		this.parent = otuSet;
-		getOTUKeyedRows().setOTUs();
+		updateOTUs();
 	}
 
-	public List<C> removeColumn(final int columnNo) {
-		throw new UnsupportedOperationException();
+	/** {@inheritDoc} */
+	public void updateOTUs() {
+		getOTUKeyedRows().updateOTUs();
 	}
 }

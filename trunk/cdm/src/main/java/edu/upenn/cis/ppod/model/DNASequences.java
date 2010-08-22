@@ -118,8 +118,8 @@ public class DNASequences
 	}
 
 	/** {@inheritDoc} */
-	public void setOTUs() {
-		sequences.setOTUs();
+	public void updateOTUs() {
+		sequences.updateOTUs();
 	}
 
 	public void setParent(final IDNASequenceSet parent) {

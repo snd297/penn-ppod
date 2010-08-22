@@ -133,8 +133,8 @@ public class DNARows implements IOTUKeyedMap<IDNARow> {
 	}
 
 	/** {@inheritDoc} */
-	public void setOTUs() {
-		rows.setOTUs();
+	public void updateOTUs() {
+		rows.updateOTUs();
 	}
 
 	/**
