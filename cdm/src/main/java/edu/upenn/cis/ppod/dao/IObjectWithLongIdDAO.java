@@ -15,6 +15,8 @@
  */
 package edu.upenn.cis.ppod.dao;
 
+import edu.upenn.cis.ppod.thirdparty.dao.IDAO;
+
 
 /**
  * @author Sam Donnelly

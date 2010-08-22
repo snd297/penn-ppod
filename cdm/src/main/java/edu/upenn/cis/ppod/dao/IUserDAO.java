@@ -16,6 +16,7 @@
 package edu.upenn.cis.ppod.dao;
 
 import edu.upenn.cis.ppod.model.security.User;
+import edu.upenn.cis.ppod.thirdparty.dao.IDAO;
 
 /**
  * Data Access Object for PPodUser related operations.

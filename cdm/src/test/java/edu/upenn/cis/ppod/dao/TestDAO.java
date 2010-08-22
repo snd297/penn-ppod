@@ -20,6 +20,8 @@ import static com.google.common.collect.Lists.newArrayList;
 import java.io.Serializable;
 import java.util.List;
 
+import edu.upenn.cis.ppod.thirdparty.dao.IDAO;
+
 public class TestDAO<T, ID extends Serializable> implements IDAO<T, ID> {
 
 	private final List<T> madePersistent = newArrayList();

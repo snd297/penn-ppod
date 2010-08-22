@@ -37,7 +37,6 @@ import javax.xml.bind.annotation.XmlElement;
 import javax.xml.bind.annotation.XmlIDREF;
 import javax.xml.bind.annotation.adapters.XmlAdapter;
 
-import edu.umd.cs.findbugs.annotations.CheckForNull;
 import edu.umd.cs.findbugs.annotations.Nullable;
 import edu.upenn.cis.ppod.imodel.IStandardCell;
 import edu.upenn.cis.ppod.imodel.IStandardCharacter;
@@ -88,7 +87,6 @@ public class StandardCell
 	 */
 	@ManyToOne(fetch = FetchType.LAZY, targetEntity = StandardState.class)
 	@JoinColumn(name = StandardState.JOIN_COLUMN)
-	@Nullable
 	private IStandardState element;
 
 	/**
@@ -99,7 +97,6 @@ public class StandardCell
 	@ManyToMany(targetEntity = StandardState.class)
 	@JoinTable(inverseJoinColumns = @JoinColumn(
 			name = StandardState.JOIN_COLUMN))
-	@Nullable
 	private Set<IStandardState> elements;
 
 	/**
@@ -109,11 +106,9 @@ public class StandardCell
 	@ManyToOne(fetch = FetchType.LAZY, optional = false,
 			targetEntity = StandardRow.class)
 	@JoinColumn(name = StandardRow.JOIN_COLUMN)
-	@CheckForNull
 	private IStandardRow parent;
 
 	@Transient
-	@Nullable
 	private Set<StandardState> elementsXml;
 
 	/** No-arg constructor for (at least) Hibernate. */
@@ -125,7 +120,7 @@ public class StandardCell
 		visitor.visitStandardCell(this);
 	}
 
-	protected boolean afterMarshal(@CheckForNull final Marshaller marshaller) {
+	protected boolean afterMarshal(@Nullable final Marshaller marshaller) {
 		elementsXml = null;
 		return true;
 	}
@@ -152,7 +147,7 @@ public class StandardCell
 	}
 
 	@Override
-	protected boolean beforeMarshal(@CheckForNull final Marshaller marshaller) {
+	protected boolean beforeMarshal(@Nullable final Marshaller marshaller) {
 		if (getType() == Type.POLYMORPHIC || getType() == Type.UNCERTAIN) {
 			this.elementsXml = newHashSet();
 			for (final IStandardState element : elements) {
@@ -198,21 +193,18 @@ public class StandardCell
 
 	@XmlAttribute(name = "stateDocId")
 	@XmlIDREF
-	@Nullable
 	@Override
 	protected IStandardState getElement() {
 		return element;
 	}
 
 	@Override
-	@Nullable
 	Set<IStandardState> getElementsModifiable() {
 		return elements;
 	}
 
 	@XmlElement(name = "stateDocId")
 	@XmlIDREF
-	@Nullable
 	protected Set<StandardState> getElementsXml() {
 		return elementsXml;
 	}
@@ -223,7 +215,6 @@ public class StandardCell
 	 * @return the {@code CharacterStateRow} to which this
 	 *         {@code CharacterStateCell} belongs
 	 */
-	@Nullable
 	@Override
 	public IStandardRow getParent() {
 		return parent;
@@ -249,13 +240,13 @@ public class StandardCell
 	/** Protected for JAXB. */
 	@Override
 	protected void setElement(
-			@CheckForNull final IStandardState element) {
+			@Nullable final IStandardState element) {
 		this.element = element;
 	}
 
 	@Override
 	void setElements(
-			@CheckForNull final Set<IStandardState> elements) {
+			@Nullable final Set<IStandardState> elements) {
 		this.elements = elements;
 	}
 

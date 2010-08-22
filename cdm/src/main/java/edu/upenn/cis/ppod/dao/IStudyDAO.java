@@ -19,6 +19,7 @@ import java.util.List;
 import java.util.Set;
 
 import edu.upenn.cis.ppod.imodel.IStudy;
+import edu.upenn.cis.ppod.thirdparty.dao.IDAO;
 import edu.upenn.cis.ppod.util.IPair;
 
 /**

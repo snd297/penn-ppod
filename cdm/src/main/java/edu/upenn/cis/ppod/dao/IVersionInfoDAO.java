@@ -16,6 +16,7 @@
 package edu.upenn.cis.ppod.dao;
 
 import edu.upenn.cis.ppod.model.VersionInfo;
+import edu.upenn.cis.ppod.thirdparty.dao.IDAO;
 
 /**
  * A {@link VersionInfo} DAO.

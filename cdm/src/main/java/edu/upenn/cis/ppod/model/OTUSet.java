@@ -45,7 +45,6 @@ import javax.xml.bind.annotation.adapters.XmlAdapter;
 
 import com.google.common.annotations.VisibleForTesting;
 
-import edu.umd.cs.findbugs.annotations.CheckForNull;
 import edu.umd.cs.findbugs.annotations.Nullable;
 import edu.upenn.cis.ppod.imodel.IChild;
 import edu.upenn.cis.ppod.imodel.IDNAMatrix;
@@ -109,7 +108,6 @@ public class OTUSet
 
 	/** Nullable free-form description. */
 	@Column(name = DESCRIPTION_COLUMN, nullable = true)
-	@CheckForNull
 	private String description;
 
 	@OneToMany(
@@ -148,7 +146,6 @@ public class OTUSet
 			optional = false,
 			targetEntity = Study.class)
 	@JoinColumn(name = Study.JOIN_COLUMN)
-	@CheckForNull
 	private IStudy parent;
 
 	/** The tree sets that reference this OTU set. */
@@ -160,7 +157,6 @@ public class OTUSet
 	private final Set<ITreeSet> treeSets = newHashSet();
 
 	@Column(name = "POSITION")
-	@CheckForNull
 	private Integer position;
 
 	/**
@@ -257,7 +253,7 @@ public class OTUSet
 	 * @param parent see {@code Unmarshaller}
 	 */
 	public void afterUnmarshal(
-			@CheckForNull final Unmarshaller u,
+			@Nullable final Unmarshaller u,
 			final Object parent) {
 		checkNotNull(parent);
 		this.parent = (Study) parent;
@@ -280,7 +276,6 @@ public class OTUSet
 	 * @return the description
 	 */
 	@XmlAttribute
-	@CheckForNull
 	public String getDescription() {
 		return description;
 	}
@@ -340,13 +335,11 @@ public class OTUSet
 	 * 
 	 * @return the study to which this OTU set belongs
 	 */
-	@Nullable
 	public IStudy getParent() {
 		return parent;
 	}
 
 	/** {@inheritDoc} */
-	@Nullable
 	public Integer getPosition() {
 		return position;
 	}
@@ -436,7 +429,7 @@ public class OTUSet
 	}
 
 	/** {@inheritDoc} */
-	public void setDescription(@CheckForNull final String description) {
+	public void setDescription(@Nullable final String description) {
 		if (equal(getDescription(), description)) {
 
 		} else {
@@ -515,13 +508,13 @@ public class OTUSet
 	}
 
 	/** {@inheritDoc} */
-	public void setParent(@CheckForNull final IStudy parent) {
+	public void setParent(@Nullable final IStudy parent) {
 		this.parent = parent;
 	}
 
 	/** {@inheritDoc} */
 	public void setPosition(
-			@CheckForNull final Integer position) {
+			@Nullable final Integer position) {
 		this.position = position;
 	}
 

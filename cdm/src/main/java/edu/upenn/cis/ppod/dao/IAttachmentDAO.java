@@ -16,6 +16,7 @@
 package edu.upenn.cis.ppod.dao;
 
 import edu.upenn.cis.ppod.model.Attachment;
+import edu.upenn.cis.ppod.thirdparty.dao.IDAO;
 
 /**
  * {@link Attachment} DAO.

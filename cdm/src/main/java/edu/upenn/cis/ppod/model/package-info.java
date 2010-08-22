@@ -17,9 +17,9 @@
 /**
  * The heart of the project: the CDM classes.
  */
-@DefaultAnnotation(NonNull.class)
+@DefaultAnnotationForParameters(NonNull.class)
 package edu.upenn.cis.ppod.model;
 
-import edu.umd.cs.findbugs.annotations.DefaultAnnotation;
+import edu.umd.cs.findbugs.annotations.DefaultAnnotationForParameters;
 import edu.umd.cs.findbugs.annotations.NonNull;
 
