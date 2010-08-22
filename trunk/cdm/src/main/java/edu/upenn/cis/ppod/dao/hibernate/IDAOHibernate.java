@@ -19,7 +19,7 @@ import java.io.Serializable;
 
 import org.hibernate.Session;
 
-import edu.upenn.cis.ppod.dao.IDAO;
+import edu.upenn.cis.ppod.thirdparty.dao.IDAO;
 
 /**
  * An {@link IDAO} that needs to have a {@link Session} set to function.

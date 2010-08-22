@@ -18,6 +18,7 @@ package edu.upenn.cis.ppod.dao;
 import java.util.List;
 
 import edu.upenn.cis.ppod.model.StandardRow;
+import edu.upenn.cis.ppod.thirdparty.dao.IDAO;
 
 /**
  * {@link CharacterStateRow} DAO.

@@ -18,6 +18,7 @@ package edu.upenn.cis.ppod.dao;
 import java.util.List;
 
 import edu.upenn.cis.ppod.imodel.IStandardMatrix;
+import edu.upenn.cis.ppod.thirdparty.dao.IDAO;
 
 /**
  * A {@link CharacterStateMatrix} DAO.

@@ -18,7 +18,6 @@ package edu.upenn.cis.ppod.imodel;
 import java.util.Map;
 
 import edu.umd.cs.findbugs.annotations.CheckForNull;
-import edu.umd.cs.findbugs.annotations.Nullable;
 
 public interface IOTUKeyedMap<V extends IChild<?>>
 		extends IVisitable {
@@ -42,7 +41,6 @@ public interface IOTUKeyedMap<V extends IChild<?>>
 	 *             OTU-keyed map
 	 * @throws NullPointerException if the specified key is null
 	 */
-	@Nullable
 	V get(IOTU key);
 
 	/**

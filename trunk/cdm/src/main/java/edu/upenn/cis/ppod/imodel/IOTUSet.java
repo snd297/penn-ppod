@@ -20,7 +20,6 @@ import java.util.Set;
 
 import javax.xml.bind.annotation.adapters.XmlJavaTypeAdapter;
 
-import edu.umd.cs.findbugs.annotations.CheckForNull;
 import edu.umd.cs.findbugs.annotations.Nullable;
 import edu.upenn.cis.ppod.model.OTUSet;
 
@@ -87,7 +86,6 @@ public interface IOTUSet
 	 * 
 	 * @return the description
 	 */
-	@CheckForNull
 	String getDescription();
 
 	Set<IDNAMatrix> getDNAMatrices();
@@ -164,7 +162,7 @@ public interface IOTUSet
 	 * 
 	 * @param description the description
 	 */
-	void setDescription(@CheckForNull String description);
+	void setDescription(@Nullable String description);
 
 	/**
 	 * Set the label of this OTU set

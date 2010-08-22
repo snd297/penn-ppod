@@ -18,6 +18,7 @@ package edu.upenn.cis.ppod.dao;
 import java.util.List;
 
 import edu.upenn.cis.ppod.imodel.IOTUSet;
+import edu.upenn.cis.ppod.thirdparty.dao.IDAO;
 
 /**
  * An <code>OTUSet</code> DAO.
