@@ -26,7 +26,7 @@ import javax.persistence.FetchType;
 import javax.persistence.JoinColumn;
 import javax.persistence.ManyToOne;
 import javax.persistence.OneToMany;
-import javax.persistence.OrderBy;
+import javax.persistence.OrderColumn;
 import javax.persistence.Table;
 import javax.xml.bind.annotation.XmlElement;
 import javax.xml.bind.annotation.adapters.XmlAdapter;
@@ -70,7 +70,7 @@ public class StandardRow
 			cascade = CascadeType.ALL,
 			orphanRemoval = true,
 			targetEntity = StandardCell.class)
-	@OrderBy("position")
+	@OrderColumn(name = "POSITION")
 	private final List<IStandardCell> cells = newArrayList();
 
 	@ManyToOne(fetch = FetchType.LAZY, optional = false,

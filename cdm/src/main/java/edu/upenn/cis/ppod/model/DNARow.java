@@ -26,7 +26,7 @@ import javax.persistence.FetchType;
 import javax.persistence.JoinColumn;
 import javax.persistence.ManyToOne;
 import javax.persistence.OneToMany;
-import javax.persistence.OrderBy;
+import javax.persistence.OrderColumn;
 import javax.persistence.Table;
 import javax.xml.bind.annotation.XmlElement;
 import javax.xml.bind.annotation.adapters.XmlAdapter;
@@ -72,7 +72,7 @@ public class DNARow extends Row<IDNACell, IDNAMatrix> implements IDNARow {
 
 	@OneToMany(mappedBy = "parent", cascade = CascadeType.ALL,
 			orphanRemoval = true, targetEntity = DNACell.class)
-	@OrderBy("position")
+	@OrderColumn(name = "POSITION")
 	private final List<IDNACell> cells = newArrayList();
 
 	DNARow() {}

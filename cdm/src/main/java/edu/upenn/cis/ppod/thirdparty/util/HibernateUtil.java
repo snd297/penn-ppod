@@ -37,6 +37,7 @@ import org.hibernate.SessionFactory;
 import org.hibernate.cfg.AnnotationConfiguration;
 import org.hibernate.cfg.Configuration;
 import org.hibernate.cfg.Environment;
+import org.hibernate.cfg.ImprovedNamingStrategy;
 import org.slf4j.Logger;
 
 /**
@@ -83,6 +84,7 @@ public class HibernateUtil {
 
 			// Reads hibernate.properties, if present
 			configuration = new AnnotationConfiguration();
+			configuration.setNamingStrategy(new ImprovedNamingStrategy());
 
 			// Read hibernate.cfg.xml (has to be present)
 			configuration.configure();

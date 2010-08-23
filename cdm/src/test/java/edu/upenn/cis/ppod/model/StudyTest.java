@@ -45,17 +45,11 @@ public class StudyTest {
 		final OTUSet otuSet = otuSetProvider.get();
 		study.addOTUSet(otuSet);
 		study.unsetInNeedOfNewVersion();
-		boolean returnedValue = study.removeOTUSet(otuSet);
-		assertTrue(returnedValue);
+		study.removeOTUSet(otuSet);
 		assertTrue(study.isInNeedOfNewVersion());
 		assertFalse(study.getOTUSets().contains(otuSet));
 		assertNull(otuSet.getPosition());
 
-		study.unsetInNeedOfNewVersion();
-
-		study.removeOTUSet(otuSet);
-		assertFalse(study.isInNeedOfNewVersion());
-		assertNull(otuSet.getParent());
 	}
 
 	@Test
@@ -82,20 +76,11 @@ public class StudyTest {
 		final OTUSet otuSet = otuSetProvider.get();
 		study.unsetInNeedOfNewVersion();
 
-		final boolean returnedBoolean = study.addOTUSet(otuSet);
+		study.addOTUSet(otuSet);
 
-		assertTrue(returnedBoolean);
 		assertTrue(study.isInNeedOfNewVersion());
 		assertEquals(study.getOTUSets().size(), 1);
 		assertTrue(study.getOTUSets().contains(otuSet));
 		assertEquals(otuSet.getPosition(), Integer.valueOf(0));
-
-		study.unsetInNeedOfNewVersion();
-
-		final boolean returnedBoolean2 = study.addOTUSet(otuSet);
-		assertFalse(returnedBoolean2);
-		assertFalse(study.isInNeedOfNewVersion());
-		assertEquals(study.getOTUSets().size(), 1);
-		assertTrue(study.getOTUSets().contains(otuSet));
 	}
 }

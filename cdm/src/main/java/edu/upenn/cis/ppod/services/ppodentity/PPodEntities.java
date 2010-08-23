@@ -15,6 +15,7 @@
  */
 package edu.upenn.cis.ppod.services.ppodentity;
 
+import static com.google.common.base.Preconditions.checkArgument;
 import static com.google.common.base.Preconditions.checkNotNull;
 import static com.google.common.collect.Lists.newArrayList;
 import static com.google.common.collect.Sets.newHashSet;
@@ -56,14 +57,13 @@ public class PPodEntities implements IPPodEntities {
 	@XmlElement(name = "attachmentType")
 	private final Set<IAttachmentType> pPodEntitiesWideAttachmentTypes = newHashSet();
 
-	public boolean addOTUSet(final IOTUSet otuSet) {
+	/** {@inheritDoc} */
+	public void addOTUSet(final IOTUSet otuSet) {
 		checkNotNull(otuSet);
-		if (getOTUSets().contains(otuSet)) {
-			return false;
-		} else {
-			otuSets.add(otuSet);
-			return true;
-		}
+		checkArgument(!getOTUSets().contains(otuSet),
+				"this study already contains otu set [" + otuSet.getLabel()
+						+ "]");
+		otuSets.add(otuSet);
 	}
 
 	/**

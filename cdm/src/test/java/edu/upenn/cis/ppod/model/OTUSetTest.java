@@ -443,20 +443,12 @@ public class OTUSetTest {
 
 		otuSet.setVersionInfo(pPodVersionInfoProvider.get());
 
-		final boolean returnedBoolean = otuSet.removeTreeSet(treeSet1);
-
-		assertTrue(returnedBoolean);
+		otuSet.removeTreeSet(treeSet1);
 
 		assertTrue(otuSet.isInNeedOfNewVersion());
 
 		assertEquals(otuSet.getTreeSets(),
 						ImmutableSet.of(treeSet0, treeSet2));
-
-		otuSet.unsetInNeedOfNewVersion();
-
-		final boolean returnedBoolean2 = otuSet.removeTreeSet(treeSet1);
-		assertFalse(returnedBoolean2);
-		assertFalse(otuSet.isInNeedOfNewVersion());
 
 	}
 

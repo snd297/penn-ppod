@@ -31,10 +31,9 @@ public interface IOTUSets {
 	 * 
 	 * @param otuSet to be added
 	 * 
-	 * @return {@code true} if this set did not already contain the specified
-	 *         element, {@code false} otherwise
+	 * @throws IllegalArgumentException if this already contains an the OTU set
 	 */
-	boolean addOTUSet(IOTUSet otuSet);
+	void addOTUSet(IOTUSet otuSet);
 
 	/**
 	 * Get the OTU sets contained in this {@code IOTUSets}.

@@ -34,9 +34,10 @@ public interface IStudy extends ILabeled, IOTUSets, IUUPPodEntity {
 	 * 
 	 * @param otuSet to be removed
 	 * 
-	 * @return {@code true} if the study contained the specified OTU set
+	 * @throw IllegalArgumentException if this study does not contain the OTU
+	 *        set
 	 */
-	boolean removeOTUSet(final IOTUSet otuSet);
+	void removeOTUSet(final IOTUSet otuSet);
 
 	/**
 	 * Set the label.
