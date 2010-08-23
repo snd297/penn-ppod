@@ -92,7 +92,7 @@ public final class HibernateSessionPerRequestFilter implements Filter {
 				logger.warn("transaction committed");
 			}
 
-		} catch (final Throwable ex) {
+		} catch (Throwable ex) {
 			try {
 				if (sf.getCurrentSession().getTransaction().isActive()) {
 					logger

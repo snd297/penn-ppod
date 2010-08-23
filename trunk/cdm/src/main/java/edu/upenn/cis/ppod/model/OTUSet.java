@@ -142,8 +142,8 @@ public class OTUSet
 	private final List<IOTU> otus = newArrayList();
 
 	@ManyToOne(
-			fetch = FetchType.LAZY,
-			optional = false,
+				fetch = FetchType.LAZY,
+				optional = false,
 			targetEntity = Study.class)
 	@JoinColumn(name = Study.JOIN_COLUMN)
 	private IStudy parent;
@@ -418,14 +418,14 @@ public class OTUSet
 		return false;
 	}
 
-	public boolean removeTreeSet(final ITreeSet treeSet) {
+	public void removeTreeSet(final ITreeSet treeSet) {
 		checkNotNull(treeSet);
-		if (getTreeSetsModifiable().remove(treeSet)) {
-			treeSet.setParent(null);
-			setInNeedOfNewVersion();
-			return true;
-		}
-		return false;
+		checkArgument(getTreeSets().contains(treeSet),
+				"otu set does not contain the given tree set ["
+						+ treeSet.getLabel() + "]");
+		treeSets.remove(treeSet);
+		treeSet.setParent(null);
+		setInNeedOfNewVersion();
 	}
 
 	/** {@inheritDoc} */

@@ -20,6 +20,7 @@ import java.util.Set;
 
 import javax.xml.bind.annotation.adapters.XmlJavaTypeAdapter;
 
+import edu.umd.cs.findbugs.annotations.CheckForNull;
 import edu.umd.cs.findbugs.annotations.Nullable;
 import edu.upenn.cis.ppod.model.OTUSet;
 
@@ -33,6 +34,9 @@ public interface IOTUSet
 	 * Handles the {@code IDNAMatrix->IOTUSet} side of the relationship.
 	 * 
 	 * @param matrix to be added
+	 * 
+	 * @throws IllegalArgumentException if this otu set already contains the
+	 *             matrix
 	 */
 	void addDNAMatrix(IDNAMatrix matrix);
 
@@ -86,6 +90,7 @@ public interface IOTUSet
 	 * 
 	 * @return the description
 	 */
+	@CheckForNull
 	String getDescription();
 
 	Set<IDNAMatrix> getDNAMatrices();
@@ -108,6 +113,11 @@ public interface IOTUSet
 	 */
 	List<IOTU> getOTUs();
 
+	/**
+	 * Get the standard matrices contained in this OTU set.
+	 * 
+	 * @return the standard matrices contained in this OTU set
+	 */
 	Set<IStandardMatrix> getStandardMatrices();
 
 	/**
@@ -152,17 +162,17 @@ public interface IOTUSet
 	 * 
 	 * @param matrix to be removed
 	 * 
-	 * @return {@code true} if this OTU set contained the specified tree set,
-	 *         {@code false} otherwise
+	 * @throws IllegalArgumentException if the tree set does not belong to this
+	 *             otu set
 	 */
-	boolean removeTreeSet(ITreeSet treeSet);
+	void removeTreeSet(ITreeSet treeSet);
 
 	/**
 	 * Setter.
 	 * 
 	 * @param description the description
 	 */
-	void setDescription(@Nullable String description);
+	void setDescription(@CheckForNull String description);
 
 	/**
 	 * Set the label of this OTU set

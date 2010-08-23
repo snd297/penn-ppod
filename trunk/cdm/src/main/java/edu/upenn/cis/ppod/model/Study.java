@@ -15,6 +15,7 @@
  */
 package edu.upenn.cis.ppod.model;
 
+import static com.google.common.base.Preconditions.checkArgument;
 import static com.google.common.base.Preconditions.checkNotNull;
 import static com.google.common.collect.Lists.newArrayList;
 import static com.google.common.collect.Sets.newHashSet;
@@ -27,7 +28,7 @@ import javax.persistence.CascadeType;
 import javax.persistence.Column;
 import javax.persistence.Entity;
 import javax.persistence.OneToMany;
-import javax.persistence.OrderBy;
+import javax.persistence.OrderColumn;
 import javax.persistence.Table;
 import javax.persistence.Transient;
 import javax.xml.bind.Marshaller;
@@ -74,7 +75,7 @@ public class Study
 			cascade = CascadeType.ALL,
 			orphanRemoval = true,
 			targetEntity = OTUSet.class)
-	@OrderBy("position")
+	@OrderColumn(name = "POSITION")
 	private final List<IOTUSet> otuSets = newArrayList();
 
 	@Transient
@@ -94,17 +95,15 @@ public class Study
 	}
 
 	/** {@inheritDoc} */
-	public boolean addOTUSet(final IOTUSet otuSet) {
+	public void addOTUSet(final IOTUSet otuSet) {
 		checkNotNull(otuSet);
-		if (getOTUSets().contains(otuSet)) {
-			return false;
-		} else {
-			otuSets.add(otuSet);
-			otuSet.setParent(this);
-			otuSet.setPosition(otuSets.size() - 1);
-			setInNeedOfNewVersion();
-			return true;
-		}
+		checkArgument(!getOTUSets().contains(otuSet),
+				"this study already contains otu set [" + otuSet.getLabel()
+						+ "]");
+		otuSets.add(otuSet);
+		otuSet.setParent(this);
+		otuSet.setPosition(otuSets.size() - 1);
+		setInNeedOfNewVersion();
 	}
 
 	/**
@@ -134,7 +133,6 @@ public class Study
 	 */
 	@Override
 	protected boolean beforeMarshal(final Marshaller m) {
-		// super.beforeMarshal(m);
 		if (attachmentNamespaces.size() == 0) {
 			PPodEntitiesUtil.extractAttachmentInfoFromAttachee(
 					attachmentNamespaces,
@@ -175,14 +173,20 @@ public class Study
 	}
 
 	/** {@inheritDoc} */
-	public boolean removeOTUSet(final IOTUSet otuSet) {
-		if (otuSets.remove(otuSet)) {
-			otuSet.setParent(null);
-			otuSet.setPosition(null);
-			setInNeedOfNewVersion();
-			return true;
+	public void removeOTUSet(final IOTUSet otuSet) {
+		checkNotNull(otuSet);
+		checkArgument(getOTUSets().contains(otuSet),
+				"this study does not contain otu set [" + otuSet.getLabel()
+						+ "]");
+		otuSets.remove(otuSet);
+		otuSet.setParent(null);
+		otuSet.setPosition(null);
+		setInNeedOfNewVersion();
+		int otuSetPos = -1;
+		for (final IOTUSet containedOTUSet : getOTUSets()) {
+			otuSetPos++;
+			containedOTUSet.setPosition(otuSetPos);
 		}
-		return false;
 	}
 
 	/** {@inheritDoc} */
