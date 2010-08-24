@@ -82,6 +82,7 @@ final class Study2StudyInfo implements IStudy2StudyInfo {
 			studyInfo.getOTUSetInfos().add(otuSetInfo);
 			otuSetInfo.setEntityId(otuSet.getId());
 			otuSetInfo.setPPodId(otuSet.getPPodId());
+			otuSetInfo.setDocId(otuSet.getDocId());
 			otuSetInfo.setVersion(otuSet.getVersionInfo()
 					.getVersion());
 			for (final IOTU otu : otuSet.getOTUs()) {
@@ -113,10 +114,10 @@ final class Study2StudyInfo implements IStudy2StudyInfo {
 							pPodEntityInfoProvider.get();
 					characterInfo.setPPodId(standardCharacter.getPPodId());
 					characterInfo.setEntityId(standardCharacter.getId());
-					characterInfo.setVersion(standardCharacter.getVersionInfo()
-							.getVersion());
-					matrixInfo.getCharacterInfosByIdx().put(characterIdx,
-							characterInfo);
+					characterInfo.setVersion(
+							standardCharacter.getVersionInfo().getVersion());
+					matrixInfo.getCharacterInfosByIdx()
+							.put(characterIdx, characterInfo);
 				}
 
 				for (int columnPosition = 0; columnPosition < matrix
