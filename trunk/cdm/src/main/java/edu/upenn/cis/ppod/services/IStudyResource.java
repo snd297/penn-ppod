@@ -28,7 +28,6 @@ import javax.ws.rs.Produces;
 import org.jboss.resteasy.annotations.GZIP;
 
 import edu.upenn.cis.ppod.imodel.IStudy;
-import edu.upenn.cis.ppod.model.Study;
 import edu.upenn.cis.ppod.services.ppodentity.StudyInfo;
 import edu.upenn.cis.ppod.thirdparty.util.Pretty;
 
@@ -50,7 +49,7 @@ public interface IStudyResource {
 	@GZIP
 	@Consumes("application/xml")
 	@Produces("application/xml")
-	StudyInfo createStudy(@Pretty @GZIP Study study);
+	StudyInfo createStudy(@Pretty @GZIP IStudy study);
 
 	/**
 	 * Get the {@link Study} that has the given pPOD ID.
@@ -87,6 +86,6 @@ public interface IStudyResource {
 	@Consumes("application/xml")
 	@Produces("application/xml")
 	StudyInfo updateStudy(
-			@Pretty @GZIP Study study,
+			@Pretty @GZIP IStudy study,
 			@PathParam("pPodId") String pPodId);
 }

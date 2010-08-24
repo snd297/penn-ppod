@@ -55,15 +55,15 @@ final class StudyDAOHibernate
 		return results;
 	}
 
-	public Study getStudyByPPodId(final String pPodId) {
-		return (Study) getSession()
+	public IStudy getStudyByPPodId(final String pPodId) {
+		return (IStudy) getSession()
 				.getNamedQuery(
 						Study.class.getSimpleName() + "-getByPPodId")
 				.setParameter("pPodId", pPodId)
 				.uniqueResult();
 	}
 
-	public Study getStudyByPPodIdEager(final String pPodId) {
+	public IStudy getStudyByPPodIdEager(final String pPodId) {
 		throw new UnsupportedOperationException();
 		// return (Study) getSession()
 		// .createCriteria(Study.class)

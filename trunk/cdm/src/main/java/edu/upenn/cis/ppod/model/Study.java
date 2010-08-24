@@ -95,6 +95,19 @@ public class Study
 	}
 
 	/** {@inheritDoc} */
+	public void addOTUSet(final int pos, final IOTUSet otuSet) {
+		checkNotNull(otuSet);
+		checkArgument(pos >= 0, "pos< 0");
+		checkArgument(!getOTUSets().contains(otuSet),
+				"this study already contains otu set [" + otuSet.getLabel()
+						+ "]");
+		otuSets.add(pos, otuSet);
+		otuSet.setParent(this);
+		ModelUtil.adjustPositions(otuSets);
+		setInNeedOfNewVersion();
+	}
+
+	/** {@inheritDoc} */
 	public void addOTUSet(final IOTUSet otuSet) {
 		checkNotNull(otuSet);
 		checkArgument(!getOTUSets().contains(otuSet),
@@ -182,11 +195,7 @@ public class Study
 		otuSet.setParent(null);
 		otuSet.setPosition(null);
 		setInNeedOfNewVersion();
-		int otuSetPos = -1;
-		for (final IOTUSet containedOTUSet : getOTUSets()) {
-			otuSetPos++;
-			containedOTUSet.setPosition(otuSetPos);
-		}
+		ModelUtil.adjustPositions(otuSets);
 	}
 
 	/** {@inheritDoc} */

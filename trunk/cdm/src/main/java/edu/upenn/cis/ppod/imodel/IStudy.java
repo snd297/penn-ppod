@@ -46,4 +46,7 @@ public interface IStudy extends ILabeled, IOTUSets, IUUPPodEntity {
 	 */
 	void setLabel(final String label);
 
+
+	void addOTUSet(int pos, IOTUSet otuSet);
+
 }
