@@ -15,6 +15,7 @@
  */
 package edu.upenn.cis.ppod.imodel;
 
+import edu.umd.cs.findbugs.annotations.CheckForNull;
 import edu.umd.cs.findbugs.annotations.Nullable;
 
 /**
@@ -39,7 +40,7 @@ public interface IChild<P> extends IPPodEntity {
 	 * Generally, there is no reason for client code to call this method as the
 	 * parent-child relationships are managed by the parents' adder/setters.
 	 */
-	void setParent(@Nullable P parent);
+	void setParent(@CheckForNull P parent);
 
 	/**
 	 * Mark this and {@link #getParent()} as in need of a new pPOD version.
