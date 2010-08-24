@@ -44,6 +44,7 @@ import javax.xml.bind.annotation.adapters.XmlAdapter;
 
 import com.google.common.annotations.VisibleForTesting;
 
+import edu.umd.cs.findbugs.annotations.CheckForNull;
 import edu.umd.cs.findbugs.annotations.Nullable;
 import edu.upenn.cis.ppod.imodel.IChild;
 import edu.upenn.cis.ppod.imodel.IDNAMatrix;
@@ -108,6 +109,7 @@ public class OTUSet
 
 	/** Nullable free-form description. */
 	@Column(name = DESCRIPTION_COLUMN, nullable = true)
+	@CheckForNull
 	private String description;
 
 	@OneToMany(
@@ -132,6 +134,7 @@ public class OTUSet
 	 * OTU set labels are unique within a particular {@code IStudy}
 	 */
 	@Column(name = "LABEL", nullable = false)
+	@Nullable
 	private String label;
 
 	/** The OTUs in this OTU set. */
@@ -148,6 +151,7 @@ public class OTUSet
 				optional = false,
 			targetEntity = Study.class)
 	@JoinColumn(name = Study.JOIN_COLUMN)
+	@Nullable
 	private IStudy parent;
 
 	/** The tree sets that reference this OTU set. */
@@ -160,6 +164,7 @@ public class OTUSet
 	private final List<ITreeSet> treeSets = newArrayList();
 
 	@Column(name = "POSITION")
+	@Nullable
 	private Integer position;
 
 	/**
@@ -319,7 +324,7 @@ public class OTUSet
 	public void addTreeSet(final ITreeSet treeSet) {
 		checkNotNull(treeSet);
 		checkArgument(
-				!treeSets.contains(treeSets),
+				!treeSets.contains(treeSet),
 				"otu set already contains the tree set ["
 						+ treeSet.getLabel() + "]");
 		getTreeSetsModifiable().add(treeSet);
@@ -414,12 +419,7 @@ public class OTUSet
 		return otus;
 	}
 
-	/**
-	 * Get the study to which this OTU set belongs. Will be {@code null} when
-	 * this OTU set does not belong to a {@code Study}.
-	 * 
-	 * @return the study to which this OTU set belongs
-	 */
+	/** {@inheritDoc} */
 	public IStudy getParent() {
 		return parent;
 	}
