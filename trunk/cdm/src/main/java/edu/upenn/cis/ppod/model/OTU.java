@@ -101,7 +101,7 @@ public class OTU
 	public void afterUnmarshal(
 			@CheckForNull final Unmarshaller u,
 			final Object parent) {
-		this.parent = (OTUSet) parent;
+		this.parent = (IOTUSet) parent;
 	}
 
 	/**
@@ -121,8 +121,8 @@ public class OTU
 	 * 
 	 * @return the {@code OTUSet} that owns this {@code OTU}
 	 */
-	public OTUSet getParent() {
-		return (OTUSet) parent;
+	public IOTUSet getParent() {
+		return (IOTUSet) parent;
 	}
 
 	/**

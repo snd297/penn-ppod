@@ -41,7 +41,7 @@ import edu.upenn.cis.ppod.model.VersionInfo;
  */
 final class Study2StudyInfo implements IStudy2StudyInfo {
 
-	private final Provider<MolecularSequenceSetInfo> molecularSequenceSetInfoProvider;
+	private final Provider<SequenceSetInfo> molecularSequenceSetInfoProvider;
 	private final Provider<TreeSetInfo> treeSetInfoProvider;
 	private final Provider<PPodEntityInfo> pPodEntityInfoProvider;
 	private final Provider<PPodEntityInfoWDocId> pPodEntityInfoWDocIdProvider;
@@ -53,7 +53,7 @@ final class Study2StudyInfo implements IStudy2StudyInfo {
 	Study2StudyInfo(
 			final Provider<OTUSetInfo> otuSetPPodIdAndVersionProvider,
 			final Provider<MatrixInfo> matrixPPodIdAndVersionProvider,
-			final Provider<MolecularSequenceSetInfo> molecularSequenceSetInfoProvider,
+			final Provider<SequenceSetInfo> molecularSequenceSetInfoProvider,
 			final Provider<TreeSetInfo> treeSetInfoProvider,
 			final Provider<PPodEntityInfo> pPodEntityInfoProvider,
 			final Provider<PPodEntityInfoWDocId> pPodEntityInfoWDocIdProvider,
@@ -197,7 +197,7 @@ final class Study2StudyInfo implements IStudy2StudyInfo {
 			// MolecularSequenceSets
 			for (final IDNASequenceSet dnaSequenceSet : otuSet
 					.getDNASequenceSets()) {
-				final MolecularSequenceSetInfo sequenceSetInfo =
+				final SequenceSetInfo sequenceSetInfo =
 						molecularSequenceSetInfoProvider.get();
 				otuSetInfo.getSequenceSetInfos().add(sequenceSetInfo);
 				sequenceSetInfo.setPPodId(dnaSequenceSet.getPPodId());

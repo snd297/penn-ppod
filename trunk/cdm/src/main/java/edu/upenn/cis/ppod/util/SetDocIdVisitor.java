@@ -18,7 +18,6 @@ package edu.upenn.cis.ppod.util;
 import edu.upenn.cis.ppod.imodel.IAttachmentNamespace;
 import edu.upenn.cis.ppod.imodel.IAttachmentType;
 import edu.upenn.cis.ppod.imodel.IOTU;
-import edu.upenn.cis.ppod.imodel.IStandardCharacter;
 import edu.upenn.cis.ppod.imodel.IStandardState;
 
 /**
@@ -28,7 +27,7 @@ import edu.upenn.cis.ppod.imodel.IStandardState;
  * 
  * @author Sam Donnelly
  */
-final class SetXmlIdVisitor extends EmptyVisitor implements ISetXmlIdVisitor {
+final class SetDocIdVisitor extends EmptyVisitor implements ISetDocIdVisitor {
 
 	/**
 	 * Call {@link IOTU#setXmlId()}
@@ -39,18 +38,6 @@ final class SetXmlIdVisitor extends EmptyVisitor implements ISetXmlIdVisitor {
 	public void visitOTU(final IOTU otu) {
 		if (otu.getDocId() == null) {
 			otu.setDocId();
-		}
-	}
-
-	/**
-	 * Call {@link StandardCharacter#setXmlId()}
-	 * 
-	 * @param character target
-	 */
-	@Override
-	public void visitStandardCharacter(final IStandardCharacter character) {
-		if (character.getDocId() == null) {
-			character.setDocId();
 		}
 	}
 

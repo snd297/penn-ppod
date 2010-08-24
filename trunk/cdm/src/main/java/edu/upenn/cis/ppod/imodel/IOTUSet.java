@@ -70,12 +70,29 @@ public interface IOTUSet
 	void addOTU(IOTU otu);
 
 	/**
+	 * Add {@code matrix} to this {@code OTUSet} at the given position.
+	 * <p>
+	 * Also handles the {@code IStandardMatrix->IOTUSet} side of the
+	 * relationship.
+	 * 
+	 * @param pos where to insert the matrix
+	 * @param matrix matrix we're adding
+	 * 
+	 * @throw IllegalArgumentException if this OTU set already contains the
+	 *        matrix
+	 */
+	void addStandardMatrix(int pos, IStandardMatrix matrix);
+
+	/**
 	 * Add {@code matrix} to this {@code OTUSet}.
 	 * <p>
 	 * Also handles the {@code IStandardMatrix->IOTUSet} side of the
 	 * relationship.
 	 * 
 	 * @param matrix matrix we're adding
+	 * 
+	 * @throw IllegalArgumentException if this OTU set already contains the
+	 *        matrix
 	 */
 	void addStandardMatrix(IStandardMatrix matrix);
 
@@ -121,7 +138,7 @@ public interface IOTUSet
 	 * 
 	 * @return the standard matrices contained in this OTU set
 	 */
-	Set<IStandardMatrix> getStandardMatrices();
+	List<IStandardMatrix> getStandardMatrices();
 
 	/**
 	 * Get the tree sets contained in this OTU set.
@@ -154,11 +171,10 @@ public interface IOTUSet
 	 * Remove {@code matrix} from this OTU set.
 	 * 
 	 * @param matrix to be removed
-	 * 
-	 * @return {@code true} if this OTU set contained the specified matrix,
-	 *         {@code false} otherwise
+	 * @throws IllegalArgumentException if this OTU set does not contain the
+	 *             matrix
 	 */
-	boolean removeStandardMatrix(IStandardMatrix matrix);
+	void removeStandardMatrix(IStandardMatrix matrix);
 
 	/**
 	 * Remove {@code treeSet} from this OTU set.

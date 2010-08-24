@@ -24,7 +24,7 @@ import com.google.inject.ImplementedBy;
  * 
  * @author Sam Donnelly
  */
-@ImplementedBy(SetXmlIdVisitor.class)
-public interface ISetXmlIdVisitor extends IVisitor {
+@ImplementedBy(SetDocIdVisitor.class)
+public interface ISetDocIdVisitor extends IVisitor {
 
 }

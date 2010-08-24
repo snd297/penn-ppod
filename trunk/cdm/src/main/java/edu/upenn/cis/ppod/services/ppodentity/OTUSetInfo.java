@@ -33,17 +33,12 @@ import javax.xml.bind.annotation.XmlRootElement;
 @XmlAccessorType(XmlAccessType.NONE)
 public final class OTUSetInfo extends PPodEntityInfoWDocId {
 
-
 	/** Order matters for these. */
 	private final List<PPodEntityInfoWDocId> otuInfos = newArrayList();
 
-	/**
-	 * The pPOD version of char matrix {@code data} is {@code
-	 * matrixInfosByDocId.get(PPodUtil.getPPodId(data))}.
-	 */
-	private Set<MatrixInfo> matrixInfos = newHashSet();
+	private final Set<MatrixInfo> matrixInfos = newHashSet();
 
-	private final Set<MolecularSequenceSetInfo> sequenceSetInfos = newHashSet();
+	private final Set<SequenceSetInfo> sequenceSetInfos = newHashSet();
 
 	private final Set<TreeSetInfo> treeSetInfos = newHashSet();
 
@@ -66,19 +61,13 @@ public final class OTUSetInfo extends PPodEntityInfoWDocId {
 	}
 
 	@XmlElement(name = "sequenceSetInfo")
-	public Set<MolecularSequenceSetInfo> getSequenceSetInfos() {
+	public Set<SequenceSetInfo> getSequenceSetInfos() {
 		return sequenceSetInfos;
 	}
 
 	@XmlElement(name = "treeSetInfo")
 	public Set<TreeSetInfo> getTreeSetInfos() {
 		return treeSetInfos;
-	}
-
-	public OTUSetInfo setMatrixInfos(
-			final Set<MatrixInfo> matrixInfos) {
-		this.matrixInfos = matrixInfos;
-		return this;
 	}
 
 	/**

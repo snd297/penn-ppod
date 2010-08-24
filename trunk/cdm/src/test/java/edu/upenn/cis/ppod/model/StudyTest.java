@@ -26,6 +26,7 @@ import com.google.inject.Inject;
 import com.google.inject.Provider;
 
 import edu.upenn.cis.ppod.TestGroupDefs;
+import edu.upenn.cis.ppod.imodel.IOTUSet;
 import edu.upenn.cis.ppod.imodel.IStudy;
 
 /**
@@ -43,7 +44,7 @@ public class StudyTest {
 	@Test
 	public void removeOTUSet() {
 		final IStudy study = studyProvider.get();
-		final OTUSet otuSet = otuSetProvider.get();
+		final IOTUSet otuSet = otuSetProvider.get();
 		study.addOTUSet(otuSet);
 		study.unsetInNeedOfNewVersion();
 		study.removeOTUSet(otuSet);
@@ -74,7 +75,7 @@ public class StudyTest {
 	@Test
 	public void addOTUSet() {
 		final IStudy study = studyProvider.get();
-		final OTUSet otuSet = otuSetProvider.get();
+		final IOTUSet otuSet = otuSetProvider.get();
 		study.unsetInNeedOfNewVersion();
 
 		study.addOTUSet(otuSet);

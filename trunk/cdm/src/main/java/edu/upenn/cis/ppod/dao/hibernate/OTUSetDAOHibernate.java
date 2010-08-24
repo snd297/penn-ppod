@@ -28,8 +28,8 @@ public class OTUSetDAOHibernate
 		extends GenericHibernateDAO<IOTUSet, Long>
 		implements IOTUSetDAOHibernate {
 
-	public OTUSet getOTUSetByPPodId(final String pPodId) {
-		return (OTUSet) getSession().getNamedQuery(
+	public IOTUSet getOTUSetByPPodId(final String pPodId) {
+		return (IOTUSet) getSession().getNamedQuery(
 				OTUSet.class.getSimpleName() + "-getByPPodId")
 				.setParameter("pPodId", pPodId).uniqueResult();
 	}

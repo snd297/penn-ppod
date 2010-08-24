@@ -128,7 +128,7 @@ public class TreeSet
 	protected void afterUnmarshal(
 			@CheckForNull final Unmarshaller u,
 			final Object parent) {
-		this.parent = (OTUSet) parent;
+		this.parent = (IOTUSet) parent;
 	}
 
 	/**

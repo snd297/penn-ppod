@@ -35,7 +35,7 @@ import edu.upenn.cis.ppod.imodel.IStandardMatrix;
 import edu.upenn.cis.ppod.imodel.ITreeSet;
 import edu.upenn.cis.ppod.services.ppodentity.PPodEntities;
 import edu.upenn.cis.ppod.thirdparty.util.HibernateUtil;
-import edu.upenn.cis.ppod.util.ISetXmlIdVisitor;
+import edu.upenn.cis.ppod.util.ISetDocIdVisitor;
 import edu.upenn.cis.ppod.util.IVisitor;
 
 /**
@@ -53,9 +53,9 @@ class PPodEntitiesResourceHibernate implements
 
 	@Inject
 	PPodEntitiesResourceHibernate(final Provider<PPodEntities> pPodEntities,
-			final ISetXmlIdVisitor setXmlIdVisitor) {
+			final ISetDocIdVisitor setDocIdVisitor) {
 		this.pPodEntitiesProvider = pPodEntities;
-		this.setDocIdVisitor = setXmlIdVisitor;
+		this.setDocIdVisitor = setDocIdVisitor;
 	}
 
 	public PPodEntities getEntitiesByHqlQuery(final String query) {

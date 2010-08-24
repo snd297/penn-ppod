@@ -104,7 +104,7 @@ public class OTUSet
 			cascade = CascadeType.ALL,
 			orphanRemoval = true,
 			targetEntity = StandardMatrix.class)
-	private final Set<IStandardMatrix> standardMatrices = newHashSet();
+	private final List<IStandardMatrix> standardMatrices = newArrayList();
 
 	/** Nullable free-form description. */
 	@Column(name = DESCRIPTION_COLUMN, nullable = true)
@@ -228,10 +228,30 @@ public class OTUSet
 	public void addStandardMatrix(
 			final IStandardMatrix matrix) {
 		checkNotNull(matrix);
-		if (standardMatrices.add(matrix)) {
-			matrix.setParent(this);
-			setInNeedOfNewVersion();
-		}
+		checkArgument(
+				!standardMatrices.contains(matrix),
+				"otu set contains the matrix ["
+						+ matrix.getLabel() + "]");
+		standardMatrices.add(matrix);
+		matrix.setParent(this);
+		matrix.setPosition(standardMatrices.size() - 1);
+		setInNeedOfNewVersion();
+	}
+
+	/** {@inheritDoc} */
+	public void addStandardMatrix(
+			final int pos,
+			final IStandardMatrix matrix) {
+		checkNotNull(matrix);
+		checkArgument(pos >= 0, "pos < 0");
+		checkArgument(
+				!standardMatrices.contains(matrix),
+				"otu set contains the matrix ["
+						+ matrix.getLabel() + "]");
+		standardMatrices.add(pos, matrix);
+		matrix.setParent(this);
+		ModelUtil.adjustPositions(standardMatrices);
+		setInNeedOfNewVersion();
 	}
 
 	/** {@inheritDoc} */
@@ -252,8 +272,8 @@ public class OTUSet
 	public void afterUnmarshal(
 			@Nullable final Unmarshaller u,
 			final Object parent) {
-		checkNotNull(parent);
 		this.parent = (IStudy) parent;
+		ModelUtil.adjustPositions(getStandardMatrices());
 	}
 
 	@VisibleForTesting
@@ -342,12 +362,12 @@ public class OTUSet
 	}
 
 	/** {@inheritDoc} */
-	public Set<IStandardMatrix> getStandardMatrices() {
-		return Collections.unmodifiableSet(standardMatrices);
+	public List<IStandardMatrix> getStandardMatrices() {
+		return Collections.unmodifiableList(standardMatrices);
 	}
 
 	@XmlElement(name = "matrix")
-	protected Set<IStandardMatrix> getStandardMatricesModifiable() {
+	protected List<IStandardMatrix> getStandardMatricesModifiable() {
 		return standardMatrices;
 	}
 
@@ -405,14 +425,16 @@ public class OTUSet
 	 * @return {@code true} if this OTU set contained the specified matrix,
 	 *         {@code false} otherwise
 	 */
-	public boolean removeStandardMatrix(final IStandardMatrix matrix) {
+	public void removeStandardMatrix(final IStandardMatrix matrix) {
 		checkNotNull(matrix);
-		if (getStandardMatricesModifiable().remove(matrix)) {
-			matrix.setParent(null);
-			setInNeedOfNewVersion();
-			return true;
-		}
-		return false;
+		checkArgument(standardMatrices.contains(matrix),
+				"otu set does not contain the matirx [" + matrix.getLabel()
+						+ "]");
+		getStandardMatricesModifiable().remove(matrix);
+		matrix.setParent(null);
+		matrix.setPosition(null);
+		setInNeedOfNewVersion();
+		ModelUtil.adjustPositions(standardMatrices);
 	}
 
 	public void removeTreeSet(final ITreeSet treeSet) {

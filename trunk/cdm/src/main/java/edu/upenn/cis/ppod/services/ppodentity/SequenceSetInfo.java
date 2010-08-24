@@ -25,7 +25,7 @@ import javax.xml.bind.annotation.XmlElementWrapper;
  * @author Sam Donnelly
  * 
  */
-public class MolecularSequenceSetInfo extends PPodEntityInfoWDocId {
+public class SequenceSetInfo extends PPodEntityInfoWDocId {
 
 	private Map<String, Long> sequenceVersionsByOTUDocId = newHashMap();
 

@@ -296,7 +296,9 @@ final class CreateOrUpdateStudy implements ICreateOrUpdateStudy {
 								newVersionInfo.getNewVersionInfo());
 				dbMatrix.setPPodId();
 				dbMatrix.setLabel(incomingMatrix.getLabel());
-				dbOTUSet.addStandardMatrix(dbMatrix);
+				dbOTUSet.addStandardMatrix(
+						incomingMatrix.getPosition(),
+						dbMatrix);
 			}
 			createOrUpdateStandardMatrix
 					.createOrUpdateMatrix(dbMatrix, incomingMatrix);
