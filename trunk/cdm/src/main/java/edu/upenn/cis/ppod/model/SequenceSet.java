@@ -58,6 +58,7 @@ abstract class SequenceSet<S extends ISequence<?>>
 		extends UUPPodEntityWithDocId
 		implements ISequenceSet<S> {
 
+	@CheckForNull
 	@Column(name = "LABEL", nullable = false)
 	private String label;
 
@@ -66,6 +67,10 @@ abstract class SequenceSet<S extends ISequence<?>>
 	@JoinColumn(name = OTUSet.JOIN_COLUMN)
 	@Target(OTUSet.class)
 	private IOTUSet parent;
+
+	@Column(name = "POSITION", nullable = false)
+	@CheckForNull
+	private Integer position;
 
 	SequenceSet() {}
 
@@ -125,6 +130,11 @@ abstract class SequenceSet<S extends ISequence<?>>
 	@Nullable
 	public IOTUSet getParent() {
 		return parent;
+	}
+
+	/** {@inheritDoc} */
+	public Integer getPosition() {
+		return position;
 	}
 
 	/**
@@ -205,18 +215,23 @@ abstract class SequenceSet<S extends ISequence<?>>
 	}
 
 	/** {@inheritDoc} */
+	public void setParent(
+			@CheckForNull final IOTUSet parent) {
+		this.parent = parent;
+		updateOTUs();
+	}
+
+	/** {@inheritDoc} */
+	public void setPosition(final Integer position) {
+		this.position = position;
+	}
+
+	/** {@inheritDoc} */
 	public void updateOTUs() {
 		checkState(getOTUKeyedSequences() != null,
 					"getOTUKeyedSequences() == null, "
 							+ "so there are no sequences to operate on");
 
 		getOTUKeyedSequences().updateOTUs();
-	}
-
-	/** {@inheritDoc} */
-	public void setParent(
-			@CheckForNull final IOTUSet parent) {
-		this.parent = parent;
-		updateOTUs();
 	}
 }

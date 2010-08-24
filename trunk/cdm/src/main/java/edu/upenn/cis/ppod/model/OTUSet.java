@@ -24,7 +24,6 @@ import static com.google.common.collect.Lists.newArrayList;
 import static com.google.common.collect.Sets.newHashSet;
 import static edu.upenn.cis.ppod.util.PPodIterables.findIf;
 
-import java.util.Collection;
 import java.util.Collections;
 import java.util.List;
 import java.util.Set;
@@ -115,14 +114,14 @@ public class OTUSet
 			cascade = CascadeType.ALL,
 			orphanRemoval = true,
 			targetEntity = DNAMatrix.class)
-	private final Set<IDNAMatrix> dnaMatrices = newHashSet();
+	private final List<IDNAMatrix> dnaMatrices = newArrayList();
 
 	@OneToMany(
 			mappedBy = "parent",
 			cascade = CascadeType.ALL,
 			orphanRemoval = true,
 			targetEntity = DNASequenceSet.class)
-	private final Set<IDNASequenceSet> dnaSequenceSets = newHashSet();
+	private final List<IDNASequenceSet> dnaSequenceSets = newArrayList();
 
 	/**
 	 * Non-unique label.
@@ -154,7 +153,7 @@ public class OTUSet
 			cascade = CascadeType.ALL,
 			orphanRemoval = true,
 			targetEntity = TreeSet.class)
-	private final Set<ITreeSet> treeSets = newHashSet();
+	private final List<ITreeSet> treeSets = newArrayList();
 
 	@Column(name = "POSITION")
 	private Integer position;
@@ -178,20 +177,61 @@ public class OTUSet
 	/** {@inheritDoc} */
 	public void addDNAMatrix(final IDNAMatrix matrix) {
 		checkNotNull(matrix);
-		if (dnaMatrices.add(matrix)) {
-			matrix.setParent(this);
-			setInNeedOfNewVersion();
-		}
+		checkArgument(
+				!dnaMatrices.contains(matrix),
+				"otu set contains the matrix ["
+						+ matrix.getLabel() + "]");
+		dnaMatrices.add(matrix);
+		matrix.setPosition(dnaMatrices.size() - 1);
+		matrix.setParent(this);
+		setInNeedOfNewVersion();
+	}
+
+	/** {@inheritDoc} */
+	public void addDNAMatrix(
+			final int pos,
+			final IDNAMatrix matrix) {
+		checkNotNull(matrix);
+		checkArgument(pos >= 0, "pos < 0");
+		checkArgument(
+				!dnaMatrices.contains(matrix),
+				"otu set contains the matrix ["
+						+ matrix.getLabel() + "]");
+		dnaMatrices.add(pos, matrix);
+		matrix.setParent(this);
+		ModelUtil.adjustPositions(standardMatrices);
+		setInNeedOfNewVersion();
+	}
+
+	/** {@inheritDoc} */
+	public void addDNASequenceSet(
+			final int sequenceSetPos,
+			final IDNASequenceSet sequenceSet) {
+		checkNotNull(sequenceSet);
+		checkArgument(sequenceSetPos >= 0, "sequenceSetPos < 0");
+		checkArgument(
+				!dnaSequenceSets.contains(sequenceSet),
+				"otu set contains the matrix ["
+						+ sequenceSet.getLabel() + "]");
+		dnaSequenceSets.add(sequenceSet);
+		sequenceSet.setParent(this);
+		sequenceSet.setPosition(sequenceSetPos);
+		ModelUtil.adjustPositions(standardMatrices);
+		setInNeedOfNewVersion();
 	}
 
 	/** {@inheritDoc} */
 	public void addDNASequenceSet(
 			final IDNASequenceSet sequenceSet) {
 		checkNotNull(sequenceSet);
-		if (dnaSequenceSets.add(sequenceSet)) {
-			sequenceSet.setParent(this);
-			setInNeedOfNewVersion();
-		}
+		checkArgument(
+				!dnaSequenceSets.contains(sequenceSet),
+				"otu set contains the matrix ["
+						+ sequenceSet.getLabel() + "]");
+		dnaSequenceSets.add(sequenceSet);
+		sequenceSet.setParent(this);
+		sequenceSet.setPosition(dnaSequenceSets.size() - 1);
+		setInNeedOfNewVersion();
 	}
 
 	/**
@@ -226,20 +266,6 @@ public class OTUSet
 
 	/** {@inheritDoc} */
 	public void addStandardMatrix(
-			final IStandardMatrix matrix) {
-		checkNotNull(matrix);
-		checkArgument(
-				!standardMatrices.contains(matrix),
-				"otu set contains the matrix ["
-						+ matrix.getLabel() + "]");
-		standardMatrices.add(matrix);
-		matrix.setParent(this);
-		matrix.setPosition(standardMatrices.size() - 1);
-		setInNeedOfNewVersion();
-	}
-
-	/** {@inheritDoc} */
-	public void addStandardMatrix(
 			final int pos,
 			final IStandardMatrix matrix) {
 		checkNotNull(matrix);
@@ -255,12 +281,47 @@ public class OTUSet
 	}
 
 	/** {@inheritDoc} */
+	public void addStandardMatrix(
+			final IStandardMatrix matrix) {
+		checkNotNull(matrix);
+		checkArgument(
+				!standardMatrices.contains(matrix),
+				"otu set contains the matrix ["
+						+ matrix.getLabel() + "]");
+		standardMatrices.add(matrix);
+		matrix.setParent(this);
+		matrix.setPosition(standardMatrices.size() - 1);
+		setInNeedOfNewVersion();
+	}
+
+	/** {@inheritDoc} */
+	public void addTreeSet(
+			final int treeSetPos,
+			final ITreeSet treeSet) {
+		checkNotNull(treeSet);
+		checkArgument(treeSetPos >= 0, "pos < 0");
+		checkArgument(
+				!treeSets.contains(treeSet),
+				"otu set contains the tree set ["
+						+ treeSet.getLabel() + "]");
+		treeSets.add(treeSetPos, treeSet);
+		treeSet.setParent(this);
+		treeSet.setPosition(treeSetPos);
+		ModelUtil.adjustPositions(treeSets);
+		setInNeedOfNewVersion();
+	}
+
+	/** {@inheritDoc} */
 	public void addTreeSet(final ITreeSet treeSet) {
 		checkNotNull(treeSet);
-		if (getTreeSetsModifiable().add(treeSet)) {
-			treeSet.setParent(this);
-			setInNeedOfNewVersion();
-		}
+		checkArgument(
+				!treeSets.contains(treeSets),
+				"otu set already contains the tree set ["
+						+ treeSet.getLabel() + "]");
+		getTreeSetsModifiable().add(treeSet);
+		treeSet.setParent(this);
+		treeSet.setPosition(position);
+		setInNeedOfNewVersion();
 	}
 
 	/**
@@ -274,6 +335,9 @@ public class OTUSet
 			final Object parent) {
 		this.parent = (IStudy) parent;
 		ModelUtil.adjustPositions(getStandardMatrices());
+		ModelUtil.adjustPositions(getDNAMatrices());
+		ModelUtil.adjustPositions(getDNASequenceSets());
+		ModelUtil.adjustPositions(getTreeSets());
 	}
 
 	@VisibleForTesting
@@ -298,22 +362,22 @@ public class OTUSet
 	}
 
 	/** {@inheritDoc} */
-	public Set<IDNAMatrix> getDNAMatrices() {
-		return Collections.unmodifiableSet(dnaMatrices);
+	public List<IDNAMatrix> getDNAMatrices() {
+		return Collections.unmodifiableList(dnaMatrices);
 	}
 
 	@XmlElement(name = "dnaMatrix")
-	protected Collection<IDNAMatrix> getDNAMatricesModifiable() {
+	protected List<IDNAMatrix> getDNAMatricesModifiable() {
 		return dnaMatrices;
 	}
 
 	/** {@inheritDoc} */
-	public Set<IDNASequenceSet> getDNASequenceSets() {
-		return Collections.unmodifiableSet(dnaSequenceSets);
+	public List<IDNASequenceSet> getDNASequenceSets() {
+		return Collections.unmodifiableList(dnaSequenceSets);
 	}
 
 	@XmlElement(name = "dnaSequenceSet")
-	protected Set<IDNASequenceSet> getDNASequenceSetsModifiable() {
+	protected List<IDNASequenceSet> getDNASequenceSetsModifiable() {
 		return dnaSequenceSets;
 	}
 
@@ -372,31 +436,25 @@ public class OTUSet
 	}
 
 	/** {@inheritDoc} */
-	public Set<ITreeSet> getTreeSets() {
-		return Collections.unmodifiableSet(treeSets);
+	public List<ITreeSet> getTreeSets() {
+		return Collections.unmodifiableList(treeSets);
 	}
 
 	@XmlElement(name = "treeSet")
-	protected Set<ITreeSet> getTreeSetsModifiable() {
+	protected List<ITreeSet> getTreeSetsModifiable() {
 		return treeSets;
 	}
 
-	/**
-	 * Remove {@code matrix} from this OTU set.
-	 * 
-	 * @param matrix to be removed
-	 * 
-	 * @return {@code true} if this OTU set contained the specified matrix,
-	 *         {@code false} otherwise
-	 */
-	public boolean removeDNAMatrix(final IDNAMatrix matrix) {
+	/** {@inheritDoc} */
+	public void removeDNAMatrix(final IDNAMatrix matrix) {
 		checkNotNull(matrix);
-		if (getDNAMatricesModifiable().remove(matrix)) {
-			matrix.setParent(null);
-			setInNeedOfNewVersion();
-			return true;
-		}
-		return false;
+		checkArgument(dnaMatrices.contains(matrix),
+				"otu set does not contain the dna matrix [" + matrix.getLabel()
+						+ "]");
+		getDNAMatricesModifiable().remove(matrix);
+		matrix.setParent(null);
+		matrix.setPosition(null);
+		setInNeedOfNewVersion();
 	}
 
 	/**
@@ -428,7 +486,7 @@ public class OTUSet
 	public void removeStandardMatrix(final IStandardMatrix matrix) {
 		checkNotNull(matrix);
 		checkArgument(standardMatrices.contains(matrix),
-				"otu set does not contain the matirx [" + matrix.getLabel()
+				"otu set does not contain the matrix [" + matrix.getLabel()
 						+ "]");
 		getStandardMatricesModifiable().remove(matrix);
 		matrix.setParent(null);
@@ -437,6 +495,7 @@ public class OTUSet
 		ModelUtil.adjustPositions(standardMatrices);
 	}
 
+	/** {@inheritDoc} */
 	public void removeTreeSet(final ITreeSet treeSet) {
 		checkNotNull(treeSet);
 		checkArgument(getTreeSets().contains(treeSet),
@@ -444,6 +503,7 @@ public class OTUSet
 						+ treeSet.getLabel() + "]");
 		treeSets.remove(treeSet);
 		treeSet.setParent(null);
+		treeSet.setPosition(null);
 		setInNeedOfNewVersion();
 	}
 
@@ -503,6 +563,11 @@ public class OTUSet
 		return removedOTUs;
 	}
 
+	/** {@inheritDoc} */
+	public void setParent(@Nullable final IStudy parent) {
+		this.parent = parent;
+	}
+
 	private void setParentOnChildren() {
 		// Now let's let everyone know about the new OTUs
 		for (final IChild<IOTUSet> otu : getOTUs()) {
@@ -524,11 +589,6 @@ public class OTUSet
 		for (final IChild<IOTUSet> treeSet : getTreeSets()) {
 			treeSet.setParent(this);
 		}
-	}
-
-	/** {@inheritDoc} */
-	public void setParent(@Nullable final IStudy parent) {
-		this.parent = parent;
 	}
 
 	/** {@inheritDoc} */

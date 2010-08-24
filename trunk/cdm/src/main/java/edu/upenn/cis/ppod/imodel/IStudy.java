@@ -35,7 +35,8 @@ public interface IStudy extends ILabeled, IOTUSets, IUUPPodEntity {
 	 * @param pos where the OTU set should be inserted
 	 * @param otuSet to be inserted
 	 * 
-	 * @throws IllegalArgumentException if this already contains an the OTU set
+	 * @throws IllegalArgumentException if this study already contains the OTU
+	 *             set
 	 */
 	void addOTUSet(int pos, IOTUSet otuSet);
 

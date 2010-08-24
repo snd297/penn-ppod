@@ -16,7 +16,6 @@
 package edu.upenn.cis.ppod.imodel;
 
 import java.util.List;
-import java.util.Set;
 
 import javax.xml.bind.annotation.adapters.XmlJavaTypeAdapter;
 
@@ -40,6 +39,8 @@ public interface IOTUSet
 	 */
 	void addDNAMatrix(IDNAMatrix matrix);
 
+	void addDNAMatrix(int pos, IDNAMatrix matrix);
+
 	/**
 	 * Add an {@code IDNASequenceSet}.
 	 * <p>
@@ -47,8 +48,13 @@ public interface IOTUSet
 	 * relationship.
 	 * 
 	 * @param dnaSequenceSet the new {@code DNASequenceSet}
+	 * 
+	 * @throws IllegalArgumentException if this otu set already contains the
+	 *             matrix
 	 */
 	void addDNASequenceSet(IDNASequenceSet sequenceSet);
+
+	void addDNASequenceSet(int sequenceSetPos, IDNASequenceSet sequenceSet);
 
 	/**
 	 * Scaffolding code that does two things:
@@ -96,6 +102,8 @@ public interface IOTUSet
 	 */
 	void addStandardMatrix(IStandardMatrix matrix);
 
+	void addTreeSet(int treeSetPos, ITreeSet treeSet);
+
 	/**
 	 * Add a tree set to this OTU set.
 	 * <p>
@@ -113,9 +121,9 @@ public interface IOTUSet
 	@CheckForNull
 	String getDescription();
 
-	Set<IDNAMatrix> getDNAMatrices();
+	List<IDNAMatrix> getDNAMatrices();
 
-	Set<IDNASequenceSet> getDNASequenceSets();
+	List<IDNASequenceSet> getDNASequenceSets();
 
 	/**
 	 * Getter. {@code null} when the object is created. Once set, it will never
@@ -145,17 +153,17 @@ public interface IOTUSet
 	 * 
 	 * @return the tree sets contained in this OTU set
 	 */
-	Set<ITreeSet> getTreeSets();
+	List<ITreeSet> getTreeSets();
 
 	/**
 	 * Remove {@code matrix} from this OTU set.
 	 * 
 	 * @param matrix to be removed
 	 * 
-	 * @return {@code true} if this OTU set contained the specified matrix,
-	 *         {@code false} otherwise
+	 * @throws IllegalArgumentException if this OTU set does not contain the
+	 *             matrix
 	 */
-	boolean removeDNAMatrix(IDNAMatrix matrix);
+	void removeDNAMatrix(IDNAMatrix matrix);
 
 	/**
 	 * Remove {@code sequenceSet} from this OTU set.
@@ -211,6 +219,6 @@ public interface IOTUSet
 	 * @return any {@code OTU}s that were removed as a result of this operation,
 	 *         in their original order
 	 */
-	List<IOTU> setOTUs(final List<? extends IOTU> otus);
+	List<IOTU> setOTUs(List<? extends IOTU> otus);
 
 }
