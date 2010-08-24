@@ -27,6 +27,7 @@ import javax.xml.bind.annotation.XmlAttribute;
 import javax.xml.bind.annotation.adapters.XmlAdapter;
 
 import edu.umd.cs.findbugs.annotations.CheckForNull;
+import edu.umd.cs.findbugs.annotations.Nullable;
 import edu.upenn.cis.ppod.imodel.IOTU;
 import edu.upenn.cis.ppod.imodel.IOTUSet;
 import edu.upenn.cis.ppod.util.IVisitor;
@@ -71,6 +72,7 @@ public class OTU
 
 	/** Non-unique label. */
 	@Column(name = LABEL_COLUMN, nullable = false)
+	@Nullable
 	private String label;
 
 	/**
