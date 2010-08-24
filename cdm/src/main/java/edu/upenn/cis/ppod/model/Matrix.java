@@ -99,7 +99,7 @@ public abstract class Matrix<R extends IRow<C, ?>, C extends ICell<?, ?>>
 	@Target(OTUSet.class)
 	private IOTUSet parent;
 
-	@Column(name = "POSITION")
+	@Column(name = "POSITION", nullable = false)
 	private Integer position;
 
 	/** Default constructor. */
