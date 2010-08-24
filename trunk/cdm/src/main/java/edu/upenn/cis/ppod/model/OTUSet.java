@@ -103,6 +103,7 @@ public class OTUSet
 			cascade = CascadeType.ALL,
 			orphanRemoval = true,
 			targetEntity = StandardMatrix.class)
+	@OrderColumn(name = "POSITION")
 	private final List<IStandardMatrix> standardMatrices = newArrayList();
 
 	/** Nullable free-form description. */
@@ -114,6 +115,7 @@ public class OTUSet
 			cascade = CascadeType.ALL,
 			orphanRemoval = true,
 			targetEntity = DNAMatrix.class)
+	@OrderColumn(name = "POSITION")
 	private final List<IDNAMatrix> dnaMatrices = newArrayList();
 
 	@OneToMany(
@@ -121,6 +123,7 @@ public class OTUSet
 			cascade = CascadeType.ALL,
 			orphanRemoval = true,
 			targetEntity = DNASequenceSet.class)
+	@OrderColumn(name = "POSITION")
 	private final List<IDNASequenceSet> dnaSequenceSets = newArrayList();
 
 	/**
@@ -153,6 +156,7 @@ public class OTUSet
 			cascade = CascadeType.ALL,
 			orphanRemoval = true,
 			targetEntity = TreeSet.class)
+	@OrderColumn(name = "POSITION")
 	private final List<ITreeSet> treeSets = newArrayList();
 
 	@Column(name = "POSITION")
@@ -199,7 +203,7 @@ public class OTUSet
 						+ matrix.getLabel() + "]");
 		dnaMatrices.add(pos, matrix);
 		matrix.setParent(this);
-		ModelUtil.adjustPositions(standardMatrices);
+		ModelUtil.adjustPositions(dnaMatrices);
 		setInNeedOfNewVersion();
 	}
 
