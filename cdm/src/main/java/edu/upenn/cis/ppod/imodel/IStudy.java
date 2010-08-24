@@ -30,6 +30,16 @@ import edu.upenn.cis.ppod.services.ppodentity.IOTUSets;
 public interface IStudy extends ILabeled, IOTUSets, IUUPPodEntity {
 
 	/**
+	 * Insert an OTU set at the given position.
+	 * 
+	 * @param pos where the OTU set should be inserted
+	 * @param otuSet to be inserted
+	 * 
+	 * @throws IllegalArgumentException if this already contains an the OTU set
+	 */
+	void addOTUSet(int pos, IOTUSet otuSet);
+
+	/**
 	 * Remove an OTU set from this Study.
 	 * 
 	 * @param otuSet to be removed
@@ -45,8 +55,5 @@ public interface IStudy extends ILabeled, IOTUSets, IUUPPodEntity {
 	 * @param label the label to set
 	 */
 	void setLabel(final String label);
-
-
-	void addOTUSet(int pos, IOTUSet otuSet);
 
 }

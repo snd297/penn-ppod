@@ -97,9 +97,11 @@ public class Study
 	/** {@inheritDoc} */
 	public void addOTUSet(final int pos, final IOTUSet otuSet) {
 		checkNotNull(otuSet);
-		checkArgument(pos >= 0, "pos< 0");
-		checkArgument(!getOTUSets().contains(otuSet),
-				"this study already contains otu set [" + otuSet.getLabel()
+		checkArgument(pos >= 0, "pos < 0");
+		checkArgument(
+				!getOTUSets().contains(otuSet),
+				"this study already contains otu set ["
+						+ otuSet.getLabel()
 						+ "]");
 		otuSets.add(pos, otuSet);
 		otuSet.setParent(this);
