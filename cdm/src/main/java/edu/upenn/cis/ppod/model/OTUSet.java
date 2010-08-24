@@ -68,7 +68,7 @@ import edu.upenn.cis.ppod.util.IVisitor;
 @Entity
 @Table(name = OTUSet.TABLE)
 public class OTUSet
-		extends UUPPodEntityWithDocId
+		extends UUPPodEntity
 		implements IOTUSet {
 
 	public static class Adapter extends XmlAdapter<OTUSet, IOTUSet> {
@@ -196,9 +196,6 @@ public class OTUSet
 
 	/**
 	 * {@inheritDoc}
-	 * 
-	 * @throws IllegalArgumentException if this OTU set already has an OTU with
-	 *             {@code otu}'s label
 	 */
 	public void addOTU(final IOTU otu) {
 		checkNotNull(otu);
@@ -256,7 +253,7 @@ public class OTUSet
 			@Nullable final Unmarshaller u,
 			final Object parent) {
 		checkNotNull(parent);
-		this.parent = (Study) parent;
+		this.parent = (IStudy) parent;
 	}
 
 	@VisibleForTesting

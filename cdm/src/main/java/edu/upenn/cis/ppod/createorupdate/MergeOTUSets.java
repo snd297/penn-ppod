@@ -58,9 +58,6 @@ final class MergeOTUSets implements IMergeOTUSets {
 		targetOTUSet.setLabel(sourceOTUSet.getLabel());
 		targetOTUSet.setDescription(sourceOTUSet.getDescription());
 
-		// This is for a response to the service client.
-		targetOTUSet.setDocId(sourceOTUSet.getDocId());
-
 		final List<IOTU> newTargetOTUs =
 				newArrayListWithCapacity(sourceOTUSet.getOTUs().size());
 

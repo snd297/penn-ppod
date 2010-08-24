@@ -87,7 +87,7 @@ public class OTUSetTest {
 	@Inject
 	private Provider<Attachment> attachmentProvider;
 
-	private Study study;
+	private IStudy study;
 
 	@Inject
 	private Provider<TestVisitor> testVisitorProvider;

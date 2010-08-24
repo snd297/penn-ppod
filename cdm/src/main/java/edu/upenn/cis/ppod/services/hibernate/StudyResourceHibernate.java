@@ -41,7 +41,6 @@ import edu.upenn.cis.ppod.dao.hibernate.IVersionInfoDAOHibernate;
 import edu.upenn.cis.ppod.imodel.INewVersionInfo;
 import edu.upenn.cis.ppod.imodel.INewVersionInfoDB;
 import edu.upenn.cis.ppod.imodel.IStudy;
-import edu.upenn.cis.ppod.model.Study;
 import edu.upenn.cis.ppod.services.IStudyResource;
 import edu.upenn.cis.ppod.services.StringPair;
 import edu.upenn.cis.ppod.services.ppodentity.IStudy2StudyInfo;
@@ -128,7 +127,7 @@ final class StudyResourceHibernate implements IStudyResource {
 		this.setPPodVersionInfoVisitorFactory = setVersionInfoVisitorFactory;
 	}
 
-	public StudyInfo createStudy(final Study incomingStudy) {
+	public StudyInfo createStudy(final IStudy incomingStudy) {
 		return createOrUpdateStudy(incomingStudy);
 	}
 
@@ -149,7 +148,7 @@ final class StudyResourceHibernate implements IStudyResource {
 				}));
 	}
 
-	private StudyInfo createOrUpdateStudy(final Study incomingStudy) {
+	private StudyInfo createOrUpdateStudy(final IStudy incomingStudy) {
 		incomingStudy.accept(afterUnmarshalVisitorProvider.get());
 
 		final ICreateOrUpdateStudy createOrUpdateStudy =
@@ -170,7 +169,7 @@ final class StudyResourceHibernate implements IStudyResource {
 		return study2StudyInfo.toStudyInfo(dbStudy);
 	}
 
-	public StudyInfo updateStudy(final Study incomingStudy, final String pPodId) {
+	public StudyInfo updateStudy(final IStudy incomingStudy, final String pPodId) {
 		return createOrUpdateStudy(incomingStudy);
 	}
 

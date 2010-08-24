@@ -163,7 +163,7 @@ final class CreateOrUpdateStudy implements ICreateOrUpdateStudy {
 				dbOTUSet.setPPodId();
 				dbOTUSet.setLabel(incomingOTUSet.getLabel()); // non-null, do it
 																// now
-				dbStudy.addOTUSet(dbOTUSet);
+				dbStudy.addOTUSet(incomingOTUSet.getPosition(), dbOTUSet);
 				dao.makePersistent(dbOTUSet);
 			}
 

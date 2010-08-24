@@ -26,6 +26,7 @@ import com.google.inject.Inject;
 import com.google.inject.Provider;
 
 import edu.upenn.cis.ppod.TestGroupDefs;
+import edu.upenn.cis.ppod.imodel.IStudy;
 
 /**
  * @author Sam Donnelly
@@ -41,7 +42,7 @@ public class StudyTest {
 
 	@Test
 	public void removeOTUSet() {
-		final Study study = studyProvider.get();
+		final IStudy study = studyProvider.get();
 		final OTUSet otuSet = otuSetProvider.get();
 		study.addOTUSet(otuSet);
 		study.unsetInNeedOfNewVersion();
@@ -54,7 +55,7 @@ public class StudyTest {
 
 	@Test
 	public void setLabel() {
-		final Study study = studyProvider.get();
+		final IStudy study = studyProvider.get();
 		study.unsetInNeedOfNewVersion();
 		final String label = "otu-set-label";
 		study.setLabel(label);
@@ -72,7 +73,7 @@ public class StudyTest {
 
 	@Test
 	public void addOTUSet() {
-		final Study study = studyProvider.get();
+		final IStudy study = studyProvider.get();
 		final OTUSet otuSet = otuSetProvider.get();
 		study.unsetInNeedOfNewVersion();
 
