@@ -49,7 +49,7 @@ import edu.upenn.cis.ppod.thirdparty.util.HibernateUtil;
 import edu.upenn.cis.ppod.util.IAfterUnmarshalVisitor;
 import edu.upenn.cis.ppod.util.IPair;
 import edu.upenn.cis.ppod.util.ISetVersionInfoVisitor;
-import edu.upenn.cis.ppod.util.ISetXmlIdVisitor;
+import edu.upenn.cis.ppod.util.ISetDocIdVisitor;
 
 /**
  * @author Sam Donnelly
@@ -70,7 +70,7 @@ final class StudyResourceHibernate implements IStudyResource {
 
 	private final IStudy2StudyInfo study2StudyInfo;
 
-	private final ISetXmlIdVisitor setXmlIdVisitor;
+	private final ISetDocIdVisitor setDocIdVisitor;
 
 	private final INewVersionInfo newVersionInfo;
 
@@ -87,7 +87,7 @@ final class StudyResourceHibernate implements IStudyResource {
 			final ICreateOrUpdateStudy.IFactory createOrUpdateStudyFactory,
 			final IStudy2StudyInfo study2StudyInfo,
 			final IVersionInfoDAOHibernate versionInfoDAO,
-			final ISetXmlIdVisitor setXmlIdVisitor,
+			final ISetDocIdVisitor setDocIdVisitor,
 			final Provider<IAfterUnmarshalVisitor> afterUnmarshalVisitorProvider,
 			final INewVersionInfoDB.IFactory newVersionInfoFactory,
 			final ISetVersionInfoVisitor.IFactory setVersionInfoVisitorFactory,
@@ -117,7 +117,7 @@ final class StudyResourceHibernate implements IStudyResource {
 		this.saveOrUpdateStudyFactory = createOrUpdateStudyFactory;
 
 		this.study2StudyInfo = study2StudyInfo;
-		this.setXmlIdVisitor = setXmlIdVisitor;
+		this.setDocIdVisitor = setDocIdVisitor;
 		this.afterUnmarshalVisitorProvider = afterUnmarshalVisitorProvider;
 		this.stringPairFactory = stringPairFactory;
 
@@ -133,7 +133,7 @@ final class StudyResourceHibernate implements IStudyResource {
 
 	public IStudy getStudyByPPodId(final String pPodId) {
 		final IStudy study = studyDAO.getStudyByPPodId(pPodId);
-		study.accept(setXmlIdVisitor);
+		study.accept(setDocIdVisitor);
 		return study;
 	}
 

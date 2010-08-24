@@ -34,6 +34,7 @@ import com.google.inject.Inject;
 import com.google.inject.Provider;
 
 import edu.upenn.cis.ppod.TestGroupDefs;
+import edu.upenn.cis.ppod.imodel.IOTUSet;
 import edu.upenn.cis.ppod.imodel.IStandardCharacter;
 import edu.upenn.cis.ppod.util.TestVisitor;
 
@@ -121,7 +122,7 @@ public class PPodEntityTest {
 	 */
 	@Test(expectedExceptions = IllegalStateException.class)
 	public void getMarshalled() {
-		final OTUSet otuSet = otuSetProvider.get();
+		final IOTUSet otuSet = otuSetProvider.get();
 		((PersistentObject) otuSet).setUnmarshalled(true);
 		otuSet.getVersionInfo();
 	}
@@ -188,7 +189,7 @@ public class PPodEntityTest {
 
 	@Test
 	public void getVersion() {
-		final OTUSet otuSet = new OTUSet();
+		final IOTUSet otuSet = new OTUSet();
 		assertNull(otuSet.getVersion());
 
 		final VersionInfo versionInfo = new VersionInfo();
@@ -203,7 +204,7 @@ public class PPodEntityTest {
 
 	@Test
 	public void getVersionInfo() {
-		final OTUSet otuSet = new OTUSet();
+		final IOTUSet otuSet = new OTUSet();
 		final VersionInfo versionInfo = new VersionInfo();
 		otuSet.setVersionInfo(versionInfo);
 		assertSame(otuSet.getVersionInfo(), versionInfo);
@@ -242,7 +243,7 @@ public class PPodEntityTest {
 
 	@Test
 	public void accept() {
-		final OTUSet otuSet = new OTUSet();
+		final IOTUSet otuSet = new OTUSet();
 		final Attachment attachment0 = new Attachment();
 		final Attachment attachment1 = new Attachment();
 		final Attachment attachment2 = new Attachment();

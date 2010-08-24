@@ -22,7 +22,8 @@ import javax.xml.bind.annotation.adapters.XmlJavaTypeAdapter;
 import edu.upenn.cis.ppod.model.StandardMatrix;
 
 @XmlJavaTypeAdapter(StandardMatrix.Adapter.class)
-public interface IStandardMatrix extends IMatrix<IStandardRow, IStandardCell> {
+public interface IStandardMatrix
+		extends IMatrix<IStandardRow, IStandardCell>, IOrderedChild<IOTUSet> {
 
 	void afterUnmarshal();
 

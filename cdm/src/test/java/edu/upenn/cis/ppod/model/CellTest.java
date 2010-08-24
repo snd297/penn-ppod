@@ -36,6 +36,7 @@ import com.google.inject.Provider;
 import edu.upenn.cis.ppod.TestGroupDefs;
 import edu.upenn.cis.ppod.imodel.ICell;
 import edu.upenn.cis.ppod.imodel.IDNARow;
+import edu.upenn.cis.ppod.imodel.IOTUSet;
 
 @Test(groups = { TestGroupDefs.FAST })
 public class CellTest {
@@ -177,7 +178,7 @@ public class CellTest {
 
 		final DNAMatrix matrix = new DNAMatrix(new DNARows());
 		matrix.setColumnsSize(1);
-		final OTUSet otuSet = new OTUSet();
+		final IOTUSet otuSet = new OTUSet();
 		otuSet.addDNAMatrix(matrix);
 		otuSet.addOTU(new OTU().setLabel("otu-0"));
 

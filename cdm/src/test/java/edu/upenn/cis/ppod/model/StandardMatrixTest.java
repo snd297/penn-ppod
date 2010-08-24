@@ -36,6 +36,7 @@ import com.google.inject.Inject;
 import com.google.inject.Provider;
 
 import edu.upenn.cis.ppod.TestGroupDefs;
+import edu.upenn.cis.ppod.imodel.IOTUSet;
 import edu.upenn.cis.ppod.imodel.IStandardRow;
 import edu.upenn.cis.ppod.imodel.IStandardState;
 
@@ -72,7 +73,7 @@ public class StandardMatrixTest {
 	private StandardState.IFactory stateFactory;
 
 	@edu.umd.cs.findbugs.annotations.SuppressWarnings
-	private OTUSet otuSet012;
+	private IOTUSet otuSet012;
 	private OTU otu0;
 	private OTU otu1;
 	private OTU otu2;

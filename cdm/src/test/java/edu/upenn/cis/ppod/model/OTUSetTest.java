@@ -42,6 +42,7 @@ import edu.upenn.cis.ppod.imodel.IAttachment;
 import edu.upenn.cis.ppod.imodel.IDNAMatrix;
 import edu.upenn.cis.ppod.imodel.IDNASequenceSet;
 import edu.upenn.cis.ppod.imodel.IOTU;
+import edu.upenn.cis.ppod.imodel.IOTUSet;
 import edu.upenn.cis.ppod.imodel.IStandardMatrix;
 import edu.upenn.cis.ppod.imodel.IStudy;
 import edu.upenn.cis.ppod.imodel.ITreeSet;
@@ -177,7 +178,7 @@ public class OTUSetTest {
 
 	@Test
 	public void addOTU() {
-		final OTUSet otuSet = otuSetProvider.get();
+		final IOTUSet otuSet = otuSetProvider.get();
 		final StandardMatrix standardMatrix = standardMatrixProvider.get();
 		otuSet.addStandardMatrix(standardMatrix);
 
@@ -321,7 +322,7 @@ public class OTUSetTest {
 	@Test
 	public void removeDNASequenceSet() {
 
-		final OTUSet otuSet = otuSetProvider.get();
+		final IOTUSet otuSet = otuSetProvider.get();
 		final IDNASequenceSet dnaSequenceSet0 = dnaSequenceSetProvider.get();
 		otuSet.addDNASequenceSet(dnaSequenceSet0);
 		final IDNASequenceSet dnaSequenceSet1 = dnaSequenceSetProvider.get();
@@ -391,22 +392,15 @@ public class OTUSetTest {
 
 		study.unsetInNeedOfNewVersion();
 
-		boolean returnedBoolean = otuSet.removeStandardMatrix(matrix1);
+		otuSet.removeStandardMatrix(matrix1);
 
-		assertTrue(returnedBoolean);
 		assertTrue(otuSet.isInNeedOfNewVersion());
 		assertNull(matrix1.getParent());
+		assertNull(matrix1.getPosition());
 
 		assertEquals(
 				otuSet.getStandardMatrices(),
 				ImmutableSet.of(matrix0, matrix2));
-
-		otuSet.unsetInNeedOfNewVersion();
-
-		boolean returnedBoolean2 = otuSet.removeStandardMatrix(matrix1);
-		assertFalse(returnedBoolean2);
-		assertFalse(otuSet.isInNeedOfNewVersion());
-		assertNull(matrix1.getParent());
 	}
 
 	/**
@@ -488,7 +482,7 @@ public class OTUSetTest {
 
 	@Test
 	public void setInNeedOfNewPPodVersionWithNoStudy() {
-		final OTUSet otuSetWithNoStudy = otuSetProvider.get();
+		final IOTUSet otuSetWithNoStudy = otuSetProvider.get();
 		otuSetWithNoStudy.unsetInNeedOfNewVersion();
 		otuSetWithNoStudy.setInNeedOfNewVersion();
 		assertTrue(otuSetWithNoStudy.isInNeedOfNewVersion());

@@ -130,11 +130,7 @@ public class Study
 	protected void afterUnmarshal(
 			@CheckForNull final Unmarshaller u,
 			@CheckForNull final Object parent) {
-		int otuSetPosition = -1;
-		for (final IOTUSet otuSet : getOTUSets()) {
-			otuSetPosition++;
-			otuSet.setPosition(otuSetPosition);
-		}
+		ModelUtil.adjustPositions(otuSets);
 	}
 
 	/**

@@ -99,6 +99,9 @@ public abstract class Matrix<R extends IRow<C, ?>, C extends ICell<?, ?>>
 	@Target(OTUSet.class)
 	private IOTUSet parent;
 
+	@Column(name = "POSITION")
+	private Integer position;
+
 	/** Default constructor. */
 	Matrix() {}
 
@@ -135,7 +138,7 @@ public abstract class Matrix<R extends IRow<C, ?>, C extends ICell<?, ?>>
 	protected void afterUnmarshal(
 			@Nullable final Unmarshaller u,
 			final Object parent) {
-		this.parent = (OTUSet) parent;
+		this.parent = (IOTUSet) parent;
 		setColumnsSize(getColumnVersions().size());
 	}
 
@@ -234,6 +237,10 @@ public abstract class Matrix<R extends IRow<C, ?>, C extends ICell<?, ?>>
 	 */
 	public IOTUSet getParent() {
 		return parent;
+	}
+
+	public Integer getPosition() {
+		return position;
 	}
 
 	/**
@@ -374,6 +381,10 @@ public abstract class Matrix<R extends IRow<C, ?>, C extends ICell<?, ?>>
 				"getOTUKeyedRows() returned null - has the conrete class been constructed correctly, w/ its OTU->X dependency?");
 		this.parent = otuSet;
 		updateOTUs();
+	}
+
+	public void setPosition(final Integer position) {
+		this.position = position;
 	}
 
 	/** {@inheritDoc} */
