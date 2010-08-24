@@ -35,8 +35,9 @@ public interface IOrderedChild<P> extends IChild<P> {
 	 * <p>
 	 * Use a {@code null} when removing a child from its parent
 	 * <p>
-	 * There is no reason for client code to call this method as the value will
-	 * always be set by the parent object.
+	 * <strong>There is no reason for client code to call this method as the
+	 * value will always be set by the parent object. Modifying could cause
+	 * unexpected behavior.</strong>
 	 * 
 	 * @param position the position of this child
 	 */
