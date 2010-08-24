@@ -26,7 +26,7 @@ public interface ITreeSet
 		extends ILabeled, IUUPPodEntity, IOTUSetChild, IWithDocId {
 
 	/**
-	 * Add {@code tree} to this {@code TreeSet}.
+	 * Add {@code tree} to this {@code ITreeSet}.
 	 * 
 	 * @param tree to be added
 	 * 
@@ -35,8 +35,18 @@ public interface ITreeSet
 	 */
 	boolean addTree(ITree tree);
 
+	/**
+	 * Get the constituent trees.
+	 * 
+	 * @return the constituent trees.
+	 */
 	List<ITree> getTrees();
 
+	/**
+	 * Set the label.
+	 * 
+	 * @param label the label value
+	 */
 	void setLabel(String label);
 
 	/**

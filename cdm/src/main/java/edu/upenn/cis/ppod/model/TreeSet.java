@@ -93,6 +93,10 @@ public class TreeSet
 	@JoinColumn(name = JOIN_COLUMN, nullable = false)
 	private final List<ITree> trees = newArrayList();
 
+	@Column(name = "POSITION", nullable = false)
+	@Nullable
+	private Integer position;
+
 	TreeSet() {}
 
 	@Override
@@ -150,6 +154,11 @@ public class TreeSet
 	}
 
 	/** {@inheritDoc} */
+	public Integer getPosition() {
+		return position;
+	}
+
+	/** {@inheritDoc} */
 	public List<ITree> getTrees() {
 		return Collections.unmodifiableList(trees);
 	}
@@ -184,12 +193,9 @@ public class TreeSet
 		updateOTUs();
 	}
 
-	/**
-	 * There's nothing for a tree set to do since the OTU's are stored as pPOD
-	 * IDs in the newick strings which can't be modified.
-	 */
-	public void updateOTUs() {
-
+	/** {@inheritDoc} */
+	public void setPosition(final Integer position) {
+		this.position = position;
 	}
 
 	/**
@@ -247,6 +253,14 @@ public class TreeSet
 				.append(TAB).append(")");
 
 		return retValue.toString();
+	}
+
+	/**
+	 * There's nothing for a tree set to do since the OTU's are stored as pPOD
+	 * IDs in the newick strings which can't be modified.
+	 */
+	public void updateOTUs() {
+
 	}
 
 }

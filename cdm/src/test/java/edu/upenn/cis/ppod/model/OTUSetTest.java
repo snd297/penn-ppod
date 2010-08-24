@@ -167,13 +167,7 @@ public class OTUSetTest {
 		assertEquals(getOnlyElement(otuSet.getDNAMatrices()), dnaMatrix);
 		assertSame(dnaMatrix.getParent(), otuSet);
 		assertTrue(otuSet.isInNeedOfNewVersion());
-
-		otuSet.unsetInNeedOfNewVersion();
-		otuSet.addDNAMatrix(dnaMatrix);
-
-		assertEquals(getOnlyElement(otuSet.getDNAMatrices()), dnaMatrix);
-		assertFalse(otuSet.isInNeedOfNewVersion());
-
+		assertEquals(dnaMatrix.getPosition(), Integer.valueOf(0));
 	}
 
 	@Test
@@ -361,22 +355,15 @@ public class OTUSetTest {
 
 		study.unsetInNeedOfNewVersion();
 
-		boolean returnedBoolean = otuSet.removeDNAMatrix(matrix1);
+		otuSet.removeDNAMatrix(matrix1);
 
-		assertTrue(returnedBoolean);
 		assertTrue(otuSet.isInNeedOfNewVersion());
 		assertNull(matrix1.getParent());
+		assertNull(matrix1.getPosition());
 
 		assertEquals(
 				otuSet.getDNAMatrices(),
 				ImmutableSet.of(matrix0, matrix2));
-
-		otuSet.unsetInNeedOfNewVersion();
-
-		boolean returnedBoolean2 = otuSet.removeDNAMatrix(matrix1);
-		assertFalse(returnedBoolean2);
-		assertFalse(otuSet.isInNeedOfNewVersion());
-		assertNull(matrix1.getParent());
 	}
 
 	@Test
@@ -440,10 +427,10 @@ public class OTUSetTest {
 		otuSet.removeTreeSet(treeSet1);
 
 		assertTrue(otuSet.isInNeedOfNewVersion());
-
+		assertNull(treeSet1.getParent());
+		assertNull(treeSet1.getPosition());
 		assertEquals(otuSet.getTreeSets(),
 						ImmutableSet.of(treeSet0, treeSet2));
-
 	}
 
 	@Test
@@ -527,11 +514,6 @@ public class OTUSetTest {
 		otuSet.unsetInNeedOfNewVersion();
 		otuSet.addTreeSet(treeSet0);
 		assertTrue(otuSet.isInNeedOfNewVersion());
-
-		otuSet.unsetInNeedOfNewVersion();
-
-		otuSet.addTreeSet(treeSet0);
-		assertFalse(otuSet.isInNeedOfNewVersion());
-
+		assertEquals(treeSet0.getPosition(), Integer.valueOf(0));
 	}
 }

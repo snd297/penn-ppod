@@ -31,7 +31,7 @@ public interface IOTUSets {
 	 * 
 	 * @param otuSet to be added
 	 * 
-	 * @throws IllegalArgumentException if this already contains an the OTU set
+	 * @throws IllegalArgumentException if this already contains the OTU set
 	 */
 	void addOTUSet(IOTUSet otuSet);
 
