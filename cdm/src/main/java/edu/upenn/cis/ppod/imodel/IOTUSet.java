@@ -26,7 +26,7 @@ import edu.upenn.cis.ppod.model.OTUSet;
 
 @XmlJavaTypeAdapter(OTUSet.Adapter.class)
 public interface IOTUSet
-		extends ILabeled, IUUPPodEntity, IOrderedChild<IStudy> {
+		extends ILabeled, IUUPPodEntity, IOrderedChild<IStudy>, IWithDocId {
 
 	/**
 	 * Add a DNA matrix to this OTU set.
