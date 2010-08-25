@@ -85,15 +85,10 @@ public interface IMatrix<R extends IRow<C, ?>, C extends ICell<?, ?>>
 	/**
 	 * Get the rows that make up this matrix.
 	 * <p>
-	 * The values won't be {@code null} for matrices straight out of the
-	 * database.
-	 * <p>
-	 * {@code null} values occur only when {@link #setOTUSet(OTUSet)} contains
-	 * OTUs newly introduced to this matrix.
+	 * Rows will only be {@code null} for OTUs newly introduced to this matrix
+	 * by {@link #setOTUs}.
 	 * 
-	 * @param otu the key
-	 * 
-	 * @return the row, or {@code null} of no such row has been inserted yet
+	 * @return the rows that make up this matrix
 	 */
 	Map<IOTU, R> getRows();
 

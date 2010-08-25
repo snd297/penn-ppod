@@ -109,8 +109,8 @@ abstract class CreateOrUpdateMatrix<M extends IMatrix<R, C>, R extends IRow<C, ?
 
 			if (null == (dbRow = dbMatrix.getRows().get(dbOTU))) {
 				dbRow = rowProvider.get();
-				dbRow.setVersionInfo(newVersionInfo
-						.getNewVersionInfo());
+				dbRow.setVersionInfo(
+						newVersionInfo.getNewVersionInfo());
 				dbMatrix.putRow(dbOTU, dbRow);
 				dao.makePersistent(dbRow);
 			}

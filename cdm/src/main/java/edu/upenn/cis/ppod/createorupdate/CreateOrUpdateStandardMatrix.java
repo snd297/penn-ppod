@@ -87,6 +87,7 @@ final class CreateOrUpdateStandardMatrix
 		checkNotNull(dbMatrix);
 		checkNotNull(sourceMatrix);
 
+
 		final List<IStandardCharacter> newDbMatrixCharacters = newArrayList();
 		int sourceCharacterPosition = -1;
 		for (final IStandardCharacter sourceCharacter : sourceMatrix
