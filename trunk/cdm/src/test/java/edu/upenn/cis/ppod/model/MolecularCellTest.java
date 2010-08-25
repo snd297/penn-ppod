@@ -29,13 +29,14 @@ import org.testng.annotations.Test;
 import com.google.common.collect.ImmutableSet;
 
 import edu.upenn.cis.ppod.TestGroupDefs;
+import edu.upenn.cis.ppod.imodel.DNANucleotide;
 
 /**
  * {@link MolecularCell} testing.
  * 
  * @author Sam Donnelly
  */
-@Test(groups = { TestGroupDefs.FAST, TestGroupDefs.SINGLE })
+@Test(groups = { TestGroupDefs.FAST })
 public class MolecularCellTest {
 
 	public void setPolymorphicElements() {

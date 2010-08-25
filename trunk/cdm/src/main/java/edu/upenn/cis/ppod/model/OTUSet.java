@@ -204,7 +204,7 @@ public class OTUSet
 		checkArgument(pos >= 0, "pos < 0");
 		checkArgument(
 				!dnaMatrices.contains(matrix),
-				"otu set contains the matrix ["
+				"otu set already contains the dna matrix ["
 						+ matrix.getLabel() + "]");
 		dnaMatrices.add(pos, matrix);
 		matrix.setParent(this);
@@ -220,9 +220,9 @@ public class OTUSet
 		checkArgument(sequenceSetPos >= 0, "sequenceSetPos < 0");
 		checkArgument(
 				!dnaSequenceSets.contains(sequenceSet),
-				"otu set contains the matrix ["
+				"otu set already contains the matrix ["
 						+ sequenceSet.getLabel() + "]");
-		dnaSequenceSets.add(sequenceSet);
+		dnaSequenceSets.add(sequenceSetPos, sequenceSet);
 		sequenceSet.setParent(this);
 		sequenceSet.setPosition(sequenceSetPos);
 		ModelUtil.adjustPositions(standardMatrices);
@@ -235,7 +235,7 @@ public class OTUSet
 		checkNotNull(sequenceSet);
 		checkArgument(
 				!dnaSequenceSets.contains(sequenceSet),
-				"otu set contains the matrix ["
+				"otu set already contains the standard matrix ["
 						+ sequenceSet.getLabel() + "]");
 		dnaSequenceSets.add(sequenceSet);
 		sequenceSet.setParent(this);

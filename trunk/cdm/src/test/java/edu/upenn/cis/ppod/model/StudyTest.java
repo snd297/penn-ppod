@@ -18,6 +18,7 @@ package edu.upenn.cis.ppod.model;
 import static org.testng.Assert.assertEquals;
 import static org.testng.Assert.assertFalse;
 import static org.testng.Assert.assertNull;
+import static org.testng.Assert.assertSame;
 import static org.testng.Assert.assertTrue;
 
 import org.testng.annotations.Test;
@@ -39,7 +40,7 @@ public class StudyTest {
 	private Provider<Study> studyProvider;
 
 	@Inject
-	private Provider<OTUSet> otuSetProvider;
+	private Provider<IOTUSet> otuSetProvider;
 
 	@Test
 	public void removeOTUSet() {
@@ -51,7 +52,6 @@ public class StudyTest {
 		assertTrue(study.isInNeedOfNewVersion());
 		assertFalse(study.getOTUSets().contains(otuSet));
 		assertNull(otuSet.getPosition());
-
 	}
 
 	@Test
@@ -72,17 +72,48 @@ public class StudyTest {
 		assertEquals(study.getLabel(), label);
 	}
 
+	@Test(expectedExceptions = IllegalArgumentException.class)
+	public void addOTUSetWAlreadyContainedOTUSet() {
+		final IStudy study = studyProvider.get();
+		final IOTUSet otuSet0 = otuSetProvider.get();
+		study.addOTUSet(otuSet0);
+		study.addOTUSet(otuSet0);
+	}
+
 	@Test
 	public void addOTUSet() {
 		final IStudy study = studyProvider.get();
-		final IOTUSet otuSet = otuSetProvider.get();
+		final IOTUSet otuSet0 = otuSetProvider.get();
+
 		study.unsetInNeedOfNewVersion();
 
-		study.addOTUSet(otuSet);
-
+		study.addOTUSet(otuSet0);
 		assertTrue(study.isInNeedOfNewVersion());
 		assertEquals(study.getOTUSets().size(), 1);
-		assertTrue(study.getOTUSets().contains(otuSet));
-		assertEquals(otuSet.getPosition(), Integer.valueOf(0));
+		assertTrue(study.getOTUSets().contains(otuSet0));
+		assertEquals(otuSet0.getPosition(), Integer.valueOf(0));
+		assertSame(otuSet0.getParent(), study);
+	}
+
+	@Test
+	public void addOTUSetPos() {
+		final IStudy study = studyProvider.get();
+		final IOTUSet otuSet0 = otuSetProvider.get();
+		final IOTUSet otuSet1 = otuSetProvider.get();
+		final IOTUSet otuSet2 = otuSetProvider.get();
+		final IOTUSet otuSet3 = otuSetProvider.get();
+
+		study.addOTUSet(otuSet0);
+		study.addOTUSet(otuSet1);
+		study.addOTUSet(otuSet2);
+
+		study.unsetInNeedOfNewVersion();
+
+		study.addOTUSet(2, otuSet3);
+		assertTrue(study.isInNeedOfNewVersion());
+		assertEquals(study.getOTUSets().size(), 4);
+		assertTrue(study.getOTUSets().contains(otuSet3));
+		assertEquals(otuSet3.getPosition(), Integer.valueOf(2));
+		assertSame(otuSet3.getParent(), study);
 	}
 }
