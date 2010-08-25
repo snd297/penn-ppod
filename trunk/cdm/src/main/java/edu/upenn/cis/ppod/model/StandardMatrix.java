@@ -49,7 +49,8 @@ import edu.upenn.cis.ppod.util.IVisitor;
  */
 @Entity
 @Table(name = StandardMatrix.TABLE)
-public class StandardMatrix extends Matrix<IStandardRow, IStandardCell>
+public class StandardMatrix
+		extends Matrix<IStandardRow, IStandardCell>
 		implements IStandardMatrix {
 
 	public static class Adapter extends
@@ -228,7 +229,6 @@ public class StandardMatrix extends Matrix<IStandardRow, IStandardCell>
 	 * 
 	 * @param otusToRows the otusToRows to set
 	 */
-	@edu.umd.cs.findbugs.annotations.SuppressWarnings
 	protected void setOTUKeyedRows(
 			final StandardRows rows) {
 		this.rows = rows;

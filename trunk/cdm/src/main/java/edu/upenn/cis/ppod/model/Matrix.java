@@ -163,6 +163,7 @@ public abstract class Matrix<R extends IRow<C, ?>, C extends ICell<?, ?>>
 		return true;
 	}
 
+	/** {@inheritDoc} */
 	public Integer getColumnsSize() {
 		return Integer.valueOf(getColumnVersionInfos().size());
 	}
@@ -243,14 +244,7 @@ public abstract class Matrix<R extends IRow<C, ?>, C extends ICell<?, ?>>
 		return position;
 	}
 
-	/**
-	 * Get the rows that make up this matrix.
-	 * <p>
-	 * Rows will only be {@code null} for OTUs newly introduced to this matrix
-	 * by {@link #setOTUs}.
-	 * 
-	 * @return the rows that make up this matrix
-	 */
+	/** {@inheritDoc} */
 	public Map<IOTU, R> getRows() {
 		return Collections
 				.unmodifiableMap(getOTUKeyedRows().getValues());
@@ -292,8 +286,25 @@ public abstract class Matrix<R extends IRow<C, ?>, C extends ICell<?, ?>>
 		return getOTUKeyedRows().put(otu, row);
 	}
 
+	/** {@inheritDoc} */
 	public List<C> removeColumn(final int columnNo) {
-		throw new UnsupportedOperationException();
+		checkArgument(
+				columnNo >= 0,
+				"columnNo < 0");
+		checkArgument(
+				columnNo < getColumnsSize(),
+				"columnNo >= number of columns");
+
+		getColumnVersionInfosModifiable().remove(columnNo);
+
+		final List<C> removedColumn = newArrayList();
+		for (final R row : getRows().values()) {
+			final List<C> cells = row.getCells();
+			final C removedCell = cells.remove(columnNo);
+			removedColumn.add(removedCell);
+			row.setCells(cells);
+		}
+		return removedColumn;
 	}
 
 	/** {@inheritDoc} */
