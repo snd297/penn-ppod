@@ -214,6 +214,20 @@ public class OTUSet
 
 	/** {@inheritDoc} */
 	public void addDNASequenceSet(
+			final IDNASequenceSet sequenceSet) {
+		checkNotNull(sequenceSet);
+		checkArgument(
+				!dnaSequenceSets.contains(sequenceSet),
+				"otu set already contains the standard matrix ["
+						+ sequenceSet.getLabel() + "]");
+		dnaSequenceSets.add(sequenceSet);
+		sequenceSet.setParent(this);
+		sequenceSet.setPosition(dnaSequenceSets.size() - 1);
+		setInNeedOfNewVersion();
+	}
+
+	/** {@inheritDoc} */
+	public void addDNASequenceSet(
 			final int sequenceSetPos,
 			final IDNASequenceSet sequenceSet) {
 		checkNotNull(sequenceSet);
@@ -225,21 +239,7 @@ public class OTUSet
 		dnaSequenceSets.add(sequenceSetPos, sequenceSet);
 		sequenceSet.setParent(this);
 		sequenceSet.setPosition(sequenceSetPos);
-		ModelUtil.adjustPositions(standardMatrices);
-		setInNeedOfNewVersion();
-	}
-
-	/** {@inheritDoc} */
-	public void addDNASequenceSet(
-			final IDNASequenceSet sequenceSet) {
-		checkNotNull(sequenceSet);
-		checkArgument(
-				!dnaSequenceSets.contains(sequenceSet),
-				"otu set already contains the standard matrix ["
-						+ sequenceSet.getLabel() + "]");
-		dnaSequenceSets.add(sequenceSet);
-		sequenceSet.setParent(this);
-		sequenceSet.setPosition(dnaSequenceSets.size() - 1);
+		ModelUtil.adjustPositions(dnaSequenceSets);
 		setInNeedOfNewVersion();
 	}
 
@@ -458,35 +458,23 @@ public class OTUSet
 		getDNAMatricesModifiable().remove(matrix);
 		matrix.setParent(null);
 		matrix.setPosition(null);
+		ModelUtil.adjustPositions(dnaMatrices);
 		setInNeedOfNewVersion();
 	}
 
-	/**
-	 * Remove {@code sequenceSet} from this OTU set.
-	 * 
-	 * @param sequenceSet to be removed
-	 * 
-	 * @return {@code true} if this OTU set contained the specified sequence
-	 *         set, {@code false} otherwise
-	 */
-	public boolean removeDNASequenceSet(final IDNASequenceSet sequenceSet) {
+	/** {@inheritDoc} */
+	public void removeDNASequenceSet(final IDNASequenceSet sequenceSet) {
 		checkNotNull(sequenceSet);
-		if (getDNASequenceSetsModifiable().remove(sequenceSet)) {
-			sequenceSet.setParent(null);
-			setInNeedOfNewVersion();
-			return true;
-		}
-		return false;
+		checkArgument(getDNASequenceSets().contains(sequenceSet),
+				"otu does not contain the dna sequence set labeled ["
+						+ sequenceSet.getLabel() + "]");
+		getDNASequenceSetsModifiable().remove(sequenceSet);
+		sequenceSet.setParent(null);
+		ModelUtil.adjustPositions(getDNASequenceSetsModifiable());
+		setInNeedOfNewVersion();
 	}
 
-	/**
-	 * Remove {@code matrix} from this OTU set.
-	 * 
-	 * @param matrix to be removed
-	 * 
-	 * @return {@code true} if this OTU set contained the specified matrix,
-	 *         {@code false} otherwise
-	 */
+	/** {@inheritDoc} */
 	public void removeStandardMatrix(final IStandardMatrix matrix) {
 		checkNotNull(matrix);
 		checkArgument(standardMatrices.contains(matrix),
@@ -495,8 +483,8 @@ public class OTUSet
 		getStandardMatricesModifiable().remove(matrix);
 		matrix.setParent(null);
 		matrix.setPosition(null);
-		setInNeedOfNewVersion();
 		ModelUtil.adjustPositions(standardMatrices);
+		setInNeedOfNewVersion();
 	}
 
 	/** {@inheritDoc} */
@@ -508,6 +496,7 @@ public class OTUSet
 		treeSets.remove(treeSet);
 		treeSet.setParent(null);
 		treeSet.setPosition(null);
+		ModelUtil.adjustPositions(treeSets);
 		setInNeedOfNewVersion();
 	}
 

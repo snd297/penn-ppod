@@ -65,9 +65,8 @@ public class TreeSetTest {
 		final ITree tree = treeProvider.get();
 
 		assertFalse(treeSet.isInNeedOfNewVersion());
-		final boolean returnedBoolean = treeSet.addTree(tree);
+		treeSet.addTree(tree);
 		assertTrue(treeSet.isInNeedOfNewVersion());
-		assertTrue(returnedBoolean);
 		assertSame(tree.getParent(), treeSet);
 		assertEquals(getOnlyElement(treeSet.getTrees()), tree);
 	}

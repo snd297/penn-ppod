@@ -58,7 +58,7 @@ public abstract class Cell<E, R extends IRow<?, ?>>
 
 	@Column(name = TYPE_COLUMN, nullable = false)
 	@Enumerated(EnumType.ORDINAL)
-	@CheckForNull
+	@Nullable
 	private Type type;
 
 	Cell() {}
@@ -151,7 +151,7 @@ public abstract class Cell<E, R extends IRow<?, ?>>
 	 * 
 	 * @throws IllegalStateException if {@code getType() == null}
 	 */
-	@CheckForNull
+	@Nullable
 	Set<E> getElementsIfMultiple() {
 		if (getType() == null) {
 			throw new IllegalStateException("getType == null");

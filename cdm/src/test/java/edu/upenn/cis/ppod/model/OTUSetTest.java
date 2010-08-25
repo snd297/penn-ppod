@@ -188,8 +188,50 @@ public class OTUSetTest {
 		assertTrue(otuSet.isInNeedOfNewVersion());
 		assertEquals(otuSet.getDNAMatrices().size(), 4);
 		assertTrue(otuSet.getDNAMatrices().contains(matrix3));
+		assertEquals(matrix0.getPosition(), Integer.valueOf(0));
+		assertEquals(matrix1.getPosition(), Integer.valueOf(1));
 		assertEquals(matrix3.getPosition(), Integer.valueOf(2));
+		assertEquals(matrix2.getPosition(), Integer.valueOf(3));
 		assertSame(matrix3.getParent(), otuSet);
+	}
+
+	@Test
+	public void addDNASequenceSet() {
+		final DNASequenceSet sequenceSet = dnaSequenceSetProvider.get();
+
+		otuSet.unsetInNeedOfNewVersion();
+
+		otuSet.addDNASequenceSet(sequenceSet);
+		assertEquals(getOnlyElement(otuSet.getDNASequenceSets()), sequenceSet);
+		assertSame(sequenceSet.getParent(), otuSet);
+		assertTrue(otuSet.isInNeedOfNewVersion());
+		assertEquals(sequenceSet.getPosition(), Integer.valueOf(0));
+	}
+
+	@Test(groups = TestGroupDefs.SINGLE)
+	public void addDNASequenceSetPos() {
+		final IOTUSet otuSet = new OTUSet();
+		final IDNASequenceSet sequenceSet0 = dnaSequenceSetProvider.get();
+		final IDNASequenceSet sequenceSet1 = dnaSequenceSetProvider.get();
+		final IDNASequenceSet sequenceSet2 = dnaSequenceSetProvider.get();
+		final IDNASequenceSet sequenceSet3 = dnaSequenceSetProvider.get();
+
+		otuSet.addDNASequenceSet(sequenceSet0);
+		otuSet.addDNASequenceSet(sequenceSet1);
+		otuSet.addDNASequenceSet(sequenceSet2);
+
+		otuSet.unsetInNeedOfNewVersion();
+
+		otuSet.addDNASequenceSet(2, sequenceSet3);
+		assertTrue(otuSet.isInNeedOfNewVersion());
+		assertEquals(otuSet.getDNASequenceSets().size(), 4);
+		assertTrue(otuSet.getDNASequenceSets().contains(sequenceSet3));
+		assertEquals(sequenceSet0.getPosition(), Integer.valueOf(0));
+		assertEquals(sequenceSet1.getPosition(), Integer.valueOf(1));
+		assertEquals(sequenceSet3.getPosition(), Integer.valueOf(2));
+		assertEquals(sequenceSet2.getPosition(), Integer.valueOf(3));
+
+		assertSame(sequenceSet3.getParent(), otuSet);
 	}
 
 	@Test
@@ -292,6 +334,41 @@ public class OTUSetTest {
 	}
 
 	@Test
+	public void addStandardMatrix() {
+		final StandardMatrix dnaMatrix = standardMatrixProvider.get();
+
+		otuSet.unsetInNeedOfNewVersion();
+
+		otuSet.addStandardMatrix(dnaMatrix);
+		assertEquals(getOnlyElement(otuSet.getStandardMatrices()), dnaMatrix);
+		assertSame(dnaMatrix.getParent(), otuSet);
+		assertTrue(otuSet.isInNeedOfNewVersion());
+		assertEquals(dnaMatrix.getPosition(), Integer.valueOf(0));
+	}
+
+	@Test(groups = TestGroupDefs.SINGLE)
+	public void addStandardMatrixPos() {
+		final IOTUSet otuSet = new OTUSet();
+		final IStandardMatrix matrix0 = standardMatrixProvider.get();
+		final IStandardMatrix matrix1 = standardMatrixProvider.get();
+		final IStandardMatrix matrix2 = standardMatrixProvider.get();
+		final IStandardMatrix matrix3 = standardMatrixProvider.get();
+
+		otuSet.addStandardMatrix(matrix0);
+		otuSet.addStandardMatrix(matrix1);
+		otuSet.addStandardMatrix(matrix2);
+
+		otuSet.unsetInNeedOfNewVersion();
+
+		otuSet.addStandardMatrix(2, matrix3);
+		assertTrue(otuSet.isInNeedOfNewVersion());
+		assertEquals(otuSet.getStandardMatrices().size(), 4);
+		assertTrue(otuSet.getStandardMatrices().contains(matrix3));
+		assertEquals(matrix3.getPosition(), Integer.valueOf(2));
+		assertSame(matrix3.getParent(), otuSet);
+	}
+
+	@Test
 	public void addTreeSet() {
 		final TreeSet treeSet0 = treeSetProvider.get();
 
@@ -320,7 +397,11 @@ public class OTUSetTest {
 		assertTrue(otuSet.isInNeedOfNewVersion());
 		assertEquals(otuSet.getTreeSets().size(), 4);
 		assertTrue(otuSet.getTreeSets().contains(treeSet3));
+		assertEquals(treeSet0.getPosition(), Integer.valueOf(0));
+		assertEquals(treeSet1.getPosition(), Integer.valueOf(1));
 		assertEquals(treeSet3.getPosition(), Integer.valueOf(2));
+		assertEquals(treeSet2.getPosition(), Integer.valueOf(3));
+
 		assertSame(treeSet3.getParent(), otuSet);
 	}
 
@@ -390,7 +471,9 @@ public class OTUSetTest {
 
 		assertEquals(
 				otuSet.getDNAMatrices(),
-				ImmutableSet.of(matrix0, matrix2));
+				ImmutableList.of(matrix0, matrix2));
+		assertEquals(matrix0.getPosition(), Integer.valueOf(0));
+		assertEquals(matrix2.getPosition(), Integer.valueOf(1));
 	}
 
 	@Test
@@ -404,21 +487,11 @@ public class OTUSetTest {
 		final IDNASequenceSet dnaSequenceSet2 = dnaSequenceSetProvider.get();
 		otuSet.addDNASequenceSet(dnaSequenceSet2);
 
-		final boolean booleanReturned =
-				otuSet.removeDNASequenceSet(dnaSequenceSet1);
-
-		assertTrue(booleanReturned);
+		otuSet.removeDNASequenceSet(dnaSequenceSet1);
 
 		assertEquals(
 				otuSet.getDNASequenceSets(),
-				ImmutableSet.of(dnaSequenceSet0, dnaSequenceSet2));
-
-		otuSet.unsetInNeedOfNewVersion();
-
-		final boolean booleanReturned2 =
-				otuSet.removeDNASequenceSet(dnaSequenceSet1);
-		assertFalse(booleanReturned2);
-		assertFalse(otuSet.isInNeedOfNewVersion());
+				ImmutableList.of(dnaSequenceSet0, dnaSequenceSet2));
 	}
 
 	/**
@@ -439,6 +512,7 @@ public class OTUSetTest {
 		assertFalse(contains(otuSet.getOTUs(), otus.get(1)));
 		assertTrue(otuSet.isInNeedOfNewVersion());
 		assertEquals(removedOTUs, newHashSet(otus.get(1)));
+		assertNull(otus.get(1).getParent());
 	}
 
 	@Test
@@ -462,7 +536,10 @@ public class OTUSetTest {
 
 		assertEquals(
 				otuSet.getStandardMatrices(),
-				ImmutableSet.of(matrix0, matrix2));
+				ImmutableList.of(matrix0, matrix2));
+
+		assertEquals(matrix0.getPosition(), Integer.valueOf(0));
+		assertEquals(matrix2.getPosition(), Integer.valueOf(1));
 	}
 
 	@Test
@@ -483,7 +560,9 @@ public class OTUSetTest {
 		assertNull(treeSet1.getParent());
 		assertNull(treeSet1.getPosition());
 		assertEquals(otuSet.getTreeSets(),
-						ImmutableSet.of(treeSet0, treeSet2));
+						ImmutableList.of(treeSet0, treeSet2));
+		assertEquals(treeSet0.getPosition(), Integer.valueOf(0));
+		assertEquals(treeSet2.getPosition(), Integer.valueOf(1));
 	}
 
 	@Test

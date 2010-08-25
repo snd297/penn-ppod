@@ -30,10 +30,10 @@ public interface ITreeSet
 	 * 
 	 * @param tree to be added
 	 * 
-	 * @return {@code true} if the element was added (duplicate trees are not
-	 *         allowed)
+	 * @throws IllegalArgumentException if the tree is already contained in this
+	 *             tree set
 	 */
-	boolean addTree(ITree tree);
+	void addTree(ITree tree);
 
 	/**
 	 * Get the constituent trees.

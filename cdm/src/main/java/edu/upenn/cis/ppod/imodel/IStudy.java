@@ -22,7 +22,7 @@ import edu.upenn.cis.ppod.services.ppodentity.IOTUSets;
 
 /**
  * A collection of work - inspired by a Mesquite project - sets of OTU sets and,
- * through the OTU sets, matrices, and tree sets.
+ * through the OTU sets, matrices, sequences, and tree sets.
  * 
  * @author Sam Donnelly
  */
