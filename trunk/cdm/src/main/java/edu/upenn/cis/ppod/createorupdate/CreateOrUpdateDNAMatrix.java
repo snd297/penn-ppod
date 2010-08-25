@@ -15,6 +15,7 @@
  */
 package edu.upenn.cis.ppod.createorupdate;
 
+import static com.google.common.base.Preconditions.checkArgument;
 import static com.google.common.collect.Iterables.get;
 import static com.google.common.collect.Iterables.getOnlyElement;
 
@@ -24,6 +25,7 @@ import com.google.inject.assistedinject.Assisted;
 
 import edu.upenn.cis.ppod.imodel.DNANucleotide;
 import edu.upenn.cis.ppod.imodel.IAttachment;
+import edu.upenn.cis.ppod.imodel.ICell;
 import edu.upenn.cis.ppod.imodel.IDNACell;
 import edu.upenn.cis.ppod.imodel.IDNAMatrix;
 import edu.upenn.cis.ppod.imodel.IDNARow;
@@ -52,43 +54,54 @@ final class CreateOrUpdateDNAMatrix
 				dao);
 	}
 
-	@Override
 	public void createOrUpdateMatrix(
 			final IDNAMatrix dbMatrix,
 			final IDNAMatrix sourceMatrix) {
+
+		final int[] sourceToDbCharPositions =
+				new int[sourceMatrix.getColumnsSize()];
+
+		for (int i = 0; i < sourceToDbCharPositions.length; i++) {
+			if (i < dbMatrix.getColumnsSize()) {
+				sourceToDbCharPositions[i] = i;
+			} else {
+				sourceToDbCharPositions[i] = -1;
+			}
+		}
+
 		dbMatrix.setColumnsSize(
 				get(sourceMatrix.getRows()
-								.values(), 0)
+						.values(), 0)
 						.getCells()
 						.size());
-		super.createOrUpdateMatrix(dbMatrix, sourceMatrix);
+
+		super.createOrUpdateMatrixHelper(
+				dbMatrix,
+				sourceMatrix,
+				sourceToDbCharPositions);
 	}
 
 	@Override
-	void handleCell(final IDNACell targetCell, final IDNACell sourceCell) {
-		switch (sourceCell.getType()) {
-			case UNASSIGNED:
-				targetCell.setUnassigned();
-				break;
-			case SINGLE:
-				targetCell.setSingleElement(
-						getOnlyElement(sourceCell.getElements()),
-						sourceCell.getLowerCase());
-				break;
-			case POLYMORPHIC:
-				targetCell.setPolymorphicElements(
-						sourceCell.getElements(),
-						sourceCell.getLowerCase());
-				break;
-			case UNCERTAIN:
-				targetCell.setUncertainElements(sourceCell.getElements());
-				break;
-			case INAPPLICABLE:
-				targetCell.setInapplicable();
-				break;
-			default:
-				throw new AssertionError(
-						"unknown type: " + sourceCell.getType());
-		}
+	void handlePolymorphicCell(final IDNACell targetCell,
+			final IDNACell sourceCell) {
+		checkArgument(sourceCell.getType() == ICell.Type.POLYMORPHIC);
+		targetCell.setPolymorphicElements(
+				sourceCell.getElements(),
+				sourceCell.getLowerCase());
+	}
+
+	@Override
+	void handleSingleCell(final IDNACell targetCell, final IDNACell sourceCell) {
+		checkArgument(sourceCell.getType() == ICell.Type.SINGLE);
+		targetCell.setSingleElement(
+				getOnlyElement(sourceCell.getElements()),
+				sourceCell.getLowerCase());
+	}
+
+	@Override
+	void handleUncertainCell(final IDNACell targetCell,
+			final IDNACell sourceCell) {
+		checkArgument(sourceCell.getType() == ICell.Type.UNCERTAIN);
+		targetCell.setUncertainElements(sourceCell.getElements());
 	}
 }
