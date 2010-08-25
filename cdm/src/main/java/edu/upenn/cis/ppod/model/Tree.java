@@ -21,6 +21,7 @@ import javax.annotation.CheckForNull;
 import javax.annotation.Nullable;
 import javax.persistence.Column;
 import javax.persistence.Entity;
+import javax.persistence.FetchType;
 import javax.persistence.JoinColumn;
 import javax.persistence.Lob;
 import javax.persistence.ManyToOne;
@@ -67,7 +68,8 @@ public class Tree extends UUPPodEntity implements ITree {
 	@CheckForNull
 	private String newick;
 
-	@ManyToOne(optional = false, targetEntity = TreeSet.class)
+	@ManyToOne(fetch = FetchType.LAZY, optional = false,
+			targetEntity = TreeSet.class)
 	@JoinColumn(name = TreeSet.JOIN_COLUMN, insertable = false,
 				updatable = false)
 	@CheckForNull

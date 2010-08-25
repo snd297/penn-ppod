@@ -170,6 +170,28 @@ public class OTUSetTest {
 		assertEquals(dnaMatrix.getPosition(), Integer.valueOf(0));
 	}
 
+	@Test(groups = TestGroupDefs.SINGLE)
+	public void addDNAMatrixPos() {
+		final IOTUSet otuSet = new OTUSet();
+		final IDNAMatrix matrix0 = dnaMatrixProvider.get();
+		final IDNAMatrix matrix1 = dnaMatrixProvider.get();
+		final IDNAMatrix matrix2 = dnaMatrixProvider.get();
+		final IDNAMatrix matrix3 = dnaMatrixProvider.get();
+
+		otuSet.addDNAMatrix(matrix0);
+		otuSet.addDNAMatrix(matrix1);
+		otuSet.addDNAMatrix(matrix2);
+
+		otuSet.unsetInNeedOfNewVersion();
+
+		otuSet.addDNAMatrix(2, matrix3);
+		assertTrue(otuSet.isInNeedOfNewVersion());
+		assertEquals(otuSet.getDNAMatrices().size(), 4);
+		assertTrue(otuSet.getDNAMatrices().contains(matrix3));
+		assertEquals(matrix3.getPosition(), Integer.valueOf(2));
+		assertSame(matrix3.getParent(), otuSet);
+	}
+
 	@Test
 	public void addOTU() {
 		final IOTUSet otuSet = otuSetProvider.get();
@@ -270,6 +292,39 @@ public class OTUSetTest {
 	}
 
 	@Test
+	public void addTreeSet() {
+		final TreeSet treeSet0 = treeSetProvider.get();
+
+		otuSet.unsetInNeedOfNewVersion();
+		otuSet.addTreeSet(treeSet0);
+		assertTrue(otuSet.isInNeedOfNewVersion());
+		assertEquals(treeSet0.getPosition(), Integer.valueOf(0));
+		assertSame(treeSet0.getParent(), otuSet);
+	}
+
+	@Test
+	public void addTreeSetPos() {
+		final IOTUSet otuSet = new OTUSet();
+		final ITreeSet treeSet0 = new TreeSet();
+		final ITreeSet treeSet1 = new TreeSet();
+		final ITreeSet treeSet2 = new TreeSet();
+		final ITreeSet treeSet3 = new TreeSet();
+
+		otuSet.addTreeSet(treeSet0);
+		otuSet.addTreeSet(treeSet1);
+		otuSet.addTreeSet(treeSet2);
+
+		otuSet.unsetInNeedOfNewVersion();
+
+		otuSet.addTreeSet(2, treeSet3);
+		assertTrue(otuSet.isInNeedOfNewVersion());
+		assertEquals(otuSet.getTreeSets().size(), 4);
+		assertTrue(otuSet.getTreeSets().contains(treeSet3));
+		assertEquals(treeSet3.getPosition(), Integer.valueOf(2));
+		assertSame(treeSet3.getParent(), otuSet);
+	}
+
+	@Test
 	public void afterUnmarshal() {
 		final IStudy study = studyProvider.get();
 		otuSet.unsetInNeedOfNewVersion();
@@ -314,6 +369,31 @@ public class OTUSetTest {
 	}
 
 	@Test
+	public void removeDNAMatrix() {
+
+		final IDNAMatrix matrix0 = dnaMatrixProvider.get();
+		otuSet.addDNAMatrix(matrix0);
+		final IDNAMatrix matrix1 = dnaMatrixProvider.get();
+		otuSet.addDNAMatrix(matrix1);
+		final IDNAMatrix matrix2 = dnaMatrixProvider.get();
+		otuSet.addDNAMatrix(matrix2);
+
+		otuSet.unsetInNeedOfNewVersion();
+
+		study.unsetInNeedOfNewVersion();
+
+		otuSet.removeDNAMatrix(matrix1);
+
+		assertTrue(otuSet.isInNeedOfNewVersion());
+		assertNull(matrix1.getParent());
+		assertNull(matrix1.getPosition());
+
+		assertEquals(
+				otuSet.getDNAMatrices(),
+				ImmutableSet.of(matrix0, matrix2));
+	}
+
+	@Test
 	public void removeDNASequenceSet() {
 
 		final IOTUSet otuSet = otuSetProvider.get();
@@ -341,29 +421,24 @@ public class OTUSetTest {
 		assertFalse(otuSet.isInNeedOfNewVersion());
 	}
 
+	/**
+	 * Remove an otu set and make sure it was removed, otuSet is marked for a
+	 * new pPOD version, and the return value of removeOTUs contains the removed
+	 * OTU.
+	 */
 	@Test
-	public void removeDNAMatrix() {
-
-		final IDNAMatrix matrix0 = dnaMatrixProvider.get();
-		otuSet.addDNAMatrix(matrix0);
-		final IDNAMatrix matrix1 = dnaMatrixProvider.get();
-		otuSet.addDNAMatrix(matrix1);
-		final IDNAMatrix matrix2 = dnaMatrixProvider.get();
-		otuSet.addDNAMatrix(matrix2);
-
+	public void removeOTU() {
 		otuSet.unsetInNeedOfNewVersion();
 
-		study.unsetInNeedOfNewVersion();
+		final ImmutableList<IOTU> otus2 =
+				ImmutableList.of(otus.get(0), otus.get(2));
 
-		otuSet.removeDNAMatrix(matrix1);
+		final ImmutableList<IOTU> removedOTUs =
+				ImmutableList.copyOf(otuSet.setOTUs(otus2));
 
+		assertFalse(contains(otuSet.getOTUs(), otus.get(1)));
 		assertTrue(otuSet.isInNeedOfNewVersion());
-		assertNull(matrix1.getParent());
-		assertNull(matrix1.getPosition());
-
-		assertEquals(
-				otuSet.getDNAMatrices(),
-				ImmutableSet.of(matrix0, matrix2));
+		assertEquals(removedOTUs, newHashSet(otus.get(1)));
 	}
 
 	@Test
@@ -390,26 +465,6 @@ public class OTUSetTest {
 				ImmutableSet.of(matrix0, matrix2));
 	}
 
-	/**
-	 * Remove an otu set and make sure it was removed, otuSet is marked for a
-	 * new pPOD version, and the return value of removeOTUs contains the removed
-	 * OTU.
-	 */
-	@Test
-	public void removeOTU() {
-		otuSet.unsetInNeedOfNewVersion();
-
-		final ImmutableList<IOTU> otus2 =
-				ImmutableList.of(otus.get(0), otus.get(2));
-
-		final ImmutableList<IOTU> removedOTUs =
-				ImmutableList.copyOf(otuSet.setOTUs(otus2));
-
-		assertFalse(contains(otuSet.getOTUs(), otus.get(1)));
-		assertTrue(otuSet.isInNeedOfNewVersion());
-		assertEquals(removedOTUs, newHashSet(otus.get(1)));
-	}
-
 	@Test
 	public void removeTreeSet() {
 		final ITreeSet treeSet0 = treeSetProvider.get();
@@ -421,8 +476,6 @@ public class OTUSetTest {
 		final ITreeSet treeSet2 = treeSetProvider.get();
 		treeSet2.setLabel("treeSet2");
 		otuSet.addTreeSet(treeSet2);
-
-		otuSet.setVersionInfo(pPodVersionInfoProvider.get());
 
 		otuSet.removeTreeSet(treeSet1);
 
@@ -505,15 +558,5 @@ public class OTUSetTest {
 		otuSet.setParent(null);
 		assertNull(otuSet.getParent());
 		assertFalse(otuSet.isInNeedOfNewVersion());
-	}
-
-	@Test
-	public void addTreeSet() {
-		final TreeSet treeSet0 = treeSetProvider.get();
-
-		otuSet.unsetInNeedOfNewVersion();
-		otuSet.addTreeSet(treeSet0);
-		assertTrue(otuSet.isInNeedOfNewVersion());
-		assertEquals(treeSet0.getPosition(), Integer.valueOf(0));
 	}
 }
