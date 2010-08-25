@@ -112,15 +112,13 @@ public class TreeSet
 	/**
 	 * {@inheritDoc}
 	 */
-	public boolean addTree(final ITree tree) {
+	public void addTree(final ITree tree) {
 		checkNotNull(tree);
-		if (trees.contains(tree)) {
-			return false;
-		}
+		checkArgument(!trees.contains(tree),
+				"tree set already contains a tree [" + tree.getLabel() + "]");
 		trees.add(tree);
 		tree.setParent(this);
 		setInNeedOfNewVersion();
-		return true;
 	}
 
 	/**

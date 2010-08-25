@@ -45,13 +45,20 @@ public class StudyTest {
 	@Test
 	public void removeOTUSet() {
 		final IStudy study = studyProvider.get();
-		final IOTUSet otuSet = otuSetProvider.get();
-		study.addOTUSet(otuSet);
+		final IOTUSet otuSet0 = otuSetProvider.get();
+		final IOTUSet otuSet1 = otuSetProvider.get();
+		final IOTUSet otuSet2 = otuSetProvider.get();
+		study.addOTUSet(otuSet0);
+		study.addOTUSet(otuSet1);
+		study.addOTUSet(otuSet2);
 		study.unsetInNeedOfNewVersion();
-		study.removeOTUSet(otuSet);
+
+		study.removeOTUSet(otuSet1);
 		assertTrue(study.isInNeedOfNewVersion());
-		assertFalse(study.getOTUSets().contains(otuSet));
-		assertNull(otuSet.getPosition());
+		assertFalse(study.getOTUSets().contains(otuSet1));
+		assertNull(otuSet1.getPosition());
+		assertEquals(otuSet0.getPosition(), Integer.valueOf(0));
+		assertEquals(otuSet2.getPosition(), Integer.valueOf(1));
 	}
 
 	@Test

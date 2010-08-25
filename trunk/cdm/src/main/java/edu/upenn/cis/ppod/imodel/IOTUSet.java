@@ -170,15 +170,16 @@ public interface IOTUSet
 	 * 
 	 * @param sequenceSet to be removed
 	 * 
-	 * @return {@code true} if this OTU set contained the specified sequence
-	 *         set, {@code false} otherwise
+	 * @throws IllegalArgumentException if the sequence set is not contained in
+	 *             this OTU set
 	 */
-	boolean removeDNASequenceSet(IDNASequenceSet sequenceSet);
+	void removeDNASequenceSet(IDNASequenceSet sequenceSet);
 
 	/**
 	 * Remove {@code matrix} from this OTU set.
 	 * 
 	 * @param matrix to be removed
+	 * 
 	 * @throws IllegalArgumentException if this OTU set does not contain the
 	 *             matrix
 	 */

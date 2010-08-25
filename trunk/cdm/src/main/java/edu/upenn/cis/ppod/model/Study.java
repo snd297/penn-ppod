@@ -192,8 +192,8 @@ public class Study
 		otuSets.remove(otuSet);
 		otuSet.setParent(null);
 		otuSet.setPosition(null);
-		setInNeedOfNewVersion();
 		ModelUtil.adjustPositions(otuSets);
+		setInNeedOfNewVersion();
 	}
 
 	/** {@inheritDoc} */
