@@ -19,6 +19,7 @@ import static com.google.common.base.Objects.equal;
 import static com.google.common.base.Preconditions.checkArgument;
 import static com.google.common.base.Preconditions.checkNotNull;
 import static com.google.common.base.Preconditions.checkState;
+import static com.google.common.collect.Iterables.get;
 import static com.google.common.collect.Lists.newArrayList;
 import static edu.upenn.cis.ppod.util.CollectionsUtil.nullFill;
 
@@ -114,6 +115,10 @@ public abstract class Matrix<R extends IRow<C, ?>, C extends ICell<?, ?>>
 
 	public void afterUnmarshal() {
 		getOTUKeyedRows().afterUnmarshal();
+		setColumnsSize(get(getRows()
+				.values(), 0)
+				.getCells()
+				.size());
 	}
 
 	/**
@@ -139,7 +144,7 @@ public abstract class Matrix<R extends IRow<C, ?>, C extends ICell<?, ?>>
 			@Nullable final Unmarshaller u,
 			final Object parent) {
 		this.parent = (IOTUSet) parent;
-		setColumnsSize(getColumnVersions().size());
+
 	}
 
 	@Override

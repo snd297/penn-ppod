@@ -16,7 +16,7 @@
 package edu.upenn.cis.ppod.createorupdate;
 
 import static com.google.common.base.Preconditions.checkNotNull;
-import static com.google.common.collect.Lists.newArrayList;
+import static com.google.common.collect.Lists.newArrayListWithCapacity;
 
 import java.util.List;
 
@@ -64,17 +64,16 @@ abstract class CreateOrUpdateMatrix<M extends IMatrix<R, C>, R extends IRow<C, ?
 		this.dao = dao;
 	}
 
-	/**
-	 * Put the state of the source cell into the target cell.
-	 * 
-	 * @param targetCell target
-	 * @param sourceCell source
-	 */
-	abstract void handleCell(final C targetCell, final C sourceCell);
+	abstract void handleSingleCell(final C targetCell, final C sourceCell);
 
-	public void createOrUpdateMatrix(
+	abstract void handlePolymorphicCell(final C targetCell, final C sourceCell);
+
+	abstract void handleUncertainCell(final C targetCell, final C sourceCell);
+
+	public void createOrUpdateMatrixHelper(
 			final M dbMatrix,
-			final M sourceMatrix) {
+			final M sourceMatrix,
+			final int[] sourceToDbCharPositions) {
 
 		checkNotNull(dbMatrix);
 		checkNotNull(sourceMatrix);
@@ -115,18 +114,19 @@ abstract class CreateOrUpdateMatrix<M extends IMatrix<R, C>, R extends IRow<C, ?
 				dao.makePersistent(dbRow);
 			}
 
-			final List<C> dbCells = newArrayList(dbRow.getCells());
+			final List<C> dbCells =
+					newArrayListWithCapacity(sourceRow.getCells().size());
 
-			// Add in cells to dbCells if needed.
-			while (dbCells.size() < sourceRow.getCells().size()) {
-				final C dbCell = cellProvider.get();
-				dbCells.add(dbCell);
-				dbCell.setVersionInfo(newVersionInfo.getNewVersionInfo());
-			}
-
-			// Get rid of cells from dbCells if needed
-			while (dbCells.size() > sourceRow.getCells().size()) {
-				dbCells.remove(dbCells.size() - 1);
+			for (int i = 0; i < sourceToDbCharPositions.length; i++) {
+				if (sourceToDbCharPositions[i] == -1) {
+					final C newDbCell = cellProvider.get();
+					newDbCell
+							.setVersionInfo(newVersionInfo.getNewVersionInfo());
+					dbCells.add(newDbCell);
+				} else {
+					dbCells.add(
+							dbRow.getCells().get(sourceToDbCharPositions[i]));
+				}
 			}
 
 			dbRow.setCells(dbCells);
@@ -139,7 +139,25 @@ abstract class CreateOrUpdateMatrix<M extends IMatrix<R, C>, R extends IRow<C, ?
 						.getCells()
 						.get(dbCellPosition);
 
-				handleCell(dbCell, sourceCell);
+				switch (sourceCell.getType()) {
+					case UNASSIGNED:
+						dbCell.setUnassigned();
+						break;
+					case SINGLE:
+						handleSingleCell(dbCell, sourceCell);
+						break;
+					case POLYMORPHIC:
+						handlePolymorphicCell(dbCell, sourceCell);
+						break;
+					case UNCERTAIN:
+						handleUncertainCell(dbCell, sourceCell);
+						break;
+					case INAPPLICABLE:
+						dbCell.setInapplicable();
+						break;
+					default:
+						throw new AssertionError("unknown cell type");
+				}
 
 				// We need to do this here since we're removing the cell from
 				// the persistence context (with evict). So it won't get handled

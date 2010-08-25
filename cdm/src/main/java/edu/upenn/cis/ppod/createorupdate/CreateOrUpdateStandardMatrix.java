@@ -36,6 +36,7 @@ import com.google.inject.Provider;
 import com.google.inject.assistedinject.Assisted;
 
 import edu.upenn.cis.ppod.imodel.IAttachment;
+import edu.upenn.cis.ppod.imodel.ICell;
 import edu.upenn.cis.ppod.imodel.INewVersionInfo;
 import edu.upenn.cis.ppod.imodel.IStandardCell;
 import edu.upenn.cis.ppod.imodel.IStandardCharacter;
@@ -78,7 +79,6 @@ final class CreateOrUpdateStandardMatrix
 		this.newVersionInfo = newVersionInfo;
 	}
 
-	@Override
 	public void createOrUpdateMatrix(
 			final IStandardMatrix dbMatrix,
 			final IStandardMatrix sourceMatrix) {
@@ -87,6 +87,8 @@ final class CreateOrUpdateStandardMatrix
 		checkNotNull(dbMatrix);
 		checkNotNull(sourceMatrix);
 
+		final int[] sourceToDbCharPositions =
+				new int[sourceMatrix.getColumnsSize()];
 
 		final List<IStandardCharacter> newDbMatrixCharacters = newArrayList();
 		int sourceCharacterPosition = -1;
@@ -106,7 +108,12 @@ final class CreateOrUpdateStandardMatrix
 				newDbCharacter.setVersionInfo(
 						newVersionInfo.getNewVersionInfo());
 				newDbCharacter.setPPodId();
+				sourceToDbCharPositions[sourceCharacterPosition] = -1;
 			}
+
+			// Will be setting it to -1 if it's not present
+			sourceToDbCharPositions[sourceCharacterPosition] =
+					dbMatrix.getCharacters().indexOf(newDbCharacter);
 
 			newDbMatrixCharacters.add(newDbCharacter);
 
@@ -129,65 +136,42 @@ final class CreateOrUpdateStandardMatrix
 
 		dbMatrix.setCharacters(newDbMatrixCharacters);
 
-		super.createOrUpdateMatrix(dbMatrix, sourceMatrix);
+		super.createOrUpdateMatrixHelper(dbMatrix, sourceMatrix,
+				sourceToDbCharPositions);
 
 	}
 
-	/**
-	 * {@inheritDoc}
-	 * <p>
-	 * This method assumes that all of the characters in the source and target
-	 * matrices are equivalent (including their character states), and their
-	 * order the same. In other words, this method doesn't do any checking of
-	 * the characters and states to make sure that they have the same labels and
-	 * state numbers in the source and target matrices.
-	 * 
-	 * @throws IllegalArgumentException if
-	 *             {@code targetCell.getPosition() != sourceCell.getPosition()}
-	 */
 	@Override
-	void handleCell(
+	void handlePolymorphicCell(
 			final IStandardCell targetCell,
 			final IStandardCell sourceCell) {
+		checkArgument(sourceCell.getType() == ICell.Type.POLYMORPHIC);
+		final Set<Integer> sourceStateNumbers =
+				newHashSet(
+				transform(
+						sourceCell.getElements(),
+						IStandardState.getStateNumber));
+		targetCell.setPolymorphicWithStateNos(sourceStateNumbers);
+	}
 
-		checkArgument(targetCell.getPosition().equals(sourceCell.getPosition()));
+	@Override
+	void handleSingleCell(final IStandardCell targetCell,
+			final IStandardCell sourceCell) {
+		checkArgument(sourceCell.getType() == ICell.Type.SINGLE);
+		final IStandardState sourceState =
+				getOnlyElement(sourceCell.getElements());
+		targetCell.setSingleWithStateNo(sourceState.getStateNumber());
+	}
 
-		switch (sourceCell.getType()) {
-			case UNASSIGNED:
-				targetCell.setUnassigned();
-				break;
-			case SINGLE:
-				final IStandardState sourceState =
-						getOnlyElement(sourceCell.getElements());
-				targetCell.setSingleWithStateNo(sourceState.getStateNumber());
-				break;
-			case POLYMORPHIC:
-			case UNCERTAIN:
-				final Set<Integer> sourceStateNumbers =
-						newHashSet(
-						transform(
-								sourceCell.getElements(),
-								IStandardState.getStateNumber));
-				switch (sourceCell.getType()) {
-					case POLYMORPHIC:
-						targetCell
-								.setPolymorphicWithStateNos(sourceStateNumbers);
-						break;
-					case UNCERTAIN:
-						targetCell
-								.setUncertainWithStateNos(sourceStateNumbers);
-						break;
-					default:
-						throw new AssertionError(
-								"type should be POLYMORPHIC or UNCERTAIN but is "
-										+ sourceCell.getType());
-				}
-				break;
-			case INAPPLICABLE:
-				targetCell.setInapplicable();
-				break;
-			default:
-				break;
-		}
+	@Override
+	void handleUncertainCell(final IStandardCell targetCell,
+			final IStandardCell sourceCell) {
+		checkArgument(sourceCell.getType() == ICell.Type.UNCERTAIN);
+		final Set<Integer> sourceStateNumbers =
+				newHashSet(
+				transform(
+						sourceCell.getElements(),
+						IStandardState.getStateNumber));
+		targetCell.setUncertainWithStateNos(sourceStateNumbers);
 	}
 }

@@ -27,6 +27,11 @@ import edu.upenn.cis.ppod.model.VersionInfo;
 public interface IMatrix<R extends IRow<C, ?>, C extends ICell<?, ?>>
 		extends IOTUSetChild, IUUPPodEntity, IWithDocId {
 
+	/**
+	 * Will return {@code 0} for newly constructed matrices.
+	 * 
+	 * @param columnsSize the number of columns in this matrix
+	 */
 	Integer getColumnsSize();
 
 	/**
@@ -93,6 +98,17 @@ public interface IMatrix<R extends IRow<C, ?>, C extends ICell<?, ?>>
 	Map<IOTU, R> getRows();
 
 	/**
+	 * Move column {@code src} to column {@code dest}.
+	 * <p>
+	 * One should be aware that for persisted matrices, this can be an expensive
+	 * operation since all of the cells in the matrix will be loaded.
+	 * 
+	 * @param src column to move
+	 * @param dest where to move it
+	 */
+	void moveColumn(int src, int dest);
+
+	/**
 	 * Set row at <code>otu</code> to <code>row</code>.
 	 * <p>
 	 * Assumes {@code row} does not belong to another matrix.
@@ -107,6 +123,8 @@ public interface IMatrix<R extends IRow<C, ?>, C extends ICell<?, ?>>
 	 */
 	@CheckForNull
 	R putRow(final IOTU otu, final R row);
+
+	public List<C> removeColumn(int columnNo);
 
 	void setColumnsSize(final int columnsSize);
 
@@ -153,18 +171,5 @@ public interface IMatrix<R extends IRow<C, ?>, C extends ICell<?, ?>>
 	 * @param label the value for the label
 	 */
 	void setLabel(final String label);
-
-	/**
-	 * Move column {@code src} to column {@code dest}.
-	 * <p>
-	 * One should be aware that for persisted matrices, this can be an expensive
-	 * operation since all of the cells in the matrix will be loaded.
-	 * 
-	 * @param src column to move
-	 * @param dest where to move it
-	 */
-	void moveColumn(int src, int dest);
-
-	public List<C> removeColumn(int columnNo);
 
 }
