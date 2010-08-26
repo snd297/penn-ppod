@@ -29,7 +29,11 @@ import edu.upenn.cis.ppod.model.VersionInfo;
 public interface IMatrix<R extends IRow<C, ?>, C extends ICell<?, ?>>
 		extends IOTUSetChild, IUUPPodEntity, IWithDocId {
 
+	public void addColumn(int columnNo, List<? extends C> column);
+
 	/**
+	 * The number of columns which any newly introduced rows must have.
+	 * <p>
 	 * Will return {@code 0} for newly constructed matrices.
 	 * 
 	 * @param columnsSize the number of columns in this matrix
@@ -100,6 +104,18 @@ public interface IMatrix<R extends IRow<C, ?>, C extends ICell<?, ?>>
 	Map<IOTU, R> getRows();
 
 	/**
+	 * Move column {@code src} to column {@code dest}.
+	 * <p>
+	 * One should be aware that for persisted matrices, this can be an expensive
+	 * operation since all of the cells in the matrix will be loaded.
+	 * 
+	 * @param src column to move
+	 * @param dest where to move it
+	 */
+	@Beta
+	void moveColumn(int src, int dest);
+
+	/**
 	 * Set row at <code>otu</code> to <code>row</code>.
 	 * <p>
 	 * Assumes {@code row} does not belong to another matrix.
@@ -124,8 +140,6 @@ public interface IMatrix<R extends IRow<C, ?>, C extends ICell<?, ?>>
 	 */
 	@Beta
 	public List<C> removeColumn(int columnNo);
-
-	public void addColumn(int columnNo, List<? extends C> column);
 
 	/**
 	 * Set a particular column to a version.

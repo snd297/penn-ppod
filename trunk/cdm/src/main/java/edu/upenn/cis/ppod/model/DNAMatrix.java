@@ -17,6 +17,8 @@ package edu.upenn.cis.ppod.model;
 
 import static com.google.common.base.Preconditions.checkNotNull;
 
+import java.util.List;
+
 import javax.persistence.Embedded;
 import javax.persistence.Entity;
 import javax.persistence.Table;
@@ -87,6 +89,11 @@ public class DNAMatrix extends Matrix<IDNARow, IDNACell> implements IDNAMatrix {
 	protected IDNAMatrix setOTUKeyedRows(final DNARows rows) {
 		this.rows = rows;
 		return this;
+	}
+
+	public List<IDNACell> removeColumn(final int columnNo) {
+		setColumnsSize(getColumnsSize() - 1);
+		return super.removeColumnHelper(columnNo);
 	}
 
 }

@@ -22,7 +22,6 @@ import static com.google.common.base.Preconditions.checkState;
 import static com.google.common.collect.Iterables.get;
 import static com.google.common.collect.Lists.newArrayList;
 import static edu.upenn.cis.ppod.util.CollectionsUtil.nullFill;
-import static edu.upenn.cis.ppod.util.CollectionsUtil.nullFillAndSet;
 
 import java.util.Collections;
 import java.util.List;
@@ -87,10 +86,12 @@ public abstract class Matrix<R extends IRow<C, ?>, C extends ICell<?, ?>>
 
 	/** Free-form description. */
 	@Column(name = DESCRIPTION_COLUMN, nullable = true)
+	@CheckForNull
 	private String description;
 
 	/** The label for this {@code Matrix}. */
 	@Column(name = LABEL_COLUMN, nullable = false)
+	@Nullable
 	private String label;
 
 	/**
@@ -100,9 +101,11 @@ public abstract class Matrix<R extends IRow<C, ?>, C extends ICell<?, ?>>
 	@ManyToOne(fetch = FetchType.LAZY, optional = false)
 	@JoinColumn(name = OTUSet.JOIN_COLUMN)
 	@Target(OTUSet.class)
+	@Nullable
 	private IOTUSet parent;
 
 	@Column(name = "POSITION", nullable = false)
+	@Nullable
 	private Integer position;
 
 	/** Default constructor. */
@@ -124,7 +127,6 @@ public abstract class Matrix<R extends IRow<C, ?>, C extends ICell<?, ?>>
 				columnNo < getColumnsSize(),
 				"columnNo >= number of columns");
 
-		nullFillAndSet(columnVersionInfos, columnNo, null);
 		int rowPos = -1;
 		for (final R row : getRows().values()) {
 			rowPos++;
@@ -256,6 +258,26 @@ public abstract class Matrix<R extends IRow<C, ?>, C extends ICell<?, ?>>
 				.unmodifiableMap(getOTUKeyedRows().getValues());
 	}
 
+	/** {@inheritDoc} */
+	public void moveColumn(final int src, final int dest) {
+		checkArgument(src >= 0);
+		checkArgument(src < getColumnsSize());
+		checkArgument(dest >= 0);
+		checkArgument(dest < getColumnsSize());
+		if (src == dest) {
+			return;
+		}
+		for (final R row : getRows().values()) {
+			row.moveCell(src, dest);
+		}
+		final VersionInfo versionInfo =
+				getColumnVersionInfosModifiable().remove(src);
+		getColumnVersionInfosModifiable().add(dest - 1, versionInfo);
+
+		final Long version = getColumnVersionsModifiable().remove(src);
+		getColumnVersionsModifiable().add(dest - 1, version);
+	}
+
 	/**
 	 * {@inheritDoc}
 	 * <p>
@@ -273,7 +295,7 @@ public abstract class Matrix<R extends IRow<C, ?>, C extends ICell<?, ?>>
 	}
 
 	/** {@inheritDoc} */
-	public List<C> removeColumn(final int columnNo) {
+	public List<C> removeColumnHelper(final int columnNo) {
 		checkArgument(
 				columnNo >= 0,
 				"columnNo < 0");
@@ -305,10 +327,7 @@ public abstract class Matrix<R extends IRow<C, ?>, C extends ICell<?, ?>>
 		}
 	}
 
-	/**
-	 * {@inheritDoc}
-	 * 
-	 */
+	/** {@inheritDoc} */
 	public void setColumnVersionInfo(
 			final int pos,
 			final VersionInfo versionInfo) {

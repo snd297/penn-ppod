@@ -128,6 +128,54 @@ public class StandardMatrix
 		setColumnsSize(getCharacters().size());
 	}
 
+	private List<VersionInfo> determineNewColumnHeaderPPodVersionInfos(
+			final List<? extends IStandardCharacter> newCharacters) {
+
+		final BiMap<Integer, Integer> originalPositionsToNewPositions = HashBiMap
+				.create(getColumnsSize());
+		for (int originalPosition = 0; originalPosition < getCharacters()
+				.size(); originalPosition++) {
+			final IStandardCharacter originalCharacter =
+					getCharacters().get(originalPosition);
+			final Integer newPosition = newCharacters
+					.indexOf(originalCharacter);
+			// Use unique negative values to indicate not present. Unique since
+			// this is a BiMap
+			originalPositionsToNewPositions.put(originalPosition,
+					newPosition == -1 ? -(originalPosition + 1) : newPosition);
+		}
+		final List<VersionInfo> newColumnHeaderPPodVersionInfos =
+				newArrayListWithCapacity(newCharacters.size());
+		for (final Entry<Integer, Integer> originalPositionToNewPosition : originalPositionsToNewPositions
+				.entrySet()) {
+			final Integer originalPosition = originalPositionToNewPosition
+					.getKey();
+			final Integer newPosition = originalPositionToNewPosition
+					.getValue();
+			if (newPosition < 0) {
+				// The character has been removed, nothing to do
+			} else {
+				nullFillAndSet(
+						newColumnHeaderPPodVersionInfos,
+						newPosition,
+						getColumnVersionInfos().get(originalPosition));
+			}
+		}
+
+		final Map<Integer, Integer> newPositionsByOriginalPositions = originalPositionsToNewPositions
+				.inverse();
+		// Now we add in null values for newly added characters
+		for (int newCharacterPosition = 0; newCharacterPosition < newCharacters
+				.size(); newCharacterPosition++) {
+			if (null == newPositionsByOriginalPositions
+					.get(newCharacterPosition)) {
+				nullFillAndSet(newColumnHeaderPPodVersionInfos,
+						newCharacterPosition, null);
+			}
+		}
+		return newColumnHeaderPPodVersionInfos;
+	}
+
 	/** {@inheritDoc} */
 	public List<IStandardCharacter> getCharacters() {
 		return Collections.unmodifiableList(characters);
@@ -152,6 +200,14 @@ public class StandardMatrix
 	@Override
 	protected StandardRows getOTUKeyedRows() {
 		return rows;
+	}
+
+	/** {@inheritDoc} */
+	public List<IStandardCell> removeColumn(final int columnNo) {
+		final List<IStandardCharacter> characters = newArrayList(getCharacters());
+		characters.remove(columnNo);
+		setCharacters(characters);
+		return super.removeColumnHelper(columnNo);
 	}
 
 	/**
@@ -218,54 +274,6 @@ public class StandardMatrix
 		return removedCharacters;
 	}
 
-	private List<VersionInfo> determineNewColumnHeaderPPodVersionInfos(
-			final List<? extends IStandardCharacter> newCharacters) {
-
-		final BiMap<Integer, Integer> originalPositionsToNewPositions = HashBiMap
-				.create(getColumnsSize());
-		for (int originalPosition = 0; originalPosition < getCharacters()
-				.size(); originalPosition++) {
-			final IStandardCharacter originalCharacter =
-					getCharacters().get(originalPosition);
-			final Integer newPosition = newCharacters
-					.indexOf(originalCharacter);
-			// Use unique negative values to indicate not present. Unique since
-			// this is a BiMap
-			originalPositionsToNewPositions.put(originalPosition,
-					newPosition == -1 ? -(originalPosition + 1) : newPosition);
-		}
-		final List<VersionInfo> newColumnHeaderPPodVersionInfos =
-				newArrayListWithCapacity(newCharacters.size());
-		for (final Entry<Integer, Integer> originalPositionToNewPosition : originalPositionsToNewPositions
-				.entrySet()) {
-			final Integer originalPosition = originalPositionToNewPosition
-					.getKey();
-			final Integer newPosition = originalPositionToNewPosition
-					.getValue();
-			if (newPosition < 0) {
-				// The character has been removed, nothing to do
-			} else {
-				nullFillAndSet(
-						newColumnHeaderPPodVersionInfos,
-						newPosition,
-						getColumnVersionInfos().get(originalPosition));
-			}
-		}
-
-		final Map<Integer, Integer> newPositionsByOriginalPositions = originalPositionsToNewPositions
-				.inverse();
-		// Now we add in null values for newly added characters
-		for (int newCharacterPosition = 0; newCharacterPosition < newCharacters
-				.size(); newCharacterPosition++) {
-			if (null == newPositionsByOriginalPositions
-					.get(newCharacterPosition)) {
-				nullFillAndSet(newColumnHeaderPPodVersionInfos,
-						newCharacterPosition, null);
-			}
-		}
-		return newColumnHeaderPPodVersionInfos;
-	}
-
 	/**
 	 * Set the rows.
 	 * <p>
@@ -277,5 +285,4 @@ public class StandardMatrix
 			final StandardRows rows) {
 		this.rows = rows;
 	}
-
 }
