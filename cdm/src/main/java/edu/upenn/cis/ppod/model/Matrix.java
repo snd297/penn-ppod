@@ -22,6 +22,7 @@ import static com.google.common.base.Preconditions.checkState;
 import static com.google.common.collect.Iterables.get;
 import static com.google.common.collect.Lists.newArrayList;
 import static edu.upenn.cis.ppod.util.CollectionsUtil.nullFill;
+import static edu.upenn.cis.ppod.util.CollectionsUtil.nullFillAndSet;
 
 import java.util.Collections;
 import java.util.List;
@@ -43,6 +44,7 @@ import javax.xml.bind.annotation.XmlElement;
 
 import org.hibernate.annotations.Target;
 
+import edu.umd.cs.findbugs.annotations.CheckForNull;
 import edu.umd.cs.findbugs.annotations.Nullable;
 import edu.upenn.cis.ppod.imodel.ICell;
 import edu.upenn.cis.ppod.imodel.IMatrix;
@@ -113,6 +115,25 @@ public abstract class Matrix<R extends IRow<C, ?>, C extends ICell<?, ?>>
 		super.accept(visitor);
 	}
 
+	/** {@inheritDoc} */
+	public void addColumn(
+			final int columnNo,
+			final List<? extends C> column) {
+		checkArgument(columnNo >= 0, "columnNo < 0");
+		checkArgument(
+				columnNo < getColumnsSize(),
+				"columnNo >= number of columns");
+
+		nullFillAndSet(columnVersionInfos, columnNo, null);
+		int rowPos = -1;
+		for (final R row : getRows().values()) {
+			rowPos++;
+			final List<C> cells = newArrayList(row.getCells());
+			cells.add(columnNo, column.get(rowPos));
+			row.setCells(cells);
+		}
+	}
+
 	public void afterUnmarshal() {
 		getOTUKeyedRows().afterUnmarshal();
 		setColumnsSize(get(getRows()
@@ -122,13 +143,13 @@ public abstract class Matrix<R extends IRow<C, ?>, C extends ICell<?, ?>>
 	}
 
 	protected void afterUnmarshal(
-			@Nullable final Unmarshaller u,
+			@CheckForNull final Unmarshaller u,
 			final Object parent) {
 		this.parent = (IOTUSet) parent;
 	}
 
 	@Override
-	protected boolean beforeMarshal(@Nullable final Marshaller marshaller) {
+	protected boolean beforeMarshal(@CheckForNull final Marshaller marshaller) {
 
 		if (getColumnVersions().size() != 0) {
 			throw new AssertionError(
@@ -235,26 +256,6 @@ public abstract class Matrix<R extends IRow<C, ?>, C extends ICell<?, ?>>
 				.unmodifiableMap(getOTUKeyedRows().getValues());
 	}
 
-	/** {@inheritDoc} */
-	public void moveColumn(final int src, final int dest) {
-		checkArgument(src >= 0);
-		checkArgument(src < getColumnsSize());
-		checkArgument(dest >= 0);
-		checkArgument(dest < getColumnsSize());
-		if (src == dest) {
-			return;
-		}
-		for (final R row : getRows().values()) {
-			row.moveCell(src, dest);
-		}
-		final VersionInfo versionInfo =
-				getColumnVersionInfosModifiable().remove(src);
-		getColumnVersionInfosModifiable().add(dest - 1, versionInfo);
-
-		final Long version = getColumnVersionsModifiable().remove(src);
-		getColumnVersionsModifiable().add(dest - 1, version);
-	}
-
 	/**
 	 * {@inheritDoc}
 	 * <p>
@@ -280,14 +281,12 @@ public abstract class Matrix<R extends IRow<C, ?>, C extends ICell<?, ?>>
 				columnNo < getColumnsSize(),
 				"columnNo >= number of columns");
 
-		getColumnVersionInfosModifiable().remove(columnNo);
-
 		final List<C> removedColumn = newArrayList();
 		for (final R row : getRows().values()) {
-			final List<C> cells = row.getCells();
+			final List<C> cells = newArrayList(row.getCells());
 			final C removedCell = cells.remove(columnNo);
-			removedColumn.add(removedCell);
 			row.setCells(cells);
+			removedColumn.add(removedCell);
 		}
 		return removedColumn;
 	}
@@ -309,8 +308,6 @@ public abstract class Matrix<R extends IRow<C, ?>, C extends ICell<?, ?>>
 	/**
 	 * {@inheritDoc}
 	 * 
-	 * @throw IllegalArgumentException if {@code pos >=
-	 *        getColumnVersionInfos().size()}
 	 */
 	public void setColumnVersionInfo(
 			final int pos,

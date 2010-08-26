@@ -35,9 +35,18 @@ public interface IStandardMatrix
 	List<IStandardCharacter> getCharacters();
 
 	/**
+	 * {@inheritDoc}
+	 * <p>
+	 * Does nothing with the characters of the matrix.
+	 */
+	List<IStandardCell> removeColumn(final int columnNo);
+
+	/**
 	 * Set the characters.
 	 * <p>
-	 * This method is does not reorder the columns of the matrix.
+	 * This method is does not reorder the columns of the matrix because that is
+	 * a potentially expensive operation - it could load the entire matrix into
+	 * the persistence context.
 	 * <p>
 	 * This method does reorder {@link #getColumnVersionInfos()}.
 	 * <p>
