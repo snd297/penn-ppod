@@ -18,10 +18,14 @@ package edu.upenn.cis.ppod.model;
 import static com.google.common.base.Preconditions.checkArgument;
 import static com.google.common.base.Preconditions.checkNotNull;
 import static com.google.common.collect.Lists.newArrayList;
+import static com.google.common.collect.Lists.newArrayListWithCapacity;
+import static edu.upenn.cis.ppod.util.CollectionsUtil.nullFillAndSet;
 
 import java.util.Collections;
 import java.util.Iterator;
 import java.util.List;
+import java.util.Map;
+import java.util.Map.Entry;
 
 import javax.persistence.CascadeType;
 import javax.persistence.Embedded;
@@ -34,6 +38,8 @@ import javax.xml.bind.Unmarshaller;
 import javax.xml.bind.annotation.XmlElement;
 import javax.xml.bind.annotation.adapters.XmlAdapter;
 
+import com.google.common.collect.BiMap;
+import com.google.common.collect.HashBiMap;
 import com.google.inject.Inject;
 
 import edu.upenn.cis.ppod.imodel.IStandardCell;
@@ -148,19 +154,6 @@ public class StandardMatrix
 		return rows;
 	}
 
-	@Override
-	public void moveColumn(final int src, final int dest) {
-		checkArgument(src >= 0);
-		final int columnsSize = getColumnsSize();
-		checkArgument(src < columnsSize);
-		checkArgument(dest >= 0);
-		checkArgument(dest < columnsSize);
-		final IStandardCharacter character =
-				getCharactersModifiable().remove(src);
-		getCharactersModifiable().add(dest - 1, character);
-		super.moveColumn(src, dest);
-	}
-
 	/**
 	 * {@inheritDoc}
 	 * 
@@ -200,9 +193,12 @@ public class StandardMatrix
 			}
 		}
 
-		setColumnsSize(characters.size());
+		final List<VersionInfo> columnVersionInfos = getColumnVersionInfosModifiable();
+		final List<VersionInfo> newColumnVersionInfos = determineNewColumnHeaderPPodVersionInfos(characters);
+		columnVersionInfos.clear();
+		columnVersionInfos.addAll(newColumnVersionInfos);
 
-		final List<IStandardCharacter> removedCharacters = newArrayList(getCharactersModifiable());
+		final List<IStandardCharacter> removedCharacters = newArrayList(getCharacters());
 
 		removedCharacters.removeAll(characters);
 		for (final IStandardCharacter removedCharacter : removedCharacters) {
@@ -222,6 +218,54 @@ public class StandardMatrix
 		return removedCharacters;
 	}
 
+	private List<VersionInfo> determineNewColumnHeaderPPodVersionInfos(
+			final List<? extends IStandardCharacter> newCharacters) {
+
+		final BiMap<Integer, Integer> originalPositionsToNewPositions = HashBiMap
+				.create(getColumnsSize());
+		for (int originalPosition = 0; originalPosition < getCharacters()
+				.size(); originalPosition++) {
+			final IStandardCharacter originalCharacter =
+					getCharacters().get(originalPosition);
+			final Integer newPosition = newCharacters
+					.indexOf(originalCharacter);
+			// Use unique negative values to indicate not present. Unique since
+			// this is a BiMap
+			originalPositionsToNewPositions.put(originalPosition,
+					newPosition == -1 ? -(originalPosition + 1) : newPosition);
+		}
+		final List<VersionInfo> newColumnHeaderPPodVersionInfos =
+				newArrayListWithCapacity(newCharacters.size());
+		for (final Entry<Integer, Integer> originalPositionToNewPosition : originalPositionsToNewPositions
+				.entrySet()) {
+			final Integer originalPosition = originalPositionToNewPosition
+					.getKey();
+			final Integer newPosition = originalPositionToNewPosition
+					.getValue();
+			if (newPosition < 0) {
+				// The character has been removed, nothing to do
+			} else {
+				nullFillAndSet(
+						newColumnHeaderPPodVersionInfos,
+						newPosition,
+						getColumnVersionInfos().get(originalPosition));
+			}
+		}
+
+		final Map<Integer, Integer> newPositionsByOriginalPositions = originalPositionsToNewPositions
+				.inverse();
+		// Now we add in null values for newly added characters
+		for (int newCharacterPosition = 0; newCharacterPosition < newCharacters
+				.size(); newCharacterPosition++) {
+			if (null == newPositionsByOriginalPositions
+					.get(newCharacterPosition)) {
+				nullFillAndSet(newColumnHeaderPPodVersionInfos,
+						newCharacterPosition, null);
+			}
+		}
+		return newColumnHeaderPPodVersionInfos;
+	}
+
 	/**
 	 * Set the rows.
 	 * <p>
@@ -233,4 +277,5 @@ public class StandardMatrix
 			final StandardRows rows) {
 		this.rows = rows;
 	}
+
 }

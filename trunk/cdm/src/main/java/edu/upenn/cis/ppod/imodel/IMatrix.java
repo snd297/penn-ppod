@@ -20,6 +20,8 @@ import java.util.Map;
 
 import javax.xml.bind.annotation.XmlAttribute;
 
+import com.google.common.annotations.Beta;
+
 import edu.umd.cs.findbugs.annotations.CheckForNull;
 import edu.umd.cs.findbugs.annotations.Nullable;
 import edu.upenn.cis.ppod.model.VersionInfo;
@@ -98,17 +100,6 @@ public interface IMatrix<R extends IRow<C, ?>, C extends ICell<?, ?>>
 	Map<IOTU, R> getRows();
 
 	/**
-	 * Move column {@code src} to column {@code dest}.
-	 * <p>
-	 * One should be aware that for persisted matrices, this can be an expensive
-	 * operation since all of the cells in the matrix will be loaded.
-	 * 
-	 * @param src column to move
-	 * @param dest where to move it
-	 */
-	void moveColumn(int src, int dest);
-
-	/**
 	 * Set row at <code>otu</code> to <code>row</code>.
 	 * <p>
 	 * Assumes {@code row} does not belong to another matrix.
@@ -124,19 +115,28 @@ public interface IMatrix<R extends IRow<C, ?>, C extends ICell<?, ?>>
 	@CheckForNull
 	R putRow(final IOTU otu, final R row);
 
+	/**
+	 * Remove the cells the make up the given column number.
+	 * 
+	 * @param columnNo the column to remove
+	 * 
+	 * @return the cells in the column
+	 */
+	@Beta
 	public List<C> removeColumn(int columnNo);
 
-	void setColumnsSize(final int columnsSize);
+	public void addColumn(int columnNo, List<? extends C> column);
 
 	/**
 	 * Set a particular column to a version.
 	 * 
 	 * @param pos position of the column
 	 * @param versionInfo the version
+	 * 
+	 * @throw IllegalArgumentException if {@code pos >=
+	 *        getColumnVersionInfos().size()}
 	 */
-	void setColumnVersionInfo(
-			final int pos,
-			final VersionInfo versionInfo);
+	void setColumnVersionInfo(int pos, VersionInfo versionInfo);
 
 	/**
 	 * Set all of the columns' pPOD version infos.
@@ -145,16 +145,14 @@ public interface IMatrix<R extends IRow<C, ?>, C extends ICell<?, ?>>
 	 * 
 	 * @return this
 	 */
-	void setColumnVersionInfos(
-			final VersionInfo versionInfo);
+	void setColumnVersionInfos(VersionInfo versionInfo);
 
 	/**
 	 * Setter.
 	 * 
 	 * @param description the description value, {@code null} is allowed
 	 */
-	void setDescription(
-			@CheckForNull final String description);
+	void setDescription(@CheckForNull final String description);
 
 	/**
 	 * Set the column at {@code position} as in need of a new
@@ -163,13 +161,13 @@ public interface IMatrix<R extends IRow<C, ?>, C extends ICell<?, ?>>
 	 * 
 	 * @param position the column that needs the new {@code VersionInfo}
 	 */
-	void setInNeedOfNewColumnVersion(final int position);
+	void setInNeedOfNewColumnVersion(int position);
 
 	/**
 	 * Set the label of this matrix.
 	 * 
 	 * @param label the value for the label
 	 */
-	void setLabel(final String label);
+	void setLabel(String label);
 
 }
