@@ -39,7 +39,7 @@ public interface IStandardMatrix
 	 * <p>
 	 * Does nothing with the characters of the matrix.
 	 */
-	List<IStandardCell> removeColumn(final int columnNo);
+	List<IStandardCell> removeColumnHelper(final int columnNo);
 
 	/**
 	 * Set the characters.

@@ -37,4 +37,6 @@ public interface IRow<C extends ICell<?, ?>, M extends IMatrix<?, ?>>
 	 */
 	List<C> setCells(List<? extends C> cells);
 
+	void moveCell(int src, int dest);
+
 }
