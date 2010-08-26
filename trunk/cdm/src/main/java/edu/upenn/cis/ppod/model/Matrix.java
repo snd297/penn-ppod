@@ -121,30 +121,10 @@ public abstract class Matrix<R extends IRow<C, ?>, C extends ICell<?, ?>>
 				.size());
 	}
 
-	/**
-	 * Set the values of the column version numbers for marshalled matrices.
-	 * <p>
-	 * <strong>Outside of testing, clients should never call this
-	 * method.</strong> In normal usage, these values are populated when an
-	 * object in marshalled.
-	 * 
-	 * @param columnVersions values
-	 */
-	// @VisibleForTesting
-	// private void setColumnVersions(final List<Integer> columnVersions) {
-	// checkNotNull(columnVersions);
-	// checkArgument(columnVersions.size() == getColumnsSize(),
-	// "columnVersions size is not the same as getColumnsSize()");
-	//
-	// this.columnVersions.clear();
-	// this.columnVersions.addAll(this.columnVersions);
-	// }
-
 	protected void afterUnmarshal(
 			@Nullable final Unmarshaller u,
 			final Object parent) {
 		this.parent = (IOTUSet) parent;
-
 	}
 
 	@Override
