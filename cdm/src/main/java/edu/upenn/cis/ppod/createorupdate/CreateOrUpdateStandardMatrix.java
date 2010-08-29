@@ -35,6 +35,7 @@ import com.google.inject.Inject;
 import com.google.inject.Provider;
 import com.google.inject.assistedinject.Assisted;
 
+import edu.upenn.cis.ppod.dao.IObjectWithLongIdDAO;
 import edu.upenn.cis.ppod.imodel.IAttachment;
 import edu.upenn.cis.ppod.imodel.ICell;
 import edu.upenn.cis.ppod.imodel.INewVersionInfo;
@@ -44,7 +45,6 @@ import edu.upenn.cis.ppod.imodel.IStandardMatrix;
 import edu.upenn.cis.ppod.imodel.IStandardRow;
 import edu.upenn.cis.ppod.imodel.IStandardState;
 import edu.upenn.cis.ppod.imodel.IWithPPodId;
-import edu.upenn.cis.ppod.thirdparty.dao.IDAO;
 
 /**
  * @author Sam Donnelly
@@ -69,11 +69,11 @@ final class CreateOrUpdateStandardMatrix
 			final Provider<IStandardCell> cellProvider,
 			final IStandardState.IFactory stateFactory,
 			final Provider<IAttachment> attachmentProvider,
+			final IObjectWithLongIdDAO dao,
 			@Assisted final IMergeAttachments mergeAttachments,
-			@Assisted final IDAO<Object, Long> dao,
 			@Assisted final INewVersionInfo newVersionInfo) {
-		super(rowProvider, cellProvider, attachmentProvider,
-				newVersionInfo, dao);
+		super(rowProvider, cellProvider, attachmentProvider, dao,
+				newVersionInfo);
 		this.standardCharacterProvider = characterProvider;
 		this.standardStateFactory = stateFactory;
 		this.newVersionInfo = newVersionInfo;

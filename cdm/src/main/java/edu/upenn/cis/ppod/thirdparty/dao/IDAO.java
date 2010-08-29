@@ -49,10 +49,6 @@ public interface IDAO<T, ID extends Serializable> {
 	 */
 	T get(ID id, boolean lock);
 
-	String getEntityName(Class<? extends T> entityClass);
-
-	String getEntityName(T entity);
-
 	/**
 	 * Return the identifier value of the given entity as associated with this
 	 * <code>IDAO</code>'s session. An exception is thrown if the given entity

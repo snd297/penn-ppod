@@ -19,14 +19,12 @@ import static com.google.common.collect.Lists.newArrayList;
 
 import java.util.List;
 
-import org.testng.annotations.BeforeMethod;
 import org.testng.annotations.Test;
 
 import com.google.inject.Inject;
 import com.google.inject.Provider;
 
 import edu.upenn.cis.ppod.TestGroupDefs;
-import edu.upenn.cis.ppod.dao.TestObjectWithLongIdDAO;
 import edu.upenn.cis.ppod.imodel.INewVersionInfo;
 import edu.upenn.cis.ppod.imodel.IOTU;
 import edu.upenn.cis.ppod.imodel.IOTUSet;
@@ -57,16 +55,6 @@ public class CreateOrUpdateStandardMatrixTest {
 	@Inject
 	private INewVersionInfo newVersionInfo;
 
-	@Inject
-	private Provider<TestObjectWithLongIdDAO> daoProvider;
-
-	private TestObjectWithLongIdDAO dao;
-
-	@BeforeMethod
-	public void beforeMethod() {
-		dao = daoProvider.get();
-	}
-
 	@Test(dataProvider = PPodEntityProvider.STANDARD_MATRICES_PROVIDER,
 			dataProviderClass = PPodEntityProvider.class)
 	public void create(final IStandardMatrix sourceMatrix) {
@@ -74,7 +62,6 @@ public class CreateOrUpdateStandardMatrixTest {
 		final ICreateOrUpdateStandardMatrix createOrUpdateStandardMatrix =
 				createOrUpdateMatrixFactory.create(
 						mergeAttachment,
-						dao,
 						newVersionInfo);
 		final IOTUSet fakeDbOTUSet = sourceMatrix.getParent();
 
@@ -96,7 +83,6 @@ public class CreateOrUpdateStandardMatrixTest {
 	public void moveRows(final IStandardMatrix sourceMatrix) {
 		final ICreateOrUpdateStandardMatrix createOrUpdateStandardMatrix =
 				createOrUpdateMatrixFactory.create(mergeAttachment,
-						dao,
 						newVersionInfo);
 		final IOTUSet fakeDbOTUSet = sourceMatrix.getParent();
 
@@ -143,7 +129,6 @@ public class CreateOrUpdateStandardMatrixTest {
 		final ICreateOrUpdateStandardMatrix createOrUpdateMatrix =
 					createOrUpdateMatrixFactory.create(
 							mergeAttachment,
-							dao,
 							newVersionInfo);
 		final IOTUSet fakeDbOTUSet = sourceMatrix.getParent();
 
@@ -200,7 +185,6 @@ public class CreateOrUpdateStandardMatrixTest {
 		final ICreateOrUpdateStandardMatrix createOrUpdateMatrix =
 				createOrUpdateMatrixFactory
 						.create(mergeAttachment,
-								dao,
 								newVersionInfo);
 		final IOTUSet fakeDbOTUSet = sourceMatrix.getParent();
 

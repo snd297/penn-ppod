@@ -19,6 +19,7 @@ import com.google.inject.AbstractModule;
 
 import edu.upenn.cis.ppod.dao.IAttachmentNamespaceDAO;
 import edu.upenn.cis.ppod.dao.IAttachmentTypeDAO;
+import edu.upenn.cis.ppod.dao.IObjectWithLongIdDAO;
 
 /**
  * The Class DAOHibernateModule.
@@ -34,6 +35,7 @@ public class DAOHibernateModule extends AbstractModule {
 				.to(AttachmentNamespaceDAOHibernate.class);
 		bind(IAttachmentTypeDAO.class)
 				.to(AttachmentTypeDAOHibernate.class);
-
+		bind(IObjectWithLongIdDAO.class)
+				.to(ObjectWithLongIdDAOHibernate.class);
 	}
 }

@@ -29,10 +29,10 @@ import edu.upenn.cis.ppod.thirdparty.dao.IDAO;
  */
 @ImplementedBy(CreateOrUpdateDNAMatrix.class)
 public interface ICreateOrUpdateDNAMatrix extends
-ICreateOrUpdateMatrix<IDNAMatrix, IDNARow, IDNACell, DNANucleotide> {
+		ICreateOrUpdateMatrix<IDNAMatrix, IDNARow, IDNACell, DNANucleotide> {
 	static interface IFactory {
 		ICreateOrUpdateDNAMatrix create(
-				INewVersionInfo newVersionInfo,
-				IDAO<Object, Long> dao);
+				INewVersionInfo newVersionInfo);
+
 	}
 }

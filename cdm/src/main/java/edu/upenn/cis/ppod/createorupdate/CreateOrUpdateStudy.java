@@ -28,6 +28,7 @@ import com.google.inject.assistedinject.Assisted;
 
 import edu.upenn.cis.ppod.dao.IAttachmentNamespaceDAO;
 import edu.upenn.cis.ppod.dao.IAttachmentTypeDAO;
+import edu.upenn.cis.ppod.dao.IObjectWithLongIdDAO;
 import edu.upenn.cis.ppod.dao.IStudyDAO;
 import edu.upenn.cis.ppod.imodel.IDNAMatrix;
 import edu.upenn.cis.ppod.imodel.IDNASequence;
@@ -38,7 +39,6 @@ import edu.upenn.cis.ppod.imodel.IStandardMatrix;
 import edu.upenn.cis.ppod.imodel.IStudy;
 import edu.upenn.cis.ppod.imodel.ITreeSet;
 import edu.upenn.cis.ppod.imodel.IWithPPodId;
-import edu.upenn.cis.ppod.thirdparty.dao.IDAO;
 
 /**
  * Create a new study or update an existing one.
@@ -64,7 +64,7 @@ final class CreateOrUpdateStudy implements ICreateOrUpdateStudy {
 	private final IStudy incomingStudy;
 	private IStudy dbStudy;
 	private final ICreateOrUpdateDNAMatrix createOrUpdateDNAMatrix;
-	private final IDAO<Object, Long> dao;
+	private final IObjectWithLongIdDAO dao;
 
 	@Inject
 	CreateOrUpdateStudy(
@@ -80,11 +80,11 @@ final class CreateOrUpdateStudy implements ICreateOrUpdateStudy {
 			final IMergeSequenceSets.IFactory<IDNASequenceSet, IDNASequence> mergeDNASequenceSetsFactory,
 			final IMergeAttachments.IFactory mergeAttachmentFactory,
 			final Provider<IDNAMatrix> dnaMatrixProvider,
+			final IObjectWithLongIdDAO dao,
 			@Assisted final IStudy incomingStudy,
 			@Assisted final IStudyDAO studyDAO,
 			@Assisted final IAttachmentNamespaceDAO attachmentNamespaceDAO,
 			@Assisted final IAttachmentTypeDAO attachmentTypeDAO,
-			@Assisted final IDAO<Object, Long> dao,
 			@Assisted final INewVersionInfo newVersionInfo) {
 		this.incomingStudy = incomingStudy;
 		this.studyDAO = studyDAO;
@@ -98,13 +98,12 @@ final class CreateOrUpdateStudy implements ICreateOrUpdateStudy {
 				.create(newVersionInfo);
 		this.createOrUpdateDNAMatrix =
 				createOrUpdateDNAMatrixFactory
-						.create(newVersionInfo, dao);
+						.create(newVersionInfo);
 		this.createOrUpdateStandardMatrix =
 				createOrUpdateMatrixFactory.create(
 						mergeAttachmentFactory
 								.create(attachmentNamespaceDAO,
 										attachmentTypeDAO),
-										dao,
 										newVersionInfo);
 		this.mergeDNASequenceSets =
 				mergeDNASequenceSetsFactory.create(

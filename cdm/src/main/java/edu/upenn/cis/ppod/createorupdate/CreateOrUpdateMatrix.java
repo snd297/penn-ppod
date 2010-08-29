@@ -27,13 +27,13 @@ import com.google.inject.Inject;
 import com.google.inject.Provider;
 import com.google.inject.assistedinject.Assisted;
 
+import edu.upenn.cis.ppod.dao.IObjectWithLongIdDAO;
 import edu.upenn.cis.ppod.imodel.IAttachment;
 import edu.upenn.cis.ppod.imodel.ICell;
 import edu.upenn.cis.ppod.imodel.IMatrix;
 import edu.upenn.cis.ppod.imodel.INewVersionInfo;
 import edu.upenn.cis.ppod.imodel.IOTU;
 import edu.upenn.cis.ppod.imodel.IRow;
-import edu.upenn.cis.ppod.thirdparty.dao.IDAO;
 
 /**
  * @author Sam Donnelly
@@ -43,7 +43,7 @@ abstract class CreateOrUpdateMatrix<M extends IMatrix<R, C>, R extends IRow<C, ?
 
 	private final Provider<C> cellProvider;
 
-	private final IDAO<Object, Long> dao;
+	private final IObjectWithLongIdDAO dao;
 
 	protected Logger logger = LoggerFactory.getLogger(getClass());
 
@@ -56,8 +56,8 @@ abstract class CreateOrUpdateMatrix<M extends IMatrix<R, C>, R extends IRow<C, ?
 			final Provider<R> rowProvider,
 			final Provider<C> cellProvider,
 			final Provider<IAttachment> attachmentProvider,
-			@Assisted final INewVersionInfo newVersionInfo,
-			@Assisted final IDAO<Object, Long> dao) {
+			final IObjectWithLongIdDAO dao,
+			@Assisted final INewVersionInfo newVersionInfo) {
 		this.rowProvider = rowProvider;
 		this.cellProvider = cellProvider;
 		this.newVersionInfo = newVersionInfo;

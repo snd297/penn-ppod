@@ -23,7 +23,6 @@ import edu.upenn.cis.ppod.dao.IOTUSetDAO;
 import edu.upenn.cis.ppod.dao.IStudyDAO;
 import edu.upenn.cis.ppod.imodel.INewVersionInfo;
 import edu.upenn.cis.ppod.imodel.IStudy;
-import edu.upenn.cis.ppod.thirdparty.dao.IDAO;
 
 /**
  * If study is new, make it persistent. If it was already persisted, update it.
@@ -63,7 +62,6 @@ public interface ICreateOrUpdateStudy {
 				IOTUSetDAO otuSetDAO,
 				IAttachmentNamespaceDAO attachmentNamespaceDAO,
 				IAttachmentTypeDAO attachmentTypeDAO,
-				IDAO<Object, Long> dao,
 				INewVersionInfo newVersionInfo);
 
 	}
