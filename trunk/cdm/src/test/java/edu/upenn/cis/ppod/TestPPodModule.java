@@ -17,6 +17,8 @@ package edu.upenn.cis.ppod;
 
 import com.google.inject.AbstractModule;
 
+import edu.upenn.cis.ppod.dao.IObjectWithLongIdDAO;
+import edu.upenn.cis.ppod.dao.TestObjectWithLongIdDAO;
 import edu.upenn.cis.ppod.util.TestPPodUtilModule;
 
 /**
@@ -26,6 +28,8 @@ public class TestPPodModule extends AbstractModule {
 
 	@Override
 	protected void configure() {
+		bind(IObjectWithLongIdDAO.class)
+				.to(TestObjectWithLongIdDAO.class);
 		install(new TestPPodUtilModule());
 	}
 }

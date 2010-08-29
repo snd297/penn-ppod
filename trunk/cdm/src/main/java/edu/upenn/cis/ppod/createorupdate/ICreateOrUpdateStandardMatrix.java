@@ -63,9 +63,6 @@ public interface ICreateOrUpdateStandardMatrix
 	static interface IFactory {
 		ICreateOrUpdateStandardMatrix create(
 				IMergeAttachments mergeAttachments,
-				IDAO<Object, Long> dao,
 				INewVersionInfo newVersionInfo);
-
 	}
-
 }

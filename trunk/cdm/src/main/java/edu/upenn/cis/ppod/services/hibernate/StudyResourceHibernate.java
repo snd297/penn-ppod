@@ -158,7 +158,6 @@ final class StudyResourceHibernate implements IStudyResource {
 						otuSetDAO,
 						attachmentNamespaceDAO,
 						attachmentTypeDAO,
-						dao,
 						newVersionInfo);
 		createOrUpdateStudy.createOrUpdateStudy();
 		final IStudy dbStudy = createOrUpdateStudy.getDbStudy();
