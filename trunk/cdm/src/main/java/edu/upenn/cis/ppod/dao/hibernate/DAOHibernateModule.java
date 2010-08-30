@@ -16,6 +16,7 @@
 package edu.upenn.cis.ppod.dao.hibernate;
 
 import org.hibernate.Session;
+import org.hibernate.SessionFactory;
 
 import com.google.inject.AbstractModule;
 import com.google.inject.Provides;
@@ -23,7 +24,8 @@ import com.google.inject.Provides;
 import edu.upenn.cis.ppod.dao.IAttachmentNamespaceDAO;
 import edu.upenn.cis.ppod.dao.IAttachmentTypeDAO;
 import edu.upenn.cis.ppod.dao.IObjectWithLongIdDAO;
-import edu.upenn.cis.ppod.thirdparty.util.HibernateUtil;
+import edu.upenn.cis.ppod.dao.IStudyDAO;
+import edu.upenn.cis.ppod.dao.IVersionInfoDAO;
 
 /**
  * The Class DAOHibernateModule.
@@ -35,19 +37,26 @@ public class DAOHibernateModule extends AbstractModule {
 	@Override
 	protected void configure() {
 
+		bind(IStudyDAO.class)
+				.to(StudyDAOHibernate.class);
+
 		bind(IAttachmentNamespaceDAO.class)
 				.to(AttachmentNamespaceDAOHibernate.class);
 		bind(IAttachmentTypeDAO.class)
 				.to(AttachmentTypeDAOHibernate.class);
 		bind(IObjectWithLongIdDAO.class)
 				.to(ObjectWithLongIdDAOHibernate.class);
+		bind(IVersionInfoDAO.class)
+				.to(VersionInfoDAOHibernate.class);
 
+		bind(SessionFactory.class)
+				.toProvider(SessionFactoryProvider.class)
+				.asEagerSingleton();
 	}
 
-	// TODO: load session factory into a guice singelton in this modeule
-	// also make dao's request scoped?
 	@Provides
-	Session provideSession() {
-		return HibernateUtil.getSessionFactory().getCurrentSession();
+	Session provideSession(final SessionFactory sf) {
+		return sf.getCurrentSession();
 	}
+
 }

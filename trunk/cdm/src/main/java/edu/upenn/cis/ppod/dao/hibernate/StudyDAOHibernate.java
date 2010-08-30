@@ -21,8 +21,11 @@ import java.util.Iterator;
 import java.util.List;
 import java.util.Set;
 
+import org.hibernate.Session;
+
 import com.google.inject.Inject;
 
+import edu.upenn.cis.ppod.dao.IStudyDAO;
 import edu.upenn.cis.ppod.imodel.IStudy;
 import edu.upenn.cis.ppod.model.Study;
 import edu.upenn.cis.ppod.thirdparty.dao.hibernate.GenericHibernateDAO;
@@ -35,12 +38,15 @@ import edu.upenn.cis.ppod.util.IPair;
  */
 final class StudyDAOHibernate
 		extends GenericHibernateDAO<IStudy, Long>
-		implements IStudyDAOHibernate {
+		implements IStudyDAO {
 
 	private final IPair.IFactory pairFactory;
 
 	@Inject
-	StudyDAOHibernate(final IPair.IFactory pairFactory) {
+	StudyDAOHibernate(
+			final Session session,
+			final IPair.IFactory pairFactory) {
+		super(session);
 		this.pairFactory = pairFactory;
 	}
 

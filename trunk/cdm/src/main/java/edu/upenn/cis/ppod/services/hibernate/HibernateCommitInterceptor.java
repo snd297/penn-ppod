@@ -24,7 +24,7 @@ import org.jboss.resteasy.spi.interception.PostProcessInterceptor;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
-import edu.upenn.cis.ppod.thirdparty.util.HibernateUtil;
+import edu.upenn.cis.ppod.dao.hibernate.SessionFactoryProvider;
 
 /**
  * Attempt to commit the current transaction <em>before</em> the servlet
@@ -42,9 +42,10 @@ public class HibernateCommitInterceptor implements PostProcessInterceptor {
 			.getLogger(HibernateCommitInterceptor.class);
 
 	public void postProcess(final ServerResponse response) {
-		final Session currentSession =
-				HibernateUtil.getSessionFactory().getCurrentSession();
-
+		// final Session currentSession =
+		// HibernateUtil.getSessionFactory().getCurrentSession();
+		final Session currentSession = SessionFactoryProvider
+				.getSessionFactory().getCurrentSession();
 		logger.info("committing transaction...");
 		currentSession.getTransaction().commit();
 		logger.info("committed");

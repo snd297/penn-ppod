@@ -24,7 +24,6 @@ import java.util.Map;
 
 import com.google.inject.Inject;
 import com.google.inject.Provider;
-import com.google.inject.assistedinject.Assisted;
 
 import edu.upenn.cis.ppod.dao.IAttachmentNamespaceDAO;
 import edu.upenn.cis.ppod.dao.IAttachmentTypeDAO;
@@ -54,8 +53,8 @@ class MergeAttachments implements IMergeAttachments {
 	MergeAttachments(
 			final Provider<IAttachmentNamespace> attachmentNamespaceProvider,
 			final Provider<IAttachmentType> attachmentTypeProvider,
-			@Assisted final IAttachmentNamespaceDAO attachmentNamespaceDAO,
-			@Assisted final IAttachmentTypeDAO attachmentTypeDAO) {
+			final IAttachmentNamespaceDAO attachmentNamespaceDAO,
+			final IAttachmentTypeDAO attachmentTypeDAO) {
 
 		this.attachmentNamespaceDAO = attachmentNamespaceDAO;
 		this.attachmentTypeDAO = attachmentTypeDAO;

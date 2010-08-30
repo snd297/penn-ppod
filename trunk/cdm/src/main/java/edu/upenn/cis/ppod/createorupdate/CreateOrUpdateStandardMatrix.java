@@ -33,7 +33,6 @@ import org.slf4j.LoggerFactory;
 
 import com.google.inject.Inject;
 import com.google.inject.Provider;
-import com.google.inject.assistedinject.Assisted;
 
 import edu.upenn.cis.ppod.dao.IObjectWithLongIdDAO;
 import edu.upenn.cis.ppod.imodel.IAttachment;
@@ -70,8 +69,9 @@ final class CreateOrUpdateStandardMatrix
 			final IStandardState.IFactory stateFactory,
 			final Provider<IAttachment> attachmentProvider,
 			final IObjectWithLongIdDAO dao,
-			@Assisted final IMergeAttachments mergeAttachments,
-			@Assisted final INewVersionInfo newVersionInfo) {
+			final INewVersionInfo newVersionInfo,
+			final IMergeAttachments mergeAttachments) {
+
 		super(rowProvider, cellProvider, attachmentProvider, dao,
 				newVersionInfo);
 		this.standardCharacterProvider = characterProvider;

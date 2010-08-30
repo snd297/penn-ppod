@@ -59,12 +59,12 @@ final class CreateOrUpdateStudy implements ICreateOrUpdateStudy {
 	private final IMergeOTUSets mergeOTUSets;
 	private final ICreateOrUpdateStandardMatrix createOrUpdateStandardMatrix;
 	private final IMergeTreeSets mergeTreeSets;
-	private final INewVersionInfo newVersionInfo;
 	private final IMergeSequenceSets<IDNASequenceSet, IDNASequence> mergeDNASequenceSets;
 	private final IStudy incomingStudy;
 	private IStudy dbStudy;
 	private final ICreateOrUpdateDNAMatrix createOrUpdateDNAMatrix;
 	private final IObjectWithLongIdDAO dao;
+	private final INewVersionInfo newVersionInfo;
 
 	@Inject
 	CreateOrUpdateStudy(
@@ -73,19 +73,19 @@ final class CreateOrUpdateStudy implements ICreateOrUpdateStudy {
 			final Provider<IStandardMatrix> standardMatrix,
 			final Provider<IDNASequenceSet> dnaSequenceSetProvider,
 			final Provider<ITreeSet> treeSetProvider,
-			final IMergeOTUSets.IFactory saveOrUpdateOTUSetFactory,
-			final IMergeTreeSets.IFactory mergeTreeSetsFactory,
-			final ICreateOrUpdateDNAMatrix.IFactory createOrUpdateDNAMatrixFactory,
-			final ICreateOrUpdateStandardMatrix.IFactory createOrUpdateMatrixFactory,
-			final IMergeSequenceSets.IFactory<IDNASequenceSet, IDNASequence> mergeDNASequenceSetsFactory,
-			final IMergeAttachments.IFactory mergeAttachmentFactory,
+			final IMergeOTUSets mergeOTUSets,
+			final IMergeTreeSets mergeTreeSets,
+			final ICreateOrUpdateDNAMatrix createOrUpdateDNAMatrix,
+			final ICreateOrUpdateStandardMatrix createOrUpdateMatrix,
+			final IMergeSequenceSets<IDNASequenceSet, IDNASequence> mergeDNASequenceSets,
 			final Provider<IDNAMatrix> dnaMatrixProvider,
 			final IObjectWithLongIdDAO dao,
-			@Assisted final IStudy incomingStudy,
-			@Assisted final IStudyDAO studyDAO,
-			@Assisted final IAttachmentNamespaceDAO attachmentNamespaceDAO,
-			@Assisted final IAttachmentTypeDAO attachmentTypeDAO,
-			@Assisted final INewVersionInfo newVersionInfo) {
+			final IAttachmentNamespaceDAO attachmentNamespaceDAO,
+			final IAttachmentTypeDAO attachmentTypeDAO,
+			final INewVersionInfo newVersionInfo,
+			final IStudyDAO studyDAO,
+			@Assisted final IStudy incomingStudy) {
+
 		this.incomingStudy = incomingStudy;
 		this.studyDAO = studyDAO;
 		this.studyProvider = studyProvider;
@@ -93,23 +93,12 @@ final class CreateOrUpdateStudy implements ICreateOrUpdateStudy {
 		this.standardMatrixProvider = standardMatrix;
 		this.dnaSequenceSetProvider = dnaSequenceSetProvider;
 		this.treeSetProvider = treeSetProvider;
+		this.mergeOTUSets = mergeOTUSets;
+		this.createOrUpdateDNAMatrix = createOrUpdateDNAMatrix;
 		this.newVersionInfo = newVersionInfo;
-		this.mergeOTUSets = saveOrUpdateOTUSetFactory
-				.create(newVersionInfo);
-		this.createOrUpdateDNAMatrix =
-				createOrUpdateDNAMatrixFactory
-						.create(newVersionInfo);
-		this.createOrUpdateStandardMatrix =
-				createOrUpdateMatrixFactory.create(
-						mergeAttachmentFactory
-								.create(attachmentNamespaceDAO,
-										attachmentTypeDAO),
-										newVersionInfo);
-		this.mergeDNASequenceSets =
-				mergeDNASequenceSetsFactory.create(
-						dao,
-						newVersionInfo);
-		this.mergeTreeSets = mergeTreeSetsFactory.create(newVersionInfo);
+		this.createOrUpdateStandardMatrix = createOrUpdateMatrix;
+		this.mergeDNASequenceSets = mergeDNASequenceSets;
+		this.mergeTreeSets = mergeTreeSets;
 		this.dnaMatrixProvider = dnaMatrixProvider;
 		this.dao = dao;
 	}

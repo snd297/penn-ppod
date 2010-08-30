@@ -18,16 +18,18 @@ package edu.upenn.cis.ppod.model;
 import java.util.Date;
 
 import com.google.inject.Inject;
-import com.google.inject.assistedinject.Assisted;
 
 import edu.upenn.cis.ppod.dao.IVersionInfoDAO;
-import edu.upenn.cis.ppod.imodel.INewVersionInfoDB;
+import edu.upenn.cis.ppod.imodel.INewVersionInfo;
 
 /**
+ * We put this class in here so it can access
+ * {@link VersionInfo#setVersion(Long)}.
+ * 
  * @author Sam Donnelly
  */
 final class NewVersionInfoDB implements
-		INewVersionInfoDB {
+		INewVersionInfo {
 
 	private final VersionInfo newVersionInfo;
 	private final IVersionInfoDAO versionInfoDAO;
@@ -35,8 +37,9 @@ final class NewVersionInfoDB implements
 	private boolean versionInfoInitialized = false;
 
 	@Inject
-	NewVersionInfoDB(final VersionInfo newVersionInfo,
-			@Assisted final IVersionInfoDAO versionInfoDAO) {
+	NewVersionInfoDB(
+			final VersionInfo newVersionInfo,
+			final IVersionInfoDAO versionInfoDAO) {
 		this.newVersionInfo = newVersionInfo;
 		this.versionInfoDAO = versionInfoDAO;
 	}

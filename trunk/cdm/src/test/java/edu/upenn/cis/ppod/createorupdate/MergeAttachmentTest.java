@@ -26,7 +26,6 @@ import com.google.inject.Inject;
 import com.google.inject.Provider;
 
 import edu.upenn.cis.ppod.TestGroupDefs;
-import edu.upenn.cis.ppod.dao.IAttachmentNamespaceDAO;
 import edu.upenn.cis.ppod.imodel.IAttachment;
 import edu.upenn.cis.ppod.imodel.IAttachmentNamespace;
 import edu.upenn.cis.ppod.imodel.IAttachmentType;
@@ -41,15 +40,7 @@ import edu.upenn.cis.ppod.model.ModelAssert;
 public class MergeAttachmentTest {
 
 	@Inject
-	private IMergeAttachments.IFactory mergeAttachmentFactory;
-
-	@Inject
-	private Provider<TestAttachmentNamespaceDAO> attachmentNamespaceDAOProvider;
-
-	private IAttachmentNamespaceDAO attachmentNamespaceDAO;
-
-	@Inject
-	private TestAttachmentTypeDAO attachmentTypeDAO;
+	private Provider<IMergeAttachments> mergeAttachmentProvider;
 
 	@Inject
 	private Provider<IAttachment> attachmentProvider;
@@ -66,15 +57,12 @@ public class MergeAttachmentTest {
 		namespacesByLabel.put(
 				"TEST_ATTACHMENT_NAMESPACE",
 				attachmentNamespaceProvider.get());
-		attachmentNamespaceDAO =
-				attachmentNamespaceDAOProvider.get()
-						.setNamespacesByLabel(namespacesByLabel);
 	}
 
 	@Test
 	public void mergeOnBlankTarget() {
-		IMergeAttachments mergeAttachments = mergeAttachmentFactory.create(
-				attachmentNamespaceDAO, attachmentTypeDAO);
+		IMergeAttachments mergeAttachments = mergeAttachmentProvider.get();
+
 		final IAttachment targetAttachment = attachmentProvider.get(), sourceAttachment = attachmentProvider
 				.get();
 		sourceAttachment.setLabel("target attachment");

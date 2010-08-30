@@ -17,11 +17,6 @@ package edu.upenn.cis.ppod.createorupdate;
 
 import com.google.inject.ImplementedBy;
 
-import edu.upenn.cis.ppod.dao.IAttachmentNamespaceDAO;
-import edu.upenn.cis.ppod.dao.IAttachmentTypeDAO;
-import edu.upenn.cis.ppod.dao.IOTUSetDAO;
-import edu.upenn.cis.ppod.dao.IStudyDAO;
-import edu.upenn.cis.ppod.imodel.INewVersionInfo;
 import edu.upenn.cis.ppod.imodel.IStudy;
 
 /**
@@ -57,12 +52,7 @@ public interface ICreateOrUpdateStudy {
 		 * 
 		 * @return a new {@link ISaveOrUpdateStudy}
 		 */
-		ICreateOrUpdateStudy create(IStudy incomingStudy,
-				IStudyDAO studyDAO,
-				IOTUSetDAO otuSetDAO,
-				IAttachmentNamespaceDAO attachmentNamespaceDAO,
-				IAttachmentTypeDAO attachmentTypeDAO,
-				INewVersionInfo newVersionInfo);
+		ICreateOrUpdateStudy create(IStudy incomingStudy);
 
 	}
 }

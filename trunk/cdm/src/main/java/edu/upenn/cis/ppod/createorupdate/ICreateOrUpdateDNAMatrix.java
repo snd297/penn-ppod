@@ -21,8 +21,6 @@ import edu.upenn.cis.ppod.imodel.DNANucleotide;
 import edu.upenn.cis.ppod.imodel.IDNACell;
 import edu.upenn.cis.ppod.imodel.IDNAMatrix;
 import edu.upenn.cis.ppod.imodel.IDNARow;
-import edu.upenn.cis.ppod.imodel.INewVersionInfo;
-import edu.upenn.cis.ppod.thirdparty.dao.IDAO;
 
 /**
  * @author Sam Donnelly
@@ -30,9 +28,5 @@ import edu.upenn.cis.ppod.thirdparty.dao.IDAO;
 @ImplementedBy(CreateOrUpdateDNAMatrix.class)
 public interface ICreateOrUpdateDNAMatrix extends
 		ICreateOrUpdateMatrix<IDNAMatrix, IDNARow, IDNACell, DNANucleotide> {
-	static interface IFactory {
-		ICreateOrUpdateDNAMatrix create(
-				INewVersionInfo newVersionInfo);
 
-	}
 }

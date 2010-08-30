@@ -21,7 +21,6 @@ import static com.google.common.collect.Iterables.getOnlyElement;
 
 import com.google.inject.Inject;
 import com.google.inject.Provider;
-import com.google.inject.assistedinject.Assisted;
 
 import edu.upenn.cis.ppod.dao.IObjectWithLongIdDAO;
 import edu.upenn.cis.ppod.imodel.DNANucleotide;
@@ -45,7 +44,7 @@ final class CreateOrUpdateDNAMatrix
 			final Provider<IAttachment> attachmentProvider,
 			final Provider<MatrixInfo> matrixInfoProvider,
 			final IObjectWithLongIdDAO dao,
-			@Assisted final INewVersionInfo newVersionInfo) {
+			final INewVersionInfo newVersionInfo) {
 
 		super(
 				rowProvider,

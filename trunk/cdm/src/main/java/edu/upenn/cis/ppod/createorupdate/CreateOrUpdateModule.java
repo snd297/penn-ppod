@@ -17,7 +17,6 @@ package edu.upenn.cis.ppod.createorupdate;
 
 import com.google.inject.AbstractModule;
 import com.google.inject.TypeLiteral;
-import com.google.inject.assistedinject.FactoryProvider;
 
 import edu.upenn.cis.ppod.imodel.IDNASequence;
 import edu.upenn.cis.ppod.imodel.IDNASequenceSet;
@@ -28,26 +27,24 @@ import edu.upenn.cis.ppod.imodel.IDNASequenceSet;
  */
 public class CreateOrUpdateModule extends AbstractModule {
 
+	private final static class IMergeSequenceSetsTypeLiteral
+			extends
+			TypeLiteral<IMergeSequenceSets<IDNASequenceSet, IDNASequence>> {}
+
 	private final static class MergeSequenceSetsTypeLiteral
 			extends
 			TypeLiteral<MergeSequenceSets<IDNASequenceSet, IDNASequence>> {}
 
-	private final static class IMergeSequenceSetsIFactoryTypeLiteral
-			extends
-			TypeLiteral<IMergeSequenceSets.IFactory<IDNASequenceSet, IDNASequence>> {}
-
 	@Override
 	protected void configure() {
+
+		final TypeLiteral<IMergeSequenceSets<IDNASequenceSet, IDNASequence>> iMergeDNASequenceSetTypeLiteral =
+				new IMergeSequenceSetsTypeLiteral();
 
 		final TypeLiteral<MergeSequenceSets<IDNASequenceSet, IDNASequence>> mergeDNASequenceSetTypeLiteral =
 				new MergeSequenceSetsTypeLiteral();
 
-		final TypeLiteral<IMergeSequenceSets.IFactory<IDNASequenceSet, IDNASequence>> mergeDNASequencesFactoryTypeLiteral =
-				new IMergeSequenceSetsIFactoryTypeLiteral();
-
-		bind(mergeDNASequencesFactoryTypeLiteral).toProvider(
-				FactoryProvider.newFactory(mergeDNASequencesFactoryTypeLiteral,
-						mergeDNASequenceSetTypeLiteral));
+		bind(iMergeDNASequenceSetTypeLiteral).to(mergeDNASequenceSetTypeLiteral);
 
 	}
 }

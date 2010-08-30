@@ -15,6 +15,9 @@
  */
 package edu.upenn.cis.ppod.util;
 
+import org.hibernate.Query;
+import org.hibernate.Session;
+
 import com.google.inject.AbstractModule;
 
 import edu.upenn.cis.ppod.imodel.INewVersionInfo;
@@ -28,6 +31,8 @@ public class TestPPodUtilModule extends AbstractModule {
 	@Override
 	protected void configure() {
 		bind(INewVersionInfo.class).to(StubNewVersionInfo.class);
+		bind(Session.class).to(StubSession.class);
+		bind(Query.class).to(StubQuery.class);
 	}
 
 }

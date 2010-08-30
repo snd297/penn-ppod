@@ -25,7 +25,6 @@ import com.google.inject.Inject;
 import com.google.inject.Provider;
 
 import edu.upenn.cis.ppod.TestGroupDefs;
-import edu.upenn.cis.ppod.imodel.INewVersionInfo;
 import edu.upenn.cis.ppod.imodel.IOTU;
 import edu.upenn.cis.ppod.imodel.IOTUSet;
 import edu.upenn.cis.ppod.imodel.IStandardCell;
@@ -44,25 +43,17 @@ import edu.upenn.cis.ppod.util.PPodEntityProvider;
 public class CreateOrUpdateStandardMatrixTest {
 
 	@Inject
-	private ICreateOrUpdateStandardMatrix.IFactory createOrUpdateMatrixFactory;
+	private Provider<ICreateOrUpdateStandardMatrix> createOrUpdateMatrixProvider;
 
 	@Inject
 	private Provider<IStandardMatrix> characterStateMatrixProvider;
-
-	@Inject
-	private TestMergeAttachment mergeAttachment;
-
-	@Inject
-	private INewVersionInfo newVersionInfo;
 
 	@Test(dataProvider = PPodEntityProvider.STANDARD_MATRICES_PROVIDER,
 			dataProviderClass = PPodEntityProvider.class)
 	public void create(final IStandardMatrix sourceMatrix) {
 
 		final ICreateOrUpdateStandardMatrix createOrUpdateStandardMatrix =
-				createOrUpdateMatrixFactory.create(
-						mergeAttachment,
-						newVersionInfo);
+				createOrUpdateMatrixProvider.get();
 		final IOTUSet fakeDbOTUSet = sourceMatrix.getParent();
 
 		final IStandardMatrix targetMatrix =
@@ -82,8 +73,7 @@ public class CreateOrUpdateStandardMatrixTest {
 			dataProviderClass = PPodEntityProvider.class)
 	public void moveRows(final IStandardMatrix sourceMatrix) {
 		final ICreateOrUpdateStandardMatrix createOrUpdateStandardMatrix =
-				createOrUpdateMatrixFactory.create(mergeAttachment,
-						newVersionInfo);
+				createOrUpdateMatrixProvider.get();
 		final IOTUSet fakeDbOTUSet = sourceMatrix.getParent();
 
 		final IStandardMatrix targetMatrix =
@@ -127,9 +117,7 @@ public class CreateOrUpdateStandardMatrixTest {
 			dataProviderClass = PPodEntityProvider.class)
 	public void moveCharacters(final IStandardMatrix sourceMatrix) {
 		final ICreateOrUpdateStandardMatrix createOrUpdateMatrix =
-					createOrUpdateMatrixFactory.create(
-							mergeAttachment,
-							newVersionInfo);
+					createOrUpdateMatrixProvider.get();
 		final IOTUSet fakeDbOTUSet = sourceMatrix.getParent();
 
 		final IStandardMatrix targetMatrix = characterStateMatrixProvider
@@ -183,9 +171,7 @@ public class CreateOrUpdateStandardMatrixTest {
 			dataProviderClass = PPodEntityProvider.class)
 	public void removeColumn(final IStandardMatrix sourceMatrix) {
 		final ICreateOrUpdateStandardMatrix createOrUpdateMatrix =
-				createOrUpdateMatrixFactory
-						.create(mergeAttachment,
-								newVersionInfo);
+				createOrUpdateMatrixProvider.get();
 		final IOTUSet fakeDbOTUSet = sourceMatrix.getParent();
 
 		final IStandardMatrix targetMatrix =

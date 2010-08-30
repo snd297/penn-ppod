@@ -15,6 +15,11 @@
  */
 package edu.upenn.cis.ppod.dao.hibernate;
 
+import org.hibernate.Session;
+
+import com.google.inject.Inject;
+
+import edu.upenn.cis.ppod.dao.IAttachmentNamespaceDAO;
 import edu.upenn.cis.ppod.imodel.IAttachmentNamespace;
 import edu.upenn.cis.ppod.model.AttachmentNamespace;
 import edu.upenn.cis.ppod.thirdparty.dao.hibernate.GenericHibernateDAO;
@@ -23,8 +28,13 @@ import edu.upenn.cis.ppod.thirdparty.dao.hibernate.GenericHibernateDAO;
  * @author Sam Donnelly
  */
 final class AttachmentNamespaceDAOHibernate extends
-		GenericHibernateDAO<IAttachmentNamespace, Long> implements
-		IAttachmentNamespaceDAOHibernate {
+		GenericHibernateDAO<IAttachmentNamespace, Long>
+		implements IAttachmentNamespaceDAO {
+
+	@Inject
+	AttachmentNamespaceDAOHibernate(final Session session) {
+		super(session);
+	}
 
 	/** {@inheritDoc} */
 	public IAttachmentNamespace getNamespaceByLabel(final String namespace) {
