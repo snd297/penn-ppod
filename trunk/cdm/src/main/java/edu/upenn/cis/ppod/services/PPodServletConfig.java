@@ -18,6 +18,7 @@ import com.google.inject.servlet.ServletModule;
 import edu.upenn.cis.ppod.PPodModule;
 import edu.upenn.cis.ppod.services.hibernate.PPodServicesHibernateModule;
 import edu.upenn.cis.ppod.thirdparty.util.HibernateSessionPerRequestFilter;
+import edu.upenn.cis.ppod.thirdparty.util.PPodModuleProcessor;
 
 public class PPodServletConfig extends GuiceServletContextListener {
 
@@ -31,7 +32,8 @@ public class PPodServletConfig extends GuiceServletContextListener {
 
 						@Override
 						protected void configureServlets() {
-							bind(IniShiroFilter.class).in(Singleton.class);
+							bind(IniShiroFilter.class)
+									.in(Singleton.class);
 							bind(HttpServletDispatcher.class)
 									.in(Singleton.class);
 							filter("/*")
@@ -62,7 +64,6 @@ public class PPodServletConfig extends GuiceServletContextListener {
 		final PPodModuleProcessor processor = new PPodModuleProcessor(registry,
 				providerFactory);
 		processor.processInjector(getInjector());
-
 	}
 
 	@Override

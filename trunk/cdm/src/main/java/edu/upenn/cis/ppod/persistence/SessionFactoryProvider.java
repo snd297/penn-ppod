@@ -1,4 +1,4 @@
-package edu.upenn.cis.ppod.dao.hibernate;
+package edu.upenn.cis.ppod.persistence;
 
 import org.hibernate.SessionFactory;
 import org.hibernate.cfg.AnnotationConfiguration;

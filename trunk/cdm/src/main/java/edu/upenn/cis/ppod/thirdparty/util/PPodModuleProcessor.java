@@ -1,4 +1,4 @@
-package edu.upenn.cis.ppod.services;
+package edu.upenn.cis.ppod.thirdparty.util;
 
 import java.lang.reflect.Type;
 
@@ -16,6 +16,9 @@ import org.slf4j.LoggerFactory;
 import com.google.inject.Binding;
 import com.google.inject.Injector;
 
+/**
+ * Based on {@link ModuleProcessor}.
+ */
 public class PPodModuleProcessor {
 	private final static Logger logger = LoggerFactory
 			.getLogger(ModuleProcessor.class);

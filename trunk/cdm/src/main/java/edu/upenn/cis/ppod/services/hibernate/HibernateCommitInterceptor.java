@@ -24,7 +24,7 @@ import org.jboss.resteasy.spi.interception.PostProcessInterceptor;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
-import edu.upenn.cis.ppod.dao.hibernate.SessionFactoryProvider;
+import edu.upenn.cis.ppod.persistence.SessionFactoryProvider;
 
 /**
  * Attempt to commit the current transaction <em>before</em> the servlet

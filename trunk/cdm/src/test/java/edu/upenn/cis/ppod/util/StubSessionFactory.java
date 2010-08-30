@@ -15,26 +15,175 @@
  */
 package edu.upenn.cis.ppod.util;
 
-import org.hibernate.Query;
+import java.io.Serializable;
+import java.sql.Connection;
+import java.util.Map;
+import java.util.Set;
 
-import org.hibernate.Session;
+import javax.naming.NamingException;
+import javax.naming.Reference;
 
-import com.google.inject.Provider;
-
-import edu.umd.cs.findbugs.annotations.SuppressWarnings;
+import org.hibernate.Cache;
+import org.hibernate.HibernateException;
+import org.hibernate.Interceptor;
+import org.hibernate.SessionFactory;
+import org.hibernate.StatelessSession;
+import org.hibernate.engine.FilterDefinition;
+import org.hibernate.metadata.ClassMetadata;
+import org.hibernate.metadata.CollectionMetadata;
+import org.hibernate.stat.Statistics;
 
 /**
  * @author Sam Donnelly
  */
-public class StubSessionFactory implements ISessionFactory {
+public class StubSessionFactory implements SessionFactory {
 
-	private Provider<Query> stubQueryProvider;
+	public Reference getReference() throws NamingException {
+		// TODO Auto-generated method stub
+		throw new UnsupportedOperationException();
+	}
 
-	StubSessionFactory(final Provider<Query> stubQueryProvider) {
-	//	this.stubQueryProvider = stubQueryProvider
+	public org.hibernate.classic.Session openSession()
+			throws HibernateException {
+		// TODO Auto-generated method stub
+		throw new UnsupportedOperationException();
 	}
-    @SuppressWarnings
-	public Session create() {
-		return new StubSession(stubQueryProvider);
+
+	public org.hibernate.classic.Session openSession(Interceptor interceptor)
+			throws HibernateException {
+		// TODO Auto-generated method stub
+		throw new UnsupportedOperationException();
 	}
+
+	public org.hibernate.classic.Session openSession(Connection connection) {
+		// TODO Auto-generated method stub
+		throw new UnsupportedOperationException();
+	}
+
+	public org.hibernate.classic.Session openSession(Connection connection,
+			Interceptor interceptor) {
+		// TODO Auto-generated method stub
+		throw new UnsupportedOperationException();
+	}
+
+	public org.hibernate.classic.Session getCurrentSession()
+			throws HibernateException {
+		// TODO Auto-generated method stub
+		throw new UnsupportedOperationException();
+	}
+
+	public StatelessSession openStatelessSession() {
+		// TODO Auto-generated method stub
+		throw new UnsupportedOperationException();
+	}
+
+	public StatelessSession openStatelessSession(Connection connection) {
+		// TODO Auto-generated method stub
+		throw new UnsupportedOperationException();
+	}
+
+	public ClassMetadata getClassMetadata(Class entityClass) {
+		// TODO Auto-generated method stub
+		throw new UnsupportedOperationException();
+	}
+
+	public ClassMetadata getClassMetadata(String entityName) {
+		// TODO Auto-generated method stub
+		throw new UnsupportedOperationException();
+	}
+
+	public CollectionMetadata getCollectionMetadata(String roleName) {
+		// TODO Auto-generated method stub
+		throw new UnsupportedOperationException();
+	}
+
+	public Map getAllClassMetadata() {
+		// TODO Auto-generated method stub
+		throw new UnsupportedOperationException();
+	}
+
+	public Map getAllCollectionMetadata() {
+		// TODO Auto-generated method stub
+		throw new UnsupportedOperationException();
+	}
+
+	public Statistics getStatistics() {
+		// TODO Auto-generated method stub
+		throw new UnsupportedOperationException();
+	}
+
+	public void close() throws HibernateException {
+		// TODO Auto-generated method stub
+		throw new UnsupportedOperationException();
+	}
+
+	public boolean isClosed() {
+		// TODO Auto-generated method stub
+		throw new UnsupportedOperationException();
+	}
+
+	public Cache getCache() {
+		// TODO Auto-generated method stub
+		throw new UnsupportedOperationException();
+	}
+
+	public void evict(Class persistentClass) throws HibernateException {
+		// TODO Auto-generated method stub
+		throw new UnsupportedOperationException();
+	}
+
+	public void evict(Class persistentClass, Serializable id)
+			throws HibernateException {
+		// TODO Auto-generated method stub
+		throw new UnsupportedOperationException();
+	}
+
+	public void evictEntity(String entityName) throws HibernateException {
+		// TODO Auto-generated method stub
+		throw new UnsupportedOperationException();
+	}
+
+	public void evictEntity(String entityName, Serializable id)
+			throws HibernateException {
+		// TODO Auto-generated method stub
+		throw new UnsupportedOperationException();
+	}
+
+	public void evictCollection(String roleName) throws HibernateException {
+		// TODO Auto-generated method stub
+		throw new UnsupportedOperationException();
+	}
+
+	public void evictCollection(String roleName, Serializable id)
+			throws HibernateException {
+		// TODO Auto-generated method stub
+		throw new UnsupportedOperationException();
+	}
+
+	public void evictQueries(String cacheRegion) throws HibernateException {
+		// TODO Auto-generated method stub
+		throw new UnsupportedOperationException();
+	}
+
+	public void evictQueries() throws HibernateException {
+		// TODO Auto-generated method stub
+		throw new UnsupportedOperationException();
+	}
+
+	public Set getDefinedFilterNames() {
+		// TODO Auto-generated method stub
+		throw new UnsupportedOperationException();
+	}
+
+	public FilterDefinition getFilterDefinition(String filterName)
+			throws HibernateException {
+		// TODO Auto-generated method stub
+		throw new UnsupportedOperationException();
+	}
+
+	public boolean containsFetchProfileDefinition(String name) {
+		// TODO Auto-generated method stub
+		throw new UnsupportedOperationException();
+	}
+
 }
