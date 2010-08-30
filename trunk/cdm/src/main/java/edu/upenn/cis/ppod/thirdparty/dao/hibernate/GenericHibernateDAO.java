@@ -44,7 +44,6 @@ import org.hibernate.criterion.Criterion;
 import org.hibernate.criterion.Example;
 
 import edu.upenn.cis.ppod.dao.hibernate.IDAOHibernate;
-import edu.upenn.cis.ppod.thirdparty.util.HibernateUtil;
 
 /**
  * From http://www.hibernate.org/328.html.
@@ -55,6 +54,10 @@ import edu.upenn.cis.ppod.thirdparty.util.HibernateUtil;
  */
 public abstract class GenericHibernateDAO<T, ID extends Serializable>
 		implements IDAOHibernate<T, ID> {
+
+	public GenericHibernateDAO(final Session session) {
+		this.session = session;
+	}
 
 	/** No arg constructor. */
 	public GenericHibernateDAO() {
@@ -204,7 +207,8 @@ public abstract class GenericHibernateDAO<T, ID extends Serializable>
 	 */
 	protected Session getSession() {
 		if (session == null) {
-			setSession(HibernateUtil.getSessionFactory().getCurrentSession());
+			throw new IllegalStateException("no session set for dao");
+			// setSession(HibernateUtil.getSessionFactory().getCurrentSession());
 		}
 		return session;
 	}
