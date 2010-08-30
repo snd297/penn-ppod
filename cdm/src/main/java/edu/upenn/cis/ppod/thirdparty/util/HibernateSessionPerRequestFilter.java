@@ -54,12 +54,12 @@ public final class HibernateSessionPerRequestFilter implements Filter {
 	private static Logger logger = LoggerFactory
 			.getLogger(HibernateSessionPerRequestFilter.class);
 
-	// private final Provider<PPodVersionInfoInterceptor>
-	// versionInfoInterceptorProvider = pPodCoreFactory
-	// .getProvider(PPodVersionInfoInterceptor.class);
+	private SessionFactory sf;
 
 	@Inject
-	private SessionFactory sf;
+	HibernateSessionPerRequestFilter(final SessionFactory sf) {
+		this.sf = sf;
+	}
 
 	public void destroy() {}
 
@@ -123,8 +123,8 @@ public final class HibernateSessionPerRequestFilter implements Filter {
 	}
 
 	public void init(final FilterConfig filterConfig) throws ServletException {
-		logger.debug("Initializing filter...");
-		logger.debug("Obtaining SessionFactory from HibernateUtil");
+		// logger.debug("Initializing filter...");
+		// logger.debug("Obtaining SessionFactory from HibernateUtil");
 		// sf = HibernateUtil.getSessionFactory();
 	}
 }

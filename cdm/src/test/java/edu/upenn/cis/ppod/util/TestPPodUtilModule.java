@@ -17,6 +17,7 @@ package edu.upenn.cis.ppod.util;
 
 import org.hibernate.Query;
 import org.hibernate.Session;
+import org.hibernate.SessionFactory;
 
 import com.google.inject.AbstractModule;
 
@@ -33,6 +34,7 @@ public class TestPPodUtilModule extends AbstractModule {
 		bind(INewVersionInfo.class).to(StubNewVersionInfo.class);
 		bind(Session.class).to(StubSession.class);
 		bind(Query.class).to(StubQuery.class);
+		bind(SessionFactory.class).to(StubSessionFactory.class);
 	}
 
 }

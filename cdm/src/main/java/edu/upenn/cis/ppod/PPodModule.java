@@ -58,6 +58,7 @@ import edu.upenn.cis.ppod.model.StandardState;
 import edu.upenn.cis.ppod.model.Study;
 import edu.upenn.cis.ppod.model.Tree;
 import edu.upenn.cis.ppod.model.TreeSet;
+import edu.upenn.cis.ppod.persistence.PersistenceModule;
 import edu.upenn.cis.ppod.services.StringPair;
 import edu.upenn.cis.ppod.util.IPair;
 import edu.upenn.cis.ppod.util.ISetVersionInfoVisitor;
@@ -120,6 +121,6 @@ public final class PPodModule extends AbstractModule {
 		install(new ModelModule());
 		install(new DAOHibernateModule());
 		install(new CreateOrUpdateModule());
-
+		install(new PersistenceModule());
 	}
 }

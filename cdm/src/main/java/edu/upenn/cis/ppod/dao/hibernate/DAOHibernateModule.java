@@ -15,11 +15,7 @@
  */
 package edu.upenn.cis.ppod.dao.hibernate;
 
-import org.hibernate.Session;
-import org.hibernate.SessionFactory;
-
 import com.google.inject.AbstractModule;
-import com.google.inject.Provides;
 
 import edu.upenn.cis.ppod.dao.IAttachmentNamespaceDAO;
 import edu.upenn.cis.ppod.dao.IAttachmentTypeDAO;
@@ -48,15 +44,6 @@ public class DAOHibernateModule extends AbstractModule {
 				.to(ObjectWithLongIdDAOHibernate.class);
 		bind(IVersionInfoDAO.class)
 				.to(VersionInfoDAOHibernate.class);
-
-		bind(SessionFactory.class)
-				.toProvider(SessionFactoryProvider.class)
-				.asEagerSingleton();
-	}
-
-	@Provides
-	Session provideSession(final SessionFactory sf) {
-		return sf.getCurrentSession();
 	}
 
 }
