@@ -34,7 +34,6 @@ import edu.upenn.cis.ppod.imodel.IOTUSet;
 import edu.upenn.cis.ppod.imodel.IStandardMatrix;
 import edu.upenn.cis.ppod.imodel.ITreeSet;
 import edu.upenn.cis.ppod.services.ppodentity.PPodEntities;
-import edu.upenn.cis.ppod.thirdparty.util.HibernateUtil;
 import edu.upenn.cis.ppod.util.ISetDocIdVisitor;
 import edu.upenn.cis.ppod.util.IVisitor;
 
@@ -53,17 +52,15 @@ class PPodEntitiesResourceHibernate implements
 
 	@Inject
 	PPodEntitiesResourceHibernate(final Provider<PPodEntities> pPodEntities,
-			final ISetDocIdVisitor setDocIdVisitor) {
+			final ISetDocIdVisitor setDocIdVisitor,
+			final Session session) {
 		this.pPodEntitiesProvider = pPodEntities;
 		this.setDocIdVisitor = setDocIdVisitor;
+		this.session = session;
 	}
 
 	public PPodEntities getEntitiesByHqlQuery(final String query) {
 		checkNotNull(query);
-
-		if (session == null) {
-			session = HibernateUtil.getSessionFactory().getCurrentSession();
-		}
 
 		// These queries are read only so set this for efficiency, security, and
 		// so we can modify the entities for the response

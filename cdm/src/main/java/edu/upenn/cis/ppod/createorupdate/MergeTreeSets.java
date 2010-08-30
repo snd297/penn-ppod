@@ -26,7 +26,6 @@ import java.util.List;
 
 import com.google.inject.Inject;
 import com.google.inject.Provider;
-import com.google.inject.assistedinject.Assisted;
 
 import edu.upenn.cis.ppod.imodel.INewVersionInfo;
 import edu.upenn.cis.ppod.imodel.IOTU;
@@ -45,8 +44,9 @@ final class MergeTreeSets implements IMergeTreeSets {
 	private final INewVersionInfo newVersionInfo;
 
 	@Inject
-	MergeTreeSets(final Provider<ITree> treeProvider,
-			@Assisted final INewVersionInfo newVersionInfo) {
+	MergeTreeSets(
+			final Provider<ITree> treeProvider,
+			final INewVersionInfo newVersionInfo) {
 
 		this.treeProvider = treeProvider;
 		this.newVersionInfo = newVersionInfo;

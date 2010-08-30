@@ -15,6 +15,11 @@
  */
 package edu.upenn.cis.ppod.dao.hibernate;
 
+import org.hibernate.Session;
+
+import com.google.inject.Inject;
+
+import edu.upenn.cis.ppod.dao.IVersionInfoDAO;
 import edu.upenn.cis.ppod.model.VersionInfo;
 import edu.upenn.cis.ppod.thirdparty.dao.hibernate.GenericHibernateDAO;
 
@@ -25,8 +30,13 @@ import edu.upenn.cis.ppod.thirdparty.dao.hibernate.GenericHibernateDAO;
  */
 public final class VersionInfoDAOHibernate
 		extends GenericHibernateDAO<VersionInfo, Long>
-		implements IVersionInfoDAOHibernate {
+		implements IVersionInfoDAO {
 
+	@Inject
+	VersionInfoDAOHibernate(final Session session) {
+		super(session);
+	}
+	
 	public Long getMaxVersion() {
 		final Long maxPPodVersion =
 				(Long) getSession()

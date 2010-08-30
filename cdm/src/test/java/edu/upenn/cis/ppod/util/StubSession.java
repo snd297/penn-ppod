@@ -215,8 +215,7 @@ public class StubSession implements Session {
 	}
 
 	public Query getNamedQuery(String queryName) throws HibernateException {
-		// TODO Auto-generated method stub
-		throw new UnsupportedOperationException();
+		return new StubQuery();
 	}
 
 	public Session getSession(EntityMode entityMode) {

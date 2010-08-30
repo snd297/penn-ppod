@@ -17,12 +17,10 @@ package edu.upenn.cis.ppod.createorupdate;
 
 import com.google.inject.ImplementedBy;
 
-import edu.upenn.cis.ppod.imodel.INewVersionInfo;
 import edu.upenn.cis.ppod.imodel.IStandardCell;
 import edu.upenn.cis.ppod.imodel.IStandardMatrix;
 import edu.upenn.cis.ppod.imodel.IStandardRow;
 import edu.upenn.cis.ppod.imodel.IStandardState;
-import edu.upenn.cis.ppod.thirdparty.dao.IDAO;
 
 /**
  * Copy the state of {@code sourceMatrix} onto the persistent matrix
@@ -59,10 +57,4 @@ public interface ICreateOrUpdateStandardMatrix
 	void createOrUpdateMatrix(
 			IStandardMatrix dbMatrix,
 			IStandardMatrix sourceMatrix);
-
-	static interface IFactory {
-		ICreateOrUpdateStandardMatrix create(
-				IMergeAttachments mergeAttachments,
-				INewVersionInfo newVersionInfo);
-	}
 }

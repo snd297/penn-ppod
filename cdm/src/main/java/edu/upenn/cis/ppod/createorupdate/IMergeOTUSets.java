@@ -17,7 +17,6 @@ package edu.upenn.cis.ppod.createorupdate;
 
 import com.google.inject.ImplementedBy;
 
-import edu.upenn.cis.ppod.imodel.INewVersionInfo;
 import edu.upenn.cis.ppod.imodel.IOTUSet;
 
 /**
@@ -27,9 +26,5 @@ import edu.upenn.cis.ppod.imodel.IOTUSet;
 public interface IMergeOTUSets {
 
 	void mergeOTUSets(IOTUSet targetOTUSet, IOTUSet sourceOTUSet);
-
-	static interface IFactory {
-		IMergeOTUSets create(INewVersionInfo newVersionInfo);
-	}
 
 }

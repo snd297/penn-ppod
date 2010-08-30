@@ -20,53 +20,31 @@ import static com.google.common.collect.Sets.newHashSet;
 
 import java.util.Set;
 
-import org.hibernate.Session;
-
 import com.google.common.base.Function;
 import com.google.inject.Inject;
 import com.google.inject.Provider;
 
 import edu.upenn.cis.ppod.createorupdate.ICreateOrUpdateStudy;
-import edu.upenn.cis.ppod.dao.IAttachmentNamespaceDAO;
-import edu.upenn.cis.ppod.dao.IAttachmentTypeDAO;
-import edu.upenn.cis.ppod.dao.IOTUSetDAO;
-import edu.upenn.cis.ppod.dao.IObjectWithLongIdDAO;
 import edu.upenn.cis.ppod.dao.IStudyDAO;
-import edu.upenn.cis.ppod.dao.hibernate.IAttachmentNamespaceDAOHibernate;
-import edu.upenn.cis.ppod.dao.hibernate.IAttachmentTypeDAOHibernate;
-import edu.upenn.cis.ppod.dao.hibernate.IOTUSetDAOHibernate;
-import edu.upenn.cis.ppod.dao.hibernate.IObjectWithLongIdDAOHibernate;
-import edu.upenn.cis.ppod.dao.hibernate.IStudyDAOHibernate;
-import edu.upenn.cis.ppod.dao.hibernate.IVersionInfoDAOHibernate;
 import edu.upenn.cis.ppod.imodel.INewVersionInfo;
-import edu.upenn.cis.ppod.imodel.INewVersionInfoDB;
 import edu.upenn.cis.ppod.imodel.IStudy;
 import edu.upenn.cis.ppod.services.IStudyResource;
 import edu.upenn.cis.ppod.services.StringPair;
 import edu.upenn.cis.ppod.services.ppodentity.IStudy2StudyInfo;
 import edu.upenn.cis.ppod.services.ppodentity.StudyInfo;
-import edu.upenn.cis.ppod.thirdparty.util.HibernateUtil;
 import edu.upenn.cis.ppod.util.IAfterUnmarshalVisitor;
 import edu.upenn.cis.ppod.util.IPair;
-import edu.upenn.cis.ppod.util.ISetVersionInfoVisitor;
 import edu.upenn.cis.ppod.util.ISetDocIdVisitor;
+import edu.upenn.cis.ppod.util.ISetVersionInfoVisitor;
 
 /**
  * @author Sam Donnelly
  */
-final class StudyResourceHibernate implements IStudyResource {
+public final class StudyResourceHibernate implements IStudyResource {
 
 	private final IStudyDAO studyDAO;
 
-	private final IOTUSetDAO otuSetDAO;
-
-	private final IAttachmentNamespaceDAO attachmentNamespaceDAO;
-
-	private final IAttachmentTypeDAO attachmentTypeDAO;
-
-	private final ICreateOrUpdateStudy.IFactory saveOrUpdateStudyFactory;
-
-	private final IObjectWithLongIdDAO dao;
+	private final ICreateOrUpdateStudy.IFactory createOrUpdateStudyFactory;
 
 	private final IStudy2StudyInfo study2StudyInfo;
 
@@ -82,47 +60,25 @@ final class StudyResourceHibernate implements IStudyResource {
 
 	@Inject
 	StudyResourceHibernate(
-			final IStudyDAOHibernate studyDAO,
-			final IOTUSetDAOHibernate otuSetDAO,
+			final IStudyDAO studyDAO,
 			final ICreateOrUpdateStudy.IFactory createOrUpdateStudyFactory,
 			final IStudy2StudyInfo study2StudyInfo,
-			final IVersionInfoDAOHibernate versionInfoDAO,
 			final ISetDocIdVisitor setDocIdVisitor,
 			final Provider<IAfterUnmarshalVisitor> afterUnmarshalVisitorProvider,
-			final INewVersionInfoDB.IFactory newVersionInfoFactory,
+			final INewVersionInfo newVersionInfo,
 			final ISetVersionInfoVisitor.IFactory setVersionInfoVisitorFactory,
-			final StringPair.IFactory stringPairFactory,
-			final IAttachmentNamespaceDAOHibernate attachmentNamespaceDAO,
-			final IAttachmentTypeDAOHibernate attachmentTypeDAO,
-			final IObjectWithLongIdDAOHibernate dao) {
-		final Session currentSession =
-				HibernateUtil.getSessionFactory().getCurrentSession();
-		studyDAO.setSession(currentSession);
+			final StringPair.IFactory stringPairFactory) {
+
 		this.studyDAO = studyDAO;
 
-		versionInfoDAO.setSession(currentSession);
-
-		otuSetDAO.setSession(currentSession);
-		this.otuSetDAO = otuSetDAO;
-
-		attachmentNamespaceDAO.setSession(currentSession);
-		this.attachmentNamespaceDAO = attachmentNamespaceDAO;
-
-		this.attachmentTypeDAO = attachmentTypeDAO;
-		attachmentTypeDAO.setSession(currentSession);
-
-		dao.setSession(currentSession);
-		this.dao = dao;
-
-		this.saveOrUpdateStudyFactory = createOrUpdateStudyFactory;
+		this.createOrUpdateStudyFactory = createOrUpdateStudyFactory;
 
 		this.study2StudyInfo = study2StudyInfo;
 		this.setDocIdVisitor = setDocIdVisitor;
 		this.afterUnmarshalVisitorProvider = afterUnmarshalVisitorProvider;
 		this.stringPairFactory = stringPairFactory;
 
-		this.newVersionInfo =
-				newVersionInfoFactory.create(versionInfoDAO);
+		this.newVersionInfo = newVersionInfo;
 
 		this.setPPodVersionInfoVisitorFactory = setVersionInfoVisitorFactory;
 	}
@@ -152,13 +108,8 @@ final class StudyResourceHibernate implements IStudyResource {
 		incomingStudy.accept(afterUnmarshalVisitorProvider.get());
 
 		final ICreateOrUpdateStudy createOrUpdateStudy =
-				saveOrUpdateStudyFactory.create(
-						incomingStudy,
-						studyDAO,
-						otuSetDAO,
-						attachmentNamespaceDAO,
-						attachmentTypeDAO,
-						newVersionInfo);
+				createOrUpdateStudyFactory.create(
+						incomingStudy);
 		createOrUpdateStudy.createOrUpdateStudy();
 		final IStudy dbStudy = createOrUpdateStudy.getDbStudy();
 		final ISetVersionInfoVisitor setVersionInfoVisitor =

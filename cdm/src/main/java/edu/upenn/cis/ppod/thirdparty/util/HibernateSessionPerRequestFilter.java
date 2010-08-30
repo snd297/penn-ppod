@@ -46,6 +46,10 @@ import org.hibernate.context.ManagedSessionContext;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
+import com.google.inject.Inject;
+import com.google.inject.Singleton;
+
+@Singleton
 public final class HibernateSessionPerRequestFilter implements Filter {
 	private static Logger logger = LoggerFactory
 			.getLogger(HibernateSessionPerRequestFilter.class);
@@ -54,6 +58,7 @@ public final class HibernateSessionPerRequestFilter implements Filter {
 	// versionInfoInterceptorProvider = pPodCoreFactory
 	// .getProvider(PPodVersionInfoInterceptor.class);
 
+	@Inject
 	private SessionFactory sf;
 
 	public void destroy() {}
@@ -120,6 +125,6 @@ public final class HibernateSessionPerRequestFilter implements Filter {
 	public void init(final FilterConfig filterConfig) throws ServletException {
 		logger.debug("Initializing filter...");
 		logger.debug("Obtaining SessionFactory from HibernateUtil");
-		sf = HibernateUtil.getSessionFactory();
+		// sf = HibernateUtil.getSessionFactory();
 	}
 }

@@ -17,7 +17,6 @@ package edu.upenn.cis.ppod.createorupdate;
 
 import com.google.inject.ImplementedBy;
 
-import edu.upenn.cis.ppod.imodel.INewVersionInfo;
 import edu.upenn.cis.ppod.imodel.ITreeSet;
 
 /**
@@ -27,7 +26,4 @@ import edu.upenn.cis.ppod.imodel.ITreeSet;
 public interface IMergeTreeSets {
 	void mergeTreeSets(ITreeSet targetTreeSet, ITreeSet sourceTreeSet);
 
-	static interface IFactory {
-		IMergeTreeSets create(INewVersionInfo newVersionInfo);
-	}
 }

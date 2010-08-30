@@ -38,13 +38,11 @@ import org.hibernate.ScrollableResults;
 import org.hibernate.transform.ResultTransformer;
 import org.hibernate.type.Type;
 
-
-
 /**
  * @author samd
- *
+ * 
  */
-public class StubQuery implements Query{
+public class StubQuery implements Query {
 
 	public int executeUpdate() throws HibernateException {
 		// TODO Auto-generated method stub
@@ -294,8 +292,7 @@ public class StubQuery implements Query{
 
 	public Query setParameter(String name, Object val)
 			throws HibernateException {
-		// TODO Auto-generated method stub
-		throw new UnsupportedOperationException();
+		return this;
 	}
 
 	public Query setParameter(int position, Object val, Type type) {

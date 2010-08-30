@@ -15,10 +15,8 @@
  */
 package edu.upenn.cis.ppod.createorupdate;
 
-import edu.upenn.cis.ppod.imodel.INewVersionInfo;
 import edu.upenn.cis.ppod.imodel.ISequence;
 import edu.upenn.cis.ppod.imodel.ISequenceSet;
-import edu.upenn.cis.ppod.thirdparty.dao.IDAO;
 
 /**
  * Merges the state of one sequence set onto another.
@@ -33,9 +31,4 @@ public interface IMergeSequenceSets<SS extends ISequenceSet<S>, S extends ISeque
 	public void mergeSequenceSets(final SS targetSequenceSet,
 			final SS sourceSequenceSet);
 
-	static interface IFactory<SS extends ISequenceSet<S>, S extends ISequence<?>> {
-
-		IMergeSequenceSets<SS, S> create(IDAO<Object, Long> dao,
-				INewVersionInfo newVersionInfo);
-	}
 }

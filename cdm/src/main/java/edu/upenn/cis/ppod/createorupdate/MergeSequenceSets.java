@@ -23,7 +23,6 @@ import java.util.Map;
 import com.google.common.collect.ImmutableMap;
 import com.google.inject.Inject;
 import com.google.inject.Provider;
-import com.google.inject.assistedinject.Assisted;
 
 import edu.upenn.cis.ppod.imodel.INewVersionInfo;
 import edu.upenn.cis.ppod.imodel.IOTU;
@@ -39,7 +38,7 @@ final class MergeSequenceSets<SS extends ISequenceSet<S>, S extends ISequence<?>
 	@Inject
 	MergeSequenceSets(
 			final Provider<S> sequenceProvider,
-			@Assisted INewVersionInfo newVersionInfo) {
+			INewVersionInfo newVersionInfo) {
 		this.sequenceProvider = sequenceProvider;
 		this.newVersionInfo = newVersionInfo;
 	}

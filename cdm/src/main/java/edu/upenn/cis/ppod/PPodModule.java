@@ -19,12 +19,7 @@ import com.google.inject.AbstractModule;
 import com.google.inject.assistedinject.FactoryProvider;
 
 import edu.upenn.cis.ppod.createorupdate.CreateOrUpdateModule;
-import edu.upenn.cis.ppod.createorupdate.ICreateOrUpdateDNAMatrix;
-import edu.upenn.cis.ppod.createorupdate.ICreateOrUpdateStandardMatrix;
 import edu.upenn.cis.ppod.createorupdate.ICreateOrUpdateStudy;
-import edu.upenn.cis.ppod.createorupdate.IMergeAttachments;
-import edu.upenn.cis.ppod.createorupdate.IMergeOTUSets;
-import edu.upenn.cis.ppod.createorupdate.IMergeTreeSets;
 import edu.upenn.cis.ppod.dao.hibernate.DAOHibernateModule;
 import edu.upenn.cis.ppod.imodel.IAttachment;
 import edu.upenn.cis.ppod.imodel.IAttachmentNamespace;
@@ -79,26 +74,6 @@ public final class PPodModule extends AbstractModule {
 	protected void configure() {
 
 		bind(IPair.IFactory.class).to(Pair.Factory.class);
-
-		bind(IMergeOTUSets.IFactory.class).toProvider(
-				FactoryProvider.newFactory(IMergeOTUSets.IFactory.class,
-						IMergeOTUSets.class));
-		bind(IMergeTreeSets.IFactory.class).toProvider(
-				FactoryProvider.newFactory(IMergeTreeSets.IFactory.class,
-						IMergeTreeSets.class));
-		bind(ICreateOrUpdateStandardMatrix.IFactory.class).toProvider(
-				FactoryProvider.newFactory(
-						ICreateOrUpdateStandardMatrix.IFactory.class,
-						ICreateOrUpdateStandardMatrix.class));
-		bind(ICreateOrUpdateDNAMatrix.IFactory.class)
-				.toProvider(
-						FactoryProvider.newFactory(
-								ICreateOrUpdateDNAMatrix.IFactory.class,
-								ICreateOrUpdateDNAMatrix.class));
-
-		bind(IMergeAttachments.IFactory.class).toProvider(
-				FactoryProvider.newFactory(IMergeAttachments.IFactory.class,
-						IMergeAttachments.class));
 
 		bind(StringPair.IFactory.class).toProvider(
 				FactoryProvider.newFactory(

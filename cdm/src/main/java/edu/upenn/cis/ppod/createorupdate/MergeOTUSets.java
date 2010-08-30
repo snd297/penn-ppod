@@ -25,7 +25,6 @@ import java.util.List;
 
 import com.google.inject.Inject;
 import com.google.inject.Provider;
-import com.google.inject.assistedinject.Assisted;
 
 import edu.upenn.cis.ppod.imodel.INewVersionInfo;
 import edu.upenn.cis.ppod.imodel.IOTU;
@@ -44,8 +43,9 @@ final class MergeOTUSets implements IMergeOTUSets {
 	private final INewVersionInfo newVersionInfo;
 
 	@Inject
-	MergeOTUSets(final Provider<OTU> otuProvider,
-			@Assisted INewVersionInfo newVersionInfo) {
+	MergeOTUSets(
+			final Provider<OTU> otuProvider,
+			final INewVersionInfo newVersionInfo) {
 		this.otuProvider = otuProvider;
 		this.newVersionInfo = newVersionInfo;
 	}

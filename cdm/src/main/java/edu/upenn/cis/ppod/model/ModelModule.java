@@ -17,8 +17,9 @@ package edu.upenn.cis.ppod.model;
 
 import com.google.inject.AbstractModule;
 import com.google.inject.assistedinject.FactoryProvider;
+import com.google.inject.servlet.RequestScoped;
 
-import edu.upenn.cis.ppod.imodel.INewVersionInfoDB;
+import edu.upenn.cis.ppod.imodel.INewVersionInfo;
 
 /**
  * @author Sam Donnelly
@@ -28,16 +29,13 @@ public class ModelModule extends AbstractModule {
 
 	@Override
 	protected void configure() {
-		bind(INewVersionInfoDB.IFactory.class).toProvider(
-				FactoryProvider.newFactory(
-						INewVersionInfoDB.IFactory.class,
-						NewVersionInfoDB.class));
+		bind(INewVersionInfo.class)
+				.to(NewVersionInfoDB.class)
+				.in(RequestScoped.class);
 		bind(Attachment.IIsOfNamespace.IFactory.class)
 				.toProvider(
 						FactoryProvider.newFactory(
 								Attachment.IIsOfNamespace.IFactory.class,
 								Attachment.IIsOfNamespace.class));
-
 	}
-
 }

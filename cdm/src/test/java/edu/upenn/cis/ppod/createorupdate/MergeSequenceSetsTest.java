@@ -21,10 +21,8 @@ import com.google.inject.Inject;
 import com.google.inject.Provider;
 
 import edu.upenn.cis.ppod.TestGroupDefs;
-import edu.upenn.cis.ppod.dao.TestObjectWithLongIdDAO;
 import edu.upenn.cis.ppod.imodel.IDNASequence;
 import edu.upenn.cis.ppod.imodel.IDNASequenceSet;
-import edu.upenn.cis.ppod.imodel.INewVersionInfo;
 import edu.upenn.cis.ppod.imodel.IOTU;
 import edu.upenn.cis.ppod.imodel.IOTUSet;
 import edu.upenn.cis.ppod.model.ModelAssert;
@@ -32,7 +30,7 @@ import edu.upenn.cis.ppod.model.ModelAssert;
 @Test(groups = TestGroupDefs.FAST, dependsOnGroups = TestGroupDefs.INIT)
 public class MergeSequenceSetsTest {
 	@Inject
-	private IMergeSequenceSets.IFactory<IDNASequenceSet, IDNASequence> mergeDNASequenceSetsFactory;
+	private IMergeSequenceSets<IDNASequenceSet, IDNASequence> mergeSeqSets;
 
 	@Inject
 	private Provider<IDNASequenceSet> dnaSequenceSetProvider;
@@ -46,16 +44,8 @@ public class MergeSequenceSetsTest {
 	@Inject
 	private Provider<IOTU> otuProvider;
 
-	@Inject
-	private INewVersionInfo newVersionInfo;
-
-	@Inject
-	private TestObjectWithLongIdDAO dao;
-
 	@Test
 	public void modifySequencesKeepLength() {
-		final IMergeSequenceSets<IDNASequenceSet, IDNASequence> mergeSeqSets =
-					mergeDNASequenceSetsFactory.create(dao, newVersionInfo);
 
 		final IDNASequenceSet srcSeqSet =
 					dnaSequenceSetProvider.get();
@@ -118,8 +108,6 @@ public class MergeSequenceSetsTest {
 
 	@Test
 	public void shortenSequences() {
-		final IMergeSequenceSets<IDNASequenceSet, IDNASequence> mergeSeqSets =
-					mergeDNASequenceSetsFactory.create(dao, newVersionInfo);
 
 		final IDNASequenceSet srcSeqSet =
 				dnaSequenceSetProvider.get();
@@ -184,9 +172,6 @@ public class MergeSequenceSetsTest {
 
 	@Test
 	public void mergeOnBlankTarget() {
-		final IMergeSequenceSets<IDNASequenceSet, IDNASequence> mergeSeqSets =
-				mergeDNASequenceSetsFactory.create(dao, newVersionInfo);
-
 		final IDNASequenceSet srcSeqSet =
 				dnaSequenceSetProvider.get();
 		srcSeqSet.setLabel("src-seq-set-0");
