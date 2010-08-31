@@ -29,8 +29,6 @@ import edu.upenn.cis.ppod.model.VersionInfo;
 public interface IMatrix<R extends IRow<C, ?>, C extends ICell<?, ?>>
 		extends IOTUSetChild, IUUPPodEntity, IWithDocId {
 
-	public void addColumn(int columnNo, List<? extends C> column);
-
 	/**
 	 * The number of columns which any newly introduced rows must have.
 	 * <p>

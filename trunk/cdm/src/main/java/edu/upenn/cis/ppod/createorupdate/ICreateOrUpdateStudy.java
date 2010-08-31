@@ -32,27 +32,10 @@ public interface ICreateOrUpdateStudy {
 	 * it.
 	 * 
 	 * @param incomingStudy to be made persistent or updated
-	 */
-	void createOrUpdateStudy();
-
-	/**
-	 * Return the {@code Study} in a persistent state.
 	 * 
-	 * @return the {@code Study} in a persistent state.
+	 * @return a new {@code IStudy} with {@code incomingStudy}'s state, in a
+	 *         persistent state
 	 */
-	IStudy getDbStudy();
+	IStudy createOrUpdateStudy(IStudy incomingStudy);
 
-	static interface IFactory {
-
-		/**
-		 * Create {@link ISaveOrUpdateStudy}s that depend on a {@link Session}.
-		 * 
-		 * @param session dependency
-		 * @param newVersionInfo
-		 * 
-		 * @return a new {@link ISaveOrUpdateStudy}
-		 */
-		ICreateOrUpdateStudy create(IStudy incomingStudy);
-
-	}
 }
