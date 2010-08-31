@@ -268,7 +268,9 @@ public abstract class Matrix<R extends IRow<C, ?>, C extends ICell<?, ?>>
 			return;
 		}
 		for (final R row : getRows().values()) {
-			row.moveCell(src, dest);
+			final List<C> cells = newArrayList(row.getCells());
+			cells.add(dest + 1, cells.remove(src));
+			row.setCells(cells);
 		}
 		final VersionInfo versionInfo =
 				getColumnVersionInfosModifiable().remove(src);

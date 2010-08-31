@@ -20,8 +20,6 @@ import static com.google.common.collect.Sets.newHashSet;
 
 import java.util.Set;
 
-import org.hibernate.Session;
-
 import com.google.common.base.Function;
 import com.google.inject.Inject;
 import com.google.inject.Provider;
@@ -64,8 +62,6 @@ public final class StudyResourceHibernate implements IStudyResource {
 
 	private final ISetVersionInfoVisitor setVersionInfoVisitor;
 
-	private final Session session;
-
 	@Inject
 	StudyResourceHibernate(
 			final IStudyDAO studyDAO,
@@ -74,8 +70,7 @@ public final class StudyResourceHibernate implements IStudyResource {
 			final ISetDocIdVisitor setDocIdVisitor,
 			final Provider<IAfterUnmarshalVisitor> afterUnmarshalVisitorProvider,
 			final ISetVersionInfoVisitor setVersionInfoVisitor,
-			final StringPair.IFactory stringPairFactory,
-			final Session session) {
+			final StringPair.IFactory stringPairFactory) {
 
 		this.studyDAO = studyDAO;
 
@@ -87,7 +82,6 @@ public final class StudyResourceHibernate implements IStudyResource {
 		this.stringPairFactory = stringPairFactory;
 
 		this.setVersionInfoVisitor = setVersionInfoVisitor;
-		this.session = session;
 	}
 
 	private StudyInfo createOrUpdateStudy(final IStudy incomingStudy) {
@@ -106,14 +100,12 @@ public final class StudyResourceHibernate implements IStudyResource {
 
 	public StudyInfo createStudy(final IStudy incomingStudy) {
 		final StudyInfo studyInfo = createOrUpdateStudy(incomingStudy);
-		session.getTransaction().commit();
 		return studyInfo;
 	}
 
 	public IStudy getStudyByPPodId(final String pPodId) {
 		final IStudy study = studyDAO.getStudyByPPodId(pPodId);
 		study.accept(setDocIdVisitor);
-		session.getTransaction().commit();
 		return study;
 	}
 
@@ -126,13 +118,11 @@ public final class StudyResourceHibernate implements IStudyResource {
 								.getSecond());
 					}
 				}));
-		session.getTransaction().commit();
 		return studyPPodIdLabelPairs;
 	}
 
 	public StudyInfo updateStudy(final IStudy incomingStudy, final String pPodId) {
 		final StudyInfo studyInfo = createOrUpdateStudy(incomingStudy);
-		session.getTransaction().commit();
 		return studyInfo;
 	}
 

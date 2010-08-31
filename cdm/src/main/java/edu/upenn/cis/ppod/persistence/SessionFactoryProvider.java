@@ -9,6 +9,19 @@ import com.google.inject.Provider;
 
 public class SessionFactoryProvider implements Provider<SessionFactory> {
 
+	private static SessionFactory sf;
+
+	/**
+	 * Don't use this if not necessary. This is a compromise to get the session
+	 * factory into
+	 * {@link edu.upenn.cis.ppod.services.hibernate.HibernateCommitInterceptor}.
+	 * 
+	 * @return the singleton session factory
+	 */
+	public static SessionFactory getSessionFactory() {
+		return sf;
+	}
+
 	SessionFactoryProvider() {}
 
 	public SessionFactory get() {
@@ -18,6 +31,7 @@ public class SessionFactoryProvider implements Provider<SessionFactory> {
 		// Read hibernate.cfg.xml (has to be present)
 		cfg.configure();
 		final SessionFactory sf = cfg.buildSessionFactory();
+		SessionFactoryProvider.sf = sf;
 		return sf;
 	}
 
