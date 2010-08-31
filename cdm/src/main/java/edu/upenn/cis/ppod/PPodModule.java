@@ -19,7 +19,6 @@ import com.google.inject.AbstractModule;
 import com.google.inject.assistedinject.FactoryProvider;
 
 import edu.upenn.cis.ppod.createorupdate.CreateOrUpdateModule;
-import edu.upenn.cis.ppod.createorupdate.ICreateOrUpdateStudy;
 import edu.upenn.cis.ppod.dao.hibernate.DAOHibernateModule;
 import edu.upenn.cis.ppod.imodel.IAttachment;
 import edu.upenn.cis.ppod.imodel.IAttachmentNamespace;
@@ -79,11 +78,6 @@ public final class PPodModule extends AbstractModule {
 				FactoryProvider.newFactory(
 						StringPair.IFactory.class,
 						StringPair.class));
-
-		bind(ICreateOrUpdateStudy.IFactory.class).toProvider(
-				FactoryProvider.newFactory(
-						ICreateOrUpdateStudy.IFactory.class,
-						ICreateOrUpdateStudy.class));
 
 		bind(IStudy.class).to(Study.class);
 

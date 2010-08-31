@@ -50,7 +50,7 @@ public final class StudyResourceHibernate implements IStudyResource {
 
 	private final IStudyDAO studyDAO;
 
-	private final ICreateOrUpdateStudy.IFactory createOrUpdateStudyFactory;
+	private final ICreateOrUpdateStudy createOrUpdateStudy;
 
 	private final IStudy2StudyInfo study2StudyInfo;
 
@@ -65,7 +65,7 @@ public final class StudyResourceHibernate implements IStudyResource {
 	@Inject
 	StudyResourceHibernate(
 			final IStudyDAO studyDAO,
-			final ICreateOrUpdateStudy.IFactory createOrUpdateStudyFactory,
+			final ICreateOrUpdateStudy createOrUpdateStudy,
 			final IStudy2StudyInfo study2StudyInfo,
 			final ISetDocIdVisitor setDocIdVisitor,
 			final Provider<IAfterUnmarshalVisitor> afterUnmarshalVisitorProvider,
@@ -74,7 +74,7 @@ public final class StudyResourceHibernate implements IStudyResource {
 
 		this.studyDAO = studyDAO;
 
-		this.createOrUpdateStudyFactory = createOrUpdateStudyFactory;
+		this.createOrUpdateStudy = createOrUpdateStudy;
 
 		this.study2StudyInfo = study2StudyInfo;
 		this.setDocIdVisitor = setDocIdVisitor;
@@ -87,11 +87,8 @@ public final class StudyResourceHibernate implements IStudyResource {
 	private StudyInfo createOrUpdateStudy(final IStudy incomingStudy) {
 		incomingStudy.accept(afterUnmarshalVisitorProvider.get());
 
-		final ICreateOrUpdateStudy createOrUpdateStudy =
-				createOrUpdateStudyFactory.create(
-						incomingStudy);
-		createOrUpdateStudy.createOrUpdateStudy();
-		final IStudy dbStudy = createOrUpdateStudy.getDbStudy();
+		final IStudy dbStudy = createOrUpdateStudy
+				.createOrUpdateStudy(incomingStudy);
 
 		dbStudy.accept(setVersionInfoVisitor);
 

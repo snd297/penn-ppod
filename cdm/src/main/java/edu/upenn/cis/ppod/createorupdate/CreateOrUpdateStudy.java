@@ -24,7 +24,6 @@ import java.util.Set;
 
 import com.google.inject.Inject;
 import com.google.inject.Provider;
-import com.google.inject.assistedinject.Assisted;
 
 import edu.upenn.cis.ppod.dao.IAttachmentNamespaceDAO;
 import edu.upenn.cis.ppod.dao.IAttachmentTypeDAO;
@@ -60,8 +59,6 @@ final class CreateOrUpdateStudy implements ICreateOrUpdateStudy {
 	private final ICreateOrUpdateStandardMatrix createOrUpdateStandardMatrix;
 	private final IMergeTreeSets mergeTreeSets;
 	private final IMergeSequenceSets<IDNASequenceSet, IDNASequence> mergeDNASequenceSets;
-	private final IStudy incomingStudy;
-	private IStudy dbStudy;
 	private final ICreateOrUpdateDNAMatrix createOrUpdateDNAMatrix;
 	private final IObjectWithLongIdDAO dao;
 	private final INewVersionInfo newVersionInfo;
@@ -83,10 +80,8 @@ final class CreateOrUpdateStudy implements ICreateOrUpdateStudy {
 			final IAttachmentNamespaceDAO attachmentNamespaceDAO,
 			final IAttachmentTypeDAO attachmentTypeDAO,
 			final INewVersionInfo newVersionInfo,
-			final IStudyDAO studyDAO,
-			@Assisted final IStudy incomingStudy) {
+			final IStudyDAO studyDAO) {
 
-		this.incomingStudy = incomingStudy;
 		this.studyDAO = studyDAO;
 		this.studyProvider = studyProvider;
 		this.otuSetProvider = otuSetProvider;
@@ -103,7 +98,8 @@ final class CreateOrUpdateStudy implements ICreateOrUpdateStudy {
 		this.dao = dao;
 	}
 
-	public void createOrUpdateStudy() {
+	public IStudy createOrUpdateStudy(final IStudy incomingStudy) {
+		IStudy dbStudy = null;
 		boolean makeStudyPersistent = false;
 		if (null == (dbStudy =
 				studyDAO.getStudyByPPodId(
@@ -169,9 +165,6 @@ final class CreateOrUpdateStudy implements ICreateOrUpdateStudy {
 			handleDNASequenceSets(dbOTUSet, incomingOTUSet);
 			handleTreeSets(dbOTUSet, incomingOTUSet);
 		}
-	}
-
-	public IStudy getDbStudy() {
 		return dbStudy;
 	}
 
