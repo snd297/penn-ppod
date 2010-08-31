@@ -22,8 +22,6 @@ import java.util.List;
 
 import org.hibernate.Session;
 
-import edu.upenn.cis.ppod.dao.hibernate.IObjectWithLongIdDAOHibernate;
-
 /**
  * A {@code IObjectWithLongIdDAO} that stores the entities that operations were
  * called on. So you can, for example, get a list of all of the entities that
@@ -33,7 +31,7 @@ import edu.upenn.cis.ppod.dao.hibernate.IObjectWithLongIdDAOHibernate;
  * 
  * @author Sam Donnelly
  */
-public class TestObjectWithLongIdDAO implements IObjectWithLongIdDAOHibernate {
+public class TestObjectWithLongIdDAO implements IObjectWithLongIdDAO {
 
 	private List<Object> deletedEntities = newArrayList();
 

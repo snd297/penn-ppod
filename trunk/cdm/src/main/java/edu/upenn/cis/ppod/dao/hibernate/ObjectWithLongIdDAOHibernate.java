@@ -19,6 +19,7 @@ import org.hibernate.Session;
 
 import com.google.inject.Inject;
 
+import edu.upenn.cis.ppod.dao.IObjectWithLongIdDAO;
 import edu.upenn.cis.ppod.thirdparty.dao.hibernate.GenericHibernateDAO;
 
 /**
@@ -28,7 +29,7 @@ import edu.upenn.cis.ppod.thirdparty.dao.hibernate.GenericHibernateDAO;
  */
 final class ObjectWithLongIdDAOHibernate
 		extends GenericHibernateDAO<Object, Long>
-		implements IObjectWithLongIdDAOHibernate {
+		implements IObjectWithLongIdDAO {
 
 	@Inject
 	ObjectWithLongIdDAOHibernate(final Session session) {

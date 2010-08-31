@@ -61,7 +61,6 @@ import edu.upenn.cis.ppod.model.TreeSet;
 import edu.upenn.cis.ppod.persistence.PersistenceModule;
 import edu.upenn.cis.ppod.services.StringPair;
 import edu.upenn.cis.ppod.util.IPair;
-import edu.upenn.cis.ppod.util.ISetVersionInfoVisitor;
 import edu.upenn.cis.ppod.util.Pair;
 
 /**
@@ -80,11 +79,6 @@ public final class PPodModule extends AbstractModule {
 				FactoryProvider.newFactory(
 						StringPair.IFactory.class,
 						StringPair.class));
-
-		bind(ISetVersionInfoVisitor.IFactory.class).toProvider(
-				FactoryProvider.newFactory(
-						ISetVersionInfoVisitor.IFactory.class,
-						ISetVersionInfoVisitor.class));
 
 		bind(ICreateOrUpdateStudy.IFactory.class).toProvider(
 				FactoryProvider.newFactory(

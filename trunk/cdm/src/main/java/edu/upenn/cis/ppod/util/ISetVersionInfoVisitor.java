@@ -17,30 +17,10 @@ package edu.upenn.cis.ppod.util;
 
 import com.google.inject.ImplementedBy;
 
-import edu.upenn.cis.ppod.imodel.INewVersionInfo;
-
 /**
  * @author Sam Donnelly
  */
 @ImplementedBy(SetVersionInfoVisitor.class)
 public interface ISetVersionInfoVisitor extends IVisitor {
-
-	/**
-	 * Create a {@code SetPPodVersionInfoVisitor} with the given
-	 * {@code INewPPodVersionInfo}.
-	 */
-	static interface IFactory {
-
-		/**
-		 * Create a {@code SetPPodVersionInfoVisitor} with the given
-		 * {@code INewPPodVersionInfo}.
-		 * 
-		 * @param newPPodVersionInfo to be assigned to objects that are
-		 *            {@link PPodEntity#isInNeedOfNewPPodVersionInfo()}
-		 * 
-		 * @return the new {@code SetPPodVersionInfoVisitor}
-		 */
-		ISetVersionInfoVisitor create(INewVersionInfo newVersionInfo);
-	}
 
 }
