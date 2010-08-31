@@ -20,13 +20,14 @@ import static com.google.common.collect.Sets.newHashSet;
 
 import java.util.Set;
 
+import org.hibernate.Session;
+
 import com.google.common.base.Function;
 import com.google.inject.Inject;
 import com.google.inject.Provider;
 
 import edu.upenn.cis.ppod.createorupdate.ICreateOrUpdateStudy;
 import edu.upenn.cis.ppod.dao.IStudyDAO;
-import edu.upenn.cis.ppod.imodel.INewVersionInfo;
 import edu.upenn.cis.ppod.imodel.IStudy;
 import edu.upenn.cis.ppod.services.IStudyResource;
 import edu.upenn.cis.ppod.services.StringPair;
@@ -38,6 +39,13 @@ import edu.upenn.cis.ppod.util.ISetDocIdVisitor;
 import edu.upenn.cis.ppod.util.ISetVersionInfoVisitor;
 
 /**
+ * We commit the transactions in this class so that the resteasy response will
+ * know that something went wrong if the commit goes wrong. We used to do it in
+ * a resteasy interceptor, but that didn't work cleanly whe we switched over to
+ * a guice managed session factory: we couldn't get at the current session
+ * inside the interceptor without putting a kludge static reference to it in
+ * {@link edu.upenn.cis.ppod.persistence.SessionFactoryProvider}.
+ * 
  * @author Sam Donnelly
  */
 public final class StudyResourceHibernate implements IStudyResource {
@@ -50,13 +58,13 @@ public final class StudyResourceHibernate implements IStudyResource {
 
 	private final ISetDocIdVisitor setDocIdVisitor;
 
-	private final INewVersionInfo newVersionInfo;
-
 	private final Provider<IAfterUnmarshalVisitor> afterUnmarshalVisitorProvider;
 
 	private final StringPair.IFactory stringPairFactory;
 
-	private final ISetVersionInfoVisitor.IFactory setPPodVersionInfoVisitorFactory;
+	private final ISetVersionInfoVisitor setVersionInfoVisitor;
+
+	private final Session session;
 
 	@Inject
 	StudyResourceHibernate(
@@ -65,9 +73,9 @@ public final class StudyResourceHibernate implements IStudyResource {
 			final IStudy2StudyInfo study2StudyInfo,
 			final ISetDocIdVisitor setDocIdVisitor,
 			final Provider<IAfterUnmarshalVisitor> afterUnmarshalVisitorProvider,
-			final INewVersionInfo newVersionInfo,
-			final ISetVersionInfoVisitor.IFactory setVersionInfoVisitorFactory,
-			final StringPair.IFactory stringPairFactory) {
+			final ISetVersionInfoVisitor setVersionInfoVisitor,
+			final StringPair.IFactory stringPairFactory,
+			final Session session) {
 
 		this.studyDAO = studyDAO;
 
@@ -78,23 +86,25 @@ public final class StudyResourceHibernate implements IStudyResource {
 		this.afterUnmarshalVisitorProvider = afterUnmarshalVisitorProvider;
 		this.stringPairFactory = stringPairFactory;
 
-		this.newVersionInfo = newVersionInfo;
-
-		this.setPPodVersionInfoVisitorFactory = setVersionInfoVisitorFactory;
+		this.setVersionInfoVisitor = setVersionInfoVisitor;
+		this.session = session;
 	}
 
 	public StudyInfo createStudy(final IStudy incomingStudy) {
-		return createOrUpdateStudy(incomingStudy);
+		final StudyInfo studyInfo = createOrUpdateStudy(incomingStudy);
+		session.getTransaction().commit();
+		return studyInfo;
 	}
 
 	public IStudy getStudyByPPodId(final String pPodId) {
 		final IStudy study = studyDAO.getStudyByPPodId(pPodId);
 		study.accept(setDocIdVisitor);
+		session.getTransaction().commit();
 		return study;
 	}
 
 	public Set<StringPair> getStudyPPodIdLabelPairs() {
-		return newHashSet(transform(
+		final Set<StringPair> studyPPodIdLabelPairs = newHashSet(transform(
 						studyDAO.getPPodIdLabelPairs(),
 				new Function<IPair<String, String>, StringPair>() {
 					public StringPair apply(final IPair<String, String> from) {
@@ -102,6 +112,8 @@ public final class StudyResourceHibernate implements IStudyResource {
 								.getSecond());
 					}
 				}));
+		session.getTransaction().commit();
+		return studyPPodIdLabelPairs;
 	}
 
 	private StudyInfo createOrUpdateStudy(final IStudy incomingStudy) {
@@ -112,15 +124,16 @@ public final class StudyResourceHibernate implements IStudyResource {
 						incomingStudy);
 		createOrUpdateStudy.createOrUpdateStudy();
 		final IStudy dbStudy = createOrUpdateStudy.getDbStudy();
-		final ISetVersionInfoVisitor setVersionInfoVisitor =
-				setPPodVersionInfoVisitorFactory.create(newVersionInfo);
+
 		dbStudy.accept(setVersionInfoVisitor);
 
 		return study2StudyInfo.toStudyInfo(dbStudy);
 	}
 
 	public StudyInfo updateStudy(final IStudy incomingStudy, final String pPodId) {
-		return createOrUpdateStudy(incomingStudy);
+		final StudyInfo studyInfo = createOrUpdateStudy(incomingStudy);
+		session.getTransaction().commit();
+		return studyInfo;
 	}
 
 }

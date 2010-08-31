@@ -48,7 +48,7 @@ final class SetVersionInfoVisitor extends EmptyVisitor implements
 
 	@Inject
 	SetVersionInfoVisitor(
-			@Assisted final INewVersionInfo newVersionInfo) {
+			final INewVersionInfo newVersionInfo) {
 		this.newVersionInfo = newVersionInfo;
 	}
 

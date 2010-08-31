@@ -42,10 +42,8 @@ public class HibernateCommitInterceptor implements PostProcessInterceptor {
 			.getLogger(HibernateCommitInterceptor.class);
 
 	public void postProcess(final ServerResponse response) {
-		// final Session currentSession =
-		// HibernateUtil.getSessionFactory().getCurrentSession();
-		final Session currentSession = SessionFactoryProvider
-				.getSessionFactory().getCurrentSession();
+		final Session currentSession =
+				SessionFactoryProvider.getSessionFactory().getCurrentSession();
 		logger.info("committing transaction...");
 		currentSession.getTransaction().commit();
 		logger.info("committed");

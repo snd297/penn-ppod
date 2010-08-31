@@ -43,7 +43,7 @@ import org.hibernate.Session;
 import org.hibernate.criterion.Criterion;
 import org.hibernate.criterion.Example;
 
-import edu.upenn.cis.ppod.dao.hibernate.IDAOHibernate;
+import edu.upenn.cis.ppod.thirdparty.dao.IDAO;
 
 /**
  * From http://www.hibernate.org/328.html.
@@ -53,7 +53,7 @@ import edu.upenn.cis.ppod.dao.hibernate.IDAOHibernate;
  *            {@link Long}
  */
 public abstract class GenericHibernateDAO<T, ID extends Serializable>
-		implements IDAOHibernate<T, ID> {
+		implements IDAO<T, ID> {
 
 	public GenericHibernateDAO(final Session session) {
 		this.session = session;
