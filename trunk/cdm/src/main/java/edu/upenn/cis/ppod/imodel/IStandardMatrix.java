@@ -35,13 +35,6 @@ public interface IStandardMatrix
 	List<IStandardCharacter> getCharacters();
 
 	/**
-	 * {@inheritDoc}
-	 * <p>
-	 * Does nothing with the characters of the matrix.
-	 */
-	List<IStandardCell> removeColumnHelper(final int columnNo);
-
-	/**
 	 * Set the characters.
 	 * <p>
 	 * This method is does not reorder the columns of the matrix because that is

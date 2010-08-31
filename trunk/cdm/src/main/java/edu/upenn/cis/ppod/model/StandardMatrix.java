@@ -111,6 +111,19 @@ public class StandardMatrix
 		super.accept(visitor);
 	}
 
+	public void addColumn(
+			final int columnNo,
+			final IStandardCharacter character,
+			final List<IStandardCell> cells) {
+		checkArgument(columnNo <= getColumnsSize(),
+				"columnNo " + columnNo + " too big for matrix column size "
+						+ getColumnsSize());
+		checkArgument(columnNo >= 0, "columnNo is negative: " + columnNo);
+		final List<IStandardCharacter> standardCharacters = newArrayList(getCharacters());
+		standardCharacters.add(columnNo, character);
+
+	}
+
 	@Override
 	public void afterUnmarshal() {
 		rows.afterUnmarshal();
@@ -200,6 +213,15 @@ public class StandardMatrix
 	@Override
 	protected StandardRows getOTUKeyedRows() {
 		return rows;
+	}
+
+	@Override
+	public void moveColumn(final int src, final int dest) {
+		final List<IStandardCharacter> characters = newArrayList(getCharacters());
+		final IStandardCharacter character = characters.remove(src);
+		characters.add(dest + 1, character);
+		setCharacters(characters);
+		super.moveColumn(src, dest);
 	}
 
 	/** {@inheritDoc} */
