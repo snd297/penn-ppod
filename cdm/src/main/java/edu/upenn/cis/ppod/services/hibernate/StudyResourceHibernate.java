@@ -90,6 +90,20 @@ public final class StudyResourceHibernate implements IStudyResource {
 		this.session = session;
 	}
 
+	private StudyInfo createOrUpdateStudy(final IStudy incomingStudy) {
+		incomingStudy.accept(afterUnmarshalVisitorProvider.get());
+
+		final ICreateOrUpdateStudy createOrUpdateStudy =
+				createOrUpdateStudyFactory.create(
+						incomingStudy);
+		createOrUpdateStudy.createOrUpdateStudy();
+		final IStudy dbStudy = createOrUpdateStudy.getDbStudy();
+
+		dbStudy.accept(setVersionInfoVisitor);
+
+		return study2StudyInfo.toStudyInfo(dbStudy);
+	}
+
 	public StudyInfo createStudy(final IStudy incomingStudy) {
 		final StudyInfo studyInfo = createOrUpdateStudy(incomingStudy);
 		session.getTransaction().commit();
@@ -114,20 +128,6 @@ public final class StudyResourceHibernate implements IStudyResource {
 				}));
 		session.getTransaction().commit();
 		return studyPPodIdLabelPairs;
-	}
-
-	private StudyInfo createOrUpdateStudy(final IStudy incomingStudy) {
-		incomingStudy.accept(afterUnmarshalVisitorProvider.get());
-
-		final ICreateOrUpdateStudy createOrUpdateStudy =
-				createOrUpdateStudyFactory.create(
-						incomingStudy);
-		createOrUpdateStudy.createOrUpdateStudy();
-		final IStudy dbStudy = createOrUpdateStudy.getDbStudy();
-
-		dbStudy.accept(setVersionInfoVisitor);
-
-		return study2StudyInfo.toStudyInfo(dbStudy);
 	}
 
 	public StudyInfo updateStudy(final IStudy incomingStudy, final String pPodId) {
