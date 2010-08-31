@@ -294,8 +294,13 @@ public abstract class Matrix<R extends IRow<C, ?>, C extends ICell<?, ?>>
 		return getOTUKeyedRows().put(otu, row);
 	}
 
-	/** {@inheritDoc} */
-	public List<C> removeColumnHelper(final int columnNo) {
+	/**
+	 * Removes the cells in the column.
+	 * 
+	 * @param columnNo whic column to remove
+	 * @return the removed cells
+	 */
+	protected List<C> removeColumnHelper(final int columnNo) {
 		checkArgument(
 				columnNo >= 0,
 				"columnNo < 0");
