@@ -105,9 +105,6 @@ final class CreateOrUpdateStudy implements ICreateOrUpdateStudy {
 				studyDAO.getStudyByPPodId(
 						incomingStudy.getPPodId()))) {
 			dbStudy = studyProvider.get();
-			dbStudy.setVersionInfo(
-					newVersionInfo.getNewVersionInfo());
-			dbStudy.setPPodId();
 			makeStudyPersistent = true;
 		}
 		dbStudy.setLabel(incomingStudy.getLabel());
@@ -149,9 +146,6 @@ final class CreateOrUpdateStudy implements ICreateOrUpdateStudy {
 											incomingOTUSet.getPPodId()),
 									IWithPPodId.getPPodId)))) {
 				dbOTUSet = otuSetProvider.get();
-				dbOTUSet.setVersionInfo(newVersionInfo
-						.getNewVersionInfo());
-				dbOTUSet.setPPodId();
 				dbOTUSet.setLabel(incomingOTUSet.getLabel()); // non-null, do it
 																// now
 				dbStudy.addOTUSet(incomingOTUSet.getPosition(), dbOTUSet);
@@ -199,11 +193,6 @@ final class CreateOrUpdateStudy implements ICreateOrUpdateStudy {
 									IWithPPodId.getPPodId
 									)))) {
 				dbMatrix = dnaMatrixProvider.get();
-				dbMatrix.setVersionInfo(
-						newVersionInfo.getNewVersionInfo());
-				dbMatrix.setColumnVersionInfos(
-								newVersionInfo.getNewVersionInfo());
-				dbMatrix.setPPodId();
 
 				// Do this here because it's non-nullable
 				dbMatrix.setLabel(incomingMatrix.getLabel());

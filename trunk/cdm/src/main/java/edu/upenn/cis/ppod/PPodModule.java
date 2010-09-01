@@ -23,41 +23,28 @@ import edu.upenn.cis.ppod.dao.hibernate.DAOHibernateModule;
 import edu.upenn.cis.ppod.imodel.IAttachment;
 import edu.upenn.cis.ppod.imodel.IAttachmentNamespace;
 import edu.upenn.cis.ppod.imodel.IAttachmentType;
-import edu.upenn.cis.ppod.imodel.IDNACell;
-import edu.upenn.cis.ppod.imodel.IDNAMatrix;
-import edu.upenn.cis.ppod.imodel.IDNARow;
 import edu.upenn.cis.ppod.imodel.IDNASequence;
 import edu.upenn.cis.ppod.imodel.IDNASequenceSet;
-import edu.upenn.cis.ppod.imodel.IOTU;
-import edu.upenn.cis.ppod.imodel.IOTUSet;
 import edu.upenn.cis.ppod.imodel.IStandardCell;
 import edu.upenn.cis.ppod.imodel.IStandardCharacter;
 import edu.upenn.cis.ppod.imodel.IStandardMatrix;
 import edu.upenn.cis.ppod.imodel.IStandardRow;
 import edu.upenn.cis.ppod.imodel.IStandardState;
-import edu.upenn.cis.ppod.imodel.IStudy;
 import edu.upenn.cis.ppod.imodel.ITree;
 import edu.upenn.cis.ppod.imodel.ITreeSet;
 import edu.upenn.cis.ppod.model.Attachment;
 import edu.upenn.cis.ppod.model.AttachmentNamespace;
 import edu.upenn.cis.ppod.model.AttachmentType;
-import edu.upenn.cis.ppod.model.DNACell;
-import edu.upenn.cis.ppod.model.DNAMatrix;
-import edu.upenn.cis.ppod.model.DNARow;
 import edu.upenn.cis.ppod.model.DNASequence;
 import edu.upenn.cis.ppod.model.DNASequenceSet;
 import edu.upenn.cis.ppod.model.ModelModule;
-import edu.upenn.cis.ppod.model.OTU;
-import edu.upenn.cis.ppod.model.OTUSet;
 import edu.upenn.cis.ppod.model.StandardCell;
 import edu.upenn.cis.ppod.model.StandardCharacter;
 import edu.upenn.cis.ppod.model.StandardMatrix;
 import edu.upenn.cis.ppod.model.StandardRow;
 import edu.upenn.cis.ppod.model.StandardState;
-import edu.upenn.cis.ppod.model.Study;
 import edu.upenn.cis.ppod.model.Tree;
 import edu.upenn.cis.ppod.model.TreeSet;
-import edu.upenn.cis.ppod.persistence.PersistenceModule;
 import edu.upenn.cis.ppod.services.StringPair;
 import edu.upenn.cis.ppod.util.IPair;
 import edu.upenn.cis.ppod.util.Pair;
@@ -79,11 +66,6 @@ public final class PPodModule extends AbstractModule {
 						StringPair.IFactory.class,
 						StringPair.class));
 
-		bind(IStudy.class).to(Study.class);
-
-		bind(IOTUSet.class).to(OTUSet.class);
-		bind(IOTU.class).to(OTU.class);
-
 		bind(IStandardMatrix.class).to(StandardMatrix.class);
 		bind(IStandardCharacter.class).to(StandardCharacter.class);
 		bind(IStandardState.IFactory.class).toProvider(
@@ -91,10 +73,6 @@ public final class PPodModule extends AbstractModule {
 						StandardState.class));
 		bind(IStandardRow.class).to(StandardRow.class);
 		bind(IStandardCell.class).to(StandardCell.class);
-
-		bind(IDNAMatrix.class).to(DNAMatrix.class);
-		bind(IDNARow.class).to(DNARow.class);
-		bind(IDNACell.class).to(DNACell.class);
 
 		bind(IDNASequenceSet.class).to(DNASequenceSet.class);
 		bind(IDNASequence.class).to(DNASequence.class);
@@ -109,6 +87,5 @@ public final class PPodModule extends AbstractModule {
 		install(new ModelModule());
 		install(new DAOHibernateModule());
 		install(new CreateOrUpdateModule());
-		install(new PersistenceModule());
 	}
 }

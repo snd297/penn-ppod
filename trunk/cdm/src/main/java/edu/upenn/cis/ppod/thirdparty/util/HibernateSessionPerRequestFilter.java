@@ -57,7 +57,8 @@ public final class HibernateSessionPerRequestFilter implements Filter {
 	private SessionFactory sf;
 
 	@Inject
-	HibernateSessionPerRequestFilter(final SessionFactory sf) {
+	HibernateSessionPerRequestFilter(
+			final SessionFactory sf) {
 		this.sf = sf;
 	}
 

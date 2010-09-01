@@ -49,7 +49,7 @@ import edu.upenn.cis.ppod.imodel.IStandardState;
 public class StandardMatrixTest {
 
 	@Inject
-	private Provider<OTUSet> otuSetProvider;
+	private Provider<IOTUSet> otuSetProvider;
 
 	@Inject
 	private Provider<OTU> otuProvider;
