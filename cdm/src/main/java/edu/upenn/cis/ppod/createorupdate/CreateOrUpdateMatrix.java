@@ -25,7 +25,6 @@ import org.slf4j.LoggerFactory;
 
 import com.google.inject.Inject;
 import com.google.inject.Provider;
-import com.google.inject.assistedinject.Assisted;
 
 import edu.upenn.cis.ppod.dao.IObjectWithLongIdDAO;
 import edu.upenn.cis.ppod.imodel.IAttachment;
@@ -47,9 +46,9 @@ abstract class CreateOrUpdateMatrix<M extends IMatrix<R, C>, R extends IRow<C, ?
 
 	protected Logger logger = LoggerFactory.getLogger(getClass());
 
-	private final INewVersionInfo newVersionInfo;
-
 	private final Provider<R> rowProvider;
+
+	private final INewVersionInfo newVersionInfo;
 
 	@Inject
 	CreateOrUpdateMatrix(
@@ -57,18 +56,12 @@ abstract class CreateOrUpdateMatrix<M extends IMatrix<R, C>, R extends IRow<C, ?
 			final Provider<C> cellProvider,
 			final Provider<IAttachment> attachmentProvider,
 			final IObjectWithLongIdDAO dao,
-			@Assisted final INewVersionInfo newVersionInfo) {
+			final INewVersionInfo newVersionInfo) {
 		this.rowProvider = rowProvider;
 		this.cellProvider = cellProvider;
 		this.newVersionInfo = newVersionInfo;
 		this.dao = dao;
 	}
-
-	abstract void handleSingleCell(final C targetCell, final C sourceCell);
-
-	abstract void handlePolymorphicCell(final C targetCell, final C sourceCell);
-
-	abstract void handleUncertainCell(final C targetCell, final C sourceCell);
 
 	public void createOrUpdateMatrixHelper(
 			final M dbMatrix,
@@ -108,8 +101,6 @@ abstract class CreateOrUpdateMatrix<M extends IMatrix<R, C>, R extends IRow<C, ?
 
 			if (null == (dbRow = dbMatrix.getRows().get(dbOTU))) {
 				dbRow = rowProvider.get();
-				dbRow.setVersionInfo(
-						newVersionInfo.getNewVersionInfo());
 				dbMatrix.putRow(dbOTU, dbRow);
 				dao.makePersistent(dbRow);
 			}
@@ -117,15 +108,13 @@ abstract class CreateOrUpdateMatrix<M extends IMatrix<R, C>, R extends IRow<C, ?
 			final List<C> dbCells =
 					newArrayListWithCapacity(sourceRow.getCells().size());
 
-			for (int i = 0; i < sourceToDbCharPositions.length; i++) {
-				if (sourceToDbCharPositions[i] == -1) {
+			for (final int sourceToDbCharPosition : sourceToDbCharPositions) {
+				if (sourceToDbCharPosition == -1) {
 					final C newDbCell = cellProvider.get();
-					newDbCell
-							.setVersionInfo(newVersionInfo.getNewVersionInfo());
 					dbCells.add(newDbCell);
 				} else {
 					dbCells.add(
-							dbRow.getCells().get(sourceToDbCharPositions[i]));
+							dbRow.getCells().get(sourceToDbCharPosition));
 				}
 			}
 
@@ -184,4 +173,10 @@ abstract class CreateOrUpdateMatrix<M extends IMatrix<R, C>, R extends IRow<C, ?
 			dao.evict(dbRow);
 		}
 	}
+
+	abstract void handlePolymorphicCell(final C targetCell, final C sourceCell);
+
+	abstract void handleSingleCell(final C targetCell, final C sourceCell);
+
+	abstract void handleUncertainCell(final C targetCell, final C sourceCell);
 }

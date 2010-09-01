@@ -32,7 +32,6 @@ import edu.upenn.cis.ppod.dao.IStudyDAO;
 import edu.upenn.cis.ppod.imodel.IDNAMatrix;
 import edu.upenn.cis.ppod.imodel.IDNASequence;
 import edu.upenn.cis.ppod.imodel.IDNASequenceSet;
-import edu.upenn.cis.ppod.imodel.INewVersionInfo;
 import edu.upenn.cis.ppod.imodel.IOTUSet;
 import edu.upenn.cis.ppod.imodel.IStandardMatrix;
 import edu.upenn.cis.ppod.imodel.IStudy;
@@ -61,7 +60,6 @@ final class CreateOrUpdateStudy implements ICreateOrUpdateStudy {
 	private final IMergeSequenceSets<IDNASequenceSet, IDNASequence> mergeDNASequenceSets;
 	private final ICreateOrUpdateDNAMatrix createOrUpdateDNAMatrix;
 	private final IObjectWithLongIdDAO dao;
-	private final INewVersionInfo newVersionInfo;
 
 	@Inject
 	CreateOrUpdateStudy(
@@ -79,7 +77,6 @@ final class CreateOrUpdateStudy implements ICreateOrUpdateStudy {
 			final IObjectWithLongIdDAO dao,
 			final IAttachmentNamespaceDAO attachmentNamespaceDAO,
 			final IAttachmentTypeDAO attachmentTypeDAO,
-			final INewVersionInfo newVersionInfo,
 			final IStudyDAO studyDAO) {
 
 		this.studyDAO = studyDAO;
@@ -90,7 +87,6 @@ final class CreateOrUpdateStudy implements ICreateOrUpdateStudy {
 		this.treeSetProvider = treeSetProvider;
 		this.mergeOTUSets = mergeOTUSets;
 		this.createOrUpdateDNAMatrix = createOrUpdateDNAMatrix;
-		this.newVersionInfo = newVersionInfo;
 		this.createOrUpdateStandardMatrix = createOrUpdateMatrix;
 		this.mergeDNASequenceSets = mergeDNASequenceSets;
 		this.mergeTreeSets = mergeTreeSets;
@@ -236,9 +232,6 @@ final class CreateOrUpdateStudy implements ICreateOrUpdateStudy {
 											.getPPodId()),
 									IWithPPodId.getPPodId)))) {
 				dbDNASequenceSet = dnaSequenceSetProvider.get();
-				dbDNASequenceSet.setPPodId();
-				dbDNASequenceSet.setVersionInfo(newVersionInfo
-						.getNewVersionInfo());
 				dbDNASequenceSet.setLabel(incomingSequenceSet.getLabel());
 				dbOTUSet.addDNASequenceSet(
 						incomingSequenceSet.getPosition(), dbDNASequenceSet);

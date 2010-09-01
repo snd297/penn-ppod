@@ -33,14 +33,12 @@ final class MergeSequenceSets<SS extends ISequenceSet<S>, S extends ISequence<?>
 		implements IMergeSequenceSets<SS, S> {
 
 	private final Provider<S> sequenceProvider;
-	private final INewVersionInfo newVersionInfo;
 
 	@Inject
 	MergeSequenceSets(
 			final Provider<S> sequenceProvider,
 			INewVersionInfo newVersionInfo) {
 		this.sequenceProvider = sequenceProvider;
-		this.newVersionInfo = newVersionInfo;
 	}
 
 	public void mergeSequenceSets(
@@ -99,8 +97,6 @@ final class MergeSequenceSets<SS extends ISequenceSet<S>, S extends ISequence<?>
 			if (null == (targSeq =
 					targOTUsToSeqs.get(targOTU))) {
 				targSeq = sequenceProvider.get();
-				targSeq.setVersionInfo(newVersionInfo
-						.getNewVersionInfo());
 			}
 			targSeq.setSequence(srcSeq.getSequence());
 			targSeqSet.putSequence(targOTU, targSeq);
