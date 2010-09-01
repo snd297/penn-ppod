@@ -281,11 +281,6 @@ final class CreateOrUpdateStudy implements ICreateOrUpdateStudy {
 									IWithPPodId.getPPodId
 									)))) {
 				dbMatrix = standardMatrixProvider.get();
-				dbMatrix.setVersionInfo(
-						newVersionInfo.getNewVersionInfo());
-				dbMatrix.setColumnVersionInfos(
-								newVersionInfo.getNewVersionInfo());
-				dbMatrix.setPPodId();
 				dbMatrix.setLabel(incomingMatrix.getLabel());
 				dbOTUSet.addStandardMatrix(
 						incomingMatrix.getPosition(),
@@ -324,9 +319,6 @@ final class CreateOrUpdateStudy implements ICreateOrUpdateStudy {
 							compose(equalTo(incomingTreeSet.getPPodId()),
 									IWithPPodId.getPPodId)))) {
 				dbTreeSet = treeSetProvider.get();
-				dbTreeSet.setVersionInfo(newVersionInfo
-						.getNewVersionInfo());
-				dbTreeSet.setPPodId();
 				dbTreeSet.setLabel(incomingTreeSet.getLabel());
 				dbOTUSet.addTreeSet(incomingTreeSet.getPosition(), dbTreeSet);
 			}

@@ -105,9 +105,6 @@ final class CreateOrUpdateStandardMatrix
 											sourceCharacter.getPPodId()),
 											IWithPPodId.getPPodId)))) {
 				newDbCharacter = standardCharacterProvider.get();
-				newDbCharacter.setVersionInfo(
-						newVersionInfo.getNewVersionInfo());
-				newDbCharacter.setPPodId();
 				sourceToDbCharPositions[sourceCharacterPosition] = -1;
 			}
 
