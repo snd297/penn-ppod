@@ -25,26 +25,12 @@ import edu.upenn.cis.ppod.imodel.IAttachmentNamespace;
 import edu.upenn.cis.ppod.imodel.IAttachmentType;
 import edu.upenn.cis.ppod.imodel.IDNASequence;
 import edu.upenn.cis.ppod.imodel.IDNASequenceSet;
-import edu.upenn.cis.ppod.imodel.IStandardCell;
-import edu.upenn.cis.ppod.imodel.IStandardCharacter;
-import edu.upenn.cis.ppod.imodel.IStandardMatrix;
-import edu.upenn.cis.ppod.imodel.IStandardRow;
-import edu.upenn.cis.ppod.imodel.IStandardState;
-import edu.upenn.cis.ppod.imodel.ITree;
-import edu.upenn.cis.ppod.imodel.ITreeSet;
 import edu.upenn.cis.ppod.model.Attachment;
 import edu.upenn.cis.ppod.model.AttachmentNamespace;
 import edu.upenn.cis.ppod.model.AttachmentType;
 import edu.upenn.cis.ppod.model.DNASequence;
 import edu.upenn.cis.ppod.model.DNASequenceSet;
 import edu.upenn.cis.ppod.model.ModelModule;
-import edu.upenn.cis.ppod.model.StandardCell;
-import edu.upenn.cis.ppod.model.StandardCharacter;
-import edu.upenn.cis.ppod.model.StandardMatrix;
-import edu.upenn.cis.ppod.model.StandardRow;
-import edu.upenn.cis.ppod.model.StandardState;
-import edu.upenn.cis.ppod.model.Tree;
-import edu.upenn.cis.ppod.model.TreeSet;
 import edu.upenn.cis.ppod.services.StringPair;
 import edu.upenn.cis.ppod.util.IPair;
 import edu.upenn.cis.ppod.util.Pair;
@@ -66,19 +52,8 @@ public final class PPodModule extends AbstractModule {
 						StringPair.IFactory.class,
 						StringPair.class));
 
-		bind(IStandardMatrix.class).to(StandardMatrix.class);
-		bind(IStandardCharacter.class).to(StandardCharacter.class);
-		bind(IStandardState.IFactory.class).toProvider(
-				FactoryProvider.newFactory(IStandardState.IFactory.class,
-						StandardState.class));
-		bind(IStandardRow.class).to(StandardRow.class);
-		bind(IStandardCell.class).to(StandardCell.class);
-
 		bind(IDNASequenceSet.class).to(DNASequenceSet.class);
 		bind(IDNASequence.class).to(DNASequence.class);
-
-		bind(ITreeSet.class).to(TreeSet.class);
-		bind(ITree.class).to(Tree.class);
 
 		bind(IAttachmentNamespace.class).to(AttachmentNamespace.class);
 		bind(IAttachmentType.class).to(AttachmentType.class);
