@@ -35,7 +35,6 @@ public class DAOHibernateModule extends AbstractModule {
 
 		bind(IStudyDAO.class)
 				.to(StudyDAOHibernate.class);
-
 		bind(IAttachmentNamespaceDAO.class)
 				.to(AttachmentNamespaceDAOHibernate.class);
 		bind(IAttachmentTypeDAO.class)

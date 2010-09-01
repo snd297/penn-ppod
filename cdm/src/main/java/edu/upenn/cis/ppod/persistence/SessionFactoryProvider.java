@@ -1,5 +1,7 @@
 package edu.upenn.cis.ppod.persistence;
 
+import static com.google.common.base.Preconditions.checkState;
+
 import org.hibernate.SessionFactory;
 import org.hibernate.cfg.AnnotationConfiguration;
 import org.hibernate.cfg.Configuration;
@@ -24,7 +26,12 @@ public class SessionFactoryProvider implements Provider<SessionFactory> {
 
 	SessionFactoryProvider() {}
 
-	public SessionFactory get() {
+	public synchronized SessionFactory get() {
+		checkState(
+				getSessionFactory() == null,
+				"the session factory singleton has already been initialized - is SessionFactoryProvider\n"
+						+ " bound as an eager singelton as it should be? Has it been put into more than one injector\n "
+						+ " in the same JVM? Though that may be a legit thing to do, it's not supported.");
 		final Configuration cfg = new AnnotationConfiguration();
 		cfg.setNamingStrategy(new ImprovedNamingStrategy());
 

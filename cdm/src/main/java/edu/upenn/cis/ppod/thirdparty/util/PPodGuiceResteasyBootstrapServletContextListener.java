@@ -15,6 +15,7 @@ import com.google.inject.Singleton;
 import com.google.inject.servlet.ServletModule;
 
 import edu.upenn.cis.ppod.PPodModule;
+import edu.upenn.cis.ppod.persistence.PersistenceModule;
 import edu.upenn.cis.ppod.services.hibernate.PPodServicesHibernateModule;
 
 /**
@@ -43,6 +44,7 @@ public class PPodGuiceResteasyBootstrapServletContextListener extends
 		final Injector injector =
 				Guice.createInjector(
 						new PPodModule(),
+						new PersistenceModule(),
 						new PPodServicesHibernateModule(),
 						new ServletModule() {
 
