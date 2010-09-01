@@ -69,9 +69,8 @@ final class CreateOrUpdateStandardMatrix
 			final IStandardState.IFactory stateFactory,
 			final Provider<IAttachment> attachmentProvider,
 			final IObjectWithLongIdDAO dao,
-			final INewVersionInfo newVersionInfo,
-			final IMergeAttachments mergeAttachments) {
-
+			final IMergeAttachments mergeAttachments,
+			final INewVersionInfo newVersionInfo) {
 		super(rowProvider, cellProvider, attachmentProvider, dao,
 				newVersionInfo);
 		this.standardCharacterProvider = characterProvider;

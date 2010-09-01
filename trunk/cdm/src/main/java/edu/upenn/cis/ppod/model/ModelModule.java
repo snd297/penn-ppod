@@ -20,12 +20,18 @@ import com.google.inject.Provides;
 import com.google.inject.assistedinject.FactoryProvider;
 import com.google.inject.servlet.RequestScoped;
 
+import edu.upenn.cis.ppod.imodel.IAttachment;
+import edu.upenn.cis.ppod.imodel.IAttachmentNamespace;
+import edu.upenn.cis.ppod.imodel.IAttachmentType;
 import edu.upenn.cis.ppod.imodel.IDNACell;
 import edu.upenn.cis.ppod.imodel.IDNAMatrix;
 import edu.upenn.cis.ppod.imodel.IDNARow;
+import edu.upenn.cis.ppod.imodel.IDNASequence;
+import edu.upenn.cis.ppod.imodel.IDNASequenceSet;
 import edu.upenn.cis.ppod.imodel.INewVersionInfo;
 import edu.upenn.cis.ppod.imodel.IOTU;
 import edu.upenn.cis.ppod.imodel.IOTUSet;
+import edu.upenn.cis.ppod.imodel.IPPodEntity;
 import edu.upenn.cis.ppod.imodel.IStandardCell;
 import edu.upenn.cis.ppod.imodel.IStandardCharacter;
 import edu.upenn.cis.ppod.imodel.IStandardMatrix;
@@ -42,24 +48,26 @@ import edu.upenn.cis.ppod.imodel.IUUPPodEntity;
  */
 public class ModelModule extends AbstractModule {
 
-	private static void preparePPodEntity(final IUUPPodEntity pPodEntity,
+	private static void preparePPodEntity(final IPPodEntity pPodEntity,
 			final INewVersionInfo newVersionInfo) {
 		pPodEntity.setVersionInfo(newVersionInfo.getNewVersionInfo());
+	}
+
+	private static void prepareUUPPodEntity(final IUUPPodEntity pPodEntity,
+			final INewVersionInfo newVersionInfo) {
+		preparePPodEntity(pPodEntity, newVersionInfo);
 		pPodEntity.setPPodId();
 	}
 
 	@Override
 	protected void configure() {
 
-		bind(IDNARow.class).to(DNARow.class);
-		bind(IDNACell.class).to(DNACell.class);
-
 		bind(IStandardState.IFactory.class).toProvider(
 				FactoryProvider.newFactory(IStandardState.IFactory.class,
 						StandardState.class));
 
-		bind(IStandardRow.class).to(StandardRow.class);
-		bind(IStandardCell.class).to(StandardCell.class);
+		bind(IAttachmentNamespace.class).to(AttachmentNamespace.class);
+		bind(IAttachmentType.class).to(AttachmentType.class);
 
 		bind(INewVersionInfo.class)
 				.to(NewVersionInfoDB.class)
@@ -72,34 +80,77 @@ public class ModelModule extends AbstractModule {
 	}
 
 	@Provides
+	IAttachment provideAttachment(final INewVersionInfo newVersionInfo) {
+		final IAttachment attachment = new Attachment();
+		prepareUUPPodEntity(attachment, newVersionInfo);
+		return attachment;
+	}
+
+	@Provides
+	IDNACell provideDNACell(final INewVersionInfo newVersionInfo) {
+		final IDNACell cell = new DNACell();
+		preparePPodEntity(cell, newVersionInfo);
+		return cell;
+	}
+
+	@Provides
 	IDNAMatrix provideDNAMatrix(final INewVersionInfo newVersionInfo,
 			final DNARows rows) {
 		final IDNAMatrix matrix = new DNAMatrix(rows);
-		preparePPodEntity(matrix, newVersionInfo);
+		prepareUUPPodEntity(matrix, newVersionInfo);
 		matrix.setColumnVersionInfos(
 				newVersionInfo.getNewVersionInfo());
 		return matrix;
 	}
 
 	@Provides
+	IDNARow provideDNARow(final INewVersionInfo newVersionInfo) {
+		final IDNARow row = new DNARow();
+		preparePPodEntity(row, newVersionInfo);
+		return row;
+	}
+
+	@Provides
+	IDNASequence provideDNASequence(final INewVersionInfo newVersionInfo) {
+		final IDNASequence sequence = new DNASequence();
+		preparePPodEntity(sequence, newVersionInfo);
+		return sequence;
+	}
+
+	@Provides
+	IDNASequenceSet provideDNASequenceSet(final INewVersionInfo newVersionInfo,
+			final DNASequences sequences) {
+		final IDNASequenceSet sequenceSet = new DNASequenceSet(sequences);
+		prepareUUPPodEntity(sequenceSet, newVersionInfo);
+		return sequenceSet;
+	}
+
+	@Provides
 	IOTU provideOTU(final INewVersionInfo newVersionInfo) {
 		final IOTU otu = new OTU();
-		preparePPodEntity(otu, newVersionInfo);
+		prepareUUPPodEntity(otu, newVersionInfo);
 		return otu;
 	}
 
 	@Provides
 	IOTUSet provideOTUSet(final INewVersionInfo newVersionInfo) {
 		final IOTUSet otuSet = new OTUSet();
-		preparePPodEntity(otuSet, newVersionInfo);
+		prepareUUPPodEntity(otuSet, newVersionInfo);
 		return otuSet;
+	}
+
+	@Provides
+	IStandardCell provideStandardCell(final INewVersionInfo newVersionInfo) {
+		final IStandardCell cell = new StandardCell();
+		preparePPodEntity(cell, newVersionInfo);
+		return cell;
 	}
 
 	@Provides
 	IStandardCharacter provideStandardCharacter(
 			final INewVersionInfo newVersionInfo) {
 		final IStandardCharacter character = new StandardCharacter();
-		preparePPodEntity(character, newVersionInfo);
+		prepareUUPPodEntity(character, newVersionInfo);
 		return character;
 	}
 
@@ -107,30 +158,37 @@ public class ModelModule extends AbstractModule {
 	IStandardMatrix provideStandardMatrix(final INewVersionInfo newVersionInfo,
 			final StandardRows rows) {
 		final IStandardMatrix matrix = new StandardMatrix(rows);
-		preparePPodEntity(matrix, newVersionInfo);
+		prepareUUPPodEntity(matrix, newVersionInfo);
 		matrix.setColumnVersionInfos(
 				newVersionInfo.getNewVersionInfo());
 		return matrix;
 	}
 
 	@Provides
+	IStandardRow provideStandardRow(final INewVersionInfo newVersionInfo) {
+		final IStandardRow row = new StandardRow();
+		preparePPodEntity(row, newVersionInfo);
+		return row;
+	}
+
+	@Provides
 	IStudy provideStudy(final INewVersionInfo newVersionInfo) {
 		final IStudy study = new Study();
-		preparePPodEntity(study, newVersionInfo);
+		prepareUUPPodEntity(study, newVersionInfo);
 		return study;
 	}
 
 	@Provides
 	ITree provideTree(final INewVersionInfo newVersionInfo) {
 		final ITree tree = new Tree();
-		preparePPodEntity(tree, newVersionInfo);
+		prepareUUPPodEntity(tree, newVersionInfo);
 		return tree;
 	}
 
 	@Provides
 	ITreeSet provideTreeSet(final INewVersionInfo newVersionInfo) {
 		final ITreeSet treeSet = new TreeSet();
-		preparePPodEntity(treeSet, newVersionInfo);
+		prepareUUPPodEntity(treeSet, newVersionInfo);
 		return treeSet;
 	}
 

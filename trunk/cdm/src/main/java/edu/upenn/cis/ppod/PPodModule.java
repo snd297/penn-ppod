@@ -20,16 +20,6 @@ import com.google.inject.assistedinject.FactoryProvider;
 
 import edu.upenn.cis.ppod.createorupdate.CreateOrUpdateModule;
 import edu.upenn.cis.ppod.dao.hibernate.DAOHibernateModule;
-import edu.upenn.cis.ppod.imodel.IAttachment;
-import edu.upenn.cis.ppod.imodel.IAttachmentNamespace;
-import edu.upenn.cis.ppod.imodel.IAttachmentType;
-import edu.upenn.cis.ppod.imodel.IDNASequence;
-import edu.upenn.cis.ppod.imodel.IDNASequenceSet;
-import edu.upenn.cis.ppod.model.Attachment;
-import edu.upenn.cis.ppod.model.AttachmentNamespace;
-import edu.upenn.cis.ppod.model.AttachmentType;
-import edu.upenn.cis.ppod.model.DNASequence;
-import edu.upenn.cis.ppod.model.DNASequenceSet;
 import edu.upenn.cis.ppod.model.ModelModule;
 import edu.upenn.cis.ppod.services.StringPair;
 import edu.upenn.cis.ppod.util.IPair;
@@ -52,12 +42,6 @@ public final class PPodModule extends AbstractModule {
 						StringPair.IFactory.class,
 						StringPair.class));
 
-		bind(IDNASequenceSet.class).to(DNASequenceSet.class);
-		bind(IDNASequence.class).to(DNASequence.class);
-
-		bind(IAttachmentNamespace.class).to(AttachmentNamespace.class);
-		bind(IAttachmentType.class).to(AttachmentType.class);
-		bind(IAttachment.class).to(Attachment.class);
 
 		install(new ModelModule());
 		install(new DAOHibernateModule());
