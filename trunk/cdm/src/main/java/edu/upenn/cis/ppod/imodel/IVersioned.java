@@ -65,8 +65,13 @@ public interface IVersioned extends IPersistentObject {
 	 */
 	void setInNeedOfNewVersion();
 
-	IVersioned setVersionInfo(final VersionInfo versionInfo);
+	/**
+	 * Set the pPod version info.
+	 * 
+	 * @param versionInfo new pPOD version
+	 */
+	void setVersionInfo(final VersionInfo versionInfo);
 
-	IVersioned unsetInNeedOfNewVersion();
+	void unsetInNeedOfNewVersion();
 
 }

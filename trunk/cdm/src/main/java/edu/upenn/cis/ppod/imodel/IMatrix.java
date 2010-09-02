@@ -102,32 +102,27 @@ public interface IMatrix<R extends IRow<C, ?>, C extends ICell<?, ?>>
 	Map<IOTU, R> getRows();
 
 	/**
-	 * Move column {@code src} to column {@code dest}.
-	 * <p>
-	 * One should be aware that for persisted matrices, this can be an expensive
-	 * operation since all of the cells in the matrix will be loaded.
-	 * 
-	 * @param src column to move
-	 * @param dest where to move it
-	 */
-	@Beta
-	void moveColumn(int src, int dest);
-
-	/**
 	 * Set row at <code>otu</code> to <code>row</code>.
 	 * <p>
 	 * Assumes {@code row} does not belong to another matrix.
 	 * <p>
 	 * {@code otu} must be a member of {@link #getParent()}.
+	 * <p>
+	 * Assumes {@code row} is not detached.
 	 * 
 	 * @param otu index of the row we are adding
 	 * @param row the row we're adding
 	 * 
 	 * @return the row that was previously there, or {@code null} if there was
 	 *         no row previously there
+	 * 
+	 * @throws IllegalArgumentException if {@code otu} does not belong to this
+	 *             matrix's {@code OTUSet}
+	 * @throws IllegalArgumentException if this matrix already contains a row
+	 *             {@code .equals} to {@code row}
 	 */
 	@CheckForNull
-	R putRow(final IOTU otu, final R row);
+	R putRow(IOTU otu, R row);
 
 	/**
 	 * Remove the cells the make up the given column number.
@@ -164,7 +159,7 @@ public interface IMatrix<R extends IRow<C, ?>, C extends ICell<?, ?>>
 	 * 
 	 * @param description the description value, {@code null} is allowed
 	 */
-	void setDescription(@CheckForNull final String description);
+	void setDescription(@CheckForNull String description);
 
 	/**
 	 * Set the column at {@code position} as in need of a new

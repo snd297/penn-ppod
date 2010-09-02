@@ -21,8 +21,6 @@ import static com.google.common.collect.Sets.newHashSet;
 import java.util.List;
 import java.util.Set;
 
-import javax.annotation.CheckForNull;
-
 import org.hibernate.FlushMode;
 import org.hibernate.Session;
 
@@ -33,6 +31,7 @@ import edu.upenn.cis.ppod.imodel.IOTU;
 import edu.upenn.cis.ppod.imodel.IOTUSet;
 import edu.upenn.cis.ppod.imodel.IStandardMatrix;
 import edu.upenn.cis.ppod.imodel.ITreeSet;
+import edu.upenn.cis.ppod.services.IPPodEntitiesResource;
 import edu.upenn.cis.ppod.services.ppodentity.PPodEntities;
 import edu.upenn.cis.ppod.util.ISetDocIdVisitor;
 import edu.upenn.cis.ppod.util.IVisitor;
@@ -41,17 +40,17 @@ import edu.upenn.cis.ppod.util.IVisitor;
  * @author Sam Donnelly
  */
 class PPodEntitiesResourceHibernate implements
-		IPPodEntitiesResourceHibernate {
+		IPPodEntitiesResource {
 
 	private final Provider<PPodEntities> pPodEntitiesProvider;
 
 	private final IVisitor setDocIdVisitor;
 
-	@CheckForNull
 	private Session session;
 
 	@Inject
-	PPodEntitiesResourceHibernate(final Provider<PPodEntities> pPodEntities,
+	PPodEntitiesResourceHibernate(
+			final Provider<PPodEntities> pPodEntities,
 			final ISetDocIdVisitor setDocIdVisitor,
 			final Session session) {
 		this.pPodEntitiesProvider = pPodEntities;
@@ -161,8 +160,4 @@ class PPodEntitiesResourceHibernate implements
 		return pPodEntities;
 	}
 
-	public PPodEntitiesResourceHibernate setSession(final Session session) {
-		this.session = session;
-		return this;
-	}
 }

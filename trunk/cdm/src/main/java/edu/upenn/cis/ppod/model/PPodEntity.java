@@ -179,6 +179,7 @@ public abstract class PPodEntity
 						new IAttachment.IsOfNamespace(namespace)));
 	}
 
+	/** {@inheritDoc} */
 	public Set<IAttachment> getAttachmentsByNamespaceAndType(
 			final String namespace, final String type) {
 		return newHashSet(filter(
@@ -262,15 +263,7 @@ public abstract class PPodEntity
 		this.hasAttachments = hasAttachments;
 	}
 
-	/**
-	 * Mark this object's {@link VersionInfo} for update to the next version
-	 * number on save or update. This is done by setting it to {@code null}.
-	 * <p>
-	 * Implementors should also, if desired, call {@code resetVersionInfo()} on
-	 * any owning objects.
-	 * 
-	 * @return this {@code PPodEntity}
-	 */
+	/** {@inheritDoc} */
 	@OverridingMethodsMustInvokeSuper
 	public void setInNeedOfNewVersion() {
 		inNeedOfNewVersion = true;
@@ -292,19 +285,12 @@ public abstract class PPodEntity
 		return this;
 	}
 
-	/**
-	 * Set the pPod version info.
-	 * 
-	 * @param versionInfo new pPOD version
-	 * 
-	 * @return this
-	 */
-	public IPPodEntity setVersionInfo(
+	/** {@inheritDoc} */
+	public void setVersionInfo(
 			final VersionInfo versionInfo) {
 		checkNotNull(versionInfo);
 		unsetInNeedOfNewVersion();
 		this.versionInfo = versionInfo;
-		return this;
 	}
 
 	/**
@@ -335,9 +321,7 @@ public abstract class PPodEntity
 	}
 
 	@VisibleForTesting
-	public IPPodEntity unsetInNeedOfNewVersion() {
+	public void unsetInNeedOfNewVersion() {
 		inNeedOfNewVersion = false;
-		return this;
 	}
-
 }

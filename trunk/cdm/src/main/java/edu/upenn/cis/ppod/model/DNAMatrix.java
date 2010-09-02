@@ -91,6 +91,7 @@ public class DNAMatrix extends Matrix<IDNARow, IDNACell> implements IDNAMatrix {
 		return this;
 	}
 
+	/** {@inheritDoc} */
 	public List<IDNACell> removeColumn(final int columnNo) {
 		setColumnsSize(getColumnsSize() - 1);
 		return super.removeColumnHelper(columnNo);
