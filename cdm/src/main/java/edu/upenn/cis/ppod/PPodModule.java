@@ -42,7 +42,6 @@ public final class PPodModule extends AbstractModule {
 						StringPair.IFactory.class,
 						StringPair.class));
 
-
 		install(new ModelModule());
 		install(new DAOHibernateModule());
 		install(new CreateOrUpdateModule());

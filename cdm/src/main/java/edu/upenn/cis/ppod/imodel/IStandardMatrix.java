@@ -19,6 +19,8 @@ import java.util.List;
 
 import javax.xml.bind.annotation.adapters.XmlJavaTypeAdapter;
 
+import com.google.common.annotations.Beta;
+
 import edu.upenn.cis.ppod.model.StandardMatrix;
 
 @XmlJavaTypeAdapter(StandardMatrix.Adapter.class)
@@ -52,5 +54,9 @@ public interface IStandardMatrix
 	 */
 	List<IStandardCharacter> setCharacters(
 			final List<? extends IStandardCharacter> characters);
+
+	@Beta
+	void addColumn(int columnNo, IStandardCharacter character,
+			List<? extends IStandardCell> column);
 
 }

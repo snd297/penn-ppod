@@ -258,37 +258,8 @@ public abstract class Matrix<R extends IRow<C, ?>, C extends ICell<?, ?>>
 				.unmodifiableMap(getOTUKeyedRows().getValues());
 	}
 
-	/** {@inheritDoc} */
-	public void moveColumn(final int src, final int dest) {
-		checkArgument(src >= 0);
-		checkArgument(src < getColumnsSize());
-		checkArgument(dest >= 0);
-		checkArgument(dest < getColumnsSize());
-		if (src == dest) {
-			return;
-		}
-		for (final R row : getRows().values()) {
-			final List<C> cells = newArrayList(row.getCells());
-			cells.add(dest + 1, cells.remove(src));
-			row.setCells(cells);
-		}
-		final VersionInfo versionInfo =
-				getColumnVersionInfosModifiable().remove(src);
-		getColumnVersionInfosModifiable().add(dest - 1, versionInfo);
-
-		final Long version = getColumnVersionsModifiable().remove(src);
-		getColumnVersionsModifiable().add(dest - 1, version);
-	}
-
 	/**
 	 * {@inheritDoc}
-	 * <p>
-	 * Assumes {@code row} is not detached.
-	 * 
-	 * @throws IllegalArgumentException if {@code otu} does not belong to this
-	 *             matrix's {@code OTUSet}
-	 * @throws IllegalArgumentException if this matrix already contains a row
-	 *             {@code .equals} to {@code row}
 	 */
 	public R putRow(final IOTU otu, final R row) {
 		checkNotNull(otu);
