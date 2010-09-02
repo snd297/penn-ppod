@@ -67,7 +67,7 @@ public class DNACell
 	public static final String TABLE = "DNA_CELL";
 
 	public static final String JOIN_COLUMN =
-			TABLE + "_" + PersistentObject.ID_COLUMN;
+		TABLE + "_" + PersistentObject.ID_COLUMN;
 
 	/**
 	 * The heart of the cell: the {@code DNANucleotide}s.

@@ -1,5 +1,105 @@
 package edu.upenn.cis.ppod.model;
 
-public class ProteinCell {
+import java.util.Set;
+
+import javax.persistence.CollectionTable;
+import javax.persistence.Column;
+import javax.persistence.ElementCollection;
+import javax.persistence.EnumType;
+import javax.persistence.Enumerated;
+import javax.persistence.FetchType;
+import javax.persistence.JoinColumn;
+import javax.persistence.ManyToOne;
+import javax.xml.bind.annotation.XmlAttribute;
+import javax.xml.bind.annotation.XmlElement;
+
+import edu.umd.cs.findbugs.annotations.CheckForNull;
+import edu.umd.cs.findbugs.annotations.Nullable;
+import edu.upenn.cis.ppod.imodel.IProteinCell;
+import edu.upenn.cis.ppod.imodel.IProteinRow;
+import edu.upenn.cis.ppod.imodel.Protein;
+
+public class ProteinCell
+		extends MolecularCell<Protein, IProteinRow>
+		implements IProteinCell {
+
+	public static final String TABLE = "PROTEIN_CELL";
+
+	public static final String JOIN_COLUMN =
+			TABLE + "_" + PersistentObject.ID_COLUMN;
+
+	@ManyToOne(fetch = FetchType.LAZY, optional = false,
+			targetEntity = DNARow.class)
+	@JoinColumn(name = ProteinRow.JOIN_COLUMN)
+	@Nullable
+	private IProteinRow parent;
+
+	/**
+	 * The heart of the cell: the {@code DNANucleotide}s.
+	 * <p>
+	 * At most one of {@code element} and {@code elements} will be non-
+	 * {@code null}.
+	 */
+	@ElementCollection
+	@CollectionTable(name = "PROTEIN_CELL_ELEMENTS",
+						joinColumns = @JoinColumn(name = JOIN_COLUMN))
+	@Column(name = "ELEMENT")
+	@Enumerated(EnumType.ORDINAL)
+	@CheckForNull
+	private Set<Protein> elements;
+
+	/**
+	 * To handle the most-common case of a single element.
+	 * <p>
+	 * At most of one of {@code element} and {@code elements} will be
+	 * {@code null}.
+	 */
+	@Column(name = "ELEMENT", nullable = true)
+	@Enumerated(EnumType.ORDINAL)
+	@CheckForNull
+	private Protein element;
+
+	@XmlAttribute(name = "protein")
+	@Override
+	protected Protein getElement() {
+		return element;
+	}
+
+	/**
+	 * {@inheritDoc}
+	 * <p>
+	 * Protected for JAXB.
+	 */
+	@XmlElement(name = "nucleotide")
+	@Override
+	protected Set<Protein> getElementsIfMultiple() {
+		return super.getElementsIfMultiple();
+	}
+
+	@Override
+	Set<Protein> getElementsModifiable() {
+		return elements;
+	}
+
+	@Override
+	@Nullable
+	public IProteinRow getParent() {
+		return parent;
+	}
+
+	@Override
+	protected void setElement(final Protein element) {
+		this.element = element;
+	}
+
+	@Override
+	void setElements(final Set<Protein> elements) {
+		this.elements = elements;
+	}
+
+	/** {@inheritDoc} */
+	public void setParent(@CheckForNull final IProteinRow parent) {
+		this.parent = parent;
+	}
 
 }
