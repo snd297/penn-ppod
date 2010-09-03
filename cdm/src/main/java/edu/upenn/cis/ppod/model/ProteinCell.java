@@ -45,7 +45,7 @@ public class ProteinCell
 						joinColumns = @JoinColumn(name = JOIN_COLUMN))
 	@Column(name = "ELEMENT")
 	@Enumerated(EnumType.ORDINAL)
-	@CheckForNull
+	@Nullable
 	private Set<Protein> elements;
 
 	/**
@@ -56,7 +56,7 @@ public class ProteinCell
 	 */
 	@Column(name = "ELEMENT", nullable = true)
 	@Enumerated(EnumType.ORDINAL)
-	@CheckForNull
+	@Nullable
 	private Protein element;
 
 	@XmlAttribute(name = "protein")
