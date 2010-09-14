@@ -27,6 +27,8 @@ import java.util.Set;
 import javax.persistence.CascadeType;
 import javax.persistence.Column;
 import javax.persistence.Entity;
+import javax.persistence.NamedQueries;
+import javax.persistence.NamedQuery;
 import javax.persistence.OneToMany;
 import javax.persistence.OrderColumn;
 import javax.persistence.Table;
@@ -54,6 +56,22 @@ import edu.upenn.cis.ppod.util.PPodEntitiesUtil;
 @XmlRootElement
 @Entity
 @Table(name = Study.TABLE)
+@NamedQueries({
+		@NamedQuery(name = "Study-getByPPodId",
+				query = "select s from Study s where s.pPodId=:pPodId"),
+		@NamedQuery(
+				name = "Study-getVersionByPPodId",
+				query = "select s.versionInfo.version "
+						+ "from Study s where s.pPodId=:pPodId"),
+		@NamedQuery(
+				name = "Study-getOTUSetInfosByStudyPPodIdAndMinVersion",
+				query = "select os.id, os.pPodId, os.versionInfo.version "
+						+ "from Study s join s.otuSets os "
+						+ "where s.pPodId=:studyPPodId "
+						+ "and os.versionInfo.version >= :minVersion"),
+		@NamedQuery(
+				name = "Study-getPPodIdLabelPairs",
+				query = "select s.pPodId, s.label from Study s") })
 public class Study
 		extends UUPPodEntity
 		implements IStudy {

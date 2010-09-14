@@ -30,9 +30,10 @@ public class OTUSetDAOHibernate
 		implements IOTUSetDAO {
 
 	public IOTUSet getOTUSetByPPodId(final String pPodId) {
-		return (IOTUSet) getSession().getNamedQuery(
-				OTUSet.class.getSimpleName() + "-getByPPodId")
-				.setParameter("pPodId", pPodId).uniqueResult();
+		return (IOTUSet) getSession()
+				.getNamedQuery(OTUSet.class.getSimpleName() + "-getByPPodId")
+				.setParameter("pPodId", pPodId)
+				.uniqueResult();
 	}
 
 	@SuppressWarnings("unchecked")
@@ -42,8 +43,9 @@ public class OTUSetDAOHibernate
 				.getNamedQuery(
 						OTUSet.class.getSimpleName()
 								+ "-getOTUPPodIdsVersionsByOTUSetIdAndMinPPodVersion")
-				.setParameter("otuId", otuId).setParameter(
-						"minPPodVersion", minPPodVersion).list();
+				.setParameter("otuId", otuId)
+				.setParameter("minPPodVersion", minPPodVersion)
+				.list();
 	}
 
 	@SuppressWarnings("unchecked")

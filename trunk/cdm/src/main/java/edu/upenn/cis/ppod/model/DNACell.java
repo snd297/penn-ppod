@@ -67,7 +67,7 @@ public class DNACell
 	public static final String TABLE = "DNA_CELL";
 
 	public static final String JOIN_COLUMN =
-		TABLE + "_" + PersistentObject.ID_COLUMN;
+			TABLE + "_" + PersistentObject.ID_COLUMN;
 
 	/**
 	 * The heart of the cell: the {@code DNANucleotide}s.
@@ -77,7 +77,7 @@ public class DNACell
 	 */
 	@ElementCollection
 	@CollectionTable(name = "DNA_CELL_ELEMENTS",
-						joinColumns = @JoinColumn(name = JOIN_COLUMN))
+			joinColumns = @JoinColumn(name = JOIN_COLUMN))
 	@Column(name = "ELEMENT")
 	@Enumerated(EnumType.ORDINAL)
 	@CheckForNull

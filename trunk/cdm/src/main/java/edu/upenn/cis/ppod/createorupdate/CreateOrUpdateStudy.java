@@ -106,12 +106,6 @@ final class CreateOrUpdateStudy implements ICreateOrUpdateStudy {
 		dbStudy.setLabel(incomingStudy.getLabel());
 
 		if (makeStudyPersistent) {
-			// It's okay to pass makePersistent a persistent study, but we do
-			// this just in case
-			// it's an expensive operation - which one could imagine it may be
-			// w/ cascades. Though saveOrUpdate cascades don't get to the cells
-			// (they get stopped at the OTUKeyedMaps) so it really may not
-			// matter anyway.
 			studyDAO.makePersistent(dbStudy);
 		}
 
@@ -193,6 +187,7 @@ final class CreateOrUpdateStudy implements ICreateOrUpdateStudy {
 				// Do this here because it's non-nullable
 				dbMatrix.setLabel(incomingMatrix.getLabel());
 				dbOTUSet.addDNAMatrix(incomingMatrix.getPosition(), dbMatrix);
+				dao.makePersistent(dbMatrix);
 			}
 			createOrUpdateDNAMatrix
 							.createOrUpdateMatrix(
@@ -235,6 +230,7 @@ final class CreateOrUpdateStudy implements ICreateOrUpdateStudy {
 				dbDNASequenceSet.setLabel(incomingSequenceSet.getLabel());
 				dbOTUSet.addDNASequenceSet(
 						incomingSequenceSet.getPosition(), dbDNASequenceSet);
+				dao.makePersistent(dbDNASequenceSet);
 			}
 			mergeDNASequenceSets
 					.mergeSequenceSets(dbDNASequenceSet, incomingSequenceSet);
@@ -278,6 +274,7 @@ final class CreateOrUpdateStudy implements ICreateOrUpdateStudy {
 				dbOTUSet.addStandardMatrix(
 						incomingMatrix.getPosition(),
 						dbMatrix);
+				dao.makePersistent(dbMatrix);
 			}
 			createOrUpdateStandardMatrix
 					.createOrUpdateMatrix(dbMatrix, incomingMatrix);
@@ -314,6 +311,7 @@ final class CreateOrUpdateStudy implements ICreateOrUpdateStudy {
 				dbTreeSet = treeSetProvider.get();
 				dbTreeSet.setLabel(incomingTreeSet.getLabel());
 				dbOTUSet.addTreeSet(incomingTreeSet.getPosition(), dbTreeSet);
+				dao.makePersistent(dbTreeSet);
 			}
 			mergeTreeSets.mergeTreeSets(dbTreeSet, incomingTreeSet);
 		}

@@ -23,6 +23,8 @@ import javax.annotation.CheckForNull;
 import javax.annotation.Nullable;
 import javax.persistence.Column;
 import javax.persistence.Entity;
+import javax.persistence.NamedQueries;
+import javax.persistence.NamedQuery;
 import javax.persistence.Table;
 import javax.xml.bind.annotation.XmlAttribute;
 
@@ -40,6 +42,8 @@ import javax.xml.bind.annotation.XmlAttribute;
  */
 @Entity
 @Table(name = VersionInfo.TABLE)
+@NamedQueries({ @NamedQuery(name = "VersionInfo-getMaxVersionInfo",
+		query = "select max(vi.version) from VersionInfo vi") })
 public class VersionInfo extends PersistentObject {
 
 	public final static String TABLE = "VERSION_INFO";
