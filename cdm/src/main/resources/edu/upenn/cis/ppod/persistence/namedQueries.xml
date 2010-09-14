@@ -3,39 +3,6 @@
 	xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
 	xsi:schemaLocation="http://java.sun.com/xml/ns/persistence/orm http://java.sun.com/xml/ns/persistence/orm_1_0.xsd"
 	version="1.0">
-
-	<named-query name="VersionInfo-getMaxVersionInfo">
-		<query>select max(vi.version) from VersionInfo vi
-		</query>
-		<hint name="org.hibernate.comment" value="Get the maxiumum VersionInfo.version." />
-	</named-query>
-
-	<named-query name="Study-getByPPodId">
-		<query>select s from Study s where s.pPodId=:pPodId</query>
-		<hint name="org.hibernate.comment" value="Get a Study given its pPOD ID." />
-	</named-query>
-
-	<named-query name="Study-getByPPodIdEager">
-		<query>select s from Study s left join fetch s.otuSets o left join fetch o.standardMatrices m left join fetch m.rows where s.pPodId=:pPodId</query>
-		<hint name="org.hibernate.comment" value="Get a Study given its pPOD ID." />
-	</named-query>
-
-	<named-query name="Study-getVersionByPPodId">
-		<query>select s.versionInfo.version from Study s where s.pPodId=:pPodId</query>
-	</named-query>
-
-	<named-query name="Study-getOTUSetInfosByStudyPPodIdAndMinVersion">
-		<query>select os.id, os.pPodId, os.versionInfo.version 
-		       from Study s join s.otuSets os
-		       where s.pPodId=:studyPPodId and os.versionInfo.version >= :minVersion</query>
-	</named-query>
-
-	<named-query name="Study-getPPodIdLabelPairs">
-		<query>select s.pPodId, s.label from Study s</query>
-		<hint name="org.hibernate.comment" value="Get pPodId/label pairs for all persisted studies" />
-	</named-query>
-
-
 	<named-query name="OTUSet-getByPPodId">
 		<query>select os from OTUSet os where os.pPodId=:pPodId</query>
 		<hint name="org.hibernate.comment" value="Get an otu set given its pPodId." />
