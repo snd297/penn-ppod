@@ -24,7 +24,7 @@ import edu.upenn.cis.ppod.imodel.IOTU;
  * @author Sam Donnelly
  */
 public class OTUDNARowPair extends
-		OTUSomethingPair<IDNARow> {
+		OTUKeyedPair<IDNARow> {
 
 	@XmlElement
 	@Override
@@ -36,9 +36,9 @@ public class OTUDNARowPair extends
 	 * This seemingly redundant setter method added for the sake of JAXB.
 	 */
 	@Override
-	public OTUDNARowPair setSecond(
+	public void setSecond(
 			final IDNARow row) {
-		return (OTUDNARowPair) super.setSecond(row);
+		super.setSecond(row);
 	}
 
 	public static OTUDNARowPair of(
@@ -49,5 +49,4 @@ public class OTUDNARowPair extends
 		otuRowPair.setSecond(second);
 		return otuRowPair;
 	}
-
 }

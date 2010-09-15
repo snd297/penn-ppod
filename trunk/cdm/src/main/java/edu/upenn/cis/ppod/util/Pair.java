@@ -64,9 +64,8 @@ public class Pair<T, U> implements IPair<T, U> {
 		return this;
 	}
 
-	public Pair<T, U> setSecond(final U second) {
+	public void setSecond(final U second) {
 		this.second = second;
-		return this;
 	}
 
 	/**

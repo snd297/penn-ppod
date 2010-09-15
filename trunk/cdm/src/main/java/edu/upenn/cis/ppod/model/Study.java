@@ -53,9 +53,6 @@ import edu.upenn.cis.ppod.util.PPodEntitiesUtil;
  * 
  * @author Sam Donnelly
  */
-@XmlRootElement
-@Entity
-@Table(name = Study.TABLE)
 @NamedQueries({
 		@NamedQuery(name = "Study-getByPPodId",
 				query = "select s from Study s where s.pPodId=:pPodId"),
@@ -72,6 +69,9 @@ import edu.upenn.cis.ppod.util.PPodEntitiesUtil;
 		@NamedQuery(
 				name = "Study-getPPodIdLabelPairs",
 				query = "select s.pPodId, s.label from Study s") })
+@XmlRootElement
+@Entity
+@Table(name = Study.TABLE)
 public class Study
 		extends UUPPodEntity
 		implements IStudy {
