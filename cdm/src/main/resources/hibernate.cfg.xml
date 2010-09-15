@@ -47,8 +47,5 @@
 		<mapping class="edu.upenn.cis.ppod.model.DNASequences" />
 		<mapping class="edu.upenn.cis.ppod.model.DNASequence" />
 
-		<!--  metadata -->
-		<mapping resource="edu/upenn/cis/ppod/persistence/namedQueries.xml" />
-
 	</session-factory>
 </hibernate-configuration>

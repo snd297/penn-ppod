@@ -26,8 +26,8 @@ import edu.upenn.cis.ppod.imodel.IStandardRow;
  * @author Sam Donnelly
  */
 @XmlAccessorType(XmlAccessType.NONE)
-public class OTUStandardRowPair extends
-		OTUSomethingPair<IStandardRow> {
+public class OTUStandardRowPair
+		extends OTUKeyedPair<IStandardRow> {
 	/**
 	 * For JAXB.
 	 */
@@ -43,9 +43,9 @@ public class OTUStandardRowPair extends
 	 * This seemingly redundant setter method added for the sake of JAXB.
 	 */
 	@Override
-	public OTUSomethingPair<IStandardRow> setSecond(
+	public void setSecond(
 			final IStandardRow row) {
-		return (OTUSomethingPair<IStandardRow>) super.setSecond(row);
+		super.setSecond(row);
 	}
 
 	public static OTUStandardRowPair of(

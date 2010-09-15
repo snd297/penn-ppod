@@ -25,6 +25,7 @@ import edu.upenn.cis.ppod.imodel.IDNASequence;
 import edu.upenn.cis.ppod.imodel.IDNASequenceSet;
 import edu.upenn.cis.ppod.imodel.IOTU;
 import edu.upenn.cis.ppod.imodel.IOTUSet;
+import edu.upenn.cis.ppod.imodel.IProteinRow;
 import edu.upenn.cis.ppod.imodel.IStandardCell;
 import edu.upenn.cis.ppod.imodel.IStandardCharacter;
 import edu.upenn.cis.ppod.imodel.IStandardMatrix;
@@ -111,6 +112,13 @@ public abstract class EmptyVisitor implements IVisitor {
 	 * @param otuSet ignored
 	 */
 	public void visitOTUSet(final IOTUSet otuSet) {}
+
+	/**
+	 * Does nothing.
+	 * 
+	 * @param proteinRow ignored
+	 */
+	public void visitProteinRow(final IProteinRow row) {}
 
 	/**
 	 * Does nothing.

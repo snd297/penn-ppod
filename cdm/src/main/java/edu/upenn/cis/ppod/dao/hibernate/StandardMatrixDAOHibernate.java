@@ -15,11 +15,7 @@
  */
 package edu.upenn.cis.ppod.dao.hibernate;
 
-import static com.google.common.collect.Sets.newHashSet;
-
-import java.util.Iterator;
 import java.util.List;
-import java.util.Set;
 
 import com.google.inject.Inject;
 
@@ -45,14 +41,6 @@ final class StandardMatrixDAOHibernate
 		this.pairFactory = orderedPairFactory;
 	}
 
-	public IStandardMatrix getByPPodId(final String pPodId) {
-		return (IStandardMatrix) getSession()
-				.getNamedQuery(
-						StandardMatrix.class.getSimpleName() + "-getByPPodId")
-				.setParameter("pPodId", pPodId)
-				.uniqueResult();
-	}
-
 	@SuppressWarnings("unchecked")
 	public List<Object[]> getCharacterInfosByMatrixIdAndMinPPodVersion(
 			final Long matrixId, final Long minPPodVersion) {
@@ -71,19 +59,6 @@ final class StandardMatrixDAOHibernate
 						+ "-getColumnPPodVersionsByMatrixId")
 				.setParameter("matrixId", matrixId)
 				.list();
-	}
-
-	public Set<IPair<String, String>> getPPodIdLabelPairs() {
-		final Set<IPair<String, String>> results = newHashSet();
-		for (final Iterator<?> itr = getSession().getNamedQuery(
-				StandardMatrix.class.getSimpleName()
-						+ "-getPPodIdLabelPairs").iterate(); itr.hasNext();) {
-			final Object[] result = (Object[]) itr.next();
-			results.add(
-					pairFactory.create((String) result[0],
-							(String) result[1]));
-		}
-		return results;
 	}
 
 	public Long getPPodVersionById(final Long id) {
