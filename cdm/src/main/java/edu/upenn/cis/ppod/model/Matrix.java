@@ -41,8 +41,6 @@ import javax.xml.bind.Unmarshaller;
 import javax.xml.bind.annotation.XmlAttribute;
 import javax.xml.bind.annotation.XmlElement;
 
-import org.hibernate.annotations.Target;
-
 import edu.umd.cs.findbugs.annotations.CheckForNull;
 import edu.umd.cs.findbugs.annotations.Nullable;
 import edu.upenn.cis.ppod.imodel.ICell;
@@ -98,15 +96,11 @@ public abstract class Matrix<R extends IRow<C, ?>, C extends ICell<?, ?>>
 	 * These are the <code>OTU</code>s whose data comprises this
 	 * {@code CharacterStateMatrix}.
 	 */
-	@ManyToOne(fetch = FetchType.LAZY, optional = false)
-	@JoinColumn(name = OTUSet.JOIN_COLUMN)
-	@Target(OTUSet.class)
-	@Nullable
+	@ManyToOne(fetch = FetchType.LAZY, optional = false,
+			targetEntity = OTUSet.class)
+	@JoinColumn(name = OTUSet.JOIN_COLUMN, insertable = false,
+				updatable = false)
 	private IOTUSet parent;
-
-	@Column(name = "POSITION", nullable = false)
-	@Nullable
-	private Integer position;
 
 	/** Default constructor. */
 	Matrix() {}
@@ -248,10 +242,6 @@ public abstract class Matrix<R extends IRow<C, ?>, C extends ICell<?, ?>>
 		return parent;
 	}
 
-	public Integer getPosition() {
-		return position;
-	}
-
 	/** {@inheritDoc} */
 	public Map<IOTU, R> getRows() {
 		return Collections
@@ -372,10 +362,6 @@ public abstract class Matrix<R extends IRow<C, ?>, C extends ICell<?, ?>>
 				"getOTUKeyedRows() returned null - has the conrete class been constructed correctly, w/ its OTU->X dependency?");
 		this.parent = otuSet;
 		updateOTUs();
-	}
-
-	public void setPosition(final Integer position) {
-		this.position = position;
 	}
 
 	/** {@inheritDoc} */

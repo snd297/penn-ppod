@@ -100,11 +100,11 @@ public class OTUSet
 	public static final String LABEL_COLUMN = "LABEL";
 
 	@OneToMany(
-			mappedBy = "parent",
 			cascade = CascadeType.ALL,
 			orphanRemoval = true,
 			targetEntity = StandardMatrix.class)
 	@OrderColumn(name = "POSITION")
+	@JoinColumn(name = JOIN_COLUMN, nullable = false)
 	private final List<IStandardMatrix> standardMatrices = newArrayList();
 
 	/** Nullable free-form description. */
@@ -113,19 +113,19 @@ public class OTUSet
 	private String description;
 
 	@OneToMany(
-			mappedBy = "parent",
 			cascade = CascadeType.ALL,
 			orphanRemoval = true,
 			targetEntity = DNAMatrix.class)
 	@OrderColumn(name = "POSITION")
+	@JoinColumn(name = JOIN_COLUMN, nullable = false)
 	private final List<IDNAMatrix> dnaMatrices = newArrayList();
 
 	@OneToMany(
-			mappedBy = "parent",
 			cascade = CascadeType.ALL,
 			orphanRemoval = true,
 			targetEntity = DNASequenceSet.class)
 	@OrderColumn(name = "POSITION")
+	@JoinColumn(name = JOIN_COLUMN, nullable = false)
 	private final List<IDNASequenceSet> dnaSequenceSets = newArrayList();
 
 	/**
@@ -146,26 +146,21 @@ public class OTUSet
 	@JoinColumn(name = JOIN_COLUMN, nullable = false)
 	private final List<IOTU> otus = newArrayList();
 
-	@ManyToOne(
-				fetch = FetchType.LAZY,
-				optional = false,
+	@ManyToOne(fetch = FetchType.LAZY, optional = false,
 			targetEntity = Study.class)
-	@JoinColumn(name = Study.JOIN_COLUMN)
-	@Nullable
+	@JoinColumn(name = Study.JOIN_COLUMN, insertable = false,
+				updatable = false)
+	@CheckForNull
 	private IStudy parent;
 
 	/** The tree sets that reference this OTU set. */
 	@OneToMany(
-			mappedBy = "parent",
 			cascade = CascadeType.ALL,
 			orphanRemoval = true,
 			targetEntity = TreeSet.class)
 	@OrderColumn(name = "POSITION")
+	@JoinColumn(name = JOIN_COLUMN, nullable = false)
 	private final List<ITreeSet> treeSets = newArrayList();
-
-	@Column(name = "POSITION")
-	@Nullable
-	private Integer position;
 
 	/**
 	 * Intentionally package-private, to block subclassing outside of this
@@ -191,7 +186,6 @@ public class OTUSet
 				"otu set contains the matrix ["
 						+ matrix.getLabel() + "]");
 		dnaMatrices.add(matrix);
-		matrix.setPosition(dnaMatrices.size() - 1);
 		matrix.setParent(this);
 		setInNeedOfNewVersion();
 	}
@@ -208,7 +202,6 @@ public class OTUSet
 						+ matrix.getLabel() + "]");
 		dnaMatrices.add(pos, matrix);
 		matrix.setParent(this);
-		ModelUtil.adjustPositions(dnaMatrices);
 		setInNeedOfNewVersion();
 	}
 
@@ -222,7 +215,6 @@ public class OTUSet
 						+ sequenceSet.getLabel() + "]");
 		dnaSequenceSets.add(sequenceSet);
 		sequenceSet.setParent(this);
-		sequenceSet.setPosition(dnaSequenceSets.size() - 1);
 		setInNeedOfNewVersion();
 	}
 
@@ -238,8 +230,6 @@ public class OTUSet
 						+ sequenceSet.getLabel() + "]");
 		dnaSequenceSets.add(sequenceSetPos, sequenceSet);
 		sequenceSet.setParent(this);
-		sequenceSet.setPosition(sequenceSetPos);
-		ModelUtil.adjustPositions(dnaSequenceSets);
 		setInNeedOfNewVersion();
 	}
 
@@ -285,7 +275,6 @@ public class OTUSet
 						+ matrix.getLabel() + "]");
 		standardMatrices.add(pos, matrix);
 		matrix.setParent(this);
-		ModelUtil.adjustPositions(standardMatrices);
 		setInNeedOfNewVersion();
 	}
 
@@ -299,7 +288,6 @@ public class OTUSet
 						+ matrix.getLabel() + "]");
 		standardMatrices.add(matrix);
 		matrix.setParent(this);
-		matrix.setPosition(standardMatrices.size() - 1);
 		setInNeedOfNewVersion();
 	}
 
@@ -315,8 +303,6 @@ public class OTUSet
 						+ treeSet.getLabel() + "]");
 		treeSets.add(treeSetPos, treeSet);
 		treeSet.setParent(this);
-		treeSet.setPosition(treeSetPos);
-		ModelUtil.adjustPositions(treeSets);
 		setInNeedOfNewVersion();
 	}
 
@@ -329,7 +315,6 @@ public class OTUSet
 						+ treeSet.getLabel() + "]");
 		getTreeSetsModifiable().add(treeSet);
 		treeSet.setParent(this);
-		treeSet.setPosition(position);
 		setInNeedOfNewVersion();
 	}
 
@@ -343,10 +328,6 @@ public class OTUSet
 			@Nullable final Unmarshaller u,
 			final Object parent) {
 		this.parent = (IStudy) parent;
-		ModelUtil.adjustPositions(getStandardMatrices());
-		ModelUtil.adjustPositions(getDNAMatrices());
-		ModelUtil.adjustPositions(getDNASequenceSets());
-		ModelUtil.adjustPositions(getTreeSets());
 	}
 
 	@VisibleForTesting
@@ -425,11 +406,6 @@ public class OTUSet
 	}
 
 	/** {@inheritDoc} */
-	public Integer getPosition() {
-		return position;
-	}
-
-	/** {@inheritDoc} */
 	public List<IStandardMatrix> getStandardMatrices() {
 		return Collections.unmodifiableList(standardMatrices);
 	}
@@ -457,8 +433,6 @@ public class OTUSet
 						+ "]");
 		getDNAMatricesModifiable().remove(matrix);
 		matrix.setParent(null);
-		matrix.setPosition(null);
-		ModelUtil.adjustPositions(dnaMatrices);
 		setInNeedOfNewVersion();
 	}
 
@@ -470,7 +444,6 @@ public class OTUSet
 						+ sequenceSet.getLabel() + "]");
 		getDNASequenceSetsModifiable().remove(sequenceSet);
 		sequenceSet.setParent(null);
-		ModelUtil.adjustPositions(getDNASequenceSetsModifiable());
 		setInNeedOfNewVersion();
 	}
 
@@ -482,8 +455,6 @@ public class OTUSet
 						+ "]");
 		getStandardMatricesModifiable().remove(matrix);
 		matrix.setParent(null);
-		matrix.setPosition(null);
-		ModelUtil.adjustPositions(standardMatrices);
 		setInNeedOfNewVersion();
 	}
 
@@ -495,8 +466,6 @@ public class OTUSet
 						+ treeSet.getLabel() + "]");
 		treeSets.remove(treeSet);
 		treeSet.setParent(null);
-		treeSet.setPosition(null);
-		ModelUtil.adjustPositions(treeSets);
 		setInNeedOfNewVersion();
 	}
 
@@ -582,12 +551,6 @@ public class OTUSet
 		for (final IChild<IOTUSet> treeSet : getTreeSets()) {
 			treeSet.setParent(this);
 		}
-	}
-
-	/** {@inheritDoc} */
-	public void setPosition(
-			@Nullable final Integer position) {
-		this.position = position;
 	}
 
 	/**

@@ -32,8 +32,6 @@ import javax.persistence.MappedSuperclass;
 import javax.xml.bind.Unmarshaller;
 import javax.xml.bind.annotation.XmlAttribute;
 
-import org.hibernate.annotations.Target;
-
 import edu.upenn.cis.ppod.imodel.IOTU;
 import edu.upenn.cis.ppod.imodel.IOTUKeyedMap;
 import edu.upenn.cis.ppod.imodel.IOTUSet;
@@ -58,19 +56,16 @@ abstract class SequenceSet<S extends ISequence<?>>
 		extends UUPPodEntityWithDocId
 		implements ISequenceSet<S> {
 
-	@CheckForNull
+	@Nullable
 	@Column(name = "LABEL", nullable = false)
 	private String label;
 
-	@CheckForNull
-	@ManyToOne(fetch = FetchType.LAZY, optional = false)
-	@JoinColumn(name = OTUSet.JOIN_COLUMN)
-	@Target(OTUSet.class)
+	@Nullable
+	@ManyToOne(fetch = FetchType.LAZY, optional = false,
+			targetEntity = OTUSet.class)
+	@JoinColumn(name = OTUSet.JOIN_COLUMN, insertable = false,
+				updatable = false)
 	private IOTUSet parent;
-
-	@Column(name = "POSITION", nullable = false)
-	@CheckForNull
-	private Integer position;
 
 	SequenceSet() {}
 
@@ -130,11 +125,6 @@ abstract class SequenceSet<S extends ISequence<?>>
 	@Nullable
 	public IOTUSet getParent() {
 		return parent;
-	}
-
-	/** {@inheritDoc} */
-	public Integer getPosition() {
-		return position;
 	}
 
 	/**
@@ -219,11 +209,6 @@ abstract class SequenceSet<S extends ISequence<?>>
 			@CheckForNull final IOTUSet parent) {
 		this.parent = parent;
 		updateOTUs();
-	}
-
-	/** {@inheritDoc} */
-	public void setPosition(final Integer position) {
-		this.position = position;
 	}
 
 	/** {@inheritDoc} */

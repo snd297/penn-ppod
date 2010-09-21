@@ -27,6 +27,7 @@ import java.util.Set;
 import javax.persistence.CascadeType;
 import javax.persistence.Column;
 import javax.persistence.Entity;
+import javax.persistence.JoinColumn;
 import javax.persistence.NamedQueries;
 import javax.persistence.NamedQuery;
 import javax.persistence.OneToMany;
@@ -88,12 +89,10 @@ public class Study
 	@Column(name = LABEL_COLUMN, nullable = false)
 	private String label;
 
-	@OneToMany(
-			mappedBy = "parent",
-			cascade = CascadeType.ALL,
-			orphanRemoval = true,
+	@OneToMany(cascade = CascadeType.ALL, orphanRemoval = true,
 			targetEntity = OTUSet.class)
 	@OrderColumn(name = "POSITION")
+	@JoinColumn(name = JOIN_COLUMN, nullable = false)
 	private final List<IOTUSet> otuSets = newArrayList();
 
 	@Transient
@@ -123,7 +122,6 @@ public class Study
 						+ "]");
 		otuSets.add(pos, otuSet);
 		otuSet.setParent(this);
-		ModelUtil.adjustPositions(otuSets);
 		setInNeedOfNewVersion();
 	}
 
@@ -135,7 +133,6 @@ public class Study
 						+ "]");
 		otuSets.add(otuSet);
 		otuSet.setParent(this);
-		otuSet.setPosition(otuSets.size() - 1);
 		setInNeedOfNewVersion();
 	}
 
@@ -148,7 +145,7 @@ public class Study
 	protected void afterUnmarshal(
 			@CheckForNull final Unmarshaller u,
 			@CheckForNull final Object parent) {
-		ModelUtil.adjustPositions(otuSets);
+
 	}
 
 	/**
@@ -209,8 +206,6 @@ public class Study
 						+ "]");
 		otuSets.remove(otuSet);
 		otuSet.setParent(null);
-		otuSet.setPosition(null);
-		ModelUtil.adjustPositions(otuSets);
 		setInNeedOfNewVersion();
 	}
 
