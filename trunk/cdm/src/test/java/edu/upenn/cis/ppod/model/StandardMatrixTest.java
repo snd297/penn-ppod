@@ -32,11 +32,13 @@ import org.testng.annotations.BeforeMethod;
 import org.testng.annotations.Test;
 
 import com.google.common.collect.ImmutableList;
+import com.google.common.collect.ImmutableSet;
 import com.google.inject.Inject;
 import com.google.inject.Provider;
 
 import edu.upenn.cis.ppod.TestGroupDefs;
 import edu.upenn.cis.ppod.imodel.IOTUSet;
+import edu.upenn.cis.ppod.imodel.IStandardMatrix;
 import edu.upenn.cis.ppod.imodel.IStandardRow;
 import edu.upenn.cis.ppod.imodel.IStandardState;
 
@@ -427,4 +429,143 @@ public class StandardMatrixTest {
 		assertNull(matrix.getDescription());
 		assertFalse(matrix.isInNeedOfNewVersion());
 	}
+
+	public void removeColumn() {
+
+	}
+
+	// void populateMatrix(final IStandardMatrix matrix) {
+	// final IOTUSet otuSet = otuSetProvider.get();
+	//
+	// otuSet.setLabel("otu-set");
+	// otuSet.setVersion(78732598732L);
+	// otuSet.setPPodId();
+	//
+	// final TestOTU otu0 = otuProvider.get();
+	// otuSet.addOTU(otu0);
+	// otu0.setLabel("otu-0");
+	// otu0.setVersion(343L);
+	// otu0.setPPodId();
+	//
+	// final TestOTU otu1 = otuProvider.get();
+	// otuSet.addOTU(otu1);
+	// otu1.setLabel("otu-1");
+	// otu1.setVersion(343L);
+	// otu1.setPPodId();
+	//
+	// final TestOTU otu2 = otuProvider.get();
+	// otuSet.addOTU(otu2);
+	// otu2.setLabel("otu-2");
+	// otu2.setVersion(343L);
+	// otu2.setPPodId();
+	//
+	// final TestStandardCharacter character0 = standardCharacterProvider
+	// .get();
+	// character0.setLabel("character-0");
+	// character0.setVersion(45245L);
+	// character0.setPPodId();
+	//
+	// final IStandardState state00 = standardStateFactory.create(0);
+	// character0.addState(state00);
+	// state00.setLabel("state-00");
+	// final IStandardState state01 = standardStateFactory.create(1);
+	// character0.addState(state01);
+	// state01.setLabel("state-01");
+	// final IStandardState state02 = standardStateFactory.create(2);
+	// character0.addState(state02);
+	// state02.setLabel("state-02");
+	//
+	// final TestStandardCharacter character1 = standardCharacterProvider
+	// .get();
+	// character1.setLabel("character-1");
+	// character1.setVersion(45245L);
+	// character1.setPPodId();
+	//
+	// final IStandardState state10 = standardStateFactory.create(0);
+	// character1.addState(state10);
+	// state10.setLabel("state-10");
+	// final IStandardState state11 = standardStateFactory.create(1);
+	// character1.addState(state11);
+	// state11.setLabel("state-11");
+	// final IStandardState state12 = standardStateFactory.create(2);
+	// character1.addState(state12);
+	// state12.setLabel("state-12");
+	//
+	// final TestStandardCharacter character2 = standardCharacterProvider
+	// .get();
+	// character2.setLabel("character-2");
+	// character2.setVersion(45245L);
+	// character2.setPPodId();
+	//
+	// final IStandardState state20 = standardStateFactory.create(0);
+	// character2.addState(state20);
+	// state20.setLabel("state-20");
+	// final IStandardState state21 = standardStateFactory.create(1);
+	// character2.addState(state21);
+	// state21.setLabel("state-21");
+	// final IStandardState state22 = standardStateFactory.create(2);
+	// character2.addState(state22);
+	// state22.setLabel("state-22");
+	//
+	// final TestStandardMatrix matrix = standardMatrixProvider.get();
+	// matrix.setLabel("matrix");
+	// otuSet.addStandardMatrix(matrix);
+	// matrix.setVersion(8735873L);
+	// matrix.setPPodId();
+	// matrix.setCharacters(ImmutableList.of(character0, character1,
+	// character2));
+	// matrix.setColumnVersions(ImmutableList.of(58L, 34783L, 325L));
+	//
+	// final TestStandardRow row0 = standardRowProvider.get();
+	// matrix.putRow(otu0, row0);
+	// row0.setVersion(4759879L);
+	//
+	// final TestStandardCell cell00 = standardCellProvider.get();
+	// cell00.setVersion(353L);
+	// final TestStandardCell cell01 = standardCellProvider.get();
+	// cell01.setVersion(353L);
+	// final TestStandardCell cell02 = standardCellProvider.get();
+	// cell02.setVersion(353L);
+	//
+	// row0.setCells(ImmutableList.of(cell00, cell01, cell02));
+	//
+	// cell00.setUnassigned();
+	// cell01.setSingleWithStateNo(0);
+	// cell02.setPolymorphicWithStateNos(ImmutableSet.of(0, 2));
+	//
+	// final TestStandardRow row1 = standardRowProvider.get();
+	// matrix.putRow(otu1, row1);
+	// row1.setVersion(4759879L);
+	//
+	// final TestStandardCell cell10 = standardCellProvider.get();
+	// cell10.setVersion(353L);
+	// final TestStandardCell cell11 = standardCellProvider.get();
+	// cell11.setVersion(353L);
+	// final TestStandardCell cell12 = standardCellProvider.get();
+	// cell12.setVersion(353L);
+	//
+	// row1.setCells(ImmutableList.of(cell10, cell11, cell12));
+	//
+	// cell10.setUncertainWithStateNos(ImmutableSet.of(1, 2));
+	// cell11.setInapplicable();
+	// cell12.setSingleWithStateNo(1);
+	//
+	// final TestStandardRow row2 = standardRowProvider.get();
+	// matrix.putRow(otu2, row2);
+	// row2.setVersion(4759879L);
+	//
+	// final TestStandardCell cell20 = standardCellProvider.get();
+	// cell20.setVersion(353L);
+	// final TestStandardCell cell21 = standardCellProvider.get();
+	// cell21.setVersion(353L);
+	// final TestStandardCell cell22 = standardCellProvider.get();
+	// cell22.setVersion(353L);
+	//
+	// row2.setCells(ImmutableList.of(cell20, cell21, cell22));
+	//
+	// cell20.setPolymorphicWithStateNos(ImmutableSet.of(0, 1));
+	// cell21.setInapplicable();
+	// cell22.setSingleWithStateNo(2);
+	//
+	// }
 }
