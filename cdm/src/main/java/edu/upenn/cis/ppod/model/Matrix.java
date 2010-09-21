@@ -119,7 +119,7 @@ public abstract class Matrix<R extends IRow<C, ?>, C extends ICell<?, ?>>
 	}
 
 	/** {@inheritDoc} */
-	public void addColumn(
+	protected void addColumn(
 			final int columnNo,
 			final List<? extends C> column) {
 		checkArgument(columnNo >= 0, "columnNo < 0");
@@ -270,7 +270,8 @@ public abstract class Matrix<R extends IRow<C, ?>, C extends ICell<?, ?>>
 	/**
 	 * Removes the cells in the column.
 	 * 
-	 * @param columnNo whic column to remove
+	 * @param columnNo which column to remove
+	 * 
 	 * @return the removed cells
 	 */
 	protected List<C> removeColumnHelper(final int columnNo) {
