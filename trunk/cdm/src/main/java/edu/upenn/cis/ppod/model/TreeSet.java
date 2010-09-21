@@ -40,8 +40,6 @@ import javax.xml.bind.annotation.XmlAttribute;
 import javax.xml.bind.annotation.XmlElement;
 import javax.xml.bind.annotation.adapters.XmlAdapter;
 
-import org.hibernate.annotations.Target;
-
 import com.google.common.collect.Iterators;
 
 import edu.upenn.cis.ppod.imodel.IOTUSet;
@@ -78,13 +76,15 @@ public class TreeSet
 
 	public static final String JOIN_COLUMN = TABLE + "_ID";
 
+	@Nullable
 	@Column(name = "LABEL", nullable = false)
 	private String label;
 
-	@CheckForNull
-	@ManyToOne(fetch = FetchType.LAZY, optional = false)
-	@JoinColumn(name = OTUSet.JOIN_COLUMN)
-	@Target(OTUSet.class)
+	@Nullable
+	@ManyToOne(fetch = FetchType.LAZY, optional = false,
+			targetEntity = OTUSet.class)
+	@JoinColumn(name = OTUSet.JOIN_COLUMN, insertable = false,
+				updatable = false)
 	private IOTUSet parent;
 
 	@OneToMany(cascade = CascadeType.ALL, orphanRemoval = true,
@@ -92,10 +92,6 @@ public class TreeSet
 	@OrderColumn(name = "POSITION")
 	@JoinColumn(name = JOIN_COLUMN, nullable = false)
 	private final List<ITree> trees = newArrayList();
-
-	@Column(name = "POSITION", nullable = false)
-	@Nullable
-	private Integer position;
 
 	TreeSet() {}
 
@@ -152,11 +148,6 @@ public class TreeSet
 	}
 
 	/** {@inheritDoc} */
-	public Integer getPosition() {
-		return position;
-	}
-
-	/** {@inheritDoc} */
 	public List<ITree> getTrees() {
 		return Collections.unmodifiableList(trees);
 	}
@@ -189,11 +180,6 @@ public class TreeSet
 	public void setParent(@CheckForNull final IOTUSet parent) {
 		this.parent = parent;
 		updateOTUs();
-	}
-
-	/** {@inheritDoc} */
-	public void setPosition(final Integer position) {
-		this.position = position;
 	}
 
 	/**

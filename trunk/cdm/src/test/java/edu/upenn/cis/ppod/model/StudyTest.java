@@ -17,12 +17,12 @@ package edu.upenn.cis.ppod.model;
 
 import static org.testng.Assert.assertEquals;
 import static org.testng.Assert.assertFalse;
-import static org.testng.Assert.assertNull;
 import static org.testng.Assert.assertSame;
 import static org.testng.Assert.assertTrue;
 
 import org.testng.annotations.Test;
 
+import com.google.common.collect.ImmutableList;
 import com.google.inject.Inject;
 import com.google.inject.Provider;
 
@@ -56,9 +56,9 @@ public class StudyTest {
 		study.removeOTUSet(otuSet1);
 		assertTrue(study.isInNeedOfNewVersion());
 		assertFalse(study.getOTUSets().contains(otuSet1));
-		assertNull(otuSet1.getPosition());
-		assertEquals(otuSet0.getPosition(), Integer.valueOf(0));
-		assertEquals(otuSet2.getPosition(), Integer.valueOf(1));
+
+		assertEquals(study.getOTUSets(),
+				ImmutableList.of(otuSet0, otuSet2));
 	}
 
 	@Test
@@ -98,7 +98,6 @@ public class StudyTest {
 		assertTrue(study.isInNeedOfNewVersion());
 		assertEquals(study.getOTUSets().size(), 1);
 		assertTrue(study.getOTUSets().contains(otuSet0));
-		assertEquals(otuSet0.getPosition(), Integer.valueOf(0));
 		assertSame(otuSet0.getParent(), study);
 	}
 
@@ -118,9 +117,8 @@ public class StudyTest {
 
 		study.addOTUSet(2, otuSet3);
 		assertTrue(study.isInNeedOfNewVersion());
-		assertEquals(study.getOTUSets().size(), 4);
-		assertTrue(study.getOTUSets().contains(otuSet3));
-		assertEquals(otuSet3.getPosition(), Integer.valueOf(2));
+		assertEquals(study.getOTUSets(),
+				ImmutableList.of(otuSet0, otuSet1, otuSet3, otuSet2));
 		assertSame(otuSet3.getParent(), study);
 	}
 }
