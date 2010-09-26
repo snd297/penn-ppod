@@ -134,6 +134,8 @@ public interface IMatrix<R extends IRow<C, ?>, C extends ICell<?, ?>>
 	@Beta
 	public List<C> removeColumn(int columnNo);
 
+	void setColumnsSize(int columnsSize);
+
 	/**
 	 * Set a particular column to a version.
 	 * 

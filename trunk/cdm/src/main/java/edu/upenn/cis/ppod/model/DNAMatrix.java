@@ -40,7 +40,7 @@ import edu.upenn.cis.ppod.util.IVisitor;
 @Entity
 @Table(name = DNAMatrix.TABLE)
 public class DNAMatrix
-		extends MolecularMatrix<IDNARow, IDNACell>
+		extends Matrix<IDNARow, IDNACell>
 		implements IDNAMatrix {
 
 	public static class Adapter extends XmlAdapter<DNAMatrix, IDNAMatrix> {

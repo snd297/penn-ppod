@@ -23,8 +23,6 @@ import com.google.inject.Inject;
 import com.google.inject.Provider;
 
 import edu.upenn.cis.ppod.TestGroupDefs;
-import edu.upenn.cis.ppod.imodel.IDNACell;
-import edu.upenn.cis.ppod.imodel.IDNARow;
 import edu.upenn.cis.ppod.imodel.IMatrix;
 
 /**
@@ -41,7 +39,7 @@ public class MatrixTest {
 
 	@Test
 	public void setColumnPPodVersionInfo() {
-		final MolecularMatrix<IDNARow, IDNACell> matrix = dnaMatrixProvider.get();
+		final Matrix<?, ?> matrix = dnaMatrixProvider.get();
 		final VersionInfo versionInfo = pPodVersionInfoProvider.get();
 		matrix.resizeColumnVersionInfos(1);
 		matrix.setColumnVersionInfos(versionInfo);

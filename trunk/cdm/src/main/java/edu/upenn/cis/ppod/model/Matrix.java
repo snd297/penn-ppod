@@ -368,4 +368,8 @@ public abstract class Matrix<R extends IRow<C, ?>, C extends ICell<?, ?>>
 	public void updateOTUs() {
 		getOTUKeyedRows().updateOTUs();
 	}
+
+	public void setColumnsSize(final int columnsSize) {
+		this.resizeColumnVersionInfos(columnsSize);
+	}
 }
