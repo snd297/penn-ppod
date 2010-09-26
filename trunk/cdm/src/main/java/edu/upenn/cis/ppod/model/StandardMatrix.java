@@ -34,7 +34,6 @@ import javax.persistence.JoinColumn;
 import javax.persistence.OneToMany;
 import javax.persistence.OrderColumn;
 import javax.persistence.Table;
-import javax.xml.bind.Unmarshaller;
 import javax.xml.bind.annotation.XmlElement;
 import javax.xml.bind.annotation.adapters.XmlAdapter;
 
@@ -128,19 +127,8 @@ public class StandardMatrix
 
 	@Override
 	public void afterUnmarshal() {
+		super.afterUnmarshal();
 		rows.afterUnmarshal();
-	}
-
-	/**
-	 * {@link Unmarshaller} callback.
-	 * 
-	 * @param u see {@code Unmarshaller}
-	 * @param parent see {@code Unmarshaller}
-	 */
-	@Override
-	public void afterUnmarshal(final Unmarshaller u, final Object parent) {
-		super.afterUnmarshal(u, parent);
-		resizeColumnVersionInfos(getCharacters().size());
 	}
 
 	private List<VersionInfo> determineNewColumnHeaderPPodVersionInfos(
