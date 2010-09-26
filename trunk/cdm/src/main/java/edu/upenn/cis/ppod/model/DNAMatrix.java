@@ -39,7 +39,9 @@ import edu.upenn.cis.ppod.util.IVisitor;
  */
 @Entity
 @Table(name = DNAMatrix.TABLE)
-public class DNAMatrix extends Matrix<IDNARow, IDNACell> implements IDNAMatrix {
+public class DNAMatrix
+		extends MolecularMatrix<IDNARow, IDNACell>
+		implements IDNAMatrix {
 
 	public static class Adapter extends XmlAdapter<DNAMatrix, IDNAMatrix> {
 
@@ -83,18 +85,18 @@ public class DNAMatrix extends Matrix<IDNARow, IDNACell> implements IDNAMatrix {
 		return rows;
 	}
 
+	/** {@inheritDoc} */
+	public List<IDNACell> removeColumn(final int columnNo) {
+		resizeColumnVersionInfos(getColumnsSize() - 1);
+		return super.removeColumnHelper(columnNo);
+	}
+
 	/**
 	 * Created for JAXB.
 	 */
 	protected IDNAMatrix setOTUKeyedRows(final DNARows rows) {
 		this.rows = rows;
 		return this;
-	}
-
-	/** {@inheritDoc} */
-	public List<IDNACell> removeColumn(final int columnNo) {
-		setColumnsSize(getColumnsSize() - 1);
-		return super.removeColumnHelper(columnNo);
 	}
 
 }

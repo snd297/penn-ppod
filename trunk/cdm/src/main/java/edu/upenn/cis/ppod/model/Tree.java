@@ -60,19 +60,19 @@ public class Tree extends UUPPodEntity implements ITree {
 	public static final String TABLE = "TREE";
 
 	@Column(name = "LABEL", nullable = false)
-	@CheckForNull
+	@Nullable
 	private String label;
 
 	@Lob
 	@Column(name = "NEWICK", nullable = false)
-	@CheckForNull
+	@Nullable
 	private String newick;
 
 	@ManyToOne(fetch = FetchType.LAZY, optional = false,
 			targetEntity = TreeSet.class)
 	@JoinColumn(name = TreeSet.JOIN_COLUMN, insertable = false,
 				updatable = false)
-	@CheckForNull
+	@Nullable
 	private ITreeSet parent;
 
 	Tree() {}

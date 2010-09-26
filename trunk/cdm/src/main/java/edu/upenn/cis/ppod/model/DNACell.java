@@ -34,7 +34,7 @@ import javax.xml.bind.annotation.XmlAttribute;
 import javax.xml.bind.annotation.XmlElement;
 import javax.xml.bind.annotation.adapters.XmlAdapter;
 
-import edu.umd.cs.findbugs.annotations.CheckForNull;
+import edu.umd.cs.findbugs.annotations.Nullable;
 import edu.upenn.cis.ppod.imodel.DNANucleotide;
 import edu.upenn.cis.ppod.imodel.IDNACell;
 import edu.upenn.cis.ppod.imodel.IDNARow;
@@ -80,7 +80,7 @@ public class DNACell
 			joinColumns = @JoinColumn(name = JOIN_COLUMN))
 	@Column(name = "ELEMENT")
 	@Enumerated(EnumType.ORDINAL)
-	@CheckForNull
+	@Nullable
 	private Set<DNANucleotide> elements;
 
 	/**
@@ -91,12 +91,13 @@ public class DNACell
 	 */
 	@Column(name = "ELEMENT", nullable = true)
 	@Enumerated(EnumType.ORDINAL)
-	@CheckForNull
+	@Nullable
 	private DNANucleotide element;
 
 	@ManyToOne(fetch = FetchType.LAZY, optional = false,
 			targetEntity = DNARow.class)
 	@JoinColumn(name = DNARow.JOIN_COLUMN)
+	@Nullable
 	private IDNARow parent;
 
 	DNACell() {}

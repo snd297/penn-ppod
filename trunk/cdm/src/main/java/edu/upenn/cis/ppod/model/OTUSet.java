@@ -150,7 +150,7 @@ public class OTUSet
 			targetEntity = Study.class)
 	@JoinColumn(name = Study.JOIN_COLUMN, insertable = false,
 				updatable = false)
-	@CheckForNull
+	@Nullable
 	private IStudy parent;
 
 	/** The tree sets that reference this OTU set. */

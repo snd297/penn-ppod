@@ -53,7 +53,8 @@ final class StudyDAOHibernate
 	public Set<IPair<String, String>> getPPodIdLabelPairs() {
 		final Set<IPair<String, String>> results = newHashSet();
 		for (final Iterator<?> itr = getSession().getNamedQuery(
-				"Study-getPPodIdLabelPairs").iterate(); itr.hasNext();) {
+				Study.class.getSimpleName()
+						+ "-getPPodIdLabelPairs").iterate(); itr.hasNext();) {
 			final Object[] result = (Object[]) itr.next();
 			results.add(pairFactory.create((String) result[0],
 					(String) result[1]));

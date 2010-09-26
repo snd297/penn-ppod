@@ -140,7 +140,7 @@ public class StandardMatrix
 	@Override
 	public void afterUnmarshal(final Unmarshaller u, final Object parent) {
 		super.afterUnmarshal(u, parent);
-		setColumnsSize(getCharacters().size());
+		resizeColumnVersionInfos(getCharacters().size());
 	}
 
 	private List<VersionInfo> determineNewColumnHeaderPPodVersionInfos(

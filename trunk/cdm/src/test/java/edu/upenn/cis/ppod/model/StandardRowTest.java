@@ -139,7 +139,7 @@ public class StandardRowTest {
 		@SuppressWarnings("unchecked")
 		final List<StandardCharacter> emptyList = (List<StandardCharacter>) Collections.EMPTY_LIST;
 
-		matrix.setColumnsSize(0);
+		matrix.resizeColumnVersionInfos(0);
 
 		matrix.setCharacters(emptyList);
 
