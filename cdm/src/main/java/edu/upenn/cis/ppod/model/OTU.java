@@ -78,7 +78,7 @@ public class OTU
 	/**
 	 * The {@code OTUSet} that this {@code OTU} belongs to.
 	 */
-	@CheckForNull
+	@Nullable
 	@ManyToOne(targetEntity = OTUSet.class)
 	@JoinColumn(name = OTUSet.JOIN_COLUMN, insertable = false,
 			updatable = false, nullable = false)

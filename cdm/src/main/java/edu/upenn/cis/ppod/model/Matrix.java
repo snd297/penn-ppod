@@ -100,6 +100,7 @@ public abstract class Matrix<R extends IRow<C, ?>, C extends ICell<?, ?>>
 			targetEntity = OTUSet.class)
 	@JoinColumn(name = OTUSet.JOIN_COLUMN, insertable = false,
 				updatable = false)
+	@Nullable
 	private IOTUSet parent;
 
 	/** Default constructor. */
@@ -132,7 +133,7 @@ public abstract class Matrix<R extends IRow<C, ?>, C extends ICell<?, ?>>
 
 	public void afterUnmarshal() {
 		getOTUKeyedRows().afterUnmarshal();
-		setColumnsSize(get(getRows()
+		resizeColumnVersionInfos(get(getRows()
 				.values(), 0)
 				.getCells()
 				.size());
@@ -282,8 +283,7 @@ public abstract class Matrix<R extends IRow<C, ?>, C extends ICell<?, ?>>
 		return removedColumn;
 	}
 
-	/** {@inheritDoc} */
-	public void setColumnsSize(final int columnsSize) {
+	void resizeColumnVersionInfos(final int columnsSize) {
 		checkArgument(columnsSize >= 0, "columnsSize < 0");
 
 		// Add in column versions as necessary
