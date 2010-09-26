@@ -47,6 +47,8 @@ public interface IStandardMatrix
 	 * <p>
 	 * It is legal for two characters to have the same label, but not to be
 	 * {@code .equals} to each other.
+	 * <p>
+	 * This method also takes care of calling {@link #setCol
 	 * 
 	 * @param characters the new characters
 	 * 

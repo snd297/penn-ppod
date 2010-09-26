@@ -133,7 +133,7 @@ public abstract class Matrix<R extends IRow<C, ?>, C extends ICell<?, ?>>
 
 	public void afterUnmarshal() {
 		getOTUKeyedRows().afterUnmarshal();
-		resizeColumnVersionInfos(get(getRows()
+		nullFill(getColumnVersionInfosModifiable(), get(getRows()
 				.values(), 0)
 				.getCells()
 				.size());
@@ -283,19 +283,6 @@ public abstract class Matrix<R extends IRow<C, ?>, C extends ICell<?, ?>>
 		return removedColumn;
 	}
 
-	void resizeColumnVersionInfos(final int columnsSize) {
-		checkArgument(columnsSize >= 0, "columnsSize < 0");
-
-		// Add in column versions as necessary
-		nullFill(getColumnVersionInfosModifiable(), columnsSize);
-
-		// Remove column versions as necessary
-		while (getColumnVersionInfos().size() > columnsSize) {
-			getColumnVersionInfosModifiable()
-					.remove(getColumnVersionInfos().size() - 1);
-		}
-	}
-
 	/** {@inheritDoc} */
 	public void setColumnVersionInfo(
 			final int pos,
@@ -367,9 +354,5 @@ public abstract class Matrix<R extends IRow<C, ?>, C extends ICell<?, ?>>
 	/** {@inheritDoc} */
 	public void updateOTUs() {
 		getOTUKeyedRows().updateOTUs();
-	}
-
-	public void setColumnsSize(final int columnsSize) {
-		this.resizeColumnVersionInfos(columnsSize);
 	}
 }

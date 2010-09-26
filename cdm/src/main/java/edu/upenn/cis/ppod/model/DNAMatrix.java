@@ -40,7 +40,7 @@ import edu.upenn.cis.ppod.util.IVisitor;
 @Entity
 @Table(name = DNAMatrix.TABLE)
 public class DNAMatrix
-		extends Matrix<IDNARow, IDNACell>
+		extends MolecularMatrix<IDNARow, IDNACell>
 		implements IDNAMatrix {
 
 	public static class Adapter extends XmlAdapter<DNAMatrix, IDNAMatrix> {
@@ -87,7 +87,7 @@ public class DNAMatrix
 
 	/** {@inheritDoc} */
 	public List<IDNACell> removeColumn(final int columnNo) {
-		resizeColumnVersionInfos(getColumnsSize() - 1);
+		setColumnsSize(getColumnsSize() - 1);
 		return super.removeColumnHelper(columnNo);
 	}
 

@@ -139,8 +139,6 @@ public class StandardRowTest {
 		@SuppressWarnings("unchecked")
 		final List<StandardCharacter> emptyList = (List<StandardCharacter>) Collections.EMPTY_LIST;
 
-		matrix.resizeColumnVersionInfos(0);
-
 		matrix.setCharacters(emptyList);
 
 		// Just call setUnassigned so that the cell is in a legal state - it
