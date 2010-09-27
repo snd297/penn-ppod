@@ -94,7 +94,7 @@ public class PPodRealm extends AuthorizingRealm {
 			final PrincipalCollection principals) {
 		final Long userId =
 				(Long) principals.fromRealm(getName()).iterator().next();
-		final User pPodUser = daoFactory.getPPodUserDAO().get(userId, false);
+		final User pPodUser = daoFactory.getPPodUserDAO().findById(userId, false);
 		if (pPodUser != null) {
 			final SimpleAuthorizationInfo info = new SimpleAuthorizationInfo();
 			for (final Permission permission : pPodUser.getPermissions()) {
