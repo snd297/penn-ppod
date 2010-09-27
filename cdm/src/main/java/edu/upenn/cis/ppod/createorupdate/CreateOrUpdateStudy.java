@@ -278,7 +278,7 @@ final class CreateOrUpdateStudy implements ICreateOrUpdateStudy {
 				dbMatrix = standardMatrixProvider.get();
 				dbMatrix.setLabel(incomingMatrix.getLabel());
 				dbOTUSet.addStandardMatrix(
-						incomingMatrixPos++,
+						incomingMatrixPos,
 						dbMatrix);
 				dao.makePersistent(dbMatrix);
 			}
@@ -319,7 +319,7 @@ final class CreateOrUpdateStudy implements ICreateOrUpdateStudy {
 									IWithPPodId.getPPodId)))) {
 				dbTreeSet = treeSetProvider.get();
 				dbTreeSet.setLabel(incomingTreeSet.getLabel());
-				dbOTUSet.addTreeSet(incomingTreeSetPos++, dbTreeSet);
+				dbOTUSet.addTreeSet(incomingTreeSetPos, dbTreeSet);
 				dao.makePersistent(dbTreeSet);
 			}
 			mergeTreeSets.mergeTreeSets(dbTreeSet, incomingTreeSet);
