@@ -52,7 +52,7 @@ public class TestAttachmentNamespaceDAO implements IAttachmentNamespaceDAO {
 		throw new UnsupportedOperationException();
 	}
 
-	public IAttachmentNamespace get(final Long id, final boolean lock) {
+	public IAttachmentNamespace findById(final Long id, final boolean lock) {
 		throw new UnsupportedOperationException();
 	}
 

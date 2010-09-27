@@ -41,7 +41,7 @@ public class TestDAO<T, ID extends Serializable> implements IDAO<T, ID> {
 
 	public void flush() {}
 
-	public T get(final ID id, final boolean lock) {
+	public T findById(final ID id, final boolean lock) {
 		return null;
 	}
 

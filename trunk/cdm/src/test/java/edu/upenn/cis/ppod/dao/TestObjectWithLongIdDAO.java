@@ -81,7 +81,7 @@ public class TestObjectWithLongIdDAO implements IObjectWithLongIdDAO {
 	 */
 	public void flush() {}
 
-	public Object get(final Long id, final boolean lock) {
+	public Object findById(final Long id, final boolean lock) {
 		// TODO Auto-generated method stub
 		throw new UnsupportedOperationException();
 	}

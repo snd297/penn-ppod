@@ -119,7 +119,7 @@ public abstract class GenericHibernateDAO<T, ID extends Serializable>
 		getSession().flush();
 	}
 
-	public T get(final ID id, final boolean lock) {
+	public T findById(final ID id, final boolean lock) {
 		if (id == null) {
 			return null;
 		}

@@ -45,7 +45,7 @@ public class TestAttachmentTypeDAO implements IAttachmentTypeDAO {
 		throw new UnsupportedOperationException();
 	}
 
-	public IAttachmentType get(final Long id, final boolean lock) {
+	public IAttachmentType findById(final Long id, final boolean lock) {
 		throw new UnsupportedOperationException();
 	}
 

@@ -47,7 +47,7 @@ public interface IDAO<T, ID extends Serializable> {
 	 * @return the retrieved object, or <code>null</code> if there is no such
 	 *         object or if <code>id</code> is <code>null</code>
 	 */
-	T get(ID id, boolean lock);
+	T findById(ID id, boolean lock);
 
 	/**
 	 * Return the identifier value of the given entity as associated with this

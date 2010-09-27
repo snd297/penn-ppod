@@ -50,14 +50,14 @@ import com.google.inject.Inject;
 import com.google.inject.Singleton;
 
 @Singleton
-public final class HibernateSessionPerRequestFilter implements Filter {
+public final class HibernateSessionRequestFilter implements Filter {
 	private static Logger logger = LoggerFactory
-			.getLogger(HibernateSessionPerRequestFilter.class);
+			.getLogger(HibernateSessionRequestFilter.class);
 
 	private SessionFactory sf;
 
 	@Inject
-	HibernateSessionPerRequestFilter(
+	HibernateSessionRequestFilter(
 			final SessionFactory sf) {
 		this.sf = sf;
 	}
