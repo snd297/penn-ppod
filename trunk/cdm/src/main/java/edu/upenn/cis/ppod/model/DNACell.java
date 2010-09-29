@@ -34,6 +34,8 @@ import javax.xml.bind.annotation.XmlAttribute;
 import javax.xml.bind.annotation.XmlElement;
 import javax.xml.bind.annotation.adapters.XmlAdapter;
 
+import org.hibernate.annotations.Immutable;
+
 import edu.umd.cs.findbugs.annotations.Nullable;
 import edu.upenn.cis.ppod.imodel.DNANucleotide;
 import edu.upenn.cis.ppod.imodel.IDNACell;
@@ -47,6 +49,7 @@ import edu.upenn.cis.ppod.util.IVisitor;
  */
 @Entity
 @Table(name = DNACell.TABLE)
+@Immutable
 public class DNACell
 		extends MolecularCell<DNANucleotide, IDNARow>
 		implements IDNACell {

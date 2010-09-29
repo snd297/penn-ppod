@@ -36,7 +36,8 @@ import javax.xml.bind.annotation.XmlAttribute;
  * because we don't want for these to be manipulated outside of this package due
  * to their trickiness.
  * <p>
- * We don't make the entity immutable since it's not a root object.
+ * We don't make the entity immutable since it's not a root entity (or is it? -
+ * not sure if PersistentObject counts since it is not an entity).
  * 
  * @author Sam Donnelly
  */
