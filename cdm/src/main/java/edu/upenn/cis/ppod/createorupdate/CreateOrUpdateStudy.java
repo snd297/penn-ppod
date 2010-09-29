@@ -103,6 +103,8 @@ final class CreateOrUpdateStudy implements ICreateOrUpdateStudy {
 			dbStudy = studyProvider.get();
 			makeStudyPersistent = true;
 		} 
+		
+		
 		dbStudy.setLabel(incomingStudy.getLabel());
 
 		if (makeStudyPersistent) {

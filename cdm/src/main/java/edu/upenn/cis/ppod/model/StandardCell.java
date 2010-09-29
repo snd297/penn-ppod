@@ -207,6 +207,12 @@ public class StandardCell
 		return elements;
 	}
 
+	/**
+	 * We needed to create this instead of serializing a Set<IStandardState}
+	 * because the interfaces didn't work with
+	 * 
+	 * @XmlIdREF
+	 */
 	@XmlElement(name = "stateDocId")
 	@XmlIDREF
 	protected Set<StandardState> getElementsXml() {
