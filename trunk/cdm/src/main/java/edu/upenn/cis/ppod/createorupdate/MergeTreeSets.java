@@ -18,8 +18,8 @@ package edu.upenn.cis.ppod.createorupdate;
 import static com.google.common.base.Preconditions.checkNotNull;
 import static com.google.common.base.Predicates.compose;
 import static com.google.common.base.Predicates.equalTo;
+import static com.google.common.collect.Iterables.find;
 import static com.google.common.collect.Lists.newArrayList;
-import static edu.upenn.cis.ppod.util.PPodIterables.findIf;
 
 import java.util.Iterator;
 import java.util.List;
@@ -63,9 +63,10 @@ final class MergeTreeSets implements IMergeTreeSets {
 		for (final ITree sourceTree : sourceTreeSet.getTrees()) {
 			ITree targetTree;
 			if (null == (targetTree =
-					findIf(targetTreeSet.getTrees(), compose(
-							equalTo(sourceTree.getPPodId()),
-							IWithPPodId.getPPodId)))) {
+							find(targetTreeSet.getTrees(), compose(
+									equalTo(sourceTree.getPPodId()),
+									IWithPPodId.getPPodId),
+									null))) {
 				targetTree = treeProvider.get();
 			}
 			newTargetTrees.add(targetTree);

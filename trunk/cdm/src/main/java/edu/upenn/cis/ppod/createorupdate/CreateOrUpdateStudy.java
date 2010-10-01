@@ -17,8 +17,8 @@ package edu.upenn.cis.ppod.createorupdate;
 
 import static com.google.common.base.Predicates.compose;
 import static com.google.common.base.Predicates.equalTo;
+import static com.google.common.collect.Iterables.find;
 import static com.google.common.collect.Sets.newHashSet;
-import static edu.upenn.cis.ppod.util.PPodIterables.findIf;
 
 import java.util.Set;
 
@@ -102,9 +102,8 @@ final class CreateOrUpdateStudy implements ICreateOrUpdateStudy {
 						incomingStudy.getPPodId()))) {
 			dbStudy = studyProvider.get();
 			makeStudyPersistent = true;
-		} 
-		
-		
+		}
+
 		dbStudy.setLabel(incomingStudy.getLabel());
 
 		if (makeStudyPersistent) {
@@ -115,12 +114,13 @@ final class CreateOrUpdateStudy implements ICreateOrUpdateStudy {
 		// study.
 		final Set<IOTUSet> toBeRemoveds = newHashSet();
 		for (final IOTUSet dbOTUSet : dbStudy.getOTUSets()) {
-			if (null == findIf(
+			if (null == find(
 					incomingStudy.getOTUSets(),
 					compose(
 							equalTo(
 									dbOTUSet.getPPodId()),
-							IWithPPodId.getPPodId))) {
+							IWithPPodId.getPPodId),
+							null)) {
 				toBeRemoveds.add(dbOTUSet);
 			}
 		}
@@ -134,11 +134,12 @@ final class CreateOrUpdateStudy implements ICreateOrUpdateStudy {
 			incomingOTUSetPos++;
 			IOTUSet dbOTUSet;
 			if (null == (dbOTUSet =
-					findIf(dbStudy.getOTUSets(),
+					find(dbStudy.getOTUSets(),
 							compose(
 									equalTo(
 											incomingOTUSet.getPPodId()),
-									IWithPPodId.getPPodId)))) {
+									IWithPPodId.getPPodId),
+									null))) {
 				dbOTUSet = otuSetProvider.get();
 				dbOTUSet.setLabel(incomingOTUSet.getLabel()); // non-null, do it
 																// now
@@ -163,12 +164,13 @@ final class CreateOrUpdateStudy implements ICreateOrUpdateStudy {
 		// Let's delete matrices missing from the incoming OTU set
 		final Set<IDNAMatrix> toBeRemoveds = newHashSet();
 		for (final IDNAMatrix dbMatrix : dbOTUSet.getDNAMatrices()) {
-			if (null == findIf(
+			if (null == find(
 							incomingOTUSet.getDNAMatrices(),
 							compose(
 									equalTo(
 										dbMatrix.getPPodId()),
-										IWithPPodId.getPPodId))) {
+										IWithPPodId.getPPodId),
+										null)) {
 				toBeRemoveds.add(dbMatrix);
 			}
 		}
@@ -181,13 +183,14 @@ final class CreateOrUpdateStudy implements ICreateOrUpdateStudy {
 			incomingMatrixPos++;
 			IDNAMatrix dbMatrix;
 			if (null == (dbMatrix =
-					findIf(
+					find(
 							dbOTUSet.getDNAMatrices(),
 							compose(
 									equalTo(
 											incomingMatrix.getPPodId()),
-									IWithPPodId.getPPodId
-									)))) {
+									IWithPPodId.getPPodId),
+									null
+									))) {
 				dbMatrix = dnaMatrixProvider.get();
 
 				// Do this here because it's non-nullable
@@ -209,12 +212,13 @@ final class CreateOrUpdateStudy implements ICreateOrUpdateStudy {
 		final Set<IDNASequenceSet> toBeRemoveds = newHashSet();
 		for (final IDNASequenceSet dbSequenceSet : dbOTUSet
 				.getDNASequenceSets()) {
-			if (null == findIf(
+			if (null == find(
 					incomingOTUSet.getDNASequenceSets(),
 					compose(
 							equalTo(
 								dbSequenceSet.getPPodId()),
-							IWithPPodId.getPPodId))) {
+							IWithPPodId.getPPodId),
+							null)) {
 				toBeRemoveds.add(dbSequenceSet);
 			}
 		}
@@ -228,11 +232,12 @@ final class CreateOrUpdateStudy implements ICreateOrUpdateStudy {
 			incomingSequenceSetPos++;
 			IDNASequenceSet dbDNASequenceSet;
 			if (null == (dbDNASequenceSet =
-					findIf(dbOTUSet.getDNASequenceSets(),
+					find(dbOTUSet.getDNASequenceSets(),
 							compose(
 									equalTo(incomingSequenceSet
 											.getPPodId()),
-									IWithPPodId.getPPodId)))) {
+									IWithPPodId.getPPodId),
+									null))) {
 				dbDNASequenceSet = dnaSequenceSetProvider.get();
 				dbDNASequenceSet.setLabel(incomingSequenceSet.getLabel());
 				dbOTUSet.addDNASequenceSet(
@@ -251,12 +256,13 @@ final class CreateOrUpdateStudy implements ICreateOrUpdateStudy {
 		// Let's delete matrices missing from the incoming OTU set
 		final Set<IStandardMatrix> toBeRemoveds = newHashSet();
 		for (final IStandardMatrix dbMatrix : dbOTUSet.getStandardMatrices()) {
-			if (null == findIf(
+			if (null == find(
 							incomingOTUSet.getStandardMatrices(),
 							compose(
 									equalTo(
 										dbMatrix.getPPodId()),
-										IWithPPodId.getPPodId))) {
+										IWithPPodId.getPPodId),
+										null)) {
 				toBeRemoveds.add(dbMatrix);
 			}
 		}
@@ -270,13 +276,13 @@ final class CreateOrUpdateStudy implements ICreateOrUpdateStudy {
 			incomingMatrixPos++;
 			IStandardMatrix dbMatrix;
 			if (null == (dbMatrix =
-					findIf(
+					find(
 							dbOTUSet.getStandardMatrices(),
 							compose(
 									equalTo(
 											incomingMatrix.getPPodId()),
-									IWithPPodId.getPPodId
-									)))) {
+									IWithPPodId.getPPodId),
+									null))) {
 				dbMatrix = standardMatrixProvider.get();
 				dbMatrix.setLabel(incomingMatrix.getLabel());
 				dbOTUSet.addStandardMatrix(
@@ -296,11 +302,12 @@ final class CreateOrUpdateStudy implements ICreateOrUpdateStudy {
 		// Let's delete tree sets missing from incoming OTU set
 		final Set<ITreeSet> toBeDeleteds = newHashSet();
 		for (final ITreeSet dbTreeSet : dbOTUSet.getTreeSets()) {
-			if (null == findIf(incomingOTUSet.getTreeSets(),
+			if (null == find(incomingOTUSet.getTreeSets(),
 						compose(
 								equalTo(
 										dbTreeSet.getPPodId()),
-										IWithPPodId.getPPodId))) {
+										IWithPPodId.getPPodId),
+										null)) {
 				toBeDeleteds.add(dbTreeSet);
 			}
 		}
@@ -316,9 +323,10 @@ final class CreateOrUpdateStudy implements ICreateOrUpdateStudy {
 			incomingTreeSetPos++;
 			ITreeSet dbTreeSet;
 			if (null == (dbTreeSet =
-					findIf(dbOTUSet.getTreeSets(),
+					find(dbOTUSet.getTreeSets(),
 							compose(equalTo(incomingTreeSet.getPPodId()),
-									IWithPPodId.getPPodId)))) {
+									IWithPPodId.getPPodId),
+									null))) {
 				dbTreeSet = treeSetProvider.get();
 				dbTreeSet.setLabel(incomingTreeSet.getLabel());
 				dbOTUSet.addTreeSet(incomingTreeSetPos, dbTreeSet);

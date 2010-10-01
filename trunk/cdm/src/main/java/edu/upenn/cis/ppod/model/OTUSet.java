@@ -20,9 +20,9 @@ import static com.google.common.base.Preconditions.checkArgument;
 import static com.google.common.base.Preconditions.checkNotNull;
 import static com.google.common.base.Predicates.compose;
 import static com.google.common.base.Predicates.equalTo;
+import static com.google.common.collect.Iterables.find;
 import static com.google.common.collect.Lists.newArrayList;
 import static com.google.common.collect.Sets.newHashSet;
-import static edu.upenn.cis.ppod.util.PPodIterables.findIf;
 
 import java.util.Collections;
 import java.util.List;
@@ -244,11 +244,13 @@ public class OTUSet
 
 	private IOTU addOTUWithoutSetOTUsOnChildren(final IOTU otu) {
 		checkNotNull(otu);
-		final IOTU dupNameOTU = findIf(getOTUs(),
-				compose(
-						equalTo(
+		final IOTU dupNameOTU =
+				find(getOTUs(),
+						compose(
+								equalTo(
 								otu.getLabel()),
-								ILabeled.getLabel));
+								ILabeled.getLabel),
+								null);
 		if (dupNameOTU == null || otu.equals(dupNameOTU)) {
 
 		} else {

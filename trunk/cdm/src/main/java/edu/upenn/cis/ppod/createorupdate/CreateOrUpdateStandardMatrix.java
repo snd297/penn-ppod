@@ -19,11 +19,11 @@ import static com.google.common.base.Preconditions.checkArgument;
 import static com.google.common.base.Preconditions.checkNotNull;
 import static com.google.common.base.Predicates.compose;
 import static com.google.common.base.Predicates.equalTo;
+import static com.google.common.collect.Iterables.find;
 import static com.google.common.collect.Iterables.getOnlyElement;
 import static com.google.common.collect.Iterables.transform;
 import static com.google.common.collect.Lists.newArrayList;
 import static com.google.common.collect.Sets.newHashSet;
-import static edu.upenn.cis.ppod.util.PPodIterables.findIf;
 
 import java.util.List;
 import java.util.Set;
@@ -97,12 +97,13 @@ final class CreateOrUpdateStandardMatrix
 			IStandardCharacter newDbCharacter;
 
 			if (null == (newDbCharacter =
-					findIf(dbMatrix
-							.getCharacters(),
-							compose(
-									equalTo(
-											sourceCharacter.getPPodId()),
-											IWithPPodId.getPPodId)))) {
+									find(dbMatrix
+											.getCharacters(),
+											compose(
+													equalTo(
+													sourceCharacter.getPPodId()),
+													IWithPPodId.getPPodId),
+													null))) {
 				newDbCharacter = standardCharacterProvider.get();
 				sourceToDbCharPositions[sourceCharacterPosition] = -1;
 			}

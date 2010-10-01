@@ -18,9 +18,9 @@ package edu.upenn.cis.ppod.model;
 import static com.google.common.base.Predicates.compose;
 import static com.google.common.base.Predicates.equalTo;
 import static com.google.common.collect.Iterables.filter;
+import static com.google.common.collect.Iterables.find;
 import static com.google.common.collect.Iterables.getOnlyElement;
 import static com.google.common.collect.Sets.newHashSet;
-import static edu.upenn.cis.ppod.util.PPodIterables.findIf;
 import static org.testng.Assert.assertEquals;
 import static org.testng.Assert.assertNotNull;
 import static org.testng.Assert.assertSame;
@@ -99,12 +99,13 @@ public class ModelAssert {
 				.getOTUs().size());
 		for (final IOTU expectedOTU : expectedOTUSet.getOTUs()) {
 			final IOTU foundOTU =
-					findIf(
+					find(
 							actualOTUSet.getOTUs(),
 							compose(
 									equalTo(
 									expectedOTU.getLabel()),
-									ILabeled.getLabel));
+									ILabeled.getLabel),
+									null);
 
 			assertNotNull(foundOTU, "couldn't find an expected OTU ["
 								+ expectedOTU.getLabel()
@@ -138,11 +139,12 @@ public class ModelAssert {
 				.getStates()) {
 
 			final IStandardState expectedState =
-					findIf(
+					find(
 							expectedCharacter.getStates(),
 							compose(
 									equalTo(actualState.getStateNumber()),
-									IStandardState.getStateNumber));
+									IStandardState.getStateNumber),
+									null);
 
 			assertNotNull(expectedState);
 			assertTrue(expectedState.getParent() == expectedCharacter);
@@ -161,12 +163,12 @@ public class ModelAssert {
 				.getElements().size());
 		for (final IStandardState actualState : actualCell.getElements()) {
 			final IStandardState expectedState =
-					findIf(
-							expectedCell.getElements(),
+					find(expectedCell.getElements(),
 							compose(
 									equalTo(
 										actualState.getStateNumber()),
-									IStandardState.getStateNumber));
+									IStandardState.getStateNumber),
+									null);
 			assertEqualsStandardStates(
 					actualState,
 					expectedState);
