@@ -18,8 +18,8 @@ package edu.upenn.cis.ppod.createorupdate;
 import static com.google.common.base.Preconditions.checkNotNull;
 import static com.google.common.base.Predicates.compose;
 import static com.google.common.base.Predicates.equalTo;
+import static com.google.common.collect.Iterables.find;
 import static com.google.common.collect.Lists.newArrayListWithCapacity;
-import static edu.upenn.cis.ppod.util.PPodIterables.findIf;
 
 import java.util.List;
 
@@ -62,10 +62,12 @@ final class MergeOTUSets implements IMergeOTUSets {
 		for (final IOTU sourceOTU : sourceOTUSet.getOTUs()) {
 			IOTU targetOTU;
 			if (null == (targetOTU =
-					findIf(targetOTUSet.getOTUs(),
+					find(targetOTUSet.getOTUs(),
 							compose(
-									equalTo(sourceOTU.getPPodId()),
-									IWithPPodId.getPPodId)))) {
+									equalTo(sourceOTU
+											.getPPodId()),
+											IWithPPodId.getPPodId),
+											null))) {
 				targetOTU = otuProvider.get();
 			}
 			newTargetOTUs.add(targetOTU);

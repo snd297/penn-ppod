@@ -19,7 +19,6 @@ import static com.google.common.base.Preconditions.checkNotNull;
 
 import java.util.Date;
 
-import javax.annotation.CheckForNull;
 import javax.annotation.Nullable;
 import javax.persistence.Column;
 import javax.persistence.Entity;
@@ -58,7 +57,7 @@ public class VersionInfo extends PersistentObject {
 
 	/** Record the creation time of this record. Immutable */
 	@Column(name = "CREATED", nullable = false, updatable = false)
-	@CheckForNull
+	@Nullable
 	private Date created;
 
 	/**
