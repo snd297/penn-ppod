@@ -65,6 +65,5 @@ public class PPodGuiceResteasyBootstrapServletContextListener extends
 						}
 						);
 		processor.processInjector(injector);
-
 	}
 }

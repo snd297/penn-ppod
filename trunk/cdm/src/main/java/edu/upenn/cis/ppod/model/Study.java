@@ -100,6 +100,8 @@ public class Study
 
 	@Transient
 	private final Set<IAttachmentType> attachmentTypes = newHashSet();
+	
+	//
 
 	Study() {}
 
