@@ -84,7 +84,7 @@ public class StandardCell
 	/**
 	 * To handle the most-common case of a single state.
 	 * <p>
-	 * Will be {@code null} if type is not {@link Type.SINGLE}.
+	 * Will be {@code null} if type is not {@link Type#SINGLE}.
 	 */
 	@ManyToOne(fetch = FetchType.LAZY, targetEntity = StandardState.class)
 	@JoinColumn(name = StandardState.JOIN_COLUMN)
@@ -94,7 +94,8 @@ public class StandardCell
 	/**
 	 * The heart of the cell: the states.
 	 * <p>
-	 * Will be {@code null} when first created, but is generally not-null.
+	 * Will be {@code null} if type is not {@link Type#POLYMORPHIC} or
+	 * {@link Type#UNCERTAIN}.
 	 */
 	@ManyToMany(targetEntity = StandardState.class)
 	@JoinTable(inverseJoinColumns = @JoinColumn(
@@ -112,6 +113,7 @@ public class StandardCell
 	@CheckForNull
 	private IStandardRow parent;
 
+	@Nullable
 	@Transient
 	private Set<StandardState> elementsXml;
 

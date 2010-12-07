@@ -17,9 +17,9 @@
 /**
  * The CDM interfaces.
  */
-@DefaultAnnotationForParameters(NonNull.class)
+@DefaultAnnotation(NonNull.class)
 package edu.upenn.cis.ppod.imodel;
 
-import edu.umd.cs.findbugs.annotations.DefaultAnnotationForParameters;
+import edu.umd.cs.findbugs.annotations.DefaultAnnotation;
 import edu.umd.cs.findbugs.annotations.NonNull;
 
