@@ -25,8 +25,6 @@ import java.util.Set;
 import org.testng.annotations.Test;
 
 import com.google.common.collect.ImmutableSet;
-import com.google.inject.Inject;
-import com.google.inject.Provider;
 
 import edu.upenn.cis.ppod.TestGroupDefs;
 import edu.upenn.cis.ppod.imodel.DNANucleotide;
@@ -38,11 +36,8 @@ import edu.upenn.cis.ppod.imodel.ICell.Type;
  * 
  * @author Sam Donnelly
  */
-@Test(groups = { TestGroupDefs.FAST }, dependsOnGroups = TestGroupDefs.INIT)
+@Test(groups = { TestGroupDefs.FAST })
 public class DNACellTest {
-
-	@Inject
-	private Provider<DNACell> dnaCellProvider;
 
 	@Test(expectedExceptions = IllegalArgumentException.class)
 	public void setPolymorphicElementsTooFewStates() {
@@ -54,7 +49,7 @@ public class DNACellTest {
 
 	@Test
 	public void setTypeAndStatesInapplicable() {
-		final DNACell dnaCell = dnaCellProvider.get();
+		final DNACell dnaCell = new DNACell();
 		dnaCell.unsetInNeedOfNewVersion();
 
 		dnaCell.setInapplicable();
@@ -65,7 +60,7 @@ public class DNACellTest {
 
 	@Test
 	public void setTypeAndStatesSingle() {
-		final DNACell dnaCell = dnaCellProvider.get();
+		final DNACell dnaCell = new DNACell();
 		dnaCell.unsetInNeedOfNewVersion();
 		dnaCell.setSingleElement(DNANucleotide.A, false);
 		assertEquals(dnaCell.getType(), Type.SINGLE);
@@ -76,7 +71,7 @@ public class DNACellTest {
 
 	@Test
 	public void setSingleElementWithValueItAlreadyHad() {
-		final DNACell dnaCell = dnaCellProvider.get();
+		final DNACell dnaCell = new DNACell();
 
 		dnaCell.unsetInNeedOfNewVersion();
 		dnaCell.setSingleElement(DNANucleotide.A, false);
@@ -93,7 +88,7 @@ public class DNACellTest {
 	}
 
 	public void setPolymorphicOrUncertain() {
-		final DNACell cell = dnaCellProvider.get();
+		final DNACell cell = new DNACell();
 		final Set<DNANucleotide> nucleotides =
 				ImmutableSet.of(DNANucleotide.A, DNANucleotide.T);
 		cell.unsetInNeedOfNewVersion();

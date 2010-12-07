@@ -23,9 +23,6 @@ import static org.testng.Assert.assertTrue;
 
 import org.testng.annotations.Test;
 
-import com.google.inject.Inject;
-import com.google.inject.Provider;
-
 import edu.upenn.cis.ppod.TestGroupDefs;
 import edu.upenn.cis.ppod.imodel.IDNASequence;
 
@@ -34,15 +31,8 @@ import edu.upenn.cis.ppod.imodel.IDNASequence;
  * 
  * @author Sam Donnelly
  */
-@Test(groups = { TestGroupDefs.FAST },
-		dependsOnGroups = TestGroupDefs.INIT)
+@Test(groups = { TestGroupDefs.FAST })
 public class ChromatogramTest {
-
-	@Inject
-	private Provider<Chromatogram> chromatogramProvider;
-
-	@Inject
-	private Provider<DNASequence> dnaSequenceProvider;
 
 	/**
 	 * Run {@link Chromatogram#setChromatogram(byte[])} and
@@ -59,7 +49,7 @@ public class ChromatogramTest {
 	@Test
 	public void setBytesValue() {
 
-		final Chromatogram chromatogram = chromatogramProvider.get();
+		final Chromatogram chromatogram = new Chromatogram();
 
 		assertNull(chromatogram.getChromatogram());
 
@@ -91,8 +81,8 @@ public class ChromatogramTest {
 
 	@Test
 	public void setSequence() {
-		final Chromatogram chromatogram = chromatogramProvider.get();
-		final IDNASequence sequence = dnaSequenceProvider.get();
+		final Chromatogram chromatogram = new Chromatogram();
+		final IDNASequence sequence = new DNASequence();
 
 		final Chromatogram returnedChromatogram =
 				chromatogram.setSequence(sequence);

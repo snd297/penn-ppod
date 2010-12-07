@@ -22,9 +22,6 @@ import static org.testng.Assert.assertTrue;
 
 import org.testng.annotations.Test;
 
-import com.google.inject.Inject;
-import com.google.inject.Provider;
-
 import edu.upenn.cis.ppod.TestGroupDefs;
 import edu.upenn.cis.ppod.imodel.IDNASequence;
 import edu.upenn.cis.ppod.imodel.IOTU;
@@ -37,20 +34,8 @@ import edu.upenn.cis.ppod.imodel.ISequenceSet;
  * 
  * @author Sam Donnelly
  */
-@Test(groups = TestGroupDefs.FAST, dependsOnGroups = TestGroupDefs.INIT)
+@Test(groups = TestGroupDefs.FAST)
 public class MolecularSequenceTest {
-
-	@Inject
-	private Provider<DNASequence> dnaSequenceProvider;
-
-	@Inject
-	private Provider<DNASequenceSet> dnaSequenceSetProvider;
-
-	@Inject
-	private Provider<OTUSet> otuSetProvider;
-
-	@Inject
-	private Provider<OTU> otuProvider;
 
 	/**
 	 * Tests the following:
@@ -62,8 +47,7 @@ public class MolecularSequenceTest {
 	 */
 	@Test
 	public void setSequence() {
-		final Sequence<?> sequence = dnaSequenceProvider
-				.get();
+		final Sequence<?> sequence = new DNASequence();
 		final String sequenceString = "ACGMTARC-T-A";
 		sequence.setSequence(sequenceString);
 		assertEquals(sequence.getSequence(), sequenceString);
@@ -87,8 +71,7 @@ public class MolecularSequenceTest {
 	 */
 	@Test(expectedExceptions = IllegalArgumentException.class)
 	public void setSequenceWithAnIllegalCharacter() {
-		final ISequence<?> sequence = dnaSequenceProvider
-				.get();
+		final ISequence<?> sequence = new DNASequence();
 		final String sequenceString = "ACGTlC-T-A";
 		sequence.setSequence(sequenceString);
 	}
@@ -101,14 +84,13 @@ public class MolecularSequenceTest {
 	 */
 	@Test
 	public void setInNeedOfNewPPodVersion() {
-		final DNASequence sequence = dnaSequenceProvider
-				.get();
-		final IOTUSet otuSet = otuSetProvider.get();
-		final IOTU otu0 = otuProvider.get();
+		final DNASequence sequence = new DNASequence();
+		final IOTUSet otuSet = new OTUSet();
+		final IOTU otu0 = new OTU();
 		otuSet.addOTU(otu0);
 
-		final ISequenceSet<IDNASequence> sequenceSet =
-				dnaSequenceSetProvider.get();
+		final ISequenceSet<IDNASequence> sequenceSet = new DNASequenceSet(
+				new DNASequences());
 
 		sequenceSet.setParent(otuSet);
 
@@ -146,7 +128,7 @@ public class MolecularSequenceTest {
 	 */
 	@Test
 	public void setName() {
-		final Sequence<?> sequence = dnaSequenceProvider.get();
+		final Sequence<?> sequence = new DNASequence();
 
 		assertNull(sequence.getName());
 
@@ -182,7 +164,7 @@ public class MolecularSequenceTest {
 	 */
 	@Test
 	public void setAccession() {
-		final Sequence<?> sequence = dnaSequenceProvider.get();
+		final Sequence<?> sequence = new DNASequence();
 
 		assertNull(sequence.getAccession());
 
@@ -218,7 +200,7 @@ public class MolecularSequenceTest {
 	 */
 	@Test
 	public void setDescription() {
-		final Sequence<?> sequence = dnaSequenceProvider.get();
+		final Sequence<?> sequence = new DNASequence();
 
 		assertNull(sequence.getDescription());
 
