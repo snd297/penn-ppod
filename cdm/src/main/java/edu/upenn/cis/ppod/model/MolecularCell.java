@@ -53,7 +53,7 @@ public abstract class MolecularCell<E extends Enum<?>, R extends IRow<?, ?>>
 	}
 
 	/**
-	 * Protected for JAXB.
+	 * Protected JAXB.
 	 */
 	protected void setLowerCase(
 			@CheckForNull final Boolean upperCase) {

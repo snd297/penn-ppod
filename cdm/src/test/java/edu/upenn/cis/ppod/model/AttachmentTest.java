@@ -22,9 +22,6 @@ import static org.testng.Assert.assertTrue;
 
 import org.testng.annotations.Test;
 
-import com.google.inject.Inject;
-import com.google.inject.Provider;
-
 import edu.upenn.cis.ppod.TestGroupDefs;
 import edu.upenn.cis.ppod.imodel.IAttachment;
 import edu.upenn.cis.ppod.imodel.IStandardCharacter;
@@ -34,14 +31,8 @@ import edu.upenn.cis.ppod.imodel.IStandardCharacter;
  * 
  * @author Sam Donnelly
  */
-@Test(groups = TestGroupDefs.FAST, dependsOnGroups = TestGroupDefs.INIT)
+@Test(groups = TestGroupDefs.FAST)
 public class AttachmentTest {
-
-	@Inject
-	private Provider<StandardCharacter> standardCharacterProvider;
-
-	@Inject
-	private Provider<Attachment> attachmentProvider;
 
 	/**
 	 * Run {@link Attachment#setBytesValue(byte[])} through its paces:
@@ -58,7 +49,7 @@ public class AttachmentTest {
 	@Test
 	public void setBytesValue() {
 
-		final IAttachment attachment = attachmentProvider.get();
+		final IAttachment attachment = new Attachment();
 
 		assertNull(attachment.getBytesValue());
 
@@ -94,7 +85,7 @@ public class AttachmentTest {
 
 	@Test
 	public void setLabel() {
-		final IAttachment attachment = attachmentProvider.get();
+		final IAttachment attachment = new Attachment();
 		assertNull(attachment.getLabel());
 
 		final String label = "LABEL";
@@ -135,7 +126,7 @@ public class AttachmentTest {
 
 	@Test
 	public void setStringValue() {
-		final IAttachment attachment = attachmentProvider.get();
+		final IAttachment attachment = new Attachment();
 		assertNull(attachment.getStringValue());
 
 		final String stringVal = "STRING-VALUE";
@@ -181,8 +172,8 @@ public class AttachmentTest {
 	 */
 	@Test
 	public void setInNeedOfNewVersion() {
-		final Attachment attachment = attachmentProvider.get();
-		final IStandardCharacter character = standardCharacterProvider.get();
+		final Attachment attachment = new Attachment();
+		final IStandardCharacter character = new StandardCharacter();
 		character.addAttachment(attachment);
 		attachment.unsetInNeedOfNewVersion();
 		character.unsetInNeedOfNewVersion();

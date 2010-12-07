@@ -19,9 +19,6 @@ import static org.testng.Assert.assertSame;
 
 import org.testng.annotations.Test;
 
-import com.google.inject.Inject;
-import com.google.inject.Provider;
-
 import edu.upenn.cis.ppod.TestGroupDefs;
 import edu.upenn.cis.ppod.imodel.IDNACell;
 import edu.upenn.cis.ppod.imodel.IDNARow;
@@ -30,20 +27,13 @@ import edu.upenn.cis.ppod.imodel.IMatrix;
 /**
  * @author Sam Donnelly
  */
-@Test(groups = TestGroupDefs.FAST, dependsOnGroups = TestGroupDefs.INIT)
+@Test(groups = TestGroupDefs.FAST)
 public class MatrixTest {
-
-	@Inject
-	private Provider<DNAMatrix> dnaMatrixProvider;
-
-	@Inject
-	private Provider<VersionInfo> pPodVersionInfoProvider;
 
 	@Test
 	public void setColumnPPodVersionInfo() {
-		final MolecularMatrix<IDNARow, IDNACell> matrix = dnaMatrixProvider
-				.get();
-		final VersionInfo versionInfo = pPodVersionInfoProvider.get();
+		final MolecularMatrix<IDNARow, IDNACell> matrix = new DNAMatrix();
+		final VersionInfo versionInfo = new VersionInfo();
 		matrix.setColumnsSize(1);
 		matrix.setColumnVersionInfos(versionInfo);
 		matrix.setColumnVersionInfo(0, versionInfo);
@@ -52,8 +42,8 @@ public class MatrixTest {
 
 	@Test(expectedExceptions = IllegalArgumentException.class)
 	public void setColumnPPodVersionInfosWTooSmallPos() {
-		final IMatrix<?, ?> matrix = dnaMatrixProvider.get();
-		final VersionInfo versionInfo = pPodVersionInfoProvider.get();
+		final IMatrix<?, ?> matrix = new DNAMatrix();
+		final VersionInfo versionInfo = new VersionInfo();
 		matrix.setColumnVersionInfo(0, versionInfo);
 	}
 }

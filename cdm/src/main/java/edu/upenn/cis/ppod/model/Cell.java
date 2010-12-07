@@ -267,8 +267,6 @@ public abstract class Cell<E, R extends IRow<?, ?>>
 	 * Assumes that none of {@code elements} is in a detached state.
 	 * <p>
 	 * This object makes its own copy of {@code states}.
-	 * <p>
-	 * This implementation calls {@link #initElements()}.
 	 * 
 	 * @param states to be added
 	 * 

@@ -49,7 +49,7 @@ public class TestVisitor extends EmptyVisitor {
 
 	final List<Object> visited = newArrayList();
 
-	TestVisitor() {}
+	public TestVisitor() {}
 
 	public List<Object> getVisited() {
 		return visited;

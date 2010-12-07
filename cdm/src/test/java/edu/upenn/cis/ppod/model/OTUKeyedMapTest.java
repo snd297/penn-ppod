@@ -15,61 +15,52 @@
  */
 package edu.upenn.cis.ppod.model;
 
+import static org.mockito.Matchers.any;
+import static org.mockito.Mockito.mock;
+import static org.mockito.Mockito.times;
+import static org.mockito.Mockito.verify;
 import static org.testng.Assert.assertEquals;
 import static org.testng.Assert.assertFalse;
 import static org.testng.Assert.assertTrue;
 
 import org.testng.annotations.Test;
 
-import com.google.common.collect.ImmutableList;
-import com.google.inject.Inject;
-import com.google.inject.Provider;
-
 import edu.upenn.cis.ppod.TestGroupDefs;
 import edu.upenn.cis.ppod.imodel.IDNARow;
 import edu.upenn.cis.ppod.imodel.IOTU;
 import edu.upenn.cis.ppod.imodel.IOTUSet;
-import edu.upenn.cis.ppod.util.TestVisitor;
+import edu.upenn.cis.ppod.util.IVisitor;
 
 /**
  * @author Sam Donnelly
  */
-@Test(groups = TestGroupDefs.FAST, dependsOnGroups = TestGroupDefs.INIT)
+@Test(groups = TestGroupDefs.FAST)
 public class OTUKeyedMapTest {
-
-	@Inject
-	private Provider<OTUSet> otuSetProvider;
-
-	@Inject
-	private Provider<OTU> otuProvider;
-
-	@Inject
-	private Provider<DNAMatrix> dnaMatrixProvider;
-
-	@Inject
-	private Provider<DNARow> dnaRowProvider;
-
-	@Inject
-	private Provider<DNARows> dnaRowsProvider;
 
 	@Test
 	public void clear() {
-		final DNAMatrix matrix = dnaMatrixProvider.get();
-		final OTUSet otuSet = otuSetProvider.get();
+		final DNAMatrix matrix = new DNAMatrix(new DNARows());
+		final OTUSet otuSet = new OTUSet();
 		matrix.setParent(otuSet);
 
-		final IOTU otu0 = otuProvider.get().setLabel("otu0");
-		final IOTU otu1 = otuProvider.get().setLabel("otu1");
-		final IOTU otu2 = otuProvider.get().setLabel("otu2");
+		final IOTU otu0 = new OTU();
+		otu0.setLabel("otu0");
+
+		final IOTU otu1 = new OTU();
+		otu1.setLabel("otu1");
+
+		final IOTU otu2 = new OTU();
+		otu2.setLabel("otu2");
+
 		otuSet.addOTU(otu0);
 		otuSet.addOTU(otu1);
 		otuSet.addOTU(otu2);
 
-		final IDNARow row0 = dnaRowProvider.get();
-		final IDNARow row1 = dnaRowProvider.get();
-		final IDNARow row2 = dnaRowProvider.get();
+		final IDNARow row0 = new DNARow();
+		final IDNARow row1 = new DNARow();
+		final IDNARow row2 = new DNARow();
 
-		final DNARows rows = dnaRowsProvider.get();
+		final DNARows rows = new DNARows();
 		rows.setParent(matrix);
 
 		rows.put(otu0, row0);
@@ -91,7 +82,7 @@ public class OTUKeyedMapTest {
 	 */
 	@Test
 	public void clearWhileEmpty() {
-		final DNAMatrix matrix = dnaMatrixProvider.get();
+		final DNAMatrix matrix = new DNAMatrix(new DNARows());
 		final DNARows otusToRows = matrix.getOTUKeyedRows();
 		otusToRows.setParent(matrix);
 		matrix.unsetInNeedOfNewVersion();
@@ -100,25 +91,28 @@ public class OTUKeyedMapTest {
 		assertFalse(matrix.isInNeedOfNewVersion());
 	}
 
-	@Inject
-	private Provider<TestVisitor> testVisitorProvider;
-
 	@Test
 	public void accept() {
-		final DNAMatrix matrix = dnaMatrixProvider.get();
+		final DNAMatrix matrix = new DNAMatrix(new DNARows());
 
-		final IOTUSet otuSet = otuSetProvider.get();
+		final IOTUSet otuSet = new OTUSet();
 		otuSet.addDNAMatrix(matrix);
 
-		final IOTU otu0 = otuProvider.get().setLabel("otu0");
-		final IOTU otu1 = otuProvider.get().setLabel("otu1");
-		final IOTU otu2 = otuProvider.get().setLabel("otu2");
+		final IOTU otu0 = new OTU();
+		otu0.setLabel("otu0");
+
+		final IOTU otu1 = new OTU();
+		otu1.setLabel("otu1");
+
+		final IOTU otu2 = new OTU();
+		otu2.setLabel("otu2");
+
 		otuSet.addOTU(otu0);
 		otuSet.addOTU(otu1);
 		otuSet.addOTU(otu2);
 
-		final DNARow row0 = dnaRowProvider.get();
-		final DNARow row2 = dnaRowProvider.get();
+		final DNARow row0 = new DNARow();
+		final DNARow row2 = new DNARow();
 
 		matrix.putRow(otu0, row0);
 		matrix.getOTUKeyedRows().getValues().put(otu1, null); // the
@@ -130,18 +124,16 @@ public class OTUKeyedMapTest {
 		// values, but we need to sneak around the matrix to get it in there
 		matrix.putRow(otu2, row2);
 
-		final TestVisitor visitor = testVisitorProvider.get();
+		final IVisitor visitor = mock(IVisitor.class);
 
 		matrix.getOTUKeyedRows().accept(visitor);
 
 		// Size should be the same as all of the rows minus the null row
-		assertEquals(visitor.getVisited().size(),
-				matrix.getRows().values().size() - 1);
+		verify(visitor, times(matrix.getRows().size() - 1))
+				.visitDNARow(any(DNARow.class));
 
-		// assertTrue(visitor.getVisited().contains(matrix.getOTUKeyedRows()));
-		assertTrue(visitor
-				.getVisited()
-				.containsAll(ImmutableList
-						.of(row0, row2)));
+		verify(visitor).visitDNARow(row0);
+		verify(visitor).visitDNARow(row2);
+
 	}
 }
