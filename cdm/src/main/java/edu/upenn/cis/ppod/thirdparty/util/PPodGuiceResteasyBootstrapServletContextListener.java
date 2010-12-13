@@ -44,7 +44,6 @@ public class PPodGuiceResteasyBootstrapServletContextListener extends
 		final Injector injector =
 				Guice.createInjector(
 						new PPodModule(),
-						new PersistenceModule(),
 						new PPodServicesHibernateModule(),
 						new ServletModule() {
 

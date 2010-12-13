@@ -109,7 +109,7 @@ public class VersionInfo extends PersistentObject {
 	 * Set the value for the pPOD version number.
 	 * <p>
 	 * Intentionally non-public (protected for JAXB): we don't want for these to
-	 * be manipulated outside of the package: use
+	 * be manipulated outside of the package.
 	 * 
 	 * @param version the pPOD version number
 	 * 

@@ -11,6 +11,9 @@ import com.google.inject.Provider;
 
 public class SessionFactoryProvider implements Provider<SessionFactory> {
 
+	/**
+	 * Only static for {@link #getSessionFactory()}.
+	 */
 	private static SessionFactory sf;
 
 	/**

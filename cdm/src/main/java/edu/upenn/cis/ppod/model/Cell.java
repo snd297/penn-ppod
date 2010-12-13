@@ -88,7 +88,7 @@ public abstract class Cell<E, R extends IRow<?, ?>>
 	/**
 	 * Will be {@code null} if this is cell is not {@link Type.SINGLE}.
 	 */
-	@CheckForNull
+	@Nullable
 	abstract E getElement();
 
 	/**

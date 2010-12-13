@@ -32,9 +32,6 @@ import javax.persistence.Table;
 import org.hibernate.annotations.Cascade;
 import org.hibernate.annotations.Index;
 
-import edu.upenn.cis.ppod.util.IVisitor;
-
-
 /**
  * Simple class that represents any User domain entity in any application.
  * 
@@ -65,7 +62,9 @@ public final class User extends Party {
 
 	@ManyToMany
 	@Cascade(org.hibernate.annotations.CascadeType.SAVE_UPDATE)
-	@JoinTable(name = TABLE + "_" + Role.TABLE, joinColumns = { @JoinColumn(name = ID_COLUMN) }, inverseJoinColumns = { @JoinColumn(name = Role.JOIN_COLUMN) })
+	@JoinTable(name = TABLE + "_" + Role.TABLE, joinColumns = { @JoinColumn(
+			name = ID_COLUMN) }, inverseJoinColumns = { @JoinColumn(
+			name = Role.JOIN_COLUMN) })
 	// @Cache(usage = CacheConcurrencyStrategy.READ_WRITE)
 	private final Set<Role> roles = newHashSet();
 

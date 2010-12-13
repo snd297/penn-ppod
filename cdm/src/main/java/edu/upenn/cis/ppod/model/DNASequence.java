@@ -86,7 +86,7 @@ public class DNASequence
 			fetch = FetchType.LAZY,
 			optional = false,
 			targetEntity = DNASequenceSet.class)
-	@CheckForNull
+	@Nullable
 	private IDNASequenceSet parent;
 
 	@ElementCollection

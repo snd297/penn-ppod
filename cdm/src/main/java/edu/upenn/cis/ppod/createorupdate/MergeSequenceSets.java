@@ -24,7 +24,6 @@ import com.google.common.collect.ImmutableMap;
 import com.google.inject.Inject;
 import com.google.inject.Provider;
 
-import edu.upenn.cis.ppod.imodel.INewVersionInfo;
 import edu.upenn.cis.ppod.imodel.IOTU;
 import edu.upenn.cis.ppod.imodel.ISequence;
 import edu.upenn.cis.ppod.imodel.ISequenceSet;
@@ -36,8 +35,7 @@ final class MergeSequenceSets<SS extends ISequenceSet<S>, S extends ISequence<?>
 
 	@Inject
 	MergeSequenceSets(
-			final Provider<S> sequenceProvider,
-			INewVersionInfo newVersionInfo) {
+			final Provider<S> sequenceProvider) {
 		this.sequenceProvider = sequenceProvider;
 	}
 
