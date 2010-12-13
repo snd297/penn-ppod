@@ -24,7 +24,6 @@ import org.hibernate.CallbackException;
 import org.hibernate.type.Type;
 
 import com.google.inject.Inject;
-import com.google.inject.Provider;
 
 import edu.upenn.cis.ppod.model.Study;
 import edu.upenn.cis.ppod.thirdparty.util.ChainedInterceptor;
@@ -56,7 +55,7 @@ public final class AccessInterceptor extends ChainedInterceptor {
 	 * @throws CallbackException if the action is not permitted
 	 */
 	private void check(
-			final Class clazz,
+			final Class<?> clazz,
 			final String action,
 			final Serializable id) throws CallbackException {
 

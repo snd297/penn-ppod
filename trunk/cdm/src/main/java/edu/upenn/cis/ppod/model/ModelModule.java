@@ -18,7 +18,6 @@ package edu.upenn.cis.ppod.model;
 import com.google.inject.AbstractModule;
 import com.google.inject.Provides;
 import com.google.inject.assistedinject.FactoryProvider;
-import com.google.inject.servlet.RequestScoped;
 
 import edu.upenn.cis.ppod.imodel.IAttachment;
 import edu.upenn.cis.ppod.imodel.IAttachmentNamespace;
@@ -69,9 +68,8 @@ public class ModelModule extends AbstractModule {
 		bind(IAttachmentNamespace.class).to(AttachmentNamespace.class);
 		bind(IAttachmentType.class).to(AttachmentType.class);
 
-		bind(INewVersionInfo.class)
-				.to(NewVersionInfoDB.class)
-				.in(RequestScoped.class);
+		bind(INewVersionInfo.class).to(NewVersionInfoDB.class);
+
 		bind(Attachment.IIsOfNamespace.IFactory.class)
 				.toProvider(
 						FactoryProvider.newFactory(
