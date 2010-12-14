@@ -70,7 +70,10 @@ public class AttachmentNamespace
 	@CheckForNull
 	private String label;
 
-	AttachmentNamespace() {}
+	/**
+	 * For Hibernate.
+	 */
+	public AttachmentNamespace() {}
 
 	public void accept(final IVisitor visitor) {
 		visitor.visitAttachmentNamespace(this);

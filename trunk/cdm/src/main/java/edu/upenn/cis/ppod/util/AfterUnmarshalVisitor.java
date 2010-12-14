@@ -28,9 +28,8 @@ import edu.upenn.cis.ppod.imodel.IStandardMatrix;
  * 
  * @author Sam Donnelly
  */
-class AfterUnmarshalVisitor
-		extends EmptyVisitor
-		implements IAfterUnmarshalVisitor {
+public class AfterUnmarshalVisitor
+		extends EmptyVisitor {
 
 	@Override
 	public void visitStandardCell(final IStandardCell cell) {

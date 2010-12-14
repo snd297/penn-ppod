@@ -38,10 +38,4 @@ public interface IPair<T, U> {
 	 */
 	U getSecond();
 
-	/**
-	 * Create an ordered pair.
-	 */
-	static interface IFactory {
-		<T, U> IPair<T, U> create(T t, U u);
-	}
 }

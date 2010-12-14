@@ -30,6 +30,7 @@ import edu.upenn.cis.ppod.imodel.IStudy;
 import edu.upenn.cis.ppod.model.Study;
 import edu.upenn.cis.ppod.thirdparty.dao.hibernate.GenericHibernateDAO;
 import edu.upenn.cis.ppod.util.IPair;
+import edu.upenn.cis.ppod.util.Pair;
 
 /**
  * An {@link IStudyDAO} Hibernate DAO.
@@ -40,14 +41,19 @@ final class StudyDAOHibernate
 		extends GenericHibernateDAO<IStudy, Long>
 		implements IStudyDAO {
 
-	private final IPair.IFactory pairFactory;
-
 	@Inject
 	StudyDAOHibernate(
-			final Session session,
-			final IPair.IFactory pairFactory) {
+			final Session session) {
 		super(session);
-		this.pairFactory = pairFactory;
+	}
+
+	@SuppressWarnings("unchecked")
+	public List<Object[]> getOTUInfosByStudyPPodIdAndMinPPodVersion(
+			final String studyPPodId, final Long minPPodVersion) {
+		return getSession().getNamedQuery(
+				"Study-getOTUSetInfosByStudyPPodIdAndMinPPodVersion")
+				.setParameter("studyPPodId", studyPPodId).setParameter(
+						"minPPodVersion", minPPodVersion).list();
 	}
 
 	public Set<IPair<String, String>> getPPodIdLabelPairs() {
@@ -56,10 +62,16 @@ final class StudyDAOHibernate
 				Study.class.getSimpleName()
 						+ "-getPPodIdLabelPairs").iterate(); itr.hasNext();) {
 			final Object[] result = (Object[]) itr.next();
-			results.add(pairFactory.create((String) result[0],
+			results.add(Pair.newPair((String) result[0],
 					(String) result[1]));
 		}
 		return results;
+	}
+
+	public Long getPPodVersionByPPodId(final String pPodId) {
+		return (Long) getSession()
+				.getNamedQuery("Study-getPPodVersionByPPodId").setParameter(
+						"pPodId", pPodId).uniqueResult();
 	}
 
 	public IStudy getStudyByPPodId(final String pPodId) {
@@ -88,20 +100,5 @@ final class StudyDAOHibernate
 		// .createCriteria("otusToRows")
 		// .setFetchMode("otusToRows", FetchMode.JOIN)
 		// .uniqueResult();
-	}
-
-	@SuppressWarnings("unchecked")
-	public List<Object[]> getOTUInfosByStudyPPodIdAndMinPPodVersion(
-			String studyPPodId, Long minPPodVersion) {
-		return (List<Object[]>) getSession().getNamedQuery(
-				"Study-getOTUSetInfosByStudyPPodIdAndMinPPodVersion")
-				.setParameter("studyPPodId", studyPPodId).setParameter(
-						"minPPodVersion", minPPodVersion).list();
-	}
-
-	public Long getPPodVersionByPPodId(String pPodId) {
-		return (Long) getSession()
-				.getNamedQuery("Study-getPPodVersionByPPodId").setParameter(
-						"pPodId", pPodId).uniqueResult();
 	}
 }

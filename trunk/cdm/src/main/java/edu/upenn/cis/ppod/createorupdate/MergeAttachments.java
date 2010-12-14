@@ -23,13 +23,14 @@ import java.util.HashMap;
 import java.util.Map;
 
 import com.google.inject.Inject;
-import com.google.inject.Provider;
 
 import edu.upenn.cis.ppod.dao.IAttachmentNamespaceDAO;
 import edu.upenn.cis.ppod.dao.IAttachmentTypeDAO;
 import edu.upenn.cis.ppod.imodel.IAttachment;
 import edu.upenn.cis.ppod.imodel.IAttachmentNamespace;
 import edu.upenn.cis.ppod.imodel.IAttachmentType;
+import edu.upenn.cis.ppod.model.AttachmentNamespace;
+import edu.upenn.cis.ppod.model.AttachmentType;
 
 /**
  * @author Sam Donnelly
@@ -38,9 +39,6 @@ class MergeAttachments implements IMergeAttachments {
 
 	private final IAttachmentNamespaceDAO attachmentNamespaceDAO;
 	private final IAttachmentTypeDAO attachmentTypeDAO;
-
-	private final Provider<IAttachmentNamespace> attachmentNamespaceProvider;
-	private final Provider<IAttachmentType> attachmentTypeProvider;
 
 	// Temporary measure: both the the type and namespace should be passed in
 	// from caller (is that really true?)
@@ -51,15 +49,10 @@ class MergeAttachments implements IMergeAttachments {
 
 	@Inject
 	MergeAttachments(
-			final Provider<IAttachmentNamespace> attachmentNamespaceProvider,
-			final Provider<IAttachmentType> attachmentTypeProvider,
 			final IAttachmentNamespaceDAO attachmentNamespaceDAO,
 			final IAttachmentTypeDAO attachmentTypeDAO) {
-
 		this.attachmentNamespaceDAO = attachmentNamespaceDAO;
 		this.attachmentTypeDAO = attachmentTypeDAO;
-		this.attachmentNamespaceProvider = attachmentNamespaceProvider;
-		this.attachmentTypeProvider = attachmentTypeProvider;
 	}
 
 	public void mergeAttachments(
@@ -90,7 +83,8 @@ class MergeAttachments implements IMergeAttachments {
 									.getNamespace().getLabel());
 			if (null == targetAttachmentNamespace) {
 				targetAttachmentNamespace =
-						attachmentNamespaceProvider.get();
+						new AttachmentNamespace();
+
 				targetAttachmentNamespace
 								.setLabel(
 										sourceAttachment.getType()
@@ -118,7 +112,7 @@ class MergeAttachments implements IMergeAttachments {
 							targetAttachmentNamespace.getLabel(),
 							sourceAttachment.getType().getLabel());
 			if (null == targetAttachmentType) {
-				targetAttachmentType = attachmentTypeProvider.get();
+				targetAttachmentType = new AttachmentType();
 				targetAttachmentType
 						.setLabel(sourceAttachment
 								.getType()

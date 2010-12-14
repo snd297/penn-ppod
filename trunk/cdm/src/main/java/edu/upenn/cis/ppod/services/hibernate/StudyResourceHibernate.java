@@ -22,7 +22,6 @@ import java.util.Set;
 
 import com.google.common.base.Function;
 import com.google.inject.Inject;
-import com.google.inject.Provider;
 
 import edu.upenn.cis.ppod.createorupdate.ICreateOrUpdateStudy;
 import edu.upenn.cis.ppod.dao.IStudyDAO;
@@ -31,10 +30,10 @@ import edu.upenn.cis.ppod.services.IStudyResource;
 import edu.upenn.cis.ppod.services.StringPair;
 import edu.upenn.cis.ppod.services.ppodentity.IStudy2StudyInfo;
 import edu.upenn.cis.ppod.services.ppodentity.StudyInfo;
-import edu.upenn.cis.ppod.util.IAfterUnmarshalVisitor;
+import edu.upenn.cis.ppod.util.AfterUnmarshalVisitor;
 import edu.upenn.cis.ppod.util.IPair;
-import edu.upenn.cis.ppod.util.ISetDocIdVisitor;
 import edu.upenn.cis.ppod.util.ISetVersionInfoVisitor;
+import edu.upenn.cis.ppod.util.SetDocIdVisitor;
 
 /**
  * We commit the transactions in this class so that the resteasy response will
@@ -54,12 +53,6 @@ public final class StudyResourceHibernate implements IStudyResource {
 
 	private final IStudy2StudyInfo study2StudyInfo;
 
-	private final ISetDocIdVisitor setDocIdVisitor;
-
-	private final Provider<IAfterUnmarshalVisitor> afterUnmarshalVisitorProvider;
-
-	private final StringPair.IFactory stringPairFactory;
-
 	private final ISetVersionInfoVisitor setVersionInfoVisitor;
 
 	@Inject
@@ -67,25 +60,19 @@ public final class StudyResourceHibernate implements IStudyResource {
 			final IStudyDAO studyDAO,
 			final ICreateOrUpdateStudy createOrUpdateStudy,
 			final IStudy2StudyInfo study2StudyInfo,
-			final ISetDocIdVisitor setDocIdVisitor,
-			final Provider<IAfterUnmarshalVisitor> afterUnmarshalVisitorProvider,
-			final ISetVersionInfoVisitor setVersionInfoVisitor,
-			final StringPair.IFactory stringPairFactory) {
+			final ISetVersionInfoVisitor setVersionInfoVisitor) {
 
 		this.studyDAO = studyDAO;
 
 		this.createOrUpdateStudy = createOrUpdateStudy;
 
 		this.study2StudyInfo = study2StudyInfo;
-		this.setDocIdVisitor = setDocIdVisitor;
-		this.afterUnmarshalVisitorProvider = afterUnmarshalVisitorProvider;
-		this.stringPairFactory = stringPairFactory;
 
 		this.setVersionInfoVisitor = setVersionInfoVisitor;
 	}
 
 	private StudyInfo createOrUpdateStudy(final IStudy incomingStudy) {
-		incomingStudy.accept(afterUnmarshalVisitorProvider.get());
+		incomingStudy.accept(new AfterUnmarshalVisitor());
 
 		final IStudy dbStudy = createOrUpdateStudy
 				.createOrUpdateStudy(incomingStudy);
@@ -102,7 +89,7 @@ public final class StudyResourceHibernate implements IStudyResource {
 
 	public IStudy getStudyByPPodId(final String pPodId) {
 		final IStudy study = studyDAO.getStudyByPPodId(pPodId);
-		study.accept(setDocIdVisitor);
+		study.accept(new SetDocIdVisitor());
 		return study;
 	}
 
@@ -111,8 +98,7 @@ public final class StudyResourceHibernate implements IStudyResource {
 						studyDAO.getPPodIdLabelPairs(),
 				new Function<IPair<String, String>, StringPair>() {
 					public StringPair apply(final IPair<String, String> from) {
-						return stringPairFactory.create(from.getFirst(), from
-								.getSecond());
+						return new StringPair(from.getFirst(), from.getSecond());
 					}
 				}));
 		return studyPPodIdLabelPairs;

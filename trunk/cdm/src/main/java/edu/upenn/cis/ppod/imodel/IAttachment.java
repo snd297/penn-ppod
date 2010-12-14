@@ -25,7 +25,6 @@ import javax.xml.bind.annotation.adapters.XmlJavaTypeAdapter;
 
 import com.google.common.base.Function;
 import com.google.common.base.Predicate;
-import com.google.inject.ImplementedBy;
 import com.google.inject.Inject;
 import com.google.inject.assistedinject.Assisted;
 
@@ -36,32 +35,7 @@ import edu.upenn.cis.ppod.model.Attachment;
 @XmlJavaTypeAdapter(Attachment.Adapter.class)
 public interface IAttachment extends IUUPPodEntity {
 
-	/**
-	 * Is an attachment of a particular {@link AttachmentNamespace}?
-	 */
-	@ImplementedBy(IsOfNamespace.class)
-	public static interface IIsOfNamespace extends Predicate<IAttachment> {
-
-		/**
-		 * Makes {@code IIsOfNamespace}s.
-		 */
-		public static interface IFactory {
-
-			/**
-			 * Create a {@code IIsOfNamespace} that will return {@code true} if
-			 * and only if the attachment's namespaceLabel has the given
-			 * attachmentLabel.
-			 * 
-			 * @param namespaceLabel the attachmentLabel of the namespaceLabel
-			 *            we're interested in
-			 * 
-			 * @return a new {@code IIsOfNamespace}
-			 */
-			IIsOfNamespace create(String namespaceLabel);
-		}
-	}
-
-	final static class IsOfNamespace implements IIsOfNamespace {
+	final static class IsOfNamespace implements Predicate<IAttachment> {
 
 		private final String namespaceLabel;
 

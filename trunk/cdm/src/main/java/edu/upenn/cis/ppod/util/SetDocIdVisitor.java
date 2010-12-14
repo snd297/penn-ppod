@@ -28,7 +28,7 @@ import edu.upenn.cis.ppod.imodel.IStandardState;
  * 
  * @author Sam Donnelly
  */
-final class SetDocIdVisitor extends EmptyVisitor implements ISetDocIdVisitor {
+public final class SetDocIdVisitor extends EmptyVisitor {
 
 	/**
 	 * Call {@code otuSet.setDocId()}.

@@ -16,7 +16,6 @@
 package edu.upenn.cis.ppod.util;
 
 import com.google.inject.Inject;
-import com.google.inject.assistedinject.Assisted;
 
 import edu.upenn.cis.ppod.imodel.IAttachment;
 import edu.upenn.cis.ppod.imodel.IDNACell;
