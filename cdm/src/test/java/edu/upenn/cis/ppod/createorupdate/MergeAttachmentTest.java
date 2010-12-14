@@ -16,19 +16,22 @@
 package edu.upenn.cis.ppod.createorupdate;
 
 import static com.google.common.collect.Maps.newHashMap;
+import static org.mockito.Mockito.mock;
 
 import java.util.Map;
 
 import org.testng.annotations.BeforeMethod;
 import org.testng.annotations.Test;
 
-import com.google.inject.Inject;
-import com.google.inject.Provider;
-
 import edu.upenn.cis.ppod.TestGroupDefs;
+import edu.upenn.cis.ppod.dao.IAttachmentNamespaceDAO;
+import edu.upenn.cis.ppod.dao.IAttachmentTypeDAO;
 import edu.upenn.cis.ppod.imodel.IAttachment;
 import edu.upenn.cis.ppod.imodel.IAttachmentNamespace;
 import edu.upenn.cis.ppod.imodel.IAttachmentType;
+import edu.upenn.cis.ppod.model.Attachment;
+import edu.upenn.cis.ppod.model.AttachmentNamespace;
+import edu.upenn.cis.ppod.model.AttachmentType;
 import edu.upenn.cis.ppod.model.ModelAssert;
 
 /**
@@ -36,43 +39,32 @@ import edu.upenn.cis.ppod.model.ModelAssert;
  * 
  * @author Sam Donnelly
  */
-@Test(groups = { TestGroupDefs.FAST }, dependsOnGroups = TestGroupDefs.INIT)
+@Test(groups = { TestGroupDefs.FAST })
 public class MergeAttachmentTest {
-
-	@Inject
-	private Provider<IMergeAttachments> mergeAttachmentProvider;
-
-	@Inject
-	private Provider<IAttachment> attachmentProvider;
-
-	@Inject
-	private Provider<IAttachmentNamespace> attachmentNamespaceProvider;
-
-	@Inject
-	private Provider<IAttachmentType> attachmentTypeProvider;
 
 	@BeforeMethod
 	public void beforeMethod() {
 		final Map<String, IAttachmentNamespace> namespacesByLabel = newHashMap();
 		namespacesByLabel.put(
 				"TEST_ATTACHMENT_NAMESPACE",
-				attachmentNamespaceProvider.get());
+				new AttachmentNamespace());
 	}
 
 	@Test
 	public void mergeOnBlankTarget() {
-		IMergeAttachments mergeAttachments = mergeAttachmentProvider.get();
+		IMergeAttachments mergeAttachments = new MergeAttachments(
+				mock(IAttachmentNamespaceDAO.class),
+				mock(IAttachmentTypeDAO.class));
 
-		final IAttachment targetAttachment = attachmentProvider.get(), sourceAttachment = attachmentProvider
-				.get();
+		final IAttachment targetAttachment = new Attachment(), sourceAttachment = new Attachment();
 		sourceAttachment.setLabel("target attachment");
-		final IAttachmentType sourceAttachmentType =
-				attachmentTypeProvider.get();
+		final IAttachmentType sourceAttachmentType = new AttachmentType();
+
 		sourceAttachmentType.setLabel("SOURCE_ATTACHMENT_TYPE");
 		sourceAttachment.setType(sourceAttachmentType);
 
-		final IAttachmentNamespace srcNamespace =
-				attachmentNamespaceProvider.get();
+		final IAttachmentNamespace srcNamespace = new AttachmentNamespace();
+
 		srcNamespace.setLabel("SOURCE_ATTACHMENT_NAMESPACE");
 
 		sourceAttachment.getType().setNamespace(srcNamespace);

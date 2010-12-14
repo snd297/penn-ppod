@@ -17,13 +17,10 @@ package edu.upenn.cis.ppod.dao.hibernate;
 
 import java.util.List;
 
-import com.google.inject.Inject;
-
 import edu.upenn.cis.ppod.dao.IStandardMatrixDAO;
 import edu.upenn.cis.ppod.imodel.IStandardMatrix;
 import edu.upenn.cis.ppod.model.StandardMatrix;
 import edu.upenn.cis.ppod.thirdparty.dao.hibernate.GenericHibernateDAO;
-import edu.upenn.cis.ppod.util.IPair;
 
 /**
  * A default {@link StandardMatrix} Hibernate DAO.
@@ -33,13 +30,6 @@ import edu.upenn.cis.ppod.util.IPair;
 final class StandardMatrixDAOHibernate
 		extends GenericHibernateDAO<IStandardMatrix, Long>
 		implements IStandardMatrixDAO {
-
-	private final IPair.IFactory pairFactory;
-
-	@Inject
-	protected StandardMatrixDAOHibernate(final IPair.IFactory orderedPairFactory) {
-		this.pairFactory = orderedPairFactory;
-	}
 
 	@SuppressWarnings("unchecked")
 	public List<Object[]> getCharacterInfosByMatrixIdAndMinPPodVersion(

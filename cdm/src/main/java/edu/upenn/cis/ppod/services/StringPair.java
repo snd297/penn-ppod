@@ -20,8 +20,6 @@ import javax.xml.bind.annotation.XmlAccessorType;
 import javax.xml.bind.annotation.XmlRootElement;
 
 import com.google.common.base.Function;
-import com.google.inject.Inject;
-import com.google.inject.assistedinject.Assisted;
 
 import edu.upenn.cis.ppod.util.IPair;
 
@@ -44,9 +42,8 @@ public final class StringPair implements IPair<String, String> {
 	@SuppressWarnings("unused")
 	private StringPair() {}
 
-	@Inject
-	StringPair(@Assisted("first") final String first,
-			@Assisted("second") final String second) {
+	public StringPair(final String first,
+			final String second) {
 		this.first = first;
 		this.second = second;
 	}
@@ -66,9 +63,4 @@ public final class StringPair implements IPair<String, String> {
 		}
 
 	};
-
-	public static interface IFactory {
-		StringPair create(@Assisted("first") String first,
-				@Assisted("second") String second);
-	}
 }

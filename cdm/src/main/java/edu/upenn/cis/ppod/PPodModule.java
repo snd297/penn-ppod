@@ -16,7 +16,6 @@
 package edu.upenn.cis.ppod;
 
 import com.google.inject.AbstractModule;
-import com.google.inject.assistedinject.FactoryProvider;
 import com.google.inject.servlet.RequestScoped;
 
 import edu.upenn.cis.ppod.createorupdate.CreateOrUpdateModule;
@@ -25,9 +24,6 @@ import edu.upenn.cis.ppod.imodel.INewVersionInfo;
 import edu.upenn.cis.ppod.model.ModelModule;
 import edu.upenn.cis.ppod.model.NewVersionInfoDB;
 import edu.upenn.cis.ppod.persistence.PersistenceModule;
-import edu.upenn.cis.ppod.services.StringPair;
-import edu.upenn.cis.ppod.util.IPair;
-import edu.upenn.cis.ppod.util.Pair;
 
 /**
  * pPOD CDM guice configuration.
@@ -38,13 +34,6 @@ public final class PPodModule extends AbstractModule {
 
 	@Override
 	protected void configure() {
-
-		bind(IPair.IFactory.class).to(Pair.Factory.class);
-
-		bind(StringPair.IFactory.class).toProvider(
-				FactoryProvider.newFactory(
-						StringPair.IFactory.class,
-						StringPair.class));
 
 		bind(INewVersionInfo.class).to(NewVersionInfoDB.class).in(
 				RequestScoped.class);

@@ -31,10 +31,8 @@ import com.google.inject.assistedinject.Assisted;
 @XmlAccessorType(XmlAccessType.NONE)
 public class Pair<T, U> implements IPair<T, U> {
 
-	public static class Factory implements IFactory {
-		public <T, U> Pair<T, U> create(final T first, final U second) {
-			return new Pair<T, U>(first, second);
-		}
+	static public <T, U> Pair<T, U> newPair(final T first, final U second) {
+		return new Pair<T, U>(first, second);
 	}
 
 	private T first;

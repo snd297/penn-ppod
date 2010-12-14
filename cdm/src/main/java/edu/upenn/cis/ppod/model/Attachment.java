@@ -106,7 +106,7 @@ public class Attachment extends UUPPodEntity implements IAttachment {
 	private IAttachmentType type;
 
 	/** Default constructor for (at least) Hibernate. */
-	Attachment() {}
+	public Attachment() {}
 
 	@Override
 	public void accept(final IVisitor visitor) {

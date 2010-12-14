@@ -17,11 +17,8 @@ package edu.upenn.cis.ppod.model;
 
 import com.google.inject.AbstractModule;
 import com.google.inject.Provides;
-import com.google.inject.assistedinject.FactoryProvider;
 
 import edu.upenn.cis.ppod.imodel.IAttachment;
-import edu.upenn.cis.ppod.imodel.IAttachmentNamespace;
-import edu.upenn.cis.ppod.imodel.IAttachmentType;
 import edu.upenn.cis.ppod.imodel.IDNACell;
 import edu.upenn.cis.ppod.imodel.IDNAMatrix;
 import edu.upenn.cis.ppod.imodel.IDNARow;
@@ -57,17 +54,7 @@ public class ModelModule extends AbstractModule {
 	}
 
 	@Override
-	protected void configure() {
-
-		bind(IAttachmentNamespace.class).to(AttachmentNamespace.class);
-		bind(IAttachmentType.class).to(AttachmentType.class);
-
-		bind(Attachment.IIsOfNamespace.IFactory.class)
-				.toProvider(
-						FactoryProvider.newFactory(
-								Attachment.IIsOfNamespace.IFactory.class,
-								Attachment.IIsOfNamespace.class));
-	}
+	protected void configure() {}
 
 	@Provides
 	IAttachment provideAttachment(final INewVersionInfo newVersionInfo) {

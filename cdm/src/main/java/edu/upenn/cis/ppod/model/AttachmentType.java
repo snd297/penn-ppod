@@ -86,7 +86,10 @@ public class AttachmentType
 	@CheckForNull
 	private String label;
 
-	AttachmentType() {}
+	/**
+	 * For Hibernate.
+	 */
+	public AttachmentType() {}
 
 	public void accept(final IVisitor visitor) {
 		checkNotNull(visitor);

@@ -33,8 +33,7 @@ import edu.upenn.cis.ppod.imodel.IStandardMatrix;
 import edu.upenn.cis.ppod.imodel.ITreeSet;
 import edu.upenn.cis.ppod.services.IPPodEntitiesResource;
 import edu.upenn.cis.ppod.services.ppodentity.PPodEntities;
-import edu.upenn.cis.ppod.util.ISetDocIdVisitor;
-import edu.upenn.cis.ppod.util.IVisitor;
+import edu.upenn.cis.ppod.util.SetDocIdVisitor;
 
 /**
  * @author Sam Donnelly
@@ -44,17 +43,13 @@ class PPodEntitiesResourceHibernate implements
 
 	private final Provider<PPodEntities> pPodEntitiesProvider;
 
-	private final IVisitor setDocIdVisitor;
-
 	private Session session;
 
 	@Inject
 	PPodEntitiesResourceHibernate(
 			final Provider<PPodEntities> pPodEntities,
-			final ISetDocIdVisitor setDocIdVisitor,
 			final Session session) {
 		this.pPodEntitiesProvider = pPodEntities;
-		this.setDocIdVisitor = setDocIdVisitor;
 		this.session = session;
 	}
 
@@ -104,7 +99,7 @@ class PPodEntitiesResourceHibernate implements
 
 				addedMatrices.add(matrix);
 				if (matrix.getDocId() == null) {
-					matrix.getParent().accept(setDocIdVisitor);
+					matrix.getParent().accept(new SetDocIdVisitor());
 				}
 
 				// Note that otu set may have already been added in any of the
@@ -118,7 +113,7 @@ class PPodEntitiesResourceHibernate implements
 
 				addedTreeSets.add(treeSet);
 				if (treeSet.getDocId() == null) {
-					treeSet.getParent().accept(setDocIdVisitor);
+					treeSet.getParent().accept(new SetDocIdVisitor());
 				}
 
 				// Note that otu set may have already been added in any of the
