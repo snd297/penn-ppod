@@ -172,7 +172,7 @@ public class CellTest {
 
 		final DNARow row = new DNARow();
 
-		final DNAMatrix matrix = new DNAMatrix(new DNARows());
+		final DNAMatrix matrix = new DNAMatrix();
 		matrix.setColumnsSize(1);
 		final IOTUSet otuSet = new OTUSet();
 		otuSet.addDNAMatrix(matrix);

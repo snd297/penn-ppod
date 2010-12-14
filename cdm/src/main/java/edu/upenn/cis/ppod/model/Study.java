@@ -100,10 +100,11 @@ public class Study
 
 	@Transient
 	private final Set<IAttachmentType> attachmentTypes = newHashSet();
-	
-	//
 
-	Study() {}
+	/**
+	 * No-arg constructor.
+	 */
+	public Study() {}
 
 	@Override
 	public void accept(final IVisitor visitor) {

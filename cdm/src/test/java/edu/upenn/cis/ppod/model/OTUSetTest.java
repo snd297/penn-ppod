@@ -72,17 +72,17 @@ public class OTUSetTest {
 		otuSet.addOTU(new OTU().setLabel("otu-1"));
 		otuSet.addOTU(new OTU().setLabel("otu-2"));
 
-		otuSet.addStandardMatrix(new StandardMatrix(new StandardRows()));
-		otuSet.addStandardMatrix(new StandardMatrix(new StandardRows()));
-		otuSet.addStandardMatrix(new StandardMatrix(new StandardRows()));
+		otuSet.addStandardMatrix(new StandardMatrix());
+		otuSet.addStandardMatrix(new StandardMatrix());
+		otuSet.addStandardMatrix(new StandardMatrix());
 
-		otuSet.addDNAMatrix(new DNAMatrix(new DNARows()));
-		otuSet.addDNAMatrix(new DNAMatrix(new DNARows()));
-		otuSet.addDNAMatrix(new DNAMatrix(new DNARows()));
+		otuSet.addDNAMatrix(new DNAMatrix());
+		otuSet.addDNAMatrix(new DNAMatrix());
+		otuSet.addDNAMatrix(new DNAMatrix());
 
-		otuSet.addDNASequenceSet(new DNASequenceSet(new DNASequences()));
-		otuSet.addDNASequenceSet(new DNASequenceSet(new DNASequences()));
-		otuSet.addDNASequenceSet(new DNASequenceSet(new DNASequences()));
+		otuSet.addDNASequenceSet(new DNASequenceSet());
+		otuSet.addDNASequenceSet(new DNASequenceSet());
+		otuSet.addDNASequenceSet(new DNASequenceSet());
 
 		otuSet.addTreeSet(new TreeSet());
 		otuSet.addTreeSet(new TreeSet());
@@ -109,7 +109,7 @@ public class OTUSetTest {
 
 	@Test
 	public void addDNAMatrix() {
-		final DNAMatrix dnaMatrix = new DNAMatrix(new DNARows());
+		final DNAMatrix dnaMatrix = new DNAMatrix();
 
 		otuSet.unsetInNeedOfNewVersion();
 
@@ -121,10 +121,10 @@ public class OTUSetTest {
 
 	public void addDNAMatrixPos() {
 		final IOTUSet otuSet = new OTUSet();
-		final IDNAMatrix matrix0 = new DNAMatrix(new DNARows());
-		final IDNAMatrix matrix1 = new DNAMatrix(new DNARows());
-		final IDNAMatrix matrix2 = new DNAMatrix(new DNARows());
-		final IDNAMatrix matrix3 = new DNAMatrix(new DNARows());
+		final IDNAMatrix matrix0 = new DNAMatrix();
+		final IDNAMatrix matrix1 = new DNAMatrix();
+		final IDNAMatrix matrix2 = new DNAMatrix();
+		final IDNAMatrix matrix3 = new DNAMatrix();
 
 		otuSet.addDNAMatrix(matrix0);
 		otuSet.addDNAMatrix(matrix1);
@@ -145,8 +145,7 @@ public class OTUSetTest {
 
 	@Test
 	public void addDNASequenceSet() {
-		final DNASequenceSet sequenceSet = new DNASequenceSet(
-				new DNASequences());
+		final DNASequenceSet sequenceSet = new DNASequenceSet();
 
 		otuSet.unsetInNeedOfNewVersion();
 
@@ -159,14 +158,13 @@ public class OTUSetTest {
 	@Test(groups = TestGroupDefs.SINGLE)
 	public void addDNASequenceSetPos() {
 		final IOTUSet otuSet = new OTUSet();
-		final IDNASequenceSet sequenceSet0 = new DNASequenceSet(
-				new DNASequences());
-		final IDNASequenceSet sequenceSet1 = new DNASequenceSet(
-				new DNASequences());
-		final IDNASequenceSet sequenceSet2 = new DNASequenceSet(
-				new DNASequences());
-		final IDNASequenceSet sequenceSet3 = new DNASequenceSet(
-				new DNASequences());
+		final IDNASequenceSet sequenceSet0 = new DNASequenceSet();
+
+		final IDNASequenceSet sequenceSet1 = new DNASequenceSet();
+
+		final IDNASequenceSet sequenceSet2 = new DNASequenceSet();
+
+		final IDNASequenceSet sequenceSet3 = new DNASequenceSet();
 
 		otuSet.addDNASequenceSet(sequenceSet0);
 		otuSet.addDNASequenceSet(sequenceSet1);
@@ -189,15 +187,15 @@ public class OTUSetTest {
 	@Test
 	public void addOTU() {
 		final IOTUSet otuSet = new OTUSet();
-		final StandardMatrix standardMatrix = new StandardMatrix(
-				new StandardRows());
+		final StandardMatrix standardMatrix = new StandardMatrix();
+
 		otuSet.addStandardMatrix(standardMatrix);
 
-		final DNAMatrix dnaMatrix = new DNAMatrix(new DNARows());
+		final DNAMatrix dnaMatrix = new DNAMatrix();
 		otuSet.addDNAMatrix(dnaMatrix);
 
-		final DNASequenceSet dnaSequenceSet = new DNASequenceSet(
-				new DNASequences());
+		final DNASequenceSet dnaSequenceSet = new DNASequenceSet();
+
 		otuSet.addDNASequenceSet(dnaSequenceSet);
 
 		final OTU otu0 = new OTU().setLabel("otu-0");
@@ -289,7 +287,7 @@ public class OTUSetTest {
 
 	@Test
 	public void addStandardMatrix() {
-		final StandardMatrix dnaMatrix = new StandardMatrix(new StandardRows());
+		final StandardMatrix dnaMatrix = new StandardMatrix();
 
 		otuSet.unsetInNeedOfNewVersion();
 
@@ -302,10 +300,10 @@ public class OTUSetTest {
 	@Test(groups = TestGroupDefs.SINGLE)
 	public void addStandardMatrixPos() {
 		final IOTUSet otuSet = new OTUSet();
-		final IStandardMatrix matrix0 = new StandardMatrix(new StandardRows());
-		final IStandardMatrix matrix1 = new StandardMatrix(new StandardRows());
-		final IStandardMatrix matrix2 = new StandardMatrix(new StandardRows());
-		final IStandardMatrix matrix3 = new StandardMatrix(new StandardRows());
+		final IStandardMatrix matrix0 = new StandardMatrix();
+		final IStandardMatrix matrix1 = new StandardMatrix();
+		final IStandardMatrix matrix2 = new StandardMatrix();
+		final IStandardMatrix matrix3 = new StandardMatrix();
 
 		otuSet.addStandardMatrix(matrix0);
 		otuSet.addStandardMatrix(matrix1);
@@ -399,11 +397,11 @@ public class OTUSetTest {
 	@Test
 	public void removeDNAMatrix() {
 
-		final IDNAMatrix matrix0 = new DNAMatrix(new DNARows());
+		final IDNAMatrix matrix0 = new DNAMatrix();
 		otuSet.addDNAMatrix(matrix0);
-		final IDNAMatrix matrix1 = new DNAMatrix(new DNARows());
+		final IDNAMatrix matrix1 = new DNAMatrix();
 		otuSet.addDNAMatrix(matrix1);
-		final IDNAMatrix matrix2 = new DNAMatrix(new DNARows());
+		final IDNAMatrix matrix2 = new DNAMatrix();
 		otuSet.addDNAMatrix(matrix2);
 
 		otuSet.unsetInNeedOfNewVersion();
@@ -424,14 +422,14 @@ public class OTUSetTest {
 	public void removeDNASequenceSet() {
 
 		final IOTUSet otuSet = new OTUSet();
-		final IDNASequenceSet dnaSequenceSet0 = new DNASequenceSet(
-				new DNASequences());
+		final IDNASequenceSet dnaSequenceSet0 = new DNASequenceSet();
+
 		otuSet.addDNASequenceSet(dnaSequenceSet0);
-		final IDNASequenceSet dnaSequenceSet1 = new DNASequenceSet(
-				new DNASequences());
+		final IDNASequenceSet dnaSequenceSet1 = new DNASequenceSet();
+
 		otuSet.addDNASequenceSet(dnaSequenceSet1);
-		final IDNASequenceSet dnaSequenceSet2 = new DNASequenceSet(
-				new DNASequences());
+		final IDNASequenceSet dnaSequenceSet2 = new DNASequenceSet();
+
 		otuSet.addDNASequenceSet(dnaSequenceSet2);
 
 		otuSet.removeDNASequenceSet(dnaSequenceSet1);
@@ -464,11 +462,11 @@ public class OTUSetTest {
 
 	@Test
 	public void removeStandardMatrix() {
-		final IStandardMatrix matrix0 = new StandardMatrix(new StandardRows());
+		final IStandardMatrix matrix0 = new StandardMatrix();
 		otuSet.addStandardMatrix(matrix0);
-		final IStandardMatrix matrix1 = new StandardMatrix(new StandardRows());
+		final IStandardMatrix matrix1 = new StandardMatrix();
 		otuSet.addStandardMatrix(matrix1);
-		final IStandardMatrix matrix2 = new StandardMatrix(new StandardRows());
+		final IStandardMatrix matrix2 = new StandardMatrix();
 		otuSet.addStandardMatrix(matrix2);
 
 		otuSet.unsetInNeedOfNewVersion();

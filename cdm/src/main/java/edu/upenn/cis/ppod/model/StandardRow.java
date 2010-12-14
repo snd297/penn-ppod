@@ -78,7 +78,7 @@ public class StandardRow
 	@JoinColumn(name = StandardMatrix.JOIN_COLUMN)
 	private IStandardMatrix parent;
 
-	StandardRow() {}
+	public StandardRow() {}
 
 	@Override
 	public void accept(final IVisitor visitor) {

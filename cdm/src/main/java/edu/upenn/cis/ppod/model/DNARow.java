@@ -76,7 +76,7 @@ public class DNARow extends Row<IDNACell, IDNAMatrix> implements IDNARow {
 	@OrderColumn(name = "POSITION")
 	private final List<IDNACell> cells = newArrayList();
 
-	DNARow() {}
+	public DNARow() {}
 
 	/** {@inheritDoc} */
 	@Override

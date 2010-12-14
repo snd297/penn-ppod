@@ -35,9 +35,6 @@ import javax.xml.bind.annotation.XmlElement;
 import javax.xml.bind.annotation.XmlIDREF;
 import javax.xml.bind.annotation.adapters.XmlAdapter;
 
-import com.google.common.base.Predicate;
-import com.google.inject.assistedinject.Assisted;
-
 import edu.umd.cs.findbugs.annotations.CheckForNull;
 import edu.umd.cs.findbugs.annotations.Nullable;
 import edu.upenn.cis.ppod.imodel.IAttachment;
@@ -65,32 +62,6 @@ public class Attachment extends UUPPodEntity implements IAttachment {
 		@Override
 		public IAttachment unmarshal(final Attachment attachment) {
 			return attachment;
-		}
-	}
-
-	/**
-	 * Is an attachment of a the given's attachments namespace and type? And
-	 * does it have the given attachment's label and string value?
-	 */
-	public static interface IIsOfNamepspaceTypeLabelAndStringValue
-			extends Predicate<IAttachment> {
-
-		/**
-		 * Creates {@code IIsOfNamepspaceTypeLabelAndStringValue}s. For Guice.
-		 */
-		public static interface IFactory {
-
-			/**
-			 * Create an {@code IIsOfNamepspaceTypeLabelAndStringValue} that
-			 * compares to the given attachment's label, string value, type
-			 * label, and namespace label.
-			 * 
-			 * @param attachment the attachment to match against
-			 * 
-			 * @return a new {@code IIsOfNamepspaceTypeLabelAndStringValue}
-			 */
-			IIsOfNamepspaceTypeLabelAndStringValue create(
-					@Assisted IAttachment attachment);
 		}
 	}
 

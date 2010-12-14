@@ -32,7 +32,6 @@ import com.google.inject.assistedinject.Assisted;
 import edu.umd.cs.findbugs.annotations.CheckForNull;
 import edu.umd.cs.findbugs.annotations.Nullable;
 import edu.upenn.cis.ppod.model.Attachment;
-import edu.upenn.cis.ppod.model.Attachment.IIsOfNamepspaceTypeLabelAndStringValue;
 
 @XmlJavaTypeAdapter(Attachment.Adapter.class)
 public interface IAttachment extends IUUPPodEntity {
@@ -114,8 +113,8 @@ public interface IAttachment extends IUUPPodEntity {
 
 	}
 
-	final static class IsOfNamespaceTypeLabelAndStringValue
-				implements IIsOfNamepspaceTypeLabelAndStringValue {
+	public final static class IsOfNamespaceTypeLabelAndStringValue implements
+			Predicate<IAttachment> {
 
 		private final String attachmentLabel;
 		private final String attachmentStringValue;

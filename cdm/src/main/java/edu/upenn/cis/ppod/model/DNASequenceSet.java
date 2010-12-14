@@ -29,8 +29,6 @@ import javax.persistence.Table;
 import javax.xml.bind.annotation.XmlElement;
 import javax.xml.bind.annotation.adapters.XmlAdapter;
 
-import com.google.inject.Inject;
-
 import edu.upenn.cis.ppod.imodel.IDNASequence;
 import edu.upenn.cis.ppod.imodel.IDNASequenceSet;
 import edu.upenn.cis.ppod.imodel.IOTU;
@@ -77,14 +75,13 @@ public class DNASequenceSet
 	 */
 	@Embedded
 	@CheckForNull
-	private DNASequences sequences;
+	private DNASequences sequences = new DNASequences();
 
-	DNASequenceSet() {}
-
-	@Inject
-	DNASequenceSet(final DNASequences otusToDNASequences) {
-		this.sequences = otusToDNASequences;
-		this.sequences.setParent(this);
+	/**
+	 * Default constructor.
+	 */
+	public DNASequenceSet() {
+		sequences.setParent(this);
 	}
 
 	@Override

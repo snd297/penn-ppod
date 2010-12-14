@@ -21,24 +21,15 @@ import static org.testng.Assert.assertTrue;
 
 import org.testng.annotations.Test;
 
-import com.google.inject.Inject;
-import com.google.inject.Provider;
-
 import edu.upenn.cis.ppod.TestGroupDefs;
 
-@Test(groups = TestGroupDefs.FAST, dependsOnGroups = TestGroupDefs.INIT)
+@Test(groups = TestGroupDefs.FAST)
 public class TreeTest {
-
-	@Inject
-	private Provider<TreeSet> treeSetProvider;
-
-	@Inject
-	private Provider<Tree> treeProvider;
 
 	@Test
 	public void setInNeedOfNewVersionForParentedTree() {
-		final TreeSet treeSet = treeSetProvider.get();
-		final Tree tree = treeProvider.get();
+		final TreeSet treeSet = new TreeSet();
+		final Tree tree = new Tree();
 		treeSet.addTree(tree);
 		tree.unsetInNeedOfNewVersion();
 		treeSet.unsetInNeedOfNewVersion();
@@ -51,7 +42,7 @@ public class TreeTest {
 
 	@Test
 	public void setInNeedOfNewVersionForParentlessTree() {
-		final Tree tree = treeProvider.get();
+		final Tree tree = new Tree();
 		assertFalse(tree.isInNeedOfNewVersion());
 		tree.setInNeedOfNewVersion();
 		assertTrue(tree.isInNeedOfNewVersion());
@@ -59,7 +50,7 @@ public class TreeTest {
 
 	@Test
 	public void setLabel() {
-		final Tree tree = treeProvider.get();
+		final Tree tree = new Tree();
 		tree.unsetInNeedOfNewVersion();
 		final String label = "otu-label";
 		tree.setLabel(label);
@@ -75,7 +66,7 @@ public class TreeTest {
 
 	@Test
 	public void setNewick() {
-		final Tree tree = treeProvider.get();
+		final Tree tree = new Tree();
 		final String newick = "arbitrary string";
 		tree.unsetInNeedOfNewVersion();
 		tree.setNewick(newick);

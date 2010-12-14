@@ -115,7 +115,7 @@ public class StandardCharacter extends UUPPodEntityWithDocId
 	/**
 	 * Default constructor for (at least) Hibernate.
 	 */
-	StandardCharacter() {}
+	public StandardCharacter() {}
 
 	@Override
 	public void accept(final IVisitor visitor) {

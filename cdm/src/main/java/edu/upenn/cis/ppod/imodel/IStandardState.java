@@ -28,20 +28,6 @@ public interface IStandardState
 		extends IChild<IStandardCharacter>, IPPodEntity, ILabeled, IWithDocId {
 
 	/**
-	 * For assisted injections.
-	 */
-	public static interface IFactory {
-
-		/**
-		 * Create a character state with the given state number.
-		 * 
-		 * @param stateNumber the state number for the new state
-		 * @return the new state
-		 */
-		StandardState create(Integer stateNumber);
-	}
-
-	/**
 	 * {@link Function} wrapper of {@link #getStateNumber()}.
 	 */
 	public static final Function<IStandardState, Integer> getStateNumber = new Function<IStandardState, Integer>() {

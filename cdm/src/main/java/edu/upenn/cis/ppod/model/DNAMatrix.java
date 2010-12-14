@@ -25,8 +25,6 @@ import javax.persistence.Table;
 import javax.xml.bind.annotation.XmlElement;
 import javax.xml.bind.annotation.adapters.XmlAdapter;
 
-import com.google.inject.Inject;
-
 import edu.upenn.cis.ppod.imodel.IDNACell;
 import edu.upenn.cis.ppod.imodel.IDNAMatrix;
 import edu.upenn.cis.ppod.imodel.IDNARow;
@@ -59,14 +57,13 @@ public class DNAMatrix
 	public final static String TABLE = "DNA_MATRIX";
 
 	@Embedded
-	private DNARows rows;
+	private DNARows rows = new DNARows();
 
-	DNAMatrix() {}
-
-	@Inject
-	DNAMatrix(final DNARows rows) {
-		this.rows = rows;
-		this.rows.setParent(this);
+	/**
+	 * No-arg constructor.
+	 */
+	public DNAMatrix() {
+		rows.setParent(this);
 	}
 
 	@Override

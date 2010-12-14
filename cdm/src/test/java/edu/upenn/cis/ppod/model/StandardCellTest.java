@@ -83,9 +83,6 @@ public class StandardCellTest {
 	@Nullable
 	private StandardState state01;
 
-	@Inject
-	private StandardState.IFactory stateFactory;
-
 	@Nullable
 	private Set<StandardState> states;
 
@@ -111,12 +108,12 @@ public class StandardCellTest {
 		states = newHashSet();
 
 		// State 0 of character 0
-		state00 = stateFactory.create(0);
+		state00 = new StandardState(0);
 
 		character0.addState(state00);
 
 		// State 0 of character 1
-		state01 = stateFactory.create(1);
+		state01 = new StandardState(1);
 		character0.addState(state01);
 
 	}
