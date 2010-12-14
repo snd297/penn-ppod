@@ -52,6 +52,19 @@ public class DNASequence
 		extends Sequence<IDNASequenceSet>
 		implements IDNASequence {
 
+	public static class Adapter extends XmlAdapter<DNASequence, IDNASequence> {
+
+		@Override
+		public DNASequence marshal(final IDNASequence sequence) {
+			return (DNASequence) sequence;
+		}
+
+		@Override
+		public IDNASequence unmarshal(final DNASequence sequence) {
+			return sequence;
+		}
+	}
+
 	/**
 	 * The characters that are legal in a {@code DNASequence}.
 	 */
@@ -96,6 +109,11 @@ public class DNASequence
 	@Enumerated(EnumType.ORDINAL)
 	private final List<Double> phredPhrapScores = newArrayList();
 
+	/**
+	 * Default constructor.
+	 */
+	public DNASequence() {}
+
 	@Override
 	public void accept(final IVisitor visitor) {
 		checkNotNull(visitor);
@@ -124,19 +142,6 @@ public class DNASequence
 	public void setParent(
 			@CheckForNull final IDNASequenceSet parent) {
 		this.parent = parent;
-	}
-
-	public static class Adapter extends XmlAdapter<DNASequence, IDNASequence> {
-
-		@Override
-		public DNASequence marshal(final IDNASequence sequence) {
-			return (DNASequence) sequence;
-		}
-
-		@Override
-		public IDNASequence unmarshal(final DNASequence sequence) {
-			return sequence;
-		}
 	}
 
 }

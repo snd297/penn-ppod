@@ -89,8 +89,7 @@ public class MolecularSequenceTest {
 		final IOTU otu0 = new OTU();
 		otuSet.addOTU(otu0);
 
-		final ISequenceSet<IDNASequence> sequenceSet = new DNASequenceSet(
-				new DNASequences());
+		final ISequenceSet<IDNASequence> sequenceSet = new DNASequenceSet();
 
 		sequenceSet.setParent(otuSet);
 

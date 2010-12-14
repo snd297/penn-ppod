@@ -39,7 +39,6 @@ import javax.xml.bind.annotation.adapters.XmlAdapter;
 
 import com.google.common.collect.BiMap;
 import com.google.common.collect.HashBiMap;
-import com.google.inject.Inject;
 
 import edu.upenn.cis.ppod.imodel.IStandardCell;
 import edu.upenn.cis.ppod.imodel.IStandardCharacter;
@@ -88,16 +87,15 @@ public class StandardMatrix
 	@JoinColumn(name = JOIN_COLUMN, nullable = false)
 	private final List<IStandardCharacter> characters = newArrayList();
 
+	/**
+	 * Non-final for JAXB.
+	 */
 	@Embedded
-	private StandardRows rows;
+	private StandardRows rows = new StandardRows();
 
-	/** No-arg constructor for Hibernate. */
-	StandardMatrix() {}
-
-	@Inject
-	StandardMatrix(final StandardRows rows) {
-		this.rows = rows;
-		this.rows.setParent(this);
+	/** No-arg constructor. */
+	public StandardMatrix() {
+		rows.setParent(this);
 	}
 
 	@Override

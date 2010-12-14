@@ -163,10 +163,9 @@ public class OTUSet
 	private final List<ITreeSet> treeSets = newArrayList();
 
 	/**
-	 * Intentionally package-private, to block subclassing outside of this
-	 * package.
+	 * Default constructor.
 	 */
-	OTUSet() {}
+	public OTUSet() {}
 
 	@Override
 	public void accept(final IVisitor visitor) {

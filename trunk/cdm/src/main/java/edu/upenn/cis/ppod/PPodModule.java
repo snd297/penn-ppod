@@ -17,10 +17,14 @@ package edu.upenn.cis.ppod;
 
 import com.google.inject.AbstractModule;
 import com.google.inject.assistedinject.FactoryProvider;
+import com.google.inject.servlet.RequestScoped;
 
 import edu.upenn.cis.ppod.createorupdate.CreateOrUpdateModule;
 import edu.upenn.cis.ppod.dao.hibernate.DAOHibernateModule;
+import edu.upenn.cis.ppod.imodel.INewVersionInfo;
 import edu.upenn.cis.ppod.model.ModelModule;
+import edu.upenn.cis.ppod.model.NewVersionInfoDB;
+import edu.upenn.cis.ppod.persistence.PersistenceModule;
 import edu.upenn.cis.ppod.services.StringPair;
 import edu.upenn.cis.ppod.util.IPair;
 import edu.upenn.cis.ppod.util.Pair;
@@ -42,8 +46,12 @@ public final class PPodModule extends AbstractModule {
 						StringPair.IFactory.class,
 						StringPair.class));
 
+		bind(INewVersionInfo.class).to(NewVersionInfoDB.class).in(
+				RequestScoped.class);
+
 		install(new ModelModule());
 		install(new DAOHibernateModule());
 		install(new CreateOrUpdateModule());
+		install(new PersistenceModule());
 	}
 }

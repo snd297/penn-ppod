@@ -35,7 +35,6 @@ import edu.upenn.cis.ppod.imodel.IStandardCell;
 import edu.upenn.cis.ppod.imodel.IStandardCharacter;
 import edu.upenn.cis.ppod.imodel.IStandardMatrix;
 import edu.upenn.cis.ppod.imodel.IStandardRow;
-import edu.upenn.cis.ppod.imodel.IStandardState;
 import edu.upenn.cis.ppod.imodel.IStudy;
 import edu.upenn.cis.ppod.imodel.ITree;
 import edu.upenn.cis.ppod.imodel.ITreeSet;
@@ -43,7 +42,6 @@ import edu.upenn.cis.ppod.imodel.IUUPPodEntity;
 
 /**
  * @author Sam Donnelly
- * 
  */
 public class ModelModule extends AbstractModule {
 
@@ -61,14 +59,8 @@ public class ModelModule extends AbstractModule {
 	@Override
 	protected void configure() {
 
-		bind(IStandardState.IFactory.class).toProvider(
-				FactoryProvider.newFactory(IStandardState.IFactory.class,
-						StandardState.class));
-
 		bind(IAttachmentNamespace.class).to(AttachmentNamespace.class);
 		bind(IAttachmentType.class).to(AttachmentType.class);
-
-		bind(INewVersionInfo.class).to(NewVersionInfoDB.class);
 
 		bind(Attachment.IIsOfNamespace.IFactory.class)
 				.toProvider(
@@ -92,9 +84,8 @@ public class ModelModule extends AbstractModule {
 	}
 
 	@Provides
-	IDNAMatrix provideDNAMatrix(final INewVersionInfo newVersionInfo,
-			final DNARows rows) {
-		final IDNAMatrix matrix = new DNAMatrix(rows);
+	IDNAMatrix provideDNAMatrix(final INewVersionInfo newVersionInfo) {
+		final IDNAMatrix matrix = new DNAMatrix();
 		prepareUUPPodEntity(matrix, newVersionInfo);
 		matrix.setColumnVersionInfos(
 				newVersionInfo.getNewVersionInfo());
@@ -116,9 +107,8 @@ public class ModelModule extends AbstractModule {
 	}
 
 	@Provides
-	IDNASequenceSet provideDNASequenceSet(final INewVersionInfo newVersionInfo,
-			final DNASequences sequences) {
-		final IDNASequenceSet sequenceSet = new DNASequenceSet(sequences);
+	IDNASequenceSet provideDNASequenceSet(final INewVersionInfo newVersionInfo) {
+		final IDNASequenceSet sequenceSet = new DNASequenceSet();
 		prepareUUPPodEntity(sequenceSet, newVersionInfo);
 		return sequenceSet;
 	}
@@ -153,9 +143,8 @@ public class ModelModule extends AbstractModule {
 	}
 
 	@Provides
-	IStandardMatrix provideStandardMatrix(final INewVersionInfo newVersionInfo,
-			final StandardRows rows) {
-		final IStandardMatrix matrix = new StandardMatrix(rows);
+	IStandardMatrix provideStandardMatrix(final INewVersionInfo newVersionInfo) {
+		final IStandardMatrix matrix = new StandardMatrix();
 		prepareUUPPodEntity(matrix, newVersionInfo);
 		matrix.setColumnVersionInfos(
 				newVersionInfo.getNewVersionInfo());

@@ -44,6 +44,7 @@ import edu.upenn.cis.ppod.imodel.IStandardMatrix;
 import edu.upenn.cis.ppod.imodel.IStandardRow;
 import edu.upenn.cis.ppod.imodel.IStandardState;
 import edu.upenn.cis.ppod.imodel.IWithPPodId;
+import edu.upenn.cis.ppod.model.StandardState;
 
 /**
  * @author Sam Donnelly
@@ -54,7 +55,6 @@ final class CreateOrUpdateStandardMatrix
 		implements ICreateOrUpdateStandardMatrix {
 
 	private final Provider<IStandardCharacter> standardCharacterProvider;
-	private final IStandardState.IFactory standardStateFactory;
 
 	private static Logger logger =
 			LoggerFactory.getLogger(CreateOrUpdateMatrix.class);
@@ -66,7 +66,6 @@ final class CreateOrUpdateStandardMatrix
 			final Provider<IStandardRow> rowProvider,
 			final Provider<IStandardCharacter> characterProvider,
 			final Provider<IStandardCell> cellProvider,
-			final IStandardState.IFactory stateFactory,
 			final Provider<IAttachment> attachmentProvider,
 			final IObjectWithLongIdDAO dao,
 			final IMergeAttachments mergeAttachments,
@@ -74,7 +73,6 @@ final class CreateOrUpdateStandardMatrix
 		super(rowProvider, cellProvider, attachmentProvider, dao,
 				newVersionInfo);
 		this.standardCharacterProvider = characterProvider;
-		this.standardStateFactory = stateFactory;
 		this.newVersionInfo = newVersionInfo;
 	}
 
@@ -121,8 +119,7 @@ final class CreateOrUpdateStandardMatrix
 				IStandardState dbState;
 				if (null == (dbState =
 						newDbCharacter.getState(sourceState.getStateNumber()))) {
-					dbState = standardStateFactory
-							.create(sourceState.getStateNumber());
+					dbState = new StandardState(sourceState.getStateNumber());
 					newDbCharacter.addState(dbState);
 					dbState.setVersionInfo(
 							newVersionInfo.getNewVersionInfo());

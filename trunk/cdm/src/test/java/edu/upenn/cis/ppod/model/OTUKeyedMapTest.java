@@ -39,7 +39,7 @@ public class OTUKeyedMapTest {
 
 	@Test
 	public void clear() {
-		final DNAMatrix matrix = new DNAMatrix(new DNARows());
+		final DNAMatrix matrix = new DNAMatrix();
 		final OTUSet otuSet = new OTUSet();
 		matrix.setParent(otuSet);
 
@@ -82,7 +82,7 @@ public class OTUKeyedMapTest {
 	 */
 	@Test
 	public void clearWhileEmpty() {
-		final DNAMatrix matrix = new DNAMatrix(new DNARows());
+		final DNAMatrix matrix = new DNAMatrix();
 		final DNARows otusToRows = matrix.getOTUKeyedRows();
 		otusToRows.setParent(matrix);
 		matrix.unsetInNeedOfNewVersion();
@@ -93,7 +93,7 @@ public class OTUKeyedMapTest {
 
 	@Test
 	public void accept() {
-		final DNAMatrix matrix = new DNAMatrix(new DNARows());
+		final DNAMatrix matrix = new DNAMatrix();
 
 		final IOTUSet otuSet = new OTUSet();
 		otuSet.addDNAMatrix(matrix);

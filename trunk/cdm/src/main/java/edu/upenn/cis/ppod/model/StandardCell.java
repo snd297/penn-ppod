@@ -118,7 +118,7 @@ public class StandardCell
 	private Set<StandardState> elementsXml;
 
 	/** No-arg constructor for (at least) Hibernate. */
-	StandardCell() {}
+	public StandardCell() {}
 
 	@Override
 	public void accept(final IVisitor visitor) {

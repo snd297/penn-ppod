@@ -75,7 +75,10 @@ public class Tree extends UUPPodEntity implements ITree {
 	@Nullable
 	private ITreeSet parent;
 
-	Tree() {}
+	/**
+	 * For Hibernate.
+	 */
+	public Tree() {}
 
 	@Override
 	public void accept(final IVisitor visitor) {

@@ -28,9 +28,6 @@ import javax.persistence.Table;
 import javax.xml.bind.annotation.XmlAttribute;
 import javax.xml.bind.annotation.adapters.XmlAdapter;
 
-import com.google.inject.Inject;
-import com.google.inject.assistedinject.Assisted;
-
 import edu.umd.cs.findbugs.annotations.CheckForNull;
 import edu.upenn.cis.ppod.imodel.IStandardCharacter;
 import edu.upenn.cis.ppod.imodel.IStandardState;
@@ -50,7 +47,6 @@ import edu.upenn.cis.ppod.util.IVisitor;
 @Entity
 @Table(name = StandardState.TABLE)
 public class StandardState extends PPodEntityWDocId implements IStandardState {
-
 
 	public static class Adapter extends
 			XmlAdapter<StandardState, IStandardState> {
@@ -88,7 +84,7 @@ public class StandardState extends PPodEntityWDocId implements IStandardState {
 	 * of these objects. Write-once-read-many.
 	 */
 	@Column(name = STATE_NUMBER_COLUMN, nullable = false, updatable = false)
-	@CheckForNull
+	@Nullable
 	private Integer stateNumber;
 
 	/**
@@ -96,7 +92,7 @@ public class StandardState extends PPodEntityWDocId implements IStandardState {
 	 * <code>"short"</code>, and <code>"long"</code>
 	 */
 	@Column(name = LABEL_COLUMN, nullable = false)
-	@CheckForNull
+	@Nullable
 	private String label;
 
 	/**
@@ -105,13 +101,15 @@ public class StandardState extends PPodEntityWDocId implements IStandardState {
 	@ManyToOne(fetch = FetchType.LAZY, optional = false,
 			targetEntity = StandardCharacter.class)
 	@JoinColumn(name = StandardCharacter.JOIN_COLUMN)
-	@CheckForNull
+	@Nullable
 	private IStandardCharacter parent;
 
+	/**
+	 * For Hibernate.
+	 */
 	StandardState() {}
 
-	@Inject
-	StandardState(@Assisted final Integer stateNumber) {
+	public StandardState(final Integer stateNumber) {
 		checkNotNull(stateNumber);
 		this.stateNumber = stateNumber;
 	}

@@ -22,9 +22,6 @@ import java.util.Date;
 
 import org.testng.annotations.Test;
 
-import com.google.inject.Inject;
-import com.google.inject.Provider;
-
 import edu.upenn.cis.ppod.TestGroupDefs;
 
 /**
@@ -32,15 +29,12 @@ import edu.upenn.cis.ppod.TestGroupDefs;
  * 
  * @author Sam Donnelly
  */
-@Test(groups = TestGroupDefs.FAST, dependsOnGroups = TestGroupDefs.INIT)
+@Test(groups = TestGroupDefs.FAST)
 public class VersionInfoTest {
-
-	@Inject
-	private Provider<VersionInfo> versionInfoProvider;
 
 	@Test
 	public void getCreated() {
-		final VersionInfo versionInfo = versionInfoProvider.get();
+		final VersionInfo versionInfo = new VersionInfo();
 
 		assertNull(versionInfo.getCreated());
 

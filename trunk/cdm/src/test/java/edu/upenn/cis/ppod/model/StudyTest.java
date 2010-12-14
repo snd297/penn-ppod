@@ -23,8 +23,6 @@ import static org.testng.Assert.assertTrue;
 import org.testng.annotations.Test;
 
 import com.google.common.collect.ImmutableList;
-import com.google.inject.Inject;
-import com.google.inject.Provider;
 
 import edu.upenn.cis.ppod.TestGroupDefs;
 import edu.upenn.cis.ppod.imodel.IOTUSet;
@@ -34,20 +32,15 @@ import edu.upenn.cis.ppod.imodel.IStudy;
  * @author Sam Donnelly
  * 
  */
-@Test(groups = { TestGroupDefs.FAST }, dependsOnGroups = TestGroupDefs.INIT)
+@Test(groups = { TestGroupDefs.FAST })
 public class StudyTest {
-	@Inject
-	private Provider<Study> studyProvider;
-
-	@Inject
-	private Provider<IOTUSet> otuSetProvider;
 
 	@Test
 	public void removeOTUSet() {
-		final IStudy study = studyProvider.get();
-		final IOTUSet otuSet0 = otuSetProvider.get();
-		final IOTUSet otuSet1 = otuSetProvider.get();
-		final IOTUSet otuSet2 = otuSetProvider.get();
+		final IStudy study = new Study();
+		final IOTUSet otuSet0 = new OTUSet();
+		final IOTUSet otuSet1 = new OTUSet();
+		final IOTUSet otuSet2 = new OTUSet();
 		study.addOTUSet(otuSet0);
 		study.addOTUSet(otuSet1);
 		study.addOTUSet(otuSet2);
@@ -63,7 +56,7 @@ public class StudyTest {
 
 	@Test
 	public void setLabel() {
-		final IStudy study = studyProvider.get();
+		final IStudy study = new Study();
 		study.unsetInNeedOfNewVersion();
 		final String label = "otu-set-label";
 		study.setLabel(label);
@@ -81,16 +74,16 @@ public class StudyTest {
 
 	@Test(expectedExceptions = IllegalArgumentException.class)
 	public void addOTUSetWAlreadyContainedOTUSet() {
-		final IStudy study = studyProvider.get();
-		final IOTUSet otuSet0 = otuSetProvider.get();
+		final IStudy study = new Study();
+		final IOTUSet otuSet0 = new OTUSet();
 		study.addOTUSet(otuSet0);
 		study.addOTUSet(otuSet0);
 	}
 
 	@Test
 	public void addOTUSet() {
-		final IStudy study = studyProvider.get();
-		final IOTUSet otuSet0 = otuSetProvider.get();
+		final IStudy study = new Study();
+		final IOTUSet otuSet0 = new OTUSet();
 
 		study.unsetInNeedOfNewVersion();
 
@@ -103,11 +96,11 @@ public class StudyTest {
 
 	@Test
 	public void addOTUSetPos() {
-		final IStudy study = studyProvider.get();
-		final IOTUSet otuSet0 = otuSetProvider.get();
-		final IOTUSet otuSet1 = otuSetProvider.get();
-		final IOTUSet otuSet2 = otuSetProvider.get();
-		final IOTUSet otuSet3 = otuSetProvider.get();
+		final IStudy study = new Study();
+		final IOTUSet otuSet0 = new OTUSet();
+		final IOTUSet otuSet1 = new OTUSet();
+		final IOTUSet otuSet2 = new OTUSet();
+		final IOTUSet otuSet3 = new OTUSet();
 
 		study.addOTUSet(otuSet0);
 		study.addOTUSet(otuSet1);

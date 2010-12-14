@@ -18,7 +18,6 @@ package edu.upenn.cis.ppod.model;
 import java.util.Date;
 
 import com.google.inject.Inject;
-import com.google.inject.servlet.RequestScoped;
 
 import edu.upenn.cis.ppod.dao.IVersionInfoDAO;
 import edu.upenn.cis.ppod.imodel.INewVersionInfo;
@@ -29,8 +28,7 @@ import edu.upenn.cis.ppod.imodel.INewVersionInfo;
  * 
  * @author Sam Donnelly
  */
-@RequestScoped
-final class NewVersionInfoDB implements
+public final class NewVersionInfoDB implements
 		INewVersionInfo {
 
 	private final VersionInfo newVersionInfo;

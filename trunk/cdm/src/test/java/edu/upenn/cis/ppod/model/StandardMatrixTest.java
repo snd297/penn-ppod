@@ -32,13 +32,11 @@ import org.testng.annotations.BeforeMethod;
 import org.testng.annotations.Test;
 
 import com.google.common.collect.ImmutableList;
-import com.google.common.collect.ImmutableSet;
 import com.google.inject.Inject;
 import com.google.inject.Provider;
 
 import edu.upenn.cis.ppod.TestGroupDefs;
 import edu.upenn.cis.ppod.imodel.IOTUSet;
-import edu.upenn.cis.ppod.imodel.IStandardMatrix;
 import edu.upenn.cis.ppod.imodel.IStandardRow;
 import edu.upenn.cis.ppod.imodel.IStandardState;
 
@@ -47,32 +45,8 @@ import edu.upenn.cis.ppod.imodel.IStandardState;
  * 
  * @author Sam Donnelly
  */
-@Test(groups = TestGroupDefs.FAST, dependsOnGroups = TestGroupDefs.INIT)
+@Test(groups = TestGroupDefs.FAST)
 public class StandardMatrixTest {
-
-	@Inject
-	private Provider<IOTUSet> otuSetProvider;
-
-	@Inject
-	private Provider<OTU> otuProvider;
-
-	@Inject
-	private VersionInfo versionInfo;
-
-	@Inject
-	private Provider<StandardMatrix> matrixProvider;
-
-	@Inject
-	private Provider<StandardCharacter> characterProvider;
-
-	@Inject
-	private Provider<StandardRow> rowProvider;
-
-	@Inject
-	private Provider<StandardCell> cellProvider;
-
-	@Inject
-	private StandardState.IFactory stateFactory;
 
 	@edu.umd.cs.findbugs.annotations.SuppressWarnings
 	private IOTUSet otuSet012;
@@ -85,13 +59,18 @@ public class StandardMatrixTest {
 
 	@BeforeMethod
 	public void beforeMethod() {
-		matrix = matrixProvider.get();
+		matrix = new StandardMatrix();
 
-		otu0 = otuProvider.get().setLabel("otu0");
-		otu1 = otuProvider.get().setLabel("otu1");
-		otu2 = otuProvider.get().setLabel("otu2");
+		otu0 = new OTU();
+		otu0.setLabel("otu0");
 
-		otuSet012 = otuSetProvider.get();
+		otu1 = new OTU();
+		otu1.setLabel("otu1");
+
+		otu2 = new OTU();
+		otu2.setLabel("otu2");
+
+		otuSet012 = new OTUSet();
 		otuSet012.setOTUs(newArrayList(otu0, otu1, otu2));
 
 		otuSet012.addStandardMatrix(matrix);
@@ -101,36 +80,36 @@ public class StandardMatrixTest {
 	@Test
 	public void setOTUsWReorderedOTUs() {
 
-		final StandardCharacter standardCharacter = characterProvider.get();
+		final StandardCharacter standardCharacter = new StandardCharacter();
 		standardCharacter.setLabel("testLabel");
 		matrix.setCharacters(newArrayList(standardCharacter));
 
-		matrix.putRow(otu0, rowProvider.get());
-		final StandardCell cell00 = cellProvider.get();
+		matrix.putRow(otu0, new StandardRow());
+		final StandardCell cell00 = new StandardCell();
 		matrix.getRows().get(otu0).setCells(
 				Arrays.asList(new StandardCell[] { cell00 }));
-		standardCharacter.addState(stateFactory.create(0));
+		standardCharacter.addState(new StandardState(0));
 
 		final IStandardState state = standardCharacter.getState(0);
 		assertNotNull(state);
 
 		cell00.setSingleWithStateNo(state.getStateNumber());
 
-		matrix.putRow(otu1, rowProvider.get());
-		final StandardCell cell10 = cellProvider.get();
+		matrix.putRow(otu1, new StandardRow());
+		final StandardCell cell10 = new StandardCell();
 		matrix.getRows().get(otu1).setCells(
 				Arrays.asList(new StandardCell[] { cell10 }));
 
-		final IStandardState state1 = stateFactory.create(1);
+		final IStandardState state1 = new StandardState(1);
 		standardCharacter.addState(state1);
 		cell10.setSingleWithStateNo(state1.getStateNumber());
 
-		matrix.putRow(otu2, rowProvider.get());
-		final StandardCell cell20 = cellProvider.get();
+		matrix.putRow(otu2, new StandardRow());
+		final StandardCell cell20 = new StandardCell();
 		matrix.getRows().get(otu2).setCells(
 				Arrays.asList(new StandardCell[] { cell20 }));
 
-		final IStandardState state0 = stateFactory.create(0);
+		final IStandardState state0 = new StandardState(0);
 		standardCharacter.addState(state0);
 		cell20.setSingleWithStateNo(state0.getStateNumber());
 
@@ -163,9 +142,9 @@ public class StandardMatrixTest {
 
 		final ImmutableList<StandardCharacter> standardCharacters =
 				ImmutableList.of(
-						characterProvider.get(),
-						characterProvider.get(),
-						characterProvider.get());
+						new StandardCharacter(),
+						new StandardCharacter(),
+						new StandardCharacter());
 
 		standardCharacters.get(0).setLabel("character-0");
 		standardCharacters.get(1).setLabel("character-1");
@@ -196,9 +175,9 @@ public class StandardMatrixTest {
 	public void moveCharacter() {
 		final ImmutableList<StandardCharacter> standardCharacters =
 				ImmutableList.of(
-						characterProvider.get(),
-						characterProvider.get(),
-						characterProvider.get());
+						new StandardCharacter(),
+						new StandardCharacter(),
+						new StandardCharacter());
 
 		standardCharacters.get(0).setLabel("character-0");
 		standardCharacters.get(1).setLabel("character-1");
@@ -232,9 +211,9 @@ public class StandardMatrixTest {
 	public void replaceCharacters() {
 		final ImmutableList<StandardCharacter> characters =
 				ImmutableList.of(
-						characterProvider.get(),
-						characterProvider.get(),
-						characterProvider.get());
+						new StandardCharacter(),
+						new StandardCharacter(),
+						new StandardCharacter());
 
 		characters.get(0).setLabel("character-0");
 		characters.get(1).setLabel("character-1");
@@ -252,9 +231,9 @@ public class StandardMatrixTest {
 
 		final ImmutableList<StandardCharacter> characters2 =
 				ImmutableList.of(
-						characterProvider.get(),
-						characterProvider.get(),
-						characterProvider.get());
+						new StandardCharacter(),
+						new StandardCharacter(),
+						new StandardCharacter());
 
 		characters.get(0).setLabel("character-2-0");
 		characters.get(1).setLabel("character-2-1");
@@ -283,9 +262,9 @@ public class StandardMatrixTest {
 	public void setCharactersWithEqualsCharacters() {
 		final ImmutableList<StandardCharacter> characters =
 				ImmutableList.of(
-						characterProvider.get(),
-						characterProvider.get(),
-						characterProvider.get());
+						new StandardCharacter(),
+						new StandardCharacter(),
+						new StandardCharacter());
 
 		characters.get(0).setLabel("character-0");
 		characters.get(1).setLabel("character-1");
@@ -307,9 +286,9 @@ public class StandardMatrixTest {
 	 */
 	@Test
 	public void setWithSameRow() {
-		final IStandardRow row1 = rowProvider.get();
+		final IStandardRow row1 = new StandardRow();
 		matrix.putRow(otu1, row1);
-		matrix.setVersionInfo(versionInfo);
+		matrix.setVersionInfo(new VersionInfo());
 		matrix.putRow(otu1, row1);
 		assertFalse(matrix.isInNeedOfNewVersion());
 	}
@@ -337,9 +316,9 @@ public class StandardMatrixTest {
 	 */
 	@Test
 	public void replaceRow() {
-		final StandardRow row1 = rowProvider.get();
+		final StandardRow row1 = new StandardRow();
 		matrix.putRow(otu1, row1);
-		final IStandardRow row2 = rowProvider.get();
+		final IStandardRow row2 = new StandardRow();
 		final IStandardRow someRow = matrix.putRow(otu1, row2);
 		assertEquals(someRow, row1);
 		assertNull(row1.getParent());
@@ -353,9 +332,9 @@ public class StandardMatrixTest {
 
 		final ImmutableList<StandardCharacter> characters =
 				ImmutableList.of(
-						characterProvider.get(),
-						characterProvider.get(),
-						characterProvider.get());
+						new StandardCharacter(),
+						new StandardCharacter(),
+						new StandardCharacter());
 
 		characters.get(0).setLabel("character-0");
 		characters.get(1).setLabel("character-1");
@@ -387,9 +366,9 @@ public class StandardMatrixTest {
 
 	@Test(expectedExceptions = IllegalArgumentException.class)
 	public void setCharactersW2EqualsCharacters() {
-		final StandardCharacter character0 = characterProvider.get();
+		final StandardCharacter character0 = new StandardCharacter();
 		character0.setLabel("character0");
-		final StandardCharacter character1 = characterProvider.get();
+		final StandardCharacter character1 = new StandardCharacter();
 		character1.setLabel("character1");
 
 		final ImmutableList<StandardCharacter> standardCharacters = ImmutableList

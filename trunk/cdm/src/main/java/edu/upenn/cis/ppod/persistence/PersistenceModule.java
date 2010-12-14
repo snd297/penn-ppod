@@ -10,7 +10,6 @@ import com.google.inject.Provides;
 public class PersistenceModule extends AbstractModule {
 	@Override
 	protected void configure() {
-
 		bind(SessionFactory.class)
 				.toProvider(SessionFactoryProvider.class)
 				.asEagerSingleton();

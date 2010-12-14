@@ -84,7 +84,7 @@ public class OTU
 			updatable = false, nullable = false)
 	private IOTUSet parent;
 
-	OTU() {}
+	public OTU() {}
 
 	@Override
 	public void accept(final IVisitor visitor) {
