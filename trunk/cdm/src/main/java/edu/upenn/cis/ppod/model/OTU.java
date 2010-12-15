@@ -110,6 +110,7 @@ public class OTU
 	 * @return the label of this {@code OTU}
 	 */
 	@XmlAttribute
+	@Nullable
 	public String getLabel() {
 		return label;
 	}
@@ -121,6 +122,7 @@ public class OTU
 	 * 
 	 * @return the {@code OTUSet} that owns this {@code OTU}
 	 */
+	@Nullable
 	public IOTUSet getParent() {
 		return (IOTUSet) parent;
 	}

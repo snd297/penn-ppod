@@ -26,6 +26,12 @@ import edu.upenn.cis.ppod.imodel.IOTU;
  */
 public class OTUKeyedPair<U> extends Pair<IOTU, U> {
 
+	protected OTUKeyedPair() {}
+
+	public OTUKeyedPair(final IOTU first, final U second) {
+		super(first, second);
+	}
+
 	@XmlElement
 	@XmlIDREF
 	@Override
@@ -37,8 +43,8 @@ public class OTUKeyedPair<U> extends Pair<IOTU, U> {
 	 * This seemingly redundant setter method added for the sake of JAXB.
 	 */
 	@Override
-	public OTUKeyedPair<U> setFirst(final IOTU otu) {
-		return (OTUKeyedPair<U>) super.setFirst(otu);
+	protected void setFirst(final IOTU otu) {
+		super.setFirst(otu);
 	}
 
 }

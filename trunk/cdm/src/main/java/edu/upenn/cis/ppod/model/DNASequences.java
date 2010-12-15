@@ -80,7 +80,7 @@ public class DNASequences
 		for (final Map.Entry<IOTU, IDNASequence> otuToRow : getValues()
 				.entrySet()) {
 			getOTUSomethingPairs().add(
-					OTUDNASequencePair.of(otuToRow.getKey(), otuToRow
+					new OTUDNASequencePair(otuToRow.getKey(), otuToRow
 							.getValue()));
 		}
 		return true;
@@ -105,7 +105,8 @@ public class DNASequences
 		return sequences.getParent();
 	}
 
-	@OneToMany(cascade = CascadeType.ALL, orphanRemoval = true, targetEntity = DNASequence.class)
+	@OneToMany(cascade = CascadeType.ALL, orphanRemoval = true,
+			targetEntity = DNASequence.class)
 	@JoinTable(inverseJoinColumns = @JoinColumn(name = DNASequence.JOIN_COLUMN))
 	@MapKeyJoinColumn(name = OTU.JOIN_COLUMN)
 	@MapKeyClass(OTU.class)

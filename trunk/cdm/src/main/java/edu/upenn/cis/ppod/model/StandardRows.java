@@ -83,7 +83,7 @@ public class StandardRows
 		for (final Map.Entry<IOTU, IStandardRow> otuToRow : getValues()
 				.entrySet()) {
 			getOTUSomethingPairs().add(
-					OTUStandardRowPair.of(otuToRow.getKey(),
+					new OTUStandardRowPair(otuToRow.getKey(),
 							otuToRow.getValue()));
 		}
 		return true;

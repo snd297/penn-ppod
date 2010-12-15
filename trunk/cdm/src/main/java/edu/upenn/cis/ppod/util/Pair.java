@@ -20,8 +20,6 @@ import javax.xml.bind.annotation.XmlAccessType;
 import javax.xml.bind.annotation.XmlAccessorType;
 
 import com.google.common.base.Function;
-import com.google.inject.Inject;
-import com.google.inject.assistedinject.Assisted;
 
 /**
  * {@code IPair} implementation.
@@ -31,7 +29,24 @@ import com.google.inject.assistedinject.Assisted;
 @XmlAccessorType(XmlAccessType.NONE)
 public class Pair<T, U> implements IPair<T, U> {
 
+	/**
+	 * Turn an {@link IPair} into an {@link Pair}.
+	 */
+	public static final Function<IPair<String, String>, Pair<String, String>> of = new Function<IPair<String, String>, Pair<String, String>>() {
+		public Pair<String, String> apply(final IPair<String, String> from) {
+			return Pair.of(from);
+		}
+	};
+
 	static public <T, U> Pair<T, U> newPair(final T first, final U second) {
+		return new Pair<T, U>(first, second);
+	}
+
+	public static <T, U> Pair<T, U> of(final IPair<T, U> orderedPair) {
+		return new Pair<T, U>(orderedPair.getFirst(), orderedPair.getSecond());
+	}
+
+	public static <T, U> Pair<T, U> of(final T first, final U second) {
 		return new Pair<T, U>(first, second);
 	}
 
@@ -39,10 +54,12 @@ public class Pair<T, U> implements IPair<T, U> {
 
 	private U second;
 
+	/**
+	 * For JAXB.
+	 */
 	protected Pair() {}
 
-	@Inject
-	protected Pair(@Assisted final T first, @Assisted final U second) {
+	public Pair(final T first, final U second) {
 		this.first = first;
 		this.second = second;
 	}
@@ -57,12 +74,11 @@ public class Pair<T, U> implements IPair<T, U> {
 		return second;
 	}
 
-	public Pair<T, U> setFirst(final T first) {
+	protected void setFirst(final T first) {
 		this.first = first;
-		return this;
 	}
 
-	public void setSecond(final U second) {
+	protected void setSecond(final U second) {
 		this.second = second;
 	}
 
@@ -75,7 +91,7 @@ public class Pair<T, U> implements IPair<T, U> {
 	public String toString() {
 		final String TAB = " ";
 
-		StringBuilder retValue = new StringBuilder();
+		final StringBuilder retValue = new StringBuilder();
 
 		retValue.append("Pair(").append(super.toString()).append(TAB).append(
 				"first=").append(this.first).append(TAB).append("second=")
@@ -83,21 +99,4 @@ public class Pair<T, U> implements IPair<T, U> {
 
 		return retValue.toString();
 	}
-
-	public static <T, U> Pair<T, U> of(final IPair<T, U> orderedPair) {
-		return new Pair<T, U>(orderedPair.getFirst(), orderedPair.getSecond());
-	}
-
-	public static <T, U> Pair<T, U> of(final T first, final U second) {
-		return new Pair<T, U>(first, second);
-	}
-
-	/**
-	 * Turn an {@link IPair} into an {@link Pair}.
-	 */
-	public static final Function<IPair<String, String>, Pair<String, String>> of = new Function<IPair<String, String>, Pair<String, String>>() {
-		public Pair<String, String> apply(final IPair<String, String> from) {
-			return Pair.of(from);
-		}
-	};
 }
