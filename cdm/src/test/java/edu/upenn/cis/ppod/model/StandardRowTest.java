@@ -27,8 +27,6 @@ import org.testng.annotations.BeforeMethod;
 import org.testng.annotations.Test;
 
 import com.google.common.collect.ImmutableList;
-import com.google.inject.Inject;
-import com.google.inject.Provider;
 
 import edu.upenn.cis.ppod.TestGroupDefs;
 import edu.upenn.cis.ppod.imodel.IOTU;
@@ -41,26 +39,8 @@ import edu.upenn.cis.ppod.imodel.IStandardRow;
  * @author Sam Donnelly
  * 
  */
-@Test(groups = TestGroupDefs.FAST, dependsOnGroups = TestGroupDefs.INIT)
+@Test(groups = TestGroupDefs.FAST)
 public class StandardRowTest {
-
-	@Inject
-	private Provider<StandardMatrix> matrixProvider;
-
-	@Inject
-	private Provider<OTUSet> otuSetProvider;
-
-	@Inject
-	private Provider<OTU> otuProvider;
-
-	@Inject
-	private Provider<StandardCharacter> characterProvider;
-
-	@Inject
-	private Provider<StandardRow> rowProvider;
-
-	@Inject
-	private Provider<StandardCell> cellProvider;
 
 	private List<IOTU> otus;
 
@@ -68,20 +48,20 @@ public class StandardRowTest {
 
 	@BeforeMethod
 	public void beforeMethod() {
-		matrix = matrixProvider.get();
-		matrix.setParent(otuSetProvider.get());
+		matrix = new StandardMatrix();
+		matrix.setParent(new OTUSet());
 		otus = newArrayList();
-		otus.add(otuProvider.get().setLabel("OTU-0"));
+		otus.add(new OTU().setLabel("OTU-0"));
 		matrix.getParent().setOTUs(newArrayList(otus.get(0)));
-		matrix.putRow(otus.get(0), rowProvider.get());
-		final IStandardCharacter character0 = characterProvider.get();
+		matrix.putRow(otus.get(0), new StandardRow());
+		final IStandardCharacter character0 = new StandardCharacter();
 		character0.setLabel("character-0");
 		matrix.setCharacters(newArrayList(character0));
 	}
 
 	@Test
 	public void addCellToMatrixWOneCharacter() {
-		final StandardCell cell = cellProvider.get();
+		final StandardCell cell = new StandardCell();
 		cell.setUnassigned();
 		matrix.getRows().get(matrix.getParent().getOTUs().get(0)).setCells(
 				Arrays.asList(cell));
@@ -92,21 +72,22 @@ public class StandardRowTest {
 
 	@Test
 	void setCells() {
-		matrix = matrixProvider.get();
-		matrix.setParent(otuSetProvider.get());
+		matrix = new StandardMatrix();
+		matrix.setParent(new OTUSet());
 		otus = newArrayList();
-		final IOTU otu0 = otuProvider.get().setLabel("OTU-0");
+		final IOTU otu0 = new OTU();
+		otu0.setLabel("OTU-0");
 		otus.add(otu0);
 		matrix.getParent().setOTUs(newArrayList(otus.get(0)));
-		matrix.putRow(otus.get(0), rowProvider.get());
+		matrix.putRow(otus.get(0), new StandardRow());
 
 		final IStandardRow row = matrix.getRows().get(otu0);
 
 		final ImmutableList<StandardCharacter> characters =
 				ImmutableList.of(
-						characterProvider.get(),
-						characterProvider.get(),
-						characterProvider.get());
+						new StandardCharacter(),
+						new StandardCharacter(),
+						new StandardCharacter());
 
 		characters.get(0).setLabel("character-0");
 		characters.get(1).setLabel("character-1");
@@ -115,8 +96,8 @@ public class StandardRowTest {
 		matrix.setCharacters(characters);
 
 		final List<StandardCell> cells =
-				ImmutableList.of(cellProvider.get(), cellProvider.get(),
-						cellProvider.get());
+				ImmutableList.of(new StandardCell(), new StandardCell(),
+						new StandardCell());
 		row.setCells(cells);
 		assertEquals(row.getCells(), cells);
 
@@ -128,9 +109,9 @@ public class StandardRowTest {
 		// Just call setUnassigned so that the cell is in a legal state - it
 		// shouldn't really matterJust call setUnassigned so that the cell is in
 		// a legal state - it shouldn't really matter
-		final StandardCell cell = cellProvider.get();
+		final StandardCell cell = new StandardCell();
 		cell.setUnassigned();
-		rowProvider.get().setCells(Arrays.asList(cell));
+		new StandardRow().setCells(Arrays.asList(cell));
 	}
 
 	@Test(expectedExceptions = IllegalStateException.class)
@@ -143,7 +124,7 @@ public class StandardRowTest {
 
 		// Just call setUnassigned so that the cell is in a legal state - it
 		// shouldn't really matter.
-		final StandardCell cell = cellProvider.get();
+		final StandardCell cell = new StandardCell();
 		cell.setUnassigned();
 		matrix.getRows().get(
 				matrix.getParent().getOTUs().get(0))
@@ -152,10 +133,10 @@ public class StandardRowTest {
 
 	@Test(expectedExceptions = IllegalStateException.class)
 	public void addCellToMatrixWTooFewCharacters() {
-		final StandardCell cell0 = cellProvider.get();
+		final StandardCell cell0 = new StandardCell();
 		cell0.setUnassigned();
 
-		final StandardCell cell1 = cellProvider.get();
+		final StandardCell cell1 = new StandardCell();
 		cell1.setUnassigned();
 		final List<StandardCell> cells =
 				newArrayList(cell0, cell1);

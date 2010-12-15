@@ -81,7 +81,7 @@ public class DNARows implements IOTUKeyedMap<IDNARow> {
 		for (final Map.Entry<IOTU, IDNARow> otuToRow : getValues()
 				.entrySet()) {
 			getOTUSomethingPairs().add(
-					OTUDNARowPair.of(otuToRow.getKey(), otuToRow
+					new OTUDNARowPair(otuToRow.getKey(), otuToRow
 							.getValue()));
 		}
 		return true;

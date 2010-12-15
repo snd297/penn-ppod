@@ -15,8 +15,6 @@
  */
 package edu.upenn.cis.ppod.util;
 
-import javax.xml.bind.annotation.XmlAccessType;
-import javax.xml.bind.annotation.XmlAccessorType;
 import javax.xml.bind.annotation.XmlElement;
 
 import edu.upenn.cis.ppod.imodel.IOTU;
@@ -25,13 +23,17 @@ import edu.upenn.cis.ppod.imodel.IStandardRow;
 /**
  * @author Sam Donnelly
  */
-@XmlAccessorType(XmlAccessType.NONE)
 public class OTUStandardRowPair
 		extends OTUKeyedPair<IStandardRow> {
+
 	/**
 	 * For JAXB.
 	 */
-	private OTUStandardRowPair() {}
+	protected OTUStandardRowPair() {}
+
+	public OTUStandardRowPair(final IOTU first, final IStandardRow second) {
+		super(first, second);
+	}
 
 	@XmlElement
 	@Override
@@ -43,18 +45,9 @@ public class OTUStandardRowPair
 	 * This seemingly redundant setter method added for the sake of JAXB.
 	 */
 	@Override
-	public void setSecond(
+	protected void setSecond(
 			final IStandardRow row) {
 		super.setSecond(row);
-	}
-
-	public static OTUStandardRowPair of(
-			final IOTU first,
-			final IStandardRow second) {
-		final OTUStandardRowPair otuRowPair = new OTUStandardRowPair();
-		otuRowPair.setFirst(first);
-		otuRowPair.setSecond(second);
-		return otuRowPair;
 	}
 
 }

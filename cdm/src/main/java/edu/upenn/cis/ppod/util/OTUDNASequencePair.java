@@ -22,13 +22,17 @@ import edu.upenn.cis.ppod.imodel.IOTU;
 
 /**
  * @author Sam Donnelly
- * 
  */
 public class OTUDNASequencePair extends OTUKeyedPair<IDNASequence> {
+
 	/**
-	 * For JAXB.
+	 * For JAXB
 	 */
-	private OTUDNASequencePair() {}
+	protected OTUDNASequencePair() {}
+
+	public OTUDNASequencePair(final IOTU first, final IDNASequence second) {
+		super(first, second);
+	}
 
 	@XmlElement
 	@Override
@@ -40,16 +44,7 @@ public class OTUDNASequencePair extends OTUKeyedPair<IDNASequence> {
 	 * This seemingly redundant setter method added for the sake of JAXB.
 	 */
 	@Override
-	public void setSecond(final IDNASequence sequence) {
+	protected void setSecond(final IDNASequence sequence) {
 		super.setSecond(sequence);
-	}
-
-	public static OTUDNASequencePair of(
-			final IOTU first,
-			final IDNASequence second) {
-		final OTUDNASequencePair otuSequencePair = new OTUDNASequencePair();
-		otuSequencePair.setFirst(first);
-		otuSequencePair.setSecond(second);
-		return otuSequencePair;
 	}
 }

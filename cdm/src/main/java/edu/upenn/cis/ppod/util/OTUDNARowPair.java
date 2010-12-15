@@ -20,11 +20,17 @@ import javax.xml.bind.annotation.XmlElement;
 import edu.upenn.cis.ppod.imodel.IDNARow;
 import edu.upenn.cis.ppod.imodel.IOTU;
 
-/**
- * @author Sam Donnelly
- */
 public class OTUDNARowPair extends
 		OTUKeyedPair<IDNARow> {
+
+	/**
+	 * For JAXB.
+	 */
+	protected OTUDNARowPair() {}
+
+	public OTUDNARowPair(final IOTU first, final IDNARow second) {
+		super(first, second);
+	}
 
 	@XmlElement
 	@Override
@@ -36,17 +42,9 @@ public class OTUDNARowPair extends
 	 * This seemingly redundant setter method added for the sake of JAXB.
 	 */
 	@Override
-	public void setSecond(
+	protected void setSecond(
 			final IDNARow row) {
 		super.setSecond(row);
 	}
 
-	public static OTUDNARowPair of(
-			final IOTU first,
-			final IDNARow second) {
-		final OTUDNARowPair otuRowPair = new OTUDNARowPair();
-		otuRowPair.setFirst(first);
-		otuRowPair.setSecond(second);
-		return otuRowPair;
-	}
 }
