@@ -93,7 +93,7 @@ public class TreeSet
 	@JoinColumn(name = JOIN_COLUMN, nullable = false)
 	private final List<ITree> trees = newArrayList();
 
-	TreeSet() {}
+	public TreeSet() {}
 
 	@Override
 	public void accept(final IVisitor visitor) {

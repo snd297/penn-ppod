@@ -103,7 +103,7 @@ public class DNACell
 	@Nullable
 	private IDNARow parent;
 
-	DNACell() {}
+	public DNACell() {}
 
 	@Override
 	public void accept(final IVisitor visitor) {
