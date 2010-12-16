@@ -20,36 +20,27 @@ import static com.google.common.collect.Iterables.get;
 import static com.google.common.collect.Iterables.getOnlyElement;
 
 import com.google.inject.Inject;
-import com.google.inject.Provider;
 
 import edu.upenn.cis.ppod.dao.IObjectWithLongIdDAO;
 import edu.upenn.cis.ppod.imodel.DNANucleotide;
-import edu.upenn.cis.ppod.imodel.IAttachment;
 import edu.upenn.cis.ppod.imodel.ICell;
 import edu.upenn.cis.ppod.imodel.IDNACell;
 import edu.upenn.cis.ppod.imodel.IDNAMatrix;
 import edu.upenn.cis.ppod.imodel.IDNARow;
 import edu.upenn.cis.ppod.imodel.INewVersionInfo;
-import edu.upenn.cis.ppod.services.ppodentity.MatrixInfo;
+import edu.upenn.cis.ppod.model.ModelFactory;
+import edu.upenn.cis.ppod.model.VersionInfo;
 
-final class CreateOrUpdateDNAMatrix
+class CreateOrUpdateDNAMatrix
 		extends
 		CreateOrUpdateMatrix<IDNAMatrix, IDNARow, IDNACell, DNANucleotide>
 		implements ICreateOrUpdateDNAMatrix {
 
 	@Inject
 	CreateOrUpdateDNAMatrix(
-			final Provider<IDNARow> rowProvider,
-			final Provider<IDNACell> cellProvider,
-			final Provider<IAttachment> attachmentProvider,
-			final Provider<MatrixInfo> matrixInfoProvider,
 			final IObjectWithLongIdDAO dao,
 			final INewVersionInfo newVersionInfo) {
-
 		super(
-				rowProvider,
-				cellProvider,
-				attachmentProvider,
 				dao,
 				newVersionInfo);
 
@@ -83,7 +74,7 @@ final class CreateOrUpdateDNAMatrix
 	}
 
 	@Override
-	void handlePolymorphicCell(final IDNACell targetCell,
+	protected void handlePolymorphicCell(final IDNACell targetCell,
 			final IDNACell sourceCell) {
 		checkArgument(sourceCell.getType() == ICell.Type.POLYMORPHIC);
 		targetCell.setPolymorphicElements(
@@ -92,7 +83,8 @@ final class CreateOrUpdateDNAMatrix
 	}
 
 	@Override
-	void handleSingleCell(final IDNACell targetCell, final IDNACell sourceCell) {
+	protected void handleSingleCell(final IDNACell targetCell,
+			final IDNACell sourceCell) {
 		checkArgument(sourceCell.getType() == ICell.Type.SINGLE);
 		targetCell.setSingleElement(
 				getOnlyElement(sourceCell.getElements()),
@@ -100,9 +92,19 @@ final class CreateOrUpdateDNAMatrix
 	}
 
 	@Override
-	void handleUncertainCell(final IDNACell targetCell,
+	protected void handleUncertainCell(final IDNACell targetCell,
 			final IDNACell sourceCell) {
 		checkArgument(sourceCell.getType() == ICell.Type.UNCERTAIN);
 		targetCell.setUncertainElements(sourceCell.getElements());
+	}
+
+	@Override
+	protected IDNACell newC(final VersionInfo versionInfo) {
+		return ModelFactory.newDNACell(versionInfo);
+	}
+
+	@Override
+	protected IDNARow newR(final VersionInfo versionInfo) {
+		return ModelFactory.newDNARow(versionInfo);
 	}
 }

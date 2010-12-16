@@ -23,20 +23,20 @@ import static com.google.common.collect.Sets.newHashSet;
 import java.util.Set;
 
 import com.google.inject.Inject;
-import com.google.inject.Provider;
 
 import edu.upenn.cis.ppod.dao.IAttachmentNamespaceDAO;
 import edu.upenn.cis.ppod.dao.IAttachmentTypeDAO;
 import edu.upenn.cis.ppod.dao.IObjectWithLongIdDAO;
 import edu.upenn.cis.ppod.dao.IStudyDAO;
 import edu.upenn.cis.ppod.imodel.IDNAMatrix;
-import edu.upenn.cis.ppod.imodel.IDNASequence;
 import edu.upenn.cis.ppod.imodel.IDNASequenceSet;
+import edu.upenn.cis.ppod.imodel.INewVersionInfo;
 import edu.upenn.cis.ppod.imodel.IOTUSet;
 import edu.upenn.cis.ppod.imodel.IStandardMatrix;
 import edu.upenn.cis.ppod.imodel.IStudy;
 import edu.upenn.cis.ppod.imodel.ITreeSet;
 import edu.upenn.cis.ppod.imodel.IWithPPodId;
+import edu.upenn.cis.ppod.model.ModelFactory;
 
 /**
  * Create a new study or update an existing one.
@@ -46,52 +46,34 @@ import edu.upenn.cis.ppod.imodel.IWithPPodId;
 final class CreateOrUpdateStudy implements ICreateOrUpdateStudy {
 
 	private final IStudyDAO studyDAO;
-
-	private final Provider<IStudy> studyProvider;
-	private final Provider<IOTUSet> otuSetProvider;
-	private final Provider<IStandardMatrix> standardMatrixProvider;
-	private final Provider<IDNAMatrix> dnaMatrixProvider;
-	private final Provider<IDNASequenceSet> dnaSequenceSetProvider;
-	private final Provider<ITreeSet> treeSetProvider;
-
-	private final IMergeOTUSets mergeOTUSets;
-	private final ICreateOrUpdateStandardMatrix createOrUpdateStandardMatrix;
-	private final IMergeTreeSets mergeTreeSets;
-	private final IMergeSequenceSets<IDNASequenceSet, IDNASequence> mergeDNASequenceSets;
-	private final ICreateOrUpdateDNAMatrix createOrUpdateDNAMatrix;
 	private final IObjectWithLongIdDAO dao;
+	private final INewVersionInfo newVersionInfo;
+	private final MergeOTUSets mergeOTUSets;
+	private CreateOrUpdateDNAMatrix createOrUpdateDNAMatrix;
+	private MergeDNASequenceSets mergeDNASequenceSets;
+	private CreateOrUpdateStandardMatrix createOrUpdateStandardMatrix;
+	private MergeTreeSets mergeTreeSets;
 
 	@Inject
 	CreateOrUpdateStudy(
-			final Provider<IStudy> studyProvider,
-			final Provider<IOTUSet> otuSetProvider,
-			final Provider<IStandardMatrix> standardMatrix,
-			final Provider<IDNASequenceSet> dnaSequenceSetProvider,
-			final Provider<ITreeSet> treeSetProvider,
-			final IMergeOTUSets mergeOTUSets,
-			final IMergeTreeSets mergeTreeSets,
-			final ICreateOrUpdateDNAMatrix createOrUpdateDNAMatrix,
-			final ICreateOrUpdateStandardMatrix createOrUpdateMatrix,
-			final IMergeSequenceSets<IDNASequenceSet, IDNASequence> mergeDNASequenceSets,
-			final Provider<IDNAMatrix> dnaMatrixProvider,
-			final IObjectWithLongIdDAO dao,
+				final IObjectWithLongIdDAO dao,
 			final IAttachmentNamespaceDAO attachmentNamespaceDAO,
 			final IAttachmentTypeDAO attachmentTypeDAO,
-			final IStudyDAO studyDAO) {
-
+			final IStudyDAO studyDAO,
+			final INewVersionInfo newVersionInfo,
+			final MergeOTUSets mergeOTUSets,
+			final CreateOrUpdateDNAMatrix createOrUpdateDNAMatrix,
+			final MergeDNASequenceSets mergeDNASequenceSets,
+			final CreateOrUpdateStandardMatrix createOrUpdateStandardMatrix,
+			final MergeTreeSets mergeTreeSets) {
 		this.studyDAO = studyDAO;
-		this.studyProvider = studyProvider;
-		this.otuSetProvider = otuSetProvider;
-		this.standardMatrixProvider = standardMatrix;
-		this.dnaSequenceSetProvider = dnaSequenceSetProvider;
-		this.treeSetProvider = treeSetProvider;
+		this.dao = dao;
+		this.newVersionInfo = newVersionInfo;
 		this.mergeOTUSets = mergeOTUSets;
 		this.createOrUpdateDNAMatrix = createOrUpdateDNAMatrix;
-		this.createOrUpdateStandardMatrix = createOrUpdateMatrix;
 		this.mergeDNASequenceSets = mergeDNASequenceSets;
+		this.createOrUpdateStandardMatrix = createOrUpdateStandardMatrix;
 		this.mergeTreeSets = mergeTreeSets;
-		this.dnaMatrixProvider = dnaMatrixProvider;
-		this.dao = dao;
 	}
 
 	public IStudy createOrUpdateStudy(final IStudy incomingStudy) {
@@ -100,7 +82,7 @@ final class CreateOrUpdateStudy implements ICreateOrUpdateStudy {
 		if (null == (dbStudy =
 				studyDAO.getStudyByPPodId(
 						incomingStudy.getPPodId()))) {
-			dbStudy = studyProvider.get();
+			dbStudy = ModelFactory.newStudy(newVersionInfo.getNewVersionInfo());
 			makeStudyPersistent = true;
 		}
 
@@ -140,7 +122,8 @@ final class CreateOrUpdateStudy implements ICreateOrUpdateStudy {
 											incomingOTUSet.getPPodId()),
 									IWithPPodId.getPPodId),
 									null))) {
-				dbOTUSet = otuSetProvider.get();
+				dbOTUSet = ModelFactory.newOTUSet(newVersionInfo
+						.getNewVersionInfo());
 				dbOTUSet.setLabel(incomingOTUSet.getLabel()); // non-null, do it
 																// now
 				dbStudy.addOTUSet(incomingOTUSetPos, dbOTUSet);
@@ -191,7 +174,8 @@ final class CreateOrUpdateStudy implements ICreateOrUpdateStudy {
 									IWithPPodId.getPPodId),
 									null
 									))) {
-				dbMatrix = dnaMatrixProvider.get();
+				dbMatrix = ModelFactory.newDNAMatrix(newVersionInfo
+						.getNewVersionInfo());
 
 				// Do this here because it's non-nullable
 				dbMatrix.setLabel(incomingMatrix.getLabel());
@@ -238,7 +222,8 @@ final class CreateOrUpdateStudy implements ICreateOrUpdateStudy {
 											.getPPodId()),
 									IWithPPodId.getPPodId),
 									null))) {
-				dbDNASequenceSet = dnaSequenceSetProvider.get();
+				dbDNASequenceSet = ModelFactory
+						.newDNASequenceSet(newVersionInfo.getNewVersionInfo());
 				dbDNASequenceSet.setLabel(incomingSequenceSet.getLabel());
 				dbOTUSet.addDNASequenceSet(
 						incomingSequenceSetPos, dbDNASequenceSet);
@@ -283,7 +268,8 @@ final class CreateOrUpdateStudy implements ICreateOrUpdateStudy {
 											incomingMatrix.getPPodId()),
 									IWithPPodId.getPPodId),
 									null))) {
-				dbMatrix = standardMatrixProvider.get();
+				dbMatrix = ModelFactory.newStandardMatrix(newVersionInfo
+						.getNewVersionInfo());
 				dbMatrix.setLabel(incomingMatrix.getLabel());
 				dbOTUSet.addStandardMatrix(
 						incomingMatrixPos,
@@ -327,7 +313,8 @@ final class CreateOrUpdateStudy implements ICreateOrUpdateStudy {
 							compose(equalTo(incomingTreeSet.getPPodId()),
 									IWithPPodId.getPPodId),
 									null))) {
-				dbTreeSet = treeSetProvider.get();
+				dbTreeSet = ModelFactory.newTreeSet(newVersionInfo
+						.getNewVersionInfo());
 				dbTreeSet.setLabel(incomingTreeSet.getLabel());
 				dbOTUSet.addTreeSet(incomingTreeSetPos, dbTreeSet);
 				dao.makePersistent(dbTreeSet);

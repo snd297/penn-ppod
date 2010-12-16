@@ -15,24 +15,7 @@
  */
 package edu.upenn.cis.ppod.model;
 
-import com.google.inject.AbstractModule;
-import com.google.inject.Provides;
-
-import edu.upenn.cis.ppod.imodel.IAttachment;
-import edu.upenn.cis.ppod.imodel.IDNACell;
-import edu.upenn.cis.ppod.imodel.IDNAMatrix;
-import edu.upenn.cis.ppod.imodel.IDNARow;
-import edu.upenn.cis.ppod.imodel.IDNASequence;
-import edu.upenn.cis.ppod.imodel.IDNASequenceSet;
-import edu.upenn.cis.ppod.imodel.INewVersionInfo;
-import edu.upenn.cis.ppod.imodel.IOTU;
-import edu.upenn.cis.ppod.imodel.IOTUSet;
 import edu.upenn.cis.ppod.imodel.IPPodEntity;
-import edu.upenn.cis.ppod.imodel.IStandardCell;
-import edu.upenn.cis.ppod.imodel.IStandardCharacter;
-import edu.upenn.cis.ppod.imodel.IStandardMatrix;
-import edu.upenn.cis.ppod.imodel.IStandardRow;
-import edu.upenn.cis.ppod.imodel.IStudy;
 import edu.upenn.cis.ppod.imodel.ITree;
 import edu.upenn.cis.ppod.imodel.ITreeSet;
 import edu.upenn.cis.ppod.imodel.IUUPPodEntity;
@@ -40,122 +23,115 @@ import edu.upenn.cis.ppod.imodel.IUUPPodEntity;
 /**
  * @author Sam Donnelly
  */
-public class ModelFactory extends AbstractModule {
+public class ModelFactory {
 
-	private static void preparePPodEntity(final IPPodEntity pPodEntity,
-			final INewVersionInfo newVersionInfo) {
-		pPodEntity.setVersionInfo(newVersionInfo.getNewVersionInfo());
-	}
-
-	private static void prepareUUPPodEntity(final IUUPPodEntity pPodEntity,
-			final INewVersionInfo newVersionInfo) {
-		preparePPodEntity(pPodEntity, newVersionInfo);
-		pPodEntity.setPPodId();
-	}
-
-	@Override
-	protected void configure() {}
-
-	public IAttachment newAttachment(final INewVersionInfo newVersionInfo) {
-		final IAttachment attachment = new Attachment();
-		prepareUUPPodEntity(attachment, newVersionInfo);
+	public static Attachment newAttachment(final VersionInfo versionInfo) {
+		final Attachment attachment = new Attachment();
+		prepareUUPPodEntity(attachment, versionInfo);
 		return attachment;
 	}
 
-	public IDNACell provideDNACell(final INewVersionInfo newVersionInfo) {
-		final IDNACell cell = new DNACell();
-		preparePPodEntity(cell, newVersionInfo);
+	private static void preparePPodEntity(final IPPodEntity pPodEntity,
+			final VersionInfo versionInfo) {
+		pPodEntity.setVersionInfo(versionInfo);
+	}
+
+	private static void prepareUUPPodEntity(final IUUPPodEntity pPodEntity,
+			final VersionInfo versionInfo) {
+		preparePPodEntity(pPodEntity, versionInfo);
+		pPodEntity.setPPodId();
+	}
+
+	public static DNACell newDNACell(final VersionInfo versionInfo) {
+		final DNACell cell = new DNACell();
+		preparePPodEntity(cell, versionInfo);
 		return cell;
 	}
 
-	public IDNAMatrix provideDNAMatrix(final INewVersionInfo newVersionInfo) {
-		final IDNAMatrix matrix = new DNAMatrix();
-		prepareUUPPodEntity(matrix, newVersionInfo);
-		matrix.setColumnVersionInfos(
-				newVersionInfo.getNewVersionInfo());
+	public static DNAMatrix newDNAMatrix(
+			final VersionInfo versionInfo) {
+		final DNAMatrix matrix = new DNAMatrix();
+		prepareUUPPodEntity(matrix, versionInfo);
+		matrix.setColumnVersionInfos(versionInfo);
 		return matrix;
 	}
 
-	public IDNARow provideDNARow(final INewVersionInfo newVersionInfo) {
-		final IDNARow row = new DNARow();
-		preparePPodEntity(row, newVersionInfo);
+	public static DNARow newDNARow(final VersionInfo versionInfo) {
+		final DNARow row = new DNARow();
+		preparePPodEntity(row, versionInfo);
 		return row;
 	}
 
-	public IDNASequence provideDNASequence(
-			final INewVersionInfo newVersionInfo) {
-		final IDNASequence sequence = new DNASequence();
-		preparePPodEntity(sequence, newVersionInfo);
+	public static DNASequence newDNASequence(
+			final VersionInfo versionInfo) {
+		final DNASequence sequence = new DNASequence();
+		preparePPodEntity(sequence, versionInfo);
 		return sequence;
 	}
 
-	public IDNASequenceSet provideDNASequenceSet(
-			final INewVersionInfo newVersionInfo) {
-		final IDNASequenceSet sequenceSet = new DNASequenceSet();
-		prepareUUPPodEntity(sequenceSet, newVersionInfo);
+	public static DNASequenceSet newDNASequenceSet(
+			final VersionInfo versionInfo) {
+		final DNASequenceSet sequenceSet = new DNASequenceSet();
+		prepareUUPPodEntity(sequenceSet, versionInfo);
 		return sequenceSet;
 	}
 
-	public IOTU provideOTU(final INewVersionInfo newVersionInfo) {
-		final IOTU otu = new OTU();
-		prepareUUPPodEntity(otu, newVersionInfo);
+	public static OTU provideOTU(final VersionInfo versionInfo) {
+		final OTU otu = new OTU();
+		prepareUUPPodEntity(otu, versionInfo);
 		return otu;
 	}
 
-	public IOTUSet provideOTUSet(final INewVersionInfo newVersionInfo) {
-		final IOTUSet otuSet = new OTUSet();
-		prepareUUPPodEntity(otuSet, newVersionInfo);
+	public static OTUSet newOTUSet(final VersionInfo versionInfo) {
+		final OTUSet otuSet = new OTUSet();
+		prepareUUPPodEntity(otuSet, versionInfo);
 		return otuSet;
 	}
 
-	public IStandardCell provideStandardCell(
-			final INewVersionInfo newVersionInfo) {
-		final IStandardCell cell = new StandardCell();
-		preparePPodEntity(cell, newVersionInfo);
+	public static StandardCell newStandardCell(
+			final VersionInfo versionInfo) {
+		final StandardCell cell = new StandardCell();
+		preparePPodEntity(cell, versionInfo);
 		return cell;
 	}
 
-	public IStandardCharacter provideStandardCharacter(
-			final INewVersionInfo newVersionInfo) {
-		final IStandardCharacter character = new StandardCharacter();
-		prepareUUPPodEntity(character, newVersionInfo);
+	public static StandardCharacter newStandardCharacter(
+			final VersionInfo versionInfo) {
+		final StandardCharacter character = new StandardCharacter();
+		prepareUUPPodEntity(character, versionInfo);
 		return character;
 	}
 
-	public IStandardMatrix provideStandardMatrix(
-			final INewVersionInfo newVersionInfo) {
-		final IStandardMatrix matrix = new StandardMatrix();
-		prepareUUPPodEntity(matrix, newVersionInfo);
-		matrix.setColumnVersionInfos(
-				newVersionInfo.getNewVersionInfo());
+	public static StandardMatrix newStandardMatrix(
+			final VersionInfo versionInfo) {
+		final StandardMatrix matrix = new StandardMatrix();
+		prepareUUPPodEntity(matrix, versionInfo);
+		matrix.setColumnVersionInfos(versionInfo);
 		return matrix;
 	}
 
-	@Provides
-	IStandardRow provideStandardRow(final INewVersionInfo newVersionInfo) {
-		final IStandardRow row = new StandardRow();
-		preparePPodEntity(row, newVersionInfo);
+	public static StandardRow newStandardRow(
+			final VersionInfo versionInfo) {
+		final StandardRow row = new StandardRow();
+		preparePPodEntity(row, versionInfo);
 		return row;
 	}
 
-	@Provides
-	IStudy provideStudy(final INewVersionInfo newVersionInfo) {
-		final IStudy study = new Study();
-		prepareUUPPodEntity(study, newVersionInfo);
+	public static Study newStudy(final VersionInfo versionInfo) {
+		final Study study = new Study();
+		prepareUUPPodEntity(study, versionInfo);
 		return study;
 	}
 
-	@Provides
-	ITree provideTree(final INewVersionInfo newVersionInfo) {
+	public static ITree provideTree(final VersionInfo versionInfo) {
 		final ITree tree = new Tree();
-		prepareUUPPodEntity(tree, newVersionInfo);
+		prepareUUPPodEntity(tree, versionInfo);
 		return tree;
 	}
 
-	@Provides
-	ITreeSet provideTreeSet(final INewVersionInfo newVersionInfo) {
+	public static ITreeSet newTreeSet(final VersionInfo versionInfo) {
 		final ITreeSet treeSet = new TreeSet();
-		prepareUUPPodEntity(treeSet, newVersionInfo);
+		prepareUUPPodEntity(treeSet, versionInfo);
 		return treeSet;
 	}
 

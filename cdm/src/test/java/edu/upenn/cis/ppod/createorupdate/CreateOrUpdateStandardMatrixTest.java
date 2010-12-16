@@ -16,15 +16,16 @@
 package edu.upenn.cis.ppod.createorupdate;
 
 import static com.google.common.collect.Lists.newArrayList;
+import static org.mockito.Mockito.mock;
+import static org.mockito.Mockito.when;
 
 import java.util.List;
 
 import org.testng.annotations.Test;
 
-import com.google.inject.Inject;
-import com.google.inject.Provider;
-
 import edu.upenn.cis.ppod.TestGroupDefs;
+import edu.upenn.cis.ppod.dao.IObjectWithLongIdDAO;
+import edu.upenn.cis.ppod.imodel.INewVersionInfo;
 import edu.upenn.cis.ppod.imodel.IOTU;
 import edu.upenn.cis.ppod.imodel.IOTUSet;
 import edu.upenn.cis.ppod.imodel.IStandardCell;
@@ -32,6 +33,8 @@ import edu.upenn.cis.ppod.imodel.IStandardCharacter;
 import edu.upenn.cis.ppod.imodel.IStandardMatrix;
 import edu.upenn.cis.ppod.imodel.IStandardRow;
 import edu.upenn.cis.ppod.model.ModelAssert;
+import edu.upenn.cis.ppod.model.StandardMatrix;
+import edu.upenn.cis.ppod.model.VersionInfo;
 import edu.upenn.cis.ppod.util.PPodEntityProvider;
 
 /**
@@ -42,22 +45,22 @@ import edu.upenn.cis.ppod.util.PPodEntityProvider;
 @Test(groups = { TestGroupDefs.FAST }, singleThreaded = true)
 public class CreateOrUpdateStandardMatrixTest {
 
-	@Inject
-	private Provider<ICreateOrUpdateStandardMatrix> createOrUpdateMatrixProvider;
-
-	@Inject
-	private Provider<IStandardMatrix> characterStateMatrixProvider;
-
 	@Test(dataProvider = PPodEntityProvider.STANDARD_MATRICES_PROVIDER,
 			dataProviderClass = PPodEntityProvider.class)
 	public void create(final IStandardMatrix sourceMatrix) {
 
+		final VersionInfo versionInfo = new VersionInfo();
+		final INewVersionInfo newVersionInfo = mock(INewVersionInfo.class);
+		when(newVersionInfo.getNewVersionInfo()).thenReturn(versionInfo);
+
 		final ICreateOrUpdateStandardMatrix createOrUpdateStandardMatrix =
-				createOrUpdateMatrixProvider.get();
+				new CreateOrUpdateStandardMatrix(
+						mock(IObjectWithLongIdDAO.class),
+						newVersionInfo);
+
 		final IOTUSet fakeDbOTUSet = sourceMatrix.getParent();
 
-		final IStandardMatrix targetMatrix =
-				characterStateMatrixProvider.get();
+		final IStandardMatrix targetMatrix = new StandardMatrix();
 
 		fakeDbOTUSet.addStandardMatrix(targetMatrix);
 
@@ -72,12 +75,20 @@ public class CreateOrUpdateStandardMatrixTest {
 	@Test(dataProvider = PPodEntityProvider.STANDARD_MATRICES_PROVIDER,
 			dataProviderClass = PPodEntityProvider.class)
 	public void moveRows(final IStandardMatrix sourceMatrix) {
+
+		final VersionInfo versionInfo = new VersionInfo();
+		final INewVersionInfo newVersionInfo = mock(INewVersionInfo.class);
+		when(newVersionInfo.getNewVersionInfo()).thenReturn(versionInfo);
+
 		final ICreateOrUpdateStandardMatrix createOrUpdateStandardMatrix =
-				createOrUpdateMatrixProvider.get();
+				new CreateOrUpdateStandardMatrix(
+						mock(IObjectWithLongIdDAO.class),
+						newVersionInfo);
+
 		final IOTUSet fakeDbOTUSet = sourceMatrix.getParent();
 
 		final IStandardMatrix targetMatrix =
-				characterStateMatrixProvider.get();
+				new StandardMatrix();
 
 		fakeDbOTUSet.addStandardMatrix(targetMatrix);
 
@@ -116,16 +127,23 @@ public class CreateOrUpdateStandardMatrixTest {
 	@Test(dataProvider = PPodEntityProvider.STANDARD_MATRICES_PROVIDER,
 			dataProviderClass = PPodEntityProvider.class)
 	public void moveCharacters(final IStandardMatrix sourceMatrix) {
-		final ICreateOrUpdateStandardMatrix createOrUpdateMatrix =
-					createOrUpdateMatrixProvider.get();
+
+		final VersionInfo versionInfo = new VersionInfo();
+		final INewVersionInfo newVersionInfo = mock(INewVersionInfo.class);
+		when(newVersionInfo.getNewVersionInfo()).thenReturn(versionInfo);
+
+		final ICreateOrUpdateStandardMatrix createOrUpdateStandardMatrix =
+				new CreateOrUpdateStandardMatrix(
+						mock(IObjectWithLongIdDAO.class),
+						newVersionInfo);
+
 		final IOTUSet fakeDbOTUSet = sourceMatrix.getParent();
 
-		final IStandardMatrix targetMatrix = characterStateMatrixProvider
-					.get();
+		final IStandardMatrix targetMatrix = new StandardMatrix();
 
 		fakeDbOTUSet.addStandardMatrix(targetMatrix);
 
-		createOrUpdateMatrix.createOrUpdateMatrix(
+		createOrUpdateStandardMatrix.createOrUpdateMatrix(
 					targetMatrix,
 					sourceMatrix);
 
@@ -159,7 +177,7 @@ public class CreateOrUpdateStandardMatrixTest {
 			sourceRow.setCells(newSourceCells);
 		}
 
-		createOrUpdateMatrix.createOrUpdateMatrix(
+		createOrUpdateStandardMatrix.createOrUpdateMatrix(
 					targetMatrix,
 					sourceMatrix);
 
@@ -170,16 +188,24 @@ public class CreateOrUpdateStandardMatrixTest {
 	@Test(dataProvider = PPodEntityProvider.STANDARD_MATRICES_PROVIDER,
 			dataProviderClass = PPodEntityProvider.class)
 	public void removeColumn(final IStandardMatrix sourceMatrix) {
-		final ICreateOrUpdateStandardMatrix createOrUpdateMatrix =
-				createOrUpdateMatrixProvider.get();
+
+		final VersionInfo versionInfo = new VersionInfo();
+		final INewVersionInfo newVersionInfo = mock(INewVersionInfo.class);
+		when(newVersionInfo.getNewVersionInfo()).thenReturn(versionInfo);
+
+		final ICreateOrUpdateStandardMatrix createOrUpdateStandardMatrix =
+				new CreateOrUpdateStandardMatrix(
+						mock(IObjectWithLongIdDAO.class),
+						newVersionInfo);
+
 		final IOTUSet fakeDbOTUSet = sourceMatrix.getParent();
 
 		final IStandardMatrix targetMatrix =
-				characterStateMatrixProvider.get();
+				new StandardMatrix();
 
 		fakeDbOTUSet.addStandardMatrix(targetMatrix);
 
-		createOrUpdateMatrix
+		createOrUpdateStandardMatrix
 				.createOrUpdateMatrix(targetMatrix, sourceMatrix);
 
 		// Simulate passing back in the persisted characters: so we need to
@@ -226,7 +252,7 @@ public class CreateOrUpdateStandardMatrixTest {
 									.size() - 1));
 		}
 
-		createOrUpdateMatrix.createOrUpdateMatrix(
+		createOrUpdateStandardMatrix.createOrUpdateMatrix(
 					targetMatrix,
 					sourceMatrix);
 

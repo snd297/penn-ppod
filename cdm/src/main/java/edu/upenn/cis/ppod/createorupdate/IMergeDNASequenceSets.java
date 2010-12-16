@@ -15,20 +15,19 @@
  */
 package edu.upenn.cis.ppod.createorupdate;
 
-import edu.upenn.cis.ppod.imodel.ISequence;
-import edu.upenn.cis.ppod.imodel.ISequenceSet;
+import com.google.inject.ImplementedBy;
+
+import edu.upenn.cis.ppod.imodel.IDNASequenceSet;
 
 /**
  * Merges the state of one sequence set onto another.
  * 
  * @author Sam Donnelly
- * 
- * @param <SS> the kind of {@link SequenceSet} we're operating on
- * @param <S> the kind of {@link Sequence} that belongs in the sequence set
  */
-public interface IMergeSequenceSets<SS extends ISequenceSet<S>, S extends ISequence<?>> {
+@ImplementedBy(MergeDNASequenceSets.class)
+public interface IMergeDNASequenceSets {
 
-	public void mergeSequenceSets(final SS targetSequenceSet,
-			final SS sourceSequenceSet);
+	void mergeSequenceSets(final IDNASequenceSet targetSequenceSet,
+			final IDNASequenceSet sourceSequenceSet);
 
 }

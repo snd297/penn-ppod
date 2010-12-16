@@ -15,73 +15,64 @@
  */
 package edu.upenn.cis.ppod.createorupdate;
 
-import org.testng.annotations.Test;
+import static org.mockito.Mockito.mock;
+import static org.mockito.Mockito.when;
 
-import com.google.inject.Inject;
-import com.google.inject.Provider;
+import org.testng.annotations.Test;
 
 import edu.upenn.cis.ppod.TestGroupDefs;
 import edu.upenn.cis.ppod.imodel.IDNASequence;
 import edu.upenn.cis.ppod.imodel.IDNASequenceSet;
-import edu.upenn.cis.ppod.imodel.IOTU;
+import edu.upenn.cis.ppod.imodel.INewVersionInfo;
 import edu.upenn.cis.ppod.imodel.IOTUSet;
+import edu.upenn.cis.ppod.model.DNASequence;
+import edu.upenn.cis.ppod.model.DNASequenceSet;
 import edu.upenn.cis.ppod.model.ModelAssert;
+import edu.upenn.cis.ppod.model.OTU;
+import edu.upenn.cis.ppod.model.OTUSet;
+import edu.upenn.cis.ppod.model.VersionInfo;
 
-@Test(groups = TestGroupDefs.FAST, dependsOnGroups = TestGroupDefs.INIT)
+@Test(groups = TestGroupDefs.FAST)
 public class MergeSequenceSetsTest {
-	@Inject
-	private IMergeSequenceSets<IDNASequenceSet, IDNASequence> mergeSeqSets;
-
-	@Inject
-	private Provider<IDNASequenceSet> dnaSequenceSetProvider;
-
-	@Inject
-	private Provider<IDNASequence> dnaSequenceProvider;
-
-	@Inject
-	private Provider<IOTUSet> otuSetProvider;
-
-	@Inject
-	private Provider<IOTU> otuProvider;
 
 	@Test
 	public void modifySequencesKeepLength() {
 
-		final IDNASequenceSet srcSeqSet =
-					dnaSequenceSetProvider.get();
-		srcSeqSet.setLabel("src-seq-set-0");
-		final IDNASequenceSet trgSeqSet = dnaSequenceSetProvider.get();
+		final IDNASequenceSet srcSeqSet = new DNASequenceSet();
 
-		final IOTUSet trgOTUSet = otuSetProvider.get();
-		trgOTUSet.addOTU(otuProvider.get().setLabel("otu-0"));
-		trgOTUSet.addOTU(otuProvider.get().setLabel("otu-1"));
-		trgOTUSet.addOTU(otuProvider.get().setLabel("otu-2"));
+		srcSeqSet.setLabel("src-seq-set-0");
+		final IDNASequenceSet trgSeqSet = new DNASequenceSet();
+
+		final IOTUSet trgOTUSet = new OTUSet();
+		trgOTUSet.addOTU(new OTU().setLabel("otu-0"));
+		trgOTUSet.addOTU(new OTU().setLabel("otu-1"));
+		trgOTUSet.addOTU(new OTU().setLabel("otu-2"));
 		trgOTUSet.addDNASequenceSet(trgSeqSet);
 
-		final IOTUSet srcOTUSet = otuSetProvider.get();
-		srcOTUSet.addOTU(otuProvider.get().setLabel("otu-0"));
-		srcOTUSet.addOTU(otuProvider.get().setLabel("otu-1"));
-		srcOTUSet.addOTU(otuProvider.get().setLabel("otu-2"));
+		final IOTUSet srcOTUSet = new OTUSet();
+		srcOTUSet.addOTU(new OTU().setLabel("otu-0"));
+		srcOTUSet.addOTU(new OTU().setLabel("otu-1"));
+		srcOTUSet.addOTU(new OTU().setLabel("otu-2"));
 
 		srcOTUSet.addDNASequenceSet(srcSeqSet);
 
 		final IDNASequence srcSeq0 =
-					(IDNASequence) dnaSequenceProvider
-							.get()
+					(IDNASequence) new DNASequence()
 							.setSequence("ACT")
-							.setAccession("jkjkj")
-							.setName("jkejfke")
-							.setDescription("jkfjeijf");
+																	.setAccession(
+																			"jkjkj")
+																	.setName(
+																			"jkejfke")
+																	.setDescription(
+																			"jkfjeijf");
 		final IDNASequence srcSeq1 =
-					(IDNASequence) dnaSequenceProvider
-							.get()
+					(IDNASequence) new DNASequence()
 							.setSequence("TCA")
 							.setAccession("jjijk")
 							.setName("jefeji")
 							.setDescription("ejfiejiji");
 		final IDNASequence srcSeq2 =
-					(IDNASequence) dnaSequenceProvider
-							.get()
+					(IDNASequence) new DNASequence()
 							.setSequence("ATC")
 							.setAccession("jfje")
 							.setName("jfifjiji")
@@ -90,6 +81,13 @@ public class MergeSequenceSetsTest {
 		srcSeqSet.putSequence(srcOTUSet.getOTUs().get(0), srcSeq0);
 		srcSeqSet.putSequence(srcOTUSet.getOTUs().get(1), srcSeq1);
 		srcSeqSet.putSequence(srcOTUSet.getOTUs().get(2), srcSeq2);
+
+		final VersionInfo versionInfo = new VersionInfo();
+		final INewVersionInfo newVersionInfo = mock(INewVersionInfo.class);
+		when(newVersionInfo.getNewVersionInfo()).thenReturn(versionInfo);
+
+		final IMergeDNASequenceSets mergeSeqSets = new MergeDNASequenceSets(
+				newVersionInfo);
 
 		mergeSeqSets.mergeSequenceSets(trgSeqSet, srcSeqSet);
 
@@ -110,40 +108,38 @@ public class MergeSequenceSetsTest {
 	public void shortenSequences() {
 
 		final IDNASequenceSet srcSeqSet =
-				dnaSequenceSetProvider.get();
-		srcSeqSet.setLabel("src-seq-set-0");
-		final IDNASequenceSet trgSeqSet = dnaSequenceSetProvider.get();
+				new DNASequenceSet();
 
-		final IOTUSet trgOTUSet = otuSetProvider.get();
-		trgOTUSet.addOTU(otuProvider.get().setLabel("otu-0"));
-		trgOTUSet.addOTU(otuProvider.get().setLabel("otu-1"));
-		trgOTUSet.addOTU(otuProvider.get().setLabel("otu-2"));
+		srcSeqSet.setLabel("src-seq-set-0");
+		final IDNASequenceSet trgSeqSet = new DNASequenceSet();
+
+		final IOTUSet trgOTUSet = new OTUSet();
+		trgOTUSet.addOTU(new OTU().setLabel("otu-0"));
+		trgOTUSet.addOTU(new OTU().setLabel("otu-1"));
+		trgOTUSet.addOTU(new OTU().setLabel("otu-2"));
 		trgOTUSet.addDNASequenceSet(trgSeqSet);
 
-		final IOTUSet srcOTUSet = otuSetProvider.get();
-		srcOTUSet.addOTU(otuProvider.get().setLabel("otu-0"));
-		srcOTUSet.addOTU(otuProvider.get().setLabel("otu-1"));
-		srcOTUSet.addOTU(otuProvider.get().setLabel("otu-2"));
+		final IOTUSet srcOTUSet = new OTUSet();
+		srcOTUSet.addOTU(new OTU().setLabel("otu-0"));
+		srcOTUSet.addOTU(new OTU().setLabel("otu-1"));
+		srcOTUSet.addOTU(new OTU().setLabel("otu-2"));
 
 		srcOTUSet.addDNASequenceSet(srcSeqSet);
 
 		final IDNASequence srcSeq0 =
-					(IDNASequence) dnaSequenceProvider
-							.get()
+				(IDNASequence) new DNASequence()
 							.setSequence("ACT")
 							.setAccession("jkjkj")
 							.setName("jkejfke")
 							.setDescription("jkfjeijf");
 		final IDNASequence srcSeq1 =
-					(IDNASequence) dnaSequenceProvider
-							.get()
+				(IDNASequence) new DNASequence()
 							.setSequence("TCA")
 							.setAccession("jjijk")
 							.setName("jefeji")
 							.setDescription("ejfiejiji");
 		final IDNASequence srcSeq2 =
-					(IDNASequence) dnaSequenceProvider
-							.get()
+				(IDNASequence) new DNASequence()
 							.setSequence("ATC")
 							.setAccession("jfje")
 							.setName("jfifjiji")
@@ -152,6 +148,13 @@ public class MergeSequenceSetsTest {
 		srcSeqSet.putSequence(srcOTUSet.getOTUs().get(0), srcSeq0);
 		srcSeqSet.putSequence(srcOTUSet.getOTUs().get(1), srcSeq1);
 		srcSeqSet.putSequence(srcOTUSet.getOTUs().get(2), srcSeq2);
+
+		final VersionInfo versionInfo = new VersionInfo();
+		final INewVersionInfo newVersionInfo = mock(INewVersionInfo.class);
+		when(newVersionInfo.getNewVersionInfo()).thenReturn(versionInfo);
+
+		final IMergeDNASequenceSets mergeSeqSets = new MergeDNASequenceSets(
+				newVersionInfo);
 
 		mergeSeqSets.mergeSequenceSets(trgSeqSet, srcSeqSet);
 
@@ -173,40 +176,37 @@ public class MergeSequenceSetsTest {
 	@Test
 	public void mergeOnBlankTarget() {
 		final IDNASequenceSet srcSeqSet =
-				dnaSequenceSetProvider.get();
+				new DNASequenceSet();
 		srcSeqSet.setLabel("src-seq-set-0");
-		final IDNASequenceSet trgSeqSet = dnaSequenceSetProvider.get();
+		final IDNASequenceSet trgSeqSet = new DNASequenceSet();
 
-		final IOTUSet trgOTUSet = otuSetProvider.get();
-		trgOTUSet.addOTU(otuProvider.get().setLabel("otu-0"));
-		trgOTUSet.addOTU(otuProvider.get().setLabel("otu-1"));
-		trgOTUSet.addOTU(otuProvider.get().setLabel("otu-2"));
+		final IOTUSet trgOTUSet = new OTUSet();
+		trgOTUSet.addOTU(new OTU().setLabel("otu-0"));
+		trgOTUSet.addOTU(new OTU().setLabel("otu-1"));
+		trgOTUSet.addOTU(new OTU().setLabel("otu-2"));
 		trgOTUSet.addDNASequenceSet(trgSeqSet);
 
-		final IOTUSet srcOTUSet = otuSetProvider.get();
-		srcOTUSet.addOTU(otuProvider.get().setLabel("otu-0"));
-		srcOTUSet.addOTU(otuProvider.get().setLabel("otu-1"));
-		srcOTUSet.addOTU(otuProvider.get().setLabel("otu-2"));
+		final IOTUSet srcOTUSet = new OTUSet();
+		srcOTUSet.addOTU(new OTU().setLabel("otu-0"));
+		srcOTUSet.addOTU(new OTU().setLabel("otu-1"));
+		srcOTUSet.addOTU(new OTU().setLabel("otu-2"));
 
 		srcOTUSet.addDNASequenceSet(srcSeqSet);
 
 		final IDNASequence srcSeq0 =
-				(IDNASequence) dnaSequenceProvider
-						.get()
-						.setSequence("ACT")
-						.setAccession("jkjkj")
-						.setName("jkejfke")
-						.setDescription("jkfjeijf");
+				(IDNASequence) new DNASequence()
+								.setSequence("ACT")
+								.setAccession("jkjkj")
+								.setName("jkejfke")
+								.setDescription("jkfjeijf");
 		final IDNASequence srcSeq1 =
-				(IDNASequence) dnaSequenceProvider
-						.get()
+				(IDNASequence) new DNASequence()
 						.setSequence("TCA")
 						.setAccession("jjijk")
 						.setName("jefeji")
 						.setDescription("ejfiejiji");
 		final IDNASequence srcSeq2 =
-				(IDNASequence) dnaSequenceProvider
-						.get()
+				(IDNASequence) new DNASequence()
 						.setSequence("ATC")
 						.setAccession("jfje")
 						.setName("jfifjiji")
@@ -215,6 +215,13 @@ public class MergeSequenceSetsTest {
 		srcSeqSet.putSequence(srcOTUSet.getOTUs().get(0), srcSeq0);
 		srcSeqSet.putSequence(srcOTUSet.getOTUs().get(1), srcSeq1);
 		srcSeqSet.putSequence(srcOTUSet.getOTUs().get(2), srcSeq2);
+
+		final VersionInfo versionInfo = new VersionInfo();
+		final INewVersionInfo newVersionInfo = mock(INewVersionInfo.class);
+		when(newVersionInfo.getNewVersionInfo()).thenReturn(versionInfo);
+
+		final IMergeDNASequenceSets mergeSeqSets = new MergeDNASequenceSets(
+				newVersionInfo);
 
 		mergeSeqSets.mergeSequenceSets(trgSeqSet, srcSeqSet);
 

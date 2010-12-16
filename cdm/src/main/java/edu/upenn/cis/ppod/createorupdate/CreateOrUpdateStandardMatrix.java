@@ -32,10 +32,8 @@ import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
 import com.google.inject.Inject;
-import com.google.inject.Provider;
 
 import edu.upenn.cis.ppod.dao.IObjectWithLongIdDAO;
-import edu.upenn.cis.ppod.imodel.IAttachment;
 import edu.upenn.cis.ppod.imodel.ICell;
 import edu.upenn.cis.ppod.imodel.INewVersionInfo;
 import edu.upenn.cis.ppod.imodel.IStandardCell;
@@ -44,7 +42,9 @@ import edu.upenn.cis.ppod.imodel.IStandardMatrix;
 import edu.upenn.cis.ppod.imodel.IStandardRow;
 import edu.upenn.cis.ppod.imodel.IStandardState;
 import edu.upenn.cis.ppod.imodel.IWithPPodId;
+import edu.upenn.cis.ppod.model.ModelFactory;
 import edu.upenn.cis.ppod.model.StandardState;
+import edu.upenn.cis.ppod.model.VersionInfo;
 
 /**
  * @author Sam Donnelly
@@ -54,8 +54,6 @@ final class CreateOrUpdateStandardMatrix
 		CreateOrUpdateMatrix<IStandardMatrix, IStandardRow, IStandardCell, IStandardState>
 		implements ICreateOrUpdateStandardMatrix {
 
-	private final Provider<IStandardCharacter> standardCharacterProvider;
-
 	private static Logger logger =
 			LoggerFactory.getLogger(CreateOrUpdateMatrix.class);
 
@@ -63,16 +61,9 @@ final class CreateOrUpdateStandardMatrix
 
 	@Inject
 	CreateOrUpdateStandardMatrix(
-			final Provider<IStandardRow> rowProvider,
-			final Provider<IStandardCharacter> characterProvider,
-			final Provider<IStandardCell> cellProvider,
-			final Provider<IAttachment> attachmentProvider,
 			final IObjectWithLongIdDAO dao,
-			final IMergeAttachments mergeAttachments,
 			final INewVersionInfo newVersionInfo) {
-		super(rowProvider, cellProvider, attachmentProvider, dao,
-				newVersionInfo);
-		this.standardCharacterProvider = characterProvider;
+		super(dao, newVersionInfo);
 		this.newVersionInfo = newVersionInfo;
 	}
 
@@ -102,7 +93,9 @@ final class CreateOrUpdateStandardMatrix
 													sourceCharacter.getPPodId()),
 													IWithPPodId.getPPodId),
 													null))) {
-				newDbCharacter = standardCharacterProvider.get();
+				newDbCharacter = ModelFactory
+						.newStandardCharacter(newVersionInfo
+								.getNewVersionInfo());
 				sourceToDbCharPositions[sourceCharacterPosition] = -1;
 			}
 
@@ -136,7 +129,7 @@ final class CreateOrUpdateStandardMatrix
 	}
 
 	@Override
-	void handlePolymorphicCell(
+	protected void handlePolymorphicCell(
 			final IStandardCell targetCell,
 			final IStandardCell sourceCell) {
 		checkArgument(sourceCell.getType() == ICell.Type.POLYMORPHIC);
@@ -149,7 +142,7 @@ final class CreateOrUpdateStandardMatrix
 	}
 
 	@Override
-	void handleSingleCell(final IStandardCell targetCell,
+	protected void handleSingleCell(final IStandardCell targetCell,
 			final IStandardCell sourceCell) {
 		checkArgument(sourceCell.getType() == ICell.Type.SINGLE);
 		final IStandardState sourceState =
@@ -158,7 +151,7 @@ final class CreateOrUpdateStandardMatrix
 	}
 
 	@Override
-	void handleUncertainCell(final IStandardCell targetCell,
+	protected void handleUncertainCell(final IStandardCell targetCell,
 			final IStandardCell sourceCell) {
 		checkArgument(sourceCell.getType() == ICell.Type.UNCERTAIN);
 		final Set<Integer> sourceStateNumbers =
@@ -167,5 +160,15 @@ final class CreateOrUpdateStandardMatrix
 						sourceCell.getElements(),
 						IStandardState.getStateNumber));
 		targetCell.setUncertainWithStateNos(sourceStateNumbers);
+	}
+
+	@Override
+	protected IStandardCell newC(final VersionInfo versionInfo) {
+		return ModelFactory.newStandardCell(versionInfo);
+	}
+
+	@Override
+	protected IStandardRow newR(final VersionInfo versionInfo) {
+		return ModelFactory.newStandardRow(versionInfo);
 	}
 }
