@@ -24,7 +24,7 @@ import edu.upenn.cis.ppod.imodel.INewVersionInfo;
 import edu.upenn.cis.ppod.imodel.IVersionInfo;
 
 /**
- * We put this class in here so it can access
+ * We put this class in here so it can create {@link VersionInfo}
  * {@link VersionInfo#setVersion(Long)} and {@link VersionInfo#setCreated(Date)}
  * .
  * 
@@ -33,16 +33,14 @@ import edu.upenn.cis.ppod.imodel.IVersionInfo;
 public final class NewVersionInfoDB implements
 		INewVersionInfo {
 
-	private final VersionInfo newVersionInfo;
+	private final VersionInfo newVersionInfo = new VersionInfo();
 	private final IVersionInfoDAO versionInfoDAO;
 
 	private boolean versionInfoInitialized = false;
 
 	@Inject
 	NewVersionInfoDB(
-			final VersionInfo newVersionInfo,
 			final IVersionInfoDAO versionInfoDAO) {
-		this.newVersionInfo = newVersionInfo;
 		this.versionInfoDAO = versionInfoDAO;
 	}
 
