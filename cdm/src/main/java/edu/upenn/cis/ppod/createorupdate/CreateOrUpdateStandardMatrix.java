@@ -41,10 +41,10 @@ import edu.upenn.cis.ppod.imodel.IStandardCharacter;
 import edu.upenn.cis.ppod.imodel.IStandardMatrix;
 import edu.upenn.cis.ppod.imodel.IStandardRow;
 import edu.upenn.cis.ppod.imodel.IStandardState;
+import edu.upenn.cis.ppod.imodel.IVersionInfo;
 import edu.upenn.cis.ppod.imodel.IWithPPodId;
 import edu.upenn.cis.ppod.model.ModelFactory;
 import edu.upenn.cis.ppod.model.StandardState;
-import edu.upenn.cis.ppod.model.VersionInfo;
 
 /**
  * @author Sam Donnelly
@@ -163,12 +163,12 @@ final class CreateOrUpdateStandardMatrix
 	}
 
 	@Override
-	protected IStandardCell newC(final VersionInfo versionInfo) {
+	protected IStandardCell newC(final IVersionInfo versionInfo) {
 		return ModelFactory.newStandardCell(versionInfo);
 	}
 
 	@Override
-	protected IStandardRow newR(final VersionInfo versionInfo) {
+	protected IStandardRow newR(final IVersionInfo versionInfo) {
 		return ModelFactory.newStandardRow(versionInfo);
 	}
 }

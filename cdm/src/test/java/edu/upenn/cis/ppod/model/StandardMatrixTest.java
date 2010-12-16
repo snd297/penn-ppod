@@ -39,6 +39,7 @@ import edu.upenn.cis.ppod.TestGroupDefs;
 import edu.upenn.cis.ppod.imodel.IOTUSet;
 import edu.upenn.cis.ppod.imodel.IStandardRow;
 import edu.upenn.cis.ppod.imodel.IStandardState;
+import edu.upenn.cis.ppod.imodel.IVersionInfo;
 
 /**
  * Logic tests of {@link StandardMatrix}.
@@ -381,7 +382,7 @@ public class StandardMatrixTest {
 		final VersionInfo versionInfo = pPodVersionInfoProvider.get();
 
 		matrix.setColumnVersionInfos(versionInfo);
-		for (final VersionInfo columnPPodVersionInfo : matrix
+		for (final IVersionInfo columnPPodVersionInfo : matrix
 				.getColumnVersionInfos()) {
 			assertSame(columnPPodVersionInfo, versionInfo);
 		}

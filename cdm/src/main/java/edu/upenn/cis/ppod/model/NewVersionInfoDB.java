@@ -21,10 +21,12 @@ import com.google.inject.Inject;
 
 import edu.upenn.cis.ppod.dao.IVersionInfoDAO;
 import edu.upenn.cis.ppod.imodel.INewVersionInfo;
+import edu.upenn.cis.ppod.imodel.IVersionInfo;
 
 /**
  * We put this class in here so it can access
- * {@link VersionInfo#setVersion(Long)}.
+ * {@link VersionInfo#setVersion(Long)} and {@link VersionInfo#setCreated(Date)}
+ * .
  * 
  * @author Sam Donnelly
  */
@@ -44,7 +46,7 @@ public final class NewVersionInfoDB implements
 		this.versionInfoDAO = versionInfoDAO;
 	}
 
-	public VersionInfo getNewVersionInfo() {
+	public IVersionInfo getNewVersionInfo() {
 		initializeVersionInfo();
 		return newVersionInfo;
 	}

@@ -28,8 +28,8 @@ import edu.upenn.cis.ppod.imodel.IDNACell;
 import edu.upenn.cis.ppod.imodel.IDNAMatrix;
 import edu.upenn.cis.ppod.imodel.IDNARow;
 import edu.upenn.cis.ppod.imodel.INewVersionInfo;
+import edu.upenn.cis.ppod.imodel.IVersionInfo;
 import edu.upenn.cis.ppod.model.ModelFactory;
-import edu.upenn.cis.ppod.model.VersionInfo;
 
 class CreateOrUpdateDNAMatrix
 		extends
@@ -99,12 +99,12 @@ class CreateOrUpdateDNAMatrix
 	}
 
 	@Override
-	protected IDNACell newC(final VersionInfo versionInfo) {
+	protected IDNACell newC(final IVersionInfo versionInfo) {
 		return ModelFactory.newDNACell(versionInfo);
 	}
 
 	@Override
-	protected IDNARow newR(final VersionInfo versionInfo) {
+	protected IDNARow newR(final IVersionInfo versionInfo) {
 		return ModelFactory.newDNARow(versionInfo);
 	}
 }

@@ -32,9 +32,9 @@ import edu.upenn.cis.ppod.imodel.IStandardCell;
 import edu.upenn.cis.ppod.imodel.IStandardCharacter;
 import edu.upenn.cis.ppod.imodel.IStandardMatrix;
 import edu.upenn.cis.ppod.imodel.IStandardRow;
+import edu.upenn.cis.ppod.imodel.IVersionInfo;
 import edu.upenn.cis.ppod.model.ModelAssert;
 import edu.upenn.cis.ppod.model.StandardMatrix;
-import edu.upenn.cis.ppod.model.VersionInfo;
 import edu.upenn.cis.ppod.util.PPodEntityProvider;
 
 /**
@@ -49,7 +49,7 @@ public class CreateOrUpdateStandardMatrixTest {
 			dataProviderClass = PPodEntityProvider.class)
 	public void create(final IStandardMatrix sourceMatrix) {
 
-		final VersionInfo versionInfo = new VersionInfo();
+		final IVersionInfo versionInfo = mock(IVersionInfo.class);
 		final INewVersionInfo newVersionInfo = mock(INewVersionInfo.class);
 		when(newVersionInfo.getNewVersionInfo()).thenReturn(versionInfo);
 
@@ -76,7 +76,7 @@ public class CreateOrUpdateStandardMatrixTest {
 			dataProviderClass = PPodEntityProvider.class)
 	public void moveRows(final IStandardMatrix sourceMatrix) {
 
-		final VersionInfo versionInfo = new VersionInfo();
+		final IVersionInfo versionInfo = mock(IVersionInfo.class);
 		final INewVersionInfo newVersionInfo = mock(INewVersionInfo.class);
 		when(newVersionInfo.getNewVersionInfo()).thenReturn(versionInfo);
 
@@ -128,7 +128,7 @@ public class CreateOrUpdateStandardMatrixTest {
 			dataProviderClass = PPodEntityProvider.class)
 	public void moveCharacters(final IStandardMatrix sourceMatrix) {
 
-		final VersionInfo versionInfo = new VersionInfo();
+		final IVersionInfo versionInfo = mock(IVersionInfo.class);
 		final INewVersionInfo newVersionInfo = mock(INewVersionInfo.class);
 		when(newVersionInfo.getNewVersionInfo()).thenReturn(versionInfo);
 
@@ -189,7 +189,7 @@ public class CreateOrUpdateStandardMatrixTest {
 			dataProviderClass = PPodEntityProvider.class)
 	public void removeColumn(final IStandardMatrix sourceMatrix) {
 
-		final VersionInfo versionInfo = new VersionInfo();
+		final IVersionInfo versionInfo = mock(IVersionInfo.class);
 		final INewVersionInfo newVersionInfo = mock(INewVersionInfo.class);
 		when(newVersionInfo.getNewVersionInfo()).thenReturn(versionInfo);
 

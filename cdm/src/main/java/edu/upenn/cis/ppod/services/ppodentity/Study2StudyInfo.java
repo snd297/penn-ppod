@@ -34,7 +34,7 @@ import edu.upenn.cis.ppod.imodel.IStandardRow;
 import edu.upenn.cis.ppod.imodel.IStudy;
 import edu.upenn.cis.ppod.imodel.ITree;
 import edu.upenn.cis.ppod.imodel.ITreeSet;
-import edu.upenn.cis.ppod.model.VersionInfo;
+import edu.upenn.cis.ppod.imodel.IVersionInfo;
 
 /**
  * @author Sam Donnelly
@@ -122,7 +122,7 @@ final class Study2StudyInfo implements IStudy2StudyInfo {
 
 				for (int columnPosition = 0; columnPosition < matrix
 						.getColumnVersionInfos().size(); columnPosition++) {
-					final VersionInfo columnVersionInfo =
+					final IVersionInfo columnVersionInfo =
 							matrix.getColumnVersionInfos()
 									.get(columnPosition);
 					matrixInfo.getColumnHeaderVersionsByIdx()
@@ -166,7 +166,7 @@ final class Study2StudyInfo implements IStudy2StudyInfo {
 
 				for (int columnPosition = 0; columnPosition < matrix
 						.getColumnVersionInfos().size(); columnPosition++) {
-					final VersionInfo columnVersionInfo =
+					final IVersionInfo columnVersionInfo =
 							matrix.getColumnVersionInfos()
 									.get(columnPosition);
 					matrixInfo.getColumnHeaderVersionsByIdx()

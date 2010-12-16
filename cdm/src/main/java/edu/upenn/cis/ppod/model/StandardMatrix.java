@@ -44,6 +44,7 @@ import edu.upenn.cis.ppod.imodel.IStandardCell;
 import edu.upenn.cis.ppod.imodel.IStandardCharacter;
 import edu.upenn.cis.ppod.imodel.IStandardMatrix;
 import edu.upenn.cis.ppod.imodel.IStandardRow;
+import edu.upenn.cis.ppod.imodel.IVersionInfo;
 import edu.upenn.cis.ppod.util.IVisitor;
 
 /**
@@ -129,7 +130,7 @@ public class StandardMatrix
 		rows.afterUnmarshal();
 	}
 
-	private List<VersionInfo> determineNewColumnHeaderPPodVersionInfos(
+	private List<IVersionInfo> determineNewColumnHeaderPPodVersionInfos(
 			final List<? extends IStandardCharacter> newCharacters) {
 
 		final BiMap<Integer, Integer> originalPositionsToNewPositions = HashBiMap
@@ -145,7 +146,7 @@ public class StandardMatrix
 			originalPositionsToNewPositions.put(originalPosition,
 					newPosition == -1 ? -(originalPosition + 1) : newPosition);
 		}
-		final List<VersionInfo> newColumnHeaderPPodVersionInfos =
+		final List<IVersionInfo> newColumnHeaderPPodVersionInfos =
 				newArrayListWithCapacity(newCharacters.size());
 		for (final Entry<Integer, Integer> originalPositionToNewPosition : originalPositionsToNewPositions
 				.entrySet()) {
@@ -250,8 +251,8 @@ public class StandardMatrix
 			}
 		}
 
-		final List<VersionInfo> columnVersionInfos = getColumnVersionInfosModifiable();
-		final List<VersionInfo> newColumnVersionInfos = determineNewColumnHeaderPPodVersionInfos(characters);
+		final List<IVersionInfo> columnVersionInfos = getColumnVersionInfosModifiable();
+		final List<IVersionInfo> newColumnVersionInfos = determineNewColumnHeaderPPodVersionInfos(characters);
 		columnVersionInfos.clear();
 		columnVersionInfos.addAll(newColumnVersionInfos);
 

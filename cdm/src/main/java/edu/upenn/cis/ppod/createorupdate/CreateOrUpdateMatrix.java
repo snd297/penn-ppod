@@ -29,7 +29,7 @@ import edu.upenn.cis.ppod.imodel.IMatrix;
 import edu.upenn.cis.ppod.imodel.INewVersionInfo;
 import edu.upenn.cis.ppod.imodel.IOTU;
 import edu.upenn.cis.ppod.imodel.IRow;
-import edu.upenn.cis.ppod.model.VersionInfo;
+import edu.upenn.cis.ppod.imodel.IVersionInfo;
 
 /**
  * @author Sam Donnelly
@@ -160,9 +160,9 @@ abstract class CreateOrUpdateMatrix<M extends IMatrix<R, C>, R extends IRow<C, ?
 		}
 	}
 
-	protected abstract C newC(VersionInfo newVersionInfo);
+	protected abstract C newC(IVersionInfo newVersionInfo);
 
-	protected abstract R newR(VersionInfo newVersionInfo);
+	protected abstract R newR(IVersionInfo newVersionInfo);
 
 	protected abstract void handlePolymorphicCell(final C targetCell,
 			final C sourceCell);

@@ -13,29 +13,30 @@
  * See the License for the specific language governing permissions and
  * limitations under the License.
  */
-package edu.upenn.cis.ppod.util;
+package edu.upenn.cis.ppod.imodel;
 
-import com.google.inject.Inject;
+import java.util.Date;
 
-import edu.upenn.cis.ppod.imodel.INewVersionInfo;
-import edu.upenn.cis.ppod.imodel.IVersionInfo;
-import edu.upenn.cis.ppod.model.VersionInfo;
+import javax.annotation.Nullable;
+import javax.xml.bind.annotation.XmlAttribute;
 
-/**
- * Return an empty {@link PPodVersionInfo}
- * 
- * @author Sam Donnelly
- */
-class StubNewVersionInfo implements INewVersionInfo {
+public interface IVersionInfo extends IPersistentObject {
 
-	private final VersionInfo newPPodVersionInfo;
+	/**
+	 * Get a copy of the creation date.
+	 * 
+	 * @return a copy of the creation date
+	 */
+	@XmlAttribute
+	@Nullable
+	Date getCreated();
 
-	@Inject
-	StubNewVersionInfo(final VersionInfo newPPodVersionInfo) {
-		this.newPPodVersionInfo = newPPodVersionInfo;
-	}
+	/**
+	 * Getter.
+	 * 
+	 * @return the pPOD version number
+	 */
+	@XmlAttribute
+	Long getVersion();
 
-	public IVersionInfo getNewVersionInfo() {
-		return newPPodVersionInfo;
-	}
 }

@@ -24,7 +24,6 @@ import com.google.common.annotations.Beta;
 
 import edu.umd.cs.findbugs.annotations.CheckForNull;
 import edu.umd.cs.findbugs.annotations.Nullable;
-import edu.upenn.cis.ppod.model.VersionInfo;
 
 public interface IMatrix<R extends IRow<C, ?>, C extends ICell<?, ?>>
 		extends IOTUSetChild, IUUPPodEntity, IWithDocId {
@@ -47,7 +46,7 @@ public interface IMatrix<R extends IRow<C, ?>, C extends ICell<?, ?>>
 	 * 
 	 * @return get the column pPOD version infos
 	 */
-	List<VersionInfo> getColumnVersionInfos();
+	List<IVersionInfo> getColumnVersionInfos();
 
 	/**
 	 * Get the pPOD version numbers of each column. The version number is the
@@ -143,7 +142,7 @@ public interface IMatrix<R extends IRow<C, ?>, C extends ICell<?, ?>>
 	 * @throw IllegalArgumentException if {@code pos >=
 	 *        getColumnVersionInfos().size()}
 	 */
-	void setColumnVersionInfo(int pos, VersionInfo versionInfo);
+	void setColumnVersionInfo(int pos, IVersionInfo versionInfo);
 
 	/**
 	 * Set all of the columns' pPOD version infos.
@@ -152,7 +151,7 @@ public interface IMatrix<R extends IRow<C, ?>, C extends ICell<?, ?>>
 	 * 
 	 * @return this
 	 */
-	void setColumnVersionInfos(VersionInfo versionInfo);
+	void setColumnVersionInfos(IVersionInfo versionInfo);
 
 	/**
 	 * Setter.

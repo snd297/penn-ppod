@@ -49,6 +49,7 @@ import edu.upenn.cis.ppod.imodel.IOTU;
 import edu.upenn.cis.ppod.imodel.IOTUKeyedMap;
 import edu.upenn.cis.ppod.imodel.IOTUSet;
 import edu.upenn.cis.ppod.imodel.IRow;
+import edu.upenn.cis.ppod.imodel.IVersionInfo;
 import edu.upenn.cis.ppod.util.IVisitor;
 
 /**
@@ -69,11 +70,11 @@ public abstract class Matrix<R extends IRow<C, ?>, C extends ICell<?, ?>>
 	public static final String LABEL_COLUMN = "LABEL";
 
 	/** The pPod versions of the columns. */
-	@ManyToMany
+	@ManyToMany(targetEntity = VersionInfo.class)
 	@JoinTable(inverseJoinColumns =
 		{ @JoinColumn(name = VersionInfo.JOIN_COLUMN) })
 	@OrderColumn(name = VersionInfo.TABLE + "_POSITION")
-	private final List<VersionInfo> columnVersionInfos = newArrayList();
+	private final List<IVersionInfo> columnVersionInfos = newArrayList();
 
 	/**
 	 * For sending over the wire to web clients. Because we don't want to send
@@ -154,7 +155,7 @@ public abstract class Matrix<R extends IRow<C, ?>, C extends ICell<?, ?>>
 		}
 
 		int columnVersionInfoPos = -1;
-		for (final VersionInfo columnVersionInfo : getColumnVersionInfos()) {
+		for (final IVersionInfo columnVersionInfo : getColumnVersionInfos()) {
 			columnVersionInfoPos++;
 			if (columnVersionInfo == null) {
 				getColumnVersionsModifiable().add(null);
@@ -172,7 +173,7 @@ public abstract class Matrix<R extends IRow<C, ?>, C extends ICell<?, ?>>
 	}
 
 	/** {@inheritDoc} */
-	public List<VersionInfo> getColumnVersionInfos() {
+	public List<IVersionInfo> getColumnVersionInfos() {
 		return Collections.unmodifiableList(columnVersionInfos);
 	}
 
@@ -181,7 +182,7 @@ public abstract class Matrix<R extends IRow<C, ?>, C extends ICell<?, ?>>
 	 * 
 	 * @return a modifiable reference to the column pPOD version infos
 	 */
-	List<VersionInfo> getColumnVersionInfosModifiable() {
+	List<IVersionInfo> getColumnVersionInfosModifiable() {
 		return columnVersionInfos;
 	}
 
@@ -286,7 +287,7 @@ public abstract class Matrix<R extends IRow<C, ?>, C extends ICell<?, ?>>
 	/** {@inheritDoc} */
 	public void setColumnVersionInfo(
 			final int pos,
-			final VersionInfo versionInfo) {
+			final IVersionInfo versionInfo) {
 		checkNotNull(versionInfo);
 		checkArgument(pos < getColumnVersionInfos().size(),
 				"pos is bigger than getColumnVersionInfos().size()");
@@ -295,7 +296,7 @@ public abstract class Matrix<R extends IRow<C, ?>, C extends ICell<?, ?>>
 
 	/** {@inheritDoc} */
 	public void setColumnVersionInfos(
-			final VersionInfo versionInfo) {
+			final IVersionInfo versionInfo) {
 		for (int pos = 0; pos < getColumnVersionInfos().size(); pos++) {
 			setColumnVersionInfo(pos, versionInfo);
 		}
