@@ -34,16 +34,18 @@ public class NewVersionInfoDBTest {
 
 		final TestVersionInfoDAO dao = new TestVersionInfoDAO();
 
-		final VersionInfo versionInfo = new VersionInfo();
-
 		final NewVersionInfoDB newVersionInfo =
-				new NewVersionInfoDB(versionInfo, dao);
-		final IVersionInfo returnedVersionInfo = newVersionInfo
-				.getNewVersionInfo();
-		assertSame(returnedVersionInfo, versionInfo);
-		assertNotNull(versionInfo.getCreated());
-		assertSame(getOnlyElement(dao.getMadePersistent()), versionInfo);
-		assertEquals(versionInfo.getVersion(),
+				new NewVersionInfoDB(dao);
+
+		final IVersionInfo vInfo = newVersionInfo.getNewVersionInfo();
+
+		assertEquals(dao.getMadePersistent().size(), 1);
+
+		assertSame(getOnlyElement(dao.getMadePersistent()), vInfo);
+
+		assertNotNull(vInfo.getCreated());
+
+		assertEquals(vInfo.getVersion(),
 				Long.valueOf(dao.getMaxVersion() + 1));
 
 		newVersionInfo.getNewVersionInfo();

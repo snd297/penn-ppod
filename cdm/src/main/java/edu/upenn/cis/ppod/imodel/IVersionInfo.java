@@ -18,7 +18,6 @@ package edu.upenn.cis.ppod.imodel;
 import java.util.Date;
 
 import javax.annotation.Nullable;
-import javax.xml.bind.annotation.XmlAttribute;
 
 public interface IVersionInfo extends IPersistentObject {
 
@@ -27,7 +26,6 @@ public interface IVersionInfo extends IPersistentObject {
 	 * 
 	 * @return a copy of the creation date
 	 */
-	@XmlAttribute
 	@Nullable
 	Date getCreated();
 
@@ -36,7 +34,6 @@ public interface IVersionInfo extends IPersistentObject {
 	 * 
 	 * @return the pPOD version number
 	 */
-	@XmlAttribute
 	Long getVersion();
 
 }
