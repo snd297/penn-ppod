@@ -20,6 +20,7 @@ import java.util.Set;
 import javax.annotation.CheckForNull;
 import javax.xml.bind.annotation.adapters.XmlJavaTypeAdapter;
 
+import edu.umd.cs.findbugs.annotations.Nullable;
 import edu.upenn.cis.ppod.model.StandardCharacter;
 
 @XmlJavaTypeAdapter(StandardCharacter.Adapter.class)
@@ -50,7 +51,7 @@ public interface IStandardCharacter
 	 * @return the state with the given state number, or {@code null} if there
 	 *         is no such state.
 	 */
-	@CheckForNull
+	@Nullable
 	IStandardState getState(Integer stateNumber);
 
 	/**
