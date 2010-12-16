@@ -27,6 +27,8 @@ import javax.persistence.NamedQuery;
 import javax.persistence.Table;
 import javax.xml.bind.annotation.XmlAttribute;
 
+import edu.upenn.cis.ppod.imodel.IVersionInfo;
+
 /**
  * Stores data about a particular version of the whole pPOD instance - for
  * example the pPOD version number.
@@ -44,7 +46,7 @@ import javax.xml.bind.annotation.XmlAttribute;
 @Table(name = VersionInfo.TABLE)
 @NamedQueries({ @NamedQuery(name = "VersionInfo-getMaxVersionInfo",
 		query = "select max(vi.version) from VersionInfo vi") })
-public class VersionInfo extends PersistentObject {
+public class VersionInfo extends PersistentObject implements IVersionInfo {
 
 	public final static String TABLE = "VERSION_INFO";
 
@@ -60,11 +62,7 @@ public class VersionInfo extends PersistentObject {
 	@Nullable
 	private Date created;
 
-	/**
-	 * Intentionally package-private, to block subclassing outside of this
-	 * package.
-	 */
-	public VersionInfo() {}
+	VersionInfo() {}
 
 	/**
 	 * Get a copy of the creation date.
@@ -91,15 +89,15 @@ public class VersionInfo extends PersistentObject {
 	}
 
 	/**
-	 * Setter.
+	 * Setter when the version info was created.
 	 * <p>
-	 * {@code protected} for JAXB.
+	 * {@code protected} instead of package-private for JAXB.
 	 * 
 	 * @param created the value
 	 * 
 	 * @return this {@link VersionInfo}
 	 */
-	protected VersionInfo setCreated(final Date created) {
+	protected IVersionInfo setCreated(final Date created) {
 		checkNotNull(created);
 		this.created = (Date) created.clone();
 		return this;

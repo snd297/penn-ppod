@@ -34,13 +34,13 @@ public class VersionInfoTest {
 
 	@Test
 	public void getCreated() {
-		final VersionInfo versionInfo = new VersionInfo();
+		final VersionInfo vInfo = new VersionInfo();
 
-		assertNull(versionInfo.getCreated());
+		assertNull(vInfo.getCreated());
 
 		final Date now = new Date();
-		versionInfo.setCreated(now);
+		vInfo.setCreated(now);
 
-		assertEquals(versionInfo.getCreated(), now);
+		assertEquals(vInfo.getCreated(), now);
 	}
 }

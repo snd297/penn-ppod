@@ -24,6 +24,7 @@ import org.testng.annotations.Test;
 
 import edu.upenn.cis.ppod.TestGroupDefs;
 import edu.upenn.cis.ppod.dao.TestVersionInfoDAO;
+import edu.upenn.cis.ppod.imodel.IVersionInfo;
 
 @Test(groups = TestGroupDefs.FAST)
 public class NewVersionInfoDBTest {
@@ -37,7 +38,7 @@ public class NewVersionInfoDBTest {
 
 		final NewVersionInfoDB newVersionInfo =
 				new NewVersionInfoDB(versionInfo, dao);
-		final VersionInfo returnedVersionInfo = newVersionInfo
+		final IVersionInfo returnedVersionInfo = newVersionInfo
 				.getNewVersionInfo();
 		assertSame(returnedVersionInfo, versionInfo);
 		assertNotNull(versionInfo.getCreated());

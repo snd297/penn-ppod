@@ -67,7 +67,7 @@ class MergeTreeSets implements IMergeTreeSets {
 									equalTo(sourceTree.getPPodId()),
 									IWithPPodId.getPPodId),
 									null))) {
-				targetTree = ModelFactory.provideTree(newVersionInfo
+				targetTree = ModelFactory.newTree(newVersionInfo
 						.getNewVersionInfo());
 			}
 			newTargetTrees.add(targetTree);

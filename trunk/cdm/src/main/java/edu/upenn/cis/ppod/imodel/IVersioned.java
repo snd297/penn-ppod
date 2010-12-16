@@ -17,8 +17,6 @@ package edu.upenn.cis.ppod.imodel;
 
 import javax.annotation.Nullable;
 
-import edu.upenn.cis.ppod.model.VersionInfo;
-
 /**
  * An object with a {@link PPodVersionInfo}.
  * 
@@ -49,7 +47,7 @@ public interface IVersioned extends IPersistentObject {
 	 * @return the version info of this {@code IPPodVersioned}
 	 */
 	@Nullable
-	VersionInfo getVersionInfo();
+	IVersionInfo getVersionInfo();
 
 	/**
 	 * Does this object need a new pPOD version before it is saved?
@@ -70,7 +68,7 @@ public interface IVersioned extends IPersistentObject {
 	 * 
 	 * @param versionInfo new pPOD version
 	 */
-	void setVersionInfo(final VersionInfo versionInfo);
+	void setVersionInfo(final IVersionInfo versionInfo);
 
 	void unsetInNeedOfNewVersion();
 

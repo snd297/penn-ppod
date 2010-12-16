@@ -45,6 +45,7 @@ import edu.umd.cs.findbugs.annotations.CheckForNull;
 import edu.umd.cs.findbugs.annotations.Nullable;
 import edu.upenn.cis.ppod.imodel.IAttachment;
 import edu.upenn.cis.ppod.imodel.IPPodEntity;
+import edu.upenn.cis.ppod.imodel.IVersionInfo;
 import edu.upenn.cis.ppod.util.IVisitor;
 
 /**
@@ -110,10 +111,11 @@ public abstract class PPodEntity
 	 * The pPod version of this object. Similar in concept to Hibernate's
 	 * version, but tweaked for our purposes.
 	 */
-	@ManyToOne(fetch = FetchType.LAZY, optional = false)
+	@ManyToOne(targetEntity = VersionInfo.class, fetch = FetchType.LAZY,
+			optional = false)
 	@JoinColumn(name = VersionInfo.JOIN_COLUMN)
 	@CheckForNull
-	private VersionInfo versionInfo;
+	private IVersionInfo versionInfo;
 
 	protected PPodEntity() {}
 
@@ -221,7 +223,7 @@ public abstract class PPodEntity
 		return version;
 	}
 
-	public VersionInfo getVersionInfo() {
+	public IVersionInfo getVersionInfo() {
 		checkState(
 				!isUnmarshalled(),
 						"can't access a VersionInfo through an unmarshalled PPodEntity");
@@ -242,7 +244,7 @@ public abstract class PPodEntity
 			final Set<IAttachment> thisAttachments = attachments;
 			if (thisAttachments == null) {
 				throw new AssertionError(
-						"hasAttachments is true but attachmesn == null");
+						"hasAttachments is true but attachments == null");
 			}
 
 			attachmentRemoved = thisAttachments.remove(attachment);
@@ -275,19 +277,16 @@ public abstract class PPodEntity
 	 * <p>
 	 * {@code protected} for JAXB.
 	 * 
-	 * @param pPodVersion the pPOD version number
-	 * 
-	 * @return this
+	 * @param version the pPOD version number
 	 */
-	protected IPPodEntity setVersion(final Long version) {
+	protected void setVersion(final Long version) {
 		checkNotNull(version);
 		this.version = version;
-		return this;
 	}
 
 	/** {@inheritDoc} */
 	public void setVersionInfo(
-			final VersionInfo versionInfo) {
+			final IVersionInfo versionInfo) {
 		checkNotNull(versionInfo);
 		unsetInNeedOfNewVersion();
 		this.versionInfo = versionInfo;

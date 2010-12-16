@@ -68,7 +68,7 @@ class MergeOTUSets implements IMergeOTUSets {
 											.getPPodId()),
 											IWithPPodId.getPPodId),
 											null))) {
-				targetOTU = ModelFactory.provideOTU(newVersionInfo
+				targetOTU = ModelFactory.newOTU(newVersionInfo
 						.getNewVersionInfo());
 			}
 			newTargetOTUs.add(targetOTU);

@@ -36,6 +36,7 @@ import com.google.inject.Provider;
 import edu.upenn.cis.ppod.TestGroupDefs;
 import edu.upenn.cis.ppod.imodel.IOTUSet;
 import edu.upenn.cis.ppod.imodel.IStandardCharacter;
+import edu.upenn.cis.ppod.imodel.IVersionInfo;
 import edu.upenn.cis.ppod.util.TestVisitor;
 
 /**
@@ -110,7 +111,7 @@ public class PPodEntityTest {
 	@Test
 	public void beforeMarahal() {
 		final OTUSet otuSet = otuSetProvider.get();
-		final VersionInfo versionInfo = pPodVersionInfoProvider.get();
+		final IVersionInfo versionInfo = pPodVersionInfoProvider.get();
 		otuSet.setVersionInfo(pPodVersionInfoProvider.get());
 		otuSet.beforeMarshal(null);
 		assertEquals(otuSet.getVersion(), versionInfo.getVersion());
