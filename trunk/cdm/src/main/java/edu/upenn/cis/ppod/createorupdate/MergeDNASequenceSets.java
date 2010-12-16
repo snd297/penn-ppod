@@ -22,26 +22,25 @@ import java.util.Map;
 
 import com.google.common.collect.ImmutableMap;
 import com.google.inject.Inject;
-import com.google.inject.Provider;
 
+import edu.upenn.cis.ppod.imodel.IDNASequence;
+import edu.upenn.cis.ppod.imodel.IDNASequenceSet;
+import edu.upenn.cis.ppod.imodel.INewVersionInfo;
 import edu.upenn.cis.ppod.imodel.IOTU;
-import edu.upenn.cis.ppod.imodel.ISequence;
-import edu.upenn.cis.ppod.imodel.ISequenceSet;
+import edu.upenn.cis.ppod.model.ModelFactory;
 
-final class MergeSequenceSets<SS extends ISequenceSet<S>, S extends ISequence<?>>
-		implements IMergeSequenceSets<SS, S> {
+class MergeDNASequenceSets implements IMergeDNASequenceSets {
 
-	private final Provider<S> sequenceProvider;
+	private final INewVersionInfo newVersionInfo;
 
 	@Inject
-	MergeSequenceSets(
-			final Provider<S> sequenceProvider) {
-		this.sequenceProvider = sequenceProvider;
+	MergeDNASequenceSets(final INewVersionInfo newVersionInfo) {
+		this.newVersionInfo = newVersionInfo;
 	}
 
 	public void mergeSequenceSets(
-			final SS targSeqSet,
-			final SS srcSeqSet) {
+			final IDNASequenceSet targSeqSet,
+			final IDNASequenceSet srcSeqSet) {
 		checkNotNull(targSeqSet);
 		checkArgument(
 				targSeqSet.getParent() != null,
@@ -60,7 +59,7 @@ final class MergeSequenceSets<SS extends ISequenceSet<S>, S extends ISequence<?>
 		final Integer srcSeqSetLengths =
 				srcSeqSet.getSequenceLengths();
 
-		Map<IOTU, S> targOTUsToSeqs;
+		Map<IOTU, IDNASequence> targOTUsToSeqs;
 
 		if (targSeqSetLengths == null ||
 				targSeqSetLengths.equals(srcSeqSetLengths)) {
@@ -85,16 +84,17 @@ final class MergeSequenceSets<SS extends ISequenceSet<S>, S extends ISequence<?>
 							.getOTUs()
 							.get(i);
 
-			final S srcSeq = srcSeqSet.getSequence(sourceOTU);
+			final IDNASequence srcSeq = srcSeqSet.getSequence(sourceOTU);
 			final IOTU targOTU = targSeqSet.getParent()
 							.getOTUs()
 							.get(i);
 
-			S targSeq;
+			IDNASequence targSeq;
 
 			if (null == (targSeq =
 					targOTUsToSeqs.get(targOTU))) {
-				targSeq = sequenceProvider.get();
+				targSeq = ModelFactory.newDNASequence(newVersionInfo
+						.getNewVersionInfo());
 			}
 			targSeq.setSequence(srcSeq.getSequence());
 			targSeqSet.putSequence(targOTU, targSeq);

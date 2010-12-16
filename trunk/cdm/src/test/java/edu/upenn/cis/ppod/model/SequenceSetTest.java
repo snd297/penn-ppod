@@ -15,53 +15,37 @@
  */
 package edu.upenn.cis.ppod.model;
 
+import static org.mockito.Matchers.any;
+import static org.mockito.Mockito.mock;
+import static org.mockito.Mockito.times;
+import static org.mockito.Mockito.verify;
 import static org.testng.Assert.assertEquals;
 import static org.testng.Assert.assertFalse;
 import static org.testng.Assert.assertNull;
 import static org.testng.Assert.assertSame;
 import static org.testng.Assert.assertTrue;
 
-import java.util.List;
-
 import org.testng.annotations.Test;
-
-import com.google.inject.Inject;
-import com.google.inject.Provider;
 
 import edu.upenn.cis.ppod.TestGroupDefs;
 import edu.upenn.cis.ppod.imodel.IDNASequence;
 import edu.upenn.cis.ppod.imodel.IOTU;
 import edu.upenn.cis.ppod.imodel.IOTUSet;
 import edu.upenn.cis.ppod.imodel.ISequenceSet;
-import edu.upenn.cis.ppod.util.TestVisitor;
+import edu.upenn.cis.ppod.util.IVisitor;
 
 /**
  * Test {@link SequenceSet}.
  * 
  * @author Sam Donnelly
  */
-@Test(groups = TestGroupDefs.FAST, dependsOnGroups = TestGroupDefs.INIT)
+@Test(groups = TestGroupDefs.FAST)
 public class SequenceSetTest {
-
-	@Inject
-	private Provider<DNASequenceSet> dnaSequenceSetProvider;
-
-	@Inject
-	private Provider<IDNASequence> dnaSequenceProvider;
-
-	@Inject
-	private Provider<IOTUSet> otuSetProvider;
-
-	@Inject
-	private Provider<IOTU> otuProvider;
-
-	@Inject
-	private Provider<TestVisitor> testVisitorProvider;
 
 	@Test
 	public void checkSequenceSizesOnEmptySequenceSet() {
-		final SequenceSet<IDNASequence> seqSet = dnaSequenceSetProvider.get();
-		final IDNASequence seq0 = dnaSequenceProvider.get();
+		final SequenceSet<IDNASequence> seqSet = new DNASequenceSet();
+		final IDNASequence seq0 = new DNASequence();
 
 		final String seqStr0 = "ATACCCGACCGCTA";
 
@@ -73,30 +57,30 @@ public class SequenceSetTest {
 
 	@Test
 	public void checkSequenceSizesNonEmptySequenceSet() {
-		final SequenceSet<IDNASequence> seqSet = dnaSequenceSetProvider.get();
+		final SequenceSet<IDNASequence> seqSet = new DNASequenceSet();
 
-		final IDNASequence seq0 = dnaSequenceProvider.get();
+		final IDNASequence seq0 = new DNASequence();
 		final String seqStr0 = "ATACCCGACCGCTA";
 		seq0.setSequence(seqStr0);
 
-		final IDNASequence seq1 = dnaSequenceProvider.get();
+		final IDNASequence seq1 = new DNASequence();
 		final String seqStr1 = "ATACACGTCCGCTG";
 		seq1.setSequence(seqStr1);
 
-		final IDNASequence seq2 = dnaSequenceProvider.get();
+		final IDNASequence seq2 = new DNASequence();
 		final String seqStr2 = "TTCCTCGTCCGCTG";
 		seq2.setSequence(seqStr2);
 
-		final IDNASequence seq3 = dnaSequenceProvider.get();
+		final IDNASequence seq3 = new DNASequence();
 		final String seqStr3 = "CTCCTCGTCAGCAG";
 		seq3.setSequence(seqStr3);
 
-		final IOTUSet otuSet0 = otuSetProvider.get();
+		final IOTUSet otuSet0 = new OTUSet();
 		seqSet.setParent(otuSet0);
 
-		final IOTU otu0 = otuProvider.get().setLabel("otu0");
-		final IOTU otu1 = otuProvider.get().setLabel("otu1");
-		final IOTU otu2 = otuProvider.get().setLabel("otu2");
+		final IOTU otu0 = new OTU().setLabel("otu0");
+		final IOTU otu1 = new OTU().setLabel("otu1");
+		final IOTU otu2 = new OTU().setLabel("otu2");
 		otuSet0.addOTU(otu0);
 		otuSet0.addOTU(otu1);
 		otuSet0.addOTU(otu2);
@@ -111,30 +95,30 @@ public class SequenceSetTest {
 
 	@Test(expectedExceptions = IllegalArgumentException.class)
 	public void checkSequenceSizesNonEmptySequenceSetWrongLength() {
-		final SequenceSet<IDNASequence> seqSet = dnaSequenceSetProvider.get();
+		final SequenceSet<IDNASequence> seqSet = new DNASequenceSet();
 
-		final IDNASequence seq0 = dnaSequenceProvider.get();
+		final IDNASequence seq0 = new DNASequence();
 		final String seqStr0 = "ATACCCGACCGCT";
 		seq0.setSequence(seqStr0);
 
-		final IDNASequence seq1 = dnaSequenceProvider.get();
+		final IDNASequence seq1 = new DNASequence();
 		final String seqStr1 = "ATACACGTCCGCTG";
 		seq1.setSequence(seqStr1);
 
-		final IDNASequence seq2 = dnaSequenceProvider.get();
+		final IDNASequence seq2 = new DNASequence();
 		final String seqStr2 = "TTCCTCGTCCGCTG";
 		seq2.setSequence(seqStr2);
 
-		final IDNASequence seq3 = dnaSequenceProvider.get();
+		final IDNASequence seq3 = new DNASequence();
 		final String seqStr3 = "CTCCTCGTCAGCAG";
 		seq3.setSequence(seqStr3);
 
-		final IOTUSet otuSet0 = otuSetProvider.get();
+		final IOTUSet otuSet0 = new OTUSet();
 		seqSet.setParent(otuSet0);
 
-		final IOTU otu0 = otuProvider.get().setLabel("otu0");
-		final IOTU otu1 = otuProvider.get().setLabel("otu1");
-		final IOTU otu2 = otuProvider.get().setLabel("otu2");
+		final IOTU otu0 = new OTU().setLabel("otu0");
+		final IOTU otu1 = new OTU().setLabel("otu1");
+		final IOTU otu2 = new OTU().setLabel("otu2");
 		otuSet0.addOTU(otu0);
 		otuSet0.addOTU(otu1);
 		otuSet0.addOTU(otu2);
@@ -149,12 +133,12 @@ public class SequenceSetTest {
 
 	@Test
 	public void setInNeedOfNewVersion() {
-		final DNASequenceSet seqSet = dnaSequenceSetProvider.get();
+		final DNASequenceSet seqSet = new DNASequenceSet();
 		assertFalse(seqSet.isInNeedOfNewVersion());
 		seqSet.setInNeedOfNewVersion();
 		assertTrue(seqSet.isInNeedOfNewVersion());
 
-		final IOTUSet otuSet = otuSetProvider.get();
+		final IOTUSet otuSet = new OTUSet();
 		otuSet.addDNASequenceSet(seqSet);
 		seqSet.unsetInNeedOfNewVersion();
 		otuSet.unsetInNeedOfNewVersion();
@@ -166,7 +150,7 @@ public class SequenceSetTest {
 
 	@Test
 	public void setLabel() {
-		final ISequenceSet<IDNASequence> seqSet = dnaSequenceSetProvider.get();
+		final ISequenceSet<IDNASequence> seqSet = new DNASequenceSet();
 		assertNull(seqSet.getLabel());
 
 		assertFalse(seqSet.isInNeedOfNewVersion());
@@ -180,55 +164,52 @@ public class SequenceSetTest {
 		seqSet.setLabel(label);
 		assertEquals(seqSet.getLabel(), label);
 		assertFalse(seqSet.isInNeedOfNewVersion());
-
 	}
 
 	@Test
 	public void afterUnmarshal() {
-		final SequenceSet<?> seqSet = dnaSequenceSetProvider.get();
-		final IOTUSet otuSet = otuSetProvider.get();
+		final SequenceSet<?> seqSet = new DNASequenceSet();
+		final IOTUSet otuSet = new OTUSet();
 		seqSet.afterUnmarshal(null, otuSet);
 		assertSame(seqSet.getParent(), otuSet);
 	}
 
 	@Test
 	public void accept() {
-		final IOTUSet otuSet = otuSetProvider.get();
-		otuSet.addOTU(otuProvider.get().setLabel("otu-0"));
-		otuSet.addOTU(otuProvider.get().setLabel("otu-1"));
-		otuSet.addOTU(otuProvider.get().setLabel("otu-2"));
+		final IOTUSet otuSet = new OTUSet();
+		otuSet.addOTU(new OTU().setLabel("otu-0"));
+		otuSet.addOTU(new OTU().setLabel("otu-1"));
+		otuSet.addOTU(new OTU().setLabel("otu-2"));
 
-		final DNASequenceSet seqSet = dnaSequenceSetProvider.get();
+		final DNASequenceSet seqSet = new DNASequenceSet();
 
 		otuSet.addDNASequenceSet(seqSet);
 
-		seqSet.putSequence(otuSet.getOTUs().get(0),
-				(DNASequence) dnaSequenceProvider.get().setSequence("ATG"));
-		seqSet.putSequence(otuSet.getOTUs().get(1),
-				(DNASequence) dnaSequenceProvider.get().setSequence("CTA"));
-		seqSet.putSequence(otuSet.getOTUs().get(2),
-				(DNASequence) dnaSequenceProvider.get().setSequence("TTT"));
+		final IDNASequence seq0 = (DNASequence) new DNASequence()
+				.setSequence("ATG");
+		final IDNASequence seq1 = (DNASequence) new DNASequence()
+				.setSequence("CTA");
+		final IDNASequence seq2 = (DNASequence) new DNASequence()
+				.setSequence("TTT");
 
-		final TestVisitor visitor = testVisitorProvider.get();
+		seqSet.putSequence(otuSet.getOTUs().get(0), seq0);
+
+		seqSet.putSequence(otuSet.getOTUs().get(1), seq1);
+
+		seqSet.putSequence(otuSet.getOTUs().get(2), seq2);
+
+		final IVisitor visitor = mock(IVisitor.class);
 
 		seqSet.accept(visitor);
 
-		final List<Object> visited = visitor.getVisited();
+		verify(visitor, times(1)).visitDNASequenceSet(seqSet);
 
-		assertEquals(visited.size(),
-				seqSet.getSequences().values().size() + 1); // add
-		// in
-		// one
-		// for
-		// parent
+		verify(visitor, times(seqSet.getSequences().values().size()))
+				.visitDNASequence(any(DNASequence.class));
 
-		assertSame(visited.get(0), seqSet);
-
-		// Order undefined for visiting the children
-		final List<Object> visitedChildren = visited.subList(1, visited.size());
-		for (final Object sequence : seqSet.getSequences().values()) {
-			assertTrue(visitedChildren.contains(sequence));
-		}
+		verify(visitor).visitDNASequence(seq0);
+		verify(visitor).visitDNASequence(seq1);
+		verify(visitor).visitDNASequence(seq2);
 
 	}
 }

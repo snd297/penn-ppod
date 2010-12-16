@@ -32,9 +32,6 @@ import javax.annotation.Nullable;
 import org.testng.annotations.BeforeMethod;
 import org.testng.annotations.Test;
 
-import com.google.inject.Inject;
-import com.google.inject.Provider;
-
 import edu.upenn.cis.ppod.TestGroupDefs;
 import edu.upenn.cis.ppod.imodel.ICell;
 import edu.upenn.cis.ppod.imodel.IOTU;
@@ -50,59 +47,37 @@ import edu.upenn.cis.ppod.imodel.IStandardState;
  * 
  * @author Sam Donnelly
  */
-@Test(groups = TestGroupDefs.FAST, dependsOnGroups = TestGroupDefs.INIT)
+@Test(groups = TestGroupDefs.FAST)
 public class StandardCellTest {
 
 	@Nullable
 	private StandardCell cell;
 
-	@Inject
-	private Provider<StandardCell> cellProvider;
-
-	@Inject
-	private Provider<IStandardCharacter> characterProvider;
-
-	@Nullable
-	private IStandardMatrix matrix;
-
-	@Inject
-	private Provider<IStandardMatrix> standardMatrixProvider;
-
-	@Inject
-	private Provider<IOTU> otuProvider;
-
-	@Inject
-	private Provider<IOTUSet> otuSetProvider;
-
-	@Inject
-	private Provider<IStandardRow> rowProvider;
-
-	@Nullable
 	private StandardState state00;
 
-	@Nullable
 	private StandardState state01;
 
-	@Nullable
 	private Set<StandardState> states;
+
+	private IStandardMatrix matrix;
 
 	@BeforeMethod
 	public void beforeMethod() {
-		cell = cellProvider.get();
+		cell = new StandardCell();
 
-		matrix = standardMatrixProvider.get();
+		matrix = new StandardMatrix();
 
-		final IOTUSet otuSet = otuSetProvider.get();
+		final IOTUSet otuSet = new OTUSet();
 
-		final IOTU otu0 = otuProvider.get().setLabel("otu0");
+		final IOTU otu0 = new OTU().setLabel("otu0");
 		otuSet.setOTUs(newArrayList(otu0));
 		matrix.setParent(otuSet);
 
 		final IStandardCharacter character0 =
-				characterProvider.get();
+				new StandardCharacter();
 		character0.setLabel("character0");
 		matrix.setCharacters(newArrayList(character0));
-		final IStandardRow row0 = rowProvider.get();
+		final IStandardRow row0 = new StandardRow();
 		matrix.putRow(matrix.getParent().getOTUs().get(0), row0);
 
 		states = newHashSet();
@@ -267,7 +242,7 @@ public class StandardCellTest {
 	 */
 	@Test(expectedExceptions = IllegalStateException.class)
 	public void setStatesForACellThatDoesNotBelongToARow() {
-		final IStandardCell cell = cellProvider.get();
+		final IStandardCell cell = new StandardCell();
 		cell.setSingleWithStateNo(state00.getStateNumber());
 	}
 

@@ -64,7 +64,7 @@ public class VersionInfo extends PersistentObject {
 	 * Intentionally package-private, to block subclassing outside of this
 	 * package.
 	 */
-	VersionInfo() {}
+	public VersionInfo() {}
 
 	/**
 	 * Get a copy of the creation date.
