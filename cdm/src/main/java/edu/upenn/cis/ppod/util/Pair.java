@@ -64,12 +64,10 @@ public class Pair<T, U> implements IPair<T, U> {
 		this.second = second;
 	}
 
-	@Nullable
 	public T getFirst() {
 		return first;
 	}
 
-	@Nullable
 	public U getSecond() {
 		return second;
 	}

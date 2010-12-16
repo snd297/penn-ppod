@@ -22,6 +22,7 @@ import javax.xml.bind.annotation.XmlRootElement;
 import com.google.common.base.Function;
 
 import edu.upenn.cis.ppod.util.IPair;
+import edu.upenn.cis.ppod.util.Pair;
 
 /**
  * Serializing a {@code Pair<String, String>} didn't work right, so we made this
@@ -30,11 +31,16 @@ import edu.upenn.cis.ppod.util.IPair;
  * @author Sam Donnelly
  */
 @XmlRootElement
-@XmlAccessorType(XmlAccessType.FIELD)
-public final class StringPair implements IPair<String, String> {
+@XmlAccessorType(XmlAccessType.PROPERTY)
+public final class StringPair extends Pair<String, String> {
 
-	private String first;
-	private String second;
+	public static final Function<StringPair, IPair<String, String>> castToIPair = new Function<StringPair, IPair<String, String>>() {
+
+		public IPair<String, String> apply(final StringPair from) {
+			return from;
+		}
+
+	};
 
 	/**
 	 * Created for JAXB.
@@ -44,23 +50,32 @@ public final class StringPair implements IPair<String, String> {
 
 	public StringPair(final String first,
 			final String second) {
-		this.first = first;
-		this.second = second;
+		super(first, second);
 	}
 
+	@Override
 	public String getFirst() {
-		return first;
+		return super.getFirst();
 	}
 
+	@Override
 	public String getSecond() {
-		return second;
+		return super.getSecond();
 	}
 
-	public static final Function<StringPair, IPair<String, String>> castToIPair = new Function<StringPair, IPair<String, String>>() {
+	/**
+	 * This seemingly redundant setter method added for the sake of JAXB.
+	 */
+	@Override
+	protected void setFirst(final String first) {
+		super.setFirst(first);
+	}
 
-		public IPair<String, String> apply(final StringPair from) {
-			return (IPair<String, String>) from;
-		}
-
-	};
+	/**
+	 * This seemingly redundant setter method added for the sake of JAXB.
+	 */
+	@Override
+	protected void setSecond(final String second) {
+		super.setSecond(second);
+	}
 }
