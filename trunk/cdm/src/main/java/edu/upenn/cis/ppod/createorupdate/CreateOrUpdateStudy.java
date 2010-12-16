@@ -43,16 +43,16 @@ import edu.upenn.cis.ppod.model.ModelFactory;
  * 
  * @author Sam Donnelly
  */
-final class CreateOrUpdateStudy implements ICreateOrUpdateStudy {
+class CreateOrUpdateStudy implements ICreateOrUpdateStudy {
 
 	private final IStudyDAO studyDAO;
 	private final IObjectWithLongIdDAO dao;
 	private final INewVersionInfo newVersionInfo;
-	private final MergeOTUSets mergeOTUSets;
-	private CreateOrUpdateDNAMatrix createOrUpdateDNAMatrix;
-	private MergeDNASequenceSets mergeDNASequenceSets;
-	private CreateOrUpdateStandardMatrix createOrUpdateStandardMatrix;
-	private MergeTreeSets mergeTreeSets;
+	private final IMergeOTUSets mergeOTUSets;
+	private final ICreateOrUpdateDNAMatrix createOrUpdateDNAMatrix;
+	private final IMergeDNASequenceSets mergeDNASequenceSets;
+	private final ICreateOrUpdateStandardMatrix createOrUpdateStandardMatrix;
+	private final IMergeTreeSets mergeTreeSets;
 
 	@Inject
 	CreateOrUpdateStudy(
@@ -61,11 +61,11 @@ final class CreateOrUpdateStudy implements ICreateOrUpdateStudy {
 			final IAttachmentTypeDAO attachmentTypeDAO,
 			final IStudyDAO studyDAO,
 			final INewVersionInfo newVersionInfo,
-			final MergeOTUSets mergeOTUSets,
-			final CreateOrUpdateDNAMatrix createOrUpdateDNAMatrix,
-			final MergeDNASequenceSets mergeDNASequenceSets,
-			final CreateOrUpdateStandardMatrix createOrUpdateStandardMatrix,
-			final MergeTreeSets mergeTreeSets) {
+			final IMergeOTUSets mergeOTUSets,
+			final ICreateOrUpdateDNAMatrix createOrUpdateDNAMatrix,
+			final IMergeDNASequenceSets mergeDNASequenceSets,
+			final ICreateOrUpdateStandardMatrix createOrUpdateStandardMatrix,
+			final IMergeTreeSets mergeTreeSets) {
 		this.studyDAO = studyDAO;
 		this.dao = dao;
 		this.newVersionInfo = newVersionInfo;
