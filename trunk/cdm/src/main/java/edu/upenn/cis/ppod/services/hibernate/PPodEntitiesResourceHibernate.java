@@ -24,9 +24,6 @@ import java.util.Set;
 import org.hibernate.FlushMode;
 import org.hibernate.Session;
 
-import com.google.inject.Inject;
-import com.google.inject.Provider;
-
 import edu.upenn.cis.ppod.imodel.IOTU;
 import edu.upenn.cis.ppod.imodel.IOTUSet;
 import edu.upenn.cis.ppod.imodel.IStandardMatrix;
@@ -41,15 +38,10 @@ import edu.upenn.cis.ppod.util.SetDocIdVisitor;
 class PPodEntitiesResourceHibernate implements
 		IPPodEntitiesResource {
 
-	private final Provider<PPodEntities> pPodEntitiesProvider;
-
 	private Session session;
 
-	@Inject
 	PPodEntitiesResourceHibernate(
-			final Provider<PPodEntities> pPodEntities,
 			final Session session) {
-		this.pPodEntitiesProvider = pPodEntities;
 		this.session = session;
 	}
 
@@ -63,7 +55,7 @@ class PPodEntitiesResourceHibernate implements
 
 		@SuppressWarnings("unchecked")
 		final List<Object> queryResults = session.createQuery(query).list();
-		final PPodEntities pPodEntities = pPodEntitiesProvider.get();
+		final PPodEntities pPodEntities = new PPodEntities();
 
 		final Set<IStandardMatrix> addedMatrices = newHashSet();
 		final Set<ITreeSet> addedTreeSets = newHashSet();

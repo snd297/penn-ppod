@@ -45,6 +45,8 @@ import edu.upenn.cis.ppod.util.PPodEntitiesUtil;
 @XmlAccessorType(XmlAccessType.NONE)
 public class PPodEntities implements IPPodEntities {
 
+	public PPodEntities() {}
+
 	@XmlElement(name = "otuSet")
 	private final List<IOTUSet> otuSets = newArrayList();
 

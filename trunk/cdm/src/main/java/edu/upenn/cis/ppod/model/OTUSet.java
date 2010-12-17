@@ -241,7 +241,7 @@ public class OTUSet
 		setParentOnChildren();
 	}
 
-	private IOTU addOTUWithoutSetOTUsOnChildren(final IOTU otu) {
+	private void addOTUWithoutSetOTUsOnChildren(final IOTU otu) {
 		checkNotNull(otu);
 		final IOTU dupNameOTU =
 				find(getOTUs(),
@@ -261,7 +261,6 @@ public class OTUSet
 			otu.setParent(this);
 			setInNeedOfNewVersion();
 		}
-		return otu;
 	}
 
 	/** {@inheritDoc} */

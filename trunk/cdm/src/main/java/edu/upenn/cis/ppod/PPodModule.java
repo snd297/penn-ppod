@@ -38,5 +38,6 @@ public final class PPodModule extends AbstractModule {
 
 		install(new DAOHibernateModule());
 		install(new PersistenceModule());
+		
 	}
 }

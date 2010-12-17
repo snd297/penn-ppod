@@ -42,7 +42,7 @@ import edu.upenn.cis.ppod.util.PPodEntityProvider;
  * 
  * @author Sam Donnelly
  */
-@Test(groups = { TestGroupDefs.FAST }, singleThreaded = true)
+@Test(groups = { TestGroupDefs.FAST })
 public class CreateOrUpdateStandardMatrixTest {
 
 	@Test(dataProvider = PPodEntityProvider.STANDARD_MATRICES_PROVIDER,
