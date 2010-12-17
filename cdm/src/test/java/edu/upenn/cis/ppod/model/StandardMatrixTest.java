@@ -32,8 +32,6 @@ import org.testng.annotations.BeforeMethod;
 import org.testng.annotations.Test;
 
 import com.google.common.collect.ImmutableList;
-import com.google.inject.Inject;
-import com.google.inject.Provider;
 
 import edu.upenn.cis.ppod.TestGroupDefs;
 import edu.upenn.cis.ppod.imodel.IOTUSet;
@@ -184,9 +182,9 @@ public class StandardMatrixTest {
 		standardCharacters.get(1).setLabel("character-1");
 		standardCharacters.get(2).setLabel("character-2");
 
-		final VersionInfo pPodVersionInfo0 = pPodVersionInfoProvider.get();
-		final VersionInfo pPodVersionInfo1 = pPodVersionInfoProvider.get();
-		final VersionInfo pPodVersionInfo2 = pPodVersionInfoProvider.get();
+		final VersionInfo pPodVersionInfo0 = new VersionInfo();
+		final VersionInfo pPodVersionInfo1 = new VersionInfo();
+		final VersionInfo pPodVersionInfo2 = new VersionInfo();
 
 		matrix.setCharacters(standardCharacters);
 
@@ -220,9 +218,9 @@ public class StandardMatrixTest {
 		characters.get(1).setLabel("character-1");
 		characters.get(2).setLabel("character-2");
 
-		final VersionInfo pPodVersionInfo0 = pPodVersionInfoProvider.get();
-		final VersionInfo pPodVersionInfo1 = pPodVersionInfoProvider.get();
-		final VersionInfo pPodVersionInfo2 = pPodVersionInfoProvider.get();
+		final VersionInfo pPodVersionInfo0 = new VersionInfo();
+		final VersionInfo pPodVersionInfo1 = new VersionInfo();
+		final VersionInfo pPodVersionInfo2 = new VersionInfo();
 
 		matrix.setCharacters(characters);
 
@@ -325,9 +323,6 @@ public class StandardMatrixTest {
 		assertNull(row1.getParent());
 	}
 
-	@Inject
-	private Provider<VersionInfo> pPodVersionInfoProvider;
-
 	@Test
 	public void beforeMarshal() {
 
@@ -344,11 +339,11 @@ public class StandardMatrixTest {
 		nullFillAndSet(
 				matrix.getColumnVersionInfosModifiable(),
 				0,
-				pPodVersionInfoProvider.get().setVersion(3L));
+				new VersionInfo().setVersion(3L));
 		nullFillAndSet(
 				matrix.getColumnVersionInfosModifiable(),
 				2,
-				pPodVersionInfoProvider.get().setVersion(8L));
+				new VersionInfo().setVersion(8L));
 
 		matrix.beforeMarshal(null);
 		assertEquals(matrix.getColumnVersions().size(),
@@ -379,7 +374,7 @@ public class StandardMatrixTest {
 	}
 
 	public void setColumnPPodVersionInfos() {
-		final VersionInfo versionInfo = pPodVersionInfoProvider.get();
+		final VersionInfo versionInfo = new VersionInfo();
 
 		matrix.setColumnVersionInfos(versionInfo);
 		for (final IVersionInfo columnPPodVersionInfo : matrix

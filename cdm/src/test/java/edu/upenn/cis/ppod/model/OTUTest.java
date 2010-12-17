@@ -22,20 +22,14 @@ import static org.testng.Assert.assertTrue;
 
 import org.testng.annotations.Test;
 
-import com.google.inject.Inject;
-import com.google.inject.Provider;
-
 import edu.upenn.cis.ppod.TestGroupDefs;
 
-@Test(groups = TestGroupDefs.FAST, dependsOnGroups = TestGroupDefs.INIT)
+@Test(groups = TestGroupDefs.FAST)
 public class OTUTest {
-
-	@Inject
-	private Provider<OTU> otuProvider;
 
 	@Test
 	public void setLabel() {
-		final OTU otu = otuProvider.get();
+		final OTU otu = new OTU();
 		otu.unsetInNeedOfNewVersion();
 		final String label = "otu-label";
 		final OTU returnedOTU = otu.setLabel(label);

@@ -6,10 +6,15 @@ import org.hibernate.SessionFactory;
 import org.hibernate.cfg.AnnotationConfiguration;
 import org.hibernate.cfg.Configuration;
 import org.hibernate.cfg.ImprovedNamingStrategy;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 
 import com.google.inject.Provider;
 
 public class SessionFactoryProvider implements Provider<SessionFactory> {
+
+	private static Logger logger = LoggerFactory
+			.getLogger(SessionFactoryProvider.class);
 
 	/**
 	 * Only static for {@link #getSessionFactory()}.
@@ -35,6 +40,7 @@ public class SessionFactoryProvider implements Provider<SessionFactory> {
 				"the session factory singleton has already been initialized - is SessionFactoryProvider\n"
 						+ " bound as an eager singelton as it should be? Has it been put into more than one injector\n "
 						+ " in the same JVM? Though that may be a legit thing to do, it's not supported.");
+		logger.debug("building session factory...");
 		final Configuration cfg = new AnnotationConfiguration();
 		cfg.setNamingStrategy(new ImprovedNamingStrategy());
 
@@ -42,6 +48,7 @@ public class SessionFactoryProvider implements Provider<SessionFactory> {
 		cfg.configure();
 		final SessionFactory sf = cfg.buildSessionFactory();
 		SessionFactoryProvider.sf = sf;
+		logger.debug("...done");
 		return sf;
 	}
 

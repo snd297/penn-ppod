@@ -20,9 +20,6 @@ import static org.testng.Assert.assertSame;
 
 import org.testng.annotations.Test;
 
-import com.google.inject.Inject;
-import com.google.inject.Provider;
-
 import edu.upenn.cis.ppod.TestGroupDefs;
 import edu.upenn.cis.ppod.imodel.IDNASequence;
 import edu.upenn.cis.ppod.imodel.IOTU;
@@ -33,20 +30,8 @@ import edu.upenn.cis.ppod.imodel.IOTUSet;
  * 
  * @author Sam Donnelly
  */
-@Test(groups = TestGroupDefs.FAST, dependsOnGroups = TestGroupDefs.INIT)
+@Test(groups = TestGroupDefs.FAST)
 public class OTUsToDNASequencesTest {
-
-	@Inject
-	private Provider<DNASequenceSet> dnaSequenceSetProvider;
-
-	@Inject
-	private Provider<OTUSet> otuSetProvider;
-
-	@Inject
-	private Provider<OTU> otuProvider;
-
-	@Inject
-	private Provider<DNASequence> dnaSequenceProvider;
 
 	/**
 	 * Do a straight put with
@@ -59,7 +44,7 @@ public class OTUsToDNASequencesTest {
 		final IOTU otu = new OTU();
 		otuSet.addOTU(otu);
 		final IDNASequence sequence = new DNASequence();
-		final DNASequenceSet sequenceSet = dnaSequenceSetProvider.get();
+		final DNASequenceSet sequenceSet = new DNASequenceSet();
 		otuSet.addDNASequenceSet(sequenceSet);
 		sequenceSet.getOTUKeyedSequences().put(otu, sequence);
 		assertSame(sequenceSet.getOTUKeyedSequences().getValues()
@@ -73,15 +58,15 @@ public class OTUsToDNASequencesTest {
 	 */
 	@Test
 	public void putTestReplaceASequence() {
-		final IOTUSet otuSet = otuSetProvider.get();
-		final IOTU otu = otuProvider.get();
+		final IOTUSet otuSet = new OTUSet();
+		final IOTU otu = new OTU();
 		otuSet.addOTU(otu);
-		final DNASequence sequence = dnaSequenceProvider.get();
-		final DNASequenceSet sequenceSet = dnaSequenceSetProvider.get();
+		final DNASequence sequence = new DNASequence();
+		final DNASequenceSet sequenceSet = new DNASequenceSet();
 		otuSet.addDNASequenceSet(sequenceSet);
 		sequenceSet.getOTUKeyedSequences().put(otu, sequence);
 
-		final IDNASequence sequence2 = dnaSequenceProvider.get();
+		final IDNASequence sequence2 = new DNASequence();
 
 		sequenceSet.getOTUKeyedSequences().put(otu, sequence2);
 

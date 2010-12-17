@@ -18,6 +18,10 @@ package edu.upenn.cis.ppod.model;
 import static com.google.common.collect.Iterables.getOnlyElement;
 import static com.google.common.collect.Iterables.isEmpty;
 import static com.google.common.collect.Sets.newHashSet;
+import static org.mockito.Matchers.any;
+import static org.mockito.Mockito.mock;
+import static org.mockito.Mockito.times;
+import static org.mockito.Mockito.verify;
 import static org.testng.Assert.assertEquals;
 import static org.testng.Assert.assertFalse;
 import static org.testng.Assert.assertNotNull;
@@ -30,42 +34,27 @@ import java.util.Set;
 import org.testng.annotations.Test;
 
 import com.google.common.collect.ImmutableSet;
-import com.google.inject.Inject;
-import com.google.inject.Provider;
 
 import edu.upenn.cis.ppod.TestGroupDefs;
 import edu.upenn.cis.ppod.imodel.IOTUSet;
 import edu.upenn.cis.ppod.imodel.IStandardCharacter;
 import edu.upenn.cis.ppod.imodel.IVersionInfo;
-import edu.upenn.cis.ppod.util.TestVisitor;
+import edu.upenn.cis.ppod.util.IVisitor;
 
 /**
  * Test {@link PPodEntity}.
  * 
  * @author Sam Donnelly
  */
-@Test(groups = { TestGroupDefs.FAST },
-		dependsOnGroups = TestGroupDefs.INIT)
+@Test(groups = { TestGroupDefs.FAST })
 public class PPodEntityTest {
-
-	@Inject
-	private Provider<OTUSet> otuSetProvider;
-
-	@Inject
-	private Provider<Attachment> attachmentProvider;
-
-	@Inject
-	private Provider<VersionInfo> pPodVersionInfoProvider;
-
-	@Inject
-	private Provider<TestVisitor> testVisitorProvider;
 
 	@Test
 	public void addAttachment() {
-		final OTUSet otuSet = otuSetProvider.get();
+		final OTUSet otuSet = new OTUSet();
 		otuSet.unsetInNeedOfNewVersion();
 
-		final Attachment attachment = attachmentProvider.get();
+		final Attachment attachment = new Attachment();
 		assertFalse(otuSet.getHasAttachments());
 		otuSet.addAttachment(attachment);
 		assertEquals(
@@ -78,7 +67,7 @@ public class PPodEntityTest {
 
 	@Test
 	public void getElementsXmlWNullAttachments() {
-		final OTUSet otuSet = otuSetProvider.get();
+		final OTUSet otuSet = new OTUSet();
 		assertNull(otuSet.getAttachmentsXml());
 
 		otuSet.setHasAttachments(true);
@@ -90,16 +79,16 @@ public class PPodEntityTest {
 
 	@Test
 	public void getElementsXmlWAttachments() {
-		final Attachment attachment0 = attachmentProvider.get();
-		final Attachment attachment1 = attachmentProvider.get();
-		final Attachment attachment2 = attachmentProvider.get();
+		final Attachment attachment0 = new Attachment();
+		final Attachment attachment1 = new Attachment();
+		final Attachment attachment2 = new Attachment();
 
 		final Set<Attachment> attachments =
 				ImmutableSet.of(attachment0,
 						attachment1,
 						attachment2);
 
-		final OTUSet otuSet = otuSetProvider.get();
+		final OTUSet otuSet = new OTUSet();
 
 		otuSet.addAttachment(attachment0);
 		otuSet.addAttachment(attachment1);
@@ -110,9 +99,9 @@ public class PPodEntityTest {
 
 	@Test
 	public void beforeMarahal() {
-		final OTUSet otuSet = otuSetProvider.get();
-		final IVersionInfo versionInfo = pPodVersionInfoProvider.get();
-		otuSet.setVersionInfo(pPodVersionInfoProvider.get());
+		final OTUSet otuSet = new OTUSet();
+		final IVersionInfo versionInfo = new VersionInfo();
+		otuSet.setVersionInfo(new VersionInfo());
 		otuSet.beforeMarshal(null);
 		assertEquals(otuSet.getVersion(), versionInfo.getVersion());
 	}
@@ -123,7 +112,7 @@ public class PPodEntityTest {
 	 */
 	@Test(expectedExceptions = IllegalStateException.class)
 	public void getMarshalled() {
-		final IOTUSet otuSet = otuSetProvider.get();
+		final IOTUSet otuSet = new OTUSet();
 		((PersistentObject) otuSet).setUnmarshalled(true);
 		otuSet.getVersionInfo();
 	}
@@ -134,10 +123,10 @@ public class PPodEntityTest {
 	 */
 	@Test
 	public void removeAttachment() {
-		final OTUSet otuSet = otuSetProvider.get();
-		final Attachment attachment1 = attachmentProvider.get();
-		final Attachment attachment2 = attachmentProvider.get();
-		final Attachment attachment3 = attachmentProvider.get();
+		final OTUSet otuSet = new OTUSet();
+		final Attachment attachment1 = new Attachment();
+		final Attachment attachment2 = new Attachment();
+		final Attachment attachment3 = new Attachment();
 		otuSet.addAttachment(attachment1);
 		otuSet.addAttachment(attachment2);
 		otuSet.addAttachment(attachment3);
@@ -257,14 +246,14 @@ public class PPodEntityTest {
 		otuSet.addAttachment(attachment1);
 		otuSet.addAttachment(attachment2);
 
-		final TestVisitor testVisitor = testVisitorProvider.get();
+		final IVisitor testVisitor = mock(IVisitor.class);
 
 		otuSet.accept(testVisitor);
 
-		assertEquals(testVisitor.getVisited().size(),
-				1 + otuSet.getAttachments().size());
-
-		assertTrue(testVisitor.getVisited().containsAll(expectedAttachments));
-
+		verify(testVisitor, times(expectedAttachments.size())).visitAttachment(
+				any(Attachment.class));
+		verify(testVisitor).visitAttachment(attachment0);
+		verify(testVisitor).visitAttachment(attachment1);
+		verify(testVisitor).visitAttachment(attachment2);
 	}
 }

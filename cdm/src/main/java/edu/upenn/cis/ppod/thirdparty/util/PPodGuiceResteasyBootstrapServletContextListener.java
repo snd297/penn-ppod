@@ -4,10 +4,13 @@ import javax.servlet.ServletContext;
 import javax.servlet.ServletContextEvent;
 
 import org.apache.shiro.web.servlet.IniShiroFilter;
+import org.hibernate.SessionFactory;
 import org.jboss.resteasy.plugins.server.servlet.HttpServletDispatcher;
 import org.jboss.resteasy.plugins.server.servlet.ResteasyBootstrap;
 import org.jboss.resteasy.spi.Registry;
 import org.jboss.resteasy.spi.ResteasyProviderFactory;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 
 import com.google.inject.Guice;
 import com.google.inject.Injector;
@@ -15,7 +18,6 @@ import com.google.inject.Singleton;
 import com.google.inject.servlet.ServletModule;
 
 import edu.upenn.cis.ppod.PPodModule;
-import edu.upenn.cis.ppod.persistence.PersistenceModule;
 import edu.upenn.cis.ppod.services.hibernate.PPodServicesHibernateModule;
 
 /**
@@ -26,8 +28,21 @@ import edu.upenn.cis.ppod.services.hibernate.PPodServicesHibernateModule;
 public class PPodGuiceResteasyBootstrapServletContextListener extends
 		ResteasyBootstrap {
 
+	private static Logger logger = LoggerFactory
+			.getLogger(PPodGuiceResteasyBootstrapServletContextListener.class);
+
+	private SessionFactory sessionFactory;
+
 	@Override
-	public void contextDestroyed(final ServletContextEvent event) {}
+	public void contextDestroyed(final ServletContextEvent event) {
+		if (sessionFactory.isClosed()) {
+			logger.debug("hibernate already shut down...nothing to do");
+		} else {
+			logger.debug("shutting down hibernate...");
+			sessionFactory.close();
+			logger.debug("done");
+		}
+	}
 
 	@Override
 	public void contextInitialized(final ServletContextEvent event) {
@@ -64,5 +79,6 @@ public class PPodGuiceResteasyBootstrapServletContextListener extends
 						}
 						);
 		processor.processInjector(injector);
+		sessionFactory = injector.getInstance(SessionFactory.class);
 	}
 }
