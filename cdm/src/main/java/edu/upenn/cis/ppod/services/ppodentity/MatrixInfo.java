@@ -26,9 +26,6 @@ import javax.xml.bind.annotation.XmlAccessorType;
 import javax.xml.bind.annotation.XmlElementWrapper;
 import javax.xml.bind.annotation.XmlRootElement;
 
-import com.google.inject.Inject;
-import com.google.inject.Provider;
-
 /**
  * @author Sam Donnelly
  */
@@ -39,9 +36,9 @@ public final class MatrixInfo extends PPodEntityInfoWDocId {
 	private Map<Integer, PPodEntityInfo> characterInfosByIdx = newTreeMap();
 
 	/**
-	 * Version of column header {@code ic} is at {@code
-	 * columnHeaderVersionsByColumnIndex.get(ic)}. The returned value will be
-	 * {@code null} if no version number was inserted.
+	 * Version of column header {@code ic} is at
+	 * {@code columnHeaderVersionsByColumnIndex.get(ic)}. The returned value
+	 * will be {@code null} if no version number was inserted.
 	 * <p>
 	 * Uses a {@link TreeMap} to ease debugging: it's easier to read if it
 	 * prints out in order.
@@ -78,15 +75,7 @@ public final class MatrixInfo extends PPodEntityInfoWDocId {
 	 */
 	private final Map<Integer, CellVersionsByColumnIdx> cellPPodIdAndVersionsByMN = newTreeMap();
 
-	private Provider<CellVersionsByColumnIdx> cellPPodIdAndVersionsByColumnIdxProvider;
-
-	MatrixInfo() {}
-
-	@Inject
-	MatrixInfo(
-			final Provider<CellVersionsByColumnIdx> cellPPodIdAndVersionsByColumnIdxProvider) {
-		this.cellPPodIdAndVersionsByColumnIdxProvider = cellPPodIdAndVersionsByColumnIdxProvider;
-	}
+	public MatrixInfo() {}
 
 	public Long getCellVersion(final int it, final int ic) {
 		if (cellPPodIdAndVersionsByMN.get(it) == null) {
@@ -131,7 +120,7 @@ public final class MatrixInfo extends PPodEntityInfoWDocId {
 
 		} else {
 			cellPPodIdAndVersionsByMN.put(m,
-					cellPPodIdAndVersionsByColumnIdxProvider.get());
+					new CellVersionsByColumnIdx());
 		}
 		cellPPodIdAndVersionsByMN.get(m).getCellVersionsByColumnIdx().put(n,
 				cellPPodVersion);

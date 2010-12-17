@@ -35,13 +35,9 @@ public class PPodGuiceResteasyBootstrapServletContextListener extends
 
 	@Override
 	public void contextDestroyed(final ServletContextEvent event) {
-		if (sessionFactory.isClosed()) {
-			logger.debug("hibernate already shut down...nothing to do");
-		} else {
-			logger.debug("shutting down hibernate...");
-			sessionFactory.close();
-			logger.debug("done");
-		}
+		logger.debug("shutting down hibernate...");
+		sessionFactory.close();
+		logger.debug("done");
 	}
 
 	@Override

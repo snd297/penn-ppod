@@ -42,7 +42,7 @@ public final class OTUSetInfo extends PPodEntityInfoWDocId {
 
 	private final Set<TreeSetInfo> treeSetInfos = newHashSet();
 
-	OTUSetInfo() {}
+	public OTUSetInfo() {}
 
 	@XmlElement(name = "matrixInfo")
 	public Set<MatrixInfo> getMatrixInfos() {

@@ -6,7 +6,6 @@
 			<run>
 				<exclude name="broken" />
 				<exclude name="in-development" />
-				<include name="init" />
 				<include name="fast" />
 			</run>
 		</groups>

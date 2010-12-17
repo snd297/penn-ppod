@@ -25,6 +25,7 @@ import com.google.inject.Inject;
 
 import edu.upenn.cis.ppod.createorupdate.ICreateOrUpdateStudy;
 import edu.upenn.cis.ppod.dao.IStudyDAO;
+import edu.upenn.cis.ppod.imodel.INewVersionInfo;
 import edu.upenn.cis.ppod.imodel.IStudy;
 import edu.upenn.cis.ppod.services.IStudyResource;
 import edu.upenn.cis.ppod.services.StringPair;
@@ -32,8 +33,9 @@ import edu.upenn.cis.ppod.services.ppodentity.IStudy2StudyInfo;
 import edu.upenn.cis.ppod.services.ppodentity.StudyInfo;
 import edu.upenn.cis.ppod.util.AfterUnmarshalVisitor;
 import edu.upenn.cis.ppod.util.IPair;
-import edu.upenn.cis.ppod.util.ISetVersionInfoVisitor;
+import edu.upenn.cis.ppod.util.IVisitor;
 import edu.upenn.cis.ppod.util.SetDocIdVisitor;
+import edu.upenn.cis.ppod.util.SetVersionInfoVisitor;
 
 /**
  * We commit the transactions in this class so that the resteasy response will
@@ -53,22 +55,18 @@ public final class StudyResourceHibernate implements IStudyResource {
 
 	private final IStudy2StudyInfo study2StudyInfo;
 
-	private final ISetVersionInfoVisitor setVersionInfoVisitor;
+	private final INewVersionInfo newVersionInfo;
 
 	@Inject
 	StudyResourceHibernate(
 			final IStudyDAO studyDAO,
 			final ICreateOrUpdateStudy createOrUpdateStudy,
 			final IStudy2StudyInfo study2StudyInfo,
-			final ISetVersionInfoVisitor setVersionInfoVisitor) {
-
+			final INewVersionInfo newVersionInfo) {
 		this.studyDAO = studyDAO;
-
 		this.createOrUpdateStudy = createOrUpdateStudy;
-
 		this.study2StudyInfo = study2StudyInfo;
-
-		this.setVersionInfoVisitor = setVersionInfoVisitor;
+		this.newVersionInfo = newVersionInfo;
 	}
 
 	private StudyInfo createOrUpdateStudy(final IStudy incomingStudy) {
@@ -76,6 +74,9 @@ public final class StudyResourceHibernate implements IStudyResource {
 
 		final IStudy dbStudy = createOrUpdateStudy
 				.createOrUpdateStudy(incomingStudy);
+
+		final IVisitor setVersionInfoVisitor = new SetVersionInfoVisitor(
+				newVersionInfo);
 
 		dbStudy.accept(setVersionInfoVisitor);
 

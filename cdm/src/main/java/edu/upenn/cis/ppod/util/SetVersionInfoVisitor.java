@@ -15,8 +15,6 @@
  */
 package edu.upenn.cis.ppod.util;
 
-import com.google.inject.Inject;
-
 import edu.upenn.cis.ppod.imodel.IAttachment;
 import edu.upenn.cis.ppod.imodel.IDNACell;
 import edu.upenn.cis.ppod.imodel.IDNAMatrix;
@@ -40,13 +38,11 @@ import edu.upenn.cis.ppod.imodel.IVersioned;
  * 
  * @author Sam Donnelly
  */
-final class SetVersionInfoVisitor extends EmptyVisitor implements
-		ISetVersionInfoVisitor {
+public final class SetVersionInfoVisitor extends EmptyVisitor {
 
 	private final INewVersionInfo newVersionInfo;
 
-	@Inject
-	SetVersionInfoVisitor(
+	public SetVersionInfoVisitor(
 			final INewVersionInfo newVersionInfo) {
 		this.newVersionInfo = newVersionInfo;
 	}

@@ -16,10 +16,6 @@
 package edu.upenn.cis.ppod.services.ppodentity;
 
 import static com.google.common.base.Preconditions.checkNotNull;
-
-import com.google.inject.Inject;
-import com.google.inject.Provider;
-
 import edu.upenn.cis.ppod.imodel.IDNACell;
 import edu.upenn.cis.ppod.imodel.IDNAMatrix;
 import edu.upenn.cis.ppod.imodel.IDNARow;
@@ -39,45 +35,17 @@ import edu.upenn.cis.ppod.imodel.IVersionInfo;
 /**
  * @author Sam Donnelly
  */
-final class Study2StudyInfo implements IStudy2StudyInfo {
-
-	private final Provider<SequenceSetInfo> molecularSequenceSetInfoProvider;
-	private final Provider<TreeSetInfo> treeSetInfoProvider;
-	private final Provider<PPodEntityInfo> pPodEntityInfoProvider;
-	private final Provider<PPodEntityInfoWDocId> pPodEntityInfoWDocIdProvider;
-	private final Provider<MatrixInfo> matrixInfoProvider;
-	private final Provider<StudyInfo> studyInfoProvider;
-	private final Provider<OTUSetInfo> otuSetInfoProvider;
-
-	@Inject
-	Study2StudyInfo(
-			final Provider<OTUSetInfo> otuSetPPodIdAndVersionProvider,
-			final Provider<MatrixInfo> matrixPPodIdAndVersionProvider,
-			final Provider<SequenceSetInfo> molecularSequenceSetInfoProvider,
-			final Provider<TreeSetInfo> treeSetInfoProvider,
-			final Provider<PPodEntityInfo> pPodEntityInfoProvider,
-			final Provider<PPodEntityInfoWDocId> pPodEntityInfoWDocIdProvider,
-			final Provider<MatrixInfo> matrixInfoProvider,
-			final Provider<StudyInfo> studyInfoProvider,
-			final Provider<OTUSetInfo> otuSetInfoProvider) {
-		this.molecularSequenceSetInfoProvider = molecularSequenceSetInfoProvider;
-		this.treeSetInfoProvider = treeSetInfoProvider;
-		this.pPodEntityInfoProvider = pPodEntityInfoProvider;
-		this.pPodEntityInfoWDocIdProvider = pPodEntityInfoWDocIdProvider;
-		this.matrixInfoProvider = matrixInfoProvider;
-		this.studyInfoProvider = studyInfoProvider;
-		this.otuSetInfoProvider = otuSetInfoProvider;
-	}
+public final class Study2StudyInfo implements IStudy2StudyInfo {
 
 	public StudyInfo toStudyInfo(final IStudy study) {
 		checkNotNull(study);
-		final StudyInfo studyInfo = studyInfoProvider.get();
+		final StudyInfo studyInfo = new StudyInfo();
 		studyInfo.setEntityId(study.getId());
 		studyInfo.setPPodId(study.getPPodId());
 		studyInfo.setVersion(study.getVersionInfo().getVersion());
 
 		for (final IOTUSet otuSet : study.getOTUSets()) {
-			final OTUSetInfo otuSetInfo = otuSetInfoProvider.get();
+			final OTUSetInfo otuSetInfo = new OTUSetInfo();
 
 			studyInfo.getOTUSetInfos().add(otuSetInfo);
 			otuSetInfo.setEntityId(otuSet.getId());
@@ -87,7 +55,7 @@ final class Study2StudyInfo implements IStudy2StudyInfo {
 					.getVersion());
 			for (final IOTU otu : otuSet.getOTUs()) {
 				final PPodEntityInfoWDocId otuInfo =
-						pPodEntityInfoWDocIdProvider.get();
+						new PPodEntityInfoWDocId();
 				otuSetInfo.getOTUInfos().add(otuInfo);
 				otuInfo.setEntityId(otu.getId());
 				otuInfo.setPPodId(otu.getPPodId());
@@ -98,7 +66,7 @@ final class Study2StudyInfo implements IStudy2StudyInfo {
 
 			for (final IStandardMatrix matrix : otuSet
 					.getStandardMatrices()) {
-				final MatrixInfo matrixInfo = matrixInfoProvider.get();
+				final MatrixInfo matrixInfo = new MatrixInfo();
 				otuSetInfo.getMatrixInfos().add(matrixInfo);
 				matrixInfo.setPPodId(matrix.getPPodId());
 				matrixInfo.setEntityId(matrix.getId());
@@ -111,7 +79,7 @@ final class Study2StudyInfo implements IStudy2StudyInfo {
 						.getCharacters()) {
 					characterIdx++;
 					final PPodEntityInfo characterInfo =
-							pPodEntityInfoProvider.get();
+							new PPodEntityInfo();
 					characterInfo.setPPodId(standardCharacter.getPPodId());
 					characterInfo.setEntityId(standardCharacter.getId());
 					characterInfo.setVersion(
@@ -156,7 +124,7 @@ final class Study2StudyInfo implements IStudy2StudyInfo {
 			// duplicate code.
 			for (final IDNAMatrix matrix : otuSet
 					.getDNAMatrices()) {
-				final MatrixInfo matrixInfo = matrixInfoProvider.get();
+				final MatrixInfo matrixInfo = new MatrixInfo();
 				otuSetInfo.getMatrixInfos().add(matrixInfo);
 				matrixInfo.setPPodId(matrix.getPPodId());
 				matrixInfo.setEntityId(matrix.getId());
@@ -199,7 +167,7 @@ final class Study2StudyInfo implements IStudy2StudyInfo {
 			for (final IDNASequenceSet dnaSequenceSet : otuSet
 					.getDNASequenceSets()) {
 				final SequenceSetInfo sequenceSetInfo =
-						molecularSequenceSetInfoProvider.get();
+						new SequenceSetInfo();
 				otuSetInfo.getSequenceSetInfos().add(sequenceSetInfo);
 				sequenceSetInfo.setPPodId(dnaSequenceSet.getPPodId());
 				sequenceSetInfo.setVersion(dnaSequenceSet
@@ -217,7 +185,7 @@ final class Study2StudyInfo implements IStudy2StudyInfo {
 			}
 
 			for (final ITreeSet treeSet : otuSet.getTreeSets()) {
-				final TreeSetInfo treeSetInfo = treeSetInfoProvider.get();
+				final TreeSetInfo treeSetInfo = new TreeSetInfo();
 				otuSetInfo.getTreeSetInfos().add(treeSetInfo);
 				treeSetInfo.setEntityId(treeSet.getId());
 				treeSetInfo.setPPodId(treeSet.getPPodId());
@@ -226,8 +194,7 @@ final class Study2StudyInfo implements IStudy2StudyInfo {
 				treeSetInfo.setDocId(treeSet.getDocId());
 
 				for (final ITree tree : treeSet.getTrees()) {
-					final PPodEntityInfo treeInfo =
-							pPodEntityInfoProvider.get();
+					final PPodEntityInfo treeInfo = new PPodEntityInfo();
 					treeSetInfo.getTreeInfos().add(treeInfo);
 					treeInfo.setEntityId(tree.getId());
 					treeInfo.setPPodId(tree.getPPodId());

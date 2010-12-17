@@ -86,6 +86,10 @@ public class OTU
 
 	public OTU() {}
 
+	public OTU(final String label) {
+		this.label = label;
+	}
+
 	@Override
 	public void accept(final IVisitor visitor) {
 		checkNotNull(visitor);
@@ -124,7 +128,7 @@ public class OTU
 	 */
 	@Nullable
 	public IOTUSet getParent() {
-		return (IOTUSet) parent;
+		return parent;
 	}
 
 	/**
