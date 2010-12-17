@@ -26,16 +26,12 @@ import edu.upenn.cis.ppod.TestGroupDefs;
 /**
  * @author Sam Donnelly
  */
-@Test(groups = { TestGroupDefs.FAST, TestGroupDefs.IN_DEVELOPMENT }, dependsOnGroups = TestGroupDefs.INIT)
+@Test(groups = { TestGroupDefs.FAST, TestGroupDefs.IN_DEVELOPMENT })
 public class PPodEntitiesResourceTest {
 
-	// private ServletTester tester;
 	private Server server;
 
-// @Inject
-// private IPPodEntitiesResource pPodEntitiesResource;
-
-	//@BeforeSuite
+	// @BeforeSuite
 	public void beforeSuite() throws Exception {
 		String jetty_home = System.getProperty("jetty.home", "..");
 		System.out.println("jetty_home: " + jetty_home);
@@ -60,48 +56,49 @@ public class PPodEntitiesResourceTest {
 		while (true) {
 			Thread.sleep(1000);
 		}
-// server = new Server(8080);
-// server.setContextPath("");
-// tester
-// .addServlet(
-// org.jboss.resteasy.plugins.server.servlet.HttpServletDispatcher.class,
-// "/ppod-services");
-// tester
-// .setAttribute(
-// "resteasy.guice.modules",
-// "edu.upenn.cis.ppod.services.PPodServicesModule, "
-// + "edu.upenn.cis.ppod.util.PPodCoreModule, "
-// + "edu.upenn.cis.ppod.thirdparty.injectslf4j.InjectSlf4jModule");
-// tester
-// .setAttribute("resteasy.providers",
-// "edu.upenn.cis.ppod.services.hibernate.HibernateCommitInterceptor");
-// tester
-// .addFilter(
-// edu.upenn.cis.ppod.thirdparty.util.HibernateSessionPerRequestFilter.class,
-// "/*", 0);
-// tester
-// .addEventListener(new GuiceResteasyBootstrapServletContextListener());
+		// server = new Server(8080);
+		// server.setContextPath("");
+		// tester
+		// .addServlet(
+		// org.jboss.resteasy.plugins.server.servlet.HttpServletDispatcher.class,
+		// "/ppod-services");
+		// tester
+		// .setAttribute(
+		// "resteasy.guice.modules",
+		// "edu.upenn.cis.ppod.services.PPodServicesModule, "
+		// + "edu.upenn.cis.ppod.util.PPodCoreModule, "
+		// + "edu.upenn.cis.ppod.thirdparty.injectslf4j.InjectSlf4jModule");
+		// tester
+		// .setAttribute("resteasy.providers",
+		// "edu.upenn.cis.ppod.services.hibernate.HibernateCommitInterceptor");
+		// tester
+		// .addFilter(
+		// edu.upenn.cis.ppod.thirdparty.util.HibernateSessionPerRequestFilter.class,
+		// "/*", 0);
+		// tester
+		// .addEventListener(new
+		// GuiceResteasyBootstrapServletContextListener());
 
-// final TJWSEmbeddedJaxrsServer tjws = new TJWSEmbeddedJaxrsServer();
-// tjws.setPort(8081);
-//
-// tjws.getDeployment().getActualResourceClasses().add(
-// IPPodEntitiesResource.class);
-// System.out.println("started the server......................");
-// tjws.start();
+		// final TJWSEmbeddedJaxrsServer tjws = new TJWSEmbeddedJaxrsServer();
+		// tjws.setPort(8081);
+		//
+		// tjws.getDeployment().getActualResourceClasses().add(
+		// IPPodEntitiesResource.class);
+		// System.out.println("started the server......................");
+		// tjws.start();
 	}
 
 	public void uploadProject() throws Exception {
 
-	// final String response = tester.getResponses("GET");
+		// final String response = tester.getResponses("GET");
 	}
 
-// public void getEntitiesByHqlQuery() {
-// ManagedSessionContext.bind(HibernateUtil.getSessionFactory()
-// .openSession());
-// final IOTUSets entities = pPodEntitiesResource
-// .getEntitiesByHqlQuery("from CharacterStateMatrix m join fetch m.otuSet os join fetch os.otus o where o.label='Sus'");
-// System.out.println(entities);
-// ManagedSessionContext.unbind(HibernateUtil.getSessionFactory());
-// }
+	// public void getEntitiesByHqlQuery() {
+	// ManagedSessionContext.bind(HibernateUtil.getSessionFactory()
+	// .openSession());
+	// final IOTUSets entities = pPodEntitiesResource
+	// .getEntitiesByHqlQuery("from CharacterStateMatrix m join fetch m.otuSet os join fetch os.otus o where o.label='Sus'");
+	// System.out.println(entities);
+	// ManagedSessionContext.unbind(HibernateUtil.getSessionFactory());
+	// }
 }

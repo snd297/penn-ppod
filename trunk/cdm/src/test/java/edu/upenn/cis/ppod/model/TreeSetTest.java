@@ -17,6 +17,10 @@ package edu.upenn.cis.ppod.model;
 
 import static com.google.common.collect.Iterables.getOnlyElement;
 import static com.google.common.collect.Iterables.isEmpty;
+import static org.mockito.Matchers.any;
+import static org.mockito.Mockito.mock;
+import static org.mockito.Mockito.times;
+import static org.mockito.Mockito.verify;
 import static org.testng.Assert.assertEquals;
 import static org.testng.Assert.assertFalse;
 import static org.testng.Assert.assertNull;
@@ -28,15 +32,13 @@ import java.util.List;
 import org.testng.annotations.Test;
 
 import com.google.common.collect.ImmutableList;
-import com.google.common.collect.ImmutableSet;
-import com.google.inject.Inject;
 
 import edu.upenn.cis.ppod.TestGroupDefs;
 import edu.upenn.cis.ppod.imodel.IAttachment;
 import edu.upenn.cis.ppod.imodel.IOTUSet;
 import edu.upenn.cis.ppod.imodel.ITree;
 import edu.upenn.cis.ppod.imodel.ITreeSet;
-import edu.upenn.cis.ppod.util.TestVisitor;
+import edu.upenn.cis.ppod.util.IVisitor;
 
 /**
  * Test {@link TreeSet}.
@@ -143,9 +145,6 @@ public class TreeSetTest {
 		assertEquals(treeSet.getLabel(), otuSetLabel);
 	}
 
-	@Inject
-	private TestVisitor visitor;
-
 	@Test
 	public void accept() {
 		final ITreeSet treeSet = new TreeSet();
@@ -153,24 +152,29 @@ public class TreeSetTest {
 		treeSet.addTree(new Tree());
 		treeSet.addTree(new Tree());
 
-		treeSet.addAttachment(new Attachment());
-		treeSet.addAttachment(new Attachment());
-		treeSet.addAttachment(new Attachment());
+		final IAttachment a0 = new Attachment();
+		final IAttachment a1 = new Attachment();
+		final IAttachment a2 = new Attachment();
+
+		treeSet.addAttachment(a0);
+		treeSet.addAttachment(a1);
+		treeSet.addAttachment(a2);
+
+		final IVisitor visitor = mock(IVisitor.class);
 
 		treeSet.accept(visitor);
 
-		assertEquals(visitor.getVisited().size(),
-				ImmutableSet.of(treeSet).size()
-						+ treeSet.getTrees().size()
-						+ treeSet.getAttachments().size());
+		verify(visitor, times(treeSet.getTrees().size())).visitTree(
+				any(Tree.class));
+		verify(visitor, times(1)).visitTree(treeSet.getTrees().get(0));
+		verify(visitor, times(1)).visitTree(treeSet.getTrees().get(1));
+		verify(visitor, times(1)).visitTree(treeSet.getTrees().get(2));
 
-		for (final ITree tree : treeSet.getTrees()) {
-			assertTrue(visitor.getVisited().contains(tree));
-		}
-
-		for (final IAttachment attachment : treeSet.getAttachments()) {
-			assertTrue(visitor.getVisited().contains(attachment));
-		}
-
+		verify(visitor, times(treeSet.getAttachments().size()))
+				.visitAttachment(
+						any(Attachment.class));
+		verify(visitor, times(1)).visitAttachment(a0);
+		verify(visitor, times(1)).visitAttachment(a1);
+		verify(visitor, times(1)).visitAttachment(a2);
 	}
 }
