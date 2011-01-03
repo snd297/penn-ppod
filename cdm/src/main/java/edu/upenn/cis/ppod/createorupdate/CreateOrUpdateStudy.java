@@ -28,7 +28,7 @@ import edu.upenn.cis.ppod.dao.IAttachmentNamespaceDAO;
 import edu.upenn.cis.ppod.dao.IAttachmentTypeDAO;
 import edu.upenn.cis.ppod.dao.IObjectWithLongIdDAO;
 import edu.upenn.cis.ppod.dao.IStudyDAO;
-import edu.upenn.cis.ppod.imodel.IDNAMatrix;
+import edu.upenn.cis.ppod.imodel.IDnaMatrix;
 import edu.upenn.cis.ppod.imodel.IDnaSequenceSet;
 import edu.upenn.cis.ppod.imodel.INewVersionInfo;
 import edu.upenn.cis.ppod.imodel.IOtuSet;
@@ -145,8 +145,8 @@ class CreateOrUpdateStudy implements ICreateOrUpdateStudy {
 			final IOtuSet incomingOTUSet) {
 
 		// Let's delete matrices missing from the incoming OTU set
-		final Set<IDNAMatrix> toBeRemoveds = newHashSet();
-		for (final IDNAMatrix dbMatrix : dbOTUSet.getDNAMatrices()) {
+		final Set<IDnaMatrix> toBeRemoveds = newHashSet();
+		for (final IDnaMatrix dbMatrix : dbOTUSet.getDNAMatrices()) {
 			if (null == find(
 							incomingOTUSet.getDNAMatrices(),
 							compose(
@@ -157,14 +157,14 @@ class CreateOrUpdateStudy implements ICreateOrUpdateStudy {
 				toBeRemoveds.add(dbMatrix);
 			}
 		}
-		for (final IDNAMatrix toBeRemoved : toBeRemoveds) {
+		for (final IDnaMatrix toBeRemoved : toBeRemoveds) {
 			dbOTUSet.removeDNAMatrix(toBeRemoved);
 		}
 		int incomingMatrixPos = -1;
-		for (final IDNAMatrix incomingMatrix : incomingOTUSet
+		for (final IDnaMatrix incomingMatrix : incomingOTUSet
 				.getDNAMatrices()) {
 			incomingMatrixPos++;
-			IDNAMatrix dbMatrix;
+			IDnaMatrix dbMatrix;
 			if (null == (dbMatrix =
 					find(
 							dbOTUSet.getDNAMatrices(),

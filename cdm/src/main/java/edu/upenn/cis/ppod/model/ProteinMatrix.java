@@ -5,7 +5,7 @@ import java.util.List;
 import javax.persistence.Entity;
 import javax.xml.bind.annotation.adapters.XmlAdapter;
 
-import edu.upenn.cis.ppod.imodel.IOTUKeyedMap;
+import edu.upenn.cis.ppod.imodel.IOtuKeyedMap;
 import edu.upenn.cis.ppod.imodel.IProteinCell;
 import edu.upenn.cis.ppod.imodel.IProteinMatrix;
 import edu.upenn.cis.ppod.imodel.IProteinRow;
@@ -34,7 +34,7 @@ public class ProteinMatrix
 	}
 
 	@Override
-	IOTUKeyedMap<IProteinRow> getOTUKeyedRows() {
+	IOtuKeyedMap<IProteinRow> getOTUKeyedRows() {
 		// TODO Auto-generated method stub
 		throw new UnsupportedOperationException();
 	}

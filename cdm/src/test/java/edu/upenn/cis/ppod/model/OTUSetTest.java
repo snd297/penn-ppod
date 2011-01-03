@@ -40,7 +40,7 @@ import com.google.common.collect.ImmutableList;
 import com.google.common.collect.ImmutableSet;
 
 import edu.upenn.cis.ppod.TestGroupDefs;
-import edu.upenn.cis.ppod.imodel.IDNAMatrix;
+import edu.upenn.cis.ppod.imodel.IDnaMatrix;
 import edu.upenn.cis.ppod.imodel.IDnaSequenceSet;
 import edu.upenn.cis.ppod.imodel.IOtu;
 import edu.upenn.cis.ppod.imodel.IOtuSet;
@@ -121,10 +121,10 @@ public class OTUSetTest {
 
 	public void addDNAMatrixPos() {
 		final IOtuSet otuSet = new OtuSet();
-		final IDNAMatrix matrix0 = new DnaMatrix();
-		final IDNAMatrix matrix1 = new DnaMatrix();
-		final IDNAMatrix matrix2 = new DnaMatrix();
-		final IDNAMatrix matrix3 = new DnaMatrix();
+		final IDnaMatrix matrix0 = new DnaMatrix();
+		final IDnaMatrix matrix1 = new DnaMatrix();
+		final IDnaMatrix matrix2 = new DnaMatrix();
+		final IDnaMatrix matrix3 = new DnaMatrix();
 
 		otuSet.addDNAMatrix(matrix0);
 		otuSet.addDNAMatrix(matrix1);
@@ -409,11 +409,11 @@ public class OTUSetTest {
 	@Test
 	public void removeDNAMatrix() {
 
-		final IDNAMatrix matrix0 = new DnaMatrix();
+		final IDnaMatrix matrix0 = new DnaMatrix();
 		otuSet.addDNAMatrix(matrix0);
-		final IDNAMatrix matrix1 = new DnaMatrix();
+		final IDnaMatrix matrix1 = new DnaMatrix();
 		otuSet.addDNAMatrix(matrix1);
-		final IDNAMatrix matrix2 = new DnaMatrix();
+		final IDnaMatrix matrix2 = new DnaMatrix();
 		otuSet.addDNAMatrix(matrix2);
 
 		otuSet.unsetInNeedOfNewVersion();

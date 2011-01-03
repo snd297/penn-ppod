@@ -17,16 +17,16 @@ package edu.upenn.cis.ppod.createorupdate;
 
 import com.google.inject.ImplementedBy;
 
-import edu.upenn.cis.ppod.imodel.DNANucleotide;
-import edu.upenn.cis.ppod.imodel.IDNACell;
-import edu.upenn.cis.ppod.imodel.IDNAMatrix;
-import edu.upenn.cis.ppod.imodel.IDNARow;
+import edu.upenn.cis.ppod.imodel.DnaNucleotide;
+import edu.upenn.cis.ppod.imodel.IDnaCell;
+import edu.upenn.cis.ppod.imodel.IDnaMatrix;
+import edu.upenn.cis.ppod.imodel.IDnaRow;
 
 /**
  * @author Sam Donnelly
  */
 @ImplementedBy(CreateOrUpdateDNAMatrix.class)
 public interface ICreateOrUpdateDNAMatrix extends
-		ICreateOrUpdateMatrix<IDNAMatrix, IDNARow, IDNACell, DNANucleotide> {
+		ICreateOrUpdateMatrix<IDnaMatrix, IDnaRow, IDnaCell, DnaNucleotide> {
 
 }

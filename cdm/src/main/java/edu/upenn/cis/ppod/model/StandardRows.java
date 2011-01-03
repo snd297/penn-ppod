@@ -38,8 +38,8 @@ import javax.xml.bind.annotation.XmlElement;
 import org.hibernate.annotations.Parent;
 
 import edu.upenn.cis.ppod.imodel.IOtu;
-import edu.upenn.cis.ppod.imodel.IOTUKeyedMap;
-import edu.upenn.cis.ppod.imodel.IOTUKeyedMapPlus;
+import edu.upenn.cis.ppod.imodel.IOtuKeyedMap;
+import edu.upenn.cis.ppod.imodel.IOtuKeyedMapPlus;
 import edu.upenn.cis.ppod.imodel.IStandardMatrix;
 import edu.upenn.cis.ppod.imodel.IStandardRow;
 import edu.upenn.cis.ppod.util.IVisitor;
@@ -54,9 +54,9 @@ import edu.upenn.cis.ppod.util.OTUStandardRowPair;
 @Embeddable
 @Access(AccessType.PROPERTY)
 public class StandardRows
-		implements IOTUKeyedMap<IStandardRow> {
+		implements IOtuKeyedMap<IStandardRow> {
 
-	private final IOTUKeyedMapPlus<IStandardRow, IStandardMatrix, OTUStandardRowPair> rows =
+	private final IOtuKeyedMapPlus<IStandardRow, IStandardMatrix, OTUStandardRowPair> rows =
 			new OTUKeyedMapPlus<IStandardRow, IStandardMatrix, OTUStandardRowPair>();
 
 	StandardRows() {}

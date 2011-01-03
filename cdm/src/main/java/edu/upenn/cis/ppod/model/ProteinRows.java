@@ -3,16 +3,16 @@ package edu.upenn.cis.ppod.model;
 import java.util.Map;
 
 import edu.upenn.cis.ppod.imodel.IOtu;
-import edu.upenn.cis.ppod.imodel.IOTUKeyedMap;
-import edu.upenn.cis.ppod.imodel.IOTUKeyedMapPlus;
+import edu.upenn.cis.ppod.imodel.IOtuKeyedMap;
+import edu.upenn.cis.ppod.imodel.IOtuKeyedMapPlus;
 import edu.upenn.cis.ppod.imodel.IProteinMatrix;
 import edu.upenn.cis.ppod.imodel.IProteinRow;
 import edu.upenn.cis.ppod.util.IVisitor;
 import edu.upenn.cis.ppod.util.OTUProteinRowPair;
 
-public class ProteinRows implements IOTUKeyedMap<IProteinRow> {
+public class ProteinRows implements IOtuKeyedMap<IProteinRow> {
 
-	private final IOTUKeyedMapPlus<IProteinRow, IProteinMatrix, OTUProteinRowPair> rows =
+	private final IOtuKeyedMapPlus<IProteinRow, IProteinMatrix, OTUProteinRowPair> rows =
 			new OTUKeyedMapPlus<IProteinRow, IProteinMatrix, OTUProteinRowPair>();
 
 	/** {@inheritDoc} */

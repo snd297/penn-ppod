@@ -37,9 +37,9 @@ public interface IOtuSet
 	 * @throws IllegalArgumentException if this otu set already contains the
 	 *             matrix
 	 */
-	void addDNAMatrix(IDNAMatrix matrix);
+	void addDNAMatrix(IDnaMatrix matrix);
 
-	void addDNAMatrix(int pos, IDNAMatrix matrix);
+	void addDNAMatrix(int pos, IDnaMatrix matrix);
 
 	/**
 	 * Add an {@code IDNASequenceSet}.
@@ -121,7 +121,7 @@ public interface IOtuSet
 	@CheckForNull
 	String getDescription();
 
-	List<IDNAMatrix> getDNAMatrices();
+	List<IDnaMatrix> getDNAMatrices();
 
 	List<IDnaSequenceSet> getDNASequenceSets();
 
@@ -163,7 +163,7 @@ public interface IOtuSet
 	 * @throws IllegalArgumentException if this OTU set does not contain the
 	 *             matrix
 	 */
-	void removeDNAMatrix(IDNAMatrix matrix);
+	void removeDNAMatrix(IDnaMatrix matrix);
 
 	/**
 	 * Remove {@code sequenceSet} from this OTU set.

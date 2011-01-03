@@ -27,7 +27,7 @@ import org.testng.annotations.Test;
 import com.google.common.collect.ImmutableSet;
 
 import edu.upenn.cis.ppod.TestGroupDefs;
-import edu.upenn.cis.ppod.imodel.DNANucleotide;
+import edu.upenn.cis.ppod.imodel.DnaNucleotide;
 import edu.upenn.cis.ppod.imodel.ICell;
 import edu.upenn.cis.ppod.imodel.ICell.Type;
 
@@ -42,8 +42,8 @@ public class DNACellTest {
 	@Test(expectedExceptions = IllegalArgumentException.class)
 	public void setPolymorphicElementsTooFewStates() {
 		final DnaCell cell = new DnaCell();
-		final Set<DNANucleotide> nucleotides =
-				ImmutableSet.of(DNANucleotide.A);
+		final Set<DnaNucleotide> nucleotides =
+				ImmutableSet.of(DnaNucleotide.A);
 		cell.setPolymorphicElements(nucleotides, true);
 	}
 
@@ -62,10 +62,10 @@ public class DNACellTest {
 	public void setTypeAndStatesSingle() {
 		final DnaCell dnaCell = new DnaCell();
 		dnaCell.unsetInNeedOfNewVersion();
-		dnaCell.setSingleElement(DNANucleotide.A, false);
+		dnaCell.setSingleElement(DnaNucleotide.A, false);
 		assertEquals(dnaCell.getType(), Type.SINGLE);
 		assertEquals(getOnlyElement(dnaCell.getElements()),
-				DNANucleotide.A);
+				DnaNucleotide.A);
 		assertTrue(dnaCell.isInNeedOfNewVersion());
 	}
 
@@ -74,8 +74,8 @@ public class DNACellTest {
 		final DnaCell dnaCell = new DnaCell();
 
 		dnaCell.unsetInNeedOfNewVersion();
-		dnaCell.setSingleElement(DNANucleotide.A, false);
-		dnaCell.setSingleElement(DNANucleotide.A, false);
+		dnaCell.setSingleElement(DnaNucleotide.A, false);
+		dnaCell.setSingleElement(DnaNucleotide.A, false);
 
 		assertEquals(
 				dnaCell.getType(),
@@ -83,14 +83,14 @@ public class DNACellTest {
 		assertEquals(
 				getOnlyElement(
 						dnaCell.getElements()),
-					DNANucleotide.A);
+					DnaNucleotide.A);
 		assertTrue(dnaCell.isInNeedOfNewVersion());
 	}
 
 	public void setPolymorphicOrUncertain() {
 		final DnaCell cell = new DnaCell();
-		final Set<DNANucleotide> nucleotides =
-				ImmutableSet.of(DNANucleotide.A, DNANucleotide.T);
+		final Set<DnaNucleotide> nucleotides =
+				ImmutableSet.of(DnaNucleotide.A, DnaNucleotide.T);
 		cell.unsetInNeedOfNewVersion();
 
 		cell.setPolymorphicOrUncertain(
