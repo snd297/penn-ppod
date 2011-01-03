@@ -62,8 +62,8 @@ abstract class SequenceSet<S extends ISequence<?>>
 
 	@Nullable
 	@ManyToOne(fetch = FetchType.LAZY, optional = false,
-			targetEntity = OtuSetChangeSet.class)
-	@JoinColumn(name = OtuSetChangeSet.JOIN_COLUMN, insertable = false,
+			targetEntity = OtuSet.class)
+	@JoinColumn(name = OtuSet.JOIN_COLUMN, insertable = false,
 				updatable = false)
 	private IOtuSet parent;
 
@@ -91,7 +91,7 @@ abstract class SequenceSet<S extends ISequence<?>>
 			@CheckForNull final Unmarshaller u,
 			final Object parent) {
 		checkNotNull(parent);
-		setParent((OtuSetChangeSet) parent);
+		setParent((OtuSet) parent);
 	}
 
 	void checkSequenceLength(final S sequence) {

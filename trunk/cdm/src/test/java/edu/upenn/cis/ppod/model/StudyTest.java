@@ -38,9 +38,9 @@ public class StudyTest {
 	@Test
 	public void removeOTUSet() {
 		final IStudy study = new Study();
-		final IOtuSet otuSet0 = new OtuSetChangeSet();
-		final IOtuSet otuSet1 = new OtuSetChangeSet();
-		final IOtuSet otuSet2 = new OtuSetChangeSet();
+		final IOtuSet otuSet0 = new OtuSet();
+		final IOtuSet otuSet1 = new OtuSet();
+		final IOtuSet otuSet2 = new OtuSet();
 		study.addOTUSet(otuSet0);
 		study.addOTUSet(otuSet1);
 		study.addOTUSet(otuSet2);
@@ -75,7 +75,7 @@ public class StudyTest {
 	@Test(expectedExceptions = IllegalArgumentException.class)
 	public void addOTUSetWAlreadyContainedOTUSet() {
 		final IStudy study = new Study();
-		final IOtuSet otuSet0 = new OtuSetChangeSet();
+		final IOtuSet otuSet0 = new OtuSet();
 		study.addOTUSet(otuSet0);
 		study.addOTUSet(otuSet0);
 	}
@@ -83,7 +83,7 @@ public class StudyTest {
 	@Test
 	public void addOTUSet() {
 		final IStudy study = new Study();
-		final IOtuSet otuSet0 = new OtuSetChangeSet();
+		final IOtuSet otuSet0 = new OtuSet();
 
 		study.unsetInNeedOfNewVersion();
 
@@ -97,10 +97,10 @@ public class StudyTest {
 	@Test
 	public void addOTUSetPos() {
 		final IStudy study = new Study();
-		final IOtuSet otuSet0 = new OtuSetChangeSet();
-		final IOtuSet otuSet1 = new OtuSetChangeSet();
-		final IOtuSet otuSet2 = new OtuSetChangeSet();
-		final IOtuSet otuSet3 = new OtuSetChangeSet();
+		final IOtuSet otuSet0 = new OtuSet();
+		final IOtuSet otuSet1 = new OtuSet();
+		final IOtuSet otuSet2 = new OtuSet();
+		final IOtuSet otuSet3 = new OtuSet();
 
 		study.addOTUSet(otuSet0);
 		study.addOTUSet(otuSet1);

@@ -75,7 +75,7 @@ public class SequenceSetTest {
 		final String seqStr3 = "CTCCTCGTCAGCAG";
 		seq3.setSequence(seqStr3);
 
-		final IOtuSet otuSet0 = new OtuSetChangeSet();
+		final IOtuSet otuSet0 = new OtuSet();
 		seqSet.setParent(otuSet0);
 
 		final IOtu otu0 = new Otu().setLabel("otu0");
@@ -113,7 +113,7 @@ public class SequenceSetTest {
 		final String seqStr3 = "CTCCTCGTCAGCAG";
 		seq3.setSequence(seqStr3);
 
-		final IOtuSet otuSet0 = new OtuSetChangeSet();
+		final IOtuSet otuSet0 = new OtuSet();
 		seqSet.setParent(otuSet0);
 
 		final IOtu otu0 = new Otu().setLabel("otu0");
@@ -138,7 +138,7 @@ public class SequenceSetTest {
 		seqSet.setInNeedOfNewVersion();
 		assertTrue(seqSet.isInNeedOfNewVersion());
 
-		final IOtuSet otuSet = new OtuSetChangeSet();
+		final IOtuSet otuSet = new OtuSet();
 		otuSet.addDNASequenceSet(seqSet);
 		seqSet.unsetInNeedOfNewVersion();
 		otuSet.unsetInNeedOfNewVersion();
@@ -169,14 +169,14 @@ public class SequenceSetTest {
 	@Test
 	public void afterUnmarshal() {
 		final SequenceSet<?> seqSet = new DNASequenceSet();
-		final IOtuSet otuSet = new OtuSetChangeSet();
+		final IOtuSet otuSet = new OtuSet();
 		seqSet.afterUnmarshal(null, otuSet);
 		assertSame(seqSet.getParent(), otuSet);
 	}
 
 	@Test
 	public void accept() {
-		final IOtuSet otuSet = new OtuSetChangeSet();
+		final IOtuSet otuSet = new OtuSet();
 		otuSet.addOTU(new Otu().setLabel("otu-0"));
 		otuSet.addOTU(new Otu().setLabel("otu-1"));
 		otuSet.addOTU(new Otu().setLabel("otu-2"));

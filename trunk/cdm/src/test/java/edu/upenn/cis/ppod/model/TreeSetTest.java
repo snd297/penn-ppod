@@ -117,7 +117,7 @@ public class TreeSetTest {
 
 		assertTrue(treeSet.isInNeedOfNewVersion());
 
-		final IOtuSet otuSet = new OtuSetChangeSet();
+		final IOtuSet otuSet = new OtuSet();
 		otuSet.addTreeSet(treeSet);
 		otuSet.unsetInNeedOfNewVersion();
 		treeSet.unsetInNeedOfNewVersion();

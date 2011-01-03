@@ -40,7 +40,7 @@ public class OTUKeyedMapTest {
 	@Test
 	public void clear() {
 		final DNAMatrix matrix = new DNAMatrix();
-		final OtuSetChangeSet otuSet = new OtuSetChangeSet();
+		final OtuSet otuSet = new OtuSet();
 		matrix.setParent(otuSet);
 
 		final IOtu otu0 = new Otu();
@@ -95,7 +95,7 @@ public class OTUKeyedMapTest {
 	public void accept() {
 		final DNAMatrix matrix = new DNAMatrix();
 
-		final IOtuSet otuSet = new OtuSetChangeSet();
+		final IOtuSet otuSet = new OtuSet();
 		otuSet.addDNAMatrix(matrix);
 
 		final IOtu otu0 = new Otu();

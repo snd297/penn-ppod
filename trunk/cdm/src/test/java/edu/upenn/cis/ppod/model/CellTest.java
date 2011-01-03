@@ -174,7 +174,7 @@ public class CellTest {
 
 		final DNAMatrix matrix = new DNAMatrix();
 		matrix.setColumnsSize(1);
-		final IOtuSet otuSet = new OtuSetChangeSet();
+		final IOtuSet otuSet = new OtuSet();
 		otuSet.addDNAMatrix(matrix);
 		otuSet.addOTU(new Otu().setLabel("otu-0"));
 

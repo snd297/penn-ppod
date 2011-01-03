@@ -72,8 +72,8 @@ public class ModelFactory {
 		return otu;
 	}
 
-	public static OtuSetChangeSet newOTUSet(final IVersionInfo versionInfo) {
-		final OtuSetChangeSet otuSet = new OtuSetChangeSet();
+	public static OtuSet newOTUSet(final IVersionInfo versionInfo) {
+		final OtuSet otuSet = new OtuSet();
 		prepareUUPPodEntity(otuSet, versionInfo);
 		return otuSet;
 	}

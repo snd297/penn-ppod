@@ -90,7 +90,7 @@ public class Study
 	private String label;
 
 	@OneToMany(cascade = CascadeType.ALL, orphanRemoval = true,
-			targetEntity = OtuSetChangeSet.class)
+			targetEntity = OtuSet.class)
 	@OrderColumn(name = "POSITION")
 	@JoinColumn(name = JOIN_COLUMN, nullable = false)
 	private final List<IOtuSet> otuSets = newArrayList();

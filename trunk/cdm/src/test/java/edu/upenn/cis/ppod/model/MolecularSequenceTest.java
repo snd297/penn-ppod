@@ -85,7 +85,7 @@ public class MolecularSequenceTest {
 	@Test
 	public void setInNeedOfNewPPodVersion() {
 		final DNASequence sequence = new DNASequence();
-		final IOtuSet otuSet = new OtuSetChangeSet();
+		final IOtuSet otuSet = new OtuSet();
 		final IOtu otu0 = new Otu();
 		otuSet.addOTU(otu0);
 

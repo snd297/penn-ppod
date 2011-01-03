@@ -57,7 +57,7 @@ import edu.upenn.cis.ppod.util.IVisitor;
 @Test(groups = { TestGroupDefs.FAST })
 public class OTUSetTest {
 
-	private OtuSetChangeSet otuSet;
+	private OtuSet otuSet;
 
 	private List<IOtu> otus;
 
@@ -66,7 +66,7 @@ public class OTUSetTest {
 	@Test
 	public void accept() {
 
-		final OtuSetChangeSet otuSet = new OtuSetChangeSet();
+		final OtuSet otuSet = new OtuSet();
 
 		otuSet.addOTU(new Otu().setLabel("otu-0"));
 		otuSet.addOTU(new Otu().setLabel("otu-1"));
@@ -120,7 +120,7 @@ public class OTUSetTest {
 	}
 
 	public void addDNAMatrixPos() {
-		final IOtuSet otuSet = new OtuSetChangeSet();
+		final IOtuSet otuSet = new OtuSet();
 		final IDNAMatrix matrix0 = new DNAMatrix();
 		final IDNAMatrix matrix1 = new DNAMatrix();
 		final IDNAMatrix matrix2 = new DNAMatrix();
@@ -157,7 +157,7 @@ public class OTUSetTest {
 
 	@Test(groups = TestGroupDefs.SINGLE)
 	public void addDNASequenceSetPos() {
-		final IOtuSet otuSet = new OtuSetChangeSet();
+		final IOtuSet otuSet = new OtuSet();
 		final IDNASequenceSet sequenceSet0 = new DNASequenceSet();
 
 		final IDNASequenceSet sequenceSet1 = new DNASequenceSet();
@@ -186,7 +186,7 @@ public class OTUSetTest {
 
 	@Test
 	public void addOTU() {
-		final IOtuSet otuSet = new OtuSetChangeSet();
+		final IOtuSet otuSet = new OtuSet();
 		final StandardMatrix standardMatrix = new StandardMatrix();
 
 		otuSet.addStandardMatrix(standardMatrix);
@@ -299,7 +299,7 @@ public class OTUSetTest {
 
 	@Test(groups = TestGroupDefs.SINGLE)
 	public void addStandardMatrixPos() {
-		final IOtuSet otuSet = new OtuSetChangeSet();
+		final IOtuSet otuSet = new OtuSet();
 		final IStandardMatrix matrix0 = new StandardMatrix();
 		final IStandardMatrix matrix1 = new StandardMatrix();
 		final IStandardMatrix matrix2 = new StandardMatrix();
@@ -331,7 +331,7 @@ public class OTUSetTest {
 
 	@Test
 	public void addTreeSetPos() {
-		final IOtuSet otuSet = new OtuSetChangeSet();
+		final IOtuSet otuSet = new OtuSet();
 		final ITreeSet treeSet0 = new TreeSet();
 		final ITreeSet treeSet1 = new TreeSet();
 		final ITreeSet treeSet2 = new TreeSet();
@@ -362,7 +362,7 @@ public class OTUSetTest {
 
 	@BeforeMethod
 	public void beforeMethod() {
-		otuSet = new OtuSetChangeSet();
+		otuSet = new OtuSet();
 		otus = newArrayList();
 
 		final IOtu otu0 = new Otu();
@@ -433,7 +433,7 @@ public class OTUSetTest {
 	@Test
 	public void removeDNASequenceSet() {
 
-		final IOtuSet otuSet = new OtuSetChangeSet();
+		final IOtuSet otuSet = new OtuSet();
 		final IDNASequenceSet dnaSequenceSet0 = new DNASequenceSet();
 
 		otuSet.addDNASequenceSet(dnaSequenceSet0);
@@ -552,7 +552,7 @@ public class OTUSetTest {
 
 	@Test
 	public void setInNeedOfNewPPodVersionWithNoStudy() {
-		final IOtuSet otuSetWithNoStudy = new OtuSetChangeSet();
+		final IOtuSet otuSetWithNoStudy = new OtuSet();
 		otuSetWithNoStudy.unsetInNeedOfNewVersion();
 		otuSetWithNoStudy.setInNeedOfNewVersion();
 		assertTrue(otuSetWithNoStudy.isInNeedOfNewVersion());
