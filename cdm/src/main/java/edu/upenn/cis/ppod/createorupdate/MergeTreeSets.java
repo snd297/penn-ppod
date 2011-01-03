@@ -27,7 +27,7 @@ import java.util.List;
 import com.google.inject.Inject;
 
 import edu.upenn.cis.ppod.imodel.INewVersionInfo;
-import edu.upenn.cis.ppod.imodel.IOtuChangeCase;
+import edu.upenn.cis.ppod.imodel.IOtu;
 import edu.upenn.cis.ppod.imodel.ITree;
 import edu.upenn.cis.ppod.imodel.ITreeSet;
 import edu.upenn.cis.ppod.imodel.IHasPPodId;
@@ -84,11 +84,11 @@ class MergeTreeSets implements IMergeTreeSets {
 				throw new IllegalArgumentException(
 						"sourceTreeSet.getOTUSet().getOTUsSize() should be the same as targetTreeSet.getOTUSet().getOTUsSize()");
 			}
-			for (final Iterator<IOtuChangeCase> sourceOTUItr = sourceTreeSet.getParent()
+			for (final Iterator<IOtu> sourceOTUItr = sourceTreeSet.getParent()
 					.getOTUs().iterator(), targetOTUItr = targetTreeSet
 					.getParent().getOTUs().iterator(); sourceOTUItr.hasNext();) {
-				final IOtuChangeCase sourceOTU = sourceOTUItr.next();
-				final IOtuChangeCase targetOTU = targetOTUItr.next();
+				final IOtu sourceOTU = sourceOTUItr.next();
+				final IOtu targetOTU = targetOTUItr.next();
 				targetNewick = targetNewick.replace(
 						sourceOTU.getDocId(),
 						targetOTU.getPPodId());

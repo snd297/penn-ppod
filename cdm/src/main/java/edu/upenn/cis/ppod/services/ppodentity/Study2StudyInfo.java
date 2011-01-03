@@ -21,7 +21,7 @@ import edu.upenn.cis.ppod.imodel.IDNAMatrix;
 import edu.upenn.cis.ppod.imodel.IDNARow;
 import edu.upenn.cis.ppod.imodel.IDNASequence;
 import edu.upenn.cis.ppod.imodel.IDNASequenceSet;
-import edu.upenn.cis.ppod.imodel.IOtuChangeCase;
+import edu.upenn.cis.ppod.imodel.IOtu;
 import edu.upenn.cis.ppod.imodel.IOTUSet;
 import edu.upenn.cis.ppod.imodel.IStandardCell;
 import edu.upenn.cis.ppod.imodel.IStandardCharacter;
@@ -53,7 +53,7 @@ public final class Study2StudyInfo implements IStudy2StudyInfo {
 			otuSetInfo.setDocId(otuSet.getDocId());
 			otuSetInfo.setVersion(otuSet.getVersionInfo()
 					.getVersion());
-			for (final IOtuChangeCase otu : otuSet.getOTUs()) {
+			for (final IOtu otu : otuSet.getOTUs()) {
 				final PPodEntityInfoWDocId otuInfo =
 						new PPodEntityInfoWDocId();
 				otuSetInfo.getOTUInfos().add(otuInfo);
@@ -100,7 +100,7 @@ public final class Study2StudyInfo implements IStudy2StudyInfo {
 
 				int rowIdx = -1;
 
-				for (final IOtuChangeCase otu : matrix.getParent().getOTUs()) {
+				for (final IOtu otu : matrix.getParent().getOTUs()) {
 					final IStandardRow row = matrix.getRows().get(otu);
 					rowIdx++;
 					final Long rowVersion = row.getVersionInfo()
@@ -144,7 +144,7 @@ public final class Study2StudyInfo implements IStudy2StudyInfo {
 
 				int rowIdx = -1;
 
-				for (final IOtuChangeCase otu : matrix.getParent().getOTUs()) {
+				for (final IOtu otu : matrix.getParent().getOTUs()) {
 					final IDNARow row = matrix.getRows().get(otu);
 					rowIdx++;
 					final Long rowVersion =
@@ -173,7 +173,7 @@ public final class Study2StudyInfo implements IStudy2StudyInfo {
 				sequenceSetInfo.setVersion(dnaSequenceSet
 						.getVersionInfo().getVersion());
 				sequenceSetInfo.setEntityId(dnaSequenceSet.getId());
-				for (final IOtuChangeCase otu : otuSet.getOTUs()) {
+				for (final IOtu otu : otuSet.getOTUs()) {
 					final IDNASequence dnaSequence =
 							dnaSequenceSet.getSequence(otu);
 					sequenceSetInfo

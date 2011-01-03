@@ -2,7 +2,7 @@ package edu.upenn.cis.ppod.model;
 
 import java.util.Map;
 
-import edu.upenn.cis.ppod.imodel.IOtuChangeCase;
+import edu.upenn.cis.ppod.imodel.IOtu;
 import edu.upenn.cis.ppod.imodel.IOTUKeyedMap;
 import edu.upenn.cis.ppod.imodel.IOTUKeyedMapPlus;
 import edu.upenn.cis.ppod.imodel.IProteinMatrix;
@@ -26,17 +26,17 @@ public class ProteinRows implements IOTUKeyedMap<IProteinRow> {
 	}
 
 	/** {@inheritDoc} */
-	public IProteinRow get(final IOtuChangeCase key) {
+	public IProteinRow get(final IOtu key) {
 		return rows.get(key);
 	}
 
 	/** {@inheritDoc} */
-	public Map<IOtuChangeCase, IProteinRow> getValues() {
+	public Map<IOtu, IProteinRow> getValues() {
 		return rows.getValues();
 	}
 
 	/** {@inheritDoc} */
-	public IProteinRow put(final IOtuChangeCase key, final IProteinRow value) {
+	public IProteinRow put(final IOtu key, final IProteinRow value) {
 		return rows.put(key, value);
 	}
 

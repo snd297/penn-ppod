@@ -18,7 +18,7 @@ package edu.upenn.cis.ppod.util;
 import javax.xml.bind.annotation.XmlElement;
 
 import edu.upenn.cis.ppod.imodel.IDNASequence;
-import edu.upenn.cis.ppod.imodel.IOtuChangeCase;
+import edu.upenn.cis.ppod.imodel.IOtu;
 
 /**
  * @author Sam Donnelly
@@ -30,7 +30,7 @@ public class OTUDNASequencePair extends OTUKeyedPair<IDNASequence> {
 	 */
 	protected OTUDNASequencePair() {}
 
-	public OTUDNASequencePair(final IOtuChangeCase first, final IDNASequence second) {
+	public OTUDNASequencePair(final IOtu first, final IDNASequence second) {
 		super(first, second);
 	}
 

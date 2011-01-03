@@ -21,7 +21,7 @@ import edu.upenn.cis.ppod.imodel.IAttachee;
 import edu.upenn.cis.ppod.imodel.IAttachment;
 import edu.upenn.cis.ppod.imodel.IAttachmentNamespace;
 import edu.upenn.cis.ppod.imodel.IAttachmentType;
-import edu.upenn.cis.ppod.imodel.IOtuChangeCase;
+import edu.upenn.cis.ppod.imodel.IOtu;
 import edu.upenn.cis.ppod.imodel.IOTUSet;
 import edu.upenn.cis.ppod.imodel.IStandardCharacter;
 import edu.upenn.cis.ppod.imodel.IStandardMatrix;
@@ -62,7 +62,7 @@ public class PPodEntitiesUtil {
 					studyWideAttachmentNamespaces,
 					studyWideAttachmentTypes,
 					otuSet);
-			for (final IOtuChangeCase otu : otuSet.getOTUs()) {
+			for (final IOtu otu : otuSet.getOTUs()) {
 				extractAttachmentInfoFromAttachee(
 						studyWideAttachmentNamespaces,
 						studyWideAttachmentTypes, otu);

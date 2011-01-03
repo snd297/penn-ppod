@@ -29,7 +29,7 @@ import org.testng.annotations.Test;
 import com.google.common.collect.ImmutableList;
 
 import edu.upenn.cis.ppod.TestGroupDefs;
-import edu.upenn.cis.ppod.imodel.IOtuChangeCase;
+import edu.upenn.cis.ppod.imodel.IOtu;
 import edu.upenn.cis.ppod.imodel.IStandardCharacter;
 import edu.upenn.cis.ppod.imodel.IStandardRow;
 
@@ -42,7 +42,7 @@ import edu.upenn.cis.ppod.imodel.IStandardRow;
 @Test(groups = TestGroupDefs.FAST)
 public class StandardRowTest {
 
-	private List<IOtuChangeCase> otus;
+	private List<IOtu> otus;
 
 	private StandardMatrix matrix;
 
@@ -75,7 +75,7 @@ public class StandardRowTest {
 		matrix = new StandardMatrix();
 		matrix.setParent(new OTUSet());
 		otus = newArrayList();
-		final IOtuChangeCase otu0 = new OTU();
+		final IOtu otu0 = new OTU();
 		otu0.setLabel("OTU-0");
 		otus.add(otu0);
 		matrix.getParent().setOTUs(newArrayList(otus.get(0)));

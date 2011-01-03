@@ -32,7 +32,7 @@ import javax.persistence.MappedSuperclass;
 import javax.xml.bind.Unmarshaller;
 import javax.xml.bind.annotation.XmlAttribute;
 
-import edu.upenn.cis.ppod.imodel.IOtuChangeCase;
+import edu.upenn.cis.ppod.imodel.IOtu;
 import edu.upenn.cis.ppod.imodel.IOTUKeyedMap;
 import edu.upenn.cis.ppod.imodel.IOTUSet;
 import edu.upenn.cis.ppod.imodel.ISequence;
@@ -138,7 +138,7 @@ abstract class SequenceSet<S extends ISequence<?>>
 	 *             sequence's {@code OTUSet}
 	 */
 	@Nullable
-	public abstract S getSequence(final IOtuChangeCase otu);
+	public abstract S getSequence(final IOtu otu);
 
 	/**
 	 * Get the length of the sequences in this set, or {@code null} if no
@@ -168,7 +168,7 @@ abstract class SequenceSet<S extends ISequence<?>>
 	 * @return a map which contains the {@code OTU, S} entries of this sequence
 	 *         set
 	 */
-	public abstract Map<IOtuChangeCase, S> getSequences();
+	public abstract Map<IOtu, S> getSequences();
 
 	/**
 	 * {@inheritDoc}
@@ -183,7 +183,7 @@ abstract class SequenceSet<S extends ISequence<?>>
 	 * @return
 	 */
 	@CheckForNull
-	public abstract S putSequence(final IOtuChangeCase otu, final S sequence);
+	public abstract S putSequence(final IOtu otu, final S sequence);
 
 	@Override
 	public void setInNeedOfNewVersion() {
