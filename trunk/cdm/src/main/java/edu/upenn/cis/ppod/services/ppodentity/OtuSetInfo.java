@@ -31,7 +31,7 @@ import javax.xml.bind.annotation.XmlRootElement;
  */
 @XmlRootElement
 @XmlAccessorType(XmlAccessType.NONE)
-public final class OtuSetInfoCaseChange extends PPodEntityInfoWDocId {
+public final class OtuSetInfo extends PPodEntityInfoWDocId {
 
 	/** Order matters for these. */
 	private final List<PPodEntityInfoWDocId> otuInfos = newArrayList();
@@ -42,7 +42,7 @@ public final class OtuSetInfoCaseChange extends PPodEntityInfoWDocId {
 
 	private final Set<TreeSetInfo> treeSetInfos = newHashSet();
 
-	public OtuSetInfoCaseChange() {}
+	public OtuSetInfo() {}
 
 	@XmlElement(name = "matrixInfo")
 	public Set<MatrixInfo> getMatrixInfos() {

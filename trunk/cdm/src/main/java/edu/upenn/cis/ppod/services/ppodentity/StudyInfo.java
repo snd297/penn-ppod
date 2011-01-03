@@ -33,7 +33,7 @@ import javax.xml.bind.annotation.XmlRootElement;
 @XmlAccessorType(XmlAccessType.NONE)
 public final class StudyInfo extends PPodEntityInfo {
 
-	private List<OtuSetInfoCaseChange> otuSetInfos = newArrayList();
+	private List<OtuSetInfo> otuSetInfos = newArrayList();
 
 	/**
 	 * No-arg constructor.
@@ -41,11 +41,11 @@ public final class StudyInfo extends PPodEntityInfo {
 	public StudyInfo() {}
 
 	@XmlElement(name = "otuSetInfo")
-	public List<OtuSetInfoCaseChange> getOTUSetInfos() {
+	public List<OtuSetInfo> getOTUSetInfos() {
 		return otuSetInfos;
 	}
 
-	public StudyInfo setOTUSetInfos(final List<OtuSetInfoCaseChange> otuSetInfos) {
+	public StudyInfo setOTUSetInfos(final List<OtuSetInfo> otuSetInfos) {
 		this.otuSetInfos = otuSetInfos;
 		return this;
 	}
