@@ -43,7 +43,7 @@ import edu.upenn.cis.ppod.imodel.IOtu;
 import edu.upenn.cis.ppod.imodel.IOTUKeyedMap;
 import edu.upenn.cis.ppod.imodel.IOTUKeyedMapPlus;
 import edu.upenn.cis.ppod.util.IVisitor;
-import edu.upenn.cis.ppod.util.OTUDNARowPair;
+import edu.upenn.cis.ppod.util.OtuDnaRowPairCaseChange;
 
 /**
  * Maps {@link OTU}s to {@link DNARow}s.
@@ -55,8 +55,8 @@ import edu.upenn.cis.ppod.util.OTUDNARowPair;
 @Access(AccessType.PROPERTY)
 public class DNARows implements IOTUKeyedMap<IDNARow> {
 
-	private final IOTUKeyedMapPlus<IDNARow, IDNAMatrix, OTUDNARowPair> rows =
-			new OTUKeyedMapPlus<IDNARow, IDNAMatrix, OTUDNARowPair>();
+	private final IOTUKeyedMapPlus<IDNARow, IDNAMatrix, OtuDnaRowPairCaseChange> rows =
+			new OTUKeyedMapPlus<IDNARow, IDNAMatrix, OtuDnaRowPairCaseChange>();
 
 	/** {@inheritDoc} */
 	public void accept(final IVisitor visitor) {
@@ -81,7 +81,7 @@ public class DNARows implements IOTUKeyedMap<IDNARow> {
 		for (final Map.Entry<IOtu, IDNARow> otuToRow : getValues()
 				.entrySet()) {
 			getOTUSomethingPairs().add(
-					new OTUDNARowPair(otuToRow.getKey(), otuToRow
+					new OtuDnaRowPairCaseChange(otuToRow.getKey(), otuToRow
 							.getValue()));
 		}
 		return true;
@@ -98,7 +98,7 @@ public class DNARows implements IOTUKeyedMap<IDNARow> {
 
 	@XmlElement(name = "otuRowPair")
 	@Transient
-	public Set<OTUDNARowPair> getOTUSomethingPairs() {
+	public Set<OtuDnaRowPairCaseChange> getOTUSomethingPairs() {
 		return rows.getOTUSomethingPairs();
 	}
 
