@@ -42,7 +42,7 @@ import edu.upenn.cis.ppod.imodel.IStandardMatrix;
 import edu.upenn.cis.ppod.imodel.IStandardRow;
 import edu.upenn.cis.ppod.imodel.IStandardState;
 import edu.upenn.cis.ppod.imodel.IVersionInfo;
-import edu.upenn.cis.ppod.imodel.IWithPPodId;
+import edu.upenn.cis.ppod.imodel.IHasPPodId;
 import edu.upenn.cis.ppod.model.ModelFactory;
 import edu.upenn.cis.ppod.model.StandardState;
 
@@ -91,7 +91,7 @@ final class CreateOrUpdateStandardMatrix
 											compose(
 													equalTo(
 													sourceCharacter.getPPodId()),
-													IWithPPodId.getPPodId),
+													IHasPPodId.getPPodId),
 													null))) {
 				newDbCharacter = ModelFactory
 						.newStandardCharacter(newVersionInfo

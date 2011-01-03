@@ -15,4 +15,4 @@
  */
 package edu.upenn.cis.ppod.imodel;
 
-public interface IUUPPodEntity extends IPPodEntity, IWithPPodId {}
+public interface IUUPPodEntity extends IPPodEntity, IHasPPodId {}

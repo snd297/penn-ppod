@@ -52,15 +52,14 @@ public abstract class UUPPodEntity extends PPodEntity implements IUUPPodEntity {
 		return pPodId;
 	}
 
-	public UUPPodEntity setPPodId() {
-		return setPPodId(UUID.randomUUID().toString());
+	public void setPPodId() {
+		setPPodId(UUID.randomUUID().toString());
 	}
 
-	public UUPPodEntity setPPodId(@CheckForNull final String pPodId) {
+	public void setPPodId(@CheckForNull final String pPodId) {
 		checkState(getPPodId() == null, "pPodId already set");
 
 		this.pPodId = pPodId;
-		return this;
 	}
 
 	/**

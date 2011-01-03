@@ -20,7 +20,7 @@ import javax.xml.bind.annotation.XmlAccessorType;
 import javax.xml.bind.annotation.XmlAttribute;
 import javax.xml.bind.annotation.XmlRootElement;
 
-import edu.upenn.cis.ppod.imodel.IWithPPodId;
+import edu.upenn.cis.ppod.imodel.IHasPPodId;
 
 /**
  * For communicating back to a client certain information about a pPOD entity
@@ -31,7 +31,7 @@ import edu.upenn.cis.ppod.imodel.IWithPPodId;
  */
 @XmlRootElement
 @XmlAccessorType(XmlAccessType.NONE)
-public class PPodEntityInfo implements IWithPPodId {
+public class PPodEntityInfo implements IHasPPodId {
 
 	private String pPodId;
 
@@ -85,12 +85,9 @@ public class PPodEntityInfo implements IWithPPodId {
 	 * Set the pPodId.
 	 * 
 	 * @param pPodId the pPodId to set
-	 * 
-	 * @return this
 	 */
-	public PPodEntityInfo setPPodId(final String pPodId) {
+	public void setPPodId(final String pPodId) {
 		this.pPodId = pPodId;
-		return this;
 	}
 
 	/**
@@ -107,8 +104,10 @@ public class PPodEntityInfo implements IWithPPodId {
 
 	/**
 	 * This method is not supported.
+	 * 
+	 * @throws UnsupportedOperationException always
 	 */
-	public PPodEntityInfo setPPodId() {
+	public void setPPodId() {
 		throw new UnsupportedOperationException();
 	}
 }
