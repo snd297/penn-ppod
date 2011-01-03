@@ -21,7 +21,7 @@ import static org.testng.Assert.assertSame;
 import org.testng.annotations.Test;
 
 import edu.upenn.cis.ppod.TestGroupDefs;
-import edu.upenn.cis.ppod.imodel.IDNASequence;
+import edu.upenn.cis.ppod.imodel.IDnaSequence;
 import edu.upenn.cis.ppod.imodel.IOtu;
 import edu.upenn.cis.ppod.imodel.IOtuSet;
 
@@ -43,7 +43,7 @@ public class OTUsToDNASequencesTest {
 		final IOtuSet otuSet = new OtuSet();
 		final IOtu otu = new Otu();
 		otuSet.addOTU(otu);
-		final IDNASequence sequence = new DnaSequence();
+		final IDnaSequence sequence = new DnaSequence();
 		final DnaSequenceSet sequenceSet = new DnaSequenceSet();
 		otuSet.addDNASequenceSet(sequenceSet);
 		sequenceSet.getOTUKeyedSequences().put(otu, sequence);
@@ -66,7 +66,7 @@ public class OTUsToDNASequencesTest {
 		otuSet.addDNASequenceSet(sequenceSet);
 		sequenceSet.getOTUKeyedSequences().put(otu, sequence);
 
-		final IDNASequence sequence2 = new DnaSequence();
+		final IDnaSequence sequence2 = new DnaSequence();
 
 		sequenceSet.getOTUKeyedSequences().put(otu, sequence2);
 

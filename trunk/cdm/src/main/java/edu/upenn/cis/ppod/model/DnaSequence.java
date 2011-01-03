@@ -37,7 +37,7 @@ import com.google.common.collect.ImmutableSet;
 
 import edu.umd.cs.findbugs.annotations.CheckForNull;
 import edu.umd.cs.findbugs.annotations.Nullable;
-import edu.upenn.cis.ppod.imodel.IDNASequence;
+import edu.upenn.cis.ppod.imodel.IDnaSequence;
 import edu.upenn.cis.ppod.imodel.IDnaSequenceSet;
 import edu.upenn.cis.ppod.util.IVisitor;
 
@@ -50,17 +50,17 @@ import edu.upenn.cis.ppod.util.IVisitor;
 @Table(name = DnaSequence.TABLE)
 public class DnaSequence
 		extends Sequence<IDnaSequenceSet>
-		implements IDNASequence {
+		implements IDnaSequence {
 
-	public static class Adapter extends XmlAdapter<DnaSequence, IDNASequence> {
+	public static class Adapter extends XmlAdapter<DnaSequence, IDnaSequence> {
 
 		@Override
-		public DnaSequence marshal(final IDNASequence sequence) {
+		public DnaSequence marshal(final IDnaSequence sequence) {
 			return (DnaSequence) sequence;
 		}
 
 		@Override
-		public IDNASequence unmarshal(final DnaSequence sequence) {
+		public IDnaSequence unmarshal(final DnaSequence sequence) {
 			return sequence;
 		}
 	}

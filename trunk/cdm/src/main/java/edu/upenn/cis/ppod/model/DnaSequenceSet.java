@@ -29,7 +29,7 @@ import javax.persistence.Table;
 import javax.xml.bind.annotation.XmlElement;
 import javax.xml.bind.annotation.adapters.XmlAdapter;
 
-import edu.upenn.cis.ppod.imodel.IDNASequence;
+import edu.upenn.cis.ppod.imodel.IDnaSequence;
 import edu.upenn.cis.ppod.imodel.IDnaSequenceSet;
 import edu.upenn.cis.ppod.imodel.IOtu;
 import edu.upenn.cis.ppod.util.IVisitor;
@@ -42,7 +42,7 @@ import edu.upenn.cis.ppod.util.IVisitor;
 @Entity
 @Table(name = DnaSequenceSet.TABLE)
 public class DnaSequenceSet
-		extends SequenceSet<IDNASequence>
+		extends SequenceSet<IDnaSequence>
 		implements IDnaSequenceSet {
 
 	public static class Adapter extends
@@ -104,13 +104,13 @@ public class DnaSequenceSet
 	}
 
 	@Override
-	public IDNASequence getSequence(final IOtu otu) {
+	public IDnaSequence getSequence(final IOtu otu) {
 		checkNotNull(otu);
 		return getOTUKeyedSequences().get(otu);
 	}
 
 	@Override
-	public Map<IOtu, IDNASequence> getSequences() {
+	public Map<IOtu, IDnaSequence> getSequences() {
 		return Collections.unmodifiableMap(
 				getOTUKeyedSequences()
 						.getValues());
@@ -118,9 +118,9 @@ public class DnaSequenceSet
 
 	@Override
 	@CheckForNull
-	public IDNASequence putSequence(
+	public IDnaSequence putSequence(
 			final IOtu otu,
-			final IDNASequence sequence) {
+			final IDnaSequence sequence) {
 		checkNotNull(otu);
 		checkNotNull(sequence);
 		checkArgument(sequence.getSequence() != null,

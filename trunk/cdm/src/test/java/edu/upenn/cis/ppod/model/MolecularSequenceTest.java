@@ -23,7 +23,7 @@ import static org.testng.Assert.assertTrue;
 import org.testng.annotations.Test;
 
 import edu.upenn.cis.ppod.TestGroupDefs;
-import edu.upenn.cis.ppod.imodel.IDNASequence;
+import edu.upenn.cis.ppod.imodel.IDnaSequence;
 import edu.upenn.cis.ppod.imodel.IOtu;
 import edu.upenn.cis.ppod.imodel.IOtuSet;
 import edu.upenn.cis.ppod.imodel.ISequence;
@@ -89,7 +89,7 @@ public class MolecularSequenceTest {
 		final IOtu otu0 = new Otu();
 		otuSet.addOTU(otu0);
 
-		final ISequenceSet<IDNASequence> sequenceSet = new DnaSequenceSet();
+		final ISequenceSet<IDnaSequence> sequenceSet = new DnaSequenceSet();
 
 		sequenceSet.setParent(otuSet);
 

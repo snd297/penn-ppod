@@ -23,7 +23,7 @@ import java.util.Map;
 import com.google.common.collect.ImmutableMap;
 import com.google.inject.Inject;
 
-import edu.upenn.cis.ppod.imodel.IDNASequence;
+import edu.upenn.cis.ppod.imodel.IDnaSequence;
 import edu.upenn.cis.ppod.imodel.IDnaSequenceSet;
 import edu.upenn.cis.ppod.imodel.INewVersionInfo;
 import edu.upenn.cis.ppod.imodel.IOtu;
@@ -59,7 +59,7 @@ class MergeDNASequenceSets implements IMergeDNASequenceSets {
 		final Integer srcSeqSetLengths =
 				srcSeqSet.getSequenceLengths();
 
-		Map<IOtu, IDNASequence> targOTUsToSeqs;
+		Map<IOtu, IDnaSequence> targOTUsToSeqs;
 
 		if (targSeqSetLengths == null ||
 				targSeqSetLengths.equals(srcSeqSetLengths)) {
@@ -84,12 +84,12 @@ class MergeDNASequenceSets implements IMergeDNASequenceSets {
 							.getOTUs()
 							.get(i);
 
-			final IDNASequence srcSeq = srcSeqSet.getSequence(sourceOTU);
+			final IDnaSequence srcSeq = srcSeqSet.getSequence(sourceOTU);
 			final IOtu targOTU = targSeqSet.getParent()
 							.getOTUs()
 							.get(i);
 
-			IDNASequence targSeq;
+			IDnaSequence targSeq;
 
 			if (null == (targSeq =
 					targOTUsToSeqs.get(targOTU))) {

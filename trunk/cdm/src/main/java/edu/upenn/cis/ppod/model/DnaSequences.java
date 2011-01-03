@@ -37,7 +37,7 @@ import javax.xml.bind.annotation.XmlElement;
 
 import org.hibernate.annotations.Parent;
 
-import edu.upenn.cis.ppod.imodel.IDNASequence;
+import edu.upenn.cis.ppod.imodel.IDnaSequence;
 import edu.upenn.cis.ppod.imodel.IDnaSequenceSet;
 import edu.upenn.cis.ppod.imodel.IOtu;
 import edu.upenn.cis.ppod.imodel.IOTUKeyedMap;
@@ -54,10 +54,10 @@ import edu.upenn.cis.ppod.util.OTUDNASequencePair;
 @Embeddable
 @Access(AccessType.PROPERTY)
 public class DnaSequences
-		implements IOTUKeyedMap<IDNASequence> {
+		implements IOTUKeyedMap<IDnaSequence> {
 
-	private final IOTUKeyedMapPlus<IDNASequence, IDnaSequenceSet, OTUDNASequencePair> sequences =
-			new OTUKeyedMapPlus<IDNASequence, IDnaSequenceSet, OTUDNASequencePair>();
+	private final IOTUKeyedMapPlus<IDnaSequence, IDnaSequenceSet, OTUDNASequencePair> sequences =
+			new OTUKeyedMapPlus<IDnaSequence, IDnaSequenceSet, OTUDNASequencePair>();
 
 	public void accept(final IVisitor visitor) {
 		sequences.accept(visitor);
@@ -77,7 +77,7 @@ public class DnaSequences
 
 	protected boolean beforeMarshal(@CheckForNull final Marshaller marshaller) {
 		getOTUSomethingPairs().clear();
-		for (final Map.Entry<IOtu, IDNASequence> otuToRow : getValues()
+		for (final Map.Entry<IOtu, IDnaSequence> otuToRow : getValues()
 				.entrySet()) {
 			getOTUSomethingPairs().add(
 					new OTUDNASequencePair(otuToRow.getKey(), otuToRow
@@ -90,7 +90,7 @@ public class DnaSequences
 		sequences.clear();
 	}
 
-	public IDNASequence get(final IOtu key) {
+	public IDnaSequence get(final IOtu key) {
 		return sequences.get(key);
 	}
 
@@ -110,11 +110,11 @@ public class DnaSequences
 	@JoinTable(inverseJoinColumns = @JoinColumn(name = DnaSequence.JOIN_COLUMN))
 	@MapKeyJoinColumn(name = Otu.JOIN_COLUMN)
 	@MapKeyClass(Otu.class)
-	public Map<IOtu, IDNASequence> getValues() {
+	public Map<IOtu, IDnaSequence> getValues() {
 		return sequences.getValues();
 	}
 
-	public IDNASequence put(final IOtu key, final IDNASequence value) {
+	public IDnaSequence put(final IOtu key, final IDnaSequence value) {
 		return sequences.put(key, value);
 	}
 
@@ -127,7 +127,7 @@ public class DnaSequences
 		sequences.setParent(parent);
 	}
 
-	public void setValues(final Map<IOtu, IDNASequence> values) {
+	public void setValues(final Map<IOtu, IDnaSequence> values) {
 		sequences.setValues(values);
 	}
 }

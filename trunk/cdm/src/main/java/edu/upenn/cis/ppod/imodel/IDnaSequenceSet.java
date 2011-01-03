@@ -20,6 +20,6 @@ import javax.xml.bind.annotation.adapters.XmlJavaTypeAdapter;
 import edu.upenn.cis.ppod.model.DnaSequenceSet;
 
 @XmlJavaTypeAdapter(DnaSequenceSet.Adapter.class)
-public interface IDnaSequenceSet extends ISequenceSet<IDNASequence>, IWithDocId {
+public interface IDnaSequenceSet extends ISequenceSet<IDnaSequence>, IWithDocId {
 	void afterUnmarshal();
 }
