@@ -26,7 +26,7 @@ import static org.testng.Assert.assertTrue;
 import org.testng.annotations.Test;
 
 import edu.upenn.cis.ppod.TestGroupDefs;
-import edu.upenn.cis.ppod.imodel.IDNARow;
+import edu.upenn.cis.ppod.imodel.IDnaRow;
 import edu.upenn.cis.ppod.imodel.IOtu;
 import edu.upenn.cis.ppod.imodel.IOtuSet;
 import edu.upenn.cis.ppod.util.IVisitor;
@@ -56,9 +56,9 @@ public class OTUKeyedMapTest {
 		otuSet.addOTU(otu1);
 		otuSet.addOTU(otu2);
 
-		final IDNARow row0 = new DnaRow();
-		final IDNARow row1 = new DnaRow();
-		final IDNARow row2 = new DnaRow();
+		final IDnaRow row0 = new DnaRow();
+		final IDnaRow row1 = new DnaRow();
+		final IDnaRow row2 = new DnaRow();
 
 		final DnaRows rows = new DnaRows();
 		rows.setParent(matrix);

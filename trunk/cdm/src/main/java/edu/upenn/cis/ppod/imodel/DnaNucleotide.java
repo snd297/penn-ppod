@@ -15,9 +15,21 @@
  */
 package edu.upenn.cis.ppod.imodel;
 
-import javax.xml.bind.annotation.adapters.XmlJavaTypeAdapter;
+/**
+ * The four DNA nucleotides.
+ * 
+ * @author Sam Donnelly
+ */
+public enum DnaNucleotide  {
+	/** Adenine. */
+	A,
 
-import edu.upenn.cis.ppod.model.DnaCell;
+	/** Cytosine. */
+	C,
 
-@XmlJavaTypeAdapter(DnaCell.Adapter.class)
-public interface IDNACell extends IMolecularCell<DNANucleotide, IDNARow> {}
+	/** Guanine. */
+	G,
+
+	/** Thymine. */
+	T
+}

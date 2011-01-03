@@ -19,7 +19,7 @@ import java.util.Map;
 
 import edu.umd.cs.findbugs.annotations.CheckForNull;
 
-public interface IOTUKeyedMap<V extends IChild<?>>
+public interface IOtuKeyedMap<V extends IChild<?>>
 		extends IVisitable {
 
 	/**

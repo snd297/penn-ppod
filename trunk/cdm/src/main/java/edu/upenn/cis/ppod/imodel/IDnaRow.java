@@ -15,21 +15,11 @@
  */
 package edu.upenn.cis.ppod.imodel;
 
-/**
- * The four DNA nucleotides.
- * 
- * @author Sam Donnelly
- */
-public enum DNANucleotide  {
-	/** Adenine. */
-	A,
+import javax.xml.bind.annotation.adapters.XmlJavaTypeAdapter;
 
-	/** Cytosine. */
-	C,
+import edu.upenn.cis.ppod.model.DnaRow;
 
-	/** Guanine. */
-	G,
+@XmlJavaTypeAdapter(DnaRow.Adapter.class)
+public interface IDnaRow extends IRow<IDnaCell, IDnaMatrix> {
 
-	/** Thymine. */
-	T
 }

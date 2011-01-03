@@ -40,8 +40,8 @@ import org.hibernate.annotations.Parent;
 import edu.upenn.cis.ppod.imodel.IDnaSequence;
 import edu.upenn.cis.ppod.imodel.IDnaSequenceSet;
 import edu.upenn.cis.ppod.imodel.IOtu;
-import edu.upenn.cis.ppod.imodel.IOTUKeyedMap;
-import edu.upenn.cis.ppod.imodel.IOTUKeyedMapPlus;
+import edu.upenn.cis.ppod.imodel.IOtuKeyedMap;
+import edu.upenn.cis.ppod.imodel.IOtuKeyedMapPlus;
 import edu.upenn.cis.ppod.util.IVisitor;
 import edu.upenn.cis.ppod.util.OTUDNASequencePair;
 
@@ -54,9 +54,9 @@ import edu.upenn.cis.ppod.util.OTUDNASequencePair;
 @Embeddable
 @Access(AccessType.PROPERTY)
 public class DnaSequences
-		implements IOTUKeyedMap<IDnaSequence> {
+		implements IOtuKeyedMap<IDnaSequence> {
 
-	private final IOTUKeyedMapPlus<IDnaSequence, IDnaSequenceSet, OTUDNASequencePair> sequences =
+	private final IOtuKeyedMapPlus<IDnaSequence, IDnaSequenceSet, OTUDNASequencePair> sequences =
 			new OTUKeyedMapPlus<IDnaSequence, IDnaSequenceSet, OTUDNASequencePair>();
 
 	public void accept(final IVisitor visitor) {

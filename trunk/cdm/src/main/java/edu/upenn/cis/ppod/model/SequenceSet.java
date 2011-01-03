@@ -33,7 +33,7 @@ import javax.xml.bind.Unmarshaller;
 import javax.xml.bind.annotation.XmlAttribute;
 
 import edu.upenn.cis.ppod.imodel.IOtu;
-import edu.upenn.cis.ppod.imodel.IOTUKeyedMap;
+import edu.upenn.cis.ppod.imodel.IOtuKeyedMap;
 import edu.upenn.cis.ppod.imodel.IOtuSet;
 import edu.upenn.cis.ppod.imodel.ISequence;
 import edu.upenn.cis.ppod.imodel.ISequenceSet;
@@ -119,7 +119,7 @@ abstract class SequenceSet<S extends ISequence<?>>
 		return label;
 	}
 
-	abstract IOTUKeyedMap<S> getOTUKeyedSequences();
+	abstract IOtuKeyedMap<S> getOTUKeyedSequences();
 
 	/** {@inheritDoc} */
 	@Nullable

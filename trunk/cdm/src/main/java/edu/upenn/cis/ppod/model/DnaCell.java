@@ -37,9 +37,9 @@ import javax.xml.bind.annotation.adapters.XmlAdapter;
 import org.hibernate.annotations.Immutable;
 
 import edu.umd.cs.findbugs.annotations.Nullable;
-import edu.upenn.cis.ppod.imodel.DNANucleotide;
-import edu.upenn.cis.ppod.imodel.IDNACell;
-import edu.upenn.cis.ppod.imodel.IDNARow;
+import edu.upenn.cis.ppod.imodel.DnaNucleotide;
+import edu.upenn.cis.ppod.imodel.IDnaCell;
+import edu.upenn.cis.ppod.imodel.IDnaRow;
 import edu.upenn.cis.ppod.util.IVisitor;
 
 /**
@@ -51,18 +51,18 @@ import edu.upenn.cis.ppod.util.IVisitor;
 @Table(name = DnaCell.TABLE)
 @Immutable
 public class DnaCell
-		extends MolecularCell<DNANucleotide, IDNARow>
-		implements IDNACell {
+		extends MolecularCell<DnaNucleotide, IDnaRow>
+		implements IDnaCell {
 
-	public static class Adapter extends XmlAdapter<DnaCell, IDNACell> {
+	public static class Adapter extends XmlAdapter<DnaCell, IDnaCell> {
 
 		@Override
-		public DnaCell marshal(final IDNACell dnaCell) {
+		public DnaCell marshal(final IDnaCell dnaCell) {
 			return (DnaCell) dnaCell;
 		}
 
 		@Override
-		public IDNACell unmarshal(final DnaCell dnaCell) {
+		public IDnaCell unmarshal(final DnaCell dnaCell) {
 			return dnaCell;
 		}
 	}
@@ -84,7 +84,7 @@ public class DnaCell
 	@Column(name = "ELEMENT")
 	@Enumerated(EnumType.ORDINAL)
 	@Nullable
-	private Set<DNANucleotide> elements;
+	private Set<DnaNucleotide> elements;
 
 	/**
 	 * To handle the most-common case of a single element.
@@ -95,13 +95,13 @@ public class DnaCell
 	@Column(name = "ELEMENT", nullable = true)
 	@Enumerated(EnumType.ORDINAL)
 	@Nullable
-	private DNANucleotide element;
+	private DnaNucleotide element;
 
 	@ManyToOne(fetch = FetchType.LAZY, optional = false,
 			targetEntity = DnaRow.class)
 	@JoinColumn(name = DnaRow.JOIN_COLUMN)
 	@Nullable
-	private IDNARow parent;
+	private IDnaRow parent;
 
 	public DnaCell() {}
 
@@ -114,12 +114,12 @@ public class DnaCell
 	/** {@inheritDoc} */
 	@XmlAttribute(name = "nucleotide")
 	@Override
-	protected DNANucleotide getElement() {
+	protected DnaNucleotide getElement() {
 		return element;
 	}
 
 	@Override
-	Set<DNANucleotide> getElementsModifiable() {
+	Set<DnaNucleotide> getElementsModifiable() {
 		return elements;
 	}
 
@@ -130,18 +130,18 @@ public class DnaCell
 	 */
 	@XmlElement(name = "nucleotide")
 	@Override
-	protected Set<DNANucleotide> getElementsIfMultiple() {
+	protected Set<DnaNucleotide> getElementsIfMultiple() {
 		return super.getElementsIfMultiple();
 	}
 
 	@Override
-	public IDNARow getParent() {
+	public IDnaRow getParent() {
 		return parent;
 	}
 
 	@Override
 	void initElements() {
-		setElements(EnumSet.noneOf(DNANucleotide.class));
+		setElements(EnumSet.noneOf(DnaNucleotide.class));
 	}
 
 	/**
@@ -150,18 +150,18 @@ public class DnaCell
 	 * Protected for JAXB.
 	 */
 	@Override
-	protected void setElement(final DNANucleotide element) {
+	protected void setElement(final DnaNucleotide element) {
 		this.element = element;
 	}
 
 	/** {@inheritDoc} */
 	@Override
-	void setElements(final Set<DNANucleotide> elements) {
+	void setElements(final Set<DnaNucleotide> elements) {
 		this.elements = elements;
 	}
 
 	/** {@inheritDoc} */
-	public void setParent(final IDNARow parent) {
+	public void setParent(final IDnaRow parent) {
 		this.parent = parent;
 	}
 }

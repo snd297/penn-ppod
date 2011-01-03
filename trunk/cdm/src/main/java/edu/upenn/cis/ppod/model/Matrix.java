@@ -46,7 +46,7 @@ import edu.umd.cs.findbugs.annotations.Nullable;
 import edu.upenn.cis.ppod.imodel.ICell;
 import edu.upenn.cis.ppod.imodel.IMatrix;
 import edu.upenn.cis.ppod.imodel.IOtu;
-import edu.upenn.cis.ppod.imodel.IOTUKeyedMap;
+import edu.upenn.cis.ppod.imodel.IOtuKeyedMap;
 import edu.upenn.cis.ppod.imodel.IOtuSet;
 import edu.upenn.cis.ppod.imodel.IRow;
 import edu.upenn.cis.ppod.imodel.IVersionInfo;
@@ -231,7 +231,7 @@ public abstract class Matrix<R extends IRow<C, ?>, C extends ICell<?, ?>>
 	 * 
 	 * @return the otusToRows
 	 */
-	abstract IOTUKeyedMap<R> getOTUKeyedRows();
+	abstract IOtuKeyedMap<R> getOTUKeyedRows();
 
 	/**
 	 * Getter. Will be {@code null} when object is first created or matrices

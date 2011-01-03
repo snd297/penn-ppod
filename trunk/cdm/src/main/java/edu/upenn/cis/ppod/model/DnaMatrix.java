@@ -25,9 +25,9 @@ import javax.persistence.Table;
 import javax.xml.bind.annotation.XmlElement;
 import javax.xml.bind.annotation.adapters.XmlAdapter;
 
-import edu.upenn.cis.ppod.imodel.IDNACell;
-import edu.upenn.cis.ppod.imodel.IDNAMatrix;
-import edu.upenn.cis.ppod.imodel.IDNARow;
+import edu.upenn.cis.ppod.imodel.IDnaCell;
+import edu.upenn.cis.ppod.imodel.IDnaMatrix;
+import edu.upenn.cis.ppod.imodel.IDnaRow;
 import edu.upenn.cis.ppod.util.IVisitor;
 
 /**
@@ -38,18 +38,18 @@ import edu.upenn.cis.ppod.util.IVisitor;
 @Entity
 @Table(name = DnaMatrix.TABLE)
 public class DnaMatrix
-		extends MolecularMatrix<IDNARow, IDNACell>
-		implements IDNAMatrix {
+		extends MolecularMatrix<IDnaRow, IDnaCell>
+		implements IDnaMatrix {
 
-	public static class Adapter extends XmlAdapter<DnaMatrix, IDNAMatrix> {
+	public static class Adapter extends XmlAdapter<DnaMatrix, IDnaMatrix> {
 
 		@Override
-		public DnaMatrix marshal(final IDNAMatrix matrix) {
+		public DnaMatrix marshal(final IDnaMatrix matrix) {
 			return (DnaMatrix) matrix;
 		}
 
 		@Override
-		public IDNAMatrix unmarshal(final DnaMatrix matrix) {
+		public IDnaMatrix unmarshal(final DnaMatrix matrix) {
 			return matrix;
 		}
 	}
@@ -83,7 +83,7 @@ public class DnaMatrix
 	}
 
 	/** {@inheritDoc} */
-	public List<IDNACell> removeColumn(final int columnNo) {
+	public List<IDnaCell> removeColumn(final int columnNo) {
 		setColumnsSize(getColumnsSize() - 1);
 		return super.removeColumnHelper(columnNo);
 	}
@@ -91,7 +91,7 @@ public class DnaMatrix
 	/**
 	 * Created for JAXB.
 	 */
-	protected IDNAMatrix setOTUKeyedRows(final DnaRows rows) {
+	protected IDnaMatrix setOTUKeyedRows(final DnaRows rows) {
 		this.rows = rows;
 		return this;
 	}

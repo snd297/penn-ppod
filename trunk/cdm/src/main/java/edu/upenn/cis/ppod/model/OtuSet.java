@@ -47,7 +47,7 @@ import com.google.common.annotations.VisibleForTesting;
 import edu.umd.cs.findbugs.annotations.CheckForNull;
 import edu.umd.cs.findbugs.annotations.Nullable;
 import edu.upenn.cis.ppod.imodel.IChild;
-import edu.upenn.cis.ppod.imodel.IDNAMatrix;
+import edu.upenn.cis.ppod.imodel.IDnaMatrix;
 import edu.upenn.cis.ppod.imodel.IDnaSequenceSet;
 import edu.upenn.cis.ppod.imodel.ILabeled;
 import edu.upenn.cis.ppod.imodel.IOtu;
@@ -118,7 +118,7 @@ public class OtuSet
 			targetEntity = DnaMatrix.class)
 	@OrderColumn(name = "POSITION")
 	@JoinColumn(name = JOIN_COLUMN, nullable = false)
-	private final List<IDNAMatrix> dnaMatrices = newArrayList();
+	private final List<IDnaMatrix> dnaMatrices = newArrayList();
 
 	@OneToMany(
 			cascade = CascadeType.ALL,
@@ -178,7 +178,7 @@ public class OtuSet
 	}
 
 	/** {@inheritDoc} */
-	public void addDNAMatrix(final IDNAMatrix matrix) {
+	public void addDNAMatrix(final IDnaMatrix matrix) {
 		checkNotNull(matrix);
 		checkArgument(
 				!dnaMatrices.contains(matrix),
@@ -192,7 +192,7 @@ public class OtuSet
 	/** {@inheritDoc} */
 	public void addDNAMatrix(
 			final int pos,
-			final IDNAMatrix matrix) {
+			final IDnaMatrix matrix) {
 		checkNotNull(matrix);
 		checkArgument(pos >= 0, "pos < 0");
 		checkArgument(
@@ -352,12 +352,12 @@ public class OtuSet
 	}
 
 	/** {@inheritDoc} */
-	public List<IDNAMatrix> getDNAMatrices() {
+	public List<IDnaMatrix> getDNAMatrices() {
 		return Collections.unmodifiableList(dnaMatrices);
 	}
 
 	@XmlElement(name = "dnaMatrix")
-	protected List<IDNAMatrix> getDNAMatricesModifiable() {
+	protected List<IDnaMatrix> getDNAMatricesModifiable() {
 		return dnaMatrices;
 	}
 
@@ -426,7 +426,7 @@ public class OtuSet
 	}
 
 	/** {@inheritDoc} */
-	public void removeDNAMatrix(final IDNAMatrix matrix) {
+	public void removeDNAMatrix(final IDnaMatrix matrix) {
 		checkNotNull(matrix);
 		checkArgument(dnaMatrices.contains(matrix),
 				"otu set does not contain the dna matrix [" + matrix.getLabel()

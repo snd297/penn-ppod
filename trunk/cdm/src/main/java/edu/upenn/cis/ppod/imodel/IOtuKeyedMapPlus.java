@@ -20,8 +20,8 @@ import java.util.Set;
 
 import edu.upenn.cis.ppod.util.IPair;
 
-public interface IOTUKeyedMapPlus<V extends IChild<?>, P extends IChild<IOtuSet>, OP extends IPair<IOtu, V>>
-		extends IOTUKeyedMap<V> {
+public interface IOtuKeyedMapPlus<V extends IChild<?>, P extends IChild<IOtuSet>, OP extends IPair<IOtu, V>>
+		extends IOtuKeyedMap<V> {
 
 	void afterUnmarshal(final P parent);
 

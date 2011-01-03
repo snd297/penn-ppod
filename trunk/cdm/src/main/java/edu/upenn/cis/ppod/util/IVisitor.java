@@ -18,9 +18,9 @@ package edu.upenn.cis.ppod.util;
 import edu.upenn.cis.ppod.imodel.IAttachment;
 import edu.upenn.cis.ppod.imodel.IAttachmentNamespace;
 import edu.upenn.cis.ppod.imodel.IAttachmentType;
-import edu.upenn.cis.ppod.imodel.IDNACell;
-import edu.upenn.cis.ppod.imodel.IDNAMatrix;
-import edu.upenn.cis.ppod.imodel.IDNARow;
+import edu.upenn.cis.ppod.imodel.IDnaCell;
+import edu.upenn.cis.ppod.imodel.IDnaMatrix;
+import edu.upenn.cis.ppod.imodel.IDnaRow;
 import edu.upenn.cis.ppod.imodel.IDnaSequence;
 import edu.upenn.cis.ppod.imodel.IDnaSequenceSet;
 import edu.upenn.cis.ppod.imodel.IOtu;
@@ -71,16 +71,16 @@ public interface IVisitor {
 	 * 
 	 * @param cell to be visited
 	 */
-	void visitDNACell(IDNACell cell);
+	void visitDNACell(IDnaCell cell);
 
 	/**
 	 * Visit a DNA matrix.
 	 * 
 	 * @param matrix to be visited
 	 */
-	void visitDNAMatrix(IDNAMatrix matrix);
+	void visitDNAMatrix(IDnaMatrix matrix);
 
-	void visitDNARow(IDNARow row);
+	void visitDNARow(IDnaRow row);
 
 	void visitDNASequence(IDnaSequence sequence);
 
