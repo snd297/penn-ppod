@@ -26,7 +26,7 @@ import java.util.List;
 import com.google.inject.Inject;
 
 import edu.upenn.cis.ppod.imodel.INewVersionInfo;
-import edu.upenn.cis.ppod.imodel.IOtuChangeCase;
+import edu.upenn.cis.ppod.imodel.IOtu;
 import edu.upenn.cis.ppod.imodel.IOTUSet;
 import edu.upenn.cis.ppod.imodel.IHasPPodId;
 import edu.upenn.cis.ppod.model.ModelFactory;
@@ -56,11 +56,11 @@ class MergeOTUSets implements IMergeOTUSets {
 		// This is for a response to the service client.
 		targetOTUSet.setDocId(sourceOTUSet.getDocId());
 
-		final List<IOtuChangeCase> newTargetOTUs =
+		final List<IOtu> newTargetOTUs =
 				newArrayListWithCapacity(sourceOTUSet.getOTUs().size());
 
-		for (final IOtuChangeCase sourceOTU : sourceOTUSet.getOTUs()) {
-			IOtuChangeCase targetOTU;
+		for (final IOtu sourceOTU : sourceOTUSet.getOTUs()) {
+			IOtu targetOTU;
 			if (null == (targetOTU =
 					find(targetOTUSet.getOTUs(),
 							compose(

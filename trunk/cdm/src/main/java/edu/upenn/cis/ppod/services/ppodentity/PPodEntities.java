@@ -32,7 +32,7 @@ import javax.xml.bind.annotation.XmlRootElement;
 
 import edu.upenn.cis.ppod.imodel.IAttachmentNamespace;
 import edu.upenn.cis.ppod.imodel.IAttachmentType;
-import edu.upenn.cis.ppod.imodel.IOtuChangeCase;
+import edu.upenn.cis.ppod.imodel.IOtu;
 import edu.upenn.cis.ppod.imodel.IOTUSet;
 import edu.upenn.cis.ppod.util.PPodEntitiesUtil;
 
@@ -51,7 +51,7 @@ public class PPodEntities implements IPPodEntities {
 	private final List<IOTUSet> otuSets = newArrayList();
 
 	@XmlElement(name = "otu")
-	private final Set<IOtuChangeCase> otus = newHashSet();
+	private final Set<IOtu> otus = newHashSet();
 
 	@XmlElement(name = "attachmentNamespace")
 	private final Set<IAttachmentNamespace> pPodEntitiesWideAttachmentNamespaces = newHashSet();
@@ -87,11 +87,11 @@ public class PPodEntities implements IPPodEntities {
 		return true;
 	}
 
-	public Set<IOtuChangeCase> getOTUs() {
+	public Set<IOtu> getOTUs() {
 		return Collections.unmodifiableSet(otus);
 	}
 
-	public IOtuChangeCase addOTU(final IOtuChangeCase otu) {
+	public IOtu addOTU(final IOtu otu) {
 		otus.add(otu);
 		return otu;
 	}

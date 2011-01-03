@@ -33,7 +33,7 @@ import edu.upenn.cis.ppod.imodel.IAttachment;
 import edu.upenn.cis.ppod.imodel.IAttachmentNamespace;
 import edu.upenn.cis.ppod.imodel.IAttachmentType;
 import edu.upenn.cis.ppod.imodel.ILabeled;
-import edu.upenn.cis.ppod.imodel.IOtuChangeCase;
+import edu.upenn.cis.ppod.imodel.IOtu;
 import edu.upenn.cis.ppod.imodel.IOTUSet;
 import edu.upenn.cis.ppod.imodel.IPPodEntity;
 import edu.upenn.cis.ppod.imodel.ISequence;
@@ -97,8 +97,8 @@ public class ModelAssert {
 		}
 		assertEquals(actualOTUSet.getOTUs().size(), expectedOTUSet
 				.getOTUs().size());
-		for (final IOtuChangeCase expectedOTU : expectedOTUSet.getOTUs()) {
-			final IOtuChangeCase foundOTU =
+		for (final IOtu expectedOTU : expectedOTUSet.getOTUs()) {
+			final IOtu foundOTU =
 					find(
 							actualOTUSet.getOTUs(),
 							compose(
@@ -115,8 +115,8 @@ public class ModelAssert {
 	}
 
 	public static void assertEqualsOTUs(
-			final IOtuChangeCase actualOTU,
-			final IOtuChangeCase expectedOTU) {
+			final IOtu actualOTU,
+			final IOtu expectedOTU) {
 		assertEquals(actualOTU.getLabel(), expectedOTU.getLabel());
 	}
 
@@ -230,7 +230,7 @@ public class ModelAssert {
 		assertEquals(actualMatrix.getRows().size(),
 				expectedMatrix.getRows().size());
 
-		for (final Iterator<IOtuChangeCase> actualOTUIterator = actualMatrix.getParent()
+		for (final Iterator<IOtu> actualOTUIterator = actualMatrix.getParent()
 				.getOTUs()
 				.iterator(), expectedOTUIterator = expectedMatrix.getParent()
 				.getOTUs()

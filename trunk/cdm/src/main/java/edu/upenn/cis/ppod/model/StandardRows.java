@@ -37,7 +37,7 @@ import javax.xml.bind.annotation.XmlElement;
 
 import org.hibernate.annotations.Parent;
 
-import edu.upenn.cis.ppod.imodel.IOtuChangeCase;
+import edu.upenn.cis.ppod.imodel.IOtu;
 import edu.upenn.cis.ppod.imodel.IOTUKeyedMap;
 import edu.upenn.cis.ppod.imodel.IOTUKeyedMapPlus;
 import edu.upenn.cis.ppod.imodel.IStandardMatrix;
@@ -80,7 +80,7 @@ public class StandardRows
 
 	protected boolean beforeMarshal(@CheckForNull final Marshaller marshaller) {
 		getOTUSomethingPairs().clear();
-		for (final Map.Entry<IOtuChangeCase, IStandardRow> otuToRow : getValues()
+		for (final Map.Entry<IOtu, IStandardRow> otuToRow : getValues()
 				.entrySet()) {
 			getOTUSomethingPairs().add(
 					new OTUStandardRowPair(otuToRow.getKey(),
@@ -93,7 +93,7 @@ public class StandardRows
 		rows.clear();
 	}
 
-	public IStandardRow get(final IOtuChangeCase key) {
+	public IStandardRow get(final IOtu key) {
 		return rows.get(key);
 	}
 
@@ -127,12 +127,12 @@ public class StandardRows
 	@JoinTable(inverseJoinColumns = @JoinColumn(name = StandardRow.JOIN_COLUMN))
 	@MapKeyJoinColumn(name = OTU.JOIN_COLUMN)
 	@MapKeyClass(OTU.class)
-	public Map<IOtuChangeCase, IStandardRow> getValues() {
+	public Map<IOtu, IStandardRow> getValues() {
 		return rows.getValues();
 	}
 
 	/** {@inheritDoc} */
-	public IStandardRow put(final IOtuChangeCase key, final IStandardRow value) {
+	public IStandardRow put(final IOtu key, final IStandardRow value) {
 		return rows.put(key, value);
 	}
 
@@ -151,7 +151,7 @@ public class StandardRows
 	}
 
 	@SuppressWarnings("unused")
-	private void setValues(final Map<IOtuChangeCase, IStandardRow> values) {
+	private void setValues(final Map<IOtu, IStandardRow> values) {
 		rows.setValues(values);
 	}
 

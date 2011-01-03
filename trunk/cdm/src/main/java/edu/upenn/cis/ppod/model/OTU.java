@@ -28,7 +28,7 @@ import javax.xml.bind.annotation.adapters.XmlAdapter;
 
 import edu.umd.cs.findbugs.annotations.CheckForNull;
 import edu.umd.cs.findbugs.annotations.Nullable;
-import edu.upenn.cis.ppod.imodel.IOtuChangeCase;
+import edu.upenn.cis.ppod.imodel.IOtu;
 import edu.upenn.cis.ppod.imodel.IOTUSet;
 import edu.upenn.cis.ppod.util.IVisitor;
 
@@ -42,17 +42,17 @@ import edu.upenn.cis.ppod.util.IVisitor;
 @Table(name = OTU.TABLE)
 public class OTU
 		extends UUPPodEntityWithDocId
-		implements IOtuChangeCase {
+		implements IOtu {
 
-	public static class Adapter extends XmlAdapter<OTU, IOtuChangeCase> {
+	public static class Adapter extends XmlAdapter<OTU, IOtu> {
 
 		@Override
-		public OTU marshal(final IOtuChangeCase otu) {
+		public OTU marshal(final IOtu otu) {
 			return (OTU) otu;
 		}
 
 		@Override
-		public IOtuChangeCase unmarshal(final OTU otu) {
+		public IOtu unmarshal(final OTU otu) {
 			return otu;
 		}
 	}

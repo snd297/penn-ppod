@@ -27,7 +27,7 @@ import edu.upenn.cis.ppod.dao.IObjectWithLongIdDAO;
 import edu.upenn.cis.ppod.imodel.ICell;
 import edu.upenn.cis.ppod.imodel.IMatrix;
 import edu.upenn.cis.ppod.imodel.INewVersionInfo;
-import edu.upenn.cis.ppod.imodel.IOtuChangeCase;
+import edu.upenn.cis.ppod.imodel.IOtu;
 import edu.upenn.cis.ppod.imodel.IRow;
 import edu.upenn.cis.ppod.imodel.IVersionInfo;
 
@@ -73,11 +73,11 @@ abstract class CreateOrUpdateMatrix<M extends IMatrix<R, C>, R extends IRow<C, ?
 
 		int sourceOTUPos = -1;
 
-		for (final IOtuChangeCase sourceOTU : sourceMatrix.getParent().getOTUs()) {
+		for (final IOtu sourceOTU : sourceMatrix.getParent().getOTUs()) {
 			sourceOTUPos++;
 			final R sourceRow = sourceMatrix.getRows().get(sourceOTU);
 
-			final IOtuChangeCase dbOTU =
+			final IOtu dbOTU =
 					dbMatrix.getParent()
 							.getOTUs()
 							.get(sourceOTUPos);

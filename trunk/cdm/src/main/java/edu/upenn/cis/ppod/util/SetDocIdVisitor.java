@@ -17,7 +17,7 @@ package edu.upenn.cis.ppod.util;
 
 import edu.upenn.cis.ppod.imodel.IAttachmentNamespace;
 import edu.upenn.cis.ppod.imodel.IAttachmentType;
-import edu.upenn.cis.ppod.imodel.IOtuChangeCase;
+import edu.upenn.cis.ppod.imodel.IOtu;
 import edu.upenn.cis.ppod.imodel.IOTUSet;
 import edu.upenn.cis.ppod.imodel.IStandardState;
 
@@ -48,7 +48,7 @@ public final class SetDocIdVisitor extends EmptyVisitor {
 	 * @param otu target
 	 */
 	@Override
-	public void visitOTU(final IOtuChangeCase otu) {
+	public void visitOTU(final IOtu otu) {
 		if (otu.getDocId() == null) {
 			otu.setDocId();
 		}

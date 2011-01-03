@@ -45,7 +45,7 @@ import edu.umd.cs.findbugs.annotations.CheckForNull;
 import edu.umd.cs.findbugs.annotations.Nullable;
 import edu.upenn.cis.ppod.imodel.ICell;
 import edu.upenn.cis.ppod.imodel.IMatrix;
-import edu.upenn.cis.ppod.imodel.IOtuChangeCase;
+import edu.upenn.cis.ppod.imodel.IOtu;
 import edu.upenn.cis.ppod.imodel.IOTUKeyedMap;
 import edu.upenn.cis.ppod.imodel.IOTUSet;
 import edu.upenn.cis.ppod.imodel.IRow;
@@ -245,7 +245,7 @@ public abstract class Matrix<R extends IRow<C, ?>, C extends ICell<?, ?>>
 	}
 
 	/** {@inheritDoc} */
-	public Map<IOtuChangeCase, R> getRows() {
+	public Map<IOtu, R> getRows() {
 		return Collections
 				.unmodifiableMap(getOTUKeyedRows().getValues());
 	}
@@ -253,7 +253,7 @@ public abstract class Matrix<R extends IRow<C, ?>, C extends ICell<?, ?>>
 	/**
 	 * {@inheritDoc}
 	 */
-	public R putRow(final IOtuChangeCase otu, final R row) {
+	public R putRow(final IOtu otu, final R row) {
 		checkNotNull(otu);
 		checkNotNull(row);
 		return getOTUKeyedRows().put(otu, row);
