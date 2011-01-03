@@ -19,7 +19,7 @@ import static com.google.common.base.Preconditions.checkNotNull;
 import edu.upenn.cis.ppod.imodel.IDNACell;
 import edu.upenn.cis.ppod.imodel.IDNAMatrix;
 import edu.upenn.cis.ppod.imodel.IDNARow;
-import edu.upenn.cis.ppod.imodel.IDNASequence;
+import edu.upenn.cis.ppod.imodel.IDnaSequence;
 import edu.upenn.cis.ppod.imodel.IDnaSequenceSet;
 import edu.upenn.cis.ppod.imodel.IOtu;
 import edu.upenn.cis.ppod.imodel.IOtuSet;
@@ -174,7 +174,7 @@ public final class Study2StudyInfo implements IStudy2StudyInfo {
 						.getVersionInfo().getVersion());
 				sequenceSetInfo.setEntityId(dnaSequenceSet.getId());
 				for (final IOtu otu : otuSet.getOTUs()) {
-					final IDNASequence dnaSequence =
+					final IDnaSequence dnaSequence =
 							dnaSequenceSet.getSequence(otu);
 					sequenceSetInfo
 							.getSequenceVersionsByOTUDocId()

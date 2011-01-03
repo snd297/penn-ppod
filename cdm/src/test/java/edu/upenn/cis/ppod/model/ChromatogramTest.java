@@ -24,7 +24,7 @@ import static org.testng.Assert.assertTrue;
 import org.testng.annotations.Test;
 
 import edu.upenn.cis.ppod.TestGroupDefs;
-import edu.upenn.cis.ppod.imodel.IDNASequence;
+import edu.upenn.cis.ppod.imodel.IDnaSequence;
 
 /**
  * {@link Chromatogram} tests.
@@ -82,7 +82,7 @@ public class ChromatogramTest {
 	@Test
 	public void setSequence() {
 		final Chromatogram chromatogram = new Chromatogram();
-		final IDNASequence sequence = new DnaSequence();
+		final IDnaSequence sequence = new DnaSequence();
 
 		final Chromatogram returnedChromatogram =
 				chromatogram.setSequence(sequence);
