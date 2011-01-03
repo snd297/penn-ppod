@@ -17,7 +17,7 @@ package edu.upenn.cis.ppod.dao;
 
 import java.util.List;
 
-import edu.upenn.cis.ppod.imodel.IOtuSetChangeCase;
+import edu.upenn.cis.ppod.imodel.IOtuSet;
 import edu.upenn.cis.ppod.thirdparty.dao.IDAO;
 
 /**
@@ -25,9 +25,9 @@ import edu.upenn.cis.ppod.thirdparty.dao.IDAO;
  * 
  * @author Sam Donnelly
  */
-public interface IOTUSetDAO extends IDAO<IOtuSetChangeCase, Long> {
+public interface IOTUSetDAO extends IDAO<IOtuSet, Long> {
 
-	IOtuSetChangeCase getOTUSetByPPodId(String pPodId);
+	IOtuSet getOTUSetByPPodId(String pPodId);
 
 	List<Object[]> getOTUIdsVersionsByOTUSetIdAndMinPPodVersion(
 			Long otuSetPPodId,

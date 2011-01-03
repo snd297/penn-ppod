@@ -17,7 +17,7 @@ package edu.upenn.cis.ppod.services.ppodentity;
 
 import java.util.Set;
 
-import edu.upenn.cis.ppod.imodel.IOtuSetChangeCase;
+import edu.upenn.cis.ppod.imodel.IOtuSet;
 
 /**
  * A collection of OTU sets, matrices and tree sets.
@@ -33,8 +33,8 @@ public interface IOTUSetCentricEntity {
 	 * @return <tt>true</tt> if this set did not already contain the specified
 	 *         OTU set, {@code false} otherwise
 	 */
-	IOtuSetChangeCase addOTUSet(IOtuSetChangeCase otuSet);
+	IOtuSet addOTUSet(IOtuSet otuSet);
 
-	Set<IOtuSetChangeCase> getOTUSets();
+	Set<IOtuSet> getOTUSets();
 
 }

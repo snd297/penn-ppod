@@ -34,7 +34,7 @@ import org.testng.annotations.Test;
 import com.google.common.collect.ImmutableList;
 
 import edu.upenn.cis.ppod.TestGroupDefs;
-import edu.upenn.cis.ppod.imodel.IOtuSetChangeCase;
+import edu.upenn.cis.ppod.imodel.IOtuSet;
 import edu.upenn.cis.ppod.imodel.IStandardRow;
 import edu.upenn.cis.ppod.imodel.IStandardState;
 import edu.upenn.cis.ppod.imodel.IVersionInfo;
@@ -48,7 +48,7 @@ import edu.upenn.cis.ppod.imodel.IVersionInfo;
 public class StandardMatrixTest {
 
 	@edu.umd.cs.findbugs.annotations.SuppressWarnings
-	private IOtuSetChangeCase otuSet012;
+	private IOtuSet otuSet012;
 	private Otu otu0;
 	private Otu otu1;
 	private Otu otu2;
@@ -69,7 +69,7 @@ public class StandardMatrixTest {
 		otu2 = new Otu();
 		otu2.setLabel("otu2");
 
-		otuSet012 = new OTUSet();
+		otuSet012 = new OtuSetChangeSet();
 		otuSet012.setOTUs(newArrayList(otu0, otu1, otu2));
 
 		otuSet012.addStandardMatrix(matrix);

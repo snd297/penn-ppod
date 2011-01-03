@@ -49,7 +49,7 @@ public class StandardRowTest {
 	@BeforeMethod
 	public void beforeMethod() {
 		matrix = new StandardMatrix();
-		matrix.setParent(new OTUSet());
+		matrix.setParent(new OtuSetChangeSet());
 		otus = newArrayList();
 		otus.add(new Otu().setLabel("OTU-0"));
 		matrix.getParent().setOTUs(newArrayList(otus.get(0)));
@@ -73,7 +73,7 @@ public class StandardRowTest {
 	@Test
 	void setCells() {
 		matrix = new StandardMatrix();
-		matrix.setParent(new OTUSet());
+		matrix.setParent(new OtuSetChangeSet());
 		otus = newArrayList();
 		final IOtu otu0 = new Otu();
 		otu0.setLabel("OTU-0");

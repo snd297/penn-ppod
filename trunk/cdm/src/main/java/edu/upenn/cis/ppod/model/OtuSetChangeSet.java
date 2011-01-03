@@ -51,7 +51,7 @@ import edu.upenn.cis.ppod.imodel.IDNAMatrix;
 import edu.upenn.cis.ppod.imodel.IDNASequenceSet;
 import edu.upenn.cis.ppod.imodel.ILabeled;
 import edu.upenn.cis.ppod.imodel.IOtu;
-import edu.upenn.cis.ppod.imodel.IOtuSetChangeCase;
+import edu.upenn.cis.ppod.imodel.IOtuSet;
 import edu.upenn.cis.ppod.imodel.IStandardMatrix;
 import edu.upenn.cis.ppod.imodel.IStudy;
 import edu.upenn.cis.ppod.imodel.ITreeSet;
@@ -66,20 +66,20 @@ import edu.upenn.cis.ppod.util.IVisitor;
  * @author Sam Donnelly
  */
 @Entity
-@Table(name = OTUSet.TABLE)
-public class OTUSet
+@Table(name = OtuSetChangeSet.TABLE)
+public class OtuSetChangeSet
 		extends UUPPodEntityWithDocId
-		implements IOtuSetChangeCase {
+		implements IOtuSet {
 
-	public static class Adapter extends XmlAdapter<OTUSet, IOtuSetChangeCase> {
+	public static class Adapter extends XmlAdapter<OtuSetChangeSet, IOtuSet> {
 
 		@Override
-		public OTUSet marshal(final IOtuSetChangeCase otuSet) {
-			return (OTUSet) otuSet;
+		public OtuSetChangeSet marshal(final IOtuSet otuSet) {
+			return (OtuSetChangeSet) otuSet;
 		}
 
 		@Override
-		public IOtuSetChangeCase unmarshal(final OTUSet otuSet) {
+		public IOtuSet unmarshal(final OtuSetChangeSet otuSet) {
 			return otuSet;
 		}
 	}
@@ -165,13 +165,13 @@ public class OTUSet
 	/**
 	 * Default constructor.
 	 */
-	public OTUSet() {}
+	public OtuSetChangeSet() {}
 
 	@Override
 	public void accept(final IVisitor visitor) {
 		checkNotNull(visitor);
 		visitor.visitOTUSet(this);
-		for (final IChild<IOtuSetChangeCase> child : getChildren()) {
+		for (final IChild<IOtuSet> child : getChildren()) {
 			child.accept(visitor);
 		}
 		super.accept(visitor);
@@ -331,8 +331,8 @@ public class OTUSet
 	}
 
 	@VisibleForTesting
-	Set<IChild<IOtuSetChangeCase>> getChildren() {
-		final Set<IChild<IOtuSetChangeCase>> children = newHashSet();
+	Set<IChild<IOtuSet>> getChildren() {
+		final Set<IChild<IOtuSet>> children = newHashSet();
 		children.addAll(getOTUs());
 		children.addAll(getStandardMatrices());
 		children.addAll(getDNAMatrices());
@@ -532,23 +532,23 @@ public class OTUSet
 
 	private void setParentOnChildren() {
 		// Now let's let everyone know about the new OTUs
-		for (final IChild<IOtuSetChangeCase> otu : getOTUs()) {
+		for (final IChild<IOtuSet> otu : getOTUs()) {
 			otu.setParent(this);
 		}
 
-		for (final IChild<IOtuSetChangeCase> matrix : getStandardMatrices()) {
+		for (final IChild<IOtuSet> matrix : getStandardMatrices()) {
 			matrix.setParent(this);
 		}
 
-		for (final IChild<IOtuSetChangeCase> matrix : getDNAMatrices()) {
+		for (final IChild<IOtuSet> matrix : getDNAMatrices()) {
 			matrix.setParent(this);
 		}
 
-		for (final IChild<IOtuSetChangeCase> sequenceSet : getDNASequenceSets()) {
+		for (final IChild<IOtuSet> sequenceSet : getDNASequenceSets()) {
 			sequenceSet.setParent(this);
 		}
 
-		for (final IChild<IOtuSetChangeCase> treeSet : getTreeSets()) {
+		for (final IChild<IOtuSet> treeSet : getTreeSets()) {
 			treeSet.setParent(this);
 		}
 	}

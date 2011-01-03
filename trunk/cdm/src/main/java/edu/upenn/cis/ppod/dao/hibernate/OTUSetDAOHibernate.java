@@ -18,20 +18,20 @@ package edu.upenn.cis.ppod.dao.hibernate;
 import java.util.List;
 
 import edu.upenn.cis.ppod.dao.IOTUSetDAO;
-import edu.upenn.cis.ppod.imodel.IOtuSetChangeCase;
-import edu.upenn.cis.ppod.model.OTUSet;
+import edu.upenn.cis.ppod.imodel.IOtuSet;
+import edu.upenn.cis.ppod.model.OtuSetChangeSet;
 import edu.upenn.cis.ppod.thirdparty.dao.hibernate.GenericHibernateDAO;
 
 /**
  * An {@link OTUSet} Hibernate DAO.
  */
 public class OTUSetDAOHibernate
-		extends GenericHibernateDAO<IOtuSetChangeCase, Long>
+		extends GenericHibernateDAO<IOtuSet, Long>
 		implements IOTUSetDAO {
 
-	public IOtuSetChangeCase getOTUSetByPPodId(final String pPodId) {
-		return (IOtuSetChangeCase) getSession()
-				.getNamedQuery(OTUSet.class.getSimpleName() + "-getByPPodId")
+	public IOtuSet getOTUSetByPPodId(final String pPodId) {
+		return (IOtuSet) getSession()
+				.getNamedQuery(OtuSetChangeSet.class.getSimpleName() + "-getByPPodId")
 				.setParameter("pPodId", pPodId)
 				.uniqueResult();
 	}
@@ -41,7 +41,7 @@ public class OTUSetDAOHibernate
 			final Long otuId, final Long minPPodVersion) {
 		return (List<Object[]>) getSession()
 				.getNamedQuery(
-						OTUSet.class.getSimpleName()
+						OtuSetChangeSet.class.getSimpleName()
 								+ "-getOTUPPodIdsVersionsByOTUSetIdAndMinPPodVersion")
 				.setParameter("otuId", otuId)
 				.setParameter("minPPodVersion", minPPodVersion)
@@ -52,7 +52,7 @@ public class OTUSetDAOHibernate
 	public List<Object[]> getMatrixInfosByOTUSetPPodIdAndMinPPodVersion(
 			final String otuSetPPodId, final Long minPPodVersion) {
 		return (List<Object[]>) getSession().getNamedQuery(
-				OTUSet.class.getSimpleName()
+				OtuSetChangeSet.class.getSimpleName()
 						+ "-getMatrixInfosByOTUSetPPodIdAndMinPPodVersion")
 				.setParameter("otuSetPPodId", otuSetPPodId)
 				.setParameter("minPPodVersion", minPPodVersion)

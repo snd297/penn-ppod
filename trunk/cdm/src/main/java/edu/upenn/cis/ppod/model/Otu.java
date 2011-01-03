@@ -29,7 +29,7 @@ import javax.xml.bind.annotation.adapters.XmlAdapter;
 import edu.umd.cs.findbugs.annotations.CheckForNull;
 import edu.umd.cs.findbugs.annotations.Nullable;
 import edu.upenn.cis.ppod.imodel.IOtu;
-import edu.upenn.cis.ppod.imodel.IOtuSetChangeCase;
+import edu.upenn.cis.ppod.imodel.IOtuSet;
 import edu.upenn.cis.ppod.util.IVisitor;
 
 /**
@@ -79,10 +79,10 @@ public class Otu
 	 * The {@code OTUSet} that this {@code OTU} belongs to.
 	 */
 	@Nullable
-	@ManyToOne(targetEntity = OTUSet.class)
-	@JoinColumn(name = OTUSet.JOIN_COLUMN, insertable = false,
+	@ManyToOne(targetEntity = OtuSetChangeSet.class)
+	@JoinColumn(name = OtuSetChangeSet.JOIN_COLUMN, insertable = false,
 			updatable = false, nullable = false)
-	private IOtuSetChangeCase parent;
+	private IOtuSet parent;
 
 	public Otu() {}
 
@@ -105,7 +105,7 @@ public class Otu
 	public void afterUnmarshal(
 			@CheckForNull final Unmarshaller u,
 			final Object parent) {
-		this.parent = (IOtuSetChangeCase) parent;
+		this.parent = (IOtuSet) parent;
 	}
 
 	/**
@@ -127,7 +127,7 @@ public class Otu
 	 * @return the {@code OTUSet} that owns this {@code OTU}
 	 */
 	@Nullable
-	public IOtuSetChangeCase getParent() {
+	public IOtuSet getParent() {
 		return parent;
 	}
 
@@ -158,7 +158,7 @@ public class Otu
 	}
 
 	/** {@inheritDoc} */
-	public void setParent(@CheckForNull final IOtuSetChangeCase parent) {
+	public void setParent(@CheckForNull final IOtuSet parent) {
 		this.parent = parent;
 	}
 

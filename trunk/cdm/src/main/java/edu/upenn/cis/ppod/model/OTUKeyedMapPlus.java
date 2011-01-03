@@ -31,7 +31,7 @@ import javax.annotation.Nullable;
 import edu.upenn.cis.ppod.imodel.IChild;
 import edu.upenn.cis.ppod.imodel.IOtu;
 import edu.upenn.cis.ppod.imodel.IOTUKeyedMapPlus;
-import edu.upenn.cis.ppod.imodel.IOtuSetChangeCase;
+import edu.upenn.cis.ppod.imodel.IOtuSet;
 import edu.upenn.cis.ppod.util.IVisitor;
 import edu.upenn.cis.ppod.util.OTUKeyedPair;
 
@@ -45,7 +45,7 @@ import edu.upenn.cis.ppod.util.OTUKeyedPair;
  * 
  * @author Sam Donnelly
  */
-public class OTUKeyedMapPlus<V extends IChild<P>, P extends IChild<IOtuSetChangeCase>, OP extends OTUKeyedPair<V>>
+public class OTUKeyedMapPlus<V extends IChild<P>, P extends IChild<IOtuSet>, OP extends OTUKeyedPair<V>>
 		implements IOTUKeyedMapPlus<V, P, OP> {
 
 	private P parent;
@@ -166,7 +166,7 @@ public class OTUKeyedMapPlus<V extends IChild<P>, P extends IChild<IOtuSetChange
 	}
 
 	public void updateOTUs() {
-		final IChild<IOtuSetChangeCase> parent = getParent();
+		final IChild<IOtuSet> parent = getParent();
 
 		final Set<IOtu> otusToBeRemoved = newHashSet();
 		for (final IOtu otu : getValues().keySet()) {

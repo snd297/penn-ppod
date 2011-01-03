@@ -34,7 +34,7 @@ import javax.xml.bind.annotation.XmlAttribute;
 
 import edu.upenn.cis.ppod.imodel.IOtu;
 import edu.upenn.cis.ppod.imodel.IOTUKeyedMap;
-import edu.upenn.cis.ppod.imodel.IOtuSetChangeCase;
+import edu.upenn.cis.ppod.imodel.IOtuSet;
 import edu.upenn.cis.ppod.imodel.ISequence;
 import edu.upenn.cis.ppod.imodel.ISequenceSet;
 import edu.upenn.cis.ppod.util.IVisitor;
@@ -62,10 +62,10 @@ abstract class SequenceSet<S extends ISequence<?>>
 
 	@Nullable
 	@ManyToOne(fetch = FetchType.LAZY, optional = false,
-			targetEntity = OTUSet.class)
-	@JoinColumn(name = OTUSet.JOIN_COLUMN, insertable = false,
+			targetEntity = OtuSetChangeSet.class)
+	@JoinColumn(name = OtuSetChangeSet.JOIN_COLUMN, insertable = false,
 				updatable = false)
-	private IOtuSetChangeCase parent;
+	private IOtuSet parent;
 
 	SequenceSet() {}
 
@@ -91,7 +91,7 @@ abstract class SequenceSet<S extends ISequence<?>>
 			@CheckForNull final Unmarshaller u,
 			final Object parent) {
 		checkNotNull(parent);
-		setParent((OTUSet) parent);
+		setParent((OtuSetChangeSet) parent);
 	}
 
 	void checkSequenceLength(final S sequence) {
@@ -123,7 +123,7 @@ abstract class SequenceSet<S extends ISequence<?>>
 
 	/** {@inheritDoc} */
 	@Nullable
-	public IOtuSetChangeCase getParent() {
+	public IOtuSet getParent() {
 		return parent;
 	}
 
@@ -206,7 +206,7 @@ abstract class SequenceSet<S extends ISequence<?>>
 
 	/** {@inheritDoc} */
 	public void setParent(
-			@CheckForNull final IOtuSetChangeCase parent) {
+			@CheckForNull final IOtuSet parent) {
 		this.parent = parent;
 		updateOTUs();
 	}
