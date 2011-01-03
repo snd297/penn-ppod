@@ -364,9 +364,21 @@ public class OTUSetTest {
 	public void beforeMethod() {
 		otuSet = new OTUSet();
 		otus = newArrayList();
-		otus.add((IOTU) new OTU().setLabel("otu0").setPPodId());
-		otus.add((IOTU) new OTU().setLabel("otu1").setPPodId());
-		otus.add((IOTU) new OTU().setLabel("otu2").setPPodId());
+
+		final IOTU otu0 = new OTU();
+		otus.add(otu0);
+		otu0.setLabel("otu0");
+		otu0.setPPodId();
+
+		final IOTU otu1 = new OTU();
+		otus.add(otu1);
+		otu1.setLabel("otu1");
+		otu1.setPPodId();
+
+		final IOTU otu2 = new OTU();
+		otus.add(otu2);
+		otu2.setLabel("otu2");
+		otu2.setPPodId();
 
 		otuSet.setOTUs(newArrayList(otus));
 

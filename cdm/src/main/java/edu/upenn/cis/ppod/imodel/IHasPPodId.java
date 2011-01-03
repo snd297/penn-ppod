@@ -24,14 +24,14 @@ import com.google.common.base.Function;
  * 
  * @author Sam Donnelly
  */
-public interface IWithPPodId {
+public interface IHasPPodId {
 
 	/**
 	 * {@link Function} wrapper of {@link #getPPodId()}.
 	 */
-	public static Function<IWithPPodId, String> getPPodId = new Function<IWithPPodId, String>() {
+	public static Function<IHasPPodId, String> getPPodId = new Function<IHasPPodId, String>() {
 
-		public String apply(final IWithPPodId from) {
+		public String apply(final IHasPPodId from) {
 			return from.getPPodId();
 		}
 
@@ -48,13 +48,12 @@ public interface IWithPPodId {
 	/**
 	 * Create the pPOD ID for this {@link IWithPPodId}.
 	 * 
-	 * @return this {@link IWithPPodId}
 	 * 
 	 * @throws IllegalStateException if {@link #getPPodId()}{@code != null} when
 	 *             this method is called. That is, it throws an exception if the
 	 *             pPOD id has already been set.
 	 */
-	IWithPPodId setPPodId();
+	void setPPodId();
 
 	/**
 	 * Set the pPOD id.
@@ -63,12 +62,10 @@ public interface IWithPPodId {
 	 * 
 	 * @param pPodId
 	 * 
-	 * @return this {@link IWithPPodId}
-	 * 
 	 * @throws IllegalStateException if {@link #getPPodId()}{@code != null} when
 	 *             this method is called. That is, it throws an exception if the
 	 *             pPOD id has already been set.
 	 */
-	IWithPPodId setPPodId(@Nullable String pPodId);
+	void setPPodId(@Nullable String pPodId);
 
 }

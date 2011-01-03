@@ -35,7 +35,7 @@ import edu.upenn.cis.ppod.imodel.IOTUSet;
 import edu.upenn.cis.ppod.imodel.IStandardMatrix;
 import edu.upenn.cis.ppod.imodel.IStudy;
 import edu.upenn.cis.ppod.imodel.ITreeSet;
-import edu.upenn.cis.ppod.imodel.IWithPPodId;
+import edu.upenn.cis.ppod.imodel.IHasPPodId;
 import edu.upenn.cis.ppod.model.ModelFactory;
 
 /**
@@ -101,7 +101,7 @@ class CreateOrUpdateStudy implements ICreateOrUpdateStudy {
 					compose(
 							equalTo(
 									dbOTUSet.getPPodId()),
-							IWithPPodId.getPPodId),
+							IHasPPodId.getPPodId),
 							null)) {
 				toBeRemoveds.add(dbOTUSet);
 			}
@@ -120,7 +120,7 @@ class CreateOrUpdateStudy implements ICreateOrUpdateStudy {
 							compose(
 									equalTo(
 											incomingOTUSet.getPPodId()),
-									IWithPPodId.getPPodId),
+									IHasPPodId.getPPodId),
 									null))) {
 				dbOTUSet = ModelFactory.newOTUSet(newVersionInfo
 						.getNewVersionInfo());
@@ -152,7 +152,7 @@ class CreateOrUpdateStudy implements ICreateOrUpdateStudy {
 							compose(
 									equalTo(
 										dbMatrix.getPPodId()),
-										IWithPPodId.getPPodId),
+										IHasPPodId.getPPodId),
 										null)) {
 				toBeRemoveds.add(dbMatrix);
 			}
@@ -171,7 +171,7 @@ class CreateOrUpdateStudy implements ICreateOrUpdateStudy {
 							compose(
 									equalTo(
 											incomingMatrix.getPPodId()),
-									IWithPPodId.getPPodId),
+									IHasPPodId.getPPodId),
 									null
 									))) {
 				dbMatrix = ModelFactory.newDNAMatrix(newVersionInfo
@@ -201,7 +201,7 @@ class CreateOrUpdateStudy implements ICreateOrUpdateStudy {
 					compose(
 							equalTo(
 								dbSequenceSet.getPPodId()),
-							IWithPPodId.getPPodId),
+							IHasPPodId.getPPodId),
 							null)) {
 				toBeRemoveds.add(dbSequenceSet);
 			}
@@ -220,7 +220,7 @@ class CreateOrUpdateStudy implements ICreateOrUpdateStudy {
 							compose(
 									equalTo(incomingSequenceSet
 											.getPPodId()),
-									IWithPPodId.getPPodId),
+									IHasPPodId.getPPodId),
 									null))) {
 				dbDNASequenceSet = ModelFactory
 						.newDNASequenceSet(newVersionInfo.getNewVersionInfo());
@@ -246,7 +246,7 @@ class CreateOrUpdateStudy implements ICreateOrUpdateStudy {
 							compose(
 									equalTo(
 										dbMatrix.getPPodId()),
-										IWithPPodId.getPPodId),
+										IHasPPodId.getPPodId),
 										null)) {
 				toBeRemoveds.add(dbMatrix);
 			}
@@ -266,7 +266,7 @@ class CreateOrUpdateStudy implements ICreateOrUpdateStudy {
 							compose(
 									equalTo(
 											incomingMatrix.getPPodId()),
-									IWithPPodId.getPPodId),
+									IHasPPodId.getPPodId),
 									null))) {
 				dbMatrix = ModelFactory.newStandardMatrix(newVersionInfo
 						.getNewVersionInfo());
@@ -292,7 +292,7 @@ class CreateOrUpdateStudy implements ICreateOrUpdateStudy {
 						compose(
 								equalTo(
 										dbTreeSet.getPPodId()),
-										IWithPPodId.getPPodId),
+										IHasPPodId.getPPodId),
 										null)) {
 				toBeDeleteds.add(dbTreeSet);
 			}
@@ -311,7 +311,7 @@ class CreateOrUpdateStudy implements ICreateOrUpdateStudy {
 			if (null == (dbTreeSet =
 					find(dbOTUSet.getTreeSets(),
 							compose(equalTo(incomingTreeSet.getPPodId()),
-									IWithPPodId.getPPodId),
+									IHasPPodId.getPPodId),
 									null))) {
 				dbTreeSet = ModelFactory.newTreeSet(newVersionInfo
 						.getNewVersionInfo());

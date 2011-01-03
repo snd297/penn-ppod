@@ -28,7 +28,7 @@ import com.google.inject.Inject;
 import edu.upenn.cis.ppod.imodel.INewVersionInfo;
 import edu.upenn.cis.ppod.imodel.IOTU;
 import edu.upenn.cis.ppod.imodel.IOTUSet;
-import edu.upenn.cis.ppod.imodel.IWithPPodId;
+import edu.upenn.cis.ppod.imodel.IHasPPodId;
 import edu.upenn.cis.ppod.model.ModelFactory;
 
 /**
@@ -66,7 +66,7 @@ class MergeOTUSets implements IMergeOTUSets {
 							compose(
 									equalTo(sourceOTU
 											.getPPodId()),
-											IWithPPodId.getPPodId),
+											IHasPPodId.getPPodId),
 											null))) {
 				targetOTU = ModelFactory.newOTU(newVersionInfo
 						.getNewVersionInfo());
