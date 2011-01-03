@@ -21,7 +21,7 @@ import edu.umd.cs.findbugs.annotations.Nullable;
 import edu.upenn.cis.ppod.model.OTU;
 
 @XmlJavaTypeAdapter(OTU.Adapter.class)
-public interface IOTU
+public interface IOtuChangeCase
 		extends IUUPPodEntity, ILabeled, IChild<IOTUSet>, IWithDocId {
 
 	/**
@@ -42,6 +42,6 @@ public interface IOTU
 	 * 
 	 * @return this
 	 */
-	IOTU setLabel(final String label);
+	IOtuChangeCase setLabel(final String label);
 
 }

@@ -24,7 +24,7 @@ import java.util.Set;
 import org.hibernate.FlushMode;
 import org.hibernate.Session;
 
-import edu.upenn.cis.ppod.imodel.IOTU;
+import edu.upenn.cis.ppod.imodel.IOtuChangeCase;
 import edu.upenn.cis.ppod.imodel.IOTUSet;
 import edu.upenn.cis.ppod.imodel.IStandardMatrix;
 import edu.upenn.cis.ppod.imodel.ITreeSet;
@@ -111,8 +111,8 @@ class PPodEntitiesResourceHibernate implements
 				// Note that otu set may have already been added in any of the
 				// other if clauses: Hibernate identity takes care of us
 				pPodEntities.addOTUSet(treeSet.getParent());
-			} else if (queryResult instanceof IOTU) {
-				final IOTU otu = (IOTU) queryResult;
+			} else if (queryResult instanceof IOtuChangeCase) {
+				final IOtuChangeCase otu = (IOtuChangeCase) queryResult;
 				session.setReadOnly(otu, true);
 				pPodEntities.addOTU(otu);
 			} else if (queryResult instanceof Object[]) {

@@ -73,7 +73,7 @@ public interface IOTUSet
 	 * 
 	 * @param otu see description
 	 */
-	void addOTU(IOTU otu);
+	void addOTU(IOtuChangeCase otu);
 
 	/**
 	 * Add {@code matrix} to this {@code OTUSet} at the given position.
@@ -139,7 +139,7 @@ public interface IOTUSet
 	 * 
 	 * @return the {@code IOTU}s that make up this {@code IOTUSet}
 	 */
-	List<IOTU> getOTUs();
+	List<IOtuChangeCase> getOTUs();
 
 	/**
 	 * Get the standard matrices contained in this OTU set.
@@ -220,6 +220,6 @@ public interface IOTUSet
 	 * @return any {@code OTU}s that were removed as a result of this operation,
 	 *         in their original order
 	 */
-	List<IOTU> setOTUs(List<? extends IOTU> otus);
+	List<IOtuChangeCase> setOTUs(List<? extends IOtuChangeCase> otus);
 
 }

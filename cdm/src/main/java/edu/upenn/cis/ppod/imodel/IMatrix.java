@@ -98,7 +98,7 @@ public interface IMatrix<R extends IRow<C, ?>, C extends ICell<?, ?>>
 	 * 
 	 * @return the rows that make up this matrix
 	 */
-	Map<IOTU, R> getRows();
+	Map<IOtuChangeCase, R> getRows();
 
 	/**
 	 * Set row at <code>otu</code> to <code>row</code>.
@@ -121,7 +121,7 @@ public interface IMatrix<R extends IRow<C, ?>, C extends ICell<?, ?>>
 	 *             {@code .equals} to {@code row}
 	 */
 	@CheckForNull
-	R putRow(IOTU otu, R row);
+	R putRow(IOtuChangeCase otu, R row);
 
 	/**
 	 * Remove the cells the make up the given column number.

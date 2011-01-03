@@ -39,7 +39,7 @@ import org.hibernate.annotations.Parent;
 
 import edu.upenn.cis.ppod.imodel.IDNAMatrix;
 import edu.upenn.cis.ppod.imodel.IDNARow;
-import edu.upenn.cis.ppod.imodel.IOTU;
+import edu.upenn.cis.ppod.imodel.IOtuChangeCase;
 import edu.upenn.cis.ppod.imodel.IOTUKeyedMap;
 import edu.upenn.cis.ppod.imodel.IOTUKeyedMapPlus;
 import edu.upenn.cis.ppod.util.IVisitor;
@@ -78,7 +78,7 @@ public class DNARows implements IOTUKeyedMap<IDNARow> {
 
 	protected boolean beforeMarshal(@CheckForNull final Marshaller marshaller) {
 		getOTUSomethingPairs().clear();
-		for (final Map.Entry<IOTU, IDNARow> otuToRow : getValues()
+		for (final Map.Entry<IOtuChangeCase, IDNARow> otuToRow : getValues()
 				.entrySet()) {
 			getOTUSomethingPairs().add(
 					new OTUDNARowPair(otuToRow.getKey(), otuToRow
@@ -92,7 +92,7 @@ public class DNARows implements IOTUKeyedMap<IDNARow> {
 	}
 
 	/** {@inheritDoc} */
-	public IDNARow get(final IOTU key) {
+	public IDNARow get(final IOtuChangeCase key) {
 		return rows.get(key);
 	}
 
@@ -123,12 +123,12 @@ public class DNARows implements IOTUKeyedMap<IDNARow> {
 	@JoinTable(inverseJoinColumns = @JoinColumn(name = DNARow.JOIN_COLUMN))
 	@MapKeyJoinColumn(name = OTU.JOIN_COLUMN)
 	@MapKeyClass(OTU.class)
-	public Map<IOTU, IDNARow> getValues() {
+	public Map<IOtuChangeCase, IDNARow> getValues() {
 		return rows.getValues();
 	}
 
 	/** {@inheritDoc} */
-	public IDNARow put(final IOTU key, final IDNARow value) {
+	public IDNARow put(final IOtuChangeCase key, final IDNARow value) {
 		return rows.put(key, value);
 	}
 
@@ -148,7 +148,7 @@ public class DNARows implements IOTUKeyedMap<IDNARow> {
 
 	/** {@inheritDoc} */
 	public void setValues(
-			final Map<IOTU, IDNARow> values) {
+			final Map<IOtuChangeCase, IDNARow> values) {
 		rows.setValues(values);
 	}
 }
