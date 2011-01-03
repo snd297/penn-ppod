@@ -21,7 +21,7 @@ import edu.upenn.cis.ppod.imodel.IDNARow;
 import edu.upenn.cis.ppod.imodel.IOtu;
 
 public class OTUDNARowPair extends
-		OTUKeyedPair<IDNARow> {
+		OtuKeyedPairCaseChange<IDNARow> {
 
 	/**
 	 * For JAXB.
