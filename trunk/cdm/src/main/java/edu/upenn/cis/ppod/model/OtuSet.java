@@ -48,7 +48,7 @@ import edu.umd.cs.findbugs.annotations.CheckForNull;
 import edu.umd.cs.findbugs.annotations.Nullable;
 import edu.upenn.cis.ppod.imodel.IChild;
 import edu.upenn.cis.ppod.imodel.IDNAMatrix;
-import edu.upenn.cis.ppod.imodel.IDNASequenceSet;
+import edu.upenn.cis.ppod.imodel.IDnaSequenceSet;
 import edu.upenn.cis.ppod.imodel.ILabeled;
 import edu.upenn.cis.ppod.imodel.IOtu;
 import edu.upenn.cis.ppod.imodel.IOtuSet;
@@ -126,7 +126,7 @@ public class OtuSet
 			targetEntity = DnaSequenceSet.class)
 	@OrderColumn(name = "POSITION")
 	@JoinColumn(name = JOIN_COLUMN, nullable = false)
-	private final List<IDNASequenceSet> dnaSequenceSets = newArrayList();
+	private final List<IDnaSequenceSet> dnaSequenceSets = newArrayList();
 
 	/**
 	 * Non-unique label.
@@ -206,7 +206,7 @@ public class OtuSet
 
 	/** {@inheritDoc} */
 	public void addDNASequenceSet(
-			final IDNASequenceSet sequenceSet) {
+			final IDnaSequenceSet sequenceSet) {
 		checkNotNull(sequenceSet);
 		checkArgument(
 				!dnaSequenceSets.contains(sequenceSet),
@@ -220,7 +220,7 @@ public class OtuSet
 	/** {@inheritDoc} */
 	public void addDNASequenceSet(
 			final int sequenceSetPos,
-			final IDNASequenceSet sequenceSet) {
+			final IDnaSequenceSet sequenceSet) {
 		checkNotNull(sequenceSet);
 		checkArgument(sequenceSetPos >= 0, "sequenceSetPos < 0");
 		checkArgument(
@@ -362,12 +362,12 @@ public class OtuSet
 	}
 
 	/** {@inheritDoc} */
-	public List<IDNASequenceSet> getDNASequenceSets() {
+	public List<IDnaSequenceSet> getDNASequenceSets() {
 		return Collections.unmodifiableList(dnaSequenceSets);
 	}
 
 	@XmlElement(name = "dnaSequenceSet")
-	protected List<IDNASequenceSet> getDNASequenceSetsModifiable() {
+	protected List<IDnaSequenceSet> getDNASequenceSetsModifiable() {
 		return dnaSequenceSets;
 	}
 
@@ -437,7 +437,7 @@ public class OtuSet
 	}
 
 	/** {@inheritDoc} */
-	public void removeDNASequenceSet(final IDNASequenceSet sequenceSet) {
+	public void removeDNASequenceSet(final IDnaSequenceSet sequenceSet) {
 		checkNotNull(sequenceSet);
 		checkArgument(getDNASequenceSets().contains(sequenceSet),
 				"otu does not contain the dna sequence set labeled ["

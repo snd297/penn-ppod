@@ -22,7 +22,7 @@ import org.testng.annotations.Test;
 
 import edu.upenn.cis.ppod.TestGroupDefs;
 import edu.upenn.cis.ppod.imodel.IDNASequence;
-import edu.upenn.cis.ppod.imodel.IDNASequenceSet;
+import edu.upenn.cis.ppod.imodel.IDnaSequenceSet;
 import edu.upenn.cis.ppod.imodel.INewVersionInfo;
 import edu.upenn.cis.ppod.imodel.IOtuSet;
 import edu.upenn.cis.ppod.imodel.IVersionInfo;
@@ -38,10 +38,10 @@ public class MergeSequenceSetsTest {
 	@Test
 	public void modifySequencesKeepLength() {
 
-		final IDNASequenceSet srcSeqSet = new DnaSequenceSet();
+		final IDnaSequenceSet srcSeqSet = new DnaSequenceSet();
 
 		srcSeqSet.setLabel("src-seq-set-0");
-		final IDNASequenceSet trgSeqSet = new DnaSequenceSet();
+		final IDnaSequenceSet trgSeqSet = new DnaSequenceSet();
 
 		final IOtuSet trgOTUSet = new OtuSet();
 		trgOTUSet.addOTU(new Otu("otu-0"));
@@ -107,11 +107,11 @@ public class MergeSequenceSetsTest {
 	@Test
 	public void shortenSequences() {
 
-		final IDNASequenceSet srcSeqSet =
+		final IDnaSequenceSet srcSeqSet =
 				new DnaSequenceSet();
 
 		srcSeqSet.setLabel("src-seq-set-0");
-		final IDNASequenceSet trgSeqSet = new DnaSequenceSet();
+		final IDnaSequenceSet trgSeqSet = new DnaSequenceSet();
 
 		final IOtuSet trgOTUSet = new OtuSet();
 		trgOTUSet.addOTU(new Otu("otu-0"));
@@ -175,10 +175,10 @@ public class MergeSequenceSetsTest {
 
 	@Test
 	public void mergeOnBlankTarget() {
-		final IDNASequenceSet srcSeqSet =
+		final IDnaSequenceSet srcSeqSet =
 				new DnaSequenceSet();
 		srcSeqSet.setLabel("src-seq-set-0");
-		final IDNASequenceSet trgSeqSet = new DnaSequenceSet();
+		final IDnaSequenceSet trgSeqSet = new DnaSequenceSet();
 
 		final IOtuSet trgOTUSet = new OtuSet();
 		trgOTUSet.addOTU(new Otu("otu-0"));

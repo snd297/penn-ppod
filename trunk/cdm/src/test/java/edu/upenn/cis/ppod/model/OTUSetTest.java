@@ -41,7 +41,7 @@ import com.google.common.collect.ImmutableSet;
 
 import edu.upenn.cis.ppod.TestGroupDefs;
 import edu.upenn.cis.ppod.imodel.IDNAMatrix;
-import edu.upenn.cis.ppod.imodel.IDNASequenceSet;
+import edu.upenn.cis.ppod.imodel.IDnaSequenceSet;
 import edu.upenn.cis.ppod.imodel.IOtu;
 import edu.upenn.cis.ppod.imodel.IOtuSet;
 import edu.upenn.cis.ppod.imodel.IStandardMatrix;
@@ -158,13 +158,13 @@ public class OTUSetTest {
 	@Test(groups = TestGroupDefs.SINGLE)
 	public void addDNASequenceSetPos() {
 		final IOtuSet otuSet = new OtuSet();
-		final IDNASequenceSet sequenceSet0 = new DnaSequenceSet();
+		final IDnaSequenceSet sequenceSet0 = new DnaSequenceSet();
 
-		final IDNASequenceSet sequenceSet1 = new DnaSequenceSet();
+		final IDnaSequenceSet sequenceSet1 = new DnaSequenceSet();
 
-		final IDNASequenceSet sequenceSet2 = new DnaSequenceSet();
+		final IDnaSequenceSet sequenceSet2 = new DnaSequenceSet();
 
-		final IDNASequenceSet sequenceSet3 = new DnaSequenceSet();
+		final IDnaSequenceSet sequenceSet3 = new DnaSequenceSet();
 
 		otuSet.addDNASequenceSet(sequenceSet0);
 		otuSet.addDNASequenceSet(sequenceSet1);
@@ -434,13 +434,13 @@ public class OTUSetTest {
 	public void removeDNASequenceSet() {
 
 		final IOtuSet otuSet = new OtuSet();
-		final IDNASequenceSet dnaSequenceSet0 = new DnaSequenceSet();
+		final IDnaSequenceSet dnaSequenceSet0 = new DnaSequenceSet();
 
 		otuSet.addDNASequenceSet(dnaSequenceSet0);
-		final IDNASequenceSet dnaSequenceSet1 = new DnaSequenceSet();
+		final IDnaSequenceSet dnaSequenceSet1 = new DnaSequenceSet();
 
 		otuSet.addDNASequenceSet(dnaSequenceSet1);
-		final IDNASequenceSet dnaSequenceSet2 = new DnaSequenceSet();
+		final IDnaSequenceSet dnaSequenceSet2 = new DnaSequenceSet();
 
 		otuSet.addDNASequenceSet(dnaSequenceSet2);
 

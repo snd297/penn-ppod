@@ -22,7 +22,7 @@ import edu.upenn.cis.ppod.imodel.IDNACell;
 import edu.upenn.cis.ppod.imodel.IDNAMatrix;
 import edu.upenn.cis.ppod.imodel.IDNARow;
 import edu.upenn.cis.ppod.imodel.IDNASequence;
-import edu.upenn.cis.ppod.imodel.IDNASequenceSet;
+import edu.upenn.cis.ppod.imodel.IDnaSequenceSet;
 import edu.upenn.cis.ppod.imodel.IOtu;
 import edu.upenn.cis.ppod.imodel.IOtuSet;
 import edu.upenn.cis.ppod.imodel.IProteinRow;
@@ -97,7 +97,7 @@ public abstract class EmptyVisitor implements IVisitor {
 	 * 
 	 * @param sequenceSet ignored
 	 */
-	public void visitDNASequenceSet(final IDNASequenceSet sequenceSet) {}
+	public void visitDNASequenceSet(final IDnaSequenceSet sequenceSet) {}
 
 	/**
 	 * Does nothing.

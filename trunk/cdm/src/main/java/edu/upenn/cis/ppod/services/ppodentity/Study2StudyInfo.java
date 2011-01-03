@@ -20,7 +20,7 @@ import edu.upenn.cis.ppod.imodel.IDNACell;
 import edu.upenn.cis.ppod.imodel.IDNAMatrix;
 import edu.upenn.cis.ppod.imodel.IDNARow;
 import edu.upenn.cis.ppod.imodel.IDNASequence;
-import edu.upenn.cis.ppod.imodel.IDNASequenceSet;
+import edu.upenn.cis.ppod.imodel.IDnaSequenceSet;
 import edu.upenn.cis.ppod.imodel.IOtu;
 import edu.upenn.cis.ppod.imodel.IOtuSet;
 import edu.upenn.cis.ppod.imodel.IStandardCell;
@@ -164,7 +164,7 @@ public final class Study2StudyInfo implements IStudy2StudyInfo {
 
 			// TODO: this should be genericized when we support other kinds of
 			// MolecularSequenceSets
-			for (final IDNASequenceSet dnaSequenceSet : otuSet
+			for (final IDnaSequenceSet dnaSequenceSet : otuSet
 					.getDNASequenceSets()) {
 				final SequenceSetInfo sequenceSetInfo =
 						new SequenceSetInfo();

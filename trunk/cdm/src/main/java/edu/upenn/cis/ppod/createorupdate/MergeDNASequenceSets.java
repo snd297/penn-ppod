@@ -24,7 +24,7 @@ import com.google.common.collect.ImmutableMap;
 import com.google.inject.Inject;
 
 import edu.upenn.cis.ppod.imodel.IDNASequence;
-import edu.upenn.cis.ppod.imodel.IDNASequenceSet;
+import edu.upenn.cis.ppod.imodel.IDnaSequenceSet;
 import edu.upenn.cis.ppod.imodel.INewVersionInfo;
 import edu.upenn.cis.ppod.imodel.IOtu;
 import edu.upenn.cis.ppod.model.ModelFactory;
@@ -39,8 +39,8 @@ class MergeDNASequenceSets implements IMergeDNASequenceSets {
 	}
 
 	public void mergeSequenceSets(
-			final IDNASequenceSet targSeqSet,
-			final IDNASequenceSet srcSeqSet) {
+			final IDnaSequenceSet targSeqSet,
+			final IDnaSequenceSet srcSeqSet) {
 		checkNotNull(targSeqSet);
 		checkArgument(
 				targSeqSet.getParent() != null,

@@ -52,9 +52,9 @@ public interface IOtuSet
 	 * @throws IllegalArgumentException if this otu set already contains the
 	 *             matrix
 	 */
-	void addDNASequenceSet(IDNASequenceSet sequenceSet);
+	void addDNASequenceSet(IDnaSequenceSet sequenceSet);
 
-	void addDNASequenceSet(int sequenceSetPos, IDNASequenceSet sequenceSet);
+	void addDNASequenceSet(int sequenceSetPos, IDnaSequenceSet sequenceSet);
 
 	/**
 	 * Scaffolding code that does two things:
@@ -123,7 +123,7 @@ public interface IOtuSet
 
 	List<IDNAMatrix> getDNAMatrices();
 
-	List<IDNASequenceSet> getDNASequenceSets();
+	List<IDnaSequenceSet> getDNASequenceSets();
 
 	/**
 	 * Getter. {@code null} when the object is created. Once set, it will never
@@ -173,7 +173,7 @@ public interface IOtuSet
 	 * @throws IllegalArgumentException if the sequence set is not contained in
 	 *             this OTU set
 	 */
-	void removeDNASequenceSet(IDNASequenceSet sequenceSet);
+	void removeDNASequenceSet(IDnaSequenceSet sequenceSet);
 
 	/**
 	 * Remove {@code matrix} from this OTU set.
