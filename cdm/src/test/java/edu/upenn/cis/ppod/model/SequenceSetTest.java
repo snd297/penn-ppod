@@ -78,9 +78,9 @@ public class SequenceSetTest {
 		final IOTUSet otuSet0 = new OTUSet();
 		seqSet.setParent(otuSet0);
 
-		final IOtu otu0 = new OTU().setLabel("otu0");
-		final IOtu otu1 = new OTU().setLabel("otu1");
-		final IOtu otu2 = new OTU().setLabel("otu2");
+		final IOtu otu0 = new OtuChangeCase().setLabel("otu0");
+		final IOtu otu1 = new OtuChangeCase().setLabel("otu1");
+		final IOtu otu2 = new OtuChangeCase().setLabel("otu2");
 		otuSet0.addOTU(otu0);
 		otuSet0.addOTU(otu1);
 		otuSet0.addOTU(otu2);
@@ -116,9 +116,9 @@ public class SequenceSetTest {
 		final IOTUSet otuSet0 = new OTUSet();
 		seqSet.setParent(otuSet0);
 
-		final IOtu otu0 = new OTU().setLabel("otu0");
-		final IOtu otu1 = new OTU().setLabel("otu1");
-		final IOtu otu2 = new OTU().setLabel("otu2");
+		final IOtu otu0 = new OtuChangeCase().setLabel("otu0");
+		final IOtu otu1 = new OtuChangeCase().setLabel("otu1");
+		final IOtu otu2 = new OtuChangeCase().setLabel("otu2");
 		otuSet0.addOTU(otu0);
 		otuSet0.addOTU(otu1);
 		otuSet0.addOTU(otu2);
@@ -177,9 +177,9 @@ public class SequenceSetTest {
 	@Test
 	public void accept() {
 		final IOTUSet otuSet = new OTUSet();
-		otuSet.addOTU(new OTU().setLabel("otu-0"));
-		otuSet.addOTU(new OTU().setLabel("otu-1"));
-		otuSet.addOTU(new OTU().setLabel("otu-2"));
+		otuSet.addOTU(new OtuChangeCase().setLabel("otu-0"));
+		otuSet.addOTU(new OtuChangeCase().setLabel("otu-1"));
+		otuSet.addOTU(new OtuChangeCase().setLabel("otu-2"));
 
 		final DNASequenceSet seqSet = new DNASequenceSet();
 

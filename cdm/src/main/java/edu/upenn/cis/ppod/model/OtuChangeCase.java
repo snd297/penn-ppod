@@ -39,20 +39,20 @@ import edu.upenn.cis.ppod.util.IVisitor;
  * @author Sam Donnelly
  */
 @Entity
-@Table(name = OTU.TABLE)
-public class OTU
+@Table(name = OtuChangeCase.TABLE)
+public class OtuChangeCase
 		extends UUPPodEntityWithDocId
 		implements IOtu {
 
-	public static class Adapter extends XmlAdapter<OTU, IOtu> {
+	public static class Adapter extends XmlAdapter<OtuChangeCase, IOtu> {
 
 		@Override
-		public OTU marshal(final IOtu otu) {
-			return (OTU) otu;
+		public OtuChangeCase marshal(final IOtu otu) {
+			return (OtuChangeCase) otu;
 		}
 
 		@Override
-		public IOtu unmarshal(final OTU otu) {
+		public IOtu unmarshal(final OtuChangeCase otu) {
 			return otu;
 		}
 	}
@@ -84,9 +84,9 @@ public class OTU
 			updatable = false, nullable = false)
 	private IOTUSet parent;
 
-	public OTU() {}
+	public OtuChangeCase() {}
 
-	public OTU(final String label) {
+	public OtuChangeCase(final String label) {
 		this.label = label;
 	}
 
@@ -146,7 +146,7 @@ public class OTU
 	}
 
 	/** {@inheritDoc} */
-	public OTU setLabel(final String label) {
+	public OtuChangeCase setLabel(final String label) {
 		checkNotNull(label);
 		if (label.equals(getLabel())) {
 

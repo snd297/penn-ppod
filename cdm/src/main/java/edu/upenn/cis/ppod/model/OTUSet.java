@@ -141,7 +141,7 @@ public class OTUSet
 	@OneToMany(
 			orphanRemoval = true,
 			cascade = CascadeType.ALL,
-			targetEntity = OTU.class)
+			targetEntity = OtuChangeCase.class)
 	@OrderColumn(name = "POSITION")
 	@JoinColumn(name = JOIN_COLUMN, nullable = false)
 	private final List<IOtu> otus = newArrayList();

@@ -108,8 +108,8 @@ public class DNASequences
 	@OneToMany(cascade = CascadeType.ALL, orphanRemoval = true,
 			targetEntity = DNASequence.class)
 	@JoinTable(inverseJoinColumns = @JoinColumn(name = DNASequence.JOIN_COLUMN))
-	@MapKeyJoinColumn(name = OTU.JOIN_COLUMN)
-	@MapKeyClass(OTU.class)
+	@MapKeyJoinColumn(name = OtuChangeCase.JOIN_COLUMN)
+	@MapKeyClass(OtuChangeCase.class)
 	public Map<IOtu, IDNASequence> getValues() {
 		return sequences.getValues();
 	}

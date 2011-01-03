@@ -18,9 +18,9 @@ package edu.upenn.cis.ppod.imodel;
 import javax.xml.bind.annotation.adapters.XmlJavaTypeAdapter;
 
 import edu.umd.cs.findbugs.annotations.Nullable;
-import edu.upenn.cis.ppod.model.OTU;
+import edu.upenn.cis.ppod.model.OtuChangeCase;
 
-@XmlJavaTypeAdapter(OTU.Adapter.class)
+@XmlJavaTypeAdapter(OtuChangeCase.Adapter.class)
 public interface IOtu
 		extends IUUPPodEntity, ILabeled, IChild<IOTUSet>, IWithDocId {
 

@@ -125,8 +125,8 @@ public class StandardRows
 			orphanRemoval = true,
 			targetEntity = StandardRow.class)
 	@JoinTable(inverseJoinColumns = @JoinColumn(name = StandardRow.JOIN_COLUMN))
-	@MapKeyJoinColumn(name = OTU.JOIN_COLUMN)
-	@MapKeyClass(OTU.class)
+	@MapKeyJoinColumn(name = OtuChangeCase.JOIN_COLUMN)
+	@MapKeyClass(OtuChangeCase.class)
 	public Map<IOtu, IStandardRow> getValues() {
 		return rows.getValues();
 	}

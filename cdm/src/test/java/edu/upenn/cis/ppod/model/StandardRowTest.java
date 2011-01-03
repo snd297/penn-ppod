@@ -51,7 +51,7 @@ public class StandardRowTest {
 		matrix = new StandardMatrix();
 		matrix.setParent(new OTUSet());
 		otus = newArrayList();
-		otus.add(new OTU().setLabel("OTU-0"));
+		otus.add(new OtuChangeCase().setLabel("OTU-0"));
 		matrix.getParent().setOTUs(newArrayList(otus.get(0)));
 		matrix.putRow(otus.get(0), new StandardRow());
 		final IStandardCharacter character0 = new StandardCharacter();
@@ -75,7 +75,7 @@ public class StandardRowTest {
 		matrix = new StandardMatrix();
 		matrix.setParent(new OTUSet());
 		otus = newArrayList();
-		final IOtu otu0 = new OTU();
+		final IOtu otu0 = new OtuChangeCase();
 		otu0.setLabel("OTU-0");
 		otus.add(otu0);
 		matrix.getParent().setOTUs(newArrayList(otus.get(0)));
