@@ -66,8 +66,8 @@ public class ModelFactory {
 		return sequenceSet;
 	}
 
-	public static OtuChangeCase newOTU(final IVersionInfo versionInfo) {
-		final OtuChangeCase otu = new OtuChangeCase();
+	public static Otu newOTU(final IVersionInfo versionInfo) {
+		final Otu otu = new Otu();
 		prepareUUPPodEntity(otu, versionInfo);
 		return otu;
 	}

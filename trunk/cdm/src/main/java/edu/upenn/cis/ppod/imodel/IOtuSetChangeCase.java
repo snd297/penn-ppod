@@ -24,7 +24,7 @@ import edu.umd.cs.findbugs.annotations.Nullable;
 import edu.upenn.cis.ppod.model.OTUSet;
 
 @XmlJavaTypeAdapter(OTUSet.Adapter.class)
-public interface IOTUSet
+public interface IOtuSetChangeCase
 		extends ILabeled, IUUPPodEntity, IChild<IStudy>, IWithDocId {
 
 	/**

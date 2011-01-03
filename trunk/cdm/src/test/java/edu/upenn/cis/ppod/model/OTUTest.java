@@ -29,10 +29,10 @@ public class OTUTest {
 
 	@Test
 	public void setLabel() {
-		final OtuChangeCase otu = new OtuChangeCase();
+		final Otu otu = new Otu();
 		otu.unsetInNeedOfNewVersion();
 		final String label = "otu-label";
-		final OtuChangeCase returnedOTU = otu.setLabel(label);
+		final Otu returnedOTU = otu.setLabel(label);
 		assertTrue(otu.isInNeedOfNewVersion());
 		assertSame(returnedOTU, otu);
 		otu.isInNeedOfNewVersion();

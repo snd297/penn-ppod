@@ -38,7 +38,7 @@ public interface IStudy extends ILabeled, IOTUSets, IUUPPodEntity {
 	 * @throws IllegalArgumentException if this study already contains the OTU
 	 *             set
 	 */
-	void addOTUSet(int pos, IOTUSet otuSet);
+	void addOTUSet(int pos, IOtuSetChangeCase otuSet);
 
 	/**
 	 * Remove an OTU set from this Study.
@@ -48,7 +48,7 @@ public interface IStudy extends ILabeled, IOTUSets, IUUPPodEntity {
 	 * @throw IllegalArgumentException if this study does not contain the OTU
 	 *        set
 	 */
-	void removeOTUSet(final IOTUSet otuSet);
+	void removeOTUSet(final IOtuSetChangeCase otuSet);
 
 	/**
 	 * Set the label.

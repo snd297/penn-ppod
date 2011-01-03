@@ -24,7 +24,7 @@ import edu.upenn.cis.ppod.imodel.IDNARow;
 import edu.upenn.cis.ppod.imodel.IDNASequence;
 import edu.upenn.cis.ppod.imodel.IDNASequenceSet;
 import edu.upenn.cis.ppod.imodel.IOtu;
-import edu.upenn.cis.ppod.imodel.IOTUSet;
+import edu.upenn.cis.ppod.imodel.IOtuSetChangeCase;
 import edu.upenn.cis.ppod.imodel.IProteinRow;
 import edu.upenn.cis.ppod.imodel.IStandardCell;
 import edu.upenn.cis.ppod.imodel.IStandardCharacter;
@@ -111,7 +111,7 @@ public abstract class EmptyVisitor implements IVisitor {
 	 * 
 	 * @param otuSet ignored
 	 */
-	public void visitOTUSet(final IOTUSet otuSet) {}
+	public void visitOTUSet(final IOtuSetChangeCase otuSet) {}
 
 	/**
 	 * Does nothing.

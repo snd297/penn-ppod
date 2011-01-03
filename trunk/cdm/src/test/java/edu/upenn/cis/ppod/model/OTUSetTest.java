@@ -43,7 +43,7 @@ import edu.upenn.cis.ppod.TestGroupDefs;
 import edu.upenn.cis.ppod.imodel.IDNAMatrix;
 import edu.upenn.cis.ppod.imodel.IDNASequenceSet;
 import edu.upenn.cis.ppod.imodel.IOtu;
-import edu.upenn.cis.ppod.imodel.IOTUSet;
+import edu.upenn.cis.ppod.imodel.IOtuSetChangeCase;
 import edu.upenn.cis.ppod.imodel.IStandardMatrix;
 import edu.upenn.cis.ppod.imodel.IStudy;
 import edu.upenn.cis.ppod.imodel.ITreeSet;
@@ -68,9 +68,9 @@ public class OTUSetTest {
 
 		final OTUSet otuSet = new OTUSet();
 
-		otuSet.addOTU(new OtuChangeCase().setLabel("otu-0"));
-		otuSet.addOTU(new OtuChangeCase().setLabel("otu-1"));
-		otuSet.addOTU(new OtuChangeCase().setLabel("otu-2"));
+		otuSet.addOTU(new Otu().setLabel("otu-0"));
+		otuSet.addOTU(new Otu().setLabel("otu-1"));
+		otuSet.addOTU(new Otu().setLabel("otu-2"));
 
 		otuSet.addStandardMatrix(new StandardMatrix());
 		otuSet.addStandardMatrix(new StandardMatrix());
@@ -96,7 +96,7 @@ public class OTUSetTest {
 		otuSet.accept(visitor);
 
 		verify(visitor, times(otuSet.getOTUs().size()))
-				.visitOTU(any(OtuChangeCase.class));
+				.visitOTU(any(Otu.class));
 		verify(visitor, times(otuSet.getStandardMatrices().size()))
 				.visitStandardMatrix(any(StandardMatrix.class));
 		verify(visitor, times(otuSet.getDNAMatrices().size())).visitDNAMatrix(
@@ -120,7 +120,7 @@ public class OTUSetTest {
 	}
 
 	public void addDNAMatrixPos() {
-		final IOTUSet otuSet = new OTUSet();
+		final IOtuSetChangeCase otuSet = new OTUSet();
 		final IDNAMatrix matrix0 = new DNAMatrix();
 		final IDNAMatrix matrix1 = new DNAMatrix();
 		final IDNAMatrix matrix2 = new DNAMatrix();
@@ -157,7 +157,7 @@ public class OTUSetTest {
 
 	@Test(groups = TestGroupDefs.SINGLE)
 	public void addDNASequenceSetPos() {
-		final IOTUSet otuSet = new OTUSet();
+		final IOtuSetChangeCase otuSet = new OTUSet();
 		final IDNASequenceSet sequenceSet0 = new DNASequenceSet();
 
 		final IDNASequenceSet sequenceSet1 = new DNASequenceSet();
@@ -186,7 +186,7 @@ public class OTUSetTest {
 
 	@Test
 	public void addOTU() {
-		final IOTUSet otuSet = new OTUSet();
+		final IOtuSetChangeCase otuSet = new OTUSet();
 		final StandardMatrix standardMatrix = new StandardMatrix();
 
 		otuSet.addStandardMatrix(standardMatrix);
@@ -198,9 +198,9 @@ public class OTUSetTest {
 
 		otuSet.addDNASequenceSet(dnaSequenceSet);
 
-		final OtuChangeCase otu0 = new OtuChangeCase().setLabel("otu-0");
-		final OtuChangeCase otu1 = new OtuChangeCase().setLabel("otu-1");
-		final OtuChangeCase otu2 = new OtuChangeCase().setLabel("otu-2");
+		final Otu otu0 = new Otu().setLabel("otu-0");
+		final Otu otu1 = new Otu().setLabel("otu-1");
+		final Otu otu2 = new Otu().setLabel("otu-2");
 
 		otuSet.unsetInNeedOfNewVersion();
 		standardMatrix.unsetInNeedOfNewVersion();
@@ -232,8 +232,8 @@ public class OTUSetTest {
 		assertTrue(dnaMatrix.isInNeedOfNewVersion());
 		assertTrue(dnaSequenceSet.isInNeedOfNewVersion());
 
-		final List<OtuChangeCase> otus012 = ImmutableList.of(otu0, otu1, otu2);
-		final Set<OtuChangeCase> otusSet012 = ImmutableSet.copyOf(otus012);
+		final List<Otu> otus012 = ImmutableList.of(otu0, otu1, otu2);
+		final Set<Otu> otusSet012 = ImmutableSet.copyOf(otus012);
 
 		assertEquals(otuSet.getOTUs(), otus012);
 
@@ -272,7 +272,7 @@ public class OTUSetTest {
 	 */
 	@Test
 	public void addOTUWAlreadyContainedOTU() {
-		otuSet.setOTUs(ImmutableList.of(new OtuChangeCase().setLabel("OTU-0")));
+		otuSet.setOTUs(ImmutableList.of(new Otu().setLabel("OTU-0")));
 		otuSet.unsetInNeedOfNewVersion();
 
 		otuSet.setOTUs(otuSet.getOTUs());
@@ -281,7 +281,7 @@ public class OTUSetTest {
 
 	@Test(expectedExceptions = IllegalArgumentException.class)
 	public void addOTUWDuplicateLabel() {
-		otus.add(new OtuChangeCase().setLabel(otus.get(0).getLabel()));
+		otus.add(new Otu().setLabel(otus.get(0).getLabel()));
 		otuSet.setOTUs(newArrayList(otus));
 	}
 
@@ -299,7 +299,7 @@ public class OTUSetTest {
 
 	@Test(groups = TestGroupDefs.SINGLE)
 	public void addStandardMatrixPos() {
-		final IOTUSet otuSet = new OTUSet();
+		final IOtuSetChangeCase otuSet = new OTUSet();
 		final IStandardMatrix matrix0 = new StandardMatrix();
 		final IStandardMatrix matrix1 = new StandardMatrix();
 		final IStandardMatrix matrix2 = new StandardMatrix();
@@ -331,7 +331,7 @@ public class OTUSetTest {
 
 	@Test
 	public void addTreeSetPos() {
-		final IOTUSet otuSet = new OTUSet();
+		final IOtuSetChangeCase otuSet = new OTUSet();
 		final ITreeSet treeSet0 = new TreeSet();
 		final ITreeSet treeSet1 = new TreeSet();
 		final ITreeSet treeSet2 = new TreeSet();
@@ -365,17 +365,17 @@ public class OTUSetTest {
 		otuSet = new OTUSet();
 		otus = newArrayList();
 
-		final IOtu otu0 = new OtuChangeCase();
+		final IOtu otu0 = new Otu();
 		otus.add(otu0);
 		otu0.setLabel("otu0");
 		otu0.setPPodId();
 
-		final IOtu otu1 = new OtuChangeCase();
+		final IOtu otu1 = new Otu();
 		otus.add(otu1);
 		otu1.setLabel("otu1");
 		otu1.setPPodId();
 
-		final IOtu otu2 = new OtuChangeCase();
+		final IOtu otu2 = new Otu();
 		otus.add(otu2);
 		otu2.setLabel("otu2");
 		otu2.setPPodId();
@@ -396,7 +396,7 @@ public class OTUSetTest {
 
 		otuSet.setVersionInfo(new VersionInfo());
 		study.setVersionInfo(new VersionInfo());
-		final List<IOtu> removedOTUs = otuSet.setOTUs(new ArrayList<OtuChangeCase>());
+		final List<IOtu> removedOTUs = otuSet.setOTUs(new ArrayList<Otu>());
 
 		assertEquals(removedOTUs, otus);
 		assertTrue(otuSet.isInNeedOfNewVersion());
@@ -433,7 +433,7 @@ public class OTUSetTest {
 	@Test
 	public void removeDNASequenceSet() {
 
-		final IOTUSet otuSet = new OTUSet();
+		final IOtuSetChangeCase otuSet = new OTUSet();
 		final IDNASequenceSet dnaSequenceSet0 = new DNASequenceSet();
 
 		otuSet.addDNASequenceSet(dnaSequenceSet0);
@@ -552,7 +552,7 @@ public class OTUSetTest {
 
 	@Test
 	public void setInNeedOfNewPPodVersionWithNoStudy() {
-		final IOTUSet otuSetWithNoStudy = new OTUSet();
+		final IOtuSetChangeCase otuSetWithNoStudy = new OTUSet();
 		otuSetWithNoStudy.unsetInNeedOfNewVersion();
 		otuSetWithNoStudy.setInNeedOfNewVersion();
 		assertTrue(otuSetWithNoStudy.isInNeedOfNewVersion());

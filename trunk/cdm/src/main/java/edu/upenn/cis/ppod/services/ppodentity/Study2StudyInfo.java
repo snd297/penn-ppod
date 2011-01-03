@@ -22,7 +22,7 @@ import edu.upenn.cis.ppod.imodel.IDNARow;
 import edu.upenn.cis.ppod.imodel.IDNASequence;
 import edu.upenn.cis.ppod.imodel.IDNASequenceSet;
 import edu.upenn.cis.ppod.imodel.IOtu;
-import edu.upenn.cis.ppod.imodel.IOTUSet;
+import edu.upenn.cis.ppod.imodel.IOtuSetChangeCase;
 import edu.upenn.cis.ppod.imodel.IStandardCell;
 import edu.upenn.cis.ppod.imodel.IStandardCharacter;
 import edu.upenn.cis.ppod.imodel.IStandardMatrix;
@@ -44,7 +44,7 @@ public final class Study2StudyInfo implements IStudy2StudyInfo {
 		studyInfo.setPPodId(study.getPPodId());
 		studyInfo.setVersion(study.getVersionInfo().getVersion());
 
-		for (final IOTUSet otuSet : study.getOTUSets()) {
+		for (final IOtuSetChangeCase otuSet : study.getOTUSets()) {
 			final OTUSetInfo otuSetInfo = new OTUSetInfo();
 
 			studyInfo.getOTUSetInfos().add(otuSetInfo);
