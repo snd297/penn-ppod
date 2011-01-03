@@ -35,7 +35,7 @@ import org.testng.annotations.Test;
 import edu.upenn.cis.ppod.TestGroupDefs;
 import edu.upenn.cis.ppod.imodel.ICell;
 import edu.upenn.cis.ppod.imodel.IOtu;
-import edu.upenn.cis.ppod.imodel.IOtuSetChangeCase;
+import edu.upenn.cis.ppod.imodel.IOtuSet;
 import edu.upenn.cis.ppod.imodel.IStandardCell;
 import edu.upenn.cis.ppod.imodel.IStandardCharacter;
 import edu.upenn.cis.ppod.imodel.IStandardMatrix;
@@ -67,7 +67,7 @@ public class StandardCellTest {
 
 		matrix = new StandardMatrix();
 
-		final IOtuSetChangeCase otuSet = new OTUSet();
+		final IOtuSet otuSet = new OtuSetChangeSet();
 
 		final IOtu otu0 = new Otu().setLabel("otu0");
 		otuSet.setOTUs(newArrayList(otu0));

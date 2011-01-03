@@ -28,7 +28,7 @@ import org.testng.annotations.Test;
 import edu.upenn.cis.ppod.TestGroupDefs;
 import edu.upenn.cis.ppod.imodel.IDNARow;
 import edu.upenn.cis.ppod.imodel.IOtu;
-import edu.upenn.cis.ppod.imodel.IOtuSetChangeCase;
+import edu.upenn.cis.ppod.imodel.IOtuSet;
 import edu.upenn.cis.ppod.util.IVisitor;
 
 /**
@@ -40,7 +40,7 @@ public class OTUKeyedMapTest {
 	@Test
 	public void clear() {
 		final DNAMatrix matrix = new DNAMatrix();
-		final OTUSet otuSet = new OTUSet();
+		final OtuSetChangeSet otuSet = new OtuSetChangeSet();
 		matrix.setParent(otuSet);
 
 		final IOtu otu0 = new Otu();
@@ -95,7 +95,7 @@ public class OTUKeyedMapTest {
 	public void accept() {
 		final DNAMatrix matrix = new DNAMatrix();
 
-		final IOtuSetChangeCase otuSet = new OTUSet();
+		final IOtuSet otuSet = new OtuSetChangeSet();
 		otuSet.addDNAMatrix(matrix);
 
 		final IOtu otu0 = new Otu();

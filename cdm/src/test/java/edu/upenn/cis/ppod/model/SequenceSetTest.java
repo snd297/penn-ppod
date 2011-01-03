@@ -30,7 +30,7 @@ import org.testng.annotations.Test;
 import edu.upenn.cis.ppod.TestGroupDefs;
 import edu.upenn.cis.ppod.imodel.IDNASequence;
 import edu.upenn.cis.ppod.imodel.IOtu;
-import edu.upenn.cis.ppod.imodel.IOtuSetChangeCase;
+import edu.upenn.cis.ppod.imodel.IOtuSet;
 import edu.upenn.cis.ppod.imodel.ISequenceSet;
 import edu.upenn.cis.ppod.util.IVisitor;
 
@@ -75,7 +75,7 @@ public class SequenceSetTest {
 		final String seqStr3 = "CTCCTCGTCAGCAG";
 		seq3.setSequence(seqStr3);
 
-		final IOtuSetChangeCase otuSet0 = new OTUSet();
+		final IOtuSet otuSet0 = new OtuSetChangeSet();
 		seqSet.setParent(otuSet0);
 
 		final IOtu otu0 = new Otu().setLabel("otu0");
@@ -113,7 +113,7 @@ public class SequenceSetTest {
 		final String seqStr3 = "CTCCTCGTCAGCAG";
 		seq3.setSequence(seqStr3);
 
-		final IOtuSetChangeCase otuSet0 = new OTUSet();
+		final IOtuSet otuSet0 = new OtuSetChangeSet();
 		seqSet.setParent(otuSet0);
 
 		final IOtu otu0 = new Otu().setLabel("otu0");
@@ -138,7 +138,7 @@ public class SequenceSetTest {
 		seqSet.setInNeedOfNewVersion();
 		assertTrue(seqSet.isInNeedOfNewVersion());
 
-		final IOtuSetChangeCase otuSet = new OTUSet();
+		final IOtuSet otuSet = new OtuSetChangeSet();
 		otuSet.addDNASequenceSet(seqSet);
 		seqSet.unsetInNeedOfNewVersion();
 		otuSet.unsetInNeedOfNewVersion();
@@ -169,14 +169,14 @@ public class SequenceSetTest {
 	@Test
 	public void afterUnmarshal() {
 		final SequenceSet<?> seqSet = new DNASequenceSet();
-		final IOtuSetChangeCase otuSet = new OTUSet();
+		final IOtuSet otuSet = new OtuSetChangeSet();
 		seqSet.afterUnmarshal(null, otuSet);
 		assertSame(seqSet.getParent(), otuSet);
 	}
 
 	@Test
 	public void accept() {
-		final IOtuSetChangeCase otuSet = new OTUSet();
+		final IOtuSet otuSet = new OtuSetChangeSet();
 		otuSet.addOTU(new Otu().setLabel("otu-0"));
 		otuSet.addOTU(new Otu().setLabel("otu-1"));
 		otuSet.addOTU(new Otu().setLabel("otu-2"));

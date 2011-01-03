@@ -36,7 +36,7 @@ import org.testng.annotations.Test;
 import com.google.common.collect.ImmutableSet;
 
 import edu.upenn.cis.ppod.TestGroupDefs;
-import edu.upenn.cis.ppod.imodel.IOtuSetChangeCase;
+import edu.upenn.cis.ppod.imodel.IOtuSet;
 import edu.upenn.cis.ppod.imodel.IStandardCharacter;
 import edu.upenn.cis.ppod.imodel.IVersionInfo;
 import edu.upenn.cis.ppod.util.IVisitor;
@@ -51,7 +51,7 @@ public class PPodEntityTest {
 
 	@Test
 	public void addAttachment() {
-		final OTUSet otuSet = new OTUSet();
+		final OtuSetChangeSet otuSet = new OtuSetChangeSet();
 		otuSet.unsetInNeedOfNewVersion();
 
 		final Attachment attachment = new Attachment();
@@ -67,7 +67,7 @@ public class PPodEntityTest {
 
 	@Test
 	public void getElementsXmlWNullAttachments() {
-		final OTUSet otuSet = new OTUSet();
+		final OtuSetChangeSet otuSet = new OtuSetChangeSet();
 		assertNull(otuSet.getAttachmentsXml());
 
 		otuSet.setHasAttachments(true);
@@ -88,7 +88,7 @@ public class PPodEntityTest {
 						attachment1,
 						attachment2);
 
-		final OTUSet otuSet = new OTUSet();
+		final OtuSetChangeSet otuSet = new OtuSetChangeSet();
 
 		otuSet.addAttachment(attachment0);
 		otuSet.addAttachment(attachment1);
@@ -99,7 +99,7 @@ public class PPodEntityTest {
 
 	@Test
 	public void beforeMarahal() {
-		final OTUSet otuSet = new OTUSet();
+		final OtuSetChangeSet otuSet = new OtuSetChangeSet();
 		final IVersionInfo versionInfo = new VersionInfo();
 		otuSet.setVersionInfo(new VersionInfo());
 		otuSet.beforeMarshal(null);
@@ -112,7 +112,7 @@ public class PPodEntityTest {
 	 */
 	@Test(expectedExceptions = IllegalStateException.class)
 	public void getMarshalled() {
-		final IOtuSetChangeCase otuSet = new OTUSet();
+		final IOtuSet otuSet = new OtuSetChangeSet();
 		((PersistentObject) otuSet).setUnmarshalled(true);
 		otuSet.getVersionInfo();
 	}
@@ -123,7 +123,7 @@ public class PPodEntityTest {
 	 */
 	@Test
 	public void removeAttachment() {
-		final OTUSet otuSet = new OTUSet();
+		final OtuSetChangeSet otuSet = new OtuSetChangeSet();
 		final Attachment attachment1 = new Attachment();
 		final Attachment attachment2 = new Attachment();
 		final Attachment attachment3 = new Attachment();
@@ -179,7 +179,7 @@ public class PPodEntityTest {
 
 	@Test
 	public void getVersion() {
-		final IOtuSetChangeCase otuSet = new OTUSet();
+		final IOtuSet otuSet = new OtuSetChangeSet();
 		assertNull(otuSet.getVersion());
 
 		final VersionInfo versionInfo = new VersionInfo();
@@ -194,7 +194,7 @@ public class PPodEntityTest {
 
 	@Test
 	public void getVersionInfo() {
-		final IOtuSetChangeCase otuSet = new OTUSet();
+		final IOtuSet otuSet = new OtuSetChangeSet();
 		final VersionInfo versionInfo = new VersionInfo();
 		otuSet.setVersionInfo(versionInfo);
 		assertSame(otuSet.getVersionInfo(), versionInfo);
@@ -202,14 +202,14 @@ public class PPodEntityTest {
 
 	@Test(expectedExceptions = IllegalStateException.class)
 	public void getVersionInfoNotUnmarshalled() {
-		final OTUSet otuSet = new OTUSet();
+		final OtuSetChangeSet otuSet = new OtuSetChangeSet();
 		otuSet.setUnmarshalled(true);
 		otuSet.getVersionInfo();
 	}
 
 	@Test
 	public void getAttachmentsXmlWAttachments() {
-		final OTUSet otuSet = new OTUSet();
+		final OtuSetChangeSet otuSet = new OtuSetChangeSet();
 		final Attachment attachment0 = new Attachment();
 		final Attachment attachment1 = new Attachment();
 		final Attachment attachment2 = new Attachment();
@@ -227,13 +227,13 @@ public class PPodEntityTest {
 
 	@Test
 	public void getAttachmensXmlWNoAttachments() {
-		final OTUSet otuSet = new OTUSet();
+		final OtuSetChangeSet otuSet = new OtuSetChangeSet();
 		assertNull(otuSet.getAttachmentsXml());
 	}
 
 	@Test
 	public void accept() {
-		final IOtuSetChangeCase otuSet = new OTUSet();
+		final IOtuSet otuSet = new OtuSetChangeSet();
 		final Attachment attachment0 = new Attachment();
 		final Attachment attachment1 = new Attachment();
 		final Attachment attachment2 = new Attachment();

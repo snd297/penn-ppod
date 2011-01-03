@@ -21,10 +21,10 @@ import javax.xml.bind.annotation.adapters.XmlJavaTypeAdapter;
 
 import edu.umd.cs.findbugs.annotations.CheckForNull;
 import edu.umd.cs.findbugs.annotations.Nullable;
-import edu.upenn.cis.ppod.model.OTUSet;
+import edu.upenn.cis.ppod.model.OtuSetChangeSet;
 
-@XmlJavaTypeAdapter(OTUSet.Adapter.class)
-public interface IOtuSetChangeCase
+@XmlJavaTypeAdapter(OtuSetChangeSet.Adapter.class)
+public interface IOtuSet
 		extends ILabeled, IUUPPodEntity, IChild<IStudy>, IWithDocId {
 
 	/**

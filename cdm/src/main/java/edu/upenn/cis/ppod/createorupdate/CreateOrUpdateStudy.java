@@ -31,7 +31,7 @@ import edu.upenn.cis.ppod.dao.IStudyDAO;
 import edu.upenn.cis.ppod.imodel.IDNAMatrix;
 import edu.upenn.cis.ppod.imodel.IDNASequenceSet;
 import edu.upenn.cis.ppod.imodel.INewVersionInfo;
-import edu.upenn.cis.ppod.imodel.IOtuSetChangeCase;
+import edu.upenn.cis.ppod.imodel.IOtuSet;
 import edu.upenn.cis.ppod.imodel.IStandardMatrix;
 import edu.upenn.cis.ppod.imodel.IStudy;
 import edu.upenn.cis.ppod.imodel.ITreeSet;
@@ -94,8 +94,8 @@ class CreateOrUpdateStudy implements ICreateOrUpdateStudy {
 
 		// Delete otu sets in persisted study that are not in the incoming
 		// study.
-		final Set<IOtuSetChangeCase> toBeRemoveds = newHashSet();
-		for (final IOtuSetChangeCase dbOTUSet : dbStudy.getOTUSets()) {
+		final Set<IOtuSet> toBeRemoveds = newHashSet();
+		for (final IOtuSet dbOTUSet : dbStudy.getOTUSets()) {
 			if (null == find(
 					incomingStudy.getOTUSets(),
 					compose(
@@ -106,15 +106,15 @@ class CreateOrUpdateStudy implements ICreateOrUpdateStudy {
 				toBeRemoveds.add(dbOTUSet);
 			}
 		}
-		for (final IOtuSetChangeCase toBeRemoved : toBeRemoveds) {
+		for (final IOtuSet toBeRemoved : toBeRemoveds) {
 			dbStudy.removeOTUSet(toBeRemoved);
 		}
 
 		// Save or update incoming otu sets
 		int incomingOTUSetPos = -1;
-		for (final IOtuSetChangeCase incomingOTUSet : incomingStudy.getOTUSets()) {
+		for (final IOtuSet incomingOTUSet : incomingStudy.getOTUSets()) {
 			incomingOTUSetPos++;
-			IOtuSetChangeCase dbOTUSet;
+			IOtuSet dbOTUSet;
 			if (null == (dbOTUSet =
 					find(dbStudy.getOTUSets(),
 							compose(
@@ -141,8 +141,8 @@ class CreateOrUpdateStudy implements ICreateOrUpdateStudy {
 	}
 
 	private void handleDNAMatrices(
-			final IOtuSetChangeCase dbOTUSet,
-			final IOtuSetChangeCase incomingOTUSet) {
+			final IOtuSet dbOTUSet,
+			final IOtuSet incomingOTUSet) {
 
 		// Let's delete matrices missing from the incoming OTU set
 		final Set<IDNAMatrix> toBeRemoveds = newHashSet();
@@ -189,8 +189,8 @@ class CreateOrUpdateStudy implements ICreateOrUpdateStudy {
 	}
 
 	private void handleDNASequenceSets(
-			final IOtuSetChangeCase dbOTUSet,
-			final IOtuSetChangeCase incomingOTUSet) {
+			final IOtuSet dbOTUSet,
+			final IOtuSet incomingOTUSet) {
 
 		// Let's delete sequences missing from the incoming otu set
 		final Set<IDNASequenceSet> toBeRemoveds = newHashSet();
@@ -235,8 +235,8 @@ class CreateOrUpdateStudy implements ICreateOrUpdateStudy {
 	}
 
 	private void handleStandardMatrices(
-			final IOtuSetChangeCase dbOTUSet,
-			final IOtuSetChangeCase incomingOTUSet) {
+			final IOtuSet dbOTUSet,
+			final IOtuSet incomingOTUSet) {
 
 		// Let's delete matrices missing from the incoming OTU set
 		final Set<IStandardMatrix> toBeRemoveds = newHashSet();
@@ -282,8 +282,8 @@ class CreateOrUpdateStudy implements ICreateOrUpdateStudy {
 	}
 
 	private void handleTreeSets(
-			final IOtuSetChangeCase dbOTUSet,
-			final IOtuSetChangeCase incomingOTUSet) {
+			final IOtuSet dbOTUSet,
+			final IOtuSet incomingOTUSet) {
 
 		// Let's delete tree sets missing from incoming OTU set
 		final Set<ITreeSet> toBeDeleteds = newHashSet();

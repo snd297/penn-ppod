@@ -27,7 +27,7 @@ import com.google.inject.Inject;
 
 import edu.upenn.cis.ppod.imodel.INewVersionInfo;
 import edu.upenn.cis.ppod.imodel.IOtu;
-import edu.upenn.cis.ppod.imodel.IOtuSetChangeCase;
+import edu.upenn.cis.ppod.imodel.IOtuSet;
 import edu.upenn.cis.ppod.imodel.IHasPPodId;
 import edu.upenn.cis.ppod.model.ModelFactory;
 
@@ -46,8 +46,8 @@ class MergeOTUSets implements IMergeOTUSets {
 	}
 
 	public void mergeOTUSets(
-			final IOtuSetChangeCase targetOTUSet,
-			final IOtuSetChangeCase sourceOTUSet) {
+			final IOtuSet targetOTUSet,
+			final IOtuSet sourceOTUSet) {
 		checkNotNull(targetOTUSet);
 		checkNotNull(sourceOTUSet);
 		targetOTUSet.setLabel(sourceOTUSet.getLabel());

@@ -42,7 +42,7 @@ import javax.xml.bind.annotation.adapters.XmlAdapter;
 
 import com.google.common.collect.Iterators;
 
-import edu.upenn.cis.ppod.imodel.IOtuSetChangeCase;
+import edu.upenn.cis.ppod.imodel.IOtuSet;
 import edu.upenn.cis.ppod.imodel.ITree;
 import edu.upenn.cis.ppod.imodel.ITreeSet;
 import edu.upenn.cis.ppod.util.IVisitor;
@@ -82,10 +82,10 @@ public class TreeSet
 
 	@Nullable
 	@ManyToOne(fetch = FetchType.LAZY, optional = false,
-			targetEntity = OTUSet.class)
-	@JoinColumn(name = OTUSet.JOIN_COLUMN, insertable = false,
+			targetEntity = OtuSetChangeSet.class)
+	@JoinColumn(name = OtuSetChangeSet.JOIN_COLUMN, insertable = false,
 				updatable = false)
-	private IOtuSetChangeCase parent;
+	private IOtuSet parent;
 
 	@OneToMany(cascade = CascadeType.ALL, orphanRemoval = true,
 			targetEntity = Tree.class)
@@ -126,7 +126,7 @@ public class TreeSet
 	protected void afterUnmarshal(
 			@CheckForNull final Unmarshaller u,
 			final Object parent) {
-		this.parent = (IOtuSetChangeCase) parent;
+		this.parent = (IOtuSet) parent;
 	}
 
 	/**
@@ -143,7 +143,7 @@ public class TreeSet
 
 	/** {@inheritDoc} */
 	@Nullable
-	public IOtuSetChangeCase getParent() {
+	public IOtuSet getParent() {
 		return parent;
 	}
 
@@ -177,7 +177,7 @@ public class TreeSet
 	}
 
 	/** {@inheritDoc} */
-	public void setParent(@CheckForNull final IOtuSetChangeCase parent) {
+	public void setParent(@CheckForNull final IOtuSet parent) {
 		this.parent = parent;
 		updateOTUs();
 	}

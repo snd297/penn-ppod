@@ -25,7 +25,7 @@ import org.testng.annotations.Test;
 import com.google.common.collect.ImmutableList;
 
 import edu.upenn.cis.ppod.TestGroupDefs;
-import edu.upenn.cis.ppod.imodel.IOtuSetChangeCase;
+import edu.upenn.cis.ppod.imodel.IOtuSet;
 import edu.upenn.cis.ppod.imodel.IStudy;
 
 /**
@@ -38,9 +38,9 @@ public class StudyTest {
 	@Test
 	public void removeOTUSet() {
 		final IStudy study = new Study();
-		final IOtuSetChangeCase otuSet0 = new OTUSet();
-		final IOtuSetChangeCase otuSet1 = new OTUSet();
-		final IOtuSetChangeCase otuSet2 = new OTUSet();
+		final IOtuSet otuSet0 = new OtuSetChangeSet();
+		final IOtuSet otuSet1 = new OtuSetChangeSet();
+		final IOtuSet otuSet2 = new OtuSetChangeSet();
 		study.addOTUSet(otuSet0);
 		study.addOTUSet(otuSet1);
 		study.addOTUSet(otuSet2);
@@ -75,7 +75,7 @@ public class StudyTest {
 	@Test(expectedExceptions = IllegalArgumentException.class)
 	public void addOTUSetWAlreadyContainedOTUSet() {
 		final IStudy study = new Study();
-		final IOtuSetChangeCase otuSet0 = new OTUSet();
+		final IOtuSet otuSet0 = new OtuSetChangeSet();
 		study.addOTUSet(otuSet0);
 		study.addOTUSet(otuSet0);
 	}
@@ -83,7 +83,7 @@ public class StudyTest {
 	@Test
 	public void addOTUSet() {
 		final IStudy study = new Study();
-		final IOtuSetChangeCase otuSet0 = new OTUSet();
+		final IOtuSet otuSet0 = new OtuSetChangeSet();
 
 		study.unsetInNeedOfNewVersion();
 
@@ -97,10 +97,10 @@ public class StudyTest {
 	@Test
 	public void addOTUSetPos() {
 		final IStudy study = new Study();
-		final IOtuSetChangeCase otuSet0 = new OTUSet();
-		final IOtuSetChangeCase otuSet1 = new OTUSet();
-		final IOtuSetChangeCase otuSet2 = new OTUSet();
-		final IOtuSetChangeCase otuSet3 = new OTUSet();
+		final IOtuSet otuSet0 = new OtuSetChangeSet();
+		final IOtuSet otuSet1 = new OtuSetChangeSet();
+		final IOtuSet otuSet2 = new OtuSetChangeSet();
+		final IOtuSet otuSet3 = new OtuSetChangeSet();
 
 		study.addOTUSet(otuSet0);
 		study.addOTUSet(otuSet1);

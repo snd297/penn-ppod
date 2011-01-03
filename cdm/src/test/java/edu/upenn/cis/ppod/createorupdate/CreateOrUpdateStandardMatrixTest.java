@@ -27,7 +27,7 @@ import edu.upenn.cis.ppod.TestGroupDefs;
 import edu.upenn.cis.ppod.dao.IObjectWithLongIdDAO;
 import edu.upenn.cis.ppod.imodel.INewVersionInfo;
 import edu.upenn.cis.ppod.imodel.IOtu;
-import edu.upenn.cis.ppod.imodel.IOtuSetChangeCase;
+import edu.upenn.cis.ppod.imodel.IOtuSet;
 import edu.upenn.cis.ppod.imodel.IStandardCell;
 import edu.upenn.cis.ppod.imodel.IStandardCharacter;
 import edu.upenn.cis.ppod.imodel.IStandardMatrix;
@@ -58,7 +58,7 @@ public class CreateOrUpdateStandardMatrixTest {
 						mock(IObjectWithLongIdDAO.class),
 						newVersionInfo);
 
-		final IOtuSetChangeCase fakeDbOTUSet = sourceMatrix.getParent();
+		final IOtuSet fakeDbOTUSet = sourceMatrix.getParent();
 
 		final IStandardMatrix targetMatrix = new StandardMatrix();
 
@@ -85,7 +85,7 @@ public class CreateOrUpdateStandardMatrixTest {
 						mock(IObjectWithLongIdDAO.class),
 						newVersionInfo);
 
-		final IOtuSetChangeCase fakeDbOTUSet = sourceMatrix.getParent();
+		final IOtuSet fakeDbOTUSet = sourceMatrix.getParent();
 
 		final IStandardMatrix targetMatrix =
 				new StandardMatrix();
@@ -137,7 +137,7 @@ public class CreateOrUpdateStandardMatrixTest {
 						mock(IObjectWithLongIdDAO.class),
 						newVersionInfo);
 
-		final IOtuSetChangeCase fakeDbOTUSet = sourceMatrix.getParent();
+		final IOtuSet fakeDbOTUSet = sourceMatrix.getParent();
 
 		final IStandardMatrix targetMatrix = new StandardMatrix();
 
@@ -198,7 +198,7 @@ public class CreateOrUpdateStandardMatrixTest {
 						mock(IObjectWithLongIdDAO.class),
 						newVersionInfo);
 
-		final IOtuSetChangeCase fakeDbOTUSet = sourceMatrix.getParent();
+		final IOtuSet fakeDbOTUSet = sourceMatrix.getParent();
 
 		final IStandardMatrix targetMatrix =
 				new StandardMatrix();

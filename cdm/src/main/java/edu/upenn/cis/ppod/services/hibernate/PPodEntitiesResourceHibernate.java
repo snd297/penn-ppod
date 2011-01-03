@@ -25,7 +25,7 @@ import org.hibernate.FlushMode;
 import org.hibernate.Session;
 
 import edu.upenn.cis.ppod.imodel.IOtu;
-import edu.upenn.cis.ppod.imodel.IOtuSetChangeCase;
+import edu.upenn.cis.ppod.imodel.IOtuSet;
 import edu.upenn.cis.ppod.imodel.IStandardMatrix;
 import edu.upenn.cis.ppod.imodel.ITreeSet;
 import edu.upenn.cis.ppod.services.IPPodEntitiesResource;
@@ -73,8 +73,8 @@ class PPodEntitiesResourceHibernate implements
 		// }
 
 		for (final Object queryResult : queryResults) {
-			if (queryResult instanceof IOtuSetChangeCase) {
-				final IOtuSetChangeCase otuSet = (IOtuSetChangeCase) queryResult;
+			if (queryResult instanceof IOtuSet) {
+				final IOtuSet otuSet = (IOtuSet) queryResult;
 
 				// Extra insurance against accidental sync with database
 				session.setReadOnly(otuSet, true);
@@ -129,7 +129,7 @@ class PPodEntitiesResourceHibernate implements
 
 			// Now we clean up our response so we don't include any extra
 			// matrices or tree sets that were pulled over with the OTUSet's
-			for (final IOtuSetChangeCase otuSet : pPodEntities.getOTUSets()) {
+			for (final IOtuSet otuSet : pPodEntities.getOTUSets()) {
 				for (final IStandardMatrix matrix : otuSet
 						.getStandardMatrices()) {
 					if (addedMatrices.contains(matrix)) {

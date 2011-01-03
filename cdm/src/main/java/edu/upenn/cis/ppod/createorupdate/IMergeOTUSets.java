@@ -17,7 +17,7 @@ package edu.upenn.cis.ppod.createorupdate;
 
 import com.google.inject.ImplementedBy;
 
-import edu.upenn.cis.ppod.imodel.IOtuSetChangeCase;
+import edu.upenn.cis.ppod.imodel.IOtuSet;
 
 /**
  * @author Sam Donnelly
@@ -25,6 +25,6 @@ import edu.upenn.cis.ppod.imodel.IOtuSetChangeCase;
 @ImplementedBy(MergeOTUSets.class)
 public interface IMergeOTUSets {
 
-	void mergeOTUSets(IOtuSetChangeCase targetOTUSet, IOtuSetChangeCase sourceOTUSet);
+	void mergeOTUSets(IOtuSet targetOTUSet, IOtuSet sourceOTUSet);
 
 }
