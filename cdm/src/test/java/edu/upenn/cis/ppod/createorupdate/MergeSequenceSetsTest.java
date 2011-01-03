@@ -24,12 +24,12 @@ import edu.upenn.cis.ppod.TestGroupDefs;
 import edu.upenn.cis.ppod.imodel.IDNASequence;
 import edu.upenn.cis.ppod.imodel.IDNASequenceSet;
 import edu.upenn.cis.ppod.imodel.INewVersionInfo;
-import edu.upenn.cis.ppod.imodel.IOTUSet;
+import edu.upenn.cis.ppod.imodel.IOtuSetChangeCase;
 import edu.upenn.cis.ppod.imodel.IVersionInfo;
 import edu.upenn.cis.ppod.model.DNASequence;
 import edu.upenn.cis.ppod.model.DNASequenceSet;
 import edu.upenn.cis.ppod.model.ModelAssert;
-import edu.upenn.cis.ppod.model.OtuChangeCase;
+import edu.upenn.cis.ppod.model.Otu;
 import edu.upenn.cis.ppod.model.OTUSet;
 
 @Test(groups = TestGroupDefs.FAST)
@@ -43,16 +43,16 @@ public class MergeSequenceSetsTest {
 		srcSeqSet.setLabel("src-seq-set-0");
 		final IDNASequenceSet trgSeqSet = new DNASequenceSet();
 
-		final IOTUSet trgOTUSet = new OTUSet();
-		trgOTUSet.addOTU(new OtuChangeCase("otu-0"));
-		trgOTUSet.addOTU(new OtuChangeCase("otu-1"));
-		trgOTUSet.addOTU(new OtuChangeCase("otu-2"));
+		final IOtuSetChangeCase trgOTUSet = new OTUSet();
+		trgOTUSet.addOTU(new Otu("otu-0"));
+		trgOTUSet.addOTU(new Otu("otu-1"));
+		trgOTUSet.addOTU(new Otu("otu-2"));
 		trgOTUSet.addDNASequenceSet(trgSeqSet);
 
-		final IOTUSet srcOTUSet = new OTUSet();
-		srcOTUSet.addOTU(new OtuChangeCase("otu-0"));
-		srcOTUSet.addOTU(new OtuChangeCase("otu-1"));
-		srcOTUSet.addOTU(new OtuChangeCase("otu-2"));
+		final IOtuSetChangeCase srcOTUSet = new OTUSet();
+		srcOTUSet.addOTU(new Otu("otu-0"));
+		srcOTUSet.addOTU(new Otu("otu-1"));
+		srcOTUSet.addOTU(new Otu("otu-2"));
 
 		srcOTUSet.addDNASequenceSet(srcSeqSet);
 
@@ -113,16 +113,16 @@ public class MergeSequenceSetsTest {
 		srcSeqSet.setLabel("src-seq-set-0");
 		final IDNASequenceSet trgSeqSet = new DNASequenceSet();
 
-		final IOTUSet trgOTUSet = new OTUSet();
-		trgOTUSet.addOTU(new OtuChangeCase("otu-0"));
-		trgOTUSet.addOTU(new OtuChangeCase("otu-1"));
-		trgOTUSet.addOTU(new OtuChangeCase("otu-2"));
+		final IOtuSetChangeCase trgOTUSet = new OTUSet();
+		trgOTUSet.addOTU(new Otu("otu-0"));
+		trgOTUSet.addOTU(new Otu("otu-1"));
+		trgOTUSet.addOTU(new Otu("otu-2"));
 		trgOTUSet.addDNASequenceSet(trgSeqSet);
 
-		final IOTUSet srcOTUSet = new OTUSet();
-		srcOTUSet.addOTU(new OtuChangeCase("otu-0"));
-		srcOTUSet.addOTU(new OtuChangeCase("otu-1"));
-		srcOTUSet.addOTU(new OtuChangeCase("otu-2"));
+		final IOtuSetChangeCase srcOTUSet = new OTUSet();
+		srcOTUSet.addOTU(new Otu("otu-0"));
+		srcOTUSet.addOTU(new Otu("otu-1"));
+		srcOTUSet.addOTU(new Otu("otu-2"));
 
 		srcOTUSet.addDNASequenceSet(srcSeqSet);
 
@@ -180,16 +180,16 @@ public class MergeSequenceSetsTest {
 		srcSeqSet.setLabel("src-seq-set-0");
 		final IDNASequenceSet trgSeqSet = new DNASequenceSet();
 
-		final IOTUSet trgOTUSet = new OTUSet();
-		trgOTUSet.addOTU(new OtuChangeCase("otu-0"));
-		trgOTUSet.addOTU(new OtuChangeCase("otu-1"));
-		trgOTUSet.addOTU(new OtuChangeCase("otu-2"));
+		final IOtuSetChangeCase trgOTUSet = new OTUSet();
+		trgOTUSet.addOTU(new Otu("otu-0"));
+		trgOTUSet.addOTU(new Otu("otu-1"));
+		trgOTUSet.addOTU(new Otu("otu-2"));
 		trgOTUSet.addDNASequenceSet(trgSeqSet);
 
-		final IOTUSet srcOTUSet = new OTUSet();
-		srcOTUSet.addOTU(new OtuChangeCase("otu-0"));
-		srcOTUSet.addOTU(new OtuChangeCase("otu-1"));
-		srcOTUSet.addOTU(new OtuChangeCase("otu-2"));
+		final IOtuSetChangeCase srcOTUSet = new OTUSet();
+		srcOTUSet.addOTU(new Otu("otu-0"));
+		srcOTUSet.addOTU(new Otu("otu-1"));
+		srcOTUSet.addOTU(new Otu("otu-2"));
 
 		srcOTUSet.addDNASequenceSet(srcSeqSet);
 

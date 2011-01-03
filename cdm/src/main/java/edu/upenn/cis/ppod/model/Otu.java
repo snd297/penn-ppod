@@ -29,7 +29,7 @@ import javax.xml.bind.annotation.adapters.XmlAdapter;
 import edu.umd.cs.findbugs.annotations.CheckForNull;
 import edu.umd.cs.findbugs.annotations.Nullable;
 import edu.upenn.cis.ppod.imodel.IOtu;
-import edu.upenn.cis.ppod.imodel.IOTUSet;
+import edu.upenn.cis.ppod.imodel.IOtuSetChangeCase;
 import edu.upenn.cis.ppod.util.IVisitor;
 
 /**
@@ -39,20 +39,20 @@ import edu.upenn.cis.ppod.util.IVisitor;
  * @author Sam Donnelly
  */
 @Entity
-@Table(name = OtuChangeCase.TABLE)
-public class OtuChangeCase
+@Table(name = Otu.TABLE)
+public class Otu
 		extends UUPPodEntityWithDocId
 		implements IOtu {
 
-	public static class Adapter extends XmlAdapter<OtuChangeCase, IOtu> {
+	public static class Adapter extends XmlAdapter<Otu, IOtu> {
 
 		@Override
-		public OtuChangeCase marshal(final IOtu otu) {
-			return (OtuChangeCase) otu;
+		public Otu marshal(final IOtu otu) {
+			return (Otu) otu;
 		}
 
 		@Override
-		public IOtu unmarshal(final OtuChangeCase otu) {
+		public IOtu unmarshal(final Otu otu) {
 			return otu;
 		}
 	}
@@ -82,11 +82,11 @@ public class OtuChangeCase
 	@ManyToOne(targetEntity = OTUSet.class)
 	@JoinColumn(name = OTUSet.JOIN_COLUMN, insertable = false,
 			updatable = false, nullable = false)
-	private IOTUSet parent;
+	private IOtuSetChangeCase parent;
 
-	public OtuChangeCase() {}
+	public Otu() {}
 
-	public OtuChangeCase(final String label) {
+	public Otu(final String label) {
 		this.label = label;
 	}
 
@@ -105,7 +105,7 @@ public class OtuChangeCase
 	public void afterUnmarshal(
 			@CheckForNull final Unmarshaller u,
 			final Object parent) {
-		this.parent = (IOTUSet) parent;
+		this.parent = (IOtuSetChangeCase) parent;
 	}
 
 	/**
@@ -127,7 +127,7 @@ public class OtuChangeCase
 	 * @return the {@code OTUSet} that owns this {@code OTU}
 	 */
 	@Nullable
-	public IOTUSet getParent() {
+	public IOtuSetChangeCase getParent() {
 		return parent;
 	}
 
@@ -146,7 +146,7 @@ public class OtuChangeCase
 	}
 
 	/** {@inheritDoc} */
-	public OtuChangeCase setLabel(final String label) {
+	public Otu setLabel(final String label) {
 		checkNotNull(label);
 		if (label.equals(getLabel())) {
 
@@ -158,7 +158,7 @@ public class OtuChangeCase
 	}
 
 	/** {@inheritDoc} */
-	public void setParent(@CheckForNull final IOTUSet parent) {
+	public void setParent(@CheckForNull final IOtuSetChangeCase parent) {
 		this.parent = parent;
 	}
 

@@ -24,7 +24,7 @@ import edu.upenn.cis.ppod.imodel.IDNARow;
 import edu.upenn.cis.ppod.imodel.IDNASequence;
 import edu.upenn.cis.ppod.imodel.IDNASequenceSet;
 import edu.upenn.cis.ppod.imodel.IOtu;
-import edu.upenn.cis.ppod.imodel.IOTUSet;
+import edu.upenn.cis.ppod.imodel.IOtuSetChangeCase;
 import edu.upenn.cis.ppod.imodel.IProteinRow;
 import edu.upenn.cis.ppod.imodel.IStandardCell;
 import edu.upenn.cis.ppod.imodel.IStandardCharacter;
@@ -88,7 +88,7 @@ public interface IVisitor {
 
 	void visitOTU(IOtu otu);
 
-	void visitOTUSet(IOTUSet otuSet);
+	void visitOTUSet(IOtuSetChangeCase otuSet);
 
 	void visitProteinRow(IProteinRow row);
 

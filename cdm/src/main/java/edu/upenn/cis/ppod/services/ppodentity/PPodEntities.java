@@ -33,7 +33,7 @@ import javax.xml.bind.annotation.XmlRootElement;
 import edu.upenn.cis.ppod.imodel.IAttachmentNamespace;
 import edu.upenn.cis.ppod.imodel.IAttachmentType;
 import edu.upenn.cis.ppod.imodel.IOtu;
-import edu.upenn.cis.ppod.imodel.IOTUSet;
+import edu.upenn.cis.ppod.imodel.IOtuSetChangeCase;
 import edu.upenn.cis.ppod.util.PPodEntitiesUtil;
 
 /**
@@ -48,7 +48,7 @@ public class PPodEntities implements IPPodEntities {
 	public PPodEntities() {}
 
 	@XmlElement(name = "otuSet")
-	private final List<IOTUSet> otuSets = newArrayList();
+	private final List<IOtuSetChangeCase> otuSets = newArrayList();
 
 	@XmlElement(name = "otu")
 	private final Set<IOtu> otus = newHashSet();
@@ -60,7 +60,7 @@ public class PPodEntities implements IPPodEntities {
 	private final Set<IAttachmentType> pPodEntitiesWideAttachmentTypes = newHashSet();
 
 	/** {@inheritDoc} */
-	public void addOTUSet(final IOTUSet otuSet) {
+	public void addOTUSet(final IOtuSetChangeCase otuSet) {
 		checkNotNull(otuSet);
 		checkArgument(!getOTUSets().contains(otuSet),
 				"this study already contains otu set [" + otuSet.getLabel()
@@ -96,7 +96,7 @@ public class PPodEntities implements IPPodEntities {
 		return otu;
 	}
 
-	public List<IOTUSet> getOTUSets() {
+	public List<IOtuSetChangeCase> getOTUSets() {
 		return Collections.unmodifiableList(otuSets);
 	}
 

@@ -35,7 +35,7 @@ import edu.upenn.cis.ppod.TestGroupDefs;
 import edu.upenn.cis.ppod.imodel.DNANucleotide;
 import edu.upenn.cis.ppod.imodel.ICell;
 import edu.upenn.cis.ppod.imodel.IDNARow;
-import edu.upenn.cis.ppod.imodel.IOTUSet;
+import edu.upenn.cis.ppod.imodel.IOtuSetChangeCase;
 
 @Test(groups = { TestGroupDefs.FAST })
 public class CellTest {
@@ -174,9 +174,9 @@ public class CellTest {
 
 		final DNAMatrix matrix = new DNAMatrix();
 		matrix.setColumnsSize(1);
-		final IOTUSet otuSet = new OTUSet();
+		final IOtuSetChangeCase otuSet = new OTUSet();
 		otuSet.addDNAMatrix(matrix);
-		otuSet.addOTU(new OtuChangeCase().setLabel("otu-0"));
+		otuSet.addOTU(new Otu().setLabel("otu-0"));
 
 		matrix.putRow(otuSet.getOTUs().get(0), row);
 

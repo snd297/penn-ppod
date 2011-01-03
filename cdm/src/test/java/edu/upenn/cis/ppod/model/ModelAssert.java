@@ -34,7 +34,7 @@ import edu.upenn.cis.ppod.imodel.IAttachmentNamespace;
 import edu.upenn.cis.ppod.imodel.IAttachmentType;
 import edu.upenn.cis.ppod.imodel.ILabeled;
 import edu.upenn.cis.ppod.imodel.IOtu;
-import edu.upenn.cis.ppod.imodel.IOTUSet;
+import edu.upenn.cis.ppod.imodel.IOtuSetChangeCase;
 import edu.upenn.cis.ppod.imodel.IPPodEntity;
 import edu.upenn.cis.ppod.imodel.ISequence;
 import edu.upenn.cis.ppod.imodel.ISequenceSet;
@@ -89,8 +89,8 @@ public class ModelAssert {
 	}
 
 	public static void assertEqualsOTUSet(
-			final IOTUSet actualOTUSet,
-			final IOTUSet expectedOTUSet) {
+			final IOtuSetChangeCase actualOTUSet,
+			final IOtuSetChangeCase expectedOTUSet) {
 		assertEquals(actualOTUSet.getLabel(), expectedOTUSet.getLabel());
 		if (expectedOTUSet.getPPodId() != null) {
 			assertEquals(actualOTUSet.getPPodId(), expectedOTUSet.getPPodId());

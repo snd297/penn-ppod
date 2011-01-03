@@ -47,7 +47,7 @@ import edu.upenn.cis.ppod.imodel.ICell;
 import edu.upenn.cis.ppod.imodel.IMatrix;
 import edu.upenn.cis.ppod.imodel.IOtu;
 import edu.upenn.cis.ppod.imodel.IOTUKeyedMap;
-import edu.upenn.cis.ppod.imodel.IOTUSet;
+import edu.upenn.cis.ppod.imodel.IOtuSetChangeCase;
 import edu.upenn.cis.ppod.imodel.IRow;
 import edu.upenn.cis.ppod.imodel.IVersionInfo;
 import edu.upenn.cis.ppod.util.IVisitor;
@@ -102,7 +102,7 @@ public abstract class Matrix<R extends IRow<C, ?>, C extends ICell<?, ?>>
 	@JoinColumn(name = OTUSet.JOIN_COLUMN, insertable = false,
 				updatable = false)
 	@Nullable
-	private IOTUSet parent;
+	private IOtuSetChangeCase parent;
 
 	/** Default constructor. */
 	Matrix() {}
@@ -143,7 +143,7 @@ public abstract class Matrix<R extends IRow<C, ?>, C extends ICell<?, ?>>
 	protected void afterUnmarshal(
 			@CheckForNull final Unmarshaller u,
 			final Object parent) {
-		this.parent = (IOTUSet) parent;
+		this.parent = (IOtuSetChangeCase) parent;
 	}
 
 	@Override
@@ -240,7 +240,7 @@ public abstract class Matrix<R extends IRow<C, ?>, C extends ICell<?, ?>>
 	 * 
 	 * @return this matrix's {@code OTUSet}
 	 */
-	public IOTUSet getParent() {
+	public IOtuSetChangeCase getParent() {
 		return parent;
 	}
 
@@ -344,7 +344,7 @@ public abstract class Matrix<R extends IRow<C, ?>, C extends ICell<?, ?>>
 
 	/** {@inheritDoc} */
 	public void setParent(
-			@Nullable final IOTUSet otuSet) {
+			@Nullable final IOtuSetChangeCase otuSet) {
 		checkState(
 				getOTUKeyedRows() != null,
 				"getOTUKeyedRows() returned null - has the conrete class been constructed correctly, w/ its OTU->X dependency?");

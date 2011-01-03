@@ -30,7 +30,7 @@ import org.testng.annotations.Test;
 import edu.upenn.cis.ppod.TestGroupDefs;
 import edu.upenn.cis.ppod.imodel.IDNASequence;
 import edu.upenn.cis.ppod.imodel.IOtu;
-import edu.upenn.cis.ppod.imodel.IOTUSet;
+import edu.upenn.cis.ppod.imodel.IOtuSetChangeCase;
 import edu.upenn.cis.ppod.imodel.ISequenceSet;
 import edu.upenn.cis.ppod.util.IVisitor;
 
@@ -75,12 +75,12 @@ public class SequenceSetTest {
 		final String seqStr3 = "CTCCTCGTCAGCAG";
 		seq3.setSequence(seqStr3);
 
-		final IOTUSet otuSet0 = new OTUSet();
+		final IOtuSetChangeCase otuSet0 = new OTUSet();
 		seqSet.setParent(otuSet0);
 
-		final IOtu otu0 = new OtuChangeCase().setLabel("otu0");
-		final IOtu otu1 = new OtuChangeCase().setLabel("otu1");
-		final IOtu otu2 = new OtuChangeCase().setLabel("otu2");
+		final IOtu otu0 = new Otu().setLabel("otu0");
+		final IOtu otu1 = new Otu().setLabel("otu1");
+		final IOtu otu2 = new Otu().setLabel("otu2");
 		otuSet0.addOTU(otu0);
 		otuSet0.addOTU(otu1);
 		otuSet0.addOTU(otu2);
@@ -113,12 +113,12 @@ public class SequenceSetTest {
 		final String seqStr3 = "CTCCTCGTCAGCAG";
 		seq3.setSequence(seqStr3);
 
-		final IOTUSet otuSet0 = new OTUSet();
+		final IOtuSetChangeCase otuSet0 = new OTUSet();
 		seqSet.setParent(otuSet0);
 
-		final IOtu otu0 = new OtuChangeCase().setLabel("otu0");
-		final IOtu otu1 = new OtuChangeCase().setLabel("otu1");
-		final IOtu otu2 = new OtuChangeCase().setLabel("otu2");
+		final IOtu otu0 = new Otu().setLabel("otu0");
+		final IOtu otu1 = new Otu().setLabel("otu1");
+		final IOtu otu2 = new Otu().setLabel("otu2");
 		otuSet0.addOTU(otu0);
 		otuSet0.addOTU(otu1);
 		otuSet0.addOTU(otu2);
@@ -138,7 +138,7 @@ public class SequenceSetTest {
 		seqSet.setInNeedOfNewVersion();
 		assertTrue(seqSet.isInNeedOfNewVersion());
 
-		final IOTUSet otuSet = new OTUSet();
+		final IOtuSetChangeCase otuSet = new OTUSet();
 		otuSet.addDNASequenceSet(seqSet);
 		seqSet.unsetInNeedOfNewVersion();
 		otuSet.unsetInNeedOfNewVersion();
@@ -169,17 +169,17 @@ public class SequenceSetTest {
 	@Test
 	public void afterUnmarshal() {
 		final SequenceSet<?> seqSet = new DNASequenceSet();
-		final IOTUSet otuSet = new OTUSet();
+		final IOtuSetChangeCase otuSet = new OTUSet();
 		seqSet.afterUnmarshal(null, otuSet);
 		assertSame(seqSet.getParent(), otuSet);
 	}
 
 	@Test
 	public void accept() {
-		final IOTUSet otuSet = new OTUSet();
-		otuSet.addOTU(new OtuChangeCase().setLabel("otu-0"));
-		otuSet.addOTU(new OtuChangeCase().setLabel("otu-1"));
-		otuSet.addOTU(new OtuChangeCase().setLabel("otu-2"));
+		final IOtuSetChangeCase otuSet = new OTUSet();
+		otuSet.addOTU(new Otu().setLabel("otu-0"));
+		otuSet.addOTU(new Otu().setLabel("otu-1"));
+		otuSet.addOTU(new Otu().setLabel("otu-2"));
 
 		final DNASequenceSet seqSet = new DNASequenceSet();
 
