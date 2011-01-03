@@ -20,15 +20,15 @@ import javax.xml.bind.annotation.XmlElement;
 import edu.upenn.cis.ppod.imodel.IDNARow;
 import edu.upenn.cis.ppod.imodel.IOtu;
 
-public class OTUDNARowPair extends
+public class OtuDnaRowPairCaseChange extends
 		OtuKeyedPairCaseChange<IDNARow> {
 
 	/**
 	 * For JAXB.
 	 */
-	protected OTUDNARowPair() {}
+	protected OtuDnaRowPairCaseChange() {}
 
-	public OTUDNARowPair(final IOtu first, final IDNARow second) {
+	public OtuDnaRowPairCaseChange(final IOtu first, final IDNARow second) {
 		super(first, second);
 	}
 
