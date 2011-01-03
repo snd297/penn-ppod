@@ -30,7 +30,7 @@ import javax.xml.bind.annotation.XmlElement;
 import javax.xml.bind.annotation.adapters.XmlAdapter;
 
 import edu.upenn.cis.ppod.imodel.IDNASequence;
-import edu.upenn.cis.ppod.imodel.IDNASequenceSet;
+import edu.upenn.cis.ppod.imodel.IDnaSequenceSet;
 import edu.upenn.cis.ppod.imodel.IOtu;
 import edu.upenn.cis.ppod.util.IVisitor;
 
@@ -43,18 +43,18 @@ import edu.upenn.cis.ppod.util.IVisitor;
 @Table(name = DnaSequenceSet.TABLE)
 public class DnaSequenceSet
 		extends SequenceSet<IDNASequence>
-		implements IDNASequenceSet {
+		implements IDnaSequenceSet {
 
 	public static class Adapter extends
-			XmlAdapter<DnaSequenceSet, IDNASequenceSet> {
+			XmlAdapter<DnaSequenceSet, IDnaSequenceSet> {
 
 		@Override
-		public DnaSequenceSet marshal(final IDNASequenceSet sequenceSet) {
+		public DnaSequenceSet marshal(final IDnaSequenceSet sequenceSet) {
 			return (DnaSequenceSet) sequenceSet;
 		}
 
 		@Override
-		public IDNASequenceSet unmarshal(final DnaSequenceSet sequenceSet) {
+		public IDnaSequenceSet unmarshal(final DnaSequenceSet sequenceSet) {
 			return sequenceSet;
 		}
 	}

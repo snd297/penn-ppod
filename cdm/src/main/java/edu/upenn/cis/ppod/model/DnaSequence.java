@@ -38,7 +38,7 @@ import com.google.common.collect.ImmutableSet;
 import edu.umd.cs.findbugs.annotations.CheckForNull;
 import edu.umd.cs.findbugs.annotations.Nullable;
 import edu.upenn.cis.ppod.imodel.IDNASequence;
-import edu.upenn.cis.ppod.imodel.IDNASequenceSet;
+import edu.upenn.cis.ppod.imodel.IDnaSequenceSet;
 import edu.upenn.cis.ppod.util.IVisitor;
 
 /**
@@ -49,7 +49,7 @@ import edu.upenn.cis.ppod.util.IVisitor;
 @Entity
 @Table(name = DnaSequence.TABLE)
 public class DnaSequence
-		extends Sequence<IDNASequenceSet>
+		extends Sequence<IDnaSequenceSet>
 		implements IDNASequence {
 
 	public static class Adapter extends XmlAdapter<DnaSequence, IDNASequence> {
@@ -100,7 +100,7 @@ public class DnaSequence
 			optional = false,
 			targetEntity = DnaSequenceSet.class)
 	@Nullable
-	private IDNASequenceSet parent;
+	private IDnaSequenceSet parent;
 
 	@ElementCollection
 	@CollectionTable(name = "DNA_SEQUENCE_PHRED_PHRAP_SCORES",
@@ -121,7 +121,7 @@ public class DnaSequence
 	}
 
 	@Nullable
-	public IDNASequenceSet getParent() {
+	public IDnaSequenceSet getParent() {
 		return parent;
 	}
 
@@ -140,7 +140,7 @@ public class DnaSequence
 
 	/** {@inheritDoc} */
 	public void setParent(
-			@CheckForNull final IDNASequenceSet parent) {
+			@CheckForNull final IDnaSequenceSet parent) {
 		this.parent = parent;
 	}
 
