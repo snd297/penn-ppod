@@ -5,7 +5,7 @@ import javax.xml.bind.annotation.XmlAccessorType;
 import javax.xml.bind.annotation.XmlElement;
 
 import edu.upenn.cis.ppod.imodel.IProteinRow;
-import edu.upenn.cis.ppod.model.OTU;
+import edu.upenn.cis.ppod.model.OtuChangeCase;
 
 @XmlAccessorType(XmlAccessType.NONE)
 public class OTUProteinRowPair
@@ -13,7 +13,7 @@ public class OTUProteinRowPair
 
 	protected OTUProteinRowPair() {}
 
-	public OTUProteinRowPair(final OTU first, final IProteinRow second) {
+	public OTUProteinRowPair(final OtuChangeCase first, final IProteinRow second) {
 		super(first, second);
 	}
 

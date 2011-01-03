@@ -49,9 +49,9 @@ public class StandardMatrixTest {
 
 	@edu.umd.cs.findbugs.annotations.SuppressWarnings
 	private IOTUSet otuSet012;
-	private OTU otu0;
-	private OTU otu1;
-	private OTU otu2;
+	private OtuChangeCase otu0;
+	private OtuChangeCase otu1;
+	private OtuChangeCase otu2;
 
 	@edu.umd.cs.findbugs.annotations.SuppressWarnings
 	private StandardMatrix matrix;
@@ -60,13 +60,13 @@ public class StandardMatrixTest {
 	public void beforeMethod() {
 		matrix = new StandardMatrix();
 
-		otu0 = new OTU();
+		otu0 = new OtuChangeCase();
 		otu0.setLabel("otu0");
 
-		otu1 = new OTU();
+		otu1 = new OtuChangeCase();
 		otu1.setLabel("otu1");
 
-		otu2 = new OTU();
+		otu2 = new OtuChangeCase();
 		otu2.setLabel("otu2");
 
 		otuSet012 = new OTUSet();
@@ -114,7 +114,7 @@ public class StandardMatrixTest {
 
 		final int originalRowsSize = matrix.getRows().size();
 
-		final ImmutableList<OTU> otus210 = ImmutableList.of(otu2, otu1, otu0);
+		final ImmutableList<OtuChangeCase> otus210 = ImmutableList.of(otu2, otu1, otu0);
 		matrix.getParent().setOTUs(otus210);
 
 		assertEquals(matrix.getParent().getOTUs(), otus210);
@@ -127,7 +127,7 @@ public class StandardMatrixTest {
 
 		otuSet012.setOTUs(newArrayList(otu1, otu2));
 
-		final ImmutableList<OTU> otus12 = ImmutableList.of(otu1, otu2);
+		final ImmutableList<OtuChangeCase> otus12 = ImmutableList.of(otu1, otu2);
 
 		assertEquals(matrix.getParent().getOTUs(), otus12);
 		assertEquals(matrix.getRows().size(), otus12.size());

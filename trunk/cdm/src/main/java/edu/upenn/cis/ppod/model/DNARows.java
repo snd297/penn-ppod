@@ -121,8 +121,8 @@ public class DNARows implements IOTUKeyedMap<IDNARow> {
 			orphanRemoval = true,
 			targetEntity = DNARow.class)
 	@JoinTable(inverseJoinColumns = @JoinColumn(name = DNARow.JOIN_COLUMN))
-	@MapKeyJoinColumn(name = OTU.JOIN_COLUMN)
-	@MapKeyClass(OTU.class)
+	@MapKeyJoinColumn(name = OtuChangeCase.JOIN_COLUMN)
+	@MapKeyClass(OtuChangeCase.class)
 	public Map<IOtu, IDNARow> getValues() {
 		return rows.getValues();
 	}

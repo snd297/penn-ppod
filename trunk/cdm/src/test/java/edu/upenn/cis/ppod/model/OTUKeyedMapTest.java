@@ -43,13 +43,13 @@ public class OTUKeyedMapTest {
 		final OTUSet otuSet = new OTUSet();
 		matrix.setParent(otuSet);
 
-		final IOtu otu0 = new OTU();
+		final IOtu otu0 = new OtuChangeCase();
 		otu0.setLabel("otu0");
 
-		final IOtu otu1 = new OTU();
+		final IOtu otu1 = new OtuChangeCase();
 		otu1.setLabel("otu1");
 
-		final IOtu otu2 = new OTU();
+		final IOtu otu2 = new OtuChangeCase();
 		otu2.setLabel("otu2");
 
 		otuSet.addOTU(otu0);
@@ -98,13 +98,13 @@ public class OTUKeyedMapTest {
 		final IOTUSet otuSet = new OTUSet();
 		otuSet.addDNAMatrix(matrix);
 
-		final IOtu otu0 = new OTU();
+		final IOtu otu0 = new OtuChangeCase();
 		otu0.setLabel("otu0");
 
-		final IOtu otu1 = new OTU();
+		final IOtu otu1 = new OtuChangeCase();
 		otu1.setLabel("otu1");
 
-		final IOtu otu2 = new OTU();
+		final IOtu otu2 = new OtuChangeCase();
 		otu2.setLabel("otu2");
 
 		otuSet.addOTU(otu0);

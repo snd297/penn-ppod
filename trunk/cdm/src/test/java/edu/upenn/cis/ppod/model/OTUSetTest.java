@@ -68,9 +68,9 @@ public class OTUSetTest {
 
 		final OTUSet otuSet = new OTUSet();
 
-		otuSet.addOTU(new OTU().setLabel("otu-0"));
-		otuSet.addOTU(new OTU().setLabel("otu-1"));
-		otuSet.addOTU(new OTU().setLabel("otu-2"));
+		otuSet.addOTU(new OtuChangeCase().setLabel("otu-0"));
+		otuSet.addOTU(new OtuChangeCase().setLabel("otu-1"));
+		otuSet.addOTU(new OtuChangeCase().setLabel("otu-2"));
 
 		otuSet.addStandardMatrix(new StandardMatrix());
 		otuSet.addStandardMatrix(new StandardMatrix());
@@ -96,7 +96,7 @@ public class OTUSetTest {
 		otuSet.accept(visitor);
 
 		verify(visitor, times(otuSet.getOTUs().size()))
-				.visitOTU(any(OTU.class));
+				.visitOTU(any(OtuChangeCase.class));
 		verify(visitor, times(otuSet.getStandardMatrices().size()))
 				.visitStandardMatrix(any(StandardMatrix.class));
 		verify(visitor, times(otuSet.getDNAMatrices().size())).visitDNAMatrix(
@@ -198,9 +198,9 @@ public class OTUSetTest {
 
 		otuSet.addDNASequenceSet(dnaSequenceSet);
 
-		final OTU otu0 = new OTU().setLabel("otu-0");
-		final OTU otu1 = new OTU().setLabel("otu-1");
-		final OTU otu2 = new OTU().setLabel("otu-2");
+		final OtuChangeCase otu0 = new OtuChangeCase().setLabel("otu-0");
+		final OtuChangeCase otu1 = new OtuChangeCase().setLabel("otu-1");
+		final OtuChangeCase otu2 = new OtuChangeCase().setLabel("otu-2");
 
 		otuSet.unsetInNeedOfNewVersion();
 		standardMatrix.unsetInNeedOfNewVersion();
@@ -232,8 +232,8 @@ public class OTUSetTest {
 		assertTrue(dnaMatrix.isInNeedOfNewVersion());
 		assertTrue(dnaSequenceSet.isInNeedOfNewVersion());
 
-		final List<OTU> otus012 = ImmutableList.of(otu0, otu1, otu2);
-		final Set<OTU> otusSet012 = ImmutableSet.copyOf(otus012);
+		final List<OtuChangeCase> otus012 = ImmutableList.of(otu0, otu1, otu2);
+		final Set<OtuChangeCase> otusSet012 = ImmutableSet.copyOf(otus012);
 
 		assertEquals(otuSet.getOTUs(), otus012);
 
@@ -272,7 +272,7 @@ public class OTUSetTest {
 	 */
 	@Test
 	public void addOTUWAlreadyContainedOTU() {
-		otuSet.setOTUs(ImmutableList.of(new OTU().setLabel("OTU-0")));
+		otuSet.setOTUs(ImmutableList.of(new OtuChangeCase().setLabel("OTU-0")));
 		otuSet.unsetInNeedOfNewVersion();
 
 		otuSet.setOTUs(otuSet.getOTUs());
@@ -281,7 +281,7 @@ public class OTUSetTest {
 
 	@Test(expectedExceptions = IllegalArgumentException.class)
 	public void addOTUWDuplicateLabel() {
-		otus.add(new OTU().setLabel(otus.get(0).getLabel()));
+		otus.add(new OtuChangeCase().setLabel(otus.get(0).getLabel()));
 		otuSet.setOTUs(newArrayList(otus));
 	}
 
@@ -365,17 +365,17 @@ public class OTUSetTest {
 		otuSet = new OTUSet();
 		otus = newArrayList();
 
-		final IOtu otu0 = new OTU();
+		final IOtu otu0 = new OtuChangeCase();
 		otus.add(otu0);
 		otu0.setLabel("otu0");
 		otu0.setPPodId();
 
-		final IOtu otu1 = new OTU();
+		final IOtu otu1 = new OtuChangeCase();
 		otus.add(otu1);
 		otu1.setLabel("otu1");
 		otu1.setPPodId();
 
-		final IOtu otu2 = new OTU();
+		final IOtu otu2 = new OtuChangeCase();
 		otus.add(otu2);
 		otu2.setLabel("otu2");
 		otu2.setPPodId();
@@ -396,7 +396,7 @@ public class OTUSetTest {
 
 		otuSet.setVersionInfo(new VersionInfo());
 		study.setVersionInfo(new VersionInfo());
-		final List<IOtu> removedOTUs = otuSet.setOTUs(new ArrayList<OTU>());
+		final List<IOtu> removedOTUs = otuSet.setOTUs(new ArrayList<OtuChangeCase>());
 
 		assertEquals(removedOTUs, otus);
 		assertTrue(otuSet.isInNeedOfNewVersion());
