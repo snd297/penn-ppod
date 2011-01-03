@@ -30,7 +30,7 @@ import edu.upenn.cis.ppod.model.DNASequence;
 import edu.upenn.cis.ppod.model.DNASequenceSet;
 import edu.upenn.cis.ppod.model.ModelAssert;
 import edu.upenn.cis.ppod.model.Otu;
-import edu.upenn.cis.ppod.model.OtuSetChangeSet;
+import edu.upenn.cis.ppod.model.OtuSet;
 
 @Test(groups = TestGroupDefs.FAST)
 public class MergeSequenceSetsTest {
@@ -43,13 +43,13 @@ public class MergeSequenceSetsTest {
 		srcSeqSet.setLabel("src-seq-set-0");
 		final IDNASequenceSet trgSeqSet = new DNASequenceSet();
 
-		final IOtuSet trgOTUSet = new OtuSetChangeSet();
+		final IOtuSet trgOTUSet = new OtuSet();
 		trgOTUSet.addOTU(new Otu("otu-0"));
 		trgOTUSet.addOTU(new Otu("otu-1"));
 		trgOTUSet.addOTU(new Otu("otu-2"));
 		trgOTUSet.addDNASequenceSet(trgSeqSet);
 
-		final IOtuSet srcOTUSet = new OtuSetChangeSet();
+		final IOtuSet srcOTUSet = new OtuSet();
 		srcOTUSet.addOTU(new Otu("otu-0"));
 		srcOTUSet.addOTU(new Otu("otu-1"));
 		srcOTUSet.addOTU(new Otu("otu-2"));
@@ -113,13 +113,13 @@ public class MergeSequenceSetsTest {
 		srcSeqSet.setLabel("src-seq-set-0");
 		final IDNASequenceSet trgSeqSet = new DNASequenceSet();
 
-		final IOtuSet trgOTUSet = new OtuSetChangeSet();
+		final IOtuSet trgOTUSet = new OtuSet();
 		trgOTUSet.addOTU(new Otu("otu-0"));
 		trgOTUSet.addOTU(new Otu("otu-1"));
 		trgOTUSet.addOTU(new Otu("otu-2"));
 		trgOTUSet.addDNASequenceSet(trgSeqSet);
 
-		final IOtuSet srcOTUSet = new OtuSetChangeSet();
+		final IOtuSet srcOTUSet = new OtuSet();
 		srcOTUSet.addOTU(new Otu("otu-0"));
 		srcOTUSet.addOTU(new Otu("otu-1"));
 		srcOTUSet.addOTU(new Otu("otu-2"));
@@ -180,13 +180,13 @@ public class MergeSequenceSetsTest {
 		srcSeqSet.setLabel("src-seq-set-0");
 		final IDNASequenceSet trgSeqSet = new DNASequenceSet();
 
-		final IOtuSet trgOTUSet = new OtuSetChangeSet();
+		final IOtuSet trgOTUSet = new OtuSet();
 		trgOTUSet.addOTU(new Otu("otu-0"));
 		trgOTUSet.addOTU(new Otu("otu-1"));
 		trgOTUSet.addOTU(new Otu("otu-2"));
 		trgOTUSet.addDNASequenceSet(trgSeqSet);
 
-		final IOtuSet srcOTUSet = new OtuSetChangeSet();
+		final IOtuSet srcOTUSet = new OtuSet();
 		srcOTUSet.addOTU(new Otu("otu-0"));
 		srcOTUSet.addOTU(new Otu("otu-1"));
 		srcOTUSet.addOTU(new Otu("otu-2"));

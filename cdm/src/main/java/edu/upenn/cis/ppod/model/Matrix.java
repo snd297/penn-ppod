@@ -98,8 +98,8 @@ public abstract class Matrix<R extends IRow<C, ?>, C extends ICell<?, ?>>
 	 * {@code CharacterStateMatrix}.
 	 */
 	@ManyToOne(fetch = FetchType.LAZY, optional = false,
-			targetEntity = OtuSetChangeSet.class)
-	@JoinColumn(name = OtuSetChangeSet.JOIN_COLUMN, insertable = false,
+			targetEntity = OtuSet.class)
+	@JoinColumn(name = OtuSet.JOIN_COLUMN, insertable = false,
 				updatable = false)
 	@Nullable
 	private IOtuSet parent;

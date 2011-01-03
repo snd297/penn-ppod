@@ -66,20 +66,20 @@ import edu.upenn.cis.ppod.util.IVisitor;
  * @author Sam Donnelly
  */
 @Entity
-@Table(name = OtuSetChangeSet.TABLE)
-public class OtuSetChangeSet
+@Table(name = OtuSet.TABLE)
+public class OtuSet
 		extends UUPPodEntityWithDocId
 		implements IOtuSet {
 
-	public static class Adapter extends XmlAdapter<OtuSetChangeSet, IOtuSet> {
+	public static class Adapter extends XmlAdapter<OtuSet, IOtuSet> {
 
 		@Override
-		public OtuSetChangeSet marshal(final IOtuSet otuSet) {
-			return (OtuSetChangeSet) otuSet;
+		public OtuSet marshal(final IOtuSet otuSet) {
+			return (OtuSet) otuSet;
 		}
 
 		@Override
-		public IOtuSet unmarshal(final OtuSetChangeSet otuSet) {
+		public IOtuSet unmarshal(final OtuSet otuSet) {
 			return otuSet;
 		}
 	}
@@ -165,7 +165,7 @@ public class OtuSetChangeSet
 	/**
 	 * Default constructor.
 	 */
-	public OtuSetChangeSet() {}
+	public OtuSet() {}
 
 	@Override
 	public void accept(final IVisitor visitor) {

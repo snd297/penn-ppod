@@ -67,7 +67,7 @@ public class StandardCellTest {
 
 		matrix = new StandardMatrix();
 
-		final IOtuSet otuSet = new OtuSetChangeSet();
+		final IOtuSet otuSet = new OtuSet();
 
 		final IOtu otu0 = new Otu().setLabel("otu0");
 		otuSet.setOTUs(newArrayList(otu0));

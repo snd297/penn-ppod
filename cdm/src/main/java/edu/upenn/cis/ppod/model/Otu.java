@@ -79,8 +79,8 @@ public class Otu
 	 * The {@code OTUSet} that this {@code OTU} belongs to.
 	 */
 	@Nullable
-	@ManyToOne(targetEntity = OtuSetChangeSet.class)
-	@JoinColumn(name = OtuSetChangeSet.JOIN_COLUMN, insertable = false,
+	@ManyToOne(targetEntity = OtuSet.class)
+	@JoinColumn(name = OtuSet.JOIN_COLUMN, insertable = false,
 			updatable = false, nullable = false)
 	private IOtuSet parent;
 

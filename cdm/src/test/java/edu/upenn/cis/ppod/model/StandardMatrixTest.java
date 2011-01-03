@@ -69,7 +69,7 @@ public class StandardMatrixTest {
 		otu2 = new Otu();
 		otu2.setLabel("otu2");
 
-		otuSet012 = new OtuSetChangeSet();
+		otuSet012 = new OtuSet();
 		otuSet012.setOTUs(newArrayList(otu0, otu1, otu2));
 
 		otuSet012.addStandardMatrix(matrix);

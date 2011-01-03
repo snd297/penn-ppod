@@ -21,9 +21,9 @@ import javax.xml.bind.annotation.adapters.XmlJavaTypeAdapter;
 
 import edu.umd.cs.findbugs.annotations.CheckForNull;
 import edu.umd.cs.findbugs.annotations.Nullable;
-import edu.upenn.cis.ppod.model.OtuSetChangeSet;
+import edu.upenn.cis.ppod.model.OtuSet;
 
-@XmlJavaTypeAdapter(OtuSetChangeSet.Adapter.class)
+@XmlJavaTypeAdapter(OtuSet.Adapter.class)
 public interface IOtuSet
 		extends ILabeled, IUUPPodEntity, IChild<IStudy>, IWithDocId {
 
