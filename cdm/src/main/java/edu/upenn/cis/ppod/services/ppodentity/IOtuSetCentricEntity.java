@@ -24,7 +24,7 @@ import edu.upenn.cis.ppod.imodel.IOtuSet;
  * 
  * @author Sam Donnelly
  */
-public interface IOTUSetCentricEntity {
+public interface IOtuSetCentricEntity {
 
 	/**
 	 * Add an OTU set to this {@link IOTUSets}.
