@@ -34,7 +34,7 @@ public interface ISequenceSet<S extends ISequence<?>>
 	 *             sequence's {@code OTUSet}
 	 */
 	@Nullable
-	S getSequence(IOTU otu);
+	S getSequence(IOtuChangeCase otu);
 
 	/**
 	 * Get the length of the sequences in this set, or {@code null} if no
@@ -46,7 +46,7 @@ public interface ISequenceSet<S extends ISequence<?>>
 	@CheckForNull
 	Integer getSequenceLengths();
 
-	Map<IOTU, S> getSequences();
+	Map<IOtuChangeCase, S> getSequences();
 
 	/**
 	 * 
@@ -61,7 +61,7 @@ public interface ISequenceSet<S extends ISequence<?>>
 	 * @return
 	 */
 	@CheckForNull
-	S putSequence(IOTU otu, S sequence);
+	S putSequence(IOtuChangeCase otu, S sequence);
 
 	void setLabel(String label);
 

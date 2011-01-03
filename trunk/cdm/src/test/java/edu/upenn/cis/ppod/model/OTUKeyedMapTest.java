@@ -27,7 +27,7 @@ import org.testng.annotations.Test;
 
 import edu.upenn.cis.ppod.TestGroupDefs;
 import edu.upenn.cis.ppod.imodel.IDNARow;
-import edu.upenn.cis.ppod.imodel.IOTU;
+import edu.upenn.cis.ppod.imodel.IOtuChangeCase;
 import edu.upenn.cis.ppod.imodel.IOTUSet;
 import edu.upenn.cis.ppod.util.IVisitor;
 
@@ -43,13 +43,13 @@ public class OTUKeyedMapTest {
 		final OTUSet otuSet = new OTUSet();
 		matrix.setParent(otuSet);
 
-		final IOTU otu0 = new OTU();
+		final IOtuChangeCase otu0 = new OTU();
 		otu0.setLabel("otu0");
 
-		final IOTU otu1 = new OTU();
+		final IOtuChangeCase otu1 = new OTU();
 		otu1.setLabel("otu1");
 
-		final IOTU otu2 = new OTU();
+		final IOtuChangeCase otu2 = new OTU();
 		otu2.setLabel("otu2");
 
 		otuSet.addOTU(otu0);
@@ -98,13 +98,13 @@ public class OTUKeyedMapTest {
 		final IOTUSet otuSet = new OTUSet();
 		otuSet.addDNAMatrix(matrix);
 
-		final IOTU otu0 = new OTU();
+		final IOtuChangeCase otu0 = new OTU();
 		otu0.setLabel("otu0");
 
-		final IOTU otu1 = new OTU();
+		final IOtuChangeCase otu1 = new OTU();
 		otu1.setLabel("otu1");
 
-		final IOTU otu2 = new OTU();
+		final IOtuChangeCase otu2 = new OTU();
 		otu2.setLabel("otu2");
 
 		otuSet.addOTU(otu0);

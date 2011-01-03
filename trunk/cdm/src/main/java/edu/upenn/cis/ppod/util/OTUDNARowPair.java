@@ -18,7 +18,7 @@ package edu.upenn.cis.ppod.util;
 import javax.xml.bind.annotation.XmlElement;
 
 import edu.upenn.cis.ppod.imodel.IDNARow;
-import edu.upenn.cis.ppod.imodel.IOTU;
+import edu.upenn.cis.ppod.imodel.IOtuChangeCase;
 
 public class OTUDNARowPair extends
 		OTUKeyedPair<IDNARow> {
@@ -28,7 +28,7 @@ public class OTUDNARowPair extends
 	 */
 	protected OTUDNARowPair() {}
 
-	public OTUDNARowPair(final IOTU first, final IDNARow second) {
+	public OTUDNARowPair(final IOtuChangeCase first, final IDNARow second) {
 		super(first, second);
 	}
 

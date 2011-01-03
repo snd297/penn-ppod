@@ -29,7 +29,7 @@ import org.testng.annotations.Test;
 
 import edu.upenn.cis.ppod.TestGroupDefs;
 import edu.upenn.cis.ppod.imodel.IDNASequence;
-import edu.upenn.cis.ppod.imodel.IOTU;
+import edu.upenn.cis.ppod.imodel.IOtuChangeCase;
 import edu.upenn.cis.ppod.imodel.IOTUSet;
 import edu.upenn.cis.ppod.imodel.ISequenceSet;
 import edu.upenn.cis.ppod.util.IVisitor;
@@ -78,9 +78,9 @@ public class SequenceSetTest {
 		final IOTUSet otuSet0 = new OTUSet();
 		seqSet.setParent(otuSet0);
 
-		final IOTU otu0 = new OTU().setLabel("otu0");
-		final IOTU otu1 = new OTU().setLabel("otu1");
-		final IOTU otu2 = new OTU().setLabel("otu2");
+		final IOtuChangeCase otu0 = new OTU().setLabel("otu0");
+		final IOtuChangeCase otu1 = new OTU().setLabel("otu1");
+		final IOtuChangeCase otu2 = new OTU().setLabel("otu2");
 		otuSet0.addOTU(otu0);
 		otuSet0.addOTU(otu1);
 		otuSet0.addOTU(otu2);
@@ -116,9 +116,9 @@ public class SequenceSetTest {
 		final IOTUSet otuSet0 = new OTUSet();
 		seqSet.setParent(otuSet0);
 
-		final IOTU otu0 = new OTU().setLabel("otu0");
-		final IOTU otu1 = new OTU().setLabel("otu1");
-		final IOTU otu2 = new OTU().setLabel("otu2");
+		final IOtuChangeCase otu0 = new OTU().setLabel("otu0");
+		final IOtuChangeCase otu1 = new OTU().setLabel("otu1");
+		final IOtuChangeCase otu2 = new OTU().setLabel("otu2");
 		otuSet0.addOTU(otu0);
 		otuSet0.addOTU(otu1);
 		otuSet0.addOTU(otu2);

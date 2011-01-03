@@ -31,7 +31,7 @@ import javax.xml.bind.annotation.adapters.XmlAdapter;
 
 import edu.upenn.cis.ppod.imodel.IDNASequence;
 import edu.upenn.cis.ppod.imodel.IDNASequenceSet;
-import edu.upenn.cis.ppod.imodel.IOTU;
+import edu.upenn.cis.ppod.imodel.IOtuChangeCase;
 import edu.upenn.cis.ppod.util.IVisitor;
 
 /**
@@ -104,13 +104,13 @@ public class DNASequenceSet
 	}
 
 	@Override
-	public IDNASequence getSequence(final IOTU otu) {
+	public IDNASequence getSequence(final IOtuChangeCase otu) {
 		checkNotNull(otu);
 		return getOTUKeyedSequences().get(otu);
 	}
 
 	@Override
-	public Map<IOTU, IDNASequence> getSequences() {
+	public Map<IOtuChangeCase, IDNASequence> getSequences() {
 		return Collections.unmodifiableMap(
 				getOTUKeyedSequences()
 						.getValues());
@@ -119,7 +119,7 @@ public class DNASequenceSet
 	@Override
 	@CheckForNull
 	public IDNASequence putSequence(
-			final IOTU otu,
+			final IOtuChangeCase otu,
 			final IDNASequence sequence) {
 		checkNotNull(otu);
 		checkNotNull(sequence);

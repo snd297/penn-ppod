@@ -26,7 +26,7 @@ import org.testng.annotations.Test;
 import edu.upenn.cis.ppod.TestGroupDefs;
 import edu.upenn.cis.ppod.dao.IObjectWithLongIdDAO;
 import edu.upenn.cis.ppod.imodel.INewVersionInfo;
-import edu.upenn.cis.ppod.imodel.IOTU;
+import edu.upenn.cis.ppod.imodel.IOtuChangeCase;
 import edu.upenn.cis.ppod.imodel.IOTUSet;
 import edu.upenn.cis.ppod.imodel.IStandardCell;
 import edu.upenn.cis.ppod.imodel.IStandardCharacter;
@@ -102,7 +102,7 @@ public class CreateOrUpdateStandardMatrixTest {
 					targetMatrix.getCharacters().get(i).getPPodId());
 		}
 
-		final List<IOTU> shuffledSourceOTUs =
+		final List<IOtuChangeCase> shuffledSourceOTUs =
 				newArrayList(sourceMatrix.getParent().getOTUs());
 		shuffledSourceOTUs.set(0,
 				sourceMatrix.getParent()
@@ -165,7 +165,7 @@ public class CreateOrUpdateStandardMatrixTest {
 					sourceMatrix.getCharacters().get(0));
 		sourceMatrix.setCharacters(newSourceMatrixCharacters);
 
-		for (final IOTU sourceOTU : sourceMatrix.getParent().getOTUs()) {
+		for (final IOtuChangeCase sourceOTU : sourceMatrix.getParent().getOTUs()) {
 			final IStandardRow sourceRow =
 					sourceMatrix.getRows().get(sourceOTU);
 
@@ -228,7 +228,7 @@ public class CreateOrUpdateStandardMatrixTest {
 
 		final List<IStandardCell> removedSourceCells = newArrayList();
 
-		for (final IOTU sourceOTU : sourceMatrix.getParent().getOTUs()) {
+		for (final IOtuChangeCase sourceOTU : sourceMatrix.getParent().getOTUs()) {
 			final IStandardRow sourceRow = sourceMatrix.getRows()
 					.get(sourceOTU);
 			final List<IStandardCell> newSourceCells =
@@ -240,7 +240,7 @@ public class CreateOrUpdateStandardMatrixTest {
 			sourceRow.setCells(newSourceCells);
 		}
 
-		for (final IOTU targetOTU : targetMatrix.getParent().getOTUs()) {
+		for (final IOtuChangeCase targetOTU : targetMatrix.getParent().getOTUs()) {
 			final IStandardRow targetRow = targetMatrix.getRows()
 					.get(targetOTU);
 			// It will be the _last_ cell in the row that is deleted by the dao

@@ -42,7 +42,7 @@ import com.google.common.collect.ImmutableSet;
 import edu.upenn.cis.ppod.TestGroupDefs;
 import edu.upenn.cis.ppod.imodel.IDNAMatrix;
 import edu.upenn.cis.ppod.imodel.IDNASequenceSet;
-import edu.upenn.cis.ppod.imodel.IOTU;
+import edu.upenn.cis.ppod.imodel.IOtuChangeCase;
 import edu.upenn.cis.ppod.imodel.IOTUSet;
 import edu.upenn.cis.ppod.imodel.IStandardMatrix;
 import edu.upenn.cis.ppod.imodel.IStudy;
@@ -59,7 +59,7 @@ public class OTUSetTest {
 
 	private OTUSet otuSet;
 
-	private List<IOTU> otus;
+	private List<IOtuChangeCase> otus;
 
 	private IStudy study;
 
@@ -365,17 +365,17 @@ public class OTUSetTest {
 		otuSet = new OTUSet();
 		otus = newArrayList();
 
-		final IOTU otu0 = new OTU();
+		final IOtuChangeCase otu0 = new OTU();
 		otus.add(otu0);
 		otu0.setLabel("otu0");
 		otu0.setPPodId();
 
-		final IOTU otu1 = new OTU();
+		final IOtuChangeCase otu1 = new OTU();
 		otus.add(otu1);
 		otu1.setLabel("otu1");
 		otu1.setPPodId();
 
-		final IOTU otu2 = new OTU();
+		final IOtuChangeCase otu2 = new OTU();
 		otus.add(otu2);
 		otu2.setLabel("otu2");
 		otu2.setPPodId();
@@ -396,7 +396,7 @@ public class OTUSetTest {
 
 		otuSet.setVersionInfo(new VersionInfo());
 		study.setVersionInfo(new VersionInfo());
-		final List<IOTU> removedOTUs = otuSet.setOTUs(new ArrayList<OTU>());
+		final List<IOtuChangeCase> removedOTUs = otuSet.setOTUs(new ArrayList<OTU>());
 
 		assertEquals(removedOTUs, otus);
 		assertTrue(otuSet.isInNeedOfNewVersion());
@@ -460,10 +460,10 @@ public class OTUSetTest {
 	public void removeOTU() {
 		otuSet.unsetInNeedOfNewVersion();
 
-		final ImmutableList<IOTU> otus2 =
+		final ImmutableList<IOtuChangeCase> otus2 =
 				ImmutableList.of(otus.get(0), otus.get(2));
 
-		final ImmutableList<IOTU> removedOTUs =
+		final ImmutableList<IOtuChangeCase> removedOTUs =
 				ImmutableList.copyOf(otuSet.setOTUs(otus2));
 
 		assertFalse(contains(otuSet.getOTUs(), otus.get(1)));

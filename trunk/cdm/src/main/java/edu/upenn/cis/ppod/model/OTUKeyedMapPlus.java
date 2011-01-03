@@ -29,7 +29,7 @@ import javax.annotation.CheckForNull;
 import javax.annotation.Nullable;
 
 import edu.upenn.cis.ppod.imodel.IChild;
-import edu.upenn.cis.ppod.imodel.IOTU;
+import edu.upenn.cis.ppod.imodel.IOtuChangeCase;
 import edu.upenn.cis.ppod.imodel.IOTUKeyedMapPlus;
 import edu.upenn.cis.ppod.imodel.IOTUSet;
 import edu.upenn.cis.ppod.util.IVisitor;
@@ -50,7 +50,7 @@ public class OTUKeyedMapPlus<V extends IChild<P>, P extends IChild<IOTUSet>, OP 
 
 	private P parent;
 
-	private Map<IOTU, V> values = newHashMap();
+	private Map<IOtuChangeCase, V> values = newHashMap();
 
 	private final Set<OP> otuSomethingPairs = newHashSet();
 
@@ -99,7 +99,7 @@ public class OTUKeyedMapPlus<V extends IChild<P>, P extends IChild<IOTUSet>, OP 
 
 	/** {@code inheritDoc} */
 	@Nullable
-	public V get(final IOTU otu) {
+	public V get(final IOtuChangeCase otu) {
 		checkNotNull(otu);
 		checkArgument(getValues().keySet().contains(otu),
 				"otu is not in the keys");
@@ -121,12 +121,12 @@ public class OTUKeyedMapPlus<V extends IChild<P>, P extends IChild<IOTUSet>, OP 
 	}
 
 	/** {@inheritDoc} */
-	public Map<IOTU, V> getValues() {
+	public Map<IOtuChangeCase, V> getValues() {
 		return values;
 	}
 
 	@CheckForNull
-	public V put(final IOTU key, final V value) {
+	public V put(final IOtuChangeCase key, final V value) {
 		checkNotNull(key);
 		checkNotNull(value);
 		checkState(getParent() != null, "no parent has been assigned");
@@ -168,8 +168,8 @@ public class OTUKeyedMapPlus<V extends IChild<P>, P extends IChild<IOTUSet>, OP 
 	public void updateOTUs() {
 		final IChild<IOTUSet> parent = getParent();
 
-		final Set<IOTU> otusToBeRemoved = newHashSet();
-		for (final IOTU otu : getValues().keySet()) {
+		final Set<IOtuChangeCase> otusToBeRemoved = newHashSet();
+		for (final IOtuChangeCase otu : getValues().keySet()) {
 			if (parent.getParent() != null
 					&& contains(parent
 									.getParent()
@@ -181,7 +181,7 @@ public class OTUKeyedMapPlus<V extends IChild<P>, P extends IChild<IOTUSet>, OP 
 			}
 		}
 
-		for (final IOTU otuToBeRemoved : otusToBeRemoved) {
+		for (final IOtuChangeCase otuToBeRemoved : otusToBeRemoved) {
 			final V value = get(otuToBeRemoved);
 			if (value != null) {
 				value.setParent(null);
@@ -193,7 +193,7 @@ public class OTUKeyedMapPlus<V extends IChild<P>, P extends IChild<IOTUSet>, OP 
 				.removeAll(otusToBeRemoved);
 
 		if (getParent().getParent() != null) {
-			for (final IOTU otu : parent.getParent().getOTUs()) {
+			for (final IOtuChangeCase otu : parent.getParent().getOTUs()) {
 				if (getValues().containsKey(otu)) {
 
 				} else {
@@ -211,7 +211,7 @@ public class OTUKeyedMapPlus<V extends IChild<P>, P extends IChild<IOTUSet>, OP 
 	}
 
 	/** {@inheritDoc} */
-	public void setValues(final Map<IOTU, V> values) {
+	public void setValues(final Map<IOtuChangeCase, V> values) {
 		this.values = values;
 	}
 }

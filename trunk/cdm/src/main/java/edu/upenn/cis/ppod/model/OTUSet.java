@@ -50,7 +50,7 @@ import edu.upenn.cis.ppod.imodel.IChild;
 import edu.upenn.cis.ppod.imodel.IDNAMatrix;
 import edu.upenn.cis.ppod.imodel.IDNASequenceSet;
 import edu.upenn.cis.ppod.imodel.ILabeled;
-import edu.upenn.cis.ppod.imodel.IOTU;
+import edu.upenn.cis.ppod.imodel.IOtuChangeCase;
 import edu.upenn.cis.ppod.imodel.IOTUSet;
 import edu.upenn.cis.ppod.imodel.IStandardMatrix;
 import edu.upenn.cis.ppod.imodel.IStudy;
@@ -144,7 +144,7 @@ public class OTUSet
 			targetEntity = OTU.class)
 	@OrderColumn(name = "POSITION")
 	@JoinColumn(name = JOIN_COLUMN, nullable = false)
-	private final List<IOTU> otus = newArrayList();
+	private final List<IOtuChangeCase> otus = newArrayList();
 
 	@ManyToOne(fetch = FetchType.LAZY, optional = false,
 			targetEntity = Study.class)
@@ -235,15 +235,15 @@ public class OTUSet
 	/**
 	 * {@inheritDoc}
 	 */
-	public void addOTU(final IOTU otu) {
+	public void addOTU(final IOtuChangeCase otu) {
 		checkNotNull(otu);
 		addOTUWithoutSetOTUsOnChildren(otu);
 		setParentOnChildren();
 	}
 
-	private void addOTUWithoutSetOTUsOnChildren(final IOTU otu) {
+	private void addOTUWithoutSetOTUsOnChildren(final IOtuChangeCase otu) {
 		checkNotNull(otu);
-		final IOTU dupNameOTU =
+		final IOtuChangeCase dupNameOTU =
 				find(getOTUs(),
 						compose(
 								equalTo(
@@ -386,7 +386,7 @@ public class OTUSet
 	 * 
 	 * @return the {@code OTU}s that make up this {@code OTUSet}
 	 */
-	public List<IOTU> getOTUs() {
+	public List<IOtuChangeCase> getOTUs() {
 		return Collections.unmodifiableList(otus);
 	}
 
@@ -396,7 +396,7 @@ public class OTUSet
 	 * @return a modifiable reference to this the otus.
 	 */
 	@XmlElement(name = "otu")
-	protected List<IOTU> getOTUsModifiable() {
+	protected List<IOtuChangeCase> getOTUsModifiable() {
 		return otus;
 	}
 
@@ -500,21 +500,21 @@ public class OTUSet
 	}
 
 	/** {@inheritDoc} */
-	public List<IOTU> setOTUs(final List<? extends IOTU> otus) {
+	public List<IOtuChangeCase> setOTUs(final List<? extends IOtuChangeCase> otus) {
 		checkNotNull(otus);
 		if (otus.equals(getOTUs())) {
 			return Collections.emptyList();
 		}
 
-		final List<IOTU> removedOTUs = newArrayList(getOTUs());
+		final List<IOtuChangeCase> removedOTUs = newArrayList(getOTUs());
 		removedOTUs.removeAll(otus);
 
-		for (final IOTU removedOTU : removedOTUs) {
+		for (final IOtuChangeCase removedOTU : removedOTUs) {
 			removedOTU.setParent(null);
 		}
 
 		getOTUsModifiable().clear();
-		for (final IOTU otu : otus) {
+		for (final IOtuChangeCase otu : otus) {
 			addOTUWithoutSetOTUsOnChildren(otu);
 		}
 

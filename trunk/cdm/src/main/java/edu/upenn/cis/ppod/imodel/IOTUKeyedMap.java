@@ -41,14 +41,14 @@ public interface IOTUKeyedMap<V extends IChild<?>>
 	 *             OTU-keyed map
 	 * @throws NullPointerException if the specified key is null
 	 */
-	V get(IOTU key);
+	V get(IOtuChangeCase key);
 
 	/**
 	 * Get the map that makes up this OTU-keyed map.
 	 * 
 	 * @return the map that makes up this OTU-keyed map
 	 */
-	Map<IOTU, V> getValues();
+	Map<IOtuChangeCase, V> getValues();
 
 	/**
 	 * Associates {@code value} with {@code key} in this map. If the map
@@ -73,7 +73,7 @@ public interface IOTUKeyedMap<V extends IChild<?>>
 	 *             {@code .equals} to {@code value}
 	 */
 	@CheckForNull
-	V put(IOTU key, V value);
+	V put(IOtuChangeCase key, V value);
 
 	/**
 	 * Set the keys of this {@code OTUKeyedMap} to the OTUs in its parent's
