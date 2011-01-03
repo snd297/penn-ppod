@@ -44,8 +44,8 @@ public class SequenceSetTest {
 
 	@Test
 	public void checkSequenceSizesOnEmptySequenceSet() {
-		final SequenceSet<IDNASequence> seqSet = new DNASequenceSet();
-		final IDNASequence seq0 = new DNASequence();
+		final SequenceSet<IDNASequence> seqSet = new DnaSequenceSet();
+		final IDNASequence seq0 = new DnaSequence();
 
 		final String seqStr0 = "ATACCCGACCGCTA";
 
@@ -57,21 +57,21 @@ public class SequenceSetTest {
 
 	@Test
 	public void checkSequenceSizesNonEmptySequenceSet() {
-		final SequenceSet<IDNASequence> seqSet = new DNASequenceSet();
+		final SequenceSet<IDNASequence> seqSet = new DnaSequenceSet();
 
-		final IDNASequence seq0 = new DNASequence();
+		final IDNASequence seq0 = new DnaSequence();
 		final String seqStr0 = "ATACCCGACCGCTA";
 		seq0.setSequence(seqStr0);
 
-		final IDNASequence seq1 = new DNASequence();
+		final IDNASequence seq1 = new DnaSequence();
 		final String seqStr1 = "ATACACGTCCGCTG";
 		seq1.setSequence(seqStr1);
 
-		final IDNASequence seq2 = new DNASequence();
+		final IDNASequence seq2 = new DnaSequence();
 		final String seqStr2 = "TTCCTCGTCCGCTG";
 		seq2.setSequence(seqStr2);
 
-		final IDNASequence seq3 = new DNASequence();
+		final IDNASequence seq3 = new DnaSequence();
 		final String seqStr3 = "CTCCTCGTCAGCAG";
 		seq3.setSequence(seqStr3);
 
@@ -95,21 +95,21 @@ public class SequenceSetTest {
 
 	@Test(expectedExceptions = IllegalArgumentException.class)
 	public void checkSequenceSizesNonEmptySequenceSetWrongLength() {
-		final SequenceSet<IDNASequence> seqSet = new DNASequenceSet();
+		final SequenceSet<IDNASequence> seqSet = new DnaSequenceSet();
 
-		final IDNASequence seq0 = new DNASequence();
+		final IDNASequence seq0 = new DnaSequence();
 		final String seqStr0 = "ATACCCGACCGCT";
 		seq0.setSequence(seqStr0);
 
-		final IDNASequence seq1 = new DNASequence();
+		final IDNASequence seq1 = new DnaSequence();
 		final String seqStr1 = "ATACACGTCCGCTG";
 		seq1.setSequence(seqStr1);
 
-		final IDNASequence seq2 = new DNASequence();
+		final IDNASequence seq2 = new DnaSequence();
 		final String seqStr2 = "TTCCTCGTCCGCTG";
 		seq2.setSequence(seqStr2);
 
-		final IDNASequence seq3 = new DNASequence();
+		final IDNASequence seq3 = new DnaSequence();
 		final String seqStr3 = "CTCCTCGTCAGCAG";
 		seq3.setSequence(seqStr3);
 
@@ -133,7 +133,7 @@ public class SequenceSetTest {
 
 	@Test
 	public void setInNeedOfNewVersion() {
-		final DNASequenceSet seqSet = new DNASequenceSet();
+		final DnaSequenceSet seqSet = new DnaSequenceSet();
 		assertFalse(seqSet.isInNeedOfNewVersion());
 		seqSet.setInNeedOfNewVersion();
 		assertTrue(seqSet.isInNeedOfNewVersion());
@@ -150,7 +150,7 @@ public class SequenceSetTest {
 
 	@Test
 	public void setLabel() {
-		final ISequenceSet<IDNASequence> seqSet = new DNASequenceSet();
+		final ISequenceSet<IDNASequence> seqSet = new DnaSequenceSet();
 		assertNull(seqSet.getLabel());
 
 		assertFalse(seqSet.isInNeedOfNewVersion());
@@ -168,7 +168,7 @@ public class SequenceSetTest {
 
 	@Test
 	public void afterUnmarshal() {
-		final SequenceSet<?> seqSet = new DNASequenceSet();
+		final SequenceSet<?> seqSet = new DnaSequenceSet();
 		final IOtuSet otuSet = new OtuSet();
 		seqSet.afterUnmarshal(null, otuSet);
 		assertSame(seqSet.getParent(), otuSet);
@@ -181,15 +181,15 @@ public class SequenceSetTest {
 		otuSet.addOTU(new Otu().setLabel("otu-1"));
 		otuSet.addOTU(new Otu().setLabel("otu-2"));
 
-		final DNASequenceSet seqSet = new DNASequenceSet();
+		final DnaSequenceSet seqSet = new DnaSequenceSet();
 
 		otuSet.addDNASequenceSet(seqSet);
 
-		final IDNASequence seq0 = (DNASequence) new DNASequence()
+		final IDNASequence seq0 = (DnaSequence) new DnaSequence()
 				.setSequence("ATG");
-		final IDNASequence seq1 = (DNASequence) new DNASequence()
+		final IDNASequence seq1 = (DnaSequence) new DnaSequence()
 				.setSequence("CTA");
-		final IDNASequence seq2 = (DNASequence) new DNASequence()
+		final IDNASequence seq2 = (DnaSequence) new DnaSequence()
 				.setSequence("TTT");
 
 		seqSet.putSequence(otuSet.getOTUs().get(0), seq0);
@@ -205,7 +205,7 @@ public class SequenceSetTest {
 		verify(visitor, times(1)).visitDNASequenceSet(seqSet);
 
 		verify(visitor, times(seqSet.getSequences().values().size()))
-				.visitDNASequence(any(DNASequence.class));
+				.visitDNASequence(any(DnaSequence.class));
 
 		verify(visitor).visitDNASequence(seq0);
 		verify(visitor).visitDNASequence(seq1);

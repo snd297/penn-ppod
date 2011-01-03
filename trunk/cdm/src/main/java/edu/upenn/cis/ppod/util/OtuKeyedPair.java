@@ -16,35 +16,35 @@
 package edu.upenn.cis.ppod.util;
 
 import javax.xml.bind.annotation.XmlElement;
+import javax.xml.bind.annotation.XmlIDREF;
 
-import edu.upenn.cis.ppod.imodel.IDNARow;
 import edu.upenn.cis.ppod.imodel.IOtu;
 
-public class OtuDnaRowPairCaseChange extends
-		OtuKeyedPairCaseChange<IDNARow> {
+/**
+ * @author Sam Donnelly
+ * 
+ */
+public class OtuKeyedPair<U> extends Pair<IOtu, U> {
 
-	/**
-	 * For JAXB.
-	 */
-	protected OtuDnaRowPairCaseChange() {}
+	protected OtuKeyedPair() {}
 
-	public OtuDnaRowPairCaseChange(final IOtu first, final IDNARow second) {
+	public OtuKeyedPair(final IOtu first, final U second) {
 		super(first, second);
 	}
 
 	@XmlElement
+	@XmlIDREF
 	@Override
-	public IDNARow getSecond() {
-		return super.getSecond();
+	public IOtu getFirst() {
+		return super.getFirst();
 	}
 
 	/**
 	 * This seemingly redundant setter method added for the sake of JAXB.
 	 */
 	@Override
-	protected void setSecond(
-			final IDNARow row) {
-		super.setSecond(row);
+	protected void setFirst(final IOtu otu) {
+		super.setFirst(otu);
 	}
 
 }

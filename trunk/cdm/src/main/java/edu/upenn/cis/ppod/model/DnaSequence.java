@@ -47,20 +47,20 @@ import edu.upenn.cis.ppod.util.IVisitor;
  * @author Sam Donnelly
  */
 @Entity
-@Table(name = DNASequence.TABLE)
-public class DNASequence
+@Table(name = DnaSequence.TABLE)
+public class DnaSequence
 		extends Sequence<IDNASequenceSet>
 		implements IDNASequence {
 
-	public static class Adapter extends XmlAdapter<DNASequence, IDNASequence> {
+	public static class Adapter extends XmlAdapter<DnaSequence, IDNASequence> {
 
 		@Override
-		public DNASequence marshal(final IDNASequence sequence) {
-			return (DNASequence) sequence;
+		public DnaSequence marshal(final IDNASequence sequence) {
+			return (DnaSequence) sequence;
 		}
 
 		@Override
-		public IDNASequence unmarshal(final DNASequence sequence) {
+		public IDNASequence unmarshal(final DnaSequence sequence) {
 			return sequence;
 		}
 	}
@@ -98,7 +98,7 @@ public class DNASequence
 	@ManyToOne(
 			fetch = FetchType.LAZY,
 			optional = false,
-			targetEntity = DNASequenceSet.class)
+			targetEntity = DnaSequenceSet.class)
 	@Nullable
 	private IDNASequenceSet parent;
 
@@ -112,7 +112,7 @@ public class DNASequence
 	/**
 	 * Default constructor.
 	 */
-	public DNASequence() {}
+	public DnaSequence() {}
 
 	@Override
 	public void accept(final IVisitor visitor) {

@@ -32,7 +32,7 @@ public class MatrixTest {
 
 	@Test
 	public void setColumnPPodVersionInfo() {
-		final MolecularMatrix<IDNARow, IDNACell> matrix = new DNAMatrix();
+		final MolecularMatrix<IDNARow, IDNACell> matrix = new DnaMatrix();
 		final VersionInfo versionInfo = new VersionInfo();
 		matrix.setColumnsSize(1);
 		matrix.setColumnVersionInfos(versionInfo);
@@ -42,7 +42,7 @@ public class MatrixTest {
 
 	@Test(expectedExceptions = IllegalArgumentException.class)
 	public void setColumnPPodVersionInfosWTooSmallPos() {
-		final IMatrix<?, ?> matrix = new DNAMatrix();
+		final IMatrix<?, ?> matrix = new DnaMatrix();
 		final VersionInfo versionInfo = new VersionInfo();
 		matrix.setColumnVersionInfo(0, versionInfo);
 	}

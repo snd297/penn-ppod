@@ -40,7 +40,7 @@ import edu.upenn.cis.ppod.imodel.DNANucleotide;
 public class MolecularCellTest {
 
 	public void setPolymorphicElements() {
-		final MolecularCell<DNANucleotide, ?> cell = new DNACell();
+		final MolecularCell<DNANucleotide, ?> cell = new DnaCell();
 
 		cell.unsetInNeedOfNewVersion();
 
@@ -88,7 +88,7 @@ public class MolecularCellTest {
 
 	@Test
 	public void setSingleElement() {
-		final MolecularCell<DNANucleotide, ?> cell = new DNACell();
+		final MolecularCell<DNANucleotide, ?> cell = new DnaCell();
 
 		cell.unsetInNeedOfNewVersion();
 		cell.setSingleElement(DNANucleotide.C, false);
@@ -113,7 +113,7 @@ public class MolecularCellTest {
 
 	@Test
 	public void setUncertainElements() {
-		final MolecularCell<DNANucleotide, ?> cell = new DNACell();
+		final MolecularCell<DNANucleotide, ?> cell = new DnaCell();
 		cell.unsetInNeedOfNewVersion();
 		final Set<DNANucleotide> nucleotides =
 				ImmutableSet.of(DNANucleotide.A, DNANucleotide.C);

@@ -39,7 +39,7 @@ public class OTUKeyedMapTest {
 
 	@Test
 	public void clear() {
-		final DNAMatrix matrix = new DNAMatrix();
+		final DnaMatrix matrix = new DnaMatrix();
 		final OtuSet otuSet = new OtuSet();
 		matrix.setParent(otuSet);
 
@@ -56,11 +56,11 @@ public class OTUKeyedMapTest {
 		otuSet.addOTU(otu1);
 		otuSet.addOTU(otu2);
 
-		final IDNARow row0 = new DNARow();
-		final IDNARow row1 = new DNARow();
-		final IDNARow row2 = new DNARow();
+		final IDNARow row0 = new DnaRow();
+		final IDNARow row1 = new DnaRow();
+		final IDNARow row2 = new DnaRow();
 
-		final DNARows rows = new DNARows();
+		final DnaRows rows = new DnaRows();
 		rows.setParent(matrix);
 
 		rows.put(otu0, row0);
@@ -82,8 +82,8 @@ public class OTUKeyedMapTest {
 	 */
 	@Test
 	public void clearWhileEmpty() {
-		final DNAMatrix matrix = new DNAMatrix();
-		final DNARows otusToRows = matrix.getOTUKeyedRows();
+		final DnaMatrix matrix = new DnaMatrix();
+		final DnaRows otusToRows = matrix.getOTUKeyedRows();
 		otusToRows.setParent(matrix);
 		matrix.unsetInNeedOfNewVersion();
 		otusToRows.clear();
@@ -93,7 +93,7 @@ public class OTUKeyedMapTest {
 
 	@Test
 	public void accept() {
-		final DNAMatrix matrix = new DNAMatrix();
+		final DnaMatrix matrix = new DnaMatrix();
 
 		final IOtuSet otuSet = new OtuSet();
 		otuSet.addDNAMatrix(matrix);
@@ -111,8 +111,8 @@ public class OTUKeyedMapTest {
 		otuSet.addOTU(otu1);
 		otuSet.addOTU(otu2);
 
-		final DNARow row0 = new DNARow();
-		final DNARow row2 = new DNARow();
+		final DnaRow row0 = new DnaRow();
+		final DnaRow row2 = new DnaRow();
 
 		matrix.putRow(otu0, row0);
 		matrix.getOTUKeyedRows().getValues().put(otu1, null); // the
@@ -130,7 +130,7 @@ public class OTUKeyedMapTest {
 
 		// Size should be the same as all of the rows minus the null row
 		verify(visitor, times(matrix.getRows().size() - 1))
-				.visitDNARow(any(DNARow.class));
+				.visitDNARow(any(DnaRow.class));
 
 		verify(visitor).visitDNARow(row0);
 		verify(visitor).visitDNARow(row2);

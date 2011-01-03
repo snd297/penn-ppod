@@ -47,7 +47,7 @@ public class MolecularSequenceTest {
 	 */
 	@Test
 	public void setSequence() {
-		final Sequence<?> sequence = new DNASequence();
+		final Sequence<?> sequence = new DnaSequence();
 		final String sequenceString = "ACGMTARC-T-A";
 		sequence.setSequence(sequenceString);
 		assertEquals(sequence.getSequence(), sequenceString);
@@ -71,7 +71,7 @@ public class MolecularSequenceTest {
 	 */
 	@Test(expectedExceptions = IllegalArgumentException.class)
 	public void setSequenceWithAnIllegalCharacter() {
-		final ISequence<?> sequence = new DNASequence();
+		final ISequence<?> sequence = new DnaSequence();
 		final String sequenceString = "ACGTlC-T-A";
 		sequence.setSequence(sequenceString);
 	}
@@ -84,12 +84,12 @@ public class MolecularSequenceTest {
 	 */
 	@Test
 	public void setInNeedOfNewPPodVersion() {
-		final DNASequence sequence = new DNASequence();
+		final DnaSequence sequence = new DnaSequence();
 		final IOtuSet otuSet = new OtuSet();
 		final IOtu otu0 = new Otu();
 		otuSet.addOTU(otu0);
 
-		final ISequenceSet<IDNASequence> sequenceSet = new DNASequenceSet();
+		final ISequenceSet<IDNASequence> sequenceSet = new DnaSequenceSet();
 
 		sequenceSet.setParent(otuSet);
 
@@ -127,7 +127,7 @@ public class MolecularSequenceTest {
 	 */
 	@Test
 	public void setName() {
-		final Sequence<?> sequence = new DNASequence();
+		final Sequence<?> sequence = new DnaSequence();
 
 		assertNull(sequence.getName());
 
@@ -163,7 +163,7 @@ public class MolecularSequenceTest {
 	 */
 	@Test
 	public void setAccession() {
-		final Sequence<?> sequence = new DNASequence();
+		final Sequence<?> sequence = new DnaSequence();
 
 		assertNull(sequence.getAccession());
 
@@ -199,7 +199,7 @@ public class MolecularSequenceTest {
 	 */
 	@Test
 	public void setDescription() {
-		final Sequence<?> sequence = new DNASequence();
+		final Sequence<?> sequence = new DnaSequence();
 
 		assertNull(sequence.getDescription());
 

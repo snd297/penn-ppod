@@ -36,20 +36,20 @@ import edu.upenn.cis.ppod.util.IVisitor;
  * @author Sam Donnelly
  */
 @Entity
-@Table(name = DNAMatrix.TABLE)
-public class DNAMatrix
+@Table(name = DnaMatrix.TABLE)
+public class DnaMatrix
 		extends MolecularMatrix<IDNARow, IDNACell>
 		implements IDNAMatrix {
 
-	public static class Adapter extends XmlAdapter<DNAMatrix, IDNAMatrix> {
+	public static class Adapter extends XmlAdapter<DnaMatrix, IDNAMatrix> {
 
 		@Override
-		public DNAMatrix marshal(final IDNAMatrix matrix) {
-			return (DNAMatrix) matrix;
+		public DnaMatrix marshal(final IDNAMatrix matrix) {
+			return (DnaMatrix) matrix;
 		}
 
 		@Override
-		public IDNAMatrix unmarshal(final DNAMatrix matrix) {
+		public IDNAMatrix unmarshal(final DnaMatrix matrix) {
 			return matrix;
 		}
 	}
@@ -57,12 +57,12 @@ public class DNAMatrix
 	public final static String TABLE = "DNA_MATRIX";
 
 	@Embedded
-	private DNARows rows = new DNARows();
+	private DnaRows rows = new DnaRows();
 
 	/**
 	 * No-arg constructor.
 	 */
-	public DNAMatrix() {
+	public DnaMatrix() {
 		rows.setParent(this);
 	}
 
@@ -78,7 +78,7 @@ public class DNAMatrix
 	 */
 	@XmlElement(name = "rows")
 	@Override
-	protected DNARows getOTUKeyedRows() {
+	protected DnaRows getOTUKeyedRows() {
 		return rows;
 	}
 
@@ -91,7 +91,7 @@ public class DNAMatrix
 	/**
 	 * Created for JAXB.
 	 */
-	protected IDNAMatrix setOTUKeyedRows(final DNARows rows) {
+	protected IDNAMatrix setOTUKeyedRows(final DnaRows rows) {
 		this.rows = rows;
 		return this;
 	}

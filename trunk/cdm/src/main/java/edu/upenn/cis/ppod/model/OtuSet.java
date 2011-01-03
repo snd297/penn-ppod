@@ -115,7 +115,7 @@ public class OtuSet
 	@OneToMany(
 			cascade = CascadeType.ALL,
 			orphanRemoval = true,
-			targetEntity = DNAMatrix.class)
+			targetEntity = DnaMatrix.class)
 	@OrderColumn(name = "POSITION")
 	@JoinColumn(name = JOIN_COLUMN, nullable = false)
 	private final List<IDNAMatrix> dnaMatrices = newArrayList();
@@ -123,7 +123,7 @@ public class OtuSet
 	@OneToMany(
 			cascade = CascadeType.ALL,
 			orphanRemoval = true,
-			targetEntity = DNASequenceSet.class)
+			targetEntity = DnaSequenceSet.class)
 	@OrderColumn(name = "POSITION")
 	@JoinColumn(name = JOIN_COLUMN, nullable = false)
 	private final List<IDNASequenceSet> dnaSequenceSets = newArrayList();

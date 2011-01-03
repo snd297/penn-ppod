@@ -82,7 +82,7 @@ public class ChromatogramTest {
 	@Test
 	public void setSequence() {
 		final Chromatogram chromatogram = new Chromatogram();
-		final IDNASequence sequence = new DNASequence();
+		final IDNASequence sequence = new DnaSequence();
 
 		final Chromatogram returnedChromatogram =
 				chromatogram.setSequence(sequence);

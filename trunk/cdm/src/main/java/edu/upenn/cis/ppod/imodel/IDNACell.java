@@ -17,7 +17,7 @@ package edu.upenn.cis.ppod.imodel;
 
 import javax.xml.bind.annotation.adapters.XmlJavaTypeAdapter;
 
-import edu.upenn.cis.ppod.model.DNACell;
+import edu.upenn.cis.ppod.model.DnaCell;
 
-@XmlJavaTypeAdapter(DNACell.Adapter.class)
+@XmlJavaTypeAdapter(DnaCell.Adapter.class)
 public interface IDNACell extends IMolecularCell<DNANucleotide, IDNARow> {}

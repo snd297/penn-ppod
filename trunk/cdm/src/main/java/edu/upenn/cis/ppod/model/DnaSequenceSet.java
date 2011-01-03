@@ -40,21 +40,21 @@ import edu.upenn.cis.ppod.util.IVisitor;
  * @author Sam Donnelly
  */
 @Entity
-@Table(name = DNASequenceSet.TABLE)
-public class DNASequenceSet
+@Table(name = DnaSequenceSet.TABLE)
+public class DnaSequenceSet
 		extends SequenceSet<IDNASequence>
 		implements IDNASequenceSet {
 
 	public static class Adapter extends
-			XmlAdapter<DNASequenceSet, IDNASequenceSet> {
+			XmlAdapter<DnaSequenceSet, IDNASequenceSet> {
 
 		@Override
-		public DNASequenceSet marshal(final IDNASequenceSet sequenceSet) {
-			return (DNASequenceSet) sequenceSet;
+		public DnaSequenceSet marshal(final IDNASequenceSet sequenceSet) {
+			return (DnaSequenceSet) sequenceSet;
 		}
 
 		@Override
-		public IDNASequenceSet unmarshal(final DNASequenceSet sequenceSet) {
+		public IDNASequenceSet unmarshal(final DnaSequenceSet sequenceSet) {
 			return sequenceSet;
 		}
 	}
@@ -75,12 +75,12 @@ public class DNASequenceSet
 	 */
 	@Embedded
 	@CheckForNull
-	private DNASequences sequences = new DNASequences();
+	private DnaSequences sequences = new DnaSequences();
 
 	/**
 	 * Default constructor.
 	 */
-	public DNASequenceSet() {
+	public DnaSequenceSet() {
 		sequences.setParent(this);
 	}
 
@@ -99,7 +99,7 @@ public class DNASequenceSet
 	@XmlElement(name = "sequences")
 	@Override
 	@Nullable
-	protected DNASequences getOTUKeyedSequences() {
+	protected DnaSequences getOTUKeyedSequences() {
 		return sequences;
 	}
 
@@ -131,7 +131,7 @@ public class DNASequenceSet
 
 	/** Protected For JAXB. */
 	protected void setOTUKeyedSequences(
-			final DNASequences sequences) {
+			final DnaSequences sequences) {
 		checkNotNull(sequences);
 		this.sequences = sequences;
 	}
