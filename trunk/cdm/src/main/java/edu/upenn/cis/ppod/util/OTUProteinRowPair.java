@@ -9,7 +9,7 @@ import edu.upenn.cis.ppod.model.Otu;
 
 @XmlAccessorType(XmlAccessType.NONE)
 public class OTUProteinRowPair
-		extends OTUKeyedPair<IProteinRow> {
+		extends OtuKeyedPairCaseChange<IProteinRow> {
 
 	protected OTUProteinRowPair() {}
 

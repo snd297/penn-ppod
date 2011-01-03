@@ -24,7 +24,7 @@ import edu.upenn.cis.ppod.imodel.IStandardRow;
  * @author Sam Donnelly
  */
 public class OTUStandardRowPair
-		extends OTUKeyedPair<IStandardRow> {
+		extends OtuKeyedPairCaseChange<IStandardRow> {
 
 	/**
 	 * For JAXB.

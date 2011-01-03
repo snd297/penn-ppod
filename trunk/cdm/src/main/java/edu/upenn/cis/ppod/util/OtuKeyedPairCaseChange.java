@@ -24,11 +24,11 @@ import edu.upenn.cis.ppod.imodel.IOtu;
  * @author Sam Donnelly
  * 
  */
-public class OTUKeyedPair<U> extends Pair<IOtu, U> {
+public class OtuKeyedPairCaseChange<U> extends Pair<IOtu, U> {
 
-	protected OTUKeyedPair() {}
+	protected OtuKeyedPairCaseChange() {}
 
-	public OTUKeyedPair(final IOtu first, final U second) {
+	public OtuKeyedPairCaseChange(final IOtu first, final U second) {
 		super(first, second);
 	}
 

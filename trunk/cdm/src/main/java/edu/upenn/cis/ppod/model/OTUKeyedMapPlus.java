@@ -33,7 +33,7 @@ import edu.upenn.cis.ppod.imodel.IOtu;
 import edu.upenn.cis.ppod.imodel.IOTUKeyedMapPlus;
 import edu.upenn.cis.ppod.imodel.IOtuSet;
 import edu.upenn.cis.ppod.util.IVisitor;
-import edu.upenn.cis.ppod.util.OTUKeyedPair;
+import edu.upenn.cis.ppod.util.OtuKeyedPairCaseChange;
 
 /**
  * An {@code IOTU -> PersistentObject} map with {@code equals}-unique values.
@@ -45,7 +45,7 @@ import edu.upenn.cis.ppod.util.OTUKeyedPair;
  * 
  * @author Sam Donnelly
  */
-public class OTUKeyedMapPlus<V extends IChild<P>, P extends IChild<IOtuSet>, OP extends OTUKeyedPair<V>>
+public class OTUKeyedMapPlus<V extends IChild<P>, P extends IChild<IOtuSet>, OP extends OtuKeyedPairCaseChange<V>>
 		implements IOTUKeyedMapPlus<V, P, OP> {
 
 	private P parent;
