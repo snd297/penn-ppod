@@ -48,21 +48,21 @@ import edu.upenn.cis.ppod.util.IVisitor;
  * @author Sam Donnelly
  */
 @Entity
-@Table(name = DNACell.TABLE)
+@Table(name = DnaCell.TABLE)
 @Immutable
-public class DNACell
+public class DnaCell
 		extends MolecularCell<DNANucleotide, IDNARow>
 		implements IDNACell {
 
-	public static class Adapter extends XmlAdapter<DNACell, IDNACell> {
+	public static class Adapter extends XmlAdapter<DnaCell, IDNACell> {
 
 		@Override
-		public DNACell marshal(final IDNACell dnaCell) {
-			return (DNACell) dnaCell;
+		public DnaCell marshal(final IDNACell dnaCell) {
+			return (DnaCell) dnaCell;
 		}
 
 		@Override
-		public IDNACell unmarshal(final DNACell dnaCell) {
+		public IDNACell unmarshal(final DnaCell dnaCell) {
 			return dnaCell;
 		}
 	}
@@ -98,12 +98,12 @@ public class DNACell
 	private DNANucleotide element;
 
 	@ManyToOne(fetch = FetchType.LAZY, optional = false,
-			targetEntity = DNARow.class)
-	@JoinColumn(name = DNARow.JOIN_COLUMN)
+			targetEntity = DnaRow.class)
+	@JoinColumn(name = DnaRow.JOIN_COLUMN)
 	@Nullable
 	private IDNARow parent;
 
-	public DNACell() {}
+	public DnaCell() {}
 
 	@Override
 	public void accept(final IVisitor visitor) {

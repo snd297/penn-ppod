@@ -32,36 +32,36 @@ public class ModelFactory {
 		return attachment;
 	}
 
-	public static DNACell newDNACell(final IVersionInfo versionInfo) {
-		final DNACell cell = new DNACell();
+	public static DnaCell newDNACell(final IVersionInfo versionInfo) {
+		final DnaCell cell = new DnaCell();
 		preparePPodEntity(cell, versionInfo);
 		return cell;
 	}
 
-	public static DNAMatrix newDNAMatrix(
+	public static DnaMatrix newDNAMatrix(
 			final IVersionInfo versionInfo) {
-		final DNAMatrix matrix = new DNAMatrix();
+		final DnaMatrix matrix = new DnaMatrix();
 		prepareUUPPodEntity(matrix, versionInfo);
 		matrix.setColumnVersionInfos(versionInfo);
 		return matrix;
 	}
 
-	public static DNARow newDNARow(final IVersionInfo versionInfo) {
-		final DNARow row = new DNARow();
+	public static DnaRow newDNARow(final IVersionInfo versionInfo) {
+		final DnaRow row = new DnaRow();
 		preparePPodEntity(row, versionInfo);
 		return row;
 	}
 
-	public static DNASequence newDNASequence(
+	public static DnaSequence newDNASequence(
 			final IVersionInfo versionInfo) {
-		final DNASequence sequence = new DNASequence();
+		final DnaSequence sequence = new DnaSequence();
 		preparePPodEntity(sequence, versionInfo);
 		return sequence;
 	}
 
-	public static DNASequenceSet newDNASequenceSet(
+	public static DnaSequenceSet newDNASequenceSet(
 			final IVersionInfo versionInfo) {
-		final DNASequenceSet sequenceSet = new DNASequenceSet();
+		final DnaSequenceSet sequenceSet = new DnaSequenceSet();
 		prepareUUPPodEntity(sequenceSet, versionInfo);
 		return sequenceSet;
 	}

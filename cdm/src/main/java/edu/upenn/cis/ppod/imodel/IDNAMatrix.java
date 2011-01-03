@@ -17,9 +17,9 @@ package edu.upenn.cis.ppod.imodel;
 
 import javax.xml.bind.annotation.adapters.XmlJavaTypeAdapter;
 
-import edu.upenn.cis.ppod.model.DNAMatrix;
+import edu.upenn.cis.ppod.model.DnaMatrix;
 
-@XmlJavaTypeAdapter(DNAMatrix.Adapter.class)
+@XmlJavaTypeAdapter(DnaMatrix.Adapter.class)
 public interface IDNAMatrix extends IMolecularMatrix<IDNARow, IDNACell> {
 
 	void afterUnmarshal();

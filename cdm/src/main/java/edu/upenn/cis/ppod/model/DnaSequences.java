@@ -37,118 +37,97 @@ import javax.xml.bind.annotation.XmlElement;
 
 import org.hibernate.annotations.Parent;
 
-import edu.upenn.cis.ppod.imodel.IDNAMatrix;
-import edu.upenn.cis.ppod.imodel.IDNARow;
+import edu.upenn.cis.ppod.imodel.IDNASequence;
+import edu.upenn.cis.ppod.imodel.IDNASequenceSet;
 import edu.upenn.cis.ppod.imodel.IOtu;
 import edu.upenn.cis.ppod.imodel.IOTUKeyedMap;
 import edu.upenn.cis.ppod.imodel.IOTUKeyedMapPlus;
 import edu.upenn.cis.ppod.util.IVisitor;
-import edu.upenn.cis.ppod.util.OtuDnaRowPairCaseChange;
+import edu.upenn.cis.ppod.util.OTUDNASequencePair;
 
 /**
- * Maps {@link OTU}s to {@link DNARow}s.
+ * An OTU-keyed map of {@link DNASequence}s.
  * 
  * @author Sam Donnelly
  */
 @XmlAccessorType(XmlAccessType.NONE)
 @Embeddable
 @Access(AccessType.PROPERTY)
-public class DNARows implements IOTUKeyedMap<IDNARow> {
+public class DnaSequences
+		implements IOTUKeyedMap<IDNASequence> {
 
-	private final IOTUKeyedMapPlus<IDNARow, IDNAMatrix, OtuDnaRowPairCaseChange> rows =
-			new OTUKeyedMapPlus<IDNARow, IDNAMatrix, OtuDnaRowPairCaseChange>();
+	private final IOTUKeyedMapPlus<IDNASequence, IDNASequenceSet, OTUDNASequencePair> sequences =
+			new OTUKeyedMapPlus<IDNASequence, IDNASequenceSet, OTUDNASequencePair>();
 
-	/** {@inheritDoc} */
 	public void accept(final IVisitor visitor) {
-		rows.accept(visitor);
+		sequences.accept(visitor);
 	}
 
-	/** {@inheritDoc} */
 	public void afterUnmarshal() {
-		rows.afterUnmarshal();
+		sequences.afterUnmarshal();
 	}
 
 	protected void afterUnmarshal(
 			@CheckForNull final Unmarshaller u,
 			final Object parent) {
-		// Don't checkNotNull(parent) since JAXB is the caller and we can't
+		// Don't checkNotNull(parent) since it's called by JAXB and we can't
 		// control what it does
-		rows.afterUnmarshal((DNAMatrix) parent);
+		sequences.afterUnmarshal((IDNASequenceSet) parent);
 	}
 
 	protected boolean beforeMarshal(@CheckForNull final Marshaller marshaller) {
 		getOTUSomethingPairs().clear();
-		for (final Map.Entry<IOtu, IDNARow> otuToRow : getValues()
+		for (final Map.Entry<IOtu, IDNASequence> otuToRow : getValues()
 				.entrySet()) {
 			getOTUSomethingPairs().add(
-					new OtuDnaRowPairCaseChange(otuToRow.getKey(), otuToRow
+					new OTUDNASequencePair(otuToRow.getKey(), otuToRow
 							.getValue()));
 		}
 		return true;
 	}
 
 	public void clear() {
-		rows.clear();
+		sequences.clear();
 	}
 
-	/** {@inheritDoc} */
-	public IDNARow get(final IOtu key) {
-		return rows.get(key);
+	public IDNASequence get(final IOtu key) {
+		return sequences.get(key);
 	}
 
-	@XmlElement(name = "otuRowPair")
+	@XmlElement(name = "otuSequencePair")
 	@Transient
-	public Set<OtuDnaRowPairCaseChange> getOTUSomethingPairs() {
-		return rows.getOTUSomethingPairs();
+	public Set<OTUDNASequencePair> getOTUSomethingPairs() {
+		return sequences.getOTUSomethingPairs();
 	}
 
 	@Parent
-	public IDNAMatrix getParent() {
-		return rows.getParent();
+	public IDNASequenceSet getParent() {
+		return sequences.getParent();
 	}
 
-	/**
-	 * We want everything but SAVE_UPDATE (which ALL will give us) - once it's
-	 * evicted out of the persistence context, we don't want it back in via
-	 * cascading UPDATE. So that we can run leaner for large matrices.
-	 */
-	@OneToMany(cascade = {
-			CascadeType.PERSIST,
-			CascadeType.MERGE,
-			CascadeType.REMOVE,
-			CascadeType.DETACH,
-			CascadeType.REFRESH },
-			orphanRemoval = true,
-			targetEntity = DNARow.class)
-	@JoinTable(inverseJoinColumns = @JoinColumn(name = DNARow.JOIN_COLUMN))
+	@OneToMany(cascade = CascadeType.ALL, orphanRemoval = true,
+			targetEntity = DnaSequence.class)
+	@JoinTable(inverseJoinColumns = @JoinColumn(name = DnaSequence.JOIN_COLUMN))
 	@MapKeyJoinColumn(name = Otu.JOIN_COLUMN)
 	@MapKeyClass(Otu.class)
-	public Map<IOtu, IDNARow> getValues() {
-		return rows.getValues();
+	public Map<IOtu, IDNASequence> getValues() {
+		return sequences.getValues();
 	}
 
-	/** {@inheritDoc} */
-	public IDNARow put(final IOtu key, final IDNARow value) {
-		return rows.put(key, value);
+	public IDNASequence put(final IOtu key, final IDNASequence value) {
+		return sequences.put(key, value);
 	}
 
 	/** {@inheritDoc} */
 	public void updateOTUs() {
-		rows.updateOTUs();
+		sequences.updateOTUs();
 	}
 
-	/**
-	 * Set the owner of this object.
-	 * 
-	 * @param parent the owner
-	 */
-	public void setParent(final IDNAMatrix parent) {
-		rows.setParent(parent);
+	public void setParent(final IDNASequenceSet parent) {
+		sequences.setParent(parent);
 	}
 
-	/** {@inheritDoc} */
-	public void setValues(
-			final Map<IOtu, IDNARow> values) {
-		rows.setValues(values);
+	public void setValues(final Map<IOtu, IDNASequence> values) {
+		sequences.setValues(values);
 	}
 }

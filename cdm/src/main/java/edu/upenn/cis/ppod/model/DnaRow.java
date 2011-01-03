@@ -44,18 +44,18 @@ import edu.upenn.cis.ppod.util.IVisitor;
  * @author Sam Donnelly
  */
 @Entity
-@Table(name = DNARow.TABLE)
-public class DNARow extends Row<IDNACell, IDNAMatrix> implements IDNARow {
+@Table(name = DnaRow.TABLE)
+public class DnaRow extends Row<IDNACell, IDNAMatrix> implements IDNARow {
 
-	public static class Adapter extends XmlAdapter<DNARow, IDNARow> {
+	public static class Adapter extends XmlAdapter<DnaRow, IDNARow> {
 
 		@Override
-		public DNARow marshal(final IDNARow row) {
-			return (DNARow) row;
+		public DnaRow marshal(final IDNARow row) {
+			return (DnaRow) row;
 		}
 
 		@Override
-		public IDNARow unmarshal(final DNARow row) {
+		public IDNARow unmarshal(final DnaRow row) {
 			return row;
 		}
 	}
@@ -66,17 +66,17 @@ public class DNARow extends Row<IDNACell, IDNAMatrix> implements IDNARow {
 			TABLE + "_" + PersistentObject.ID_COLUMN;
 
 	@ManyToOne(fetch = FetchType.LAZY, optional = false,
-			targetEntity = DNAMatrix.class)
-	@JoinColumn(name = DNAMatrix.JOIN_COLUMN)
+			targetEntity = DnaMatrix.class)
+	@JoinColumn(name = DnaMatrix.JOIN_COLUMN)
 	@Nullable
 	private IDNAMatrix parent;
 
 	@OneToMany(mappedBy = "parent", cascade = CascadeType.ALL,
-			orphanRemoval = true, targetEntity = DNACell.class)
+			orphanRemoval = true, targetEntity = DnaCell.class)
 	@OrderColumn(name = "POSITION")
 	private final List<IDNACell> cells = newArrayList();
 
-	public DNARow() {}
+	public DnaRow() {}
 
 	/** {@inheritDoc} */
 	@Override

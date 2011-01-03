@@ -42,8 +42,8 @@ public class CellTest {
 
 	@Test
 	public void afterUnmarshal() {
-		final IDNARow row = new DNARow();
-		final DNACell cell = new DNACell();
+		final IDNARow row = new DnaRow();
+		final DnaCell cell = new DnaCell();
 		cell.afterUnmarshal(null, row);
 		assertSame(cell.getParent(), row);
 	}
@@ -56,7 +56,7 @@ public class CellTest {
 	@Test
 	public void beforeMarshal() {
 		final VersionInfo versionInfo = new VersionInfo().setVersion(23L);
-		final Cell<DNANucleotide, ?> cell = new DNACell();
+		final Cell<DNANucleotide, ?> cell = new DnaCell();
 		cell.setType(ICell.Type.INAPPLICABLE);
 		cell.setVersionInfo(versionInfo);
 		cell.beforeMarshal(null);
@@ -69,13 +69,13 @@ public class CellTest {
 	 */
 	@Test(expectedExceptions = IllegalStateException.class)
 	public void beforeMarshalBeforeTypeHasBeenSet() {
-		final DNACell cell = new DNACell();
+		final DnaCell cell = new DnaCell();
 		cell.beforeMarshal(null);
 	}
 
 	@Test(expectedExceptions = IllegalStateException.class)
 	public void beforeMarshalWNoType() {
-		final Cell<DNANucleotide, ?> cell = new DNACell();
+		final Cell<DNANucleotide, ?> cell = new DnaCell();
 		cell.beforeMarshal(null);
 	}
 
@@ -87,7 +87,7 @@ public class CellTest {
 	 */
 	@Test
 	public void getElementsWhenCellHasMultipleElements() {
-		final Cell<DNANucleotide, ?> cell = new DNACell();
+		final Cell<DNANucleotide, ?> cell = new DnaCell();
 
 		final Set<DNANucleotide> elements =
 				ImmutableSet.of(DNANucleotide.A, DNANucleotide.T);
@@ -101,13 +101,13 @@ public class CellTest {
 
 	@Test(expectedExceptions = IllegalStateException.class)
 	public void getElementsWhenNoTypeSet() {
-		final ICell<?, ?> cell = new DNACell();
+		final ICell<?, ?> cell = new DnaCell();
 		cell.getElements();
 	}
 
 	@Test
 	public void getElementsXml() {
-		final DNACell cell = new DNACell();
+		final DnaCell cell = new DnaCell();
 		cell.setType(ICell.Type.UNCERTAIN);
 		final Set<DNANucleotide> cellElementsXml = cell.getElementsIfMultiple();
 		assertNotNull(cellElementsXml);
@@ -135,13 +135,13 @@ public class CellTest {
 
 	@Test(expectedExceptions = IllegalStateException.class)
 	public void getElementsIfMultipleWNoType() {
-		final Cell<?, ?> cell = new DNACell();
+		final Cell<?, ?> cell = new DnaCell();
 		cell.getElementsIfMultiple();
 	}
 
 	@Test
 	public void getStatesWhenCellHasNoElements() {
-		final Cell<DNANucleotide, ?> cell = new DNACell();
+		final Cell<DNANucleotide, ?> cell = new DnaCell();
 		cell.setType(ICell.Type.UNASSIGNED);
 		cell.setElement(null);
 		cell.setElements(null);
@@ -153,7 +153,7 @@ public class CellTest {
 
 	@Test
 	public void getStatesWhenCellHasOneElement() {
-		final Cell<DNANucleotide, ?> cell = new DNACell();
+		final Cell<DNANucleotide, ?> cell = new DnaCell();
 
 		final DNANucleotide nucleotide = DNANucleotide.C;
 
@@ -164,15 +164,15 @@ public class CellTest {
 
 	@Test
 	public void setInNeedOfNewVersion() {
-		final DNACell cell = new DNACell();
+		final DnaCell cell = new DnaCell();
 		cell.unsetInNeedOfNewVersion();
 
 		cell.setInNeedOfNewVersion();
 		assertTrue(cell.isInNeedOfNewVersion());
 
-		final DNARow row = new DNARow();
+		final DnaRow row = new DnaRow();
 
-		final DNAMatrix matrix = new DNAMatrix();
+		final DnaMatrix matrix = new DnaMatrix();
 		matrix.setColumnsSize(1);
 		final IOtuSet otuSet = new OtuSet();
 		otuSet.addDNAMatrix(matrix);
@@ -191,7 +191,7 @@ public class CellTest {
 		assertTrue(row.isInNeedOfNewVersion());
 		assertNull(matrix.getColumnVersionInfos().get(0));
 
-		matrix.putRow(otuSet.getOTUs().get(0), new DNARow());
+		matrix.putRow(otuSet.getOTUs().get(0), new DnaRow());
 
 		cell.unsetInNeedOfNewVersion();
 		row.unsetInNeedOfNewVersion();
@@ -207,7 +207,7 @@ public class CellTest {
 
 	@Test
 	public void setInapplicable() {
-		final Cell<DNANucleotide, ?> cell = new DNACell();
+		final Cell<DNANucleotide, ?> cell = new DnaCell();
 		cell.unsetInNeedOfNewVersion();
 		cell.setInapplicable();
 
@@ -232,7 +232,7 @@ public class CellTest {
 	 */
 	@Test
 	public void setPolymorphicOrUncertain() {
-		final Cell<DNANucleotide, ?> cell = new DNACell();
+		final Cell<DNANucleotide, ?> cell = new DnaCell();
 
 		final Set<DNANucleotide> nucleotides =
 				EnumSet.of(DNANucleotide.A, DNANucleotide.C);
@@ -247,7 +247,7 @@ public class CellTest {
 
 	@Test(expectedExceptions = IllegalArgumentException.class)
 	public void setPolymorphicOrUncertainWInapplicable() {
-		final Cell<DNANucleotide, ?> cell = new DNACell();
+		final Cell<DNANucleotide, ?> cell = new DnaCell();
 		cell.setPolymorphicOrUncertain(
 				ICell.Type.INAPPLICABLE,
 				ImmutableSet.of(DNANucleotide.A, DNANucleotide.C));
@@ -263,7 +263,7 @@ public class CellTest {
 	 */
 	@Test
 	public void setPolymorphicOrUncertainWSameTypeAndNucleotides() {
-		final Cell<DNANucleotide, ?> cell = new DNACell();
+		final Cell<DNANucleotide, ?> cell = new DnaCell();
 
 		final Set<DNANucleotide> nucleotides =
 				EnumSet.of(DNANucleotide.A, DNANucleotide.C);
@@ -282,7 +282,7 @@ public class CellTest {
 
 	@Test(expectedExceptions = IllegalArgumentException.class)
 	public void setPolymorphicOrUncertainWSingle() {
-		final Cell<DNANucleotide, ?> cell = new DNACell();
+		final Cell<DNANucleotide, ?> cell = new DnaCell();
 		cell.setPolymorphicOrUncertain(
 				ICell.Type.SINGLE,
 				ImmutableSet.of(DNANucleotide.A, DNANucleotide.C));
@@ -290,7 +290,7 @@ public class CellTest {
 
 	@Test(expectedExceptions = IllegalArgumentException.class)
 	public void setPolymorphicOrUncertainWTooFewElements() {
-		final Cell<DNANucleotide, ?> cell = new DNACell();
+		final Cell<DNANucleotide, ?> cell = new DnaCell();
 		;
 		cell.setPolymorphicOrUncertain(
 				ICell.Type.POLYMORPHIC,
@@ -299,7 +299,7 @@ public class CellTest {
 
 	@Test(expectedExceptions = IllegalArgumentException.class)
 	public void setPolymorphicOrUncertainWUnassigned() {
-		final Cell<DNANucleotide, ?> cell = new DNACell();
+		final Cell<DNANucleotide, ?> cell = new DnaCell();
 		cell.setPolymorphicOrUncertain(
 				ICell.Type.UNASSIGNED,
 				ImmutableSet.of(DNANucleotide.A, DNANucleotide.C));
@@ -307,13 +307,13 @@ public class CellTest {
 
 	@Test(expectedExceptions = IllegalArgumentException.class)
 	public void setPosition() {
-		final Cell<?, ?> cell = new DNACell();
+		final Cell<?, ?> cell = new DnaCell();
 		cell.setPosition(-1);
 	}
 
 	@Test
 	public void setUnassigned() {
-		final Cell<DNANucleotide, ?> cell = new DNACell();
+		final Cell<DNANucleotide, ?> cell = new DnaCell();
 		cell.unsetInNeedOfNewVersion();
 		cell.setUnassigned();
 

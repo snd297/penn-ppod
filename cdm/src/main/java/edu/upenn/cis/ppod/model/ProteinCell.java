@@ -29,7 +29,7 @@ public class ProteinCell
 			TABLE + "_" + PersistentObject.ID_COLUMN;
 
 	@ManyToOne(fetch = FetchType.LAZY, optional = false,
-			targetEntity = DNARow.class)
+			targetEntity = DnaRow.class)
 	@JoinColumn(name = ProteinRow.JOIN_COLUMN)
 	@Nullable
 	private IProteinRow parent;

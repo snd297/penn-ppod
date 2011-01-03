@@ -23,7 +23,7 @@ import edu.upenn.cis.ppod.imodel.IOtu;
 /**
  * @author Sam Donnelly
  */
-public class OTUDNASequencePair extends OtuKeyedPairCaseChange<IDNASequence> {
+public class OTUDNASequencePair extends OtuKeyedPair<IDNASequence> {
 
 	/**
 	 * For JAXB

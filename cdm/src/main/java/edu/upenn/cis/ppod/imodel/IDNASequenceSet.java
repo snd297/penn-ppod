@@ -17,9 +17,9 @@ package edu.upenn.cis.ppod.imodel;
 
 import javax.xml.bind.annotation.adapters.XmlJavaTypeAdapter;
 
-import edu.upenn.cis.ppod.model.DNASequenceSet;
+import edu.upenn.cis.ppod.model.DnaSequenceSet;
 
-@XmlJavaTypeAdapter(DNASequenceSet.Adapter.class)
+@XmlJavaTypeAdapter(DnaSequenceSet.Adapter.class)
 public interface IDNASequenceSet extends ISequenceSet<IDNASequence>, IWithDocId {
 	void afterUnmarshal();
 }

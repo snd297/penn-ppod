@@ -41,7 +41,7 @@ public class DNACellTest {
 
 	@Test(expectedExceptions = IllegalArgumentException.class)
 	public void setPolymorphicElementsTooFewStates() {
-		final DNACell cell = new DNACell();
+		final DnaCell cell = new DnaCell();
 		final Set<DNANucleotide> nucleotides =
 				ImmutableSet.of(DNANucleotide.A);
 		cell.setPolymorphicElements(nucleotides, true);
@@ -49,7 +49,7 @@ public class DNACellTest {
 
 	@Test
 	public void setTypeAndStatesInapplicable() {
-		final DNACell dnaCell = new DNACell();
+		final DnaCell dnaCell = new DnaCell();
 		dnaCell.unsetInNeedOfNewVersion();
 
 		dnaCell.setInapplicable();
@@ -60,7 +60,7 @@ public class DNACellTest {
 
 	@Test
 	public void setTypeAndStatesSingle() {
-		final DNACell dnaCell = new DNACell();
+		final DnaCell dnaCell = new DnaCell();
 		dnaCell.unsetInNeedOfNewVersion();
 		dnaCell.setSingleElement(DNANucleotide.A, false);
 		assertEquals(dnaCell.getType(), Type.SINGLE);
@@ -71,7 +71,7 @@ public class DNACellTest {
 
 	@Test
 	public void setSingleElementWithValueItAlreadyHad() {
-		final DNACell dnaCell = new DNACell();
+		final DnaCell dnaCell = new DnaCell();
 
 		dnaCell.unsetInNeedOfNewVersion();
 		dnaCell.setSingleElement(DNANucleotide.A, false);
@@ -88,7 +88,7 @@ public class DNACellTest {
 	}
 
 	public void setPolymorphicOrUncertain() {
-		final DNACell cell = new DNACell();
+		final DnaCell cell = new DnaCell();
 		final Set<DNANucleotide> nucleotides =
 				ImmutableSet.of(DNANucleotide.A, DNANucleotide.T);
 		cell.unsetInNeedOfNewVersion();
