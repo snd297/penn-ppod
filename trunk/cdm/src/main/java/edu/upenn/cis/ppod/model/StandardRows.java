@@ -100,7 +100,7 @@ public class StandardRows
 	@XmlElement(name = "otuRowPair")
 	@Transient
 	public Set<OtuStandardRowPair> getOTUSomethingPairs() {
-		return rows.getOTUKeyedPairs();
+		return rows.getOtuKeyedPairs();
 	}
 
 	@Parent

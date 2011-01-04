@@ -99,7 +99,7 @@ public class DnaRows implements IOtuKeyedMap<IDnaRow> {
 	@XmlElement(name = "otuRowPair")
 	@Transient
 	public Set<OtuDnaRowPair> getOtuKeyedPairs() {
-		return rows.getOTUKeyedPairs();
+		return rows.getOtuKeyedPairs();
 	}
 
 	@Parent
