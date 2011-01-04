@@ -97,7 +97,7 @@ public class DnaSequences
 	@XmlElement(name = "otuSequencePair")
 	@Transient
 	public Set<OtuDnaSequencePair> getOTUSomethingPairs() {
-		return sequences.getOTUKeyedPairs();
+		return sequences.getOtuKeyedPairs();
 	}
 
 	@Parent

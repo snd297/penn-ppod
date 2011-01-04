@@ -33,7 +33,7 @@ public interface IOtuKeyedMapPlus<V extends IChild<?>, P extends IChild<IOtuSet>
 	 * couldn't get it to work maybe because the key marshalled as a
 	 * {@code XmlIDREF}.
 	 */
-	Set<OP> getOTUKeyedPairs();
+	Set<OP> getOtuKeyedPairs();
 
 	P getParent();
 
