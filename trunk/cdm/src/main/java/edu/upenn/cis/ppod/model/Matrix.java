@@ -354,6 +354,6 @@ public abstract class Matrix<R extends IRow<C, ?>, C extends ICell<?, ?>>
 
 	/** {@inheritDoc} */
 	public void updateOTUs() {
-		getOTUKeyedRows().updateOTUs();
+		getOTUKeyedRows().updateOtus();
 	}
 }

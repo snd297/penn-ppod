@@ -217,6 +217,6 @@ abstract class SequenceSet<S extends ISequence<?>>
 					"getOTUKeyedSequences() == null, "
 							+ "so there are no sequences to operate on");
 
-		getOTUKeyedSequences().updateOTUs();
+		getOTUKeyedSequences().updateOtus();
 	}
 }
