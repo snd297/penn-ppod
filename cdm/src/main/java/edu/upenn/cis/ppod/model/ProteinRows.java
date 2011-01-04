@@ -41,7 +41,7 @@ public class ProteinRows implements IOtuKeyedMap<IProteinRow> {
 	}
 
 	/** {@inheritDoc} */
-	public void updateOTUs() {
-		rows.updateOTUs();
+	public void updateOtus() {
+		rows.updateOtus();
 	}
 }

@@ -29,9 +29,10 @@ public interface IOtuKeyedMapPlus<V extends IChild<?>, P extends IChild<IOtuSet>
 
 	/**
 	 * For marshalling {@code rows}. Since a {@code Map}'s key couldn't be an
-	 * {@code XmlIDREF} in JAXB as far as we can tell.
+	 * interface. And even if we use a concrete class for the key, we couldn't
+	 * get it work maybe because the key marshalled as a {@code XmlIDREF}.
 	 */
-	Set<OP> getOTUSomethingPairs();
+	Set<OP> getOTUKeyedPairs();
 
 	P getParent();
 

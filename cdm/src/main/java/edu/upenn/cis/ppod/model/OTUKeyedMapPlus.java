@@ -70,10 +70,10 @@ public class OTUKeyedMapPlus<V extends IChild<P>, P extends IChild<IOtuSet>, OP 
 	 * resolved.
 	 */
 	public void afterUnmarshal() {
-		for (final OP otuValuePair : getOTUSomethingPairs()) {
+		for (final OP otuValuePair : getOTUKeyedPairs()) {
 			put(otuValuePair.getFirst(), otuValuePair.getSecond());
 		}
-		getOTUSomethingPairs().clear();
+		getOTUKeyedPairs().clear();
 	}
 
 	public void afterUnmarshal(final P parent) {
@@ -81,7 +81,7 @@ public class OTUKeyedMapPlus<V extends IChild<P>, P extends IChild<IOtuSet>, OP 
 
 		setParent(parent);
 
-		for (final OP otuSomethingPair : getOTUSomethingPairs()) {
+		for (final OP otuSomethingPair : getOTUKeyedPairs()) {
 			otuSomethingPair.getSecond().setParent(getParent());
 		}
 
@@ -106,7 +106,7 @@ public class OTUKeyedMapPlus<V extends IChild<P>, P extends IChild<IOtuSet>, OP 
 		return getValues().get(otu);
 	}
 
-	public Set<OP> getOTUSomethingPairs() {
+	public Set<OP> getOTUKeyedPairs() {
 		return otuSomethingPairs;
 	}
 
@@ -165,7 +165,7 @@ public class OTUKeyedMapPlus<V extends IChild<P>, P extends IChild<IOtuSet>, OP 
 		}
 	}
 
-	public void updateOTUs() {
+	public void updateOtus() {
 		final IChild<IOtuSet> parent = getParent();
 
 		final Set<IOtu> otusToBeRemoved = newHashSet();

@@ -77,12 +77,12 @@ public class DnaRows implements IOtuKeyedMap<IDnaRow> {
 	}
 
 	protected boolean beforeMarshal(@CheckForNull final Marshaller marshaller) {
-		getOTUSomethingPairs().clear();
+		getOtuKeyedPairs().clear();
 		for (final Map.Entry<IOtu, IDnaRow> otuToRow : getValues()
 				.entrySet()) {
-			getOTUSomethingPairs().add(
-					new OtuDnaRowPair(otuToRow.getKey(), otuToRow
-							.getValue()));
+			getOtuKeyedPairs().add(
+					new OtuDnaRowPair(otuToRow.getKey(),
+							otuToRow.getValue()));
 		}
 		return true;
 	}
@@ -98,8 +98,8 @@ public class DnaRows implements IOtuKeyedMap<IDnaRow> {
 
 	@XmlElement(name = "otuRowPair")
 	@Transient
-	public Set<OtuDnaRowPair> getOTUSomethingPairs() {
-		return rows.getOTUSomethingPairs();
+	public Set<OtuDnaRowPair> getOtuKeyedPairs() {
+		return rows.getOTUKeyedPairs();
 	}
 
 	@Parent
@@ -133,8 +133,8 @@ public class DnaRows implements IOtuKeyedMap<IDnaRow> {
 	}
 
 	/** {@inheritDoc} */
-	public void updateOTUs() {
-		rows.updateOTUs();
+	public void updateOtus() {
+		rows.updateOtus();
 	}
 
 	/**

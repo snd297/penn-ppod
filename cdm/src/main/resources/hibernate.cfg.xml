@@ -26,18 +26,18 @@
 		<mapping class="edu.upenn.cis.ppod.model.StandardRow" />
 		<mapping class="edu.upenn.cis.ppod.model.StandardCell" />
 
-		<mapping class="edu.upenn.cis.ppod.model.DNAMatrix" />
-		<mapping class="edu.upenn.cis.ppod.model.DNARows" />
-		<mapping class="edu.upenn.cis.ppod.model.DNARow" />
-		<mapping class="edu.upenn.cis.ppod.model.DNACell" />
+		<mapping class="edu.upenn.cis.ppod.model.DnaMatrix" />
+		<mapping class="edu.upenn.cis.ppod.model.DnaRows" />
+		<mapping class="edu.upenn.cis.ppod.model.DnaRow" />
+		<mapping class="edu.upenn.cis.ppod.model.DnaCell" />
 
 		<mapping class="edu.upenn.cis.ppod.model.Attachment" />
 		<mapping class="edu.upenn.cis.ppod.model.AttachmentNamespace" />
 		<mapping class="edu.upenn.cis.ppod.model.AttachmentType" />
 
-		<mapping class="edu.upenn.cis.ppod.model.DNASequenceSet" />
-		<mapping class="edu.upenn.cis.ppod.model.DNASequences" />
-		<mapping class="edu.upenn.cis.ppod.model.DNASequence" />
+		<mapping class="edu.upenn.cis.ppod.model.DnaSequenceSet" />
+		<mapping class="edu.upenn.cis.ppod.model.DnaSequences" />
+		<mapping class="edu.upenn.cis.ppod.model.DnaSequence" />
 
 	</session-factory>
 </hibernate-configuration>

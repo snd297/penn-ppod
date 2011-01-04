@@ -84,7 +84,6 @@ public class StandardState extends PPodEntityWDocId implements IStandardState {
 	 * of these objects. Write-once-read-many.
 	 */
 	@Column(name = STATE_NUMBER_COLUMN, nullable = false, updatable = false)
-	@Nullable
 	private Integer stateNumber;
 
 	/**
