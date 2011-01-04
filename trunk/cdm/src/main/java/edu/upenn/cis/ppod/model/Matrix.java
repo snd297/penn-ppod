@@ -349,11 +349,11 @@ public abstract class Matrix<R extends IRow<C, ?>, C extends ICell<?, ?>>
 				getOTUKeyedRows() != null,
 				"getOTUKeyedRows() returned null - has the conrete class been constructed correctly, w/ its OTU->X dependency?");
 		this.parent = otuSet;
-		updateOTUs();
+		updateOtus();
 	}
 
 	/** {@inheritDoc} */
-	public void updateOTUs() {
+	public void updateOtus() {
 		getOTUKeyedRows().updateOtus();
 	}
 }

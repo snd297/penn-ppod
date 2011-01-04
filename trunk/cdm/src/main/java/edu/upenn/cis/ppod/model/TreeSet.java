@@ -179,7 +179,7 @@ public class TreeSet
 	/** {@inheritDoc} */
 	public void setParent(@CheckForNull final IOtuSet parent) {
 		this.parent = parent;
-		updateOTUs();
+		updateOtus();
 	}
 
 	/**
@@ -243,7 +243,7 @@ public class TreeSet
 	 * There's nothing for a tree set to do since the OTU's are stored as pPOD
 	 * IDs in the newick strings which can't be modified.
 	 */
-	public void updateOTUs() {
+	public void updateOtus() {
 
 	}
 
