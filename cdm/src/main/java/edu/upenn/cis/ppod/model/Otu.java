@@ -120,9 +120,9 @@ public class Otu
 	}
 
 	/**
-	 * Get the owning {@code OTUSet}. Will be {@code null} for parentless
-	 * {@code OTU}s. Will never be {@code null} for {@code OTU}s just pulled out
-	 * of the database since persisted {@code OTU}s must have parents.
+	 * Get the owning {@code IOtuSet}. Will be {@code null} for parentless
+	 * {@code Otu}s. Will never be {@code null} for {@code OTU}s just pulled out
+	 * of the database since persisted {@code Otu}s must have parents.
 	 * 
 	 * @return the {@code OTUSet} that owns this {@code OTU}
 	 */
@@ -134,8 +134,6 @@ public class Otu
 	/**
 	 * Mark this {@code OTU} and its parent {@code IOTUSet}, if it has one, as
 	 * in need of a new pPod version info.
-	 * 
-	 * @return this {@code OTU}
 	 */
 	@Override
 	public void setInNeedOfNewVersion() {
