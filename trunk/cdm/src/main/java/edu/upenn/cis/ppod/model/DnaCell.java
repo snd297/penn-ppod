@@ -43,7 +43,7 @@ import edu.upenn.cis.ppod.imodel.IDnaRow;
 import edu.upenn.cis.ppod.util.IVisitor;
 
 /**
- * A cell that contains {@link DNANucleotide}s.
+ * A cell that contains {@link DnaNucleotide}s.
  * 
  * @author Sam Donnelly
  */

@@ -8,12 +8,12 @@ import edu.upenn.cis.ppod.imodel.IProteinRow;
 import edu.upenn.cis.ppod.model.Otu;
 
 @XmlAccessorType(XmlAccessType.NONE)
-public class OTUProteinRowPair
+public final class OtuProteinRowPair
 		extends OtuKeyedPair<IProteinRow> {
 
-	protected OTUProteinRowPair() {}
+	protected OtuProteinRowPair() {}
 
-	public OTUProteinRowPair(final Otu first, final IProteinRow second) {
+	public OtuProteinRowPair(final Otu first, final IProteinRow second) {
 		super(first, second);
 	}
 

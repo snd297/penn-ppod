@@ -43,7 +43,7 @@ import edu.upenn.cis.ppod.imodel.IOtu;
 import edu.upenn.cis.ppod.imodel.IOtuKeyedMap;
 import edu.upenn.cis.ppod.imodel.IOtuKeyedMapPlus;
 import edu.upenn.cis.ppod.util.IVisitor;
-import edu.upenn.cis.ppod.util.OTUDNASequencePair;
+import edu.upenn.cis.ppod.util.OtuDnaSequencePair;
 
 /**
  * An OTU-keyed map of {@link DNASequence}s.
@@ -56,8 +56,8 @@ import edu.upenn.cis.ppod.util.OTUDNASequencePair;
 public class DnaSequences
 		implements IOtuKeyedMap<IDnaSequence> {
 
-	private final IOtuKeyedMapPlus<IDnaSequence, IDnaSequenceSet, OTUDNASequencePair> sequences =
-			new OtuKeyedMapPlus<IDnaSequence, IDnaSequenceSet, OTUDNASequencePair>();
+	private final IOtuKeyedMapPlus<IDnaSequence, IDnaSequenceSet, OtuDnaSequencePair> sequences =
+			new OtuKeyedMapPlus<IDnaSequence, IDnaSequenceSet, OtuDnaSequencePair>();
 
 	public void accept(final IVisitor visitor) {
 		sequences.accept(visitor);
@@ -80,7 +80,7 @@ public class DnaSequences
 		for (final Map.Entry<IOtu, IDnaSequence> otuToRow : getValues()
 				.entrySet()) {
 			getOTUSomethingPairs().add(
-					new OTUDNASequencePair(otuToRow.getKey(), otuToRow
+					new OtuDnaSequencePair(otuToRow.getKey(), otuToRow
 							.getValue()));
 		}
 		return true;
@@ -96,7 +96,7 @@ public class DnaSequences
 
 	@XmlElement(name = "otuSequencePair")
 	@Transient
-	public Set<OTUDNASequencePair> getOTUSomethingPairs() {
+	public Set<OtuDnaSequencePair> getOTUSomethingPairs() {
 		return sequences.getOTUKeyedPairs();
 	}
 

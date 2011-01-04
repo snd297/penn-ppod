@@ -19,9 +19,6 @@ import javax.xml.bind.annotation.XmlAccessType;
 import javax.xml.bind.annotation.XmlAccessorType;
 import javax.xml.bind.annotation.XmlRootElement;
 
-import com.google.common.base.Function;
-
-import edu.upenn.cis.ppod.util.IPair;
 import edu.upenn.cis.ppod.util.Pair;
 
 /**
@@ -33,14 +30,6 @@ import edu.upenn.cis.ppod.util.Pair;
 @XmlRootElement
 @XmlAccessorType(XmlAccessType.PROPERTY)
 public final class StringPair extends Pair<String, String> {
-
-	public static final Function<StringPair, IPair<String, String>> castToIPair = new Function<StringPair, IPair<String, String>>() {
-
-		public IPair<String, String> apply(final StringPair from) {
-			return from;
-		}
-
-	};
 
 	/**
 	 * Created for JAXB.

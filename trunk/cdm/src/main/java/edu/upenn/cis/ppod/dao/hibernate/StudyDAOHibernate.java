@@ -29,7 +29,6 @@ import edu.upenn.cis.ppod.dao.IStudyDAO;
 import edu.upenn.cis.ppod.imodel.IStudy;
 import edu.upenn.cis.ppod.model.Study;
 import edu.upenn.cis.ppod.thirdparty.dao.hibernate.GenericHibernateDAO;
-import edu.upenn.cis.ppod.util.IPair;
 import edu.upenn.cis.ppod.util.Pair;
 
 /**
@@ -56,13 +55,13 @@ final class StudyDAOHibernate
 						"minPPodVersion", minPPodVersion).list();
 	}
 
-	public Set<IPair<String, String>> getPPodIdLabelPairs() {
-		final Set<IPair<String, String>> results = newHashSet();
+	public Set<Pair<String, String>> getPPodIdLabelPairs() {
+		final Set<Pair<String, String>> results = newHashSet();
 		for (final Iterator<?> itr = getSession().getNamedQuery(
 				Study.class.getSimpleName()
 						+ "-getPPodIdLabelPairs").iterate(); itr.hasNext();) {
 			final Object[] result = (Object[]) itr.next();
-			results.add(Pair.newPair((String) result[0],
+			results.add(Pair.of((String) result[0],
 					(String) result[1]));
 		}
 		return results;

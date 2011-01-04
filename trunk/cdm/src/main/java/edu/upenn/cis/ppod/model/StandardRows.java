@@ -43,7 +43,7 @@ import edu.upenn.cis.ppod.imodel.IOtuKeyedMapPlus;
 import edu.upenn.cis.ppod.imodel.IStandardMatrix;
 import edu.upenn.cis.ppod.imodel.IStandardRow;
 import edu.upenn.cis.ppod.util.IVisitor;
-import edu.upenn.cis.ppod.util.OTUStandardRowPair;
+import edu.upenn.cis.ppod.util.OtuStandardRowPair;
 
 /**
  * Maps {@link OTU}s to {@link StandardRow}s.
@@ -56,8 +56,8 @@ import edu.upenn.cis.ppod.util.OTUStandardRowPair;
 public class StandardRows
 		implements IOtuKeyedMap<IStandardRow> {
 
-	private final IOtuKeyedMapPlus<IStandardRow, IStandardMatrix, OTUStandardRowPair> rows =
-			new OtuKeyedMapPlus<IStandardRow, IStandardMatrix, OTUStandardRowPair>();
+	private final IOtuKeyedMapPlus<IStandardRow, IStandardMatrix, OtuStandardRowPair> rows =
+			new OtuKeyedMapPlus<IStandardRow, IStandardMatrix, OtuStandardRowPair>();
 
 	StandardRows() {}
 
@@ -83,7 +83,7 @@ public class StandardRows
 		for (final Map.Entry<IOtu, IStandardRow> otuToRow : getValues()
 				.entrySet()) {
 			getOTUSomethingPairs().add(
-					new OTUStandardRowPair(otuToRow.getKey(),
+					new OtuStandardRowPair(otuToRow.getKey(),
 							otuToRow.getValue()));
 		}
 		return true;
@@ -99,7 +99,7 @@ public class StandardRows
 
 	@XmlElement(name = "otuRowPair")
 	@Transient
-	public Set<OTUStandardRowPair> getOTUSomethingPairs() {
+	public Set<OtuStandardRowPair> getOTUSomethingPairs() {
 		return rows.getOTUKeyedPairs();
 	}
 
