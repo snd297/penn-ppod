@@ -32,8 +32,8 @@ import edu.upenn.cis.ppod.services.StringPair;
 import edu.upenn.cis.ppod.services.ppodentity.IStudy2StudyInfo;
 import edu.upenn.cis.ppod.services.ppodentity.StudyInfo;
 import edu.upenn.cis.ppod.util.AfterUnmarshalVisitor;
-import edu.upenn.cis.ppod.util.IPair;
 import edu.upenn.cis.ppod.util.IVisitor;
+import edu.upenn.cis.ppod.util.Pair;
 import edu.upenn.cis.ppod.util.SetDocIdVisitor;
 import edu.upenn.cis.ppod.util.SetVersionInfoVisitor;
 
@@ -95,14 +95,19 @@ public final class StudyResourceHibernate implements IStudyResource {
 	}
 
 	public Set<StringPair> getStudyPPodIdLabelPairs() {
-		final Set<StringPair> studyPPodIdLabelPairs = newHashSet(transform(
-						studyDAO.getPPodIdLabelPairs(),
-				new Function<IPair<String, String>, StringPair>() {
-					public StringPair apply(final IPair<String, String> from) {
+
+		final Set<Pair<String, String>> studyPPodIdPairs = studyDAO
+				.getPPodIdLabelPairs();
+
+		final Set<StringPair> studyPPodIdStringPairs = newHashSet(transform(
+				studyPPodIdPairs,
+
+				new Function<Pair<String, String>, StringPair>() {
+					public StringPair apply(final Pair<String, String> from) {
 						return new StringPair(from.getFirst(), from.getSecond());
 					}
 				}));
-		return studyPPodIdLabelPairs;
+		return studyPPodIdStringPairs;
 	}
 
 	public StudyInfo updateStudy(final IStudy incomingStudy, final String pPodId) {

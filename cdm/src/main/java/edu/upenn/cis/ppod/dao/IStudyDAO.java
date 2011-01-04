@@ -20,7 +20,7 @@ import java.util.Set;
 
 import edu.upenn.cis.ppod.imodel.IStudy;
 import edu.upenn.cis.ppod.thirdparty.dao.IDAO;
-import edu.upenn.cis.ppod.util.IPair;
+import edu.upenn.cis.ppod.util.Pair;
 
 /**
  * A {@code Study} DAO.
@@ -36,7 +36,7 @@ public interface IStudyDAO extends IDAO<IStudy, Long> {
 	 * @return a set composed of a (pPOD ID, Study label) pair for every
 	 *         {@link Study} in the database
 	 */
-	Set<IPair<String, String>> getPPodIdLabelPairs();
+	Set<Pair<String, String>> getPPodIdLabelPairs();
 
 	/**
 	 * Retrieve a {@link Study} given its pPOD id. Returns {@code null} if
@@ -44,10 +44,11 @@ public interface IStudyDAO extends IDAO<IStudy, Long> {
 	 * 
 	 * @param pPodId the pPOD id of the {@link Study} we want - {@code null} is
 	 *            legal
-	 * @return a {@link Study} given its pPOD id or {@code null} if {@code
-	 *         pPodId == null}
+	 * @return a {@link Study} given its pPOD id or {@code null} if
+	 *         {@code pPodId == null}
 	 */
 	IStudy getStudyByPPodId(String pPodId);
+
 	IStudy getStudyByPPodIdEager(String pPodId);
 
 	/**
@@ -57,7 +58,6 @@ public interface IStudyDAO extends IDAO<IStudy, Long> {
 	 * @return the pPOD version of the study with the given pPOD id
 	 */
 	Long getPPodVersionByPPodId(String pPodId);
-
 
 	List<Object[]> getOTUInfosByStudyPPodIdAndMinPPodVersion(String pPodId,
 			Long pPodVersion);

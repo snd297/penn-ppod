@@ -15,11 +15,8 @@
  */
 package edu.upenn.cis.ppod.util;
 
-import javax.annotation.Nullable;
 import javax.xml.bind.annotation.XmlAccessType;
 import javax.xml.bind.annotation.XmlAccessorType;
-
-import com.google.common.base.Function;
 
 /**
  * {@code IPair} implementation.
@@ -27,24 +24,7 @@ import com.google.common.base.Function;
  * @author Sam Donnelly
  */
 @XmlAccessorType(XmlAccessType.NONE)
-public class Pair<T, U> implements IPair<T, U> {
-
-	/**
-	 * Turn an {@link IPair} into an {@link Pair}.
-	 */
-	public static final Function<IPair<String, String>, Pair<String, String>> of = new Function<IPair<String, String>, Pair<String, String>>() {
-		public Pair<String, String> apply(final IPair<String, String> from) {
-			return Pair.of(from);
-		}
-	};
-
-	static public <T, U> Pair<T, U> newPair(final T first, final U second) {
-		return new Pair<T, U>(first, second);
-	}
-
-	public static <T, U> Pair<T, U> of(final IPair<T, U> orderedPair) {
-		return new Pair<T, U>(orderedPair.getFirst(), orderedPair.getSecond());
-	}
+public class Pair<T, U> {
 
 	public static <T, U> Pair<T, U> of(final T first, final U second) {
 		return new Pair<T, U>(first, second);
