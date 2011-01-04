@@ -56,7 +56,7 @@ import edu.upenn.cis.ppod.util.OtuDnaRowPair;
 public class DnaRows implements IOtuKeyedMap<IDnaRow> {
 
 	private final IOtuKeyedMapPlus<IDnaRow, IDnaMatrix, OtuDnaRowPair> rows =
-			new OTUKeyedMapPlus<IDnaRow, IDnaMatrix, OtuDnaRowPair>();
+			new OtuKeyedMapPlus<IDnaRow, IDnaMatrix, OtuDnaRowPair>();
 
 	/** {@inheritDoc} */
 	public void accept(final IVisitor visitor) {

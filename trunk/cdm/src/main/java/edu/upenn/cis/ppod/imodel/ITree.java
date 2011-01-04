@@ -30,7 +30,7 @@ import edu.upenn.cis.ppod.model.Tree;
  * @author Sam Donnelly
  */
 @XmlJavaTypeAdapter(Tree.Adapter.class)
-public interface ITree extends ILabeled, IUUPPodEntity, IChild<ITreeSet> {
+public interface ITree extends ILabeled, IUuPPodEntity, IChild<ITreeSet> {
 
 	/**
 	 * Return the label. {@code null} when the tree is constructed, but will

@@ -13,7 +13,7 @@ import edu.upenn.cis.ppod.util.OTUProteinRowPair;
 public class ProteinRows implements IOtuKeyedMap<IProteinRow> {
 
 	private final IOtuKeyedMapPlus<IProteinRow, IProteinMatrix, OTUProteinRowPair> rows =
-			new OTUKeyedMapPlus<IProteinRow, IProteinMatrix, OTUProteinRowPair>();
+			new OtuKeyedMapPlus<IProteinRow, IProteinMatrix, OTUProteinRowPair>();
 
 	/** {@inheritDoc} */
 	public void accept(final IVisitor visitor) {

@@ -21,7 +21,7 @@ import javax.xml.bind.annotation.adapters.XmlJavaTypeAdapter;
 import edu.upenn.cis.ppod.model.AttachmentType;
 
 @XmlJavaTypeAdapter(AttachmentType.Adapter.class)
-public interface IAttachmentType extends IVisitable, IWithDocId {
+public interface IAttachmentType extends IVisitable, IHasDocId {
 
 	/**
 	 * Get the label. Will be {@code null} for newly created objects until

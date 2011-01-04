@@ -22,7 +22,7 @@ import edu.upenn.cis.ppod.model.Otu;
 
 @XmlJavaTypeAdapter(Otu.Adapter.class)
 public interface IOtu
-		extends IUUPPodEntity, ILabeled, IChild<IOtuSet>, IWithDocId {
+		extends IUuPPodEntity, ILabeled, IChild<IOtuSet>, IHasDocId {
 
 	/**
 	 * Return the label of this {@code OTU}.

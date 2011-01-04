@@ -26,7 +26,7 @@ import edu.umd.cs.findbugs.annotations.CheckForNull;
 import edu.umd.cs.findbugs.annotations.Nullable;
 
 public interface IMatrix<R extends IRow<C, ?>, C extends ICell<?, ?>>
-		extends IOTUSetChild, IUUPPodEntity, IWithDocId {
+		extends IOTUSetChild, IUuPPodEntity, IHasDocId {
 
 	/**
 	 * The number of columns which any newly introduced rows must have.

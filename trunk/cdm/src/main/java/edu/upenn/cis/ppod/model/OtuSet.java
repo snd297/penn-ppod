@@ -68,7 +68,7 @@ import edu.upenn.cis.ppod.util.IVisitor;
 @Entity
 @Table(name = OtuSet.TABLE)
 public class OtuSet
-		extends UUPPodEntityWithDocId
+		extends UuPPodEntityWithDocId
 		implements IOtuSet {
 
 	public static class Adapter extends XmlAdapter<OtuSet, IOtuSet> {

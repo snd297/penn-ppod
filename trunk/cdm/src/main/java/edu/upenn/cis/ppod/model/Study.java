@@ -74,7 +74,7 @@ import edu.upenn.cis.ppod.util.PPodEntitiesUtil;
 @Entity
 @Table(name = Study.TABLE)
 public class Study
-		extends UUPPodEntity
+		extends UuPPodEntity
 		implements IStudy {
 
 	/** The table name for this entity. */

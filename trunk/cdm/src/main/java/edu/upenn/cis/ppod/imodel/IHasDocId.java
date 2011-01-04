@@ -30,7 +30,7 @@ import javax.annotation.Nullable;
  * 
  * @author Sam Donnelly
  */
-public interface IWithDocId {
+public interface IHasDocId {
 
 	/**
 	 * Get the {@link javax.xml.bind.annotation.XmlID} attribute.

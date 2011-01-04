@@ -45,7 +45,7 @@ import edu.upenn.cis.ppod.util.OtuKeyedPair;
  * 
  * @author Sam Donnelly
  */
-public class OTUKeyedMapPlus<V extends IChild<P>, P extends IChild<IOtuSet>, OP extends OtuKeyedPair<V>>
+public class OtuKeyedMapPlus<V extends IChild<P>, P extends IChild<IOtuSet>, OP extends OtuKeyedPair<V>>
 		implements IOtuKeyedMapPlus<V, P, OP> {
 
 	private P parent;
@@ -54,7 +54,7 @@ public class OTUKeyedMapPlus<V extends IChild<P>, P extends IChild<IOtuSet>, OP 
 
 	private final Set<OP> otuSomethingPairs = newHashSet();
 
-	public OTUKeyedMapPlus() {}
+	public OtuKeyedMapPlus() {}
 
 	public void accept(final IVisitor visitor) {
 		checkNotNull(visitor);
