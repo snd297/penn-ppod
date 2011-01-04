@@ -22,7 +22,7 @@ import edu.upenn.cis.ppod.model.AttachmentNamespace;
 
 @XmlJavaTypeAdapter(AttachmentNamespace.Adapter.class)
 public interface IAttachmentNamespace
-		extends ILabeled, IVisitable, IWithDocId {
+		extends ILabeled, IVisitable, IHasDocId {
 
 	/**
 	 * Set the label.

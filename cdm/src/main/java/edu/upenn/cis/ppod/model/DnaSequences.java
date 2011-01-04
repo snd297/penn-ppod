@@ -57,7 +57,7 @@ public class DnaSequences
 		implements IOtuKeyedMap<IDnaSequence> {
 
 	private final IOtuKeyedMapPlus<IDnaSequence, IDnaSequenceSet, OTUDNASequencePair> sequences =
-			new OTUKeyedMapPlus<IDnaSequence, IDnaSequenceSet, OTUDNASequencePair>();
+			new OtuKeyedMapPlus<IDnaSequence, IDnaSequenceSet, OTUDNASequencePair>();
 
 	public void accept(final IVisitor visitor) {
 		sequences.accept(visitor);

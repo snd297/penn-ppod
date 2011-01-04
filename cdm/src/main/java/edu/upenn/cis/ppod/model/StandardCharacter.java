@@ -54,7 +54,7 @@ import edu.upenn.cis.ppod.util.IVisitor;
  */
 @Entity
 @Table(name = StandardCharacter.TABLE)
-public class StandardCharacter extends UUPPodEntityWithDocId
+public class StandardCharacter extends UuPPodEntityWithDocId
 		implements IStandardCharacter {
 
 	public static class Adapter extends

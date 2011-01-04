@@ -25,7 +25,7 @@ import edu.upenn.cis.ppod.model.StandardCharacter;
 
 @XmlJavaTypeAdapter(StandardCharacter.Adapter.class)
 public interface IStandardCharacter
-		extends IChild<IStandardMatrix>, IUUPPodEntity, IWithDocId, ILabeled {
+		extends IChild<IStandardMatrix>, IUuPPodEntity, IHasDocId, ILabeled {
 
 	/**
 	 * Add <code>state</code> into this <code>Character</code>.

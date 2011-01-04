@@ -50,7 +50,7 @@ import edu.upenn.cis.ppod.util.IVisitor;
 @XmlAccessorType(XmlAccessType.NONE)
 @Entity
 @Table(name = Attachment.TABLE)
-public class Attachment extends UUPPodEntity implements IAttachment {
+public class Attachment extends UuPPodEntity implements IAttachment {
 
 	public static class Adapter extends XmlAdapter<Attachment, IAttachment> {
 

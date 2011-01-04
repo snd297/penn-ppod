@@ -36,7 +36,7 @@ import edu.upenn.cis.ppod.imodel.IDnaSequence;
  */
 @Entity
 @Table(name = "CHROMATOGRAM")
-public class Chromatogram extends UUPPodEntity {
+public class Chromatogram extends UuPPodEntity {
 
 	@Lob
 	@Column(name = "CHROMATOGRAM", nullable = false)

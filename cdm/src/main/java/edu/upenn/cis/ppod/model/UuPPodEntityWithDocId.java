@@ -22,16 +22,16 @@ import javax.xml.bind.annotation.XmlAttribute;
 import javax.xml.bind.annotation.XmlID;
 
 import edu.umd.cs.findbugs.annotations.CheckForNull;
-import edu.upenn.cis.ppod.imodel.IWithDocId;
+import edu.upenn.cis.ppod.imodel.IHasDocId;
 
 /**
  * A {@code UUPPodEntity} w/ an {@link XmlID} attribute called {@code "docId"}.
  * 
  * @author Sam Donnelly
  */
-public abstract class UUPPodEntityWithDocId
-		extends UUPPodEntity
-		implements IWithDocId {
+public abstract class UuPPodEntityWithDocId
+		extends UuPPodEntity
+		implements IHasDocId {
 
 	/**
 	 * Intended for referencing elements within a document - be it XML, JSON,

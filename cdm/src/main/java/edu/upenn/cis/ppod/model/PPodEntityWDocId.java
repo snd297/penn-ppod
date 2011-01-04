@@ -21,7 +21,7 @@ import javax.annotation.Nullable;
 import javax.xml.bind.annotation.XmlAttribute;
 import javax.xml.bind.annotation.XmlID;
 
-import edu.upenn.cis.ppod.imodel.IWithDocId;
+import edu.upenn.cis.ppod.imodel.IHasDocId;
 
 /**
  * A {@code PPodEntity} w/ an {@link XmlID} attribute called {@code "docId"}.
@@ -30,7 +30,7 @@ import edu.upenn.cis.ppod.imodel.IWithDocId;
  */
 public abstract class PPodEntityWDocId
 		extends PPodEntity
-		implements IWithDocId {
+		implements IHasDocId {
 
 	/**
 	 * Intended for referencing elements within a document - be it XML, JSON,

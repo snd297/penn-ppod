@@ -28,9 +28,10 @@ public interface IOtuKeyedMapPlus<V extends IChild<?>, P extends IChild<IOtuSet>
 	void clear();
 
 	/**
-	 * For marshalling {@code rows}. Since a {@code Map}'s key couldn't be an
-	 * interface. And even if we use a concrete class for the key, we couldn't
-	 * get it work maybe because the key marshalled as a {@code XmlIDREF}.
+	 * For marshalling {@code rows}. Since a {@code Map}'s key and value
+	 * couldn't be an interface. And even if we use a concrete classes we,
+	 * couldn't get it to work maybe because the key marshalled as a
+	 * {@code XmlIDREF}.
 	 */
 	Set<OP> getOTUKeyedPairs();
 

@@ -53,7 +53,7 @@ import edu.upenn.cis.ppod.util.IVisitor;
  */
 @MappedSuperclass
 abstract class SequenceSet<S extends ISequence<?>>
-		extends UUPPodEntityWithDocId
+		extends UuPPodEntityWithDocId
 		implements ISequenceSet<S> {
 
 	@Nullable

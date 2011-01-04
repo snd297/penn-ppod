@@ -25,7 +25,7 @@ import edu.upenn.cis.ppod.model.StandardState;
 
 @XmlJavaTypeAdapter(StandardState.Adapter.class)
 public interface IStandardState
-		extends IChild<IStandardCharacter>, IPPodEntity, ILabeled, IWithDocId {
+		extends IChild<IStandardCharacter>, IPPodEntity, ILabeled, IHasDocId {
 
 	/**
 	 * {@link Function} wrapper of {@link #getStateNumber()}.

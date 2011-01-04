@@ -18,7 +18,7 @@ package edu.upenn.cis.ppod.model;
 import edu.upenn.cis.ppod.imodel.IPPodEntity;
 import edu.upenn.cis.ppod.imodel.ITree;
 import edu.upenn.cis.ppod.imodel.ITreeSet;
-import edu.upenn.cis.ppod.imodel.IUUPPodEntity;
+import edu.upenn.cis.ppod.imodel.IUuPPodEntity;
 import edu.upenn.cis.ppod.imodel.IVersionInfo;
 
 /**
@@ -130,7 +130,7 @@ public class ModelFactory {
 		pPodEntity.setVersionInfo(versionInfo);
 	}
 
-	private static void prepareUUPPodEntity(final IUUPPodEntity pPodEntity,
+	private static void prepareUUPPodEntity(final IUuPPodEntity pPodEntity,
 			final IVersionInfo versionInfo) {
 		preparePPodEntity(pPodEntity, versionInfo);
 		pPodEntity.setPPodId();

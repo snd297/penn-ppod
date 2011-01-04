@@ -21,7 +21,7 @@ import javax.annotation.CheckForNull;
 import javax.annotation.Nullable;
 
 public interface ISequenceSet<S extends ISequence<?>>
-		extends ILabeled, IOTUSetChild, IUUPPodEntity {
+		extends ILabeled, IOTUSetChild, IUuPPodEntity {
 
 	/**
 	 * Get the sequence indexed by {@code otu}.

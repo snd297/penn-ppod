@@ -57,7 +57,7 @@ public class StandardRows
 		implements IOtuKeyedMap<IStandardRow> {
 
 	private final IOtuKeyedMapPlus<IStandardRow, IStandardMatrix, OTUStandardRowPair> rows =
-			new OTUKeyedMapPlus<IStandardRow, IStandardMatrix, OTUStandardRowPair>();
+			new OtuKeyedMapPlus<IStandardRow, IStandardMatrix, OTUStandardRowPair>();
 
 	StandardRows() {}
 

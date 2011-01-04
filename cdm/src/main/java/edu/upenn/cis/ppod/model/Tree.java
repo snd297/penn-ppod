@@ -42,7 +42,7 @@ import edu.upenn.cis.ppod.util.IVisitor;
  */
 @Entity
 @Table(name = Tree.TABLE)
-public class Tree extends UUPPodEntity implements ITree {
+public class Tree extends UuPPodEntity implements ITree {
 
 	public static class Adapter extends XmlAdapter<Tree, ITree> {
 

@@ -27,7 +27,7 @@ import edu.upenn.cis.ppod.services.ppodentity.IOTUSets;
  * @author Sam Donnelly
  */
 @XmlSeeAlso(Study.class)
-public interface IStudy extends ILabeled, IOTUSets, IUUPPodEntity {
+public interface IStudy extends ILabeled, IOTUSets, IUuPPodEntity {
 
 	/**
 	 * Insert an OTU set at the given position.

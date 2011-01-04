@@ -60,7 +60,7 @@ import edu.upenn.cis.ppod.util.IVisitor;
  */
 @MappedSuperclass
 public abstract class Matrix<R extends IRow<C, ?>, C extends ICell<?, ?>>
-		extends UUPPodEntityWithDocId
+		extends UuPPodEntityWithDocId
 		implements IMatrix<R, C> {
 
 	/** Description column. */
