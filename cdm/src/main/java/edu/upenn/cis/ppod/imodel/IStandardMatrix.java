@@ -25,7 +25,7 @@ import edu.upenn.cis.ppod.model.StandardMatrix;
 
 @XmlJavaTypeAdapter(StandardMatrix.Adapter.class)
 public interface IStandardMatrix
-		extends IMatrix<IStandardRow, IStandardCell>, IOTUSetChild {
+		extends IMatrix<IStandardRow, IStandardCell>, IOtuSetChild {
 
 	void afterUnmarshal();
 
