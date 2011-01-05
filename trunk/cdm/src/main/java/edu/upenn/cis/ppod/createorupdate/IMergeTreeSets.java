@@ -17,13 +17,13 @@ package edu.upenn.cis.ppod.createorupdate;
 
 import com.google.inject.ImplementedBy;
 
-import edu.upenn.cis.ppod.imodel.ITreeSet;
+import edu.upenn.cis.ppod.model.TreeSet;
 
 /**
  * @author Sam Donnelly
  */
 @ImplementedBy(MergeTreeSets.class)
 public interface IMergeTreeSets {
-	void mergeTreeSets(ITreeSet targetTreeSet, ITreeSet sourceTreeSet);
+	void mergeTreeSets(TreeSet targetTreeSet, TreeSet sourceTreeSet);
 
 }

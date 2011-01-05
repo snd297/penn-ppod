@@ -38,11 +38,10 @@ import javax.xml.bind.annotation.XmlAccessType;
 import javax.xml.bind.annotation.XmlAccessorType;
 import javax.xml.bind.annotation.XmlAttribute;
 import javax.xml.bind.annotation.XmlElement;
-import javax.xml.bind.annotation.adapters.XmlAdapter;
 
 import com.google.common.collect.Iterators;
 
-import edu.upenn.cis.ppod.imodel.ITreeSet;
+import edu.upenn.cis.ppod.imodel.IDependsOnParentOtus;
 import edu.upenn.cis.ppod.util.IVisitor;
 
 /**
@@ -54,21 +53,7 @@ import edu.upenn.cis.ppod.util.IVisitor;
 @Entity
 @Table(name = TreeSet.TABLE)
 public class TreeSet
-		extends UuPPodEntityWithDocId
-		implements ITreeSet {
-
-	public static class Adapter extends XmlAdapter<TreeSet, ITreeSet> {
-
-		@Override
-		public TreeSet marshal(final ITreeSet treeSet) {
-			return (TreeSet) treeSet;
-		}
-
-		@Override
-		public TreeSet unmarshal(final TreeSet treeSet) {
-			return treeSet;
-		}
-	}
+		extends UuPPodEntityWithDocId implements IDependsOnParentOtus {
 
 	public static final String TABLE = "TREE_SET";
 
@@ -102,7 +87,12 @@ public class TreeSet
 	}
 
 	/**
-	 * {@inheritDoc}
+	 * Add {@code tree} to this {@code ITreeSet}.
+	 * 
+	 * @param tree to be added
+	 * 
+	 * @throws IllegalArgumentException if the tree is already contained in this
+	 *             tree set
 	 */
 	public void addTree(final Tree tree) {
 		checkNotNull(tree);
@@ -143,7 +133,11 @@ public class TreeSet
 		return parent;
 	}
 
-	/** {@inheritDoc} */
+	/**
+	 * Get the constituent trees.
+	 * 
+	 * @return the constituent trees.
+	 */
 	public List<Tree> getTrees() {
 		return Collections.unmodifiableList(trees);
 	}
@@ -161,7 +155,11 @@ public class TreeSet
 		super.setInNeedOfNewVersion();
 	}
 
-	/** {@inheritDoc} */
+	/**
+	 * Set the label.
+	 * 
+	 * @param label the label value
+	 */
 	public void setLabel(final String label) {
 		checkNotNull(label);
 		if (label.equals(getLabel())) {
@@ -179,10 +177,13 @@ public class TreeSet
 	}
 
 	/**
-	 * {@inheritDoc}
+	 * Set the trees in this tree set.
+	 * <p>
+	 * This handles both sides of the {@code ITreeSet<->ITree} relationship.
 	 * 
-	 * @throws IllegalArgumentException if {@code trees} contains any
-	 *             {@code .equals(...)} duplicates
+	 * @param trees the trees we're setting
+	 * 
+	 * @return any trees which were removed as a result of this operation
 	 */
 	public List<Tree> setTrees(final List<? extends Tree> trees) {
 		checkNotNull(trees);

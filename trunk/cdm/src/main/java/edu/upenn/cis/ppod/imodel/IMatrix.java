@@ -27,7 +27,7 @@ import edu.umd.cs.findbugs.annotations.Nullable;
 import edu.upenn.cis.ppod.model.Otu;
 
 public interface IMatrix<R extends IRow<C, ?>, C extends ICell<?, ?>>
-		extends IDependsOnOtus, IUuPPodEntity, IHasDocId {
+		extends IDependsOnParentOtus, IUuPPodEntity, IHasDocId {
 
 	/**
 	 * The number of columns which any newly introduced rows must have.

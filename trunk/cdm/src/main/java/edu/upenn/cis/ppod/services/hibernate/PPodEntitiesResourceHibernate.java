@@ -25,9 +25,9 @@ import org.hibernate.FlushMode;
 import org.hibernate.Session;
 
 import edu.upenn.cis.ppod.imodel.IStandardMatrix;
-import edu.upenn.cis.ppod.imodel.ITreeSet;
 import edu.upenn.cis.ppod.model.Otu;
 import edu.upenn.cis.ppod.model.OtuSet;
+import edu.upenn.cis.ppod.model.TreeSet;
 import edu.upenn.cis.ppod.services.IPPodEntitiesResource;
 import edu.upenn.cis.ppod.services.ppodentity.PPodEntities;
 import edu.upenn.cis.ppod.util.SetDocIdVisitor;
@@ -58,7 +58,7 @@ class PPodEntitiesResourceHibernate implements
 		final PPodEntities pPodEntities = new PPodEntities();
 
 		final Set<IStandardMatrix> addedMatrices = newHashSet();
-		final Set<ITreeSet> addedTreeSets = newHashSet();
+		final Set<TreeSet> addedTreeSets = newHashSet();
 
 		// final List<Object> flattenedQueryResults = newArrayList();
 		// for (final Object queryResult : queryResults) {
@@ -97,8 +97,8 @@ class PPodEntitiesResourceHibernate implements
 				// Note that otu set may have already been added in any of the
 				// other if clauses: Hibernate identity takes care of us
 				pPodEntities.addOtuSet(matrix.getParent());
-			} else if (queryResult instanceof ITreeSet) {
-				final ITreeSet treeSet = (ITreeSet) queryResult;
+			} else if (queryResult instanceof TreeSet) {
+				final TreeSet treeSet = (TreeSet) queryResult;
 
 				// Extra insurance against accidental sync with database
 				session.setReadOnly(treeSet, true);
@@ -137,7 +137,7 @@ class PPodEntitiesResourceHibernate implements
 					}
 				}
 
-				for (final ITreeSet treeSet : otuSet.getTreeSets()) {
+				for (final TreeSet treeSet : otuSet.getTreeSets()) {
 					if (addedTreeSets.contains(treeSet)) {
 						otuSet.addTreeSet(treeSet);
 					}

@@ -34,9 +34,9 @@ import edu.upenn.cis.ppod.imodel.IHasPPodId;
 import edu.upenn.cis.ppod.imodel.INewVersionInfo;
 import edu.upenn.cis.ppod.imodel.IStandardMatrix;
 import edu.upenn.cis.ppod.imodel.IStudy;
-import edu.upenn.cis.ppod.imodel.ITreeSet;
 import edu.upenn.cis.ppod.model.ModelFactory;
 import edu.upenn.cis.ppod.model.OtuSet;
+import edu.upenn.cis.ppod.model.TreeSet;
 
 /**
  * Create a new study or update an existing one.
@@ -48,7 +48,7 @@ class CreateOrUpdateStudy implements ICreateOrUpdateStudy {
 	private final IStudyDAO studyDAO;
 	private final IObjectWithLongIdDAO dao;
 	private final INewVersionInfo newVersionInfo;
-	private final IMergeOTUSets mergeOTUSets;
+	private final IMergeOtuSets mergeOTUSets;
 	private final ICreateOrUpdateDNAMatrix createOrUpdateDNAMatrix;
 	private final IMergeDNASequenceSets mergeDNASequenceSets;
 	private final ICreateOrUpdateStandardMatrix createOrUpdateStandardMatrix;
@@ -61,7 +61,7 @@ class CreateOrUpdateStudy implements ICreateOrUpdateStudy {
 			final IAttachmentTypeDAO attachmentTypeDAO,
 			final IStudyDAO studyDAO,
 			final INewVersionInfo newVersionInfo,
-			final IMergeOTUSets mergeOTUSets,
+			final IMergeOtuSets mergeOTUSets,
 			final ICreateOrUpdateDNAMatrix createOrUpdateDNAMatrix,
 			final IMergeDNASequenceSets mergeDNASequenceSets,
 			final ICreateOrUpdateStandardMatrix createOrUpdateStandardMatrix,
@@ -286,8 +286,8 @@ class CreateOrUpdateStudy implements ICreateOrUpdateStudy {
 			final OtuSet incomingOTUSet) {
 
 		// Let's delete tree sets missing from incoming OTU set
-		final Set<ITreeSet> toBeDeleteds = newHashSet();
-		for (final ITreeSet dbTreeSet : dbOTUSet.getTreeSets()) {
+		final Set<TreeSet> toBeDeleteds = newHashSet();
+		for (final TreeSet dbTreeSet : dbOTUSet.getTreeSets()) {
 			if (null == find(incomingOTUSet.getTreeSets(),
 						compose(
 								equalTo(
@@ -298,16 +298,16 @@ class CreateOrUpdateStudy implements ICreateOrUpdateStudy {
 			}
 		}
 
-		for (final ITreeSet toBeDeleted : toBeDeleteds) {
+		for (final TreeSet toBeDeleted : toBeDeleteds) {
 			dbOTUSet.removeTreeSet(toBeDeleted);
 		}
 
 		int incomingTreeSetPos = -1;
 
 		// Now let's add in new ones
-		for (final ITreeSet incomingTreeSet : incomingOTUSet.getTreeSets()) {
+		for (final TreeSet incomingTreeSet : incomingOTUSet.getTreeSets()) {
 			incomingTreeSetPos++;
-			ITreeSet dbTreeSet;
+			TreeSet dbTreeSet;
 			if (null == (dbTreeSet =
 					find(dbOTUSet.getTreeSets(),
 							compose(equalTo(incomingTreeSet.getPPodId()),
