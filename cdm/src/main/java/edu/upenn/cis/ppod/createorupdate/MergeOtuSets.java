@@ -32,37 +32,37 @@ import edu.upenn.cis.ppod.model.Otu;
 import edu.upenn.cis.ppod.model.OtuSet;
 
 /**
- * Merge {@code sourceOTUSet} onto {@code targetOTUSet}.
+ * Merge {@code sourceOtuSet} onto {@code targetOtuSet}.
  * 
  * @author Sam Donnelly
  */
-class MergeOTUSets implements IMergeOTUSets {
+class MergeOtuSets implements IMergeOtuSets {
 
 	private INewVersionInfo newVersionInfo;
 
 	@Inject
-	MergeOTUSets(final INewVersionInfo newVersionInfo) {
+	MergeOtuSets(final INewVersionInfo newVersionInfo) {
 		this.newVersionInfo = newVersionInfo;
 	}
 
 	public void mergeOTUSets(
-			final OtuSet targetOTUSet,
-			final OtuSet sourceOTUSet) {
-		checkNotNull(targetOTUSet);
-		checkNotNull(sourceOTUSet);
-		targetOTUSet.setLabel(sourceOTUSet.getLabel());
-		targetOTUSet.setDescription(sourceOTUSet.getDescription());
+			final OtuSet targetOtuSet,
+			final OtuSet sourceOtuSet) {
+		checkNotNull(targetOtuSet);
+		checkNotNull(sourceOtuSet);
+		targetOtuSet.setLabel(sourceOtuSet.getLabel());
+		targetOtuSet.setDescription(sourceOtuSet.getDescription());
 
 		// This is for a response to the service client.
-		targetOTUSet.setDocId(sourceOTUSet.getDocId());
+		targetOtuSet.setDocId(sourceOtuSet.getDocId());
 
 		final List<Otu> newTargetOTUs =
-				newArrayListWithCapacity(sourceOTUSet.getOtus().size());
+				newArrayListWithCapacity(sourceOtuSet.getOtus().size());
 
-		for (final Otu sourceOTU : sourceOTUSet.getOtus()) {
+		for (final Otu sourceOTU : sourceOtuSet.getOtus()) {
 			Otu targetOTU;
 			if (null == (targetOTU =
-					find(targetOTUSet.getOtus(),
+					find(targetOtuSet.getOtus(),
 							compose(
 									equalTo(sourceOTU
 											.getPPodId()),
@@ -77,6 +77,6 @@ class MergeOTUSets implements IMergeOTUSets {
 			// This is for a response to the service client.
 			targetOTU.setDocId(sourceOTU.getDocId());
 		}
-		targetOTUSet.setOTUs(newTargetOTUs);
+		targetOtuSet.setOTUs(newTargetOTUs);
 	}
 }

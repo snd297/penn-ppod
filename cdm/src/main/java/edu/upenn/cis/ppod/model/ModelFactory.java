@@ -16,7 +16,6 @@
 package edu.upenn.cis.ppod.model;
 
 import edu.upenn.cis.ppod.imodel.IPPodEntity;
-import edu.upenn.cis.ppod.imodel.ITreeSet;
 import edu.upenn.cis.ppod.imodel.IUuPPodEntity;
 import edu.upenn.cis.ppod.imodel.IVersionInfo;
 
@@ -118,8 +117,8 @@ public class ModelFactory {
 		return tree;
 	}
 
-	public static ITreeSet newTreeSet(final IVersionInfo versionInfo) {
-		final ITreeSet treeSet = new TreeSet();
+	public static TreeSet newTreeSet(final IVersionInfo versionInfo) {
+		final TreeSet treeSet = new TreeSet();
 		prepareUUPPodEntity(treeSet, versionInfo);
 		return treeSet;
 	}

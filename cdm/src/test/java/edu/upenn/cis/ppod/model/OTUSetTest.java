@@ -44,7 +44,6 @@ import edu.upenn.cis.ppod.imodel.IDnaMatrix;
 import edu.upenn.cis.ppod.imodel.IDnaSequenceSet;
 import edu.upenn.cis.ppod.imodel.IStandardMatrix;
 import edu.upenn.cis.ppod.imodel.IStudy;
-import edu.upenn.cis.ppod.imodel.ITreeSet;
 import edu.upenn.cis.ppod.util.IVisitor;
 
 /**
@@ -330,10 +329,10 @@ public class OTUSetTest {
 	@Test
 	public void addTreeSetPos() {
 		final OtuSet otuSet = new OtuSet();
-		final ITreeSet treeSet0 = new TreeSet();
-		final ITreeSet treeSet1 = new TreeSet();
-		final ITreeSet treeSet2 = new TreeSet();
-		final ITreeSet treeSet3 = new TreeSet();
+		final TreeSet treeSet0 = new TreeSet();
+		final TreeSet treeSet1 = new TreeSet();
+		final TreeSet treeSet2 = new TreeSet();
+		final TreeSet treeSet3 = new TreeSet();
 
 		otuSet.addTreeSet(treeSet0);
 		otuSet.addTreeSet(treeSet1);
@@ -496,13 +495,13 @@ public class OTUSetTest {
 
 	@Test
 	public void removeTreeSet() {
-		final ITreeSet treeSet0 = new TreeSet();
+		final TreeSet treeSet0 = new TreeSet();
 		treeSet0.setLabel("treeSet0");
 		otuSet.addTreeSet(treeSet0);
-		final ITreeSet treeSet1 = new TreeSet();
+		final TreeSet treeSet1 = new TreeSet();
 		treeSet1.setLabel("treeSet1");
 		otuSet.addTreeSet(treeSet1);
-		final ITreeSet treeSet2 = new TreeSet();
+		final TreeSet treeSet2 = new TreeSet();
 		treeSet2.setLabel("treeSet2");
 		otuSet.addTreeSet(treeSet2);
 

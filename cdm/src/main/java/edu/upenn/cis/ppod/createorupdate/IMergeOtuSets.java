@@ -22,8 +22,8 @@ import edu.upenn.cis.ppod.model.OtuSet;
 /**
  * @author Sam Donnelly
  */
-@ImplementedBy(MergeOTUSets.class)
-public interface IMergeOTUSets {
+@ImplementedBy(MergeOtuSets.class)
+public interface IMergeOtuSets {
 
 	void mergeOTUSets(OtuSet targetOTUSet, OtuSet sourceOTUSet);
 

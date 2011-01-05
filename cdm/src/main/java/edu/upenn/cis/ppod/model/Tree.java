@@ -30,7 +30,6 @@ import javax.xml.bind.Unmarshaller;
 import javax.xml.bind.annotation.XmlAttribute;
 import javax.xml.bind.annotation.XmlElement;
 
-import edu.upenn.cis.ppod.imodel.ITreeSet;
 import edu.upenn.cis.ppod.util.IVisitor;
 
 /**
@@ -53,12 +52,11 @@ public class Tree extends UuPPodEntity {
 	@Nullable
 	private String newick;
 
-	@ManyToOne(fetch = FetchType.LAZY, optional = false,
-			targetEntity = TreeSet.class)
+	@ManyToOne(fetch = FetchType.LAZY, optional = false)
 	@JoinColumn(name = TreeSet.JOIN_COLUMN, insertable = false,
 				updatable = false)
 	@Nullable
-	private ITreeSet parent;
+	private TreeSet parent;
 
 	/**
 	 * For Hibernate.
@@ -111,7 +109,7 @@ public class Tree extends UuPPodEntity {
 	}
 
 	@Nullable
-	public ITreeSet getParent() {
+	public TreeSet getParent() {
 		return parent;
 	}
 
@@ -156,7 +154,7 @@ public class Tree extends UuPPodEntity {
 	}
 
 	/** {@inheritDoc} */
-	public void setParent(@CheckForNull final ITreeSet parent) {
+	public void setParent(@CheckForNull final TreeSet parent) {
 		this.parent = parent;
 	}
 }

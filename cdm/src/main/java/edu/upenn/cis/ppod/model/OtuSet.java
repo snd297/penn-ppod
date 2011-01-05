@@ -51,7 +51,6 @@ import edu.upenn.cis.ppod.imodel.IDnaSequenceSet;
 import edu.upenn.cis.ppod.imodel.ILabeled;
 import edu.upenn.cis.ppod.imodel.IStandardMatrix;
 import edu.upenn.cis.ppod.imodel.IStudy;
-import edu.upenn.cis.ppod.imodel.ITreeSet;
 import edu.upenn.cis.ppod.util.IVisitor;
 
 /**
@@ -142,7 +141,7 @@ public class OtuSet
 			targetEntity = TreeSet.class)
 	@OrderColumn(name = "POSITION")
 	@JoinColumn(name = JOIN_COLUMN, nullable = false)
-	private final List<ITreeSet> treeSets = newArrayList();
+	private final List<TreeSet> treeSets = newArrayList();
 
 	/**
 	 * Default constructor.
@@ -325,7 +324,7 @@ public class OtuSet
 	 */
 	public void addTreeSet(
 			final int treeSetPos,
-			final ITreeSet treeSet) {
+			final TreeSet treeSet) {
 		checkNotNull(treeSet);
 		checkArgument(treeSetPos >= 0, "pos < 0");
 		checkArgument(
@@ -338,7 +337,7 @@ public class OtuSet
 	}
 
 	/** {@inheritDoc} */
-	public void addTreeSet(final ITreeSet treeSet) {
+	public void addTreeSet(final TreeSet treeSet) {
 		checkNotNull(treeSet);
 		checkArgument(
 				!treeSets.contains(treeSet),
@@ -458,12 +457,12 @@ public class OtuSet
 	 * 
 	 * @return the tree sets contained in this OTU set
 	 */
-	public List<ITreeSet> getTreeSets() {
+	public List<TreeSet> getTreeSets() {
 		return Collections.unmodifiableList(treeSets);
 	}
 
 	@XmlElement(name = "treeSet")
-	protected List<ITreeSet> getTreeSetsModifiable() {
+	protected List<TreeSet> getTreeSetsModifiable() {
 		return treeSets;
 	}
 
@@ -529,7 +528,7 @@ public class OtuSet
 	 * @throws IllegalArgumentException if the tree set does not belong to this
 	 *             otu set
 	 */
-	public void removeTreeSet(final ITreeSet treeSet) {
+	public void removeTreeSet(final TreeSet treeSet) {
 		checkNotNull(treeSet);
 		checkArgument(getTreeSets().contains(treeSet),
 				"otu set does not contain the given tree set ["
