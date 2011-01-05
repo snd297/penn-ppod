@@ -27,8 +27,7 @@ import javax.persistence.MappedSuperclass;
 import javax.xml.bind.annotation.XmlAttribute;
 import javax.xml.bind.annotation.XmlElement;
 
-import edu.upenn.cis.ppod.imodel.ISequence;
-import edu.upenn.cis.ppod.imodel.ISequenceSet;
+import edu.upenn.cis.ppod.imodel.IChild;
 
 /**
  * A molecular sequence - DNA, RNA, protein - that is represented by a
@@ -37,9 +36,9 @@ import edu.upenn.cis.ppod.imodel.ISequenceSet;
  * @author Sam Donnelly
  */
 @MappedSuperclass
-public abstract class Sequence<SS extends ISequenceSet<?>>
+public abstract class Sequence<SS extends SequenceSet<?>>
 		extends PPodEntity
-		implements ISequence<SS> {
+		implements IChild<SS> {
 
 	private final static String SEQUENCE_COLUMN = "SEQUENCE";
 
@@ -127,7 +126,7 @@ public abstract class Sequence<SS extends ISequenceSet<?>>
 	 * 
 	 * @return this
 	 */
-	public ISequence<SS> setAccession(
+	public Sequence<SS> setAccession(
 				@CheckForNull final String accession) {
 		if (equal(accession, getAccession())) {
 			return this;
@@ -144,7 +143,7 @@ public abstract class Sequence<SS extends ISequenceSet<?>>
 	 * 
 	 * @return this
 	 */
-	public ISequence<SS> setDescription(
+	public Sequence<SS> setDescription(
 			@CheckForNull final String newDescription) {
 		if (equal(newDescription, getDescription())) {
 			return this;
@@ -161,7 +160,7 @@ public abstract class Sequence<SS extends ISequenceSet<?>>
 	 * 
 	 * @return this
 	 */
-	public ISequence<SS> setName(@CheckForNull final String name) {
+	public Sequence<SS> setName(@CheckForNull final String name) {
 		if (equal(name, getName())) {
 			return this;
 		}
@@ -180,7 +179,7 @@ public abstract class Sequence<SS extends ISequenceSet<?>>
 	 * @throws IllegalArgumentException if any characters in newSequence are
 	 *             such that {@link #isLegal(char)} is false.
 	 */
-	public ISequence<SS> setSequence(final String sequence) {
+	public Sequence<SS> setSequence(final String sequence) {
 		checkNotNull(sequence);
 		if (sequence.equals(getSequence())) {
 			return this;

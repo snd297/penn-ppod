@@ -23,9 +23,6 @@ import static org.testng.Assert.assertTrue;
 import org.testng.annotations.Test;
 
 import edu.upenn.cis.ppod.TestGroupDefs;
-import edu.upenn.cis.ppod.imodel.IDnaSequence;
-import edu.upenn.cis.ppod.imodel.ISequence;
-import edu.upenn.cis.ppod.imodel.ISequenceSet;
 
 /**
  * Tests for {@link Sequence}.
@@ -69,7 +66,7 @@ public class MolecularSequenceTest {
 	 */
 	@Test(expectedExceptions = IllegalArgumentException.class)
 	public void setSequenceWithAnIllegalCharacter() {
-		final ISequence<?> sequence = new DnaSequence();
+		final Sequence<?> sequence = new DnaSequence();
 		final String sequenceString = "ACGTlC-T-A";
 		sequence.setSequence(sequenceString);
 	}
@@ -87,7 +84,7 @@ public class MolecularSequenceTest {
 		final Otu otu0 = new Otu();
 		otuSet.addOTU(otu0);
 
-		final ISequenceSet<IDnaSequence> sequenceSet = new DnaSequenceSet();
+		final SequenceSet<DnaSequence> sequenceSet = new DnaSequenceSet();
 
 		sequenceSet.setParent(otuSet);
 

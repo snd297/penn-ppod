@@ -36,6 +36,7 @@ import com.google.common.collect.ImmutableSet;
 
 import edu.umd.cs.findbugs.annotations.CheckForNull;
 import edu.umd.cs.findbugs.annotations.Nullable;
+import edu.upenn.cis.ppod.imodel.IChild;
 import edu.upenn.cis.ppod.util.IVisitor;
 
 /**
@@ -46,7 +47,7 @@ import edu.upenn.cis.ppod.util.IVisitor;
 @Entity
 @Table(name = DnaSequence.TABLE)
 public class DnaSequence
-		extends Sequence<DnaSequenceSet> {
+		extends Sequence<DnaSequenceSet> implements IChild<DnaSequenceSet> {
 
 	/**
 	 * The characters that are legal in a {@code DNASequence}.
@@ -83,7 +84,7 @@ public class DnaSequence
 			optional = false,
 			targetEntity = DnaSequenceSet.class)
 	@Nullable
-	private IDnaSequenceSet parent;
+	private DnaSequenceSet parent;
 
 	@ElementCollection
 	@CollectionTable(name = "DNA_SEQUENCE_PHRED_PHRAP_SCORES",
@@ -104,7 +105,7 @@ public class DnaSequence
 	}
 
 	@Nullable
-	public IDnaSequenceSet getParent() {
+	public DnaSequenceSet getParent() {
 		return parent;
 	}
 
@@ -123,7 +124,7 @@ public class DnaSequence
 
 	/** {@inheritDoc} */
 	public void setParent(
-			@CheckForNull final IDnaSequenceSet parent) {
+			@CheckForNull final DnaSequenceSet parent) {
 		this.parent = parent;
 	}
 

@@ -21,8 +21,6 @@ import static org.mockito.Mockito.when;
 import org.testng.annotations.Test;
 
 import edu.upenn.cis.ppod.TestGroupDefs;
-import edu.upenn.cis.ppod.imodel.IDnaSequence;
-import edu.upenn.cis.ppod.imodel.IDnaSequenceSet;
 import edu.upenn.cis.ppod.imodel.INewVersionInfo;
 import edu.upenn.cis.ppod.imodel.IVersionInfo;
 import edu.upenn.cis.ppod.model.DnaSequence;
@@ -37,10 +35,10 @@ public class MergeSequenceSetsTest {
 	@Test
 	public void modifySequencesKeepLength() {
 
-		final IDnaSequenceSet srcSeqSet = new DnaSequenceSet();
+		final DnaSequenceSet srcSeqSet = new DnaSequenceSet();
 
 		srcSeqSet.setLabel("src-seq-set-0");
-		final IDnaSequenceSet trgSeqSet = new DnaSequenceSet();
+		final DnaSequenceSet trgSeqSet = new DnaSequenceSet();
 
 		final OtuSet trgOTUSet = new OtuSet();
 		trgOTUSet.addOTU(new Otu("otu-0"));
@@ -55,8 +53,8 @@ public class MergeSequenceSetsTest {
 
 		srcOTUSet.addDNASequenceSet(srcSeqSet);
 
-		final IDnaSequence srcSeq0 =
-					(IDnaSequence) new DnaSequence()
+		final DnaSequence srcSeq0 =
+					(DnaSequence) new DnaSequence()
 							.setSequence("ACT")
 																	.setAccession(
 																			"jkjkj")
@@ -64,14 +62,14 @@ public class MergeSequenceSetsTest {
 																			"jkejfke")
 																	.setDescription(
 																			"jkfjeijf");
-		final IDnaSequence srcSeq1 =
-					(IDnaSequence) new DnaSequence()
+		final DnaSequence srcSeq1 =
+					(DnaSequence) new DnaSequence()
 							.setSequence("TCA")
 							.setAccession("jjijk")
 							.setName("jefeji")
 							.setDescription("ejfiejiji");
-		final IDnaSequence srcSeq2 =
-					(IDnaSequence) new DnaSequence()
+		final DnaSequence srcSeq2 =
+					(DnaSequence) new DnaSequence()
 							.setSequence("ATC")
 							.setAccession("jfje")
 							.setName("jfifjiji")
@@ -106,11 +104,11 @@ public class MergeSequenceSetsTest {
 	@Test
 	public void shortenSequences() {
 
-		final IDnaSequenceSet srcSeqSet =
+		final DnaSequenceSet srcSeqSet =
 				new DnaSequenceSet();
 
 		srcSeqSet.setLabel("src-seq-set-0");
-		final IDnaSequenceSet trgSeqSet = new DnaSequenceSet();
+		final DnaSequenceSet trgSeqSet = new DnaSequenceSet();
 
 		final OtuSet trgOTUSet = new OtuSet();
 		trgOTUSet.addOTU(new Otu("otu-0"));
@@ -125,20 +123,20 @@ public class MergeSequenceSetsTest {
 
 		srcOTUSet.addDNASequenceSet(srcSeqSet);
 
-		final IDnaSequence srcSeq0 =
-				(IDnaSequence) new DnaSequence()
+		final DnaSequence srcSeq0 =
+				(DnaSequence) new DnaSequence()
 							.setSequence("ACT")
 							.setAccession("jkjkj")
 							.setName("jkejfke")
 							.setDescription("jkfjeijf");
-		final IDnaSequence srcSeq1 =
-				(IDnaSequence) new DnaSequence()
+		final DnaSequence srcSeq1 =
+				(DnaSequence) new DnaSequence()
 							.setSequence("TCA")
 							.setAccession("jjijk")
 							.setName("jefeji")
 							.setDescription("ejfiejiji");
-		final IDnaSequence srcSeq2 =
-				(IDnaSequence) new DnaSequence()
+		final DnaSequence srcSeq2 =
+				(DnaSequence) new DnaSequence()
 							.setSequence("ATC")
 							.setAccession("jfje")
 							.setName("jfifjiji")
@@ -174,10 +172,10 @@ public class MergeSequenceSetsTest {
 
 	@Test
 	public void mergeOnBlankTarget() {
-		final IDnaSequenceSet srcSeqSet =
+		final DnaSequenceSet srcSeqSet =
 				new DnaSequenceSet();
 		srcSeqSet.setLabel("src-seq-set-0");
-		final IDnaSequenceSet trgSeqSet = new DnaSequenceSet();
+		final DnaSequenceSet trgSeqSet = new DnaSequenceSet();
 
 		final OtuSet trgOTUSet = new OtuSet();
 		trgOTUSet.addOTU(new Otu("otu-0"));
@@ -192,20 +190,20 @@ public class MergeSequenceSetsTest {
 
 		srcOTUSet.addDNASequenceSet(srcSeqSet);
 
-		final IDnaSequence srcSeq0 =
-				(IDnaSequence) new DnaSequence()
+		final DnaSequence srcSeq0 =
+				(DnaSequence) new DnaSequence()
 								.setSequence("ACT")
 								.setAccession("jkjkj")
 								.setName("jkejfke")
 								.setDescription("jkfjeijf");
-		final IDnaSequence srcSeq1 =
-				(IDnaSequence) new DnaSequence()
+		final DnaSequence srcSeq1 =
+				(DnaSequence) new DnaSequence()
 						.setSequence("TCA")
 						.setAccession("jjijk")
 						.setName("jefeji")
 						.setDescription("ejfiejiji");
-		final IDnaSequence srcSeq2 =
-				(IDnaSequence) new DnaSequence()
+		final DnaSequence srcSeq2 =
+				(DnaSequence) new DnaSequence()
 						.setSequence("ATC")
 						.setAccession("jfje")
 						.setName("jfifjiji")

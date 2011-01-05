@@ -28,8 +28,6 @@ import static org.testng.Assert.assertTrue;
 import org.testng.annotations.Test;
 
 import edu.upenn.cis.ppod.TestGroupDefs;
-import edu.upenn.cis.ppod.imodel.IDnaSequence;
-import edu.upenn.cis.ppod.imodel.ISequenceSet;
 import edu.upenn.cis.ppod.util.IVisitor;
 
 /**
@@ -42,8 +40,8 @@ public class SequenceSetTest {
 
 	@Test
 	public void checkSequenceSizesOnEmptySequenceSet() {
-		final SequenceSet<IDnaSequence> seqSet = new DnaSequenceSet();
-		final IDnaSequence seq0 = new DnaSequence();
+		final SequenceSet<DnaSequence> seqSet = new DnaSequenceSet();
+		final DnaSequence seq0 = new DnaSequence();
 
 		final String seqStr0 = "ATACCCGACCGCTA";
 
@@ -55,21 +53,21 @@ public class SequenceSetTest {
 
 	@Test
 	public void checkSequenceSizesNonEmptySequenceSet() {
-		final SequenceSet<IDnaSequence> seqSet = new DnaSequenceSet();
+		final SequenceSet<DnaSequence> seqSet = new DnaSequenceSet();
 
-		final IDnaSequence seq0 = new DnaSequence();
+		final DnaSequence seq0 = new DnaSequence();
 		final String seqStr0 = "ATACCCGACCGCTA";
 		seq0.setSequence(seqStr0);
 
-		final IDnaSequence seq1 = new DnaSequence();
+		final DnaSequence seq1 = new DnaSequence();
 		final String seqStr1 = "ATACACGTCCGCTG";
 		seq1.setSequence(seqStr1);
 
-		final IDnaSequence seq2 = new DnaSequence();
+		final DnaSequence seq2 = new DnaSequence();
 		final String seqStr2 = "TTCCTCGTCCGCTG";
 		seq2.setSequence(seqStr2);
 
-		final IDnaSequence seq3 = new DnaSequence();
+		final DnaSequence seq3 = new DnaSequence();
 		final String seqStr3 = "CTCCTCGTCAGCAG";
 		seq3.setSequence(seqStr3);
 
@@ -93,21 +91,21 @@ public class SequenceSetTest {
 
 	@Test(expectedExceptions = IllegalArgumentException.class)
 	public void checkSequenceSizesNonEmptySequenceSetWrongLength() {
-		final SequenceSet<IDnaSequence> seqSet = new DnaSequenceSet();
+		final SequenceSet<DnaSequence> seqSet = new DnaSequenceSet();
 
-		final IDnaSequence seq0 = new DnaSequence();
+		final DnaSequence seq0 = new DnaSequence();
 		final String seqStr0 = "ATACCCGACCGCT";
 		seq0.setSequence(seqStr0);
 
-		final IDnaSequence seq1 = new DnaSequence();
+		final DnaSequence seq1 = new DnaSequence();
 		final String seqStr1 = "ATACACGTCCGCTG";
 		seq1.setSequence(seqStr1);
 
-		final IDnaSequence seq2 = new DnaSequence();
+		final DnaSequence seq2 = new DnaSequence();
 		final String seqStr2 = "TTCCTCGTCCGCTG";
 		seq2.setSequence(seqStr2);
 
-		final IDnaSequence seq3 = new DnaSequence();
+		final DnaSequence seq3 = new DnaSequence();
 		final String seqStr3 = "CTCCTCGTCAGCAG";
 		seq3.setSequence(seqStr3);
 
@@ -148,7 +146,7 @@ public class SequenceSetTest {
 
 	@Test
 	public void setLabel() {
-		final ISequenceSet<IDnaSequence> seqSet = new DnaSequenceSet();
+		final SequenceSet<DnaSequence> seqSet = new DnaSequenceSet();
 		assertNull(seqSet.getLabel());
 
 		assertFalse(seqSet.isInNeedOfNewVersion());
@@ -183,11 +181,11 @@ public class SequenceSetTest {
 
 		otuSet.addDNASequenceSet(seqSet);
 
-		final IDnaSequence seq0 = (DnaSequence) new DnaSequence()
+		final DnaSequence seq0 = (DnaSequence) new DnaSequence()
 				.setSequence("ATG");
-		final IDnaSequence seq1 = (DnaSequence) new DnaSequence()
+		final DnaSequence seq1 = (DnaSequence) new DnaSequence()
 				.setSequence("CTA");
-		final IDnaSequence seq2 = (DnaSequence) new DnaSequence()
+		final DnaSequence seq2 = (DnaSequence) new DnaSequence()
 				.setSequence("TTT");
 
 		seqSet.putSequence(otuSet.getOtus().get(0), seq0);
