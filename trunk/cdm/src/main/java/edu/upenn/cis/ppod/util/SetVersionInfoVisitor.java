@@ -16,9 +16,6 @@
 package edu.upenn.cis.ppod.util;
 
 import edu.upenn.cis.ppod.imodel.IAttachment;
-import edu.upenn.cis.ppod.imodel.IDnaCell;
-import edu.upenn.cis.ppod.imodel.IDnaMatrix;
-import edu.upenn.cis.ppod.imodel.IDnaRow;
 import edu.upenn.cis.ppod.imodel.IMatrix;
 import edu.upenn.cis.ppod.imodel.INewVersionInfo;
 import edu.upenn.cis.ppod.imodel.IStandardCell;
@@ -28,6 +25,9 @@ import edu.upenn.cis.ppod.imodel.IStandardRow;
 import edu.upenn.cis.ppod.imodel.IStandardState;
 import edu.upenn.cis.ppod.imodel.IStudy;
 import edu.upenn.cis.ppod.imodel.IVersioned;
+import edu.upenn.cis.ppod.model.DnaCell;
+import edu.upenn.cis.ppod.model.DnaMatrix;
+import edu.upenn.cis.ppod.model.DnaRow;
 import edu.upenn.cis.ppod.model.Otu;
 import edu.upenn.cis.ppod.model.OtuSet;
 import edu.upenn.cis.ppod.model.Tree;
@@ -60,17 +60,17 @@ public final class SetVersionInfoVisitor extends EmptyVisitor {
 	}
 
 	@Override
-	public void visitDNACell(final IDnaCell cell) {
+	public void visitDNACell(final DnaCell cell) {
 		setNewVersionInfo(cell);
 	}
 
 	@Override
-	public void visitDNAMatrix(final IDnaMatrix matrix) {
+	public void visitDNAMatrix(final DnaMatrix matrix) {
 		visitMatrix(matrix);
 	}
 
 	@Override
-	public void visitDNARow(final IDnaRow row) {
+	public void visitDNARow(final DnaRow row) {
 		setNewVersionInfo(row);
 	}
 

@@ -32,14 +32,11 @@ import javax.persistence.ManyToOne;
 import javax.persistence.Table;
 import javax.xml.bind.annotation.XmlAttribute;
 import javax.xml.bind.annotation.XmlElement;
-import javax.xml.bind.annotation.adapters.XmlAdapter;
 
 import org.hibernate.annotations.Immutable;
 
 import edu.umd.cs.findbugs.annotations.Nullable;
 import edu.upenn.cis.ppod.imodel.DnaNucleotide;
-import edu.upenn.cis.ppod.imodel.IDnaCell;
-import edu.upenn.cis.ppod.imodel.IDnaRow;
 import edu.upenn.cis.ppod.util.IVisitor;
 
 /**
@@ -51,21 +48,7 @@ import edu.upenn.cis.ppod.util.IVisitor;
 @Table(name = DnaCell.TABLE)
 @Immutable
 public class DnaCell
-		extends MolecularCell<DnaNucleotide, IDnaRow>
-		implements IDnaCell {
-
-	public static class Adapter extends XmlAdapter<DnaCell, IDnaCell> {
-
-		@Override
-		public DnaCell marshal(final IDnaCell dnaCell) {
-			return (DnaCell) dnaCell;
-		}
-
-		@Override
-		public IDnaCell unmarshal(final DnaCell dnaCell) {
-			return dnaCell;
-		}
-	}
+		extends MolecularCell<DnaNucleotide, DnaRow> {
 
 	public static final String TABLE = "DNA_CELL";
 
@@ -97,11 +80,10 @@ public class DnaCell
 	@Nullable
 	private DnaNucleotide element;
 
-	@ManyToOne(fetch = FetchType.LAZY, optional = false,
-			targetEntity = DnaRow.class)
+	@ManyToOne(fetch = FetchType.LAZY, optional = false)
 	@JoinColumn(name = DnaRow.JOIN_COLUMN)
 	@Nullable
-	private IDnaRow parent;
+	private DnaRow parent;
 
 	public DnaCell() {}
 
@@ -135,7 +117,7 @@ public class DnaCell
 	}
 
 	@Override
-	public IDnaRow getParent() {
+	public DnaRow getParent() {
 		return parent;
 	}
 
@@ -161,7 +143,7 @@ public class DnaCell
 	}
 
 	/** {@inheritDoc} */
-	public void setParent(final IDnaRow parent) {
+	public void setParent(final DnaRow parent) {
 		this.parent = parent;
 	}
 }

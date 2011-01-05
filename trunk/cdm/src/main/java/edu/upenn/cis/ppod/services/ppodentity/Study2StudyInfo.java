@@ -16,9 +16,6 @@
 package edu.upenn.cis.ppod.services.ppodentity;
 
 import static com.google.common.base.Preconditions.checkNotNull;
-import edu.upenn.cis.ppod.imodel.IDnaCell;
-import edu.upenn.cis.ppod.imodel.IDnaMatrix;
-import edu.upenn.cis.ppod.imodel.IDnaRow;
 import edu.upenn.cis.ppod.imodel.IDnaSequence;
 import edu.upenn.cis.ppod.imodel.IDnaSequenceSet;
 import edu.upenn.cis.ppod.imodel.IStandardCell;
@@ -27,6 +24,9 @@ import edu.upenn.cis.ppod.imodel.IStandardMatrix;
 import edu.upenn.cis.ppod.imodel.IStandardRow;
 import edu.upenn.cis.ppod.imodel.IStudy;
 import edu.upenn.cis.ppod.imodel.IVersionInfo;
+import edu.upenn.cis.ppod.model.DnaCell;
+import edu.upenn.cis.ppod.model.DnaMatrix;
+import edu.upenn.cis.ppod.model.DnaRow;
 import edu.upenn.cis.ppod.model.Otu;
 import edu.upenn.cis.ppod.model.OtuSet;
 import edu.upenn.cis.ppod.model.Tree;
@@ -122,7 +122,7 @@ public final class Study2StudyInfo implements IStudy2StudyInfo {
 
 			// TODO: refactor so CharacterStateMatrix and DNAMatrix don't have
 			// duplicate code.
-			for (final IDnaMatrix matrix : otuSet
+			for (final DnaMatrix matrix : otuSet
 					.getDNAMatrices()) {
 				final MatrixInfo matrixInfo = new MatrixInfo();
 				otuSetInfo.getMatrixInfos().add(matrixInfo);
@@ -145,7 +145,7 @@ public final class Study2StudyInfo implements IStudy2StudyInfo {
 				int rowIdx = -1;
 
 				for (final Otu otu : matrix.getParent().getOtus()) {
-					final IDnaRow row = matrix.getRows().get(otu);
+					final DnaRow row = matrix.getRows().get(otu);
 					rowIdx++;
 					final Long rowVersion =
 							row.getVersionInfo().getVersion();
@@ -153,7 +153,7 @@ public final class Study2StudyInfo implements IStudy2StudyInfo {
 							.put(rowIdx, rowVersion);
 
 					int cellIdx = -1;
-					for (final IDnaCell cell : row.getCells()) {
+					for (final DnaCell cell : row.getCells()) {
 						cellIdx++;
 						matrixInfo
 								.setCellPPodIdAndVersion(rowIdx, cellIdx,

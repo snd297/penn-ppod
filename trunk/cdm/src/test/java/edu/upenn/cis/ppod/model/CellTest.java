@@ -34,14 +34,13 @@ import com.google.common.collect.ImmutableSet;
 import edu.upenn.cis.ppod.TestGroupDefs;
 import edu.upenn.cis.ppod.imodel.DnaNucleotide;
 import edu.upenn.cis.ppod.imodel.ICell;
-import edu.upenn.cis.ppod.imodel.IDnaRow;
 
 @Test(groups = { TestGroupDefs.FAST })
 public class CellTest {
 
 	@Test
 	public void afterUnmarshal() {
-		final IDnaRow row = new DnaRow();
+		final DnaRow row = new DnaRow();
 		final DnaCell cell = new DnaCell();
 		cell.afterUnmarshal(null, row);
 		assertSame(cell.getParent(), row);

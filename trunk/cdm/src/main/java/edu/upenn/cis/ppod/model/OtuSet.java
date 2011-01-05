@@ -46,7 +46,6 @@ import com.google.common.annotations.VisibleForTesting;
 import edu.umd.cs.findbugs.annotations.CheckForNull;
 import edu.umd.cs.findbugs.annotations.Nullable;
 import edu.upenn.cis.ppod.imodel.IChild;
-import edu.upenn.cis.ppod.imodel.IDnaMatrix;
 import edu.upenn.cis.ppod.imodel.IDnaSequenceSet;
 import edu.upenn.cis.ppod.imodel.ILabeled;
 import edu.upenn.cis.ppod.imodel.IStandardMatrix;
@@ -100,7 +99,7 @@ public class OtuSet
 			targetEntity = DnaMatrix.class)
 	@OrderColumn(name = "POSITION")
 	@JoinColumn(name = JOIN_COLUMN, nullable = false)
-	private final List<IDnaMatrix> dnaMatrices = newArrayList();
+	private final List<DnaMatrix> dnaMatrices = newArrayList();
 
 	@OneToMany(
 			cascade = CascadeType.ALL,
@@ -161,14 +160,14 @@ public class OtuSet
 	/**
 	 * Add a DNA matrix to this OTU set.
 	 * <p>
-	 * Handles the {@code IDNAMatrix->IOTUSet} side of the relationship.
+	 * Handles the {@code DnaMatrix->IOTUSet} side of the relationship.
 	 * 
 	 * @param matrix to be added
 	 * 
 	 * @throws IllegalArgumentException if this otu set already contains the
 	 *             matrix
 	 */
-	public void addDNAMatrix(final IDnaMatrix matrix) {
+	public void addDNAMatrix(final DnaMatrix matrix) {
 		checkNotNull(matrix);
 		checkArgument(
 				!dnaMatrices.contains(matrix),
@@ -182,7 +181,7 @@ public class OtuSet
 	/** {@inheritDoc} */
 	public void addDNAMatrix(
 			final int pos,
-			final IDnaMatrix matrix) {
+			final DnaMatrix matrix) {
 		checkNotNull(matrix);
 		checkArgument(pos >= 0, "pos < 0");
 		checkArgument(
@@ -383,12 +382,12 @@ public class OtuSet
 	}
 
 	/** {@inheritDoc} */
-	public List<IDnaMatrix> getDNAMatrices() {
+	public List<DnaMatrix> getDNAMatrices() {
 		return Collections.unmodifiableList(dnaMatrices);
 	}
 
 	@XmlElement(name = "dnaMatrix")
-	protected List<IDnaMatrix> getDNAMatricesModifiable() {
+	protected List<DnaMatrix> getDNAMatricesModifiable() {
 		return dnaMatrices;
 	}
 
@@ -474,7 +473,7 @@ public class OtuSet
 	 * @throws IllegalArgumentException if this OTU set does not contain the
 	 *             matrix
 	 */
-	public void removeDNAMatrix(final IDnaMatrix matrix) {
+	public void removeDNAMatrix(final DnaMatrix matrix) {
 		checkNotNull(matrix);
 		checkArgument(dnaMatrices.contains(matrix),
 				"otu set does not contain the dna matrix [" + matrix.getLabel()

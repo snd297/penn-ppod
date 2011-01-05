@@ -36,8 +36,6 @@ import javax.xml.bind.annotation.XmlElement;
 
 import org.hibernate.annotations.Parent;
 
-import edu.upenn.cis.ppod.imodel.IDnaMatrix;
-import edu.upenn.cis.ppod.imodel.IDnaRow;
 import edu.upenn.cis.ppod.imodel.IOtuKeyedMap;
 import edu.upenn.cis.ppod.imodel.IOtuKeyedMapPlus;
 import edu.upenn.cis.ppod.util.IVisitor;
@@ -51,10 +49,10 @@ import edu.upenn.cis.ppod.util.OtuDnaRowPair;
 @XmlAccessorType(XmlAccessType.NONE)
 @Embeddable
 @Access(AccessType.PROPERTY)
-public class DnaRows implements IOtuKeyedMap<IDnaRow> {
+public class DnaRows implements IOtuKeyedMap<DnaRow> {
 
-	private final IOtuKeyedMapPlus<IDnaRow, IDnaMatrix, OtuDnaRowPair> rows =
-			new OtuKeyedMapPlus<IDnaRow, IDnaMatrix, OtuDnaRowPair>();
+	private final IOtuKeyedMapPlus<DnaRow, DnaMatrix, OtuDnaRowPair> rows =
+			new OtuKeyedMapPlus<DnaRow, DnaMatrix, OtuDnaRowPair>();
 
 	/** {@inheritDoc} */
 	public void accept(final IVisitor visitor) {
@@ -76,7 +74,7 @@ public class DnaRows implements IOtuKeyedMap<IDnaRow> {
 
 	protected boolean beforeMarshal(@CheckForNull final Marshaller marshaller) {
 		getOtuKeyedPairs().clear();
-		for (final Map.Entry<Otu, IDnaRow> otuToRow : getValues()
+		for (final Map.Entry<Otu, DnaRow> otuToRow : getValues()
 				.entrySet()) {
 			getOtuKeyedPairs().add(
 					new OtuDnaRowPair(otuToRow.getKey(),
@@ -90,7 +88,7 @@ public class DnaRows implements IOtuKeyedMap<IDnaRow> {
 	}
 
 	/** {@inheritDoc} */
-	public IDnaRow get(final Otu key) {
+	public DnaRow get(final Otu key) {
 		return rows.get(key);
 	}
 
@@ -101,7 +99,7 @@ public class DnaRows implements IOtuKeyedMap<IDnaRow> {
 	}
 
 	@Parent
-	public IDnaMatrix getParent() {
+	public DnaMatrix getParent() {
 		return rows.getParent();
 	}
 
@@ -120,12 +118,12 @@ public class DnaRows implements IOtuKeyedMap<IDnaRow> {
 			targetEntity = DnaRow.class)
 	@JoinTable(inverseJoinColumns = @JoinColumn(name = DnaRow.JOIN_COLUMN))
 	@MapKeyJoinColumn(name = Otu.JOIN_COLUMN)
-	public Map<Otu, IDnaRow> getValues() {
+	public Map<Otu, DnaRow> getValues() {
 		return rows.getValues();
 	}
 
 	/** {@inheritDoc} */
-	public IDnaRow put(final Otu key, final IDnaRow value) {
+	public DnaRow put(final Otu key, final DnaRow value) {
 		return rows.put(key, value);
 	}
 
@@ -139,13 +137,13 @@ public class DnaRows implements IOtuKeyedMap<IDnaRow> {
 	 * 
 	 * @param parent the owner
 	 */
-	public void setParent(final IDnaMatrix parent) {
+	public void setParent(final DnaMatrix parent) {
 		rows.setParent(parent);
 	}
 
 	/** {@inheritDoc} */
 	public void setValues(
-			final Map<Otu, IDnaRow> values) {
+			final Map<Otu, DnaRow> values) {
 		rows.setValues(values);
 	}
 }

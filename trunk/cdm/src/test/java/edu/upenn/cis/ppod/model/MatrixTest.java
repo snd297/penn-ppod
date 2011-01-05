@@ -20,8 +20,6 @@ import static org.testng.Assert.assertSame;
 import org.testng.annotations.Test;
 
 import edu.upenn.cis.ppod.TestGroupDefs;
-import edu.upenn.cis.ppod.imodel.IDnaCell;
-import edu.upenn.cis.ppod.imodel.IDnaRow;
 import edu.upenn.cis.ppod.imodel.IMatrix;
 
 /**
@@ -32,7 +30,7 @@ public class MatrixTest {
 
 	@Test
 	public void setColumnPPodVersionInfo() {
-		final MolecularMatrix<IDnaRow, IDnaCell> matrix = new DnaMatrix();
+		final MolecularMatrix<DnaRow, DnaCell> matrix = new DnaMatrix();
 		final VersionInfo versionInfo = new VersionInfo();
 		matrix.setColumnsSize(1);
 		matrix.setColumnVersionInfos(versionInfo);

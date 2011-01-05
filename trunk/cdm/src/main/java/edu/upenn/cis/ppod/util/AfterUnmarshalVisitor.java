@@ -16,10 +16,10 @@
 
 package edu.upenn.cis.ppod.util;
 
-import edu.upenn.cis.ppod.imodel.IDnaMatrix;
 import edu.upenn.cis.ppod.imodel.IDnaSequenceSet;
 import edu.upenn.cis.ppod.imodel.IStandardCell;
 import edu.upenn.cis.ppod.imodel.IStandardMatrix;
+import edu.upenn.cis.ppod.model.DnaMatrix;
 
 /**
  * For straightening up or filling data structures after we've unmarshalled.
@@ -37,7 +37,7 @@ public class AfterUnmarshalVisitor
 	}
 
 	@Override
-	public void visitDNAMatrix(final IDnaMatrix matrix) {
+	public void visitDNAMatrix(final DnaMatrix matrix) {
 		matrix.afterUnmarshal();
 	}
 
