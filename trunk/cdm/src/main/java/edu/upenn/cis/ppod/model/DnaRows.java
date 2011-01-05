@@ -25,7 +25,6 @@ import javax.persistence.CascadeType;
 import javax.persistence.Embeddable;
 import javax.persistence.JoinColumn;
 import javax.persistence.JoinTable;
-import javax.persistence.MapKeyClass;
 import javax.persistence.MapKeyJoinColumn;
 import javax.persistence.OneToMany;
 import javax.persistence.Transient;
@@ -39,7 +38,6 @@ import org.hibernate.annotations.Parent;
 
 import edu.upenn.cis.ppod.imodel.IDnaMatrix;
 import edu.upenn.cis.ppod.imodel.IDnaRow;
-import edu.upenn.cis.ppod.imodel.IOtu;
 import edu.upenn.cis.ppod.imodel.IOtuKeyedMap;
 import edu.upenn.cis.ppod.imodel.IOtuKeyedMapPlus;
 import edu.upenn.cis.ppod.util.IVisitor;
@@ -78,7 +76,7 @@ public class DnaRows implements IOtuKeyedMap<IDnaRow> {
 
 	protected boolean beforeMarshal(@CheckForNull final Marshaller marshaller) {
 		getOtuKeyedPairs().clear();
-		for (final Map.Entry<IOtu, IDnaRow> otuToRow : getValues()
+		for (final Map.Entry<Otu, IDnaRow> otuToRow : getValues()
 				.entrySet()) {
 			getOtuKeyedPairs().add(
 					new OtuDnaRowPair(otuToRow.getKey(),
@@ -92,7 +90,7 @@ public class DnaRows implements IOtuKeyedMap<IDnaRow> {
 	}
 
 	/** {@inheritDoc} */
-	public IDnaRow get(final IOtu key) {
+	public IDnaRow get(final Otu key) {
 		return rows.get(key);
 	}
 
@@ -122,13 +120,12 @@ public class DnaRows implements IOtuKeyedMap<IDnaRow> {
 			targetEntity = DnaRow.class)
 	@JoinTable(inverseJoinColumns = @JoinColumn(name = DnaRow.JOIN_COLUMN))
 	@MapKeyJoinColumn(name = Otu.JOIN_COLUMN)
-	@MapKeyClass(Otu.class)
-	public Map<IOtu, IDnaRow> getValues() {
+	public Map<Otu, IDnaRow> getValues() {
 		return rows.getValues();
 	}
 
 	/** {@inheritDoc} */
-	public IDnaRow put(final IOtu key, final IDnaRow value) {
+	public IDnaRow put(final Otu key, final IDnaRow value) {
 		return rows.put(key, value);
 	}
 
@@ -148,7 +145,7 @@ public class DnaRows implements IOtuKeyedMap<IDnaRow> {
 
 	/** {@inheritDoc} */
 	public void setValues(
-			final Map<IOtu, IDnaRow> values) {
+			final Map<Otu, IDnaRow> values) {
 		rows.setValues(values);
 	}
 }

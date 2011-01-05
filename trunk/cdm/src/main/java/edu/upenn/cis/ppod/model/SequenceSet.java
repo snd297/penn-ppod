@@ -32,27 +32,20 @@ import javax.persistence.MappedSuperclass;
 import javax.xml.bind.Unmarshaller;
 import javax.xml.bind.annotation.XmlAttribute;
 
-import edu.upenn.cis.ppod.imodel.IOtu;
 import edu.upenn.cis.ppod.imodel.IOtuKeyedMap;
-import edu.upenn.cis.ppod.imodel.IOtuSet;
 import edu.upenn.cis.ppod.imodel.ISequence;
 import edu.upenn.cis.ppod.imodel.ISequenceSet;
 import edu.upenn.cis.ppod.util.IVisitor;
 
 /**
- * A set of {@link Sequence}s.
+ * A set of {@link ISequence}s.
  * 
  * @author Sam Donnelly
  * 
  * @param <S> the type of {@code Sequence} this set contains
  */
-/**
- * @author Sam Donnelly
- * 
- * @param <S>
- */
 @MappedSuperclass
-abstract class SequenceSet<S extends ISequence<?>>
+public abstract class SequenceSet<S extends ISequence<?>>
 		extends UuPPodEntityWithDocId
 		implements ISequenceSet<S> {
 
@@ -61,11 +54,10 @@ abstract class SequenceSet<S extends ISequence<?>>
 	private String label;
 
 	@Nullable
-	@ManyToOne(fetch = FetchType.LAZY, optional = false,
-			targetEntity = OtuSet.class)
+	@ManyToOne(fetch = FetchType.LAZY, optional = false)
 	@JoinColumn(name = OtuSet.JOIN_COLUMN, insertable = false,
 				updatable = false)
-	private IOtuSet parent;
+	private OtuSet parent;
 
 	SequenceSet() {}
 
@@ -123,7 +115,7 @@ abstract class SequenceSet<S extends ISequence<?>>
 
 	/** {@inheritDoc} */
 	@Nullable
-	public IOtuSet getParent() {
+	public OtuSet getParent() {
 		return parent;
 	}
 
@@ -138,7 +130,7 @@ abstract class SequenceSet<S extends ISequence<?>>
 	 *             sequence's {@code OTUSet}
 	 */
 	@Nullable
-	public abstract S getSequence(final IOtu otu);
+	public abstract S getSequence(final Otu otu);
 
 	/**
 	 * Get the length of the sequences in this set, or {@code null} if no
@@ -168,7 +160,7 @@ abstract class SequenceSet<S extends ISequence<?>>
 	 * @return a map which contains the {@code OTU, S} entries of this sequence
 	 *         set
 	 */
-	public abstract Map<IOtu, S> getSequences();
+	public abstract Map<Otu, S> getSequences();
 
 	/**
 	 * {@inheritDoc}
@@ -183,7 +175,7 @@ abstract class SequenceSet<S extends ISequence<?>>
 	 * @return
 	 */
 	@CheckForNull
-	public abstract S putSequence(final IOtu otu, final S sequence);
+	public abstract S putSequence(final Otu otu, final S sequence);
 
 	@Override
 	public void setInNeedOfNewVersion() {
@@ -206,7 +198,7 @@ abstract class SequenceSet<S extends ISequence<?>>
 
 	/** {@inheritDoc} */
 	public void setParent(
-			@CheckForNull final IOtuSet parent) {
+			@CheckForNull final OtuSet parent) {
 		this.parent = parent;
 		updateOtus();
 	}

@@ -19,7 +19,7 @@ import static com.google.common.collect.Lists.newArrayList;
 
 import java.util.List;
 
-import edu.upenn.cis.ppod.imodel.IOtu;
+import edu.upenn.cis.ppod.model.Otu;
 
 /**
  * @author Sam Donnelly
@@ -27,7 +27,7 @@ import edu.upenn.cis.ppod.imodel.IOtu;
  */
 public class Provenance {
 	private String voucherCode = "";
-	private List<IOtu> otus = newArrayList();
+	private List<Otu> otus = newArrayList();
 	private List<Chromatogram> chromotgrams = newArrayList();
 	private List<Image> images = newArrayList();
 

@@ -26,12 +26,12 @@ import java.util.List;
 
 import com.google.inject.Inject;
 
+import edu.upenn.cis.ppod.imodel.IHasPPodId;
 import edu.upenn.cis.ppod.imodel.INewVersionInfo;
-import edu.upenn.cis.ppod.imodel.IOtu;
 import edu.upenn.cis.ppod.imodel.ITree;
 import edu.upenn.cis.ppod.imodel.ITreeSet;
-import edu.upenn.cis.ppod.imodel.IHasPPodId;
 import edu.upenn.cis.ppod.model.ModelFactory;
+import edu.upenn.cis.ppod.model.Otu;
 
 /**
  * An {@code IMergeTreeSets}.
@@ -76,19 +76,19 @@ class MergeTreeSets implements IMergeTreeSets {
 
 			if (sourceTreeSet
 					.getParent()
-					.getOTUs()
+					.getOtus()
 					.size() != targetTreeSet
 					.getParent()
-					.getOTUs()
+					.getOtus()
 					.size()) {
 				throw new IllegalArgumentException(
 						"sourceTreeSet.getOTUSet().getOTUsSize() should be the same as targetTreeSet.getOTUSet().getOTUsSize()");
 			}
-			for (final Iterator<IOtu> sourceOTUItr = sourceTreeSet.getParent()
-					.getOTUs().iterator(), targetOTUItr = targetTreeSet
-					.getParent().getOTUs().iterator(); sourceOTUItr.hasNext();) {
-				final IOtu sourceOTU = sourceOTUItr.next();
-				final IOtu targetOTU = targetOTUItr.next();
+			for (final Iterator<Otu> sourceOTUItr = sourceTreeSet.getParent()
+					.getOtus().iterator(), targetOTUItr = targetTreeSet
+					.getParent().getOtus().iterator(); sourceOTUItr.hasNext();) {
+				final Otu sourceOTU = sourceOTUItr.next();
+				final Otu targetOTU = targetOTUItr.next();
 				targetNewick = targetNewick.replace(
 						sourceOTU.getDocId(),
 						targetOTU.getPPodId());

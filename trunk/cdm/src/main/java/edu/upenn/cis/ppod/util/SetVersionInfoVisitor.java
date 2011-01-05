@@ -21,8 +21,6 @@ import edu.upenn.cis.ppod.imodel.IDnaMatrix;
 import edu.upenn.cis.ppod.imodel.IDnaRow;
 import edu.upenn.cis.ppod.imodel.IMatrix;
 import edu.upenn.cis.ppod.imodel.INewVersionInfo;
-import edu.upenn.cis.ppod.imodel.IOtu;
-import edu.upenn.cis.ppod.imodel.IOtuSet;
 import edu.upenn.cis.ppod.imodel.IStandardCell;
 import edu.upenn.cis.ppod.imodel.IStandardCharacter;
 import edu.upenn.cis.ppod.imodel.IStandardMatrix;
@@ -32,6 +30,8 @@ import edu.upenn.cis.ppod.imodel.IStudy;
 import edu.upenn.cis.ppod.imodel.ITree;
 import edu.upenn.cis.ppod.imodel.ITreeSet;
 import edu.upenn.cis.ppod.imodel.IVersioned;
+import edu.upenn.cis.ppod.model.Otu;
+import edu.upenn.cis.ppod.model.OtuSet;
 
 /**
  * Stuff that should be done at the very end of a pPOD session.
@@ -75,12 +75,12 @@ public final class SetVersionInfoVisitor extends EmptyVisitor {
 	}
 
 	@Override
-	public void visitOTU(final IOtu otu) {
+	public void visitOTU(final Otu otu) {
 		setNewVersionInfo(otu);
 	}
 
 	@Override
-	public void visitOTUSet(final IOtuSet otuSet) {
+	public void visitOTUSet(final OtuSet otuSet) {
 		setNewVersionInfo(otuSet);
 	}
 

@@ -39,7 +39,6 @@ import org.hibernate.annotations.Parent;
 
 import edu.upenn.cis.ppod.imodel.IDnaSequence;
 import edu.upenn.cis.ppod.imodel.IDnaSequenceSet;
-import edu.upenn.cis.ppod.imodel.IOtu;
 import edu.upenn.cis.ppod.imodel.IOtuKeyedMap;
 import edu.upenn.cis.ppod.imodel.IOtuKeyedMapPlus;
 import edu.upenn.cis.ppod.util.IVisitor;
@@ -77,7 +76,7 @@ public class DnaSequences
 
 	protected boolean beforeMarshal(@CheckForNull final Marshaller marshaller) {
 		getOTUSomethingPairs().clear();
-		for (final Map.Entry<IOtu, IDnaSequence> otuToRow : getValues()
+		for (final Map.Entry<Otu, IDnaSequence> otuToRow : getValues()
 				.entrySet()) {
 			getOTUSomethingPairs().add(
 					new OtuDnaSequencePair(otuToRow.getKey(), otuToRow
@@ -90,7 +89,7 @@ public class DnaSequences
 		sequences.clear();
 	}
 
-	public IDnaSequence get(final IOtu key) {
+	public IDnaSequence get(final Otu key) {
 		return sequences.get(key);
 	}
 
@@ -110,11 +109,11 @@ public class DnaSequences
 	@JoinTable(inverseJoinColumns = @JoinColumn(name = DnaSequence.JOIN_COLUMN))
 	@MapKeyJoinColumn(name = Otu.JOIN_COLUMN)
 	@MapKeyClass(Otu.class)
-	public Map<IOtu, IDnaSequence> getValues() {
+	public Map<Otu, IDnaSequence> getValues() {
 		return sequences.getValues();
 	}
 
-	public IDnaSequence put(final IOtu key, final IDnaSequence value) {
+	public IDnaSequence put(final Otu key, final IDnaSequence value) {
 		return sequences.put(key, value);
 	}
 
@@ -127,7 +126,7 @@ public class DnaSequences
 		sequences.setParent(parent);
 	}
 
-	public void setValues(final Map<IOtu, IDnaSequence> values) {
+	public void setValues(final Map<Otu, IDnaSequence> values) {
 		sequences.setValues(values);
 	}
 }

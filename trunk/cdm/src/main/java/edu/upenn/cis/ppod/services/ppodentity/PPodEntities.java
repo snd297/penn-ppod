@@ -32,8 +32,8 @@ import javax.xml.bind.annotation.XmlRootElement;
 
 import edu.upenn.cis.ppod.imodel.IAttachmentNamespace;
 import edu.upenn.cis.ppod.imodel.IAttachmentType;
-import edu.upenn.cis.ppod.imodel.IOtu;
-import edu.upenn.cis.ppod.imodel.IOtuSet;
+import edu.upenn.cis.ppod.model.Otu;
+import edu.upenn.cis.ppod.model.OtuSet;
 import edu.upenn.cis.ppod.util.PPodEntitiesUtil;
 
 /**
@@ -48,10 +48,10 @@ public class PPodEntities implements IPPodEntities {
 	public PPodEntities() {}
 
 	@XmlElement(name = "otuSet")
-	private final List<IOtuSet> otuSets = newArrayList();
+	private final List<OtuSet> otuSets = newArrayList();
 
 	@XmlElement(name = "otu")
-	private final Set<IOtu> otus = newHashSet();
+	private final Set<Otu> otus = newHashSet();
 
 	@XmlElement(name = "attachmentNamespace")
 	private final Set<IAttachmentNamespace> pPodEntitiesWideAttachmentNamespaces = newHashSet();
@@ -60,7 +60,7 @@ public class PPodEntities implements IPPodEntities {
 	private final Set<IAttachmentType> pPodEntitiesWideAttachmentTypes = newHashSet();
 
 	/** {@inheritDoc} */
-	public void addOTUSet(final IOtuSet otuSet) {
+	public void addOtuSet(final OtuSet otuSet) {
 		checkNotNull(otuSet);
 		checkArgument(!getOTUSets().contains(otuSet),
 				"this study already contains otu set [" + otuSet.getLabel()
@@ -87,16 +87,16 @@ public class PPodEntities implements IPPodEntities {
 		return true;
 	}
 
-	public Set<IOtu> getOTUs() {
+	public Set<Otu> getOTUs() {
 		return Collections.unmodifiableSet(otus);
 	}
 
-	public IOtu addOTU(final IOtu otu) {
+	public Otu addOTU(final Otu otu) {
 		otus.add(otu);
 		return otu;
 	}
 
-	public List<IOtuSet> getOTUSets() {
+	public List<OtuSet> getOTUSets() {
 		return Collections.unmodifiableList(otuSets);
 	}
 

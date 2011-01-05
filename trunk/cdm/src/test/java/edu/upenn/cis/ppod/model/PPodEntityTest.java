@@ -36,7 +36,6 @@ import org.testng.annotations.Test;
 import com.google.common.collect.ImmutableSet;
 
 import edu.upenn.cis.ppod.TestGroupDefs;
-import edu.upenn.cis.ppod.imodel.IOtuSet;
 import edu.upenn.cis.ppod.imodel.IStandardCharacter;
 import edu.upenn.cis.ppod.imodel.IVersionInfo;
 import edu.upenn.cis.ppod.util.IVisitor;
@@ -112,7 +111,7 @@ public class PPodEntityTest {
 	 */
 	@Test(expectedExceptions = IllegalStateException.class)
 	public void getMarshalled() {
-		final IOtuSet otuSet = new OtuSet();
+		final OtuSet otuSet = new OtuSet();
 		((PersistentObject) otuSet).setUnmarshalled(true);
 		otuSet.getVersionInfo();
 	}
@@ -179,7 +178,7 @@ public class PPodEntityTest {
 
 	@Test
 	public void getVersion() {
-		final IOtuSet otuSet = new OtuSet();
+		final OtuSet otuSet = new OtuSet();
 		assertNull(otuSet.getVersion());
 
 		final VersionInfo versionInfo = new VersionInfo();
@@ -194,7 +193,7 @@ public class PPodEntityTest {
 
 	@Test
 	public void getVersionInfo() {
-		final IOtuSet otuSet = new OtuSet();
+		final OtuSet otuSet = new OtuSet();
 		final VersionInfo versionInfo = new VersionInfo();
 		otuSet.setVersionInfo(versionInfo);
 		assertSame(otuSet.getVersionInfo(), versionInfo);
@@ -233,7 +232,7 @@ public class PPodEntityTest {
 
 	@Test
 	public void accept() {
-		final IOtuSet otuSet = new OtuSet();
+		final OtuSet otuSet = new OtuSet();
 		final Attachment attachment0 = new Attachment();
 		final Attachment attachment1 = new Attachment();
 		final Attachment attachment2 = new Attachment();

@@ -33,8 +33,6 @@ import edu.upenn.cis.ppod.imodel.IAttachment;
 import edu.upenn.cis.ppod.imodel.IAttachmentNamespace;
 import edu.upenn.cis.ppod.imodel.IAttachmentType;
 import edu.upenn.cis.ppod.imodel.ILabeled;
-import edu.upenn.cis.ppod.imodel.IOtu;
-import edu.upenn.cis.ppod.imodel.IOtuSet;
 import edu.upenn.cis.ppod.imodel.IPPodEntity;
 import edu.upenn.cis.ppod.imodel.ISequence;
 import edu.upenn.cis.ppod.imodel.ISequenceSet;
@@ -61,20 +59,20 @@ public class ModelAssert {
 				expectedSeqSet.getSequences().size());
 
 		assertEquals(
-				actualSeqSet.getParent().getOTUs().size(),
-				expectedSeqSet.getParent().getOTUs().size());
+				actualSeqSet.getParent().getOtus().size(),
+				expectedSeqSet.getParent().getOtus().size());
 
-		for (int otuPos = 0; otuPos < actualSeqSet.getParent().getOTUs().size(); otuPos++) {
+		for (int otuPos = 0; otuPos < actualSeqSet.getParent().getOtus().size(); otuPos++) {
 			assertEqualsSequences(
 					actualSeqSet
 							.getSequence(actualSeqSet
 									.getParent()
-									.getOTUs()
+									.getOtus()
 									.get(otuPos)),
 									expectedSeqSet
 											.getSequence(expectedSeqSet
 													.getParent()
-													.getOTUs()
+													.getOtus()
 													.get(otuPos)));
 		}
 	}
@@ -89,18 +87,18 @@ public class ModelAssert {
 	}
 
 	public static void assertEqualsOTUSet(
-			final IOtuSet actualOTUSet,
-			final IOtuSet expectedOTUSet) {
+			final OtuSet actualOTUSet,
+			final OtuSet expectedOTUSet) {
 		assertEquals(actualOTUSet.getLabel(), expectedOTUSet.getLabel());
 		if (expectedOTUSet.getPPodId() != null) {
 			assertEquals(actualOTUSet.getPPodId(), expectedOTUSet.getPPodId());
 		}
-		assertEquals(actualOTUSet.getOTUs().size(), expectedOTUSet
-				.getOTUs().size());
-		for (final IOtu expectedOTU : expectedOTUSet.getOTUs()) {
-			final IOtu foundOTU =
+		assertEquals(actualOTUSet.getOtus().size(), expectedOTUSet
+				.getOtus().size());
+		for (final Otu expectedOTU : expectedOTUSet.getOtus()) {
+			final Otu foundOTU =
 					find(
-							actualOTUSet.getOTUs(),
+							actualOTUSet.getOtus(),
 							compose(
 									equalTo(
 									expectedOTU.getLabel()),
@@ -115,8 +113,8 @@ public class ModelAssert {
 	}
 
 	public static void assertEqualsOTUs(
-			final IOtu actualOTU,
-			final IOtu expectedOTU) {
+			final Otu actualOTU,
+			final Otu expectedOTU) {
 		assertEquals(actualOTU.getLabel(), expectedOTU.getLabel());
 	}
 
@@ -230,10 +228,10 @@ public class ModelAssert {
 		assertEquals(actualMatrix.getRows().size(),
 				expectedMatrix.getRows().size());
 
-		for (final Iterator<IOtu> actualOTUIterator = actualMatrix.getParent()
-				.getOTUs()
+		for (final Iterator<Otu> actualOTUIterator = actualMatrix.getParent()
+				.getOtus()
 				.iterator(), expectedOTUIterator = expectedMatrix.getParent()
-				.getOTUs()
+				.getOtus()
 				.iterator(); actualOTUIterator.hasNext()
 								&& expectedOTUIterator.hasNext();) {
 			final IStandardRow actualRow = actualMatrix

@@ -29,28 +29,26 @@ import javax.annotation.CheckForNull;
 import javax.annotation.Nullable;
 
 import edu.upenn.cis.ppod.imodel.IChild;
-import edu.upenn.cis.ppod.imodel.IOtu;
 import edu.upenn.cis.ppod.imodel.IOtuKeyedMapPlus;
-import edu.upenn.cis.ppod.imodel.IOtuSet;
 import edu.upenn.cis.ppod.util.IVisitor;
 import edu.upenn.cis.ppod.util.OtuKeyedPair;
 
 /**
- * An {@code IOTU -> PersistentObject} map with {@code equals}-unique values.
+ * An {@code IOtu -> PersistentObject} map with {@code equals}-unique values.
  * <p>
  * Even though this object is guaranteed to have unique values, we don't call it
  * a bidirectional map because it doesn't support an inverse view. It will
  * always be safe however to, for example, call {@link HashBiMap#create(Map)} on
- * {@link #getOTUsToValues()}.
+ * {@link #getOtusKeyedPairs()}.
  * 
  * @author Sam Donnelly
  */
-public class OtuKeyedMapPlus<V extends IChild<P>, P extends IChild<IOtuSet>, OP extends OtuKeyedPair<V>>
+public class OtuKeyedMapPlus<V extends IChild<P>, P extends IChild<OtuSet>, OP extends OtuKeyedPair<V>>
 		implements IOtuKeyedMapPlus<V, P, OP> {
 
 	private P parent;
 
-	private Map<IOtu, V> values = newHashMap();
+	private Map<Otu, V> values = newHashMap();
 
 	private final Set<OP> otuSomethingPairs = newHashSet();
 
@@ -99,7 +97,7 @@ public class OtuKeyedMapPlus<V extends IChild<P>, P extends IChild<IOtuSet>, OP 
 
 	/** {@code inheritDoc} */
 	@Nullable
-	public V get(final IOtu otu) {
+	public V get(final Otu otu) {
 		checkNotNull(otu);
 		checkArgument(getValues().keySet().contains(otu),
 				"otu is not in the keys");
@@ -121,12 +119,12 @@ public class OtuKeyedMapPlus<V extends IChild<P>, P extends IChild<IOtuSet>, OP 
 	}
 
 	/** {@inheritDoc} */
-	public Map<IOtu, V> getValues() {
+	public Map<Otu, V> getValues() {
 		return values;
 	}
 
 	@CheckForNull
-	public V put(final IOtu key, final V value) {
+	public V put(final Otu key, final V value) {
 		checkNotNull(key);
 		checkNotNull(value);
 		checkState(getParent() != null, "no parent has been assigned");
@@ -137,7 +135,7 @@ public class OtuKeyedMapPlus<V extends IChild<P>, P extends IChild<IOtuSet>, OP 
 				contains(
 						getParent()
 								.getParent()
-								.getOTUs(),
+								.getOtus(),
 								key),
 				"otu does not belong to the parent's OTUSet");
 
@@ -166,14 +164,14 @@ public class OtuKeyedMapPlus<V extends IChild<P>, P extends IChild<IOtuSet>, OP 
 	}
 
 	public void updateOtus() {
-		final IChild<IOtuSet> parent = getParent();
+		final IChild<OtuSet> parent = getParent();
 
-		final Set<IOtu> otusToBeRemoved = newHashSet();
-		for (final IOtu otu : getValues().keySet()) {
+		final Set<Otu> otusToBeRemoved = newHashSet();
+		for (final Otu otu : getValues().keySet()) {
 			if (parent.getParent() != null
 					&& contains(parent
 									.getParent()
-									.getOTUs(), otu)) {
+									.getOtus(), otu)) {
 				// it stays
 			} else {
 				otusToBeRemoved.add(otu);
@@ -181,7 +179,7 @@ public class OtuKeyedMapPlus<V extends IChild<P>, P extends IChild<IOtuSet>, OP 
 			}
 		}
 
-		for (final IOtu otuToBeRemoved : otusToBeRemoved) {
+		for (final Otu otuToBeRemoved : otusToBeRemoved) {
 			final V value = get(otuToBeRemoved);
 			if (value != null) {
 				value.setParent(null);
@@ -193,7 +191,7 @@ public class OtuKeyedMapPlus<V extends IChild<P>, P extends IChild<IOtuSet>, OP 
 				.removeAll(otusToBeRemoved);
 
 		if (getParent().getParent() != null) {
-			for (final IOtu otu : parent.getParent().getOTUs()) {
+			for (final Otu otu : parent.getParent().getOtus()) {
 				if (getValues().containsKey(otu)) {
 
 				} else {
@@ -211,7 +209,7 @@ public class OtuKeyedMapPlus<V extends IChild<P>, P extends IChild<IOtuSet>, OP 
 	}
 
 	/** {@inheritDoc} */
-	public void setValues(final Map<IOtu, V> values) {
+	public void setValues(final Map<Otu, V> values) {
 		this.values = values;
 	}
 }

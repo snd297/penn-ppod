@@ -37,7 +37,6 @@ import javax.xml.bind.annotation.XmlElement;
 import javax.xml.bind.annotation.XmlIDREF;
 import javax.xml.bind.annotation.adapters.XmlAdapter;
 
-import edu.umd.cs.findbugs.annotations.CheckForNull;
 import edu.umd.cs.findbugs.annotations.Nullable;
 import edu.upenn.cis.ppod.imodel.IStandardCell;
 import edu.upenn.cis.ppod.imodel.IStandardCharacter;
@@ -110,7 +109,7 @@ public class StandardCell
 	@ManyToOne(fetch = FetchType.LAZY, optional = false,
 			targetEntity = StandardRow.class)
 	@JoinColumn(name = StandardRow.JOIN_COLUMN)
-	@CheckForNull
+	@Nullable
 	private IStandardRow parent;
 
 	@Nullable

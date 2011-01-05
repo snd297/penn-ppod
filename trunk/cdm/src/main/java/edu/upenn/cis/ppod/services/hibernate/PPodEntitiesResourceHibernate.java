@@ -24,10 +24,10 @@ import java.util.Set;
 import org.hibernate.FlushMode;
 import org.hibernate.Session;
 
-import edu.upenn.cis.ppod.imodel.IOtu;
-import edu.upenn.cis.ppod.imodel.IOtuSet;
 import edu.upenn.cis.ppod.imodel.IStandardMatrix;
 import edu.upenn.cis.ppod.imodel.ITreeSet;
+import edu.upenn.cis.ppod.model.Otu;
+import edu.upenn.cis.ppod.model.OtuSet;
 import edu.upenn.cis.ppod.services.IPPodEntitiesResource;
 import edu.upenn.cis.ppod.services.ppodentity.PPodEntities;
 import edu.upenn.cis.ppod.util.SetDocIdVisitor;
@@ -73,15 +73,15 @@ class PPodEntitiesResourceHibernate implements
 		// }
 
 		for (final Object queryResult : queryResults) {
-			if (queryResult instanceof IOtuSet) {
-				final IOtuSet otuSet = (IOtuSet) queryResult;
+			if (queryResult instanceof OtuSet) {
+				final OtuSet otuSet = (OtuSet) queryResult;
 
 				// Extra insurance against accidental sync with database
 				session.setReadOnly(otuSet, true);
 
 				// Note that otu set may have already been added in any of the
 				// other if clauses: Hibernate identity takes care of us
-				pPodEntities.addOTUSet(otuSet);
+				pPodEntities.addOtuSet(otuSet);
 			} else if (queryResult instanceof IStandardMatrix) {
 
 				final IStandardMatrix matrix = (IStandardMatrix) queryResult;
@@ -96,7 +96,7 @@ class PPodEntitiesResourceHibernate implements
 
 				// Note that otu set may have already been added in any of the
 				// other if clauses: Hibernate identity takes care of us
-				pPodEntities.addOTUSet(matrix.getParent());
+				pPodEntities.addOtuSet(matrix.getParent());
 			} else if (queryResult instanceof ITreeSet) {
 				final ITreeSet treeSet = (ITreeSet) queryResult;
 
@@ -110,9 +110,9 @@ class PPodEntitiesResourceHibernate implements
 
 				// Note that otu set may have already been added in any of the
 				// other if clauses: Hibernate identity takes care of us
-				pPodEntities.addOTUSet(treeSet.getParent());
-			} else if (queryResult instanceof IOtu) {
-				final IOtu otu = (IOtu) queryResult;
+				pPodEntities.addOtuSet(treeSet.getParent());
+			} else if (queryResult instanceof Otu) {
+				final Otu otu = (Otu) queryResult;
 				session.setReadOnly(otu, true);
 				pPodEntities.addOTU(otu);
 			} else if (queryResult instanceof Object[]) {
@@ -129,7 +129,7 @@ class PPodEntitiesResourceHibernate implements
 
 			// Now we clean up our response so we don't include any extra
 			// matrices or tree sets that were pulled over with the OTUSet's
-			for (final IOtuSet otuSet : pPodEntities.getOTUSets()) {
+			for (final OtuSet otuSet : pPodEntities.getOTUSets()) {
 				for (final IStandardMatrix matrix : otuSet
 						.getStandardMatrices()) {
 					if (addedMatrices.contains(matrix)) {

@@ -25,7 +25,6 @@ import org.testng.annotations.Test;
 import com.google.common.collect.ImmutableList;
 
 import edu.upenn.cis.ppod.TestGroupDefs;
-import edu.upenn.cis.ppod.imodel.IOtuSet;
 import edu.upenn.cis.ppod.imodel.IStudy;
 
 /**
@@ -38,12 +37,12 @@ public class StudyTest {
 	@Test
 	public void removeOTUSet() {
 		final IStudy study = new Study();
-		final IOtuSet otuSet0 = new OtuSet();
-		final IOtuSet otuSet1 = new OtuSet();
-		final IOtuSet otuSet2 = new OtuSet();
-		study.addOTUSet(otuSet0);
-		study.addOTUSet(otuSet1);
-		study.addOTUSet(otuSet2);
+		final OtuSet otuSet0 = new OtuSet();
+		final OtuSet otuSet1 = new OtuSet();
+		final OtuSet otuSet2 = new OtuSet();
+		study.addOtuSet(otuSet0);
+		study.addOtuSet(otuSet1);
+		study.addOtuSet(otuSet2);
 		study.unsetInNeedOfNewVersion();
 
 		study.removeOTUSet(otuSet1);
@@ -75,19 +74,19 @@ public class StudyTest {
 	@Test(expectedExceptions = IllegalArgumentException.class)
 	public void addOTUSetWAlreadyContainedOTUSet() {
 		final IStudy study = new Study();
-		final IOtuSet otuSet0 = new OtuSet();
-		study.addOTUSet(otuSet0);
-		study.addOTUSet(otuSet0);
+		final OtuSet otuSet0 = new OtuSet();
+		study.addOtuSet(otuSet0);
+		study.addOtuSet(otuSet0);
 	}
 
 	@Test
 	public void addOTUSet() {
 		final IStudy study = new Study();
-		final IOtuSet otuSet0 = new OtuSet();
+		final OtuSet otuSet0 = new OtuSet();
 
 		study.unsetInNeedOfNewVersion();
 
-		study.addOTUSet(otuSet0);
+		study.addOtuSet(otuSet0);
 		assertTrue(study.isInNeedOfNewVersion());
 		assertEquals(study.getOTUSets().size(), 1);
 		assertTrue(study.getOTUSets().contains(otuSet0));
@@ -97,18 +96,18 @@ public class StudyTest {
 	@Test
 	public void addOTUSetPos() {
 		final IStudy study = new Study();
-		final IOtuSet otuSet0 = new OtuSet();
-		final IOtuSet otuSet1 = new OtuSet();
-		final IOtuSet otuSet2 = new OtuSet();
-		final IOtuSet otuSet3 = new OtuSet();
+		final OtuSet otuSet0 = new OtuSet();
+		final OtuSet otuSet1 = new OtuSet();
+		final OtuSet otuSet2 = new OtuSet();
+		final OtuSet otuSet3 = new OtuSet();
 
-		study.addOTUSet(otuSet0);
-		study.addOTUSet(otuSet1);
-		study.addOTUSet(otuSet2);
+		study.addOtuSet(otuSet0);
+		study.addOtuSet(otuSet1);
+		study.addOtuSet(otuSet2);
 
 		study.unsetInNeedOfNewVersion();
 
-		study.addOTUSet(2, otuSet3);
+		study.addOtuSet(2, otuSet3);
 		assertTrue(study.isInNeedOfNewVersion());
 		assertEquals(study.getOTUSets(),
 				ImmutableList.of(otuSet0, otuSet1, otuSet3, otuSet2));

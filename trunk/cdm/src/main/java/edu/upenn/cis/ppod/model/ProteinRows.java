@@ -2,7 +2,6 @@ package edu.upenn.cis.ppod.model;
 
 import java.util.Map;
 
-import edu.upenn.cis.ppod.imodel.IOtu;
 import edu.upenn.cis.ppod.imodel.IOtuKeyedMap;
 import edu.upenn.cis.ppod.imodel.IOtuKeyedMapPlus;
 import edu.upenn.cis.ppod.imodel.IProteinMatrix;
@@ -26,17 +25,17 @@ public class ProteinRows implements IOtuKeyedMap<IProteinRow> {
 	}
 
 	/** {@inheritDoc} */
-	public IProteinRow get(final IOtu key) {
+	public IProteinRow get(final Otu key) {
 		return rows.get(key);
 	}
 
 	/** {@inheritDoc} */
-	public Map<IOtu, IProteinRow> getValues() {
+	public Map<Otu, IProteinRow> getValues() {
 		return rows.getValues();
 	}
 
 	/** {@inheritDoc} */
-	public IProteinRow put(final IOtu key, final IProteinRow value) {
+	public IProteinRow put(final Otu key, final IProteinRow value) {
 		return rows.put(key, value);
 	}
 

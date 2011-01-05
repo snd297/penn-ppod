@@ -18,9 +18,11 @@ package edu.upenn.cis.ppod.imodel;
 import java.util.Map;
 import java.util.Set;
 
+import edu.upenn.cis.ppod.model.Otu;
+import edu.upenn.cis.ppod.model.OtuSet;
 import edu.upenn.cis.ppod.util.Pair;
 
-public interface IOtuKeyedMapPlus<V extends IChild<?>, P extends IChild<IOtuSet>, OP extends Pair<IOtu, V>>
+public interface IOtuKeyedMapPlus<V extends IChild<?>, P extends IChild<OtuSet>, OP extends Pair<Otu, V>>
 		extends IOtuKeyedMap<V> {
 
 	void afterUnmarshal(final P parent);
@@ -39,6 +41,6 @@ public interface IOtuKeyedMapPlus<V extends IChild<?>, P extends IChild<IOtuSet>
 
 	void setParent(final P parent);
 
-	void setValues(final Map<IOtu, V> values);
+	void setValues(final Map<Otu, V> values);
 
 }

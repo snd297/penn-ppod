@@ -25,11 +25,11 @@ import java.util.List;
 
 import com.google.inject.Inject;
 
-import edu.upenn.cis.ppod.imodel.INewVersionInfo;
-import edu.upenn.cis.ppod.imodel.IOtu;
-import edu.upenn.cis.ppod.imodel.IOtuSet;
 import edu.upenn.cis.ppod.imodel.IHasPPodId;
+import edu.upenn.cis.ppod.imodel.INewVersionInfo;
 import edu.upenn.cis.ppod.model.ModelFactory;
+import edu.upenn.cis.ppod.model.Otu;
+import edu.upenn.cis.ppod.model.OtuSet;
 
 /**
  * Merge {@code sourceOTUSet} onto {@code targetOTUSet}.
@@ -46,8 +46,8 @@ class MergeOTUSets implements IMergeOTUSets {
 	}
 
 	public void mergeOTUSets(
-			final IOtuSet targetOTUSet,
-			final IOtuSet sourceOTUSet) {
+			final OtuSet targetOTUSet,
+			final OtuSet sourceOTUSet) {
 		checkNotNull(targetOTUSet);
 		checkNotNull(sourceOTUSet);
 		targetOTUSet.setLabel(sourceOTUSet.getLabel());
@@ -56,13 +56,13 @@ class MergeOTUSets implements IMergeOTUSets {
 		// This is for a response to the service client.
 		targetOTUSet.setDocId(sourceOTUSet.getDocId());
 
-		final List<IOtu> newTargetOTUs =
-				newArrayListWithCapacity(sourceOTUSet.getOTUs().size());
+		final List<Otu> newTargetOTUs =
+				newArrayListWithCapacity(sourceOTUSet.getOtus().size());
 
-		for (final IOtu sourceOTU : sourceOTUSet.getOTUs()) {
-			IOtu targetOTU;
+		for (final Otu sourceOTU : sourceOTUSet.getOtus()) {
+			Otu targetOTU;
 			if (null == (targetOTU =
-					find(targetOTUSet.getOTUs(),
+					find(targetOTUSet.getOtus(),
 							compose(
 									equalTo(sourceOTU
 											.getPPodId()),

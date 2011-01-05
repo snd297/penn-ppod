@@ -24,6 +24,7 @@ import com.google.common.annotations.Beta;
 
 import edu.umd.cs.findbugs.annotations.CheckForNull;
 import edu.umd.cs.findbugs.annotations.Nullable;
+import edu.upenn.cis.ppod.model.Otu;
 
 public interface IMatrix<R extends IRow<C, ?>, C extends ICell<?, ?>>
 		extends IOtuSetChild, IUuPPodEntity, IHasDocId {
@@ -98,7 +99,7 @@ public interface IMatrix<R extends IRow<C, ?>, C extends ICell<?, ?>>
 	 * 
 	 * @return the rows that make up this matrix
 	 */
-	Map<IOtu, R> getRows();
+	Map<Otu, R> getRows();
 
 	/**
 	 * Set row at <code>otu</code> to <code>row</code>.
@@ -121,7 +122,7 @@ public interface IMatrix<R extends IRow<C, ?>, C extends ICell<?, ?>>
 	 *             {@code .equals} to {@code row}
 	 */
 	@CheckForNull
-	R putRow(IOtu otu, R row);
+	R putRow(Otu otu, R row);
 
 	/**
 	 * Remove the cells the make up the given column number.

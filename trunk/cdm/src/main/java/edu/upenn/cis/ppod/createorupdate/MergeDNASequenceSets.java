@@ -26,8 +26,8 @@ import com.google.inject.Inject;
 import edu.upenn.cis.ppod.imodel.IDnaSequence;
 import edu.upenn.cis.ppod.imodel.IDnaSequenceSet;
 import edu.upenn.cis.ppod.imodel.INewVersionInfo;
-import edu.upenn.cis.ppod.imodel.IOtu;
 import edu.upenn.cis.ppod.model.ModelFactory;
+import edu.upenn.cis.ppod.model.Otu;
 
 class MergeDNASequenceSets implements IMergeDNASequenceSets {
 
@@ -59,7 +59,7 @@ class MergeDNASequenceSets implements IMergeDNASequenceSets {
 		final Integer srcSeqSetLengths =
 				srcSeqSet.getSequenceLengths();
 
-		Map<IOtu, IDnaSequence> targOTUsToSeqs;
+		Map<Otu, IDnaSequence> targOTUsToSeqs;
 
 		if (targSeqSetLengths == null ||
 				targSeqSetLengths.equals(srcSeqSetLengths)) {
@@ -78,15 +78,15 @@ class MergeDNASequenceSets implements IMergeDNASequenceSets {
 			targSeqSet.clearSequences();
 		}
 
-		for (int i = 0; i < srcSeqSet.getParent().getOTUs().size(); i++) {
-			final IOtu sourceOTU =
+		for (int i = 0; i < srcSeqSet.getParent().getOtus().size(); i++) {
+			final Otu sourceOTU =
 					srcSeqSet.getParent()
-							.getOTUs()
+							.getOtus()
 							.get(i);
 
 			final IDnaSequence srcSeq = srcSeqSet.getSequence(sourceOTU);
-			final IOtu targOTU = targSeqSet.getParent()
-							.getOTUs()
+			final Otu targOTU = targSeqSet.getParent()
+							.getOtus()
 							.get(i);
 
 			IDnaSequence targSeq;

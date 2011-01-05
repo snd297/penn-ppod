@@ -17,8 +17,8 @@ package edu.upenn.cis.ppod.util;
 
 import javax.xml.bind.annotation.XmlElement;
 
-import edu.upenn.cis.ppod.imodel.IOtu;
 import edu.upenn.cis.ppod.imodel.IStandardRow;
+import edu.upenn.cis.ppod.model.Otu;
 
 /**
  * @author Sam Donnelly
@@ -31,7 +31,7 @@ public final class OtuStandardRowPair
 	 */
 	protected OtuStandardRowPair() {}
 
-	public OtuStandardRowPair(final IOtu first, final IStandardRow second) {
+	public OtuStandardRowPair(final Otu first, final IStandardRow second) {
 		super(first, second);
 	}
 

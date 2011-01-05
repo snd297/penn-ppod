@@ -17,6 +17,7 @@ package edu.upenn.cis.ppod.imodel;
 
 import javax.xml.bind.annotation.XmlSeeAlso;
 
+import edu.upenn.cis.ppod.model.OtuSet;
 import edu.upenn.cis.ppod.model.Study;
 import edu.upenn.cis.ppod.services.ppodentity.IOTUSets;
 
@@ -38,7 +39,7 @@ public interface IStudy extends ILabeled, IOTUSets, IUuPPodEntity {
 	 * @throws IllegalArgumentException if this study already contains the OTU
 	 *             set
 	 */
-	void addOTUSet(int pos, IOtuSet otuSet);
+	void addOtuSet(int pos, OtuSet otuSet);
 
 	/**
 	 * Remove an OTU set from this Study.
@@ -48,7 +49,7 @@ public interface IStudy extends ILabeled, IOTUSets, IUuPPodEntity {
 	 * @throw IllegalArgumentException if this study does not contain the OTU
 	 *        set
 	 */
-	void removeOTUSet(final IOtuSet otuSet);
+	void removeOTUSet(final OtuSet otuSet);
 
 	/**
 	 * Set the label.

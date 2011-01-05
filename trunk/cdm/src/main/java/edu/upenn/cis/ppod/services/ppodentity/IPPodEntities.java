@@ -17,13 +17,13 @@ package edu.upenn.cis.ppod.services.ppodentity;
 
 import java.util.Set;
 
-import edu.upenn.cis.ppod.imodel.IOtu;
+import edu.upenn.cis.ppod.model.Otu;
 
 /**
  * @author Sam Donnelly
  */
 public interface IPPodEntities extends IOTUSets {
-	Set<IOtu> getOTUs();
+	Set<Otu> getOTUs();
 
-	IOtu addOTU(IOtu otu);
+	Otu addOTU(Otu otu);
 }
