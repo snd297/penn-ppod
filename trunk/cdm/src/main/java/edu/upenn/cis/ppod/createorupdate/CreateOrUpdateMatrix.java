@@ -25,11 +25,11 @@ import org.slf4j.LoggerFactory;
 
 import edu.upenn.cis.ppod.dao.IObjectWithLongIdDAO;
 import edu.upenn.cis.ppod.imodel.INewVersionInfo;
-import edu.upenn.cis.ppod.imodel.IVersionInfo;
 import edu.upenn.cis.ppod.model.Cell;
 import edu.upenn.cis.ppod.model.Matrix;
 import edu.upenn.cis.ppod.model.Otu;
 import edu.upenn.cis.ppod.model.Row;
+import edu.upenn.cis.ppod.model.VersionInfo;
 
 /**
  * @author Sam Donnelly
@@ -160,9 +160,9 @@ abstract class CreateOrUpdateMatrix<M extends Matrix<R, C>, R extends Row<C, ?>,
 		}
 	}
 
-	protected abstract C newC(IVersionInfo newVersionInfo);
+	protected abstract C newC(VersionInfo newVersionInfo);
 
-	protected abstract R newR(IVersionInfo newVersionInfo);
+	protected abstract R newR(VersionInfo newVersionInfo);
 
 	protected abstract void handlePolymorphicCell(final C targetCell,
 			final C sourceCell);

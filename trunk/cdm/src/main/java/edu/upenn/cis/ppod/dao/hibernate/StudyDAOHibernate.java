@@ -26,7 +26,6 @@ import org.hibernate.Session;
 import com.google.inject.Inject;
 
 import edu.upenn.cis.ppod.dao.IStudyDAO;
-import edu.upenn.cis.ppod.imodel.IStudy;
 import edu.upenn.cis.ppod.model.Study;
 import edu.upenn.cis.ppod.thirdparty.dao.hibernate.GenericHibernateDAO;
 import edu.upenn.cis.ppod.util.Pair;
@@ -37,7 +36,7 @@ import edu.upenn.cis.ppod.util.Pair;
  * @author Sam Donnelly
  */
 final class StudyDAOHibernate
-		extends GenericHibernateDAO<IStudy, Long>
+		extends GenericHibernateDAO<Study, Long>
 		implements IStudyDAO {
 
 	@Inject
@@ -73,15 +72,15 @@ final class StudyDAOHibernate
 						"pPodId", pPodId).uniqueResult();
 	}
 
-	public IStudy getStudyByPPodId(final String pPodId) {
-		return (IStudy) getSession()
+	public Study getStudyByPPodId(final String pPodId) {
+		return (Study) getSession()
 				.getNamedQuery(
 						Study.class.getSimpleName() + "-getByPPodId")
 				.setParameter("pPodId", pPodId)
 				.uniqueResult();
 	}
 
-	public IStudy getStudyByPPodIdEager(final String pPodId) {
+	public Study getStudyByPPodIdEager(final String pPodId) {
 		throw new UnsupportedOperationException();
 		// return (Study) getSession()
 		// .createCriteria(Study.class)

@@ -44,11 +44,10 @@ import javax.xml.bind.annotation.XmlElement;
 import edu.umd.cs.findbugs.annotations.CheckForNull;
 import edu.umd.cs.findbugs.annotations.Nullable;
 import edu.upenn.cis.ppod.imodel.IDependsOnParentOtus;
+import edu.upenn.cis.ppod.imodel.IHasColumnVersionInfos;
 import edu.upenn.cis.ppod.imodel.IHasDocId;
 import edu.upenn.cis.ppod.imodel.IHasPPodId;
-import edu.upenn.cis.ppod.imodel.IHasColumnVersionInfos;
 import edu.upenn.cis.ppod.imodel.IOtuKeyedMap;
-import edu.upenn.cis.ppod.imodel.IVersionInfo;
 import edu.upenn.cis.ppod.util.IVisitor;
 
 /**
@@ -60,7 +59,8 @@ import edu.upenn.cis.ppod.util.IVisitor;
 @MappedSuperclass
 public abstract class Matrix<R extends Row<C, ?>, C extends Cell<?, ?>>
 		extends UuPPodEntityWithDocId
-		implements IHasColumnVersionInfos, IDependsOnParentOtus, IHasDocId, IHasPPodId {
+		implements IHasColumnVersionInfos, IDependsOnParentOtus, IHasDocId,
+		IHasPPodId {
 
 	/** Description column. */
 	public static final String DESCRIPTION_COLUMN = "DESCRIPTION";
@@ -73,7 +73,7 @@ public abstract class Matrix<R extends Row<C, ?>, C extends Cell<?, ?>>
 	@JoinTable(inverseJoinColumns =
 		{ @JoinColumn(name = VersionInfo.JOIN_COLUMN) })
 	@OrderColumn(name = VersionInfo.TABLE + "_POSITION")
-	private final List<IVersionInfo> columnVersionInfos = newArrayList();
+	private final List<VersionInfo> columnVersionInfos = newArrayList();
 
 	/**
 	 * For sending over the wire to web clients. Because we don't want to send
@@ -153,7 +153,7 @@ public abstract class Matrix<R extends Row<C, ?>, C extends Cell<?, ?>>
 		}
 
 		int columnVersionInfoPos = -1;
-		for (final IVersionInfo columnVersionInfo : getColumnVersionInfos()) {
+		for (final VersionInfo columnVersionInfo : getColumnVersionInfos()) {
 			columnVersionInfoPos++;
 			if (columnVersionInfo == null) {
 				getColumnVersionsModifiable().add(null);
@@ -185,7 +185,7 @@ public abstract class Matrix<R extends Row<C, ?>, C extends Cell<?, ?>>
 	 * 
 	 * @return get the column pPOD version infos
 	 */
-	public List<IVersionInfo> getColumnVersionInfos() {
+	public List<VersionInfo> getColumnVersionInfos() {
 		return Collections.unmodifiableList(columnVersionInfos);
 	}
 
@@ -194,7 +194,7 @@ public abstract class Matrix<R extends Row<C, ?>, C extends Cell<?, ?>>
 	 * 
 	 * @return a modifiable reference to the column pPOD version infos
 	 */
-	List<IVersionInfo> getColumnVersionInfosModifiable() {
+	List<VersionInfo> getColumnVersionInfosModifiable() {
 		return columnVersionInfos;
 	}
 
@@ -348,7 +348,7 @@ public abstract class Matrix<R extends Row<C, ?>, C extends Cell<?, ?>>
 	 */
 	public void setColumnVersionInfo(
 			final int pos,
-			final IVersionInfo versionInfo) {
+			final VersionInfo versionInfo) {
 		checkNotNull(versionInfo);
 		checkArgument(pos < getColumnVersionInfos().size(),
 				"pos is bigger than getColumnVersionInfos().size()");
@@ -363,7 +363,7 @@ public abstract class Matrix<R extends Row<C, ?>, C extends Cell<?, ?>>
 	 * @return this
 	 */
 	public void setColumnVersionInfos(
-			final IVersionInfo versionInfo) {
+			final VersionInfo versionInfo) {
 		for (int pos = 0; pos < getColumnVersionInfos().size(); pos++) {
 			setColumnVersionInfo(pos, versionInfo);
 		}

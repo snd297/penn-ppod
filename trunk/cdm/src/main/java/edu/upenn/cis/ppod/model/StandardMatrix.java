@@ -40,7 +40,6 @@ import com.google.common.annotations.Beta;
 import com.google.common.collect.BiMap;
 import com.google.common.collect.HashBiMap;
 
-import edu.upenn.cis.ppod.imodel.IVersionInfo;
 import edu.upenn.cis.ppod.util.IVisitor;
 
 /**
@@ -110,7 +109,7 @@ public class StandardMatrix
 		rows.afterUnmarshal();
 	}
 
-	private List<IVersionInfo> determineNewColumnHeaderPPodVersionInfos(
+	private List<VersionInfo> determineNewColumnHeaderPPodVersionInfos(
 			final List<? extends StandardCharacter> newCharacters) {
 
 		final BiMap<Integer, Integer> originalPositionsToNewPositions = HashBiMap
@@ -126,7 +125,7 @@ public class StandardMatrix
 			originalPositionsToNewPositions.put(originalPosition,
 					newPosition == -1 ? -(originalPosition + 1) : newPosition);
 		}
-		final List<IVersionInfo> newColumnHeaderPPodVersionInfos =
+		final List<VersionInfo> newColumnHeaderPPodVersionInfos =
 				newArrayListWithCapacity(newCharacters.size());
 		for (final Entry<Integer, Integer> originalPositionToNewPosition : originalPositionsToNewPositions
 				.entrySet()) {
@@ -255,8 +254,8 @@ public class StandardMatrix
 			}
 		}
 
-		final List<IVersionInfo> columnVersionInfos = getColumnVersionInfosModifiable();
-		final List<IVersionInfo> newColumnVersionInfos = determineNewColumnHeaderPPodVersionInfos(characters);
+		final List<VersionInfo> columnVersionInfos = getColumnVersionInfosModifiable();
+		final List<VersionInfo> newColumnVersionInfos = determineNewColumnHeaderPPodVersionInfos(characters);
 		columnVersionInfos.clear();
 		columnVersionInfos.addAll(newColumnVersionInfos);
 

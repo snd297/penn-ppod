@@ -36,7 +36,6 @@ import org.testng.annotations.Test;
 import com.google.common.collect.ImmutableSet;
 
 import edu.upenn.cis.ppod.TestGroupDefs;
-import edu.upenn.cis.ppod.imodel.IVersionInfo;
 import edu.upenn.cis.ppod.util.IVisitor;
 
 /**
@@ -98,7 +97,7 @@ public class PPodEntityTest {
 	@Test
 	public void beforeMarahal() {
 		final OtuSet otuSet = new OtuSet();
-		final IVersionInfo versionInfo = new VersionInfo();
+		final VersionInfo versionInfo = new VersionInfo();
 		otuSet.setVersionInfo(new VersionInfo());
 		otuSet.beforeMarshal(null);
 		assertEquals(otuSet.getVersion(), versionInfo.getVersion());

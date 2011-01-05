@@ -51,7 +51,8 @@ public class CellTest {
 	 */
 	@Test
 	public void beforeMarshal() {
-		final VersionInfo versionInfo = new VersionInfo().setVersion(23L);
+		final VersionInfo versionInfo = new VersionInfo();
+		versionInfo.setVersion(23L);
 		final Cell<DnaNucleotide, ?> cell = new DnaCell();
 		cell.setType(Cell.Type.INAPPLICABLE);
 		cell.setVersionInfo(versionInfo);
@@ -171,7 +172,7 @@ public class CellTest {
 		final DnaMatrix matrix = new DnaMatrix();
 		matrix.setColumnsSize(1);
 		final OtuSet otuSet = new OtuSet();
-		otuSet.addDNAMatrix(matrix);
+		otuSet.addDnaMatrix(matrix);
 		otuSet.addOTU(new Otu().setLabel("otu-0"));
 
 		matrix.putRow(otuSet.getOtus().get(0), row);

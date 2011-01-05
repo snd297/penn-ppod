@@ -17,81 +17,80 @@ package edu.upenn.cis.ppod.model;
 
 import edu.upenn.cis.ppod.imodel.IPPodEntity;
 import edu.upenn.cis.ppod.imodel.IUuPPodEntity;
-import edu.upenn.cis.ppod.imodel.IVersionInfo;
 
 /**
  * @author Sam Donnelly
  */
 public class ModelFactory {
 
-	public static Attachment newAttachment(final IVersionInfo versionInfo) {
+	public static Attachment newAttachment(final VersionInfo versionInfo) {
 		final Attachment attachment = new Attachment();
 		prepareUUPPodEntity(attachment, versionInfo);
 		return attachment;
 	}
 
-	public static DnaCell newDNACell(final IVersionInfo versionInfo) {
+	public static DnaCell newDNACell(final VersionInfo versionInfo) {
 		final DnaCell cell = new DnaCell();
 		preparePPodEntity(cell, versionInfo);
 		return cell;
 	}
 
 	public static DnaMatrix newDNAMatrix(
-			final IVersionInfo versionInfo) {
+			final VersionInfo versionInfo) {
 		final DnaMatrix matrix = new DnaMatrix();
 		prepareUUPPodEntity(matrix, versionInfo);
 		matrix.setColumnVersionInfos(versionInfo);
 		return matrix;
 	}
 
-	public static DnaRow newDNARow(final IVersionInfo versionInfo) {
+	public static DnaRow newDNARow(final VersionInfo versionInfo) {
 		final DnaRow row = new DnaRow();
 		preparePPodEntity(row, versionInfo);
 		return row;
 	}
 
 	public static DnaSequence newDNASequence(
-			final IVersionInfo versionInfo) {
+			final VersionInfo versionInfo) {
 		final DnaSequence sequence = new DnaSequence();
 		preparePPodEntity(sequence, versionInfo);
 		return sequence;
 	}
 
 	public static DnaSequenceSet newDNASequenceSet(
-			final IVersionInfo versionInfo) {
+			final VersionInfo versionInfo) {
 		final DnaSequenceSet sequenceSet = new DnaSequenceSet();
 		prepareUUPPodEntity(sequenceSet, versionInfo);
 		return sequenceSet;
 	}
 
-	public static Otu newOTU(final IVersionInfo versionInfo) {
+	public static Otu newOTU(final VersionInfo versionInfo) {
 		final Otu otu = new Otu();
 		prepareUUPPodEntity(otu, versionInfo);
 		return otu;
 	}
 
-	public static OtuSet newOTUSet(final IVersionInfo versionInfo) {
+	public static OtuSet newOTUSet(final VersionInfo versionInfo) {
 		final OtuSet otuSet = new OtuSet();
 		prepareUUPPodEntity(otuSet, versionInfo);
 		return otuSet;
 	}
 
 	public static StandardCell newStandardCell(
-			final IVersionInfo versionInfo) {
+			final VersionInfo versionInfo) {
 		final StandardCell cell = new StandardCell();
 		preparePPodEntity(cell, versionInfo);
 		return cell;
 	}
 
 	public static StandardCharacter newStandardCharacter(
-			final IVersionInfo versionInfo) {
+			final VersionInfo versionInfo) {
 		final StandardCharacter character = new StandardCharacter();
 		prepareUUPPodEntity(character, versionInfo);
 		return character;
 	}
 
 	public static StandardMatrix newStandardMatrix(
-			final IVersionInfo versionInfo) {
+			final VersionInfo versionInfo) {
 		final StandardMatrix matrix = new StandardMatrix();
 		prepareUUPPodEntity(matrix, versionInfo);
 		matrix.setColumnVersionInfos(versionInfo);
@@ -99,37 +98,37 @@ public class ModelFactory {
 	}
 
 	public static StandardRow newStandardRow(
-			final IVersionInfo versionInfo) {
+			final VersionInfo versionInfo) {
 		final StandardRow row = new StandardRow();
 		preparePPodEntity(row, versionInfo);
 		return row;
 	}
 
-	public static Study newStudy(final IVersionInfo versionInfo) {
+	public static Study newStudy(final VersionInfo versionInfo) {
 		final Study study = new Study();
 		prepareUUPPodEntity(study, versionInfo);
 		return study;
 	}
 
-	public static Tree newTree(final IVersionInfo versionInfo) {
+	public static Tree newTree(final VersionInfo versionInfo) {
 		final Tree tree = new Tree();
 		prepareUUPPodEntity(tree, versionInfo);
 		return tree;
 	}
 
-	public static TreeSet newTreeSet(final IVersionInfo versionInfo) {
+	public static TreeSet newTreeSet(final VersionInfo versionInfo) {
 		final TreeSet treeSet = new TreeSet();
 		prepareUUPPodEntity(treeSet, versionInfo);
 		return treeSet;
 	}
 
 	private static void preparePPodEntity(final IPPodEntity pPodEntity,
-			final IVersionInfo versionInfo) {
+			final VersionInfo versionInfo) {
 		pPodEntity.setVersionInfo(versionInfo);
 	}
 
 	private static void prepareUUPPodEntity(final IUuPPodEntity pPodEntity,
-			final IVersionInfo versionInfo) {
+			final VersionInfo versionInfo) {
 		preparePPodEntity(pPodEntity, versionInfo);
 		pPodEntity.setPPodId();
 	}

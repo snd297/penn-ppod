@@ -30,12 +30,12 @@ import edu.upenn.cis.ppod.dao.IObjectWithLongIdDAO;
 import edu.upenn.cis.ppod.dao.IStudyDAO;
 import edu.upenn.cis.ppod.imodel.IHasPPodId;
 import edu.upenn.cis.ppod.imodel.INewVersionInfo;
-import edu.upenn.cis.ppod.imodel.IStudy;
 import edu.upenn.cis.ppod.model.DnaMatrix;
 import edu.upenn.cis.ppod.model.DnaSequenceSet;
 import edu.upenn.cis.ppod.model.ModelFactory;
 import edu.upenn.cis.ppod.model.OtuSet;
 import edu.upenn.cis.ppod.model.StandardMatrix;
+import edu.upenn.cis.ppod.model.Study;
 import edu.upenn.cis.ppod.model.TreeSet;
 
 /**
@@ -76,8 +76,8 @@ class CreateOrUpdateStudy implements ICreateOrUpdateStudy {
 		this.mergeTreeSets = mergeTreeSets;
 	}
 
-	public IStudy createOrUpdateStudy(final IStudy incomingStudy) {
-		IStudy dbStudy = null;
+	public Study createOrUpdateStudy(final Study incomingStudy) {
+		Study dbStudy = null;
 		boolean makeStudyPersistent = false;
 		if (null == (dbStudy =
 				studyDAO.getStudyByPPodId(

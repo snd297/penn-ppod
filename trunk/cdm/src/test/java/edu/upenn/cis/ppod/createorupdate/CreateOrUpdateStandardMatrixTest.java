@@ -26,7 +26,6 @@ import org.testng.annotations.Test;
 import edu.upenn.cis.ppod.TestGroupDefs;
 import edu.upenn.cis.ppod.dao.IObjectWithLongIdDAO;
 import edu.upenn.cis.ppod.imodel.INewVersionInfo;
-import edu.upenn.cis.ppod.imodel.IVersionInfo;
 import edu.upenn.cis.ppod.model.ModelAssert;
 import edu.upenn.cis.ppod.model.Otu;
 import edu.upenn.cis.ppod.model.OtuSet;
@@ -34,6 +33,7 @@ import edu.upenn.cis.ppod.model.StandardCell;
 import edu.upenn.cis.ppod.model.StandardCharacter;
 import edu.upenn.cis.ppod.model.StandardMatrix;
 import edu.upenn.cis.ppod.model.StandardRow;
+import edu.upenn.cis.ppod.model.VersionInfo;
 import edu.upenn.cis.ppod.util.PPodEntityProvider;
 
 /**
@@ -48,7 +48,7 @@ public class CreateOrUpdateStandardMatrixTest {
 			dataProviderClass = PPodEntityProvider.class)
 	public void create(final StandardMatrix sourceMatrix) {
 
-		final IVersionInfo versionInfo = mock(IVersionInfo.class);
+		final VersionInfo versionInfo = mock(VersionInfo.class);
 		final INewVersionInfo newVersionInfo = mock(INewVersionInfo.class);
 		when(newVersionInfo.getNewVersionInfo()).thenReturn(versionInfo);
 
@@ -75,7 +75,7 @@ public class CreateOrUpdateStandardMatrixTest {
 			dataProviderClass = PPodEntityProvider.class)
 	public void moveRows(final StandardMatrix sourceMatrix) {
 
-		final IVersionInfo versionInfo = mock(IVersionInfo.class);
+		final VersionInfo versionInfo = mock(VersionInfo.class);
 		final INewVersionInfo newVersionInfo = mock(INewVersionInfo.class);
 		when(newVersionInfo.getNewVersionInfo()).thenReturn(versionInfo);
 
@@ -127,7 +127,7 @@ public class CreateOrUpdateStandardMatrixTest {
 			dataProviderClass = PPodEntityProvider.class)
 	public void moveCharacters(final StandardMatrix sourceMatrix) {
 
-		final IVersionInfo versionInfo = mock(IVersionInfo.class);
+		final VersionInfo versionInfo = mock(VersionInfo.class);
 		final INewVersionInfo newVersionInfo = mock(INewVersionInfo.class);
 		when(newVersionInfo.getNewVersionInfo()).thenReturn(versionInfo);
 
@@ -188,7 +188,7 @@ public class CreateOrUpdateStandardMatrixTest {
 			dataProviderClass = PPodEntityProvider.class)
 	public void removeColumn(final StandardMatrix sourceMatrix) {
 
-		final IVersionInfo versionInfo = mock(IVersionInfo.class);
+		final VersionInfo versionInfo = mock(VersionInfo.class);
 		final INewVersionInfo newVersionInfo = mock(INewVersionInfo.class);
 		when(newVersionInfo.getNewVersionInfo()).thenReturn(versionInfo);
 

@@ -45,7 +45,6 @@ import edu.umd.cs.findbugs.annotations.CheckForNull;
 import edu.umd.cs.findbugs.annotations.Nullable;
 import edu.upenn.cis.ppod.imodel.IAttachment;
 import edu.upenn.cis.ppod.imodel.IPPodEntity;
-import edu.upenn.cis.ppod.imodel.IVersionInfo;
 import edu.upenn.cis.ppod.util.IVisitor;
 
 /**
@@ -111,11 +110,10 @@ public abstract class PPodEntity
 	 * The pPod version of this object. Similar in concept to Hibernate's
 	 * version, but tweaked for our purposes.
 	 */
-	@ManyToOne(targetEntity = VersionInfo.class, fetch = FetchType.LAZY,
-			optional = false)
+	@ManyToOne(fetch = FetchType.LAZY, optional = false)
 	@JoinColumn(name = VersionInfo.JOIN_COLUMN)
 	@CheckForNull
-	private IVersionInfo versionInfo;
+	private VersionInfo versionInfo;
 
 	protected PPodEntity() {}
 
@@ -223,7 +221,7 @@ public abstract class PPodEntity
 		return version;
 	}
 
-	public IVersionInfo getVersionInfo() {
+	public VersionInfo getVersionInfo() {
 		checkState(
 				!isUnmarshalled(),
 						"can't access a VersionInfo through an unmarshalled PPodEntity");
@@ -286,7 +284,7 @@ public abstract class PPodEntity
 
 	/** {@inheritDoc} */
 	public void setVersionInfo(
-			final IVersionInfo versionInfo) {
+			final VersionInfo versionInfo) {
 		checkNotNull(versionInfo);
 		unsetInNeedOfNewVersion();
 		this.versionInfo = versionInfo;

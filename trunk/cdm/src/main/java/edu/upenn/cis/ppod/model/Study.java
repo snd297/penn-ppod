@@ -43,8 +43,8 @@ import javax.xml.bind.annotation.XmlRootElement;
 import edu.umd.cs.findbugs.annotations.CheckForNull;
 import edu.upenn.cis.ppod.imodel.IAttachmentNamespace;
 import edu.upenn.cis.ppod.imodel.IAttachmentType;
-import edu.upenn.cis.ppod.imodel.IStudy;
-import edu.upenn.cis.ppod.imodel.IVersioned;
+import edu.upenn.cis.ppod.imodel.ILabeled;
+import edu.upenn.cis.ppod.services.ppodentity.IOTUSets;
 import edu.upenn.cis.ppod.util.IVisitor;
 import edu.upenn.cis.ppod.util.PPodEntitiesUtil;
 
@@ -75,7 +75,7 @@ import edu.upenn.cis.ppod.util.PPodEntitiesUtil;
 @Table(name = Study.TABLE)
 public class Study
 		extends UuPPodEntity
-		implements IStudy, IVersioned {
+		implements ILabeled, IOTUSets {
 
 	/** The table name for this entity. */
 	public static final String TABLE = "STUDY";
@@ -113,7 +113,15 @@ public class Study
 		}
 	}
 
-	/** {@inheritDoc} */
+	/**
+	 * Insert an OTU set at the given position.
+	 * 
+	 * @param pos where the OTU set should be inserted
+	 * @param otuSet to be inserted
+	 * 
+	 * @throws IllegalArgumentException if this study already contains the OTU
+	 *             set
+	 */
 	public void addOtuSet(final int pos, final OtuSet otuSet) {
 		checkNotNull(otuSet);
 		checkArgument(pos >= 0, "pos < 0");
@@ -200,7 +208,14 @@ public class Study
 		return attachmentTypes;
 	}
 
-	/** {@inheritDoc} */
+	/**
+	 * Remove an OTU set from this Study.
+	 * 
+	 * @param otuSet to be removed
+	 * 
+	 * @throw IllegalArgumentException if this study does not contain the OTU
+	 *        set
+	 */
 	public void removeOTUSet(final OtuSet otuSet) {
 		checkNotNull(otuSet);
 		checkArgument(getOTUSets().contains(otuSet),
@@ -211,7 +226,11 @@ public class Study
 		setInNeedOfNewVersion();
 	}
 
-	/** {@inheritDoc} */
+	/**
+	 * Set the label.
+	 * 
+	 * @param label the label to set
+	 */
 	public void setLabel(final String label) {
 		checkNotNull(label);
 		if (label.equals(this.label)) {

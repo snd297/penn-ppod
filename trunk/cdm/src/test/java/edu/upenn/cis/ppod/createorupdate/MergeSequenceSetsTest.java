@@ -22,12 +22,12 @@ import org.testng.annotations.Test;
 
 import edu.upenn.cis.ppod.TestGroupDefs;
 import edu.upenn.cis.ppod.imodel.INewVersionInfo;
-import edu.upenn.cis.ppod.imodel.IVersionInfo;
 import edu.upenn.cis.ppod.model.DnaSequence;
 import edu.upenn.cis.ppod.model.DnaSequenceSet;
 import edu.upenn.cis.ppod.model.ModelAssert;
 import edu.upenn.cis.ppod.model.Otu;
 import edu.upenn.cis.ppod.model.OtuSet;
+import edu.upenn.cis.ppod.model.VersionInfo;
 
 @Test(groups = TestGroupDefs.FAST)
 public class MergeSequenceSetsTest {
@@ -79,7 +79,7 @@ public class MergeSequenceSetsTest {
 		srcSeqSet.putSequence(srcOTUSet.getOtus().get(1), srcSeq1);
 		srcSeqSet.putSequence(srcOTUSet.getOtus().get(2), srcSeq2);
 
-		final IVersionInfo versionInfo = mock(IVersionInfo.class);
+		final VersionInfo versionInfo = mock(VersionInfo.class);
 		final INewVersionInfo newVersionInfo = mock(INewVersionInfo.class);
 		when(newVersionInfo.getNewVersionInfo()).thenReturn(versionInfo);
 
@@ -146,7 +146,7 @@ public class MergeSequenceSetsTest {
 		srcSeqSet.putSequence(srcOTUSet.getOtus().get(1), srcSeq1);
 		srcSeqSet.putSequence(srcOTUSet.getOtus().get(2), srcSeq2);
 
-		final IVersionInfo versionInfo = mock(IVersionInfo.class);
+		final VersionInfo versionInfo = mock(VersionInfo.class);
 		final INewVersionInfo newVersionInfo = mock(INewVersionInfo.class);
 		when(newVersionInfo.getNewVersionInfo()).thenReturn(versionInfo);
 
@@ -213,7 +213,7 @@ public class MergeSequenceSetsTest {
 		srcSeqSet.putSequence(srcOTUSet.getOtus().get(1), srcSeq1);
 		srcSeqSet.putSequence(srcOTUSet.getOtus().get(2), srcSeq2);
 
-		final IVersionInfo versionInfo = mock(IVersionInfo.class);
+		final VersionInfo versionInfo = mock(VersionInfo.class);
 		final INewVersionInfo newVersionInfo = mock(INewVersionInfo.class);
 		when(newVersionInfo.getNewVersionInfo()).thenReturn(versionInfo);
 

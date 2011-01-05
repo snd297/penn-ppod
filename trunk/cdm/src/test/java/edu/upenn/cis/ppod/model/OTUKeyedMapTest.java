@@ -93,7 +93,7 @@ public class OTUKeyedMapTest {
 		final DnaMatrix matrix = new DnaMatrix();
 
 		final OtuSet otuSet = new OtuSet();
-		otuSet.addDNAMatrix(matrix);
+		otuSet.addDnaMatrix(matrix);
 
 		final Otu otu0 = new Otu();
 		otu0.setLabel("otu0");

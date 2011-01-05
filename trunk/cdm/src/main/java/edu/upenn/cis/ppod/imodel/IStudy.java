@@ -30,32 +30,10 @@ import edu.upenn.cis.ppod.services.ppodentity.IOTUSets;
 @XmlSeeAlso(Study.class)
 public interface IStudy extends IUuPPodEntity, IOTUSets, ILabeled {
 
-	/**
-	 * Insert an OTU set at the given position.
-	 * 
-	 * @param pos where the OTU set should be inserted
-	 * @param otuSet to be inserted
-	 * 
-	 * @throws IllegalArgumentException if this study already contains the OTU
-	 *             set
-	 */
 	void addOtuSet(int pos, OtuSet otuSet);
 
-	/**
-	 * Remove an OTU set from this Study.
-	 * 
-	 * @param otuSet to be removed
-	 * 
-	 * @throw IllegalArgumentException if this study does not contain the OTU
-	 *        set
-	 */
 	void removeOTUSet(final OtuSet otuSet);
 
-	/**
-	 * Set the label.
-	 * 
-	 * @param label the label to set
-	 */
 	void setLabel(final String label);
 
 }

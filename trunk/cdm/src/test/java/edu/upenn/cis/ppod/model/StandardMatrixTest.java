@@ -34,7 +34,6 @@ import org.testng.annotations.Test;
 import com.google.common.collect.ImmutableList;
 
 import edu.upenn.cis.ppod.TestGroupDefs;
-import edu.upenn.cis.ppod.imodel.IVersionInfo;
 
 /**
  * Logic tests of {@link StandardMatrix}.
@@ -333,14 +332,20 @@ public class StandardMatrixTest {
 		characters.get(1).setLabel("character-1");
 		characters.get(2).setLabel("character-2");
 
+		final VersionInfo version3 = new VersionInfo();
+		version3.setVersion(3L);
+
 		nullFillAndSet(
 				matrix.getColumnVersionInfosModifiable(),
 				0,
-				new VersionInfo().setVersion(3L));
+				version3);
+
+		final VersionInfo version8 = new VersionInfo();
+		version3.setVersion(8L);
 		nullFillAndSet(
 				matrix.getColumnVersionInfosModifiable(),
 				2,
-				new VersionInfo().setVersion(8L));
+				version8);
 
 		matrix.beforeMarshal(null);
 		assertEquals(matrix.getColumnVersions().size(),
@@ -374,7 +379,7 @@ public class StandardMatrixTest {
 		final VersionInfo versionInfo = new VersionInfo();
 
 		matrix.setColumnVersionInfos(versionInfo);
-		for (final IVersionInfo columnPPodVersionInfo : matrix
+		for (final VersionInfo columnPPodVersionInfo : matrix
 				.getColumnVersionInfos()) {
 			assertSame(columnPPodVersionInfo, versionInfo);
 		}
