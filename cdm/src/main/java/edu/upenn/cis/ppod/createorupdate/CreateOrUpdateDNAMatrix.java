@@ -23,13 +23,13 @@ import com.google.inject.Inject;
 
 import edu.upenn.cis.ppod.dao.IObjectWithLongIdDAO;
 import edu.upenn.cis.ppod.imodel.INewVersionInfo;
-import edu.upenn.cis.ppod.imodel.IVersionInfo;
 import edu.upenn.cis.ppod.model.Cell;
 import edu.upenn.cis.ppod.model.DnaCell;
 import edu.upenn.cis.ppod.model.DnaMatrix;
 import edu.upenn.cis.ppod.model.DnaNucleotide;
 import edu.upenn.cis.ppod.model.DnaRow;
 import edu.upenn.cis.ppod.model.ModelFactory;
+import edu.upenn.cis.ppod.model.VersionInfo;
 
 class CreateOrUpdateDNAMatrix
 		extends
@@ -99,12 +99,12 @@ class CreateOrUpdateDNAMatrix
 	}
 
 	@Override
-	protected DnaCell newC(final IVersionInfo versionInfo) {
+	protected DnaCell newC(final VersionInfo versionInfo) {
 		return ModelFactory.newDNACell(versionInfo);
 	}
 
 	@Override
-	protected DnaRow newR(final IVersionInfo versionInfo) {
+	protected DnaRow newR(final VersionInfo versionInfo) {
 		return ModelFactory.newDNARow(versionInfo);
 	}
 }

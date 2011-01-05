@@ -16,8 +16,6 @@
 package edu.upenn.cis.ppod.services.ppodentity;
 
 import static com.google.common.base.Preconditions.checkNotNull;
-import edu.upenn.cis.ppod.imodel.IStudy;
-import edu.upenn.cis.ppod.imodel.IVersionInfo;
 import edu.upenn.cis.ppod.model.DnaCell;
 import edu.upenn.cis.ppod.model.DnaMatrix;
 import edu.upenn.cis.ppod.model.DnaRow;
@@ -29,15 +27,17 @@ import edu.upenn.cis.ppod.model.StandardCell;
 import edu.upenn.cis.ppod.model.StandardCharacter;
 import edu.upenn.cis.ppod.model.StandardMatrix;
 import edu.upenn.cis.ppod.model.StandardRow;
+import edu.upenn.cis.ppod.model.Study;
 import edu.upenn.cis.ppod.model.Tree;
 import edu.upenn.cis.ppod.model.TreeSet;
+import edu.upenn.cis.ppod.model.VersionInfo;
 
 /**
  * @author Sam Donnelly
  */
 public final class Study2StudyInfo implements IStudy2StudyInfo {
 
-	public StudyInfo toStudyInfo(final IStudy study) {
+	public StudyInfo toStudyInfo(final Study study) {
 		checkNotNull(study);
 		final StudyInfo studyInfo = new StudyInfo();
 		studyInfo.setEntityId(study.getId());
@@ -90,7 +90,7 @@ public final class Study2StudyInfo implements IStudy2StudyInfo {
 
 				for (int columnPosition = 0; columnPosition < matrix
 						.getColumnVersionInfos().size(); columnPosition++) {
-					final IVersionInfo columnVersionInfo =
+					final VersionInfo columnVersionInfo =
 							matrix.getColumnVersionInfos()
 									.get(columnPosition);
 					matrixInfo.getColumnHeaderVersionsByIdx()
@@ -134,7 +134,7 @@ public final class Study2StudyInfo implements IStudy2StudyInfo {
 
 				for (int columnPosition = 0; columnPosition < matrix
 						.getColumnVersionInfos().size(); columnPosition++) {
-					final IVersionInfo columnVersionInfo =
+					final VersionInfo columnVersionInfo =
 							matrix.getColumnVersionInfos()
 									.get(columnPosition);
 					matrixInfo.getColumnHeaderVersionsByIdx()

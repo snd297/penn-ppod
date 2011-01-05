@@ -27,8 +27,6 @@ import javax.persistence.NamedQuery;
 import javax.persistence.Table;
 import javax.xml.bind.annotation.XmlAttribute;
 
-import edu.upenn.cis.ppod.imodel.IVersionInfo;
-
 /**
  * Stores data about a particular version of the whole pPOD instance - for
  * example the pPOD version number.
@@ -46,7 +44,7 @@ import edu.upenn.cis.ppod.imodel.IVersionInfo;
 @Table(name = VersionInfo.TABLE)
 @NamedQueries({ @NamedQuery(name = "VersionInfo-getMaxVersionInfo",
 		query = "select max(vi.version) from VersionInfo vi") })
-public class VersionInfo extends PersistentObject implements IVersionInfo {
+public class VersionInfo extends PersistentObject {
 
 	public final static String TABLE = "VERSION_INFO";
 
@@ -94,13 +92,10 @@ public class VersionInfo extends PersistentObject implements IVersionInfo {
 	 * {@code protected} instead of package-private for JAXB.
 	 * 
 	 * @param created the value
-	 * 
-	 * @return this {@link VersionInfo}
 	 */
-	protected IVersionInfo setCreated(final Date created) {
+	protected void setCreated(final Date created) {
 		checkNotNull(created);
 		this.created = (Date) created.clone();
-		return this;
 	}
 
 	/**
@@ -110,32 +105,10 @@ public class VersionInfo extends PersistentObject implements IVersionInfo {
 	 * be manipulated outside of the package.
 	 * 
 	 * @param version the pPOD version number
-	 * 
-	 * @return this {@link VersionInfo}
 	 */
-	protected VersionInfo setVersion(final Long version) {
+	protected void setVersion(final Long version) {
 		checkNotNull(version);
 		this.version = version;
-		return this;
-	}
-
-	/**
-	 * Constructs a <code>String</code> with attributes in name=value format.
-	 * 
-	 * @return a <code>String</code> representation of this object.
-	 */
-	@Override
-	public String toString() {
-		final String TAB = " ";
-
-		final StringBuilder retValue = new StringBuilder();
-
-		retValue.append("VersionInfo(").append(super.toString())
-				.append(TAB).append("version=").append(this.version)
-				.append(TAB).append("created=").append(this.created)
-				.append(TAB).append(")");
-
-		return retValue.toString();
 	}
 
 }

@@ -21,7 +21,6 @@ import com.google.inject.Inject;
 
 import edu.upenn.cis.ppod.dao.IVersionInfoDAO;
 import edu.upenn.cis.ppod.imodel.INewVersionInfo;
-import edu.upenn.cis.ppod.imodel.IVersionInfo;
 
 /**
  * We put this class in here so it can create {@link VersionInfo}
@@ -44,7 +43,7 @@ public final class NewVersionInfoDB implements
 		this.versionInfoDAO = versionInfoDAO;
 	}
 
-	public IVersionInfo getNewVersionInfo() {
+	public VersionInfo getNewVersionInfo() {
 		initializeVersionInfo();
 		return newVersionInfo;
 	}

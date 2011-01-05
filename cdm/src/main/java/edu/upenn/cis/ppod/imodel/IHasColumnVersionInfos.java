@@ -17,6 +17,8 @@ package edu.upenn.cis.ppod.imodel;
 
 import java.util.List;
 
+import edu.upenn.cis.ppod.model.VersionInfo;
+
 public interface IHasColumnVersionInfos extends IVersioned {
 
 	/**
@@ -28,7 +30,7 @@ public interface IHasColumnVersionInfos extends IVersioned {
 	 * 
 	 * @return get the column pPOD version infos
 	 */
-	List<IVersionInfo> getColumnVersionInfos();
+	List<VersionInfo> getColumnVersionInfos();
 
 	/**
 	 * Set a particular column to a version.
@@ -39,6 +41,6 @@ public interface IHasColumnVersionInfos extends IVersioned {
 	 * @throw IllegalArgumentException if {@code pos >=
 	 *        getColumnVersionInfos().size()}
 	 */
-	void setColumnVersionInfo(int pos, IVersionInfo versionInfo);
+	void setColumnVersionInfo(int pos, VersionInfo versionInfo);
 
 }

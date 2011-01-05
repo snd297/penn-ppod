@@ -26,7 +26,7 @@ import com.google.inject.Inject;
 import edu.upenn.cis.ppod.createorupdate.ICreateOrUpdateStudy;
 import edu.upenn.cis.ppod.dao.IStudyDAO;
 import edu.upenn.cis.ppod.imodel.INewVersionInfo;
-import edu.upenn.cis.ppod.imodel.IStudy;
+import edu.upenn.cis.ppod.model.Study;
 import edu.upenn.cis.ppod.services.IStudyResource;
 import edu.upenn.cis.ppod.services.StringPair;
 import edu.upenn.cis.ppod.services.ppodentity.IStudy2StudyInfo;
@@ -69,10 +69,10 @@ public final class StudyResourceHibernate implements IStudyResource {
 		this.newVersionInfo = newVersionInfo;
 	}
 
-	private StudyInfo createOrUpdateStudy(final IStudy incomingStudy) {
+	private StudyInfo createOrUpdateStudy(final Study incomingStudy) {
 		incomingStudy.accept(new AfterUnmarshalVisitor());
 
-		final IStudy dbStudy = createOrUpdateStudy
+		final Study dbStudy = createOrUpdateStudy
 				.createOrUpdateStudy(incomingStudy);
 
 		final IVisitor setVersionInfoVisitor = new SetVersionInfoVisitor(
@@ -83,13 +83,13 @@ public final class StudyResourceHibernate implements IStudyResource {
 		return study2StudyInfo.toStudyInfo(dbStudy);
 	}
 
-	public StudyInfo createStudy(final IStudy incomingStudy) {
+	public StudyInfo createStudy(final Study incomingStudy) {
 		final StudyInfo studyInfo = createOrUpdateStudy(incomingStudy);
 		return studyInfo;
 	}
 
-	public IStudy getStudyByPPodId(final String pPodId) {
-		final IStudy study = studyDAO.getStudyByPPodId(pPodId);
+	public Study getStudyByPPodId(final String pPodId) {
+		final Study study = studyDAO.getStudyByPPodId(pPodId);
 		study.accept(new SetDocIdVisitor());
 		return study;
 	}
@@ -110,7 +110,7 @@ public final class StudyResourceHibernate implements IStudyResource {
 		return studyPPodIdStringPairs;
 	}
 
-	public StudyInfo updateStudy(final IStudy incomingStudy, final String pPodId) {
+	public StudyInfo updateStudy(final Study incomingStudy, final String pPodId) {
 		final StudyInfo studyInfo = createOrUpdateStudy(incomingStudy);
 		return studyInfo;
 	}

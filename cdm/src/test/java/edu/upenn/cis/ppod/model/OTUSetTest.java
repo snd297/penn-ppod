@@ -40,7 +40,6 @@ import com.google.common.collect.ImmutableList;
 import com.google.common.collect.ImmutableSet;
 
 import edu.upenn.cis.ppod.TestGroupDefs;
-import edu.upenn.cis.ppod.imodel.IStudy;
 import edu.upenn.cis.ppod.util.IVisitor;
 
 /**
@@ -55,7 +54,7 @@ public class OTUSetTest {
 
 	private List<Otu> otus;
 
-	private IStudy study;
+	private Study study;
 
 	@Test
 	public void accept() {
@@ -70,9 +69,9 @@ public class OTUSetTest {
 		otuSet.addStandardMatrix(new StandardMatrix());
 		otuSet.addStandardMatrix(new StandardMatrix());
 
-		otuSet.addDNAMatrix(new DnaMatrix());
-		otuSet.addDNAMatrix(new DnaMatrix());
-		otuSet.addDNAMatrix(new DnaMatrix());
+		otuSet.addDnaMatrix(new DnaMatrix());
+		otuSet.addDnaMatrix(new DnaMatrix());
+		otuSet.addDnaMatrix(new DnaMatrix());
 
 		otuSet.addDNASequenceSet(new DnaSequenceSet());
 		otuSet.addDNASequenceSet(new DnaSequenceSet());
@@ -107,7 +106,7 @@ public class OTUSetTest {
 
 		otuSet.unsetInNeedOfNewVersion();
 
-		otuSet.addDNAMatrix(dnaMatrix);
+		otuSet.addDnaMatrix(dnaMatrix);
 		assertEquals(getOnlyElement(otuSet.getDNAMatrices()), dnaMatrix);
 		assertSame(dnaMatrix.getParent(), otuSet);
 		assertTrue(otuSet.isInNeedOfNewVersion());
@@ -120,9 +119,9 @@ public class OTUSetTest {
 		final DnaMatrix matrix2 = new DnaMatrix();
 		final DnaMatrix matrix3 = new DnaMatrix();
 
-		otuSet.addDNAMatrix(matrix0);
-		otuSet.addDNAMatrix(matrix1);
-		otuSet.addDNAMatrix(matrix2);
+		otuSet.addDnaMatrix(matrix0);
+		otuSet.addDnaMatrix(matrix1);
+		otuSet.addDnaMatrix(matrix2);
 
 		otuSet.unsetInNeedOfNewVersion();
 
@@ -186,7 +185,7 @@ public class OTUSetTest {
 		otuSet.addStandardMatrix(standardMatrix);
 
 		final DnaMatrix dnaMatrix = new DnaMatrix();
-		otuSet.addDNAMatrix(dnaMatrix);
+		otuSet.addDnaMatrix(dnaMatrix);
 
 		final DnaSequenceSet dnaSequenceSet = new DnaSequenceSet();
 
@@ -346,12 +345,11 @@ public class OTUSetTest {
 
 	@Test
 	public void afterUnmarshal() {
-		final IStudy study = new Study();
+		final Study study = new Study();
 		otuSet.unsetInNeedOfNewVersion();
 		otuSet.afterUnmarshal(null, study);
 		assertSame(otuSet.getParent(), study);
 		assertFalse(otuSet.isInNeedOfNewVersion());
-
 	}
 
 	@BeforeMethod
@@ -404,11 +402,11 @@ public class OTUSetTest {
 	public void removeDNAMatrix() {
 
 		final DnaMatrix matrix0 = new DnaMatrix();
-		otuSet.addDNAMatrix(matrix0);
+		otuSet.addDnaMatrix(matrix0);
 		final DnaMatrix matrix1 = new DnaMatrix();
-		otuSet.addDNAMatrix(matrix1);
+		otuSet.addDnaMatrix(matrix1);
 		final DnaMatrix matrix2 = new DnaMatrix();
-		otuSet.addDNAMatrix(matrix2);
+		otuSet.addDnaMatrix(matrix2);
 
 		otuSet.unsetInNeedOfNewVersion();
 

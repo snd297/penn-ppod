@@ -25,7 +25,6 @@ import org.testng.annotations.Test;
 import com.google.common.collect.ImmutableList;
 
 import edu.upenn.cis.ppod.TestGroupDefs;
-import edu.upenn.cis.ppod.imodel.IStudy;
 
 /**
  * @author Sam Donnelly
@@ -36,7 +35,7 @@ public class StudyTest {
 
 	@Test
 	public void removeOTUSet() {
-		final IStudy study = new Study();
+		final Study study = new Study();
 		final OtuSet otuSet0 = new OtuSet();
 		final OtuSet otuSet1 = new OtuSet();
 		final OtuSet otuSet2 = new OtuSet();
@@ -55,7 +54,7 @@ public class StudyTest {
 
 	@Test
 	public void setLabel() {
-		final IStudy study = new Study();
+		final Study study = new Study();
 		study.unsetInNeedOfNewVersion();
 		final String label = "otu-set-label";
 		study.setLabel(label);
@@ -73,7 +72,7 @@ public class StudyTest {
 
 	@Test(expectedExceptions = IllegalArgumentException.class)
 	public void addOTUSetWAlreadyContainedOTUSet() {
-		final IStudy study = new Study();
+		final Study study = new Study();
 		final OtuSet otuSet0 = new OtuSet();
 		study.addOtuSet(otuSet0);
 		study.addOtuSet(otuSet0);
@@ -81,7 +80,7 @@ public class StudyTest {
 
 	@Test
 	public void addOTUSet() {
-		final IStudy study = new Study();
+		final Study study = new Study();
 		final OtuSet otuSet0 = new OtuSet();
 
 		study.unsetInNeedOfNewVersion();
@@ -95,7 +94,7 @@ public class StudyTest {
 
 	@Test
 	public void addOTUSetPos() {
-		final IStudy study = new Study();
+		final Study study = new Study();
 		final OtuSet otuSet0 = new OtuSet();
 		final OtuSet otuSet1 = new OtuSet();
 		final OtuSet otuSet2 = new OtuSet();

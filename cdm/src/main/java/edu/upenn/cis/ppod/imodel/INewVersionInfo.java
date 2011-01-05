@@ -15,6 +15,8 @@
  */
 package edu.upenn.cis.ppod.imodel;
 
+import edu.upenn.cis.ppod.model.VersionInfo;
+
 /**
  * Get the next version available version info.
  * <p>
@@ -30,6 +32,6 @@ public interface INewVersionInfo {
 	 * 
 	 * @return the next version available from the pPOD DB
 	 */
-	IVersionInfo getNewVersionInfo();
+	VersionInfo getNewVersionInfo();
 
 }

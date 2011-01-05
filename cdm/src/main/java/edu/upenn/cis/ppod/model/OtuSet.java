@@ -47,7 +47,6 @@ import edu.umd.cs.findbugs.annotations.CheckForNull;
 import edu.umd.cs.findbugs.annotations.Nullable;
 import edu.upenn.cis.ppod.imodel.IChild;
 import edu.upenn.cis.ppod.imodel.ILabeled;
-import edu.upenn.cis.ppod.imodel.IStudy;
 import edu.upenn.cis.ppod.util.IVisitor;
 
 /**
@@ -80,8 +79,7 @@ public class OtuSet
 
 	@OneToMany(
 			cascade = CascadeType.ALL,
-			orphanRemoval = true,
-			targetEntity = StandardMatrix.class)
+			orphanRemoval = true)
 	@OrderColumn(name = "POSITION")
 	@JoinColumn(name = JOIN_COLUMN, nullable = false)
 	private final List<StandardMatrix> standardMatrices = newArrayList();
@@ -93,16 +91,14 @@ public class OtuSet
 
 	@OneToMany(
 			cascade = CascadeType.ALL,
-			orphanRemoval = true,
-			targetEntity = DnaMatrix.class)
+			orphanRemoval = true)
 	@OrderColumn(name = "POSITION")
 	@JoinColumn(name = JOIN_COLUMN, nullable = false)
 	private final List<DnaMatrix> dnaMatrices = newArrayList();
 
 	@OneToMany(
 			cascade = CascadeType.ALL,
-			orphanRemoval = true,
-			targetEntity = DnaSequenceSet.class)
+			orphanRemoval = true)
 	@OrderColumn(name = "POSITION")
 	@JoinColumn(name = JOIN_COLUMN, nullable = false)
 	private final List<DnaSequenceSet> dnaSequenceSets = newArrayList();
@@ -129,13 +125,12 @@ public class OtuSet
 	@JoinColumn(name = Study.JOIN_COLUMN, insertable = false,
 				updatable = false)
 	@Nullable
-	private IStudy parent;
+	private Study parent;
 
 	/** The tree sets that reference this OTU set. */
 	@OneToMany(
 			cascade = CascadeType.ALL,
-			orphanRemoval = true,
-			targetEntity = TreeSet.class)
+			orphanRemoval = true)
 	@OrderColumn(name = "POSITION")
 	@JoinColumn(name = JOIN_COLUMN, nullable = false)
 	private final List<TreeSet> treeSets = newArrayList();
@@ -165,7 +160,7 @@ public class OtuSet
 	 * @throws IllegalArgumentException if this otu set already contains the
 	 *             matrix
 	 */
-	public void addDNAMatrix(final DnaMatrix matrix) {
+	public void addDnaMatrix(final DnaMatrix matrix) {
 		checkNotNull(matrix);
 		checkArgument(
 				!dnaMatrices.contains(matrix),
@@ -352,9 +347,9 @@ public class OtuSet
 	 * @param parent see {@code Unmarshaller}
 	 */
 	public void afterUnmarshal(
-			@Nullable final Unmarshaller u,
+			@CheckForNull final Unmarshaller u,
 			final Object parent) {
-		this.parent = (IStudy) parent;
+		this.parent = (Study) parent;
 	}
 
 	@VisibleForTesting
@@ -431,7 +426,7 @@ public class OtuSet
 	}
 
 	/** {@inheritDoc} */
-	public IStudy getParent() {
+	public Study getParent() {
 		return parent;
 	}
 
@@ -551,7 +546,7 @@ public class OtuSet
 
 	@Override
 	public void setInNeedOfNewVersion() {
-		final IStudy study = getParent();
+		final Study study = getParent();
 		if (study != null) {
 			study.setInNeedOfNewVersion();
 		}
@@ -590,11 +585,11 @@ public class OtuSet
 			return Collections.emptyList();
 		}
 
-		final List<Otu> removedOTUs = newArrayList(getOtus());
-		removedOTUs.removeAll(otus);
+		final List<Otu> removedOtus = newArrayList(getOtus());
+		removedOtus.removeAll(otus);
 
-		for (final Otu removedOTU : removedOTUs) {
-			removedOTU.setParent(null);
+		for (final Otu removedOtu : removedOtus) {
+			removedOtu.setParent(null);
 		}
 
 		getOTUsModifiable().clear();
@@ -606,11 +601,11 @@ public class OtuSet
 
 		setInNeedOfNewVersion();
 
-		return removedOTUs;
+		return removedOtus;
 	}
 
 	/** {@inheritDoc} */
-	public void setParent(@Nullable final IStudy parent) {
+	public void setParent(@CheckForNull final Study parent) {
 		this.parent = parent;
 	}
 

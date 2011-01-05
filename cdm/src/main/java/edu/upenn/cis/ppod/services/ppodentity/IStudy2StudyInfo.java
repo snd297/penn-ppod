@@ -17,7 +17,7 @@ package edu.upenn.cis.ppod.services.ppodentity;
 
 import com.google.inject.ImplementedBy;
 
-import edu.upenn.cis.ppod.imodel.IStudy;
+import edu.upenn.cis.ppod.model.Study;
 
 /**
  * Distill a {@link Study} to a {@link StudyInfo}.
@@ -34,6 +34,6 @@ public interface IStudy2StudyInfo {
 	 * 
 	 * @return output
 	 */
-	StudyInfo toStudyInfo(IStudy study);
+	StudyInfo toStudyInfo(Study study);
 
 }
