@@ -61,8 +61,7 @@ public class StandardMatrix
 
 	@OneToMany(
 			cascade = CascadeType.ALL,
-			orphanRemoval = true,
-			targetEntity = StandardCharacter.class)
+			orphanRemoval = true)
 	@OrderColumn(name = "POSITION")
 	@JoinColumn(name = JOIN_COLUMN, nullable = false)
 	private final List<StandardCharacter> characters = newArrayList();

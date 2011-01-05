@@ -180,11 +180,10 @@ public class Attachment extends UuPPodEntity {
 	public static final String TYPE_COLUMN = "TYPE";
 
 	/** Object to which this attachment is attached. */
-	@CheckForNull
-	@ManyToOne(fetch = FetchType.LAZY, optional = false,
-			targetEntity = PPodEntity.class)
+	@Nullable
+	@ManyToOne(fetch = FetchType.LAZY, optional = false)
 	@JoinColumn(name = PPodEntity.JOIN_COLUMN)
-	private IPPodEntity attachee;
+	private PPodEntity attachee;
 
 	@CheckForNull
 	@Lob
@@ -203,8 +202,7 @@ public class Attachment extends UuPPodEntity {
 	/** Like a variable typeLabel. */
 	@ManyToOne(
 			fetch = FetchType.LAZY,
-			optional = false,
-			targetEntity = AttachmentType.class)
+			optional = false)
 	@JoinColumn(name = AttachmentType.JOIN_COLUMN)
 	@CheckForNull
 	private AttachmentType type;
@@ -231,7 +229,7 @@ public class Attachment extends UuPPodEntity {
 	public void afterUnmarshal(
 			@CheckForNull final Unmarshaller u,
 			final Object parent) {
-		attachee = (IPPodEntity) parent;
+		attachee = (PPodEntity) parent;
 	}
 
 	/**
@@ -298,7 +296,7 @@ public class Attachment extends UuPPodEntity {
 	}
 
 	/** {@inheritDoc} */
-	public void setAttachee(@CheckForNull final IPPodEntity attachee) {
+	public void setAttachee(@CheckForNull final PPodEntity attachee) {
 		this.attachee = attachee;
 	}
 

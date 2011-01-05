@@ -102,8 +102,7 @@ public class DnaSequences
 		return sequences.getParent();
 	}
 
-	@OneToMany(cascade = CascadeType.ALL, orphanRemoval = true,
-			targetEntity = DnaSequence.class)
+	@OneToMany(cascade = CascadeType.ALL, orphanRemoval = true)
 	@JoinTable(inverseJoinColumns = @JoinColumn(name = DnaSequence.JOIN_COLUMN))
 	@MapKeyJoinColumn(name = Otu.JOIN_COLUMN)
 	@MapKeyClass(Otu.class)

@@ -54,8 +54,7 @@ public class StandardRow
 	@OrderColumn(name = "POSITION")
 	private final List<StandardCell> cells = newArrayList();
 
-	@ManyToOne(fetch = FetchType.LAZY, optional = false,
-			targetEntity = StandardMatrix.class)
+	@ManyToOne(fetch = FetchType.LAZY, optional = false)
 	@JoinColumn(name = StandardMatrix.JOIN_COLUMN)
 	private StandardMatrix parent;
 

@@ -81,8 +81,7 @@ public class DnaSequence
 
 	@ManyToOne(
 			fetch = FetchType.LAZY,
-			optional = false,
-			targetEntity = DnaSequenceSet.class)
+			optional = false)
 	@Nullable
 	private DnaSequenceSet parent;
 
