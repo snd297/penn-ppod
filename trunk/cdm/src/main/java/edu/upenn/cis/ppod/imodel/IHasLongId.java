@@ -22,7 +22,7 @@ import javax.annotation.Nullable;
  * 
  * @author Sam Donnelly
  */
-public interface IPersistentObject {
+public interface IHasLongId {
 
 	/**
 	 * The surrogate key of the entity

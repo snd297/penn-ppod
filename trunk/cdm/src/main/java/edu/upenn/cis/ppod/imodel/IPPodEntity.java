@@ -16,6 +16,6 @@
 package edu.upenn.cis.ppod.imodel;
 
 public interface IPPodEntity
-		extends IAttachee, IPersistentObject, IVersioned, IVisitable {
+		extends IAttachee, IHasLongId, IVersioned, IVisitable {
 
 }

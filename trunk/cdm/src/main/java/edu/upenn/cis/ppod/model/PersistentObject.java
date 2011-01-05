@@ -32,7 +32,7 @@ import javax.xml.bind.annotation.XmlAttribute;
 import com.google.common.annotations.VisibleForTesting;
 
 import edu.umd.cs.findbugs.annotations.CheckForNull;
-import edu.upenn.cis.ppod.imodel.IPersistentObject;
+import edu.upenn.cis.ppod.imodel.IHasLongId;
 
 /**
  * Base class for {@code edu.upenn.cis.ppod.model} (and subpackages) entities.
@@ -41,7 +41,7 @@ import edu.upenn.cis.ppod.imodel.IPersistentObject;
  */
 @XmlAccessorType(XmlAccessType.NONE)
 @MappedSuperclass
-public abstract class PersistentObject implements IPersistentObject {
+public abstract class PersistentObject implements IHasLongId {
 
 	public static final String ID_COLUMN = "ID";
 

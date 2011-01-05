@@ -17,17 +17,17 @@ package edu.upenn.cis.ppod.createorupdate;
 
 import com.google.inject.ImplementedBy;
 
-import edu.upenn.cis.ppod.imodel.IDnaSequenceSet;
+import edu.upenn.cis.ppod.model.DnaSequenceSet;
 
 /**
  * Merges the state of one sequence set onto another.
  * 
  * @author Sam Donnelly
  */
-@ImplementedBy(MergeDNASequenceSets.class)
+@ImplementedBy(MergeDnaSequenceSets.class)
 public interface IMergeDNASequenceSets {
 
-	void mergeSequenceSets(final IDnaSequenceSet targetSequenceSet,
-			final IDnaSequenceSet sourceSequenceSet);
+	void mergeSequenceSets(final DnaSequenceSet targetSequenceSet,
+			final DnaSequenceSet sourceSequenceSet);
 
 }

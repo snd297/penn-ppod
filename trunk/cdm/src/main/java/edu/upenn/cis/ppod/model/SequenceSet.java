@@ -163,8 +163,6 @@ public abstract class SequenceSet<S extends ISequence<?>>
 	public abstract Map<Otu, S> getSequences();
 
 	/**
-	 * {@inheritDoc}
-	 * 
 	 * @param otu
 	 * @param sequence
 	 * 
@@ -185,7 +183,6 @@ public abstract class SequenceSet<S extends ISequence<?>>
 		super.setInNeedOfNewVersion();
 	}
 
-	/** {@inheritDoc} */
 	public void setLabel(final String label) {
 		checkNotNull(label);
 		if (label.equals(getLabel())) {

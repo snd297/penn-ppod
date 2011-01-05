@@ -23,24 +23,24 @@ import java.util.Map;
 import com.google.common.collect.ImmutableMap;
 import com.google.inject.Inject;
 
-import edu.upenn.cis.ppod.imodel.IDnaSequence;
-import edu.upenn.cis.ppod.imodel.IDnaSequenceSet;
 import edu.upenn.cis.ppod.imodel.INewVersionInfo;
+import edu.upenn.cis.ppod.model.DnaSequence;
+import edu.upenn.cis.ppod.model.DnaSequenceSet;
 import edu.upenn.cis.ppod.model.ModelFactory;
 import edu.upenn.cis.ppod.model.Otu;
 
-class MergeDNASequenceSets implements IMergeDNASequenceSets {
+class MergeDnaSequenceSets implements IMergeDNASequenceSets {
 
 	private final INewVersionInfo newVersionInfo;
 
 	@Inject
-	MergeDNASequenceSets(final INewVersionInfo newVersionInfo) {
+	MergeDnaSequenceSets(final INewVersionInfo newVersionInfo) {
 		this.newVersionInfo = newVersionInfo;
 	}
 
 	public void mergeSequenceSets(
-			final IDnaSequenceSet targSeqSet,
-			final IDnaSequenceSet srcSeqSet) {
+			final DnaSequenceSet targSeqSet,
+			final DnaSequenceSet srcSeqSet) {
 		checkNotNull(targSeqSet);
 		checkArgument(
 				targSeqSet.getParent() != null,
@@ -59,7 +59,7 @@ class MergeDNASequenceSets implements IMergeDNASequenceSets {
 		final Integer srcSeqSetLengths =
 				srcSeqSet.getSequenceLengths();
 
-		Map<Otu, IDnaSequence> targOTUsToSeqs;
+		Map<Otu, DnaSequence> targOTUsToSeqs;
 
 		if (targSeqSetLengths == null ||
 				targSeqSetLengths.equals(srcSeqSetLengths)) {
@@ -84,12 +84,12 @@ class MergeDNASequenceSets implements IMergeDNASequenceSets {
 							.getOtus()
 							.get(i);
 
-			final IDnaSequence srcSeq = srcSeqSet.getSequence(sourceOTU);
+			final DnaSequence srcSeq = srcSeqSet.getSequence(sourceOTU);
 			final Otu targOTU = targSeqSet.getParent()
 							.getOtus()
 							.get(i);
 
-			IDnaSequence targSeq;
+			DnaSequence targSeq;
 
 			if (null == (targSeq =
 					targOTUsToSeqs.get(targOTU))) {

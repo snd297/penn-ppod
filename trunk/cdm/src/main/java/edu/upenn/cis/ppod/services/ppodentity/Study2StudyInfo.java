@@ -16,13 +16,13 @@
 package edu.upenn.cis.ppod.services.ppodentity;
 
 import static com.google.common.base.Preconditions.checkNotNull;
-import edu.upenn.cis.ppod.imodel.IDnaSequence;
-import edu.upenn.cis.ppod.imodel.IDnaSequenceSet;
 import edu.upenn.cis.ppod.imodel.IStudy;
 import edu.upenn.cis.ppod.imodel.IVersionInfo;
 import edu.upenn.cis.ppod.model.DnaCell;
 import edu.upenn.cis.ppod.model.DnaMatrix;
 import edu.upenn.cis.ppod.model.DnaRow;
+import edu.upenn.cis.ppod.model.DnaSequence;
+import edu.upenn.cis.ppod.model.DnaSequenceSet;
 import edu.upenn.cis.ppod.model.Otu;
 import edu.upenn.cis.ppod.model.OtuSet;
 import edu.upenn.cis.ppod.model.StandardCell;
@@ -164,7 +164,7 @@ public final class Study2StudyInfo implements IStudy2StudyInfo {
 
 			// TODO: this should be genericized when we support other kinds of
 			// MolecularSequenceSets
-			for (final IDnaSequenceSet dnaSequenceSet : otuSet
+			for (final DnaSequenceSet dnaSequenceSet : otuSet
 					.getDNASequenceSets()) {
 				final SequenceSetInfo sequenceSetInfo =
 						new SequenceSetInfo();
@@ -174,7 +174,7 @@ public final class Study2StudyInfo implements IStudy2StudyInfo {
 						.getVersionInfo().getVersion());
 				sequenceSetInfo.setEntityId(dnaSequenceSet.getId());
 				for (final Otu otu : otuSet.getOtus()) {
-					final IDnaSequence dnaSequence =
+					final DnaSequence dnaSequence =
 							dnaSequenceSet.getSequence(otu);
 					sequenceSetInfo
 							.getSequenceVersionsByOTUDocId()
