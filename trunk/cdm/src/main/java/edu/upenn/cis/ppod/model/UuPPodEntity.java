@@ -25,7 +25,7 @@ import javax.persistence.Column;
 import javax.persistence.MappedSuperclass;
 import javax.xml.bind.annotation.XmlAttribute;
 
-import edu.upenn.cis.ppod.imodel.IHasPPodId;
+import edu.upenn.cis.ppod.imodel.IUuPPodEntity;
 
 /**
  * A universally unique pPOD entity.
@@ -33,7 +33,7 @@ import edu.upenn.cis.ppod.imodel.IHasPPodId;
  * @author Sam Donnelly
  */
 @MappedSuperclass
-public abstract class UuPPodEntity extends PPodEntity implements IHasPPodId {
+public abstract class UuPPodEntity extends PPodEntity implements IUuPPodEntity {
 
 	final static String PPOD_ID_COLUMN = "PPOD_ID";
 	final static int PPOD_ID_COLUMN_LENGTH = 36;

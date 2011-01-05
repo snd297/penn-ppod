@@ -33,8 +33,6 @@ import javax.xml.bind.Unmarshaller;
 import javax.xml.bind.annotation.XmlAttribute;
 
 import edu.upenn.cis.ppod.imodel.IOtuKeyedMap;
-import edu.upenn.cis.ppod.imodel.ISequence;
-import edu.upenn.cis.ppod.imodel.ISequenceSet;
 import edu.upenn.cis.ppod.util.IVisitor;
 
 /**
@@ -45,9 +43,8 @@ import edu.upenn.cis.ppod.util.IVisitor;
  * @param <S> the type of {@code Sequence} this set contains
  */
 @MappedSuperclass
-public abstract class SequenceSet<S extends ISequence<?>>
-		extends UuPPodEntityWithDocId
-		implements ISequenceSet<S> {
+public abstract class SequenceSet<S extends Sequence<?>>
+		extends UuPPodEntityWithDocId {
 
 	@Nullable
 	@Column(name = "LABEL", nullable = false)

@@ -34,8 +34,6 @@ import edu.upenn.cis.ppod.imodel.IAttachmentNamespace;
 import edu.upenn.cis.ppod.imodel.IAttachmentType;
 import edu.upenn.cis.ppod.imodel.ILabeled;
 import edu.upenn.cis.ppod.imodel.IPPodEntity;
-import edu.upenn.cis.ppod.imodel.ISequence;
-import edu.upenn.cis.ppod.imodel.ISequenceSet;
 
 /**
  * For asserting that various {@code edu.upenn.cis.ppod.model} elements are the
@@ -45,9 +43,9 @@ import edu.upenn.cis.ppod.imodel.ISequenceSet;
  */
 public class ModelAssert {
 
-	public static <S extends ISequence<?>> void assertEqualsSequenceSets(
-			final ISequenceSet<S> actualSeqSet,
-			final ISequenceSet<S> expectedSeqSet) {
+	public static <S extends Sequence<?>> void assertEqualsSequenceSets(
+			final SequenceSet<S> actualSeqSet,
+			final SequenceSet<S> expectedSeqSet) {
 		assertEquals(actualSeqSet.getLabel(), actualSeqSet.getLabel());
 		assertEquals(
 				actualSeqSet.getSequences().size(),
@@ -73,8 +71,8 @@ public class ModelAssert {
 	}
 
 	public static void assertEqualsSequences(
-			final ISequence<?> actualSeq,
-			final ISequence<?> expectedSeq) {
+			final Sequence<?> actualSeq,
+			final Sequence<?> expectedSeq) {
 		assertEquals(actualSeq.getSequence(), expectedSeq.getSequence());
 		assertEquals(actualSeq.getAccession(), expectedSeq.getAccession());
 		assertEquals(actualSeq.getDescription(), expectedSeq.getDescription());

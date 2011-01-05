@@ -29,8 +29,6 @@ import javax.persistence.Lob;
 import javax.persistence.OneToOne;
 import javax.persistence.Table;
 
-import edu.upenn.cis.ppod.imodel.IDnaSequence;
-
 /**
  * @author Sam Donnelly
  */
@@ -45,7 +43,7 @@ public class Chromatogram extends UuPPodEntity {
 
 	@OneToOne(fetch = FetchType.LAZY, optional = true)
 	@CheckForNull
-	private IDnaSequence sequence;
+	private DnaSequence sequence;
 
 	@Nullable
 	public byte[] getChromatogram() {
@@ -64,7 +62,7 @@ public class Chromatogram extends UuPPodEntity {
 	 * @return the {@code DNASequence} that this points to
 	 */
 	@CheckForNull
-	public IDnaSequence getSequence() {
+	public DnaSequence getSequence() {
 		return sequence;
 	}
 
@@ -84,7 +82,7 @@ public class Chromatogram extends UuPPodEntity {
 		return this;
 	}
 
-	public Chromatogram setSequence(@CheckForNull final IDnaSequence sequence) {
+	public Chromatogram setSequence(@CheckForNull final DnaSequence sequence) {
 		if (equal(sequence, this.sequence)) {
 			return this;
 		}
