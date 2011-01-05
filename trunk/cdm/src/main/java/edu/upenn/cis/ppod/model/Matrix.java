@@ -69,7 +69,7 @@ public abstract class Matrix<R extends Row<C, ?>, C extends Cell<?, ?>>
 	public static final String LABEL_COLUMN = "LABEL";
 
 	/** The pPod versions of the columns. */
-	@ManyToMany(targetEntity = VersionInfo.class)
+	@ManyToMany
 	@JoinTable(inverseJoinColumns =
 		{ @JoinColumn(name = VersionInfo.JOIN_COLUMN) })
 	@OrderColumn(name = VersionInfo.TABLE + "_POSITION")

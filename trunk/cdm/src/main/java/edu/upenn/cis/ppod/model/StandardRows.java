@@ -118,8 +118,7 @@ public class StandardRows
 			CascadeType.REMOVE,
 			CascadeType.DETACH,
 			CascadeType.REFRESH },
-			orphanRemoval = true,
-			targetEntity = StandardRow.class)
+			orphanRemoval = true)
 	@JoinTable(inverseJoinColumns = @JoinColumn(name = StandardRow.JOIN_COLUMN))
 	@MapKeyJoinColumn(name = Otu.JOIN_COLUMN)
 	public Map<Otu, StandardRow> getValues() {

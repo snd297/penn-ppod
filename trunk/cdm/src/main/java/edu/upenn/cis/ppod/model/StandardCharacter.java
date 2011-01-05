@@ -82,7 +82,7 @@ public class StandardCharacter extends UuPPodEntityWithDocId {
 	/**
 	 * The matrix that owns this {@code StandardCharacter}.
 	 */
-	@ManyToOne(optional = false, targetEntity = StandardMatrix.class)
+	@ManyToOne(optional = false)
 	@JoinColumn(
 			name = StandardMatrix.JOIN_COLUMN,
 			insertable = false,
@@ -100,7 +100,7 @@ public class StandardCharacter extends UuPPodEntityWithDocId {
 	 * 2, and 3.
 	 */
 	@OneToMany(mappedBy = "parent", cascade = CascadeType.ALL,
-			orphanRemoval = true, targetEntity = StandardState.class)
+			orphanRemoval = true)
 	@MapKey(name = "stateNumber")
 	private final Map<Integer, StandardState> states = newHashMap();
 

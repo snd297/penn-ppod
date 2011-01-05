@@ -114,8 +114,7 @@ public class DnaRows implements IOtuKeyedMap<DnaRow> {
 			CascadeType.REMOVE,
 			CascadeType.DETACH,
 			CascadeType.REFRESH },
-			orphanRemoval = true,
-			targetEntity = DnaRow.class)
+			orphanRemoval = true)
 	@JoinTable(inverseJoinColumns = @JoinColumn(name = DnaRow.JOIN_COLUMN))
 	@MapKeyJoinColumn(name = Otu.JOIN_COLUMN)
 	public Map<Otu, DnaRow> getValues() {

@@ -75,7 +75,7 @@ public abstract class PPodEntity
 	public static final String JOIN_COLUMN = TABLE + "_ID";
 
 	@OneToMany(mappedBy = "attachee", cascade = CascadeType.ALL,
-			orphanRemoval = true, targetEntity = Attachment.class)
+			orphanRemoval = true)
 	@CheckForNull
 	private Set<Attachment> attachments;
 

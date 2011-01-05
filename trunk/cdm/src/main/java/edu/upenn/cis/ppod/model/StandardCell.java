@@ -79,7 +79,7 @@ public class StandardCell
 	 * <p>
 	 * Will be {@code null} if type is not {@link Type#SINGLE}.
 	 */
-	@ManyToOne(fetch = FetchType.LAZY, targetEntity = StandardState.class)
+	@ManyToOne(fetch = FetchType.LAZY)
 	@JoinColumn(name = StandardState.JOIN_COLUMN)
 	@Nullable
 	private StandardState element;
@@ -90,7 +90,7 @@ public class StandardCell
 	 * Will be {@code null} if type is not {@link Type#POLYMORPHIC} or
 	 * {@link Type#UNCERTAIN}.
 	 */
-	@ManyToMany(targetEntity = StandardState.class)
+	@ManyToMany
 	@JoinTable(inverseJoinColumns = @JoinColumn(
 			name = StandardState.JOIN_COLUMN))
 	@Nullable
@@ -100,8 +100,7 @@ public class StandardCell
 	 * The {@code CharacterStateRow} to which this {@code CharacterStateCell}
 	 * belongs.
 	 */
-	@ManyToOne(fetch = FetchType.LAZY, optional = false,
-			targetEntity = StandardRow.class)
+	@ManyToOne(fetch = FetchType.LAZY, optional = false)
 	@JoinColumn(name = StandardRow.JOIN_COLUMN)
 	@Nullable
 	private StandardRow parent;

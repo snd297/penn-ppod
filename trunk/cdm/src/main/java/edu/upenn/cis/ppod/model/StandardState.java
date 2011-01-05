@@ -93,8 +93,7 @@ public class StandardState extends PPodEntityWDocId {
 	/**
 	 * The {@code Character} of which this is a state.
 	 */
-	@ManyToOne(fetch = FetchType.LAZY, optional = false,
-			targetEntity = StandardCharacter.class)
+	@ManyToOne(fetch = FetchType.LAZY, optional = false)
 	@JoinColumn(name = StandardCharacter.JOIN_COLUMN)
 	@Nullable
 	private StandardCharacter parent;
