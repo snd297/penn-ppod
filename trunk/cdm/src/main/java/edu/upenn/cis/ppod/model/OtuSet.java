@@ -241,7 +241,7 @@ public class OtuSet
 	 * 
 	 * @param otu see description
 	 */
-	public void addOTU(final Otu otu) {
+	public void addOtu(final Otu otu) {
 		checkNotNull(otu);
 		addOTUWithoutSetOTUsOnChildren(otu);
 		setParentOnChildren();

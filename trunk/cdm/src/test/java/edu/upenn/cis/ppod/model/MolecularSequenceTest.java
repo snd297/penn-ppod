@@ -82,7 +82,7 @@ public class MolecularSequenceTest {
 		final DnaSequence sequence = new DnaSequence();
 		final OtuSet otuSet = new OtuSet();
 		final Otu otu0 = new Otu();
-		otuSet.addOTU(otu0);
+		otuSet.addOtu(otu0);
 
 		final SequenceSet<DnaSequence> sequenceSet = new DnaSequenceSet();
 

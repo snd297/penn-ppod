@@ -61,9 +61,9 @@ public class OTUSetTest {
 
 		final OtuSet otuSet = new OtuSet();
 
-		otuSet.addOTU(new Otu().setLabel("otu-0"));
-		otuSet.addOTU(new Otu().setLabel("otu-1"));
-		otuSet.addOTU(new Otu().setLabel("otu-2"));
+		otuSet.addOtu(new Otu().setLabel("otu-0"));
+		otuSet.addOtu(new Otu().setLabel("otu-1"));
+		otuSet.addOtu(new Otu().setLabel("otu-2"));
 
 		otuSet.addStandardMatrix(new StandardMatrix());
 		otuSet.addStandardMatrix(new StandardMatrix());
@@ -199,7 +199,7 @@ public class OTUSetTest {
 		standardMatrix.unsetInNeedOfNewVersion();
 		dnaMatrix.unsetInNeedOfNewVersion();
 		dnaSequenceSet.unsetInNeedOfNewVersion();
-		otuSet.addOTU(otu0);
+		otuSet.addOtu(otu0);
 		assertTrue(otuSet.isInNeedOfNewVersion());
 		assertTrue(standardMatrix.isInNeedOfNewVersion());
 		assertTrue(dnaMatrix.isInNeedOfNewVersion());
@@ -209,7 +209,7 @@ public class OTUSetTest {
 		standardMatrix.unsetInNeedOfNewVersion();
 		dnaMatrix.unsetInNeedOfNewVersion();
 		dnaSequenceSet.unsetInNeedOfNewVersion();
-		otuSet.addOTU(otu1);
+		otuSet.addOtu(otu1);
 		assertTrue(otuSet.isInNeedOfNewVersion());
 		assertTrue(standardMatrix.isInNeedOfNewVersion());
 		assertTrue(dnaMatrix.isInNeedOfNewVersion());
@@ -219,7 +219,7 @@ public class OTUSetTest {
 		standardMatrix.unsetInNeedOfNewVersion();
 		dnaMatrix.unsetInNeedOfNewVersion();
 		dnaSequenceSet.unsetInNeedOfNewVersion();
-		otuSet.addOTU(otu2);
+		otuSet.addOtu(otu2);
 		assertTrue(otuSet.isInNeedOfNewVersion());
 		assertTrue(standardMatrix.isInNeedOfNewVersion());
 		assertTrue(dnaMatrix.isInNeedOfNewVersion());

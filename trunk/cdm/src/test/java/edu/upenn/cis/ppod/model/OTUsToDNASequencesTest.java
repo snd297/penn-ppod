@@ -39,7 +39,7 @@ public class OTUsToDNASequencesTest {
 
 		final OtuSet otuSet = new OtuSet();
 		final Otu otu = new Otu();
-		otuSet.addOTU(otu);
+		otuSet.addOtu(otu);
 		final DnaSequence sequence = new DnaSequence();
 		final DnaSequenceSet sequenceSet = new DnaSequenceSet();
 		otuSet.addDNASequenceSet(sequenceSet);
@@ -57,7 +57,7 @@ public class OTUsToDNASequencesTest {
 	public void putTestReplaceASequence() {
 		final OtuSet otuSet = new OtuSet();
 		final Otu otu = new Otu();
-		otuSet.addOTU(otu);
+		otuSet.addOtu(otu);
 		final DnaSequence sequence = new DnaSequence();
 		final DnaSequenceSet sequenceSet = new DnaSequenceSet();
 		otuSet.addDNASequenceSet(sequenceSet);

@@ -49,9 +49,9 @@ public class OTUKeyedMapTest {
 		final Otu otu2 = new Otu();
 		otu2.setLabel("otu2");
 
-		otuSet.addOTU(otu0);
-		otuSet.addOTU(otu1);
-		otuSet.addOTU(otu2);
+		otuSet.addOtu(otu0);
+		otuSet.addOtu(otu1);
+		otuSet.addOtu(otu2);
 
 		final DnaRow row0 = new DnaRow();
 		final DnaRow row1 = new DnaRow();
@@ -104,9 +104,9 @@ public class OTUKeyedMapTest {
 		final Otu otu2 = new Otu();
 		otu2.setLabel("otu2");
 
-		otuSet.addOTU(otu0);
-		otuSet.addOTU(otu1);
-		otuSet.addOTU(otu2);
+		otuSet.addOtu(otu0);
+		otuSet.addOtu(otu1);
+		otuSet.addOtu(otu2);
 
 		final DnaRow row0 = new DnaRow();
 		final DnaRow row2 = new DnaRow();
