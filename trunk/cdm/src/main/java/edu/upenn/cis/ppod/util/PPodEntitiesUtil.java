@@ -18,9 +18,9 @@ package edu.upenn.cis.ppod.util;
 import java.util.Set;
 
 import edu.upenn.cis.ppod.imodel.IAttachee;
-import edu.upenn.cis.ppod.imodel.IAttachment;
-import edu.upenn.cis.ppod.imodel.IAttachmentNamespace;
-import edu.upenn.cis.ppod.imodel.IAttachmentType;
+import edu.upenn.cis.ppod.model.Attachment;
+import edu.upenn.cis.ppod.model.AttachmentNamespace;
+import edu.upenn.cis.ppod.model.AttachmentType;
 import edu.upenn.cis.ppod.model.Otu;
 import edu.upenn.cis.ppod.model.OtuSet;
 import edu.upenn.cis.ppod.model.StandardCharacter;
@@ -42,10 +42,10 @@ public class PPodEntitiesUtil {
 	 * @param attachments to which to add the extracted attachments
 	 */
 	public static void extractAttachmentInfoFromAttachee(
-			final Set<? super IAttachmentNamespace> attachmentNamespaces,
-			final Set<? super IAttachmentType> attachmentTypes,
+			final Set<? super AttachmentNamespace> attachmentNamespaces,
+			final Set<? super AttachmentType> attachmentTypes,
 			final IAttachee attachee) {
-		for (final IAttachment attachment : attachee.getAttachments()) {
+		for (final Attachment attachment : attachee.getAttachments()) {
 			attachmentNamespaces.add(attachment.getType().getNamespace());
 			attachmentTypes.add(attachment.getType());
 			extractAttachmentInfoFromAttachee(attachmentNamespaces,
@@ -54,8 +54,8 @@ public class PPodEntitiesUtil {
 	}
 
 	public static void extractAttachmentInfoFromPPodEntities(
-			final Set<? super IAttachmentNamespace> studyWideAttachmentNamespaces,
-			final Set<? super IAttachmentType> studyWideAttachmentTypes,
+			final Set<? super AttachmentNamespace> studyWideAttachmentNamespaces,
+			final Set<? super AttachmentType> studyWideAttachmentTypes,
 			final IOTUSets otuSetCentricEntities) {
 		for (final OtuSet otuSet : otuSetCentricEntities.getOTUSets()) {
 			extractAttachmentInfoFromAttachee(

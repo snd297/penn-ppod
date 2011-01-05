@@ -15,7 +15,7 @@
  */
 package edu.upenn.cis.ppod.dao;
 
-import edu.upenn.cis.ppod.imodel.IAttachmentType;
+import edu.upenn.cis.ppod.model.AttachmentType;
 import edu.upenn.cis.ppod.thirdparty.dao.IDAO;
 
 /**
@@ -23,7 +23,7 @@ import edu.upenn.cis.ppod.thirdparty.dao.IDAO;
  * 
  * @author Sam Donnelly
  */
-public interface IAttachmentTypeDAO extends IDAO<IAttachmentType, Long> {
+public interface IAttachmentTypeDAO extends IDAO<AttachmentType, Long> {
 
 	/**
 	 * Get the attachment type with label {@code typeLabel} and in the given
@@ -34,7 +34,7 @@ public interface IAttachmentTypeDAO extends IDAO<IAttachmentType, Long> {
 	 * @return the attachment type with label {@code typeLabel} and in the given
 	 *         namespace
 	 */
-	IAttachmentType getTypeByNamespaceAndLabel(
+	AttachmentType getTypeByNamespaceAndLabel(
 			String namespaceLabel,
 			String typeLabel);
 

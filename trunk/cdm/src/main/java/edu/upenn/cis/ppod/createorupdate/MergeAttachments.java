@@ -26,9 +26,7 @@ import com.google.inject.Inject;
 
 import edu.upenn.cis.ppod.dao.IAttachmentNamespaceDAO;
 import edu.upenn.cis.ppod.dao.IAttachmentTypeDAO;
-import edu.upenn.cis.ppod.imodel.IAttachment;
-import edu.upenn.cis.ppod.imodel.IAttachmentNamespace;
-import edu.upenn.cis.ppod.imodel.IAttachmentType;
+import edu.upenn.cis.ppod.model.Attachment;
 import edu.upenn.cis.ppod.model.AttachmentNamespace;
 import edu.upenn.cis.ppod.model.AttachmentType;
 
@@ -42,9 +40,9 @@ class MergeAttachments implements IMergeAttachments {
 
 	// Temporary measure: both the the type and namespace should be passed in
 	// from caller (is that really true?)
-	private final Map<String, IAttachmentNamespace> labelsToNamespaces = newHashMap();
+	private final Map<String, AttachmentNamespace> labelsToNamespaces = newHashMap();
 
-	private final Map<IAttachmentNamespace, Map<String, IAttachmentType>> typesByNamespaceAndLabel =
+	private final Map<AttachmentNamespace, Map<String, AttachmentType>> typesByNamespaceAndLabel =
 			newHashMap();
 
 	@Inject
@@ -56,8 +54,8 @@ class MergeAttachments implements IMergeAttachments {
 	}
 
 	public void mergeAttachments(
-			final IAttachment targetAttachment,
-			final IAttachment sourceAttachment) {
+			final Attachment targetAttachment,
+			final Attachment sourceAttachment) {
 		checkNotNull(targetAttachment);
 		checkNotNull(sourceAttachment);
 		checkArgument(sourceAttachment.getType() != null,
@@ -70,7 +68,7 @@ class MergeAttachments implements IMergeAttachments {
 				sourceAttachment.getType().getNamespace().getLabel() != null,
 				"sourceAttachment.getType().getNamespace().getLabel() == null");
 
-		IAttachmentNamespace targetAttachmentNamespace =
+		AttachmentNamespace targetAttachmentNamespace =
 				labelsToNamespaces
 						.get(sourceAttachment
 								.getType()
@@ -99,10 +97,10 @@ class MergeAttachments implements IMergeAttachments {
 			typesByNamespaceAndLabel
 					.put(
 							targetAttachmentNamespace,
-							new HashMap<String, IAttachmentType>());
+							new HashMap<String, AttachmentType>());
 		}
 
-		IAttachmentType targetAttachmentType =
+		AttachmentType targetAttachmentType =
 				typesByNamespaceAndLabel
 						.get(targetAttachmentNamespace)
 						.get(sourceAttachment.getType().getLabel());

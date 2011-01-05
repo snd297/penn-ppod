@@ -16,6 +16,7 @@
 package edu.upenn.cis.ppod.model;
 
 import static com.google.common.base.Objects.equal;
+import static com.google.common.base.Preconditions.checkArgument;
 import static com.google.common.base.Preconditions.checkNotNull;
 
 import java.util.Arrays;
@@ -35,10 +36,12 @@ import javax.xml.bind.annotation.XmlElement;
 import javax.xml.bind.annotation.XmlIDREF;
 import javax.xml.bind.annotation.adapters.XmlAdapter;
 
+import com.google.common.base.Predicate;
+import com.google.inject.Inject;
+import com.google.inject.assistedinject.Assisted;
+
 import edu.umd.cs.findbugs.annotations.CheckForNull;
 import edu.umd.cs.findbugs.annotations.Nullable;
-import edu.upenn.cis.ppod.imodel.IAttachment;
-import edu.upenn.cis.ppod.imodel.IAttachmentType;
 import edu.upenn.cis.ppod.imodel.IPPodEntity;
 import edu.upenn.cis.ppod.util.IVisitor;
 
@@ -50,17 +53,118 @@ import edu.upenn.cis.ppod.util.IVisitor;
 @XmlAccessorType(XmlAccessType.NONE)
 @Entity
 @Table(name = Attachment.TABLE)
-public class Attachment extends UuPPodEntity implements IAttachment {
+public class Attachment extends UuPPodEntity {
 
-	public static class Adapter extends XmlAdapter<Attachment, IAttachment> {
+	final static class IsOfNamespace implements Predicate<Attachment> {
+
+		private final String namespaceLabel;
+
+		/**
+		 * @param namespaceLabel is the typeLabel of this namespaceLabel?
+		 */
+		@Inject
+		public IsOfNamespace(@Assisted final String namespaceLabel) {
+			checkNotNull(namespaceLabel);
+			this.namespaceLabel = namespaceLabel;
+		}
+
+		public boolean apply(final Attachment input) {
+			checkNotNull(input);
+			return namespaceLabel.equals(input.getType().getNamespace()
+						.getLabel());
+		}
+
+	}
+
+	/**
+	 * Is an attachment of a particular {@link AttachmentNamespace} and
+	 * {@link AttachmentType}?
+	 */
+	public final static class IsOfNamespaceAndType
+			implements Predicate<Attachment> {
+
+		private final String namespaceLabel;
+
+		private final String typeLabel;
+
+		/**
+		 * @param typeLabel is the attachment of this typeLabel?
+		 * @param namespaceLabel is the typeLabel of this namespaceLabel?
+		 */
+		public IsOfNamespaceAndType(final String namespaceLabel,
+				final String typeLabel) {
+			checkNotNull(namespaceLabel);
+			checkNotNull(typeLabel);
+			this.typeLabel = typeLabel;
+			this.namespaceLabel = namespaceLabel;
+		}
+
+		public boolean apply(final Attachment input) {
+			checkNotNull(input);
+			return namespaceLabel.equals(input.getType().getNamespace()
+					.getLabel())
+					&& typeLabel.equals(input.getType().getLabel());
+		}
+
+	}
+
+	public final static class IsOfNamespaceTypeLabelAndStringValue implements
+			Predicate<Attachment> {
+
+		private final String attachmentLabel;
+		private final String attachmentStringValue;
+		private final String namespaceLabel;
+		private final String typeLabel;
+
+		public IsOfNamespaceTypeLabelAndStringValue(final Attachment attachment) {
+			checkNotNull(attachment);
+			checkArgument(attachment.getType() != null,
+						"attachment.getType() == null");
+
+			checkArgument(attachment.getType().getNamespace() != null,
+						"attachment.getType().getNamespace() == null");
+
+			checkArgument(
+						attachment.getType().getNamespace().getLabel() != null,
+						"attachment's typeLabel's namespaceLabel has null attachmentLabel");
+
+			checkArgument(attachment.getType().getLabel() != null,
+						"attachment's typeLabel has null attachmentLabel");
+
+			final String attachmentLabel = attachment.getLabel();
+			checkArgument(attachmentLabel != null,
+						"attachment.getLabel() == null");
+
+			final String attachmentStringValue = attachment.getStringValue();
+
+			checkArgument(attachmentStringValue != null,
+						"attachment.getStringValue() == null");
+
+			this.namespaceLabel = attachment.getType().getNamespace()
+						.getLabel();
+			this.typeLabel = attachment.getType().getLabel();
+			this.attachmentLabel = attachmentLabel;
+			this.attachmentStringValue = attachmentStringValue;
+		}
+
+		public boolean apply(final Attachment input) {
+			return namespaceLabel.equals(input.getType().getNamespace()
+						.getLabel())
+						&& typeLabel.equals(input.getType().getLabel())
+						&& attachmentLabel.equals(input.getLabel())
+						&& attachmentStringValue.equals(input.getStringValue());
+		}
+	}
+
+	public static class Adapter extends XmlAdapter<Attachment, Attachment> {
 
 		@Override
-		public Attachment marshal(final IAttachment attachment) {
+		public Attachment marshal(final Attachment attachment) {
 			return (Attachment) attachment;
 		}
 
 		@Override
-		public IAttachment unmarshal(final Attachment attachment) {
+		public Attachment unmarshal(final Attachment attachment) {
 			return attachment;
 		}
 	}
@@ -103,7 +207,7 @@ public class Attachment extends UuPPodEntity implements IAttachment {
 			targetEntity = AttachmentType.class)
 	@JoinColumn(name = AttachmentType.JOIN_COLUMN)
 	@CheckForNull
-	private IAttachmentType type;
+	private AttachmentType type;
 
 	/** Default constructor for (at least) Hibernate. */
 	public Attachment() {}
@@ -189,7 +293,7 @@ public class Attachment extends UuPPodEntity implements IAttachment {
 	@XmlAttribute(name = "attachmentTypeDocId")
 	@XmlIDREF
 	@Nullable
-	public IAttachmentType getType() {
+	public AttachmentType getType() {
 		return type;
 	}
 
@@ -264,7 +368,7 @@ public class Attachment extends UuPPodEntity implements IAttachment {
 	 * 
 	 * @param type the type
 	 */
-	public void setType(final IAttachmentType type) {
+	public void setType(final AttachmentType type) {
 		checkNotNull(type);
 		if (type.equals(getType())) {
 

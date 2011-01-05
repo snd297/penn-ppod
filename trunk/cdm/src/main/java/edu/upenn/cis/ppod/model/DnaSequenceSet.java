@@ -28,7 +28,6 @@ import javax.persistence.Entity;
 import javax.persistence.Table;
 import javax.xml.bind.annotation.XmlElement;
 
-import edu.upenn.cis.ppod.imodel.IDependsOnParentOtus;
 import edu.upenn.cis.ppod.util.IVisitor;
 
 /**
@@ -39,8 +38,7 @@ import edu.upenn.cis.ppod.util.IVisitor;
 @Entity
 @Table(name = DnaSequenceSet.TABLE)
 public class DnaSequenceSet
-		extends SequenceSet<DnaSequence>
-		implements IDependsOnParentOtus {
+		extends SequenceSet<DnaSequence> {
 
 	/**
 	 * The name of the entity's table.
