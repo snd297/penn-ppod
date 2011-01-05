@@ -34,7 +34,6 @@ import org.testng.annotations.Test;
 import com.google.common.collect.ImmutableList;
 
 import edu.upenn.cis.ppod.TestGroupDefs;
-import edu.upenn.cis.ppod.imodel.IOtuSet;
 import edu.upenn.cis.ppod.imodel.IStandardRow;
 import edu.upenn.cis.ppod.imodel.IStandardState;
 import edu.upenn.cis.ppod.imodel.IVersionInfo;
@@ -48,7 +47,7 @@ import edu.upenn.cis.ppod.imodel.IVersionInfo;
 public class StandardMatrixTest {
 
 	@edu.umd.cs.findbugs.annotations.SuppressWarnings
-	private IOtuSet otuSet012;
+	private OtuSet otuSet012;
 	private Otu otu0;
 	private Otu otu1;
 	private Otu otu2;
@@ -117,7 +116,7 @@ public class StandardMatrixTest {
 		final ImmutableList<Otu> otus210 = ImmutableList.of(otu2, otu1, otu0);
 		matrix.getParent().setOTUs(otus210);
 
-		assertEquals(matrix.getParent().getOTUs(), otus210);
+		assertEquals(matrix.getParent().getOtus(), otus210);
 		assertEquals(matrix.getRows().size(), originalRowsSize);
 
 	}
@@ -129,7 +128,7 @@ public class StandardMatrixTest {
 
 		final ImmutableList<Otu> otus12 = ImmutableList.of(otu1, otu2);
 
-		assertEquals(matrix.getParent().getOTUs(), otus12);
+		assertEquals(matrix.getParent().getOtus(), otus12);
 		assertEquals(matrix.getRows().size(), otus12.size());
 	}
 

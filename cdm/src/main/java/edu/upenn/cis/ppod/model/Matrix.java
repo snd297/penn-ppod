@@ -45,9 +45,7 @@ import edu.umd.cs.findbugs.annotations.CheckForNull;
 import edu.umd.cs.findbugs.annotations.Nullable;
 import edu.upenn.cis.ppod.imodel.ICell;
 import edu.upenn.cis.ppod.imodel.IMatrix;
-import edu.upenn.cis.ppod.imodel.IOtu;
 import edu.upenn.cis.ppod.imodel.IOtuKeyedMap;
-import edu.upenn.cis.ppod.imodel.IOtuSet;
 import edu.upenn.cis.ppod.imodel.IRow;
 import edu.upenn.cis.ppod.imodel.IVersionInfo;
 import edu.upenn.cis.ppod.util.IVisitor;
@@ -97,12 +95,11 @@ public abstract class Matrix<R extends IRow<C, ?>, C extends ICell<?, ?>>
 	 * These are the <code>OTU</code>s whose data comprises this
 	 * {@code CharacterStateMatrix}.
 	 */
-	@ManyToOne(fetch = FetchType.LAZY, optional = false,
-			targetEntity = OtuSet.class)
+	@ManyToOne(fetch = FetchType.LAZY, optional = false)
 	@JoinColumn(name = OtuSet.JOIN_COLUMN, insertable = false,
 				updatable = false)
 	@Nullable
-	private IOtuSet parent;
+	private OtuSet parent;
 
 	/** Default constructor. */
 	Matrix() {}
@@ -143,7 +140,7 @@ public abstract class Matrix<R extends IRow<C, ?>, C extends ICell<?, ?>>
 	protected void afterUnmarshal(
 			@CheckForNull final Unmarshaller u,
 			final Object parent) {
-		this.parent = (IOtuSet) parent;
+		this.parent = (OtuSet) parent;
 	}
 
 	@Override
@@ -240,12 +237,12 @@ public abstract class Matrix<R extends IRow<C, ?>, C extends ICell<?, ?>>
 	 * 
 	 * @return this matrix's {@code OTUSet}
 	 */
-	public IOtuSet getParent() {
+	public OtuSet getParent() {
 		return parent;
 	}
 
 	/** {@inheritDoc} */
-	public Map<IOtu, R> getRows() {
+	public Map<Otu, R> getRows() {
 		return Collections
 				.unmodifiableMap(getOTUKeyedRows().getValues());
 	}
@@ -253,7 +250,7 @@ public abstract class Matrix<R extends IRow<C, ?>, C extends ICell<?, ?>>
 	/**
 	 * {@inheritDoc}
 	 */
-	public R putRow(final IOtu otu, final R row) {
+	public R putRow(final Otu otu, final R row) {
 		checkNotNull(otu);
 		checkNotNull(row);
 		return getOTUKeyedRows().put(otu, row);
@@ -344,7 +341,7 @@ public abstract class Matrix<R extends IRow<C, ?>, C extends ICell<?, ?>>
 
 	/** {@inheritDoc} */
 	public void setParent(
-			@Nullable final IOtuSet otuSet) {
+			@Nullable final OtuSet otuSet) {
 		checkState(
 				getOTUKeyedRows() != null,
 				"getOTUKeyedRows() returned null - has the conrete class been constructed correctly, w/ its OTU->X dependency?");

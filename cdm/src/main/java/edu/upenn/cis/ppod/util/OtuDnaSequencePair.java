@@ -18,7 +18,7 @@ package edu.upenn.cis.ppod.util;
 import javax.xml.bind.annotation.XmlElement;
 
 import edu.upenn.cis.ppod.imodel.IDnaSequence;
-import edu.upenn.cis.ppod.imodel.IOtu;
+import edu.upenn.cis.ppod.model.Otu;
 
 /**
  * @author Sam Donnelly
@@ -30,7 +30,7 @@ public class OtuDnaSequencePair extends OtuKeyedPair<IDnaSequence> {
 	 */
 	protected OtuDnaSequencePair() {}
 
-	public OtuDnaSequencePair(final IOtu first, final IDnaSequence second) {
+	public OtuDnaSequencePair(final Otu first, final IDnaSequence second) {
 		super(first, second);
 	}
 

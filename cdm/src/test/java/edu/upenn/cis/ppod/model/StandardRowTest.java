@@ -29,7 +29,6 @@ import org.testng.annotations.Test;
 import com.google.common.collect.ImmutableList;
 
 import edu.upenn.cis.ppod.TestGroupDefs;
-import edu.upenn.cis.ppod.imodel.IOtu;
 import edu.upenn.cis.ppod.imodel.IStandardCharacter;
 import edu.upenn.cis.ppod.imodel.IStandardRow;
 
@@ -42,7 +41,7 @@ import edu.upenn.cis.ppod.imodel.IStandardRow;
 @Test(groups = TestGroupDefs.FAST)
 public class StandardRowTest {
 
-	private List<IOtu> otus;
+	private List<Otu> otus;
 
 	private StandardMatrix matrix;
 
@@ -63,7 +62,7 @@ public class StandardRowTest {
 	public void addCellToMatrixWOneCharacter() {
 		final StandardCell cell = new StandardCell();
 		cell.setUnassigned();
-		matrix.getRows().get(matrix.getParent().getOTUs().get(0)).setCells(
+		matrix.getRows().get(matrix.getParent().getOtus().get(0)).setCells(
 				Arrays.asList(cell));
 
 		ModelAssert.assertEqualsStandardCells(cell, matrix.getRows().get(
@@ -75,7 +74,7 @@ public class StandardRowTest {
 		matrix = new StandardMatrix();
 		matrix.setParent(new OtuSet());
 		otus = newArrayList();
-		final IOtu otu0 = new Otu();
+		final Otu otu0 = new Otu();
 		otu0.setLabel("OTU-0");
 		otus.add(otu0);
 		matrix.getParent().setOTUs(newArrayList(otus.get(0)));
@@ -127,7 +126,7 @@ public class StandardRowTest {
 		final StandardCell cell = new StandardCell();
 		cell.setUnassigned();
 		matrix.getRows().get(
-				matrix.getParent().getOTUs().get(0))
+				matrix.getParent().getOtus().get(0))
 				.setCells(Arrays.asList(cell));
 	}
 
@@ -141,7 +140,7 @@ public class StandardRowTest {
 		final List<StandardCell> cells =
 				newArrayList(cell0, cell1);
 
-		matrix.getRows().get(matrix.getParent().getOTUs().get(0))
+		matrix.getRows().get(matrix.getParent().getOtus().get(0))
 				.setCells(cells);
 	}
 }

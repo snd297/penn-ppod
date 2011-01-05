@@ -34,8 +34,6 @@ import org.testng.annotations.Test;
 
 import edu.upenn.cis.ppod.TestGroupDefs;
 import edu.upenn.cis.ppod.imodel.ICell;
-import edu.upenn.cis.ppod.imodel.IOtu;
-import edu.upenn.cis.ppod.imodel.IOtuSet;
 import edu.upenn.cis.ppod.imodel.IStandardCell;
 import edu.upenn.cis.ppod.imodel.IStandardCharacter;
 import edu.upenn.cis.ppod.imodel.IStandardMatrix;
@@ -67,9 +65,9 @@ public class StandardCellTest {
 
 		matrix = new StandardMatrix();
 
-		final IOtuSet otuSet = new OtuSet();
+		final OtuSet otuSet = new OtuSet();
 
-		final IOtu otu0 = new Otu().setLabel("otu0");
+		final Otu otu0 = new Otu().setLabel("otu0");
 		otuSet.setOTUs(newArrayList(otu0));
 		matrix.setParent(otuSet);
 
@@ -78,7 +76,7 @@ public class StandardCellTest {
 		character0.setLabel("character0");
 		matrix.setCharacters(newArrayList(character0));
 		final IStandardRow row0 = new StandardRow();
-		matrix.putRow(matrix.getParent().getOTUs().get(0), row0);
+		matrix.putRow(matrix.getParent().getOtus().get(0), row0);
 
 		states = newHashSet();
 
@@ -98,7 +96,7 @@ public class StandardCellTest {
 		matrix.getRows()
 				.get(matrix
 						.getParent()
-						.getOTUs()
+						.getOtus()
 						.get(0))
 						.setCells(Arrays.asList(cell));
 		states.add(state00);
@@ -116,7 +114,7 @@ public class StandardCellTest {
 		matrix.getRows()
 				.get(matrix
 						.getParent()
-						.getOTUs()
+						.getOtus()
 						.get(0))
 						.setCells(Arrays.asList(cell));
 		states.add(state00);
@@ -133,7 +131,7 @@ public class StandardCellTest {
 	public void beforeMarshalSingle() {
 		matrix
 				.getRows()
-				.get(matrix.getParent().getOTUs().get(0))
+				.get(matrix.getParent().getOtus().get(0))
 				.setCells(Arrays.asList(cell));
 		states.add(state00);
 
@@ -162,7 +160,7 @@ public class StandardCellTest {
 	public void setPolymorphicElementsTooFewStates() {
 		matrix.getRows().get(
 				matrix.getParent()
-						.getOTUs()
+						.getOtus()
 						.get(0))
 				.setCells(
 						Arrays.asList(cell));
@@ -175,7 +173,7 @@ public class StandardCellTest {
 	@Test
 	public void setInapplcableWasSingle() {
 		matrix.getRows()
-				.get(matrix.getParent().getOTUs().get(0)).setCells(
+				.get(matrix.getParent().getOtus().get(0)).setCells(
 						Arrays.asList(cell));
 		cell.setSingleWithStateNo(state00.getStateNumber());
 		cell.setInapplicable();
@@ -189,7 +187,7 @@ public class StandardCellTest {
 	public void setInapplicableWasPolymorphic() {
 		matrix.getRows().get(
 				matrix.getParent()
-						.getOTUs()
+						.getOtus()
 						.get(0))
 				.setCells(
 						Arrays.asList(cell));
@@ -205,7 +203,7 @@ public class StandardCellTest {
 
 	@Test
 	public void setPolymorphicElements() {
-		matrix.getRows().get(matrix.getParent().getOTUs().get(0)).setCells(
+		matrix.getRows().get(matrix.getParent().getOtus().get(0)).setCells(
 				Arrays.asList(cell));
 		states.add(state00);
 		states.add(state01);
@@ -220,7 +218,7 @@ public class StandardCellTest {
 	public void setSingleElement() {
 		matrix
 				.getRows()
-				.get(matrix.getParent().getOTUs().get(0))
+				.get(matrix.getParent().getOtus().get(0))
 				.setCells(Arrays.asList(cell));
 		states.add(state00);
 
@@ -248,7 +246,7 @@ public class StandardCellTest {
 
 	@Test
 	public void setUncertainElements() {
-		matrix.getRows().get(matrix.getParent().getOTUs().get(0)).setCells(
+		matrix.getRows().get(matrix.getParent().getOtus().get(0)).setCells(
 				Arrays.asList(cell));
 		states.add(state00);
 		states.add(state01);

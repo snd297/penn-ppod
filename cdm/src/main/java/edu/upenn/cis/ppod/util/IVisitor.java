@@ -23,8 +23,6 @@ import edu.upenn.cis.ppod.imodel.IDnaMatrix;
 import edu.upenn.cis.ppod.imodel.IDnaRow;
 import edu.upenn.cis.ppod.imodel.IDnaSequence;
 import edu.upenn.cis.ppod.imodel.IDnaSequenceSet;
-import edu.upenn.cis.ppod.imodel.IOtu;
-import edu.upenn.cis.ppod.imodel.IOtuSet;
 import edu.upenn.cis.ppod.imodel.IProteinRow;
 import edu.upenn.cis.ppod.imodel.IStandardCell;
 import edu.upenn.cis.ppod.imodel.IStandardCharacter;
@@ -34,6 +32,8 @@ import edu.upenn.cis.ppod.imodel.IStandardState;
 import edu.upenn.cis.ppod.imodel.IStudy;
 import edu.upenn.cis.ppod.imodel.ITree;
 import edu.upenn.cis.ppod.imodel.ITreeSet;
+import edu.upenn.cis.ppod.model.Otu;
+import edu.upenn.cis.ppod.model.OtuSet;
 
 /**
  * The visitor in the visitor pattern.
@@ -86,9 +86,9 @@ public interface IVisitor {
 
 	void visitDNASequenceSet(IDnaSequenceSet sequenceSet);
 
-	void visitOTU(IOtu otu);
+	void visitOTU(Otu otu);
 
-	void visitOTUSet(IOtuSet otuSet);
+	void visitOTUSet(OtuSet otuSet);
 
 	void visitProteinRow(IProteinRow row);
 

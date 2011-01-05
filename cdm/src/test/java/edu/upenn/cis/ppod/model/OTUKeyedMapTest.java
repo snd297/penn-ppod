@@ -27,8 +27,6 @@ import org.testng.annotations.Test;
 
 import edu.upenn.cis.ppod.TestGroupDefs;
 import edu.upenn.cis.ppod.imodel.IDnaRow;
-import edu.upenn.cis.ppod.imodel.IOtu;
-import edu.upenn.cis.ppod.imodel.IOtuSet;
 import edu.upenn.cis.ppod.util.IVisitor;
 
 /**
@@ -43,13 +41,13 @@ public class OTUKeyedMapTest {
 		final OtuSet otuSet = new OtuSet();
 		matrix.setParent(otuSet);
 
-		final IOtu otu0 = new Otu();
+		final Otu otu0 = new Otu();
 		otu0.setLabel("otu0");
 
-		final IOtu otu1 = new Otu();
+		final Otu otu1 = new Otu();
 		otu1.setLabel("otu1");
 
-		final IOtu otu2 = new Otu();
+		final Otu otu2 = new Otu();
 		otu2.setLabel("otu2");
 
 		otuSet.addOTU(otu0);
@@ -95,16 +93,16 @@ public class OTUKeyedMapTest {
 	public void accept() {
 		final DnaMatrix matrix = new DnaMatrix();
 
-		final IOtuSet otuSet = new OtuSet();
+		final OtuSet otuSet = new OtuSet();
 		otuSet.addDNAMatrix(matrix);
 
-		final IOtu otu0 = new Otu();
+		final Otu otu0 = new Otu();
 		otu0.setLabel("otu0");
 
-		final IOtu otu1 = new Otu();
+		final Otu otu1 = new Otu();
 		otu1.setLabel("otu1");
 
-		final IOtu otu2 = new Otu();
+		final Otu otu2 = new Otu();
 		otu2.setLabel("otu2");
 
 		otuSet.addOTU(otu0);

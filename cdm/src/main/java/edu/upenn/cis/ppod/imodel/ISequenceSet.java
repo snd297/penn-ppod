@@ -20,6 +20,8 @@ import java.util.Map;
 import javax.annotation.CheckForNull;
 import javax.annotation.Nullable;
 
+import edu.upenn.cis.ppod.model.Otu;
+
 public interface ISequenceSet<S extends ISequence<?>>
 		extends ILabeled, IOtuSetChild, IUuPPodEntity {
 
@@ -34,7 +36,7 @@ public interface ISequenceSet<S extends ISequence<?>>
 	 *             sequence's {@code OTUSet}
 	 */
 	@Nullable
-	S getSequence(IOtu otu);
+	S getSequence(Otu otu);
 
 	/**
 	 * Get the length of the sequences in this set, or {@code null} if no
@@ -46,7 +48,7 @@ public interface ISequenceSet<S extends ISequence<?>>
 	@CheckForNull
 	Integer getSequenceLengths();
 
-	Map<IOtu, S> getSequences();
+	Map<Otu, S> getSequences();
 
 	/**
 	 * 
@@ -61,7 +63,7 @@ public interface ISequenceSet<S extends ISequence<?>>
 	 * @return
 	 */
 	@CheckForNull
-	S putSequence(IOtu otu, S sequence);
+	S putSequence(Otu otu, S sequence);
 
 	void setLabel(String label);
 

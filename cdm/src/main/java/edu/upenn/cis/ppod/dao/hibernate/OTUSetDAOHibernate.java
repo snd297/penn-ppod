@@ -18,7 +18,6 @@ package edu.upenn.cis.ppod.dao.hibernate;
 import java.util.List;
 
 import edu.upenn.cis.ppod.dao.IOTUSetDAO;
-import edu.upenn.cis.ppod.imodel.IOtuSet;
 import edu.upenn.cis.ppod.model.OtuSet;
 import edu.upenn.cis.ppod.thirdparty.dao.hibernate.GenericHibernateDAO;
 
@@ -26,11 +25,11 @@ import edu.upenn.cis.ppod.thirdparty.dao.hibernate.GenericHibernateDAO;
  * An {@link OTUSet} Hibernate DAO.
  */
 public class OTUSetDAOHibernate
-		extends GenericHibernateDAO<IOtuSet, Long>
+		extends GenericHibernateDAO<OtuSet, Long>
 		implements IOTUSetDAO {
 
-	public IOtuSet getOTUSetByPPodId(final String pPodId) {
-		return (IOtuSet) getSession()
+	public OtuSet getOTUSetByPPodId(final String pPodId) {
+		return (OtuSet) getSession()
 				.getNamedQuery(OtuSet.class.getSimpleName() + "-getByPPodId")
 				.setParameter("pPodId", pPodId)
 				.uniqueResult();

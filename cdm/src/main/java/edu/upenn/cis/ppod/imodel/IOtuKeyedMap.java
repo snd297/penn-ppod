@@ -18,6 +18,7 @@ package edu.upenn.cis.ppod.imodel;
 import java.util.Map;
 
 import edu.umd.cs.findbugs.annotations.CheckForNull;
+import edu.upenn.cis.ppod.model.Otu;
 
 public interface IOtuKeyedMap<V extends IChild<?>>
 		extends IVisitable {
@@ -41,14 +42,14 @@ public interface IOtuKeyedMap<V extends IChild<?>>
 	 *             OTU-keyed map
 	 * @throws NullPointerException if the specified key is null
 	 */
-	V get(IOtu key);
+	V get(Otu key);
 
 	/**
 	 * Get the map that makes up this OTU-keyed map.
 	 * 
 	 * @return the map that makes up this OTU-keyed map
 	 */
-	Map<IOtu, V> getValues();
+	Map<Otu, V> getValues();
 
 	/**
 	 * Associates {@code value} with {@code key} in this map. If the map
@@ -73,7 +74,7 @@ public interface IOtuKeyedMap<V extends IChild<?>>
 	 *             {@code .equals} to {@code value}
 	 */
 	@CheckForNull
-	V put(IOtu key, V value);
+	V put(Otu key, V value);
 
 	/**
 	 * Set the keys of this {@code OTUKeyedMap} to the OTUs in its parent's

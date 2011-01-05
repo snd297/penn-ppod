@@ -25,7 +25,6 @@ import javax.persistence.CascadeType;
 import javax.persistence.Embeddable;
 import javax.persistence.JoinColumn;
 import javax.persistence.JoinTable;
-import javax.persistence.MapKeyClass;
 import javax.persistence.MapKeyJoinColumn;
 import javax.persistence.OneToMany;
 import javax.persistence.Transient;
@@ -37,7 +36,6 @@ import javax.xml.bind.annotation.XmlElement;
 
 import org.hibernate.annotations.Parent;
 
-import edu.upenn.cis.ppod.imodel.IOtu;
 import edu.upenn.cis.ppod.imodel.IOtuKeyedMap;
 import edu.upenn.cis.ppod.imodel.IOtuKeyedMapPlus;
 import edu.upenn.cis.ppod.imodel.IStandardMatrix;
@@ -80,7 +78,7 @@ public class StandardRows
 
 	protected boolean beforeMarshal(@CheckForNull final Marshaller marshaller) {
 		getOTUSomethingPairs().clear();
-		for (final Map.Entry<IOtu, IStandardRow> otuToRow : getValues()
+		for (final Map.Entry<Otu, IStandardRow> otuToRow : getValues()
 				.entrySet()) {
 			getOTUSomethingPairs().add(
 					new OtuStandardRowPair(otuToRow.getKey(),
@@ -93,7 +91,7 @@ public class StandardRows
 		rows.clear();
 	}
 
-	public IStandardRow get(final IOtu key) {
+	public IStandardRow get(final Otu key) {
 		return rows.get(key);
 	}
 
@@ -126,13 +124,12 @@ public class StandardRows
 			targetEntity = StandardRow.class)
 	@JoinTable(inverseJoinColumns = @JoinColumn(name = StandardRow.JOIN_COLUMN))
 	@MapKeyJoinColumn(name = Otu.JOIN_COLUMN)
-	@MapKeyClass(Otu.class)
-	public Map<IOtu, IStandardRow> getValues() {
+	public Map<Otu, IStandardRow> getValues() {
 		return rows.getValues();
 	}
 
 	/** {@inheritDoc} */
-	public IStandardRow put(final IOtu key, final IStandardRow value) {
+	public IStandardRow put(final Otu key, final IStandardRow value) {
 		return rows.put(key, value);
 	}
 
@@ -151,7 +148,7 @@ public class StandardRows
 	}
 
 	@SuppressWarnings("unused")
-	private void setValues(final Map<IOtu, IStandardRow> values) {
+	private void setValues(final Map<Otu, IStandardRow> values) {
 		rows.setValues(values);
 	}
 

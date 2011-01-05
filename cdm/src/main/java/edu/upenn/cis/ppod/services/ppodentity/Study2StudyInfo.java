@@ -21,8 +21,6 @@ import edu.upenn.cis.ppod.imodel.IDnaMatrix;
 import edu.upenn.cis.ppod.imodel.IDnaRow;
 import edu.upenn.cis.ppod.imodel.IDnaSequence;
 import edu.upenn.cis.ppod.imodel.IDnaSequenceSet;
-import edu.upenn.cis.ppod.imodel.IOtu;
-import edu.upenn.cis.ppod.imodel.IOtuSet;
 import edu.upenn.cis.ppod.imodel.IStandardCell;
 import edu.upenn.cis.ppod.imodel.IStandardCharacter;
 import edu.upenn.cis.ppod.imodel.IStandardMatrix;
@@ -31,6 +29,8 @@ import edu.upenn.cis.ppod.imodel.IStudy;
 import edu.upenn.cis.ppod.imodel.ITree;
 import edu.upenn.cis.ppod.imodel.ITreeSet;
 import edu.upenn.cis.ppod.imodel.IVersionInfo;
+import edu.upenn.cis.ppod.model.Otu;
+import edu.upenn.cis.ppod.model.OtuSet;
 
 /**
  * @author Sam Donnelly
@@ -44,7 +44,7 @@ public final class Study2StudyInfo implements IStudy2StudyInfo {
 		studyInfo.setPPodId(study.getPPodId());
 		studyInfo.setVersion(study.getVersionInfo().getVersion());
 
-		for (final IOtuSet otuSet : study.getOTUSets()) {
+		for (final OtuSet otuSet : study.getOTUSets()) {
 			final OtuSetInfo otuSetInfo = new OtuSetInfo();
 
 			studyInfo.getOTUSetInfos().add(otuSetInfo);
@@ -53,7 +53,7 @@ public final class Study2StudyInfo implements IStudy2StudyInfo {
 			otuSetInfo.setDocId(otuSet.getDocId());
 			otuSetInfo.setVersion(otuSet.getVersionInfo()
 					.getVersion());
-			for (final IOtu otu : otuSet.getOTUs()) {
+			for (final Otu otu : otuSet.getOtus()) {
 				final PPodEntityInfoWDocId otuInfo =
 						new PPodEntityInfoWDocId();
 				otuSetInfo.getOTUInfos().add(otuInfo);
@@ -100,7 +100,7 @@ public final class Study2StudyInfo implements IStudy2StudyInfo {
 
 				int rowIdx = -1;
 
-				for (final IOtu otu : matrix.getParent().getOTUs()) {
+				for (final Otu otu : matrix.getParent().getOtus()) {
 					final IStandardRow row = matrix.getRows().get(otu);
 					rowIdx++;
 					final Long rowVersion = row.getVersionInfo()
@@ -144,7 +144,7 @@ public final class Study2StudyInfo implements IStudy2StudyInfo {
 
 				int rowIdx = -1;
 
-				for (final IOtu otu : matrix.getParent().getOTUs()) {
+				for (final Otu otu : matrix.getParent().getOtus()) {
 					final IDnaRow row = matrix.getRows().get(otu);
 					rowIdx++;
 					final Long rowVersion =
@@ -173,7 +173,7 @@ public final class Study2StudyInfo implements IStudy2StudyInfo {
 				sequenceSetInfo.setVersion(dnaSequenceSet
 						.getVersionInfo().getVersion());
 				sequenceSetInfo.setEntityId(dnaSequenceSet.getId());
-				for (final IOtu otu : otuSet.getOTUs()) {
+				for (final Otu otu : otuSet.getOtus()) {
 					final IDnaSequence dnaSequence =
 							dnaSequenceSet.getSequence(otu);
 					sequenceSetInfo

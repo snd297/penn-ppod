@@ -35,7 +35,6 @@ import edu.upenn.cis.ppod.TestGroupDefs;
 import edu.upenn.cis.ppod.imodel.DnaNucleotide;
 import edu.upenn.cis.ppod.imodel.ICell;
 import edu.upenn.cis.ppod.imodel.IDnaRow;
-import edu.upenn.cis.ppod.imodel.IOtuSet;
 
 @Test(groups = { TestGroupDefs.FAST })
 public class CellTest {
@@ -174,11 +173,11 @@ public class CellTest {
 
 		final DnaMatrix matrix = new DnaMatrix();
 		matrix.setColumnsSize(1);
-		final IOtuSet otuSet = new OtuSet();
+		final OtuSet otuSet = new OtuSet();
 		otuSet.addDNAMatrix(matrix);
 		otuSet.addOTU(new Otu().setLabel("otu-0"));
 
-		matrix.putRow(otuSet.getOTUs().get(0), row);
+		matrix.putRow(otuSet.getOtus().get(0), row);
 
 		row.setCells(ImmutableList.of(cell));
 
@@ -191,7 +190,7 @@ public class CellTest {
 		assertTrue(row.isInNeedOfNewVersion());
 		assertNull(matrix.getColumnVersionInfos().get(0));
 
-		matrix.putRow(otuSet.getOTUs().get(0), new DnaRow());
+		matrix.putRow(otuSet.getOtus().get(0), new DnaRow());
 
 		cell.unsetInNeedOfNewVersion();
 		row.unsetInNeedOfNewVersion();

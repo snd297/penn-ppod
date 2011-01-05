@@ -275,11 +275,11 @@ public abstract class PPodEntity
 	 * Set the pPOD version number for marshalling so that an entire
 	 * {@link VersionInfo} need not be sent over the wire.
 	 * <p>
-	 * {@code protected} for JAXB.
+	 * protected instead of package-private for JAXB.
 	 * 
 	 * @param version the pPOD version number
 	 */
-	protected void setVersion(final Long version) {
+	public void setVersion(final Long version) {
 		checkNotNull(version);
 		this.version = version;
 	}
@@ -290,33 +290,6 @@ public abstract class PPodEntity
 		checkNotNull(versionInfo);
 		unsetInNeedOfNewVersion();
 		this.versionInfo = versionInfo;
-	}
-
-	/**
-	 * Constructs a <code>String</code> with all attributes in name = value
-	 * format.
-	 * 
-	 * @return a <code>String</code> representation of this object.
-	 */
-	@Override
-	public String toString() {
-		final String TAB = "";
-
-		final StringBuilder retValue = new StringBuilder();
-
-		retValue.append("PPodEntity(").append(super.toString())/*
-																 * .append(TAB)
-																 * .append(
-																 * "attachments="
-																 * )
-																 * .append(this.
-																 * attachments)
-																 */.append(TAB)
-				.append("versionInfo=").append(this.versionInfo)
-				.append(TAB).append("version=").append(this.version)
-				.append(TAB).append(")");
-
-		return retValue.toString();
 	}
 
 	@VisibleForTesting

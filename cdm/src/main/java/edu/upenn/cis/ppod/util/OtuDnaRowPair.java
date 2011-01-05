@@ -18,7 +18,7 @@ package edu.upenn.cis.ppod.util;
 import javax.xml.bind.annotation.XmlElement;
 
 import edu.upenn.cis.ppod.imodel.IDnaRow;
-import edu.upenn.cis.ppod.imodel.IOtu;
+import edu.upenn.cis.ppod.model.Otu;
 
 public class OtuDnaRowPair extends
 		OtuKeyedPair<IDnaRow> {
@@ -28,7 +28,7 @@ public class OtuDnaRowPair extends
 	 */
 	protected OtuDnaRowPair() {}
 
-	public OtuDnaRowPair(final IOtu first, final IDnaRow second) {
+	public OtuDnaRowPair(final Otu first, final IDnaRow second) {
 		super(first, second);
 	}
 

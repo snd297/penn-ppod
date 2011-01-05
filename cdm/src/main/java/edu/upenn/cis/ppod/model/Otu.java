@@ -24,12 +24,11 @@ import javax.persistence.ManyToOne;
 import javax.persistence.Table;
 import javax.xml.bind.Unmarshaller;
 import javax.xml.bind.annotation.XmlAttribute;
-import javax.xml.bind.annotation.adapters.XmlAdapter;
 
 import edu.umd.cs.findbugs.annotations.CheckForNull;
 import edu.umd.cs.findbugs.annotations.Nullable;
-import edu.upenn.cis.ppod.imodel.IOtu;
-import edu.upenn.cis.ppod.imodel.IOtuSet;
+import edu.upenn.cis.ppod.imodel.IChild;
+import edu.upenn.cis.ppod.imodel.ILabeled;
 import edu.upenn.cis.ppod.util.IVisitor;
 
 /**
@@ -42,20 +41,7 @@ import edu.upenn.cis.ppod.util.IVisitor;
 @Table(name = Otu.TABLE)
 public class Otu
 		extends UuPPodEntityWithDocId
-		implements IOtu {
-
-	public static class Adapter extends XmlAdapter<Otu, IOtu> {
-
-		@Override
-		public Otu marshal(final IOtu otu) {
-			return (Otu) otu;
-		}
-
-		@Override
-		public IOtu unmarshal(final Otu otu) {
-			return otu;
-		}
-	}
+		implements IChild<OtuSet>, ILabeled {
 
 	/** The table for this entity. */
 	public static final String TABLE = "OTU";
@@ -79,10 +65,10 @@ public class Otu
 	 * The {@code OTUSet} that this {@code OTU} belongs to.
 	 */
 	@Nullable
-	@ManyToOne(targetEntity = OtuSet.class)
+	@ManyToOne
 	@JoinColumn(name = OtuSet.JOIN_COLUMN, insertable = false,
 			updatable = false, nullable = false)
-	private IOtuSet parent;
+	private OtuSet parent;
 
 	public Otu() {}
 
@@ -105,7 +91,7 @@ public class Otu
 	public void afterUnmarshal(
 			@CheckForNull final Unmarshaller u,
 			final Object parent) {
-		this.parent = (IOtuSet) parent;
+		this.parent = (OtuSet) parent;
 	}
 
 	/**
@@ -127,7 +113,7 @@ public class Otu
 	 * @return the {@code OTUSet} that owns this {@code OTU}
 	 */
 	@Nullable
-	public IOtuSet getParent() {
+	public OtuSet getParent() {
 		return parent;
 	}
 
@@ -143,7 +129,13 @@ public class Otu
 		super.setInNeedOfNewVersion();
 	}
 
-	/** {@inheritDoc} */
+	/**
+	 * Set the label.
+	 * 
+	 * @param label the label
+	 * 
+	 * @return this
+	 */
 	public Otu setLabel(final String label) {
 		checkNotNull(label);
 		if (label.equals(getLabel())) {
@@ -155,8 +147,12 @@ public class Otu
 		return this;
 	}
 
-	/** {@inheritDoc} */
-	public void setParent(@CheckForNull final IOtuSet parent) {
+	/**
+	 * Set the parent OTU set.
+	 * 
+	 * @param parent the parent OTU set
+	 */
+	public void setParent(@CheckForNull final OtuSet parent) {
 		this.parent = parent;
 	}
 

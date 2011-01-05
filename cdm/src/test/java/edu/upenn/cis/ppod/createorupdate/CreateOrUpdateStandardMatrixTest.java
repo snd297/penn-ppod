@@ -26,14 +26,14 @@ import org.testng.annotations.Test;
 import edu.upenn.cis.ppod.TestGroupDefs;
 import edu.upenn.cis.ppod.dao.IObjectWithLongIdDAO;
 import edu.upenn.cis.ppod.imodel.INewVersionInfo;
-import edu.upenn.cis.ppod.imodel.IOtu;
-import edu.upenn.cis.ppod.imodel.IOtuSet;
 import edu.upenn.cis.ppod.imodel.IStandardCell;
 import edu.upenn.cis.ppod.imodel.IStandardCharacter;
 import edu.upenn.cis.ppod.imodel.IStandardMatrix;
 import edu.upenn.cis.ppod.imodel.IStandardRow;
 import edu.upenn.cis.ppod.imodel.IVersionInfo;
 import edu.upenn.cis.ppod.model.ModelAssert;
+import edu.upenn.cis.ppod.model.Otu;
+import edu.upenn.cis.ppod.model.OtuSet;
 import edu.upenn.cis.ppod.model.StandardMatrix;
 import edu.upenn.cis.ppod.util.PPodEntityProvider;
 
@@ -58,7 +58,7 @@ public class CreateOrUpdateStandardMatrixTest {
 						mock(IObjectWithLongIdDAO.class),
 						newVersionInfo);
 
-		final IOtuSet fakeDbOTUSet = sourceMatrix.getParent();
+		final OtuSet fakeDbOTUSet = sourceMatrix.getParent();
 
 		final IStandardMatrix targetMatrix = new StandardMatrix();
 
@@ -85,7 +85,7 @@ public class CreateOrUpdateStandardMatrixTest {
 						mock(IObjectWithLongIdDAO.class),
 						newVersionInfo);
 
-		final IOtuSet fakeDbOTUSet = sourceMatrix.getParent();
+		final OtuSet fakeDbOTUSet = sourceMatrix.getParent();
 
 		final IStandardMatrix targetMatrix =
 				new StandardMatrix();
@@ -102,16 +102,16 @@ public class CreateOrUpdateStandardMatrixTest {
 					targetMatrix.getCharacters().get(i).getPPodId());
 		}
 
-		final List<IOtu> shuffledSourceOTUs =
-				newArrayList(sourceMatrix.getParent().getOTUs());
+		final List<Otu> shuffledSourceOTUs =
+				newArrayList(sourceMatrix.getParent().getOtus());
 		shuffledSourceOTUs.set(0,
 				sourceMatrix.getParent()
-						.getOTUs()
+						.getOtus()
 						.get(shuffledSourceOTUs.size() / 2));
 		shuffledSourceOTUs.set(
 				shuffledSourceOTUs.size() / 2,
 				sourceMatrix.getParent()
-						.getOTUs()
+						.getOtus()
 						.get(0));
 
 		sourceMatrix.getParent().setOTUs(shuffledSourceOTUs);
@@ -137,7 +137,7 @@ public class CreateOrUpdateStandardMatrixTest {
 						mock(IObjectWithLongIdDAO.class),
 						newVersionInfo);
 
-		final IOtuSet fakeDbOTUSet = sourceMatrix.getParent();
+		final OtuSet fakeDbOTUSet = sourceMatrix.getParent();
 
 		final IStandardMatrix targetMatrix = new StandardMatrix();
 
@@ -165,7 +165,7 @@ public class CreateOrUpdateStandardMatrixTest {
 					sourceMatrix.getCharacters().get(0));
 		sourceMatrix.setCharacters(newSourceMatrixCharacters);
 
-		for (final IOtu sourceOTU : sourceMatrix.getParent().getOTUs()) {
+		for (final Otu sourceOTU : sourceMatrix.getParent().getOtus()) {
 			final IStandardRow sourceRow =
 					sourceMatrix.getRows().get(sourceOTU);
 
@@ -198,7 +198,7 @@ public class CreateOrUpdateStandardMatrixTest {
 						mock(IObjectWithLongIdDAO.class),
 						newVersionInfo);
 
-		final IOtuSet fakeDbOTUSet = sourceMatrix.getParent();
+		final OtuSet fakeDbOTUSet = sourceMatrix.getParent();
 
 		final IStandardMatrix targetMatrix =
 				new StandardMatrix();
@@ -228,7 +228,7 @@ public class CreateOrUpdateStandardMatrixTest {
 
 		final List<IStandardCell> removedSourceCells = newArrayList();
 
-		for (final IOtu sourceOTU : sourceMatrix.getParent().getOTUs()) {
+		for (final Otu sourceOTU : sourceMatrix.getParent().getOtus()) {
 			final IStandardRow sourceRow = sourceMatrix.getRows()
 					.get(sourceOTU);
 			final List<IStandardCell> newSourceCells =
@@ -240,7 +240,7 @@ public class CreateOrUpdateStandardMatrixTest {
 			sourceRow.setCells(newSourceCells);
 		}
 
-		for (final IOtu targetOTU : targetMatrix.getParent().getOTUs()) {
+		for (final Otu targetOTU : targetMatrix.getParent().getOtus()) {
 			final IStandardRow targetRow = targetMatrix.getRows()
 					.get(targetOTU);
 			// It will be the _last_ cell in the row that is deleted by the dao

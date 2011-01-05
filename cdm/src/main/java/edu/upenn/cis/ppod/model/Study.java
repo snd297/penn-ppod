@@ -43,7 +43,6 @@ import javax.xml.bind.annotation.XmlRootElement;
 import edu.umd.cs.findbugs.annotations.CheckForNull;
 import edu.upenn.cis.ppod.imodel.IAttachmentNamespace;
 import edu.upenn.cis.ppod.imodel.IAttachmentType;
-import edu.upenn.cis.ppod.imodel.IOtuSet;
 import edu.upenn.cis.ppod.imodel.IStudy;
 import edu.upenn.cis.ppod.util.IVisitor;
 import edu.upenn.cis.ppod.util.PPodEntitiesUtil;
@@ -89,11 +88,10 @@ public class Study
 	@Column(name = LABEL_COLUMN, nullable = false)
 	private String label;
 
-	@OneToMany(cascade = CascadeType.ALL, orphanRemoval = true,
-			targetEntity = OtuSet.class)
+	@OneToMany(cascade = CascadeType.ALL, orphanRemoval = true)
 	@OrderColumn(name = "POSITION")
 	@JoinColumn(name = JOIN_COLUMN, nullable = false)
-	private final List<IOtuSet> otuSets = newArrayList();
+	private final List<OtuSet> otuSets = newArrayList();
 
 	@Transient
 	private final Set<IAttachmentNamespace> attachmentNamespaces = newHashSet();
@@ -109,13 +107,13 @@ public class Study
 	@Override
 	public void accept(final IVisitor visitor) {
 		visitor.visitStudy(this);
-		for (final IOtuSet otuSet : getOTUSets()) {
+		for (final OtuSet otuSet : getOTUSets()) {
 			otuSet.accept(visitor);
 		}
 	}
 
 	/** {@inheritDoc} */
-	public void addOTUSet(final int pos, final IOtuSet otuSet) {
+	public void addOtuSet(final int pos, final OtuSet otuSet) {
 		checkNotNull(otuSet);
 		checkArgument(pos >= 0, "pos < 0");
 		checkArgument(
@@ -129,7 +127,7 @@ public class Study
 	}
 
 	/** {@inheritDoc} */
-	public void addOTUSet(final IOtuSet otuSet) {
+	public void addOtuSet(final OtuSet otuSet) {
 		checkNotNull(otuSet);
 		checkArgument(!getOTUSets().contains(otuSet),
 				"this study already contains otu set [" + otuSet.getLabel()
@@ -182,12 +180,12 @@ public class Study
 	}
 
 	/** {@inheritDoc} */
-	public List<IOtuSet> getOTUSets() {
+	public List<OtuSet> getOTUSets() {
 		return Collections.unmodifiableList(otuSets);
 	}
 
 	@XmlElement(name = "otuSet")
-	protected List<IOtuSet> getOTUSetsModifiable() {
+	protected List<OtuSet> getOTUSetsModifiable() {
 		return otuSets;
 	}
 
@@ -202,7 +200,7 @@ public class Study
 	}
 
 	/** {@inheritDoc} */
-	public void removeOTUSet(final IOtuSet otuSet) {
+	public void removeOTUSet(final OtuSet otuSet) {
 		checkNotNull(otuSet);
 		checkArgument(getOTUSets().contains(otuSet),
 				"this study does not contain otu set [" + otuSet.getLabel()

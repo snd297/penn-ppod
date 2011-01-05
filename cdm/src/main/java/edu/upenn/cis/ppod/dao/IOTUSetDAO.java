@@ -17,7 +17,7 @@ package edu.upenn.cis.ppod.dao;
 
 import java.util.List;
 
-import edu.upenn.cis.ppod.imodel.IOtuSet;
+import edu.upenn.cis.ppod.model.OtuSet;
 import edu.upenn.cis.ppod.thirdparty.dao.IDAO;
 
 /**
@@ -25,9 +25,9 @@ import edu.upenn.cis.ppod.thirdparty.dao.IDAO;
  * 
  * @author Sam Donnelly
  */
-public interface IOTUSetDAO extends IDAO<IOtuSet, Long> {
+public interface IOTUSetDAO extends IDAO<OtuSet, Long> {
 
-	IOtuSet getOTUSetByPPodId(String pPodId);
+	OtuSet getOTUSetByPPodId(String pPodId);
 
 	List<Object[]> getOTUIdsVersionsByOTUSetIdAndMinPPodVersion(
 			Long otuSetPPodId,

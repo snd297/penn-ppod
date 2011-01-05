@@ -24,8 +24,6 @@ import org.testng.annotations.Test;
 
 import edu.upenn.cis.ppod.TestGroupDefs;
 import edu.upenn.cis.ppod.imodel.IDnaSequence;
-import edu.upenn.cis.ppod.imodel.IOtu;
-import edu.upenn.cis.ppod.imodel.IOtuSet;
 import edu.upenn.cis.ppod.imodel.ISequence;
 import edu.upenn.cis.ppod.imodel.ISequenceSet;
 
@@ -85,8 +83,8 @@ public class MolecularSequenceTest {
 	@Test
 	public void setInNeedOfNewPPodVersion() {
 		final DnaSequence sequence = new DnaSequence();
-		final IOtuSet otuSet = new OtuSet();
-		final IOtu otu0 = new Otu();
+		final OtuSet otuSet = new OtuSet();
+		final Otu otu0 = new Otu();
 		otuSet.addOTU(otu0);
 
 		final ISequenceSet<IDnaSequence> sequenceSet = new DnaSequenceSet();

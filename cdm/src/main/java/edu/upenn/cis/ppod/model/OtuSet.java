@@ -40,7 +40,6 @@ import javax.persistence.Table;
 import javax.xml.bind.Unmarshaller;
 import javax.xml.bind.annotation.XmlAttribute;
 import javax.xml.bind.annotation.XmlElement;
-import javax.xml.bind.annotation.adapters.XmlAdapter;
 
 import com.google.common.annotations.VisibleForTesting;
 
@@ -50,8 +49,6 @@ import edu.upenn.cis.ppod.imodel.IChild;
 import edu.upenn.cis.ppod.imodel.IDnaMatrix;
 import edu.upenn.cis.ppod.imodel.IDnaSequenceSet;
 import edu.upenn.cis.ppod.imodel.ILabeled;
-import edu.upenn.cis.ppod.imodel.IOtu;
-import edu.upenn.cis.ppod.imodel.IOtuSet;
 import edu.upenn.cis.ppod.imodel.IStandardMatrix;
 import edu.upenn.cis.ppod.imodel.IStudy;
 import edu.upenn.cis.ppod.imodel.ITreeSet;
@@ -68,21 +65,7 @@ import edu.upenn.cis.ppod.util.IVisitor;
 @Entity
 @Table(name = OtuSet.TABLE)
 public class OtuSet
-		extends UuPPodEntityWithDocId
-		implements IOtuSet {
-
-	public static class Adapter extends XmlAdapter<OtuSet, IOtuSet> {
-
-		@Override
-		public OtuSet marshal(final IOtuSet otuSet) {
-			return (OtuSet) otuSet;
-		}
-
-		@Override
-		public IOtuSet unmarshal(final OtuSet otuSet) {
-			return otuSet;
-		}
-	}
+		extends UuPPodEntityWithDocId {
 
 	/** The column that stores the description. */
 	public static final String DESCRIPTION_COLUMN = "DESCRIPTION";
@@ -140,11 +123,10 @@ public class OtuSet
 	/** The OTUs in this OTU set. */
 	@OneToMany(
 			orphanRemoval = true,
-			cascade = CascadeType.ALL,
-			targetEntity = Otu.class)
+			cascade = CascadeType.ALL)
 	@OrderColumn(name = "POSITION")
 	@JoinColumn(name = JOIN_COLUMN, nullable = false)
-	private final List<IOtu> otus = newArrayList();
+	private final List<Otu> otus = newArrayList();
 
 	@ManyToOne(fetch = FetchType.LAZY, optional = false,
 			targetEntity = Study.class)
@@ -171,13 +153,22 @@ public class OtuSet
 	public void accept(final IVisitor visitor) {
 		checkNotNull(visitor);
 		visitor.visitOTUSet(this);
-		for (final IChild<IOtuSet> child : getChildren()) {
+		for (final IChild<OtuSet> child : getChildren()) {
 			child.accept(visitor);
 		}
 		super.accept(visitor);
 	}
 
-	/** {@inheritDoc} */
+	/**
+	 * Add a DNA matrix to this OTU set.
+	 * <p>
+	 * Handles the {@code IDNAMatrix->IOTUSet} side of the relationship.
+	 * 
+	 * @param matrix to be added
+	 * 
+	 * @throws IllegalArgumentException if this otu set already contains the
+	 *             matrix
+	 */
 	public void addDNAMatrix(final IDnaMatrix matrix) {
 		checkNotNull(matrix);
 		checkArgument(
@@ -204,7 +195,17 @@ public class OtuSet
 		setInNeedOfNewVersion();
 	}
 
-	/** {@inheritDoc} */
+	/**
+	 * Add an {@code IDNASequenceSet}.
+	 * <p>
+	 * Also handles the {@code IDNASequenceSet->IOTUSet} side of the
+	 * relationship.
+	 * 
+	 * @param dnaSequenceSet the new {@code DNASequenceSet}
+	 * 
+	 * @throws IllegalArgumentException if this otu set already contains the
+	 *             matrix
+	 */
 	public void addDNASequenceSet(
 			final IDnaSequenceSet sequenceSet) {
 		checkNotNull(sequenceSet);
@@ -233,18 +234,32 @@ public class OtuSet
 	}
 
 	/**
-	 * {@inheritDoc}
+	 * Scaffolding code that does two things:
+	 * <ol>
+	 * <li>Adds <code>otu</code> to this {@code IOTUSet}'s constituent
+	 * {@code IOTU}s</li>
+	 * <li>Adds this {@code IOTUSet} to {@code otu}'s {@code IOTUSet}s</li>
+	 * </ol>
+	 * So it takes care of both sides of the <code>IOTUSet</code><->
+	 * <code>IOTU</code> relationship.
+	 * <p>
+	 * {@code otu} must have a label that is unique relative to this OTU set.
+	 * 
+	 * @throws IllegalArgumentException if this OTU set already has an OTU with
+	 *             {@code otu}'s label
+	 * 
+	 * @param otu see description
 	 */
-	public void addOTU(final IOtu otu) {
+	public void addOTU(final Otu otu) {
 		checkNotNull(otu);
 		addOTUWithoutSetOTUsOnChildren(otu);
 		setParentOnChildren();
 	}
 
-	private void addOTUWithoutSetOTUsOnChildren(final IOtu otu) {
+	private void addOTUWithoutSetOTUsOnChildren(final Otu otu) {
 		checkNotNull(otu);
-		final IOtu dupNameOTU =
-				find(getOTUs(),
+		final Otu dupNameOTU =
+				find(getOtus(),
 						compose(
 								equalTo(
 								otu.getLabel()),
@@ -263,7 +278,17 @@ public class OtuSet
 		}
 	}
 
-	/** {@inheritDoc} */
+	/**
+	 * Add {@code matrix} to this {@code OTUSet}.
+	 * <p>
+	 * Also handles the {@code IStandardMatrix->IOTUSet} side of the
+	 * relationship.
+	 * 
+	 * @param matrix matrix we're adding
+	 * 
+	 * @throw IllegalArgumentException if this OTU set already contains the
+	 *        matrix
+	 */
 	public void addStandardMatrix(
 			final int pos,
 			final IStandardMatrix matrix) {
@@ -291,7 +316,13 @@ public class OtuSet
 		setInNeedOfNewVersion();
 	}
 
-	/** {@inheritDoc} */
+	/**
+	 * Add a tree set to this OTU set.
+	 * <p>
+	 * Also handles the {@code TreeSet->OTUSet} side of the relationship.
+	 * 
+	 * @param treeSet to be added
+	 */
 	public void addTreeSet(
 			final int treeSetPos,
 			final ITreeSet treeSet) {
@@ -331,9 +362,9 @@ public class OtuSet
 	}
 
 	@VisibleForTesting
-	Set<IChild<IOtuSet>> getChildren() {
-		final Set<IChild<IOtuSet>> children = newHashSet();
-		children.addAll(getOTUs());
+	Set<IChild<OtuSet>> getChildren() {
+		final Set<IChild<OtuSet>> children = newHashSet();
+		children.addAll(getOtus());
 		children.addAll(getStandardMatrices());
 		children.addAll(getDNAMatrices());
 		children.addAll(getTreeSets());
@@ -342,10 +373,11 @@ public class OtuSet
 	}
 
 	/**
-	 * Getter. {@code null} is a legal value.
+	 * Get the description.
 	 * 
 	 * @return the description
 	 */
+	@CheckForNull
 	@XmlAttribute
 	public String getDescription() {
 		return description;
@@ -367,15 +399,17 @@ public class OtuSet
 	}
 
 	@XmlElement(name = "dnaSequenceSet")
-	protected List<IDnaSequenceSet> getDNASequenceSetsModifiable() {
+	protected List<IDnaSequenceSet> getDnaSequenceSetsModifiable() {
 		return dnaSequenceSets;
 	}
 
 	/**
-	 * Getter. {@code null} when the object is created.
+	 * Getter. {@code null} when the object is created. Once set, it will never
+	 * be {@code null}.
 	 * 
 	 * @return the label
 	 */
+	@Nullable
 	@XmlAttribute
 	public String getLabel() {
 		return label;
@@ -386,7 +420,7 @@ public class OtuSet
 	 * 
 	 * @return the {@code OTU}s that make up this {@code OTUSet}
 	 */
-	public List<IOtu> getOTUs() {
+	public List<Otu> getOtus() {
 		return Collections.unmodifiableList(otus);
 	}
 
@@ -396,7 +430,7 @@ public class OtuSet
 	 * @return a modifiable reference to this the otus.
 	 */
 	@XmlElement(name = "otu")
-	protected List<IOtu> getOTUsModifiable() {
+	protected List<Otu> getOTUsModifiable() {
 		return otus;
 	}
 
@@ -405,7 +439,11 @@ public class OtuSet
 		return parent;
 	}
 
-	/** {@inheritDoc} */
+	/**
+	 * Get the standard matrices contained in this OTU set.
+	 * 
+	 * @return the standard matrices contained in this OTU set
+	 */
 	public List<IStandardMatrix> getStandardMatrices() {
 		return Collections.unmodifiableList(standardMatrices);
 	}
@@ -415,7 +453,11 @@ public class OtuSet
 		return standardMatrices;
 	}
 
-	/** {@inheritDoc} */
+	/**
+	 * Get the tree sets contained in this OTU set.
+	 * 
+	 * @return the tree sets contained in this OTU set
+	 */
 	public List<ITreeSet> getTreeSets() {
 		return Collections.unmodifiableList(treeSets);
 	}
@@ -425,7 +467,14 @@ public class OtuSet
 		return treeSets;
 	}
 
-	/** {@inheritDoc} */
+	/**
+	 * Remove {@code matrix} from this OTU set.
+	 * 
+	 * @param matrix to be removed
+	 * 
+	 * @throws IllegalArgumentException if this OTU set does not contain the
+	 *             matrix
+	 */
 	public void removeDNAMatrix(final IDnaMatrix matrix) {
 		checkNotNull(matrix);
 		checkArgument(dnaMatrices.contains(matrix),
@@ -436,18 +485,32 @@ public class OtuSet
 		setInNeedOfNewVersion();
 	}
 
-	/** {@inheritDoc} */
-	public void removeDNASequenceSet(final IDnaSequenceSet sequenceSet) {
+	/**
+	 * Remove {@code sequenceSet} from this OTU set.
+	 * 
+	 * @param sequenceSet to be removed
+	 * 
+	 * @throws IllegalArgumentException if the sequence set is not contained in
+	 *             this OTU set
+	 */
+	public void removeDnaSequenceSet(final IDnaSequenceSet sequenceSet) {
 		checkNotNull(sequenceSet);
 		checkArgument(getDNASequenceSets().contains(sequenceSet),
 				"otu does not contain the dna sequence set labeled ["
 						+ sequenceSet.getLabel() + "]");
-		getDNASequenceSetsModifiable().remove(sequenceSet);
+		getDnaSequenceSetsModifiable().remove(sequenceSet);
 		sequenceSet.setParent(null);
 		setInNeedOfNewVersion();
 	}
 
-	/** {@inheritDoc} */
+	/**
+	 * Remove {@code matrix} from this OTU set.
+	 * 
+	 * @param matrix to be removed
+	 * 
+	 * @throws IllegalArgumentException if this OTU set does not contain the
+	 *             matrix
+	 */
 	public void removeStandardMatrix(final IStandardMatrix matrix) {
 		checkNotNull(matrix);
 		checkArgument(standardMatrices.contains(matrix),
@@ -458,7 +521,14 @@ public class OtuSet
 		setInNeedOfNewVersion();
 	}
 
-	/** {@inheritDoc} */
+	/**
+	 * Remove {@code treeSet} from this OTU set.
+	 * 
+	 * @param matrix to be removed
+	 * 
+	 * @throws IllegalArgumentException if the tree set does not belong to this
+	 *             otu set
+	 */
 	public void removeTreeSet(final ITreeSet treeSet) {
 		checkNotNull(treeSet);
 		checkArgument(getTreeSets().contains(treeSet),
@@ -469,8 +539,12 @@ public class OtuSet
 		setInNeedOfNewVersion();
 	}
 
-	/** {@inheritDoc} */
-	public void setDescription(@Nullable final String description) {
+	/**
+	 * Set the descriptino
+	 * 
+	 * @param description the description
+	 */
+	public void setDescription(@CheckForNull final String description) {
 		if (equal(getDescription(), description)) {
 
 		} else {
@@ -488,7 +562,11 @@ public class OtuSet
 		super.setInNeedOfNewVersion();
 	}
 
-	/** {@inheritDoc} */
+	/**
+	 * Set the label of this OTU set
+	 * 
+	 * @param label the label
+	 */
 	public void setLabel(final String label) {
 		checkNotNull(label);
 		if (label.equals(getLabel())) {
@@ -499,22 +577,32 @@ public class OtuSet
 		}
 	}
 
-	/** {@inheritDoc} */
-	public List<IOtu> setOTUs(final List<? extends IOtu> otus) {
+	/**
+	 * Set this OTU set's OTUs.
+	 * <p>
+	 * If this method is effectively removing any of this sets's original OTUs,
+	 * then the {@code OTU->OTUSet} relationship is severed.
+	 * 
+	 * @param otus the otus to assign to this OTU set
+	 * 
+	 * @return any {@code OTU}s that were removed as a result of this operation,
+	 *         in their original order
+	 */
+	public List<Otu> setOTUs(final List<? extends Otu> otus) {
 		checkNotNull(otus);
-		if (otus.equals(getOTUs())) {
+		if (otus.equals(getOtus())) {
 			return Collections.emptyList();
 		}
 
-		final List<IOtu> removedOTUs = newArrayList(getOTUs());
+		final List<Otu> removedOTUs = newArrayList(getOtus());
 		removedOTUs.removeAll(otus);
 
-		for (final IOtu removedOTU : removedOTUs) {
+		for (final Otu removedOTU : removedOTUs) {
 			removedOTU.setParent(null);
 		}
 
 		getOTUsModifiable().clear();
-		for (final IOtu otu : otus) {
+		for (final Otu otu : otus) {
 			addOTUWithoutSetOTUsOnChildren(otu);
 		}
 
@@ -532,23 +620,23 @@ public class OtuSet
 
 	private void setParentOnChildren() {
 		// Now let's let everyone know about the new OTUs
-		for (final IChild<IOtuSet> otu : getOTUs()) {
+		for (final IChild<OtuSet> otu : getOtus()) {
 			otu.setParent(this);
 		}
 
-		for (final IChild<IOtuSet> matrix : getStandardMatrices()) {
+		for (final IChild<OtuSet> matrix : getStandardMatrices()) {
 			matrix.setParent(this);
 		}
 
-		for (final IChild<IOtuSet> matrix : getDNAMatrices()) {
+		for (final IChild<OtuSet> matrix : getDNAMatrices()) {
 			matrix.setParent(this);
 		}
 
-		for (final IChild<IOtuSet> sequenceSet : getDNASequenceSets()) {
+		for (final IChild<OtuSet> sequenceSet : getDNASequenceSets()) {
 			sequenceSet.setParent(this);
 		}
 
-		for (final IChild<IOtuSet> treeSet : getTreeSets()) {
+		for (final IChild<OtuSet> treeSet : getTreeSets()) {
 			treeSet.setParent(this);
 		}
 	}

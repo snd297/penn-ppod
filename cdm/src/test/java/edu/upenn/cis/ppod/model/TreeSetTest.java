@@ -35,7 +35,6 @@ import com.google.common.collect.ImmutableList;
 
 import edu.upenn.cis.ppod.TestGroupDefs;
 import edu.upenn.cis.ppod.imodel.IAttachment;
-import edu.upenn.cis.ppod.imodel.IOtuSet;
 import edu.upenn.cis.ppod.imodel.ITree;
 import edu.upenn.cis.ppod.imodel.ITreeSet;
 import edu.upenn.cis.ppod.util.IVisitor;
@@ -117,7 +116,7 @@ public class TreeSetTest {
 
 		assertTrue(treeSet.isInNeedOfNewVersion());
 
-		final IOtuSet otuSet = new OtuSet();
+		final OtuSet otuSet = new OtuSet();
 		otuSet.addTreeSet(treeSet);
 		otuSet.unsetInNeedOfNewVersion();
 		treeSet.unsetInNeedOfNewVersion();

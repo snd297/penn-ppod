@@ -42,7 +42,6 @@ import javax.xml.bind.annotation.adapters.XmlAdapter;
 
 import com.google.common.collect.Iterators;
 
-import edu.upenn.cis.ppod.imodel.IOtuSet;
 import edu.upenn.cis.ppod.imodel.ITree;
 import edu.upenn.cis.ppod.imodel.ITreeSet;
 import edu.upenn.cis.ppod.util.IVisitor;
@@ -81,11 +80,10 @@ public class TreeSet
 	private String label;
 
 	@Nullable
-	@ManyToOne(fetch = FetchType.LAZY, optional = false,
-			targetEntity = OtuSet.class)
+	@ManyToOne(fetch = FetchType.LAZY, optional = false)
 	@JoinColumn(name = OtuSet.JOIN_COLUMN, insertable = false,
 				updatable = false)
-	private IOtuSet parent;
+	private OtuSet parent;
 
 	@OneToMany(cascade = CascadeType.ALL, orphanRemoval = true,
 			targetEntity = Tree.class)
@@ -126,7 +124,7 @@ public class TreeSet
 	protected void afterUnmarshal(
 			@CheckForNull final Unmarshaller u,
 			final Object parent) {
-		this.parent = (IOtuSet) parent;
+		this.parent = (OtuSet) parent;
 	}
 
 	/**
@@ -143,7 +141,7 @@ public class TreeSet
 
 	/** {@inheritDoc} */
 	@Nullable
-	public IOtuSet getParent() {
+	public OtuSet getParent() {
 		return parent;
 	}
 
@@ -177,7 +175,7 @@ public class TreeSet
 	}
 
 	/** {@inheritDoc} */
-	public void setParent(@CheckForNull final IOtuSet parent) {
+	public void setParent(@CheckForNull final OtuSet parent) {
 		this.parent = parent;
 		updateOtus();
 	}
