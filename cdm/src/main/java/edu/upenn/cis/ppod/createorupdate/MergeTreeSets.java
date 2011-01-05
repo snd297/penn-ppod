@@ -28,10 +28,10 @@ import com.google.inject.Inject;
 
 import edu.upenn.cis.ppod.imodel.IHasPPodId;
 import edu.upenn.cis.ppod.imodel.INewVersionInfo;
-import edu.upenn.cis.ppod.imodel.ITree;
 import edu.upenn.cis.ppod.imodel.ITreeSet;
 import edu.upenn.cis.ppod.model.ModelFactory;
 import edu.upenn.cis.ppod.model.Otu;
+import edu.upenn.cis.ppod.model.Tree;
 
 /**
  * An {@code IMergeTreeSets}.
@@ -58,10 +58,10 @@ class MergeTreeSets implements IMergeTreeSets {
 
 		targetTreeSet.setLabel(sourceTreeSet.getLabel());
 
-		final List<ITree> newTargetTrees = newArrayList();
+		final List<Tree> newTargetTrees = newArrayList();
 
-		for (final ITree sourceTree : sourceTreeSet.getTrees()) {
-			ITree targetTree;
+		for (final Tree sourceTree : sourceTreeSet.getTrees()) {
+			Tree targetTree;
 			if (null == (targetTree =
 							find(targetTreeSet.getTrees(), compose(
 									equalTo(sourceTree.getPPodId()),

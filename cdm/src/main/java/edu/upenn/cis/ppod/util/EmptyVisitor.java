@@ -30,10 +30,10 @@ import edu.upenn.cis.ppod.imodel.IStandardMatrix;
 import edu.upenn.cis.ppod.imodel.IStandardRow;
 import edu.upenn.cis.ppod.imodel.IStandardState;
 import edu.upenn.cis.ppod.imodel.IStudy;
-import edu.upenn.cis.ppod.imodel.ITree;
 import edu.upenn.cis.ppod.imodel.ITreeSet;
 import edu.upenn.cis.ppod.model.Otu;
 import edu.upenn.cis.ppod.model.OtuSet;
+import edu.upenn.cis.ppod.model.Tree;
 
 /**
  * An {@link IVisitor} that does nothing.
@@ -167,7 +167,7 @@ public abstract class EmptyVisitor implements IVisitor {
 	 * 
 	 * @param tree ignored
 	 */
-	public void visitTree(final ITree tree) {}
+	public void visitTree(final Tree tree) {}
 
 	/**
 	 * Does nothing.

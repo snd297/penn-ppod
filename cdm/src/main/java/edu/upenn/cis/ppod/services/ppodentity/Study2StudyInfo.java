@@ -26,11 +26,11 @@ import edu.upenn.cis.ppod.imodel.IStandardCharacter;
 import edu.upenn.cis.ppod.imodel.IStandardMatrix;
 import edu.upenn.cis.ppod.imodel.IStandardRow;
 import edu.upenn.cis.ppod.imodel.IStudy;
-import edu.upenn.cis.ppod.imodel.ITree;
 import edu.upenn.cis.ppod.imodel.ITreeSet;
 import edu.upenn.cis.ppod.imodel.IVersionInfo;
 import edu.upenn.cis.ppod.model.Otu;
 import edu.upenn.cis.ppod.model.OtuSet;
+import edu.upenn.cis.ppod.model.Tree;
 
 /**
  * @author Sam Donnelly
@@ -193,7 +193,7 @@ public final class Study2StudyInfo implements IStudy2StudyInfo {
 						.getVersion());
 				treeSetInfo.setDocId(treeSet.getDocId());
 
-				for (final ITree tree : treeSet.getTrees()) {
+				for (final Tree tree : treeSet.getTrees()) {
 					final PPodEntityInfo treeInfo = new PPodEntityInfo();
 					treeSetInfo.getTreeInfos().add(treeInfo);
 					treeInfo.setEntityId(tree.getId());

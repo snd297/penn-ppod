@@ -30,10 +30,10 @@ import edu.upenn.cis.ppod.imodel.IStandardMatrix;
 import edu.upenn.cis.ppod.imodel.IStandardRow;
 import edu.upenn.cis.ppod.imodel.IStandardState;
 import edu.upenn.cis.ppod.imodel.IStudy;
-import edu.upenn.cis.ppod.imodel.ITree;
 import edu.upenn.cis.ppod.imodel.ITreeSet;
 import edu.upenn.cis.ppod.model.Otu;
 import edu.upenn.cis.ppod.model.OtuSet;
+import edu.upenn.cis.ppod.model.Tree;
 
 /**
  * The visitor in the visitor pattern.
@@ -129,7 +129,7 @@ public interface IVisitor {
 	 * 
 	 * @param tree to be visited
 	 */
-	void visitTree(ITree tree);
+	void visitTree(Tree tree);
 
 	void visitTreeSet(ITreeSet treeSet);
 

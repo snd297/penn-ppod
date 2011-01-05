@@ -42,7 +42,6 @@ import javax.xml.bind.annotation.adapters.XmlAdapter;
 
 import com.google.common.collect.Iterators;
 
-import edu.upenn.cis.ppod.imodel.ITree;
 import edu.upenn.cis.ppod.imodel.ITreeSet;
 import edu.upenn.cis.ppod.util.IVisitor;
 
@@ -66,7 +65,7 @@ public class TreeSet
 		}
 
 		@Override
-		public ITreeSet unmarshal(final TreeSet treeSet) {
+		public TreeSet unmarshal(final TreeSet treeSet) {
 			return treeSet;
 		}
 	}
@@ -85,11 +84,10 @@ public class TreeSet
 				updatable = false)
 	private OtuSet parent;
 
-	@OneToMany(cascade = CascadeType.ALL, orphanRemoval = true,
-			targetEntity = Tree.class)
+	@OneToMany(cascade = CascadeType.ALL, orphanRemoval = true)
 	@OrderColumn(name = "POSITION")
 	@JoinColumn(name = JOIN_COLUMN, nullable = false)
-	private final List<ITree> trees = newArrayList();
+	private final List<Tree> trees = newArrayList();
 
 	public TreeSet() {}
 
@@ -97,7 +95,7 @@ public class TreeSet
 	public void accept(final IVisitor visitor) {
 		checkNotNull(visitor);
 		visitor.visitTreeSet(this);
-		for (final ITree tree : getTreesModifiable()) {
+		for (final Tree tree : getTreesModifiable()) {
 			tree.accept(visitor);
 		}
 		super.accept(visitor);
@@ -106,7 +104,7 @@ public class TreeSet
 	/**
 	 * {@inheritDoc}
 	 */
-	public void addTree(final ITree tree) {
+	public void addTree(final Tree tree) {
 		checkNotNull(tree);
 		checkArgument(!trees.contains(tree),
 				"tree set already contains a tree [" + tree.getLabel() + "]");
@@ -146,12 +144,12 @@ public class TreeSet
 	}
 
 	/** {@inheritDoc} */
-	public List<ITree> getTrees() {
+	public List<Tree> getTrees() {
 		return Collections.unmodifiableList(trees);
 	}
 
 	@XmlElement(name = "tree")
-	protected List<ITree> getTreesModifiable() {
+	protected List<Tree> getTreesModifiable() {
 		return trees;
 	}
 
@@ -186,29 +184,29 @@ public class TreeSet
 	 * @throws IllegalArgumentException if {@code trees} contains any
 	 *             {@code .equals(...)} duplicates
 	 */
-	public List<ITree> setTrees(final List<? extends ITree> trees) {
+	public List<Tree> setTrees(final List<? extends Tree> trees) {
 		checkNotNull(trees);
 		if (trees.equals(getTreesModifiable())) {
 			return Collections.emptyList();
 		}
 
 		int treePos = -1;
-		for (final ITree tree : trees) {
+		for (final Tree tree : trees) {
 			treePos++;
 			checkArgument(
 					!Iterators.contains(trees.listIterator(treePos + 1), tree),
 					"argument trees contains duplicates");
 		}
 
-		final List<ITree> removedTrees = newArrayList(getTrees());
+		final List<Tree> removedTrees = newArrayList(getTrees());
 		removedTrees.removeAll(trees);
 
-		for (final ITree removedTree : removedTrees) {
+		for (final Tree removedTree : removedTrees) {
 			removedTree.setParent(null);
 		}
 
 		getTreesModifiable().clear();
-		for (final ITree newTree : trees) {
+		for (final Tree newTree : trees) {
 			addTree(newTree);
 		}
 		setInNeedOfNewVersion();

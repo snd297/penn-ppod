@@ -19,11 +19,12 @@ import java.util.List;
 
 import javax.xml.bind.annotation.adapters.XmlJavaTypeAdapter;
 
+import edu.upenn.cis.ppod.model.Tree;
 import edu.upenn.cis.ppod.model.TreeSet;
 
 @XmlJavaTypeAdapter(TreeSet.Adapter.class)
 public interface ITreeSet
-		extends ILabeled, IUuPPodEntity, IOtuSetChild, IHasDocId {
+		extends ILabeled, IUuPPodEntity, IDependsOnOtus, IHasDocId {
 
 	/**
 	 * Add {@code tree} to this {@code ITreeSet}.
@@ -33,14 +34,14 @@ public interface ITreeSet
 	 * @throws IllegalArgumentException if the tree is already contained in this
 	 *             tree set
 	 */
-	void addTree(ITree tree);
+	void addTree(Tree tree);
 
 	/**
 	 * Get the constituent trees.
 	 * 
 	 * @return the constituent trees.
 	 */
-	List<ITree> getTrees();
+	List<Tree> getTrees();
 
 	/**
 	 * Set the label.
@@ -58,6 +59,6 @@ public interface ITreeSet
 	 * 
 	 * @return any trees which were removed as a result of this operation
 	 */
-	List<ITree> setTrees(List<? extends ITree> trees);
+	List<Tree> setTrees(List<? extends Tree> trees);
 
 }

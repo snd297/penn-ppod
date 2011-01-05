@@ -29,9 +29,7 @@ import javax.persistence.Table;
 import javax.xml.bind.Unmarshaller;
 import javax.xml.bind.annotation.XmlAttribute;
 import javax.xml.bind.annotation.XmlElement;
-import javax.xml.bind.annotation.adapters.XmlAdapter;
 
-import edu.upenn.cis.ppod.imodel.ITree;
 import edu.upenn.cis.ppod.imodel.ITreeSet;
 import edu.upenn.cis.ppod.util.IVisitor;
 
@@ -42,20 +40,7 @@ import edu.upenn.cis.ppod.util.IVisitor;
  */
 @Entity
 @Table(name = Tree.TABLE)
-public class Tree extends UuPPodEntity implements ITree {
-
-	public static class Adapter extends XmlAdapter<Tree, ITree> {
-
-		@Override
-		public Tree marshal(final ITree tree) {
-			return (Tree) tree;
-		}
-
-		@Override
-		public ITree unmarshal(final Tree tree) {
-			return tree;
-		}
-	}
+public class Tree extends UuPPodEntity {
 
 	public static final String TABLE = "TREE";
 
@@ -101,14 +86,24 @@ public class Tree extends UuPPodEntity implements ITree {
 		setParent((TreeSet) parent);
 	}
 
-	/** {@inheritDoc} */
+	/**
+	 * Return the label. {@code null} when the tree is constructed, but will
+	 * never be {@code null} once set.
+	 * 
+	 * @return the label
+	 */
 	@XmlAttribute
 	@Nullable
 	public String getLabel() {
 		return label;
 	}
 
-	/** {@inheritDoc} */
+	/**
+	 * Get the newick string. {@code null} when the tree is constructed, but
+	 * will never be {@code null} once set.
+	 * 
+	 * @return the newick string
+	 */
 	@XmlElement
 	@Nullable
 	public String getNewick() {
@@ -128,7 +123,11 @@ public class Tree extends UuPPodEntity implements ITree {
 		super.setInNeedOfNewVersion();
 	}
 
-	/** {@inheritDoc} */
+	/**
+	 * Set the label of this tree.
+	 * 
+	 * @param label the label
+	 */
 	public void setLabel(final String label) {
 		checkNotNull(label);
 		if (label.equals(this.label)) {
@@ -139,7 +138,13 @@ public class Tree extends UuPPodEntity implements ITree {
 		}
 	}
 
-	/** {@inheritDoc} */
+	/**
+	 * Setter.
+	 * 
+	 * @param newick the Newick tree, composed of pPOD id's.
+	 * 
+	 * @return this {@code Tree}
+	 */
 	public void setNewick(final String newick) {
 		checkNotNull(newick);
 		if (newick.equals(getNewick())) {
