@@ -44,6 +44,7 @@ import edu.umd.cs.findbugs.annotations.CheckForNull;
 import edu.upenn.cis.ppod.imodel.IAttachmentNamespace;
 import edu.upenn.cis.ppod.imodel.IAttachmentType;
 import edu.upenn.cis.ppod.imodel.IStudy;
+import edu.upenn.cis.ppod.imodel.IVersioned;
 import edu.upenn.cis.ppod.util.IVisitor;
 import edu.upenn.cis.ppod.util.PPodEntitiesUtil;
 
@@ -74,7 +75,7 @@ import edu.upenn.cis.ppod.util.PPodEntitiesUtil;
 @Table(name = Study.TABLE)
 public class Study
 		extends UuPPodEntity
-		implements IStudy {
+		implements IStudy, IVersioned {
 
 	/** The table name for this entity. */
 	public static final String TABLE = "STUDY";

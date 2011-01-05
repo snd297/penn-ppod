@@ -33,7 +33,7 @@ import edu.umd.cs.findbugs.annotations.Nullable;
 import edu.upenn.cis.ppod.model.Attachment;
 
 @XmlJavaTypeAdapter(Attachment.Adapter.class)
-public interface IAttachment extends IUuPPodEntity {
+public interface IAttachment extends IVersioned {
 
 	final static class IsOfNamespace implements Predicate<IAttachment> {
 

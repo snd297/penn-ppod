@@ -22,7 +22,7 @@ import javax.annotation.Nullable;
  * 
  * @author Sam Donnelly
  */
-public interface IVersioned extends IPersistentObject {
+public interface IVersioned extends IHasLongId {
 
 	/**
 	 * Used when we serialize so that we don't have to serialize the

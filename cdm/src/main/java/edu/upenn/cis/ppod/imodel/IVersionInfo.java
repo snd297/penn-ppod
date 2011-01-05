@@ -19,7 +19,7 @@ import java.util.Date;
 
 import javax.annotation.Nullable;
 
-public interface IVersionInfo extends IPersistentObject {
+public interface IVersionInfo extends IHasLongId {
 
 	/**
 	 * Get a copy of the creation date.

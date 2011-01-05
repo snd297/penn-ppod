@@ -37,8 +37,6 @@ import javax.xml.bind.annotation.XmlElement;
 
 import org.hibernate.annotations.Parent;
 
-import edu.upenn.cis.ppod.imodel.IDnaSequence;
-import edu.upenn.cis.ppod.imodel.IDnaSequenceSet;
 import edu.upenn.cis.ppod.imodel.IOtuKeyedMap;
 import edu.upenn.cis.ppod.imodel.IOtuKeyedMapPlus;
 import edu.upenn.cis.ppod.util.IVisitor;
@@ -53,10 +51,10 @@ import edu.upenn.cis.ppod.util.OtuDnaSequencePair;
 @Embeddable
 @Access(AccessType.PROPERTY)
 public class DnaSequences
-		implements IOtuKeyedMap<IDnaSequence> {
+		implements IOtuKeyedMap<DnaSequence> {
 
-	private final IOtuKeyedMapPlus<IDnaSequence, IDnaSequenceSet, OtuDnaSequencePair> sequences =
-			new OtuKeyedMapPlus<IDnaSequence, IDnaSequenceSet, OtuDnaSequencePair>();
+	private final IOtuKeyedMapPlus<DnaSequence, DnaSequenceSet, OtuDnaSequencePair> sequences =
+			new OtuKeyedMapPlus<DnaSequence, DnaSequenceSet, OtuDnaSequencePair>();
 
 	public void accept(final IVisitor visitor) {
 		sequences.accept(visitor);
@@ -71,12 +69,12 @@ public class DnaSequences
 			final Object parent) {
 		// Don't checkNotNull(parent) since it's called by JAXB and we can't
 		// control what it does
-		sequences.afterUnmarshal((IDnaSequenceSet) parent);
+		sequences.afterUnmarshal((DnaSequenceSet) parent);
 	}
 
 	protected boolean beforeMarshal(@CheckForNull final Marshaller marshaller) {
 		getOTUSomethingPairs().clear();
-		for (final Map.Entry<Otu, IDnaSequence> otuToRow : getValues()
+		for (final Map.Entry<Otu, DnaSequence> otuToRow : getValues()
 				.entrySet()) {
 			getOTUSomethingPairs().add(
 					new OtuDnaSequencePair(otuToRow.getKey(), otuToRow
@@ -89,7 +87,7 @@ public class DnaSequences
 		sequences.clear();
 	}
 
-	public IDnaSequence get(final Otu key) {
+	public DnaSequence get(final Otu key) {
 		return sequences.get(key);
 	}
 
@@ -100,7 +98,7 @@ public class DnaSequences
 	}
 
 	@Parent
-	public IDnaSequenceSet getParent() {
+	public DnaSequenceSet getParent() {
 		return sequences.getParent();
 	}
 
@@ -109,11 +107,11 @@ public class DnaSequences
 	@JoinTable(inverseJoinColumns = @JoinColumn(name = DnaSequence.JOIN_COLUMN))
 	@MapKeyJoinColumn(name = Otu.JOIN_COLUMN)
 	@MapKeyClass(Otu.class)
-	public Map<Otu, IDnaSequence> getValues() {
+	public Map<Otu, DnaSequence> getValues() {
 		return sequences.getValues();
 	}
 
-	public IDnaSequence put(final Otu key, final IDnaSequence value) {
+	public DnaSequence put(final Otu key, final DnaSequence value) {
 		return sequences.put(key, value);
 	}
 
@@ -122,11 +120,11 @@ public class DnaSequences
 		sequences.updateOtus();
 	}
 
-	public void setParent(final IDnaSequenceSet parent) {
+	public void setParent(final DnaSequenceSet parent) {
 		sequences.setParent(parent);
 	}
 
-	public void setValues(final Map<Otu, IDnaSequence> values) {
+	public void setValues(final Map<Otu, DnaSequence> values) {
 		sequences.setValues(values);
 	}
 }

@@ -18,12 +18,12 @@ package edu.upenn.cis.ppod.util;
 import edu.upenn.cis.ppod.imodel.IAttachment;
 import edu.upenn.cis.ppod.imodel.IAttachmentNamespace;
 import edu.upenn.cis.ppod.imodel.IAttachmentType;
-import edu.upenn.cis.ppod.imodel.IDnaSequence;
-import edu.upenn.cis.ppod.imodel.IDnaSequenceSet;
 import edu.upenn.cis.ppod.imodel.IStudy;
 import edu.upenn.cis.ppod.model.DnaCell;
 import edu.upenn.cis.ppod.model.DnaMatrix;
 import edu.upenn.cis.ppod.model.DnaRow;
+import edu.upenn.cis.ppod.model.DnaSequence;
+import edu.upenn.cis.ppod.model.DnaSequenceSet;
 import edu.upenn.cis.ppod.model.Otu;
 import edu.upenn.cis.ppod.model.OtuSet;
 import edu.upenn.cis.ppod.model.ProteinRow;
@@ -90,14 +90,14 @@ public abstract class EmptyVisitor implements IVisitor {
 	 * 
 	 * @param sequence ignored
 	 */
-	public void visitDNASequence(final IDnaSequence sequence) {}
+	public void visitDNASequence(final DnaSequence sequence) {}
 
 	/**
 	 * Does nothing.
 	 * 
 	 * @param sequenceSet ignored
 	 */
-	public void visitDNASequenceSet(final IDnaSequenceSet sequenceSet) {}
+	public void visitDNASequenceSet(final DnaSequenceSet sequenceSet) {}
 
 	/**
 	 * Does nothing.

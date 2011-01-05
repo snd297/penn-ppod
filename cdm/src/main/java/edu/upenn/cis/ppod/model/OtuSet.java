@@ -46,7 +46,6 @@ import com.google.common.annotations.VisibleForTesting;
 import edu.umd.cs.findbugs.annotations.CheckForNull;
 import edu.umd.cs.findbugs.annotations.Nullable;
 import edu.upenn.cis.ppod.imodel.IChild;
-import edu.upenn.cis.ppod.imodel.IDnaSequenceSet;
 import edu.upenn.cis.ppod.imodel.ILabeled;
 import edu.upenn.cis.ppod.imodel.IStudy;
 import edu.upenn.cis.ppod.util.IVisitor;
@@ -106,7 +105,7 @@ public class OtuSet
 			targetEntity = DnaSequenceSet.class)
 	@OrderColumn(name = "POSITION")
 	@JoinColumn(name = JOIN_COLUMN, nullable = false)
-	private final List<IDnaSequenceSet> dnaSequenceSets = newArrayList();
+	private final List<DnaSequenceSet> dnaSequenceSets = newArrayList();
 
 	/**
 	 * Non-unique label.
@@ -193,9 +192,9 @@ public class OtuSet
 	}
 
 	/**
-	 * Add an {@code IDNASequenceSet}.
+	 * Add an {@code DnaSequenceSet}.
 	 * <p>
-	 * Also handles the {@code IDNASequenceSet->IOTUSet} side of the
+	 * Also handles the {@code DnaSequenceSet->IOTUSet} side of the
 	 * relationship.
 	 * 
 	 * @param dnaSequenceSet the new {@code DNASequenceSet}
@@ -204,7 +203,7 @@ public class OtuSet
 	 *             matrix
 	 */
 	public void addDNASequenceSet(
-			final IDnaSequenceSet sequenceSet) {
+			final DnaSequenceSet sequenceSet) {
 		checkNotNull(sequenceSet);
 		checkArgument(
 				!dnaSequenceSets.contains(sequenceSet),
@@ -218,7 +217,7 @@ public class OtuSet
 	/** {@inheritDoc} */
 	public void addDNASequenceSet(
 			final int sequenceSetPos,
-			final IDnaSequenceSet sequenceSet) {
+			final DnaSequenceSet sequenceSet) {
 		checkNotNull(sequenceSet);
 		checkArgument(sequenceSetPos >= 0, "sequenceSetPos < 0");
 		checkArgument(
@@ -391,12 +390,12 @@ public class OtuSet
 	}
 
 	/** {@inheritDoc} */
-	public List<IDnaSequenceSet> getDNASequenceSets() {
+	public List<DnaSequenceSet> getDNASequenceSets() {
 		return Collections.unmodifiableList(dnaSequenceSets);
 	}
 
 	@XmlElement(name = "dnaSequenceSet")
-	protected List<IDnaSequenceSet> getDnaSequenceSetsModifiable() {
+	protected List<DnaSequenceSet> getDnaSequenceSetsModifiable() {
 		return dnaSequenceSets;
 	}
 
@@ -490,7 +489,7 @@ public class OtuSet
 	 * @throws IllegalArgumentException if the sequence set is not contained in
 	 *             this OTU set
 	 */
-	public void removeDnaSequenceSet(final IDnaSequenceSet sequenceSet) {
+	public void removeDnaSequenceSet(final DnaSequenceSet sequenceSet) {
 		checkNotNull(sequenceSet);
 		checkArgument(getDNASequenceSets().contains(sequenceSet),
 				"otu does not contain the dna sequence set labeled ["
