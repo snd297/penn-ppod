@@ -35,8 +35,6 @@ import com.google.common.collect.ImmutableList;
 
 import edu.upenn.cis.ppod.TestGroupDefs;
 import edu.upenn.cis.ppod.imodel.IAttachment;
-import edu.upenn.cis.ppod.imodel.ITree;
-import edu.upenn.cis.ppod.imodel.ITreeSet;
 import edu.upenn.cis.ppod.util.IVisitor;
 
 /**
@@ -49,8 +47,8 @@ public class TreeSetTest {
 
 	@Test
 	public void addTree() {
-		final ITreeSet treeSet = new TreeSet();
-		final ITree tree = new Tree();
+		final TreeSet treeSet = new TreeSet();
+		final Tree tree = new Tree();
 
 		assertFalse(treeSet.isInNeedOfNewVersion());
 		treeSet.addTree(tree);
@@ -61,7 +59,7 @@ public class TreeSetTest {
 
 	@Test
 	public void setTrees() {
-		final ITreeSet treeSet = new TreeSet();
+		final TreeSet treeSet = new TreeSet();
 
 		assertFalse(treeSet.isInNeedOfNewVersion());
 
@@ -70,7 +68,7 @@ public class TreeSetTest {
 						new Tree(),
 						new Tree());
 
-		final List<ITree> returnedTrees = treeSet.setTrees(trees);
+		final List<Tree> returnedTrees = treeSet.setTrees(trees);
 
 		assertTrue(treeSet.isInNeedOfNewVersion());
 
@@ -80,7 +78,7 @@ public class TreeSetTest {
 
 		treeSet.unsetInNeedOfNewVersion();
 		assertFalse(treeSet.isInNeedOfNewVersion());
-		final List<ITree> returnedTrees2 = treeSet.setTrees(trees);
+		final List<Tree> returnedTrees2 = treeSet.setTrees(trees);
 		assertTrue(isEmpty(returnedTrees2));
 		assertFalse(treeSet.isInNeedOfNewVersion());
 		assertEquals(treeSet.getTrees(), trees);
@@ -90,14 +88,14 @@ public class TreeSetTest {
 		final List<Tree> trees2 =
 				ImmutableList.of(trees.get(1));
 
-		final List<ITree> returnedTrees3 = treeSet.setTrees(trees2);
+		final List<Tree> returnedTrees3 = treeSet.setTrees(trees2);
 		assertTrue(treeSet.isInNeedOfNewVersion());
 		assertEquals(returnedTrees3,
 				ImmutableList.of(
 						trees.get(0),
 						trees.get(2)));
 		assertEquals(treeSet.getTrees(), trees2);
-		for (final ITree returnedTree3 : returnedTrees3) {
+		for (final Tree returnedTree3 : returnedTrees3) {
 			assertNull(returnedTree3.getParent());
 		}
 	}
@@ -109,7 +107,7 @@ public class TreeSetTest {
 	@Test
 	public void setInNeedOfNewVersionInfo() {
 
-		final ITreeSet treeSet = new TreeSet();
+		final TreeSet treeSet = new TreeSet();
 		treeSet.unsetInNeedOfNewVersion();
 
 		treeSet.setInNeedOfNewVersion();
@@ -130,7 +128,7 @@ public class TreeSetTest {
 
 	@Test
 	public void setLabel() {
-		final ITreeSet treeSet = new TreeSet();
+		final TreeSet treeSet = new TreeSet();
 		treeSet.unsetInNeedOfNewVersion();
 		final String otuSetLabel = "otu-set-label";
 		treeSet.setLabel(otuSetLabel);
@@ -146,7 +144,7 @@ public class TreeSetTest {
 
 	@Test
 	public void accept() {
-		final ITreeSet treeSet = new TreeSet();
+		final TreeSet treeSet = new TreeSet();
 		treeSet.addTree(new Tree());
 		treeSet.addTree(new Tree());
 		treeSet.addTree(new Tree());

@@ -27,11 +27,11 @@ import edu.upenn.cis.ppod.imodel.IStandardMatrix;
 import edu.upenn.cis.ppod.imodel.IStandardRow;
 import edu.upenn.cis.ppod.imodel.IStandardState;
 import edu.upenn.cis.ppod.imodel.IStudy;
-import edu.upenn.cis.ppod.imodel.ITree;
 import edu.upenn.cis.ppod.imodel.ITreeSet;
 import edu.upenn.cis.ppod.imodel.IVersioned;
 import edu.upenn.cis.ppod.model.Otu;
 import edu.upenn.cis.ppod.model.OtuSet;
+import edu.upenn.cis.ppod.model.Tree;
 
 /**
  * Stuff that should be done at the very end of a pPOD session.
@@ -115,7 +115,7 @@ public final class SetVersionInfoVisitor extends EmptyVisitor {
 	}
 
 	@Override
-	public void visitTree(final ITree tree) {
+	public void visitTree(final Tree tree) {
 		setNewVersionInfo(tree);
 	}
 
