@@ -36,7 +36,6 @@ import org.testng.annotations.Test;
 import com.google.common.collect.ImmutableSet;
 
 import edu.upenn.cis.ppod.TestGroupDefs;
-import edu.upenn.cis.ppod.imodel.IStandardCharacter;
 import edu.upenn.cis.ppod.imodel.IVersionInfo;
 import edu.upenn.cis.ppod.util.IVisitor;
 
@@ -159,7 +158,7 @@ public class PPodEntityTest {
 
 	@Test
 	public void getAttachmentsHasAttachments() {
-		final IStandardCharacter character = new StandardCharacter();
+		final StandardCharacter character = new StandardCharacter();
 
 		final Attachment attachment0 = new Attachment();
 		final Attachment attachment1 = new Attachment();

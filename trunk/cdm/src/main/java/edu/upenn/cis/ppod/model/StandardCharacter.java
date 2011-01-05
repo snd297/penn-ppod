@@ -41,9 +41,6 @@ import com.google.common.base.Preconditions;
 
 import edu.umd.cs.findbugs.annotations.CheckForNull;
 import edu.umd.cs.findbugs.annotations.Nullable;
-import edu.upenn.cis.ppod.imodel.IStandardCharacter;
-import edu.upenn.cis.ppod.imodel.IStandardMatrix;
-import edu.upenn.cis.ppod.imodel.IStandardState;
 import edu.upenn.cis.ppod.util.IVisitor;
 
 /**
@@ -54,19 +51,18 @@ import edu.upenn.cis.ppod.util.IVisitor;
  */
 @Entity
 @Table(name = StandardCharacter.TABLE)
-public class StandardCharacter extends UuPPodEntityWithDocId
-		implements IStandardCharacter {
+public class StandardCharacter extends UuPPodEntityWithDocId {
 
 	public static class Adapter extends
-			XmlAdapter<StandardCharacter, IStandardCharacter> {
+			XmlAdapter<StandardCharacter, StandardCharacter> {
 
 		@Override
-		public StandardCharacter marshal(final IStandardCharacter character) {
+		public StandardCharacter marshal(final StandardCharacter character) {
 			return (StandardCharacter) character;
 		}
 
 		@Override
-		public IStandardCharacter unmarshal(final StandardCharacter character) {
+		public StandardCharacter unmarshal(final StandardCharacter character) {
 			return character;
 		}
 	}
@@ -92,7 +88,7 @@ public class StandardCharacter extends UuPPodEntityWithDocId
 			insertable = false,
 			updatable = false)
 	@CheckForNull
-	private IStandardMatrix parent;
+	private StandardMatrix parent;
 
 	@Column(name = "MESQUITE_ID", nullable = false, unique = true)
 	private String mesquiteId;
@@ -106,11 +102,11 @@ public class StandardCharacter extends UuPPodEntityWithDocId
 	@OneToMany(mappedBy = "parent", cascade = CascadeType.ALL,
 			orphanRemoval = true, targetEntity = StandardState.class)
 	@MapKey(name = "stateNumber")
-	private final Map<Integer, IStandardState> states = newHashMap();
+	private final Map<Integer, StandardState> states = newHashMap();
 
 	@Transient
 	@Nullable
-	private Set<IStandardState> statesXml;
+	private Set<StandardState> statesXml;
 
 	/**
 	 * Default constructor for (at least) Hibernate.
@@ -121,17 +117,28 @@ public class StandardCharacter extends UuPPodEntityWithDocId
 	public void accept(final IVisitor visitor) {
 		checkNotNull(visitor);
 		visitor.visitStandardCharacter(this);
-		for (final IStandardState state : getStates()) {
+		for (final StandardState state : getStates()) {
 			state.accept(visitor);
 		}
 		super.accept(visitor);
 	}
 
-	/** {@inheritDoc} */
+	/**
+	 * Add <code>state</code> into this <code>Character</code>.
+	 * <p>
+	 * Calling this handles both sides of the <code>Character</code><->
+	 * <code>CharacterState</code>s. relationship.
+	 * 
+	 * @param state what we're adding
+	 * 
+	 * @return the previous state that was associated with
+	 *         {@code state.getStateNumber()} or {@code null} if there was no
+	 *         such state.
+	 */
 	@CheckForNull
-	public IStandardState addState(final IStandardState state) {
+	public StandardState addState(final StandardState state) {
 		Preconditions.checkNotNull(state);
-		final IStandardState originalState =
+		final StandardState originalState =
 				states.put(state.getStateNumber(), state);
 		if (state == originalState) {
 			return originalState;
@@ -159,8 +166,8 @@ public class StandardCharacter extends UuPPodEntityWithDocId
 	protected void afterUnmarshal(
 			@CheckForNull final Unmarshaller u,
 			final Object parent) {
-		setParent((IStandardMatrix) parent);
-		for (final IStandardState stateXml : statesXml) {
+		setParent((StandardMatrix) parent);
+		for (final StandardState stateXml : statesXml) {
 			stateXml.setParent(this);
 			states.put(stateXml.getStateNumber(), stateXml);
 		}
@@ -170,7 +177,7 @@ public class StandardCharacter extends UuPPodEntityWithDocId
 	@Override
 	protected boolean beforeMarshal(@CheckForNull final Marshaller marshaller) {
 		statesXml = newHashSet();
-		for (final IStandardState state : states.values()) {
+		for (final StandardState state : states.values()) {
 			statesXml.add(state);
 		}
 		return true;
@@ -207,24 +214,36 @@ public class StandardCharacter extends UuPPodEntityWithDocId
 	 * @return the matrix that owns this character
 	 */
 	@Nullable
-	public IStandardMatrix getParent() {
+	public StandardMatrix getParent() {
 		return parent;
 	}
 
-	/** {@inheritDoc} */
+	/**
+	 * Get the state with the given state number, or {@code null} if there is no
+	 * such state.
+	 * 
+	 * @param stateNumber the state number of the state we want to retrieve
+	 * 
+	 * @return the state with the given state number, or {@code null} if there
+	 *         is no such state.
+	 */
 	@CheckForNull
-	public IStandardState getState(final Integer stateNumber) {
+	public StandardState getState(final Integer stateNumber) {
 		checkNotNull(stateNumber);
 		return states.get(stateNumber.intValue());
 	}
 
-	/** {@inheritDoc} */
-	public Set<IStandardState> getStates() {
+	/**
+	 * Get the states of this character.
+	 * 
+	 * @return the states of this character.
+	 */
+	public Set<StandardState> getStates() {
 		return newHashSet(states.values());
 	}
 
 	@XmlElement(name = "state")
-	protected Set<IStandardState> getStatesXml() {
+	protected Set<StandardState> getStatesXml() {
 		return statesXml;
 	}
 
@@ -259,7 +278,7 @@ public class StandardCharacter extends UuPPodEntityWithDocId
 
 	/** {@inheritDoc} */
 	public void setParent(
-			@CheckForNull final IStandardMatrix parent) {
+			@CheckForNull final StandardMatrix parent) {
 		this.parent = parent;
 	}
 

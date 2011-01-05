@@ -17,24 +17,28 @@ package edu.upenn.cis.ppod.imodel;
 
 import java.util.List;
 
-public interface IRow<C extends ICell<?, ?>, M extends IMatrix<?, ?>>
-		extends IChild<M> {
-	/**
-	 * Get the cells that make up this row.
-	 * 
-	 * @return the cells that make up this row
-	 */
-	List<C> getCells();
+public interface IHasColumnVersionInfos extends IVersioned {
 
 	/**
-	 * Set the cells of this row.
+	 * Get the column pPOD version infos. These are equal to the largest pPOD
+	 * version in the columns, where largest list determined determined by
+	 * {@link VersionInfo#getVersion()} .
 	 * <p>
-	 * This handles both sides of the {@code Row<->Cell} relationship.
+	 * The behavior of this method is undefined for unmarshalled matrices.
 	 * 
-	 * @param cells the cells
-	 * 
-	 * @return any cells which were removed as a result of this operation
+	 * @return get the column pPOD version infos
 	 */
-	List<C> setCells(List<? extends C> cells);
+	List<IVersionInfo> getColumnVersionInfos();
+
+	/**
+	 * Set a particular column to a version.
+	 * 
+	 * @param pos position of the column
+	 * @param versionInfo the version
+	 * 
+	 * @throw IllegalArgumentException if {@code pos >=
+	 *        getColumnVersionInfos().size()}
+	 */
+	void setColumnVersionInfo(int pos, IVersionInfo versionInfo);
 
 }

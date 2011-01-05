@@ -24,7 +24,6 @@ import org.testng.annotations.Test;
 
 import edu.upenn.cis.ppod.TestGroupDefs;
 import edu.upenn.cis.ppod.imodel.IAttachment;
-import edu.upenn.cis.ppod.imodel.IStandardCharacter;
 
 /**
  * Tests for {@link Attachment}.
@@ -173,7 +172,7 @@ public class AttachmentTest {
 	@Test
 	public void setInNeedOfNewVersion() {
 		final Attachment attachment = new Attachment();
-		final IStandardCharacter character = new StandardCharacter();
+		final StandardCharacter character = new StandardCharacter();
 		character.addAttachment(attachment);
 		attachment.unsetInNeedOfNewVersion();
 		character.unsetInNeedOfNewVersion();

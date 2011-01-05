@@ -29,8 +29,6 @@ import org.testng.annotations.Test;
 import com.google.common.collect.ImmutableList;
 
 import edu.upenn.cis.ppod.TestGroupDefs;
-import edu.upenn.cis.ppod.imodel.IStandardCharacter;
-import edu.upenn.cis.ppod.imodel.IStandardRow;
 
 /**
  * {@link CharacterStateRow} test.
@@ -53,7 +51,7 @@ public class StandardRowTest {
 		otus.add(new Otu().setLabel("OTU-0"));
 		matrix.getParent().setOTUs(newArrayList(otus.get(0)));
 		matrix.putRow(otus.get(0), new StandardRow());
-		final IStandardCharacter character0 = new StandardCharacter();
+		final StandardCharacter character0 = new StandardCharacter();
 		character0.setLabel("character-0");
 		matrix.setCharacters(newArrayList(character0));
 	}
@@ -80,7 +78,7 @@ public class StandardRowTest {
 		matrix.getParent().setOTUs(newArrayList(otus.get(0)));
 		matrix.putRow(otus.get(0), new StandardRow());
 
-		final IStandardRow row = matrix.getRows().get(otu0);
+		final StandardRow row = matrix.getRows().get(otu0);
 
 		final ImmutableList<StandardCharacter> characters =
 				ImmutableList.of(

@@ -24,6 +24,8 @@ import javax.persistence.Entity;
 import javax.persistence.Table;
 import javax.xml.bind.annotation.XmlElement;
 
+import com.google.common.annotations.Beta;
+
 import edu.upenn.cis.ppod.util.IVisitor;
 
 /**
@@ -64,7 +66,14 @@ public class DnaMatrix
 		return rows;
 	}
 
-	/** {@inheritDoc} */
+	/**
+	 * Remove the cells the make up the given column number.
+	 * 
+	 * @param columnNo the column to remove
+	 * 
+	 * @return the cells in the column
+	 */
+	@Beta
 	public List<DnaCell> removeColumn(final int columnNo) {
 		setColumnsSize(getColumnsSize() - 1);
 		return super.removeColumnHelper(columnNo);

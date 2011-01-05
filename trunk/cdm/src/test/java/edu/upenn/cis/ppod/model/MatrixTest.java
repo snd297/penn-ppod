@@ -20,7 +20,6 @@ import static org.testng.Assert.assertSame;
 import org.testng.annotations.Test;
 
 import edu.upenn.cis.ppod.TestGroupDefs;
-import edu.upenn.cis.ppod.imodel.IMatrix;
 
 /**
  * @author Sam Donnelly
@@ -40,7 +39,7 @@ public class MatrixTest {
 
 	@Test(expectedExceptions = IllegalArgumentException.class)
 	public void setColumnPPodVersionInfosWTooSmallPos() {
-		final IMatrix<?, ?> matrix = new DnaMatrix();
+		final Matrix<?, ?> matrix = new DnaMatrix();
 		final VersionInfo versionInfo = new VersionInfo();
 		matrix.setColumnVersionInfo(0, versionInfo);
 	}

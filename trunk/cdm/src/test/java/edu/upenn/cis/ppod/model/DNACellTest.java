@@ -27,9 +27,7 @@ import org.testng.annotations.Test;
 import com.google.common.collect.ImmutableSet;
 
 import edu.upenn.cis.ppod.TestGroupDefs;
-import edu.upenn.cis.ppod.imodel.DnaNucleotide;
-import edu.upenn.cis.ppod.imodel.ICell;
-import edu.upenn.cis.ppod.imodel.ICell.Type;
+import edu.upenn.cis.ppod.model.Cell.Type;
 
 /**
  * Test {@link DNACell}.
@@ -94,20 +92,20 @@ public class DNACellTest {
 		cell.unsetInNeedOfNewVersion();
 
 		cell.setPolymorphicOrUncertain(
-						ICell.Type.POLYMORPHIC,
+						Cell.Type.POLYMORPHIC,
 						nucleotides);
 
 		assertTrue(cell.isInNeedOfNewVersion());
-		assertEquals(cell.getType(), ICell.Type.POLYMORPHIC);
+		assertEquals(cell.getType(), Cell.Type.POLYMORPHIC);
 		assertEquals(cell.getElements(),
 					nucleotides);
 
 		cell.unsetInNeedOfNewVersion();
 
-		cell.setPolymorphicOrUncertain(ICell.Type.POLYMORPHIC, nucleotides);
+		cell.setPolymorphicOrUncertain(Cell.Type.POLYMORPHIC, nucleotides);
 
 		assertFalse(cell.isInNeedOfNewVersion());
-		assertEquals(cell.getType(), ICell.Type.POLYMORPHIC);
+		assertEquals(cell.getType(), Cell.Type.POLYMORPHIC);
 		assertEquals((Object) cell.getElements(),
 				(Object) nucleotides);
 

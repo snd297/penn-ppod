@@ -43,10 +43,11 @@ import javax.xml.bind.annotation.XmlElement;
 
 import edu.umd.cs.findbugs.annotations.CheckForNull;
 import edu.umd.cs.findbugs.annotations.Nullable;
-import edu.upenn.cis.ppod.imodel.ICell;
-import edu.upenn.cis.ppod.imodel.IMatrix;
+import edu.upenn.cis.ppod.imodel.IDependsOnParentOtus;
+import edu.upenn.cis.ppod.imodel.IHasDocId;
+import edu.upenn.cis.ppod.imodel.IHasPPodId;
+import edu.upenn.cis.ppod.imodel.IHasColumnVersionInfos;
 import edu.upenn.cis.ppod.imodel.IOtuKeyedMap;
-import edu.upenn.cis.ppod.imodel.IRow;
 import edu.upenn.cis.ppod.imodel.IVersionInfo;
 import edu.upenn.cis.ppod.util.IVisitor;
 
@@ -57,9 +58,9 @@ import edu.upenn.cis.ppod.util.IVisitor;
  * @author Sam Donnelly
  */
 @MappedSuperclass
-public abstract class Matrix<R extends IRow<C, ?>, C extends ICell<?, ?>>
+public abstract class Matrix<R extends Row<C, ?>, C extends Cell<?, ?>>
 		extends UuPPodEntityWithDocId
-		implements IMatrix<R, C> {
+		implements IHasColumnVersionInfos, IDependsOnParentOtus, IHasDocId, IHasPPodId {
 
 	/** Description column. */
 	public static final String DESCRIPTION_COLUMN = "DESCRIPTION";
@@ -164,12 +165,26 @@ public abstract class Matrix<R extends IRow<C, ?>, C extends ICell<?, ?>>
 		return true;
 	}
 
-	/** {@inheritDoc} */
+	/**
+	 * The number of columns which any newly introduced rows must have.
+	 * <p>
+	 * Will return {@code 0} for newly constructed matrices.
+	 * 
+	 * @param columnsSize the number of columns in this matrix
+	 */
 	public Integer getColumnsSize() {
 		return Integer.valueOf(getColumnVersionInfos().size());
 	}
 
-	/** {@inheritDoc} */
+	/**
+	 * Get the column pPOD version infos. These are equal to the largest pPOD
+	 * version in the columns, where largest list determined determined by
+	 * {@link VersionInfo#getVersion()} .
+	 * <p>
+	 * The behavior of this method is undefined for unmarshalled matrices.
+	 * 
+	 * @return get the column pPOD version infos
+	 */
 	public List<IVersionInfo> getColumnVersionInfos() {
 		return Collections.unmodifiableList(columnVersionInfos);
 	}
@@ -183,7 +198,23 @@ public abstract class Matrix<R extends IRow<C, ?>, C extends ICell<?, ?>>
 		return columnVersionInfos;
 	}
 
-	/** {@inheritDoc} */
+	/**
+	 * Get the pPOD version numbers of each column. The version number is the
+	 * value of the largest cell version in the column.
+	 * <p>
+	 * This method was created for getting at the version number in unmarshalled
+	 * matrices, but it is fine to call for any matrix. When
+	 * {@link #getColumnVersionInfos()} is defined the following calls are
+	 * equivalent:
+	 * <ul>
+	 * <li>
+	 * {@code getColumnVersionInfos().get(n).getVersion()}</li>
+	 * <li>
+	 * {@code getColumnVersions().get(n)}</li>
+	 * </ul>
+	 * 
+	 * @return the pPOD version number of each column
+	 */
 	public List<Long> getColumnVersions() {
 		return Collections.unmodifiableList(columnVersions);
 	}
@@ -195,11 +226,10 @@ public abstract class Matrix<R extends IRow<C, ?>, C extends ICell<?, ?>>
 
 	/**
 	 * Getter.
-	 * <p>
-	 * {@code null} is a legal value.
 	 * 
 	 * @return the description
 	 */
+	@CheckForNull
 	@XmlAttribute
 	public String getDescription() {
 		return description;
@@ -214,6 +244,7 @@ public abstract class Matrix<R extends IRow<C, ?>, C extends ICell<?, ?>>
 	 * 
 	 * @return the label
 	 */
+	@Nullable
 	@XmlAttribute
 	public String getLabel() {
 		return label;
@@ -241,15 +272,40 @@ public abstract class Matrix<R extends IRow<C, ?>, C extends ICell<?, ?>>
 		return parent;
 	}
 
-	/** {@inheritDoc} */
+	/**
+	 * Get the rows that make up this matrix.
+	 * <p>
+	 * Rows will only be {@code null} for OTUs newly introduced to this matrix
+	 * by {@link #setOTUs}.
+	 * 
+	 * @return the rows that make up this matrix
+	 */
 	public Map<Otu, R> getRows() {
 		return Collections
 				.unmodifiableMap(getOTUKeyedRows().getValues());
 	}
 
 	/**
-	 * {@inheritDoc}
+	 * Set row at <code>otu</code> to <code>row</code>.
+	 * <p>
+	 * Assumes {@code row} does not belong to another matrix.
+	 * <p>
+	 * {@code otu} must be a member of {@link #getParent()}.
+	 * <p>
+	 * Assumes {@code row} is not detached.
+	 * 
+	 * @param otu index of the row we are adding
+	 * @param row the row we're adding
+	 * 
+	 * @return the row that was previously there, or {@code null} if there was
+	 *         no row previously there
+	 * 
+	 * @throws IllegalArgumentException if {@code otu} does not belong to this
+	 *             matrix's {@code OTUSet}
+	 * @throws IllegalArgumentException if this matrix already contains a row
+	 *             {@code .equals} to {@code row}
 	 */
+	@CheckForNull
 	public R putRow(final Otu otu, final R row) {
 		checkNotNull(otu);
 		checkNotNull(row);
@@ -281,7 +337,15 @@ public abstract class Matrix<R extends IRow<C, ?>, C extends ICell<?, ?>>
 		return removedColumn;
 	}
 
-	/** {@inheritDoc} */
+	/**
+	 * Set a particular column to a version.
+	 * 
+	 * @param pos position of the column
+	 * @param versionInfo the version
+	 * 
+	 * @throw IllegalArgumentException if {@code pos >=
+	 *        getColumnVersionInfos().size()}
+	 */
 	public void setColumnVersionInfo(
 			final int pos,
 			final IVersionInfo versionInfo) {
@@ -291,7 +355,13 @@ public abstract class Matrix<R extends IRow<C, ?>, C extends ICell<?, ?>>
 		getColumnVersionInfosModifiable().set(pos, versionInfo);
 	}
 
-	/** {@inheritDoc} */
+	/**
+	 * Set all of the columns' pPOD version infos.
+	 * 
+	 * @param versionInfo the pPOD version info
+	 * 
+	 * @return this
+	 */
 	public void setColumnVersionInfos(
 			final IVersionInfo versionInfo) {
 		for (int pos = 0; pos < getColumnVersionInfos().size(); pos++) {
@@ -299,9 +369,18 @@ public abstract class Matrix<R extends IRow<C, ?>, C extends ICell<?, ?>>
 		}
 	}
 
-	/** {@inheritDoc} */
+	public void setColumnVersions(final List<Long> pPodColumnVersions) {
+		columnVersions.clear();
+		columnVersions.addAll(pPodColumnVersions);
+	}
+
+	/**
+	 * Setter.
+	 * 
+	 * @param description the description value
+	 */
 	public void setDescription(
-			@Nullable final String description) {
+			@CheckForNull final String description) {
 		if (equal(description, getDescription())) {
 			// nothing to do
 		} else {
@@ -310,7 +389,13 @@ public abstract class Matrix<R extends IRow<C, ?>, C extends ICell<?, ?>>
 		}
 	}
 
-	/** {@inheritDoc} */
+	/**
+	 * Set the column at {@code position} as in need of a new
+	 * {@link VersionInfo}. Which means to set {@link #getColumnVersionInfos()}
+	 * {@code .get(position)} to {@code null}.
+	 * 
+	 * @param position the column that needs the new {@code VersionInfo}
+	 */
 	public void setInNeedOfNewColumnVersion(final int position) {
 		checkArgument(position >= 0, "position is negative");
 		checkArgument(position < getColumnsSize(),
@@ -328,7 +413,11 @@ public abstract class Matrix<R extends IRow<C, ?>, C extends ICell<?, ?>>
 		super.setInNeedOfNewVersion();
 	}
 
-	/** {@inheritDoc} */
+	/**
+	 * Set the label of this matrix.
+	 * 
+	 * @param label the value for the label
+	 */
 	public void setLabel(final String label) {
 		checkNotNull(label);
 		if (label.equals(getLabel())) {

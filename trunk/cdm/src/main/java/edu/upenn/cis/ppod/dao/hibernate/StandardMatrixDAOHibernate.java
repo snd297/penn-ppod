@@ -18,7 +18,6 @@ package edu.upenn.cis.ppod.dao.hibernate;
 import java.util.List;
 
 import edu.upenn.cis.ppod.dao.IStandardMatrixDAO;
-import edu.upenn.cis.ppod.imodel.IStandardMatrix;
 import edu.upenn.cis.ppod.model.StandardMatrix;
 import edu.upenn.cis.ppod.thirdparty.dao.hibernate.GenericHibernateDAO;
 
@@ -28,7 +27,7 @@ import edu.upenn.cis.ppod.thirdparty.dao.hibernate.GenericHibernateDAO;
  * @author Sam Donnelly
  */
 final class StandardMatrixDAOHibernate
-		extends GenericHibernateDAO<IStandardMatrix, Long>
+		extends GenericHibernateDAO<StandardMatrix, Long>
 		implements IStandardMatrixDAO {
 
 	@SuppressWarnings("unchecked")

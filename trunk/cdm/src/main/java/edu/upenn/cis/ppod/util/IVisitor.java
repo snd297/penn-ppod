@@ -20,18 +20,18 @@ import edu.upenn.cis.ppod.imodel.IAttachmentNamespace;
 import edu.upenn.cis.ppod.imodel.IAttachmentType;
 import edu.upenn.cis.ppod.imodel.IDnaSequence;
 import edu.upenn.cis.ppod.imodel.IDnaSequenceSet;
-import edu.upenn.cis.ppod.imodel.IProteinRow;
-import edu.upenn.cis.ppod.imodel.IStandardCell;
-import edu.upenn.cis.ppod.imodel.IStandardCharacter;
-import edu.upenn.cis.ppod.imodel.IStandardMatrix;
-import edu.upenn.cis.ppod.imodel.IStandardRow;
-import edu.upenn.cis.ppod.imodel.IStandardState;
 import edu.upenn.cis.ppod.imodel.IStudy;
 import edu.upenn.cis.ppod.model.DnaCell;
 import edu.upenn.cis.ppod.model.DnaMatrix;
 import edu.upenn.cis.ppod.model.DnaRow;
 import edu.upenn.cis.ppod.model.Otu;
 import edu.upenn.cis.ppod.model.OtuSet;
+import edu.upenn.cis.ppod.model.ProteinRow;
+import edu.upenn.cis.ppod.model.StandardCell;
+import edu.upenn.cis.ppod.model.StandardCharacter;
+import edu.upenn.cis.ppod.model.StandardMatrix;
+import edu.upenn.cis.ppod.model.StandardRow;
+import edu.upenn.cis.ppod.model.StandardState;
 import edu.upenn.cis.ppod.model.Tree;
 import edu.upenn.cis.ppod.model.TreeSet;
 
@@ -90,32 +90,32 @@ public interface IVisitor {
 
 	void visitOTUSet(OtuSet otuSet);
 
-	void visitProteinRow(IProteinRow row);
+	void visitProteinRow(ProteinRow row);
 
-	void visitStandardCell(IStandardCell cell);
+	void visitStandardCell(StandardCell cell);
 
 	/**
 	 * Visit a character
 	 * 
 	 * @param to be visited
 	 */
-	void visitStandardCharacter(IStandardCharacter character);
+	void visitStandardCharacter(StandardCharacter character);
 
-	void visitStandardMatrix(IStandardMatrix matrix);
+	void visitStandardMatrix(StandardMatrix matrix);
 
 	/**
 	 * Visit the row
 	 * 
 	 * @param row to be visited
 	 */
-	void visitStandardRow(IStandardRow row);
+	void visitStandardRow(StandardRow row);
 
 	/**
 	 * Visit the standard state.
 	 * 
 	 * @param state to be visited
 	 */
-	void visitStandardState(IStandardState state);
+	void visitStandardState(StandardState state);
 
 	/**
 	 * Visit the study.

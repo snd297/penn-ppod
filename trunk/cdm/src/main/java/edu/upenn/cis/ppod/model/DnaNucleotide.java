@@ -13,11 +13,23 @@
  * See the License for the specific language governing permissions and
  * limitations under the License.
  */
-package edu.upenn.cis.ppod.imodel;
+package edu.upenn.cis.ppod.model;
 
-import javax.xml.bind.annotation.adapters.XmlJavaTypeAdapter;
+/**
+ * The four DNA nucleotides.
+ * 
+ * @author Sam Donnelly
+ */
+public enum DnaNucleotide  {
+	/** Adenine. */
+	A,
 
-import edu.upenn.cis.ppod.model.StandardRow;
+	/** Cytosine. */
+	C,
 
-@XmlJavaTypeAdapter(StandardRow.Adapter.class)
-public interface IStandardRow extends IRow<IStandardCell, IStandardMatrix> {}
+	/** Guanine. */
+	G,
+
+	/** Thymine. */
+	T
+}

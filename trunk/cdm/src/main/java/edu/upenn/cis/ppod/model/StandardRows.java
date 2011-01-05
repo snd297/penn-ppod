@@ -38,8 +38,6 @@ import org.hibernate.annotations.Parent;
 
 import edu.upenn.cis.ppod.imodel.IOtuKeyedMap;
 import edu.upenn.cis.ppod.imodel.IOtuKeyedMapPlus;
-import edu.upenn.cis.ppod.imodel.IStandardMatrix;
-import edu.upenn.cis.ppod.imodel.IStandardRow;
 import edu.upenn.cis.ppod.util.IVisitor;
 import edu.upenn.cis.ppod.util.OtuStandardRowPair;
 
@@ -52,10 +50,10 @@ import edu.upenn.cis.ppod.util.OtuStandardRowPair;
 @Embeddable
 @Access(AccessType.PROPERTY)
 public class StandardRows
-		implements IOtuKeyedMap<IStandardRow> {
+		implements IOtuKeyedMap<StandardRow> {
 
-	private final IOtuKeyedMapPlus<IStandardRow, IStandardMatrix, OtuStandardRowPair> rows =
-			new OtuKeyedMapPlus<IStandardRow, IStandardMatrix, OtuStandardRowPair>();
+	private final IOtuKeyedMapPlus<StandardRow, StandardMatrix, OtuStandardRowPair> rows =
+			new OtuKeyedMapPlus<StandardRow, StandardMatrix, OtuStandardRowPair>();
 
 	StandardRows() {}
 
@@ -73,12 +71,12 @@ public class StandardRows
 			final Object parent) {
 		// Don't do checkNotNull(parent) since this is called by JAXB and we
 		// can't control it
-		rows.afterUnmarshal((IStandardMatrix) parent);
+		rows.afterUnmarshal((StandardMatrix) parent);
 	}
 
 	protected boolean beforeMarshal(@CheckForNull final Marshaller marshaller) {
 		getOTUSomethingPairs().clear();
-		for (final Map.Entry<Otu, IStandardRow> otuToRow : getValues()
+		for (final Map.Entry<Otu, StandardRow> otuToRow : getValues()
 				.entrySet()) {
 			getOTUSomethingPairs().add(
 					new OtuStandardRowPair(otuToRow.getKey(),
@@ -91,7 +89,7 @@ public class StandardRows
 		rows.clear();
 	}
 
-	public IStandardRow get(final Otu key) {
+	public StandardRow get(final Otu key) {
 		return rows.get(key);
 	}
 
@@ -102,7 +100,7 @@ public class StandardRows
 	}
 
 	@Parent
-	public IStandardMatrix getParent() {
+	public StandardMatrix getParent() {
 		return rows.getParent();
 	}
 
@@ -124,12 +122,12 @@ public class StandardRows
 			targetEntity = StandardRow.class)
 	@JoinTable(inverseJoinColumns = @JoinColumn(name = StandardRow.JOIN_COLUMN))
 	@MapKeyJoinColumn(name = Otu.JOIN_COLUMN)
-	public Map<Otu, IStandardRow> getValues() {
+	public Map<Otu, StandardRow> getValues() {
 		return rows.getValues();
 	}
 
 	/** {@inheritDoc} */
-	public IStandardRow put(final Otu key, final IStandardRow value) {
+	public StandardRow put(final Otu key, final StandardRow value) {
 		return rows.put(key, value);
 	}
 
@@ -143,12 +141,12 @@ public class StandardRows
 	 * 
 	 * @param parent the owner
 	 */
-	public void setParent(final IStandardMatrix parent) {
+	public void setParent(final StandardMatrix parent) {
 		rows.setParent(parent);
 	}
 
 	@SuppressWarnings("unused")
-	private void setValues(final Map<Otu, IStandardRow> values) {
+	private void setValues(final Map<Otu, StandardRow> values) {
 		rows.setValues(values);
 	}
 

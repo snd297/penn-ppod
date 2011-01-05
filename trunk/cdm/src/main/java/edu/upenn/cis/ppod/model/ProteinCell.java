@@ -15,24 +15,20 @@ import javax.xml.bind.annotation.XmlElement;
 
 import edu.umd.cs.findbugs.annotations.CheckForNull;
 import edu.umd.cs.findbugs.annotations.Nullable;
-import edu.upenn.cis.ppod.imodel.IProteinCell;
-import edu.upenn.cis.ppod.imodel.IProteinRow;
 import edu.upenn.cis.ppod.imodel.Protein;
 
 public class ProteinCell
-		extends MolecularCell<Protein, IProteinRow>
-		implements IProteinCell {
+		extends MolecularCell<Protein, ProteinRow> {
 
 	public static final String TABLE = "PROTEIN_CELL";
 
 	public static final String JOIN_COLUMN =
 			TABLE + "_" + PersistentObject.ID_COLUMN;
 
-	@ManyToOne(fetch = FetchType.LAZY, optional = false,
-			targetEntity = DnaRow.class)
+	@ManyToOne(fetch = FetchType.LAZY, optional = false)
 	@JoinColumn(name = ProteinRow.JOIN_COLUMN)
 	@Nullable
-	private IProteinRow parent;
+	private ProteinRow parent;
 
 	/**
 	 * The heart of the cell: the {@code DNANucleotide}s.
@@ -83,7 +79,7 @@ public class ProteinCell
 
 	@Override
 	@Nullable
-	public IProteinRow getParent() {
+	public ProteinRow getParent() {
 		return parent;
 	}
 
@@ -98,7 +94,7 @@ public class ProteinCell
 	}
 
 	/** {@inheritDoc} */
-	public void setParent(@CheckForNull final IProteinRow parent) {
+	public void setParent(@CheckForNull final ProteinRow parent) {
 		this.parent = parent;
 	}
 

@@ -36,19 +36,60 @@ import com.google.common.annotations.VisibleForTesting;
 
 import edu.umd.cs.findbugs.annotations.CheckForNull;
 import edu.umd.cs.findbugs.annotations.Nullable;
-import edu.upenn.cis.ppod.imodel.ICell;
-import edu.upenn.cis.ppod.imodel.IMatrix;
-import edu.upenn.cis.ppod.imodel.IRow;
+import edu.upenn.cis.ppod.imodel.IChild;
 
 /**
- * A cell.
+ * A cell in a matrix
  * 
  * @author Sam Donnelly
+ * 
+ * @param <E> the elements in the cell
+ * @param <R> the parent row type
  */
 @MappedSuperclass
-public abstract class Cell<E, R extends IRow<?, ?>>
+public abstract class Cell<E, R extends Row<?, ?>>
 		extends PPodEntity
-		implements ICell<E, R> {
+		implements IChild<R> {
+
+	/**
+	 * The different types of {@code Cell}: single, polymorphic, uncertain,
+	 * unassigned, or inapplicable.
+	 * <p>
+	 * Because we're storing these in the db as ordinals they will be:
+	 * <ul>
+	 * <li>{@code UNASSIGNED -> 0}</li>
+	 * <li>{@code SINGLE -> 1}</li>
+	 * <li>{@code POLYMORPHIC -> 2}</li>
+	 * <li>{@code UNCERTAIN -> 3}</li>
+	 * <li>{@code INAPPLICABLE -> 4}</li>
+	 * </ul>
+	 */
+	public static enum Type {
+
+		/** Unassigned, usually written as a {@code "?"} in Nexus files. */
+		UNASSIGNED,
+
+		/**
+		 * The cell has exactly one state.
+		 */
+		SINGLE,
+
+		/**
+		 * The cell is a conjunctions of states: <em>state1</em> and
+		 * <em>state2</em> and ... and <em>stateN</em>.
+		 */
+		POLYMORPHIC,
+
+		/**
+		 * The cell is a disjunction of states: <em>state1</em> or
+		 * <em>state2</em> or ... or <em>stateN</em>.
+		 */
+		UNCERTAIN,
+
+		/** Inapplicable, usually written as a {@code "-"} in Nexus files. */
+		INAPPLICABLE;
+
+	}
 
 	static final String TYPE_COLUMN = "TYPE";
 
@@ -86,7 +127,11 @@ public abstract class Cell<E, R extends IRow<?, ?>>
 	}
 
 	/**
+	 * Get the elements contained in this cell.
+	 * <p>
 	 * Will be {@code null} if this is cell is not {@link Type.SINGLE}.
+	 * 
+	 * @return the elements contained in this cell
 	 */
 	@Nullable
 	abstract E getElement();
@@ -220,7 +265,10 @@ public abstract class Cell<E, R extends IRow<?, ?>>
 	abstract void setElements(
 			@CheckForNull final Set<E> elements);
 
-	/** {@inheritDoc} */
+	/**
+	 * Set this cell's type to {@link Type#INAPPLICABLE}, its elements to the
+	 * empty set.
+	 */
 	public void setInapplicable() {
 		setInapplicableOrUnassigned(Type.INAPPLICABLE);
 	}
@@ -247,7 +295,7 @@ public abstract class Cell<E, R extends IRow<?, ?>>
 		final R row = getParent();
 		if (row != null) {
 			row.setInNeedOfNewVersion();
-			final IMatrix<?, ?> matrix = row.getParent();
+			final Matrix<?, ?> matrix = row.getParent();
 			if (matrix != null) {
 				// so FindBugs knows that it's okay
 				final Integer position = getPosition();
@@ -338,7 +386,10 @@ public abstract class Cell<E, R extends IRow<?, ?>>
 		return;
 	}
 
-	/** {@inheritDoc} */
+	/**
+	 * Set this cell's type to {@link Type#UNASSIGNED}, its elements to the
+	 * empty set.
+	 */
 	public void setUnassigned() {
 		setInapplicableOrUnassigned(Type.UNASSIGNED);
 	}

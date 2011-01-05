@@ -38,11 +38,6 @@ import javax.xml.bind.annotation.XmlIDREF;
 import javax.xml.bind.annotation.adapters.XmlAdapter;
 
 import edu.umd.cs.findbugs.annotations.Nullable;
-import edu.upenn.cis.ppod.imodel.IStandardCell;
-import edu.upenn.cis.ppod.imodel.IStandardCharacter;
-import edu.upenn.cis.ppod.imodel.IStandardMatrix;
-import edu.upenn.cis.ppod.imodel.IStandardRow;
-import edu.upenn.cis.ppod.imodel.IStandardState;
 import edu.upenn.cis.ppod.util.IVisitor;
 
 /**
@@ -53,18 +48,17 @@ import edu.upenn.cis.ppod.util.IVisitor;
 @Entity
 @Table(name = StandardCell.TABLE)
 public class StandardCell
-		extends Cell<IStandardState, IStandardRow>
-		implements IStandardCell {
+		extends Cell<StandardState, StandardRow> {
 
-	public static class Adapter extends XmlAdapter<StandardCell, IStandardCell> {
+	public static class Adapter extends XmlAdapter<StandardCell, StandardCell> {
 
 		@Override
-		public StandardCell marshal(final IStandardCell cell) {
+		public StandardCell marshal(final StandardCell cell) {
 			return (StandardCell) cell;
 		}
 
 		@Override
-		public IStandardCell unmarshal(final StandardCell cell) {
+		public StandardCell unmarshal(final StandardCell cell) {
 			return cell;
 		}
 	}
@@ -88,7 +82,7 @@ public class StandardCell
 	@ManyToOne(fetch = FetchType.LAZY, targetEntity = StandardState.class)
 	@JoinColumn(name = StandardState.JOIN_COLUMN)
 	@Nullable
-	private IStandardState element;
+	private StandardState element;
 
 	/**
 	 * The heart of the cell: the states.
@@ -100,7 +94,7 @@ public class StandardCell
 	@JoinTable(inverseJoinColumns = @JoinColumn(
 			name = StandardState.JOIN_COLUMN))
 	@Nullable
-	private Set<IStandardState> elements;
+	private Set<StandardState> elements;
 
 	/**
 	 * The {@code CharacterStateRow} to which this {@code CharacterStateCell}
@@ -110,7 +104,7 @@ public class StandardCell
 			targetEntity = StandardRow.class)
 	@JoinColumn(name = StandardRow.JOIN_COLUMN)
 	@Nullable
-	private IStandardRow parent;
+	private StandardRow parent;
 
 	@Nullable
 	@Transient
@@ -130,10 +124,15 @@ public class StandardCell
 		return true;
 	}
 
+	/**
+	 * Take actions that must be performed after
+	 * {@link javax.xml.bind.annotation.XmlIDREF}s have been resolved, that is,
+	 * after unmarshalling is finished.
+	 */
 	public void afterUnmarshal() {
 		if (getType() == Type.POLYMORPHIC || getType() == Type.UNCERTAIN) {
 			initElements();
-			for (final IStandardState elementXml : elementsXml) {
+			for (final StandardState elementXml : elementsXml) {
 				getElementsModifiable().add(elementXml);
 			}
 		}
@@ -148,14 +147,14 @@ public class StandardCell
 	 */
 	@Override
 	protected void afterUnmarshal(final Unmarshaller u, final Object parent) {
-		this.parent = (IStandardRow) parent;
+		this.parent = (StandardRow) parent;
 	}
 
 	@Override
 	protected boolean beforeMarshal(@Nullable final Marshaller marshaller) {
 		if (getType() == Type.POLYMORPHIC || getType() == Type.UNCERTAIN) {
 			this.elementsXml = newHashSet();
-			for (final IStandardState element : elements) {
+			for (final StandardState element : elements) {
 				// Load it if it's a proxy ;-)
 				element.getStateNumber();
 				this.elementsXml.add((StandardState) element);
@@ -171,14 +170,14 @@ public class StandardCell
 
 	private void checkRowMatrixCharacter() {
 
-		final IStandardRow row = getParent();
+		final StandardRow row = getParent();
 
 		checkState(row != null && getPosition() != null,
 				"this cell has not been assigned a row");
 
 		final Integer position = getPosition();
 
-		final IStandardMatrix matrix = row.getParent();
+		final StandardMatrix matrix = row.getParent();
 
 		checkState(matrix != null,
 				"this cell's row has not had a matrix assigned");
@@ -199,17 +198,17 @@ public class StandardCell
 	@XmlAttribute(name = "stateDocId")
 	@XmlIDREF
 	@Override
-	protected IStandardState getElement() {
+	protected StandardState getElement() {
 		return element;
 	}
 
 	@Override
-	Set<IStandardState> getElementsModifiable() {
+	Set<StandardState> getElementsModifiable() {
 		return elements;
 	}
 
 	/**
-	 * We needed to create this instead of serializing a Set<IStandardState}
+	 * We needed to create this instead of serializing a Set<StandardState}
 	 * because the interfaces didn't work with
 	 * 
 	 * @XmlIdREF
@@ -227,16 +226,16 @@ public class StandardCell
 	 *         {@code CharacterStateCell} belongs
 	 */
 	@Override
-	public IStandardRow getParent() {
+	public StandardRow getParent() {
 		return parent;
 	}
 
-	private Set<IStandardState> getStates(final Set<Integer> stateNumbers) {
-		final Set<IStandardState> states = newHashSet();
-		final IStandardCharacter character = getParent().getParent()
+	private Set<StandardState> getStates(final Set<Integer> stateNumbers) {
+		final Set<StandardState> states = newHashSet();
+		final StandardCharacter character = getParent().getParent()
 				.getCharacters().get(getPosition());
 		for (final Integer stateNumber : stateNumbers) {
-			final IStandardState state = character.getState(stateNumber);
+			final StandardState state = character.getState(stateNumber);
 			checkArgument(
 					state != null,
 					"This matrix doesn't have a state number "
@@ -251,18 +250,18 @@ public class StandardCell
 	/** Protected for JAXB. */
 	@Override
 	protected void setElement(
-			@Nullable final IStandardState element) {
+			@Nullable final StandardState element) {
 		this.element = element;
 	}
 
 	@Override
 	void setElements(
-			@Nullable final Set<IStandardState> elements) {
+			@Nullable final Set<StandardState> elements) {
 		this.elements = elements;
 	}
 
 	/** {@inheritDoc} */
-	public void setParent(final IStandardRow parent) {
+	public void setParent(final StandardRow parent) {
 		this.parent = parent;
 	}
 
@@ -281,7 +280,7 @@ public class StandardCell
 	@Override
 	void setPolymorphicOrUncertain(
 			final Type type,
-			final Set<? extends IStandardState> elements) {
+			final Set<? extends StandardState> elements) {
 		checkNotNull(type);
 		checkNotNull(elements);
 
@@ -301,7 +300,12 @@ public class StandardCell
 	}
 
 	/**
-	 * {@inheritDoc}
+	 * Set the cell's type to {@link Type.POLYMORPHIC} and its states to contain
+	 * only the states with the given state numbers. The states are pulled from
+	 * this column's character, so it is not legal to call this method if this
+	 * cell is not part of a matrix with a character in the column.
+	 * 
+	 * @param stateNumbers the state numbers of the states we want
 	 * 
 	 * @throw IllegalArgumentException if {@code elements.size() < 2}
 	 */
@@ -314,7 +318,14 @@ public class StandardCell
 		setPolymorphicOrUncertain(Type.POLYMORPHIC, getStates(stateNumbers));
 	}
 
-	/** {@inheritDoc} */
+	/**
+	 * Set the cell's type to {@link Type.SINGLE} and its states to contain only
+	 * the state with the given state number. The state is pulled from this
+	 * column's character, so it is not legal to call this method if this cell
+	 * is not part of a matrix with a character in the column.
+	 * 
+	 * @param stateNumber the state number of the state we want
+	 */
 	public void setSingleWithStateNo(final Integer stateNumber) {
 
 		checkNotNull(stateNumber);
@@ -323,7 +334,7 @@ public class StandardCell
 					getPosition() != null,
 					"this cell has not been assigned a row: it's position attribute is null");
 
-		final IStandardCharacter character =
+		final StandardCharacter character =
 				getParent()
 						.getParent()
 						.getCharacters()
@@ -332,7 +343,7 @@ public class StandardCell
 		checkState(character != null,
 				"no character has been assigned for column " + getPosition());
 
-		final IStandardState state = character.getState(stateNumber);
+		final StandardState state = character.getState(stateNumber);
 
 		checkArgument(
 				state != null,
@@ -354,7 +365,14 @@ public class StandardCell
 		}
 	}
 
-	/** {@inheritDoc} */
+	/**
+	 * Set the cell's type to {@link Type.UNCERTAIN} and its states to contain
+	 * only the states with the given state numbers. The states are pulled from
+	 * this column's character, so it is not legal to call this method if this
+	 * cell is not part of a matrix with a character in the column.
+	 * 
+	 * @param stateNumbers the state numbers of the states we want
+	 */
 	public void setUncertainWithStateNos(
 			final Set<Integer> stateNumbers) {
 		checkNotNull(stateNumbers);
@@ -362,27 +380,5 @@ public class StandardCell
 				stateNumbers.size() > 1,
 				"polymorphic states must be > 1");
 		setPolymorphicOrUncertain(Type.UNCERTAIN, getStates(stateNumbers));
-	}
-
-	/**
-	 * Constructs a {@code String} with attributes in name=value format.
-	 * 
-	 * @return a {@code String} representation of this object
-	 */
-	@Override
-	public String toString() {
-		final String TAB = " ";
-
-		final StringBuilder retValue = new StringBuilder();
-
-		retValue.append("CharacterStateCell(")
-				.append(super.toString())
-				.append(TAB)
-				.append("version=")
-				.append(TAB)
-				.append("states=")
-				.append(this.elements).append(TAB).append(")");
-
-		return retValue.toString();
 	}
 }

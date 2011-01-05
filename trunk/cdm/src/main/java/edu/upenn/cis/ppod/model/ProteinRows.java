@@ -4,15 +4,13 @@ import java.util.Map;
 
 import edu.upenn.cis.ppod.imodel.IOtuKeyedMap;
 import edu.upenn.cis.ppod.imodel.IOtuKeyedMapPlus;
-import edu.upenn.cis.ppod.imodel.IProteinMatrix;
-import edu.upenn.cis.ppod.imodel.IProteinRow;
 import edu.upenn.cis.ppod.util.IVisitor;
 import edu.upenn.cis.ppod.util.OtuProteinRowPair;
 
-public class ProteinRows implements IOtuKeyedMap<IProteinRow> {
+public class ProteinRows implements IOtuKeyedMap<ProteinRow> {
 
-	private final IOtuKeyedMapPlus<IProteinRow, IProteinMatrix, OtuProteinRowPair> rows =
-			new OtuKeyedMapPlus<IProteinRow, IProteinMatrix, OtuProteinRowPair>();
+	private final IOtuKeyedMapPlus<ProteinRow, ProteinMatrix, OtuProteinRowPair> rows =
+			new OtuKeyedMapPlus<ProteinRow, ProteinMatrix, OtuProteinRowPair>();
 
 	/** {@inheritDoc} */
 	public void accept(final IVisitor visitor) {
@@ -25,17 +23,17 @@ public class ProteinRows implements IOtuKeyedMap<IProteinRow> {
 	}
 
 	/** {@inheritDoc} */
-	public IProteinRow get(final Otu key) {
+	public ProteinRow get(final Otu key) {
 		return rows.get(key);
 	}
 
 	/** {@inheritDoc} */
-	public Map<Otu, IProteinRow> getValues() {
+	public Map<Otu, ProteinRow> getValues() {
 		return rows.getValues();
 	}
 
 	/** {@inheritDoc} */
-	public IProteinRow put(final Otu key, final IProteinRow value) {
+	public ProteinRow put(final Otu key, final ProteinRow value) {
 		return rows.put(key, value);
 	}
 
