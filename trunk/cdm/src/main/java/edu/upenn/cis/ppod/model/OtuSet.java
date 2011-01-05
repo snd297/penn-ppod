@@ -616,25 +616,8 @@ public class OtuSet
 	}
 
 	private void setParentOnChildren() {
-		// Now let's let everyone know about the new OTUs
-		for (final IChild<OtuSet> otu : getOtus()) {
-			otu.setParent(this);
-		}
-
-		for (final IChild<OtuSet> matrix : getStandardMatrices()) {
-			matrix.setParent(this);
-		}
-
-		for (final IChild<OtuSet> matrix : getDNAMatrices()) {
-			matrix.setParent(this);
-		}
-
-		for (final IChild<OtuSet> sequenceSet : getDNASequenceSets()) {
-			sequenceSet.setParent(this);
-		}
-
-		for (final IChild<OtuSet> treeSet : getTreeSets()) {
-			treeSet.setParent(this);
+		for (final IChild<OtuSet> child : getChildren()) {
+			child.setParent(this);
 		}
 	}
 

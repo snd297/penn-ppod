@@ -364,7 +364,15 @@ public abstract class Cell<E, R extends Row<?, ?>>
 	}
 
 	/**
-	 * {@inheritDoc}
+	 * Set the position of this child.
+	 * <p>
+	 * Use a {@code null} when removing a child from its parent
+	 * <p>
+	 * <strong>There is no reason for client code to call this method as the
+	 * value will always be set by the parent object. Modifying could cause
+	 * unexpected behavior.</strong>
+	 * 
+	 * @param position the position of this child
 	 * 
 	 * @throw IllegalArgumentException if
 	 *        {@code position !=null && position < 0}
