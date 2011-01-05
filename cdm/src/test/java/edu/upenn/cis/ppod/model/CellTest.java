@@ -173,7 +173,7 @@ public class CellTest {
 		matrix.setColumnsSize(1);
 		final OtuSet otuSet = new OtuSet();
 		otuSet.addDnaMatrix(matrix);
-		otuSet.addOTU(new Otu().setLabel("otu-0"));
+		otuSet.addOtu(new Otu().setLabel("otu-0"));
 
 		matrix.putRow(otuSet.getOtus().get(0), row);
 

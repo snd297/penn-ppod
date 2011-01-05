@@ -227,7 +227,7 @@ public class StandardCharacter extends UuPPodEntityWithDocId {
 	 * @return the state with the given state number, or {@code null} if there
 	 *         is no such state.
 	 */
-	@CheckForNull
+	@Nullable
 	public StandardState getState(final Integer stateNumber) {
 		checkNotNull(stateNumber);
 		return states.get(stateNumber.intValue());
