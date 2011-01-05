@@ -18,9 +18,6 @@ package edu.upenn.cis.ppod.util;
 import edu.upenn.cis.ppod.imodel.IAttachment;
 import edu.upenn.cis.ppod.imodel.IAttachmentNamespace;
 import edu.upenn.cis.ppod.imodel.IAttachmentType;
-import edu.upenn.cis.ppod.imodel.IDnaCell;
-import edu.upenn.cis.ppod.imodel.IDnaMatrix;
-import edu.upenn.cis.ppod.imodel.IDnaRow;
 import edu.upenn.cis.ppod.imodel.IDnaSequence;
 import edu.upenn.cis.ppod.imodel.IDnaSequenceSet;
 import edu.upenn.cis.ppod.imodel.IProteinRow;
@@ -30,6 +27,9 @@ import edu.upenn.cis.ppod.imodel.IStandardMatrix;
 import edu.upenn.cis.ppod.imodel.IStandardRow;
 import edu.upenn.cis.ppod.imodel.IStandardState;
 import edu.upenn.cis.ppod.imodel.IStudy;
+import edu.upenn.cis.ppod.model.DnaCell;
+import edu.upenn.cis.ppod.model.DnaMatrix;
+import edu.upenn.cis.ppod.model.DnaRow;
 import edu.upenn.cis.ppod.model.Otu;
 import edu.upenn.cis.ppod.model.OtuSet;
 import edu.upenn.cis.ppod.model.Tree;
@@ -69,21 +69,21 @@ public abstract class EmptyVisitor implements IVisitor {
 	 * 
 	 * @param cell ignored
 	 */
-	public void visitDNACell(final IDnaCell cell) {}
+	public void visitDNACell(final DnaCell cell) {}
 
 	/**
 	 * Does nothing.
 	 * 
 	 * @param matrix ignored
 	 */
-	public void visitDNAMatrix(final IDnaMatrix matrix) {}
+	public void visitDNAMatrix(final DnaMatrix matrix) {}
 
 	/**
 	 * Does nothing.
 	 * 
 	 * @param row ignored
 	 */
-	public void visitDNARow(final IDnaRow row) {}
+	public void visitDNARow(final DnaRow row) {}
 
 	/**
 	 * Does nothing.

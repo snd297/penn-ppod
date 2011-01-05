@@ -17,24 +17,24 @@ package edu.upenn.cis.ppod.util;
 
 import javax.xml.bind.annotation.XmlElement;
 
-import edu.upenn.cis.ppod.imodel.IDnaRow;
+import edu.upenn.cis.ppod.model.DnaRow;
 import edu.upenn.cis.ppod.model.Otu;
 
 public class OtuDnaRowPair extends
-		OtuKeyedPair<IDnaRow> {
+		OtuKeyedPair<DnaRow> {
 
 	/**
 	 * For JAXB.
 	 */
 	protected OtuDnaRowPair() {}
 
-	public OtuDnaRowPair(final Otu first, final IDnaRow second) {
+	public OtuDnaRowPair(final Otu first, final DnaRow second) {
 		super(first, second);
 	}
 
 	@XmlElement
 	@Override
-	public IDnaRow getSecond() {
+	public DnaRow getSecond() {
 		return super.getSecond();
 	}
 
@@ -43,7 +43,7 @@ public class OtuDnaRowPair extends
 	 */
 	@Override
 	protected void setSecond(
-			final IDnaRow row) {
+			final DnaRow row) {
 		super.setSecond(row);
 	}
 

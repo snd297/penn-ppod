@@ -24,16 +24,16 @@ import com.google.inject.Inject;
 import edu.upenn.cis.ppod.dao.IObjectWithLongIdDAO;
 import edu.upenn.cis.ppod.imodel.DnaNucleotide;
 import edu.upenn.cis.ppod.imodel.ICell;
-import edu.upenn.cis.ppod.imodel.IDnaCell;
-import edu.upenn.cis.ppod.imodel.IDnaMatrix;
-import edu.upenn.cis.ppod.imodel.IDnaRow;
 import edu.upenn.cis.ppod.imodel.INewVersionInfo;
 import edu.upenn.cis.ppod.imodel.IVersionInfo;
+import edu.upenn.cis.ppod.model.DnaCell;
+import edu.upenn.cis.ppod.model.DnaMatrix;
+import edu.upenn.cis.ppod.model.DnaRow;
 import edu.upenn.cis.ppod.model.ModelFactory;
 
 class CreateOrUpdateDNAMatrix
 		extends
-		CreateOrUpdateMatrix<IDnaMatrix, IDnaRow, IDnaCell, DnaNucleotide>
+		CreateOrUpdateMatrix<DnaMatrix, DnaRow, DnaCell, DnaNucleotide>
 		implements ICreateOrUpdateDNAMatrix {
 
 	@Inject
@@ -47,8 +47,8 @@ class CreateOrUpdateDNAMatrix
 	}
 
 	public void createOrUpdateMatrix(
-			final IDnaMatrix dbMatrix,
-			final IDnaMatrix sourceMatrix) {
+			final DnaMatrix dbMatrix,
+			final DnaMatrix sourceMatrix) {
 
 		final int[] sourceToDbCharPositions =
 				new int[sourceMatrix.getColumnsSize()];
@@ -74,8 +74,8 @@ class CreateOrUpdateDNAMatrix
 	}
 
 	@Override
-	protected void handlePolymorphicCell(final IDnaCell targetCell,
-			final IDnaCell sourceCell) {
+	protected void handlePolymorphicCell(final DnaCell targetCell,
+			final DnaCell sourceCell) {
 		checkArgument(sourceCell.getType() == ICell.Type.POLYMORPHIC);
 		targetCell.setPolymorphicElements(
 				sourceCell.getElements(),
@@ -83,8 +83,8 @@ class CreateOrUpdateDNAMatrix
 	}
 
 	@Override
-	protected void handleSingleCell(final IDnaCell targetCell,
-			final IDnaCell sourceCell) {
+	protected void handleSingleCell(final DnaCell targetCell,
+			final DnaCell sourceCell) {
 		checkArgument(sourceCell.getType() == ICell.Type.SINGLE);
 		targetCell.setSingleElement(
 				getOnlyElement(sourceCell.getElements()),
@@ -92,19 +92,19 @@ class CreateOrUpdateDNAMatrix
 	}
 
 	@Override
-	protected void handleUncertainCell(final IDnaCell targetCell,
-			final IDnaCell sourceCell) {
+	protected void handleUncertainCell(final DnaCell targetCell,
+			final DnaCell sourceCell) {
 		checkArgument(sourceCell.getType() == ICell.Type.UNCERTAIN);
 		targetCell.setUncertainElements(sourceCell.getElements());
 	}
 
 	@Override
-	protected IDnaCell newC(final IVersionInfo versionInfo) {
+	protected DnaCell newC(final IVersionInfo versionInfo) {
 		return ModelFactory.newDNACell(versionInfo);
 	}
 
 	@Override
-	protected IDnaRow newR(final IVersionInfo versionInfo) {
+	protected DnaRow newR(final IVersionInfo versionInfo) {
 		return ModelFactory.newDNARow(versionInfo);
 	}
 }

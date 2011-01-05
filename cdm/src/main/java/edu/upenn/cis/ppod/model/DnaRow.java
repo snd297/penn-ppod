@@ -30,12 +30,8 @@ import javax.persistence.OneToMany;
 import javax.persistence.OrderColumn;
 import javax.persistence.Table;
 import javax.xml.bind.annotation.XmlElement;
-import javax.xml.bind.annotation.adapters.XmlAdapter;
 
 import edu.umd.cs.findbugs.annotations.Nullable;
-import edu.upenn.cis.ppod.imodel.IDnaCell;
-import edu.upenn.cis.ppod.imodel.IDnaMatrix;
-import edu.upenn.cis.ppod.imodel.IDnaRow;
 import edu.upenn.cis.ppod.util.IVisitor;
 
 /**
@@ -45,36 +41,22 @@ import edu.upenn.cis.ppod.util.IVisitor;
  */
 @Entity
 @Table(name = DnaRow.TABLE)
-public class DnaRow extends Row<IDnaCell, IDnaMatrix> implements IDnaRow {
-
-	public static class Adapter extends XmlAdapter<DnaRow, IDnaRow> {
-
-		@Override
-		public DnaRow marshal(final IDnaRow row) {
-			return (DnaRow) row;
-		}
-
-		@Override
-		public IDnaRow unmarshal(final DnaRow row) {
-			return row;
-		}
-	}
+public class DnaRow extends Row<DnaCell, DnaMatrix> {
 
 	public static final String TABLE = "DNA_ROW";
 
 	public static final String JOIN_COLUMN =
 			TABLE + "_" + PersistentObject.ID_COLUMN;
 
-	@ManyToOne(fetch = FetchType.LAZY, optional = false,
-			targetEntity = DnaMatrix.class)
+	@ManyToOne(fetch = FetchType.LAZY, optional = false)
 	@JoinColumn(name = DnaMatrix.JOIN_COLUMN)
 	@Nullable
-	private IDnaMatrix parent;
+	private DnaMatrix parent;
 
 	@OneToMany(mappedBy = "parent", cascade = CascadeType.ALL,
-			orphanRemoval = true, targetEntity = DnaCell.class)
+			orphanRemoval = true)
 	@OrderColumn(name = "POSITION")
-	private final List<IDnaCell> cells = newArrayList();
+	private final List<DnaCell> cells = newArrayList();
 
 	public DnaRow() {}
 
@@ -89,12 +71,12 @@ public class DnaRow extends Row<IDnaCell, IDnaMatrix> implements IDnaRow {
 	/** {@inheritDoc} */
 	@XmlElement(name = "cell")
 	@Override
-	protected List<IDnaCell> getCellsModifiable() {
+	protected List<DnaCell> getCellsModifiable() {
 		return cells;
 	}
 
 	/** {@inheritDoc} */
-	public IDnaMatrix getParent() {
+	public DnaMatrix getParent() {
 		return parent;
 	}
 
@@ -110,7 +92,7 @@ public class DnaRow extends Row<IDnaCell, IDnaMatrix> implements IDnaRow {
 	 *             end
 	 */
 	@Override
-	public List<IDnaCell> setCells(final List<? extends IDnaCell> cells) {
+	public List<DnaCell> setCells(final List<? extends DnaCell> cells) {
 		checkNotNull(cells);
 		checkArgument(
 				cells.size() >= getCells().size(),
@@ -123,16 +105,16 @@ public class DnaRow extends Row<IDnaCell, IDnaMatrix> implements IDnaRow {
 						+ "this method can't do anything but add or removes cells from the "
 						+ "end");
 
-		final List<IDnaCell> clearedCells = super.setCellsHelper(cells);
+		final List<DnaCell> clearedCells = super.setCellsHelper(cells);
 
-		for (final IDnaCell cell : getCells()) {
+		for (final DnaCell cell : getCells()) {
 			cell.setParent(this);
 		}
 		return clearedCells;
 	}
 
 	/** {@inheritDoc} */
-	public void setParent(final IDnaMatrix parent) {
+	public void setParent(final DnaMatrix parent) {
 		this.parent = parent;
 	}
 }
