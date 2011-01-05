@@ -123,7 +123,7 @@ public final class Study2StudyInfo implements IStudy2StudyInfo {
 			// TODO: refactor so CharacterStateMatrix and DNAMatrix don't have
 			// duplicate code.
 			for (final DnaMatrix matrix : otuSet
-					.getDNAMatrices()) {
+					.getDnaMatrices()) {
 				final MatrixInfo matrixInfo = new MatrixInfo();
 				otuSetInfo.getMatrixInfos().add(matrixInfo);
 				matrixInfo.setPPodId(matrix.getPPodId());
@@ -165,7 +165,7 @@ public final class Study2StudyInfo implements IStudy2StudyInfo {
 			// TODO: this should be genericized when we support other kinds of
 			// MolecularSequenceSets
 			for (final DnaSequenceSet dnaSequenceSet : otuSet
-					.getDNASequenceSets()) {
+					.getDnaSequenceSets()) {
 				final SequenceSetInfo sequenceSetInfo =
 						new SequenceSetInfo();
 				otuSetInfo.getSequenceSetInfos().add(sequenceSetInfo);

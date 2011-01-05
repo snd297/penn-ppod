@@ -73,9 +73,9 @@ public class OTUSetTest {
 		otuSet.addDnaMatrix(new DnaMatrix());
 		otuSet.addDnaMatrix(new DnaMatrix());
 
-		otuSet.addDNASequenceSet(new DnaSequenceSet());
-		otuSet.addDNASequenceSet(new DnaSequenceSet());
-		otuSet.addDNASequenceSet(new DnaSequenceSet());
+		otuSet.addDnaSequenceSet(new DnaSequenceSet());
+		otuSet.addDnaSequenceSet(new DnaSequenceSet());
+		otuSet.addDnaSequenceSet(new DnaSequenceSet());
 
 		otuSet.addTreeSet(new TreeSet());
 		otuSet.addTreeSet(new TreeSet());
@@ -92,9 +92,9 @@ public class OTUSetTest {
 				.visitOTU(any(Otu.class));
 		verify(visitor, times(otuSet.getStandardMatrices().size()))
 				.visitStandardMatrix(any(StandardMatrix.class));
-		verify(visitor, times(otuSet.getDNAMatrices().size())).visitDNAMatrix(
+		verify(visitor, times(otuSet.getDnaMatrices().size())).visitDNAMatrix(
 				any(DnaMatrix.class));
-		verify(visitor, times(otuSet.getDNASequenceSets().size()))
+		verify(visitor, times(otuSet.getDnaSequenceSets().size()))
 				.visitDNASequenceSet(any(DnaSequenceSet.class));
 		verify(visitor, times(otuSet.getAttachments().size())).visitAttachment(
 				any(Attachment.class));
@@ -107,7 +107,7 @@ public class OTUSetTest {
 		otuSet.unsetInNeedOfNewVersion();
 
 		otuSet.addDnaMatrix(dnaMatrix);
-		assertEquals(getOnlyElement(otuSet.getDNAMatrices()), dnaMatrix);
+		assertEquals(getOnlyElement(otuSet.getDnaMatrices()), dnaMatrix);
 		assertSame(dnaMatrix.getParent(), otuSet);
 		assertTrue(otuSet.isInNeedOfNewVersion());
 	}
@@ -125,12 +125,12 @@ public class OTUSetTest {
 
 		otuSet.unsetInNeedOfNewVersion();
 
-		otuSet.addDNAMatrix(2, matrix3);
+		otuSet.addDnaMatrix(2, matrix3);
 		assertTrue(otuSet.isInNeedOfNewVersion());
-		assertEquals(otuSet.getDNAMatrices().size(), 4);
-		assertTrue(otuSet.getDNAMatrices().contains(matrix3));
+		assertEquals(otuSet.getDnaMatrices().size(), 4);
+		assertTrue(otuSet.getDnaMatrices().contains(matrix3));
 
-		assertEquals(otuSet.getDNAMatrices(),
+		assertEquals(otuSet.getDnaMatrices(),
 				ImmutableSet.of(matrix0, matrix1, matrix3, matrix2));
 
 		assertSame(matrix3.getParent(), otuSet);
@@ -142,8 +142,8 @@ public class OTUSetTest {
 
 		otuSet.unsetInNeedOfNewVersion();
 
-		otuSet.addDNASequenceSet(sequenceSet);
-		assertEquals(getOnlyElement(otuSet.getDNASequenceSets()), sequenceSet);
+		otuSet.addDnaSequenceSet(sequenceSet);
+		assertEquals(getOnlyElement(otuSet.getDnaSequenceSets()), sequenceSet);
 		assertSame(sequenceSet.getParent(), otuSet);
 		assertTrue(otuSet.isInNeedOfNewVersion());
 	}
@@ -159,18 +159,18 @@ public class OTUSetTest {
 
 		final DnaSequenceSet sequenceSet3 = new DnaSequenceSet();
 
-		otuSet.addDNASequenceSet(sequenceSet0);
-		otuSet.addDNASequenceSet(sequenceSet1);
-		otuSet.addDNASequenceSet(sequenceSet2);
+		otuSet.addDnaSequenceSet(sequenceSet0);
+		otuSet.addDnaSequenceSet(sequenceSet1);
+		otuSet.addDnaSequenceSet(sequenceSet2);
 
 		otuSet.unsetInNeedOfNewVersion();
 
-		otuSet.addDNASequenceSet(2, sequenceSet3);
+		otuSet.addDnaSequenceSet(2, sequenceSet3);
 		assertTrue(otuSet.isInNeedOfNewVersion());
-		assertEquals(otuSet.getDNASequenceSets().size(), 4);
-		assertTrue(otuSet.getDNASequenceSets().contains(sequenceSet3));
+		assertEquals(otuSet.getDnaSequenceSets().size(), 4);
+		assertTrue(otuSet.getDnaSequenceSets().contains(sequenceSet3));
 
-		assertEquals(otuSet.getDNASequenceSets(),
+		assertEquals(otuSet.getDnaSequenceSets(),
 				ImmutableList.of(sequenceSet0, sequenceSet1, sequenceSet3,
 						sequenceSet2));
 
@@ -189,7 +189,7 @@ public class OTUSetTest {
 
 		final DnaSequenceSet dnaSequenceSet = new DnaSequenceSet();
 
-		otuSet.addDNASequenceSet(dnaSequenceSet);
+		otuSet.addDnaSequenceSet(dnaSequenceSet);
 
 		final Otu otu0 = new Otu().setLabel("otu-0");
 		final Otu otu1 = new Otu().setLabel("otu-1");
@@ -265,17 +265,17 @@ public class OTUSetTest {
 	 */
 	@Test
 	public void addOTUWAlreadyContainedOTU() {
-		otuSet.setOTUs(ImmutableList.of(new Otu().setLabel("OTU-0")));
+		otuSet.setOtus(ImmutableList.of(new Otu().setLabel("OTU-0")));
 		otuSet.unsetInNeedOfNewVersion();
 
-		otuSet.setOTUs(otuSet.getOtus());
+		otuSet.setOtus(otuSet.getOtus());
 		assertFalse(otuSet.isInNeedOfNewVersion());
 	}
 
 	@Test(expectedExceptions = IllegalArgumentException.class)
 	public void addOTUWDuplicateLabel() {
 		otus.add(new Otu().setLabel(otus.get(0).getLabel()));
-		otuSet.setOTUs(newArrayList(otus));
+		otuSet.setOtus(newArrayList(otus));
 	}
 
 	@Test
@@ -372,7 +372,7 @@ public class OTUSetTest {
 		otu2.setLabel("otu2");
 		otu2.setPPodId();
 
-		otuSet.setOTUs(newArrayList(otus));
+		otuSet.setOtus(newArrayList(otus));
 
 		// Do this so we can check that version resets are being done.
 		study = new Study();
@@ -384,11 +384,11 @@ public class OTUSetTest {
 	 */
 	@Test
 	public void clearOTUs() {
-		otuSet.setOTUs(newArrayList(otus));
+		otuSet.setOtus(newArrayList(otus));
 
 		otuSet.setVersionInfo(new VersionInfo());
 		study.setVersionInfo(new VersionInfo());
-		final List<Otu> removedOTUs = otuSet.setOTUs(new ArrayList<Otu>());
+		final List<Otu> removedOTUs = otuSet.setOtus(new ArrayList<Otu>());
 
 		assertEquals(removedOTUs, otus);
 		assertTrue(otuSet.isInNeedOfNewVersion());
@@ -412,13 +412,13 @@ public class OTUSetTest {
 
 		study.unsetInNeedOfNewVersion();
 
-		otuSet.removeDNAMatrix(matrix1);
+		otuSet.removeDnaMatrix(matrix1);
 
 		assertTrue(otuSet.isInNeedOfNewVersion());
 		assertNull(matrix1.getParent());
 
 		assertEquals(
-				otuSet.getDNAMatrices(),
+				otuSet.getDnaMatrices(),
 				ImmutableList.of(matrix0, matrix2));
 	}
 
@@ -428,18 +428,18 @@ public class OTUSetTest {
 		final OtuSet otuSet = new OtuSet();
 		final DnaSequenceSet dnaSequenceSet0 = new DnaSequenceSet();
 
-		otuSet.addDNASequenceSet(dnaSequenceSet0);
+		otuSet.addDnaSequenceSet(dnaSequenceSet0);
 		final DnaSequenceSet dnaSequenceSet1 = new DnaSequenceSet();
 
-		otuSet.addDNASequenceSet(dnaSequenceSet1);
+		otuSet.addDnaSequenceSet(dnaSequenceSet1);
 		final DnaSequenceSet dnaSequenceSet2 = new DnaSequenceSet();
 
-		otuSet.addDNASequenceSet(dnaSequenceSet2);
+		otuSet.addDnaSequenceSet(dnaSequenceSet2);
 
 		otuSet.removeDnaSequenceSet(dnaSequenceSet1);
 
 		assertEquals(
-				otuSet.getDNASequenceSets(),
+				otuSet.getDnaSequenceSets(),
 				ImmutableList.of(dnaSequenceSet0, dnaSequenceSet2));
 	}
 
@@ -456,7 +456,7 @@ public class OTUSetTest {
 				ImmutableList.of(otus.get(0), otus.get(2));
 
 		final ImmutableList<Otu> removedOTUs =
-				ImmutableList.copyOf(otuSet.setOTUs(otus2));
+				ImmutableList.copyOf(otuSet.setOtus(otus2));
 
 		assertFalse(contains(otuSet.getOtus(), otus.get(1)));
 		assertTrue(otuSet.isInNeedOfNewVersion());

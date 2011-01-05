@@ -146,9 +146,9 @@ class CreateOrUpdateStudy implements ICreateOrUpdateStudy {
 
 		// Let's delete matrices missing from the incoming OTU set
 		final Set<DnaMatrix> toBeRemoveds = newHashSet();
-		for (final DnaMatrix dbMatrix : dbOTUSet.getDNAMatrices()) {
+		for (final DnaMatrix dbMatrix : dbOTUSet.getDnaMatrices()) {
 			if (null == find(
-							incomingOTUSet.getDNAMatrices(),
+							incomingOTUSet.getDnaMatrices(),
 							compose(
 									equalTo(
 										dbMatrix.getPPodId()),
@@ -158,16 +158,16 @@ class CreateOrUpdateStudy implements ICreateOrUpdateStudy {
 			}
 		}
 		for (final DnaMatrix toBeRemoved : toBeRemoveds) {
-			dbOTUSet.removeDNAMatrix(toBeRemoved);
+			dbOTUSet.removeDnaMatrix(toBeRemoved);
 		}
 		int incomingMatrixPos = -1;
 		for (final DnaMatrix incomingMatrix : incomingOTUSet
-				.getDNAMatrices()) {
+				.getDnaMatrices()) {
 			incomingMatrixPos++;
 			DnaMatrix dbMatrix;
 			if (null == (dbMatrix =
 					find(
-							dbOTUSet.getDNAMatrices(),
+							dbOTUSet.getDnaMatrices(),
 							compose(
 									equalTo(
 											incomingMatrix.getPPodId()),
@@ -179,7 +179,7 @@ class CreateOrUpdateStudy implements ICreateOrUpdateStudy {
 
 				// Do this here because it's non-nullable
 				dbMatrix.setLabel(incomingMatrix.getLabel());
-				dbOTUSet.addDNAMatrix(incomingMatrixPos, dbMatrix);
+				dbOTUSet.addDnaMatrix(incomingMatrixPos, dbMatrix);
 				dao.makePersistent(dbMatrix);
 			}
 			createOrUpdateDNAMatrix
@@ -195,9 +195,9 @@ class CreateOrUpdateStudy implements ICreateOrUpdateStudy {
 		// Let's delete sequences missing from the incoming otu set
 		final Set<DnaSequenceSet> toBeRemoveds = newHashSet();
 		for (final DnaSequenceSet dbSequenceSet : dbOTUSet
-				.getDNASequenceSets()) {
+				.getDnaSequenceSets()) {
 			if (null == find(
-					incomingOTUSet.getDNASequenceSets(),
+					incomingOTUSet.getDnaSequenceSets(),
 					compose(
 							equalTo(
 								dbSequenceSet.getPPodId()),
@@ -212,11 +212,11 @@ class CreateOrUpdateStudy implements ICreateOrUpdateStudy {
 		}
 		int incomingSequenceSetPos = -1;
 		for (final DnaSequenceSet incomingSequenceSet : incomingOTUSet
-				.getDNASequenceSets()) {
+				.getDnaSequenceSets()) {
 			incomingSequenceSetPos++;
 			DnaSequenceSet dbDNASequenceSet;
 			if (null == (dbDNASequenceSet =
-					find(dbOTUSet.getDNASequenceSets(),
+					find(dbOTUSet.getDnaSequenceSets(),
 							compose(
 									equalTo(incomingSequenceSet
 											.getPPodId()),
@@ -225,7 +225,7 @@ class CreateOrUpdateStudy implements ICreateOrUpdateStudy {
 				dbDNASequenceSet = ModelFactory
 						.newDNASequenceSet(newVersionInfo.getNewVersionInfo());
 				dbDNASequenceSet.setLabel(incomingSequenceSet.getLabel());
-				dbOTUSet.addDNASequenceSet(
+				dbOTUSet.addDnaSequenceSet(
 						incomingSequenceSetPos, dbDNASequenceSet);
 				dao.makePersistent(dbDNASequenceSet);
 			}

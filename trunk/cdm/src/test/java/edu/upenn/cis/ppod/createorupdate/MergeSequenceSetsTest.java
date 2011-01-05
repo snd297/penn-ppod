@@ -44,14 +44,14 @@ public class MergeSequenceSetsTest {
 		trgOTUSet.addOtu(new Otu("otu-0"));
 		trgOTUSet.addOtu(new Otu("otu-1"));
 		trgOTUSet.addOtu(new Otu("otu-2"));
-		trgOTUSet.addDNASequenceSet(trgSeqSet);
+		trgOTUSet.addDnaSequenceSet(trgSeqSet);
 
 		final OtuSet srcOTUSet = new OtuSet();
 		srcOTUSet.addOtu(new Otu("otu-0"));
 		srcOTUSet.addOtu(new Otu("otu-1"));
 		srcOTUSet.addOtu(new Otu("otu-2"));
 
-		srcOTUSet.addDNASequenceSet(srcSeqSet);
+		srcOTUSet.addDnaSequenceSet(srcSeqSet);
 
 		final DnaSequence srcSeq0 =
 					(DnaSequence) new DnaSequence()
@@ -114,14 +114,14 @@ public class MergeSequenceSetsTest {
 		trgOTUSet.addOtu(new Otu("otu-0"));
 		trgOTUSet.addOtu(new Otu("otu-1"));
 		trgOTUSet.addOtu(new Otu("otu-2"));
-		trgOTUSet.addDNASequenceSet(trgSeqSet);
+		trgOTUSet.addDnaSequenceSet(trgSeqSet);
 
 		final OtuSet srcOTUSet = new OtuSet();
 		srcOTUSet.addOtu(new Otu("otu-0"));
 		srcOTUSet.addOtu(new Otu("otu-1"));
 		srcOTUSet.addOtu(new Otu("otu-2"));
 
-		srcOTUSet.addDNASequenceSet(srcSeqSet);
+		srcOTUSet.addDnaSequenceSet(srcSeqSet);
 
 		final DnaSequence srcSeq0 =
 				(DnaSequence) new DnaSequence()
@@ -181,14 +181,14 @@ public class MergeSequenceSetsTest {
 		trgOTUSet.addOtu(new Otu("otu-0"));
 		trgOTUSet.addOtu(new Otu("otu-1"));
 		trgOTUSet.addOtu(new Otu("otu-2"));
-		trgOTUSet.addDNASequenceSet(trgSeqSet);
+		trgOTUSet.addDnaSequenceSet(trgSeqSet);
 
 		final OtuSet srcOTUSet = new OtuSet();
 		srcOTUSet.addOtu(new Otu("otu-0"));
 		srcOTUSet.addOtu(new Otu("otu-1"));
 		srcOTUSet.addOtu(new Otu("otu-2"));
 
-		srcOTUSet.addDNASequenceSet(srcSeqSet);
+		srcOTUSet.addDnaSequenceSet(srcSeqSet);
 
 		final DnaSequence srcSeq0 =
 				(DnaSequence) new DnaSequence()

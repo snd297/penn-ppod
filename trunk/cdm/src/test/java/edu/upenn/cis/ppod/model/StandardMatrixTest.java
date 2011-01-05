@@ -66,7 +66,7 @@ public class StandardMatrixTest {
 		otu2.setLabel("otu2");
 
 		otuSet012 = new OtuSet();
-		otuSet012.setOTUs(newArrayList(otu0, otu1, otu2));
+		otuSet012.setOtus(newArrayList(otu0, otu1, otu2));
 
 		otuSet012.addStandardMatrix(matrix);
 
@@ -111,7 +111,7 @@ public class StandardMatrixTest {
 		final int originalRowsSize = matrix.getRows().size();
 
 		final ImmutableList<Otu> otus210 = ImmutableList.of(otu2, otu1, otu0);
-		matrix.getParent().setOTUs(otus210);
+		matrix.getParent().setOtus(otus210);
 
 		assertEquals(matrix.getParent().getOtus(), otus210);
 		assertEquals(matrix.getRows().size(), originalRowsSize);
@@ -121,7 +121,7 @@ public class StandardMatrixTest {
 	@Test
 	public void setOTUsWithLessOTUs() {
 
-		otuSet012.setOTUs(newArrayList(otu1, otu2));
+		otuSet012.setOtus(newArrayList(otu1, otu2));
 
 		final ImmutableList<Otu> otus12 = ImmutableList.of(otu1, otu2);
 
