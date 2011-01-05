@@ -17,7 +17,7 @@ package edu.upenn.cis.ppod.createorupdate;
 
 import com.google.inject.ImplementedBy;
 
-import edu.upenn.cis.ppod.imodel.IAttachment;
+import edu.upenn.cis.ppod.model.Attachment;
 
 /**
  * @author Sam Donnelly
@@ -32,7 +32,7 @@ public interface IMergeAttachments {
 	 *             {@code sourceAttachment.getType().getNamespace() == null}
 	 */
 	void mergeAttachments(
-			final IAttachment targetAttachment,
-			final IAttachment sourceAttachment);
+			final Attachment targetAttachment,
+			final Attachment sourceAttachment);
 
 }

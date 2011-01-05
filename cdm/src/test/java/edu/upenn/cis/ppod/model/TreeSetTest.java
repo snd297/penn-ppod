@@ -34,7 +34,6 @@ import org.testng.annotations.Test;
 import com.google.common.collect.ImmutableList;
 
 import edu.upenn.cis.ppod.TestGroupDefs;
-import edu.upenn.cis.ppod.imodel.IAttachment;
 import edu.upenn.cis.ppod.util.IVisitor;
 
 /**
@@ -149,9 +148,9 @@ public class TreeSetTest {
 		treeSet.addTree(new Tree());
 		treeSet.addTree(new Tree());
 
-		final IAttachment a0 = new Attachment();
-		final IAttachment a1 = new Attachment();
-		final IAttachment a2 = new Attachment();
+		final Attachment a0 = new Attachment();
+		final Attachment a1 = new Attachment();
+		final Attachment a2 = new Attachment();
 
 		treeSet.addAttachment(a0);
 		treeSet.addAttachment(a1);

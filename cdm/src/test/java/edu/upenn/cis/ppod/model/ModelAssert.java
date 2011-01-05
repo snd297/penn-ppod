@@ -29,9 +29,6 @@ import static org.testng.Assert.assertTrue;
 import java.util.Iterator;
 import java.util.Set;
 
-import edu.upenn.cis.ppod.imodel.IAttachment;
-import edu.upenn.cis.ppod.imodel.IAttachmentNamespace;
-import edu.upenn.cis.ppod.imodel.IAttachmentType;
 import edu.upenn.cis.ppod.imodel.ILabeled;
 import edu.upenn.cis.ppod.imodel.IPPodEntity;
 
@@ -236,15 +233,15 @@ public class ModelAssert {
 	}
 
 	public static void assertEqualsAttachmentNamespaces(
-			final IAttachmentNamespace actualAttachmentNamespace,
-			final IAttachmentNamespace expectedAttachmentNamespace) {
+			final AttachmentNamespace actualAttachmentNamespace,
+			final AttachmentNamespace expectedAttachmentNamespace) {
 		assertEquals(actualAttachmentNamespace.getLabel(),
 				expectedAttachmentNamespace.getLabel());
 	}
 
 	public static void assertEqualsAttachmentTypes(
-			final IAttachmentType actualAttachmentType,
-			final IAttachmentType expectedAttachmentType) {
+			final AttachmentType actualAttachmentType,
+			final AttachmentType expectedAttachmentType) {
 		assertEquals(
 				actualAttachmentType.getLabel(),
 				expectedAttachmentType.getLabel());
@@ -262,14 +259,14 @@ public class ModelAssert {
 	}
 
 	public static void assertEqualsAttachmentSets(
-			final Set<IAttachment> actualAttachments,
-			final Set<IAttachment> expectedAttachments) {
+			final Set<Attachment> actualAttachments,
+			final Set<Attachment> expectedAttachments) {
 		assertEquals(actualAttachments.size(), expectedAttachments.size());
-		final Set<IAttachment> expectedAttachmentsCopy = newHashSet(expectedAttachments);
-		for (final IAttachment actualAttachment : actualAttachments) {
-			final IAttachment expectedAttachment = getOnlyElement(filter(
+		final Set<Attachment> expectedAttachmentsCopy = newHashSet(expectedAttachments);
+		for (final Attachment actualAttachment : actualAttachments) {
+			final Attachment expectedAttachment = getOnlyElement(filter(
 							expectedAttachmentsCopy,
-							new IAttachment.IsOfNamespaceTypeLabelAndStringValue(
+							new Attachment.IsOfNamespaceTypeLabelAndStringValue(
 									actualAttachment)));
 			expectedAttachmentsCopy.remove(expectedAttachment);
 			assertEqualsAttachments(actualAttachment, expectedAttachment);
@@ -277,8 +274,8 @@ public class ModelAssert {
 	}
 
 	public static void assertEqualsAttachments(
-			final IAttachment actualAttachment,
-			final IAttachment expectedAttachment) {
+			final Attachment actualAttachment,
+			final Attachment expectedAttachment) {
 		assertEquals(actualAttachment.getLabel(), expectedAttachment.getLabel());
 		assertEquals(actualAttachment.getStringValue(), expectedAttachment
 				.getStringValue());

@@ -41,8 +41,6 @@ import javax.xml.bind.annotation.XmlElement;
 import javax.xml.bind.annotation.XmlRootElement;
 
 import edu.umd.cs.findbugs.annotations.CheckForNull;
-import edu.upenn.cis.ppod.imodel.IAttachmentNamespace;
-import edu.upenn.cis.ppod.imodel.IAttachmentType;
 import edu.upenn.cis.ppod.imodel.ILabeled;
 import edu.upenn.cis.ppod.services.ppodentity.IOTUSets;
 import edu.upenn.cis.ppod.util.IVisitor;
@@ -95,10 +93,10 @@ public class Study
 	private final List<OtuSet> otuSets = newArrayList();
 
 	@Transient
-	private final Set<IAttachmentNamespace> attachmentNamespaces = newHashSet();
+	private final Set<AttachmentNamespace> attachmentNamespaces = newHashSet();
 
 	@Transient
-	private final Set<IAttachmentType> attachmentTypes = newHashSet();
+	private final Set<AttachmentType> attachmentTypes = newHashSet();
 
 	/**
 	 * No-arg constructor.
@@ -199,12 +197,12 @@ public class Study
 	}
 
 	@XmlElement(name = "studyWideAttachmentNamespace")
-	protected Set<IAttachmentNamespace> getStudyWideAttachmentNamespacesModifiable() {
+	protected Set<AttachmentNamespace> getStudyWideAttachmentNamespacesModifiable() {
 		return attachmentNamespaces;
 	}
 
 	@XmlElement(name = "studyWideAttachmentType")
-	protected Set<IAttachmentType> getStudyWideAttachmentTypes() {
+	protected Set<AttachmentType> getStudyWideAttachmentTypes() {
 		return attachmentTypes;
 	}
 

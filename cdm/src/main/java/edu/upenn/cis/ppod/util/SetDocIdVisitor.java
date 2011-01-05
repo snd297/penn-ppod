@@ -15,8 +15,8 @@
  */
 package edu.upenn.cis.ppod.util;
 
-import edu.upenn.cis.ppod.imodel.IAttachmentNamespace;
-import edu.upenn.cis.ppod.imodel.IAttachmentType;
+import edu.upenn.cis.ppod.model.AttachmentNamespace;
+import edu.upenn.cis.ppod.model.AttachmentType;
 import edu.upenn.cis.ppod.model.Otu;
 import edu.upenn.cis.ppod.model.OtuSet;
 import edu.upenn.cis.ppod.model.StandardState;
@@ -73,7 +73,7 @@ public final class SetDocIdVisitor extends EmptyVisitor {
 	 */
 	@Override
 	public void visitAttachmentNamespace(
-			final IAttachmentNamespace attachmentNamespace) {
+			final AttachmentNamespace attachmentNamespace) {
 		// Since this will be visited once for every attachment that is out
 		// there,
 		// we need to check it first.
@@ -88,7 +88,7 @@ public final class SetDocIdVisitor extends EmptyVisitor {
 	 * @param attachmentType target
 	 */
 	@Override
-	public void visitAttachmentType(final IAttachmentType attachmentType) {
+	public void visitAttachmentType(final AttachmentType attachmentType) {
 		// Since this will be visited once for every attachment that is out
 		// there,
 		// we need to check it first.

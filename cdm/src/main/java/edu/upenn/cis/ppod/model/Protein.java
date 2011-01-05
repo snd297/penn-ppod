@@ -1,4 +1,4 @@
-package edu.upenn.cis.ppod.imodel;
+package edu.upenn.cis.ppod.model;
 
 public enum Protein {
 	/** Alanine. */

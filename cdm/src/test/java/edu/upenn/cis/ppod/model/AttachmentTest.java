@@ -23,7 +23,6 @@ import static org.testng.Assert.assertTrue;
 import org.testng.annotations.Test;
 
 import edu.upenn.cis.ppod.TestGroupDefs;
-import edu.upenn.cis.ppod.imodel.IAttachment;
 
 /**
  * Tests for {@link Attachment}.
@@ -48,7 +47,7 @@ public class AttachmentTest {
 	@Test
 	public void setBytesValue() {
 
-		final IAttachment attachment = new Attachment();
+		final Attachment attachment = new Attachment();
 
 		assertNull(attachment.getBytesValue());
 
@@ -84,7 +83,7 @@ public class AttachmentTest {
 
 	@Test
 	public void setLabel() {
-		final IAttachment attachment = new Attachment();
+		final Attachment attachment = new Attachment();
 		assertNull(attachment.getLabel());
 
 		final String label = "LABEL";
@@ -125,7 +124,7 @@ public class AttachmentTest {
 
 	@Test
 	public void setStringValue() {
-		final IAttachment attachment = new Attachment();
+		final Attachment attachment = new Attachment();
 		assertNull(attachment.getStringValue());
 
 		final String stringVal = "STRING-VALUE";

@@ -15,7 +15,6 @@ import javax.xml.bind.annotation.XmlElement;
 
 import edu.umd.cs.findbugs.annotations.CheckForNull;
 import edu.umd.cs.findbugs.annotations.Nullable;
-import edu.upenn.cis.ppod.imodel.Protein;
 
 public class ProteinCell
 		extends MolecularCell<Protein, ProteinRow> {

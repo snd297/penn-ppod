@@ -15,7 +15,7 @@
  */
 package edu.upenn.cis.ppod.dao;
 
-import edu.upenn.cis.ppod.imodel.IAttachmentNamespace;
+import edu.upenn.cis.ppod.model.AttachmentNamespace;
 import edu.upenn.cis.ppod.thirdparty.dao.IDAO;
 
 /**
@@ -24,7 +24,7 @@ import edu.upenn.cis.ppod.thirdparty.dao.IDAO;
  * @author Sam Donnelly
  */
 public interface IAttachmentNamespaceDAO
-		extends IDAO<IAttachmentNamespace, Long> {
+		extends IDAO<AttachmentNamespace, Long> {
 
 	/**
 	 * Get the {@link AttachmentNamespace} with the given namespace.
@@ -32,5 +32,5 @@ public interface IAttachmentNamespaceDAO
 	 * @param label the namespace
 	 * @return the {@link AttachmentNamespace} with the given namespace
 	 */
-	IAttachmentNamespace getNamespaceByLabel(String label);
+	AttachmentNamespace getNamespaceByLabel(String label);
 }

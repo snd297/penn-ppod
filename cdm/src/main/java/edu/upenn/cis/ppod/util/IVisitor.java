@@ -15,9 +15,9 @@
  */
 package edu.upenn.cis.ppod.util;
 
-import edu.upenn.cis.ppod.imodel.IAttachment;
-import edu.upenn.cis.ppod.imodel.IAttachmentNamespace;
-import edu.upenn.cis.ppod.imodel.IAttachmentType;
+import edu.upenn.cis.ppod.model.Attachment;
+import edu.upenn.cis.ppod.model.AttachmentNamespace;
+import edu.upenn.cis.ppod.model.AttachmentType;
 import edu.upenn.cis.ppod.model.DnaCell;
 import edu.upenn.cis.ppod.model.DnaMatrix;
 import edu.upenn.cis.ppod.model.DnaRow;
@@ -50,21 +50,21 @@ public interface IVisitor {
 	 * 
 	 * @param attachment to be visited
 	 */
-	void visitAttachment(IAttachment attachment);
+	void visitAttachment(Attachment attachment);
 
 	/**
 	 * Visit an attachment namespace.
 	 * 
 	 * @param the attachmentNamespace to be visited
 	 */
-	void visitAttachmentNamespace(IAttachmentNamespace attachemntNamespace);
+	void visitAttachmentNamespace(AttachmentNamespace attachemntNamespace);
 
 	/**
 	 * Visit an attachment type.
 	 * 
 	 * @param the attachmentType to be visited
 	 */
-	void visitAttachmentType(IAttachmentType attachmentType);
+	void visitAttachmentType(AttachmentType attachmentType);
 
 	/**
 	 * Visit a DNA cell

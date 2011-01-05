@@ -15,10 +15,10 @@
  */
 package edu.upenn.cis.ppod.util;
 
-import edu.upenn.cis.ppod.imodel.IAttachment;
 import edu.upenn.cis.ppod.imodel.IHasColumnVersionInfos;
 import edu.upenn.cis.ppod.imodel.INewVersionInfo;
 import edu.upenn.cis.ppod.imodel.IVersioned;
+import edu.upenn.cis.ppod.model.Attachment;
 import edu.upenn.cis.ppod.model.DnaCell;
 import edu.upenn.cis.ppod.model.DnaMatrix;
 import edu.upenn.cis.ppod.model.DnaRow;
@@ -55,7 +55,7 @@ public final class SetVersionInfoVisitor extends EmptyVisitor {
 	}
 
 	@Override
-	public void visitAttachment(final IAttachment attachment) {
+	public void visitAttachment(final Attachment attachment) {
 		setNewVersionInfo(attachment);
 	}
 

@@ -15,9 +15,9 @@
  */
 package edu.upenn.cis.ppod.util;
 
-import edu.upenn.cis.ppod.imodel.IAttachment;
-import edu.upenn.cis.ppod.imodel.IAttachmentNamespace;
-import edu.upenn.cis.ppod.imodel.IAttachmentType;
+import edu.upenn.cis.ppod.model.Attachment;
+import edu.upenn.cis.ppod.model.AttachmentNamespace;
+import edu.upenn.cis.ppod.model.AttachmentType;
 import edu.upenn.cis.ppod.model.DnaCell;
 import edu.upenn.cis.ppod.model.DnaMatrix;
 import edu.upenn.cis.ppod.model.DnaRow;
@@ -47,7 +47,7 @@ public abstract class EmptyVisitor implements IVisitor {
 	 * 
 	 * @param attachment ignored
 	 */
-	public void visitAttachment(final IAttachment attachment) {}
+	public void visitAttachment(final Attachment attachment) {}
 
 	/**
 	 * Does nothing.
@@ -55,14 +55,14 @@ public abstract class EmptyVisitor implements IVisitor {
 	 * @param attachmentNamespace ignored
 	 */
 	public void visitAttachmentNamespace(
-			final IAttachmentNamespace attachmentNamespace) {}
+			final AttachmentNamespace attachmentNamespace) {}
 
 	/**
 	 * Does nothing.
 	 * 
 	 * @param attachmentType ignored
 	 */
-	public void visitAttachmentType(final IAttachmentType attachmentType) {}
+	public void visitAttachmentType(final AttachmentType attachmentType) {}
 
 	/**
 	 * Does nothing.

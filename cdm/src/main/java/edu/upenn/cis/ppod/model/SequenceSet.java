@@ -32,6 +32,7 @@ import javax.persistence.MappedSuperclass;
 import javax.xml.bind.Unmarshaller;
 import javax.xml.bind.annotation.XmlAttribute;
 
+import edu.upenn.cis.ppod.imodel.IDependsOnParentOtus;
 import edu.upenn.cis.ppod.imodel.IOtuKeyedMap;
 import edu.upenn.cis.ppod.util.IVisitor;
 
@@ -44,7 +45,8 @@ import edu.upenn.cis.ppod.util.IVisitor;
  */
 @MappedSuperclass
 public abstract class SequenceSet<S extends Sequence<?>>
-		extends UuPPodEntityWithDocId {
+		extends UuPPodEntityWithDocId
+		implements IDependsOnParentOtus {
 
 	@Nullable
 	@Column(name = "LABEL", nullable = false)

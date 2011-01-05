@@ -26,9 +26,6 @@ import org.testng.annotations.Test;
 import edu.upenn.cis.ppod.TestGroupDefs;
 import edu.upenn.cis.ppod.dao.IAttachmentNamespaceDAO;
 import edu.upenn.cis.ppod.dao.IAttachmentTypeDAO;
-import edu.upenn.cis.ppod.imodel.IAttachment;
-import edu.upenn.cis.ppod.imodel.IAttachmentNamespace;
-import edu.upenn.cis.ppod.imodel.IAttachmentType;
 import edu.upenn.cis.ppod.model.Attachment;
 import edu.upenn.cis.ppod.model.AttachmentNamespace;
 import edu.upenn.cis.ppod.model.AttachmentType;
@@ -44,7 +41,7 @@ public class MergeAttachmentTest {
 
 	@BeforeMethod
 	public void beforeMethod() {
-		final Map<String, IAttachmentNamespace> namespacesByLabel = newHashMap();
+		final Map<String, AttachmentNamespace> namespacesByLabel = newHashMap();
 		namespacesByLabel.put(
 				"TEST_ATTACHMENT_NAMESPACE",
 				new AttachmentNamespace());
@@ -56,14 +53,14 @@ public class MergeAttachmentTest {
 				mock(IAttachmentNamespaceDAO.class),
 				mock(IAttachmentTypeDAO.class));
 
-		final IAttachment targetAttachment = new Attachment(), sourceAttachment = new Attachment();
+		final Attachment targetAttachment = new Attachment(), sourceAttachment = new Attachment();
 		sourceAttachment.setLabel("target attachment");
-		final IAttachmentType sourceAttachmentType = new AttachmentType();
+		final AttachmentType sourceAttachmentType = new AttachmentType();
 
 		sourceAttachmentType.setLabel("SOURCE_ATTACHMENT_TYPE");
 		sourceAttachment.setType(sourceAttachmentType);
 
-		final IAttachmentNamespace srcNamespace = new AttachmentNamespace();
+		final AttachmentNamespace srcNamespace = new AttachmentNamespace();
 
 		srcNamespace.setLabel("SOURCE_ATTACHMENT_NAMESPACE");
 

@@ -43,7 +43,6 @@ import com.google.common.annotations.VisibleForTesting;
 
 import edu.umd.cs.findbugs.annotations.CheckForNull;
 import edu.umd.cs.findbugs.annotations.Nullable;
-import edu.upenn.cis.ppod.imodel.IAttachment;
 import edu.upenn.cis.ppod.imodel.IPPodEntity;
 import edu.upenn.cis.ppod.util.IVisitor;
 
@@ -78,7 +77,7 @@ public abstract class PPodEntity
 	@OneToMany(mappedBy = "attachee", cascade = CascadeType.ALL,
 			orphanRemoval = true, targetEntity = Attachment.class)
 	@CheckForNull
-	private Set<IAttachment> attachments;
+	private Set<Attachment> attachments;
 
 	@Column(name = "HAS_ATTACHMENTS", nullable = false)
 	private Boolean hasAttachments = false;
@@ -119,12 +118,12 @@ public abstract class PPodEntity
 
 	public void accept(final IVisitor visitor) {
 		checkNotNull(visitor);
-		for (final IAttachment attachment : getAttachments()) {
+		for (final Attachment attachment : getAttachments()) {
 			attachment.accept(visitor);
 		}
 	}
 
-	public IAttachment addAttachment(final IAttachment attachment) {
+	public Attachment addAttachment(final Attachment attachment) {
 		if (attachments == null) {
 			attachments = newHashSet();
 		}
@@ -160,7 +159,7 @@ public abstract class PPodEntity
 	}
 
 	/** {@inheritDoc} */
-	public Set<IAttachment> getAttachments() {
+	public Set<Attachment> getAttachments() {
 		if (hasAttachments) {
 			if (attachments == null) {
 				throw new AssertionError(
@@ -172,19 +171,19 @@ public abstract class PPodEntity
 	}
 
 	/** {@inheritDoc} */
-	public Set<IAttachment> getAttachmentsByNamespace(
+	public Set<Attachment> getAttachmentsByNamespace(
 			final String namespace) {
 		return newHashSet(filter(
 				getAttachments(),
-						new IAttachment.IsOfNamespace(namespace)));
+						new Attachment.IsOfNamespace(namespace)));
 	}
 
 	/** {@inheritDoc} */
-	public Set<IAttachment> getAttachmentsByNamespaceAndType(
+	public Set<Attachment> getAttachmentsByNamespaceAndType(
 			final String namespace, final String type) {
 		return newHashSet(filter(
 						getAttachments(),
-						new IAttachment.IsOfNamespaceAndType(namespace, type)));
+						new Attachment.IsOfNamespaceAndType(namespace, type)));
 	}
 
 	/**
@@ -192,7 +191,7 @@ public abstract class PPodEntity
 	 */
 	@XmlElement(name = "attachment")
 	@edu.umd.cs.findbugs.annotations.Nullable
-	protected Set<IAttachment> getAttachmentsXml() {
+	protected Set<Attachment> getAttachmentsXml() {
 		if (hasAttachments) {
 			if (attachments == null) {
 				attachments = newHashSet();
@@ -233,13 +232,13 @@ public abstract class PPodEntity
 	}
 
 	/** {@inheritDoc} */
-	public boolean removeAttachment(final IAttachment attachment) {
+	public boolean removeAttachment(final Attachment attachment) {
 		checkNotNull(attachment);
 		Boolean attachmentRemoved;
 		if (!hasAttachments) {
 			attachmentRemoved = false;
 		} else {
-			final Set<IAttachment> thisAttachments = attachments;
+			final Set<Attachment> thisAttachments = attachments;
 			if (thisAttachments == null) {
 				throw new AssertionError(
 						"hasAttachments is true but attachments == null");
