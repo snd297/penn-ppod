@@ -29,11 +29,7 @@ import javax.persistence.OneToMany;
 import javax.persistence.OrderColumn;
 import javax.persistence.Table;
 import javax.xml.bind.annotation.XmlElement;
-import javax.xml.bind.annotation.adapters.XmlAdapter;
 
-import edu.upenn.cis.ppod.imodel.IStandardCell;
-import edu.upenn.cis.ppod.imodel.IStandardMatrix;
-import edu.upenn.cis.ppod.imodel.IStandardRow;
 import edu.upenn.cis.ppod.util.IVisitor;
 
 /**
@@ -44,21 +40,7 @@ import edu.upenn.cis.ppod.util.IVisitor;
 @Entity
 @Table(name = StandardRow.TABLE)
 public class StandardRow
-		extends Row<IStandardCell, IStandardMatrix>
-		implements IStandardRow {
-
-	public static class Adapter extends XmlAdapter<StandardRow, IStandardRow> {
-
-		@Override
-		public StandardRow marshal(final IStandardRow row) {
-			return (StandardRow) row;
-		}
-
-		@Override
-		public IStandardRow unmarshal(final StandardRow row) {
-			return row;
-		}
-	}
+		extends Row<StandardCell, StandardMatrix> {
 
 	/** This entitiy's table name. */
 	public static final String TABLE = "STANDARD_ROW";
@@ -68,15 +50,14 @@ public class StandardRow
 	@OneToMany(
 			mappedBy = "parent",
 			cascade = CascadeType.ALL,
-			orphanRemoval = true,
-			targetEntity = StandardCell.class)
+			orphanRemoval = true)
 	@OrderColumn(name = "POSITION")
-	private final List<IStandardCell> cells = newArrayList();
+	private final List<StandardCell> cells = newArrayList();
 
 	@ManyToOne(fetch = FetchType.LAZY, optional = false,
 			targetEntity = StandardMatrix.class)
 	@JoinColumn(name = StandardMatrix.JOIN_COLUMN)
-	private IStandardMatrix parent;
+	private StandardMatrix parent;
 
 	public StandardRow() {}
 
@@ -89,22 +70,22 @@ public class StandardRow
 
 	@XmlElement(name = "cell")
 	@Override
-	protected List<IStandardCell> getCellsModifiable() {
+	protected List<StandardCell> getCellsModifiable() {
 		return cells;
 	}
 
 	/** {@inheritDoc} */
-	public IStandardMatrix getParent() {
+	public StandardMatrix getParent() {
 		return parent;
 	}
 
 	@Override
-	public List<IStandardCell> setCells(
-			final List<? extends IStandardCell> cells) {
-		final List<IStandardCell> clearedCells =
+	public List<StandardCell> setCells(
+			final List<? extends StandardCell> cells) {
+		final List<StandardCell> clearedCells =
 				super.setCellsHelper(cells);
 
-		for (final IStandardCell cell : getCells()) {
+		for (final StandardCell cell : getCells()) {
 			cell.setParent(this);
 		}
 		return clearedCells;
@@ -112,7 +93,7 @@ public class StandardRow
 
 	/** {@inheritDoc} */
 	public void setParent(
-			final IStandardMatrix parent) {
+			final StandardMatrix parent) {
 		this.parent = parent;
 	}
 }

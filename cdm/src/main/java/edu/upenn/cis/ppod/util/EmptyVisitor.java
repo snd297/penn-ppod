@@ -20,18 +20,18 @@ import edu.upenn.cis.ppod.imodel.IAttachmentNamespace;
 import edu.upenn.cis.ppod.imodel.IAttachmentType;
 import edu.upenn.cis.ppod.imodel.IDnaSequence;
 import edu.upenn.cis.ppod.imodel.IDnaSequenceSet;
-import edu.upenn.cis.ppod.imodel.IProteinRow;
-import edu.upenn.cis.ppod.imodel.IStandardCell;
-import edu.upenn.cis.ppod.imodel.IStandardCharacter;
-import edu.upenn.cis.ppod.imodel.IStandardMatrix;
-import edu.upenn.cis.ppod.imodel.IStandardRow;
-import edu.upenn.cis.ppod.imodel.IStandardState;
 import edu.upenn.cis.ppod.imodel.IStudy;
 import edu.upenn.cis.ppod.model.DnaCell;
 import edu.upenn.cis.ppod.model.DnaMatrix;
 import edu.upenn.cis.ppod.model.DnaRow;
 import edu.upenn.cis.ppod.model.Otu;
 import edu.upenn.cis.ppod.model.OtuSet;
+import edu.upenn.cis.ppod.model.ProteinRow;
+import edu.upenn.cis.ppod.model.StandardCell;
+import edu.upenn.cis.ppod.model.StandardCharacter;
+import edu.upenn.cis.ppod.model.StandardMatrix;
+import edu.upenn.cis.ppod.model.StandardRow;
+import edu.upenn.cis.ppod.model.StandardState;
 import edu.upenn.cis.ppod.model.Tree;
 import edu.upenn.cis.ppod.model.TreeSet;
 
@@ -118,42 +118,42 @@ public abstract class EmptyVisitor implements IVisitor {
 	 * 
 	 * @param proteinRow ignored
 	 */
-	public void visitProteinRow(final IProteinRow row) {}
+	public void visitProteinRow(final ProteinRow row) {}
 
 	/**
 	 * Does nothing.
 	 * 
 	 * @param cell ignored
 	 */
-	public void visitStandardCell(final IStandardCell cell) {}
+	public void visitStandardCell(final StandardCell cell) {}
 
 	/**
 	 * Does nothing.
 	 * 
 	 * @param character ignored
 	 */
-	public void visitStandardCharacter(final IStandardCharacter character) {}
+	public void visitStandardCharacter(final StandardCharacter character) {}
 
 	/**
 	 * Does nothing.
 	 * 
 	 * @param matrix ignored
 	 */
-	public void visitStandardMatrix(final IStandardMatrix matrix) {}
+	public void visitStandardMatrix(final StandardMatrix matrix) {}
 
 	/**
 	 * Does nothing.
 	 * 
 	 * @param row ignored
 	 */
-	public void visitStandardRow(final IStandardRow row) {}
+	public void visitStandardRow(final StandardRow row) {}
 
 	/**
 	 * Does nothing.
 	 * 
 	 * @param state ignored
 	 */
-	public void visitStandardState(final IStandardState state) {}
+	public void visitStandardState(final StandardState state) {}
 
 	/**
 	 * Does nothing.

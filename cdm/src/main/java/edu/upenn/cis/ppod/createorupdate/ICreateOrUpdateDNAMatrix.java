@@ -17,9 +17,9 @@ package edu.upenn.cis.ppod.createorupdate;
 
 import com.google.inject.ImplementedBy;
 
-import edu.upenn.cis.ppod.imodel.DnaNucleotide;
 import edu.upenn.cis.ppod.model.DnaCell;
 import edu.upenn.cis.ppod.model.DnaMatrix;
+import edu.upenn.cis.ppod.model.DnaNucleotide;
 import edu.upenn.cis.ppod.model.DnaRow;
 
 /**

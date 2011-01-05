@@ -24,17 +24,17 @@ import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
 import edu.upenn.cis.ppod.dao.IObjectWithLongIdDAO;
-import edu.upenn.cis.ppod.imodel.ICell;
-import edu.upenn.cis.ppod.imodel.IMatrix;
 import edu.upenn.cis.ppod.imodel.INewVersionInfo;
-import edu.upenn.cis.ppod.imodel.IRow;
 import edu.upenn.cis.ppod.imodel.IVersionInfo;
+import edu.upenn.cis.ppod.model.Cell;
+import edu.upenn.cis.ppod.model.Matrix;
 import edu.upenn.cis.ppod.model.Otu;
+import edu.upenn.cis.ppod.model.Row;
 
 /**
  * @author Sam Donnelly
  */
-abstract class CreateOrUpdateMatrix<M extends IMatrix<R, C>, R extends IRow<C, ?>, C extends ICell<E, ?>, E> {
+abstract class CreateOrUpdateMatrix<M extends Matrix<R, C>, R extends Row<C, ?>, C extends Cell<E, ?>, E> {
 
 	private final IObjectWithLongIdDAO dao;
 

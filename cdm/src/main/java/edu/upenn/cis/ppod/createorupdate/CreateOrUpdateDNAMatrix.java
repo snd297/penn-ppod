@@ -22,12 +22,12 @@ import static com.google.common.collect.Iterables.getOnlyElement;
 import com.google.inject.Inject;
 
 import edu.upenn.cis.ppod.dao.IObjectWithLongIdDAO;
-import edu.upenn.cis.ppod.imodel.DnaNucleotide;
-import edu.upenn.cis.ppod.imodel.ICell;
 import edu.upenn.cis.ppod.imodel.INewVersionInfo;
 import edu.upenn.cis.ppod.imodel.IVersionInfo;
+import edu.upenn.cis.ppod.model.Cell;
 import edu.upenn.cis.ppod.model.DnaCell;
 import edu.upenn.cis.ppod.model.DnaMatrix;
+import edu.upenn.cis.ppod.model.DnaNucleotide;
 import edu.upenn.cis.ppod.model.DnaRow;
 import edu.upenn.cis.ppod.model.ModelFactory;
 
@@ -76,7 +76,7 @@ class CreateOrUpdateDNAMatrix
 	@Override
 	protected void handlePolymorphicCell(final DnaCell targetCell,
 			final DnaCell sourceCell) {
-		checkArgument(sourceCell.getType() == ICell.Type.POLYMORPHIC);
+		checkArgument(sourceCell.getType() == Cell.Type.POLYMORPHIC);
 		targetCell.setPolymorphicElements(
 				sourceCell.getElements(),
 				sourceCell.getLowerCase());
@@ -85,7 +85,7 @@ class CreateOrUpdateDNAMatrix
 	@Override
 	protected void handleSingleCell(final DnaCell targetCell,
 			final DnaCell sourceCell) {
-		checkArgument(sourceCell.getType() == ICell.Type.SINGLE);
+		checkArgument(sourceCell.getType() == Cell.Type.SINGLE);
 		targetCell.setSingleElement(
 				getOnlyElement(sourceCell.getElements()),
 				sourceCell.getLowerCase());
@@ -94,7 +94,7 @@ class CreateOrUpdateDNAMatrix
 	@Override
 	protected void handleUncertainCell(final DnaCell targetCell,
 			final DnaCell sourceCell) {
-		checkArgument(sourceCell.getType() == ICell.Type.UNCERTAIN);
+		checkArgument(sourceCell.getType() == Cell.Type.UNCERTAIN);
 		targetCell.setUncertainElements(sourceCell.getElements());
 	}
 

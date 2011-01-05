@@ -32,8 +32,6 @@ import com.google.common.collect.ImmutableList;
 import com.google.common.collect.ImmutableSet;
 
 import edu.upenn.cis.ppod.TestGroupDefs;
-import edu.upenn.cis.ppod.imodel.DnaNucleotide;
-import edu.upenn.cis.ppod.imodel.ICell;
 
 @Test(groups = { TestGroupDefs.FAST })
 public class CellTest {
@@ -55,7 +53,7 @@ public class CellTest {
 	public void beforeMarshal() {
 		final VersionInfo versionInfo = new VersionInfo().setVersion(23L);
 		final Cell<DnaNucleotide, ?> cell = new DnaCell();
-		cell.setType(ICell.Type.INAPPLICABLE);
+		cell.setType(Cell.Type.INAPPLICABLE);
 		cell.setVersionInfo(versionInfo);
 		cell.beforeMarshal(null);
 		assertEquals(cell.getVersion(), versionInfo.getVersion());
@@ -90,23 +88,23 @@ public class CellTest {
 		final Set<DnaNucleotide> elements =
 				ImmutableSet.of(DnaNucleotide.A, DnaNucleotide.T);
 
-		cell.setPolymorphicOrUncertain(ICell.Type.POLYMORPHIC, elements);
+		cell.setPolymorphicOrUncertain(Cell.Type.POLYMORPHIC, elements);
 		assertEquals(cell.getElements(), elements);
 
-		cell.setType(ICell.Type.UNCERTAIN);
+		cell.setType(Cell.Type.UNCERTAIN);
 		assertEquals(cell.getElements(), elements);
 	}
 
 	@Test(expectedExceptions = IllegalStateException.class)
 	public void getElementsWhenNoTypeSet() {
-		final ICell<?, ?> cell = new DnaCell();
+		final Cell<?, ?> cell = new DnaCell();
 		cell.getElements();
 	}
 
 	@Test
 	public void getElementsXml() {
 		final DnaCell cell = new DnaCell();
-		cell.setType(ICell.Type.UNCERTAIN);
+		cell.setType(Cell.Type.UNCERTAIN);
 		final Set<DnaNucleotide> cellElementsXml = cell.getElementsIfMultiple();
 		assertNotNull(cellElementsXml);
 		assertEquals(cellElementsXml.size(), 0);
@@ -140,12 +138,12 @@ public class CellTest {
 	@Test
 	public void getStatesWhenCellHasNoElements() {
 		final Cell<DnaNucleotide, ?> cell = new DnaCell();
-		cell.setType(ICell.Type.UNASSIGNED);
+		cell.setType(Cell.Type.UNASSIGNED);
 		cell.setElement(null);
 		cell.setElements(null);
 		assertEquals(cell.getElements(), Collections.emptyList());
 
-		cell.setType(ICell.Type.INAPPLICABLE);
+		cell.setType(Cell.Type.INAPPLICABLE);
 		assertEquals(cell.getElements(), Collections.emptyList());
 	}
 
@@ -156,7 +154,7 @@ public class CellTest {
 		final DnaNucleotide nucleotide = DnaNucleotide.C;
 
 		cell.setElement(nucleotide);
-		cell.setType(ICell.Type.SINGLE);
+		cell.setType(Cell.Type.SINGLE);
 		assertEquals(cell.getElements(), ImmutableSet.of(nucleotide));
 	}
 
@@ -210,14 +208,14 @@ public class CellTest {
 		cell.setInapplicable();
 
 		assertTrue(cell.isInNeedOfNewVersion());
-		assertEquals(cell.getType(), ICell.Type.INAPPLICABLE);
+		assertEquals(cell.getType(), Cell.Type.INAPPLICABLE);
 		assertEquals(cell.getElements(), Collections.emptySet());
 
 		cell.unsetInNeedOfNewVersion();
 		cell.setInapplicable();
 
 		assertFalse(cell.isInNeedOfNewVersion());
-		assertEquals(cell.getType(), ICell.Type.INAPPLICABLE);
+		assertEquals(cell.getType(), Cell.Type.INAPPLICABLE);
 		assertEquals(cell.getElements(), Collections.emptySet());
 	}
 
@@ -236,10 +234,10 @@ public class CellTest {
 				EnumSet.of(DnaNucleotide.A, DnaNucleotide.C);
 
 		cell.setPolymorphicOrUncertain(
-				ICell.Type.UNCERTAIN,
+				Cell.Type.UNCERTAIN,
 				nucleotides);
 
-		assertSame(ICell.Type.UNCERTAIN, cell.getType());
+		assertSame(Cell.Type.UNCERTAIN, cell.getType());
 		assertEquals(nucleotides, cell.getElements());
 	}
 
@@ -247,7 +245,7 @@ public class CellTest {
 	public void setPolymorphicOrUncertainWInapplicable() {
 		final Cell<DnaNucleotide, ?> cell = new DnaCell();
 		cell.setPolymorphicOrUncertain(
-				ICell.Type.INAPPLICABLE,
+				Cell.Type.INAPPLICABLE,
 				ImmutableSet.of(DnaNucleotide.A, DnaNucleotide.C));
 	}
 
@@ -267,14 +265,14 @@ public class CellTest {
 				EnumSet.of(DnaNucleotide.A, DnaNucleotide.C);
 
 		cell.setPolymorphicOrUncertain(
-				ICell.Type.UNCERTAIN,
+				Cell.Type.UNCERTAIN,
 				nucleotides);
 
 		cell.setPolymorphicOrUncertain(
-				ICell.Type.UNCERTAIN,
+				Cell.Type.UNCERTAIN,
 				nucleotides);
 
-		assertSame(ICell.Type.UNCERTAIN, cell.getType());
+		assertSame(Cell.Type.UNCERTAIN, cell.getType());
 		assertEquals(nucleotides, cell.getElements());
 	}
 
@@ -282,7 +280,7 @@ public class CellTest {
 	public void setPolymorphicOrUncertainWSingle() {
 		final Cell<DnaNucleotide, ?> cell = new DnaCell();
 		cell.setPolymorphicOrUncertain(
-				ICell.Type.SINGLE,
+				Cell.Type.SINGLE,
 				ImmutableSet.of(DnaNucleotide.A, DnaNucleotide.C));
 	}
 
@@ -291,7 +289,7 @@ public class CellTest {
 		final Cell<DnaNucleotide, ?> cell = new DnaCell();
 		;
 		cell.setPolymorphicOrUncertain(
-				ICell.Type.POLYMORPHIC,
+				Cell.Type.POLYMORPHIC,
 				ImmutableSet.of(DnaNucleotide.A));
 	}
 
@@ -299,7 +297,7 @@ public class CellTest {
 	public void setPolymorphicOrUncertainWUnassigned() {
 		final Cell<DnaNucleotide, ?> cell = new DnaCell();
 		cell.setPolymorphicOrUncertain(
-				ICell.Type.UNASSIGNED,
+				Cell.Type.UNASSIGNED,
 				ImmutableSet.of(DnaNucleotide.A, DnaNucleotide.C));
 	}
 
@@ -316,14 +314,14 @@ public class CellTest {
 		cell.setUnassigned();
 
 		assertTrue(cell.isInNeedOfNewVersion());
-		assertEquals(cell.getType(), ICell.Type.UNASSIGNED);
+		assertEquals(cell.getType(), Cell.Type.UNASSIGNED);
 		assertEquals(cell.getElements(), Collections.emptySet());
 
 		cell.unsetInNeedOfNewVersion();
 		cell.setUnassigned();
 
 		assertFalse(cell.isInNeedOfNewVersion());
-		assertEquals(cell.getType(), ICell.Type.UNASSIGNED);
+		assertEquals(cell.getType(), Cell.Type.UNASSIGNED);
 		assertEquals(cell.getElements(), Collections.emptySet());
 
 	}

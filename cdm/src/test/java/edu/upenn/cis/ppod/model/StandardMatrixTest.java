@@ -34,8 +34,6 @@ import org.testng.annotations.Test;
 import com.google.common.collect.ImmutableList;
 
 import edu.upenn.cis.ppod.TestGroupDefs;
-import edu.upenn.cis.ppod.imodel.IStandardRow;
-import edu.upenn.cis.ppod.imodel.IStandardState;
 import edu.upenn.cis.ppod.imodel.IVersionInfo;
 
 /**
@@ -88,7 +86,7 @@ public class StandardMatrixTest {
 				Arrays.asList(new StandardCell[] { cell00 }));
 		standardCharacter.addState(new StandardState(0));
 
-		final IStandardState state = standardCharacter.getState(0);
+		final StandardState state = standardCharacter.getState(0);
 		assertNotNull(state);
 
 		cell00.setSingleWithStateNo(state.getStateNumber());
@@ -98,7 +96,7 @@ public class StandardMatrixTest {
 		matrix.getRows().get(otu1).setCells(
 				Arrays.asList(new StandardCell[] { cell10 }));
 
-		final IStandardState state1 = new StandardState(1);
+		final StandardState state1 = new StandardState(1);
 		standardCharacter.addState(state1);
 		cell10.setSingleWithStateNo(state1.getStateNumber());
 
@@ -107,7 +105,7 @@ public class StandardMatrixTest {
 		matrix.getRows().get(otu2).setCells(
 				Arrays.asList(new StandardCell[] { cell20 }));
 
-		final IStandardState state0 = new StandardState(0);
+		final StandardState state0 = new StandardState(0);
 		standardCharacter.addState(state0);
 		cell20.setSingleWithStateNo(state0.getStateNumber());
 
@@ -284,7 +282,7 @@ public class StandardMatrixTest {
 	 */
 	@Test
 	public void setWithSameRow() {
-		final IStandardRow row1 = new StandardRow();
+		final StandardRow row1 = new StandardRow();
 		matrix.putRow(otu1, row1);
 		matrix.setVersionInfo(new VersionInfo());
 		matrix.putRow(otu1, row1);
@@ -316,8 +314,8 @@ public class StandardMatrixTest {
 	public void replaceRow() {
 		final StandardRow row1 = new StandardRow();
 		matrix.putRow(otu1, row1);
-		final IStandardRow row2 = new StandardRow();
-		final IStandardRow someRow = matrix.putRow(otu1, row2);
+		final StandardRow row2 = new StandardRow();
+		final StandardRow someRow = matrix.putRow(otu1, row2);
 		assertEquals(someRow, row1);
 		assertNull(row1.getParent());
 	}
@@ -408,7 +406,7 @@ public class StandardMatrixTest {
 
 	}
 
-	// void populateMatrix(final IStandardMatrix matrix) {
+	// void populateMatrix(final StandardMatrix matrix) {
 	// final IOTUSet otuSet = otuSetProvider.get();
 	//
 	// otuSet.setLabel("otu-set");
@@ -439,13 +437,13 @@ public class StandardMatrixTest {
 	// character0.setVersion(45245L);
 	// character0.setPPodId();
 	//
-	// final IStandardState state00 = standardStateFactory.create(0);
+	// final StandardState state00 = standardStateFactory.create(0);
 	// character0.addState(state00);
 	// state00.setLabel("state-00");
-	// final IStandardState state01 = standardStateFactory.create(1);
+	// final StandardState state01 = standardStateFactory.create(1);
 	// character0.addState(state01);
 	// state01.setLabel("state-01");
-	// final IStandardState state02 = standardStateFactory.create(2);
+	// final StandardState state02 = standardStateFactory.create(2);
 	// character0.addState(state02);
 	// state02.setLabel("state-02");
 	//
@@ -455,13 +453,13 @@ public class StandardMatrixTest {
 	// character1.setVersion(45245L);
 	// character1.setPPodId();
 	//
-	// final IStandardState state10 = standardStateFactory.create(0);
+	// final StandardState state10 = standardStateFactory.create(0);
 	// character1.addState(state10);
 	// state10.setLabel("state-10");
-	// final IStandardState state11 = standardStateFactory.create(1);
+	// final StandardState state11 = standardStateFactory.create(1);
 	// character1.addState(state11);
 	// state11.setLabel("state-11");
-	// final IStandardState state12 = standardStateFactory.create(2);
+	// final StandardState state12 = standardStateFactory.create(2);
 	// character1.addState(state12);
 	// state12.setLabel("state-12");
 	//
@@ -471,13 +469,13 @@ public class StandardMatrixTest {
 	// character2.setVersion(45245L);
 	// character2.setPPodId();
 	//
-	// final IStandardState state20 = standardStateFactory.create(0);
+	// final StandardState state20 = standardStateFactory.create(0);
 	// character2.addState(state20);
 	// state20.setLabel("state-20");
-	// final IStandardState state21 = standardStateFactory.create(1);
+	// final StandardState state21 = standardStateFactory.create(1);
 	// character2.addState(state21);
 	// state21.setLabel("state-21");
-	// final IStandardState state22 = standardStateFactory.create(2);
+	// final StandardState state22 = standardStateFactory.create(2);
 	// character2.addState(state22);
 	// state22.setLabel("state-22");
 	//

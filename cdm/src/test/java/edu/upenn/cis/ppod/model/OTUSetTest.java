@@ -41,7 +41,6 @@ import com.google.common.collect.ImmutableSet;
 
 import edu.upenn.cis.ppod.TestGroupDefs;
 import edu.upenn.cis.ppod.imodel.IDnaSequenceSet;
-import edu.upenn.cis.ppod.imodel.IStandardMatrix;
 import edu.upenn.cis.ppod.imodel.IStudy;
 import edu.upenn.cis.ppod.util.IVisitor;
 
@@ -296,10 +295,10 @@ public class OTUSetTest {
 	@Test(groups = TestGroupDefs.SINGLE)
 	public void addStandardMatrixPos() {
 		final OtuSet otuSet = new OtuSet();
-		final IStandardMatrix matrix0 = new StandardMatrix();
-		final IStandardMatrix matrix1 = new StandardMatrix();
-		final IStandardMatrix matrix2 = new StandardMatrix();
-		final IStandardMatrix matrix3 = new StandardMatrix();
+		final StandardMatrix matrix0 = new StandardMatrix();
+		final StandardMatrix matrix1 = new StandardMatrix();
+		final StandardMatrix matrix2 = new StandardMatrix();
+		final StandardMatrix matrix3 = new StandardMatrix();
 
 		otuSet.addStandardMatrix(matrix0);
 		otuSet.addStandardMatrix(matrix1);
@@ -470,11 +469,11 @@ public class OTUSetTest {
 
 	@Test
 	public void removeStandardMatrix() {
-		final IStandardMatrix matrix0 = new StandardMatrix();
+		final StandardMatrix matrix0 = new StandardMatrix();
 		otuSet.addStandardMatrix(matrix0);
-		final IStandardMatrix matrix1 = new StandardMatrix();
+		final StandardMatrix matrix1 = new StandardMatrix();
 		otuSet.addStandardMatrix(matrix1);
-		final IStandardMatrix matrix2 = new StandardMatrix();
+		final StandardMatrix matrix2 = new StandardMatrix();
 		otuSet.addStandardMatrix(matrix2);
 
 		otuSet.unsetInNeedOfNewVersion();

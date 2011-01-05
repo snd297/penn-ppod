@@ -26,11 +26,10 @@ import javax.persistence.JoinColumn;
 import javax.persistence.ManyToOne;
 import javax.persistence.Table;
 import javax.xml.bind.annotation.XmlAttribute;
-import javax.xml.bind.annotation.adapters.XmlAdapter;
+
+import com.google.common.base.Function;
 
 import edu.umd.cs.findbugs.annotations.CheckForNull;
-import edu.upenn.cis.ppod.imodel.IStandardCharacter;
-import edu.upenn.cis.ppod.imodel.IStandardState;
 import edu.upenn.cis.ppod.util.IVisitor;
 
 /**
@@ -46,21 +45,18 @@ import edu.upenn.cis.ppod.util.IVisitor;
  */
 @Entity
 @Table(name = StandardState.TABLE)
-public class StandardState extends PPodEntityWDocId implements IStandardState {
+public class StandardState extends PPodEntityWDocId {
 
-	public static class Adapter extends
-			XmlAdapter<StandardState, IStandardState> {
+	/**
+	 * {@link Function} wrapper of {@link #getStateNumber()}.
+	 */
+	public static final Function<StandardState, Integer> getStateNumber = new Function<StandardState, Integer>() {
 
-		@Override
-		public StandardState marshal(final IStandardState state) {
-			return (StandardState) state;
+		public Integer apply(final StandardState from) {
+			return from.getStateNumber();
 		}
 
-		@Override
-		public IStandardState unmarshal(final StandardState state) {
-			return state;
-		}
-	}
+	};
 
 	/** The name of this entity's table. */
 	public final static String TABLE = "STANDARD_STATE";
@@ -101,7 +97,7 @@ public class StandardState extends PPodEntityWDocId implements IStandardState {
 			targetEntity = StandardCharacter.class)
 	@JoinColumn(name = StandardCharacter.JOIN_COLUMN)
 	@Nullable
-	private IStandardCharacter parent;
+	private StandardCharacter parent;
 
 	/**
 	 * For Hibernate.
@@ -155,7 +151,7 @@ public class StandardState extends PPodEntityWDocId implements IStandardState {
 	 * @return this character stateNumber's owning character
 	 */
 	@Nullable
-	public IStandardCharacter getParent() {
+	public StandardCharacter getParent() {
 		return parent;
 	}
 
@@ -209,7 +205,7 @@ public class StandardState extends PPodEntityWDocId implements IStandardState {
 	 * @param character see description.
 	 */
 	public void setParent(
-			@CheckForNull final IStandardCharacter parent) {
+			@CheckForNull final StandardCharacter parent) {
 		this.parent = parent;
 	}
 

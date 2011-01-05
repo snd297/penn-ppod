@@ -34,16 +34,15 @@ import org.slf4j.LoggerFactory;
 import com.google.inject.Inject;
 
 import edu.upenn.cis.ppod.dao.IObjectWithLongIdDAO;
-import edu.upenn.cis.ppod.imodel.ICell;
-import edu.upenn.cis.ppod.imodel.INewVersionInfo;
-import edu.upenn.cis.ppod.imodel.IStandardCell;
-import edu.upenn.cis.ppod.imodel.IStandardCharacter;
-import edu.upenn.cis.ppod.imodel.IStandardMatrix;
-import edu.upenn.cis.ppod.imodel.IStandardRow;
-import edu.upenn.cis.ppod.imodel.IStandardState;
-import edu.upenn.cis.ppod.imodel.IVersionInfo;
 import edu.upenn.cis.ppod.imodel.IHasPPodId;
+import edu.upenn.cis.ppod.imodel.INewVersionInfo;
+import edu.upenn.cis.ppod.imodel.IVersionInfo;
+import edu.upenn.cis.ppod.model.Cell;
 import edu.upenn.cis.ppod.model.ModelFactory;
+import edu.upenn.cis.ppod.model.StandardCell;
+import edu.upenn.cis.ppod.model.StandardCharacter;
+import edu.upenn.cis.ppod.model.StandardMatrix;
+import edu.upenn.cis.ppod.model.StandardRow;
 import edu.upenn.cis.ppod.model.StandardState;
 
 /**
@@ -51,7 +50,7 @@ import edu.upenn.cis.ppod.model.StandardState;
  */
 final class CreateOrUpdateStandardMatrix
 		extends
-		CreateOrUpdateMatrix<IStandardMatrix, IStandardRow, IStandardCell, IStandardState>
+		CreateOrUpdateMatrix<StandardMatrix, StandardRow, StandardCell, StandardState>
 		implements ICreateOrUpdateStandardMatrix {
 
 	private static Logger logger =
@@ -68,8 +67,8 @@ final class CreateOrUpdateStandardMatrix
 	}
 
 	public void createOrUpdateMatrix(
-			final IStandardMatrix dbMatrix,
-			final IStandardMatrix sourceMatrix) {
+			final StandardMatrix dbMatrix,
+			final StandardMatrix sourceMatrix) {
 		final String METHOD = "createOrUpdate(...)";
 		logger.debug("{}: entering", METHOD);
 		checkNotNull(dbMatrix);
@@ -78,12 +77,12 @@ final class CreateOrUpdateStandardMatrix
 		final int[] sourceToDbCharPositions =
 				new int[sourceMatrix.getColumnsSize()];
 
-		final List<IStandardCharacter> newDbMatrixCharacters = newArrayList();
+		final List<StandardCharacter> newDbMatrixCharacters = newArrayList();
 		int sourceCharacterPosition = -1;
-		for (final IStandardCharacter sourceCharacter : sourceMatrix
+		for (final StandardCharacter sourceCharacter : sourceMatrix
 				.getCharacters()) {
 			sourceCharacterPosition++;
-			IStandardCharacter newDbCharacter;
+			StandardCharacter newDbCharacter;
 
 			if (null == (newDbCharacter =
 									find(dbMatrix
@@ -108,8 +107,8 @@ final class CreateOrUpdateStandardMatrix
 			newDbCharacter.setLabel(sourceCharacter.getLabel());
 			newDbCharacter.setMesquiteId(sourceCharacter.getMesquiteId());
 
-			for (final IStandardState sourceState : sourceCharacter.getStates()) {
-				IStandardState dbState;
+			for (final StandardState sourceState : sourceCharacter.getStates()) {
+				StandardState dbState;
 				if (null == (dbState =
 						newDbCharacter.getState(sourceState.getStateNumber()))) {
 					dbState = new StandardState(sourceState.getStateNumber());
@@ -130,45 +129,45 @@ final class CreateOrUpdateStandardMatrix
 
 	@Override
 	protected void handlePolymorphicCell(
-			final IStandardCell targetCell,
-			final IStandardCell sourceCell) {
-		checkArgument(sourceCell.getType() == ICell.Type.POLYMORPHIC);
+			final StandardCell targetCell,
+			final StandardCell sourceCell) {
+		checkArgument(sourceCell.getType() == Cell.Type.POLYMORPHIC);
 		final Set<Integer> sourceStateNumbers =
 				newHashSet(
 				transform(
 						sourceCell.getElements(),
-						IStandardState.getStateNumber));
+						StandardState.getStateNumber));
 		targetCell.setPolymorphicWithStateNos(sourceStateNumbers);
 	}
 
 	@Override
-	protected void handleSingleCell(final IStandardCell targetCell,
-			final IStandardCell sourceCell) {
-		checkArgument(sourceCell.getType() == ICell.Type.SINGLE);
-		final IStandardState sourceState =
+	protected void handleSingleCell(final StandardCell targetCell,
+			final StandardCell sourceCell) {
+		checkArgument(sourceCell.getType() == Cell.Type.SINGLE);
+		final StandardState sourceState =
 				getOnlyElement(sourceCell.getElements());
 		targetCell.setSingleWithStateNo(sourceState.getStateNumber());
 	}
 
 	@Override
-	protected void handleUncertainCell(final IStandardCell targetCell,
-			final IStandardCell sourceCell) {
-		checkArgument(sourceCell.getType() == ICell.Type.UNCERTAIN);
+	protected void handleUncertainCell(final StandardCell targetCell,
+			final StandardCell sourceCell) {
+		checkArgument(sourceCell.getType() == Cell.Type.UNCERTAIN);
 		final Set<Integer> sourceStateNumbers =
 				newHashSet(
 				transform(
 						sourceCell.getElements(),
-						IStandardState.getStateNumber));
+						StandardState.getStateNumber));
 		targetCell.setUncertainWithStateNos(sourceStateNumbers);
 	}
 
 	@Override
-	protected IStandardCell newC(final IVersionInfo versionInfo) {
+	protected StandardCell newC(final IVersionInfo versionInfo) {
 		return ModelFactory.newStandardCell(versionInfo);
 	}
 
 	@Override
-	protected IStandardRow newR(final IVersionInfo versionInfo) {
+	protected StandardRow newR(final IVersionInfo versionInfo) {
 		return ModelFactory.newStandardRow(versionInfo);
 	}
 }

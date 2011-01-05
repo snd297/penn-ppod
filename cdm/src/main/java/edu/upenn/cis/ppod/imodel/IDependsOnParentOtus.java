@@ -5,7 +5,7 @@ import edu.upenn.cis.ppod.model.OtuSet;
 public interface IDependsOnParentOtus extends IChild<OtuSet> {
 
 	/**
-	 * Signal the child that the otus may have changed - added or deleted.
+	 * Signal to the child that the otus may have changed - added or deleted.
 	 */
 	void updateOtus();
 }

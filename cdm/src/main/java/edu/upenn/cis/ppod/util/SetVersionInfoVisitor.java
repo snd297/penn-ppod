@@ -16,13 +16,8 @@
 package edu.upenn.cis.ppod.util;
 
 import edu.upenn.cis.ppod.imodel.IAttachment;
-import edu.upenn.cis.ppod.imodel.IMatrix;
+import edu.upenn.cis.ppod.imodel.IHasColumnVersionInfos;
 import edu.upenn.cis.ppod.imodel.INewVersionInfo;
-import edu.upenn.cis.ppod.imodel.IStandardCell;
-import edu.upenn.cis.ppod.imodel.IStandardCharacter;
-import edu.upenn.cis.ppod.imodel.IStandardMatrix;
-import edu.upenn.cis.ppod.imodel.IStandardRow;
-import edu.upenn.cis.ppod.imodel.IStandardState;
 import edu.upenn.cis.ppod.imodel.IStudy;
 import edu.upenn.cis.ppod.imodel.IVersioned;
 import edu.upenn.cis.ppod.model.DnaCell;
@@ -30,6 +25,11 @@ import edu.upenn.cis.ppod.model.DnaMatrix;
 import edu.upenn.cis.ppod.model.DnaRow;
 import edu.upenn.cis.ppod.model.Otu;
 import edu.upenn.cis.ppod.model.OtuSet;
+import edu.upenn.cis.ppod.model.StandardCell;
+import edu.upenn.cis.ppod.model.StandardCharacter;
+import edu.upenn.cis.ppod.model.StandardMatrix;
+import edu.upenn.cis.ppod.model.StandardRow;
+import edu.upenn.cis.ppod.model.StandardState;
 import edu.upenn.cis.ppod.model.Tree;
 import edu.upenn.cis.ppod.model.TreeSet;
 
@@ -85,27 +85,27 @@ public final class SetVersionInfoVisitor extends EmptyVisitor {
 	}
 
 	@Override
-	public void visitStandardCell(final IStandardCell cell) {
+	public void visitStandardCell(final StandardCell cell) {
 		setNewVersionInfo(cell);
 	}
 
 	@Override
-	public void visitStandardCharacter(final IStandardCharacter character) {
+	public void visitStandardCharacter(final StandardCharacter character) {
 		setNewVersionInfo(character);
 	}
 
 	@Override
-	public void visitStandardMatrix(final IStandardMatrix matrix) {
+	public void visitStandardMatrix(final StandardMatrix matrix) {
 		visitMatrix(matrix);
 	}
 
 	@Override
-	public void visitStandardRow(final IStandardRow row) {
+	public void visitStandardRow(final StandardRow row) {
 		setNewVersionInfo(row);
 	}
 
 	@Override
-	public void visitStandardState(final IStandardState standardState) {
+	public void visitStandardState(final StandardState standardState) {
 		setNewVersionInfo(standardState);
 	}
 
@@ -124,7 +124,7 @@ public final class SetVersionInfoVisitor extends EmptyVisitor {
 		setNewVersionInfo(treeSet);
 	}
 
-	private void visitMatrix(final IMatrix<?, ?> matrix) {
+	private void visitMatrix(final IHasColumnVersionInfos matrix) {
 		setNewVersionInfo(matrix);
 		for (int pos = 0; pos < matrix.getColumnVersionInfos().size(); pos++) {
 			if (matrix.getColumnVersionInfos().get(pos) == null) {

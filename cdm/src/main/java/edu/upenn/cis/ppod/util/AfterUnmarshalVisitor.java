@@ -17,9 +17,9 @@
 package edu.upenn.cis.ppod.util;
 
 import edu.upenn.cis.ppod.imodel.IDnaSequenceSet;
-import edu.upenn.cis.ppod.imodel.IStandardCell;
-import edu.upenn.cis.ppod.imodel.IStandardMatrix;
 import edu.upenn.cis.ppod.model.DnaMatrix;
+import edu.upenn.cis.ppod.model.StandardCell;
+import edu.upenn.cis.ppod.model.StandardMatrix;
 
 /**
  * For straightening up or filling data structures after we've unmarshalled.
@@ -32,7 +32,7 @@ public class AfterUnmarshalVisitor
 		extends EmptyVisitor {
 
 	@Override
-	public void visitStandardCell(final IStandardCell cell) {
+	public void visitStandardCell(final StandardCell cell) {
 		cell.afterUnmarshal();
 	}
 
@@ -47,7 +47,7 @@ public class AfterUnmarshalVisitor
 	}
 
 	@Override
-	public void visitStandardMatrix(final IStandardMatrix matrix) {
+	public void visitStandardMatrix(final StandardMatrix matrix) {
 		matrix.afterUnmarshal();
 	}
 }

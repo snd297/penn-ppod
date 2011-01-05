@@ -24,8 +24,6 @@ import static org.testng.Assert.assertTrue;
 import org.testng.annotations.Test;
 
 import edu.upenn.cis.ppod.TestGroupDefs;
-import edu.upenn.cis.ppod.imodel.IStandardCharacter;
-import edu.upenn.cis.ppod.imodel.IStandardState;
 
 /**
  * Test {@link StandardCharacter}.
@@ -37,11 +35,11 @@ public class StandardCharacterTest {
 
 	@Test
 	public void addState() {
-		final IStandardCharacter character = new StandardCharacter();
-		final IStandardState state0 = new StandardState(0);
+		final StandardCharacter character = new StandardCharacter();
+		final StandardState state0 = new StandardState(0);
 
 		character.unsetInNeedOfNewVersion();
-		final IStandardState returnedState0 = character.addState(state0);
+		final StandardState returnedState0 = character.addState(state0);
 		assertTrue(character.isInNeedOfNewVersion());
 		assertNull(returnedState0);
 		assertEquals(character.getStates().size(), 1);
@@ -49,7 +47,7 @@ public class StandardCharacterTest {
 		assertSame(state0.getParent(), character);
 
 		character.unsetInNeedOfNewVersion();
-		final IStandardState returnedState1 = character.addState(state0);
+		final StandardState returnedState1 = character.addState(state0);
 		assertFalse(character.isInNeedOfNewVersion());
 		assertSame(returnedState1, state0);
 		assertEquals(character.getStates().size(), 1);
@@ -58,8 +56,8 @@ public class StandardCharacterTest {
 		assertSame(state0.getParent(), character);
 
 		character.unsetInNeedOfNewVersion();
-		final IStandardState state01 = new StandardState(0);
-		final IStandardState returnedState2 = character.addState(state01);
+		final StandardState state01 = new StandardState(0);
+		final StandardState returnedState2 = character.addState(state01);
 		assertTrue(character.isInNeedOfNewVersion());
 		assertSame(state0, returnedState2);
 		assertEquals(character.getStates().size(), 1);

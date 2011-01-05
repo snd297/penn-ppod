@@ -18,10 +18,6 @@ package edu.upenn.cis.ppod.services.ppodentity;
 import static com.google.common.base.Preconditions.checkNotNull;
 import edu.upenn.cis.ppod.imodel.IDnaSequence;
 import edu.upenn.cis.ppod.imodel.IDnaSequenceSet;
-import edu.upenn.cis.ppod.imodel.IStandardCell;
-import edu.upenn.cis.ppod.imodel.IStandardCharacter;
-import edu.upenn.cis.ppod.imodel.IStandardMatrix;
-import edu.upenn.cis.ppod.imodel.IStandardRow;
 import edu.upenn.cis.ppod.imodel.IStudy;
 import edu.upenn.cis.ppod.imodel.IVersionInfo;
 import edu.upenn.cis.ppod.model.DnaCell;
@@ -29,6 +25,10 @@ import edu.upenn.cis.ppod.model.DnaMatrix;
 import edu.upenn.cis.ppod.model.DnaRow;
 import edu.upenn.cis.ppod.model.Otu;
 import edu.upenn.cis.ppod.model.OtuSet;
+import edu.upenn.cis.ppod.model.StandardCell;
+import edu.upenn.cis.ppod.model.StandardCharacter;
+import edu.upenn.cis.ppod.model.StandardMatrix;
+import edu.upenn.cis.ppod.model.StandardRow;
 import edu.upenn.cis.ppod.model.Tree;
 import edu.upenn.cis.ppod.model.TreeSet;
 
@@ -64,7 +64,7 @@ public final class Study2StudyInfo implements IStudy2StudyInfo {
 				otuInfo.setDocId(otu.getDocId());
 			}
 
-			for (final IStandardMatrix matrix : otuSet
+			for (final StandardMatrix matrix : otuSet
 					.getStandardMatrices()) {
 				final MatrixInfo matrixInfo = new MatrixInfo();
 				otuSetInfo.getMatrixInfos().add(matrixInfo);
@@ -75,7 +75,7 @@ public final class Study2StudyInfo implements IStudy2StudyInfo {
 				matrixInfo.setDocId(matrix.getDocId());
 
 				int characterIdx = -1;
-				for (final IStandardCharacter standardCharacter : matrix
+				for (final StandardCharacter standardCharacter : matrix
 						.getCharacters()) {
 					characterIdx++;
 					final PPodEntityInfo characterInfo =
@@ -101,7 +101,7 @@ public final class Study2StudyInfo implements IStudy2StudyInfo {
 				int rowIdx = -1;
 
 				for (final Otu otu : matrix.getParent().getOtus()) {
-					final IStandardRow row = matrix.getRows().get(otu);
+					final StandardRow row = matrix.getRows().get(otu);
 					rowIdx++;
 					final Long rowVersion = row.getVersionInfo()
 							.getVersion();
@@ -109,7 +109,7 @@ public final class Study2StudyInfo implements IStudy2StudyInfo {
 							rowVersion);
 
 					int cellIdx = -1;
-					for (final IStandardCell cell : row.getCells()) {
+					for (final StandardCell cell : row.getCells()) {
 						cellIdx++;
 						matrixInfo.setCellPPodIdAndVersion(
 								rowIdx, cellIdx,

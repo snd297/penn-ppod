@@ -31,11 +31,11 @@ import edu.upenn.cis.ppod.dao.IStudyDAO;
 import edu.upenn.cis.ppod.imodel.IDnaSequenceSet;
 import edu.upenn.cis.ppod.imodel.IHasPPodId;
 import edu.upenn.cis.ppod.imodel.INewVersionInfo;
-import edu.upenn.cis.ppod.imodel.IStandardMatrix;
 import edu.upenn.cis.ppod.imodel.IStudy;
 import edu.upenn.cis.ppod.model.DnaMatrix;
 import edu.upenn.cis.ppod.model.ModelFactory;
 import edu.upenn.cis.ppod.model.OtuSet;
+import edu.upenn.cis.ppod.model.StandardMatrix;
 import edu.upenn.cis.ppod.model.TreeSet;
 
 /**
@@ -239,8 +239,8 @@ class CreateOrUpdateStudy implements ICreateOrUpdateStudy {
 			final OtuSet incomingOTUSet) {
 
 		// Let's delete matrices missing from the incoming OTU set
-		final Set<IStandardMatrix> toBeRemoveds = newHashSet();
-		for (final IStandardMatrix dbMatrix : dbOTUSet.getStandardMatrices()) {
+		final Set<StandardMatrix> toBeRemoveds = newHashSet();
+		for (final StandardMatrix dbMatrix : dbOTUSet.getStandardMatrices()) {
 			if (null == find(
 							incomingOTUSet.getStandardMatrices(),
 							compose(
@@ -252,14 +252,14 @@ class CreateOrUpdateStudy implements ICreateOrUpdateStudy {
 			}
 		}
 
-		for (final IStandardMatrix toBeRemoved : toBeRemoveds) {
+		for (final StandardMatrix toBeRemoved : toBeRemoveds) {
 			dbOTUSet.removeStandardMatrix(toBeRemoved);
 		}
 		int incomingMatrixPos = -1;
-		for (final IStandardMatrix incomingMatrix : incomingOTUSet
+		for (final StandardMatrix incomingMatrix : incomingOTUSet
 				.getStandardMatrices()) {
 			incomingMatrixPos++;
-			IStandardMatrix dbMatrix;
+			StandardMatrix dbMatrix;
 			if (null == (dbMatrix =
 					find(
 							dbOTUSet.getStandardMatrices(),

@@ -17,27 +17,27 @@ package edu.upenn.cis.ppod.util;
 
 import javax.xml.bind.annotation.XmlElement;
 
-import edu.upenn.cis.ppod.imodel.IStandardRow;
 import edu.upenn.cis.ppod.model.Otu;
+import edu.upenn.cis.ppod.model.StandardRow;
 
 /**
  * @author Sam Donnelly
  */
 public final class OtuStandardRowPair
-		extends OtuKeyedPair<IStandardRow> {
+		extends OtuKeyedPair<StandardRow> {
 
 	/**
 	 * For JAXB.
 	 */
 	protected OtuStandardRowPair() {}
 
-	public OtuStandardRowPair(final Otu first, final IStandardRow second) {
+	public OtuStandardRowPair(final Otu first, final StandardRow second) {
 		super(first, second);
 	}
 
 	@XmlElement
 	@Override
-	public IStandardRow getSecond() {
+	public StandardRow getSecond() {
 		return super.getSecond();
 	}
 
@@ -46,7 +46,7 @@ public final class OtuStandardRowPair
 	 */
 	@Override
 	protected void setSecond(
-			final IStandardRow row) {
+			final StandardRow row) {
 		super.setSecond(row);
 	}
 

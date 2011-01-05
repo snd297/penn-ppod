@@ -33,12 +33,6 @@ import org.testng.annotations.BeforeMethod;
 import org.testng.annotations.Test;
 
 import edu.upenn.cis.ppod.TestGroupDefs;
-import edu.upenn.cis.ppod.imodel.ICell;
-import edu.upenn.cis.ppod.imodel.IStandardCell;
-import edu.upenn.cis.ppod.imodel.IStandardCharacter;
-import edu.upenn.cis.ppod.imodel.IStandardMatrix;
-import edu.upenn.cis.ppod.imodel.IStandardRow;
-import edu.upenn.cis.ppod.imodel.IStandardState;
 
 /**
  * Test {@link CharacterStateCell}.
@@ -57,7 +51,7 @@ public class StandardCellTest {
 
 	private Set<StandardState> states;
 
-	private IStandardMatrix matrix;
+	private StandardMatrix matrix;
 
 	@BeforeMethod
 	public void beforeMethod() {
@@ -71,11 +65,11 @@ public class StandardCellTest {
 		otuSet.setOTUs(newArrayList(otu0));
 		matrix.setParent(otuSet);
 
-		final IStandardCharacter character0 =
+		final StandardCharacter character0 =
 				new StandardCharacter();
 		character0.setLabel("character0");
 		matrix.setCharacters(newArrayList(character0));
-		final IStandardRow row0 = new StandardRow();
+		final StandardRow row0 = new StandardRow();
 		matrix.putRow(matrix.getParent().getOtus().get(0), row0);
 
 		states = newHashSet();
@@ -103,7 +97,7 @@ public class StandardCellTest {
 		states.add(state01);
 		cell.setPolymorphicWithStateNos(
 				newHashSet(
-						transform(states, IStandardState.getStateNumber)));
+						transform(states, StandardState.getStateNumber)));
 		cell.beforeMarshal(null);
 
 		assertEquals(cell.getElementsXml(), states);
@@ -121,7 +115,7 @@ public class StandardCellTest {
 		states.add(state01);
 		cell.setUncertainWithStateNos(
 				newHashSet(
-						transform(states, IStandardState.getStateNumber)));
+						transform(states, StandardState.getStateNumber)));
 		cell.beforeMarshal(null);
 
 		assertEquals(cell.getElementsXml(), states);
@@ -167,7 +161,7 @@ public class StandardCellTest {
 		states.add(state00);
 		cell.setPolymorphicWithStateNos(
 				newHashSet(
-						transform(states, IStandardState.getStateNumber)));
+						transform(states, StandardState.getStateNumber)));
 	}
 
 	@Test
@@ -177,7 +171,7 @@ public class StandardCellTest {
 						Arrays.asList(cell));
 		cell.setSingleWithStateNo(state00.getStateNumber());
 		cell.setInapplicable();
-		assertEquals(cell.getType(), ICell.Type.INAPPLICABLE);
+		assertEquals(cell.getType(), Cell.Type.INAPPLICABLE);
 
 		// Make sure it's empty
 		assertEquals(cell.getElements().size(), 0);
@@ -195,9 +189,9 @@ public class StandardCellTest {
 		states.add(state01);
 		cell.setPolymorphicWithStateNos(
 				newHashSet(
-						transform(states, IStandardState.getStateNumber)));
+						transform(states, StandardState.getStateNumber)));
 		cell.setInapplicable();
-		assertEquals(cell.getType(), ICell.Type.INAPPLICABLE);
+		assertEquals(cell.getType(), Cell.Type.INAPPLICABLE);
 		assertTrue(isEmpty(cell.getElements()));
 	}
 
@@ -209,8 +203,8 @@ public class StandardCellTest {
 		states.add(state01);
 		cell.setPolymorphicWithStateNos(
 				newHashSet(
-						transform(states, IStandardState.getStateNumber)));
-		assertEquals(cell.getType(), ICell.Type.POLYMORPHIC);
+						transform(states, StandardState.getStateNumber)));
+		assertEquals(cell.getType(), Cell.Type.POLYMORPHIC);
 		assertEquals((Object) cell.getElements(), (Object) states);
 	}
 
@@ -225,13 +219,13 @@ public class StandardCellTest {
 		cell.unsetInNeedOfNewVersion();
 		cell.setSingleWithStateNo(state00.getStateNumber());
 		assertTrue(cell.isInNeedOfNewVersion());
-		assertEquals(cell.getType(), ICell.Type.SINGLE);
+		assertEquals(cell.getType(), Cell.Type.SINGLE);
 		assertEquals(cell.getElements(), states);
 
 		cell.unsetInNeedOfNewVersion();
 		cell.setSingleWithStateNo(state00.getStateNumber());
 		assertFalse(cell.isInNeedOfNewVersion());
-		assertEquals(cell.getType(), ICell.Type.SINGLE);
+		assertEquals(cell.getType(), Cell.Type.SINGLE);
 		assertEquals(cell.getElements(), states);
 	}
 
@@ -240,7 +234,7 @@ public class StandardCellTest {
 	 */
 	@Test(expectedExceptions = IllegalStateException.class)
 	public void setStatesForACellThatDoesNotBelongToARow() {
-		final IStandardCell cell = new StandardCell();
+		final StandardCell cell = new StandardCell();
 		cell.setSingleWithStateNo(state00.getStateNumber());
 	}
 
@@ -251,7 +245,7 @@ public class StandardCellTest {
 		states.add(state00);
 		states.add(state01);
 		cell.setUncertainElements(states);
-		assertEquals(cell.getType(), ICell.Type.UNCERTAIN);
+		assertEquals(cell.getType(), Cell.Type.UNCERTAIN);
 		assertEquals((Object) cell.getElements(), (Object) newHashSet(states));
 	}
 

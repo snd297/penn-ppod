@@ -35,15 +35,11 @@ import javax.persistence.OneToMany;
 import javax.persistence.OrderColumn;
 import javax.persistence.Table;
 import javax.xml.bind.annotation.XmlElement;
-import javax.xml.bind.annotation.adapters.XmlAdapter;
 
+import com.google.common.annotations.Beta;
 import com.google.common.collect.BiMap;
 import com.google.common.collect.HashBiMap;
 
-import edu.upenn.cis.ppod.imodel.IStandardCell;
-import edu.upenn.cis.ppod.imodel.IStandardCharacter;
-import edu.upenn.cis.ppod.imodel.IStandardMatrix;
-import edu.upenn.cis.ppod.imodel.IStandardRow;
 import edu.upenn.cis.ppod.imodel.IVersionInfo;
 import edu.upenn.cis.ppod.util.IVisitor;
 
@@ -55,23 +51,7 @@ import edu.upenn.cis.ppod.util.IVisitor;
 @Entity
 @Table(name = StandardMatrix.TABLE)
 public class StandardMatrix
-		extends Matrix<IStandardRow, IStandardCell>
-		implements IStandardMatrix {
-
-	public static class Adapter extends
-			XmlAdapter<StandardMatrix, IStandardMatrix> {
-
-		@Override
-		public StandardMatrix marshal(final IStandardMatrix matrix) {
-			return (StandardMatrix) matrix;
-		}
-
-		@Override
-		public IStandardMatrix unmarshal(final StandardMatrix matrix) {
-			return matrix;
-		}
-	}
-
+		extends Matrix<StandardRow, StandardCell> {
 	/** This entity's table name. */
 	public static final String TABLE = "STANDARD_MATRIX";
 
@@ -86,7 +66,7 @@ public class StandardMatrix
 			targetEntity = StandardCharacter.class)
 	@OrderColumn(name = "POSITION")
 	@JoinColumn(name = JOIN_COLUMN, nullable = false)
-	private final List<IStandardCharacter> characters = newArrayList();
+	private final List<StandardCharacter> characters = newArrayList();
 
 	/**
 	 * Non-final for JAXB.
@@ -103,7 +83,7 @@ public class StandardMatrix
 	public void accept(final IVisitor visitor) {
 		checkNotNull(visitor);
 		visitor.visitStandardMatrix(this);
-		for (final IStandardCharacter character : getCharacters()) {
+		for (final StandardCharacter character : getCharacters()) {
 			character.accept(visitor);
 		}
 		super.accept(visitor);
@@ -112,13 +92,13 @@ public class StandardMatrix
 	/** {@inheritDoc} */
 	public void addColumn(
 			final int columnNo,
-			final IStandardCharacter character,
-			final List<? extends IStandardCell> cells) {
+			final StandardCharacter character,
+			final List<? extends StandardCell> cells) {
 		checkArgument(columnNo <= getColumnsSize(),
 				"columnNo " + columnNo + " too big for matrix column size "
 						+ getColumnsSize());
 		checkArgument(columnNo >= 0, "columnNo is negative: " + columnNo);
-		final List<IStandardCharacter> thisCharacters = newArrayList(getCharacters());
+		final List<StandardCharacter> thisCharacters = newArrayList(getCharacters());
 		thisCharacters.add(columnNo, character);
 		setCharacters(thisCharacters);
 		addColumn(columnNo, cells);
@@ -131,13 +111,13 @@ public class StandardMatrix
 	}
 
 	private List<IVersionInfo> determineNewColumnHeaderPPodVersionInfos(
-			final List<? extends IStandardCharacter> newCharacters) {
+			final List<? extends StandardCharacter> newCharacters) {
 
 		final BiMap<Integer, Integer> originalPositionsToNewPositions = HashBiMap
 				.create(getColumnsSize());
 		for (int originalPosition = 0; originalPosition < getCharacters()
 				.size(); originalPosition++) {
-			final IStandardCharacter originalCharacter =
+			final StandardCharacter originalCharacter =
 					getCharacters().get(originalPosition);
 			final Integer newPosition = newCharacters
 					.indexOf(originalCharacter);
@@ -178,8 +158,12 @@ public class StandardMatrix
 		return newColumnHeaderPPodVersionInfos;
 	}
 
-	/** {@inheritDoc} */
-	public List<IStandardCharacter> getCharacters() {
+	/**
+	 * Get the characters contained in this matrix.
+	 * 
+	 * @return the characters contained in this matrix
+	 */
+	public List<StandardCharacter> getCharacters() {
 		return Collections.unmodifiableList(characters);
 	}
 
@@ -189,7 +173,7 @@ public class StandardMatrix
 	 * @return a modifiable reference to this matrix's characters
 	 */
 	@XmlElement(name = "character")
-	protected List<IStandardCharacter> getCharactersModifiable() {
+	protected List<StandardCharacter> getCharactersModifiable() {
 		return characters;
 	}
 
@@ -204,16 +188,36 @@ public class StandardMatrix
 		return rows;
 	}
 
-	/** {@inheritDoc} */
-	public List<IStandardCell> removeColumn(final int columnNo) {
-		final List<IStandardCharacter> characters = newArrayList(getCharacters());
+	/**
+	 * Remove the cells the make up the given column number.
+	 * 
+	 * @param columnNo the column to remove
+	 * 
+	 * @return the cells in the column
+	 */
+	@Beta
+	public List<StandardCell> removeColumn(final int columnNo) {
+		final List<StandardCharacter> characters = newArrayList(getCharacters());
 		characters.remove(columnNo);
 		setCharacters(characters);
 		return super.removeColumnHelper(columnNo);
 	}
 
 	/**
-	 * {@inheritDoc}
+	 * Set the characters.
+	 * <p>
+	 * This method is does not reorder the columns of the matrix because that is
+	 * a potentially expensive operation - it could load the entire matrix into
+	 * the persistence context.
+	 * <p>
+	 * This method does reorder {@link #getColumnVersionInfos()}.
+	 * <p>
+	 * It is legal for two characters to have the same label, but not to be
+	 * {@code .equals} to each other.
+	 * 
+	 * @param characters the new characters
+	 * 
+	 * @return the characters removed as a result of this operation
 	 * 
 	 * @throws IllegalArgumentException if any of {code newCharacters} is
 	 *             {@code null}
@@ -222,8 +226,8 @@ public class StandardMatrix
 	 * @throws IllegalStateExeption if {@code characters.size() !=
 	 *             getColumnsSize()}
 	 */
-	public List<IStandardCharacter> setCharacters(
-			final List<? extends IStandardCharacter> characters) {
+	public List<StandardCharacter> setCharacters(
+			final List<? extends StandardCharacter> characters) {
 		checkNotNull(characters);
 
 		if (characters.equals(getCharacters())) {
@@ -231,16 +235,16 @@ public class StandardMatrix
 		}
 
 		int newCharacterPos = -1;
-		for (final IStandardCharacter character : characters) {
+		for (final StandardCharacter character : characters) {
 			newCharacterPos++;
 			checkArgument(character != null, "newCharacters["
 												+ newCharacterPos
 												+ "] is null");
 
-			for (final Iterator<? extends IStandardCharacter> itr = characters
+			for (final Iterator<? extends StandardCharacter> itr = characters
 					.listIterator(newCharacterPos + 1); itr
 					.hasNext();) {
-				final IStandardCharacter character2 = itr.next();
+				final StandardCharacter character2 = itr.next();
 				checkArgument(!character.equals(character2),
 						"two characters are the same "
 								+ character.getLabel()
@@ -256,10 +260,10 @@ public class StandardMatrix
 		columnVersionInfos.clear();
 		columnVersionInfos.addAll(newColumnVersionInfos);
 
-		final List<IStandardCharacter> removedCharacters = newArrayList(getCharacters());
+		final List<StandardCharacter> removedCharacters = newArrayList(getCharacters());
 
 		removedCharacters.removeAll(characters);
-		for (final IStandardCharacter removedCharacter : removedCharacters) {
+		for (final StandardCharacter removedCharacter : removedCharacters) {
 			removedCharacter.setParent(null);
 		}
 
@@ -267,7 +271,7 @@ public class StandardMatrix
 
 		getCharactersModifiable().addAll(characters);
 
-		for (final IStandardCharacter character : getCharacters()) {
+		for (final StandardCharacter character : getCharacters()) {
 			character.setParent(this);
 		}
 
@@ -287,4 +291,5 @@ public class StandardMatrix
 			final StandardRows rows) {
 		this.rows = rows;
 	}
+
 }

@@ -17,10 +17,10 @@ package edu.upenn.cis.ppod.createorupdate;
 
 import com.google.inject.ImplementedBy;
 
-import edu.upenn.cis.ppod.imodel.IStandardCell;
-import edu.upenn.cis.ppod.imodel.IStandardMatrix;
-import edu.upenn.cis.ppod.imodel.IStandardRow;
-import edu.upenn.cis.ppod.imodel.IStandardState;
+import edu.upenn.cis.ppod.model.StandardCell;
+import edu.upenn.cis.ppod.model.StandardMatrix;
+import edu.upenn.cis.ppod.model.StandardRow;
+import edu.upenn.cis.ppod.model.StandardState;
 
 /**
  * Copy the state of {@code sourceMatrix} onto the persistent matrix
@@ -34,7 +34,7 @@ import edu.upenn.cis.ppod.imodel.IStandardState;
 @ImplementedBy(CreateOrUpdateStandardMatrix.class)
 public interface ICreateOrUpdateStandardMatrix
 		extends
-		ICreateOrUpdateMatrix<IStandardMatrix, IStandardRow, IStandardCell, IStandardState> {
+		ICreateOrUpdateMatrix<StandardMatrix, StandardRow, StandardCell, StandardState> {
 
 	/**
 	 * Copy the state of {@code sourceMatrix} onto the persistent matrix
@@ -55,6 +55,6 @@ public interface ICreateOrUpdateStandardMatrix
 	 *            {@code sourceMatrix}
 	 */
 	void createOrUpdateMatrix(
-			IStandardMatrix dbMatrix,
-			IStandardMatrix sourceMatrix);
+			StandardMatrix dbMatrix,
+			StandardMatrix sourceMatrix);
 }

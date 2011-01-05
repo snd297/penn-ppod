@@ -17,9 +17,9 @@ package edu.upenn.cis.ppod.util;
 
 import edu.upenn.cis.ppod.imodel.IAttachmentNamespace;
 import edu.upenn.cis.ppod.imodel.IAttachmentType;
-import edu.upenn.cis.ppod.imodel.IStandardState;
 import edu.upenn.cis.ppod.model.Otu;
 import edu.upenn.cis.ppod.model.OtuSet;
+import edu.upenn.cis.ppod.model.StandardState;
 
 /**
  * Set the doc id on {@code Attachment}s, {@code AttachmentNamespace}s,
@@ -60,7 +60,7 @@ public final class SetDocIdVisitor extends EmptyVisitor {
 	 * @param characterState target
 	 */
 	@Override
-	public void visitStandardState(final IStandardState standardState) {
+	public void visitStandardState(final StandardState standardState) {
 		if (standardState.getDocId() == null) {
 			standardState.setDocId();
 		}

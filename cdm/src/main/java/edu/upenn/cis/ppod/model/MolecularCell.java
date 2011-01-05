@@ -26,13 +26,20 @@ import javax.persistence.MappedSuperclass;
 import javax.xml.bind.annotation.XmlAttribute;
 
 import edu.umd.cs.findbugs.annotations.CheckForNull;
-import edu.upenn.cis.ppod.imodel.IMolecularCell;
-import edu.upenn.cis.ppod.imodel.IRow;
 
+/**
+ * A cell in a molecular matrix. The elements are subclasses of {@code Enum} so
+ * implementors are free to, for example, put the elements into an
+ * {@link java.util.EnumSet} or use {@code ==} when comparing elements.
+ * 
+ * @author Sam Donnelly
+ * 
+ * @param <E> see the elements in the cell
+ * @param <R> see parent row
+ */
 @MappedSuperclass
-public abstract class MolecularCell<E extends Enum<?>, R extends IRow<?, ?>>
-		extends Cell<E, R>
-		implements IMolecularCell<E, R> {
+public abstract class MolecularCell<E extends Enum<?>, R extends Row<?, ?>>
+		extends Cell<E, R> {
 
 	@Column(name = "LOWER_CASE", nullable = true)
 	@CheckForNull
@@ -40,6 +47,17 @@ public abstract class MolecularCell<E extends Enum<?>, R extends IRow<?, ?>>
 
 	MolecularCell() {}
 
+	/**
+	 * Are the contained {@link edu.upenn.cis.ppod.model.DNANucleotide}
+	 * lower-case?
+	 * <p>
+	 * Will be {@code null} for {@link Type.INAPPLICABLE},
+	 * {@link Type.UNASSIGNED}, and {@link Type.UNCERTAIN} cells.
+	 * 
+	 * @return {@code true} if the contained
+	 *         {@link edu.upenn.cis.ppod.model.DNANucleotide} is lower-case,
+	 *         {@code false} otherwise
+	 */
 	@Nullable
 	@XmlAttribute(name = "upperCase")
 	public Boolean getLowerCase() {
@@ -60,7 +78,15 @@ public abstract class MolecularCell<E extends Enum<?>, R extends IRow<?, ?>>
 		this.lowerCase = upperCase;
 	}
 
-	/** {@inheritDoc} */
+	/**
+	 * Set the cell to have type {@link Type#POLYMORPHIC}, the given elements,
+	 * and the given case.
+	 * <p>
+	 * {@code elements} must contain at least two elements.
+	 * 
+	 * @param elements the elements to assign to this cell
+	 * @param lowerCase is it lower-case?
+	 */
 	public void setPolymorphicElements(
 			final Set<? extends E> elements, final Boolean lowerCase) {
 		checkNotNull(lowerCase);
@@ -73,7 +99,13 @@ public abstract class MolecularCell<E extends Enum<?>, R extends IRow<?, ?>>
 		}
 	}
 
-	/** {@inheritDoc} */
+	/**
+	 * Set the cell to have type {@link Type#SINGLE}, the given element, and the
+	 * given case.
+	 * 
+	 * @param element element to assign to this cell
+	 * @param lowerCase is it lower-case?
+	 */
 	public void setSingleElement(
 			final E element,
 			final Boolean lowerCase) {
@@ -97,9 +129,11 @@ public abstract class MolecularCell<E extends Enum<?>, R extends IRow<?, ?>>
 	}
 
 	/**
-	 * {@inheritDoc}
+	 * Set the type to uncertain and this cell's elements to {@code elements}.
 	 * 
-	 * @throw IllegalArgumentException if {@code uncertainStates.size() < 2}
+	 * @param elements the elements
+	 * 
+	 * @throws IllegalArgumentException if {@code uncertainStates.size() > 1}
 	 */
 	@Override
 	public void setUncertainElements(

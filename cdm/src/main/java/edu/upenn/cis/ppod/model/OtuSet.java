@@ -48,7 +48,6 @@ import edu.umd.cs.findbugs.annotations.Nullable;
 import edu.upenn.cis.ppod.imodel.IChild;
 import edu.upenn.cis.ppod.imodel.IDnaSequenceSet;
 import edu.upenn.cis.ppod.imodel.ILabeled;
-import edu.upenn.cis.ppod.imodel.IStandardMatrix;
 import edu.upenn.cis.ppod.imodel.IStudy;
 import edu.upenn.cis.ppod.util.IVisitor;
 
@@ -86,7 +85,7 @@ public class OtuSet
 			targetEntity = StandardMatrix.class)
 	@OrderColumn(name = "POSITION")
 	@JoinColumn(name = JOIN_COLUMN, nullable = false)
-	private final List<IStandardMatrix> standardMatrices = newArrayList();
+	private final List<StandardMatrix> standardMatrices = newArrayList();
 
 	/** Nullable free-form description. */
 	@Column(name = DESCRIPTION_COLUMN, nullable = true)
@@ -279,7 +278,7 @@ public class OtuSet
 	/**
 	 * Add {@code matrix} to this {@code OTUSet}.
 	 * <p>
-	 * Also handles the {@code IStandardMatrix->IOTUSet} side of the
+	 * Also handles the {@code StandardMatrix->IOTUSet} side of the
 	 * relationship.
 	 * 
 	 * @param matrix matrix we're adding
@@ -289,7 +288,7 @@ public class OtuSet
 	 */
 	public void addStandardMatrix(
 			final int pos,
-			final IStandardMatrix matrix) {
+			final StandardMatrix matrix) {
 		checkNotNull(matrix);
 		checkArgument(pos >= 0, "pos < 0");
 		checkArgument(
@@ -303,7 +302,7 @@ public class OtuSet
 
 	/** {@inheritDoc} */
 	public void addStandardMatrix(
-			final IStandardMatrix matrix) {
+			final StandardMatrix matrix) {
 		checkNotNull(matrix);
 		checkArgument(
 				!standardMatrices.contains(matrix),
@@ -442,12 +441,12 @@ public class OtuSet
 	 * 
 	 * @return the standard matrices contained in this OTU set
 	 */
-	public List<IStandardMatrix> getStandardMatrices() {
+	public List<StandardMatrix> getStandardMatrices() {
 		return Collections.unmodifiableList(standardMatrices);
 	}
 
 	@XmlElement(name = "matrix")
-	protected List<IStandardMatrix> getStandardMatricesModifiable() {
+	protected List<StandardMatrix> getStandardMatricesModifiable() {
 		return standardMatrices;
 	}
 
@@ -509,7 +508,7 @@ public class OtuSet
 	 * @throws IllegalArgumentException if this OTU set does not contain the
 	 *             matrix
 	 */
-	public void removeStandardMatrix(final IStandardMatrix matrix) {
+	public void removeStandardMatrix(final StandardMatrix matrix) {
 		checkNotNull(matrix);
 		checkArgument(standardMatrices.contains(matrix),
 				"otu set does not contain the matrix [" + matrix.getLabel()

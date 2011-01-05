@@ -21,9 +21,9 @@ import javax.xml.bind.JAXBContext;
 
 import org.testng.annotations.DataProvider;
 
-import edu.upenn.cis.ppod.imodel.IStandardMatrix;
 import edu.upenn.cis.ppod.imodel.IStudy;
 import edu.upenn.cis.ppod.model.OtuSet;
+import edu.upenn.cis.ppod.model.StandardMatrix;
 import edu.upenn.cis.ppod.model.Study;
 
 /**
@@ -47,7 +47,7 @@ public class PPodEntityProvider {
 								.getResourceAsStream("/MX540.xml"));
 		studyMX540.accept(new AfterUnmarshalVisitor());
 
-		final IStandardMatrix smallStandardMatrix =
+		final StandardMatrix smallStandardMatrix =
 				getOnlyElement(
 						getOnlyElement(
 								studyMX540.getOTUSets())
