@@ -46,6 +46,7 @@ import com.google.common.annotations.VisibleForTesting;
 import edu.umd.cs.findbugs.annotations.CheckForNull;
 import edu.umd.cs.findbugs.annotations.Nullable;
 import edu.upenn.cis.ppod.imodel.IChild;
+import edu.upenn.cis.ppod.imodel.IDependsOnParentOtus;
 import edu.upenn.cis.ppod.imodel.ILabeled;
 import edu.upenn.cis.ppod.util.IVisitor;
 
@@ -120,8 +121,7 @@ public class OtuSet
 	@JoinColumn(name = JOIN_COLUMN, nullable = false)
 	private final List<Otu> otus = newArrayList();
 
-	@ManyToOne(fetch = FetchType.LAZY, optional = false,
-			targetEntity = Study.class)
+	@ManyToOne(fetch = FetchType.LAZY, optional = false)
 	@JoinColumn(name = Study.JOIN_COLUMN, insertable = false,
 				updatable = false)
 	@Nullable
@@ -244,7 +244,7 @@ public class OtuSet
 	public void addOtu(final Otu otu) {
 		checkNotNull(otu);
 		addOTUWithoutSetOTUsOnChildren(otu);
-		setParentOnChildren();
+		updateOtusOnChildren();
 	}
 
 	private void addOTUWithoutSetOTUsOnChildren(final Otu otu) {
@@ -356,6 +356,13 @@ public class OtuSet
 	Set<IChild<OtuSet>> getChildren() {
 		final Set<IChild<OtuSet>> children = newHashSet();
 		children.addAll(getOtus());
+		children.addAll(getDependentChildren());
+		return children;
+	}
+
+	@VisibleForTesting
+	Set<IDependsOnParentOtus> getDependentChildren() {
+		final Set<IDependsOnParentOtus> children = newHashSet();
 		children.addAll(getStandardMatrices());
 		children.addAll(getDNAMatrices());
 		children.addAll(getTreeSets());
@@ -633,5 +640,11 @@ public class OtuSet
 				.append(this.otus).append(TAB).append(")");
 
 		return retValue.toString();
+	}
+
+	private void updateOtusOnChildren() {
+		for (final IDependsOnParentOtus child : getDependentChildren()) {
+			child.updateOtus();
+		}
 	}
 }
