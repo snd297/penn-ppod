@@ -113,7 +113,7 @@ public class CreateOrUpdateStandardMatrixTest {
 						.getOtus()
 						.get(0));
 
-		sourceMatrix.getParent().setOTUs(shuffledSourceOTUs);
+		sourceMatrix.getParent().setOtus(shuffledSourceOTUs);
 
 		createOrUpdateStandardMatrix
 				.createOrUpdateMatrix(targetMatrix, sourceMatrix);

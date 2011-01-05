@@ -62,7 +62,7 @@ public class StandardCellTest {
 		final OtuSet otuSet = new OtuSet();
 
 		final Otu otu0 = new Otu().setLabel("otu0");
-		otuSet.setOTUs(newArrayList(otu0));
+		otuSet.setOtus(newArrayList(otu0));
 		matrix.setParent(otuSet);
 
 		final StandardCharacter character0 =

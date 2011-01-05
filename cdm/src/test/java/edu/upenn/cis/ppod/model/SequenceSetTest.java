@@ -135,7 +135,7 @@ public class SequenceSetTest {
 		assertTrue(seqSet.isInNeedOfNewVersion());
 
 		final OtuSet otuSet = new OtuSet();
-		otuSet.addDNASequenceSet(seqSet);
+		otuSet.addDnaSequenceSet(seqSet);
 		seqSet.unsetInNeedOfNewVersion();
 		otuSet.unsetInNeedOfNewVersion();
 
@@ -179,7 +179,7 @@ public class SequenceSetTest {
 
 		final DnaSequenceSet seqSet = new DnaSequenceSet();
 
-		otuSet.addDNASequenceSet(seqSet);
+		otuSet.addDnaSequenceSet(seqSet);
 
 		final DnaSequence seq0 = (DnaSequence) new DnaSequence()
 				.setSequence("ATG");

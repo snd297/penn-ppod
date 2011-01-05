@@ -77,6 +77,6 @@ class MergeOtuSets implements IMergeOtuSets {
 			// This is for a response to the service client.
 			targetOTU.setDocId(sourceOTU.getDocId());
 		}
-		targetOtuSet.setOTUs(newTargetOTUs);
+		targetOtuSet.setOtus(newTargetOTUs);
 	}
 }

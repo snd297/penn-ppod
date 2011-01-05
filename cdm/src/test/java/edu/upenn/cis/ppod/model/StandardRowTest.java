@@ -49,7 +49,7 @@ public class StandardRowTest {
 		matrix.setParent(new OtuSet());
 		otus = newArrayList();
 		otus.add(new Otu().setLabel("OTU-0"));
-		matrix.getParent().setOTUs(newArrayList(otus.get(0)));
+		matrix.getParent().setOtus(newArrayList(otus.get(0)));
 		matrix.putRow(otus.get(0), new StandardRow());
 		final StandardCharacter character0 = new StandardCharacter();
 		character0.setLabel("character-0");
@@ -75,7 +75,7 @@ public class StandardRowTest {
 		final Otu otu0 = new Otu();
 		otu0.setLabel("OTU-0");
 		otus.add(otu0);
-		matrix.getParent().setOTUs(newArrayList(otus.get(0)));
+		matrix.getParent().setOtus(newArrayList(otus.get(0)));
 		matrix.putRow(otus.get(0), new StandardRow());
 
 		final StandardRow row = matrix.getRows().get(otu0);

@@ -171,8 +171,7 @@ public class OtuSet
 		setInNeedOfNewVersion();
 	}
 
-	/** {@inheritDoc} */
-	public void addDNAMatrix(
+	public void addDnaMatrix(
 			final int pos,
 			final DnaMatrix matrix) {
 		checkNotNull(matrix);
@@ -197,7 +196,7 @@ public class OtuSet
 	 * @throws IllegalArgumentException if this otu set already contains the
 	 *             matrix
 	 */
-	public void addDNASequenceSet(
+	public void addDnaSequenceSet(
 			final DnaSequenceSet sequenceSet) {
 		checkNotNull(sequenceSet);
 		checkArgument(
@@ -210,7 +209,7 @@ public class OtuSet
 	}
 
 	/** {@inheritDoc} */
-	public void addDNASequenceSet(
+	public void addDnaSequenceSet(
 			final int sequenceSetPos,
 			final DnaSequenceSet sequenceSet) {
 		checkNotNull(sequenceSet);
@@ -243,11 +242,11 @@ public class OtuSet
 	 */
 	public void addOtu(final Otu otu) {
 		checkNotNull(otu);
-		addOTUWithoutSetOTUsOnChildren(otu);
+		addOtuWithoutSetOtusOnChildren(otu);
 		updateOtusOnChildren();
 	}
 
-	private void addOTUWithoutSetOTUsOnChildren(final Otu otu) {
+	private void addOtuWithoutSetOtusOnChildren(final Otu otu) {
 		checkNotNull(otu);
 		final Otu dupNameOTU =
 				find(getOtus(),
@@ -263,7 +262,7 @@ public class OtuSet
 									+ "' already has an OTU labeled '"
 									+ otu.getLabel() + "'");
 		}
-		if (getOTUsModifiable().add(otu)) {
+		if (getOtusModifiable().add(otu)) {
 			otu.setParent(this);
 			setInNeedOfNewVersion();
 		}
@@ -364,9 +363,9 @@ public class OtuSet
 	Set<IDependsOnParentOtus> getDependentChildren() {
 		final Set<IDependsOnParentOtus> children = newHashSet();
 		children.addAll(getStandardMatrices());
-		children.addAll(getDNAMatrices());
+		children.addAll(getDnaMatrices());
 		children.addAll(getTreeSets());
-		children.addAll(getDNASequenceSets());
+		children.addAll(getDnaSequenceSets());
 		return children;
 	}
 
@@ -382,17 +381,17 @@ public class OtuSet
 	}
 
 	/** {@inheritDoc} */
-	public List<DnaMatrix> getDNAMatrices() {
+	public List<DnaMatrix> getDnaMatrices() {
 		return Collections.unmodifiableList(dnaMatrices);
 	}
 
 	@XmlElement(name = "dnaMatrix")
-	protected List<DnaMatrix> getDNAMatricesModifiable() {
+	protected List<DnaMatrix> getDnaMatricesModifiable() {
 		return dnaMatrices;
 	}
 
 	/** {@inheritDoc} */
-	public List<DnaSequenceSet> getDNASequenceSets() {
+	public List<DnaSequenceSet> getDnaSequenceSets() {
 		return Collections.unmodifiableList(dnaSequenceSets);
 	}
 
@@ -428,7 +427,7 @@ public class OtuSet
 	 * @return a modifiable reference to this the otus.
 	 */
 	@XmlElement(name = "otu")
-	protected List<Otu> getOTUsModifiable() {
+	protected List<Otu> getOtusModifiable() {
 		return otus;
 	}
 
@@ -473,12 +472,12 @@ public class OtuSet
 	 * @throws IllegalArgumentException if this OTU set does not contain the
 	 *             matrix
 	 */
-	public void removeDNAMatrix(final DnaMatrix matrix) {
+	public void removeDnaMatrix(final DnaMatrix matrix) {
 		checkNotNull(matrix);
 		checkArgument(dnaMatrices.contains(matrix),
 				"otu set does not contain the dna matrix [" + matrix.getLabel()
 						+ "]");
-		getDNAMatricesModifiable().remove(matrix);
+		getDnaMatricesModifiable().remove(matrix);
 		matrix.setParent(null);
 		setInNeedOfNewVersion();
 	}
@@ -493,7 +492,7 @@ public class OtuSet
 	 */
 	public void removeDnaSequenceSet(final DnaSequenceSet sequenceSet) {
 		checkNotNull(sequenceSet);
-		checkArgument(getDNASequenceSets().contains(sequenceSet),
+		checkArgument(getDnaSequenceSets().contains(sequenceSet),
 				"otu does not contain the dna sequence set labeled ["
 						+ sequenceSet.getLabel() + "]");
 		getDnaSequenceSetsModifiable().remove(sequenceSet);
@@ -586,7 +585,7 @@ public class OtuSet
 	 * @return any {@code OTU}s that were removed as a result of this operation,
 	 *         in their original order
 	 */
-	public List<Otu> setOTUs(final List<? extends Otu> otus) {
+	public List<Otu> setOtus(final List<? extends Otu> otus) {
 		checkNotNull(otus);
 		if (otus.equals(getOtus())) {
 			return Collections.emptyList();
@@ -599,9 +598,9 @@ public class OtuSet
 			removedOtu.setParent(null);
 		}
 
-		getOTUsModifiable().clear();
+		getOtusModifiable().clear();
 		for (final Otu otu : otus) {
-			addOTUWithoutSetOTUsOnChildren(otu);
+			addOtuWithoutSetOtusOnChildren(otu);
 		}
 
 		setParentOnChildren();
