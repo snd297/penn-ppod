@@ -54,7 +54,7 @@ public class StandardCellTest {
 	private StandardMatrix matrix;
 
 	@BeforeMethod
-	public void beforeMethod() {
+	public void setUp() {
 		cell = new StandardCell();
 
 		matrix = new StandardMatrix();

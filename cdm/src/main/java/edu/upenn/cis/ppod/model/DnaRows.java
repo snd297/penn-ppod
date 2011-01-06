@@ -54,9 +54,15 @@ public class DnaRows implements IOtuKeyedMap<DnaRow> {
 	private final IOtuKeyedMapPlus<DnaRow, DnaMatrix, OtuDnaRowPair> rows =
 			new OtuKeyedMapPlus<DnaRow, DnaMatrix, OtuDnaRowPair>();
 
+	DnaRows() {}
+
 	/** {@inheritDoc} */
 	public void accept(final IVisitor visitor) {
 		rows.accept(visitor);
+	}
+
+	protected boolean afterMarshal(@CheckForNull final Marshaller marshaller) {
+		return rows.afterMarshal(marshaller);
 	}
 
 	/** {@inheritDoc} */
@@ -126,11 +132,6 @@ public class DnaRows implements IOtuKeyedMap<DnaRow> {
 		return rows.put(key, value);
 	}
 
-	/** {@inheritDoc} */
-	public void updateOtus() {
-		rows.updateOtus();
-	}
-
 	/**
 	 * Set the owner of this object.
 	 * 
@@ -144,5 +145,10 @@ public class DnaRows implements IOtuKeyedMap<DnaRow> {
 	public void setValues(
 			final Map<Otu, DnaRow> values) {
 		rows.setValues(values);
+	}
+
+	/** {@inheritDoc} */
+	public void updateOtus() {
+		rows.updateOtus();
 	}
 }

@@ -16,7 +16,6 @@
 package edu.upenn.cis.ppod.model;
 
 import static com.google.common.collect.Iterables.getOnlyElement;
-import static com.google.common.collect.Iterables.isEmpty;
 import static org.mockito.Matchers.any;
 import static org.mockito.Mockito.mock;
 import static org.mockito.Mockito.times;
@@ -67,18 +66,16 @@ public class TreeSetTest {
 						new Tree(),
 						new Tree());
 
-		final List<Tree> returnedTrees = treeSet.setTrees(trees);
+		treeSet.setTrees(trees);
 
 		assertTrue(treeSet.isInNeedOfNewVersion());
-
-		assertTrue(isEmpty(returnedTrees));
 
 		assertEquals(treeSet.getTrees(), trees);
 
 		treeSet.unsetInNeedOfNewVersion();
 		assertFalse(treeSet.isInNeedOfNewVersion());
-		final List<Tree> returnedTrees2 = treeSet.setTrees(trees);
-		assertTrue(isEmpty(returnedTrees2));
+
+		treeSet.setTrees(trees);
 		assertFalse(treeSet.isInNeedOfNewVersion());
 		assertEquals(treeSet.getTrees(), trees);
 
@@ -87,16 +84,13 @@ public class TreeSetTest {
 		final List<Tree> trees2 =
 				ImmutableList.of(trees.get(1));
 
-		final List<Tree> returnedTrees3 = treeSet.setTrees(trees2);
+		treeSet.setTrees(trees2);
 		assertTrue(treeSet.isInNeedOfNewVersion());
-		assertEquals(returnedTrees3,
-				ImmutableList.of(
-						trees.get(0),
-						trees.get(2)));
+
 		assertEquals(treeSet.getTrees(), trees2);
-		for (final Tree returnedTree3 : returnedTrees3) {
-			assertNull(returnedTree3.getParent());
-		}
+
+		assertNull(trees.get(0).getParent());
+		assertNull(trees.get(2).getParent());
 	}
 
 	/**
@@ -172,5 +166,14 @@ public class TreeSetTest {
 		verify(visitor, times(1)).visitAttachment(a0);
 		verify(visitor, times(1)).visitAttachment(a1);
 		verify(visitor, times(1)).visitAttachment(a2);
+	}
+
+	@Test(expectedExceptions = IllegalArgumentException.class)
+	public void setTreesWDup() {
+		final TreeSet treeSet = new TreeSet();
+		final Tree tree0 = new Tree();
+		final Tree tree1 = new Tree();
+
+		treeSet.setTrees(ImmutableList.of(tree0, tree1, tree1));
 	}
 }

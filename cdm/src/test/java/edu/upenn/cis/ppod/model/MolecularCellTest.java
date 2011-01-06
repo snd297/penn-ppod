@@ -38,6 +38,7 @@ import edu.upenn.cis.ppod.TestGroupDefs;
 @Test(groups = { TestGroupDefs.FAST })
 public class MolecularCellTest {
 
+	@Test
 	public void setPolymorphicElements() {
 		final MolecularCell<DnaNucleotide, ?> cell = new DnaCell();
 

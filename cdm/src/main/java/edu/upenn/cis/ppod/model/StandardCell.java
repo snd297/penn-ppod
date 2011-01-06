@@ -35,8 +35,8 @@ import javax.xml.bind.Unmarshaller;
 import javax.xml.bind.annotation.XmlAttribute;
 import javax.xml.bind.annotation.XmlElement;
 import javax.xml.bind.annotation.XmlIDREF;
-import javax.xml.bind.annotation.adapters.XmlAdapter;
 
+import edu.umd.cs.findbugs.annotations.CheckForNull;
 import edu.umd.cs.findbugs.annotations.Nullable;
 import edu.upenn.cis.ppod.util.IVisitor;
 
@@ -49,20 +49,6 @@ import edu.upenn.cis.ppod.util.IVisitor;
 @Table(name = StandardCell.TABLE)
 public class StandardCell
 		extends Cell<StandardState, StandardRow> {
-
-	public static class Adapter extends XmlAdapter<StandardCell, StandardCell> {
-
-		@Override
-		public StandardCell marshal(final StandardCell cell) {
-			return (StandardCell) cell;
-		}
-
-		@Override
-		public StandardCell unmarshal(final StandardCell cell) {
-			return cell;
-		}
-	}
-
 	/**
 	 * The name of the table.
 	 */
@@ -118,7 +104,7 @@ public class StandardCell
 		visitor.visitStandardCell(this);
 	}
 
-	protected boolean afterMarshal(@Nullable final Marshaller marshaller) {
+	protected boolean afterMarshal(@CheckForNull final Marshaller marshaller) {
 		elementsXml = null;
 		return true;
 	}
@@ -145,12 +131,13 @@ public class StandardCell
 	 * @param parent see {@code Unmarshaller}
 	 */
 	@Override
-	protected void afterUnmarshal(final Unmarshaller u, final Object parent) {
+	protected void afterUnmarshal(@CheckForNull final Unmarshaller u,
+			final Object parent) {
 		this.parent = (StandardRow) parent;
 	}
 
 	@Override
-	protected boolean beforeMarshal(@Nullable final Marshaller marshaller) {
+	protected boolean beforeMarshal(@CheckForNull final Marshaller marshaller) {
 		if (getType() == Type.POLYMORPHIC || getType() == Type.UNCERTAIN) {
 			this.elementsXml = newHashSet();
 			for (final StandardState element : elements) {
@@ -163,7 +150,8 @@ public class StandardCell
 	}
 
 	@Override
-	protected void beforeUnmarshal(final Unmarshaller u, final Object parent) {
+	protected void beforeUnmarshal(@CheckForNull final Unmarshaller u,
+			final Object parent) {
 		elementsXml = newHashSet();
 	}
 

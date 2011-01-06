@@ -183,57 +183,38 @@ public class TreeSet
 	 * 
 	 * @param trees the trees we're setting
 	 * 
-	 * @return any trees which were removed as a result of this operation
+	 * @throws IllegalArgumentException if {@code trees} contains any .equals
+	 *             dups
 	 */
-	public List<Tree> setTrees(final List<? extends Tree> trees) {
+	public void setTrees(final List<? extends Tree> trees) {
 		checkNotNull(trees);
-		if (trees.equals(getTreesModifiable())) {
-			return Collections.emptyList();
+		if (trees.equals(this.trees)) {
+
+		} else {
+
+			int treePos = -1;
+			for (final Tree tree : trees) {
+				treePos++;
+				checkArgument(
+						!Iterators.contains(trees.listIterator(treePos + 1),
+								tree),
+						"argument trees contains duplicates");
+			}
+
+			final List<Tree> removedTrees = newArrayList(this.trees);
+			removedTrees.removeAll(trees);
+
+			for (final Tree removedTree : removedTrees) {
+				removedTree.setParent(null);
+			}
+
+			this.trees.clear();
+			for (final Tree newTree : trees) {
+				addTree(newTree);
+			}
+			setInNeedOfNewVersion();
 		}
-
-		int treePos = -1;
-		for (final Tree tree : trees) {
-			treePos++;
-			checkArgument(
-					!Iterators.contains(trees.listIterator(treePos + 1), tree),
-					"argument trees contains duplicates");
-		}
-
-		final List<Tree> removedTrees = newArrayList(getTrees());
-		removedTrees.removeAll(trees);
-
-		for (final Tree removedTree : removedTrees) {
-			removedTree.setParent(null);
-		}
-
-		getTreesModifiable().clear();
-		for (final Tree newTree : trees) {
-			addTree(newTree);
-		}
-		setInNeedOfNewVersion();
-		return removedTrees;
-	}
-
-	/**
-	 * Constructs a <code>String</code> with attributes in name=value format.
-	 * 
-	 * @return a <code>String</code> representation of this object.
-	 */
-	@Override
-	public String toString() {
-		final String TAB = " ";
-
-		final StringBuilder retValue = new StringBuilder();
-
-		retValue.append("TreeSet(")
-				.append("label=")
-				.append(this.label)
-				.append(TAB)
-				.append("trees=")
-				.append(this.trees)
-				.append(TAB).append(")");
-
-		return retValue.toString();
+		return;
 	}
 
 	/**
