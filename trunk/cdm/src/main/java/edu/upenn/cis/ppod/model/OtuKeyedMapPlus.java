@@ -51,7 +51,7 @@ public class OtuKeyedMapPlus<V extends IChild<P>, P extends IChild<OtuSet>, OP e
 
 	private Map<Otu, V> values = newHashMap();
 
-	private final Set<OP> otuSomethingPairs = newHashSet();
+	private final Set<OP> otuKeyedPairs = newHashSet();
 
 	OtuKeyedMapPlus() {}
 
@@ -65,7 +65,7 @@ public class OtuKeyedMapPlus<V extends IChild<P>, P extends IChild<OtuSet>, OP e
 	}
 
 	public boolean afterMarshal(@CheckForNull final Marshaller marshaller) {
-		otuSomethingPairs.clear();
+		otuKeyedPairs.clear();
 		return true;
 	}
 
@@ -111,7 +111,7 @@ public class OtuKeyedMapPlus<V extends IChild<P>, P extends IChild<OtuSet>, OP e
 	}
 
 	public Set<OP> getOtuKeyedPairs() {
-		return otuSomethingPairs;
+		return otuKeyedPairs;
 	}
 
 	/**
