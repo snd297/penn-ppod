@@ -269,10 +269,13 @@ public class OtuSet
 	}
 
 	/**
-	 * Add {@code matrix} to this {@code OTUSet}.
+	 * Add {@code matrix} to this {@code OTUSet} at the specified position.
+	 * Shifts the element currently at that position (if any) and any subsequent
+	 * elements to the right (adds one to their indices).
 	 * <p>
 	 * Also handles the {@code StandardMatrix->IOTUSet} side of the
 	 * relationship.
+	 * 
 	 * 
 	 * @param matrix matrix we're adding
 	 * 
