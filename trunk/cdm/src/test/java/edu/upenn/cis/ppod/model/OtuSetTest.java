@@ -288,6 +288,14 @@ public class OtuSetTest {
 		assertTrue(otuSet.isInNeedOfNewVersion());
 	}
 
+	@Test(expectedExceptions = IllegalArgumentException.class)
+	public void addStandardMatrixWDup() {
+		final OtuSet otuSet = new OtuSet();
+		final StandardMatrix matrix0 = new StandardMatrix();
+		otuSet.addStandardMatrix(matrix0);
+		otuSet.addStandardMatrix(matrix0);
+	}
+
 	@Test(groups = TestGroupDefs.SINGLE)
 	public void addStandardMatrixPos() {
 		final OtuSet otuSet = new OtuSet();
@@ -308,6 +316,14 @@ public class OtuSetTest {
 		assertEquals(otuSet.getStandardMatrices(),
 				ImmutableList.of(matrix0, matrix1, matrix3, matrix2));
 		assertSame(matrix3.getParent(), otuSet);
+	}
+
+	@Test(expectedExceptions = IllegalArgumentException.class)
+	public void addStandardMatrixPosWDup() {
+		final OtuSet otuSet = new OtuSet();
+		final StandardMatrix matrix0 = new StandardMatrix();
+		otuSet.addStandardMatrix(0, matrix0);
+		otuSet.addStandardMatrix(0, matrix0);
 	}
 
 	@Test
