@@ -32,7 +32,7 @@ import edu.upenn.cis.ppod.util.IVisitor;
  * @author Sam Donnelly
  */
 @Test(groups = TestGroupDefs.FAST)
-public class OTUKeyedMapTest {
+public class OtuKeyedMapTest {
 
 	@Test
 	public void clear() {

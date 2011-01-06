@@ -431,7 +431,12 @@ public class OtuSet
 		return otus;
 	}
 
-	/** {@inheritDoc} */
+	/**
+	 * Get the owning study.
+	 * 
+	 * @return the owning study
+	 */
+	@Nullable
 	public Study getParent() {
 		return parent;
 	}
@@ -581,33 +586,31 @@ public class OtuSet
 	 * then the {@code OTU->OTUSet} relationship is severed.
 	 * 
 	 * @param otus the otus to assign to this OTU set
-	 * 
-	 * @return any {@code OTU}s that were removed as a result of this operation,
-	 *         in their original order
 	 */
-	public List<Otu> setOtus(final List<? extends Otu> otus) {
+	public void setOtus(final List<? extends Otu> otus) {
 		checkNotNull(otus);
 		if (otus.equals(getOtus())) {
-			return Collections.emptyList();
+
+		} else {
+
+			final List<Otu> removedOtus = newArrayList(this.otus);
+			removedOtus.removeAll(otus);
+
+			for (final Otu removedOtu : removedOtus) {
+				removedOtu.setParent(null);
+			}
+
+			this.otus.clear();
+			for (final Otu otu : otus) {
+				addOtuWithoutSetOtusOnChildren(otu);
+			}
+
+			setParentOnChildren();
+
+			setInNeedOfNewVersion();
 		}
 
-		final List<Otu> removedOtus = newArrayList(getOtus());
-		removedOtus.removeAll(otus);
-
-		for (final Otu removedOtu : removedOtus) {
-			removedOtu.setParent(null);
-		}
-
-		getOtusModifiable().clear();
-		for (final Otu otu : otus) {
-			addOtuWithoutSetOtusOnChildren(otu);
-		}
-
-		setParentOnChildren();
-
-		setInNeedOfNewVersion();
-
-		return removedOtus;
+		return;
 	}
 
 	/** {@inheritDoc} */

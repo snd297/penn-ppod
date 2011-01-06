@@ -28,7 +28,7 @@ import edu.upenn.cis.ppod.TestGroupDefs;
  * @author Sam Donnelly
  */
 @Test(groups = TestGroupDefs.FAST)
-public class OTUsToDNASequencesTest {
+public class OtusToDnaSequencesTest {
 
 	/**
 	 * Do a straight put with
