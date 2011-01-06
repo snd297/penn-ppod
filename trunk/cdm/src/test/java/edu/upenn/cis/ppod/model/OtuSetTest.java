@@ -15,10 +15,8 @@
  */
 package edu.upenn.cis.ppod.model;
 
-import static com.google.common.collect.Iterables.contains;
 import static com.google.common.collect.Iterables.getOnlyElement;
 import static com.google.common.collect.Lists.newArrayList;
-import static com.google.common.collect.Sets.newHashSet;
 import static org.mockito.Matchers.any;
 import static org.mockito.Mockito.mock;
 import static org.mockito.Mockito.times;
@@ -48,7 +46,7 @@ import edu.upenn.cis.ppod.util.IVisitor;
  * @author Sam Donnelly
  */
 @Test(groups = { TestGroupDefs.FAST })
-public class OTUSetTest {
+public class OtuSetTest {
 
 	private OtuSet otuSet;
 
@@ -388,9 +386,12 @@ public class OTUSetTest {
 
 		otuSet.setVersionInfo(new VersionInfo());
 		study.setVersionInfo(new VersionInfo());
-		final List<Otu> removedOTUs = otuSet.setOtus(new ArrayList<Otu>());
 
-		assertEquals(removedOTUs, otus);
+		study.unsetInNeedOfNewVersion();
+		otuSet.unsetInNeedOfNewVersion();
+
+		otuSet.setOtus(new ArrayList<Otu>());
+
 		assertTrue(otuSet.isInNeedOfNewVersion());
 		// assertNull(otuSet.getPPodVersionInfo());
 		assertTrue(study.isInNeedOfNewVersion());
@@ -449,18 +450,16 @@ public class OTUSetTest {
 	 * OTU.
 	 */
 	@Test
-	public void removeOTU() {
+	public void removeOtu() {
 		otuSet.unsetInNeedOfNewVersion();
 
 		final ImmutableList<Otu> otus2 =
 				ImmutableList.of(otus.get(0), otus.get(2));
 
-		final ImmutableList<Otu> removedOTUs =
-				ImmutableList.copyOf(otuSet.setOtus(otus2));
+		otuSet.setOtus(otus2);
 
-		assertFalse(contains(otuSet.getOtus(), otus.get(1)));
+		assertFalse(otuSet.getOtus().contains(otus.get(1)));
 		assertTrue(otuSet.isInNeedOfNewVersion());
-		assertEquals(removedOTUs, newHashSet(otus.get(1)));
 		assertNull(otus.get(1).getParent());
 	}
 

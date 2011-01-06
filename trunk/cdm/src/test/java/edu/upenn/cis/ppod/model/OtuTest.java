@@ -25,7 +25,7 @@ import org.testng.annotations.Test;
 import edu.upenn.cis.ppod.TestGroupDefs;
 
 @Test(groups = TestGroupDefs.FAST)
-public class OTUTest {
+public class OtuTest {
 
 	@Test
 	public void setLabel() {

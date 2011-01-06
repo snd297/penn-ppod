@@ -35,7 +35,7 @@ import edu.upenn.cis.ppod.model.Cell.Type;
  * @author Sam Donnelly
  */
 @Test(groups = { TestGroupDefs.FAST })
-public class DNACellTest {
+public class DnaCellTest {
 
 	@Test(expectedExceptions = IllegalArgumentException.class)
 	public void setPolymorphicElementsTooFewStates() {

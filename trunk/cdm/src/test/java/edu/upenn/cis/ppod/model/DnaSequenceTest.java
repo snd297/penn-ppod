@@ -32,7 +32,7 @@ import edu.upenn.cis.ppod.TestGroupDefs;
  * @author Sam Donnelly
  */
 @Test(groups = TestGroupDefs.FAST)
-public class DNASequenceTest {
+public class DnaSequenceTest {
 
 	private final List<java.lang.Character> alpabet = ImmutableList
 			.of(
