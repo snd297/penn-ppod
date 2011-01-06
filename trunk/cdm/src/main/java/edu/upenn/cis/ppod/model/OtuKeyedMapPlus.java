@@ -27,6 +27,7 @@ import java.util.Set;
 
 import javax.annotation.CheckForNull;
 import javax.annotation.Nullable;
+import javax.xml.bind.Marshaller;
 
 import edu.upenn.cis.ppod.imodel.IChild;
 import edu.upenn.cis.ppod.imodel.IOtuKeyedMapPlus;
@@ -52,7 +53,7 @@ public class OtuKeyedMapPlus<V extends IChild<P>, P extends IChild<OtuSet>, OP e
 
 	private final Set<OP> otuSomethingPairs = newHashSet();
 
-	public OtuKeyedMapPlus() {}
+	OtuKeyedMapPlus() {}
 
 	public void accept(final IVisitor visitor) {
 		checkNotNull(visitor);
@@ -61,6 +62,11 @@ public class OtuKeyedMapPlus<V extends IChild<P>, P extends IChild<OtuSet>, OP e
 				value.accept(visitor);
 			}
 		}
+	}
+
+	public boolean afterMarshal(@CheckForNull final Marshaller marshaller) {
+		otuSomethingPairs.clear();
+		return true;
 	}
 
 	/**
@@ -163,6 +169,18 @@ public class OtuKeyedMapPlus<V extends IChild<P>, P extends IChild<OtuSet>, OP e
 		}
 	}
 
+	/** {@inheritDoc} */
+	public void setParent(final P parent) {
+		checkNotNull(parent);
+		this.parent = parent;
+	}
+
+	/** {@inheritDoc} */
+	public void setValues(final Map<Otu, V> values) {
+		this.values = values;
+	}
+
+	/** {@inheritDoc}  */
 	public void updateOtus() {
 		final IChild<OtuSet> parent = getParent();
 
@@ -200,16 +218,5 @@ public class OtuKeyedMapPlus<V extends IChild<P>, P extends IChild<OtuSet>, OP e
 				}
 			}
 		}
-	}
-
-	/** {@inheritDoc} */
-	public void setParent(final P parent) {
-		checkNotNull(parent);
-		this.parent = parent;
-	}
-
-	/** {@inheritDoc} */
-	public void setValues(final Map<Otu, V> values) {
-		this.values = values;
 	}
 }

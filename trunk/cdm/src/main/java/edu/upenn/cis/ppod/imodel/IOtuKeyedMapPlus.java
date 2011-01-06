@@ -18,6 +18,9 @@ package edu.upenn.cis.ppod.imodel;
 import java.util.Map;
 import java.util.Set;
 
+import javax.xml.bind.Marshaller;
+
+import edu.umd.cs.findbugs.annotations.CheckForNull;
 import edu.upenn.cis.ppod.model.Otu;
 import edu.upenn.cis.ppod.model.OtuSet;
 import edu.upenn.cis.ppod.util.Pair;
@@ -25,7 +28,9 @@ import edu.upenn.cis.ppod.util.Pair;
 public interface IOtuKeyedMapPlus<V extends IChild<?>, P extends IChild<OtuSet>, OP extends Pair<Otu, V>>
 		extends IOtuKeyedMap<V> {
 
-	void afterUnmarshal(final P parent);
+	boolean afterMarshal(@CheckForNull Marshaller marshaller);
+
+	void afterUnmarshal(P parent);
 
 	void clear();
 

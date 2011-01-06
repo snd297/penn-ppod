@@ -53,20 +53,6 @@ import edu.upenn.cis.ppod.util.IVisitor;
 @Table(name = StandardCharacter.TABLE)
 public class StandardCharacter extends UuPPodEntityWithDocId {
 
-	public static class Adapter extends
-			XmlAdapter<StandardCharacter, StandardCharacter> {
-
-		@Override
-		public StandardCharacter marshal(final StandardCharacter character) {
-			return (StandardCharacter) character;
-		}
-
-		@Override
-		public StandardCharacter unmarshal(final StandardCharacter character) {
-			return character;
-		}
-	}
-
 	public final static String TABLE = "STANDARD_CHARACTER";
 
 	public final static String JOIN_COLUMN = TABLE + "_ID";
