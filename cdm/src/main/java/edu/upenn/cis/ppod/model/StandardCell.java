@@ -38,7 +38,7 @@ import javax.xml.bind.annotation.XmlIDREF;
 
 import edu.umd.cs.findbugs.annotations.CheckForNull;
 import edu.umd.cs.findbugs.annotations.Nullable;
-import edu.upenn.cis.ppod.domain.CellType;
+import edu.upenn.cis.ppod.domain.PPodCellType;
 import edu.upenn.cis.ppod.util.IVisitor;
 
 /**
@@ -116,7 +116,7 @@ public class StandardCell
 	 * after unmarshalling is finished.
 	 */
 	public void afterUnmarshal() {
-		if (getType() == CellType.POLYMORPHIC || getType() == CellType.UNCERTAIN) {
+		if (getType() == PPodCellType.POLYMORPHIC || getType() == PPodCellType.UNCERTAIN) {
 			initElements();
 			for (final StandardState elementXml : elementsXml) {
 				getElementsModifiable().add(elementXml);
@@ -139,7 +139,7 @@ public class StandardCell
 
 	@Override
 	protected boolean beforeMarshal(@CheckForNull final Marshaller marshaller) {
-		if (getType() == CellType.POLYMORPHIC || getType() == CellType.UNCERTAIN) {
+		if (getType() == PPodCellType.POLYMORPHIC || getType() == PPodCellType.UNCERTAIN) {
 			this.elementsXml = newHashSet();
 			for (final StandardState element : elements) {
 				// Load it if it's a proxy ;-)
@@ -267,14 +267,14 @@ public class StandardCell
 	 */
 	@Override
 	void setPolymorphicOrUncertain(
-			final CellType type,
+			final PPodCellType type,
 			final Set<? extends StandardState> elements) {
 		checkNotNull(type);
 		checkNotNull(elements);
 
 		checkArgument(
-				type == CellType.POLYMORPHIC
-						|| type == CellType.UNCERTAIN,
+				type == PPodCellType.POLYMORPHIC
+						|| type == PPodCellType.UNCERTAIN,
 				" type is " + type + " but must be POLYMORPHIC OR UNCERTAIN");
 
 		checkArgument(
@@ -303,7 +303,7 @@ public class StandardCell
 		checkArgument(
 				stateNumbers.size() > 1,
 				"polymorphic states must be > 1");
-		setPolymorphicOrUncertain(CellType.POLYMORPHIC, getStates(stateNumbers));
+		setPolymorphicOrUncertain(PPodCellType.POLYMORPHIC, getStates(stateNumbers));
 	}
 
 	/**
@@ -341,14 +341,14 @@ public class StandardCell
 						+ "]");
 
 		if (state.equals(getElement())) {
-			if (getType() != CellType.SINGLE) {
+			if (getType() != PPodCellType.SINGLE) {
 				throw new AssertionError(
 						"element is set, but this cell is not a SINGLE");
 			}
 		} else {
 			setElement(state);
 			setElements(null);
-			setType(CellType.SINGLE);
+			setType(PPodCellType.SINGLE);
 			setInNeedOfNewVersion();
 		}
 	}
@@ -367,6 +367,6 @@ public class StandardCell
 		checkArgument(
 				stateNumbers.size() > 1,
 				"polymorphic states must be > 1");
-		setPolymorphicOrUncertain(CellType.UNCERTAIN, getStates(stateNumbers));
+		setPolymorphicOrUncertain(PPodCellType.UNCERTAIN, getStates(stateNumbers));
 	}
 }

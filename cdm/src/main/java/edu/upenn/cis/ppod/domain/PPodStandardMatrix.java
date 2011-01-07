@@ -8,22 +8,22 @@ import java.util.List;
 import edu.umd.cs.findbugs.annotations.CheckForNull;
 import edu.umd.cs.findbugs.annotations.Nullable;
 
-public class StandardMatrix {
+public class PPodStandardMatrix {
 	@CheckForNull
 	private final Long version;
-	private final List<StandardCharacter> characters = newArrayList();
-	private final List<StandardRow> rows = newArrayList();
+	private final List<PPodStandardCharacter> characters = newArrayList();
+	private final List<PPodStandardRow> rows = newArrayList();
 
-	public StandardMatrix(final Long version) {
+	public PPodStandardMatrix(final Long version) {
 		checkNotNull(version);
 		this.version = version;
 	}
 
-	public List<StandardCharacter> getCharacters() {
+	public List<PPodStandardCharacter> getCharacters() {
 		return characters;
 	}
 
-	public List<StandardRow> getRows() {
+	public List<PPodStandardRow> getRows() {
 		return rows;
 	}
 

@@ -17,7 +17,7 @@ package edu.upenn.cis.ppod.createorupdate;
 
 import com.google.inject.ImplementedBy;
 
-import edu.upenn.cis.ppod.domain.DnaNucleotide;
+import edu.upenn.cis.ppod.domain.PPodDnaNucleotide;
 import edu.upenn.cis.ppod.model.DnaCell;
 import edu.upenn.cis.ppod.model.DnaMatrix;
 import edu.upenn.cis.ppod.model.DnaRow;
@@ -27,6 +27,6 @@ import edu.upenn.cis.ppod.model.DnaRow;
  */
 @ImplementedBy(CreateOrUpdateDNAMatrix.class)
 public interface ICreateOrUpdateDNAMatrix extends
-		ICreateOrUpdateMatrix<DnaMatrix, DnaRow, DnaCell, DnaNucleotide> {
+		ICreateOrUpdateMatrix<DnaMatrix, DnaRow, DnaCell, PPodDnaNucleotide> {
 
 }

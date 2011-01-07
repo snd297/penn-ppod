@@ -36,7 +36,7 @@ import javax.xml.bind.annotation.XmlElement;
 import org.hibernate.annotations.Immutable;
 
 import edu.umd.cs.findbugs.annotations.Nullable;
-import edu.upenn.cis.ppod.domain.DnaNucleotide;
+import edu.upenn.cis.ppod.domain.PPodDnaNucleotide;
 import edu.upenn.cis.ppod.util.IVisitor;
 
 /**
@@ -48,7 +48,7 @@ import edu.upenn.cis.ppod.util.IVisitor;
 @Table(name = DnaCell.TABLE)
 @Immutable
 public class DnaCell
-		extends MolecularCell<DnaNucleotide, DnaRow> {
+		extends MolecularCell<PPodDnaNucleotide, DnaRow> {
 
 	public static final String TABLE = "DNA_CELL";
 
@@ -67,7 +67,7 @@ public class DnaCell
 	@Column(name = "ELEMENT")
 	@Enumerated(EnumType.ORDINAL)
 	@Nullable
-	private Set<DnaNucleotide> elements;
+	private Set<PPodDnaNucleotide> elements;
 
 	/**
 	 * To handle the most-common case of a single element.
@@ -78,7 +78,7 @@ public class DnaCell
 	@Column(name = "ELEMENT", nullable = true)
 	@Enumerated(EnumType.ORDINAL)
 	@Nullable
-	private DnaNucleotide element;
+	private PPodDnaNucleotide element;
 
 	@ManyToOne(fetch = FetchType.LAZY, optional = false)
 	@JoinColumn(name = DnaRow.JOIN_COLUMN)
@@ -96,12 +96,12 @@ public class DnaCell
 	/** {@inheritDoc} */
 	@XmlAttribute(name = "nucleotide")
 	@Override
-	protected DnaNucleotide getElement() {
+	protected PPodDnaNucleotide getElement() {
 		return element;
 	}
 
 	@Override
-	Set<DnaNucleotide> getElementsModifiable() {
+	Set<PPodDnaNucleotide> getElementsModifiable() {
 		return elements;
 	}
 
@@ -112,7 +112,7 @@ public class DnaCell
 	 */
 	@XmlElement(name = "nucleotide")
 	@Override
-	protected Set<DnaNucleotide> getElementsIfMultiple() {
+	protected Set<PPodDnaNucleotide> getElementsIfMultiple() {
 		return super.getElementsIfMultiple();
 	}
 
@@ -123,7 +123,7 @@ public class DnaCell
 
 	@Override
 	void initElements() {
-		setElements(EnumSet.noneOf(DnaNucleotide.class));
+		setElements(EnumSet.noneOf(PPodDnaNucleotide.class));
 	}
 
 	/**
@@ -132,13 +132,13 @@ public class DnaCell
 	 * Protected for JAXB.
 	 */
 	@Override
-	protected void setElement(final DnaNucleotide element) {
+	protected void setElement(final PPodDnaNucleotide element) {
 		this.element = element;
 	}
 
 	/** {@inheritDoc} */
 	@Override
-	void setElements(final Set<DnaNucleotide> elements) {
+	void setElements(final Set<PPodDnaNucleotide> elements) {
 		this.elements = elements;
 	}
 

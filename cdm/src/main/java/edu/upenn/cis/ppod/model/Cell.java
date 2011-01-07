@@ -36,7 +36,7 @@ import com.google.common.annotations.VisibleForTesting;
 
 import edu.umd.cs.findbugs.annotations.CheckForNull;
 import edu.umd.cs.findbugs.annotations.Nullable;
-import edu.upenn.cis.ppod.domain.CellType;
+import edu.upenn.cis.ppod.domain.PPodCellType;
 import edu.upenn.cis.ppod.imodel.IChild;
 
 /**
@@ -61,7 +61,7 @@ public abstract class Cell<E, R extends Row<?, ?>>
 	@Column(name = TYPE_COLUMN, nullable = false)
 	@Enumerated(EnumType.ORDINAL)
 	@Nullable
-	private CellType type;
+	private PPodCellType type;
 
 	Cell() {}
 
@@ -202,7 +202,7 @@ public abstract class Cell<E, R extends Row<?, ?>>
 	 */
 	@XmlAttribute
 	@Nullable
-	public CellType getType() {
+	public PPodCellType getType() {
 		return type;
 	}
 
@@ -231,14 +231,14 @@ public abstract class Cell<E, R extends Row<?, ?>>
 	 * empty set.
 	 */
 	public void setInapplicable() {
-		setInapplicableOrUnassigned(CellType.INAPPLICABLE);
+		setInapplicableOrUnassigned(PPodCellType.INAPPLICABLE);
 	}
 
-	void setInapplicableOrUnassigned(final CellType type) {
+	void setInapplicableOrUnassigned(final PPodCellType type) {
 		checkNotNull(type);
 		checkArgument(
-				type == CellType.INAPPLICABLE
-						|| type == CellType.UNASSIGNED,
+				type == PPodCellType.INAPPLICABLE
+						|| type == PPodCellType.UNASSIGNED,
 				"type was " + type + " but must be INAPPLICABLE or UNASSIGNED");
 
 		if (type == getType()) {
@@ -282,14 +282,14 @@ public abstract class Cell<E, R extends Row<?, ?>>
 	 * @return this
 	 */
 	void setPolymorphicOrUncertain(
-			final CellType type,
+			final PPodCellType type,
 			final Set<? extends E> elements) {
 		checkNotNull(type);
 		checkNotNull(elements);
 
 		checkArgument(
-				type == CellType.POLYMORPHIC
-						|| type == CellType.UNCERTAIN,
+				type == PPodCellType.POLYMORPHIC
+						|| type == PPodCellType.UNCERTAIN,
 				" type is " + type + " but must be POLYMORPHIC OR UNCERTAIN");
 
 		checkArgument(
@@ -349,7 +349,7 @@ public abstract class Cell<E, R extends Row<?, ?>>
 	 * @param type the new type
 	 */
 	@VisibleForTesting
-	void setType(final CellType type) {
+	void setType(final PPodCellType type) {
 		checkNotNull(type);
 		this.type = type;
 		return;
@@ -360,7 +360,7 @@ public abstract class Cell<E, R extends Row<?, ?>>
 	 * empty set.
 	 */
 	public void setUnassigned() {
-		setInapplicableOrUnassigned(CellType.UNASSIGNED);
+		setInapplicableOrUnassigned(PPodCellType.UNASSIGNED);
 	}
 
 	/**
@@ -375,7 +375,7 @@ public abstract class Cell<E, R extends Row<?, ?>>
 				elements.size() > 1,
 				"uncertain elements must be > 1");
 		setPolymorphicOrUncertain(
-				CellType.UNCERTAIN,
+				PPodCellType.UNCERTAIN,
 				elements);
 	}
 }

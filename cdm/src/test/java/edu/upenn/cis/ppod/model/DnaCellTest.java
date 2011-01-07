@@ -27,8 +27,8 @@ import org.testng.annotations.Test;
 import com.google.common.collect.ImmutableSet;
 
 import edu.upenn.cis.ppod.TestGroupDefs;
-import edu.upenn.cis.ppod.domain.CellType;
-import edu.upenn.cis.ppod.domain.DnaNucleotide;
+import edu.upenn.cis.ppod.domain.PPodCellType;
+import edu.upenn.cis.ppod.domain.PPodDnaNucleotide;
 
 /**
  * Test {@link DNACell}.
@@ -41,8 +41,8 @@ public class DnaCellTest {
 	@Test(expectedExceptions = IllegalArgumentException.class)
 	public void setPolymorphicElementsTooFewStates() {
 		final DnaCell cell = new DnaCell();
-		final Set<DnaNucleotide> nucleotides =
-				ImmutableSet.of(DnaNucleotide.A);
+		final Set<PPodDnaNucleotide> nucleotides =
+				ImmutableSet.of(PPodDnaNucleotide.A);
 		cell.setPolymorphicElements(nucleotides, true);
 	}
 
@@ -52,7 +52,7 @@ public class DnaCellTest {
 		dnaCell.unsetInNeedOfNewVersion();
 
 		dnaCell.setInapplicable();
-		assertEquals(dnaCell.getType(), CellType.INAPPLICABLE);
+		assertEquals(dnaCell.getType(), PPodCellType.INAPPLICABLE);
 		assertEquals(dnaCell.getElements().size(), 0);
 		assertTrue(dnaCell.isInNeedOfNewVersion());
 	}
@@ -61,10 +61,10 @@ public class DnaCellTest {
 	public void setTypeAndStatesSingle() {
 		final DnaCell dnaCell = new DnaCell();
 		dnaCell.unsetInNeedOfNewVersion();
-		dnaCell.setSingleElement(DnaNucleotide.A, false);
-		assertEquals(dnaCell.getType(), CellType.SINGLE);
+		dnaCell.setSingleElement(PPodDnaNucleotide.A, false);
+		assertEquals(dnaCell.getType(), PPodCellType.SINGLE);
 		assertEquals(getOnlyElement(dnaCell.getElements()),
-				DnaNucleotide.A);
+				PPodDnaNucleotide.A);
 		assertTrue(dnaCell.isInNeedOfNewVersion());
 	}
 
@@ -73,40 +73,40 @@ public class DnaCellTest {
 		final DnaCell dnaCell = new DnaCell();
 
 		dnaCell.unsetInNeedOfNewVersion();
-		dnaCell.setSingleElement(DnaNucleotide.A, false);
-		dnaCell.setSingleElement(DnaNucleotide.A, false);
+		dnaCell.setSingleElement(PPodDnaNucleotide.A, false);
+		dnaCell.setSingleElement(PPodDnaNucleotide.A, false);
 
 		assertEquals(
 				dnaCell.getType(),
-				CellType.SINGLE);
+				PPodCellType.SINGLE);
 		assertEquals(
 				getOnlyElement(
 						dnaCell.getElements()),
-					DnaNucleotide.A);
+					PPodDnaNucleotide.A);
 		assertTrue(dnaCell.isInNeedOfNewVersion());
 	}
 
 	public void setPolymorphicOrUncertain() {
 		final DnaCell cell = new DnaCell();
-		final Set<DnaNucleotide> nucleotides =
-				ImmutableSet.of(DnaNucleotide.A, DnaNucleotide.T);
+		final Set<PPodDnaNucleotide> nucleotides =
+				ImmutableSet.of(PPodDnaNucleotide.A, PPodDnaNucleotide.T);
 		cell.unsetInNeedOfNewVersion();
 
 		cell.setPolymorphicOrUncertain(
-						CellType.POLYMORPHIC,
+						PPodCellType.POLYMORPHIC,
 						nucleotides);
 
 		assertTrue(cell.isInNeedOfNewVersion());
-		assertEquals(cell.getType(), CellType.POLYMORPHIC);
+		assertEquals(cell.getType(), PPodCellType.POLYMORPHIC);
 		assertEquals(cell.getElements(),
 					nucleotides);
 
 		cell.unsetInNeedOfNewVersion();
 
-		cell.setPolymorphicOrUncertain(CellType.POLYMORPHIC, nucleotides);
+		cell.setPolymorphicOrUncertain(PPodCellType.POLYMORPHIC, nucleotides);
 
 		assertFalse(cell.isInNeedOfNewVersion());
-		assertEquals(cell.getType(), CellType.POLYMORPHIC);
+		assertEquals(cell.getType(), PPodCellType.POLYMORPHIC);
 		assertEquals((Object) cell.getElements(),
 				(Object) nucleotides);
 

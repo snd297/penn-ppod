@@ -25,16 +25,14 @@ import com.google.inject.Inject;
 
 import edu.upenn.cis.ppod.createorupdate.ICreateOrUpdateStudy;
 import edu.upenn.cis.ppod.dao.IStudyDAO;
+import edu.upenn.cis.ppod.domain.PPodStudy;
 import edu.upenn.cis.ppod.imodel.INewVersionInfo;
-import edu.upenn.cis.ppod.model.Study;
 import edu.upenn.cis.ppod.services.IStudyResource;
 import edu.upenn.cis.ppod.services.StringPair;
 import edu.upenn.cis.ppod.services.ppodentity.IStudy2StudyInfo;
 import edu.upenn.cis.ppod.services.ppodentity.StudyInfo;
-import edu.upenn.cis.ppod.util.AfterUnmarshalVisitor;
 import edu.upenn.cis.ppod.util.IVisitor;
 import edu.upenn.cis.ppod.util.Pair;
-import edu.upenn.cis.ppod.util.SetDocIdVisitor;
 import edu.upenn.cis.ppod.util.SetVersionInfoVisitor;
 
 /**
@@ -69,10 +67,9 @@ public final class StudyResourceHibernate implements IStudyResource {
 		this.newVersionInfo = newVersionInfo;
 	}
 
-	private StudyInfo createOrUpdateStudy(final Study incomingStudy) {
-		incomingStudy.accept(new AfterUnmarshalVisitor());
+	private StudyInfo createOrUpdateStudy(final PPodStudy incomingStudy) {
 
-		final Study dbStudy = createOrUpdateStudy
+		final edu.upenn.cis.ppod.model.Study dbStudy = createOrUpdateStudy
 				.createOrUpdateStudy(incomingStudy);
 
 		final IVisitor setVersionInfoVisitor = new SetVersionInfoVisitor(
@@ -83,15 +80,14 @@ public final class StudyResourceHibernate implements IStudyResource {
 		return study2StudyInfo.toStudyInfo(dbStudy);
 	}
 
-	public StudyInfo createStudy(final Study incomingStudy) {
+	public StudyInfo createStudy(final PPodStudy incomingStudy) {
 		final StudyInfo studyInfo = createOrUpdateStudy(incomingStudy);
 		return studyInfo;
 	}
 
-	public Study getStudyByPPodId(final String pPodId) {
-		final Study study = studyDAO.getStudyByPPodId(pPodId);
-		study.accept(new SetDocIdVisitor());
-		return study;
+	public PPodStudy getStudyByPPodId(final String pPodId) {
+		// final Study study = studyDAO.getStudyByPPodId(pPodId);
+		return null;
 	}
 
 	public Set<StringPair> getStudyPPodIdLabelPairs() {
@@ -110,7 +106,7 @@ public final class StudyResourceHibernate implements IStudyResource {
 		return studyPPodIdStringPairs;
 	}
 
-	public StudyInfo updateStudy(final Study incomingStudy, final String pPodId) {
+	public StudyInfo updateStudy(final PPodStudy incomingStudy, final String pPodId) {
 		final StudyInfo studyInfo = createOrUpdateStudy(incomingStudy);
 		return studyInfo;
 	}

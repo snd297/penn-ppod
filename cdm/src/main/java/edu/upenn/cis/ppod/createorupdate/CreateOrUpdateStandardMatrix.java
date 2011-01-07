@@ -34,7 +34,7 @@ import org.slf4j.LoggerFactory;
 import com.google.inject.Inject;
 
 import edu.upenn.cis.ppod.dao.IObjectWithLongIdDAO;
-import edu.upenn.cis.ppod.domain.CellType;
+import edu.upenn.cis.ppod.domain.PPodCellType;
 import edu.upenn.cis.ppod.imodel.IHasPPodId;
 import edu.upenn.cis.ppod.imodel.INewVersionInfo;
 import edu.upenn.cis.ppod.model.ModelFactory;
@@ -131,7 +131,7 @@ final class CreateOrUpdateStandardMatrix
 	protected void handlePolymorphicCell(
 			final StandardCell targetCell,
 			final StandardCell sourceCell) {
-		checkArgument(sourceCell.getType() == CellType.POLYMORPHIC);
+		checkArgument(sourceCell.getType() == PPodCellType.POLYMORPHIC);
 		final Set<Integer> sourceStateNumbers =
 				newHashSet(
 				transform(
@@ -143,7 +143,7 @@ final class CreateOrUpdateStandardMatrix
 	@Override
 	protected void handleSingleCell(final StandardCell targetCell,
 			final StandardCell sourceCell) {
-		checkArgument(sourceCell.getType() == CellType.SINGLE);
+		checkArgument(sourceCell.getType() == PPodCellType.SINGLE);
 		final StandardState sourceState =
 				getOnlyElement(sourceCell.getElements());
 		targetCell.setSingleWithStateNo(sourceState.getStateNumber());
@@ -152,7 +152,7 @@ final class CreateOrUpdateStandardMatrix
 	@Override
 	protected void handleUncertainCell(final StandardCell targetCell,
 			final StandardCell sourceCell) {
-		checkArgument(sourceCell.getType() == CellType.UNCERTAIN);
+		checkArgument(sourceCell.getType() == PPodCellType.UNCERTAIN);
 		final Set<Integer> sourceStateNumbers =
 				newHashSet(
 				transform(
