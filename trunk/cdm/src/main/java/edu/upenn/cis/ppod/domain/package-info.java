@@ -9,27 +9,14 @@
  *
  * Unless required by applicable law or agreed to in writing, software
  * distributed under the License is distributed on an "AS IS" BASIS,
- * WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
+ * WITHOUT WARRANTIES OR CONDITIONS of ANY KIND, either express or implied.
  * See the License for the specific language governing permissions and
  * limitations under the License.
  */
-package edu.upenn.cis.ppod.model;
 
-/**
- * The four DNA nucleotides.
- * 
- * @author Sam Donnelly
- */
-public enum DnaNucleotide  {
-	/** Adenine. */
-	A,
+@DefaultAnnotation(NonNull.class)
+package edu.upenn.cis.ppod.domain;
 
-	/** Cytosine. */
-	C,
+import edu.umd.cs.findbugs.annotations.DefaultAnnotation;
+import edu.umd.cs.findbugs.annotations.NonNull;
 
-	/** Guanine. */
-	G,
-
-	/** Thymine. */
-	T
-}

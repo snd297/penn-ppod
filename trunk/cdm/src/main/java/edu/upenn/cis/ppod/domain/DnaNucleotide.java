@@ -13,20 +13,23 @@
  * See the License for the specific language governing permissions and
  * limitations under the License.
  */
-package edu.upenn.cis.ppod.createorupdate;
-
-import com.google.inject.ImplementedBy;
-
-import edu.upenn.cis.ppod.domain.DnaNucleotide;
-import edu.upenn.cis.ppod.model.DnaCell;
-import edu.upenn.cis.ppod.model.DnaMatrix;
-import edu.upenn.cis.ppod.model.DnaRow;
+package edu.upenn.cis.ppod.domain;
 
 /**
+ * The four DNA nucleotides.
+ * 
  * @author Sam Donnelly
  */
-@ImplementedBy(CreateOrUpdateDNAMatrix.class)
-public interface ICreateOrUpdateDNAMatrix extends
-		ICreateOrUpdateMatrix<DnaMatrix, DnaRow, DnaCell, DnaNucleotide> {
+public enum DnaNucleotide  {
+	/** Adenine. */
+	A,
 
+	/** Cytosine. */
+	C,
+
+	/** Guanine. */
+	G,
+
+	/** Thymine. */
+	T
 }

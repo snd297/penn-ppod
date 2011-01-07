@@ -29,6 +29,7 @@ import org.testng.annotations.Test;
 import com.google.common.collect.ImmutableSet;
 
 import edu.upenn.cis.ppod.TestGroupDefs;
+import edu.upenn.cis.ppod.domain.DnaNucleotide;
 
 /**
  * {@link MolecularCell} testing.

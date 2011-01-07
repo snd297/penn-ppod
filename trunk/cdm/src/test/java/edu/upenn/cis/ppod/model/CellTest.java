@@ -32,6 +32,7 @@ import com.google.common.collect.ImmutableList;
 import com.google.common.collect.ImmutableSet;
 
 import edu.upenn.cis.ppod.TestGroupDefs;
+import edu.upenn.cis.ppod.domain.DnaNucleotide;
 
 @Test(groups = { TestGroupDefs.FAST })
 public class CellTest {

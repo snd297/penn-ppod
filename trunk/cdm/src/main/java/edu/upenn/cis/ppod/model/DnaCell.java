@@ -36,6 +36,7 @@ import javax.xml.bind.annotation.XmlElement;
 import org.hibernate.annotations.Immutable;
 
 import edu.umd.cs.findbugs.annotations.Nullable;
+import edu.upenn.cis.ppod.domain.DnaNucleotide;
 import edu.upenn.cis.ppod.util.IVisitor;
 
 /**
