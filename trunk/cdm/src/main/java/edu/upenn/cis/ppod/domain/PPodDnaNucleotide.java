@@ -20,7 +20,7 @@ package edu.upenn.cis.ppod.domain;
  * 
  * @author Sam Donnelly
  */
-public enum PPodDnaNucleotide  {
+public enum PPodDnaNucleotide {
 	/** Adenine. */
 	A,
 

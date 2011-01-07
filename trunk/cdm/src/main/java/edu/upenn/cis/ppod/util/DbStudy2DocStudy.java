@@ -1,4 +1,4 @@
-package edu.upenn.cis.ppod.domain;
+package edu.upenn.cis.ppod.util;
 
 import static com.google.common.collect.Iterables.getOnlyElement;
 
@@ -6,6 +6,17 @@ import java.util.EnumSet;
 import java.util.List;
 import java.util.Set;
 
+import edu.upenn.cis.ppod.domain.PPodDnaMatrix;
+import edu.upenn.cis.ppod.domain.PPodDnaNucleotide;
+import edu.upenn.cis.ppod.domain.PPodDnaRow;
+import edu.upenn.cis.ppod.domain.PPodOtu;
+import edu.upenn.cis.ppod.domain.PPodOtuSet;
+import edu.upenn.cis.ppod.domain.PPodStandardCell;
+import edu.upenn.cis.ppod.domain.PPodStandardCharacter;
+import edu.upenn.cis.ppod.domain.PPodStandardMatrix;
+import edu.upenn.cis.ppod.domain.PPodStandardRow;
+import edu.upenn.cis.ppod.domain.PPodStandardState;
+import edu.upenn.cis.ppod.domain.PPodStudy;
 import edu.upenn.cis.ppod.model.DnaCell;
 import edu.upenn.cis.ppod.model.DnaMatrix;
 import edu.upenn.cis.ppod.model.DnaRow;
@@ -18,7 +29,7 @@ import edu.upenn.cis.ppod.model.StandardRow;
 import edu.upenn.cis.ppod.model.StandardState;
 import edu.upenn.cis.ppod.model.Study;
 
-public class Study2PPodStudy {
+public class DbStudy2DocStudy {
 
 	public static PPodStudy dbStudy2DocStudy(final Study dbStudy) {
 		final PPodStudy docStudy = new PPodStudy(dbStudy.getPPodId(), dbStudy
@@ -191,12 +202,15 @@ public class Study2PPodStudy {
 	public static PPodStandardMatrix dbStandardMatrix2DocStandardMatrix(
 			final StandardMatrix dbMatrix) {
 		final PPodStandardMatrix docMatrix = new PPodStandardMatrix(
-				dbMatrix.getPPodId(), dbMatrix.getVersionInfo().getVersion());
+				dbMatrix.getPPodId(), dbMatrix.getVersionInfo().getVersion(),
+				dbMatrix.getLabel());
 
 		for (final StandardCharacter dbCharacter : dbMatrix.getCharacters()) {
 			final PPodStandardCharacter docCharacter = new PPodStandardCharacter(
+					dbCharacter.getPPodId(),
 					dbCharacter.getVersionInfo().getVersion(),
-					dbCharacter.getLabel());
+					dbCharacter.getLabel(),
+					dbCharacter.getMesquiteId());
 			docMatrix.getCharacters().add(docCharacter);
 			for (final StandardState dbState : dbCharacter.getStates()) {
 				final PPodStandardState docState = new PPodStandardState(
@@ -227,8 +241,9 @@ public class Study2PPodStudy {
 
 	public static PPodDnaMatrix dbDnaMatrix2DocDnaMatrix(
 			final DnaMatrix dbMatrix) {
-		final PPodDnaMatrix docMatrix = new PPodDnaMatrix(dbMatrix.getPPodId(),
-				dbMatrix.getVersionInfo().getVersion());
+		final PPodDnaMatrix docMatrix = new PPodDnaMatrix(
+				dbMatrix.getPPodId(),
+				dbMatrix.getVersionInfo().getVersion(), dbMatrix.getLabel());
 		for (final Otu dbOtu : dbMatrix.getParent().getOtus()) {
 			final DnaRow dbRow = dbMatrix.getRows().get(dbOtu);
 			final List<DnaCell> dbCells = dbRow.getCells();
@@ -236,14 +251,14 @@ public class Study2PPodStudy {
 			for (final DnaCell dbCell : dbCells) {
 				docSeq.append(dbCell2IupacPlus(dbCell));
 			}
-			final PPodDnaRow docRow = new PPodDnaRow(dbRow.getVersionInfo()
-					.getVersion(), docSeq.toString());
+			final PPodDnaRow docRow = new PPodDnaRow(
+					dbRow.getVersionInfo().getVersion(), docSeq.toString());
 			docMatrix.getRows().add(docRow);
 		}
 		return docMatrix;
 	}
 
-	private Study2PPodStudy() {
+	private DbStudy2DocStudy() {
 
 	}
 }

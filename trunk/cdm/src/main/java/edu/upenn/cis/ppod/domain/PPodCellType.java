@@ -24,14 +24,14 @@ public enum PPodCellType {
 	SINGLE,
 
 	/**
-	 * The cell is a conjunctions of states: <em>state1</em> and
-	 * <em>state2</em> and ... and <em>stateN</em>.
+	 * The cell is a conjunctions of states: <em>state1</em> and <em>state2</em>
+	 * and ... and <em>stateN</em>.
 	 */
 	POLYMORPHIC,
 
 	/**
-	 * The cell is a disjunction of states: <em>state1</em> or
-	 * <em>state2</em> or ... or <em>stateN</em>.
+	 * The cell is a disjunction of states: <em>state1</em> or <em>state2</em>
+	 * or ... or <em>stateN</em>.
 	 */
 	UNCERTAIN,
 

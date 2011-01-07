@@ -5,7 +5,8 @@ import static com.google.common.collect.Lists.newArrayList;
 
 import java.util.List;
 
-public class PPodOtuSet extends UuPPodDomainObject {
+public final class PPodOtuSet extends UuPPodDomainObjectWDocId
+		implements IHasPPodId {
 
 	private final String label;
 	private final List<PPodOtu> otus = newArrayList();
@@ -14,15 +15,15 @@ public class PPodOtuSet extends UuPPodDomainObject {
 	private final List<PPodDnaSequenceSet> dnaSequenceSets = newArrayList();
 	private final List<PPodTreeSet> treeSets = newArrayList();
 
-	public PPodOtuSet(final String pPodId, final Long version,
-			final String label) {
-		super(pPodId, version);
-
+	public PPodOtuSet(final String label) {
 		checkNotNull(label);
 		this.label = label;
 	}
 
-	public PPodOtuSet(final String label) {
+	public PPodOtuSet(final String pPodId, final Long version,
+			final String label) {
+		super(pPodId, version);
+
 		checkNotNull(label);
 		this.label = label;
 	}

@@ -1,22 +1,15 @@
 package edu.upenn.cis.ppod.domain;
 
-import edu.umd.cs.findbugs.annotations.CheckForNull;
-import edu.umd.cs.findbugs.annotations.Nullable;
-
-public class PPodDnaSequence {
-	@CheckForNull
-	private final Long version;
+final public class PPodDnaSequence extends PPodDomainObject {
 
 	private final String sequence;
+	private final String name;
 
-	public PPodDnaSequence(final Long version, final String sequence) {
-		this.version = version;
+	public PPodDnaSequence(final Long version, final String sequence,
+			final String name) {
+		super(version);
 		this.sequence = sequence;
-	}
-
-	public PPodDnaSequence(final String sequence) {
-		this.version = null;
-		this.sequence = sequence;
+		this.name = name;
 	}
 
 	/**
@@ -26,9 +19,8 @@ public class PPodDnaSequence {
 		return sequence;
 	}
 
-	@Nullable
-	public Long getVersion() {
-		return version;
+	public String getName() {
+		return name;
 	}
 
 }

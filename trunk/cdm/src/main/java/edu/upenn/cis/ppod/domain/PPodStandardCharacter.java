@@ -5,40 +5,38 @@ import static com.google.common.collect.Sets.newHashSet;
 
 import java.util.Set;
 
-import edu.umd.cs.findbugs.annotations.CheckForNull;
-import edu.umd.cs.findbugs.annotations.Nullable;
+public final class PPodStandardCharacter extends UuPPodDomainObject {
 
-public class PPodStandardCharacter {
-
-	@CheckForNull
-	private final Long version;
 	private final String label;
+
+	private final String mesquiteId;
 
 	private final Set<PPodStandardState> states = newHashSet();
 
-	public PPodStandardCharacter(final Long version, final String label) {
-		checkNotNull(version);
+	public PPodStandardCharacter(final String pPodId, final Long version,
+			final String label, final String mesquiteId) {
+		super(pPodId, version);
 		checkNotNull(label);
-		this.version = version;
+		checkNotNull(mesquiteId);
 		this.label = label;
+		this.mesquiteId = mesquiteId;
 	}
 
-	public PPodStandardCharacter(final String label) {
-		this.version = null;
+	public PPodStandardCharacter(final String label,
+			final String mesquiteId) {
 		this.label = label;
+		this.mesquiteId = mesquiteId;
 	}
 
 	public String getLabel() {
 		return label;
 	}
 
+	public String getMesquiteId() {
+		return mesquiteId;
+	}
+
 	public Set<PPodStandardState> getStates() {
 		return states;
 	}
-
-	@Nullable
-	public Long getVersion() {
-		return version;
-	}
-
 }

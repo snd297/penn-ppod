@@ -24,6 +24,9 @@ import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
 import edu.upenn.cis.ppod.dao.IObjectWithLongIdDAO;
+import edu.upenn.cis.ppod.domain.PPodStandardCell;
+import edu.upenn.cis.ppod.domain.PPodStandardMatrix;
+import edu.upenn.cis.ppod.domain.PPodStandardRow;
 import edu.upenn.cis.ppod.imodel.INewVersionInfo;
 import edu.upenn.cis.ppod.model.Cell;
 import edu.upenn.cis.ppod.model.Matrix;
@@ -51,7 +54,7 @@ abstract class CreateOrUpdateMatrix<M extends Matrix<R, C>, R extends Row<C, ?>,
 
 	public void createOrUpdateMatrixHelper(
 			final M dbMatrix,
-			final M sourceMatrix,
+			final PPodStandardMatrix sourceMatrix,
 			final int[] sourceToDbCharPositions) {
 
 		checkNotNull(dbMatrix);
@@ -66,16 +69,16 @@ abstract class CreateOrUpdateMatrix<M extends Matrix<R, C>, R extends Row<C, ?>,
 		}
 
 		dbMatrix.setLabel(sourceMatrix.getLabel());
-		dbMatrix.setDescription(sourceMatrix.getDescription());
+		// dbMatrix.setDescription(sourceMatrix.getDescription());
 
 		// So that makePersistenct(dbRow) below has a persistent parent.
 		dao.makePersistent(dbMatrix);
 
 		int sourceOTUPos = -1;
 
-		for (final Otu sourceOTU : sourceMatrix.getParent().getOtus()) {
+		for (final PPodStandardRow sourceRow : sourceMatrix.getRows()) {
+
 			sourceOTUPos++;
-			final R sourceRow = sourceMatrix.getRows().get(sourceOTU);
 
 			final Otu dbOTU =
 					dbMatrix.getParent()
@@ -110,7 +113,7 @@ abstract class CreateOrUpdateMatrix<M extends Matrix<R, C>, R extends Row<C, ?>,
 			for (final C dbCell : dbRow.getCells()) {
 				dbCellPosition++;
 
-				final C sourceCell = sourceRow
+				final PPodStandardCell sourceCell = sourceRow
 						.getCells()
 						.get(dbCellPosition);
 
@@ -165,11 +168,11 @@ abstract class CreateOrUpdateMatrix<M extends Matrix<R, C>, R extends Row<C, ?>,
 	protected abstract R newR(VersionInfo newVersionInfo);
 
 	protected abstract void handlePolymorphicCell(final C targetCell,
-			final C sourceCell);
+			final PPodStandardCell sourceCell);
 
 	protected abstract void handleSingleCell(final C targetCell,
-			final C sourceCell);
+			final PPodStandardCell sourceCell);
 
 	protected abstract void handleUncertainCell(final C targetCell,
-			final C sourceCell);
+			final PPodStandardCell sourceCell);
 }

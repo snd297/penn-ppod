@@ -21,12 +21,15 @@ import static com.google.common.base.Predicates.equalTo;
 import static com.google.common.collect.Iterables.find;
 import static com.google.common.collect.Lists.newArrayList;
 
-import java.util.Iterator;
 import java.util.List;
 
 import com.google.inject.Inject;
 
-import edu.upenn.cis.ppod.imodel.IHasPPodId;
+import edu.upenn.cis.ppod.domain.IHasPPodId;
+import edu.upenn.cis.ppod.domain.PPodOtu;
+import edu.upenn.cis.ppod.domain.PPodOtuSet;
+import edu.upenn.cis.ppod.domain.PPodTree;
+import edu.upenn.cis.ppod.domain.PPodTreeSet;
 import edu.upenn.cis.ppod.imodel.INewVersionInfo;
 import edu.upenn.cis.ppod.model.ModelFactory;
 import edu.upenn.cis.ppod.model.Otu;
@@ -49,7 +52,8 @@ class MergeTreeSets implements IMergeTreeSets {
 
 	public void mergeTreeSets(
 			final TreeSet targetTreeSet,
-			final TreeSet sourceTreeSet) {
+			final PPodTreeSet sourceTreeSet,
+			final PPodOtuSet sourceOtuSet) {
 		checkNotNull(targetTreeSet);
 		checkNotNull(sourceTreeSet);
 
@@ -60,10 +64,10 @@ class MergeTreeSets implements IMergeTreeSets {
 
 		final List<Tree> newTargetTrees = newArrayList();
 
-		for (final Tree sourceTree : sourceTreeSet.getTrees()) {
+		for (final PPodTree sourceTree : sourceTreeSet.getTrees()) {
 			Tree targetTree;
 			if (null == (targetTree =
-							find(targetTreeSet.getTrees(), compose(
+					find(targetTreeSet.getTrees(), compose(
 									equalTo(sourceTree.getPPodId()),
 									IHasPPodId.getPPodId),
 									null))) {
@@ -74,21 +78,18 @@ class MergeTreeSets implements IMergeTreeSets {
 
 			String targetNewick = sourceTree.getNewick();
 
-			if (sourceTreeSet
-					.getParent()
-					.getOtus()
-					.size() != targetTreeSet
+			if (sourceOtuSet.getOtus().size() != targetTreeSet
 					.getParent()
 					.getOtus()
 					.size()) {
 				throw new IllegalArgumentException(
 						"sourceTreeSet.getOTUSet().getOTUsSize() should be the same as targetTreeSet.getOTUSet().getOTUsSize()");
 			}
-			for (final Iterator<Otu> sourceOTUItr = sourceTreeSet.getParent()
-					.getOtus().iterator(), targetOTUItr = targetTreeSet
-					.getParent().getOtus().iterator(); sourceOTUItr.hasNext();) {
-				final Otu sourceOTU = sourceOTUItr.next();
-				final Otu targetOTU = targetOTUItr.next();
+
+			for (int i = 0, sourceOtuSetSize = sourceOtuSet.getOtus().size(); i < sourceOtuSetSize; i++) {
+				final PPodOtu sourceOTU = sourceOtuSet.getOtus().get(i);
+				final Otu targetOTU = targetTreeSet.getParent().getOtus()
+						.get(i);
 				targetNewick = targetNewick.replace(
 						sourceOTU.getDocId(),
 						targetOTU.getPPodId());

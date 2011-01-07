@@ -1,21 +1,29 @@
 package edu.upenn.cis.ppod.domain;
 
+import static com.google.common.base.Preconditions.checkNotNull;
 import static com.google.common.collect.Lists.newArrayList;
 
 import java.util.List;
 
-public class PPodDnaMatrix extends UuPPodDomainObject {
+final public class PPodDnaMatrix extends UuPPodDomainObject {
 
+	private final String label;
 	private final List<PPodDnaRow> rows = newArrayList();
 
-	public PPodDnaMatrix() {}
-
-	public PPodDnaMatrix(final String pPodId, final Long version) {
-		super(pPodId, version);
+	public String getLabel() {
+		return label;
 	}
 
 	public List<PPodDnaRow> getRows() {
 		return rows;
+	}
+
+	public PPodDnaMatrix(final String pPodId, final Long version,
+			final String label) {
+		super(pPodId, version);
+		checkNotNull(label);
+		this.label = label;
+
 	}
 
 }

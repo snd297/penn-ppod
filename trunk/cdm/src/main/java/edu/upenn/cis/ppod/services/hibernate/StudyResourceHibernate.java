@@ -26,7 +26,6 @@ import com.google.inject.Inject;
 import edu.upenn.cis.ppod.createorupdate.ICreateOrUpdateStudy;
 import edu.upenn.cis.ppod.dao.IStudyDAO;
 import edu.upenn.cis.ppod.domain.PPodStudy;
-import edu.upenn.cis.ppod.domain.Study2PPodStudy;
 import edu.upenn.cis.ppod.imodel.INewVersionInfo;
 import edu.upenn.cis.ppod.model.Study;
 import edu.upenn.cis.ppod.services.IStudyResource;
@@ -36,6 +35,7 @@ import edu.upenn.cis.ppod.services.ppodentity.StudyInfo;
 import edu.upenn.cis.ppod.util.IVisitor;
 import edu.upenn.cis.ppod.util.Pair;
 import edu.upenn.cis.ppod.util.SetVersionInfoVisitor;
+import edu.upenn.cis.ppod.util.DbStudy2DocStudy;
 
 /**
  * We commit the transactions in this class so that the resteasy response will
@@ -89,7 +89,7 @@ public final class StudyResourceHibernate implements IStudyResource {
 
 	public PPodStudy getStudyByPPodId(final String pPodId) {
 		final Study dbStudy = studyDAO.getStudyByPPodId(pPodId);
-		final PPodStudy docStudy = Study2PPodStudy.dbStudy2DocStudy(dbStudy);
+		final PPodStudy docStudy = DbStudy2DocStudy.dbStudy2DocStudy(dbStudy);
 		return docStudy;
 	}
 

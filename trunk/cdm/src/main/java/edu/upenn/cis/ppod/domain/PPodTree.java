@@ -1,22 +1,18 @@
 package edu.upenn.cis.ppod.domain;
 
-import edu.umd.cs.findbugs.annotations.CheckForNull;
-import edu.umd.cs.findbugs.annotations.Nullable;
+public final class PPodTree extends UuPPodDomainObject {
 
-public class PPodTree {
-	@CheckForNull
-	private final Long version;
 	private final String label;
 	private final String newick;
 
-	public PPodTree(final String label, final String newick) {
-		this.version = null;
+	public PPodTree(final String pPodId, final Long version,
+			final String label, final String newick) {
+		super(pPodId, version);
 		this.label = label;
 		this.newick = newick;
 	}
 
-	public PPodTree(final Long version, final String label, final String newick) {
-		this.version = version;
+	public PPodTree(final String label, final String newick) {
 		this.label = label;
 		this.newick = newick;
 	}
@@ -29,8 +25,4 @@ public class PPodTree {
 		return newick;
 	}
 
-	@Nullable
-	public Long getVersion() {
-		return version;
-	}
 }
