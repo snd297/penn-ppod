@@ -36,6 +36,7 @@ import com.google.common.annotations.VisibleForTesting;
 
 import edu.umd.cs.findbugs.annotations.CheckForNull;
 import edu.umd.cs.findbugs.annotations.Nullable;
+import edu.upenn.cis.ppod.domain.CellType;
 import edu.upenn.cis.ppod.imodel.IChild;
 
 /**
@@ -51,46 +52,6 @@ public abstract class Cell<E, R extends Row<?, ?>>
 		extends PPodEntity
 		implements IChild<R> {
 
-	/**
-	 * The different types of {@code Cell}: single, polymorphic, uncertain,
-	 * unassigned, or inapplicable.
-	 * <p>
-	 * Because we're storing these in the db as ordinals they will be:
-	 * <ul>
-	 * <li>{@code UNASSIGNED -> 0}</li>
-	 * <li>{@code SINGLE -> 1}</li>
-	 * <li>{@code POLYMORPHIC -> 2}</li>
-	 * <li>{@code UNCERTAIN -> 3}</li>
-	 * <li>{@code INAPPLICABLE -> 4}</li>
-	 * </ul>
-	 */
-	public static enum Type {
-
-		/** Unassigned, usually written as a {@code "?"} in Nexus files. */
-		UNASSIGNED,
-
-		/**
-		 * The cell has exactly one state.
-		 */
-		SINGLE,
-
-		/**
-		 * The cell is a conjunctions of states: <em>state1</em> and
-		 * <em>state2</em> and ... and <em>stateN</em>.
-		 */
-		POLYMORPHIC,
-
-		/**
-		 * The cell is a disjunction of states: <em>state1</em> or
-		 * <em>state2</em> or ... or <em>stateN</em>.
-		 */
-		UNCERTAIN,
-
-		/** Inapplicable, usually written as a {@code "-"} in Nexus files. */
-		INAPPLICABLE;
-
-	}
-
 	static final String TYPE_COLUMN = "TYPE";
 
 	@Column(name = "POSITION", nullable = false)
@@ -100,7 +61,7 @@ public abstract class Cell<E, R extends Row<?, ?>>
 	@Column(name = TYPE_COLUMN, nullable = false)
 	@Enumerated(EnumType.ORDINAL)
 	@Nullable
-	private Type type;
+	private CellType type;
 
 	Cell() {}
 
@@ -241,7 +202,7 @@ public abstract class Cell<E, R extends Row<?, ?>>
 	 */
 	@XmlAttribute
 	@Nullable
-	public Type getType() {
+	public CellType getType() {
 		return type;
 	}
 
@@ -270,14 +231,14 @@ public abstract class Cell<E, R extends Row<?, ?>>
 	 * empty set.
 	 */
 	public void setInapplicable() {
-		setInapplicableOrUnassigned(Type.INAPPLICABLE);
+		setInapplicableOrUnassigned(CellType.INAPPLICABLE);
 	}
 
-	void setInapplicableOrUnassigned(final Type type) {
+	void setInapplicableOrUnassigned(final CellType type) {
 		checkNotNull(type);
 		checkArgument(
-				type == Type.INAPPLICABLE
-						|| type == Type.UNASSIGNED,
+				type == CellType.INAPPLICABLE
+						|| type == CellType.UNASSIGNED,
 				"type was " + type + " but must be INAPPLICABLE or UNASSIGNED");
 
 		if (type == getType()) {
@@ -321,14 +282,14 @@ public abstract class Cell<E, R extends Row<?, ?>>
 	 * @return this
 	 */
 	void setPolymorphicOrUncertain(
-			final Type type,
+			final CellType type,
 			final Set<? extends E> elements) {
 		checkNotNull(type);
 		checkNotNull(elements);
 
 		checkArgument(
-				type == Type.POLYMORPHIC
-						|| type == Type.UNCERTAIN,
+				type == CellType.POLYMORPHIC
+						|| type == CellType.UNCERTAIN,
 				" type is " + type + " but must be POLYMORPHIC OR UNCERTAIN");
 
 		checkArgument(
@@ -388,7 +349,7 @@ public abstract class Cell<E, R extends Row<?, ?>>
 	 * @param type the new type
 	 */
 	@VisibleForTesting
-	void setType(final Type type) {
+	void setType(final CellType type) {
 		checkNotNull(type);
 		this.type = type;
 		return;
@@ -399,7 +360,7 @@ public abstract class Cell<E, R extends Row<?, ?>>
 	 * empty set.
 	 */
 	public void setUnassigned() {
-		setInapplicableOrUnassigned(Type.UNASSIGNED);
+		setInapplicableOrUnassigned(CellType.UNASSIGNED);
 	}
 
 	/**
@@ -414,7 +375,7 @@ public abstract class Cell<E, R extends Row<?, ?>>
 				elements.size() > 1,
 				"uncertain elements must be > 1");
 		setPolymorphicOrUncertain(
-				Type.UNCERTAIN,
+				CellType.UNCERTAIN,
 				elements);
 	}
 }

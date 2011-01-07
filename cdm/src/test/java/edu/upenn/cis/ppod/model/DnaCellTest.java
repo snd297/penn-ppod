@@ -27,8 +27,8 @@ import org.testng.annotations.Test;
 import com.google.common.collect.ImmutableSet;
 
 import edu.upenn.cis.ppod.TestGroupDefs;
+import edu.upenn.cis.ppod.domain.CellType;
 import edu.upenn.cis.ppod.domain.DnaNucleotide;
-import edu.upenn.cis.ppod.model.Cell.Type;
 
 /**
  * Test {@link DNACell}.
@@ -52,7 +52,7 @@ public class DnaCellTest {
 		dnaCell.unsetInNeedOfNewVersion();
 
 		dnaCell.setInapplicable();
-		assertEquals(dnaCell.getType(), Type.INAPPLICABLE);
+		assertEquals(dnaCell.getType(), CellType.INAPPLICABLE);
 		assertEquals(dnaCell.getElements().size(), 0);
 		assertTrue(dnaCell.isInNeedOfNewVersion());
 	}
@@ -62,7 +62,7 @@ public class DnaCellTest {
 		final DnaCell dnaCell = new DnaCell();
 		dnaCell.unsetInNeedOfNewVersion();
 		dnaCell.setSingleElement(DnaNucleotide.A, false);
-		assertEquals(dnaCell.getType(), Type.SINGLE);
+		assertEquals(dnaCell.getType(), CellType.SINGLE);
 		assertEquals(getOnlyElement(dnaCell.getElements()),
 				DnaNucleotide.A);
 		assertTrue(dnaCell.isInNeedOfNewVersion());
@@ -78,7 +78,7 @@ public class DnaCellTest {
 
 		assertEquals(
 				dnaCell.getType(),
-				Type.SINGLE);
+				CellType.SINGLE);
 		assertEquals(
 				getOnlyElement(
 						dnaCell.getElements()),
@@ -93,20 +93,20 @@ public class DnaCellTest {
 		cell.unsetInNeedOfNewVersion();
 
 		cell.setPolymorphicOrUncertain(
-						Cell.Type.POLYMORPHIC,
+						CellType.POLYMORPHIC,
 						nucleotides);
 
 		assertTrue(cell.isInNeedOfNewVersion());
-		assertEquals(cell.getType(), Cell.Type.POLYMORPHIC);
+		assertEquals(cell.getType(), CellType.POLYMORPHIC);
 		assertEquals(cell.getElements(),
 					nucleotides);
 
 		cell.unsetInNeedOfNewVersion();
 
-		cell.setPolymorphicOrUncertain(Cell.Type.POLYMORPHIC, nucleotides);
+		cell.setPolymorphicOrUncertain(CellType.POLYMORPHIC, nucleotides);
 
 		assertFalse(cell.isInNeedOfNewVersion());
-		assertEquals(cell.getType(), Cell.Type.POLYMORPHIC);
+		assertEquals(cell.getType(), CellType.POLYMORPHIC);
 		assertEquals((Object) cell.getElements(),
 				(Object) nucleotides);
 

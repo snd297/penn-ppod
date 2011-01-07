@@ -33,6 +33,7 @@ import org.testng.annotations.BeforeMethod;
 import org.testng.annotations.Test;
 
 import edu.upenn.cis.ppod.TestGroupDefs;
+import edu.upenn.cis.ppod.domain.CellType;
 
 /**
  * Test {@link CharacterStateCell}.
@@ -171,7 +172,7 @@ public class StandardCellTest {
 						Arrays.asList(cell));
 		cell.setSingleWithStateNo(state00.getStateNumber());
 		cell.setInapplicable();
-		assertEquals(cell.getType(), Cell.Type.INAPPLICABLE);
+		assertEquals(cell.getType(), CellType.INAPPLICABLE);
 
 		// Make sure it's empty
 		assertEquals(cell.getElements().size(), 0);
@@ -191,7 +192,7 @@ public class StandardCellTest {
 				newHashSet(
 						transform(states, StandardState.getStateNumber)));
 		cell.setInapplicable();
-		assertEquals(cell.getType(), Cell.Type.INAPPLICABLE);
+		assertEquals(cell.getType(), CellType.INAPPLICABLE);
 		assertTrue(isEmpty(cell.getElements()));
 	}
 
@@ -204,7 +205,7 @@ public class StandardCellTest {
 		cell.setPolymorphicWithStateNos(
 				newHashSet(
 						transform(states, StandardState.getStateNumber)));
-		assertEquals(cell.getType(), Cell.Type.POLYMORPHIC);
+		assertEquals(cell.getType(), CellType.POLYMORPHIC);
 		assertEquals((Object) cell.getElements(), (Object) states);
 	}
 
@@ -219,13 +220,13 @@ public class StandardCellTest {
 		cell.unsetInNeedOfNewVersion();
 		cell.setSingleWithStateNo(state00.getStateNumber());
 		assertTrue(cell.isInNeedOfNewVersion());
-		assertEquals(cell.getType(), Cell.Type.SINGLE);
+		assertEquals(cell.getType(), CellType.SINGLE);
 		assertEquals(cell.getElements(), states);
 
 		cell.unsetInNeedOfNewVersion();
 		cell.setSingleWithStateNo(state00.getStateNumber());
 		assertFalse(cell.isInNeedOfNewVersion());
-		assertEquals(cell.getType(), Cell.Type.SINGLE);
+		assertEquals(cell.getType(), CellType.SINGLE);
 		assertEquals(cell.getElements(), states);
 	}
 
@@ -245,7 +246,7 @@ public class StandardCellTest {
 		states.add(state00);
 		states.add(state01);
 		cell.setUncertainElements(states);
-		assertEquals(cell.getType(), Cell.Type.UNCERTAIN);
+		assertEquals(cell.getType(), CellType.UNCERTAIN);
 		assertEquals((Object) cell.getElements(), (Object) newHashSet(states));
 	}
 
