@@ -17,6 +17,7 @@ package edu.upenn.cis.ppod.createorupdate;
 
 import com.google.inject.ImplementedBy;
 
+import edu.upenn.cis.ppod.domain.PPodDnaSequenceSet;
 import edu.upenn.cis.ppod.model.DnaSequenceSet;
 
 /**
@@ -28,6 +29,6 @@ import edu.upenn.cis.ppod.model.DnaSequenceSet;
 public interface IMergeDNASequenceSets {
 
 	void mergeSequenceSets(final DnaSequenceSet targetSequenceSet,
-			final DnaSequenceSet sourceSequenceSet);
+			final PPodDnaSequenceSet sourceSequenceSet);
 
 }

@@ -23,6 +23,8 @@ import java.util.Map;
 import com.google.common.collect.ImmutableMap;
 import com.google.inject.Inject;
 
+import edu.upenn.cis.ppod.domain.PPodDnaSequence;
+import edu.upenn.cis.ppod.domain.PPodDnaSequenceSet;
 import edu.upenn.cis.ppod.imodel.INewVersionInfo;
 import edu.upenn.cis.ppod.model.DnaSequence;
 import edu.upenn.cis.ppod.model.DnaSequenceSet;
@@ -40,25 +42,25 @@ class MergeDnaSequenceSets implements IMergeDNASequenceSets {
 
 	public void mergeSequenceSets(
 			final DnaSequenceSet targSeqSet,
-			final DnaSequenceSet srcSeqSet) {
+			final PPodDnaSequenceSet srcSeqSet) {
 		checkNotNull(targSeqSet);
 		checkArgument(
 				targSeqSet.getParent() != null,
 				"targSeqSet does not belong to an OTUSet");
 
 		checkNotNull(srcSeqSet);
-		checkArgument(
-				srcSeqSet.getParent() != null,
-				"srcSeqSet does not belong to an OTUSet");
 
 		targSeqSet.setLabel(srcSeqSet.getLabel());
 
 		final Integer targSeqSetLengths =
 				targSeqSet.getSequenceLengths();
 
-		final Integer srcSeqSetLengths =
-				srcSeqSet.getSequenceLengths();
-
+		Integer srcSeqSetLengths;
+		if (srcSeqSet.getSequences().size() == 0) {
+			srcSeqSetLengths = -1;
+		} else {
+			srcSeqSet.getSequences().get(0).getSequence().length();
+		}
 		Map<Otu, DnaSequence> targOTUsToSeqs;
 
 		if (targSeqSetLengths == null ||
@@ -78,13 +80,9 @@ class MergeDnaSequenceSets implements IMergeDNASequenceSets {
 			targSeqSet.clearSequences();
 		}
 
-		for (int i = 0; i < srcSeqSet.getParent().getOtus().size(); i++) {
-			final Otu sourceOTU =
-					srcSeqSet.getParent()
-							.getOtus()
-							.get(i);
+		for (int i = 0; i < srcSeqSet.getSequences().size(); i++) {
 
-			final DnaSequence srcSeq = srcSeqSet.getSequence(sourceOTU);
+			final PPodDnaSequence srcSeq = srcSeqSet.getSequences().get(i);
 			final Otu targOTU = targSeqSet.getParent()
 							.getOtus()
 							.get(i);

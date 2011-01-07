@@ -17,6 +17,7 @@ package edu.upenn.cis.ppod.createorupdate;
 
 import com.google.inject.ImplementedBy;
 
+import edu.upenn.cis.ppod.domain.PPodStandardMatrix;
 import edu.upenn.cis.ppod.model.StandardCell;
 import edu.upenn.cis.ppod.model.StandardMatrix;
 import edu.upenn.cis.ppod.model.StandardRow;
@@ -56,5 +57,5 @@ public interface ICreateOrUpdateStandardMatrix
 	 */
 	void createOrUpdateMatrix(
 			StandardMatrix dbMatrix,
-			StandardMatrix sourceMatrix);
+			PPodStandardMatrix sourceMatrix);
 }

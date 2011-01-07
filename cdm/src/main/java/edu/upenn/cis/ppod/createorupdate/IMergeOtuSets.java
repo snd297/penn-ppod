@@ -17,6 +17,7 @@ package edu.upenn.cis.ppod.createorupdate;
 
 import com.google.inject.ImplementedBy;
 
+import edu.upenn.cis.ppod.domain.PPodOtuSet;
 import edu.upenn.cis.ppod.model.OtuSet;
 
 /**
@@ -25,6 +26,6 @@ import edu.upenn.cis.ppod.model.OtuSet;
 @ImplementedBy(MergeOtuSets.class)
 public interface IMergeOtuSets {
 
-	void mergeOTUSets(OtuSet targetOTUSet, OtuSet sourceOTUSet);
+	void mergeOTUSets(OtuSet targetOTUSet, PPodOtuSet sourceOTUSet);
 
 }

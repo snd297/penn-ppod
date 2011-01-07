@@ -43,10 +43,10 @@ import javax.xml.bind.annotation.XmlElement;
 
 import edu.umd.cs.findbugs.annotations.CheckForNull;
 import edu.umd.cs.findbugs.annotations.Nullable;
+import edu.upenn.cis.ppod.domain.IHasPPodId;
 import edu.upenn.cis.ppod.imodel.IDependsOnParentOtus;
 import edu.upenn.cis.ppod.imodel.IHasColumnVersionInfos;
 import edu.upenn.cis.ppod.imodel.IHasDocId;
-import edu.upenn.cis.ppod.imodel.IHasPPodId;
 import edu.upenn.cis.ppod.imodel.IOtuKeyedMap;
 import edu.upenn.cis.ppod.util.IVisitor;
 

@@ -34,8 +34,12 @@ import org.slf4j.LoggerFactory;
 import com.google.inject.Inject;
 
 import edu.upenn.cis.ppod.dao.IObjectWithLongIdDAO;
+import edu.upenn.cis.ppod.domain.IHasPPodId;
 import edu.upenn.cis.ppod.domain.PPodCellType;
-import edu.upenn.cis.ppod.imodel.IHasPPodId;
+import edu.upenn.cis.ppod.domain.PPodStandardCell;
+import edu.upenn.cis.ppod.domain.PPodStandardCharacter;
+import edu.upenn.cis.ppod.domain.PPodStandardMatrix;
+import edu.upenn.cis.ppod.domain.PPodStandardState;
 import edu.upenn.cis.ppod.imodel.INewVersionInfo;
 import edu.upenn.cis.ppod.model.ModelFactory;
 import edu.upenn.cis.ppod.model.StandardCell;
@@ -68,18 +72,18 @@ final class CreateOrUpdateStandardMatrix
 
 	public void createOrUpdateMatrix(
 			final StandardMatrix dbMatrix,
-			final StandardMatrix sourceMatrix) {
+			final PPodStandardMatrix sourceMatrix) {
 		final String METHOD = "createOrUpdate(...)";
 		logger.debug("{}: entering", METHOD);
 		checkNotNull(dbMatrix);
 		checkNotNull(sourceMatrix);
 
 		final int[] sourceToDbCharPositions =
-				new int[sourceMatrix.getColumnsSize()];
+				new int[sourceMatrix.getCharacters().size()];
 
 		final List<StandardCharacter> newDbMatrixCharacters = newArrayList();
 		int sourceCharacterPosition = -1;
-		for (final StandardCharacter sourceCharacter : sourceMatrix
+		for (final PPodStandardCharacter sourceCharacter : sourceMatrix
 				.getCharacters()) {
 			sourceCharacterPosition++;
 			StandardCharacter newDbCharacter;
@@ -107,7 +111,8 @@ final class CreateOrUpdateStandardMatrix
 			newDbCharacter.setLabel(sourceCharacter.getLabel());
 			newDbCharacter.setMesquiteId(sourceCharacter.getMesquiteId());
 
-			for (final StandardState sourceState : sourceCharacter.getStates()) {
+			for (final PPodStandardState sourceState : sourceCharacter
+					.getStates()) {
 				StandardState dbState;
 				if (null == (dbState =
 						newDbCharacter.getState(sourceState.getStateNumber()))) {
@@ -130,23 +135,17 @@ final class CreateOrUpdateStandardMatrix
 	@Override
 	protected void handlePolymorphicCell(
 			final StandardCell targetCell,
-			final StandardCell sourceCell) {
+			final PPodStandardCell sourceCell) {
 		checkArgument(sourceCell.getType() == PPodCellType.POLYMORPHIC);
-		final Set<Integer> sourceStateNumbers =
-				newHashSet(
-				transform(
-						sourceCell.getElements(),
-						StandardState.getStateNumber));
+		final Set<Integer> sourceStateNumbers = sourceCell.getStates();
 		targetCell.setPolymorphicWithStateNos(sourceStateNumbers);
 	}
 
 	@Override
 	protected void handleSingleCell(final StandardCell targetCell,
-			final StandardCell sourceCell) {
+			final PPodStandardCell sourceCell) {
 		checkArgument(sourceCell.getType() == PPodCellType.SINGLE);
-		final StandardState sourceState =
-				getOnlyElement(sourceCell.getElements());
-		targetCell.setSingleWithStateNo(sourceState.getStateNumber());
+		targetCell.setSingleWithStateNo(getOnlyElement(sourceCell.getStates()));
 	}
 
 	@Override

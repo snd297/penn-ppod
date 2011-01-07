@@ -1,13 +1,13 @@
 package edu.upenn.cis.ppod.domain;
 
-public class PPodStandardState {
+public final class PPodStandardState {
 
-	private int stateNo;
+	private int stateNumber;
 
 	private String label;
 
-	public PPodStandardState(final int stateNo, final String label) {
-		this.stateNo = stateNo;
+	public PPodStandardState(final int stateNumber, final String label) {
+		this.stateNumber = stateNumber;
 		this.label = label;
 	}
 
@@ -21,8 +21,8 @@ public class PPodStandardState {
 	/**
 	 * @return the stateNo
 	 */
-	public int getStateNo() {
-		return stateNo;
+	public int getStateNumber() {
+		return stateNumber;
 	}
 
 	/**
@@ -34,7 +34,7 @@ public class PPodStandardState {
 	}
 
 	@SuppressWarnings("unused")
-	private void setStateNo(final int stateNo) {
-		this.stateNo = stateNo;
+	private void setStateNumber(final int stateNumber) {
+		this.stateNumber = stateNumber;
 	}
 }

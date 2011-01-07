@@ -17,6 +17,9 @@ package edu.upenn.cis.ppod.createorupdate;
 
 import com.google.inject.ImplementedBy;
 
+import edu.upenn.cis.ppod.domain.PPodStudy;
+import edu.upenn.cis.ppod.model.Study;
+
 /**
  * If study is new, make it persistent. If it was already persisted, update it.
  * 
@@ -34,7 +37,6 @@ public interface ICreateOrUpdateStudy {
 	 * @return a new {@code Study} with {@code incomingStudy}'s state, in a
 	 *         persistent state
 	 */
-	edu.upenn.cis.ppod.model.Study createOrUpdateStudy(
-			edu.upenn.cis.ppod.domain.PPodStudy incomingStudy);
+	Study createOrUpdateStudy(PPodStudy incomingStudy);
 
 }

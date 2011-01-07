@@ -28,7 +28,13 @@ import edu.upenn.cis.ppod.dao.IAttachmentNamespaceDAO;
 import edu.upenn.cis.ppod.dao.IAttachmentTypeDAO;
 import edu.upenn.cis.ppod.dao.IObjectWithLongIdDAO;
 import edu.upenn.cis.ppod.dao.IStudyDAO;
-import edu.upenn.cis.ppod.imodel.IHasPPodId;
+import edu.upenn.cis.ppod.domain.IHasPPodId;
+import edu.upenn.cis.ppod.domain.PPodDnaMatrix;
+import edu.upenn.cis.ppod.domain.PPodDnaSequenceSet;
+import edu.upenn.cis.ppod.domain.PPodOtuSet;
+import edu.upenn.cis.ppod.domain.PPodStandardMatrix;
+import edu.upenn.cis.ppod.domain.PPodStudy;
+import edu.upenn.cis.ppod.domain.PPodTreeSet;
 import edu.upenn.cis.ppod.imodel.INewVersionInfo;
 import edu.upenn.cis.ppod.model.DnaMatrix;
 import edu.upenn.cis.ppod.model.DnaSequenceSet;
@@ -77,74 +83,73 @@ class CreateOrUpdateStudy implements ICreateOrUpdateStudy {
 	}
 
 	public Study createOrUpdateStudy(
-			final edu.upenn.cis.ppod.domain.PPodStudy incomingStudy) {
-		return null;
-		// Study dbStudy = null;
-		// boolean makeStudyPersistent = false;
-		// if (null == (dbStudy =
-		// studyDAO.getStudyByPPodId(
-		// incomingStudy.getPPodId()))) {
-		// dbStudy = ModelFactory.newStudy(newVersionInfo.getNewVersionInfo());
-		// makeStudyPersistent = true;
-		// }
-		//
-		// dbStudy.setLabel(incomingStudy.getLabel());
-		//
-		// if (makeStudyPersistent) {
-		// studyDAO.makePersistent(dbStudy);
-		// }
-		//
-		// // Delete otu sets in persisted study that are not in the incoming
-		// // study.
-		// final Set<OtuSet> toBeRemoveds = newHashSet();
-		// for (final OtuSet dbOTUSet : dbStudy.getOTUSets()) {
-		// if (null == find(
-		// incomingStudy.getOTUSets(),
-		// compose(
-		// equalTo(
-		// dbOTUSet.getPPodId()),
-		// IHasPPodId.getPPodId),
-		// null)) {
-		// toBeRemoveds.add(dbOTUSet);
-		// }
-		// }
-		// for (final OtuSet toBeRemoved : toBeRemoveds) {
-		// dbStudy.removeOTUSet(toBeRemoved);
-		// }
-		//
-		// // Save or update incoming otu sets
-		// int incomingOTUSetPos = -1;
-		// for (final OtuSet incomingOTUSet : incomingStudy.getOTUSets()) {
-		// incomingOTUSetPos++;
-		// OtuSet dbOTUSet;
-		// if (null == (dbOTUSet =
-		// find(dbStudy.getOTUSets(),
-		// compose(
-		// equalTo(
-		// incomingOTUSet.getPPodId()),
-		// IHasPPodId.getPPodId),
-		// null))) {
-		// dbOTUSet = ModelFactory.newOTUSet(newVersionInfo
-		// .getNewVersionInfo());
-		// dbOTUSet.setLabel(incomingOTUSet.getLabel()); // non-null, do it
-		// // now
-		// dbStudy.addOtuSet(incomingOTUSetPos, dbOTUSet);
-		// dao.makePersistent(dbOTUSet);
-		// }
-		//
-		// mergeOTUSets.mergeOTUSets(dbOTUSet, incomingOTUSet);
-		//
-		// handleDNAMatrices(dbOTUSet, incomingOTUSet);
-		// handleStandardMatrices(dbOTUSet, incomingOTUSet);
-		// handleDNASequenceSets(dbOTUSet, incomingOTUSet);
-		// handleTreeSets(dbOTUSet, incomingOTUSet);
-		// }
-		// return dbStudy;
+			final PPodStudy incomingStudy) {
+		Study dbStudy = null;
+		boolean makeStudyPersistent = false;
+		if (null == (dbStudy =
+				studyDAO.getStudyByPPodId(
+						incomingStudy.getPPodId()))) {
+			dbStudy = ModelFactory.newStudy(newVersionInfo.getNewVersionInfo());
+			makeStudyPersistent = true;
+		}
+
+		dbStudy.setLabel(incomingStudy.getLabel());
+
+		if (makeStudyPersistent) {
+			studyDAO.makePersistent(dbStudy);
+		}
+
+		// Delete otu sets in persisted study that are not in the incoming
+		// study.
+		final Set<OtuSet> toBeRemoveds = newHashSet();
+		for (final OtuSet dbOTUSet : dbStudy.getOtuSets()) {
+			if (null == find(
+					incomingStudy.getOtuSets(),
+					compose(
+							equalTo(
+							dbOTUSet.getPPodId()),
+							IHasPPodId.getPPodId),
+					null)) {
+				toBeRemoveds.add(dbOTUSet);
+			}
+		}
+		for (final OtuSet toBeRemoved : toBeRemoveds) {
+			dbStudy.removeOTUSet(toBeRemoved);
+		}
+
+		// Save or update incoming otu sets
+		int incomingOTUSetPos = -1;
+		for (final PPodOtuSet incomingOTUSet : incomingStudy.getOtuSets()) {
+			incomingOTUSetPos++;
+			OtuSet dbOTUSet;
+			if (null == (dbOTUSet =
+					find(dbStudy.getOtuSets(),
+							compose(
+									equalTo(
+									incomingOTUSet.getPPodId()),
+									IHasPPodId.getPPodId),
+							null))) {
+				dbOTUSet = ModelFactory.newOTUSet(newVersionInfo
+						.getNewVersionInfo());
+				dbOTUSet.setLabel(incomingOTUSet.getLabel()); // non-null, do it
+				// now
+				dbStudy.addOtuSet(incomingOTUSetPos, dbOTUSet);
+				dao.makePersistent(dbOTUSet);
+			}
+
+			mergeOTUSets.mergeOTUSets(dbOTUSet, incomingOTUSet);
+
+			handleDNAMatrices(dbOTUSet, incomingOTUSet);
+			handleStandardMatrices(dbOTUSet, incomingOTUSet);
+			handleDNASequenceSets(dbOTUSet, incomingOTUSet);
+			handleTreeSets(dbOTUSet, incomingOTUSet);
+		}
+		return dbStudy;
 	}
 
 	private void handleDNAMatrices(
 			final OtuSet dbOTUSet,
-			final OtuSet incomingOTUSet) {
+			final PPodOtuSet incomingOTUSet) {
 
 		// Let's delete matrices missing from the incoming OTU set
 		final Set<DnaMatrix> toBeRemoveds = newHashSet();
@@ -163,7 +168,7 @@ class CreateOrUpdateStudy implements ICreateOrUpdateStudy {
 			dbOTUSet.removeDnaMatrix(toBeRemoved);
 		}
 		int incomingMatrixPos = -1;
-		for (final DnaMatrix incomingMatrix : incomingOTUSet
+		for (final PPodDnaMatrix incomingMatrix : incomingOTUSet
 				.getDnaMatrices()) {
 			incomingMatrixPos++;
 			DnaMatrix dbMatrix;
@@ -192,7 +197,7 @@ class CreateOrUpdateStudy implements ICreateOrUpdateStudy {
 
 	private void handleDNASequenceSets(
 			final OtuSet dbOTUSet,
-			final OtuSet incomingOTUSet) {
+			final PPodOtuSet incomingOTUSet) {
 
 		// Let's delete sequences missing from the incoming otu set
 		final Set<DnaSequenceSet> toBeRemoveds = newHashSet();
@@ -213,7 +218,7 @@ class CreateOrUpdateStudy implements ICreateOrUpdateStudy {
 			dbOTUSet.removeDnaSequenceSet(toBeRemoved);
 		}
 		int incomingSequenceSetPos = -1;
-		for (final DnaSequenceSet incomingSequenceSet : incomingOTUSet
+		for (final PPodDnaSequenceSet incomingSequenceSet : incomingOTUSet
 				.getDnaSequenceSets()) {
 			incomingSequenceSetPos++;
 			DnaSequenceSet dbDNASequenceSet;
@@ -238,7 +243,7 @@ class CreateOrUpdateStudy implements ICreateOrUpdateStudy {
 
 	private void handleStandardMatrices(
 			final OtuSet dbOTUSet,
-			final OtuSet incomingOTUSet) {
+			final PPodOtuSet incomingOTUSet) {
 
 		// Let's delete matrices missing from the incoming OTU set
 		final Set<StandardMatrix> toBeRemoveds = newHashSet();
@@ -258,7 +263,7 @@ class CreateOrUpdateStudy implements ICreateOrUpdateStudy {
 			dbOTUSet.removeStandardMatrix(toBeRemoved);
 		}
 		int incomingMatrixPos = -1;
-		for (final StandardMatrix incomingMatrix : incomingOTUSet
+		for (final PPodStandardMatrix incomingMatrix : incomingOTUSet
 				.getStandardMatrices()) {
 			incomingMatrixPos++;
 			StandardMatrix dbMatrix;
@@ -285,7 +290,7 @@ class CreateOrUpdateStudy implements ICreateOrUpdateStudy {
 
 	private void handleTreeSets(
 			final OtuSet dbOTUSet,
-			final OtuSet incomingOTUSet) {
+			final PPodOtuSet incomingOTUSet) {
 
 		// Let's delete tree sets missing from incoming OTU set
 		final Set<TreeSet> toBeDeleteds = newHashSet();
@@ -307,7 +312,7 @@ class CreateOrUpdateStudy implements ICreateOrUpdateStudy {
 		int incomingTreeSetPos = -1;
 
 		// Now let's add in new ones
-		for (final TreeSet incomingTreeSet : incomingOTUSet.getTreeSets()) {
+		for (final PPodTreeSet incomingTreeSet : incomingOTUSet.getTreeSets()) {
 			incomingTreeSetPos++;
 			TreeSet dbTreeSet;
 			if (null == (dbTreeSet =

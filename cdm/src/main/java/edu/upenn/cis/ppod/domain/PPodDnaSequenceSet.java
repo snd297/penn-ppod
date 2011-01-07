@@ -1,30 +1,28 @@
 package edu.upenn.cis.ppod.domain;
 
+import static com.google.common.base.Preconditions.checkNotNull;
 import static com.google.common.collect.Lists.newArrayList;
 
 import java.util.List;
 
-import edu.umd.cs.findbugs.annotations.CheckForNull;
-import edu.umd.cs.findbugs.annotations.Nullable;
+final public class PPodDnaSequenceSet extends UuPPodDomainObject {
 
-public class PPodDnaSequenceSet {
-
-	@CheckForNull
-	final Long version;
-
+	private final String label;
 	private final List<PPodDnaSequence> sequences = newArrayList();
 
-	public PPodDnaSequenceSet(final Long version) {
-		this.version = version;
+	public PPodDnaSequenceSet(final String pPodId, final Long version,
+			final String label) {
+		super(pPodId, version);
+		checkNotNull(label);
+		this.label = label;
+	}
+
+	public String getLabel() {
+		return label;
 	}
 
 	public List<PPodDnaSequence> getSequences() {
 		return sequences;
-	}
-
-	@Nullable
-	public Long getVersion() {
-		return version;
 	}
 
 }
