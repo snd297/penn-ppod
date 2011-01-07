@@ -8,38 +8,38 @@ import java.util.List;
 import edu.umd.cs.findbugs.annotations.CheckForNull;
 import edu.umd.cs.findbugs.annotations.Nullable;
 
-public class OtuSet {
+public class PPodOtuSet {
 
 	@CheckForNull
 	private final Long version;
 	private final String label;
-	private final List<Otu> otus = newArrayList();
-	private final List<DnaMatrix> dnaMatrices = newArrayList();
-	private final List<StandardMatrix> standardMatrices = newArrayList();
-	private final List<DnaSequenceSet> dnaSequenceSets = newArrayList();
-	private final List<TreeSet> treeSets = newArrayList();
+	private final List<PPodOtu> otus = newArrayList();
+	private final List<PPodDnaMatrix> dnaMatrices = newArrayList();
+	private final List<PPodStandardMatrix> standardMatrices = newArrayList();
+	private final List<PPodDnaSequenceSet> dnaSequenceSets = newArrayList();
+	private final List<PPodTreeSet> treeSets = newArrayList();
 
-	public OtuSet(final Long version, final String label) {
+	public PPodOtuSet(final Long version, final String label) {
 		checkNotNull(version);
 		checkNotNull(label);
 		this.version = version;
 		this.label = label;
 	}
 
-	public OtuSet(final String label) {
+	public PPodOtuSet(final String label) {
 		checkNotNull(label);
 		this.version = null;
 		this.label = label;
 	}
 
-	public List<DnaMatrix> getDnaMatrices() {
+	public List<PPodDnaMatrix> getDnaMatrices() {
 		return dnaMatrices;
 	}
 
 	/**
 	 * @return the dnaSequenceSets
 	 */
-	public List<DnaSequenceSet> getDnaSequenceSets() {
+	public List<PPodDnaSequenceSet> getDnaSequenceSets() {
 		return dnaSequenceSets;
 	}
 
@@ -47,15 +47,15 @@ public class OtuSet {
 		return label;
 	}
 
-	public List<Otu> getOtus() {
+	public List<PPodOtu> getOtus() {
 		return otus;
 	}
 
-	public List<StandardMatrix> getStandardMatrices() {
+	public List<PPodStandardMatrix> getStandardMatrices() {
 		return standardMatrices;
 	}
 
-	public List<TreeSet> getTreeSets() {
+	public List<PPodTreeSet> getTreeSets() {
 		return treeSets;
 	}
 

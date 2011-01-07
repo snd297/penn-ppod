@@ -31,21 +31,21 @@ import edu.umd.cs.findbugs.annotations.Nullable;
  * @author Sam Donnelly
  */
 @XmlRootElement
-public class Study {
+public class PPodStudy {
 
 	@CheckForNull
 	private Long version;
 
 	private String label;
 
-	private final List<OtuSet> otuSets = newArrayList();
+	private final List<PPodOtuSet> otuSets = newArrayList();
 
-	public Study(final long version, final String label) {
+	public PPodStudy(final long version, final String label) {
 		this.version = version;
 		this.label = label;
 	}
 
-	public Study(final String label) {
+	public PPodStudy(final String label) {
 		this.label = label;
 	}
 
@@ -56,7 +56,7 @@ public class Study {
 		return label;
 	}
 
-	public List<OtuSet> getOtuSets() {
+	public List<PPodOtuSet> getOtuSets() {
 		return otuSets;
 	}
 

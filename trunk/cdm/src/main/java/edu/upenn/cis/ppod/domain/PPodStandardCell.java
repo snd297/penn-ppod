@@ -7,18 +7,18 @@ import java.util.List;
 import edu.umd.cs.findbugs.annotations.CheckForNull;
 import edu.umd.cs.findbugs.annotations.Nullable;
 
-public class StandardCell {
+public class PPodStandardCell {
 	@CheckForNull
 	private final Long version;
-	private final CellType type;
+	private final PPodCellType type;
 	private final List<Integer> states = newArrayList();
 
-	public StandardCell(final CellType type) {
+	public PPodStandardCell(final PPodCellType type) {
 		version = null;
 		this.type = type;
 	}
 
-	public StandardCell(final Long version, final CellType type) {
+	public PPodStandardCell(final Long version, final PPodCellType type) {
 		this.version = version;
 		this.type = type;
 	}
@@ -33,7 +33,7 @@ public class StandardCell {
 	/**
 	 * @return the type
 	 */
-	public CellType getType() {
+	public PPodCellType getType() {
 		return type;
 	}
 

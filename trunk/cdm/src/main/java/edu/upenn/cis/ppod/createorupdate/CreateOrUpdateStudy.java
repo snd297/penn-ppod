@@ -76,68 +76,70 @@ class CreateOrUpdateStudy implements ICreateOrUpdateStudy {
 		this.mergeTreeSets = mergeTreeSets;
 	}
 
-	public Study createOrUpdateStudy(final Study incomingStudy) {
-		Study dbStudy = null;
-		boolean makeStudyPersistent = false;
-		if (null == (dbStudy =
-				studyDAO.getStudyByPPodId(
-						incomingStudy.getPPodId()))) {
-			dbStudy = ModelFactory.newStudy(newVersionInfo.getNewVersionInfo());
-			makeStudyPersistent = true;
-		}
-
-		dbStudy.setLabel(incomingStudy.getLabel());
-
-		if (makeStudyPersistent) {
-			studyDAO.makePersistent(dbStudy);
-		}
-
-		// Delete otu sets in persisted study that are not in the incoming
-		// study.
-		final Set<OtuSet> toBeRemoveds = newHashSet();
-		for (final OtuSet dbOTUSet : dbStudy.getOTUSets()) {
-			if (null == find(
-					incomingStudy.getOTUSets(),
-					compose(
-							equalTo(
-									dbOTUSet.getPPodId()),
-							IHasPPodId.getPPodId),
-							null)) {
-				toBeRemoveds.add(dbOTUSet);
-			}
-		}
-		for (final OtuSet toBeRemoved : toBeRemoveds) {
-			dbStudy.removeOTUSet(toBeRemoved);
-		}
-
-		// Save or update incoming otu sets
-		int incomingOTUSetPos = -1;
-		for (final OtuSet incomingOTUSet : incomingStudy.getOTUSets()) {
-			incomingOTUSetPos++;
-			OtuSet dbOTUSet;
-			if (null == (dbOTUSet =
-					find(dbStudy.getOTUSets(),
-							compose(
-									equalTo(
-											incomingOTUSet.getPPodId()),
-									IHasPPodId.getPPodId),
-									null))) {
-				dbOTUSet = ModelFactory.newOTUSet(newVersionInfo
-						.getNewVersionInfo());
-				dbOTUSet.setLabel(incomingOTUSet.getLabel()); // non-null, do it
-																// now
-				dbStudy.addOtuSet(incomingOTUSetPos, dbOTUSet);
-				dao.makePersistent(dbOTUSet);
-			}
-
-			mergeOTUSets.mergeOTUSets(dbOTUSet, incomingOTUSet);
-
-			handleDNAMatrices(dbOTUSet, incomingOTUSet);
-			handleStandardMatrices(dbOTUSet, incomingOTUSet);
-			handleDNASequenceSets(dbOTUSet, incomingOTUSet);
-			handleTreeSets(dbOTUSet, incomingOTUSet);
-		}
-		return dbStudy;
+	public Study createOrUpdateStudy(
+			final edu.upenn.cis.ppod.domain.PPodStudy incomingStudy) {
+		return null;
+		// Study dbStudy = null;
+		// boolean makeStudyPersistent = false;
+		// if (null == (dbStudy =
+		// studyDAO.getStudyByPPodId(
+		// incomingStudy.getPPodId()))) {
+		// dbStudy = ModelFactory.newStudy(newVersionInfo.getNewVersionInfo());
+		// makeStudyPersistent = true;
+		// }
+		//
+		// dbStudy.setLabel(incomingStudy.getLabel());
+		//
+		// if (makeStudyPersistent) {
+		// studyDAO.makePersistent(dbStudy);
+		// }
+		//
+		// // Delete otu sets in persisted study that are not in the incoming
+		// // study.
+		// final Set<OtuSet> toBeRemoveds = newHashSet();
+		// for (final OtuSet dbOTUSet : dbStudy.getOTUSets()) {
+		// if (null == find(
+		// incomingStudy.getOTUSets(),
+		// compose(
+		// equalTo(
+		// dbOTUSet.getPPodId()),
+		// IHasPPodId.getPPodId),
+		// null)) {
+		// toBeRemoveds.add(dbOTUSet);
+		// }
+		// }
+		// for (final OtuSet toBeRemoved : toBeRemoveds) {
+		// dbStudy.removeOTUSet(toBeRemoved);
+		// }
+		//
+		// // Save or update incoming otu sets
+		// int incomingOTUSetPos = -1;
+		// for (final OtuSet incomingOTUSet : incomingStudy.getOTUSets()) {
+		// incomingOTUSetPos++;
+		// OtuSet dbOTUSet;
+		// if (null == (dbOTUSet =
+		// find(dbStudy.getOTUSets(),
+		// compose(
+		// equalTo(
+		// incomingOTUSet.getPPodId()),
+		// IHasPPodId.getPPodId),
+		// null))) {
+		// dbOTUSet = ModelFactory.newOTUSet(newVersionInfo
+		// .getNewVersionInfo());
+		// dbOTUSet.setLabel(incomingOTUSet.getLabel()); // non-null, do it
+		// // now
+		// dbStudy.addOtuSet(incomingOTUSetPos, dbOTUSet);
+		// dao.makePersistent(dbOTUSet);
+		// }
+		//
+		// mergeOTUSets.mergeOTUSets(dbOTUSet, incomingOTUSet);
+		//
+		// handleDNAMatrices(dbOTUSet, incomingOTUSet);
+		// handleStandardMatrices(dbOTUSet, incomingOTUSet);
+		// handleDNASequenceSets(dbOTUSet, incomingOTUSet);
+		// handleTreeSets(dbOTUSet, incomingOTUSet);
+		// }
+		// return dbStudy;
 	}
 
 	private void handleDNAMatrices(

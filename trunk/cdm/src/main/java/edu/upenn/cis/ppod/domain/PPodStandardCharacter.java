@@ -8,22 +8,22 @@ import java.util.Set;
 import edu.umd.cs.findbugs.annotations.CheckForNull;
 import edu.umd.cs.findbugs.annotations.Nullable;
 
-public class StandardCharacter {
+public class PPodStandardCharacter {
 
 	@CheckForNull
 	private final Long version;
 	private final String label;
 
-	private final Set<StandardState> states = newHashSet();
+	private final Set<PPodStandardState> states = newHashSet();
 
-	public StandardCharacter(final Long version, final String label) {
+	public PPodStandardCharacter(final Long version, final String label) {
 		checkNotNull(version);
 		checkNotNull(label);
 		this.version = version;
 		this.label = label;
 	}
 
-	public StandardCharacter(final String label) {
+	public PPodStandardCharacter(final String label) {
 		this.version = null;
 		this.label = label;
 	}
@@ -32,7 +32,7 @@ public class StandardCharacter {
 		return label;
 	}
 
-	public Set<StandardState> getStates() {
+	public Set<PPodStandardState> getStates() {
 		return states;
 	}
 

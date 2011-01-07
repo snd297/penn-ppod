@@ -7,19 +7,28 @@ import java.util.List;
 import edu.umd.cs.findbugs.annotations.CheckForNull;
 import edu.umd.cs.findbugs.annotations.Nullable;
 
-public class StandardRow {
-
+public class PPodTreeSet {
 	@CheckForNull
 	private final Long version;
+	private final String label;
+	private final List<PPodTree> trees = newArrayList();
 
-	final List<StandardState> states = newArrayList();
-
-	public StandardRow(final Long version) {
+	public PPodTreeSet(final Long version, final String label) {
 		this.version = version;
+		this.label = label;
 	}
 
-	public List<StandardState> getStates() {
-		return states;
+	public PPodTreeSet(final String label) {
+		this.version = null;
+		this.label = label;
+	}
+
+	public String getLabel() {
+		return label;
+	}
+
+	public List<PPodTree> getTrees() {
+		return trees;
 	}
 
 	/**
@@ -29,4 +38,5 @@ public class StandardRow {
 	public Long getVersion() {
 		return version;
 	}
+
 }

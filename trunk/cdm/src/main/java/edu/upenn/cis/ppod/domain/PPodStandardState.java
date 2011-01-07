@@ -1,12 +1,12 @@
 package edu.upenn.cis.ppod.domain;
 
-public class StandardState {
+public class PPodStandardState {
 
 	private int stateNo;
 
 	private String label;
 
-	public StandardState(final int stateNo, final String label) {
+	public PPodStandardState(final int stateNo, final String label) {
 		this.stateNo = stateNo;
 		this.label = label;
 	}

@@ -13,7 +13,7 @@ package edu.upenn.cis.ppod.domain;
  * <li>{@code INAPPLICABLE -> 4}</li>
  * </ul>
  */
-public enum CellType {
+public enum PPodCellType {
 
 	/** Unassigned, usually written as a {@code "?"} in Nexus files. */
 	UNASSIGNED,

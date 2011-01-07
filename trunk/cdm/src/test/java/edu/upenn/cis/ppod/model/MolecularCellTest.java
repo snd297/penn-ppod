@@ -29,7 +29,7 @@ import org.testng.annotations.Test;
 import com.google.common.collect.ImmutableSet;
 
 import edu.upenn.cis.ppod.TestGroupDefs;
-import edu.upenn.cis.ppod.domain.DnaNucleotide;
+import edu.upenn.cis.ppod.domain.PPodDnaNucleotide;
 
 /**
  * {@link MolecularCell} testing.
@@ -41,12 +41,12 @@ public class MolecularCellTest {
 
 	@Test
 	public void setPolymorphicElements() {
-		final MolecularCell<DnaNucleotide, ?> cell = new DnaCell();
+		final MolecularCell<PPodDnaNucleotide, ?> cell = new DnaCell();
 
 		cell.unsetInNeedOfNewVersion();
 
-		final Set<DnaNucleotide> nucleotides =
-				ImmutableSet.of(DnaNucleotide.A, DnaNucleotide.T);
+		final Set<PPodDnaNucleotide> nucleotides =
+				ImmutableSet.of(PPodDnaNucleotide.A, PPodDnaNucleotide.T);
 
 		cell.setPolymorphicElements(
 						nucleotides,
@@ -67,8 +67,8 @@ public class MolecularCellTest {
 
 		cell.unsetInNeedOfNewVersion();
 
-		final Set<DnaNucleotide> nucleotides2 =
-				ImmutableSet.of(DnaNucleotide.T, DnaNucleotide.G);
+		final Set<PPodDnaNucleotide> nucleotides2 =
+				ImmutableSet.of(PPodDnaNucleotide.T, PPodDnaNucleotide.G);
 
 		cell.setPolymorphicElements(
 						nucleotides2,
@@ -89,35 +89,35 @@ public class MolecularCellTest {
 
 	@Test
 	public void setSingleElement() {
-		final MolecularCell<DnaNucleotide, ?> cell = new DnaCell();
+		final MolecularCell<PPodDnaNucleotide, ?> cell = new DnaCell();
 
 		cell.unsetInNeedOfNewVersion();
-		cell.setSingleElement(DnaNucleotide.C, false);
+		cell.setSingleElement(PPodDnaNucleotide.C, false);
 		assertTrue(cell.isInNeedOfNewVersion());
-		assertSame(getOnlyElement(cell.getElements()), DnaNucleotide.C);
+		assertSame(getOnlyElement(cell.getElements()), PPodDnaNucleotide.C);
 
 		cell.unsetInNeedOfNewVersion();
-		cell.setSingleElement(DnaNucleotide.C, false);
+		cell.setSingleElement(PPodDnaNucleotide.C, false);
 		assertFalse(cell.isInNeedOfNewVersion());
-		assertSame(getOnlyElement(cell.getElements()), DnaNucleotide.C);
+		assertSame(getOnlyElement(cell.getElements()), PPodDnaNucleotide.C);
 
 		cell.unsetInNeedOfNewVersion();
-		cell.setSingleElement(DnaNucleotide.C, true);
+		cell.setSingleElement(PPodDnaNucleotide.C, true);
 		assertTrue(cell.isInNeedOfNewVersion());
-		assertSame(getOnlyElement(cell.getElements()), DnaNucleotide.C);
+		assertSame(getOnlyElement(cell.getElements()), PPodDnaNucleotide.C);
 
 		cell.unsetInNeedOfNewVersion();
-		cell.setSingleElement(DnaNucleotide.A, true);
+		cell.setSingleElement(PPodDnaNucleotide.A, true);
 		assertTrue(cell.isInNeedOfNewVersion());
-		assertSame(getOnlyElement(cell.getElements()), DnaNucleotide.A);
+		assertSame(getOnlyElement(cell.getElements()), PPodDnaNucleotide.A);
 	}
 
 	@Test
 	public void setUncertainElements() {
-		final MolecularCell<DnaNucleotide, ?> cell = new DnaCell();
+		final MolecularCell<PPodDnaNucleotide, ?> cell = new DnaCell();
 		cell.unsetInNeedOfNewVersion();
-		final Set<DnaNucleotide> nucleotides =
-				ImmutableSet.of(DnaNucleotide.A, DnaNucleotide.C);
+		final Set<PPodDnaNucleotide> nucleotides =
+				ImmutableSet.of(PPodDnaNucleotide.A, PPodDnaNucleotide.C);
 		cell.setUncertainElements(nucleotides);
 		assertTrue(cell.isInNeedOfNewVersion());
 		assertEquals(cell.getElements(), nucleotides);
