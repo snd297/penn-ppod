@@ -1,24 +1,18 @@
 package edu.upenn.cis.ppod.domain;
 
 import static com.google.common.base.Preconditions.checkNotNull;
-import edu.umd.cs.findbugs.annotations.CheckForNull;
-import edu.umd.cs.findbugs.annotations.Nullable;
 
-public class PPodOtu {
+public class PPodOtu extends UuPPodDomainObject {
 
-	@CheckForNull
-	private final Long version;
 	private final String label;
 
-	public PPodOtu(final Long version, final String label) {
-		checkNotNull(version);
+	public PPodOtu(final String pPodId, final Long version, final String label) {
+		super(pPodId, version);
 		checkNotNull(label);
-		this.version = version;
 		this.label = label;
 	}
 
 	public PPodOtu(final String label) {
-		this.version = null;
 		this.label = label;
 	}
 
@@ -27,14 +21,6 @@ public class PPodOtu {
 	 */
 	public String getLabel() {
 		return label;
-	}
-
-	/**
-	 * @return the version
-	 */
-	@Nullable
-	public Long getVersion() {
-		return version;
 	}
 
 }

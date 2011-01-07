@@ -4,29 +4,18 @@ import static com.google.common.collect.Lists.newArrayList;
 
 import java.util.List;
 
-import edu.umd.cs.findbugs.annotations.CheckForNull;
-import edu.umd.cs.findbugs.annotations.Nullable;
+public class PPodStandardRow extends PPodDomainObject {
 
-public class PPodStandardRow {
+	final List<PPodStandardCell> cells = newArrayList();
 
-	@CheckForNull
-	private final Long version;
-
-	final List<PPodStandardState> states = newArrayList();
+	public PPodStandardRow() {}
 
 	public PPodStandardRow(final Long version) {
-		this.version = version;
+		super(version);
 	}
 
-	public List<PPodStandardState> getStates() {
-		return states;
+	public List<PPodStandardCell> getCells() {
+		return cells;
 	}
 
-	/**
-	 * @return the version
-	 */
-	@Nullable
-	public Long getVersion() {
-		return version;
-	}
 }

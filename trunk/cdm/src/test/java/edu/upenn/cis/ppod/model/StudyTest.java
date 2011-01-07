@@ -46,9 +46,9 @@ public class StudyTest {
 
 		study.removeOTUSet(otuSet1);
 		assertTrue(study.isInNeedOfNewVersion());
-		assertFalse(study.getOTUSets().contains(otuSet1));
+		assertFalse(study.getOtuSets().contains(otuSet1));
 
-		assertEquals(study.getOTUSets(),
+		assertEquals(study.getOtuSets(),
 				ImmutableList.of(otuSet0, otuSet2));
 	}
 
@@ -87,8 +87,8 @@ public class StudyTest {
 
 		study.addOtuSet(otuSet0);
 		assertTrue(study.isInNeedOfNewVersion());
-		assertEquals(study.getOTUSets().size(), 1);
-		assertTrue(study.getOTUSets().contains(otuSet0));
+		assertEquals(study.getOtuSets().size(), 1);
+		assertTrue(study.getOtuSets().contains(otuSet0));
 		assertSame(otuSet0.getParent(), study);
 	}
 
@@ -108,7 +108,7 @@ public class StudyTest {
 
 		study.addOtuSet(2, otuSet3);
 		assertTrue(study.isInNeedOfNewVersion());
-		assertEquals(study.getOTUSets(),
+		assertEquals(study.getOtuSets(),
 				ImmutableList.of(otuSet0, otuSet1, otuSet3, otuSet2));
 		assertSame(otuSet3.getParent(), study);
 	}

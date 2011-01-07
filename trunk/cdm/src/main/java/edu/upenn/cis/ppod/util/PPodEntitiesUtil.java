@@ -57,7 +57,7 @@ public class PPodEntitiesUtil {
 			final Set<? super AttachmentNamespace> studyWideAttachmentNamespaces,
 			final Set<? super AttachmentType> studyWideAttachmentTypes,
 			final IOTUSets otuSetCentricEntities) {
-		for (final OtuSet otuSet : otuSetCentricEntities.getOTUSets()) {
+		for (final OtuSet otuSet : otuSetCentricEntities.getOtuSets()) {
 			extractAttachmentInfoFromAttachee(
 					studyWideAttachmentNamespaces,
 					studyWideAttachmentTypes,
