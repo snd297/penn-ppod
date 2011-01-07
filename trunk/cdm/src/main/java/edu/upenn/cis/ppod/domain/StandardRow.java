@@ -12,13 +12,13 @@ public class StandardRow {
 	@CheckForNull
 	private final Long version;
 
-	final List<Integer> states = newArrayList();
+	final List<StandardState> states = newArrayList();
 
 	public StandardRow(final Long version) {
 		this.version = version;
 	}
 
-	public List<Integer> getStates() {
+	public List<StandardState> getStates() {
 		return states;
 	}
 

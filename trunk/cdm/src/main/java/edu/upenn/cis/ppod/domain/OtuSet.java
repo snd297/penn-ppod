@@ -36,6 +36,13 @@ public class OtuSet {
 		return dnaMatrices;
 	}
 
+	/**
+	 * @return the dnaSequenceSets
+	 */
+	public List<DnaSequenceSet> getDnaSequenceSets() {
+		return dnaSequenceSets;
+	}
+
 	public String getLabel() {
 		return label;
 	}
@@ -58,13 +65,6 @@ public class OtuSet {
 	@Nullable
 	public Long getVersion() {
 		return version;
-	}
-
-	/**
-	 * @return the dnaSequenceSets
-	 */
-	public List<DnaSequenceSet> getDnaSequenceSets() {
-		return dnaSequenceSets;
 	}
 
 }

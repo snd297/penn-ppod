@@ -26,6 +26,7 @@ import javax.persistence.MappedSuperclass;
 import javax.xml.bind.annotation.XmlAttribute;
 
 import edu.umd.cs.findbugs.annotations.CheckForNull;
+import edu.upenn.cis.ppod.domain.CellType;
 
 /**
  * A cell in a molecular matrix. The elements are subclasses of {@code Enum} so
@@ -65,7 +66,7 @@ public abstract class MolecularCell<E extends Enum<?>, R extends Row<?, ?>>
 	}
 
 	@Override
-	void setInapplicableOrUnassigned(final Type type) {
+	void setInapplicableOrUnassigned(final CellType type) {
 		super.setInapplicableOrUnassigned(type);
 		setLowerCase(null);
 	}
@@ -90,7 +91,7 @@ public abstract class MolecularCell<E extends Enum<?>, R extends Row<?, ?>>
 	public void setPolymorphicElements(
 			final Set<? extends E> elements, final Boolean lowerCase) {
 		checkNotNull(lowerCase);
-		super.setPolymorphicOrUncertain(Type.POLYMORPHIC, elements);
+		super.setPolymorphicOrUncertain(CellType.POLYMORPHIC, elements);
 		if (lowerCase.equals(getLowerCase())) {
 
 		} else {
@@ -115,12 +116,12 @@ public abstract class MolecularCell<E extends Enum<?>, R extends Row<?, ?>>
 		// == is safe since we know E is an Enum
 		if (element == getElement()
 				&& lowerCase.equals(getLowerCase())) {
-			if (getType() != Type.SINGLE) {
+			if (getType() != CellType.SINGLE) {
 				throw new AssertionError(
 						"element is set, but this cell is not a SINGLE");
 			}
 		} else {
-			setType(Type.SINGLE);
+			setType(CellType.SINGLE);
 			setElements(null);
 			setElement(element);
 			setLowerCase(lowerCase);
@@ -143,7 +144,7 @@ public abstract class MolecularCell<E extends Enum<?>, R extends Row<?, ?>>
 				uncertainElements.size() > 1,
 				"uncertain elements must be > 1");
 		setPolymorphicOrUncertain(
-				Type.UNCERTAIN,
+				CellType.UNCERTAIN,
 				uncertainElements);
 		setLowerCase(null);
 	}
