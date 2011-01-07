@@ -62,7 +62,7 @@ public class PPodEntities implements IPPodEntities {
 	/** {@inheritDoc} */
 	public void addOtuSet(final OtuSet otuSet) {
 		checkNotNull(otuSet);
-		checkArgument(!getOTUSets().contains(otuSet),
+		checkArgument(!getOtuSets().contains(otuSet),
 				"this study already contains otu set [" + otuSet.getLabel()
 						+ "]");
 		otuSets.add(otuSet);
@@ -96,7 +96,7 @@ public class PPodEntities implements IPPodEntities {
 		return otu;
 	}
 
-	public List<OtuSet> getOTUSets() {
+	public List<OtuSet> getOtuSets() {
 		return Collections.unmodifiableList(otuSets);
 	}
 

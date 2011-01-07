@@ -106,7 +106,7 @@ public class Study
 	@Override
 	public void accept(final IVisitor visitor) {
 		visitor.visitStudy(this);
-		for (final OtuSet otuSet : getOTUSets()) {
+		for (final OtuSet otuSet : getOtuSets()) {
 			otuSet.accept(visitor);
 		}
 	}
@@ -124,7 +124,7 @@ public class Study
 		checkNotNull(otuSet);
 		checkArgument(pos >= 0, "pos < 0");
 		checkArgument(
-				!getOTUSets().contains(otuSet),
+				!getOtuSets().contains(otuSet),
 				"this study already contains otu set ["
 						+ otuSet.getLabel()
 						+ "]");
@@ -136,7 +136,7 @@ public class Study
 	/** {@inheritDoc} */
 	public void addOtuSet(final OtuSet otuSet) {
 		checkNotNull(otuSet);
-		checkArgument(!getOTUSets().contains(otuSet),
+		checkArgument(!getOtuSets().contains(otuSet),
 				"this study already contains otu set [" + otuSet.getLabel()
 						+ "]");
 		otuSets.add(otuSet);
@@ -187,7 +187,7 @@ public class Study
 	}
 
 	/** {@inheritDoc} */
-	public List<OtuSet> getOTUSets() {
+	public List<OtuSet> getOtuSets() {
 		return Collections.unmodifiableList(otuSets);
 	}
 
@@ -216,7 +216,7 @@ public class Study
 	 */
 	public void removeOTUSet(final OtuSet otuSet) {
 		checkNotNull(otuSet);
-		checkArgument(getOTUSets().contains(otuSet),
+		checkArgument(getOtuSets().contains(otuSet),
 				"this study does not contain otu set [" + otuSet.getLabel()
 						+ "]");
 		otuSets.remove(otuSet);

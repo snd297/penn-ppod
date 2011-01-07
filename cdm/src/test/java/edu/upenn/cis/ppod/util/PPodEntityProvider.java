@@ -49,7 +49,7 @@ public class PPodEntityProvider {
 		final StandardMatrix smallStandardMatrix =
 				getOnlyElement(
 						getOnlyElement(
-								studyMX540.getOTUSets())
+								studyMX540.getOtuSets())
 								.getStandardMatrices());
 
 		// final Study studyM1808 = (Study) ctx.createUnmarshaller().unmarshal(
@@ -79,7 +79,7 @@ public class PPodEntityProvider {
 		studyMX540.accept(new AfterUnmarshalVisitor());
 
 		final OtuSet otuSet =
-				getOnlyElement(studyMX540.getOTUSets());
+				getOnlyElement(studyMX540.getOtuSets());
 
 		return new Object[][] { new Object[] { otuSet } };
 

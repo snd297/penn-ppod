@@ -129,7 +129,7 @@ class PPodEntitiesResourceHibernate implements
 
 			// Now we clean up our response so we don't include any extra
 			// matrices or tree sets that were pulled over with the OTUSet's
-			for (final OtuSet otuSet : pPodEntities.getOTUSets()) {
+			for (final OtuSet otuSet : pPodEntities.getOtuSets()) {
 				for (final StandardMatrix matrix : otuSet
 						.getStandardMatrices()) {
 					if (addedMatrices.contains(matrix)) {

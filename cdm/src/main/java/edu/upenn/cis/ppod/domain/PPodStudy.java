@@ -21,9 +21,6 @@ import java.util.List;
 
 import javax.xml.bind.annotation.XmlRootElement;
 
-import edu.umd.cs.findbugs.annotations.CheckForNull;
-import edu.umd.cs.findbugs.annotations.Nullable;
-
 /**
  * A collection of work - inspired by a Mesquite project - sets of OTU sets and,
  * through the OTU sets, matrices and tree sets.
@@ -31,21 +28,18 @@ import edu.umd.cs.findbugs.annotations.Nullable;
  * @author Sam Donnelly
  */
 @XmlRootElement
-public class PPodStudy {
+public final class PPodStudy extends UuPPodDomainObject {
 
-	@CheckForNull
-	private Long version;
-
-	private String label;
+	private final String label;
 
 	private final List<PPodOtuSet> otuSets = newArrayList();
 
-	public PPodStudy(final long version, final String label) {
-		this.version = version;
+	public PPodStudy(final String label) {
 		this.label = label;
 	}
 
-	public PPodStudy(final String label) {
+	public PPodStudy(final String pPodId, final Long version, final String label) {
+		super(pPodId, version);
 		this.label = label;
 	}
 
@@ -59,13 +53,4 @@ public class PPodStudy {
 	public List<PPodOtuSet> getOtuSets() {
 		return otuSets;
 	}
-
-	/**
-	 * @return the version
-	 */
-	@Nullable
-	public Long getVersion() {
-		return version;
-	}
-
 }

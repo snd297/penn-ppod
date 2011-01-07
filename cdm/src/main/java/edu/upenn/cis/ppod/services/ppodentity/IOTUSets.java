@@ -40,6 +40,6 @@ public interface IOTUSets {
 	 * 
 	 * @return the OTU sets contained in this {@code IOTUSets}
 	 */
-	List<OtuSet> getOTUSets();
+	List<OtuSet> getOtuSets();
 
 }

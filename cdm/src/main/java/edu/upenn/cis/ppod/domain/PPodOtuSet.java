@@ -5,13 +5,8 @@ import static com.google.common.collect.Lists.newArrayList;
 
 import java.util.List;
 
-import edu.umd.cs.findbugs.annotations.CheckForNull;
-import edu.umd.cs.findbugs.annotations.Nullable;
+public class PPodOtuSet extends UuPPodDomainObject {
 
-public class PPodOtuSet {
-
-	@CheckForNull
-	private final Long version;
 	private final String label;
 	private final List<PPodOtu> otus = newArrayList();
 	private final List<PPodDnaMatrix> dnaMatrices = newArrayList();
@@ -19,16 +14,16 @@ public class PPodOtuSet {
 	private final List<PPodDnaSequenceSet> dnaSequenceSets = newArrayList();
 	private final List<PPodTreeSet> treeSets = newArrayList();
 
-	public PPodOtuSet(final Long version, final String label) {
-		checkNotNull(version);
+	public PPodOtuSet(final String pPodId, final Long version,
+			final String label) {
+		super(pPodId, version);
+
 		checkNotNull(label);
-		this.version = version;
 		this.label = label;
 	}
 
 	public PPodOtuSet(final String label) {
 		checkNotNull(label);
-		this.version = null;
 		this.label = label;
 	}
 
@@ -57,14 +52,6 @@ public class PPodOtuSet {
 
 	public List<PPodTreeSet> getTreeSets() {
 		return treeSets;
-	}
-
-	/**
-	 * @return the version
-	 */
-	@Nullable
-	public Long getVersion() {
-		return version;
 	}
 
 }
