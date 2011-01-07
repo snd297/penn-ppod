@@ -16,6 +16,7 @@ public class OtuSet {
 	private final List<Otu> otus = newArrayList();
 	private final List<DnaMatrix> dnaMatrices = newArrayList();
 	private final List<StandardMatrix> standardMatrices = newArrayList();
+	private final List<DnaSequenceSet> dnaSequenceSets = newArrayList();
 	private final List<TreeSet> treeSets = newArrayList();
 
 	public OtuSet(final Long version, final String label) {
@@ -57,6 +58,13 @@ public class OtuSet {
 	@Nullable
 	public Long getVersion() {
 		return version;
+	}
+
+	/**
+	 * @return the dnaSequenceSets
+	 */
+	public List<DnaSequenceSet> getDnaSequenceSets() {
+		return dnaSequenceSets;
 	}
 
 }
