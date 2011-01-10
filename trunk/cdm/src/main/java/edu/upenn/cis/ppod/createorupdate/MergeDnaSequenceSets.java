@@ -55,7 +55,7 @@ class MergeDnaSequenceSets implements IMergeDNASequenceSets {
 		final Integer targSeqSetLengths =
 				targSeqSet.getSequenceLengths();
 
-		Integer srcSeqSetLengths;
+		Integer srcSeqSetLengths = null;
 		if (srcSeqSet.getSequences().size() == 0) {
 			srcSeqSetLengths = -1;
 		} else {

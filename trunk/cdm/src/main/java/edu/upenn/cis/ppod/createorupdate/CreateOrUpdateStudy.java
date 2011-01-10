@@ -62,7 +62,7 @@ class CreateOrUpdateStudy implements ICreateOrUpdateStudy {
 
 	@Inject
 	CreateOrUpdateStudy(
-				final IObjectWithLongIdDAO dao,
+			final IObjectWithLongIdDAO dao,
 			final IAttachmentNamespaceDAO attachmentNamespaceDAO,
 			final IAttachmentTypeDAO attachmentTypeDAO,
 			final IStudyDAO studyDAO,
@@ -242,12 +242,12 @@ class CreateOrUpdateStudy implements ICreateOrUpdateStudy {
 	}
 
 	private void handleStandardMatrices(
-			final OtuSet dbOTUSet,
+			final OtuSet dbOtuSet,
 			final PPodOtuSet incomingOTUSet) {
 
 		// Let's delete matrices missing from the incoming OTU set
 		final Set<StandardMatrix> toBeRemoveds = newHashSet();
-		for (final StandardMatrix dbMatrix : dbOTUSet.getStandardMatrices()) {
+		for (final StandardMatrix dbMatrix : dbOtuSet.getStandardMatrices()) {
 			if (null == find(
 							incomingOTUSet.getStandardMatrices(),
 							compose(
@@ -260,7 +260,7 @@ class CreateOrUpdateStudy implements ICreateOrUpdateStudy {
 		}
 
 		for (final StandardMatrix toBeRemoved : toBeRemoveds) {
-			dbOTUSet.removeStandardMatrix(toBeRemoved);
+			dbOtuSet.removeStandardMatrix(toBeRemoved);
 		}
 		int incomingMatrixPos = -1;
 		for (final PPodStandardMatrix incomingMatrix : incomingOTUSet
@@ -269,7 +269,7 @@ class CreateOrUpdateStudy implements ICreateOrUpdateStudy {
 			StandardMatrix dbMatrix;
 			if (null == (dbMatrix =
 					find(
-							dbOTUSet.getStandardMatrices(),
+							dbOtuSet.getStandardMatrices(),
 							compose(
 									equalTo(
 											incomingMatrix.getPPodId()),
@@ -278,7 +278,7 @@ class CreateOrUpdateStudy implements ICreateOrUpdateStudy {
 				dbMatrix = ModelFactory.newStandardMatrix(newVersionInfo
 						.getNewVersionInfo());
 				dbMatrix.setLabel(incomingMatrix.getLabel());
-				dbOTUSet.addStandardMatrix(
+				dbOtuSet.addStandardMatrix(
 						incomingMatrixPos,
 						dbMatrix);
 				dao.makePersistent(dbMatrix);
@@ -289,13 +289,13 @@ class CreateOrUpdateStudy implements ICreateOrUpdateStudy {
 	}
 
 	private void handleTreeSets(
-			final OtuSet dbOTUSet,
-			final PPodOtuSet incomingOTUSet) {
+			final OtuSet dbOtuSet,
+			final PPodOtuSet incomingOtuSet) {
 
 		// Let's delete tree sets missing from incoming OTU set
 		final Set<TreeSet> toBeDeleteds = newHashSet();
-		for (final TreeSet dbTreeSet : dbOTUSet.getTreeSets()) {
-			if (null == find(incomingOTUSet.getTreeSets(),
+		for (final TreeSet dbTreeSet : dbOtuSet.getTreeSets()) {
+			if (null == find(incomingOtuSet.getTreeSets(),
 						compose(
 								equalTo(
 										dbTreeSet.getPPodId()),
@@ -306,27 +306,28 @@ class CreateOrUpdateStudy implements ICreateOrUpdateStudy {
 		}
 
 		for (final TreeSet toBeDeleted : toBeDeleteds) {
-			dbOTUSet.removeTreeSet(toBeDeleted);
+			dbOtuSet.removeTreeSet(toBeDeleted);
 		}
 
 		int incomingTreeSetPos = -1;
 
 		// Now let's add in new ones
-		for (final PPodTreeSet incomingTreeSet : incomingOTUSet.getTreeSets()) {
+		for (final PPodTreeSet incomingTreeSet : incomingOtuSet.getTreeSets()) {
 			incomingTreeSetPos++;
 			TreeSet dbTreeSet;
 			if (null == (dbTreeSet =
-					find(dbOTUSet.getTreeSets(),
+					find(dbOtuSet.getTreeSets(),
 							compose(equalTo(incomingTreeSet.getPPodId()),
 									IHasPPodId.getPPodId),
 									null))) {
 				dbTreeSet = ModelFactory.newTreeSet(newVersionInfo
 						.getNewVersionInfo());
 				dbTreeSet.setLabel(incomingTreeSet.getLabel());
-				dbOTUSet.addTreeSet(incomingTreeSetPos, dbTreeSet);
+				dbOtuSet.addTreeSet(incomingTreeSetPos, dbTreeSet);
 				dao.makePersistent(dbTreeSet);
 			}
-			mergeTreeSets.mergeTreeSets(dbTreeSet, incomingTreeSet);
+			mergeTreeSets.mergeTreeSets(dbTreeSet, incomingTreeSet,
+					incomingOtuSet);
 		}
 	}
 }

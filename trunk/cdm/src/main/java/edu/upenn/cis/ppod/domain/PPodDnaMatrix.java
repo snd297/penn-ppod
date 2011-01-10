@@ -5,7 +5,7 @@ import static com.google.common.collect.Lists.newArrayList;
 
 import java.util.List;
 
-final public class PPodDnaMatrix extends UuPPodDomainObject {
+final public class PPodDnaMatrix extends UuPPodDomainObjectWDocId {
 
 	private final String label;
 	private final List<PPodDnaRow> rows = newArrayList();

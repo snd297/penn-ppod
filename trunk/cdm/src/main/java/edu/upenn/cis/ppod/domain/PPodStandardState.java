@@ -1,5 +1,7 @@
 package edu.upenn.cis.ppod.domain;
 
+import static com.google.common.base.Preconditions.checkNotNull;
+
 public final class PPodStandardState {
 
 	private int stateNumber;
@@ -7,6 +9,8 @@ public final class PPodStandardState {
 	private String label;
 
 	public PPodStandardState(final int stateNumber, final String label) {
+		checkNotNull(stateNumber);
+		checkNotNull(label);
 		this.stateNumber = stateNumber;
 		this.label = label;
 	}
@@ -25,16 +29,4 @@ public final class PPodStandardState {
 		return stateNumber;
 	}
 
-	/**
-	 * @param label the label to set
-	 */
-	@SuppressWarnings("unused")
-	private void setLabel(final String label) {
-		this.label = label;
-	}
-
-	@SuppressWarnings("unused")
-	private void setStateNumber(final int stateNumber) {
-		this.stateNumber = stateNumber;
-	}
 }

@@ -1,8 +1,8 @@
 package edu.upenn.cis.ppod.util;
 
 import static com.google.common.collect.Iterables.getOnlyElement;
+import static com.google.common.collect.Sets.immutableEnumSet;
 
-import java.util.EnumSet;
 import java.util.List;
 import java.util.Set;
 
@@ -58,37 +58,37 @@ public class DbStudy2DocStudy {
 	}
 
 	public static Set<PPodDnaNucleotide> A_G =
-			EnumSet.of(PPodDnaNucleotide.A, PPodDnaNucleotide.G);
+			immutableEnumSet(PPodDnaNucleotide.A, PPodDnaNucleotide.G);
 
 	public static Set<PPodDnaNucleotide> C_T =
-			EnumSet.of(PPodDnaNucleotide.C, PPodDnaNucleotide.T);
+			immutableEnumSet(PPodDnaNucleotide.C, PPodDnaNucleotide.T);
 
 	public static Set<PPodDnaNucleotide> G_C =
-			EnumSet.of(PPodDnaNucleotide.G, PPodDnaNucleotide.C);
+			immutableEnumSet(PPodDnaNucleotide.G, PPodDnaNucleotide.C);
 
 	public static Set<PPodDnaNucleotide> A_T =
-			EnumSet.of(PPodDnaNucleotide.A, PPodDnaNucleotide.T);
+			immutableEnumSet(PPodDnaNucleotide.A, PPodDnaNucleotide.T);
 
 	public static Set<PPodDnaNucleotide> G_T =
-			EnumSet.of(PPodDnaNucleotide.G, PPodDnaNucleotide.T);
+			immutableEnumSet(PPodDnaNucleotide.G, PPodDnaNucleotide.T);
 
 	public static Set<PPodDnaNucleotide> A_C =
-			EnumSet.of(PPodDnaNucleotide.A, PPodDnaNucleotide.C);
+			immutableEnumSet(PPodDnaNucleotide.A, PPodDnaNucleotide.C);
 
 	public static Set<PPodDnaNucleotide> C_G_T =
-			EnumSet.of(PPodDnaNucleotide.C, PPodDnaNucleotide.G,
+			immutableEnumSet(PPodDnaNucleotide.C, PPodDnaNucleotide.G,
 					PPodDnaNucleotide.T);
 
 	public static Set<PPodDnaNucleotide> A_G_T =
-			EnumSet.of(PPodDnaNucleotide.A, PPodDnaNucleotide.G,
+			immutableEnumSet(PPodDnaNucleotide.A, PPodDnaNucleotide.G,
 					PPodDnaNucleotide.T);
 
 	public static Set<PPodDnaNucleotide> A_C_T =
-			EnumSet.of(PPodDnaNucleotide.A, PPodDnaNucleotide.C,
+			immutableEnumSet(PPodDnaNucleotide.A, PPodDnaNucleotide.C,
 					PPodDnaNucleotide.T);
 
 	public static Set<PPodDnaNucleotide> A_C_G =
-			EnumSet.of(PPodDnaNucleotide.A, PPodDnaNucleotide.C,
+			immutableEnumSet(PPodDnaNucleotide.A, PPodDnaNucleotide.C,
 					PPodDnaNucleotide.G);
 
 	public static char dbCell2IupacPlus(final DnaCell dbCell) {
@@ -131,35 +131,37 @@ public class DbStudy2DocStudy {
 						break;
 				}
 			case POLYMORPHIC:
-				if (dbCell.getElements().size() == 2) {
-					if (dbCell.getElements().equals(A_G)) {
-						iupacPlus = '!';
-					} else if (dbCell.getElements().equals(C_T)) {
-						iupacPlus = '@';
-					} else if (dbCell.getElements().equals(G_C)) {
-						iupacPlus = '#';
-					} else if (dbCell.getElements().equals(A_T)) {
-						iupacPlus = '$';
-					} else if (dbCell.getElements().equals(G_T)) {
-						iupacPlus = '%';
-					} else if (dbCell.getElements().equals(A_C)) {
-						iupacPlus = '^';
-					}
-				} else if (dbCell.getElements().size() == 3) {
-					if (dbCell.getElements().equals(C_G_T)) {
-						iupacPlus = '&';
-					} else if (dbCell.getElements().equals(A_G_T)) {
-						iupacPlus = '*';
-					} else if (dbCell.getElements().equals(A_C_T)) {
-						iupacPlus = '(';
-					} else if (dbCell.getElements().equals(A_C_G)) {
-						iupacPlus = ')';
-					}
-				} else if (dbCell.getElements().size() == 4) {
-					iupacPlus = '_';
-				} else {
-					throw new AssertionError();
-				}
+				throw new UnsupportedOperationException(
+						"we don't currently support polymorphic");
+				// if (dbCell.getElements().size() == 2) {
+				// if (dbCell.getElements().equals(A_G)) {
+				// iupacPlus = '!';
+				// } else if (dbCell.getElements().equals(C_T)) {
+				// iupacPlus = '@';
+				// } else if (dbCell.getElements().equals(G_C)) {
+				// iupacPlus = '#';
+				// } else if (dbCell.getElements().equals(A_T)) {
+				// iupacPlus = '$';
+				// } else if (dbCell.getElements().equals(G_T)) {
+				// iupacPlus = '%';
+				// } else if (dbCell.getElements().equals(A_C)) {
+				// iupacPlus = '^';
+				// }
+				// } else if (dbCell.getElements().size() == 3) {
+				// if (dbCell.getElements().equals(C_G_T)) {
+				// iupacPlus = '&';
+				// } else if (dbCell.getElements().equals(A_G_T)) {
+				// iupacPlus = '*';
+				// } else if (dbCell.getElements().equals(A_C_T)) {
+				// iupacPlus = '(';
+				// } else if (dbCell.getElements().equals(A_C_G)) {
+				// iupacPlus = ')';
+				// }
+				// } else if (dbCell.getElements().size() == 4) {
+				// iupacPlus = '_';
+				// } else {
+				// throw new AssertionError();
+				// }
 			case UNCERTAIN:
 				if (dbCell.getElements().size() == 2) {
 					if (dbCell.getElements().equals(A_G)) {

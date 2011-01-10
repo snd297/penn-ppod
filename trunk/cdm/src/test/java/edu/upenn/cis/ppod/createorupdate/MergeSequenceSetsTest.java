@@ -21,8 +21,11 @@ import static org.mockito.Mockito.when;
 import org.testng.annotations.Test;
 
 import edu.upenn.cis.ppod.TestGroupDefs;
+import edu.upenn.cis.ppod.domain.PPodDnaSequence;
+import edu.upenn.cis.ppod.domain.PPodDnaSequenceSet;
+import edu.upenn.cis.ppod.domain.PPodOtu;
+import edu.upenn.cis.ppod.domain.PPodOtuSet;
 import edu.upenn.cis.ppod.imodel.INewVersionInfo;
-import edu.upenn.cis.ppod.model.DnaSequence;
 import edu.upenn.cis.ppod.model.DnaSequenceSet;
 import edu.upenn.cis.ppod.model.ModelAssert;
 import edu.upenn.cis.ppod.model.Otu;
@@ -35,9 +38,9 @@ public class MergeSequenceSetsTest {
 	@Test
 	public void modifySequencesKeepLength() {
 
-		final DnaSequenceSet srcSeqSet = new DnaSequenceSet();
+		final PPodDnaSequenceSet srcSeqSet = new PPodDnaSequenceSet(
+				"src-seq-set-0");
 
-		srcSeqSet.setLabel("src-seq-set-0");
 		final DnaSequenceSet trgSeqSet = new DnaSequenceSet();
 
 		final OtuSet trgOTUSet = new OtuSet();
@@ -46,38 +49,24 @@ public class MergeSequenceSetsTest {
 		trgOTUSet.addOtu(new Otu("otu-2"));
 		trgOTUSet.addDnaSequenceSet(trgSeqSet);
 
-		final OtuSet srcOTUSet = new OtuSet();
-		srcOTUSet.addOtu(new Otu("otu-0"));
-		srcOTUSet.addOtu(new Otu("otu-1"));
-		srcOTUSet.addOtu(new Otu("otu-2"));
+		final PPodOtuSet srcOTUSet = new PPodOtuSet("otu-set-0");
+		srcOTUSet.getOtus().add(new PPodOtu("otu-0"));
+		srcOTUSet.getOtus().add(new PPodOtu("otu-1"));
+		srcOTUSet.getOtus().add(new PPodOtu("otu-2"));
 
-		srcOTUSet.addDnaSequenceSet(srcSeqSet);
+		srcOTUSet.getDnaSequenceSets().add(srcSeqSet);
 
-		final DnaSequence srcSeq0 =
-					(DnaSequence) new DnaSequence()
-							.setSequence("ACT")
-																	.setAccession(
-																			"jkjkj")
-																	.setName(
-																			"jkejfke")
-																	.setDescription(
-																			"jkfjeijf");
-		final DnaSequence srcSeq1 =
-					(DnaSequence) new DnaSequence()
-							.setSequence("TCA")
-							.setAccession("jjijk")
-							.setName("jefeji")
-							.setDescription("ejfiejiji");
-		final DnaSequence srcSeq2 =
-					(DnaSequence) new DnaSequence()
-							.setSequence("ATC")
-							.setAccession("jfje")
-							.setName("jfifjiji")
-							.setDescription("fjijeifji");
+		PPodDnaSequence srcSeq0 =
+					new PPodDnaSequence("ACT", "jkjkj", "jkejfke", "jkfjeijf");
+		PPodDnaSequence srcSeq1 =
+				new PPodDnaSequence("TCA", "jjijk", "jefeji", "ejfiejiji");
+		PPodDnaSequence srcSeq2 =
+						new PPodDnaSequence("ATC", "jfje", "jfifjiji",
+								"fjijeifji");
 
-		srcSeqSet.putSequence(srcOTUSet.getOtus().get(0), srcSeq0);
-		srcSeqSet.putSequence(srcOTUSet.getOtus().get(1), srcSeq1);
-		srcSeqSet.putSequence(srcOTUSet.getOtus().get(2), srcSeq2);
+		srcSeqSet.getSequences().add(srcSeq0);
+		srcSeqSet.getSequences().add(srcSeq1);
+		srcSeqSet.getSequences().add(srcSeq2);
 
 		final VersionInfo versionInfo = mock(VersionInfo.class);
 		final INewVersionInfo newVersionInfo = mock(INewVersionInfo.class);
@@ -88,13 +77,13 @@ public class MergeSequenceSetsTest {
 
 		mergeSeqSets.mergeSequenceSets(trgSeqSet, srcSeqSet);
 
-		srcSeq0.setSequence("ACC");
-		srcSeq1.setSequence("TCT");
-		srcSeq2.setSequence("ATA");
-
-		srcSeqSet.putSequence(srcOTUSet.getOtus().get(0), srcSeq0);
-		srcSeqSet.putSequence(srcOTUSet.getOtus().get(1), srcSeq1);
-		srcSeqSet.putSequence(srcOTUSet.getOtus().get(2), srcSeq2);
+		srcSeq0 =
+				new PPodDnaSequence("ACC", "jkjkj", "jkejfke", "jkfjeijf");
+		srcSeq1 =
+				new PPodDnaSequence("TCT", "jjijk", "jefeji", "ejfiejiji");
+		srcSeq2 =
+				new PPodDnaSequence("ATA", "jfje", "jfifjiji",
+						"fjijeifji");
 
 		mergeSeqSets.mergeSequenceSets(trgSeqSet, srcSeqSet);
 
@@ -104,10 +93,9 @@ public class MergeSequenceSetsTest {
 	@Test
 	public void shortenSequences() {
 
-		final DnaSequenceSet srcSeqSet =
-				new DnaSequenceSet();
+		final PPodDnaSequenceSet srcSeqSet =
+				new PPodDnaSequenceSet("src-seq-set-0");
 
-		srcSeqSet.setLabel("src-seq-set-0");
 		final DnaSequenceSet trgSeqSet = new DnaSequenceSet();
 
 		final OtuSet trgOTUSet = new OtuSet();
@@ -116,35 +104,24 @@ public class MergeSequenceSetsTest {
 		trgOTUSet.addOtu(new Otu("otu-2"));
 		trgOTUSet.addDnaSequenceSet(trgSeqSet);
 
-		final OtuSet srcOTUSet = new OtuSet();
-		srcOTUSet.addOtu(new Otu("otu-0"));
-		srcOTUSet.addOtu(new Otu("otu-1"));
-		srcOTUSet.addOtu(new Otu("otu-2"));
+		final PPodOtuSet srcOTUSet = new PPodOtuSet("otu-set-0");
+		srcOTUSet.getOtus().add(new PPodOtu("otu-0"));
+		srcOTUSet.getOtus().add(new PPodOtu("otu-1"));
+		srcOTUSet.getOtus().add(new PPodOtu("otu-2"));
 
-		srcOTUSet.addDnaSequenceSet(srcSeqSet);
+		srcOTUSet.getDnaSequenceSets().add(srcSeqSet);
 
-		final DnaSequence srcSeq0 =
-				(DnaSequence) new DnaSequence()
-							.setSequence("ACT")
-							.setAccession("jkjkj")
-							.setName("jkejfke")
-							.setDescription("jkfjeijf");
-		final DnaSequence srcSeq1 =
-				(DnaSequence) new DnaSequence()
-							.setSequence("TCA")
-							.setAccession("jjijk")
-							.setName("jefeji")
-							.setDescription("ejfiejiji");
-		final DnaSequence srcSeq2 =
-				(DnaSequence) new DnaSequence()
-							.setSequence("ATC")
-							.setAccession("jfje")
-							.setName("jfifjiji")
-							.setDescription("fjijeifji");
+		PPodDnaSequence srcSeq0 =
+				new PPodDnaSequence("ACT", "jkjkj", "jkejfke", "jkfjeijf");
+		PPodDnaSequence srcSeq1 =
+				new PPodDnaSequence("TCA", "jjijk", "jefeji", "ejfiejiji");
+		PPodDnaSequence srcSeq2 =
+				new PPodDnaSequence("ATC", "jfje", "jfifjiji",
+						"fjijeifji");
 
-		srcSeqSet.putSequence(srcOTUSet.getOtus().get(0), srcSeq0);
-		srcSeqSet.putSequence(srcOTUSet.getOtus().get(1), srcSeq1);
-		srcSeqSet.putSequence(srcOTUSet.getOtus().get(2), srcSeq2);
+		srcSeqSet.getSequences().add(srcSeq0);
+		srcSeqSet.getSequences().add(srcSeq1);
+		srcSeqSet.getSequences().add(srcSeq2);
 
 		final VersionInfo versionInfo = mock(VersionInfo.class);
 		final INewVersionInfo newVersionInfo = mock(INewVersionInfo.class);
@@ -155,15 +132,13 @@ public class MergeSequenceSetsTest {
 
 		mergeSeqSets.mergeSequenceSets(trgSeqSet, srcSeqSet);
 
-		srcSeqSet.clearSequences();
-
-		srcSeq0.setSequence("AC");
-		srcSeq1.setSequence("TC");
-		srcSeq2.setSequence("AT");
-
-		srcSeqSet.putSequence(srcOTUSet.getOtus().get(0), srcSeq0);
-		srcSeqSet.putSequence(srcOTUSet.getOtus().get(1), srcSeq1);
-		srcSeqSet.putSequence(srcOTUSet.getOtus().get(2), srcSeq2);
+		srcSeq0 =
+				new PPodDnaSequence("AC", "jkjkj", "jkejfke", "jkfjeijf");
+		srcSeq1 =
+				new PPodDnaSequence("TC", "jjijk", "jefeji", "ejfiejiji");
+		srcSeq2 =
+				new PPodDnaSequence("AT", "jfje", "jfifjiji",
+						"fjijeifji");
 
 		mergeSeqSets.mergeSequenceSets(trgSeqSet, srcSeqSet);
 
@@ -172,9 +147,9 @@ public class MergeSequenceSetsTest {
 
 	@Test
 	public void mergeOnBlankTarget() {
-		final DnaSequenceSet srcSeqSet =
-				new DnaSequenceSet();
-		srcSeqSet.setLabel("src-seq-set-0");
+		final PPodDnaSequenceSet srcSeqSet =
+				new PPodDnaSequenceSet("src-seq-set-0");
+
 		final DnaSequenceSet trgSeqSet = new DnaSequenceSet();
 
 		final OtuSet trgOTUSet = new OtuSet();
@@ -183,35 +158,24 @@ public class MergeSequenceSetsTest {
 		trgOTUSet.addOtu(new Otu("otu-2"));
 		trgOTUSet.addDnaSequenceSet(trgSeqSet);
 
-		final OtuSet srcOTUSet = new OtuSet();
-		srcOTUSet.addOtu(new Otu("otu-0"));
-		srcOTUSet.addOtu(new Otu("otu-1"));
-		srcOTUSet.addOtu(new Otu("otu-2"));
+		final PPodOtuSet srcOTUSet = new PPodOtuSet("otu-set-0");
+		srcOTUSet.getOtus().add(new PPodOtu("otu-0"));
+		srcOTUSet.getOtus().add(new PPodOtu("otu-1"));
+		srcOTUSet.getOtus().add(new PPodOtu("otu-2"));
 
-		srcOTUSet.addDnaSequenceSet(srcSeqSet);
+		srcOTUSet.getDnaSequenceSets().add(srcSeqSet);
 
-		final DnaSequence srcSeq0 =
-				(DnaSequence) new DnaSequence()
-								.setSequence("ACT")
-								.setAccession("jkjkj")
-								.setName("jkejfke")
-								.setDescription("jkfjeijf");
-		final DnaSequence srcSeq1 =
-				(DnaSequence) new DnaSequence()
-						.setSequence("TCA")
-						.setAccession("jjijk")
-						.setName("jefeji")
-						.setDescription("ejfiejiji");
-		final DnaSequence srcSeq2 =
-				(DnaSequence) new DnaSequence()
-						.setSequence("ATC")
-						.setAccession("jfje")
-						.setName("jfifjiji")
-						.setDescription("fjijeifji");
+		PPodDnaSequence srcSeq0 =
+				new PPodDnaSequence("ACT", "jkjkj", "jkejfke", "jkfjeijf");
+		PPodDnaSequence srcSeq1 =
+				new PPodDnaSequence("TCA", "jjijk", "jefeji", "ejfiejiji");
+		PPodDnaSequence srcSeq2 =
+				new PPodDnaSequence("ATC", "jfje", "jfifjiji",
+						"fjijeifji");
 
-		srcSeqSet.putSequence(srcOTUSet.getOtus().get(0), srcSeq0);
-		srcSeqSet.putSequence(srcOTUSet.getOtus().get(1), srcSeq1);
-		srcSeqSet.putSequence(srcOTUSet.getOtus().get(2), srcSeq2);
+		srcSeqSet.getSequences().add(srcSeq0);
+		srcSeqSet.getSequences().add(srcSeq1);
+		srcSeqSet.getSequences().add(srcSeq2);
 
 		final VersionInfo versionInfo = mock(VersionInfo.class);
 		final INewVersionInfo newVersionInfo = mock(INewVersionInfo.class);

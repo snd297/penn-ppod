@@ -43,7 +43,7 @@ public class ModelFactory {
 		return matrix;
 	}
 
-	public static DnaRow newDNARow(final VersionInfo versionInfo) {
+	public static DnaRow newDnaRow(final VersionInfo versionInfo) {
 		final DnaRow row = new DnaRow();
 		preparePPodEntity(row, versionInfo);
 		return row;

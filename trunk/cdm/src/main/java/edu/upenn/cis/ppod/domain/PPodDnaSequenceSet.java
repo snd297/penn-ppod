@@ -10,6 +10,10 @@ final public class PPodDnaSequenceSet extends UuPPodDomainObject {
 	private final String label;
 	private final List<PPodDnaSequence> sequences = newArrayList();
 
+	public PPodDnaSequenceSet(final String label) {
+		this.label = label;
+	}
+
 	public PPodDnaSequenceSet(final String pPodId, final Long version,
 			final String label) {
 		super(pPodId, version);
