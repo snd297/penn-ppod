@@ -86,7 +86,7 @@ public class DocCell2DbCell {
 				dbCell.setInapplicable();
 				break;
 			default:
-				throw new AssertionError();
+				throw new AssertionError("can't handle a [" + docCell + "]");
 		}
 	}
 }

@@ -5,15 +5,28 @@ import static com.google.common.collect.Lists.newArrayList;
 
 import java.util.List;
 
+import edu.umd.cs.findbugs.annotations.CheckForNull;
+
 public final class PPodStandardMatrix extends UuPPodDomainObjectWDocId {
 
-	private final String label;
+	private String label;
 	private final List<PPodStandardCharacter> characters = newArrayList();
 	private final List<PPodStandardRow> rows = newArrayList();
+	private final List<Long> columnVersions = newArrayList();
 
-	public PPodStandardMatrix(final String pPodId, final Long version,
+	PPodStandardMatrix() {}
+
+	public PPodStandardMatrix(@CheckForNull final String pPodId,
+			@CheckForNull final Long version,
 			final String label) {
 		super(pPodId, version);
+		checkNotNull(label);
+		this.label = label;
+	}
+
+	public PPodStandardMatrix(@CheckForNull final String pPodId,
+			final String label) {
+		super(pPodId);
 		checkNotNull(label);
 		this.label = label;
 	}
@@ -28,5 +41,9 @@ public final class PPodStandardMatrix extends UuPPodDomainObjectWDocId {
 
 	public List<PPodStandardRow> getRows() {
 		return rows;
+	}
+
+	public List<Long> getColumnVersions() {
+		return columnVersions;
 	}
 }

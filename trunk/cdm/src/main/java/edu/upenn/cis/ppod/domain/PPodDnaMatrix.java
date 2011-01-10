@@ -5,10 +5,21 @@ import static com.google.common.collect.Lists.newArrayList;
 
 import java.util.List;
 
+import edu.umd.cs.findbugs.annotations.CheckForNull;
+
 final public class PPodDnaMatrix extends UuPPodDomainObjectWDocId {
 
-	private final String label;
+	PPodDnaMatrix() {}
+
+	private String label;
 	private final List<PPodDnaRow> rows = newArrayList();
+	private final List<Long> columnVersions = newArrayList();
+
+	public PPodDnaMatrix(@CheckForNull final String pPodId, final String label) {
+		super(pPodId);
+		checkNotNull(label);
+		this.label = label;
+	}
 
 	public String getLabel() {
 		return label;
@@ -24,6 +35,10 @@ final public class PPodDnaMatrix extends UuPPodDomainObjectWDocId {
 		checkNotNull(label);
 		this.label = label;
 
+	}
+
+	public List<Long> getColumnVersions() {
+		return columnVersions;
 	}
 
 }

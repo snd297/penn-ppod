@@ -4,9 +4,16 @@ import static com.google.common.base.Preconditions.checkNotNull;
 
 public final class PPodOtu extends UuPPodDomainObjectWDocId {
 
-	private final String label;
+	private String label;
+
+	PPodOtu() {}
 
 	public PPodOtu(final String label) {
+		this.label = label;
+	}
+
+	public PPodOtu(final String pPodId, final String label) {
+		super(pPodId);
 		this.label = label;
 	}
 
@@ -21,6 +28,11 @@ public final class PPodOtu extends UuPPodDomainObjectWDocId {
 	 */
 	public String getLabel() {
 		return label;
+	}
+
+	public void setLabel(final String label) {
+		checkNotNull(label);
+		this.label = label;
 	}
 
 }

@@ -2,7 +2,18 @@ package edu.upenn.cis.ppod.domain;
 
 import static com.google.common.base.Preconditions.checkNotNull;
 
+import com.google.common.base.Function;
+
 public final class PPodStandardState {
+
+	PPodStandardState() {}
+
+	public static Function<PPodStandardState, Integer> getStateNumber = new Function<PPodStandardState, Integer>() {
+
+		public Integer apply(PPodStandardState input) {
+			return input.getStateNumber();
+		}
+	};
 
 	private int stateNumber;
 
