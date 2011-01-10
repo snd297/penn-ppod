@@ -40,6 +40,8 @@ public class DnaMatrix
 
 	public final static String TABLE = "DNA_MATRIX";
 
+	public final static String JOIN_COLUMN = TABLE + "_ID";
+
 	@Embedded
 	private DnaRows rows = new DnaRows();
 

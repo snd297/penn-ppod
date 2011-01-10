@@ -15,96 +15,133 @@
  */
 package edu.upenn.cis.ppod.createorupdate;
 
-import static com.google.common.base.Preconditions.checkArgument;
-import static com.google.common.collect.Iterables.get;
-import static com.google.common.collect.Iterables.getOnlyElement;
+import static com.google.common.collect.Lists.newArrayListWithCapacity;
+
+import java.util.List;
+
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 
 import com.google.inject.Inject;
 
 import edu.upenn.cis.ppod.dao.IObjectWithLongIdDAO;
-import edu.upenn.cis.ppod.domain.PPodCellType;
-import edu.upenn.cis.ppod.domain.PPodDnaNucleotide;
+import edu.upenn.cis.ppod.domain.PPodDnaMatrix;
+import edu.upenn.cis.ppod.domain.PPodDnaRow;
 import edu.upenn.cis.ppod.imodel.INewVersionInfo;
 import edu.upenn.cis.ppod.model.DnaCell;
 import edu.upenn.cis.ppod.model.DnaMatrix;
 import edu.upenn.cis.ppod.model.DnaRow;
 import edu.upenn.cis.ppod.model.ModelFactory;
-import edu.upenn.cis.ppod.model.VersionInfo;
+import edu.upenn.cis.ppod.model.Otu;
+import edu.upenn.cis.ppod.util.DocCell2DbCell;
 
-class CreateOrUpdateDNAMatrix
-		extends
-		CreateOrUpdateMatrix<DnaMatrix, DnaRow, DnaCell, PPodDnaNucleotide>
-		implements ICreateOrUpdateDNAMatrix {
+class CreateOrUpdateDNAMatrix implements ICreateOrUpdateDNAMatrix {
+
+	private final IObjectWithLongIdDAO dao;
+	private final INewVersionInfo newVersionInfo;
+	private final static Logger logger = LoggerFactory
+			.getLogger(CreateOrUpdateDNAMatrix.class);
 
 	@Inject
 	CreateOrUpdateDNAMatrix(
 			final IObjectWithLongIdDAO dao,
 			final INewVersionInfo newVersionInfo) {
-		super(
-				dao,
-				newVersionInfo);
-
+		this.dao = dao;
+		this.newVersionInfo = newVersionInfo;
 	}
 
 	public void createOrUpdateMatrix(
 			final DnaMatrix dbMatrix,
-			final DnaMatrix sourceMatrix) {
+			final PPodDnaMatrix sourceMatrix) {
 
-		final int[] sourceToDbCharPositions =
-				new int[sourceMatrix.getColumnsSize()];
-
-		for (int i = 0; i < sourceToDbCharPositions.length; i++) {
-			if (i < dbMatrix.getColumnsSize()) {
-				sourceToDbCharPositions[i] = i;
-			} else {
-				sourceToDbCharPositions[i] = -1;
-			}
-		}
+		final String METHOD = "createOrUpdateMatrix(...)";
 
 		dbMatrix.setColumnsSize(
-				get(sourceMatrix.getRows()
-						.values(), 0)
-						.getCells()
-						.size());
+				sourceMatrix.getRows().get(0).getSequence().length());
 
-		super.createOrUpdateMatrixHelper(
-				dbMatrix,
-				sourceMatrix,
-				sourceToDbCharPositions);
+		// We need this for the response: it's less than ideal to do this here,
+		// but easy
+		if (dbMatrix.getDocId() == null) {
+			dbMatrix.setDocId(sourceMatrix.getDocId());
+		}
+
+		dbMatrix.setLabel(sourceMatrix.getLabel());
+		// dbMatrix.setDescription(sourceMatrix.getDescription());
+
+		// So that makePersistenct(dbRow) below has a persistent parent.
+		dao.makePersistent(dbMatrix);
+
+		int sourceOTUPos = -1;
+
+		for (final PPodDnaRow sourceRow : sourceMatrix.getRows()) {
+
+			sourceOTUPos++;
+
+			final Otu dbOTU =
+					dbMatrix.getParent()
+							.getOtus()
+							.get(sourceOTUPos);
+
+			// Let's create rows for OTU->null row mappings in the matrix.
+			DnaRow dbRow = null;
+
+			if (null == (dbRow = dbMatrix.getRows().get(dbOTU))) {
+				dbRow = ModelFactory.newDnaRow(newVersionInfo
+						.getNewVersionInfo());
+				dbMatrix.putRow(dbOTU, dbRow);
+				dao.makePersistent(dbRow);
+			}
+
+			final List<DnaCell> dbCells =
+					newArrayListWithCapacity(sourceRow.getSequence().length());
+
+			int i = -1;
+			while (dbCells.size() < sourceRow.getSequence().length()) {
+				i++;
+				if (i < dbCells.size()) {
+					dbCells.add(dbRow.getCells().get(i));
+				} else {
+					dbCells.add(ModelFactory.newDNACell(newVersionInfo
+							.getNewVersionInfo()));
+				}
+			}
+
+			dbRow.setCells(dbCells);
+
+			int dbCellPosition = -1;
+			for (final DnaCell dbCell : dbRow.getCells()) {
+				dbCellPosition++;
+
+				final char sourceCell = sourceRow
+						.getSequence().charAt(dbCellPosition);
+
+				DocCell2DbCell.docCell2DbCell(dbCell, sourceCell);
+
+				// We need to do this here since we're removing the cell from
+				// the persistence context (with evict). So it won't get handled
+				// higher up in the application when it does for most entities.
+				if (dbCell.isInNeedOfNewVersion()) {
+					dbCell.setVersionInfo(
+							newVersionInfo.getNewVersionInfo());
+				}
+			}
+
+			// We need to do this here since we're removing the row from
+			// the persistence context (with evict)
+			if (dbRow.isInNeedOfNewVersion()) {
+				dbRow.setVersionInfo(
+						newVersionInfo.getNewVersionInfo());
+			}
+
+			logger.debug(
+					"{}: flushing row number {}",
+					METHOD,
+					sourceOTUPos);
+
+			dao.flush();
+			dao.evict(dbRow);
+		}
+
 	}
 
-	@Override
-	protected void handlePolymorphicCell(final DnaCell targetCell,
-			final DnaCell sourceCell) {
-		checkArgument(sourceCell.getType() == PPodCellType.POLYMORPHIC);
-		targetCell.setPolymorphicElements(
-				sourceCell.getElements(),
-				sourceCell.getLowerCase());
-	}
-
-	@Override
-	protected void handleSingleCell(final DnaCell targetCell,
-			final DnaCell sourceCell) {
-		checkArgument(sourceCell.getType() == PPodCellType.SINGLE);
-		targetCell.setSingleElement(
-				getOnlyElement(sourceCell.getElements()),
-				sourceCell.getLowerCase());
-	}
-
-	@Override
-	protected void handleUncertainCell(final DnaCell targetCell,
-			final DnaCell sourceCell) {
-		checkArgument(sourceCell.getType() == PPodCellType.UNCERTAIN);
-		targetCell.setUncertainElements(sourceCell.getElements());
-	}
-
-	@Override
-	protected DnaCell newC(final VersionInfo versionInfo) {
-		return ModelFactory.newDNACell(versionInfo);
-	}
-
-	@Override
-	protected DnaRow newR(final VersionInfo versionInfo) {
-		return ModelFactory.newDNARow(versionInfo);
-	}
 }

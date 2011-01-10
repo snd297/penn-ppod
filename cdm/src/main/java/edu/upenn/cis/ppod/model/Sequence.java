@@ -44,7 +44,7 @@ public abstract class Sequence<SS extends SequenceSet<?>>
 
 	@Lob
 	@Column(name = SEQUENCE_COLUMN, nullable = false)
-	@CheckForNull
+	@Nullable
 	private String sequence;
 
 	@Column(name = "ACCESSION", nullable = true)
@@ -67,7 +67,7 @@ public abstract class Sequence<SS extends SequenceSet<?>>
 	 * @return the accession
 	 */
 	@XmlAttribute
-	@CheckForNull
+	@Nullable
 	public String getAccession() {
 		return accession;
 	}
@@ -78,7 +78,7 @@ public abstract class Sequence<SS extends SequenceSet<?>>
 	 * @return the description
 	 */
 	@XmlAttribute
-	@CheckForNull
+	@Nullable
 	public String getDescription() {
 		return description;
 	}
@@ -89,7 +89,7 @@ public abstract class Sequence<SS extends SequenceSet<?>>
 	 * @return the name
 	 */
 	@XmlAttribute
-	@CheckForNull
+	@Nullable
 	public String getName() {
 		return name;
 	}

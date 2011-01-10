@@ -17,6 +17,8 @@ package edu.upenn.cis.ppod.imodel;
 
 import javax.annotation.Nullable;
 
+import edu.upenn.cis.ppod.domain.IHasDocId;
+
 /**
  * An object that holds a write-once-read-many {@link XmlID}.
  * <p>
@@ -30,19 +32,7 @@ import javax.annotation.Nullable;
  * 
  * @author Sam Donnelly
  */
-public interface IHasDocId {
-
-	/**
-	 * Get the {@link javax.xml.bind.annotation.XmlID} attribute.
-	 * <p>
-	 * Will be {@code null} until one of the {@code setDocId(...)}s are called
-	 * by the client, but never {@code null} after that.
-	 * 
-	 * @return the {@code XmlID} attribute
-	 */
-	@Nullable
-	String getDocId();
-
+public interface IHasWormDocId extends IHasDocId {
 	/**
 	 * Create and set this {@code IWithXmlID}'s doc id.
 	 * 

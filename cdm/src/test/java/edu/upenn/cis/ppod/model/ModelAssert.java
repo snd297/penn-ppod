@@ -29,6 +29,8 @@ import static org.testng.Assert.assertTrue;
 import java.util.Iterator;
 import java.util.Set;
 
+import edu.upenn.cis.ppod.domain.PPodDnaSequence;
+import edu.upenn.cis.ppod.domain.PPodDnaSequenceSet;
 import edu.upenn.cis.ppod.imodel.ILabeled;
 import edu.upenn.cis.ppod.imodel.IPPodEntity;
 
@@ -42,15 +44,11 @@ public class ModelAssert {
 
 	public static <S extends Sequence<?>> void assertEqualsSequenceSets(
 			final SequenceSet<S> actualSeqSet,
-			final SequenceSet<S> expectedSeqSet) {
+			final PPodDnaSequenceSet expectedSeqSet) {
 		assertEquals(actualSeqSet.getLabel(), actualSeqSet.getLabel());
 		assertEquals(
 				actualSeqSet.getSequences().size(),
 				expectedSeqSet.getSequences().size());
-
-		assertEquals(
-				actualSeqSet.getParent().getOtus().size(),
-				expectedSeqSet.getParent().getOtus().size());
 
 		for (int otuPos = 0; otuPos < actualSeqSet.getParent().getOtus().size(); otuPos++) {
 			assertEqualsSequences(
@@ -60,16 +58,14 @@ public class ModelAssert {
 									.getOtus()
 									.get(otuPos)),
 									expectedSeqSet
-											.getSequence(expectedSeqSet
-													.getParent()
-													.getOtus()
-													.get(otuPos)));
+											.getSequences().get(otuPos));
+
 		}
 	}
 
 	public static void assertEqualsSequences(
 			final Sequence<?> actualSeq,
-			final Sequence<?> expectedSeq) {
+			final PPodDnaSequence expectedSeq) {
 		assertEquals(actualSeq.getSequence(), expectedSeq.getSequence());
 		assertEquals(actualSeq.getAccession(), expectedSeq.getAccession());
 		assertEquals(actualSeq.getDescription(), expectedSeq.getDescription());

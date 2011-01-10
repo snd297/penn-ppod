@@ -21,7 +21,7 @@ import javax.annotation.Nullable;
 import javax.xml.bind.annotation.XmlAttribute;
 import javax.xml.bind.annotation.XmlID;
 
-import edu.upenn.cis.ppod.imodel.IHasDocId;
+import edu.upenn.cis.ppod.imodel.IHasWormDocId;
 
 /**
  * A {@code PersistentObject} w/ an {@link XmlID} attribute called
@@ -47,7 +47,7 @@ import edu.upenn.cis.ppod.imodel.IHasDocId;
  */
 public abstract class PersistentObjectWithDocId
 		extends PersistentObject
-		implements IHasDocId {
+		implements IHasWormDocId {
 	/**
 	 * Intended for referencing elements within a document - be it XML, JSON,
 	 * etc. This is distinct from the pPOD Id of {@link UUPPodEntity}.

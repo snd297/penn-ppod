@@ -21,9 +21,7 @@ import static com.google.common.base.Predicates.compose;
 import static com.google.common.base.Predicates.equalTo;
 import static com.google.common.collect.Iterables.find;
 import static com.google.common.collect.Iterables.getOnlyElement;
-import static com.google.common.collect.Iterables.transform;
 import static com.google.common.collect.Lists.newArrayList;
-import static com.google.common.collect.Sets.newHashSet;
 
 import java.util.List;
 import java.util.Set;
@@ -150,14 +148,9 @@ final class CreateOrUpdateStandardMatrix
 
 	@Override
 	protected void handleUncertainCell(final StandardCell targetCell,
-			final StandardCell sourceCell) {
+			final PPodStandardCell sourceCell) {
 		checkArgument(sourceCell.getType() == PPodCellType.UNCERTAIN);
-		final Set<Integer> sourceStateNumbers =
-				newHashSet(
-				transform(
-						sourceCell.getElements(),
-						StandardState.getStateNumber));
-		targetCell.setUncertainWithStateNos(sourceStateNumbers);
+		targetCell.setUncertainWithStateNos(sourceCell.getStates());
 	}
 
 	@Override
