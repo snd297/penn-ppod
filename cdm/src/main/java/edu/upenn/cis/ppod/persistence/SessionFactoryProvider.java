@@ -3,7 +3,6 @@ package edu.upenn.cis.ppod.persistence;
 import static com.google.common.base.Preconditions.checkState;
 
 import org.hibernate.SessionFactory;
-import org.hibernate.cfg.AnnotationConfiguration;
 import org.hibernate.cfg.Configuration;
 import org.hibernate.cfg.ImprovedNamingStrategy;
 import org.slf4j.Logger;
@@ -41,7 +40,7 @@ public class SessionFactoryProvider implements Provider<SessionFactory> {
 						+ " bound as an eager singelton as it should be? Has it been put into more than one injector\n "
 						+ " in the same JVM? Though that may be a legit thing to do, it's not supported.");
 		logger.debug("building session factory...");
-		final Configuration cfg = new AnnotationConfiguration();
+		final Configuration cfg = new Configuration();
 		cfg.setNamingStrategy(new ImprovedNamingStrategy());
 
 		// Read hibernate.cfg.xml (has to be present)

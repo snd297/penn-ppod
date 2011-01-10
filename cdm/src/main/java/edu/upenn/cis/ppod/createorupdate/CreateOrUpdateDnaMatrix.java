@@ -35,15 +35,15 @@ import edu.upenn.cis.ppod.model.ModelFactory;
 import edu.upenn.cis.ppod.model.Otu;
 import edu.upenn.cis.ppod.util.DocCell2DbCell;
 
-class CreateOrUpdateDNAMatrix implements ICreateOrUpdateDNAMatrix {
+class CreateOrUpdateDnaMatrix implements ICreateOrUpdateDNAMatrix {
 
 	private final IObjectWithLongIdDAO dao;
 	private final INewVersionInfo newVersionInfo;
 	private final static Logger logger = LoggerFactory
-			.getLogger(CreateOrUpdateDNAMatrix.class);
+			.getLogger(CreateOrUpdateDnaMatrix.class);
 
 	@Inject
-	CreateOrUpdateDNAMatrix(
+	CreateOrUpdateDnaMatrix(
 			final IObjectWithLongIdDAO dao,
 			final INewVersionInfo newVersionInfo) {
 		this.dao = dao;

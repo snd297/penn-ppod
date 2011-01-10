@@ -56,11 +56,11 @@ public class MergeSequenceSetsTest {
 
 		srcOTUSet.getDnaSequenceSets().add(srcSeqSet);
 
-		PPodDnaSequence srcSeq0 =
+		final PPodDnaSequence srcSeq0 =
 					new PPodDnaSequence("ACT", "jkjkj", "jkejfke", "jkfjeijf");
-		PPodDnaSequence srcSeq1 =
+		final PPodDnaSequence srcSeq1 =
 				new PPodDnaSequence("TCA", "jjijk", "jefeji", "ejfiejiji");
-		PPodDnaSequence srcSeq2 =
+		final PPodDnaSequence srcSeq2 =
 						new PPodDnaSequence("ATC", "jfje", "jfifjiji",
 								"fjijeifji");
 
@@ -77,13 +77,9 @@ public class MergeSequenceSetsTest {
 
 		mergeSeqSets.mergeSequenceSets(trgSeqSet, srcSeqSet);
 
-		srcSeq0 =
-				new PPodDnaSequence("ACC", "jkjkj", "jkejfke", "jkfjeijf");
-		srcSeq1 =
-				new PPodDnaSequence("TCT", "jjijk", "jefeji", "ejfiejiji");
-		srcSeq2 =
-				new PPodDnaSequence("ATA", "jfje", "jfifjiji",
-						"fjijeifji");
+		srcSeq0.setSequence("ACC");
+		srcSeq1.setSequence("TCT");
+		srcSeq2.setSequence("ATA");
 
 		mergeSeqSets.mergeSequenceSets(trgSeqSet, srcSeqSet);
 
@@ -111,11 +107,11 @@ public class MergeSequenceSetsTest {
 
 		srcOTUSet.getDnaSequenceSets().add(srcSeqSet);
 
-		PPodDnaSequence srcSeq0 =
+		final PPodDnaSequence srcSeq0 =
 				new PPodDnaSequence("ACT", "jkjkj", "jkejfke", "jkfjeijf");
-		PPodDnaSequence srcSeq1 =
+		final PPodDnaSequence srcSeq1 =
 				new PPodDnaSequence("TCA", "jjijk", "jefeji", "ejfiejiji");
-		PPodDnaSequence srcSeq2 =
+		final PPodDnaSequence srcSeq2 =
 				new PPodDnaSequence("ATC", "jfje", "jfifjiji",
 						"fjijeifji");
 
@@ -132,13 +128,9 @@ public class MergeSequenceSetsTest {
 
 		mergeSeqSets.mergeSequenceSets(trgSeqSet, srcSeqSet);
 
-		srcSeq0 =
-				new PPodDnaSequence("AC", "jkjkj", "jkejfke", "jkfjeijf");
-		srcSeq1 =
-				new PPodDnaSequence("TC", "jjijk", "jefeji", "ejfiejiji");
-		srcSeq2 =
-				new PPodDnaSequence("AT", "jfje", "jfifjiji",
-						"fjijeifji");
+		srcSeq0.setSequence("AC");
+		srcSeq1.setSequence("TC");
+		srcSeq2.setSequence("AT");
 
 		mergeSeqSets.mergeSequenceSets(trgSeqSet, srcSeqSet);
 
@@ -165,11 +157,11 @@ public class MergeSequenceSetsTest {
 
 		srcOTUSet.getDnaSequenceSets().add(srcSeqSet);
 
-		PPodDnaSequence srcSeq0 =
+		final PPodDnaSequence srcSeq0 =
 				new PPodDnaSequence("ACT", "jkjkj", "jkejfke", "jkfjeijf");
-		PPodDnaSequence srcSeq1 =
+		final PPodDnaSequence srcSeq1 =
 				new PPodDnaSequence("TCA", "jjijk", "jefeji", "ejfiejiji");
-		PPodDnaSequence srcSeq2 =
+		final PPodDnaSequence srcSeq2 =
 				new PPodDnaSequence("ATC", "jfje", "jfifjiji",
 						"fjijeifji");
 

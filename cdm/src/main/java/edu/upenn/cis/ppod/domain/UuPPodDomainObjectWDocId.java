@@ -4,15 +4,22 @@ import java.util.UUID;
 
 import javax.xml.bind.annotation.XmlID;
 
-public class UuPPodDomainObjectWDocId extends UuPPodDomainObject {
+import edu.umd.cs.findbugs.annotations.CheckForNull;
+
+class UuPPodDomainObjectWDocId extends UuPPodDomainObject implements IHasDocId {
 	@XmlID
 	private final String docId = UUID.randomUUID().toString();
 
-	public UuPPodDomainObjectWDocId() {
+	protected UuPPodDomainObjectWDocId() {
 
 	}
 
-	public UuPPodDomainObjectWDocId(final String pPodId, final Long version) {
+	protected UuPPodDomainObjectWDocId(@CheckForNull final String pPodId) {
+		super(pPodId);
+	}
+
+	protected UuPPodDomainObjectWDocId(@CheckForNull final String pPodId,
+			final Long version) {
 		super(pPodId, version);
 	}
 

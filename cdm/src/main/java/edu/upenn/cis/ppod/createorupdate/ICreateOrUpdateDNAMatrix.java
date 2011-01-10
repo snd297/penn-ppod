@@ -23,7 +23,7 @@ import edu.upenn.cis.ppod.model.DnaMatrix;
 /**
  * @author Sam Donnelly
  */
-@ImplementedBy(CreateOrUpdateDNAMatrix.class)
+@ImplementedBy(CreateOrUpdateDnaMatrix.class)
 public interface ICreateOrUpdateDNAMatrix {
 
 	/**

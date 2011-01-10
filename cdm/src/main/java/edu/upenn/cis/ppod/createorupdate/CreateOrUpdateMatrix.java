@@ -74,16 +74,16 @@ abstract class CreateOrUpdateMatrix<M extends Matrix<R, C>, R extends Row<C, ?>,
 		// So that makePersistenct(dbRow) below has a persistent parent.
 		dao.makePersistent(dbMatrix);
 
-		int sourceOTUPos = -1;
+		int sourceRowPos = -1;
 
 		for (final PPodStandardRow sourceRow : sourceMatrix.getRows()) {
 
-			sourceOTUPos++;
+			sourceRowPos++;
 
 			final Otu dbOTU =
 					dbMatrix.getParent()
 							.getOtus()
-							.get(sourceOTUPos);
+							.get(sourceRowPos);
 
 			// Let's create rows for OTU->null row mappings in the matrix.
 			R dbRow = null;
@@ -156,7 +156,7 @@ abstract class CreateOrUpdateMatrix<M extends Matrix<R, C>, R extends Row<C, ?>,
 			logger.debug(
 					"{}: flushing row number {}",
 					METHOD,
-					sourceOTUPos);
+					sourceRowPos);
 
 			dao.flush();
 			dao.evict(dbRow);

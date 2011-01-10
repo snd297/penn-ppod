@@ -1,6 +1,7 @@
 package edu.upenn.cis.ppod.util;
 
 import static com.google.common.collect.Iterables.getOnlyElement;
+import static com.google.common.collect.Lists.newArrayList;
 import static com.google.common.collect.Sets.immutableEnumSet;
 
 import java.util.List;
@@ -28,6 +29,7 @@ import edu.upenn.cis.ppod.model.StandardMatrix;
 import edu.upenn.cis.ppod.model.StandardRow;
 import edu.upenn.cis.ppod.model.StandardState;
 import edu.upenn.cis.ppod.model.Study;
+import edu.upenn.cis.ppod.model.VersionInfo;
 
 public class DbStudy2DocStudy {
 
@@ -206,7 +208,10 @@ public class DbStudy2DocStudy {
 		final PPodStandardMatrix docMatrix = new PPodStandardMatrix(
 				dbMatrix.getPPodId(), dbMatrix.getVersionInfo().getVersion(),
 				dbMatrix.getLabel());
-
+		for (final VersionInfo columnVersionInfo : dbMatrix
+				.getColumnVersionInfos()) {
+			docMatrix.getColumnVersions().add(columnVersionInfo.getVersion());
+		}
 		for (final StandardCharacter dbCharacter : dbMatrix.getCharacters()) {
 			final PPodStandardCharacter docCharacter = new PPodStandardCharacter(
 					dbCharacter.getPPodId(),
@@ -246,12 +251,18 @@ public class DbStudy2DocStudy {
 		final PPodDnaMatrix docMatrix = new PPodDnaMatrix(
 				dbMatrix.getPPodId(),
 				dbMatrix.getVersionInfo().getVersion(), dbMatrix.getLabel());
+		for (final VersionInfo columnVersionInfo : dbMatrix
+				.getColumnVersionInfos()) {
+			docMatrix.getColumnVersions().add(columnVersionInfo.getVersion());
+		}
 		for (final Otu dbOtu : dbMatrix.getParent().getOtus()) {
 			final DnaRow dbRow = dbMatrix.getRows().get(dbOtu);
 			final List<DnaCell> dbCells = dbRow.getCells();
 			final StringBuilder docSeq = new StringBuilder();
+			final List<Long> cellVersions = newArrayList();
 			for (final DnaCell dbCell : dbCells) {
 				docSeq.append(dbCell2IupacPlus(dbCell));
+				cellVersions.add(dbCell.getVersionInfo().getVersion());
 			}
 			final PPodDnaRow docRow = new PPodDnaRow(
 					dbRow.getVersionInfo().getVersion(), docSeq.toString());

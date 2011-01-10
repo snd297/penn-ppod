@@ -14,7 +14,13 @@ abstract class UuPPodDomainObject extends PPodDomainObject
 		pPodId = null;
 	}
 
-	protected UuPPodDomainObject(final String pPodId, final Long version) {
+	protected UuPPodDomainObject(@CheckForNull final String pPodId) {
+		this.pPodId = pPodId;
+	}
+
+	protected UuPPodDomainObject(
+			final String pPodId,
+			final Long version) {
 		super(version);
 		checkNotNull(pPodId);
 		this.pPodId = pPodId;

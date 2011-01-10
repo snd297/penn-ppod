@@ -30,9 +30,11 @@ import javax.xml.bind.annotation.XmlRootElement;
 @XmlRootElement
 public final class PPodStudy extends UuPPodDomainObject {
 
-	private final String label;
+	private String label;
 
 	private final List<PPodOtuSet> otuSets = newArrayList();
+
+	PPodStudy() {}
 
 	public PPodStudy(final String label) {
 		this.label = label;
@@ -40,6 +42,11 @@ public final class PPodStudy extends UuPPodDomainObject {
 
 	public PPodStudy(final String pPodId, final Long version, final String label) {
 		super(pPodId, version);
+		this.label = label;
+	}
+
+	public PPodStudy(final String pPodId, final String label) {
+		super(pPodId);
 		this.label = label;
 	}
 

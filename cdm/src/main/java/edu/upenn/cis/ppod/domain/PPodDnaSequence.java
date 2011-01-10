@@ -1,20 +1,28 @@
 package edu.upenn.cis.ppod.domain;
 
+import static com.google.common.base.Preconditions.checkNotNull;
+
+import javax.xml.bind.annotation.XmlAccessType;
+import javax.xml.bind.annotation.XmlAccessorType;
+
 import edu.umd.cs.findbugs.annotations.CheckForNull;
 import edu.umd.cs.findbugs.annotations.Nullable;
 
+@XmlAccessorType(XmlAccessType.FIELD)
 final public class PPodDnaSequence extends PPodDomainObject {
 
-	private final String sequence;
+	PPodDnaSequence() {}
+
+	private String sequence;
 
 	@CheckForNull
-	private final String name;
+	private String name;
 
 	@CheckForNull
-	private final String description;
+	private String description;
 
 	@CheckForNull
-	private final String accession;
+	private String accession;
 
 	public PPodDnaSequence(
 			final String sequence,
@@ -55,5 +63,10 @@ final public class PPodDnaSequence extends PPodDomainObject {
 	@Nullable
 	public String getAccession() {
 		return accession;
+	}
+
+	public void setSequence(final String sequence) {
+		checkNotNull(sequence);
+		this.sequence = sequence;
 	}
 }

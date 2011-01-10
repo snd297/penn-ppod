@@ -6,8 +6,15 @@ import java.util.List;
 
 public final class PPodTreeSet extends UuPPodDomainObjectWDocId {
 
-	private final String label;
+	private String label;
 	private final List<PPodTree> trees = newArrayList();
+
+	PPodTreeSet() {}
+
+	public PPodTreeSet(final String pPodId, final String label) {
+		super(pPodId);
+		this.label = label;
+	}
 
 	public PPodTreeSet(final String pPodId, final Long version,
 			final String label) {

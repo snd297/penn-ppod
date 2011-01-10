@@ -5,10 +5,14 @@ import static com.google.common.collect.Lists.newArrayList;
 
 import java.util.List;
 
+import edu.umd.cs.findbugs.annotations.CheckForNull;
+
 public final class PPodOtuSet extends UuPPodDomainObjectWDocId
 		implements IHasPPodId {
 
-	private final String label;
+	PPodOtuSet() {}
+
+	private String label;
 	private final List<PPodOtu> otus = newArrayList();
 	private final List<PPodDnaMatrix> dnaMatrices = newArrayList();
 	private final List<PPodStandardMatrix> standardMatrices = newArrayList();
@@ -20,11 +24,17 @@ public final class PPodOtuSet extends UuPPodDomainObjectWDocId
 		this.label = label;
 	}
 
-	public PPodOtuSet(final String pPodId, final Long version,
+	public PPodOtuSet(@CheckForNull final String pPodId, final Long version,
 			final String label) {
 		super(pPodId, version);
 
 		checkNotNull(label);
+		this.label = label;
+	}
+
+	public PPodOtuSet(@CheckForNull final String pPodId,
+			final String label) {
+		super(pPodId);
 		this.label = label;
 	}
 
@@ -53,6 +63,15 @@ public final class PPodOtuSet extends UuPPodDomainObjectWDocId
 
 	public List<PPodTreeSet> getTreeSets() {
 		return treeSets;
+	}
+
+	public void setLabel(final String label) {
+		this.label = label;
+	}
+
+	public void setOtus(final List<? extends PPodOtu> otus) {
+		this.otus.clear();
+		this.otus.addAll(otus);
 	}
 
 }
