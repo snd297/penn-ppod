@@ -52,7 +52,9 @@ class MergeDnaSequenceSets implements IMergeDNASequenceSets {
 
 		// This is for a response to the service client.
 		// It's really not ideal to set it on the persistence object
-		targSeqSet.setDocId(srcSeqSet.getDocId());
+		if (targSeqSet.getDocId() == null) {
+			targSeqSet.setDocId(srcSeqSet.getDocId());
+		}
 
 		targSeqSet.setLabel(srcSeqSet.getLabel());
 
