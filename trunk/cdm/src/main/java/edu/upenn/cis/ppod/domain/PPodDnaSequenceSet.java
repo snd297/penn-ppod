@@ -30,8 +30,8 @@ final public class PPodDnaSequenceSet extends UuPPodDomainObject {
 		this.label = label;
 	}
 
-	public PPodDnaSequenceSet(@CheckForNull final String pPodId,
-			@CheckForNull final Long version,
+	public PPodDnaSequenceSet(final String pPodId,
+			final Long version,
 			final String label) {
 		super(pPodId, version);
 		checkNotNull(label);

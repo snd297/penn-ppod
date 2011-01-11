@@ -16,8 +16,8 @@ public final class PPodStandardMatrix extends UuPPodDomainObjectWDocId {
 
 	PPodStandardMatrix() {}
 
-	public PPodStandardMatrix(@CheckForNull final String pPodId,
-			@CheckForNull final Long version,
+	public PPodStandardMatrix(final String pPodId,
+			final Long version,
 			final String label) {
 		super(pPodId, version);
 		checkNotNull(label);

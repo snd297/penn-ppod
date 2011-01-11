@@ -18,7 +18,7 @@ class UuPPodDomainObjectWDocId extends UuPPodDomainObject implements IHasDocId {
 		super(pPodId);
 	}
 
-	protected UuPPodDomainObjectWDocId(@CheckForNull final String pPodId,
+	protected UuPPodDomainObjectWDocId(final String pPodId,
 			final Long version) {
 		super(pPodId, version);
 	}

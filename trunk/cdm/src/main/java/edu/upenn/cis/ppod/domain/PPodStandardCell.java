@@ -50,7 +50,7 @@ public final class PPodStandardCell extends PPodDomainObject {
 	public void setUncertain(final Set<Integer> states) {
 		checkNotNull(states);
 		checkArgument(states.size() > 1);
-		type = PPodCellType.POLYMORPHIC;
+		type = PPodCellType.UNCERTAIN;
 		this.states.clear();
 		this.states.addAll(states);
 	}
