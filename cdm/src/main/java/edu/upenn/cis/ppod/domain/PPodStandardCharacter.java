@@ -13,19 +13,12 @@ import edu.umd.cs.findbugs.annotations.Nullable;
 
 public final class PPodStandardCharacter extends UuPPodDomainObject {
 
-	PPodStandardCharacter() {}
-
 	private String label;
-	private String mesquiteId;
 
+	private String mesquiteId;
 	private final Set<PPodStandardState> states = newHashSet();
 
-	@Nullable
-	public PPodStandardState getState(final int stateNo) {
-		return find(states,
-				compose(equalTo(stateNo), PPodStandardState.getStateNumber),
-				null);
-	}
+	PPodStandardCharacter() {}
 
 	public PPodStandardCharacter(final String pPodId,
 			final Long version,
@@ -53,6 +46,13 @@ public final class PPodStandardCharacter extends UuPPodDomainObject {
 
 	public String getMesquiteId() {
 		return mesquiteId;
+	}
+
+	@Nullable
+	public PPodStandardState getState(final int stateNo) {
+		return find(states,
+				compose(equalTo(stateNo), PPodStandardState.getStateNumber),
+				null);
 	}
 
 	public Set<PPodStandardState> getStates() {

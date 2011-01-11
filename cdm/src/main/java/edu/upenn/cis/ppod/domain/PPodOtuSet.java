@@ -10,14 +10,15 @@ import edu.umd.cs.findbugs.annotations.CheckForNull;
 public final class PPodOtuSet extends UuPPodDomainObjectWDocId
 		implements IHasPPodId {
 
-	PPodOtuSet() {}
-
 	private String label;
-	private final List<PPodOtu> otus = newArrayList();
+
+	private List<PPodOtu> otus = newArrayList();
 	private final List<PPodDnaMatrix> dnaMatrices = newArrayList();
 	private final List<PPodStandardMatrix> standardMatrices = newArrayList();
 	private final List<PPodDnaSequenceSet> dnaSequenceSets = newArrayList();
 	private final List<PPodTreeSet> treeSets = newArrayList();
+
+	PPodOtuSet() {}
 
 	public PPodOtuSet(final String label) {
 		checkNotNull(label);
@@ -66,12 +67,13 @@ public final class PPodOtuSet extends UuPPodDomainObjectWDocId
 	}
 
 	public void setLabel(final String label) {
+		checkNotNull(label);
 		this.label = label;
 	}
 
-	public void setOtus(final List<? extends PPodOtu> otus) {
-		this.otus.clear();
-		this.otus.addAll(otus);
+	public void setOtus(final List<PPodOtu> otus) {
+		checkNotNull(otus);
+		this.otus = otus;
 	}
 
 }
