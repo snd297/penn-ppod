@@ -2,8 +2,12 @@ package edu.upenn.cis.ppod.domain;
 
 import static com.google.common.base.Preconditions.checkNotNull;
 
+import javax.xml.bind.annotation.XmlAccessType;
+import javax.xml.bind.annotation.XmlAccessorType;
+
 import com.google.common.base.Function;
 
+@XmlAccessorType(XmlAccessType.FIELD)
 public final class PPodStandardState {
 
 	PPodStandardState() {}

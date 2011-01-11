@@ -35,24 +35,24 @@ public final class PPodStandardCell extends PPodDomainObject {
 	public void setSingle(final Integer state) {
 		checkNotNull(state);
 		type = PPodCellType.SINGLE;
-		states.clear();
-		states.add(state);
+		this.states.clear();
+		this.states.add(state);
 	}
 
 	public void setPolymorphic(final Set<Integer> states) {
 		checkNotNull(states);
 		checkArgument(states.size() > 1);
 		type = PPodCellType.POLYMORPHIC;
-		states.clear();
-		states.addAll(states);
+		this.states.clear();
+		this.states.addAll(states);
 	}
 
 	public void setUncertain(final Set<Integer> states) {
 		checkNotNull(states);
 		checkArgument(states.size() > 1);
 		type = PPodCellType.POLYMORPHIC;
-		states.clear();
-		states.addAll(states);
+		this.states.clear();
+		this.states.addAll(states);
 	}
 
 	/**
