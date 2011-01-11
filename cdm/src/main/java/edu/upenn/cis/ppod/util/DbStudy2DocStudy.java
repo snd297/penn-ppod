@@ -10,6 +10,8 @@ import java.util.Set;
 import edu.upenn.cis.ppod.domain.PPodDnaMatrix;
 import edu.upenn.cis.ppod.domain.PPodDnaNucleotide;
 import edu.upenn.cis.ppod.domain.PPodDnaRow;
+import edu.upenn.cis.ppod.domain.PPodDnaSequence;
+import edu.upenn.cis.ppod.domain.PPodDnaSequenceSet;
 import edu.upenn.cis.ppod.domain.PPodOtu;
 import edu.upenn.cis.ppod.domain.PPodOtuSet;
 import edu.upenn.cis.ppod.domain.PPodStandardCell;
@@ -21,6 +23,8 @@ import edu.upenn.cis.ppod.domain.PPodStudy;
 import edu.upenn.cis.ppod.model.DnaCell;
 import edu.upenn.cis.ppod.model.DnaMatrix;
 import edu.upenn.cis.ppod.model.DnaRow;
+import edu.upenn.cis.ppod.model.DnaSequence;
+import edu.upenn.cis.ppod.model.DnaSequenceSet;
 import edu.upenn.cis.ppod.model.Otu;
 import edu.upenn.cis.ppod.model.OtuSet;
 import edu.upenn.cis.ppod.model.StandardCell;
@@ -48,6 +52,21 @@ public class DbStudy2DocStudy {
 
 		for (final Otu dbOtu : dbOtuSet.getOtus()) {
 			docOtuSet.getOtus().add(dbOtu2DocOtu(dbOtu));
+		}
+
+		for (final StandardMatrix dbMatrix : dbOtuSet.getStandardMatrices()) {
+			docOtuSet.getStandardMatrices().add(
+					dbStandardMatrix2DocStandardMatrix(dbMatrix));
+		}
+
+		for (final DnaMatrix dbMatrix : dbOtuSet.getDnaMatrices()) {
+			docOtuSet.getDnaMatrices().add(
+					dbDnaMatrix2DocDnaMatrix(dbMatrix));
+		}
+
+		for (final DnaSequenceSet dbSequenceSet : dbOtuSet.getDnaSequenceSets()) {
+			docOtuSet.getDnaSequenceSets().add(
+					dbDnaSequenceSet2DocDnaSequenceSet(dbSequenceSet));
 		}
 
 		return docOtuSet;
@@ -94,7 +113,7 @@ public class DbStudy2DocStudy {
 					PPodDnaNucleotide.G);
 
 	public static char dbCell2IupacPlus(final DnaCell dbCell) {
-		char iupacPlus;
+		char iupacPlus = (char) -1;
 		switch (dbCell.getType()) {
 			case UNASSIGNED:
 				iupacPlus = '?';
@@ -130,8 +149,9 @@ public class DbStudy2DocStudy {
 						}
 						break;
 					default:
-						break;
+						throw new AssertionError();
 				}
+				break;
 			case POLYMORPHIC:
 				throw new UnsupportedOperationException(
 						"we don't currently support polymorphic");
@@ -194,11 +214,15 @@ public class DbStudy2DocStudy {
 				} else {
 					throw new AssertionError();
 				}
+				break;
 			case INAPPLICABLE:
 				iupacPlus = '-';
 				break;
 			default:
 				throw new AssertionError();
+		}
+		if (iupacPlus == (char) -1) {
+			throw new AssertionError();
 		}
 		return iupacPlus;
 	}
@@ -266,9 +290,27 @@ public class DbStudy2DocStudy {
 			}
 			final PPodDnaRow docRow = new PPodDnaRow(
 					dbRow.getVersionInfo().getVersion(), docSeq.toString());
+			docRow.setCellVersions(cellVersions);
 			docMatrix.getRows().add(docRow);
 		}
 		return docMatrix;
+	}
+
+	public static PPodDnaSequenceSet dbDnaSequenceSet2DocDnaSequenceSet(
+			final DnaSequenceSet dbSequenceSet) {
+		final PPodDnaSequenceSet docSequenceSet = new PPodDnaSequenceSet(
+				dbSequenceSet.getPPodId(), dbSequenceSet.getVersionInfo()
+						.getVersion(), dbSequenceSet.getLabel());
+		for (final Otu dbOtu : dbSequenceSet.getParent().getOtus()) {
+			final DnaSequence dbSequence = dbSequenceSet.getSequence(dbOtu);
+			final PPodDnaSequence docSequence =
+					new PPodDnaSequence(dbSequence.getSequence(),
+							dbSequence.getName(),
+							dbSequence.getDescription(),
+							dbSequence.getAccession());
+			docSequenceSet.getSequences().add(docSequence);
+		}
+		return docSequenceSet;
 	}
 
 	private DbStudy2DocStudy() {

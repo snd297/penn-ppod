@@ -30,4 +30,9 @@ final public class PPodDnaRow extends PPodDomainObject {
 	public List<Long> getCellVersions() {
 		return cellVersions;
 	}
+
+	public void setCellVersions(List<Long> cellVersions) {
+		this.cellVersions.clear();
+		this.cellVersions.addAll(cellVersions);
+	}
 }
