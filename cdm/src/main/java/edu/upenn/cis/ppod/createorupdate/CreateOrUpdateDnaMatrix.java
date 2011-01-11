@@ -98,7 +98,7 @@ class CreateOrUpdateDnaMatrix implements ICreateOrUpdateDNAMatrix {
 			int i = -1;
 			while (dbCells.size() < sourceRow.getSequence().length()) {
 				i++;
-				if (i < dbCells.size()) {
+				if (i < dbRow.getCells().size()) {
 					dbCells.add(dbRow.getCells().get(i));
 				} else {
 					dbCells.add(ModelFactory.newDNACell(newVersionInfo

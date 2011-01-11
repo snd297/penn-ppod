@@ -146,7 +146,7 @@ public class OtuSetTest {
 		assertTrue(otuSet.isInNeedOfNewVersion());
 	}
 
-	@Test(groups = TestGroupDefs.SINGLE)
+	@Test
 	public void addDNASequenceSetPos() {
 		final OtuSet otuSet = new OtuSet();
 		final DnaSequenceSet sequenceSet0 = new DnaSequenceSet();
@@ -296,7 +296,7 @@ public class OtuSetTest {
 		otuSet.addStandardMatrix(matrix0);
 	}
 
-	@Test(groups = TestGroupDefs.SINGLE)
+	@Test
 	public void addStandardMatrixPos() {
 		final OtuSet otuSet = new OtuSet();
 		final StandardMatrix matrix0 = new StandardMatrix();
