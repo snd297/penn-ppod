@@ -10,9 +10,9 @@ import edu.umd.cs.findbugs.annotations.CheckForNull;
 public final class PPodStandardMatrix extends UuPPodDomainObjectWDocId {
 
 	private String label;
-	private final List<PPodStandardCharacter> characters = newArrayList();
+	private List<PPodStandardCharacter> characters = newArrayList();
 	private final List<PPodStandardRow> rows = newArrayList();
-	private final List<Long> columnVersions = newArrayList();
+	private List<Long> columnVersions = newArrayList();
 
 	PPodStandardMatrix() {}
 
@@ -35,6 +35,10 @@ public final class PPodStandardMatrix extends UuPPodDomainObjectWDocId {
 		return characters;
 	}
 
+	public List<Long> getColumnVersions() {
+		return columnVersions;
+	}
+
 	public String getLabel() {
 		return label;
 	}
@@ -43,7 +47,17 @@ public final class PPodStandardMatrix extends UuPPodDomainObjectWDocId {
 		return rows;
 	}
 
-	public List<Long> getColumnVersions() {
-		return columnVersions;
+	public void setCharacters(final List<PPodStandardCharacter> characters) {
+		checkNotNull(characters);
+		this.characters = characters;
+	}
+
+	public void setColumnVersions(final List<Long> columnVersions) {
+		checkNotNull(columnVersions);
+		this.columnVersions = columnVersions;
+	}
+
+	public void setLabel(final String label) {
+		this.label = label;
 	}
 }
