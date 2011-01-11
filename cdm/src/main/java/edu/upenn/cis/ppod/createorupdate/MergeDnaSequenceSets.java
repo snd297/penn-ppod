@@ -50,6 +50,10 @@ class MergeDnaSequenceSets implements IMergeDNASequenceSets {
 
 		checkNotNull(srcSeqSet);
 
+		// This is for a response to the service client.
+		// It's really not ideal to set it on the persistence object
+		targSeqSet.setDocId(srcSeqSet.getDocId());
+
 		targSeqSet.setLabel(srcSeqSet.getLabel());
 
 		final Integer targSeqSetLengths =

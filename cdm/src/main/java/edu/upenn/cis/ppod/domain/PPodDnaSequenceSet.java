@@ -5,13 +5,9 @@ import static com.google.common.collect.Lists.newArrayList;
 
 import java.util.List;
 
-import javax.xml.bind.annotation.XmlAccessType;
-import javax.xml.bind.annotation.XmlAccessorType;
-
 import edu.umd.cs.findbugs.annotations.CheckForNull;
 
-@XmlAccessorType(XmlAccessType.FIELD)
-final public class PPodDnaSequenceSet extends UuPPodDomainObject {
+final public class PPodDnaSequenceSet extends UuPPodDomainObjectWDocId {
 
 	private String label;
 	private final List<PPodDnaSequence> sequences = newArrayList();

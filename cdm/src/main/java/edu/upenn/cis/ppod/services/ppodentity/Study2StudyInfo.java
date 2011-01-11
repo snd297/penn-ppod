@@ -172,6 +172,7 @@ public final class Study2StudyInfo implements IStudy2StudyInfo {
 				sequenceSetInfo.setPPodId(dnaSequenceSet.getPPodId());
 				sequenceSetInfo.setVersion(dnaSequenceSet
 						.getVersionInfo().getVersion());
+				sequenceSetInfo.setDocId(dnaSequenceSet.getDocId());
 				sequenceSetInfo.setEntityId(dnaSequenceSet.getId());
 				for (final Otu otu : otuSet.getOtus()) {
 					final DnaSequence dnaSequence =
