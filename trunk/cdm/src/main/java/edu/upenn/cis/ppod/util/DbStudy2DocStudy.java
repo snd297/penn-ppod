@@ -304,7 +304,9 @@ public class DbStudy2DocStudy {
 		for (final Otu dbOtu : dbSequenceSet.getParent().getOtus()) {
 			final DnaSequence dbSequence = dbSequenceSet.getSequence(dbOtu);
 			final PPodDnaSequence docSequence =
-					new PPodDnaSequence(dbSequence.getSequence(),
+					new PPodDnaSequence(
+							dbSequence.getVersionInfo().getVersion(),
+							dbSequence.getSequence(),
 							dbSequence.getName(),
 							dbSequence.getDescription(),
 							dbSequence.getAccession());
