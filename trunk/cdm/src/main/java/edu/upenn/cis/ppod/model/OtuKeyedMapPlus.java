@@ -27,12 +27,10 @@ import java.util.Set;
 
 import javax.annotation.CheckForNull;
 import javax.annotation.Nullable;
-import javax.xml.bind.Marshaller;
 
 import edu.upenn.cis.ppod.imodel.IChild;
 import edu.upenn.cis.ppod.imodel.IOtuKeyedMapPlus;
 import edu.upenn.cis.ppod.util.IVisitor;
-import edu.upenn.cis.ppod.util.OtuKeyedPair;
 
 /**
  * An {@code IOtu -> PersistentObject} map with {@code equals}-unique values.
@@ -44,14 +42,12 @@ import edu.upenn.cis.ppod.util.OtuKeyedPair;
  * 
  * @author Sam Donnelly
  */
-public class OtuKeyedMapPlus<V extends IChild<P>, P extends IChild<OtuSet>, OP extends OtuKeyedPair<V>>
-		implements IOtuKeyedMapPlus<V, P, OP> {
+class OtuKeyedMapPlus<V extends IChild<P>, P extends IChild<OtuSet>>
+		implements IOtuKeyedMapPlus<V, P> {
 
 	private P parent;
 
 	private Map<Otu, V> values = newHashMap();
-
-	private final Set<OP> otuKeyedPairs = newHashSet();
 
 	OtuKeyedMapPlus() {}
 
@@ -62,33 +58,6 @@ public class OtuKeyedMapPlus<V extends IChild<P>, P extends IChild<OtuSet>, OP e
 				value.accept(visitor);
 			}
 		}
-	}
-
-	public boolean afterMarshal(@CheckForNull final Marshaller marshaller) {
-		otuKeyedPairs.clear();
-		return true;
-	}
-
-	/**
-	 * Take care of work that can only be done after {@link XmlIDREF}s have been
-	 * resolved.
-	 */
-	public void afterUnmarshal() {
-		for (final OP otuValuePair : getOtuKeyedPairs()) {
-			put(otuValuePair.getFirst(), otuValuePair.getSecond());
-		}
-		getOtuKeyedPairs().clear();
-	}
-
-	public void afterUnmarshal(final P parent) {
-		checkNotNull(parent);
-
-		setParent(parent);
-
-		for (final OP otuSomethingPair : getOtuKeyedPairs()) {
-			otuSomethingPair.getSecond().setParent(getParent());
-		}
-
 	}
 
 	/** {@inheritDoc} */
@@ -108,10 +77,6 @@ public class OtuKeyedMapPlus<V extends IChild<P>, P extends IChild<OtuSet>, OP e
 		checkArgument(getValues().keySet().contains(otu),
 				"otu is not in the keys");
 		return getValues().get(otu);
-	}
-
-	public Set<OP> getOtuKeyedPairs() {
-		return otuKeyedPairs;
 	}
 
 	/**
@@ -180,7 +145,7 @@ public class OtuKeyedMapPlus<V extends IChild<P>, P extends IChild<OtuSet>, OP e
 		this.values = values;
 	}
 
-	/** {@inheritDoc}  */
+	/** {@inheritDoc} */
 	public void updateOtus() {
 		final IChild<OtuSet> parent = getParent();
 

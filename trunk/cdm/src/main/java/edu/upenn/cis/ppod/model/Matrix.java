@@ -19,9 +19,7 @@ import static com.google.common.base.Objects.equal;
 import static com.google.common.base.Preconditions.checkArgument;
 import static com.google.common.base.Preconditions.checkNotNull;
 import static com.google.common.base.Preconditions.checkState;
-import static com.google.common.collect.Iterables.get;
 import static com.google.common.collect.Lists.newArrayList;
-import static edu.upenn.cis.ppod.util.CollectionsUtil.nullFill;
 
 import java.util.Collections;
 import java.util.List;
@@ -127,14 +125,6 @@ public abstract class Matrix<R extends Row<C, ?>, C extends Cell<?, ?>>
 			cells.add(columnNo, column.get(rowPos));
 			row.setCells(cells);
 		}
-	}
-
-	public void afterUnmarshal() {
-		getOTUKeyedRows().afterUnmarshal();
-		nullFill(getColumnVersionInfosModifiable(), get(getRows()
-				.values(), 0)
-				.getCells()
-				.size());
 	}
 
 	protected void afterUnmarshal(

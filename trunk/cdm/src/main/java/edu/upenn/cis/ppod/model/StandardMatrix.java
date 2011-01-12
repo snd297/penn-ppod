@@ -102,12 +102,6 @@ public class StandardMatrix
 		addColumn(columnNo, cells);
 	}
 
-	@Override
-	public void afterUnmarshal() {
-		super.afterUnmarshal();
-		rows.afterUnmarshal();
-	}
-
 	private List<VersionInfo> determineNewColumnHeaderPPodVersionInfos(
 			final List<? extends StandardCharacter> newCharacters) {
 

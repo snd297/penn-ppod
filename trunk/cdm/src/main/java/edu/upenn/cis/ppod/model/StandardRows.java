@@ -16,9 +16,7 @@ I * Copyright (C) 2010 Trustees of the University of Pennsylvania
 package edu.upenn.cis.ppod.model;
 
 import java.util.Map;
-import java.util.Set;
 
-import javax.annotation.CheckForNull;
 import javax.persistence.Access;
 import javax.persistence.AccessType;
 import javax.persistence.CascadeType;
@@ -27,19 +25,14 @@ import javax.persistence.JoinColumn;
 import javax.persistence.JoinTable;
 import javax.persistence.MapKeyJoinColumn;
 import javax.persistence.OneToMany;
-import javax.persistence.Transient;
-import javax.xml.bind.Marshaller;
-import javax.xml.bind.Unmarshaller;
 import javax.xml.bind.annotation.XmlAccessType;
 import javax.xml.bind.annotation.XmlAccessorType;
-import javax.xml.bind.annotation.XmlElement;
 
 import org.hibernate.annotations.Parent;
 
 import edu.upenn.cis.ppod.imodel.IOtuKeyedMap;
 import edu.upenn.cis.ppod.imodel.IOtuKeyedMapPlus;
 import edu.upenn.cis.ppod.util.IVisitor;
-import edu.upenn.cis.ppod.util.OtuStandardRowPair;
 
 /**
  * Maps {@link OTU}s to {@link StandardRow}s.
@@ -49,40 +42,16 @@ import edu.upenn.cis.ppod.util.OtuStandardRowPair;
 @XmlAccessorType(XmlAccessType.NONE)
 @Embeddable
 @Access(AccessType.PROPERTY)
-public class StandardRows
+class StandardRows
 		implements IOtuKeyedMap<StandardRow> {
 
-	private final IOtuKeyedMapPlus<StandardRow, StandardMatrix, OtuStandardRowPair> rows =
-			new OtuKeyedMapPlus<StandardRow, StandardMatrix, OtuStandardRowPair>();
+	private final IOtuKeyedMapPlus<StandardRow, StandardMatrix> rows =
+			new OtuKeyedMapPlus<StandardRow, StandardMatrix>();
 
 	StandardRows() {}
 
 	public void accept(final IVisitor visitor) {
 		rows.accept(visitor);
-	}
-
-	/** {@inheritDoc} */
-	public void afterUnmarshal() {
-		rows.afterUnmarshal();
-	}
-
-	protected void afterUnmarshal(
-			@CheckForNull final Unmarshaller u,
-			final Object parent) {
-		// Don't do checkNotNull(parent) since this is called by JAXB and we
-		// can't control it
-		rows.afterUnmarshal((StandardMatrix) parent);
-	}
-
-	protected boolean beforeMarshal(@CheckForNull final Marshaller marshaller) {
-		getOTUSomethingPairs().clear();
-		for (final Map.Entry<Otu, StandardRow> otuToRow : getValues()
-				.entrySet()) {
-			getOTUSomethingPairs().add(
-					new OtuStandardRowPair(otuToRow.getKey(),
-							otuToRow.getValue()));
-		}
-		return true;
 	}
 
 	public void clear() {
@@ -91,12 +60,6 @@ public class StandardRows
 
 	public StandardRow get(final Otu key) {
 		return rows.get(key);
-	}
-
-	@XmlElement(name = "otuRowPair")
-	@Transient
-	public Set<OtuStandardRowPair> getOTUSomethingPairs() {
-		return rows.getOtuKeyedPairs();
 	}
 
 	@Parent

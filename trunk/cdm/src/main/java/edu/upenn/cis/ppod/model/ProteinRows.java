@@ -5,21 +5,15 @@ import java.util.Map;
 import edu.upenn.cis.ppod.imodel.IOtuKeyedMap;
 import edu.upenn.cis.ppod.imodel.IOtuKeyedMapPlus;
 import edu.upenn.cis.ppod.util.IVisitor;
-import edu.upenn.cis.ppod.util.OtuProteinRowPair;
 
 public class ProteinRows implements IOtuKeyedMap<ProteinRow> {
 
-	private final IOtuKeyedMapPlus<ProteinRow, ProteinMatrix, OtuProteinRowPair> rows =
-			new OtuKeyedMapPlus<ProteinRow, ProteinMatrix, OtuProteinRowPair>();
+	private final IOtuKeyedMapPlus<ProteinRow, ProteinMatrix> rows =
+			new OtuKeyedMapPlus<ProteinRow, ProteinMatrix>();
 
 	/** {@inheritDoc} */
 	public void accept(final IVisitor visitor) {
 		rows.accept(visitor);
-	}
-
-	/** {@inheritDoc} */
-	public void afterUnmarshal() {
-		rows.afterUnmarshal();
 	}
 
 	/** {@inheritDoc} */
