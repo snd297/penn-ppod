@@ -24,9 +24,9 @@ import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
 import edu.upenn.cis.ppod.dao.IObjectWithLongIdDAO;
-import edu.upenn.cis.ppod.domain.PPodStandardCell;
-import edu.upenn.cis.ppod.domain.PPodStandardMatrix;
-import edu.upenn.cis.ppod.domain.PPodStandardRow;
+import edu.upenn.cis.ppod.dto.PPodStandardCell;
+import edu.upenn.cis.ppod.dto.PPodStandardMatrix;
+import edu.upenn.cis.ppod.dto.PPodStandardRow;
 import edu.upenn.cis.ppod.imodel.INewVersionInfo;
 import edu.upenn.cis.ppod.model.Cell;
 import edu.upenn.cis.ppod.model.Matrix;

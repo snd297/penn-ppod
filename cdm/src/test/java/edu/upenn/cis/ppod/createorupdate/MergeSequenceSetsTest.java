@@ -21,10 +21,10 @@ import static org.mockito.Mockito.when;
 import org.testng.annotations.Test;
 
 import edu.upenn.cis.ppod.TestGroupDefs;
-import edu.upenn.cis.ppod.domain.PPodDnaSequence;
-import edu.upenn.cis.ppod.domain.PPodDnaSequenceSet;
-import edu.upenn.cis.ppod.domain.PPodOtu;
-import edu.upenn.cis.ppod.domain.PPodOtuSet;
+import edu.upenn.cis.ppod.dto.PPodDnaSequence;
+import edu.upenn.cis.ppod.dto.PPodDnaSequenceSet;
+import edu.upenn.cis.ppod.dto.PPodOtu;
+import edu.upenn.cis.ppod.dto.PPodOtuSet;
 import edu.upenn.cis.ppod.imodel.INewVersionInfo;
 import edu.upenn.cis.ppod.model.DnaSequenceSet;
 import edu.upenn.cis.ppod.model.ModelAssert;

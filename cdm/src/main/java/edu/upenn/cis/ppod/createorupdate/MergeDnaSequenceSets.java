@@ -23,8 +23,8 @@ import java.util.Map;
 import com.google.common.collect.ImmutableMap;
 import com.google.inject.Inject;
 
-import edu.upenn.cis.ppod.domain.PPodDnaSequence;
-import edu.upenn.cis.ppod.domain.PPodDnaSequenceSet;
+import edu.upenn.cis.ppod.dto.PPodDnaSequence;
+import edu.upenn.cis.ppod.dto.PPodDnaSequenceSet;
 import edu.upenn.cis.ppod.imodel.INewVersionInfo;
 import edu.upenn.cis.ppod.model.DnaSequence;
 import edu.upenn.cis.ppod.model.DnaSequenceSet;

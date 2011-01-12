@@ -26,7 +26,7 @@ import javax.persistence.MappedSuperclass;
 import javax.xml.bind.annotation.XmlAttribute;
 
 import edu.umd.cs.findbugs.annotations.CheckForNull;
-import edu.upenn.cis.ppod.domain.PPodCellType;
+import edu.upenn.cis.ppod.dto.PPodCellType;
 
 /**
  * A cell in a molecular matrix. The elements are subclasses of {@code Enum} so

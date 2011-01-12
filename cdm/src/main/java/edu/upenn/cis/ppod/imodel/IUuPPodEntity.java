@@ -15,6 +15,6 @@
  */
 package edu.upenn.cis.ppod.imodel;
 
-import edu.upenn.cis.ppod.domain.IHasPPodId;
+import edu.upenn.cis.ppod.dto.IHasPPodId;
 
 public interface IUuPPodEntity extends IPPodEntity, IHasPPodId {}

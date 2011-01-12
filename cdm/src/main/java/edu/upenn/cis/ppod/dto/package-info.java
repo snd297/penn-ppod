@@ -15,7 +15,7 @@
  */
 
 @DefaultAnnotation(NonNull.class)
-package edu.upenn.cis.ppod.domain;
+package edu.upenn.cis.ppod.dto;
 
 import edu.umd.cs.findbugs.annotations.DefaultAnnotation;
 import edu.umd.cs.findbugs.annotations.NonNull;

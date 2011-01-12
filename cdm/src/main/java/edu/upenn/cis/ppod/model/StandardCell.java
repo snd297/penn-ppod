@@ -33,7 +33,7 @@ import javax.xml.bind.annotation.XmlAttribute;
 import javax.xml.bind.annotation.XmlIDREF;
 
 import edu.umd.cs.findbugs.annotations.Nullable;
-import edu.upenn.cis.ppod.domain.PPodCellType;
+import edu.upenn.cis.ppod.dto.PPodCellType;
 import edu.upenn.cis.ppod.util.IVisitor;
 
 /**

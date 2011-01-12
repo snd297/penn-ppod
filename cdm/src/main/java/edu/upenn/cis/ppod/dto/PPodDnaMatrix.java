@@ -1,4 +1,4 @@
-package edu.upenn.cis.ppod.domain;
+package edu.upenn.cis.ppod.dto;
 
 import static com.google.common.base.Preconditions.checkNotNull;
 import static com.google.common.collect.Lists.newArrayList;
@@ -34,7 +34,6 @@ final public class PPodDnaMatrix extends UuPPodDomainObject {
 		super(pPodId, version);
 		checkNotNull(label);
 		this.label = label;
-
 	}
 
 	public List<Long> getColumnVersions() {

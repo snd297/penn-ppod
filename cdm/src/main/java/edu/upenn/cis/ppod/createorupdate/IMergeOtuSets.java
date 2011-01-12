@@ -17,7 +17,7 @@ package edu.upenn.cis.ppod.createorupdate;
 
 import com.google.inject.ImplementedBy;
 
-import edu.upenn.cis.ppod.domain.PPodOtuSet;
+import edu.upenn.cis.ppod.dto.PPodOtuSet;
 import edu.upenn.cis.ppod.model.OtuSet;
 
 /**

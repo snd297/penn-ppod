@@ -2,7 +2,7 @@ package edu.upenn.cis.ppod.util;
 
 import java.util.EnumSet;
 
-import edu.upenn.cis.ppod.domain.PPodDnaNucleotide;
+import edu.upenn.cis.ppod.dto.PPodDnaNucleotide;
 import edu.upenn.cis.ppod.model.DnaCell;
 
 public class DocCell2DbCell {

@@ -32,12 +32,12 @@ import org.slf4j.LoggerFactory;
 import com.google.inject.Inject;
 
 import edu.upenn.cis.ppod.dao.IObjectWithLongIdDAO;
-import edu.upenn.cis.ppod.domain.IHasPPodId;
-import edu.upenn.cis.ppod.domain.PPodCellType;
-import edu.upenn.cis.ppod.domain.PPodStandardCell;
-import edu.upenn.cis.ppod.domain.PPodStandardCharacter;
-import edu.upenn.cis.ppod.domain.PPodStandardMatrix;
-import edu.upenn.cis.ppod.domain.PPodStandardState;
+import edu.upenn.cis.ppod.dto.IHasPPodId;
+import edu.upenn.cis.ppod.dto.PPodCellType;
+import edu.upenn.cis.ppod.dto.PPodStandardCell;
+import edu.upenn.cis.ppod.dto.PPodStandardCharacter;
+import edu.upenn.cis.ppod.dto.PPodStandardMatrix;
+import edu.upenn.cis.ppod.dto.PPodStandardState;
 import edu.upenn.cis.ppod.imodel.INewVersionInfo;
 import edu.upenn.cis.ppod.model.ModelFactory;
 import edu.upenn.cis.ppod.model.StandardCell;

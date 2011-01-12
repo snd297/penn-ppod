@@ -25,8 +25,8 @@ import org.slf4j.LoggerFactory;
 import com.google.inject.Inject;
 
 import edu.upenn.cis.ppod.dao.IObjectWithLongIdDAO;
-import edu.upenn.cis.ppod.domain.PPodDnaMatrix;
-import edu.upenn.cis.ppod.domain.PPodDnaRow;
+import edu.upenn.cis.ppod.dto.PPodDnaMatrix;
+import edu.upenn.cis.ppod.dto.PPodDnaRow;
 import edu.upenn.cis.ppod.imodel.INewVersionInfo;
 import edu.upenn.cis.ppod.model.DnaCell;
 import edu.upenn.cis.ppod.model.DnaMatrix;
