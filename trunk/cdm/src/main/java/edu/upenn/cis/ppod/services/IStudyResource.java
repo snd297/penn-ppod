@@ -28,7 +28,7 @@ import javax.ws.rs.Produces;
 import org.jboss.resteasy.annotations.GZIP;
 
 import edu.upenn.cis.ppod.dto.PPodStudy;
-import edu.upenn.cis.ppod.services.ppodentity.StudyInfo;
+import edu.upenn.cis.ppod.dto.StudyInfo;
 import edu.upenn.cis.ppod.thirdparty.util.Pretty;
 
 /**

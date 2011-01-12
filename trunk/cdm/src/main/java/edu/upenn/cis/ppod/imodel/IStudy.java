@@ -17,9 +17,9 @@ package edu.upenn.cis.ppod.imodel;
 
 import javax.xml.bind.annotation.XmlSeeAlso;
 
+import edu.upenn.cis.ppod.dto.IOTUSets;
 import edu.upenn.cis.ppod.model.OtuSet;
 import edu.upenn.cis.ppod.model.Study;
-import edu.upenn.cis.ppod.services.ppodentity.IOTUSets;
 
 /**
  * A collection of work - inspired by a Mesquite project - sets of OTU sets and,

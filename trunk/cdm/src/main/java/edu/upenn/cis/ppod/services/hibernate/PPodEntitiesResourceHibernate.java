@@ -24,12 +24,12 @@ import java.util.Set;
 import org.hibernate.FlushMode;
 import org.hibernate.Session;
 
+import edu.upenn.cis.ppod.dto.PPodEntities;
 import edu.upenn.cis.ppod.model.Otu;
 import edu.upenn.cis.ppod.model.OtuSet;
 import edu.upenn.cis.ppod.model.StandardMatrix;
 import edu.upenn.cis.ppod.model.TreeSet;
 import edu.upenn.cis.ppod.services.IPPodEntitiesResource;
-import edu.upenn.cis.ppod.services.ppodentity.PPodEntities;
 
 /**
  * @author Sam Donnelly

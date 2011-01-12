@@ -17,6 +17,7 @@ package edu.upenn.cis.ppod.util;
 
 import java.util.Set;
 
+import edu.upenn.cis.ppod.dto.IOTUSets;
 import edu.upenn.cis.ppod.imodel.IAttachee;
 import edu.upenn.cis.ppod.model.Attachment;
 import edu.upenn.cis.ppod.model.AttachmentNamespace;
@@ -25,7 +26,6 @@ import edu.upenn.cis.ppod.model.Otu;
 import edu.upenn.cis.ppod.model.OtuSet;
 import edu.upenn.cis.ppod.model.StandardCharacter;
 import edu.upenn.cis.ppod.model.StandardMatrix;
-import edu.upenn.cis.ppod.services.ppodentity.IOTUSets;
 
 /**
  * @author Sam Donnelly

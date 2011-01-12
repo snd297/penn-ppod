@@ -13,28 +13,33 @@
  * See the License for the specific language governing permissions and
  * limitations under the License.
  */
-package edu.upenn.cis.ppod.services.ppodentity;
+package edu.upenn.cis.ppod.dto;
 
-import java.util.Set;
+import java.util.List;
 
 import edu.upenn.cis.ppod.model.OtuSet;
 
 /**
- * A collection of OTU sets, matrices and tree sets.
+ * A collection of OTU sets.
  * 
  * @author Sam Donnelly
  */
-public interface IOtuSetCentricEntity {
+public interface IOTUSets {
 
 	/**
 	 * Add an OTU set to this {@link IOTUSets}.
 	 * 
 	 * @param otuSet to be added
-	 * @return <tt>true</tt> if this set did not already contain the specified
-	 *         OTU set, {@code false} otherwise
+	 * 
+	 * @throws IllegalArgumentException if this already contains the OTU set
 	 */
-	OtuSet addOTUSet(OtuSet otuSet);
+	void addOtuSet(OtuSet otuSet);
 
-	Set<OtuSet> getOTUSets();
+	/**
+	 * Get the OTU sets contained in this {@code IOTUSets}.
+	 * 
+	 * @return the OTU sets contained in this {@code IOTUSets}
+	 */
+	List<OtuSet> getOtuSets();
 
 }
