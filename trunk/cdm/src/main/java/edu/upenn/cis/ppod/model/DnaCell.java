@@ -34,7 +34,7 @@ import javax.persistence.Table;
 import org.hibernate.annotations.Immutable;
 
 import edu.umd.cs.findbugs.annotations.Nullable;
-import edu.upenn.cis.ppod.domain.PPodDnaNucleotide;
+import edu.upenn.cis.ppod.dto.PPodDnaNucleotide;
 import edu.upenn.cis.ppod.util.IVisitor;
 
 /**

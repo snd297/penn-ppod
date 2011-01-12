@@ -1,4 +1,4 @@
-package edu.upenn.cis.ppod.domain;
+package edu.upenn.cis.ppod.dto;
 
 import static com.google.common.base.Preconditions.checkNotNull;
 

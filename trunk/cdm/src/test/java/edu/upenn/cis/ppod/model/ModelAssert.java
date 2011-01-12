@@ -29,8 +29,8 @@ import static org.testng.Assert.assertTrue;
 import java.util.Iterator;
 import java.util.Set;
 
-import edu.upenn.cis.ppod.domain.PPodDnaSequence;
-import edu.upenn.cis.ppod.domain.PPodDnaSequenceSet;
+import edu.upenn.cis.ppod.dto.PPodDnaSequence;
+import edu.upenn.cis.ppod.dto.PPodDnaSequenceSet;
 import edu.upenn.cis.ppod.imodel.ILabeled;
 import edu.upenn.cis.ppod.imodel.IPPodEntity;
 

@@ -1,4 +1,4 @@
-package edu.upenn.cis.ppod.domain;
+package edu.upenn.cis.ppod.dto;
 
 /**
  * The different types of {@code Cell}: single, polymorphic, uncertain,

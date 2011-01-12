@@ -25,9 +25,9 @@ import java.util.List;
 
 import com.google.inject.Inject;
 
-import edu.upenn.cis.ppod.domain.IHasPPodId;
-import edu.upenn.cis.ppod.domain.PPodOtu;
-import edu.upenn.cis.ppod.domain.PPodOtuSet;
+import edu.upenn.cis.ppod.dto.IHasPPodId;
+import edu.upenn.cis.ppod.dto.PPodOtu;
+import edu.upenn.cis.ppod.dto.PPodOtuSet;
 import edu.upenn.cis.ppod.imodel.INewVersionInfo;
 import edu.upenn.cis.ppod.model.ModelFactory;
 import edu.upenn.cis.ppod.model.Otu;

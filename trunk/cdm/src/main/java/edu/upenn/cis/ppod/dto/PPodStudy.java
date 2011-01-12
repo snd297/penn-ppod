@@ -13,7 +13,7 @@
  * See the License for the specific language governing permissions and
  * limitations under the License.
  */
-package edu.upenn.cis.ppod.domain;
+package edu.upenn.cis.ppod.dto;
 
 import static com.google.common.collect.Lists.newArrayList;
 

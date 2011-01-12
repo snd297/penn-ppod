@@ -32,7 +32,7 @@ import org.testng.annotations.BeforeMethod;
 import org.testng.annotations.Test;
 
 import edu.upenn.cis.ppod.TestGroupDefs;
-import edu.upenn.cis.ppod.domain.PPodCellType;
+import edu.upenn.cis.ppod.dto.PPodCellType;
 
 /**
  * Test {@link CharacterStateCell}.
