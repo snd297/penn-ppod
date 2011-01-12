@@ -47,7 +47,7 @@ public final class Study2StudyInfo implements IStudy2StudyInfo {
 		for (final OtuSet otuSet : study.getOtuSets()) {
 			final OtuSetInfo otuSetInfo = new OtuSetInfo();
 
-			studyInfo.getOTUSetInfos().add(otuSetInfo);
+			studyInfo.getOtuSetInfos().add(otuSetInfo);
 			otuSetInfo.setEntityId(otuSet.getId());
 			otuSetInfo.setPPodId(otuSet.getPPodId());
 			otuSetInfo.setDocId(otuSet.getDocId());
@@ -178,9 +178,7 @@ public final class Study2StudyInfo implements IStudy2StudyInfo {
 					final DnaSequence dnaSequence =
 							dnaSequenceSet.getSequence(otu);
 					sequenceSetInfo
-							.getSequenceVersionsByOTUDocId()
-							.put(
-									otu.getDocId(),
+							.getSequenceVersions().add(
 									dnaSequence.getVersionInfo().getVersion());
 				}
 			}
