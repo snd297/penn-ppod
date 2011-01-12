@@ -30,7 +30,6 @@ import edu.upenn.cis.ppod.model.StandardMatrix;
 import edu.upenn.cis.ppod.model.TreeSet;
 import edu.upenn.cis.ppod.services.IPPodEntitiesResource;
 import edu.upenn.cis.ppod.services.ppodentity.PPodEntities;
-import edu.upenn.cis.ppod.util.SetDocIdVisitor;
 
 /**
  * @author Sam Donnelly
@@ -90,9 +89,6 @@ class PPodEntitiesResourceHibernate implements
 				session.setReadOnly(matrix, true);
 
 				addedMatrices.add(matrix);
-				if (matrix.getDocId() == null) {
-					matrix.getParent().accept(new SetDocIdVisitor());
-				}
 
 				// Note that otu set may have already been added in any of the
 				// other if clauses: Hibernate identity takes care of us
@@ -104,9 +100,6 @@ class PPodEntitiesResourceHibernate implements
 				session.setReadOnly(treeSet, true);
 
 				addedTreeSets.add(treeSet);
-				if (treeSet.getDocId() == null) {
-					treeSet.getParent().accept(new SetDocIdVisitor());
-				}
 
 				// Note that otu set may have already been added in any of the
 				// other if clauses: Hibernate identity takes care of us

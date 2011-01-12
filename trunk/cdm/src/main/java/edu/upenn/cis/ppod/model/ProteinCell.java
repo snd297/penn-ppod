@@ -10,8 +10,6 @@ import javax.persistence.Enumerated;
 import javax.persistence.FetchType;
 import javax.persistence.JoinColumn;
 import javax.persistence.ManyToOne;
-import javax.xml.bind.annotation.XmlAttribute;
-import javax.xml.bind.annotation.XmlElement;
 
 import edu.umd.cs.findbugs.annotations.CheckForNull;
 import edu.umd.cs.findbugs.annotations.Nullable;
@@ -54,21 +52,9 @@ public class ProteinCell
 	@Nullable
 	private Protein element;
 
-	@XmlAttribute(name = "protein")
 	@Override
 	protected Protein getElement() {
 		return element;
-	}
-
-	/**
-	 * {@inheritDoc}
-	 * <p>
-	 * Protected for JAXB.
-	 */
-	@XmlElement(name = "nucleotide")
-	@Override
-	protected Set<Protein> getElementsIfMultiple() {
-		return super.getElementsIfMultiple();
 	}
 
 	@Override

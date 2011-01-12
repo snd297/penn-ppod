@@ -38,46 +38,6 @@ import edu.upenn.cis.ppod.domain.PPodDnaNucleotide;
 @Test(groups = { TestGroupDefs.FAST })
 public class CellTest {
 
-	@Test
-	public void afterUnmarshal() {
-		final DnaRow row = new DnaRow();
-		final DnaCell cell = new DnaCell();
-		cell.afterUnmarshal(null, row);
-		assertSame(cell.getParent(), row);
-	}
-
-	/**
-	 * Verify that {@link PPodEntity#beforeMarshal(javax.xml.bind.Marshaller)}
-	 * is called when {@link Cell#beforeMarshal(javax.xml.bind.Marshaller)} is
-	 * called.
-	 */
-	@Test
-	public void beforeMarshal() {
-		final VersionInfo versionInfo = new VersionInfo();
-		versionInfo.setVersion(23L);
-		final Cell<PPodDnaNucleotide, ?> cell = new DnaCell();
-		cell.setType(PPodCellType.INAPPLICABLE);
-		cell.setVersionInfo(versionInfo);
-		cell.beforeMarshal(null);
-		assertEquals(cell.getVersion(), versionInfo.getVersion());
-	}
-
-	/**
-	 * {@code beforeMarshal(...)} should throw an {@code IllegalStateException}
-	 * if the type has not bee set yet.
-	 */
-	@Test(expectedExceptions = IllegalStateException.class)
-	public void beforeMarshalBeforeTypeHasBeenSet() {
-		final DnaCell cell = new DnaCell();
-		cell.beforeMarshal(null);
-	}
-
-	@Test(expectedExceptions = IllegalStateException.class)
-	public void beforeMarshalWNoType() {
-		final Cell<PPodDnaNucleotide, ?> cell = new DnaCell();
-		cell.beforeMarshal(null);
-	}
-
 	/**
 	 * Matrix must be ready to have a row with one cell added to it.
 	 * 
@@ -102,40 +62,6 @@ public class CellTest {
 	public void getElementsWhenNoTypeSet() {
 		final Cell<?, ?> cell = new DnaCell();
 		cell.getElements();
-	}
-
-	@Test
-	public void getElementsXml() {
-		final DnaCell cell = new DnaCell();
-		cell.setType(PPodCellType.UNCERTAIN);
-		final Set<PPodDnaNucleotide> cellElementsXml = cell.getElementsIfMultiple();
-		assertNotNull(cellElementsXml);
-		assertEquals(cellElementsXml.size(), 0);
-
-		cell.setUnassigned();
-		assertNull(cell.getElementsIfMultiple());
-
-		cell.setSingleElement(PPodDnaNucleotide.A, true);
-		assertNull(cell.getElementsIfMultiple());
-
-		cell.setInapplicable();
-		assertNull(cell.getElementsIfMultiple());
-
-		final Set<PPodDnaNucleotide> nucleotides = EnumSet.of(PPodDnaNucleotide.A,
-				PPodDnaNucleotide.G);
-		cell.setPolymorphicElements(nucleotides, true);
-		assertEquals((Object) cell.getElementsIfMultiple(),
-				(Object) nucleotides);
-		cell.setUncertainElements(nucleotides);
-		assertEquals((Object) cell.getElementsIfMultiple(),
-				(Object) nucleotides);
-
-	}
-
-	@Test(expectedExceptions = IllegalStateException.class)
-	public void getElementsIfMultipleWNoType() {
-		final Cell<?, ?> cell = new DnaCell();
-		cell.getElementsIfMultiple();
 	}
 
 	@Test

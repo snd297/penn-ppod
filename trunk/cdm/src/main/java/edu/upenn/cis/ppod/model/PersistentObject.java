@@ -24,14 +24,7 @@ import javax.persistence.Id;
 import javax.persistence.MappedSuperclass;
 import javax.persistence.Transient;
 import javax.persistence.Version;
-import javax.xml.bind.Unmarshaller;
-import javax.xml.bind.annotation.XmlAccessType;
-import javax.xml.bind.annotation.XmlAccessorType;
-import javax.xml.bind.annotation.XmlAttribute;
 
-import com.google.common.annotations.VisibleForTesting;
-
-import edu.umd.cs.findbugs.annotations.CheckForNull;
 import edu.upenn.cis.ppod.imodel.IHasLongId;
 
 /**
@@ -39,7 +32,6 @@ import edu.upenn.cis.ppod.imodel.IHasLongId;
  * 
  * @author Sam Donnelly
  */
-@XmlAccessorType(XmlAccessType.NONE)
 @MappedSuperclass
 public abstract class PersistentObject implements IHasLongId {
 
@@ -61,10 +53,13 @@ public abstract class PersistentObject implements IHasLongId {
 	@Id
 	@GeneratedValue
 	@Column(name = ID_COLUMN)
+	@Nullable
 	private Long id;
 
+	@SuppressWarnings("unused")
 	@Version
 	@Column(name = "OBJ_VERSION")
+	@Nullable
 	private Integer objVersion;
 
 	@Transient
@@ -73,13 +68,6 @@ public abstract class PersistentObject implements IHasLongId {
 	/** Default constructor. */
 	protected PersistentObject() {}
 
-	protected void beforeUnmarshal(
-			@CheckForNull final Unmarshaller u,
-			@CheckForNull final Object parent) {
-		setUnmarshalled(true);
-	}
-
-	@XmlAttribute
 	@Nullable
 	public Long getId() {
 		return id;
@@ -89,35 +77,10 @@ public abstract class PersistentObject implements IHasLongId {
 		return unmarshalled;
 	}
 
-	/** Protected for Jaxb. */
-	protected PersistentObject setId(final Long id) {
+	@SuppressWarnings("unused")
+	private PersistentObject setId(final Long id) {
 		this.id = id;
 		return this;
-	}
-
-	@VisibleForTesting
-	PersistentObject setUnmarshalled(final boolean marshalled) {
-		this.unmarshalled = marshalled;
-		return this;
-	}
-
-	/**
-	 * Constructs a <code>String</code> with all attributes in name = value
-	 * format.
-	 * 
-	 * @return a <code>String</code> representation of this object.
-	 */
-	@Override
-	public String toString() {
-		final String TAB = "";
-
-		final StringBuilder retValue = new StringBuilder();
-
-		retValue.append("PersistentObject(").append(super.toString()).append(
-				TAB).append("id=").append(this.id).append(TAB).append(
-				"version=").append(this.objVersion).append(TAB).append(")");
-
-		return retValue.toString();
 	}
 
 }

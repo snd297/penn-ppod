@@ -16,7 +16,6 @@
 package edu.upenn.cis.ppod.model;
 
 import static com.google.common.collect.Lists.newArrayList;
-import static edu.upenn.cis.ppod.util.CollectionsUtil.nullFillAndSet;
 import static org.testng.Assert.assertEquals;
 import static org.testng.Assert.assertFalse;
 import static org.testng.Assert.assertNotNull;
@@ -317,49 +316,6 @@ public class StandardMatrixTest {
 		final StandardRow someRow = matrix.putRow(otu1, row2);
 		assertEquals(someRow, row1);
 		assertNull(row1.getParent());
-	}
-
-	@Test
-	public void beforeMarshal() {
-
-		final ImmutableList<StandardCharacter> characters =
-				ImmutableList.of(
-						new StandardCharacter(),
-						new StandardCharacter(),
-						new StandardCharacter());
-
-		characters.get(0).setLabel("character-0");
-		characters.get(1).setLabel("character-1");
-		characters.get(2).setLabel("character-2");
-
-		final VersionInfo version3 = new VersionInfo();
-		version3.setVersion(3L);
-
-		nullFillAndSet(
-				matrix.getColumnVersionInfosModifiable(),
-				0,
-				version3);
-
-		final VersionInfo version8 = new VersionInfo();
-		version3.setVersion(8L);
-		nullFillAndSet(
-				matrix.getColumnVersionInfosModifiable(),
-				2,
-				version8);
-
-		matrix.beforeMarshal(null);
-		assertEquals(matrix.getColumnVersions().size(),
-				matrix.getColumnVersionInfos().size());
-		for (int i = 0; i < matrix.getColumnVersionInfos().size(); i++) {
-			if (matrix.getColumnVersionInfos().get(i) == null) {
-				assertNull(matrix.getColumnVersions().get(i));
-			} else {
-				assertEquals(matrix.getColumnVersions().get(i),
-						matrix
-								.getColumnVersionInfos().get(i)
-								.getVersion());
-			}
-		}
 	}
 
 	@Test(expectedExceptions = IllegalArgumentException.class)

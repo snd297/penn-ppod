@@ -21,7 +21,6 @@ import static com.google.common.collect.Lists.newArrayList;
 import static com.google.common.collect.Sets.newHashSet;
 import static org.testng.Assert.assertEquals;
 import static org.testng.Assert.assertFalse;
-import static org.testng.Assert.assertNull;
 import static org.testng.Assert.assertTrue;
 
 import java.util.Arrays;
@@ -84,71 +83,6 @@ public class StandardCellTest {
 		state01 = new StandardState(1);
 		character0.addState(state01);
 
-	}
-
-	@Test
-	public void beforeMarshalPolymorphic() {
-		matrix.getRows()
-				.get(matrix
-						.getParent()
-						.getOtus()
-						.get(0))
-						.setCells(Arrays.asList(cell));
-		states.add(state00);
-		states.add(state01);
-		cell.setPolymorphicWithStateNos(
-				newHashSet(
-						transform(states, StandardState.getStateNumber)));
-		cell.beforeMarshal(null);
-
-		assertEquals(cell.getElementsXml(), states);
-	}
-
-	@Test
-	public void beforeMarshalUncertain() {
-		matrix.getRows()
-				.get(matrix
-						.getParent()
-						.getOtus()
-						.get(0))
-						.setCells(Arrays.asList(cell));
-		states.add(state00);
-		states.add(state01);
-		cell.setUncertainWithStateNos(
-				newHashSet(
-						transform(states, StandardState.getStateNumber)));
-		cell.beforeMarshal(null);
-
-		assertEquals(cell.getElementsXml(), states);
-	}
-
-	@Test
-	public void beforeMarshalSingle() {
-		matrix
-				.getRows()
-				.get(matrix.getParent().getOtus().get(0))
-				.setCells(Arrays.asList(cell));
-		states.add(state00);
-
-		cell.setSingleWithStateNo(state00.getStateNumber());
-
-		cell.beforeMarshal(null);
-
-		assertNull(cell.getElementsXml());
-	}
-
-	@Test
-	public void beforeMarshalInapplicable() {
-		cell.setInapplicable();
-		cell.beforeMarshal(null);
-		assertNull(cell.getElementsXml());
-	}
-
-	@Test
-	public void beforeMarshalUnassigned() {
-		cell.setUnassigned();
-		cell.beforeMarshal(null);
-		assertNull(cell.getElementsXml());
 	}
 
 	@Test(expectedExceptions = IllegalArgumentException.class)

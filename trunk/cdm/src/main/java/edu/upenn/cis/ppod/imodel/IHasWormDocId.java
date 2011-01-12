@@ -15,8 +15,6 @@ s * Copyright (C) 2010 Trustees of the University of Pennsylvania
  */
 package edu.upenn.cis.ppod.imodel;
 
-import javax.annotation.Nullable;
-
 import edu.upenn.cis.ppod.domain.IHasDocId;
 
 /**
@@ -33,16 +31,9 @@ import edu.upenn.cis.ppod.domain.IHasDocId;
  * @author Sam Donnelly
  */
 public interface IHasWormDocId extends IHasDocId {
-	/**
-	 * Create and set this {@code IWithXmlID}'s doc id.
-	 * 
-	 * @throws IllegalStateException if {@link #getXmlId()}{@code != null} when
-	 *             this method is called
-	 */
-	void setDocId();
 
 	/**
-	 * Set this {@code IWithDocID}'s xml id.
+	 * Set this {@code IHasWormDocID}'s xml id.
 	 * 
 	 * @param docId the xml id
 	 * 

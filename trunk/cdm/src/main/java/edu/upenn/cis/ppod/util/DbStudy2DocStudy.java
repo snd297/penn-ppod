@@ -259,7 +259,7 @@ public class DbStudy2DocStudy {
 			final List<StandardCell> dbCells = dbRow.getCells();
 			for (final StandardCell dbCell : dbCells) {
 				final PPodStandardCell docCell = new PPodStandardCell(
-						dbCell.getVersion(), dbCell.getType());
+						dbCell.getVersionInfo().getVersion(), dbCell.getType());
 				docRow.getCells().add(docCell);
 				for (final StandardState state : dbCell.getElements()) {
 					docCell.getStates().add(state.getStateNumber());

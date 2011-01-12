@@ -29,14 +29,9 @@ import javax.persistence.JoinTable;
 import javax.persistence.ManyToMany;
 import javax.persistence.ManyToOne;
 import javax.persistence.Table;
-import javax.persistence.Transient;
-import javax.xml.bind.Marshaller;
-import javax.xml.bind.Unmarshaller;
 import javax.xml.bind.annotation.XmlAttribute;
-import javax.xml.bind.annotation.XmlElement;
 import javax.xml.bind.annotation.XmlIDREF;
 
-import edu.umd.cs.findbugs.annotations.CheckForNull;
 import edu.umd.cs.findbugs.annotations.Nullable;
 import edu.upenn.cis.ppod.domain.PPodCellType;
 import edu.upenn.cis.ppod.util.IVisitor;
@@ -92,10 +87,6 @@ public class StandardCell
 	@Nullable
 	private StandardRow parent;
 
-	@Nullable
-	@Transient
-	private Set<StandardState> elementsXml;
-
 	/** No-arg constructor for (at least) Hibernate. */
 	public StandardCell() {}
 
@@ -103,57 +94,6 @@ public class StandardCell
 	public void accept(final IVisitor visitor) {
 		checkNotNull(visitor);
 		visitor.visitStandardCell(this);
-	}
-
-	protected boolean afterMarshal(@CheckForNull final Marshaller marshaller) {
-		elementsXml = null;
-		return true;
-	}
-
-	/**
-	 * Take actions that must be performed after
-	 * {@link javax.xml.bind.annotation.XmlIDREF}s have been resolved, that is,
-	 * after unmarshalling is finished.
-	 */
-	public void afterUnmarshal() {
-		if (getType() == PPodCellType.POLYMORPHIC || getType() == PPodCellType.UNCERTAIN) {
-			initElements();
-			for (final StandardState elementXml : elementsXml) {
-				getElementsModifiable().add(elementXml);
-			}
-		}
-		elementsXml = null;
-	}
-
-	/**
-	 * {@link Unmarshaller} callback.
-	 * 
-	 * @param u see {@code Unmarshaller}
-	 * @param parent see {@code Unmarshaller}
-	 */
-	@Override
-	protected void afterUnmarshal(@CheckForNull final Unmarshaller u,
-			final Object parent) {
-		this.parent = (StandardRow) parent;
-	}
-
-	@Override
-	protected boolean beforeMarshal(@CheckForNull final Marshaller marshaller) {
-		if (getType() == PPodCellType.POLYMORPHIC || getType() == PPodCellType.UNCERTAIN) {
-			this.elementsXml = newHashSet();
-			for (final StandardState element : elements) {
-				// Load it if it's a proxy ;-)
-				element.getStateNumber();
-				this.elementsXml.add((StandardState) element);
-			}
-		}
-		return true;
-	}
-
-	@Override
-	protected void beforeUnmarshal(@CheckForNull final Unmarshaller u,
-			final Object parent) {
-		elementsXml = newHashSet();
 	}
 
 	private void checkRowMatrixCharacter() {
@@ -193,18 +133,6 @@ public class StandardCell
 	@Override
 	Set<StandardState> getElementsModifiable() {
 		return elements;
-	}
-
-	/**
-	 * We needed to create this instead of serializing a Set<StandardState}
-	 * because the interfaces didn't work with
-	 * 
-	 * @XmlIdREF
-	 */
-	@XmlElement(name = "stateDocId")
-	@XmlIDREF
-	protected Set<StandardState> getElementsXml() {
-		return elementsXml;
 	}
 
 	/**
@@ -303,7 +231,8 @@ public class StandardCell
 		checkArgument(
 				stateNumbers.size() > 1,
 				"polymorphic states must be > 1");
-		setPolymorphicOrUncertain(PPodCellType.POLYMORPHIC, getStates(stateNumbers));
+		setPolymorphicOrUncertain(PPodCellType.POLYMORPHIC,
+				getStates(stateNumbers));
 	}
 
 	/**
@@ -367,6 +296,7 @@ public class StandardCell
 		checkArgument(
 				stateNumbers.size() > 1,
 				"polymorphic states must be > 1");
-		setPolymorphicOrUncertain(PPodCellType.UNCERTAIN, getStates(stateNumbers));
+		setPolymorphicOrUncertain(PPodCellType.UNCERTAIN,
+				getStates(stateNumbers));
 	}
 }

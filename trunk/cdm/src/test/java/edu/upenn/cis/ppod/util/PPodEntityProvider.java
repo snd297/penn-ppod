@@ -44,7 +44,6 @@ public class PPodEntityProvider {
 				(Study) ctx.createUnmarshaller().unmarshal(
 						PPodEntityProvider.class
 								.getResourceAsStream("/MX540.xml"));
-		studyMX540.accept(new AfterUnmarshalVisitor());
 
 		final StandardMatrix smallStandardMatrix =
 				getOnlyElement(
@@ -76,8 +75,6 @@ public class PPodEntityProvider {
 				(Study) ctx.createUnmarshaller().unmarshal(
 						PPodEntityProvider.class
 								.getResourceAsStream("/MX540.xml"));
-		studyMX540.accept(new AfterUnmarshalVisitor());
-
 		final OtuSet otuSet =
 				getOnlyElement(studyMX540.getOtuSets());
 
