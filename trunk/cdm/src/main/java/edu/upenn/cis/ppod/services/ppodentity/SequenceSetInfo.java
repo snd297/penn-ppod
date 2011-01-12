@@ -15,9 +15,9 @@
  */
 package edu.upenn.cis.ppod.services.ppodentity;
 
-import static com.google.common.collect.Maps.newHashMap;
+import static com.google.common.collect.Lists.newArrayList;
 
-import java.util.Map;
+import java.util.List;
 
 import javax.xml.bind.annotation.XmlElementWrapper;
 
@@ -27,10 +27,10 @@ import javax.xml.bind.annotation.XmlElementWrapper;
  */
 public class SequenceSetInfo extends PPodEntityInfoWDocId {
 
-	private Map<String, Long> sequenceVersionsByOTUDocId = newHashMap();
+	private List<Long> sequenceVersions = newArrayList();
 
-	@XmlElementWrapper(name = "sequenceVersionsByOTUDocId")
-	public Map<String, Long> getSequenceVersionsByOTUDocId() {
-		return sequenceVersionsByOTUDocId;
+	@XmlElementWrapper(name = "sequenceVersions")
+	public List<Long> getSequenceVersions() {
+		return sequenceVersions;
 	}
 }

@@ -41,7 +41,7 @@ public final class StudyInfo extends PPodEntityInfo {
 	public StudyInfo() {}
 
 	@XmlElement(name = "otuSetInfo")
-	public List<OtuSetInfo> getOTUSetInfos() {
+	public List<OtuSetInfo> getOtuSetInfos() {
 		return otuSetInfos;
 	}
 
