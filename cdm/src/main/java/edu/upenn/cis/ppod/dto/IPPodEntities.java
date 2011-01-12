@@ -13,24 +13,17 @@
  * See the License for the specific language governing permissions and
  * limitations under the License.
  */
-package edu.upenn.cis.ppod.services.ppodentity;
+package edu.upenn.cis.ppod.dto;
 
-import static com.google.common.collect.Lists.newArrayList;
+import java.util.Set;
 
-import java.util.List;
-
-import javax.xml.bind.annotation.XmlElementWrapper;
+import edu.upenn.cis.ppod.model.Otu;
 
 /**
  * @author Sam Donnelly
- * 
  */
-public class SequenceSetInfo extends PPodEntityInfo {
+public interface IPPodEntities extends IOTUSets {
+	Set<Otu> getOTUs();
 
-	private List<Long> sequenceVersions = newArrayList();
-
-	@XmlElementWrapper(name = "sequenceVersions")
-	public List<Long> getSequenceVersions() {
-		return sequenceVersions;
-	}
+	Otu addOTU(Otu otu);
 }

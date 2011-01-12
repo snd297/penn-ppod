@@ -33,8 +33,8 @@ import javax.persistence.OrderColumn;
 import javax.persistence.Table;
 
 import edu.umd.cs.findbugs.annotations.Nullable;
+import edu.upenn.cis.ppod.dto.IOTUSets;
 import edu.upenn.cis.ppod.imodel.ILabeled;
-import edu.upenn.cis.ppod.services.ppodentity.IOTUSets;
 import edu.upenn.cis.ppod.util.IVisitor;
 
 /**

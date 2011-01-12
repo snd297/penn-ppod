@@ -13,14 +13,13 @@
  * See the License for the specific language governing permissions and
  * limitations under the License.
  */
-package edu.upenn.cis.ppod.services.ppodentity;
+package edu.upenn.cis.ppod.dto;
 
 import javax.xml.bind.annotation.XmlAccessType;
 import javax.xml.bind.annotation.XmlAccessorType;
 import javax.xml.bind.annotation.XmlAttribute;
 import javax.xml.bind.annotation.XmlRootElement;
 
-import edu.upenn.cis.ppod.dto.IHasPPodId;
 
 /**
  * For communicating back to a client certain information about a pPOD entity

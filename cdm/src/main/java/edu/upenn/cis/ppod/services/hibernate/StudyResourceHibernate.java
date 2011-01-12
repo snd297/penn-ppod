@@ -25,13 +25,13 @@ import com.google.inject.Inject;
 
 import edu.upenn.cis.ppod.createorupdate.ICreateOrUpdateStudy;
 import edu.upenn.cis.ppod.dao.IStudyDAO;
+import edu.upenn.cis.ppod.dto.IStudy2StudyInfo;
 import edu.upenn.cis.ppod.dto.PPodStudy;
+import edu.upenn.cis.ppod.dto.StudyInfo;
 import edu.upenn.cis.ppod.imodel.INewVersionInfo;
 import edu.upenn.cis.ppod.model.Study;
 import edu.upenn.cis.ppod.services.IStudyResource;
 import edu.upenn.cis.ppod.services.StringPair;
-import edu.upenn.cis.ppod.services.ppodentity.IStudy2StudyInfo;
-import edu.upenn.cis.ppod.services.ppodentity.StudyInfo;
 import edu.upenn.cis.ppod.util.IVisitor;
 import edu.upenn.cis.ppod.util.Pair;
 import edu.upenn.cis.ppod.util.SetVersionInfoVisitor;

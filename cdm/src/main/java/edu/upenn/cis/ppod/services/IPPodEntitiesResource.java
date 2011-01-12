@@ -22,7 +22,7 @@ import javax.ws.rs.Produces;
 
 import org.jboss.resteasy.annotations.GZIP;
 
-import edu.upenn.cis.ppod.services.ppodentity.PPodEntities;
+import edu.upenn.cis.ppod.dto.PPodEntities;
 import edu.upenn.cis.ppod.thirdparty.util.Pretty;
 
 /**
