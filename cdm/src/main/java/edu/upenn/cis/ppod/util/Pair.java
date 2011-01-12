@@ -15,15 +15,13 @@
  */
 package edu.upenn.cis.ppod.util;
 
-import javax.xml.bind.annotation.XmlAccessType;
-import javax.xml.bind.annotation.XmlAccessorType;
+import static com.google.common.base.Preconditions.checkNotNull;
 
 /**
  * {@code IPair} implementation.
  * 
  * @author Sam Donnelly
  */
-@XmlAccessorType(XmlAccessType.NONE)
 public class Pair<T, U> {
 
 	public static <T, U> Pair<T, U> of(final T first, final U second) {
@@ -40,6 +38,8 @@ public class Pair<T, U> {
 	protected Pair() {}
 
 	public Pair(final T first, final U second) {
+		checkNotNull(first);
+		checkNotNull(second);
 		this.first = first;
 		this.second = second;
 	}

@@ -5,7 +5,7 @@ import static com.google.common.collect.Lists.newArrayList;
 
 import java.util.List;
 
-public final class PPodStandardRow extends PPodDomainObject implements IPPodRow {
+public final class PPodStandardRow extends PPodDomainObject {
 
 	private List<PPodStandardCell> cells = newArrayList();
 

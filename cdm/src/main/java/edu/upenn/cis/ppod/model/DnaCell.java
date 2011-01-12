@@ -30,8 +30,6 @@ import javax.persistence.FetchType;
 import javax.persistence.JoinColumn;
 import javax.persistence.ManyToOne;
 import javax.persistence.Table;
-import javax.xml.bind.annotation.XmlAttribute;
-import javax.xml.bind.annotation.XmlElement;
 
 import org.hibernate.annotations.Immutable;
 
@@ -94,7 +92,6 @@ public class DnaCell
 	}
 
 	/** {@inheritDoc} */
-	@XmlAttribute(name = "nucleotide")
 	@Override
 	protected PPodDnaNucleotide getElement() {
 		return element;
@@ -103,17 +100,6 @@ public class DnaCell
 	@Override
 	Set<PPodDnaNucleotide> getElementsModifiable() {
 		return elements;
-	}
-
-	/**
-	 * {@inheritDoc}
-	 * <p>
-	 * Protected for JAXB.
-	 */
-	@XmlElement(name = "nucleotide")
-	@Override
-	protected Set<PPodDnaNucleotide> getElementsIfMultiple() {
-		return super.getElementsIfMultiple();
 	}
 
 	@Override

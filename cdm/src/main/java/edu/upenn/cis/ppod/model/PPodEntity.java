@@ -35,14 +35,11 @@ import javax.persistence.ManyToOne;
 import javax.persistence.OneToMany;
 import javax.persistence.Table;
 import javax.persistence.Transient;
-import javax.xml.bind.Marshaller;
 import javax.xml.bind.annotation.XmlAttribute;
-import javax.xml.bind.annotation.XmlElement;
 
 import com.google.common.annotations.VisibleForTesting;
 
 import edu.umd.cs.findbugs.annotations.CheckForNull;
-import edu.umd.cs.findbugs.annotations.Nullable;
 import edu.upenn.cis.ppod.imodel.IPPodEntity;
 import edu.upenn.cis.ppod.util.IVisitor;
 
@@ -101,10 +98,6 @@ public abstract class PPodEntity
 	@Transient
 	private boolean inNeedOfNewVersion = false;
 
-	@Transient
-	@CheckForNull
-	private Long version;
-
 	/**
 	 * The pPod version of this object. Similar in concept to Hibernate's
 	 * version, but tweaked for our purposes.
@@ -136,28 +129,6 @@ public abstract class PPodEntity
 		return attachment;
 	}
 
-	/**
-	 * See {@link Marshaller}.
-	 * <p>
-	 * Overriders of this method <em>should not</em> call this method (as in
-	 * {@code super.beforeMarshal(...)}) because that will result in this method
-	 * being called multiple times.
-	 * 
-	 * @param marshaler see {@code Marshaller}
-	 * @return see {@code Marshaller}
-	 */
-	protected boolean beforeMarshal(@CheckForNull final Marshaller marshaler) {
-		// Write out the version number for the client of the xml
-		// if (version != null) {
-		// throw new IllegalStateException(
-		// "about to marshal, but version != null. Outside of testing, this value should never be set in client code.");
-		// }
-		if (versionInfo != null) {
-			version = versionInfo.getVersion();
-		}
-		return true;
-	}
-
 	/** {@inheritDoc} */
 	public Set<Attachment> getAttachments() {
 		if (hasAttachments) {
@@ -187,21 +158,6 @@ public abstract class PPodEntity
 	}
 
 	/**
-	 * So we can avoid hitting attachments. Protected for JAXB.
-	 */
-	@XmlElement(name = "attachment")
-	@edu.umd.cs.findbugs.annotations.Nullable
-	protected Set<Attachment> getAttachmentsXml() {
-		if (hasAttachments) {
-			if (attachments == null) {
-				attachments = newHashSet();
-			}
-			return attachments;
-		}
-		return null;
-	}
-
-	/**
 	 * We send this over the wire so that {@link #setAttachmentsXml()} only
 	 * creates a set to hold attachments when necessary. We do this because
 	 * there can be many cells, all of which may contain attachments.
@@ -209,15 +165,6 @@ public abstract class PPodEntity
 	@XmlAttribute(name = "hasAttachments")
 	protected Boolean getHasAttachments() {
 		return hasAttachments;
-	}
-
-	@XmlAttribute
-	@Nullable
-	public Long getVersion() {
-		if (versionInfo != null) {
-			return versionInfo.getVersion();
-		}
-		return version;
 	}
 
 	public VersionInfo getVersionInfo() {
@@ -266,19 +213,6 @@ public abstract class PPodEntity
 	@OverridingMethodsMustInvokeSuper
 	public void setInNeedOfNewVersion() {
 		inNeedOfNewVersion = true;
-	}
-
-	/**
-	 * Set the pPOD version number for marshalling so that an entire
-	 * {@link VersionInfo} need not be sent over the wire.
-	 * <p>
-	 * protected instead of package-private for JAXB.
-	 * 
-	 * @param version the pPOD version number
-	 */
-	public void setVersion(final Long version) {
-		checkNotNull(version);
-		this.version = version;
 	}
 
 	/** {@inheritDoc} */

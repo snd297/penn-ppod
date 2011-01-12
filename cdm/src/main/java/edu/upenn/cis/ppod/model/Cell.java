@@ -28,9 +28,6 @@ import javax.persistence.Column;
 import javax.persistence.EnumType;
 import javax.persistence.Enumerated;
 import javax.persistence.MappedSuperclass;
-import javax.xml.bind.Marshaller;
-import javax.xml.bind.Unmarshaller;
-import javax.xml.bind.annotation.XmlAttribute;
 
 import com.google.common.annotations.VisibleForTesting;
 
@@ -63,29 +60,7 @@ public abstract class Cell<E, R extends Row<?, ?>>
 	@Nullable
 	private PPodCellType type;
 
-	Cell() {}
-
-	/**
-	 * {@link Unmarshaller} callback.
-	 * 
-	 * @param u see {@code Unmarshaller}
-	 * @param parent see {@code Unmarshaller}
-	 */
-	protected void afterUnmarshal(
-			@CheckForNull final Unmarshaller u,
-			final Object parent) {
-		checkNotNull(parent);
-
-		@SuppressWarnings("unchecked")
-		final R row = (R) parent;
-		setParent(row);
-	}
-
-	@Override
-	protected boolean beforeMarshal(@CheckForNull final Marshaller marshaller) {
-		checkState(getType() != null, "can't marshal a cell with no type");
-		return true;
-	}
+	protected Cell() {}
 
 	/**
 	 * Get the elements contained in this cell.
@@ -148,36 +123,6 @@ public abstract class Cell<E, R extends Row<?, ?>>
 		}
 	}
 
-	/**
-	 * Can be used for serialization.
-	 * <p>
-	 * This method assumes that {@link #getType()} is non-null. So, for
-	 * instance, it assumes that the unmarshaller will have set the type before
-	 * it calls this method.
-	 * 
-	 * @throws IllegalStateException if {@code getType() == null}
-	 */
-	@Nullable
-	Set<E> getElementsIfMultiple() {
-		if (getType() == null) {
-			throw new IllegalStateException("getType == null");
-		}
-		switch (getType()) {
-			case UNASSIGNED:
-			case SINGLE:
-			case INAPPLICABLE:
-				return null;
-			case POLYMORPHIC:
-			case UNCERTAIN:
-				if (getElementsModifiable() == null) {
-					initElements();
-				}
-				return getElementsModifiable();
-			default:
-				throw new AssertionError("unknown type: " + getType());
-		}
-	}
-
 	@Nullable
 	abstract Set<E> getElementsModifiable();
 
@@ -200,7 +145,6 @@ public abstract class Cell<E, R extends Row<?, ?>>
 	 * 
 	 * @return the type of this cell
 	 */
-	@XmlAttribute
 	@Nullable
 	public PPodCellType getType() {
 		return type;

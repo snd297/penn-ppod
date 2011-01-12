@@ -35,7 +35,6 @@ import javax.xml.bind.Marshaller;
 import javax.xml.bind.Unmarshaller;
 import javax.xml.bind.annotation.XmlAttribute;
 import javax.xml.bind.annotation.XmlElement;
-import javax.xml.bind.annotation.adapters.XmlAdapter;
 
 import com.google.common.base.Preconditions;
 
@@ -158,21 +157,6 @@ public class StandardCharacter extends UuPPodEntityWithDocId {
 			states.put(stateXml.getStateNumber(), stateXml);
 		}
 		statesXml = null;
-	}
-
-	@Override
-	protected boolean beforeMarshal(@CheckForNull final Marshaller marshaller) {
-		statesXml = newHashSet();
-		for (final StandardState state : states.values()) {
-			statesXml.add(state);
-		}
-		return true;
-	}
-
-	@Override
-	protected void beforeUnmarshal(
-			@CheckForNull final Unmarshaller u, final Object parent) {
-		statesXml = newHashSet();
 	}
 
 	/**

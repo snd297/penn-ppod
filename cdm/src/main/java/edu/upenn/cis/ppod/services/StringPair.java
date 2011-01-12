@@ -19,8 +19,6 @@ import javax.xml.bind.annotation.XmlAccessType;
 import javax.xml.bind.annotation.XmlAccessorType;
 import javax.xml.bind.annotation.XmlRootElement;
 
-import edu.upenn.cis.ppod.util.Pair;
-
 /**
  * Serializing a {@code Pair<String, String>} didn't work right, so we made this
  * class.
@@ -29,42 +27,41 @@ import edu.upenn.cis.ppod.util.Pair;
  */
 @XmlRootElement
 @XmlAccessorType(XmlAccessType.PROPERTY)
-public final class StringPair extends Pair<String, String> {
+public final class StringPair {
+
+	private String first;
+	private String second;
 
 	/**
 	 * Created for JAXB.
 	 */
-	@SuppressWarnings("unused")
-	private StringPair() {}
+	StringPair() {}
 
 	public StringPair(final String first,
 			final String second) {
-		super(first, second);
+		this.first = first;
+		this.second = second;
 	}
 
-	@Override
 	public String getFirst() {
-		return super.getFirst();
+		return first;
 	}
 
-	@Override
 	public String getSecond() {
-		return super.getSecond();
+		return second;
 	}
 
 	/**
 	 * This seemingly redundant setter method added for the sake of JAXB.
 	 */
-	@Override
-	protected void setFirst(final String first) {
-		super.setFirst(first);
+	public void setFirst(final String first) {
+		this.first = first;
 	}
 
 	/**
 	 * This seemingly redundant setter method added for the sake of JAXB.
 	 */
-	@Override
-	protected void setSecond(final String second) {
-		super.setSecond(second);
+	public void setSecond(final String second) {
+		this.second = second;
 	}
 }

@@ -21,11 +21,7 @@ import static org.testng.Assert.assertNull;
 import static org.testng.Assert.assertSame;
 import static org.testng.Assert.assertTrue;
 
-import java.util.Set;
-
 import org.testng.annotations.Test;
-
-import com.google.common.collect.ImmutableSet;
 
 import edu.upenn.cis.ppod.TestGroupDefs;
 
@@ -70,18 +66,4 @@ public class StandardCharacterTest {
 		assertNull(state0.getParent());
 	}
 
-	@Test
-	public void beforeMarshal() {
-		final StandardCharacter character = new StandardCharacter();
-
-		final Set<StandardState> states = ImmutableSet.of(new StandardState(0),
-				new StandardState(1),
-				new StandardState(2));
-
-		for (final StandardState state : states) {
-			character.addState(state);
-		}
-		character.beforeMarshal(null);
-		assertEquals(character.getStatesXml(), states);
-	}
 }

@@ -27,24 +27,7 @@ import edu.upenn.cis.ppod.model.VersionInfo;
 public interface IVersioned extends IHasLongId {
 
 	/**
-	 * Used when we serialize so that we don't have to serialize the
-	 * {@link PPodVersionInfo} too. Will be {@code null} when the object is
-	 * first constructed.
-	 * 
-	 * @return {@code getPPodVersionInfo().getPPodVersion()} if available,
-	 *         otherwise use the value that was serialized
-	 * 
-	 * @throws IllegalStateException if there is no pPOD version number
-	 *             available
-	 */
-	@Nullable
-	Long getVersion();
-
-	/**
 	 * Get the version info of this {@code IPPodVersioned}.
-	 * <p>
-	 * NOTE: the weird name is on purpose so that Hibernate can identity it as
-	 * the getter.
 	 * 
 	 * @return the version info of this {@code IPPodVersioned}
 	 */

@@ -24,8 +24,6 @@ import static org.mockito.Mockito.times;
 import static org.mockito.Mockito.verify;
 import static org.testng.Assert.assertEquals;
 import static org.testng.Assert.assertFalse;
-import static org.testng.Assert.assertNotNull;
-import static org.testng.Assert.assertNull;
 import static org.testng.Assert.assertSame;
 import static org.testng.Assert.assertTrue;
 
@@ -60,58 +58,6 @@ public class PPodEntityTest {
 		assertTrue(otuSet.getHasAttachments());
 		assertTrue(otuSet.isInNeedOfNewVersion());
 
-	}
-
-	@Test
-	public void getElementsXmlWNullAttachments() {
-		final OtuSet otuSet = new OtuSet();
-		assertNull(otuSet.getAttachmentsXml());
-
-		otuSet.setHasAttachments(true);
-
-		assertNotNull(otuSet.getAttachmentsXml());
-		assertEquals(otuSet.getAttachmentsXml().size(), 0);
-
-	}
-
-	@Test
-	public void getElementsXmlWAttachments() {
-		final Attachment attachment0 = new Attachment();
-		final Attachment attachment1 = new Attachment();
-		final Attachment attachment2 = new Attachment();
-
-		final Set<Attachment> attachments =
-				ImmutableSet.of(attachment0,
-						attachment1,
-						attachment2);
-
-		final OtuSet otuSet = new OtuSet();
-
-		otuSet.addAttachment(attachment0);
-		otuSet.addAttachment(attachment1);
-		otuSet.addAttachment(attachment2);
-
-		assertEquals(otuSet.getAttachmentsXml(), attachments);
-	}
-
-	@Test
-	public void beforeMarahal() {
-		final OtuSet otuSet = new OtuSet();
-		final VersionInfo versionInfo = new VersionInfo();
-		otuSet.setVersionInfo(new VersionInfo());
-		otuSet.beforeMarshal(null);
-		assertEquals(otuSet.getVersion(), versionInfo.getVersion());
-	}
-
-	/**
-	 * Make sure {@code PPodEntity.getPPodVersionInfo()} throws an exception for
-	 * marshalled objects.
-	 */
-	@Test(expectedExceptions = IllegalStateException.class)
-	public void getMarshalled() {
-		final OtuSet otuSet = new OtuSet();
-		((PersistentObject) otuSet).setUnmarshalled(true);
-		otuSet.getVersionInfo();
 	}
 
 	/**
@@ -175,57 +121,11 @@ public class PPodEntityTest {
 	}
 
 	@Test
-	public void getVersion() {
-		final OtuSet otuSet = new OtuSet();
-		assertNull(otuSet.getVersion());
-
-		final VersionInfo versionInfo = new VersionInfo();
-
-		final Long versionNo = 454L;
-
-		versionInfo.setVersion(versionNo);
-		otuSet.setVersionInfo(versionInfo);
-
-		assertEquals(otuSet.getVersion(), versionNo);
-	}
-
-	@Test
 	public void getVersionInfo() {
 		final OtuSet otuSet = new OtuSet();
 		final VersionInfo versionInfo = new VersionInfo();
 		otuSet.setVersionInfo(versionInfo);
 		assertSame(otuSet.getVersionInfo(), versionInfo);
-	}
-
-	@Test(expectedExceptions = IllegalStateException.class)
-	public void getVersionInfoNotUnmarshalled() {
-		final OtuSet otuSet = new OtuSet();
-		otuSet.setUnmarshalled(true);
-		otuSet.getVersionInfo();
-	}
-
-	@Test
-	public void getAttachmentsXmlWAttachments() {
-		final OtuSet otuSet = new OtuSet();
-		final Attachment attachment0 = new Attachment();
-		final Attachment attachment1 = new Attachment();
-		final Attachment attachment2 = new Attachment();
-		final Set<Attachment> expectedAttachments =
-				ImmutableSet.of(attachment0,
-								attachment1,
-								attachment2);
-		otuSet.addAttachment(attachment0);
-		otuSet.addAttachment(attachment1);
-		otuSet.addAttachment(attachment2);
-
-		assertEquals(otuSet.getAttachmentsXml(), expectedAttachments);
-
-	}
-
-	@Test
-	public void getAttachmensXmlWNoAttachments() {
-		final OtuSet otuSet = new OtuSet();
-		assertNull(otuSet.getAttachmentsXml());
 	}
 
 	@Test

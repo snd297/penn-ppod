@@ -10,9 +10,7 @@ class UuPPodDomainObjectWDocId extends UuPPodDomainObject implements IHasDocId {
 	@XmlID
 	private final String docId = UUID.randomUUID().toString();
 
-	protected UuPPodDomainObjectWDocId() {
-
-	}
+	protected UuPPodDomainObjectWDocId() {}
 
 	protected UuPPodDomainObjectWDocId(@CheckForNull final String pPodId) {
 		super(pPodId);

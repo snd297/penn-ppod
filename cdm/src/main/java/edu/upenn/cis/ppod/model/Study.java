@@ -18,11 +18,9 @@ package edu.upenn.cis.ppod.model;
 import static com.google.common.base.Preconditions.checkArgument;
 import static com.google.common.base.Preconditions.checkNotNull;
 import static com.google.common.collect.Lists.newArrayList;
-import static com.google.common.collect.Sets.newHashSet;
 
 import java.util.Collections;
 import java.util.List;
-import java.util.Set;
 
 import javax.persistence.CascadeType;
 import javax.persistence.Column;
@@ -33,18 +31,11 @@ import javax.persistence.NamedQuery;
 import javax.persistence.OneToMany;
 import javax.persistence.OrderColumn;
 import javax.persistence.Table;
-import javax.persistence.Transient;
-import javax.xml.bind.Marshaller;
-import javax.xml.bind.Unmarshaller;
-import javax.xml.bind.annotation.XmlAttribute;
-import javax.xml.bind.annotation.XmlElement;
-import javax.xml.bind.annotation.XmlRootElement;
 
-import edu.umd.cs.findbugs.annotations.CheckForNull;
+import edu.umd.cs.findbugs.annotations.Nullable;
 import edu.upenn.cis.ppod.imodel.ILabeled;
 import edu.upenn.cis.ppod.services.ppodentity.IOTUSets;
 import edu.upenn.cis.ppod.util.IVisitor;
-import edu.upenn.cis.ppod.util.PPodEntitiesUtil;
 
 /**
  * A collection of work - inspired by a Mesquite project - sets of OTU sets and,
@@ -68,7 +59,6 @@ import edu.upenn.cis.ppod.util.PPodEntitiesUtil;
 		@NamedQuery(
 				name = "Study-getPPodIdLabelPairs",
 				query = "select s.pPodId, s.label from Study s") })
-@XmlRootElement
 @Entity
 @Table(name = Study.TABLE)
 public class Study
@@ -91,12 +81,6 @@ public class Study
 	@OrderColumn(name = "POSITION")
 	@JoinColumn(name = JOIN_COLUMN, nullable = false)
 	private final List<OtuSet> otuSets = newArrayList();
-
-	@Transient
-	private final Set<AttachmentNamespace> attachmentNamespaces = newHashSet();
-
-	@Transient
-	private final Set<AttachmentType> attachmentTypes = newHashSet();
 
 	/**
 	 * No-arg constructor.
@@ -145,43 +129,11 @@ public class Study
 	}
 
 	/**
-	 * {@link Unmarshaller} callback.
+	 * Get the label.
 	 * 
-	 * @param u see {@code Unmarshaller}
-	 * @param parent see {@code Unmarshaller}
+	 * @return the label
 	 */
-	protected void afterUnmarshal(
-			@CheckForNull final Unmarshaller u,
-			@CheckForNull final Object parent) {
-
-	}
-
-	/**
-	 * We gather up all of the attachment info of this study, its matrices, OTU
-	 * sets, and trees and add them to the {@code studyWide*}s.
-	 * 
-	 * See {@link Marshaller}.
-	 * 
-	 * @param m see {@code Marshaller}
-	 * @return see {@code Marshaller}
-	 */
-	@Override
-	protected boolean beforeMarshal(final Marshaller m) {
-		if (attachmentNamespaces.size() == 0) {
-			PPodEntitiesUtil.extractAttachmentInfoFromAttachee(
-					attachmentNamespaces,
-					attachmentTypes,
-					this);
-			PPodEntitiesUtil.extractAttachmentInfoFromPPodEntities(
-					attachmentNamespaces,
-					attachmentTypes,
-					this);
-		}
-		return true;
-	}
-
-	/** {@inheritDoc} */
-	@XmlAttribute
+	@Nullable
 	public String getLabel() {
 		return label;
 	}
@@ -191,19 +143,8 @@ public class Study
 		return Collections.unmodifiableList(otuSets);
 	}
 
-	@XmlElement(name = "otuSet")
 	protected List<OtuSet> getOTUSetsModifiable() {
 		return otuSets;
-	}
-
-	@XmlElement(name = "studyWideAttachmentNamespace")
-	protected Set<AttachmentNamespace> getStudyWideAttachmentNamespacesModifiable() {
-		return attachmentNamespaces;
-	}
-
-	@XmlElement(name = "studyWideAttachmentType")
-	protected Set<AttachmentType> getStudyWideAttachmentTypes() {
-		return attachmentTypes;
 	}
 
 	/**
@@ -237,29 +178,5 @@ public class Study
 			this.label = label;
 			setInNeedOfNewVersion();
 		}
-	}
-
-	/**
-	 * Constructs a <code>String</code> with all attributes in name = value
-	 * format.
-	 * 
-	 * @return a <code>String</code> representation of this object.
-	 */
-	@Override
-	public String toString() {
-		final String TAB = "";
-
-		final StringBuilder retValue = new StringBuilder();
-
-		retValue.append("Study(").append(super.toString()).append(TAB).append(
-				"label=").append(this.label).append(TAB).append("otuSets=")
-				.append(this.otuSets).append(TAB).append(
-						"studyWideAttachmentTypes=").append(
-						this.attachmentTypes).append(TAB).append(
-						"studyWideAttachmentNamespaces=").append(
-						this.attachmentNamespaces).append(TAB).append(
-						")");
-
-		return retValue.toString();
 	}
 }

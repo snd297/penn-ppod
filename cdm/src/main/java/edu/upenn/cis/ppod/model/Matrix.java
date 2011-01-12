@@ -36,7 +36,6 @@ import javax.persistence.ManyToOne;
 import javax.persistence.MappedSuperclass;
 import javax.persistence.OrderColumn;
 import javax.persistence.Transient;
-import javax.xml.bind.Marshaller;
 import javax.xml.bind.Unmarshaller;
 import javax.xml.bind.annotation.XmlAttribute;
 import javax.xml.bind.annotation.XmlElement;
@@ -142,27 +141,6 @@ public abstract class Matrix<R extends Row<C, ?>, C extends Cell<?, ?>>
 			@CheckForNull final Unmarshaller u,
 			final Object parent) {
 		this.parent = (OtuSet) parent;
-	}
-
-	@Override
-	protected boolean beforeMarshal(@CheckForNull final Marshaller marshaller) {
-
-		if (getColumnVersions().size() != 0) {
-			throw new AssertionError(
-					"getColumnsVersions().size() should be 0 before marshal");
-		}
-
-		int columnVersionInfoPos = -1;
-		for (final VersionInfo columnVersionInfo : getColumnVersionInfos()) {
-			columnVersionInfoPos++;
-			if (columnVersionInfo == null) {
-				getColumnVersionsModifiable().add(null);
-			} else {
-				getColumnVersionsModifiable()
-						.add(columnVersionInfo.getVersion());
-			}
-		}
-		return true;
 	}
 
 	/**
