@@ -24,12 +24,6 @@ public interface IOtuKeyedMap<V extends IChild<?>>
 		extends IVisitable {
 
 	/**
-	 * Do processing that must occur after JAXB unmarshalling is complete - that
-	 * is, after the OTUs' {@code @XmlIDREF}'s have been resolved.
-	 */
-	void afterUnmarshal();
-
-	/**
 	 * Returns the value to which the specified key is mapped which will be
 	 * {@code null} if {@link #setOTUs()} has been called with newly introduced
 	 * OTUs.

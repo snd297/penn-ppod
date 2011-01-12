@@ -67,10 +67,6 @@ public abstract class SequenceSet<S extends Sequence<?>>
 		super.accept(visitor);
 	}
 
-	public void afterUnmarshal() {
-		getOTUKeyedSequences().afterUnmarshal();
-	}
-
 	/**
 	 * See {@link Unmarshaller}.
 	 * 

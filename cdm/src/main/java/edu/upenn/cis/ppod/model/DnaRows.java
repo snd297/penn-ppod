@@ -16,9 +16,7 @@
 package edu.upenn.cis.ppod.model;
 
 import java.util.Map;
-import java.util.Set;
 
-import javax.annotation.CheckForNull;
 import javax.persistence.Access;
 import javax.persistence.AccessType;
 import javax.persistence.CascadeType;
@@ -27,66 +25,30 @@ import javax.persistence.JoinColumn;
 import javax.persistence.JoinTable;
 import javax.persistence.MapKeyJoinColumn;
 import javax.persistence.OneToMany;
-import javax.persistence.Transient;
-import javax.xml.bind.Marshaller;
-import javax.xml.bind.Unmarshaller;
-import javax.xml.bind.annotation.XmlAccessType;
-import javax.xml.bind.annotation.XmlAccessorType;
-import javax.xml.bind.annotation.XmlElement;
 
 import org.hibernate.annotations.Parent;
 
 import edu.upenn.cis.ppod.imodel.IOtuKeyedMap;
 import edu.upenn.cis.ppod.imodel.IOtuKeyedMapPlus;
 import edu.upenn.cis.ppod.util.IVisitor;
-import edu.upenn.cis.ppod.util.OtuDnaRowPair;
 
 /**
  * Maps {@link OTU}s to {@link DNARow}s.
  * 
  * @author Sam Donnelly
  */
-@XmlAccessorType(XmlAccessType.NONE)
 @Embeddable
 @Access(AccessType.PROPERTY)
-public class DnaRows implements IOtuKeyedMap<DnaRow> {
+class DnaRows implements IOtuKeyedMap<DnaRow> {
 
-	private final IOtuKeyedMapPlus<DnaRow, DnaMatrix, OtuDnaRowPair> rows =
-			new OtuKeyedMapPlus<DnaRow, DnaMatrix, OtuDnaRowPair>();
+	private final IOtuKeyedMapPlus<DnaRow, DnaMatrix> rows =
+			new OtuKeyedMapPlus<DnaRow, DnaMatrix>();
 
 	DnaRows() {}
 
 	/** {@inheritDoc} */
 	public void accept(final IVisitor visitor) {
 		rows.accept(visitor);
-	}
-
-	protected boolean afterMarshal(@CheckForNull final Marshaller marshaller) {
-		return rows.afterMarshal(marshaller);
-	}
-
-	/** {@inheritDoc} */
-	public void afterUnmarshal() {
-		rows.afterUnmarshal();
-	}
-
-	protected void afterUnmarshal(
-			@CheckForNull final Unmarshaller u,
-			final Object parent) {
-		// Don't checkNotNull(parent) since JAXB is the caller and we can't
-		// control what it does
-		rows.afterUnmarshal((DnaMatrix) parent);
-	}
-
-	protected boolean beforeMarshal(@CheckForNull final Marshaller marshaller) {
-		getOtuKeyedPairs().clear();
-		for (final Map.Entry<Otu, DnaRow> otuToRow : getValues()
-				.entrySet()) {
-			getOtuKeyedPairs().add(
-					new OtuDnaRowPair(otuToRow.getKey(),
-							otuToRow.getValue()));
-		}
-		return true;
 	}
 
 	public void clear() {
@@ -96,12 +58,6 @@ public class DnaRows implements IOtuKeyedMap<DnaRow> {
 	/** {@inheritDoc} */
 	public DnaRow get(final Otu key) {
 		return rows.get(key);
-	}
-
-	@XmlElement(name = "otuRowPair")
-	@Transient
-	public Set<OtuDnaRowPair> getOtuKeyedPairs() {
-		return rows.getOtuKeyedPairs();
 	}
 
 	@Parent

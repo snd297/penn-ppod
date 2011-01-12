@@ -16,31 +16,23 @@
 package edu.upenn.cis.ppod.model;
 
 import java.util.Map;
-import java.util.Set;
 
-import javax.annotation.CheckForNull;
 import javax.persistence.Access;
 import javax.persistence.AccessType;
 import javax.persistence.CascadeType;
 import javax.persistence.Embeddable;
 import javax.persistence.JoinColumn;
 import javax.persistence.JoinTable;
-import javax.persistence.MapKeyClass;
 import javax.persistence.MapKeyJoinColumn;
 import javax.persistence.OneToMany;
-import javax.persistence.Transient;
-import javax.xml.bind.Marshaller;
-import javax.xml.bind.Unmarshaller;
 import javax.xml.bind.annotation.XmlAccessType;
 import javax.xml.bind.annotation.XmlAccessorType;
-import javax.xml.bind.annotation.XmlElement;
 
 import org.hibernate.annotations.Parent;
 
 import edu.upenn.cis.ppod.imodel.IOtuKeyedMap;
 import edu.upenn.cis.ppod.imodel.IOtuKeyedMapPlus;
 import edu.upenn.cis.ppod.util.IVisitor;
-import edu.upenn.cis.ppod.util.OtuDnaSequencePair;
 
 /**
  * An OTU-keyed map of {@link DNASequence}s.
@@ -53,34 +45,11 @@ import edu.upenn.cis.ppod.util.OtuDnaSequencePair;
 public class DnaSequences
 		implements IOtuKeyedMap<DnaSequence> {
 
-	private final IOtuKeyedMapPlus<DnaSequence, DnaSequenceSet, OtuDnaSequencePair> sequences =
-			new OtuKeyedMapPlus<DnaSequence, DnaSequenceSet, OtuDnaSequencePair>();
+	private final IOtuKeyedMapPlus<DnaSequence, DnaSequenceSet> sequences =
+			new OtuKeyedMapPlus<DnaSequence, DnaSequenceSet>();
 
 	public void accept(final IVisitor visitor) {
 		sequences.accept(visitor);
-	}
-
-	public void afterUnmarshal() {
-		sequences.afterUnmarshal();
-	}
-
-	protected void afterUnmarshal(
-			@CheckForNull final Unmarshaller u,
-			final Object parent) {
-		// Don't checkNotNull(parent) since it's called by JAXB and we can't
-		// control what it does
-		sequences.afterUnmarshal((DnaSequenceSet) parent);
-	}
-
-	protected boolean beforeMarshal(@CheckForNull final Marshaller marshaller) {
-		getOTUSomethingPairs().clear();
-		for (final Map.Entry<Otu, DnaSequence> otuToRow : getValues()
-				.entrySet()) {
-			getOTUSomethingPairs().add(
-					new OtuDnaSequencePair(otuToRow.getKey(), otuToRow
-							.getValue()));
-		}
-		return true;
 	}
 
 	public void clear() {
@@ -91,12 +60,6 @@ public class DnaSequences
 		return sequences.get(key);
 	}
 
-	@XmlElement(name = "otuSequencePair")
-	@Transient
-	public Set<OtuDnaSequencePair> getOTUSomethingPairs() {
-		return sequences.getOtuKeyedPairs();
-	}
-
 	@Parent
 	public DnaSequenceSet getParent() {
 		return sequences.getParent();
@@ -105,7 +68,6 @@ public class DnaSequences
 	@OneToMany(cascade = CascadeType.ALL, orphanRemoval = true)
 	@JoinTable(inverseJoinColumns = @JoinColumn(name = DnaSequence.JOIN_COLUMN))
 	@MapKeyJoinColumn(name = Otu.JOIN_COLUMN)
-	@MapKeyClass(Otu.class)
 	public Map<Otu, DnaSequence> getValues() {
 		return sequences.getValues();
 	}
