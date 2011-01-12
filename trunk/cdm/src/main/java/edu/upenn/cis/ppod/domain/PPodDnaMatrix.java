@@ -7,7 +7,7 @@ import java.util.List;
 
 import edu.umd.cs.findbugs.annotations.CheckForNull;
 
-final public class PPodDnaMatrix extends UuPPodDomainObjectWDocId {
+final public class PPodDnaMatrix extends UuPPodDomainObject {
 
 	PPodDnaMatrix() {}
 

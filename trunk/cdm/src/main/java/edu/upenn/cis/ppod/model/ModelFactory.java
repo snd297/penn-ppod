@@ -16,7 +16,6 @@
 package edu.upenn.cis.ppod.model;
 
 import edu.upenn.cis.ppod.imodel.IPPodEntity;
-import edu.upenn.cis.ppod.imodel.IUuPPodEntity;
 
 /**
  * @author Sam Donnelly
@@ -25,7 +24,7 @@ public class ModelFactory {
 
 	public static Attachment newAttachment(final VersionInfo versionInfo) {
 		final Attachment attachment = new Attachment();
-		prepareUUPPodEntity(attachment, versionInfo);
+		preparePPodEntity(attachment, versionInfo);
 		return attachment;
 	}
 
@@ -38,7 +37,7 @@ public class ModelFactory {
 	public static DnaMatrix newDNAMatrix(
 			final VersionInfo versionInfo) {
 		final DnaMatrix matrix = new DnaMatrix();
-		prepareUUPPodEntity(matrix, versionInfo);
+		preparePPodEntity(matrix, versionInfo);
 		matrix.setColumnVersionInfos(versionInfo);
 		return matrix;
 	}
@@ -59,19 +58,19 @@ public class ModelFactory {
 	public static DnaSequenceSet newDNASequenceSet(
 			final VersionInfo versionInfo) {
 		final DnaSequenceSet sequenceSet = new DnaSequenceSet();
-		prepareUUPPodEntity(sequenceSet, versionInfo);
+		preparePPodEntity(sequenceSet, versionInfo);
 		return sequenceSet;
 	}
 
 	public static Otu newOTU(final VersionInfo versionInfo) {
 		final Otu otu = new Otu();
-		prepareUUPPodEntity(otu, versionInfo);
+		preparePPodEntity(otu, versionInfo);
 		return otu;
 	}
 
 	public static OtuSet newOTUSet(final VersionInfo versionInfo) {
 		final OtuSet otuSet = new OtuSet();
-		prepareUUPPodEntity(otuSet, versionInfo);
+		preparePPodEntity(otuSet, versionInfo);
 		return otuSet;
 	}
 
@@ -85,14 +84,14 @@ public class ModelFactory {
 	public static StandardCharacter newStandardCharacter(
 			final VersionInfo versionInfo) {
 		final StandardCharacter character = new StandardCharacter();
-		prepareUUPPodEntity(character, versionInfo);
+		preparePPodEntity(character, versionInfo);
 		return character;
 	}
 
 	public static StandardMatrix newStandardMatrix(
 			final VersionInfo versionInfo) {
 		final StandardMatrix matrix = new StandardMatrix();
-		prepareUUPPodEntity(matrix, versionInfo);
+		preparePPodEntity(matrix, versionInfo);
 		matrix.setColumnVersionInfos(versionInfo);
 		return matrix;
 	}
@@ -106,31 +105,25 @@ public class ModelFactory {
 
 	public static Study newStudy(final VersionInfo versionInfo) {
 		final Study study = new Study();
-		prepareUUPPodEntity(study, versionInfo);
+		preparePPodEntity(study, versionInfo);
 		return study;
 	}
 
 	public static Tree newTree(final VersionInfo versionInfo) {
 		final Tree tree = new Tree();
-		prepareUUPPodEntity(tree, versionInfo);
+		preparePPodEntity(tree, versionInfo);
 		return tree;
 	}
 
 	public static TreeSet newTreeSet(final VersionInfo versionInfo) {
 		final TreeSet treeSet = new TreeSet();
-		prepareUUPPodEntity(treeSet, versionInfo);
+		preparePPodEntity(treeSet, versionInfo);
 		return treeSet;
 	}
 
 	private static void preparePPodEntity(final IPPodEntity pPodEntity,
 			final VersionInfo versionInfo) {
 		pPodEntity.setVersionInfo(versionInfo);
-	}
-
-	private static void prepareUUPPodEntity(final IUuPPodEntity pPodEntity,
-			final VersionInfo versionInfo) {
-		preparePPodEntity(pPodEntity, versionInfo);
-		pPodEntity.setPPodId();
 	}
 
 }

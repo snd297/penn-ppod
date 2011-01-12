@@ -7,16 +7,15 @@ import java.util.List;
 
 import edu.umd.cs.findbugs.annotations.CheckForNull;
 
-public final class PPodOtuSet extends UuPPodDomainObjectWDocId
-		implements IHasPPodId {
+public final class PPodOtuSet extends UuPPodDomainObject {
 
 	private String label;
 
 	private List<PPodOtu> otus = newArrayList();
-	private final List<PPodDnaMatrix> dnaMatrices = newArrayList();
-	private final List<PPodStandardMatrix> standardMatrices = newArrayList();
-	private final List<PPodDnaSequenceSet> dnaSequenceSets = newArrayList();
-	private final List<PPodTreeSet> treeSets = newArrayList();
+	private List<PPodDnaMatrix> dnaMatrices = newArrayList();
+	private List<PPodStandardMatrix> standardMatrices = newArrayList();
+	private List<PPodDnaSequenceSet> dnaSequenceSets = newArrayList();
+	private List<PPodTreeSet> treeSets = newArrayList();
 
 	PPodOtuSet() {}
 

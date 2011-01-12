@@ -31,10 +31,10 @@ import javax.xml.bind.annotation.XmlRootElement;
  */
 @XmlRootElement
 @XmlAccessorType(XmlAccessType.NONE)
-public final class OtuSetInfo extends PPodEntityInfoWDocId {
+public final class OtuSetInfo extends PPodEntityInfo {
 
 	/** Order matters for these. */
-	private final List<PPodEntityInfoWDocId> otuInfos = newArrayList();
+	private final List<PPodEntityInfo> otuInfos = newArrayList();
 
 	private final Set<MatrixInfo> matrixInfos = newHashSet();
 
@@ -56,7 +56,7 @@ public final class OtuSetInfo extends PPodEntityInfoWDocId {
 	 * @return
 	 */
 	@XmlElement(name = "otuInfo")
-	public List<PPodEntityInfoWDocId> getOTUInfos() {
+	public List<PPodEntityInfo> getOTUInfos() {
 		return otuInfos;
 	}
 

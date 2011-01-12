@@ -52,8 +52,7 @@ import edu.upenn.cis.ppod.util.IVisitor;
 @XmlAccessorType(XmlAccessType.NONE)
 @Entity
 @Table(name = TreeSet.TABLE)
-public class TreeSet
-		extends UuPPodEntityWithDocId implements IDependsOnParentOtus {
+public class TreeSet extends UuPPodEntity implements IDependsOnParentOtus {
 
 	public static final String TABLE = "TREE_SET";
 

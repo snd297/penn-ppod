@@ -31,7 +31,7 @@ import javax.xml.bind.annotation.XmlRootElement;
  */
 @XmlRootElement
 @XmlAccessorType(XmlAccessType.NONE)
-public final class MatrixInfo extends PPodEntityInfoWDocId {
+public final class MatrixInfo extends PPodEntityInfo {
 
 	private Map<Integer, PPodEntityInfo> characterInfosByIdx = newTreeMap();
 
