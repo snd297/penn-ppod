@@ -4,7 +4,7 @@ import static com.google.common.collect.Lists.newArrayList;
 
 import java.util.List;
 
-public final class PPodTreeSet extends UuPPodDomainObjectWDocId {
+public final class PPodTreeSet extends UuPPodDomainObject {
 
 	private String label;
 	private final List<PPodTree> trees = newArrayList();

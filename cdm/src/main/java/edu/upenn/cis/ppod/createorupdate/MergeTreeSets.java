@@ -57,9 +57,6 @@ class MergeTreeSets implements IMergeTreeSets {
 		checkNotNull(targetTreeSet);
 		checkNotNull(sourceTreeSet);
 
-		// For the response to the client
-		targetTreeSet.setDocId(sourceTreeSet.getDocId());
-
 		targetTreeSet.setLabel(sourceTreeSet.getLabel());
 
 		final List<Tree> newTargetTrees = newArrayList();

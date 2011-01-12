@@ -27,7 +27,7 @@ import javax.xml.bind.annotation.XmlRootElement;
  * 
  */
 @XmlRootElement
-public final class TreeSetInfo extends PPodEntityInfoWDocId {
+public final class TreeSetInfo extends PPodEntityInfo {
 
 	private List<PPodEntityInfo> treeInfos = newArrayList();
 

@@ -40,7 +40,7 @@ import edu.upenn.cis.ppod.util.IVisitor;
 @Entity
 @Table(name = Otu.TABLE)
 public class Otu
-		extends UuPPodEntityWithDocId
+		extends UuPPodEntity
 		implements IChild<OtuSet>, ILabeled {
 
 	/** The table for this entity. */

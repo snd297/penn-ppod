@@ -60,8 +60,7 @@ import edu.upenn.cis.ppod.util.IVisitor;
  */
 @Entity
 @Table(name = OtuSet.TABLE)
-public class OtuSet
-		extends UuPPodEntityWithDocId {
+public class OtuSet extends UuPPodEntity {
 
 	/** The column that stores the description. */
 	public static final String DESCRIPTION_COLUMN = "DESCRIPTION";

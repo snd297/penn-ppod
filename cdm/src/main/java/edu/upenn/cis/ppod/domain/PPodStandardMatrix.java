@@ -7,7 +7,7 @@ import java.util.List;
 
 import edu.umd.cs.findbugs.annotations.CheckForNull;
 
-public final class PPodStandardMatrix extends UuPPodDomainObjectWDocId {
+public final class PPodStandardMatrix extends UuPPodDomainObject {
 
 	private String label;
 	private List<PPodStandardCharacter> characters = newArrayList();

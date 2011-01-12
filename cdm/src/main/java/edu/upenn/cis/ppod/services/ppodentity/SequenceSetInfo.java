@@ -25,7 +25,7 @@ import javax.xml.bind.annotation.XmlElementWrapper;
  * @author Sam Donnelly
  * 
  */
-public class SequenceSetInfo extends PPodEntityInfoWDocId {
+public class SequenceSetInfo extends PPodEntityInfo {
 
 	private List<Long> sequenceVersions = newArrayList();
 

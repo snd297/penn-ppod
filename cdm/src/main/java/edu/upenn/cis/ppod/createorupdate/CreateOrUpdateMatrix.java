@@ -62,12 +62,6 @@ abstract class CreateOrUpdateMatrix<M extends Matrix<R, C>, R extends Row<C, ?>,
 
 		final String METHOD = "createOrUpdate(...)";
 
-		// We need this for the response: it's less than ideal to do this here,
-		// but easy
-		if (dbMatrix.getDocId() == null) {
-			dbMatrix.setDocId(sourceMatrix.getDocId());
-		}
-
 		dbMatrix.setLabel(sourceMatrix.getLabel());
 		// dbMatrix.setDescription(sourceMatrix.getDescription());
 

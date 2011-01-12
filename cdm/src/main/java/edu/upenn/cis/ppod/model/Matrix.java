@@ -43,7 +43,6 @@ import edu.umd.cs.findbugs.annotations.Nullable;
 import edu.upenn.cis.ppod.domain.IHasPPodId;
 import edu.upenn.cis.ppod.imodel.IDependsOnParentOtus;
 import edu.upenn.cis.ppod.imodel.IHasColumnVersionInfos;
-import edu.upenn.cis.ppod.imodel.IHasWormDocId;
 import edu.upenn.cis.ppod.imodel.IOtuKeyedMap;
 import edu.upenn.cis.ppod.util.IVisitor;
 
@@ -55,8 +54,8 @@ import edu.upenn.cis.ppod.util.IVisitor;
  */
 @MappedSuperclass
 public abstract class Matrix<R extends Row<C, ?>, C extends Cell<?, ?>>
-		extends UuPPodEntityWithDocId
-		implements IHasColumnVersionInfos, IDependsOnParentOtus, IHasWormDocId,
+		extends UuPPodEntity
+		implements IHasColumnVersionInfos, IDependsOnParentOtus,
 		IHasPPodId {
 
 	/** Description column. */

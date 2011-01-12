@@ -374,17 +374,14 @@ public class OtuSetTest {
 		final Otu otu0 = new Otu();
 		otus.add(otu0);
 		otu0.setLabel("otu0");
-		otu0.setPPodId();
 
 		final Otu otu1 = new Otu();
 		otus.add(otu1);
 		otu1.setLabel("otu1");
-		otu1.setPPodId();
 
 		final Otu otu2 = new Otu();
 		otus.add(otu2);
 		otu2.setLabel("otu2");
-		otu2.setPPodId();
 
 		otuSet.setOtus(newArrayList(otus));
 

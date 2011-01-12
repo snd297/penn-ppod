@@ -38,7 +38,7 @@ import edu.upenn.cis.ppod.model.OtuSet;
  * 
  * @author Sam Donnelly
  */
-class MergeOtuSets implements IMergeOtuSets {
+final class MergeOtuSets implements IMergeOtuSets {
 
 	private INewVersionInfo newVersionInfo;
 
@@ -54,9 +54,6 @@ class MergeOtuSets implements IMergeOtuSets {
 		checkNotNull(sourceOtuSet);
 		targetOtuSet.setLabel(sourceOtuSet.getLabel());
 		// targetOtuSet.setDescription(sourceOtuSet.getDescription());
-
-		// This is for a response to the service client.
-		targetOtuSet.setDocId(sourceOtuSet.getDocId());
 
 		final List<Otu> newTargetOTUs =
 				newArrayListWithCapacity(sourceOtuSet.getOtus().size());
@@ -75,9 +72,6 @@ class MergeOtuSets implements IMergeOtuSets {
 			}
 			newTargetOTUs.add(targetOTU);
 			targetOTU.setLabel(sourceOTU.getLabel());
-
-			// This is for a response to the service client.
-			targetOTU.setDocId(sourceOTU.getDocId());
 		}
 		targetOtuSet.setOtus(newTargetOTUs);
 	}

@@ -7,7 +7,7 @@ import java.util.List;
 
 import edu.umd.cs.findbugs.annotations.CheckForNull;
 
-final public class PPodDnaSequenceSet extends UuPPodDomainObjectWDocId {
+final public class PPodDnaSequenceSet extends UuPPodDomainObject {
 
 	private String label;
 	private final List<PPodDnaSequence> sequences = newArrayList();

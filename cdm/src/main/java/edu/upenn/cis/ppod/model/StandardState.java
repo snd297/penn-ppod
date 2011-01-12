@@ -45,7 +45,7 @@ import edu.upenn.cis.ppod.util.IVisitor;
  */
 @Entity
 @Table(name = StandardState.TABLE)
-public class StandardState extends PPodEntityWDocId {
+public class StandardState extends PPodEntity {
 
 	/**
 	 * {@link Function} wrapper of {@link #getStateNumber()}.

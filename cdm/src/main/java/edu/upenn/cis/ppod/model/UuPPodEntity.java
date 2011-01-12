@@ -15,11 +15,8 @@
  */
 package edu.upenn.cis.ppod.model;
 
-import static com.google.common.base.Preconditions.checkState;
-
 import java.util.UUID;
 
-import javax.annotation.CheckForNull;
 import javax.annotation.Nullable;
 import javax.persistence.Column;
 import javax.persistence.MappedSuperclass;
@@ -43,41 +40,12 @@ public abstract class UuPPodEntity extends PPodEntity implements IUuPPodEntity {
 	 */
 	@Column(name = PPOD_ID_COLUMN, unique = true, nullable = false,
 			length = PPOD_ID_COLUMN_LENGTH, updatable = false)
-	@CheckForNull
-	private String pPodId;
+	private String pPodId = UUID.randomUUID().toString();
 
 	@XmlAttribute
 	@Nullable
 	public String getPPodId() {
 		return pPodId;
-	}
-
-	public void setPPodId() {
-		setPPodId(UUID.randomUUID().toString());
-	}
-
-	public void setPPodId(@CheckForNull final String pPodId) {
-		checkState(getPPodId() == null, "pPodId already set");
-
-		this.pPodId = pPodId;
-	}
-
-	/**
-	 * Constructs a <code>String</code> with all attributes in name = value
-	 * format.
-	 * 
-	 * @return a <code>String</code> representation of this object.
-	 */
-	@Override
-	public String toString() {
-		final String TAB = "";
-
-		final StringBuilder retValue = new StringBuilder();
-
-		retValue.append("UUPPodEntity(").append(super.toString()).append(TAB)
-				.append("pPodId=").append(this.pPodId).append(TAB).append(")");
-
-		return retValue.toString();
 	}
 
 }
