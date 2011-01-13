@@ -28,7 +28,6 @@ import javax.persistence.ManyToOne;
 import javax.persistence.OneToMany;
 import javax.persistence.OrderColumn;
 import javax.persistence.Table;
-import javax.xml.bind.annotation.XmlElement;
 
 import edu.upenn.cis.ppod.util.IVisitor;
 
@@ -67,7 +66,6 @@ public class StandardRow
 		super.accept(visitor);
 	}
 
-	@XmlElement(name = "cell")
 	@Override
 	protected List<StandardCell> getCellsModifiable() {
 		return cells;

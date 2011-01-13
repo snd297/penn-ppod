@@ -34,7 +34,7 @@ final class AttachmentTypeDAOHibernate
 
 	@Inject
 	AttachmentTypeDAOHibernate(final Session session) {
-		super(session);
+		setSession(session);
 	}
 
 	public AttachmentType getTypeByNamespaceAndLabel(

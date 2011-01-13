@@ -14,6 +14,7 @@
 		<property name="current_session_context_class">managed</property>
 
 		<mapping class="edu.upenn.cis.ppod.model.VersionInfo" />
+		<mapping class="edu.upenn.cis.ppod.model.CurrentVersion" />
 
 		<mapping class="edu.upenn.cis.ppod.model.Study" />
 

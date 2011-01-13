@@ -16,10 +16,8 @@
 package edu.upenn.cis.ppod.dto;
 
 import static com.google.common.collect.Lists.newArrayList;
-import static com.google.common.collect.Sets.newHashSet;
 
 import java.util.List;
-import java.util.Set;
 
 import javax.xml.bind.annotation.XmlAccessType;
 import javax.xml.bind.annotation.XmlAccessorType;
@@ -36,16 +34,16 @@ public final class OtuSetInfo extends PPodEntityInfo {
 	/** Order matters for these. */
 	private final List<PPodEntityInfo> otuInfos = newArrayList();
 
-	private final Set<MatrixInfo> matrixInfos = newHashSet();
+	private final List<MatrixInfo> matrixInfos = newArrayList();
 
-	private final Set<SequenceSetInfo> sequenceSetInfos = newHashSet();
+	private final List<SequenceSetInfo> sequenceSetInfos = newArrayList();
 
-	private final Set<TreeSetInfo> treeSetInfos = newHashSet();
+	private final List<TreeSetInfo> treeSetInfos = newArrayList();
 
 	public OtuSetInfo() {}
 
 	@XmlElement(name = "matrixInfo")
-	public Set<MatrixInfo> getMatrixInfos() {
+	public List<MatrixInfo> getMatrixInfos() {
 		return matrixInfos;
 	}
 
@@ -61,31 +59,12 @@ public final class OtuSetInfo extends PPodEntityInfo {
 	}
 
 	@XmlElement(name = "sequenceSetInfo")
-	public Set<SequenceSetInfo> getSequenceSetInfos() {
+	public List<SequenceSetInfo> getSequenceSetInfos() {
 		return sequenceSetInfos;
 	}
 
 	@XmlElement(name = "treeSetInfo")
-	public Set<TreeSetInfo> getTreeSetInfos() {
+	public List<TreeSetInfo> getTreeSetInfos() {
 		return treeSetInfos;
 	}
-
-	/**
-	 * Constructs a <code>String</code> with all attributes in name = value
-	 * format.
-	 * 
-	 * @return a <code>String</code> representation of this object.
-	 */
-	@Override
-	public String toString() {
-		final String TAB = "    ";
-
-		String retValue = "";
-
-		retValue = "OTUSetInfo ( " + super.toString() + TAB
-					+ "otuInfosByDocId = " + this.otuInfos + TAB + " )";
-
-		return retValue;
-	}
-
 }

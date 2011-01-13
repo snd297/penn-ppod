@@ -28,13 +28,6 @@ import javax.persistence.JoinColumn;
 import javax.persistence.Lob;
 import javax.persistence.ManyToOne;
 import javax.persistence.Table;
-import javax.xml.bind.Unmarshaller;
-import javax.xml.bind.annotation.XmlAccessType;
-import javax.xml.bind.annotation.XmlAccessorType;
-import javax.xml.bind.annotation.XmlAttribute;
-import javax.xml.bind.annotation.XmlElement;
-import javax.xml.bind.annotation.XmlIDREF;
-import javax.xml.bind.annotation.adapters.XmlAdapter;
 
 import com.google.common.base.Predicate;
 import com.google.inject.Inject;
@@ -50,7 +43,6 @@ import edu.upenn.cis.ppod.util.IVisitor;
  * 
  * @author Sam Donnelly
  */
-@XmlAccessorType(XmlAccessType.NONE)
 @Entity
 @Table(name = Attachment.TABLE)
 public class Attachment extends UuPPodEntity {
@@ -156,19 +148,6 @@ public class Attachment extends UuPPodEntity {
 		}
 	}
 
-	public static class Adapter extends XmlAdapter<Attachment, Attachment> {
-
-		@Override
-		public Attachment marshal(final Attachment attachment) {
-			return (Attachment) attachment;
-		}
-
-		@Override
-		public Attachment unmarshal(final Attachment attachment) {
-			return attachment;
-		}
-	}
-
 	static final String BYTES_VALUE_COLUMN = "BYTES_VALUE";
 
 	public static final String TABLE = "ATTACHMENT";
@@ -221,18 +200,6 @@ public class Attachment extends UuPPodEntity {
 	}
 
 	/**
-	 * See {@link Unmarshaller}.
-	 * 
-	 * @param u see {@code Unmarshaller}
-	 * @param parent see {@code Unmarshaller}
-	 */
-	public void afterUnmarshal(
-			@CheckForNull final Unmarshaller u,
-			final Object parent) {
-		attachee = (PPodEntity) parent;
-	}
-
-	/**
 	 * Get the entities that have this has an attachment.
 	 * <p>
 	 * Will be {@code null} for newly create attachments, will never be
@@ -250,8 +217,7 @@ public class Attachment extends UuPPodEntity {
 	 * 
 	 * @return a copy of the byteArrayValue
 	 */
-	@XmlElement
-	@CheckForNull
+	@Nullable
 	public byte[] getBytesValue() {
 		if (bytesValue == null) {
 			return null;
@@ -266,8 +232,7 @@ public class Attachment extends UuPPodEntity {
 	 * 
 	 * @return the attachmentLabel
 	 */
-	@XmlAttribute
-	@CheckForNull
+	@Nullable
 	public String getLabel() {
 		return label;
 	}
@@ -277,8 +242,7 @@ public class Attachment extends UuPPodEntity {
 	 * 
 	 * @return the value.
 	 */
-	@XmlAttribute
-	@CheckForNull
+	@Nullable
 	public String getStringValue() {
 		return stringValue;
 	}
@@ -288,8 +252,6 @@ public class Attachment extends UuPPodEntity {
 	 * 
 	 * @return the typeLabel of this attachment
 	 */
-	@XmlAttribute(name = "attachmentTypeDocId")
-	@XmlIDREF
 	@Nullable
 	public AttachmentType getType() {
 		return type;

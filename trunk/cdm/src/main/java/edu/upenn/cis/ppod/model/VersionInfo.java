@@ -25,7 +25,8 @@ import javax.persistence.Entity;
 import javax.persistence.NamedQueries;
 import javax.persistence.NamedQuery;
 import javax.persistence.Table;
-import javax.xml.bind.annotation.XmlAttribute;
+
+import edu.umd.cs.findbugs.annotations.CheckForNull;
 
 /**
  * Stores data about a particular version of the whole pPOD instance - for
@@ -50,14 +51,18 @@ public class VersionInfo extends PersistentObject {
 
 	public final static String JOIN_COLUMN = TABLE + "_ID";
 
-	/** The pPOD version number. Immutable. */
-	@Column(name = "PPOD_VERSION", unique = true, nullable = false,
-			updatable = false)
-	private Long version = -1L;
+	/**
+	 * The pPOD version number. Immutable.
+	 * <p>
+	 * Only nullable so that we can delay filling it in as long as possible.
+	 * */
+	@Column(name = "VERSION", unique = true)
+	@CheckForNull
+	private Long version;
 
 	/** Record the creation time of this record. Immutable */
 	@Column(name = "CREATED", nullable = false, updatable = false)
-	@Nullable
+	@CheckForNull
 	private Date created;
 
 	VersionInfo() {}
@@ -67,7 +72,6 @@ public class VersionInfo extends PersistentObject {
 	 * 
 	 * @return a copy of the creation date
 	 */
-	@XmlAttribute
 	@Nullable
 	public Date getCreated() {
 		if (created == null) {
@@ -81,32 +85,27 @@ public class VersionInfo extends PersistentObject {
 	 * 
 	 * @return the pPOD version number
 	 */
-	@XmlAttribute
+	@Nullable
 	public Long getVersion() {
 		return version;
 	}
 
 	/**
 	 * Setter when the version info was created.
-	 * <p>
-	 * {@code protected} instead of package-private for JAXB.
 	 * 
 	 * @param created the value
 	 */
-	protected void setCreated(final Date created) {
+	public void setCreated(final Date created) {
 		checkNotNull(created);
 		this.created = (Date) created.clone();
 	}
 
 	/**
 	 * Set the value for the pPOD version number.
-	 * <p>
-	 * Intentionally non-public (protected for JAXB): we don't want for these to
-	 * be manipulated outside of the package.
 	 * 
 	 * @param version the pPOD version number
 	 */
-	protected void setVersion(final Long version) {
+	public void setVersion(final Long version) {
 		checkNotNull(version);
 		this.version = version;
 	}

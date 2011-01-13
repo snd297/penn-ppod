@@ -22,7 +22,6 @@ import java.util.List;
 import javax.persistence.Embedded;
 import javax.persistence.Entity;
 import javax.persistence.Table;
-import javax.xml.bind.annotation.XmlElement;
 
 import com.google.common.annotations.Beta;
 
@@ -62,7 +61,6 @@ public class DnaMatrix
 	/**
 	 * Created for JAXB.
 	 */
-	@XmlElement(name = "rows")
 	@Override
 	protected DnaRows getOTUKeyedRows() {
 		return rows;

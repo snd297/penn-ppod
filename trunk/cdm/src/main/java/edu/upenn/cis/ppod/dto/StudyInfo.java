@@ -45,9 +45,8 @@ public final class StudyInfo extends PPodEntityInfo {
 		return otuSetInfos;
 	}
 
-	public StudyInfo setOTUSetInfos(final List<OtuSetInfo> otuSetInfos) {
+	public void setOTUSetInfos(final List<OtuSetInfo> otuSetInfos) {
 		this.otuSetInfos = otuSetInfos;
-		return this;
 	}
 
 }

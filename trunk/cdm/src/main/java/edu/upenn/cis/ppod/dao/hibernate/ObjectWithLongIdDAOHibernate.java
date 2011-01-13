@@ -33,7 +33,7 @@ final class ObjectWithLongIdDAOHibernate
 
 	@Inject
 	ObjectWithLongIdDAOHibernate(final Session session) {
-		super(session);
+		setSession(session);
 	}
 
 }

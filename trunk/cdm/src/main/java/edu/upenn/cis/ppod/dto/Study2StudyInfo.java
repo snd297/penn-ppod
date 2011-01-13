@@ -35,9 +35,11 @@ import edu.upenn.cis.ppod.model.VersionInfo;
 /**
  * @author Sam Donnelly
  */
-public final class Study2StudyInfo implements IStudy2StudyInfo {
+public final class Study2StudyInfo {
 
-	public StudyInfo toStudyInfo(final Study study) {
+	private Study2StudyInfo() {}
+
+	public static StudyInfo toStudyInfo(final Study study) {
 		checkNotNull(study);
 		final StudyInfo studyInfo = new StudyInfo();
 		studyInfo.setEntityId(study.getId());

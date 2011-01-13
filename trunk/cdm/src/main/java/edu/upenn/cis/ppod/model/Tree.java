@@ -26,9 +26,6 @@ import javax.persistence.JoinColumn;
 import javax.persistence.Lob;
 import javax.persistence.ManyToOne;
 import javax.persistence.Table;
-import javax.xml.bind.Unmarshaller;
-import javax.xml.bind.annotation.XmlAttribute;
-import javax.xml.bind.annotation.XmlElement;
 
 import edu.upenn.cis.ppod.util.IVisitor;
 
@@ -71,26 +68,11 @@ public class Tree extends UuPPodEntity {
 	}
 
 	/**
-	 * See {@link Unmarshaller}.
-	 * 
-	 * @param u see {@code Unmarshaller}
-	 * @param parent see see {@code Unmarshaller}
-	 * 
-	 */
-	protected void afterUnmarshal(
-			@CheckForNull final Unmarshaller u,
-			final Object parent) {
-		// don't checkNotNull(parent) since it's a jaxb callback
-		setParent((TreeSet) parent);
-	}
-
-	/**
 	 * Return the label. {@code null} when the tree is constructed, but will
 	 * never be {@code null} once set.
 	 * 
 	 * @return the label
 	 */
-	@XmlAttribute
 	@Nullable
 	public String getLabel() {
 		return label;
@@ -102,7 +84,6 @@ public class Tree extends UuPPodEntity {
 	 * 
 	 * @return the newick string
 	 */
-	@XmlElement
 	@Nullable
 	public String getNewick() {
 		return newick;

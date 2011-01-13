@@ -39,6 +39,7 @@ import java.util.List;
 import org.hibernate.Criteria;
 import org.hibernate.Hibernate;
 import org.hibernate.LockMode;
+import org.hibernate.LockOptions;
 import org.hibernate.Session;
 import org.hibernate.criterion.Criterion;
 import org.hibernate.criterion.Example;
@@ -54,10 +55,6 @@ import edu.upenn.cis.ppod.thirdparty.dao.IDAO;
  */
 public abstract class GenericHibernateDAO<T, ID extends Serializable>
 		implements IDAO<T, ID> {
-
-	public GenericHibernateDAO(final Session session) {
-		this.session = session;
-	}
 
 	/** No arg constructor. */
 	public GenericHibernateDAO() {
@@ -120,9 +117,8 @@ public abstract class GenericHibernateDAO<T, ID extends Serializable>
 	}
 
 	public T findById(final ID id, final boolean lock) {
-		if (id == null) {
-			return null;
-		}
+		checkNotNull(id);
+
 		T entity;
 		if (lock) {
 			@SuppressWarnings("unchecked")
@@ -131,7 +127,7 @@ public abstract class GenericHibernateDAO<T, ID extends Serializable>
 							.get(
 									getPersistentClass(),
 									id,
-									LockMode.PESSIMISTIC_WRITE);
+									new LockOptions(LockMode.PESSIMISTIC_WRITE));
 			entity = suppressUncheckedWarningEntity;
 		} else {
 			@SuppressWarnings("unchecked")

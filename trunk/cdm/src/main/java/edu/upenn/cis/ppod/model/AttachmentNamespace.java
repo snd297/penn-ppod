@@ -22,7 +22,6 @@ import javax.annotation.Nullable;
 import javax.persistence.Column;
 import javax.persistence.Entity;
 import javax.persistence.Table;
-import javax.xml.bind.annotation.XmlAttribute;
 
 import edu.upenn.cis.ppod.util.IVisitor;
 
@@ -66,7 +65,6 @@ public class AttachmentNamespace extends PersistentObject {
 	 * 
 	 * @return the label
 	 */
-	@XmlAttribute
 	@Nullable
 	public String getLabel() {
 		return label;

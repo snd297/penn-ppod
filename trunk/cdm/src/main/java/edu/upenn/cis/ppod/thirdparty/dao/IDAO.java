@@ -3,6 +3,8 @@ package edu.upenn.cis.ppod.thirdparty.dao;
 import java.io.Serializable;
 import java.util.List;
 
+import edu.umd.cs.findbugs.annotations.Nullable;
+
 /**
  * A DAO interface.
  * <p>
@@ -47,6 +49,7 @@ public interface IDAO<T, ID extends Serializable> {
 	 * @return the retrieved object, or <code>null</code> if there is no such
 	 *         object or if <code>id</code> is <code>null</code>
 	 */
+	@Nullable
 	T findById(ID id, boolean lock);
 
 	/**
