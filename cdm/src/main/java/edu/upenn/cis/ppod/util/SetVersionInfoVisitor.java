@@ -19,15 +19,11 @@ import edu.upenn.cis.ppod.imodel.IHasColumnVersionInfos;
 import edu.upenn.cis.ppod.imodel.INewVersionInfo;
 import edu.upenn.cis.ppod.imodel.IVersioned;
 import edu.upenn.cis.ppod.model.Attachment;
-import edu.upenn.cis.ppod.model.DnaCell;
 import edu.upenn.cis.ppod.model.DnaMatrix;
-import edu.upenn.cis.ppod.model.DnaRow;
 import edu.upenn.cis.ppod.model.Otu;
 import edu.upenn.cis.ppod.model.OtuSet;
-import edu.upenn.cis.ppod.model.StandardCell;
 import edu.upenn.cis.ppod.model.StandardCharacter;
 import edu.upenn.cis.ppod.model.StandardMatrix;
-import edu.upenn.cis.ppod.model.StandardRow;
 import edu.upenn.cis.ppod.model.StandardState;
 import edu.upenn.cis.ppod.model.Study;
 import edu.upenn.cis.ppod.model.Tree;
@@ -60,18 +56,8 @@ public final class SetVersionInfoVisitor extends EmptyVisitor {
 	}
 
 	@Override
-	public void visitDNACell(final DnaCell cell) {
-		setNewVersionInfo(cell);
-	}
-
-	@Override
 	public void visitDNAMatrix(final DnaMatrix matrix) {
 		visitMatrix(matrix);
-	}
-
-	@Override
-	public void visitDNARow(final DnaRow row) {
-		setNewVersionInfo(row);
 	}
 
 	@Override
@@ -85,11 +71,6 @@ public final class SetVersionInfoVisitor extends EmptyVisitor {
 	}
 
 	@Override
-	public void visitStandardCell(final StandardCell cell) {
-		setNewVersionInfo(cell);
-	}
-
-	@Override
 	public void visitStandardCharacter(final StandardCharacter character) {
 		setNewVersionInfo(character);
 	}
@@ -97,11 +78,6 @@ public final class SetVersionInfoVisitor extends EmptyVisitor {
 	@Override
 	public void visitStandardMatrix(final StandardMatrix matrix) {
 		visitMatrix(matrix);
-	}
-
-	@Override
-	public void visitStandardRow(final StandardRow row) {
-		setNewVersionInfo(row);
 	}
 
 	@Override
