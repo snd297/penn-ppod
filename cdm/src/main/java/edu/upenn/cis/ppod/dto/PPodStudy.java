@@ -19,7 +19,10 @@ import static com.google.common.collect.Lists.newArrayList;
 
 import java.util.List;
 
+import javax.xml.bind.annotation.XmlElement;
 import javax.xml.bind.annotation.XmlRootElement;
+
+import edu.umd.cs.findbugs.annotations.CheckForNull;
 
 /**
  * A collection of work - inspired by a Mesquite project - sets of OTU sets and,
@@ -28,33 +31,19 @@ import javax.xml.bind.annotation.XmlRootElement;
  * @author Sam Donnelly
  */
 @XmlRootElement
-public final class PPodStudy extends UuPPodDomainObject {
+public final class PPodStudy extends UuPPodDomainObjectWithLabel {
 
-	private String label;
-
+	@XmlElement(name = "otuSet")
 	private final List<PPodOtuSet> otuSets = newArrayList();
 
 	PPodStudy() {}
 
-	public PPodStudy(final String label) {
-		this.label = label;
-	}
-
 	public PPodStudy(final String pPodId, final Long version, final String label) {
-		super(pPodId, version);
-		this.label = label;
+		super(pPodId, version, label);
 	}
 
-	public PPodStudy(final String pPodId, final String label) {
-		super(pPodId);
-		this.label = label;
-	}
-
-	/**
-	 * @return the label
-	 */
-	public String getLabel() {
-		return label;
+	public PPodStudy(@CheckForNull final String pPodId, final String label) {
+		super(pPodId, label);
 	}
 
 	public List<PPodOtuSet> getOtuSets() {

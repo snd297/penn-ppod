@@ -5,37 +5,41 @@ import static com.google.common.collect.Lists.newArrayList;
 
 import java.util.List;
 
+import javax.xml.bind.annotation.XmlElement;
+
 import edu.umd.cs.findbugs.annotations.CheckForNull;
 
-public final class PPodOtuSet extends UuPPodDomainObject {
+public final class PPodOtuSet extends UuPPodDomainObjectWithLabel {
 
-	private String label;
-
+	@XmlElement(name = "otu")
 	private List<PPodOtu> otus = newArrayList();
+
+	@XmlElement(name = "dnaMatrix")
 	private List<PPodDnaMatrix> dnaMatrices = newArrayList();
+
+	@XmlElement(name = "standardMatrix")
 	private List<PPodStandardMatrix> standardMatrices = newArrayList();
+
+	@XmlElement(name = "dnaSequenceSet")
 	private List<PPodDnaSequenceSet> dnaSequenceSets = newArrayList();
+
+	@XmlElement(name = "treeSet")
 	private List<PPodTreeSet> treeSets = newArrayList();
 
 	PPodOtuSet() {}
 
 	public PPodOtuSet(final String label) {
-		checkNotNull(label);
-		this.label = label;
+		super(label);
 	}
 
 	public PPodOtuSet(final String pPodId, final Long version,
 			final String label) {
-		super(pPodId, version);
-
-		checkNotNull(label);
-		this.label = label;
+		super(pPodId, version, label);
 	}
 
 	public PPodOtuSet(@CheckForNull final String pPodId,
 			final String label) {
-		super(pPodId);
-		this.label = label;
+		super(pPodId, label);
 	}
 
 	public List<PPodDnaMatrix> getDnaMatrices() {
@@ -49,10 +53,6 @@ public final class PPodOtuSet extends UuPPodDomainObject {
 		return dnaSequenceSets;
 	}
 
-	public String getLabel() {
-		return label;
-	}
-
 	public List<PPodOtu> getOtus() {
 		return otus;
 	}
@@ -63,11 +63,6 @@ public final class PPodOtuSet extends UuPPodDomainObject {
 
 	public List<PPodTreeSet> getTreeSets() {
 		return treeSets;
-	}
-
-	public void setLabel(final String label) {
-		checkNotNull(label);
-		this.label = label;
 	}
 
 	public void setOtus(final List<PPodOtu> otus) {

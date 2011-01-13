@@ -6,18 +6,25 @@ import static com.google.common.collect.Sets.newHashSet;
 
 import java.util.Set;
 
+import javax.xml.bind.annotation.XmlAttribute;
+import javax.xml.bind.annotation.XmlElement;
+
+import edu.umd.cs.findbugs.annotations.CheckForNull;
+import edu.umd.cs.findbugs.annotations.Nullable;
+
 public final class PPodStandardCell extends PPodDomainObject {
 
+	@CheckForNull
+	@XmlAttribute
 	private PPodCellType type;
+
+	@XmlElement(name = "state")
 	private Set<Integer> states = newHashSet();
 
 	public PPodStandardCell() {}
 
-	public PPodStandardCell(final Long version, final PPodCellType type) {
+	public PPodStandardCell(final Long version) {
 		super(version);
-
-		checkNotNull(type);
-		this.type = type;
 	}
 
 	/**
@@ -30,8 +37,14 @@ public final class PPodStandardCell extends PPodDomainObject {
 	/**
 	 * @return the type
 	 */
+	@Nullable
 	public PPodCellType getType() {
 		return type;
+	}
+
+	public void setType(final PPodCellType type) {
+		checkNotNull(type);
+		this.type = type;
 	}
 
 	public void setInapplicable() {

@@ -82,7 +82,7 @@ public class DnaSequence
 	@ManyToOne(
 			fetch = FetchType.LAZY,
 			optional = false)
-	@Nullable
+	@CheckForNull
 	private DnaSequenceSet parent;
 
 	@ElementCollection

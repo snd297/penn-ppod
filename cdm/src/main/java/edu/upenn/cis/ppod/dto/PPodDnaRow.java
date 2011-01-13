@@ -5,9 +5,13 @@ import static com.google.common.collect.Lists.newArrayList;
 
 import java.util.List;
 
+import javax.xml.bind.annotation.XmlElement;
+
 final public class PPodDnaRow extends PPodDomainObject {
 
 	private String sequence;
+
+	@XmlElement(name = "cellVersion")
 	private final List<Long> cellVersions = newArrayList();
 
 	PPodDnaRow() {}

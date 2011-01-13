@@ -1,28 +1,25 @@
 package edu.upenn.cis.ppod.dto;
 
-import static com.google.common.base.Preconditions.checkNotNull;
 import static com.google.common.collect.Lists.newArrayList;
 
 import java.util.List;
 
+import javax.xml.bind.annotation.XmlElement;
+
 import edu.umd.cs.findbugs.annotations.CheckForNull;
 
-final public class PPodDnaMatrix extends UuPPodDomainObject {
+final public class PPodDnaMatrix extends UuPPodDomainObjectWithLabel {
 
 	PPodDnaMatrix() {}
 
-	private String label;
+	@XmlElement(name = "row")
 	private final List<PPodDnaRow> rows = newArrayList();
+
+	@XmlElement(name = "columnVersion")
 	private final List<Long> columnVersions = newArrayList();
 
 	public PPodDnaMatrix(@CheckForNull final String pPodId, final String label) {
-		super(pPodId);
-		checkNotNull(label);
-		this.label = label;
-	}
-
-	public String getLabel() {
-		return label;
+		super(pPodId, label);
 	}
 
 	public List<PPodDnaRow> getRows() {
@@ -31,9 +28,7 @@ final public class PPodDnaMatrix extends UuPPodDomainObject {
 
 	public PPodDnaMatrix(final String pPodId, final Long version,
 			final String label) {
-		super(pPodId, version);
-		checkNotNull(label);
-		this.label = label;
+		super(pPodId, version, label);
 	}
 
 	public List<Long> getColumnVersions() {

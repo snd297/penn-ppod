@@ -24,12 +24,12 @@ import java.util.SortedMap;
 import javax.xml.bind.annotation.XmlAccessType;
 import javax.xml.bind.annotation.XmlAccessorType;
 import javax.xml.bind.annotation.XmlElementWrapper;
-import javax.xml.bind.annotation.XmlRootElement;
+
+import edu.umd.cs.findbugs.annotations.Nullable;
 
 /**
  * @author Sam Donnelly
  */
-@XmlRootElement
 @XmlAccessorType(XmlAccessType.NONE)
 public final class MatrixInfo extends PPodEntityInfo {
 
@@ -77,6 +77,7 @@ public final class MatrixInfo extends PPodEntityInfo {
 
 	public MatrixInfo() {}
 
+	@Nullable
 	public Long getCellVersion(final int it, final int ic) {
 		if (cellPPodIdAndVersionsByMN.get(it) == null) {
 			return null;

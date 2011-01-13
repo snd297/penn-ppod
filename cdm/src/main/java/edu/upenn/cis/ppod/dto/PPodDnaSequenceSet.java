@@ -1,41 +1,33 @@
 package edu.upenn.cis.ppod.dto;
 
-import static com.google.common.base.Preconditions.checkNotNull;
 import static com.google.common.collect.Lists.newArrayList;
 
 import java.util.List;
 
+import javax.xml.bind.annotation.XmlElement;
+
 import edu.umd.cs.findbugs.annotations.CheckForNull;
 
-final public class PPodDnaSequenceSet extends UuPPodDomainObject {
+final public class PPodDnaSequenceSet extends UuPPodDomainObjectWithLabel {
 
-	private String label;
+	@XmlElement(name = "character")
 	private final List<PPodDnaSequence> sequences = newArrayList();
 
 	PPodDnaSequenceSet() {}
 
 	public PPodDnaSequenceSet(final String label) {
-		checkNotNull(label);
-		this.label = label;
+		super(label);
 	}
 
 	public PPodDnaSequenceSet(@CheckForNull final String pPodId,
 			final String label) {
-		super(pPodId);
-		checkNotNull(label);
-		this.label = label;
+		super(pPodId, label);
 	}
 
 	public PPodDnaSequenceSet(final String pPodId,
 			final Long version,
 			final String label) {
-		super(pPodId, version);
-		checkNotNull(label);
-		this.label = label;
-	}
-
-	public String getLabel() {
-		return label;
+		super(pPodId, version, label);
 	}
 
 	public List<PPodDnaSequence> getSequences() {

@@ -8,14 +8,18 @@ import static com.google.common.collect.Sets.newHashSet;
 
 import java.util.Set;
 
+import javax.xml.bind.annotation.XmlAttribute;
+import javax.xml.bind.annotation.XmlElement;
+
 import edu.umd.cs.findbugs.annotations.CheckForNull;
 import edu.umd.cs.findbugs.annotations.Nullable;
 
-public final class PPodStandardCharacter extends UuPPodDomainObject {
+public final class PPodStandardCharacter extends UuPPodDomainObjectWithLabel {
 
-	private String label;
-
+	@XmlAttribute
 	private String mesquiteId;
+
+	@XmlElement(name = "state")
 	private final Set<PPodStandardState> states = newHashSet();
 
 	PPodStandardCharacter() {}
@@ -23,25 +27,17 @@ public final class PPodStandardCharacter extends UuPPodDomainObject {
 	public PPodStandardCharacter(final String pPodId,
 			final Long version,
 			final String label, final String mesquiteId) {
-		super(pPodId, version);
-		checkNotNull(label);
+		super(pPodId, version, label);
 		checkNotNull(mesquiteId);
-		this.label = label;
 		this.mesquiteId = mesquiteId;
 	}
 
 	public PPodStandardCharacter(@CheckForNull final String pPodId,
 			final String label,
 			final String mesquiteId) {
-		super(pPodId);
-		checkNotNull(label);
+		super(pPodId, label);
 		checkNotNull(mesquiteId);
-		this.label = label;
 		this.mesquiteId = mesquiteId;
-	}
-
-	public String getLabel() {
-		return label;
 	}
 
 	public String getMesquiteId() {

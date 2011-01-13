@@ -4,30 +4,22 @@ import static com.google.common.collect.Lists.newArrayList;
 
 import java.util.List;
 
-public final class PPodTreeSet extends UuPPodDomainObject {
+import javax.xml.bind.annotation.XmlElement;
 
-	private String label;
+public final class PPodTreeSet extends UuPPodDomainObjectWithLabel {
+
+	@XmlElement(name = "tree")
 	private final List<PPodTree> trees = newArrayList();
 
 	PPodTreeSet() {}
 
 	public PPodTreeSet(final String pPodId, final String label) {
-		super(pPodId);
-		this.label = label;
+		super(pPodId, label);
 	}
 
 	public PPodTreeSet(final String pPodId, final Long version,
 			final String label) {
-		super(pPodId, version);
-		this.label = label;
-	}
-
-	public PPodTreeSet(final String label) {
-		this.label = label;
-	}
-
-	public String getLabel() {
-		return label;
+		super(pPodId, version, label);
 	}
 
 	public List<PPodTree> getTrees() {
