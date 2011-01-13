@@ -32,6 +32,7 @@ import javax.persistence.Table;
 import javax.xml.bind.annotation.XmlAttribute;
 import javax.xml.bind.annotation.XmlIDREF;
 
+import edu.umd.cs.findbugs.annotations.CheckForNull;
 import edu.umd.cs.findbugs.annotations.Nullable;
 import edu.upenn.cis.ppod.dto.PPodCellType;
 import edu.upenn.cis.ppod.util.IVisitor;
@@ -84,7 +85,7 @@ public class StandardCell
 	 */
 	@ManyToOne(fetch = FetchType.LAZY, optional = false)
 	@JoinColumn(name = StandardRow.JOIN_COLUMN)
-	@Nullable
+	@CheckForNull
 	private StandardRow parent;
 
 	/** No-arg constructor for (at least) Hibernate. */

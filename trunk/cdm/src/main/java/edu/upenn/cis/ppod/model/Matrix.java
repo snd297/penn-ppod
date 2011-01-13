@@ -85,7 +85,7 @@ public abstract class Matrix<R extends Row<C, ?>, C extends Cell<?, ?>>
 
 	/** The label for this {@code Matrix}. */
 	@Column(name = LABEL_COLUMN, nullable = false)
-	@Nullable
+	@CheckForNull
 	private String label;
 
 	/**
@@ -95,7 +95,7 @@ public abstract class Matrix<R extends Row<C, ?>, C extends Cell<?, ?>>
 	@ManyToOne(fetch = FetchType.LAZY, optional = false)
 	@JoinColumn(name = OtuSet.JOIN_COLUMN, insertable = false,
 				updatable = false)
-	@Nullable
+	@CheckForNull
 	private OtuSet parent;
 
 	/** Default constructor. */

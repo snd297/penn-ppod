@@ -5,13 +5,19 @@ import static com.google.common.collect.Lists.newArrayList;
 
 import java.util.List;
 
+import javax.xml.bind.annotation.XmlElement;
+
 import edu.umd.cs.findbugs.annotations.CheckForNull;
 
-public final class PPodStandardMatrix extends UuPPodDomainObject {
+public final class PPodStandardMatrix extends UuPPodDomainObjectWithLabel {
 
-	private String label;
+	@XmlElement(name = "character")
 	private List<PPodStandardCharacter> characters = newArrayList();
+
+	@XmlElement(name = "row")
 	private final List<PPodStandardRow> rows = newArrayList();
+
+	@XmlElement(name = "columnVersion")
 	private List<Long> columnVersions = newArrayList();
 
 	PPodStandardMatrix() {}
@@ -19,16 +25,12 @@ public final class PPodStandardMatrix extends UuPPodDomainObject {
 	public PPodStandardMatrix(final String pPodId,
 			final Long version,
 			final String label) {
-		super(pPodId, version);
-		checkNotNull(label);
-		this.label = label;
+		super(pPodId, version, label);
 	}
 
 	public PPodStandardMatrix(@CheckForNull final String pPodId,
 			final String label) {
-		super(pPodId);
-		checkNotNull(label);
-		this.label = label;
+		super(pPodId, label);
 	}
 
 	public List<PPodStandardCharacter> getCharacters() {
@@ -37,10 +39,6 @@ public final class PPodStandardMatrix extends UuPPodDomainObject {
 
 	public List<Long> getColumnVersions() {
 		return columnVersions;
-	}
-
-	public String getLabel() {
-		return label;
 	}
 
 	public List<PPodStandardRow> getRows() {
@@ -57,7 +55,4 @@ public final class PPodStandardMatrix extends UuPPodDomainObject {
 		this.columnVersions = columnVersions;
 	}
 
-	public void setLabel(final String label) {
-		this.label = label;
-	}
 }

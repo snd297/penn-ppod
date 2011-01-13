@@ -4,27 +4,29 @@ import static com.google.common.base.Preconditions.checkNotNull;
 
 import javax.xml.bind.annotation.XmlAccessType;
 import javax.xml.bind.annotation.XmlAccessorType;
+import javax.xml.bind.annotation.XmlAttribute;
 
 import com.google.common.base.Function;
 
 @XmlAccessorType(XmlAccessType.FIELD)
 public final class PPodStandardState {
 
-	PPodStandardState() {}
-
 	public static Function<PPodStandardState, Integer> getStateNumber = new Function<PPodStandardState, Integer>() {
 
-		public Integer apply(PPodStandardState input) {
+		public Integer apply(final PPodStandardState input) {
 			return input.getStateNumber();
 		}
 	};
 
+	@XmlAttribute
 	private int stateNumber;
 
+	@XmlAttribute
 	private String label;
 
+	PPodStandardState() {}
+
 	public PPodStandardState(final int stateNumber, final String label) {
-		checkNotNull(stateNumber);
 		checkNotNull(label);
 		this.stateNumber = stateNumber;
 		this.label = label;
