@@ -24,18 +24,20 @@ import com.google.common.base.Function;
 import com.google.inject.Inject;
 
 import edu.upenn.cis.ppod.createorupdate.ICreateOrUpdateStudy;
+import edu.upenn.cis.ppod.dao.ICurrentVersionDAO;
 import edu.upenn.cis.ppod.dao.IStudyDAO;
-import edu.upenn.cis.ppod.dto.IStudy2StudyInfo;
 import edu.upenn.cis.ppod.dto.PPodStudy;
+import edu.upenn.cis.ppod.dto.Study2StudyInfo;
 import edu.upenn.cis.ppod.dto.StudyInfo;
 import edu.upenn.cis.ppod.imodel.INewVersionInfo;
+import edu.upenn.cis.ppod.model.CurrentVersion;
 import edu.upenn.cis.ppod.model.Study;
 import edu.upenn.cis.ppod.services.IStudyResource;
 import edu.upenn.cis.ppod.services.StringPair;
+import edu.upenn.cis.ppod.util.DbStudy2DocStudy;
 import edu.upenn.cis.ppod.util.IVisitor;
 import edu.upenn.cis.ppod.util.Pair;
 import edu.upenn.cis.ppod.util.SetVersionInfoVisitor;
-import edu.upenn.cis.ppod.util.DbStudy2DocStudy;
 
 /**
  * We commit the transactions in this class so that the resteasy response will
@@ -53,20 +55,20 @@ public final class StudyResourceHibernate implements IStudyResource {
 
 	private final ICreateOrUpdateStudy createOrUpdateStudy;
 
-	private final IStudy2StudyInfo study2StudyInfo;
-
 	private final INewVersionInfo newVersionInfo;
+
+	private final ICurrentVersionDAO currentVersionDAO;
 
 	@Inject
 	StudyResourceHibernate(
 			final IStudyDAO studyDAO,
 			final ICreateOrUpdateStudy createOrUpdateStudy,
-			final IStudy2StudyInfo study2StudyInfo,
-			final INewVersionInfo newVersionInfo) {
+			final INewVersionInfo newVersionInfo,
+			final ICurrentVersionDAO currentVersionDAO) {
 		this.studyDAO = studyDAO;
 		this.createOrUpdateStudy = createOrUpdateStudy;
-		this.study2StudyInfo = study2StudyInfo;
 		this.newVersionInfo = newVersionInfo;
+		this.currentVersionDAO = currentVersionDAO;
 	}
 
 	private StudyInfo createOrUpdateStudy(final PPodStudy incomingStudy) {
@@ -79,7 +81,20 @@ public final class StudyResourceHibernate implements IStudyResource {
 
 		dbStudy.accept(setVersionInfoVisitor);
 
-		return study2StudyInfo.toStudyInfo(dbStudy);
+		CurrentVersion currentVersion = currentVersionDAO.findById(
+				CurrentVersion.ID,
+				true);
+
+		if (currentVersion == null) {
+			currentVersion = new CurrentVersion(1L);
+			currentVersionDAO.makePersistent(currentVersion);
+		} else {
+			currentVersion.setVersion(currentVersion.getVersion() + 1);
+		}
+		newVersionInfo.getNewVersionInfo().setVersion(
+				currentVersion.getVersion());
+
+		return Study2StudyInfo.toStudyInfo(dbStudy);
 	}
 
 	public StudyInfo createStudy(final PPodStudy incomingStudy) {

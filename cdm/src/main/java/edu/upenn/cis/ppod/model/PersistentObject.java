@@ -22,7 +22,6 @@ import javax.persistence.Column;
 import javax.persistence.GeneratedValue;
 import javax.persistence.Id;
 import javax.persistence.MappedSuperclass;
-import javax.persistence.Transient;
 import javax.persistence.Version;
 
 import edu.upenn.cis.ppod.imodel.IHasLongId;
@@ -62,19 +61,12 @@ public abstract class PersistentObject implements IHasLongId {
 	@Nullable
 	private Integer objVersion;
 
-	@Transient
-	private boolean unmarshalled = false;
-
 	/** Default constructor. */
 	protected PersistentObject() {}
 
 	@Nullable
 	public Long getId() {
 		return id;
-	}
-
-	protected boolean isUnmarshalled() {
-		return unmarshalled;
 	}
 
 	@SuppressWarnings("unused")

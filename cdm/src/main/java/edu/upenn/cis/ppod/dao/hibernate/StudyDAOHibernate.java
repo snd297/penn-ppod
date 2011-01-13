@@ -42,7 +42,7 @@ final class StudyDAOHibernate
 	@Inject
 	StudyDAOHibernate(
 			final Session session) {
-		super(session);
+		setSession(session);
 	}
 
 	@SuppressWarnings("unchecked")

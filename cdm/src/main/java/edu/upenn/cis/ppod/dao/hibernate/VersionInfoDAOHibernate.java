@@ -34,15 +34,13 @@ public final class VersionInfoDAOHibernate
 
 	@Inject
 	VersionInfoDAOHibernate(final Session session) {
-		super(session);
+		setSession(session);
 	}
-	
+
 	public Long getMaxVersion() {
 		final Long maxPPodVersion =
 				(Long) getSession()
-						.getNamedQuery(
-								VersionInfo.class.getSimpleName()
-										+ "-getMaxVersionInfo")
+						.getNamedQuery("VersionInfo-getMaxVersionInfo")
 						.uniqueResult();
 		return maxPPodVersion == null ? Long.valueOf(0L) : maxPPodVersion;
 	}

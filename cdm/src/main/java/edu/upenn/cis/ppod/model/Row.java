@@ -22,9 +22,6 @@ import static com.google.common.collect.Lists.newArrayList;
 import java.util.Collections;
 import java.util.List;
 
-import javax.xml.bind.Unmarshaller;
-
-import edu.umd.cs.findbugs.annotations.CheckForNull;
 import edu.upenn.cis.ppod.imodel.IChild;
 import edu.upenn.cis.ppod.util.IVisitor;
 
@@ -49,22 +46,6 @@ public abstract class Row<C extends Cell<?, ?>, M extends Matrix<?, ?>>
 			cell.accept(visitor);
 		}
 		super.accept(visitor);
-	}
-
-	/**
-	 * {@link Unmarshaller} callback.
-	 * 
-	 * @param u see {@code Unmarshaller}
-	 * @param parent see {@code Unmarshaller}
-	 */
-	protected void afterUnmarshal(
-			@CheckForNull final Unmarshaller u,
-			final Object parent) {
-		int cellPosition = -1;
-		for (final C cell : getCells()) {
-			cellPosition++;
-			cell.setPosition(cellPosition);
-		}
 	}
 
 	/**

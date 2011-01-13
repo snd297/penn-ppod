@@ -29,8 +29,6 @@ import javax.persistence.JoinTable;
 import javax.persistence.ManyToMany;
 import javax.persistence.ManyToOne;
 import javax.persistence.Table;
-import javax.xml.bind.annotation.XmlAttribute;
-import javax.xml.bind.annotation.XmlIDREF;
 
 import edu.umd.cs.findbugs.annotations.CheckForNull;
 import edu.umd.cs.findbugs.annotations.Nullable;
@@ -124,8 +122,6 @@ public class StandardCell
 
 	}
 
-	@XmlAttribute(name = "stateDocId")
-	@XmlIDREF
 	@Override
 	protected StandardState getElement() {
 		return element;

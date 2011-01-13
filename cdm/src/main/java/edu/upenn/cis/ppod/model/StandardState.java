@@ -25,7 +25,6 @@ import javax.persistence.FetchType;
 import javax.persistence.JoinColumn;
 import javax.persistence.ManyToOne;
 import javax.persistence.Table;
-import javax.xml.bind.annotation.XmlAttribute;
 
 import com.google.common.base.Function;
 
@@ -137,7 +136,6 @@ public class StandardState extends PPodEntity {
 	 * 
 	 * @return this character stateNumber's label
 	 */
-	@XmlAttribute(required = true)
 	@Nullable
 	public String getLabel() {
 		return label;
@@ -163,7 +161,6 @@ public class StandardState extends PPodEntity {
 	 * 
 	 * @return get the integer value of this character stateNumber
 	 */
-	@XmlAttribute
 	@Nullable
 	public Integer getStateNumber() {
 		return stateNumber;

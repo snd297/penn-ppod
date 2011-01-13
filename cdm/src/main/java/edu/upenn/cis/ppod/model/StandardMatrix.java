@@ -34,7 +34,6 @@ import javax.persistence.JoinColumn;
 import javax.persistence.OneToMany;
 import javax.persistence.OrderColumn;
 import javax.persistence.Table;
-import javax.xml.bind.annotation.XmlElement;
 
 import com.google.common.annotations.Beta;
 import com.google.common.collect.BiMap;
@@ -164,7 +163,6 @@ public class StandardMatrix
 	 * 
 	 * @return a modifiable reference to this matrix's characters
 	 */
-	@XmlElement(name = "character")
 	protected List<StandardCharacter> getCharactersModifiable() {
 		return characters;
 	}
@@ -174,7 +172,6 @@ public class StandardMatrix
 	 * 
 	 * @return the otusToRows
 	 */
-	@XmlElement(name = "rows")
 	@Override
 	protected StandardRows getOTUKeyedRows() {
 		return rows;

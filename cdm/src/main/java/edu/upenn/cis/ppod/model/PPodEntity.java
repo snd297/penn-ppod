@@ -16,7 +16,6 @@
 package edu.upenn.cis.ppod.model;
 
 import static com.google.common.base.Preconditions.checkNotNull;
-import static com.google.common.base.Preconditions.checkState;
 import static com.google.common.collect.Iterables.filter;
 import static com.google.common.collect.Sets.newHashSet;
 
@@ -35,7 +34,6 @@ import javax.persistence.ManyToOne;
 import javax.persistence.OneToMany;
 import javax.persistence.Table;
 import javax.persistence.Transient;
-import javax.xml.bind.annotation.XmlAttribute;
 
 import com.google.common.annotations.VisibleForTesting;
 
@@ -158,19 +156,14 @@ public abstract class PPodEntity
 	}
 
 	/**
-	 * We send this over the wire so that {@link #setAttachmentsXml()} only
-	 * creates a set to hold attachments when necessary. We do this because
-	 * there can be many cells, all of which may contain attachments.
+	 * So that we don't need to hit the attachments if not necessary. It's an
+	 * issue for matrices which have tons of cells.
 	 */
-	@XmlAttribute(name = "hasAttachments")
 	protected Boolean getHasAttachments() {
 		return hasAttachments;
 	}
 
 	public VersionInfo getVersionInfo() {
-		checkState(
-				!isUnmarshalled(),
-						"can't access a VersionInfo through an unmarshalled PPodEntity");
 		return versionInfo;
 	}
 
@@ -200,13 +193,6 @@ public abstract class PPodEntity
 			}
 		}
 		return attachmentRemoved;
-	}
-
-	/**
-	 * Protected for JAXB.
-	 */
-	protected void setHasAttachments(final Boolean hasAttachments) {
-		this.hasAttachments = hasAttachments;
 	}
 
 	/** {@inheritDoc} */

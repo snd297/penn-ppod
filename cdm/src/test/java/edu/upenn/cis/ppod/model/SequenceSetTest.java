@@ -22,7 +22,6 @@ import static org.mockito.Mockito.verify;
 import static org.testng.Assert.assertEquals;
 import static org.testng.Assert.assertFalse;
 import static org.testng.Assert.assertNull;
-import static org.testng.Assert.assertSame;
 import static org.testng.Assert.assertTrue;
 
 import org.testng.annotations.Test;
@@ -160,14 +159,6 @@ public class SequenceSetTest {
 		seqSet.setLabel(label);
 		assertEquals(seqSet.getLabel(), label);
 		assertFalse(seqSet.isInNeedOfNewVersion());
-	}
-
-	@Test
-	public void afterUnmarshal() {
-		final SequenceSet<?> seqSet = new DnaSequenceSet();
-		final OtuSet otuSet = new OtuSet();
-		seqSet.afterUnmarshal(null, otuSet);
-		assertSame(seqSet.getParent(), otuSet);
 	}
 
 	@Test

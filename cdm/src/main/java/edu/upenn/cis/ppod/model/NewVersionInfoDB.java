@@ -26,6 +26,8 @@ import edu.upenn.cis.ppod.imodel.INewVersionInfo;
  * We put this class in here so it can create {@link VersionInfo}
  * {@link VersionInfo#setVersion(Long)} and {@link VersionInfo#setCreated(Date)}
  * .
+ * <p>
+ * Not thread-safe.
  * 
  * @author Sam Donnelly
  */
@@ -41,6 +43,7 @@ public final class NewVersionInfoDB implements
 	NewVersionInfoDB(
 			final IVersionInfoDAO versionInfoDAO) {
 		this.versionInfoDAO = versionInfoDAO;
+
 	}
 
 	public VersionInfo getNewVersionInfo() {
@@ -52,9 +55,6 @@ public final class NewVersionInfoDB implements
 		if (versionInfoInitialized) {
 
 		} else {
-			final Long newVersion =
-					Long.valueOf(versionInfoDAO.getMaxVersion() + 1);
-			newVersionInfo.setVersion(newVersion);
 			newVersionInfo.setCreated(new Date());
 			versionInfoDAO.makePersistent(newVersionInfo);
 			versionInfoInitialized = true;

@@ -25,8 +25,6 @@ import javax.persistence.FetchType;
 import javax.persistence.JoinColumn;
 import javax.persistence.ManyToOne;
 import javax.persistence.Table;
-import javax.xml.bind.annotation.XmlAttribute;
-import javax.xml.bind.annotation.XmlIDREF;
 
 import org.hibernate.annotations.Index;
 
@@ -83,7 +81,6 @@ public class AttachmentType extends PersistentObject {
 	 * 
 	 * @return the label
 	 */
-	@XmlAttribute
 	@Nullable
 	public String getLabel() {
 		return label;
@@ -95,8 +92,6 @@ public class AttachmentType extends PersistentObject {
 	 * 
 	 * @return the namespace
 	 */
-	@XmlAttribute(name = "attachmentNamespaceDocId")
-	@XmlIDREF
 	@Nullable
 	public AttachmentNamespace getNamespace() {
 		return namespace;

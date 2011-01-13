@@ -23,7 +23,6 @@ import java.util.Set;
 import javax.annotation.Nullable;
 import javax.persistence.Column;
 import javax.persistence.MappedSuperclass;
-import javax.xml.bind.annotation.XmlAttribute;
 
 import edu.umd.cs.findbugs.annotations.CheckForNull;
 import edu.upenn.cis.ppod.dto.PPodCellType;
@@ -60,7 +59,6 @@ public abstract class MolecularCell<E extends Enum<?>, R extends Row<?, ?>>
 	 *         {@code false} otherwise
 	 */
 	@Nullable
-	@XmlAttribute(name = "upperCase")
 	public Boolean getLowerCase() {
 		return lowerCase;
 	}

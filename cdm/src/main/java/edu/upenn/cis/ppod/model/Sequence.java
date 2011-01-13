@@ -24,8 +24,6 @@ import javax.annotation.Nullable;
 import javax.persistence.Column;
 import javax.persistence.Lob;
 import javax.persistence.MappedSuperclass;
-import javax.xml.bind.annotation.XmlAttribute;
-import javax.xml.bind.annotation.XmlElement;
 
 import edu.upenn.cis.ppod.imodel.IChild;
 
@@ -66,7 +64,6 @@ public abstract class Sequence<SS extends SequenceSet<?>>
 	 * 
 	 * @return the accession
 	 */
-	@XmlAttribute
 	@Nullable
 	public String getAccession() {
 		return accession;
@@ -77,7 +74,6 @@ public abstract class Sequence<SS extends SequenceSet<?>>
 	 * 
 	 * @return the description
 	 */
-	@XmlAttribute
 	@Nullable
 	public String getDescription() {
 		return description;
@@ -88,7 +84,6 @@ public abstract class Sequence<SS extends SequenceSet<?>>
 	 * 
 	 * @return the name
 	 */
-	@XmlAttribute
 	@Nullable
 	public String getName() {
 		return name;
@@ -104,7 +99,6 @@ public abstract class Sequence<SS extends SequenceSet<?>>
 	 * 
 	 * @return the sequence string
 	 */
-	@XmlElement
 	@Nullable
 	public String getSequence() {
 		return sequence;

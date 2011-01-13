@@ -23,14 +23,11 @@ import java.util.Map;
 
 import javax.annotation.CheckForNull;
 import javax.annotation.Nullable;
-import javax.annotation.OverridingMethodsMustInvokeSuper;
 import javax.persistence.Column;
 import javax.persistence.FetchType;
 import javax.persistence.JoinColumn;
 import javax.persistence.ManyToOne;
 import javax.persistence.MappedSuperclass;
-import javax.xml.bind.Unmarshaller;
-import javax.xml.bind.annotation.XmlAttribute;
 
 import edu.upenn.cis.ppod.imodel.IDependsOnParentOtus;
 import edu.upenn.cis.ppod.imodel.IOtuKeyedMap;
@@ -67,20 +64,6 @@ public abstract class SequenceSet<S extends Sequence<?>>
 		super.accept(visitor);
 	}
 
-	/**
-	 * See {@link Unmarshaller}.
-	 * 
-	 * @param u see {@code Unmarshaller}
-	 * @param parent see {@code Unmarshaller}
-	 */
-	@OverridingMethodsMustInvokeSuper
-	public void afterUnmarshal(
-			@CheckForNull final Unmarshaller u,
-			final Object parent) {
-		checkNotNull(parent);
-		setParent((OtuSet) parent);
-	}
-
 	void checkSequenceLength(final S sequence) {
 		checkNotNull(sequence);
 		checkArgument(
@@ -101,7 +84,6 @@ public abstract class SequenceSet<S extends Sequence<?>>
 		}
 	}
 
-	@XmlAttribute(name = "label")
 	public String getLabel() {
 		return label;
 	}

@@ -37,9 +37,6 @@ import javax.persistence.ManyToOne;
 import javax.persistence.OneToMany;
 import javax.persistence.OrderColumn;
 import javax.persistence.Table;
-import javax.xml.bind.Unmarshaller;
-import javax.xml.bind.annotation.XmlAttribute;
-import javax.xml.bind.annotation.XmlElement;
 
 import com.google.common.annotations.VisibleForTesting;
 
@@ -341,18 +338,6 @@ public class OtuSet extends UuPPodEntity {
 		setInNeedOfNewVersion();
 	}
 
-	/**
-	 * See {@link Unmarshaller}.
-	 * 
-	 * @param u see {@code Unmarshaller}
-	 * @param parent see {@code Unmarshaller}
-	 */
-	protected void afterUnmarshal(
-			@CheckForNull final Unmarshaller u,
-			final Object parent) {
-		this.parent = (Study) parent;
-	}
-
 	@VisibleForTesting
 	Set<IChild<OtuSet>> getChildren() {
 		final Set<IChild<OtuSet>> children = newHashSet();
@@ -376,8 +361,7 @@ public class OtuSet extends UuPPodEntity {
 	 * 
 	 * @return the description
 	 */
-	@CheckForNull
-	@XmlAttribute
+	@Nullable
 	public String getDescription() {
 		return description;
 	}
@@ -387,7 +371,6 @@ public class OtuSet extends UuPPodEntity {
 		return Collections.unmodifiableList(dnaMatrices);
 	}
 
-	@XmlElement(name = "dnaMatrix")
 	protected List<DnaMatrix> getDnaMatricesModifiable() {
 		return dnaMatrices;
 	}
@@ -397,7 +380,6 @@ public class OtuSet extends UuPPodEntity {
 		return Collections.unmodifiableList(dnaSequenceSets);
 	}
 
-	@XmlElement(name = "dnaSequenceSet")
 	protected List<DnaSequenceSet> getDnaSequenceSetsModifiable() {
 		return dnaSequenceSets;
 	}
@@ -409,7 +391,6 @@ public class OtuSet extends UuPPodEntity {
 	 * @return the label
 	 */
 	@Nullable
-	@XmlAttribute
 	public String getLabel() {
 		return label;
 	}
@@ -428,7 +409,6 @@ public class OtuSet extends UuPPodEntity {
 	 * 
 	 * @return a modifiable reference to this the otus.
 	 */
-	@XmlElement(name = "otu")
 	protected List<Otu> getOtusModifiable() {
 		return otus;
 	}
@@ -452,7 +432,6 @@ public class OtuSet extends UuPPodEntity {
 		return Collections.unmodifiableList(standardMatrices);
 	}
 
-	@XmlElement(name = "matrix")
 	protected List<StandardMatrix> getStandardMatricesModifiable() {
 		return standardMatrices;
 	}
@@ -466,7 +445,6 @@ public class OtuSet extends UuPPodEntity {
 		return Collections.unmodifiableList(treeSets);
 	}
 
-	@XmlElement(name = "treeSet")
 	protected List<TreeSet> getTreeSetsModifiable() {
 		return treeSets;
 	}

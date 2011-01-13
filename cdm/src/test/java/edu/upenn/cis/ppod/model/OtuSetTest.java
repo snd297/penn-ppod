@@ -357,15 +357,6 @@ public class OtuSetTest {
 		assertSame(treeSet3.getParent(), otuSet);
 	}
 
-	@Test
-	public void afterUnmarshal() {
-		final Study study = new Study();
-		otuSet.unsetInNeedOfNewVersion();
-		otuSet.afterUnmarshal(null, study);
-		assertSame(otuSet.getParent(), study);
-		assertFalse(otuSet.isInNeedOfNewVersion());
-	}
-
 	@BeforeMethod
 	public void beforeMethod() {
 		otuSet = new OtuSet();

@@ -33,11 +33,6 @@ import javax.persistence.ManyToOne;
 import javax.persistence.OneToMany;
 import javax.persistence.OrderColumn;
 import javax.persistence.Table;
-import javax.xml.bind.Unmarshaller;
-import javax.xml.bind.annotation.XmlAccessType;
-import javax.xml.bind.annotation.XmlAccessorType;
-import javax.xml.bind.annotation.XmlAttribute;
-import javax.xml.bind.annotation.XmlElement;
 
 import com.google.common.collect.Iterators;
 
@@ -49,7 +44,6 @@ import edu.upenn.cis.ppod.util.IVisitor;
  * 
  * @author Sam Donnelly
  */
-@XmlAccessorType(XmlAccessType.NONE)
 @Entity
 @Table(name = TreeSet.TABLE)
 public class TreeSet extends UuPPodEntity implements IDependsOnParentOtus {
@@ -103,24 +97,11 @@ public class TreeSet extends UuPPodEntity implements IDependsOnParentOtus {
 	}
 
 	/**
-	 * {@link Unmarshaller} callback.
-	 * 
-	 * @param u See {@code Unmarshaller}
-	 * @param parent {@code Unmarshaller}
-	 */
-	protected void afterUnmarshal(
-			@CheckForNull final Unmarshaller u,
-			final Object parent) {
-		this.parent = (OtuSet) parent;
-	}
-
-	/**
 	 * Get the label. Will be {@code null} when the object is first constructed.
 	 * Will never be {@code null} for objects in a persistent state.
 	 * 
 	 * @return the label
 	 */
-	@XmlAttribute
 	@Nullable
 	public String getLabel() {
 		return label;
@@ -141,7 +122,6 @@ public class TreeSet extends UuPPodEntity implements IDependsOnParentOtus {
 		return Collections.unmodifiableList(trees);
 	}
 
-	@XmlElement(name = "tree")
 	protected List<Tree> getTreesModifiable() {
 		return trees;
 	}

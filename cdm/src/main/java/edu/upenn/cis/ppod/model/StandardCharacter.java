@@ -30,11 +30,6 @@ import javax.persistence.ManyToOne;
 import javax.persistence.MapKey;
 import javax.persistence.OneToMany;
 import javax.persistence.Table;
-import javax.persistence.Transient;
-import javax.xml.bind.Marshaller;
-import javax.xml.bind.Unmarshaller;
-import javax.xml.bind.annotation.XmlAttribute;
-import javax.xml.bind.annotation.XmlElement;
 
 import com.google.common.base.Preconditions;
 
@@ -62,6 +57,7 @@ public class StandardCharacter extends UuPPodEntity {
 	 * The non-unique label of this {@code Character}.
 	 */
 	@Column(name = LABEL_COLUMN, nullable = false)
+	@CheckForNull
 	private String label;
 
 	/**
@@ -76,6 +72,7 @@ public class StandardCharacter extends UuPPodEntity {
 	private StandardMatrix parent;
 
 	@Column(name = "MESQUITE_ID", nullable = false, unique = true)
+	@CheckForNull
 	private String mesquiteId;
 
 	/**
@@ -88,10 +85,6 @@ public class StandardCharacter extends UuPPodEntity {
 			orphanRemoval = true)
 	@MapKey(name = "stateNumber")
 	private final Map<Integer, StandardState> states = newHashMap();
-
-	@Transient
-	@Nullable
-	private Set<StandardState> statesXml;
 
 	/**
 	 * Default constructor for (at least) Hibernate.
@@ -137,40 +130,17 @@ public class StandardCharacter extends UuPPodEntity {
 		return originalState;
 	}
 
-	protected boolean afterMarshal(@CheckForNull final Marshaller marshaller) {
-		statesXml = null;
-		return true;
-	}
-
-	/**
-	 * {@link Unmarshaller} callback.
-	 * 
-	 * @param u see {@code Unmarshaller}
-	 * @param parent see {@code Unmarshaller}
-	 */
-	protected void afterUnmarshal(
-			@CheckForNull final Unmarshaller u,
-			final Object parent) {
-		setParent((StandardMatrix) parent);
-		for (final StandardState stateXml : statesXml) {
-			stateXml.setParent(this);
-			states.put(stateXml.getStateNumber(), stateXml);
-		}
-		statesXml = null;
-	}
-
 	/**
 	 * Get the label of this {@code Character}.
 	 * 
 	 * @return the label of this {@code Character}
 	 */
-	@XmlAttribute
 	@Nullable
 	public String getLabel() {
 		return label;
 	}
 
-	@XmlAttribute
+	@Nullable
 	public String getMesquiteId() {
 		return mesquiteId;
 	}
@@ -210,11 +180,6 @@ public class StandardCharacter extends UuPPodEntity {
 	 */
 	public Set<StandardState> getStates() {
 		return newHashSet(states.values());
-	}
-
-	@XmlElement(name = "state")
-	protected Set<StandardState> getStatesXml() {
-		return statesXml;
 	}
 
 	@Override

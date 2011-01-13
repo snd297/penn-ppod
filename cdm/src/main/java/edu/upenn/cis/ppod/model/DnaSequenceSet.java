@@ -26,7 +26,6 @@ import javax.annotation.Nullable;
 import javax.persistence.Embedded;
 import javax.persistence.Entity;
 import javax.persistence.Table;
-import javax.xml.bind.annotation.XmlElement;
 
 import edu.upenn.cis.ppod.util.IVisitor;
 
@@ -77,7 +76,6 @@ public class DnaSequenceSet
 		getOTUKeyedSequences().clear();
 	}
 
-	@XmlElement(name = "sequences")
 	@Override
 	@Nullable
 	protected DnaSequences getOTUKeyedSequences() {

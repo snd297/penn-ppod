@@ -22,8 +22,6 @@ import javax.persistence.Entity;
 import javax.persistence.JoinColumn;
 import javax.persistence.ManyToOne;
 import javax.persistence.Table;
-import javax.xml.bind.Unmarshaller;
-import javax.xml.bind.annotation.XmlAttribute;
 
 import edu.umd.cs.findbugs.annotations.CheckForNull;
 import edu.umd.cs.findbugs.annotations.Nullable;
@@ -58,13 +56,13 @@ public class Otu
 
 	/** Non-unique label. */
 	@Column(name = LABEL_COLUMN, nullable = false)
-	@Nullable
+	@CheckForNull
 	private String label;
 
 	/**
 	 * The {@code OTUSet} that this {@code OTU} belongs to.
 	 */
-	@Nullable
+	@CheckForNull
 	@ManyToOne
 	@JoinColumn(name = OtuSet.JOIN_COLUMN, insertable = false,
 			updatable = false, nullable = false)
@@ -83,23 +81,10 @@ public class Otu
 	}
 
 	/**
-	 * See {@link Unmarshaller}.
-	 * 
-	 * @param u see {@code Unmarshaller}
-	 * @param parent see {@code Unmarshaller}
-	 */
-	public void afterUnmarshal(
-			@CheckForNull final Unmarshaller u,
-			final Object parent) {
-		this.parent = (OtuSet) parent;
-	}
-
-	/**
 	 * Return the label of this {@code OTU}.
 	 * 
 	 * @return the label of this {@code OTU}
 	 */
-	@XmlAttribute
 	@Nullable
 	public String getLabel() {
 		return label;
@@ -155,19 +140,4 @@ public class Otu
 	public void setParent(@CheckForNull final OtuSet parent) {
 		this.parent = parent;
 	}
-
-	/**
-	 * Constructs a <code>String</code> with attributes in name = value format.
-	 * 
-	 * @return a <code>String</code> representation of this object
-	 */
-	@Override
-	public String toString() {
-		final StringBuilder retValue = new StringBuilder();
-
-		retValue.append("OTU(").append("label=").append(this.label).append(")");
-
-		return retValue.toString();
-	}
-
 }

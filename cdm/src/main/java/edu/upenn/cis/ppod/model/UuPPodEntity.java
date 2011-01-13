@@ -17,10 +17,8 @@ package edu.upenn.cis.ppod.model;
 
 import java.util.UUID;
 
-import javax.annotation.Nullable;
 import javax.persistence.Column;
 import javax.persistence.MappedSuperclass;
-import javax.xml.bind.annotation.XmlAttribute;
 
 import edu.upenn.cis.ppod.imodel.IUuPPodEntity;
 
@@ -42,8 +40,6 @@ public abstract class UuPPodEntity extends PPodEntity implements IUuPPodEntity {
 			length = PPOD_ID_COLUMN_LENGTH, updatable = false)
 	private String pPodId = UUID.randomUUID().toString();
 
-	@XmlAttribute
-	@Nullable
 	public String getPPodId() {
 		return pPodId;
 	}

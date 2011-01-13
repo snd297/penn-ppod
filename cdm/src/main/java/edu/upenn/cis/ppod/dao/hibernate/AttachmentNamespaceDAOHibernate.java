@@ -32,7 +32,7 @@ final class AttachmentNamespaceDAOHibernate
 
 	@Inject
 	AttachmentNamespaceDAOHibernate(final Session session) {
-		super(session);
+		setSession(session);
 	}
 
 	/** {@inheritDoc} */

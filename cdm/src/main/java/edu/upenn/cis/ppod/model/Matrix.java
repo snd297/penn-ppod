@@ -34,9 +34,6 @@ import javax.persistence.ManyToOne;
 import javax.persistence.MappedSuperclass;
 import javax.persistence.OrderColumn;
 import javax.persistence.Transient;
-import javax.xml.bind.Unmarshaller;
-import javax.xml.bind.annotation.XmlAttribute;
-import javax.xml.bind.annotation.XmlElement;
 
 import edu.umd.cs.findbugs.annotations.CheckForNull;
 import edu.umd.cs.findbugs.annotations.Nullable;
@@ -126,12 +123,6 @@ public abstract class Matrix<R extends Row<C, ?>, C extends Cell<?, ?>>
 		}
 	}
 
-	protected void afterUnmarshal(
-			@CheckForNull final Unmarshaller u,
-			final Object parent) {
-		this.parent = (OtuSet) parent;
-	}
-
 	/**
 	 * The number of columns which any newly introduced rows must have.
 	 * <p>
@@ -186,7 +177,6 @@ public abstract class Matrix<R extends Row<C, ?>, C extends Cell<?, ?>>
 		return Collections.unmodifiableList(columnVersions);
 	}
 
-	@XmlElement(name = "columnVersion")
 	protected List<Long> getColumnVersionsModifiable() {
 		return columnVersions;
 	}
@@ -196,8 +186,7 @@ public abstract class Matrix<R extends Row<C, ?>, C extends Cell<?, ?>>
 	 * 
 	 * @return the description
 	 */
-	@CheckForNull
-	@XmlAttribute
+	@Nullable
 	public String getDescription() {
 		return description;
 	}
@@ -212,7 +201,6 @@ public abstract class Matrix<R extends Row<C, ?>, C extends Cell<?, ?>>
 	 * @return the label
 	 */
 	@Nullable
-	@XmlAttribute
 	public String getLabel() {
 		return label;
 	}
