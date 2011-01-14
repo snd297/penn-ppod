@@ -17,6 +17,7 @@ package edu.upenn.cis.ppod.model;
 
 import static com.google.common.base.Preconditions.checkArgument;
 import static com.google.common.base.Preconditions.checkNotNull;
+import static com.google.common.base.Preconditions.checkState;
 import static com.google.common.collect.Sets.newHashSet;
 
 import java.util.Collections;
@@ -78,10 +79,10 @@ abstract class Cell<E, R extends Row<?, ?>>
 	 *             i.e. if {@link #getType() == null}
 	 */
 	public Set<E> getElements() {
-		// checkState(type != null,
-		// "type has yet to be assigned for this cell");
+		checkState(type != null,
+				"type has yet to be assigned for this cell");
 
-		switch (getType()) {
+		switch (type) {
 			// Don't hit states unless we have to
 			case INAPPLICABLE:
 			case UNASSIGNED:
