@@ -38,7 +38,6 @@ import edu.upenn.cis.ppod.dto.PPodTreeSet;
 import edu.upenn.cis.ppod.imodel.INewVersionInfo;
 import edu.upenn.cis.ppod.model.DnaMatrix;
 import edu.upenn.cis.ppod.model.DnaSequenceSet;
-import edu.upenn.cis.ppod.model.ModelFactory;
 import edu.upenn.cis.ppod.model.OtuSet;
 import edu.upenn.cis.ppod.model.StandardMatrix;
 import edu.upenn.cis.ppod.model.Study;
@@ -89,7 +88,8 @@ class CreateOrUpdateStudy implements ICreateOrUpdateStudy {
 		if (null == (dbStudy =
 				studyDAO.getStudyByPPodId(
 						incomingStudy.getPPodId()))) {
-			dbStudy = ModelFactory.newStudy(newVersionInfo.getNewVersionInfo());
+			dbStudy = new Study();
+			dbStudy.setVersionInfo(newVersionInfo.getNewVersionInfo());
 			makeStudyPersistent = true;
 		}
 
@@ -118,31 +118,31 @@ class CreateOrUpdateStudy implements ICreateOrUpdateStudy {
 		}
 
 		// Save or update incoming otu sets
-		int incomingOTUSetPos = -1;
-		for (final PPodOtuSet incomingOTUSet : incomingStudy.getOtuSets()) {
-			incomingOTUSetPos++;
-			OtuSet dbOTUSet;
-			if (null == (dbOTUSet =
+		int incomingOtuSetPos = -1;
+		for (final PPodOtuSet incomingOtuSet : incomingStudy.getOtuSets()) {
+			incomingOtuSetPos++;
+			OtuSet dbOtuSet;
+			if (null == (dbOtuSet =
 					find(dbStudy.getOtuSets(),
 							compose(
 									equalTo(
-									incomingOTUSet.getPPodId()),
+									incomingOtuSet.getPPodId()),
 									IHasPPodId.getPPodId),
 							null))) {
-				dbOTUSet = ModelFactory.newOTUSet(newVersionInfo
-						.getNewVersionInfo());
-				dbOTUSet.setLabel(incomingOTUSet.getLabel()); // non-null, do it
+				dbOtuSet = new OtuSet();
+				dbOtuSet.setVersionInfo(newVersionInfo.getNewVersionInfo());
+				dbOtuSet.setLabel(incomingOtuSet.getLabel()); // non-null, do it
 				// now
-				dbStudy.addOtuSet(incomingOTUSetPos, dbOTUSet);
-				dao.makePersistent(dbOTUSet);
+				dbStudy.addOtuSet(incomingOtuSetPos, dbOtuSet);
+				dao.makePersistent(dbOtuSet);
 			}
 
-			mergeOTUSets.mergeOTUSets(dbOTUSet, incomingOTUSet);
+			mergeOTUSets.mergeOTUSets(dbOtuSet, incomingOtuSet);
 
-			handleDNAMatrices(dbOTUSet, incomingOTUSet);
-			handleStandardMatrices(dbOTUSet, incomingOTUSet);
-			handleDNASequenceSets(dbOTUSet, incomingOTUSet);
-			handleTreeSets(dbOTUSet, incomingOTUSet);
+			handleDNAMatrices(dbOtuSet, incomingOtuSet);
+			handleStandardMatrices(dbOtuSet, incomingOtuSet);
+			handleDNASequenceSets(dbOtuSet, incomingOtuSet);
+			handleTreeSets(dbOtuSet, incomingOtuSet);
 		}
 		return dbStudy;
 	}
@@ -181,8 +181,8 @@ class CreateOrUpdateStudy implements ICreateOrUpdateStudy {
 									IHasPPodId.getPPodId),
 									null
 									))) {
-				dbMatrix = ModelFactory.newDNAMatrix(newVersionInfo
-						.getNewVersionInfo());
+				dbMatrix = new DnaMatrix();
+				dbMatrix.setVersionInfo(newVersionInfo.getNewVersionInfo());
 
 				// Do this here because it's non-nullable
 				dbMatrix.setLabel(incomingMatrix.getLabel());
@@ -196,12 +196,12 @@ class CreateOrUpdateStudy implements ICreateOrUpdateStudy {
 	}
 
 	private void handleDNASequenceSets(
-			final OtuSet dbOTUSet,
+			final OtuSet dbOtuSet,
 			final PPodOtuSet incomingOTUSet) {
 
 		// Let's delete sequences missing from the incoming otu set
 		final Set<DnaSequenceSet> toBeRemoveds = newHashSet();
-		for (final DnaSequenceSet dbSequenceSet : dbOTUSet
+		for (final DnaSequenceSet dbSequenceSet : dbOtuSet
 				.getDnaSequenceSets()) {
 			if (null == find(
 					incomingOTUSet.getDnaSequenceSets(),
@@ -215,29 +215,30 @@ class CreateOrUpdateStudy implements ICreateOrUpdateStudy {
 		}
 
 		for (final DnaSequenceSet toBeRemoved : toBeRemoveds) {
-			dbOTUSet.removeDnaSequenceSet(toBeRemoved);
+			dbOtuSet.removeDnaSequenceSet(toBeRemoved);
 		}
 		int incomingSequenceSetPos = -1;
 		for (final PPodDnaSequenceSet incomingSequenceSet : incomingOTUSet
 				.getDnaSequenceSets()) {
 			incomingSequenceSetPos++;
-			DnaSequenceSet dbDNASequenceSet;
-			if (null == (dbDNASequenceSet =
-					find(dbOTUSet.getDnaSequenceSets(),
+			DnaSequenceSet dbDnaSequenceSet;
+			if (null == (dbDnaSequenceSet =
+					find(dbOtuSet.getDnaSequenceSets(),
 							compose(
 									equalTo(incomingSequenceSet
 											.getPPodId()),
 									IHasPPodId.getPPodId),
 									null))) {
-				dbDNASequenceSet = ModelFactory
-						.newDNASequenceSet(newVersionInfo.getNewVersionInfo());
-				dbDNASequenceSet.setLabel(incomingSequenceSet.getLabel());
-				dbOTUSet.addDnaSequenceSet(
-						incomingSequenceSetPos, dbDNASequenceSet);
-				dao.makePersistent(dbDNASequenceSet);
+				dbDnaSequenceSet = new DnaSequenceSet();
+				dbDnaSequenceSet.setVersionInfo(newVersionInfo
+						.getNewVersionInfo());
+				dbDnaSequenceSet.setLabel(incomingSequenceSet.getLabel());
+				dbOtuSet.addDnaSequenceSet(
+						incomingSequenceSetPos, dbDnaSequenceSet);
+				dao.makePersistent(dbDnaSequenceSet);
 			}
 			mergeDNASequenceSets
-					.mergeSequenceSets(dbDNASequenceSet, incomingSequenceSet);
+					.mergeSequenceSets(dbDnaSequenceSet, incomingSequenceSet);
 		}
 	}
 
@@ -275,8 +276,8 @@ class CreateOrUpdateStudy implements ICreateOrUpdateStudy {
 											incomingMatrix.getPPodId()),
 									IHasPPodId.getPPodId),
 									null))) {
-				dbMatrix = ModelFactory.newStandardMatrix(newVersionInfo
-						.getNewVersionInfo());
+				dbMatrix = new StandardMatrix();
+				dbMatrix.setVersionInfo(newVersionInfo.getNewVersionInfo());
 				dbMatrix.setLabel(incomingMatrix.getLabel());
 				dbOtuSet.addStandardMatrix(
 						incomingMatrixPos,
@@ -320,8 +321,8 @@ class CreateOrUpdateStudy implements ICreateOrUpdateStudy {
 							compose(equalTo(incomingTreeSet.getPPodId()),
 									IHasPPodId.getPPodId),
 									null))) {
-				dbTreeSet = ModelFactory.newTreeSet(newVersionInfo
-						.getNewVersionInfo());
+				dbTreeSet = new TreeSet();
+				dbTreeSet.setVersionInfo(newVersionInfo.getNewVersionInfo());
 				dbTreeSet.setLabel(incomingTreeSet.getLabel());
 				dbOtuSet.addTreeSet(incomingTreeSetPos, dbTreeSet);
 				dao.makePersistent(dbTreeSet);

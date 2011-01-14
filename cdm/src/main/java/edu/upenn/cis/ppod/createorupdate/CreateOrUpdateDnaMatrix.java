@@ -31,7 +31,6 @@ import edu.upenn.cis.ppod.imodel.INewVersionInfo;
 import edu.upenn.cis.ppod.model.DnaCell;
 import edu.upenn.cis.ppod.model.DnaMatrix;
 import edu.upenn.cis.ppod.model.DnaRow;
-import edu.upenn.cis.ppod.model.ModelFactory;
 import edu.upenn.cis.ppod.model.Otu;
 import edu.upenn.cis.ppod.util.DocCell2DbCell;
 
@@ -80,8 +79,8 @@ class CreateOrUpdateDnaMatrix implements ICreateOrUpdateDNAMatrix {
 			DnaRow dbRow = null;
 
 			if (null == (dbRow = dbMatrix.getRows().get(dbOTU))) {
-				dbRow = ModelFactory.newDnaRow(newVersionInfo
-						.getNewVersionInfo());
+				dbRow = new DnaRow();
+				dbRow.setVersionInfo(newVersionInfo.getNewVersionInfo());
 				dbMatrix.putRow(dbOTU, dbRow);
 				dao.makePersistent(dbRow);
 			}
@@ -95,8 +94,10 @@ class CreateOrUpdateDnaMatrix implements ICreateOrUpdateDNAMatrix {
 				if (i < dbRow.getCells().size()) {
 					dbCells.add(dbRow.getCells().get(i));
 				} else {
-					dbCells.add(ModelFactory.newDNACell(newVersionInfo
-							.getNewVersionInfo()));
+					final DnaCell dbCell = new DnaCell();
+					dbCell.setVersionInfo(newVersionInfo
+							.getNewVersionInfo());
+					dbCells.add(dbCell);
 				}
 			}
 

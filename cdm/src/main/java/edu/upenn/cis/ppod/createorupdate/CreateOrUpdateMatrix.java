@@ -28,7 +28,6 @@ import edu.upenn.cis.ppod.dto.PPodStandardCell;
 import edu.upenn.cis.ppod.dto.PPodStandardMatrix;
 import edu.upenn.cis.ppod.dto.PPodStandardRow;
 import edu.upenn.cis.ppod.imodel.INewVersionInfo;
-import edu.upenn.cis.ppod.model.ModelFactory;
 import edu.upenn.cis.ppod.model.Otu;
 import edu.upenn.cis.ppod.model.StandardCell;
 import edu.upenn.cis.ppod.model.StandardMatrix;
@@ -83,8 +82,8 @@ abstract class CreateOrUpdateMatrix {
 			StandardRow dbRow = null;
 
 			if (null == (dbRow = dbMatrix.getRows().get(dbOTU))) {
-				dbRow = ModelFactory.newStandardRow(newVersionInfo
-						.getNewVersionInfo());
+				dbRow = new StandardRow();
+				dbRow.setVersionInfo(newVersionInfo.getNewVersionInfo());
 				dbMatrix.putRow(dbOTU, dbRow);
 				dao.makePersistent(dbRow);
 			}

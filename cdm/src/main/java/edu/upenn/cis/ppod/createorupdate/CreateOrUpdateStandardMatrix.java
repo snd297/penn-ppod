@@ -39,7 +39,6 @@ import edu.upenn.cis.ppod.dto.PPodStandardCharacter;
 import edu.upenn.cis.ppod.dto.PPodStandardMatrix;
 import edu.upenn.cis.ppod.dto.PPodStandardState;
 import edu.upenn.cis.ppod.imodel.INewVersionInfo;
-import edu.upenn.cis.ppod.model.ModelFactory;
 import edu.upenn.cis.ppod.model.StandardCell;
 import edu.upenn.cis.ppod.model.StandardCharacter;
 import edu.upenn.cis.ppod.model.StandardMatrix;
@@ -92,9 +91,9 @@ final class CreateOrUpdateStandardMatrix
 													sourceCharacter.getPPodId()),
 													IHasPPodId.getPPodId),
 													null))) {
-				newDbCharacter = ModelFactory
-						.newStandardCharacter(newVersionInfo
-								.getNewVersionInfo());
+				newDbCharacter = new StandardCharacter();
+				newDbCharacter.setVersionInfo(newVersionInfo
+						.getNewVersionInfo());
 				sourceToDbCharPositions[sourceCharacterPosition] = -1;
 			}
 
