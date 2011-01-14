@@ -20,6 +20,11 @@ import static com.google.common.collect.Sets.newHashSet;
 
 import java.util.Set;
 
+import org.hibernate.Session;
+import org.hibernate.SessionFactory;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
+
 import com.google.common.base.Function;
 import com.google.inject.Inject;
 
@@ -59,42 +64,65 @@ public final class StudyResourceHibernate implements IStudyResource {
 
 	private final ICurrentVersionDAO currentVersionDAO;
 
+	private final SessionFactory sessionFactory;
+
+	private static final Logger logger = LoggerFactory
+			.getLogger(StudyResourceHibernate.class);
+
 	@Inject
 	StudyResourceHibernate(
 			final IStudyDAO studyDAO,
 			final ICreateOrUpdateStudy createOrUpdateStudy,
 			final INewVersionInfo newVersionInfo,
-			final ICurrentVersionDAO currentVersionDAO) {
+			final ICurrentVersionDAO currentVersionDAO,
+			final SessionFactory sessionFactory) {
 		this.studyDAO = studyDAO;
 		this.createOrUpdateStudy = createOrUpdateStudy;
 		this.newVersionInfo = newVersionInfo;
 		this.currentVersionDAO = currentVersionDAO;
+		this.sessionFactory = sessionFactory;
 	}
 
 	private StudyInfo createOrUpdateStudy(final PPodStudy incomingStudy) {
+		try {
+			final Session session = sessionFactory.getCurrentSession();
+			session.beginTransaction();
 
-		final edu.upenn.cis.ppod.model.Study dbStudy = createOrUpdateStudy
-				.createOrUpdateStudy(incomingStudy);
+			final edu.upenn.cis.ppod.model.Study dbStudy = createOrUpdateStudy
+					.createOrUpdateStudy(incomingStudy);
 
-		final IVisitor setVersionInfoVisitor = new SetVersionInfoVisitor(
-				newVersionInfo);
+			final IVisitor setVersionInfoVisitor = new SetVersionInfoVisitor(
+					newVersionInfo);
 
-		dbStudy.accept(setVersionInfoVisitor);
+			dbStudy.accept(setVersionInfoVisitor);
 
-		CurrentVersion currentVersion = currentVersionDAO.findById(
-				CurrentVersion.ID,
-				true);
+			CurrentVersion currentVersion = currentVersionDAO.findById(
+					CurrentVersion.ID,
+					true);
 
-		if (currentVersion == null) {
-			currentVersion = new CurrentVersion(1L);
-			currentVersionDAO.makePersistent(currentVersion);
-		} else {
-			currentVersion.setVersion(currentVersion.getVersion() + 1);
+			if (currentVersion == null) {
+				currentVersion = new CurrentVersion(1L);
+				currentVersionDAO.makePersistent(currentVersion);
+			} else {
+				currentVersion.setVersion(currentVersion.getVersion() + 1);
+			}
+			newVersionInfo.getNewVersionInfo().setVersion(
+					currentVersion.getVersion());
+
+			final StudyInfo studyInfo = Study2StudyInfo.toStudyInfo(dbStudy);
+
+			session.getTransaction().commit();
+
+			return studyInfo;
+
+		} catch (Throwable t) {
+			try {
+				sessionFactory.getCurrentSession().getTransaction().rollback();
+			} catch (Throwable rbEx) {
+				logger.error("error rolling back transaction", rbEx);
+			}
+			throw new IllegalStateException(t);
 		}
-		newVersionInfo.getNewVersionInfo().setVersion(
-				currentVersion.getVersion());
-
-		return Study2StudyInfo.toStudyInfo(dbStudy);
 	}
 
 	public StudyInfo createStudy(final PPodStudy incomingStudy) {
@@ -103,25 +131,55 @@ public final class StudyResourceHibernate implements IStudyResource {
 	}
 
 	public PPodStudy getStudyByPPodId(final String pPodId) {
-		final Study dbStudy = studyDAO.getStudyByPPodId(pPodId);
-		final PPodStudy docStudy = DbStudy2DocStudy.dbStudy2DocStudy(dbStudy);
-		return docStudy;
+		try {
+			final Session session = sessionFactory.getCurrentSession();
+			session.beginTransaction();
+
+			final Study dbStudy = studyDAO.getStudyByPPodId(pPodId);
+			final PPodStudy docStudy = DbStudy2DocStudy
+					.dbStudy2DocStudy(dbStudy);
+
+			session.getTransaction().commit();
+
+			return docStudy;
+		} catch (Throwable t) {
+			try {
+				sessionFactory.getCurrentSession().getTransaction().rollback();
+			} catch (Throwable rbEx) {
+				logger.error("error rolling back transaction", rbEx);
+			}
+			throw new IllegalStateException(t);
+		}
 	}
 
 	public Set<StringPair> getStudyPPodIdLabelPairs() {
+		try {
+			final Session session = sessionFactory.getCurrentSession();
+			session.beginTransaction();
 
-		final Set<Pair<String, String>> studyPPodIdPairs = studyDAO
-				.getPPodIdLabelPairs();
+			final Set<Pair<String, String>> studyPPodIdPairs = studyDAO
+					.getPPodIdLabelPairs();
 
-		final Set<StringPair> studyPPodIdStringPairs = newHashSet(transform(
-				studyPPodIdPairs,
+			final Set<StringPair> studyPPodIdStringPairs = newHashSet(transform(
+					studyPPodIdPairs,
 
-				new Function<Pair<String, String>, StringPair>() {
-					public StringPair apply(final Pair<String, String> from) {
-						return new StringPair(from.getFirst(), from.getSecond());
-					}
-				}));
-		return studyPPodIdStringPairs;
+					new Function<Pair<String, String>, StringPair>() {
+						public StringPair apply(final Pair<String, String> from) {
+							return new StringPair(from.getFirst(), from
+									.getSecond());
+						}
+					}));
+
+			session.getTransaction().commit();
+			return studyPPodIdStringPairs;
+		} catch (Throwable t) {
+			try {
+				sessionFactory.getCurrentSession().getTransaction().rollback();
+			} catch (Throwable rbEx) {
+				logger.error("error rolling back transaction", rbEx);
+			}
+			throw new IllegalStateException(t);
+		}
 	}
 
 	public StudyInfo updateStudy(final PPodStudy incomingStudy,

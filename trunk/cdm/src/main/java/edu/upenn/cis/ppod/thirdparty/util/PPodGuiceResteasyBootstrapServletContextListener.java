@@ -66,9 +66,6 @@ public class PPodGuiceResteasyBootstrapServletContextListener extends
 										.in(Singleton.class);
 								filter("/*")
 										.through(IniShiroFilter.class);
-								filter("/*")
-										.through(
-												HibernateSessionRequestFilter.class);
 								serve("/*")
 										.with(HttpServletDispatcher.class);
 							}
