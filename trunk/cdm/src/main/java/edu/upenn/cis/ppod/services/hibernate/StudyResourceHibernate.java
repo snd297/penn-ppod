@@ -88,7 +88,7 @@ public final class StudyResourceHibernate implements IStudyResource {
 			final Session session = sessionFactory.getCurrentSession();
 			session.beginTransaction();
 
-			final edu.upenn.cis.ppod.model.Study dbStudy = createOrUpdateStudy
+			final Study dbStudy = createOrUpdateStudy
 					.createOrUpdateStudy(incomingStudy);
 
 			final IVisitor setVersionInfoVisitor = new SetVersionInfoVisitor(
