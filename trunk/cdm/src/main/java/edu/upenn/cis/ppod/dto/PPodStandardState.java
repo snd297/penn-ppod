@@ -46,4 +46,8 @@ public final class PPodStandardState {
 		return stateNumber;
 	}
 
+	public void setLabel(final String label) {
+		this.label = label;
+	}
+
 }
