@@ -1,6 +1,13 @@
 package edu.upenn.cis.ppod.dto;
 
-public final class PPodOtu extends UuPPodDomainObjectWLabelAndDocId {
+import java.util.UUID;
+
+import javax.xml.bind.annotation.XmlID;
+
+public final class PPodOtu extends UuPPodDomainObjectWithLabel {
+
+	@XmlID
+	private final String docId = UUID.randomUUID().toString();
 
 	PPodOtu() {}
 
@@ -14,6 +21,10 @@ public final class PPodOtu extends UuPPodDomainObjectWLabelAndDocId {
 
 	public PPodOtu(final String pPodId, final Long version, final String label) {
 		super(pPodId, version, label);
+	}
+
+	public String getDocId() {
+		return docId;
 	}
 
 }

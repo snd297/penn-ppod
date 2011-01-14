@@ -9,8 +9,6 @@ import edu.umd.cs.findbugs.annotations.CheckForNull;
 abstract class UuPPodDomainObjectWLabelAndDocId extends
 		UuPPodDomainObjectWithLabel
 		implements IHasDocId {
-	@XmlID
-	private final String docId = UUID.randomUUID().toString();
 
 	protected UuPPodDomainObjectWLabelAndDocId() {}
 
@@ -28,8 +26,6 @@ abstract class UuPPodDomainObjectWLabelAndDocId extends
 		super(pPodId, version, label);
 	}
 
-	public String getDocId() {
-		return docId;
-	}
+	
 
 }

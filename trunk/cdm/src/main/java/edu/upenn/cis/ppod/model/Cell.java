@@ -17,7 +17,6 @@ package edu.upenn.cis.ppod.model;
 
 import static com.google.common.base.Preconditions.checkArgument;
 import static com.google.common.base.Preconditions.checkNotNull;
-import static com.google.common.base.Preconditions.checkState;
 import static com.google.common.collect.Sets.newHashSet;
 
 import java.util.Collections;
@@ -45,7 +44,7 @@ import edu.upenn.cis.ppod.imodel.IChild;
  * @param <R> the parent row type
  */
 @MappedSuperclass
-public abstract class Cell<E, R extends Row<?, ?>>
+abstract class Cell<E, R extends Row<?, ?>>
 		extends PPodEntity
 		implements IChild<R> {
 
@@ -57,7 +56,7 @@ public abstract class Cell<E, R extends Row<?, ?>>
 
 	@Column(name = TYPE_COLUMN, nullable = false)
 	@Enumerated(EnumType.ORDINAL)
-	@Nullable
+	@CheckForNull
 	private PPodCellType type;
 
 	protected Cell() {}
@@ -79,8 +78,8 @@ public abstract class Cell<E, R extends Row<?, ?>>
 	 *             i.e. if {@link #getType() == null}
 	 */
 	public Set<E> getElements() {
-		checkState(getType() != null,
-				"type has yet to be assigned for this cell");
+		// checkState(type != null,
+		// "type has yet to be assigned for this cell");
 
 		switch (getType()) {
 			// Don't hit states unless we have to

@@ -29,7 +29,6 @@ import javax.persistence.OneToMany;
 import org.hibernate.annotations.Parent;
 
 import edu.upenn.cis.ppod.imodel.IOtuKeyedMap;
-import edu.upenn.cis.ppod.imodel.IOtuKeyedMapPlus;
 import edu.upenn.cis.ppod.util.IVisitor;
 
 /**
@@ -42,7 +41,7 @@ import edu.upenn.cis.ppod.util.IVisitor;
 class StandardRows
 		implements IOtuKeyedMap<StandardRow> {
 
-	private final IOtuKeyedMapPlus<StandardRow, StandardMatrix> rows =
+	private final OtuKeyedMapPlus<StandardRow, StandardMatrix> rows =
 			new OtuKeyedMapPlus<StandardRow, StandardMatrix>();
 
 	StandardRows() {}

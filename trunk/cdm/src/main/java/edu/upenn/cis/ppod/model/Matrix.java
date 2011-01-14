@@ -50,7 +50,7 @@ import edu.upenn.cis.ppod.util.IVisitor;
  * @author Sam Donnelly
  */
 @MappedSuperclass
-public abstract class Matrix<R extends Row<C, ?>, C extends Cell<?, ?>>
+abstract class Matrix<R extends Row<C, ?>, C extends Cell<?, ?>>
 		extends UuPPodEntity
 		implements IHasColumnVersionInfos, IDependsOnParentOtus,
 		IHasPPodId {

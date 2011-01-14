@@ -29,7 +29,7 @@ import javax.annotation.CheckForNull;
 import javax.annotation.Nullable;
 
 import edu.upenn.cis.ppod.imodel.IChild;
-import edu.upenn.cis.ppod.imodel.IOtuKeyedMapPlus;
+import edu.upenn.cis.ppod.imodel.IOtuKeyedMap;
 import edu.upenn.cis.ppod.util.IVisitor;
 
 /**
@@ -43,7 +43,7 @@ import edu.upenn.cis.ppod.util.IVisitor;
  * @author Sam Donnelly
  */
 class OtuKeyedMapPlus<V extends IChild<P>, P extends IChild<OtuSet>>
-		implements IOtuKeyedMapPlus<V, P> {
+		implements IOtuKeyedMap<V> {
 
 	private P parent;
 

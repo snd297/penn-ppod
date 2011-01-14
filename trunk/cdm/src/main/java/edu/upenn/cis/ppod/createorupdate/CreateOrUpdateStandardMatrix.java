@@ -43,16 +43,14 @@ import edu.upenn.cis.ppod.model.ModelFactory;
 import edu.upenn.cis.ppod.model.StandardCell;
 import edu.upenn.cis.ppod.model.StandardCharacter;
 import edu.upenn.cis.ppod.model.StandardMatrix;
-import edu.upenn.cis.ppod.model.StandardRow;
 import edu.upenn.cis.ppod.model.StandardState;
-import edu.upenn.cis.ppod.model.VersionInfo;
 
 /**
  * @author Sam Donnelly
  */
 final class CreateOrUpdateStandardMatrix
 		extends
-		CreateOrUpdateMatrix<StandardMatrix, StandardRow, StandardCell, StandardState>
+		CreateOrUpdateMatrix
 		implements ICreateOrUpdateStandardMatrix {
 
 	private static Logger logger =
@@ -153,13 +151,4 @@ final class CreateOrUpdateStandardMatrix
 		targetCell.setUncertainWithStateNos(sourceCell.getStates());
 	}
 
-	@Override
-	protected StandardCell newC(final VersionInfo versionInfo) {
-		return ModelFactory.newStandardCell(versionInfo);
-	}
-
-	@Override
-	protected StandardRow newR(final VersionInfo versionInfo) {
-		return ModelFactory.newStandardRow(versionInfo);
-	}
 }
