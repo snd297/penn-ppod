@@ -1,5 +1,6 @@
 package edu.upenn.cis.ppod.dto;
 
+import static com.google.common.base.Preconditions.checkArgument;
 import static com.google.common.base.Preconditions.checkNotNull;
 import static com.google.common.collect.Lists.newArrayList;
 
@@ -23,7 +24,7 @@ public final class PPodStandardMatrix extends UuPPodDomainObjectWithLabel {
 	PPodStandardMatrix() {}
 
 	public PPodStandardMatrix(final String pPodId,
-			final Long version,
+			final long version,
 			final String label) {
 		super(pPodId, version, label);
 	}
@@ -31,6 +32,21 @@ public final class PPodStandardMatrix extends UuPPodDomainObjectWithLabel {
 	public PPodStandardMatrix(@CheckForNull final String pPodId,
 			final String label) {
 		super(pPodId, label);
+	}
+
+	public void addColumn(final int columnNumber,
+			final long columnVersionNumber,
+			final PPodStandardCharacter character,
+			final List<PPodStandardCell> column) {
+		checkArgument(columnNumber >= 0);
+		checkNotNull(character);
+		checkNotNull(column);
+		this.columnVersions.add(columnNumber, columnVersionNumber);
+		this.characters.add(columnNumber, character);
+
+		for (int i = 0; i < rows.size(); i++) {
+			rows.get(i).getCells().add(columnNumber, column.get(i));
+		}
 	}
 
 	public List<PPodStandardCharacter> getCharacters() {
@@ -45,6 +61,17 @@ public final class PPodStandardMatrix extends UuPPodDomainObjectWithLabel {
 		return rows;
 	}
 
+	public List<PPodStandardCell> removeColumn(final int columnNumber) {
+		checkArgument(columnNumber >= 0);
+		this.columnVersions.remove(columnNumber);
+		this.characters.remove(columnNumber);
+		final List<PPodStandardCell> removedColumn = newArrayList();
+		for (final PPodStandardRow row : rows) {
+			removedColumn.add(row.getCells().remove(columnNumber));
+		}
+		return removedColumn;
+	}
+
 	public void setCharacters(final List<PPodStandardCharacter> characters) {
 		checkNotNull(characters);
 		this.characters = characters;
@@ -54,5 +81,4 @@ public final class PPodStandardMatrix extends UuPPodDomainObjectWithLabel {
 		checkNotNull(columnVersions);
 		this.columnVersions = columnVersions;
 	}
-
 }

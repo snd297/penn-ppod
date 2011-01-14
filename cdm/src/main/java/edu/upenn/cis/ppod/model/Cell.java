@@ -52,7 +52,7 @@ abstract class Cell<E, R extends Row<?, ?>>
 	static final String TYPE_COLUMN = "TYPE";
 
 	@Column(name = "POSITION", nullable = false)
-	@Nullable
+	@CheckForNull
 	private Integer position;
 
 	@Column(name = TYPE_COLUMN, nullable = false)
