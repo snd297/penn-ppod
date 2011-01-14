@@ -28,7 +28,6 @@ import edu.upenn.cis.ppod.dto.PPodDnaSequenceSet;
 import edu.upenn.cis.ppod.imodel.INewVersionInfo;
 import edu.upenn.cis.ppod.model.DnaSequence;
 import edu.upenn.cis.ppod.model.DnaSequenceSet;
-import edu.upenn.cis.ppod.model.ModelFactory;
 import edu.upenn.cis.ppod.model.Otu;
 
 class MergeDnaSequenceSets implements IMergeDNASequenceSets {
@@ -91,8 +90,8 @@ class MergeDnaSequenceSets implements IMergeDNASequenceSets {
 
 			if (null == (targSeq =
 					targOTUsToSeqs.get(targOTU))) {
-				targSeq = ModelFactory.newDNASequence(newVersionInfo
-						.getNewVersionInfo());
+				targSeq = new DnaSequence();
+				targSeq.setVersionInfo(newVersionInfo.getNewVersionInfo());
 			}
 			targSeq.setSequence(srcSeq.getSequence());
 			targSeqSet.putSequence(targOTU, targSeq);

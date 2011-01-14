@@ -29,7 +29,6 @@ import edu.upenn.cis.ppod.dto.IHasPPodId;
 import edu.upenn.cis.ppod.dto.PPodOtu;
 import edu.upenn.cis.ppod.dto.PPodOtuSet;
 import edu.upenn.cis.ppod.imodel.INewVersionInfo;
-import edu.upenn.cis.ppod.model.ModelFactory;
 import edu.upenn.cis.ppod.model.Otu;
 import edu.upenn.cis.ppod.model.OtuSet;
 
@@ -67,8 +66,8 @@ final class MergeOtuSets implements IMergeOtuSets {
 											.getPPodId()),
 											IHasPPodId.getPPodId),
 											null))) {
-				targetOTU = ModelFactory.newOTU(newVersionInfo
-						.getNewVersionInfo());
+				targetOTU = new Otu();
+				targetOTU.setVersionInfo(newVersionInfo.getNewVersionInfo());
 			}
 			newTargetOTUs.add(targetOTU);
 			targetOTU.setLabel(sourceOTU.getLabel());
