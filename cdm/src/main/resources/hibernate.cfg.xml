@@ -11,7 +11,7 @@
 			/> <mapping class="edu.upenn.cis.ppod.model.security.StudyPermission" /> -->
 
 		<!-- Bind the getCurrentSession() method to the thread. -->
-		<property name="current_session_context_class">managed</property>
+		<property name="current_session_context_class">thread</property>
 
 		<mapping class="edu.upenn.cis.ppod.model.VersionInfo" />
 		<mapping class="edu.upenn.cis.ppod.model.CurrentVersion" />
