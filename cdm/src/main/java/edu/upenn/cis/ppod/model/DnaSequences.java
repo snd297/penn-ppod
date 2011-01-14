@@ -29,7 +29,6 @@ import javax.persistence.OneToMany;
 import org.hibernate.annotations.Parent;
 
 import edu.upenn.cis.ppod.imodel.IOtuKeyedMap;
-import edu.upenn.cis.ppod.imodel.IOtuKeyedMapPlus;
 import edu.upenn.cis.ppod.util.IVisitor;
 
 /**
@@ -42,7 +41,7 @@ import edu.upenn.cis.ppod.util.IVisitor;
 public class DnaSequences
 		implements IOtuKeyedMap<DnaSequence> {
 
-	private final IOtuKeyedMapPlus<DnaSequence, DnaSequenceSet> sequences =
+	private final OtuKeyedMapPlus<DnaSequence, DnaSequenceSet> sequences =
 			new OtuKeyedMapPlus<DnaSequence, DnaSequenceSet>();
 
 	public void accept(final IVisitor visitor) {

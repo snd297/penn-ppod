@@ -28,16 +28,16 @@ import edu.upenn.cis.ppod.dto.PPodStandardCell;
 import edu.upenn.cis.ppod.dto.PPodStandardMatrix;
 import edu.upenn.cis.ppod.dto.PPodStandardRow;
 import edu.upenn.cis.ppod.imodel.INewVersionInfo;
-import edu.upenn.cis.ppod.model.Cell;
-import edu.upenn.cis.ppod.model.Matrix;
+import edu.upenn.cis.ppod.model.ModelFactory;
 import edu.upenn.cis.ppod.model.Otu;
-import edu.upenn.cis.ppod.model.Row;
-import edu.upenn.cis.ppod.model.VersionInfo;
+import edu.upenn.cis.ppod.model.StandardCell;
+import edu.upenn.cis.ppod.model.StandardMatrix;
+import edu.upenn.cis.ppod.model.StandardRow;
 
 /**
  * @author Sam Donnelly
  */
-abstract class CreateOrUpdateMatrix<M extends Matrix<R, C>, R extends Row<C, ?>, C extends Cell<E, ?>, E> {
+abstract class CreateOrUpdateMatrix {
 
 	private final IObjectWithLongIdDAO dao;
 
@@ -53,7 +53,7 @@ abstract class CreateOrUpdateMatrix<M extends Matrix<R, C>, R extends Row<C, ?>,
 	}
 
 	public void createOrUpdateMatrixHelper(
-			final M dbMatrix,
+			final StandardMatrix dbMatrix,
 			final PPodStandardMatrix sourceMatrix,
 			final int[] sourceToDbCharPositions) {
 
@@ -80,20 +80,23 @@ abstract class CreateOrUpdateMatrix<M extends Matrix<R, C>, R extends Row<C, ?>,
 							.get(sourceRowPos);
 
 			// Let's create rows for OTU->null row mappings in the matrix.
-			R dbRow = null;
+			StandardRow dbRow = null;
 
 			if (null == (dbRow = dbMatrix.getRows().get(dbOTU))) {
-				dbRow = newR(newVersionInfo.getNewVersionInfo());
+				dbRow = ModelFactory.newStandardRow(newVersionInfo
+						.getNewVersionInfo());
 				dbMatrix.putRow(dbOTU, dbRow);
 				dao.makePersistent(dbRow);
 			}
 
-			final List<C> dbCells =
+			final List<StandardCell> dbCells =
 					newArrayListWithCapacity(sourceRow.getCells().size());
 
 			for (final int sourceToDbCharPosition : sourceToDbCharPositions) {
 				if (sourceToDbCharPosition == -1) {
-					final C newDbCell = newC(newVersionInfo.getNewVersionInfo());
+					final StandardCell newDbCell = new StandardCell();
+					newDbCell
+							.setVersionInfo(newVersionInfo.getNewVersionInfo());
 					dbCells.add(newDbCell);
 				} else {
 					dbCells.add(
@@ -104,7 +107,7 @@ abstract class CreateOrUpdateMatrix<M extends Matrix<R, C>, R extends Row<C, ?>,
 			dbRow.setCells(dbCells);
 
 			int dbCellPosition = -1;
-			for (final C dbCell : dbRow.getCells()) {
+			for (final StandardCell dbCell : dbRow.getCells()) {
 				dbCellPosition++;
 
 				final PPodStandardCell sourceCell = sourceRow
@@ -157,16 +160,13 @@ abstract class CreateOrUpdateMatrix<M extends Matrix<R, C>, R extends Row<C, ?>,
 		}
 	}
 
-	protected abstract C newC(VersionInfo newVersionInfo);
-
-	protected abstract R newR(VersionInfo newVersionInfo);
-
-	protected abstract void handlePolymorphicCell(final C targetCell,
+	protected abstract void handlePolymorphicCell(
+			final StandardCell targetCell,
 			final PPodStandardCell sourceCell);
 
-	protected abstract void handleSingleCell(final C targetCell,
+	protected abstract void handleSingleCell(final StandardCell targetCell,
 			final PPodStandardCell sourceCell);
 
-	protected abstract void handleUncertainCell(final C targetCell,
+	protected abstract void handleUncertainCell(final StandardCell targetCell,
 			final PPodStandardCell sourceCell);
 }

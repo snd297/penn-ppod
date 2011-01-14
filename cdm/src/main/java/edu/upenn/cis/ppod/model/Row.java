@@ -33,7 +33,7 @@ import edu.upenn.cis.ppod.util.IVisitor;
  * @param <C> the type of cell we have
  * @param <M> the parent of the row
  */
-public abstract class Row<C extends Cell<?, ?>, M extends Matrix<?, ?>>
+abstract class Row<C extends Cell<?, ?>, M extends Matrix<?, ?>>
 		extends PPodEntity
 		implements IChild<M> {
 

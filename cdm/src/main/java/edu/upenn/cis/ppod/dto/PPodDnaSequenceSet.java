@@ -10,7 +10,7 @@ import edu.umd.cs.findbugs.annotations.CheckForNull;
 
 final public class PPodDnaSequenceSet extends UuPPodDomainObjectWithLabel {
 
-	@XmlElement(name = "character")
+	@XmlElement(name = "sequence")
 	private final List<PPodDnaSequence> sequences = newArrayList();
 
 	PPodDnaSequenceSet() {}

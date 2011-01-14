@@ -17,7 +17,7 @@ package edu.upenn.cis.ppod.imodel;
 
 import java.util.Map;
 
-import edu.umd.cs.findbugs.annotations.CheckForNull;
+import edu.umd.cs.findbugs.annotations.Nullable;
 import edu.upenn.cis.ppod.model.Otu;
 
 public interface IOtuKeyedMap<V extends IChild<?>>
@@ -67,7 +67,7 @@ public interface IOtuKeyedMap<V extends IChild<?>>
 	 * @throws IllegalArgumentException if there's already a value
 	 *             {@code .equals} to {@code value}
 	 */
-	@CheckForNull
+	@Nullable
 	V put(Otu key, V value);
 
 	/**

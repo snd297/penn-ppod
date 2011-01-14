@@ -3,7 +3,7 @@ package edu.upenn.cis.ppod.model;
 import static com.google.common.base.Preconditions.checkArgument;
 import static edu.upenn.cis.ppod.util.CollectionsUtil.nullFill;
 
-public abstract class MolecularMatrix<R extends Row<C, ?>, C extends MolecularCell<?, ?>>
+abstract class MolecularMatrix<R extends Row<C, ?>, C extends MolecularCell<?, ?>>
 		extends Matrix<R, C> {
 
 	public void setColumnsSize(final int columnsSize) {

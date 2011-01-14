@@ -29,7 +29,6 @@ import javax.persistence.OneToMany;
 import org.hibernate.annotations.Parent;
 
 import edu.upenn.cis.ppod.imodel.IOtuKeyedMap;
-import edu.upenn.cis.ppod.imodel.IOtuKeyedMapPlus;
 import edu.upenn.cis.ppod.util.IVisitor;
 
 /**
@@ -41,7 +40,7 @@ import edu.upenn.cis.ppod.util.IVisitor;
 @Access(AccessType.PROPERTY)
 class DnaRows implements IOtuKeyedMap<DnaRow> {
 
-	private final IOtuKeyedMapPlus<DnaRow, DnaMatrix> rows =
+	private final OtuKeyedMapPlus<DnaRow, DnaMatrix> rows =
 			new OtuKeyedMapPlus<DnaRow, DnaMatrix>();
 
 	DnaRows() {}
