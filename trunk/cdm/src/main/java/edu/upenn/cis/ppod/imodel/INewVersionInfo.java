@@ -34,4 +34,6 @@ public interface INewVersionInfo {
 	 */
 	VersionInfo getNewVersionInfo();
 
+	boolean newVersionWasDealtOut();
+
 }

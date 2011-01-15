@@ -34,7 +34,7 @@ import edu.upenn.cis.ppod.imodel.INewVersionInfo;
 public final class NewVersionInfoDB implements
 		INewVersionInfo {
 
-	private final VersionInfo newVersionInfo = new VersionInfo();
+	private VersionInfo newVersionInfo = new VersionInfo();
 	private final IVersionInfoDAO versionInfoDAO;
 
 	private boolean versionInfoInitialized = false;
@@ -43,7 +43,6 @@ public final class NewVersionInfoDB implements
 	NewVersionInfoDB(
 			final IVersionInfoDAO versionInfoDAO) {
 		this.versionInfoDAO = versionInfoDAO;
-
 	}
 
 	public VersionInfo getNewVersionInfo() {
@@ -59,5 +58,9 @@ public final class NewVersionInfoDB implements
 			versionInfoDAO.makePersistent(newVersionInfo);
 			versionInfoInitialized = true;
 		}
+	}
+
+	public boolean newVersionWasDealtOut() {
+		return versionInfoInitialized;
 	}
 }

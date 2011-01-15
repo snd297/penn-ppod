@@ -24,7 +24,7 @@ public final class PPodStandardMatrix extends UuPPodDomainObjectWithLabel {
 	PPodStandardMatrix() {}
 
 	public PPodStandardMatrix(final String pPodId,
-			final long version,
+			final Long version,
 			final String label) {
 		super(pPodId, version, label);
 	}
