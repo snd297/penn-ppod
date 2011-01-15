@@ -12,7 +12,7 @@ final public class PPodDnaRow extends PPodDomainObject {
 	private String sequence;
 
 	@XmlElement(name = "cellVersion")
-	private final List<Long> cellVersions = newArrayList();
+	private List<Long> cellVersions = newArrayList();
 
 	PPodDnaRow() {}
 
@@ -35,8 +35,8 @@ final public class PPodDnaRow extends PPodDomainObject {
 		return cellVersions;
 	}
 
-	public void setCellVersions(List<Long> cellVersions) {
-		this.cellVersions.clear();
-		this.cellVersions.addAll(cellVersions);
+	public void setCellVersions(final List<Long> cellVersions) {
+		checkNotNull(cellVersions);
+		this.cellVersions = cellVersions;
 	}
 }

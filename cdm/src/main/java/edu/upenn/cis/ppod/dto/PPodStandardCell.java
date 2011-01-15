@@ -2,49 +2,54 @@ package edu.upenn.cis.ppod.dto;
 
 import static com.google.common.base.Preconditions.checkArgument;
 import static com.google.common.base.Preconditions.checkNotNull;
+import static com.google.common.collect.Iterables.getOnlyElement;
 import static com.google.common.collect.Sets.newHashSet;
 
+import java.util.Collections;
 import java.util.Set;
 
 import javax.xml.bind.annotation.XmlAttribute;
 import javax.xml.bind.annotation.XmlElement;
 
-import edu.umd.cs.findbugs.annotations.CheckForNull;
-import edu.umd.cs.findbugs.annotations.Nullable;
+import com.google.common.collect.ImmutableSet;
 
 public final class PPodStandardCell extends PPodDomainObject {
 
-	@CheckForNull
+	public static final Set<Integer> EMPTY_STATES = ImmutableSet.of();
+
 	@XmlAttribute
 	private PPodCellType type;
 
 	@XmlElement(name = "state")
 	private Set<Integer> states = newHashSet();
 
-	public PPodStandardCell() {}
+	PPodStandardCell() {}
 
-	public PPodStandardCell(final Long version) {
+	public PPodStandardCell(final PPodCellType type,
+			final Set<Integer> states) {
+		setTypeAndStates(type, states);
+	}
+
+	public PPodStandardCell(final Long version, final PPodCellType type,
+			final Set<Integer> states) {
 		super(version);
+		setTypeAndStates(type, states);
 	}
 
 	/**
-	 * @return the states
+	 * Return an unmodifiable view of the states.
+	 * 
+	 * @return an unmodifiable view of the states.
 	 */
 	public Set<Integer> getStates() {
-		return states;
+		return Collections.unmodifiableSet(states);
 	}
 
 	/**
 	 * @return the type
 	 */
-	@Nullable
 	public PPodCellType getType() {
 		return type;
-	}
-
-	public void setType(final PPodCellType type) {
-		checkNotNull(type);
-		this.type = type;
 	}
 
 	public void setInapplicable() {
@@ -62,13 +67,33 @@ public final class PPodStandardCell extends PPodDomainObject {
 	public void setSingle(final Integer state) {
 		checkNotNull(state);
 		type = PPodCellType.SINGLE;
-		this.states.clear();
 		this.states.add(state);
 	}
 
-	public void setStates(final Set<Integer> states) {
-		checkNotNull(states);
-		this.states = states;
+	public void setTypeAndStates(final PPodCellType type,
+			final Set<Integer> states) {
+		switch (type) {
+			case UNASSIGNED:
+				checkArgument(states.size() == 0);
+				setUnassigned();
+				break;
+			case SINGLE:
+				checkArgument(states.size() == 1);
+				setSingle(getOnlyElement(states));
+				break;
+			case POLYMORPHIC:
+				setPolymorphic(states);
+				break;
+			case UNCERTAIN:
+				setUncertain(states);
+				break;
+			case INAPPLICABLE:
+				checkArgument(states.size() == 0);
+				setInapplicable();
+				break;
+			default:
+				throw new AssertionError();
+		}
 	}
 
 	public void setUnassigned() {
