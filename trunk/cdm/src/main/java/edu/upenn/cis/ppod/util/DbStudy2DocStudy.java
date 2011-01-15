@@ -1,8 +1,10 @@
 package edu.upenn.cis.ppod.util;
 
 import static com.google.common.collect.Iterables.getOnlyElement;
+import static com.google.common.collect.Iterables.transform;
 import static com.google.common.collect.Lists.newArrayList;
 import static com.google.common.collect.Sets.immutableEnumSet;
+import static com.google.common.collect.Sets.newHashSet;
 
 import java.util.List;
 import java.util.Set;
@@ -338,13 +340,14 @@ public class DbStudy2DocStudy {
 
 			final List<StandardCell> dbCells = dbRow.getCells();
 			for (final StandardCell dbCell : dbCells) {
-				final PPodStandardCell docCell = new PPodStandardCell(
-						dbCell.getVersionInfo().getVersion());
+				final PPodStandardCell docCell =
+						new PPodStandardCell(
+								dbCell.getVersionInfo().getVersion(),
+								dbCell.getType(),
+								newHashSet(
+										transform(dbCell.getElements(),
+												StandardState.getStateNumber)));
 				docRow.getCells().add(docCell);
-				docCell.setType(dbCell.getType());
-				for (final StandardState state : dbCell.getElements()) {
-					docCell.getStates().add(state.getStateNumber());
-				}
 			}
 		}
 
