@@ -26,6 +26,7 @@ import com.google.inject.Inject;
 
 import edu.upenn.cis.ppod.dao.IAttachmentNamespaceDAO;
 import edu.upenn.cis.ppod.dao.IAttachmentTypeDAO;
+import edu.upenn.cis.ppod.dao.ICurrentVersionDAO;
 import edu.upenn.cis.ppod.dao.IObjectWithLongIdDAO;
 import edu.upenn.cis.ppod.dao.IStudyDAO;
 import edu.upenn.cis.ppod.dto.IHasPPodId;
@@ -36,12 +37,15 @@ import edu.upenn.cis.ppod.dto.PPodStandardMatrix;
 import edu.upenn.cis.ppod.dto.PPodStudy;
 import edu.upenn.cis.ppod.dto.PPodTreeSet;
 import edu.upenn.cis.ppod.imodel.INewVersionInfo;
+import edu.upenn.cis.ppod.model.CurrentVersion;
 import edu.upenn.cis.ppod.model.DnaMatrix;
 import edu.upenn.cis.ppod.model.DnaSequenceSet;
 import edu.upenn.cis.ppod.model.OtuSet;
 import edu.upenn.cis.ppod.model.StandardMatrix;
 import edu.upenn.cis.ppod.model.Study;
 import edu.upenn.cis.ppod.model.TreeSet;
+import edu.upenn.cis.ppod.util.IVisitor;
+import edu.upenn.cis.ppod.util.SetVersionInfoVisitor;
 
 /**
  * Create a new study or update an existing one.
@@ -58,6 +62,7 @@ class CreateOrUpdateStudy implements ICreateOrUpdateStudy {
 	private final IMergeDNASequenceSets mergeDNASequenceSets;
 	private final ICreateOrUpdateStandardMatrix createOrUpdateStandardMatrix;
 	private final IMergeTreeSets mergeTreeSets;
+	private final ICurrentVersionDAO currentVersionDAO;
 
 	@Inject
 	CreateOrUpdateStudy(
@@ -70,7 +75,8 @@ class CreateOrUpdateStudy implements ICreateOrUpdateStudy {
 			final ICreateOrUpdateDNAMatrix createOrUpdateDNAMatrix,
 			final IMergeDNASequenceSets mergeDNASequenceSets,
 			final ICreateOrUpdateStandardMatrix createOrUpdateStandardMatrix,
-			final IMergeTreeSets mergeTreeSets) {
+			final IMergeTreeSets mergeTreeSets,
+			final ICurrentVersionDAO currentVersionDAO) {
 		this.studyDAO = studyDAO;
 		this.dao = dao;
 		this.newVersionInfo = newVersionInfo;
@@ -79,6 +85,7 @@ class CreateOrUpdateStudy implements ICreateOrUpdateStudy {
 		this.mergeDNASequenceSets = mergeDNASequenceSets;
 		this.createOrUpdateStandardMatrix = createOrUpdateStandardMatrix;
 		this.mergeTreeSets = mergeTreeSets;
+		this.currentVersionDAO = currentVersionDAO;
 	}
 
 	public Study createOrUpdateStudy(
@@ -144,6 +151,27 @@ class CreateOrUpdateStudy implements ICreateOrUpdateStudy {
 			handleDNASequenceSets(dbOtuSet, incomingOtuSet);
 			handleTreeSets(dbOtuSet, incomingOtuSet);
 		}
+		final IVisitor setVersionInfoVisitor = new SetVersionInfoVisitor(
+				newVersionInfo);
+
+		dbStudy.accept(setVersionInfoVisitor);
+
+		if (newVersionInfo.newVersionWasDealtOut()) {
+
+			CurrentVersion currentVersion = currentVersionDAO.findById(
+					CurrentVersion.ID,
+					true);
+
+			if (currentVersion == null) {
+				currentVersion = new CurrentVersion(1L);
+				currentVersionDAO.makePersistent(currentVersion);
+			} else {
+				currentVersion.setVersion(currentVersion.getVersion() + 1);
+			}
+			newVersionInfo.getNewVersionInfo().setVersion(
+					currentVersion.getVersion());
+		}
+
 		return dbStudy;
 	}
 

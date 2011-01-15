@@ -91,24 +91,6 @@ public final class StudyResourceHibernate implements IStudyResource {
 			final Study dbStudy = createOrUpdateStudy
 					.createOrUpdateStudy(incomingStudy);
 
-			final IVisitor setVersionInfoVisitor = new SetVersionInfoVisitor(
-					newVersionInfo);
-
-			dbStudy.accept(setVersionInfoVisitor);
-
-			CurrentVersion currentVersion = currentVersionDAO.findById(
-					CurrentVersion.ID,
-					true);
-
-			if (currentVersion == null) {
-				currentVersion = new CurrentVersion(1L);
-				currentVersionDAO.makePersistent(currentVersion);
-			} else {
-				currentVersion.setVersion(currentVersion.getVersion() + 1);
-			}
-			newVersionInfo.getNewVersionInfo().setVersion(
-					currentVersion.getVersion());
-
 			final StudyInfo studyInfo = Study2StudyInfo.toStudyInfo(dbStudy);
 
 			session.getTransaction().commit();
