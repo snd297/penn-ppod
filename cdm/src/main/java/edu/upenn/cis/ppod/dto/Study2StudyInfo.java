@@ -171,11 +171,13 @@ public final class Study2StudyInfo {
 				sequenceSetInfo.setVersion(dnaSequenceSet
 						.getVersionInfo().getVersion());
 				sequenceSetInfo.setEntityId(dnaSequenceSet.getId());
+				int otuPos = -1;
 				for (final Otu otu : otuSet.getOtus()) {
+					otuPos++;
 					final DnaSequence dnaSequence =
 							dnaSequenceSet.getSequence(otu);
 					sequenceSetInfo
-							.getSequenceVersions().add(
+							.getSequenceVersions().put(otuPos,
 									dnaSequence.getVersionInfo().getVersion());
 				}
 			}
