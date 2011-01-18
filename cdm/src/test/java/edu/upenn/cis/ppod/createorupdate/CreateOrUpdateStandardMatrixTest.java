@@ -15,45 +15,61 @@
  */
 package edu.upenn.cis.ppod.createorupdate;
 
+import static com.google.common.collect.Iterables.getOnlyElement;
+import static org.mockito.Mockito.mock;
+import static org.mockito.Mockito.when;
+
 import org.testng.annotations.Test;
 
 import edu.upenn.cis.ppod.TestGroupDefs;
+import edu.upenn.cis.ppod.dao.IObjectWithLongIdDAO;
+import edu.upenn.cis.ppod.dto.PPodOtuSet;
+import edu.upenn.cis.ppod.dto.PPodStandardMatrix;
+import edu.upenn.cis.ppod.imodel.INewVersionInfo;
+import edu.upenn.cis.ppod.model.ModelAssert;
+import edu.upenn.cis.ppod.model.OtuSet;
+import edu.upenn.cis.ppod.model.StandardMatrix;
+import edu.upenn.cis.ppod.model.VersionInfo;
+import edu.upenn.cis.ppod.util.PPodEntityProvider;
 
 /**
  * Tests of {@link ICreateOrUpdateCharacterStateMatrix}.
  * 
  * @author Sam Donnelly
  */
-@Test(groups = { TestGroupDefs.FAST, TestGroupDefs.BROKEN })
+@Test(groups = { TestGroupDefs.FAST })
 public class CreateOrUpdateStandardMatrixTest {
 
-	// @Test(dataProvider = PPodEntityProvider.STANDARD_MATRICES_PROVIDER,
-	// dataProviderClass = PPodEntityProvider.class)
-	// public void create(final PPodStandardMatrix sourceMatrix) {
-	//
-	// final VersionInfo versionInfo = mock(VersionInfo.class);
-	// final INewVersionInfo newVersionInfo = mock(INewVersionInfo.class);
-	// when(newVersionInfo.getNewVersionInfo()).thenReturn(versionInfo);
-	//
-	// final ICreateOrUpdateStandardMatrix createOrUpdateStandardMatrix =
-	// new CreateOrUpdateStandardMatrix(
-	// mock(IObjectWithLongIdDAO.class),
-	// newVersionInfo);
-	//
-	// final OtuSet fakeDbOTUSet = sourceMatrix.getParent();
-	//
-	// final StandardMatrix targetMatrix = new StandardMatrix();
-	//
-	// fakeDbOTUSet.addStandardMatrix(targetMatrix);
-	//
-	// createOrUpdateStandardMatrix
-	// .createOrUpdateMatrix(targetMatrix, sourceMatrix);
-	//
-	// ModelAssert.assertEqualsStandardMatrices(
-	// targetMatrix,
-	// sourceMatrix);
-	// }
-	//
+	@Test(dataProvider = PPodEntityProvider.STANDARD_MATRICES_PROVIDER,
+			dataProviderClass = PPodEntityProvider.class)
+	public void create(final PPodOtuSet sourceOtuSet) {
+
+		final VersionInfo versionInfo = mock(VersionInfo.class);
+		final INewVersionInfo newVersionInfo = mock(INewVersionInfo.class);
+		when(newVersionInfo.getNewVersionInfo()).thenReturn(versionInfo);
+
+		final ICreateOrUpdateStandardMatrix createOrUpdateStandardMatrix =
+				new CreateOrUpdateStandardMatrix(
+						mock(IObjectWithLongIdDAO.class),
+						newVersionInfo);
+
+		final PPodStandardMatrix sourceMatrix = getOnlyElement(sourceOtuSet
+				.getStandardMatrices());
+
+		final OtuSet targetOtuSet = new OtuSet();
+		final StandardMatrix targetMatrix = new StandardMatrix();
+		targetOtuSet.addStandardMatrix(targetMatrix);
+
+		new MergeOtuSets(newVersionInfo).mergeOTUSets(targetOtuSet,
+				sourceOtuSet);
+
+		createOrUpdateStandardMatrix
+				.createOrUpdateMatrix(targetMatrix, sourceMatrix);
+
+		ModelAssert.assertEqualsStandardMatrices(
+				targetMatrix,
+				sourceMatrix);
+	}
 	// @Test(dataProvider = PPodEntityProvider.STANDARD_MATRICES_PROVIDER,
 	// dataProviderClass = PPodEntityProvider.class)
 	// public void moveRows(final StandardMatrix sourceMatrix) {
@@ -105,7 +121,7 @@ public class CreateOrUpdateStandardMatrixTest {
 	// targetMatrix,
 	// sourceMatrix);
 	// }
-	//
+
 	// @Test(dataProvider = PPodEntityProvider.STANDARD_MATRICES_PROVIDER,
 	// dataProviderClass = PPodEntityProvider.class)
 	// public void moveCharacters(final StandardMatrix sourceMatrix) {

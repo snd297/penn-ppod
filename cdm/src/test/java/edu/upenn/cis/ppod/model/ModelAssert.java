@@ -26,11 +26,17 @@ import static org.testng.Assert.assertNotNull;
 import static org.testng.Assert.assertSame;
 import static org.testng.Assert.assertTrue;
 
-import java.util.Iterator;
 import java.util.Set;
 
 import edu.upenn.cis.ppod.dto.PPodDnaSequence;
 import edu.upenn.cis.ppod.dto.PPodDnaSequenceSet;
+import edu.upenn.cis.ppod.dto.PPodOtu;
+import edu.upenn.cis.ppod.dto.PPodOtuSet;
+import edu.upenn.cis.ppod.dto.PPodStandardCell;
+import edu.upenn.cis.ppod.dto.PPodStandardCharacter;
+import edu.upenn.cis.ppod.dto.PPodStandardMatrix;
+import edu.upenn.cis.ppod.dto.PPodStandardRow;
+import edu.upenn.cis.ppod.dto.PPodStandardState;
 import edu.upenn.cis.ppod.imodel.ILabeled;
 import edu.upenn.cis.ppod.imodel.IPPodEntity;
 
@@ -74,14 +80,14 @@ public class ModelAssert {
 
 	public static void assertEqualsOTUSet(
 			final OtuSet actualOTUSet,
-			final OtuSet expectedOTUSet) {
+			final PPodOtuSet expectedOTUSet) {
 		assertEquals(actualOTUSet.getLabel(), expectedOTUSet.getLabel());
 		if (expectedOTUSet.getPPodId() != null) {
 			assertEquals(actualOTUSet.getPPodId(), expectedOTUSet.getPPodId());
 		}
 		assertEquals(actualOTUSet.getOtus().size(), expectedOTUSet
 				.getOtus().size());
-		for (final Otu expectedOTU : expectedOTUSet.getOtus()) {
+		for (final PPodOtu expectedOTU : expectedOTUSet.getOtus()) {
 			final Otu foundOTU =
 					find(
 							actualOTUSet.getOtus(),
@@ -105,16 +111,17 @@ public class ModelAssert {
 	}
 
 	public static void assertEqualsStandardStates(
-			final StandardState actualState, final StandardState expectedState) {
+			final StandardState actualState,
+			final PPodStandardState expectedState) {
 		assertEquals(actualState.getLabel(), expectedState.getLabel());
-		assertEquals(actualState.getStateNumber(),
+		assertEquals(actualState.getStateNumber().intValue(),
 				expectedState.getStateNumber());
 	}
 
 	public static void assertEqualsCharacters(
 			final StandardCharacter actualCharacter,
-			final StandardCharacter expectedCharacter) {
-		assertEqualsPPodEntities(actualCharacter, expectedCharacter);
+			final PPodStandardCharacter expectedCharacter) {
+		// assertEqualsPPodEntities(actualCharacter, expectedCharacter);
 		assertEquals(actualCharacter.getLabel(), expectedCharacter.getLabel());
 		assertEquals(actualCharacter.getStates().size(),
 				expectedCharacter
@@ -122,16 +129,16 @@ public class ModelAssert {
 		for (final StandardState actualState : actualCharacter
 				.getStates()) {
 
-			final StandardState expectedState =
+			final PPodStandardState expectedState =
 					find(
 							expectedCharacter.getStates(),
 							compose(
 									equalTo(actualState.getStateNumber()),
-									StandardState.getStateNumber),
+									PPodStandardState.getStateNumber),
 									null);
 
 			assertNotNull(expectedState);
-			assertTrue(expectedState.getParent() == expectedCharacter);
+			// assertTrue(expectedState.getParent() == expectedCharacter);
 			assertEqualsStandardStates(
 					actualState,
 					expectedState);
@@ -141,38 +148,25 @@ public class ModelAssert {
 
 	public static void assertEqualsStandardCells(
 			final StandardCell actualCell,
-			final StandardCell expectedCell) {
+			final PPodStandardCell expectedCell) {
 		assertEquals(actualCell.getType(), expectedCell.getType());
 		assertEquals(actualCell.getElements().size(), expectedCell
-				.getElements().size());
+				.getStates().size());
 		for (final StandardState actualState : actualCell.getElements()) {
-			final StandardState expectedState =
-					find(expectedCell.getElements(),
-							compose(
-									equalTo(
-										actualState.getStateNumber()),
-									StandardState.getStateNumber),
-									null);
-			assertEqualsStandardStates(
-					actualState,
-					expectedState);
+			assertTrue(expectedCell.getStates().contains(
+					actualState.getStateNumber()));
 		}
 	}
 
 	public static void assertEqualsStandardRows(
 			final StandardRow actualRow,
-			final StandardRow expectedRow) {
+			final PPodStandardRow expectedRow) {
 		assertEquals(actualRow.getCells().size(), expectedRow.getCells().size());
 
-		for (final Iterator<StandardCell> actualCellItr = actualRow
-				.getCells()
-				.iterator(), expectedCellItr = expectedRow.getCells()
-				.iterator(); actualCellItr
-				.hasNext()
-																		&& expectedCellItr
-																				.hasNext();) {
-			final StandardCell actualCell = actualCellItr.next(), expectedCell = expectedCellItr
-					.next();
+		for (int ic = 0; ic < actualRow.getCells().size(); ic++) {
+			final StandardCell actualCell = actualRow.getCells().get(ic);
+			final PPodStandardCell expectedCell = expectedRow.getCells()
+					.get(ic);
 			assertTrue(actualCell.getParent() == actualRow);
 			assertEqualsStandardCells(actualCell, expectedCell);
 		}
@@ -186,43 +180,35 @@ public class ModelAssert {
 	 */
 	public static void assertEqualsStandardMatrices(
 			final StandardMatrix actualMatrix,
-			final StandardMatrix expectedMatrix) {
+			final PPodStandardMatrix expectedMatrix) {
 		assertEquals(actualMatrix.getLabel(), expectedMatrix.getLabel());
-		assertEquals(
-				actualMatrix.getDescription(),
-				expectedMatrix.getDescription());
+		// assertEquals(
+		// actualMatrix.getDescription(),
+		// expectedMatrix.getDescription());
 
-		assertEqualsOTUSet(actualMatrix.getParent(), expectedMatrix.getParent());
+		// assertEqualsOTUSet(actualMatrix.getParent(),
+		// expectedMatrix.getParent());
 
 		assertEquals(
 				actualMatrix.getCharacters().size(),
 				actualMatrix.getCharacters().size());
-		for (final Iterator<StandardCharacter> actualCharacterItr = actualMatrix
-				.getCharacters().iterator(), expectedCharacterItr = expectedMatrix
-				.getCharacters().iterator(); actualCharacterItr
-				.hasNext()
-												&& expectedCharacterItr
-														.hasNext();) {
-			final StandardCharacter actualCharacter = actualCharacterItr
-					.next();
-			final StandardCharacter expectedCharacter =
-					expectedCharacterItr.next();
+
+		for (int ic = 0; ic < actualMatrix.getCharacters().size(); ic++) {
+			final StandardCharacter actualCharacter = actualMatrix
+					.getCharacters().get(ic);
+			final PPodStandardCharacter expectedCharacter = expectedMatrix
+					.getCharacters().get(ic);
 			assertSame(actualCharacter.getParent(), actualMatrix);
-			assertSame(expectedCharacter.getParent(), expectedMatrix);
 			assertEqualsCharacters(actualCharacter, expectedCharacter);
 		}
 		assertEquals(actualMatrix.getRows().size(),
 				expectedMatrix.getRows().size());
 
-		for (final Iterator<Otu> actualOTUIterator = actualMatrix.getParent()
-				.getOtus()
-				.iterator(), expectedOTUIterator = expectedMatrix.getParent()
-				.getOtus()
-				.iterator(); actualOTUIterator.hasNext()
-								&& expectedOTUIterator.hasNext();) {
+		for (int io = 0; io < actualMatrix.getParent().getOtus().size(); io++) {
 			final StandardRow actualRow = actualMatrix
-					.getRows().get(actualOTUIterator.next()), expectedRow = expectedMatrix
-					.getRows().get(expectedOTUIterator.next());
+					.getRows().get(actualMatrix.getParent().getOtus().get(io));
+			final PPodStandardRow expectedRow = expectedMatrix.getRows()
+					.get(io);
 			assertTrue(actualRow.getParent() == actualMatrix);
 			assertEqualsStandardRows(actualRow, expectedRow);
 		}

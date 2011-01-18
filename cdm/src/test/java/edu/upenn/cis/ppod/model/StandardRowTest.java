@@ -62,9 +62,8 @@ public class StandardRowTest {
 		cell.setUnassigned();
 		matrix.getRows().get(matrix.getParent().getOtus().get(0)).setCells(
 				Arrays.asList(cell));
-
-		ModelAssert.assertEqualsStandardCells(cell, matrix.getRows().get(
-				otus.get(0)).getCells().get(0));
+		assertSame(matrix.getRows().get(matrix.getParent().getOtus().get(0)),
+				cell);
 	}
 
 	@Test
