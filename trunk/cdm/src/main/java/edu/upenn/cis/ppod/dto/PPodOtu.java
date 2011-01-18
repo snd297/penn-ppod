@@ -2,11 +2,15 @@ package edu.upenn.cis.ppod.dto;
 
 import java.util.UUID;
 
+import javax.xml.bind.annotation.XmlAttribute;
 import javax.xml.bind.annotation.XmlID;
+
+import edu.umd.cs.findbugs.annotations.CheckForNull;
 
 public final class PPodOtu extends UuPPodDomainObjectWithLabel {
 
 	@XmlID
+	@XmlAttribute
 	private final String docId = UUID.randomUUID().toString();
 
 	PPodOtu() {}
@@ -15,7 +19,7 @@ public final class PPodOtu extends UuPPodDomainObjectWithLabel {
 		super(label);
 	}
 
-	public PPodOtu(final String pPodId, final String label) {
+	public PPodOtu(@CheckForNull final String pPodId, final String label) {
 		super(pPodId, label);
 	}
 

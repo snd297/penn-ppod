@@ -21,8 +21,9 @@ import javax.xml.bind.JAXBContext;
 
 import org.testng.annotations.DataProvider;
 
+import edu.upenn.cis.ppod.dto.PPodOtuSet;
+import edu.upenn.cis.ppod.dto.PPodStudy;
 import edu.upenn.cis.ppod.model.OtuSet;
-import edu.upenn.cis.ppod.model.StandardMatrix;
 import edu.upenn.cis.ppod.model.Study;
 
 /**
@@ -39,17 +40,15 @@ public class PPodEntityProvider {
 	@DataProvider(name = STANDARD_MATRICES_PROVIDER)
 	public static Object[][] createMatrix() throws Exception {
 
-		final JAXBContext ctx = JAXBContext.newInstance(Study.class);
-		final Study studyMX540 =
-				(Study) ctx.createUnmarshaller().unmarshal(
+		final JAXBContext ctx = JAXBContext.newInstance(PPodStudy.class);
+		final PPodStudy studyMX540 =
+				(PPodStudy) ctx.createUnmarshaller().unmarshal(
 						PPodEntityProvider.class
 								.getResourceAsStream("/MX540.xml"));
 
-		final StandardMatrix smallStandardMatrix =
-				getOnlyElement(
+		final PPodOtuSet otuSet =
 						getOnlyElement(
-								studyMX540.getOtuSets())
-								.getStandardMatrices());
+								studyMX540.getOtuSets());
 
 		// final Study studyM1808 = (Study) ctx.createUnmarshaller().unmarshal(
 		// MatrixProvider.class.getResourceAsStream("/M1808.nex.xml"));
@@ -62,7 +61,7 @@ public class PPodEntityProvider {
 		// studyM1808.getOTUSets())
 		// .getCharacterStateMatrices());
 
-		return new Object[][] { new Object[] { smallStandardMatrix } };
+		return new Object[][] { new Object[] { otuSet } };
 
 	}
 
