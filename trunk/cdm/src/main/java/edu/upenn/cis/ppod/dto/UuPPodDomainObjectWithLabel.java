@@ -14,8 +14,9 @@ abstract class UuPPodDomainObjectWithLabel extends PPodDomainObject
 	private String label;
 
 	@XmlAttribute(name = "pPodId")
+	// default naming makes it weird
 	@CheckForNull
-	private final String pPodId;
+	private String pPodId;
 
 	protected UuPPodDomainObjectWithLabel() {
 		pPodId = null;
@@ -28,11 +29,10 @@ abstract class UuPPodDomainObjectWithLabel extends PPodDomainObject
 	}
 
 	protected UuPPodDomainObjectWithLabel(
-			final String pPodId,
+			@CheckForNull final String pPodId,
 			final Long version,
 			final String label) {
 		super(version);
-		checkNotNull(pPodId);
 		checkNotNull(label);
 		this.pPodId = pPodId;
 		this.label = label;
@@ -57,6 +57,10 @@ abstract class UuPPodDomainObjectWithLabel extends PPodDomainObject
 	public void setLabel(final String label) {
 		checkNotNull(label);
 		this.label = label;
+	}
+
+	public void setPPodId(@CheckForNull final String pPodId) {
+		this.pPodId = pPodId;
 	}
 
 }
