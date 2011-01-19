@@ -15,16 +15,16 @@ public final class PPodOtuSet extends UuPPodDomainObjectWithLabel {
 	private List<PPodOtu> otus = newArrayList();
 
 	@XmlElement(name = "dnaMatrix")
-	private List<PPodDnaMatrix> dnaMatrices = newArrayList();
+	private final List<PPodDnaMatrix> dnaMatrices = newArrayList();
 
 	@XmlElement(name = "standardMatrix")
-	private List<PPodStandardMatrix> standardMatrices = newArrayList();
+	private final List<PPodStandardMatrix> standardMatrices = newArrayList();
 
 	@XmlElement(name = "dnaSequenceSet")
-	private List<PPodDnaSequenceSet> dnaSequenceSets = newArrayList();
+	private final List<PPodDnaSequenceSet> dnaSequenceSets = newArrayList();
 
 	@XmlElement(name = "treeSet")
-	private List<PPodTreeSet> treeSets = newArrayList();
+	private final List<PPodTreeSet> treeSets = newArrayList();
 
 	PPodOtuSet() {}
 
