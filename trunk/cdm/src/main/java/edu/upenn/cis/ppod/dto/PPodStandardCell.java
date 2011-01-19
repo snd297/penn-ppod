@@ -5,7 +5,6 @@ import static com.google.common.base.Preconditions.checkNotNull;
 import static com.google.common.collect.Iterables.getOnlyElement;
 import static com.google.common.collect.Sets.newHashSet;
 
-import java.util.Collections;
 import java.util.Set;
 
 import javax.xml.bind.annotation.XmlAttribute;
@@ -25,14 +24,14 @@ public final class PPodStandardCell extends PPodDomainObject {
 
 	PPodStandardCell() {}
 
-	public PPodStandardCell(final PPodCellType type,
-			final Set<Integer> states) {
-		setTypeAndStates(type, states);
-	}
-
 	public PPodStandardCell(final Long version, final PPodCellType type,
 			final Set<Integer> states) {
 		super(version);
+		setTypeAndStates(type, states);
+	}
+
+	public PPodStandardCell(final PPodCellType type,
+			final Set<Integer> states) {
 		setTypeAndStates(type, states);
 	}
 
@@ -42,7 +41,7 @@ public final class PPodStandardCell extends PPodDomainObject {
 	 * @return an unmodifiable view of the states.
 	 */
 	public Set<Integer> getStates() {
-		return Collections.unmodifiableSet(states);
+		return states;
 	}
 
 	/**
@@ -68,6 +67,16 @@ public final class PPodStandardCell extends PPodDomainObject {
 		checkNotNull(state);
 		type = PPodCellType.SINGLE;
 		this.states.add(state);
+	}
+
+	public void setStates(final Set<Integer> states) {
+		checkNotNull(states);
+		this.states = states;
+	}
+
+	public void setType(final PPodCellType type) {
+		checkNotNull(type);
+		this.type = type;
 	}
 
 	public void setTypeAndStates(final PPodCellType type,
