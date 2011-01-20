@@ -49,9 +49,6 @@ import edu.upenn.cis.ppod.util.IVisitor;
 public class DnaSequence
 		extends Sequence<DnaSequenceSet> implements IChild<DnaSequenceSet> {
 
-	/**
-	 * The characters that are legal in a {@code DNASequence}.
-	 */
 	private final static Set<java.lang.Character> LEGAL_CHARS =
 			ImmutableSet.of(
 					'A', 'a',

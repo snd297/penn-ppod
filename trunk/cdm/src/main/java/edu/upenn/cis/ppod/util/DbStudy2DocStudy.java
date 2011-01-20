@@ -3,14 +3,21 @@ package edu.upenn.cis.ppod.util;
 import static com.google.common.collect.Iterables.getOnlyElement;
 import static com.google.common.collect.Iterables.transform;
 import static com.google.common.collect.Lists.newArrayList;
-import static com.google.common.collect.Sets.immutableEnumSet;
 import static com.google.common.collect.Sets.newHashSet;
+import static edu.upenn.cis.ppod.dto.PPodDnaNucleotide.A_C;
+import static edu.upenn.cis.ppod.dto.PPodDnaNucleotide.A_C_G;
+import static edu.upenn.cis.ppod.dto.PPodDnaNucleotide.A_C_T;
+import static edu.upenn.cis.ppod.dto.PPodDnaNucleotide.A_G;
+import static edu.upenn.cis.ppod.dto.PPodDnaNucleotide.A_G_T;
+import static edu.upenn.cis.ppod.dto.PPodDnaNucleotide.A_T;
+import static edu.upenn.cis.ppod.dto.PPodDnaNucleotide.C_G_T;
+import static edu.upenn.cis.ppod.dto.PPodDnaNucleotide.C_T;
+import static edu.upenn.cis.ppod.dto.PPodDnaNucleotide.G_C;
+import static edu.upenn.cis.ppod.dto.PPodDnaNucleotide.G_T;
 
 import java.util.List;
-import java.util.Set;
 
 import edu.upenn.cis.ppod.dto.PPodDnaMatrix;
-import edu.upenn.cis.ppod.dto.PPodDnaNucleotide;
 import edu.upenn.cis.ppod.dto.PPodDnaRow;
 import edu.upenn.cis.ppod.dto.PPodDnaSequence;
 import edu.upenn.cis.ppod.dto.PPodDnaSequenceSet;
@@ -38,40 +45,6 @@ import edu.upenn.cis.ppod.model.Study;
 import edu.upenn.cis.ppod.model.VersionInfo;
 
 public class DbStudy2DocStudy {
-
-	public static Set<PPodDnaNucleotide> A_G =
-			immutableEnumSet(PPodDnaNucleotide.A, PPodDnaNucleotide.G);
-
-	public static Set<PPodDnaNucleotide> C_T =
-			immutableEnumSet(PPodDnaNucleotide.C, PPodDnaNucleotide.T);
-
-	public static Set<PPodDnaNucleotide> G_C =
-			immutableEnumSet(PPodDnaNucleotide.G, PPodDnaNucleotide.C);
-
-	public static Set<PPodDnaNucleotide> A_T =
-			immutableEnumSet(PPodDnaNucleotide.A, PPodDnaNucleotide.T);
-
-	public static Set<PPodDnaNucleotide> G_T =
-			immutableEnumSet(PPodDnaNucleotide.G, PPodDnaNucleotide.T);
-
-	public static Set<PPodDnaNucleotide> A_C =
-			immutableEnumSet(PPodDnaNucleotide.A, PPodDnaNucleotide.C);
-
-	public static Set<PPodDnaNucleotide> C_G_T =
-			immutableEnumSet(PPodDnaNucleotide.C, PPodDnaNucleotide.G,
-					PPodDnaNucleotide.T);
-
-	public static Set<PPodDnaNucleotide> A_G_T =
-			immutableEnumSet(PPodDnaNucleotide.A, PPodDnaNucleotide.G,
-					PPodDnaNucleotide.T);
-
-	public static Set<PPodDnaNucleotide> A_C_T =
-			immutableEnumSet(PPodDnaNucleotide.A, PPodDnaNucleotide.C,
-					PPodDnaNucleotide.T);
-
-	public static Set<PPodDnaNucleotide> A_C_G =
-			immutableEnumSet(PPodDnaNucleotide.A, PPodDnaNucleotide.C,
-					PPodDnaNucleotide.G);
 
 	public static char dbCell2IupacPlus(final DnaCell dbCell) {
 		char iupacPlus = (char) -1;
@@ -280,6 +253,7 @@ public class DbStudy2DocStudy {
 	public static PPodOtu dbOtu2DocOtu(final Otu dbOtu) {
 		final PPodOtu docOtu = new PPodOtu(dbOtu.getPPodId(), dbOtu
 				.getVersionInfo().getVersion(), dbOtu.getLabel());
+		docOtu.setDocId(null);
 		return docOtu;
 	}
 
