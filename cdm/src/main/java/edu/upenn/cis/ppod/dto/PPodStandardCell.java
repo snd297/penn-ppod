@@ -35,11 +35,6 @@ public final class PPodStandardCell extends PPodDomainObject {
 		setTypeAndStates(type, states);
 	}
 
-	/**
-	 * Return an unmodifiable view of the states.
-	 * 
-	 * @return an unmodifiable view of the states.
-	 */
 	public Set<Integer> getStates() {
 		return states;
 	}

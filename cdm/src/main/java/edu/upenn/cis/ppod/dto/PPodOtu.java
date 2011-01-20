@@ -11,7 +11,7 @@ public final class PPodOtu extends UuPPodDomainObjectWithLabel {
 
 	@XmlID
 	@XmlAttribute
-	private final String docId = UUID.randomUUID().toString();
+	private String docId = UUID.randomUUID().toString();
 
 	PPodOtu() {}
 
@@ -19,16 +19,20 @@ public final class PPodOtu extends UuPPodDomainObjectWithLabel {
 		super(label);
 	}
 
-	public PPodOtu(@CheckForNull final String pPodId, final String label) {
-		super(pPodId, label);
-	}
-
 	public PPodOtu(final String pPodId, final Long version, final String label) {
 		super(pPodId, version, label);
 	}
 
+	public PPodOtu(@CheckForNull final String pPodId, final String label) {
+		super(pPodId, label);
+	}
+
 	public String getDocId() {
 		return docId;
+	}
+
+	public void setDocId(@CheckForNull final String docId) {
+		this.docId = docId;
 	}
 
 }
