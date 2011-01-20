@@ -6,11 +6,13 @@ import javax.xml.bind.annotation.XmlAttribute;
 import javax.xml.bind.annotation.XmlID;
 
 import edu.umd.cs.findbugs.annotations.CheckForNull;
+import edu.umd.cs.findbugs.annotations.Nullable;
 
 public final class PPodOtu extends UuPPodDomainObjectWithLabel {
 
 	@XmlID
 	@XmlAttribute
+	@CheckForNull
 	private String docId = UUID.randomUUID().toString();
 
 	PPodOtu() {}
@@ -27,6 +29,7 @@ public final class PPodOtu extends UuPPodDomainObjectWithLabel {
 		super(pPodId, label);
 	}
 
+	@Nullable
 	public String getDocId() {
 		return docId;
 	}

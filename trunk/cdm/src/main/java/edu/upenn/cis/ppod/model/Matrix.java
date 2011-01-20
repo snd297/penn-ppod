@@ -18,7 +18,6 @@ package edu.upenn.cis.ppod.model;
 import static com.google.common.base.Objects.equal;
 import static com.google.common.base.Preconditions.checkArgument;
 import static com.google.common.base.Preconditions.checkNotNull;
-import static com.google.common.base.Preconditions.checkState;
 import static com.google.common.collect.Lists.newArrayList;
 
 import java.util.Collections;
@@ -37,7 +36,6 @@ import javax.persistence.Transient;
 
 import edu.umd.cs.findbugs.annotations.CheckForNull;
 import edu.umd.cs.findbugs.annotations.Nullable;
-import edu.upenn.cis.ppod.dto.IHasPPodId;
 import edu.upenn.cis.ppod.imodel.IDependsOnParentOtus;
 import edu.upenn.cis.ppod.imodel.IHasColumnVersionInfos;
 import edu.upenn.cis.ppod.imodel.IOtuKeyedMap;
@@ -52,8 +50,7 @@ import edu.upenn.cis.ppod.util.IVisitor;
 @MappedSuperclass
 abstract class Matrix<R extends Row<C, ?>, C extends Cell<?, ?>>
 		extends UuPPodEntity
-		implements IHasColumnVersionInfos, IDependsOnParentOtus,
-		IHasPPodId {
+		implements IHasColumnVersionInfos, IDependsOnParentOtus {
 
 	/** Description column. */
 	public static final String DESCRIPTION_COLUMN = "DESCRIPTION";
@@ -386,9 +383,6 @@ abstract class Matrix<R extends Row<C, ?>, C extends Cell<?, ?>>
 	/** {@inheritDoc} */
 	public void setParent(
 			@Nullable final OtuSet otuSet) {
-		checkState(
-				getOTUKeyedRows() != null,
-				"getOTUKeyedRows() returned null - has the conrete class been constructed correctly, w/ its OTU->X dependency?");
 		this.parent = otuSet;
 		updateOtus();
 	}

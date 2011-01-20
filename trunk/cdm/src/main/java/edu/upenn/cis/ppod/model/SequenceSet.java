@@ -17,7 +17,6 @@ package edu.upenn.cis.ppod.model;
 
 import static com.google.common.base.Preconditions.checkArgument;
 import static com.google.common.base.Preconditions.checkNotNull;
-import static com.google.common.base.Preconditions.checkState;
 
 import java.util.Map;
 
@@ -179,10 +178,6 @@ public abstract class SequenceSet<S extends Sequence<?>>
 
 	/** {@inheritDoc} */
 	public void updateOtus() {
-		checkState(getOTUKeyedSequences() != null,
-					"getOTUKeyedSequences() == null, "
-							+ "so there are no sequences to operate on");
-
 		getOTUKeyedSequences().updateOtus();
 	}
 }

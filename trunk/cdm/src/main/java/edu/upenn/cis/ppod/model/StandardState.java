@@ -16,7 +16,6 @@
 package edu.upenn.cis.ppod.model;
 
 import static com.google.common.base.Preconditions.checkNotNull;
-import static com.google.common.base.Preconditions.checkState;
 
 import javax.annotation.Nullable;
 import javax.persistence.Column;
@@ -205,23 +204,6 @@ public class StandardState extends PPodEntity {
 		this.parent = parent;
 	}
 
-	/**
-	 * Set the integer value of this state.
-	 * <p>
-	 * {@code stateNumber} must be an {@code Integer} and not an {@code int} to
-	 * play nicely with JAXB.
-	 * <p>
-	 * This method was created for JAXB - we'd rather if the state number had no
-	 * setter.
-	 * 
-	 * @param stateNumber the integer value to use for this state
-	 */
-	protected void setStateNumber(final Integer stateNumber) {
-		checkNotNull(stateNumber);
-		checkState(this.stateNumber == null,
-				"this.stateNumber is non-null: this is a WORM property.");
-		this.stateNumber = stateNumber;
-	}
 
 	/**
 	 * Constructs a <code>String</code> with all attributes in name = value

@@ -2,7 +2,11 @@ package edu.upenn.cis.ppod.dto;
 
 import static com.google.common.base.Preconditions.checkNotNull;
 
+import java.util.Set;
+
 import javax.xml.bind.annotation.XmlAttribute;
+
+import com.google.common.collect.ImmutableSet;
 
 import edu.umd.cs.findbugs.annotations.CheckForNull;
 import edu.umd.cs.findbugs.annotations.Nullable;
@@ -22,6 +26,25 @@ final public class PPodDnaSequence extends PPodDomainObject {
 	@XmlAttribute
 	@CheckForNull
 	private String accession;
+
+	public final static Set<java.lang.Character> LEGAL_CHARS =
+	ImmutableSet.of(
+			'A', 'a',
+			'C', 'c',
+			'G', 'g',
+			'T', 't',
+			'R',
+			'Y',
+			'K',
+			'M',
+			'S',
+			'W',
+			'B',
+			'D',
+			'H',
+			'V',
+			'N',
+			'-');
 
 	PPodDnaSequence() {}
 
