@@ -251,9 +251,11 @@ public class DbStudy2DocStudy {
 	}
 
 	public static PPodOtu dbOtu2DocOtu(final Otu dbOtu) {
-		final PPodOtu docOtu = new PPodOtu(dbOtu.getPPodId(), dbOtu
-				.getVersionInfo().getVersion(), dbOtu.getLabel());
-		docOtu.setDocId(null);
+		final PPodOtu docOtu = new PPodOtu(
+				dbOtu.getPPodId(),
+				dbOtu.getVersionInfo().getVersion(),
+				dbOtu.getPPodId(),
+				dbOtu.getLabel());
 		return docOtu;
 	}
 
