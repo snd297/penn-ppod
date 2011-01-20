@@ -74,7 +74,7 @@ public final class PPodStandardCell extends PPodDomainObject {
 		this.type = type;
 	}
 
-	public void setTypeAndStates(final PPodCellType type,
+	private void setTypeAndStates(final PPodCellType type,
 			final Set<Integer> states) {
 		switch (type) {
 			case UNASSIGNED:

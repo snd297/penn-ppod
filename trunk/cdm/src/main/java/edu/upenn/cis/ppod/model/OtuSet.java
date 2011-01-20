@@ -254,8 +254,8 @@ public class OtuSet extends UuPPodEntity {
 		if (dupNameOTU == null || otu.equals(dupNameOTU)) {
 
 		} else {
-			checkArgument(false, "OTUSet labeled '" + getLabel()
-									+ "' already has an OTU labeled '"
+			checkArgument(false, "OtuSet labeled '" + getLabel()
+									+ "' already has an Otu labeled '"
 									+ otu.getLabel() + "'");
 		}
 		if (getOtusModifiable().add(otu)) {
