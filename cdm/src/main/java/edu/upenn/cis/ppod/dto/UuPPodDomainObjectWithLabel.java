@@ -18,17 +18,17 @@ abstract class UuPPodDomainObjectWithLabel extends PPodDomainObject
 	@CheckForNull
 	private String pPodId;
 
-	protected UuPPodDomainObjectWithLabel() {
+	UuPPodDomainObjectWithLabel() {
 		pPodId = null;
 	}
 
-	protected UuPPodDomainObjectWithLabel(final String label) {
+	UuPPodDomainObjectWithLabel(final String label) {
 		checkNotNull(label);
 		this.pPodId = null;
 		this.label = label;
 	}
 
-	protected UuPPodDomainObjectWithLabel(
+	UuPPodDomainObjectWithLabel(
 			@CheckForNull final String pPodId,
 			final Long version,
 			final String label) {
@@ -38,7 +38,7 @@ abstract class UuPPodDomainObjectWithLabel extends PPodDomainObject
 		this.label = label;
 	}
 
-	protected UuPPodDomainObjectWithLabel(@CheckForNull final String pPodId,
+	UuPPodDomainObjectWithLabel(@CheckForNull final String pPodId,
 			final String label) {
 		checkNotNull(label);
 		this.pPodId = pPodId;
