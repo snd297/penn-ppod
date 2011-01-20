@@ -22,7 +22,7 @@ import edu.upenn.cis.ppod.model.Otu;
 /**
  * @author Sam Donnelly
  */
-public interface IPPodEntities extends IOTUSets {
+public interface IPPodEntities extends IOtuSets {
 	Set<Otu> getOTUs();
 
 	Otu addOTU(Otu otu);

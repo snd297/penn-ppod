@@ -33,7 +33,7 @@ import javax.persistence.OrderColumn;
 import javax.persistence.Table;
 
 import edu.umd.cs.findbugs.annotations.Nullable;
-import edu.upenn.cis.ppod.dto.IOTUSets;
+import edu.upenn.cis.ppod.dto.IOtuSets;
 import edu.upenn.cis.ppod.imodel.ILabeled;
 import edu.upenn.cis.ppod.util.IVisitor;
 
@@ -63,7 +63,7 @@ import edu.upenn.cis.ppod.util.IVisitor;
 @Table(name = Study.TABLE)
 public class Study
 		extends UuPPodEntity
-		implements ILabeled, IOTUSets {
+		implements ILabeled, IOtuSets {
 
 	/** The table name for this entity. */
 	public static final String TABLE = "STUDY";

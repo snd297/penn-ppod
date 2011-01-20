@@ -17,7 +17,7 @@ package edu.upenn.cis.ppod.util;
 
 import java.util.Set;
 
-import edu.upenn.cis.ppod.dto.IOTUSets;
+import edu.upenn.cis.ppod.dto.IOtuSets;
 import edu.upenn.cis.ppod.imodel.IAttachee;
 import edu.upenn.cis.ppod.model.Attachment;
 import edu.upenn.cis.ppod.model.AttachmentNamespace;
@@ -56,7 +56,7 @@ public class PPodEntitiesUtil {
 	public static void extractAttachmentInfoFromPPodEntities(
 			final Set<? super AttachmentNamespace> studyWideAttachmentNamespaces,
 			final Set<? super AttachmentType> studyWideAttachmentTypes,
-			final IOTUSets otuSetCentricEntities) {
+			final IOtuSets otuSetCentricEntities) {
 		for (final OtuSet otuSet : otuSetCentricEntities.getOtuSets()) {
 			extractAttachmentInfoFromAttachee(
 					studyWideAttachmentNamespaces,

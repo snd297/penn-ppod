@@ -17,7 +17,7 @@ package edu.upenn.cis.ppod.imodel;
 
 import javax.xml.bind.annotation.XmlSeeAlso;
 
-import edu.upenn.cis.ppod.dto.IOTUSets;
+import edu.upenn.cis.ppod.dto.IOtuSets;
 import edu.upenn.cis.ppod.model.OtuSet;
 import edu.upenn.cis.ppod.model.Study;
 
@@ -28,7 +28,7 @@ import edu.upenn.cis.ppod.model.Study;
  * @author Sam Donnelly
  */
 @XmlSeeAlso(Study.class)
-public interface IStudy extends IUuPPodEntity, IOTUSets, ILabeled {
+public interface IStudy extends IUuPPodEntity, IOtuSets, ILabeled {
 
 	void addOtuSet(int pos, OtuSet otuSet);
 

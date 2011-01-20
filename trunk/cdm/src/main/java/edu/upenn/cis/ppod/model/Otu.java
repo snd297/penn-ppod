@@ -71,6 +71,7 @@ public class Otu
 	public Otu() {}
 
 	public Otu(final String label) {
+		checkNotNull(label);
 		this.label = label;
 	}
 
@@ -121,7 +122,7 @@ public class Otu
 	 * 
 	 * @return this
 	 */
-	public Otu setLabel(final String label) {
+	public void setLabel(final String label) {
 		checkNotNull(label);
 		if (label.equals(getLabel())) {
 
@@ -129,7 +130,6 @@ public class Otu
 			this.label = label;
 			setInNeedOfNewVersion();
 		}
-		return this;
 	}
 
 	/**
