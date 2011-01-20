@@ -21,15 +21,15 @@ public final class PPodOtu extends UuPPodDomainObjectWithLabel {
 		super(label);
 	}
 
+	public PPodOtu(final String pPodId, final Long version, final String label) {
+		super(pPodId, version, label);
+	}
+
 	public PPodOtu(final String pPodId, final Long version, final String docId,
 			final String label) {
 		this(pPodId, version, label);
 		checkNotNull(docId);
 		this.docId = docId;
-	}
-
-	public PPodOtu(final String pPodId, final Long version, final String label) {
-		super(pPodId, version, label);
 	}
 
 	public PPodOtu(@CheckForNull final String pPodId, final String label) {

@@ -16,11 +16,11 @@ abstract class PPodDomainObject {
 	@CheckForNull
 	private Long version;
 
-	protected PPodDomainObject() {
+	PPodDomainObject() {
 		version = null;
 	}
 
-	protected PPodDomainObject(final Long version) {
+	PPodDomainObject(final Long version) {
 		checkNotNull(version);
 		this.version = version;
 	}
