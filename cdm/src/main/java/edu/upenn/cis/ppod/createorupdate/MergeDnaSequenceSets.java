@@ -58,7 +58,8 @@ class MergeDnaSequenceSets implements IMergeDNASequenceSets {
 		if (srcSeqSet.getSequences().size() == 0) {
 			srcSeqSetLengths = -1;
 		} else {
-			srcSeqSet.getSequences().get(0).getSequence().length();
+			srcSeqSetLengths = srcSeqSet.getSequences().get(0).getSequence()
+					.length();
 		}
 		Map<Otu, DnaSequence> targOTUsToSeqs;
 

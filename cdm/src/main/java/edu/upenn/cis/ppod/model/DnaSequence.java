@@ -19,7 +19,6 @@ import static com.google.common.base.Preconditions.checkNotNull;
 import static com.google.common.collect.Lists.newArrayList;
 
 import java.util.List;
-import java.util.Set;
 
 import javax.persistence.CollectionTable;
 import javax.persistence.Column;
@@ -32,11 +31,9 @@ import javax.persistence.JoinColumn;
 import javax.persistence.ManyToOne;
 import javax.persistence.Table;
 
-import com.google.common.collect.ImmutableSet;
-
 import edu.umd.cs.findbugs.annotations.CheckForNull;
 import edu.umd.cs.findbugs.annotations.Nullable;
-import edu.upenn.cis.ppod.imodel.IChild;
+import edu.upenn.cis.ppod.dto.PPodDnaSequence;
 import edu.upenn.cis.ppod.util.IVisitor;
 
 /**
@@ -46,27 +43,7 @@ import edu.upenn.cis.ppod.util.IVisitor;
  */
 @Entity
 @Table(name = DnaSequence.TABLE)
-public class DnaSequence
-		extends Sequence<DnaSequenceSet> implements IChild<DnaSequenceSet> {
-
-	private final static Set<java.lang.Character> LEGAL_CHARS =
-			ImmutableSet.of(
-					'A', 'a',
-					'C', 'c',
-					'G', 'g',
-					'T', 't',
-					'R',
-					'Y',
-					'K',
-					'M',
-					'S',
-					'W',
-					'B',
-					'D',
-					'H',
-					'V',
-					'N',
-					'-');
+public class DnaSequence extends Sequence<DnaSequenceSet> {
 
 	/**
 	 * The name of the {@code DNASequence} table.
@@ -107,7 +84,7 @@ public class DnaSequence
 
 	@Override
 	public boolean isLegal(final char c) {
-		return LEGAL_CHARS.contains(c);
+		return PPodDnaSequence.LEGAL_CHARS.contains(c);
 	}
 
 	@Override

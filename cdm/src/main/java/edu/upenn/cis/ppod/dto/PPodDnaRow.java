@@ -2,7 +2,6 @@ package edu.upenn.cis.ppod.dto;
 
 import static com.google.common.base.Preconditions.checkArgument;
 import static com.google.common.base.Preconditions.checkNotNull;
-import static com.google.common.collect.Lists.newArrayList;
 
 import java.util.List;
 import java.util.Set;
@@ -10,6 +9,9 @@ import java.util.Set;
 import javax.xml.bind.annotation.XmlElement;
 
 import com.google.common.collect.ImmutableSet;
+
+import edu.umd.cs.findbugs.annotations.CheckForNull;
+import edu.umd.cs.findbugs.annotations.Nullable;
 
 final public class PPodDnaRow extends PPodDomainObject {
 
@@ -36,7 +38,8 @@ final public class PPodDnaRow extends PPodDomainObject {
 	private String sequence;
 
 	@XmlElement(name = "cellVersion")
-	private List<Long> cellVersions = newArrayList();
+	@CheckForNull
+	private List<Long> cellVersions;
 
 	PPodDnaRow() {}
 
@@ -51,6 +54,7 @@ final public class PPodDnaRow extends PPodDomainObject {
 		this.sequence = sequence;
 	}
 
+	@Nullable
 	public List<Long> getCellVersions() {
 		return cellVersions;
 	}
@@ -59,8 +63,7 @@ final public class PPodDnaRow extends PPodDomainObject {
 		return sequence;
 	}
 
-	public void setCellVersions(final List<Long> cellVersions) {
-		checkNotNull(cellVersions);
+	public void setCellVersions(@CheckForNull final List<Long> cellVersions) {
 		this.cellVersions = cellVersions;
 	}
 

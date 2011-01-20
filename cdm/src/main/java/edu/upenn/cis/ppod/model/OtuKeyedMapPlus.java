@@ -45,6 +45,7 @@ import edu.upenn.cis.ppod.util.IVisitor;
 class OtuKeyedMapPlus<V extends IChild<P>, P extends IChild<OtuSet>>
 		implements IOtuKeyedMap<V> {
 
+	@CheckForNull
 	private P parent;
 
 	private Map<Otu, V> values = newHashMap();
@@ -98,7 +99,7 @@ class OtuKeyedMapPlus<V extends IChild<P>, P extends IChild<OtuSet>>
 	public V put(final Otu key, final V value) {
 		checkNotNull(key);
 		checkNotNull(value);
-		checkState(getParent() != null, "no parent has been assigned");
+		checkState(parent != null, "no parent has been assigned");
 		checkState(getParent().getParent() != null,
 				"parent " + getParent().getClass().getSimpleName()
 						+ " has not been added to an OTUSet");
