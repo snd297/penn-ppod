@@ -38,37 +38,36 @@ public enum PPodDnaNucleotide {
 	T;
 
 	public final static Set<PPodDnaNucleotide> A_G =
-			immutableEnumSet(PPodDnaNucleotide.A, PPodDnaNucleotide.G);
+			immutableEnumSet(A, G);
 
 	public final static Set<PPodDnaNucleotide> C_T =
-			immutableEnumSet(PPodDnaNucleotide.C, PPodDnaNucleotide.T);
+			immutableEnumSet(C, T);
 
 	public final static Set<PPodDnaNucleotide> G_C =
-			immutableEnumSet(PPodDnaNucleotide.G, PPodDnaNucleotide.C);
+			immutableEnumSet(G, C);
 
 	public final static Set<PPodDnaNucleotide> A_T =
-			immutableEnumSet(PPodDnaNucleotide.A, PPodDnaNucleotide.T);
+			immutableEnumSet(A, T);
 
 	public final static Set<PPodDnaNucleotide> G_T =
-			immutableEnumSet(PPodDnaNucleotide.G, PPodDnaNucleotide.T);
+			immutableEnumSet(G, T);
 
 	public final static Set<PPodDnaNucleotide> A_C =
-			immutableEnumSet(PPodDnaNucleotide.A, PPodDnaNucleotide.C);
+			immutableEnumSet(A, C);
 
 	public final static Set<PPodDnaNucleotide> C_G_T =
-			immutableEnumSet(PPodDnaNucleotide.C, PPodDnaNucleotide.G,
-					PPodDnaNucleotide.T);
+			immutableEnumSet(C, G, T);
 
 	public final static Set<PPodDnaNucleotide> A_G_T =
-			immutableEnumSet(PPodDnaNucleotide.A, PPodDnaNucleotide.G,
-					PPodDnaNucleotide.T);
+			immutableEnumSet(A, G, T);
 
 	public final static Set<PPodDnaNucleotide> A_C_T =
-			immutableEnumSet(PPodDnaNucleotide.A, PPodDnaNucleotide.C,
-					PPodDnaNucleotide.T);
+			immutableEnumSet(A, C, T);
 
 	public final static Set<PPodDnaNucleotide> A_C_G =
-			immutableEnumSet(PPodDnaNucleotide.A, PPodDnaNucleotide.C,
-					PPodDnaNucleotide.G);
+			immutableEnumSet(A, C, G);
+
+	public final static Set<PPodDnaNucleotide> A_C_G_T =
+			immutableEnumSet(A, C, G, T);
 
 }

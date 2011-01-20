@@ -262,7 +262,7 @@ public class OtuSetTest {
 	 * should not be reset when this happens.
 	 */
 	@Test
-	public void addOTUWAlreadyContainedOTU() {
+	public void addOtuWAlreadyContainedOTU() {
 		otuSet.setOtus(ImmutableList.of(new Otu("OTU-0")));
 		otuSet.unsetInNeedOfNewVersion();
 
@@ -271,7 +271,7 @@ public class OtuSetTest {
 	}
 
 	@Test(expectedExceptions = IllegalArgumentException.class)
-	public void addOTUWDuplicateLabel() {
+	public void addOtuWDuplicateLabel() {
 		otus.add(new Otu(otus.get(0).getLabel()));
 		otuSet.setOtus(newArrayList(otus));
 	}

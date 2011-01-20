@@ -1,7 +1,5 @@
 package edu.upenn.cis.ppod.util;
 
-import java.util.EnumSet;
-
 import edu.upenn.cis.ppod.dto.PPodDnaNucleotide;
 import edu.upenn.cis.ppod.model.DnaCell;
 
@@ -38,49 +36,37 @@ public class DocCell2DbCell {
 				dbCell.setSingleElement(PPodDnaNucleotide.T, true);
 				break;
 			case 'R':
-				dbCell.setUncertainElements(EnumSet.of(PPodDnaNucleotide.A,
-						PPodDnaNucleotide.G));
+				dbCell.setUncertainElements(PPodDnaNucleotide.A_G);
 				break;
 			case 'Y':
-				dbCell.setUncertainElements(EnumSet.of(PPodDnaNucleotide.C,
-						PPodDnaNucleotide.T));
+				dbCell.setUncertainElements(PPodDnaNucleotide.C_T);
 				break;
 			case 'S':
-				dbCell.setUncertainElements(EnumSet.of(PPodDnaNucleotide.G,
-						PPodDnaNucleotide.C));
+				dbCell.setUncertainElements(PPodDnaNucleotide.G_C);
 				break;
 			case 'W':
-				dbCell.setUncertainElements(EnumSet.of(PPodDnaNucleotide.A,
-						PPodDnaNucleotide.T));
+				dbCell.setUncertainElements(PPodDnaNucleotide.A_T);
 				break;
 			case 'K':
-				dbCell.setUncertainElements(EnumSet.of(PPodDnaNucleotide.G,
-						PPodDnaNucleotide.T));
+				dbCell.setUncertainElements(PPodDnaNucleotide.G_T);
 				break;
 			case 'M':
-				dbCell.setUncertainElements(EnumSet.of(PPodDnaNucleotide.A,
-						PPodDnaNucleotide.C));
+				dbCell.setUncertainElements(PPodDnaNucleotide.A_C);
 				break;
 			case 'B':
-				dbCell.setUncertainElements(EnumSet.of(PPodDnaNucleotide.C,
-						PPodDnaNucleotide.G, PPodDnaNucleotide.T));
+				dbCell.setUncertainElements(PPodDnaNucleotide.C_G_T);
 				break;
 			case 'D':
-				dbCell.setUncertainElements(EnumSet.of(PPodDnaNucleotide.A,
-						PPodDnaNucleotide.G, PPodDnaNucleotide.T));
+				dbCell.setUncertainElements(PPodDnaNucleotide.A_G_T);
 				break;
 			case 'H':
-				dbCell.setUncertainElements(EnumSet.of(PPodDnaNucleotide.A,
-						PPodDnaNucleotide.C, PPodDnaNucleotide.T));
+				dbCell.setUncertainElements(PPodDnaNucleotide.A_C_T);
 				break;
 			case 'V':
-				dbCell.setUncertainElements(EnumSet.of(PPodDnaNucleotide.A,
-						PPodDnaNucleotide.C, PPodDnaNucleotide.G));
+				dbCell.setUncertainElements(PPodDnaNucleotide.A_C_G);
 				break;
 			case 'N':
-				dbCell.setUncertainElements(EnumSet.of(PPodDnaNucleotide.A,
-						PPodDnaNucleotide.C, PPodDnaNucleotide.G,
-						PPodDnaNucleotide.T));
+				dbCell.setUncertainElements(PPodDnaNucleotide.A_C_G_T);
 				break;
 			case '-':
 				dbCell.setInapplicable();
