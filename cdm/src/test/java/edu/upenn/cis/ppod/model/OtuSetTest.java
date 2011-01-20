@@ -59,9 +59,9 @@ public class OtuSetTest {
 
 		final OtuSet otuSet = new OtuSet();
 
-		otuSet.addOtu(new Otu().setLabel("otu-0"));
-		otuSet.addOtu(new Otu().setLabel("otu-1"));
-		otuSet.addOtu(new Otu().setLabel("otu-2"));
+		otuSet.addOtu(new Otu("otu-0"));
+		otuSet.addOtu(new Otu("otu-1"));
+		otuSet.addOtu(new Otu("otu-2"));
 
 		otuSet.addStandardMatrix(new StandardMatrix());
 		otuSet.addStandardMatrix(new StandardMatrix());
@@ -189,9 +189,9 @@ public class OtuSetTest {
 
 		otuSet.addDnaSequenceSet(dnaSequenceSet);
 
-		final Otu otu0 = new Otu().setLabel("otu-0");
-		final Otu otu1 = new Otu().setLabel("otu-1");
-		final Otu otu2 = new Otu().setLabel("otu-2");
+		final Otu otu0 = new Otu("otu-0");
+		final Otu otu1 = new Otu("otu-1");
+		final Otu otu2 = new Otu("otu-2");
 
 		otuSet.unsetInNeedOfNewVersion();
 		standardMatrix.unsetInNeedOfNewVersion();
@@ -263,7 +263,7 @@ public class OtuSetTest {
 	 */
 	@Test
 	public void addOTUWAlreadyContainedOTU() {
-		otuSet.setOtus(ImmutableList.of(new Otu().setLabel("OTU-0")));
+		otuSet.setOtus(ImmutableList.of(new Otu("OTU-0")));
 		otuSet.unsetInNeedOfNewVersion();
 
 		otuSet.setOtus(otuSet.getOtus());
@@ -272,7 +272,7 @@ public class OtuSetTest {
 
 	@Test(expectedExceptions = IllegalArgumentException.class)
 	public void addOTUWDuplicateLabel() {
-		otus.add(new Otu().setLabel(otus.get(0).getLabel()));
+		otus.add(new Otu(otus.get(0).getLabel()));
 		otuSet.setOtus(newArrayList(otus));
 	}
 

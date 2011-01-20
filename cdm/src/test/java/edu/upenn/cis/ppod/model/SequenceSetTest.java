@@ -73,9 +73,9 @@ public class SequenceSetTest {
 		final OtuSet otuSet0 = new OtuSet();
 		seqSet.setParent(otuSet0);
 
-		final Otu otu0 = new Otu().setLabel("otu0");
-		final Otu otu1 = new Otu().setLabel("otu1");
-		final Otu otu2 = new Otu().setLabel("otu2");
+		final Otu otu0 = new Otu("otu0");
+		final Otu otu1 = new Otu("otu1");
+		final Otu otu2 = new Otu("otu2");
 		otuSet0.addOtu(otu0);
 		otuSet0.addOtu(otu1);
 		otuSet0.addOtu(otu2);
@@ -111,9 +111,9 @@ public class SequenceSetTest {
 		final OtuSet otuSet0 = new OtuSet();
 		seqSet.setParent(otuSet0);
 
-		final Otu otu0 = new Otu().setLabel("otu0");
-		final Otu otu1 = new Otu().setLabel("otu1");
-		final Otu otu2 = new Otu().setLabel("otu2");
+		final Otu otu0 = new Otu("otu0");
+		final Otu otu1 = new Otu("otu1");
+		final Otu otu2 = new Otu("otu2");
 		otuSet0.addOtu(otu0);
 		otuSet0.addOtu(otu1);
 		otuSet0.addOtu(otu2);
@@ -164,9 +164,9 @@ public class SequenceSetTest {
 	@Test
 	public void accept() {
 		final OtuSet otuSet = new OtuSet();
-		otuSet.addOtu(new Otu().setLabel("otu-0"));
-		otuSet.addOtu(new Otu().setLabel("otu-1"));
-		otuSet.addOtu(new Otu().setLabel("otu-2"));
+		otuSet.addOtu(new Otu("otu-0"));
+		otuSet.addOtu(new Otu("otu-1"));
+		otuSet.addOtu(new Otu("otu-2"));
 
 		final DnaSequenceSet seqSet = new DnaSequenceSet();
 

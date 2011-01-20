@@ -48,7 +48,7 @@ public class StandardRowTest {
 		matrix = new StandardMatrix();
 		matrix.setParent(new OtuSet());
 		otus = newArrayList();
-		otus.add(new Otu().setLabel("OTU-0"));
+		otus.add(new Otu("OTU-0"));
 		matrix.getParent().setOtus(newArrayList(otus.get(0)));
 		matrix.putRow(otus.get(0), new StandardRow());
 		final StandardCharacter character0 = new StandardCharacter();
