@@ -85,7 +85,7 @@ public class StandardState extends PPodEntity {
 	 * <code>"short"</code>, and <code>"long"</code>
 	 */
 	@Column(name = LABEL_COLUMN, nullable = false)
-	@Nullable
+	@CheckForNull
 	private String label;
 
 	/**
@@ -93,7 +93,7 @@ public class StandardState extends PPodEntity {
 	 */
 	@ManyToOne(fetch = FetchType.LAZY, optional = false)
 	@JoinColumn(name = StandardCharacter.JOIN_COLUMN)
-	@Nullable
+	@CheckForNull
 	private StandardCharacter parent;
 
 	/**
@@ -203,7 +203,6 @@ public class StandardState extends PPodEntity {
 			@CheckForNull final StandardCharacter parent) {
 		this.parent = parent;
 	}
-
 
 	/**
 	 * Constructs a <code>String</code> with all attributes in name = value

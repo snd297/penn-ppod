@@ -16,6 +16,8 @@
 package edu.upenn.cis.ppod.model;
 
 import static com.google.common.collect.Lists.newArrayList;
+import static org.mockito.Mockito.mock;
+import static org.mockito.Mockito.verify;
 import static org.testng.Assert.assertEquals;
 import static org.testng.Assert.assertFalse;
 import static org.testng.Assert.assertNotNull;
@@ -33,6 +35,7 @@ import org.testng.annotations.Test;
 import com.google.common.collect.ImmutableList;
 
 import edu.upenn.cis.ppod.TestGroupDefs;
+import edu.upenn.cis.ppod.util.IVisitor;
 
 /**
  * Logic tests of {@link StandardMatrix}.
@@ -331,6 +334,7 @@ public class StandardMatrixTest {
 		matrix.setCharacters(standardCharacters);
 	}
 
+	@Test
 	public void setColumnPPodVersionInfos() {
 		final VersionInfo versionInfo = new VersionInfo();
 
@@ -341,6 +345,7 @@ public class StandardMatrixTest {
 		}
 	}
 
+	@Test
 	public void setDescription() {
 		matrix.unsetInNeedOfNewVersion();
 		final String description = "DESCRIPTION";
@@ -363,10 +368,27 @@ public class StandardMatrixTest {
 		assertFalse(matrix.isInNeedOfNewVersion());
 	}
 
-	public void removeColumn() {
+	@Test
+	public void accept() {
+		final StandardMatrix matrix = new StandardMatrix();
+		final IVisitor visitor = mock(IVisitor.class);
+
+		final StandardCharacter character0 = mock(StandardCharacter.class);
+		final StandardCharacter character1 = mock(StandardCharacter.class);
+		final StandardCharacter character2 = mock(StandardCharacter.class);
+
+		matrix.setCharacters(newArrayList(character0,
+				character1, character2));
+
+		matrix.accept(visitor);
+
+		verify(visitor).visitStandardMatrix(matrix);
+
+		verify(character0).accept(visitor);
+		verify(character1).accept(visitor);
+		verify(character2).accept(visitor);
 
 	}
-
 	// void populateMatrix(final StandardMatrix matrix) {
 	// final IOTUSet otuSet = otuSetProvider.get();
 	//

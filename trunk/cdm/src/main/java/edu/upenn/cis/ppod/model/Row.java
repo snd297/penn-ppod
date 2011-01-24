@@ -22,6 +22,8 @@ import static com.google.common.collect.Lists.newArrayList;
 import java.util.Collections;
 import java.util.List;
 
+import com.google.common.annotations.VisibleForTesting;
+
 import edu.upenn.cis.ppod.imodel.IChild;
 import edu.upenn.cis.ppod.util.IVisitor;
 
@@ -62,7 +64,8 @@ abstract class Row<C extends Cell<?, ?>, M extends Matrix<?, ?>>
 	 * 
 	 * @return this
 	 */
-	private void clearCells() {
+	@VisibleForTesting
+	void clearCells() {
 		for (final C clearedCell : getCells()) {
 			clearedCell.setParent(null);
 			clearedCell.setPosition(null);
