@@ -91,10 +91,14 @@ public class StandardMatrix
 			final int columnNo,
 			final StandardCharacter character,
 			final List<? extends StandardCell> cells) {
+		checkNotNull(character);
+		checkNotNull(cells);
 		checkArgument(columnNo <= getColumnsSize(),
 				"columnNo " + columnNo + " too big for matrix column size "
 						+ getColumnsSize());
 		checkArgument(columnNo >= 0, "columnNo is negative: " + columnNo);
+		checkArgument(cells.size() == rows.getValues().size());
+
 		final List<StandardCharacter> thisCharacters = newArrayList(getCharacters());
 		thisCharacters.add(columnNo, character);
 		setCharacters(thisCharacters);
@@ -206,8 +210,6 @@ public class StandardMatrix
 	 * 
 	 * @param characters the new characters
 	 * 
-	 * @return the characters removed as a result of this operation
-	 * 
 	 * @throws IllegalArgumentException if any of {code newCharacters} is
 	 *             {@code null}
 	 * @throws IllegalArgumentException if any of {@code newCharacters} are
@@ -215,12 +217,11 @@ public class StandardMatrix
 	 * @throws IllegalStateExeption if {@code characters.size() !=
 	 *             getColumnsSize()}
 	 */
-	public List<StandardCharacter> setCharacters(
-			final List<? extends StandardCharacter> characters) {
+	public void setCharacters(final List<? extends StandardCharacter> characters) {
 		checkNotNull(characters);
 
 		if (characters.equals(getCharacters())) {
-			return Collections.emptyList();
+			return;
 		}
 
 		int newCharacterPos = -1;
@@ -266,7 +267,6 @@ public class StandardMatrix
 
 		// the matrix has changed
 		setInNeedOfNewVersion();
-		return removedCharacters;
 	}
 
 	/**

@@ -36,11 +36,12 @@ import edu.upenn.cis.ppod.model.Tree;
 import edu.upenn.cis.ppod.model.TreeSet;
 
 /**
- * An {@link IVisitor} that does nothing.
+ * An {@link IVisitor} that does nothing: meant to be extended by visitors so
+ * they don't have to implement every method.
  * 
  * @author Sam Donnelly
  */
-public abstract class EmptyVisitor implements IVisitor {
+public class EmptyVisitor implements IVisitor {
 
 	/**
 	 * Does nothing.
