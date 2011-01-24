@@ -23,7 +23,7 @@ public class ProteinRow extends Row<ProteinCell, ProteinMatrix> {
 	}
 
 	@Override
-	public List<ProteinCell> setCells(List<? extends ProteinCell> cells) {
+	public void setCells(List<? extends ProteinCell> cells) {
 		// TODO Auto-generated method stub
 		throw new UnsupportedOperationException();
 	}

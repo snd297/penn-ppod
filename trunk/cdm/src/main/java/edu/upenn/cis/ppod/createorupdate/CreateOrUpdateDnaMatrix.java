@@ -64,16 +64,16 @@ class CreateOrUpdateDnaMatrix implements ICreateOrUpdateDNAMatrix {
 		// So that makePersistenct(dbRow) below has a persistent parent.
 		dao.makePersistent(dbMatrix);
 
-		int sourceOTUPos = -1;
+		int sourceOtuPos = -1;
 
 		for (final PPodDnaRow sourceRow : sourceMatrix.getRows()) {
 
-			sourceOTUPos++;
+			sourceOtuPos++;
 
 			final Otu dbOTU =
 					dbMatrix.getParent()
 							.getOtus()
-							.get(sourceOTUPos);
+							.get(sourceOtuPos);
 
 			// Let's create rows for OTU->null row mappings in the matrix.
 			DnaRow dbRow = null;
@@ -131,7 +131,7 @@ class CreateOrUpdateDnaMatrix implements ICreateOrUpdateDNAMatrix {
 			logger.debug(
 					"{}: flushing row number {}",
 					METHOD,
-					sourceOTUPos);
+					sourceOtuPos);
 
 			dao.flush();
 			dao.evict(dbRow);

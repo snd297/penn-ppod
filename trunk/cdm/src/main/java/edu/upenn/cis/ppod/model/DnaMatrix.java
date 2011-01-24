@@ -34,8 +34,7 @@ import edu.upenn.cis.ppod.util.IVisitor;
  */
 @Entity
 @Table(name = DnaMatrix.TABLE)
-public class DnaMatrix
-		extends MolecularMatrix<DnaRow, DnaCell> {
+public class DnaMatrix extends MolecularMatrix<DnaRow, DnaCell> {
 
 	public final static String TABLE = "DNA_MATRIX";
 
@@ -58,11 +57,8 @@ public class DnaMatrix
 		super.accept(visitor);
 	}
 
-	/**
-	 * Created for JAXB.
-	 */
 	@Override
-	protected DnaRows getOTUKeyedRows() {
+	protected DnaRows getOtuKeyedRows() {
 		return rows;
 	}
 

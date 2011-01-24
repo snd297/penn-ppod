@@ -98,7 +98,7 @@ abstract class Matrix<R extends Row<C, ?>, C extends Cell<?, ?>>
 	@Override
 	public void accept(final IVisitor visitor) {
 		checkNotNull(visitor);
-		getOTUKeyedRows().accept(visitor);
+		getOtuKeyedRows().accept(visitor);
 		super.accept(visitor);
 	}
 
@@ -211,7 +211,7 @@ abstract class Matrix<R extends Row<C, ?>, C extends Cell<?, ?>>
 	 * 
 	 * @return the otusToRows
 	 */
-	abstract IOtuKeyedMap<R> getOTUKeyedRows();
+	abstract IOtuKeyedMap<R> getOtuKeyedRows();
 
 	/**
 	 * Getter. Will be {@code null} when object is first created or matrices
@@ -234,7 +234,7 @@ abstract class Matrix<R extends Row<C, ?>, C extends Cell<?, ?>>
 	 */
 	public Map<Otu, R> getRows() {
 		return Collections
-				.unmodifiableMap(getOTUKeyedRows().getValues());
+				.unmodifiableMap(getOtuKeyedRows().getValues());
 	}
 
 	/**
@@ -261,7 +261,7 @@ abstract class Matrix<R extends Row<C, ?>, C extends Cell<?, ?>>
 	public R putRow(final Otu otu, final R row) {
 		checkNotNull(otu);
 		checkNotNull(row);
-		return getOTUKeyedRows().put(otu, row);
+		return getOtuKeyedRows().put(otu, row);
 	}
 
 	/**
@@ -389,6 +389,6 @@ abstract class Matrix<R extends Row<C, ?>, C extends Cell<?, ?>>
 
 	/** {@inheritDoc} */
 	public void updateOtus() {
-		getOTUKeyedRows().updateOtus();
+		getOtuKeyedRows().updateOtus();
 	}
 }

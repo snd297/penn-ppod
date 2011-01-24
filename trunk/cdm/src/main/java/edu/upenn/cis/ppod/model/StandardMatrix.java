@@ -173,7 +173,7 @@ public class StandardMatrix
 	 * @return the otusToRows
 	 */
 	@Override
-	protected StandardRows getOTUKeyedRows() {
+	protected StandardRows getOtuKeyedRows() {
 		return rows;
 	}
 
