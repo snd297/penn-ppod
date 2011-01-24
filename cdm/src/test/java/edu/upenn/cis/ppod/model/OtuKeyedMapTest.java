@@ -80,7 +80,7 @@ public class OtuKeyedMapTest {
 	@Test
 	public void clearWhileEmpty() {
 		final DnaMatrix matrix = new DnaMatrix();
-		final DnaRows otusToRows = matrix.getOTUKeyedRows();
+		final DnaRows otusToRows = matrix.getOtuKeyedRows();
 		otusToRows.setParent(matrix);
 		matrix.unsetInNeedOfNewVersion();
 		otusToRows.clear();
@@ -112,7 +112,7 @@ public class OtuKeyedMapTest {
 		final DnaRow row2 = new DnaRow();
 
 		matrix.putRow(otu0, row0);
-		matrix.getOTUKeyedRows().getValues().put(otu1, null); // the
+		matrix.getOtuKeyedRows().getValues().put(otu1, null); // the
 		// accept
 		// method
 		// should
@@ -123,14 +123,14 @@ public class OtuKeyedMapTest {
 
 		final IVisitor visitor = mock(IVisitor.class);
 
-		matrix.getOTUKeyedRows().accept(visitor);
+		matrix.getOtuKeyedRows().accept(visitor);
 
 		// Size should be the same as all of the rows minus the null row
 		verify(visitor, times(matrix.getRows().size() - 1))
-				.visitDNARow(any(DnaRow.class));
+				.visitDnaRow(any(DnaRow.class));
 
-		verify(visitor).visitDNARow(row0);
-		verify(visitor).visitDNARow(row2);
+		verify(visitor).visitDnaRow(row0);
+		verify(visitor).visitDnaRow(row2);
 
 	}
 }

@@ -77,15 +77,13 @@ public class StandardRow
 	}
 
 	@Override
-	public List<StandardCell> setCells(
+	public void setCells(
 			final List<? extends StandardCell> cells) {
-		final List<StandardCell> clearedCells =
-				super.setCellsHelper(cells);
+		super.setCellsHelper(cells);
 
 		for (final StandardCell cell : getCells()) {
 			cell.setParent(this);
 		}
-		return clearedCells;
 	}
 
 	/** {@inheritDoc} */

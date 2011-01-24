@@ -69,7 +69,7 @@ public abstract class EmptyVisitor implements IVisitor {
 	 * 
 	 * @param cell ignored
 	 */
-	public void visitDNACell(final DnaCell cell) {}
+	public void visitDnaCell(final DnaCell cell) {}
 
 	/**
 	 * Does nothing.
@@ -83,7 +83,7 @@ public abstract class EmptyVisitor implements IVisitor {
 	 * 
 	 * @param row ignored
 	 */
-	public void visitDNARow(final DnaRow row) {}
+	public void visitDnaRow(final DnaRow row) {}
 
 	/**
 	 * Does nothing.

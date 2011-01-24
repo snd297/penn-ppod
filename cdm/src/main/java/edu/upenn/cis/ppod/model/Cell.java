@@ -242,10 +242,8 @@ abstract class Cell<E, R extends Row<?, ?>>
 						+ elements.size());
 
 		if (getType() != null
-				&& getType()
-						.equals(type)
-				&& elements
-						.equals(getElementsModifiable())) {
+				&& getType().equals(type)
+				&& elements.equals(getElementsModifiable())) {
 			return;
 		}
 

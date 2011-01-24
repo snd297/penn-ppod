@@ -110,6 +110,7 @@ public class OtuSetTest {
 		assertTrue(otuSet.isInNeedOfNewVersion());
 	}
 
+	@Test
 	public void addDNAMatrixPos() {
 		final OtuSet otuSet = new OtuSet();
 		final DnaMatrix matrix0 = new DnaMatrix();
@@ -230,7 +231,7 @@ public class OtuSetTest {
 
 		assertEquals(
 				standardMatrix
-						.getOTUKeyedRows()
+						.getOtuKeyedRows()
 						.getValues()
 						.keySet(),
 				otusSet012);
@@ -239,7 +240,7 @@ public class OtuSetTest {
 		assertNull(standardMatrix.getRows().get(otu2));
 
 		assertEquals(
-				dnaMatrix.getOTUKeyedRows().getValues().keySet(),
+				dnaMatrix.getOtuKeyedRows().getValues().keySet(),
 				otusSet012);
 		assertNull(dnaMatrix.getRows().get(otu0));
 		assertNull(dnaMatrix.getRows().get(otu1));

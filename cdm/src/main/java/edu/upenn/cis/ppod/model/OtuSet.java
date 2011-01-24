@@ -74,9 +74,7 @@ public class OtuSet extends UuPPodEntity {
 	/** The column that stores the label. */
 	public static final String LABEL_COLUMN = "LABEL";
 
-	@OneToMany(
-			cascade = CascadeType.ALL,
-			orphanRemoval = true)
+	@OneToMany(cascade = CascadeType.ALL, orphanRemoval = true)
 	@OrderColumn(name = "POSITION")
 	@JoinColumn(name = JOIN_COLUMN, nullable = false)
 	private final List<StandardMatrix> standardMatrices = newArrayList();
@@ -106,7 +104,7 @@ public class OtuSet extends UuPPodEntity {
 	 * OTU set labels are unique within a particular {@code IStudy}
 	 */
 	@Column(name = "LABEL", nullable = false)
-	@Nullable
+	@CheckForNull
 	private String label;
 
 	/** The OTUs in this OTU set. */
@@ -120,7 +118,7 @@ public class OtuSet extends UuPPodEntity {
 	@ManyToOne(fetch = FetchType.LAZY, optional = false)
 	@JoinColumn(name = Study.JOIN_COLUMN, insertable = false,
 				updatable = false)
-	@Nullable
+	@CheckForNull
 	private Study parent;
 
 	/** The tree sets that reference this OTU set. */
@@ -537,7 +535,7 @@ public class OtuSet extends UuPPodEntity {
 
 	@Override
 	public void setInNeedOfNewVersion() {
-		final Study study = getParent();
+		final Study study = parent;
 		if (study != null) {
 			study.setInNeedOfNewVersion();
 		}
@@ -602,26 +600,6 @@ public class OtuSet extends UuPPodEntity {
 		for (final IChild<OtuSet> child : getChildren()) {
 			child.setParent(this);
 		}
-	}
-
-	/**
-	 * Constructs a <code>String</code> with all attributes in name=value
-	 * format.
-	 * 
-	 * @return a <code>String</code> representation of this object.
-	 */
-	@Override
-	public String toString() {
-		final String TAB = ",";
-
-		final StringBuilder retValue = new StringBuilder();
-
-		retValue.append("OTUSet(").append(super.toString()).append(TAB).append(
-				"id=").append(TAB).append("version=").append(TAB).append(
-				"label=").append(this.label).append(TAB).append("otus=")
-				.append(this.otus).append(TAB).append(")");
-
-		return retValue.toString();
 	}
 
 	private void updateOtusOnChildren() {

@@ -34,7 +34,7 @@ import edu.umd.cs.findbugs.annotations.Nullable;
 import edu.upenn.cis.ppod.util.IVisitor;
 
 /**
- * A row of {@link DNACell}s.
+ * A row of {@link DnaCell}s.
  * 
  * @author Sam Donnelly
  */
@@ -63,7 +63,7 @@ public class DnaRow extends Row<DnaCell, DnaMatrix> {
 	@Override
 	public void accept(final IVisitor visitor) {
 		checkNotNull(visitor);
-		visitor.visitDNARow(this);
+		visitor.visitDnaRow(this);
 		super.accept(visitor);
 	}
 
@@ -90,7 +90,7 @@ public class DnaRow extends Row<DnaCell, DnaMatrix> {
 	 *             end
 	 */
 	@Override
-	public List<DnaCell> setCells(final List<? extends DnaCell> cells) {
+	public void setCells(final List<? extends DnaCell> cells) {
 		checkNotNull(cells);
 		checkArgument(
 				cells.size() >= getCells().size(),
@@ -103,12 +103,11 @@ public class DnaRow extends Row<DnaCell, DnaMatrix> {
 						+ "this method can't do anything but add or removes cells from the "
 						+ "end");
 
-		final List<DnaCell> clearedCells = super.setCellsHelper(cells);
+		super.setCellsHelper(cells);
 
 		for (final DnaCell cell : getCells()) {
 			cell.setParent(this);
 		}
-		return clearedCells;
 	}
 
 	/** {@inheritDoc} */

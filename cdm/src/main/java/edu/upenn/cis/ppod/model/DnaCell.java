@@ -88,7 +88,7 @@ public class DnaCell
 	@Override
 	public void accept(final IVisitor visitor) {
 		checkNotNull(visitor);
-		visitor.visitDNACell(this);
+		visitor.visitDnaCell(this);
 	}
 
 	/** {@inheritDoc} */

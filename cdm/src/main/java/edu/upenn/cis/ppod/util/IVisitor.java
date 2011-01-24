@@ -71,7 +71,7 @@ public interface IVisitor {
 	 * 
 	 * @param cell to be visited
 	 */
-	void visitDNACell(DnaCell cell);
+	void visitDnaCell(DnaCell cell);
 
 	/**
 	 * Visit a DNA matrix.
@@ -80,7 +80,7 @@ public interface IVisitor {
 	 */
 	void visitDNAMatrix(DnaMatrix matrix);
 
-	void visitDNARow(DnaRow row);
+	void visitDnaRow(DnaRow row);
 
 	void visitDNASequence(DnaSequence sequence);
 

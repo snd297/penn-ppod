@@ -56,6 +56,8 @@ abstract class Row<C extends Cell<?, ?>, M extends Matrix<?, ?>>
 	 * <p>
 	 * This method {@code null}s out the cell->row relationship.
 	 * <p>
+	 * This method calls {@code Cell.setParent(null)} on all cleared cells.
+	 * <p>
 	 * This method calls {@code Cell.setPosition(null)} on all cleared cells.
 	 * 
 	 * @return this
@@ -97,14 +99,14 @@ abstract class Row<C extends Cell<?, ?>, M extends Matrix<?, ?>>
 	 * @throws IllegalStateException if the owning matrix does not have the same
 	 *             number of columns as {@code cells.size()}
 	 */
-	public abstract List<C> setCells(final List<? extends C> cells);
+	public abstract void setCells(final List<? extends C> cells);
 
-	List<C> setCellsHelper(
+	void setCellsHelper(
 			final List<? extends C> cells) {
 		checkNotNull(cells);
 
 		if (cells.equals(getCells())) {
-			return Collections.emptyList();
+			return;
 		}
 		final M matrix = getParent();
 
@@ -121,15 +123,14 @@ abstract class Row<C extends Cell<?, ?>, M extends Matrix<?, ?>>
 
 		clearCells();
 
-		int cellPos = -1;
 		getCellsModifiable().addAll(cells);
 
+		int cellPos = -1;
 		for (final C cell : getCells()) {
 			cellPos++;
 			cell.setPosition(cellPos);
 		}
 		setInNeedOfNewVersion();
-		return removedCells;
 	}
 
 	/**

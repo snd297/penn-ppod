@@ -16,7 +16,7 @@ public class ProteinMatrix
 	}
 
 	@Override
-	IOtuKeyedMap<ProteinRow> getOTUKeyedRows() {
+	IOtuKeyedMap<ProteinRow> getOtuKeyedRows() {
 		// TODO Auto-generated method stub
 		throw new UnsupportedOperationException();
 	}
