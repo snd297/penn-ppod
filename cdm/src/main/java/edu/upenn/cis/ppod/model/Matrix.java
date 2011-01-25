@@ -32,7 +32,6 @@ import javax.persistence.ManyToMany;
 import javax.persistence.ManyToOne;
 import javax.persistence.MappedSuperclass;
 import javax.persistence.OrderColumn;
-import javax.persistence.Transient;
 
 import edu.umd.cs.findbugs.annotations.CheckForNull;
 import edu.umd.cs.findbugs.annotations.Nullable;
@@ -64,13 +63,6 @@ abstract class Matrix<R extends Row<C, ?>, C extends Cell<?, ?>>
 		{ @JoinColumn(name = VersionInfo.JOIN_COLUMN) })
 	@OrderColumn(name = VersionInfo.TABLE + "_POSITION")
 	private final List<VersionInfo> columnVersionInfos = newArrayList();
-
-	/**
-	 * For sending over the wire to web clients. Because we don't want to send
-	 * the whole {@link VersionInfo}.
-	 */
-	@Transient
-	private final List<Long> columnVersions = newArrayList();
 
 	/** Free-form description. */
 	@Column(name = DESCRIPTION_COLUMN, nullable = true)
@@ -151,31 +143,6 @@ abstract class Matrix<R extends Row<C, ?>, C extends Cell<?, ?>>
 	 */
 	List<VersionInfo> getColumnVersionInfosModifiable() {
 		return columnVersionInfos;
-	}
-
-	/**
-	 * Get the pPOD version numbers of each column. The version number is the
-	 * value of the largest cell version in the column.
-	 * <p>
-	 * This method was created for getting at the version number in unmarshalled
-	 * matrices, but it is fine to call for any matrix. When
-	 * {@link #getColumnVersionInfos()} is defined the following calls are
-	 * equivalent:
-	 * <ul>
-	 * <li>
-	 * {@code getColumnVersionInfos().get(n).getVersion()}</li>
-	 * <li>
-	 * {@code getColumnVersions().get(n)}</li>
-	 * </ul>
-	 * 
-	 * @return the pPOD version number of each column
-	 */
-	public List<Long> getColumnVersions() {
-		return Collections.unmodifiableList(columnVersions);
-	}
-
-	protected List<Long> getColumnVersionsModifiable() {
-		return columnVersions;
 	}
 
 	/**
@@ -321,11 +288,6 @@ abstract class Matrix<R extends Row<C, ?>, C extends Cell<?, ?>>
 		}
 	}
 
-	public void setColumnVersions(final List<Long> pPodColumnVersions) {
-		columnVersions.clear();
-		columnVersions.addAll(pPodColumnVersions);
-	}
-
 	/**
 	 * Setter.
 	 * 
@@ -372,7 +334,7 @@ abstract class Matrix<R extends Row<C, ?>, C extends Cell<?, ?>>
 	 */
 	public void setLabel(final String label) {
 		checkNotNull(label);
-		if (label.equals(getLabel())) {
+		if (label.equals(this.label)) {
 			// they're the same, nothing to do
 		} else {
 			this.label = label;
@@ -382,7 +344,7 @@ abstract class Matrix<R extends Row<C, ?>, C extends Cell<?, ?>>
 
 	/** {@inheritDoc} */
 	public void setParent(
-			@Nullable final OtuSet otuSet) {
+			@CheckForNull final OtuSet otuSet) {
 		this.parent = otuSet;
 		updateOtus();
 	}
