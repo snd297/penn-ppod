@@ -113,24 +113,6 @@ public class StandardState extends PPodEntity {
 	}
 
 	/**
-	 * See {@link Unmarshaller} javadoc on <em>Unmarshal Event Callbacks</em>.
-	 * 
-	 * @param u see {@code Unmarshaller} javadoc on
-	 *            <em>Unmarshal Event Callbacks</em>
-	 * @param parent see {@code Unmarshaller} javadoc on
-	 *            <em>Unmarshal Event Callbacks</em>
-	 */
-	// public void afterUnmarshal(final Unmarshaller u, final Object parent) {
-	// We do this in Character - why? Does it have to do with the fact that
-	// CharacterState's are stored in Character in a Map?
-	//
-	// if (parent instanceof Character) {
-	// setCharacter((Character) parent);
-	// }
-	// super.afterUnmarshal(u, parent);
-	// }
-
-	/**
 	 * Get this character stateNumber's label.
 	 * 
 	 * @return this character stateNumber's label
