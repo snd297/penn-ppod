@@ -15,6 +15,8 @@ I * Copyright (C) 2010 Trustees of the University of Pennsylvania
  */
 package edu.upenn.cis.ppod.model;
 
+import static com.google.common.base.Preconditions.checkNotNull;
+
 import java.util.Map;
 
 import javax.persistence.Access;
@@ -41,10 +43,14 @@ import edu.upenn.cis.ppod.util.IVisitor;
 class StandardRows
 		implements IOtuKeyedMap<StandardRow> {
 
-	private final OtuKeyedMapPlus<StandardRow, StandardMatrix> rows =
-			new OtuKeyedMapPlus<StandardRow, StandardMatrix>();
+	private final OtuKeyedMapPlus<StandardRow, StandardMatrix> rows = new OtuKeyedMapPlus<StandardRow, StandardMatrix>();
 
 	StandardRows() {}
+
+	StandardRows(final StandardMatrix parent) {
+		checkNotNull(parent);
+		rows.setParent(parent);
+	}
 
 	public void accept(final IVisitor visitor) {
 		rows.accept(visitor);

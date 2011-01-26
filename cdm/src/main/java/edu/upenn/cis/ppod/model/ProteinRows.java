@@ -1,5 +1,7 @@
 package edu.upenn.cis.ppod.model;
 
+import static com.google.common.base.Preconditions.checkNotNull;
+
 import java.util.Map;
 
 import edu.upenn.cis.ppod.imodel.IOtuKeyedMap;
@@ -7,8 +9,12 @@ import edu.upenn.cis.ppod.util.IVisitor;
 
 public class ProteinRows implements IOtuKeyedMap<ProteinRow> {
 
-	private final OtuKeyedMapPlus<ProteinRow, ProteinMatrix> rows =
-			new OtuKeyedMapPlus<ProteinRow, ProteinMatrix>();
+	private final OtuKeyedMapPlus<ProteinRow, ProteinMatrix> rows = new OtuKeyedMapPlus<ProteinRow, ProteinMatrix>();
+
+	ProteinRows(final ProteinMatrix matrix) {
+		checkNotNull(matrix);
+		rows.setParent(matrix);
+	}
 
 	/** {@inheritDoc} */
 	public void accept(final IVisitor visitor) {

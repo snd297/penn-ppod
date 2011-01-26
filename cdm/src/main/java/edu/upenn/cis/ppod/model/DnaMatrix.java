@@ -41,14 +41,12 @@ public class DnaMatrix extends MolecularMatrix<DnaRow, DnaCell> {
 	public final static String JOIN_COLUMN = TABLE + "_ID";
 
 	@Embedded
-	private DnaRows rows = new DnaRows();
+	private DnaRows rows = new DnaRows(this);
 
 	/**
 	 * No-arg constructor.
 	 */
-	public DnaMatrix() {
-		rows.setParent(this);
-	}
+	public DnaMatrix() {}
 
 	@Override
 	public void accept(final IVisitor visitor) {

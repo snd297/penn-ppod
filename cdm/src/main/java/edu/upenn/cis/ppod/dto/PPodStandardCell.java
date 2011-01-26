@@ -13,6 +13,14 @@ import javax.xml.bind.annotation.XmlElement;
 
 import com.google.common.collect.ImmutableSet;
 
+/**
+ * Represents cell in a standard matrix.
+ * <p>
+ * Because the type and states of a cell are not independent of one another,
+ * this class is set up so that both must be set at the same time.
+ * 
+ * @author Sam Donnelly
+ */
 public final class PPodStandardCell extends PPodDomainObject {
 
 	public static final Set<Integer> EMPTY_STATES = ImmutableSet.of();

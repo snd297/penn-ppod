@@ -15,6 +15,8 @@
  */
 package edu.upenn.cis.ppod.model;
 
+import static com.google.common.base.Preconditions.checkNotNull;
+
 import java.util.Map;
 
 import javax.persistence.Access;
@@ -41,8 +43,14 @@ import edu.upenn.cis.ppod.util.IVisitor;
 public class DnaSequences
 		implements IOtuKeyedMap<DnaSequence> {
 
-	private final OtuKeyedMapPlus<DnaSequence, DnaSequenceSet> sequences =
-			new OtuKeyedMapPlus<DnaSequence, DnaSequenceSet>();
+	private final OtuKeyedMapPlus<DnaSequence, DnaSequenceSet> sequences = new OtuKeyedMapPlus<DnaSequence, DnaSequenceSet>();
+
+	DnaSequences() {}
+
+	DnaSequences(final DnaSequenceSet parent) {
+		checkNotNull(parent);
+		sequences.setParent(parent);
+	}
 
 	public void accept(final IVisitor visitor) {
 		sequences.accept(visitor);
@@ -73,16 +81,16 @@ public class DnaSequences
 	}
 
 	/** {@inheritDoc} */
-	public void updateOtus() {
-		sequences.updateOtus();
-	}
-
-	/** {@inheritDoc} */
 	public void setParent(final DnaSequenceSet parent) {
 		sequences.setParent(parent);
 	}
 
 	public void setValues(final Map<Otu, DnaSequence> values) {
 		sequences.setValues(values);
+	}
+
+	/** {@inheritDoc} */
+	public void updateOtus() {
+		sequences.updateOtus();
 	}
 }

@@ -54,14 +54,12 @@ public class DnaSequenceSet
 	 * The sequences.
 	 */
 	@Embedded
-	private DnaSequences sequences = new DnaSequences();
+	private DnaSequences sequences = new DnaSequences(this);
 
 	/**
 	 * Default constructor.
 	 */
-	public DnaSequenceSet() {
-		sequences.setParent(this);
-	}
+	public DnaSequenceSet() {}
 
 	@Override
 	public void accept(final IVisitor visitor) {

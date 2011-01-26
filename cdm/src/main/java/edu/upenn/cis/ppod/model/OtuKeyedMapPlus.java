@@ -45,7 +45,6 @@ import edu.upenn.cis.ppod.util.IVisitor;
 class OtuKeyedMapPlus<V extends IChild<P>, P extends IChild<OtuSet>>
 		implements IOtuKeyedMap<V> {
 
-	@CheckForNull
 	private P parent;
 
 	private Map<Otu, V> values = newHashMap();
