@@ -54,7 +54,6 @@ public class DnaSequenceSet
 	 * The sequences.
 	 */
 	@Embedded
-	@CheckForNull
 	private DnaSequences sequences = new DnaSequences();
 
 	/**
@@ -96,7 +95,7 @@ public class DnaSequenceSet
 	}
 
 	@Override
-	@CheckForNull
+	@Nullable
 	public DnaSequence putSequence(
 			final Otu otu,
 			final DnaSequence sequence) {

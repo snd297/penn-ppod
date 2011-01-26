@@ -104,6 +104,7 @@ public abstract class PPodEntity
 	}
 
 	public Attachment addAttachment(final Attachment attachment) {
+		checkNotNull(attachment);
 		if (attachments == null) {
 			attachments = newHashSet();
 		}
@@ -131,6 +132,7 @@ public abstract class PPodEntity
 	/** {@inheritDoc} */
 	public Set<Attachment> getAttachmentsByNamespace(
 			final String namespace) {
+		checkNotNull(namespace);
 		return newHashSet(filter(
 				getAttachments(),
 						new Attachment.IsOfNamespace(namespace)));
@@ -139,6 +141,8 @@ public abstract class PPodEntity
 	/** {@inheritDoc} */
 	public Set<Attachment> getAttachmentsByNamespaceAndType(
 			final String namespace, final String type) {
+		checkNotNull(namespace);
+		checkNotNull(type);
 		return newHashSet(filter(
 						getAttachments(),
 						new Attachment.IsOfNamespaceAndType(namespace, type)));
@@ -191,8 +195,7 @@ public abstract class PPodEntity
 	}
 
 	/** {@inheritDoc} */
-	public void setVersionInfo(
-			final VersionInfo versionInfo) {
+	public void setVersionInfo(final VersionInfo versionInfo) {
 		checkNotNull(versionInfo);
 		unsetInNeedOfNewVersion();
 		this.versionInfo = versionInfo;

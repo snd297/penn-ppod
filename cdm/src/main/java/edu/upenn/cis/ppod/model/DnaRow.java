@@ -30,7 +30,7 @@ import javax.persistence.OneToMany;
 import javax.persistence.OrderColumn;
 import javax.persistence.Table;
 
-import edu.umd.cs.findbugs.annotations.Nullable;
+import edu.umd.cs.findbugs.annotations.CheckForNull;
 import edu.upenn.cis.ppod.util.IVisitor;
 
 /**
@@ -49,7 +49,7 @@ public class DnaRow extends Row<DnaCell, DnaMatrix> {
 
 	@ManyToOne(fetch = FetchType.LAZY, optional = false)
 	@JoinColumn(name = DnaMatrix.JOIN_COLUMN)
-	@Nullable
+	@CheckForNull
 	private DnaMatrix parent;
 
 	@OneToMany(mappedBy = "parent", cascade = CascadeType.ALL,
