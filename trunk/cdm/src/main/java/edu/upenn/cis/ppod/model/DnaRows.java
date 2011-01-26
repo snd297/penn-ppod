@@ -15,6 +15,8 @@
  */
 package edu.upenn.cis.ppod.model;
 
+import static com.google.common.base.Preconditions.checkNotNull;
+
 import java.util.Map;
 
 import javax.persistence.Access;
@@ -40,10 +42,14 @@ import edu.upenn.cis.ppod.util.IVisitor;
 @Access(AccessType.PROPERTY)
 class DnaRows implements IOtuKeyedMap<DnaRow> {
 
-	private final OtuKeyedMapPlus<DnaRow, DnaMatrix> rows =
-			new OtuKeyedMapPlus<DnaRow, DnaMatrix>();
+	private final OtuKeyedMapPlus<DnaRow, DnaMatrix> rows = new OtuKeyedMapPlus<DnaRow, DnaMatrix>();
 
 	DnaRows() {}
+
+	DnaRows(final DnaMatrix parent) {
+		checkNotNull(parent);
+		rows.setParent(parent);
+	}
 
 	/** {@inheritDoc} */
 	public void accept(final IVisitor visitor) {

@@ -57,8 +57,7 @@ public class OtuKeyedMapTest {
 		final DnaRow row1 = new DnaRow();
 		final DnaRow row2 = new DnaRow();
 
-		final DnaRows rows = new DnaRows();
-		rows.setParent(matrix);
+		final DnaRows rows = new DnaRows(matrix);
 
 		rows.put(otu0, row0);
 		rows.put(otu1, row1);

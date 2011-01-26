@@ -69,12 +69,10 @@ public class StandardMatrix
 	 * Non-final for JAXB.
 	 */
 	@Embedded
-	private StandardRows rows = new StandardRows();
+	private StandardRows rows = new StandardRows(this);
 
 	/** No-arg constructor. */
-	public StandardMatrix() {
-		rows.setParent(this);
-	}
+	public StandardMatrix() {}
 
 	@Override
 	public void accept(final IVisitor visitor) {
