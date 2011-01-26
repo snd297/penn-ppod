@@ -61,12 +61,14 @@ public final class PPodStandardCell extends PPodDomainObject {
 		checkNotNull(states);
 		checkArgument(states.size() > 1);
 		type = PPodCellType.POLYMORPHIC;
-		this.states = states;
+		this.states.clear();
+		this.states.addAll(states);
 	}
 
 	public void setSingle(final Integer state) {
 		checkNotNull(state);
 		type = PPodCellType.SINGLE;
+		this.states.clear();
 		this.states.add(state);
 	}
 
@@ -105,7 +107,8 @@ public final class PPodStandardCell extends PPodDomainObject {
 		checkNotNull(states);
 		checkArgument(states.size() > 1);
 		type = PPodCellType.UNCERTAIN;
-		this.states = states;
+		this.states.clear();
+		this.states.addAll(states);
 	}
 
 }
