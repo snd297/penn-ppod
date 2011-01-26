@@ -31,8 +31,6 @@ import javax.persistence.MapKey;
 import javax.persistence.OneToMany;
 import javax.persistence.Table;
 
-import com.google.common.base.Preconditions;
-
 import edu.umd.cs.findbugs.annotations.CheckForNull;
 import edu.umd.cs.findbugs.annotations.Nullable;
 import edu.upenn.cis.ppod.util.IVisitor;
@@ -113,9 +111,9 @@ public class StandardCharacter extends UuPPodEntity {
 	 *         {@code state.getStateNumber()} or {@code null} if there was no
 	 *         such state.
 	 */
-	@CheckForNull
+	@Nullable
 	public StandardState addState(final StandardState state) {
-		Preconditions.checkNotNull(state);
+		checkNotNull(state);
 		final StandardState originalState =
 				states.put(state.getStateNumber(), state);
 		if (state == originalState) {
@@ -192,7 +190,7 @@ public class StandardCharacter extends UuPPodEntity {
 
 	/** {@inheritDoc} */
 	public void setLabel(final String label) {
-		Preconditions.checkNotNull(label);
+		checkNotNull(label);
 		if (label.equals(this.label)) {
 			// they're the same, nothing to do.
 		} else {
@@ -215,23 +213,5 @@ public class StandardCharacter extends UuPPodEntity {
 	public void setParent(
 			@CheckForNull final StandardMatrix parent) {
 		this.parent = parent;
-	}
-
-	/**
-	 * Constructs a <code>String</code> with all attributes in name = value
-	 * format.
-	 * 
-	 * @return a <code>String</code> representation of this object.
-	 */
-	@Override
-	public String toString() {
-		final String TAB = "";
-
-		final StringBuilder retValue = new StringBuilder();
-
-		retValue.append("Character(").append("label=").append(this.label)
-				.append(TAB).append(")");
-
-		return retValue.toString();
 	}
 }

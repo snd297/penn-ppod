@@ -77,6 +77,7 @@ public class DnaSequences
 		sequences.updateOtus();
 	}
 
+	/** {@inheritDoc} */
 	public void setParent(final DnaSequenceSet parent) {
 		sequences.setParent(parent);
 	}
