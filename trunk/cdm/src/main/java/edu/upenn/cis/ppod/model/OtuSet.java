@@ -256,7 +256,7 @@ public class OtuSet extends UuPPodEntity {
 									+ "' already has an Otu labeled '"
 									+ otu.getLabel() + "'");
 		}
-		if (getOtusModifiable().add(otu)) {
+		if (otus.add(otu)) {
 			otu.setParent(this);
 			setInNeedOfNewVersion();
 		}
@@ -331,7 +331,7 @@ public class OtuSet extends UuPPodEntity {
 				!treeSets.contains(treeSet),
 				"otu set already contains the tree set ["
 						+ treeSet.getLabel() + "]");
-		getTreeSetsModifiable().add(treeSet);
+		treeSets.add(treeSet);
 		treeSet.setParent(this);
 		setInNeedOfNewVersion();
 	}
@@ -369,17 +369,9 @@ public class OtuSet extends UuPPodEntity {
 		return Collections.unmodifiableList(dnaMatrices);
 	}
 
-	protected List<DnaMatrix> getDnaMatricesModifiable() {
-		return dnaMatrices;
-	}
-
 	/** {@inheritDoc} */
 	public List<DnaSequenceSet> getDnaSequenceSets() {
 		return Collections.unmodifiableList(dnaSequenceSets);
-	}
-
-	protected List<DnaSequenceSet> getDnaSequenceSetsModifiable() {
-		return dnaSequenceSets;
 	}
 
 	/**
@@ -403,15 +395,6 @@ public class OtuSet extends UuPPodEntity {
 	}
 
 	/**
-	 * Get a modifiable reference to this the otus.
-	 * 
-	 * @return a modifiable reference to this the otus.
-	 */
-	protected List<Otu> getOtusModifiable() {
-		return otus;
-	}
-
-	/**
 	 * Get the owning study.
 	 * 
 	 * @return the owning study
@@ -430,10 +413,6 @@ public class OtuSet extends UuPPodEntity {
 		return Collections.unmodifiableList(standardMatrices);
 	}
 
-	protected List<StandardMatrix> getStandardMatricesModifiable() {
-		return standardMatrices;
-	}
-
 	/**
 	 * Get the tree sets contained in this OTU set.
 	 * 
@@ -441,10 +420,6 @@ public class OtuSet extends UuPPodEntity {
 	 */
 	public List<TreeSet> getTreeSets() {
 		return Collections.unmodifiableList(treeSets);
-	}
-
-	protected List<TreeSet> getTreeSetsModifiable() {
-		return treeSets;
 	}
 
 	/**
@@ -460,7 +435,7 @@ public class OtuSet extends UuPPodEntity {
 		checkArgument(dnaMatrices.contains(matrix),
 				"otu set does not contain the dna matrix [" + matrix.getLabel()
 						+ "]");
-		getDnaMatricesModifiable().remove(matrix);
+		dnaMatrices.remove(matrix);
 		matrix.setParent(null);
 		setInNeedOfNewVersion();
 	}
@@ -478,7 +453,7 @@ public class OtuSet extends UuPPodEntity {
 		checkArgument(getDnaSequenceSets().contains(sequenceSet),
 				"otu does not contain the dna sequence set labeled ["
 						+ sequenceSet.getLabel() + "]");
-		getDnaSequenceSetsModifiable().remove(sequenceSet);
+		dnaSequenceSets.remove(sequenceSet);
 		sequenceSet.setParent(null);
 		setInNeedOfNewVersion();
 	}
@@ -496,7 +471,7 @@ public class OtuSet extends UuPPodEntity {
 		checkArgument(standardMatrices.contains(matrix),
 				"otu set does not contain the matrix [" + matrix.getLabel()
 						+ "]");
-		getStandardMatricesModifiable().remove(matrix);
+		standardMatrices.remove(matrix);
 		matrix.setParent(null);
 		setInNeedOfNewVersion();
 	}

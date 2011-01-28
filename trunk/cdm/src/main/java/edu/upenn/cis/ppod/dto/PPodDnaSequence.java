@@ -28,23 +28,23 @@ final public class PPodDnaSequence extends PPodDomainObject {
 	private String accession;
 
 	public final static Set<java.lang.Character> LEGAL_CHARS =
-	ImmutableSet.of(
-			'A', 'a',
-			'C', 'c',
-			'G', 'g',
-			'T', 't',
-			'R',
-			'Y',
-			'K',
-			'M',
-			'S',
-			'W',
-			'B',
-			'D',
-			'H',
-			'V',
-			'N',
-			'-');
+			ImmutableSet.of(
+					'A', 'a',
+					'C', 'c',
+					'G', 'g',
+					'T', 't',
+					'R',
+					'Y',
+					'K',
+					'M',
+					'S',
+					'W',
+					'B',
+					'D',
+					'H',
+					'V',
+					'N',
+					'-');
 
 	PPodDnaSequence() {}
 
