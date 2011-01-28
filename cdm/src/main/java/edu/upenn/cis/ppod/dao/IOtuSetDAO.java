@@ -25,15 +25,15 @@ import edu.upenn.cis.ppod.thirdparty.dao.IDAO;
  * 
  * @author Sam Donnelly
  */
-public interface IOTUSetDAO extends IDAO<OtuSet, Long> {
+public interface IOtuSetDAO extends IDAO<OtuSet, Long> {
 
 	OtuSet getOTUSetByPPodId(String pPodId);
 
-	List<Object[]> getOTUIdsVersionsByOTUSetIdAndMinPPodVersion(
+	List<Object[]> getOtuIdsVersionsByOtuSetIdAndMinPPodVersion(
 			Long otuSetPPodId,
 			Long minPPodVersion);
 
-	List<Object[]> getMatrixInfosByOTUSetPPodIdAndMinPPodVersion(
+	List<Object[]> getMatrixInfosByOtuSetPPodIdAndMinPPodVersion(
 			String pPodId,
 			Long pPodVersion);
 

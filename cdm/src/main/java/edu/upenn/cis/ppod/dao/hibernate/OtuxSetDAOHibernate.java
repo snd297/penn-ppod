@@ -17,16 +17,16 @@ package edu.upenn.cis.ppod.dao.hibernate;
 
 import java.util.List;
 
-import edu.upenn.cis.ppod.dao.IOTUSetDAO;
+import edu.upenn.cis.ppod.dao.IOtuSetDAO;
 import edu.upenn.cis.ppod.model.OtuSet;
 import edu.upenn.cis.ppod.thirdparty.dao.hibernate.GenericHibernateDAO;
 
 /**
  * An {@link OTUSet} Hibernate DAO.
  */
-public class OTUSetDAOHibernate
+public class OtuxSetDAOHibernate
 		extends GenericHibernateDAO<OtuSet, Long>
-		implements IOTUSetDAO {
+		implements IOtuSetDAO {
 
 	public OtuSet getOTUSetByPPodId(final String pPodId) {
 		return (OtuSet) getSession()
@@ -36,23 +36,23 @@ public class OTUSetDAOHibernate
 	}
 
 	@SuppressWarnings("unchecked")
-	public List<Object[]> getOTUIdsVersionsByOTUSetIdAndMinPPodVersion(
+	public List<Object[]> getOtuIdsVersionsByOtuSetIdAndMinPPodVersion(
 			final Long otuId, final Long minPPodVersion) {
 		return (List<Object[]>) getSession()
 				.getNamedQuery(
 						OtuSet.class.getSimpleName()
-								+ "-getOTUPPodIdsVersionsByOTUSetIdAndMinPPodVersion")
+								+ "-getOtuPPodIdsVersionsByOtuSetIdAndMinPPodVersion")
 				.setParameter("otuId", otuId)
 				.setParameter("minPPodVersion", minPPodVersion)
 				.list();
 	}
 
 	@SuppressWarnings("unchecked")
-	public List<Object[]> getMatrixInfosByOTUSetPPodIdAndMinPPodVersion(
+	public List<Object[]> getMatrixInfosByOtuSetPPodIdAndMinPPodVersion(
 			final String otuSetPPodId, final Long minPPodVersion) {
 		return (List<Object[]>) getSession().getNamedQuery(
 				OtuSet.class.getSimpleName()
-						+ "-getMatrixInfosByOTUSetPPodIdAndMinPPodVersion")
+						+ "-getMatrixInfosByOtuSetPPodIdAndMinPPodVersion")
 				.setParameter("otuSetPPodId", otuSetPPodId)
 				.setParameter("minPPodVersion", minPPodVersion)
 				.list();

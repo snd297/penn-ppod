@@ -33,6 +33,7 @@ import javax.persistence.Table;
 
 import org.hibernate.annotations.Immutable;
 
+import edu.umd.cs.findbugs.annotations.CheckForNull;
 import edu.umd.cs.findbugs.annotations.Nullable;
 import edu.upenn.cis.ppod.dto.PPodDnaNucleotide;
 import edu.upenn.cis.ppod.util.IVisitor;
@@ -80,7 +81,7 @@ public class DnaCell
 
 	@ManyToOne(fetch = FetchType.LAZY, optional = false)
 	@JoinColumn(name = DnaRow.JOIN_COLUMN)
-	@Nullable
+	@CheckForNull
 	private DnaRow parent;
 
 	public DnaCell() {}
