@@ -24,7 +24,7 @@ import edu.upenn.cis.ppod.thirdparty.dao.hibernate.GenericHibernateDAO;
 /**
  * An {@link OTUSet} Hibernate DAO.
  */
-public class OtuxSetDAOHibernate
+public class OtuSetDAOHibernate
 		extends GenericHibernateDAO<OtuSet, Long>
 		implements IOtuSetDAO {
 
