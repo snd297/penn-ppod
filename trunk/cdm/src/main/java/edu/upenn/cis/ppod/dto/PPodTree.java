@@ -5,9 +5,9 @@ import edu.umd.cs.findbugs.annotations.CheckForNull;
 
 public final class PPodTree extends UuPPodDomainObjectWithLabel {
 
-	PPodTree() {}
-
 	private String newick;
+
+	PPodTree() {}
 
 	public PPodTree(final String pPodId,
 			final Long version,
@@ -24,13 +24,12 @@ public final class PPodTree extends UuPPodDomainObjectWithLabel {
 		this.newick = newick;
 	}
 
-	// public PPodTree(final String label, final String newick) {
-	// super(label);
-	// this.newick = newick;
-	// }
-
 	public String getNewick() {
 		return newick;
+	}
+
+	public void setNewick(final String newick) {
+		this.newick = newick;
 	}
 
 }

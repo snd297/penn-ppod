@@ -32,6 +32,7 @@ import javax.persistence.OneToMany;
 import javax.persistence.OrderColumn;
 import javax.persistence.Table;
 
+import edu.umd.cs.findbugs.annotations.CheckForNull;
 import edu.umd.cs.findbugs.annotations.Nullable;
 import edu.upenn.cis.ppod.dto.IOtuSets;
 import edu.upenn.cis.ppod.imodel.ILabeled;
@@ -75,6 +76,7 @@ public class Study
 	static final String LABEL_COLUMN = "LABEL";
 
 	@Column(name = LABEL_COLUMN, nullable = false)
+	@CheckForNull
 	private String label;
 
 	@OneToMany(cascade = CascadeType.ALL, orphanRemoval = true)
@@ -143,19 +145,15 @@ public class Study
 		return Collections.unmodifiableList(otuSets);
 	}
 
-	protected List<OtuSet> getOTUSetsModifiable() {
-		return otuSets;
-	}
-
 	/**
 	 * Remove an OTU set from this Study.
 	 * 
 	 * @param otuSet to be removed
 	 * 
-	 * @throw IllegalArgumentException if this study does not contain the OTU
+	 * @throw IllegalArgumentException if this study does not contain the Otu
 	 *        set
 	 */
-	public void removeOTUSet(final OtuSet otuSet) {
+	public void removeOtuSet(final OtuSet otuSet) {
 		checkNotNull(otuSet);
 		checkArgument(getOtuSets().contains(otuSet),
 				"this study does not contain otu set [" + otuSet.getLabel()

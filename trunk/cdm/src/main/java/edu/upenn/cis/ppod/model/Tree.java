@@ -41,18 +41,18 @@ public class Tree extends UuPPodEntity {
 	public static final String TABLE = "TREE";
 
 	@Column(name = "LABEL", nullable = false)
-	@Nullable
+	@CheckForNull
 	private String label;
 
 	@Lob
 	@Column(name = "NEWICK", nullable = false)
-	@Nullable
+	@CheckForNull
 	private String newick;
 
 	@ManyToOne(fetch = FetchType.LAZY, optional = false)
 	@JoinColumn(name = TreeSet.JOIN_COLUMN, insertable = false,
 				updatable = false)
-	@Nullable
+	@CheckForNull
 	private TreeSet parent;
 
 	/**

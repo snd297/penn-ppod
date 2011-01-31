@@ -24,7 +24,7 @@ public class ProteinCell
 
 	@ManyToOne(fetch = FetchType.LAZY, optional = false)
 	@JoinColumn(name = ProteinRow.JOIN_COLUMN)
-	@Nullable
+	@CheckForNull
 	private ProteinRow parent;
 
 	/**

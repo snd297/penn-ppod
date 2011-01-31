@@ -15,8 +15,6 @@
  */
 package edu.upenn.cis.ppod.dto;
 
-import javax.annotation.Nullable;
-
 import com.google.common.base.Function;
 
 /**
@@ -38,11 +36,10 @@ public interface IHasPPodId {
 	};
 
 	/**
-	 * Get the pPOD id of this {@link IWithPPodId}.
+	 * Get the pPOD id.
 	 * 
-	 * @return the pPOD id of this {@link IWithPPodId}
+	 * @return the pPOD id
 	 */
-	@Nullable
 	String getPPodId();
 
 }
