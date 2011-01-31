@@ -44,7 +44,7 @@ public class StudyTest {
 		study.addOtuSet(otuSet2);
 		study.unsetInNeedOfNewVersion();
 
-		study.removeOTUSet(otuSet1);
+		study.removeOtuSet(otuSet1);
 		assertTrue(study.isInNeedOfNewVersion());
 		assertFalse(study.getOtuSets().contains(otuSet1));
 

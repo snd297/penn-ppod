@@ -44,11 +44,11 @@ public abstract class SequenceSet<S extends Sequence<?>>
 		extends UuPPodEntity
 		implements IDependsOnParentOtus {
 
-	@Nullable
+	@CheckForNull
 	@Column(name = "LABEL", nullable = false)
 	private String label;
 
-	@Nullable
+	@CheckForNull
 	@ManyToOne(fetch = FetchType.LAZY, optional = false)
 	@JoinColumn(name = OtuSet.JOIN_COLUMN, insertable = false,
 				updatable = false)
@@ -83,6 +83,7 @@ public abstract class SequenceSet<S extends Sequence<?>>
 		}
 	}
 
+	@Nullable
 	public String getLabel() {
 		return label;
 	}
@@ -115,7 +116,7 @@ public abstract class SequenceSet<S extends Sequence<?>>
 	 * @return the length of the sequences in this set, or {@code null} if no
 	 *         sequences have been added to this set
 	 */
-	@CheckForNull
+	@Nullable
 	public Integer getSequenceLengths() {
 		for (final S sequenceInThisSet : getOTUKeyedSequences()
 				.getValues()
@@ -148,7 +149,7 @@ public abstract class SequenceSet<S extends Sequence<?>>
 	 *             {@code sequence.getSequence().length() != this.getLength()}
 	 * @return
 	 */
-	@CheckForNull
+	@Nullable
 	public abstract S putSequence(final Otu otu, final S sequence);
 
 	@Override

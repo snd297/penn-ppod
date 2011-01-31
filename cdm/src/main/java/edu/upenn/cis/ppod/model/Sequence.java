@@ -42,7 +42,7 @@ public abstract class Sequence<SS extends SequenceSet<?>>
 
 	@Lob
 	@Column(name = SEQUENCE_COLUMN, nullable = false)
-	@Nullable
+	@CheckForNull
 	private String sequence;
 
 	@Column(name = "ACCESSION", nullable = true)

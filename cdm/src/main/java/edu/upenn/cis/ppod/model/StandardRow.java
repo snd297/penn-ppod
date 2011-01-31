@@ -29,6 +29,7 @@ import javax.persistence.OneToMany;
 import javax.persistence.OrderColumn;
 import javax.persistence.Table;
 
+import edu.umd.cs.findbugs.annotations.CheckForNull;
 import edu.upenn.cis.ppod.util.IVisitor;
 
 /**
@@ -55,6 +56,7 @@ public class StandardRow
 
 	@ManyToOne(fetch = FetchType.LAZY, optional = false)
 	@JoinColumn(name = StandardMatrix.JOIN_COLUMN)
+	@CheckForNull
 	private StandardMatrix parent;
 
 	public StandardRow() {}
@@ -87,8 +89,7 @@ public class StandardRow
 	}
 
 	/** {@inheritDoc} */
-	public void setParent(
-			final StandardMatrix parent) {
+	public void setParent(final StandardMatrix parent) {
 		this.parent = parent;
 	}
 }

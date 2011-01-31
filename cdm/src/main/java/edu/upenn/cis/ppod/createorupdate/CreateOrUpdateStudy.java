@@ -121,7 +121,7 @@ class CreateOrUpdateStudy implements ICreateOrUpdateStudy {
 			}
 		}
 		for (final OtuSet toBeRemoved : toBeRemoveds) {
-			dbStudy.removeOTUSet(toBeRemoved);
+			dbStudy.removeOtuSet(toBeRemoved);
 		}
 
 		// Save or update incoming otu sets

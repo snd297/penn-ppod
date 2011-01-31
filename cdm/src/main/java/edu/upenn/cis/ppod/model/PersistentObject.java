@@ -24,6 +24,7 @@ import javax.persistence.Id;
 import javax.persistence.MappedSuperclass;
 import javax.persistence.Version;
 
+import edu.umd.cs.findbugs.annotations.CheckForNull;
 import edu.upenn.cis.ppod.imodel.IHasLongId;
 
 /**
@@ -52,13 +53,13 @@ public abstract class PersistentObject implements IHasLongId {
 	@Id
 	@GeneratedValue
 	@Column(name = ID_COLUMN)
-	@Nullable
+	@CheckForNull
 	private Long id;
 
 	@SuppressWarnings("unused")
 	@Version
 	@Column(name = "OBJ_VERSION")
-	@Nullable
+	@CheckForNull
 	private Integer objVersion;
 
 	/** Default constructor. */
