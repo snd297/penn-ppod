@@ -115,12 +115,6 @@ abstract class Row<C extends Cell<?, ?>, M extends Matrix<?, ?>>
 
 		checkState(matrix != null, "This row hasn't been added to a matrix yet");
 
-		checkState(matrix.getColumnsSize() == cells.size(),
-								"the matrix has different number of columns "
-										+ matrix.getColumnsSize()
-										+ " than cells "
-										+ cells.size());
-
 		final List<C> removedCells = newArrayList(getCells());
 		removedCells.removeAll(cells);
 

@@ -69,15 +69,8 @@ public class DnaMatrix extends MolecularMatrix<DnaRow, DnaCell> {
 	 */
 	@Beta
 	public List<DnaCell> removeColumn(final int columnNo) {
-		setColumnsSize(getColumnsSize() - 1);
+		// setColumnsSize(getColumnsSize() - 1);
 		return super.removeColumnHelper(columnNo);
-	}
-
-	/**
-	 * Created for JAXB.
-	 */
-	protected void setOTUKeyedRows(final DnaRows rows) {
-		this.rows = rows;
 	}
 
 }

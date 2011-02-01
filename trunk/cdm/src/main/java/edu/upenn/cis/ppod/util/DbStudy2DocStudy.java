@@ -210,10 +210,7 @@ public class DbStudy2DocStudy {
 		final PPodDnaMatrix docMatrix = new PPodDnaMatrix(
 				dbMatrix.getPPodId(),
 				dbMatrix.getVersionInfo().getVersion(), dbMatrix.getLabel());
-		for (final VersionInfo columnVersionInfo : dbMatrix
-				.getColumnVersionInfos()) {
-			docMatrix.getColumnVersions().add(columnVersionInfo.getVersion());
-		}
+
 		for (final Otu dbOtu : dbMatrix.getParent().getOtus()) {
 			final DnaRow dbRow = dbMatrix.getRows().get(dbOtu);
 			final List<DnaCell> dbCells = dbRow.getCells();

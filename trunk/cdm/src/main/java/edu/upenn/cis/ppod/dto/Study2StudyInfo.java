@@ -57,7 +57,7 @@ public final class Study2StudyInfo {
 			for (final Otu otu : otuSet.getOtus()) {
 				final PPodEntityInfo otuInfo =
 						new PPodEntityInfo();
-				otuSetInfo.getOTUInfos().add(otuInfo);
+				otuSetInfo.getOtuInfos().add(otuInfo);
 				otuInfo.setEntityId(otu.getId());
 				otuInfo.setPPodId(otu.getPPodId());
 				otuInfo.setVersion(otu.getVersionInfo()
@@ -66,8 +66,8 @@ public final class Study2StudyInfo {
 
 			for (final StandardMatrix matrix : otuSet
 					.getStandardMatrices()) {
-				final MatrixInfo matrixInfo = new MatrixInfo();
-				otuSetInfo.getMatrixInfos().add(matrixInfo);
+				final StandardMatrixInfo matrixInfo = new StandardMatrixInfo();
+				otuSetInfo.getStandardMatrixInfos().add(matrixInfo);
 				matrixInfo.setPPodId(matrix.getPPodId());
 				matrixInfo.setEntityId(matrix.getId());
 				matrixInfo.setVersion(matrix.getVersionInfo()
@@ -123,22 +123,12 @@ public final class Study2StudyInfo {
 			// duplicate code.
 			for (final DnaMatrix matrix : otuSet
 					.getDnaMatrices()) {
-				final MatrixInfo matrixInfo = new MatrixInfo();
-				otuSetInfo.getMatrixInfos().add(matrixInfo);
+				final MolecularMatrixInfo matrixInfo = new MolecularMatrixInfo();
+				otuSetInfo.getDnaMatrixInfos().add(matrixInfo);
 				matrixInfo.setPPodId(matrix.getPPodId());
 				matrixInfo.setEntityId(matrix.getId());
 				matrixInfo.setVersion(matrix.getVersionInfo()
 						.getVersion());
-
-				for (int columnPosition = 0; columnPosition < matrix
-						.getColumnVersionInfos().size(); columnPosition++) {
-					final VersionInfo columnVersionInfo =
-							matrix.getColumnVersionInfos()
-									.get(columnPosition);
-					matrixInfo.getColumnHeaderVersionsByIdx()
-							.put(columnPosition,
-									columnVersionInfo.getVersion());
-				}
 
 				int rowIdx = -1;
 

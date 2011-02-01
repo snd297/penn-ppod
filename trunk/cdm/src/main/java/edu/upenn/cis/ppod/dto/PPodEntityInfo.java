@@ -20,7 +20,6 @@ import javax.xml.bind.annotation.XmlAccessorType;
 import javax.xml.bind.annotation.XmlAttribute;
 import javax.xml.bind.annotation.XmlRootElement;
 
-
 /**
  * For communicating back to a client certain information about a pPOD entity
  * without having to send the entire entity: the pPOD ID, pPOD Version, database
@@ -72,12 +71,9 @@ public class PPodEntityInfo implements IHasPPodId {
 	 * Set the entityId.
 	 * 
 	 * @param entityId the entityId to set
-	 * 
-	 * @return this
 	 */
-	public PPodEntityInfo setEntityId(final Long entityId) {
+	public void setEntityId(final Long entityId) {
 		this.entityId = entityId;
-		return this;
 	}
 
 	/**
@@ -93,12 +89,9 @@ public class PPodEntityInfo implements IHasPPodId {
 	 * Set the pPodVersion.
 	 * 
 	 * @param pPodVersion the pPodVersion to set
-	 * 
-	 * @return this
 	 */
-	public PPodEntityInfo setVersion(final Long pPodVersion) {
+	public void setVersion(final Long pPodVersion) {
 		this.pPodVersion = pPodVersion;
-		return this;
 	}
 
 	/**

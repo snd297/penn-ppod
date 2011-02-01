@@ -389,6 +389,24 @@ public class StandardMatrixTest {
 		verify(character2).accept(visitor);
 
 	}
+
+	@Test
+	public void setColumnPPodVersionInfo() {
+		final StandardMatrix matrix = new StandardMatrix();
+		final VersionInfo versionInfo = new VersionInfo();
+		matrix.setCharacters(newArrayList(new StandardCharacter()));
+		matrix.setColumnVersionInfos(versionInfo);
+		matrix.setColumnVersionInfo(0, versionInfo);
+		assertSame(matrix.getColumnVersionInfos().get(0), versionInfo);
+	}
+
+	@Test(expectedExceptions = IllegalArgumentException.class)
+	public void setColumnPPodVersionInfosWTooSmallPos() {
+		final StandardMatrix matrix = new StandardMatrix();
+		final VersionInfo versionInfo = new VersionInfo();
+		matrix.setColumnVersionInfo(0, versionInfo);
+	}
+
 	// void populateMatrix(final StandardMatrix matrix) {
 	// final IOTUSet otuSet = otuSetProvider.get();
 	//

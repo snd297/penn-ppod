@@ -46,12 +46,9 @@ public final class CellVersionsByColumnIdx {
 	 * Set the cellVersionsByColumnIdx.
 	 * 
 	 * @param cellVersionsByColumnIdx the cellVersionsByColumnIdx to set
-	 * 
-	 * @return this
 	 */
-	public CellVersionsByColumnIdx setCellVersionsByColumnIdx(
+	public void setCellVersionsByColumnIdx(
 			final Map<Integer, Long> cellVersionsByColumnIdx) {
 		this.cellVersionsByColumnIdx = cellVersionsByColumnIdx;
-		return this;
 	}
 }

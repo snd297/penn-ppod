@@ -18,7 +18,7 @@ public class RowTest {
 		otuSet.addOtu(otu);
 		final DnaMatrix matrix = new DnaMatrix();
 		otuSet.addDnaMatrix(matrix);
-		matrix.setColumnsSize(3);
+		// matrix.setColumnsSize(3);
 		final DnaRow row = new DnaRow();
 		matrix.putRow(otu, row);
 		row.setCells(newArrayList(new DnaCell(), new DnaCell(), new DnaCell()));

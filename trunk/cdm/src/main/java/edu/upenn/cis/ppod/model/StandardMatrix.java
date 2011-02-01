@@ -31,6 +31,8 @@ import javax.persistence.CascadeType;
 import javax.persistence.Embedded;
 import javax.persistence.Entity;
 import javax.persistence.JoinColumn;
+import javax.persistence.JoinTable;
+import javax.persistence.ManyToMany;
 import javax.persistence.OneToMany;
 import javax.persistence.OrderColumn;
 import javax.persistence.Table;
@@ -39,6 +41,7 @@ import com.google.common.annotations.Beta;
 import com.google.common.collect.BiMap;
 import com.google.common.collect.HashBiMap;
 
+import edu.upenn.cis.ppod.imodel.IHasColumnVersionInfos;
 import edu.upenn.cis.ppod.util.IVisitor;
 
 /**
@@ -48,8 +51,9 @@ import edu.upenn.cis.ppod.util.IVisitor;
  */
 @Entity
 @Table(name = StandardMatrix.TABLE)
-public class StandardMatrix
-		extends Matrix<StandardRow, StandardCell> {
+public class StandardMatrix extends Matrix<StandardRow, StandardCell> implements
+		IHasColumnVersionInfos {
+
 	/** This entity's table name. */
 	public static final String TABLE = "STANDARD_MATRIX";
 
@@ -65,11 +69,15 @@ public class StandardMatrix
 	@JoinColumn(name = JOIN_COLUMN, nullable = false)
 	private final List<StandardCharacter> characters = newArrayList();
 
-	/**
-	 * Non-final for JAXB.
-	 */
+	/** The pPod versions of the columns. */
+	@ManyToMany
+	@JoinTable(inverseJoinColumns =
+		{ @JoinColumn(name = VersionInfo.JOIN_COLUMN) })
+	@OrderColumn(name = VersionInfo.TABLE + "_POSITION")
+	private final List<VersionInfo> columnVersionInfos = newArrayList();
+
 	@Embedded
-	private StandardRows rows = new StandardRows(this);
+	private final StandardRows rows = new StandardRows(this);
 
 	/** No-arg constructor. */
 	public StandardMatrix() {}
@@ -167,6 +175,39 @@ public class StandardMatrix
 	 */
 	protected List<StandardCharacter> getCharactersModifiable() {
 		return characters;
+	}
+
+	/**
+	 * The number of columns which any newly introduced rows must have.
+	 * <p>
+	 * Will return {@code 0} for newly constructed matrices.
+	 * 
+	 * @param columnsSize the number of columns in this matrix
+	 */
+	public Integer getColumnsSize() {
+		return Integer.valueOf(getColumnVersionInfos().size());
+	}
+
+	/**
+	 * Get the column pPOD version infos. These are equal to the largest pPOD
+	 * version in the columns, where largest list determined determined by
+	 * {@link VersionInfo#getVersion()} .
+	 * <p>
+	 * The behavior of this method is undefined for unmarshalled matrices.
+	 * 
+	 * @return get the column pPOD version infos
+	 */
+	public List<VersionInfo> getColumnVersionInfos() {
+		return Collections.unmodifiableList(columnVersionInfos);
+	}
+
+	/**
+	 * A modifiable reference to the column pPOD version infos.
+	 * 
+	 * @return a modifiable reference to the column pPOD version infos
+	 */
+	List<VersionInfo> getColumnVersionInfosModifiable() {
+		return columnVersionInfos;
 	}
 
 	/**
@@ -268,15 +309,51 @@ public class StandardMatrix
 	}
 
 	/**
-	 * Set the rows.
-	 * <p>
-	 * Created for JAXB.
+	 * Set a particular column to a version.
 	 * 
-	 * @param otusToRows the otusToRows to set
+	 * @param pos position of the column
+	 * @param versionInfo the version
+	 * 
+	 * @throw IllegalArgumentException if {@code pos >=
+	 *        getColumnVersionInfos().size()}
 	 */
-	protected void setOTUKeyedRows(
-			final StandardRows rows) {
-		this.rows = rows;
+	public void setColumnVersionInfo(
+			final int pos,
+			final VersionInfo versionInfo) {
+		checkNotNull(versionInfo);
+		checkArgument(pos < getColumnVersionInfos().size(),
+				"pos is bigger than getColumnVersionInfos().size()");
+		getColumnVersionInfosModifiable().set(pos, versionInfo);
+	}
+
+	/**
+	 * Set all of the columns' pPOD version infos.
+	 * 
+	 * @param versionInfo the pPOD version info
+	 * 
+	 * @return this
+	 */
+	public void setColumnVersionInfos(
+			final VersionInfo versionInfo) {
+		for (int pos = 0; pos < getColumnVersionInfos().size(); pos++) {
+			setColumnVersionInfo(pos, versionInfo);
+		}
+	}
+
+	/**
+	 * Set the column at {@code position} as in need of a new
+	 * {@link VersionInfo}. Which means to set {@link #getColumnVersionInfos()}
+	 * {@code .get(position)} to {@code null}.
+	 * 
+	 * @param position the column that needs the new {@code VersionInfo}
+	 */
+	public void setInNeedOfNewColumnVersion(final int position) {
+		checkArgument(position >= 0, "position is negative");
+		checkArgument(position < getColumnsSize(),
+				"position " + position
+						+ " is too large for the number of columns "
+						+ getColumnVersionInfos().size());
+		columnVersionInfos.set(position, null);
 	}
 
 }

@@ -55,8 +55,8 @@ class CreateOrUpdateDnaMatrix implements ICreateOrUpdateDNAMatrix {
 
 		final String METHOD = "createOrUpdateMatrix(...)";
 
-		dbMatrix.setColumnsSize(
-				sourceMatrix.getRows().get(0).getSequence().length());
+		// dbMatrix.setColumnsSize(
+		// sourceMatrix.getRows().get(0).getSequence().length());
 
 		dbMatrix.setLabel(sourceMatrix.getLabel());
 		// dbMatrix.setDescription(sourceMatrix.getDescription());

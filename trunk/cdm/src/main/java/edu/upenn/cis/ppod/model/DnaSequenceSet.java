@@ -21,7 +21,6 @@ import static com.google.common.base.Preconditions.checkNotNull;
 import java.util.Collections;
 import java.util.Map;
 
-import javax.annotation.CheckForNull;
 import javax.annotation.Nullable;
 import javax.persistence.Embedded;
 import javax.persistence.Entity;
@@ -103,13 +102,6 @@ public class DnaSequenceSet
 						"sequence.getSequence() == null");
 		checkSequenceLength(sequence);
 		return getOTUKeyedSequences().put(otu, sequence);
-	}
-
-	/** Protected For JAXB. */
-	protected void setOTUKeyedSequences(
-			final DnaSequences sequences) {
-		checkNotNull(sequences);
-		this.sequences = sequences;
 	}
 
 }

@@ -279,6 +279,17 @@ public class StandardCell
 		}
 	}
 
+	@Override
+	public void setInNeedOfNewVersion() {
+		if (parent != null) {
+			final StandardMatrix grandParent = parent.getParent();
+			if (grandParent != null) {
+				grandParent.setInNeedOfNewColumnVersion(getPosition());
+			}
+		}
+		super.setInNeedOfNewVersion();
+	}
+
 	/**
 	 * Set the cell's type to {@link Type.UNCERTAIN} and its states to contain
 	 * only the states with the given state numbers. The states are pulled from

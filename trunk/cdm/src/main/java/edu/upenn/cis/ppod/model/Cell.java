@@ -202,13 +202,10 @@ abstract class Cell<E, R extends Row<?, ?>>
 			row.setInNeedOfNewVersion();
 			final Matrix<?, ?> matrix = row.getParent();
 			if (matrix != null) {
-				// so FindBugs knows that it's okay
-				final Integer position = getPosition();
 				if (getPosition() == null) {
 					throw new AssertionError(
 							"cell has no position, but is a part of a matrix");
 				}
-				matrix.setInNeedOfNewColumnVersion(position);
 			}
 		}
 		super.setInNeedOfNewVersion();

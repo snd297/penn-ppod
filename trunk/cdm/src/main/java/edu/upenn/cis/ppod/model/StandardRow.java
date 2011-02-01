@@ -16,6 +16,7 @@
 package edu.upenn.cis.ppod.model;
 
 import static com.google.common.base.Preconditions.checkNotNull;
+import static com.google.common.base.Preconditions.checkState;
 import static com.google.common.collect.Lists.newArrayList;
 
 import java.util.List;
@@ -81,6 +82,13 @@ public class StandardRow
 	@Override
 	public void setCells(
 			final List<? extends StandardCell> cells) {
+		checkState(parent != null);
+		checkState(parent.getCharacters().size() == cells.size(),
+				"the matrix has different number of columns "
+						+ parent.getCharacters().size()
+						+ " than cells "
+						+ cells.size());
+
 		super.setCellsHelper(cells);
 
 		for (final StandardCell cell : getCells()) {
