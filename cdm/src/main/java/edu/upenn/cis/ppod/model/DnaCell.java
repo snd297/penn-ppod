@@ -113,13 +113,8 @@ public class DnaCell
 		setElements(EnumSet.noneOf(PPodDnaNucleotide.class));
 	}
 
-	/**
-	 * {@inheritDoc}
-	 * <p>
-	 * Protected for JAXB.
-	 */
 	@Override
-	protected void setElement(final PPodDnaNucleotide element) {
+	void setElement(final PPodDnaNucleotide element) {
 		this.element = element;
 	}
 

@@ -34,7 +34,9 @@ public final class OtuSetInfo extends PPodEntityInfo {
 	/** Order matters for these. */
 	private final List<PPodEntityInfo> otuInfos = newArrayList();
 
-	private final List<MatrixInfo> matrixInfos = newArrayList();
+	private final List<StandardMatrixInfo> standardMatrixInfos = newArrayList();
+
+	private final List<MolecularMatrixInfo> dnaMatrixInfos = newArrayList();
 
 	private final List<SequenceSetInfo> sequenceSetInfos = newArrayList();
 
@@ -42,9 +44,9 @@ public final class OtuSetInfo extends PPodEntityInfo {
 
 	public OtuSetInfo() {}
 
-	@XmlElement(name = "matrixInfo")
-	public List<MatrixInfo> getMatrixInfos() {
-		return matrixInfos;
+	@XmlElement(name = "dnaMatrixInfo")
+	public List<MolecularMatrixInfo> getDnaMatrixInfos() {
+		return dnaMatrixInfos;
 	}
 
 	/**
@@ -54,7 +56,7 @@ public final class OtuSetInfo extends PPodEntityInfo {
 	 * @return
 	 */
 	@XmlElement(name = "otuInfo")
-	public List<PPodEntityInfo> getOTUInfos() {
+	public List<PPodEntityInfo> getOtuInfos() {
 		return otuInfos;
 	}
 
@@ -63,8 +65,14 @@ public final class OtuSetInfo extends PPodEntityInfo {
 		return sequenceSetInfos;
 	}
 
+	@XmlElement(name = "standardMatrixInfos")
+	public List<StandardMatrixInfo> getStandardMatrixInfos() {
+		return standardMatrixInfos;
+	}
+
 	@XmlElement(name = "treeSetInfo")
 	public List<TreeSetInfo> getTreeSetInfos() {
 		return treeSetInfos;
 	}
+
 }

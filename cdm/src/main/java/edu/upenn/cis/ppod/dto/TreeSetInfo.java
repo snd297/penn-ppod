@@ -45,12 +45,9 @@ public final class TreeSetInfo extends PPodEntityInfo {
 	 * Set the treePPodVersions.
 	 * 
 	 * @param treePPodVersions the treePPodVersions to set
-	 * 
-	 * @return this
 	 */
-	public TreeSetInfo setTreePPodInfos(
+	public void setTreePPodInfos(
 			final List<PPodEntityInfo> treePPodVersions) {
 		this.treeInfos = treePPodVersions;
-		return this;
 	}
 }

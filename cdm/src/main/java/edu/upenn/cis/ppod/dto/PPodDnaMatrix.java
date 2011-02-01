@@ -14,9 +14,6 @@ final public class PPodDnaMatrix extends UuPPodDomainObjectWithLabel {
 	@XmlElement(name = "row")
 	private List<PPodDnaRow> rows = newArrayList();
 
-	@XmlElement(name = "columnVersion")
-	private List<Long> columnVersions = newArrayList();
-
 	PPodDnaMatrix() {}
 
 	public PPodDnaMatrix(final String pPodId, final Long version,
@@ -28,17 +25,8 @@ final public class PPodDnaMatrix extends UuPPodDomainObjectWithLabel {
 		super(pPodId, label);
 	}
 
-	public List<Long> getColumnVersions() {
-		return columnVersions;
-	}
-
 	public List<PPodDnaRow> getRows() {
 		return rows;
-	}
-
-	public void setColumnVersions(final List<Long> columnVersions) {
-		checkNotNull(rows);
-		this.columnVersions = columnVersions;
 	}
 
 	public void setRows(final List<PPodDnaRow> rows) {

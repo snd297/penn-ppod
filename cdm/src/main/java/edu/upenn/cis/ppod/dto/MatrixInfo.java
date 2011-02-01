@@ -21,8 +21,6 @@ import static com.google.common.collect.Maps.newTreeMap;
 import java.util.Map;
 import java.util.SortedMap;
 
-import javax.xml.bind.annotation.XmlAccessType;
-import javax.xml.bind.annotation.XmlAccessorType;
 import javax.xml.bind.annotation.XmlElementWrapper;
 
 import edu.umd.cs.findbugs.annotations.Nullable;
@@ -30,20 +28,9 @@ import edu.umd.cs.findbugs.annotations.Nullable;
 /**
  * @author Sam Donnelly
  */
-@XmlAccessorType(XmlAccessType.NONE)
-public final class MatrixInfo extends PPodEntityInfo {
+abstract class MatrixInfo extends PPodEntityInfo {
 
 	private Map<Integer, PPodEntityInfo> characterInfosByIdx = newTreeMap();
-
-	/**
-	 * Version of column header {@code ic} is at
-	 * {@code columnHeaderVersionsByColumnIndex.get(ic)}. The returned value
-	 * will be {@code null} if no version number was inserted.
-	 * <p>
-	 * Uses a {@link TreeMap} to ease debugging: it's easier to read if it
-	 * prints out in order.
-	 */
-	private Map<Integer, Long> columnHeaderVersionsByIdx = newTreeMap();
 
 	/**
 	 * Version of row header {@code it} is at {@code rowVersionsByIdx.get(it)}.
@@ -78,7 +65,7 @@ public final class MatrixInfo extends PPodEntityInfo {
 	public MatrixInfo() {}
 
 	@Nullable
-	public Long getCellVersion(final int it, final int ic) {
+	public final Long getCellVersion(final int it, final int ic) {
 		if (cellPPodIdAndVersionsByMN.get(it) == null) {
 			return null;
 		} else {
@@ -88,7 +75,7 @@ public final class MatrixInfo extends PPodEntityInfo {
 	}
 
 	@XmlElementWrapper
-	public Map<Integer, CellVersionsByColumnIdx> getCellVersionsByMN() {
+	public final Map<Integer, CellVersionsByColumnIdx> getCellVersionsByMN() {
 		return cellPPodIdAndVersionsByMN;
 	}
 
@@ -98,21 +85,16 @@ public final class MatrixInfo extends PPodEntityInfo {
 	 * @return the characterInfosByIdx
 	 */
 	@XmlElementWrapper
-	public Map<Integer, PPodEntityInfo> getCharacterInfosByIdx() {
+	public final Map<Integer, PPodEntityInfo> getCharacterInfosByIdx() {
 		return characterInfosByIdx;
 	}
 
 	@XmlElementWrapper
-	public Map<Integer, Long> getColumnHeaderVersionsByIdx() {
-		return columnHeaderVersionsByIdx;
-	}
-
-	@XmlElementWrapper
-	public Map<Integer, Long> getRowHeaderVersionsByIdx() {
+	final public Map<Integer, Long> getRowHeaderVersionsByIdx() {
 		return rowVersionsByIdx;
 	}
 
-	public MatrixInfo setCellPPodIdAndVersion(final Integer m,
+	public final void setCellPPodIdAndVersion(final Integer m,
 			final Integer n, final Long cellPPodVersion) {
 		checkNotNull(m);
 		checkNotNull(n);
@@ -125,32 +107,22 @@ public final class MatrixInfo extends PPodEntityInfo {
 		}
 		cellPPodIdAndVersionsByMN.get(m).getCellVersionsByColumnIdx().put(n,
 				cellPPodVersion);
-		return this;
 	}
 
 	/**
 	 * Set the characterInfosByIdx.
 	 * 
 	 * @param characterInfosByIdx the characterInfosByIdx to set
-	 * 
-	 * @return this
 	 */
-	public MatrixInfo setCharacterInfosByIdx(
+	public final void setCharacterInfosByIdx(
 			final Map<Integer, PPodEntityInfo> characterInfosByIdx) {
 		this.characterInfosByIdx = characterInfosByIdx;
-		return this;
 	}
 
-	public MatrixInfo setColumnHeaderVersionsByIdx(
-			final SortedMap<Integer, Long> columnHeaderPPodVersions) {
-		this.columnHeaderVersionsByIdx = columnHeaderPPodVersions;
-		return this;
-	}
-
-	public MatrixInfo setRowHeaderVersionsByRowIdx(
+	public final void setRowHeaderVersionsByRowIdx(
 			final SortedMap<Integer, Long> rowHeaderPPodVersions) {
+		checkNotNull(rowHeaderPPodVersions);
 		this.rowVersionsByIdx = rowHeaderPPodVersions;
-		return this;
 	}
 
 }

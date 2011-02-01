@@ -17,8 +17,6 @@ package edu.upenn.cis.ppod.model;
 
 import static org.testng.Assert.assertEquals;
 import static org.testng.Assert.assertFalse;
-import static org.testng.Assert.assertNotNull;
-import static org.testng.Assert.assertNull;
 import static org.testng.Assert.assertSame;
 import static org.testng.Assert.assertTrue;
 
@@ -98,7 +96,7 @@ public class CellTest {
 		final DnaRow row = new DnaRow();
 
 		final DnaMatrix matrix = new DnaMatrix();
-		matrix.setColumnsSize(1);
+		// matrix.setColumnsSize(1);
 		final OtuSet otuSet = new OtuSet();
 		otuSet.addDnaMatrix(matrix);
 		otuSet.addOtu(new Otu("otu-0"));
@@ -109,24 +107,24 @@ public class CellTest {
 
 		cell.unsetInNeedOfNewVersion();
 		row.unsetInNeedOfNewVersion();
-		matrix.setInNeedOfNewColumnVersion(0);
+		// matrix.setInNeedOfNewColumnVersion(0);
 
 		cell.setInNeedOfNewVersion();
 		assertTrue(cell.isInNeedOfNewVersion());
 		assertTrue(row.isInNeedOfNewVersion());
-		assertNull(matrix.getColumnVersionInfos().get(0));
+		// assertNull(matrix.getColumnVersionInfos().get(0));
 
 		matrix.putRow(otuSet.getOtus().get(0), new DnaRow());
 
 		cell.unsetInNeedOfNewVersion();
 		row.unsetInNeedOfNewVersion();
-		matrix.setColumnVersionInfos(new VersionInfo());
+		// matrix.setColumnVersionInfos(new VersionInfo());
 
 		cell.setInNeedOfNewVersion();
 
 		assertTrue(cell.isInNeedOfNewVersion());
 		assertTrue(row.isInNeedOfNewVersion());
-		assertNotNull(matrix.getColumnVersionInfos().get(0));
+		// assertNotNull(matrix.getColumnVersionInfos().get(0));
 
 	}
 

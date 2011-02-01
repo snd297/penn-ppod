@@ -27,16 +27,12 @@ import java.util.Map;
 import javax.persistence.Column;
 import javax.persistence.FetchType;
 import javax.persistence.JoinColumn;
-import javax.persistence.JoinTable;
-import javax.persistence.ManyToMany;
 import javax.persistence.ManyToOne;
 import javax.persistence.MappedSuperclass;
-import javax.persistence.OrderColumn;
 
 import edu.umd.cs.findbugs.annotations.CheckForNull;
 import edu.umd.cs.findbugs.annotations.Nullable;
 import edu.upenn.cis.ppod.imodel.IDependsOnParentOtus;
-import edu.upenn.cis.ppod.imodel.IHasColumnVersionInfos;
 import edu.upenn.cis.ppod.imodel.IOtuKeyedMap;
 import edu.upenn.cis.ppod.util.IVisitor;
 
@@ -49,20 +45,13 @@ import edu.upenn.cis.ppod.util.IVisitor;
 @MappedSuperclass
 abstract class Matrix<R extends Row<C, ?>, C extends Cell<?, ?>>
 		extends UuPPodEntity
-		implements IHasColumnVersionInfos, IDependsOnParentOtus {
+		implements IDependsOnParentOtus {
 
 	/** Description column. */
 	public static final String DESCRIPTION_COLUMN = "DESCRIPTION";
 
 	/** Label column. */
 	public static final String LABEL_COLUMN = "LABEL";
-
-	/** The pPod versions of the columns. */
-	@ManyToMany
-	@JoinTable(inverseJoinColumns =
-		{ @JoinColumn(name = VersionInfo.JOIN_COLUMN) })
-	@OrderColumn(name = VersionInfo.TABLE + "_POSITION")
-	private final List<VersionInfo> columnVersionInfos = newArrayList();
 
 	/** Free-form description. */
 	@Column(name = DESCRIPTION_COLUMN, nullable = true)
@@ -99,9 +88,6 @@ abstract class Matrix<R extends Row<C, ?>, C extends Cell<?, ?>>
 			final int columnNo,
 			final List<? extends C> column) {
 		checkArgument(columnNo >= 0, "columnNo < 0");
-		checkArgument(
-				columnNo < getColumnsSize(),
-				"columnNo >= number of columns");
 
 		int rowPos = -1;
 		for (final R row : getRows().values()) {
@@ -110,39 +96,6 @@ abstract class Matrix<R extends Row<C, ?>, C extends Cell<?, ?>>
 			cells.add(columnNo, column.get(rowPos));
 			row.setCells(cells);
 		}
-	}
-
-	/**
-	 * The number of columns which any newly introduced rows must have.
-	 * <p>
-	 * Will return {@code 0} for newly constructed matrices.
-	 * 
-	 * @param columnsSize the number of columns in this matrix
-	 */
-	public Integer getColumnsSize() {
-		return Integer.valueOf(getColumnVersionInfos().size());
-	}
-
-	/**
-	 * Get the column pPOD version infos. These are equal to the largest pPOD
-	 * version in the columns, where largest list determined determined by
-	 * {@link VersionInfo#getVersion()} .
-	 * <p>
-	 * The behavior of this method is undefined for unmarshalled matrices.
-	 * 
-	 * @return get the column pPOD version infos
-	 */
-	public List<VersionInfo> getColumnVersionInfos() {
-		return Collections.unmodifiableList(columnVersionInfos);
-	}
-
-	/**
-	 * A modifiable reference to the column pPOD version infos.
-	 * 
-	 * @return a modifiable reference to the column pPOD version infos
-	 */
-	List<VersionInfo> getColumnVersionInfosModifiable() {
-		return columnVersionInfos;
 	}
 
 	/**
@@ -242,9 +195,6 @@ abstract class Matrix<R extends Row<C, ?>, C extends Cell<?, ?>>
 		checkArgument(
 				columnNo >= 0,
 				"columnNo < 0");
-		checkArgument(
-				columnNo < getColumnsSize(),
-				"columnNo >= number of columns");
 
 		final List<C> removedColumn = newArrayList();
 		for (final R row : getRows().values()) {
@@ -256,37 +206,6 @@ abstract class Matrix<R extends Row<C, ?>, C extends Cell<?, ?>>
 		return removedColumn;
 	}
 
-	/**
-	 * Set a particular column to a version.
-	 * 
-	 * @param pos position of the column
-	 * @param versionInfo the version
-	 * 
-	 * @throw IllegalArgumentException if {@code pos >=
-	 *        getColumnVersionInfos().size()}
-	 */
-	public void setColumnVersionInfo(
-			final int pos,
-			final VersionInfo versionInfo) {
-		checkNotNull(versionInfo);
-		checkArgument(pos < getColumnVersionInfos().size(),
-				"pos is bigger than getColumnVersionInfos().size()");
-		getColumnVersionInfosModifiable().set(pos, versionInfo);
-	}
-
-	/**
-	 * Set all of the columns' pPOD version infos.
-	 * 
-	 * @param versionInfo the pPOD version info
-	 * 
-	 * @return this
-	 */
-	public void setColumnVersionInfos(
-			final VersionInfo versionInfo) {
-		for (int pos = 0; pos < getColumnVersionInfos().size(); pos++) {
-			setColumnVersionInfo(pos, versionInfo);
-		}
-	}
 
 	/**
 	 * Setter.
@@ -301,22 +220,6 @@ abstract class Matrix<R extends Row<C, ?>, C extends Cell<?, ?>>
 			this.description = description;
 			setInNeedOfNewVersion();
 		}
-	}
-
-	/**
-	 * Set the column at {@code position} as in need of a new
-	 * {@link VersionInfo}. Which means to set {@link #getColumnVersionInfos()}
-	 * {@code .get(position)} to {@code null}.
-	 * 
-	 * @param position the column that needs the new {@code VersionInfo}
-	 */
-	public void setInNeedOfNewColumnVersion(final int position) {
-		checkArgument(position >= 0, "position is negative");
-		checkArgument(position < getColumnsSize(),
-				"position " + position
-						+ " is too large for the number of columns "
-						+ getColumnVersionInfos().size());
-		columnVersionInfos.set(position, null);
 	}
 
 	@Override

@@ -26,21 +26,4 @@ import edu.upenn.cis.ppod.TestGroupDefs;
  */
 @Test(groups = TestGroupDefs.FAST)
 public class MatrixTest {
-
-	@Test
-	public void setColumnPPodVersionInfo() {
-		final MolecularMatrix<DnaRow, DnaCell> matrix = new DnaMatrix();
-		final VersionInfo versionInfo = new VersionInfo();
-		matrix.setColumnsSize(1);
-		matrix.setColumnVersionInfos(versionInfo);
-		matrix.setColumnVersionInfo(0, versionInfo);
-		assertSame(matrix.getColumnVersionInfos().get(0), versionInfo);
-	}
-
-	@Test(expectedExceptions = IllegalArgumentException.class)
-	public void setColumnPPodVersionInfosWTooSmallPos() {
-		final Matrix<?, ?> matrix = new DnaMatrix();
-		final VersionInfo versionInfo = new VersionInfo();
-		matrix.setColumnVersionInfo(0, versionInfo);
-	}
 }
