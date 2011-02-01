@@ -13,7 +13,7 @@ import com.google.common.collect.ImmutableSet;
 import edu.umd.cs.findbugs.annotations.CheckForNull;
 import edu.umd.cs.findbugs.annotations.Nullable;
 
-final public class PPodDnaRow extends PPodDomainObject {
+public final class PPodDnaRow extends PPodDomainObject {
 
 	public final static Set<java.lang.Character> LEGAL_CHARS =
 			ImmutableSet.of(
@@ -63,7 +63,8 @@ final public class PPodDnaRow extends PPodDomainObject {
 		return sequence;
 	}
 
-	public void setCellVersions(@CheckForNull final List<Long> cellVersions) {
+	public void setCellVersions(
+			@CheckForNull final List<Long> cellVersions) {
 		this.cellVersions = cellVersions;
 	}
 

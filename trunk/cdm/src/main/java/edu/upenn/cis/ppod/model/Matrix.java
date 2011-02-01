@@ -64,8 +64,7 @@ abstract class Matrix<R extends Row<C, ?>, C extends Cell<?, ?>>
 	private String label;
 
 	/**
-	 * These are the <code>OTU</code>s whose data comprises this
-	 * {@code CharacterStateMatrix}.
+	 * These are the <code>OTU</code>s whose data comprises this {@code Matrix}.
 	 */
 	@ManyToOne(fetch = FetchType.LAZY, optional = false)
 	@JoinColumn(name = OtuSet.JOIN_COLUMN, insertable = false,
@@ -88,7 +87,7 @@ abstract class Matrix<R extends Row<C, ?>, C extends Cell<?, ?>>
 			final int columnNo,
 			final List<? extends C> column) {
 		checkArgument(columnNo >= 0, "columnNo < 0");
-
+		checkNotNull(column);
 		int rowPos = -1;
 		for (final R row : getRows().values()) {
 			rowPos++;
@@ -177,7 +176,7 @@ abstract class Matrix<R extends Row<C, ?>, C extends Cell<?, ?>>
 	 * @throws IllegalArgumentException if this matrix already contains a row
 	 *             {@code .equals} to {@code row}
 	 */
-	@CheckForNull
+	@Nullable
 	public R putRow(final Otu otu, final R row) {
 		checkNotNull(otu);
 		checkNotNull(row);
@@ -205,7 +204,6 @@ abstract class Matrix<R extends Row<C, ?>, C extends Cell<?, ?>>
 		}
 		return removedColumn;
 	}
-
 
 	/**
 	 * Setter.
@@ -247,8 +245,8 @@ abstract class Matrix<R extends Row<C, ?>, C extends Cell<?, ?>>
 
 	/** {@inheritDoc} */
 	public void setParent(
-			@CheckForNull final OtuSet otuSet) {
-		this.parent = otuSet;
+			@CheckForNull final OtuSet parent) {
+		this.parent = parent;
 		updateOtus();
 	}
 

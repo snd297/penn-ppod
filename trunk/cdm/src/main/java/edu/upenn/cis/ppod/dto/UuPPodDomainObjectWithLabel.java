@@ -50,16 +50,16 @@ abstract class UuPPodDomainObjectWithLabel extends PPodDomainObject
 	}
 
 	@Nullable
-	public String getPPodId() {
+	public final String getPPodId() {
 		return pPodId;
 	}
 
-	public void setLabel(final String label) {
+	public final void setLabel(final String label) {
 		checkNotNull(label);
 		this.label = label;
 	}
 
-	public void setPPodId(@CheckForNull final String pPodId) {
+	public final void setPPodId(@CheckForNull final String pPodId) {
 		this.pPodId = pPodId;
 	}
 
