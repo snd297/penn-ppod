@@ -19,16 +19,12 @@ import static com.google.common.base.Preconditions.checkArgument;
 import static com.google.common.base.Preconditions.checkNotNull;
 
 import java.util.Collection;
-import java.util.Iterator;
 import java.util.List;
-import java.util.Map;
 import java.util.Vector;
 import java.util.concurrent.ConcurrentHashMap;
 
 import javax.annotation.CheckForNull;
 import javax.annotation.Nonnegative;
-
-import com.google.common.collect.Maps;
 
 /**
  * For easing work with collections.
@@ -89,15 +85,5 @@ public class CollectionsUtil {
 			coll.add(null);
 		}
 
-	}
-
-	public static <K, V> Map<K, V> newHashMap(
-			final Iterator<Map.Entry<K, V>> entryIterator) {
-		final Map<K, V> map = Maps.newHashMap();
-		while (entryIterator.hasNext()) {
-			final Map.Entry<K, V> entry = entryIterator.next();
-			map.put(entry.getKey(), entry.getValue());
-		}
-		return map;
 	}
 }

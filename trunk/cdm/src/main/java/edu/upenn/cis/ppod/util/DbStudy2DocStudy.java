@@ -17,6 +17,9 @@ import static edu.upenn.cis.ppod.dto.PPodDnaNucleotide.G_T;
 
 import java.util.List;
 
+import com.google.inject.Inject;
+
+import edu.upenn.cis.ppod.dao.IObjectWithLongIdDAO;
 import edu.upenn.cis.ppod.dto.PPodDnaMatrix;
 import edu.upenn.cis.ppod.dto.PPodDnaRow;
 import edu.upenn.cis.ppod.dto.PPodDnaSequence;
@@ -46,7 +49,9 @@ import edu.upenn.cis.ppod.model.VersionInfo;
 
 public class DbStudy2DocStudy {
 
-	public static char dbCell2IupacPlus(final DnaCell dbCell) {
+	private IObjectWithLongIdDAO dao;
+
+	public char dbCell2IupacPlus(final DnaCell dbCell) {
 		char iupacPlus = (char) -1;
 		switch (dbCell.getType()) {
 			case UNASSIGNED:
@@ -205,7 +210,7 @@ public class DbStudy2DocStudy {
 		return iupacPlus;
 	}
 
-	public static PPodDnaMatrix dbDnaMatrix2DocDnaMatrix(
+	public PPodDnaMatrix dbDnaMatrix2DocDnaMatrix(
 			final DnaMatrix dbMatrix) {
 		final PPodDnaMatrix docMatrix = new PPodDnaMatrix(
 				dbMatrix.getPPodId(),
@@ -222,13 +227,14 @@ public class DbStudy2DocStudy {
 			}
 			final PPodDnaRow docRow = new PPodDnaRow(
 					dbRow.getVersionInfo().getVersion(), docSeq.toString());
-			docRow.setCellVersions(cellVersions);
 			docMatrix.getRows().add(docRow);
+			docRow.setCellVersions(cellVersions);
+			dao.evict(dbRow);
 		}
 		return docMatrix;
 	}
 
-	public static PPodDnaSequenceSet dbDnaSequenceSet2DocDnaSequenceSet(
+	public PPodDnaSequenceSet dbDnaSequenceSet2DocDnaSequenceSet(
 			final DnaSequenceSet dbSequenceSet) {
 		final PPodDnaSequenceSet docSequenceSet = new PPodDnaSequenceSet(
 				dbSequenceSet.getPPodId(), dbSequenceSet.getVersionInfo()
@@ -247,7 +253,7 @@ public class DbStudy2DocStudy {
 		return docSequenceSet;
 	}
 
-	public static PPodOtu dbOtu2DocOtu(final Otu dbOtu) {
+	public PPodOtu dbOtu2DocOtu(final Otu dbOtu) {
 		final PPodOtu docOtu = new PPodOtu(
 				dbOtu.getPPodId(),
 				dbOtu.getVersionInfo().getVersion(),
@@ -256,7 +262,7 @@ public class DbStudy2DocStudy {
 		return docOtu;
 	}
 
-	public static PPodOtuSet dbOtuSet2DocOtuSet(final OtuSet dbOtuSet) {
+	public PPodOtuSet dbOtuSet2DocOtuSet(final OtuSet dbOtuSet) {
 		final PPodOtuSet docOtuSet = new PPodOtuSet(dbOtuSet.getPPodId(),
 				dbOtuSet.getVersionInfo().getVersion(), dbOtuSet.getLabel());
 
@@ -327,7 +333,7 @@ public class DbStudy2DocStudy {
 		return docMatrix;
 	}
 
-	public static PPodStudy dbStudy2DocStudy(final Study dbStudy) {
+	public PPodStudy dbStudy2DocStudy(final Study dbStudy) {
 		final PPodStudy docStudy = new PPodStudy(dbStudy.getPPodId(), dbStudy
 				.getVersionInfo().getVersion(), dbStudy.getLabel());
 		for (final OtuSet dbOtuSet : dbStudy.getOtuSets()) {
@@ -336,7 +342,8 @@ public class DbStudy2DocStudy {
 		return docStudy;
 	}
 
-	private DbStudy2DocStudy() {
-
+	@Inject
+	DbStudy2DocStudy(IObjectWithLongIdDAO dao) {
+		this.dao = dao;
 	}
 }

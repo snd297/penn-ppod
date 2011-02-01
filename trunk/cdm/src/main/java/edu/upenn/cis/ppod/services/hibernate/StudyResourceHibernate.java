@@ -15,9 +15,11 @@
  */
 package edu.upenn.cis.ppod.services.hibernate;
 
+import static com.google.common.base.Preconditions.checkNotNull;
 import static com.google.common.collect.Iterables.transform;
 import static com.google.common.collect.Sets.newHashSet;
 
+import java.util.Date;
 import java.util.Set;
 
 import org.hibernate.Session;
@@ -35,14 +37,11 @@ import edu.upenn.cis.ppod.dto.PPodStudy;
 import edu.upenn.cis.ppod.dto.Study2StudyInfo;
 import edu.upenn.cis.ppod.dto.StudyInfo;
 import edu.upenn.cis.ppod.imodel.INewVersionInfo;
-import edu.upenn.cis.ppod.model.CurrentVersion;
 import edu.upenn.cis.ppod.model.Study;
 import edu.upenn.cis.ppod.services.IStudyResource;
 import edu.upenn.cis.ppod.services.StringPair;
 import edu.upenn.cis.ppod.util.DbStudy2DocStudy;
-import edu.upenn.cis.ppod.util.IVisitor;
 import edu.upenn.cis.ppod.util.Pair;
-import edu.upenn.cis.ppod.util.SetVersionInfoVisitor;
 
 /**
  * We commit the transactions in this class so that the resteasy response will
@@ -60,11 +59,9 @@ public final class StudyResourceHibernate implements IStudyResource {
 
 	private final ICreateOrUpdateStudy createOrUpdateStudy;
 
-	private final INewVersionInfo newVersionInfo;
-
-	private final ICurrentVersionDAO currentVersionDAO;
-
 	private final SessionFactory sessionFactory;
+
+	private DbStudy2DocStudy dbStudy2DocStudy;
 
 	private static final Logger logger = LoggerFactory
 			.getLogger(StudyResourceHibernate.class);
@@ -75,15 +72,17 @@ public final class StudyResourceHibernate implements IStudyResource {
 			final ICreateOrUpdateStudy createOrUpdateStudy,
 			final INewVersionInfo newVersionInfo,
 			final ICurrentVersionDAO currentVersionDAO,
-			final SessionFactory sessionFactory) {
+			final SessionFactory sessionFactory,
+			final DbStudy2DocStudy dbStudy2DocStudy) {
 		this.studyDAO = studyDAO;
 		this.createOrUpdateStudy = createOrUpdateStudy;
-		this.newVersionInfo = newVersionInfo;
-		this.currentVersionDAO = currentVersionDAO;
 		this.sessionFactory = sessionFactory;
+		this.dbStudy2DocStudy = dbStudy2DocStudy;
 	}
 
 	private StudyInfo createOrUpdateStudy(final PPodStudy incomingStudy) {
+		checkNotNull(incomingStudy);
+		final long inTime = new Date().getTime();
 		try {
 			final Session session = sessionFactory.getCurrentSession();
 			session.beginTransaction();
@@ -104,6 +103,9 @@ public final class StudyResourceHibernate implements IStudyResource {
 				logger.error("error rolling back transaction", rbEx);
 			}
 			throw new IllegalStateException(t);
+		} finally {
+			logger.debug("createOrUpdateStudy(...): response time: "
+					+ ((new Date().getTime() - inTime) / 1000) + " seconds");
 		}
 	}
 
@@ -113,12 +115,13 @@ public final class StudyResourceHibernate implements IStudyResource {
 	}
 
 	public PPodStudy getStudyByPPodId(final String pPodId) {
+		final long inTime = new Date().getTime();
 		try {
 			final Session session = sessionFactory.getCurrentSession();
 			session.beginTransaction();
 
 			final Study dbStudy = studyDAO.getStudyByPPodId(pPodId);
-			final PPodStudy docStudy = DbStudy2DocStudy
+			final PPodStudy docStudy = dbStudy2DocStudy
 					.dbStudy2DocStudy(dbStudy);
 
 			session.getTransaction().commit();
@@ -131,6 +134,9 @@ public final class StudyResourceHibernate implements IStudyResource {
 				logger.error("error rolling back transaction", rbEx);
 			}
 			throw new IllegalStateException(t);
+		} finally {
+			logger.debug("getStudyByPPodId(...): response time: "
+					+ ((new Date().getTime() - inTime) / 1000) + " seconds");
 		}
 	}
 

@@ -13,9 +13,8 @@
  * See the License for the specific language governing permissions and
  * limitations under the License.
  */
-package edu.upenn.cis.ppod.dao.hibernate;
+package edu.upenn.cis.ppod.dao;
 
-import edu.upenn.cis.ppod.dao.IPPodRoleDAO;
 import edu.upenn.cis.ppod.model.security.Role;
 import edu.upenn.cis.ppod.thirdparty.dao.hibernate.GenericHibernateDAO;
 

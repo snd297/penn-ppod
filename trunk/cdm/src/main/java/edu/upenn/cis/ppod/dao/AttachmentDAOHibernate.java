@@ -13,35 +13,16 @@
  * See the License for the specific language governing permissions and
  * limitations under the License.
  */
-package edu.upenn.cis.ppod.dao.hibernate;
+package edu.upenn.cis.ppod.dao;
 
-import org.hibernate.Session;
-
-import com.google.inject.Inject;
-
-import edu.upenn.cis.ppod.dao.IVersionInfoDAO;
-import edu.upenn.cis.ppod.model.VersionInfo;
+import edu.upenn.cis.ppod.model.Attachment;
 import edu.upenn.cis.ppod.thirdparty.dao.hibernate.GenericHibernateDAO;
 
 /**
- * A Hibernate <code>IVersionInfoDAO</code>.
+ * The Class AttachmentDAOHibernate.
  * 
  * @author Sam Donnelly
  */
-public final class VersionInfoDAOHibernate
-		extends GenericHibernateDAO<VersionInfo, Long>
-		implements IVersionInfoDAO {
-
-	@Inject
-	VersionInfoDAOHibernate(final Session session) {
-		setSession(session);
-	}
-
-	public Long getMaxVersion() {
-		final Long maxPPodVersion =
-				(Long) getSession()
-						.getNamedQuery("VersionInfo-getMaxVersionInfo")
-						.uniqueResult();
-		return maxPPodVersion == null ? Long.valueOf(0L) : maxPPodVersion;
-	}
-}
+final class AttachmentDAOHibernate
+		extends GenericHibernateDAO<Attachment, Long>
+		implements IAttachmentDAO {}

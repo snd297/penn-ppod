@@ -1,6 +1,6 @@
-package edu.upenn.cis.ppod.model;
+package edu.upenn.cis.ppod.dto;
 
-public enum Protein {
+public enum PPodProtein {
 	/** Alanine. */
 	A,
 

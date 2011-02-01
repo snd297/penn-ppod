@@ -13,7 +13,7 @@
  * See the License for the specific language governing permissions and
  * limitations under the License.
  */
-package edu.upenn.cis.ppod.dao.hibernate;
+package edu.upenn.cis.ppod.dao;
 
 import static com.google.common.collect.Sets.newHashSet;
 
@@ -25,7 +25,6 @@ import org.hibernate.Session;
 
 import com.google.inject.Inject;
 
-import edu.upenn.cis.ppod.dao.IStudyDAO;
 import edu.upenn.cis.ppod.model.Study;
 import edu.upenn.cis.ppod.thirdparty.dao.hibernate.GenericHibernateDAO;
 import edu.upenn.cis.ppod.util.Pair;
@@ -68,8 +67,10 @@ final class StudyDAOHibernate
 
 	public Long getPPodVersionByPPodId(final String pPodId) {
 		return (Long) getSession()
-				.getNamedQuery("Study-getPPodVersionByPPodId").setParameter(
-						"pPodId", pPodId).uniqueResult();
+				.getNamedQuery("Study-getPPodVersionByPPodId")
+				// .setReadOnly(true)
+				.setParameter("pPodId", pPodId)
+				.uniqueResult();
 	}
 
 	public Study getStudyByPPodId(final String pPodId) {
@@ -81,6 +82,7 @@ final class StudyDAOHibernate
 	}
 
 	public Study getStudyByPPodIdEager(final String pPodId) {
+
 		throw new UnsupportedOperationException();
 		// return (Study) getSession()
 		// .createCriteria(Study.class)

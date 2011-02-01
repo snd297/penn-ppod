@@ -13,27 +13,10 @@
  * See the License for the specific language governing permissions and
  * limitations under the License.
  */
-package edu.upenn.cis.ppod.dao.hibernate;
 
-import org.hibernate.Session;
+@DefaultAnnotation(NonNull.class)
+package edu.upenn.cis.ppod.dao;
 
-import com.google.inject.Inject;
+import edu.umd.cs.findbugs.annotations.DefaultAnnotation;
+import edu.umd.cs.findbugs.annotations.NonNull;
 
-import edu.upenn.cis.ppod.dao.IObjectWithLongIdDAO;
-import edu.upenn.cis.ppod.thirdparty.dao.hibernate.GenericHibernateDAO;
-
-/**
- * A generic DAO for when we just need the basic operations.
- * 
- * @author Sam Donnelly
- */
-final class ObjectWithLongIdDAOHibernate
-		extends GenericHibernateDAO<Object, Long>
-		implements IObjectWithLongIdDAO {
-
-	@Inject
-	ObjectWithLongIdDAOHibernate(final Session session) {
-		setSession(session);
-	}
-
-}
