@@ -168,8 +168,8 @@ public class OtuSet extends UuPPodEntity {
 	public void addDnaMatrix(
 			final int pos,
 			final DnaMatrix matrix) {
-		checkNotNull(matrix);
 		checkArgument(pos >= 0, "pos < 0");
+		checkNotNull(matrix);
 		checkArgument(
 				!dnaMatrices.contains(matrix),
 				"otu set already contains the dna matrix ["
@@ -206,8 +206,8 @@ public class OtuSet extends UuPPodEntity {
 	public void addDnaSequenceSet(
 			final int sequenceSetPos,
 			final DnaSequenceSet sequenceSet) {
-		checkNotNull(sequenceSet);
 		checkArgument(sequenceSetPos >= 0, "sequenceSetPos < 0");
+		checkNotNull(sequenceSet);
 		checkArgument(
 				!dnaSequenceSets.contains(sequenceSet),
 				"otu set already contains the matrix ["
@@ -242,14 +242,14 @@ public class OtuSet extends UuPPodEntity {
 
 	private void addOtuWithoutSetOtusOnChildren(final Otu otu) {
 		checkNotNull(otu);
-		final Otu dupNameOTU =
+		final Otu dupNameOtu =
 				find(getOtus(),
 						compose(
 								equalTo(
 								otu.getLabel()),
 								ILabeled.getLabel),
 								null);
-		if (dupNameOTU == null || otu.equals(dupNameOTU)) {
+		if (dupNameOtu == null || otu.equals(dupNameOtu)) {
 
 		} else {
 			checkArgument(false, "OtuSet labeled '" + getLabel()
