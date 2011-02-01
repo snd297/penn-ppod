@@ -77,7 +77,7 @@ public class EmptyVisitor implements IVisitor {
 	 * 
 	 * @param matrix ignored
 	 */
-	public void visitDNAMatrix(final DnaMatrix matrix) {}
+	public void visitDnaMatrix(final DnaMatrix matrix) {}
 
 	/**
 	 * Does nothing.

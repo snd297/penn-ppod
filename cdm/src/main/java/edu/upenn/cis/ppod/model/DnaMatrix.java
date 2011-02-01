@@ -51,7 +51,7 @@ public class DnaMatrix extends MolecularMatrix<DnaRow, DnaCell> {
 	@Override
 	public void accept(final IVisitor visitor) {
 		checkNotNull(visitor);
-		visitor.visitDNAMatrix(this);
+		visitor.visitDnaMatrix(this);
 		super.accept(visitor);
 	}
 

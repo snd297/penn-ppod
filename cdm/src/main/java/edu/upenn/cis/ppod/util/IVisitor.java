@@ -78,7 +78,7 @@ public interface IVisitor {
 	 * 
 	 * @param matrix to be visited
 	 */
-	void visitDNAMatrix(DnaMatrix matrix);
+	void visitDnaMatrix(DnaMatrix matrix);
 
 	void visitDnaRow(DnaRow row);
 
