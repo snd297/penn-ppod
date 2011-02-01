@@ -17,6 +17,7 @@ import com.google.inject.Injector;
 import com.google.inject.Singleton;
 import com.google.inject.servlet.ServletModule;
 
+import edu.umd.cs.findbugs.annotations.CheckForNull;
 import edu.upenn.cis.ppod.PPodModule;
 import edu.upenn.cis.ppod.services.hibernate.PPodServicesHibernateModule;
 
@@ -31,12 +32,15 @@ public class PPodGuiceResteasyBootstrapServletContextListener extends
 	private static Logger logger = LoggerFactory
 			.getLogger(PPodGuiceResteasyBootstrapServletContextListener.class);
 
+	@CheckForNull
 	private SessionFactory sessionFactory;
 
 	@Override
 	public void contextDestroyed(final ServletContextEvent event) {
 		logger.debug("shutting down hibernate...");
-		sessionFactory.close();
+		if (sessionFactory != null) {
+			sessionFactory.close();
+		}
 		logger.debug("done");
 	}
 

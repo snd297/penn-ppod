@@ -46,7 +46,14 @@ import edu.upenn.cis.ppod.util.IVisitor;
  */
 @NamedQueries({
 		@NamedQuery(name = "Study-getByPPodId",
-				query = "select s from Study s where s.pPodId=:pPodId"),
+				query = "select s "
+						+ "from Study s "
+						// + "join fetch s.otuSets o "
+						// + "join fetch o.dnaMatrices d "
+						// + "join fetch d.rows r "
+						// + "join fetch r.values v "
+						// + "join fetch v.cells "
+						+ "where s.pPodId=:pPodId"),
 		@NamedQuery(
 				name = "Study-getVersionByPPodId",
 				query = "select s.versionInfo.version "

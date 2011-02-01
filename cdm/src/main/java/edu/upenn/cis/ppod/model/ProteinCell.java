@@ -13,9 +13,10 @@ import javax.persistence.ManyToOne;
 
 import edu.umd.cs.findbugs.annotations.CheckForNull;
 import edu.umd.cs.findbugs.annotations.Nullable;
+import edu.upenn.cis.ppod.dto.PPodProtein;
 
 public class ProteinCell
-		extends MolecularCell<Protein, ProteinRow> {
+		extends MolecularCell<PPodProtein, ProteinRow> {
 
 	public static final String TABLE = "PROTEIN_CELL";
 
@@ -39,7 +40,7 @@ public class ProteinCell
 	@Column(name = "ELEMENT")
 	@Enumerated(EnumType.ORDINAL)
 	@Nullable
-	private Set<Protein> elements;
+	private Set<PPodProtein> elements;
 
 	/**
 	 * To handle the most-common case of a single element.
@@ -50,15 +51,15 @@ public class ProteinCell
 	@Column(name = "ELEMENT", nullable = true)
 	@Enumerated(EnumType.ORDINAL)
 	@Nullable
-	private Protein element;
+	private PPodProtein element;
 
 	@Override
-	protected Protein getElement() {
+	protected PPodProtein getElement() {
 		return element;
 	}
 
 	@Override
-	Set<Protein> getElementsModifiable() {
+	Set<PPodProtein> getElementsModifiable() {
 		return elements;
 	}
 
@@ -69,12 +70,12 @@ public class ProteinCell
 	}
 
 	@Override
-	protected void setElement(final Protein element) {
+	protected void setElement(final PPodProtein element) {
 		this.element = element;
 	}
 
 	@Override
-	void setElements(final Set<Protein> elements) {
+	void setElements(final Set<PPodProtein> elements) {
 		this.elements = elements;
 	}
 

@@ -13,15 +13,10 @@
  * See the License for the specific language governing permissions and
  * limitations under the License.
  */
-package edu.upenn.cis.ppod.dao.hibernate;
+package edu.upenn.cis.ppod.dao;
 
 import com.google.inject.AbstractModule;
 
-import edu.upenn.cis.ppod.dao.IAttachmentNamespaceDAO;
-import edu.upenn.cis.ppod.dao.IAttachmentTypeDAO;
-import edu.upenn.cis.ppod.dao.IObjectWithLongIdDAO;
-import edu.upenn.cis.ppod.dao.IStudyDAO;
-import edu.upenn.cis.ppod.dao.IVersionInfoDAO;
 
 /**
  * The Class DAOHibernateModule.
