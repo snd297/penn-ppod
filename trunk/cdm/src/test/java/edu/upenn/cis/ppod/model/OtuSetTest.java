@@ -90,7 +90,7 @@ public class OtuSetTest {
 				.visitOTU(any(Otu.class));
 		verify(visitor, times(otuSet.getStandardMatrices().size()))
 				.visitStandardMatrix(any(StandardMatrix.class));
-		verify(visitor, times(otuSet.getDnaMatrices().size())).visitDNAMatrix(
+		verify(visitor, times(otuSet.getDnaMatrices().size())).visitDnaMatrix(
 				any(DnaMatrix.class));
 		verify(visitor, times(otuSet.getDnaSequenceSets().size()))
 				.visitDNASequenceSet(any(DnaSequenceSet.class));

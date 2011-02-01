@@ -56,7 +56,7 @@ public final class SetVersionInfoVisitor extends EmptyVisitor {
 	}
 
 	@Override
-	public void visitDNAMatrix(final DnaMatrix matrix) {
+	public void visitDnaMatrix(final DnaMatrix matrix) {
 		setNewVersionInfo(matrix);
 	}
 
