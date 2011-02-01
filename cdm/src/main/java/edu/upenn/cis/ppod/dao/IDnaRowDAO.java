@@ -6,6 +6,6 @@ import edu.upenn.cis.ppod.model.DnaRow;
 import edu.upenn.cis.ppod.thirdparty.dao.IDAO;
 
 @ImplementedBy(DnaRowDAOHibernate.class)
-public interface IDnaRowDao extends IDAO<DnaRow, Long> {
+public interface IDnaRowDAO extends IDAO<DnaRow, Long> {
 
 }

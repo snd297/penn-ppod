@@ -5,6 +5,6 @@ import edu.upenn.cis.ppod.thirdparty.dao.hibernate.GenericHibernateDAO;
 
 public class DnaRowDAOHibernate
 		extends GenericHibernateDAO<DnaRow, Long>
-		implements IDnaRowDao {
+		implements IDnaRowDAO {
 	
 }
