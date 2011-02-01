@@ -11,13 +11,11 @@ public class ProteinMatrix
 		extends Matrix<ProteinRow, ProteinCell> {
 
 	public List<ProteinCell> removeColumn(int columnNo) {
-		// TODO Auto-generated method stub
 		throw new UnsupportedOperationException();
 	}
 
 	@Override
 	IOtuKeyedMap<ProteinRow> getOtuKeyedRows() {
-		// TODO Auto-generated method stub
 		throw new UnsupportedOperationException();
 	}
 }
