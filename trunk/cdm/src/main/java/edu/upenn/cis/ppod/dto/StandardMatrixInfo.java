@@ -1,5 +1,6 @@
 package edu.upenn.cis.ppod.dto;
 
+import static com.google.common.base.Preconditions.checkNotNull;
 import static com.google.common.collect.Maps.newTreeMap;
 
 import java.util.Map;
@@ -25,6 +26,7 @@ public class StandardMatrixInfo extends MatrixInfo {
 
 	public void setColumnHeaderVersionsByIdx(
 			final SortedMap<Integer, Long> columnHeaderPPodVersions) {
+		checkNotNull(columnHeaderPPodVersions);
 		this.columnHeaderVersionsByIdx = columnHeaderPPodVersions;
 	}
 }

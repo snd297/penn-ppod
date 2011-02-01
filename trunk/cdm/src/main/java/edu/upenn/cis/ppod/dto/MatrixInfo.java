@@ -15,6 +15,7 @@
  */
 package edu.upenn.cis.ppod.dto;
 
+import static com.google.common.base.Preconditions.checkArgument;
 import static com.google.common.base.Preconditions.checkNotNull;
 import static com.google.common.collect.Maps.newTreeMap;
 
@@ -28,7 +29,7 @@ import edu.umd.cs.findbugs.annotations.Nullable;
 /**
  * @author Sam Donnelly
  */
-abstract class MatrixInfo extends PPodEntityInfo {
+public class MatrixInfo extends PPodEntityInfo {
 
 	private Map<Integer, PPodEntityInfo> characterInfosByIdx = newTreeMap();
 
@@ -66,6 +67,8 @@ abstract class MatrixInfo extends PPodEntityInfo {
 
 	@Nullable
 	public final Long getCellVersion(final int it, final int ic) {
+		checkArgument(it >= 0);
+		checkArgument(ic >= 0);
 		if (cellPPodIdAndVersionsByMN.get(it) == null) {
 			return null;
 		} else {
@@ -94,10 +97,10 @@ abstract class MatrixInfo extends PPodEntityInfo {
 		return rowVersionsByIdx;
 	}
 
-	public final void setCellPPodIdAndVersion(final Integer m,
-			final Integer n, final Long cellPPodVersion) {
-		checkNotNull(m);
-		checkNotNull(n);
+	public final void setCellPPodIdAndVersion(final int m,
+			final int n, final Long cellPPodVersion) {
+		checkArgument(m >= 0);
+		checkArgument(n >= 0);
 		checkNotNull(cellPPodVersion);
 		if (cellPPodIdAndVersionsByMN.containsKey(m)) {
 
@@ -116,6 +119,7 @@ abstract class MatrixInfo extends PPodEntityInfo {
 	 */
 	public final void setCharacterInfosByIdx(
 			final Map<Integer, PPodEntityInfo> characterInfosByIdx) {
+		checkNotNull(characterInfosByIdx);
 		this.characterInfosByIdx = characterInfosByIdx;
 	}
 

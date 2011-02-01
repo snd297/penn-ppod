@@ -15,7 +15,6 @@
  */
 package edu.upenn.cis.ppod.model;
 
-import static com.google.common.base.Preconditions.checkArgument;
 import static com.google.common.base.Preconditions.checkNotNull;
 import static com.google.common.collect.Lists.newArrayList;
 
@@ -80,31 +79,11 @@ public class DnaRow extends Row<DnaCell, DnaMatrix> {
 
 	/**
 	 * {@inheritDoc}
-	 * <p>
-	 * DNA matrices do not support moving columns or deleting non-last columns
-	 * See <a href="http://code.google.com/p/penn-ppod/issues/detail?id=28">bug
-	 * 28</a>.
-	 * 
-	 * @throws IllegalArgumentException if {@code cells} is such that this
-	 *             method should do anything but add or removes cells from the
-	 *             end
 	 */
 	@Override
 	public void setCells(final List<? extends DnaCell> cells) {
 		checkNotNull(cells);
-		checkArgument(
-				cells.size() >= getCells().size(),
-				"input cells must be longer than the current cells: "
-						+ "this method can't do anything but add or removes cells from the "
-						+ "end");
-		checkArgument(
-				cells.subList(0, getCells().size()).equals(getCells()),
-				"cells.subList(0, getCells().size()) does not .equals(getCells()) "
-						+ "this method can't do anything but add or removes cells from the "
-						+ "end");
-
 		super.setCellsHelper(cells);
-
 		for (final DnaCell cell : getCells()) {
 			cell.setParent(this);
 		}

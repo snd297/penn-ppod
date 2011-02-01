@@ -123,7 +123,7 @@ public final class Study2StudyInfo {
 			// duplicate code.
 			for (final DnaMatrix matrix : otuSet
 					.getDnaMatrices()) {
-				final MolecularMatrixInfo matrixInfo = new MolecularMatrixInfo();
+				final MatrixInfo matrixInfo = new MatrixInfo();
 				otuSetInfo.getDnaMatrixInfos().add(matrixInfo);
 				matrixInfo.setPPodId(matrix.getPPodId());
 				matrixInfo.setEntityId(matrix.getId());
