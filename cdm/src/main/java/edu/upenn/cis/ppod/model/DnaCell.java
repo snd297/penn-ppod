@@ -114,18 +114,18 @@ public class DnaCell
 	}
 
 	@Override
-	void setElement(final PPodDnaNucleotide element) {
+	void setElement(@CheckForNull final PPodDnaNucleotide element) {
 		this.element = element;
 	}
 
 	/** {@inheritDoc} */
 	@Override
-	void setElements(final Set<PPodDnaNucleotide> elements) {
+	void setElements(@CheckForNull final Set<PPodDnaNucleotide> elements) {
 		this.elements = elements;
 	}
 
 	/** {@inheritDoc} */
-	public void setParent(final DnaRow parent) {
+	public void setParent(@CheckForNull final DnaRow parent) {
 		this.parent = parent;
 	}
 }

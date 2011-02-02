@@ -141,6 +141,7 @@ public final class StudyResourceHibernate implements IStudyResource {
 	}
 
 	public Set<StringPair> getStudyPPodIdLabelPairs() {
+		final long inTime = new Date().getTime();
 		try {
 			final Session session = sessionFactory.getCurrentSession();
 			session.beginTransaction();
@@ -167,6 +168,9 @@ public final class StudyResourceHibernate implements IStudyResource {
 				logger.error("error rolling back transaction", rbEx);
 			}
 			throw new IllegalStateException(t);
+		} finally {
+			logger.debug("getStudyPPodIdLabelPairs(...): response time: "
+					+ ((new Date().getTime() - inTime) / 1000) + " seconds");
 		}
 	}
 

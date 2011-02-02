@@ -29,6 +29,7 @@ public final class PPodTree extends UuPPodDomainObjectWithLabel {
 	}
 
 	public void setNewick(final String newick) {
+		checkNotNull(newick);
 		this.newick = newick;
 	}
 

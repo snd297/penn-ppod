@@ -21,12 +21,11 @@ import static com.google.common.collect.Lists.newArrayList;
 import static com.google.common.collect.Sets.newHashSet;
 import static org.testng.Assert.assertEquals;
 import static org.testng.Assert.assertFalse;
+import static org.testng.Assert.assertNull;
 import static org.testng.Assert.assertTrue;
 
 import java.util.Arrays;
 import java.util.Set;
-
-import javax.annotation.Nullable;
 
 import org.testng.annotations.BeforeMethod;
 import org.testng.annotations.Test;
@@ -42,7 +41,6 @@ import edu.upenn.cis.ppod.dto.PPodCellType;
 @Test(groups = TestGroupDefs.FAST)
 public class StandardCellTest {
 
-	@Nullable
 	private StandardCell cell;
 
 	private StandardState state00;
@@ -52,52 +50,6 @@ public class StandardCellTest {
 	private Set<StandardState> states;
 
 	private StandardMatrix matrix;
-
-	@BeforeMethod
-	public void setUp() {
-		cell = new StandardCell();
-
-		matrix = new StandardMatrix();
-
-		final OtuSet otuSet = new OtuSet();
-
-		final Otu otu0 = new Otu("otu0");
-		otuSet.setOtus(newArrayList(otu0));
-		matrix.setParent(otuSet);
-
-		final StandardCharacter character0 =
-				new StandardCharacter();
-		character0.setLabel("character0");
-		matrix.setCharacters(newArrayList(character0));
-		final StandardRow row0 = new StandardRow();
-		matrix.putRow(matrix.getParent().getOtus().get(0), row0);
-
-		states = newHashSet();
-
-		// State 0 of character 0
-		state00 = new StandardState(0);
-
-		character0.addState(state00);
-
-		// State 0 of character 1
-		state01 = new StandardState(1);
-		character0.addState(state01);
-
-	}
-
-	@Test(expectedExceptions = IllegalArgumentException.class)
-	public void setPolymorphicElementsTooFewStates() {
-		matrix.getRows().get(
-				matrix.getParent()
-						.getOtus()
-						.get(0))
-				.setCells(
-						Arrays.asList(cell));
-		states.add(state00);
-		cell.setPolymorphicWithStateNos(
-				newHashSet(
-						transform(states, StandardState.getStateNumber)));
-	}
 
 	@Test
 	public void setInapplcableWasSingle() {
@@ -131,6 +83,20 @@ public class StandardCellTest {
 	}
 
 	@Test
+	public void setInNeedOfNewVersion() {
+		matrix.getRows().get(
+				matrix.getParent()
+						.getOtus()
+						.get(0))
+				.setCells(
+						Arrays.asList(cell));
+		assertFalse(cell.isInNeedOfNewVersion());
+		cell.setInNeedOfNewVersion();
+		assertTrue(cell.isInNeedOfNewVersion());
+		assertNull(matrix.getColumnVersionInfos().get(cell.getPosition()));
+	}
+
+	@Test
 	public void setPolymorphicElements() {
 		matrix.getRows().get(matrix.getParent().getOtus().get(0)).setCells(
 				Arrays.asList(cell));
@@ -141,6 +107,20 @@ public class StandardCellTest {
 						transform(states, StandardState.getStateNumber)));
 		assertEquals(cell.getType(), PPodCellType.POLYMORPHIC);
 		assertEquals((Object) cell.getElements(), (Object) states);
+	}
+
+	@Test(expectedExceptions = IllegalArgumentException.class)
+	public void setPolymorphicElementsTooFewStates() {
+		matrix.getRows().get(
+				matrix.getParent()
+						.getOtus()
+						.get(0))
+				.setCells(
+						Arrays.asList(cell));
+		states.add(state00);
+		cell.setPolymorphicWithStateNos(
+				newHashSet(
+						transform(states, StandardState.getStateNumber)));
 	}
 
 	@Test
@@ -184,4 +164,35 @@ public class StandardCellTest {
 		assertEquals((Object) cell.getElements(), (Object) newHashSet(states));
 	}
 
+	@BeforeMethod
+	public void setUp() {
+		cell = new StandardCell();
+
+		matrix = new StandardMatrix();
+
+		final OtuSet otuSet = new OtuSet();
+
+		final Otu otu0 = new Otu("otu0");
+		otuSet.setOtus(newArrayList(otu0));
+		matrix.setParent(otuSet);
+
+		final StandardCharacter character0 =
+				new StandardCharacter();
+		character0.setLabel("character0");
+		matrix.setCharacters(newArrayList(character0));
+		final StandardRow row0 = new StandardRow();
+		matrix.putRow(matrix.getParent().getOtus().get(0), row0);
+
+		states = newHashSet();
+
+		// State 0 of character 0
+		state00 = new StandardState(0);
+
+		character0.addState(state00);
+
+		// State 0 of character 1
+		state01 = new StandardState(1);
+		character0.addState(state01);
+
+	}
 }

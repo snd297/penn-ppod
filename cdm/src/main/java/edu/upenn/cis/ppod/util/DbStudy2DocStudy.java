@@ -1,5 +1,6 @@
 package edu.upenn.cis.ppod.util;
 
+import static com.google.common.base.Preconditions.checkNotNull;
 import static com.google.common.collect.Iterables.getOnlyElement;
 import static com.google.common.collect.Iterables.transform;
 import static com.google.common.collect.Lists.newArrayList;
@@ -61,6 +62,7 @@ public final class DbStudy2DocStudy {
 	}
 
 	public char dbCell2IupacPlus(final DnaCell dbCell) {
+		checkNotNull(dbCell);
 		char iupacPlus = (char) -1;
 		switch (dbCell.getType()) {
 			case UNASSIGNED:
@@ -219,8 +221,17 @@ public final class DbStudy2DocStudy {
 		return iupacPlus;
 	}
 
+	/**
+	 * This method evicts rows from the persistence context after they are
+	 * processed.
+	 * 
+	 * @param dbMatrix to be converted
+	 * 
+	 * @return a doc version of {@code dbMatrix}
+	 */
 	public PPodDnaMatrix dbDnaMatrix2DocDnaMatrix(
 			final DnaMatrix dbMatrix) {
+		checkNotNull(dbMatrix);
 		final PPodDnaMatrix docMatrix = new PPodDnaMatrix(
 				dbMatrix.getPPodId(),
 				dbMatrix.getVersionInfo().getVersion(), dbMatrix.getLabel());
@@ -245,6 +256,7 @@ public final class DbStudy2DocStudy {
 
 	public PPodDnaSequenceSet dbDnaSequenceSet2DocDnaSequenceSet(
 			final DnaSequenceSet dbSequenceSet) {
+		checkNotNull(dbSequenceSet);
 		final PPodDnaSequenceSet docSequenceSet = new PPodDnaSequenceSet(
 				dbSequenceSet.getPPodId(), dbSequenceSet.getVersionInfo()
 						.getVersion(), dbSequenceSet.getLabel());
@@ -272,6 +284,7 @@ public final class DbStudy2DocStudy {
 	}
 
 	public PPodOtuSet dbOtuSet2DocOtuSet(final OtuSet dbOtuSet) {
+		checkNotNull(dbOtuSet);
 		final PPodOtuSet docOtuSet = new PPodOtuSet(dbOtuSet.getPPodId(),
 				dbOtuSet.getVersionInfo().getVersion(), dbOtuSet.getLabel());
 
@@ -302,7 +315,8 @@ public final class DbStudy2DocStudy {
 	}
 
 	public PPodStandardMatrix dbStandardMatrix2DocStandardMatrix(
-			final StandardMatrix dbMatrix) {
+						final StandardMatrix dbMatrix) {
+		checkNotNull(dbMatrix);
 		final PPodStandardMatrix docMatrix = new PPodStandardMatrix(
 				dbMatrix.getPPodId(), dbMatrix.getVersionInfo().getVersion(),
 				dbMatrix.getLabel());
@@ -347,6 +361,7 @@ public final class DbStudy2DocStudy {
 	}
 
 	public PPodStudy dbStudy2DocStudy(final Study dbStudy) {
+		checkNotNull(dbStudy);
 		final PPodStudy docStudy = new PPodStudy(dbStudy.getPPodId(), dbStudy
 				.getVersionInfo().getVersion(), dbStudy.getLabel());
 		for (final OtuSet dbOtuSet : dbStudy.getOtuSets()) {
@@ -356,6 +371,7 @@ public final class DbStudy2DocStudy {
 	}
 
 	public PPodTreeSet dbTreeSet2DocTreeSet(final TreeSet dbTreeSet) {
+		checkNotNull(dbTreeSet);
 		final PPodTreeSet docTreeSet =
 				new PPodTreeSet(
 						dbTreeSet.getPPodId(),
