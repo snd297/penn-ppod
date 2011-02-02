@@ -15,6 +15,8 @@
  */
 package edu.upenn.cis.ppod.dao;
 
+import com.google.inject.ImplementedBy;
+
 import edu.upenn.cis.ppod.model.AttachmentNamespace;
 import edu.upenn.cis.ppod.thirdparty.dao.IDAO;
 
@@ -23,6 +25,7 @@ import edu.upenn.cis.ppod.thirdparty.dao.IDAO;
  * 
  * @author Sam Donnelly
  */
+@ImplementedBy(AttachmentNamespaceDAOHibernate.class)
 public interface IAttachmentNamespaceDAO
 		extends IDAO<AttachmentNamespace, Long> {
 

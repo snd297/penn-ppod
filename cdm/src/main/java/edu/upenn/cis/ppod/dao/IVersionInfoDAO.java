@@ -15,6 +15,8 @@
  */
 package edu.upenn.cis.ppod.dao;
 
+import com.google.inject.ImplementedBy;
+
 import edu.upenn.cis.ppod.model.VersionInfo;
 import edu.upenn.cis.ppod.thirdparty.dao.IDAO;
 
@@ -23,6 +25,7 @@ import edu.upenn.cis.ppod.thirdparty.dao.IDAO;
  * 
  * @author Sam Donnelly
  */
+@ImplementedBy(VersionInfoDAOHibernate.class)
 public interface IVersionInfoDAO extends IDAO<VersionInfo, Long> {
 
 	/**
