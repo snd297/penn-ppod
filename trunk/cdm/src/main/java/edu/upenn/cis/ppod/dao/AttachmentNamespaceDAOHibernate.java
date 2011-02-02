@@ -15,6 +15,8 @@
  */
 package edu.upenn.cis.ppod.dao;
 
+import static com.google.common.base.Preconditions.checkNotNull;
+
 import org.hibernate.Session;
 
 import com.google.inject.Inject;
@@ -31,6 +33,7 @@ final class AttachmentNamespaceDAOHibernate
 
 	@Inject
 	AttachmentNamespaceDAOHibernate(final Session session) {
+		checkNotNull(session);
 		setSession(session);
 	}
 

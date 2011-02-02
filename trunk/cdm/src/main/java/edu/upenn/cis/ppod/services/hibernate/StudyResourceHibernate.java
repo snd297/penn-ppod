@@ -30,7 +30,7 @@ import org.slf4j.LoggerFactory;
 import com.google.common.base.Function;
 import com.google.inject.Inject;
 
-import edu.upenn.cis.ppod.createorupdate.ICreateOrUpdateStudy;
+import edu.upenn.cis.ppod.createorupdate.CreateOrUpdateStudy;
 import edu.upenn.cis.ppod.dao.ICurrentVersionDAO;
 import edu.upenn.cis.ppod.dao.IStudyDAO;
 import edu.upenn.cis.ppod.dto.PPodStudy;
@@ -57,7 +57,7 @@ public final class StudyResourceHibernate implements IStudyResource {
 
 	private final IStudyDAO studyDAO;
 
-	private final ICreateOrUpdateStudy createOrUpdateStudy;
+	private final CreateOrUpdateStudy createOrUpdateStudy;
 
 	private final SessionFactory sessionFactory;
 
@@ -69,7 +69,7 @@ public final class StudyResourceHibernate implements IStudyResource {
 	@Inject
 	StudyResourceHibernate(
 			final IStudyDAO studyDAO,
-			final ICreateOrUpdateStudy createOrUpdateStudy,
+			final CreateOrUpdateStudy createOrUpdateStudy,
 			final INewVersionInfo newVersionInfo,
 			final ICurrentVersionDAO currentVersionDAO,
 			final SessionFactory sessionFactory,

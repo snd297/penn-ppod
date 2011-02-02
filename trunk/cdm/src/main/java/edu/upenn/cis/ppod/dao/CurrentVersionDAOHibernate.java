@@ -7,11 +7,11 @@ import com.google.inject.Inject;
 import edu.upenn.cis.ppod.model.CurrentVersion;
 import edu.upenn.cis.ppod.thirdparty.dao.hibernate.GenericHibernateDAO;
 
-public class CurrentVersionDAO
+public class CurrentVersionDAOHibernate
 		extends GenericHibernateDAO<CurrentVersion, Long>
 		implements ICurrentVersionDAO {
 	@Inject
-	CurrentVersionDAO(final Session session) {
+	CurrentVersionDAOHibernate(final Session session) {
 		setSession(session);
 	}
 }

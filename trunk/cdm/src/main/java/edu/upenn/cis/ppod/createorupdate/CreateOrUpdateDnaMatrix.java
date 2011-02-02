@@ -24,7 +24,7 @@ import org.slf4j.LoggerFactory;
 
 import com.google.inject.Inject;
 
-import edu.upenn.cis.ppod.dao.IObjectWithLongIdDAO;
+import edu.upenn.cis.ppod.dao.IDnaRowDAO;
 import edu.upenn.cis.ppod.dto.PPodDnaMatrix;
 import edu.upenn.cis.ppod.dto.PPodDnaRow;
 import edu.upenn.cis.ppod.imodel.INewVersionInfo;
@@ -34,18 +34,18 @@ import edu.upenn.cis.ppod.model.DnaRow;
 import edu.upenn.cis.ppod.model.Otu;
 import edu.upenn.cis.ppod.util.DocCell2DbCell;
 
-class CreateOrUpdateDnaMatrix implements ICreateOrUpdateDNAMatrix {
+public final class CreateOrUpdateDnaMatrix {
 
-	private final IObjectWithLongIdDAO dao;
+	private final IDnaRowDAO dnaRowDao;
 	private final INewVersionInfo newVersionInfo;
 	private final static Logger logger = LoggerFactory
 			.getLogger(CreateOrUpdateDnaMatrix.class);
 
 	@Inject
 	CreateOrUpdateDnaMatrix(
-			final IObjectWithLongIdDAO dao,
+			final IDnaRowDAO dao,
 			final INewVersionInfo newVersionInfo) {
-		this.dao = dao;
+		this.dnaRowDao = dao;
 		this.newVersionInfo = newVersionInfo;
 	}
 
@@ -60,9 +60,6 @@ class CreateOrUpdateDnaMatrix implements ICreateOrUpdateDNAMatrix {
 
 		dbMatrix.setLabel(sourceMatrix.getLabel());
 		// dbMatrix.setDescription(sourceMatrix.getDescription());
-
-		// So that makePersistenct(dbRow) below has a persistent parent.
-		dao.makePersistent(dbMatrix);
 
 		int sourceOtuPos = -1;
 
@@ -82,7 +79,7 @@ class CreateOrUpdateDnaMatrix implements ICreateOrUpdateDNAMatrix {
 				dbRow = new DnaRow();
 				dbRow.setVersionInfo(newVersionInfo.getNewVersionInfo());
 				dbMatrix.putRow(dbOTU, dbRow);
-				dao.makePersistent(dbRow);
+				dnaRowDao.makePersistent(dbRow);
 			}
 
 			final List<DnaCell> dbCells =
@@ -133,8 +130,8 @@ class CreateOrUpdateDnaMatrix implements ICreateOrUpdateDNAMatrix {
 					METHOD,
 					sourceOtuPos);
 
-			dao.flush();
-			dao.evict(dbRow);
+			dnaRowDao.flush();
+			dnaRowDao.evict(dbRow);
 		}
 
 	}

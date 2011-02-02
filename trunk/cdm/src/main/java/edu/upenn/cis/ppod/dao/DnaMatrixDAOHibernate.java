@@ -4,15 +4,15 @@ import org.hibernate.Session;
 
 import com.google.inject.Inject;
 
-import edu.upenn.cis.ppod.model.DnaRow;
+import edu.upenn.cis.ppod.model.DnaMatrix;
 import edu.upenn.cis.ppod.thirdparty.dao.hibernate.GenericHibernateDAO;
 
-class DnaRowDAOHibernate
-		extends GenericHibernateDAO<DnaRow, Long>
-		implements IDnaRowDAO {
+final class DnaMatrixDAOHibernate
+		extends GenericHibernateDAO<DnaMatrix, Long>
+		implements IDnaMatrixDAO {
 
 	@Inject
-	DnaRowDAOHibernate(final Session session) {
+	DnaMatrixDAOHibernate(final Session session) {
 		setSession(session);
 	}
 }

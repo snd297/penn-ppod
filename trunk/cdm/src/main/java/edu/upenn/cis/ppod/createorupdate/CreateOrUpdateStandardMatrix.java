@@ -31,7 +31,6 @@ import org.slf4j.LoggerFactory;
 
 import com.google.inject.Inject;
 
-import edu.upenn.cis.ppod.dao.IObjectWithLongIdDAO;
 import edu.upenn.cis.ppod.dto.IHasPPodId;
 import edu.upenn.cis.ppod.dto.PPodCellType;
 import edu.upenn.cis.ppod.dto.PPodStandardCell;
@@ -47,10 +46,7 @@ import edu.upenn.cis.ppod.model.StandardState;
 /**
  * @author Sam Donnelly
  */
-final class CreateOrUpdateStandardMatrix
-		extends
-		CreateOrUpdateMatrix
-		implements ICreateOrUpdateStandardMatrix {
+public final class CreateOrUpdateStandardMatrix extends CreateOrUpdateMatrix {
 
 	private static Logger logger =
 			LoggerFactory.getLogger(CreateOrUpdateMatrix.class);
@@ -59,9 +55,8 @@ final class CreateOrUpdateStandardMatrix
 
 	@Inject
 	CreateOrUpdateStandardMatrix(
-			final IObjectWithLongIdDAO dao,
 			final INewVersionInfo newVersionInfo) {
-		super(dao, newVersionInfo);
+		super(newVersionInfo);
 		this.newVersionInfo = newVersionInfo;
 	}
 

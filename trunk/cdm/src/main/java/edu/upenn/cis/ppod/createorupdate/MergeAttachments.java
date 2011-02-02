@@ -33,7 +33,7 @@ import edu.upenn.cis.ppod.model.AttachmentType;
 /**
  * @author Sam Donnelly
  */
-class MergeAttachments implements IMergeAttachments {
+public final class MergeAttachments {
 
 	private final IAttachmentNamespaceDAO attachmentNamespaceDAO;
 	private final IAttachmentTypeDAO attachmentTypeDAO;

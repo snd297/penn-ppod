@@ -27,8 +27,13 @@ import com.google.inject.Inject;
 import edu.upenn.cis.ppod.dao.IAttachmentNamespaceDAO;
 import edu.upenn.cis.ppod.dao.IAttachmentTypeDAO;
 import edu.upenn.cis.ppod.dao.ICurrentVersionDAO;
-import edu.upenn.cis.ppod.dao.IObjectWithLongIdDAO;
+import edu.upenn.cis.ppod.dao.IDnaMatrixDAO;
+import edu.upenn.cis.ppod.dao.IDnaRowDAO;
+import edu.upenn.cis.ppod.dao.IDnaSequenceSetDAO;
+import edu.upenn.cis.ppod.dao.IOtuSetDAO;
+import edu.upenn.cis.ppod.dao.IStandardMatrixDAO;
 import edu.upenn.cis.ppod.dao.IStudyDAO;
+import edu.upenn.cis.ppod.dao.ITreeSetDAO;
 import edu.upenn.cis.ppod.dto.IHasPPodId;
 import edu.upenn.cis.ppod.dto.PPodDnaMatrix;
 import edu.upenn.cis.ppod.dto.PPodDnaSequenceSet;
@@ -52,33 +57,43 @@ import edu.upenn.cis.ppod.util.SetVersionInfoVisitor;
  * 
  * @author Sam Donnelly
  */
-class CreateOrUpdateStudy implements ICreateOrUpdateStudy {
+public final class CreateOrUpdateStudy {
 
 	private final IStudyDAO studyDAO;
-	private final IObjectWithLongIdDAO dao;
+	private final IDnaRowDAO dnaRowDao;
 	private final INewVersionInfo newVersionInfo;
-	private final IMergeOtuSets mergeOTUSets;
-	private final ICreateOrUpdateDNAMatrix createOrUpdateDNAMatrix;
-	private final IMergeDNASequenceSets mergeDNASequenceSets;
-	private final ICreateOrUpdateStandardMatrix createOrUpdateStandardMatrix;
-	private final IMergeTreeSets mergeTreeSets;
+	private final MergeOtuSets mergeOTUSets;
+	private final CreateOrUpdateDnaMatrix createOrUpdateDNAMatrix;
+	private final MergeDnaSequenceSets mergeDNASequenceSets;
+	private final CreateOrUpdateStandardMatrix createOrUpdateStandardMatrix;
+	private final MergeTreeSets mergeTreeSets;
 	private final ICurrentVersionDAO currentVersionDAO;
+	private final IOtuSetDAO otuSetDAO;
+	private final IDnaSequenceSetDAO dnaSequenceSetDAO;
+	private final IDnaMatrixDAO dnaMatrixDAO;
+	private final IStandardMatrixDAO standardMatrixDAO;
+	private ITreeSetDAO treeSetDAO;
 
 	@Inject
 	CreateOrUpdateStudy(
-			final IObjectWithLongIdDAO dao,
+			final IDnaRowDAO dnaRowDao,
 			final IAttachmentNamespaceDAO attachmentNamespaceDAO,
 			final IAttachmentTypeDAO attachmentTypeDAO,
 			final IStudyDAO studyDAO,
 			final INewVersionInfo newVersionInfo,
-			final IMergeOtuSets mergeOTUSets,
-			final ICreateOrUpdateDNAMatrix createOrUpdateDNAMatrix,
-			final IMergeDNASequenceSets mergeDNASequenceSets,
-			final ICreateOrUpdateStandardMatrix createOrUpdateStandardMatrix,
-			final IMergeTreeSets mergeTreeSets,
-			final ICurrentVersionDAO currentVersionDAO) {
+			final MergeOtuSets mergeOTUSets,
+			final CreateOrUpdateDnaMatrix createOrUpdateDNAMatrix,
+			final MergeDnaSequenceSets mergeDNASequenceSets,
+			final CreateOrUpdateStandardMatrix createOrUpdateStandardMatrix,
+			final MergeTreeSets mergeTreeSets,
+			final ICurrentVersionDAO currentVersionDAO,
+			final IOtuSetDAO otuSetDAO,
+			final IDnaSequenceSetDAO dnaSequenceSetDAO,
+			final IDnaMatrixDAO dnaMatrixDAO,
+			final IStandardMatrixDAO standardMatrixDAO,
+			final ITreeSetDAO treeSetDAO) {
 		this.studyDAO = studyDAO;
-		this.dao = dao;
+		this.dnaRowDao = dnaRowDao;
 		this.newVersionInfo = newVersionInfo;
 		this.mergeOTUSets = mergeOTUSets;
 		this.createOrUpdateDNAMatrix = createOrUpdateDNAMatrix;
@@ -86,10 +101,14 @@ class CreateOrUpdateStudy implements ICreateOrUpdateStudy {
 		this.createOrUpdateStandardMatrix = createOrUpdateStandardMatrix;
 		this.mergeTreeSets = mergeTreeSets;
 		this.currentVersionDAO = currentVersionDAO;
+		this.otuSetDAO = otuSetDAO;
+		this.dnaSequenceSetDAO = dnaSequenceSetDAO;
+		this.dnaMatrixDAO = dnaMatrixDAO;
+		this.standardMatrixDAO = standardMatrixDAO;
+		this.treeSetDAO = treeSetDAO;
 	}
 
-	public Study createOrUpdateStudy(
-			final PPodStudy incomingStudy) {
+	public Study createOrUpdateStudy(final PPodStudy incomingStudy) {
 		Study dbStudy = null;
 		boolean makeStudyPersistent = false;
 		if (null == (dbStudy =
@@ -141,7 +160,7 @@ class CreateOrUpdateStudy implements ICreateOrUpdateStudy {
 				dbOtuSet.setLabel(incomingOtuSet.getLabel()); // non-null, do it
 				// now
 				dbStudy.addOtuSet(incomingOtuSetPos, dbOtuSet);
-				dao.makePersistent(dbOtuSet);
+				otuSetDAO.makePersistent(dbOtuSet);
 			}
 
 			mergeOTUSets.mergeOTUSets(dbOtuSet, incomingOtuSet);
@@ -215,7 +234,7 @@ class CreateOrUpdateStudy implements ICreateOrUpdateStudy {
 				// Do this here because it's non-nullable
 				dbMatrix.setLabel(incomingMatrix.getLabel());
 				dbOTUSet.addDnaMatrix(incomingMatrixPos, dbMatrix);
-				dao.makePersistent(dbMatrix);
+				dnaMatrixDAO.makePersistent(dbMatrix);
 			}
 			createOrUpdateDNAMatrix
 							.createOrUpdateMatrix(
@@ -263,7 +282,7 @@ class CreateOrUpdateStudy implements ICreateOrUpdateStudy {
 				dbDnaSequenceSet.setLabel(incomingSequenceSet.getLabel());
 				dbOtuSet.addDnaSequenceSet(
 						incomingSequenceSetPos, dbDnaSequenceSet);
-				dao.makePersistent(dbDnaSequenceSet);
+				dnaSequenceSetDAO.makePersistent(dbDnaSequenceSet);
 			}
 			mergeDNASequenceSets
 					.mergeSequenceSets(dbDnaSequenceSet, incomingSequenceSet);
@@ -310,7 +329,7 @@ class CreateOrUpdateStudy implements ICreateOrUpdateStudy {
 				dbOtuSet.addStandardMatrix(
 						incomingMatrixPos,
 						dbMatrix);
-				dao.makePersistent(dbMatrix);
+				standardMatrixDAO.makePersistent(dbMatrix);
 			}
 			createOrUpdateStandardMatrix
 					.createOrUpdateMatrix(dbMatrix, incomingMatrix);
@@ -353,7 +372,7 @@ class CreateOrUpdateStudy implements ICreateOrUpdateStudy {
 				dbTreeSet.setVersionInfo(newVersionInfo.getNewVersionInfo());
 				dbTreeSet.setLabel(incomingTreeSet.getLabel());
 				dbOtuSet.addTreeSet(incomingTreeSetPos, dbTreeSet);
-				dao.makePersistent(dbTreeSet);
+				treeSetDAO.makePersistent(dbTreeSet);
 			}
 			mergeTreeSets.mergeTreeSets(dbTreeSet, incomingTreeSet,
 					incomingOtuSet);

@@ -17,6 +17,10 @@ package edu.upenn.cis.ppod.dao;
 
 import java.util.List;
 
+import org.hibernate.Session;
+
+import com.google.inject.Inject;
+
 import edu.upenn.cis.ppod.model.StandardMatrix;
 import edu.upenn.cis.ppod.thirdparty.dao.hibernate.GenericHibernateDAO;
 
@@ -28,6 +32,11 @@ import edu.upenn.cis.ppod.thirdparty.dao.hibernate.GenericHibernateDAO;
 final class StandardMatrixDAOHibernate
 		extends GenericHibernateDAO<StandardMatrix, Long>
 		implements IStandardMatrixDAO {
+
+	@Inject
+	StandardMatrixDAOHibernate(final Session session) {
+		setSession(session);
+	}
 
 	@SuppressWarnings("unchecked")
 	public List<Object[]> getCharacterInfosByMatrixIdAndMinPPodVersion(

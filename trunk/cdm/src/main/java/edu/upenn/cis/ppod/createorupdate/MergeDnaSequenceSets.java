@@ -30,7 +30,7 @@ import edu.upenn.cis.ppod.model.DnaSequence;
 import edu.upenn.cis.ppod.model.DnaSequenceSet;
 import edu.upenn.cis.ppod.model.Otu;
 
-class MergeDnaSequenceSets implements IMergeDNASequenceSets {
+public final class MergeDnaSequenceSets {
 
 	private final INewVersionInfo newVersionInfo;
 
