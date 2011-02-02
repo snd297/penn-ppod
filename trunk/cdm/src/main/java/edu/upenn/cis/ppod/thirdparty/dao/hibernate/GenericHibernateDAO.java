@@ -86,15 +86,15 @@ public abstract class GenericHibernateDAO<T, ID extends Serializable>
 	 * Call {@link Session#clear()} on this <code>GenericHibernateDAO</code>'s
 	 * session.
 	 */
-	public void clear() {
+	public final void clear() {
 		getSession().clear();
 	}
 
-	public List<T> findAll() {
+	public final List<T> findAll() {
 		return findByCriteria();
 	}
 
-	public List<T> findByExample(final T exampleInstance,
+	public final List<T> findByExample(final T exampleInstance,
 			final String... excludeProperty) {
 		final Criteria crit = getSession().createCriteria(getPersistentClass());
 		final Example example = Example.create(exampleInstance);
@@ -138,7 +138,7 @@ public abstract class GenericHibernateDAO<T, ID extends Serializable>
 		return entity;
 	}
 
-	public Serializable getIdentifier(final Object o) {
+	public final Serializable getIdentifier(final Object o) {
 		return getSession().getIdentifier(o);
 	}
 
@@ -147,15 +147,15 @@ public abstract class GenericHibernateDAO<T, ID extends Serializable>
 	 * 
 	 * @return the {@link Class} of the entity that this {@link IDAO} manages
 	 */
-	public Class<T> getPersistentClass() {
+	public final Class<T> getPersistentClass() {
 		return persistentClass;
 	}
 
-	public void evict(final T entity) {
+	public final void evict(final T entity) {
 		getSession().evict(entity);
 	}
 
-	public void evictEntities(final Iterable<? extends T> entities) {
+	public final void evictEntities(final Iterable<? extends T> entities) {
 		for (final T entity : entities) {
 			evict(entity);
 		}
@@ -172,8 +172,9 @@ public abstract class GenericHibernateDAO<T, ID extends Serializable>
 	}
 
 	/** {@inheritDoc} */
-	public final void setSession(final Session s) {
-		this.session = s;
+	public final void setSession(final Session session) {
+		checkNotNull(session);
+		this.session = session;
 	}
 
 	/**
@@ -185,7 +186,7 @@ public abstract class GenericHibernateDAO<T, ID extends Serializable>
 	 * 
 	 * @return persisted {@code T}s that match {@code criterion}
 	 */
-	protected List<T> findByCriteria(final Criterion... criterion) {
+	protected final List<T> findByCriteria(final Criterion... criterion) {
 		final Criteria crit = getSession().createCriteria(getPersistentClass());
 		for (final Criterion c : criterion) {
 			crit.add(c);
@@ -203,7 +204,7 @@ public abstract class GenericHibernateDAO<T, ID extends Serializable>
 	 * 
 	 * @return see description
 	 */
-	protected Session getSession() {
+	protected final Session getSession() {
 		if (session == null) {
 			throw new IllegalStateException("no session set for dao");
 			// setSession(HibernateUtil.getSessionFactory().getCurrentSession());
@@ -211,12 +212,12 @@ public abstract class GenericHibernateDAO<T, ID extends Serializable>
 		return session;
 	}
 
-	public void initialize(final T entity) {
+	public final void initialize(final T entity) {
 		checkNotNull(entity);
 		Hibernate.initialize(entity);
 	}
 
-	public String getEntityName(T entity) {
+	public final String getEntityName(T entity) {
 		return getSession().getEntityName(entity);
 	}
 

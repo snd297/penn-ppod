@@ -15,6 +15,8 @@
  */
 package edu.upenn.cis.ppod.dao;
 
+import com.google.inject.ImplementedBy;
+
 import edu.upenn.cis.ppod.model.AttachmentType;
 import edu.upenn.cis.ppod.thirdparty.dao.IDAO;
 
@@ -23,6 +25,7 @@ import edu.upenn.cis.ppod.thirdparty.dao.IDAO;
  * 
  * @author Sam Donnelly
  */
+@ImplementedBy(AttachmentTypeDAOHibernate.class)
 public interface IAttachmentTypeDAO extends IDAO<AttachmentType, Long> {
 
 	/**

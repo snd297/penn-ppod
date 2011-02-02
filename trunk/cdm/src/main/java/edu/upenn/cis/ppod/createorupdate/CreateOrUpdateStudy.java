@@ -60,7 +60,6 @@ import edu.upenn.cis.ppod.util.SetVersionInfoVisitor;
 public final class CreateOrUpdateStudy {
 
 	private final IStudyDAO studyDAO;
-	private final IDnaRowDAO dnaRowDao;
 	private final INewVersionInfo newVersionInfo;
 	private final MergeOtuSets mergeOTUSets;
 	private final CreateOrUpdateDnaMatrix createOrUpdateDNAMatrix;
@@ -72,7 +71,7 @@ public final class CreateOrUpdateStudy {
 	private final IDnaSequenceSetDAO dnaSequenceSetDAO;
 	private final IDnaMatrixDAO dnaMatrixDAO;
 	private final IStandardMatrixDAO standardMatrixDAO;
-	private ITreeSetDAO treeSetDAO;
+	private final ITreeSetDAO treeSetDAO;
 
 	@Inject
 	CreateOrUpdateStudy(
@@ -93,7 +92,6 @@ public final class CreateOrUpdateStudy {
 			final IStandardMatrixDAO standardMatrixDAO,
 			final ITreeSetDAO treeSetDAO) {
 		this.studyDAO = studyDAO;
-		this.dnaRowDao = dnaRowDao;
 		this.newVersionInfo = newVersionInfo;
 		this.mergeOTUSets = mergeOTUSets;
 		this.createOrUpdateDNAMatrix = createOrUpdateDNAMatrix;

@@ -39,8 +39,7 @@ final class StudyDAOHibernate
 		implements IStudyDAO {
 
 	@Inject
-	StudyDAOHibernate(
-			final Session session) {
+	StudyDAOHibernate(final Session session) {
 		setSession(session);
 	}
 

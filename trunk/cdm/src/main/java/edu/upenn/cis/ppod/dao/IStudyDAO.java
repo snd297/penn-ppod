@@ -18,6 +18,8 @@ package edu.upenn.cis.ppod.dao;
 import java.util.List;
 import java.util.Set;
 
+import com.google.inject.ImplementedBy;
+
 import edu.upenn.cis.ppod.model.Study;
 import edu.upenn.cis.ppod.thirdparty.dao.IDAO;
 import edu.upenn.cis.ppod.util.Pair;
@@ -27,6 +29,7 @@ import edu.upenn.cis.ppod.util.Pair;
  * 
  * @author Sam Donnelly
  */
+@ImplementedBy(StudyDAOHibernate.class)
 public interface IStudyDAO extends IDAO<Study, Long> {
 
 	/**

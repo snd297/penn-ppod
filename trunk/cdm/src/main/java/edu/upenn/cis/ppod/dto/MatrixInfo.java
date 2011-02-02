@@ -93,7 +93,7 @@ public class MatrixInfo extends PPodEntityInfo {
 	}
 
 	@XmlElementWrapper
-	final public Map<Integer, Long> getRowHeaderVersionsByIdx() {
+	public final Map<Integer, Long> getRowHeaderVersionsByIdx() {
 		return rowVersionsByIdx;
 	}
 
