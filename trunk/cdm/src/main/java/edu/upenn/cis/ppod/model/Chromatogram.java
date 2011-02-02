@@ -38,7 +38,7 @@ public class Chromatogram extends UuPPodEntity {
 
 	@Lob
 	@Column(name = "CHROMATOGRAM", nullable = false)
-	@Nullable
+	@CheckForNull
 	private byte[] chromatogram;
 
 	@OneToOne(fetch = FetchType.LAZY, optional = true)
@@ -61,7 +61,7 @@ public class Chromatogram extends UuPPodEntity {
 	 * 
 	 * @return the {@code DNASequence} that this points to
 	 */
-	@CheckForNull
+	@Nullable
 	public DnaSequence getSequence() {
 		return sequence;
 	}

@@ -15,6 +15,7 @@
  */
 package edu.upenn.cis.ppod.dto;
 
+import static com.google.common.base.Preconditions.checkNotNull;
 import static com.google.common.collect.Lists.newArrayList;
 
 import java.util.List;
@@ -34,7 +35,7 @@ import edu.umd.cs.findbugs.annotations.CheckForNull;
 public final class PPodStudy extends UuPPodDomainObjectWithLabel {
 
 	@XmlElement(name = "otuSet")
-	private final List<PPodOtuSet> otuSets = newArrayList();
+	private List<PPodOtuSet> otuSets = newArrayList();
 
 	PPodStudy() {}
 
@@ -48,5 +49,10 @@ public final class PPodStudy extends UuPPodDomainObjectWithLabel {
 
 	public List<PPodOtuSet> getOtuSets() {
 		return otuSets;
+	}
+
+	public void setOtuSets(final List<PPodOtuSet> otuSets) {
+		checkNotNull(otuSets);
+		this.otuSets = otuSets;
 	}
 }

@@ -26,11 +26,11 @@ abstract class PPodDomainObject {
 	}
 
 	@Nullable
-	public final Long getVersion() {
+	public Long getVersion() {
 		return version;
 	}
 
-	public final void setVersion(@CheckForNull final Long version) {
+	public void setVersion(@CheckForNull final Long version) {
 		this.version = version;
 	}
 

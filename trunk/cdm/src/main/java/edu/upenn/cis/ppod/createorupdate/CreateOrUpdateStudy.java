@@ -195,7 +195,7 @@ public final class CreateOrUpdateStudy {
 	private void handleDNAMatrices(
 			final OtuSet dbOTUSet,
 			final PPodOtuSet incomingOTUSet) {
-
+		
 		// Let's delete matrices missing from the incoming OTU set
 		final Set<DnaMatrix> toBeRemoveds = newHashSet();
 		for (final DnaMatrix dbMatrix : dbOTUSet.getDnaMatrices()) {

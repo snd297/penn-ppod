@@ -60,7 +60,7 @@ abstract class Cell<E, R extends Row<?, ?>>
 	@CheckForNull
 	private PPodCellType type;
 
-	protected Cell() {}
+	Cell() {}
 
 	/**
 	 * Get the elements contained in this cell.
@@ -167,8 +167,7 @@ abstract class Cell<E, R extends Row<?, ?>>
 	/**
 	 * Does not affect {@link #isInNeedOfNewVersion()}.
 	 */
-	abstract void setElements(
-			@CheckForNull final Set<E> elements);
+	abstract void setElements(@CheckForNull final Set<E> elements);
 
 	/**
 	 * Set this cell's type to {@link Type#INAPPLICABLE}, its elements to the
