@@ -15,7 +15,13 @@
  */
 package edu.upenn.cis.ppod.dao;
 
+import static com.google.common.base.Preconditions.checkNotNull;
+
 import java.util.List;
+
+import org.hibernate.Session;
+
+import com.google.inject.Inject;
 
 import edu.upenn.cis.ppod.model.OtuSet;
 import edu.upenn.cis.ppod.thirdparty.dao.hibernate.GenericHibernateDAO;
@@ -23,9 +29,15 @@ import edu.upenn.cis.ppod.thirdparty.dao.hibernate.GenericHibernateDAO;
 /**
  * An {@link OTUSet} Hibernate DAO.
  */
-public class OtuSetDAOHibernate
+final class OtuSetDAOHibernate
 		extends GenericHibernateDAO<OtuSet, Long>
 		implements IOtuSetDAO {
+
+	@Inject
+	OtuSetDAOHibernate(final Session session) {
+		checkNotNull(session);
+		setSession(session);
+	}
 
 	public OtuSet getOTUSetByPPodId(final String pPodId) {
 		return (OtuSet) getSession()

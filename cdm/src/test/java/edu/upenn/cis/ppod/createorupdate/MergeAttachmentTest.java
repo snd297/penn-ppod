@@ -49,7 +49,7 @@ public class MergeAttachmentTest {
 
 	@Test
 	public void mergeOnBlankTarget() {
-		IMergeAttachments mergeAttachments = new MergeAttachments(
+		MergeAttachments mergeAttachments = new MergeAttachments(
 				mock(IAttachmentNamespaceDAO.class),
 				mock(IAttachmentTypeDAO.class));
 

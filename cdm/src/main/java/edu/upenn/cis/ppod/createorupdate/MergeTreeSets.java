@@ -40,7 +40,7 @@ import edu.upenn.cis.ppod.model.TreeSet;
  * 
  * @author Sam Donnelly
  */
-class MergeTreeSets implements IMergeTreeSets {
+public final class MergeTreeSets {
 
 	private final INewVersionInfo newVersionInfo;
 

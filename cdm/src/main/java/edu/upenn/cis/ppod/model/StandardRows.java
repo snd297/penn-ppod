@@ -40,8 +40,7 @@ import edu.upenn.cis.ppod.util.IVisitor;
  */
 @Embeddable
 @Access(AccessType.PROPERTY)
-class StandardRows
-		implements IOtuKeyedMap<StandardRow> {
+class StandardRows implements IOtuKeyedMap<StandardRow> {
 
 	private final OtuKeyedMapPlus<StandardRow, StandardMatrix> rows = new OtuKeyedMapPlus<StandardRow, StandardMatrix>();
 
@@ -69,21 +68,7 @@ class StandardRows
 		return rows.getParent();
 	}
 
-	/**
-	 * We want everything but SAVE_UPDATE (which ALL will give us) - once it's
-	 * evicted out of the persistence context, we don't want it back in via
-	 * cascading UPDATE. So that we can run leaner for large matrices. This is
-	 * more important for protein matrices but we do it here for at least
-	 * consistency since the same client code works with the different kinds of
-	 * matrices.
-	 */
-	@OneToMany(cascade = {
-			CascadeType.PERSIST,
-			CascadeType.MERGE,
-			CascadeType.REMOVE,
-			CascadeType.DETACH,
-			CascadeType.REFRESH },
-			orphanRemoval = true)
+	@OneToMany(cascade = CascadeType.ALL, orphanRemoval = true)
 	@JoinTable(inverseJoinColumns = @JoinColumn(name = StandardRow.JOIN_COLUMN))
 	@MapKeyJoinColumn(name = Otu.JOIN_COLUMN)
 	public Map<Otu, StandardRow> getValues() {

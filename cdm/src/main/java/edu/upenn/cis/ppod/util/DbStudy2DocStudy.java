@@ -19,7 +19,7 @@ import java.util.List;
 
 import com.google.inject.Inject;
 
-import edu.upenn.cis.ppod.dao.IObjectWithLongIdDAO;
+import edu.upenn.cis.ppod.dao.IDnaRowDAO;
 import edu.upenn.cis.ppod.dto.PPodDnaMatrix;
 import edu.upenn.cis.ppod.dto.PPodDnaRow;
 import edu.upenn.cis.ppod.dto.PPodDnaSequence;
@@ -32,6 +32,8 @@ import edu.upenn.cis.ppod.dto.PPodStandardMatrix;
 import edu.upenn.cis.ppod.dto.PPodStandardRow;
 import edu.upenn.cis.ppod.dto.PPodStandardState;
 import edu.upenn.cis.ppod.dto.PPodStudy;
+import edu.upenn.cis.ppod.dto.PPodTree;
+import edu.upenn.cis.ppod.dto.PPodTreeSet;
 import edu.upenn.cis.ppod.model.DnaCell;
 import edu.upenn.cis.ppod.model.DnaMatrix;
 import edu.upenn.cis.ppod.model.DnaRow;
@@ -45,11 +47,18 @@ import edu.upenn.cis.ppod.model.StandardMatrix;
 import edu.upenn.cis.ppod.model.StandardRow;
 import edu.upenn.cis.ppod.model.StandardState;
 import edu.upenn.cis.ppod.model.Study;
+import edu.upenn.cis.ppod.model.Tree;
+import edu.upenn.cis.ppod.model.TreeSet;
 import edu.upenn.cis.ppod.model.VersionInfo;
 
-public class DbStudy2DocStudy {
+public final class DbStudy2DocStudy {
 
-	private IObjectWithLongIdDAO dao;
+	private final IDnaRowDAO dnaRowDao;
+
+	@Inject
+	DbStudy2DocStudy(final IDnaRowDAO dnaRowDao) {
+		this.dnaRowDao = dnaRowDao;
+	}
 
 	public char dbCell2IupacPlus(final DnaCell dbCell) {
 		char iupacPlus = (char) -1;
@@ -229,7 +238,7 @@ public class DbStudy2DocStudy {
 					dbRow.getVersionInfo().getVersion(), docSeq.toString());
 			docMatrix.getRows().add(docRow);
 			docRow.setCellVersions(cellVersions);
-			dao.evict(dbRow);
+			dnaRowDao.evict(dbRow);
 		}
 		return docMatrix;
 	}
@@ -285,10 +294,14 @@ public class DbStudy2DocStudy {
 					dbDnaSequenceSet2DocDnaSequenceSet(dbSequenceSet));
 		}
 
+		for (final TreeSet dbTreeSet : dbOtuSet.getTreeSets()) {
+			docOtuSet.getTreeSets().add(dbTreeSet2DocTreeSet(dbTreeSet));
+		}
+
 		return docOtuSet;
 	}
 
-	public static PPodStandardMatrix dbStandardMatrix2DocStandardMatrix(
+	public PPodStandardMatrix dbStandardMatrix2DocStandardMatrix(
 			final StandardMatrix dbMatrix) {
 		final PPodStandardMatrix docMatrix = new PPodStandardMatrix(
 				dbMatrix.getPPodId(), dbMatrix.getVersionInfo().getVersion(),
@@ -342,8 +355,21 @@ public class DbStudy2DocStudy {
 		return docStudy;
 	}
 
-	@Inject
-	DbStudy2DocStudy(IObjectWithLongIdDAO dao) {
-		this.dao = dao;
+	public PPodTreeSet dbTreeSet2DocTreeSet(final TreeSet dbTreeSet) {
+		final PPodTreeSet docTreeSet =
+				new PPodTreeSet(
+						dbTreeSet.getPPodId(),
+						dbTreeSet.getVersionInfo().getVersion(),
+						dbTreeSet.getLabel());
+		for (final Tree dbTree : dbTreeSet.getTrees()) {
+			final PPodTree docTree =
+					new PPodTree(
+							dbTree.getPPodId(),
+							dbTree.getVersionInfo().getVersion(),
+							dbTree.getLabel(),
+							dbTree.getNewick());
+			docTreeSet.getTrees().add(docTree);
+		}
+		return docTreeSet;
 	}
 }

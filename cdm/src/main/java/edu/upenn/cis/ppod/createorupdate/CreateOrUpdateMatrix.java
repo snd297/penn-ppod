@@ -23,7 +23,6 @@ import java.util.List;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
-import edu.upenn.cis.ppod.dao.IObjectWithLongIdDAO;
 import edu.upenn.cis.ppod.dto.PPodStandardCell;
 import edu.upenn.cis.ppod.dto.PPodStandardMatrix;
 import edu.upenn.cis.ppod.dto.PPodStandardRow;
@@ -38,17 +37,13 @@ import edu.upenn.cis.ppod.model.StandardRow;
  */
 abstract class CreateOrUpdateMatrix {
 
-	private final IObjectWithLongIdDAO dao;
-
 	protected Logger logger = LoggerFactory.getLogger(getClass());
 
 	private final INewVersionInfo newVersionInfo;
 
 	protected CreateOrUpdateMatrix(
-			final IObjectWithLongIdDAO dao,
 			final INewVersionInfo newVersionInfo) {
 		this.newVersionInfo = newVersionInfo;
-		this.dao = dao;
 	}
 
 	public void createOrUpdateMatrixHelper(
@@ -62,10 +57,6 @@ abstract class CreateOrUpdateMatrix {
 		final String METHOD = "createOrUpdate(...)";
 
 		dbMatrix.setLabel(sourceMatrix.getLabel());
-		// dbMatrix.setDescription(sourceMatrix.getDescription());
-
-		// So that makePersistenct(dbRow) below has a persistent parent.
-		dao.makePersistent(dbMatrix);
 
 		int sourceRowPos = -1;
 
@@ -85,7 +76,7 @@ abstract class CreateOrUpdateMatrix {
 				dbRow = new StandardRow();
 				dbRow.setVersionInfo(newVersionInfo.getNewVersionInfo());
 				dbMatrix.putRow(dbOTU, dbRow);
-				dao.makePersistent(dbRow);
+				// dao.makePersistent(dbRow);
 			}
 
 			final List<StandardCell> dbCells =
@@ -154,8 +145,8 @@ abstract class CreateOrUpdateMatrix {
 					METHOD,
 					sourceRowPos);
 
-			dao.flush();
-			dao.evict(dbRow);
+			// dao.flush();
+			// dao.evict(dbRow);
 		}
 	}
 

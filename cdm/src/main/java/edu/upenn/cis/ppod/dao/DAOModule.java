@@ -13,25 +13,25 @@
  * See the License for the specific language governing permissions and
  * limitations under the License.
  */
-package edu.upenn.cis.ppod.createorupdate;
+package edu.upenn.cis.ppod.dao;
 
-import com.google.inject.ImplementedBy;
-
-import edu.upenn.cis.ppod.dto.PPodDnaMatrix;
-import edu.upenn.cis.ppod.model.DnaMatrix;
+import com.google.inject.AbstractModule;
 
 /**
+ * The Class DAOHibernateModule.
+ * 
  * @author Sam Donnelly
  */
-@ImplementedBy(CreateOrUpdateDnaMatrix.class)
-public interface ICreateOrUpdateDNAMatrix {
+public class DAOModule extends AbstractModule {
 
-	/**
-	 * Assumes {@code dbMatrix} is in a persistent state.
-	 * 
-	 * @param dbMatrix
-	 * @param sourceMatrix
-	 */
-	void createOrUpdateMatrix(DnaMatrix dbMatrix, PPodDnaMatrix sourceMatrix);
+	@Override
+	protected void configure() {
+
+		bind(IStudyDAO.class).to(StudyDAOHibernate.class);
+		bind(IAttachmentNamespaceDAO.class).to(
+				AttachmentNamespaceDAOHibernate.class);
+		bind(IAttachmentTypeDAO.class).to(AttachmentTypeDAOHibernate.class);
+		bind(IVersionInfoDAO.class).to(VersionInfoDAOHibernate.class);
+	}
 
 }

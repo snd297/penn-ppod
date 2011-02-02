@@ -25,7 +25,6 @@ import java.util.List;
 import org.testng.annotations.Test;
 
 import edu.upenn.cis.ppod.TestGroupDefs;
-import edu.upenn.cis.ppod.dao.IObjectWithLongIdDAO;
 import edu.upenn.cis.ppod.dto.PPodOtu;
 import edu.upenn.cis.ppod.dto.PPodOtuSet;
 import edu.upenn.cis.ppod.dto.PPodStandardCell;
@@ -58,10 +57,8 @@ public class CreateOrUpdateStandardMatrixTest {
 		final INewVersionInfo newVersionInfo = mock(INewVersionInfo.class);
 		when(newVersionInfo.getNewVersionInfo()).thenReturn(versionInfo);
 
-		final ICreateOrUpdateStandardMatrix createOrUpdateStandardMatrix =
-				new CreateOrUpdateStandardMatrix(
-						mock(IObjectWithLongIdDAO.class),
-						newVersionInfo);
+		final CreateOrUpdateStandardMatrix createOrUpdateStandardMatrix =
+				new CreateOrUpdateStandardMatrix(newVersionInfo);
 
 		final PPodStandardMatrix sourceMatrix = getOnlyElement(sourceOtuSet
 				.getStandardMatrices());
@@ -89,10 +86,8 @@ public class CreateOrUpdateStandardMatrixTest {
 		final INewVersionInfo newVersionInfo = mock(INewVersionInfo.class);
 		when(newVersionInfo.getNewVersionInfo()).thenReturn(versionInfo);
 
-		final ICreateOrUpdateStandardMatrix createOrUpdateStandardMatrix =
-				new CreateOrUpdateStandardMatrix(
-						mock(IObjectWithLongIdDAO.class),
-						newVersionInfo);
+		final CreateOrUpdateStandardMatrix createOrUpdateStandardMatrix =
+				new CreateOrUpdateStandardMatrix(newVersionInfo);
 
 		final OtuSet targetOtuSet = new OtuSet();
 		final StandardMatrix targetMatrix = new StandardMatrix();
@@ -142,10 +137,8 @@ public class CreateOrUpdateStandardMatrixTest {
 		final INewVersionInfo newVersionInfo = mock(INewVersionInfo.class);
 		when(newVersionInfo.getNewVersionInfo()).thenReturn(versionInfo);
 
-		final ICreateOrUpdateStandardMatrix createOrUpdateStandardMatrix =
-				new CreateOrUpdateStandardMatrix(
-						mock(IObjectWithLongIdDAO.class),
-						newVersionInfo);
+		final CreateOrUpdateStandardMatrix createOrUpdateStandardMatrix =
+				new CreateOrUpdateStandardMatrix(newVersionInfo);
 
 		final OtuSet targetOtuSet = new OtuSet();
 		final StandardMatrix targetMatrix = new StandardMatrix();
@@ -207,10 +200,8 @@ public class CreateOrUpdateStandardMatrixTest {
 		final INewVersionInfo newVersionInfo = mock(INewVersionInfo.class);
 		when(newVersionInfo.getNewVersionInfo()).thenReturn(versionInfo);
 
-		final ICreateOrUpdateStandardMatrix createOrUpdateStandardMatrix =
-				new CreateOrUpdateStandardMatrix(
-						mock(IObjectWithLongIdDAO.class),
-						newVersionInfo);
+		final CreateOrUpdateStandardMatrix createOrUpdateStandardMatrix =
+				new CreateOrUpdateStandardMatrix(newVersionInfo);
 
 		final OtuSet targetOtuSet = new OtuSet();
 		final StandardMatrix targetMatrix = new StandardMatrix();

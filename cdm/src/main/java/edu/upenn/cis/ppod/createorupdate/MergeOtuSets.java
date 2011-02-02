@@ -37,7 +37,7 @@ import edu.upenn.cis.ppod.model.OtuSet;
  * 
  * @author Sam Donnelly
  */
-final class MergeOtuSets implements IMergeOtuSets {
+public final class MergeOtuSets {
 
 	private INewVersionInfo newVersionInfo;
 
