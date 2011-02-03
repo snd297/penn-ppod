@@ -1,5 +1,7 @@
 package edu.upenn.cis.ppod.model;
 
+import static com.google.common.base.Preconditions.checkNotNull;
+
 import java.util.Set;
 
 import javax.persistence.CollectionTable;
@@ -13,10 +15,11 @@ import javax.persistence.ManyToOne;
 
 import edu.umd.cs.findbugs.annotations.CheckForNull;
 import edu.umd.cs.findbugs.annotations.Nullable;
+import edu.upenn.cis.ppod.dto.PPodCellType;
 import edu.upenn.cis.ppod.dto.PPodProtein;
 
 public class ProteinCell
-		extends MolecularCell<PPodProtein, ProteinRow> {
+		extends Cell<PPodProtein, ProteinRow> {
 
 	public static final String TABLE = "PROTEIN_CELL";
 
@@ -80,8 +83,15 @@ public class ProteinCell
 	}
 
 	/** {@inheritDoc} */
-	public void setParent(@CheckForNull final ProteinRow parent) {
+	public void setParent(final ProteinRow parent) {
 		this.parent = parent;
+	}
+
+	public void setSingleElement(final PPodProtein protein) {
+		checkNotNull(protein);
+		setType(PPodCellType.SINGLE);
+		this.element = protein;
+		this.elements = null;
 	}
 
 }

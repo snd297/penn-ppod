@@ -46,7 +46,7 @@ import edu.upenn.cis.ppod.util.IVisitor;
 @Entity
 @Table(name = DnaCell.TABLE)
 @Immutable
-public class DnaCell extends MolecularCell<PPodDnaNucleotide, DnaRow> {
+public class DnaCell extends CellWithCase<PPodDnaNucleotide, DnaRow> {
 
 	public static final String TABLE = "DNA_CELL";
 
@@ -113,18 +113,18 @@ public class DnaCell extends MolecularCell<PPodDnaNucleotide, DnaRow> {
 	}
 
 	@Override
-	void setElement(@CheckForNull final PPodDnaNucleotide element) {
+	void setElement(final PPodDnaNucleotide element) {
 		this.element = element;
 	}
 
 	/** {@inheritDoc} */
 	@Override
-	void setElements(@CheckForNull final Set<PPodDnaNucleotide> elements) {
+	void setElements(final Set<PPodDnaNucleotide> elements) {
 		this.elements = elements;
 	}
 
 	/** {@inheritDoc} */
-	public void setParent(@CheckForNull final DnaRow parent) {
+	public void setParent(final DnaRow parent) {
 		this.parent = parent;
 	}
 }

@@ -4,7 +4,7 @@ import static com.google.common.base.Preconditions.checkNotNull;
 import edu.upenn.cis.ppod.dto.PPodDnaNucleotide;
 import edu.upenn.cis.ppod.model.DnaCell;
 
-public class DocCell2DbCell {
+public class DnaDocCell2DbCell {
 
 	public static void docCell2DbCell(final DnaCell dbCell, final char docCell) {
 		checkNotNull(dbCell);
