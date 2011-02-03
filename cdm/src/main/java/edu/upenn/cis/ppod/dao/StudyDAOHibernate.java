@@ -25,9 +25,9 @@ import org.hibernate.Session;
 
 import com.google.inject.Inject;
 
+import edu.upenn.cis.ppod.dto.PPodLabelAndId;
 import edu.upenn.cis.ppod.model.Study;
 import edu.upenn.cis.ppod.thirdparty.dao.hibernate.GenericHibernateDAO;
-import edu.upenn.cis.ppod.util.Pair;
 
 /**
  * An {@link IStudyDAO} Hibernate DAO.
@@ -52,13 +52,13 @@ final class StudyDAOHibernate
 						"minPPodVersion", minPPodVersion).list();
 	}
 
-	public Set<Pair<String, String>> getPPodIdLabelPairs() {
-		final Set<Pair<String, String>> results = newHashSet();
+	public Set<PPodLabelAndId> getPPodIdLabelPairs() {
+		final Set<PPodLabelAndId> results = newHashSet();
 		for (final Iterator<?> itr = getSession().getNamedQuery(
 				Study.class.getSimpleName()
 						+ "-getPPodIdLabelPairs").iterate(); itr.hasNext();) {
 			final Object[] result = (Object[]) itr.next();
-			results.add(Pair.of((String) result[0],
+			results.add(new PPodLabelAndId((String) result[0],
 					(String) result[1]));
 		}
 		return results;
