@@ -98,6 +98,7 @@ public class Study
 
 	@Override
 	public void accept(final IVisitor visitor) {
+		checkNotNull(visitor);
 		visitor.visitStudy(this);
 		for (final OtuSet otuSet : getOtuSets()) {
 			otuSet.accept(visitor);
