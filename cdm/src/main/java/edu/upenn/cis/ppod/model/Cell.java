@@ -29,8 +29,6 @@ import javax.persistence.EnumType;
 import javax.persistence.Enumerated;
 import javax.persistence.MappedSuperclass;
 
-import com.google.common.annotations.VisibleForTesting;
-
 import edu.umd.cs.findbugs.annotations.CheckForNull;
 import edu.umd.cs.findbugs.annotations.Nullable;
 import edu.upenn.cis.ppod.dto.PPodCellType;
@@ -286,7 +284,6 @@ abstract class Cell<E, R extends Row<?, ?>>
 	 * 
 	 * @param type the new type
 	 */
-	@VisibleForTesting
 	void setType(final PPodCellType type) {
 		checkNotNull(type);
 		this.type = type;
@@ -316,4 +313,5 @@ abstract class Cell<E, R extends Row<?, ?>>
 				PPodCellType.UNCERTAIN,
 				elements);
 	}
+
 }

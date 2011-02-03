@@ -27,6 +27,7 @@ import edu.upenn.cis.ppod.dto.PPodDnaSequence;
 import edu.upenn.cis.ppod.dto.PPodDnaSequenceSet;
 import edu.upenn.cis.ppod.dto.PPodOtu;
 import edu.upenn.cis.ppod.dto.PPodOtuSet;
+import edu.upenn.cis.ppod.dto.PPodProteinMatrix;
 import edu.upenn.cis.ppod.dto.PPodStandardCell;
 import edu.upenn.cis.ppod.dto.PPodStandardCharacter;
 import edu.upenn.cis.ppod.dto.PPodStandardMatrix;
@@ -42,6 +43,7 @@ import edu.upenn.cis.ppod.model.DnaSequence;
 import edu.upenn.cis.ppod.model.DnaSequenceSet;
 import edu.upenn.cis.ppod.model.Otu;
 import edu.upenn.cis.ppod.model.OtuSet;
+import edu.upenn.cis.ppod.model.ProteinMatrix;
 import edu.upenn.cis.ppod.model.StandardCell;
 import edu.upenn.cis.ppod.model.StandardCharacter;
 import edu.upenn.cis.ppod.model.StandardMatrix;
@@ -59,6 +61,16 @@ public final class DbStudy2DocStudy {
 	@Inject
 	DbStudy2DocStudy(final IDnaRowDAO dnaRowDao) {
 		this.dnaRowDao = dnaRowDao;
+	}
+
+	public PPodProteinMatrix dbProteinMatrix2DocProteinMatrix(
+			final ProteinMatrix matrix) {
+		final PPodProteinMatrix docProteinMatrix =
+				new PPodProteinMatrix(
+						matrix.getPPodId(),
+						matrix.getVersionInfo().getVersion(),
+						matrix.getLabel());
+		return docProteinMatrix;
 	}
 
 	public char dbCell2IupacPlus(final DnaCell dbCell) {

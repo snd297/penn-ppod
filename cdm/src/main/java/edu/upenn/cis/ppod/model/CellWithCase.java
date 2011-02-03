@@ -38,14 +38,14 @@ import edu.upenn.cis.ppod.dto.PPodCellType;
  * @param <R> see parent row
  */
 @MappedSuperclass
-public abstract class MolecularCell<E extends Enum<?>, R extends Row<?, ?>>
+public abstract class CellWithCase<E extends Enum<?>, R extends Row<?, ?>>
 		extends Cell<E, R> {
 
 	@Column(name = "LOWER_CASE", nullable = true)
 	@CheckForNull
 	private Boolean lowerCase;
 
-	MolecularCell() {}
+	CellWithCase() {}
 
 	/**
 	 * Are the contained {@link edu.upenn.cis.ppod.model.DNANucleotide}

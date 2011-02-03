@@ -41,7 +41,7 @@ public class MolecularCellTest {
 
 	@Test
 	public void setPolymorphicElements() {
-		final MolecularCell<PPodDnaNucleotide, ?> cell = new DnaCell();
+		final CellWithCase<PPodDnaNucleotide, ?> cell = new DnaCell();
 
 		cell.unsetInNeedOfNewVersion();
 
@@ -89,7 +89,7 @@ public class MolecularCellTest {
 
 	@Test
 	public void setSingleElement() {
-		final MolecularCell<PPodDnaNucleotide, ?> cell = new DnaCell();
+		final CellWithCase<PPodDnaNucleotide, ?> cell = new DnaCell();
 
 		cell.unsetInNeedOfNewVersion();
 		cell.setSingleElement(PPodDnaNucleotide.C, false);
@@ -114,7 +114,7 @@ public class MolecularCellTest {
 
 	@Test
 	public void setUncertainElements() {
-		final MolecularCell<PPodDnaNucleotide, ?> cell = new DnaCell();
+		final CellWithCase<PPodDnaNucleotide, ?> cell = new DnaCell();
 		cell.unsetInNeedOfNewVersion();
 		final Set<PPodDnaNucleotide> nucleotides =
 				ImmutableSet.of(PPodDnaNucleotide.A, PPodDnaNucleotide.C);

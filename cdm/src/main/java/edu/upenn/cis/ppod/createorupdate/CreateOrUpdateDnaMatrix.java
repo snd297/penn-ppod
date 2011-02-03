@@ -32,7 +32,7 @@ import edu.upenn.cis.ppod.model.DnaCell;
 import edu.upenn.cis.ppod.model.DnaMatrix;
 import edu.upenn.cis.ppod.model.DnaRow;
 import edu.upenn.cis.ppod.model.Otu;
-import edu.upenn.cis.ppod.util.DocCell2DbCell;
+import edu.upenn.cis.ppod.util.DnaDocCell2DbCell;
 
 public final class CreateOrUpdateDnaMatrix {
 
@@ -107,7 +107,7 @@ public final class CreateOrUpdateDnaMatrix {
 				final char sourceCell = sourceRow
 						.getSequence().charAt(dbCellPosition);
 
-				DocCell2DbCell.docCell2DbCell(dbCell, sourceCell);
+				DnaDocCell2DbCell.docCell2DbCell(dbCell, sourceCell);
 
 				// We need to do this here since we're removing the cell from
 				// the persistence context (with evict). So it won't get handled

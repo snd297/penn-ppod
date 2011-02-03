@@ -1,6 +1,6 @@
 package edu.upenn.cis.ppod.model;
 
-abstract class MolecularMatrix<R extends Row<C, ?>, C extends MolecularCell<?, ?>>
+abstract class MolecularMatrix<R extends Row<C, ?>, C extends CellWithCase<?, ?>>
 		extends Matrix<R, C> {
 
 	// public void setColumnsSize(final int columnsSize) {
