@@ -10,18 +10,18 @@ abstract class PPodMolecularRow extends PPodDomainObject {
 
 	PPodMolecularRow() {}
 
-	public PPodMolecularRow(final Long version, final String sequence) {
+	PPodMolecularRow(final Long version, final String sequence) {
 		super(version);
 		checkNotNull(sequence);
 		setSequence(sequence);
 	}
 
-	public PPodMolecularRow(final String sequence) {
+	PPodMolecularRow(final String sequence) {
 		checkNotNull(sequence);
 		this.sequence = sequence;
 	}
 
-	abstract protected Set<Character> getLegalChars();
+	abstract Set<Character> getLegalChars();
 
 	public final String getSequence() {
 		return sequence;
