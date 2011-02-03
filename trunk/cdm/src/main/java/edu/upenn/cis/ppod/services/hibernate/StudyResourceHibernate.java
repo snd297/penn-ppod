@@ -16,8 +16,6 @@
 package edu.upenn.cis.ppod.services.hibernate;
 
 import static com.google.common.base.Preconditions.checkNotNull;
-import static com.google.common.collect.Iterables.transform;
-import static com.google.common.collect.Sets.newHashSet;
 
 import java.util.Date;
 import java.util.Set;
@@ -27,21 +25,19 @@ import org.hibernate.SessionFactory;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
-import com.google.common.base.Function;
 import com.google.inject.Inject;
 
 import edu.upenn.cis.ppod.createorupdate.CreateOrUpdateStudy;
 import edu.upenn.cis.ppod.dao.ICurrentVersionDAO;
 import edu.upenn.cis.ppod.dao.IStudyDAO;
+import edu.upenn.cis.ppod.dto.PPodLabelAndId;
 import edu.upenn.cis.ppod.dto.PPodStudy;
 import edu.upenn.cis.ppod.dto.Study2StudyInfo;
 import edu.upenn.cis.ppod.dto.StudyInfo;
 import edu.upenn.cis.ppod.imodel.INewVersionInfo;
 import edu.upenn.cis.ppod.model.Study;
 import edu.upenn.cis.ppod.services.IStudyResource;
-import edu.upenn.cis.ppod.services.StringPair;
 import edu.upenn.cis.ppod.util.DbStudy2DocStudy;
-import edu.upenn.cis.ppod.util.Pair;
 
 /**
  * We commit the transactions in this class so that the resteasy response will
@@ -140,27 +136,16 @@ public final class StudyResourceHibernate implements IStudyResource {
 		}
 	}
 
-	public Set<StringPair> getStudyPPodIdLabelPairs() {
+	public Set<PPodLabelAndId> getStudyPPodIdLabelPairs() {
 		final long inTime = new Date().getTime();
 		try {
 			final Session session = sessionFactory.getCurrentSession();
 			session.beginTransaction();
 
-			final Set<Pair<String, String>> studyPPodIdPairs = studyDAO
+			final Set<PPodLabelAndId> studyLabelAndIds = studyDAO
 					.getPPodIdLabelPairs();
-
-			final Set<StringPair> studyPPodIdStringPairs = newHashSet(transform(
-					studyPPodIdPairs,
-
-					new Function<Pair<String, String>, StringPair>() {
-						public StringPair apply(final Pair<String, String> from) {
-							return new StringPair(from.getFirst(), from
-									.getSecond());
-						}
-					}));
-
 			session.getTransaction().commit();
-			return studyPPodIdStringPairs;
+			return studyLabelAndIds;
 		} catch (Throwable t) {
 			try {
 				sessionFactory.getCurrentSession().getTransaction().rollback();

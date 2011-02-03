@@ -46,8 +46,7 @@ import edu.upenn.cis.ppod.util.IVisitor;
 @Entity
 @Table(name = DnaCell.TABLE)
 @Immutable
-public class DnaCell
-		extends MolecularCell<PPodDnaNucleotide, DnaRow> {
+public class DnaCell extends MolecularCell<PPodDnaNucleotide, DnaRow> {
 
 	public static final String TABLE = "DNA_CELL";
 
@@ -55,7 +54,7 @@ public class DnaCell
 			TABLE + "_" + PersistentObject.ID_COLUMN;
 
 	/**
-	 * The heart of the cell: the {@code DNANucleotide}s.
+	 * The heart of the cell: the {@code DnaNucleotide}s.
 	 * <p>
 	 * At most one of {@code element} and {@code elements} will be non-
 	 * {@code null}.

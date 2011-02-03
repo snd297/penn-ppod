@@ -28,6 +28,7 @@ import javax.ws.rs.Produces;
 import org.jboss.resteasy.annotations.GZIP;
 
 import edu.upenn.cis.ppod.dto.PPodStudy;
+import edu.upenn.cis.ppod.dto.PPodLabelAndId;
 import edu.upenn.cis.ppod.dto.StudyInfo;
 import edu.upenn.cis.ppod.thirdparty.util.Pretty;
 
@@ -77,7 +78,7 @@ public interface IStudyResource {
 	@GZIP
 	@Path("ppodidlabelpairs")
 	@Produces("application/xml")
-	Set<StringPair> getStudyPPodIdLabelPairs();
+	Set<PPodLabelAndId> getStudyPPodIdLabelPairs();
 
 	@PUT
 	@Pretty

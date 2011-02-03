@@ -8,12 +8,10 @@ import org.slf4j.LoggerFactory;
 
 import com.google.inject.Provider;
 
-public class SessionFactoryProvider implements Provider<SessionFactory> {
+final class SessionFactoryProvider implements Provider<SessionFactory> {
 
 	private static Logger logger = LoggerFactory
 			.getLogger(SessionFactoryProvider.class);
-
-	SessionFactoryProvider() {}
 
 	public SessionFactory get() {
 		logger.debug("building session factory...");

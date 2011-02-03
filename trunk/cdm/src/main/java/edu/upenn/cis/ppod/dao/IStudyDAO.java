@@ -20,9 +20,9 @@ import java.util.Set;
 
 import com.google.inject.ImplementedBy;
 
+import edu.upenn.cis.ppod.dto.PPodLabelAndId;
 import edu.upenn.cis.ppod.model.Study;
 import edu.upenn.cis.ppod.thirdparty.dao.IDAO;
-import edu.upenn.cis.ppod.util.Pair;
 
 /**
  * A {@code Study} DAO.
@@ -39,7 +39,7 @@ public interface IStudyDAO extends IDAO<Study, Long> {
 	 * @return a set composed of a (pPOD ID, Study label) pair for every
 	 *         {@link Study} in the database
 	 */
-	Set<Pair<String, String>> getPPodIdLabelPairs();
+	Set<PPodLabelAndId> getPPodIdLabelPairs();
 
 	/**
 	 * Retrieve a {@link Study} given its pPOD id. Returns {@code null} if
