@@ -44,5 +44,4 @@ public final class PPodOtu extends UuPPodDomainObjectWithLabel {
 		checkNotNull(docId);
 		this.docId = docId;
 	}
-
 }
