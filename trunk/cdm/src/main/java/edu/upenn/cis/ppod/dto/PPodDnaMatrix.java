@@ -1,18 +1,12 @@
 package edu.upenn.cis.ppod.dto;
 
-import static com.google.common.base.Preconditions.checkNotNull;
-import static com.google.common.collect.Lists.newArrayList;
-
 import java.util.List;
 
 import javax.xml.bind.annotation.XmlElement;
 
 import edu.umd.cs.findbugs.annotations.CheckForNull;
 
-final public class PPodDnaMatrix extends UuPPodDomainObjectWithLabel {
-
-	@XmlElement(name = "row")
-	private List<PPodDnaRow> rows = newArrayList();
+final public class PPodDnaMatrix extends PPodMatrix<PPodDnaRow> {
 
 	PPodDnaMatrix() {}
 
@@ -25,12 +19,9 @@ final public class PPodDnaMatrix extends UuPPodDomainObjectWithLabel {
 		super(pPodId, label);
 	}
 
-	public List<PPodDnaRow> getRows() {
-		return rows;
+	@XmlElement(name = "row")
+	public final List<PPodDnaRow> getRows() {
+		return super.getRows();
 	}
 
-	public void setRows(final List<PPodDnaRow> rows) {
-		checkNotNull(rows);
-		this.rows = rows;
-	}
 }

@@ -45,7 +45,7 @@ abstract class UuPPodDomainObjectWithLabel extends PPodDomainObject
 		this.label = label;
 	}
 
-	public String getLabel() {
+	public final String getLabel() {
 		return label;
 	}
 

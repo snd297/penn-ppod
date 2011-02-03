@@ -6,19 +6,17 @@ import static com.google.common.collect.Lists.newArrayList;
 
 import java.util.List;
 
+import javax.xml.bind.annotation.XmlAccessType;
+import javax.xml.bind.annotation.XmlAccessorType;
 import javax.xml.bind.annotation.XmlElement;
 
 import edu.umd.cs.findbugs.annotations.CheckForNull;
 
-public final class PPodStandardMatrix extends UuPPodDomainObjectWithLabel {
+@XmlAccessorType(XmlAccessType.PROPERTY)
+public final class PPodStandardMatrix extends PPodMatrix<PPodStandardRow> {
 
-	@XmlElement(name = "character")
 	private List<PPodStandardCharacter> characters = newArrayList();
 
-	@XmlElement(name = "row")
-	private final List<PPodStandardRow> rows = newArrayList();
-
-	@XmlElement(name = "columnVersion")
 	private List<Long> columnVersions = newArrayList();
 
 	PPodStandardMatrix() {}
@@ -44,21 +42,25 @@ public final class PPodStandardMatrix extends UuPPodDomainObjectWithLabel {
 		this.columnVersions.add(columnNumber, columnVersionNumber);
 		this.characters.add(columnNumber, character);
 
-		for (int i = 0; i < rows.size(); i++) {
-			rows.get(i).getCells().add(columnNumber, column.get(i));
+		for (int i = 0; i < getRows().size(); i++) {
+			getRows().get(i).getCells().add(columnNumber, column.get(i));
 		}
 	}
 
+	@XmlElement(name = "character")
 	public List<PPodStandardCharacter> getCharacters() {
 		return characters;
 	}
 
+	@XmlElement(name = "columnVersion")
 	public List<Long> getColumnVersions() {
 		return columnVersions;
 	}
 
-	public List<PPodStandardRow> getRows() {
-		return rows;
+	@Override
+	@XmlElement(name = "row")
+	public final List<PPodStandardRow> getRows() {
+		return super.getRows();
 	}
 
 	public List<PPodStandardCell> removeColumn(final int columnNumber) {
@@ -66,7 +68,7 @@ public final class PPodStandardMatrix extends UuPPodDomainObjectWithLabel {
 		this.columnVersions.remove(columnNumber);
 		this.characters.remove(columnNumber);
 		final List<PPodStandardCell> removedColumn = newArrayList();
-		for (final PPodStandardRow row : rows) {
+		for (final PPodStandardRow row : getRows()) {
 			removedColumn.add(row.getCells().remove(columnNumber));
 		}
 		return removedColumn;
