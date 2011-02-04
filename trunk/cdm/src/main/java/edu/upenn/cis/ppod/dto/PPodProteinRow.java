@@ -8,7 +8,6 @@ public final class PPodProteinRow extends PPodMolecularRow {
 	public final static Set<java.lang.Character> LEGAL_CHARS =
 			ImmutableSet.of(
 					'A',
-					'B',
 					'C',
 					'D',
 					'E',
@@ -29,12 +28,31 @@ public final class PPodProteinRow extends PPodMolecularRow {
 					'W',
 					'X',
 					'Y',
-					'Z',
+					'*',
+					'1',
+					'2',
+					'3',
+					'4',
 					'-',
-					'?');
+					'?',
+					'(',
+					')',
+					'{',
+					'}');
+
+	PPodProteinRow() {}
+
+	public PPodProteinRow(final Long version, final String sequence) {
+		super(version, sequence);
+	}
+
+	public PPodProteinRow(final String sequence) {
+		super(sequence);
+	}
 
 	@Override
-	protected Set<Character> getLegalChars() {
+	Set<Character> getLegalChars() {
 		return LEGAL_CHARS;
 	}
+
 }
