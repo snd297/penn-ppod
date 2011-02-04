@@ -16,9 +16,6 @@ public class ProteinDocCell2DbCell {
 			case 'A':
 				dbCell.setSingleElement(PPodProtein.A);
 				break;
-			case 'B':
-				dbCell.setSingleElement(PPodProtein.B);
-				break;
 			case 'C':
 				dbCell.setSingleElement(PPodProtein.C);
 				break;
@@ -79,8 +76,20 @@ public class ProteinDocCell2DbCell {
 			case 'Y':
 				dbCell.setSingleElement(PPodProtein.Y);
 				break;
-			case 'Z':
-				dbCell.setSingleElement(PPodProtein.Z);
+			case '*':
+				dbCell.setSingleElement(PPodProtein.STOP);
+				break;
+			case '1':
+				dbCell.setSingleElement(PPodProtein.ONE);
+				break;
+			case '2':
+				dbCell.setSingleElement(PPodProtein.TWO);
+				break;
+			case '3':
+				dbCell.setSingleElement(PPodProtein.THREE);
+				break;
+			case '4':
+				dbCell.setSingleElement(PPodProtein.FOUR);
 				break;
 			case '-':
 				dbCell.setInapplicable();

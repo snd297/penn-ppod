@@ -31,7 +31,6 @@ public final class PPodDnaRow extends PPodMolecularRow {
 					'N',
 					'-',
 					'?');
-
 	@XmlElement(name = "cellVersion")
 	@CheckForNull
 	private List<Long> cellVersions;
@@ -40,11 +39,15 @@ public final class PPodDnaRow extends PPodMolecularRow {
 
 	public PPodDnaRow(final Long version, final String sequence) {
 		super(version, sequence);
-
 	}
 
 	public PPodDnaRow(final String sequence) {
 		super(sequence);
+	}
+
+	@Override
+	protected Set<Character> getLegalChars() {
+		return LEGAL_CHARS;
 	}
 
 	@Nullable
@@ -52,13 +55,7 @@ public final class PPodDnaRow extends PPodMolecularRow {
 		return cellVersions;
 	}
 
-	public void setCellVersions(
-			@CheckForNull final List<Long> cellVersions) {
+	public void setCellVersions(@CheckForNull final List<Long> cellVersions) {
 		this.cellVersions = cellVersions;
-	}
-
-	@Override
-	protected Set<Character> getLegalChars() {
-		return LEGAL_CHARS;
 	}
 }

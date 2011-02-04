@@ -314,4 +314,16 @@ abstract class Cell<E, R extends Row<?, ?>>
 				elements);
 	}
 
+	void setSingleElement(final E element) {
+		checkNotNull(element);
+		if (getType() == PPodCellType.SINGLE
+				&& getElement().equals(element)) {
+
+		} else {
+			setType(PPodCellType.SINGLE);
+			setElement(element);
+			setElements(null);
+			setInNeedOfNewVersion();
+		}
+	}
 }

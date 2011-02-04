@@ -272,10 +272,7 @@ public class StandardCell
 						"element is set, but this cell is not a SINGLE");
 			}
 		} else {
-			setElement(state);
-			setElements(null);
-			setType(PPodCellType.SINGLE);
-			setInNeedOfNewVersion();
+			super.setSingleElement(state);
 		}
 	}
 

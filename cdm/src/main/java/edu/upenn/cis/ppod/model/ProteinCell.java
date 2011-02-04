@@ -43,7 +43,7 @@ public class ProteinCell
 	@Column(name = "ELEMENT")
 	@Enumerated(EnumType.ORDINAL)
 	@Nullable
-	private Set<PPodProtein> elements;
+	Set<PPodProtein> elements;
 
 	/**
 	 * To handle the most-common case of a single element.
@@ -54,7 +54,7 @@ public class ProteinCell
 	@Column(name = "ELEMENT", nullable = true)
 	@Enumerated(EnumType.ORDINAL)
 	@Nullable
-	private PPodProtein element;
+	PPodProtein element;
 
 	@Override
 	protected PPodProtein getElement() {
@@ -87,11 +87,14 @@ public class ProteinCell
 		this.parent = parent;
 	}
 
+	@Override
 	public void setSingleElement(final PPodProtein protein) {
-		checkNotNull(protein);
-		setType(PPodCellType.SINGLE);
-		this.element = protein;
-		this.elements = null;
+		super.setSingleElement(protein);
+	}
+
+	public void setPolymorphic(final Set<PPodProtein> proteins) {
+		checkNotNull(proteins);
+		setPolymorphicOrUncertain(PPodCellType.SINGLE, proteins);
 	}
 
 }
