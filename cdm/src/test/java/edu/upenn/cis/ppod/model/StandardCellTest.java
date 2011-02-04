@@ -159,7 +159,7 @@ public class StandardCellTest {
 				Arrays.asList(cell));
 		states.add(state00);
 		states.add(state01);
-		cell.setUncertainElements(states);
+		cell.setUncertain(states);
 		assertEquals(cell.getType(), PPodCellType.UNCERTAIN);
 		assertEquals((Object) cell.getElements(), (Object) newHashSet(states));
 	}

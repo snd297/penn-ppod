@@ -88,13 +88,13 @@ public class ProteinCell
 	}
 
 	@Override
-	public void setSingleElement(final PPodProtein protein) {
-		super.setSingleElement(protein);
+	public void setSingle(final PPodProtein protein) {
+		super.setSingle(protein);
 	}
 
 	public void setPolymorphic(final Set<PPodProtein> proteins) {
 		checkNotNull(proteins);
-		setPolymorphicOrUncertain(PPodCellType.SINGLE, proteins);
+		setPolymorphicOrUncertain(PPodCellType.POLYMORPHIC, proteins);
 	}
 
 }

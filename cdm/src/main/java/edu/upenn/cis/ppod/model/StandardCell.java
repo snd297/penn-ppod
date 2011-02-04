@@ -272,7 +272,7 @@ public class StandardCell
 						"element is set, but this cell is not a SINGLE");
 			}
 		} else {
-			super.setSingleElement(state);
+			super.setSingle(state);
 		}
 	}
 

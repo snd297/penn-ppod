@@ -303,7 +303,7 @@ abstract class Cell<E, R extends Row<?, ?>>
 	 * 
 	 * @throw IllegalArgumentException if {@code uncertainStates.size() < 2}
 	 */
-	public void setUncertainElements(
+	public void setUncertain(
 			final Set<? extends E> elements) {
 		checkNotNull(elements);
 		checkArgument(
@@ -314,7 +314,7 @@ abstract class Cell<E, R extends Row<?, ?>>
 				elements);
 	}
 
-	void setSingleElement(final E element) {
+	void setSingle(final E element) {
 		checkNotNull(element);
 		if (getType() == PPodCellType.SINGLE
 				&& getElement().equals(element)) {
