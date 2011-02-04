@@ -38,37 +38,37 @@ public class DnaDocCell2DbCell {
 				dbCell.setSingleElement(PPodDnaNucleotide.T, true);
 				break;
 			case 'R':
-				dbCell.setUncertainElements(PPodDnaNucleotide.A_G);
+				dbCell.setUncertain(PPodDnaNucleotide.A_G);
 				break;
 			case 'Y':
-				dbCell.setUncertainElements(PPodDnaNucleotide.C_T);
+				dbCell.setUncertain(PPodDnaNucleotide.C_T);
 				break;
 			case 'S':
-				dbCell.setUncertainElements(PPodDnaNucleotide.G_C);
+				dbCell.setUncertain(PPodDnaNucleotide.G_C);
 				break;
 			case 'W':
-				dbCell.setUncertainElements(PPodDnaNucleotide.A_T);
+				dbCell.setUncertain(PPodDnaNucleotide.A_T);
 				break;
 			case 'K':
-				dbCell.setUncertainElements(PPodDnaNucleotide.G_T);
+				dbCell.setUncertain(PPodDnaNucleotide.G_T);
 				break;
 			case 'M':
-				dbCell.setUncertainElements(PPodDnaNucleotide.A_C);
+				dbCell.setUncertain(PPodDnaNucleotide.A_C);
 				break;
 			case 'B':
-				dbCell.setUncertainElements(PPodDnaNucleotide.C_G_T);
+				dbCell.setUncertain(PPodDnaNucleotide.C_G_T);
 				break;
 			case 'D':
-				dbCell.setUncertainElements(PPodDnaNucleotide.A_G_T);
+				dbCell.setUncertain(PPodDnaNucleotide.A_G_T);
 				break;
 			case 'H':
-				dbCell.setUncertainElements(PPodDnaNucleotide.A_C_T);
+				dbCell.setUncertain(PPodDnaNucleotide.A_C_T);
 				break;
 			case 'V':
-				dbCell.setUncertainElements(PPodDnaNucleotide.A_C_G);
+				dbCell.setUncertain(PPodDnaNucleotide.A_C_G);
 				break;
 			case 'N':
-				dbCell.setUncertainElements(PPodDnaNucleotide.A_C_G_T);
+				dbCell.setUncertain(PPodDnaNucleotide.A_C_G_T);
 				break;
 			case '-':
 				dbCell.setInapplicable();

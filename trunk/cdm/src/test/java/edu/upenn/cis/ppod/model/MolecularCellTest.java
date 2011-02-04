@@ -118,7 +118,7 @@ public class MolecularCellTest {
 		cell.unsetInNeedOfNewVersion();
 		final Set<PPodDnaNucleotide> nucleotides =
 				ImmutableSet.of(PPodDnaNucleotide.A, PPodDnaNucleotide.C);
-		cell.setUncertainElements(nucleotides);
+		cell.setUncertain(nucleotides);
 		assertTrue(cell.isInNeedOfNewVersion());
 		assertEquals(cell.getElements(), nucleotides);
 		assertNull(cell.getLowerCase());
@@ -126,13 +126,13 @@ public class MolecularCellTest {
 		cell.setPolymorphicElements(nucleotides, false);
 
 		cell.unsetInNeedOfNewVersion();
-		cell.setUncertainElements(nucleotides);
+		cell.setUncertain(nucleotides);
 		assertTrue(cell.isInNeedOfNewVersion());
 		assertEquals(cell.getElements(), nucleotides);
 		assertNull(cell.getLowerCase());
 
 		cell.unsetInNeedOfNewVersion();
-		cell.setUncertainElements(nucleotides);
+		cell.setUncertain(nucleotides);
 		assertFalse(cell.isInNeedOfNewVersion());
 		assertEquals(cell.getElements(), nucleotides);
 		assertNull(cell.getLowerCase());

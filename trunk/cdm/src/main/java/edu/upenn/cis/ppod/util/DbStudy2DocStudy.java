@@ -81,9 +81,9 @@ public final class DbStudy2DocStudy {
 			case SINGLE:
 				if (dbCell.getLowerCase()) {
 					iupacPlus = Character.toLowerCase(getOnlyElement(
-							dbCell.getElements()).name().charAt(0));
+							dbCell.getElements()).toString().charAt(0));
 				} else {
-					iupacPlus = getOnlyElement(dbCell.getElements()).name()
+					iupacPlus = getOnlyElement(dbCell.getElements()).toString()
 							.charAt(0);
 				}
 				break;
@@ -299,7 +299,7 @@ public final class DbStudy2DocStudy {
 		return docOtuSet;
 	}
 
-	public void dbProteinCell2Sequence(final ProteinCell proteinCell,
+	public static void dbProteinCell2Sequence(final ProteinCell proteinCell,
 			final StringBuilder sequence) {
 		checkNotNull(proteinCell);
 		checkNotNull(sequence);
@@ -324,7 +324,7 @@ public final class DbStudy2DocStudy {
 		}
 
 		for (final PPodProtein protein : proteinCell.getElements()) {
-			sequence.append(protein.name());
+			sequence.append(protein.toString());
 		}
 
 		switch (proteinCell.getType()) {

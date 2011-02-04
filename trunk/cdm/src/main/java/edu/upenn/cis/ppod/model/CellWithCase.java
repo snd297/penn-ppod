@@ -135,7 +135,7 @@ public abstract class CellWithCase<E extends Enum<?>, R extends Row<?, ?>>
 	 * @throws IllegalArgumentException if {@code uncertainStates.size() > 1}
 	 */
 	@Override
-	public void setUncertainElements(
+	public void setUncertain(
 			final Set<? extends E> uncertainElements) {
 		checkNotNull(uncertainElements);
 		checkArgument(
