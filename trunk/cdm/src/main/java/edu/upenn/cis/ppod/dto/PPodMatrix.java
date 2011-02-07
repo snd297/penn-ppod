@@ -10,8 +10,9 @@ import javax.xml.bind.annotation.XmlAccessorType;
 
 import edu.umd.cs.findbugs.annotations.CheckForNull;
 
-@XmlAccessorType(XmlAccessType.PROPERTY)
-abstract class PPodMatrix<R> extends UuPPodDomainObjectWithLabel {
+@XmlAccessorType(XmlAccessType.NONE)
+abstract class PPodMatrix<R extends PPodDomainObject> extends
+		UuPPodDomainObjectWithLabel {
 
 	private List<R> rows = newArrayList();
 

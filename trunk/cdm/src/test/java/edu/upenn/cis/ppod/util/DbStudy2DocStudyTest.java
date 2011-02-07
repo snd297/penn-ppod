@@ -91,4 +91,32 @@ public class DbStudy2DocStudyTest {
 			}
 		}
 	}
+
+	@Test
+	public void dbProteinCell2SequenceInapplicable() {
+		final ProteinCell cell = new ProteinCell();
+		cell.setInapplicable();
+
+		final StringBuilder sb = new StringBuilder();
+
+		DbStudy2DocStudy.dbProteinCell2Sequence(cell, sb);
+
+		assertEquals(sb.length(), 1);
+
+		assertEquals(sb.charAt(0), '-');
+	}
+
+	@Test
+	public void dbProteinCell2SequenceUnassigned() {
+		final ProteinCell cell = new ProteinCell();
+		cell.setUnassigned();
+
+		final StringBuilder sb = new StringBuilder();
+
+		DbStudy2DocStudy.dbProteinCell2Sequence(cell, sb);
+
+		assertEquals(sb.length(), 1);
+
+		assertEquals(sb.charAt(0), '?');
+	}
 }
