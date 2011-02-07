@@ -63,7 +63,7 @@ public class DnaSequenceSet
 	@Override
 	public void accept(final IVisitor visitor) {
 		checkNotNull(visitor);
-		visitor.visitDNASequenceSet(this);
+		visitor.visitDnaSequenceSet(this);
 		super.accept(visitor);
 	}
 

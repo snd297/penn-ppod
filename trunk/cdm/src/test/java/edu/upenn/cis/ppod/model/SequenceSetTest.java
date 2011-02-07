@@ -189,14 +189,14 @@ public class SequenceSetTest {
 
 		seqSet.accept(visitor);
 
-		verify(visitor, times(1)).visitDNASequenceSet(seqSet);
+		verify(visitor, times(1)).visitDnaSequenceSet(seqSet);
 
 		verify(visitor, times(seqSet.getSequences().values().size()))
-				.visitDNASequence(any(DnaSequence.class));
+				.visitDnaSequence(any(DnaSequence.class));
 
-		verify(visitor).visitDNASequence(seq0);
-		verify(visitor).visitDNASequence(seq1);
-		verify(visitor).visitDNASequence(seq2);
+		verify(visitor).visitDnaSequence(seq0);
+		verify(visitor).visitDnaSequence(seq1);
+		verify(visitor).visitDnaSequence(seq2);
 
 	}
 }

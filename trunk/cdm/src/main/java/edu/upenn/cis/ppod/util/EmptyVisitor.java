@@ -25,6 +25,8 @@ import edu.upenn.cis.ppod.model.DnaSequence;
 import edu.upenn.cis.ppod.model.DnaSequenceSet;
 import edu.upenn.cis.ppod.model.Otu;
 import edu.upenn.cis.ppod.model.OtuSet;
+import edu.upenn.cis.ppod.model.ProteinCell;
+import edu.upenn.cis.ppod.model.ProteinMatrix;
 import edu.upenn.cis.ppod.model.ProteinRow;
 import edu.upenn.cis.ppod.model.StandardCell;
 import edu.upenn.cis.ppod.model.StandardCharacter;
@@ -91,28 +93,32 @@ public class EmptyVisitor implements IVisitor {
 	 * 
 	 * @param sequence ignored
 	 */
-	public void visitDNASequence(final DnaSequence sequence) {}
+	public void visitDnaSequence(final DnaSequence sequence) {}
 
 	/**
 	 * Does nothing.
 	 * 
 	 * @param sequenceSet ignored
 	 */
-	public void visitDNASequenceSet(final DnaSequenceSet sequenceSet) {}
+	public void visitDnaSequenceSet(final DnaSequenceSet sequenceSet) {}
 
 	/**
 	 * Does nothing.
 	 * 
 	 * @param otu ignored
 	 */
-	public void visitOTU(final Otu otu) {}
+	public void visitOtu(final Otu otu) {}
 
 	/**
 	 * Does nothing.
 	 * 
 	 * @param otuSet ignored
 	 */
-	public void visitOTUSet(final OtuSet otuSet) {}
+	public void visitOtuSet(final OtuSet otuSet) {}
+
+	public void visitProteinCell(final ProteinCell cell) {}
+
+	public void visitProteinMatrix(final ProteinMatrix matrix) {}
 
 	/**
 	 * Does nothing.

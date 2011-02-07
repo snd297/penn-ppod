@@ -96,6 +96,13 @@ public class OtuSet extends UuPPodEntity {
 			orphanRemoval = true)
 	@OrderColumn(name = "POSITION")
 	@JoinColumn(name = JOIN_COLUMN, nullable = false)
+	private final List<ProteinMatrix> proteinMatrices = newArrayList();
+
+	@OneToMany(
+			cascade = CascadeType.ALL,
+			orphanRemoval = true)
+	@OrderColumn(name = "POSITION")
+	@JoinColumn(name = JOIN_COLUMN, nullable = false)
 	private final List<DnaSequenceSet> dnaSequenceSets = newArrayList();
 
 	/**
@@ -137,7 +144,7 @@ public class OtuSet extends UuPPodEntity {
 	@Override
 	public void accept(final IVisitor visitor) {
 		checkNotNull(visitor);
-		visitor.visitOTUSet(this);
+		visitor.visitOtuSet(this);
 		for (final IChild<OtuSet> child : getChildren()) {
 			child.accept(visitor);
 		}
@@ -260,6 +267,31 @@ public class OtuSet extends UuPPodEntity {
 			otu.setParent(this);
 			setInNeedOfNewVersion();
 		}
+	}
+
+	public void addProteinMatrix(
+			final int pos,
+			final ProteinMatrix matrix) {
+		checkArgument(pos >= 0, "pos < 0");
+		checkNotNull(matrix);
+		checkArgument(
+				!proteinMatrices.contains(matrix),
+				"otu set already contains the protein matrix ["
+						+ matrix.getLabel() + "]");
+		proteinMatrices.add(pos, matrix);
+		matrix.setParent(this);
+		setInNeedOfNewVersion();
+	}
+
+	public void addProteinMatrix(final ProteinMatrix matrix) {
+		checkNotNull(matrix);
+		checkArgument(
+				!proteinMatrices.contains(matrix),
+				"otu set contains the matrix ["
+						+ matrix.getLabel() + "]");
+		proteinMatrices.add(matrix);
+		matrix.setParent(this);
+		setInNeedOfNewVersion();
 	}
 
 	/**
@@ -405,6 +437,15 @@ public class OtuSet extends UuPPodEntity {
 	}
 
 	/**
+	 * Get an unmodifiable view of the protein matrices.
+	 * 
+	 * @return an unmodifiable view of the protein matrices
+	 */
+	public List<ProteinMatrix> getProteinMatrices() {
+		return Collections.unmodifiableList(proteinMatrices);
+	}
+
+	/**
 	 * Get the standard matrices contained in this OTU set.
 	 * 
 	 * @return the standard matrices contained in this OTU set
@@ -455,6 +496,26 @@ public class OtuSet extends UuPPodEntity {
 						+ sequenceSet.getLabel() + "]");
 		dnaSequenceSets.remove(sequenceSet);
 		sequenceSet.setParent(null);
+		setInNeedOfNewVersion();
+	}
+
+	/**
+	 * Remove {@code matrix} from this OTU set.
+	 * 
+	 * @param matrix to be removed
+	 * 
+	 * @throws IllegalArgumentException if this OTU set does not contain the
+	 *             matrix
+	 */
+	public void removeProteinMatrix(final ProteinMatrix matrix) {
+		checkNotNull(matrix);
+		checkArgument(
+				proteinMatrices.contains(matrix),
+				"otu set does not contain the protein matrix ["
+						+ matrix.getLabel()
+						+ "]");
+		proteinMatrices.remove(matrix);
+		matrix.setParent(null);
 		setInNeedOfNewVersion();
 	}
 

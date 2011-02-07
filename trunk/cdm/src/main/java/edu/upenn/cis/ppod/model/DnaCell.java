@@ -31,8 +31,6 @@ import javax.persistence.JoinColumn;
 import javax.persistence.ManyToOne;
 import javax.persistence.Table;
 
-import org.hibernate.annotations.Immutable;
-
 import edu.umd.cs.findbugs.annotations.CheckForNull;
 import edu.umd.cs.findbugs.annotations.Nullable;
 import edu.upenn.cis.ppod.dto.PPodDnaNucleotide;
@@ -45,7 +43,6 @@ import edu.upenn.cis.ppod.util.IVisitor;
  */
 @Entity
 @Table(name = DnaCell.TABLE)
-@Immutable
 public class DnaCell extends CellWithCase<PPodDnaNucleotide, DnaRow> {
 
 	public static final String TABLE = "DNA_CELL";

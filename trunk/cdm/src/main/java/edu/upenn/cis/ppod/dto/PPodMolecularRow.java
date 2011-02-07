@@ -22,7 +22,7 @@ abstract class PPodMolecularRow extends PPodDomainObject {
 		this.sequence = sequence;
 	}
 
-	abstract Set<Character> getLegalChars();
+	abstract Set<Character> getLegalCharsAndDelimiters();
 
 	public final String getSequence() {
 		return sequence;
@@ -31,7 +31,7 @@ abstract class PPodMolecularRow extends PPodDomainObject {
 	public final void setSequence(final String sequence) {
 		checkNotNull(sequence);
 		for (int i = 0; i < sequence.length(); i++) {
-			checkArgument(getLegalChars().contains(sequence.charAt(i)),
+			checkArgument(getLegalCharsAndDelimiters().contains(sequence.charAt(i)),
 					"position " + i + " is " + sequence.charAt(i)
 							+ " which is illegal");
 		}
