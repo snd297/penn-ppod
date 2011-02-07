@@ -14,17 +14,20 @@ public final class PPodOtuSet extends UuPPodDomainObjectWithLabel {
 	@XmlElement(name = "otu")
 	private List<PPodOtu> otus = newArrayList();
 
-	@XmlElement(name = "dnaMatrix")
-	private final List<PPodDnaMatrix> dnaMatrices = newArrayList();
-
 	@XmlElement(name = "standardMatrix")
-	private final List<PPodStandardMatrix> standardMatrices = newArrayList();
+	private List<PPodStandardMatrix> standardMatrices = newArrayList();
+
+	@XmlElement(name = "dnaMatrix")
+	private List<PPodDnaMatrix> dnaMatrices = newArrayList();
+
+	@XmlElement(name = "proteinMatrix")
+	private List<PPodProteinMatrix> proteinMatrices = newArrayList();
 
 	@XmlElement(name = "dnaSequenceSet")
-	private final List<PPodDnaSequenceSet> dnaSequenceSets = newArrayList();
+	private List<PPodDnaSequenceSet> dnaSequenceSets = newArrayList();
 
 	@XmlElement(name = "treeSet")
-	private final List<PPodTreeSet> treeSets = newArrayList();
+	private List<PPodTreeSet> treeSets = newArrayList();
 
 	PPodOtuSet() {}
 
@@ -57,6 +60,10 @@ public final class PPodOtuSet extends UuPPodDomainObjectWithLabel {
 		return otus;
 	}
 
+	public List<PPodProteinMatrix> getProteinMatrices() {
+		return proteinMatrices;
+	}
+
 	public List<PPodStandardMatrix> getStandardMatrices() {
 		return standardMatrices;
 	}
@@ -65,9 +72,35 @@ public final class PPodOtuSet extends UuPPodDomainObjectWithLabel {
 		return treeSets;
 	}
 
+	public void setDnaMatrices(final List<PPodDnaMatrix> dnaMatrices) {
+		checkNotNull(dnaMatrices);
+		this.dnaMatrices = dnaMatrices;
+	}
+
+	public void setDnaSequenceSets(
+			final List<PPodDnaSequenceSet> dnaSequenceSets) {
+		checkNotNull(dnaSequenceSets);
+		this.dnaSequenceSets = dnaSequenceSets;
+	}
+
 	public void setOtus(final List<PPodOtu> otus) {
 		checkNotNull(otus);
 		this.otus = otus;
 	}
 
+	public void setProteinMatrices(final List<PPodProteinMatrix> proteinMatrices) {
+		checkNotNull(proteinMatrices);
+		this.proteinMatrices = proteinMatrices;
+	}
+
+	public void setStandardMatrices(
+			final List<PPodStandardMatrix> standardMatrices) {
+		checkNotNull(standardMatrices);
+		this.standardMatrices = standardMatrices;
+	}
+
+	public void setTreeSets(final List<PPodTreeSet> treeSets) {
+		checkNotNull(treeSets);
+		this.treeSets = treeSets;
+	}
 }

@@ -2,10 +2,13 @@ package edu.upenn.cis.ppod.dto;
 
 import java.util.List;
 
+import javax.xml.bind.annotation.XmlAccessType;
+import javax.xml.bind.annotation.XmlAccessorType;
 import javax.xml.bind.annotation.XmlElement;
 
 import edu.umd.cs.findbugs.annotations.CheckForNull;
 
+@XmlAccessorType(XmlAccessType.PROPERTY)
 final public class PPodDnaMatrix extends PPodMatrix<PPodDnaRow> {
 
 	PPodDnaMatrix() {}
@@ -20,7 +23,8 @@ final public class PPodDnaMatrix extends PPodMatrix<PPodDnaRow> {
 	}
 
 	@XmlElement(name = "row")
-	public final List<PPodDnaRow> getRows() {
+	@Override
+	public List<PPodDnaRow> getRows() {
 		return super.getRows();
 	}
 

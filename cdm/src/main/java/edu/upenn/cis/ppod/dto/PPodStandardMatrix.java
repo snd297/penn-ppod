@@ -57,12 +57,6 @@ public final class PPodStandardMatrix extends PPodMatrix<PPodStandardRow> {
 		return columnVersions;
 	}
 
-	@Override
-	@XmlElement(name = "row")
-	public final List<PPodStandardRow> getRows() {
-		return super.getRows();
-	}
-
 	public List<PPodStandardCell> removeColumn(final int columnNumber) {
 		checkArgument(columnNumber >= 0);
 		this.columnVersions.remove(columnNumber);
@@ -83,4 +77,11 @@ public final class PPodStandardMatrix extends PPodMatrix<PPodStandardRow> {
 		checkNotNull(columnVersions);
 		this.columnVersions = columnVersions;
 	}
+
+	@XmlElement(name = "row")
+	@Override
+	public final List<PPodStandardRow> getRows() {
+		return super.getRows();
+	}
+
 }

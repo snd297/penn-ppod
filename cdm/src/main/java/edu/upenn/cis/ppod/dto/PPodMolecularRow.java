@@ -5,8 +5,6 @@ import static com.google.common.base.Preconditions.checkNotNull;
 
 import java.util.Set;
 
-
-
 abstract class PPodMolecularRow extends PPodDomainObject {
 
 	private String sequence;
