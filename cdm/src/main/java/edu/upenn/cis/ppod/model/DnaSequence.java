@@ -74,7 +74,7 @@ public class DnaSequence extends Sequence<DnaSequenceSet> {
 	@Override
 	public void accept(final IVisitor visitor) {
 		checkNotNull(visitor);
-		visitor.visitDNASequence(this);
+		visitor.visitDnaSequence(this);
 	}
 
 	@Nullable

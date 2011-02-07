@@ -67,7 +67,7 @@ public class CreateOrUpdateStandardMatrixTest {
 		final StandardMatrix targetMatrix = new StandardMatrix();
 		targetOtuSet.addStandardMatrix(targetMatrix);
 
-		new MergeOtuSets(newVersionInfo).mergeOTUSets(targetOtuSet,
+		new MergeOtuSets(newVersionInfo).mergeOtuSets(targetOtuSet,
 				sourceOtuSet);
 
 		createOrUpdateStandardMatrix
@@ -93,7 +93,7 @@ public class CreateOrUpdateStandardMatrixTest {
 		final StandardMatrix targetMatrix = new StandardMatrix();
 		targetOtuSet.addStandardMatrix(targetMatrix);
 
-		new MergeOtuSets(newVersionInfo).mergeOTUSets(targetOtuSet,
+		new MergeOtuSets(newVersionInfo).mergeOtuSets(targetOtuSet,
 				sourceOtuSet);
 
 		final PPodStandardMatrix sourceMatrix =
@@ -144,7 +144,7 @@ public class CreateOrUpdateStandardMatrixTest {
 		final StandardMatrix targetMatrix = new StandardMatrix();
 		targetOtuSet.addStandardMatrix(targetMatrix);
 
-		new MergeOtuSets(newVersionInfo).mergeOTUSets(targetOtuSet,
+		new MergeOtuSets(newVersionInfo).mergeOtuSets(targetOtuSet,
 				sourceOtuSet);
 
 		final PPodStandardMatrix sourceMatrix =
@@ -207,7 +207,7 @@ public class CreateOrUpdateStandardMatrixTest {
 		final StandardMatrix targetMatrix = new StandardMatrix();
 		targetOtuSet.addStandardMatrix(targetMatrix);
 
-		new MergeOtuSets(newVersionInfo).mergeOTUSets(targetOtuSet,
+		new MergeOtuSets(newVersionInfo).mergeOtuSets(targetOtuSet,
 				sourceOtuSet);
 
 		final PPodStandardMatrix sourceMatrix =

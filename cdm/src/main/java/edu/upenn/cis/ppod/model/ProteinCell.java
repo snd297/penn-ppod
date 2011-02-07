@@ -7,17 +7,21 @@ import java.util.Set;
 import javax.persistence.CollectionTable;
 import javax.persistence.Column;
 import javax.persistence.ElementCollection;
+import javax.persistence.Entity;
 import javax.persistence.EnumType;
 import javax.persistence.Enumerated;
 import javax.persistence.FetchType;
 import javax.persistence.JoinColumn;
 import javax.persistence.ManyToOne;
+import javax.persistence.Table;
 
 import edu.umd.cs.findbugs.annotations.CheckForNull;
 import edu.umd.cs.findbugs.annotations.Nullable;
 import edu.upenn.cis.ppod.dto.PPodCellType;
 import edu.upenn.cis.ppod.dto.PPodProtein;
 
+@Entity
+@Table(name = ProteinCell.TABLE)
 public class ProteinCell
 		extends Cell<PPodProtein, ProteinRow> {
 
@@ -32,7 +36,7 @@ public class ProteinCell
 	private ProteinRow parent;
 
 	/**
-	 * The heart of the cell: the {@code DNANucleotide}s.
+	 * If a cell contains multiple elements, we use this. Otherwise it's null.
 	 * <p>
 	 * At most one of {@code element} and {@code elements} will be non-
 	 * {@code null}.
@@ -43,7 +47,7 @@ public class ProteinCell
 	@Column(name = "ELEMENT")
 	@Enumerated(EnumType.ORDINAL)
 	@Nullable
-	Set<PPodProtein> elements;
+	private Set<PPodProtein> elements;
 
 	/**
 	 * To handle the most-common case of a single element.
@@ -54,7 +58,7 @@ public class ProteinCell
 	@Column(name = "ELEMENT", nullable = true)
 	@Enumerated(EnumType.ORDINAL)
 	@Nullable
-	PPodProtein element;
+	private PPodProtein element;
 
 	@Override
 	protected PPodProtein getElement() {

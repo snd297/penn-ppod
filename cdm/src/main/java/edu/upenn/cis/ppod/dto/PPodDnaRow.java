@@ -46,7 +46,7 @@ public final class PPodDnaRow extends PPodMolecularRow {
 	}
 
 	@Override
-	protected Set<Character> getLegalChars() {
+	protected Set<Character> getLegalCharsAndDelimiters() {
 		return LEGAL_CHARS;
 	}
 

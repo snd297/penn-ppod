@@ -22,6 +22,7 @@ import edu.upenn.cis.ppod.model.Attachment;
 import edu.upenn.cis.ppod.model.DnaMatrix;
 import edu.upenn.cis.ppod.model.Otu;
 import edu.upenn.cis.ppod.model.OtuSet;
+import edu.upenn.cis.ppod.model.ProteinMatrix;
 import edu.upenn.cis.ppod.model.StandardCharacter;
 import edu.upenn.cis.ppod.model.StandardMatrix;
 import edu.upenn.cis.ppod.model.StandardState;
@@ -60,14 +61,29 @@ public final class SetVersionInfoVisitor extends EmptyVisitor {
 		setNewVersionInfo(matrix);
 	}
 
+	private void visitMatrix(final IHasColumnVersionInfos matrix) {
+		setNewVersionInfo(matrix);
+		for (int pos = 0; pos < matrix.getColumnVersionInfos().size(); pos++) {
+			if (matrix.getColumnVersionInfos().get(pos) == null) {
+				matrix.setColumnVersionInfo(pos,
+						newVersionInfo.getNewVersionInfo());
+			}
+		}
+	}
+
 	@Override
-	public void visitOTU(final Otu otu) {
+	public void visitOtu(final Otu otu) {
 		setNewVersionInfo(otu);
 	}
 
 	@Override
-	public void visitOTUSet(final OtuSet otuSet) {
+	public void visitOtuSet(final OtuSet otuSet) {
 		setNewVersionInfo(otuSet);
+	}
+
+	@Override
+	public void visitProteinMatrix(final ProteinMatrix matrix) {
+		setNewVersionInfo(matrix);
 	}
 
 	@Override
@@ -98,15 +114,5 @@ public final class SetVersionInfoVisitor extends EmptyVisitor {
 	@Override
 	public void visitTreeSet(final TreeSet treeSet) {
 		setNewVersionInfo(treeSet);
-	}
-
-	private void visitMatrix(final IHasColumnVersionInfos matrix) {
-		setNewVersionInfo(matrix);
-		for (int pos = 0; pos < matrix.getColumnVersionInfos().size(); pos++) {
-			if (matrix.getColumnVersionInfos().get(pos) == null) {
-				matrix.setColumnVersionInfo(pos,
-						newVersionInfo.getNewVersionInfo());
-			}
-		}
 	}
 }

@@ -3,6 +3,7 @@ package edu.upenn.cis.ppod.dto;
 import java.util.Set;
 
 import com.google.common.collect.ImmutableSet;
+import com.google.common.collect.Sets;
 
 public final class PPodProteinRow extends PPodMolecularRow {
 	public final static Set<java.lang.Character> LEGAL_CHARS =
@@ -34,11 +35,17 @@ public final class PPodProteinRow extends PPodMolecularRow {
 					'3',
 					'4',
 					'-',
-					'?',
+					'?');
+
+	public final static Set<Character> DELIMITERS =
+			ImmutableSet.of(
 					'(',
 					')',
 					'{',
 					'}');
+
+	public final static Set<Character> LEGAL_CHARS_AND_DELIMITERS =
+			ImmutableSet.copyOf(Sets.union(DELIMITERS, LEGAL_CHARS));
 
 	PPodProteinRow() {}
 
@@ -51,8 +58,8 @@ public final class PPodProteinRow extends PPodMolecularRow {
 	}
 
 	@Override
-	Set<Character> getLegalChars() {
-		return LEGAL_CHARS;
+	Set<Character> getLegalCharsAndDelimiters() {
+		return LEGAL_CHARS_AND_DELIMITERS;
 	}
 
 }

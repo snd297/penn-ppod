@@ -46,7 +46,7 @@ public final class MergeOtuSets {
 		this.newVersionInfo = newVersionInfo;
 	}
 
-	public void mergeOTUSets(
+	public void mergeOtuSets(
 			final OtuSet targetOtuSet,
 			final PPodOtuSet sourceOtuSet) {
 		checkNotNull(targetOtuSet);

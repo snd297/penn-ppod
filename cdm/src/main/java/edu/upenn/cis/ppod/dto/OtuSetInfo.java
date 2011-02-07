@@ -15,6 +15,7 @@
  */
 package edu.upenn.cis.ppod.dto;
 
+import static com.google.common.base.Preconditions.checkNotNull;
 import static com.google.common.collect.Lists.newArrayList;
 
 import java.util.List;
@@ -31,19 +32,26 @@ import javax.xml.bind.annotation.XmlRootElement;
 @XmlAccessorType(XmlAccessType.NONE)
 public final class OtuSetInfo extends PPodEntityInfo {
 
-	/** Order matters for these. */
-	private final List<PPodEntityInfo> otuInfos = newArrayList();
+	private List<PPodEntityInfo> otuInfos = newArrayList();
 
-	private final List<StandardMatrixInfo> standardMatrixInfos = newArrayList();
+	private List<StandardMatrixInfo> standardMatrixInfos = newArrayList();
 
-	private final List<MatrixInfo> dnaMatrixInfos = newArrayList();
+	private List<MatrixInfo> dnaMatrixInfos = newArrayList();
 
-	private final List<SequenceSetInfo> sequenceSetInfos = newArrayList();
+	private List<MatrixInfo> proteinMatrixInfos = newArrayList();
 
-	private final List<TreeSetInfo> treeSetInfos = newArrayList();
+	private List<SequenceSetInfo> sequenceSetInfos = newArrayList();
+
+	private List<TreeSetInfo> treeSetInfos = newArrayList();
 
 	public OtuSetInfo() {}
 
+	/**
+	 * Guaranteed to be in the same order as they were in the {@code OTUSet} on
+	 * the upload.
+	 * 
+	 * @return
+	 */
 	@XmlElement(name = "dnaMatrixInfo")
 	public List<MatrixInfo> getDnaMatrixInfos() {
 		return dnaMatrixInfos;
@@ -60,19 +68,91 @@ public final class OtuSetInfo extends PPodEntityInfo {
 		return otuInfos;
 	}
 
+	/**
+	 * Guaranteed to be in the same order as they were in the {@code OTUSet} on
+	 * the upload.
+	 * 
+	 * @return
+	 */
+	@XmlElement(name = "proteinMatrixInfo")
+	public List<MatrixInfo> getProteinMatrixInfos() {
+		return proteinMatrixInfos;
+	}
+
+	/**
+	 * Guaranteed to be in the same order as they were in the {@code OTUSet} on
+	 * the upload.
+	 * 
+	 * @return
+	 */
 	@XmlElement(name = "sequenceSetInfo")
 	public List<SequenceSetInfo> getSequenceSetInfos() {
 		return sequenceSetInfos;
 	}
 
-	@XmlElement(name = "standardMatrixInfos")
+	/**
+	 * Guaranteed to be in the same order as they were in the {@code OTUSet} on
+	 * the upload.
+	 * 
+	 * @return
+	 */
+	@XmlElement(name = "standardMatrixInfo")
 	public List<StandardMatrixInfo> getStandardMatrixInfos() {
 		return standardMatrixInfos;
 	}
 
+	/**
+	 * Guaranteed to be in the same order as they were in the {@code OTUSet} on
+	 * the upload.
+	 * 
+	 * @return
+	 */
 	@XmlElement(name = "treeSetInfo")
 	public List<TreeSetInfo> getTreeSetInfos() {
 		return treeSetInfos;
+	}
+
+	/**
+	 * @param dnaMatrixInfos the dnaMatrixInfos to set
+	 */
+	public void setDnaMatrixInfos(final List<MatrixInfo> dnaMatrixInfos) {
+		checkNotNull(dnaMatrixInfos);
+		this.dnaMatrixInfos = dnaMatrixInfos;
+	}
+
+	public void setOtuInfos(final List<PPodEntityInfo> otuInfos) {
+		checkNotNull(otuInfos);
+		this.otuInfos = otuInfos;
+	}
+
+	public void setProteinMatrixInfos(final List<MatrixInfo> proteinMatrixInfos) {
+		checkNotNull(proteinMatrixInfos);
+		this.proteinMatrixInfos = proteinMatrixInfos;
+	}
+
+	/**
+	 * @param sequenceSetInfos the sequenceSetInfos to set
+	 */
+	public void setSequenceSetInfos(final List<SequenceSetInfo> sequenceSetInfos) {
+		checkNotNull(sequenceSetInfos);
+		this.sequenceSetInfos = sequenceSetInfos;
+	}
+
+	/**
+	 * @param standardMatrixInfos the standardMatrixInfos to set
+	 */
+	public void setStandardMatrixInfos(
+			final List<StandardMatrixInfo> standardMatrixInfos) {
+		checkNotNull(standardMatrixInfos);
+		this.standardMatrixInfos = standardMatrixInfos;
+	}
+
+	/**
+	 * @param treeSetInfos the treeSetInfos to set
+	 */
+	public void setTreeSetInfos(final List<TreeSetInfo> treeSetInfos) {
+		checkNotNull(treeSetInfos);
+		this.treeSetInfos = treeSetInfos;
 	}
 
 }

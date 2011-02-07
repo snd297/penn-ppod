@@ -103,8 +103,7 @@ class DnaRows implements IOtuKeyedMap<DnaRow> {
 	}
 
 	/** {@inheritDoc} */
-	public void setValues(
-			final Map<Otu, DnaRow> values) {
+	public void setValues(final Map<Otu, DnaRow> values) {
 		rows.setValues(values);
 	}
 

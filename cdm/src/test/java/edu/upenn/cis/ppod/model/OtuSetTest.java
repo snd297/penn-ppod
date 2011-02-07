@@ -87,13 +87,13 @@ public class OtuSetTest {
 		otuSet.accept(visitor);
 
 		verify(visitor, times(otuSet.getOtus().size()))
-				.visitOTU(any(Otu.class));
+				.visitOtu(any(Otu.class));
 		verify(visitor, times(otuSet.getStandardMatrices().size()))
 				.visitStandardMatrix(any(StandardMatrix.class));
 		verify(visitor, times(otuSet.getDnaMatrices().size())).visitDnaMatrix(
 				any(DnaMatrix.class));
 		verify(visitor, times(otuSet.getDnaSequenceSets().size()))
-				.visitDNASequenceSet(any(DnaSequenceSet.class));
+				.visitDnaSequenceSet(any(DnaSequenceSet.class));
 		verify(visitor, times(otuSet.getAttachments().size())).visitAttachment(
 				any(Attachment.class));
 	}
