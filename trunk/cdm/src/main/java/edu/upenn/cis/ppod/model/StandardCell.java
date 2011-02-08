@@ -42,8 +42,7 @@ import edu.upenn.cis.ppod.util.IVisitor;
  */
 @Entity
 @Table(name = StandardCell.TABLE)
-public class StandardCell
-		extends Cell<StandardState, StandardRow> {
+public class StandardCell extends Cell<StandardState, StandardRow> {
 	/**
 	 * The name of the table.
 	 */
@@ -163,7 +162,7 @@ public class StandardCell
 	/** Protected for JAXB. */
 	@Override
 	protected void setElement(
-			@Nullable final StandardState element) {
+				final StandardState element) {
 		this.element = element;
 	}
 

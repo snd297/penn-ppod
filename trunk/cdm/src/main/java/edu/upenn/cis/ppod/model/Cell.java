@@ -308,7 +308,7 @@ abstract class Cell<E, R extends Row<?, ?>>
 		checkNotNull(elements);
 		checkArgument(
 				elements.size() > 1,
-				"uncertain elements must be > 1");
+				"uncertain elements must be > 1, got " + elements);
 		setPolymorphicOrUncertain(
 				PPodCellType.UNCERTAIN,
 				elements);
