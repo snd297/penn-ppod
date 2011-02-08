@@ -56,6 +56,14 @@ public class ProteinRow extends Row<ProteinCell, ProteinMatrix> {
 		return parent;
 	}
 
+	public void addCell(final ProteinCell cell) {
+		checkNotNull(cell);
+		cells.add(cell);
+		cell.setPosition(cells.size() - 1);
+		cell.setParent(this);
+		setInNeedOfNewVersion();
+	}
+
 	/**
 	 * {@inheritDoc}
 	 */
