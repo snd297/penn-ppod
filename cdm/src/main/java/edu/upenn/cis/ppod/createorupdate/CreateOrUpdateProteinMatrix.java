@@ -1,9 +1,5 @@
 package edu.upenn.cis.ppod.createorupdate;
 
-import static com.google.common.collect.Lists.newArrayListWithCapacity;
-
-import java.util.List;
-
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
@@ -17,6 +13,7 @@ import edu.upenn.cis.ppod.model.Otu;
 import edu.upenn.cis.ppod.model.ProteinCell;
 import edu.upenn.cis.ppod.model.ProteinMatrix;
 import edu.upenn.cis.ppod.model.ProteinRow;
+import edu.upenn.cis.ppod.util.PPodSequenceTokenizer;
 import edu.upenn.cis.ppod.util.ProteinDocCell2DbCell;
 
 public class CreateOrUpdateProteinMatrix {
@@ -61,32 +58,26 @@ public class CreateOrUpdateProteinMatrix {
 				proteinRowDao.makePersistent(dbRow);
 			}
 
-			final List<ProteinCell> dbCells =
-					newArrayListWithCapacity(sourceRow.getSequence().length());
-
-			int i = -1;
-			while (dbCells.size() < sourceRow.getSequence().length()) {
-				i++;
-				if (i < dbRow.getCells().size()) {
-					dbCells.add(dbRow.getCells().get(i));
-				} else {
-					final ProteinCell dbCell = new ProteinCell();
-					dbCell.setVersionInfo(newVersionInfo
-							.getNewVersionInfo());
-					dbCells.add(dbCell);
-				}
-			}
-
-			dbRow.setCells(dbCells);
+			final PPodSequenceTokenizer seqTokenizer = new PPodSequenceTokenizer(
+					sourceRow.getSequence());
 
 			int dbCellPosition = -1;
-			for (final ProteinCell dbCell : dbRow.getCells()) {
+
+			while (seqTokenizer.hasMoreTokens()) {
 				dbCellPosition++;
+				ProteinCell dbCell = null;
+				if (dbCellPosition < dbRow.getCells().size()) {
+					dbCell = dbRow.getCells().get(dbCellPosition);
+				} else {
+					dbCell = new ProteinCell();
+					dbRow.addCell(dbCell);
+				}
 
-				final char sourceCell = sourceRow
-						.getSequence().charAt(dbCellPosition);
+				final PPodSequenceTokenizer.Token seqToken = seqTokenizer
+						.nextToken();
 
-				ProteinDocCell2DbCell.docCell2DbCell(dbCell, sourceCell);
+				ProteinDocCell2DbCell.docCell2DbCell(dbCell, seqToken.cellType,
+						seqToken.sequence);
 
 				// We need to do this here since we're removing the cell from
 				// the persistence context (with evict). So it won't get handled
