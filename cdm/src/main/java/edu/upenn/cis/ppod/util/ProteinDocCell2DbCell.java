@@ -1,6 +1,5 @@
 package edu.upenn.cis.ppod.util;
 
-import static com.google.common.base.Preconditions.checkArgument;
 import static com.google.common.base.Preconditions.checkNotNull;
 import static com.google.common.collect.Iterables.getOnlyElement;
 import static com.google.common.collect.Sets.newHashSet;
@@ -9,7 +8,6 @@ import java.util.Set;
 
 import edu.upenn.cis.ppod.dto.PPodCellType;
 import edu.upenn.cis.ppod.dto.PPodProtein;
-import edu.upenn.cis.ppod.dto.PPodProteinRow;
 import edu.upenn.cis.ppod.model.ProteinCell;
 
 public class ProteinDocCell2DbCell {
@@ -24,8 +22,6 @@ public class ProteinDocCell2DbCell {
 
 		for (int i = 0; i < docSequence.length(); i++) {
 			final char docChar = docSequence.charAt(i);
-			checkArgument(PPodProteinRow.LEGAL_CHARS.contains(docChar),
-					"'" + docChar + "' is not a legal protein char");
 			switch (docChar) {
 				case '-':
 				case '?':
@@ -113,25 +109,25 @@ public class ProteinDocCell2DbCell {
 				default:
 					throw new AssertionError("can't handle a [" + docChar + "]");
 			}
-			switch (cellType) {
-				case UNASSIGNED:
-					dbCell.setUnassigned();
-					break;
-				case SINGLE:
-					dbCell.setSingle(getOnlyElement(proteins));
-					break;
-				case POLYMORPHIC:
-					dbCell.setPolymorphic(proteins);
-					break;
-				case UNCERTAIN:
-					dbCell.setUncertain(proteins);
-					break;
-				case INAPPLICABLE:
-					dbCell.setInapplicable();
-					break;
-				default:
-					throw new AssertionError();
-			}
+		}
+		switch (cellType) {
+			case UNASSIGNED:
+				dbCell.setUnassigned();
+				break;
+			case SINGLE:
+				dbCell.setSingle(getOnlyElement(proteins));
+				break;
+			case POLYMORPHIC:
+				dbCell.setPolymorphic(proteins);
+				break;
+			case UNCERTAIN:
+				dbCell.setUncertain(proteins);
+				break;
+			case INAPPLICABLE:
+				dbCell.setInapplicable();
+				break;
+			default:
+				throw new AssertionError();
 		}
 	}
 }

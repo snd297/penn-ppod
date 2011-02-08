@@ -149,7 +149,7 @@ public final class Study2StudyInfo {
 			for (final ProteinMatrix matrix : otuSet.getProteinMatrices()) {
 
 				final MatrixInfo matrixInfo = new MatrixInfo();
-				otuSetInfo.getDnaMatrixInfos().add(matrixInfo);
+				otuSetInfo.getProteinMatrixInfos().add(matrixInfo);
 				matrixInfo.setPPodId(matrix.getPPodId());
 				matrixInfo.setVersion(matrix.getVersionInfo()
 						.getVersion());
