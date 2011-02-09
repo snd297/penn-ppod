@@ -48,7 +48,7 @@ public class MolecularCellTest {
 		final Set<PPodDnaNucleotide> nucleotides =
 				ImmutableSet.of(PPodDnaNucleotide.A, PPodDnaNucleotide.T);
 
-		cell.setPolymorphicElements(
+		cell.setPolymorphic(
 						nucleotides,
 						false);
 		assertTrue(cell.isInNeedOfNewVersion());
@@ -58,7 +58,7 @@ public class MolecularCellTest {
 
 		cell.unsetInNeedOfNewVersion();
 
-		cell.setPolymorphicElements(
+		cell.setPolymorphic(
 						nucleotides,
 						false);
 		assertFalse(cell.isInNeedOfNewVersion());
@@ -70,7 +70,7 @@ public class MolecularCellTest {
 		final Set<PPodDnaNucleotide> nucleotides2 =
 				ImmutableSet.of(PPodDnaNucleotide.T, PPodDnaNucleotide.G);
 
-		cell.setPolymorphicElements(
+		cell.setPolymorphic(
 						nucleotides2,
 						false);
 		assertTrue(cell.isInNeedOfNewVersion());
@@ -79,7 +79,7 @@ public class MolecularCellTest {
 
 		cell.unsetInNeedOfNewVersion();
 
-		cell.setPolymorphicElements(
+		cell.setPolymorphic(
 						nucleotides2,
 						true);
 		assertTrue(cell.isInNeedOfNewVersion());
@@ -92,22 +92,22 @@ public class MolecularCellTest {
 		final CellWithCase<PPodDnaNucleotide, ?> cell = new DnaCell();
 
 		cell.unsetInNeedOfNewVersion();
-		cell.setSingleElement(PPodDnaNucleotide.C, false);
+		cell.setSingle(PPodDnaNucleotide.C, false);
 		assertTrue(cell.isInNeedOfNewVersion());
 		assertSame(getOnlyElement(cell.getElements()), PPodDnaNucleotide.C);
 
 		cell.unsetInNeedOfNewVersion();
-		cell.setSingleElement(PPodDnaNucleotide.C, false);
+		cell.setSingle(PPodDnaNucleotide.C, false);
 		assertFalse(cell.isInNeedOfNewVersion());
 		assertSame(getOnlyElement(cell.getElements()), PPodDnaNucleotide.C);
 
 		cell.unsetInNeedOfNewVersion();
-		cell.setSingleElement(PPodDnaNucleotide.C, true);
+		cell.setSingle(PPodDnaNucleotide.C, true);
 		assertTrue(cell.isInNeedOfNewVersion());
 		assertSame(getOnlyElement(cell.getElements()), PPodDnaNucleotide.C);
 
 		cell.unsetInNeedOfNewVersion();
-		cell.setSingleElement(PPodDnaNucleotide.A, true);
+		cell.setSingle(PPodDnaNucleotide.A, true);
 		assertTrue(cell.isInNeedOfNewVersion());
 		assertSame(getOnlyElement(cell.getElements()), PPodDnaNucleotide.A);
 	}
@@ -123,7 +123,7 @@ public class MolecularCellTest {
 		assertEquals(cell.getElements(), nucleotides);
 		assertNull(cell.getLowerCase());
 
-		cell.setPolymorphicElements(nucleotides, false);
+		cell.setPolymorphic(nucleotides, false);
 
 		cell.unsetInNeedOfNewVersion();
 		cell.setUncertain(nucleotides);

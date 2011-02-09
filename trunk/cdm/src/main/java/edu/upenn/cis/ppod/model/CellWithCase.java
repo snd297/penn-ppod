@@ -86,7 +86,7 @@ public abstract class CellWithCase<E extends Enum<?>, R extends Row<?, ?>>
 	 * @param elements the elements to assign to this cell
 	 * @param lowerCase is it lower-case?
 	 */
-	public void setPolymorphicElements(
+	public void setPolymorphic(
 			final Set<? extends E> elements, final Boolean lowerCase) {
 		checkNotNull(lowerCase);
 		super.setPolymorphicOrUncertain(PPodCellType.POLYMORPHIC, elements);
@@ -105,7 +105,7 @@ public abstract class CellWithCase<E extends Enum<?>, R extends Row<?, ?>>
 	 * @param element element to assign to this cell
 	 * @param lowerCase is it lower-case?
 	 */
-	public void setSingleElement(
+	public void setSingle(
 			final E element,
 			final Boolean lowerCase) {
 		checkNotNull(element);

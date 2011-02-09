@@ -43,7 +43,7 @@ public class DnaCellTest {
 		final DnaCell cell = new DnaCell();
 		final Set<PPodDnaNucleotide> nucleotides =
 				ImmutableSet.of(PPodDnaNucleotide.A);
-		cell.setPolymorphicElements(nucleotides, true);
+		cell.setPolymorphic(nucleotides, true);
 	}
 
 	@Test
@@ -61,7 +61,7 @@ public class DnaCellTest {
 	public void setTypeAndStatesSingle() {
 		final DnaCell dnaCell = new DnaCell();
 		dnaCell.unsetInNeedOfNewVersion();
-		dnaCell.setSingleElement(PPodDnaNucleotide.A, false);
+		dnaCell.setSingle(PPodDnaNucleotide.A, false);
 		assertEquals(dnaCell.getType(), PPodCellType.SINGLE);
 		assertEquals(getOnlyElement(dnaCell.getElements()),
 				PPodDnaNucleotide.A);
@@ -73,8 +73,8 @@ public class DnaCellTest {
 		final DnaCell dnaCell = new DnaCell();
 
 		dnaCell.unsetInNeedOfNewVersion();
-		dnaCell.setSingleElement(PPodDnaNucleotide.A, false);
-		dnaCell.setSingleElement(PPodDnaNucleotide.A, false);
+		dnaCell.setSingle(PPodDnaNucleotide.A, false);
+		dnaCell.setSingle(PPodDnaNucleotide.A, false);
 
 		assertEquals(
 				dnaCell.getType(),
