@@ -2,8 +2,8 @@ package edu.upenn.cis.ppod.util;
 
 import static com.google.common.base.Preconditions.checkNotNull;
 import static com.google.common.collect.Iterables.getOnlyElement;
-import static com.google.common.collect.Sets.newHashSet;
 
+import java.util.EnumSet;
 import java.util.Set;
 
 import edu.upenn.cis.ppod.dto.PPodCellType;
@@ -18,7 +18,7 @@ public class ProteinDocCell2DbCell {
 		checkNotNull(cellType);
 		checkNotNull(docSequence);
 
-		final Set<PPodProtein> proteins = newHashSet();
+		final Set<PPodProtein> proteins = EnumSet.noneOf(PPodProtein.class);
 
 		for (int i = 0; i < docSequence.length(); i++) {
 			final char docChar = docSequence.charAt(i);
