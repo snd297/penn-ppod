@@ -1,5 +1,6 @@
 package edu.upenn.cis.ppod.util;
 
+import static com.google.common.base.Preconditions.checkArgument;
 import static com.google.common.base.Preconditions.checkNotNull;
 import static com.google.common.collect.Iterables.getOnlyElement;
 
@@ -107,23 +108,29 @@ public class ProteinDocCell2DbCell {
 					proteins.add(PPodProtein.FOUR);
 					break;
 				default:
-					throw new AssertionError("can't handle a [" + docChar + "]");
+					throw new IllegalArgumentException(
+							"illegacl char in sequence [" + docChar + "]");
 			}
 		}
 		switch (cellType) {
 			case UNASSIGNED:
+				checkArgument(docSequence.equals("?"));
 				dbCell.setUnassigned();
 				break;
 			case SINGLE:
+				checkArgument(docSequence.length() == 1);
 				dbCell.setSingle(getOnlyElement(proteins));
 				break;
 			case POLYMORPHIC:
+				checkArgument(docSequence.length() > 1);
 				dbCell.setPolymorphic(proteins);
 				break;
 			case UNCERTAIN:
+				checkArgument(docSequence.length() > 1);
 				dbCell.setUncertain(proteins);
 				break;
 			case INAPPLICABLE:
+				checkArgument(docSequence.equals("-"));
 				dbCell.setInapplicable();
 				break;
 			default:

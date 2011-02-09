@@ -1,23 +1,4 @@
-/*
- * Copyright (C) 2010 Trustees of the University of Pennsylvania
- *
- * Licensed under the Apache License, Version 2.0 (the "License");
- * you may not use this file except in compliance with the License.
- * You may obtain a copy of the License at
- *
- * http://www.apache.org/licenses/LICENSE-2.0
- *
- * Unless required by applicable law or agreed to in writing, software
- * distributed under the License is distributed on an "AS IS" BASIS,
- * WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
- * See the License for the specific language governing permissions and
- * limitations under the License.
- */
 package edu.upenn.cis.ppod.createorupdate;
-
-import static com.google.common.collect.Lists.newArrayListWithCapacity;
-
-import java.util.List;
 
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
@@ -33,19 +14,19 @@ import edu.upenn.cis.ppod.model.DnaMatrix;
 import edu.upenn.cis.ppod.model.DnaRow;
 import edu.upenn.cis.ppod.model.Otu;
 import edu.upenn.cis.ppod.util.DnaDocCell2DbCell;
+import edu.upenn.cis.ppod.util.PPodSequenceTokenizer;
 
-public final class CreateOrUpdateDnaMatrix {
-
-	private final IDnaRowDAO dnaRowDao;
+public class CreateOrUpdateDnaMatrix {
+	private final IDnaRowDAO dnaRowDAO;
 	private final INewVersionInfo newVersionInfo;
 	private final static Logger logger = LoggerFactory
 			.getLogger(CreateOrUpdateDnaMatrix.class);
 
 	@Inject
 	CreateOrUpdateDnaMatrix(
-			final IDnaRowDAO dao,
+			final IDnaRowDAO proteinRowDAO,
 			final INewVersionInfo newVersionInfo) {
-		this.dnaRowDao = dao;
+		this.dnaRowDAO = proteinRowDAO;
 		this.newVersionInfo = newVersionInfo;
 	}
 
@@ -55,11 +36,7 @@ public final class CreateOrUpdateDnaMatrix {
 
 		final String METHOD = "createOrUpdateMatrix(...)";
 
-		// dbMatrix.setColumnsSize(
-		// sourceMatrix.getRows().get(0).getSequence().length());
-
 		dbMatrix.setLabel(sourceMatrix.getLabel());
-		// dbMatrix.setDescription(sourceMatrix.getDescription());
 
 		int sourceOtuPos = -1;
 
@@ -67,47 +44,41 @@ public final class CreateOrUpdateDnaMatrix {
 
 			sourceOtuPos++;
 
-			final Otu dbOTU =
-					dbMatrix.getParent()
+			final Otu dbOtu = dbMatrix.getParent()
 							.getOtus()
 							.get(sourceOtuPos);
 
 			// Let's create rows for OTU->null row mappings in the matrix.
 			DnaRow dbRow = null;
 
-			if (null == (dbRow = dbMatrix.getRows().get(dbOTU))) {
+			if (null == (dbRow = dbMatrix.getRows().get(dbOtu))) {
 				dbRow = new DnaRow();
 				dbRow.setVersionInfo(newVersionInfo.getNewVersionInfo());
-				dbMatrix.putRow(dbOTU, dbRow);
-				dnaRowDao.makePersistent(dbRow);
+				dbMatrix.putRow(dbOtu, dbRow);
+				dnaRowDAO.makePersistent(dbRow);
 			}
 
-			final List<DnaCell> dbCells =
-					newArrayListWithCapacity(sourceRow.getSequence().length());
-
-			int i = -1;
-			while (dbCells.size() < sourceRow.getSequence().length()) {
-				i++;
-				if (i < dbRow.getCells().size()) {
-					dbCells.add(dbRow.getCells().get(i));
-				} else {
-					final DnaCell dbCell = new DnaCell();
-					dbCell.setVersionInfo(newVersionInfo
-							.getNewVersionInfo());
-					dbCells.add(dbCell);
-				}
-			}
-
-			dbRow.setCells(dbCells);
+			final PPodSequenceTokenizer seqTokenizer = new PPodSequenceTokenizer(
+					sourceRow.getSequence());
 
 			int dbCellPosition = -1;
-			for (final DnaCell dbCell : dbRow.getCells()) {
+
+			while (seqTokenizer.hasMoreTokens()) {
 				dbCellPosition++;
+				DnaCell dbCell = null;
+				if (dbCellPosition < dbRow.getCells().size()) {
+					dbCell = dbRow.getCells().get(dbCellPosition);
+				} else {
+					dbCell = new DnaCell();
+					dbRow.addCell(dbCell);
+				}
 
-				final char sourceCell = sourceRow
-						.getSequence().charAt(dbCellPosition);
+				final PPodSequenceTokenizer.Token seqToken = seqTokenizer
+						.nextToken();
 
-				DnaDocCell2DbCell.docCell2DbCell(dbCell, sourceCell);
+				DnaDocCell2DbCell.docCell2DbCell(dbCell,
+						seqToken.cellType,
+						seqToken.sequence);
 
 				// We need to do this here since we're removing the cell from
 				// the persistence context (with evict). So it won't get handled
@@ -130,10 +101,8 @@ public final class CreateOrUpdateDnaMatrix {
 					METHOD,
 					sourceOtuPos);
 
-			dnaRowDao.flush();
-			dnaRowDao.evict(dbRow);
+			dnaRowDAO.flush();
+			dnaRowDAO.evict(dbRow);
 		}
-
 	}
-
 }

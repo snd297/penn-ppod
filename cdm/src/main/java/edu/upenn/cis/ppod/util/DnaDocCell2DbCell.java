@@ -1,80 +1,81 @@
 package edu.upenn.cis.ppod.util;
 
+import static com.google.common.base.Preconditions.checkArgument;
 import static com.google.common.base.Preconditions.checkNotNull;
+import static com.google.common.collect.Iterables.getOnlyElement;
+
+import java.util.EnumSet;
+import java.util.Set;
+
+import edu.upenn.cis.ppod.dto.PPodCellType;
 import edu.upenn.cis.ppod.dto.PPodDnaNucleotide;
 import edu.upenn.cis.ppod.model.DnaCell;
 
 public class DnaDocCell2DbCell {
 
-	public static void docCell2DbCell(final DnaCell dbCell, final char docCell) {
+	public static void docCell2DbCell(final DnaCell dbCell,
+			final PPodCellType cellType,
+			final String docSequence) {
 		checkNotNull(dbCell);
+		checkNotNull(cellType);
+		checkNotNull(docSequence);
 
-		switch (docCell) {
-			case '?':
+		final Set<PPodDnaNucleotide> nucleotides = EnumSet
+				.noneOf(PPodDnaNucleotide.class);
+		boolean lowerCase = false;
+
+		for (int i = 0; i < docSequence.length(); i++) {
+			final char docChar = docSequence.charAt(i);
+			if (Character.isLowerCase(docChar)) {
+				lowerCase = true;
+			}
+			final char upCasedDocChar = Character.toUpperCase(docChar);
+			switch (upCasedDocChar) {
+				case '-':
+				case '?':
+					// don't care, already dealt with by whatever gave us the
+					// cell type
+					break;
+				case 'A':
+					nucleotides.add(PPodDnaNucleotide.A);
+					break;
+				case 'C':
+					nucleotides.add(PPodDnaNucleotide.C);
+					break;
+				case 'G':
+					nucleotides.add(PPodDnaNucleotide.G);
+					break;
+				case 'T':
+					nucleotides.add(PPodDnaNucleotide.T);
+					break;
+				default:
+					throw new IllegalArgumentException(
+							"illegacl char in sequence [" + docChar + "]");
+			}
+		}
+		switch (cellType) {
+			case UNASSIGNED:
+				checkArgument(docSequence.equals("?"));
 				dbCell.setUnassigned();
 				break;
-			case 'A':
-				dbCell.setSingleElement(PPodDnaNucleotide.A, false);
+			case SINGLE:
+				checkArgument(docSequence.length() == 1);
+				dbCell.setSingle(getOnlyElement(nucleotides), lowerCase);
 				break;
-			case 'a':
-				dbCell.setSingleElement(PPodDnaNucleotide.A, true);
+			case POLYMORPHIC:
+				checkArgument(docSequence.length() > 1);
+				dbCell.setPolymorphic(nucleotides, lowerCase);
 				break;
-			case 'C':
-				dbCell.setSingleElement(PPodDnaNucleotide.C, false);
+			case UNCERTAIN:
+				checkArgument(docSequence.length() > 1);
+				dbCell.setUncertain(nucleotides);
 				break;
-			case 'c':
-				dbCell.setSingleElement(PPodDnaNucleotide.C, true);
-				break;
-			case 'G':
-				dbCell.setSingleElement(PPodDnaNucleotide.G, false);
-				break;
-			case 'g':
-				dbCell.setSingleElement(PPodDnaNucleotide.G, true);
-				break;
-			case 'T':
-				dbCell.setSingleElement(PPodDnaNucleotide.T, false);
-				break;
-			case 't':
-				dbCell.setSingleElement(PPodDnaNucleotide.T, true);
-				break;
-			case 'R':
-				dbCell.setUncertain(PPodDnaNucleotide.A_G);
-				break;
-			case 'Y':
-				dbCell.setUncertain(PPodDnaNucleotide.C_T);
-				break;
-			case 'S':
-				dbCell.setUncertain(PPodDnaNucleotide.G_C);
-				break;
-			case 'W':
-				dbCell.setUncertain(PPodDnaNucleotide.A_T);
-				break;
-			case 'K':
-				dbCell.setUncertain(PPodDnaNucleotide.G_T);
-				break;
-			case 'M':
-				dbCell.setUncertain(PPodDnaNucleotide.A_C);
-				break;
-			case 'B':
-				dbCell.setUncertain(PPodDnaNucleotide.C_G_T);
-				break;
-			case 'D':
-				dbCell.setUncertain(PPodDnaNucleotide.A_G_T);
-				break;
-			case 'H':
-				dbCell.setUncertain(PPodDnaNucleotide.A_C_T);
-				break;
-			case 'V':
-				dbCell.setUncertain(PPodDnaNucleotide.A_C_G);
-				break;
-			case 'N':
-				dbCell.setUncertain(PPodDnaNucleotide.A_C_G_T);
-				break;
-			case '-':
+			case INAPPLICABLE:
+				checkArgument(docSequence.equals("-"));
 				dbCell.setInapplicable();
 				break;
 			default:
-				throw new AssertionError("can't handle a [" + docCell + "]");
+				throw new AssertionError();
 		}
 	}
 }

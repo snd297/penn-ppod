@@ -34,7 +34,7 @@ import edu.upenn.cis.ppod.util.IVisitor;
  */
 @Entity
 @Table(name = DnaMatrix.TABLE)
-public class DnaMatrix extends MolecularMatrix<DnaRow, DnaCell> {
+public class DnaMatrix extends Matrix<DnaRow, DnaCell> {
 
 	public final static String TABLE = "DNA_MATRIX";
 

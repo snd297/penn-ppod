@@ -66,6 +66,14 @@ public class DnaRow extends Row<DnaCell, DnaMatrix> {
 		super.accept(visitor);
 	}
 
+	public void addCell(final DnaCell cell) {
+		checkNotNull(cell);
+		cells.add(cell);
+		cell.setPosition(cells.size() - 1);
+		cell.setParent(this);
+		setInNeedOfNewVersion();
+	}
+
 	/** {@inheritDoc} */
 	@Override
 	protected List<DnaCell> getCellsModifiable() {

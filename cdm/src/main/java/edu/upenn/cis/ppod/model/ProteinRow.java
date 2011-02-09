@@ -33,7 +33,7 @@ public class ProteinRow extends Row<ProteinCell, ProteinMatrix> {
 	@OneToMany(mappedBy = "parent", cascade = CascadeType.ALL,
 			orphanRemoval = true)
 	@OrderColumn(name = "POSITION")
-	private final List<ProteinCell> cells = newArrayList();
+	final List<ProteinCell> cells = newArrayList();
 
 	public ProteinRow() {}
 
@@ -56,14 +56,6 @@ public class ProteinRow extends Row<ProteinCell, ProteinMatrix> {
 		return parent;
 	}
 
-	public void addCell(final ProteinCell cell) {
-		checkNotNull(cell);
-		cells.add(cell);
-		cell.setPosition(cells.size() - 1);
-		cell.setParent(this);
-		setInNeedOfNewVersion();
-	}
-
 	/**
 	 * {@inheritDoc}
 	 */
@@ -80,4 +72,14 @@ public class ProteinRow extends Row<ProteinCell, ProteinMatrix> {
 	public void setParent(final ProteinMatrix parent) {
 		this.parent = parent;
 	}
+
+	public void addCell(final ProteinCell cell) {
+		checkNotNull(cell);
+		cells.add(cell);
+		getCellsModifiable().add(cell);
+		cell.setPosition(getCellsModifiable().size() - 1);
+		cell.setParent(this);
+		setInNeedOfNewVersion();
+	}
+
 }
