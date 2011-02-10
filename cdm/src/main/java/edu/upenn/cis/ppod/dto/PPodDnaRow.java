@@ -18,17 +18,6 @@ public final class PPodDnaRow extends PPodMolecularRow {
 					'C', 'c',
 					'G', 'g',
 					'T', 't',
-					'R',
-					'Y',
-					'K',
-					'M',
-					'S',
-					'W',
-					'B',
-					'D',
-					'H',
-					'V',
-					'N',
 					'-',
 					'?');
 	@XmlElement(name = "cellVersion")
@@ -46,7 +35,7 @@ public final class PPodDnaRow extends PPodMolecularRow {
 	}
 
 	@Override
-	protected Set<Character> getLegalCharsAndDelimiters() {
+	protected Set<Character> getLegalChars() {
 		return LEGAL_CHARS;
 	}
 

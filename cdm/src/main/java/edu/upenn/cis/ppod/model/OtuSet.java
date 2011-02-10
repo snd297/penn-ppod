@@ -248,7 +248,6 @@ public class OtuSet extends UuPPodEntity {
 	}
 
 	private void addOtuWithoutSetOtusOnChildren(final Otu otu) {
-		checkNotNull(otu);
 		final Otu dupNameOtu =
 				find(getOtus(),
 						compose(

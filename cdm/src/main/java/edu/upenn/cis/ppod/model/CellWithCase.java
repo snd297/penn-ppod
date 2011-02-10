@@ -87,7 +87,7 @@ public abstract class CellWithCase<E extends Enum<?>, R extends Row<?, ?>>
 	 * @param lowerCase is it lower-case?
 	 */
 	public void setPolymorphic(
-			final Set<? extends E> elements, final Boolean lowerCase) {
+			final Set<E> elements, final Boolean lowerCase) {
 		checkNotNull(lowerCase);
 		super.setPolymorphicOrUncertain(PPodCellType.POLYMORPHIC, elements);
 		if (lowerCase.equals(getLowerCase())) {
@@ -135,8 +135,7 @@ public abstract class CellWithCase<E extends Enum<?>, R extends Row<?, ?>>
 	 * @throws IllegalArgumentException if {@code uncertainStates.size() > 1}
 	 */
 	@Override
-	public void setUncertain(
-			final Set<? extends E> uncertainElements) {
+	public void setUncertain(final Set<E> uncertainElements) {
 		checkNotNull(uncertainElements);
 		checkArgument(
 				uncertainElements.size() > 1,

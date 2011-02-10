@@ -2,6 +2,7 @@ package edu.upenn.cis.ppod.util;
 
 import static com.google.common.base.Preconditions.checkNotNull;
 import static com.google.common.collect.Iterables.transform;
+import static com.google.common.collect.Lists.newArrayList;
 import static com.google.common.collect.Sets.newHashSet;
 
 import java.util.List;
@@ -10,6 +11,7 @@ import com.google.inject.Inject;
 
 import edu.upenn.cis.ppod.dao.IDnaRowDAO;
 import edu.upenn.cis.ppod.dao.IProteinRowDAO;
+import edu.upenn.cis.ppod.dto.PPodCellType;
 import edu.upenn.cis.ppod.dto.PPodDnaMatrix;
 import edu.upenn.cis.ppod.dto.PPodDnaNucleotide;
 import edu.upenn.cis.ppod.dto.PPodDnaRow;
@@ -49,6 +51,56 @@ import edu.upenn.cis.ppod.model.TreeSet;
 import edu.upenn.cis.ppod.model.VersionInfo;
 
 public final class DbStudy2DocStudy {
+
+	public static void dbDnaCell2Sequence(final DnaCell dnaCell,
+			final StringBuilder sequence) {
+		checkNotNull(dnaCell);
+		checkNotNull(sequence);
+
+		switch (dnaCell.getType()) {
+			case UNASSIGNED:
+				sequence.append('?');
+				break;
+			case INAPPLICABLE:
+				sequence.append('-');
+				break;
+			case SINGLE:
+				break;
+			case POLYMORPHIC:
+				sequence.append('(');
+				break;
+			case UNCERTAIN:
+				sequence.append('{');
+				break;
+			default:
+				throw new AssertionError();
+		}
+
+		for (final PPodDnaNucleotide nucleotide : dnaCell.getElements()) {
+			char nucleotideChar = nucleotide.toString().charAt(0);
+			if ((dnaCell.getType() == PPodCellType.POLYMORPHIC
+					|| dnaCell.getType() == PPodCellType.SINGLE)
+					&& dnaCell.getLowerCase()) {
+				nucleotideChar = Character.toLowerCase(nucleotideChar);
+			}
+			sequence.append(nucleotideChar);
+		}
+
+		switch (dnaCell.getType()) {
+			case UNASSIGNED:
+			case INAPPLICABLE:
+			case SINGLE:
+				break;
+			case POLYMORPHIC:
+				sequence.append(')');
+				break;
+			case UNCERTAIN:
+				sequence.append('}');
+				break;
+			default:
+				throw new AssertionError();
+		}
+	}
 
 	public static void dbProteinCell2Sequence(final ProteinCell proteinCell,
 			final StringBuilder sequence) {
@@ -94,54 +146,6 @@ public final class DbStudy2DocStudy {
 		}
 	}
 
-	public static void dbDnaCell2Sequence(final DnaCell dnaCell,
-			final StringBuilder sequence) {
-		checkNotNull(dnaCell);
-		checkNotNull(sequence);
-
-		switch (dnaCell.getType()) {
-			case UNASSIGNED:
-				sequence.append('?');
-				break;
-			case INAPPLICABLE:
-				sequence.append('-');
-				break;
-			case SINGLE:
-				break;
-			case POLYMORPHIC:
-				sequence.append('(');
-				break;
-			case UNCERTAIN:
-				sequence.append('{');
-				break;
-			default:
-				throw new AssertionError();
-		}
-
-		for (final PPodDnaNucleotide nucleotide : dnaCell.getElements()) {
-			char nucleotideChar = nucleotide.toString().charAt(0);
-			if (dnaCell.getLowerCase()) {
-				nucleotideChar = Character.toLowerCase(nucleotideChar);
-			}
-			sequence.append(nucleotideChar);
-		}
-
-		switch (dnaCell.getType()) {
-			case UNASSIGNED:
-			case INAPPLICABLE:
-			case SINGLE:
-				break;
-			case POLYMORPHIC:
-				sequence.append(')');
-				break;
-			case UNCERTAIN:
-				sequence.append('}');
-				break;
-			default:
-				throw new AssertionError();
-		}
-	}
-
 	private final IDnaRowDAO dnaRowDao;
 
 	private final IProteinRowDAO proteinRowDao;
@@ -153,140 +157,32 @@ public final class DbStudy2DocStudy {
 		this.proteinRowDao = proteinRowDao;
 	}
 
-	// public char dbCell2IupacPlus(final DnaCell dbCell) {
-	// checkNotNull(dbCell);
-	// char iupacPlus = (char) -1;
-	// switch (dbCell.getType()) {
-	// case UNASSIGNED:
-	// iupacPlus = '?';
-	// break;
-	// case SINGLE:
-	// if (dbCell.getLowerCase()) {
-	// iupacPlus = Character.toLowerCase(getOnlyElement(
-	// dbCell.getElements()).toString().charAt(0));
-	// } else {
-	// iupacPlus = getOnlyElement(dbCell.getElements()).toString()
-	// .charAt(0);
-	// }
-	// break;
-	// case POLYMORPHIC:
-	// if (dbCell.getElements().size() == 2) {
-	// if (dbCell.getElements().equals(A_G)) {
-	// if (dbCell.getLowerCase()) {
-	// iupacPlus = '0';
-	// } else {
-	// iupacPlus = ')';
-	// }
-	// } else if (dbCell.getElements().equals(C_T)) {
-	// if (dbCell.getLowerCase()) {
-	// iupacPlus = '1';
-	// } else {
-	// iupacPlus = '!';
-	// }
-	// } else if (dbCell.getElements().equals(G_C)) {
-	// if (dbCell.getLowerCase()) {
-	// iupacPlus = '2';
-	// } else {
-	// iupacPlus = '@';
-	// }
-	// } else if (dbCell.getElements().equals(A_T)) {
-	// if (dbCell.getLowerCase()) {
-	// iupacPlus = '3';
-	// } else {
-	// iupacPlus = '#';
-	// }
-	// } else if (dbCell.getElements().equals(G_T)) {
-	// if (dbCell.getLowerCase()) {
-	// iupacPlus = '4';
-	// } else {
-	// iupacPlus = '$';
-	// }
-	// } else if (dbCell.getElements().equals(A_C)) {
-	// if (dbCell.getLowerCase()) {
-	// iupacPlus = '5';
-	// } else {
-	// iupacPlus = '%';
-	// }
-	// }
-	// } else if (dbCell.getElements().size() == 3) {
-	// if (dbCell.getElements().equals(C_G_T)) {
-	// if (dbCell.getLowerCase()) {
-	// iupacPlus = '6';
-	// } else {
-	// iupacPlus = '^';
-	// }
-	// } else if (dbCell.getElements().equals(A_G_T)) {
-	// if (dbCell.getLowerCase()) {
-	// iupacPlus = '7';
-	// } else {
-	// iupacPlus = '&';
-	// }
-	// } else if (dbCell.getElements().equals(A_C_T)) {
-	// if (dbCell.getLowerCase()) {
-	// iupacPlus = '8';
-	// } else {
-	// iupacPlus = '*';
-	// }
-	// } else if (dbCell.getElements().equals(A_C_G)) {
-	// if (dbCell.getLowerCase()) {
-	// iupacPlus = '9';
-	// } else {
-	// iupacPlus = '(';
-	// }
-	// } else {
-	// throw new AssertionError();
-	// }
-	// } else if (dbCell.getElements().size() == 4) {
-	// if (dbCell.getLowerCase()) {
-	// iupacPlus = '=';
-	// } else {
-	// iupacPlus = '+';
-	// }
-	// } else {
-	// throw new AssertionError();
-	// }
-	// case UNCERTAIN:
-	// if (dbCell.getElements().size() == 2) {
-	// if (dbCell.getElements().equals(A_G)) {
-	// iupacPlus = 'R';
-	// } else if (dbCell.getElements().equals(C_T)) {
-	// iupacPlus = 'Y';
-	// } else if (dbCell.getElements().equals(G_C)) {
-	// iupacPlus = 'S';
-	// } else if (dbCell.getElements().equals(A_T)) {
-	// iupacPlus = 'W';
-	// } else if (dbCell.getElements().equals(G_T)) {
-	// iupacPlus = 'K';
-	// } else if (dbCell.getElements().equals(A_C)) {
-	// iupacPlus = 'M';
-	// }
-	// } else if (dbCell.getElements().size() == 3) {
-	// if (dbCell.getElements().equals(C_G_T)) {
-	// iupacPlus = 'B';
-	// } else if (dbCell.getElements().equals(A_G_T)) {
-	// iupacPlus = 'D';
-	// } else if (dbCell.getElements().equals(A_C_T)) {
-	// iupacPlus = 'H';
-	// } else if (dbCell.getElements().equals(A_C_G)) {
-	// iupacPlus = 'V';
-	// }
-	// } else if (dbCell.getElements().size() == 4) {
-	// iupacPlus = 'N';
-	// } else {
-	// throw new AssertionError();
-	// }
-	// break;
-	// case INAPPLICABLE:
-	// iupacPlus = '-';
-	// break;
-	// default:
-	// throw new AssertionError();
-	// }
-	// if (iupacPlus == (char) -1) {
-	// throw new AssertionError();
-	// }
-	// return iupacPlus;
-	// }
+	public PPodDnaMatrix dbDnaMatrix2DocDnaMatrix(
+			final DnaMatrix dbMatrix) {
+		checkNotNull(dbMatrix);
+		final PPodDnaMatrix docMatrix =
+				new PPodDnaMatrix(
+						dbMatrix.getPPodId(),
+						dbMatrix.getVersionInfo().getVersion(),
+						dbMatrix.getLabel());
+
+		for (final Otu dbOtu : dbMatrix.getParent().getOtus()) {
+			final DnaRow dbRow = dbMatrix.getRows().get(dbOtu);
+			final StringBuilder docSeq = new StringBuilder();
+			final List<Long> cellVersions = newArrayList();
+			for (final DnaCell dbCell : dbRow.getCells()) {
+				dbDnaCell2Sequence(dbCell, docSeq);
+				cellVersions.add(dbCell.getVersionInfo().getVersion());
+			}
+			final PPodDnaRow docRow = new PPodDnaRow(
+					dbRow.getVersionInfo().getVersion(),
+					docSeq.toString());
+			docMatrix.getRows().add(docRow);
+			docRow.setCellVersions(cellVersions);
+			dnaRowDao.evict(dbRow);
+		}
+		return docMatrix;
+	}
 
 	/**
 	 * This method evicts rows from the persistence context after they are
@@ -296,7 +192,6 @@ public final class DbStudy2DocStudy {
 	 * 
 	 * @return a doc version of {@code dbMatrix}
 	 */
-
 	public PPodDnaSequenceSet dbDnaSequenceSet2DocDnaSequenceSet(
 			final DnaSequenceSet dbSequenceSet) {
 		checkNotNull(dbSequenceSet);
@@ -362,31 +257,6 @@ public final class DbStudy2DocStudy {
 		return docOtuSet;
 	}
 
-	public PPodDnaMatrix dbDnaMatrix2DocDnaMatrix(
-			final DnaMatrix dbMatrix) {
-		checkNotNull(dbMatrix);
-		final PPodDnaMatrix docMatrix =
-				new PPodDnaMatrix(
-						dbMatrix.getPPodId(),
-						dbMatrix.getVersionInfo().getVersion(),
-						dbMatrix.getLabel());
-
-		for (final Otu dbOtu : dbMatrix.getParent().getOtus()) {
-			final DnaRow dbRow = dbMatrix.getRows().get(dbOtu);
-			final List<DnaCell> dbCells = dbRow.getCells();
-			final StringBuilder docSeq = new StringBuilder();
-			for (final DnaCell dbCell : dbCells) {
-				dbDnaCell2Sequence(dbCell, docSeq);
-			}
-			final PPodDnaRow docRow = new PPodDnaRow(
-					dbRow.getVersionInfo().getVersion(),
-					docSeq.toString());
-			docMatrix.getRows().add(docRow);
-			dnaRowDao.evict(dbRow);
-		}
-		return docMatrix;
-	}
-
 	public PPodProteinMatrix dbProteinMatrix2DocProteinMatrix(
 			final ProteinMatrix dbMatrix) {
 		checkNotNull(dbMatrix);
@@ -398,13 +268,14 @@ public final class DbStudy2DocStudy {
 
 		for (final Otu dbOtu : dbMatrix.getParent().getOtus()) {
 			final ProteinRow dbRow = dbMatrix.getRows().get(dbOtu);
-			final List<ProteinCell> dbCells = dbRow.getCells();
 			final StringBuilder docSeq = new StringBuilder();
-			for (final ProteinCell dbCell : dbCells) {
+			for (final ProteinCell dbCell : dbRow.getCells()) {
 				dbProteinCell2Sequence(dbCell, docSeq);
 			}
-			final PPodProteinRow docRow = new PPodProteinRow(
-					dbRow.getVersionInfo().getVersion(), docSeq.toString());
+			final PPodProteinRow docRow =
+					new PPodProteinRow(
+							dbRow.getVersionInfo().getVersion(),
+							docSeq.toString());
 			docMatrix.getRows().add(docRow);
 			proteinRowDao.evict(dbRow);
 		}
@@ -441,8 +312,7 @@ public final class DbStudy2DocStudy {
 					.getVersionInfo().getVersion());
 			docMatrix.getRows().add(docRow);
 
-			final List<StandardCell> dbCells = dbRow.getCells();
-			for (final StandardCell dbCell : dbCells) {
+			for (final StandardCell dbCell : dbRow.getCells()) {
 				final PPodStandardCell docCell =
 						new PPodStandardCell(
 								dbCell.getVersionInfo().getVersion(),

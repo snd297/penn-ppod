@@ -116,26 +116,22 @@ public final class OtuSetInfo extends PPodEntityInfo {
 	 * @param dnaMatrixInfos the dnaMatrixInfos to set
 	 */
 	public void setDnaMatrixInfos(final List<MatrixInfo> dnaMatrixInfos) {
-		checkNotNull(dnaMatrixInfos);
-		this.dnaMatrixInfos = dnaMatrixInfos;
+		this.dnaMatrixInfos = checkNotNull(dnaMatrixInfos);
 	}
 
 	public void setOtuInfos(final List<PPodEntityInfo> otuInfos) {
-		checkNotNull(otuInfos);
-		this.otuInfos = otuInfos;
+		this.otuInfos = checkNotNull(otuInfos);
 	}
 
 	public void setProteinMatrixInfos(final List<MatrixInfo> proteinMatrixInfos) {
-		checkNotNull(proteinMatrixInfos);
-		this.proteinMatrixInfos = proteinMatrixInfos;
+		this.proteinMatrixInfos = checkNotNull(proteinMatrixInfos);
 	}
 
 	/**
 	 * @param sequenceSetInfos the sequenceSetInfos to set
 	 */
 	public void setSequenceSetInfos(final List<SequenceSetInfo> sequenceSetInfos) {
-		checkNotNull(sequenceSetInfos);
-		this.sequenceSetInfos = sequenceSetInfos;
+		this.sequenceSetInfos = checkNotNull(sequenceSetInfos);
 	}
 
 	/**
@@ -143,16 +139,14 @@ public final class OtuSetInfo extends PPodEntityInfo {
 	 */
 	public void setStandardMatrixInfos(
 			final List<StandardMatrixInfo> standardMatrixInfos) {
-		checkNotNull(standardMatrixInfos);
-		this.standardMatrixInfos = standardMatrixInfos;
+		this.standardMatrixInfos = checkNotNull(standardMatrixInfos);
 	}
 
 	/**
 	 * @param treeSetInfos the treeSetInfos to set
 	 */
 	public void setTreeSetInfos(final List<TreeSetInfo> treeSetInfos) {
-		checkNotNull(treeSetInfos);
-		this.treeSetInfos = treeSetInfos;
+		this.treeSetInfos = checkNotNull(treeSetInfos);
 	}
 
 }

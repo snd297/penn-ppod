@@ -30,8 +30,6 @@ import javax.persistence.ManyToOne;
 import javax.persistence.Table;
 
 import com.google.common.base.Predicate;
-import com.google.inject.Inject;
-import com.google.inject.assistedinject.Assisted;
 
 import edu.umd.cs.findbugs.annotations.CheckForNull;
 import edu.umd.cs.findbugs.annotations.Nullable;
@@ -54,8 +52,7 @@ public class Attachment extends UuPPodEntity {
 		/**
 		 * @param namespaceLabel is the typeLabel of this namespaceLabel?
 		 */
-		@Inject
-		public IsOfNamespace(@Assisted final String namespaceLabel) {
+		public IsOfNamespace(final String namespaceLabel) {
 			checkNotNull(namespaceLabel);
 			this.namespaceLabel = namespaceLabel;
 		}

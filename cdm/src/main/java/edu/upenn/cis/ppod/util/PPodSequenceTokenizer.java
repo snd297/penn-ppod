@@ -14,10 +14,8 @@ public final class PPodSequenceTokenizer {
 		public final String sequence;
 
 		public Token(final PPodCellType cellType, final String sequence) {
-			checkNotNull(cellType);
-			checkNotNull(sequence);
-			this.cellType = cellType;
-			this.sequence = sequence;
+			this.cellType = checkNotNull(cellType);
+			this.sequence = checkNotNull(sequence);
 		}
 	}
 
