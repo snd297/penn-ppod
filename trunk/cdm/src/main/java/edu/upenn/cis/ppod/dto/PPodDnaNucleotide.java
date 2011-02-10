@@ -15,10 +15,6 @@
  */
 package edu.upenn.cis.ppod.dto;
 
-import static com.google.common.collect.Sets.immutableEnumSet;
-
-import java.util.Set;
-
 /**
  * The four DNA nucleotides.
  * 
@@ -37,37 +33,5 @@ public enum PPodDnaNucleotide {
 	/** Thymine. */
 	T;
 
-	public final static Set<PPodDnaNucleotide> A_G =
-			immutableEnumSet(A, G);
-
-	public final static Set<PPodDnaNucleotide> C_T =
-			immutableEnumSet(C, T);
-
-	public final static Set<PPodDnaNucleotide> G_C =
-			immutableEnumSet(G, C);
-
-	public final static Set<PPodDnaNucleotide> A_T =
-			immutableEnumSet(A, T);
-
-	public final static Set<PPodDnaNucleotide> G_T =
-			immutableEnumSet(G, T);
-
-	public final static Set<PPodDnaNucleotide> A_C =
-			immutableEnumSet(A, C);
-
-	public final static Set<PPodDnaNucleotide> C_G_T =
-			immutableEnumSet(C, G, T);
-
-	public final static Set<PPodDnaNucleotide> A_G_T =
-			immutableEnumSet(A, G, T);
-
-	public final static Set<PPodDnaNucleotide> A_C_T =
-			immutableEnumSet(A, C, T);
-
-	public final static Set<PPodDnaNucleotide> A_C_G =
-			immutableEnumSet(A, C, G);
-
-	public final static Set<PPodDnaNucleotide> A_C_G_T =
-			immutableEnumSet(A, C, G, T);
-
+	
 }
