@@ -23,9 +23,8 @@ abstract class UuPPodDomainObjectWithLabel extends PPodDomainObject
 	}
 
 	UuPPodDomainObjectWithLabel(final String label) {
-		checkNotNull(label);
+		this.label = checkNotNull(label);
 		this.pPodId = null;
-		this.label = label;
 	}
 
 	UuPPodDomainObjectWithLabel(
@@ -33,16 +32,14 @@ abstract class UuPPodDomainObjectWithLabel extends PPodDomainObject
 			final Long version,
 			final String label) {
 		super(version);
-		checkNotNull(label);
+		this.label = checkNotNull(label);
 		this.pPodId = pPodId;
-		this.label = label;
 	}
 
 	UuPPodDomainObjectWithLabel(@CheckForNull final String pPodId,
 			final String label) {
-		checkNotNull(label);
 		this.pPodId = pPodId;
-		this.label = label;
+		this.label = checkNotNull(label);
 	}
 
 	public final String getLabel() {

@@ -28,6 +28,9 @@ public class DnaDocCell2DbCell {
 			final char docChar = docSequence.charAt(i);
 			if (Character.isLowerCase(docChar)) {
 				lowerCase = true;
+			} else {
+				// if one is lower case, all of them should be
+				checkArgument(lowerCase == false);
 			}
 			final char upCasedDocChar = Character.toUpperCase(docChar);
 			switch (upCasedDocChar) {
@@ -50,7 +53,7 @@ public class DnaDocCell2DbCell {
 					break;
 				default:
 					throw new IllegalArgumentException(
-							"illegacl char in sequence [" + docChar + "]");
+							"illegal char in sequence [" + docChar + "]");
 			}
 		}
 		switch (cellType) {

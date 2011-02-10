@@ -61,7 +61,6 @@ public class ProteinRow extends Row<ProteinCell, ProteinMatrix> {
 	 */
 	@Override
 	public void setCells(final List<? extends ProteinCell> cells) {
-		checkNotNull(cells);
 		super.setCellsHelper(cells);
 		for (final ProteinCell cell : getCells()) {
 			cell.setParent(this);

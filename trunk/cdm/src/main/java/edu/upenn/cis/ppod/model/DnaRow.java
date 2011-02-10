@@ -90,7 +90,6 @@ public class DnaRow extends Row<DnaCell, DnaMatrix> {
 	 */
 	@Override
 	public void setCells(final List<? extends DnaCell> cells) {
-		checkNotNull(cells);
 		super.setCellsHelper(cells);
 		for (final DnaCell cell : getCells()) {
 			cell.setParent(this);

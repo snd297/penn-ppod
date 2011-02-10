@@ -5,7 +5,15 @@ import static com.google.common.base.Preconditions.checkNotNull;
 
 import java.util.Set;
 
+import com.google.common.collect.ImmutableSet;
+
 abstract class PPodMolecularRow extends PPodDomainObject {
+
+	public static final Set<Character> DELIMITERS = ImmutableSet.of(
+						'(',
+						')',
+						'{',
+						'}');
 
 	private String sequence;
 
@@ -13,16 +21,14 @@ abstract class PPodMolecularRow extends PPodDomainObject {
 
 	PPodMolecularRow(final Long version, final String sequence) {
 		super(version);
-		checkNotNull(sequence);
-		setSequence(sequence);
+		this.sequence = checkNotNull(sequence);
 	}
 
 	PPodMolecularRow(final String sequence) {
-		checkNotNull(sequence);
-		this.sequence = sequence;
+		this.sequence = checkNotNull(sequence);
 	}
 
-	abstract Set<Character> getLegalCharsAndDelimiters();
+	abstract Set<Character> getLegalChars();
 
 	public final String getSequence() {
 		return sequence;
@@ -31,7 +37,9 @@ abstract class PPodMolecularRow extends PPodDomainObject {
 	public final void setSequence(final String sequence) {
 		checkNotNull(sequence);
 		for (int i = 0; i < sequence.length(); i++) {
-			checkArgument(getLegalCharsAndDelimiters().contains(sequence.charAt(i)),
+			checkArgument(
+					getLegalChars().contains(sequence.charAt(i))
+							|| DELIMITERS.contains(sequence.charAt(i)),
 					"position " + i + " is " + sequence.charAt(i)
 							+ " which is illegal");
 		}

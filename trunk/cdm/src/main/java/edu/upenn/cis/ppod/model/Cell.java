@@ -21,7 +21,6 @@ import static com.google.common.base.Preconditions.checkState;
 import static com.google.common.collect.Sets.newHashSet;
 
 import java.util.Collections;
-import java.util.HashSet;
 import java.util.Set;
 
 import javax.persistence.Column;
@@ -149,15 +148,6 @@ abstract class Cell<E, R extends Row<?, ?>>
 	}
 
 	/**
-	 * This initializes the cells elements to {@code new HashSet<E>()}.
-	 * Subclasses may wish to override this for more efficient solutions, for
-	 * example using an {@code EnumSet<E>}.
-	 */
-	void initElements() {
-		setElements(new HashSet<E>());
-	}
-
-	/**
 	 * Does not affect {@link #isInNeedOfNewVersion()}.
 	 */
 	abstract void setElement(@CheckForNull final E element);
@@ -176,7 +166,6 @@ abstract class Cell<E, R extends Row<?, ?>>
 	}
 
 	void setInapplicableOrUnassigned(final PPodCellType type) {
-		checkNotNull(type);
 		checkArgument(
 				type == PPodCellType.INAPPLICABLE
 						|| type == PPodCellType.UNASSIGNED,
@@ -213,7 +202,7 @@ abstract class Cell<E, R extends Row<?, ?>>
 	 * <p>
 	 * Assumes that none of {@code elements} is in a detached state.
 	 * <p>
-	 * This object makes its own copy of {@code states}.
+	 * This object makes retains the a reference to {@code states}.
 	 * 
 	 * @param states to be added
 	 * 
@@ -221,10 +210,7 @@ abstract class Cell<E, R extends Row<?, ?>>
 	 */
 	void setPolymorphicOrUncertain(
 			final PPodCellType type,
-			final Set<? extends E> elements) {
-		checkNotNull(type);
-		checkNotNull(elements);
-
+			final Set<E> elements) {
 		checkArgument(
 				type == PPodCellType.POLYMORPHIC
 						|| type == PPodCellType.UNCERTAIN,
@@ -240,23 +226,9 @@ abstract class Cell<E, R extends Row<?, ?>>
 				&& elements.equals(getElementsModifiable())) {
 			return;
 		}
-
-		setElement(null);
-
-		if (getElementsModifiable() == null) {
-			initElements();
-		}
-
 		setType(type);
-
-		final Set<E> thisElements = getElementsModifiable();
-		if (thisElements == null) {
-			throw new AssertionError(
-					"initElements() was called but elements is null");
-		}
-		thisElements.clear();
-		thisElements.addAll(elements);
-
+		setElement(null);
+		setElements(elements);
 		setInNeedOfNewVersion();
 	}
 
@@ -285,7 +257,6 @@ abstract class Cell<E, R extends Row<?, ?>>
 	 * @param type the new type
 	 */
 	void setType(final PPodCellType type) {
-		checkNotNull(type);
 		this.type = type;
 		return;
 	}
@@ -303,8 +274,7 @@ abstract class Cell<E, R extends Row<?, ?>>
 	 * 
 	 * @throw IllegalArgumentException if {@code uncertainStates.size() < 2}
 	 */
-	public void setUncertain(
-			final Set<? extends E> elements) {
+	public void setUncertain(final Set<E> elements) {
 		checkNotNull(elements);
 		checkArgument(
 				elements.size() > 1,
@@ -315,7 +285,6 @@ abstract class Cell<E, R extends Row<?, ?>>
 	}
 
 	void setSingle(final E element) {
-		checkNotNull(element);
 		if (getType() == PPodCellType.SINGLE
 				&& getElement().equals(element)) {
 

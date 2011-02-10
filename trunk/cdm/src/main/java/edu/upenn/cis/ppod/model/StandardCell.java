@@ -192,7 +192,7 @@ public class StandardCell extends Cell<StandardState, StandardRow> {
 	@Override
 	void setPolymorphicOrUncertain(
 			final PPodCellType type,
-			final Set<? extends StandardState> elements) {
+			final Set<StandardState> elements) {
 		checkNotNull(type);
 		checkNotNull(elements);
 

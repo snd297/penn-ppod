@@ -17,7 +17,6 @@ package edu.upenn.cis.ppod.model;
 
 import static com.google.common.base.Preconditions.checkNotNull;
 
-import java.util.EnumSet;
 import java.util.Set;
 
 import javax.persistence.CollectionTable;
@@ -102,11 +101,6 @@ public class DnaCell extends CellWithCase<PPodDnaNucleotide, DnaRow> {
 	@Override
 	public DnaRow getParent() {
 		return parent;
-	}
-
-	@Override
-	void initElements() {
-		setElements(EnumSet.noneOf(PPodDnaNucleotide.class));
 	}
 
 	@Override

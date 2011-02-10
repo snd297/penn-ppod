@@ -21,8 +21,7 @@ abstract class PPodDomainObject {
 	}
 
 	PPodDomainObject(final Long version) {
-		checkNotNull(version);
-		this.version = version;
+		this.version = checkNotNull(version);
 	}
 
 	@Nullable
