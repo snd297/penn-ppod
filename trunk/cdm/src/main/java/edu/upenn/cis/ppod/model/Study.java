@@ -17,6 +17,9 @@ package edu.upenn.cis.ppod.model;
 
 import static com.google.common.base.Preconditions.checkArgument;
 import static com.google.common.base.Preconditions.checkNotNull;
+import static com.google.common.base.Predicates.compose;
+import static com.google.common.base.Predicates.equalTo;
+import static com.google.common.collect.Iterables.find;
 import static com.google.common.collect.Lists.newArrayList;
 
 import java.util.Collections;
@@ -113,6 +116,8 @@ public class Study
 	 * 
 	 * @throws IllegalArgumentException if this study already contains the OTU
 	 *             set
+	 * @throws IllegalArgumentException if this study already contains an OTU
+	 *             with the {@code otuSet}'s label
 	 */
 	public void addOtuSet(final int pos, final OtuSet otuSet) {
 		checkNotNull(otuSet);
@@ -122,20 +127,22 @@ public class Study
 				"this study already contains otu set ["
 						+ otuSet.getLabel()
 						+ "]");
+		checkArgument(
+				find(otuSets,
+						compose(equalTo(otuSet.getLabel()), ILabeled.getLabel),
+						null) == null,
+				"this study already contains an otu set labled ["
+						+ otuSet.getLabel() + "]");
 		otuSets.add(pos, otuSet);
 		otuSet.setParent(this);
 		setInNeedOfNewVersion();
 	}
 
-	/** {@inheritDoc} */
+	/**
+	 * Equivalent to {@code #addOtuSet(getOtuSets.size(), otuSet)};
+	 */
 	public void addOtuSet(final OtuSet otuSet) {
-		checkNotNull(otuSet);
-		checkArgument(!getOtuSets().contains(otuSet),
-				"this study already contains otu set [" + otuSet.getLabel()
-						+ "]");
-		otuSets.add(otuSet);
-		otuSet.setParent(this);
-		setInNeedOfNewVersion();
+		addOtuSet(otuSets.size(), otuSet);
 	}
 
 	/**
