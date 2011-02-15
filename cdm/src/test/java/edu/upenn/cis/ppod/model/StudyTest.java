@@ -37,8 +37,12 @@ public class StudyTest {
 	public void removeOTUSet() {
 		final Study study = new Study();
 		final OtuSet otuSet0 = new OtuSet();
+		otuSet0.setLabel("otu-set-0");
 		final OtuSet otuSet1 = new OtuSet();
+		otuSet1.setLabel("otu-set-1");
 		final OtuSet otuSet2 = new OtuSet();
+		otuSet2.setLabel("otu-set-2");
+
 		study.addOtuSet(otuSet0);
 		study.addOtuSet(otuSet1);
 		study.addOtuSet(otuSet2);
@@ -96,9 +100,13 @@ public class StudyTest {
 	public void addOTUSetPos() {
 		final Study study = new Study();
 		final OtuSet otuSet0 = new OtuSet();
+		otuSet0.setLabel("otu-set-0");
 		final OtuSet otuSet1 = new OtuSet();
+		otuSet1.setLabel("otu-set-1");
 		final OtuSet otuSet2 = new OtuSet();
+		otuSet2.setLabel("otu-set-2");
 		final OtuSet otuSet3 = new OtuSet();
+		otuSet3.setLabel("otu-set-3");
 
 		study.addOtuSet(otuSet0);
 		study.addOtuSet(otuSet1);

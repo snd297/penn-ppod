@@ -23,7 +23,7 @@ public class ProteinRowTest {
 		assertSame(cell.getParent(), row);
 		assertEquals(cell.getPosition().intValue(), 0);
 
-		// There was actually a bug where the method added the same cell twice
+		// There was a bug where the method added the same cell twice
 		assertEquals(frequency(row.getCells(), cell), 1);
 	}
 }
