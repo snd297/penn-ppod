@@ -75,7 +75,6 @@ public class ProteinRow extends Row<ProteinCell, ProteinMatrix> {
 	public void addCell(final ProteinCell cell) {
 		checkNotNull(cell);
 		cells.add(cell);
-		getCellsModifiable().add(cell);
 		cell.setPosition(getCellsModifiable().size() - 1);
 		cell.setParent(this);
 		setInNeedOfNewVersion();
