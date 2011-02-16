@@ -21,7 +21,6 @@ import java.util.Date;
 import java.util.Set;
 
 import org.hibernate.Session;
-import org.hibernate.SessionFactory;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
@@ -55,9 +54,9 @@ public final class StudyResourceHibernate implements IStudyResource {
 
 	private final CreateOrUpdateStudy createOrUpdateStudy;
 
-	private final SessionFactory sessionFactory;
+	private final Session session;
 
-	private DbStudy2DocStudy dbStudy2DocStudy;
+	private final DbStudy2DocStudy dbStudy2DocStudy;
 
 	private static final Logger logger = LoggerFactory
 			.getLogger(StudyResourceHibernate.class);
@@ -68,11 +67,11 @@ public final class StudyResourceHibernate implements IStudyResource {
 			final CreateOrUpdateStudy createOrUpdateStudy,
 			final INewVersionInfo newVersionInfo,
 			final ICurrentVersionDAO currentVersionDAO,
-			final SessionFactory sessionFactory,
+			final Session session,
 			final DbStudy2DocStudy dbStudy2DocStudy) {
 		this.studyDAO = studyDAO;
 		this.createOrUpdateStudy = createOrUpdateStudy;
-		this.sessionFactory = sessionFactory;
+		this.session = session;
 		this.dbStudy2DocStudy = dbStudy2DocStudy;
 	}
 
@@ -80,7 +79,7 @@ public final class StudyResourceHibernate implements IStudyResource {
 		checkNotNull(incomingStudy);
 		final long inTime = new Date().getTime();
 		try {
-			final Session session = sessionFactory.getCurrentSession();
+
 			session.beginTransaction();
 
 			final Study dbStudy = createOrUpdateStudy
@@ -92,16 +91,16 @@ public final class StudyResourceHibernate implements IStudyResource {
 
 			return studyInfo;
 
-		} catch (Throwable t) {
+		} catch (final Throwable t) {
 			try {
-				sessionFactory.getCurrentSession().getTransaction().rollback();
-			} catch (Throwable rbEx) {
+				session.getTransaction().rollback();
+			} catch (final Throwable rbEx) {
 				logger.error("error rolling back transaction", rbEx);
 			}
 			throw new IllegalStateException(t);
 		} finally {
 			logger.debug("createOrUpdateStudy(...): response time: "
-					+ ((new Date().getTime() - inTime) / 1000) + " seconds");
+					+ (new Date().getTime() - inTime) + " milliseconds");
 		}
 	}
 
@@ -113,7 +112,7 @@ public final class StudyResourceHibernate implements IStudyResource {
 	public PPodStudy getStudyByPPodId(final String pPodId) {
 		final long inTime = new Date().getTime();
 		try {
-			final Session session = sessionFactory.getCurrentSession();
+
 			session.beginTransaction();
 
 			final Study dbStudy = studyDAO.getStudyByPPodId(pPodId);
@@ -123,39 +122,38 @@ public final class StudyResourceHibernate implements IStudyResource {
 			session.getTransaction().commit();
 
 			return docStudy;
-		} catch (Throwable t) {
+		} catch (final Throwable t) {
 			try {
-				sessionFactory.getCurrentSession().getTransaction().rollback();
-			} catch (Throwable rbEx) {
+				session.getTransaction().rollback();
+			} catch (final Throwable rbEx) {
 				logger.error("error rolling back transaction", rbEx);
 			}
 			throw new IllegalStateException(t);
 		} finally {
 			logger.debug("getStudyByPPodId(...): response time: "
-					+ ((new Date().getTime() - inTime) / 1000) + " seconds");
+					+ (new Date().getTime() - inTime) + " milliseconds");
 		}
 	}
 
 	public Set<PPodLabelAndId> getStudyPPodIdLabelPairs() {
 		final long inTime = new Date().getTime();
 		try {
-			final Session session = sessionFactory.getCurrentSession();
 			session.beginTransaction();
 
 			final Set<PPodLabelAndId> studyLabelAndIds = studyDAO
 					.getPPodIdLabelPairs();
 			session.getTransaction().commit();
 			return studyLabelAndIds;
-		} catch (Throwable t) {
+		} catch (final Throwable t) {
 			try {
-				sessionFactory.getCurrentSession().getTransaction().rollback();
-			} catch (Throwable rbEx) {
+				session.getTransaction().rollback();
+			} catch (final Throwable rbEx) {
 				logger.error("error rolling back transaction", rbEx);
 			}
 			throw new IllegalStateException(t);
 		} finally {
 			logger.debug("getStudyPPodIdLabelPairs(...): response time: "
-					+ ((new Date().getTime() - inTime) / 1000) + " seconds");
+					+ (new Date().getTime() - inTime) + " milliseconds");
 		}
 	}
 

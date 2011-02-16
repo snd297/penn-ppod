@@ -203,14 +203,14 @@ public final class CreateOrUpdateStudy {
 	}
 
 	private void handleDnaMatrices(
-			final OtuSet dbOTUSet,
-			final PPodOtuSet incomingOTUSet) {
+			final OtuSet dbOtuSet,
+			final PPodOtuSet incomingOtuSet) {
 
 		// Let's delete matrices missing from the incoming OTU set
 		final Set<DnaMatrix> toBeRemoveds = newHashSet();
-		for (final DnaMatrix dbMatrix : dbOTUSet.getDnaMatrices()) {
+		for (final DnaMatrix dbMatrix : dbOtuSet.getDnaMatrices()) {
 			if (null == find(
-							incomingOTUSet.getDnaMatrices(),
+							incomingOtuSet.getDnaMatrices(),
 							compose(
 									equalTo(
 										dbMatrix.getPPodId()),
@@ -220,16 +220,16 @@ public final class CreateOrUpdateStudy {
 			}
 		}
 		for (final DnaMatrix toBeRemoved : toBeRemoveds) {
-			dbOTUSet.removeDnaMatrix(toBeRemoved);
+			dbOtuSet.removeDnaMatrix(toBeRemoved);
 		}
 		int incomingMatrixPos = -1;
-		for (final PPodDnaMatrix incomingMatrix : incomingOTUSet
+		for (final PPodDnaMatrix incomingMatrix : incomingOtuSet
 				.getDnaMatrices()) {
 			incomingMatrixPos++;
 			DnaMatrix dbMatrix;
 			if (null == (dbMatrix =
 					find(
-							dbOTUSet.getDnaMatrices(),
+							dbOtuSet.getDnaMatrices(),
 							compose(
 									equalTo(
 											incomingMatrix.getPPodId()),
@@ -241,7 +241,7 @@ public final class CreateOrUpdateStudy {
 
 				// Do this here because it's non-nullable
 				dbMatrix.setLabel(incomingMatrix.getLabel());
-				dbOTUSet.addDnaMatrix(incomingMatrixPos, dbMatrix);
+				dbOtuSet.addDnaMatrix(incomingMatrixPos, dbMatrix);
 				dnaMatrixDAO.makePersistent(dbMatrix);
 			}
 			createOrUpdateDnaMatrix
