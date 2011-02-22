@@ -13,7 +13,7 @@
  * See the License for the specific language governing permissions and
  * limitations under the License.
  */
-package edu.upenn.cis.ppod.services.hibernate;
+package edu.upenn.cis.ppod.services;
 
 import static com.google.common.base.Preconditions.checkNotNull;
 
@@ -35,7 +35,6 @@ import edu.upenn.cis.ppod.dto.Study2StudyInfo;
 import edu.upenn.cis.ppod.dto.StudyInfo;
 import edu.upenn.cis.ppod.imodel.INewVersionInfo;
 import edu.upenn.cis.ppod.model.Study;
-import edu.upenn.cis.ppod.services.IStudyResource;
 import edu.upenn.cis.ppod.util.DbStudy2DocStudy;
 
 /**
@@ -48,7 +47,7 @@ import edu.upenn.cis.ppod.util.DbStudy2DocStudy;
  * 
  * @author Sam Donnelly
  */
-public final class StudyResourceHibernate implements IStudyResource {
+class StudyResourceHibernate implements IStudyResource {
 
 	private final IStudyDAO studyDAO;
 

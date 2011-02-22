@@ -137,6 +137,11 @@ public interface IVisitor {
 	 */
 	void visitTree(Tree tree);
 
+	/**
+	 * Visit the tree set.
+	 * 
+	 * @param treeSet the tree set
+	 */
 	void visitTreeSet(TreeSet treeSet);
 
 }

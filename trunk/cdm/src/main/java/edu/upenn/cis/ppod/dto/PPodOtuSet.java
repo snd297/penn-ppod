@@ -73,34 +73,28 @@ public final class PPodOtuSet extends UuPPodDomainObjectWithLabel {
 	}
 
 	public void setDnaMatrices(final List<PPodDnaMatrix> dnaMatrices) {
-		checkNotNull(dnaMatrices);
-		this.dnaMatrices = dnaMatrices;
+		this.dnaMatrices = checkNotNull(dnaMatrices);
 	}
 
 	public void setDnaSequenceSets(
 			final List<PPodDnaSequenceSet> dnaSequenceSets) {
-		checkNotNull(dnaSequenceSets);
-		this.dnaSequenceSets = dnaSequenceSets;
+		this.dnaSequenceSets = checkNotNull(dnaSequenceSets);
 	}
 
 	public void setOtus(final List<PPodOtu> otus) {
-		checkNotNull(otus);
-		this.otus = otus;
+		this.otus = checkNotNull(otus);
 	}
 
 	public void setProteinMatrices(final List<PPodProteinMatrix> proteinMatrices) {
-		checkNotNull(proteinMatrices);
-		this.proteinMatrices = proteinMatrices;
+		this.proteinMatrices = checkNotNull(proteinMatrices);
 	}
 
 	public void setStandardMatrices(
 			final List<PPodStandardMatrix> standardMatrices) {
-		checkNotNull(standardMatrices);
-		this.standardMatrices = standardMatrices;
+		this.standardMatrices = checkNotNull(standardMatrices);
 	}
 
 	public void setTreeSets(final List<PPodTreeSet> treeSets) {
-		checkNotNull(treeSets);
-		this.treeSets = treeSets;
+		this.treeSets = checkNotNull(treeSets);
 	}
 }

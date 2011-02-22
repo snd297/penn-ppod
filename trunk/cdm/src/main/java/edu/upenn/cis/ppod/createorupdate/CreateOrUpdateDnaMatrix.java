@@ -33,9 +33,9 @@ public class CreateOrUpdateDnaMatrix {
 
 	@Inject
 	CreateOrUpdateDnaMatrix(
-			final IDnaRowDAO proteinRowDAO,
+			final IDnaRowDAO dnaRowDAO,
 			final INewVersionInfo newVersionInfo) {
-		this.dnaRowDAO = proteinRowDAO;
+		this.dnaRowDAO = dnaRowDAO;
 		this.newVersionInfo = newVersionInfo;
 	}
 
