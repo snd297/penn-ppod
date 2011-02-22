@@ -13,23 +13,27 @@
  * See the License for the specific language governing permissions and
  * limitations under the License.
  */
-package edu.upenn.cis.ppod.services.hibernate;
+package edu.upenn.cis.ppod.services;
 
 import static com.google.common.base.Preconditions.checkNotNull;
-import static com.google.common.collect.Sets.newHashSet;
+import static com.google.common.base.Predicates.compose;
+import static com.google.common.base.Predicates.equalTo;
+import static com.google.common.collect.Iterables.find;
 
 import java.util.List;
-import java.util.Set;
 
-import org.hibernate.FlushMode;
 import org.hibernate.Session;
 
+import com.google.inject.Inject;
+
+import edu.upenn.cis.ppod.dto.IHasPPodId;
 import edu.upenn.cis.ppod.dto.PPodEntities;
+import edu.upenn.cis.ppod.dto.PPodOtuSet;
 import edu.upenn.cis.ppod.model.Otu;
 import edu.upenn.cis.ppod.model.OtuSet;
 import edu.upenn.cis.ppod.model.StandardMatrix;
 import edu.upenn.cis.ppod.model.TreeSet;
-import edu.upenn.cis.ppod.services.IPPodEntitiesResource;
+import edu.upenn.cis.ppod.util.DbStudy2DocStudy;
 
 /**
  * @author Sam Donnelly
@@ -37,27 +41,24 @@ import edu.upenn.cis.ppod.services.IPPodEntitiesResource;
 class PPodEntitiesResourceHibernate implements
 		IPPodEntitiesResource {
 
-	private Session session;
+	private final Session session;
+	private final DbStudy2DocStudy dbStudy2DocStudy;
 
+	@Inject
 	PPodEntitiesResourceHibernate(
-			final Session session) {
+			final Session session,
+			final DbStudy2DocStudy dbStudy2DocStudy) {
 		this.session = session;
+		this.dbStudy2DocStudy = dbStudy2DocStudy;
 	}
 
 	public PPodEntities getEntitiesByHqlQuery(final String query) {
 		checkNotNull(query);
 
-		// These queries are read only so set this for efficiency, security, and
-		// so we can modify the entities for the response
-		// without the modifications being committed to the database.
-		session.setFlushMode(FlushMode.MANUAL);
-
 		@SuppressWarnings("unchecked")
-		final List<Object> queryResults = session.createQuery(query).list();
+		final List<Object> queryResults =
+				session.createQuery(query).setReadOnly(true).list();
 		final PPodEntities pPodEntities = new PPodEntities();
-
-		final Set<StandardMatrix> addedMatrices = newHashSet();
-		final Set<TreeSet> addedTreeSets = newHashSet();
 
 		// final List<Object> flattenedQueryResults = newArrayList();
 		// for (final Object queryResult : queryResults) {
@@ -75,39 +76,41 @@ class PPodEntitiesResourceHibernate implements
 			if (queryResult instanceof OtuSet) {
 				final OtuSet otuSet = (OtuSet) queryResult;
 
-				// Extra insurance against accidental sync with database
-				session.setReadOnly(otuSet, true);
-
 				// Note that otu set may have already been added in any of the
-				// other if clauses: Hibernate identity takes care of us
-				pPodEntities.addOtuSet(otuSet);
+				// other if clauses so we must make check before adding
+				if (find(
+						pPodEntities.getOtuSets(),
+						compose(equalTo(otuSet.getPPodId()),
+								IHasPPodId.getPPodId), null) == null) {
+					pPodEntities.getOtuSets().add(
+							dbStudy2DocStudy.dbOtuSet2DocOtuSet(otuSet));
+				}
 			} else if (queryResult instanceof StandardMatrix) {
-
 				final StandardMatrix matrix = (StandardMatrix) queryResult;
 
-				// Extra insurance against accidental sync with database
-				session.setReadOnly(matrix, true);
+				// Note that otu set may have already been added in any of
+				// the other if clauses so we must make check before adding
+				if (find(
+						pPodEntities.getOtuSets(),
+						compose(equalTo(matrix.getParent().getPPodId()),
+								IHasPPodId.getPPodId), null) == null) {
+					PPodOtuSet docOtuSet =
+							dbStudy2DocStudy.dbOtuSet2DocOtuSetJustOtus(matrix
+									.getParent());
+					pPodEntities.getOtuSets().add(docOtuSet);
+					docOtuSet
+							.getStandardMatrices()
+							.add(dbStudy2DocStudy
+									.dbStandardMatrix2DocStandardMatrix(matrix));
+				}
 
-				addedMatrices.add(matrix);
-
-				// Note that otu set may have already been added in any of the
-				// other if clauses: Hibernate identity takes care of us
-				pPodEntities.addOtuSet(matrix.getParent());
 			} else if (queryResult instanceof TreeSet) {
-				final TreeSet treeSet = (TreeSet) queryResult;
-
-				// Extra insurance against accidental sync with database
-				session.setReadOnly(treeSet, true);
-
-				addedTreeSets.add(treeSet);
-
-				// Note that otu set may have already been added in any of the
-				// other if clauses: Hibernate identity takes care of us
-				pPodEntities.addOtuSet(treeSet.getParent());
+				// final TreeSet treeSet = (TreeSet) queryResult;
+				throw new IllegalArgumentException(
+						"tree set queries not supported");
 			} else if (queryResult instanceof Otu) {
 				final Otu otu = (Otu) queryResult;
-				session.setReadOnly(otu, true);
-				pPodEntities.addOTU(otu);
+				pPodEntities.getOtus().add(dbStudy2DocStudy.dbOtu2DocOtu(otu));
 			} else if (queryResult instanceof Object[]) {
 				throw new IllegalArgumentException(
 						"nested query results not supported. query: [" + query
@@ -122,22 +125,21 @@ class PPodEntitiesResourceHibernate implements
 
 			// Now we clean up our response so we don't include any extra
 			// matrices or tree sets that were pulled over with the OTUSet's
-			for (final OtuSet otuSet : pPodEntities.getOtuSets()) {
-				for (final StandardMatrix matrix : otuSet
-						.getStandardMatrices()) {
-					if (addedMatrices.contains(matrix)) {
-						otuSet.addStandardMatrix(matrix);
-					}
-				}
-
-				for (final TreeSet treeSet : otuSet.getTreeSets()) {
-					if (addedTreeSets.contains(treeSet)) {
-						otuSet.addTreeSet(treeSet);
-					}
-				}
-			}
+			// for (final OtuSet otuSet : pPodEntities.getOtuSets()) {
+			// for (final StandardMatrix matrix : otuSet
+			// .getStandardMatrices()) {
+			// if (addedMatrices.contains(matrix)) {
+			// otuSet.addStandardMatrix(matrix);
+			// }
+			// }
+			//
+			// for (final TreeSet treeSet : otuSet.getTreeSets()) {
+			// if (addedTreeSets.contains(treeSet)) {
+			// otuSet.addTreeSet(treeSet);
+			// }
+			// }
+			// }
 		}
 		return pPodEntities;
 	}
-
 }

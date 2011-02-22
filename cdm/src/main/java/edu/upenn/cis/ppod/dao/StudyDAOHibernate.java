@@ -46,8 +46,9 @@ final class StudyDAOHibernate
 	@SuppressWarnings("unchecked")
 	public List<Object[]> getOTUInfosByStudyPPodIdAndMinPPodVersion(
 			final String studyPPodId, final Long minPPodVersion) {
-		return getSession().getNamedQuery(
-				"Study-getOTUSetInfosByStudyPPodIdAndMinPPodVersion")
+		return getSession()
+				.getNamedQuery(
+						"Study-getOTUSetInfosByStudyPPodIdAndMinPPodVersion")
 				.setParameter("studyPPodId", studyPPodId).setParameter(
 						"minPPodVersion", minPPodVersion).list();
 	}

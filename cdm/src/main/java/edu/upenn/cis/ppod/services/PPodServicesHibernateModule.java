@@ -9,17 +9,24 @@
  *
  * Unless required by applicable law or agreed to in writing, software
  * distributed under the License is distributed on an "AS IS" BASIS,
- * WITHOUT WARRANTIES OR CONDITIONS of ANY KIND, either express or implied.
+ * WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
  * See the License for the specific language governing permissions and
  * limitations under the License.
  */
+package edu.upenn.cis.ppod.services;
+
+import com.google.inject.AbstractModule;
 
 /**
- * Services which are built with Hibernate.
+ * @author Sam Donnelly
+ * 
  */
-@DefaultAnnotation(NonNull.class)
-package edu.upenn.cis.ppod.services.hibernate;
+public class PPodServicesHibernateModule extends AbstractModule {
 
-import edu.umd.cs.findbugs.annotations.DefaultAnnotation;
-import edu.umd.cs.findbugs.annotations.NonNull;
-
+	@Override
+	protected void configure() {
+		bind(IStudyResource.class).to(StudyResourceHibernate.class);
+		bind(IPPodEntitiesResource.class).to(
+				PPodEntitiesResourceHibernate.class);
+	}
+}

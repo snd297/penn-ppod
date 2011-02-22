@@ -21,6 +21,7 @@ import javax.xml.bind.JAXBContext;
 
 import org.testng.annotations.DataProvider;
 
+import edu.upenn.cis.ppod.dto.IHasOtuSets;
 import edu.upenn.cis.ppod.dto.PPodOtuSet;
 import edu.upenn.cis.ppod.dto.PPodStudy;
 import edu.upenn.cis.ppod.model.OtuSet;
@@ -41,8 +42,8 @@ public class PPodEntityProvider {
 	public static Object[][] createMatrix() throws Exception {
 
 		final JAXBContext ctx = JAXBContext.newInstance(PPodStudy.class);
-		final PPodStudy studyMX540 =
-				(PPodStudy) ctx.createUnmarshaller().unmarshal(
+		final IHasOtuSets studyMX540 =
+				(IHasOtuSets) ctx.createUnmarshaller().unmarshal(
 						PPodEntityProvider.class
 								.getResourceAsStream("/MX540.xml"));
 

@@ -96,7 +96,7 @@ public class Otu
 	 * {@code Otu}s. Will never be {@code null} for {@code OTU}s just pulled out
 	 * of the database since persisted {@code Otu}s must have parents.
 	 * 
-	 * @return the {@code OTUSet} that owns this {@code OTU}
+	 * @return the OTU set that owns this OTU
 	 */
 	@Nullable
 	public OtuSet getParent() {
@@ -109,8 +109,8 @@ public class Otu
 	 */
 	@Override
 	public void setInNeedOfNewVersion() {
-		if (getParent() != null) {
-			getParent().setInNeedOfNewVersion();
+		if (parent != null) {
+			parent.setInNeedOfNewVersion();
 		}
 		super.setInNeedOfNewVersion();
 	}

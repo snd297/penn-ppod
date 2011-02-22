@@ -25,8 +25,8 @@ import com.google.inject.ImplementedBy;
 /**
  * @author Sam Donnelly
  */
-@ImplementedBy(PPodGreetingService.class)
 @Path("/")
+@ImplementedBy(PPodGreetingService.class)
 public interface IPPodGreetingResource {
 
 	@GET

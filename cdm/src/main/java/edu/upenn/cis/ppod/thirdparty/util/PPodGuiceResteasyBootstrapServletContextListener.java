@@ -19,7 +19,7 @@ import com.google.inject.servlet.ServletModule;
 
 import edu.umd.cs.findbugs.annotations.CheckForNull;
 import edu.upenn.cis.ppod.PPodModule;
-import edu.upenn.cis.ppod.services.hibernate.PPodServicesHibernateModule;
+import edu.upenn.cis.ppod.services.PPodServicesHibernateModule;
 
 /**
  * Based on

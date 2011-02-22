@@ -222,13 +222,7 @@ public final class DbStudy2DocStudy {
 	}
 
 	public PPodOtuSet dbOtuSet2DocOtuSet(final OtuSet dbOtuSet) {
-		checkNotNull(dbOtuSet);
-		final PPodOtuSet docOtuSet = new PPodOtuSet(dbOtuSet.getPPodId(),
-				dbOtuSet.getVersionInfo().getVersion(), dbOtuSet.getLabel());
-
-		for (final Otu dbOtu : dbOtuSet.getOtus()) {
-			docOtuSet.getOtus().add(dbOtu2DocOtu(dbOtu));
-		}
+		final PPodOtuSet docOtuSet = dbOtuSet2DocOtuSetJustOtus(dbOtuSet);
 
 		for (final ProteinMatrix dbMatrix : dbOtuSet.getProteinMatrices()) {
 			docOtuSet.getProteinMatrices().add(
@@ -254,6 +248,16 @@ public final class DbStudy2DocStudy {
 			docOtuSet.getTreeSets().add(dbTreeSet2DocTreeSet(dbTreeSet));
 		}
 
+		return docOtuSet;
+	}
+
+	public PPodOtuSet dbOtuSet2DocOtuSetJustOtus(final OtuSet dbOtuSet) {
+		final PPodOtuSet docOtuSet = new PPodOtuSet(dbOtuSet.getPPodId(),
+				dbOtuSet.getVersionInfo().getVersion(), dbOtuSet.getLabel());
+
+		for (final Otu dbOtu : dbOtuSet.getOtus()) {
+			docOtuSet.getOtus().add(dbOtu2DocOtu(dbOtu));
+		}
 		return docOtuSet;
 	}
 
