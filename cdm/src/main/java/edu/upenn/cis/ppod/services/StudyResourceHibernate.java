@@ -15,8 +15,6 @@
  */
 package edu.upenn.cis.ppod.services;
 
-import static com.google.common.base.Preconditions.checkNotNull;
-
 import java.util.Date;
 import java.util.Set;
 
@@ -75,7 +73,6 @@ class StudyResourceHibernate implements IStudyResource {
 	}
 
 	private StudyInfo createOrUpdateStudy(final PPodStudy incomingStudy) {
-		checkNotNull(incomingStudy);
 		final long inTime = new Date().getTime();
 		try {
 

@@ -15,14 +15,17 @@
  */
 package edu.upenn.cis.ppod.services;
 
-import static com.google.common.base.Preconditions.checkNotNull;
 import static com.google.common.base.Predicates.compose;
 import static com.google.common.base.Predicates.equalTo;
 import static com.google.common.collect.Iterables.find;
 
+import java.util.Date;
 import java.util.List;
 
 import org.hibernate.Session;
+import org.hibernate.Transaction;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 
 import com.google.inject.Inject;
 
@@ -43,6 +46,8 @@ class PPodEntitiesResourceHibernate implements
 
 	private final Session session;
 	private final DbStudy2DocStudy dbStudy2DocStudy;
+	private static final Logger logger = LoggerFactory
+			.getLogger(PPodEntitiesResourceHibernate.class);
 
 	@Inject
 	PPodEntitiesResourceHibernate(
@@ -53,93 +58,115 @@ class PPodEntitiesResourceHibernate implements
 	}
 
 	public PPodEntities getEntitiesByHqlQuery(final String query) {
-		checkNotNull(query);
+		final long inTime = new Date().getTime();
+		Transaction trx = null;
+		try {
+			trx = session.beginTransaction();
 
-		@SuppressWarnings("unchecked")
-		final List<Object> queryResults =
-				session.createQuery(query).setReadOnly(true).list();
-		final PPodEntities pPodEntities = new PPodEntities();
+			@SuppressWarnings("unchecked")
+			final List<Object> queryResults =
+					session.createQuery(query).setReadOnly(true).list();
+			final PPodEntities pPodEntities = new PPodEntities();
 
-		// final List<Object> flattenedQueryResults = newArrayList();
-		// for (final Object queryResult : queryResults) {
-		// if (queryResult instanceof Object[]) {
-		// final Object[] objects = (Object[]) queryResult;
-		// for (final Object object : objects) {
-		// flattenedQueryResults.add(object);
-		// }
-		// } else {
-		// flattenedQueryResults.add(queryResult);
-		// }
-		// }
+			// final List<Object> flattenedQueryResults = newArrayList();
+			// for (final Object queryResult : queryResults) {
+			// if (queryResult instanceof Object[]) {
+			// final Object[] objects = (Object[]) queryResult;
+			// for (final Object object : objects) {
+			// flattenedQueryResults.add(object);
+			// }
+			// } else {
+			// flattenedQueryResults.add(queryResult);
+			// }
+			// }
 
-		for (final Object queryResult : queryResults) {
-			if (queryResult instanceof OtuSet) {
-				final OtuSet otuSet = (OtuSet) queryResult;
+			for (final Object queryResult : queryResults) {
+				if (queryResult instanceof OtuSet) {
+					final OtuSet otuSet = (OtuSet) queryResult;
 
-				// Note that otu set may have already been added in any of the
-				// other if clauses so we must make check before adding
-				if (find(
-						pPodEntities.getOtuSets(),
-						compose(equalTo(otuSet.getPPodId()),
-								IHasPPodId.getPPodId), null) == null) {
-					pPodEntities.getOtuSets().add(
-							dbStudy2DocStudy.dbOtuSet2DocOtuSet(otuSet));
-				}
-			} else if (queryResult instanceof StandardMatrix) {
-				final StandardMatrix matrix = (StandardMatrix) queryResult;
+					// Note that otu set may have already been added in any of
+					// the
+					// other if clauses so we must make check before adding
+					if (find(
+							pPodEntities.getOtuSets(),
+							compose(equalTo(otuSet.getPPodId()),
+									IHasPPodId.getPPodId), null) == null) {
+						pPodEntities.getOtuSets().add(
+								dbStudy2DocStudy.dbOtuSet2DocOtuSet(otuSet));
+					}
+				} else if (queryResult instanceof StandardMatrix) {
+					final StandardMatrix matrix = (StandardMatrix) queryResult;
 
-				// Note that otu set may have already been added in any of
-				// the other if clauses so we must make check before adding
-				if (find(
-						pPodEntities.getOtuSets(),
-						compose(equalTo(matrix.getParent().getPPodId()),
-								IHasPPodId.getPPodId), null) == null) {
-					PPodOtuSet docOtuSet =
-							dbStudy2DocStudy.dbOtuSet2DocOtuSetJustOtus(matrix
-									.getParent());
-					pPodEntities.getOtuSets().add(docOtuSet);
-					docOtuSet
-							.getStandardMatrices()
-							.add(dbStudy2DocStudy
-									.dbStandardMatrix2DocStandardMatrix(matrix));
-				}
+					// Note that otu set may have already been added in any of
+					// the other if clauses so we must make check before adding
+					if (find(
+							pPodEntities.getOtuSets(),
+							compose(equalTo(matrix.getParent().getPPodId()),
+									IHasPPodId.getPPodId), null) == null) {
+						PPodOtuSet docOtuSet =
+								dbStudy2DocStudy
+										.dbOtuSet2DocOtuSetJustOtus(matrix
+												.getParent());
+						pPodEntities.getOtuSets().add(docOtuSet);
+						docOtuSet
+								.getStandardMatrices()
+								.add(dbStudy2DocStudy
+										.dbStandardMatrix2DocStandardMatrix(matrix));
+					}
 
-			} else if (queryResult instanceof TreeSet) {
-				// final TreeSet treeSet = (TreeSet) queryResult;
-				throw new IllegalArgumentException(
-						"tree set queries not supported");
-			} else if (queryResult instanceof Otu) {
-				final Otu otu = (Otu) queryResult;
-				pPodEntities.getOtus().add(dbStudy2DocStudy.dbOtu2DocOtu(otu));
-			} else if (queryResult instanceof Object[]) {
-				throw new IllegalArgumentException(
-						"nested query results not supported. query: [" + query
-								+ "]");
-			} else {
-				throw new IllegalArgumentException("unsupported entity type ["
+				} else if (queryResult instanceof TreeSet) {
+					// final TreeSet treeSet = (TreeSet) queryResult;
+					throw new IllegalArgumentException(
+							"tree set queries not supported");
+				} else if (queryResult instanceof Otu) {
+					final Otu otu = (Otu) queryResult;
+					pPodEntities.getOtus().add(
+							dbStudy2DocStudy.dbOtu2DocOtu(otu));
+				} else if (queryResult instanceof Object[]) {
+					throw new IllegalArgumentException(
+							"nested query results not supported. query: ["
+									+ query
+									+ "]");
+				} else {
+					throw new IllegalArgumentException(
+							"unsupported entity type ["
 													+ queryResult.getClass()
 													+ "], result: ["
 													+ queryResult.toString()
 													+ "]");
-			}
+				}
 
-			// Now we clean up our response so we don't include any extra
-			// matrices or tree sets that were pulled over with the OTUSet's
-			// for (final OtuSet otuSet : pPodEntities.getOtuSets()) {
-			// for (final StandardMatrix matrix : otuSet
-			// .getStandardMatrices()) {
-			// if (addedMatrices.contains(matrix)) {
-			// otuSet.addStandardMatrix(matrix);
-			// }
-			// }
-			//
-			// for (final TreeSet treeSet : otuSet.getTreeSets()) {
-			// if (addedTreeSets.contains(treeSet)) {
-			// otuSet.addTreeSet(treeSet);
-			// }
-			// }
-			// }
+				// Now we clean up our response so we don't include any extra
+				// matrices or tree sets that were pulled over with the OTUSet's
+				// for (final OtuSet otuSet : pPodEntities.getOtuSets()) {
+				// for (final StandardMatrix matrix : otuSet
+				// .getStandardMatrices()) {
+				// if (addedMatrices.contains(matrix)) {
+				// otuSet.addStandardMatrix(matrix);
+				// }
+				// }
+				//
+				// for (final TreeSet treeSet : otuSet.getTreeSets()) {
+				// if (addedTreeSets.contains(treeSet)) {
+				// otuSet.addTreeSet(treeSet);
+				// }
+				// }
+				// }
+			}
+			trx.commit();
+			return pPodEntities;
+		} catch (Throwable t) {
+			if (trx != null && trx.isActive()) {
+				try {
+					trx.rollback();
+				} catch (Throwable rbEx) {
+					logger.error("caught exception while rolling back", rbEx);
+				}
+			}
+			throw new IllegalStateException(t);
+		} finally {
+			logger.debug("createOrUpdateStudy(...): response time: "
+					+ (new Date().getTime() - inTime) + " milliseconds");
 		}
-		return pPodEntities;
 	}
 }
