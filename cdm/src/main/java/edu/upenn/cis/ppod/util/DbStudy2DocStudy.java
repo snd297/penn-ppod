@@ -289,9 +289,11 @@ public final class DbStudy2DocStudy {
 	public PPodStandardMatrix dbStandardMatrix2DocStandardMatrix(
 						final StandardMatrix dbMatrix) {
 		checkNotNull(dbMatrix);
-		final PPodStandardMatrix docMatrix = new PPodStandardMatrix(
-				dbMatrix.getPPodId(), dbMatrix.getVersionInfo().getVersion(),
-				dbMatrix.getLabel());
+		final PPodStandardMatrix docMatrix =
+				new PPodStandardMatrix(
+						dbMatrix.getPPodId(),
+						dbMatrix.getVersionInfo().getVersion(),
+						dbMatrix.getLabel());
 		for (final VersionInfo columnVersionInfo : dbMatrix
 				.getColumnVersionInfos()) {
 			docMatrix.getColumnVersions().add(columnVersionInfo.getVersion());
