@@ -65,7 +65,9 @@ class PPodEntitiesResourceHibernate implements
 
 			@SuppressWarnings("unchecked")
 			final List<Object> queryResults =
-					session.createQuery(query).setReadOnly(true).list();
+					session.createQuery(query)
+							.setReadOnly(true)
+							.list();
 			final PPodEntities pPodEntities = new PPodEntities();
 
 			// final List<Object> flattenedQueryResults = newArrayList();
@@ -92,27 +94,31 @@ class PPodEntitiesResourceHibernate implements
 							compose(equalTo(otuSet.getPPodId()),
 									IHasPPodId.getPPodId), null) == null) {
 						pPodEntities.getOtuSets().add(
-								dbStudy2DocStudy.dbOtuSet2DocOtuSet(otuSet));
+								dbStudy2DocStudy
+										.dbOtuSet2DocOtuSetJustOtus(otuSet));
 					}
 				} else if (queryResult instanceof StandardMatrix) {
 					final StandardMatrix matrix = (StandardMatrix) queryResult;
 
 					// Note that otu set may have already been added in any of
 					// the other if clauses so we must make check before adding
-					if (find(
+
+					PPodOtuSet docOtuSet;
+
+					if ((docOtuSet = find(
 							pPodEntities.getOtuSets(),
 							compose(equalTo(matrix.getParent().getPPodId()),
-									IHasPPodId.getPPodId), null) == null) {
-						PPodOtuSet docOtuSet =
+									IHasPPodId.getPPodId), null)) == null) {
+						docOtuSet =
 								dbStudy2DocStudy
-										.dbOtuSet2DocOtuSetJustOtus(matrix
-												.getParent());
+										.dbOtuSet2DocOtuSetJustOtus(
+												matrix.getParent());
 						pPodEntities.getOtuSets().add(docOtuSet);
-						docOtuSet
-								.getStandardMatrices()
-								.add(dbStudy2DocStudy
-										.dbStandardMatrix2DocStandardMatrix(matrix));
 					}
+					docOtuSet
+							.getStandardMatrices()
+							.add(dbStudy2DocStudy
+									.dbStandardMatrix2DocStandardMatrix(matrix));
 
 				} else if (queryResult instanceof TreeSet) {
 					// final TreeSet treeSet = (TreeSet) queryResult;
