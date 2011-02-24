@@ -69,11 +69,6 @@ public class StandardState extends PPodEntity {
 	final static String STATE_NUMBER_COLUMN = "STATE_NUMBER";
 
 	/**
-	 * The column where the label is stored. Intentionally package-private.
-	 */
-	final static String LABEL_COLUMN = "LABEL";
-
-	/**
 	 * The state number of this {@code CharacterState}. This is the core value
 	 * of these objects. Write-once-read-many.
 	 */
@@ -84,7 +79,7 @@ public class StandardState extends PPodEntity {
 	 * Label for this stateNumber. Things like <code>"absent"</code>,
 	 * <code>"short"</code>, and <code>"long"</code>
 	 */
-	@Column(name = LABEL_COLUMN, nullable = false)
+	@Column(name = "LABEL", nullable = false)
 	@CheckForNull
 	private String label;
 

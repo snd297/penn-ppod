@@ -49,12 +49,10 @@ public class StandardCharacter extends UuPPodEntity {
 
 	public final static String JOIN_COLUMN = TABLE + "_ID";
 
-	final static String LABEL_COLUMN = "LABEL";
-
 	/**
 	 * The non-unique label of this {@code Character}.
 	 */
-	@Column(name = LABEL_COLUMN, nullable = false)
+	@Column(name = "LABEL", nullable = false)
 	@CheckForNull
 	private String label;
 
@@ -91,7 +89,6 @@ public class StandardCharacter extends UuPPodEntity {
 
 	@Override
 	public void accept(final IVisitor visitor) {
-		checkNotNull(visitor);
 		visitor.visitStandardCharacter(this);
 		for (final StandardState state : getStates()) {
 			state.accept(visitor);

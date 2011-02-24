@@ -47,8 +47,7 @@ class StandardRows implements IOtuKeyedMap<StandardRow> {
 	StandardRows() {}
 
 	StandardRows(final StandardMatrix parent) {
-		checkNotNull(parent);
-		rows.setParent(parent);
+		rows.setParent(checkNotNull(parent));
 	}
 
 	public void accept(final IVisitor visitor) {
@@ -69,7 +68,8 @@ class StandardRows implements IOtuKeyedMap<StandardRow> {
 	}
 
 	@OneToMany(cascade = CascadeType.ALL, orphanRemoval = true)
-	@JoinTable(inverseJoinColumns = @JoinColumn(name = StandardRow.JOIN_COLUMN))
+	@JoinTable(name = "STANDARD_MATRIX_STANDARD_ROWS",
+			inverseJoinColumns = @JoinColumn(name = StandardRow.JOIN_COLUMN))
 	@MapKeyJoinColumn(name = Otu.JOIN_COLUMN)
 	public Map<Otu, StandardRow> getValues() {
 		return rows.getValues();

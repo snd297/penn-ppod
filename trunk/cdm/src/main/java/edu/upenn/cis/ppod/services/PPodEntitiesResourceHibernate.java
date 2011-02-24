@@ -70,18 +70,6 @@ class PPodEntitiesResourceHibernate implements
 							.list();
 			final PPodEntities pPodEntities = new PPodEntities();
 
-			// final List<Object> flattenedQueryResults = newArrayList();
-			// for (final Object queryResult : queryResults) {
-			// if (queryResult instanceof Object[]) {
-			// final Object[] objects = (Object[]) queryResult;
-			// for (final Object object : objects) {
-			// flattenedQueryResults.add(object);
-			// }
-			// } else {
-			// flattenedQueryResults.add(queryResult);
-			// }
-			// }
-
 			for (final Object queryResult : queryResults) {
 				if (queryResult instanceof OtuSet) {
 					final OtuSet otuSet = (OtuSet) queryResult;
@@ -93,9 +81,12 @@ class PPodEntitiesResourceHibernate implements
 							pPodEntities.getOtuSets(),
 							compose(equalTo(otuSet.getPPodId()),
 									IHasPPodId.getPPodId), null) == null) {
-						pPodEntities.getOtuSets().add(
-								dbStudy2DocStudy
-										.dbOtuSet2DocOtuSetJustOtus(otuSet));
+						final PPodOtuSet docOtuSet = dbStudy2DocStudy
+								.dbOtuSet2DocOtuSetJustOtus(otuSet);
+
+						pPodEntities.getOtuSets().add(docOtuSet);
+						docOtuSet.setLabel(docOtuSet.getLabel() + "/"
+								+ otuSet.getParent().getLabel());
 					}
 				} else if (queryResult instanceof StandardMatrix) {
 					final StandardMatrix matrix = (StandardMatrix) queryResult;
@@ -114,6 +105,8 @@ class PPodEntitiesResourceHibernate implements
 										.dbOtuSet2DocOtuSetJustOtus(
 												matrix.getParent());
 						pPodEntities.getOtuSets().add(docOtuSet);
+						docOtuSet.setLabel(docOtuSet.getLabel() + "/"
+								+ matrix.getParent().getParent().getLabel());
 					}
 					docOtuSet
 							.getStandardMatrices()
@@ -141,23 +134,6 @@ class PPodEntitiesResourceHibernate implements
 													+ queryResult.toString()
 													+ "]");
 				}
-
-				// Now we clean up our response so we don't include any extra
-				// matrices or tree sets that were pulled over with the OTUSet's
-				// for (final OtuSet otuSet : pPodEntities.getOtuSets()) {
-				// for (final StandardMatrix matrix : otuSet
-				// .getStandardMatrices()) {
-				// if (addedMatrices.contains(matrix)) {
-				// otuSet.addStandardMatrix(matrix);
-				// }
-				// }
-				//
-				// for (final TreeSet treeSet : otuSet.getTreeSets()) {
-				// if (addedTreeSets.contains(treeSet)) {
-				// otuSet.addTreeSet(treeSet);
-				// }
-				// }
-				// }
 			}
 			trx.commit();
 			return pPodEntities;
