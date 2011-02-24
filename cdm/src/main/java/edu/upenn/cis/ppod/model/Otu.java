@@ -49,13 +49,8 @@ public class Otu
 	 */
 	public static final String JOIN_COLUMN = TABLE + "_ID";
 
-	/**
-	 * The column where we store {@code #label}. Intentionally package-private.
-	 */
-	static final String LABEL_COLUMN = "LABEL";
-
 	/** Non-unique label. */
-	@Column(name = LABEL_COLUMN, nullable = false)
+	@Column(name = "LABEL", nullable = false)
 	@CheckForNull
 	private String label;
 
@@ -71,8 +66,7 @@ public class Otu
 	public Otu() {}
 
 	public Otu(final String label) {
-		checkNotNull(label);
-		this.label = label;
+		this.label = checkNotNull(label);
 	}
 
 	@Override
