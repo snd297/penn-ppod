@@ -31,6 +31,7 @@ import org.slf4j.LoggerFactory;
 
 import com.google.inject.Inject;
 
+import edu.upenn.cis.ppod.dao.IStandardRowDAO;
 import edu.upenn.cis.ppod.dto.IHasPPodId;
 import edu.upenn.cis.ppod.dto.PPodCellType;
 import edu.upenn.cis.ppod.dto.PPodStandardCell;
@@ -55,8 +56,9 @@ public final class CreateOrUpdateStandardMatrix extends CreateOrUpdateMatrix {
 
 	@Inject
 	CreateOrUpdateStandardMatrix(
-			final INewVersionInfo newVersionInfo) {
-		super(newVersionInfo);
+			final INewVersionInfo newVersionInfo,
+			final IStandardRowDAO rowDao) {
+		super(newVersionInfo, rowDao);
 		this.newVersionInfo = newVersionInfo;
 	}
 

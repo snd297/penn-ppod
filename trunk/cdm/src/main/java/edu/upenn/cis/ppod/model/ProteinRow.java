@@ -1,25 +1,22 @@
 package edu.upenn.cis.ppod.model;
 
 import static com.google.common.base.Preconditions.checkNotNull;
-import static com.google.common.collect.Lists.newArrayList;
 
-import java.util.List;
-
-import javax.persistence.CascadeType;
 import javax.persistence.Entity;
 import javax.persistence.FetchType;
 import javax.persistence.JoinColumn;
+import javax.persistence.Lob;
 import javax.persistence.ManyToOne;
-import javax.persistence.OneToMany;
-import javax.persistence.OrderColumn;
 import javax.persistence.Table;
 
 import edu.umd.cs.findbugs.annotations.CheckForNull;
+import edu.umd.cs.findbugs.annotations.Nullable;
+import edu.upenn.cis.ppod.imodel.IChild;
 import edu.upenn.cis.ppod.util.IVisitor;
 
 @Entity
 @Table(name = ProteinRow.TABLE)
-public class ProteinRow extends Row<ProteinCell, ProteinMatrix> {
+public class ProteinRow extends PPodEntity implements IChild<ProteinMatrix> {
 
 	public static final String TABLE = "PROTEIN_ROW";
 	public static final String JOIN_COLUMN =
@@ -30,10 +27,9 @@ public class ProteinRow extends Row<ProteinCell, ProteinMatrix> {
 	@CheckForNull
 	private ProteinMatrix parent;
 
-	@OneToMany(mappedBy = "parent", cascade = CascadeType.ALL,
-			orphanRemoval = true)
-	@OrderColumn(name = "POSITION")
-	final List<ProteinCell> cells = newArrayList();
+	@Lob
+	@CheckForNull
+	private String sequence;
 
 	public ProteinRow() {}
 
@@ -46,25 +42,13 @@ public class ProteinRow extends Row<ProteinCell, ProteinMatrix> {
 	}
 
 	/** {@inheritDoc} */
-	@Override
-	protected List<ProteinCell> getCellsModifiable() {
-		return cells;
-	}
-
-	/** {@inheritDoc} */
 	public ProteinMatrix getParent() {
 		return parent;
 	}
 
-	/**
-	 * {@inheritDoc}
-	 */
-	@Override
-	public void setCells(final List<? extends ProteinCell> cells) {
-		super.setCellsHelper(cells);
-		for (final ProteinCell cell : getCells()) {
-			cell.setParent(this);
-		}
+	@Nullable
+	public String getSequence() {
+		return this.sequence;
 	}
 
 	/** {@inheritDoc} */
@@ -72,12 +56,11 @@ public class ProteinRow extends Row<ProteinCell, ProteinMatrix> {
 		this.parent = parent;
 	}
 
-	public void addCell(final ProteinCell cell) {
-		checkNotNull(cell);
-		cells.add(cell);
-		cell.setPosition(getCellsModifiable().size() - 1);
-		cell.setParent(this);
-		setInNeedOfNewVersion();
+	public void setSequence(final String sequence) {
+		if (!sequence.equals(this.sequence)) {
+			this.sequence = sequence;
+			setInNeedOfNewVersion();
+		}
 	}
 
 }

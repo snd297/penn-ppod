@@ -1,28 +1,39 @@
 package edu.upenn.cis.ppod.model;
 
 import static com.google.common.base.Preconditions.checkNotNull;
+import static com.google.common.collect.Maps.newHashMap;
 
-import java.util.List;
+import java.util.Collections;
+import java.util.Map;
 
-import javax.persistence.Embedded;
+import javax.persistence.CascadeType;
 import javax.persistence.Entity;
+import javax.persistence.JoinColumn;
+import javax.persistence.JoinTable;
+import javax.persistence.MapKeyJoinColumn;
+import javax.persistence.OneToMany;
 import javax.persistence.Table;
 
-import com.google.common.annotations.Beta;
-
+import edu.upenn.cis.ppod.imodel.IDependsOnParentOtus;
+import edu.upenn.cis.ppod.imodel.IOtuKeyedMap;
 import edu.upenn.cis.ppod.util.IVisitor;
+import edu.upenn.cis.ppod.util.UPennCisPPodUtil;
 
 @Entity
 @Table(name = ProteinMatrix.TABLE)
 public class ProteinMatrix
-		extends Matrix<ProteinRow, ProteinCell> {
+		extends Matrix<ProteinRow>
+		implements IDependsOnParentOtus {
 
 	public final static String TABLE = "PROTEIN_MATRIX";
 
 	public final static String JOIN_COLUMN = TABLE + "_ID";
 
-	@Embedded
-	private final ProteinRows rows = new ProteinRows(this);
+	@OneToMany(cascade = CascadeType.ALL, orphanRemoval = true)
+	@JoinTable(name = TABLE + "_" + ProteinRow.TABLE,
+			inverseJoinColumns = @JoinColumn(name = StandardRow.JOIN_COLUMN))
+	@MapKeyJoinColumn(name = Otu.JOIN_COLUMN)
+	private final Map<Otu, ProteinRow> rows = newHashMap();
 
 	/**
 	 * No-arg constructor.
@@ -33,23 +44,43 @@ public class ProteinMatrix
 	public void accept(final IVisitor visitor) {
 		checkNotNull(visitor);
 		visitor.visitProteinMatrix(this);
+		for (final ProteinRow row : rows.values()) {
+			if (row != null) {
+				row.accept(visitor);
+			}
+		}
 		super.accept(visitor);
 	}
 
-	@Override
-	protected ProteinRows getOtuKeyedRows() {
-		return rows;
+	public void updateOtus() {
+		if (UPennCisPPodUtil.updateOtus(getParent(), rows)) {
+			setInNeedOfNewVersion();
+		}
 	}
 
-	/**
-	 * Remove the cells the make up the given column number.
-	 * 
-	 * @param columnNo the column to remove
-	 * 
-	 * @return the cells in the column
-	 */
-	@Beta
-	public List<DnaCell> removeColumn(final int columnNo) {
+	@Override
+	IOtuKeyedMap<ProteinRow> getOtuKeyedRows() {
 		throw new UnsupportedOperationException();
+	}
+
+	@Override
+	public Map<Otu, ProteinRow> getRows() {
+		return Collections.unmodifiableMap(rows);
+	}
+
+	@Override
+	public ProteinRow putRow(final Otu otu, final ProteinRow row) {
+		checkNotNull(otu);
+		checkNotNull(row);
+		final ProteinRow oldRow = rows.put(otu, row);
+		row.setParent(this);
+		if (row != oldRow || oldRow == null) {
+			setInNeedOfNewVersion();
+		}
+
+		if (row != oldRow && oldRow != null) {
+			oldRow.setParent(null);
+		}
+		return oldRow;
 	}
 }

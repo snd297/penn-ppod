@@ -23,7 +23,6 @@ import edu.upenn.cis.ppod.model.DnaSequence;
 import edu.upenn.cis.ppod.model.DnaSequenceSet;
 import edu.upenn.cis.ppod.model.Otu;
 import edu.upenn.cis.ppod.model.OtuSet;
-import edu.upenn.cis.ppod.model.ProteinCell;
 import edu.upenn.cis.ppod.model.ProteinMatrix;
 import edu.upenn.cis.ppod.model.ProteinRow;
 import edu.upenn.cis.ppod.model.StandardCell;
@@ -163,14 +162,6 @@ public final class Study2StudyInfo {
 							row.getVersionInfo().getVersion();
 					matrixInfo.getRowHeaderVersionsByIdx()
 							.put(rowIdx, rowVersion);
-
-					int cellIdx = -1;
-					for (final ProteinCell cell : row.getCells()) {
-						cellIdx++;
-						matrixInfo
-								.setCellPPodIdAndVersion(rowIdx, cellIdx,
-										cell.getVersionInfo().getVersion());
-					}
 				}
 			}
 

@@ -17,9 +17,19 @@ package edu.upenn.cis.ppod.util;
 
 import static com.google.common.base.Predicates.compose;
 import static com.google.common.base.Predicates.equalTo;
+import static com.google.common.collect.Iterables.contains;
+import static com.google.common.collect.Sets.newHashSet;
+
+import java.util.Map;
+import java.util.Set;
 
 import com.google.common.base.Function;
 import com.google.common.base.Predicate;
+
+import edu.umd.cs.findbugs.annotations.CheckForNull;
+import edu.upenn.cis.ppod.imodel.IChild;
+import edu.upenn.cis.ppod.model.Otu;
+import edu.upenn.cis.ppod.model.OtuSet;
 
 /**
  * Project wide utilities.
@@ -41,5 +51,44 @@ public class UPennCisPPodUtil {
 	public static <F, T> Predicate<F> composeEqualTo(T equalToTarget,
 			Function<F, ? extends T> f) {
 		return compose(equalTo(equalToTarget), f);
+	}
+
+	public static <R extends IChild<?>> boolean updateOtus(
+			@CheckForNull final OtuSet parent,
+			final Map<Otu, R> rows) {
+
+		boolean changed = false;
+
+		final Set<Otu> otusToBeRemoved = newHashSet();
+
+		for (final Otu otu : rows.keySet()) {
+			if (parent != null && contains(parent.getOtus(), otu)) {
+				// it stays
+			} else {
+				otusToBeRemoved.add(otu);
+				changed = true;
+			}
+		}
+
+		for (final Otu otuToBeRemoved : otusToBeRemoved) {
+			final R row = rows.get(otuToBeRemoved);
+			if (row != null) {
+				row.setParent(null);
+			}
+		}
+
+		rows.keySet().removeAll(otusToBeRemoved);
+
+		if (parent != null) {
+			for (final Otu otu : parent.getOtus()) {
+				if (rows.containsKey(otu)) {
+
+				} else {
+					rows.put(otu, null);
+					changed = true;
+				}
+			}
+		}
+		return changed;
 	}
 }

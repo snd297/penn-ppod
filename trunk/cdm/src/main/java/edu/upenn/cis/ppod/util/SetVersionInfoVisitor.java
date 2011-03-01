@@ -23,8 +23,10 @@ import edu.upenn.cis.ppod.model.DnaMatrix;
 import edu.upenn.cis.ppod.model.Otu;
 import edu.upenn.cis.ppod.model.OtuSet;
 import edu.upenn.cis.ppod.model.ProteinMatrix;
+import edu.upenn.cis.ppod.model.StandardCell;
 import edu.upenn.cis.ppod.model.StandardCharacter;
 import edu.upenn.cis.ppod.model.StandardMatrix;
+import edu.upenn.cis.ppod.model.StandardRow;
 import edu.upenn.cis.ppod.model.StandardState;
 import edu.upenn.cis.ppod.model.Study;
 import edu.upenn.cis.ppod.model.Tree;
@@ -87,6 +89,12 @@ public final class SetVersionInfoVisitor extends EmptyVisitor {
 	}
 
 	@Override
+	public void visitStandardCell(final StandardCell cell) {
+		// should be taken care of
+		// setNewVersionInfo(cell);
+	}
+
+	@Override
 	public void visitStandardCharacter(final StandardCharacter character) {
 		setNewVersionInfo(character);
 	}
@@ -94,6 +102,12 @@ public final class SetVersionInfoVisitor extends EmptyVisitor {
 	@Override
 	public void visitStandardMatrix(final StandardMatrix matrix) {
 		visitMatrix(matrix);
+	}
+
+	@Override
+	public void visitStandardRow(final StandardRow row) {
+		// should be taken care of
+		// setNewVersionInfo(row);
 	}
 
 	@Override

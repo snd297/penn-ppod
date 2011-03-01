@@ -231,8 +231,7 @@ public class OtuSetTest {
 
 		assertEquals(
 				standardMatrix
-						.getOtuKeyedRows()
-						.getValues()
+						.getRows()
 						.keySet(),
 				otusSet012);
 		assertNull(standardMatrix.getRows().get(otu0));

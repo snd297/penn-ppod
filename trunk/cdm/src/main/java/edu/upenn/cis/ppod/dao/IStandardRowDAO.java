@@ -17,6 +17,8 @@ package edu.upenn.cis.ppod.dao;
 
 import java.util.List;
 
+import com.google.inject.ImplementedBy;
+
 import edu.upenn.cis.ppod.model.StandardRow;
 import edu.upenn.cis.ppod.thirdparty.dao.IDAO;
 
@@ -25,6 +27,7 @@ import edu.upenn.cis.ppod.thirdparty.dao.IDAO;
  * 
  * @author Sam Donnelly
  */
+@ImplementedBy(StandardRowDAOHibernate.class)
 public interface IStandardRowDAO extends IDAO<StandardRow, Long> {
 
 	List<Object[]> getCellIdxsVersionsByRowIdAndMinVersion(
