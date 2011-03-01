@@ -17,6 +17,10 @@ package edu.upenn.cis.ppod.dao;
 
 import java.util.List;
 
+import org.hibernate.Session;
+
+import com.google.inject.Inject;
+
 import edu.upenn.cis.ppod.model.StandardRow;
 import edu.upenn.cis.ppod.thirdparty.dao.hibernate.GenericHibernateDAO;
 
@@ -26,6 +30,11 @@ import edu.upenn.cis.ppod.thirdparty.dao.hibernate.GenericHibernateDAO;
 class StandardRowDAOHibernate
 		extends GenericHibernateDAO<StandardRow, Long>
 		implements IStandardRowDAO {
+
+	@Inject
+	StandardRowDAOHibernate(final Session session) {
+		setSession(session);
+	}
 
 	@SuppressWarnings("unchecked")
 	public List<Object[]> getCellIdxsVersionsByRowIdAndMinVersion(

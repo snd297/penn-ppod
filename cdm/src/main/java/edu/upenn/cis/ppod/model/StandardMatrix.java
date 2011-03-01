@@ -19,6 +19,7 @@ import static com.google.common.base.Preconditions.checkArgument;
 import static com.google.common.base.Preconditions.checkNotNull;
 import static com.google.common.collect.Lists.newArrayList;
 import static com.google.common.collect.Lists.newArrayListWithCapacity;
+import static com.google.common.collect.Maps.newHashMap;
 import static edu.upenn.cis.ppod.util.CollectionsUtil.nullFillAndSet;
 
 import java.util.Collections;
@@ -28,21 +29,22 @@ import java.util.Map;
 import java.util.Map.Entry;
 
 import javax.persistence.CascadeType;
-import javax.persistence.Embedded;
 import javax.persistence.Entity;
 import javax.persistence.JoinColumn;
 import javax.persistence.JoinTable;
 import javax.persistence.ManyToMany;
+import javax.persistence.MapKeyJoinColumn;
 import javax.persistence.OneToMany;
 import javax.persistence.OrderColumn;
 import javax.persistence.Table;
 
-import com.google.common.annotations.Beta;
 import com.google.common.collect.BiMap;
 import com.google.common.collect.HashBiMap;
 
 import edu.upenn.cis.ppod.imodel.IHasColumnVersionInfos;
+import edu.upenn.cis.ppod.imodel.IOtuKeyedMap;
 import edu.upenn.cis.ppod.util.IVisitor;
+import edu.upenn.cis.ppod.util.UPennCisPPodUtil;
 
 /**
  * A standard matrix - aka a character matrix.
@@ -51,7 +53,7 @@ import edu.upenn.cis.ppod.util.IVisitor;
  */
 @Entity
 @Table(name = StandardMatrix.TABLE)
-public class StandardMatrix extends Matrix<StandardRow, StandardCell> implements
+public class StandardMatrix extends Matrix<StandardRow> implements
 		IHasColumnVersionInfos {
 
 	/** This entity's table name. */
@@ -76,8 +78,22 @@ public class StandardMatrix extends Matrix<StandardRow, StandardCell> implements
 	@OrderColumn(name = VersionInfo.TABLE + "_POSITION")
 	private final List<VersionInfo> columnVersionInfos = newArrayList();
 
-	@Embedded
-	private final StandardRows rows = new StandardRows(this);
+	/**
+	 * We want everything but SAVE_UPDATE (which ALL will give us) - once it's
+	 * evicted out of the persistence context, we don't want it back in via
+	 * cascading UPDATE. So that we can run leaner for large matrices.
+	 */
+	@OneToMany(cascade = {
+			CascadeType.PERSIST,
+			CascadeType.MERGE,
+			CascadeType.REMOVE,
+			CascadeType.DETACH,
+			CascadeType.REFRESH },
+			orphanRemoval = true)
+	@JoinTable(name = TABLE + "_" + StandardRow.TABLE,
+			inverseJoinColumns = @JoinColumn(name = StandardRow.JOIN_COLUMN))
+	@MapKeyJoinColumn(name = Otu.JOIN_COLUMN)
+	private final Map<Otu, StandardRow> rows = newHashMap();
 
 	/** No-arg constructor. */
 	public StandardMatrix() {}
@@ -89,6 +105,11 @@ public class StandardMatrix extends Matrix<StandardRow, StandardCell> implements
 		for (final StandardCharacter character : getCharacters()) {
 			character.accept(visitor);
 		}
+		for (final StandardRow row : rows.values()) {
+			if (row != null) {
+				row.accept(visitor);
+			}
+		}
 		super.accept(visitor);
 	}
 
@@ -97,18 +118,20 @@ public class StandardMatrix extends Matrix<StandardRow, StandardCell> implements
 			final int columnNo,
 			final StandardCharacter character,
 			final List<? extends StandardCell> cells) {
-		checkNotNull(character);
-		checkNotNull(cells);
-		checkArgument(columnNo <= getColumnsSize(),
-				"columnNo " + columnNo + " too big for matrix column size "
-						+ getColumnsSize());
-		checkArgument(columnNo >= 0, "columnNo is negative: " + columnNo);
-		checkArgument(cells.size() == rows.getValues().size());
-
-		final List<StandardCharacter> thisCharacters = newArrayList(getCharacters());
-		thisCharacters.add(columnNo, character);
-		setCharacters(thisCharacters);
-		addColumn(columnNo, cells);
+		throw new UnsupportedOperationException();
+		// checkNotNull(character);
+		// checkNotNull(cells);
+		// checkArgument(columnNo <= getColumnsSize(),
+		// "columnNo " + columnNo + " too big for matrix column size "
+		// + getColumnsSize());
+		// checkArgument(columnNo >= 0, "columnNo is negative: " + columnNo);
+		// checkArgument(cells.size() == rows.getValues().size());
+		//
+		// final List<StandardCharacter> thisCharacters =
+		// newArrayList(getCharacters());
+		// thisCharacters.add(columnNo, character);
+		// setCharacters(thisCharacters);
+		// addColumn(columnNo, cells);
 	}
 
 	private List<VersionInfo> determineNewColumnHeaderPPodVersionInfos(
@@ -210,36 +233,36 @@ public class StandardMatrix extends Matrix<StandardRow, StandardCell> implements
 		return columnVersionInfos;
 	}
 
-	/**
-	 * Get the otusToRows.
-	 * 
-	 * @return the otusToRows
-	 */
 	@Override
-	protected StandardRows getOtuKeyedRows() {
-		return rows;
+	IOtuKeyedMap<StandardRow> getOtuKeyedRows() {
+		throw new UnsupportedOperationException();
 	}
 
-	/**
-	 * Remove the cells the make up the given column number.
-	 * 
-	 * @param columnNo the column to remove
-	 * 
-	 * @return the cells in the column
-	 */
-	@Beta
-	public List<StandardCell> removeColumn(final int columnNo) {
-		final List<StandardCharacter> characters = newArrayList(getCharacters());
-		characters.remove(columnNo);
-		setCharacters(characters);
-		return super.removeColumnHelper(columnNo);
+	@Override
+	public Map<Otu, StandardRow> getRows() {
+		return Collections.unmodifiableMap(rows);
+	}
+
+	@Override
+	public StandardRow putRow(final Otu otu, final StandardRow row) {
+		checkNotNull(otu);
+		checkNotNull(row);
+		final StandardRow oldRow = rows.put(otu, row);
+		row.setParent(this);
+		if (row != oldRow || oldRow == null) {
+			setInNeedOfNewVersion();
+		}
+		if (row != oldRow && oldRow != null) {
+			oldRow.setParent(null);
+		}
+		return oldRow;
 	}
 
 	/**
 	 * Set the characters.
 	 * <p>
-	 * This method is does not reorder the columns of the matrix because that is
-	 * a potentially expensive operation - it could load the entire matrix into
+	 * This method does not reorder the columns of the matrix because that is a
+	 * potentially expensive operation - it could load the entire matrix into
 	 * the persistence context.
 	 * <p>
 	 * This method does reorder {@link #getColumnVersionInfos()}.
@@ -356,4 +379,11 @@ public class StandardMatrix extends Matrix<StandardRow, StandardCell> implements
 		columnVersionInfos.set(position, null);
 	}
 
+	/** {@inheritDoc} */
+	@Override
+	public void updateOtus() {
+		if (UPennCisPPodUtil.updateOtus(getParent(), rows)) {
+			setInNeedOfNewVersion();
+		}
+	}
 }

@@ -23,23 +23,24 @@ public final class PPodSequenceTokenizer {
 
 	private int pos = 0;
 
-	// private int tokenCount = -1;
+	private int tokenCount = -1;
 
 	public PPodSequenceTokenizer(final String sequence) {
 		checkNotNull(sequence);
 		this.sequence = sequence;
 	}
 
-	// public int countTokens() {
-	// if (tokenCount == -1) {
-	// tokenCount = 0;
-	// while (hasMoreTokens()) {
-	// tokenCount++;
-	// }
-	// pos = 0;
-	// }
-	// return tokenCount;
-	// }
+	public int countTokens() {
+		if (tokenCount == -1) {
+			tokenCount = 0;
+			while (hasMoreTokens()) {
+				tokenCount++;
+				nextToken();
+			}
+			pos = 0;
+		}
+		return tokenCount;
+	}
 
 	public boolean hasMoreTokens() {
 		if (pos < sequence.length()) {

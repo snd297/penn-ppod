@@ -25,7 +25,6 @@ import static com.google.common.collect.Sets.newHashSet;
 import java.util.Map;
 import java.util.Set;
 
-import javax.annotation.CheckForNull;
 import javax.annotation.Nullable;
 
 import edu.upenn.cis.ppod.imodel.IChild;
@@ -94,7 +93,7 @@ class OtuKeyedMapPlus<V extends IChild<P>, P extends IChild<OtuSet>>
 		return values;
 	}
 
-	@CheckForNull
+	@Nullable
 	public V put(final Otu key, final V value) {
 		checkNotNull(key);
 		checkNotNull(value);

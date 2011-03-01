@@ -186,7 +186,7 @@ abstract class Cell<E, R extends Row<?, ?>>
 		final R row = getParent();
 		if (row != null) {
 			row.setInNeedOfNewVersion();
-			final Matrix<?, ?> matrix = row.getParent();
+			final Matrix<?> matrix = row.getParent();
 			if (matrix != null) {
 				if (getPosition() == null) {
 					throw new AssertionError(

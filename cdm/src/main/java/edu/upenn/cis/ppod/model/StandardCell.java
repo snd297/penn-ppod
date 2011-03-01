@@ -62,7 +62,7 @@ public class StandardCell extends Cell<StandardState, StandardRow> {
 	@ManyToOne(fetch = FetchType.LAZY)
 	@JoinColumn(name = StandardState.JOIN_COLUMN)
 	@Nullable
-	private StandardState element;
+	private StandardState state;
 
 	/**
 	 * The heart of the cell: the states.
@@ -74,7 +74,7 @@ public class StandardCell extends Cell<StandardState, StandardRow> {
 	@JoinTable(inverseJoinColumns = @JoinColumn(
 			name = StandardState.JOIN_COLUMN))
 	@Nullable
-	private Set<StandardState> elements;
+	private Set<StandardState> states;
 
 	/**
 	 * The {@code CharacterStateRow} to which this {@code CharacterStateCell}
@@ -123,12 +123,12 @@ public class StandardCell extends Cell<StandardState, StandardRow> {
 
 	@Override
 	protected StandardState getElement() {
-		return element;
+		return state;
 	}
 
 	@Override
 	Set<StandardState> getElementsModifiable() {
-		return elements;
+		return states;
 	}
 
 	/**
@@ -163,13 +163,13 @@ public class StandardCell extends Cell<StandardState, StandardRow> {
 	@Override
 	protected void setElement(
 				final StandardState element) {
-		this.element = element;
+		this.state = element;
 	}
 
 	@Override
 	void setElements(
 			@Nullable final Set<StandardState> elements) {
-		this.elements = elements;
+		this.states = elements;
 	}
 
 	/** {@inheritDoc} */

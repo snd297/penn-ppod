@@ -25,6 +25,7 @@ import java.util.List;
 import org.testng.annotations.Test;
 
 import edu.upenn.cis.ppod.TestGroupDefs;
+import edu.upenn.cis.ppod.dao.IStandardRowDAO;
 import edu.upenn.cis.ppod.dto.PPodOtu;
 import edu.upenn.cis.ppod.dto.PPodOtuSet;
 import edu.upenn.cis.ppod.dto.PPodStandardCell;
@@ -58,7 +59,8 @@ public class CreateOrUpdateStandardMatrixTest {
 		when(newVersionInfo.getNewVersionInfo()).thenReturn(versionInfo);
 
 		final CreateOrUpdateStandardMatrix createOrUpdateStandardMatrix =
-				new CreateOrUpdateStandardMatrix(newVersionInfo);
+				new CreateOrUpdateStandardMatrix(newVersionInfo,
+						mock(IStandardRowDAO.class));
 
 		final PPodStandardMatrix sourceMatrix = getOnlyElement(sourceOtuSet
 				.getStandardMatrices());
@@ -87,7 +89,8 @@ public class CreateOrUpdateStandardMatrixTest {
 		when(newVersionInfo.getNewVersionInfo()).thenReturn(versionInfo);
 
 		final CreateOrUpdateStandardMatrix createOrUpdateStandardMatrix =
-				new CreateOrUpdateStandardMatrix(newVersionInfo);
+				new CreateOrUpdateStandardMatrix(newVersionInfo,
+						mock(IStandardRowDAO.class));
 
 		final OtuSet targetOtuSet = new OtuSet();
 		final StandardMatrix targetMatrix = new StandardMatrix();
@@ -138,7 +141,8 @@ public class CreateOrUpdateStandardMatrixTest {
 		when(newVersionInfo.getNewVersionInfo()).thenReturn(versionInfo);
 
 		final CreateOrUpdateStandardMatrix createOrUpdateStandardMatrix =
-				new CreateOrUpdateStandardMatrix(newVersionInfo);
+				new CreateOrUpdateStandardMatrix(newVersionInfo,
+						mock(IStandardRowDAO.class));
 
 		final OtuSet targetOtuSet = new OtuSet();
 		final StandardMatrix targetMatrix = new StandardMatrix();
@@ -201,7 +205,8 @@ public class CreateOrUpdateStandardMatrixTest {
 		when(newVersionInfo.getNewVersionInfo()).thenReturn(versionInfo);
 
 		final CreateOrUpdateStandardMatrix createOrUpdateStandardMatrix =
-				new CreateOrUpdateStandardMatrix(newVersionInfo);
+				new CreateOrUpdateStandardMatrix(newVersionInfo,
+						mock(IStandardRowDAO.class));
 
 		final OtuSet targetOtuSet = new OtuSet();
 		final StandardMatrix targetMatrix = new StandardMatrix();

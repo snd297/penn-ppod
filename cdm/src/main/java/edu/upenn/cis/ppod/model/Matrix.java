@@ -16,12 +16,9 @@
 package edu.upenn.cis.ppod.model;
 
 import static com.google.common.base.Objects.equal;
-import static com.google.common.base.Preconditions.checkArgument;
 import static com.google.common.base.Preconditions.checkNotNull;
-import static com.google.common.collect.Lists.newArrayList;
 
 import java.util.Collections;
-import java.util.List;
 import java.util.Map;
 
 import javax.persistence.Column;
@@ -32,9 +29,9 @@ import javax.persistence.MappedSuperclass;
 
 import edu.umd.cs.findbugs.annotations.CheckForNull;
 import edu.umd.cs.findbugs.annotations.Nullable;
+import edu.upenn.cis.ppod.imodel.IChild;
 import edu.upenn.cis.ppod.imodel.IDependsOnParentOtus;
 import edu.upenn.cis.ppod.imodel.IOtuKeyedMap;
-import edu.upenn.cis.ppod.util.IVisitor;
 
 /**
  * A matrix is a set of OTU-keyed rows with column header pPOD versions which
@@ -43,7 +40,7 @@ import edu.upenn.cis.ppod.util.IVisitor;
  * @author Sam Donnelly
  */
 @MappedSuperclass
-abstract class Matrix<R extends Row<C, ?>, C extends Cell<?, ?>>
+public abstract class Matrix<R extends IChild<?>>
 		extends UuPPodEntity
 		implements IDependsOnParentOtus {
 
@@ -74,28 +71,6 @@ abstract class Matrix<R extends Row<C, ?>, C extends Cell<?, ?>>
 
 	/** Default constructor. */
 	Matrix() {}
-
-	@Override
-	public void accept(final IVisitor visitor) {
-		checkNotNull(visitor);
-		getOtuKeyedRows().accept(visitor);
-		super.accept(visitor);
-	}
-
-	/** {@inheritDoc} */
-	protected void addColumn(
-			final int columnNo,
-			final List<? extends C> column) {
-		checkArgument(columnNo >= 0, "columnNo < 0");
-		checkNotNull(column);
-		int rowPos = -1;
-		for (final R row : getRows().values()) {
-			rowPos++;
-			final List<C> cells = newArrayList(row.getCells());
-			cells.add(columnNo, column.get(rowPos));
-			row.setCells(cells);
-		}
-	}
 
 	/**
 	 * Getter.
@@ -181,28 +156,6 @@ abstract class Matrix<R extends Row<C, ?>, C extends Cell<?, ?>>
 		checkNotNull(otu);
 		checkNotNull(row);
 		return getOtuKeyedRows().put(otu, row);
-	}
-
-	/**
-	 * Removes the cells in the column.
-	 * 
-	 * @param columnNo which column to remove
-	 * 
-	 * @return the removed cells
-	 */
-	protected List<C> removeColumnHelper(final int columnNo) {
-		checkArgument(
-				columnNo >= 0,
-				"columnNo < 0");
-
-		final List<C> removedColumn = newArrayList();
-		for (final R row : getRows().values()) {
-			final List<C> cells = newArrayList(row.getCells());
-			final C removedCell = cells.remove(columnNo);
-			row.setCells(cells);
-			removedColumn.add(removedCell);
-		}
-		return removedColumn;
 	}
 
 	/**

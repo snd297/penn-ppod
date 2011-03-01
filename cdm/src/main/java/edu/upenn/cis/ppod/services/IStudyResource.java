@@ -27,8 +27,6 @@ import javax.ws.rs.Produces;
 
 import org.jboss.resteasy.annotations.GZIP;
 
-import com.google.inject.ImplementedBy;
-
 import edu.upenn.cis.ppod.dto.PPodLabelAndId;
 import edu.upenn.cis.ppod.dto.PPodStudy;
 import edu.upenn.cis.ppod.dto.StudyInfo;

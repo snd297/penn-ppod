@@ -10,7 +10,6 @@ import java.util.List;
 import com.google.inject.Inject;
 
 import edu.upenn.cis.ppod.dao.IDnaRowDAO;
-import edu.upenn.cis.ppod.dao.IProteinRowDAO;
 import edu.upenn.cis.ppod.dto.PPodCellType;
 import edu.upenn.cis.ppod.dto.PPodDnaMatrix;
 import edu.upenn.cis.ppod.dto.PPodDnaNucleotide;
@@ -19,7 +18,6 @@ import edu.upenn.cis.ppod.dto.PPodDnaSequence;
 import edu.upenn.cis.ppod.dto.PPodDnaSequenceSet;
 import edu.upenn.cis.ppod.dto.PPodOtu;
 import edu.upenn.cis.ppod.dto.PPodOtuSet;
-import edu.upenn.cis.ppod.dto.PPodProtein;
 import edu.upenn.cis.ppod.dto.PPodProteinMatrix;
 import edu.upenn.cis.ppod.dto.PPodProteinRow;
 import edu.upenn.cis.ppod.dto.PPodStandardCell;
@@ -37,7 +35,6 @@ import edu.upenn.cis.ppod.model.DnaSequence;
 import edu.upenn.cis.ppod.model.DnaSequenceSet;
 import edu.upenn.cis.ppod.model.Otu;
 import edu.upenn.cis.ppod.model.OtuSet;
-import edu.upenn.cis.ppod.model.ProteinCell;
 import edu.upenn.cis.ppod.model.ProteinMatrix;
 import edu.upenn.cis.ppod.model.ProteinRow;
 import edu.upenn.cis.ppod.model.StandardCell;
@@ -102,59 +99,11 @@ public final class DbStudy2DocStudy {
 		}
 	}
 
-	public static void dbProteinCell2Sequence(final ProteinCell proteinCell,
-			final StringBuilder sequence) {
-		checkNotNull(proteinCell);
-		checkNotNull(sequence);
-
-		switch (proteinCell.getType()) {
-			case UNASSIGNED:
-				sequence.append('?');
-				break;
-			case INAPPLICABLE:
-				sequence.append('-');
-				break;
-			case SINGLE:
-				break;
-			case POLYMORPHIC:
-				sequence.append('(');
-				break;
-			case UNCERTAIN:
-				sequence.append('{');
-				break;
-			default:
-				throw new AssertionError();
-		}
-
-		for (final PPodProtein protein : proteinCell.getElements()) {
-			sequence.append(protein.toString());
-		}
-
-		switch (proteinCell.getType()) {
-			case UNASSIGNED:
-			case INAPPLICABLE:
-			case SINGLE:
-				break;
-			case POLYMORPHIC:
-				sequence.append(')');
-				break;
-			case UNCERTAIN:
-				sequence.append('}');
-				break;
-			default:
-				throw new AssertionError();
-		}
-	}
-
 	private final IDnaRowDAO dnaRowDao;
 
-	private final IProteinRowDAO proteinRowDao;
-
 	@Inject
-	DbStudy2DocStudy(final IDnaRowDAO dnaRowDao,
-			final IProteinRowDAO proteinRowDao) {
+	DbStudy2DocStudy(final IDnaRowDAO dnaRowDao) {
 		this.dnaRowDao = dnaRowDao;
-		this.proteinRowDao = proteinRowDao;
 	}
 
 	public PPodDnaMatrix dbDnaMatrix2DocDnaMatrix(
@@ -272,16 +221,11 @@ public final class DbStudy2DocStudy {
 
 		for (final Otu dbOtu : dbMatrix.getParent().getOtus()) {
 			final ProteinRow dbRow = dbMatrix.getRows().get(dbOtu);
-			final StringBuilder docSeq = new StringBuilder();
-			for (final ProteinCell dbCell : dbRow.getCells()) {
-				dbProteinCell2Sequence(dbCell, docSeq);
-			}
 			final PPodProteinRow docRow =
 					new PPodProteinRow(
 							dbRow.getVersionInfo().getVersion(),
-							docSeq.toString());
+							dbRow.getSequence());
 			docMatrix.getRows().add(docRow);
-			proteinRowDao.evict(dbRow);
 		}
 		return docMatrix;
 	}
