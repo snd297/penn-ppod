@@ -32,6 +32,7 @@ import com.google.inject.Inject;
 import edu.upenn.cis.ppod.dto.IHasPPodId;
 import edu.upenn.cis.ppod.dto.PPodEntities;
 import edu.upenn.cis.ppod.dto.PPodOtuSet;
+import edu.upenn.cis.ppod.dto.PPodStandardMatrix;
 import edu.upenn.cis.ppod.model.Otu;
 import edu.upenn.cis.ppod.model.OtuSet;
 import edu.upenn.cis.ppod.model.StandardMatrix;
@@ -108,10 +109,20 @@ class PPodEntitiesResourceHibernate implements
 						docOtuSet.setLabel(docOtuSet.getLabel() + "/"
 								+ matrix.getParent().getParent().getLabel());
 					}
-					docOtuSet
-							.getStandardMatrices()
-							.add(dbStudy2DocStudy
-									.dbStandardMatrix2DocStandardMatrix(matrix));
+
+					// Let's not add in the same matrix twice
+					if (find(docOtuSet.getStandardMatrices(),
+							compose(equalTo(matrix.getPPodId()),
+									IHasPPodId.getPPodId), null) == null) {
+						final PPodStandardMatrix docMatrix = dbStudy2DocStudy
+								.dbStandardMatrix2DocStandardMatrix(matrix);
+						docMatrix.setLabel(docMatrix.getLabel() + "/"
+								+ matrix.getParent().getParent().getLabel());
+						docOtuSet
+								.getStandardMatrices()
+								.add(docMatrix);
+
+					}
 
 				} else if (queryResult instanceof TreeSet) {
 					// final TreeSet treeSet = (TreeSet) queryResult;

@@ -18,7 +18,6 @@ package edu.upenn.cis.ppod.util;
 import edu.upenn.cis.ppod.model.Attachment;
 import edu.upenn.cis.ppod.model.AttachmentNamespace;
 import edu.upenn.cis.ppod.model.AttachmentType;
-import edu.upenn.cis.ppod.model.DnaCell;
 import edu.upenn.cis.ppod.model.DnaMatrix;
 import edu.upenn.cis.ppod.model.DnaRow;
 import edu.upenn.cis.ppod.model.DnaSequence;
@@ -66,13 +65,6 @@ public interface IVisitor {
 	 * @param the attachmentType to be visited
 	 */
 	void visitAttachmentType(AttachmentType attachmentType);
-
-	/**
-	 * Visit a DNA cell
-	 * 
-	 * @param cell to be visited
-	 */
-	void visitDnaCell(DnaCell cell);
 
 	/**
 	 * Visit a DNA matrix.

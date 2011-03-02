@@ -7,12 +7,7 @@ import static com.google.common.collect.Sets.newHashSet;
 
 import java.util.List;
 
-import com.google.inject.Inject;
-
-import edu.upenn.cis.ppod.dao.IDnaRowDAO;
-import edu.upenn.cis.ppod.dto.PPodCellType;
 import edu.upenn.cis.ppod.dto.PPodDnaMatrix;
-import edu.upenn.cis.ppod.dto.PPodDnaNucleotide;
 import edu.upenn.cis.ppod.dto.PPodDnaRow;
 import edu.upenn.cis.ppod.dto.PPodDnaSequence;
 import edu.upenn.cis.ppod.dto.PPodDnaSequenceSet;
@@ -28,7 +23,6 @@ import edu.upenn.cis.ppod.dto.PPodStandardState;
 import edu.upenn.cis.ppod.dto.PPodStudy;
 import edu.upenn.cis.ppod.dto.PPodTree;
 import edu.upenn.cis.ppod.dto.PPodTreeSet;
-import edu.upenn.cis.ppod.model.DnaCell;
 import edu.upenn.cis.ppod.model.DnaMatrix;
 import edu.upenn.cis.ppod.model.DnaRow;
 import edu.upenn.cis.ppod.model.DnaSequence;
@@ -49,63 +43,6 @@ import edu.upenn.cis.ppod.model.VersionInfo;
 
 public final class DbStudy2DocStudy {
 
-	public static void dbDnaCell2Sequence(final DnaCell dnaCell,
-			final StringBuilder sequence) {
-		checkNotNull(dnaCell);
-		checkNotNull(sequence);
-
-		switch (dnaCell.getType()) {
-			case UNASSIGNED:
-				sequence.append('?');
-				break;
-			case INAPPLICABLE:
-				sequence.append('-');
-				break;
-			case SINGLE:
-				break;
-			case POLYMORPHIC:
-				sequence.append('(');
-				break;
-			case UNCERTAIN:
-				sequence.append('{');
-				break;
-			default:
-				throw new AssertionError();
-		}
-
-		for (final PPodDnaNucleotide nucleotide : dnaCell.getElements()) {
-			char nucleotideChar = nucleotide.toString().charAt(0);
-			if ((dnaCell.getType() == PPodCellType.POLYMORPHIC
-					|| dnaCell.getType() == PPodCellType.SINGLE)
-					&& dnaCell.getLowerCase()) {
-				nucleotideChar = Character.toLowerCase(nucleotideChar);
-			}
-			sequence.append(nucleotideChar);
-		}
-
-		switch (dnaCell.getType()) {
-			case UNASSIGNED:
-			case INAPPLICABLE:
-			case SINGLE:
-				break;
-			case POLYMORPHIC:
-				sequence.append(')');
-				break;
-			case UNCERTAIN:
-				sequence.append('}');
-				break;
-			default:
-				throw new AssertionError();
-		}
-	}
-
-	private final IDnaRowDAO dnaRowDao;
-
-	@Inject
-	DbStudy2DocStudy(final IDnaRowDAO dnaRowDao) {
-		this.dnaRowDao = dnaRowDao;
-	}
-
 	public PPodDnaMatrix dbDnaMatrix2DocDnaMatrix(
 			final DnaMatrix dbMatrix) {
 		checkNotNull(dbMatrix);
@@ -117,18 +54,12 @@ public final class DbStudy2DocStudy {
 
 		for (final Otu dbOtu : dbMatrix.getParent().getOtus()) {
 			final DnaRow dbRow = dbMatrix.getRows().get(dbOtu);
-			final StringBuilder docSeq = new StringBuilder();
 			final List<Long> cellVersions = newArrayList();
-			for (final DnaCell dbCell : dbRow.getCells()) {
-				dbDnaCell2Sequence(dbCell, docSeq);
-				cellVersions.add(dbCell.getVersionInfo().getVersion());
-			}
 			final PPodDnaRow docRow = new PPodDnaRow(
 					dbRow.getVersionInfo().getVersion(),
-					docSeq.toString());
+					dbRow.getSequence());
 			docMatrix.getRows().add(docRow);
 			docRow.setCellVersions(cellVersions);
-			dnaRowDao.evict(dbRow);
 		}
 		return docMatrix;
 	}

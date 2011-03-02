@@ -156,7 +156,7 @@ public class Attachment extends UuPPodEntity {
 	public static final String TYPE_COLUMN = "TYPE";
 
 	/** Object to which this attachment is attached. */
-	@Nullable
+	@CheckForNull
 	@ManyToOne(fetch = FetchType.LAZY, optional = false)
 	@JoinColumn(name = PPodEntity.JOIN_COLUMN)
 	private PPodEntity attachee;

@@ -16,12 +16,21 @@
 package edu.upenn.cis.ppod.model;
 
 import static com.google.common.base.Preconditions.checkNotNull;
+import static com.google.common.collect.Maps.newHashMap;
 
-import javax.persistence.Embedded;
+import java.util.Collections;
+import java.util.Map;
+
+import javax.persistence.CascadeType;
 import javax.persistence.Entity;
+import javax.persistence.JoinColumn;
+import javax.persistence.JoinTable;
+import javax.persistence.MapKeyJoinColumn;
+import javax.persistence.OneToMany;
 import javax.persistence.Table;
 
 import edu.upenn.cis.ppod.util.IVisitor;
+import edu.upenn.cis.ppod.util.UPennCisPPodUtil;
 
 /**
  * A {@link MolecularMatrix} composed of {@link DNARow}s.
@@ -36,8 +45,11 @@ public class DnaMatrix extends Matrix<DnaRow> {
 
 	public final static String JOIN_COLUMN = TABLE + "_ID";
 
-	@Embedded
-	private DnaRows rows = new DnaRows(this);
+	@OneToMany(cascade = CascadeType.ALL, orphanRemoval = true)
+	@JoinTable(name = TABLE + "_" + DnaRow.TABLE,
+			inverseJoinColumns = @JoinColumn(name = DnaRow.JOIN_COLUMN))
+	@MapKeyJoinColumn(name = Otu.JOIN_COLUMN)
+	private final Map<Otu, DnaRow> rows = newHashMap();
 
 	/**
 	 * No-arg constructor.
@@ -48,13 +60,37 @@ public class DnaMatrix extends Matrix<DnaRow> {
 	public void accept(final IVisitor visitor) {
 		checkNotNull(visitor);
 		visitor.visitDnaMatrix(this);
-		rows.accept(visitor);
+		for (final DnaRow row : rows.values()) {
+			if (row != null) {
+				row.accept(visitor);
+			}
+		}
 		super.accept(visitor);
 	}
 
 	@Override
-	protected DnaRows getOtuKeyedRows() {
-		return rows;
+	public Map<Otu, DnaRow> getRows() {
+		return Collections.unmodifiableMap(rows);
 	}
 
+	@Override
+	public DnaRow putRow(final Otu otu, final DnaRow row) {
+		checkNotNull(otu);
+		checkNotNull(row);
+		final DnaRow oldRow = rows.put(otu, row);
+		row.setParent(this);
+		if (row != oldRow || oldRow == null) {
+			setInNeedOfNewVersion();
+		}
+
+		if (row != oldRow && oldRow != null) {
+			oldRow.setParent(null);
+		}
+		return oldRow;
+	}
+
+	@Override
+	public void updateOtus() {
+		UPennCisPPodUtil.updateOtus(getParent(), rows, this);
+	}
 }

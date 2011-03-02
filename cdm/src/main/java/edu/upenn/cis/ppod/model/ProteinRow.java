@@ -1,7 +1,6 @@
 package edu.upenn.cis.ppod.model;
 
-import static com.google.common.base.Preconditions.checkNotNull;
-
+import javax.persistence.Column;
 import javax.persistence.Entity;
 import javax.persistence.FetchType;
 import javax.persistence.JoinColumn;
@@ -28,6 +27,7 @@ public class ProteinRow extends PPodEntity implements IChild<ProteinMatrix> {
 	private ProteinMatrix parent;
 
 	@Lob
+	@Column(nullable = false)
 	@CheckForNull
 	private String sequence;
 
@@ -36,7 +36,6 @@ public class ProteinRow extends PPodEntity implements IChild<ProteinMatrix> {
 	/** {@inheritDoc} */
 	@Override
 	public void accept(final IVisitor visitor) {
-		checkNotNull(visitor);
 		visitor.visitProteinRow(this);
 		super.accept(visitor);
 	}
@@ -51,6 +50,14 @@ public class ProteinRow extends PPodEntity implements IChild<ProteinMatrix> {
 		return this.sequence;
 	}
 
+	@Override
+	public void setInNeedOfNewVersion() {
+		super.setInNeedOfNewVersion();
+		if (parent != null) {
+			parent.setInNeedOfNewVersion();
+		}
+	}
+
 	/** {@inheritDoc} */
 	public void setParent(final ProteinMatrix parent) {
 		this.parent = parent;
@@ -62,5 +69,4 @@ public class ProteinRow extends PPodEntity implements IChild<ProteinMatrix> {
 			setInNeedOfNewVersion();
 		}
 	}
-
 }
