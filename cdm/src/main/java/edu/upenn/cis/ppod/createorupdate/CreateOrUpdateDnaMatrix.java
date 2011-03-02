@@ -58,13 +58,6 @@ public class CreateOrUpdateDnaMatrix {
 
 			dnaRowDAO.makePersistent(dbRow);
 
-			// We used to need to do this here since we're removing the row from
-			// the persistence context (with evict)
-			if (dbRow.isInNeedOfNewVersion()) {
-				dbRow.setVersionInfo(
-						newVersionInfo.getNewVersionInfo());
-			}
-
 			logger.debug(
 					"{}: finishing row number {}",
 					METHOD,
