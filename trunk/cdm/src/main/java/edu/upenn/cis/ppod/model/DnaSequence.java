@@ -64,6 +64,7 @@ public class DnaSequence extends Sequence<DnaSequenceSet> {
 						joinColumns = @JoinColumn(name = JOIN_COLUMN))
 	@Column(name = "ELEMENT")
 	@Enumerated(EnumType.ORDINAL)
+	@SuppressWarnings("unused")
 	private final List<Double> phredPhrapScores = newArrayList();
 
 	/**

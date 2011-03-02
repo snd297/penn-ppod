@@ -58,13 +58,6 @@ public class CreateOrUpdateProteinMatrix {
 
 			proteinRowDao.makePersistent(dbRow);
 
-			// We need to do this here since we're removing the row from
-			// the persistence context (with evict)
-			if (dbRow.isInNeedOfNewVersion()) {
-				dbRow.setVersionInfo(
-						newVersionInfo.getNewVersionInfo());
-			}
-
 			logger.debug(
 					"{}: finished row number {}",
 					METHOD,

@@ -20,9 +20,13 @@ import edu.upenn.cis.ppod.imodel.INewVersionInfo;
 import edu.upenn.cis.ppod.imodel.IVersioned;
 import edu.upenn.cis.ppod.model.Attachment;
 import edu.upenn.cis.ppod.model.DnaMatrix;
+import edu.upenn.cis.ppod.model.DnaRow;
+import edu.upenn.cis.ppod.model.DnaSequence;
+import edu.upenn.cis.ppod.model.DnaSequenceSet;
 import edu.upenn.cis.ppod.model.Otu;
 import edu.upenn.cis.ppod.model.OtuSet;
 import edu.upenn.cis.ppod.model.ProteinMatrix;
+import edu.upenn.cis.ppod.model.ProteinRow;
 import edu.upenn.cis.ppod.model.StandardCell;
 import edu.upenn.cis.ppod.model.StandardCharacter;
 import edu.upenn.cis.ppod.model.StandardMatrix;
@@ -63,6 +67,21 @@ public final class SetVersionInfoVisitor extends EmptyVisitor {
 		setNewVersionInfo(matrix);
 	}
 
+	@Override
+	public void visitDnaRow(final DnaRow row) {
+		setNewVersionInfo(row);
+	}
+
+	@Override
+	public void visitDnaSequence(final DnaSequence sequence) {
+		setNewVersionInfo(sequence);
+	}
+
+	@Override
+	public void visitDnaSequenceSet(final DnaSequenceSet sequenceSet) {
+		setNewVersionInfo(sequenceSet);
+	}
+
 	private void visitMatrix(final IHasColumnVersionInfos matrix) {
 		setNewVersionInfo(matrix);
 		for (int pos = 0; pos < matrix.getColumnVersionInfos().size(); pos++) {
@@ -86,6 +105,11 @@ public final class SetVersionInfoVisitor extends EmptyVisitor {
 	@Override
 	public void visitProteinMatrix(final ProteinMatrix matrix) {
 		setNewVersionInfo(matrix);
+	}
+
+	@Override
+	public void visitProteinRow(final ProteinRow row) {
+		setNewVersionInfo(row);
 	}
 
 	@Override
