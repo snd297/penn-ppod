@@ -31,9 +31,7 @@
 		<mapping class="edu.upenn.cis.ppod.model.StandardCell" />
 
 		<mapping class="edu.upenn.cis.ppod.model.DnaMatrix" />
-		<mapping class="edu.upenn.cis.ppod.model.DnaRows" />
 		<mapping class="edu.upenn.cis.ppod.model.DnaRow" />
-		<mapping class="edu.upenn.cis.ppod.model.DnaCell" />
 
 		<mapping class="edu.upenn.cis.ppod.model.ProteinMatrix" />
 		<mapping class="edu.upenn.cis.ppod.model.ProteinRow" />
@@ -43,7 +41,6 @@
 		<mapping class="edu.upenn.cis.ppod.model.AttachmentType" />
 
 		<mapping class="edu.upenn.cis.ppod.model.DnaSequenceSet" />
-		<mapping class="edu.upenn.cis.ppod.model.DnaSequences" />
 		<mapping class="edu.upenn.cis.ppod.model.DnaSequence" />
 
 	</session-factory>

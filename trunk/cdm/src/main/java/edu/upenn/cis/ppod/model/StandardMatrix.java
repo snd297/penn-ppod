@@ -42,7 +42,6 @@ import com.google.common.collect.BiMap;
 import com.google.common.collect.HashBiMap;
 
 import edu.upenn.cis.ppod.imodel.IHasColumnVersionInfos;
-import edu.upenn.cis.ppod.imodel.IOtuKeyedMap;
 import edu.upenn.cis.ppod.util.IVisitor;
 import edu.upenn.cis.ppod.util.UPennCisPPodUtil;
 
@@ -111,27 +110,6 @@ public class StandardMatrix extends Matrix<StandardRow> implements
 			}
 		}
 		super.accept(visitor);
-	}
-
-	/** {@inheritDoc} */
-	public void addColumn(
-			final int columnNo,
-			final StandardCharacter character,
-			final List<? extends StandardCell> cells) {
-		throw new UnsupportedOperationException();
-		// checkNotNull(character);
-		// checkNotNull(cells);
-		// checkArgument(columnNo <= getColumnsSize(),
-		// "columnNo " + columnNo + " too big for matrix column size "
-		// + getColumnsSize());
-		// checkArgument(columnNo >= 0, "columnNo is negative: " + columnNo);
-		// checkArgument(cells.size() == rows.getValues().size());
-		//
-		// final List<StandardCharacter> thisCharacters =
-		// newArrayList(getCharacters());
-		// thisCharacters.add(columnNo, character);
-		// setCharacters(thisCharacters);
-		// addColumn(columnNo, cells);
 	}
 
 	private List<VersionInfo> determineNewColumnHeaderPPodVersionInfos(
@@ -231,11 +209,6 @@ public class StandardMatrix extends Matrix<StandardRow> implements
 	 */
 	List<VersionInfo> getColumnVersionInfosModifiable() {
 		return columnVersionInfos;
-	}
-
-	@Override
-	IOtuKeyedMap<StandardRow> getOtuKeyedRows() {
-		throw new UnsupportedOperationException();
 	}
 
 	@Override
@@ -382,8 +355,6 @@ public class StandardMatrix extends Matrix<StandardRow> implements
 	/** {@inheritDoc} */
 	@Override
 	public void updateOtus() {
-		if (UPennCisPPodUtil.updateOtus(getParent(), rows)) {
-			setInNeedOfNewVersion();
-		}
+		UPennCisPPodUtil.updateOtus(getParent(), rows, this);
 	}
 }

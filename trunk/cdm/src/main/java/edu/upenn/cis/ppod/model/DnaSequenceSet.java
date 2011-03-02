@@ -15,18 +15,23 @@
  */
 package edu.upenn.cis.ppod.model;
 
-import static com.google.common.base.Preconditions.checkArgument;
 import static com.google.common.base.Preconditions.checkNotNull;
+import static com.google.common.collect.Maps.newHashMap;
 
 import java.util.Collections;
 import java.util.Map;
 
 import javax.annotation.Nullable;
-import javax.persistence.Embedded;
+import javax.persistence.CascadeType;
 import javax.persistence.Entity;
+import javax.persistence.JoinColumn;
+import javax.persistence.JoinTable;
+import javax.persistence.MapKeyJoinColumn;
+import javax.persistence.OneToMany;
 import javax.persistence.Table;
 
 import edu.upenn.cis.ppod.util.IVisitor;
+import edu.upenn.cis.ppod.util.UPennCisPPodUtil;
 
 /**
  * A set of {@link DNASequence}s.
@@ -49,11 +54,10 @@ public class DnaSequenceSet
 	public final static String JOIN_COLUMN =
 			TABLE + "_" + PersistentObject.ID_COLUMN;
 
-	/**
-	 * The sequences.
-	 */
-	@Embedded
-	private DnaSequences sequences = new DnaSequences(this);
+	@OneToMany(cascade = CascadeType.ALL, orphanRemoval = true)
+	@JoinTable(inverseJoinColumns = @JoinColumn(name = DnaSequence.JOIN_COLUMN))
+	@MapKeyJoinColumn(name = Otu.JOIN_COLUMN)
+	private final Map<Otu, DnaSequence> sequences = newHashMap();
 
 	/**
 	 * Default constructor.
@@ -64,31 +68,31 @@ public class DnaSequenceSet
 	public void accept(final IVisitor visitor) {
 		checkNotNull(visitor);
 		visitor.visitDnaSequenceSet(this);
+		for (final DnaSequence sequence : sequences.values()) {
+			if (sequence != null) {
+				sequence.accept(visitor);
+			}
+		}
 		super.accept(visitor);
 	}
 
 	/** {@inheritDoc} */
 	public void clearSequences() {
-		getOTUKeyedSequences().clear();
-	}
-
-	@Override
-	@Nullable
-	protected DnaSequences getOTUKeyedSequences() {
-		return sequences;
+		if (sequences.size() > 0) {
+			sequences.clear();
+			setInNeedOfNewVersion();
+		}
 	}
 
 	@Override
 	public DnaSequence getSequence(final Otu otu) {
 		checkNotNull(otu);
-		return getOTUKeyedSequences().get(otu);
+		return sequences.get(otu);
 	}
 
 	@Override
 	public Map<Otu, DnaSequence> getSequences() {
-		return Collections.unmodifiableMap(
-				getOTUKeyedSequences()
-						.getValues());
+		return Collections.unmodifiableMap(sequences);
 	}
 
 	@Override
@@ -98,10 +102,20 @@ public class DnaSequenceSet
 			final DnaSequence sequence) {
 		checkNotNull(otu);
 		checkNotNull(sequence);
-		checkArgument(sequence.getSequence() != null,
-						"sequence.getSequence() == null");
-		checkSequenceLength(sequence);
-		return getOTUKeyedSequences().put(otu, sequence);
+		final DnaSequence oldSequence = sequences.put(otu, sequence);
+		sequence.setParent(this);
+		if (sequence != oldSequence || oldSequence == null) {
+			setInNeedOfNewVersion();
+		}
+
+		if (sequence != oldSequence && oldSequence != null) {
+			oldSequence.setParent(null);
+		}
+		return oldSequence;
 	}
 
+	@Override
+	public void updateOtus() {
+		UPennCisPPodUtil.updateOtus(getParent(), sequences, this);
+	}
 }

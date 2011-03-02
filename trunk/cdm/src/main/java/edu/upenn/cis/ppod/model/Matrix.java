@@ -18,7 +18,6 @@ package edu.upenn.cis.ppod.model;
 import static com.google.common.base.Objects.equal;
 import static com.google.common.base.Preconditions.checkNotNull;
 
-import java.util.Collections;
 import java.util.Map;
 
 import javax.persistence.Column;
@@ -31,7 +30,6 @@ import edu.umd.cs.findbugs.annotations.CheckForNull;
 import edu.umd.cs.findbugs.annotations.Nullable;
 import edu.upenn.cis.ppod.imodel.IChild;
 import edu.upenn.cis.ppod.imodel.IDependsOnParentOtus;
-import edu.upenn.cis.ppod.imodel.IOtuKeyedMap;
 
 /**
  * A matrix is a set of OTU-keyed rows with column header pPOD versions which
@@ -40,7 +38,7 @@ import edu.upenn.cis.ppod.imodel.IOtuKeyedMap;
  * @author Sam Donnelly
  */
 @MappedSuperclass
-public abstract class Matrix<R extends IChild<?>>
+abstract class Matrix<R extends IChild<?>>
 		extends UuPPodEntity
 		implements IDependsOnParentOtus {
 
@@ -97,17 +95,6 @@ public abstract class Matrix<R extends IChild<?>>
 	}
 
 	/**
-	 * Get the otusToRows.
-	 * <p>
-	 * In perfect world, this would live in a subclass since it does impose a
-	 * certain implementation - storing rows in an OTU-to-row map.
-	 * <p>
-	 * 
-	 * @return the otusToRows
-	 */
-	abstract IOtuKeyedMap<R> getOtuKeyedRows();
-
-	/**
 	 * Getter. Will be {@code null} when object is first created or matrices
 	 * that have been severed from their parent, but never {@code null} for
 	 * objects freshly pulled out of the database.
@@ -126,10 +113,7 @@ public abstract class Matrix<R extends IChild<?>>
 	 * 
 	 * @return the rows that make up this matrix
 	 */
-	public Map<Otu, R> getRows() {
-		return Collections
-				.unmodifiableMap(getOtuKeyedRows().getValues());
-	}
+	public abstract Map<Otu, R> getRows();
 
 	/**
 	 * Set row at <code>otu</code> to <code>row</code>.
@@ -152,11 +136,7 @@ public abstract class Matrix<R extends IChild<?>>
 	 *             {@code .equals} to {@code row}
 	 */
 	@Nullable
-	public R putRow(final Otu otu, final R row) {
-		checkNotNull(otu);
-		checkNotNull(row);
-		return getOtuKeyedRows().put(otu, row);
-	}
+	public abstract R putRow(final Otu otu, final R row);
 
 	/**
 	 * Setter.
@@ -204,7 +184,5 @@ public abstract class Matrix<R extends IChild<?>>
 	}
 
 	/** {@inheritDoc} */
-	public void updateOtus() {
-		getOtuKeyedRows().updateOtus();
-	}
+	public abstract void updateOtus();
 }

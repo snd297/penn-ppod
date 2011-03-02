@@ -15,7 +15,6 @@ import javax.persistence.OneToMany;
 import javax.persistence.Table;
 
 import edu.upenn.cis.ppod.imodel.IDependsOnParentOtus;
-import edu.upenn.cis.ppod.imodel.IOtuKeyedMap;
 import edu.upenn.cis.ppod.util.IVisitor;
 import edu.upenn.cis.ppod.util.UPennCisPPodUtil;
 
@@ -31,7 +30,7 @@ public class ProteinMatrix
 
 	@OneToMany(cascade = CascadeType.ALL, orphanRemoval = true)
 	@JoinTable(name = TABLE + "_" + ProteinRow.TABLE,
-			inverseJoinColumns = @JoinColumn(name = StandardRow.JOIN_COLUMN))
+			inverseJoinColumns = @JoinColumn(name = ProteinRow.JOIN_COLUMN))
 	@MapKeyJoinColumn(name = Otu.JOIN_COLUMN)
 	private final Map<Otu, ProteinRow> rows = newHashMap();
 
@@ -50,17 +49,6 @@ public class ProteinMatrix
 			}
 		}
 		super.accept(visitor);
-	}
-
-	public void updateOtus() {
-		if (UPennCisPPodUtil.updateOtus(getParent(), rows)) {
-			setInNeedOfNewVersion();
-		}
-	}
-
-	@Override
-	IOtuKeyedMap<ProteinRow> getOtuKeyedRows() {
-		throw new UnsupportedOperationException();
 	}
 
 	@Override
@@ -82,5 +70,10 @@ public class ProteinMatrix
 			oldRow.setParent(null);
 		}
 		return oldRow;
+	}
+
+	@Override
+	public void updateOtus() {
+		UPennCisPPodUtil.updateOtus(getParent(), rows, this);
 	}
 }

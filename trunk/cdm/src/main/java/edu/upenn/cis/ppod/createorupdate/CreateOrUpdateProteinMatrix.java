@@ -52,10 +52,11 @@ public class CreateOrUpdateProteinMatrix {
 				dbRow = new ProteinRow();
 				dbRow.setVersionInfo(newVersionInfo.getNewVersionInfo());
 				dbMatrix.putRow(dbOtu, dbRow);
-				proteinRowDao.makePersistent(dbRow);
 			}
 
 			dbRow.setSequence(sourceRow.getSequence());
+
+			proteinRowDao.makePersistent(dbRow);
 
 			// We need to do this here since we're removing the row from
 			// the persistence context (with evict)

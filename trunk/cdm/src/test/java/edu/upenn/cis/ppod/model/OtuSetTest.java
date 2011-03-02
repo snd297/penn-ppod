@@ -239,7 +239,7 @@ public class OtuSetTest {
 		assertNull(standardMatrix.getRows().get(otu2));
 
 		assertEquals(
-				dnaMatrix.getOtuKeyedRows().getValues().keySet(),
+				dnaMatrix.getRows().keySet(),
 				otusSet012);
 		assertNull(dnaMatrix.getRows().get(otu0));
 		assertNull(dnaMatrix.getRows().get(otu1));
@@ -247,8 +247,7 @@ public class OtuSetTest {
 
 		assertEquals(
 				dnaSequenceSet
-						.getOTUKeyedSequences()
-						.getValues()
+						.getSequences()
 						.keySet(),
 						otusSet012);
 

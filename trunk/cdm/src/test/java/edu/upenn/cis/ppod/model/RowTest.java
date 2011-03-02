@@ -16,17 +16,21 @@ public class RowTest {
 		final OtuSet otuSet = new OtuSet();
 		final Otu otu = new Otu();
 		otuSet.addOtu(otu);
-		final DnaMatrix matrix = new DnaMatrix();
-		otuSet.addDnaMatrix(matrix);
+		final StandardMatrix matrix = new StandardMatrix();
+		otuSet.addStandardMatrix(matrix);
 		// matrix.setColumnsSize(3);
-		final DnaRow row = new DnaRow();
+		matrix.setCharacters(newArrayList(new StandardCharacter(),
+				new StandardCharacter(), new StandardCharacter()));
+
+		final StandardRow row = new StandardRow();
 		matrix.putRow(otu, row);
-		row.setCells(newArrayList(new DnaCell(), new DnaCell(), new DnaCell()));
+		row.setCells(newArrayList(new StandardCell(), new StandardCell(),
+				new StandardCell()));
 		row.clearCells();
 
 		assertTrue(isEmpty(row.getCells()));
 
-		for (final DnaCell cell : row.getCells()) {
+		for (final StandardCell cell : row.getCells()) {
 			assertNull(cell.getParent());
 			assertNull(cell.getPosition());
 		}

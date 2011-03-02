@@ -29,8 +29,6 @@ import javax.persistence.ManyToOne;
 import javax.persistence.MappedSuperclass;
 
 import edu.upenn.cis.ppod.imodel.IDependsOnParentOtus;
-import edu.upenn.cis.ppod.imodel.IOtuKeyedMap;
-import edu.upenn.cis.ppod.util.IVisitor;
 
 /**
  * A set of {@link ISequence}s.
@@ -56,13 +54,6 @@ public abstract class SequenceSet<S extends Sequence<?>>
 
 	SequenceSet() {}
 
-	@Override
-	public void accept(final IVisitor visitor) {
-		checkNotNull(visitor);
-		getOTUKeyedSequences().accept(visitor);
-		super.accept(visitor);
-	}
-
 	void checkSequenceLength(final S sequence) {
 		checkNotNull(sequence);
 		checkArgument(
@@ -87,8 +78,6 @@ public abstract class SequenceSet<S extends Sequence<?>>
 	public String getLabel() {
 		return label;
 	}
-
-	abstract IOtuKeyedMap<S> getOTUKeyedSequences();
 
 	/** {@inheritDoc} */
 	@Nullable
@@ -118,11 +107,9 @@ public abstract class SequenceSet<S extends Sequence<?>>
 	 */
 	@Nullable
 	public Integer getSequenceLengths() {
-		for (final S sequenceInThisSet : getOTUKeyedSequences()
-				.getValues()
-				.values()) {
-			if (sequenceInThisSet != null) {
-				return sequenceInThisSet.getSequence().length();
+		for (final S sequence : getSequences().values()) {
+			if (sequence != null) {
+				return sequence.getSequence().length();
 			}
 		}
 		return null;
@@ -178,7 +165,5 @@ public abstract class SequenceSet<S extends Sequence<?>>
 	}
 
 	/** {@inheritDoc} */
-	public void updateOtus() {
-		getOTUKeyedSequences().updateOtus();
-	}
+	public abstract void updateOtus();
 }

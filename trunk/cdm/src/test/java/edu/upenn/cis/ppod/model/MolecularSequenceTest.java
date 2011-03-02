@@ -78,7 +78,7 @@ public class MolecularSequenceTest {
 	 * Also make sure that it works if no parent has been set.
 	 */
 	@Test
-	public void setInNeedOfNewPPodVersion() {
+	public void setInNeedOfNewVersion() {
 		final DnaSequence sequence = new DnaSequence();
 		final OtuSet otuSet = new OtuSet();
 		final Otu otu0 = new Otu();

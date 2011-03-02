@@ -16,7 +16,6 @@
 package edu.upenn.cis.ppod.dto;
 
 import static com.google.common.base.Preconditions.checkNotNull;
-import edu.upenn.cis.ppod.model.DnaCell;
 import edu.upenn.cis.ppod.model.DnaMatrix;
 import edu.upenn.cis.ppod.model.DnaRow;
 import edu.upenn.cis.ppod.model.DnaSequence;
@@ -134,14 +133,6 @@ public final class Study2StudyInfo {
 							row.getVersionInfo().getVersion();
 					matrixInfo.getRowHeaderVersionsByIdx()
 							.put(rowIdx, rowVersion);
-
-					int cellIdx = -1;
-					for (final DnaCell cell : row.getCells()) {
-						cellIdx++;
-						matrixInfo
-								.setCellPPodIdAndVersion(rowIdx, cellIdx,
-										cell.getVersionInfo().getVersion());
-					}
 				}
 			}
 

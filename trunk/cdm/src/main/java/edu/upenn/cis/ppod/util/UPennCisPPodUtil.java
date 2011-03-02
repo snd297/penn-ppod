@@ -28,6 +28,7 @@ import com.google.common.base.Predicate;
 
 import edu.umd.cs.findbugs.annotations.CheckForNull;
 import edu.upenn.cis.ppod.imodel.IChild;
+import edu.upenn.cis.ppod.imodel.IVersioned;
 import edu.upenn.cis.ppod.model.Otu;
 import edu.upenn.cis.ppod.model.OtuSet;
 
@@ -53,11 +54,10 @@ public class UPennCisPPodUtil {
 		return compose(equalTo(equalToTarget), f);
 	}
 
-	public static <R extends IChild<?>> boolean updateOtus(
+	public static <C extends IChild<?>> void updateOtus(
 			@CheckForNull final OtuSet parent,
-			final Map<Otu, R> rows) {
-
-		boolean changed = false;
+			final Map<Otu, C> rows,
+			final IVersioned versioned) {
 
 		final Set<Otu> otusToBeRemoved = newHashSet();
 
@@ -66,12 +66,12 @@ public class UPennCisPPodUtil {
 				// it stays
 			} else {
 				otusToBeRemoved.add(otu);
-				changed = true;
+				versioned.setInNeedOfNewVersion();
 			}
 		}
 
 		for (final Otu otuToBeRemoved : otusToBeRemoved) {
-			final R row = rows.get(otuToBeRemoved);
+			final C row = rows.get(otuToBeRemoved);
 			if (row != null) {
 				row.setParent(null);
 			}
@@ -85,10 +85,9 @@ public class UPennCisPPodUtil {
 
 				} else {
 					rows.put(otu, null);
-					changed = true;
+					versioned.setInNeedOfNewVersion();
 				}
 			}
 		}
-		return changed;
 	}
 }

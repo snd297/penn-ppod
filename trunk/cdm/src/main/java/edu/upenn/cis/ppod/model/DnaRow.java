@@ -16,20 +16,18 @@
 package edu.upenn.cis.ppod.model;
 
 import static com.google.common.base.Preconditions.checkNotNull;
-import static com.google.common.collect.Lists.newArrayList;
 
-import java.util.List;
-
-import javax.persistence.CascadeType;
+import javax.persistence.Column;
 import javax.persistence.Entity;
 import javax.persistence.FetchType;
 import javax.persistence.JoinColumn;
+import javax.persistence.Lob;
 import javax.persistence.ManyToOne;
-import javax.persistence.OneToMany;
-import javax.persistence.OrderColumn;
 import javax.persistence.Table;
 
 import edu.umd.cs.findbugs.annotations.CheckForNull;
+import edu.umd.cs.findbugs.annotations.Nullable;
+import edu.upenn.cis.ppod.imodel.IChild;
 import edu.upenn.cis.ppod.util.IVisitor;
 
 /**
@@ -39,7 +37,7 @@ import edu.upenn.cis.ppod.util.IVisitor;
  */
 @Entity
 @Table(name = DnaRow.TABLE)
-public class DnaRow extends Row<DnaCell, DnaMatrix> {
+public class DnaRow extends PPodEntity implements IChild<DnaMatrix> {
 
 	public static final String TABLE = "DNA_ROW";
 
@@ -51,10 +49,10 @@ public class DnaRow extends Row<DnaCell, DnaMatrix> {
 	@CheckForNull
 	private DnaMatrix parent;
 
-	@OneToMany(mappedBy = "parent", cascade = CascadeType.ALL,
-			orphanRemoval = true)
-	@OrderColumn(name = "POSITION")
-	private final List<DnaCell> cells = newArrayList();
+	@Lob
+	@Column(nullable = false)
+	@CheckForNull
+	private String sequence;
 
 	public DnaRow() {}
 
@@ -66,38 +64,33 @@ public class DnaRow extends Row<DnaCell, DnaMatrix> {
 		super.accept(visitor);
 	}
 
-	public void addCell(final DnaCell cell) {
-		checkNotNull(cell);
-		cells.add(cell);
-		cell.setPosition(cells.size() - 1);
-		cell.setParent(this);
-		setInNeedOfNewVersion();
-	}
-
-	/** {@inheritDoc} */
-	@Override
-	protected List<DnaCell> getCellsModifiable() {
-		return cells;
-	}
-
 	/** {@inheritDoc} */
 	public DnaMatrix getParent() {
 		return parent;
 	}
 
-	/**
-	 * {@inheritDoc}
-	 */
+	@Nullable
+	public String getSequence() {
+		return sequence;
+	}
+
 	@Override
-	public void setCells(final List<? extends DnaCell> cells) {
-		super.setCellsHelper(cells);
-		for (final DnaCell cell : getCells()) {
-			cell.setParent(this);
+	public void setInNeedOfNewVersion() {
+		super.setInNeedOfNewVersion();
+		if (parent != null) {
+			parent.setInNeedOfNewVersion();
 		}
 	}
 
 	/** {@inheritDoc} */
 	public void setParent(final DnaMatrix parent) {
 		this.parent = parent;
+	}
+
+	public void setSequence(final String sequence) {
+		if (!sequence.equals(this.sequence)) {
+			this.sequence = sequence;
+			setInNeedOfNewVersion();
+		}
 	}
 }
