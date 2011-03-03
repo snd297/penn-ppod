@@ -1,0 +1,32 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<project xmlns="http://maven.apache.org/POM/4.0.0" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+	xsi:schemaLocation="http://maven.apache.org/POM/4.0.0 http://maven.apache.org/maven-v4_0_0.xsd">
+	<name>pPOD core data model</name>
+	<parent>
+		<groupId>edu.upenn.cis.ppod</groupId>
+		<artifactId>ppod</artifactId>
+		<version>0.2-SNAPSHOT</version>
+	</parent>
+	<modelVersion>4.0.0</modelVersion>
+	<groupId>edu.upenn.cis.ppod</groupId>
+	<artifactId>ppod-cdm</artifactId>
+	<build>
+		<plugins>
+			<plugin>
+				<artifactId>maven-surefire-plugin</artifactId>
+				<configuration>
+					<suiteXmlFiles>
+						<suiteXmlFile>src/test/resources/testng-fast.xml</suiteXmlFile>
+					</suiteXmlFiles>
+				</configuration>
+			</plugin><!-- <plugin> <groupId>org.codehaus.mojo</groupId> <artifactId>hibernate3-maven-plugin</artifactId> 
+				<version>2.2</version> <executions> <execution> <phase>process-classes</phase> 
+				<goals> <goal>hbm2ddl</goal> </goals> </execution> </executions> <configuration> 
+				<components> <component> <name>hbm2ddl</name> <implementation>annotationconfiguration</implementation> 
+				</component> </components> <componentProperties> <propertyfile>src/main/resources/hibernate-export-ddl.properties</propertyfile> 
+				<create>true</create> <drop>false</drop> <export>false</export> <format>true</format> 
+				<outputfilename>ppod.ddl</outputfilename> </componentProperties> </configuration> 
+				</plugin> -->
+		</plugins>
+	</build>
+</project> 

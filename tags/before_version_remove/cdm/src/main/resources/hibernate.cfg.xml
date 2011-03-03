@@ -1,0 +1,47 @@
+<?xml version='1.0' encoding='utf-8'?>
+<!DOCTYPE hibernate-configuration
+        PUBLIC "-//Hibernate/Hibernate Configuration DTD//EN"
+        "http://hibernate.sourceforge.net/hibernate-configuration-3.0.dtd">
+<hibernate-configuration>
+	<session-factory>
+		<!-- List of annotated classes -->
+		<!-- <mapping class="edu.upenn.cis.ppod.thirdparty.model.security.Role" 
+			/> <mapping class="edu.upenn.cis.ppod.thirdparty.model.security.User" /> 
+			<mapping class="edu.upenn.cis.ppod.model.security.Party" /> <mapping class="edu.upenn.cis.ppod.model.security.Group" 
+			/> <mapping class="edu.upenn.cis.ppod.model.security.StudyPermission" /> -->
+
+		<!-- Bind the getCurrentSession() method to the thread. -->
+		<property name="current_session_context_class">thread</property>
+
+		<mapping class="edu.upenn.cis.ppod.model.VersionInfo" />
+		<mapping class="edu.upenn.cis.ppod.model.CurrentVersion" />
+
+		<mapping class="edu.upenn.cis.ppod.model.Study" />
+
+		<mapping class="edu.upenn.cis.ppod.model.Otu" />
+		<mapping class="edu.upenn.cis.ppod.model.OtuSet" />
+
+		<mapping class="edu.upenn.cis.ppod.model.Tree" />
+		<mapping class="edu.upenn.cis.ppod.model.TreeSet" />
+
+		<mapping class="edu.upenn.cis.ppod.model.StandardMatrix" />
+		<mapping class="edu.upenn.cis.ppod.model.StandardCharacter" />
+		<mapping class="edu.upenn.cis.ppod.model.StandardState" />
+		<mapping class="edu.upenn.cis.ppod.model.StandardRow" />
+		<mapping class="edu.upenn.cis.ppod.model.StandardCell" />
+
+		<mapping class="edu.upenn.cis.ppod.model.DnaMatrix" />
+		<mapping class="edu.upenn.cis.ppod.model.DnaRow" />
+
+		<mapping class="edu.upenn.cis.ppod.model.ProteinMatrix" />
+		<mapping class="edu.upenn.cis.ppod.model.ProteinRow" />
+
+		<mapping class="edu.upenn.cis.ppod.model.Attachment" />
+		<mapping class="edu.upenn.cis.ppod.model.AttachmentNamespace" />
+		<mapping class="edu.upenn.cis.ppod.model.AttachmentType" />
+
+		<mapping class="edu.upenn.cis.ppod.model.DnaSequenceSet" />
+		<mapping class="edu.upenn.cis.ppod.model.DnaSequence" />
+
+	</session-factory>
+</hibernate-configuration>

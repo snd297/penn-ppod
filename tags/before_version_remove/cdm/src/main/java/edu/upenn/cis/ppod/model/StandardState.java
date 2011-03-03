@@ -1,0 +1,202 @@
+/*
+ * Copyright (C) 2009 Trustees of the University of Pennsylvania
+ *
+ * Licensed under the Apache License, Version 2.0 (the "License");
+ * you may not use this file except in compliance with the License.
+ * You may obtain a copy of the License at
+ *
+ * http://www.apache.org/licenses/LICENSE-2.0
+ *
+ * Unless required by applicable law or agreed to in writing, software
+ * distributed under the License is distributed on an "AS IS" BASIS,
+ * WITHOUT WARRANTIES OR CONDITIONS of ANY KIND, either express or implied.
+ * See the License for the specific language governing permissions and
+ * limitations under the License.
+ */
+package edu.upenn.cis.ppod.model;
+
+import static com.google.common.base.Preconditions.checkNotNull;
+
+import javax.annotation.Nullable;
+import javax.persistence.Column;
+import javax.persistence.Entity;
+import javax.persistence.FetchType;
+import javax.persistence.JoinColumn;
+import javax.persistence.ManyToOne;
+import javax.persistence.Table;
+
+import com.google.common.base.Function;
+
+import edu.umd.cs.findbugs.annotations.CheckForNull;
+import edu.upenn.cis.ppod.util.IVisitor;
+
+/**
+ * A stateNumber of a {@link StandardCharacter}. Represents things like
+ * "absent", "short", and "long" for some character, say "proboscis".
+ * <p>
+ * A {@code StandardState} can belong to exactly one {@code StandardCharacter}.
+ * <p>
+ * This is <em>not</em> a {@link UUPPodEntity} because its uniqueness is a
+ * function of its {@link StandardCharacter} + {@link #getStateNumber()}
+ * 
+ * @author Sam Donnelly
+ */
+@Entity
+@Table(name = StandardState.TABLE)
+public class StandardState extends PPodEntity {
+
+	/**
+	 * {@link Function} wrapper of {@link #getStateNumber()}.
+	 */
+	public static final Function<StandardState, Integer> getStateNumber = new Function<StandardState, Integer>() {
+
+		public Integer apply(final StandardState from) {
+			return from.getStateNumber();
+		}
+
+	};
+
+	/** The name of this entity's table. */
+	public final static String TABLE = "STANDARD_STATE";
+
+	/** For foreign keys that point at this table. */
+	public final static String JOIN_COLUMN = TABLE + "_ID";
+
+	/**
+	 * The column where the stateNumber is stored. Intentionally
+	 * package-private.
+	 */
+	final static String STATE_NUMBER_COLUMN = "STATE_NUMBER";
+
+	/**
+	 * The state number of this {@code CharacterState}. This is the core value
+	 * of these objects. Write-once-read-many.
+	 */
+	@Column(name = STATE_NUMBER_COLUMN, nullable = false, updatable = false)
+	private Integer stateNumber;
+
+	/**
+	 * Label for this stateNumber. Things like <code>"absent"</code>,
+	 * <code>"short"</code>, and <code>"long"</code>
+	 */
+	@Column(name = "LABEL", nullable = false)
+	@CheckForNull
+	private String label;
+
+	/**
+	 * The {@code Character} of which this is a state.
+	 */
+	@ManyToOne(fetch = FetchType.LAZY, optional = false)
+	@JoinColumn(name = StandardCharacter.JOIN_COLUMN)
+	@CheckForNull
+	private StandardCharacter parent;
+
+	/**
+	 * For Hibernate.
+	 */
+	StandardState() {}
+
+	public StandardState(final Integer stateNumber) {
+		checkNotNull(stateNumber);
+		this.stateNumber = stateNumber;
+	}
+
+	@Override
+	public void accept(final IVisitor visitor) {
+		super.accept(visitor);
+		visitor.visitStandardState(this);
+	}
+
+	/**
+	 * Get this character stateNumber's label.
+	 * 
+	 * @return this character stateNumber's label
+	 */
+	@Nullable
+	public String getLabel() {
+		return label;
+	}
+
+	/**
+	 * Get this character owning character. Will be {@code null} when newly
+	 * constructed.
+	 * 
+	 * @return this character stateNumber's owning character
+	 */
+	@Nullable
+	public StandardCharacter getParent() {
+		return parent;
+	}
+
+	/**
+	 * Get the integer value of this character stateNumber. The integer value is
+	 * the heart of the class.
+	 * <p>
+	 * {@code null} when the object is created. Never {@code null} for
+	 * persistent objects.
+	 * 
+	 * @return get the integer value of this character stateNumber
+	 */
+	@Nullable
+	public Integer getStateNumber() {
+		return stateNumber;
+	}
+
+	@Override
+	public void setInNeedOfNewVersion() {
+		if (parent != null) {
+			parent.setInNeedOfNewVersion();
+		}
+		super.setInNeedOfNewVersion();
+	}
+
+	/**
+	 * Set the label.
+	 * 
+	 * @param label the label
+	 */
+	public void setLabel(final String label) {
+		checkNotNull(label);
+		if (label.equals(getLabel())) {
+
+		} else {
+			this.label = label;
+			setInNeedOfNewVersion();
+		}
+	}
+
+	/**
+	 * Set the parent {@code StandardCharacter}.
+	 * <p>
+	 * Intentionally package-private and meant to be called from
+	 * {@link StandardCharacter}.
+	 * <p>
+	 * {@code parent} being {@code null} signifies that the relationship, if it
+	 * exists, is being severed.
+	 * 
+	 * @param character see description.
+	 */
+	public void setParent(
+			@CheckForNull final StandardCharacter parent) {
+		this.parent = parent;
+	}
+
+	/**
+	 * Constructs a <code>String</code> with all attributes in name = value
+	 * format.
+	 * 
+	 * @return a <code>String</code> representation of this object.
+	 */
+	@Override
+	public String toString() {
+		final String TAB = "";
+
+		final StringBuilder retValue = new StringBuilder();
+
+		retValue.append("CharacterState(").append("stateNumber=").append(
+				this.stateNumber).append(TAB).append("label=").append(
+				this.label).append(TAB).append(")");
+
+		return retValue.toString();
+	}
+}
