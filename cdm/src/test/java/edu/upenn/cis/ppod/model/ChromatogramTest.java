@@ -15,12 +15,6 @@
  */
 package edu.upenn.cis.ppod.model;
 
-import static org.testng.Assert.assertEquals;
-import static org.testng.Assert.assertFalse;
-import static org.testng.Assert.assertNull;
-import static org.testng.Assert.assertSame;
-import static org.testng.Assert.assertTrue;
-
 import org.testng.annotations.Test;
 
 import edu.upenn.cis.ppod.TestGroupDefs;
@@ -33,65 +27,4 @@ import edu.upenn.cis.ppod.TestGroupDefs;
 @Test(groups = { TestGroupDefs.FAST })
 public class ChromatogramTest {
 
-	/**
-	 * Run {@link Chromatogram#setChromatogram(byte[])} and
-	 * {@link Chromatogram#getChromatogram()} through its paces:
-	 * <ol>
-	 * <li>straight set and verify in need of new pPOD version</li>
-	 * <li>set w/ already-value and make sure its not in need of a new pPOD
-	 * version</li>
-	 * <li>set w/ a new byte array that has the same length as the one it
-	 * already has. Because the attachment will reuse the same byte array in
-	 * this case and its another branch</li>
-	 * </ol>
-	 */
-	@Test
-	public void setBytesValue() {
-
-		final Chromatogram chromatogram = new Chromatogram();
-
-		assertNull(chromatogram.getChromatogram());
-
-		final byte[] bytes = new byte[] { 1, 3, 5 };
-
-		final Chromatogram chromatogramReturned = chromatogram
-				.setChromatogram(bytes);
-		assertSame(chromatogramReturned, chromatogram);
-
-		assertEquals(chromatogram.getChromatogram(), bytes);
-
-		assertTrue(chromatogram.isInNeedOfNewVersion());
-
-		chromatogram.unsetInNeedOfNewVersion();
-
-		chromatogram.setChromatogram(bytes);
-
-		assertFalse(chromatogram.isInNeedOfNewVersion());
-
-		chromatogram.unsetInNeedOfNewVersion();
-
-		final byte[] bytes2 = new byte[] { 3, 5, 3 };
-
-		chromatogram.setChromatogram(bytes2);
-
-		assertEquals(chromatogram.getChromatogram(), bytes2);
-
-	}
-
-	@Test
-	public void setSequence() {
-		final Chromatogram chromatogram = new Chromatogram();
-		final DnaSequence sequence = new DnaSequence();
-
-		final Chromatogram returnedChromatogram =
-				chromatogram.setSequence(sequence);
-		assertSame(returnedChromatogram, chromatogram);
-		assertSame(chromatogram.getSequence(), sequence);
-		assertTrue(chromatogram.isInNeedOfNewVersion());
-
-		chromatogram.unsetInNeedOfNewVersion();
-		chromatogram.setSequence(sequence);
-		assertEquals(chromatogram.getSequence(), sequence);
-		assertFalse(chromatogram.isInNeedOfNewVersion());
-	}
 }

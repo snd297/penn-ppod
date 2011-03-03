@@ -20,13 +20,10 @@ public class DnaSequenceSetTest {
 		Otu otu = new Otu();
 		otuSet.addOtu(otu);
 
-		sequenceSet.unsetInNeedOfNewVersion();
-
 		sequenceSet.putSequence(otu, sequence);
 		assertEquals(sequenceSet.getSequences().size(), 1);
 		assertTrue(sequenceSet.getSequences().values().contains(sequence));
 		assertSame(sequence.getParent(), sequenceSet);
-		assertTrue(sequenceSet.isInNeedOfNewVersion());
 
 	}
 
@@ -46,12 +43,9 @@ public class DnaSequenceSetTest {
 
 		final DnaSequence sequence2 = new DnaSequence();
 
-		sequenceSet.unsetInNeedOfNewVersion();
-
 		sequenceSet.putSequence(otu, sequence2);
 
 		assertNull(sequence.getParent());
-		assertTrue(sequenceSet.isInNeedOfNewVersion());
 		assertEquals(sequenceSet.getSequences().size(), 1);
 		assertTrue(sequenceSet.getSequences().values().contains(sequence2));
 

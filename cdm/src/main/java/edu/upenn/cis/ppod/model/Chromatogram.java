@@ -15,11 +15,6 @@
  */
 package edu.upenn.cis.ppod.model;
 
-import static com.google.common.base.Objects.equal;
-import static com.google.common.base.Preconditions.checkNotNull;
-
-import java.util.Arrays;
-
 import javax.annotation.CheckForNull;
 import javax.annotation.Nullable;
 import javax.persistence.Column;
@@ -66,29 +61,12 @@ public class Chromatogram extends UuPPodEntity {
 		return sequence;
 	}
 
-	public Chromatogram setChromatogram(final byte[] chromatogram) {
-		checkNotNull(chromatogram);
-		if (Arrays.equals(chromatogram, this.chromatogram)) {
-			return this;
-		}
-
-		if (this.chromatogram == null
-					|| this.chromatogram.length != chromatogram.length) {
-			this.chromatogram = new byte[chromatogram.length];
-		}
-		System.arraycopy(this.chromatogram, 0, chromatogram, 0,
-					chromatogram.length);
-		setInNeedOfNewVersion();
-		return this;
+	public void setChromatogram(final byte[] chromatogram) {
+		this.chromatogram = chromatogram;
 	}
 
-	public Chromatogram setSequence(@CheckForNull final DnaSequence sequence) {
-		if (equal(sequence, this.sequence)) {
-			return this;
-		}
+	public void setSequence(@CheckForNull final DnaSequence sequence) {
 		this.sequence = sequence;
-		setInNeedOfNewVersion();
-		return this;
 	}
 
 }

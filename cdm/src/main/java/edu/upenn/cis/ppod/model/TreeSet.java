@@ -19,7 +19,6 @@ import static com.google.common.base.Preconditions.checkArgument;
 import static com.google.common.base.Preconditions.checkNotNull;
 import static com.google.common.collect.Lists.newArrayList;
 
-import java.util.Collections;
 import java.util.List;
 
 import javax.annotation.CheckForNull;
@@ -37,7 +36,6 @@ import javax.persistence.Table;
 import com.google.common.collect.Iterators;
 
 import edu.upenn.cis.ppod.imodel.IDependsOnParentOtus;
-import edu.upenn.cis.ppod.util.IVisitor;
 
 /**
  * An ordered, unique collection of {@link Tree}s.
@@ -69,16 +67,6 @@ public class TreeSet extends UuPPodEntity implements IDependsOnParentOtus {
 
 	public TreeSet() {}
 
-	@Override
-	public void accept(final IVisitor visitor) {
-		checkNotNull(visitor);
-		visitor.visitTreeSet(this);
-		for (final Tree tree : getTreesModifiable()) {
-			tree.accept(visitor);
-		}
-		super.accept(visitor);
-	}
-
 	/**
 	 * Add {@code tree} to this {@code ITreeSet}.
 	 * 
@@ -93,7 +81,6 @@ public class TreeSet extends UuPPodEntity implements IDependsOnParentOtus {
 				"tree set already contains a tree [" + tree.getLabel() + "]");
 		trees.add(tree);
 		tree.setParent(this);
-		setInNeedOfNewVersion();
 	}
 
 	/**
@@ -119,19 +106,7 @@ public class TreeSet extends UuPPodEntity implements IDependsOnParentOtus {
 	 * @return the constituent trees.
 	 */
 	public List<Tree> getTrees() {
-		return Collections.unmodifiableList(trees);
-	}
-
-	protected List<Tree> getTreesModifiable() {
 		return trees;
-	}
-
-	@Override
-	public void setInNeedOfNewVersion() {
-		if (getParent() != null) {
-			getParent().setInNeedOfNewVersion();
-		}
-		super.setInNeedOfNewVersion();
 	}
 
 	/**
@@ -140,13 +115,7 @@ public class TreeSet extends UuPPodEntity implements IDependsOnParentOtus {
 	 * @param label the label value
 	 */
 	public void setLabel(final String label) {
-		checkNotNull(label);
-		if (label.equals(getLabel())) {
-
-		} else {
-			this.label = label;
-			setInNeedOfNewVersion();
-		}
+		this.label = checkNotNull(label);
 	}
 
 	/** {@inheritDoc} */
@@ -167,33 +136,26 @@ public class TreeSet extends UuPPodEntity implements IDependsOnParentOtus {
 	 */
 	public void setTrees(final List<? extends Tree> trees) {
 		checkNotNull(trees);
-		if (trees.equals(this.trees)) {
-
-		} else {
-
-			int treePos = -1;
-			for (final Tree tree : trees) {
-				treePos++;
-				checkArgument(
+		int treePos = -1;
+		for (final Tree tree : trees) {
+			treePos++;
+			checkArgument(
 						!Iterators.contains(trees.listIterator(treePos + 1),
 								tree),
 						"argument trees contains duplicates");
-			}
-
-			final List<Tree> removedTrees = newArrayList(this.trees);
-			removedTrees.removeAll(trees);
-
-			for (final Tree removedTree : removedTrees) {
-				removedTree.setParent(null);
-			}
-
-			this.trees.clear();
-			for (final Tree newTree : trees) {
-				addTree(newTree);
-			}
-			setInNeedOfNewVersion();
 		}
-		return;
+
+		final List<Tree> removedTrees = newArrayList(this.trees);
+		removedTrees.removeAll(trees);
+
+		for (final Tree removedTree : removedTrees) {
+			removedTree.setParent(null);
+		}
+
+		this.trees.clear();
+		for (final Tree newTree : trees) {
+			addTree(newTree);
+		}
 	}
 
 	/**

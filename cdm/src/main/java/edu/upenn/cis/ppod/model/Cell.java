@@ -177,24 +177,7 @@ abstract class Cell<E, R extends Row<?, ?>>
 		setType(type);
 		setElement(null);
 		setElements(null);
-		setInNeedOfNewVersion();
 		return;
-	}
-
-	@Override
-	public void setInNeedOfNewVersion() {
-		final R row = getParent();
-		if (row != null) {
-			row.setInNeedOfNewVersion();
-			final Matrix<?> matrix = row.getParent();
-			if (matrix != null) {
-				if (getPosition() == null) {
-					throw new AssertionError(
-							"cell has no position, but is a part of a matrix");
-				}
-			}
-		}
-		super.setInNeedOfNewVersion();
 	}
 
 	/**
@@ -220,33 +203,22 @@ abstract class Cell<E, R extends Row<?, ?>>
 				elements.size() > 1,
 				"POLYMORPIC AND UNCERTAIN must have greater than 1 element but elements has "
 						+ elements.size());
-
-		if (getType() != null
-				&& getType().equals(type)
-				&& elements.equals(getElementsModifiable())) {
-			return;
-		}
 		setType(type);
 		setElement(null);
 		setElements(elements);
-		setInNeedOfNewVersion();
 	}
 
 	/**
 	 * Set the position of this child.
 	 * <p>
 	 * Use a {@code null} when removing a child from its parent
-	 * <p>
-	 * <strong>There is no reason for client code to call this method as the
-	 * value will always be set by the parent object. Modifying could cause
-	 * unexpected behavior.</strong>
 	 * 
 	 * @param position the position of this child
 	 * 
 	 * @throw IllegalArgumentException if
 	 *        {@code position !=null && position < 0}
 	 */
-	public void setPosition(@CheckForNull final Integer position) {
+	void setPosition(@CheckForNull final Integer position) {
 		checkArgument(position == null || position >= 0, "position < 0");
 		this.position = position;
 	}
@@ -292,7 +264,6 @@ abstract class Cell<E, R extends Row<?, ?>>
 			setType(PPodCellType.SINGLE);
 			setElement(element);
 			setElements(null);
-			setInNeedOfNewVersion();
 		}
 	}
 }

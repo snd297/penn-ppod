@@ -28,8 +28,6 @@ import javax.persistence.Table;
 
 import org.hibernate.annotations.Index;
 
-import edu.upenn.cis.ppod.util.IVisitor;
-
 /**
  * Says what kind of attachment we have. for example, you might have an author
  * attachment.
@@ -68,12 +66,6 @@ public class AttachmentType extends PersistentObject {
 	 * For Hibernate.
 	 */
 	public AttachmentType() {}
-
-	public void accept(final IVisitor visitor) {
-		checkNotNull(visitor);
-		visitor.visitAttachmentType(this);
-		getNamespace().accept(visitor);
-	}
 
 	/**
 	 * Get the label. Will be {@code null} for newly created objects until

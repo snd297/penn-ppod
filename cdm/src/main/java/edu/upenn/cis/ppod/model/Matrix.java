@@ -15,7 +15,6 @@
  */
 package edu.upenn.cis.ppod.model;
 
-import static com.google.common.base.Objects.equal;
 import static com.google.common.base.Preconditions.checkNotNull;
 
 import java.util.Map;
@@ -145,20 +144,7 @@ abstract class Matrix<R extends IChild<?>>
 	 */
 	public void setDescription(
 			@CheckForNull final String description) {
-		if (equal(description, getDescription())) {
-			// nothing to do
-		} else {
-			this.description = description;
-			setInNeedOfNewVersion();
-		}
-	}
-
-	@Override
-	public void setInNeedOfNewVersion() {
-		if (getParent() != null) {
-			getParent().setInNeedOfNewVersion();
-		}
-		super.setInNeedOfNewVersion();
+		this.description = description;
 	}
 
 	/**
@@ -167,13 +153,7 @@ abstract class Matrix<R extends IChild<?>>
 	 * @param label the value for the label
 	 */
 	public void setLabel(final String label) {
-		checkNotNull(label);
-		if (label.equals(this.label)) {
-			// they're the same, nothing to do
-		} else {
-			this.label = label;
-			setInNeedOfNewVersion();
-		}
+		this.label = checkNotNull(label);
 	}
 
 	/** {@inheritDoc} */

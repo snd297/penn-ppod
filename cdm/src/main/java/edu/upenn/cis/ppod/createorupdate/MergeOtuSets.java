@@ -23,12 +23,9 @@ import static com.google.common.collect.Lists.newArrayListWithCapacity;
 
 import java.util.List;
 
-import com.google.inject.Inject;
-
 import edu.upenn.cis.ppod.dto.IHasPPodId;
 import edu.upenn.cis.ppod.dto.PPodOtu;
 import edu.upenn.cis.ppod.dto.PPodOtuSet;
-import edu.upenn.cis.ppod.imodel.INewVersionInfo;
 import edu.upenn.cis.ppod.model.Otu;
 import edu.upenn.cis.ppod.model.OtuSet;
 
@@ -38,13 +35,6 @@ import edu.upenn.cis.ppod.model.OtuSet;
  * @author Sam Donnelly
  */
 public final class MergeOtuSets {
-
-	private INewVersionInfo newVersionInfo;
-
-	@Inject
-	MergeOtuSets(final INewVersionInfo newVersionInfo) {
-		this.newVersionInfo = newVersionInfo;
-	}
 
 	public void mergeOtuSets(
 			final OtuSet targetOtuSet,
@@ -67,7 +57,6 @@ public final class MergeOtuSets {
 											IHasPPodId.getPPodId),
 											null))) {
 				targetOTU = new Otu();
-				targetOTU.setVersionInfo(newVersionInfo.getNewVersionInfo());
 			}
 			newTargetOTUs.add(targetOTU);
 			targetOTU.setLabel(sourceOTU.getLabel());

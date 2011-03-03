@@ -16,10 +16,8 @@
 package edu.upenn.cis.ppod.model;
 
 import static org.testng.Assert.assertEquals;
-import static org.testng.Assert.assertFalse;
 import static org.testng.Assert.assertNull;
 import static org.testng.Assert.assertSame;
-import static org.testng.Assert.assertTrue;
 
 import org.testng.annotations.Test;
 
@@ -38,27 +36,21 @@ public class StandardCharacterTest {
 		final StandardCharacter character = new StandardCharacter();
 		final StandardState state0 = new StandardState(0);
 
-		character.unsetInNeedOfNewVersion();
 		final StandardState returnedState0 = character.addState(state0);
-		assertTrue(character.isInNeedOfNewVersion());
 		assertNull(returnedState0);
 		assertEquals(character.getStates().size(), 1);
 		assertSame(character.getState(0), state0);
 		assertSame(state0.getParent(), character);
 
-		character.unsetInNeedOfNewVersion();
 		final StandardState returnedState1 = character.addState(state0);
-		assertFalse(character.isInNeedOfNewVersion());
 		assertSame(returnedState1, state0);
 		assertEquals(character.getStates().size(), 1);
 		assertSame(character.getState(0), state0);
 		assertSame(state0.getParent(), character);
 		assertSame(state0.getParent(), character);
 
-		character.unsetInNeedOfNewVersion();
 		final StandardState state01 = new StandardState(0);
 		final StandardState returnedState2 = character.addState(state01);
-		assertTrue(character.isInNeedOfNewVersion());
 		assertSame(state0, returnedState2);
 		assertEquals(character.getStates().size(), 1);
 		assertSame(character.getState(0), state01);

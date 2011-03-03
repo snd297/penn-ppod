@@ -8,23 +8,19 @@ import com.google.inject.Inject;
 import edu.upenn.cis.ppod.dao.IDnaRowDAO;
 import edu.upenn.cis.ppod.dto.PPodDnaMatrix;
 import edu.upenn.cis.ppod.dto.PPodDnaRow;
-import edu.upenn.cis.ppod.imodel.INewVersionInfo;
 import edu.upenn.cis.ppod.model.DnaMatrix;
 import edu.upenn.cis.ppod.model.DnaRow;
 import edu.upenn.cis.ppod.model.Otu;
 
 public class CreateOrUpdateDnaMatrix {
 	private final IDnaRowDAO dnaRowDAO;
-	private final INewVersionInfo newVersionInfo;
 	private final static Logger logger = LoggerFactory
 			.getLogger(CreateOrUpdateDnaMatrix.class);
 
 	@Inject
 	CreateOrUpdateDnaMatrix(
-			final IDnaRowDAO dnaRowDAO,
-			final INewVersionInfo newVersionInfo) {
+			final IDnaRowDAO dnaRowDAO) {
 		this.dnaRowDAO = dnaRowDAO;
-		this.newVersionInfo = newVersionInfo;
 	}
 
 	public void createOrUpdateMatrix(
@@ -50,7 +46,6 @@ public class CreateOrUpdateDnaMatrix {
 
 			if (null == (dbRow = dbMatrix.getRows().get(dbOtu))) {
 				dbRow = new DnaRow();
-				dbRow.setVersionInfo(newVersionInfo.getNewVersionInfo());
 				dbMatrix.putRow(dbOtu, dbRow);
 			}
 

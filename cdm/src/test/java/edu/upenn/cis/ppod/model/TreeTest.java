@@ -15,10 +15,6 @@
  */
 package edu.upenn.cis.ppod.model;
 
-import static org.testng.Assert.assertEquals;
-import static org.testng.Assert.assertFalse;
-import static org.testng.Assert.assertTrue;
-
 import org.testng.annotations.Test;
 
 import edu.upenn.cis.ppod.TestGroupDefs;
@@ -26,56 +22,4 @@ import edu.upenn.cis.ppod.TestGroupDefs;
 @Test(groups = TestGroupDefs.FAST)
 public class TreeTest {
 
-	@Test
-	public void setInNeedOfNewVersionForParentedTree() {
-		final TreeSet treeSet = new TreeSet();
-		final Tree tree = new Tree();
-		treeSet.addTree(tree);
-		tree.unsetInNeedOfNewVersion();
-		treeSet.unsetInNeedOfNewVersion();
-
-		tree.setInNeedOfNewVersion();
-
-		assertTrue(tree.isInNeedOfNewVersion());
-		assertTrue(treeSet.isInNeedOfNewVersion());
-	}
-
-	@Test
-	public void setInNeedOfNewVersionForParentlessTree() {
-		final Tree tree = new Tree();
-		assertFalse(tree.isInNeedOfNewVersion());
-		tree.setInNeedOfNewVersion();
-		assertTrue(tree.isInNeedOfNewVersion());
-	}
-
-	@Test
-	public void setLabel() {
-		final Tree tree = new Tree();
-		tree.unsetInNeedOfNewVersion();
-		final String label = "otu-label";
-		tree.setLabel(label);
-		assertTrue(tree.isInNeedOfNewVersion());
-		tree.isInNeedOfNewVersion();
-		assertEquals(tree.getLabel(), label);
-
-		tree.unsetInNeedOfNewVersion();
-		tree.setLabel(label);
-		assertFalse(tree.isInNeedOfNewVersion());
-		assertEquals(tree.getLabel(), label);
-	}
-
-	@Test
-	public void setNewick() {
-		final Tree tree = new Tree();
-		final String newick = "arbitrary string";
-		tree.unsetInNeedOfNewVersion();
-		tree.setNewick(newick);
-		assertEquals(tree.getNewick(), newick);
-		assertTrue(tree.isInNeedOfNewVersion());
-
-		tree.unsetInNeedOfNewVersion();
-		tree.setNewick(newick);
-		assertFalse(tree.isInNeedOfNewVersion());
-		assertEquals(tree.getNewick(), newick);
-	}
 }

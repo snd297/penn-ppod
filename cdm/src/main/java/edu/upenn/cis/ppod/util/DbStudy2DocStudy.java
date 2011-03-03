@@ -1,6 +1,7 @@
 package edu.upenn.cis.ppod.util;
 
 import static com.google.common.base.Preconditions.checkNotNull;
+import static com.google.common.collect.Iterables.get;
 import static com.google.common.collect.Iterables.transform;
 import static com.google.common.collect.Lists.newArrayList;
 import static com.google.common.collect.Sets.newHashSet;
@@ -39,7 +40,6 @@ import edu.upenn.cis.ppod.model.StandardState;
 import edu.upenn.cis.ppod.model.Study;
 import edu.upenn.cis.ppod.model.Tree;
 import edu.upenn.cis.ppod.model.TreeSet;
-import edu.upenn.cis.ppod.model.VersionInfo;
 
 public final class DbStudy2DocStudy {
 
@@ -49,14 +49,14 @@ public final class DbStudy2DocStudy {
 		final PPodDnaMatrix docMatrix =
 				new PPodDnaMatrix(
 						dbMatrix.getPPodId(),
-						dbMatrix.getVersionInfo().getVersion(),
+						1L,
 						dbMatrix.getLabel());
 
 		for (final Otu dbOtu : dbMatrix.getParent().getOtus()) {
 			final DnaRow dbRow = dbMatrix.getRows().get(dbOtu);
 			final List<Long> cellVersions = newArrayList();
 			final PPodDnaRow docRow = new PPodDnaRow(
-					dbRow.getVersionInfo().getVersion(),
+					1L,
 					dbRow.getSequence());
 			docMatrix.getRows().add(docRow);
 			docRow.setCellVersions(cellVersions);
@@ -76,13 +76,12 @@ public final class DbStudy2DocStudy {
 			final DnaSequenceSet dbSequenceSet) {
 		checkNotNull(dbSequenceSet);
 		final PPodDnaSequenceSet docSequenceSet = new PPodDnaSequenceSet(
-				dbSequenceSet.getPPodId(), dbSequenceSet.getVersionInfo()
-						.getVersion(), dbSequenceSet.getLabel());
+				dbSequenceSet.getPPodId(), 1L, dbSequenceSet.getLabel());
 		for (final Otu dbOtu : dbSequenceSet.getParent().getOtus()) {
 			final DnaSequence dbSequence = dbSequenceSet.getSequence(dbOtu);
 			final PPodDnaSequence docSequence =
 					new PPodDnaSequence(
-							dbSequence.getVersionInfo().getVersion(),
+							1L,
 							dbSequence.getSequence(),
 							dbSequence.getName(),
 							dbSequence.getDescription(),
@@ -95,7 +94,7 @@ public final class DbStudy2DocStudy {
 	public PPodOtu dbOtu2DocOtu(final Otu dbOtu) {
 		final PPodOtu docOtu = new PPodOtu(
 				dbOtu.getPPodId(),
-				dbOtu.getVersionInfo().getVersion(),
+				1L,
 				dbOtu.getPPodId(),
 				dbOtu.getLabel());
 		return docOtu;
@@ -133,7 +132,7 @@ public final class DbStudy2DocStudy {
 
 	public PPodOtuSet dbOtuSet2DocOtuSetJustOtus(final OtuSet dbOtuSet) {
 		final PPodOtuSet docOtuSet = new PPodOtuSet(dbOtuSet.getPPodId(),
-				dbOtuSet.getVersionInfo().getVersion(), dbOtuSet.getLabel());
+				1L, dbOtuSet.getLabel());
 
 		for (final Otu dbOtu : dbOtuSet.getOtus()) {
 			docOtuSet.getOtus().add(dbOtu2DocOtu(dbOtu));
@@ -147,14 +146,14 @@ public final class DbStudy2DocStudy {
 		final PPodProteinMatrix docMatrix =
 				new PPodProteinMatrix(
 						dbMatrix.getPPodId(),
-						dbMatrix.getVersionInfo().getVersion(),
+						1L,
 						dbMatrix.getLabel());
 
 		for (final Otu dbOtu : dbMatrix.getParent().getOtus()) {
 			final ProteinRow dbRow = dbMatrix.getRows().get(dbOtu);
 			final PPodProteinRow docRow =
 					new PPodProteinRow(
-							dbRow.getVersionInfo().getVersion(),
+							1L,
 							dbRow.getSequence());
 			docMatrix.getRows().add(docRow);
 		}
@@ -167,16 +166,17 @@ public final class DbStudy2DocStudy {
 		final PPodStandardMatrix docMatrix =
 				new PPodStandardMatrix(
 						dbMatrix.getPPodId(),
-						dbMatrix.getVersionInfo().getVersion(),
+						1L,
 						dbMatrix.getLabel());
-		for (final VersionInfo columnVersionInfo : dbMatrix
-				.getColumnVersionInfos()) {
-			docMatrix.getColumnVersions().add(columnVersionInfo.getVersion());
+		for (@SuppressWarnings("unused")
+		final StandardCell cell : get(dbMatrix.getRows().values(), 0)
+				.getCells()) {
+			docMatrix.getColumnVersions().add(1L);
 		}
 		for (final StandardCharacter dbCharacter : dbMatrix.getCharacters()) {
 			final PPodStandardCharacter docCharacter = new PPodStandardCharacter(
 					dbCharacter.getPPodId(),
-					dbCharacter.getVersionInfo().getVersion(),
+					1L,
 					dbCharacter.getLabel(),
 					dbCharacter.getMesquiteId());
 			docMatrix.getCharacters().add(docCharacter);
@@ -189,14 +189,13 @@ public final class DbStudy2DocStudy {
 
 		for (final Otu dbOtu : dbMatrix.getParent().getOtus()) {
 			final StandardRow dbRow = dbMatrix.getRows().get(dbOtu);
-			final PPodStandardRow docRow = new PPodStandardRow(dbRow
-					.getVersionInfo().getVersion());
+			final PPodStandardRow docRow = new PPodStandardRow(1L);
 			docMatrix.getRows().add(docRow);
 
 			for (final StandardCell dbCell : dbRow.getCells()) {
 				final PPodStandardCell docCell =
 						new PPodStandardCell(
-								dbCell.getVersionInfo().getVersion(),
+								1L,
 								dbCell.getType(),
 								newHashSet(
 										transform(dbCell.getElements(),
@@ -210,8 +209,8 @@ public final class DbStudy2DocStudy {
 
 	public PPodStudy dbStudy2DocStudy(final Study dbStudy) {
 		checkNotNull(dbStudy);
-		final PPodStudy docStudy = new PPodStudy(dbStudy.getPPodId(), dbStudy
-				.getVersionInfo().getVersion(), dbStudy.getLabel());
+		final PPodStudy docStudy = new PPodStudy(dbStudy.getPPodId(), 1L,
+				dbStudy.getLabel());
 		for (final OtuSet dbOtuSet : dbStudy.getOtuSets()) {
 			docStudy.getOtuSets().add(dbOtuSet2DocOtuSet(dbOtuSet));
 		}
@@ -223,13 +222,13 @@ public final class DbStudy2DocStudy {
 		final PPodTreeSet docTreeSet =
 				new PPodTreeSet(
 						dbTreeSet.getPPodId(),
-						dbTreeSet.getVersionInfo().getVersion(),
+						1L,
 						dbTreeSet.getLabel());
 		for (final Tree dbTree : dbTreeSet.getTrees()) {
 			final PPodTree docTree =
 					new PPodTree(
 							dbTree.getPPodId(),
-							dbTree.getVersionInfo().getVersion(),
+							1L,
 							dbTree.getLabel(),
 							dbTree.getNewick());
 			docTreeSet.getTrees().add(docTree);

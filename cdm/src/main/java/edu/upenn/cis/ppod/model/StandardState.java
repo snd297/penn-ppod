@@ -25,10 +25,11 @@ import javax.persistence.JoinColumn;
 import javax.persistence.ManyToOne;
 import javax.persistence.Table;
 
+import org.hibernate.annotations.Index;
+
 import com.google.common.base.Function;
 
 import edu.umd.cs.findbugs.annotations.CheckForNull;
-import edu.upenn.cis.ppod.util.IVisitor;
 
 /**
  * A stateNumber of a {@link StandardCharacter}. Represents things like
@@ -80,6 +81,7 @@ public class StandardState extends PPodEntity {
 	 * <code>"short"</code>, and <code>"long"</code>
 	 */
 	@Column(name = "LABEL", nullable = false)
+	@Index(name = "LABEL_IDX")
 	@CheckForNull
 	private String label;
 
@@ -99,12 +101,6 @@ public class StandardState extends PPodEntity {
 	public StandardState(final Integer stateNumber) {
 		checkNotNull(stateNumber);
 		this.stateNumber = stateNumber;
-	}
-
-	@Override
-	public void accept(final IVisitor visitor) {
-		super.accept(visitor);
-		visitor.visitStandardState(this);
 	}
 
 	/**
@@ -142,27 +138,13 @@ public class StandardState extends PPodEntity {
 		return stateNumber;
 	}
 
-	@Override
-	public void setInNeedOfNewVersion() {
-		if (parent != null) {
-			parent.setInNeedOfNewVersion();
-		}
-		super.setInNeedOfNewVersion();
-	}
-
 	/**
 	 * Set the label.
 	 * 
 	 * @param label the label
 	 */
 	public void setLabel(final String label) {
-		checkNotNull(label);
-		if (label.equals(getLabel())) {
-
-		} else {
-			this.label = label;
-			setInNeedOfNewVersion();
-		}
+		this.label = checkNotNull(label);
 	}
 
 	/**

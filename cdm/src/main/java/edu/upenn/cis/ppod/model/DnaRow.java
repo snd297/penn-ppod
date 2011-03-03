@@ -28,7 +28,6 @@ import javax.persistence.Table;
 import edu.umd.cs.findbugs.annotations.CheckForNull;
 import edu.umd.cs.findbugs.annotations.Nullable;
 import edu.upenn.cis.ppod.imodel.IChild;
-import edu.upenn.cis.ppod.util.IVisitor;
 
 /**
  * A row of {@link DnaCell}s.
@@ -57,14 +56,6 @@ public class DnaRow extends PPodEntity implements IChild<DnaMatrix> {
 	public DnaRow() {}
 
 	/** {@inheritDoc} */
-	@Override
-	public void accept(final IVisitor visitor) {
-		checkNotNull(visitor);
-		visitor.visitDnaRow(this);
-		super.accept(visitor);
-	}
-
-	/** {@inheritDoc} */
 	public DnaMatrix getParent() {
 		return parent;
 	}
@@ -74,23 +65,12 @@ public class DnaRow extends PPodEntity implements IChild<DnaMatrix> {
 		return sequence;
 	}
 
-	@Override
-	public void setInNeedOfNewVersion() {
-		super.setInNeedOfNewVersion();
-		if (parent != null) {
-			parent.setInNeedOfNewVersion();
-		}
-	}
-
 	/** {@inheritDoc} */
 	public void setParent(final DnaMatrix parent) {
 		this.parent = parent;
 	}
 
 	public void setSequence(final String sequence) {
-		if (!sequence.equals(this.sequence)) {
-			this.sequence = sequence;
-			setInNeedOfNewVersion();
-		}
+		this.sequence = checkNotNull(sequence);
 	}
 }

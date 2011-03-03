@@ -23,14 +23,11 @@ import static com.google.common.collect.Lists.newArrayList;
 
 import java.util.List;
 
-import com.google.inject.Inject;
-
 import edu.upenn.cis.ppod.dto.IHasPPodId;
 import edu.upenn.cis.ppod.dto.PPodOtu;
 import edu.upenn.cis.ppod.dto.PPodOtuSet;
 import edu.upenn.cis.ppod.dto.PPodTree;
 import edu.upenn.cis.ppod.dto.PPodTreeSet;
-import edu.upenn.cis.ppod.imodel.INewVersionInfo;
 import edu.upenn.cis.ppod.model.Otu;
 import edu.upenn.cis.ppod.model.Tree;
 import edu.upenn.cis.ppod.model.TreeSet;
@@ -41,13 +38,6 @@ import edu.upenn.cis.ppod.model.TreeSet;
  * @author Sam Donnelly
  */
 public final class MergeTreeSets {
-
-	private final INewVersionInfo newVersionInfo;
-
-	@Inject
-	MergeTreeSets(INewVersionInfo newVersionInfo) {
-		this.newVersionInfo = newVersionInfo;
-	}
 
 	public void mergeTreeSets(
 			final TreeSet targetTreeSet,
@@ -68,7 +58,6 @@ public final class MergeTreeSets {
 									IHasPPodId.getPPodId),
 									null))) {
 				targetTree = new Tree();
-				targetTree.setVersionInfo(newVersionInfo.getNewVersionInfo());
 			}
 			newTargetTrees.add(targetTree);
 

@@ -17,7 +17,6 @@ package edu.upenn.cis.ppod.model.security;
 
 import static com.google.common.collect.Sets.newHashSet;
 
-import java.util.Collections;
 import java.util.Set;
 
 import javax.persistence.Entity;
@@ -27,8 +26,6 @@ import javax.persistence.ManyToMany;
 import javax.persistence.Table;
 
 import org.hibernate.annotations.Cascade;
-
-import edu.upenn.cis.ppod.util.IVisitor;
 
 /**
  * Group permissions.
@@ -65,17 +62,8 @@ public final class Group extends Party {
 		return this;
 	}
 
-	/**
-	 * Get an unmodifiable view of this group's members.
-	 * 
-	 * @return an unmodifiable view of this group's members
-	 */
 	public Set<User> getUsers() {
-		return Collections.unmodifiableSet(users);
+		return users;
 	}
 
-	public void accept(IVisitor visitor) {
-		// TODO Auto-generated method stub
-		throw new UnsupportedOperationException();
-	}
 }

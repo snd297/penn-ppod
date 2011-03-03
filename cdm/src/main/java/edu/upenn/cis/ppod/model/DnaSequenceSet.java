@@ -18,7 +18,6 @@ package edu.upenn.cis.ppod.model;
 import static com.google.common.base.Preconditions.checkNotNull;
 import static com.google.common.collect.Maps.newHashMap;
 
-import java.util.Collections;
 import java.util.Map;
 
 import javax.annotation.Nullable;
@@ -30,7 +29,6 @@ import javax.persistence.MapKeyJoinColumn;
 import javax.persistence.OneToMany;
 import javax.persistence.Table;
 
-import edu.upenn.cis.ppod.util.IVisitor;
 import edu.upenn.cis.ppod.util.UPennCisPPodUtil;
 
 /**
@@ -64,24 +62,9 @@ public class DnaSequenceSet
 	 */
 	public DnaSequenceSet() {}
 
-	@Override
-	public void accept(final IVisitor visitor) {
-		checkNotNull(visitor);
-		visitor.visitDnaSequenceSet(this);
-		for (final DnaSequence sequence : sequences.values()) {
-			if (sequence != null) {
-				sequence.accept(visitor);
-			}
-		}
-		super.accept(visitor);
-	}
-
 	/** {@inheritDoc} */
 	public void clearSequences() {
-		if (sequences.size() > 0) {
-			sequences.clear();
-			setInNeedOfNewVersion();
-		}
+		sequences.clear();
 	}
 
 	@Override
@@ -92,7 +75,7 @@ public class DnaSequenceSet
 
 	@Override
 	public Map<Otu, DnaSequence> getSequences() {
-		return Collections.unmodifiableMap(sequences);
+		return sequences;
 	}
 
 	@Override
@@ -104,9 +87,6 @@ public class DnaSequenceSet
 		checkNotNull(sequence);
 		final DnaSequence oldSequence = sequences.put(otu, sequence);
 		sequence.setParent(this);
-		if (sequence != oldSequence || oldSequence == null) {
-			setInNeedOfNewVersion();
-		}
 
 		if (sequence != oldSequence && oldSequence != null) {
 			oldSequence.setParent(null);
@@ -116,6 +96,6 @@ public class DnaSequenceSet
 
 	@Override
 	public void updateOtus() {
-		UPennCisPPodUtil.updateOtus(getParent(), sequences, this);
+		UPennCisPPodUtil.updateOtus(getParent(), sequences);
 	}
 }

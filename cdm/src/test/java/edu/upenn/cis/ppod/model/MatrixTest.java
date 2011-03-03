@@ -15,8 +15,6 @@
  */
 package edu.upenn.cis.ppod.model;
 
-import static org.testng.Assert.assertSame;
-
 import org.testng.annotations.Test;
 
 import edu.upenn.cis.ppod.TestGroupDefs;
@@ -25,5 +23,4 @@ import edu.upenn.cis.ppod.TestGroupDefs;
  * @author Sam Donnelly
  */
 @Test(groups = TestGroupDefs.FAST)
-public class MatrixTest {
-}
+public class MatrixTest {}

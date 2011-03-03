@@ -38,7 +38,6 @@ import edu.upenn.cis.ppod.dto.PPodStandardCell;
 import edu.upenn.cis.ppod.dto.PPodStandardCharacter;
 import edu.upenn.cis.ppod.dto.PPodStandardMatrix;
 import edu.upenn.cis.ppod.dto.PPodStandardState;
-import edu.upenn.cis.ppod.imodel.INewVersionInfo;
 import edu.upenn.cis.ppod.model.StandardCell;
 import edu.upenn.cis.ppod.model.StandardCharacter;
 import edu.upenn.cis.ppod.model.StandardMatrix;
@@ -52,14 +51,10 @@ public final class CreateOrUpdateStandardMatrix extends CreateOrUpdateMatrix {
 	private static Logger logger =
 			LoggerFactory.getLogger(CreateOrUpdateMatrix.class);
 
-	private final INewVersionInfo newVersionInfo;
-
 	@Inject
 	CreateOrUpdateStandardMatrix(
-			final INewVersionInfo newVersionInfo,
 			final IStandardRowDAO rowDao) {
-		super(newVersionInfo, rowDao);
-		this.newVersionInfo = newVersionInfo;
+		super(rowDao);
 	}
 
 	public void createOrUpdateMatrix(
@@ -89,8 +84,6 @@ public final class CreateOrUpdateStandardMatrix extends CreateOrUpdateMatrix {
 													IHasPPodId.getPPodId),
 													null))) {
 				newDbCharacter = new StandardCharacter();
-				newDbCharacter.setVersionInfo(newVersionInfo
-						.getNewVersionInfo());
 				sourceToDbCharPositions[sourceCharacterPosition] = -1;
 			}
 
@@ -110,8 +103,6 @@ public final class CreateOrUpdateStandardMatrix extends CreateOrUpdateMatrix {
 						newDbCharacter.getState(sourceState.getStateNumber()))) {
 					dbState = new StandardState(sourceState.getStateNumber());
 					newDbCharacter.addState(dbState);
-					dbState.setVersionInfo(
-							newVersionInfo.getNewVersionInfo());
 				}
 				dbState.setLabel(sourceState.getLabel());
 			}

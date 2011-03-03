@@ -15,7 +15,6 @@
  */
 package edu.upenn.cis.ppod.model;
 
-import static com.google.common.base.Preconditions.checkNotNull;
 import static com.google.common.collect.Lists.newArrayList;
 
 import java.util.List;
@@ -34,7 +33,6 @@ import javax.persistence.Table;
 import edu.umd.cs.findbugs.annotations.CheckForNull;
 import edu.umd.cs.findbugs.annotations.Nullable;
 import edu.upenn.cis.ppod.dto.PPodDnaSequence;
-import edu.upenn.cis.ppod.util.IVisitor;
 
 /**
  * A DNA sequence.
@@ -72,12 +70,6 @@ public class DnaSequence extends Sequence<DnaSequenceSet> {
 	 */
 	public DnaSequence() {}
 
-	@Override
-	public void accept(final IVisitor visitor) {
-		checkNotNull(visitor);
-		visitor.visitDnaSequence(this);
-	}
-
 	@Nullable
 	public DnaSequenceSet getParent() {
 		return parent;
@@ -86,14 +78,6 @@ public class DnaSequence extends Sequence<DnaSequenceSet> {
 	@Override
 	public boolean isLegal(final char c) {
 		return PPodDnaSequence.LEGAL_CHARS.contains(c);
-	}
-
-	@Override
-	public void setInNeedOfNewVersion() {
-		if (getParent() != null) {
-			getParent().setInNeedOfNewVersion();
-		}
-		super.setInNeedOfNewVersion();
 	}
 
 	/** {@inheritDoc} */

@@ -19,13 +19,11 @@ import static com.google.common.base.Preconditions.checkNotNull;
 import static com.google.common.base.Preconditions.checkState;
 import static com.google.common.collect.Lists.newArrayList;
 
-import java.util.Collections;
 import java.util.List;
 
 import com.google.common.annotations.VisibleForTesting;
 
 import edu.upenn.cis.ppod.imodel.IChild;
-import edu.upenn.cis.ppod.util.IVisitor;
 
 /**
  * A row of cells.
@@ -41,20 +39,8 @@ abstract class Row<C extends Cell<?, ?>, M extends Matrix<?>>
 
 	Row() {}
 
-	@Override
-	public void accept(final IVisitor visitor) {
-		checkNotNull(visitor);
-		for (final C cell : getCells()) {
-			cell.accept(visitor);
-		}
-		super.accept(visitor);
-	}
-
 	/**
 	 * Empty out this row's cells.
-	 * <p>
-	 * This method will not mark this object or parents as in need of a new pPOD
-	 * version.
 	 * <p>
 	 * This method {@code null}s out the cell->row relationship.
 	 * <p>
@@ -70,7 +56,7 @@ abstract class Row<C extends Cell<?, ?>, M extends Matrix<?>>
 			clearedCell.setParent(null);
 			clearedCell.setPosition(null);
 		}
-		getCellsModifiable().clear();
+		getCells().clear();
 	}
 
 	/**
@@ -78,16 +64,7 @@ abstract class Row<C extends Cell<?, ?>, M extends Matrix<?>>
 	 * 
 	 * @return the cells that make up this row
 	 */
-	public List<C> getCells() {
-		return Collections.unmodifiableList(getCellsModifiable());
-	}
-
-	/**
-	 * Get a modifiable reference to this row's cells.
-	 * 
-	 * @return a modifiable reference to this row's cells
-	 */
-	abstract List<C> getCellsModifiable();
+	public abstract List<C> getCells();
 
 	/**
 	 * Set the cells of this row.
@@ -120,27 +97,13 @@ abstract class Row<C extends Cell<?, ?>, M extends Matrix<?>>
 
 		clearCells();
 
-		getCellsModifiable().addAll(cells);
+		getCells().addAll(cells);
 
 		int cellPos = -1;
 		for (final C cell : getCells()) {
 			cellPos++;
 			cell.setPosition(cellPos);
 		}
-		setInNeedOfNewVersion();
 	}
 
-	/**
-	 * Reset the pPOD version info of this row and that of its matrix.
-	 */
-	@Override
-	public void setInNeedOfNewVersion() {
-
-		// So FindBugs knows it's okay
-		final M matrix = getParent();
-		if (matrix != null) {
-			matrix.setInNeedOfNewVersion();
-		}
-		super.setInNeedOfNewVersion();
-	}
 }

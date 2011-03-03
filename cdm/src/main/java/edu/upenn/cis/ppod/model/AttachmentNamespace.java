@@ -23,8 +23,6 @@ import javax.persistence.Column;
 import javax.persistence.Entity;
 import javax.persistence.Table;
 
-import edu.upenn.cis.ppod.util.IVisitor;
-
 /**
  * To prevent name clashes among {@link AttachmentType}s.
  * 
@@ -54,10 +52,6 @@ public class AttachmentNamespace extends PersistentObject {
 	 */
 	public AttachmentNamespace() {}
 
-	public void accept(final IVisitor visitor) {
-		visitor.visitAttachmentNamespace(this);
-	}
-
 	/**
 	 * Get the label. Will be {@code null} for newly created objects until
 	 * {@link #setLabel(String)} is called. Once set, it will never be
@@ -76,7 +70,6 @@ public class AttachmentNamespace extends PersistentObject {
 	 * @param label the label
 	 */
 	public void setLabel(final String label) {
-		checkNotNull(label);
-		this.label = label;
+		this.label = checkNotNull(label);
 	}
 }

@@ -15,7 +15,6 @@
  */
 package edu.upenn.cis.ppod.model;
 
-import static com.google.common.base.Preconditions.checkNotNull;
 import static com.google.common.base.Preconditions.checkState;
 import static com.google.common.collect.Lists.newArrayList;
 
@@ -31,7 +30,6 @@ import javax.persistence.OrderColumn;
 import javax.persistence.Table;
 
 import edu.umd.cs.findbugs.annotations.CheckForNull;
-import edu.upenn.cis.ppod.util.IVisitor;
 
 /**
  * Rows of a {@link StandardMatrix}.
@@ -63,14 +61,7 @@ public class StandardRow
 	public StandardRow() {}
 
 	@Override
-	public void accept(final IVisitor visitor) {
-		checkNotNull(visitor);
-		visitor.visitStandardRow(this);
-		super.accept(visitor);
-	}
-
-	@Override
-	protected List<StandardCell> getCellsModifiable() {
+	public List<StandardCell> getCells() {
 		return cells;
 	}
 

@@ -15,19 +15,9 @@
  */
 package edu.upenn.cis.ppod.model;
 
-import static org.mockito.Matchers.any;
-import static org.mockito.Mockito.mock;
-import static org.mockito.Mockito.times;
-import static org.mockito.Mockito.verify;
-import static org.testng.Assert.assertEquals;
-import static org.testng.Assert.assertFalse;
-import static org.testng.Assert.assertNull;
-import static org.testng.Assert.assertTrue;
-
 import org.testng.annotations.Test;
 
 import edu.upenn.cis.ppod.TestGroupDefs;
-import edu.upenn.cis.ppod.util.IVisitor;
 
 /**
  * Test {@link SequenceSet}.
@@ -126,77 +116,4 @@ public class SequenceSetTest {
 		seqSet.checkSequenceLength(seq0);
 	}
 
-	@Test
-	public void setInNeedOfNewVersion() {
-		final DnaSequenceSet seqSet = new DnaSequenceSet();
-		assertFalse(seqSet.isInNeedOfNewVersion());
-		seqSet.setInNeedOfNewVersion();
-		assertTrue(seqSet.isInNeedOfNewVersion());
-
-		final OtuSet otuSet = new OtuSet();
-		otuSet.addDnaSequenceSet(seqSet);
-		seqSet.unsetInNeedOfNewVersion();
-		otuSet.unsetInNeedOfNewVersion();
-
-		seqSet.setInNeedOfNewVersion();
-		assertTrue(seqSet.isInNeedOfNewVersion());
-		assertTrue(otuSet.isInNeedOfNewVersion());
-	}
-
-	@Test
-	public void setLabel() {
-		final SequenceSet<DnaSequence> seqSet = new DnaSequenceSet();
-		assertNull(seqSet.getLabel());
-
-		assertFalse(seqSet.isInNeedOfNewVersion());
-		final String label = "seq-set";
-		seqSet.setLabel(label);
-		assertTrue(seqSet.isInNeedOfNewVersion());
-		assertEquals(seqSet.getLabel(), label);
-
-		seqSet.unsetInNeedOfNewVersion();
-		assertFalse(seqSet.isInNeedOfNewVersion());
-		seqSet.setLabel(label);
-		assertEquals(seqSet.getLabel(), label);
-		assertFalse(seqSet.isInNeedOfNewVersion());
-	}
-
-	@Test
-	public void accept() {
-		final OtuSet otuSet = new OtuSet();
-		otuSet.addOtu(new Otu("otu-0"));
-		otuSet.addOtu(new Otu("otu-1"));
-		otuSet.addOtu(new Otu("otu-2"));
-
-		final DnaSequenceSet seqSet = new DnaSequenceSet();
-
-		otuSet.addDnaSequenceSet(seqSet);
-
-		final DnaSequence seq0 = (DnaSequence) new DnaSequence()
-				.setSequence("ATG");
-		final DnaSequence seq1 = (DnaSequence) new DnaSequence()
-				.setSequence("CTA");
-		final DnaSequence seq2 = (DnaSequence) new DnaSequence()
-				.setSequence("TTT");
-
-		seqSet.putSequence(otuSet.getOtus().get(0), seq0);
-
-		seqSet.putSequence(otuSet.getOtus().get(1), seq1);
-
-		seqSet.putSequence(otuSet.getOtus().get(2), seq2);
-
-		final IVisitor visitor = mock(IVisitor.class);
-
-		seqSet.accept(visitor);
-
-		verify(visitor, times(1)).visitDnaSequenceSet(seqSet);
-
-		verify(visitor, times(seqSet.getSequences().values().size()))
-				.visitDnaSequence(any(DnaSequence.class));
-
-		verify(visitor).visitDnaSequence(seq0);
-		verify(visitor).visitDnaSequence(seq1);
-		verify(visitor).visitDnaSequence(seq2);
-
-	}
 }
