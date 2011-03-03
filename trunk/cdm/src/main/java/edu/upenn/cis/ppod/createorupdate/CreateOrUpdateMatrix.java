@@ -27,7 +27,6 @@ import edu.upenn.cis.ppod.dao.IStandardRowDAO;
 import edu.upenn.cis.ppod.dto.PPodStandardCell;
 import edu.upenn.cis.ppod.dto.PPodStandardMatrix;
 import edu.upenn.cis.ppod.dto.PPodStandardRow;
-import edu.upenn.cis.ppod.imodel.INewVersionInfo;
 import edu.upenn.cis.ppod.model.Otu;
 import edu.upenn.cis.ppod.model.StandardCell;
 import edu.upenn.cis.ppod.model.StandardMatrix;
@@ -40,13 +39,10 @@ abstract class CreateOrUpdateMatrix {
 
 	protected Logger logger = LoggerFactory.getLogger(getClass());
 
-	private final INewVersionInfo newVersionInfo;
 	private final IStandardRowDAO rowDao;
 
 	protected CreateOrUpdateMatrix(
-			final INewVersionInfo newVersionInfo,
-			final IStandardRowDAO rowDao) {
-		this.newVersionInfo = newVersionInfo;
+				final IStandardRowDAO rowDao) {
 		this.rowDao = rowDao;
 	}
 
@@ -78,7 +74,6 @@ abstract class CreateOrUpdateMatrix {
 
 			if (null == (dbRow = dbMatrix.getRows().get(dbOTU))) {
 				dbRow = new StandardRow();
-				dbRow.setVersionInfo(newVersionInfo.getNewVersionInfo());
 				dbMatrix.putRow(dbOTU, dbRow);
 				rowDao.makePersistent(dbRow);
 			}
@@ -89,8 +84,6 @@ abstract class CreateOrUpdateMatrix {
 			for (final int sourceToDbCharPosition : sourceToDbCharPositions) {
 				if (sourceToDbCharPosition == -1) {
 					final StandardCell newDbCell = new StandardCell();
-					newDbCell
-							.setVersionInfo(newVersionInfo.getNewVersionInfo());
 					dbCells.add(newDbCell);
 				} else {
 					dbCells.add(
@@ -127,21 +120,6 @@ abstract class CreateOrUpdateMatrix {
 					default:
 						throw new AssertionError("unknown cell type");
 				}
-
-				// We need to do this here since we're removing the cell from
-				// the persistence context (with evict). So it won't get handled
-				// higher up in the application when it does for most entities.
-				if (dbCell.isInNeedOfNewVersion()) {
-					dbCell.setVersionInfo(
-							newVersionInfo.getNewVersionInfo());
-				}
-			}
-
-			// We need to do this here since we're removing the row from
-			// the persistence context (with evict)
-			if (dbRow.isInNeedOfNewVersion()) {
-				dbRow.setVersionInfo(
-						newVersionInfo.getNewVersionInfo());
 			}
 
 			logger.debug(

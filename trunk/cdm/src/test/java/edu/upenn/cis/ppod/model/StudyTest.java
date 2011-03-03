@@ -46,32 +46,12 @@ public class StudyTest {
 		study.addOtuSet(otuSet0);
 		study.addOtuSet(otuSet1);
 		study.addOtuSet(otuSet2);
-		study.unsetInNeedOfNewVersion();
 
 		study.removeOtuSet(otuSet1);
-		assertTrue(study.isInNeedOfNewVersion());
 		assertFalse(study.getOtuSets().contains(otuSet1));
 
 		assertEquals(study.getOtuSets(),
 				ImmutableList.of(otuSet0, otuSet2));
-	}
-
-	@Test
-	public void setLabel() {
-		final Study study = new Study();
-		study.unsetInNeedOfNewVersion();
-		final String label = "otu-set-label";
-		study.setLabel(label);
-		assertTrue(study.isInNeedOfNewVersion());
-		study.isInNeedOfNewVersion();
-
-		assertEquals(study.getLabel(), label);
-
-		study.unsetInNeedOfNewVersion();
-		study.setLabel(label);
-
-		assertFalse(study.isInNeedOfNewVersion());
-		assertEquals(study.getLabel(), label);
 	}
 
 	@Test(expectedExceptions = IllegalArgumentException.class)
@@ -87,10 +67,7 @@ public class StudyTest {
 		final Study study = new Study();
 		final OtuSet otuSet0 = new OtuSet();
 
-		study.unsetInNeedOfNewVersion();
-
 		study.addOtuSet(otuSet0);
-		assertTrue(study.isInNeedOfNewVersion());
 		assertEquals(study.getOtuSets().size(), 1);
 		assertTrue(study.getOtuSets().contains(otuSet0));
 		assertSame(otuSet0.getParent(), study);
@@ -112,10 +89,7 @@ public class StudyTest {
 		study.addOtuSet(otuSet1);
 		study.addOtuSet(otuSet2);
 
-		study.unsetInNeedOfNewVersion();
-
 		study.addOtuSet(2, otuSet3);
-		assertTrue(study.isInNeedOfNewVersion());
 		assertEquals(study.getOtuSets(),
 				ImmutableList.of(otuSet0, otuSet1, otuSet3, otuSet2));
 		assertSame(otuSet3.getParent(), study);

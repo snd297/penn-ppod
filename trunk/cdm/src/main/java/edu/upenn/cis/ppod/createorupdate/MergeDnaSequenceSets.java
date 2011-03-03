@@ -21,23 +21,14 @@ import static com.google.common.base.Preconditions.checkNotNull;
 import java.util.Map;
 
 import com.google.common.collect.ImmutableMap;
-import com.google.inject.Inject;
 
 import edu.upenn.cis.ppod.dto.PPodDnaSequence;
 import edu.upenn.cis.ppod.dto.PPodDnaSequenceSet;
-import edu.upenn.cis.ppod.imodel.INewVersionInfo;
 import edu.upenn.cis.ppod.model.DnaSequence;
 import edu.upenn.cis.ppod.model.DnaSequenceSet;
 import edu.upenn.cis.ppod.model.Otu;
 
 public final class MergeDnaSequenceSets {
-
-	private final INewVersionInfo newVersionInfo;
-
-	@Inject
-	MergeDnaSequenceSets(final INewVersionInfo newVersionInfo) {
-		this.newVersionInfo = newVersionInfo;
-	}
 
 	public void mergeSequenceSets(
 			final DnaSequenceSet targSeqSet,
@@ -92,7 +83,6 @@ public final class MergeDnaSequenceSets {
 			if (null == (targSeq =
 					targOTUsToSeqs.get(targOTU))) {
 				targSeq = new DnaSequence();
-				targSeq.setVersionInfo(newVersionInfo.getNewVersionInfo());
 			}
 			targSeq.setSequence(srcSeq.getSequence());
 			targSeqSet.putSequence(targOTU, targSeq);

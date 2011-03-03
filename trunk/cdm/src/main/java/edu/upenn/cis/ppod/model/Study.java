@@ -22,7 +22,6 @@ import static com.google.common.base.Predicates.equalTo;
 import static com.google.common.collect.Iterables.find;
 import static com.google.common.collect.Lists.newArrayList;
 
-import java.util.Collections;
 import java.util.List;
 
 import javax.persistence.CascadeType;
@@ -39,7 +38,6 @@ import edu.umd.cs.findbugs.annotations.CheckForNull;
 import edu.umd.cs.findbugs.annotations.Nullable;
 import edu.upenn.cis.ppod.dto.IOtuSets;
 import edu.upenn.cis.ppod.imodel.ILabeled;
-import edu.upenn.cis.ppod.util.IVisitor;
 
 /**
  * A collection of work - inspired by a Mesquite project - sets of OTU sets and,
@@ -57,16 +55,6 @@ import edu.upenn.cis.ppod.util.IVisitor;
 						// + "join fetch r.values v "
 						// + "join fetch v.cells "
 						+ "where s.pPodId=:pPodId"),
-		@NamedQuery(
-				name = "Study-getVersionByPPodId",
-				query = "select s.versionInfo.version "
-						+ "from Study s where s.pPodId=:pPodId"),
-		@NamedQuery(
-				name = "Study-getOTUSetInfosByStudyPPodIdAndMinVersion",
-				query = "select os.id, os.pPodId, os.versionInfo.version "
-						+ "from Study s join s.otuSets os "
-						+ "where s.pPodId=:studyPPodId "
-						+ "and os.versionInfo.version >= :minVersion"),
 		@NamedQuery(
 				name = "Study-getPPodIdLabelPairs",
 				query = "select s.pPodId, s.label from Study s") })
@@ -99,15 +87,6 @@ public class Study
 	 */
 	public Study() {}
 
-	@Override
-	public void accept(final IVisitor visitor) {
-		checkNotNull(visitor);
-		visitor.visitStudy(this);
-		for (final OtuSet otuSet : getOtuSets()) {
-			otuSet.accept(visitor);
-		}
-	}
-
 	/**
 	 * Insert an OTU set at the given position.
 	 * 
@@ -135,7 +114,6 @@ public class Study
 						+ otuSet.getLabel() + "]");
 		otuSets.add(pos, otuSet);
 		otuSet.setParent(this);
-		setInNeedOfNewVersion();
 	}
 
 	/**
@@ -157,7 +135,7 @@ public class Study
 
 	/** {@inheritDoc} */
 	public List<OtuSet> getOtuSets() {
-		return Collections.unmodifiableList(otuSets);
+		return otuSets;
 	}
 
 	/**
@@ -175,7 +153,6 @@ public class Study
 						+ "]");
 		otuSets.remove(otuSet);
 		otuSet.setParent(null);
-		setInNeedOfNewVersion();
 	}
 
 	/**
@@ -184,12 +161,6 @@ public class Study
 	 * @param label the label to set
 	 */
 	public void setLabel(final String label) {
-		checkNotNull(label);
-		if (label.equals(this.label)) {
-
-		} else {
-			this.label = label;
-			setInNeedOfNewVersion();
-		}
+		this.label = checkNotNull(label);
 	}
 }

@@ -59,7 +59,7 @@ public class CreateOrUpdateStandardMatrixTest {
 		when(newVersionInfo.getNewVersionInfo()).thenReturn(versionInfo);
 
 		final CreateOrUpdateStandardMatrix createOrUpdateStandardMatrix =
-				new CreateOrUpdateStandardMatrix(newVersionInfo,
+				new CreateOrUpdateStandardMatrix(
 						mock(IStandardRowDAO.class));
 
 		final PPodStandardMatrix sourceMatrix = getOnlyElement(sourceOtuSet
@@ -69,7 +69,7 @@ public class CreateOrUpdateStandardMatrixTest {
 		final StandardMatrix targetMatrix = new StandardMatrix();
 		targetOtuSet.addStandardMatrix(targetMatrix);
 
-		new MergeOtuSets(newVersionInfo).mergeOtuSets(targetOtuSet,
+		new MergeOtuSets().mergeOtuSets(targetOtuSet,
 				sourceOtuSet);
 
 		createOrUpdateStandardMatrix
@@ -89,14 +89,14 @@ public class CreateOrUpdateStandardMatrixTest {
 		when(newVersionInfo.getNewVersionInfo()).thenReturn(versionInfo);
 
 		final CreateOrUpdateStandardMatrix createOrUpdateStandardMatrix =
-				new CreateOrUpdateStandardMatrix(newVersionInfo,
+				new CreateOrUpdateStandardMatrix(
 						mock(IStandardRowDAO.class));
 
 		final OtuSet targetOtuSet = new OtuSet();
 		final StandardMatrix targetMatrix = new StandardMatrix();
 		targetOtuSet.addStandardMatrix(targetMatrix);
 
-		new MergeOtuSets(newVersionInfo).mergeOtuSets(targetOtuSet,
+		new MergeOtuSets().mergeOtuSets(targetOtuSet,
 				sourceOtuSet);
 
 		final PPodStandardMatrix sourceMatrix =
@@ -141,14 +141,14 @@ public class CreateOrUpdateStandardMatrixTest {
 		when(newVersionInfo.getNewVersionInfo()).thenReturn(versionInfo);
 
 		final CreateOrUpdateStandardMatrix createOrUpdateStandardMatrix =
-				new CreateOrUpdateStandardMatrix(newVersionInfo,
+				new CreateOrUpdateStandardMatrix(
 						mock(IStandardRowDAO.class));
 
 		final OtuSet targetOtuSet = new OtuSet();
 		final StandardMatrix targetMatrix = new StandardMatrix();
 		targetOtuSet.addStandardMatrix(targetMatrix);
 
-		new MergeOtuSets(newVersionInfo).mergeOtuSets(targetOtuSet,
+		new MergeOtuSets().mergeOtuSets(targetOtuSet,
 				sourceOtuSet);
 
 		final PPodStandardMatrix sourceMatrix =
@@ -205,14 +205,14 @@ public class CreateOrUpdateStandardMatrixTest {
 		when(newVersionInfo.getNewVersionInfo()).thenReturn(versionInfo);
 
 		final CreateOrUpdateStandardMatrix createOrUpdateStandardMatrix =
-				new CreateOrUpdateStandardMatrix(newVersionInfo,
+				new CreateOrUpdateStandardMatrix(
 						mock(IStandardRowDAO.class));
 
 		final OtuSet targetOtuSet = new OtuSet();
 		final StandardMatrix targetMatrix = new StandardMatrix();
 		targetOtuSet.addStandardMatrix(targetMatrix);
 
-		new MergeOtuSets(newVersionInfo).mergeOtuSets(targetOtuSet,
+		new MergeOtuSets().mergeOtuSets(targetOtuSet,
 				sourceOtuSet);
 
 		final PPodStandardMatrix sourceMatrix =

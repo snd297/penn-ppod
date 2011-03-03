@@ -20,7 +20,6 @@ package edu.upenn.cis.ppod.model.security;
 
 import static com.google.common.collect.Sets.newHashSet;
 
-import java.util.Collections;
 import java.util.Set;
 
 import javax.persistence.CascadeType;
@@ -33,7 +32,6 @@ import javax.persistence.Table;
 import org.hibernate.annotations.Index;
 
 import edu.upenn.cis.ppod.model.PersistentObject;
-import edu.upenn.cis.ppod.util.IVisitor;
 
 /**
  * Model object that represents a security role.
@@ -99,13 +97,8 @@ public final class Role extends PersistentObject {
 	// @Cache(usage = CacheConcurrencyStrategy.READ_WRITE)
 	private final Set<StudyPermission> studyPermissions = newHashSet();
 
-	/**
-	 * Get an unmodifiable view of this role's permissions.
-	 * 
-	 * @return an unmodifiable view of this role's permissions
-	 */
 	public final Set<StudyPermission> getPermissions() {
-		return Collections.unmodifiableSet(studyPermissions);
+		return studyPermissions;
 	}
 
 	/**
@@ -118,11 +111,6 @@ public final class Role extends PersistentObject {
 		this.studyPermissions.clear();
 		this.studyPermissions.addAll(studyPermissions);
 		return this;
-	}
-
-	public void accept(IVisitor visitor) {
-		// TODO Auto-generated method stub
-		throw new UnsupportedOperationException();
 	}
 
 }

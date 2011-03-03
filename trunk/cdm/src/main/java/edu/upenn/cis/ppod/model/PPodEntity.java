@@ -22,24 +22,16 @@ import static com.google.common.collect.Sets.newHashSet;
 import java.util.Collections;
 import java.util.Set;
 
-import javax.annotation.OverridingMethodsMustInvokeSuper;
 import javax.persistence.CascadeType;
 import javax.persistence.Column;
 import javax.persistence.Entity;
-import javax.persistence.FetchType;
 import javax.persistence.Inheritance;
 import javax.persistence.InheritanceType;
-import javax.persistence.JoinColumn;
-import javax.persistence.ManyToOne;
 import javax.persistence.OneToMany;
 import javax.persistence.Table;
-import javax.persistence.Transient;
-
-import com.google.common.annotations.VisibleForTesting;
 
 import edu.umd.cs.findbugs.annotations.CheckForNull;
 import edu.upenn.cis.ppod.imodel.IPPodEntity;
-import edu.upenn.cis.ppod.util.IVisitor;
 
 /**
  * A {@code PersistentObject} with pPOD version information and to which we can
@@ -66,51 +58,14 @@ public abstract class PPodEntity
 	@Column(name = "HAS_ATTACHMENTS", nullable = false)
 	private Boolean hasAttachments = false;
 
-	/**
-	 * Does this object need to be assigned a new pPOD version at next save or
-	 * update? This flag is really only needed for entities that were obtained
-	 * from the database and not for transient objects - read on for the why.
-	 * <p>
-	 * We start with {@code false} because
-	 * <ul>
-	 * <li>that's appropriate for DB entities: when an object is modified, this
-	 * value will be set to {@code true} and it will be set to the newest
-	 * version number by whatever mechanism is in place</li>
-	 * <li>for transient entities this flag is functionally irrelevant: the pPOD
-	 * version info needs to be set at time of creation, so this value is will
-	 * be unset anyway in {@link #setVersionInfo} . Subsequent calls to the
-	 * setters will then turn it to {@code true} needlessly.
-	 * </ul>
-	 */
-	@Transient
-	private boolean inNeedOfNewVersion = false;
-
-	/**
-	 * The pPod version of this object. Similar in concept to Hibernate's
-	 * version, but tweaked for our purposes.
-	 */
-	@ManyToOne(fetch = FetchType.LAZY, optional = false)
-	@JoinColumn(name = VersionInfo.JOIN_COLUMN)
-	@CheckForNull
-	private VersionInfo versionInfo;
-
 	protected PPodEntity() {}
-
-	public void accept(final IVisitor visitor) {
-		checkNotNull(visitor);
-		for (final Attachment attachment : getAttachments()) {
-			attachment.accept(visitor);
-		}
-	}
 
 	public Attachment addAttachment(final Attachment attachment) {
 		checkNotNull(attachment);
 		if (attachments == null) {
 			attachments = newHashSet();
 		}
-		if (attachments.add(attachment)) {
-			setInNeedOfNewVersion();
-		}
+		attachments.add(attachment);
 		attachment.setAttachee(this);
 		hasAttachments = true;
 
@@ -156,14 +111,6 @@ public abstract class PPodEntity
 		return hasAttachments;
 	}
 
-	public VersionInfo getVersionInfo() {
-		return versionInfo;
-	}
-
-	public boolean isInNeedOfNewVersion() {
-		return inNeedOfNewVersion;
-	}
-
 	/** {@inheritDoc} */
 	public boolean removeAttachment(final Attachment attachment) {
 		checkNotNull(attachment);
@@ -178,9 +125,7 @@ public abstract class PPodEntity
 			}
 
 			attachmentRemoved = thisAttachments.remove(attachment);
-			if (attachmentRemoved) {
-				setInNeedOfNewVersion();
-			}
+
 			if (thisAttachments.size() == 0) {
 				hasAttachments = false;
 			}
@@ -188,21 +133,4 @@ public abstract class PPodEntity
 		return attachmentRemoved;
 	}
 
-	/** {@inheritDoc} */
-	@OverridingMethodsMustInvokeSuper
-	public void setInNeedOfNewVersion() {
-		inNeedOfNewVersion = true;
-	}
-
-	/** {@inheritDoc} */
-	public void setVersionInfo(final VersionInfo versionInfo) {
-		checkNotNull(versionInfo);
-		unsetInNeedOfNewVersion();
-		this.versionInfo = versionInfo;
-	}
-
-	@VisibleForTesting
-	public void unsetInNeedOfNewVersion() {
-		inNeedOfNewVersion = false;
-	}
 }

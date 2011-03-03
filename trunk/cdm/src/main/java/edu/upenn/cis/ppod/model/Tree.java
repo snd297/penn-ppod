@@ -27,8 +27,6 @@ import javax.persistence.Lob;
 import javax.persistence.ManyToOne;
 import javax.persistence.Table;
 
-import edu.upenn.cis.ppod.util.IVisitor;
-
 /**
  * A phylogenetic tree.
  * 
@@ -60,13 +58,6 @@ public class Tree extends UuPPodEntity {
 	 */
 	public Tree() {}
 
-	@Override
-	public void accept(final IVisitor visitor) {
-		checkNotNull(visitor);
-		visitor.visitTree(this);
-		super.accept(visitor);
-	}
-
 	/**
 	 * Return the label. {@code null} when the tree is constructed, but will
 	 * never be {@code null} once set.
@@ -94,27 +85,13 @@ public class Tree extends UuPPodEntity {
 		return parent;
 	}
 
-	@Override
-	public void setInNeedOfNewVersion() {
-		if (parent != null) {
-			parent.setInNeedOfNewVersion();
-		}
-		super.setInNeedOfNewVersion();
-	}
-
 	/**
 	 * Set the label of this tree.
 	 * 
 	 * @param label the label
 	 */
 	public void setLabel(final String label) {
-		checkNotNull(label);
-		if (label.equals(this.label)) {
-			// nothing to do
-		} else {
-			this.label = label;
-			setInNeedOfNewVersion();
-		}
+		this.label = checkNotNull(label);
 	}
 
 	/**
@@ -125,13 +102,7 @@ public class Tree extends UuPPodEntity {
 	 * @return this {@code Tree}
 	 */
 	public void setNewick(final String newick) {
-		checkNotNull(newick);
-		if (newick.equals(getNewick())) {
-
-		} else {
-			this.newick = newick;
-			setInNeedOfNewVersion();
-		}
+		this.newick = checkNotNull(newick);
 	}
 
 	/** {@inheritDoc} */

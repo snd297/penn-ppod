@@ -16,9 +16,6 @@
 package edu.upenn.cis.ppod.model;
 
 import static org.testng.Assert.assertEquals;
-import static org.testng.Assert.assertFalse;
-import static org.testng.Assert.assertNull;
-import static org.testng.Assert.assertTrue;
 
 import org.testng.annotations.Test;
 
@@ -32,28 +29,12 @@ import edu.upenn.cis.ppod.TestGroupDefs;
 @Test(groups = TestGroupDefs.FAST)
 public class MolecularSequenceTest {
 
-	/**
-	 * Tests the following:
-	 * <ol>
-	 * <li>straight setSequence and check isInNeedOfNewPPodVersion</li>
-	 * <li>setSequence with same value and make sure isInNeedOfNewPPodVersion
-	 * stays false</li>
-	 * </ol>
-	 */
 	@Test
 	public void setSequence() {
 		final Sequence<?> sequence = new DnaSequence();
 		final String sequenceString = "ACGMTARC-T-A";
 		sequence.setSequence(sequenceString);
 		assertEquals(sequence.getSequence(), sequenceString);
-		assertTrue(sequence.isInNeedOfNewVersion());
-
-		// Now set the same sequence - should have no affect on need for new
-		// ppod version
-		sequence.unsetInNeedOfNewVersion();
-		sequence.setSequence(sequenceString);
-		assertEquals(sequence.getSequence(), sequenceString);
-		assertFalse(sequence.isInNeedOfNewVersion());
 	}
 
 	/**
@@ -71,151 +52,4 @@ public class MolecularSequenceTest {
 		sequence.setSequence(sequenceString);
 	}
 
-	/**
-	 * Make sure that {@link Sequence#setInNeedOfNewPPodVersionInfo()} works on
-	 * both the sequence and parent sequence set.
-	 * <p>
-	 * Also make sure that it works if no parent has been set.
-	 */
-	@Test
-	public void setInNeedOfNewVersion() {
-		final DnaSequence sequence = new DnaSequence();
-		final OtuSet otuSet = new OtuSet();
-		final Otu otu0 = new Otu();
-		otuSet.addOtu(otu0);
-
-		final SequenceSet<DnaSequence> sequenceSet = new DnaSequenceSet();
-
-		sequenceSet.setParent(otuSet);
-
-		sequence.setSequence("");
-
-		sequenceSet.putSequence(otu0, sequence);
-
-		sequence.unsetInNeedOfNewVersion();
-		sequenceSet.unsetInNeedOfNewVersion();
-
-		sequence.setInNeedOfNewVersion();
-
-		assertTrue(sequence.isInNeedOfNewVersion());
-
-		assertTrue(sequenceSet.isInNeedOfNewVersion());
-
-		// Let's make sure it works if no parent has been set.
-		sequence.setParent(null);
-		sequence.unsetInNeedOfNewVersion();
-
-		sequence.setInNeedOfNewVersion();
-
-		assertTrue(sequence.isInNeedOfNewVersion());
-
-	}
-
-	/**
-	 * Run setName through its paces:
-	 * <ol>
-	 * <li>straight set and verify in need of new pPOD version</li>
-	 * <li>set w/ already-value and make sure its not in need of a new pPOD
-	 * version</li>
-	 * <li>set w/ a null value</li>
-	 * </ol>
-	 */
-	@Test
-	public void setName() {
-		final Sequence<?> sequence = new DnaSequence();
-
-		assertNull(sequence.getName());
-
-		final String sequenceName = "SEQ0";
-		sequence.setName(sequenceName);
-
-		assertEquals(sequence.getName(), sequenceName);
-
-		assertTrue(sequence.isInNeedOfNewVersion());
-
-		sequence.unsetInNeedOfNewVersion();
-
-		sequence.setName(sequenceName);
-
-		assertFalse(sequence.isInNeedOfNewVersion());
-
-		sequence.unsetInNeedOfNewVersion();
-
-		sequence.setName(null);
-
-		assertNull(sequence.getName());
-
-	}
-
-	/**
-	 * Run setAccesion through its paces:
-	 * <ol>
-	 * <li>straight set and verify in need of new pPOD version</li>
-	 * <li>set w/ already-value and make sure its not in need of a new pPOD
-	 * version</li>
-	 * <li>set w/ a null value</li>
-	 * </ol>
-	 */
-	@Test
-	public void setAccession() {
-		final Sequence<?> sequence = new DnaSequence();
-
-		assertNull(sequence.getAccession());
-
-		final String accession = "ACC0";
-		sequence.setAccession(accession);
-
-		assertEquals(sequence.getAccession(), accession);
-
-		assertTrue(sequence.isInNeedOfNewVersion());
-
-		sequence.unsetInNeedOfNewVersion();
-
-		sequence.setAccession(accession);
-
-		assertFalse(sequence.isInNeedOfNewVersion());
-
-		sequence.unsetInNeedOfNewVersion();
-
-		sequence.setAccession(null);
-
-		assertNull(sequence.getAccession());
-
-	}
-
-	/**
-	 * Run setDescription through its paces:
-	 * <ol>
-	 * <li>straight set and verify in need of new pPOD version</li>
-	 * <li>set w/ already-value and make sure its not in need of a new pPOD
-	 * version</li>
-	 * <li>set w/ a null value</li>
-	 * </ol>
-	 */
-	@Test
-	public void setDescription() {
-		final Sequence<?> sequence = new DnaSequence();
-
-		assertNull(sequence.getDescription());
-
-		final String description = "DESC0";
-		sequence.setDescription(description);
-
-		assertEquals(sequence.getDescription(), description);
-
-		assertTrue(sequence.isInNeedOfNewVersion());
-
-		sequence.unsetInNeedOfNewVersion();
-
-		sequence.setDescription(description);
-
-		assertFalse(sequence.isInNeedOfNewVersion());
-
-		sequence.unsetInNeedOfNewVersion();
-
-		sequence.setDescription(null);
-
-		assertNull(sequence.getDescription());
-
-	}
 }

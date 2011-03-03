@@ -33,7 +33,6 @@ import javax.persistence.Table;
 import edu.umd.cs.findbugs.annotations.CheckForNull;
 import edu.umd.cs.findbugs.annotations.Nullable;
 import edu.upenn.cis.ppod.dto.PPodCellType;
-import edu.upenn.cis.ppod.util.IVisitor;
 
 /**
  * A cell in a {@link StandardMatrix}.
@@ -88,12 +87,6 @@ public class StandardCell extends Cell<StandardState, StandardRow> {
 	/** No-arg constructor for (at least) Hibernate. */
 	public StandardCell() {}
 
-	@Override
-	public void accept(final IVisitor visitor) {
-		checkNotNull(visitor);
-		visitor.visitStandardCell(this);
-	}
-
 	private void checkRowMatrixCharacter() {
 
 		final StandardRow row = getParent();
@@ -107,14 +100,6 @@ public class StandardCell extends Cell<StandardState, StandardRow> {
 
 		checkState(matrix != null,
 				"this cell's row has not had a matrix assigned");
-
-		if (matrix.getColumnsSize() <= position) {
-			throw new AssertionError(
-					"position "
-							+ position
-							+ " is >= than the number of columns in the owning matrix"
-							+ matrix.getColumnsSize());
-		}
 
 		checkState(null != matrix.getCharacters().get(position),
 				"this cell's column hasn't been assigned a character");
@@ -273,17 +258,6 @@ public class StandardCell extends Cell<StandardState, StandardRow> {
 		} else {
 			super.setSingle(state);
 		}
-	}
-
-	@Override
-	public void setInNeedOfNewVersion() {
-		if (parent != null) {
-			final StandardMatrix grandParent = parent.getParent();
-			if (grandParent != null) {
-				grandParent.setInNeedOfNewColumnVersion(getPosition());
-			}
-		}
-		super.setInNeedOfNewVersion();
 	}
 
 	/**

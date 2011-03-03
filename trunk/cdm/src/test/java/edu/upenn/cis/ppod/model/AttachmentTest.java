@@ -16,9 +16,7 @@
 package edu.upenn.cis.ppod.model;
 
 import static org.testng.Assert.assertEquals;
-import static org.testng.Assert.assertFalse;
 import static org.testng.Assert.assertNull;
-import static org.testng.Assert.assertTrue;
 
 import org.testng.annotations.Test;
 
@@ -57,15 +55,7 @@ public class AttachmentTest {
 
 		assertEquals(attachment.getBytesValue(), bytesValue);
 
-		assertTrue(attachment.isInNeedOfNewVersion());
-
-		attachment.unsetInNeedOfNewVersion();
-
 		attachment.setBytesValue(bytesValue);
-
-		assertFalse(attachment.isInNeedOfNewVersion());
-
-		attachment.unsetInNeedOfNewVersion();
 
 		final byte[] bytesValue2 = new byte[] { 3, 5, 3 };
 
@@ -73,113 +63,10 @@ public class AttachmentTest {
 
 		assertEquals(attachment.getBytesValue(), bytesValue2);
 
-		attachment.unsetInNeedOfNewVersion();
-
 		attachment.setBytesValue(null);
 
 		assertNull(attachment.getBytesValue());
 
 	}
 
-	@Test
-	public void setLabel() {
-		final Attachment attachment = new Attachment();
-		assertNull(attachment.getLabel());
-
-		final String label = "LABEL";
-
-		assertFalse(attachment.isInNeedOfNewVersion());
-
-		attachment.setLabel(label);
-		assertEquals(attachment.getLabel(), label);
-
-		assertTrue(attachment.isInNeedOfNewVersion());
-
-		attachment.unsetInNeedOfNewVersion();
-
-		attachment.setLabel(label);
-
-		assertEquals(attachment.getLabel(), label);
-
-		assertFalse(attachment.isInNeedOfNewVersion());
-
-		final String label2 = "LABEL2";
-
-		attachment.unsetInNeedOfNewVersion();
-
-		attachment.setLabel(label2);
-
-		assertEquals(attachment.getLabel(), label2);
-
-		assertTrue(attachment.isInNeedOfNewVersion());
-
-		attachment.unsetInNeedOfNewVersion();
-
-		attachment.setLabel(null);
-
-		assertTrue(attachment.isInNeedOfNewVersion());
-
-		assertNull(attachment.getLabel());
-	}
-
-	@Test
-	public void setStringValue() {
-		final Attachment attachment = new Attachment();
-		assertNull(attachment.getStringValue());
-
-		final String stringVal = "STRING-VALUE";
-
-		assertFalse(attachment.isInNeedOfNewVersion());
-
-		attachment.setStringValue(stringVal);
-
-		assertEquals(attachment.getStringValue(), stringVal);
-
-		assertTrue(attachment.isInNeedOfNewVersion());
-
-		attachment.unsetInNeedOfNewVersion();
-
-		attachment.setStringValue(stringVal);
-
-		assertEquals(attachment.getStringValue(), stringVal);
-
-		assertFalse(attachment.isInNeedOfNewVersion());
-
-		final String stringVal2 = "STRING-VALUE2";
-
-		attachment.unsetInNeedOfNewVersion();
-
-		attachment.setStringValue(stringVal2);
-
-		assertEquals(attachment.getStringValue(), stringVal2);
-
-		assertTrue(attachment.isInNeedOfNewVersion());
-
-		attachment.unsetInNeedOfNewVersion();
-
-		attachment.setStringValue(null);
-
-		assertTrue(attachment.isInNeedOfNewVersion());
-
-		assertNull(attachment.getStringValue());
-	}
-
-	/**
-	 * Verify that when {@link Attachment#setInNeedOfNewVersion()} is called,
-	 * it's owner's {@code setInNeedOfNewVersion()} is also called.ax
-	 */
-	@Test
-	public void setInNeedOfNewVersion() {
-		final Attachment attachment = new Attachment();
-		final StandardCharacter character = new StandardCharacter();
-		character.addAttachment(attachment);
-		attachment.unsetInNeedOfNewVersion();
-		character.unsetInNeedOfNewVersion();
-
-		attachment.setInNeedOfNewVersion();
-
-		assertTrue(attachment.isInNeedOfNewVersion());
-		assertTrue(character.isInNeedOfNewVersion());
-
-	}
 }

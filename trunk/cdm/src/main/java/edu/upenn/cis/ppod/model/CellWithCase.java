@@ -90,12 +90,7 @@ public abstract class CellWithCase<E extends Enum<?>, R extends Row<?, ?>>
 			final Set<E> elements, final Boolean lowerCase) {
 		checkNotNull(lowerCase);
 		super.setPolymorphicOrUncertain(PPodCellType.POLYMORPHIC, elements);
-		if (lowerCase.equals(getLowerCase())) {
-
-		} else {
-			setLowerCase(lowerCase);
-			setInNeedOfNewVersion();
-		}
+		setLowerCase(lowerCase);
 	}
 
 	/**
@@ -111,20 +106,10 @@ public abstract class CellWithCase<E extends Enum<?>, R extends Row<?, ?>>
 		checkNotNull(element);
 		checkNotNull(lowerCase);
 
-		// == is safe since we know E is an Enum
-		if (element == getElement()
-				&& lowerCase.equals(getLowerCase())) {
-			if (getType() != PPodCellType.SINGLE) {
-				throw new AssertionError(
-						"element is set, but this cell is not a SINGLE");
-			}
-		} else {
-			setType(PPodCellType.SINGLE);
-			setElements(null);
-			setElement(element);
-			setLowerCase(lowerCase);
-			setInNeedOfNewVersion();
-		}
+		setType(PPodCellType.SINGLE);
+		setElements(null);
+		setElement(element);
+		setLowerCase(lowerCase);
 	}
 
 	/**

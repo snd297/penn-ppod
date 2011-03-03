@@ -42,9 +42,4 @@ public interface IChild<P> extends IPPodEntity {
 	 */
 	void setParent(@CheckForNull P parent);
 
-	/**
-	 * Mark this and {@link #getParent()} as in need of a new pPOD version.
-	 */
-	void setInNeedOfNewVersion();
-
 }

@@ -20,8 +20,6 @@ import static com.google.common.collect.Iterables.transform;
 import static com.google.common.collect.Lists.newArrayList;
 import static com.google.common.collect.Sets.newHashSet;
 import static org.testng.Assert.assertEquals;
-import static org.testng.Assert.assertFalse;
-import static org.testng.Assert.assertNull;
 import static org.testng.Assert.assertTrue;
 
 import java.util.Arrays;
@@ -83,20 +81,6 @@ public class StandardCellTest {
 	}
 
 	@Test
-	public void setInNeedOfNewVersion() {
-		matrix.getRows().get(
-				matrix.getParent()
-						.getOtus()
-						.get(0))
-				.setCells(
-						Arrays.asList(cell));
-		assertFalse(cell.isInNeedOfNewVersion());
-		cell.setInNeedOfNewVersion();
-		assertTrue(cell.isInNeedOfNewVersion());
-		assertNull(matrix.getColumnVersionInfos().get(cell.getPosition()));
-	}
-
-	@Test
 	public void setPolymorphicElements() {
 		matrix.getRows().get(matrix.getParent().getOtus().get(0)).setCells(
 				Arrays.asList(cell));
@@ -131,15 +115,11 @@ public class StandardCellTest {
 				.setCells(Arrays.asList(cell));
 		states.add(state00);
 
-		cell.unsetInNeedOfNewVersion();
 		cell.setSingleWithStateNo(state00.getStateNumber());
-		assertTrue(cell.isInNeedOfNewVersion());
 		assertEquals(cell.getType(), PPodCellType.SINGLE);
 		assertEquals(cell.getElements(), states);
 
-		cell.unsetInNeedOfNewVersion();
 		cell.setSingleWithStateNo(state00.getStateNumber());
-		assertFalse(cell.isInNeedOfNewVersion());
 		assertEquals(cell.getType(), PPodCellType.SINGLE);
 		assertEquals(cell.getElements(), states);
 	}

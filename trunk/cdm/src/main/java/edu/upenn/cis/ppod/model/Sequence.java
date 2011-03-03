@@ -15,9 +15,7 @@
  */
 package edu.upenn.cis.ppod.model;
 
-import static com.google.common.base.Objects.equal;
 import static com.google.common.base.Preconditions.checkArgument;
-import static com.google.common.base.Preconditions.checkNotNull;
 
 import javax.annotation.CheckForNull;
 import javax.annotation.Nullable;
@@ -120,14 +118,8 @@ public abstract class Sequence<SS extends SequenceSet<?>>
 	 * 
 	 * @return this
 	 */
-	public Sequence<SS> setAccession(
-				@CheckForNull final String accession) {
-		if (equal(accession, getAccession())) {
-			return this;
-		}
+	public void setAccession(@CheckForNull final String accession) {
 		this.accession = accession;
-		setInNeedOfNewVersion();
-		return this;
 	}
 
 	/**
@@ -137,14 +129,9 @@ public abstract class Sequence<SS extends SequenceSet<?>>
 	 * 
 	 * @return this
 	 */
-	public Sequence<SS> setDescription(
-			@CheckForNull final String newDescription) {
-		if (equal(newDescription, getDescription())) {
-			return this;
-		}
-		description = newDescription;
-		setInNeedOfNewVersion();
-		return this;
+	public void setDescription(
+			@CheckForNull final String description) {
+		this.description = description;
 	}
 
 	/**
@@ -154,13 +141,8 @@ public abstract class Sequence<SS extends SequenceSet<?>>
 	 * 
 	 * @return this
 	 */
-	public Sequence<SS> setName(@CheckForNull final String name) {
-		if (equal(name, getName())) {
-			return this;
-		}
+	public void setName(@CheckForNull final String name) {
 		this.name = name;
-		setInNeedOfNewVersion();
-		return this;
 	}
 
 	/**
@@ -174,10 +156,6 @@ public abstract class Sequence<SS extends SequenceSet<?>>
 	 *             such that {@link #isLegal(char)} is false.
 	 */
 	public Sequence<SS> setSequence(final String sequence) {
-		checkNotNull(sequence);
-		if (sequence.equals(getSequence())) {
-			return this;
-		}
 		for (int i = 0; i < sequence.length(); i++) {
 			checkArgument(
 					isLegal(
@@ -188,7 +166,6 @@ public abstract class Sequence<SS extends SequenceSet<?>>
 		}
 
 		this.sequence = sequence;
-		setInNeedOfNewVersion();
 		return this;
 	}
 

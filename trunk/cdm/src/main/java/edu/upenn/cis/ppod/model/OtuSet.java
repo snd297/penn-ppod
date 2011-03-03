@@ -15,7 +15,6 @@
  */
 package edu.upenn.cis.ppod.model;
 
-import static com.google.common.base.Objects.equal;
 import static com.google.common.base.Preconditions.checkArgument;
 import static com.google.common.base.Preconditions.checkNotNull;
 import static com.google.common.base.Predicates.compose;
@@ -24,7 +23,6 @@ import static com.google.common.collect.Iterables.find;
 import static com.google.common.collect.Lists.newArrayList;
 import static com.google.common.collect.Sets.newHashSet;
 
-import java.util.Collections;
 import java.util.List;
 import java.util.Set;
 
@@ -45,7 +43,6 @@ import edu.umd.cs.findbugs.annotations.Nullable;
 import edu.upenn.cis.ppod.imodel.IChild;
 import edu.upenn.cis.ppod.imodel.IDependsOnParentOtus;
 import edu.upenn.cis.ppod.imodel.ILabeled;
-import edu.upenn.cis.ppod.util.IVisitor;
 
 /**
  * A set of {@link OTU}s.
@@ -141,16 +138,6 @@ public class OtuSet extends UuPPodEntity implements ILabeled {
 	 */
 	public OtuSet() {}
 
-	@Override
-	public void accept(final IVisitor visitor) {
-		checkNotNull(visitor);
-		visitor.visitOtuSet(this);
-		for (final IChild<OtuSet> child : getChildren()) {
-			child.accept(visitor);
-		}
-		super.accept(visitor);
-	}
-
 	/**
 	 * Add a DNA matrix to this OTU set.
 	 * <p>
@@ -169,7 +156,6 @@ public class OtuSet extends UuPPodEntity implements ILabeled {
 						+ matrix.getLabel() + "]");
 		dnaMatrices.add(matrix);
 		matrix.setParent(this);
-		setInNeedOfNewVersion();
 	}
 
 	public void addDnaMatrix(
@@ -183,7 +169,6 @@ public class OtuSet extends UuPPodEntity implements ILabeled {
 						+ matrix.getLabel() + "]");
 		dnaMatrices.add(pos, matrix);
 		matrix.setParent(this);
-		setInNeedOfNewVersion();
 	}
 
 	/**
@@ -206,7 +191,6 @@ public class OtuSet extends UuPPodEntity implements ILabeled {
 						+ sequenceSet.getLabel() + "]");
 		dnaSequenceSets.add(sequenceSet);
 		sequenceSet.setParent(this);
-		setInNeedOfNewVersion();
 	}
 
 	/** {@inheritDoc} */
@@ -221,7 +205,6 @@ public class OtuSet extends UuPPodEntity implements ILabeled {
 						+ sequenceSet.getLabel() + "]");
 		dnaSequenceSets.add(sequenceSetPos, sequenceSet);
 		sequenceSet.setParent(this);
-		setInNeedOfNewVersion();
 	}
 
 	/**
@@ -264,7 +247,6 @@ public class OtuSet extends UuPPodEntity implements ILabeled {
 		}
 		if (otus.add(otu)) {
 			otu.setParent(this);
-			setInNeedOfNewVersion();
 		}
 	}
 
@@ -279,7 +261,6 @@ public class OtuSet extends UuPPodEntity implements ILabeled {
 						+ matrix.getLabel() + "]");
 		proteinMatrices.add(pos, matrix);
 		matrix.setParent(this);
-		setInNeedOfNewVersion();
 	}
 
 	public void addProteinMatrix(final ProteinMatrix matrix) {
@@ -290,7 +271,6 @@ public class OtuSet extends UuPPodEntity implements ILabeled {
 						+ matrix.getLabel() + "]");
 		proteinMatrices.add(matrix);
 		matrix.setParent(this);
-		setInNeedOfNewVersion();
 	}
 
 	/**
@@ -318,7 +298,6 @@ public class OtuSet extends UuPPodEntity implements ILabeled {
 						+ matrix.getLabel() + "]");
 		standardMatrices.add(pos, matrix);
 		matrix.setParent(this);
-		setInNeedOfNewVersion();
 	}
 
 	/** {@inheritDoc} */
@@ -331,7 +310,6 @@ public class OtuSet extends UuPPodEntity implements ILabeled {
 						+ matrix.getLabel() + "]");
 		standardMatrices.add(matrix);
 		matrix.setParent(this);
-		setInNeedOfNewVersion();
 	}
 
 	/**
@@ -352,7 +330,6 @@ public class OtuSet extends UuPPodEntity implements ILabeled {
 						+ treeSet.getLabel() + "]");
 		treeSets.add(treeSetPos, treeSet);
 		treeSet.setParent(this);
-		setInNeedOfNewVersion();
 	}
 
 	/** {@inheritDoc} */
@@ -364,7 +341,6 @@ public class OtuSet extends UuPPodEntity implements ILabeled {
 						+ treeSet.getLabel() + "]");
 		treeSets.add(treeSet);
 		treeSet.setParent(this);
-		setInNeedOfNewVersion();
 	}
 
 	@VisibleForTesting
@@ -397,12 +373,12 @@ public class OtuSet extends UuPPodEntity implements ILabeled {
 
 	/** {@inheritDoc} */
 	public List<DnaMatrix> getDnaMatrices() {
-		return Collections.unmodifiableList(dnaMatrices);
+		return dnaMatrices;
 	}
 
 	/** {@inheritDoc} */
 	public List<DnaSequenceSet> getDnaSequenceSets() {
-		return Collections.unmodifiableList(dnaSequenceSets);
+		return dnaSequenceSets;
 	}
 
 	/**
@@ -422,7 +398,7 @@ public class OtuSet extends UuPPodEntity implements ILabeled {
 	 * @return the {@code OTU}s that make up this {@code OTUSet}
 	 */
 	public List<Otu> getOtus() {
-		return Collections.unmodifiableList(otus);
+		return otus;
 	}
 
 	/**
@@ -435,13 +411,8 @@ public class OtuSet extends UuPPodEntity implements ILabeled {
 		return parent;
 	}
 
-	/**
-	 * Get an unmodifiable view of the protein matrices.
-	 * 
-	 * @return an unmodifiable view of the protein matrices
-	 */
 	public List<ProteinMatrix> getProteinMatrices() {
-		return Collections.unmodifiableList(proteinMatrices);
+		return proteinMatrices;
 	}
 
 	/**
@@ -450,7 +421,7 @@ public class OtuSet extends UuPPodEntity implements ILabeled {
 	 * @return the standard matrices contained in this OTU set
 	 */
 	public List<StandardMatrix> getStandardMatrices() {
-		return Collections.unmodifiableList(standardMatrices);
+		return standardMatrices;
 	}
 
 	/**
@@ -459,7 +430,7 @@ public class OtuSet extends UuPPodEntity implements ILabeled {
 	 * @return the tree sets contained in this OTU set
 	 */
 	public List<TreeSet> getTreeSets() {
-		return Collections.unmodifiableList(treeSets);
+		return treeSets;
 	}
 
 	/**
@@ -477,7 +448,6 @@ public class OtuSet extends UuPPodEntity implements ILabeled {
 						+ "]");
 		dnaMatrices.remove(matrix);
 		matrix.setParent(null);
-		setInNeedOfNewVersion();
 	}
 
 	/**
@@ -495,7 +465,6 @@ public class OtuSet extends UuPPodEntity implements ILabeled {
 						+ sequenceSet.getLabel() + "]");
 		dnaSequenceSets.remove(sequenceSet);
 		sequenceSet.setParent(null);
-		setInNeedOfNewVersion();
 	}
 
 	/**
@@ -515,7 +484,6 @@ public class OtuSet extends UuPPodEntity implements ILabeled {
 						+ "]");
 		proteinMatrices.remove(matrix);
 		matrix.setParent(null);
-		setInNeedOfNewVersion();
 	}
 
 	/**
@@ -533,7 +501,6 @@ public class OtuSet extends UuPPodEntity implements ILabeled {
 						+ "]");
 		standardMatrices.remove(matrix);
 		matrix.setParent(null);
-		setInNeedOfNewVersion();
 	}
 
 	/**
@@ -551,30 +518,15 @@ public class OtuSet extends UuPPodEntity implements ILabeled {
 						+ treeSet.getLabel() + "]");
 		treeSets.remove(treeSet);
 		treeSet.setParent(null);
-		setInNeedOfNewVersion();
 	}
 
 	/**
-	 * Set the descriptino
+	 * Set the description.
 	 * 
 	 * @param description the description
 	 */
 	public void setDescription(@CheckForNull final String description) {
-		if (equal(getDescription(), description)) {
-
-		} else {
-			this.description = description;
-			setInNeedOfNewVersion();
-		}
-	}
-
-	@Override
-	public void setInNeedOfNewVersion() {
-		final Study study = parent;
-		if (study != null) {
-			study.setInNeedOfNewVersion();
-		}
-		super.setInNeedOfNewVersion();
+		this.description = description;
 	}
 
 	/**
@@ -583,13 +535,7 @@ public class OtuSet extends UuPPodEntity implements ILabeled {
 	 * @param label the label
 	 */
 	public void setLabel(final String label) {
-		checkNotNull(label);
-		if (label.equals(getLabel())) {
-
-		} else {
-			this.label = label;
-			setInNeedOfNewVersion();
-		}
+		this.label = checkNotNull(label);
 	}
 
 	/**
@@ -619,8 +565,6 @@ public class OtuSet extends UuPPodEntity implements ILabeled {
 			}
 
 			setParentOnChildren();
-
-			setInNeedOfNewVersion();
 		}
 
 		return;

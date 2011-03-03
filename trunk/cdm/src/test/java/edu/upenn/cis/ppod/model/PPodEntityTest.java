@@ -18,13 +18,8 @@ package edu.upenn.cis.ppod.model;
 import static com.google.common.collect.Iterables.getOnlyElement;
 import static com.google.common.collect.Iterables.isEmpty;
 import static com.google.common.collect.Sets.newHashSet;
-import static org.mockito.Matchers.any;
-import static org.mockito.Mockito.mock;
-import static org.mockito.Mockito.times;
-import static org.mockito.Mockito.verify;
 import static org.testng.Assert.assertEquals;
 import static org.testng.Assert.assertFalse;
-import static org.testng.Assert.assertSame;
 import static org.testng.Assert.assertTrue;
 
 import java.util.Set;
@@ -34,7 +29,6 @@ import org.testng.annotations.Test;
 import com.google.common.collect.ImmutableSet;
 
 import edu.upenn.cis.ppod.TestGroupDefs;
-import edu.upenn.cis.ppod.util.IVisitor;
 
 /**
  * Test {@link PPodEntity}.
@@ -47,7 +41,6 @@ public class PPodEntityTest {
 	@Test
 	public void addAttachment() {
 		final OtuSet otuSet = new OtuSet();
-		otuSet.unsetInNeedOfNewVersion();
 
 		final Attachment attachment = new Attachment();
 		assertFalse(otuSet.getHasAttachments());
@@ -56,7 +49,6 @@ public class PPodEntityTest {
 				getOnlyElement(
 						otuSet.getAttachments()), attachment);
 		assertTrue(otuSet.getHasAttachments());
-		assertTrue(otuSet.isInNeedOfNewVersion());
 
 	}
 
@@ -120,37 +112,4 @@ public class PPodEntityTest {
 
 	}
 
-	@Test
-	public void getVersionInfo() {
-		final OtuSet otuSet = new OtuSet();
-		final VersionInfo versionInfo = new VersionInfo();
-		otuSet.setVersionInfo(versionInfo);
-		assertSame(otuSet.getVersionInfo(), versionInfo);
-	}
-
-	@Test
-	public void accept() {
-		final OtuSet otuSet = new OtuSet();
-		final Attachment attachment0 = new Attachment();
-		final Attachment attachment1 = new Attachment();
-		final Attachment attachment2 = new Attachment();
-		final Set<Attachment> expectedAttachments =
-				ImmutableSet.of(attachment0,
-								attachment1,
-								attachment2);
-
-		otuSet.addAttachment(attachment0);
-		otuSet.addAttachment(attachment1);
-		otuSet.addAttachment(attachment2);
-
-		final IVisitor testVisitor = mock(IVisitor.class);
-
-		otuSet.accept(testVisitor);
-
-		verify(testVisitor, times(expectedAttachments.size())).visitAttachment(
-				any(Attachment.class));
-		verify(testVisitor).visitAttachment(attachment0);
-		verify(testVisitor).visitAttachment(attachment1);
-		verify(testVisitor).visitAttachment(attachment2);
-	}
 }

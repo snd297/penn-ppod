@@ -15,11 +15,8 @@
  */
 package edu.upenn.cis.ppod.model;
 
-import static com.google.common.base.Objects.equal;
 import static com.google.common.base.Preconditions.checkArgument;
 import static com.google.common.base.Preconditions.checkNotNull;
-
-import java.util.Arrays;
 
 import javax.persistence.Column;
 import javax.persistence.Entity;
@@ -34,7 +31,6 @@ import com.google.common.base.Predicate;
 import edu.umd.cs.findbugs.annotations.CheckForNull;
 import edu.umd.cs.findbugs.annotations.Nullable;
 import edu.upenn.cis.ppod.imodel.IPPodEntity;
-import edu.upenn.cis.ppod.util.IVisitor;
 
 /**
  * A flexible container for data that can be attached to other pPOD attachees.
@@ -186,16 +182,6 @@ public class Attachment extends UuPPodEntity {
 	/** Default constructor for (at least) Hibernate. */
 	public Attachment() {}
 
-	@Override
-	public void accept(final IVisitor visitor) {
-		checkNotNull(visitor);
-		visitor.visitAttachment(this);
-		if (getType() != null) {
-			getType().accept(visitor);
-		}
-		super.accept(visitor);
-	}
-
 	/**
 	 * Get the entities that have this has an attachment.
 	 * <p>
@@ -265,30 +251,7 @@ public class Attachment extends UuPPodEntity {
 	 * @param bytesValue the byteValue to set
 	 */
 	public void setBytesValue(@CheckForNull final byte[] bytesValue) {
-		if (Arrays.equals(bytesValue, this.bytesValue)) {
-
-		} else {
-
-			if (bytesValue == null) {
-				this.bytesValue = null;
-			} else {
-				if (this.bytesValue == null
-						|| this.bytesValue.length != bytesValue.length) {
-					this.bytesValue = new byte[bytesValue.length];
-				}
-				System.arraycopy(this.bytesValue, 0, bytesValue, 0,
-						this.bytesValue.length);
-			}
-			setInNeedOfNewVersion();
-		}
-	}
-
-	@Override
-	public void setInNeedOfNewVersion() {
-		if (attachee != null) {
-			attachee.setInNeedOfNewVersion();
-		}
-		super.setInNeedOfNewVersion();
+		this.bytesValue = bytesValue;
 	}
 
 	/**
@@ -297,12 +260,7 @@ public class Attachment extends UuPPodEntity {
 	 * @param label the label
 	 */
 	public void setLabel(@CheckForNull final String label) {
-		if (equal(label, getLabel())) {
-
-		} else {
-			this.label = label;
-			setInNeedOfNewVersion();
-		}
+		this.label = label;
 	}
 
 	/**
@@ -312,12 +270,7 @@ public class Attachment extends UuPPodEntity {
 	 * @param stringValue the string value
 	 */
 	public void setStringValue(@CheckForNull final String stringValue) {
-		if (equal(stringValue, getStringValue())) {
-
-		} else {
-			this.stringValue = stringValue;
-			setInNeedOfNewVersion();
-		}
+		this.stringValue = stringValue;
 	}
 
 	/**
@@ -326,37 +279,7 @@ public class Attachment extends UuPPodEntity {
 	 * @param type the type
 	 */
 	public void setType(final AttachmentType type) {
-		checkNotNull(type);
-		if (type.equals(getType())) {
-
-		} else {
-			this.type = type;
-			setInNeedOfNewVersion();
-		}
-	}
-
-	/**
-	 * Constructs a <code>String</code> with all attributes in name = value
-	 * format.
-	 * 
-	 * @return a <code>String</code> representation of this object.
-	 */
-	@Override
-	@edu.umd.cs.findbugs.annotations.SuppressWarnings
-	public String toString() {
-		final String TAB = "";
-
-		final StringBuilder retValue = new StringBuilder();
-
-		retValue.append("Attachment(").append(super.toString()).append(TAB)
-				.append("typeLabel=").append(this.type).append(TAB).append(
-						"attachmentLabel=")
-				.append(this.label).append(TAB)
-				.append("attachmentStringValue=").append(
-						this.stringValue).append(TAB).append("bytesValue=")
-				.append(this.bytesValue).append(TAB).append(")");
-
-		return retValue.toString();
+		this.type = checkNotNull(type);
 	}
 
 }

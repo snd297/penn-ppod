@@ -72,8 +72,7 @@ public class MergeSequenceSetsTest {
 		final INewVersionInfo newVersionInfo = mock(INewVersionInfo.class);
 		when(newVersionInfo.getNewVersionInfo()).thenReturn(versionInfo);
 
-		final MergeDnaSequenceSets mergeSeqSets = new MergeDnaSequenceSets(
-				newVersionInfo);
+		final MergeDnaSequenceSets mergeSeqSets = new MergeDnaSequenceSets();
 
 		mergeSeqSets.mergeSequenceSets(trgSeqSet, srcSeqSet);
 
@@ -123,8 +122,7 @@ public class MergeSequenceSetsTest {
 		final INewVersionInfo newVersionInfo = mock(INewVersionInfo.class);
 		when(newVersionInfo.getNewVersionInfo()).thenReturn(versionInfo);
 
-		final MergeDnaSequenceSets mergeSeqSets = new MergeDnaSequenceSets(
-				newVersionInfo);
+		final MergeDnaSequenceSets mergeSeqSets = new MergeDnaSequenceSets();
 
 		mergeSeqSets.mergeSequenceSets(trgSeqSet, srcSeqSet);
 
@@ -173,8 +171,7 @@ public class MergeSequenceSetsTest {
 		final INewVersionInfo newVersionInfo = mock(INewVersionInfo.class);
 		when(newVersionInfo.getNewVersionInfo()).thenReturn(versionInfo);
 
-		final MergeDnaSequenceSets mergeSeqSets = new MergeDnaSequenceSets(
-				newVersionInfo);
+		final MergeDnaSequenceSets mergeSeqSets = new MergeDnaSequenceSets();
 
 		mergeSeqSets.mergeSequenceSets(trgSeqSet, srcSeqSet);
 

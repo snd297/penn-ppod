@@ -31,9 +31,10 @@ import javax.persistence.MapKey;
 import javax.persistence.OneToMany;
 import javax.persistence.Table;
 
+import org.hibernate.annotations.Index;
+
 import edu.umd.cs.findbugs.annotations.CheckForNull;
 import edu.umd.cs.findbugs.annotations.Nullable;
-import edu.upenn.cis.ppod.util.IVisitor;
 
 /**
  * A standard character, aka a morphological character. For example,
@@ -53,6 +54,7 @@ public class StandardCharacter extends UuPPodEntity {
 	 * The non-unique label of this {@code Character}.
 	 */
 	@Column(name = "LABEL", nullable = false)
+	@Index(name = "LABEL_IDX")
 	@CheckForNull
 	private String label;
 
@@ -87,15 +89,6 @@ public class StandardCharacter extends UuPPodEntity {
 	 */
 	public StandardCharacter() {}
 
-	@Override
-	public void accept(final IVisitor visitor) {
-		visitor.visitStandardCharacter(this);
-		for (final StandardState state : getStates()) {
-			state.accept(visitor);
-		}
-		super.accept(visitor);
-	}
-
 	/**
 	 * Add <code>state</code> into this <code>Character</code>.
 	 * <p>
@@ -121,7 +114,6 @@ public class StandardCharacter extends UuPPodEntity {
 			originalState.setParent(null);
 		}
 		state.setParent(this);
-		setInNeedOfNewVersion();
 		return originalState;
 	}
 
@@ -177,33 +169,13 @@ public class StandardCharacter extends UuPPodEntity {
 		return newHashSet(states.values());
 	}
 
-	@Override
-	public void setInNeedOfNewVersion() {
-		if (parent != null) {
-			parent.setInNeedOfNewVersion();
-		}
-		super.setInNeedOfNewVersion();
-	}
-
 	/** {@inheritDoc} */
 	public void setLabel(final String label) {
-		checkNotNull(label);
-		if (label.equals(this.label)) {
-			// they're the same, nothing to do.
-		} else {
-			this.label = label;
-			setInNeedOfNewVersion();
-		}
+		this.label = checkNotNull(label);
 	}
 
 	public void setMesquiteId(final String mesquiteId) {
-		checkNotNull(mesquiteId);
-		if (mesquiteId.equals(getMesquiteId())) {
-
-		} else {
-			this.mesquiteId = mesquiteId;
-			setInNeedOfNewVersion();
-		}
+		this.mesquiteId = checkNotNull(mesquiteId);
 	}
 
 	/** {@inheritDoc} */

@@ -8,23 +8,18 @@ import com.google.inject.Inject;
 import edu.upenn.cis.ppod.dao.IProteinRowDAO;
 import edu.upenn.cis.ppod.dto.PPodProteinMatrix;
 import edu.upenn.cis.ppod.dto.PPodProteinRow;
-import edu.upenn.cis.ppod.imodel.INewVersionInfo;
 import edu.upenn.cis.ppod.model.Otu;
 import edu.upenn.cis.ppod.model.ProteinMatrix;
 import edu.upenn.cis.ppod.model.ProteinRow;
 
 public class CreateOrUpdateProteinMatrix {
 	private final IProteinRowDAO proteinRowDao;
-	private final INewVersionInfo newVersionInfo;
 	private final static Logger logger = LoggerFactory
 			.getLogger(CreateOrUpdateProteinMatrix.class);
 
 	@Inject
-	CreateOrUpdateProteinMatrix(
-			final IProteinRowDAO dao,
-			final INewVersionInfo newVersionInfo) {
+	CreateOrUpdateProteinMatrix(final IProteinRowDAO dao) {
 		this.proteinRowDao = dao;
-		this.newVersionInfo = newVersionInfo;
 	}
 
 	public void createOrUpdateMatrix(
@@ -50,7 +45,6 @@ public class CreateOrUpdateProteinMatrix {
 
 			if (null == (dbRow = dbMatrix.getRows().get(dbOtu))) {
 				dbRow = new ProteinRow();
-				dbRow.setVersionInfo(newVersionInfo.getNewVersionInfo());
 				dbMatrix.putRow(dbOtu, dbRow);
 			}
 

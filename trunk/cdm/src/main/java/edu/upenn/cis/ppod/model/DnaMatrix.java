@@ -18,7 +18,6 @@ package edu.upenn.cis.ppod.model;
 import static com.google.common.base.Preconditions.checkNotNull;
 import static com.google.common.collect.Maps.newHashMap;
 
-import java.util.Collections;
 import java.util.Map;
 
 import javax.persistence.CascadeType;
@@ -29,7 +28,6 @@ import javax.persistence.MapKeyJoinColumn;
 import javax.persistence.OneToMany;
 import javax.persistence.Table;
 
-import edu.upenn.cis.ppod.util.IVisitor;
 import edu.upenn.cis.ppod.util.UPennCisPPodUtil;
 
 /**
@@ -57,20 +55,8 @@ public class DnaMatrix extends Matrix<DnaRow> {
 	public DnaMatrix() {}
 
 	@Override
-	public void accept(final IVisitor visitor) {
-		checkNotNull(visitor);
-		visitor.visitDnaMatrix(this);
-		for (final DnaRow row : rows.values()) {
-			if (row != null) {
-				row.accept(visitor);
-			}
-		}
-		super.accept(visitor);
-	}
-
-	@Override
 	public Map<Otu, DnaRow> getRows() {
-		return Collections.unmodifiableMap(rows);
+		return rows;
 	}
 
 	@Override
@@ -79,9 +65,6 @@ public class DnaMatrix extends Matrix<DnaRow> {
 		checkNotNull(row);
 		final DnaRow oldRow = rows.put(otu, row);
 		row.setParent(this);
-		if (row != oldRow || oldRow == null) {
-			setInNeedOfNewVersion();
-		}
 
 		if (row != oldRow && oldRow != null) {
 			oldRow.setParent(null);
@@ -91,6 +74,6 @@ public class DnaMatrix extends Matrix<DnaRow> {
 
 	@Override
 	public void updateOtus() {
-		UPennCisPPodUtil.updateOtus(getParent(), rows, this);
+		UPennCisPPodUtil.updateOtus(getParent(), rows);
 	}
 }

@@ -23,11 +23,12 @@ import javax.persistence.JoinColumn;
 import javax.persistence.ManyToOne;
 import javax.persistence.Table;
 
+import org.hibernate.annotations.Index;
+
 import edu.umd.cs.findbugs.annotations.CheckForNull;
 import edu.umd.cs.findbugs.annotations.Nullable;
 import edu.upenn.cis.ppod.imodel.IChild;
 import edu.upenn.cis.ppod.imodel.ILabeled;
-import edu.upenn.cis.ppod.util.IVisitor;
 
 /**
  * Operational Taxonomic Unit.
@@ -51,6 +52,7 @@ public class Otu
 
 	/** Non-unique label. */
 	@Column(name = "LABEL", nullable = false)
+	@Index(name = "LABEL_IDX")
 	@CheckForNull
 	private String label;
 
@@ -67,12 +69,6 @@ public class Otu
 
 	public Otu(final String label) {
 		this.label = checkNotNull(label);
-	}
-
-	@Override
-	public void accept(final IVisitor visitor) {
-		checkNotNull(visitor);
-		visitor.visitOtu(this);
 	}
 
 	/**
@@ -98,18 +94,6 @@ public class Otu
 	}
 
 	/**
-	 * Mark this {@code OTU} and its parent {@code IOTUSet}, if it has one, as
-	 * in need of a new pPod version info.
-	 */
-	@Override
-	public void setInNeedOfNewVersion() {
-		if (parent != null) {
-			parent.setInNeedOfNewVersion();
-		}
-		super.setInNeedOfNewVersion();
-	}
-
-	/**
 	 * Set the label.
 	 * 
 	 * @param label the label
@@ -117,13 +101,7 @@ public class Otu
 	 * @return this
 	 */
 	public void setLabel(final String label) {
-		checkNotNull(label);
-		if (label.equals(getLabel())) {
-
-		} else {
-			this.label = label;
-			setInNeedOfNewVersion();
-		}
+		this.label = checkNotNull(label);
 	}
 
 	/**

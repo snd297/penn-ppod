@@ -139,22 +139,8 @@ public abstract class SequenceSet<S extends Sequence<?>>
 	@Nullable
 	public abstract S putSequence(final Otu otu, final S sequence);
 
-	@Override
-	public void setInNeedOfNewVersion() {
-		if (getParent() != null) {
-			getParent().setInNeedOfNewVersion();
-		}
-		super.setInNeedOfNewVersion();
-	}
-
 	public void setLabel(final String label) {
-		checkNotNull(label);
-		if (label.equals(getLabel())) {
-
-		} else {
-			this.label = label;
-			setInNeedOfNewVersion();
-		}
+		this.label = checkNotNull(label);
 	}
 
 	/** {@inheritDoc} */

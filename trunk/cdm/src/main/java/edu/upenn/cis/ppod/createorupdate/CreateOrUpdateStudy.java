@@ -44,7 +44,6 @@ import edu.upenn.cis.ppod.dto.PPodStandardMatrix;
 import edu.upenn.cis.ppod.dto.PPodStudy;
 import edu.upenn.cis.ppod.dto.PPodTreeSet;
 import edu.upenn.cis.ppod.imodel.INewVersionInfo;
-import edu.upenn.cis.ppod.model.CurrentVersion;
 import edu.upenn.cis.ppod.model.DnaMatrix;
 import edu.upenn.cis.ppod.model.DnaSequenceSet;
 import edu.upenn.cis.ppod.model.OtuSet;
@@ -52,8 +51,6 @@ import edu.upenn.cis.ppod.model.ProteinMatrix;
 import edu.upenn.cis.ppod.model.StandardMatrix;
 import edu.upenn.cis.ppod.model.Study;
 import edu.upenn.cis.ppod.model.TreeSet;
-import edu.upenn.cis.ppod.util.IVisitor;
-import edu.upenn.cis.ppod.util.SetVersionInfoVisitor;
 
 /**
  * Create a new study or update an existing one.
@@ -63,14 +60,12 @@ import edu.upenn.cis.ppod.util.SetVersionInfoVisitor;
 public final class CreateOrUpdateStudy {
 
 	private final IStudyDAO studyDAO;
-	private final INewVersionInfo newVersionInfo;
 	private final MergeOtuSets mergeOtuSets;
 	private final CreateOrUpdateDnaMatrix createOrUpdateDnaMatrix;
 	private final CreateOrUpdateProteinMatrix createOrUpdateProteinMatrix;
 	private final MergeDnaSequenceSets mergeDNASequenceSets;
 	private final CreateOrUpdateStandardMatrix createOrUpdateStandardMatrix;
 	private final MergeTreeSets mergeTreeSets;
-	private final ICurrentVersionDAO currentVersionDAO;
 	private final IOtuSetDAO otuSetDAO;
 	private final IDnaSequenceSetDAO dnaSequenceSetDAO;
 	private final IDnaMatrixDAO dnaMatrixDAO;
@@ -99,13 +94,11 @@ public final class CreateOrUpdateStudy {
 			final IProteinMatrixDAO proteinMatrixDAO,
 			final CreateOrUpdateProteinMatrix createOrUpdateProteinMatrix) {
 		this.studyDAO = studyDAO;
-		this.newVersionInfo = newVersionInfo;
 		this.mergeOtuSets = mergeOTUSets;
 		this.createOrUpdateDnaMatrix = createOrUpdateDNAMatrix;
 		this.mergeDNASequenceSets = mergeDNASequenceSets;
 		this.createOrUpdateStandardMatrix = createOrUpdateStandardMatrix;
 		this.mergeTreeSets = mergeTreeSets;
-		this.currentVersionDAO = currentVersionDAO;
 		this.otuSetDAO = otuSetDAO;
 		this.dnaSequenceSetDAO = dnaSequenceSetDAO;
 		this.dnaMatrixDAO = dnaMatrixDAO;
@@ -122,7 +115,6 @@ public final class CreateOrUpdateStudy {
 				studyDAO.getStudyByPPodId(
 						incomingStudy.getPPodId()))) {
 			dbStudy = new Study();
-			dbStudy.setVersionInfo(newVersionInfo.getNewVersionInfo());
 			makeStudyPersistent = true;
 		}
 
@@ -163,7 +155,6 @@ public final class CreateOrUpdateStudy {
 									IHasPPodId.getPPodId),
 							null))) {
 				dbOtuSet = new OtuSet();
-				dbOtuSet.setVersionInfo(newVersionInfo.getNewVersionInfo());
 				dbOtuSet.setLabel(incomingOtuSet.getLabel()); // non-null, do it
 				// now
 				dbStudy.addOtuSet(incomingOtuSetPos, dbOtuSet);
@@ -177,26 +168,6 @@ public final class CreateOrUpdateStudy {
 			handleStandardMatrices(dbOtuSet, incomingOtuSet);
 			handleDnaSequenceSets(dbOtuSet, incomingOtuSet);
 			handleTreeSets(dbOtuSet, incomingOtuSet);
-		}
-		final IVisitor setVersionInfoVisitor = new SetVersionInfoVisitor(
-				newVersionInfo);
-
-		dbStudy.accept(setVersionInfoVisitor);
-
-		if (newVersionInfo.newVersionWasDealtOut()) {
-
-			CurrentVersion currentVersion = currentVersionDAO.findById(
-					CurrentVersion.ID,
-					true);
-
-			if (currentVersion == null) {
-				currentVersion = new CurrentVersion(1L);
-				currentVersionDAO.makePersistent(currentVersion);
-			} else {
-				currentVersion.setVersion(currentVersion.getVersion() + 1);
-			}
-			newVersionInfo.getNewVersionInfo().setVersion(
-					currentVersion.getVersion());
 		}
 
 		return dbStudy;
@@ -237,7 +208,6 @@ public final class CreateOrUpdateStudy {
 									null
 									))) {
 				dbMatrix = new DnaMatrix();
-				dbMatrix.setVersionInfo(newVersionInfo.getNewVersionInfo());
 
 				// Do this here because it's non-nullable
 				dbMatrix.setLabel(incomingMatrix.getLabel());
@@ -285,8 +255,6 @@ public final class CreateOrUpdateStudy {
 									IHasPPodId.getPPodId),
 									null))) {
 				dbDnaSequenceSet = new DnaSequenceSet();
-				dbDnaSequenceSet.setVersionInfo(newVersionInfo
-						.getNewVersionInfo());
 				dbDnaSequenceSet.setLabel(incomingSequenceSet.getLabel());
 				dbOtuSet.addDnaSequenceSet(
 						incomingSequenceSetPos, dbDnaSequenceSet);
@@ -332,7 +300,6 @@ public final class CreateOrUpdateStudy {
 									null
 									))) {
 				dbMatrix = new ProteinMatrix();
-				dbMatrix.setVersionInfo(newVersionInfo.getNewVersionInfo());
 
 				// Do this here because it's non-nullable
 				dbMatrix.setLabel(incomingMatrix.getLabel());
@@ -380,7 +347,6 @@ public final class CreateOrUpdateStudy {
 									IHasPPodId.getPPodId),
 									null))) {
 				dbMatrix = new StandardMatrix();
-				dbMatrix.setVersionInfo(newVersionInfo.getNewVersionInfo());
 				dbMatrix.setLabel(incomingMatrix.getLabel());
 				dbOtuSet.addStandardMatrix(
 						incomingMatrixPos,
@@ -425,7 +391,6 @@ public final class CreateOrUpdateStudy {
 									IHasPPodId.getPPodId),
 									null))) {
 				dbTreeSet = new TreeSet();
-				dbTreeSet.setVersionInfo(newVersionInfo.getNewVersionInfo());
 				dbTreeSet.setLabel(incomingTreeSet.getLabel());
 				dbOtuSet.addTreeSet(incomingTreeSetPos, dbTreeSet);
 				treeSetDAO.makePersistent(dbTreeSet);
