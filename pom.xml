@@ -57,8 +57,9 @@
 	<modules>
 		<module>cdm</module>
 		<module>services</module>
-		<module>distribution</module>
-	</modules>
+		<module>distribution</module><!--
+		<module>ppod-demo-server</module>
+	--></modules>
 	<repositories>
 		<repository>
 			<id>jboss</id>

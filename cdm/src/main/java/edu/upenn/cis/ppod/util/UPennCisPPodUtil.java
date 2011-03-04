@@ -38,18 +38,8 @@ import edu.upenn.cis.ppod.model.OtuSet;
  */
 public class UPennCisPPodUtil {
 
-	/**
-	 * Prevent inheritance and instantiation.
-	 * 
-	 * @throws UnsupportedOperationException always
-	 */
-	private UPennCisPPodUtil() {
-		throw new UnsupportedOperationException(
-				"Can't instantiate a UPennCisPPodUtil");
-	}
-
-	public static <F, T> Predicate<F> composeEqualTo(T equalToTarget,
-			Function<F, ? extends T> f) {
+	public static <F, T> Predicate<F> composeEqualTo(final T equalToTarget,
+			final Function<F, ? extends T> f) {
 		return compose(equalTo(equalToTarget), f);
 	}
 
@@ -85,5 +75,14 @@ public class UPennCisPPodUtil {
 				}
 			}
 		}
+	}
+
+	/**
+	 * Prevent inheritance and instantiation.
+	 * 
+	 * @throws UnsupportedOperationException always
+	 */
+	private UPennCisPPodUtil() {
+		throw new AssertionError();
 	}
 }
