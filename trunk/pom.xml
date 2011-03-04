@@ -59,7 +59,9 @@
 		<module>services</module>
 		<module>distribution</module><!--
 		<module>ppod-demo-server</module>
-	--></modules>
+	-->
+		<module>ppod-server</module>
+	</modules>
 	<repositories>
 		<repository>
 			<id>jboss</id>
