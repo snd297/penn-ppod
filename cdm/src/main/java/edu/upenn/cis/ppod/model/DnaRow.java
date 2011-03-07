@@ -36,7 +36,7 @@ import edu.upenn.cis.ppod.imodel.IChild;
  */
 @Entity
 @Table(name = DnaRow.TABLE)
-public class DnaRow extends PPodEntity implements IChild<DnaMatrix> {
+public class DnaRow extends PersistentObject implements IChild<DnaMatrix> {
 
 	public static final String TABLE = "DNA_ROW";
 

@@ -59,6 +59,7 @@ class PPodEntitiesResourceHibernate implements
 	}
 
 	public PPodEntities getEntitiesByHqlQuery(final String query) {
+		final String METHOD = "getEntitiesByHqlQuery(...)";
 		final long inTime = new Date().getTime();
 		Transaction trx = null;
 		try {
@@ -158,8 +159,8 @@ class PPodEntitiesResourceHibernate implements
 			}
 			throw new IllegalStateException(t);
 		} finally {
-			logger.debug("createOrUpdateStudy(...): response time: "
-					+ (new Date().getTime() - inTime) + " milliseconds");
+			logger.debug("{}: response time me: {} milliseconds",
+					METHOD, Long.valueOf(new Date().getTime() - inTime));
 		}
 	}
 }

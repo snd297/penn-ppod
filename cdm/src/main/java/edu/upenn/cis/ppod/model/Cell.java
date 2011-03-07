@@ -43,7 +43,7 @@ import edu.upenn.cis.ppod.imodel.IChild;
  */
 @MappedSuperclass
 abstract class Cell<E, R extends Row<?, ?>>
-		extends PPodEntity
+		extends PersistentObject
 		implements IChild<R> {
 
 	static final String TYPE_COLUMN = "TYPE";

@@ -73,6 +73,7 @@ class StudyResourceHibernate implements IStudyResource {
 	}
 
 	private StudyInfo createOrUpdateStudy(final PPodStudy incomingStudy) {
+		final String METHOD = "createOrUpdateStudy(...)";
 		final long inTime = new Date().getTime();
 		try {
 
@@ -95,8 +96,9 @@ class StudyResourceHibernate implements IStudyResource {
 			}
 			throw new IllegalStateException(t);
 		} finally {
-			logger.debug("createOrUpdateStudy(...): response time: "
-					+ (new Date().getTime() - inTime) + " milliseconds");
+			logger.debug("{}: response time: {} milliseconds",
+					METHOD,
+					Long.valueOf(new Date().getTime() - inTime));
 		}
 	}
 
@@ -106,6 +108,7 @@ class StudyResourceHibernate implements IStudyResource {
 	}
 
 	public PPodStudy getStudyByPPodId(final String pPodId) {
+		final String METHOD = "getStudyByPPodId(...)";
 		final long inTime = new Date().getTime();
 		try {
 
@@ -126,12 +129,14 @@ class StudyResourceHibernate implements IStudyResource {
 			}
 			throw new IllegalStateException(t);
 		} finally {
-			logger.debug("getStudyByPPodId(...): response time: "
-					+ (new Date().getTime() - inTime) + " milliseconds");
+			logger.debug("{}: response time: {} milliseconds",
+					METHOD,
+					Long.valueOf(new Date().getTime() - inTime));
 		}
 	}
 
 	public Set<PPodLabelAndId> getStudyPPodIdLabelPairs() {
+		final String METHOD = "getStudyPPodIdLabelPairs()";
 		final long inTime = new Date().getTime();
 		try {
 			session.beginTransaction();
@@ -148,8 +153,9 @@ class StudyResourceHibernate implements IStudyResource {
 			}
 			throw new IllegalStateException(t);
 		} finally {
-			logger.debug("getStudyPPodIdLabelPairs(...): response time: "
-					+ (new Date().getTime() - inTime) + " milliseconds");
+			logger.debug("{}: response time: {} milliseconds",
+					METHOD,
+					Long.valueOf(new Date().getTime() - inTime));
 		}
 	}
 

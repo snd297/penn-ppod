@@ -24,8 +24,6 @@ import java.util.Set;
 
 import com.google.inject.Inject;
 
-import edu.upenn.cis.ppod.dao.IAttachmentNamespaceDAO;
-import edu.upenn.cis.ppod.dao.IAttachmentTypeDAO;
 import edu.upenn.cis.ppod.dao.ICurrentVersionDAO;
 import edu.upenn.cis.ppod.dao.IDnaMatrixDAO;
 import edu.upenn.cis.ppod.dao.IDnaRowDAO;
@@ -76,8 +74,6 @@ public final class CreateOrUpdateStudy {
 	@Inject
 	CreateOrUpdateStudy(
 			final IDnaRowDAO dnaRowDao,
-			final IAttachmentNamespaceDAO attachmentNamespaceDAO,
-			final IAttachmentTypeDAO attachmentTypeDAO,
 			final IStudyDAO studyDAO,
 			final INewVersionInfo newVersionInfo,
 			final MergeOtuSets mergeOTUSets,

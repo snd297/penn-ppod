@@ -16,7 +16,8 @@ import edu.upenn.cis.ppod.imodel.IChild;
 
 @Entity
 @Table(name = ProteinRow.TABLE)
-public class ProteinRow extends PPodEntity implements IChild<ProteinMatrix> {
+public class ProteinRow extends PersistentObject implements
+		IChild<ProteinMatrix> {
 
 	public static final String TABLE = "PROTEIN_ROW";
 	public static final String JOIN_COLUMN =

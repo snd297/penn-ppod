@@ -30,7 +30,6 @@ import com.google.common.base.Predicate;
 
 import edu.umd.cs.findbugs.annotations.CheckForNull;
 import edu.umd.cs.findbugs.annotations.Nullable;
-import edu.upenn.cis.ppod.imodel.IPPodEntity;
 
 /**
  * A flexible container for data that can be attached to other pPOD attachees.
@@ -151,12 +150,6 @@ public class Attachment extends UuPPodEntity {
 
 	public static final String TYPE_COLUMN = "TYPE";
 
-	/** Object to which this attachment is attached. */
-	@CheckForNull
-	@ManyToOne(fetch = FetchType.LAZY, optional = false)
-	@JoinColumn(name = PPodEntity.JOIN_COLUMN)
-	private PPodEntity attachee;
-
 	@CheckForNull
 	@Lob
 	@Column(name = BYTES_VALUE_COLUMN, nullable = true)
@@ -181,19 +174,6 @@ public class Attachment extends UuPPodEntity {
 
 	/** Default constructor for (at least) Hibernate. */
 	public Attachment() {}
-
-	/**
-	 * Get the entities that have this has an attachment.
-	 * <p>
-	 * Will be {@code null} for newly create attachments, will never be
-	 * {@code null} for persistent attachments.
-	 * 
-	 * @return the entities that have this has an attachment
-	 */
-	@Nullable
-	public IPPodEntity getAttachee() {
-		return attachee;
-	}
 
 	/**
 	 * Get a copy of the byteArrayValue.
@@ -238,11 +218,6 @@ public class Attachment extends UuPPodEntity {
 	@Nullable
 	public AttachmentType getType() {
 		return type;
-	}
-
-	/** {@inheritDoc} */
-	public void setAttachee(@CheckForNull final PPodEntity attachee) {
-		this.attachee = attachee;
 	}
 
 	/**

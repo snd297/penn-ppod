@@ -13,9 +13,6 @@
 		<!-- Bind the getCurrentSession() method to the thread. -->
 		<property name="current_session_context_class">thread</property>
 
-		<mapping class="edu.upenn.cis.ppod.model.VersionInfo" />
-		<mapping class="edu.upenn.cis.ppod.model.CurrentVersion" />
-
 		<mapping class="edu.upenn.cis.ppod.model.Study" />
 
 		<mapping class="edu.upenn.cis.ppod.model.Otu" />
@@ -35,10 +32,6 @@
 
 		<mapping class="edu.upenn.cis.ppod.model.ProteinMatrix" />
 		<mapping class="edu.upenn.cis.ppod.model.ProteinRow" />
-
-		<mapping class="edu.upenn.cis.ppod.model.Attachment" />
-		<mapping class="edu.upenn.cis.ppod.model.AttachmentNamespace" />
-		<mapping class="edu.upenn.cis.ppod.model.AttachmentType" />
 
 		<mapping class="edu.upenn.cis.ppod.model.DnaSequenceSet" />
 		<mapping class="edu.upenn.cis.ppod.model.DnaSequence" />

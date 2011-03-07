@@ -1,4 +1,4 @@
-package org.ppod.server;
+package edu.upenn.cis.ppod.demo;
 
 /**
  * Hello world!
