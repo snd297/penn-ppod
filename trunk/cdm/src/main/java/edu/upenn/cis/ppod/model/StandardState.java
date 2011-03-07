@@ -44,7 +44,7 @@ import edu.umd.cs.findbugs.annotations.CheckForNull;
  */
 @Entity
 @Table(name = StandardState.TABLE)
-public class StandardState extends PPodEntity {
+public class StandardState extends PersistentObject {
 
 	/**
 	 * {@link Function} wrapper of {@link #getStateNumber()}.

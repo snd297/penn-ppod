@@ -17,17 +17,11 @@ package edu.upenn.cis.ppod.model;
 
 import static com.google.common.base.Predicates.compose;
 import static com.google.common.base.Predicates.equalTo;
-import static com.google.common.collect.Iterables.filter;
 import static com.google.common.collect.Iterables.find;
-import static com.google.common.collect.Iterables.getOnlyElement;
-import static com.google.common.collect.Sets.newHashSet;
 import static org.testng.Assert.assertEquals;
 import static org.testng.Assert.assertNotNull;
 import static org.testng.Assert.assertSame;
 import static org.testng.Assert.assertTrue;
-
-import java.util.Set;
-
 import edu.upenn.cis.ppod.dto.PPodDnaSequence;
 import edu.upenn.cis.ppod.dto.PPodDnaSequenceSet;
 import edu.upenn.cis.ppod.dto.PPodOtu;
@@ -38,7 +32,6 @@ import edu.upenn.cis.ppod.dto.PPodStandardMatrix;
 import edu.upenn.cis.ppod.dto.PPodStandardRow;
 import edu.upenn.cis.ppod.dto.PPodStandardState;
 import edu.upenn.cis.ppod.imodel.ILabeled;
-import edu.upenn.cis.ppod.imodel.IPPodEntity;
 
 /**
  * For asserting that various {@code edu.upenn.cis.ppod.model} elements are the
@@ -214,64 +207,65 @@ public class ModelAssert {
 		}
 	}
 
-	public static void assertEqualsAttachmentNamespaces(
-			final AttachmentNamespace actualAttachmentNamespace,
-			final AttachmentNamespace expectedAttachmentNamespace) {
-		assertEquals(actualAttachmentNamespace.getLabel(),
-				expectedAttachmentNamespace.getLabel());
-	}
-
-	public static void assertEqualsAttachmentTypes(
-			final AttachmentType actualAttachmentType,
-			final AttachmentType expectedAttachmentType) {
-		assertEquals(
-				actualAttachmentType.getLabel(),
-				expectedAttachmentType.getLabel());
-		assertEqualsAttachmentNamespaces(
-				actualAttachmentType.getNamespace(),
-				expectedAttachmentType.getNamespace());
-	}
-
-	public static void assertEqualsPPodEntities(
-			final IPPodEntity actualPPodEntity,
-			final IPPodEntity expectedPPodEntity) {
-		assertEqualsAttachmentSets(
-				actualPPodEntity.getAttachments(),
-				expectedPPodEntity.getAttachments());
-	}
-
-	public static void assertEqualsAttachmentSets(
-			final Set<Attachment> actualAttachments,
-			final Set<Attachment> expectedAttachments) {
-		assertEquals(actualAttachments.size(), expectedAttachments.size());
-		final Set<Attachment> expectedAttachmentsCopy = newHashSet(expectedAttachments);
-		for (final Attachment actualAttachment : actualAttachments) {
-			final Attachment expectedAttachment = getOnlyElement(filter(
-							expectedAttachmentsCopy,
-							new Attachment.IsOfNamespaceTypeLabelAndStringValue(
-									actualAttachment)));
-			expectedAttachmentsCopy.remove(expectedAttachment);
-			assertEqualsAttachments(actualAttachment, expectedAttachment);
-		}
-	}
-
-	public static void assertEqualsAttachments(
-			final Attachment actualAttachment,
-			final Attachment expectedAttachment) {
-		assertEquals(actualAttachment.getLabel(), expectedAttachment.getLabel());
-		assertEquals(actualAttachment.getStringValue(), expectedAttachment
-				.getStringValue());
-		assertEquals(actualAttachment.getBytesValue(), expectedAttachment
-				.getBytesValue());
-		assertEqualsAttachmentTypes(actualAttachment.getType(),
-				expectedAttachment.getType());
-		assertEquals(actualAttachment.getAttachments().size(),
-				expectedAttachment.getAttachments().size());
-		if (expectedAttachment.getAttachments().size() > 0) {
-			throw new IllegalArgumentException(
-					"We don't support nested attchaments yet");
-		}
-	}
+	// public static void assertEqualsAttachmentNamespaces(
+	// final AttachmentNamespace actualAttachmentNamespace,
+	// final AttachmentNamespace expectedAttachmentNamespace) {
+	// assertEquals(actualAttachmentNamespace.getLabel(),
+	// expectedAttachmentNamespace.getLabel());
+	// }
+	//
+	// public static void assertEqualsAttachmentTypes(
+	// final AttachmentType actualAttachmentType,
+	// final AttachmentType expectedAttachmentType) {
+	// assertEquals(
+	// actualAttachmentType.getLabel(),
+	// expectedAttachmentType.getLabel());
+	// assertEqualsAttachmentNamespaces(
+	// actualAttachmentType.getNamespace(),
+	// expectedAttachmentType.getNamespace());
+	// }
+	//
+	// public static void assertEqualsPPodEntities(
+	// final IPPodEntity actualPPodEntity,
+	// final IPPodEntity expectedPPodEntity) {
+	// assertEqualsAttachmentSets(
+	// actualPPodEntity.getAttachments(),
+	// expectedPPodEntity.getAttachments());
+	// }
+	//
+	// public static void assertEqualsAttachmentSets(
+	// final Set<Attachment> actualAttachments,
+	// final Set<Attachment> expectedAttachments) {
+	// assertEquals(actualAttachments.size(), expectedAttachments.size());
+	// final Set<Attachment> expectedAttachmentsCopy =
+	// newHashSet(expectedAttachments);
+	// for (final Attachment actualAttachment : actualAttachments) {
+	// final Attachment expectedAttachment = getOnlyElement(filter(
+	// expectedAttachmentsCopy,
+	// new Attachment.IsOfNamespaceTypeLabelAndStringValue(
+	// actualAttachment)));
+	// expectedAttachmentsCopy.remove(expectedAttachment);
+	// assertEqualsAttachments(actualAttachment, expectedAttachment);
+	// }
+	// }
+	//
+	// public static void assertEqualsAttachments(
+	// final Attachment actualAttachment,
+	// final Attachment expectedAttachment) {
+	// assertEquals(actualAttachment.getLabel(), expectedAttachment.getLabel());
+	// assertEquals(actualAttachment.getStringValue(), expectedAttachment
+	// .getStringValue());
+	// assertEquals(actualAttachment.getBytesValue(), expectedAttachment
+	// .getBytesValue());
+	// assertEqualsAttachmentTypes(actualAttachment.getType(),
+	// expectedAttachment.getType());
+	// assertEquals(actualAttachment.getAttachments().size(),
+	// expectedAttachment.getAttachments().size());
+	// if (expectedAttachment.getAttachments().size() > 0) {
+	// throw new IllegalArgumentException(
+	// "We don't support nested attchaments yet");
+	// }
+	// }
 
 	/**
 	 * Prevent inheritance and instantiation.
