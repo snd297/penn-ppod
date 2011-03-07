@@ -16,10 +16,7 @@
 package edu.upenn.cis.ppod;
 
 import com.google.inject.AbstractModule;
-import com.google.inject.servlet.RequestScoped;
 
-import edu.upenn.cis.ppod.imodel.INewVersionInfo;
-import edu.upenn.cis.ppod.model.NewVersionInfoDB;
 import edu.upenn.cis.ppod.persistence.PersistenceModule;
 
 /**
@@ -31,9 +28,6 @@ public final class PPodModule extends AbstractModule {
 
 	@Override
 	protected void configure() {
-
-		bind(INewVersionInfo.class).to(NewVersionInfoDB.class).in(
-				RequestScoped.class);
 
 		install(new PersistenceModule());
 

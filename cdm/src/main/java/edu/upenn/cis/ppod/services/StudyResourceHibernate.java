@@ -25,13 +25,11 @@ import org.slf4j.LoggerFactory;
 import com.google.inject.Inject;
 
 import edu.upenn.cis.ppod.createorupdate.CreateOrUpdateStudy;
-import edu.upenn.cis.ppod.dao.ICurrentVersionDAO;
 import edu.upenn.cis.ppod.dao.IStudyDAO;
 import edu.upenn.cis.ppod.dto.PPodLabelAndId;
 import edu.upenn.cis.ppod.dto.PPodStudy;
 import edu.upenn.cis.ppod.dto.Study2StudyInfo;
 import edu.upenn.cis.ppod.dto.StudyInfo;
-import edu.upenn.cis.ppod.imodel.INewVersionInfo;
 import edu.upenn.cis.ppod.model.Study;
 import edu.upenn.cis.ppod.util.DbStudy2DocStudy;
 
@@ -62,8 +60,6 @@ class StudyResourceHibernate implements IStudyResource {
 	StudyResourceHibernate(
 			final IStudyDAO studyDAO,
 			final CreateOrUpdateStudy createOrUpdateStudy,
-			final INewVersionInfo newVersionInfo,
-			final ICurrentVersionDAO currentVersionDAO,
 			final Session session,
 			final DbStudy2DocStudy dbStudy2DocStudy) {
 		this.studyDAO = studyDAO;
