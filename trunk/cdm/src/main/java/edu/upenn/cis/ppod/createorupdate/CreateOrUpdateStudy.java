@@ -24,7 +24,6 @@ import java.util.Set;
 
 import com.google.inject.Inject;
 
-import edu.upenn.cis.ppod.dao.ICurrentVersionDAO;
 import edu.upenn.cis.ppod.dao.IDnaMatrixDAO;
 import edu.upenn.cis.ppod.dao.IDnaRowDAO;
 import edu.upenn.cis.ppod.dao.IDnaSequenceSetDAO;
@@ -41,7 +40,6 @@ import edu.upenn.cis.ppod.dto.PPodProteinMatrix;
 import edu.upenn.cis.ppod.dto.PPodStandardMatrix;
 import edu.upenn.cis.ppod.dto.PPodStudy;
 import edu.upenn.cis.ppod.dto.PPodTreeSet;
-import edu.upenn.cis.ppod.imodel.INewVersionInfo;
 import edu.upenn.cis.ppod.model.DnaMatrix;
 import edu.upenn.cis.ppod.model.DnaSequenceSet;
 import edu.upenn.cis.ppod.model.OtuSet;
@@ -75,13 +73,11 @@ public final class CreateOrUpdateStudy {
 	CreateOrUpdateStudy(
 			final IDnaRowDAO dnaRowDao,
 			final IStudyDAO studyDAO,
-			final INewVersionInfo newVersionInfo,
 			final MergeOtuSets mergeOTUSets,
 			final CreateOrUpdateDnaMatrix createOrUpdateDNAMatrix,
 			final MergeDnaSequenceSets mergeDNASequenceSets,
 			final CreateOrUpdateStandardMatrix createOrUpdateStandardMatrix,
 			final MergeTreeSets mergeTreeSets,
-			final ICurrentVersionDAO currentVersionDAO,
 			final IOtuSetDAO otuSetDAO,
 			final IDnaSequenceSetDAO dnaSequenceSetDAO,
 			final IDnaMatrixDAO dnaMatrixDAO,

@@ -15,9 +15,6 @@
  */
 package edu.upenn.cis.ppod.createorupdate;
 
-import static org.mockito.Mockito.mock;
-import static org.mockito.Mockito.when;
-
 import org.testng.annotations.Test;
 
 import edu.upenn.cis.ppod.TestGroupDefs;
@@ -25,12 +22,10 @@ import edu.upenn.cis.ppod.dto.PPodDnaSequence;
 import edu.upenn.cis.ppod.dto.PPodDnaSequenceSet;
 import edu.upenn.cis.ppod.dto.PPodOtu;
 import edu.upenn.cis.ppod.dto.PPodOtuSet;
-import edu.upenn.cis.ppod.imodel.INewVersionInfo;
 import edu.upenn.cis.ppod.model.DnaSequenceSet;
 import edu.upenn.cis.ppod.model.ModelAssert;
 import edu.upenn.cis.ppod.model.Otu;
 import edu.upenn.cis.ppod.model.OtuSet;
-import edu.upenn.cis.ppod.model.VersionInfo;
 
 @Test(groups = TestGroupDefs.FAST)
 public class MergeSequenceSetsTest {
@@ -67,10 +62,6 @@ public class MergeSequenceSetsTest {
 		srcSeqSet.getSequences().add(srcSeq0);
 		srcSeqSet.getSequences().add(srcSeq1);
 		srcSeqSet.getSequences().add(srcSeq2);
-
-		final VersionInfo versionInfo = mock(VersionInfo.class);
-		final INewVersionInfo newVersionInfo = mock(INewVersionInfo.class);
-		when(newVersionInfo.getNewVersionInfo()).thenReturn(versionInfo);
 
 		final MergeDnaSequenceSets mergeSeqSets = new MergeDnaSequenceSets();
 
@@ -118,10 +109,6 @@ public class MergeSequenceSetsTest {
 		srcSeqSet.getSequences().add(srcSeq1);
 		srcSeqSet.getSequences().add(srcSeq2);
 
-		final VersionInfo versionInfo = mock(VersionInfo.class);
-		final INewVersionInfo newVersionInfo = mock(INewVersionInfo.class);
-		when(newVersionInfo.getNewVersionInfo()).thenReturn(versionInfo);
-
 		final MergeDnaSequenceSets mergeSeqSets = new MergeDnaSequenceSets();
 
 		mergeSeqSets.mergeSequenceSets(trgSeqSet, srcSeqSet);
@@ -166,10 +153,6 @@ public class MergeSequenceSetsTest {
 		srcSeqSet.getSequences().add(srcSeq0);
 		srcSeqSet.getSequences().add(srcSeq1);
 		srcSeqSet.getSequences().add(srcSeq2);
-
-		final VersionInfo versionInfo = mock(VersionInfo.class);
-		final INewVersionInfo newVersionInfo = mock(INewVersionInfo.class);
-		when(newVersionInfo.getNewVersionInfo()).thenReturn(versionInfo);
 
 		final MergeDnaSequenceSets mergeSeqSets = new MergeDnaSequenceSets();
 

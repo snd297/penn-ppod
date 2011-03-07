@@ -18,7 +18,6 @@ package edu.upenn.cis.ppod.createorupdate;
 import static com.google.common.collect.Iterables.getOnlyElement;
 import static com.google.common.collect.Lists.newArrayList;
 import static org.mockito.Mockito.mock;
-import static org.mockito.Mockito.when;
 
 import java.util.List;
 
@@ -32,14 +31,12 @@ import edu.upenn.cis.ppod.dto.PPodStandardCell;
 import edu.upenn.cis.ppod.dto.PPodStandardCharacter;
 import edu.upenn.cis.ppod.dto.PPodStandardMatrix;
 import edu.upenn.cis.ppod.dto.PPodStandardRow;
-import edu.upenn.cis.ppod.imodel.INewVersionInfo;
 import edu.upenn.cis.ppod.model.ModelAssert;
 import edu.upenn.cis.ppod.model.Otu;
 import edu.upenn.cis.ppod.model.OtuSet;
 import edu.upenn.cis.ppod.model.StandardCell;
 import edu.upenn.cis.ppod.model.StandardMatrix;
 import edu.upenn.cis.ppod.model.StandardRow;
-import edu.upenn.cis.ppod.model.VersionInfo;
 import edu.upenn.cis.ppod.util.PPodEntityProvider;
 
 /**
@@ -53,10 +50,6 @@ public class CreateOrUpdateStandardMatrixTest {
 	@Test(dataProvider = PPodEntityProvider.STANDARD_MATRICES_PROVIDER,
 			dataProviderClass = PPodEntityProvider.class)
 	public void create(final PPodOtuSet sourceOtuSet) {
-
-		final VersionInfo versionInfo = mock(VersionInfo.class);
-		final INewVersionInfo newVersionInfo = mock(INewVersionInfo.class);
-		when(newVersionInfo.getNewVersionInfo()).thenReturn(versionInfo);
 
 		final CreateOrUpdateStandardMatrix createOrUpdateStandardMatrix =
 				new CreateOrUpdateStandardMatrix(
@@ -83,10 +76,6 @@ public class CreateOrUpdateStandardMatrixTest {
 	@Test(dataProvider = PPodEntityProvider.STANDARD_MATRICES_PROVIDER,
 			dataProviderClass = PPodEntityProvider.class)
 	public void moveRows(final PPodOtuSet sourceOtuSet) {
-
-		final VersionInfo versionInfo = mock(VersionInfo.class);
-		final INewVersionInfo newVersionInfo = mock(INewVersionInfo.class);
-		when(newVersionInfo.getNewVersionInfo()).thenReturn(versionInfo);
 
 		final CreateOrUpdateStandardMatrix createOrUpdateStandardMatrix =
 				new CreateOrUpdateStandardMatrix(
@@ -135,10 +124,6 @@ public class CreateOrUpdateStandardMatrixTest {
 	@Test(dataProvider = PPodEntityProvider.STANDARD_MATRICES_PROVIDER,
 			dataProviderClass = PPodEntityProvider.class)
 	public void moveCharacters(final PPodOtuSet sourceOtuSet) {
-
-		final VersionInfo versionInfo = mock(VersionInfo.class);
-		final INewVersionInfo newVersionInfo = mock(INewVersionInfo.class);
-		when(newVersionInfo.getNewVersionInfo()).thenReturn(versionInfo);
 
 		final CreateOrUpdateStandardMatrix createOrUpdateStandardMatrix =
 				new CreateOrUpdateStandardMatrix(
@@ -199,10 +184,6 @@ public class CreateOrUpdateStandardMatrixTest {
 	@Test(dataProvider = PPodEntityProvider.STANDARD_MATRICES_PROVIDER,
 			dataProviderClass = PPodEntityProvider.class)
 	public void removeColumn(final PPodOtuSet sourceOtuSet) {
-
-		final VersionInfo versionInfo = mock(VersionInfo.class);
-		final INewVersionInfo newVersionInfo = mock(INewVersionInfo.class);
-		when(newVersionInfo.getNewVersionInfo()).thenReturn(versionInfo);
 
 		final CreateOrUpdateStandardMatrix createOrUpdateStandardMatrix =
 				new CreateOrUpdateStandardMatrix(
