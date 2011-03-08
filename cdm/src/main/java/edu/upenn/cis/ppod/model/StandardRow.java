@@ -20,14 +20,21 @@ import static com.google.common.collect.Lists.newArrayList;
 
 import java.util.List;
 
+import javax.annotation.Nullable;
+import javax.persistence.Access;
+import javax.persistence.AccessType;
 import javax.persistence.CascadeType;
+import javax.persistence.Column;
 import javax.persistence.Entity;
 import javax.persistence.FetchType;
+import javax.persistence.GeneratedValue;
+import javax.persistence.Id;
 import javax.persistence.JoinColumn;
 import javax.persistence.ManyToOne;
 import javax.persistence.OneToMany;
 import javax.persistence.OrderColumn;
 import javax.persistence.Table;
+import javax.persistence.Version;
 
 import edu.umd.cs.findbugs.annotations.CheckForNull;
 
@@ -41,10 +48,23 @@ import edu.umd.cs.findbugs.annotations.CheckForNull;
 public class StandardRow
 		extends Row<StandardCell, StandardMatrix> {
 
+	@Access(AccessType.PROPERTY)
+	@Id
+	@GeneratedValue
+	@Column(name = ID_COLUMN)
+	@CheckForNull
+	private Long id;
+
+	@SuppressWarnings("unused")
+	@Version
+	@Column(name = "OBJ_VERSION")
+	@CheckForNull
+	private Integer objVersion;
+
 	/** This entitiy's table name. */
 	public static final String TABLE = "STANDARD_ROW";
 
-	public static final String JOIN_COLUMN = TABLE + "_ID";
+	public static final String ID_COLUMN = TABLE + "_ID";
 
 	@OneToMany(
 			mappedBy = "parent",
@@ -54,7 +74,7 @@ public class StandardRow
 	private final List<StandardCell> cells = newArrayList();
 
 	@ManyToOne(fetch = FetchType.LAZY, optional = false)
-	@JoinColumn(name = StandardMatrix.JOIN_COLUMN)
+	@JoinColumn(name = StandardMatrix.ID_COLUMN)
 	@CheckForNull
 	private StandardMatrix parent;
 
@@ -63,6 +83,11 @@ public class StandardRow
 	@Override
 	public List<StandardCell> getCells() {
 		return cells;
+	}
+
+	@Nullable
+	public Long getId() {
+		return id;
 	}
 
 	/** {@inheritDoc} */
@@ -85,6 +110,11 @@ public class StandardRow
 		for (final StandardCell cell : getCells()) {
 			cell.setParent(this);
 		}
+	}
+
+	@SuppressWarnings("unused")
+	private void setId(final Long id) {
+		this.id = id;
 	}
 
 	/** {@inheritDoc} */

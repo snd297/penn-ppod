@@ -46,22 +46,21 @@ class PPodEntitiesResourceHibernate implements
 		IPPodEntitiesResource {
 
 	private final Session session;
-	private final DbStudy2DocStudy dbStudy2DocStudy;
 	private static final Logger logger = LoggerFactory
 			.getLogger(PPodEntitiesResourceHibernate.class);
 
 	@Inject
-	PPodEntitiesResourceHibernate(
-			final Session session,
-			final DbStudy2DocStudy dbStudy2DocStudy) {
+	PPodEntitiesResourceHibernate(final Session session) {
 		this.session = session;
-		this.dbStudy2DocStudy = dbStudy2DocStudy;
 	}
 
 	public PPodEntities getEntitiesByHqlQuery(final String query) {
 		final String METHOD = "getEntitiesByHqlQuery(...)";
 		final long inTime = new Date().getTime();
 		Transaction trx = null;
+
+		final DbStudy2DocStudy dbStudy2DocStudy = new DbStudy2DocStudy();
+
 		try {
 			trx = session.beginTransaction();
 
@@ -135,7 +134,7 @@ class PPodEntitiesResourceHibernate implements
 							dbStudy2DocStudy.dbOtu2DocOtu(otu));
 				} else if (queryResult instanceof Object[]) {
 					throw new IllegalArgumentException(
-							"nested query results not supported. query: ["
+							"multiple results in one row not supported. query: ["
 									+ query
 									+ "]");
 				} else {

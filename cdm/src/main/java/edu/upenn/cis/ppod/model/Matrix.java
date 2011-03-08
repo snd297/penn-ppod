@@ -61,7 +61,7 @@ abstract class Matrix<R extends IChild<?>>
 	 * These are the <code>OTU</code>s whose data comprises this {@code Matrix}.
 	 */
 	@ManyToOne(fetch = FetchType.LAZY, optional = false)
-	@JoinColumn(name = OtuSet.JOIN_COLUMN, insertable = false,
+	@JoinColumn(name = OtuSet.ID_COLUMN, insertable = false,
 				updatable = false)
 	@CheckForNull
 	private OtuSet parent;

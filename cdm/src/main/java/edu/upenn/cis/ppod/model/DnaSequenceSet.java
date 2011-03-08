@@ -21,14 +21,21 @@ import static com.google.common.collect.Maps.newHashMap;
 import java.util.Map;
 
 import javax.annotation.Nullable;
+import javax.persistence.Access;
+import javax.persistence.AccessType;
 import javax.persistence.CascadeType;
+import javax.persistence.Column;
 import javax.persistence.Entity;
+import javax.persistence.GeneratedValue;
+import javax.persistence.Id;
 import javax.persistence.JoinColumn;
 import javax.persistence.JoinTable;
 import javax.persistence.MapKeyJoinColumn;
 import javax.persistence.OneToMany;
 import javax.persistence.Table;
+import javax.persistence.Version;
 
+import edu.umd.cs.findbugs.annotations.CheckForNull;
 import edu.upenn.cis.ppod.util.UPennCisPPodUtil;
 
 /**
@@ -41,6 +48,29 @@ import edu.upenn.cis.ppod.util.UPennCisPPodUtil;
 public class DnaSequenceSet
 		extends SequenceSet<DnaSequence> {
 
+	@Access(AccessType.PROPERTY)
+	@Id
+	@GeneratedValue
+	@Column(name = ID_COLUMN)
+	@CheckForNull
+	private Long id;
+
+	@SuppressWarnings("unused")
+	@Version
+	@Column(name = "OBJ_VERSION")
+	@CheckForNull
+	private Integer objVersion;
+
+	@Nullable
+	public Long getId() {
+		return id;
+	}
+
+	@SuppressWarnings("unused")
+	private void setId(final Long id) {
+		this.id = id;
+	}
+
 	/**
 	 * The name of the entity's table.
 	 */
@@ -49,12 +79,11 @@ public class DnaSequenceSet
 	/**
 	 * Used for foreign keys that point at this table.
 	 */
-	public final static String JOIN_COLUMN =
-			TABLE + "_" + PersistentObject.ID_COLUMN;
+	public final static String ID_COLUMN = TABLE + "_ID";
 
 	@OneToMany(cascade = CascadeType.ALL, orphanRemoval = true)
-	@JoinTable(inverseJoinColumns = @JoinColumn(name = DnaSequence.JOIN_COLUMN))
-	@MapKeyJoinColumn(name = Otu.JOIN_COLUMN)
+	@JoinTable(inverseJoinColumns = @JoinColumn(name = DnaSequence.ID_COLUMN))
+	@MapKeyJoinColumn(name = Otu.ID_COLUMN)
 	private final Map<Otu, DnaSequence> sequences = newHashMap();
 
 	/**

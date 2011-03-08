@@ -34,7 +34,6 @@ import edu.upenn.cis.ppod.imodel.IChild;
  * @param <M> the parent of the row
  */
 abstract class Row<C extends Cell<?, ?>, M extends Matrix<?>>
-		extends PersistentObject
 		implements IChild<M> {
 
 	Row() {}

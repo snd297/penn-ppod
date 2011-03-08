@@ -17,11 +17,16 @@ package edu.upenn.cis.ppod.model;
 
 import static com.google.common.base.Preconditions.checkNotNull;
 
+import javax.persistence.Access;
+import javax.persistence.AccessType;
 import javax.persistence.Column;
 import javax.persistence.Entity;
+import javax.persistence.GeneratedValue;
+import javax.persistence.Id;
 import javax.persistence.JoinColumn;
 import javax.persistence.ManyToOne;
 import javax.persistence.Table;
+import javax.persistence.Version;
 
 import org.hibernate.annotations.Index;
 
@@ -42,13 +47,26 @@ public class Otu
 		extends UuPPodEntity
 		implements IChild<OtuSet>, ILabeled {
 
+	@Access(AccessType.PROPERTY)
+	@Id
+	@GeneratedValue
+	@Column(name = ID_COLUMN)
+	@CheckForNull
+	private Long id;
+
+	@SuppressWarnings("unused")
+	@Version
+	@Column(name = "OBJ_VERSION")
+	@CheckForNull
+	private Integer objVersion;
+
 	/** The table for this entity. */
 	public static final String TABLE = "OTU";
 
 	/**
 	 * To be used for the names of foreign keys that point at this table.
 	 */
-	public static final String JOIN_COLUMN = TABLE + "_ID";
+	public static final String ID_COLUMN = TABLE + "_ID";
 
 	/** Non-unique label. */
 	@Column(name = "LABEL", nullable = false)
@@ -61,7 +79,7 @@ public class Otu
 	 */
 	@CheckForNull
 	@ManyToOne
-	@JoinColumn(name = OtuSet.JOIN_COLUMN, insertable = false,
+	@JoinColumn(name = OtuSet.ID_COLUMN, insertable = false,
 			updatable = false, nullable = false)
 	private OtuSet parent;
 
@@ -69,6 +87,11 @@ public class Otu
 
 	public Otu(final String label) {
 		this.label = checkNotNull(label);
+	}
+
+	@Nullable
+	public Long getId() {
+		return id;
 	}
 
 	/**
@@ -91,6 +114,11 @@ public class Otu
 	@Nullable
 	public OtuSet getParent() {
 		return parent;
+	}
+
+	@SuppressWarnings("unused")
+	private void setId(final Long id) {
+		this.id = id;
 	}
 
 	/**

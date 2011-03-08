@@ -24,15 +24,23 @@ import java.util.Iterator;
 import java.util.List;
 import java.util.Map;
 
+import javax.annotation.Nullable;
+import javax.persistence.Access;
+import javax.persistence.AccessType;
 import javax.persistence.CascadeType;
+import javax.persistence.Column;
 import javax.persistence.Entity;
+import javax.persistence.GeneratedValue;
+import javax.persistence.Id;
 import javax.persistence.JoinColumn;
 import javax.persistence.JoinTable;
 import javax.persistence.MapKeyJoinColumn;
 import javax.persistence.OneToMany;
 import javax.persistence.OrderColumn;
 import javax.persistence.Table;
+import javax.persistence.Version;
 
+import edu.umd.cs.findbugs.annotations.CheckForNull;
 import edu.upenn.cis.ppod.util.UPennCisPPodUtil;
 
 /**
@@ -44,19 +52,42 @@ import edu.upenn.cis.ppod.util.UPennCisPPodUtil;
 @Table(name = StandardMatrix.TABLE)
 public class StandardMatrix extends Matrix<StandardRow> {
 
+	@Access(AccessType.PROPERTY)
+	@Id
+	@GeneratedValue
+	@Column(name = ID_COLUMN)
+	@CheckForNull
+	private Long id;
+
+	@SuppressWarnings("unused")
+	@Version
+	@Column(name = "OBJ_VERSION")
+	@CheckForNull
+	private Integer objVersion;
+
+	@Nullable
+	public Long getId() {
+		return id;
+	}
+
+	@SuppressWarnings("unused")
+	private void setId(final Long id) {
+		this.id = id;
+	}
+
 	/** This entity's table name. */
 	public static final String TABLE = "STANDARD_MATRIX";
 
 	/**
 	 * Name for foreign key columns that point at this table.
 	 */
-	public static final String JOIN_COLUMN = TABLE + "_ID";
+	public static final String ID_COLUMN = TABLE + "_ID";
 
 	@OneToMany(
 			cascade = CascadeType.ALL,
 			orphanRemoval = true)
 	@OrderColumn(name = "POSITION")
-	@JoinColumn(name = JOIN_COLUMN, nullable = false)
+	@JoinColumn(name = ID_COLUMN, nullable = false)
 	private final List<StandardCharacter> characters = newArrayList();
 
 	/**
@@ -72,8 +103,8 @@ public class StandardMatrix extends Matrix<StandardRow> {
 			CascadeType.REFRESH },
 			orphanRemoval = true)
 	@JoinTable(name = TABLE + "_" + StandardRow.TABLE,
-			inverseJoinColumns = @JoinColumn(name = StandardRow.JOIN_COLUMN))
-	@MapKeyJoinColumn(name = Otu.JOIN_COLUMN)
+			inverseJoinColumns = @JoinColumn(name = StandardRow.ID_COLUMN))
+	@MapKeyJoinColumn(name = Otu.ID_COLUMN)
 	private final Map<Otu, StandardRow> rows = newHashMap();
 
 	/** No-arg constructor. */

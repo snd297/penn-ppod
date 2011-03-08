@@ -17,13 +17,18 @@ package edu.upenn.cis.ppod.model;
 
 import static com.google.common.base.Preconditions.checkNotNull;
 
+import javax.persistence.Access;
+import javax.persistence.AccessType;
 import javax.persistence.Column;
 import javax.persistence.Entity;
 import javax.persistence.FetchType;
+import javax.persistence.GeneratedValue;
+import javax.persistence.Id;
 import javax.persistence.JoinColumn;
 import javax.persistence.Lob;
 import javax.persistence.ManyToOne;
 import javax.persistence.Table;
+import javax.persistence.Version;
 
 import edu.umd.cs.findbugs.annotations.CheckForNull;
 import edu.umd.cs.findbugs.annotations.Nullable;
@@ -36,15 +41,27 @@ import edu.upenn.cis.ppod.imodel.IChild;
  */
 @Entity
 @Table(name = DnaRow.TABLE)
-public class DnaRow extends PersistentObject implements IChild<DnaMatrix> {
+public class DnaRow implements IChild<DnaMatrix> {
+
+	@Access(AccessType.PROPERTY)
+	@Id
+	@GeneratedValue
+	@Column(name = ID_COLUMN)
+	@CheckForNull
+	private Long id;
+
+	@SuppressWarnings("unused")
+	@Version
+	@Column(name = "OBJ_VERSION")
+	@CheckForNull
+	private Integer objVersion;
 
 	public static final String TABLE = "DNA_ROW";
 
-	public static final String JOIN_COLUMN =
-			TABLE + "_" + PersistentObject.ID_COLUMN;
+	public static final String ID_COLUMN = TABLE + "_ID";
 
 	@ManyToOne(fetch = FetchType.LAZY, optional = false)
-	@JoinColumn(name = DnaMatrix.JOIN_COLUMN)
+	@JoinColumn(name = DnaMatrix.ID_COLUMN)
 	@CheckForNull
 	private DnaMatrix parent;
 
@@ -55,6 +72,11 @@ public class DnaRow extends PersistentObject implements IChild<DnaMatrix> {
 
 	public DnaRow() {}
 
+	@Nullable
+	public Long getId() {
+		return id;
+	}
+
 	/** {@inheritDoc} */
 	public DnaMatrix getParent() {
 		return parent;
@@ -63,6 +85,11 @@ public class DnaRow extends PersistentObject implements IChild<DnaMatrix> {
 	@Nullable
 	public String getSequence() {
 		return sequence;
+	}
+
+	@SuppressWarnings("unused")
+	private void setId(final Long id) {
+		this.id = id;
 	}
 
 	/** {@inheritDoc} */

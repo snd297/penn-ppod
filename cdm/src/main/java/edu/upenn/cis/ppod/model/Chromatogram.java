@@ -17,19 +17,45 @@ package edu.upenn.cis.ppod.model;
 
 import javax.annotation.CheckForNull;
 import javax.annotation.Nullable;
+import javax.persistence.Access;
+import javax.persistence.AccessType;
 import javax.persistence.Column;
 import javax.persistence.Entity;
 import javax.persistence.FetchType;
+import javax.persistence.GeneratedValue;
+import javax.persistence.Id;
 import javax.persistence.Lob;
 import javax.persistence.OneToOne;
-import javax.persistence.Table;
+import javax.persistence.Version;
 
 /**
  * @author Sam Donnelly
  */
 @Entity
-@Table(name = "CHROMATOGRAM")
 public class Chromatogram extends UuPPodEntity {
+
+	@Access(AccessType.PROPERTY)
+	@Id
+	@GeneratedValue
+	@Column(name = "CHROMATOGRAM_ID")
+	@CheckForNull
+	private Long id;
+
+	@SuppressWarnings("unused")
+	@Version
+	@Column(name = "OBJ_VERSION")
+	@CheckForNull
+	private Integer objVersion;
+
+	@Nullable
+	public Long getId() {
+		return id;
+	}
+
+	@SuppressWarnings("unused")
+	private void setId(final Long id) {
+		this.id = id;
+	}
 
 	@Lob
 	@Column(name = "CHROMATOGRAM", nullable = false)

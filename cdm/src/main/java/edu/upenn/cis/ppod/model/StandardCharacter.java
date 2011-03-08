@@ -22,14 +22,19 @@ import static com.google.common.collect.Sets.newHashSet;
 import java.util.Map;
 import java.util.Set;
 
+import javax.persistence.Access;
+import javax.persistence.AccessType;
 import javax.persistence.CascadeType;
 import javax.persistence.Column;
 import javax.persistence.Entity;
+import javax.persistence.GeneratedValue;
+import javax.persistence.Id;
 import javax.persistence.JoinColumn;
 import javax.persistence.ManyToOne;
 import javax.persistence.MapKey;
 import javax.persistence.OneToMany;
 import javax.persistence.Table;
+import javax.persistence.Version;
 
 import org.hibernate.annotations.Index;
 
@@ -46,9 +51,22 @@ import edu.umd.cs.findbugs.annotations.Nullable;
 @Table(name = StandardCharacter.TABLE)
 public class StandardCharacter extends UuPPodEntity {
 
+	@Access(AccessType.PROPERTY)
+	@Id
+	@GeneratedValue
+	@Column(name = ID_COLUMN)
+	@CheckForNull
+	private Long id;
+
+	@SuppressWarnings("unused")
+	@Version
+	@Column(name = "OBJ_VERSION")
+	@CheckForNull
+	private Integer objVersion;
+
 	public final static String TABLE = "STANDARD_CHARACTER";
 
-	public final static String JOIN_COLUMN = TABLE + "_ID";
+	public final static String ID_COLUMN = TABLE + "_ID";
 
 	/**
 	 * The non-unique label of this {@code Character}.
@@ -63,7 +81,7 @@ public class StandardCharacter extends UuPPodEntity {
 	 */
 	@ManyToOne(optional = false)
 	@JoinColumn(
-			name = StandardMatrix.JOIN_COLUMN,
+			name = StandardMatrix.ID_COLUMN,
 			insertable = false,
 			updatable = false)
 	@CheckForNull
@@ -117,6 +135,11 @@ public class StandardCharacter extends UuPPodEntity {
 		return originalState;
 	}
 
+	@Nullable
+	public Long getId() {
+		return id;
+	}
+
 	/**
 	 * Get the label of this {@code Character}.
 	 * 
@@ -167,6 +190,11 @@ public class StandardCharacter extends UuPPodEntity {
 	 */
 	public Set<StandardState> getStates() {
 		return newHashSet(states.values());
+	}
+
+	@SuppressWarnings("unused")
+	private void setId(final Long id) {
+		this.id = id;
 	}
 
 	/** {@inheritDoc} */
