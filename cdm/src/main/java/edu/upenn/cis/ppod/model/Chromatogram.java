@@ -47,16 +47,6 @@ public class Chromatogram extends UuPPodEntity {
 	@CheckForNull
 	private Integer objVersion;
 
-	@Nullable
-	public Long getId() {
-		return id;
-	}
-
-	@SuppressWarnings("unused")
-	private void setId(final Long id) {
-		this.id = id;
-	}
-
 	@Lob
 	@Column(name = "CHROMATOGRAM", nullable = false)
 	@CheckForNull
@@ -68,13 +58,12 @@ public class Chromatogram extends UuPPodEntity {
 
 	@Nullable
 	public byte[] getChromatogram() {
-		if (chromatogram == null) {
-			return null;
-		}
-		final byte[] chromatogramCopy = new byte[chromatogram.length];
-		System.arraycopy(chromatogram, 0, chromatogramCopy, 0,
-				chromatogram.length);
-		return chromatogramCopy;
+		return chromatogram;
+	}
+
+	@Nullable
+	public Long getId() {
+		return id;
 	}
 
 	/**
@@ -89,6 +78,11 @@ public class Chromatogram extends UuPPodEntity {
 
 	public void setChromatogram(final byte[] chromatogram) {
 		this.chromatogram = chromatogram;
+	}
+
+	@SuppressWarnings("unused")
+	private void setId(final Long id) {
+		this.id = id;
 	}
 
 	public void setSequence(@CheckForNull final DnaSequence sequence) {

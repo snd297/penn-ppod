@@ -22,15 +22,9 @@ public final class PPodStandardCharacter extends UuPPodDomainObjectWithLabel {
 	@XmlElement(name = "state")
 	private final Set<PPodStandardState> states = newHashSet();
 
-	PPodStandardCharacter() {}
-
-	public PPodStandardCharacter(final String pPodId,
-			final Long version,
-			final String label, final String mesquiteId) {
-		super(pPodId, version, label);
-		checkNotNull(mesquiteId);
-		this.mesquiteId = mesquiteId;
-	}
+	/** For JAXB. */
+	@SuppressWarnings("unused")
+	private PPodStandardCharacter() {}
 
 	public PPodStandardCharacter(@CheckForNull final String pPodId,
 			final String label,

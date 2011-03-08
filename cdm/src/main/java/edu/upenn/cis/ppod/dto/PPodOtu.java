@@ -15,25 +15,21 @@ public final class PPodOtu extends UuPPodDomainObjectWithLabel {
 	@XmlAttribute
 	private String docId = UUID.randomUUID().toString();
 
+	/** For JAXB. */
 	PPodOtu() {}
 
 	public PPodOtu(final String label) {
 		super(label);
 	}
 
-	public PPodOtu(final String pPodId, final Long version, final String label) {
-		super(pPodId, version, label);
-	}
-
-	public PPodOtu(final String pPodId, final Long version, final String docId,
-			final String label) {
-		this(pPodId, version, label);
-		checkNotNull(docId);
-		this.docId = docId;
-	}
-
 	public PPodOtu(@CheckForNull final String pPodId, final String label) {
 		super(pPodId, label);
+	}
+
+	public PPodOtu(@CheckForNull final String pPodId, final String label,
+			final String docId) {
+		super(pPodId, label);
+		this.docId = checkNotNull(docId);
 	}
 
 	public String getDocId() {
@@ -41,7 +37,6 @@ public final class PPodOtu extends UuPPodDomainObjectWithLabel {
 	}
 
 	public void setDocId(final String docId) {
-		checkNotNull(docId);
-		this.docId = docId;
+		this.docId = checkNotNull(docId);
 	}
 }

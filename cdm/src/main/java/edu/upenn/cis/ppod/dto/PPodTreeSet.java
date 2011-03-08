@@ -12,12 +12,9 @@ public final class PPodTreeSet extends UuPPodDomainObjectWithLabel {
 	@XmlElement(name = "tree")
 	private List<PPodTree> trees = newArrayList();
 
-	PPodTreeSet() {}
-
-	public PPodTreeSet(final String pPodId, final Long version,
-			final String label) {
-		super(pPodId, version, label);
-	}
+	/** For JAXB. */
+	@SuppressWarnings("unused")
+	private PPodTreeSet() {}
 
 	public PPodTreeSet(final String pPodId, final String label) {
 		super(pPodId, label);

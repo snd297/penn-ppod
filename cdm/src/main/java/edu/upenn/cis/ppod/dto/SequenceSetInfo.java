@@ -15,22 +15,9 @@
  */
 package edu.upenn.cis.ppod.dto;
 
-import static com.google.common.collect.Maps.newHashMap;
-
-import java.util.Map;
-
-import javax.xml.bind.annotation.XmlElementWrapper;
-
 /**
  * @author Sam Donnelly
- * 
  */
 public class SequenceSetInfo extends PPodEntityInfo {
 
-	private Map<Integer, Long> sequenceVersions = newHashMap();
-
-	@XmlElementWrapper(name = "sequenceVersions")
-	public Map<Integer, Long> getSequenceVersions() {
-		return sequenceVersions;
-	}
 }

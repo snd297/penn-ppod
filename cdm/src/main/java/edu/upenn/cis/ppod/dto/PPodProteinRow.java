@@ -36,11 +36,9 @@ public final class PPodProteinRow extends PPodMolecularRow {
 					'-',
 					'?');
 
-	PPodProteinRow() {}
-
-	public PPodProteinRow(final Long version, final String sequence) {
-		super(version, sequence);
-	}
+	/** For JAXB. */
+	@SuppressWarnings("unused")
+	private PPodProteinRow() {}
 
 	public PPodProteinRow(final String sequence) {
 		super(sequence);

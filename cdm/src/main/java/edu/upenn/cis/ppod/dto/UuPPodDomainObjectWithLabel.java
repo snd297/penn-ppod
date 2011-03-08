@@ -2,12 +2,15 @@ package edu.upenn.cis.ppod.dto;
 
 import static com.google.common.base.Preconditions.checkNotNull;
 
+import javax.xml.bind.annotation.XmlAccessType;
+import javax.xml.bind.annotation.XmlAccessorType;
 import javax.xml.bind.annotation.XmlAttribute;
 
 import edu.umd.cs.findbugs.annotations.CheckForNull;
 import edu.umd.cs.findbugs.annotations.Nullable;
 
-abstract class UuPPodDomainObjectWithLabel extends PPodDomainObject
+@XmlAccessorType(XmlAccessType.NONE)
+abstract class UuPPodDomainObjectWithLabel
 		implements IHasPPodId {
 
 	@XmlAttribute
@@ -29,17 +32,9 @@ abstract class UuPPodDomainObjectWithLabel extends PPodDomainObject
 
 	UuPPodDomainObjectWithLabel(
 			@CheckForNull final String pPodId,
-			final Long version,
 			final String label) {
-		super(version);
 		this.label = checkNotNull(label);
 		this.pPodId = pPodId;
-	}
-
-	UuPPodDomainObjectWithLabel(@CheckForNull final String pPodId,
-			final String label) {
-		this.pPodId = pPodId;
-		this.label = checkNotNull(label);
 	}
 
 	public final String getLabel() {
@@ -52,8 +47,7 @@ abstract class UuPPodDomainObjectWithLabel extends PPodDomainObject
 	}
 
 	public final void setLabel(final String label) {
-		checkNotNull(label);
-		this.label = label;
+		this.label = checkNotNull(label);
 	}
 
 	public final void setPPodId(@CheckForNull final String pPodId) {

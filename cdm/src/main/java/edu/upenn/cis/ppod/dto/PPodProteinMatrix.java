@@ -12,13 +12,9 @@ import edu.umd.cs.findbugs.annotations.CheckForNull;
 public final class PPodProteinMatrix extends
 		PPodMatrix<PPodProteinRow> {
 
+	/** For JAXB. */
 	@SuppressWarnings("unused")
 	private PPodProteinMatrix() {}
-
-	public PPodProteinMatrix(final String pPodId, final Long version,
-			final String label) {
-		super(pPodId, version, label);
-	}
 
 	public PPodProteinMatrix(@CheckForNull final String pPodId,
 			final String label) {

@@ -97,7 +97,7 @@ public class CreateOrUpdateStandardMatrixTest {
 
 		// Simulate passing back in the persisted characters: so we need to
 		// assign the proper pPOD ID's.
-		for (int i = 0; i < sourceMatrix.getColumnVersions().size(); i++) {
+		for (int i = 0; i < sourceMatrix.getCharacters().size(); i++) {
 			sourceMatrix.getCharacters().get(i).setPPodId(
 					targetMatrix.getCharacters().get(i).getPPodId());
 		}
@@ -145,7 +145,7 @@ public class CreateOrUpdateStandardMatrixTest {
 
 		// Simulate passing back in the persisted characters: so we need to
 		// assign the proper pPOD ID's.
-		for (int i = 0; i < sourceMatrix.getColumnVersions().size(); i++) {
+		for (int i = 0; i < sourceMatrix.getCharacters().size(); i++) {
 			sourceMatrix.getCharacters().get(i).setPPodId(
 					targetMatrix.getCharacters().get(i).getPPodId());
 		}
@@ -205,7 +205,7 @@ public class CreateOrUpdateStandardMatrixTest {
 
 		// Simulate passing back in the persisted characters: so we need to
 		// assign the proper pPOD ID's.
-		for (int i = 0; i < sourceMatrix.getColumnVersions().size(); i++) {
+		for (int i = 0; i < sourceMatrix.getCharacters().size(); i++) {
 			sourceMatrix.getCharacters()
 					.get(i)
 					.setPPodId(targetMatrix

@@ -43,6 +43,10 @@ import edu.upenn.cis.ppod.imodel.IChild;
 @Table(name = DnaRow.TABLE)
 public class DnaRow implements IChild<DnaMatrix> {
 
+	public static final String TABLE = "DNA_ROW";
+
+	public static final String ID_COLUMN = TABLE + "_ID";
+
 	@Access(AccessType.PROPERTY)
 	@Id
 	@GeneratedValue
@@ -55,10 +59,6 @@ public class DnaRow implements IChild<DnaMatrix> {
 	@Column(name = "OBJ_VERSION")
 	@CheckForNull
 	private Integer objVersion;
-
-	public static final String TABLE = "DNA_ROW";
-
-	public static final String ID_COLUMN = TABLE + "_ID";
 
 	@ManyToOne(fetch = FetchType.LAZY, optional = false)
 	@JoinColumn(name = DnaMatrix.ID_COLUMN)

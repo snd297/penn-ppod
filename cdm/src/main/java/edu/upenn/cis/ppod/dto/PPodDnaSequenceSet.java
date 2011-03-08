@@ -24,12 +24,6 @@ final public class PPodDnaSequenceSet extends UuPPodDomainObjectWithLabel {
 		super(pPodId, label);
 	}
 
-	public PPodDnaSequenceSet(final String pPodId,
-			final Long version,
-			final String label) {
-		super(pPodId, version, label);
-	}
-
 	public List<PPodDnaSequence> getSequences() {
 		return sequences;
 	}
