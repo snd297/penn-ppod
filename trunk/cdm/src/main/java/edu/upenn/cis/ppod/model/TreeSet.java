@@ -23,15 +23,20 @@ import java.util.List;
 
 import javax.annotation.CheckForNull;
 import javax.annotation.Nullable;
+import javax.persistence.Access;
+import javax.persistence.AccessType;
 import javax.persistence.CascadeType;
 import javax.persistence.Column;
 import javax.persistence.Entity;
 import javax.persistence.FetchType;
+import javax.persistence.GeneratedValue;
+import javax.persistence.Id;
 import javax.persistence.JoinColumn;
 import javax.persistence.ManyToOne;
 import javax.persistence.OneToMany;
 import javax.persistence.OrderColumn;
 import javax.persistence.Table;
+import javax.persistence.Version;
 
 import com.google.common.collect.Iterators;
 
@@ -46,9 +51,22 @@ import edu.upenn.cis.ppod.imodel.IDependsOnParentOtus;
 @Table(name = TreeSet.TABLE)
 public class TreeSet extends UuPPodEntity implements IDependsOnParentOtus {
 
+	@Access(AccessType.PROPERTY)
+	@Id
+	@GeneratedValue
+	@Column(name = ID_COLUMN)
+	@CheckForNull
+	private Long id;
+
+	@SuppressWarnings("unused")
+	@Version
+	@Column(name = "OBJ_VERSION")
+	@CheckForNull
+	private Integer objVersion;
+
 	public static final String TABLE = "TREE_SET";
 
-	public static final String JOIN_COLUMN = TABLE + "_ID";
+	public static final String ID_COLUMN = TABLE + "_ID";
 
 	@Nullable
 	@Column(name = "LABEL", nullable = false)
@@ -56,13 +74,13 @@ public class TreeSet extends UuPPodEntity implements IDependsOnParentOtus {
 
 	@Nullable
 	@ManyToOne(fetch = FetchType.LAZY, optional = false)
-	@JoinColumn(name = OtuSet.JOIN_COLUMN, insertable = false,
+	@JoinColumn(name = OtuSet.ID_COLUMN, insertable = false,
 				updatable = false)
 	private OtuSet parent;
 
 	@OneToMany(cascade = CascadeType.ALL, orphanRemoval = true)
 	@OrderColumn(name = "POSITION")
-	@JoinColumn(name = JOIN_COLUMN, nullable = false)
+	@JoinColumn(name = ID_COLUMN, nullable = false)
 	private final List<Tree> trees = newArrayList();
 
 	public TreeSet() {}
@@ -81,6 +99,11 @@ public class TreeSet extends UuPPodEntity implements IDependsOnParentOtus {
 				"tree set already contains a tree [" + tree.getLabel() + "]");
 		trees.add(tree);
 		tree.setParent(this);
+	}
+
+	@Nullable
+	public Long getId() {
+		return id;
 	}
 
 	/**
@@ -107,6 +130,11 @@ public class TreeSet extends UuPPodEntity implements IDependsOnParentOtus {
 	 */
 	public List<Tree> getTrees() {
 		return trees;
+	}
+
+	@SuppressWarnings("unused")
+	private void setId(final Long id) {
+		this.id = id;
 	}
 
 	/**

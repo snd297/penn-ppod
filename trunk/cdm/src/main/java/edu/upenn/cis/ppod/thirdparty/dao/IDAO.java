@@ -68,7 +68,6 @@ public interface IDAO<T, ID extends Serializable> {
 	 * Save or update <code>entity</code>.
 	 * 
 	 * @param entity entity object
-	 * @return <code>entity</code>
 	 */
 	void makePersistent(T entity);
 

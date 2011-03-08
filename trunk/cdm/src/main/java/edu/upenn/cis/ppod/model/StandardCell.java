@@ -22,13 +22,19 @@ import static com.google.common.collect.Sets.newHashSet;
 
 import java.util.Set;
 
+import javax.persistence.Access;
+import javax.persistence.AccessType;
+import javax.persistence.Column;
 import javax.persistence.Entity;
 import javax.persistence.FetchType;
+import javax.persistence.GeneratedValue;
+import javax.persistence.Id;
 import javax.persistence.JoinColumn;
 import javax.persistence.JoinTable;
 import javax.persistence.ManyToMany;
 import javax.persistence.ManyToOne;
 import javax.persistence.Table;
+import javax.persistence.Version;
 
 import edu.umd.cs.findbugs.annotations.CheckForNull;
 import edu.umd.cs.findbugs.annotations.Nullable;
@@ -42,6 +48,20 @@ import edu.upenn.cis.ppod.dto.PPodCellType;
 @Entity
 @Table(name = StandardCell.TABLE)
 public class StandardCell extends Cell<StandardState, StandardRow> {
+
+	@Access(AccessType.PROPERTY)
+	@Id
+	@GeneratedValue
+	@Column(name = ID_COLUMN)
+	@CheckForNull
+	private Long id;
+
+	@SuppressWarnings("unused")
+	@Version
+	@Column(name = "OBJ_VERSION")
+	@CheckForNull
+	private Integer objVersion;
+
 	/**
 	 * The name of the table.
 	 */
@@ -51,7 +71,7 @@ public class StandardCell extends Cell<StandardState, StandardRow> {
 	 * Conventionally used as the names of foreign keys that point at the
 	 * {@code CharacterStateCell} table.
 	 */
-	public static final String JOIN_COLUMN = TABLE + "_ID";
+	public static final String ID_COLUMN = TABLE + "_ID";
 
 	/**
 	 * To handle the most-common case of a single state.
@@ -59,7 +79,7 @@ public class StandardCell extends Cell<StandardState, StandardRow> {
 	 * Will be {@code null} if type is not {@link Type#SINGLE}.
 	 */
 	@ManyToOne(fetch = FetchType.LAZY)
-	@JoinColumn(name = StandardState.JOIN_COLUMN)
+	@JoinColumn(name = StandardState.ID_COLUMN)
 	@Nullable
 	private StandardState state;
 
@@ -71,7 +91,7 @@ public class StandardCell extends Cell<StandardState, StandardRow> {
 	 */
 	@ManyToMany
 	@JoinTable(inverseJoinColumns = @JoinColumn(
-			name = StandardState.JOIN_COLUMN))
+			name = StandardState.ID_COLUMN))
 	@Nullable
 	private Set<StandardState> states;
 
@@ -80,7 +100,7 @@ public class StandardCell extends Cell<StandardState, StandardRow> {
 	 * belongs.
 	 */
 	@ManyToOne(fetch = FetchType.LAZY, optional = false)
-	@JoinColumn(name = StandardRow.JOIN_COLUMN)
+	@JoinColumn(name = StandardRow.ID_COLUMN)
 	@CheckForNull
 	private StandardRow parent;
 
@@ -114,6 +134,11 @@ public class StandardCell extends Cell<StandardState, StandardRow> {
 	@Override
 	Set<StandardState> getElementsModifiable() {
 		return states;
+	}
+
+	@Nullable
+	public Long getId() {
+		return id;
 	}
 
 	/**
@@ -155,6 +180,11 @@ public class StandardCell extends Cell<StandardState, StandardRow> {
 	void setElements(
 			@Nullable final Set<StandardState> elements) {
 		this.states = elements;
+	}
+
+	@SuppressWarnings("unused")
+	private void setId(final Long id) {
+		this.id = id;
 	}
 
 	/** {@inheritDoc} */

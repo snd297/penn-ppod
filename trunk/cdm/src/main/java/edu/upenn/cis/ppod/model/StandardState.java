@@ -18,12 +18,17 @@ package edu.upenn.cis.ppod.model;
 import static com.google.common.base.Preconditions.checkNotNull;
 
 import javax.annotation.Nullable;
+import javax.persistence.Access;
+import javax.persistence.AccessType;
 import javax.persistence.Column;
 import javax.persistence.Entity;
 import javax.persistence.FetchType;
+import javax.persistence.GeneratedValue;
+import javax.persistence.Id;
 import javax.persistence.JoinColumn;
 import javax.persistence.ManyToOne;
 import javax.persistence.Table;
+import javax.persistence.Version;
 
 import org.hibernate.annotations.Index;
 
@@ -44,7 +49,20 @@ import edu.umd.cs.findbugs.annotations.CheckForNull;
  */
 @Entity
 @Table(name = StandardState.TABLE)
-public class StandardState extends PersistentObject {
+public class StandardState {
+
+	@Access(AccessType.PROPERTY)
+	@Id
+	@GeneratedValue
+	@Column(name = ID_COLUMN)
+	@CheckForNull
+	private Long id;
+
+	@SuppressWarnings("unused")
+	@Version
+	@Column(name = "OBJ_VERSION")
+	@CheckForNull
+	private Integer objVersion;
 
 	/**
 	 * {@link Function} wrapper of {@link #getStateNumber()}.
@@ -61,7 +79,7 @@ public class StandardState extends PersistentObject {
 	public final static String TABLE = "STANDARD_STATE";
 
 	/** For foreign keys that point at this table. */
-	public final static String JOIN_COLUMN = TABLE + "_ID";
+	public final static String ID_COLUMN = TABLE + "_ID";
 
 	/**
 	 * The column where the stateNumber is stored. Intentionally
@@ -89,7 +107,7 @@ public class StandardState extends PersistentObject {
 	 * The {@code Character} of which this is a state.
 	 */
 	@ManyToOne(fetch = FetchType.LAZY, optional = false)
-	@JoinColumn(name = StandardCharacter.JOIN_COLUMN)
+	@JoinColumn(name = StandardCharacter.ID_COLUMN)
 	@CheckForNull
 	private StandardCharacter parent;
 
@@ -101,6 +119,11 @@ public class StandardState extends PersistentObject {
 	public StandardState(final Integer stateNumber) {
 		checkNotNull(stateNumber);
 		this.stateNumber = stateNumber;
+	}
+
+	@Nullable
+	public Long getId() {
+		return id;
 	}
 
 	/**
@@ -136,6 +159,11 @@ public class StandardState extends PersistentObject {
 	@Nullable
 	public Integer getStateNumber() {
 		return stateNumber;
+	}
+
+	@SuppressWarnings("unused")
+	private void setId(final Long id) {
+		this.id = id;
 	}
 
 	/**

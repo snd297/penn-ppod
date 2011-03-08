@@ -48,7 +48,7 @@ public abstract class SequenceSet<S extends Sequence<?>>
 
 	@CheckForNull
 	@ManyToOne(fetch = FetchType.LAZY, optional = false)
-	@JoinColumn(name = OtuSet.JOIN_COLUMN, insertable = false,
+	@JoinColumn(name = OtuSet.ID_COLUMN, insertable = false,
 				updatable = false)
 	private OtuSet parent;
 

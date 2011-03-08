@@ -26,15 +26,20 @@ import static com.google.common.collect.Sets.newHashSet;
 import java.util.List;
 import java.util.Set;
 
+import javax.persistence.Access;
+import javax.persistence.AccessType;
 import javax.persistence.CascadeType;
 import javax.persistence.Column;
 import javax.persistence.Entity;
 import javax.persistence.FetchType;
+import javax.persistence.GeneratedValue;
+import javax.persistence.Id;
 import javax.persistence.JoinColumn;
 import javax.persistence.ManyToOne;
 import javax.persistence.OneToMany;
 import javax.persistence.OrderColumn;
 import javax.persistence.Table;
+import javax.persistence.Version;
 
 import com.google.common.annotations.VisibleForTesting;
 
@@ -56,6 +61,19 @@ import edu.upenn.cis.ppod.imodel.ILabeled;
 @Table(name = OtuSet.TABLE)
 public class OtuSet extends UuPPodEntity implements ILabeled {
 
+	@Access(AccessType.PROPERTY)
+	@Id
+	@GeneratedValue
+	@Column(name = ID_COLUMN)
+	@CheckForNull
+	private Long id;
+
+	@SuppressWarnings("unused")
+	@Version
+	@Column(name = "OBJ_VERSION")
+	@CheckForNull
+	private Integer objVersion;
+
 	/** The column that stores the description. */
 	public static final String DESCRIPTION_COLUMN = "DESCRIPTION";
 
@@ -65,15 +83,15 @@ public class OtuSet extends UuPPodEntity implements ILabeled {
 	/**
 	 * To be used in the names of foreign keys that point at this table.
 	 */
-	public static final String JOIN_COLUMN =
-			TABLE + "_" + PersistentObject.ID_COLUMN;
+	public static final String ID_COLUMN =
+			TABLE + "_ID";
 
 	/** The column that stores the label. */
 	public static final String LABEL_COLUMN = "LABEL";
 
 	@OneToMany(cascade = CascadeType.ALL, orphanRemoval = true)
 	@OrderColumn(name = "POSITION")
-	@JoinColumn(name = JOIN_COLUMN, nullable = false)
+	@JoinColumn(name = ID_COLUMN, nullable = false)
 	private final List<StandardMatrix> standardMatrices = newArrayList();
 
 	/** Nullable free-form description. */
@@ -85,21 +103,21 @@ public class OtuSet extends UuPPodEntity implements ILabeled {
 			cascade = CascadeType.ALL,
 			orphanRemoval = true)
 	@OrderColumn(name = "POSITION")
-	@JoinColumn(name = JOIN_COLUMN, nullable = false)
+	@JoinColumn(name = ID_COLUMN, nullable = false)
 	private final List<DnaMatrix> dnaMatrices = newArrayList();
 
 	@OneToMany(
 			cascade = CascadeType.ALL,
 			orphanRemoval = true)
 	@OrderColumn(name = "POSITION")
-	@JoinColumn(name = JOIN_COLUMN, nullable = false)
+	@JoinColumn(name = ID_COLUMN, nullable = false)
 	private final List<ProteinMatrix> proteinMatrices = newArrayList();
 
 	@OneToMany(
 			cascade = CascadeType.ALL,
 			orphanRemoval = true)
 	@OrderColumn(name = "POSITION")
-	@JoinColumn(name = JOIN_COLUMN, nullable = false)
+	@JoinColumn(name = ID_COLUMN, nullable = false)
 	private final List<DnaSequenceSet> dnaSequenceSets = newArrayList();
 
 	/**
@@ -116,11 +134,11 @@ public class OtuSet extends UuPPodEntity implements ILabeled {
 			orphanRemoval = true,
 			cascade = CascadeType.ALL)
 	@OrderColumn(name = "POSITION")
-	@JoinColumn(name = JOIN_COLUMN, nullable = false)
+	@JoinColumn(name = ID_COLUMN, nullable = false)
 	private final List<Otu> otus = newArrayList();
 
 	@ManyToOne(fetch = FetchType.LAZY, optional = false)
-	@JoinColumn(name = Study.JOIN_COLUMN, insertable = false,
+	@JoinColumn(name = Study.ID_COLUMN, insertable = false,
 				updatable = false)
 	@CheckForNull
 	private Study parent;
@@ -130,7 +148,7 @@ public class OtuSet extends UuPPodEntity implements ILabeled {
 			cascade = CascadeType.ALL,
 			orphanRemoval = true)
 	@OrderColumn(name = "POSITION")
-	@JoinColumn(name = JOIN_COLUMN, nullable = false)
+	@JoinColumn(name = ID_COLUMN, nullable = false)
 	private final List<TreeSet> treeSets = newArrayList();
 
 	/**
@@ -381,6 +399,11 @@ public class OtuSet extends UuPPodEntity implements ILabeled {
 		return dnaSequenceSets;
 	}
 
+	@Nullable
+	public Long getId() {
+		return id;
+	}
+
 	/**
 	 * Getter. {@code null} when the object is created. Once set, it will never
 	 * be {@code null}.
@@ -527,6 +550,11 @@ public class OtuSet extends UuPPodEntity implements ILabeled {
 	 */
 	public void setDescription(@CheckForNull final String description) {
 		this.description = description;
+	}
+
+	@SuppressWarnings("unused")
+	private void setId(final Long id) {
+		this.id = id;
 	}
 
 	/**

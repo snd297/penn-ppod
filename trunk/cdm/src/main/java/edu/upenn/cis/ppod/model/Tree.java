@@ -19,13 +19,18 @@ import static com.google.common.base.Preconditions.checkNotNull;
 
 import javax.annotation.CheckForNull;
 import javax.annotation.Nullable;
+import javax.persistence.Access;
+import javax.persistence.AccessType;
 import javax.persistence.Column;
 import javax.persistence.Entity;
 import javax.persistence.FetchType;
+import javax.persistence.GeneratedValue;
+import javax.persistence.Id;
 import javax.persistence.JoinColumn;
 import javax.persistence.Lob;
 import javax.persistence.ManyToOne;
 import javax.persistence.Table;
+import javax.persistence.Version;
 
 /**
  * A phylogenetic tree.
@@ -38,17 +43,31 @@ public class Tree extends UuPPodEntity {
 
 	public static final String TABLE = "TREE";
 
+	public static final String ID_COLUMN = TABLE + "_ID";
+
+	@Access(AccessType.PROPERTY)
+	@Id
+	@GeneratedValue
+	@Column(name = ID_COLUMN)
+	@CheckForNull
+	private Long id;
+
+	@SuppressWarnings("unused")
+	@Version
+	@Column(name = "OBJ_VERSION")
+	@CheckForNull
+	private Integer objVersion;
+
 	@Column(name = "LABEL", nullable = false)
 	@CheckForNull
 	private String label;
-
 	@Lob
 	@Column(name = "NEWICK", nullable = false)
 	@CheckForNull
 	private String newick;
 
 	@ManyToOne(fetch = FetchType.LAZY, optional = false)
-	@JoinColumn(name = TreeSet.JOIN_COLUMN, insertable = false,
+	@JoinColumn(name = TreeSet.ID_COLUMN, insertable = false,
 				updatable = false)
 	@CheckForNull
 	private TreeSet parent;
@@ -57,6 +76,11 @@ public class Tree extends UuPPodEntity {
 	 * For Hibernate.
 	 */
 	public Tree() {}
+
+	@Nullable
+	public Long getId() {
+		return id;
+	}
 
 	/**
 	 * Return the label. {@code null} when the tree is constructed, but will
@@ -83,6 +107,11 @@ public class Tree extends UuPPodEntity {
 	@Nullable
 	public TreeSet getParent() {
 		return parent;
+	}
+
+	@SuppressWarnings("unused")
+	private void setId(final Long id) {
+		this.id = id;
 	}
 
 	/**

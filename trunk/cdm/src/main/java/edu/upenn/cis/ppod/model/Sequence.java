@@ -33,7 +33,6 @@ import edu.upenn.cis.ppod.imodel.IChild;
  */
 @MappedSuperclass
 public abstract class Sequence<SS extends SequenceSet<?>>
-		extends PersistentObject
 		implements IChild<SS> {
 
 	private final static String SEQUENCE_COLUMN = "SEQUENCE";
