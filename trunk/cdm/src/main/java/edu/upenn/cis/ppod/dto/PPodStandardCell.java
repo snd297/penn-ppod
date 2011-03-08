@@ -8,6 +8,8 @@ import static com.google.common.collect.Sets.newHashSet;
 import java.util.Collections;
 import java.util.Set;
 
+import javax.xml.bind.annotation.XmlAccessType;
+import javax.xml.bind.annotation.XmlAccessorType;
 import javax.xml.bind.annotation.XmlAttribute;
 import javax.xml.bind.annotation.XmlElement;
 
@@ -21,7 +23,8 @@ import com.google.common.collect.ImmutableSet;
  * 
  * @author Sam Donnelly
  */
-public final class PPodStandardCell extends PPodDomainObject {
+@XmlAccessorType(XmlAccessType.FIELD)
+public final class PPodStandardCell {
 
 	public static final Set<Integer> EMPTY_STATES = ImmutableSet.of();
 
@@ -32,12 +35,6 @@ public final class PPodStandardCell extends PPodDomainObject {
 	private Set<Integer> states = newHashSet();
 
 	PPodStandardCell() {}
-
-	public PPodStandardCell(final Long version, final PPodCellType type,
-			final Set<Integer> states) {
-		super(version);
-		setTypeAndStates(type, states);
-	}
 
 	public PPodStandardCell(final PPodCellType type,
 			final Set<Integer> states) {

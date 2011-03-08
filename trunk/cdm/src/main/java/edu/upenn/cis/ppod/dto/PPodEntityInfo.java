@@ -33,8 +33,6 @@ public class PPodEntityInfo implements IHasPPodId {
 
 	private String pPodId;
 
-	private Long pPodVersion;
-
 	/**
 	 * Get the pPodId.
 	 * 
@@ -46,31 +44,12 @@ public class PPodEntityInfo implements IHasPPodId {
 	}
 
 	/**
-	 * Get the pPodVersion.
-	 * 
-	 * @return the pPodVersion
-	 */
-	@XmlAttribute(name = "pPodVersion")
-	public Long getVersion() {
-		return pPodVersion;
-	}
-
-	/**
 	 * Set the pPodId.
 	 * 
 	 * @param pPodId the pPodId to set
 	 */
 	public void setPPodId(final String pPodId) {
 		this.pPodId = pPodId;
-	}
-
-	/**
-	 * Set the pPodVersion.
-	 * 
-	 * @param pPodVersion the pPodVersion to set
-	 */
-	public void setVersion(final Long pPodVersion) {
-		this.pPodVersion = pPodVersion;
 	}
 
 	/**

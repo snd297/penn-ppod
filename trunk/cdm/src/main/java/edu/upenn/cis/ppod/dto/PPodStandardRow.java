@@ -5,18 +5,17 @@ import static com.google.common.collect.Lists.newArrayList;
 
 import java.util.List;
 
+import javax.xml.bind.annotation.XmlAccessType;
+import javax.xml.bind.annotation.XmlAccessorType;
 import javax.xml.bind.annotation.XmlElement;
 
-public final class PPodStandardRow extends PPodDomainObject {
+@XmlAccessorType(XmlAccessType.FIELD)
+public final class PPodStandardRow {
 
 	@XmlElement(name = "cell")
 	private List<PPodStandardCell> cells = newArrayList();
 
 	public PPodStandardRow() {}
-
-	public PPodStandardRow(final Long version) {
-		super(version);
-	}
 
 	public List<PPodStandardCell> getCells() {
 		return cells;

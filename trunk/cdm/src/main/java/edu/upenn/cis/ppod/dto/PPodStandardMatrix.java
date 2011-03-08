@@ -17,15 +17,9 @@ public final class PPodStandardMatrix extends PPodMatrix<PPodStandardRow> {
 
 	private List<PPodStandardCharacter> characters = newArrayList();
 
-	private List<Long> columnVersions = newArrayList();
-
-	PPodStandardMatrix() {}
-
-	public PPodStandardMatrix(final String pPodId,
-			final Long version,
-			final String label) {
-		super(pPodId, version, label);
-	}
+	/** For JAXB. */
+	@SuppressWarnings("unused")
+	private PPodStandardMatrix() {}
 
 	public PPodStandardMatrix(@CheckForNull final String pPodId,
 			final String label) {
@@ -33,13 +27,11 @@ public final class PPodStandardMatrix extends PPodMatrix<PPodStandardRow> {
 	}
 
 	public void addColumn(final int columnNumber,
-			final long columnVersionNumber,
 			final PPodStandardCharacter character,
 			final List<PPodStandardCell> column) {
 		checkArgument(columnNumber >= 0);
 		checkNotNull(character);
 		checkNotNull(column);
-		this.columnVersions.add(columnNumber, columnVersionNumber);
 		this.characters.add(columnNumber, character);
 
 		for (int i = 0; i < getRows().size(); i++) {
@@ -52,14 +44,14 @@ public final class PPodStandardMatrix extends PPodMatrix<PPodStandardRow> {
 		return characters;
 	}
 
-	@XmlElement(name = "columnVersion")
-	public List<Long> getColumnVersions() {
-		return columnVersions;
+	@XmlElement(name = "row")
+	@Override
+	public final List<PPodStandardRow> getRows() {
+		return super.getRows();
 	}
 
 	public List<PPodStandardCell> removeColumn(final int columnNumber) {
 		checkArgument(columnNumber >= 0);
-		this.columnVersions.remove(columnNumber);
 		this.characters.remove(columnNumber);
 		final List<PPodStandardCell> removedColumn = newArrayList();
 		for (final PPodStandardRow row : getRows()) {
@@ -71,17 +63,6 @@ public final class PPodStandardMatrix extends PPodMatrix<PPodStandardRow> {
 	public void setCharacters(final List<PPodStandardCharacter> characters) {
 		checkNotNull(characters);
 		this.characters = characters;
-	}
-
-	public void setColumnVersions(final List<Long> columnVersions) {
-		checkNotNull(columnVersions);
-		this.columnVersions = columnVersions;
-	}
-
-	@XmlElement(name = "row")
-	@Override
-	public final List<PPodStandardRow> getRows() {
-		return super.getRows();
 	}
 
 }

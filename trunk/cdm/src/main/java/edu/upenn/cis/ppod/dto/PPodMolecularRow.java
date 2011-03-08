@@ -5,9 +5,13 @@ import static com.google.common.base.Preconditions.checkNotNull;
 
 import java.util.Set;
 
+import javax.xml.bind.annotation.XmlAccessType;
+import javax.xml.bind.annotation.XmlAccessorType;
+
 import com.google.common.collect.ImmutableSet;
 
-abstract class PPodMolecularRow extends PPodDomainObject {
+@XmlAccessorType(XmlAccessType.FIELD)
+abstract class PPodMolecularRow {
 
 	public static final Set<Character> DELIMITERS = ImmutableSet.of(
 						'(',
@@ -18,11 +22,6 @@ abstract class PPodMolecularRow extends PPodDomainObject {
 	private String sequence;
 
 	PPodMolecularRow() {}
-
-	PPodMolecularRow(final Long version, final String sequence) {
-		super(version);
-		this.sequence = checkNotNull(sequence);
-	}
 
 	PPodMolecularRow(final String sequence) {
 		this.sequence = checkNotNull(sequence);

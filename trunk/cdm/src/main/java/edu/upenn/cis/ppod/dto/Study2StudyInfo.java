@@ -18,15 +18,12 @@ package edu.upenn.cis.ppod.dto;
 import static com.google.common.base.Preconditions.checkNotNull;
 import static com.google.common.collect.Iterables.get;
 import edu.upenn.cis.ppod.model.DnaMatrix;
-import edu.upenn.cis.ppod.model.DnaRow;
 import edu.upenn.cis.ppod.model.DnaSequenceSet;
 import edu.upenn.cis.ppod.model.Otu;
 import edu.upenn.cis.ppod.model.OtuSet;
 import edu.upenn.cis.ppod.model.ProteinMatrix;
-import edu.upenn.cis.ppod.model.StandardCell;
 import edu.upenn.cis.ppod.model.StandardCharacter;
 import edu.upenn.cis.ppod.model.StandardMatrix;
-import edu.upenn.cis.ppod.model.StandardRow;
 import edu.upenn.cis.ppod.model.Study;
 import edu.upenn.cis.ppod.model.Tree;
 import edu.upenn.cis.ppod.model.TreeSet;
@@ -38,25 +35,21 @@ public final class Study2StudyInfo {
 
 	private Study2StudyInfo() {}
 
-	@SuppressWarnings("unused")
 	public static StudyInfo toStudyInfo(final Study study) {
 		checkNotNull(study);
 		final StudyInfo studyInfo = new StudyInfo();
 		studyInfo.setPPodId(study.getPPodId());
-		studyInfo.setVersion(1L);
 
 		for (final OtuSet otuSet : study.getOtuSets()) {
 			final OtuSetInfo otuSetInfo = new OtuSetInfo();
 
 			studyInfo.getOtuSetInfos().add(otuSetInfo);
 			otuSetInfo.setPPodId(otuSet.getPPodId());
-			otuSetInfo.setVersion(1L);
 			for (final Otu otu : otuSet.getOtus()) {
 				final PPodEntityInfo otuInfo =
 						new PPodEntityInfo();
 				otuSetInfo.getOtuInfos().add(otuInfo);
 				otuInfo.setPPodId(otu.getPPodId());
-				otuInfo.setVersion(1L);
 			}
 
 			for (final StandardMatrix matrix : otuSet
@@ -64,7 +57,6 @@ public final class Study2StudyInfo {
 				final StandardMatrixInfo matrixInfo = new StandardMatrixInfo();
 				otuSetInfo.getStandardMatrixInfos().add(matrixInfo);
 				matrixInfo.setPPodId(matrix.getPPodId());
-				matrixInfo.setVersion(1L);
 
 				int characterIdx = -1;
 				for (final StandardCharacter standardCharacter : matrix
@@ -73,7 +65,6 @@ public final class Study2StudyInfo {
 					final PPodEntityInfo characterInfo =
 							new PPodEntityInfo();
 					characterInfo.setPPodId(standardCharacter.getPPodId());
-					characterInfo.setVersion(1L);
 					matrixInfo.getCharacterInfosByIdx()
 							.put(characterIdx, characterInfo);
 				}
@@ -84,22 +75,6 @@ public final class Study2StudyInfo {
 								.put(columnPosition, 1L);
 				}
 
-				int rowIdx = -1;
-
-				for (final Otu otu : matrix.getParent().getOtus()) {
-					final StandardRow row = matrix.getRows().get(otu);
-					rowIdx++;
-
-					matrixInfo.getRowHeaderVersionsByIdx().put(rowIdx, 1L);
-
-					int cellIdx = -1;
-					for (final StandardCell cell : row.getCells()) {
-						cellIdx++;
-						matrixInfo.setCellPPodIdAndVersion(
-								rowIdx, cellIdx,
-								1L);
-					}
-				}
 			}
 
 			// TODO: refactor so matrices don't have
@@ -108,16 +83,6 @@ public final class Study2StudyInfo {
 				final MatrixInfo matrixInfo = new MatrixInfo();
 				otuSetInfo.getDnaMatrixInfos().add(matrixInfo);
 				matrixInfo.setPPodId(matrix.getPPodId());
-				matrixInfo.setVersion(1L);
-
-				int rowIdx = -1;
-
-				for (final Otu otu : matrix.getParent().getOtus()) {
-					final DnaRow row = matrix.getRows().get(otu);
-					rowIdx++;
-					matrixInfo.getRowHeaderVersionsByIdx()
-							.put(rowIdx, 1L);
-				}
 			}
 
 			for (final ProteinMatrix matrix : otuSet.getProteinMatrices()) {
@@ -125,15 +90,7 @@ public final class Study2StudyInfo {
 				final MatrixInfo matrixInfo = new MatrixInfo();
 				otuSetInfo.getProteinMatrixInfos().add(matrixInfo);
 				matrixInfo.setPPodId(matrix.getPPodId());
-				matrixInfo.setVersion(1L);
 
-				int rowIdx = -1;
-
-				for (final Otu otu : matrix.getParent().getOtus()) {
-					rowIdx++;
-					matrixInfo.getRowHeaderVersionsByIdx()
-							.put(rowIdx, 1L);
-				}
 			}
 
 			// TODO: this should be genericized when we support other kinds of
@@ -144,28 +101,17 @@ public final class Study2StudyInfo {
 						new SequenceSetInfo();
 				otuSetInfo.getSequenceSetInfos().add(sequenceSetInfo);
 				sequenceSetInfo.setPPodId(dnaSequenceSet.getPPodId());
-				sequenceSetInfo.setVersion(1L);
-
-				int otuPos = -1;
-				for (final Otu otu : otuSet.getOtus()) {
-					otuPos++;
-					sequenceSetInfo
-							.getSequenceVersions().put(otuPos,
-									1L);
-				}
 			}
 
 			for (final TreeSet treeSet : otuSet.getTreeSets()) {
 				final TreeSetInfo treeSetInfo = new TreeSetInfo();
 				otuSetInfo.getTreeSetInfos().add(treeSetInfo);
 				treeSetInfo.setPPodId(treeSet.getPPodId());
-				treeSetInfo.setVersion(1L);
 
 				for (final Tree tree : treeSet.getTrees()) {
 					final PPodEntityInfo treeInfo = new PPodEntityInfo();
 					treeSetInfo.getTreeInfos().add(treeInfo);
 					treeInfo.setPPodId(tree.getPPodId());
-					treeInfo.setVersion(1L);
 				}
 			}
 		}

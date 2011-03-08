@@ -11,12 +11,8 @@ import edu.umd.cs.findbugs.annotations.CheckForNull;
 @XmlAccessorType(XmlAccessType.PROPERTY)
 final public class PPodDnaMatrix extends PPodMatrix<PPodDnaRow> {
 
+	/** For JAXB */
 	PPodDnaMatrix() {}
-
-	public PPodDnaMatrix(final String pPodId, final Long version,
-			final String label) {
-		super(pPodId, version, label);
-	}
 
 	public PPodDnaMatrix(@CheckForNull final String pPodId, final String label) {
 		super(pPodId, label);

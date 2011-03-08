@@ -11,18 +11,13 @@ import javax.xml.bind.annotation.XmlAccessorType;
 import edu.umd.cs.findbugs.annotations.CheckForNull;
 
 @XmlAccessorType(XmlAccessType.NONE)
-abstract class PPodMatrix<R extends PPodDomainObject> extends
+abstract class PPodMatrix<R> extends
 		UuPPodDomainObjectWithLabel {
 
 	private List<R> rows = newArrayList();
 
 	/** For Jaxb. */
 	PPodMatrix() {}
-
-	PPodMatrix(final String pPodId, final Long version,
-			final String label) {
-		super(pPodId, version, label);
-	}
 
 	PPodMatrix(@CheckForNull final String pPodId, final String label) {
 		super(pPodId, label);

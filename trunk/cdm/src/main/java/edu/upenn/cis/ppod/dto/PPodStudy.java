@@ -32,16 +32,14 @@ import edu.umd.cs.findbugs.annotations.CheckForNull;
  * @author Sam Donnelly
  */
 @XmlRootElement
-public final class PPodStudy extends UuPPodDomainObjectWithLabel implements IHasOtuSets {
+public final class PPodStudy extends UuPPodDomainObjectWithLabel implements
+		IHasOtuSets {
 
 	@XmlElement(name = "otuSet")
 	private List<PPodOtuSet> otuSets = newArrayList();
 
-	PPodStudy() {}
-
-	public PPodStudy(final String pPodId, final Long version, final String label) {
-		super(pPodId, version, label);
-	}
+	@SuppressWarnings("unused")
+	private PPodStudy() {}
 
 	public PPodStudy(@CheckForNull final String pPodId, final String label) {
 		super(pPodId, label);

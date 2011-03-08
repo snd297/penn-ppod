@@ -35,11 +35,6 @@ public final class PPodOtuSet extends UuPPodDomainObjectWithLabel {
 		super(label);
 	}
 
-	public PPodOtuSet(final String pPodId, final Long version,
-			final String label) {
-		super(pPodId, version, label);
-	}
-
 	public PPodOtuSet(@CheckForNull final String pPodId,
 			final String label) {
 		super(pPodId, label);

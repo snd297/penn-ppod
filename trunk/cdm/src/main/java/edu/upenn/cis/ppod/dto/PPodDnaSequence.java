@@ -4,6 +4,8 @@ import static com.google.common.base.Preconditions.checkNotNull;
 
 import java.util.Set;
 
+import javax.xml.bind.annotation.XmlAccessType;
+import javax.xml.bind.annotation.XmlAccessorType;
 import javax.xml.bind.annotation.XmlAttribute;
 
 import com.google.common.collect.ImmutableSet;
@@ -11,7 +13,8 @@ import com.google.common.collect.ImmutableSet;
 import edu.umd.cs.findbugs.annotations.CheckForNull;
 import edu.umd.cs.findbugs.annotations.Nullable;
 
-final public class PPodDnaSequence extends PPodDomainObject {
+@XmlAccessorType(XmlAccessType.FIELD)
+final public class PPodDnaSequence {
 
 	private String sequence;
 
@@ -46,18 +49,8 @@ final public class PPodDnaSequence extends PPodDomainObject {
 					'N',
 					'-');
 
+	/** For JAXB. */
 	PPodDnaSequence() {}
-
-	public PPodDnaSequence(final Long version, final String sequence,
-			@CheckForNull final String name,
-			@CheckForNull final String description,
-			@CheckForNull final String accession) {
-		super(version);
-		this.sequence = sequence;
-		this.name = name;
-		this.description = description;
-		this.accession = accession;
-	}
 
 	public PPodDnaSequence(
 			final String sequence,
