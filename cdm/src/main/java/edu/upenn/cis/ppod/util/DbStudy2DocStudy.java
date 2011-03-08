@@ -82,11 +82,10 @@ public final class DbStudy2DocStudy {
 	}
 
 	public PPodOtu dbOtu2DocOtu(final Otu dbOtu) {
-		final PPodOtu docOtu = new PPodOtu(
+		return new PPodOtu(
 				dbOtu.getPPodId(),
 				dbOtu.getLabel(),
 				dbOtu.getPPodId());
-		return docOtu;
 	}
 
 	public PPodOtuSet dbOtuSet2DocOtuSet(final OtuSet dbOtuSet) {
