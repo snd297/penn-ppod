@@ -175,13 +175,7 @@ public class ModelAssert {
 			final StandardMatrix actualMatrix,
 			final PPodStandardMatrix expectedMatrix) {
 		assertEquals(actualMatrix.getLabel(), expectedMatrix.getLabel());
-		// assertEquals(
-		// actualMatrix.getDescription(),
-		// expectedMatrix.getDescription());
-
-		// assertEqualsOTUSet(actualMatrix.getParent(),
-		// expectedMatrix.getParent());
-
+	
 		assertEquals(
 				actualMatrix.getCharacters().size(),
 				actualMatrix.getCharacters().size());

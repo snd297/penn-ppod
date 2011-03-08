@@ -86,8 +86,8 @@ class PPodEntitiesResourceHibernate implements
 								.dbOtuSet2DocOtuSetJustOtus(otuSet);
 
 						pPodEntities.getOtuSets().add(docOtuSet);
-						docOtuSet.setLabel(docOtuSet.getLabel() + "/"
-								+ otuSet.getParent().getLabel());
+						docOtuSet.setLabel(otuSet.getParent().getLabel() + "/"
+								+ docOtuSet.getLabel());
 					}
 				} else if (queryResult instanceof StandardMatrix) {
 					final StandardMatrix matrix = (StandardMatrix) queryResult;
@@ -106,8 +106,9 @@ class PPodEntitiesResourceHibernate implements
 										.dbOtuSet2DocOtuSetJustOtus(
 												matrix.getParent());
 						pPodEntities.getOtuSets().add(docOtuSet);
-						docOtuSet.setLabel(docOtuSet.getLabel() + "/"
-								+ matrix.getParent().getParent().getLabel());
+						docOtuSet.setLabel(matrix.getParent().getParent()
+								.getLabel()
+								+ "/" + docOtuSet.getLabel());
 					}
 
 					// Let's not add in the same matrix twice
@@ -116,8 +117,9 @@ class PPodEntitiesResourceHibernate implements
 									IHasPPodId.getPPodId), null) == null) {
 						final PPodStandardMatrix docMatrix = dbStudy2DocStudy
 								.dbStandardMatrix2DocStandardMatrix(matrix);
-						docMatrix.setLabel(docMatrix.getLabel() + "/"
-								+ matrix.getParent().getParent().getLabel());
+						docMatrix.setLabel(matrix.getParent().getParent()
+								.getLabel()
+								+ "/" + docMatrix.getLabel());
 						docOtuSet
 								.getStandardMatrices()
 								.add(docMatrix);

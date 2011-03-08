@@ -16,6 +16,8 @@ import org.testng.annotations.Test;
 
 import edu.upenn.cis.ppod.TestGroupDefs;
 import edu.upenn.cis.ppod.dto.PPodEntities;
+import edu.upenn.cis.ppod.dto.PPodOtuSet;
+import edu.upenn.cis.ppod.dto.PPodStandardMatrix;
 import edu.upenn.cis.ppod.model.OtuSet;
 import edu.upenn.cis.ppod.model.StandardMatrix;
 import edu.upenn.cis.ppod.model.Study;
@@ -23,8 +25,8 @@ import edu.upenn.cis.ppod.model.Study;
 @Test(groups = TestGroupDefs.FAST)
 public class PPodEntitiesResourceHibernateTest {
 
-	@Test(groups = TestGroupDefs.IN_DEVELOPMENT)
-	public void test() {
+	@Test
+	public void oneStandardMatrix() {
 
 		final Session s = mock(Session.class);
 		final Query q = mock(Query.class);
@@ -44,6 +46,7 @@ public class PPodEntitiesResourceHibernateTest {
 		otuSet.setLabel("otuSet");
 
 		StandardMatrix matrix = new StandardMatrix();
+
 		otuSet.addStandardMatrix(matrix);
 		matrix.setLabel("matrix");
 
@@ -56,7 +59,68 @@ public class PPodEntitiesResourceHibernateTest {
 		final PPodEntities results = pPodEntitiesResource
 				.getEntitiesByHqlQuery("some query");
 
-		assertEquals(results, matrices);
+		PPodOtuSet resultOtuSet = results.getOtuSets().get(0);
+
+		assertEquals(results.getOtuSets().size(), 1);
+		assertEquals(resultOtuSet.getPPodId(),
+				otuSet.getPPodId());
+		assertEquals(resultOtuSet.getLabel(),
+				study.getLabel() + "/" + otuSet.getLabel());
+		assertEquals(resultOtuSet.getStandardMatrices().size(),
+				1);
+		PPodStandardMatrix resultMatrix = resultOtuSet.getStandardMatrices()
+				.get(0);
+		assertEquals(resultMatrix.getPPodId(), matrix.getPPodId());
+
+	}
+
+	@Test
+	public void twoDuplicateStandardMatrices() {
+
+		final Session s = mock(Session.class);
+		final Query q = mock(Query.class);
+		final Transaction trx = mock(Transaction.class);
+
+		when(s.createQuery(anyString())).thenReturn(q);
+		when(s.beginTransaction()).thenReturn(trx);
+		when(q.setReadOnly(anyBoolean())).thenReturn(q);
+
+		List<Object> matrices = newArrayList();
+
+		Study study = new Study();
+		study.setLabel("study");
+
+		OtuSet otuSet = new OtuSet();
+		study.addOtuSet(otuSet);
+		otuSet.setLabel("otuSet");
+
+		StandardMatrix matrix = new StandardMatrix();
+
+		otuSet.addStandardMatrix(matrix);
+		matrix.setLabel("matrix");
+
+		matrices.add(matrix);
+		matrices.add(matrix);
+
+		when(q.list()).thenReturn(matrices);
+
+		final PPodEntitiesResourceHibernate pPodEntitiesResource =
+				new PPodEntitiesResourceHibernate(s);
+		final PPodEntities results = pPodEntitiesResource
+				.getEntitiesByHqlQuery("some query");
+
+		PPodOtuSet resultOtuSet = results.getOtuSets().get(0);
+
+		assertEquals(results.getOtuSets().size(), 1);
+		assertEquals(resultOtuSet.getPPodId(),
+				otuSet.getPPodId());
+		assertEquals(resultOtuSet.getLabel(),
+				study.getLabel() + "/" + otuSet.getLabel());
+		assertEquals(resultOtuSet.getStandardMatrices().size(),
+				1);
+		PPodStandardMatrix resultMatrix = resultOtuSet.getStandardMatrices()
+				.get(0);
+		assertEquals(resultMatrix.getPPodId(), matrix.getPPodId());
 
 	}
 }
