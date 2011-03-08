@@ -51,6 +51,18 @@ import edu.umd.cs.findbugs.annotations.CheckForNull;
 @Table(name = StandardState.TABLE)
 public class StandardState {
 
+	/** The name of this entity's table. */
+	public final static String TABLE = "STANDARD_STATE";
+
+	/** For foreign keys that point at this table. */
+	public final static String ID_COLUMN = TABLE + "_ID";
+
+	/**
+	 * The column where the stateNumber is stored. Intentionally
+	 * package-private.
+	 */
+	public final static String STATE_NUMBER_COLUMN = "STATE_NUMBER";
+
 	@Access(AccessType.PROPERTY)
 	@Id
 	@GeneratedValue
@@ -74,18 +86,6 @@ public class StandardState {
 		}
 
 	};
-
-	/** The name of this entity's table. */
-	public final static String TABLE = "STANDARD_STATE";
-
-	/** For foreign keys that point at this table. */
-	public final static String ID_COLUMN = TABLE + "_ID";
-
-	/**
-	 * The column where the stateNumber is stored. Intentionally
-	 * package-private.
-	 */
-	final static String STATE_NUMBER_COLUMN = "STATE_NUMBER";
 
 	/**
 	 * The state number of this {@code CharacterState}. This is the core value

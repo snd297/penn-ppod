@@ -90,8 +90,9 @@ public class StandardCell extends Cell<StandardState, StandardRow> {
 	 * {@link Type#UNCERTAIN}.
 	 */
 	@ManyToMany
-	@JoinTable(inverseJoinColumns = @JoinColumn(
-			name = StandardState.ID_COLUMN))
+	@JoinTable(name = StandardCell.TABLE + "_" + StandardState.TABLE,
+			inverseJoinColumns = @JoinColumn(
+					name = StandardState.ID_COLUMN))
 	@Nullable
 	private Set<StandardState> states;
 
