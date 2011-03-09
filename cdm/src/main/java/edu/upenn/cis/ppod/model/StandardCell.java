@@ -49,6 +49,17 @@ import edu.upenn.cis.ppod.dto.PPodCellType;
 @Table(name = StandardCell.TABLE)
 public class StandardCell extends Cell<StandardState, StandardRow> {
 
+	/**
+	 * The name of the table.
+	 */
+	public static final String TABLE = "STANDARD_CELL";
+
+	/**
+	 * Conventionally used as the names of foreign keys that point at the
+	 * {@code CharacterStateCell} table.
+	 */
+	public static final String ID_COLUMN = TABLE + "_ID";
+
 	@Access(AccessType.PROPERTY)
 	@Id
 	@GeneratedValue
@@ -61,17 +72,6 @@ public class StandardCell extends Cell<StandardState, StandardRow> {
 	@Column(name = "OBJ_VERSION")
 	@CheckForNull
 	private Integer objVersion;
-
-	/**
-	 * The name of the table.
-	 */
-	public static final String TABLE = "STANDARD_CELL";
-
-	/**
-	 * Conventionally used as the names of foreign keys that point at the
-	 * {@code CharacterStateCell} table.
-	 */
-	public static final String ID_COLUMN = TABLE + "_ID";
 
 	/**
 	 * To handle the most-common case of a single state.
@@ -259,6 +259,14 @@ public class StandardCell extends Cell<StandardState, StandardRow> {
 
 		checkNotNull(stateNumber);
 
+		if (getType() == PPodCellType.SINGLE
+				&& getElement().getStateNumber() == stateNumber) {
+			// We're already good, so let's not do anything.
+			// Since this is the most common case, it's worth doing: gives
+			// us a 50% improvement on larger matrices
+			return;
+		}
+
 		checkState(
 					getPosition() != null,
 					"this cell has not been assigned a row: it's position attribute is null");
@@ -281,14 +289,7 @@ public class StandardCell extends Cell<StandardState, StandardRow> {
 						+ character.getLabel()
 						+ "]");
 
-		if (state.equals(getElement())) {
-			if (getType() != PPodCellType.SINGLE) {
-				throw new AssertionError(
-						"element is set, but this cell is not a SINGLE");
-			}
-		} else {
-			super.setSingle(state);
-		}
+		super.setSingle(state);
 	}
 
 	/**
