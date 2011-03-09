@@ -45,7 +45,7 @@ import edu.upenn.cis.ppod.imodel.IChild;
 abstract class Cell<E, R extends Row<?, ?>>
 		implements IChild<R> {
 
-	static final String TYPE_COLUMN = "TYPE";
+	public static final String TYPE_COLUMN = "TYPE";
 
 	@Column(name = "POSITION", nullable = false)
 	@CheckForNull

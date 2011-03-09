@@ -47,6 +47,14 @@ public class Otu
 		extends UuPPodEntity
 		implements IChild<OtuSet>, ILabeled {
 
+	/** The table for this entity. */
+	public static final String TABLE = "OTU";
+
+	/**
+	 * To be used for the names of foreign keys that point at this table.
+	 */
+	public static final String ID_COLUMN = TABLE + "_ID";
+
 	@Access(AccessType.PROPERTY)
 	@Id
 	@GeneratedValue
@@ -59,14 +67,6 @@ public class Otu
 	@Column(name = "OBJ_VERSION")
 	@CheckForNull
 	private Integer objVersion;
-
-	/** The table for this entity. */
-	public static final String TABLE = "OTU";
-
-	/**
-	 * To be used for the names of foreign keys that point at this table.
-	 */
-	public static final String ID_COLUMN = TABLE + "_ID";
 
 	/** Non-unique label. */
 	@Column(name = "LABEL", nullable = false)
