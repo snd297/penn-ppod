@@ -61,19 +61,6 @@ import edu.upenn.cis.ppod.imodel.ILabeled;
 @Table(name = OtuSet.TABLE)
 public class OtuSet extends UuPPodEntity implements ILabeled {
 
-	@Access(AccessType.PROPERTY)
-	@Id
-	@GeneratedValue
-	@Column(name = ID_COLUMN)
-	@CheckForNull
-	private Long id;
-
-	@SuppressWarnings("unused")
-	@Version
-	@Column(name = "OBJ_VERSION")
-	@CheckForNull
-	private Integer objVersion;
-
 	/** The column that stores the description. */
 	public static final String DESCRIPTION_COLUMN = "DESCRIPTION";
 
@@ -88,6 +75,19 @@ public class OtuSet extends UuPPodEntity implements ILabeled {
 
 	/** The column that stores the label. */
 	public static final String LABEL_COLUMN = "LABEL";
+
+	@Access(AccessType.PROPERTY)
+	@Id
+	@GeneratedValue
+	@Column(name = ID_COLUMN)
+	@CheckForNull
+	private Long id;
+
+	@SuppressWarnings("unused")
+	@Version
+	@Column(name = "OBJ_VERSION")
+	@CheckForNull
+	private Integer objVersion;
 
 	@OneToMany(cascade = CascadeType.ALL, orphanRemoval = true)
 	@OrderColumn(name = "POSITION")

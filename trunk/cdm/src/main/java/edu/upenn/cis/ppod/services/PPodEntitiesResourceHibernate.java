@@ -97,18 +97,19 @@ class PPodEntitiesResourceHibernate implements
 
 					PPodOtuSet docOtuSet;
 
+					OtuSet dbOtuSet = matrix.getParent();
+
 					if ((docOtuSet = find(
 							pPodEntities.getOtuSets(),
-							compose(equalTo(matrix.getParent().getPPodId()),
+							compose(equalTo(dbOtuSet.getPPodId()),
 									IHasPPodId.getPPodId), null)) == null) {
 						docOtuSet =
 								dbStudy2DocStudy
-										.dbOtuSet2DocOtuSetJustOtus(
-												matrix.getParent());
+										.dbOtuSet2DocOtuSetJustOtus(dbOtuSet);
+
 						pPodEntities.getOtuSets().add(docOtuSet);
-						docOtuSet.setLabel(matrix.getParent().getParent()
-								.getLabel()
-								+ "/" + docOtuSet.getLabel());
+						docOtuSet.setLabel(dbOtuSet.getParent().getLabel()
+								+ "/" + dbOtuSet.getLabel());
 					}
 
 					// Let's not add in the same matrix twice
@@ -117,13 +118,12 @@ class PPodEntitiesResourceHibernate implements
 									IHasPPodId.getPPodId), null) == null) {
 						final PPodStandardMatrix docMatrix = dbStudy2DocStudy
 								.dbStandardMatrix2DocStandardMatrix(matrix);
-						docMatrix.setLabel(matrix.getParent().getParent()
+						docMatrix.setLabel(dbOtuSet.getParent()
 								.getLabel()
 								+ "/" + docMatrix.getLabel());
 						docOtuSet
 								.getStandardMatrices()
 								.add(docMatrix);
-
 					}
 
 				} else if (queryResult instanceof TreeSet) {

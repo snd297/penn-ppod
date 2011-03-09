@@ -48,8 +48,7 @@ public class MatrixInfo extends PPodEntityInfo {
 	 */
 	public final void setCharacterInfosByIdx(
 			final Map<Integer, PPodEntityInfo> characterInfosByIdx) {
-		checkNotNull(characterInfosByIdx);
-		this.characterInfosByIdx = characterInfosByIdx;
+		this.characterInfosByIdx = checkNotNull(characterInfosByIdx);
 	}
 
 }
