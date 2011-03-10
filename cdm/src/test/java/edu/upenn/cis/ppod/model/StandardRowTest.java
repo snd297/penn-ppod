@@ -53,7 +53,7 @@ public class StandardRowTest {
 		matrix.putRow(otus.get(0), new StandardRow());
 		final StandardCharacter character0 = new StandardCharacter();
 		character0.setLabel("character-0");
-		matrix.setCharacters(newArrayList(character0));
+		matrix.clearAndAddCharacters(newArrayList(character0));
 	}
 
 	@Test
@@ -90,7 +90,7 @@ public class StandardRowTest {
 		characters.get(1).setLabel("character-1");
 		characters.get(2).setLabel("character-2");
 
-		matrix.setCharacters(characters);
+		matrix.clearAndAddCharacters(characters);
 
 		final List<StandardCell> cells =
 				ImmutableList.of(new StandardCell(), new StandardCell(),
@@ -117,7 +117,7 @@ public class StandardRowTest {
 		@SuppressWarnings("unchecked")
 		final List<StandardCharacter> emptyList = (List<StandardCharacter>) Collections.EMPTY_LIST;
 
-		matrix.setCharacters(emptyList);
+		matrix.clearAndAddCharacters(emptyList);
 
 		// Just call setUnassigned so that the cell is in a legal state - it
 		// shouldn't really matter.

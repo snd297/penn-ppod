@@ -52,28 +52,11 @@ import edu.upenn.cis.ppod.util.UPennCisPPodUtil;
 @Table(name = StandardMatrix.TABLE)
 public class StandardMatrix extends Matrix<StandardRow> {
 
-	@Access(AccessType.PROPERTY)
-	@Id
-	@GeneratedValue
-	@Column(name = ID_COLUMN)
 	@CheckForNull
 	private Long id;
 
-	@SuppressWarnings("unused")
-	@Version
-	@Column(name = "OBJ_VERSION")
 	@CheckForNull
-	private Integer objVersion;
-
-	@Nullable
-	public Long getId() {
-		return id;
-	}
-
-	@SuppressWarnings("unused")
-	private void setId(final Long id) {
-		this.id = id;
-	}
+	private Integer version;
 
 	/** This entity's table name. */
 	public static final String TABLE = "STANDARD_MATRIX";
@@ -83,51 +66,17 @@ public class StandardMatrix extends Matrix<StandardRow> {
 	 */
 	public static final String ID_COLUMN = TABLE + "_ID";
 
-	@OneToMany(
-			cascade = CascadeType.ALL,
-			orphanRemoval = true)
-	@OrderColumn(name = "POSITION")
-	@JoinColumn(name = ID_COLUMN, nullable = false)
-	private final List<StandardCharacter> characters = newArrayList();
+	private List<StandardCharacter> characters = newArrayList();
 
 	/**
 	 * We want everything but SAVE_UPDATE (which ALL will give us) - once it's
 	 * evicted out of the persistence context, we don't want it back in via
 	 * cascading UPDATE. So that we can run leaner for large matrices.
 	 */
-	@OneToMany(cascade = {
-			CascadeType.PERSIST,
-			CascadeType.MERGE,
-			CascadeType.REMOVE,
-			CascadeType.DETACH,
-			CascadeType.REFRESH },
-			orphanRemoval = true)
-	@JoinTable(name = TABLE + "_" + StandardRow.TABLE,
-			inverseJoinColumns = @JoinColumn(name = StandardRow.ID_COLUMN))
-	@MapKeyJoinColumn(name = Otu.ID_COLUMN)
-	private final Map<Otu, StandardRow> rows = newHashMap();
+	private Map<Otu, StandardRow> rows = newHashMap();
 
 	/** No-arg constructor. */
 	public StandardMatrix() {}
-
-	/**
-	 * Get the characters contained in this matrix.
-	 * 
-	 * @return the characters contained in this matrix
-	 */
-	public List<StandardCharacter> getCharacters() {
-		return characters;
-	}
-
-	@Override
-	public Map<Otu, StandardRow> getRows() {
-		return rows;
-	}
-
-	@Override
-	public void putRow(final Otu otu, final StandardRow row) {
-		UPennCisPPodUtil.put(rows, otu, row, this);
-	}
 
 	/**
 	 * Set the characters.
@@ -135,8 +84,6 @@ public class StandardMatrix extends Matrix<StandardRow> {
 	 * This method does not reorder the columns of the matrix because that is a
 	 * potentially expensive operation - it could load the entire matrix into
 	 * the persistence context.
-	 * <p>
-	 * This method does reorder {@link #getColumnVersionInfos()}.
 	 * <p>
 	 * It is legal for two characters to have the same label, but not to be
 	 * {@code .equals} to each other.
@@ -150,7 +97,8 @@ public class StandardMatrix extends Matrix<StandardRow> {
 	 * @throws IllegalStateExeption if {@code characters.size() !=
 	 *             getColumnsSize()}
 	 */
-	public void setCharacters(final List<? extends StandardCharacter> characters) {
+	public void clearAndAddCharacters(
+			final List<? extends StandardCharacter> characters) {
 		checkNotNull(characters);
 
 		int newCharacterPos = -1;
@@ -188,6 +136,75 @@ public class StandardMatrix extends Matrix<StandardRow> {
 			character.setParent(this);
 		}
 
+	}
+
+	/**
+	 * Get the characters contained in this matrix.
+	 * 
+	 * @return the characters contained in this matrix
+	 */
+	@OneToMany(
+			cascade = CascadeType.ALL,
+			orphanRemoval = true)
+	@OrderColumn(name = "POSITION")
+	@JoinColumn(name = ID_COLUMN, nullable = false)
+	public List<StandardCharacter> getCharacters() {
+		return characters;
+	}
+
+	@Access(AccessType.PROPERTY)
+	@Id
+	@GeneratedValue
+	@Column(name = ID_COLUMN)
+	@Nullable
+	public Long getId() {
+		return id;
+	}
+
+	@OneToMany(cascade = {
+			CascadeType.PERSIST,
+			CascadeType.MERGE,
+			CascadeType.REMOVE,
+			CascadeType.DETACH,
+			CascadeType.REFRESH },
+			orphanRemoval = true)
+	@JoinTable(name = TABLE + "_" + StandardRow.TABLE,
+			inverseJoinColumns = @JoinColumn(name = StandardRow.ID_COLUMN))
+	@MapKeyJoinColumn(name = Otu.ID_COLUMN)
+	@Override
+	public Map<Otu, StandardRow> getRows() {
+		return rows;
+	}
+
+	@Version
+	@Column(name = "OBJ_VERSION")
+	public Integer getVersion() {
+		return version;
+	}
+
+	@Override
+	public void putRow(final Otu otu, final StandardRow row) {
+		UPennCisPPodUtil.put(rows, otu, row, this);
+	}
+
+	@SuppressWarnings("unused")
+	private void setCharacters(final List<StandardCharacter> characters) {
+		this.characters = characters;
+	}
+
+	@SuppressWarnings("unused")
+	private void setId(final Long id) {
+		this.id = id;
+	}
+
+	@SuppressWarnings("unused")
+	private void setRows(final Map<Otu, StandardRow> rows) {
+		this.rows = rows;
+	}
+
+	@SuppressWarnings("unused")
+	private void setVersion(final Integer version) {
+		this.version = version;
 	}
 
 	/** {@inheritDoc} */

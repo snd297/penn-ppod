@@ -50,57 +50,6 @@ public class OtuSetTest {
 
 	private Study study;
 
-	/**
-	 * There was a bug where clearAndOtus was doing a shallow copy of the
-	 * incoming otus. This is a problem for hibernate.
-	 */
-	@Test
-	public void makeSureClearAndAddOtusDoesntRetainReference() {
-		OtuSet otuSet = new OtuSet();
-		Otu otu0 = new Otu("otu0");
-		Otu otu1 = new Otu("otu1");
-		Otu otu2 = new Otu("otu2");
-
-		List<Otu> otus = newArrayList(otu0, otu1, otu2);
-
-		otuSet.clearAndAddOtus(otus);
-
-		assertNotSame(otuSet.getOtus(), otus);
-
-	}
-
-	/**
-	 * There was a bug where clearAndAddOtus was calling updateOtu on the
-	 * children after the otu sets otus were cleared. This was nulling out the
-	 * rows of the matrices.
-	 */
-	@Test
-	public void makeSureRowsDontGetNullledOut() {
-		OtuSet otuSet = new OtuSet();
-
-		Otu otu0 = new Otu("otu0");
-		Otu otu1 = new Otu("otu1");
-		Otu otu2 = new Otu("otu2");
-
-		List<Otu> otus = newArrayList(otu0, otu1, otu2);
-
-		otuSet.getOtus().addAll(otus);
-
-		StandardMatrix standardMatrix = new StandardMatrix();
-		otuSet.addStandardMatrix(standardMatrix);
-
-		standardMatrix.putRow(otu0, new StandardRow());
-		standardMatrix.putRow(otu1, new StandardRow());
-		standardMatrix.putRow(otu2, new StandardRow());
-
-		otuSet.clearAndAddOtus(otus);
-
-		for (StandardRow row : standardMatrix.getRows().values()) {
-			assertNotNull(row);
-		}
-
-	}
-
 	@Test
 	public void addDnaMatrix() {
 		final DnaMatrix dnaMatrix = new DnaMatrix();
@@ -365,6 +314,61 @@ public class OtuSetTest {
 		// Do this so we can check that version resets are being done.
 		study = new Study();
 		study.addOtuSet(otuSet);
+	}
+
+	/**
+	 * There was a bug where clearAndOtus was doing a shallow copy of the
+	 * incoming otus. This is a problem for hibernate.
+	 */
+	@Test
+	public void makeSureClearAndAddOtusDoesntRetainReference() {
+		final OtuSet otuSet = new OtuSet();
+		final Otu otu0 = new Otu("otu0");
+		final Otu otu1 = new Otu("otu1");
+		final Otu otu2 = new Otu("otu2");
+
+		final List<Otu> otus = newArrayList(otu0, otu1, otu2);
+
+		otuSet.clearAndAddOtus(otus);
+
+		assertNotSame(otuSet.getOtus(), otus);
+
+	}
+
+	/**
+	 * There was a bug where clearAndAddOtus was calling updateOtu on the
+	 * children after the otu sets otus were cleared. This was nulling out the
+	 * rows of the matrices.
+	 */
+	@Test
+	public void makeSureRowsDontGetNullledOut() {
+		final OtuSet otuSet = new OtuSet();
+
+		final Otu otu0 = new Otu("otu0");
+		final Otu otu1 = new Otu("otu1");
+		final Otu otu2 = new Otu("otu2");
+
+		final List<Otu> otus = newArrayList(otu0, otu1, otu2);
+
+		otuSet.getOtus().addAll(otus);
+
+		final StandardMatrix standardMatrix = new StandardMatrix();
+		otuSet.addStandardMatrix(standardMatrix);
+
+		standardMatrix.putRow(otu0, new StandardRow());
+		standardMatrix.putRow(otu1, new StandardRow());
+		standardMatrix.putRow(otu2, new StandardRow());
+
+		otuSet.clearAndAddOtus(otus);
+
+		// We were inadvertently wiping out all rows in one version of this test
+		// by using OtuSet.setOtus, so make sure the rows are there
+		assertEquals(standardMatrix.getRows().size(), 3);
+
+		for (final StandardRow row : standardMatrix.getRows().values()) {
+			assertNotNull(row);
+		}
+
 	}
 
 	@Test

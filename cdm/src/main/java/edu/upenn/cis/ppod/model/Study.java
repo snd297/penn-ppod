@@ -53,11 +53,6 @@ import edu.upenn.cis.ppod.imodel.IUuPPodEntity;
 		@NamedQuery(name = "Study-getByPPodId",
 				query = "select s "
 						+ "from Study s "
-						// + "join fetch s.otuSets o "
-						// + "join fetch o.dnaMatrices d "
-						// + "join fetch d.rows r "
-						// + "join fetch r.values v "
-						// + "join fetch v.cells "
 						+ "where s.pPodId=:pPodId"),
 		@NamedQuery(
 				name = "Study-getPPodIdLabelPairs",
@@ -84,16 +79,6 @@ public class Study extends UuPPodEntity2 implements ILabeled, IOtuSets,
 	private String label;
 
 	private List<OtuSet> otuSets = newArrayList();
-
-	/**
-	 * {@code updatable = false} makes this property immutable
-	 */
-	// @Column(name = UuPPodEntity.PPOD_ID_COLUMN,
-	// unique = true,
-	// nullable = false,
-	// length = UuPPodEntity.PPOD_ID_COLUMN_LENGTH,
-	// updatable = false)
-	// private String pPodId = UUID.randomUUID().toString();
 
 	/**
 	 * No-arg constructor.
@@ -207,7 +192,8 @@ public class Study extends UuPPodEntity2 implements ILabeled, IOtuSets,
 	/**
 	 * @param otuSets the otuSets to set
 	 */
-	public void setOtuSets(final List<OtuSet> otuSets) {
+	@SuppressWarnings("unused")
+	private void setOtuSets(final List<OtuSet> otuSets) {
 		this.otuSets = otuSets;
 	}
 

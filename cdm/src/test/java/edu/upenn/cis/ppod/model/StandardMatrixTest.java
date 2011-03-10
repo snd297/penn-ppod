@@ -73,7 +73,7 @@ public class StandardMatrixTest {
 
 		final StandardCharacter standardCharacter = new StandardCharacter();
 		standardCharacter.setLabel("testLabel");
-		matrix.setCharacters(newArrayList(standardCharacter));
+		matrix.clearAndAddCharacters(newArrayList(standardCharacter));
 
 		matrix.putRow(otu0, new StandardRow());
 		final StandardCell cell00 = new StandardCell();
@@ -141,7 +141,7 @@ public class StandardMatrixTest {
 		standardCharacters.get(1).setLabel("character-1");
 		standardCharacters.get(2).setLabel("character-2");
 
-		matrix.setCharacters(standardCharacters);
+		matrix.clearAndAddCharacters(standardCharacters);
 
 		assertNotSame(matrix.getCharacters(), standardCharacters);
 		Assert.assertEquals(matrix.getCharacters(),
@@ -164,14 +164,14 @@ public class StandardMatrixTest {
 		standardCharacters.get(1).setLabel("character-1");
 		standardCharacters.get(2).setLabel("character-2");
 
-		matrix.setCharacters(standardCharacters);
+		matrix.clearAndAddCharacters(standardCharacters);
 
 		final ImmutableList<StandardCharacter> shuffledCharacters = ImmutableList
 				.of(
 						standardCharacters.get(1), standardCharacters.get(2),
 						standardCharacters.get(0));
 
-		matrix.setCharacters(shuffledCharacters);
+		matrix.clearAndAddCharacters(shuffledCharacters);
 
 		assertNotSame(matrix.getCharacters(), shuffledCharacters);
 		assertEquals(matrix.getCharacters(), shuffledCharacters);
@@ -192,7 +192,7 @@ public class StandardMatrixTest {
 		characters.get(1).setLabel("character-1");
 		characters.get(2).setLabel("character-2");
 
-		matrix.setCharacters(characters);
+		matrix.clearAndAddCharacters(characters);
 
 		final ImmutableList<StandardCharacter> characters2 =
 				ImmutableList.of(
@@ -204,7 +204,7 @@ public class StandardMatrixTest {
 		characters.get(1).setLabel("character-2-1");
 		characters.get(2).setLabel("character-2-2");
 
-		matrix.setCharacters(characters2);
+		matrix.clearAndAddCharacters(characters2);
 		assertEquals(matrix.getCharacters(), characters2);
 
 		// assertEquals(matrix.getCharacterPosition(characters2.get(0)),
@@ -232,9 +232,9 @@ public class StandardMatrixTest {
 		characters.get(1).setLabel("character-1");
 		characters.get(2).setLabel("character-2");
 
-		matrix.setCharacters(characters);
+		matrix.clearAndAddCharacters(characters);
 
-		matrix.setCharacters(characters);
+		matrix.clearAndAddCharacters(characters);
 
 	}
 
@@ -260,6 +260,6 @@ public class StandardMatrixTest {
 		final ImmutableList<StandardCharacter> standardCharacters = ImmutableList
 				.of(
 						character0, character1, character0);
-		matrix.setCharacters(standardCharacters);
+		matrix.clearAndAddCharacters(standardCharacters);
 	}
 }

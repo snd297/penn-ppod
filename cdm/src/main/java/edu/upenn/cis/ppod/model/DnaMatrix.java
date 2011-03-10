@@ -46,42 +46,53 @@ import edu.upenn.cis.ppod.util.UPennCisPPodUtil;
 @Table(name = DnaMatrix.TABLE)
 public class DnaMatrix extends Matrix<DnaRow> {
 
-	@Access(AccessType.PROPERTY)
-	@Id
-	@GeneratedValue
-	@Column(name = ID_COLUMN)
 	@CheckForNull
 	private Long id;
 
-	@SuppressWarnings("unused")
-	@Version
-	@Column(name = "OBJ_VERSION")
 	@CheckForNull
-	private Integer objVersion;
+	private Integer version;
 
 	public final static String TABLE = "DNA_MATRIX";
 
 	public final static String ID_COLUMN = TABLE + "_ID";
 
-	@OneToMany(cascade = CascadeType.ALL, orphanRemoval = true)
-	@JoinTable(name = TABLE + "_" + DnaRow.TABLE,
-			inverseJoinColumns = @JoinColumn(name = DnaRow.ID_COLUMN))
-	@MapKeyJoinColumn(name = Otu.ID_COLUMN)
-	private final Map<Otu, DnaRow> rows = newHashMap();
+	private Map<Otu, DnaRow> rows = newHashMap();
 
 	/**
 	 * No-arg constructor.
 	 */
 	public DnaMatrix() {}
 
+	@Access(AccessType.PROPERTY)
+	@Id
+	@GeneratedValue
+	@Column(name = ID_COLUMN)
 	@Nullable
 	public Long getId() {
 		return id;
 	}
 
+	@OneToMany(cascade = CascadeType.ALL, orphanRemoval = true)
+	@JoinTable(name = TABLE + "_" + DnaRow.TABLE,
+			inverseJoinColumns = @JoinColumn(name = DnaRow.ID_COLUMN))
+	@MapKeyJoinColumn(name = Otu.ID_COLUMN)
 	@Override
 	public Map<Otu, DnaRow> getRows() {
 		return rows;
+	}
+
+	/**
+	 * @return the version
+	 */
+	@Version
+	@Column(name = "OBJ_VERSION")
+	public Integer getVersion() {
+		return version;
+	}
+
+	@Override
+	public void putRow(final Otu otu, final DnaRow row) {
+		UPennCisPPodUtil.put(rows, otu, row, this);
 	}
 
 	@SuppressWarnings("unused")
@@ -89,13 +100,21 @@ public class DnaMatrix extends Matrix<DnaRow> {
 		this.id = id;
 	}
 
-	@Override
-	public void updateOtus() {
-		UPennCisPPodUtil.updateOtus(getParent(), rows);
+	@SuppressWarnings("unused")
+	private void setRows(final Map<Otu, DnaRow> rows) {
+		this.rows = rows;
+	}
+
+	/**
+	 * @param version the version to set
+	 */
+	@SuppressWarnings("unused")
+	private void setVersion(final Integer version) {
+		this.version = version;
 	}
 
 	@Override
-	public void putRow(Otu otu, DnaRow row) {
-		UPennCisPPodUtil.put(rows, otu, row, this);
+	public void updateOtus() {
+		UPennCisPPodUtil.updateOtus(getParent(), rows);
 	}
 }

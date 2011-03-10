@@ -44,7 +44,7 @@ import edu.upenn.cis.ppod.imodel.ILabeled;
 @Entity
 @Table(name = Otu.TABLE)
 public class Otu
-		extends UuPPodEntity
+		extends UuPPodEntity2
 		implements IChild<OtuSet>, ILabeled {
 
 	/** The table for this entity. */
@@ -55,22 +55,13 @@ public class Otu
 	 */
 	public static final String ID_COLUMN = TABLE + "_ID";
 
-	@Access(AccessType.PROPERTY)
-	@Id
-	@GeneratedValue
-	@Column(name = ID_COLUMN)
 	@CheckForNull
 	private Long id;
 
-	@SuppressWarnings("unused")
-	@Version
-	@Column(name = "OBJ_VERSION")
 	@CheckForNull
-	private Integer objVersion;
+	private Integer version;
 
-	/** Non-unique label. */
-	@Column(name = "LABEL", nullable = false)
-	@Index(name = "LABEL_IDX")
+	/** Globally non-unique label, must be unique within an OTU set. */
 	@CheckForNull
 	private String label;
 
@@ -78,9 +69,6 @@ public class Otu
 	 * The {@code OTUSet} that this {@code OTU} belongs to.
 	 */
 	@CheckForNull
-	@ManyToOne
-	@JoinColumn(name = OtuSet.ID_COLUMN, insertable = false,
-			updatable = false, nullable = false)
 	private OtuSet parent;
 
 	public Otu() {}
@@ -89,6 +77,10 @@ public class Otu
 		this.label = checkNotNull(label);
 	}
 
+	@Access(AccessType.PROPERTY)
+	@Id
+	@GeneratedValue
+	@Column(name = ID_COLUMN)
 	@Nullable
 	public Long getId() {
 		return id;
@@ -99,6 +91,8 @@ public class Otu
 	 * 
 	 * @return the label of this {@code OTU}
 	 */
+	@Column(name = "LABEL", nullable = false)
+	@Index(name = "LABEL_IDX")
 	@Nullable
 	public String getLabel() {
 		return label;
@@ -111,9 +105,22 @@ public class Otu
 	 * 
 	 * @return the OTU set that owns this OTU
 	 */
+	@ManyToOne
+	@JoinColumn(name = OtuSet.ID_COLUMN, insertable = false,
+			updatable = false, nullable = false)
 	@Nullable
 	public OtuSet getParent() {
 		return parent;
+	}
+
+	/**
+	 * @return the version
+	 */
+	@Version
+	@Column(name = "OBJ_VERSION")
+	@Nullable
+	public Integer getVersion() {
+		return version;
 	}
 
 	@SuppressWarnings("unused")
@@ -129,7 +136,7 @@ public class Otu
 	 * @return this
 	 */
 	public void setLabel(final String label) {
-		this.label = checkNotNull(label);
+		this.label = label;
 	}
 
 	/**
@@ -139,5 +146,13 @@ public class Otu
 	 */
 	public void setParent(@CheckForNull final OtuSet parent) {
 		this.parent = parent;
+	}
+
+	/**
+	 * @param version the version to set
+	 */
+	@SuppressWarnings("unused")
+	private void setVersion(final Integer version) {
+		this.version = version;
 	}
 }

@@ -146,14 +146,8 @@ abstract class Cell<E, R extends Row<?, ?>>
 		return type;
 	}
 
-	/**
-	 * Does not affect {@link #isInNeedOfNewVersion()}.
-	 */
 	abstract void setElement(@CheckForNull final E element);
 
-	/**
-	 * Does not affect {@link #isInNeedOfNewVersion()}.
-	 */
 	abstract void setElements(@CheckForNull final Set<E> elements);
 
 	/**

@@ -29,42 +29,45 @@ public class ProteinMatrix
 		extends Matrix<ProteinRow>
 		implements IDependsOnParentOtus {
 
-	@Access(AccessType.PROPERTY)
-	@Id
-	@GeneratedValue
-	@Column(name = ID_COLUMN)
 	@CheckForNull
 	private Long id;
 
-	@SuppressWarnings("unused")
-	@Version
-	@Column(name = "OBJ_VERSION")
 	@CheckForNull
-	private Integer objVersion;
+	private Integer version;
 
 	public final static String TABLE = "PROTEIN_MATRIX";
 
 	public final static String ID_COLUMN = TABLE + "_ID";
 
-	@OneToMany(cascade = CascadeType.ALL, orphanRemoval = true)
-	@JoinTable(name = TABLE + "_" + ProteinRow.TABLE,
-			inverseJoinColumns = @JoinColumn(name = ProteinRow.ID_COLUMN))
-	@MapKeyJoinColumn(name = Otu.ID_COLUMN)
-	private final Map<Otu, ProteinRow> rows = newHashMap();
+	private Map<Otu, ProteinRow> rows = newHashMap();
 
 	/**
 	 * No-arg constructor.
 	 */
 	public ProteinMatrix() {}
 
+	@Access(AccessType.PROPERTY)
+	@Id
+	@GeneratedValue
+	@Column(name = ID_COLUMN)
 	@Nullable
 	public Long getId() {
 		return id;
 	}
 
+	@OneToMany(cascade = CascadeType.ALL, orphanRemoval = true)
+	@JoinTable(name = TABLE + "_" + ProteinRow.TABLE,
+			inverseJoinColumns = @JoinColumn(name = ProteinRow.ID_COLUMN))
+	@MapKeyJoinColumn(name = Otu.ID_COLUMN)
 	@Override
 	public Map<Otu, ProteinRow> getRows() {
 		return rows;
+	}
+
+	@Version
+	@Column(name = "OBJ_VERSION")
+	public Integer getVersion() {
+		return version;
 	}
 
 	@Override
@@ -75,6 +78,16 @@ public class ProteinMatrix
 	@SuppressWarnings("unused")
 	private void setId(final Long id) {
 		this.id = id;
+	}
+
+	@SuppressWarnings("unused")
+	private void setRows(final Map<Otu, ProteinRow> rows) {
+		this.rows = rows;
+	}
+
+	@SuppressWarnings("unused")
+	private void setVersion(final Integer version) {
+		this.version = version;
 	}
 
 	@Override

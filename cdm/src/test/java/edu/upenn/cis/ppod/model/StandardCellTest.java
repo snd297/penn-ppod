@@ -159,7 +159,7 @@ public class StandardCellTest {
 		final StandardCharacter character0 =
 				new StandardCharacter();
 		character0.setLabel("character0");
-		matrix.setCharacters(newArrayList(character0));
+		matrix.clearAndAddCharacters(newArrayList(character0));
 		final StandardRow row0 = new StandardRow();
 		matrix.putRow(matrix.getParent().getOtus().get(0), row0);
 
