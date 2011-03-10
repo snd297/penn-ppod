@@ -19,6 +19,8 @@ import static com.google.common.collect.Iterables.getOnlyElement;
 import static com.google.common.collect.Lists.newArrayList;
 import static org.testng.Assert.assertEquals;
 import static org.testng.Assert.assertFalse;
+import static org.testng.Assert.assertNotNull;
+import static org.testng.Assert.assertNotSame;
 import static org.testng.Assert.assertNull;
 import static org.testng.Assert.assertSame;
 import static org.testng.Assert.assertTrue;
@@ -47,6 +49,57 @@ public class OtuSetTest {
 	private List<Otu> otus;
 
 	private Study study;
+
+	/**
+	 * There was a bug where clearAndOtus was doing a shallow copy of the
+	 * incoming otus. This is a problem for hibernate.
+	 */
+	@Test
+	public void makeSureClearAndAddOtusDoesntRetainReference() {
+		OtuSet otuSet = new OtuSet();
+		Otu otu0 = new Otu("otu0");
+		Otu otu1 = new Otu("otu1");
+		Otu otu2 = new Otu("otu2");
+
+		List<Otu> otus = newArrayList(otu0, otu1, otu2);
+
+		otuSet.clearAndAddOtus(otus);
+
+		assertNotSame(otuSet.getOtus(), otus);
+
+	}
+
+	/**
+	 * There was a bug where clearAndAddOtus was calling updateOtu on the
+	 * children after the otu sets otus were cleared. This was nulling out the
+	 * rows of the matrices.
+	 */
+	@Test
+	public void makeSureRowsDontGetNullledOut() {
+		OtuSet otuSet = new OtuSet();
+
+		Otu otu0 = new Otu("otu0");
+		Otu otu1 = new Otu("otu1");
+		Otu otu2 = new Otu("otu2");
+
+		List<Otu> otus = newArrayList(otu0, otu1, otu2);
+
+		otuSet.getOtus().addAll(otus);
+
+		StandardMatrix standardMatrix = new StandardMatrix();
+		otuSet.addStandardMatrix(standardMatrix);
+
+		standardMatrix.putRow(otu0, new StandardRow());
+		standardMatrix.putRow(otu1, new StandardRow());
+		standardMatrix.putRow(otu2, new StandardRow());
+
+		otuSet.clearAndAddOtus(otus);
+
+		for (StandardRow row : standardMatrix.getRows().values()) {
+			assertNotNull(row);
+		}
+
+	}
 
 	@Test
 	public void addDnaMatrix() {
@@ -177,15 +230,15 @@ public class OtuSetTest {
 	 */
 	@Test
 	public void addOtuWAlreadyContainedOTU() {
-		otuSet.setOtusPlus(ImmutableList.of(new Otu("OTU-0")));
+		otuSet.clearAndAddOtus(ImmutableList.of(new Otu("OTU-0")));
 
-		otuSet.setOtusPlus(otuSet.getOtus());
+		otuSet.clearAndAddOtus(otuSet.getOtus());
 	}
 
 	@Test(expectedExceptions = IllegalArgumentException.class)
 	public void addOtuWDuplicateLabel() {
 		otus.add(new Otu(otus.get(0).getLabel()));
-		otuSet.setOtusPlus(newArrayList(otus));
+		otuSet.clearAndAddOtus(newArrayList(otus));
 	}
 
 	@Test(groups = { TestGroupDefs.FAST })
@@ -307,7 +360,7 @@ public class OtuSetTest {
 		otus.add(otu2);
 		otu2.setLabel("otu2");
 
-		otuSet.setOtusPlus(newArrayList(otus));
+		otuSet.clearAndAddOtus(newArrayList(otus));
 
 		// Do this so we can check that version resets are being done.
 		study = new Study();
@@ -365,7 +418,7 @@ public class OtuSetTest {
 		final ImmutableList<Otu> otus2 =
 				ImmutableList.of(otus.get(0), otus.get(2));
 
-		otuSet.setOtusPlus(otus2);
+		otuSet.clearAndAddOtus(otus2);
 
 		assertFalse(otuSet.getOtus().contains(otus.get(1)));
 		assertNull(otus.get(1).getParent());
