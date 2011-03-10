@@ -23,7 +23,6 @@ import static com.google.common.collect.Iterables.find;
 import static com.google.common.collect.Lists.newArrayList;
 import static com.google.common.collect.Sets.newHashSet;
 
-import java.util.Collection;
 import java.util.List;
 import java.util.Set;
 
@@ -309,7 +308,7 @@ public class OtuSet extends UuPPodEntity2 implements ILabeled {
 
 	private void checkForDuplicateOtuLabels(
 			final Otu otu,
-			final Collection<Otu> otus) {
+			final Iterable<Otu> otus) {
 		final Otu dupNameOtu =
 				find(otus,
 						compose(
@@ -324,6 +323,31 @@ public class OtuSet extends UuPPodEntity2 implements ILabeled {
 								+ "' already has an Otu labeled '"
 								+ otu.getLabel() + "'");
 		}
+	}
+
+	/**
+	 * Set this OTU set's OTUs, calls updateOtus on dependent children.
+	 * <p>
+	 * Takes care of both sides of the OTU set <-> OTU relationship.
+	 * 
+	 * @param otus the otus to assign to this OTU set
+	 */
+	public void clearAndAddOtus(final List<? extends Otu> otus) {
+		checkNotNull(otus);
+
+		final List<Otu> removedOtus = newArrayList(this.otus);
+		removedOtus.removeAll(otus);
+
+		for (final Otu removedOtu : removedOtus) {
+			removedOtu.setParent(null);
+		}
+
+		this.otus.clear();
+
+		for (final Otu otu : otus) {
+			addOtuWithoutUpdateOtusOnChildren(otu);
+		}
+		updateOtusOnChildren();
 	}
 
 	@Transient
@@ -587,31 +611,6 @@ public class OtuSet extends UuPPodEntity2 implements ILabeled {
 	@SuppressWarnings("unused")
 	private void setOtus(final List<Otu> otus) {
 		this.otus = otus;
-	}
-
-	/**
-	 * Set this OTU set's OTUs, calls updateOtus on dependent children.
-	 * <p>
-	 * Takes care of both sides of the OTU set <-> OTU relationship.
-	 * 
-	 * @param otus the otus to assign to this OTU set
-	 */
-	public void setOtusPlus(final List<Otu> otus) {
-		checkNotNull(otus);
-
-		final List<Otu> removedOtus = newArrayList(this.otus);
-		removedOtus.removeAll(otus);
-
-		for (final Otu removedOtu : removedOtus) {
-			removedOtu.setParent(null);
-		}
-
-		this.otus.clear();
-
-		for (final Otu otu : otus) {
-			addOtuWithoutUpdateOtusOnChildren(otu);
-		}
-		updateOtusOnChildren();
 	}
 
 	/** {@inheritDoc} */
