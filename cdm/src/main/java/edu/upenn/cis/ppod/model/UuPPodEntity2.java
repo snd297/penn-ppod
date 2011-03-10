@@ -2,8 +2,6 @@ package edu.upenn.cis.ppod.model;
 
 import java.util.UUID;
 
-import javax.persistence.Access;
-import javax.persistence.AccessType;
 import javax.persistence.Column;
 import javax.persistence.MappedSuperclass;
 import javax.persistence.Transient;
@@ -19,21 +17,37 @@ abstract class UuPPodEntity2 implements IUuPPodEntity {
 	/**
 	 * {@code updatable = false} makes this property immutable
 	 */
-	@Access(AccessType.FIELD)
+	private String pPodId = UUID.randomUUID().toString();
+
+	/**
+	 * Weird looking so that the hibernate property is "pPodId".
+	 * 
+	 * @return
+	 */
+	@SuppressWarnings("unused")
 	@Column(name = PPOD_ID_COLUMN,
 			unique = true,
 			nullable = false,
 			length = PPOD_ID_COLUMN_LENGTH,
 			updatable = false)
-	private String pPodId = UUID.randomUUID().toString();
+	private String getpPodId() {
+		return getPPodId();
+	}
 
 	@Transient
 	public String getPPodId() {
 		return pPodId;
 	}
 
+	/**
+	 * Weird looking so that the hibernate property is "pPodId".
+	 */
 	@SuppressWarnings("unused")
-	private void setPPodId(String pPodId) {
+	private void setpPodId(final String pPodId) {
+		setPPodId(pPodId);
+	}
+
+	private void setPPodId(final String pPodId) {
 		this.pPodId = pPodId;
 	}
 }

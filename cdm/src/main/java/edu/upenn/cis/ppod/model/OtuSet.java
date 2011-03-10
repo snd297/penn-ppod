@@ -23,6 +23,7 @@ import static com.google.common.collect.Iterables.find;
 import static com.google.common.collect.Lists.newArrayList;
 import static com.google.common.collect.Sets.newHashSet;
 
+import java.util.Collection;
 import java.util.List;
 import java.util.Set;
 
@@ -208,20 +209,7 @@ public class OtuSet extends UuPPodEntity2 implements ILabeled {
 	}
 
 	private void addOtuWithoutUpdateOtusOnChildren(final Otu otu) {
-		final Otu dupNameOtu =
-				find(getOtus(),
-						compose(
-								equalTo(
-								otu.getLabel()),
-								ILabeled.getLabel),
-								null);
-		if (dupNameOtu == null || otu.equals(dupNameOtu)) {
-
-		} else {
-			checkArgument(false, "OtuSet labeled '" + getLabel()
-									+ "' already has an Otu labeled '"
-									+ otu.getLabel() + "'");
-		}
+		checkForDuplicateOtuLabels(otu, otus);
 		otus.add(otu);
 		otu.setParent(this);
 	}
@@ -319,6 +307,25 @@ public class OtuSet extends UuPPodEntity2 implements ILabeled {
 		treeSet.setParent(this);
 	}
 
+	private void checkForDuplicateOtuLabels(
+			final Otu otu,
+			final Collection<Otu> otus) {
+		final Otu dupNameOtu =
+				find(otus,
+						compose(
+								equalTo(
+								otu.getLabel()),
+								ILabeled.getLabel),
+							null);
+		if (dupNameOtu == null || otu.equals(dupNameOtu)) {
+
+		} else {
+			checkArgument(false, "OtuSet labeled '" + getLabel()
+								+ "' already has an Otu labeled '"
+								+ otu.getLabel() + "'");
+		}
+	}
+
 	@Transient
 	@VisibleForTesting
 	Set<IChild<OtuSet>> getChildren() {
@@ -371,7 +378,6 @@ public class OtuSet extends UuPPodEntity2 implements ILabeled {
 	@Id
 	@GeneratedValue
 	@Column(name = ID_COLUMN)
-	@CheckForNull
 	@Nullable
 	public Long getId() {
 		return id;
@@ -554,11 +560,13 @@ public class OtuSet extends UuPPodEntity2 implements ILabeled {
 		this.description = description;
 	}
 
-	public void setDnaMatrices(final List<DnaMatrix> matrices) {
+	@SuppressWarnings("unused")
+	private void setDnaMatrices(final List<DnaMatrix> matrices) {
 		this.dnaMatrices = matrices;
 	}
 
-	public void setDnaSequenceSets(final List<DnaSequenceSet> sequenceSets) {
+	@SuppressWarnings("unused")
+	private void setDnaSequenceSets(final List<DnaSequenceSet> sequenceSets) {
 		this.dnaSequenceSets = sequenceSets;
 	}
 
@@ -576,15 +584,15 @@ public class OtuSet extends UuPPodEntity2 implements ILabeled {
 		this.label = label;
 	}
 
-	public void setOtus(final List<Otu> otus) {
+	@SuppressWarnings("unused")
+	private void setOtus(final List<Otu> otus) {
 		this.otus = otus;
 	}
 
 	/**
 	 * Set this OTU set's OTUs, calls updateOtus on dependent children.
 	 * <p>
-	 * If this method is effectively removing any of this sets's original OTUs,
-	 * then the {@code OTU->OTUSet} relationship is severed.
+	 * Takes care of both sides of the OTU set <-> OTU relationship.
 	 * 
 	 * @param otus the otus to assign to this OTU set
 	 */
@@ -603,7 +611,6 @@ public class OtuSet extends UuPPodEntity2 implements ILabeled {
 		for (final Otu otu : otus) {
 			addOtuWithoutUpdateOtusOnChildren(otu);
 		}
-
 		updateOtusOnChildren();
 	}
 
@@ -612,15 +619,18 @@ public class OtuSet extends UuPPodEntity2 implements ILabeled {
 		this.parent = parent;
 	}
 
-	public void setProteinMatrices(final List<ProteinMatrix> matrices) {
+	@SuppressWarnings("unused")
+	private void setProteinMatrices(final List<ProteinMatrix> matrices) {
 		this.proteinMatrices = matrices;
 	}
 
-	public void setStandardMatrices(final List<StandardMatrix> matrices) {
+	@SuppressWarnings("unused")
+	private void setStandardMatrices(final List<StandardMatrix> matrices) {
 		this.standardMatrices = matrices;
 	}
 
-	public void setTreeSets(final List<TreeSet> treeSets) {
+	@SuppressWarnings("unused")
+	private void setTreeSets(final List<TreeSet> treeSets) {
 		this.treeSets = treeSets;
 	}
 

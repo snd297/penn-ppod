@@ -41,6 +41,7 @@ import edu.umd.cs.findbugs.annotations.CheckForNull;
 import edu.umd.cs.findbugs.annotations.Nullable;
 import edu.upenn.cis.ppod.dto.IOtuSets;
 import edu.upenn.cis.ppod.imodel.ILabeled;
+import edu.upenn.cis.ppod.imodel.IUuPPodEntity;
 
 /**
  * A collection of work - inspired by a Mesquite project - sets of OTU sets and,
@@ -63,7 +64,8 @@ import edu.upenn.cis.ppod.imodel.ILabeled;
 				query = "select s.pPodId, s.label from Study s") })
 @Entity
 @Table(name = Study.TABLE)
-public class Study extends UuPPodEntity2 implements ILabeled, IOtuSets { 
+public class Study extends UuPPodEntity2 implements ILabeled, IOtuSets,
+		IUuPPodEntity {
 
 	/** The table name for this entity. */
 	public static final String TABLE = "STUDY";
@@ -216,5 +218,4 @@ public class Study extends UuPPodEntity2 implements ILabeled, IOtuSets {
 	private void setVersion(final Integer objVersion) {
 		this.version = objVersion;
 	}
-
 }

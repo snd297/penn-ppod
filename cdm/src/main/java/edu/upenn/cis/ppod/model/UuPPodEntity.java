@@ -17,8 +17,6 @@ package edu.upenn.cis.ppod.model;
 
 import java.util.UUID;
 
-import javax.persistence.Access;
-import javax.persistence.AccessType;
 import javax.persistence.Column;
 import javax.persistence.MappedSuperclass;
 import javax.persistence.Transient;
@@ -40,7 +38,6 @@ public abstract class UuPPodEntity implements
 	/**
 	 * {@code updatable = false} makes this property immutable
 	 */
-	@Access(AccessType.FIELD)
 	@Column(name = PPOD_ID_COLUMN,
 			unique = true,
 			nullable = false,

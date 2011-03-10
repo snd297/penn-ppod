@@ -50,12 +50,13 @@ public final class MergeOtuSets {
 		for (final PPodOtu sourceOTU : sourceOtuSet.getOtus()) {
 			Otu targetOTU;
 			if (null == (targetOTU =
-					find(targetOtuSet.getOtus(),
+					find(
+							targetOtuSet.getOtus(),
 							compose(
-									equalTo(sourceOTU
-											.getPPodId()),
-											IHasPPodId.getPPodId),
-											null))) {
+									equalTo(
+										sourceOTU.getPPodId()),
+										IHasPPodId.getPPodId),
+										null))) {
 				targetOTU = new Otu();
 			}
 			newTargetOTUs.add(targetOTU);
