@@ -15,8 +15,6 @@
  */
 package edu.upenn.cis.ppod.model;
 
-import static com.google.common.base.Preconditions.checkNotNull;
-
 import java.util.Map;
 
 import javax.persistence.Column;
@@ -24,6 +22,7 @@ import javax.persistence.FetchType;
 import javax.persistence.JoinColumn;
 import javax.persistence.ManyToOne;
 import javax.persistence.MappedSuperclass;
+import javax.persistence.Transient;
 
 import edu.umd.cs.findbugs.annotations.CheckForNull;
 import edu.umd.cs.findbugs.annotations.Nullable;
@@ -37,8 +36,8 @@ import edu.upenn.cis.ppod.imodel.IDependsOnParentOtus;
  * @author Sam Donnelly
  */
 @MappedSuperclass
-abstract class Matrix<R extends IChild<?>>
-		extends UuPPodEntity
+public abstract class Matrix<R extends IChild<?>>
+		extends UuPPodEntity2
 		implements IDependsOnParentOtus {
 
 	/** Description column. */
@@ -48,21 +47,16 @@ abstract class Matrix<R extends IChild<?>>
 	public static final String LABEL_COLUMN = "LABEL";
 
 	/** Free-form description. */
-	@Column(name = DESCRIPTION_COLUMN, nullable = true)
 	@CheckForNull
 	private String description;
 
 	/** The label for this {@code Matrix}. */
-	@Column(name = LABEL_COLUMN, nullable = false)
 	@CheckForNull
 	private String label;
 
 	/**
 	 * These are the <code>OTU</code>s whose data comprises this {@code Matrix}.
 	 */
-	@ManyToOne(fetch = FetchType.LAZY, optional = false)
-	@JoinColumn(name = OtuSet.ID_COLUMN, insertable = false,
-				updatable = false)
 	@CheckForNull
 	private OtuSet parent;
 
@@ -74,6 +68,7 @@ abstract class Matrix<R extends IChild<?>>
 	 * 
 	 * @return the description
 	 */
+	@Column(name = DESCRIPTION_COLUMN, nullable = true)
 	@Nullable
 	public String getDescription() {
 		return description;
@@ -88,18 +83,16 @@ abstract class Matrix<R extends IChild<?>>
 	 * 
 	 * @return the label
 	 */
+	@Column(name = LABEL_COLUMN, nullable = false)
 	@Nullable
 	public String getLabel() {
 		return label;
 	}
 
-	/**
-	 * Getter. Will be {@code null} when object is first created or matrices
-	 * that have been severed from their parent, but never {@code null} for
-	 * objects freshly pulled out of the database.
-	 * 
-	 * @return this matrix's {@code OTUSet}
-	 */
+	/** {$inheritDoc} */
+	@ManyToOne(fetch = FetchType.LAZY, optional = false)
+	@JoinColumn(name = OtuSet.ID_COLUMN, insertable = false,
+				updatable = false)
 	public OtuSet getParent() {
 		return parent;
 	}
@@ -112,6 +105,7 @@ abstract class Matrix<R extends IChild<?>>
 	 * 
 	 * @return the rows that make up this matrix
 	 */
+	@Transient
 	public abstract Map<Otu, R> getRows();
 
 	/**
@@ -150,14 +144,14 @@ abstract class Matrix<R extends IChild<?>>
 	 * @param label the value for the label
 	 */
 	public void setLabel(final String label) {
-		this.label = checkNotNull(label);
+		this.label = label;
 	}
 
 	/** {@inheritDoc} */
 	public void setParent(
 			@CheckForNull final OtuSet parent) {
 		this.parent = parent;
-		updateOtus();
+
 	}
 
 	/** {@inheritDoc} */

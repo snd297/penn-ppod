@@ -260,10 +260,10 @@ public class StandardCell extends Cell<StandardState, StandardRow> {
 		checkNotNull(stateNumber);
 
 		if (getType() == PPodCellType.SINGLE
-				&& getElement().getStateNumber() == stateNumber) {
+				&& getElement().getStateNumber().equals(stateNumber)) {
 			// We're already good, so let's not do anything.
 			// Since this is the most common case, it's worth doing: gives
-			// us a 50% improvement on larger matrices
+			// us a 50% improvement on larger matrices. 
 			return;
 		}
 
