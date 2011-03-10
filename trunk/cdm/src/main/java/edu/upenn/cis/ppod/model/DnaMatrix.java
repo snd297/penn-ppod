@@ -15,7 +15,6 @@
  */
 package edu.upenn.cis.ppod.model;
 
-import static com.google.common.base.Preconditions.checkNotNull;
 import static com.google.common.collect.Maps.newHashMap;
 
 import java.util.Map;
@@ -85,19 +84,6 @@ public class DnaMatrix extends Matrix<DnaRow> {
 		return rows;
 	}
 
-	@Override
-	public DnaRow putRow(final Otu otu, final DnaRow row) {
-		checkNotNull(otu);
-		checkNotNull(row);
-		final DnaRow oldRow = rows.put(otu, row);
-		row.setParent(this);
-
-		if (row != oldRow && oldRow != null) {
-			oldRow.setParent(null);
-		}
-		return oldRow;
-	}
-
 	@SuppressWarnings("unused")
 	private void setId(final Long id) {
 		this.id = id;
@@ -106,5 +92,10 @@ public class DnaMatrix extends Matrix<DnaRow> {
 	@Override
 	public void updateOtus() {
 		UPennCisPPodUtil.updateOtus(getParent(), rows);
+	}
+
+	@Override
+	public void putRow(Otu otu, DnaRow row) {
+		UPennCisPPodUtil.put(rows, otu, row, this);
 	}
 }

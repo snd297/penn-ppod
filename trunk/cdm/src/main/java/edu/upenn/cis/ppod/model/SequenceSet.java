@@ -126,18 +126,8 @@ public abstract class SequenceSet<S extends Sequence<?>>
 	 */
 	public abstract Map<Otu, S> getSequences();
 
-	/**
-	 * @param otu
-	 * @param sequence
-	 * 
-	 * @throws IllegalArgumentException if {@code sequence.getSequence() ==
-	 *             null}
-	 * @throws IllegalArgumentException if
-	 *             {@code sequence.getSequence().length() != this.getLength()}
-	 * @return
-	 */
 	@Nullable
-	public abstract S putSequence(final Otu otu, final S sequence);
+	public abstract void putSequence(final Otu otu, final S sequence);
 
 	public void setLabel(final String label) {
 		this.label = checkNotNull(label);

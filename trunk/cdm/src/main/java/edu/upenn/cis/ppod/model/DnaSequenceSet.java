@@ -109,18 +109,10 @@ public class DnaSequenceSet
 
 	@Override
 	@Nullable
-	public DnaSequence putSequence(
+	public void putSequence(
 			final Otu otu,
 			final DnaSequence sequence) {
-		checkNotNull(otu);
-		checkNotNull(sequence);
-		final DnaSequence oldSequence = sequences.put(otu, sequence);
-		sequence.setParent(this);
-
-		if (sequence != oldSequence && oldSequence != null) {
-			oldSequence.setParent(null);
-		}
-		return oldSequence;
+		UPennCisPPodUtil.put(sequences, otu, sequence, this);
 	}
 
 	@Override

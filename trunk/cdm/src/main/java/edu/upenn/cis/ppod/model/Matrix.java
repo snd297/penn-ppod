@@ -126,16 +126,13 @@ abstract class Matrix<R extends IChild<?>>
 	 * @param otu index of the row we are adding
 	 * @param row the row we're adding
 	 * 
-	 * @return the row that was previously there, or {@code null} if there was
-	 *         no row previously there
-	 * 
 	 * @throws IllegalArgumentException if {@code otu} does not belong to this
 	 *             matrix's {@code OTUSet}
 	 * @throws IllegalArgumentException if this matrix already contains a row
 	 *             {@code .equals} to {@code row}
 	 */
 	@Nullable
-	public abstract R putRow(final Otu otu, final R row);
+	public abstract void putRow(final Otu otu, final R row);
 
 	/**
 	 * Setter.

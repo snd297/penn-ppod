@@ -125,16 +125,8 @@ public class StandardMatrix extends Matrix<StandardRow> {
 	}
 
 	@Override
-	public StandardRow putRow(final Otu otu, final StandardRow row) {
-		checkNotNull(otu);
-		checkNotNull(row);
-		final StandardRow oldRow = rows.put(otu, row);
-		row.setParent(this);
-
-		if (row != oldRow && oldRow != null) {
-			oldRow.setParent(null);
-		}
-		return oldRow;
+	public void putRow(final Otu otu, final StandardRow row) {
+		UPennCisPPodUtil.put(rows, otu, row, this);
 	}
 
 	/**
