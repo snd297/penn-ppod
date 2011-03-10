@@ -61,6 +61,6 @@ public final class MergeOtuSets {
 			newTargetOTUs.add(targetOTU);
 			targetOTU.setLabel(sourceOTU.getLabel());
 		}
-		targetOtuSet.setOtus(newTargetOTUs);
+		targetOtuSet.setOtusPlus(newTargetOTUs);
 	}
 }

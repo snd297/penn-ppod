@@ -24,8 +24,6 @@ import static com.google.common.collect.Lists.newArrayList;
 
 import java.util.List;
 
-import javax.persistence.Access;
-import javax.persistence.AccessType;
 import javax.persistence.CascadeType;
 import javax.persistence.Column;
 import javax.persistence.Entity;
@@ -65,22 +63,7 @@ import edu.upenn.cis.ppod.imodel.ILabeled;
 				query = "select s.pPodId, s.label from Study s") })
 @Entity
 @Table(name = Study.TABLE)
-public class Study
-		extends UuPPodEntity
-		implements ILabeled, IOtuSets {
-
-	@Access(AccessType.PROPERTY)
-	@Id
-	@GeneratedValue
-	@Column(name = ID_COLUMN)
-	@CheckForNull
-	private Long id;
-
-	@SuppressWarnings("unused")
-	@Version
-	@Column(name = "OBJ_VERSION")
-	@CheckForNull
-	private Integer objVersion;
+public class Study extends UuPPodEntity2 implements ILabeled, IOtuSets { 
 
 	/** The table name for this entity. */
 	public static final String TABLE = "STUDY";
@@ -89,16 +72,26 @@ public class Study
 	public static final String ID_COLUMN =
 			TABLE + "_ID";
 
-	public static final String LABEL_COLUMN = "LABEL";
+	@CheckForNull
+	private Long id;
 
-	@Column(name = LABEL_COLUMN, nullable = false)
+	@CheckForNull
+	private Integer version;
+
 	@CheckForNull
 	private String label;
 
-	@OneToMany(cascade = CascadeType.ALL, orphanRemoval = true)
-	@OrderColumn(name = "POSITION")
-	@JoinColumn(name = ID_COLUMN, nullable = false)
-	private final List<OtuSet> otuSets = newArrayList();
+	private List<OtuSet> otuSets = newArrayList();
+
+	/**
+	 * {@code updatable = false} makes this property immutable
+	 */
+	// @Column(name = UuPPodEntity.PPOD_ID_COLUMN,
+	// unique = true,
+	// nullable = false,
+	// length = UuPPodEntity.PPOD_ID_COLUMN_LENGTH,
+	// updatable = false)
+	// private String pPodId = UUID.randomUUID().toString();
 
 	/**
 	 * No-arg constructor.
@@ -142,6 +135,9 @@ public class Study
 	}
 
 	@Nullable
+	@Id
+	@GeneratedValue
+	@Column(name = ID_COLUMN)
 	public Long getId() {
 		return id;
 	}
@@ -151,14 +147,28 @@ public class Study
 	 * 
 	 * @return the label
 	 */
+	@Column(nullable = false)
 	@Nullable
 	public String getLabel() {
 		return label;
 	}
 
 	/** {@inheritDoc} */
+	@OneToMany(cascade = CascadeType.ALL, orphanRemoval = true)
+	@OrderColumn(name = "POSITION")
+	@JoinColumn(name = ID_COLUMN, nullable = false)
 	public List<OtuSet> getOtuSets() {
 		return otuSets;
+	}
+
+	/**
+	 * @return the objVersion
+	 */
+	@Version
+	@Column(name = "OBJ_VERSION")
+	@CheckForNull
+	public Integer getVersion() {
+		return version;
 	}
 
 	/**
@@ -191,4 +201,20 @@ public class Study
 	public void setLabel(final String label) {
 		this.label = checkNotNull(label);
 	}
+
+	/**
+	 * @param otuSets the otuSets to set
+	 */
+	public void setOtuSets(final List<OtuSet> otuSets) {
+		this.otuSets = otuSets;
+	}
+
+	/**
+	 * @param objVersion the objVersion to set
+	 */
+	@SuppressWarnings("unused")
+	private void setVersion(final Integer objVersion) {
+		this.version = objVersion;
+	}
+
 }

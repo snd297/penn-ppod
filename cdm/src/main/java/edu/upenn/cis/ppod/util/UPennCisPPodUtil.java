@@ -15,6 +15,8 @@
  */
 package edu.upenn.cis.ppod.util;
 
+import static com.google.common.base.Preconditions.checkNotNull;
+import static com.google.common.base.Preconditions.checkState;
 import static com.google.common.base.Predicates.compose;
 import static com.google.common.base.Predicates.equalTo;
 import static com.google.common.collect.Iterables.contains;
@@ -41,6 +43,29 @@ public class UPennCisPPodUtil {
 	public static <F, T> Predicate<F> composeEqualTo(final T equalToTarget,
 			final Function<F, ? extends T> f) {
 		return compose(equalTo(equalToTarget), f);
+	}
+
+	public static <V extends IChild<P>, P extends IChild<OtuSet>> void put(
+			final Map<Otu, V> otusToValues,
+			final Otu otu,
+			final V value,
+			final P parent) {
+		checkNotNull(otu);
+		checkNotNull(value);
+
+		final OtuSet grandParent = parent.getParent();
+
+		checkState(grandParent != null);
+		checkState(grandParent.getOtus().contains(otu),
+				"grandparent otuset does not contain otu");
+
+		final V oldValue = otusToValues.put(otu, value);
+
+		value.setParent(parent);
+
+		if (value != oldValue && oldValue != null) {
+			oldValue.setParent(null);
+		}
 	}
 
 	public static <C extends IChild<?>> void updateOtus(

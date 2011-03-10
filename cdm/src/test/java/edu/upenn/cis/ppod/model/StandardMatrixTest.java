@@ -62,7 +62,7 @@ public class StandardMatrixTest {
 		otu2.setLabel("otu2");
 
 		otuSet012 = new OtuSet();
-		otuSet012.setOtus(newArrayList(otu0, otu1, otu2));
+		otuSet012.setOtusPlus(newArrayList(otu0, otu1, otu2));
 
 		otuSet012.addStandardMatrix(matrix);
 
@@ -107,7 +107,7 @@ public class StandardMatrixTest {
 		final int originalRowsSize = matrix.getRows().size();
 
 		final ImmutableList<Otu> otus210 = ImmutableList.of(otu2, otu1, otu0);
-		matrix.getParent().setOtus(otus210);
+		matrix.getParent().setOtusPlus(otus210);
 
 		assertEquals(matrix.getParent().getOtus(), otus210);
 		assertEquals(matrix.getRows().size(), originalRowsSize);
@@ -117,7 +117,7 @@ public class StandardMatrixTest {
 	@Test
 	public void setOTUsWithLessOTUs() {
 
-		otuSet012.setOtus(newArrayList(otu1, otu2));
+		otuSet012.setOtusPlus(newArrayList(otu1, otu2));
 
 		final ImmutableList<Otu> otus12 = ImmutableList.of(otu1, otu2);
 
@@ -240,20 +240,13 @@ public class StandardMatrixTest {
 
 	/**
 	 * Test replacing one row with another.
-	 * <ul>
-	 * <li>{@link CharacterStateMatrix#setRow(OTU, CharacterStateRow)} should
-	 * return the row that had been there</li>
-	 * <li>the replaced row should have its matrix (accessed by
-	 * {@link CharacterStateRow#getMatrix()}) set to {@code null}</li>
-	 * </ul>
 	 */
 	@Test
 	public void replaceRow() {
 		final StandardRow row1 = new StandardRow();
 		matrix.putRow(otu1, row1);
 		final StandardRow row2 = new StandardRow();
-		final StandardRow someRow = matrix.putRow(otu1, row2);
-		assertEquals(someRow, row1);
+		matrix.putRow(otu1, row2);
 		assertNull(row1.getParent());
 	}
 

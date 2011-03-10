@@ -17,10 +17,9 @@ package edu.upenn.cis.ppod.model;
 
 import static com.google.common.base.Preconditions.checkNotNull;
 import static com.google.common.collect.Maps.newHashMap;
-import static com.google.common.collect.Sets.newHashSet;
 
+import java.util.Collection;
 import java.util.Map;
-import java.util.Set;
 
 import javax.persistence.Access;
 import javax.persistence.AccessType;
@@ -184,12 +183,12 @@ public class StandardCharacter extends UuPPodEntity {
 	}
 
 	/**
-	 * Get the states of this character.
+	 * Get the states of this character. There will be no duplicate values.
 	 * 
 	 * @return the states of this character.
 	 */
-	public Set<StandardState> getStates() {
-		return newHashSet(states.values());
+	public Collection<StandardState> getStates() {
+		return states.values();
 	}
 
 	@SuppressWarnings("unused")

@@ -1,6 +1,5 @@
 package edu.upenn.cis.ppod.model;
 
-import static com.google.common.base.Preconditions.checkNotNull;
 import static com.google.common.collect.Maps.newHashMap;
 
 import java.util.Map;
@@ -69,16 +68,8 @@ public class ProteinMatrix
 	}
 
 	@Override
-	public ProteinRow putRow(final Otu otu, final ProteinRow row) {
-		checkNotNull(otu);
-		checkNotNull(row);
-		final ProteinRow oldRow = rows.put(otu, row);
-		row.setParent(this);
-
-		if (row != oldRow && oldRow != null) {
-			oldRow.setParent(null);
-		}
-		return oldRow;
+	public void putRow(final Otu otu, final ProteinRow row) {
+		UPennCisPPodUtil.put(rows, otu, row, this);
 	}
 
 	@SuppressWarnings("unused")

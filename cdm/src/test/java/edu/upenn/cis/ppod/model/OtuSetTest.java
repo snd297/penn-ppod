@@ -49,7 +49,7 @@ public class OtuSetTest {
 	private Study study;
 
 	@Test
-	public void addDNAMatrix() {
+	public void addDnaMatrix() {
 		final DnaMatrix dnaMatrix = new DnaMatrix();
 
 		otuSet.addDnaMatrix(dnaMatrix);
@@ -58,7 +58,7 @@ public class OtuSetTest {
 	}
 
 	@Test
-	public void addDNAMatrixPos() {
+	public void addDnaMatrixPos() {
 		final OtuSet otuSet = new OtuSet();
 		final DnaMatrix matrix0 = new DnaMatrix();
 		final DnaMatrix matrix1 = new DnaMatrix();
@@ -177,15 +177,46 @@ public class OtuSetTest {
 	 */
 	@Test
 	public void addOtuWAlreadyContainedOTU() {
-		otuSet.setOtus(ImmutableList.of(new Otu("OTU-0")));
+		otuSet.setOtusPlus(ImmutableList.of(new Otu("OTU-0")));
 
-		otuSet.setOtus(otuSet.getOtus());
+		otuSet.setOtusPlus(otuSet.getOtus());
 	}
 
 	@Test(expectedExceptions = IllegalArgumentException.class)
 	public void addOtuWDuplicateLabel() {
 		otus.add(new Otu(otus.get(0).getLabel()));
-		otuSet.setOtus(newArrayList(otus));
+		otuSet.setOtusPlus(newArrayList(otus));
+	}
+
+	@Test(groups = { TestGroupDefs.FAST })
+	public void addProteinMatrix() {
+		final ProteinMatrix matrix = new ProteinMatrix();
+
+		otuSet.addProteinMatrix(matrix);
+		assertEquals(getOnlyElement(otuSet.getProteinMatrices()), matrix);
+		assertSame(matrix.getParent(), otuSet);
+	}
+
+	@Test(groups = { TestGroupDefs.FAST })
+	public void addProteinMatrixPos() {
+		final OtuSet otuSet = new OtuSet();
+		final ProteinMatrix matrix0 = new ProteinMatrix();
+		final ProteinMatrix matrix1 = new ProteinMatrix();
+		final ProteinMatrix matrix2 = new ProteinMatrix();
+		final ProteinMatrix matrix3 = new ProteinMatrix();
+
+		otuSet.addProteinMatrix(matrix0);
+		otuSet.addProteinMatrix(matrix1);
+		otuSet.addProteinMatrix(matrix2);
+
+		otuSet.addProteinMatrix(2, matrix3);
+		assertEquals(otuSet.getProteinMatrices().size(), 4);
+		assertTrue(otuSet.getProteinMatrices().contains(matrix3));
+
+		assertEquals(otuSet.getProteinMatrices(),
+				ImmutableSet.of(matrix0, matrix1, matrix3, matrix2));
+
+		assertSame(matrix3.getParent(), otuSet);
 	}
 
 	@Test
@@ -195,14 +226,6 @@ public class OtuSetTest {
 		otuSet.addStandardMatrix(matrix);
 		assertEquals(getOnlyElement(otuSet.getStandardMatrices()), matrix);
 		assertSame(matrix.getParent(), otuSet);
-	}
-
-	@Test(expectedExceptions = IllegalArgumentException.class)
-	public void addStandardMatrixWDup() {
-		final OtuSet otuSet = new OtuSet();
-		final StandardMatrix matrix0 = new StandardMatrix();
-		otuSet.addStandardMatrix(matrix0);
-		otuSet.addStandardMatrix(matrix0);
 	}
 
 	@Test
@@ -230,6 +253,14 @@ public class OtuSetTest {
 		final StandardMatrix matrix0 = new StandardMatrix();
 		otuSet.addStandardMatrix(0, matrix0);
 		otuSet.addStandardMatrix(0, matrix0);
+	}
+
+	@Test(expectedExceptions = IllegalArgumentException.class)
+	public void addStandardMatrixWDup() {
+		final OtuSet otuSet = new OtuSet();
+		final StandardMatrix matrix0 = new StandardMatrix();
+		otuSet.addStandardMatrix(matrix0);
+		otuSet.addStandardMatrix(matrix0);
 	}
 
 	@Test
@@ -276,7 +307,7 @@ public class OtuSetTest {
 		otus.add(otu2);
 		otu2.setLabel("otu2");
 
-		otuSet.setOtus(newArrayList(otus));
+		otuSet.setOtusPlus(newArrayList(otus));
 
 		// Do this so we can check that version resets are being done.
 		study = new Study();
@@ -334,7 +365,7 @@ public class OtuSetTest {
 		final ImmutableList<Otu> otus2 =
 				ImmutableList.of(otus.get(0), otus.get(2));
 
-		otuSet.setOtus(otus2);
+		otuSet.setOtusPlus(otus2);
 
 		assertFalse(otuSet.getOtus().contains(otus.get(1)));
 		assertNull(otus.get(1).getParent());

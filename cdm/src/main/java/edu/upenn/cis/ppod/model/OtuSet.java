@@ -26,8 +26,6 @@ import static com.google.common.collect.Sets.newHashSet;
 import java.util.List;
 import java.util.Set;
 
-import javax.persistence.Access;
-import javax.persistence.AccessType;
 import javax.persistence.CascadeType;
 import javax.persistence.Column;
 import javax.persistence.Entity;
@@ -39,6 +37,7 @@ import javax.persistence.ManyToOne;
 import javax.persistence.OneToMany;
 import javax.persistence.OrderColumn;
 import javax.persistence.Table;
+import javax.persistence.Transient;
 import javax.persistence.Version;
 
 import com.google.common.annotations.VisibleForTesting;
@@ -59,7 +58,7 @@ import edu.upenn.cis.ppod.imodel.ILabeled;
  */
 @Entity
 @Table(name = OtuSet.TABLE)
-public class OtuSet extends UuPPodEntity implements ILabeled {
+public class OtuSet extends UuPPodEntity2 implements ILabeled {
 
 	/** The column that stores the description. */
 	public static final String DESCRIPTION_COLUMN = "DESCRIPTION";
@@ -76,80 +75,40 @@ public class OtuSet extends UuPPodEntity implements ILabeled {
 	/** The column that stores the label. */
 	public static final String LABEL_COLUMN = "LABEL";
 
-	@Access(AccessType.PROPERTY)
-	@Id
-	@GeneratedValue
-	@Column(name = ID_COLUMN)
 	@CheckForNull
 	private Long id;
 
-	@SuppressWarnings("unused")
-	@Version
-	@Column(name = "OBJ_VERSION")
 	@CheckForNull
-	private Integer objVersion;
+	private Integer version;
 
-	@OneToMany(cascade = CascadeType.ALL, orphanRemoval = true)
-	@OrderColumn(name = "POSITION")
-	@JoinColumn(name = ID_COLUMN, nullable = false)
-	private final List<StandardMatrix> standardMatrices = newArrayList();
+	private List<StandardMatrix> standardMatrices = newArrayList();
 
 	/** Nullable free-form description. */
-	@Column(name = DESCRIPTION_COLUMN, nullable = true)
 	@CheckForNull
 	private String description;
 
-	@OneToMany(
-			cascade = CascadeType.ALL,
-			orphanRemoval = true)
-	@OrderColumn(name = "POSITION")
-	@JoinColumn(name = ID_COLUMN, nullable = false)
-	private final List<DnaMatrix> dnaMatrices = newArrayList();
+	private List<DnaMatrix> dnaMatrices = newArrayList();
 
-	@OneToMany(
-			cascade = CascadeType.ALL,
-			orphanRemoval = true)
-	@OrderColumn(name = "POSITION")
-	@JoinColumn(name = ID_COLUMN, nullable = false)
-	private final List<ProteinMatrix> proteinMatrices = newArrayList();
+	private List<ProteinMatrix> proteinMatrices = newArrayList();
 
-	@OneToMany(
-			cascade = CascadeType.ALL,
-			orphanRemoval = true)
-	@OrderColumn(name = "POSITION")
-	@JoinColumn(name = ID_COLUMN, nullable = false)
-	private final List<DnaSequenceSet> dnaSequenceSets = newArrayList();
+	private List<DnaSequenceSet> dnaSequenceSets = newArrayList();
 
 	/**
 	 * Non-unique label.
 	 * <p>
 	 * OTU set labels are unique within a particular {@code IStudy}
 	 */
-	@Column(name = "LABEL", nullable = false)
 	@CheckForNull
 	private String label;
 
 	/** The OTUs in this OTU set. */
-	@OneToMany(
-			orphanRemoval = true,
-			cascade = CascadeType.ALL)
-	@OrderColumn(name = "POSITION")
-	@JoinColumn(name = ID_COLUMN, nullable = false)
-	private final List<Otu> otus = newArrayList();
+	private List<Otu> otus = newArrayList();
 
-	@ManyToOne(fetch = FetchType.LAZY, optional = false)
-	@JoinColumn(name = Study.ID_COLUMN, insertable = false,
-				updatable = false)
 	@CheckForNull
 	private Study parent;
 
 	/** The tree sets that reference this OTU set. */
-	@OneToMany(
-			cascade = CascadeType.ALL,
-			orphanRemoval = true)
-	@OrderColumn(name = "POSITION")
-	@JoinColumn(name = ID_COLUMN, nullable = false)
-	private final List<TreeSet> treeSets = newArrayList();
+	private List<TreeSet> treeSets = newArrayList();
 
 	/**
 	 * Default constructor.
@@ -244,11 +203,11 @@ public class OtuSet extends UuPPodEntity implements ILabeled {
 	 */
 	public void addOtu(final Otu otu) {
 		checkNotNull(otu);
-		addOtuWithoutSetOtusOnChildren(otu);
+		addOtuWithoutUpdateOtusOnChildren(otu);
 		updateOtusOnChildren();
 	}
 
-	private void addOtuWithoutSetOtusOnChildren(final Otu otu) {
+	private void addOtuWithoutUpdateOtusOnChildren(final Otu otu) {
 		final Otu dupNameOtu =
 				find(getOtus(),
 						compose(
@@ -263,9 +222,8 @@ public class OtuSet extends UuPPodEntity implements ILabeled {
 									+ "' already has an Otu labeled '"
 									+ otu.getLabel() + "'");
 		}
-		if (otus.add(otu)) {
-			otu.setParent(this);
-		}
+		otus.add(otu);
+		otu.setParent(this);
 	}
 
 	public void addProteinMatrix(
@@ -361,6 +319,7 @@ public class OtuSet extends UuPPodEntity implements ILabeled {
 		treeSet.setParent(this);
 	}
 
+	@Transient
 	@VisibleForTesting
 	Set<IChild<OtuSet>> getChildren() {
 		final Set<IChild<OtuSet>> children = newHashSet();
@@ -369,6 +328,7 @@ public class OtuSet extends UuPPodEntity implements ILabeled {
 		return children;
 	}
 
+	@Transient
 	@VisibleForTesting
 	Set<IDependsOnParentOtus> getDependentChildren() {
 		final Set<IDependsOnParentOtus> children = newHashSet();
@@ -384,21 +344,34 @@ public class OtuSet extends UuPPodEntity implements ILabeled {
 	 * 
 	 * @return the description
 	 */
+	@Column(name = DESCRIPTION_COLUMN, nullable = true)
 	@Nullable
 	public String getDescription() {
 		return description;
 	}
 
-	/** {@inheritDoc} */
+	@OneToMany(
+			cascade = CascadeType.ALL,
+			orphanRemoval = true)
+	@OrderColumn(name = "POSITION")
+	@JoinColumn(name = ID_COLUMN, nullable = false)
 	public List<DnaMatrix> getDnaMatrices() {
 		return dnaMatrices;
 	}
 
-	/** {@inheritDoc} */
+	@OneToMany(
+			cascade = CascadeType.ALL,
+			orphanRemoval = true)
+	@OrderColumn(name = "POSITION")
+	@JoinColumn(name = ID_COLUMN, nullable = false)
 	public List<DnaSequenceSet> getDnaSequenceSets() {
 		return dnaSequenceSets;
 	}
 
+	@Id
+	@GeneratedValue
+	@Column(name = ID_COLUMN)
+	@CheckForNull
 	@Nullable
 	public Long getId() {
 		return id;
@@ -410,6 +383,7 @@ public class OtuSet extends UuPPodEntity implements ILabeled {
 	 * 
 	 * @return the label
 	 */
+	@Column(name = "LABEL", nullable = false)
 	@Nullable
 	public String getLabel() {
 		return label;
@@ -420,6 +394,11 @@ public class OtuSet extends UuPPodEntity implements ILabeled {
 	 * 
 	 * @return the {@code OTU}s that make up this {@code OTUSet}
 	 */
+	@OneToMany(
+			orphanRemoval = true,
+			cascade = CascadeType.ALL)
+	@OrderColumn(name = "POSITION")
+	@JoinColumn(name = ID_COLUMN, nullable = false)
 	public List<Otu> getOtus() {
 		return otus;
 	}
@@ -429,11 +408,19 @@ public class OtuSet extends UuPPodEntity implements ILabeled {
 	 * 
 	 * @return the owning study
 	 */
+	@ManyToOne(fetch = FetchType.LAZY, optional = false)
+	@JoinColumn(name = Study.ID_COLUMN, insertable = false,
+				updatable = false)
 	@Nullable
 	public Study getParent() {
 		return parent;
 	}
 
+	@OneToMany(
+			cascade = CascadeType.ALL,
+			orphanRemoval = true)
+	@OrderColumn(name = "POSITION")
+	@JoinColumn(name = ID_COLUMN, nullable = false)
 	public List<ProteinMatrix> getProteinMatrices() {
 		return proteinMatrices;
 	}
@@ -443,6 +430,9 @@ public class OtuSet extends UuPPodEntity implements ILabeled {
 	 * 
 	 * @return the standard matrices contained in this OTU set
 	 */
+	@OneToMany(cascade = CascadeType.ALL, orphanRemoval = true)
+	@OrderColumn(name = "POSITION")
+	@JoinColumn(name = ID_COLUMN, nullable = false)
 	public List<StandardMatrix> getStandardMatrices() {
 		return standardMatrices;
 	}
@@ -452,8 +442,20 @@ public class OtuSet extends UuPPodEntity implements ILabeled {
 	 * 
 	 * @return the tree sets contained in this OTU set
 	 */
+	@OneToMany(
+			cascade = CascadeType.ALL,
+			orphanRemoval = true)
+	@OrderColumn(name = "POSITION")
+	@JoinColumn(name = ID_COLUMN, nullable = false)
 	public List<TreeSet> getTreeSets() {
 		return treeSets;
+	}
+
+	@Version
+	@Column(name = "OBJ_VERSION")
+	@Nullable
+	public Integer getVersion() {
+		return version;
 	}
 
 	/**
@@ -552,6 +554,14 @@ public class OtuSet extends UuPPodEntity implements ILabeled {
 		this.description = description;
 	}
 
+	public void setDnaMatrices(final List<DnaMatrix> matrices) {
+		this.dnaMatrices = matrices;
+	}
+
+	public void setDnaSequenceSets(final List<DnaSequenceSet> sequenceSets) {
+		this.dnaSequenceSets = sequenceSets;
+	}
+
 	@SuppressWarnings("unused")
 	private void setId(final Long id) {
 		this.id = id;
@@ -563,39 +573,38 @@ public class OtuSet extends UuPPodEntity implements ILabeled {
 	 * @param label the label
 	 */
 	public void setLabel(final String label) {
-		this.label = checkNotNull(label);
+		this.label = label;
+	}
+
+	public void setOtus(final List<Otu> otus) {
+		this.otus = otus;
 	}
 
 	/**
-	 * Set this OTU set's OTUs.
+	 * Set this OTU set's OTUs, calls updateOtus on dependent children.
 	 * <p>
 	 * If this method is effectively removing any of this sets's original OTUs,
 	 * then the {@code OTU->OTUSet} relationship is severed.
 	 * 
 	 * @param otus the otus to assign to this OTU set
 	 */
-	public void setOtus(final List<? extends Otu> otus) {
+	public void setOtusPlus(final List<Otu> otus) {
 		checkNotNull(otus);
-		if (otus.equals(getOtus())) {
 
-		} else {
+		final List<Otu> removedOtus = newArrayList(this.otus);
+		removedOtus.removeAll(otus);
 
-			final List<Otu> removedOtus = newArrayList(this.otus);
-			removedOtus.removeAll(otus);
-
-			for (final Otu removedOtu : removedOtus) {
-				removedOtu.setParent(null);
-			}
-
-			this.otus.clear();
-			for (final Otu otu : otus) {
-				addOtuWithoutSetOtusOnChildren(otu);
-			}
-
-			setParentOnChildren();
+		for (final Otu removedOtu : removedOtus) {
+			removedOtu.setParent(null);
 		}
 
-		return;
+		this.otus.clear();
+
+		for (final Otu otu : otus) {
+			addOtuWithoutUpdateOtusOnChildren(otu);
+		}
+
+		updateOtusOnChildren();
 	}
 
 	/** {@inheritDoc} */
@@ -603,10 +612,21 @@ public class OtuSet extends UuPPodEntity implements ILabeled {
 		this.parent = parent;
 	}
 
-	private void setParentOnChildren() {
-		for (final IChild<OtuSet> child : getChildren()) {
-			child.setParent(this);
-		}
+	public void setProteinMatrices(final List<ProteinMatrix> matrices) {
+		this.proteinMatrices = matrices;
+	}
+
+	public void setStandardMatrices(final List<StandardMatrix> matrices) {
+		this.standardMatrices = matrices;
+	}
+
+	public void setTreeSets(final List<TreeSet> treeSets) {
+		this.treeSets = treeSets;
+	}
+
+	@SuppressWarnings("unused")
+	private void setVersion(final Integer version) {
+		this.version = version;
 	}
 
 	private void updateOtusOnChildren() {
