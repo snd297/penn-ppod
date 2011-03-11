@@ -56,18 +56,18 @@ public class TreeSetTest {
 						new Tree(),
 						new Tree());
 
-		treeSet.setTrees(trees);
+		treeSet.clearAndAddTrees(trees);
 
 		assertEquals(treeSet.getTrees(), trees);
 
-		treeSet.setTrees(trees);
+		treeSet.clearAndAddTrees(trees);
 
 		assertEquals(treeSet.getTrees(), trees);
 
 		final List<Tree> trees2 =
 				ImmutableList.of(trees.get(1));
 
-		treeSet.setTrees(trees2);
+		treeSet.clearAndAddTrees(trees2);
 
 		assertEquals(treeSet.getTrees(), trees2);
 
@@ -81,6 +81,6 @@ public class TreeSetTest {
 		final Tree tree0 = new Tree();
 		final Tree tree1 = new Tree();
 
-		treeSet.setTrees(ImmutableList.of(tree0, tree1, tree1));
+		treeSet.clearAndAddTrees(ImmutableList.of(tree0, tree1, tree1));
 	}
 }

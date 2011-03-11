@@ -108,7 +108,7 @@ public final class CreateOrUpdateStandardMatrix extends CreateOrUpdateMatrix {
 			}
 		}
 
-		dbMatrix.setCharacters(newDbMatrixCharacters);
+		dbMatrix.clearAndAddCharacters(newDbMatrixCharacters);
 
 		super.createOrUpdateMatrixHelper(dbMatrix, sourceMatrix,
 				sourceToDbCharPositions);

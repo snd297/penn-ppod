@@ -20,8 +20,6 @@ import static com.google.common.collect.Maps.newHashMap;
 import java.util.Map;
 
 import javax.annotation.Nullable;
-import javax.persistence.Access;
-import javax.persistence.AccessType;
 import javax.persistence.CascadeType;
 import javax.persistence.Column;
 import javax.persistence.Entity;
@@ -63,7 +61,6 @@ public class DnaMatrix extends Matrix<DnaRow> {
 	 */
 	public DnaMatrix() {}
 
-	@Access(AccessType.PROPERTY)
 	@Id
 	@GeneratedValue
 	@Column(name = ID_COLUMN)
@@ -86,6 +83,7 @@ public class DnaMatrix extends Matrix<DnaRow> {
 	 */
 	@Version
 	@Column(name = "OBJ_VERSION")
+	@Nullable
 	public Integer getVersion() {
 		return version;
 	}

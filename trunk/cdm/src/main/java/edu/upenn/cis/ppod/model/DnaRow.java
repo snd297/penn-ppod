@@ -15,10 +15,6 @@
  */
 package edu.upenn.cis.ppod.model;
 
-import static com.google.common.base.Preconditions.checkNotNull;
-
-import javax.persistence.Access;
-import javax.persistence.AccessType;
 import javax.persistence.Column;
 import javax.persistence.Entity;
 import javax.persistence.FetchType;
@@ -47,41 +43,37 @@ public class DnaRow implements IChild<DnaMatrix> {
 
 	public static final String ID_COLUMN = TABLE + "_ID";
 
-	@Access(AccessType.PROPERTY)
-	@Id
-	@GeneratedValue
-	@Column(name = ID_COLUMN)
 	@CheckForNull
 	private Long id;
 
-	@SuppressWarnings("unused")
-	@Version
-	@Column(name = "OBJ_VERSION")
 	@CheckForNull
-	private Integer objVersion;
+	private Integer version;
 
-	@ManyToOne(fetch = FetchType.LAZY, optional = false)
-	@JoinColumn(name = DnaMatrix.ID_COLUMN)
 	@CheckForNull
 	private DnaMatrix parent;
 
-	@Lob
-	@Column(nullable = false)
 	@CheckForNull
 	private String sequence;
 
 	public DnaRow() {}
 
+	@Id
+	@GeneratedValue
+	@Column(name = ID_COLUMN)
 	@Nullable
 	public Long getId() {
 		return id;
 	}
 
 	/** {@inheritDoc} */
+	@ManyToOne(fetch = FetchType.LAZY, optional = false)
+	@JoinColumn(name = DnaMatrix.ID_COLUMN)
 	public DnaMatrix getParent() {
 		return parent;
 	}
 
+	@Lob
+	@Column(nullable = false)
 	@Nullable
 	public String getSequence() {
 		return sequence;
@@ -98,6 +90,23 @@ public class DnaRow implements IChild<DnaMatrix> {
 	}
 
 	public void setSequence(final String sequence) {
-		this.sequence = checkNotNull(sequence);
+		this.sequence = sequence;
+	}
+
+	/**
+	 * @return the version
+	 */
+	@Version
+	@Column(name = "OBJ_VERSION")
+	@Nullable
+	public Integer getVersion() {
+		return version;
+	}
+
+	/**
+	 * @param version the version to set
+	 */
+	public void setVersion(Integer version) {
+		this.version = version;
 	}
 }

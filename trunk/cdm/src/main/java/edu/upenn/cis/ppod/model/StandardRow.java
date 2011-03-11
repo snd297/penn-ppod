@@ -21,8 +21,6 @@ import static com.google.common.collect.Lists.newArrayList;
 import java.util.List;
 
 import javax.annotation.Nullable;
-import javax.persistence.Access;
-import javax.persistence.AccessType;
 import javax.persistence.CascadeType;
 import javax.persistence.Column;
 import javax.persistence.Entity;
@@ -48,55 +46,26 @@ import edu.umd.cs.findbugs.annotations.CheckForNull;
 public class StandardRow
 		extends Row<StandardCell, StandardMatrix> {
 
-	@Access(AccessType.PROPERTY)
-	@Id
-	@GeneratedValue
-	@Column(name = ID_COLUMN)
 	@CheckForNull
 	private Long id;
 
-	@SuppressWarnings("unused")
-	@Version
-	@Column(name = "OBJ_VERSION")
 	@CheckForNull
-	private Integer objVersion;
+	private Integer version;
 
 	/** This entitiy's table name. */
 	public static final String TABLE = "STANDARD_ROW";
 
 	public static final String ID_COLUMN = TABLE + "_ID";
 
-	@OneToMany(
-			mappedBy = "parent",
-			cascade = CascadeType.ALL,
-			orphanRemoval = true)
-	@OrderColumn(name = "POSITION")
-	private final List<StandardCell> cells = newArrayList();
+	private List<StandardCell> cells = newArrayList();
 
-	@ManyToOne(fetch = FetchType.LAZY, optional = false)
-	@JoinColumn(name = StandardMatrix.ID_COLUMN)
 	@CheckForNull
 	private StandardMatrix parent;
 
 	public StandardRow() {}
 
 	@Override
-	public List<StandardCell> getCells() {
-		return cells;
-	}
-
-	@Nullable
-	public Long getId() {
-		return id;
-	}
-
-	/** {@inheritDoc} */
-	public StandardMatrix getParent() {
-		return parent;
-	}
-
-	@Override
-	public void setCells(
+	public void clearAndAddCells(
 			final List<? extends StandardCell> cells) {
 		checkState(parent != null);
 		checkState(parent.getCharacters().size() == cells.size(),
@@ -112,6 +81,46 @@ public class StandardRow
 		}
 	}
 
+	@OneToMany(
+			mappedBy = "parent",
+			cascade = CascadeType.ALL,
+			orphanRemoval = true)
+	@OrderColumn(name = "POSITION")
+	@Override
+	public List<StandardCell> getCells() {
+		return cells;
+	}
+
+	@Id
+	@GeneratedValue
+	@Column(name = ID_COLUMN)
+	@Nullable
+	public Long getId() {
+		return id;
+	}
+
+	/** {@inheritDoc} */
+	@ManyToOne(fetch = FetchType.LAZY, optional = false)
+	@JoinColumn(name = StandardMatrix.ID_COLUMN)
+	public StandardMatrix getParent() {
+		return parent;
+	}
+
+	/**
+	 * @return the version
+	 */
+	@Version
+	@Column(name = "OBJ_VERSION")
+	@Nullable
+	public Integer getVersion() {
+		return version;
+	}
+
+	@SuppressWarnings("unused")
+	private void setCells(final List<StandardCell> cells) {
+		this.cells = cells;
+	}
+
 	@SuppressWarnings("unused")
 	private void setId(final Long id) {
 		this.id = id;
@@ -120,5 +129,13 @@ public class StandardRow
 	/** {@inheritDoc} */
 	public void setParent(final StandardMatrix parent) {
 		this.parent = parent;
+	}
+
+	/**
+	 * @param version the version to set
+	 */
+	@SuppressWarnings("unused")
+	private void setVersion(final Integer version) {
+		this.version = version;
 	}
 }

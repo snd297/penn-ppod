@@ -1,9 +1,5 @@
 package edu.upenn.cis.ppod.model;
 
-import static com.google.common.base.Preconditions.checkNotNull;
-
-import javax.persistence.Access;
-import javax.persistence.AccessType;
 import javax.persistence.Column;
 import javax.persistence.Entity;
 import javax.persistence.FetchType;
@@ -23,45 +19,42 @@ import edu.upenn.cis.ppod.imodel.IChild;
 @Table(name = ProteinRow.TABLE)
 public class ProteinRow implements IChild<ProteinMatrix> {
 
-	@Access(AccessType.PROPERTY)
-	@Id
-	@GeneratedValue
-	@Column(name = ID_COLUMN)
 	@CheckForNull
 	private Long id;
 
-	@SuppressWarnings("unused")
-	@Version
-	@Column(name = "OBJ_VERSION")
 	@CheckForNull
-	private Integer objVersion;
+	private Integer version;
 
 	public static final String TABLE = "PROTEIN_ROW";
 
 	public static final String ID_COLUMN =
 			TABLE + "_ID";
 
-	@ManyToOne(fetch = FetchType.LAZY, optional = false)
-	@JoinColumn(name = ProteinMatrix.ID_COLUMN)
 	@CheckForNull
 	private ProteinMatrix parent;
-	@Lob
-	@Column(nullable = false)
+
 	@CheckForNull
 	private String sequence;
 
 	public ProteinRow() {}
 
+	@Id
+	@GeneratedValue
+	@Column(name = ID_COLUMN)
 	@Nullable
 	public Long getId() {
 		return id;
 	}
 
 	/** {@inheritDoc} */
+	@ManyToOne(fetch = FetchType.LAZY, optional = false)
+	@JoinColumn(name = ProteinMatrix.ID_COLUMN)
 	public ProteinMatrix getParent() {
 		return parent;
 	}
 
+	@Lob
+	@Column(nullable = false)
 	@Nullable
 	public String getSequence() {
 		return this.sequence;
@@ -78,6 +71,24 @@ public class ProteinRow implements IChild<ProteinMatrix> {
 	}
 
 	public void setSequence(final String sequence) {
-		this.sequence = checkNotNull(sequence);
+		this.sequence = sequence;
+	}
+
+	/**
+	 * @return the version
+	 */
+	@Version
+	@Column(name = "OBJ_VERSION")
+	@Nullable
+	public Integer getVersion() {
+		return version;
+	}
+
+	/**
+	 * @param version the version to set
+	 */
+	@SuppressWarnings("unused")
+	private void setVersion(Integer version) {
+		this.version = version;
 	}
 }

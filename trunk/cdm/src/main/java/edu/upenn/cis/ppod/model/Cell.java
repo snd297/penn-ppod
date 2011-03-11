@@ -27,6 +27,7 @@ import javax.persistence.Column;
 import javax.persistence.EnumType;
 import javax.persistence.Enumerated;
 import javax.persistence.MappedSuperclass;
+import javax.persistence.Transient;
 
 import edu.umd.cs.findbugs.annotations.CheckForNull;
 import edu.umd.cs.findbugs.annotations.Nullable;
@@ -47,12 +48,9 @@ abstract class Cell<E, R extends Row<?, ?>>
 
 	public static final String TYPE_COLUMN = "TYPE";
 
-	@Column(name = "POSITION", nullable = false)
 	@CheckForNull
 	private Integer position;
 
-	@Column(name = TYPE_COLUMN, nullable = false)
-	@Enumerated(EnumType.ORDINAL)
 	@CheckForNull
 	private PPodCellType type;
 
@@ -65,6 +63,7 @@ abstract class Cell<E, R extends Row<?, ?>>
 	 * 
 	 * @return the elements contained in this cell
 	 */
+	@Transient
 	@Nullable
 	abstract E getElement();
 
@@ -74,6 +73,7 @@ abstract class Cell<E, R extends Row<?, ?>>
 	 * @throws IllegalStateException if the type has not been set for this cell,
 	 *             i.e. if {@link #getType() == null}
 	 */
+	@Transient
 	public Set<E> getElements() {
 		checkState(type != null,
 				"type has yet to be assigned for this cell");
@@ -119,13 +119,15 @@ abstract class Cell<E, R extends Row<?, ?>>
 		}
 	}
 
-	@Nullable
+	@Transient
 	abstract Set<E> getElementsModifiable();
 
+	@Transient
 	@Nullable
 	public abstract R getParent();
 
 	/** {@inheritDoc} */
+	@Column(name = "POSITION", nullable = false)
 	@Nullable
 	public Integer getPosition() {
 		return position;
@@ -141,14 +143,14 @@ abstract class Cell<E, R extends Row<?, ?>>
 	 * 
 	 * @return the type of this cell
 	 */
+	@Column(name = TYPE_COLUMN, nullable = false)
+	@Enumerated(EnumType.ORDINAL)
 	@Nullable
 	public PPodCellType getType() {
 		return type;
 	}
 
 	abstract void setElement(@CheckForNull final E element);
-
-	abstract void setElements(@CheckForNull final Set<E> elements);
 
 	/**
 	 * Set this cell's type to {@link Type#INAPPLICABLE}, its elements to the
@@ -169,7 +171,7 @@ abstract class Cell<E, R extends Row<?, ?>>
 		}
 		setType(type);
 		setElement(null);
-		setElements(null);
+		getElementsModifiable().clear();
 		return;
 	}
 
@@ -198,7 +200,8 @@ abstract class Cell<E, R extends Row<?, ?>>
 						+ elements.size());
 		setType(type);
 		setElement(null);
-		setElements(elements);
+		getElementsModifiable().clear();
+		getElementsModifiable().addAll(elements);
 	}
 
 	/**
@@ -216,14 +219,8 @@ abstract class Cell<E, R extends Row<?, ?>>
 		this.position = position;
 	}
 
-	/**
-	 * This method has no affect on {@link #isInNeedOfNewVersion()}.
-	 * 
-	 * @param type the new type
-	 */
 	void setType(final PPodCellType type) {
 		this.type = type;
-		return;
 	}
 
 	/**
@@ -252,6 +249,6 @@ abstract class Cell<E, R extends Row<?, ?>>
 	void setSingle(final E element) {
 		setType(PPodCellType.SINGLE);
 		setElement(element);
-		setElements(null);
+		getElementsModifiable().clear();
 	}
 }

@@ -25,8 +25,6 @@ import java.util.List;
 import java.util.Map;
 
 import javax.annotation.Nullable;
-import javax.persistence.Access;
-import javax.persistence.AccessType;
 import javax.persistence.CascadeType;
 import javax.persistence.Column;
 import javax.persistence.Entity;
@@ -152,7 +150,6 @@ public class StandardMatrix extends Matrix<StandardRow> {
 		return characters;
 	}
 
-	@Access(AccessType.PROPERTY)
 	@Id
 	@GeneratedValue
 	@Column(name = ID_COLUMN)
@@ -178,6 +175,7 @@ public class StandardMatrix extends Matrix<StandardRow> {
 
 	@Version
 	@Column(name = "OBJ_VERSION")
+	@Nullable
 	public Integer getVersion() {
 		return version;
 	}

@@ -52,7 +52,7 @@ public class StandardCellTest {
 	@Test
 	public void setInapplcableWasSingle() {
 		matrix.getRows()
-				.get(matrix.getParent().getOtus().get(0)).setCells(
+				.get(matrix.getParent().getOtus().get(0)).clearAndAddCells(
 						Arrays.asList(cell));
 		cell.setSingleWithStateNo(state00.getStateNumber());
 		cell.setInapplicable();
@@ -68,7 +68,7 @@ public class StandardCellTest {
 				matrix.getParent()
 						.getOtus()
 						.get(0))
-				.setCells(
+				.clearAndAddCells(
 						Arrays.asList(cell));
 		states.add(state00);
 		states.add(state01);
@@ -82,7 +82,7 @@ public class StandardCellTest {
 
 	@Test
 	public void setPolymorphicElements() {
-		matrix.getRows().get(matrix.getParent().getOtus().get(0)).setCells(
+		matrix.getRows().get(matrix.getParent().getOtus().get(0)).clearAndAddCells(
 				Arrays.asList(cell));
 		states.add(state00);
 		states.add(state01);
@@ -99,7 +99,7 @@ public class StandardCellTest {
 				matrix.getParent()
 						.getOtus()
 						.get(0))
-				.setCells(
+				.clearAndAddCells(
 						Arrays.asList(cell));
 		states.add(state00);
 		cell.setPolymorphicWithStateNos(
@@ -112,7 +112,7 @@ public class StandardCellTest {
 		matrix
 				.getRows()
 				.get(matrix.getParent().getOtus().get(0))
-				.setCells(Arrays.asList(cell));
+				.clearAndAddCells(Arrays.asList(cell));
 		states.add(state00);
 
 		cell.setSingleWithStateNo(state00.getStateNumber());
@@ -135,7 +135,7 @@ public class StandardCellTest {
 
 	@Test
 	public void setUncertainElements() {
-		matrix.getRows().get(matrix.getParent().getOtus().get(0)).setCells(
+		matrix.getRows().get(matrix.getParent().getOtus().get(0)).clearAndAddCells(
 				Arrays.asList(cell));
 		states.add(state00);
 		states.add(state01);
