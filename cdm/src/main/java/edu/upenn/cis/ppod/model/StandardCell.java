@@ -22,8 +22,6 @@ import static com.google.common.collect.Sets.newHashSet;
 
 import java.util.Set;
 
-import javax.persistence.Access;
-import javax.persistence.AccessType;
 import javax.persistence.Column;
 import javax.persistence.Entity;
 import javax.persistence.FetchType;
@@ -34,6 +32,7 @@ import javax.persistence.JoinTable;
 import javax.persistence.ManyToMany;
 import javax.persistence.ManyToOne;
 import javax.persistence.Table;
+import javax.persistence.Transient;
 import javax.persistence.Version;
 
 import edu.umd.cs.findbugs.annotations.CheckForNull;
@@ -60,26 +59,17 @@ public class StandardCell extends Cell<StandardState, StandardRow> {
 	 */
 	public static final String ID_COLUMN = TABLE + "_ID";
 
-	@Access(AccessType.PROPERTY)
-	@Id
-	@GeneratedValue
-	@Column(name = ID_COLUMN)
 	@CheckForNull
 	private Long id;
 
-	@SuppressWarnings("unused")
-	@Version
-	@Column(name = "OBJ_VERSION")
 	@CheckForNull
-	private Integer objVersion;
+	private Integer version;
 
 	/**
 	 * To handle the most-common case of a single state.
 	 * <p>
 	 * Will be {@code null} if type is not {@link Type#SINGLE}.
 	 */
-	@ManyToOne(fetch = FetchType.LAZY)
-	@JoinColumn(name = StandardState.ID_COLUMN)
 	@Nullable
 	private StandardState state;
 
@@ -89,19 +79,12 @@ public class StandardCell extends Cell<StandardState, StandardRow> {
 	 * Will be {@code null} if type is not {@link Type#POLYMORPHIC} or
 	 * {@link Type#UNCERTAIN}.
 	 */
-	@ManyToMany
-	@JoinTable(name = StandardCell.TABLE + "_" + StandardState.TABLE,
-			inverseJoinColumns = @JoinColumn(
-					name = StandardState.ID_COLUMN))
-	@Nullable
-	private Set<StandardState> states;
+	private Set<StandardState> states = newHashSet();
 
 	/**
 	 * The {@code CharacterStateRow} to which this {@code CharacterStateCell}
 	 * belongs.
 	 */
-	@ManyToOne(fetch = FetchType.LAZY, optional = false)
-	@JoinColumn(name = StandardRow.ID_COLUMN)
 	@CheckForNull
 	private StandardRow parent;
 
@@ -127,16 +110,21 @@ public class StandardCell extends Cell<StandardState, StandardRow> {
 
 	}
 
+	@Transient
 	@Override
 	protected StandardState getElement() {
 		return state;
 	}
 
+	@Transient
 	@Override
 	Set<StandardState> getElementsModifiable() {
 		return states;
 	}
 
+	@Id
+	@GeneratedValue
+	@Column(name = ID_COLUMN)
 	@Nullable
 	public Long getId() {
 		return id;
@@ -148,12 +136,38 @@ public class StandardCell extends Cell<StandardState, StandardRow> {
 	 * @return the {@code CharacterStateRow} to which this
 	 *         {@code CharacterStateCell} belongs
 	 */
+	@ManyToOne(fetch = FetchType.LAZY, optional = false)
+	@JoinColumn(name = StandardRow.ID_COLUMN)
 	@Override
 	public StandardRow getParent() {
 		return parent;
 	}
 
-	private Set<StandardState> getStates(final Set<Integer> stateNumbers) {
+	@SuppressWarnings("unused")
+	@ManyToOne(fetch = FetchType.LAZY)
+	@JoinColumn(name = StandardState.ID_COLUMN)
+	@Nullable
+	private StandardState getState() {
+		return state;
+	}
+
+	@SuppressWarnings("unused")
+	@ManyToMany
+	@JoinTable(name = StandardCell.TABLE + "_" + StandardState.TABLE,
+			inverseJoinColumns = @JoinColumn(
+					name = StandardState.ID_COLUMN))
+	private Set<StandardState> getStates() {
+		return states;
+	}
+
+	@SuppressWarnings("unused")
+	private void setStates(final Set<StandardState> states) {
+		this.states = states;
+	}
+
+	@Transient
+	private Set<StandardState> getStatesByStateNumbers(
+			final Set<Integer> stateNumbers) {
 		final Set<StandardState> states = newHashSet();
 		final StandardCharacter character = getParent().getParent()
 				.getCharacters().get(getPosition());
@@ -170,17 +184,21 @@ public class StandardCell extends Cell<StandardState, StandardRow> {
 		return states;
 	}
 
+	/**
+	 * @return the version
+	 */
+	@Version
+	@Column(name = "OBJ_VERSION")
+	@Nullable
+	public Integer getVersion() {
+		return version;
+	}
+
 	/** Protected for JAXB. */
 	@Override
 	protected void setElement(
 				final StandardState element) {
-		this.state = element;
-	}
-
-	@Override
-	void setElements(
-			@Nullable final Set<StandardState> elements) {
-		this.states = elements;
+		setState(element);
 	}
 
 	@SuppressWarnings("unused")
@@ -244,7 +262,7 @@ public class StandardCell extends Cell<StandardState, StandardRow> {
 				stateNumbers.size() > 1,
 				"polymorphic states must be > 1");
 		setPolymorphicOrUncertain(PPodCellType.POLYMORPHIC,
-				getStates(stateNumbers));
+				getStatesByStateNumbers(stateNumbers));
 	}
 
 	/**
@@ -263,7 +281,7 @@ public class StandardCell extends Cell<StandardState, StandardRow> {
 				&& getElement().getStateNumber().equals(stateNumber)) {
 			// We're already good, so let's not do anything.
 			// Since this is the most common case, it's worth doing: gives
-			// us a 50% improvement on larger matrices. 
+			// us a 50% improvement on larger matrices.
 			return;
 		}
 
@@ -292,6 +310,10 @@ public class StandardCell extends Cell<StandardState, StandardRow> {
 		super.setSingle(state);
 	}
 
+	private void setState(final StandardState state) {
+		this.state = state;
+	}
+
 	/**
 	 * Set the cell's type to {@link Type.UNCERTAIN} and its states to contain
 	 * only the states with the given state numbers. The states are pulled from
@@ -307,6 +329,14 @@ public class StandardCell extends Cell<StandardState, StandardRow> {
 				stateNumbers.size() > 1,
 				"polymorphic states must be > 1");
 		setPolymorphicOrUncertain(PPodCellType.UNCERTAIN,
-				getStates(stateNumbers));
+				getStatesByStateNumbers(stateNumbers));
+	}
+
+	/**
+	 * @param version the version to set
+	 */
+	@SuppressWarnings("unused")
+	private void setVersion(final Integer version) {
+		this.version = version;
 	}
 }

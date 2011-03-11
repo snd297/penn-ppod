@@ -61,7 +61,7 @@ public class CellTest {
 		final Cell<StandardState, ?> cell = new StandardCell();
 		cell.setType(PPodCellType.UNASSIGNED);
 		cell.setElement(null);
-		cell.setElements(null);
+		cell.getElementsModifiable().clear();
 		assertEquals(cell.getElements(), Collections.emptyList());
 
 		cell.setType(PPodCellType.INAPPLICABLE);

@@ -82,6 +82,6 @@ public final class MergeTreeSets {
 			targetTree.setNewick(targetNewick);
 			targetTree.setLabel(sourceTree.getLabel());
 		}
-		targetTreeSet.setTrees(newTargetTrees);
+		targetTreeSet.clearAndAddTrees(newTargetTrees);
 	}
 }

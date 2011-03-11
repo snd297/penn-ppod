@@ -24,7 +24,7 @@ public class RowTest {
 
 		final StandardRow row = new StandardRow();
 		matrix.putRow(otu, row);
-		row.setCells(newArrayList(new StandardCell(), new StandardCell(),
+		row.clearAndAddCells(newArrayList(new StandardCell(), new StandardCell(),
 				new StandardCell()));
 		row.clearCells();
 

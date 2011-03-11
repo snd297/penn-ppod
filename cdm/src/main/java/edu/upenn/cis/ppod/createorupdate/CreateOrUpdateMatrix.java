@@ -91,7 +91,7 @@ abstract class CreateOrUpdateMatrix {
 				}
 			}
 
-			dbRow.setCells(dbCells);
+			dbRow.clearAndAddCells(dbCells);
 
 			int dbCellPosition = -1;
 			for (final StandardCell dbCell : dbRow.getCells()) {

@@ -60,7 +60,7 @@ public class StandardRowTest {
 	public void addCellToMatrixWOneCharacter() {
 		final StandardCell cell = new StandardCell();
 		cell.setUnassigned();
-		matrix.getRows().get(matrix.getParent().getOtus().get(0)).setCells(
+		matrix.getRows().get(matrix.getParent().getOtus().get(0)).clearAndAddCells(
 				Arrays.asList(cell));
 		assertSame(matrix.getRows().get(matrix.getParent().getOtus().get(0))
 				.getCells().get(0),
@@ -95,7 +95,7 @@ public class StandardRowTest {
 		final List<StandardCell> cells =
 				ImmutableList.of(new StandardCell(), new StandardCell(),
 						new StandardCell());
-		row.setCells(cells);
+		row.clearAndAddCells(cells);
 		assertEquals(row.getCells(), cells);
 
 		assertSame(cells.get(0).getParent(), row);
@@ -108,7 +108,7 @@ public class StandardRowTest {
 		// a legal state - it shouldn't really matter
 		final StandardCell cell = new StandardCell();
 		cell.setUnassigned();
-		new StandardRow().setCells(Arrays.asList(cell));
+		new StandardRow().clearAndAddCells(Arrays.asList(cell));
 	}
 
 	@Test(expectedExceptions = IllegalStateException.class)
@@ -125,7 +125,7 @@ public class StandardRowTest {
 		cell.setUnassigned();
 		matrix.getRows().get(
 				matrix.getParent().getOtus().get(0))
-				.setCells(Arrays.asList(cell));
+				.clearAndAddCells(Arrays.asList(cell));
 	}
 
 	@Test(expectedExceptions = IllegalStateException.class)
@@ -139,6 +139,6 @@ public class StandardRowTest {
 				newArrayList(cell0, cell1);
 
 		matrix.getRows().get(matrix.getParent().getOtus().get(0))
-				.setCells(cells);
+				.clearAndAddCells(cells);
 	}
 }

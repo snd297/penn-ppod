@@ -78,7 +78,7 @@ abstract class Row<C extends Cell<?, ?>, M extends Matrix<?>>
 	 * @throws IllegalStateException if the owning matrix does not have the same
 	 *             number of columns as {@code cells.size()}
 	 */
-	public abstract void setCells(final List<? extends C> cells);
+	public abstract void clearAndAddCells(final List<? extends C> cells);
 
 	void setCellsHelper(
 			final List<? extends C> cells) {

@@ -23,8 +23,6 @@ import java.util.List;
 
 import javax.annotation.CheckForNull;
 import javax.annotation.Nullable;
-import javax.persistence.Access;
-import javax.persistence.AccessType;
 import javax.persistence.CascadeType;
 import javax.persistence.Column;
 import javax.persistence.Entity;
@@ -49,39 +47,25 @@ import edu.upenn.cis.ppod.imodel.IDependsOnParentOtus;
  */
 @Entity
 @Table(name = TreeSet.TABLE)
-public class TreeSet extends UuPPodEntity implements IDependsOnParentOtus {
+public class TreeSet extends UuPPodEntity2 implements IDependsOnParentOtus {
 
-	@Access(AccessType.PROPERTY)
-	@Id
-	@GeneratedValue
-	@Column(name = ID_COLUMN)
 	@CheckForNull
 	private Long id;
 
-	@SuppressWarnings("unused")
-	@Version
-	@Column(name = "OBJ_VERSION")
 	@CheckForNull
-	private Integer objVersion;
+	private Integer version;
 
 	public static final String TABLE = "TREE_SET";
 
 	public static final String ID_COLUMN = TABLE + "_ID";
 
 	@Nullable
-	@Column(name = "LABEL", nullable = false)
 	private String label;
 
 	@Nullable
-	@ManyToOne(fetch = FetchType.LAZY, optional = false)
-	@JoinColumn(name = OtuSet.ID_COLUMN, insertable = false,
-				updatable = false)
 	private OtuSet parent;
 
-	@OneToMany(cascade = CascadeType.ALL, orphanRemoval = true)
-	@OrderColumn(name = "POSITION")
-	@JoinColumn(name = ID_COLUMN, nullable = false)
-	private final List<Tree> trees = newArrayList();
+	private List<Tree> trees = newArrayList();
 
 	public TreeSet() {}
 
@@ -101,6 +85,43 @@ public class TreeSet extends UuPPodEntity implements IDependsOnParentOtus {
 		tree.setParent(this);
 	}
 
+	/**
+	 * Set the trees in this tree set.
+	 * <p>
+	 * This handles both sides of the {@code ITreeSet<->ITree} relationship.
+	 * 
+	 * @param trees the trees we're setting
+	 * 
+	 * @throws IllegalArgumentException if {@code trees} contains any .equals
+	 *             dups
+	 */
+	public void clearAndAddTrees(final List<? extends Tree> trees) {
+		checkNotNull(trees);
+		int treePos = -1;
+		for (final Tree tree : trees) {
+			treePos++;
+			checkArgument(
+						!Iterators.contains(trees.listIterator(treePos + 1),
+								tree),
+						"argument trees contains duplicates");
+		}
+
+		final List<Tree> removedTrees = newArrayList(this.trees);
+		removedTrees.removeAll(trees);
+
+		for (final Tree removedTree : removedTrees) {
+			removedTree.setParent(null);
+		}
+
+		this.trees.clear();
+		for (final Tree newTree : trees) {
+			addTree(newTree);
+		}
+	}
+
+	@Id
+	@GeneratedValue
+	@Column(name = ID_COLUMN)
 	@Nullable
 	public Long getId() {
 		return id;
@@ -112,12 +133,16 @@ public class TreeSet extends UuPPodEntity implements IDependsOnParentOtus {
 	 * 
 	 * @return the label
 	 */
+	@Column(name = "LABEL", nullable = false)
 	@Nullable
 	public String getLabel() {
 		return label;
 	}
 
 	/** {@inheritDoc} */
+	@ManyToOne(fetch = FetchType.LAZY, optional = false)
+	@JoinColumn(name = OtuSet.ID_COLUMN, insertable = false,
+				updatable = false)
 	@Nullable
 	public OtuSet getParent() {
 		return parent;
@@ -128,8 +153,21 @@ public class TreeSet extends UuPPodEntity implements IDependsOnParentOtus {
 	 * 
 	 * @return the constituent trees.
 	 */
+	@OneToMany(cascade = CascadeType.ALL, orphanRemoval = true)
+	@OrderColumn(name = "POSITION")
+	@JoinColumn(name = ID_COLUMN, nullable = false)
 	public List<Tree> getTrees() {
 		return trees;
+	}
+
+	/**
+	 * @return the version
+	 */
+	@Version
+	@Column(name = "OBJ_VERSION")
+	@Nullable
+	public Integer getVersion() {
+		return version;
 	}
 
 	@SuppressWarnings("unused")
@@ -152,38 +190,17 @@ public class TreeSet extends UuPPodEntity implements IDependsOnParentOtus {
 		updateOtus();
 	}
 
+	@SuppressWarnings("unused")
+	private void setTrees(final List<Tree> trees) {
+		this.trees = trees;
+	}
+
 	/**
-	 * Set the trees in this tree set.
-	 * <p>
-	 * This handles both sides of the {@code ITreeSet<->ITree} relationship.
-	 * 
-	 * @param trees the trees we're setting
-	 * 
-	 * @throws IllegalArgumentException if {@code trees} contains any .equals
-	 *             dups
+	 * @param version the version to set
 	 */
-	public void setTrees(final List<? extends Tree> trees) {
-		checkNotNull(trees);
-		int treePos = -1;
-		for (final Tree tree : trees) {
-			treePos++;
-			checkArgument(
-						!Iterators.contains(trees.listIterator(treePos + 1),
-								tree),
-						"argument trees contains duplicates");
-		}
-
-		final List<Tree> removedTrees = newArrayList(this.trees);
-		removedTrees.removeAll(trees);
-
-		for (final Tree removedTree : removedTrees) {
-			removedTree.setParent(null);
-		}
-
-		this.trees.clear();
-		for (final Tree newTree : trees) {
-			addTree(newTree);
-		}
+	@SuppressWarnings("unused")
+	private void setVersion(final Integer version) {
+		this.version = version;
 	}
 
 	/**

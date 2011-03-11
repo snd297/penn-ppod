@@ -15,12 +15,8 @@
  */
 package edu.upenn.cis.ppod.model;
 
-import static com.google.common.base.Preconditions.checkNotNull;
-
 import javax.annotation.CheckForNull;
 import javax.annotation.Nullable;
-import javax.persistence.Access;
-import javax.persistence.AccessType;
 import javax.persistence.Column;
 import javax.persistence.Entity;
 import javax.persistence.FetchType;
@@ -39,36 +35,24 @@ import javax.persistence.Version;
  */
 @Entity
 @Table(name = Tree.TABLE)
-public class Tree extends UuPPodEntity {
+public class Tree extends UuPPodEntity2 {
 
 	public static final String TABLE = "TREE";
 
 	public static final String ID_COLUMN = TABLE + "_ID";
 
-	@Access(AccessType.PROPERTY)
-	@Id
-	@GeneratedValue
-	@Column(name = ID_COLUMN)
 	@CheckForNull
 	private Long id;
 
-	@SuppressWarnings("unused")
-	@Version
-	@Column(name = "OBJ_VERSION")
 	@CheckForNull
-	private Integer objVersion;
+	private Integer version;
 
-	@Column(name = "LABEL", nullable = false)
 	@CheckForNull
 	private String label;
-	@Lob
-	@Column(name = "NEWICK", nullable = false)
+
 	@CheckForNull
 	private String newick;
 
-	@ManyToOne(fetch = FetchType.LAZY, optional = false)
-	@JoinColumn(name = TreeSet.ID_COLUMN, insertable = false,
-				updatable = false)
 	@CheckForNull
 	private TreeSet parent;
 
@@ -77,6 +61,9 @@ public class Tree extends UuPPodEntity {
 	 */
 	public Tree() {}
 
+	@Id
+	@GeneratedValue
+	@Column(name = ID_COLUMN)
 	@Nullable
 	public Long getId() {
 		return id;
@@ -88,6 +75,7 @@ public class Tree extends UuPPodEntity {
 	 * 
 	 * @return the label
 	 */
+	@Column(name = "LABEL", nullable = false)
 	@Nullable
 	public String getLabel() {
 		return label;
@@ -99,14 +87,29 @@ public class Tree extends UuPPodEntity {
 	 * 
 	 * @return the newick string
 	 */
+	@Lob
+	@Column(name = "NEWICK", nullable = false)
 	@Nullable
 	public String getNewick() {
 		return newick;
 	}
 
+	@ManyToOne(fetch = FetchType.LAZY, optional = false)
+	@JoinColumn(name = TreeSet.ID_COLUMN, insertable = false,
+				updatable = false)
 	@Nullable
 	public TreeSet getParent() {
 		return parent;
+	}
+
+	/**
+	 * @return the version
+	 */
+	@Version
+	@Column(name = "OBJ_VERSION")
+	@Nullable
+	public Integer getVersion() {
+		return version;
 	}
 
 	@SuppressWarnings("unused")
@@ -120,7 +123,7 @@ public class Tree extends UuPPodEntity {
 	 * @param label the label
 	 */
 	public void setLabel(final String label) {
-		this.label = checkNotNull(label);
+		this.label = label;
 	}
 
 	/**
@@ -131,11 +134,19 @@ public class Tree extends UuPPodEntity {
 	 * @return this {@code Tree}
 	 */
 	public void setNewick(final String newick) {
-		this.newick = checkNotNull(newick);
+		this.newick = newick;
 	}
 
 	/** {@inheritDoc} */
 	public void setParent(@CheckForNull final TreeSet parent) {
 		this.parent = parent;
+	}
+
+	/**
+	 * @param version the version to set
+	 */
+	@SuppressWarnings("unused")
+	private void setVersion(final Integer version) {
+		this.version = version;
 	}
 }
