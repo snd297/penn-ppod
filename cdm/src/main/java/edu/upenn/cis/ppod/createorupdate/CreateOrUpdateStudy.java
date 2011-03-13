@@ -25,7 +25,6 @@ import java.util.Set;
 import com.google.inject.Inject;
 
 import edu.upenn.cis.ppod.dao.IDnaMatrixDAO;
-import edu.upenn.cis.ppod.dao.IDnaRowDAO;
 import edu.upenn.cis.ppod.dao.IDnaSequenceSetDAO;
 import edu.upenn.cis.ppod.dao.IOtuSetDAO;
 import edu.upenn.cis.ppod.dao.IProteinMatrixDAO;
@@ -57,8 +56,6 @@ public final class CreateOrUpdateStudy {
 
 	private final IStudyDAO studyDAO;
 	private final MergeOtuSets mergeOtuSets;
-	private final CreateOrUpdateDnaMatrix createOrUpdateDnaMatrix;
-	private final CreateOrUpdateProteinMatrix createOrUpdateProteinMatrix;
 	private final MergeDnaSequenceSets mergeDNASequenceSets;
 	private final CreateOrUpdateStandardMatrix createOrUpdateStandardMatrix;
 	private final MergeTreeSets mergeTreeSets;
@@ -71,10 +68,8 @@ public final class CreateOrUpdateStudy {
 
 	@Inject
 	CreateOrUpdateStudy(
-			final IDnaRowDAO dnaRowDao,
 			final IStudyDAO studyDAO,
 			final MergeOtuSets mergeOTUSets,
-			final CreateOrUpdateDnaMatrix createOrUpdateDNAMatrix,
 			final MergeDnaSequenceSets mergeDNASequenceSets,
 			final CreateOrUpdateStandardMatrix createOrUpdateStandardMatrix,
 			final MergeTreeSets mergeTreeSets,
@@ -83,11 +78,9 @@ public final class CreateOrUpdateStudy {
 			final IDnaMatrixDAO dnaMatrixDAO,
 			final IStandardMatrixDAO standardMatrixDAO,
 			final ITreeSetDAO treeSetDAO,
-			final IProteinMatrixDAO proteinMatrixDAO,
-			final CreateOrUpdateProteinMatrix createOrUpdateProteinMatrix) {
+			final IProteinMatrixDAO proteinMatrixDAO) {
 		this.studyDAO = studyDAO;
 		this.mergeOtuSets = mergeOTUSets;
-		this.createOrUpdateDnaMatrix = createOrUpdateDNAMatrix;
 		this.mergeDNASequenceSets = mergeDNASequenceSets;
 		this.createOrUpdateStandardMatrix = createOrUpdateStandardMatrix;
 		this.mergeTreeSets = mergeTreeSets;
@@ -97,7 +90,6 @@ public final class CreateOrUpdateStudy {
 		this.standardMatrixDAO = standardMatrixDAO;
 		this.treeSetDAO = treeSetDAO;
 		this.proteinMatrixDAO = proteinMatrixDAO;
-		this.createOrUpdateProteinMatrix = createOrUpdateProteinMatrix;
 	}
 
 	public Study createOrUpdateStudy(final PPodStudy incomingStudy) {
@@ -206,7 +198,7 @@ public final class CreateOrUpdateStudy {
 				dbOtuSet.addDnaMatrix(incomingMatrixPos, dbMatrix);
 				dnaMatrixDAO.makePersistent(dbMatrix);
 			}
-			createOrUpdateDnaMatrix
+			new CreateOrUpdateDnaMatrix()
 							.createOrUpdateMatrix(
 									dbMatrix, incomingMatrix);
 		}
@@ -298,7 +290,7 @@ public final class CreateOrUpdateStudy {
 				dbOTUSet.addProteinMatrix(incomingMatrixPos, dbMatrix);
 				proteinMatrixDAO.makePersistent(dbMatrix);
 			}
-			createOrUpdateProteinMatrix
+			new CreateOrUpdateProteinMatrix()
 							.createOrUpdateMatrix(
 									dbMatrix, incomingMatrix);
 		}

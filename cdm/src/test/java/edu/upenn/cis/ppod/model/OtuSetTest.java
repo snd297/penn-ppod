@@ -168,9 +168,9 @@ public class OtuSetTest {
 						.keySet(),
 						otusSet012);
 
-		assertNull(dnaSequenceSet.getSequence(otu0));
-		assertNull(dnaSequenceSet.getSequence(otu1));
-		assertNull(dnaSequenceSet.getSequence(otu2));
+		assertNull(dnaSequenceSet.getSequences().get(otu0));
+		assertNull(dnaSequenceSet.getSequences().get(otu1));
+		assertNull(dnaSequenceSet.getSequences().get(otu2));
 	}
 
 	/**

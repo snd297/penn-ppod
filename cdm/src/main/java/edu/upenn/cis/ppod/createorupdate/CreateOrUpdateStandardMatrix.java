@@ -100,7 +100,8 @@ public final class CreateOrUpdateStandardMatrix extends CreateOrUpdateMatrix {
 					.getStates()) {
 				StandardState dbState;
 				if (null == (dbState =
-						newDbCharacter.getState(sourceState.getStateNumber()))) {
+						newDbCharacter.getStates().get(
+								sourceState.getStateNumber()))) {
 					dbState = new StandardState(sourceState.getStateNumber());
 					newDbCharacter.addState(dbState);
 				}

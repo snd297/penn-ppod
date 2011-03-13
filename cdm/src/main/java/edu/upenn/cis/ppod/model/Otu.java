@@ -15,10 +15,6 @@
  */
 package edu.upenn.cis.ppod.model;
 
-import static com.google.common.base.Preconditions.checkNotNull;
-
-import javax.persistence.Access;
-import javax.persistence.AccessType;
 import javax.persistence.Column;
 import javax.persistence.Entity;
 import javax.persistence.GeneratedValue;
@@ -74,10 +70,9 @@ public class Otu
 	public Otu() {}
 
 	public Otu(final String label) {
-		this.label = checkNotNull(label);
+		this.label = label;
 	}
 
-	@Access(AccessType.PROPERTY)
 	@Id
 	@GeneratedValue
 	@Column(name = ID_COLUMN)

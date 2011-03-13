@@ -18,8 +18,6 @@ package edu.upenn.cis.ppod.model;
 import static com.google.common.base.Preconditions.checkNotNull;
 
 import javax.annotation.Nullable;
-import javax.persistence.Access;
-import javax.persistence.AccessType;
 import javax.persistence.Column;
 import javax.persistence.Entity;
 import javax.persistence.FetchType;
@@ -44,6 +42,10 @@ import edu.umd.cs.findbugs.annotations.CheckForNull;
  * <p>
  * This is <em>not</em> a {@link UUPPodEntity} because its uniqueness is a
  * function of its {@link StandardCharacter} + {@link #getStateNumber()}
+ * <p>
+ * We keep the state number immutable so that the map of
+ * stateno's->StandardState in StandardCharacter doesn't get the values out of
+ * sycn with the keys.
  * 
  * @author Sam Donnelly
  */
@@ -63,18 +65,11 @@ public class StandardState {
 	 */
 	public final static String STATE_NUMBER_COLUMN = "STATE_NUMBER";
 
-	@Access(AccessType.PROPERTY)
-	@Id
-	@GeneratedValue
-	@Column(name = ID_COLUMN)
 	@CheckForNull
 	private Long id;
 
-	@SuppressWarnings("unused")
-	@Version
-	@Column(name = "OBJ_VERSION")
 	@CheckForNull
-	private Integer objVersion;
+	private Integer version;
 
 	/**
 	 * {@link Function} wrapper of {@link #getStateNumber()}.
@@ -91,23 +86,18 @@ public class StandardState {
 	 * The state number of this {@code CharacterState}. This is the core value
 	 * of these objects. Write-once-read-many.
 	 */
-	@Column(name = STATE_NUMBER_COLUMN, nullable = false, updatable = false)
 	private Integer stateNumber;
 
 	/**
 	 * Label for this stateNumber. Things like <code>"absent"</code>,
 	 * <code>"short"</code>, and <code>"long"</code>
 	 */
-	@Column(name = "LABEL", nullable = false)
-	@Index(name = "LABEL_IDX")
 	@CheckForNull
 	private String label;
 
 	/**
 	 * The {@code Character} of which this is a state.
 	 */
-	@ManyToOne(fetch = FetchType.LAZY, optional = false)
-	@JoinColumn(name = StandardCharacter.ID_COLUMN)
 	@CheckForNull
 	private StandardCharacter parent;
 
@@ -117,10 +107,12 @@ public class StandardState {
 	StandardState() {}
 
 	public StandardState(final Integer stateNumber) {
-		checkNotNull(stateNumber);
-		this.stateNumber = stateNumber;
+		this.stateNumber = checkNotNull(stateNumber);
 	}
 
+	@Id
+	@GeneratedValue
+	@Column(name = ID_COLUMN)
 	@Nullable
 	public Long getId() {
 		return id;
@@ -131,6 +123,8 @@ public class StandardState {
 	 * 
 	 * @return this character stateNumber's label
 	 */
+	@Column(name = "LABEL", nullable = false)
+	@Index(name = "LABEL_IDX")
 	@Nullable
 	public String getLabel() {
 		return label;
@@ -142,6 +136,8 @@ public class StandardState {
 	 * 
 	 * @return this character stateNumber's owning character
 	 */
+	@ManyToOne(fetch = FetchType.LAZY, optional = false)
+	@JoinColumn(name = StandardCharacter.ID_COLUMN)
 	@Nullable
 	public StandardCharacter getParent() {
 		return parent;
@@ -153,12 +149,19 @@ public class StandardState {
 	 * <p>
 	 * {@code null} when the object is created. Never {@code null} for
 	 * persistent objects.
+	 * <p>
 	 * 
 	 * @return get the integer value of this character stateNumber
 	 */
+	@Column(name = STATE_NUMBER_COLUMN, nullable = false, updatable = false)
 	@Nullable
 	public Integer getStateNumber() {
 		return stateNumber;
+	}
+
+	@SuppressWarnings("unused")
+	private void setStateNumber(final Integer stateNumber) {
+		this.stateNumber = stateNumber;
 	}
 
 	@SuppressWarnings("unused")
@@ -172,7 +175,7 @@ public class StandardState {
 	 * @param label the label
 	 */
 	public void setLabel(final String label) {
-		this.label = checkNotNull(label);
+		this.label = label;
 	}
 
 	/**
@@ -192,21 +195,20 @@ public class StandardState {
 	}
 
 	/**
-	 * Constructs a <code>String</code> with all attributes in name = value
-	 * format.
-	 * 
-	 * @return a <code>String</code> representation of this object.
+	 * @return the version
 	 */
-	@Override
-	public String toString() {
-		final String TAB = "";
+	@Version
+	@Column(name = "OBJ_VERSION")
+	@Nullable
+	public Integer getVersion() {
+		return version;
+	}
 
-		final StringBuilder retValue = new StringBuilder();
-
-		retValue.append("CharacterState(").append("stateNumber=").append(
-				this.stateNumber).append(TAB).append("label=").append(
-				this.label).append(TAB).append(")");
-
-		return retValue.toString();
+	/**
+	 * @param version the version to set
+	 */
+	@SuppressWarnings("unused")
+	private void setVersion(Integer version) {
+		this.version = version;
 	}
 }

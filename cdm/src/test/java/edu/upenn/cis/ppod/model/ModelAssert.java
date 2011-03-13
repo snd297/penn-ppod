@@ -52,7 +52,7 @@ public class ModelAssert {
 		for (int otuPos = 0; otuPos < actualSeqSet.getParent().getOtus().size(); otuPos++) {
 			assertEqualsSequences(
 					actualSeqSet
-							.getSequence(actualSeqSet
+							.getSequences().get(actualSeqSet
 									.getParent()
 									.getOtus()
 									.get(otuPos)),
@@ -120,7 +120,7 @@ public class ModelAssert {
 				expectedCharacter
 						.getStates().size());
 		for (final StandardState actualState : actualCharacter
-				.getStates()) {
+				.getStates().values()) {
 
 			final PPodStandardState expectedState =
 					find(
@@ -175,7 +175,7 @@ public class ModelAssert {
 			final StandardMatrix actualMatrix,
 			final PPodStandardMatrix expectedMatrix) {
 		assertEquals(actualMatrix.getLabel(), expectedMatrix.getLabel());
-	
+
 		assertEquals(
 				actualMatrix.getCharacters().size(),
 				actualMatrix.getCharacters().size());

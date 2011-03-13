@@ -43,13 +43,9 @@ public abstract class SequenceSet<S extends Sequence<?>>
 		implements IDependsOnParentOtus {
 
 	@CheckForNull
-	@Column(name = "LABEL", nullable = false)
 	private String label;
 
 	@CheckForNull
-	@ManyToOne(fetch = FetchType.LAZY, optional = false)
-	@JoinColumn(name = OtuSet.ID_COLUMN, insertable = false,
-				updatable = false)
 	private OtuSet parent;
 
 	SequenceSet() {}
@@ -74,29 +70,20 @@ public abstract class SequenceSet<S extends Sequence<?>>
 		}
 	}
 
+	@Column(name = "LABEL", nullable = false)
 	@Nullable
 	public String getLabel() {
 		return label;
 	}
 
 	/** {@inheritDoc} */
+	@ManyToOne(fetch = FetchType.LAZY, optional = false)
+	@JoinColumn(name = OtuSet.ID_COLUMN, insertable = false,
+				updatable = false)
 	@Nullable
 	public OtuSet getParent() {
 		return parent;
 	}
-
-	/**
-	 * Get the sequence indexed by {@code otu}.
-	 * 
-	 * @param otu index
-	 * 
-	 * @return the sequence at {@code otu}
-	 * 
-	 * @throws IllegalArgument Exception if {@code otu} does not belong to this
-	 *             sequence's {@code OTUSet}
-	 */
-	@Nullable
-	public abstract S getSequence(final Otu otu);
 
 	/**
 	 * Get the length of the sequences in this set, or {@code null} if no
@@ -130,7 +117,7 @@ public abstract class SequenceSet<S extends Sequence<?>>
 	public abstract void putSequence(final Otu otu, final S sequence);
 
 	public void setLabel(final String label) {
-		this.label = checkNotNull(label);
+		this.label = label;
 	}
 
 	/** {@inheritDoc} */

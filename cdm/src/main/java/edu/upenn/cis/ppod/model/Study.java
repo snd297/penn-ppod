@@ -17,9 +17,6 @@ package edu.upenn.cis.ppod.model;
 
 import static com.google.common.base.Preconditions.checkArgument;
 import static com.google.common.base.Preconditions.checkNotNull;
-import static com.google.common.base.Predicates.compose;
-import static com.google.common.base.Predicates.equalTo;
-import static com.google.common.collect.Iterables.find;
 import static com.google.common.collect.Lists.newArrayList;
 
 import java.util.List;
@@ -104,12 +101,6 @@ public class Study extends UuPPodEntity2 implements ILabeled, IOtuSets,
 				"this study already contains otu set ["
 						+ otuSet.getLabel()
 						+ "]");
-		checkArgument(
-				find(otuSets,
-						compose(equalTo(otuSet.getLabel()), ILabeled.getLabel),
-						null) == null,
-				"this study already contains an otu set labled ["
-						+ otuSet.getLabel() + "]");
 		otuSets.add(pos, otuSet);
 		otuSet.setParent(this);
 	}

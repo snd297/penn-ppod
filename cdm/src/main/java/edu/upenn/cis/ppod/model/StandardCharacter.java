@@ -18,11 +18,8 @@ package edu.upenn.cis.ppod.model;
 import static com.google.common.base.Preconditions.checkNotNull;
 import static com.google.common.collect.Maps.newHashMap;
 
-import java.util.Collection;
 import java.util.Map;
 
-import javax.persistence.Access;
-import javax.persistence.AccessType;
 import javax.persistence.CascadeType;
 import javax.persistence.Column;
 import javax.persistence.Entity;
@@ -48,45 +45,30 @@ import edu.umd.cs.findbugs.annotations.Nullable;
  */
 @Entity
 @Table(name = StandardCharacter.TABLE)
-public class StandardCharacter extends UuPPodEntity {
-
-	@Access(AccessType.PROPERTY)
-	@Id
-	@GeneratedValue
-	@Column(name = ID_COLUMN)
-	@CheckForNull
-	private Long id;
-
-	@SuppressWarnings("unused")
-	@Version
-	@Column(name = "OBJ_VERSION")
-	@CheckForNull
-	private Integer objVersion;
+public class StandardCharacter extends UuPPodEntity2 {
 
 	public final static String TABLE = "STANDARD_CHARACTER";
 
 	public final static String ID_COLUMN = TABLE + "_ID";
 
+	@CheckForNull
+	private Long id;
+
+	@CheckForNull
+	private Integer version;
+
 	/**
 	 * The non-unique label of this {@code Character}.
 	 */
-	@Column(name = "LABEL", nullable = false)
-	@Index(name = "LABEL_IDX")
 	@CheckForNull
 	private String label;
 
 	/**
 	 * The matrix that owns this {@code StandardCharacter}.
 	 */
-	@ManyToOne(optional = false)
-	@JoinColumn(
-			name = StandardMatrix.ID_COLUMN,
-			insertable = false,
-			updatable = false)
 	@CheckForNull
 	private StandardMatrix parent;
 
-	@Column(name = "MESQUITE_ID", nullable = false, unique = true)
 	@CheckForNull
 	private String mesquiteId;
 
@@ -96,10 +78,7 @@ public class StandardCharacter extends UuPPodEntity {
 	 * non-contiguous integers in the keys - so, for example, you might have 0,
 	 * 2, and 3.
 	 */
-	@OneToMany(mappedBy = "parent", cascade = CascadeType.ALL,
-			orphanRemoval = true)
-	@MapKey(name = "stateNumber")
-	private final Map<Integer, StandardState> states = newHashMap();
+	private Map<Integer, StandardState> states = newHashMap();
 
 	/**
 	 * Default constructor for (at least) Hibernate.
@@ -113,27 +92,21 @@ public class StandardCharacter extends UuPPodEntity {
 	 * <code>CharacterState</code>s. relationship.
 	 * 
 	 * @param state what we're adding
-	 * 
-	 * @return the previous state that was associated with
-	 *         {@code state.getStateNumber()} or {@code null} if there was no
-	 *         such state.
 	 */
-	@Nullable
-	public StandardState addState(final StandardState state) {
+	public void addState(final StandardState state) {
 		checkNotNull(state);
 		final StandardState originalState =
 				states.put(state.getStateNumber(), state);
-		if (state == originalState) {
-			return originalState;
-		}
 
-		if (originalState != null) {
+		if (state != originalState && originalState != null) {
 			originalState.setParent(null);
 		}
 		state.setParent(this);
-		return originalState;
 	}
 
+	@Id
+	@GeneratedValue
+	@Column(name = ID_COLUMN)
 	@Nullable
 	public Long getId() {
 		return id;
@@ -144,11 +117,14 @@ public class StandardCharacter extends UuPPodEntity {
 	 * 
 	 * @return the label of this {@code Character}
 	 */
+	@Column(name = "LABEL", nullable = false)
+	@Index(name = "LABEL_IDX")
 	@Nullable
 	public String getLabel() {
 		return label;
 	}
 
+	@Column(name = "MESQUITE_ID", nullable = false, unique = true)
 	@Nullable
 	public String getMesquiteId() {
 		return mesquiteId;
@@ -162,33 +138,31 @@ public class StandardCharacter extends UuPPodEntity {
 	 * 
 	 * @return the matrix that owns this character
 	 */
+	@ManyToOne(optional = false)
+	@JoinColumn(
+			name = StandardMatrix.ID_COLUMN,
+			insertable = false,
+			updatable = false)
 	@Nullable
 	public StandardMatrix getParent() {
 		return parent;
 	}
 
-	/**
-	 * Get the state with the given state number, or {@code null} if there is no
-	 * such state.
-	 * 
-	 * @param stateNumber the state number of the state we want to retrieve
-	 * 
-	 * @return the state with the given state number, or {@code null} if there
-	 *         is no such state.
-	 */
-	@Nullable
-	public StandardState getState(final Integer stateNumber) {
-		checkNotNull(stateNumber);
-		return states.get(stateNumber.intValue());
+	@OneToMany(mappedBy = "parent", cascade = CascadeType.ALL,
+			orphanRemoval = true)
+	@MapKey(name = "stateNumber")
+	public Map<Integer, StandardState> getStates() {
+		return states;
 	}
 
 	/**
-	 * Get the states of this character. There will be no duplicate values.
-	 * 
-	 * @return the states of this character.
+	 * @return the version
 	 */
-	public Collection<StandardState> getStates() {
-		return states.values();
+	@Version
+	@Column(name = "OBJ_VERSION")
+	@Nullable
+	public Integer getVersion() {
+		return version;
 	}
 
 	@SuppressWarnings("unused")
@@ -198,16 +172,29 @@ public class StandardCharacter extends UuPPodEntity {
 
 	/** {@inheritDoc} */
 	public void setLabel(final String label) {
-		this.label = checkNotNull(label);
+		this.label = label;
 	}
 
 	public void setMesquiteId(final String mesquiteId) {
-		this.mesquiteId = checkNotNull(mesquiteId);
+		this.mesquiteId = mesquiteId;
 	}
 
 	/** {@inheritDoc} */
 	public void setParent(
 			@CheckForNull final StandardMatrix parent) {
 		this.parent = parent;
+	}
+
+	@SuppressWarnings("unused")
+	private void setStates(final Map<Integer, StandardState> states) {
+		this.states = states;
+	}
+
+	/**
+	 * @param version the version to set
+	 */
+	@SuppressWarnings("unused")
+	private void setVersion(final Integer version) {
+		this.version = version;
 	}
 }
