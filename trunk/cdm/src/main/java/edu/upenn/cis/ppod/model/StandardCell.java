@@ -172,7 +172,7 @@ public class StandardCell extends Cell<StandardState, StandardRow> {
 		final StandardCharacter character = getParent().getParent()
 				.getCharacters().get(getPosition());
 		for (final Integer stateNumber : stateNumbers) {
-			final StandardState state = character.getState(stateNumber);
+			final StandardState state = character.getStates().get(stateNumber);
 			checkArgument(
 					state != null,
 					"This matrix doesn't have a state number "
@@ -298,7 +298,7 @@ public class StandardCell extends Cell<StandardState, StandardRow> {
 		checkState(character != null,
 				"no character has been assigned for column " + getPosition());
 
-		final StandardState state = character.getState(stateNumber);
+		final StandardState state = character.getStates().get(stateNumber);
 
 		checkArgument(
 				state != null,

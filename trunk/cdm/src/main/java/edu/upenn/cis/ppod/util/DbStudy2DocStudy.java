@@ -69,7 +69,8 @@ public final class DbStudy2DocStudy {
 		final PPodDnaSequenceSet docSequenceSet = new PPodDnaSequenceSet(
 				dbSequenceSet.getPPodId(), dbSequenceSet.getLabel());
 		for (final Otu dbOtu : dbSequenceSet.getParent().getOtus()) {
-			final DnaSequence dbSequence = dbSequenceSet.getSequence(dbOtu);
+			final DnaSequence dbSequence = dbSequenceSet.getSequences().get(
+					dbOtu);
 			final PPodDnaSequence docSequence =
 					new PPodDnaSequence(
 							dbSequence.getSequence(),
@@ -159,7 +160,7 @@ public final class DbStudy2DocStudy {
 					dbCharacter.getLabel(),
 					dbCharacter.getMesquiteId());
 			docMatrix.getCharacters().add(docCharacter);
-			for (final StandardState dbState : dbCharacter.getStates()) {
+			for (final StandardState dbState : dbCharacter.getStates().values()) {
 				final PPodStandardState docState = new PPodStandardState(
 						dbState.getStateNumber(), dbState.getLabel());
 				docCharacter.getStates().add(docState);

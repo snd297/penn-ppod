@@ -54,6 +54,7 @@ public class ProteinMatrix
 
 	@OneToMany(cascade = CascadeType.ALL, orphanRemoval = true)
 	@JoinTable(name = TABLE + "_" + ProteinRow.TABLE,
+			joinColumns = @JoinColumn(name = ID_COLUMN),
 			inverseJoinColumns = @JoinColumn(name = ProteinRow.ID_COLUMN))
 	@MapKeyJoinColumn(name = Otu.ID_COLUMN)
 	@Override

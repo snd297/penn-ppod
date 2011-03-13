@@ -36,24 +36,21 @@ public class StandardCharacterTest {
 		final StandardCharacter character = new StandardCharacter();
 		final StandardState state0 = new StandardState(0);
 
-		final StandardState returnedState0 = character.addState(state0);
-		assertNull(returnedState0);
+		character.addState(state0);
 		assertEquals(character.getStates().size(), 1);
-		assertSame(character.getState(0), state0);
+		assertSame(character.getStates().get(0), state0);
 		assertSame(state0.getParent(), character);
 
-		final StandardState returnedState1 = character.addState(state0);
-		assertSame(returnedState1, state0);
+		character.addState(state0);
 		assertEquals(character.getStates().size(), 1);
-		assertSame(character.getState(0), state0);
+		assertSame(character.getStates().get(0), state0);
 		assertSame(state0.getParent(), character);
 		assertSame(state0.getParent(), character);
 
 		final StandardState state01 = new StandardState(0);
-		final StandardState returnedState2 = character.addState(state01);
-		assertSame(state0, returnedState2);
+		character.addState(state01);
 		assertEquals(character.getStates().size(), 1);
-		assertSame(character.getState(0), state01);
+		assertSame(character.getStates().get(0), state01);
 		assertSame(state01.getParent(), character);
 		assertNull(state0.getParent());
 	}

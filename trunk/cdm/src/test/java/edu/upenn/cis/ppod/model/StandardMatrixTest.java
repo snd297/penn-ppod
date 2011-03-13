@@ -81,7 +81,7 @@ public class StandardMatrixTest {
 				Arrays.asList(new StandardCell[] { cell00 }));
 		standardCharacter.addState(new StandardState(0));
 
-		final StandardState state = standardCharacter.getState(0);
+		final StandardState state = standardCharacter.getStates().get(0);
 		assertNotNull(state);
 
 		cell00.setSingleWithStateNo(state.getStateNumber());

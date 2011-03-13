@@ -35,22 +35,17 @@ import edu.upenn.cis.ppod.imodel.IChild;
 public abstract class Sequence<SS extends SequenceSet<?>>
 		implements IChild<SS> {
 
-	private final static String SEQUENCE_COLUMN = "SEQUENCE";
+	public final static String SEQUENCE_COLUMN = "SEQUENCE";
 
-	@Lob
-	@Column(name = SEQUENCE_COLUMN, nullable = false)
 	@CheckForNull
 	private String sequence;
 
-	@Column(name = "ACCESSION", nullable = true)
 	@CheckForNull
 	private String accession;
 
-	@Column(name = "DESCRIPTION", nullable = true)
 	@CheckForNull
 	private String description;
 
-	@Column(name = "NAME", nullable = true)
 	@CheckForNull
 	private String name;
 
@@ -61,6 +56,7 @@ public abstract class Sequence<SS extends SequenceSet<?>>
 	 * 
 	 * @return the accession
 	 */
+	@Column(name = "ACCESSION", nullable = true)
 	@Nullable
 	public String getAccession() {
 		return accession;
@@ -71,6 +67,7 @@ public abstract class Sequence<SS extends SequenceSet<?>>
 	 * 
 	 * @return the description
 	 */
+	@Column(name = "DESCRIPTION", nullable = true)
 	@Nullable
 	public String getDescription() {
 		return description;
@@ -81,6 +78,7 @@ public abstract class Sequence<SS extends SequenceSet<?>>
 	 * 
 	 * @return the name
 	 */
+	@Column(name = "NAME", nullable = true)
 	@Nullable
 	public String getName() {
 		return name;
@@ -96,6 +94,8 @@ public abstract class Sequence<SS extends SequenceSet<?>>
 	 * 
 	 * @return the sequence string
 	 */
+	@Lob
+	@Column(name = SEQUENCE_COLUMN, nullable = false)
 	@Nullable
 	public String getSequence() {
 		return sequence;
@@ -167,28 +167,6 @@ public abstract class Sequence<SS extends SequenceSet<?>>
 		this.sequence = sequence;
 		return this;
 	}
-
-	/**
-	 * Constructs a <code>String</code> with all attributes in name = value
-	 * format.
-	 * 
-	 * @return a <code>String</code> representation of this object.
-	 */
-	@Override
-	public String toString() {
-		final String TAB = "";
-
-		final StringBuilder retValue = new StringBuilder();
-
-		retValue.append("Sequence(").append("sequence=").append(
-				this.sequence).append(TAB).append("accession=").append(
-				this.accession).append(TAB).append("description=").append(
-				this.description).append(TAB).append("name=").append(this.name)
-				.append(TAB).append(")");
-
-		return retValue.toString();
-	}
-
 }
 
 // @Column(name = "LOCUS")

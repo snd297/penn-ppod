@@ -71,6 +71,7 @@ public class DnaMatrix extends Matrix<DnaRow> {
 
 	@OneToMany(cascade = CascadeType.ALL, orphanRemoval = true)
 	@JoinTable(name = TABLE + "_" + DnaRow.TABLE,
+			joinColumns = @JoinColumn(name = ID_COLUMN),
 			inverseJoinColumns = @JoinColumn(name = DnaRow.ID_COLUMN))
 	@MapKeyJoinColumn(name = Otu.ID_COLUMN)
 	@Override

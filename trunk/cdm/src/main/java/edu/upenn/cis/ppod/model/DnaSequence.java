@@ -19,8 +19,6 @@ import static com.google.common.collect.Lists.newArrayList;
 
 import java.util.List;
 
-import javax.persistence.Access;
-import javax.persistence.AccessType;
 import javax.persistence.CollectionTable;
 import javax.persistence.Column;
 import javax.persistence.ElementCollection;
@@ -46,18 +44,11 @@ import edu.upenn.cis.ppod.dto.PPodDnaSequence;
 @Table(name = DnaSequence.TABLE)
 public class DnaSequence extends Sequence<DnaSequenceSet> {
 
-	@Access(AccessType.PROPERTY)
-	@Id
-	@GeneratedValue
-	@Column(name = ID_COLUMN)
 	@CheckForNull
 	private Long id;
 
-	@SuppressWarnings("unused")
-	@Version
-	@Column(name = "OBJ_VERSION")
 	@CheckForNull
-	private Integer objVersion;
+	private Integer version;
 
 	/**
 	 * The name of the {@code DNASequence} table.
@@ -66,32 +57,50 @@ public class DnaSequence extends Sequence<DnaSequenceSet> {
 
 	public static final String ID_COLUMN = TABLE + "_ID";
 
-	@ManyToOne(
-			fetch = FetchType.LAZY,
-			optional = false)
 	@CheckForNull
 	private DnaSequenceSet parent;
 
-	@ElementCollection
-	@CollectionTable(name = "DNA_SEQUENCE_PHRED_PHRAP_SCORES",
-						joinColumns = @JoinColumn(name = ID_COLUMN))
-	@Column(name = "ELEMENT")
-	@SuppressWarnings("unused")
-	private final List<Double> phredPhrapScores = newArrayList();
+	private List<Double> phredPhrapScores = newArrayList();
 
 	/**
 	 * Default constructor.
 	 */
 	public DnaSequence() {}
 
+	@Id
+	@GeneratedValue
+	@Column(name = ID_COLUMN)
 	@Nullable
 	public Long getId() {
 		return id;
 	}
 
+	@ManyToOne(
+			fetch = FetchType.LAZY,
+			optional = false)
 	@Nullable
 	public DnaSequenceSet getParent() {
 		return parent;
+	}
+
+	/**
+	 * @return the phredPhrapScores
+	 */
+	@ElementCollection
+	@CollectionTable(name = "DNA_SEQUENCE_PHRED_PHRAP_SCORES",
+						joinColumns = @JoinColumn(name = ID_COLUMN))
+	@Column(name = "ELEMENT")
+	public List<Double> getPhredPhrapScores() {
+		return phredPhrapScores;
+	}
+
+	/**
+	 * @return the version
+	 */
+	@Version
+	@Column(name = "OBJ_VERSION")
+	public Integer getVersion() {
+		return version;
 	}
 
 	@Override
@@ -108,6 +117,19 @@ public class DnaSequence extends Sequence<DnaSequenceSet> {
 	public void setParent(
 			@CheckForNull final DnaSequenceSet parent) {
 		this.parent = parent;
+	}
+
+	@SuppressWarnings("unused")
+	private void setPhredPhrapScores(final List<Double> phredPhrapScores) {
+		this.phredPhrapScores = phredPhrapScores;
+	}
+
+	/**
+	 * @param version the version to set
+	 */
+	@SuppressWarnings("unused")
+	private void setVersion(final Integer version) {
+		this.version = version;
 	}
 
 }

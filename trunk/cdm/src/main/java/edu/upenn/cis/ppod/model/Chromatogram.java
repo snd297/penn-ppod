@@ -16,9 +16,6 @@
 package edu.upenn.cis.ppod.model;
 
 import javax.annotation.CheckForNull;
-import javax.annotation.Nullable;
-import javax.persistence.Access;
-import javax.persistence.AccessType;
 import javax.persistence.Column;
 import javax.persistence.Entity;
 import javax.persistence.FetchType;
@@ -28,27 +25,20 @@ import javax.persistence.Lob;
 import javax.persistence.OneToOne;
 import javax.persistence.Version;
 
+import edu.umd.cs.findbugs.annotations.Nullable;
+
 /**
  * @author Sam Donnelly
  */
 @Entity
 public class Chromatogram extends UuPPodEntity {
 
-	@Access(AccessType.PROPERTY)
-	@Id
-	@GeneratedValue
-	@Column(name = "CHROMATOGRAM_ID")
 	@CheckForNull
 	private Long id;
 
-	@SuppressWarnings("unused")
-	@Version
-	@Column(name = "OBJ_VERSION")
 	@CheckForNull
-	private Integer objVersion;
+	private Integer version;
 
-	@Lob
-	@Column(name = "CHROMATOGRAM", nullable = false)
 	@CheckForNull
 	private byte[] chromatogram;
 
@@ -56,11 +46,16 @@ public class Chromatogram extends UuPPodEntity {
 	@CheckForNull
 	private DnaSequence sequence;
 
+	@Lob
+	@Column(name = "CHROMATOGRAM", nullable = false)
 	@Nullable
 	public byte[] getChromatogram() {
 		return chromatogram;
 	}
 
+	@Id
+	@GeneratedValue
+	@Column(name = "CHROMATOGRAM_ID")
 	@Nullable
 	public Long getId() {
 		return id;
@@ -87,6 +82,24 @@ public class Chromatogram extends UuPPodEntity {
 
 	public void setSequence(@CheckForNull final DnaSequence sequence) {
 		this.sequence = sequence;
+	}
+
+	/**
+	 * @return the version
+	 */
+	@Version
+	@Column(name = "OBJ_VERSION")
+	@edu.umd.cs.findbugs.annotations.Nullable
+	public Integer getVersion() {
+		return version;
+	}
+
+	/**
+	 * @param version the version to set
+	 */
+	@SuppressWarnings("unused")
+	private void setVersion(Integer version) {
+		this.version = version;
 	}
 
 }

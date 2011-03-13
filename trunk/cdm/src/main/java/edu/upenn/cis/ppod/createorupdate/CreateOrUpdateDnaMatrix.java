@@ -3,9 +3,6 @@ package edu.upenn.cis.ppod.createorupdate;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
-import com.google.inject.Inject;
-
-import edu.upenn.cis.ppod.dao.IDnaRowDAO;
 import edu.upenn.cis.ppod.dto.PPodDnaMatrix;
 import edu.upenn.cis.ppod.dto.PPodDnaRow;
 import edu.upenn.cis.ppod.model.DnaMatrix;
@@ -13,15 +10,8 @@ import edu.upenn.cis.ppod.model.DnaRow;
 import edu.upenn.cis.ppod.model.Otu;
 
 public class CreateOrUpdateDnaMatrix {
-	private final IDnaRowDAO dnaRowDAO;
 	private final static Logger logger = LoggerFactory
 			.getLogger(CreateOrUpdateDnaMatrix.class);
-
-	@Inject
-	CreateOrUpdateDnaMatrix(
-			final IDnaRowDAO dnaRowDAO) {
-		this.dnaRowDAO = dnaRowDAO;
-	}
 
 	public void createOrUpdateMatrix(
 			final DnaMatrix dbMatrix,
@@ -50,8 +40,6 @@ public class CreateOrUpdateDnaMatrix {
 			}
 
 			dbRow.setSequence(sourceRow.getSequence());
-
-			dnaRowDAO.makePersistent(dbRow);
 
 			logger.debug(
 					"{}: finishing row number {}",
