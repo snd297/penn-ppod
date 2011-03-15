@@ -27,6 +27,7 @@ import javax.persistence.FetchType;
 import javax.persistence.JoinColumn;
 import javax.persistence.ManyToOne;
 import javax.persistence.MappedSuperclass;
+import javax.persistence.Transient;
 
 import edu.upenn.cis.ppod.imodel.IDependsOnParentOtus;
 
@@ -92,6 +93,7 @@ public abstract class SequenceSet<S extends Sequence<?>>
 	 * @return the length of the sequences in this set, or {@code null} if no
 	 *         sequences have been added to this set
 	 */
+	@Transient
 	@Nullable
 	public Integer getSequenceLengths() {
 		for (final S sequence : getSequences().values()) {
@@ -111,6 +113,7 @@ public abstract class SequenceSet<S extends Sequence<?>>
 	 * @return a map which contains the {@code OTU, S} entries of this sequence
 	 *         set
 	 */
+	@Transient
 	public abstract Map<Otu, S> getSequences();
 
 	@Nullable

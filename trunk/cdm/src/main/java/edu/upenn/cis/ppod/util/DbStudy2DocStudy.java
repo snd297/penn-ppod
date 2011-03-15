@@ -5,8 +5,6 @@ import static com.google.common.collect.Iterables.transform;
 import static com.google.common.collect.Sets.newHashSet;
 import edu.upenn.cis.ppod.dto.PPodDnaMatrix;
 import edu.upenn.cis.ppod.dto.PPodDnaRow;
-import edu.upenn.cis.ppod.dto.PPodDnaSequence;
-import edu.upenn.cis.ppod.dto.PPodDnaSequenceSet;
 import edu.upenn.cis.ppod.dto.PPodOtu;
 import edu.upenn.cis.ppod.dto.PPodOtuSet;
 import edu.upenn.cis.ppod.dto.PPodProteinMatrix;
@@ -21,8 +19,6 @@ import edu.upenn.cis.ppod.dto.PPodTree;
 import edu.upenn.cis.ppod.dto.PPodTreeSet;
 import edu.upenn.cis.ppod.model.DnaMatrix;
 import edu.upenn.cis.ppod.model.DnaRow;
-import edu.upenn.cis.ppod.model.DnaSequence;
-import edu.upenn.cis.ppod.model.DnaSequenceSet;
 import edu.upenn.cis.ppod.model.Otu;
 import edu.upenn.cis.ppod.model.OtuSet;
 import edu.upenn.cis.ppod.model.ProteinMatrix;
@@ -63,24 +59,24 @@ public final class DbStudy2DocStudy {
 	 * 
 	 * @return a doc version of {@code dbMatrix}
 	 */
-	public PPodDnaSequenceSet dbDnaSequenceSet2DocDnaSequenceSet(
-			final DnaSequenceSet dbSequenceSet) {
-		checkNotNull(dbSequenceSet);
-		final PPodDnaSequenceSet docSequenceSet = new PPodDnaSequenceSet(
-				dbSequenceSet.getPPodId(), dbSequenceSet.getLabel());
-		for (final Otu dbOtu : dbSequenceSet.getParent().getOtus()) {
-			final DnaSequence dbSequence = dbSequenceSet.getSequences().get(
-					dbOtu);
-			final PPodDnaSequence docSequence =
-					new PPodDnaSequence(
-							dbSequence.getSequence(),
-							dbSequence.getName(),
-							dbSequence.getDescription(),
-							dbSequence.getAccession());
-			docSequenceSet.getSequences().add(docSequence);
-		}
-		return docSequenceSet;
-	}
+	// public PPodDnaSequenceSet dbDnaSequenceSet2DocDnaSequenceSet(
+	// final DnaSequenceSet dbSequenceSet) {
+	// checkNotNull(dbSequenceSet);
+	// final PPodDnaSequenceSet docSequenceSet = new PPodDnaSequenceSet(
+	// dbSequenceSet.getPPodId(), dbSequenceSet.getLabel());
+	// for (final Otu dbOtu : dbSequenceSet.getParent().getOtus()) {
+	// final DnaSequence dbSequence = dbSequenceSet.getSequences().get(
+	// dbOtu);
+	// final PPodDnaSequence docSequence =
+	// new PPodDnaSequence(
+	// dbSequence.getSequence(),
+	// dbSequence.getName(),
+	// dbSequence.getDescription(),
+	// dbSequence.getAccession());
+	// docSequenceSet.getSequences().add(docSequence);
+	// }
+	// return docSequenceSet;
+	// }
 
 	public PPodOtu dbOtu2DocOtu(final Otu dbOtu) {
 		return new PPodOtu(
@@ -107,10 +103,11 @@ public final class DbStudy2DocStudy {
 					dbStandardMatrix2DocStandardMatrix(dbMatrix));
 		}
 
-		for (final DnaSequenceSet dbSequenceSet : dbOtuSet.getDnaSequenceSets()) {
-			docOtuSet.getDnaSequenceSets().add(
-					dbDnaSequenceSet2DocDnaSequenceSet(dbSequenceSet));
-		}
+		// for (final DnaSequenceSet dbSequenceSet :
+		// dbOtuSet.getDnaSequenceSets()) {
+		// docOtuSet.getDnaSequenceSets().add(
+		// dbDnaSequenceSet2DocDnaSequenceSet(dbSequenceSet));
+		// }
 
 		for (final TreeSet dbTreeSet : dbOtuSet.getTreeSets()) {
 			docOtuSet.getTreeSets().add(dbTreeSet2DocTreeSet(dbTreeSet));

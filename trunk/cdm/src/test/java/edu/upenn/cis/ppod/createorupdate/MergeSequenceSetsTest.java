@@ -18,147 +18,139 @@ package edu.upenn.cis.ppod.createorupdate;
 import org.testng.annotations.Test;
 
 import edu.upenn.cis.ppod.TestGroupDefs;
-import edu.upenn.cis.ppod.dto.PPodDnaSequence;
-import edu.upenn.cis.ppod.dto.PPodDnaSequenceSet;
-import edu.upenn.cis.ppod.dto.PPodOtu;
-import edu.upenn.cis.ppod.dto.PPodOtuSet;
-import edu.upenn.cis.ppod.model.DnaSequenceSet;
-import edu.upenn.cis.ppod.model.ModelAssert;
-import edu.upenn.cis.ppod.model.Otu;
-import edu.upenn.cis.ppod.model.OtuSet;
 
 @Test(groups = TestGroupDefs.FAST)
 public class MergeSequenceSetsTest {
 
-	@Test
-	public void modifySequencesKeepLength() {
-
-		final PPodDnaSequenceSet srcSeqSet = new PPodDnaSequenceSet(
-				"src-seq-set-0");
-
-		final DnaSequenceSet trgSeqSet = new DnaSequenceSet();
-
-		final OtuSet trgOTUSet = new OtuSet();
-		trgOTUSet.addOtu(new Otu("otu-0"));
-		trgOTUSet.addOtu(new Otu("otu-1"));
-		trgOTUSet.addOtu(new Otu("otu-2"));
-		trgOTUSet.addDnaSequenceSet(trgSeqSet);
-
-		final PPodOtuSet srcOTUSet = new PPodOtuSet("otu-set-0");
-		srcOTUSet.getOtus().add(new PPodOtu("otu-0"));
-		srcOTUSet.getOtus().add(new PPodOtu("otu-1"));
-		srcOTUSet.getOtus().add(new PPodOtu("otu-2"));
-
-		srcOTUSet.getDnaSequenceSets().add(srcSeqSet);
-
-		final PPodDnaSequence srcSeq0 =
-					new PPodDnaSequence("ACT", "jkjkj", "jkejfke", "jkfjeijf");
-		final PPodDnaSequence srcSeq1 =
-				new PPodDnaSequence("TCA", "jjijk", "jefeji", "ejfiejiji");
-		final PPodDnaSequence srcSeq2 =
-						new PPodDnaSequence("ATC", "jfje", "jfifjiji",
-								"fjijeifji");
-
-		srcSeqSet.getSequences().add(srcSeq0);
-		srcSeqSet.getSequences().add(srcSeq1);
-		srcSeqSet.getSequences().add(srcSeq2);
-
-		final MergeDnaSequenceSets mergeSeqSets = new MergeDnaSequenceSets();
-
-		mergeSeqSets.mergeSequenceSets(trgSeqSet, srcSeqSet);
-
-		srcSeq0.setSequence("ACC");
-		srcSeq1.setSequence("TCT");
-		srcSeq2.setSequence("ATA");
-
-		mergeSeqSets.mergeSequenceSets(trgSeqSet, srcSeqSet);
-
-		ModelAssert.assertEqualsSequenceSets(trgSeqSet, srcSeqSet);
-	}
-
-	@Test
-	public void shortenSequences() {
-
-		final PPodDnaSequenceSet srcSeqSet =
-				new PPodDnaSequenceSet("src-seq-set-0");
-
-		final DnaSequenceSet trgSeqSet = new DnaSequenceSet();
-
-		final OtuSet trgOTUSet = new OtuSet();
-		trgOTUSet.addOtu(new Otu("otu-0"));
-		trgOTUSet.addOtu(new Otu("otu-1"));
-		trgOTUSet.addOtu(new Otu("otu-2"));
-		trgOTUSet.addDnaSequenceSet(trgSeqSet);
-
-		final PPodOtuSet srcOTUSet = new PPodOtuSet("otu-set-0");
-		srcOTUSet.getOtus().add(new PPodOtu("otu-0"));
-		srcOTUSet.getOtus().add(new PPodOtu("otu-1"));
-		srcOTUSet.getOtus().add(new PPodOtu("otu-2"));
-
-		srcOTUSet.getDnaSequenceSets().add(srcSeqSet);
-
-		final PPodDnaSequence srcSeq0 =
-				new PPodDnaSequence("ACT", "jkjkj", "jkejfke", "jkfjeijf");
-		final PPodDnaSequence srcSeq1 =
-				new PPodDnaSequence("TCA", "jjijk", "jefeji", "ejfiejiji");
-		final PPodDnaSequence srcSeq2 =
-				new PPodDnaSequence("ATC", "jfje", "jfifjiji",
-						"fjijeifji");
-
-		srcSeqSet.getSequences().add(srcSeq0);
-		srcSeqSet.getSequences().add(srcSeq1);
-		srcSeqSet.getSequences().add(srcSeq2);
-
-		final MergeDnaSequenceSets mergeSeqSets = new MergeDnaSequenceSets();
-
-		mergeSeqSets.mergeSequenceSets(trgSeqSet, srcSeqSet);
-
-		srcSeq0.setSequence("AC");
-		srcSeq1.setSequence("TC");
-		srcSeq2.setSequence("AT");
-
-		mergeSeqSets.mergeSequenceSets(trgSeqSet, srcSeqSet);
-
-		ModelAssert.assertEqualsSequenceSets(trgSeqSet, srcSeqSet);
-	}
-
-	@Test
-	public void mergeOnBlankTarget() {
-		final PPodDnaSequenceSet srcSeqSet =
-				new PPodDnaSequenceSet("src-seq-set-0");
-
-		final DnaSequenceSet trgSeqSet = new DnaSequenceSet();
-
-		final OtuSet trgOTUSet = new OtuSet();
-		trgOTUSet.addOtu(new Otu("otu-0"));
-		trgOTUSet.addOtu(new Otu("otu-1"));
-		trgOTUSet.addOtu(new Otu("otu-2"));
-		trgOTUSet.addDnaSequenceSet(trgSeqSet);
-
-		final PPodOtuSet srcOTUSet = new PPodOtuSet("otu-set-0");
-		srcOTUSet.getOtus().add(new PPodOtu("otu-0"));
-		srcOTUSet.getOtus().add(new PPodOtu("otu-1"));
-		srcOTUSet.getOtus().add(new PPodOtu("otu-2"));
-
-		srcOTUSet.getDnaSequenceSets().add(srcSeqSet);
-
-		final PPodDnaSequence srcSeq0 =
-				new PPodDnaSequence("ACT", "jkjkj", "jkejfke", "jkfjeijf");
-		final PPodDnaSequence srcSeq1 =
-				new PPodDnaSequence("TCA", "jjijk", "jefeji", "ejfiejiji");
-		final PPodDnaSequence srcSeq2 =
-				new PPodDnaSequence("ATC", "jfje", "jfifjiji",
-						"fjijeifji");
-
-		srcSeqSet.getSequences().add(srcSeq0);
-		srcSeqSet.getSequences().add(srcSeq1);
-		srcSeqSet.getSequences().add(srcSeq2);
-
-		final MergeDnaSequenceSets mergeSeqSets = new MergeDnaSequenceSets();
-
-		mergeSeqSets.mergeSequenceSets(trgSeqSet, srcSeqSet);
-
-		ModelAssert.assertEqualsSequenceSets(trgSeqSet, srcSeqSet);
-
-	}
+	// @Test
+	// public void modifySequencesKeepLength() {
+	//
+	// final PPodDnaSequenceSet srcSeqSet = new PPodDnaSequenceSet(
+	// "src-seq-set-0");
+	//
+	// final DnaSequenceSet trgSeqSet = new DnaSequenceSet();
+	//
+	// final OtuSet trgOTUSet = new OtuSet();
+	// trgOTUSet.addOtu(new Otu("otu-0"));
+	// trgOTUSet.addOtu(new Otu("otu-1"));
+	// trgOTUSet.addOtu(new Otu("otu-2"));
+	// trgOTUSet.addDnaSequenceSet(trgSeqSet);
+	//
+	// final PPodOtuSet srcOTUSet = new PPodOtuSet("otu-set-0");
+	// srcOTUSet.getOtus().add(new PPodOtu("otu-0"));
+	// srcOTUSet.getOtus().add(new PPodOtu("otu-1"));
+	// srcOTUSet.getOtus().add(new PPodOtu("otu-2"));
+	//
+	// srcOTUSet.getDnaSequenceSets().add(srcSeqSet);
+	//
+	// final PPodDnaSequence srcSeq0 =
+	// new PPodDnaSequence("ACT", "jkjkj", "jkejfke", "jkfjeijf");
+	// final PPodDnaSequence srcSeq1 =
+	// new PPodDnaSequence("TCA", "jjijk", "jefeji", "ejfiejiji");
+	// final PPodDnaSequence srcSeq2 =
+	// new PPodDnaSequence("ATC", "jfje", "jfifjiji",
+	// "fjijeifji");
+	//
+	// srcSeqSet.getSequences().add(srcSeq0);
+	// srcSeqSet.getSequences().add(srcSeq1);
+	// srcSeqSet.getSequences().add(srcSeq2);
+	//
+	// final MergeDnaSequenceSets mergeSeqSets = new MergeDnaSequenceSets();
+	//
+	// mergeSeqSets.mergeSequenceSets(trgSeqSet, srcSeqSet);
+	//
+	// srcSeq0.setSequence("ACC");
+	// srcSeq1.setSequence("TCT");
+	// srcSeq2.setSequence("ATA");
+	//
+	// mergeSeqSets.mergeSequenceSets(trgSeqSet, srcSeqSet);
+	//
+	// ModelAssert.assertEqualsSequenceSets(trgSeqSet, srcSeqSet);
+	// }
+	//
+	// @Test
+	// public void shortenSequences() {
+	//
+	// final PPodDnaSequenceSet srcSeqSet =
+	// new PPodDnaSequenceSet("src-seq-set-0");
+	//
+	// final DnaSequenceSet trgSeqSet = new DnaSequenceSet();
+	//
+	// final OtuSet trgOTUSet = new OtuSet();
+	// trgOTUSet.addOtu(new Otu("otu-0"));
+	// trgOTUSet.addOtu(new Otu("otu-1"));
+	// trgOTUSet.addOtu(new Otu("otu-2"));
+	// trgOTUSet.addDnaSequenceSet(trgSeqSet);
+	//
+	// final PPodOtuSet srcOTUSet = new PPodOtuSet("otu-set-0");
+	// srcOTUSet.getOtus().add(new PPodOtu("otu-0"));
+	// srcOTUSet.getOtus().add(new PPodOtu("otu-1"));
+	// srcOTUSet.getOtus().add(new PPodOtu("otu-2"));
+	//
+	// srcOTUSet.getDnaSequenceSets().add(srcSeqSet);
+	//
+	// final PPodDnaSequence srcSeq0 =
+	// new PPodDnaSequence("ACT", "jkjkj", "jkejfke", "jkfjeijf");
+	// final PPodDnaSequence srcSeq1 =
+	// new PPodDnaSequence("TCA", "jjijk", "jefeji", "ejfiejiji");
+	// final PPodDnaSequence srcSeq2 =
+	// new PPodDnaSequence("ATC", "jfje", "jfifjiji",
+	// "fjijeifji");
+	//
+	// srcSeqSet.getSequences().add(srcSeq0);
+	// srcSeqSet.getSequences().add(srcSeq1);
+	// srcSeqSet.getSequences().add(srcSeq2);
+	//
+	// final MergeDnaSequenceSets mergeSeqSets = new MergeDnaSequenceSets();
+	//
+	// mergeSeqSets.mergeSequenceSets(trgSeqSet, srcSeqSet);
+	//
+	// srcSeq0.setSequence("AC");
+	// srcSeq1.setSequence("TC");
+	// srcSeq2.setSequence("AT");
+	//
+	// mergeSeqSets.mergeSequenceSets(trgSeqSet, srcSeqSet);
+	//
+	// ModelAssert.assertEqualsSequenceSets(trgSeqSet, srcSeqSet);
+	// }
+	//
+	// @Test
+	// public void mergeOnBlankTarget() {
+	// final PPodDnaSequenceSet srcSeqSet =
+	// new PPodDnaSequenceSet("src-seq-set-0");
+	//
+	// final DnaSequenceSet trgSeqSet = new DnaSequenceSet();
+	//
+	// final OtuSet trgOTUSet = new OtuSet();
+	// trgOTUSet.addOtu(new Otu("otu-0"));
+	// trgOTUSet.addOtu(new Otu("otu-1"));
+	// trgOTUSet.addOtu(new Otu("otu-2"));
+	// trgOTUSet.addDnaSequenceSet(trgSeqSet);
+	//
+	// final PPodOtuSet srcOTUSet = new PPodOtuSet("otu-set-0");
+	// srcOTUSet.getOtus().add(new PPodOtu("otu-0"));
+	// srcOTUSet.getOtus().add(new PPodOtu("otu-1"));
+	// srcOTUSet.getOtus().add(new PPodOtu("otu-2"));
+	//
+	// srcOTUSet.getDnaSequenceSets().add(srcSeqSet);
+	//
+	// final PPodDnaSequence srcSeq0 =
+	// new PPodDnaSequence("ACT", "jkjkj", "jkejfke", "jkfjeijf");
+	// final PPodDnaSequence srcSeq1 =
+	// new PPodDnaSequence("TCA", "jjijk", "jefeji", "ejfiejiji");
+	// final PPodDnaSequence srcSeq2 =
+	// new PPodDnaSequence("ATC", "jfje", "jfifjiji",
+	// "fjijeifji");
+	//
+	// srcSeqSet.getSequences().add(srcSeq0);
+	// srcSeqSet.getSequences().add(srcSeq1);
+	// srcSeqSet.getSequences().add(srcSeq2);
+	//
+	// final MergeDnaSequenceSets mergeSeqSets = new MergeDnaSequenceSets();
+	//
+	// mergeSeqSets.mergeSequenceSets(trgSeqSet, srcSeqSet);
+	//
+	// ModelAssert.assertEqualsSequenceSets(trgSeqSet, srcSeqSet);
+	//
+	// }
 }

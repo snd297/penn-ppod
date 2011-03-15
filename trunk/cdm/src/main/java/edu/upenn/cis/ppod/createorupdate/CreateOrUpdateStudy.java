@@ -25,7 +25,6 @@ import java.util.Set;
 import com.google.inject.Inject;
 
 import edu.upenn.cis.ppod.dao.IDnaMatrixDAO;
-import edu.upenn.cis.ppod.dao.IDnaSequenceSetDAO;
 import edu.upenn.cis.ppod.dao.IOtuSetDAO;
 import edu.upenn.cis.ppod.dao.IProteinMatrixDAO;
 import edu.upenn.cis.ppod.dao.IStandardMatrixDAO;
@@ -33,14 +32,12 @@ import edu.upenn.cis.ppod.dao.IStudyDAO;
 import edu.upenn.cis.ppod.dao.ITreeSetDAO;
 import edu.upenn.cis.ppod.dto.IHasPPodId;
 import edu.upenn.cis.ppod.dto.PPodDnaMatrix;
-import edu.upenn.cis.ppod.dto.PPodDnaSequenceSet;
 import edu.upenn.cis.ppod.dto.PPodOtuSet;
 import edu.upenn.cis.ppod.dto.PPodProteinMatrix;
 import edu.upenn.cis.ppod.dto.PPodStandardMatrix;
 import edu.upenn.cis.ppod.dto.PPodStudy;
 import edu.upenn.cis.ppod.dto.PPodTreeSet;
 import edu.upenn.cis.ppod.model.DnaMatrix;
-import edu.upenn.cis.ppod.model.DnaSequenceSet;
 import edu.upenn.cis.ppod.model.OtuSet;
 import edu.upenn.cis.ppod.model.ProteinMatrix;
 import edu.upenn.cis.ppod.model.StandardMatrix;
@@ -56,11 +53,11 @@ public final class CreateOrUpdateStudy {
 
 	private final IStudyDAO studyDAO;
 	private final MergeOtuSets mergeOtuSets;
-	private final MergeDnaSequenceSets mergeDNASequenceSets;
+	// private final MergeDnaSequenceSets mergeDNASequenceSets;
 	private final CreateOrUpdateStandardMatrix createOrUpdateStandardMatrix;
 	private final MergeTreeSets mergeTreeSets;
 	private final IOtuSetDAO otuSetDAO;
-	private final IDnaSequenceSetDAO dnaSequenceSetDAO;
+	// private final IDnaSequenceSetDAO dnaSequenceSetDAO;
 	private final IDnaMatrixDAO dnaMatrixDAO;
 	private final IStandardMatrixDAO standardMatrixDAO;
 	private final ITreeSetDAO treeSetDAO;
@@ -70,22 +67,22 @@ public final class CreateOrUpdateStudy {
 	CreateOrUpdateStudy(
 			final IStudyDAO studyDAO,
 			final MergeOtuSets mergeOTUSets,
-			final MergeDnaSequenceSets mergeDNASequenceSets,
+			// final MergeDnaSequenceSets mergeDNASequenceSets,
 			final CreateOrUpdateStandardMatrix createOrUpdateStandardMatrix,
 			final MergeTreeSets mergeTreeSets,
 			final IOtuSetDAO otuSetDAO,
-			final IDnaSequenceSetDAO dnaSequenceSetDAO,
+			// final IDnaSequenceSetDAO dnaSequenceSetDAO,
 			final IDnaMatrixDAO dnaMatrixDAO,
 			final IStandardMatrixDAO standardMatrixDAO,
 			final ITreeSetDAO treeSetDAO,
 			final IProteinMatrixDAO proteinMatrixDAO) {
 		this.studyDAO = studyDAO;
 		this.mergeOtuSets = mergeOTUSets;
-		this.mergeDNASequenceSets = mergeDNASequenceSets;
+		// this.mergeDNASequenceSets = mergeDNASequenceSets;
 		this.createOrUpdateStandardMatrix = createOrUpdateStandardMatrix;
 		this.mergeTreeSets = mergeTreeSets;
 		this.otuSetDAO = otuSetDAO;
-		this.dnaSequenceSetDAO = dnaSequenceSetDAO;
+		// this.dnaSequenceSetDAO = dnaSequenceSetDAO;
 		this.dnaMatrixDAO = dnaMatrixDAO;
 		this.standardMatrixDAO = standardMatrixDAO;
 		this.treeSetDAO = treeSetDAO;
@@ -150,7 +147,7 @@ public final class CreateOrUpdateStudy {
 			handleProteinMatrices(dbOtuSet, incomingOtuSet);
 			handleDnaMatrices(dbOtuSet, incomingOtuSet);
 			handleStandardMatrices(dbOtuSet, incomingOtuSet);
-			handleDnaSequenceSets(dbOtuSet, incomingOtuSet);
+			// handleDnaSequenceSets(dbOtuSet, incomingOtuSet);
 			handleTreeSets(dbOtuSet, incomingOtuSet);
 		}
 
@@ -204,50 +201,50 @@ public final class CreateOrUpdateStudy {
 		}
 	}
 
-	private void handleDnaSequenceSets(
-			final OtuSet dbOtuSet,
-			final PPodOtuSet incomingOtuSet) {
-
-		// Let's delete sequences missing from the incoming otu set
-		final Set<DnaSequenceSet> toBeRemoveds = newHashSet();
-		for (final DnaSequenceSet dbSequenceSet : dbOtuSet
-				.getDnaSequenceSets()) {
-			if (null == find(
-					incomingOtuSet.getDnaSequenceSets(),
-					compose(
-							equalTo(
-								dbSequenceSet.getPPodId()),
-							IHasPPodId.getPPodId),
-							null)) {
-				toBeRemoveds.add(dbSequenceSet);
-			}
-		}
-
-		for (final DnaSequenceSet toBeRemoved : toBeRemoveds) {
-			dbOtuSet.removeDnaSequenceSet(toBeRemoved);
-		}
-		int incomingSequenceSetPos = -1;
-		for (final PPodDnaSequenceSet incomingSequenceSet : incomingOtuSet
-				.getDnaSequenceSets()) {
-			incomingSequenceSetPos++;
-			DnaSequenceSet dbDnaSequenceSet;
-			if (null == (dbDnaSequenceSet =
-					find(dbOtuSet.getDnaSequenceSets(),
-							compose(
-									equalTo(incomingSequenceSet
-											.getPPodId()),
-									IHasPPodId.getPPodId),
-									null))) {
-				dbDnaSequenceSet = new DnaSequenceSet();
-				dbDnaSequenceSet.setLabel(incomingSequenceSet.getLabel());
-				dbOtuSet.addDnaSequenceSet(
-						incomingSequenceSetPos, dbDnaSequenceSet);
-				dnaSequenceSetDAO.makePersistent(dbDnaSequenceSet);
-			}
-			mergeDNASequenceSets
-					.mergeSequenceSets(dbDnaSequenceSet, incomingSequenceSet);
-		}
-	}
+	// private void handleDnaSequenceSets(
+	// final OtuSet dbOtuSet,
+	// final PPodOtuSet incomingOtuSet) {
+	//
+	// // Let's delete sequences missing from the incoming otu set
+	// final Set<DnaSequenceSet> toBeRemoveds = newHashSet();
+	// for (final DnaSequenceSet dbSequenceSet : dbOtuSet
+	// .getDnaSequenceSets()) {
+	// if (null == find(
+	// incomingOtuSet.getDnaSequenceSets(),
+	// compose(
+	// equalTo(
+	// dbSequenceSet.getPPodId()),
+	// IHasPPodId.getPPodId),
+	// null)) {
+	// toBeRemoveds.add(dbSequenceSet);
+	// }
+	// }
+	//
+	// for (final DnaSequenceSet toBeRemoved : toBeRemoveds) {
+	// dbOtuSet.removeDnaSequenceSet(toBeRemoved);
+	// }
+	// int incomingSequenceSetPos = -1;
+	// for (final PPodDnaSequenceSet incomingSequenceSet : incomingOtuSet
+	// .getDnaSequenceSets()) {
+	// incomingSequenceSetPos++;
+	// DnaSequenceSet dbDnaSequenceSet;
+	// if (null == (dbDnaSequenceSet =
+	// find(dbOtuSet.getDnaSequenceSets(),
+	// compose(
+	// equalTo(incomingSequenceSet
+	// .getPPodId()),
+	// IHasPPodId.getPPodId),
+	// null))) {
+	// dbDnaSequenceSet = new DnaSequenceSet();
+	// dbDnaSequenceSet.setLabel(incomingSequenceSet.getLabel());
+	// dbOtuSet.addDnaSequenceSet(
+	// incomingSequenceSetPos, dbDnaSequenceSet);
+	// dnaSequenceSetDAO.makePersistent(dbDnaSequenceSet);
+	// }
+	// mergeDNASequenceSets
+	// .mergeSequenceSets(dbDnaSequenceSet, incomingSequenceSet);
+	// }
+	// }
 
 	private void handleProteinMatrices(
 			final OtuSet dbOTUSet,

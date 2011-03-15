@@ -91,7 +91,7 @@ public class OtuSet extends UuPPodEntity2 implements ILabeled {
 
 	private List<ProteinMatrix> proteinMatrices = newArrayList();
 
-	private List<DnaSequenceSet> dnaSequenceSets = newArrayList();
+	// private List<DnaSequenceSet> dnaSequenceSets = newArrayList();
 
 	/**
 	 * Non-unique label.
@@ -159,30 +159,30 @@ public class OtuSet extends UuPPodEntity2 implements ILabeled {
 	 * @throws IllegalArgumentException if this otu set already contains the
 	 *             matrix
 	 */
-	public void addDnaSequenceSet(
-			final DnaSequenceSet sequenceSet) {
-		checkNotNull(sequenceSet);
-		checkArgument(
-				!dnaSequenceSets.contains(sequenceSet),
-				"otu set already contains the standard matrix ["
-						+ sequenceSet.getLabel() + "]");
-		dnaSequenceSets.add(sequenceSet);
-		sequenceSet.setParent(this);
-	}
+	// public void addDnaSequenceSet(
+	// final DnaSequenceSet sequenceSet) {
+	// checkNotNull(sequenceSet);
+	// checkArgument(
+	// !dnaSequenceSets.contains(sequenceSet),
+	// "otu set already contains the standard matrix ["
+	// + sequenceSet.getLabel() + "]");
+	// dnaSequenceSets.add(sequenceSet);
+	// sequenceSet.setParent(this);
+	// }
 
 	/** {@inheritDoc} */
-	public void addDnaSequenceSet(
-			final int sequenceSetPos,
-			final DnaSequenceSet sequenceSet) {
-		checkArgument(sequenceSetPos >= 0, "sequenceSetPos < 0");
-		checkNotNull(sequenceSet);
-		checkArgument(
-				!dnaSequenceSets.contains(sequenceSet),
-				"otu set already contains the matrix ["
-						+ sequenceSet.getLabel() + "]");
-		dnaSequenceSets.add(sequenceSetPos, sequenceSet);
-		sequenceSet.setParent(this);
-	}
+	// public void addDnaSequenceSet(
+	// final int sequenceSetPos,
+	// final DnaSequenceSet sequenceSet) {
+	// checkArgument(sequenceSetPos >= 0, "sequenceSetPos < 0");
+	// checkNotNull(sequenceSet);
+	// checkArgument(
+	// !dnaSequenceSets.contains(sequenceSet),
+	// "otu set already contains the matrix ["
+	// + sequenceSet.getLabel() + "]");
+	// dnaSequenceSets.add(sequenceSetPos, sequenceSet);
+	// sequenceSet.setParent(this);
+	// }
 
 	/**
 	 * Scaffolding code that does two things:
@@ -366,7 +366,7 @@ public class OtuSet extends UuPPodEntity2 implements ILabeled {
 		children.addAll(getStandardMatrices());
 		children.addAll(getDnaMatrices());
 		children.addAll(getTreeSets());
-		children.addAll(getDnaSequenceSets());
+		// children.addAll(getDnaSequenceSets());
 		return children;
 	}
 
@@ -390,14 +390,14 @@ public class OtuSet extends UuPPodEntity2 implements ILabeled {
 		return dnaMatrices;
 	}
 
-	@OneToMany(
-			cascade = CascadeType.ALL,
-			orphanRemoval = true)
-	@OrderColumn(name = "POSITION")
-	@JoinColumn(name = ID_COLUMN, nullable = false)
-	public List<DnaSequenceSet> getDnaSequenceSets() {
-		return dnaSequenceSets;
-	}
+	// @OneToMany(
+	// cascade = CascadeType.ALL,
+	// orphanRemoval = true)
+	// @OrderColumn(name = "POSITION")
+	// @JoinColumn(name = ID_COLUMN, nullable = false)
+	// public List<DnaSequenceSet> getDnaSequenceSets() {
+	// return dnaSequenceSets;
+	// }
 
 	@Id
 	@GeneratedValue
@@ -513,14 +513,14 @@ public class OtuSet extends UuPPodEntity2 implements ILabeled {
 	 * @throws IllegalArgumentException if the sequence set is not contained in
 	 *             this OTU set
 	 */
-	public void removeDnaSequenceSet(final DnaSequenceSet sequenceSet) {
-		checkNotNull(sequenceSet);
-		checkArgument(getDnaSequenceSets().contains(sequenceSet),
-				"otu does not contain the dna sequence set labeled ["
-						+ sequenceSet.getLabel() + "]");
-		dnaSequenceSets.remove(sequenceSet);
-		sequenceSet.setParent(null);
-	}
+	// public void removeDnaSequenceSet(final DnaSequenceSet sequenceSet) {
+	// checkNotNull(sequenceSet);
+	// checkArgument(getDnaSequenceSets().contains(sequenceSet),
+	// "otu does not contain the dna sequence set labeled ["
+	// + sequenceSet.getLabel() + "]");
+	// dnaSequenceSets.remove(sequenceSet);
+	// sequenceSet.setParent(null);
+	// }
 
 	/**
 	 * Remove {@code matrix} from this OTU set.
@@ -589,10 +589,11 @@ public class OtuSet extends UuPPodEntity2 implements ILabeled {
 		this.dnaMatrices = matrices;
 	}
 
-	@SuppressWarnings("unused")
-	private void setDnaSequenceSets(final List<DnaSequenceSet> sequenceSets) {
-		this.dnaSequenceSets = sequenceSets;
-	}
+	// @SuppressWarnings("unused")
+	// private void setDnaSequenceSets(final List<DnaSequenceSet> sequenceSets)
+	// {
+	// this.dnaSequenceSets = sequenceSets;
+	// }
 
 	@SuppressWarnings("unused")
 	private void setId(final Long id) {
