@@ -58,7 +58,7 @@ import edu.upenn.cis.ppod.imodel.ILabeled;
  */
 @Entity
 @Table(name = OtuSet.TABLE)
-public class OtuSet extends UuPPodEntity2 implements ILabeled {
+public class OtuSet extends UuPPodEntity implements ILabeled {
 
 	/** The column that stores the description. */
 	public static final String DESCRIPTION_COLUMN = "DESCRIPTION";

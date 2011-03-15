@@ -45,7 +45,7 @@ import edu.umd.cs.findbugs.annotations.Nullable;
  */
 @Entity
 @Table(name = StandardCharacter.TABLE)
-public class StandardCharacter extends UuPPodEntity2 {
+public class StandardCharacter extends UuPPodEntity {
 
 	public final static String TABLE = "STANDARD_CHARACTER";
 

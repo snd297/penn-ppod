@@ -35,7 +35,7 @@ import javax.persistence.Version;
  */
 @Entity
 @Table(name = Tree.TABLE)
-public class Tree extends UuPPodEntity2 {
+public class Tree extends UuPPodEntity {
 
 	public static final String TABLE = "TREE";
 

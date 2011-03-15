@@ -37,7 +37,7 @@ import edu.upenn.cis.ppod.imodel.IDependsOnParentOtus;
  */
 @MappedSuperclass
 public abstract class Matrix<R extends IChild<?>>
-		extends UuPPodEntity2
+		extends UuPPodEntity
 		implements IDependsOnParentOtus {
 
 	/** Description column. */

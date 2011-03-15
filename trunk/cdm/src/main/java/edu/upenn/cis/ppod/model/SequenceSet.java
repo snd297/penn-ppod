@@ -40,7 +40,7 @@ import edu.upenn.cis.ppod.imodel.IDependsOnParentOtus;
  */
 @MappedSuperclass
 public abstract class SequenceSet<S extends Sequence<?>>
-		extends UuPPodEntity2
+		extends UuPPodEntity
 		implements IDependsOnParentOtus {
 
 	@CheckForNull
