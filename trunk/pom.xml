@@ -71,10 +71,6 @@
 			<id>Mergere</id>
 			<url>http://repo1.maven.org/maven2</url>
 		</repository>
-		<repository>
-			<id>ibiblio</id>
-			<url>http://www.ibiblio.org/maven2</url>
-		</repository>
 	</repositories>
 	<dependencyManagement>
 		<dependencies>
