@@ -56,7 +56,7 @@ import edu.upenn.cis.ppod.imodel.IUuPPodEntity;
 				query = "select s.pPodId, s.label from Study s") })
 @Entity
 @Table(name = Study.TABLE)
-public class Study extends UuPPodEntity2 implements ILabeled, IOtuSets,
+public class Study extends UuPPodEntity implements ILabeled, IOtuSets,
 		IUuPPodEntity {
 
 	/** The table name for this entity. */

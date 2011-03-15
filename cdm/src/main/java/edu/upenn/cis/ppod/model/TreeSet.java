@@ -47,7 +47,7 @@ import edu.upenn.cis.ppod.imodel.IDependsOnParentOtus;
  */
 @Entity
 @Table(name = TreeSet.TABLE)
-public class TreeSet extends UuPPodEntity2 implements IDependsOnParentOtus {
+public class TreeSet extends UuPPodEntity implements IDependsOnParentOtus {
 
 	@CheckForNull
 	private Long id;
