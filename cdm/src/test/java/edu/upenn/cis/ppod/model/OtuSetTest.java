@@ -81,41 +81,41 @@ public class OtuSetTest {
 		assertSame(matrix3.getParent(), otuSet);
 	}
 
-	@Test
-	public void addDNASequenceSet() {
-		final DnaSequenceSet sequenceSet = new DnaSequenceSet();
+	// @Test
+	// public void addDNASequenceSet() {
+	// final DnaSequenceSet sequenceSet = new DnaSequenceSet();
+	//
+	// otuSet.addDnaSequenceSet(sequenceSet);
+	// assertEquals(getOnlyElement(otuSet.getDnaSequenceSets()), sequenceSet);
+	// assertSame(sequenceSet.getParent(), otuSet);
+	// }
 
-		otuSet.addDnaSequenceSet(sequenceSet);
-		assertEquals(getOnlyElement(otuSet.getDnaSequenceSets()), sequenceSet);
-		assertSame(sequenceSet.getParent(), otuSet);
-	}
-
-	@Test
-	public void addDNASequenceSetPos() {
-		final OtuSet otuSet = new OtuSet();
-		final DnaSequenceSet sequenceSet0 = new DnaSequenceSet();
-
-		final DnaSequenceSet sequenceSet1 = new DnaSequenceSet();
-
-		final DnaSequenceSet sequenceSet2 = new DnaSequenceSet();
-
-		final DnaSequenceSet sequenceSet3 = new DnaSequenceSet();
-
-		otuSet.addDnaSequenceSet(sequenceSet0);
-		otuSet.addDnaSequenceSet(sequenceSet1);
-		otuSet.addDnaSequenceSet(sequenceSet2);
-
-		otuSet.addDnaSequenceSet(2, sequenceSet3);
-
-		assertEquals(otuSet.getDnaSequenceSets().size(), 4);
-		assertTrue(otuSet.getDnaSequenceSets().contains(sequenceSet3));
-
-		assertEquals(otuSet.getDnaSequenceSets(),
-				ImmutableList.of(sequenceSet0, sequenceSet1, sequenceSet3,
-						sequenceSet2));
-
-		assertSame(sequenceSet3.getParent(), otuSet);
-	}
+	// @Test
+	// public void addDNASequenceSetPos() {
+	// final OtuSet otuSet = new OtuSet();
+	// final DnaSequenceSet sequenceSet0 = new DnaSequenceSet();
+	//
+	// final DnaSequenceSet sequenceSet1 = new DnaSequenceSet();
+	//
+	// final DnaSequenceSet sequenceSet2 = new DnaSequenceSet();
+	//
+	// final DnaSequenceSet sequenceSet3 = new DnaSequenceSet();
+	//
+	// otuSet.addDnaSequenceSet(sequenceSet0);
+	// otuSet.addDnaSequenceSet(sequenceSet1);
+	// otuSet.addDnaSequenceSet(sequenceSet2);
+	//
+	// otuSet.addDnaSequenceSet(2, sequenceSet3);
+	//
+	// assertEquals(otuSet.getDnaSequenceSets().size(), 4);
+	// assertTrue(otuSet.getDnaSequenceSets().contains(sequenceSet3));
+	//
+	// assertEquals(otuSet.getDnaSequenceSets(),
+	// ImmutableList.of(sequenceSet0, sequenceSet1, sequenceSet3,
+	// sequenceSet2));
+	//
+	// assertSame(sequenceSet3.getParent(), otuSet);
+	// }
 
 	@Test
 	public void addOTU() {
@@ -127,9 +127,9 @@ public class OtuSetTest {
 		final DnaMatrix dnaMatrix = new DnaMatrix();
 		otuSet.addDnaMatrix(dnaMatrix);
 
-		final DnaSequenceSet dnaSequenceSet = new DnaSequenceSet();
+		// final DnaSequenceSet dnaSequenceSet = new DnaSequenceSet();
 
-		otuSet.addDnaSequenceSet(dnaSequenceSet);
+		// otuSet.addDnaSequenceSet(dnaSequenceSet);
 
 		final Otu otu0 = new Otu("otu-0");
 		final Otu otu1 = new Otu("otu-1");
@@ -162,15 +162,15 @@ public class OtuSetTest {
 		assertNull(dnaMatrix.getRows().get(otu1));
 		assertNull(dnaMatrix.getRows().get(otu2));
 
-		assertEquals(
-				dnaSequenceSet
-						.getSequences()
-						.keySet(),
-						otusSet012);
-
-		assertNull(dnaSequenceSet.getSequences().get(otu0));
-		assertNull(dnaSequenceSet.getSequences().get(otu1));
-		assertNull(dnaSequenceSet.getSequences().get(otu2));
+		// assertEquals(
+		// dnaSequenceSet
+		// .getSequences()
+		// .keySet(),
+		// otusSet012);
+		//
+		// assertNull(dnaSequenceSet.getSequences().get(otu0));
+		// assertNull(dnaSequenceSet.getSequences().get(otu1));
+		// assertNull(dnaSequenceSet.getSequences().get(otu2));
 	}
 
 	/**
@@ -390,26 +390,26 @@ public class OtuSetTest {
 				ImmutableList.of(matrix0, matrix2));
 	}
 
-	@Test
-	public void removeDNASequenceSet() {
-
-		final OtuSet otuSet = new OtuSet();
-		final DnaSequenceSet dnaSequenceSet0 = new DnaSequenceSet();
-
-		otuSet.addDnaSequenceSet(dnaSequenceSet0);
-		final DnaSequenceSet dnaSequenceSet1 = new DnaSequenceSet();
-
-		otuSet.addDnaSequenceSet(dnaSequenceSet1);
-		final DnaSequenceSet dnaSequenceSet2 = new DnaSequenceSet();
-
-		otuSet.addDnaSequenceSet(dnaSequenceSet2);
-
-		otuSet.removeDnaSequenceSet(dnaSequenceSet1);
-
-		assertEquals(
-				otuSet.getDnaSequenceSets(),
-				ImmutableList.of(dnaSequenceSet0, dnaSequenceSet2));
-	}
+	// @Test
+	// public void removeDNASequenceSet() {
+	//
+	// final OtuSet otuSet = new OtuSet();
+	// final DnaSequenceSet dnaSequenceSet0 = new DnaSequenceSet();
+	//
+	// otuSet.addDnaSequenceSet(dnaSequenceSet0);
+	// final DnaSequenceSet dnaSequenceSet1 = new DnaSequenceSet();
+	//
+	// otuSet.addDnaSequenceSet(dnaSequenceSet1);
+	// final DnaSequenceSet dnaSequenceSet2 = new DnaSequenceSet();
+	//
+	// otuSet.addDnaSequenceSet(dnaSequenceSet2);
+	//
+	// otuSet.removeDnaSequenceSet(dnaSequenceSet1);
+	//
+	// assertEquals(
+	// otuSet.getDnaSequenceSets(),
+	// ImmutableList.of(dnaSequenceSet0, dnaSequenceSet2));
+	// }
 
 	/**
 	 * Remove an otu set and make sure it was removed, otuSet is marked for a

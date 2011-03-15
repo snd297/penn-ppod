@@ -18,7 +18,6 @@ package edu.upenn.cis.ppod.dto;
 import static com.google.common.base.Preconditions.checkNotNull;
 import static com.google.common.collect.Iterables.get;
 import edu.upenn.cis.ppod.model.DnaMatrix;
-import edu.upenn.cis.ppod.model.DnaSequenceSet;
 import edu.upenn.cis.ppod.model.Otu;
 import edu.upenn.cis.ppod.model.OtuSet;
 import edu.upenn.cis.ppod.model.ProteinMatrix;
@@ -95,13 +94,13 @@ public final class Study2StudyInfo {
 
 			// TODO: this should be genericized when we support other kinds of
 			// MolecularSequenceSets
-			for (final DnaSequenceSet dnaSequenceSet : otuSet
-					.getDnaSequenceSets()) {
-				final SequenceSetInfo sequenceSetInfo =
-						new SequenceSetInfo();
-				otuSetInfo.getSequenceSetInfos().add(sequenceSetInfo);
-				sequenceSetInfo.setPPodId(dnaSequenceSet.getPPodId());
-			}
+			// for (final DnaSequenceSet dnaSequenceSet : otuSet
+			// .getDnaSequenceSets()) {
+			// final SequenceSetInfo sequenceSetInfo =
+			// new SequenceSetInfo();
+			// otuSetInfo.getSequenceSetInfos().add(sequenceSetInfo);
+			// sequenceSetInfo.setPPodId(dnaSequenceSet.getPPodId());
+			// }
 
 			for (final TreeSet treeSet : otuSet.getTreeSets()) {
 				final TreeSetInfo treeSetInfo = new TreeSetInfo();
