@@ -31,7 +31,7 @@ import edu.umd.cs.findbugs.annotations.Nullable;
  * @author Sam Donnelly
  */
 @Entity
-public class Chromatogram extends UuPPodEntity {
+public class Chromatogram extends UuPPodEntity2 {
 
 	@CheckForNull
 	private Long id;
