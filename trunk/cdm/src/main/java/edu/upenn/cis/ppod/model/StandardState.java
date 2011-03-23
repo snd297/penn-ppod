@@ -124,7 +124,7 @@ public class StandardState {
 	 * @return this character stateNumber's label
 	 */
 	@Column(name = "LABEL", nullable = false)
-	@Index(name = "LABEL_IDX")
+	@Index(name = "IDX_LABEL")
 	@Nullable
 	public String getLabel() {
 		return label;

@@ -26,7 +26,6 @@ import javax.persistence.Transient;
 
 import edu.umd.cs.findbugs.annotations.CheckForNull;
 import edu.umd.cs.findbugs.annotations.Nullable;
-import edu.upenn.cis.ppod.imodel.IChild;
 import edu.upenn.cis.ppod.imodel.IDependsOnParentOtus;
 
 /**
@@ -36,7 +35,7 @@ import edu.upenn.cis.ppod.imodel.IDependsOnParentOtus;
  * @author Sam Donnelly
  */
 @MappedSuperclass
-public abstract class Matrix<R extends IChild<?>>
+public abstract class Matrix<R>
 		extends UuPPodEntity
 		implements IDependsOnParentOtus {
 

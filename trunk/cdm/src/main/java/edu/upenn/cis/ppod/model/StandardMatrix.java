@@ -166,6 +166,7 @@ public class StandardMatrix extends Matrix<StandardRow> {
 			CascadeType.REFRESH },
 			orphanRemoval = true)
 	@JoinTable(name = TABLE + "_" + StandardRow.TABLE,
+			joinColumns = @JoinColumn(name = ID_COLUMN),
 			inverseJoinColumns = @JoinColumn(name = StandardRow.ID_COLUMN))
 	@MapKeyJoinColumn(name = Otu.ID_COLUMN)
 	@Override

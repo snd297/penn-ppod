@@ -118,7 +118,7 @@ public class StandardCharacter extends UuPPodEntity {
 	 * @return the label of this {@code Character}
 	 */
 	@Column(name = "LABEL", nullable = false)
-	@Index(name = "LABEL_IDX")
+	@Index(name = "IDX_LABEL")
 	@Nullable
 	public String getLabel() {
 		return label;

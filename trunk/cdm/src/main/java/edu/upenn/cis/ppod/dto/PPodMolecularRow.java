@@ -34,7 +34,6 @@ abstract class PPodMolecularRow {
 	}
 
 	public final void setSequence(final String sequence) {
-		checkNotNull(sequence);
 		for (int i = 0; i < sequence.length(); i++) {
 			checkArgument(
 					getLegalChars().contains(sequence.charAt(i))

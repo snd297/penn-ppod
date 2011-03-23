@@ -87,7 +87,7 @@ public class Otu
 	 * @return the label of this {@code OTU}
 	 */
 	@Column(name = "LABEL", nullable = false)
-	@Index(name = "LABEL_IDX")
+	@Index(name = "IDX_LABEL")
 	@Nullable
 	public String getLabel() {
 		return label;

@@ -15,6 +15,8 @@
  */
 package edu.upenn.cis.ppod.services;
 
+import javax.ws.rs.GET;
+import javax.ws.rs.Produces;
 import javax.ws.rs.core.Response;
 
 /**
@@ -22,6 +24,8 @@ import javax.ws.rs.core.Response;
  */
 final class PPodGreetingService implements IPPodGreetingResource {
 
+	@GET
+	@Produces("text/plain")
 	public Response greeting() {
 		return Response.status(200)
 				.entity("pPOD Services v0.2-SNAPSHOT")

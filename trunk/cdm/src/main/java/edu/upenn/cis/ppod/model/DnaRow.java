@@ -79,6 +79,16 @@ public class DnaRow implements IChild<DnaMatrix> {
 		return sequence;
 	}
 
+	/**
+	 * @return the version
+	 */
+	@Version
+	@Column(name = "OBJ_VERSION")
+	@Nullable
+	public Integer getVersion() {
+		return version;
+	}
+
 	@SuppressWarnings("unused")
 	private void setId(final Long id) {
 		this.id = id;
@@ -94,19 +104,9 @@ public class DnaRow implements IChild<DnaMatrix> {
 	}
 
 	/**
-	 * @return the version
-	 */
-	@Version
-	@Column(name = "OBJ_VERSION")
-	@Nullable
-	public Integer getVersion() {
-		return version;
-	}
-
-	/**
 	 * @param version the version to set
 	 */
-	public void setVersion(Integer version) {
+	public void setVersion(final Integer version) {
 		this.version = version;
 	}
 }

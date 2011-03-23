@@ -154,6 +154,8 @@ public class StandardCell extends Cell<StandardState, StandardRow> {
 	@SuppressWarnings("unused")
 	@ManyToMany
 	@JoinTable(name = StandardCell.TABLE + "_" + StandardState.TABLE,
+			joinColumns = @JoinColumn(
+					name = ID_COLUMN),
 			inverseJoinColumns = @JoinColumn(
 					name = StandardState.ID_COLUMN))
 	private Set<StandardState> getStates() {
