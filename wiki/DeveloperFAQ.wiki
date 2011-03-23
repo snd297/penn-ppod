@@ -1,17 +1,17 @@
 #summary Explanations of non-obvious stuff so that we remember it.
 
-===1) Why did you map cells and rows the way you did? If you don't mind using non-JPA Hibernate annotations, then why didn't you use `@IndexColumn`?===
+===1) Why did you map cells and rows the way you did? If you don't mind using non-JPA Hibernate annotations, then why didn't you use `@OrderColumn`?===
 
 We were originally doing it like this:
 
 {{{
 @Entity
-public class CharacterStateRow {
+public class StandardRow {
     ...
     @OneToMany
-    @org.hibernate.annotations.IndexColumn(name="position")
+    @OrderColumn(name = "POSITION")
     @JoinColumn(name="CHARACTER_STATE_ROW_ID", nullable=false)
-    private List<CharacterStateRow> rows;
+    private List<StandardRow> rows;
     ...
 }
 
@@ -25,7 +25,7 @@ public class CharacterStateCell {
 }
 }}}
 
-but it was too slow on at least saves. This was because it performed many extra updates for unknown reasons - maybe because it needs to manage the ordering of the list and can only update the position column when the `CharacterStateRow`is flushed, that is, after all the members have been set?  `CharacterStateMatrix->CharacterStateRow` was done the same way because it was developed at the same time. It also seems nice for consistency's sake. 
+but it was too slow on at least saves. This was because it performed many extra updates for unknown reasons - section 2.2.5.3.1.1 of [http://docs.jboss.org/hibernate/annotations/3.5/reference/en/html/entity.html#entity-hibspec] mentions that bidirectional one-to-many with the parent the owning side is not optimized, so maybe that's it.
 
 ===2) If what you say in rationale 1 is true, why did you proceed to do it with `CharacterStateMatrix->Character`?===
 
@@ -34,13 +34,3 @@ Because that is a many-to-many relationship and we didn't know how to do it othe
 ===3) But then why is `TreeSet->Tree` done with an `@IndexColumn` and join table?===
 
 Because it used to be many-to-many and since there're are so few trees in tree sets it didn't seem worth it to change.
-
-===4) Why field access and not property access? ===
-
-Because our setter's are used to figure out when we need a new pPOD version number and do input validation. a
-
-For better and for worse, we take the view that the accessors are for Java clients and the fields are for the database. There are exceptions to this, see for example `DNARows`, `StandardRows`, and `DNASequences`.
-
-When appropriate, we've used property access. For example, the @Id of our `PerisistentObject` is property access.
-
-Christian Bauer seems to think that this approach is fine https://forum.hibernate.org/viewtopic.php?p=2349555.
