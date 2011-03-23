@@ -10,7 +10,7 @@ public class StandardRow {
     ...
     @OneToMany
     @OrderColumn(name = "POSITION")
-    @JoinColumn(name="CHARACTER_STATE_ROW_ID", nullable=false)
+    @JoinColumn(name="STANDARD_ROW_ID", nullable=false)
     private List<StandardRow> rows;
     ...
 }
