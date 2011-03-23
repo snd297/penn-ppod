@@ -1,6 +1,6 @@
 #summary Explanations of non-obvious stuff so that we remember it.
 
-===1) Why did you map cells and rows the way you did? If you don't mind using non-JPA Hibernate annotations, then why didn't you use `@OrderColumn`?===
+===1) Why did you map cells and rows the way you did? Why not use `@OrderColumn`?===
 
 We were originally doing it like this:
 
@@ -26,11 +26,3 @@ public class CharacterStateCell {
 }}}
 
 but it was too slow on at least saves. This was because it performed many extra updates for unknown reasons - section 2.2.5.3.1.1 of [http://docs.jboss.org/hibernate/annotations/3.5/reference/en/html/entity.html#entity-hibspec] mentions that bidirectional one-to-many with the parent the owning side is not optimized, so maybe that's it.
-
-===2) If what you say in rationale 1 is true, why did you proceed to do it with `CharacterStateMatrix->Character`?===
-
-Because that is a many-to-many relationship and we didn't know how to do it otherwise. Plus, there're aren't as many `Character`s as there are cells and so performance problems - if any - wouldn't be as amplified.
-
-===3) But then why is `TreeSet->Tree` done with an `@IndexColumn` and join table?===
-
-Because it used to be many-to-many and since there're are so few trees in tree sets it didn't seem worth it to change.
