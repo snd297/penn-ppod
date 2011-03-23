@@ -25,4 +25,4 @@ public class StandardCell {
 }
 }}}
 
-but it was too slow on at least saves. This was because it performed many extra updates for unknown reasons - section 2.2.5.3.1.1 of [http://docs.jboss.org/hibernate/annotations/3.5/reference/en/html/entity.html#entity-hibspec] mentions that bidirectional one-to-many with the parent the owning side is not optimized, so maybe that's it.
+but it was too slow on at least saves. This was because it performed many extra updates for unknown reasons - section 2.2.5.3.1.1 of [http://docs.jboss.org/hibernate/annotations/3.5/reference/en/html/entity.html#entity-hibspec] mentions that bidirectional one-to-many with the parent the owning side is not optimized and will produce some additional UPDATE statements, so maybe that's it.
