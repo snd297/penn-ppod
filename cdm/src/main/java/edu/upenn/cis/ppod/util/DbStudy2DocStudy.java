@@ -200,13 +200,14 @@ public final class DbStudy2DocStudy {
 						dbTreeSet.getPPodId(),
 						dbTreeSet.getLabel());
 		for (final Tree dbTree : dbTreeSet.getTrees()) {
-			final PPodTree docTree =
-					new PPodTree(
-							dbTree.getPPodId(),
-							dbTree.getLabel(),
-							dbTree.getNewick());
-			docTreeSet.getTrees().add(docTree);
+			docTreeSet.getTrees().add(dbTree2DocTree(dbTree));
 		}
 		return docTreeSet;
+	}
+
+	public PPodTree dbTree2DocTree(final Tree dbTree) {
+		return new PPodTree(dbTree.getPPodId(),
+								dbTree.getLabel(),
+								dbTree.getNewick());
 	}
 }

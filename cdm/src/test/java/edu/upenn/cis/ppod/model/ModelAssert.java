@@ -22,8 +22,6 @@ import static org.testng.Assert.assertEquals;
 import static org.testng.Assert.assertNotNull;
 import static org.testng.Assert.assertSame;
 import static org.testng.Assert.assertTrue;
-import edu.upenn.cis.ppod.dto.PPodDnaSequence;
-import edu.upenn.cis.ppod.dto.PPodDnaSequenceSet;
 import edu.upenn.cis.ppod.dto.PPodOtu;
 import edu.upenn.cis.ppod.dto.PPodOtuSet;
 import edu.upenn.cis.ppod.dto.PPodStandardCell;
@@ -41,35 +39,36 @@ import edu.upenn.cis.ppod.imodel.ILabeled;
  */
 public class ModelAssert {
 
-	public static <S extends Sequence<?>> void assertEqualsSequenceSets(
-			final SequenceSet<S> actualSeqSet,
-			final PPodDnaSequenceSet expectedSeqSet) {
-		assertEquals(actualSeqSet.getLabel(), actualSeqSet.getLabel());
-		assertEquals(
-				actualSeqSet.getSequences().size(),
-				expectedSeqSet.getSequences().size());
-
-		for (int otuPos = 0; otuPos < actualSeqSet.getParent().getOtus().size(); otuPos++) {
-			assertEqualsSequences(
-					actualSeqSet
-							.getSequences().get(actualSeqSet
-									.getParent()
-									.getOtus()
-									.get(otuPos)),
-									expectedSeqSet
-											.getSequences().get(otuPos));
-
-		}
-	}
-
-	public static void assertEqualsSequences(
-			final Sequence<?> actualSeq,
-			final PPodDnaSequence expectedSeq) {
-		assertEquals(actualSeq.getSequence(), expectedSeq.getSequence());
-		assertEquals(actualSeq.getAccession(), expectedSeq.getAccession());
-		assertEquals(actualSeq.getDescription(), expectedSeq.getDescription());
-		assertEquals(actualSeq.getName(), expectedSeq.getName());
-	}
+	// public static <S extends Sequence<?>> void assertEqualsSequenceSets(
+	// final SequenceSet<S> actualSeqSet,
+	// final PPodDnaSequenceSet expectedSeqSet) {
+	// assertEquals(actualSeqSet.getLabel(), actualSeqSet.getLabel());
+	// assertEquals(
+	// actualSeqSet.getSequences().size(),
+	// expectedSeqSet.getSequences().size());
+	//
+	// for (int otuPos = 0; otuPos < actualSeqSet.getParent().getOtus().size();
+	// otuPos++) {
+	// assertEqualsSequences(
+	// actualSeqSet
+	// .getSequences().get(actualSeqSet
+	// .getParent()
+	// .getOtus()
+	// .get(otuPos)),
+	// expectedSeqSet
+	// .getSequences().get(otuPos));
+	//
+	// }
+	// }
+	//
+	// public static void assertEqualsSequences(
+	// final Sequence<?> actualSeq,
+	// final PPodDnaSequence expectedSeq) {
+	// assertEquals(actualSeq.getSequence(), expectedSeq.getSequence());
+	// assertEquals(actualSeq.getAccession(), expectedSeq.getAccession());
+	// assertEquals(actualSeq.getDescription(), expectedSeq.getDescription());
+	// assertEquals(actualSeq.getName(), expectedSeq.getName());
+	// }
 
 	public static void assertEqualsOTUSet(
 			final OtuSet actualOTUSet,
