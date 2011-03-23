@@ -16,10 +16,10 @@ public class StandardRow {
 }
 
 @Entity
-public class CharacterStateCell {
+public class StandardCell {
     ...
     @ManyToOne
-    @JoinColumn(name="CHARACTER_STATE_ROW_ID", insertable=false, updatable=false, nullable=false)
+    @JoinColumn(name="STANDARD_ROW_ID", insertable=false, updatable=false, nullable=false)
     private CharacterStateRow row;
     ...
 }
