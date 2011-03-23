@@ -2,5 +2,4 @@
   * [GettingStarted Getting Started]
   * [SettingUpMesquitePackage Setting Up the pPOD Mesquite Package Project]
   * [HQLSelectEquusSus Example HQL Query Against pPOD DB]
-  * [InfoPropagation How Information Travels Through the CDM Hierarchy]
   * [DeveloperFAQ Frequently Anticipated Questions]
