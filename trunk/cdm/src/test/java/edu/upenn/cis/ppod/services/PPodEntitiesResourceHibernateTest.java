@@ -54,7 +54,7 @@ public class PPodEntitiesResourceHibernateTest {
 
 		when(q.list()).thenReturn(matrices);
 
-		final PPodEntitiesResourceHibernate pPodEntitiesResource =
+		final IPPodEntitiesResource pPodEntitiesResource =
 				new PPodEntitiesResourceHibernate(s);
 		final PPodEntities results = pPodEntitiesResource
 				.getEntitiesByHqlQuery("some query");
@@ -104,7 +104,7 @@ public class PPodEntitiesResourceHibernateTest {
 
 		when(q.list()).thenReturn(matrices);
 
-		final PPodEntitiesResourceHibernate pPodEntitiesResource =
+		final IPPodEntitiesResource pPodEntitiesResource =
 				new PPodEntitiesResourceHibernate(s);
 		final PPodEntities results = pPodEntitiesResource
 				.getEntitiesByHqlQuery("some query");
