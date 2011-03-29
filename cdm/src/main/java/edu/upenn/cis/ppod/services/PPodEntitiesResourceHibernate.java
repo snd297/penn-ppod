@@ -30,6 +30,7 @@ import org.slf4j.LoggerFactory;
 
 import com.google.inject.Inject;
 
+import edu.upenn.cis.ppod.dto.Counts;
 import edu.upenn.cis.ppod.dto.IHasPPodId;
 import edu.upenn.cis.ppod.dto.PPodDnaMatrix;
 import edu.upenn.cis.ppod.dto.PPodEntities;
@@ -46,16 +47,82 @@ import edu.upenn.cis.ppod.util.DbStudy2DocStudy;
 /**
  * @author Sam Donnelly
  */
-class PPodEntitiesResourceHibernate implements
-		IPPodEntitiesResource {
+class PPodEntitiesResourceHibernate
+		implements IPPodEntitiesResource {
 
 	private final Session session;
-	private static final Logger logger = LoggerFactory
-			.getLogger(PPodEntitiesResourceHibernate.class);
+	private static final Logger logger =
+			LoggerFactory.getLogger(PPodEntitiesResourceHibernate.class);
 
 	@Inject
 	PPodEntitiesResourceHibernate(final Session session) {
 		this.session = session;
+	}
+
+	public Counts countHqlQuery(String query) {
+		final String METHOD = "countHqlQuery(...)";
+		long inTime = new Date().getTime();
+		Transaction trx = null;
+		try {
+
+			trx = session.beginTransaction();
+
+			StringBuilder querySb = new StringBuilder("select ");
+
+			querySb.append("count(distinct os)");
+
+			if (query.contains("os.standardMatrices")) {
+				querySb.append(", ");
+				querySb.append("count(distinct sm)");
+			} else {
+				querySb.append(", 0L");
+			}
+			if (query.contains("os.dnaMatrices")) {
+				querySb.append(", ");
+				querySb.append("count(distinct dm)");
+			} else {
+				querySb.append(", 0L");
+			}
+			if (query.contains("os.treeSets")) {
+				querySb.append(", ");
+				querySb.append("count(distinct ts)");
+			} else {
+				querySb.append(", 0L");
+			}
+
+			querySb.append(" ");
+
+			querySb.append(
+					query.substring(query.indexOf("from "),
+							query.length()));
+
+			final Object[] result = (Object[])
+					session.createQuery(querySb.toString())
+							.setReadOnly(true)
+							.uniqueResult();
+
+			Counts counts = new Counts();
+
+			counts.otuSetCount = (Long) result[0];
+			counts.standardMatrixCount = (Long) result[1];
+			counts.dnaMatrixCount = (Long) result[2];
+			counts.treeSetCount = (Long) result[3];
+
+			trx.commit();
+			return counts;
+		} catch (Throwable t) {
+			if (trx != null && trx.isActive()) {
+				try {
+					trx.rollback();
+				} catch (Throwable rbEx) {
+					logger.error("caught exception while rolling back", rbEx);
+				}
+			}
+			throw new IllegalStateException(t);
+		} finally {
+			logger.debug("{}: response time: {} milliseconds",
+					METHOD, Long.valueOf(new Date().getTime() - inTime));
+		}
 	}
 
 	public PPodEntities getEntitiesByHqlQuery(final String query) {
@@ -71,8 +138,7 @@ class PPodEntitiesResourceHibernate implements
 			@SuppressWarnings("unchecked")
 			final List<Object> queryResults =
 					session.createQuery(query)
-							.setReadOnly(true)
-							.list();
+							.setReadOnly(true).list();
 			final PPodEntities entities = new PPodEntities();
 
 			List<Object> flattenedResults = newArrayList();
@@ -196,12 +262,12 @@ class PPodEntitiesResourceHibernate implements
 				try {
 					trx.rollback();
 				} catch (Throwable rbEx) {
-					logger.error("caught exception while rolling back", rbEx);
+
 				}
 			}
 			throw new IllegalStateException(t);
 		} finally {
-			logger.debug("{}: response time me: {} milliseconds",
+			logger.debug("{}: response time: {} milliseconds",
 					METHOD, Long.valueOf(new Date().getTime() - inTime));
 		}
 	}
