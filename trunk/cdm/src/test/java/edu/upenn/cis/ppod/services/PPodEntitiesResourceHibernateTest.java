@@ -53,11 +53,12 @@ public class PPodEntitiesResourceHibernateTest {
 		matrices.add(matrix);
 
 		when(q.list()).thenReturn(matrices);
+		when(q.uniqueResult()).thenReturn(new Object[] { 1L, 1L, 1L, 1L });
 
 		final IPPodEntitiesResource pPodEntitiesResource =
 				new PPodEntitiesResourceHibernate(s);
 		final PPodEntities results = pPodEntitiesResource
-				.getEntitiesByHqlQuery("some query");
+				.getEntitiesByHqlQuery("select something from something");
 
 		PPodOtuSet resultOtuSet = results.getOtuSets().get(0);
 
@@ -103,11 +104,12 @@ public class PPodEntitiesResourceHibernateTest {
 		matrices.add(matrix);
 
 		when(q.list()).thenReturn(matrices);
+		when(q.uniqueResult()).thenReturn(new Object[] { 1L, 1L, 1L, 1L });
 
 		final IPPodEntitiesResource pPodEntitiesResource =
 				new PPodEntitiesResourceHibernate(s);
 		final PPodEntities results = pPodEntitiesResource
-				.getEntitiesByHqlQuery("some query");
+				.getEntitiesByHqlQuery("select something from something");
 
 		PPodOtuSet resultOtuSet = results.getOtuSets().get(0);
 

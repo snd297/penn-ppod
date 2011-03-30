@@ -59,57 +59,63 @@ class PPodEntitiesResourceHibernate
 		this.session = session;
 	}
 
-	public Counts countHqlQuery(String query) {
-		final String METHOD = "countHqlQuery(...)";
-		long inTime = new Date().getTime();
-		Transaction trx = null;
-		try {
+	private Counts count(String query) {
 
-			trx = session.beginTransaction();
+		StringBuilder querySb = new StringBuilder("select ");
 
-			StringBuilder querySb = new StringBuilder("select ");
+		querySb.append("count(distinct os)");
 
-			querySb.append("count(distinct os)");
+		if (query.contains("os.standardMatrices")) {
+			querySb.append(", ");
+			querySb.append("count(distinct sm)");
+		} else {
+			querySb.append(", 0L");
+		}
+		if (query.contains("os.dnaMatrices")) {
+			querySb.append(", ");
+			querySb.append("count(distinct dm)");
+		} else {
+			querySb.append(", 0L");
+		}
+		if (query.contains("os.treeSets")) {
+			querySb.append(", ");
+			querySb.append("count(distinct ts)");
+		} else {
+			querySb.append(", 0L");
+		}
 
-			if (query.contains("os.standardMatrices")) {
-				querySb.append(", ");
-				querySb.append("count(distinct sm)");
-			} else {
-				querySb.append(", 0L");
-			}
-			if (query.contains("os.dnaMatrices")) {
-				querySb.append(", ");
-				querySb.append("count(distinct dm)");
-			} else {
-				querySb.append(", 0L");
-			}
-			if (query.contains("os.treeSets")) {
-				querySb.append(", ");
-				querySb.append("count(distinct ts)");
-			} else {
-				querySb.append(", 0L");
-			}
+		querySb.append(" ");
 
-			querySb.append(" ");
-
-			querySb.append(
+		querySb.append(
 					query.substring(query.indexOf("from "),
 							query.length()));
 
-			final Object[] result = (Object[])
+		final Object[] result = (Object[])
 					session.createQuery(querySb.toString())
 							.setReadOnly(true)
 							.uniqueResult();
 
-			Counts counts = new Counts();
+		Counts counts = new Counts();
 
-			counts.otuSetCount = (Long) result[0];
-			counts.standardMatrixCount = (Long) result[1];
-			counts.dnaMatrixCount = (Long) result[2];
-			counts.treeSetCount = (Long) result[3];
+		counts.setOtuSetCount((Long) result[0]);
+		counts.setStandardMatrixCount((Long) result[1]);
+		counts.setDnaMatrixCount((Long) result[2]);
+		counts.setTreeSetCount((Long) result[3]);
+		return counts;
+	}
 
+	public Counts countHqlQuery(String query) {
+		final String METHOD = "countHqlQuery(...)";
+		long inTime = new Date().getTime();
+
+		Transaction trx = null;
+		try {
+
+			trx = session.beginTransaction();
+			Counts counts = count(query);
 			trx.commit();
 			return counts;
+
 		} catch (Throwable t) {
 			if (trx != null && trx.isActive()) {
 				try {
@@ -134,6 +140,13 @@ class PPodEntitiesResourceHibernate
 
 		try {
 			trx = session.beginTransaction();
+
+			Counts counts = count(query);
+
+			if (counts.getTotal() > 10) {
+				throw new IllegalArgumentException("result count "
+						+ counts.getTotal() + " is too much");
+			}
 
 			@SuppressWarnings("unchecked")
 			final List<Object> queryResults =
