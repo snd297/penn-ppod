@@ -125,7 +125,7 @@ public class Study extends UuPPodEntity implements ILabeled, IOtuSets,
 	 * 
 	 * @return the label
 	 */
-	@Column(nullable = false)
+	@Column(nullable = false, unique = true)
 	@Nullable
 	public String getLabel() {
 		return label;
