@@ -33,7 +33,7 @@ public class PPodEntitiesResourceHibernateTest {
 		final Transaction trx = mock(Transaction.class);
 
 		when(s.createQuery(anyString())).thenReturn(q);
-		when(s.beginTransaction()).thenReturn(trx);
+		when(s.getTransaction()).thenReturn(trx);
 		when(q.setReadOnly(anyBoolean())).thenReturn(q);
 
 		List<Object> matrices = newArrayList();
@@ -57,8 +57,9 @@ public class PPodEntitiesResourceHibernateTest {
 
 		final IPPodEntitiesResource pPodEntitiesResource =
 				new PPodEntitiesResourceHibernate(s);
-		final PPodEntities results = pPodEntitiesResource
-				.getEntitiesByHqlQuery("select something from something");
+		final PPodEntities results =
+				pPodEntitiesResource
+						.getEntitiesByHqlQuery("select something from something");
 
 		PPodOtuSet resultOtuSet = results.getOtuSets().get(0);
 
@@ -83,7 +84,7 @@ public class PPodEntitiesResourceHibernateTest {
 		final Transaction trx = mock(Transaction.class);
 
 		when(s.createQuery(anyString())).thenReturn(q);
-		when(s.beginTransaction()).thenReturn(trx);
+		when(s.getTransaction()).thenReturn(trx);
 		when(q.setReadOnly(anyBoolean())).thenReturn(q);
 
 		List<Object> matrices = newArrayList();
