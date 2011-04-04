@@ -40,6 +40,8 @@ import javax.persistence.Table;
 import javax.persistence.Transient;
 import javax.persistence.Version;
 
+import org.hibernate.annotations.Index;
+
 import com.google.common.annotations.VisibleForTesting;
 
 import edu.umd.cs.findbugs.annotations.CheckForNull;
@@ -414,6 +416,7 @@ public class OtuSet extends UuPPodEntity implements ILabeled {
 	 * @return the label
 	 */
 	@Column(name = "LABEL", nullable = false)
+	@Index(name = "IDX_LABEL")
 	@Nullable
 	public String getLabel() {
 		return label;

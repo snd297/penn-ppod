@@ -7,6 +7,8 @@ import javax.xml.bind.annotation.XmlRootElement;
 @XmlRootElement
 public class Counts {
 
+	private boolean timedOut;
+
 	private long otuSetCount = -1;
 	private long standardMatrixCount = -1;
 	private long dnaMatrixCount = -1;
@@ -36,6 +38,10 @@ public class Counts {
 	}
 
 	public long getTotal() {
+		if (timedOut) {
+			return -1;
+		}
+
 		checkState(otuSetCount != -1);
 		checkState(standardMatrixCount != -1);
 		checkState(dnaMatrixCount != -1);
@@ -77,5 +83,19 @@ public class Counts {
 	 */
 	public void setTreeSetCount(final long treeSetCount) {
 		this.treeSetCount = treeSetCount;
+	}
+
+	/**
+	 * @return the timedOut
+	 */
+	public boolean isTimedOut() {
+		return timedOut;
+	}
+
+	/**
+	 * @param timedOut the timedOut to set
+	 */
+	public void setTimedOut(boolean timedOut) {
+		this.timedOut = timedOut;
 	}
 }

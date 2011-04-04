@@ -87,7 +87,7 @@ class PPodEntitiesResourceHibernate
 		querySb.append(" ");
 
 		querySb.append(
-					query.substring(query.indexOf("from "),
+					query.substring(query.indexOf("from"),
 							query.length()));
 
 		final Object[] result = (Object[])
@@ -110,8 +110,10 @@ class PPodEntitiesResourceHibernate
 
 		Transaction trx = null;
 		try {
+			trx = session.getTransaction();
+			trx.setTimeout(15);
+			trx.begin();
 
-			trx = session.beginTransaction();
 			Counts counts = count(query);
 			trx.commit();
 			return counts;
@@ -124,7 +126,13 @@ class PPodEntitiesResourceHibernate
 					logger.error("caught exception while rolling back", rbEx);
 				}
 			}
-			throw new IllegalStateException(t);
+			Counts counts = new Counts();
+			counts.setTimedOut(true);
+			counts.setOtuSetCount(-1);
+			counts.setStandardMatrixCount(-1);
+			counts.setDnaMatrixCount(-1);
+			counts.setTreeSetCount(-1);
+			return counts;
 		} finally {
 			logger.debug("{}: response time: {} milliseconds",
 					METHOD, Long.valueOf(new Date().getTime() - inTime));
@@ -139,14 +147,9 @@ class PPodEntitiesResourceHibernate
 		final DbStudy2DocStudy dbStudy2DocStudy = new DbStudy2DocStudy();
 
 		try {
-			trx = session.beginTransaction();
-
-			Counts counts = count(query);
-
-			if (counts.getTotal() > 10) {
-				throw new IllegalArgumentException("result count "
-						+ counts.getTotal() + " is too much");
-			}
+			trx = session.getTransaction();
+			trx.setTimeout(60);
+			trx.begin();
 
 			@SuppressWarnings("unchecked")
 			final List<Object> queryResults =
