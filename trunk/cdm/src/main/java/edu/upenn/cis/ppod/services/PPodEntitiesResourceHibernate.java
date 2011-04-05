@@ -22,6 +22,7 @@ import static com.google.common.collect.Lists.newArrayList;
 
 import java.util.Date;
 import java.util.List;
+import java.util.UUID;
 
 import org.hibernate.Session;
 import org.hibernate.Transaction;
@@ -131,8 +132,9 @@ class PPodEntitiesResourceHibernate
 				}
 			}
 
-			if (endTime - inTime > (TIMEOUT_SECONDS * 1000)) {
-				logger.error("caught timeout exception", t);
+			if (endTime - inTime >= (TIMEOUT_SECONDS * 1000)) {
+				logger.error(
+						"caught timeout exception, returning flagged Counts", t);
 				final Counts counts = new Counts();
 				counts.setTimedOut(true);
 				counts.setOtuSetCount(-1);
@@ -141,7 +143,11 @@ class PPodEntitiesResourceHibernate
 				counts.setTreeSetCount(-1);
 				return counts;
 			}
-			throw new IllegalStateException(t);
+			final String exceptionUuid = UUID.randomUUID().toString();
+			logger.error(METHOD + ": " + exceptionUuid, t);
+			throw new IllegalStateException(t.getMessage() +
+					": error id [" + exceptionUuid + "]",
+					t);
 		} finally {
 			endTime = new Date().getTime();
 			logger.debug("{}: response time: {} milliseconds",
