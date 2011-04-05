@@ -59,9 +59,9 @@ class PPodEntitiesResourceHibernate
 		this.session = session;
 	}
 
-	private Counts count(String query) {
+	private Counts count(final String query) {
 
-		StringBuilder querySb = new StringBuilder("select ");
+		final StringBuilder querySb = new StringBuilder("select ");
 
 		querySb.append("count(distinct os)");
 
@@ -95,7 +95,7 @@ class PPodEntitiesResourceHibernate
 							.setReadOnly(true)
 							.uniqueResult();
 
-		Counts counts = new Counts();
+		final Counts counts = new Counts();
 
 		counts.setOtuSetCount((Long) result[0]);
 		counts.setStandardMatrixCount((Long) result[1]);
@@ -104,36 +104,46 @@ class PPodEntitiesResourceHibernate
 		return counts;
 	}
 
-	public Counts countHqlQuery(String query) {
+	public Counts countHqlQuery(final String query) {
 		final String METHOD = "countHqlQuery(...)";
-		long inTime = new Date().getTime();
+		final long inTime = new Date().getTime();
+		long endTime = -1;
+
+		final int TIMEOUT_SECONDS = 15;
 
 		Transaction trx = null;
 		try {
 			trx = session.getTransaction();
-			trx.setTimeout(15);
+			trx.setTimeout(TIMEOUT_SECONDS);
 			trx.begin();
 
-			Counts counts = count(query);
+			final Counts counts = count(query);
 			trx.commit();
 			return counts;
 
-		} catch (Throwable t) {
+		} catch (final Throwable t) {
+			endTime = new Date().getTime();
 			if (trx != null && trx.isActive()) {
 				try {
 					trx.rollback();
-				} catch (Throwable rbEx) {
+				} catch (final Throwable rbEx) {
 					logger.error("caught exception while rolling back", rbEx);
 				}
 			}
-			Counts counts = new Counts();
-			counts.setTimedOut(true);
-			counts.setOtuSetCount(-1);
-			counts.setStandardMatrixCount(-1);
-			counts.setDnaMatrixCount(-1);
-			counts.setTreeSetCount(-1);
-			return counts;
+
+			if (endTime - inTime > (TIMEOUT_SECONDS * 1000)) {
+				logger.error("caught timeout exception", t);
+				final Counts counts = new Counts();
+				counts.setTimedOut(true);
+				counts.setOtuSetCount(-1);
+				counts.setStandardMatrixCount(-1);
+				counts.setDnaMatrixCount(-1);
+				counts.setTreeSetCount(-1);
+				return counts;
+			}
+			throw new IllegalStateException(t);
 		} finally {
+			endTime = new Date().getTime();
 			logger.debug("{}: response time: {} milliseconds",
 					METHOD, Long.valueOf(new Date().getTime() - inTime));
 		}
@@ -157,12 +167,12 @@ class PPodEntitiesResourceHibernate
 							.setReadOnly(true).list();
 			final PPodEntities entities = new PPodEntities();
 
-			List<Object> flattenedResults = newArrayList();
+			final List<Object> flattenedResults = newArrayList();
 
-			for (Object queryResult : queryResults) {
+			for (final Object queryResult : queryResults) {
 				if (queryResult instanceof Object[]) {
-					Object[] queryResultObjectArray = (Object[]) queryResult;
-					for (Object o : queryResultObjectArray) {
+					final Object[] queryResultObjectArray = (Object[]) queryResult;
+					for (final Object o : queryResultObjectArray) {
 						flattenedResults.add(o);
 					}
 				} else {
@@ -180,9 +190,9 @@ class PPodEntitiesResourceHibernate
 					// Note that otu set may have already been added in any of
 					// the other if clauses so we must make check before adding
 
-					OtuSet dbOtuSet = dbMatrix.getParent();
+					final OtuSet dbOtuSet = dbMatrix.getParent();
 
-					PPodOtuSet docOtuSet = handleOtuSet(
+					final PPodOtuSet docOtuSet = handleOtuSet(
 							entities,
 							dbOtuSet,
 							dbStudy2DocStudy);
@@ -207,9 +217,9 @@ class PPodEntitiesResourceHibernate
 					// Note that otu set may have already been added in any of
 					// the other if clauses so we must make check before adding
 
-					OtuSet dbOtuSet = dbMatrix.getParent();
+					final OtuSet dbOtuSet = dbMatrix.getParent();
 
-					PPodOtuSet docOtuSet = handleOtuSet(
+					final PPodOtuSet docOtuSet = handleOtuSet(
 							entities,
 							dbOtuSet,
 							dbStudy2DocStudy);
@@ -233,9 +243,9 @@ class PPodEntitiesResourceHibernate
 					// Note that otu set may have already been added in any of
 					// the other if clauses so we must make check before adding
 
-					OtuSet dbOtuSet = dbTreeSet.getParent();
+					final OtuSet dbOtuSet = dbTreeSet.getParent();
 
-					PPodOtuSet docOtuSet = handleOtuSet(
+					final PPodOtuSet docOtuSet = handleOtuSet(
 							entities,
 							dbOtuSet,
 							dbStudy2DocStudy);
@@ -273,12 +283,12 @@ class PPodEntitiesResourceHibernate
 			}
 			trx.commit();
 			return entities;
-		} catch (Throwable t) {
+		} catch (final Throwable t) {
 			if (trx != null && trx.isActive()) {
 				try {
 					trx.rollback();
-				} catch (Throwable rbEx) {
-
+				} catch (final Throwable rbEx) {
+					logger.error("caught exception while rolling back", rbEx);
 				}
 			}
 			throw new IllegalStateException(t);
@@ -289,9 +299,9 @@ class PPodEntitiesResourceHibernate
 	}
 
 	private PPodOtuSet handleOtuSet(
-			PPodEntities pPodEntities,
-			OtuSet otuSet,
-			DbStudy2DocStudy dbStudy2DocStudy) {
+			final PPodEntities pPodEntities,
+			final OtuSet otuSet,
+			final DbStudy2DocStudy dbStudy2DocStudy) {
 		// Note that otu set may have already been added in any of
 		// the
 		// other if clauses so we must make check before adding
