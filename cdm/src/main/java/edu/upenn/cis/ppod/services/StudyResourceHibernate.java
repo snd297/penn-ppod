@@ -90,9 +90,10 @@ class StudyResourceHibernate implements IStudyResource {
 			} catch (final Throwable rbEx) {
 				logger.error("error rolling back transaction", rbEx);
 			}
+			logger.error("caught in {}", t);
 			throw new IllegalStateException(t);
 		} finally {
-			logger.debug("{}: response time: {} milliseconds",
+			logger.info("{}: response time: {} milliseconds",
 					METHOD,
 					Long.valueOf(new Date().getTime() - inTime));
 		}
@@ -123,9 +124,10 @@ class StudyResourceHibernate implements IStudyResource {
 			} catch (final Throwable rbEx) {
 				logger.error("error rolling back transaction", rbEx);
 			}
+			logger.error("caught", t);
 			throw new IllegalStateException(t);
 		} finally {
-			logger.debug("{}: response time: {} milliseconds",
+			logger.info("{}: response time: {} milliseconds",
 					METHOD,
 					Long.valueOf(new Date().getTime() - inTime));
 		}
@@ -147,9 +149,10 @@ class StudyResourceHibernate implements IStudyResource {
 			} catch (final Throwable rbEx) {
 				logger.error("error rolling back transaction", rbEx);
 			}
+			logger.error("caught", t);
 			throw new IllegalStateException(t);
 		} finally {
-			logger.debug("{}: response time: {} milliseconds",
+			logger.info("{}: response time: {} milliseconds",
 					METHOD,
 					Long.valueOf(new Date().getTime() - inTime));
 		}
