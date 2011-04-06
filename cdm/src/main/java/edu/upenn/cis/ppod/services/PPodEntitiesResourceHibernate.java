@@ -150,7 +150,7 @@ class PPodEntitiesResourceHibernate
 					t);
 		} finally {
 			endTime = new Date().getTime();
-			logger.debug("{}: response time: {} milliseconds",
+			logger.info("{}: response time: {} milliseconds",
 					METHOD, Long.valueOf(new Date().getTime() - inTime));
 		}
 	}
@@ -297,9 +297,10 @@ class PPodEntitiesResourceHibernate
 					logger.error("caught exception while rolling back", rbEx);
 				}
 			}
+			logger.error(METHOD, t);
 			throw new IllegalStateException(t);
 		} finally {
-			logger.debug("{}: response time: {} milliseconds",
+			logger.info("{}: response time: {} milliseconds",
 					METHOD, Long.valueOf(new Date().getTime() - inTime));
 		}
 	}
