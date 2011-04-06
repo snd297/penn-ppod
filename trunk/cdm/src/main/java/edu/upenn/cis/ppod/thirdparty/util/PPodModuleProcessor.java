@@ -26,7 +26,8 @@ public class PPodModuleProcessor {
 	private final Registry registry;
 	private final ResteasyProviderFactory providerFactory;
 
-	public PPodModuleProcessor(final Registry registry,
+	public PPodModuleProcessor(
+			final Registry registry,
 			final ResteasyProviderFactory providerFactory) {
 		this.registry = registry;
 		this.providerFactory = providerFactory;
