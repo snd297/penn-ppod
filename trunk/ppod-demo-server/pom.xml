@@ -20,7 +20,7 @@
 	<dependencies>
 		<dependency>
 			<groupId>edu.upenn.cis.ppod</groupId>
-			<artifactId>ppod-services</artifactId>
+			<artifactId>ppod-cdm</artifactId>
 			<version>${project.parent.version}</version>
 		</dependency>
 		<dependency>
