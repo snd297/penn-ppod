@@ -174,7 +174,7 @@ public final class DbStudy2DocStudy {
 						new PPodStandardCell(
 								dbCell.getType(),
 								newHashSet(
-										transform(dbCell.getElements(),
+										transform(dbCell.getStatesSmartly(),
 												StandardState.getStateNumber)));
 				docRow.getCells().add(docCell);
 			}

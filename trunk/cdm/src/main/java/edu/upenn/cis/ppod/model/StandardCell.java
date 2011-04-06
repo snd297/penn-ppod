@@ -20,10 +20,13 @@ import static com.google.common.base.Preconditions.checkNotNull;
 import static com.google.common.base.Preconditions.checkState;
 import static com.google.common.collect.Sets.newHashSet;
 
+import java.util.Collections;
 import java.util.Set;
 
 import javax.persistence.Column;
 import javax.persistence.Entity;
+import javax.persistence.EnumType;
+import javax.persistence.Enumerated;
 import javax.persistence.FetchType;
 import javax.persistence.GeneratedValue;
 import javax.persistence.Id;
@@ -38,6 +41,7 @@ import javax.persistence.Version;
 import edu.umd.cs.findbugs.annotations.CheckForNull;
 import edu.umd.cs.findbugs.annotations.Nullable;
 import edu.upenn.cis.ppod.dto.PPodCellType;
+import edu.upenn.cis.ppod.imodel.IChild;
 
 /**
  * A cell in a {@link StandardMatrix}.
@@ -46,7 +50,7 @@ import edu.upenn.cis.ppod.dto.PPodCellType;
  */
 @Entity
 @Table(name = StandardCell.TABLE)
-public class StandardCell extends Cell<StandardState, StandardRow> {
+public class StandardCell implements IChild<StandardRow> {
 
 	/**
 	 * The name of the table.
@@ -110,18 +114,6 @@ public class StandardCell extends Cell<StandardState, StandardRow> {
 
 	}
 
-	@Transient
-	@Override
-	protected StandardState getElement() {
-		return state;
-	}
-
-	@Transient
-	@Override
-	Set<StandardState> getElementsModifiable() {
-		return states;
-	}
-
 	@Id
 	@GeneratedValue
 	@Column(name = ID_COLUMN)
@@ -138,7 +130,6 @@ public class StandardCell extends Cell<StandardState, StandardRow> {
 	 */
 	@ManyToOne(fetch = FetchType.LAZY, optional = false)
 	@JoinColumn(name = StandardRow.ID_COLUMN)
-	@Override
 	public StandardRow getParent() {
 		return parent;
 	}
@@ -196,13 +187,6 @@ public class StandardCell extends Cell<StandardState, StandardRow> {
 		return version;
 	}
 
-	/** Protected for JAXB. */
-	@Override
-	protected void setElement(
-				final StandardState element) {
-		setState(element);
-	}
-
 	@SuppressWarnings("unused")
 	private void setId(final Long id) {
 		this.id = id;
@@ -215,22 +199,16 @@ public class StandardCell extends Cell<StandardState, StandardRow> {
 
 	/**
 	 * Add a set of {@code CharacterState}s to this {@code CharacterStateCell}.
-	 * <p>
-	 * Makes no assumption about the hibernate-state of {@code states} (could be
-	 * transient, persistent, detached). Because it looks up the actual state to
-	 * hang on to through {@code getRow().getMatrix().getCharacter(
-	 * getPosition()).getState(...)}.
 	 * 
 	 * @param states to be added. Each must not be in a detached state.
 	 * 
 	 * @return {@code state}
 	 */
-	@Override
-	void setPolymorphicOrUncertain(
+	private void setPolymorphicOrUncertain(
 			final PPodCellType type,
-			final Set<StandardState> elements) {
+			final Set<StandardState> states) {
 		checkNotNull(type);
-		checkNotNull(elements);
+		checkNotNull(states);
 
 		checkArgument(
 				type == PPodCellType.POLYMORPHIC
@@ -238,13 +216,16 @@ public class StandardCell extends Cell<StandardState, StandardRow> {
 				" type is " + type + " but must be POLYMORPHIC OR UNCERTAIN");
 
 		checkArgument(
-				elements.size() > 1,
+				states.size() > 1,
 				"POLYMORPIC AND UNCERTAIN must have greater than 1 element but elements has "
-						+ elements.size());
+						+ states.size());
 
 		checkRowMatrixCharacter();
 
-		super.setPolymorphicOrUncertain(type, elements);
+		this.type = type;
+		this.state = null;
+		this.states.clear();
+		this.states.addAll(states);
 	}
 
 	/**
@@ -257,7 +238,7 @@ public class StandardCell extends Cell<StandardState, StandardRow> {
 	 * 
 	 * @throw IllegalArgumentException if {@code elements.size() < 2}
 	 */
-	public void setPolymorphicWithStateNos(
+	public void setPolymorphic(
 			final Set<Integer> stateNumbers) {
 		checkNotNull(stateNumbers);
 		checkArgument(
@@ -275,12 +256,12 @@ public class StandardCell extends Cell<StandardState, StandardRow> {
 	 * 
 	 * @param stateNumber the state number of the state we want
 	 */
-	public void setSingleWithStateNo(final Integer stateNumber) {
+	public void setSingle(final Integer stateNumber) {
 
 		checkNotNull(stateNumber);
 
 		if (getType() == PPodCellType.SINGLE
-				&& getElement().getStateNumber().equals(stateNumber)) {
+				&& this.state.getStateNumber().equals(stateNumber)) {
 			// We're already good, so let's not do anything.
 			// Since this is the most common case, it's worth doing: gives
 			// us a 50% improvement on larger matrices.
@@ -309,11 +290,9 @@ public class StandardCell extends Cell<StandardState, StandardRow> {
 						+ character.getLabel()
 						+ "]");
 
-		super.setSingle(state);
-	}
-
-	private void setState(final StandardState state) {
+		type = PPodCellType.SINGLE;
 		this.state = state;
+		this.states.clear();
 	}
 
 	/**
@@ -324,7 +303,7 @@ public class StandardCell extends Cell<StandardState, StandardRow> {
 	 * 
 	 * @param stateNumbers the state numbers of the states we want
 	 */
-	public void setUncertainWithStateNos(
+	public void setUncertain(
 			final Set<Integer> stateNumbers) {
 		checkNotNull(stateNumbers);
 		checkArgument(
@@ -341,4 +320,137 @@ public class StandardCell extends Cell<StandardState, StandardRow> {
 	private void setVersion(final Integer version) {
 		this.version = version;
 	}
+
+	public static final String TYPE_COLUMN = "TYPE";
+
+	@CheckForNull
+	private Integer position;
+
+	@CheckForNull
+	private PPodCellType type;
+
+	/**
+	 * Don't modify the returned collection - that's undefined.
+	 * 
+	 * @throws IllegalStateException if the type has not been set for this cell,
+	 *             i.e. if {@link #getType() == null}
+	 */
+	@Transient
+	public Set<StandardState> getStatesSmartly() {
+		checkState(type != null,
+				"type has yet to be assigned for this cell");
+
+		switch (type) {
+			// Don't hit states unless we have to
+			case INAPPLICABLE:
+			case UNASSIGNED:
+				return Collections.emptySet();
+			case SINGLE:
+				if (state == null) {
+					throw new AssertionError(
+							"getElement() == null for SINGLE cell!");
+				}
+				final Set<StandardState> elementInASet = newHashSet();
+				elementInASet.add(state);
+				return elementInASet;
+			case POLYMORPHIC:
+			case UNCERTAIN:
+
+				// We have to hit states, which we want to avoid as much as
+				// possible since it will trigger a database hit, which in the
+				// aggregate
+				// is expensive since there're are so many cells.
+
+				if (states == null) {
+					throw new AssertionError(
+							"elements is null in a POLYMORPHIC or UNCERTAIN cell");
+				}
+
+				if (states.size() < 2) {
+					throw new AssertionError("type is "
+														+ getType()
+												+ " and getElements() has "
+												+ states.size() + " elements");
+				}
+				return states;
+
+			default:
+				throw new AssertionError("Unknown Cell.Type: " + type);
+		}
+	}
+
+	/** {@inheritDoc} */
+	@Column(name = "POSITION", nullable = false)
+	@Nullable
+	public Integer getPosition() {
+		return position;
+	}
+
+	/**
+	 * Get the type of this cell.
+	 * <p>
+	 * This value will be {@code null} for newly created cells until the
+	 * elements are set.
+	 * <p>
+	 * This value will never be {@code null} for a persistent cell.
+	 * 
+	 * @return the type of this cell
+	 */
+	@Column(name = TYPE_COLUMN, nullable = false)
+	@Enumerated(EnumType.ORDINAL)
+	@Nullable
+	public PPodCellType getType() {
+		return type;
+	}
+
+	/**
+	 * Set this cell's type to {@link Type#INAPPLICABLE}, its elements to the
+	 * empty set.
+	 */
+	public void setInapplicable() {
+		setInapplicableOrUnassigned(PPodCellType.INAPPLICABLE);
+	}
+
+	private void setInapplicableOrUnassigned(final PPodCellType type) {
+		checkArgument(
+				type == PPodCellType.INAPPLICABLE
+						|| type == PPodCellType.UNASSIGNED,
+				"type was " + type + " but must be INAPPLICABLE or UNASSIGNED");
+
+		if (type == getType()) {
+			return;
+		}
+		setType(type);
+		state = null;
+		states.clear();
+		return;
+	}
+
+	/**
+	 * Set the position of this child.
+	 * <p>
+	 * Use a {@code null} when removing a child from its parent
+	 * 
+	 * @param position the position of this child
+	 * 
+	 * @throw IllegalArgumentException if
+	 *        {@code position !=null && position < 0}
+	 */
+	void setPosition(@CheckForNull final Integer position) {
+		checkArgument(position == null || position >= 0, "position < 0");
+		this.position = position;
+	}
+
+	private void setType(final PPodCellType type) {
+		this.type = type;
+	}
+
+	/**
+	 * Set this cell's type to {@link Type#UNASSIGNED}, its elements to the
+	 * empty set.
+	 */
+	public void setUnassigned() {
+		setInapplicableOrUnassigned(PPodCellType.UNASSIGNED);
+	}
+
 }

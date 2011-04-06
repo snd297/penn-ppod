@@ -54,12 +54,12 @@ public class StandardCellTest {
 		matrix.getRows()
 				.get(matrix.getParent().getOtus().get(0)).clearAndAddCells(
 						Arrays.asList(cell));
-		cell.setSingleWithStateNo(state00.getStateNumber());
+		cell.setSingle(state00.getStateNumber());
 		cell.setInapplicable();
 		assertEquals(cell.getType(), PPodCellType.INAPPLICABLE);
 
 		// Make sure it's empty
-		assertEquals(cell.getElements().size(), 0);
+		assertEquals(cell.getStatesSmartly().size(), 0);
 	}
 
 	@Test
@@ -72,25 +72,26 @@ public class StandardCellTest {
 						Arrays.asList(cell));
 		states.add(state00);
 		states.add(state01);
-		cell.setPolymorphicWithStateNos(
+		cell.setPolymorphic(
 				newHashSet(
 						transform(states, StandardState.getStateNumber)));
 		cell.setInapplicable();
 		assertEquals(cell.getType(), PPodCellType.INAPPLICABLE);
-		assertTrue(isEmpty(cell.getElements()));
+		assertTrue(isEmpty(cell.getStatesSmartly()));
 	}
 
 	@Test
-	public void setPolymorphicElements() {
-		matrix.getRows().get(matrix.getParent().getOtus().get(0)).clearAndAddCells(
-				Arrays.asList(cell));
+	public void setPolymorphic() {
+		matrix.getRows().get(matrix.getParent().getOtus().get(0))
+				.clearAndAddCells(
+						Arrays.asList(cell));
 		states.add(state00);
 		states.add(state01);
-		cell.setPolymorphicWithStateNos(
+		cell.setPolymorphic(
 				newHashSet(
 						transform(states, StandardState.getStateNumber)));
 		assertEquals(cell.getType(), PPodCellType.POLYMORPHIC);
-		assertEquals((Object) cell.getElements(), (Object) states);
+		assertEquals((Object) cell.getStatesSmartly(), (Object) states);
 	}
 
 	@Test(expectedExceptions = IllegalArgumentException.class)
@@ -102,7 +103,7 @@ public class StandardCellTest {
 				.clearAndAddCells(
 						Arrays.asList(cell));
 		states.add(state00);
-		cell.setPolymorphicWithStateNos(
+		cell.setPolymorphic(
 				newHashSet(
 						transform(states, StandardState.getStateNumber)));
 	}
@@ -115,13 +116,13 @@ public class StandardCellTest {
 				.clearAndAddCells(Arrays.asList(cell));
 		states.add(state00);
 
-		cell.setSingleWithStateNo(state00.getStateNumber());
+		cell.setSingle(state00.getStateNumber());
 		assertEquals(cell.getType(), PPodCellType.SINGLE);
-		assertEquals(cell.getElements(), states);
+		assertEquals(cell.getStatesSmartly(), states);
 
-		cell.setSingleWithStateNo(state00.getStateNumber());
+		cell.setSingle(state00.getStateNumber());
 		assertEquals(cell.getType(), PPodCellType.SINGLE);
-		assertEquals(cell.getElements(), states);
+		assertEquals(cell.getStatesSmartly(), states);
 	}
 
 	/**
@@ -130,18 +131,22 @@ public class StandardCellTest {
 	@Test(expectedExceptions = IllegalStateException.class)
 	public void setStatesForACellThatDoesNotBelongToARow() {
 		final StandardCell cell = new StandardCell();
-		cell.setSingleWithStateNo(state00.getStateNumber());
+		cell.setSingle(state00.getStateNumber());
 	}
 
 	@Test
 	public void setUncertainElements() {
-		matrix.getRows().get(matrix.getParent().getOtus().get(0)).clearAndAddCells(
-				Arrays.asList(cell));
+		matrix.getRows().get(matrix.getParent().getOtus().get(0))
+				.clearAndAddCells(
+						Arrays.asList(cell));
 		states.add(state00);
 		states.add(state01);
-		cell.setUncertain(states);
+		cell.setUncertain(
+				newHashSet(state00.getStateNumber(),
+						state01.getStateNumber()));
 		assertEquals(cell.getType(), PPodCellType.UNCERTAIN);
-		assertEquals((Object) cell.getElements(), (Object) newHashSet(states));
+		assertEquals((Object) cell.getStatesSmartly(),
+				(Object) newHashSet(states));
 	}
 
 	@BeforeMethod

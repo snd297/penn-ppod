@@ -33,7 +33,7 @@ import edu.upenn.cis.ppod.imodel.IChild;
  * @param <C> the type of cell we have
  * @param <M> the parent of the row
  */
-abstract class Row<C extends Cell<?, ?>, M extends Matrix<?>>
+abstract class Row<C extends StandardCell, M extends Matrix<?>>
 		implements IChild<M> {
 
 	Row() {}

@@ -122,21 +122,21 @@ public final class CreateOrUpdateStandardMatrix extends CreateOrUpdateMatrix {
 			final PPodStandardCell sourceCell) {
 		checkArgument(sourceCell.getType() == PPodCellType.POLYMORPHIC);
 		final Set<Integer> sourceStateNumbers = sourceCell.getStates();
-		targetCell.setPolymorphicWithStateNos(sourceStateNumbers);
+		targetCell.setPolymorphic(sourceStateNumbers);
 	}
 
 	@Override
 	protected void handleSingleCell(final StandardCell targetCell,
 			final PPodStandardCell sourceCell) {
 		checkArgument(sourceCell.getType() == PPodCellType.SINGLE);
-		targetCell.setSingleWithStateNo(getOnlyElement(sourceCell.getStates()));
+		targetCell.setSingle(getOnlyElement(sourceCell.getStates()));
 	}
 
 	@Override
 	protected void handleUncertainCell(final StandardCell targetCell,
 			final PPodStandardCell sourceCell) {
 		checkArgument(sourceCell.getType() == PPodCellType.UNCERTAIN);
-		targetCell.setUncertainWithStateNos(sourceCell.getStates());
+		targetCell.setUncertain(sourceCell.getStates());
 	}
 
 }
