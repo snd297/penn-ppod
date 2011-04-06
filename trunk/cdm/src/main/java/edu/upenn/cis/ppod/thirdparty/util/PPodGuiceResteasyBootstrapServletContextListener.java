@@ -18,7 +18,7 @@ import com.google.inject.Singleton;
 import com.google.inject.servlet.ServletModule;
 
 import edu.umd.cs.findbugs.annotations.CheckForNull;
-import edu.upenn.cis.ppod.PPodModule;
+import edu.upenn.cis.ppod.persistence.PersistenceModule;
 import edu.upenn.cis.ppod.services.PPodServicesHibernateModule;
 
 /**
@@ -26,11 +26,12 @@ import edu.upenn.cis.ppod.services.PPodServicesHibernateModule;
  * {@link org.jboss.resteasy.plugins.guice.GuiceResteasyBootstrapServletContextListener}
  * .
  */
-public class PPodGuiceResteasyBootstrapServletContextListener extends
-		ResteasyBootstrap {
+public class PPodGuiceResteasyBootstrapServletContextListener
+		extends ResteasyBootstrap {
 
-	private static Logger logger = LoggerFactory
-			.getLogger(PPodGuiceResteasyBootstrapServletContextListener.class);
+	private static Logger logger =
+			LoggerFactory
+					.getLogger(PPodGuiceResteasyBootstrapServletContextListener.class);
 
 	@CheckForNull
 	private SessionFactory sessionFactory;
@@ -58,7 +59,7 @@ public class PPodGuiceResteasyBootstrapServletContextListener extends
 
 		final Injector injector =
 				Guice.createInjector(
-						new PPodModule(),
+						new PersistenceModule(),
 						new PPodServicesHibernateModule(),
 						new ServletModule() {
 
