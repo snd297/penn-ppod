@@ -15,6 +15,7 @@
  */
 package edu.upenn.cis.ppod.model;
 
+import static com.google.common.collect.Sets.newHashSet;
 import static org.testng.Assert.assertEquals;
 
 import java.util.Collections;
@@ -25,7 +26,6 @@ import org.testng.annotations.Test;
 import com.google.common.collect.ImmutableSet;
 
 import edu.upenn.cis.ppod.TestGroupDefs;
-import edu.upenn.cis.ppod.dto.PPodCellType;
 
 @Test(groups = { TestGroupDefs.FAST, TestGroupDefs.BROKEN })
 public class CellTest {
@@ -37,46 +37,45 @@ public class CellTest {
 	 * @param elements
 	 */
 	@Test
-	public void getElementsWhenCellHasMultipleElements() {
-		final Cell<StandardState, ?> cell = new StandardCell();
+	public void getStatesSmartlyWhenCellHasMultipleElements() {
+		final StandardCell cell = new StandardCell();
 
-		final Set<StandardState> elements =
+		final Set<StandardState> states =
 				ImmutableSet.of(new StandardState(0), new StandardState(1));
 
-		cell.setPolymorphicOrUncertain(PPodCellType.POLYMORPHIC, elements);
-		assertEquals(cell.getElements(), elements);
+		cell.setPolymorphic(newHashSet(0, 1));
+		assertEquals(cell.getStatesSmartly(), states);
 
-		cell.setType(PPodCellType.UNCERTAIN);
-		assertEquals(cell.getElements(), elements);
+		cell.setUncertain(newHashSet(0, 1));
+		assertEquals(cell.getStatesSmartly(), states);
 	}
 
 	@Test(expectedExceptions = IllegalStateException.class)
 	public void getElementsWhenNoTypeSet() {
-		final Cell<?, ?> cell = new StandardCell();
-		cell.getElements();
+		final StandardCell cell = new StandardCell();
+		cell.getStatesSmartly();
 	}
 
 	@Test
 	public void getStatesWhenCellHasNoElements() {
-		final Cell<StandardState, ?> cell = new StandardCell();
-		cell.setType(PPodCellType.UNASSIGNED);
-		cell.setElement(null);
-		cell.getElementsModifiable().clear();
-		assertEquals(cell.getElements(), Collections.emptyList());
+		final StandardCell cell = new StandardCell();
+		cell.setUnassigned();
 
-		cell.setType(PPodCellType.INAPPLICABLE);
-		assertEquals(cell.getElements(), Collections.emptyList());
+		assertEquals(cell.getStatesSmartly(), Collections.emptyList());
+
+		cell.setInapplicable();
+		assertEquals(cell.getStatesSmartly(), Collections.emptyList());
 	}
 
 	@Test
 	public void getStatesWhenCellHasOneElement() {
-		final Cell<StandardState, ?> cell = new StandardCell();
+		final StandardCell cell = new StandardCell();
 
-		final StandardState nucleotide = new StandardState(1);
+		final StandardState state = new StandardState(1);
 
-		cell.setElement(nucleotide);
-		cell.setType(PPodCellType.SINGLE);
-		assertEquals(cell.getElements(), ImmutableSet.of(nucleotide));
+		cell.setSingle(state.getStateNumber());
+
+		assertEquals(cell.getStatesSmartly(), ImmutableSet.of(state));
 	}
 
 	// @Test

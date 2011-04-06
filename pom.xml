@@ -61,7 +61,7 @@
 		<module>cdm</module>
 		<module>services</module>
 		<module>distribution</module><!-- <module>ppod-demo-server</module> -->
-		<module>ppod-server</module>
+		<module>ppod-demo-server</module>
 	</modules>
 	<repositories>
 		<repository>

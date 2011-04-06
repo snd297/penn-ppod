@@ -142,9 +142,9 @@ public class ModelAssert {
 			final StandardCell actualCell,
 			final PPodStandardCell expectedCell) {
 		assertEquals(actualCell.getType(), expectedCell.getType());
-		assertEquals(actualCell.getElements().size(), expectedCell
+		assertEquals(actualCell.getStatesSmartly().size(), expectedCell
 				.getStates().size());
-		for (final StandardState actualState : actualCell.getElements()) {
+		for (final StandardState actualState : actualCell.getStatesSmartly()) {
 			assertTrue(expectedCell.getStates().contains(
 					actualState.getStateNumber()));
 		}
