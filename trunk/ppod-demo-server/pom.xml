@@ -9,7 +9,7 @@
 		<version>0.2-SNAPSHOT</version>
 	</parent>
 	<groupId>edu.upenn.cis.ppod</groupId>
-	<artifactId>ppod-server</artifactId>
+	<artifactId>ppod-demo-server</artifactId>
 	<version>0.2-SNAPSHOT</version>
 	<name>ppod-server</name>
 	<url>http://maven.apache.org</url>
