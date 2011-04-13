@@ -27,7 +27,7 @@ import edu.upenn.cis.ppod.thirdparty.dao.hibernate.GenericHibernateDAO;
 /**
  * A default {@link CharacterStateRow} Hibernate DAO.
  */
-class StandardRowDAOHibernate
+final class StandardRowDAOHibernate
 		extends GenericHibernateDAO<StandardRow, Long>
 		implements IStandardRowDAO {
 

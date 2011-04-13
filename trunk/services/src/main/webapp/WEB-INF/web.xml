@@ -20,7 +20,7 @@
 	</filter-mapping>
 
 	<listener>
-		<listener-class>edu.upenn.cis.ppod.thirdparty.util.PPodGuiceResteasyBootstrapServletContextListener</listener-class>
+		<listener-class>edu.upenn.cis.ppod.thirdparty.util.PPodGuiceResteasyBootstrap</listener-class>
 	</listener>
 
 	<welcome-file-list>

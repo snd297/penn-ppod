@@ -34,7 +34,7 @@ class Message implements IMessage {
 	private final IMessagesConfig messagesConfig;
 
 	private String[] params;
-	
+
 	@Inject
 	Message(@Assisted final String code, @Assisted final Level level,
 			final IMessagesConfig messagesConfig,

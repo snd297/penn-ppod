@@ -23,14 +23,14 @@ import java.util.List;
 
 import org.testng.annotations.Test;
 
+import edu.upenn.cis.ppod.PPodOtu;
+import edu.upenn.cis.ppod.PPodOtuSet;
+import edu.upenn.cis.ppod.PPodStandardCell;
+import edu.upenn.cis.ppod.PPodStandardCharacter;
+import edu.upenn.cis.ppod.PPodStandardMatrix;
+import edu.upenn.cis.ppod.PPodStandardRow;
 import edu.upenn.cis.ppod.TestGroupDefs;
 import edu.upenn.cis.ppod.dao.IStandardRowDAO;
-import edu.upenn.cis.ppod.dto.PPodOtu;
-import edu.upenn.cis.ppod.dto.PPodOtuSet;
-import edu.upenn.cis.ppod.dto.PPodStandardCell;
-import edu.upenn.cis.ppod.dto.PPodStandardCharacter;
-import edu.upenn.cis.ppod.dto.PPodStandardMatrix;
-import edu.upenn.cis.ppod.dto.PPodStandardRow;
 import edu.upenn.cis.ppod.model.ModelAssert;
 import edu.upenn.cis.ppod.model.Otu;
 import edu.upenn.cis.ppod.model.OtuSet;

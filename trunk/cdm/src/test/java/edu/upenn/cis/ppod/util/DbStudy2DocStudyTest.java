@@ -4,8 +4,8 @@ import static org.testng.Assert.assertEquals;
 
 import org.testng.annotations.Test;
 
+import edu.upenn.cis.ppod.PPodOtu;
 import edu.upenn.cis.ppod.TestGroupDefs;
-import edu.upenn.cis.ppod.dto.PPodOtu;
 import edu.upenn.cis.ppod.model.Otu;
 
 @Test(groups = TestGroupDefs.FAST)

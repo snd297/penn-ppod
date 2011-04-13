@@ -23,9 +23,9 @@ import static com.google.common.collect.Lists.newArrayListWithCapacity;
 
 import java.util.List;
 
-import edu.upenn.cis.ppod.dto.IHasPPodId;
-import edu.upenn.cis.ppod.dto.PPodOtu;
-import edu.upenn.cis.ppod.dto.PPodOtuSet;
+import edu.upenn.cis.ppod.IHasPPodId;
+import edu.upenn.cis.ppod.PPodOtu;
+import edu.upenn.cis.ppod.PPodOtuSet;
 import edu.upenn.cis.ppod.model.Otu;
 import edu.upenn.cis.ppod.model.OtuSet;
 

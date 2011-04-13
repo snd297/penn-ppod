@@ -22,14 +22,14 @@ import static org.testng.Assert.assertEquals;
 import static org.testng.Assert.assertNotNull;
 import static org.testng.Assert.assertSame;
 import static org.testng.Assert.assertTrue;
-import edu.upenn.cis.ppod.dto.PPodOtu;
-import edu.upenn.cis.ppod.dto.PPodOtuSet;
-import edu.upenn.cis.ppod.dto.PPodStandardCell;
-import edu.upenn.cis.ppod.dto.PPodStandardCharacter;
-import edu.upenn.cis.ppod.dto.PPodStandardMatrix;
-import edu.upenn.cis.ppod.dto.PPodStandardRow;
-import edu.upenn.cis.ppod.dto.PPodStandardState;
-import edu.upenn.cis.ppod.imodel.ILabeled;
+import edu.upenn.cis.ppod.PPodOtu;
+import edu.upenn.cis.ppod.PPodOtuSet;
+import edu.upenn.cis.ppod.PPodStandardCell;
+import edu.upenn.cis.ppod.PPodStandardCharacter;
+import edu.upenn.cis.ppod.PPodStandardMatrix;
+import edu.upenn.cis.ppod.PPodStandardRow;
+import edu.upenn.cis.ppod.PPodStandardState;
+import edu.upenn.cis.ppod.dto.ILabeled;
 
 /**
  * For asserting that various {@code edu.upenn.cis.ppod.model} elements are the

@@ -25,7 +25,7 @@ import org.hibernate.Session;
 
 import com.google.inject.Inject;
 
-import edu.upenn.cis.ppod.dto.PPodLabelAndId;
+import edu.upenn.cis.ppod.PPodLabelAndId;
 import edu.upenn.cis.ppod.model.Study;
 import edu.upenn.cis.ppod.thirdparty.dao.hibernate.GenericHibernateDAO;
 

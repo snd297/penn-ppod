@@ -17,7 +17,7 @@ package edu.upenn.cis.ppod.imodel;
 
 import javax.xml.bind.annotation.XmlSeeAlso;
 
-import edu.upenn.cis.ppod.dto.IOtuSets;
+import edu.upenn.cis.ppod.dto.ILabeled;
 import edu.upenn.cis.ppod.model.OtuSet;
 import edu.upenn.cis.ppod.model.Study;
 

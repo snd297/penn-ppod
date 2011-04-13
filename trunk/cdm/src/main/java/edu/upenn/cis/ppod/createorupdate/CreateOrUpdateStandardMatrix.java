@@ -31,13 +31,13 @@ import org.slf4j.LoggerFactory;
 
 import com.google.inject.Inject;
 
+import edu.upenn.cis.ppod.IHasPPodId;
+import edu.upenn.cis.ppod.PPodCellType;
+import edu.upenn.cis.ppod.PPodStandardCell;
+import edu.upenn.cis.ppod.PPodStandardCharacter;
+import edu.upenn.cis.ppod.PPodStandardMatrix;
+import edu.upenn.cis.ppod.PPodStandardState;
 import edu.upenn.cis.ppod.dao.IStandardRowDAO;
-import edu.upenn.cis.ppod.dto.IHasPPodId;
-import edu.upenn.cis.ppod.dto.PPodCellType;
-import edu.upenn.cis.ppod.dto.PPodStandardCell;
-import edu.upenn.cis.ppod.dto.PPodStandardCharacter;
-import edu.upenn.cis.ppod.dto.PPodStandardMatrix;
-import edu.upenn.cis.ppod.dto.PPodStandardState;
 import edu.upenn.cis.ppod.model.StandardCell;
 import edu.upenn.cis.ppod.model.StandardCharacter;
 import edu.upenn.cis.ppod.model.StandardMatrix;

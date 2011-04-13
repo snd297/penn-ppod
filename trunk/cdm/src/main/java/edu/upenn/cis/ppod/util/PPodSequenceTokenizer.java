@@ -5,7 +5,7 @@ import static com.google.common.base.Preconditions.checkState;
 
 import java.util.NoSuchElementException;
 
-import edu.upenn.cis.ppod.dto.PPodCellType;
+import edu.upenn.cis.ppod.PPodCellType;
 
 public final class PPodSequenceTokenizer {
 

@@ -13,11 +13,11 @@
  * See the License for the specific language governing permissions and
  * limitations under the License.
  */
-package edu.upenn.cis.ppod.dto;
+package edu.upenn.cis.ppod.imodel;
 
 import java.util.Set;
 
-import edu.upenn.cis.ppod.dto.model.Otu;
+import edu.upenn.cis.ppod.model.Otu;
 
 /**
  * @author Sam Donnelly

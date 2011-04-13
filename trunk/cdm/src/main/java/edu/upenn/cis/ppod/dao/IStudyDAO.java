@@ -21,7 +21,7 @@ import java.util.Set;
 import com.google.inject.ImplementedBy;
 
 import edu.umd.cs.findbugs.annotations.Nullable;
-import edu.upenn.cis.ppod.dto.PPodLabelAndId;
+import edu.upenn.cis.ppod.PPodLabelAndId;
 import edu.upenn.cis.ppod.model.Study;
 import edu.upenn.cis.ppod.thirdparty.dao.IDAO;
 
