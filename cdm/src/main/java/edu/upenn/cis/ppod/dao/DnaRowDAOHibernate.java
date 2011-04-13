@@ -22,7 +22,7 @@ import com.google.inject.Inject;
 import edu.upenn.cis.ppod.model.DnaRow;
 import edu.upenn.cis.ppod.thirdparty.dao.hibernate.GenericHibernateDAO;
 
-class DnaRowDAOHibernate
+final class DnaRowDAOHibernate
 		extends GenericHibernateDAO<DnaRow, Long>
 		implements IDnaRowDAO {
 

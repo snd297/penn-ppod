@@ -1,5 +1,5 @@
 /*
- * Copyright (C) 2010 Trustees of the University of Pennsylvania
+ * Copyright (C) 2011 Trustees of the University of Pennsylvania
  *
  * Licensed under the Apache License, Version 2.0 (the "License");
  * you may not use this file except in compliance with the License.
@@ -13,11 +13,22 @@
  * See the License for the specific language governing permissions and
  * limitations under the License.
  */
-package edu.upenn.cis.ppod.dto;
+package edu.upenn.cis.ppod.demo;
 
-/**
- * @author Sam Donnelly
- */
-public class SequenceSetInfo extends PPodEntityInfo {
+import java.io.OutputStream;
+import java.net.InetAddress;
+import java.net.Socket;
 
+public class Stop {
+
+	public static void main(String[] args) throws Exception {
+		Socket s = new Socket(
+				InetAddress.getByName("127.0.0.1"),
+				Integer.valueOf(args[0]));
+		OutputStream out = s.getOutputStream();
+		System.out.println("*** sending jetty stop request");
+		out.write(("\r\n").getBytes());
+		out.flush();
+		s.close();
+	}
 }

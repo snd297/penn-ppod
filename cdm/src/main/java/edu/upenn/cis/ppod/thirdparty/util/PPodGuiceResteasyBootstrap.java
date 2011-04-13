@@ -26,15 +26,43 @@ import edu.upenn.cis.ppod.services.PPodServicesHibernateModule;
  * {@link org.jboss.resteasy.plugins.guice.GuiceResteasyBootstrapServletContextListener}
  * .
  */
-public class PPodGuiceResteasyBootstrapServletContextListener
+public class PPodGuiceResteasyBootstrap
 		extends ResteasyBootstrap {
 
 	private static Logger logger =
 			LoggerFactory
-					.getLogger(PPodGuiceResteasyBootstrapServletContextListener.class);
+					.getLogger(PPodGuiceResteasyBootstrap.class);
 
 	@CheckForNull
 	private SessionFactory sessionFactory;
+
+	private final Injector injector;
+
+	public PPodGuiceResteasyBootstrap() {
+		this(
+				Guice.createInjector(
+						new PersistenceModule(),
+						new PPodServicesHibernateModule(),
+						new ServletModule() {
+
+							@Override
+							protected void configureServlets() {
+								bind(IniShiroFilter.class)
+										.in(Singleton.class);
+								bind(HttpServletDispatcher.class)
+										.in(Singleton.class);
+								filter("/*")
+										.through(IniShiroFilter.class);
+								serve("/*")
+										.with(HttpServletDispatcher.class);
+							}
+						}
+						));
+	}
+
+	public PPodGuiceResteasyBootstrap(final Injector injector) {
+		this.injector = injector;
+	}
 
 	@Override
 	public void contextDestroyed(final ServletContextEvent event) {
@@ -57,25 +85,6 @@ public class PPodGuiceResteasyBootstrapServletContextListener
 				registry,
 				providerFactory);
 
-		final Injector injector =
-				Guice.createInjector(
-						new PersistenceModule(),
-						new PPodServicesHibernateModule(),
-						new ServletModule() {
-
-							@Override
-							protected void configureServlets() {
-								bind(IniShiroFilter.class)
-										.in(Singleton.class);
-								bind(HttpServletDispatcher.class)
-										.in(Singleton.class);
-								filter("/*")
-										.through(IniShiroFilter.class);
-								serve("/*")
-										.with(HttpServletDispatcher.class);
-							}
-						}
-						);
 		processor.processInjector(injector);
 		sessionFactory = injector.getInstance(SessionFactory.class);
 	}

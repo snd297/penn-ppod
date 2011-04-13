@@ -14,10 +14,10 @@ import org.hibernate.Session;
 import org.hibernate.Transaction;
 import org.testng.annotations.Test;
 
+import edu.upenn.cis.ppod.PPodEntities;
+import edu.upenn.cis.ppod.PPodOtuSet;
+import edu.upenn.cis.ppod.PPodStandardMatrix;
 import edu.upenn.cis.ppod.TestGroupDefs;
-import edu.upenn.cis.ppod.dto.PPodEntities;
-import edu.upenn.cis.ppod.dto.PPodOtuSet;
-import edu.upenn.cis.ppod.dto.PPodStandardMatrix;
 import edu.upenn.cis.ppod.model.OtuSet;
 import edu.upenn.cis.ppod.model.StandardMatrix;
 import edu.upenn.cis.ppod.model.Study;
@@ -55,8 +55,8 @@ public class PPodEntitiesResourceHibernateTest {
 		when(q.list()).thenReturn(matrices);
 		when(q.uniqueResult()).thenReturn(new Object[] { 1L, 1L, 1L, 1L });
 
-		final IPPodEntitiesResource pPodEntitiesResource =
-				new PPodEntitiesResourceHibernate(s);
+		final IOtuSetsResource pPodEntitiesResource =
+				new OtuSetsResourceHibernate(s);
 		final PPodEntities results =
 				pPodEntitiesResource
 						.getEntitiesByHqlQuery("select something from something");
@@ -107,8 +107,8 @@ public class PPodEntitiesResourceHibernateTest {
 		when(q.list()).thenReturn(matrices);
 		when(q.uniqueResult()).thenReturn(new Object[] { 1L, 1L, 1L, 1L });
 
-		final IPPodEntitiesResource pPodEntitiesResource =
-				new PPodEntitiesResourceHibernate(s);
+		final IOtuSetsResource pPodEntitiesResource =
+				new OtuSetsResourceHibernate(s);
 		final PPodEntities results = pPodEntitiesResource
 				.getEntitiesByHqlQuery("select something from something");
 

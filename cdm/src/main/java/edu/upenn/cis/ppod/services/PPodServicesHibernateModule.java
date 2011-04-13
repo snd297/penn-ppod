@@ -19,14 +19,14 @@ import com.google.inject.AbstractModule;
 
 /**
  * @author Sam Donnelly
- * 
  */
 public class PPodServicesHibernateModule extends AbstractModule {
 
 	@Override
 	protected void configure() {
+		bind(IPPodGreetingResource.class).to(PPodGreetingService.class);
 		bind(IStudyResource.class).to(StudyResourceHibernate.class);
-		bind(IPPodEntitiesResource.class).to(
-				PPodEntitiesResourceHibernate.class);
+		bind(IOtuSetsResource.class)
+				.to(OtuSetsResourceHibernate.class);
 	}
 }

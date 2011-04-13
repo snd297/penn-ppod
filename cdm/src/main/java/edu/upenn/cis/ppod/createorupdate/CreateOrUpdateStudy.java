@@ -24,19 +24,19 @@ import java.util.Set;
 
 import com.google.inject.Inject;
 
+import edu.upenn.cis.ppod.IHasPPodId;
+import edu.upenn.cis.ppod.PPodDnaMatrix;
+import edu.upenn.cis.ppod.PPodOtuSet;
+import edu.upenn.cis.ppod.PPodProteinMatrix;
+import edu.upenn.cis.ppod.PPodStandardMatrix;
+import edu.upenn.cis.ppod.PPodStudy;
+import edu.upenn.cis.ppod.PPodTreeSet;
 import edu.upenn.cis.ppod.dao.IDnaMatrixDAO;
 import edu.upenn.cis.ppod.dao.IOtuSetDAO;
 import edu.upenn.cis.ppod.dao.IProteinMatrixDAO;
 import edu.upenn.cis.ppod.dao.IStandardMatrixDAO;
 import edu.upenn.cis.ppod.dao.IStudyDAO;
 import edu.upenn.cis.ppod.dao.ITreeSetDAO;
-import edu.upenn.cis.ppod.dto.IHasPPodId;
-import edu.upenn.cis.ppod.dto.PPodDnaMatrix;
-import edu.upenn.cis.ppod.dto.PPodOtuSet;
-import edu.upenn.cis.ppod.dto.PPodProteinMatrix;
-import edu.upenn.cis.ppod.dto.PPodStandardMatrix;
-import edu.upenn.cis.ppod.dto.PPodStudy;
-import edu.upenn.cis.ppod.dto.PPodTreeSet;
 import edu.upenn.cis.ppod.model.DnaMatrix;
 import edu.upenn.cis.ppod.model.OtuSet;
 import edu.upenn.cis.ppod.model.ProteinMatrix;
@@ -67,22 +67,18 @@ public final class CreateOrUpdateStudy {
 	CreateOrUpdateStudy(
 			final IStudyDAO studyDAO,
 			final MergeOtuSets mergeOTUSets,
-			// final MergeDnaSequenceSets mergeDNASequenceSets,
 			final CreateOrUpdateStandardMatrix createOrUpdateStandardMatrix,
 			final MergeTreeSets mergeTreeSets,
 			final IOtuSetDAO otuSetDAO,
-			// final IDnaSequenceSetDAO dnaSequenceSetDAO,
 			final IDnaMatrixDAO dnaMatrixDAO,
 			final IStandardMatrixDAO standardMatrixDAO,
 			final ITreeSetDAO treeSetDAO,
 			final IProteinMatrixDAO proteinMatrixDAO) {
 		this.studyDAO = studyDAO;
 		this.mergeOtuSets = mergeOTUSets;
-		// this.mergeDNASequenceSets = mergeDNASequenceSets;
 		this.createOrUpdateStandardMatrix = createOrUpdateStandardMatrix;
 		this.mergeTreeSets = mergeTreeSets;
 		this.otuSetDAO = otuSetDAO;
-		// this.dnaSequenceSetDAO = dnaSequenceSetDAO;
 		this.dnaMatrixDAO = dnaMatrixDAO;
 		this.standardMatrixDAO = standardMatrixDAO;
 		this.treeSetDAO = treeSetDAO;

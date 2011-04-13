@@ -40,7 +40,7 @@ import javax.persistence.Version;
 
 import edu.umd.cs.findbugs.annotations.CheckForNull;
 import edu.umd.cs.findbugs.annotations.Nullable;
-import edu.upenn.cis.ppod.dto.PPodCellType;
+import edu.upenn.cis.ppod.PPodCellType;
 import edu.upenn.cis.ppod.imodel.IChild;
 
 /**
@@ -80,7 +80,7 @@ public class StandardCell implements IChild<StandardRow> {
 	/**
 	 * The heart of the cell: the states.
 	 * <p>
-	 * Will be {@code null} if type is not {@link Type#POLYMORPHIC} or
+	 * Will be empty if type is not {@link Type#POLYMORPHIC} or
 	 * {@link Type#UNCERTAIN}.
 	 */
 	private Set<StandardState> states = newHashSet();
@@ -91,6 +91,14 @@ public class StandardCell implements IChild<StandardRow> {
 	 */
 	@CheckForNull
 	private StandardRow parent;
+
+	public static final String TYPE_COLUMN = "TYPE";
+
+	@CheckForNull
+	private Integer position;
+
+	@CheckForNull
+	private PPodCellType type;
 
 	/** No-arg constructor for (at least) Hibernate. */
 	public StandardCell() {}
@@ -134,6 +142,13 @@ public class StandardCell implements IChild<StandardRow> {
 		return parent;
 	}
 
+	/** {@inheritDoc} */
+	@Column(name = "POSITION", nullable = false)
+	@Nullable
+	public Integer getPosition() {
+		return position;
+	}
+
 	@SuppressWarnings("unused")
 	@ManyToOne(fetch = FetchType.LAZY)
 	@JoinColumn(name = StandardState.ID_COLUMN)
@@ -151,11 +166,6 @@ public class StandardCell implements IChild<StandardRow> {
 					name = StandardState.ID_COLUMN))
 	private Set<StandardState> getStates() {
 		return states;
-	}
-
-	@SuppressWarnings("unused")
-	private void setStates(final Set<StandardState> states) {
-		this.states = states;
 	}
 
 	@Transient
@@ -176,158 +186,6 @@ public class StandardCell implements IChild<StandardRow> {
 		}
 		return states;
 	}
-
-	/**
-	 * @return the version
-	 */
-	@Version
-	@Column(name = "OBJ_VERSION")
-	@Nullable
-	public Integer getVersion() {
-		return version;
-	}
-
-	@SuppressWarnings("unused")
-	private void setId(final Long id) {
-		this.id = id;
-	}
-
-	/** {@inheritDoc} */
-	public void setParent(final StandardRow parent) {
-		this.parent = parent;
-	}
-
-	/**
-	 * Add a set of {@code CharacterState}s to this {@code CharacterStateCell}.
-	 * 
-	 * @param states to be added. Each must not be in a detached state.
-	 * 
-	 * @return {@code state}
-	 */
-	private void setPolymorphicOrUncertain(
-			final PPodCellType type,
-			final Set<StandardState> states) {
-		checkNotNull(type);
-		checkNotNull(states);
-
-		checkArgument(
-				type == PPodCellType.POLYMORPHIC
-						|| type == PPodCellType.UNCERTAIN,
-				" type is " + type + " but must be POLYMORPHIC OR UNCERTAIN");
-
-		checkArgument(
-				states.size() > 1,
-				"POLYMORPIC AND UNCERTAIN must have greater than 1 element but elements has "
-						+ states.size());
-
-		checkRowMatrixCharacter();
-
-		this.type = type;
-		this.state = null;
-		this.states.clear();
-		this.states.addAll(states);
-	}
-
-	/**
-	 * Set the cell's type to {@link Type.POLYMORPHIC} and its states to contain
-	 * only the states with the given state numbers. The states are pulled from
-	 * this column's character, so it is not legal to call this method if this
-	 * cell is not part of a matrix with a character in the column.
-	 * 
-	 * @param stateNumbers the state numbers of the states we want
-	 * 
-	 * @throw IllegalArgumentException if {@code elements.size() < 2}
-	 */
-	public void setPolymorphic(
-			final Set<Integer> stateNumbers) {
-		checkNotNull(stateNumbers);
-		checkArgument(
-				stateNumbers.size() > 1,
-				"polymorphic states must be > 1");
-		setPolymorphicOrUncertain(PPodCellType.POLYMORPHIC,
-				getStatesByStateNumbers(stateNumbers));
-	}
-
-	/**
-	 * Set the cell's type to {@link Type.SINGLE} and its states to contain only
-	 * the state with the given state number. The state is pulled from this
-	 * column's character, so it is not legal to call this method if this cell
-	 * is not part of a matrix with a character in the column.
-	 * 
-	 * @param stateNumber the state number of the state we want
-	 */
-	public void setSingle(final Integer stateNumber) {
-
-		checkNotNull(stateNumber);
-
-		if (getType() == PPodCellType.SINGLE
-				&& this.state.getStateNumber().equals(stateNumber)) {
-			// We're already good, so let's not do anything.
-			// Since this is the most common case, it's worth doing: gives
-			// us a 50% improvement on larger matrices.
-			return;
-		}
-
-		checkState(
-					getPosition() != null,
-					"this cell has not been assigned a row: it's position attribute is null");
-
-		final StandardCharacter character =
-				getParent()
-						.getParent()
-						.getCharacters()
-						.get(getPosition());
-
-		checkState(character != null,
-				"no character has been assigned for column " + getPosition());
-
-		final StandardState state = character.getStates().get(stateNumber);
-
-		checkArgument(
-				state != null,
-				"This matrix doesn't have a state number "
-						+ stateNumber + " for character ["
-						+ character.getLabel()
-						+ "]");
-
-		type = PPodCellType.SINGLE;
-		this.state = state;
-		this.states.clear();
-	}
-
-	/**
-	 * Set the cell's type to {@link Type.UNCERTAIN} and its states to contain
-	 * only the states with the given state numbers. The states are pulled from
-	 * this column's character, so it is not legal to call this method if this
-	 * cell is not part of a matrix with a character in the column.
-	 * 
-	 * @param stateNumbers the state numbers of the states we want
-	 */
-	public void setUncertain(
-			final Set<Integer> stateNumbers) {
-		checkNotNull(stateNumbers);
-		checkArgument(
-				stateNumbers.size() > 1,
-				"polymorphic states must be > 1");
-		setPolymorphicOrUncertain(PPodCellType.UNCERTAIN,
-				getStatesByStateNumbers(stateNumbers));
-	}
-
-	/**
-	 * @param version the version to set
-	 */
-	@SuppressWarnings("unused")
-	private void setVersion(final Integer version) {
-		this.version = version;
-	}
-
-	public static final String TYPE_COLUMN = "TYPE";
-
-	@CheckForNull
-	private Integer position;
-
-	@CheckForNull
-	private PPodCellType type;
 
 	/**
 	 * Don't modify the returned collection - that's undefined.
@@ -379,13 +237,6 @@ public class StandardCell implements IChild<StandardRow> {
 		}
 	}
 
-	/** {@inheritDoc} */
-	@Column(name = "POSITION", nullable = false)
-	@Nullable
-	public Integer getPosition() {
-		return position;
-	}
-
 	/**
 	 * Get the type of this cell.
 	 * <p>
@@ -404,26 +255,71 @@ public class StandardCell implements IChild<StandardRow> {
 	}
 
 	/**
+	 * @return the version
+	 */
+	@Version
+	@Column(name = "OBJ_VERSION")
+	@Nullable
+	public Integer getVersion() {
+		return version;
+	}
+
+	@SuppressWarnings("unused")
+	private void setId(final Long id) {
+		this.id = id;
+	}
+
+	/**
 	 * Set this cell's type to {@link Type#INAPPLICABLE}, its elements to the
 	 * empty set.
 	 */
 	public void setInapplicable() {
-		setInapplicableOrUnassigned(PPodCellType.INAPPLICABLE);
+		type = PPodCellType.INAPPLICABLE;
+		setStateAndClearStates(null);
 	}
 
-	private void setInapplicableOrUnassigned(final PPodCellType type) {
-		checkArgument(
-				type == PPodCellType.INAPPLICABLE
-						|| type == PPodCellType.UNASSIGNED,
-				"type was " + type + " but must be INAPPLICABLE or UNASSIGNED");
+	/** {@inheritDoc} */
+	public void setParent(final StandardRow parent) {
+		this.parent = parent;
+	}
 
-		if (type == getType()) {
-			return;
-		}
-		setType(type);
-		state = null;
-		states.clear();
-		return;
+	/**
+	 * Set the cell's type to {@link Type.POLYMORPHIC} and its states to contain
+	 * only the states with the given state numbers. The states are pulled from
+	 * this column's character, so it is not legal to call this method if this
+	 * cell is not part of a matrix with a character in the column.
+	 * 
+	 * @param stateNumbers the state numbers of the states we want
+	 * 
+	 * @throw IllegalArgumentException if {@code elements.size() < 2}
+	 */
+	public void setPolymorphic(
+			final Set<Integer> stateNumbers) {
+		checkNotNull(stateNumbers);
+		checkArgument(
+				stateNumbers.size() > 1,
+				"polymorphic states must be > 1");
+		type = PPodCellType.POLYMORPHIC;
+		setPolymorphicOrUncertain(getStatesByStateNumbers(stateNumbers));
+	}
+
+	/**
+	 * Add a set of {@code CharacterState}s to this {@code CharacterStateCell}.
+	 * 
+	 * @param states to be added. Each must not be in a detached state.
+	 * 
+	 * @return {@code state}
+	 */
+	private void setPolymorphicOrUncertain(
+			final Set<StandardState> states) {
+		checkArgument(
+				states.size() > 1,
+				"POLYMORPIC AND UNCERTAIN must have greater than 1 element but elements has "
+						+ states.size());
+		checkRowMatrixCharacter();
+		this.state = null;
+		this.states.clear();
+		this.states.addAll(states);
 	}
 
 	/**
@@ -441,6 +337,68 @@ public class StandardCell implements IChild<StandardRow> {
 		this.position = position;
 	}
 
+	/**
+	 * Set the cell's type to {@link Type.SINGLE} and its states to contain only
+	 * the state with the given state number. The state is pulled from this
+	 * column's character, so it is not legal to call this method if this cell
+	 * is not part of a matrix with a character in the column.
+	 * 
+	 * @param stateNumber the state number of the state we want
+	 */
+	public void setSingle(final Integer stateNumber) {
+
+		checkNotNull(stateNumber);
+
+		if (getType() == PPodCellType.SINGLE
+				&& this.state.getStateNumber().equals(stateNumber)) {
+			// We're already good, so let's not do anything.
+			// Since this is the most common case, it's worth doing: gives
+			// us a 50% improvement on larger matrices.
+			return;
+		}
+
+		checkState(
+					getPosition() != null,
+					"this cell has not been assigned a row: it's position attribute is null");
+
+		final StandardCharacter character =
+				getParent()
+						.getParent()
+						.getCharacters()
+						.get(getPosition());
+
+		checkState(character != null,
+				"no character has been assigned for column " + getPosition());
+
+		final StandardState state = character.getStates().get(stateNumber);
+
+		checkArgument(
+				state != null,
+				"This matrix doesn't have a state number "
+						+ stateNumber + " for character ["
+						+ character.getLabel()
+						+ "]");
+
+		type = PPodCellType.SINGLE;
+		setStateAndClearStates(state);
+	}
+
+	@SuppressWarnings("unused")
+	private void setState(final StandardState state) {
+		this.state = state;
+	}
+
+	private void setStateAndClearStates(@CheckForNull final StandardState state) {
+		this.state = state;
+		states.clear();
+	}
+
+	@SuppressWarnings("unused")
+	private void setStates(final Set<StandardState> states) {
+		this.states = states;
+	}
+
+	@SuppressWarnings("unused")
 	private void setType(final PPodCellType type) {
 		this.type = type;
 	}
@@ -450,7 +408,34 @@ public class StandardCell implements IChild<StandardRow> {
 	 * empty set.
 	 */
 	public void setUnassigned() {
-		setInapplicableOrUnassigned(PPodCellType.UNASSIGNED);
+		type = PPodCellType.UNASSIGNED;
+		setStateAndClearStates(null);
+	}
+
+	/**
+	 * Set the cell's type to {@link Type.UNCERTAIN} and its states to contain
+	 * only the states with the given state numbers. The states are pulled from
+	 * this column's character, so it is not legal to call this method if this
+	 * cell is not part of a matrix with a character in the column.
+	 * 
+	 * @param stateNumbers the state numbers of the states we want
+	 */
+	public void setUncertain(
+			final Set<Integer> stateNumbers) {
+		checkNotNull(stateNumbers);
+		checkArgument(
+				stateNumbers.size() > 1,
+				"polymorphic states must be > 1");
+		type = PPodCellType.UNCERTAIN;
+		setPolymorphicOrUncertain(getStatesByStateNumbers(stateNumbers));
+	}
+
+	/**
+	 * @param version the version to set
+	 */
+	@SuppressWarnings("unused")
+	private void setVersion(final Integer version) {
+		this.version = version;
 	}
 
 }

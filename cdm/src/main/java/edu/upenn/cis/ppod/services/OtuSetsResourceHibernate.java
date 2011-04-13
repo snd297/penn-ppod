@@ -31,13 +31,13 @@ import org.slf4j.LoggerFactory;
 
 import com.google.inject.Inject;
 
-import edu.upenn.cis.ppod.dto.Counts;
-import edu.upenn.cis.ppod.dto.IHasPPodId;
-import edu.upenn.cis.ppod.dto.PPodDnaMatrix;
-import edu.upenn.cis.ppod.dto.PPodEntities;
-import edu.upenn.cis.ppod.dto.PPodOtuSet;
-import edu.upenn.cis.ppod.dto.PPodStandardMatrix;
-import edu.upenn.cis.ppod.dto.PPodTreeSet;
+import edu.upenn.cis.ppod.Counts;
+import edu.upenn.cis.ppod.IHasPPodId;
+import edu.upenn.cis.ppod.PPodDnaMatrix;
+import edu.upenn.cis.ppod.PPodEntities;
+import edu.upenn.cis.ppod.PPodOtuSet;
+import edu.upenn.cis.ppod.PPodStandardMatrix;
+import edu.upenn.cis.ppod.PPodTreeSet;
 import edu.upenn.cis.ppod.model.DnaMatrix;
 import edu.upenn.cis.ppod.model.Otu;
 import edu.upenn.cis.ppod.model.OtuSet;
@@ -48,15 +48,15 @@ import edu.upenn.cis.ppod.util.DbStudy2DocStudy;
 /**
  * @author Sam Donnelly
  */
-class PPodEntitiesResourceHibernate
-		implements IPPodEntitiesResource {
+class OtuSetsResourceHibernate
+		implements IOtuSetsResource {
 
 	private final Session session;
 	private static final Logger logger =
-			LoggerFactory.getLogger(PPodEntitiesResourceHibernate.class);
+			LoggerFactory.getLogger(OtuSetsResourceHibernate.class);
 
 	@Inject
-	PPodEntitiesResourceHibernate(final Session session) {
+	OtuSetsResourceHibernate(final Session session) {
 		this.session = session;
 	}
 

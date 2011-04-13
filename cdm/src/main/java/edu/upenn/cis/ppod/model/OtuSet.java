@@ -46,9 +46,9 @@ import com.google.common.annotations.VisibleForTesting;
 
 import edu.umd.cs.findbugs.annotations.CheckForNull;
 import edu.umd.cs.findbugs.annotations.Nullable;
+import edu.upenn.cis.ppod.dto.ILabeled;
 import edu.upenn.cis.ppod.imodel.IChild;
 import edu.upenn.cis.ppod.imodel.IDependsOnParentOtus;
-import edu.upenn.cis.ppod.imodel.ILabeled;
 
 /**
  * A set of {@link OTU}s.
