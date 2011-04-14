@@ -45,8 +45,8 @@
 	<scm>
 	</scm>
 	<modules>
-		<module>ppod-client</module>
 		<module>cdm</module>
+		<module>ppod-client</module>
 		<module>services</module>
 		<module>ppod-demo-server</module>
 		<module>distribution</module>
