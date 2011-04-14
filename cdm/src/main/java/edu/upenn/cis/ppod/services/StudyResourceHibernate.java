@@ -24,14 +24,14 @@ import org.slf4j.LoggerFactory;
 
 import com.google.inject.Inject;
 
-import edu.upenn.cis.ppod.PPodLabelAndId;
-import edu.upenn.cis.ppod.PPodStudy;
-import edu.upenn.cis.ppod.Study2StudyInfo;
-import edu.upenn.cis.ppod.StudyInfo;
 import edu.upenn.cis.ppod.createorupdate.CreateOrUpdateStudy;
 import edu.upenn.cis.ppod.dao.IStudyDAO;
+import edu.upenn.cis.ppod.dto.PPodLabelAndId;
+import edu.upenn.cis.ppod.dto.PPodStudy;
+import edu.upenn.cis.ppod.dto.StudyInfo;
 import edu.upenn.cis.ppod.model.Study;
 import edu.upenn.cis.ppod.util.DbStudy2DocStudy;
+import edu.upenn.cis.ppod.util.Study2StudyInfo;
 
 /**
  * We commit the transactions in this class so that the resteasy response will

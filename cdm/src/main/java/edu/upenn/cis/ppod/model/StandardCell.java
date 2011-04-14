@@ -40,7 +40,7 @@ import javax.persistence.Version;
 
 import edu.umd.cs.findbugs.annotations.CheckForNull;
 import edu.umd.cs.findbugs.annotations.Nullable;
-import edu.upenn.cis.ppod.PPodCellType;
+import edu.upenn.cis.ppod.dto.PPodCellType;
 import edu.upenn.cis.ppod.imodel.IChild;
 
 /**

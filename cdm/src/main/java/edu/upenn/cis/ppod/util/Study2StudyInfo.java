@@ -13,19 +13,25 @@
  * See the License for the specific language governing permissions and
  * limitations under the License.
  */
-package edu.upenn.cis.ppod.dto;
+package edu.upenn.cis.ppod.util;
 
 import static com.google.common.base.Preconditions.checkNotNull;
 import static com.google.common.collect.Iterables.get;
-import edu.upenn.cis.ppod.dto.model.DnaMatrix;
-import edu.upenn.cis.ppod.dto.model.Otu;
-import edu.upenn.cis.ppod.dto.model.OtuSet;
-import edu.upenn.cis.ppod.dto.model.ProteinMatrix;
-import edu.upenn.cis.ppod.dto.model.StandardCharacter;
-import edu.upenn.cis.ppod.dto.model.StandardMatrix;
-import edu.upenn.cis.ppod.dto.model.Study;
-import edu.upenn.cis.ppod.dto.model.Tree;
-import edu.upenn.cis.ppod.dto.model.TreeSet;
+import edu.upenn.cis.ppod.dto.MatrixInfo;
+import edu.upenn.cis.ppod.dto.OtuSetInfo;
+import edu.upenn.cis.ppod.dto.PPodEntityInfo;
+import edu.upenn.cis.ppod.dto.StandardMatrixInfo;
+import edu.upenn.cis.ppod.dto.StudyInfo;
+import edu.upenn.cis.ppod.dto.TreeSetInfo;
+import edu.upenn.cis.ppod.model.DnaMatrix;
+import edu.upenn.cis.ppod.model.Otu;
+import edu.upenn.cis.ppod.model.OtuSet;
+import edu.upenn.cis.ppod.model.ProteinMatrix;
+import edu.upenn.cis.ppod.model.StandardCharacter;
+import edu.upenn.cis.ppod.model.StandardMatrix;
+import edu.upenn.cis.ppod.model.Study;
+import edu.upenn.cis.ppod.model.Tree;
+import edu.upenn.cis.ppod.model.TreeSet;
 
 /**
  * @author Sam Donnelly

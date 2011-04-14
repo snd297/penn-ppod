@@ -36,8 +36,8 @@ import javax.persistence.Version;
 
 import edu.umd.cs.findbugs.annotations.CheckForNull;
 import edu.umd.cs.findbugs.annotations.Nullable;
-import edu.upenn.cis.ppod.IOtuSets;
 import edu.upenn.cis.ppod.dto.ILabeled;
+import edu.upenn.cis.ppod.imodel.IOtuSets;
 import edu.upenn.cis.ppod.imodel.IUuPPodEntity;
 
 /**
@@ -56,8 +56,9 @@ import edu.upenn.cis.ppod.imodel.IUuPPodEntity;
 				query = "select s.pPodId, s.label from Study s") })
 @Entity
 @Table(name = Study.TABLE)
-public class Study extends UuPPodEntity implements ILabeled, IOtuSets,
-		IUuPPodEntity {
+public class Study
+		extends UuPPodEntity
+		implements ILabeled, IOtuSets, IUuPPodEntity {
 
 	/** The table name for this entity. */
 	public static final String TABLE = "STUDY";

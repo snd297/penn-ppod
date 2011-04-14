@@ -21,15 +21,5 @@
 			<artifactId>ppod-cdm</artifactId>
 			<version>${project.version}</version>
 		</dependency>
-		<dependency>
-			<groupId>org.apache.shiro</groupId>
-			<artifactId>shiro-core</artifactId>
-			<version>1.0.0-incubating</version>
-		</dependency>
-		<dependency>
-			<groupId>org.apache.shiro</groupId>
-			<artifactId>shiro-web</artifactId>
-			<version>1.0.0-incubating</version>
-		</dependency>
 	</dependencies>
 </project>

@@ -9,8 +9,6 @@ import org.testng.annotations.Test;
 
 import com.google.common.collect.ImmutableSet;
 
-import edu.upenn.cis.ppod.PPodCellType;
-import edu.upenn.cis.ppod.PPodStandardCell;
 import edu.upenn.cis.ppod.TestGroupDefs;
 
 @Test(groups = TestGroupDefs.FAST)

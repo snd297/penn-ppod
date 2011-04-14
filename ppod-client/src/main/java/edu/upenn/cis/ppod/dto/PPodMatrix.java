@@ -28,7 +28,6 @@ abstract class PPodMatrix<R> extends
 	}
 
 	public final void setRows(final List<R> rows) {
-		checkNotNull(rows);
-		this.rows = rows;
+		this.rows = checkNotNull(rows);
 	}
 }

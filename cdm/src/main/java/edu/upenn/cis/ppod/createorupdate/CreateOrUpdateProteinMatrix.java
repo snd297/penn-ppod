@@ -3,8 +3,8 @@ package edu.upenn.cis.ppod.createorupdate;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
-import edu.upenn.cis.ppod.PPodProteinMatrix;
-import edu.upenn.cis.ppod.PPodProteinRow;
+import edu.upenn.cis.ppod.dto.PPodProteinMatrix;
+import edu.upenn.cis.ppod.dto.PPodProteinRow;
 import edu.upenn.cis.ppod.model.Otu;
 import edu.upenn.cis.ppod.model.ProteinMatrix;
 import edu.upenn.cis.ppod.model.ProteinRow;

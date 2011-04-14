@@ -28,8 +28,8 @@ import java.util.Set;
 import org.testng.annotations.BeforeMethod;
 import org.testng.annotations.Test;
 
-import edu.upenn.cis.ppod.PPodCellType;
 import edu.upenn.cis.ppod.TestGroupDefs;
+import edu.upenn.cis.ppod.dto.PPodCellType;
 
 /**
  * Test {@link CharacterStateCell}.

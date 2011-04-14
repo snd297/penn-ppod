@@ -23,11 +23,11 @@ import static com.google.common.collect.Lists.newArrayList;
 
 import java.util.List;
 
-import edu.upenn.cis.ppod.IHasPPodId;
-import edu.upenn.cis.ppod.PPodOtu;
-import edu.upenn.cis.ppod.PPodOtuSet;
-import edu.upenn.cis.ppod.PPodTree;
-import edu.upenn.cis.ppod.PPodTreeSet;
+import edu.upenn.cis.ppod.dto.IHasPPodId;
+import edu.upenn.cis.ppod.dto.PPodOtu;
+import edu.upenn.cis.ppod.dto.PPodOtuSet;
+import edu.upenn.cis.ppod.dto.PPodTree;
+import edu.upenn.cis.ppod.dto.PPodTreeSet;
 import edu.upenn.cis.ppod.model.Otu;
 import edu.upenn.cis.ppod.model.Tree;
 import edu.upenn.cis.ppod.model.TreeSet;
