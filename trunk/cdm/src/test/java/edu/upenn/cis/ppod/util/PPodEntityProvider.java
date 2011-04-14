@@ -21,9 +21,9 @@ import javax.xml.bind.JAXBContext;
 
 import org.testng.annotations.DataProvider;
 
-import edu.upenn.cis.ppod.IHasOtuSets;
-import edu.upenn.cis.ppod.PPodOtuSet;
-import edu.upenn.cis.ppod.PPodStudy;
+import edu.upenn.cis.ppod.dto.IHasOtuSets;
+import edu.upenn.cis.ppod.dto.PPodOtuSet;
+import edu.upenn.cis.ppod.dto.PPodStudy;
 import edu.upenn.cis.ppod.model.OtuSet;
 import edu.upenn.cis.ppod.model.Study;
 

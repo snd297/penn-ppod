@@ -40,16 +40,18 @@ import edu.upenn.cis.ppod.model.OtuSet;
  */
 public class UPennCisPPodUtil {
 
-	public static <F, T> Predicate<F> composeEqualTo(final T equalToTarget,
+	public static <F, T> Predicate<F> composeEqualTo(
+			final T equalToTarget,
 			final Function<F, ? extends T> f) {
 		return compose(equalTo(equalToTarget), f);
 	}
 
-	public static <V extends IChild<P>, P extends IChild<OtuSet>> void put(
-			final Map<Otu, V> otusToValues,
-			final Otu otu,
-			final V value,
-			final P parent) {
+	public static <V extends IChild<P>, P extends IChild<OtuSet>>
+			void put(
+					final Map<Otu, V> otusToValues,
+					final Otu otu,
+					final V value,
+					final P parent) {
 		checkNotNull(otu);
 		checkNotNull(value);
 

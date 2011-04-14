@@ -9,14 +9,15 @@ import javax.xml.bind.annotation.XmlElement;
 import edu.umd.cs.findbugs.annotations.CheckForNull;
 
 @XmlAccessorType(XmlAccessType.PROPERTY)
-public final class PPodProteinMatrix extends
-		PPodMatrix<PPodProteinRow> {
+public final class PPodProteinMatrix
+		extends PPodMatrix<PPodProteinRow> {
 
 	/** For JAXB. */
 	@SuppressWarnings("unused")
 	private PPodProteinMatrix() {}
 
-	public PPodProteinMatrix(@CheckForNull final String pPodId,
+	public PPodProteinMatrix(
+			@CheckForNull final String pPodId,
 			final String label) {
 		super(pPodId, label);
 	}

@@ -23,10 +23,10 @@ import java.util.List;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
-import edu.upenn.cis.ppod.PPodStandardCell;
-import edu.upenn.cis.ppod.PPodStandardMatrix;
-import edu.upenn.cis.ppod.PPodStandardRow;
 import edu.upenn.cis.ppod.dao.IStandardRowDAO;
+import edu.upenn.cis.ppod.dto.PPodStandardCell;
+import edu.upenn.cis.ppod.dto.PPodStandardMatrix;
+import edu.upenn.cis.ppod.dto.PPodStandardRow;
 import edu.upenn.cis.ppod.model.Otu;
 import edu.upenn.cis.ppod.model.StandardCell;
 import edu.upenn.cis.ppod.model.StandardMatrix;
