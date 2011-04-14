@@ -17,9 +17,9 @@
 	</build>
 	<dependencies>
 		<dependency>
-			<groupId>edu.upenn.cis.ppod</groupId>
+			<groupId>${groupId}</groupId>
 			<artifactId>ppod-cdm</artifactId>
-			<version>${project.version}</version>
+			<version>${version}</version>
 		</dependency>
 	</dependencies>
 </project>

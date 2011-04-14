@@ -12,7 +12,7 @@ import edu.upenn.cis.ppod.TestGroupDefs;
 @Test(groups = TestGroupDefs.FAST)
 public class RowTest {
 	@Test
-	void clearCells() {
+	public void clearCells() {
 		final OtuSet otuSet = new OtuSet();
 		final Otu otu = new Otu();
 		otuSet.addOtu(otu);
@@ -24,7 +24,8 @@ public class RowTest {
 
 		final StandardRow row = new StandardRow();
 		matrix.putRow(otu, row);
-		row.clearAndAddCells(newArrayList(new StandardCell(), new StandardCell(),
+		row.clearAndAddCells(newArrayList(new StandardCell(),
+				new StandardCell(),
 				new StandardCell()));
 		row.clearCells();
 
