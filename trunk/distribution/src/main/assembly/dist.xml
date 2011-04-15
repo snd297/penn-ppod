@@ -31,6 +31,7 @@
 			<useProjectArtifact>false</useProjectArtifact>
 			<includes>
 				<include>edu.upenn.cis.ppod:ppod-demo-server</include>
+				<include>*:jar</include>
 			</includes>
 			<outputDirectory>ppod-demo-server</outputDirectory>
 		</dependencySet>
@@ -48,9 +49,9 @@
 			<useProjectArtifact>false</useProjectArtifact>
 			<includes>
 				<include>edu.upenn.cis.ppod:ppod-client</include>
+				<include>*:jar</include>
 			</includes>
 			<outputDirectory>ppod-client</outputDirectory>
 		</dependencySet>
 	</dependencySets>
-
 </assembly>

@@ -41,14 +41,18 @@ public class DemoServer {
 	private static Server server;
 
 	public static void main(String[] args) throws Exception {
-		server = new Server(Integer.valueOf(args[0]));
+		int port = 8080;
+		if (args.length > 0) {
+			port = Integer.valueOf(args[0]);
+
+		}
+		server = new Server(port);
 
 		ServletContextHandler context =
 				new ServletContextHandler(
 						server,
-						"/",
+						"/ppod-services",
 						ServletContextHandler.SESSIONS);
-		context.setResourceBase("/");
 		context.setInitParameter(
 				"resteasy.providers",
 				"edu.upenn.cis.ppod.services.PPodExceptionMapper");
@@ -73,13 +77,18 @@ public class DemoServer {
 
 		context.addEventListener(resteasyBootstrapListener);
 
-		Thread monitor = new MonitorThread(Integer.valueOf(args[0]) + 1);
+		Thread monitor = new MonitorThread(port + 1);
 
 		monitor.start();
 		server.start();
 		server.join();
 	}
 
+	/**
+	 * from
+	 * http://ptrthomas.wordpress.com/2009/01/24/how-to-start-and-stop-jetty
+	 * -revisited/
+	 */
 	private static class MonitorThread extends Thread {
 		private ServerSocket socket;
 

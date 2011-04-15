@@ -19,8 +19,11 @@ public class RowTest {
 		final StandardMatrix matrix = new StandardMatrix();
 		otuSet.addStandardMatrix(matrix);
 		// matrix.setColumnsSize(3);
-		matrix.clearAndAddCharacters(newArrayList(new StandardCharacter(),
-				new StandardCharacter(), new StandardCharacter()));
+		matrix.clearAndAddCharacters(
+				newArrayList(
+						new StandardCharacter(),
+						new StandardCharacter(),
+						new StandardCharacter()));
 
 		final StandardRow row = new StandardRow();
 		matrix.putRow(otu, row);
