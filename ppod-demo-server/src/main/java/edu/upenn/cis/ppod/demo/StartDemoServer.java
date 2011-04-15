@@ -36,7 +36,7 @@ import edu.upenn.cis.ppod.persistence.PersistenceModule;
 import edu.upenn.cis.ppod.services.PPodServicesHibernateModule;
 import edu.upenn.cis.ppod.thirdparty.util.PPodGuiceResteasyBootstrap;
 
-public class DemoServer {
+public class StartDemoServer {
 
 	private static Server server;
 
