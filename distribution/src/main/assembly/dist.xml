@@ -3,12 +3,10 @@
 	xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
 	xsi:schemaLocation="http://maven.apache.org/plugins/maven-assembly-plugin/assembly/1.1.1 http://maven.apache.org/xsd/assembly-1.1.1.xsd">
 	<id>dist</id>
-
 	<formats>
 		<format>zip</format>
 	</formats>
 	<includeBaseDirectory>true</includeBaseDirectory>
-
 	<fileSets>
 		<fileSet>
 			<directory>../</directory>
@@ -31,11 +29,27 @@
 		<dependencySet>
 			<!-- for useProjectArtifact, just following orders: see http://www.sonatype.com/books/mvnref-book/reference/assemblies-sect-output-algorithm.html#assemblies-sect-transitive -->
 			<useProjectArtifact>false</useProjectArtifact>
+			<includes>
+				<include>edu.upenn.cis.ppod:ppod-demo-server</include>
+			</includes>
+			<outputDirectory>ppod-demo-server</outputDirectory>
+		</dependencySet>
+		<dependencySet>
+			<!-- for useProjectArtifact, just following orders: see http://www.sonatype.com/books/mvnref-book/reference/assemblies-sect-output-algorithm.html#assemblies-sect-transitive -->
+			<useProjectArtifact>false</useProjectArtifact>
 			<unpack>true</unpack>
 			<includes>
 				<include>edu.upenn.cis.ppod:ppod-services</include>
 			</includes>
 			<outputDirectory>ppod-services.war</outputDirectory>
+		</dependencySet>
+		<dependencySet>
+			<!-- for useProjectArtifact, just following orders: see http://www.sonatype.com/books/mvnref-book/reference/assemblies-sect-output-algorithm.html#assemblies-sect-transitive -->
+			<useProjectArtifact>false</useProjectArtifact>
+			<includes>
+				<include>edu.upenn.cis.ppod:ppod-client</include>
+			</includes>
+			<outputDirectory>ppod-client</outputDirectory>
 		</dependencySet>
 	</dependencySets>
 
