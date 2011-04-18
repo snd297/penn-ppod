@@ -40,10 +40,10 @@ public abstract class Matrix<R>
 		implements IDependsOnParentOtus {
 
 	/** Description column. */
-	public static final String DESCRIPTION_COLUMN = "DESCRIPTION";
+	public static final String DESCRIPTION_COLUMN = "description";
 
 	/** Label column. */
-	public static final String LABEL_COLUMN = "LABEL";
+	public static final String LABEL_COLUMN = "label";
 
 	/** Free-form description. */
 	@CheckForNull

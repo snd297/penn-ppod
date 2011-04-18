@@ -47,9 +47,9 @@ import edu.umd.cs.findbugs.annotations.Nullable;
 @Table(name = StandardCharacter.TABLE)
 public class StandardCharacter extends UuPPodEntity {
 
-	public final static String TABLE = "STANDARD_CHARACTER";
+	public final static String TABLE = "standard_character";
 
-	public final static String ID_COLUMN = TABLE + "_ID";
+	public final static String ID_COLUMN = TABLE + "_id";
 
 	@CheckForNull
 	private Long id;
@@ -117,14 +117,14 @@ public class StandardCharacter extends UuPPodEntity {
 	 * 
 	 * @return the label of this {@code Character}
 	 */
-	@Column(name = "LABEL", nullable = false)
+	@Column(name = "label", nullable = false)
 	@Index(name = "IDX_LABEL")
 	@Nullable
 	public String getLabel() {
 		return label;
 	}
 
-	@Column(name = "MESQUITE_ID", nullable = false, unique = true)
+	@Column(name = "mesquite_id", nullable = false, unique = true)
 	@Nullable
 	public String getMesquiteId() {
 		return mesquiteId;
@@ -159,7 +159,7 @@ public class StandardCharacter extends UuPPodEntity {
 	 * @return the version
 	 */
 	@Version
-	@Column(name = "OBJ_VERSION")
+	@Column(name = "obj_version")
 	@Nullable
 	public Integer getVersion() {
 		return version;

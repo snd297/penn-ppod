@@ -40,10 +40,10 @@ public class ProteinRow implements IChild<ProteinMatrix> {
 	@CheckForNull
 	private Integer version;
 
-	public static final String TABLE = "PROTEIN_ROW";
+	public static final String TABLE = "protein_row";
 
 	public static final String ID_COLUMN =
-			TABLE + "_ID";
+			TABLE + "_id";
 
 	@CheckForNull
 	private ProteinMatrix parent;
@@ -75,6 +75,16 @@ public class ProteinRow implements IChild<ProteinMatrix> {
 		return this.sequence;
 	}
 
+	/**
+	 * @return the version
+	 */
+	@Version
+	@Column(name = "obj_version")
+	@Nullable
+	public Integer getVersion() {
+		return version;
+	}
+
 	@SuppressWarnings("unused")
 	private void setId(final Long id) {
 		this.id = id;
@@ -90,20 +100,10 @@ public class ProteinRow implements IChild<ProteinMatrix> {
 	}
 
 	/**
-	 * @return the version
-	 */
-	@Version
-	@Column(name = "OBJ_VERSION")
-	@Nullable
-	public Integer getVersion() {
-		return version;
-	}
-
-	/**
 	 * @param version the version to set
 	 */
 	@SuppressWarnings("unused")
-	private void setVersion(Integer version) {
+	private void setVersion(final Integer version) {
 		this.version = version;
 	}
 }
