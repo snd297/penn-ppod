@@ -63,19 +63,19 @@ import edu.upenn.cis.ppod.imodel.IDependsOnParentOtus;
 public class OtuSet extends UuPPodEntity implements ILabeled {
 
 	/** The column that stores the description. */
-	public static final String DESCRIPTION_COLUMN = "DESCRIPTION";
+	public static final String DESCRIPTION_COLUMN = "description";
 
 	/** The table for this entity. */
-	public static final String TABLE = "OTU_SET";
+	public static final String TABLE = "otu_set";
 
 	/**
 	 * To be used in the names of foreign keys that point at this table.
 	 */
 	public static final String ID_COLUMN =
-			TABLE + "_ID";
+			TABLE + "_id";
 
 	/** The column that stores the label. */
-	public static final String LABEL_COLUMN = "LABEL";
+	public static final String LABEL_COLUMN = "label";
 
 	@CheckForNull
 	private Long id;
@@ -386,7 +386,7 @@ public class OtuSet extends UuPPodEntity implements ILabeled {
 	@OneToMany(
 			cascade = CascadeType.ALL,
 			orphanRemoval = true)
-	@OrderColumn(name = "POSITION")
+	@OrderColumn(name = "position")
 	@JoinColumn(name = ID_COLUMN, nullable = false)
 	public List<DnaMatrix> getDnaMatrices() {
 		return dnaMatrices;
@@ -415,7 +415,7 @@ public class OtuSet extends UuPPodEntity implements ILabeled {
 	 * 
 	 * @return the label
 	 */
-	@Column(name = "LABEL", nullable = false)
+	@Column(name = "label", nullable = false)
 	@Index(name = "IDX_LABEL")
 	@Nullable
 	public String getLabel() {
@@ -430,7 +430,7 @@ public class OtuSet extends UuPPodEntity implements ILabeled {
 	@OneToMany(
 			orphanRemoval = true,
 			cascade = CascadeType.ALL)
-	@OrderColumn(name = "POSITION")
+	@OrderColumn(name = "position")
 	@JoinColumn(name = ID_COLUMN, nullable = false)
 	public List<Otu> getOtus() {
 		return otus;
@@ -452,7 +452,7 @@ public class OtuSet extends UuPPodEntity implements ILabeled {
 	@OneToMany(
 			cascade = CascadeType.ALL,
 			orphanRemoval = true)
-	@OrderColumn(name = "POSITION")
+	@OrderColumn(name = "position")
 	@JoinColumn(name = ID_COLUMN, nullable = false)
 	public List<ProteinMatrix> getProteinMatrices() {
 		return proteinMatrices;
@@ -464,7 +464,7 @@ public class OtuSet extends UuPPodEntity implements ILabeled {
 	 * @return the standard matrices contained in this OTU set
 	 */
 	@OneToMany(cascade = CascadeType.ALL, orphanRemoval = true)
-	@OrderColumn(name = "POSITION")
+	@OrderColumn(name = "position")
 	@JoinColumn(name = ID_COLUMN, nullable = false)
 	public List<StandardMatrix> getStandardMatrices() {
 		return standardMatrices;
@@ -478,14 +478,14 @@ public class OtuSet extends UuPPodEntity implements ILabeled {
 	@OneToMany(
 			cascade = CascadeType.ALL,
 			orphanRemoval = true)
-	@OrderColumn(name = "POSITION")
+	@OrderColumn(name = "position")
 	@JoinColumn(name = ID_COLUMN, nullable = false)
 	public List<TreeSet> getTreeSets() {
 		return treeSets;
 	}
 
 	@Version
-	@Column(name = "OBJ_VERSION")
+	@Column(name = "obj_version")
 	@Nullable
 	public Integer getVersion() {
 		return version;

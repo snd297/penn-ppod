@@ -44,12 +44,12 @@ public class Otu
 		implements IChild<OtuSet>, ILabeled {
 
 	/** The table for this entity. */
-	public static final String TABLE = "OTU";
+	public static final String TABLE = "otu";
 
 	/**
 	 * To be used for the names of foreign keys that point at this table.
 	 */
-	public static final String ID_COLUMN = TABLE + "_ID";
+	public static final String ID_COLUMN = TABLE + "_id";
 
 	@CheckForNull
 	private Long id;
@@ -86,7 +86,7 @@ public class Otu
 	 * 
 	 * @return the label of this {@code OTU}
 	 */
-	@Column(name = "LABEL", nullable = false)
+	@Column(name = "label", nullable = false)
 	@Index(name = "IDX_LABEL")
 	@Nullable
 	public String getLabel() {
@@ -112,7 +112,7 @@ public class Otu
 	 * @return the version
 	 */
 	@Version
-	@Column(name = "OBJ_VERSION")
+	@Column(name = "obj_version")
 	@Nullable
 	public Integer getVersion() {
 		return version;

@@ -55,9 +55,9 @@ public class TreeSet extends UuPPodEntity implements IDependsOnParentOtus {
 	@CheckForNull
 	private Integer version;
 
-	public static final String TABLE = "TREE_SET";
+	public static final String TABLE = "tree_set";
 
-	public static final String ID_COLUMN = TABLE + "_ID";
+	public static final String ID_COLUMN = TABLE + "_id";
 
 	@Nullable
 	private String label;
@@ -133,7 +133,7 @@ public class TreeSet extends UuPPodEntity implements IDependsOnParentOtus {
 	 * 
 	 * @return the label
 	 */
-	@Column(name = "LABEL", nullable = false)
+	@Column(name = "label", nullable = false)
 	@Nullable
 	public String getLabel() {
 		return label;
@@ -154,7 +154,7 @@ public class TreeSet extends UuPPodEntity implements IDependsOnParentOtus {
 	 * @return the constituent trees.
 	 */
 	@OneToMany(cascade = CascadeType.ALL, orphanRemoval = true)
-	@OrderColumn(name = "POSITION")
+	@OrderColumn(name = "position")
 	@JoinColumn(name = ID_COLUMN, nullable = false)
 	public List<Tree> getTrees() {
 		return trees;
@@ -164,7 +164,7 @@ public class TreeSet extends UuPPodEntity implements IDependsOnParentOtus {
 	 * @return the version
 	 */
 	@Version
-	@Column(name = "OBJ_VERSION")
+	@Column(name = "obj_version")
 	@Nullable
 	public Integer getVersion() {
 		return version;

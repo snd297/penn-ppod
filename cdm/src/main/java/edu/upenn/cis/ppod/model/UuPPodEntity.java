@@ -26,7 +26,7 @@ import edu.upenn.cis.ppod.imodel.IUuPPodEntity;
 @MappedSuperclass
 public abstract class UuPPodEntity implements IUuPPodEntity {
 
-	public final static String PPOD_ID_COLUMN = "PPOD_ID";
+	public final static String PPOD_ID_COLUMN = "ppod_id";
 	public final static int PPOD_ID_COLUMN_LENGTH = 36;
 
 	/**

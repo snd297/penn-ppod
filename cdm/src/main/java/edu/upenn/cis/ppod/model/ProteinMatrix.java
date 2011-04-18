@@ -48,9 +48,9 @@ public class ProteinMatrix
 	@CheckForNull
 	private Integer version;
 
-	public final static String TABLE = "PROTEIN_MATRIX";
+	public final static String TABLE = "protein_matrix";
 
-	public final static String ID_COLUMN = TABLE + "_ID";
+	public final static String ID_COLUMN = TABLE + "_id";
 
 	private Map<Otu, ProteinRow> rows = newHashMap();
 
@@ -78,7 +78,7 @@ public class ProteinMatrix
 	}
 
 	@Version
-	@Column(name = "OBJ_VERSION")
+	@Column(name = "obj_version")
 	@Nullable
 	public Integer getVersion() {
 		return version;

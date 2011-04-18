@@ -57,20 +57,15 @@ public class StandardMatrix extends Matrix<StandardRow> {
 	private Integer version;
 
 	/** This entity's table name. */
-	public static final String TABLE = "STANDARD_MATRIX";
+	public static final String TABLE = "standard_matrix";
 
 	/**
 	 * Name for foreign key columns that point at this table.
 	 */
-	public static final String ID_COLUMN = TABLE + "_ID";
+	public static final String ID_COLUMN = TABLE + "_id";
 
 	private List<StandardCharacter> characters = newArrayList();
 
-	/**
-	 * We want everything but SAVE_UPDATE (which ALL will give us) - once it's
-	 * evicted out of the persistence context, we don't want it back in via
-	 * cascading UPDATE. So that we can run leaner for large matrices.
-	 */
 	private Map<Otu, StandardRow> rows = newHashMap();
 
 	/** No-arg constructor. */
@@ -88,9 +83,9 @@ public class StandardMatrix extends Matrix<StandardRow> {
 	 * 
 	 * @param characters the new characters
 	 * 
-	 * @throws IllegalArgumentException if any of {code newCharacters} is
+	 * @throws IllegalArgumentException if any of {@code characters} is
 	 *             {@code null}
-	 * @throws IllegalArgumentException if any of {@code newCharacters} are
+	 * @throws IllegalArgumentException if any of {@code characters} are
 	 *             {@code .equals} to each other
 	 * @throws IllegalStateExeption if {@code characters.size() !=
 	 *             getColumnsSize()}
@@ -144,7 +139,7 @@ public class StandardMatrix extends Matrix<StandardRow> {
 	@OneToMany(
 			cascade = CascadeType.ALL,
 			orphanRemoval = true)
-	@OrderColumn(name = "POSITION")
+	@OrderColumn(name = "position")
 	@JoinColumn(name = ID_COLUMN, nullable = false)
 	public List<StandardCharacter> getCharacters() {
 		return characters;
@@ -158,6 +153,11 @@ public class StandardMatrix extends Matrix<StandardRow> {
 		return id;
 	}
 
+	/**
+	 * We want everything but SAVE_UPDATE (which ALL will give us) - once it's
+	 * evicted out of the persistence context, we don't want it back in via
+	 * cascading UPDATE. So that we can run leaner for large matrices.
+	 */
 	@OneToMany(cascade = {
 			CascadeType.PERSIST,
 			CascadeType.MERGE,
@@ -175,7 +175,7 @@ public class StandardMatrix extends Matrix<StandardRow> {
 	}
 
 	@Version
-	@Column(name = "OBJ_VERSION")
+	@Column(name = "obj_version")
 	@Nullable
 	public Integer getVersion() {
 		return version;

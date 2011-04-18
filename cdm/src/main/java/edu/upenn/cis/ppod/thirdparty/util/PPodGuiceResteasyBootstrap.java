@@ -18,7 +18,7 @@ import com.google.inject.Singleton;
 import com.google.inject.servlet.ServletModule;
 
 import edu.umd.cs.findbugs.annotations.CheckForNull;
-import edu.upenn.cis.ppod.persistence.PersistenceModule;
+import edu.upenn.cis.ppod.persistence.PPodPersistenceModule;
 import edu.upenn.cis.ppod.services.PPodServicesHibernateModule;
 
 /**
@@ -41,7 +41,7 @@ public class PPodGuiceResteasyBootstrap
 	public PPodGuiceResteasyBootstrap() {
 		this(
 				Guice.createInjector(
-						new PersistenceModule(),
+						new PPodPersistenceModule(),
 						new PPodServicesHibernateModule(),
 						new ServletModule() {
 

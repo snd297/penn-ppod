@@ -54,16 +54,16 @@ import edu.umd.cs.findbugs.annotations.CheckForNull;
 public class StandardState {
 
 	/** The name of this entity's table. */
-	public final static String TABLE = "STANDARD_STATE";
+	public final static String TABLE = "standard_state";
 
 	/** For foreign keys that point at this table. */
-	public final static String ID_COLUMN = TABLE + "_ID";
+	public final static String ID_COLUMN = TABLE + "_id";
 
 	/**
 	 * The column where the stateNumber is stored. Intentionally
 	 * package-private.
 	 */
-	public final static String STATE_NUMBER_COLUMN = "STATE_NUMBER";
+	public final static String STATE_NUMBER_COLUMN = "state_number";
 
 	@CheckForNull
 	private Long id;
@@ -123,7 +123,7 @@ public class StandardState {
 	 * 
 	 * @return this character stateNumber's label
 	 */
-	@Column(name = "LABEL", nullable = false)
+	@Column(name = "label", nullable = false)
 	@Index(name = "IDX_LABEL")
 	@Nullable
 	public String getLabel() {
@@ -159,9 +159,14 @@ public class StandardState {
 		return stateNumber;
 	}
 
-	@SuppressWarnings("unused")
-	private void setStateNumber(final Integer stateNumber) {
-		this.stateNumber = stateNumber;
+	/**
+	 * @return the version
+	 */
+	@Version
+	@Column(name = "obj_version")
+	@Nullable
+	public Integer getVersion() {
+		return version;
 	}
 
 	@SuppressWarnings("unused")
@@ -194,21 +199,16 @@ public class StandardState {
 		this.parent = parent;
 	}
 
-	/**
-	 * @return the version
-	 */
-	@Version
-	@Column(name = "OBJ_VERSION")
-	@Nullable
-	public Integer getVersion() {
-		return version;
+	@SuppressWarnings("unused")
+	private void setStateNumber(final Integer stateNumber) {
+		this.stateNumber = stateNumber;
 	}
 
 	/**
 	 * @param version the version to set
 	 */
 	@SuppressWarnings("unused")
-	private void setVersion(Integer version) {
+	private void setVersion(final Integer version) {
 		this.version = version;
 	}
 }

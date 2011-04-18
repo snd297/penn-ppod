@@ -32,7 +32,7 @@ import com.google.inject.Singleton;
 import com.google.inject.servlet.GuiceFilter;
 import com.google.inject.servlet.ServletModule;
 
-import edu.upenn.cis.ppod.persistence.PersistenceModule;
+import edu.upenn.cis.ppod.persistence.PPodPersistenceModule;
 import edu.upenn.cis.ppod.services.PPodServicesHibernateModule;
 import edu.upenn.cis.ppod.thirdparty.util.PPodGuiceResteasyBootstrap;
 
@@ -61,7 +61,7 @@ public class StartDemoServer {
 		EventListener resteasyBootstrapListener =
 				new PPodGuiceResteasyBootstrap(
 						Guice.createInjector(
-								new PersistenceModule(),
+								new PPodPersistenceModule(),
 								new PPodServicesHibernateModule(),
 								new ServletModule() {
 									@Override

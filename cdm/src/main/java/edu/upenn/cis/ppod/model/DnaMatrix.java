@@ -50,9 +50,9 @@ public class DnaMatrix extends Matrix<DnaRow> {
 	@CheckForNull
 	private Integer version;
 
-	public final static String TABLE = "DNA_MATRIX";
+	public final static String TABLE = "dna_matrix";
 
-	public final static String ID_COLUMN = TABLE + "_ID";
+	public final static String ID_COLUMN = TABLE + "_id";
 
 	private Map<Otu, DnaRow> rows = newHashMap();
 
@@ -83,7 +83,7 @@ public class DnaMatrix extends Matrix<DnaRow> {
 	 * @return the version
 	 */
 	@Version
-	@Column(name = "OBJ_VERSION")
+	@Column(name = "obj_version")
 	@Nullable
 	public Integer getVersion() {
 		return version;

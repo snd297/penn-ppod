@@ -61,11 +61,10 @@ public class Study
 		implements ILabeled, IOtuSets, IUuPPodEntity {
 
 	/** The table name for this entity. */
-	public static final String TABLE = "STUDY";
+	public static final String TABLE = "study";
 
 	/** To be used when referring to this entity in foreign keys. */
-	public static final String ID_COLUMN =
-			TABLE + "_ID";
+	public static final String ID_COLUMN = TABLE + "_id";
 
 	@CheckForNull
 	private Long id;
@@ -134,7 +133,7 @@ public class Study
 
 	/** {@inheritDoc} */
 	@OneToMany(cascade = CascadeType.ALL, orphanRemoval = true)
-	@OrderColumn(name = "POSITION")
+	@OrderColumn(name = "position")
 	@JoinColumn(name = ID_COLUMN, nullable = false)
 	public List<OtuSet> getOtuSets() {
 		return otuSets;
@@ -144,7 +143,7 @@ public class Study
 	 * @return the objVersion
 	 */
 	@Version
-	@Column(name = "OBJ_VERSION")
+	@Column(name = "obj_version")
 	@CheckForNull
 	public Integer getVersion() {
 		return version;

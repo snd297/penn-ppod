@@ -39,9 +39,9 @@ import edu.upenn.cis.ppod.imodel.IChild;
 @Table(name = DnaRow.TABLE)
 public class DnaRow implements IChild<DnaMatrix> {
 
-	public static final String TABLE = "DNA_ROW";
+	public static final String TABLE = "dna_row";
 
-	public static final String ID_COLUMN = TABLE + "_ID";
+	public static final String ID_COLUMN = TABLE + "_id";
 
 	@CheckForNull
 	private Long id;
@@ -83,7 +83,7 @@ public class DnaRow implements IChild<DnaMatrix> {
 	 * @return the version
 	 */
 	@Version
-	@Column(name = "OBJ_VERSION")
+	@Column(name = "obj_version")
 	@Nullable
 	public Integer getVersion() {
 		return version;

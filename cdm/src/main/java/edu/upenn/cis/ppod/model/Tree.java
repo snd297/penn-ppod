@@ -37,9 +37,9 @@ import javax.persistence.Version;
 @Table(name = Tree.TABLE)
 public class Tree extends UuPPodEntity {
 
-	public static final String TABLE = "TREE";
+	public static final String TABLE = "tree";
 
-	public static final String ID_COLUMN = TABLE + "_ID";
+	public static final String ID_COLUMN = TABLE + "_id";
 
 	@CheckForNull
 	private Long id;
@@ -75,7 +75,7 @@ public class Tree extends UuPPodEntity {
 	 * 
 	 * @return the label
 	 */
-	@Column(name = "LABEL", nullable = false)
+	@Column(name = "label", nullable = false)
 	@Nullable
 	public String getLabel() {
 		return label;
@@ -88,7 +88,7 @@ public class Tree extends UuPPodEntity {
 	 * @return the newick string
 	 */
 	@Lob
-	@Column(name = "NEWICK", nullable = false)
+	@Column(name = "newick", nullable = false)
 	@Nullable
 	public String getNewick() {
 		return newick;
@@ -106,7 +106,7 @@ public class Tree extends UuPPodEntity {
 	 * @return the version
 	 */
 	@Version
-	@Column(name = "OBJ_VERSION")
+	@Column(name = "obj_version")
 	@Nullable
 	public Integer getVersion() {
 		return version;

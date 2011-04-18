@@ -53,9 +53,9 @@ public class StandardRow
 	private Integer version;
 
 	/** This entitiy's table name. */
-	public static final String TABLE = "STANDARD_ROW";
+	public static final String TABLE = "standard_row";
 
-	public static final String ID_COLUMN = TABLE + "_ID";
+	public static final String ID_COLUMN = TABLE + "_id";
 
 	private List<StandardCell> cells = newArrayList();
 
@@ -85,7 +85,7 @@ public class StandardRow
 			mappedBy = "parent",
 			cascade = CascadeType.ALL,
 			orphanRemoval = true)
-	@OrderColumn(name = "POSITION")
+	@OrderColumn(name = "position")
 	@Override
 	public List<StandardCell> getCells() {
 		return cells;
@@ -110,7 +110,7 @@ public class StandardRow
 	 * @return the version
 	 */
 	@Version
-	@Column(name = "OBJ_VERSION")
+	@Column(name = "obj_version")
 	@Nullable
 	public Integer getVersion() {
 		return version;

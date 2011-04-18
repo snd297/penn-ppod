@@ -55,13 +55,13 @@ public class StandardCell implements IChild<StandardRow> {
 	/**
 	 * The name of the table.
 	 */
-	public static final String TABLE = "STANDARD_CELL";
+	public static final String TABLE = "standard_cell";
 
 	/**
 	 * Conventionally used as the names of foreign keys that point at the
 	 * {@code CharacterStateCell} table.
 	 */
-	public static final String ID_COLUMN = TABLE + "_ID";
+	public static final String ID_COLUMN = TABLE + "_id";
 
 	@CheckForNull
 	private Long id;
@@ -92,7 +92,7 @@ public class StandardCell implements IChild<StandardRow> {
 	@CheckForNull
 	private StandardRow parent;
 
-	public static final String TYPE_COLUMN = "TYPE";
+	public static final String TYPE_COLUMN = "type";
 
 	@CheckForNull
 	private Integer position;
@@ -143,7 +143,7 @@ public class StandardCell implements IChild<StandardRow> {
 	}
 
 	/** {@inheritDoc} */
-	@Column(name = "POSITION", nullable = false)
+	@Column(name = "position", nullable = false)
 	@Nullable
 	public Integer getPosition() {
 		return position;
@@ -258,7 +258,7 @@ public class StandardCell implements IChild<StandardRow> {
 	 * @return the version
 	 */
 	@Version
-	@Column(name = "OBJ_VERSION")
+	@Column(name = "obj_version")
 	@Nullable
 	public Integer getVersion() {
 		return version;
