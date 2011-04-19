@@ -9,23 +9,28 @@
 	<includeBaseDirectory>true</includeBaseDirectory>
 	<fileSets>
 		<fileSet>
+			<directory>../</directory>
 			<includes>
 				<include>LICENSE.txt</include>
 			</includes>
+			<outputDirectory></outputDirectory>
+			<fileMode>0664</fileMode>
 		</fileSet>
 		<fileSet>
-			<directory>${project.basedir}/src/main/scripts</directory>
-			<outputDirectory>/</outputDirectory>
+			<directory>src/main/scripts/</directory>
+			<outputDirectory></outputDirectory>
 			<fileMode>0775</fileMode>
 		</fileSet>
 		<fileSet>
-			<directory>${project.basedir}/src/main/config</directory>
+			<directory>src/main/config/</directory>
 			<outputDirectory>config</outputDirectory>
+			<fileMode>0664</fileMode>
 		</fileSet>
 		<fileSet>
-			<directory>${project.build.directory}/db</directory>
-			<outputDirectory>/db</outputDirectory>
+			<directory>${project.build.directory}/db/</directory>
+			<outputDirectory>/db/</outputDirectory>
 			<useDefaultExcludes>true</useDefaultExcludes>
+			<fileMode>0664</fileMode>
 		</fileSet>
 	</fileSets>
 	<dependencySets>
@@ -33,11 +38,14 @@
 			<includes>
 				<include>${artifact.groupId}:${artifact.artifactId}</include>
 			</includes>
+			<fileMode>0664</fileMode>
 		</dependencySet>
 		<dependencySet>
 			<outputDirectory>lib</outputDirectory>
+			<!-- for useProjectArtifact, see http://www.sonatype.com/books/mvnref-book/reference/assemblies-sect-output-algorithm.html#assemblies-sect-transitive -->
 			<useProjectArtifact>false</useProjectArtifact>
 			<scope>runtime</scope>
+			<fileMode>0664</fileMode>
 		</dependencySet>
 	</dependencySets>
 </assembly>
