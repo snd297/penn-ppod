@@ -26,8 +26,7 @@ public final class PPodSequenceTokenizer {
 	private int tokenCount = -1;
 
 	public PPodSequenceTokenizer(final String sequence) {
-		checkNotNull(sequence);
-		this.sequence = sequence;
+		this.sequence = checkNotNull(sequence);
 	}
 
 	public int countTokens() {
