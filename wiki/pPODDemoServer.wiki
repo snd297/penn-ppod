@@ -1,13 +1,14 @@
 #summary How to run the pPOD Demo Server
 
-= Introduction =
+= Running the pPOD Demo Server =
 
-Add your content here.
+  # Download the demo server from http://code.google.com/p/penn-ppod/downloads/detail?name=ppod-demo-server-0.2-dist.zip&can=2&q=#makechanges
+  # unzip the download. 
+  # `cd` into ppod-demo-server-X.X.X
+  # run `start-ppod-demo-server &`. You'll get a bunch of logging to standard out. To change that you can alter `config/log4j.properties` or redirect into a file.
 
 
-= Details =
 
-Download the demo server from http://code.google.com/p/penn-ppod/downloads/detail?name=ppod-demo-server-0.2-dist.zip&can=2&q=#makechanges
 
 Add your content here.  Format your content with:
   * Text in *bold* or _italic_
