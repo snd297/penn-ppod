@@ -9,30 +9,31 @@
 	<includeBaseDirectory>true</includeBaseDirectory>
 	<fileSets>
 		<fileSet>
-			<directory>../</directory>
 			<includes>
 				<include>LICENSE</include>
 			</includes>
-			<outputDirectory></outputDirectory>
 		</fileSet>
 		<fileSet>
-			<directory>../cdm/target/site/apidocs</directory>
-			<outputDirectory>docs/javadocs</outputDirectory>
+			<directory>${project.basedir}/src/main/scripts</directory>
+			<outputDirectory>/</outputDirectory>
+			<fileMode>0775</fileMode>
 		</fileSet>
 		<fileSet>
-			<directory>../config</directory>
-			<outputDirectory>config</outputDirectory>
+			<directory>${project.build.directory}/unzipped-db</directory>
+			<outputDirectory>/</outputDirectory>
+			<useDefaultExcludes>true</useDefaultExcludes>
 		</fileSet>
 	</fileSets>
 	<dependencySets>
 		<dependencySet>
-			<!-- for useProjectArtifact, just following orders: see http://www.sonatype.com/books/mvnref-book/reference/assemblies-sect-output-algorithm.html#assemblies-sect-transitive -->
-			<useProjectArtifact>false</useProjectArtifact>
-			<unpack>true</unpack>
 			<includes>
-				<include>edu.upenn.cis.ppod:ppod-services</include>
+				<include>${artifact.groupId}:${artifact.artifactId}</include>
 			</includes>
-			<outputDirectory>ppod-services.war</outputDirectory>
+		</dependencySet>
+		<dependencySet>
+			<outputDirectory>lib</outputDirectory>
+			<useProjectArtifact>false</useProjectArtifact>
+			<scope>runtime</scope>
 		</dependencySet>
 	</dependencySets>
 </assembly>
