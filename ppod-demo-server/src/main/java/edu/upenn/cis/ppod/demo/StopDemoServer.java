@@ -24,7 +24,5 @@ public class StopDemoServer {
 		out.flush();
 		s.close();
 		System.out.println("*** done");
-		out.write(("\r\n").getBytes());
-		out.flush();
 	}
 }
