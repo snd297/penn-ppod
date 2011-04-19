@@ -7,6 +7,8 @@ Add your content here.
 
 = Details =
 
+Download the demo server from http://code.google.com/p/penn-ppod/downloads/detail?name=ppod-demo-server-0.2-dist.zip&can=2&q=#makechanges
+
 Add your content here.  Format your content with:
   * Text in *bold* or _italic_
   * Headings, paragraphs, and lists
