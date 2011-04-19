@@ -11,7 +11,7 @@
 		<fileSet>
 			<directory>../</directory>
 			<includes>
-				<include>LICENSE</include>
+				<include>LICENSE.txt</include>
 			</includes>
 			<outputDirectory></outputDirectory>
 		</fileSet>

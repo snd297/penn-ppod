@@ -10,7 +10,7 @@
 	<fileSets>
 		<fileSet>
 			<includes>
-				<include>LICENSE</include>
+				<include>LICENSE.txt</include>
 			</includes>
 		</fileSet>
 		<fileSet>
@@ -23,8 +23,8 @@
 			<outputDirectory>config</outputDirectory>
 		</fileSet>
 		<fileSet>
-			<directory>${project.build.directory}/unzipped-db</directory>
-			<outputDirectory>/</outputDirectory>
+			<directory>${project.build.directory}/db</directory>
+			<outputDirectory>/db</outputDirectory>
 			<useDefaultExcludes>true</useDefaultExcludes>
 		</fileSet>
 	</fileSets>
