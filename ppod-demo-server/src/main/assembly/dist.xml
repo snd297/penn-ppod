@@ -19,6 +19,10 @@
 			<fileMode>0775</fileMode>
 		</fileSet>
 		<fileSet>
+			<directory>${project.basedir}/src/main/config</directory>
+			<outputDirectory>config</outputDirectory>
+		</fileSet>
+		<fileSet>
 			<directory>${project.build.directory}/unzipped-db</directory>
 			<outputDirectory>/</outputDirectory>
 			<useDefaultExcludes>true</useDefaultExcludes>

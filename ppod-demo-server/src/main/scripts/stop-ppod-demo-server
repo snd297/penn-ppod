@@ -50,6 +50,8 @@ else
   done
 fi
 
+CP=$PPOD_DEMO_SERVER_HOME/config:$CP
+
 # add any JVM options here
 JAVA_OPTS=
 
