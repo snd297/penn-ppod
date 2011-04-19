@@ -1,6 +1,6 @@
 #summary How to run the pPOD Demo Server
 
-You'll need to get the pPOD Mesquite package from Sam.
+You'll need to get the pPOD Mesquite package from one of us.
 
 = Running the pPOD Demo Server =
 
