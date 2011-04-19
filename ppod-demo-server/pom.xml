@@ -48,7 +48,7 @@
 						<phase>prepare-package</phase>
 						<configuration>
 							<tasks>
-								<unzip src="${project.basedir}/db.zip" dest="${project.build.directory}/unzipped-db" />
+								<unzip src="${project.basedir}/db.zip" dest="${project.build.directory}" />
 							</tasks>
 						</configuration>
 					</execution>
