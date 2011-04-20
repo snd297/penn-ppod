@@ -36,11 +36,13 @@ import edu.upenn.cis.ppod.dto.IHasPPodId;
 import edu.upenn.cis.ppod.dto.PPodDnaMatrix;
 import edu.upenn.cis.ppod.dto.PPodEntities;
 import edu.upenn.cis.ppod.dto.PPodOtuSet;
+import edu.upenn.cis.ppod.dto.PPodProteinMatrix;
 import edu.upenn.cis.ppod.dto.PPodStandardMatrix;
 import edu.upenn.cis.ppod.dto.PPodTreeSet;
 import edu.upenn.cis.ppod.model.DnaMatrix;
 import edu.upenn.cis.ppod.model.Otu;
 import edu.upenn.cis.ppod.model.OtuSet;
+import edu.upenn.cis.ppod.model.ProteinMatrix;
 import edu.upenn.cis.ppod.model.StandardMatrix;
 import edu.upenn.cis.ppod.model.TreeSet;
 import edu.upenn.cis.ppod.util.DbStudy2DocStudy;
@@ -78,6 +80,12 @@ class OtuSetsResourceHibernate
 		} else {
 			querySb.append(", 0L");
 		}
+		if (query.contains("os.proteinMatrices")) {
+			querySb.append(", ");
+			querySb.append("count(distinct pm)");
+		} else {
+			querySb.append(", 0L");
+		}
 		if (query.contains("os.treeSets")) {
 			querySb.append(", ");
 			querySb.append("count(distinct ts)");
@@ -108,13 +116,12 @@ class OtuSetsResourceHibernate
 	public Counts countHqlQuery(final String query) {
 		final String METHOD = "countHqlQuery(...)";
 		final long inTime = new Date().getTime();
-		long endTime = -1;
 
 		final int TIMEOUT_SECONDS = 15;
 
 		Transaction trx = null;
 		try {
-			trx = session.getTransaction();
+			trx = session.beginTransaction();
 			trx.setTimeout(TIMEOUT_SECONDS);
 			trx.begin();
 
@@ -123,7 +130,6 @@ class OtuSetsResourceHibernate
 			return counts;
 
 		} catch (final Throwable t) {
-			endTime = new Date().getTime();
 			if (trx != null && trx.isActive()) {
 				try {
 					trx.rollback();
@@ -131,6 +137,7 @@ class OtuSetsResourceHibernate
 					logger.error("caught exception while rolling back", rbEx);
 				}
 			}
+			long endTime = new Date().getTime();
 
 			if (endTime - inTime >= (TIMEOUT_SECONDS * 1000)) {
 				logger.error(
@@ -149,7 +156,7 @@ class OtuSetsResourceHibernate
 					": error id [" + exceptionUuid + "]",
 					t);
 		} finally {
-			endTime = new Date().getTime();
+			session.close();
 			logger.info("{}: response time: {} milliseconds",
 					METHOD, Long.valueOf(new Date().getTime() - inTime));
 		}
@@ -161,9 +168,9 @@ class OtuSetsResourceHibernate
 		Transaction trx = null;
 
 		final DbStudy2DocStudy dbStudy2DocStudy = new DbStudy2DocStudy();
-
+		boolean countTooHigh = false;
 		try {
-			trx = session.getTransaction();
+			trx = session.beginTransaction();
 			trx.setTimeout(60);
 			trx.begin();
 
@@ -186,105 +193,144 @@ class OtuSetsResourceHibernate
 				}
 			}
 
-			for (final Object queryResult : flattenedResults) {
-				if (queryResult instanceof OtuSet) {
-					final OtuSet otuSet = (OtuSet) queryResult;
-					handleOtuSet(entities, otuSet, dbStudy2DocStudy);
-				} else if (queryResult instanceof StandardMatrix) {
-					final StandardMatrix dbMatrix = (StandardMatrix) queryResult;
+			if (flattenedResults.size() > 15) {
+				countTooHigh = true;
+			} else {
 
-					// Note that otu set may have already been added in any of
-					// the other if clauses so we must make check before adding
+				for (final Object queryResult : flattenedResults) {
+					if (queryResult instanceof OtuSet) {
+						final OtuSet otuSet = (OtuSet) queryResult;
+						handleOtuSet(entities, otuSet, dbStudy2DocStudy);
+					} else if (queryResult instanceof StandardMatrix) {
+						final StandardMatrix dbMatrix = (StandardMatrix) queryResult;
 
-					final OtuSet dbOtuSet = dbMatrix.getParent();
+						// Note that otu set may have already been added in any
+						// of
+						// the other if clauses so we must make check before
+						// adding
 
-					final PPodOtuSet docOtuSet = handleOtuSet(
-							entities,
-							dbOtuSet,
-							dbStudy2DocStudy);
+						final OtuSet dbOtuSet = dbMatrix.getParent();
 
-					// Let's not add in the same matrix twice
-					if (find(docOtuSet.getStandardMatrices(),
-							compose(equalTo(dbMatrix.getPPodId()),
-									IHasPPodId.getPPodId), null) == null) {
-						final PPodStandardMatrix docMatrix = dbStudy2DocStudy
-								.dbStandardMatrix2DocStandardMatrix(dbMatrix);
-						docMatrix.setLabel(dbOtuSet.getParent()
-								.getLabel()
-								+ "/" + docMatrix.getLabel());
-						docOtuSet
-								.getStandardMatrices()
-								.add(docMatrix);
-					}
+						final PPodOtuSet docOtuSet = handleOtuSet(
+								entities,
+								dbOtuSet,
+								dbStudy2DocStudy);
 
-				} else if (queryResult instanceof DnaMatrix) {
-					final DnaMatrix dbMatrix = (DnaMatrix) queryResult;
+						// Let's not add in the same matrix twice
+						if (find(docOtuSet.getStandardMatrices(),
+								compose(equalTo(dbMatrix.getPPodId()),
+										IHasPPodId.getPPodId), null) == null) {
+							final PPodStandardMatrix docMatrix = dbStudy2DocStudy
+									.dbStandardMatrix2DocStandardMatrix(dbMatrix);
+							docMatrix.setLabel(dbOtuSet.getParent()
+									.getLabel()
+									+ "/" + docMatrix.getLabel());
+							docOtuSet
+									.getStandardMatrices()
+									.add(docMatrix);
+						}
 
-					// Note that otu set may have already been added in any of
-					// the other if clauses so we must make check before adding
+					} else if (queryResult instanceof DnaMatrix) {
+						final DnaMatrix dbMatrix = (DnaMatrix) queryResult;
 
-					final OtuSet dbOtuSet = dbMatrix.getParent();
+						// Note that otu set may have already been added in any
+						// of
+						// the other if clauses so we must make check before
+						// adding
 
-					final PPodOtuSet docOtuSet = handleOtuSet(
-							entities,
-							dbOtuSet,
-							dbStudy2DocStudy);
+						final OtuSet dbOtuSet = dbMatrix.getParent();
 
-					// Let's not add in the same matrix twice
-					if (find(docOtuSet.getStandardMatrices(),
-							compose(equalTo(dbMatrix.getPPodId()),
-									IHasPPodId.getPPodId), null) == null) {
-						final PPodDnaMatrix docMatrix = dbStudy2DocStudy
-								.dbDnaMatrix2DocDnaMatrix(dbMatrix);
-						docMatrix.setLabel(dbOtuSet.getParent()
-								.getLabel()
-								+ "/" + docMatrix.getLabel());
-						docOtuSet
-								.getDnaMatrices()
-								.add(docMatrix);
-					}
-				} else if (queryResult instanceof TreeSet) {
-					final TreeSet dbTreeSet = (TreeSet) queryResult;
+						final PPodOtuSet docOtuSet = handleOtuSet(
+								entities,
+								dbOtuSet,
+								dbStudy2DocStudy);
 
-					// Note that otu set may have already been added in any of
-					// the other if clauses so we must make check before adding
+						// Let's not add in the same matrix twice
+						if (find(docOtuSet.getStandardMatrices(),
+								compose(equalTo(dbMatrix.getPPodId()),
+										IHasPPodId.getPPodId), null) == null) {
+							final PPodDnaMatrix docMatrix = dbStudy2DocStudy
+									.dbDnaMatrix2DocDnaMatrix(dbMatrix);
+							docMatrix.setLabel(dbOtuSet.getParent()
+									.getLabel()
+									+ "/" + docMatrix.getLabel());
+							docOtuSet
+									.getDnaMatrices()
+									.add(docMatrix);
+						}
+					} else if (queryResult instanceof ProteinMatrix) {
+						final ProteinMatrix dbMatrix = (ProteinMatrix) queryResult;
 
-					final OtuSet dbOtuSet = dbTreeSet.getParent();
+						// Note that otu set may have already been added in any
+						// of
+						// the other if clauses so we must make check before
+						// adding
 
-					final PPodOtuSet docOtuSet = handleOtuSet(
-							entities,
-							dbOtuSet,
-							dbStudy2DocStudy);
+						final OtuSet dbOtuSet = dbMatrix.getParent();
 
-					// Let's not add in the same tree set twice
-					if (find(docOtuSet.getTreeSets(),
-							compose(equalTo(dbTreeSet.getPPodId()),
-									IHasPPodId.getPPodId), null) == null) {
-						final PPodTreeSet docTreeSet = dbStudy2DocStudy
-								.dbTreeSet2DocTreeSet(dbTreeSet);
-						docTreeSet.setLabel(dbOtuSet.getParent()
-								.getLabel()
-								+ "/" + docTreeSet.getLabel());
-						docOtuSet
-								.getTreeSets()
-								.add(docTreeSet);
-					}
-				} else if (queryResult instanceof Otu) {
-					final Otu otu = (Otu) queryResult;
-					entities.getOtus().add(
-							dbStudy2DocStudy.dbOtu2DocOtu(otu));
-				} else if (queryResult instanceof Object[]) {
-					throw new IllegalArgumentException(
-							"multiple results in one row not supported. query: ["
-									+ query
-									+ "]");
-				} else {
-					throw new IllegalArgumentException(
-							"unsupported entity type ["
+						final PPodOtuSet docOtuSet = handleOtuSet(
+								entities,
+								dbOtuSet,
+								dbStudy2DocStudy);
+
+						// Let's not add in the same matrix twice
+						if (find(docOtuSet.getStandardMatrices(),
+								compose(equalTo(dbMatrix.getPPodId()),
+										IHasPPodId.getPPodId), null) == null) {
+							final PPodProteinMatrix docMatrix = dbStudy2DocStudy
+									.dbProteinMatrix2DocProteinMatrix(dbMatrix);
+							docMatrix.setLabel(dbOtuSet.getParent()
+									.getLabel()
+									+ "/" + docMatrix.getLabel());
+							docOtuSet
+									.getProteinMatrices()
+									.add(docMatrix);
+						}
+					} else if (queryResult instanceof TreeSet) {
+						final TreeSet dbTreeSet = (TreeSet) queryResult;
+
+						// Note that otu set may have already been added in any
+						// of
+						// the other if clauses so we must make check before
+						// adding
+
+						final OtuSet dbOtuSet = dbTreeSet.getParent();
+
+						final PPodOtuSet docOtuSet = handleOtuSet(
+								entities,
+								dbOtuSet,
+								dbStudy2DocStudy);
+
+						// Let's not add in the same tree set twice
+						if (find(docOtuSet.getTreeSets(),
+								compose(equalTo(dbTreeSet.getPPodId()),
+										IHasPPodId.getPPodId), null) == null) {
+							final PPodTreeSet docTreeSet = dbStudy2DocStudy
+									.dbTreeSet2DocTreeSet(dbTreeSet);
+							docTreeSet.setLabel(dbOtuSet.getParent()
+									.getLabel()
+									+ "/" + docTreeSet.getLabel());
+							docOtuSet
+									.getTreeSets()
+									.add(docTreeSet);
+						}
+					} else if (queryResult instanceof Otu) {
+						final Otu otu = (Otu) queryResult;
+						entities.getOtus().add(
+								dbStudy2DocStudy.dbOtu2DocOtu(otu));
+					} else if (queryResult instanceof Object[]) {
+						throw new IllegalArgumentException(
+								"multiple results in one row not supported. query: ["
+										+ query
+										+ "]");
+					} else {
+						throw new IllegalArgumentException(
+								"unsupported entity type ["
 													+ queryResult.getClass()
 													+ "], result: ["
 													+ queryResult.toString()
 													+ "]");
+					}
 				}
 			}
 			trx.commit();
@@ -300,8 +346,13 @@ class OtuSetsResourceHibernate
 			logger.error(METHOD, t);
 			throw new IllegalStateException(t);
 		} finally {
+			session.close();
 			logger.info("{}: response time: {} milliseconds",
 					METHOD, Long.valueOf(new Date().getTime() - inTime));
+			if (countTooHigh) {
+				throw new IllegalArgumentException(
+						"more than 15 results not supported");
+			}
 		}
 	}
 
