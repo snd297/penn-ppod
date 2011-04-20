@@ -246,7 +246,7 @@ class OtuSetsResourceHibernate
 								dbStudy2DocStudy);
 
 						// Let's not add in the same matrix twice
-						if (find(docOtuSet.getStandardMatrices(),
+						if (find(docOtuSet.getDnaMatrices(),
 								compose(equalTo(dbMatrix.getPPodId()),
 										IHasPPodId.getPPodId), null) == null) {
 							final PPodDnaMatrix docMatrix = dbStudy2DocStudy
@@ -274,7 +274,7 @@ class OtuSetsResourceHibernate
 								dbStudy2DocStudy);
 
 						// Let's not add in the same matrix twice
-						if (find(docOtuSet.getStandardMatrices(),
+						if (find(docOtuSet.getProteinMatrices(),
 								compose(equalTo(dbMatrix.getPPodId()),
 										IHasPPodId.getPPodId), null) == null) {
 							final PPodProteinMatrix docMatrix = dbStudy2DocStudy
