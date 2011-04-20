@@ -1,3 +1,4 @@
+/* Based on org.jboss.resteasy.plugins.guice.ModuleProcessor */
 package edu.upenn.cis.ppod.thirdparty.util;
 
 import java.lang.reflect.Type;
