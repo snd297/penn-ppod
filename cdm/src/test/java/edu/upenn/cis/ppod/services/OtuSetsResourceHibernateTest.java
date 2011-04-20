@@ -23,7 +23,7 @@ import edu.upenn.cis.ppod.model.StandardMatrix;
 import edu.upenn.cis.ppod.model.Study;
 
 @Test(groups = TestGroupDefs.FAST)
-public class PPodEntitiesResourceHibernateTest {
+public class OtuSetsResourceHibernateTest {
 
 	@Test
 	public void oneStandardMatrix() {
@@ -33,7 +33,7 @@ public class PPodEntitiesResourceHibernateTest {
 		final Transaction trx = mock(Transaction.class);
 
 		when(s.createQuery(anyString())).thenReturn(q);
-		when(s.getTransaction()).thenReturn(trx);
+		when(s.beginTransaction()).thenReturn(trx);
 		when(q.setReadOnly(anyBoolean())).thenReturn(q);
 
 		List<Object> matrices = newArrayList();
@@ -84,7 +84,7 @@ public class PPodEntitiesResourceHibernateTest {
 		final Transaction trx = mock(Transaction.class);
 
 		when(s.createQuery(anyString())).thenReturn(q);
-		when(s.getTransaction()).thenReturn(trx);
+		when(s.beginTransaction()).thenReturn(trx);
 		when(q.setReadOnly(anyBoolean())).thenReturn(q);
 
 		List<Object> matrices = newArrayList();
