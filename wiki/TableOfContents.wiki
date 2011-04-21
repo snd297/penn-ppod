@@ -1,5 +1,5 @@
 #summary documentation outline
   * [GettingStarted Getting Started]
-  * [SettingUpMesquitePackage Setting Up the pPOD Mesquite Package Project]
+  * [SettingUpMesquitePackage Setting Up the pPOD Mesquite Package Project in Eclipse]
   * [pPODDemoServer Running the pPOD demo server]
   * [DeveloperFAQ Frequently Anticipated Questions]
