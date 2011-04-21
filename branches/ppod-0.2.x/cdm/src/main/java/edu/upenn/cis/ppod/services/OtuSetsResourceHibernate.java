@@ -119,7 +119,9 @@ class OtuSetsResourceHibernate
 
 		Transaction trx = null;
 		try {
-			trx = session.beginTransaction();
+			// not beginTransaction so we can
+			// now set the timeout
+			trx = session.getTransaction();
 			trx.setTimeout(TIMEOUT_SECONDS);
 			trx.begin();
 
@@ -168,7 +170,9 @@ class OtuSetsResourceHibernate
 		final DbStudy2DocStudy dbStudy2DocStudy = new DbStudy2DocStudy();
 		boolean countTooHigh = false;
 		try {
-			trx = session.beginTransaction();
+			// not beginTransaction so we can
+			// now set the timeout
+			trx = session.getTransaction();
 			trx.setTimeout(60);
 			trx.begin();
 

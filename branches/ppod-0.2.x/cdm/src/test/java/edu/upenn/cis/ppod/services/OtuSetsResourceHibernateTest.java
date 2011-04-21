@@ -33,7 +33,7 @@ public class OtuSetsResourceHibernateTest {
 		final Transaction trx = mock(Transaction.class);
 
 		when(s.createQuery(anyString())).thenReturn(q);
-		when(s.beginTransaction()).thenReturn(trx);
+		when(s.getTransaction()).thenReturn(trx);
 		when(q.setReadOnly(anyBoolean())).thenReturn(q);
 
 		List<Object> matrices = newArrayList();
@@ -84,7 +84,7 @@ public class OtuSetsResourceHibernateTest {
 		final Transaction trx = mock(Transaction.class);
 
 		when(s.createQuery(anyString())).thenReturn(q);
-		when(s.beginTransaction()).thenReturn(trx);
+		when(s.getTransaction()).thenReturn(trx);
 		when(q.setReadOnly(anyBoolean())).thenReturn(q);
 
 		List<Object> matrices = newArrayList();
