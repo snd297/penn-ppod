@@ -9,7 +9,7 @@ You'll need to get the pPOD Mesquite package from one of us.
   # `cd` into ppod-demo-server-X.X.X
   # run 
   {{{
-    `./start-ppod-demo-server &`
+    ./start-ppod-demo-server &
   }}}
   You'll get a bunch of logging to standard out. To change that you can alter `config/log4j.properties` or redirect into a file.
 
