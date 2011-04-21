@@ -3,6 +3,12 @@
 = Running the pPOD Demo Server =
 
   # You'll need to get the pPOD Mesquite package from one of us.
+  # Unzip it and put it where you want. We'll assume you put it into Mesquite_Folder.
+  # Add 
+  {{{
+  <classpath>./pPODMesquitePackage-0.1/Mesquite_Folder</classpath>
+  }}
+  to your `classpaths.xml` file.
   # Download the demo server from [http://code.google.com/p/penn-ppod/downloads/detail?name=ppod-demo-server-0.2-dist.zip ppod-demo-server-0.2-dist.zip]
   # Do `unzip ppod-demo-server-X.X.X-dist.zip` - this will create a directory `ppod-demo-server-X.X.X`
   # `cd` into ppod-demo-server-X.X.X
