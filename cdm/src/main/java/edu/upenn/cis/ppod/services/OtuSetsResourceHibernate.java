@@ -168,12 +168,15 @@ class OtuSetsResourceHibernate
 		Transaction trx = null;
 
 		final DbStudy2DocStudy dbStudy2DocStudy = new DbStudy2DocStudy();
+
+		final int TIMEOUT_SECONDS = 60;
+
 		boolean countTooHigh = false;
 		try {
 			// not beginTransaction so we can
 			// now set the timeout
 			trx = session.getTransaction();
-			trx.setTimeout(60);
+			trx.setTimeout(TIMEOUT_SECONDS);
 			trx.begin();
 
 			@SuppressWarnings("unchecked")
@@ -348,6 +351,14 @@ class OtuSetsResourceHibernate
 				}
 			}
 			logger.error(METHOD, t);
+			long endTime = new Date().getTime();
+
+			if (endTime - inTime >= (TIMEOUT_SECONDS * 1000)) {
+				logger.error(
+						"caught timeout exception, swalling exception and throwing one that indicates a timeout");
+				throw new IllegalStateException("query was taking longer than "
+						+ TIMEOUT_SECONDS + " seconds");
+			}
 			throw new IllegalStateException(t);
 		} finally {
 			session.close();
