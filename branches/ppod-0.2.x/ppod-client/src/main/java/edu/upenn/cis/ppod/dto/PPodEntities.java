@@ -67,4 +67,17 @@ public final class PPodEntities implements IHasOtuSets {
 		this.otuSets = checkNotNull(otuSets);
 	}
 
+	public int countMembers() {
+		int count = 0;
+		count += otus.size();
+		count += otuSets.size();
+		for (PPodOtuSet otuSet : otuSets) {
+			count += otuSet.getStandardMatrices().size();
+			count += otuSet.getDnaMatrices().size();
+			count += otuSet.getProteinMatrices().size();
+			count += otuSet.getTreeSets().size();
+		}
+		return count;
+	}
+
 }
