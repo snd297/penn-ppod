@@ -17,19 +17,3 @@ ppod.password=mypassword
   Copy the example _ppod.properties_ into _pPODMesquitePackage/Extras/config_ and modify it with your values. Once in the _config_ folder, it will be on Mesquite's classpath owing to step 2. It should be noted that the _config_ folder has an _svn:ignore=`*`_ property on it, so _ppod.properties_ (or anything else you put in there) will not be committed to the repository. Which is a good thing both to prevent config conflicts with others and to preserve your password's secrecy. So this directory makes a good place to put any other config files that don't make sense to put into Subversion.
 
 And that should be that. 
-
-==Working with the pPOD Server==
-
-===Downloading from the pPOD Server===
-
-After firing up Mesquite, here's how to download from the pPOD server:
-
-  *  * *_File>Open Other>Download from pPOD Database_* will query pPOD server for the projects it has stored and return a list for you to choose from. 
-  *  * *_File>Open Other>HQL Query against pPOD database* will bring up a dialog to query agains the database using given certain criteria like taxon, character, and character state names.
-
-===Uploading to the pPOD server===
-
-Open up a Nexus file (currently only standard and DNA matrices are supported.) There is a _pPOD_ item in the project window which if clicked will reveal
-    * *_Upload changes to Server w/ Molecular Matrices as pPOD Matrices_* this will upload your project storing the data as matrices in the pPOD server. 
-
-  Note that the last two items should appear identical to the user and have to do with how pPOD is storing the matrices internally.
