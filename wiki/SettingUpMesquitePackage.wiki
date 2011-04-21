@@ -26,14 +26,9 @@ After firing up Mesquite, here's how to download from the pPOD server:
 
   * *_File>Open Other>Download from pPOD Database_* will query pPOD server for the projects it has stored and return a list for you to choose from. 
 
-  * *_File>Open Other>HQL Query against Database_* is experimental (aka "not guaranteed to work"), but [HQLSelectEquusSus here's] what that looks like when it's working.
-
 ===Uploading to the pPOD server===
 
 Open up a Nexus file (currently only standard and DNA matrices are supported.) There is a _pPOD_ item in the project window which if clicked will reveal
-    * *_Set pPOD Server_* this is not functional
-    * *_Download changes_* this will download changes from the pPOD server to your project. This is not supposed to overwrite any local changes, however this is not a well-tested feature and is known not to work with trees.
     * *_Upload changes to Server w/ Molecular Matrices as pPOD Matrices_* this will upload your project storing the data as matrices in the pPOD server. 
-    * *_Upload changes to Server w/ Molecular Matrices as pPOD Sequences_* this will upload your project storing the data as sequences in the pPOD server.
 
   Note that the last two items should appear identical to the user and have to do with how pPOD is storing the matrices internally.
