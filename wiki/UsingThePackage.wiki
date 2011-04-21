@@ -18,3 +18,5 @@ Open up a Nexus file (RNA matrices are not yet supported.) There is a _pPOD_ ite
 = Generating HQL Queries =
 
 Let's start with a simple one: give us all Taxa Block that contain Taxa sus and equus (queries are not case sensitive):
+
+http://code.google.com/p/penn-ppod/source/browse/wiki/Pictures/UsingThePackage/selectSusEquus.jpg
