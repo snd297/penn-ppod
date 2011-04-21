@@ -7,7 +7,11 @@ You'll need to get the pPOD Mesquite package from one of us.
   # Download the demo server from [http://code.google.com/p/penn-ppod/downloads/detail?name=ppod-demo-server-0.2-dist.zip ppod-demo-server-0.2-dist.zip]
   # Do `unzip ppod-demo-server-X.X.X-dist.zip` - this will create a directory `ppod-demo-server-X.X.X`
   # `cd` into ppod-demo-server-X.X.X
-  # run `./start-ppod-demo-server &`. You'll get a bunch of logging to standard out. To change that you can alter `config/log4j.properties` or redirect into a file.
+  # run 
+  {{{
+    `./start-ppod-demo-server &`
+  }}}
+  You'll get a bunch of logging to standard out. To change that you can alter `config/log4j.properties` or redirect into a file.
 
 By default, the server listens on port 8080 for requests and on port 8081 for a shutdown command. To change this you can do 
 {{{
