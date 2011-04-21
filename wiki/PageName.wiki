@@ -1,0 +1,23 @@
+#summary Working with the pPOD-Mesquite package
+
+= Basics =
+
+===Downloading from the pPOD Server===
+
+After firing up Mesquite, here's how to download from the pPOD server:
+
+  *  * *_File>Open Other>Download from pPOD Database_* will query pPOD server for the projects it has stored and return a list for you to choose from. 
+  *  * *_File>Open Other>HQL Query against pPOD database* will bring up a dialog to query agains the database using given certain criteria like taxon, character, and character state names.
+
+===Uploading to the pPOD server===
+
+Open up a Nexus file (currently only standard and DNA matrices are supported.) There is a _pPOD_ item in the project window which if clicked will reveal
+    * *_Upload changes to Server w/ Molecular Matrices as pPOD Matrices_* this will upload your project storing the data as matrices in the pPOD server. 
+
+
+= Details =
+
+Add your content here.  Format your content with:
+  * Text in *bold* or _italic_
+  * Headings, paragraphs, and lists
+  * Automatic links to other wiki pages
