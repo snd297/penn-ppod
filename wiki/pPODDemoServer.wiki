@@ -26,11 +26,11 @@
 
   To stop the server run 
   {{{
-    `./stop-ppod-server`
+    ./stop-ppod-server
   }}}
   or 
   {{{
-    `./stop-ppod-server some-other-port + 1`
+    ./stop-ppod-server some-other-port + 1
   }}}
   if you ran on a port different than the default.
 
