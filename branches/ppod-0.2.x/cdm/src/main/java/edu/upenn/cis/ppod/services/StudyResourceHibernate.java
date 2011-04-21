@@ -34,7 +34,7 @@ import edu.upenn.cis.ppod.util.DbStudy2DocStudy;
 import edu.upenn.cis.ppod.util.Study2StudyInfo;
 
 /**
- * We commit the transactions in this class so that the resteasy response will
+ * We commit the transactions in this class - instead of a servlet filter - so that the resteasy response will
  * know that something went wrong if the commit goes wrong. We used to do it in
  * a resteasy interceptor, but that didn't work cleanly whe we switched over to
  * a guice managed session factory: we couldn't get at the current session
@@ -93,6 +93,7 @@ class StudyResourceHibernate implements IStudyResource {
 			logger.error("caught in {}", t);
 			throw new IllegalStateException(t);
 		} finally {
+			session.close();
 			logger.info("{}: response time: {} milliseconds",
 					METHOD,
 					Long.valueOf(new Date().getTime() - inTime));
@@ -127,6 +128,7 @@ class StudyResourceHibernate implements IStudyResource {
 			logger.error("caught", t);
 			throw new IllegalStateException(t);
 		} finally {
+			session.close();
 			logger.info("{}: response time: {} milliseconds",
 					METHOD,
 					Long.valueOf(new Date().getTime() - inTime));
@@ -152,13 +154,15 @@ class StudyResourceHibernate implements IStudyResource {
 			logger.error("caught", t);
 			throw new IllegalStateException(t);
 		} finally {
+			session.close();
 			logger.info("{}: response time: {} milliseconds",
 					METHOD,
 					Long.valueOf(new Date().getTime() - inTime));
 		}
 	}
 
-	public StudyInfo updateStudy(final PPodStudy incomingStudy,
+	public StudyInfo updateStudy(
+			final PPodStudy incomingStudy,
 			final String pPodId) {
 		final StudyInfo studyInfo = createOrUpdateStudy(incomingStudy);
 		return studyInfo;

@@ -28,7 +28,7 @@ final class PPodGreetingService implements IPPodGreetingResource {
 	@Produces("text/plain")
 	public Response greeting() {
 		return Response.status(200)
-				.entity("pPOD Services v0.2-SNAPSHOT")
+				.entity("pPOD Services v0.2")
 				.build();
 	}
 }
