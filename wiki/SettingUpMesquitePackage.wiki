@@ -24,7 +24,8 @@ And that should be that.
 
 After firing up Mesquite, here's how to download from the pPOD server:
 
-  * *_File>Open Other>Download from pPOD Database_* will query pPOD server for the projects it has stored and return a list for you to choose from. 
+  *  * *_File>Open Other>Download from pPOD Database_* will query pPOD server for the projects it has stored and return a list for you to choose from. 
+  *  * *_File>Open Other>HQL Query against pPOD database* will bring up a dialog to query agains the database using given certain criteria like taxon, character, and character state names.
 
 ===Uploading to the pPOD server===
 
