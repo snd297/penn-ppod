@@ -23,6 +23,8 @@
   ./start-ppod-demo-server some-other-port
   }}}
 
+You should now have a pPOD server running. It is prepopulated with TreeBASE data we can query on. See here for how to do that.
+
   Then it will listen for shutdowns on `some-other-port + 1`.
 
   To stop the server run `./stop-ppod-server` or `./stop-ppod-server some-other-port+1` if you ran on a port different than the default.
