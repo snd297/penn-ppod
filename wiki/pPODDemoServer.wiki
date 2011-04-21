@@ -6,7 +6,7 @@
   * Unzip it (it will expand into `pPODMesquitePackage-X.X.X`) and put the expanded directory where you want. We'll assume you put it into `${MESQUITE_HOME}/Mesquite_Folder`.
   * Add the appropriate entry in your `classpaths.xml` file, if you're using `${MESQUITE_HOME}/Mesquite_Folder` that would be
   {{{
-    <classpath>./pPODMesquitePackage-0.1/Mesquite_Folder</classpath>
+    <classpath>./pPODMesquitePackage-X.X.X/Mesquite_Folder</classpath>
   }}}
   * Download the demo server from [http://code.google.com/p/penn-ppod/downloads/detail?name=ppod-demo-server-0.2-dist.zip ppod-demo-server-0.2-dist.zip]
   * Do `unzip ppod-demo-server-X.X.X-dist.zip` - this will create a directory `ppod-demo-server-X.X.X`
