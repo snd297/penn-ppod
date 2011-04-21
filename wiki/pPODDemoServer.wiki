@@ -12,11 +12,11 @@
   }}}
   You'll get a bunch of logging to standard out. To change that you can alter `config/log4j.properties` or redirect into a file.
 
-By default, the server listens on port 8080 for requests and on port 8081 for a shutdown command. To change this you can do 
-{{{
+  By default, the server listens on port 8080 for requests and on port 8081 for a shutdown command. To change this you can do 
+  {{{
   ./start-ppod-demo-server some-other-port
-}}}
+  }}}
 
-Then it will listen for shutdowns on `some-other-port + 1`.
+  Then it will listen for shutdowns on `some-other-port + 1`.
 
-To stop the server run `./stop-ppod-server` or `./stop-ppod-server some-other-port+1` if you ran on a port different than the default.
+  To stop the server run `./stop-ppod-server` or `./stop-ppod-server some-other-port+1` if you ran on a port different than the default.
