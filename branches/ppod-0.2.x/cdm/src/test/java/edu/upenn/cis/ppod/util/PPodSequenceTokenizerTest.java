@@ -8,9 +8,10 @@ import java.util.NoSuchElementException;
 
 import org.testng.annotations.Test;
 
+import edu.upenn.cis.ppod.TestGroupDefs;
 import edu.upenn.cis.ppod.dto.PPodCellType;
 
-@Test
+@Test(groups = TestGroupDefs.FAST)
 public class PPodSequenceTokenizerTest {
 
 	@Test
