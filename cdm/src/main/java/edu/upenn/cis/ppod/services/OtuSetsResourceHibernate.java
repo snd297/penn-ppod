@@ -66,27 +66,31 @@ class OtuSetsResourceHibernate
 
 		final StringBuilder querySb = new StringBuilder("select ");
 
-		querySb.append("count(distinct os)");
+		final String selectPartOfQuery = query.substring(
+				0,
+				query.indexOf("from") + 1);
 
-		int smPos = query.indexOf("os.standardMatrices sm");
-		int smCPos = query.indexOf("os.standardMatrices smC");
-
-		if (smPos == -1 || smPos == smCPos) {
-			querySb.append(", 0L");
+		if (selectPartOfQuery.contains("os")) {
+			querySb.append("count(distinct os)");
 		} else {
-			querySb.append(", count(distinct sm)");
+			querySb.append("0L");
 		}
-		if (query.contains("os.dnaMatrices dm")) {
+		if (selectPartOfQuery.contains("dm")) {
 			querySb.append(", count(distinct dm)");
 		} else {
 			querySb.append(", 0L");
 		}
-		if (query.contains("os.proteinMatrices pm")) {
+		if (selectPartOfQuery.contains("dm")) {
+			querySb.append(", count(distinct dm)");
+		} else {
+			querySb.append(", 0L");
+		}
+		if (selectPartOfQuery.contains("pm")) {
 			querySb.append(", count(distinct pm)");
 		} else {
 			querySb.append(", 0L");
 		}
-		if (query.contains("os.treeSets ts")) {
+		if (selectPartOfQuery.contains("ts")) {
 			querySb.append(", count(distinct ts)");
 		} else {
 			querySb.append(", 0L");
