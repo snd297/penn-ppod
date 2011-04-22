@@ -68,22 +68,25 @@ class OtuSetsResourceHibernate
 
 		querySb.append("count(distinct os)");
 
-		if (query.contains("os.standardMatrices")) {
-			querySb.append(", count(distinct sm)");
-		} else {
+		int smPos = query.indexOf("os.standardMatrices sm");
+		int smCPos = query.indexOf("os.standardMatrices smC");
+
+		if (smPos == -1 || smPos == smCPos) {
 			querySb.append(", 0L");
+		} else {
+			querySb.append(", count(distinct sm)");
 		}
-		if (query.contains("os.dnaMatrices")) {
+		if (query.contains("os.dnaMatrices dm")) {
 			querySb.append(", count(distinct dm)");
 		} else {
 			querySb.append(", 0L");
 		}
-		if (query.contains("os.proteinMatrices")) {
+		if (query.contains("os.proteinMatrices pm")) {
 			querySb.append(", count(distinct pm)");
 		} else {
 			querySb.append(", 0L");
 		}
-		if (query.contains("os.treeSets")) {
+		if (query.contains("os.treeSets ts")) {
 			querySb.append(", count(distinct ts)");
 		} else {
 			querySb.append(", 0L");
