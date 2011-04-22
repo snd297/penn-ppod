@@ -111,18 +111,18 @@ class OtuSetsResourceHibernate
 		return counts;
 	}
 
-	public Counts countHqlQuery(final String query) {
+	public Counts countHqlQuery(final String query, Integer timeoutSeconds) {
 		final String METHOD = "countHqlQuery(...)";
 		final long inTime = new Date().getTime();
 
-		final int TIMEOUT_SECONDS = 30;
+		timeoutSeconds = Math.min(timeoutSeconds, 60);
 
 		Transaction trx = null;
 		try {
 			// not beginTransaction so we can
 			// now set the timeout
 			trx = session.getTransaction();
-			trx.setTimeout(TIMEOUT_SECONDS);
+			trx.setTimeout(timeoutSeconds);
 			trx.begin();
 
 			final Counts counts = count(query);
@@ -139,7 +139,7 @@ class OtuSetsResourceHibernate
 			}
 			long endTime = new Date().getTime();
 
-			if (endTime - inTime >= TIMEOUT_SECONDS * 1000) {
+			if (endTime - inTime >= (timeoutSeconds * 1000) - 500) {
 				logger.error(
 						"caught timeout exception, returning flagged Counts", t);
 				final Counts counts = new Counts();
@@ -353,7 +353,7 @@ class OtuSetsResourceHibernate
 			logger.error(METHOD, t);
 			long endTime = new Date().getTime();
 
-			if (endTime - inTime >= TIMEOUT_SECONDS * 1000) {
+			if (endTime - inTime >= (TIMEOUT_SECONDS * 1000) - 500) {
 				logger.error(
 						"caught timeout exception, swalling exception and throwing one that indicates a timeout");
 				throw new IllegalStateException("query was taking longer than "
