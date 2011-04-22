@@ -75,8 +75,8 @@ class OtuSetsResourceHibernate
 		} else {
 			querySb.append("0L");
 		}
-		if (selectPartOfQuery.contains("dm")) {
-			querySb.append(", count(distinct dm)");
+		if (selectPartOfQuery.contains("sm")) {
+			querySb.append(", count(distinct sm)");
 		} else {
 			querySb.append(", 0L");
 		}
