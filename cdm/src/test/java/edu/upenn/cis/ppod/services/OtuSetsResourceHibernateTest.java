@@ -58,8 +58,8 @@ public class OtuSetsResourceHibernateTest {
 
 		when(q.list()).thenReturn(matrices);
 
-		final IOtuSetsResource pPodEntitiesResource =
-				new OtuSetsResourceHibernate(s);
+		final IPPodEntitiesResource pPodEntitiesResource =
+				new PPodEntitiesResourceHibernate(s);
 		final PPodEntities results =
 				pPodEntitiesResource
 						.getEntitiesByHqlQuery("select something from something");
@@ -69,8 +69,7 @@ public class OtuSetsResourceHibernateTest {
 		assertEquals(results.getOtuSets().size(), 1);
 		assertEquals(resultOtuSet.getPPodId(),
 				otuSet.getPPodId());
-		assertEquals(resultOtuSet.getLabel(),
-				study.getLabel() + "/" + otuSet.getLabel());
+		assertEquals(resultOtuSet.getLabel(), otuSet.getLabel());
 		assertEquals(resultOtuSet.getStandardMatrices().size(),
 				1);
 		PPodStandardMatrix resultMatrix = resultOtuSet.getStandardMatrices()
@@ -110,8 +109,8 @@ public class OtuSetsResourceHibernateTest {
 
 		when(q.list()).thenReturn(matrices);
 
-		final IOtuSetsResource pPodEntitiesResource =
-				new OtuSetsResourceHibernate(s);
+		final IPPodEntitiesResource pPodEntitiesResource =
+				new PPodEntitiesResourceHibernate(s);
 		final PPodEntities results = pPodEntitiesResource
 				.getEntitiesByHqlQuery("select something from something");
 
@@ -120,8 +119,7 @@ public class OtuSetsResourceHibernateTest {
 		assertEquals(results.getOtuSets().size(), 1);
 		assertEquals(resultOtuSet.getPPodId(),
 				otuSet.getPPodId());
-		assertEquals(resultOtuSet.getLabel(),
-				study.getLabel() + "/" + otuSet.getLabel());
+		assertEquals(resultOtuSet.getLabel(), otuSet.getLabel());
 		assertEquals(resultOtuSet.getStandardMatrices().size(),
 				1);
 		PPodStandardMatrix resultMatrix = resultOtuSet.getStandardMatrices()
@@ -158,8 +156,8 @@ public class OtuSetsResourceHibernateTest {
 				+ "or os.dnaMatrices.size > 0 "
 				+ "or os.proteinMatrices.size > 0 "
 				+ "or os.treeSets.size > 0) ";
-		OtuSetsResourceHibernate otuSetsResource = new
-				OtuSetsResourceHibernate(s);
+		PPodEntitiesResourceHibernate otuSetsResource = new
+				PPodEntitiesResourceHibernate(s);
 
 		Counts counts = otuSetsResource.countHqlQuery(query, 20);
 		assertEquals(counts.getOtuSetCount(), 1L);
@@ -184,7 +182,7 @@ public class OtuSetsResourceHibernateTest {
 		when(trx.isActive()).thenReturn(true);
 		doThrow(new RuntimeException()).when(trx).begin();
 
-		OtuSetsResourceHibernate otuSetsResource = new OtuSetsResourceHibernate(
+		PPodEntitiesResourceHibernate otuSetsResource = new PPodEntitiesResourceHibernate(
 				s);
 
 		boolean exceptionCaught = false;
@@ -212,7 +210,7 @@ public class OtuSetsResourceHibernateTest {
 		when(trx.isActive()).thenReturn(true);
 		doThrow(new RuntimeException()).when(trx).begin();
 
-		OtuSetsResourceHibernate otuSetsResource = new OtuSetsResourceHibernate(
+		PPodEntitiesResourceHibernate otuSetsResource = new PPodEntitiesResourceHibernate(
 				s);
 
 		boolean exceptionCaught = false;

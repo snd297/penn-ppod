@@ -30,7 +30,7 @@ import edu.upenn.cis.ppod.thirdparty.util.Pretty;
  * @author Sam Donnelly
  */
 @Path("/otusets")
-public interface IOtuSetsResource {
+public interface IPPodEntitiesResource {
 
 	@POST
 	@Pretty
