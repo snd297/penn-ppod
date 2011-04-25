@@ -56,7 +56,7 @@ final class StudyResourceHibernate implements IStudyResource {
 	private final DbStudy2DocStudy dbStudy2DocStudy;
 
 	private static final Logger logger = LoggerFactory
-			.getLogger(StudyResourceHibernateTest.class);
+			.getLogger(StudyResourceHibernate.class);
 
 	@Inject
 	StudyResourceHibernate(
