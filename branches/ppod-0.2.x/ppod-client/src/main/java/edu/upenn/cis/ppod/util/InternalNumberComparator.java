@@ -22,9 +22,12 @@ public class InternalNumberComparator implements Comparator<String> {
 		return r;
 	}
 
-	public int compare(final String s1, final String s2) {
+	public int compare(String s1, String s2) {
 		checkNotNull(s1);
 		checkNotNull(s2);
+
+		s1 = s1.toLowerCase();
+		s2 = s2.toLowerCase();
 
 		// We split each string as runs of number/non-number strings
 		final ArrayList<String> sa1 = split(s1);

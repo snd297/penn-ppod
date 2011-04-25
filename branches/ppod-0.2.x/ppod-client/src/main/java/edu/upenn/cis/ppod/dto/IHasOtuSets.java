@@ -21,6 +21,4 @@ public interface IHasOtuSets extends ILabeled {
 
 	List<PPodOtuSet> getOtuSets();
 
-	void setOtuSets(List<PPodOtuSet> otuSets);
-
 }

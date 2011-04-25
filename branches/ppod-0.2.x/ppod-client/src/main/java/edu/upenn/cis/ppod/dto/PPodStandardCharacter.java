@@ -41,14 +41,16 @@ public final class PPodStandardCharacter extends UuPPodDomainObjectWithLabel {
 	@SuppressWarnings("unused")
 	private PPodStandardCharacter() {}
 
-	public PPodStandardCharacter(@CheckForNull final String pPodId,
+	public PPodStandardCharacter(
+			@CheckForNull final String pPodId,
 			final String label,
-			final String mesquiteId) {
+			@CheckForNull final String mesquiteId) {
 		super(pPodId, label);
 		checkNotNull(mesquiteId);
 		this.mesquiteId = mesquiteId;
 	}
 
+	@Nullable
 	public String getMesquiteId() {
 		return mesquiteId;
 	}
@@ -62,5 +64,9 @@ public final class PPodStandardCharacter extends UuPPodDomainObjectWithLabel {
 
 	public Set<PPodStandardState> getStates() {
 		return states;
+	}
+
+	public void setMesquiteId(@CheckForNull final String mesquiteId) {
+		this.mesquiteId = mesquiteId;
 	}
 }
