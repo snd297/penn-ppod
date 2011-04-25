@@ -20,6 +20,7 @@ import static org.mockito.Matchers.anyString;
 import static org.mockito.Mockito.mock;
 import static org.mockito.Mockito.verify;
 import static org.mockito.Mockito.when;
+import static org.testng.Assert.assertTrue;
 
 import java.util.HashSet;
 
@@ -61,6 +62,37 @@ public class StudyResourceHibernateTest {
 	}
 
 	@Test
+	public void createStudyThrowsCommitsAndCloses() {
+
+		IStudyDAO studyDAO = mock(IStudyDAO.class);
+		ICreateOrUpdateStudy createOrUpdateStudy = mock(ICreateOrUpdateStudy.class);
+		Session session = mock(Session.class);
+
+		Transaction trx = mock(Transaction.class);
+		when(trx.isActive()).thenReturn(true);
+
+		when(createOrUpdateStudy
+				.createOrUpdateStudy(any(PPodStudy.class))).thenThrow(
+				new RuntimeException());
+
+		when(session.beginTransaction()).thenReturn(trx);
+		StudyResourceHibernate studyResource =
+				new StudyResourceHibernate(
+						studyDAO, createOrUpdateStudy, session);
+
+		boolean exceptionCaught = false;
+		try {
+			studyResource.createStudy(new PPodStudy("dont-care", "dont-care"));
+		} catch (IllegalStateException e) {
+			exceptionCaught = true;
+		}
+		assertTrue(exceptionCaught);
+
+		verify(trx).rollback();
+		verify(session).close();
+	}
+
+	@Test
 	public void getStudyByPPodIdCommitsAndCloses() {
 		IStudyDAO studyDAO = mock(IStudyDAO.class);
 		ICreateOrUpdateStudy createOrUpdateStudy = mock(ICreateOrUpdateStudy.class);
@@ -83,14 +115,43 @@ public class StudyResourceHibernateTest {
 	}
 
 	@Test
+	public void getStudyByPPodIdThrowsCommitsAndCloses() {
+		IStudyDAO studyDAO = mock(IStudyDAO.class);
+		ICreateOrUpdateStudy createOrUpdateStudy = mock(ICreateOrUpdateStudy.class);
+		Session session = mock(Session.class);
+		Transaction trx = mock(Transaction.class);
+		when(trx.isActive()).thenReturn(true);
+
+		when(studyDAO.getStudyByPPodId(anyString())).thenThrow(
+				new RuntimeException());
+
+		when(session.beginTransaction()).thenReturn(trx);
+
+		StudyResourceHibernate studyResource =
+				new StudyResourceHibernate(
+						studyDAO, createOrUpdateStudy, session);
+
+		boolean exceptionCaught = false;
+
+		try {
+			studyResource.getStudyByPPodId("don't-care");
+		} catch (IllegalStateException e) {
+			exceptionCaught = true;
+		}
+
+		assertTrue(exceptionCaught);
+
+		verify(trx).rollback();
+		verify(session).close();
+	}
+
+	@Test
 	public void getStudyPPodIdLabelPairsCommitsAndCloses() {
 		IStudyDAO studyDAO = mock(IStudyDAO.class);
 		ICreateOrUpdateStudy createOrUpdateStudy = mock(ICreateOrUpdateStudy.class);
 		Session session = mock(Session.class);
 		Transaction trx = mock(Transaction.class);
 
-		Study study = new Study();
-		study.setLabel("dont-care");
 		when(studyDAO.getPPodIdLabelPairs()).thenReturn(
 				new HashSet<PPodLabelAndId>());
 
@@ -106,7 +167,38 @@ public class StudyResourceHibernateTest {
 	}
 
 	@Test
-	public void updateStudy() {
+	public void getStudyPPodIdLabelPairsThrowsCommitsAndCloses() {
+		IStudyDAO studyDAO = mock(IStudyDAO.class);
+		ICreateOrUpdateStudy createOrUpdateStudy = mock(ICreateOrUpdateStudy.class);
+		Session session = mock(Session.class);
+		Transaction trx = mock(Transaction.class);
+		when(trx.isActive()).thenReturn(true);
+
+		when(studyDAO.getPPodIdLabelPairs()).thenThrow(new RuntimeException());
+
+		when(session.beginTransaction()).thenReturn(trx);
+
+		StudyResourceHibernate studyResource =
+				new StudyResourceHibernate(
+						studyDAO, createOrUpdateStudy, session);
+
+		boolean caughtException = false;
+
+		try {
+
+			studyResource.getStudyPPodIdLabelPairs();
+		} catch (IllegalStateException e) {
+			caughtException = true;
+		}
+
+		assertTrue(caughtException);
+
+		verify(trx).rollback();
+		verify(session).close();
+	}
+
+	@Test
+	public void updateStudyCommitsAndCloses() {
 
 		IStudyDAO studyDAO = mock(IStudyDAO.class);
 		ICreateOrUpdateStudy createOrUpdateStudy = mock(ICreateOrUpdateStudy.class);
@@ -126,6 +218,40 @@ public class StudyResourceHibernateTest {
 				new PPodStudy("dont-care", "dont-care"), "don't-care");
 
 		verify(trx).commit();
+		verify(session).close();
+	}
+
+	@Test
+	public void updateStudyThrowsCommitsAndCloses() {
+
+		IStudyDAO studyDAO = mock(IStudyDAO.class);
+		ICreateOrUpdateStudy createOrUpdateStudy = mock(ICreateOrUpdateStudy.class);
+		Session session = mock(Session.class);
+		Transaction trx = mock(Transaction.class);
+		when(trx.isActive()).thenReturn(true);
+
+		when(createOrUpdateStudy
+				.createOrUpdateStudy(any(PPodStudy.class))).thenThrow(
+				new RuntimeException());
+
+		when(session.beginTransaction()).thenReturn(trx);
+
+		StudyResourceHibernate studyResource =
+				new StudyResourceHibernate(
+						studyDAO, createOrUpdateStudy, session);
+
+		boolean exceptionCaught = false;
+
+		try {
+			studyResource.updateStudy(
+					new PPodStudy("dont-care", "dont-care"), "don't-care");
+		} catch (IllegalStateException e) {
+			exceptionCaught = true;
+		}
+
+		assertTrue(exceptionCaught);
+
+		verify(trx).rollback();
 		verify(session).close();
 	}
 

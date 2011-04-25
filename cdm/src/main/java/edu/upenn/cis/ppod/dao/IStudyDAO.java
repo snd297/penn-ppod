@@ -15,7 +15,6 @@
  */
 package edu.upenn.cis.ppod.dao;
 
-import java.util.List;
 import java.util.Set;
 
 import com.google.inject.ImplementedBy;
@@ -44,7 +43,7 @@ public interface IStudyDAO extends IDAO<Study, Long> {
 
 	/**
 	 * Retrieve a {@link Study} given its pPOD id. Returns {@code null} if
-	 * {@code pPodId == null}.
+	 * {@code pPodId == null} or if there is no study with the pPOD id.
 	 * 
 	 * @param pPodId the pPOD id of the {@link Study} we want - {@code null} is
 	 *            legal
@@ -53,18 +52,5 @@ public interface IStudyDAO extends IDAO<Study, Long> {
 	 */
 	@Nullable
 	Study getStudyByPPodId(String pPodId);
-
-	Study getStudyByPPodIdEager(String pPodId);
-
-	/**
-	 * Get the pPOD version of the study with the given pPOD id.
-	 * 
-	 * @param pPodId the pPOD id
-	 * @return the pPOD version of the study with the given pPOD id
-	 */
-	Long getPPodVersionByPPodId(String pPodId);
-
-	List<Object[]> getOTUInfosByStudyPPodIdAndMinPPodVersion(String pPodId,
-			Long pPodVersion);
 
 }
