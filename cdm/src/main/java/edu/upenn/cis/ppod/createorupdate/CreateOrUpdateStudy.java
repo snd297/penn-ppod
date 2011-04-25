@@ -49,7 +49,7 @@ import edu.upenn.cis.ppod.model.TreeSet;
  * 
  * @author Sam Donnelly
  */
-public final class CreateOrUpdateStudy {
+public final class CreateOrUpdateStudy implements ICreateOrUpdateStudy {
 
 	private final IStudyDAO studyDAO;
 	private final MergeOtuSets mergeOtuSets;
