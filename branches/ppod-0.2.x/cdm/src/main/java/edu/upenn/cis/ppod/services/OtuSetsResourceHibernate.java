@@ -144,7 +144,7 @@ class OtuSetsResourceHibernate
 					logger.error("caught exception while rolling back", rbEx);
 				}
 			}
-			long endTime = new Date().getTime();
+			final long endTime = new Date().getTime();
 
 			if (endTime - inTime >= (timeoutSeconds * 1000) - 500) {
 				logger.error(
@@ -358,7 +358,7 @@ class OtuSetsResourceHibernate
 				}
 			}
 			logger.error(METHOD, t);
-			long endTime = new Date().getTime();
+			final long endTime = new Date().getTime();
 
 			if (endTime - inTime >= (TIMEOUT_SECONDS * 1000) - 500) {
 				logger.error(
