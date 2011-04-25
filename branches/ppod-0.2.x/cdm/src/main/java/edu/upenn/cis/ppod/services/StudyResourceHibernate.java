@@ -45,7 +45,7 @@ import edu.upenn.cis.ppod.util.Study2StudyInfo;
  * 
  * @author Sam Donnelly
  */
-class StudyResourceHibernate implements IStudyResource {
+final class StudyResourceHibernate implements IStudyResource {
 
 	private final IStudyDAO studyDAO;
 
@@ -91,7 +91,7 @@ class StudyResourceHibernate implements IStudyResource {
 		} catch (final Throwable t) {
 			try {
 				if (trx != null && trx.isActive()) {
-					session.getTransaction().rollback();
+					trx.rollback();
 				}
 			} catch (final Throwable rbEx) {
 				logger.error("error rolling back transaction", rbEx);
@@ -129,7 +129,7 @@ class StudyResourceHibernate implements IStudyResource {
 		} catch (final Throwable t) {
 			try {
 				if (trx != null && trx.isActive()) {
-					session.getTransaction().rollback();
+					trx.rollback();
 				}
 			} catch (final Throwable rbEx) {
 				logger.error("error rolling back transaction", rbEx);
@@ -158,7 +158,7 @@ class StudyResourceHibernate implements IStudyResource {
 		} catch (final Throwable t) {
 			try {
 				if (trx != null && trx.isActive()) {
-					session.getTransaction().rollback();
+					trx.rollback();
 				}
 			} catch (final Throwable rbEx) {
 				logger.error("error rolling back transaction", rbEx);
