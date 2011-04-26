@@ -96,7 +96,10 @@ final class StudyResourceHibernate implements IStudyResource {
 			} catch (final Throwable rbEx) {
 				logger.error("error rolling back transaction", rbEx);
 			}
-			logger.error("caught in {}", t);
+			logger.error("caught", t);
+			if (t instanceof RuntimeException) {
+				throw (RuntimeException) t;
+			}
 			throw new IllegalStateException(t);
 		} finally {
 			session.close();
