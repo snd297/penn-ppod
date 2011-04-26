@@ -388,8 +388,8 @@ class PPodEntitiesResourceHibernate
 				docStudy.getOtuSets(),
 				compose(equalTo(otuSet.getPPodId()),
 						IHasPPodId.getPPodId), null)) == null) {
-			docStudy.getOtuSets().add(
-					dbStudy2DocStudy.dbOtuSet2DocOtuSetShallow(otuSet));
+			docOtuSet = dbStudy2DocStudy.dbOtuSet2DocOtuSetShallow(otuSet);
+			docStudy.getOtuSets().add(docOtuSet);
 		}
 		return docOtuSet;
 	}

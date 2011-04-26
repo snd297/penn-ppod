@@ -17,6 +17,7 @@ package edu.upenn.cis.ppod.dto;
 
 import static com.google.common.base.Preconditions.checkNotNull;
 import static com.google.common.collect.Lists.newArrayList;
+import static java.util.Collections.unmodifiableList;
 
 import java.util.List;
 
@@ -31,8 +32,30 @@ public final class PPodEntities implements IHasOtuSets {
 
 	private List<PPodStudy> studies = newArrayList();
 
+	public int countMembers() {
+		int count = 0;
+		final List<PPodOtuSet> otuSets = getOtuSets();
+		count += otuSets.size();
+		for (final PPodOtuSet otuSet : otuSets) {
+			count += otuSet.getStandardMatrices().size();
+			count += otuSet.getDnaMatrices().size();
+			count += otuSet.getProteinMatrices().size();
+			count += otuSet.getTreeSets().size();
+		}
+		return count;
+	}
+
 	public String getLabel() {
 		return "From HQL";
+	}
+
+	/** ${inheritDoc} */
+	public List<PPodOtuSet> getOtuSets() {
+		final List<PPodOtuSet> otuSets = newArrayList();
+		for (final PPodStudy study : studies) {
+			otuSets.addAll(study.getOtuSets());
+		}
+		return unmodifiableList(otuSets);
 	}
 
 	@XmlElement(name = "study")
@@ -46,26 +69,5 @@ public final class PPodEntities implements IHasOtuSets {
 
 	public void setStudies(final List<PPodStudy> studies) {
 		this.studies = checkNotNull(studies);
-	}
-
-	public int countMembers() {
-		int count = 0;
-		List<PPodOtuSet> otuSets = getOtuSets();
-		count += otuSets.size();
-		for (PPodOtuSet otuSet : otuSets) {
-			count += otuSet.getStandardMatrices().size();
-			count += otuSet.getDnaMatrices().size();
-			count += otuSet.getProteinMatrices().size();
-			count += otuSet.getTreeSets().size();
-		}
-		return count;
-	}
-
-	public List<PPodOtuSet> getOtuSets() {
-		List<PPodOtuSet> otuSets = newArrayList();
-		for (PPodStudy study : studies) {
-			otuSets.addAll(study.getOtuSets());
-		}
-		return otuSets;
 	}
 }
