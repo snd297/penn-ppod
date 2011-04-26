@@ -83,7 +83,7 @@ public class StudyResourceHibernateTest {
 		boolean exceptionCaught = false;
 		try {
 			studyResource.createStudy(new PPodStudy("dont-care", "dont-care"));
-		} catch (IllegalStateException e) {
+		} catch (RuntimeException e) {
 			exceptionCaught = true;
 		}
 		assertTrue(exceptionCaught);
@@ -135,7 +135,7 @@ public class StudyResourceHibernateTest {
 
 		try {
 			studyResource.getStudyByPPodId("don't-care");
-		} catch (IllegalStateException e) {
+		} catch (RuntimeException e) {
 			exceptionCaught = true;
 		}
 
@@ -185,9 +185,8 @@ public class StudyResourceHibernateTest {
 		boolean caughtException = false;
 
 		try {
-
 			studyResource.getStudyPPodIdLabelPairs();
-		} catch (IllegalStateException e) {
+		} catch (RuntimeException e) {
 			caughtException = true;
 		}
 
