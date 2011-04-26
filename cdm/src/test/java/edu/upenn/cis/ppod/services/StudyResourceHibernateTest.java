@@ -244,7 +244,7 @@ public class StudyResourceHibernateTest {
 		try {
 			studyResource.updateStudy(
 					new PPodStudy("dont-care", "dont-care"), "don't-care");
-		} catch (IllegalStateException e) {
+		} catch (RuntimeException e) {
 			exceptionCaught = true;
 		}
 
