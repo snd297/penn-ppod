@@ -15,6 +15,7 @@
  */
 package edu.upenn.cis.ppod.dao;
 
+import static com.google.common.base.Preconditions.checkNotNull;
 import static com.google.common.collect.Sets.newHashSet;
 
 import java.util.Iterator;
@@ -78,6 +79,15 @@ final class StudyDAOHibernate
 				.getNamedQuery(
 						Study.class.getSimpleName() + "-getByPPodId")
 				.setParameter("pPodId", pPodId)
+				.uniqueResult();
+	}
+
+	public Study getStudyByLabel(final String label) {
+		checkNotNull(label);
+		return (Study) getSession()
+				.getNamedQuery(
+						Study.class.getSimpleName() + "-getByLabel")
+				.setParameter("label", label)
 				.uniqueResult();
 	}
 

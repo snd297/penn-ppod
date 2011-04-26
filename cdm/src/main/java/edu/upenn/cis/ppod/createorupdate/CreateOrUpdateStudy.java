@@ -88,6 +88,13 @@ public final class CreateOrUpdateStudy implements ICreateOrUpdateStudy {
 	public Study createOrUpdateStudy(final PPodStudy incomingStudy) {
 		Study dbStudy = null;
 		boolean makeStudyPersistent = false;
+
+		if (studyDAO.getStudyByLabel(incomingStudy.getLabel()) != null) {
+			throw new IllegalArgumentException(
+					"there is already a study labeled ["
+							+ incomingStudy.getLabel() + "]");
+		}
+
 		if (null == (dbStudy =
 				studyDAO.getStudyByPPodId(
 						incomingStudy.getPPodId()))) {
