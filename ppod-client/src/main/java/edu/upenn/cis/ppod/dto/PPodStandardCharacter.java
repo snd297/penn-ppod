@@ -15,7 +15,6 @@
  */
 package edu.upenn.cis.ppod.dto;
 
-import static com.google.common.base.Preconditions.checkNotNull;
 import static com.google.common.base.Predicates.compose;
 import static com.google.common.base.Predicates.equalTo;
 import static com.google.common.collect.Iterables.find;
@@ -32,6 +31,7 @@ import edu.umd.cs.findbugs.annotations.Nullable;
 public final class PPodStandardCharacter extends UuPPodDomainObjectWithLabel {
 
 	@XmlAttribute
+	@CheckForNull
 	private String mesquiteId;
 
 	@XmlElement(name = "state")
@@ -46,7 +46,6 @@ public final class PPodStandardCharacter extends UuPPodDomainObjectWithLabel {
 			final String label,
 			@CheckForNull final String mesquiteId) {
 		super(pPodId, label);
-		checkNotNull(mesquiteId);
 		this.mesquiteId = mesquiteId;
 	}
 

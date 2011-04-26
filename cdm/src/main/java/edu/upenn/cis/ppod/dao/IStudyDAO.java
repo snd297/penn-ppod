@@ -19,6 +19,7 @@ import java.util.Set;
 
 import com.google.inject.ImplementedBy;
 
+import edu.umd.cs.findbugs.annotations.CheckForNull;
 import edu.umd.cs.findbugs.annotations.Nullable;
 import edu.upenn.cis.ppod.dto.PPodLabelAndId;
 import edu.upenn.cis.ppod.model.Study;
@@ -51,7 +52,7 @@ public interface IStudyDAO extends IDAO<Study, Long> {
 	 *         {@code pPodId == null}
 	 */
 	@Nullable
-	Study getStudyByPPodId(String pPodId);
+	Study getStudyByPPodId(@CheckForNull String pPodId);
 
 	@Nullable
 	Study getStudyByLabel(String label);
