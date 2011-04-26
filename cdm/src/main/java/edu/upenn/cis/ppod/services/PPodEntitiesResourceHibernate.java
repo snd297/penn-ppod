@@ -176,7 +176,7 @@ class PPodEntitiesResourceHibernate
 
 		final DbStudy2DocStudy dbStudy2DocStudy = new DbStudy2DocStudy();
 
-		final int TIMEOUT_SECONDS = -1;// 60;
+		final int TIMEOUT_SECONDS = 60;
 
 		boolean countTooHigh = false;
 		try {
