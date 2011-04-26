@@ -89,17 +89,33 @@ public final class CreateOrUpdateStudy implements ICreateOrUpdateStudy {
 		Study dbStudy = null;
 		boolean makeStudyPersistent = false;
 
-		if (studyDAO.getStudyByLabel(incomingStudy.getLabel()) != null) {
-			throw new IllegalArgumentException(
-					"there is already a study labeled ["
-							+ incomingStudy.getLabel() + "]");
+		final Study dbStudyByLabel = studyDAO.getStudyByLabel(incomingStudy
+				.getLabel());
+		boolean dupLabel = false;
+
+		if (incomingStudy.getPPodId() == null) {
+			if (dbStudyByLabel == null) {
+				dbStudy = new Study();
+				makeStudyPersistent = true;
+			} else {
+				dupLabel = true;
+			}
+		} else {
+			dbStudy =
+					studyDAO.getStudyByPPodId(
+							incomingStudy.getPPodId());
+			if (dbStudy == null) {
+				throw new IllegalArgumentException("study has unknow pPOD id");
+			}
+			if (dbStudy != dbStudyByLabel) {
+				dupLabel = true;
+			}
 		}
 
-		if (null == (dbStudy =
-				studyDAO.getStudyByPPodId(
-						incomingStudy.getPPodId()))) {
-			dbStudy = new Study();
-			makeStudyPersistent = true;
+		if (dupLabel) {
+			throw new IllegalArgumentException(
+					"already have a study labeled ["
+							+ incomingStudy.getLabel() + "]");
 		}
 
 		dbStudy.setLabel(incomingStudy.getLabel());
