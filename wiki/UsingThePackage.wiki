@@ -12,7 +12,7 @@ After firing up Mesquite, here's how to download from the pPOD server:
 ===Uploading to the pPOD server===
 
 Open up a Nexus file (RNA matrices are not yet supported.) There is a _pPOD_ item in the project window which if clicked will reveal
-    * *_Upload changes to Server w/ Molecular Matrices as pPOD Matrices_* this will upload your project storing the data as matrices in the pPOD server. 
+    * *_Upload changes to Server w/ Molecular Matrices as pPOD Matrices_* this will upload your project storing the data in the pPOD server. 
 
 
 = Generating HQL Queries =
