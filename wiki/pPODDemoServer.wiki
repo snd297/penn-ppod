@@ -2,7 +2,7 @@
 
 = Running the pPOD Demo Server =
 
-  * You'll need to get the zipped pPOD Mesquite package `pPODMesquitePackage-X.X.X.zip` from one of us.
+  * You'll need to get the zipped pPOD Mesquite package `pPODMesquitePackage-X.X.X.zip` from Sam.
   * Unzip it (it will expand into `pPODMesquitePackage-X.X.X`) and put the expanded directory where you want. We'll assume you put it into `${MESQUITE_HOME}/Mesquite_Folder`.
   * Add the appropriate entry in your `classpaths.xml` file, if you're using `${MESQUITE_HOME}/Mesquite_Folder` that would be
   {{{
