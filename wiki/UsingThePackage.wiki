@@ -27,6 +27,6 @@ We can add in characters and character states we want to filter by, also let's t
 
 http://penn-ppod.googlecode.com/svn/wiki/Pictures/UsingThePackage/selectSusAndEquusPlusWildcards.png
 
-This says, give me all character matrices that have taxa named `equ%` and `s%s`, and where the `equ%` has a character called `anterior%`, and where the `s%s` has a character named `tensor%` with state `circular%pit%`, and the matrix has a state named `anterior`.
+This says, give me all character matrices that have taxa named `equ%` and `s%s`, and where the `equ%` taxon has a character called `anterior%`, and the `s%s` taxon has a character named `tensor%` with state `circular%pit%`, and the matrix has a state named `anterior`.
 
 Note that at present only character matrices which match the criteria will be returned. Which is different from, say, DNA matrices, where we return any DNA matrices that are attached (via taxa block) to a matching character matrix. That is, we don't return character matrices which are attached to matching character matrices, only matching character matrices. Maybe that's too confusing to mention.
