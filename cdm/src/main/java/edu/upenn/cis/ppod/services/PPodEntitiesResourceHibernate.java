@@ -178,7 +178,6 @@ class PPodEntitiesResourceHibernate
 
 		final int TIMEOUT_SECONDS = 60;
 
-		boolean countTooHigh = false;
 		try {
 			// not beginTransaction so we can
 			// now set the timeout
@@ -208,11 +207,6 @@ class PPodEntitiesResourceHibernate
 			}
 
 			for (final Object queryResult : flattenedAndDenulledResults) {
-				if (entities.countMembers() > 15) {
-					countTooHigh = true;
-					break;
-				}
-
 				if (queryResult instanceof OtuSet) {
 					final OtuSet otuSet = (OtuSet) queryResult;
 					handleOtuSet(entities, otuSet, dbStudy2DocStudy);
@@ -354,10 +348,6 @@ class PPodEntitiesResourceHibernate
 			session.close();
 			logger.info("{}: response time: {} milliseconds",
 					METHOD, Long.valueOf(new Date().getTime() - inTime));
-			if (countTooHigh) {
-				throw new IllegalArgumentException(
-						"more than 15 results not supported");
-			}
 		}
 	}
 
