@@ -4,10 +4,13 @@
   * First of all, you'll need to get [http://mesquiteproject.org/mesquite/mesquite.html Mesquite]
   * You'll need to get the zipped pPOD Mesquite package `pPODMesquitePackage-X.X.X.zip` from Sam.
   * Unzip it (it will expand into `pPODMesquitePackage-X.X.X`) and put the expanded directory where you want. We'll assume you put it into `${MESQUITE_HOME}/Mesquite_Folder`.
-  * Add the appropriate entry in your `classpaths.xml` file, if you're using `${MESQUITE_HOME}/Mesquite_Folder` that would be
+  * Add the appropriate entry in your `${MESQUITE_HOME}/Mesquite_Folder/classpaths.xml` file (you'll need to create a `classpaths.xml` file if there's not one already there. Here's what the entry looks like if you're using `${MESQUITE_HOME}/Mesquite_Folder` that would be
   {{{
-    <classpath>./pPODMesquitePackage-X.X.X/Mesquite_Folder</classpath>
-  }}}
+<?xml version="1.0"?>
+<mesquite>
+  <classpath>./pPODMesquitePackage-X.X.X/Mesquite_Folder</classpath>
+</mesquite>
+   }}}
   * Download the demo server from [http://code.google.com/p/penn-ppod/downloads/detail?name=ppod-demo-server-0.2-dist.zip ppod-demo-server-0.2-dist.zip]
   * Do `unzip ppod-demo-server-X.X.X-dist.zip` - this will create a directory `ppod-demo-server-X.X.X`
   * `cd` into `ppod-demo-server-X.X.X`
