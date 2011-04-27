@@ -1,4 +1,6 @@
-edu.upenn.cis.ppod.util.Strings from http://www.eekboom.com/java/compareNatural/src/com/eekboom/utils/Strings.java
+edu.upenn.cis.ppod.util.Strings is from http://www.eekboom.com/java/compareNatural/src/com/eekboom/utils/Strings.java
+
+Here is the copyright info:
 
 Copyright (c) 2006, Stephen Kelvin Friedrich,  All rights reserved.
  
