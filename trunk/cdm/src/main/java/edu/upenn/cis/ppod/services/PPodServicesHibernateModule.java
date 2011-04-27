@@ -26,7 +26,5 @@ public class PPodServicesHibernateModule extends AbstractModule {
 	protected void configure() {
 		bind(IPPodGreetingResource.class).to(PPodGreetingService.class);
 		bind(IStudyResource.class).to(StudyResourceHibernate.class);
-		bind(IOtuSetsResource.class)
-				.to(OtuSetsResourceHibernate.class);
 	}
 }
