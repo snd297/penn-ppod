@@ -32,3 +32,5 @@ This says, give me all character matrices that have taxa named 'equ%' and 's%s',
 Note that at present only character matrices which match the criteria will be returned. Which is different from, say, DNA matrices, where we return any DNA matrices that are attached (via taxa block) to a matching character matrix. That is, we don't return character matrices which are attached to matching character matrices, only matching character matrices. Maybe that's too confusing to mention.
 
 Some queries will be too hard for the server. Wildcards in particular are expensive. You can adjust the amount of time you are willing to wait for a count query to return. At present, there is no way to adjust the amount of time you will wait for an actual query - it is hardcoded at 60 seconds.
+
+http://penn-ppod.googlecode.com/svn/wiki/Pictures/UsingThePackage/selectHomoSapCat.png
