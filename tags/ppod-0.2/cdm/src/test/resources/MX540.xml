@@ -1,0 +1,3878 @@
+<?xml version="1.0" encoding="UTF-8" standalone="yes"?>
+<pPodStudy label="Project of &quot;M540.NX&quot;">
+    <otuSet label="Taxa">
+        <otu docId="ba6cfc72-9d94-4779-802a-57e410b5b5a7" label="Tursiops"/>
+        <otu docId="32e00813-1df9-4347-b86e-032fbdee0898" label="Balaenoptera"/>
+        <otu docId="ed86be58-7c9b-43ac-9731-7dc8b105a4b3" label="Tragulus"/>
+        <otu docId="b8f01d68-8e5b-40da-9da7-3a8936cb704c" label="Ovis"/>
+        <otu docId="b71d8eae-0937-4034-a579-aa7d0a6f6dad" label="Camelus"/>
+        <otu docId="34108959-7201-4a43-9bd1-18494a35e953" label="Sus"/>
+        <otu docId="0efaeb0c-97f9-4e76-b8f6-5e4b50837143" label="Hexaprotodon"/>
+        <otu docId="a5a7a0f6-8b34-4691-b5c8-f50078a03bb1" label="Hippopotamus"/>
+        <otu docId="b16b10d3-976f-4a78-b301-e65838fb2bc2" label="Equus"/>
+        <otu docId="fb154636-545e-450c-9d29-c24f1be8918b" label="Didelphis"/>
+        <standardMatrix label="Character Matrix">
+            <character mesquiteId="012d9b095b84246" label="Subarcuate Fossa">
+                <state label="absent" stateNumber="1"/>
+                <state label="present" stateNumber="0"/>
+            </character>
+            <character mesquiteId="012d9b095ba1247" label="shape Tegmen Tympani">
+                <state label="inflated" stateNumber="1"/>
+                <state label="hyperinflated" stateNumber="2"/>
+                <state label="uninflated" stateNumber="0"/>
+            </character>
+            <character mesquiteId="012d9b095ba1248" label="Anterior Proc Petr">
+                <state label="present" stateNumber="1"/>
+                <state label="absent" stateNumber="0"/>
+            </character>
+            <character mesquiteId="012d9b095ba1249" label="Tensor Tympani Fossa">
+                <state label="circular_pit,_anterior_groove" stateNumber="2"/>
+                <state label="circular_pit,_no_groove" stateNumber="1"/>
+                <state label="shallow" stateNumber="0"/>
+                <state label="long groove between tegmen tymp" stateNumber="3"/>
+            </character>
+            <character mesquiteId="012d9b095ba1250" label="transpromontorial sulcusICA">
+                <state label="present" stateNumber="0"/>
+                <state label="absent" stateNumber="1"/>
+            </character>
+            <character mesquiteId="012d9b095ba1251" label="Stapedial Groove">
+                <state label="present" stateNumber="0"/>
+                <state label="absent" stateNumber="1"/>
+            </character>
+            <character mesquiteId="012d9b095ba1252" label="Mastoid process">
+                <state label="exposed externally" stateNumber="0"/>
+                <state label="not exposed posteriorly" stateNumber="1"/>
+            </character>
+            <character mesquiteId="012d9b095ba1253" label="Stylomastoid Foramen">
+                <state label="complete" stateNumber="0"/>
+                <state label="incomplete" stateNumber="1"/>
+            </character>
+            <character mesquiteId="012d9b095ba1254" label="Facial Nerve Sulcus">
+                <state label="ant._wall_=_meat._tube_ect" stateNumber="3"/>
+                <state label="absent" stateNumber="0"/>
+                <state label="ant._wall_=_squamosal" stateNumber="1"/>
+                <state label="ant wall mas of petr" stateNumber="2"/>
+            </character>
+            <character mesquiteId="012d9b095ba2255" label="Pars_cochlearis/Basioccpital">
+                <state label="present" stateNumber="0"/>
+                <state label="absent" stateNumber="1"/>
+            </character>
+            <character mesquiteId="012d9b095ba2256" label="Ectotympanic Bulla">
+                <state label="medial_edge_=_bulla" stateNumber="1"/>
+                <state label="ring" stateNumber="0"/>
+            </character>
+            <character mesquiteId="012d9b095ba2257" label="Pachyo Bulla">
+                <state label="absent" stateNumber="0"/>
+                <state label="present" stateNumber="1"/>
+            </character>
+            <character mesquiteId="012d9b095ba2258" label="Lat furrow Bulla">
+                <state label="absent" stateNumber="0"/>
+                <state label="present" stateNumber="1"/>
+            </character>
+            <character mesquiteId="012d9b095ba2259" label="Med furrow Bulla">
+                <state label="prominent AP oriented furrow" stateNumber="2"/>
+                <state label="median notch on posterior rim" stateNumber="1"/>
+                <state label="absent" stateNumber="0"/>
+            </character>
+            <character mesquiteId="012d9b095ba2260" label="Art Bulla to Squamosal">
+                <state label="cirucular facet on short entogl" stateNumber="1"/>
+                <state label="contact with crest of entogleno" stateNumber="2"/>
+                <state label="contact absent" stateNumber="3"/>
+                <state label="contact_broad,_with_medial_pgp" stateNumber="0"/>
+            </character>
+            <character mesquiteId="012d9b095ba2261" label="ECtoTymp/Exocc_contact">
+                <state label="present" stateNumber="1"/>
+                <state label="absent" stateNumber="0"/>
+            </character>
+            <character mesquiteId="012d9b095ba2262" label="Sigmoid Process">
+                <state label="present" stateNumber="1"/>
+                <state label="absent" stateNumber="0"/>
+            </character>
+            <character mesquiteId="012d9b095ba2263" label="Sigmoid process shape">
+                <state label="broad and flaring" stateNumber="1"/>
+                <state label="thin and transverse plate" stateNumber="0"/>
+            </character>
+            <character mesquiteId="012d9b095ba2264" label="Ectotympanic meatal floor">
+                <state label="present and long" stateNumber="2"/>
+                <state label="absent" stateNumber="0"/>
+                <state label="present but short" stateNumber="1"/>
+            </character>
+            <character mesquiteId="012d9b095ba2265" label="External Auditory Meatus squamo">
+                <state label="elongate" stateNumber="1"/>
+                <state label="absent or shallow" stateNumber="0"/>
+            </character>
+            <character mesquiteId="012d9b095ba2266" label="Basioccipital_crests_(falcate_p">
+                <state label="absent" stateNumber="0"/>
+                <state label="present" stateNumber="1"/>
+            </character>
+            <character mesquiteId="012d9b095ba2267" label="Internal Carotid Foramen">
+                <state label="present,_paired" stateNumber="1"/>
+                <state label="falcate processes" stateNumber="2"/>
+                <state label="absent" stateNumber="0"/>
+            </character>
+            <character mesquiteId="012d9b095ba2268" label="Post-Glenoid_Foramen">
+                <state label="absent" stateNumber="2"/>
+                <state label="present,_med_to_petsq_sut" stateNumber="1"/>
+                <state label="present,_squam,_post_to_pgp" stateNumber="0"/>
+            </character>
+            <character mesquiteId="012d9b095ba2269" label="PRESENCE For ram sup.">
+                <state label="present" stateNumber="0"/>
+                <state label="absent" stateNumber="1"/>
+            </character>
+            <character mesquiteId="012d9b095ba2270" label="POSITION for ram sup">
+                <state label="anterolateral" stateNumber="1"/>
+                <state label="lateral" stateNumber="0"/>
+            </character>
+            <character mesquiteId="012d9b095ba2271" label="Posit For Ovale">
+                <state label="pos to gf" stateNumber="3"/>
+                <state label="med_to_gf,_pos_wall_as" stateNumber="1"/>
+                <state label="ant_to_gf,_pos_wall_as" stateNumber="0"/>
+                <state label="medial_to_gf,_post_wall_pet" stateNumber="2"/>
+            </character>
+            <character mesquiteId="012d9b095ba7272" label="Alisphenoid Canal">
+                <state label="absent" stateNumber="0"/>
+                <state label="present" stateNumber="1"/>
+            </character>
+            <character mesquiteId="012d9b095ba7273" label="Ant Open Alar Canal">
+                <state label="posterior to sphenoorbital fiss" stateNumber="1"/>
+                <state label="within sphenoorbital fissure" stateNumber="0"/>
+            </character>
+            <character mesquiteId="012d9b095ba7274" label="Post Open Alar Canal">
+                <state label="within deep groove" stateNumber="1"/>
+                <state label="well sep from fo" stateNumber="0"/>
+            </character>
+            <character mesquiteId="012d9b095ba7275" label="Foramen Rotundum">
+                <state label="absent" stateNumber="0"/>
+                <state label="present" stateNumber="1"/>
+            </character>
+            <character mesquiteId="012d9b095ba7276" label="Mastoid Foramen">
+                <state label="absent" stateNumber="1"/>
+                <state label="present" stateNumber="0"/>
+            </character>
+            <character mesquiteId="012d9b095ba7277" label="Posttemporal canal">
+                <state label="present" stateNumber="0"/>
+                <state label="absent" stateNumber="1"/>
+            </character>
+            <character mesquiteId="012d9b095ba7278" label="Preglenoid process">
+                <state label="present" stateNumber="1"/>
+                <state label="absent" stateNumber="0"/>
+            </character>
+            <character mesquiteId="012d9b095ba7279" label="Supraorbital process">
+                <state label="absent" stateNumber="0"/>
+                <state label="present" stateNumber="1"/>
+            </character>
+            <character mesquiteId="012d9b095ba7280" label="posorbital bar">
+                <state label="present,_complete" stateNumber="2"/>
+                <state label="present,_almost_complete" stateNumber="1"/>
+                <state label="absent" stateNumber="0"/>
+            </character>
+            <character mesquiteId="012d9b095ba7281" label="Contact_Front/Max">
+                <state label="present" stateNumber="1"/>
+                <state label="absent" stateNumber="0"/>
+            </character>
+            <character mesquiteId="012d9b095ba7282" label="Lacrimal Tubercle">
+                <state label="absent" stateNumber="0"/>
+                <state label="present" stateNumber="1"/>
+            </character>
+            <character mesquiteId="012d9b095ba7283" label="palatine fissure">
+                <state label="large" stateNumber="1"/>
+                <state label="small" stateNumber="0"/>
+            </character>
+            <character mesquiteId="012d9b095ba7284" label="Post margin nares">
+                <state label="anterior over canines" stateNumber="0"/>
+                <state label="posterior to P2" stateNumber="2"/>
+                <state label="between P1 and P2" stateNumber="1"/>
+            </character>
+            <character mesquiteId="012d9b095ba7285" label="Mandibular Foramen">
+                <state label="large" stateNumber="1"/>
+                <state label="small" stateNumber="0"/>
+            </character>
+            <character mesquiteId="012d9b095ba7286" label="condyle">
+                <state label="substantially higher than denti" stateNumber="2"/>
+                <state label="below level of dentition" stateNumber="0"/>
+                <state label="even with superior aspect of de" stateNumber="1"/>
+            </character>
+            <character mesquiteId="012d9b095ba7287" label="Dentary angle">
+                <state label="below ventral edge" stateNumber="1"/>
+                <state label="level with ventral edge" stateNumber="0"/>
+            </character>
+            <character mesquiteId="012d9b095ba7288" label="Upp_Inc_1-2">
+                <state label="present" stateNumber="0"/>
+                <state label="I1 and I2 absent" stateNumber="1"/>
+            </character>
+            <character mesquiteId="012d9b095ba7289" label="Incisor Alignment">
+                <state label="longitudinal,_long_prema" stateNumber="1"/>
+                <state label="transverse arc" stateNumber="0"/>
+            </character>
+            <character mesquiteId="012d9b095ba7290" label="Embrasure pits">
+                <state label="present" stateNumber="1"/>
+                <state label="absent" stateNumber="0"/>
+            </character>
+            <character mesquiteId="012d9b095ba7291" label="P1 presence">
+                <state label="present_two-rooted" stateNumber="2"/>
+                <state label="present_one-rooted" stateNumber="1"/>
+                <state label="absent" stateNumber="0"/>
+            </character>
+            <character mesquiteId="012d9b095ba7292" label="P3 roots">
+                <state label="two" stateNumber="1"/>
+                <state label="three" stateNumber="0"/>
+            </character>
+            <character mesquiteId="012d9b095ba7293" label="P4 protocone">
+                <state label="present" stateNumber="0"/>
+                <state label="absent" stateNumber="1"/>
+            </character>
+            <character mesquiteId="012d9b095ba7294" label="P4 paracone height">
+                <state label="greater than twice M1 paracone" stateNumber="1"/>
+                <state label="equal to paracone M1" stateNumber="0"/>
+            </character>
+            <character mesquiteId="012d9b095ba7295" label="P4 metacone">
+                <state label="present" stateNumber="1"/>
+                <state label="absent" stateNumber="0"/>
+            </character>
+            <character mesquiteId="012d9b095ba8296" label="stylar shelf">
+                <state label="absent" stateNumber="1"/>
+                <state label="present" stateNumber="0"/>
+            </character>
+            <character mesquiteId="012d9b095ba8297" label="M2 metacone">
+                <state label="highly reduced" stateNumber="2"/>
+                <state label="half paracone" stateNumber="1"/>
+                <state label="subequal to paracone" stateNumber="0"/>
+            </character>
+            <character mesquiteId="012d9b095ba8298" label="M1 parastyle">
+                <state label="absent" stateNumber="0"/>
+                <state label="strong" stateNumber="2"/>
+                <state label="weak" stateNumber="1"/>
+            </character>
+            <character mesquiteId="012d9b095ba8299" label="ling cing M2">
+                <state label="present" stateNumber="0"/>
+                <state label="absent" stateNumber="1"/>
+            </character>
+            <character mesquiteId="012d9b095ba8300" label="Ectocingula">
+                <state label="present" stateNumber="0"/>
+                <state label="absent" stateNumber="1"/>
+            </character>
+            <character mesquiteId="012d9b095ba8301" label="Hypocone M1M2">
+                <state label="present" stateNumber="1"/>
+                <state label="absent" stateNumber="0"/>
+            </character>
+            <character mesquiteId="012d9b095ba8302" label="Trigon basin">
+                <state label="broad" stateNumber="0"/>
+                <state label="very narrow" stateNumber="2"/>
+                <state label="somewhat narrow" stateNumber="1"/>
+            </character>
+            <character mesquiteId="012d9b095ba8303" label="Paraconule_M2/">
+                <state label="absent" stateNumber="0"/>
+                <state label="present" stateNumber="1"/>
+            </character>
+            <character mesquiteId="012d9b095ba8304" label="Metaconule_M2/">
+                <state label="present" stateNumber="1"/>
+                <state label="absent" stateNumber="0"/>
+            </character>
+            <character mesquiteId="012d9b095ba8305" label="M3">
+                <state label="present,_approx._equal_M2" stateNumber="1"/>
+                <state label="absent" stateNumber="3"/>
+                <state label="reduced" stateNumber="2"/>
+                <state label="present,_larger_than_M2" stateNumber="0"/>
+            </character>
+            <character mesquiteId="012d9b095ba8306" label="lower canines">
+                <state label="present" stateNumber="1"/>
+                <state label="absent" stateNumber="0"/>
+            </character>
+            <character mesquiteId="012d9b095ba8307" label="lower incisors">
+                <state label="tusklike" stateNumber="1"/>
+                <state label="small and vertical" stateNumber="0"/>
+            </character>
+            <character mesquiteId="012d9b095ba8308" label="lower Canine shape">
+                <state label="oval" stateNumber="0"/>
+                <state label="triangular" stateNumber="1"/>
+            </character>
+            <character mesquiteId="012d9b095ba8309" label="p1">
+                <state label="absent" stateNumber="1"/>
+                <state label="present" stateNumber="0"/>
+            </character>
+            <character mesquiteId="012d9b095ba8310" label="p3 metaconid">
+                <state label="present" stateNumber="1"/>
+                <state label="absent" stateNumber="0"/>
+            </character>
+            <character mesquiteId="012d9b095ba8311" label="p4 metaconid">
+                <state label="present" stateNumber="1"/>
+                <state label="absent" stateNumber="0"/>
+            </character>
+            <character mesquiteId="012d9b095ba8312" label="lin cing molars">
+                <state label="absent" stateNumber="0"/>
+                <state label="continuous,_mesial-distal" stateNumber="1"/>
+            </character>
+            <character mesquiteId="012d9b095ba8313" label="m1 parac">
+                <state label="present" stateNumber="0"/>
+                <state label="absent" stateNumber="1"/>
+            </character>
+            <character mesquiteId="012d9b095ba8314" label="m1_parac/crist_posit">
+                <state label="cusp or crest lingual" stateNumber="0"/>
+                <state label="cusp_or_crest_ant.betw_pr-pa" stateNumber="1"/>
+            </character>
+            <character mesquiteId="012d9b095ba8315" label="m2 parac">
+                <state label="absent" stateNumber="1"/>
+                <state label="present" stateNumber="0"/>
+            </character>
+            <character mesquiteId="012d9b095ba8316" label="m2_parac/crist_pos">
+                <state label="cusp_or_crest_ant.betw_pr-pa" stateNumber="1"/>
+                <state label="cusp or crest lingual" stateNumber="0"/>
+            </character>
+            <character mesquiteId="012d9b095ba8317" label="m3 parac">
+                <state label="absent" stateNumber="1"/>
+                <state label="present" stateNumber="0"/>
+            </character>
+            <character mesquiteId="012d9b095ba8318" label="m3_parac/cris_posit">
+                <state label="cusp or crest lingual" stateNumber="0"/>
+                <state label="cusp_or_crest_ant.betw_pr-pa" stateNumber="1"/>
+            </character>
+            <character mesquiteId="012d9b095ba8319" label="m1 metaconid">
+                <state label="present" stateNumber="0"/>
+                <state label="absent" stateNumber="1"/>
+            </character>
+            <character mesquiteId="012d9b095ba8320" label="m2 metaconid">
+                <state label="absent" stateNumber="1"/>
+                <state label="present" stateNumber="0"/>
+            </character>
+            <character mesquiteId="012d9b095ba8321" label="m3 metaconid">
+                <state label="absent" stateNumber="1"/>
+                <state label="present" stateNumber="0"/>
+            </character>
+            <character mesquiteId="012d9b095ba8322" label="m1 m2 hypoconulid">
+                <state label="absent" stateNumber="0"/>
+                <state label="present" stateNumber="1"/>
+            </character>
+            <character mesquiteId="012d9b095ba8323" label="molar protoconid">
+                <state label="subequal to talonid" stateNumber="0"/>
+                <state label="twice height of talonid" stateNumber="1"/>
+            </character>
+            <character mesquiteId="012d9b095ba8324" label="protoloph">
+                <state label="absent" stateNumber="0"/>
+                <state label="present" stateNumber="1"/>
+            </character>
+            <character mesquiteId="012d9b095ba8325" label="metaloph">
+                <state label="absent" stateNumber="0"/>
+                <state label="present" stateNumber="1"/>
+            </character>
+            <character mesquiteId="012d9b095ba9326" label="ant low lophs">
+                <state label="absent" stateNumber="0"/>
+                <state label="present" stateNumber="1"/>
+            </character>
+            <character mesquiteId="012d9b095ba9327" label="post low lophs">
+                <state label="absent" stateNumber="0"/>
+                <state label="present" stateNumber="1"/>
+            </character>
+            <character mesquiteId="012d9b095ba9328" label="Reen groove">
+                <state label="proximal" stateNumber="0"/>
+                <state label="absent" stateNumber="1"/>
+                <state label="distal" stateNumber="2"/>
+            </character>
+            <character mesquiteId="012d9b095ba9329" label="Talonid basin molar">
+                <state label="reduced" stateNumber="1"/>
+                <state label="basin,_hy_and_ent_present" stateNumber="0"/>
+            </character>
+            <character mesquiteId="012d9b095ba9330" label="M3 Hypoconulid">
+                <state label="long" stateNumber="0"/>
+                <state label="absent" stateNumber="2"/>
+                <state label="reduced" stateNumber="1"/>
+            </character>
+            <character mesquiteId="012d9b095ba9331" label="dp4">
+                <state label="6 cusped" stateNumber="1"/>
+                <state label="resembles m1" stateNumber="0"/>
+            </character>
+            <character mesquiteId="012d9b095ba9332" label="Elongate shear facets on molars">
+                <state label="absent" stateNumber="0"/>
+                <state label="present" stateNumber="1"/>
+            </character>
+            <character mesquiteId="012d9b095ba9333" label="Cerv vert length">
+                <state label="very long" stateNumber="2"/>
+                <state label="long" stateNumber="0"/>
+                <state label="short" stateNumber="1"/>
+            </character>
+            <character mesquiteId="012d9b095ba9334" label="Art_Sacral/Illium">
+                <state label="absent" stateNumber="2"/>
+                <state label="narrow" stateNumber="1"/>
+                <state label="broad" stateNumber="0"/>
+            </character>
+            <character mesquiteId="012d9b095ba9335" label="Number Sacrals">
+                <state label="one" stateNumber="0"/>
+                <state label="five-six" stateNumber="3"/>
+                <state label="four" stateNumber="2"/>
+                <state label="two-three" stateNumber="1"/>
+            </character>
+            <character mesquiteId="012d9b095ba9336" label="Scapular Spine">
+                <state label="large_acromion,_overhangs_gleno" stateNumber="0"/>
+                <state label="small acromion" stateNumber="1"/>
+                <state label="large_acromion,_does_not_overha" stateNumber="2"/>
+            </character>
+            <character mesquiteId="012d9b095ba9337" label="Entepicondyle">
+                <state label="narrow" stateNumber="1"/>
+                <state label="wide" stateNumber="0"/>
+            </character>
+            <character mesquiteId="012d9b095ba9338" label="Entepi foramen">
+                <state label="absent" stateNumber="1"/>
+                <state label="present" stateNumber="0"/>
+            </character>
+            <character mesquiteId="012d9b095ba9339" label="Olecranon process">
+                <state label="long" stateNumber="1"/>
+                <state label="short" stateNumber="0"/>
+            </character>
+            <character mesquiteId="012d9b095ba9340" label="Olec. fossa">
+                <state label="shallow" stateNumber="0"/>
+                <state label="deep" stateNumber="1"/>
+            </character>
+            <character mesquiteId="012d9b095ba9341" label="Proximal radius">
+                <state label="two fossae" stateNumber="1"/>
+                <state label="three fossae" stateNumber="2"/>
+                <state label="single fossa" stateNumber="0"/>
+            </character>
+            <character mesquiteId="012d9b095ba9342" label="Distal radius">
+                <state label="convex to flat distinct facets" stateNumber="2"/>
+                <state label="single fossa" stateNumber="0"/>
+                <state label="split into scaphoid and lunate" stateNumber="1"/>
+            </character>
+            <character mesquiteId="012d9b095ba9343" label="Centrale">
+                <state label="absent" stateNumber="1"/>
+                <state label="present" stateNumber="0"/>
+            </character>
+            <character mesquiteId="012d9b095ba9344" label="Manus">
+                <state label="paraxonic" stateNumber="1"/>
+                <state label="mesaxonic" stateNumber="0"/>
+            </character>
+            <character mesquiteId="012d9b095ba9345" label="Greater troch">
+                <state label="inferior to head of femur" stateNumber="0"/>
+                <state label="equal to head of femur" stateNumber="1"/>
+                <state label="above head of femur" stateNumber="2"/>
+            </character>
+            <character mesquiteId="012d9b095ba9346" label="3rd troch">
+                <state label="absent" stateNumber="2"/>
+                <state label="highly reduced" stateNumber="1"/>
+                <state label="present" stateNumber="0"/>
+            </character>
+            <character mesquiteId="012d9b095ba9347" label="Distal Femur">
+                <state label="wide" stateNumber="0"/>
+                <state label="narrow" stateNumber="1"/>
+            </character>
+            <character mesquiteId="012d9b095ba9348" label="Astragalar Canal">
+                <state label="absent" stateNumber="1"/>
+                <state label="present" stateNumber="0"/>
+            </character>
+            <character mesquiteId="012d9b095ba9349" label="Navicular Facet">
+                <state label="saddle-shaped" stateNumber="1"/>
+                <state label="convex" stateNumber="0"/>
+                <state label="trochleated" stateNumber="2"/>
+            </character>
+            <character mesquiteId="012d9b095ba9350" label="Sustentacular facet">
+                <state label="narrow" stateNumber="0"/>
+                <state label="wide" stateNumber="1"/>
+            </character>
+            <character mesquiteId="012d9b095ba9351" label="Cuboid facet">
+                <state label="present-small" stateNumber="1"/>
+                <state label="absent" stateNumber="0"/>
+                <state label="present-large" stateNumber="2"/>
+            </character>
+            <character mesquiteId="012d9b095ba9352" label="Lateral process">
+                <state label="present" stateNumber="0"/>
+                <state label="absent" stateNumber="1"/>
+            </character>
+            <character mesquiteId="012d9b095ba9353" label="Pes">
+                <state label="paraxonic" stateNumber="1"/>
+                <state label="mesaxonic-4" stateNumber="2"/>
+                <state label="mesaxonic-3" stateNumber="0"/>
+            </character>
+            <character mesquiteId="012d9b095ba9354" label="Proxi astrag">
+                <state label="grooved" stateNumber="1"/>
+                <state label="deeply grooved" stateNumber="2"/>
+                <state label="flat" stateNumber="0"/>
+            </character>
+            <character mesquiteId="012d9b095ba9355" label="Nav/Cub_fusion">
+                <state label="fused" stateNumber="1"/>
+                <state label="unfused" stateNumber="0"/>
+            </character>
+            <character mesquiteId="012d9b095ba9356" label="m3/m4_fusion">
+                <state label="present" stateNumber="1"/>
+                <state label="absent" stateNumber="0"/>
+            </character>
+            <character mesquiteId="012d9b095ba9357" label="Metatarsal 1">
+                <state label="unreduced" stateNumber="0"/>
+                <state label="highly reduced" stateNumber="2"/>
+                <state label="reduced" stateNumber="1"/>
+            </character>
+            <character mesquiteId="012d9b095baa358" label="Metatarsal 2">
+                <state label="highly reduced" stateNumber="2"/>
+                <state label="unreduced" stateNumber="0"/>
+                <state label="reduced" stateNumber="1"/>
+            </character>
+            <character mesquiteId="012d9b095baa359" label="Metatarsal 5">
+                <state label="highly reduced" stateNumber="2"/>
+                <state label="unreduced" stateNumber="0"/>
+                <state label="reduced" stateNumber="1"/>
+            </character>
+            <character mesquiteId="012d9b095baa360" label="Unguventral">
+                <state label="straight" stateNumber="1"/>
+                <state label="curved inferiorly" stateNumber="0"/>
+            </character>
+            <character mesquiteId="012d9b095baa361" label="Ungdorsal">
+                <state label="broad,_symmetrical" stateNumber="1"/>
+                <state label="broad,_asymmetrical" stateNumber="2"/>
+                <state label="transversely compressed" stateNumber="0"/>
+            </character>
+            <character mesquiteId="012d9b095baa362" label="Stomach epithelium">
+                <state label="glandular" stateNumber="3"/>
+                <state label="discoglandular" stateNumber="2"/>
+                <state label="composite" stateNumber="1"/>
+                <state label="nonglandular" stateNumber="0"/>
+            </character>
+            <character mesquiteId="012d9b095baa363" label="Lumen">
+                <state label="plurilocular" stateNumber="1"/>
+                <state label="unilocular" stateNumber="0"/>
+            </character>
+            <character mesquiteId="012d9b095baa364" label="Lumen diverticulation">
+                <state label="present" stateNumber="1"/>
+                <state label="absent" stateNumber="0"/>
+            </character>
+            <character mesquiteId="012d9b095baa365" label="Penile Cavernous Tissue">
+                <state label="abundant" stateNumber="0"/>
+                <state label="sparse" stateNumber="1"/>
+            </character>
+            <character mesquiteId="012d9b095baa366" label="Hair">
+                <state label="absent or sparse" stateNumber="1"/>
+                <state label="abundant" stateNumber="0"/>
+            </character>
+            <character mesquiteId="012d9b095baa367" label="sebac glands">
+                <state label="absent" stateNumber="1"/>
+                <state label="present" stateNumber="0"/>
+            </character>
+            <character mesquiteId="012d9b095baa368" label="Primary Bronchi">
+                <state label="three" stateNumber="1"/>
+                <state label="two" stateNumber="0"/>
+            </character>
+            <row>
+                <cell type="SINGLE">
+                    <state>1</state>
+                </cell>
+                <cell type="SINGLE">
+                    <state>2</state>
+                </cell>
+                <cell type="SINGLE">
+                    <state>1</state>
+                </cell>
+                <cell type="SINGLE">
+                    <state>3</state>
+                </cell>
+                <cell type="SINGLE">
+                    <state>1</state>
+                </cell>
+                <cell type="SINGLE">
+                    <state>1</state>
+                </cell>
+                <cell type="SINGLE">
+                    <state>1</state>
+                </cell>
+                <cell type="SINGLE">
+                    <state>1</state>
+                </cell>
+                <cell type="SINGLE">
+                    <state>0</state>
+                </cell>
+                <cell type="SINGLE">
+                    <state>1</state>
+                </cell>
+                <cell type="SINGLE">
+                    <state>1</state>
+                </cell>
+                <cell type="SINGLE">
+                    <state>1</state>
+                </cell>
+                <cell type="SINGLE">
+                    <state>1</state>
+                </cell>
+                <cell type="SINGLE">
+                    <state>2</state>
+                </cell>
+                <cell type="SINGLE">
+                    <state>3</state>
+                </cell>
+                <cell type="SINGLE">
+                    <state>0</state>
+                </cell>
+                <cell type="SINGLE">
+                    <state>1</state>
+                </cell>
+                <cell type="SINGLE">
+                    <state>1</state>
+                </cell>
+                <cell type="SINGLE">
+                    <state>0</state>
+                </cell>
+                <cell type="SINGLE">
+                    <state>0</state>
+                </cell>
+                <cell type="SINGLE">
+                    <state>1</state>
+                </cell>
+                <cell type="SINGLE">
+                    <state>1</state>
+                </cell>
+                <cell type="SINGLE">
+                    <state>2</state>
+                </cell>
+                <cell type="SINGLE">
+                    <state>1</state>
+                </cell>
+                <cell type="UNASSIGNED"/>
+                <cell type="UNASSIGNED"/>
+                <cell type="SINGLE">
+                    <state>0</state>
+                </cell>
+                <cell type="INAPPLICABLE"/>
+                <cell type="UNASSIGNED"/>
+                <cell type="SINGLE">
+                    <state>0</state>
+                </cell>
+                <cell type="SINGLE">
+                    <state>1</state>
+                </cell>
+                <cell type="SINGLE">
+                    <state>1</state>
+                </cell>
+                <cell type="SINGLE">
+                    <state>0</state>
+                </cell>
+                <cell type="SINGLE">
+                    <state>1</state>
+                </cell>
+                <cell type="UNASSIGNED"/>
+                <cell type="SINGLE">
+                    <state>0</state>
+                </cell>
+                <cell type="SINGLE">
+                    <state>0</state>
+                </cell>
+                <cell type="UNASSIGNED"/>
+                <cell type="SINGLE">
+                    <state>2</state>
+                </cell>
+                <cell type="SINGLE">
+                    <state>1</state>
+                </cell>
+                <cell type="UNASSIGNED"/>
+                <cell type="UNASSIGNED"/>
+                <cell type="UNASSIGNED"/>
+                <cell type="UNASSIGNED"/>
+                <cell type="SINGLE">
+                    <state>0</state>
+                </cell>
+                <cell type="UNASSIGNED"/>
+                <cell type="UNASSIGNED"/>
+                <cell type="UNASSIGNED"/>
+                <cell type="UNASSIGNED"/>
+                <cell type="UNASSIGNED"/>
+                <cell type="UNASSIGNED"/>
+                <cell type="UNASSIGNED"/>
+                <cell type="UNASSIGNED"/>
+                <cell type="UNASSIGNED"/>
+                <cell type="UNASSIGNED"/>
+                <cell type="UNASSIGNED"/>
+                <cell type="UNASSIGNED"/>
+                <cell type="UNASSIGNED"/>
+                <cell type="UNASSIGNED"/>
+                <cell type="UNASSIGNED"/>
+                <cell type="SINGLE">
+                    <state>0</state>
+                </cell>
+                <cell type="SINGLE">
+                    <state>0</state>
+                </cell>
+                <cell type="UNASSIGNED"/>
+                <cell type="UNASSIGNED"/>
+                <cell type="UNASSIGNED"/>
+                <cell type="UNASSIGNED"/>
+                <cell type="UNASSIGNED"/>
+                <cell type="UNASSIGNED"/>
+                <cell type="UNASSIGNED"/>
+                <cell type="UNASSIGNED"/>
+                <cell type="UNASSIGNED"/>
+                <cell type="UNASSIGNED"/>
+                <cell type="UNASSIGNED"/>
+                <cell type="UNASSIGNED"/>
+                <cell type="UNASSIGNED"/>
+                <cell type="UNASSIGNED"/>
+                <cell type="UNASSIGNED"/>
+                <cell type="UNASSIGNED"/>
+                <cell type="SINGLE">
+                    <state>0</state>
+                </cell>
+                <cell type="SINGLE">
+                    <state>0</state>
+                </cell>
+                <cell type="SINGLE">
+                    <state>0</state>
+                </cell>
+                <cell type="SINGLE">
+                    <state>0</state>
+                </cell>
+                <cell type="UNASSIGNED"/>
+                <cell type="UNASSIGNED"/>
+                <cell type="UNASSIGNED"/>
+                <cell type="UNASSIGNED"/>
+                <cell type="UNASSIGNED"/>
+                <cell type="SINGLE">
+                    <state>1</state>
+                </cell>
+                <cell type="UNASSIGNED"/>
+                <cell type="SINGLE">
+                    <state>0</state>
+                </cell>
+                <cell type="SINGLE">
+                    <state>2</state>
+                </cell>
+                <cell type="SINGLE">
+                    <state>1</state>
+                </cell>
+                <cell type="SINGLE">
+                    <state>1</state>
+                </cell>
+                <cell type="SINGLE">
+                    <state>0</state>
+                </cell>
+                <cell type="UNASSIGNED"/>
+                <cell type="SINGLE">
+                    <state>0</state>
+                </cell>
+                <cell type="SINGLE">
+                    <state>1</state>
+                </cell>
+                <cell type="UNASSIGNED"/>
+                <cell type="UNASSIGNED"/>
+                <cell type="UNASSIGNED"/>
+                <cell type="UNASSIGNED"/>
+                <cell type="UNASSIGNED"/>
+                <cell type="UNASSIGNED"/>
+                <cell type="UNASSIGNED"/>
+                <cell type="UNASSIGNED"/>
+                <cell type="UNASSIGNED"/>
+                <cell type="UNASSIGNED"/>
+                <cell type="UNASSIGNED"/>
+                <cell type="UNASSIGNED"/>
+                <cell type="UNASSIGNED"/>
+                <cell type="UNASSIGNED"/>
+                <cell type="SINGLE">
+                    <state>2</state>
+                </cell>
+                <cell type="SINGLE">
+                    <state>2</state>
+                </cell>
+                <cell type="SINGLE">
+                    <state>2</state>
+                </cell>
+                <cell type="UNASSIGNED"/>
+                <cell type="UNASSIGNED"/>
+                <cell type="SINGLE">
+                    <state>1</state>
+                </cell>
+                <cell type="SINGLE">
+                    <state>1</state>
+                </cell>
+                <cell type="SINGLE">
+                    <state>1</state>
+                </cell>
+                <cell type="SINGLE">
+                    <state>1</state>
+                </cell>
+                <cell type="SINGLE">
+                    <state>1</state>
+                </cell>
+                <cell type="SINGLE">
+                    <state>1</state>
+                </cell>
+                <cell type="SINGLE">
+                    <state>1</state>
+                </cell>
+            </row>
+            <row>
+                <cell type="SINGLE">
+                    <state>1</state>
+                </cell>
+                <cell type="SINGLE">
+                    <state>2</state>
+                </cell>
+                <cell type="SINGLE">
+                    <state>1</state>
+                </cell>
+                <cell type="SINGLE">
+                    <state>3</state>
+                </cell>
+                <cell type="SINGLE">
+                    <state>1</state>
+                </cell>
+                <cell type="SINGLE">
+                    <state>1</state>
+                </cell>
+                <cell type="SINGLE">
+                    <state>1</state>
+                </cell>
+                <cell type="SINGLE">
+                    <state>1</state>
+                </cell>
+                <cell type="SINGLE">
+                    <state>2</state>
+                </cell>
+                <cell type="SINGLE">
+                    <state>1</state>
+                </cell>
+                <cell type="SINGLE">
+                    <state>1</state>
+                </cell>
+                <cell type="SINGLE">
+                    <state>1</state>
+                </cell>
+                <cell type="SINGLE">
+                    <state>1</state>
+                </cell>
+                <cell type="SINGLE">
+                    <state>0</state>
+                </cell>
+                <cell type="SINGLE">
+                    <state>3</state>
+                </cell>
+                <cell type="SINGLE">
+                    <state>0</state>
+                </cell>
+                <cell type="SINGLE">
+                    <state>1</state>
+                </cell>
+                <cell type="SINGLE">
+                    <state>1</state>
+                </cell>
+                <cell type="SINGLE">
+                    <state>0</state>
+                </cell>
+                <cell type="SINGLE">
+                    <state>1</state>
+                </cell>
+                <cell type="SINGLE">
+                    <state>1</state>
+                </cell>
+                <cell type="SINGLE">
+                    <state>1</state>
+                </cell>
+                <cell type="SINGLE">
+                    <state>2</state>
+                </cell>
+                <cell type="SINGLE">
+                    <state>1</state>
+                </cell>
+                <cell type="UNASSIGNED"/>
+                <cell type="SINGLE">
+                    <state>0</state>
+                </cell>
+                <cell type="SINGLE">
+                    <state>0</state>
+                </cell>
+                <cell type="UNASSIGNED"/>
+                <cell type="UNASSIGNED"/>
+                <cell type="SINGLE">
+                    <state>0</state>
+                </cell>
+                <cell type="SINGLE">
+                    <state>1</state>
+                </cell>
+                <cell type="SINGLE">
+                    <state>1</state>
+                </cell>
+                <cell type="SINGLE">
+                    <state>0</state>
+                </cell>
+                <cell type="SINGLE">
+                    <state>1</state>
+                </cell>
+                <cell type="UNASSIGNED"/>
+                <cell type="SINGLE">
+                    <state>0</state>
+                </cell>
+                <cell type="SINGLE">
+                    <state>0</state>
+                </cell>
+                <cell type="UNASSIGNED"/>
+                <cell type="SINGLE">
+                    <state>2</state>
+                </cell>
+                <cell type="SINGLE">
+                    <state>0</state>
+                </cell>
+                <cell type="UNASSIGNED"/>
+                <cell type="SINGLE">
+                    <state>0</state>
+                </cell>
+                <cell type="UNASSIGNED"/>
+                <cell type="UNASSIGNED"/>
+                <cell type="UNASSIGNED"/>
+                <cell type="UNASSIGNED"/>
+                <cell type="UNASSIGNED"/>
+                <cell type="UNASSIGNED"/>
+                <cell type="UNASSIGNED"/>
+                <cell type="UNASSIGNED"/>
+                <cell type="UNASSIGNED"/>
+                <cell type="UNASSIGNED"/>
+                <cell type="UNASSIGNED"/>
+                <cell type="UNASSIGNED"/>
+                <cell type="UNASSIGNED"/>
+                <cell type="UNASSIGNED"/>
+                <cell type="UNASSIGNED"/>
+                <cell type="UNASSIGNED"/>
+                <cell type="UNASSIGNED"/>
+                <cell type="UNASSIGNED"/>
+                <cell type="SINGLE">
+                    <state>0</state>
+                </cell>
+                <cell type="SINGLE">
+                    <state>0</state>
+                </cell>
+                <cell type="UNASSIGNED"/>
+                <cell type="UNASSIGNED"/>
+                <cell type="UNASSIGNED"/>
+                <cell type="UNASSIGNED"/>
+                <cell type="UNASSIGNED"/>
+                <cell type="UNASSIGNED"/>
+                <cell type="UNASSIGNED"/>
+                <cell type="UNASSIGNED"/>
+                <cell type="UNASSIGNED"/>
+                <cell type="UNASSIGNED"/>
+                <cell type="UNASSIGNED"/>
+                <cell type="UNASSIGNED"/>
+                <cell type="UNASSIGNED"/>
+                <cell type="UNASSIGNED"/>
+                <cell type="UNASSIGNED"/>
+                <cell type="UNASSIGNED"/>
+                <cell type="SINGLE">
+                    <state>0</state>
+                </cell>
+                <cell type="SINGLE">
+                    <state>0</state>
+                </cell>
+                <cell type="SINGLE">
+                    <state>0</state>
+                </cell>
+                <cell type="SINGLE">
+                    <state>0</state>
+                </cell>
+                <cell type="UNASSIGNED"/>
+                <cell type="UNASSIGNED"/>
+                <cell type="UNASSIGNED"/>
+                <cell type="UNASSIGNED"/>
+                <cell type="UNASSIGNED"/>
+                <cell type="SINGLE">
+                    <state>1</state>
+                </cell>
+                <cell type="UNASSIGNED"/>
+                <cell type="SINGLE">
+                    <state>0</state>
+                </cell>
+                <cell type="SINGLE">
+                    <state>2</state>
+                </cell>
+                <cell type="SINGLE">
+                    <state>1</state>
+                </cell>
+                <cell type="SINGLE">
+                    <state>1</state>
+                </cell>
+                <cell type="SINGLE">
+                    <state>0</state>
+                </cell>
+                <cell type="UNASSIGNED"/>
+                <cell type="SINGLE">
+                    <state>0</state>
+                </cell>
+                <cell type="SINGLE">
+                    <state>1</state>
+                </cell>
+                <cell type="UNASSIGNED"/>
+                <cell type="UNASSIGNED"/>
+                <cell type="UNASSIGNED"/>
+                <cell type="UNASSIGNED"/>
+                <cell type="UNASSIGNED"/>
+                <cell type="UNASSIGNED"/>
+                <cell type="UNASSIGNED"/>
+                <cell type="UNASSIGNED"/>
+                <cell type="UNASSIGNED"/>
+                <cell type="UNASSIGNED"/>
+                <cell type="UNASSIGNED"/>
+                <cell type="UNASSIGNED"/>
+                <cell type="UNASSIGNED"/>
+                <cell type="UNASSIGNED"/>
+                <cell type="SINGLE">
+                    <state>2</state>
+                </cell>
+                <cell type="SINGLE">
+                    <state>2</state>
+                </cell>
+                <cell type="SINGLE">
+                    <state>2</state>
+                </cell>
+                <cell type="UNASSIGNED"/>
+                <cell type="UNASSIGNED"/>
+                <cell type="UNASSIGNED"/>
+                <cell type="SINGLE">
+                    <state>1</state>
+                </cell>
+                <cell type="UNASSIGNED"/>
+                <cell type="SINGLE">
+                    <state>1</state>
+                </cell>
+                <cell type="SINGLE">
+                    <state>1</state>
+                </cell>
+                <cell type="SINGLE">
+                    <state>1</state>
+                </cell>
+                <cell type="SINGLE">
+                    <state>1</state>
+                </cell>
+            </row>
+            <row>
+                <cell type="SINGLE">
+                    <state>0</state>
+                </cell>
+                <cell type="UNASSIGNED"/>
+                <cell type="SINGLE">
+                    <state>0</state>
+                </cell>
+                <cell type="SINGLE">
+                    <state>1</state>
+                </cell>
+                <cell type="SINGLE">
+                    <state>0</state>
+                </cell>
+                <cell type="SINGLE">
+                    <state>0</state>
+                </cell>
+                <cell type="SINGLE">
+                    <state>0</state>
+                </cell>
+                <cell type="SINGLE">
+                    <state>0</state>
+                </cell>
+                <cell type="SINGLE">
+                    <state>3</state>
+                </cell>
+                <cell type="SINGLE">
+                    <state>1</state>
+                </cell>
+                <cell type="SINGLE">
+                    <state>1</state>
+                </cell>
+                <cell type="SINGLE">
+                    <state>0</state>
+                </cell>
+                <cell type="SINGLE">
+                    <state>0</state>
+                </cell>
+                <cell type="POLYMORPHIC">
+                    <state>1</state>
+                    <state>2</state>
+                </cell>
+                <cell type="SINGLE">
+                    <state>0</state>
+                </cell>
+                <cell type="SINGLE">
+                    <state>1</state>
+                </cell>
+                <cell type="SINGLE">
+                    <state>1</state>
+                </cell>
+                <cell type="UNASSIGNED"/>
+                <cell type="SINGLE">
+                    <state>1</state>
+                </cell>
+                <cell type="SINGLE">
+                    <state>0</state>
+                </cell>
+                <cell type="SINGLE">
+                    <state>0</state>
+                </cell>
+                <cell type="SINGLE">
+                    <state>0</state>
+                </cell>
+                <cell type="SINGLE">
+                    <state>0</state>
+                </cell>
+                <cell type="SINGLE">
+                    <state>1</state>
+                </cell>
+                <cell type="UNASSIGNED"/>
+                <cell type="SINGLE">
+                    <state>0</state>
+                </cell>
+                <cell type="SINGLE">
+                    <state>0</state>
+                </cell>
+                <cell type="UNASSIGNED"/>
+                <cell type="UNASSIGNED"/>
+                <cell type="SINGLE">
+                    <state>0</state>
+                </cell>
+                <cell type="SINGLE">
+                    <state>0</state>
+                </cell>
+                <cell type="SINGLE">
+                    <state>0</state>
+                </cell>
+                <cell type="SINGLE">
+                    <state>0</state>
+                </cell>
+                <cell type="SINGLE">
+                    <state>0</state>
+                </cell>
+                <cell type="SINGLE">
+                    <state>1</state>
+                </cell>
+                <cell type="SINGLE">
+                    <state>0</state>
+                </cell>
+                <cell type="SINGLE">
+                    <state>0</state>
+                </cell>
+                <cell type="SINGLE">
+                    <state>1</state>
+                </cell>
+                <cell type="SINGLE">
+                    <state>0</state>
+                </cell>
+                <cell type="SINGLE">
+                    <state>0</state>
+                </cell>
+                <cell type="SINGLE">
+                    <state>2</state>
+                </cell>
+                <cell type="SINGLE">
+                    <state>0</state>
+                </cell>
+                <cell type="SINGLE">
+                    <state>1</state>
+                </cell>
+                <cell type="UNASSIGNED"/>
+                <cell type="SINGLE">
+                    <state>0</state>
+                </cell>
+                <cell type="SINGLE">
+                    <state>0</state>
+                </cell>
+                <cell type="SINGLE">
+                    <state>1</state>
+                </cell>
+                <cell type="SINGLE">
+                    <state>0</state>
+                </cell>
+                <cell type="SINGLE">
+                    <state>0</state>
+                </cell>
+                <cell type="POLYMORPHIC">
+                    <state>0</state>
+                    <state>1</state>
+                </cell>
+                <cell type="SINGLE">
+                    <state>1</state>
+                </cell>
+                <cell type="SINGLE">
+                    <state>0</state>
+                </cell>
+                <cell type="SINGLE">
+                    <state>0</state>
+                </cell>
+                <cell type="SINGLE">
+                    <state>1</state>
+                </cell>
+                <cell type="SINGLE">
+                    <state>1</state>
+                </cell>
+                <cell type="SINGLE">
+                    <state>1</state>
+                </cell>
+                <cell type="SINGLE">
+                    <state>0</state>
+                </cell>
+                <cell type="SINGLE">
+                    <state>0</state>
+                </cell>
+                <cell type="SINGLE">
+                    <state>0</state>
+                </cell>
+                <cell type="SINGLE">
+                    <state>1</state>
+                </cell>
+                <cell type="SINGLE">
+                    <state>1</state>
+                </cell>
+                <cell type="SINGLE">
+                    <state>0</state>
+                </cell>
+                <cell type="SINGLE">
+                    <state>0</state>
+                </cell>
+                <cell type="SINGLE">
+                    <state>1</state>
+                </cell>
+                <cell type="SINGLE">
+                    <state>0</state>
+                </cell>
+                <cell type="SINGLE">
+                    <state>0</state>
+                </cell>
+                <cell type="SINGLE">
+                    <state>0</state>
+                </cell>
+                <cell type="SINGLE">
+                    <state>0</state>
+                </cell>
+                <cell type="SINGLE">
+                    <state>0</state>
+                </cell>
+                <cell type="SINGLE">
+                    <state>0</state>
+                </cell>
+                <cell type="SINGLE">
+                    <state>0</state>
+                </cell>
+                <cell type="SINGLE">
+                    <state>0</state>
+                </cell>
+                <cell type="SINGLE">
+                    <state>0</state>
+                </cell>
+                <cell type="SINGLE">
+                    <state>0</state>
+                </cell>
+                <cell type="SINGLE">
+                    <state>0</state>
+                </cell>
+                <cell type="SINGLE">
+                    <state>0</state>
+                </cell>
+                <cell type="SINGLE">
+                    <state>0</state>
+                </cell>
+                <cell type="SINGLE">
+                    <state>0</state>
+                </cell>
+                <cell type="SINGLE">
+                    <state>0</state>
+                </cell>
+                <cell type="SINGLE">
+                    <state>0</state>
+                </cell>
+                <cell type="SINGLE">
+                    <state>0</state>
+                </cell>
+                <cell type="SINGLE">
+                    <state>0</state>
+                </cell>
+                <cell type="SINGLE">
+                    <state>1</state>
+                </cell>
+                <cell type="SINGLE">
+                    <state>0</state>
+                </cell>
+                <cell type="SINGLE">
+                    <state>0</state>
+                </cell>
+                <cell type="SINGLE">
+                    <state>1</state>
+                </cell>
+                <cell type="SINGLE">
+                    <state>0</state>
+                </cell>
+                <cell type="SINGLE">
+                    <state>0</state>
+                </cell>
+                <cell type="SINGLE">
+                    <state>0</state>
+                </cell>
+                <cell type="SINGLE">
+                    <state>2</state>
+                </cell>
+                <cell type="SINGLE">
+                    <state>1</state>
+                </cell>
+                <cell type="SINGLE">
+                    <state>1</state>
+                </cell>
+                <cell type="SINGLE">
+                    <state>1</state>
+                </cell>
+                <cell type="SINGLE">
+                    <state>0</state>
+                </cell>
+                <cell type="SINGLE">
+                    <state>1</state>
+                </cell>
+                <cell type="SINGLE">
+                    <state>2</state>
+                </cell>
+                <cell type="SINGLE">
+                    <state>1</state>
+                </cell>
+                <cell type="SINGLE">
+                    <state>1</state>
+                </cell>
+                <cell type="SINGLE">
+                    <state>1</state>
+                </cell>
+                <cell type="UNCERTAIN">
+                    <state>1</state>
+                    <state>2</state>
+                </cell>
+                <cell type="SINGLE">
+                    <state>2</state>
+                </cell>
+                <cell type="SINGLE">
+                    <state>1</state>
+                </cell>
+                <cell type="SINGLE">
+                    <state>1</state>
+                </cell>
+                <cell type="SINGLE">
+                    <state>2</state>
+                </cell>
+                <cell type="SINGLE">
+                    <state>1</state>
+                </cell>
+                <cell type="SINGLE">
+                    <state>1</state>
+                </cell>
+                <cell type="SINGLE">
+                    <state>1</state>
+                </cell>
+                <cell type="SINGLE">
+                    <state>1</state>
+                </cell>
+                <cell type="SINGLE">
+                    <state>2</state>
+                </cell>
+                <cell type="SINGLE">
+                    <state>1</state>
+                </cell>
+                <cell type="SINGLE">
+                    <state>1</state>
+                </cell>
+                <cell type="SINGLE">
+                    <state>2</state>
+                </cell>
+                <cell type="SINGLE">
+                    <state>1</state>
+                </cell>
+                <cell type="SINGLE">
+                    <state>2</state>
+                </cell>
+                <cell type="SINGLE">
+                    <state>1</state>
+                </cell>
+                <cell type="POLYMORPHIC">
+                    <state>0</state>
+                    <state>2</state>
+                </cell>
+                <cell type="SINGLE">
+                    <state>1</state>
+                </cell>
+                <cell type="SINGLE">
+                    <state>1</state>
+                </cell>
+                <cell type="SINGLE">
+                    <state>1</state>
+                </cell>
+                <cell type="UNASSIGNED"/>
+                <cell type="SINGLE">
+                    <state>0</state>
+                </cell>
+                <cell type="SINGLE">
+                    <state>0</state>
+                </cell>
+                <cell type="UNASSIGNED"/>
+            </row>
+            <row>
+                <cell type="SINGLE">
+                    <state>1</state>
+                </cell>
+                <cell type="SINGLE">
+                    <state>0</state>
+                </cell>
+                <cell type="SINGLE">
+                    <state>0</state>
+                </cell>
+                <cell type="SINGLE">
+                    <state>1</state>
+                </cell>
+                <cell type="SINGLE">
+                    <state>0</state>
+                </cell>
+                <cell type="SINGLE">
+                    <state>1</state>
+                </cell>
+                <cell type="SINGLE">
+                    <state>0</state>
+                </cell>
+                <cell type="UNASSIGNED"/>
+                <cell type="SINGLE">
+                    <state>2</state>
+                </cell>
+                <cell type="SINGLE">
+                    <state>1</state>
+                </cell>
+                <cell type="SINGLE">
+                    <state>1</state>
+                </cell>
+                <cell type="SINGLE">
+                    <state>0</state>
+                </cell>
+                <cell type="SINGLE">
+                    <state>0</state>
+                </cell>
+                <cell type="SINGLE">
+                    <state>1</state>
+                </cell>
+                <cell type="SINGLE">
+                    <state>3</state>
+                </cell>
+                <cell type="SINGLE">
+                    <state>0</state>
+                </cell>
+                <cell type="SINGLE">
+                    <state>1</state>
+                </cell>
+                <cell type="SINGLE">
+                    <state>0</state>
+                </cell>
+                <cell type="SINGLE">
+                    <state>2</state>
+                </cell>
+                <cell type="SINGLE">
+                    <state>0</state>
+                </cell>
+                <cell type="SINGLE">
+                    <state>0</state>
+                </cell>
+                <cell type="SINGLE">
+                    <state>0</state>
+                </cell>
+                <cell type="SINGLE">
+                    <state>0</state>
+                </cell>
+                <cell type="SINGLE">
+                    <state>1</state>
+                </cell>
+                <cell type="UNASSIGNED"/>
+                <cell type="SINGLE">
+                    <state>1</state>
+                </cell>
+                <cell type="SINGLE">
+                    <state>0</state>
+                </cell>
+                <cell type="UNASSIGNED"/>
+                <cell type="UNASSIGNED"/>
+                <cell type="SINGLE">
+                    <state>0</state>
+                </cell>
+                <cell type="SINGLE">
+                    <state>0</state>
+                </cell>
+                <cell type="SINGLE">
+                    <state>1</state>
+                </cell>
+                <cell type="SINGLE">
+                    <state>0</state>
+                </cell>
+                <cell type="SINGLE">
+                    <state>1</state>
+                </cell>
+                <cell type="SINGLE">
+                    <state>1</state>
+                </cell>
+                <cell type="SINGLE">
+                    <state>0</state>
+                </cell>
+                <cell type="SINGLE">
+                    <state>1</state>
+                </cell>
+                <cell type="SINGLE">
+                    <state>1</state>
+                </cell>
+                <cell type="SINGLE">
+                    <state>0</state>
+                </cell>
+                <cell type="SINGLE">
+                    <state>0</state>
+                </cell>
+                <cell type="SINGLE">
+                    <state>2</state>
+                </cell>
+                <cell type="SINGLE">
+                    <state>0</state>
+                </cell>
+                <cell type="SINGLE">
+                    <state>1</state>
+                </cell>
+                <cell type="UNASSIGNED"/>
+                <cell type="SINGLE">
+                    <state>0</state>
+                </cell>
+                <cell type="SINGLE">
+                    <state>0</state>
+                </cell>
+                <cell type="SINGLE">
+                    <state>0</state>
+                </cell>
+                <cell type="SINGLE">
+                    <state>0</state>
+                </cell>
+                <cell type="SINGLE">
+                    <state>0</state>
+                </cell>
+                <cell type="SINGLE">
+                    <state>0</state>
+                </cell>
+                <cell type="SINGLE">
+                    <state>1</state>
+                </cell>
+                <cell type="SINGLE">
+                    <state>0</state>
+                </cell>
+                <cell type="SINGLE">
+                    <state>2</state>
+                </cell>
+                <cell type="SINGLE">
+                    <state>1</state>
+                </cell>
+                <cell type="SINGLE">
+                    <state>1</state>
+                </cell>
+                <cell type="SINGLE">
+                    <state>1</state>
+                </cell>
+                <cell type="SINGLE">
+                    <state>0</state>
+                </cell>
+                <cell type="SINGLE">
+                    <state>0</state>
+                </cell>
+                <cell type="SINGLE">
+                    <state>0</state>
+                </cell>
+                <cell type="SINGLE">
+                    <state>1</state>
+                </cell>
+                <cell type="SINGLE">
+                    <state>1</state>
+                </cell>
+                <cell type="SINGLE">
+                    <state>0</state>
+                </cell>
+                <cell type="SINGLE">
+                    <state>0</state>
+                </cell>
+                <cell type="SINGLE">
+                    <state>1</state>
+                </cell>
+                <cell type="SINGLE">
+                    <state>1</state>
+                </cell>
+                <cell type="SINGLE">
+                    <state>1</state>
+                </cell>
+                <cell type="SINGLE">
+                    <state>0</state>
+                </cell>
+                <cell type="SINGLE">
+                    <state>0</state>
+                </cell>
+                <cell type="SINGLE">
+                    <state>0</state>
+                </cell>
+                <cell type="SINGLE">
+                    <state>0</state>
+                </cell>
+                <cell type="SINGLE">
+                    <state>0</state>
+                </cell>
+                <cell type="SINGLE">
+                    <state>0</state>
+                </cell>
+                <cell type="SINGLE">
+                    <state>0</state>
+                </cell>
+                <cell type="SINGLE">
+                    <state>0</state>
+                </cell>
+                <cell type="SINGLE">
+                    <state>0</state>
+                </cell>
+                <cell type="SINGLE">
+                    <state>0</state>
+                </cell>
+                <cell type="SINGLE">
+                    <state>0</state>
+                </cell>
+                <cell type="SINGLE">
+                    <state>0</state>
+                </cell>
+                <cell type="SINGLE">
+                    <state>0</state>
+                </cell>
+                <cell type="SINGLE">
+                    <state>0</state>
+                </cell>
+                <cell type="SINGLE">
+                    <state>0</state>
+                </cell>
+                <cell type="SINGLE">
+                    <state>0</state>
+                </cell>
+                <cell type="SINGLE">
+                    <state>1</state>
+                </cell>
+                <cell type="SINGLE">
+                    <state>0</state>
+                </cell>
+                <cell type="SINGLE">
+                    <state>0</state>
+                </cell>
+                <cell type="SINGLE">
+                    <state>1</state>
+                </cell>
+                <cell type="SINGLE">
+                    <state>0</state>
+                </cell>
+                <cell type="SINGLE">
+                    <state>0</state>
+                </cell>
+                <cell type="SINGLE">
+                    <state>0</state>
+                </cell>
+                <cell type="SINGLE">
+                    <state>2</state>
+                </cell>
+                <cell type="SINGLE">
+                    <state>1</state>
+                </cell>
+                <cell type="SINGLE">
+                    <state>1</state>
+                </cell>
+                <cell type="SINGLE">
+                    <state>1</state>
+                </cell>
+                <cell type="SINGLE">
+                    <state>0</state>
+                </cell>
+                <cell type="SINGLE">
+                    <state>1</state>
+                </cell>
+                <cell type="SINGLE">
+                    <state>2</state>
+                </cell>
+                <cell type="SINGLE">
+                    <state>1</state>
+                </cell>
+                <cell type="SINGLE">
+                    <state>1</state>
+                </cell>
+                <cell type="UNASSIGNED"/>
+                <cell type="SINGLE">
+                    <state>1</state>
+                </cell>
+                <cell type="SINGLE">
+                    <state>2</state>
+                </cell>
+                <cell type="SINGLE">
+                    <state>1</state>
+                </cell>
+                <cell type="SINGLE">
+                    <state>1</state>
+                </cell>
+                <cell type="SINGLE">
+                    <state>2</state>
+                </cell>
+                <cell type="SINGLE">
+                    <state>1</state>
+                </cell>
+                <cell type="SINGLE">
+                    <state>2</state>
+                </cell>
+                <cell type="SINGLE">
+                    <state>1</state>
+                </cell>
+                <cell type="SINGLE">
+                    <state>1</state>
+                </cell>
+                <cell type="SINGLE">
+                    <state>2</state>
+                </cell>
+                <cell type="SINGLE">
+                    <state>1</state>
+                </cell>
+                <cell type="SINGLE">
+                    <state>1</state>
+                </cell>
+                <cell type="SINGLE">
+                    <state>2</state>
+                </cell>
+                <cell type="SINGLE">
+                    <state>2</state>
+                </cell>
+                <cell type="SINGLE">
+                    <state>2</state>
+                </cell>
+                <cell type="SINGLE">
+                    <state>1</state>
+                </cell>
+                <cell type="SINGLE">
+                    <state>2</state>
+                </cell>
+                <cell type="SINGLE">
+                    <state>1</state>
+                </cell>
+                <cell type="SINGLE">
+                    <state>1</state>
+                </cell>
+                <cell type="SINGLE">
+                    <state>1</state>
+                </cell>
+                <cell type="SINGLE">
+                    <state>1</state>
+                </cell>
+                <cell type="SINGLE">
+                    <state>0</state>
+                </cell>
+                <cell type="SINGLE">
+                    <state>0</state>
+                </cell>
+                <cell type="SINGLE">
+                    <state>1</state>
+                </cell>
+            </row>
+            <row>
+                <cell type="SINGLE">
+                    <state>0</state>
+                </cell>
+                <cell type="SINGLE">
+                    <state>0</state>
+                </cell>
+                <cell type="SINGLE">
+                    <state>0</state>
+                </cell>
+                <cell type="SINGLE">
+                    <state>1</state>
+                </cell>
+                <cell type="SINGLE">
+                    <state>1</state>
+                </cell>
+                <cell type="SINGLE">
+                    <state>1</state>
+                </cell>
+                <cell type="SINGLE">
+                    <state>0</state>
+                </cell>
+                <cell type="SINGLE">
+                    <state>0</state>
+                </cell>
+                <cell type="SINGLE">
+                    <state>2</state>
+                </cell>
+                <cell type="SINGLE">
+                    <state>1</state>
+                </cell>
+                <cell type="SINGLE">
+                    <state>1</state>
+                </cell>
+                <cell type="SINGLE">
+                    <state>0</state>
+                </cell>
+                <cell type="SINGLE">
+                    <state>0</state>
+                </cell>
+                <cell type="SINGLE">
+                    <state>1</state>
+                </cell>
+                <cell type="SINGLE">
+                    <state>0</state>
+                </cell>
+                <cell type="SINGLE">
+                    <state>1</state>
+                </cell>
+                <cell type="SINGLE">
+                    <state>1</state>
+                </cell>
+                <cell type="SINGLE">
+                    <state>1</state>
+                </cell>
+                <cell type="SINGLE">
+                    <state>1</state>
+                </cell>
+                <cell type="SINGLE">
+                    <state>0</state>
+                </cell>
+                <cell type="SINGLE">
+                    <state>0</state>
+                </cell>
+                <cell type="SINGLE">
+                    <state>0</state>
+                </cell>
+                <cell type="SINGLE">
+                    <state>0</state>
+                </cell>
+                <cell type="SINGLE">
+                    <state>1</state>
+                </cell>
+                <cell type="UNASSIGNED"/>
+                <cell type="SINGLE">
+                    <state>0</state>
+                </cell>
+                <cell type="SINGLE">
+                    <state>0</state>
+                </cell>
+                <cell type="UNASSIGNED"/>
+                <cell type="UNASSIGNED"/>
+                <cell type="SINGLE">
+                    <state>0</state>
+                </cell>
+                <cell type="SINGLE">
+                    <state>0</state>
+                </cell>
+                <cell type="SINGLE">
+                    <state>1</state>
+                </cell>
+                <cell type="SINGLE">
+                    <state>0</state>
+                </cell>
+                <cell type="SINGLE">
+                    <state>1</state>
+                </cell>
+                <cell type="SINGLE">
+                    <state>1</state>
+                </cell>
+                <cell type="SINGLE">
+                    <state>1</state>
+                </cell>
+                <cell type="SINGLE">
+                    <state>0</state>
+                </cell>
+                <cell type="SINGLE">
+                    <state>0</state>
+                </cell>
+                <cell type="SINGLE">
+                    <state>0</state>
+                </cell>
+                <cell type="SINGLE">
+                    <state>0</state>
+                </cell>
+                <cell type="SINGLE">
+                    <state>2</state>
+                </cell>
+                <cell type="SINGLE">
+                    <state>0</state>
+                </cell>
+                <cell type="SINGLE">
+                    <state>1</state>
+                </cell>
+                <cell type="UNASSIGNED"/>
+                <cell type="SINGLE">
+                    <state>0</state>
+                </cell>
+                <cell type="SINGLE">
+                    <state>0</state>
+                </cell>
+                <cell type="SINGLE">
+                    <state>0</state>
+                </cell>
+                <cell type="SINGLE">
+                    <state>0</state>
+                </cell>
+                <cell type="SINGLE">
+                    <state>0</state>
+                </cell>
+                <cell type="SINGLE">
+                    <state>1</state>
+                </cell>
+                <cell type="SINGLE">
+                    <state>1</state>
+                </cell>
+                <cell type="SINGLE">
+                    <state>0</state>
+                </cell>
+                <cell type="SINGLE">
+                    <state>0</state>
+                </cell>
+                <cell type="SINGLE">
+                    <state>1</state>
+                </cell>
+                <cell type="SINGLE">
+                    <state>1</state>
+                </cell>
+                <cell type="SINGLE">
+                    <state>1</state>
+                </cell>
+                <cell type="SINGLE">
+                    <state>0</state>
+                </cell>
+                <cell type="SINGLE">
+                    <state>0</state>
+                </cell>
+                <cell type="SINGLE">
+                    <state>0</state>
+                </cell>
+                <cell type="SINGLE">
+                    <state>1</state>
+                </cell>
+                <cell type="SINGLE">
+                    <state>0</state>
+                </cell>
+                <cell type="SINGLE">
+                    <state>0</state>
+                </cell>
+                <cell type="SINGLE">
+                    <state>0</state>
+                </cell>
+                <cell type="SINGLE">
+                    <state>0</state>
+                </cell>
+                <cell type="SINGLE">
+                    <state>0</state>
+                </cell>
+                <cell type="SINGLE">
+                    <state>1</state>
+                </cell>
+                <cell type="SINGLE">
+                    <state>0</state>
+                </cell>
+                <cell type="SINGLE">
+                    <state>0</state>
+                </cell>
+                <cell type="SINGLE">
+                    <state>0</state>
+                </cell>
+                <cell type="SINGLE">
+                    <state>0</state>
+                </cell>
+                <cell type="SINGLE">
+                    <state>0</state>
+                </cell>
+                <cell type="SINGLE">
+                    <state>0</state>
+                </cell>
+                <cell type="SINGLE">
+                    <state>0</state>
+                </cell>
+                <cell type="SINGLE">
+                    <state>0</state>
+                </cell>
+                <cell type="SINGLE">
+                    <state>0</state>
+                </cell>
+                <cell type="SINGLE">
+                    <state>0</state>
+                </cell>
+                <cell type="SINGLE">
+                    <state>0</state>
+                </cell>
+                <cell type="SINGLE">
+                    <state>0</state>
+                </cell>
+                <cell type="SINGLE">
+                    <state>0</state>
+                </cell>
+                <cell type="SINGLE">
+                    <state>0</state>
+                </cell>
+                <cell type="SINGLE">
+                    <state>0</state>
+                </cell>
+                <cell type="SINGLE">
+                    <state>0</state>
+                </cell>
+                <cell type="SINGLE">
+                    <state>0</state>
+                </cell>
+                <cell type="SINGLE">
+                    <state>0</state>
+                </cell>
+                <cell type="SINGLE">
+                    <state>0</state>
+                </cell>
+                <cell type="SINGLE">
+                    <state>1</state>
+                </cell>
+                <cell type="SINGLE">
+                    <state>0</state>
+                </cell>
+                <cell type="SINGLE">
+                    <state>2</state>
+                </cell>
+                <cell type="SINGLE">
+                    <state>0</state>
+                </cell>
+                <cell type="SINGLE">
+                    <state>3</state>
+                </cell>
+                <cell type="SINGLE">
+                    <state>1</state>
+                </cell>
+                <cell type="SINGLE">
+                    <state>1</state>
+                </cell>
+                <cell type="SINGLE">
+                    <state>1</state>
+                </cell>
+                <cell type="SINGLE">
+                    <state>0</state>
+                </cell>
+                <cell type="SINGLE">
+                    <state>1</state>
+                </cell>
+                <cell type="SINGLE">
+                    <state>2</state>
+                </cell>
+                <cell type="SINGLE">
+                    <state>2</state>
+                </cell>
+                <cell type="SINGLE">
+                    <state>1</state>
+                </cell>
+                <cell type="SINGLE">
+                    <state>1</state>
+                </cell>
+                <cell type="SINGLE">
+                    <state>0</state>
+                </cell>
+                <cell type="SINGLE">
+                    <state>2</state>
+                </cell>
+                <cell type="SINGLE">
+                    <state>1</state>
+                </cell>
+                <cell type="SINGLE">
+                    <state>1</state>
+                </cell>
+                <cell type="SINGLE">
+                    <state>2</state>
+                </cell>
+                <cell type="SINGLE">
+                    <state>1</state>
+                </cell>
+                <cell type="SINGLE">
+                    <state>2</state>
+                </cell>
+                <cell type="SINGLE">
+                    <state>1</state>
+                </cell>
+                <cell type="SINGLE">
+                    <state>1</state>
+                </cell>
+                <cell type="SINGLE">
+                    <state>2</state>
+                </cell>
+                <cell type="SINGLE">
+                    <state>0</state>
+                </cell>
+                <cell type="SINGLE">
+                    <state>1</state>
+                </cell>
+                <cell type="SINGLE">
+                    <state>2</state>
+                </cell>
+                <cell type="SINGLE">
+                    <state>2</state>
+                </cell>
+                <cell type="SINGLE">
+                    <state>2</state>
+                </cell>
+                <cell type="SINGLE">
+                    <state>1</state>
+                </cell>
+                <cell type="SINGLE">
+                    <state>1</state>
+                </cell>
+                <cell type="SINGLE">
+                    <state>2</state>
+                </cell>
+                <cell type="SINGLE">
+                    <state>1</state>
+                </cell>
+                <cell type="SINGLE">
+                    <state>1</state>
+                </cell>
+                <cell type="SINGLE">
+                    <state>1</state>
+                </cell>
+                <cell type="SINGLE">
+                    <state>0</state>
+                </cell>
+                <cell type="SINGLE">
+                    <state>0</state>
+                </cell>
+                <cell type="SINGLE">
+                    <state>1</state>
+                </cell>
+            </row>
+            <row>
+                <cell type="SINGLE">
+                    <state>0</state>
+                </cell>
+                <cell type="SINGLE">
+                    <state>0</state>
+                </cell>
+                <cell type="SINGLE">
+                    <state>0</state>
+                </cell>
+                <cell type="SINGLE">
+                    <state>1</state>
+                </cell>
+                <cell type="SINGLE">
+                    <state>1</state>
+                </cell>
+                <cell type="SINGLE">
+                    <state>1</state>
+                </cell>
+                <cell type="SINGLE">
+                    <state>1</state>
+                </cell>
+                <cell type="SINGLE">
+                    <state>0</state>
+                </cell>
+                <cell type="SINGLE">
+                    <state>0</state>
+                </cell>
+                <cell type="SINGLE">
+                    <state>1</state>
+                </cell>
+                <cell type="SINGLE">
+                    <state>1</state>
+                </cell>
+                <cell type="SINGLE">
+                    <state>0</state>
+                </cell>
+                <cell type="SINGLE">
+                    <state>0</state>
+                </cell>
+                <cell type="SINGLE">
+                    <state>2</state>
+                </cell>
+                <cell type="SINGLE">
+                    <state>0</state>
+                </cell>
+                <cell type="SINGLE">
+                    <state>0</state>
+                </cell>
+                <cell type="SINGLE">
+                    <state>1</state>
+                </cell>
+                <cell type="SINGLE">
+                    <state>0</state>
+                </cell>
+                <cell type="SINGLE">
+                    <state>2</state>
+                </cell>
+                <cell type="SINGLE">
+                    <state>1</state>
+                </cell>
+                <cell type="SINGLE">
+                    <state>0</state>
+                </cell>
+                <cell type="SINGLE">
+                    <state>0</state>
+                </cell>
+                <cell type="SINGLE">
+                    <state>2</state>
+                </cell>
+                <cell type="SINGLE">
+                    <state>1</state>
+                </cell>
+                <cell type="UNASSIGNED"/>
+                <cell type="SINGLE">
+                    <state>2</state>
+                </cell>
+                <cell type="SINGLE">
+                    <state>0</state>
+                </cell>
+                <cell type="UNASSIGNED"/>
+                <cell type="UNASSIGNED"/>
+                <cell type="SINGLE">
+                    <state>0</state>
+                </cell>
+                <cell type="SINGLE">
+                    <state>1</state>
+                </cell>
+                <cell type="SINGLE">
+                    <state>1</state>
+                </cell>
+                <cell type="SINGLE">
+                    <state>0</state>
+                </cell>
+                <cell type="SINGLE">
+                    <state>0</state>
+                </cell>
+                <cell type="SINGLE">
+                    <state>0</state>
+                </cell>
+                <cell type="SINGLE">
+                    <state>0</state>
+                </cell>
+                <cell type="SINGLE">
+                    <state>1</state>
+                </cell>
+                <cell type="SINGLE">
+                    <state>0</state>
+                </cell>
+                <cell type="SINGLE">
+                    <state>0</state>
+                </cell>
+                <cell type="SINGLE">
+                    <state>0</state>
+                </cell>
+                <cell type="SINGLE">
+                    <state>2</state>
+                </cell>
+                <cell type="SINGLE">
+                    <state>0</state>
+                </cell>
+                <cell type="SINGLE">
+                    <state>0</state>
+                </cell>
+                <cell type="SINGLE">
+                    <state>0</state>
+                </cell>
+                <cell type="SINGLE">
+                    <state>0</state>
+                </cell>
+                <cell type="SINGLE">
+                    <state>2</state>
+                </cell>
+                <cell type="SINGLE">
+                    <state>1</state>
+                </cell>
+                <cell type="SINGLE">
+                    <state>0</state>
+                </cell>
+                <cell type="SINGLE">
+                    <state>0</state>
+                </cell>
+                <cell type="SINGLE">
+                    <state>1</state>
+                </cell>
+                <cell type="SINGLE">
+                    <state>1</state>
+                </cell>
+                <cell type="SINGLE">
+                    <state>0</state>
+                </cell>
+                <cell type="SINGLE">
+                    <state>1</state>
+                </cell>
+                <cell type="SINGLE">
+                    <state>0</state>
+                </cell>
+                <cell type="SINGLE">
+                    <state>1</state>
+                </cell>
+                <cell type="SINGLE">
+                    <state>1</state>
+                </cell>
+                <cell type="SINGLE">
+                    <state>0</state>
+                </cell>
+                <cell type="SINGLE">
+                    <state>1</state>
+                </cell>
+                <cell type="SINGLE">
+                    <state>1</state>
+                </cell>
+                <cell type="SINGLE">
+                    <state>1</state>
+                </cell>
+                <cell type="SINGLE">
+                    <state>0</state>
+                </cell>
+                <cell type="SINGLE">
+                    <state>0</state>
+                </cell>
+                <cell type="SINGLE">
+                    <state>1</state>
+                </cell>
+                <cell type="SINGLE">
+                    <state>1</state>
+                </cell>
+                <cell type="SINGLE">
+                    <state>0</state>
+                </cell>
+                <cell type="SINGLE">
+                    <state>1</state>
+                </cell>
+                <cell type="SINGLE">
+                    <state>0</state>
+                </cell>
+                <cell type="SINGLE">
+                    <state>0</state>
+                </cell>
+                <cell type="SINGLE">
+                    <state>0</state>
+                </cell>
+                <cell type="SINGLE">
+                    <state>0</state>
+                </cell>
+                <cell type="SINGLE">
+                    <state>0</state>
+                </cell>
+                <cell type="SINGLE">
+                    <state>0</state>
+                </cell>
+                <cell type="SINGLE">
+                    <state>0</state>
+                </cell>
+                <cell type="SINGLE">
+                    <state>0</state>
+                </cell>
+                <cell type="SINGLE">
+                    <state>0</state>
+                </cell>
+                <cell type="SINGLE">
+                    <state>0</state>
+                </cell>
+                <cell type="SINGLE">
+                    <state>1</state>
+                </cell>
+                <cell type="SINGLE">
+                    <state>0</state>
+                </cell>
+                <cell type="SINGLE">
+                    <state>0</state>
+                </cell>
+                <cell type="SINGLE">
+                    <state>0</state>
+                </cell>
+                <cell type="SINGLE">
+                    <state>0</state>
+                </cell>
+                <cell type="SINGLE">
+                    <state>0</state>
+                </cell>
+                <cell type="SINGLE">
+                    <state>1</state>
+                </cell>
+                <cell type="SINGLE">
+                    <state>0</state>
+                </cell>
+                <cell type="SINGLE">
+                    <state>0</state>
+                </cell>
+                <cell type="SINGLE">
+                    <state>1</state>
+                </cell>
+                <cell type="SINGLE">
+                    <state>0</state>
+                </cell>
+                <cell type="SINGLE">
+                    <state>0</state>
+                </cell>
+                <cell type="SINGLE">
+                    <state>0</state>
+                </cell>
+                <cell type="SINGLE">
+                    <state>2</state>
+                </cell>
+                <cell type="SINGLE">
+                    <state>1</state>
+                </cell>
+                <cell type="SINGLE">
+                    <state>1</state>
+                </cell>
+                <cell type="SINGLE">
+                    <state>1</state>
+                </cell>
+                <cell type="SINGLE">
+                    <state>1</state>
+                </cell>
+                <cell type="SINGLE">
+                    <state>1</state>
+                </cell>
+                <cell type="SINGLE">
+                    <state>2</state>
+                </cell>
+                <cell type="SINGLE">
+                    <state>1</state>
+                </cell>
+                <cell type="SINGLE">
+                    <state>1</state>
+                </cell>
+                <cell type="SINGLE">
+                    <state>1</state>
+                </cell>
+                <cell type="SINGLE">
+                    <state>1</state>
+                </cell>
+                <cell type="SINGLE">
+                    <state>2</state>
+                </cell>
+                <cell type="SINGLE">
+                    <state>1</state>
+                </cell>
+                <cell type="SINGLE">
+                    <state>1</state>
+                </cell>
+                <cell type="SINGLE">
+                    <state>2</state>
+                </cell>
+                <cell type="SINGLE">
+                    <state>1</state>
+                </cell>
+                <cell type="SINGLE">
+                    <state>2</state>
+                </cell>
+                <cell type="SINGLE">
+                    <state>1</state>
+                </cell>
+                <cell type="SINGLE">
+                    <state>1</state>
+                </cell>
+                <cell type="SINGLE">
+                    <state>2</state>
+                </cell>
+                <cell type="SINGLE">
+                    <state>0</state>
+                </cell>
+                <cell type="SINGLE">
+                    <state>0</state>
+                </cell>
+                <cell type="SINGLE">
+                    <state>2</state>
+                </cell>
+                <cell type="SINGLE">
+                    <state>0</state>
+                </cell>
+                <cell type="SINGLE">
+                    <state>0</state>
+                </cell>
+                <cell type="SINGLE">
+                    <state>1</state>
+                </cell>
+                <cell type="SINGLE">
+                    <state>2</state>
+                </cell>
+                <cell type="SINGLE">
+                    <state>0</state>
+                </cell>
+                <cell type="SINGLE">
+                    <state>0</state>
+                </cell>
+                <cell type="SINGLE">
+                    <state>0</state>
+                </cell>
+                <cell type="SINGLE">
+                    <state>1</state>
+                </cell>
+                <cell type="SINGLE">
+                    <state>0</state>
+                </cell>
+                <cell type="SINGLE">
+                    <state>0</state>
+                </cell>
+                <cell type="SINGLE">
+                    <state>1</state>
+                </cell>
+            </row>
+            <row>
+                <cell type="SINGLE">
+                    <state>1</state>
+                </cell>
+                <cell type="SINGLE">
+                    <state>1</state>
+                </cell>
+                <cell type="UNASSIGNED"/>
+                <cell type="UNASSIGNED"/>
+                <cell type="UNASSIGNED"/>
+                <cell type="UNASSIGNED"/>
+                <cell type="SINGLE">
+                    <state>1</state>
+                </cell>
+                <cell type="SINGLE">
+                    <state>0</state>
+                </cell>
+                <cell type="SINGLE">
+                    <state>3</state>
+                </cell>
+                <cell type="SINGLE">
+                    <state>1</state>
+                </cell>
+                <cell type="SINGLE">
+                    <state>1</state>
+                </cell>
+                <cell type="SINGLE">
+                    <state>0</state>
+                </cell>
+                <cell type="SINGLE">
+                    <state>0</state>
+                </cell>
+                <cell type="SINGLE">
+                    <state>0</state>
+                </cell>
+                <cell type="SINGLE">
+                    <state>3</state>
+                </cell>
+                <cell type="SINGLE">
+                    <state>1</state>
+                </cell>
+                <cell type="UNASSIGNED"/>
+                <cell type="UNASSIGNED"/>
+                <cell type="SINGLE">
+                    <state>2</state>
+                </cell>
+                <cell type="SINGLE">
+                    <state>1</state>
+                </cell>
+                <cell type="SINGLE">
+                    <state>0</state>
+                </cell>
+                <cell type="POLYMORPHIC">
+                    <state>0</state>
+                    <state>1</state>
+                </cell>
+                <cell type="SINGLE">
+                    <state>1</state>
+                </cell>
+                <cell type="SINGLE">
+                    <state>1</state>
+                </cell>
+                <cell type="UNASSIGNED"/>
+                <cell type="SINGLE">
+                    <state>2</state>
+                </cell>
+                <cell type="UNASSIGNED"/>
+                <cell type="UNASSIGNED"/>
+                <cell type="UNASSIGNED"/>
+                <cell type="SINGLE">
+                    <state>0</state>
+                </cell>
+                <cell type="UNASSIGNED"/>
+                <cell type="UNASSIGNED"/>
+                <cell type="SINGLE">
+                    <state>0</state>
+                </cell>
+                <cell type="SINGLE">
+                    <state>0</state>
+                </cell>
+                <cell type="SINGLE">
+                    <state>0</state>
+                </cell>
+                <cell type="SINGLE">
+                    <state>1</state>
+                </cell>
+                <cell type="SINGLE">
+                    <state>0</state>
+                </cell>
+                <cell type="SINGLE">
+                    <state>0</state>
+                </cell>
+                <cell type="SINGLE">
+                    <state>0</state>
+                </cell>
+                <cell type="SINGLE">
+                    <state>0</state>
+                </cell>
+                <cell type="SINGLE">
+                    <state>1</state>
+                </cell>
+                <cell type="SINGLE">
+                    <state>1</state>
+                </cell>
+                <cell type="SINGLE">
+                    <state>0</state>
+                </cell>
+                <cell type="SINGLE">
+                    <state>0</state>
+                </cell>
+                <cell type="SINGLE">
+                    <state>0</state>
+                </cell>
+                <cell type="SINGLE">
+                    <state>1</state>
+                </cell>
+                <cell type="SINGLE">
+                    <state>0</state>
+                </cell>
+                <cell type="SINGLE">
+                    <state>0</state>
+                </cell>
+                <cell type="SINGLE">
+                    <state>0</state>
+                </cell>
+                <cell type="SINGLE">
+                    <state>0</state>
+                </cell>
+                <cell type="SINGLE">
+                    <state>1</state>
+                </cell>
+                <cell type="SINGLE">
+                    <state>0</state>
+                </cell>
+                <cell type="SINGLE">
+                    <state>0</state>
+                </cell>
+                <cell type="SINGLE">
+                    <state>0</state>
+                </cell>
+                <cell type="SINGLE">
+                    <state>0</state>
+                </cell>
+                <cell type="SINGLE">
+                    <state>1</state>
+                </cell>
+                <cell type="SINGLE">
+                    <state>0</state>
+                </cell>
+                <cell type="SINGLE">
+                    <state>0</state>
+                </cell>
+                <cell type="SINGLE">
+                    <state>0</state>
+                </cell>
+                <cell type="SINGLE">
+                    <state>1</state>
+                </cell>
+                <cell type="SINGLE">
+                    <state>0</state>
+                </cell>
+                <cell type="SINGLE">
+                    <state>1</state>
+                </cell>
+                <cell type="SINGLE">
+                    <state>1</state>
+                </cell>
+                <cell type="SINGLE">
+                    <state>0</state>
+                </cell>
+                <cell type="SINGLE">
+                    <state>1</state>
+                </cell>
+                <cell type="SINGLE">
+                    <state>1</state>
+                </cell>
+                <cell type="SINGLE">
+                    <state>0</state>
+                </cell>
+                <cell type="SINGLE">
+                    <state>0</state>
+                </cell>
+                <cell type="SINGLE">
+                    <state>0</state>
+                </cell>
+                <cell type="SINGLE">
+                    <state>0</state>
+                </cell>
+                <cell type="SINGLE">
+                    <state>0</state>
+                </cell>
+                <cell type="SINGLE">
+                    <state>0</state>
+                </cell>
+                <cell type="SINGLE">
+                    <state>0</state>
+                </cell>
+                <cell type="SINGLE">
+                    <state>0</state>
+                </cell>
+                <cell type="SINGLE">
+                    <state>0</state>
+                </cell>
+                <cell type="SINGLE">
+                    <state>0</state>
+                </cell>
+                <cell type="SINGLE">
+                    <state>1</state>
+                </cell>
+                <cell type="SINGLE">
+                    <state>0</state>
+                </cell>
+                <cell type="SINGLE">
+                    <state>0</state>
+                </cell>
+                <cell type="SINGLE">
+                    <state>0</state>
+                </cell>
+                <cell type="SINGLE">
+                    <state>0</state>
+                </cell>
+                <cell type="SINGLE">
+                    <state>0</state>
+                </cell>
+                <cell type="SINGLE">
+                    <state>2</state>
+                </cell>
+                <cell type="SINGLE">
+                    <state>0</state>
+                </cell>
+                <cell type="SINGLE">
+                    <state>0</state>
+                </cell>
+                <cell type="SINGLE">
+                    <state>1</state>
+                </cell>
+                <cell type="SINGLE">
+                    <state>0</state>
+                </cell>
+                <cell type="SINGLE">
+                    <state>0</state>
+                </cell>
+                <cell type="SINGLE">
+                    <state>0</state>
+                </cell>
+                <cell type="SINGLE">
+                    <state>3</state>
+                </cell>
+                <cell type="SINGLE">
+                    <state>1</state>
+                </cell>
+                <cell type="SINGLE">
+                    <state>1</state>
+                </cell>
+                <cell type="SINGLE">
+                    <state>1</state>
+                </cell>
+                <cell type="SINGLE">
+                    <state>1</state>
+                </cell>
+                <cell type="SINGLE">
+                    <state>1</state>
+                </cell>
+                <cell type="SINGLE">
+                    <state>2</state>
+                </cell>
+                <cell type="SINGLE">
+                    <state>1</state>
+                </cell>
+                <cell type="SINGLE">
+                    <state>1</state>
+                </cell>
+                <cell type="SINGLE">
+                    <state>1</state>
+                </cell>
+                <cell type="SINGLE">
+                    <state>1</state>
+                </cell>
+                <cell type="SINGLE">
+                    <state>2</state>
+                </cell>
+                <cell type="SINGLE">
+                    <state>1</state>
+                </cell>
+                <cell type="SINGLE">
+                    <state>1</state>
+                </cell>
+                <cell type="SINGLE">
+                    <state>2</state>
+                </cell>
+                <cell type="SINGLE">
+                    <state>1</state>
+                </cell>
+                <cell type="SINGLE">
+                    <state>2</state>
+                </cell>
+                <cell type="SINGLE">
+                    <state>1</state>
+                </cell>
+                <cell type="SINGLE">
+                    <state>1</state>
+                </cell>
+                <cell type="SINGLE">
+                    <state>1</state>
+                </cell>
+                <cell type="SINGLE">
+                    <state>0</state>
+                </cell>
+                <cell type="SINGLE">
+                    <state>0</state>
+                </cell>
+                <cell type="UNASSIGNED"/>
+                <cell type="SINGLE">
+                    <state>0</state>
+                </cell>
+                <cell type="SINGLE">
+                    <state>0</state>
+                </cell>
+                <cell type="SINGLE">
+                    <state>1</state>
+                </cell>
+                <cell type="SINGLE">
+                    <state>2</state>
+                </cell>
+                <cell type="SINGLE">
+                    <state>1</state>
+                </cell>
+                <cell type="SINGLE">
+                    <state>1</state>
+                </cell>
+                <cell type="SINGLE">
+                    <state>1</state>
+                </cell>
+                <cell type="UNASSIGNED"/>
+                <cell type="SINGLE">
+                    <state>1</state>
+                </cell>
+                <cell type="UNASSIGNED"/>
+                <cell type="UNASSIGNED"/>
+            </row>
+            <row>
+                <cell type="SINGLE">
+                    <state>1</state>
+                </cell>
+                <cell type="SINGLE">
+                    <state>1</state>
+                </cell>
+                <cell type="SINGLE">
+                    <state>0</state>
+                </cell>
+                <cell type="UNASSIGNED"/>
+                <cell type="SINGLE">
+                    <state>1</state>
+                </cell>
+                <cell type="SINGLE">
+                    <state>1</state>
+                </cell>
+                <cell type="SINGLE">
+                    <state>1</state>
+                </cell>
+                <cell type="SINGLE">
+                    <state>0</state>
+                </cell>
+                <cell type="SINGLE">
+                    <state>3</state>
+                </cell>
+                <cell type="SINGLE">
+                    <state>1</state>
+                </cell>
+                <cell type="SINGLE">
+                    <state>1</state>
+                </cell>
+                <cell type="SINGLE">
+                    <state>0</state>
+                </cell>
+                <cell type="SINGLE">
+                    <state>0</state>
+                </cell>
+                <cell type="SINGLE">
+                    <state>0</state>
+                </cell>
+                <cell type="SINGLE">
+                    <state>3</state>
+                </cell>
+                <cell type="SINGLE">
+                    <state>1</state>
+                </cell>
+                <cell type="SINGLE">
+                    <state>1</state>
+                </cell>
+                <cell type="SINGLE">
+                    <state>0</state>
+                </cell>
+                <cell type="SINGLE">
+                    <state>2</state>
+                </cell>
+                <cell type="SINGLE">
+                    <state>1</state>
+                </cell>
+                <cell type="SINGLE">
+                    <state>0</state>
+                </cell>
+                <cell type="SINGLE">
+                    <state>0</state>
+                </cell>
+                <cell type="POLYMORPHIC">
+                    <state>0</state>
+                    <state>1</state>
+                </cell>
+                <cell type="SINGLE">
+                    <state>1</state>
+                </cell>
+                <cell type="UNASSIGNED"/>
+                <cell type="SINGLE">
+                    <state>3</state>
+                </cell>
+                <cell type="SINGLE">
+                    <state>0</state>
+                </cell>
+                <cell type="UNASSIGNED"/>
+                <cell type="UNASSIGNED"/>
+                <cell type="SINGLE">
+                    <state>0</state>
+                </cell>
+                <cell type="UNASSIGNED"/>
+                <cell type="UNASSIGNED"/>
+                <cell type="SINGLE">
+                    <state>0</state>
+                </cell>
+                <cell type="SINGLE">
+                    <state>1</state>
+                </cell>
+                <cell type="SINGLE">
+                    <state>1</state>
+                </cell>
+                <cell type="SINGLE">
+                    <state>1</state>
+                </cell>
+                <cell type="SINGLE">
+                    <state>0</state>
+                </cell>
+                <cell type="SINGLE">
+                    <state>0</state>
+                </cell>
+                <cell type="SINGLE">
+                    <state>0</state>
+                </cell>
+                <cell type="SINGLE">
+                    <state>0</state>
+                </cell>
+                <cell type="SINGLE">
+                    <state>1</state>
+                </cell>
+                <cell type="SINGLE">
+                    <state>1</state>
+                </cell>
+                <cell type="SINGLE">
+                    <state>0</state>
+                </cell>
+                <cell type="SINGLE">
+                    <state>0</state>
+                </cell>
+                <cell type="SINGLE">
+                    <state>0</state>
+                </cell>
+                <cell type="SINGLE">
+                    <state>1</state>
+                </cell>
+                <cell type="SINGLE">
+                    <state>1</state>
+                </cell>
+                <cell type="SINGLE">
+                    <state>0</state>
+                </cell>
+                <cell type="SINGLE">
+                    <state>0</state>
+                </cell>
+                <cell type="SINGLE">
+                    <state>0</state>
+                </cell>
+                <cell type="SINGLE">
+                    <state>1</state>
+                </cell>
+                <cell type="SINGLE">
+                    <state>0</state>
+                </cell>
+                <cell type="SINGLE">
+                    <state>1</state>
+                </cell>
+                <cell type="SINGLE">
+                    <state>0</state>
+                </cell>
+                <cell type="SINGLE">
+                    <state>0</state>
+                </cell>
+                <cell type="SINGLE">
+                    <state>1</state>
+                </cell>
+                <cell type="SINGLE">
+                    <state>0</state>
+                </cell>
+                <cell type="SINGLE">
+                    <state>0</state>
+                </cell>
+                <cell type="SINGLE">
+                    <state>0</state>
+                </cell>
+                <cell type="SINGLE">
+                    <state>1</state>
+                </cell>
+                <cell type="SINGLE">
+                    <state>0</state>
+                </cell>
+                <cell type="SINGLE">
+                    <state>1</state>
+                </cell>
+                <cell type="SINGLE">
+                    <state>1</state>
+                </cell>
+                <cell type="SINGLE">
+                    <state>1</state>
+                </cell>
+                <cell type="SINGLE">
+                    <state>0</state>
+                </cell>
+                <cell type="SINGLE">
+                    <state>0</state>
+                </cell>
+                <cell type="SINGLE">
+                    <state>0</state>
+                </cell>
+                <cell type="SINGLE">
+                    <state>0</state>
+                </cell>
+                <cell type="SINGLE">
+                    <state>0</state>
+                </cell>
+                <cell type="SINGLE">
+                    <state>0</state>
+                </cell>
+                <cell type="SINGLE">
+                    <state>0</state>
+                </cell>
+                <cell type="SINGLE">
+                    <state>0</state>
+                </cell>
+                <cell type="SINGLE">
+                    <state>0</state>
+                </cell>
+                <cell type="SINGLE">
+                    <state>0</state>
+                </cell>
+                <cell type="SINGLE">
+                    <state>0</state>
+                </cell>
+                <cell type="SINGLE">
+                    <state>0</state>
+                </cell>
+                <cell type="SINGLE">
+                    <state>1</state>
+                </cell>
+                <cell type="SINGLE">
+                    <state>0</state>
+                </cell>
+                <cell type="SINGLE">
+                    <state>0</state>
+                </cell>
+                <cell type="SINGLE">
+                    <state>0</state>
+                </cell>
+                <cell type="SINGLE">
+                    <state>0</state>
+                </cell>
+                <cell type="SINGLE">
+                    <state>0</state>
+                </cell>
+                <cell type="POLYMORPHIC">
+                    <state>0</state>
+                    <state>2</state>
+                </cell>
+                <cell type="SINGLE">
+                    <state>0</state>
+                </cell>
+                <cell type="SINGLE">
+                    <state>0</state>
+                </cell>
+                <cell type="SINGLE">
+                    <state>1</state>
+                </cell>
+                <cell type="SINGLE">
+                    <state>0</state>
+                </cell>
+                <cell type="SINGLE">
+                    <state>0</state>
+                </cell>
+                <cell type="SINGLE">
+                    <state>0</state>
+                </cell>
+                <cell type="SINGLE">
+                    <state>3</state>
+                </cell>
+                <cell type="SINGLE">
+                    <state>1</state>
+                </cell>
+                <cell type="SINGLE">
+                    <state>1</state>
+                </cell>
+                <cell type="SINGLE">
+                    <state>1</state>
+                </cell>
+                <cell type="SINGLE">
+                    <state>1</state>
+                </cell>
+                <cell type="SINGLE">
+                    <state>1</state>
+                </cell>
+                <cell type="SINGLE">
+                    <state>1</state>
+                </cell>
+                <cell type="SINGLE">
+                    <state>1</state>
+                </cell>
+                <cell type="SINGLE">
+                    <state>1</state>
+                </cell>
+                <cell type="SINGLE">
+                    <state>1</state>
+                </cell>
+                <cell type="SINGLE">
+                    <state>2</state>
+                </cell>
+                <cell type="SINGLE">
+                    <state>1</state>
+                </cell>
+                <cell type="SINGLE">
+                    <state>1</state>
+                </cell>
+                <cell type="SINGLE">
+                    <state>1</state>
+                </cell>
+                <cell type="SINGLE">
+                    <state>2</state>
+                </cell>
+                <cell type="SINGLE">
+                    <state>1</state>
+                </cell>
+                <cell type="SINGLE">
+                    <state>2</state>
+                </cell>
+                <cell type="SINGLE">
+                    <state>1</state>
+                </cell>
+                <cell type="SINGLE">
+                    <state>1</state>
+                </cell>
+                <cell type="SINGLE">
+                    <state>2</state>
+                </cell>
+                <cell type="SINGLE">
+                    <state>0</state>
+                </cell>
+                <cell type="SINGLE">
+                    <state>0</state>
+                </cell>
+                <cell type="SINGLE">
+                    <state>2</state>
+                </cell>
+                <cell type="SINGLE">
+                    <state>0</state>
+                </cell>
+                <cell type="SINGLE">
+                    <state>0</state>
+                </cell>
+                <cell type="SINGLE">
+                    <state>1</state>
+                </cell>
+                <cell type="SINGLE">
+                    <state>2</state>
+                </cell>
+                <cell type="SINGLE">
+                    <state>1</state>
+                </cell>
+                <cell type="SINGLE">
+                    <state>1</state>
+                </cell>
+                <cell type="SINGLE">
+                    <state>1</state>
+                </cell>
+                <cell type="UNASSIGNED"/>
+                <cell type="SINGLE">
+                    <state>1</state>
+                </cell>
+                <cell type="SINGLE">
+                    <state>1</state>
+                </cell>
+                <cell type="UNASSIGNED"/>
+            </row>
+            <row>
+                <cell type="SINGLE">
+                    <state>0</state>
+                </cell>
+                <cell type="SINGLE">
+                    <state>1</state>
+                </cell>
+                <cell type="SINGLE">
+                    <state>0</state>
+                </cell>
+                <cell type="SINGLE">
+                    <state>0</state>
+                </cell>
+                <cell type="SINGLE">
+                    <state>1</state>
+                </cell>
+                <cell type="SINGLE">
+                    <state>1</state>
+                </cell>
+                <cell type="SINGLE">
+                    <state>0</state>
+                </cell>
+                <cell type="SINGLE">
+                    <state>0</state>
+                </cell>
+                <cell type="SINGLE">
+                    <state>0</state>
+                </cell>
+                <cell type="SINGLE">
+                    <state>1</state>
+                </cell>
+                <cell type="SINGLE">
+                    <state>1</state>
+                </cell>
+                <cell type="SINGLE">
+                    <state>0</state>
+                </cell>
+                <cell type="UNASSIGNED"/>
+                <cell type="SINGLE">
+                    <state>2</state>
+                </cell>
+                <cell type="SINGLE">
+                    <state>0</state>
+                </cell>
+                <cell type="SINGLE">
+                    <state>0</state>
+                </cell>
+                <cell type="SINGLE">
+                    <state>1</state>
+                </cell>
+                <cell type="SINGLE">
+                    <state>0</state>
+                </cell>
+                <cell type="SINGLE">
+                    <state>2</state>
+                </cell>
+                <cell type="SINGLE">
+                    <state>0</state>
+                </cell>
+                <cell type="SINGLE">
+                    <state>0</state>
+                </cell>
+                <cell type="SINGLE">
+                    <state>0</state>
+                </cell>
+                <cell type="SINGLE">
+                    <state>1</state>
+                </cell>
+                <cell type="SINGLE">
+                    <state>1</state>
+                </cell>
+                <cell type="UNASSIGNED"/>
+                <cell type="SINGLE">
+                    <state>3</state>
+                </cell>
+                <cell type="SINGLE">
+                    <state>1</state>
+                </cell>
+                <cell type="SINGLE">
+                    <state>0</state>
+                </cell>
+                <cell type="SINGLE">
+                    <state>0</state>
+                </cell>
+                <cell type="UNASSIGNED"/>
+                <cell type="UNASSIGNED"/>
+                <cell type="UNASSIGNED"/>
+                <cell type="UNASSIGNED"/>
+                <cell type="SINGLE">
+                    <state>0</state>
+                </cell>
+                <cell type="SINGLE">
+                    <state>2</state>
+                </cell>
+                <cell type="UNASSIGNED"/>
+                <cell type="SINGLE">
+                    <state>1</state>
+                </cell>
+                <cell type="UNASSIGNED"/>
+                <cell type="SINGLE">
+                    <state>0</state>
+                </cell>
+                <cell type="SINGLE">
+                    <state>0</state>
+                </cell>
+                <cell type="SINGLE">
+                    <state>2</state>
+                </cell>
+                <cell type="SINGLE">
+                    <state>0</state>
+                </cell>
+                <cell type="SINGLE">
+                    <state>0</state>
+                </cell>
+                <cell type="SINGLE">
+                    <state>0</state>
+                </cell>
+                <cell type="SINGLE">
+                    <state>0</state>
+                </cell>
+                <cell type="SINGLE">
+                    <state>1</state>
+                </cell>
+                <cell type="UNASSIGNED"/>
+                <cell type="SINGLE">
+                    <state>0</state>
+                </cell>
+                <cell type="SINGLE">
+                    <state>0</state>
+                </cell>
+                <cell type="SINGLE">
+                    <state>1</state>
+                </cell>
+                <cell type="SINGLE">
+                    <state>1</state>
+                </cell>
+                <cell type="SINGLE">
+                    <state>0</state>
+                </cell>
+                <cell type="UNASSIGNED"/>
+                <cell type="SINGLE">
+                    <state>1</state>
+                </cell>
+                <cell type="SINGLE">
+                    <state>1</state>
+                </cell>
+                <cell type="SINGLE">
+                    <state>1</state>
+                </cell>
+                <cell type="SINGLE">
+                    <state>0</state>
+                </cell>
+                <cell type="UNASSIGNED"/>
+                <cell type="UNASSIGNED"/>
+                <cell type="SINGLE">
+                    <state>1</state>
+                </cell>
+                <cell type="SINGLE">
+                    <state>1</state>
+                </cell>
+                <cell type="SINGLE">
+                    <state>0</state>
+                </cell>
+                <cell type="SINGLE">
+                    <state>0</state>
+                </cell>
+                <cell type="SINGLE">
+                    <state>0</state>
+                </cell>
+                <cell type="SINGLE">
+                    <state>1</state>
+                </cell>
+                <cell type="SINGLE">
+                    <state>1</state>
+                </cell>
+                <cell type="SINGLE">
+                    <state>0</state>
+                </cell>
+                <cell type="SINGLE">
+                    <state>1</state>
+                </cell>
+                <cell type="SINGLE">
+                    <state>0</state>
+                </cell>
+                <cell type="SINGLE">
+                    <state>1</state>
+                </cell>
+                <cell type="SINGLE">
+                    <state>0</state>
+                </cell>
+                <cell type="SINGLE">
+                    <state>1</state>
+                </cell>
+                <cell type="SINGLE">
+                    <state>0</state>
+                </cell>
+                <cell type="SINGLE">
+                    <state>0</state>
+                </cell>
+                <cell type="SINGLE">
+                    <state>0</state>
+                </cell>
+                <cell type="SINGLE">
+                    <state>0</state>
+                </cell>
+                <cell type="SINGLE">
+                    <state>1</state>
+                </cell>
+                <cell type="SINGLE">
+                    <state>0</state>
+                </cell>
+                <cell type="SINGLE">
+                    <state>1</state>
+                </cell>
+                <cell type="SINGLE">
+                    <state>1</state>
+                </cell>
+                <cell type="SINGLE">
+                    <state>1</state>
+                </cell>
+                <cell type="SINGLE">
+                    <state>1</state>
+                </cell>
+                <cell type="SINGLE">
+                    <state>1</state>
+                </cell>
+                <cell type="SINGLE">
+                    <state>0</state>
+                </cell>
+                <cell type="SINGLE">
+                    <state>0</state>
+                </cell>
+                <cell type="SINGLE">
+                    <state>0</state>
+                </cell>
+                <cell type="SINGLE">
+                    <state>0</state>
+                </cell>
+                <cell type="SINGLE">
+                    <state>0</state>
+                </cell>
+                <cell type="SINGLE">
+                    <state>0</state>
+                </cell>
+                <cell type="SINGLE">
+                    <state>3</state>
+                </cell>
+                <cell type="SINGLE">
+                    <state>1</state>
+                </cell>
+                <cell type="SINGLE">
+                    <state>1</state>
+                </cell>
+                <cell type="SINGLE">
+                    <state>1</state>
+                </cell>
+                <cell type="SINGLE">
+                    <state>1</state>
+                </cell>
+                <cell type="SINGLE">
+                    <state>1</state>
+                </cell>
+                <cell type="SINGLE">
+                    <state>2</state>
+                </cell>
+                <cell type="SINGLE">
+                    <state>2</state>
+                </cell>
+                <cell type="SINGLE">
+                    <state>1</state>
+                </cell>
+                <cell type="SINGLE">
+                    <state>0</state>
+                </cell>
+                <cell type="SINGLE">
+                    <state>2</state>
+                </cell>
+                <cell type="SINGLE">
+                    <state>0</state>
+                </cell>
+                <cell type="SINGLE">
+                    <state>1</state>
+                </cell>
+                <cell type="SINGLE">
+                    <state>1</state>
+                </cell>
+                <cell type="SINGLE">
+                    <state>1</state>
+                </cell>
+                <cell type="SINGLE">
+                    <state>0</state>
+                </cell>
+                <cell type="SINGLE">
+                    <state>0</state>
+                </cell>
+                <cell type="SINGLE">
+                    <state>0</state>
+                </cell>
+                <cell type="SINGLE">
+                    <state>0</state>
+                </cell>
+                <cell type="SINGLE">
+                    <state>2</state>
+                </cell>
+                <cell type="SINGLE">
+                    <state>0</state>
+                </cell>
+                <cell type="SINGLE">
+                    <state>0</state>
+                </cell>
+                <cell type="SINGLE">
+                    <state>2</state>
+                </cell>
+                <cell type="SINGLE">
+                    <state>2</state>
+                </cell>
+                <cell type="SINGLE">
+                    <state>2</state>
+                </cell>
+                <cell type="SINGLE">
+                    <state>1</state>
+                </cell>
+                <cell type="SINGLE">
+                    <state>1</state>
+                </cell>
+                <cell type="SINGLE">
+                    <state>1</state>
+                </cell>
+                <cell type="SINGLE">
+                    <state>0</state>
+                </cell>
+                <cell type="SINGLE">
+                    <state>0</state>
+                </cell>
+                <cell type="SINGLE">
+                    <state>0</state>
+                </cell>
+                <cell type="SINGLE">
+                    <state>0</state>
+                </cell>
+                <cell type="SINGLE">
+                    <state>0</state>
+                </cell>
+                <cell type="SINGLE">
+                    <state>0</state>
+                </cell>
+            </row>
+            <row>
+                <cell type="SINGLE">
+                    <state>0</state>
+                </cell>
+                <cell type="SINGLE">
+                    <state>0</state>
+                </cell>
+                <cell type="SINGLE">
+                    <state>0</state>
+                </cell>
+                <cell type="SINGLE">
+                    <state>0</state>
+                </cell>
+                <cell type="SINGLE">
+                    <state>1</state>
+                </cell>
+                <cell type="SINGLE">
+                    <state>1</state>
+                </cell>
+                <cell type="SINGLE">
+                    <state>0</state>
+                </cell>
+                <cell type="SINGLE">
+                    <state>0</state>
+                </cell>
+                <cell type="SINGLE">
+                    <state>0</state>
+                </cell>
+                <cell type="SINGLE">
+                    <state>0</state>
+                </cell>
+                <cell type="SINGLE">
+                    <state>0</state>
+                </cell>
+                <cell type="UNASSIGNED"/>
+                <cell type="UNASSIGNED"/>
+                <cell type="UNASSIGNED"/>
+                <cell type="UNASSIGNED"/>
+                <cell type="UNASSIGNED"/>
+                <cell type="SINGLE">
+                    <state>0</state>
+                </cell>
+                <cell type="UNASSIGNED"/>
+                <cell type="UNASSIGNED"/>
+                <cell type="SINGLE">
+                    <state>0</state>
+                </cell>
+                <cell type="SINGLE">
+                    <state>0</state>
+                </cell>
+                <cell type="SINGLE">
+                    <state>1</state>
+                </cell>
+                <cell type="SINGLE">
+                    <state>0</state>
+                </cell>
+                <cell type="SINGLE">
+                    <state>1</state>
+                </cell>
+                <cell type="UNASSIGNED"/>
+                <cell type="SINGLE">
+                    <state>1</state>
+                </cell>
+                <cell type="SINGLE">
+                    <state>0</state>
+                </cell>
+                <cell type="UNASSIGNED"/>
+                <cell type="UNASSIGNED"/>
+                <cell type="SINGLE">
+                    <state>0</state>
+                </cell>
+                <cell type="SINGLE">
+                    <state>1</state>
+                </cell>
+                <cell type="SINGLE">
+                    <state>0</state>
+                </cell>
+                <cell type="SINGLE">
+                    <state>0</state>
+                </cell>
+                <cell type="SINGLE">
+                    <state>0</state>
+                </cell>
+                <cell type="SINGLE">
+                    <state>0</state>
+                </cell>
+                <cell type="SINGLE">
+                    <state>0</state>
+                </cell>
+                <cell type="SINGLE">
+                    <state>0</state>
+                </cell>
+                <cell type="SINGLE">
+                    <state>1</state>
+                </cell>
+                <cell type="SINGLE">
+                    <state>0</state>
+                </cell>
+                <cell type="SINGLE">
+                    <state>0</state>
+                </cell>
+                <cell type="SINGLE">
+                    <state>1</state>
+                </cell>
+                <cell type="SINGLE">
+                    <state>0</state>
+                </cell>
+                <cell type="SINGLE">
+                    <state>0</state>
+                </cell>
+                <cell type="SINGLE">
+                    <state>0</state>
+                </cell>
+                <cell type="SINGLE">
+                    <state>0</state>
+                </cell>
+                <cell type="UNASSIGNED"/>
+                <cell type="UNASSIGNED"/>
+                <cell type="SINGLE">
+                    <state>0</state>
+                </cell>
+                <cell type="SINGLE">
+                    <state>0</state>
+                </cell>
+                <cell type="UNASSIGNED"/>
+                <cell type="SINGLE">
+                    <state>0</state>
+                </cell>
+                <cell type="SINGLE">
+                    <state>0</state>
+                </cell>
+                <cell type="SINGLE">
+                    <state>1</state>
+                </cell>
+                <cell type="UNASSIGNED"/>
+                <cell type="SINGLE">
+                    <state>1</state>
+                </cell>
+                <cell type="SINGLE">
+                    <state>0</state>
+                </cell>
+                <cell type="SINGLE">
+                    <state>0</state>
+                </cell>
+                <cell type="SINGLE">
+                    <state>0</state>
+                </cell>
+                <cell type="SINGLE">
+                    <state>0</state>
+                </cell>
+                <cell type="SINGLE">
+                    <state>0</state>
+                </cell>
+                <cell type="SINGLE">
+                    <state>0</state>
+                </cell>
+                <cell type="UNASSIGNED"/>
+                <cell type="SINGLE">
+                    <state>0</state>
+                </cell>
+                <cell type="UNASSIGNED"/>
+                <cell type="SINGLE">
+                    <state>0</state>
+                </cell>
+                <cell type="SINGLE">
+                    <state>1</state>
+                </cell>
+                <cell type="SINGLE">
+                    <state>0</state>
+                </cell>
+                <cell type="SINGLE">
+                    <state>0</state>
+                </cell>
+                <cell type="SINGLE">
+                    <state>0</state>
+                </cell>
+                <cell type="SINGLE">
+                    <state>0</state>
+                </cell>
+                <cell type="SINGLE">
+                    <state>0</state>
+                </cell>
+                <cell type="SINGLE">
+                    <state>0</state>
+                </cell>
+                <cell type="SINGLE">
+                    <state>0</state>
+                </cell>
+                <cell type="SINGLE">
+                    <state>0</state>
+                </cell>
+                <cell type="SINGLE">
+                    <state>0</state>
+                </cell>
+                <cell type="SINGLE">
+                    <state>0</state>
+                </cell>
+                <cell type="SINGLE">
+                    <state>1</state>
+                </cell>
+                <cell type="SINGLE">
+                    <state>1</state>
+                </cell>
+                <cell type="SINGLE">
+                    <state>0</state>
+                </cell>
+                <cell type="SINGLE">
+                    <state>0</state>
+                </cell>
+                <cell type="SINGLE">
+                    <state>0</state>
+                </cell>
+                <cell type="SINGLE">
+                    <state>0</state>
+                </cell>
+                <cell type="SINGLE">
+                    <state>0</state>
+                </cell>
+                <cell type="SINGLE">
+                    <state>0</state>
+                </cell>
+                <cell type="UNASSIGNED"/>
+                <cell type="UNASSIGNED"/>
+                <cell type="SINGLE">
+                    <state>0</state>
+                </cell>
+                <cell type="SINGLE">
+                    <state>0</state>
+                </cell>
+                <cell type="SINGLE">
+                    <state>0</state>
+                </cell>
+                <cell type="SINGLE">
+                    <state>1</state>
+                </cell>
+                <cell type="SINGLE">
+                    <state>0</state>
+                </cell>
+                <cell type="SINGLE">
+                    <state>0</state>
+                </cell>
+                <cell type="SINGLE">
+                    <state>0</state>
+                </cell>
+                <cell type="SINGLE">
+                    <state>0</state>
+                </cell>
+                <cell type="SINGLE">
+                    <state>0</state>
+                </cell>
+                <cell type="SINGLE">
+                    <state>0</state>
+                </cell>
+                <cell type="SINGLE">
+                    <state>0</state>
+                </cell>
+                <cell type="SINGLE">
+                    <state>0</state>
+                </cell>
+                <cell type="SINGLE">
+                    <state>0</state>
+                </cell>
+                <cell type="SINGLE">
+                    <state>2</state>
+                </cell>
+                <cell type="SINGLE">
+                    <state>1</state>
+                </cell>
+                <cell type="SINGLE">
+                    <state>0</state>
+                </cell>
+                <cell type="SINGLE">
+                    <state>1</state>
+                </cell>
+                <cell type="SINGLE">
+                    <state>0</state>
+                </cell>
+                <cell type="SINGLE">
+                    <state>0</state>
+                </cell>
+                <cell type="SINGLE">
+                    <state>0</state>
+                </cell>
+                <cell type="SINGLE">
+                    <state>0</state>
+                </cell>
+                <cell type="SINGLE">
+                    <state>0</state>
+                </cell>
+                <cell type="SINGLE">
+                    <state>0</state>
+                </cell>
+                <cell type="SINGLE">
+                    <state>0</state>
+                </cell>
+                <cell type="SINGLE">
+                    <state>0</state>
+                </cell>
+                <cell type="SINGLE">
+                    <state>0</state>
+                </cell>
+                <cell type="SINGLE">
+                    <state>0</state>
+                </cell>
+                <cell type="SINGLE">
+                    <state>0</state>
+                </cell>
+                <cell type="SINGLE">
+                    <state>0</state>
+                </cell>
+                <cell type="SINGLE">
+                    <state>0</state>
+                </cell>
+                <cell type="SINGLE">
+                    <state>3</state>
+                </cell>
+                <cell type="SINGLE">
+                    <state>0</state>
+                </cell>
+                <cell type="SINGLE">
+                    <state>0</state>
+                </cell>
+                <cell type="SINGLE">
+                    <state>0</state>
+                </cell>
+                <cell type="SINGLE">
+                    <state>0</state>
+                </cell>
+                <cell type="SINGLE">
+                    <state>0</state>
+                </cell>
+                <cell type="SINGLE">
+                    <state>0</state>
+                </cell>
+            </row>
+        </standardMatrix>
+        <treeSet label="Trees from &quot;M540.NX&quot;">
+            <tree label="Fig. 4a">
+                <newick>('fb154636-545e-450c-9d29-c24f1be8918b',('b16b10d3-976f-4a78-b301-e65838fb2bc2',((('a5a7a0f6-8b34-4691-b5c8-f50078a03bb1','0efaeb0c-97f9-4e76-b8f6-5e4b50837143'),(('b71d8eae-0937-4034-a579-aa7d0a6f6dad',('b8f01d68-8e5b-40da-9da7-3a8936cb704c',('32e00813-1df9-4347-b86e-032fbdee0898','ba6cfc72-9d94-4779-802a-57e410b5b5a7'))),'ed86be58-7c9b-43ac-9731-7dc8b105a4b3')),'34108959-7201-4a43-9bd1-18494a35e953')));</newick>
+            </tree>
+            <tree label="Fig. 4e">
+                <newick>('fb154636-545e-450c-9d29-c24f1be8918b',('b16b10d3-976f-4a78-b301-e65838fb2bc2',(((('a5a7a0f6-8b34-4691-b5c8-f50078a03bb1','0efaeb0c-97f9-4e76-b8f6-5e4b50837143'),('32e00813-1df9-4347-b86e-032fbdee0898','ba6cfc72-9d94-4779-802a-57e410b5b5a7')),'34108959-7201-4a43-9bd1-18494a35e953'),('b71d8eae-0937-4034-a579-aa7d0a6f6dad',('b8f01d68-8e5b-40da-9da7-3a8936cb704c','ed86be58-7c9b-43ac-9731-7dc8b105a4b3')))));</newick>
+            </tree>
+            <tree label="Fig. 4d">
+                <newick>('fb154636-545e-450c-9d29-c24f1be8918b',('b16b10d3-976f-4a78-b301-e65838fb2bc2',(((('a5a7a0f6-8b34-4691-b5c8-f50078a03bb1','0efaeb0c-97f9-4e76-b8f6-5e4b50837143'),'34108959-7201-4a43-9bd1-18494a35e953'),('32e00813-1df9-4347-b86e-032fbdee0898','ba6cfc72-9d94-4779-802a-57e410b5b5a7')),('b71d8eae-0937-4034-a579-aa7d0a6f6dad',('b8f01d68-8e5b-40da-9da7-3a8936cb704c','ed86be58-7c9b-43ac-9731-7dc8b105a4b3')))));</newick>
+            </tree>
+            <tree label="Fig. 4c">
+                <newick>('fb154636-545e-450c-9d29-c24f1be8918b',('b16b10d3-976f-4a78-b301-e65838fb2bc2',((('a5a7a0f6-8b34-4691-b5c8-f50078a03bb1','0efaeb0c-97f9-4e76-b8f6-5e4b50837143'),((('b71d8eae-0937-4034-a579-aa7d0a6f6dad','ed86be58-7c9b-43ac-9731-7dc8b105a4b3'),'b8f01d68-8e5b-40da-9da7-3a8936cb704c'),('32e00813-1df9-4347-b86e-032fbdee0898','ba6cfc72-9d94-4779-802a-57e410b5b5a7'))),'34108959-7201-4a43-9bd1-18494a35e953')));</newick>
+            </tree>
+            <tree label="Fig. 4b">
+                <newick>('fb154636-545e-450c-9d29-c24f1be8918b',('b16b10d3-976f-4a78-b301-e65838fb2bc2',((('a5a7a0f6-8b34-4691-b5c8-f50078a03bb1','0efaeb0c-97f9-4e76-b8f6-5e4b50837143'),'34108959-7201-4a43-9bd1-18494a35e953'),(('b71d8eae-0937-4034-a579-aa7d0a6f6dad',('b8f01d68-8e5b-40da-9da7-3a8936cb704c',('32e00813-1df9-4347-b86e-032fbdee0898','ba6cfc72-9d94-4779-802a-57e410b5b5a7'))),'ed86be58-7c9b-43ac-9731-7dc8b105a4b3'))));</newick>
+            </tree>
+        </treeSet>
+    </otuSet>
+</pPodStudy>
