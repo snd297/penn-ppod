@@ -19,13 +19,12 @@ import java.util.Date;
 import java.util.Set;
 
 import org.hibernate.Session;
-import org.hibernate.Transaction;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
 import com.google.inject.Inject;
 
-import edu.upenn.cis.ppod.createorupdate.ICreateOrUpdateStudy;
+import edu.upenn.cis.ppod.createorupdate.CreateOrUpdateStudy;
 import edu.upenn.cis.ppod.dao.IStudyDAO;
 import edu.upenn.cis.ppod.dto.PPodLabelAndId;
 import edu.upenn.cis.ppod.dto.PPodStudy;
@@ -35,21 +34,20 @@ import edu.upenn.cis.ppod.util.DbStudy2DocStudy;
 import edu.upenn.cis.ppod.util.Study2StudyInfo;
 
 /**
- * We commit the transactions in this class - instead of a servlet filter - so
- * that the resteasy response will know that something went wrong if the commit
- * goes wrong. We used to do it in a resteasy interceptor, but that didn't work
- * cleanly when we switched over to a guice managed session factory: we couldn't
- * get at the current session inside the interceptor without putting a kludge
- * static reference to it in
+ * We commit the transactions in this class so that the resteasy response will
+ * know that something went wrong if the commit goes wrong. We used to do it in
+ * a resteasy interceptor, but that didn't work cleanly whe we switched over to
+ * a guice managed session factory: we couldn't get at the current session
+ * inside the interceptor without putting a kludge static reference to it in
  * {@link edu.upenn.cis.ppod.persistence.SessionFactoryProvider}.
  * 
  * @author Sam Donnelly
  */
-final class StudyResourceHibernate implements IStudyResource {
+class StudyResourceHibernate implements IStudyResource {
 
 	private final IStudyDAO studyDAO;
 
-	private final ICreateOrUpdateStudy createOrUpdateStudy;
+	private final CreateOrUpdateStudy createOrUpdateStudy;
 
 	private final Session session;
 
@@ -61,48 +59,40 @@ final class StudyResourceHibernate implements IStudyResource {
 	@Inject
 	StudyResourceHibernate(
 			final IStudyDAO studyDAO,
-			final ICreateOrUpdateStudy createOrUpdateStudy,
-			final Session session) {
+			final CreateOrUpdateStudy createOrUpdateStudy,
+			final Session session,
+			final DbStudy2DocStudy dbStudy2DocStudy) {
 		this.studyDAO = studyDAO;
 		this.createOrUpdateStudy = createOrUpdateStudy;
 		this.session = session;
-		dbStudy2DocStudy = new DbStudy2DocStudy();
+		this.dbStudy2DocStudy = dbStudy2DocStudy;
 	}
 
 	private StudyInfo createOrUpdateStudy(final PPodStudy incomingStudy) {
 		final String METHOD = "createOrUpdateStudy(...)";
 		final long inTime = new Date().getTime();
-
-		Transaction trx = null;
-
 		try {
 
-			trx = session.beginTransaction();
+			session.beginTransaction();
 
-			final Study dbStudy =
-					createOrUpdateStudy.createOrUpdateStudy(incomingStudy);
+			final Study dbStudy = createOrUpdateStudy
+					.createOrUpdateStudy(incomingStudy);
 
 			final StudyInfo studyInfo = Study2StudyInfo.toStudyInfo(dbStudy);
 
-			trx.commit();
+			session.getTransaction().commit();
 
 			return studyInfo;
 
 		} catch (final Throwable t) {
 			try {
-				if (trx != null && trx.isActive()) {
-					trx.rollback();
-				}
+				session.getTransaction().rollback();
 			} catch (final Throwable rbEx) {
 				logger.error("error rolling back transaction", rbEx);
 			}
-			logger.error("caught", t);
-			if (t instanceof RuntimeException) {
-				throw (RuntimeException) t;
-			}
+			logger.error("caught in {}", t);
 			throw new IllegalStateException(t);
 		} finally {
-			session.close();
 			logger.info("{}: response time: {} milliseconds",
 					METHOD,
 					Long.valueOf(new Date().getTime() - inTime));
@@ -117,30 +107,26 @@ final class StudyResourceHibernate implements IStudyResource {
 	public PPodStudy getStudyByPPodId(final String pPodId) {
 		final String METHOD = "getStudyByPPodId(...)";
 		final long inTime = new Date().getTime();
-		Transaction trx = null;
 		try {
 
-			trx = session.beginTransaction();
+			session.beginTransaction();
 
 			final Study dbStudy = studyDAO.getStudyByPPodId(pPodId);
 			final PPodStudy docStudy = dbStudy2DocStudy
 					.dbStudy2DocStudy(dbStudy);
 
-			trx.commit();
+			session.getTransaction().commit();
 
 			return docStudy;
 		} catch (final Throwable t) {
 			try {
-				if (trx != null && trx.isActive()) {
-					trx.rollback();
-				}
+				session.getTransaction().rollback();
 			} catch (final Throwable rbEx) {
 				logger.error("error rolling back transaction", rbEx);
 			}
 			logger.error("caught", t);
 			throw new IllegalStateException(t);
 		} finally {
-			session.close();
 			logger.info("{}: response time: {} milliseconds",
 					METHOD,
 					Long.valueOf(new Date().getTime() - inTime));
@@ -150,34 +136,29 @@ final class StudyResourceHibernate implements IStudyResource {
 	public Set<PPodLabelAndId> getStudyPPodIdLabelPairs() {
 		final String METHOD = "getStudyPPodIdLabelPairs()";
 		final long inTime = new Date().getTime();
-		Transaction trx = null;
 		try {
-			trx = session.beginTransaction();
+			session.beginTransaction();
 
 			final Set<PPodLabelAndId> studyLabelAndIds = studyDAO
 					.getPPodIdLabelPairs();
-			trx.commit();
+			session.getTransaction().commit();
 			return studyLabelAndIds;
 		} catch (final Throwable t) {
 			try {
-				if (trx != null && trx.isActive()) {
-					trx.rollback();
-				}
+				session.getTransaction().rollback();
 			} catch (final Throwable rbEx) {
 				logger.error("error rolling back transaction", rbEx);
 			}
 			logger.error("caught", t);
 			throw new IllegalStateException(t);
 		} finally {
-			session.close();
 			logger.info("{}: response time: {} milliseconds",
 					METHOD,
 					Long.valueOf(new Date().getTime() - inTime));
 		}
 	}
 
-	public StudyInfo updateStudy(
-			final PPodStudy incomingStudy,
+	public StudyInfo updateStudy(final PPodStudy incomingStudy,
 			final String pPodId) {
 		final StudyInfo studyInfo = createOrUpdateStudy(incomingStudy);
 		return studyInfo;

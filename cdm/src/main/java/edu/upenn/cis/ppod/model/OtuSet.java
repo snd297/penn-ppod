@@ -51,7 +51,9 @@ import edu.upenn.cis.ppod.imodel.IChild;
 import edu.upenn.cis.ppod.imodel.IDependsOnParentOtus;
 
 /**
- * A set of OTUs, standard matrices, dna matrices, and protein matrices.
+ * A set of {@link OTU}s.
+ * <p>
+ * The relationship between {@code OTUSet} and {@code OTU} is one-to-many.
  * 
  * @author Shirley Cohen
  * @author Sam Donnelly
@@ -81,11 +83,11 @@ public class OtuSet extends UuPPodEntity implements ILabeled {
 	@CheckForNull
 	private Integer version;
 
+	private List<StandardMatrix> standardMatrices = newArrayList();
+
 	/** Nullable free-form description. */
 	@CheckForNull
 	private String description;
-
-	private List<StandardMatrix> standardMatrices = newArrayList();
 
 	private List<DnaMatrix> dnaMatrices = newArrayList();
 

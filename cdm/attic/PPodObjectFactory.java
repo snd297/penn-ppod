@@ -13,22 +13,28 @@
  * See the License for the specific language governing permissions and
  * limitations under the License.
  */
-package edu.upenn.cis.ppod.services;
+package edu.upenn.cis.ppod;
 
-import javax.ws.rs.GET;
-import javax.ws.rs.Produces;
-import javax.ws.rs.core.Response;
+import com.google.inject.Guice;
+import com.google.inject.util.Modules;
+
+import edu.upenn.cis.ppod.services.hibernate.PPodServicesHibernateModule;
+import edu.upenn.cis.ppod.util.GuiceObjectFactory;
 
 /**
  * @author Sam Donnelly
  */
-final class PPodGreetingService implements IPPodGreetingResource {
+public class PPodObjectFactory extends GuiceObjectFactory {
 
-	@GET
-	@Produces("text/plain")
-	public Response greeting() {
-		return Response.status(200)
-				.entity("pPOD Services v0.2-SNAPSHOT")
-				.build();
+	private static final long serialVersionUID = 1L;
+
+	PPodObjectFactory() {
+		setInjector(Guice
+				.createInjector(
+						Modules.override(
+								new PPodModule(),
+								new PPodServicesHibernateModule())
+								.with(
+										new TestPPodModule())));
 	}
 }
