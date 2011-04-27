@@ -4,7 +4,7 @@
   * First of all, you'll need to get [http://mesquiteproject.org/mesquite/mesquite.html Mesquite]
   * You'll need to get the zipped pPOD Mesquite package `pPODMesquitePackage-X.X.X.zip` from Sam.
   * Unzip it (it will expand into `pPODMesquitePackage-X.X.X`) and put the expanded directory where you want. We'll assume you put it into `${MESQUITE_HOME}/Mesquite_Folder`.
-  * Add the appropriate entry in your `${MESQUITE_HOME}/Mesquite_Folder/classpaths.xml` file (you'll need to create a `classpaths.xml` file if there's not one already there. Here's what the entry looks like if you're using `${MESQUITE_HOME}/Mesquite_Folder` that would be
+  * Add the appropriate entry in your `${MESQUITE_HOME}/Mesquite_Folder/classpaths.xml` file (you'll need to create a `classpaths.xml` file if there's not one already there). Here's what the entry looks like if you're using `${MESQUITE_HOME}/Mesquite_Folder` that would be
   {{{
 <?xml version="1.0"?>
 <mesquite>
