@@ -5,6 +5,14 @@
 <hibernate-configuration>
 	<session-factory>
 		<!-- List of annotated classes -->
+		<!-- <mapping class="edu.upenn.cis.ppod.thirdparty.model.security.Role" 
+			/> <mapping class="edu.upenn.cis.ppod.thirdparty.model.security.User" /> 
+			<mapping class="edu.upenn.cis.ppod.model.security.Party" /> <mapping class="edu.upenn.cis.ppod.model.security.Group" 
+			/> <mapping class="edu.upenn.cis.ppod.model.security.StudyPermission" /> -->
+
+		<!-- Bind the getCurrentSession() method to the thread. -->
+		<property name="current_session_context_class">thread</property>
+
 		<mapping class="edu.upenn.cis.ppod.model.Study" />
 
 		<mapping class="edu.upenn.cis.ppod.model.Otu" />

@@ -198,7 +198,9 @@ public abstract class GenericHibernateDAO<T, ID extends Serializable>
 	}
 
 	/**
-	 * Get this <code>IDAO</code>'s session.
+	 * Get this <code>IDAO</code>'s session. Initializes the session
+	 * <code>HibernateUtil.getSessionFactory().getCurrentSession()</code> if
+	 * necessary.
 	 * 
 	 * @return see description
 	 */

@@ -15,11 +15,11 @@
  */
 package edu.upenn.cis.ppod.dao;
 
+import java.util.List;
 import java.util.Set;
 
 import com.google.inject.ImplementedBy;
 
-import edu.umd.cs.findbugs.annotations.CheckForNull;
 import edu.umd.cs.findbugs.annotations.Nullable;
 import edu.upenn.cis.ppod.dto.PPodLabelAndId;
 import edu.upenn.cis.ppod.model.Study;
@@ -44,7 +44,7 @@ public interface IStudyDAO extends IDAO<Study, Long> {
 
 	/**
 	 * Retrieve a {@link Study} given its pPOD id. Returns {@code null} if
-	 * {@code pPodId == null} or if there is no study with the pPOD id.
+	 * {@code pPodId == null}.
 	 * 
 	 * @param pPodId the pPOD id of the {@link Study} we want - {@code null} is
 	 *            legal
@@ -52,9 +52,19 @@ public interface IStudyDAO extends IDAO<Study, Long> {
 	 *         {@code pPodId == null}
 	 */
 	@Nullable
-	Study getStudyByPPodId(@CheckForNull String pPodId);
+	Study getStudyByPPodId(String pPodId);
 
-	@Nullable
-	Study getStudyByLabel(String label);
+	Study getStudyByPPodIdEager(String pPodId);
+
+	/**
+	 * Get the pPOD version of the study with the given pPOD id.
+	 * 
+	 * @param pPodId the pPOD id
+	 * @return the pPOD version of the study with the given pPOD id
+	 */
+	Long getPPodVersionByPPodId(String pPodId);
+
+	List<Object[]> getOTUInfosByStudyPPodIdAndMinPPodVersion(String pPodId,
+			Long pPodVersion);
 
 }

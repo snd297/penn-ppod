@@ -19,7 +19,6 @@ import com.google.inject.servlet.ServletModule;
 
 import edu.umd.cs.findbugs.annotations.CheckForNull;
 import edu.upenn.cis.ppod.persistence.PPodPersistenceModule;
-import edu.upenn.cis.ppod.services.PPodExceptionMapper;
 import edu.upenn.cis.ppod.services.PPodServicesHibernateModule;
 
 /**
@@ -88,6 +87,5 @@ public class PPodGuiceResteasyBootstrap
 
 		processor.processInjector(injector);
 		sessionFactory = injector.getInstance(SessionFactory.class);
-		providerFactory.registerProviderInstance(new PPodExceptionMapper());
 	}
 }

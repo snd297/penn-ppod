@@ -51,7 +51,7 @@ public class CreateOrUpdateStandardMatrixTest {
 			dataProviderClass = PPodEntityProvider.class)
 	public void create(final PPodOtuSet sourceOtuSet) {
 
-		final ICreateOrUpdateStandardMatrix createOrUpdateStandardMatrix =
+		final CreateOrUpdateStandardMatrix createOrUpdateStandardMatrix =
 				new CreateOrUpdateStandardMatrix(
 						mock(IStandardRowDAO.class));
 
@@ -77,7 +77,7 @@ public class CreateOrUpdateStandardMatrixTest {
 			dataProviderClass = PPodEntityProvider.class)
 	public void moveRows(final PPodOtuSet sourceOtuSet) {
 
-		final ICreateOrUpdateStandardMatrix createOrUpdateStandardMatrix =
+		final CreateOrUpdateStandardMatrix createOrUpdateStandardMatrix =
 				new CreateOrUpdateStandardMatrix(
 						mock(IStandardRowDAO.class));
 
@@ -125,7 +125,7 @@ public class CreateOrUpdateStandardMatrixTest {
 			dataProviderClass = PPodEntityProvider.class)
 	public void moveCharacters(final PPodOtuSet sourceOtuSet) {
 
-		final ICreateOrUpdateStandardMatrix createOrUpdateStandardMatrix =
+		final CreateOrUpdateStandardMatrix createOrUpdateStandardMatrix =
 				new CreateOrUpdateStandardMatrix(
 						mock(IStandardRowDAO.class));
 
@@ -185,7 +185,7 @@ public class CreateOrUpdateStandardMatrixTest {
 			dataProviderClass = PPodEntityProvider.class)
 	public void removeColumn(final PPodOtuSet sourceOtuSet) {
 
-		final ICreateOrUpdateStandardMatrix createOrUpdateStandardMatrix =
+		final CreateOrUpdateStandardMatrix createOrUpdateStandardMatrix =
 				new CreateOrUpdateStandardMatrix(
 						mock(IStandardRowDAO.class));
 
