@@ -22,3 +22,7 @@ Let's start with a simple one: give us all Taxa Block that contain Taxa sus and 
 http://penn-ppod.googlecode.com/svn/wiki/Pictures/UsingThePackage/selectSusEquus2.png
 
 After we hit "Count Matches" it will show us the number of matching items. Hitting "OK" will return the results. Currently, if the total number of items is more than 15, you'll get an error back. This is because it's unwieldy to have more than 15 items to view in the Mesquite window.
+
+We can add in characters and character states we want to filter by: 
+
+Note that at present only character matrices which match the criteria will be returned. Which is different from, say, DNA matrices, where we return any DNA matrices that are attached (via taxa block) to a matching character matrix. That is, we don't return character matrices which are attached to matching character matrices, only matching character matrices. Maybe that's too confusing to mention.
