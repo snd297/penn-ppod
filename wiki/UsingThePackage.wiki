@@ -20,3 +20,5 @@ Open up a Nexus file (RNA matrices are not yet supported.) There is a _pPOD_ ite
 Let's start with a simple one: give us all Taxa Block that contain Taxa sus and equus (queries are not case sensitive):
 
 http://penn-ppod.googlecode.com/svn/wiki/Pictures/UsingThePackage/selectSusEquus.jpg
+
+After we hit "Count Matches" it will show us the number of matching items. Hitting "OK" will return the results. Currently, if the total number of items is more than 15, you'll get an error back. This is because it's unwieldy to have more than 15 items to view in the Mesquite window.
