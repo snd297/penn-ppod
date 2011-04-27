@@ -49,12 +49,12 @@ import edu.upenn.cis.ppod.model.TreeSet;
  * 
  * @author Sam Donnelly
  */
-public final class CreateOrUpdateStudy {
+public final class CreateOrUpdateStudy implements ICreateOrUpdateStudy {
 
 	private final IStudyDAO studyDAO;
 	private final MergeOtuSets mergeOtuSets;
 	// private final MergeDnaSequenceSets mergeDNASequenceSets;
-	private final CreateOrUpdateStandardMatrix createOrUpdateStandardMatrix;
+	private final ICreateOrUpdateStandardMatrix createOrUpdateStandardMatrix;
 	private final MergeTreeSets mergeTreeSets;
 	private final IOtuSetDAO otuSetDAO;
 	// private final IDnaSequenceSetDAO dnaSequenceSetDAO;
@@ -66,18 +66,16 @@ public final class CreateOrUpdateStudy {
 	@Inject
 	CreateOrUpdateStudy(
 			final IStudyDAO studyDAO,
-			final MergeOtuSets mergeOTUSets,
-			final CreateOrUpdateStandardMatrix createOrUpdateStandardMatrix,
-			final MergeTreeSets mergeTreeSets,
+			final ICreateOrUpdateStandardMatrix createOrUpdateStandardMatrix,
 			final IOtuSetDAO otuSetDAO,
 			final IDnaMatrixDAO dnaMatrixDAO,
 			final IStandardMatrixDAO standardMatrixDAO,
 			final ITreeSetDAO treeSetDAO,
 			final IProteinMatrixDAO proteinMatrixDAO) {
 		this.studyDAO = studyDAO;
-		this.mergeOtuSets = mergeOTUSets;
+		this.mergeOtuSets = new MergeOtuSets();
 		this.createOrUpdateStandardMatrix = createOrUpdateStandardMatrix;
-		this.mergeTreeSets = mergeTreeSets;
+		this.mergeTreeSets = new MergeTreeSets();
 		this.otuSetDAO = otuSetDAO;
 		this.dnaMatrixDAO = dnaMatrixDAO;
 		this.standardMatrixDAO = standardMatrixDAO;
@@ -88,11 +86,36 @@ public final class CreateOrUpdateStudy {
 	public Study createOrUpdateStudy(final PPodStudy incomingStudy) {
 		Study dbStudy = null;
 		boolean makeStudyPersistent = false;
-		if (null == (dbStudy =
-				studyDAO.getStudyByPPodId(
-						incomingStudy.getPPodId()))) {
-			dbStudy = new Study();
-			makeStudyPersistent = true;
+
+		final Study dbStudyByLabel = studyDAO.getStudyByLabel(incomingStudy
+				.getLabel());
+		boolean dupLabel = false;
+
+		if (incomingStudy.getPPodId() == null) {
+			if (dbStudyByLabel == null) {
+				dbStudy = new Study();
+				makeStudyPersistent = true;
+			} else {
+				dupLabel = true;
+			}
+		} else {
+			dbStudy =
+					studyDAO.getStudyByPPodId(
+							incomingStudy.getPPodId());
+			if (dbStudy == null) {
+				throw new IllegalArgumentException("study has unknow pPOD id");
+			}
+			if (dbStudyByLabel == null || dbStudy == dbStudyByLabel) {
+
+			} else {
+				dupLabel = true;
+			}
+		}
+
+		if (dupLabel) {
+			throw new IllegalArgumentException(
+					"already have a study labeled ["
+							+ incomingStudy.getLabel() + "]");
 		}
 
 		dbStudy.setLabel(incomingStudy.getLabel());

@@ -53,7 +53,10 @@ import edu.upenn.cis.ppod.imodel.IUuPPodEntity;
 						+ "where s.pPodId=:pPodId"),
 		@NamedQuery(
 				name = "Study-getPPodIdLabelPairs",
-				query = "select s.pPodId, s.label from Study s") })
+				query = "select s.pPodId, s.label from Study s"),
+		@NamedQuery(
+				name = "Study-getByLabel",
+				query = "select s from Study s where s.label = :label") })
 @Entity
 @Table(name = Study.TABLE)
 public class Study

@@ -13,19 +13,18 @@
  * See the License for the specific language governing permissions and
  * limitations under the License.
  */
-package edu.upenn.cis.ppod.services;
+package edu.upenn.cis.ppod.createorupdate;
 
-import javax.ws.rs.core.Response;
-import javax.ws.rs.ext.ExceptionMapper;
-import javax.ws.rs.ext.Provider;
+import com.google.inject.ImplementedBy;
 
-@Provider
-public final class PPodExceptionMapper
-		implements ExceptionMapper<Throwable> {
+import edu.upenn.cis.ppod.dto.PPodStandardMatrix;
+import edu.upenn.cis.ppod.model.StandardMatrix;
 
-	public Response toResponse(final Throwable throwable) {
-		return Response
-				.status(500)
-				.entity(throwable.getMessage()).build();
-	}
+@ImplementedBy(CreateOrUpdateStandardMatrix.class)
+public interface ICreateOrUpdateStandardMatrix {
+
+	void createOrUpdateMatrix(
+				StandardMatrix dbMatrix,
+				PPodStandardMatrix sourceMatrix);
+
 }

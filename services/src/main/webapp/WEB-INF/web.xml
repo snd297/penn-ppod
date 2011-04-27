@@ -4,11 +4,6 @@
 <web-app>
 	<display-name>pPOD</display-name>
 
-	<context-param>
-		<param-name>resteasy.providers</param-name>
-		<param-value>edu.upenn.cis.ppod.services.PPodExceptionMapper</param-value>
-	</context-param>
-
 	<filter>
 		<filter-name>guiceFilter</filter-name>
 		<filter-class>com.google.inject.servlet.GuiceFilter</filter-class>
