@@ -24,7 +24,7 @@ import edu.upenn.cis.ppod.model.StandardMatrix;
 public interface ICreateOrUpdateStandardMatrix {
 
 	void createOrUpdateMatrix(
-			final StandardMatrix dbMatrix,
-			final PPodStandardMatrix sourceMatrix);
+				StandardMatrix dbMatrix,
+				PPodStandardMatrix sourceMatrix);
 
 }
