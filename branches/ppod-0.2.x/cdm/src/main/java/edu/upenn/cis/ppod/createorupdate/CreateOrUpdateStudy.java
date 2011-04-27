@@ -54,7 +54,7 @@ public final class CreateOrUpdateStudy implements ICreateOrUpdateStudy {
 	private final IStudyDAO studyDAO;
 	private final MergeOtuSets mergeOtuSets;
 	// private final MergeDnaSequenceSets mergeDNASequenceSets;
-	private final CreateOrUpdateStandardMatrix createOrUpdateStandardMatrix;
+	private final ICreateOrUpdateStandardMatrix createOrUpdateStandardMatrix;
 	private final MergeTreeSets mergeTreeSets;
 	private final IOtuSetDAO otuSetDAO;
 	// private final IDnaSequenceSetDAO dnaSequenceSetDAO;
@@ -66,18 +66,16 @@ public final class CreateOrUpdateStudy implements ICreateOrUpdateStudy {
 	@Inject
 	CreateOrUpdateStudy(
 			final IStudyDAO studyDAO,
-			final MergeOtuSets mergeOTUSets,
-			final CreateOrUpdateStandardMatrix createOrUpdateStandardMatrix,
-			final MergeTreeSets mergeTreeSets,
+			final ICreateOrUpdateStandardMatrix createOrUpdateStandardMatrix,
 			final IOtuSetDAO otuSetDAO,
 			final IDnaMatrixDAO dnaMatrixDAO,
 			final IStandardMatrixDAO standardMatrixDAO,
 			final ITreeSetDAO treeSetDAO,
 			final IProteinMatrixDAO proteinMatrixDAO) {
 		this.studyDAO = studyDAO;
-		this.mergeOtuSets = mergeOTUSets;
+		this.mergeOtuSets = new MergeOtuSets();
 		this.createOrUpdateStandardMatrix = createOrUpdateStandardMatrix;
-		this.mergeTreeSets = mergeTreeSets;
+		this.mergeTreeSets = new MergeTreeSets();
 		this.otuSetDAO = otuSetDAO;
 		this.dnaMatrixDAO = dnaMatrixDAO;
 		this.standardMatrixDAO = standardMatrixDAO;
