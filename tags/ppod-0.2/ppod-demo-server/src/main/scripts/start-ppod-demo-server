@@ -1,0 +1,58 @@
+#! /bin/sh
+
+# Based on the Liquibase launch script http://www.liquibase.org/
+# Modified by Sam Donnelly
+
+if [ -n "${PPOD_DEMO_SERVER_HOME+x}" ]; then
+echo "pPOD Demo Server Home: $PPOD_DEMO_SERVER_HOME"
+else
+  echo "pPOD Home is not set."
+
+  ## resolve links - $0 may be a symlink
+  PRG="$0"
+  while [ -h "$PRG" ] ; do
+    ls=`ls -ld "$PRG"`
+    link=`expr "$ls" : '.*-> \(.*\)$'`
+    if expr "$link" : '/.*' > /dev/null; then
+    PRG="$link"
+    else
+    PRG=`dirname "$PRG"`"/$link"
+    fi
+  done
+
+
+  PPOD_DEMO_SERVER_HOME=`dirname "$PRG"`
+
+  # make it fully qualified
+  PPOD_DEMO_SERVER_HOME=`cd "$PPOD_DEMO_SERVER_HOME" && pwd`
+  echo "pPOD Demo Server Home: $PPOD_DEMO_SERVER_HOME"
+fi
+
+ 
+# build classpath from all jars in lib
+if [ -f /usr/bin/cygpath ]; then
+  CP=.
+  for i in "$PPOD_DEMO_SERVER_HOME"/*.jar; do
+    i=`cygpath --windows "$i"`
+    CP="$CP;$i"
+  done
+  for i in "$PPOD_DEMO_SERVER_HOME"/lib/*.jar; do
+    i=`cygpath --windows "$i"`
+    CP="$CP;$i"
+  done
+else
+  CP=.
+  for i in "$PPOD_DEMO_SERVER_HOME"/*.jar; do
+    CP="$CP":"$i"
+  done
+  for i in "$PPOD_DEMO_SERVER_HOME"/lib/*.jar; do
+    CP="$CP":"$i"
+  done
+fi
+
+CP=$PPOD_DEMO_SERVER_HOME/config:$CP
+
+# add any JVM options here
+JAVA_OPTS=
+
+java -cp "$CP" $JAVA_OPTS edu.upenn.cis.ppod.demo.StartDemoServer ${1+"$@"}
