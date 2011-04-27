@@ -48,7 +48,7 @@
 	at edu.upenn.cis.ppod.demo.StartDemoServer.main(StartDemoServer.java:80)
   }}}
   
-  Unfortunately, you'll need to stop the server yourself when this error occurs - it does not die on it's own.
+  Unfortunately, you'll need to stop the server yourself when this error occurs - it does not die on its own.
 
 
 You should now have a pPOD server running. It is prepopulated with TreeBASE data we can query on. See here for how to do that.
