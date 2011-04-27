@@ -20,12 +20,12 @@ import javax.ws.rs.ext.ExceptionMapper;
 import javax.ws.rs.ext.Provider;
 
 @Provider
-public final class PPodExceptionMapper<E extends Throwable>
-		implements ExceptionMapper<E> {
+public final class PPodExceptionMapper
+		implements ExceptionMapper<Throwable> {
 
-	public Response toResponse(E exception) {
+	public Response toResponse(final Throwable throwable) {
 		return Response
 				.status(500)
-				.entity(exception.getMessage()).build();
+				.entity(throwable.getMessage()).build();
 	}
 }

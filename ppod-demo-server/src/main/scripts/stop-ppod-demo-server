@@ -6,7 +6,7 @@
 if [ -n "${PPOD_DEMO_SERVER_HOME+x}" ]; then
 echo "pPOD Demo Server Home: $PPOD_DEMO_SERVER_HOME"
 else
-  echo "pPOD Home is not set."
+  echo "pPOD Demo Server Home is not set...setting it"
 
   ## resolve links - $0 may be a symlink
   PRG="$0"
@@ -40,6 +40,8 @@ if [ -f /usr/bin/cygpath ]; then
     i=`cygpath --windows "$i"`
     CP="$CP;$i"
   done
+  i=`cygpath --windows "$PPOD_DEMO_SERVER_HOME/config"`
+  CP="$i;$CP"
 else
   CP=.
   for i in "$PPOD_DEMO_SERVER_HOME"/*.jar; do
@@ -48,9 +50,9 @@ else
   for i in "$PPOD_DEMO_SERVER_HOME"/lib/*.jar; do
     CP="$CP":"$i"
   done
+  CP=$PPOD_DEMO_SERVER_HOME/config:$CP
 fi
 
-CP=$PPOD_DEMO_SERVER_HOME/config:$CP
 
 # add any JVM options here
 JAVA_OPTS=

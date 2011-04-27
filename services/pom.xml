@@ -4,7 +4,7 @@
 	<parent>
 		<artifactId>ppod</artifactId>
 		<groupId>edu.upenn.cis.ppod</groupId>
-		<version>0.2-SNAPSHOT</version>
+		<version>0.2</version>
 	</parent>
 	<modelVersion>4.0.0</modelVersion>
 	<groupId>edu.upenn.cis.ppod</groupId>

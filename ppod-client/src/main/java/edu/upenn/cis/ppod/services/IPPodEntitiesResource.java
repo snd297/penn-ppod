@@ -30,7 +30,7 @@ import edu.upenn.cis.ppod.thirdparty.util.Pretty;
  * @author Sam Donnelly
  */
 @Path("/otusets")
-public interface IOtuSetsResource {
+public interface IPPodEntitiesResource {
 
 	@POST
 	@Pretty
@@ -42,8 +42,9 @@ public interface IOtuSetsResource {
 	@POST
 	@Pretty
 	@Path("/query-count")
-	// @PathParam("count")
 	@Produces("application/xml")
-	Counts countHqlQuery(@FormParam("query") String query);
+	Counts countHqlQuery(
+			@FormParam("query") String query,
+			@FormParam("timeoutSeconds") Integer timeoutSeconds);
 
 }

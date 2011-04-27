@@ -22,13 +22,11 @@ import javax.xml.bind.annotation.XmlAccessorType;
 import javax.xml.bind.annotation.XmlAttribute;
 import javax.xml.bind.annotation.XmlRootElement;
 
-import edu.upenn.cis.ppod.util.InternalNumberComparator;
+import edu.upenn.cis.ppod.util.Strings;
 
 @XmlRootElement
 @XmlAccessorType(XmlAccessType.FIELD)
 public final class PPodLabelAndId {
-
-	private static final Comparator<String> COMPARATOR = new InternalNumberComparator();
 
 	public static final Comparator<PPodLabelAndId> LABEL_COMPARATOR =
 			new java.util.Comparator<PPodLabelAndId>() {
@@ -36,7 +34,9 @@ public final class PPodLabelAndId {
 				public int compare(
 						final PPodLabelAndId o1,
 						final PPodLabelAndId o2) {
-					return COMPARATOR.compare(o1.getLabel(), o2.getLabel());
+					return Strings.IGNORE_CASE_NATURAL_COMPARATOR_ASCII
+							.compare(
+									o1.getLabel(), o2.getLabel());
 				}
 			};
 

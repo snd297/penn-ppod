@@ -53,9 +53,6 @@ public class StartDemoServer {
 						server,
 						"/ppod-services",
 						ServletContextHandler.SESSIONS);
-		context.setInitParameter(
-				"resteasy.providers",
-				"edu.upenn.cis.ppod.services.PPodExceptionMapper");
 		context.addFilter(GuiceFilter.class, "/*", 0);
 		context.addServlet(DefaultServlet.class, "/");
 		EventListener resteasyBootstrapListener =
