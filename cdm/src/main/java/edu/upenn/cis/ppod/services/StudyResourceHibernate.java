@@ -38,7 +38,7 @@ import edu.upenn.cis.ppod.util.Study2StudyInfo;
  * We commit the transactions in this class - instead of a servlet filter - so
  * that the resteasy response will know that something went wrong if the commit
  * goes wrong. We used to do it in a resteasy interceptor, but that didn't work
- * cleanly whe we switched over to a guice managed session factory: we couldn't
+ * cleanly when we switched over to a guice managed session factory: we couldn't
  * get at the current session inside the interceptor without putting a kludge
  * static reference to it in
  * {@link edu.upenn.cis.ppod.persistence.SessionFactoryProvider}.
