@@ -21,7 +21,7 @@ Let's start with a simple one: give us all character matrices that contain Taxa 
 
 http://penn-ppod.googlecode.com/svn/wiki/Pictures/UsingThePackage/selectSusEquus2.png
 
-After we hit "Count Matches" it will show us the number of matching items. Hitting "OK" will return the results.
+After we hit "Count Matches" it will show us the number of matching items. Hitting "OK" will return the results. The first time you run a count query or a real query will be the slowest.
 
 As you change your data in the form, the HQL will be updated. You can even edit the HQL yourself, but be aware that an subsequent changes to the form will wipe out manual HQL.
 
