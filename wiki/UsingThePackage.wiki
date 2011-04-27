@@ -33,4 +33,6 @@ Note that at present only character matrices which match the criteria will be re
 
 Some queries will be too hard for the server. Wildcards in particular are expensive. You can adjust the amount of time you are willing to wait for a count query to return. At present, there is no way to adjust the amount of time you will wait for an actual query - it is hardcoded at 60 seconds.
 
+And here's one that says Give me all character, dna, and protein matrices that have taxa named 'homo%sapien%', 'felis%cat%', and 'a%'.
+
 http://penn-ppod.googlecode.com/svn/wiki/Pictures/UsingThePackage/selectHomoSapCat.png
