@@ -105,7 +105,9 @@ public final class CreateOrUpdateStudy implements ICreateOrUpdateStudy {
 			if (dbStudy == null) {
 				throw new IllegalArgumentException("study has unknow pPOD id");
 			}
-			if (dbStudy != dbStudyByLabel) {
+			if (dbStudyByLabel == null || dbStudy == dbStudyByLabel) {
+
+			} else {
 				dupLabel = true;
 			}
 		}
