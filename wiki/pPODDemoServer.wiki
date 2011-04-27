@@ -33,4 +33,22 @@
   }}}
   if you ran on a port different than the default. Stopping may take a few seconds after the stop program returns.
 
+  If there is already something listening on the port you choose, you'll get an error like this: 
+  {{{
+    Exception in thread "main" java.net.BindException: Address already in use
+	at sun.nio.ch.Net.bind(Native Method)
+	at sun.nio.ch.ServerSocketChannelImpl.bind(ServerSocketChannelImpl.java:126)
+	at sun.nio.ch.ServerSocketAdaptor.bind(ServerSocketAdaptor.java:59)
+	at org.eclipse.jetty.server.nio.SelectChannelConnector.open(SelectChannelConnector.java:170)
+	at org.eclipse.jetty.server.AbstractConnector.doStart(AbstractConnector.java:356)
+	at org.eclipse.jetty.server.nio.SelectChannelConnector.doStart(SelectChannelConnector.java:248)
+	at org.eclipse.jetty.util.component.AbstractLifeCycle.start(AbstractLifeCycle.java:55)
+	at org.eclipse.jetty.server.Server.doStart(Server.java:269)
+	at org.eclipse.jetty.util.component.AbstractLifeCycle.start(AbstractLifeCycle.java:55)
+	at edu.upenn.cis.ppod.demo.StartDemoServer.main(StartDemoServer.java:80)
+  }}}
+  
+  Unfortunately, you'll need to stop the server yourself when this error occurs - it does not die on it's own.
+
+
 You should now have a pPOD server running. It is prepopulated with TreeBASE data we can query on. See here for how to do that.
