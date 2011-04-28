@@ -1,5 +1,5 @@
 /*
- * Copyright (C) 2010 Trustees of the University of Pennsylvania
+ * Copyright (C) 2011 Trustees of the University of Pennsylvania
  *
  * Licensed under the Apache License, Version 2.0 (the "License");
  * you may not use this file except in compliance with the License.
@@ -13,20 +13,16 @@
  * See the License for the specific language governing permissions and
  * limitations under the License.
  */
-package edu.upenn.cis.ppod.services;
+package edu.upenn.cis.ppod.createorupdate;
 
-import com.google.inject.AbstractModule;
+import com.google.inject.ImplementedBy;
 
-/**
- * @author Sam Donnelly
- */
-public class PPodServicesHibernateModule extends AbstractModule {
+import edu.upenn.cis.ppod.dto.PPodStudy;
+import edu.upenn.cis.ppod.model.Study;
 
-	@Override
-	protected void configure() {
-		bind(IPPodGreetingResource.class).to(PPodGreetingService.class);
-		bind(IStudyResource.class).to(StudyResourceHibernate.class);
-		bind(IPPodEntitiesResource.class)
-				.to(PPodEntitiesResourceHibernate.class);
-	}
+@ImplementedBy(CreateOrUpdateStudy.class)
+public interface ICreateOrUpdateStudy {
+
+	Study createOrUpdateStudy(final PPodStudy incomingStudy);
+
 }

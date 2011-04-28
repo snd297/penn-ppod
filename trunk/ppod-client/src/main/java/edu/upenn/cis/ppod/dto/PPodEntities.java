@@ -17,10 +17,9 @@ package edu.upenn.cis.ppod.dto;
 
 import static com.google.common.base.Preconditions.checkNotNull;
 import static com.google.common.collect.Lists.newArrayList;
-import static com.google.common.collect.Sets.newHashSet;
+import static java.util.Collections.unmodifiableList;
 
 import java.util.List;
-import java.util.Set;
 
 import javax.xml.bind.annotation.XmlAccessType;
 import javax.xml.bind.annotation.XmlAccessorType;
@@ -31,40 +30,44 @@ import javax.xml.bind.annotation.XmlRootElement;
 @XmlAccessorType(XmlAccessType.NONE)
 public final class PPodEntities implements IHasOtuSets {
 
-	private Set<PPodOtu> otus = newHashSet();
+	private List<PPodStudy> studies = newArrayList();
 
-	private List<PPodOtuSet> otuSets = newArrayList();
+	public int countMembers() {
+		int count = 0;
+		final List<PPodOtuSet> otuSets = getOtuSets();
+		count += otuSets.size();
+		for (final PPodOtuSet otuSet : otuSets) {
+			count += otuSet.getStandardMatrices().size();
+			count += otuSet.getDnaMatrices().size();
+			count += otuSet.getProteinMatrices().size();
+			count += otuSet.getTreeSets().size();
+		}
+		return count;
+	}
 
 	public String getLabel() {
 		return "From HQL";
 	}
 
-	/**
-	 * @return the otus
-	 */
-	@XmlElement(name = "otu")
-	public Set<PPodOtu> getOtus() {
-		return otus;
+	/** ${inheritDoc} */
+	public List<PPodOtuSet> getOtuSets() {
+		final List<PPodOtuSet> otuSets = newArrayList();
+		for (final PPodStudy study : studies) {
+			otuSets.addAll(study.getOtuSets());
+		}
+		return unmodifiableList(otuSets);
 	}
 
-	@XmlElement(name = "otuSet")
-	public List<PPodOtuSet> getOtuSets() {
-		return otuSets;
+	@XmlElement(name = "study")
+	public List<PPodStudy> getStudies() {
+		return studies;
 	}
 
 	public Long getVersion() {
 		return 0L;
 	}
 
-	/**
-	 * @param otus the otus to set
-	 */
-	public void setOtus(final Set<PPodOtu> otus) {
-		this.otus = checkNotNull(otus);
+	public void setStudies(final List<PPodStudy> studies) {
+		this.studies = checkNotNull(studies);
 	}
-
-	public void setOtuSets(final List<PPodOtuSet> otuSets) {
-		this.otuSets = checkNotNull(otuSets);
-	}
-
 }

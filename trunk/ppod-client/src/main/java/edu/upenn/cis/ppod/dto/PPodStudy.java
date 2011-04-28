@@ -33,6 +33,7 @@ import edu.umd.cs.findbugs.annotations.CheckForNull;
  */
 @XmlRootElement
 public final class PPodStudy extends UuPPodDomainObjectWithLabel implements
+		IHasPPodId,
 		IHasOtuSets {
 
 	@XmlElement(name = "otuSet")

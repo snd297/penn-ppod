@@ -46,7 +46,8 @@ import edu.upenn.cis.ppod.model.StandardState;
 /**
  * @author Sam Donnelly
  */
-public final class CreateOrUpdateStandardMatrix extends CreateOrUpdateMatrix {
+final class CreateOrUpdateStandardMatrix extends CreateOrUpdateMatrix implements
+		ICreateOrUpdateStandardMatrix {
 
 	private static Logger logger =
 			LoggerFactory.getLogger(CreateOrUpdateMatrix.class);
