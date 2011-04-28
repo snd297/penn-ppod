@@ -19,8 +19,12 @@ import java.util.List;
 
 public interface IHasOtuSets extends ILabeled {
 
+	/**
+	 * Return a list of the composing OTU sets. Modification of the returned
+	 * list is undefined.
+	 * 
+	 * @return a list of the composing OTU sets
+	 */
 	List<PPodOtuSet> getOtuSets();
-
-	void setOtuSets(List<PPodOtuSet> otuSets);
 
 }

@@ -27,6 +27,7 @@ public class Counts {
 	private long otuSetCount = -1;
 	private long standardMatrixCount = -1;
 	private long dnaMatrixCount = -1;
+	private long proteinMatrixCount = -1;
 	private long treeSetCount = -1;
 
 	public Counts() {}
@@ -60,8 +61,10 @@ public class Counts {
 		checkState(otuSetCount != -1);
 		checkState(standardMatrixCount != -1);
 		checkState(dnaMatrixCount != -1);
+		checkState(proteinMatrixCount != -1);
 		checkState(treeSetCount != -1);
 		return otuSetCount + standardMatrixCount + dnaMatrixCount
+				+ proteinMatrixCount
 				+ treeSetCount;
 	}
 
@@ -112,5 +115,19 @@ public class Counts {
 	 */
 	public void setTimedOut(boolean timedOut) {
 		this.timedOut = timedOut;
+	}
+
+	/**
+	 * @return the proteinMatrixCount
+	 */
+	public long getProteinMatrixCount() {
+		return proteinMatrixCount;
+	}
+
+	/**
+	 * @param proteinMatrixCount the proteinMatrixCount to set
+	 */
+	public void setProteinMatrixCount(long proteinMatrixCount) {
+		this.proteinMatrixCount = proteinMatrixCount;
 	}
 }
