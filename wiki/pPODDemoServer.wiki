@@ -2,7 +2,7 @@
 
 = Running the pPOD Demo Server =
 
-  * The demo has been tested on OS X with Mesquite 2.74. It has been lightly test on Windows Vista w/ cygwin.
+  * The demo has been tested on Mac OS X with Mesquite 2.74. It has been lightly test on Windows Vista w/ cygwin.
   * First of all, you'll need to get [http://mesquiteproject.org/mesquite/mesquite.html Mesquite]
   * You'll need to get the zipped pPOD Mesquite package `pPODMesquitePackage-X.X.X.zip` from Sam.
   * Unzip it (it will expand into `pPODMesquitePackage-X.X.X`) and put the expanded directory where you want. We'll assume you put it into `${MESQUITE_HOME}/Mesquite_Folder`.
