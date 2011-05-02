@@ -207,7 +207,6 @@ public class StandardMatrix extends Matrix<StandardRow> {
 	}
 
 	/** {@inheritDoc} */
-	@Override
 	public void updateOtus() {
 		UPennCisPPodUtil.updateOtus(getParent(), rows);
 	}

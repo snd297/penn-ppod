@@ -112,7 +112,6 @@ public class DnaMatrix extends Matrix<DnaRow> {
 		this.version = version;
 	}
 
-	@Override
 	public void updateOtus() {
 		UPennCisPPodUtil.updateOtus(getParent(), rows);
 	}

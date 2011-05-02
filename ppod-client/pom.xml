@@ -6,7 +6,7 @@
 	<parent>
 		<artifactId>ppod</artifactId>
 		<groupId>edu.upenn.cis.ppod</groupId>
-		<version>0.2</version>
+		<version>0.3-SNAPSHOT</version>
 	</parent>
 	<groupId>edu.upenn.cis.ppod</groupId>
 	<artifactId>ppod-client</artifactId>
