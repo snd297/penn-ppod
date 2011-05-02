@@ -33,14 +33,12 @@ import javax.persistence.Table;
 import javax.persistence.Version;
 
 import edu.umd.cs.findbugs.annotations.CheckForNull;
-import edu.upenn.cis.ppod.imodel.IDependsOnParentOtus;
 import edu.upenn.cis.ppod.util.UPennCisPPodUtil;
 
 @Entity
 @Table(name = ProteinMatrix.TABLE)
 public class ProteinMatrix
-		extends Matrix<ProteinRow>
-		implements IDependsOnParentOtus {
+		extends Matrix<ProteinRow> {
 
 	@CheckForNull
 	private Long id;
@@ -104,7 +102,6 @@ public class ProteinMatrix
 		this.version = version;
 	}
 
-	@Override
 	public void updateOtus() {
 		UPennCisPPodUtil.updateOtus(getParent(), rows);
 	}

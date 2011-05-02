@@ -55,6 +55,6 @@ public interface IStudyDAO extends IDAO<Study, Long> {
 	Study getStudyByPPodId(@CheckForNull String pPodId);
 
 	@Nullable
-	Study getStudyByLabel(String label);
+	Study getStudyByLabel(@CheckForNull String label);
 
 }

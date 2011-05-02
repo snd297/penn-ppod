@@ -153,6 +153,4 @@ public abstract class Matrix<R>
 
 	}
 
-	/** {@inheritDoc} */
-	public abstract void updateOtus();
 }

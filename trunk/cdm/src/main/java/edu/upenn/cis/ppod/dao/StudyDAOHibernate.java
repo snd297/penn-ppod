@@ -26,6 +26,8 @@ import org.hibernate.Session;
 
 import com.google.inject.Inject;
 
+import edu.umd.cs.findbugs.annotations.CheckForNull;
+import edu.umd.cs.findbugs.annotations.Nullable;
 import edu.upenn.cis.ppod.dto.PPodLabelAndId;
 import edu.upenn.cis.ppod.model.Study;
 import edu.upenn.cis.ppod.thirdparty.dao.hibernate.GenericHibernateDAO;
@@ -74,7 +76,8 @@ final class StudyDAOHibernate
 				.uniqueResult();
 	}
 
-	public Study getStudyByPPodId(final String pPodId) {
+	@Nullable
+	public Study getStudyByPPodId(@CheckForNull final String pPodId) {
 		return (Study) getSession()
 				.getNamedQuery(
 						Study.class.getSimpleName() + "-getByPPodId")
@@ -82,6 +85,7 @@ final class StudyDAOHibernate
 				.uniqueResult();
 	}
 
+	@Nullable
 	public Study getStudyByLabel(final String label) {
 		checkNotNull(label);
 		return (Study) getSession()
