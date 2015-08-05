@@ -1,0 +1,28 @@
+# Use HQL to select all matrices in the pPOD database which contain both 'Equus' and 'Sus', and then assemble them into a single matrix #
+
+### In Mesquite, get started by choosing _HQL Query against pPOD database..._: ###
+![http://penn-ppod.googlecode.com/svn/wiki/Pictures/SelectEquusAndSusMatrices/001-mesqSelectHQL.png](http://penn-ppod.googlecode.com/svn/wiki/Pictures/SelectEquusAndSusMatrices/001-mesqSelectHQL.png)
+
+### Enter in our HQL query: ###
+![http://penn-ppod.googlecode.com/svn/wiki/Pictures/SelectEquusAndSusMatrices/002-mesqHQLQueryWindow.png](http://penn-ppod.googlecode.com/svn/wiki/Pictures/SelectEquusAndSusMatrices/002-mesqHQLQueryWindow.png)
+
+### The results: ###
+![http://penn-ppod.googlecode.com/svn/wiki/Pictures/SelectEquusAndSusMatrices/003-mesqQueryResults.png](http://penn-ppod.googlecode.com/svn/wiki/Pictures/SelectEquusAndSusMatrices/003-mesqQueryResults.png)
+
+### Have a look at the first matrix: ###
+![http://penn-ppod.googlecode.com/svn/wiki/Pictures/SelectEquusAndSusMatrices/004-mesqMatrix1Detail.png](http://penn-ppod.googlecode.com/svn/wiki/Pictures/SelectEquusAndSusMatrices/004-mesqMatrix1Detail.png)
+
+### Rename our taxa to "Equus1" and "Sus1" and _Edit->Cut_ all rows and columns we're not interested in: ###
+![http://penn-ppod.googlecode.com/svn/wiki/Pictures/SelectEquusAndSusMatrices/007.002-cutUnwantedCharsFrom1stMatrix.png](http://penn-ppod.googlecode.com/svn/wiki/Pictures/SelectEquusAndSusMatrices/007.002-cutUnwantedCharsFrom1stMatrix.png)
+
+### View the second matrix returned: ###
+![http://penn-ppod.googlecode.com/svn/wiki/Pictures/SelectEquusAndSusMatrices/008-mesqChoose2ndMatrix.png](http://penn-ppod.googlecode.com/svn/wiki/Pictures/SelectEquusAndSusMatrices/008-mesqChoose2ndMatrix.png)
+
+### Rename our taxa to "Equus2" and "Sus2" and _Edit->Cut_ all rows and columns we're not interested in: ###
+![http://penn-ppod.googlecode.com/svn/wiki/Pictures/SelectEquusAndSusMatrices/010-removedCharsFromSecondMatrix.png](http://penn-ppod.googlecode.com/svn/wiki/Pictures/SelectEquusAndSusMatrices/010-removedCharsFromSecondMatrix.png)
+
+### For the third matrix, rename our taxa to "Equus3" and "Sus3" and _Edit->Cut_ all rows and columns we're not interested in: ###
+![http://penn-ppod.googlecode.com/svn/wiki/Pictures/SelectEquusAndSusMatrices/011-3rdMatrixTaxaAndCharsTrimmedAndTaxaRenamed.png](http://penn-ppod.googlecode.com/svn/wiki/Pictures/SelectEquusAndSusMatrices/011-3rdMatrixTaxaAndCharsTrimmedAndTaxaRenamed.png)
+
+### Finally we use Mesquite's _Matrix->Utilities->Concatenate Other Matrix_ to concatenate the second and the third matrices to the first matrix: ###
+![http://penn-ppod.googlecode.com/svn/wiki/Pictures/SelectEquusAndSusMatrices/012-2ndAnd3rdConcatedTo1st.png](http://penn-ppod.googlecode.com/svn/wiki/Pictures/SelectEquusAndSusMatrices/012-2ndAnd3rdConcatedTo1st.png)

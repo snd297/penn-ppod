@@ -1,0 +1,59 @@
+# Running the pPOD Demo Server #
+
+  * The demo has been tested on Mac OS X with Mesquite 2.74. It has been lightly tested on Windows Vista w/ cygwin.
+  * First of all, you'll need to get [Mesquite](http://mesquiteproject.org/mesquite/mesquite.html)
+  * You'll need to get the zipped pPOD Mesquite package `pPODMesquitePackage-X.X.X.zip` from Sam.
+  * Unzip it (it will expand into `pPODMesquitePackage-X.X.X`) and put the expanded directory where you want. We'll assume you put it into `${MESQUITE_HOME}/Mesquite_Folder`.
+  * Add the appropriate entry in your `${MESQUITE_HOME}/Mesquite_Folder/classpaths.xml` file (you'll need to create a `classpaths.xml` file if there's not one already there). Here's what the entry looks like if you're using `${MESQUITE_HOME}/Mesquite_Folder`:
+```
+<?xml version="1.0"?>
+<mesquite>
+  <classpath>./pPODMesquitePackage-X.X.X/Mesquite_Folder</classpath>
+</mesquite>
+```
+> (Be sure to change "X.X.X" to the version you have, for example, `pPODMesquitePackage-0.1`)
+  * Download the demo server from [ppod-demo-server-0.2-dist.zip](http://code.google.com/p/penn-ppod/downloads/detail?name=ppod-demo-server-0.2-dist.zip)
+  * Do `unzip ppod-demo-server-X.X.X-dist.zip` - this will create a directory `ppod-demo-server-X.X.X`
+  * On OS X open up Terminal, on Windows open up a cygwin bash shell
+  * `cd` into `ppod-demo-server-X.X.X`
+  * run
+```
+    ./start-ppod-demo-server &
+```
+> You'll get a bunch of logging to standard out. To change that you can alter `config/log4j.properties` or redirect into a file.
+
+> By default, the server listens on port 8080 for requests and on port 8081 for a shutdown command. To change this you can do
+```
+  ./start-ppod-demo-server some-other-port &
+```
+> Then it will listen for shutdowns on `some-other-port + 1`.
+
+> To stop the server run
+```
+    ./stop-ppod-server
+```
+> or
+```
+    ./stop-ppod-server some-other-port + 1
+```
+> if you ran on a port different than the default. Stopping may take a few seconds after the stop program returns.
+
+> If there is already something listening on the port you choose, you'll get an error like this:
+```
+    Exception in thread "main" java.net.BindException: Address already in use
+	at sun.nio.ch.Net.bind(Native Method)
+	at sun.nio.ch.ServerSocketChannelImpl.bind(ServerSocketChannelImpl.java:126)
+	at sun.nio.ch.ServerSocketAdaptor.bind(ServerSocketAdaptor.java:59)
+	at org.eclipse.jetty.server.nio.SelectChannelConnector.open(SelectChannelConnector.java:170)
+	at org.eclipse.jetty.server.AbstractConnector.doStart(AbstractConnector.java:356)
+	at org.eclipse.jetty.server.nio.SelectChannelConnector.doStart(SelectChannelConnector.java:248)
+	at org.eclipse.jetty.util.component.AbstractLifeCycle.start(AbstractLifeCycle.java:55)
+	at org.eclipse.jetty.server.Server.doStart(Server.java:269)
+	at org.eclipse.jetty.util.component.AbstractLifeCycle.start(AbstractLifeCycle.java:55)
+	at edu.upenn.cis.ppod.demo.StartDemoServer.main(StartDemoServer.java:80)
+```
+
+> Unfortunately, you'll need to stop the server yourself when this error occurs - it does not die on its own.
+
+
+You should now have a pPOD server running. It is prepopulated with TreeBASE data we can query on. See [here](UsingThePackage.md) for how to do that.

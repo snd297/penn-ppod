@@ -1,0 +1,40 @@
+# Basics #
+
+### Downloading from the pPOD Server ###
+
+After firing up Mesquite, here's how to download from the pPOD server:
+
+  * **_File>Open Other>Download from pPOD Database_** will query pPOD server for the projects it has stored and return a list for you to choose from.
+  * **_File>Open Other>HQL Query against pPOD database_** will bring up a dialog to query agains the database using given certain criteria like taxon, character, and character state names.
+
+### Uploading to the pPOD server ###
+
+Open up a Nexus file. There is a _pPOD_ item in the project window which if clicked will reveal
+  * **_Upload changes to Server w/ Molecular Matrices as pPOD Matrices_** this will upload your project storing the data in the pPOD server. NOTE: RNA matrices are not yet supported, they should just be ignored by the server.
+
+
+# Generating HQL Queries #
+
+Let's start with a simple one: give us all character matrices that contain Taxa sus and equus (queries are not case sensitive):
+
+![http://penn-ppod.googlecode.com/svn/wiki/Pictures/UsingThePackage/selectSusEquus2.png](http://penn-ppod.googlecode.com/svn/wiki/Pictures/UsingThePackage/selectSusEquus2.png)
+
+After we hit "Count Matches" it will show us the number of matching items. Hitting "OK" will return the results.
+
+The first time you run a count query or a real query will be the slowest.
+
+As you change your data in the form, the HQL will be updated. You can even edit the HQL yourself, but be aware that any subsequent changes to the form will wipe out manual HQL.
+
+The disabled checkbox `Filter Character Matrices by Char/State criteria` is always set to true. This just means that only matching character matrices will be returned. The idea is that if this was set to false, you could get back all character matrices in a taxa block that had some character matrix that satisfied the criteria.
+
+We can add in characters and character states we want to filter by, also let's throw some wildcard characters ('%') in the taxa names and character/states to show how those can be used:
+
+![http://penn-ppod.googlecode.com/svn/wiki/Pictures/UsingThePackage/selectSusAndEquusPlusWildcards.png](http://penn-ppod.googlecode.com/svn/wiki/Pictures/UsingThePackage/selectSusAndEquusPlusWildcards.png)
+
+This says, give me all character matrices that have taxa named 'equ%' and 's%s', and where the 'equ%' taxon has a character called 'anterior%', and the 's%s' taxon has a character named `tensor%` with state 'circular%pit%', and the matrix has a state named 'anterior'.
+
+Some queries will be too hard for the server. Wildcards in particular are expensive. You can adjust the amount of time you are willing to wait for a count query to return. At present, there is no way to adjust the amount of time you will wait for an actual query - it is hardcoded at 60 seconds.
+
+And here's one that says Give me all character, dna, and protein matrices that have taxa named 'homo%sapien%', 'felis%cat%', and 'a%'.
+
+![http://penn-ppod.googlecode.com/svn/wiki/Pictures/UsingThePackage/selectHomoSapCat.png](http://penn-ppod.googlecode.com/svn/wiki/Pictures/UsingThePackage/selectHomoSapCat.png)

@@ -1,0 +1,29 @@
+### 1) Why did you map cells and rows the way you did? ###
+
+We were originally doing it like this (from http://docs.jboss.org/hibernate/stable/annotations/reference/en/html/entity.html#entity-hibspec-collection-enhance):
+
+```
+@Entity
+public class Parent {
+    @OneToMany
+    @org.hibernate.annotations.IndexColumn(name="order")
+    @JoinColumn(name="parent_id", nullable=false)
+    private List<Child> children;
+    ...
+}
+
+@Entity
+public class Child {
+    ...
+    @ManyToOne
+    @JoinColumn(name="parent_id", insertable=false, updatable=false, nullable=false)
+    private Parent parent;
+    ...
+}
+```
+
+but it was too slow on at least saves. This was because it performed many extra updates for unknown reasons .- maybe because it needs to manage the ordering of the list? Instead of relying on an attribute set by the client.
+
+### 2) If what you say in rationale 1 is true, why did you proceed to do it with `CharacterStateMatrix->Character`? ###
+
+Because that is a many-to-many relationship and we didn't know where to put the position field. Plus, there're aren't as many `Character`s as there are cells and so performance problems weren't as amplified and we didn't try so hard to figure it out.
